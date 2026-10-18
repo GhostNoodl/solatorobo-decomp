@@ -1,50 +1,4 @@
-#include "ov006/Model.h"
-
-typedef struct ov006_ListNode {
-    u8 unk0[0x2c];
-    struct ov006_ListNode *next;
-} ov006_ListNode;
-
-typedef struct ov006_Widget {
-    void *vtbl;
-    u32 unk4_0 : 6;
-    u32 busy : 1;
-    u32 unk4_7 : 25;
-    u8 unk8[0x64];
-    void *unk6C;
-} ov006_Widget;
-
-typedef struct ov006_Window ov006_Window;
-typedef BOOL (*ov006_WindowFunc)(ov006_Window *self, ov006_ListNode *node);
-
-struct ov006_Window {
-    void *vtbl;
-    u8 unk4[0x8];
-    u32 flags;
-    int unk10;
-    ov006_Widget *unk14;
-    ov006_Widget *unk18;
-    int unk1C;
-    int unk20;
-    u8 unk24[0x5c];
-    void (*unk80)(int arg, ov006_Window *self, int arg2);
-    u8 unk84[0x4];
-    ov006_WindowFunc unk88;
-    ov006_WindowFunc unk8C;
-    ov006_WindowFunc unk90;
-    u8 unk94[0x4];
-    ov006_ListNode *unk98;
-    u8 unk9C[0x15];
-    s8 unkB1;
-    u8 unkB2[0x2];
-    int unkB4;
-    void *unkB8;
-    u8 unkBC[0x4];
-    u8 unkC0;
-    s8 unkC1;
-    u8 unkC2[0x12];
-    ov006_Widget *unkD4;
-};
+#include "ov006/Window.h"
 
 typedef struct ov006_Unk0203a4c0 {
     s8 *unk0;
@@ -89,19 +43,6 @@ int func_ov006_021e3958(ov006_Window *self) {
 
 int func_ov006_021e399c(ov006_Window *self, int a, int b, int c) {
     return VCALL(self, 60, a, b, c);
-}
-
-static inline ov006_ListNode *ov006_Window_GetSelected(ov006_Window *self) {
-    ov006_ListNode *node = self->unk98;
-    int i;
-    if (node == NULL) {
-        return NULL;
-    }
-    i = self->unkB1;
-    while (i-- != 0) {
-        node = node->next;
-    }
-    return node;
 }
 
 BOOL func_ov006_021e39b0(ov006_Window *self) {

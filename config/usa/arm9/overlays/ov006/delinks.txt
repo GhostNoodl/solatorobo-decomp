@@ -63,7 +63,7 @@ src/ov006/ov006_021ea3e8.cpp:
 
 src/ov006/ov006_021ce374.cpp:
     complete
-    .text       start:0x021ce374 end:0x021ce3f0
+    .text       start:0x021ce374 end:0x021ce560
 
 src/ov006/ov006_021ce560.cpp:
     complete
@@ -75,7 +75,7 @@ src/ov006/ov006_021e1f28.cpp:
 
 src/ov006/ov006_021e21cc.cpp:
     complete
-    .text       start:0x021e21cc end:0x021e22e4
+    .text       start:0x021e21cc end:0x021e2430
 
 src/ov006/ov006_021cec5c.cpp:
     complete
@@ -89,14 +89,6 @@ src/ov006/ov006_021cf7c4.cpp:
     complete
     .text       start:0x021cf7c4 end:0x021cf7c8
 
-src/ov006/ov006_021cfa60.cpp:
-    complete
-    .text       start:0x021cfa60 end:0x021cfa80
-
-src/ov006/ov006_021cfe5c.cpp:
-    complete
-    .text       start:0x021cfe5c end:0x021cfe84
-
 src/ov006/ov006_021d0188.cpp:
     complete
     .text       start:0x021d0188 end:0x021d01ac
@@ -108,10 +100,6 @@ src/ov006/ov006_021d0f44.cpp:
 src/ov006/ov006_021d1694.cpp:
     complete
     .text       start:0x021d1694 end:0x021d16a0
-
-src/ov006/ov006_021d1dbc.cpp:
-    complete
-    .text       start:0x021d1dbc end:0x021d1df8
 
 src/ov006/ov006_021d23d0.cpp:
     complete
@@ -160,3 +148,403 @@ src/ov006/ov006_021e0d64.cpp:
 src/ov006/ov006_021e139c.cpp:
     complete
     .text       start:0x021e139c end:0x021e13c8
+
+src/ov006/ov006_021ce6bc.cpp:
+    complete
+    .text       start:0x021ce6bc end:0x021cec5c
+
+src/ov006/ov006_021cf7c8.cpp:
+    complete
+    .text       start:0x021cf7c8 end:0x021cfe84
+
+src/ov006/ov006_021cf360.cpp:
+    complete
+    .text       start:0x021cf360 end:0x021cf414
+
+src/ov006/ov006_021cfe84.cpp:
+    complete
+    .text       start:0x021cfe84 end:0x021d0188
+
+src/ov006/ov006_021d01ac.cpp:
+    complete
+    .text       start:0x021d01ac end:0x021d0f44
+
+src/ov006/ov006_021d1490.cpp:
+    complete
+    .text       start:0x021d1490 end:0x021d1694
+
+src/ov006/ov006_021d1b24.cpp:
+    complete
+    .text       start:0x021d1b24 end:0x021d23d0
+
+src/ov006/ov006_021d2b9c.cpp:
+    complete
+    .text       start:0x021d2b9c end:0x021d2e48
+
+src/ov006/ov006_021d2e48.cpp:
+    complete
+    .text       start:0x021d2e48 end:0x021d3498
+
+src/ov006/ov006_021d37d0.cpp:
+    complete
+    .text       start:0x021d37d0 end:0x021d3f04
+
+src/ov006/ov006_021d40a8.cpp:
+    complete
+    .text       start:0x021d40a8 end:0x021d4118
+
+src/ov006/ov006_021ead68.cpp:
+    complete
+    .text       start:0x021ead68 end:0x021ead6c
+
+src/ov006/ov006_021eb2c8.cpp:
+    complete
+    .text       start:0x021eb2c8 end:0x021eb2cc
+
+src/ov006/ov006_021d88f8.cpp:
+    complete
+    .text       start:0x021d88f8 end:0x021d8914
+
+src/ov006/ov006_021e7390.cpp:
+    complete
+    .text       start:0x021e7390 end:0x021e73b0
+
+src/ov006/ov006_021dcc9c.cpp:
+    complete
+    .text       start:0x021dcc9c end:0x021dccc8
+
+src/ov006/ov006_021e2878.cpp:
+    complete
+    .text       start:0x021e2878 end:0x021e28b4
+
+src/ov006/ov006_021e29c4.cpp:
+    complete
+    .text       start:0x021e29c4 end:0x021e2a04
+
+src/ov006/ov006_021e1484.cpp:
+    complete
+    .text       start:0x021e1484 end:0x021e14c8
+
+src/ov006/ov006_021ddc70.cpp:
+    complete
+    .text       start:0x021ddc70 end:0x021ddcc0
+
+src/ov006/ov006_021d95a8.cpp:
+    complete
+    .text       start:0x021d95a8 end:0x021d95ec
+
+src/ov006/ov006_021e6a6c.cpp:
+    complete
+    .text       start:0x021e6a6c end:0x021e6ac4
+
+src/ov006/ov006_021e2174.cpp:
+    complete
+    .text       start:0x021e2174 end:0x021e21cc
+
+src/ov006/ov006_021d908c.cpp:
+    complete
+    .text       start:0x021d908c end:0x021d90e8
+
+src/ov006/ov006_021dc6b4.cpp:
+    complete
+    .text       start:0x021dc6b4 end:0x021dc714
+
+src/ov006/ov006_021e2430.cpp:
+    complete
+    .text       start:0x021e2430 end:0x021e2490
+
+src/ov006/ov006_021dc714.cpp:
+    complete
+    .text       start:0x021dc714 end:0x021dc778
+
+src/ov006/ov006_021e264c.cpp:
+    complete
+    .text       start:0x021e264c end:0x021e26b4
+
+src/ov006/ov006_021da19c.cpp:
+    complete
+    .text       start:0x021da19c end:0x021da208
+
+src/ov006/ov006_021dbacc.cpp:
+    complete
+    .text       start:0x021dbacc end:0x021dbb38
+
+src/ov006/ov006_021dba5c.cpp:
+    complete
+    .text       start:0x021dba5c end:0x021dbacc
+
+src/ov006/ov006_021ddb88.cpp:
+    complete
+    .text       start:0x021ddb88 end:0x021ddc70
+
+src/ov006/ov006_021e26b4.cpp:
+    complete
+    .text       start:0x021e26b4 end:0x021e279c
+
+src/ov006/ov006_021dbb38.cpp:
+    complete
+    .text       start:0x021dbb38 end:0x021dbbac
+
+src/ov006/ov006_021db95c.cpp:
+    complete
+    .text       start:0x021db95c end:0x021dba5c
+
+src/ov006/ov006_021cdfc4.cpp:
+    complete
+    .text       start:0x021cdfc4 end:0x021ce048
+
+src/ov006/ov006_021e73b0.cpp:
+    complete
+    .text       start:0x021e73b0 end:0x021e742c
+
+src/ov006/ov006_021dbfb8.cpp:
+    complete
+    .text       start:0x021dbfb8 end:0x021dc048
+
+src/ov006/ov006_021e1ddc.cpp:
+    complete
+    .text       start:0x021e1ddc end:0x021e1e6c
+
+src/ov006/ov006_021e0af4.cpp:
+    complete
+    .text       start:0x021e0af4 end:0x021e0b80
+
+src/ov006/ov006_021eacd8.cpp:
+    complete
+    .text       start:0x021eacd8 end:0x021ead68
+
+src/ov006/ov006_021eb238.cpp:
+    complete
+    .text       start:0x021eb238 end:0x021eb2c8
+
+src/ov006/ov006_021eb534.cpp:
+    complete
+    .text       start:0x021eb534 end:0x021eb5c4
+
+src/ov006/ov006_021db1b8.cpp:
+    complete
+    .text       start:0x021db1b8 end:0x021db258
+
+src/ov006/ov006_021db8c4.cpp:
+    complete
+    .text       start:0x021db8c4 end:0x021db95c
+
+src/ov006/ov006_021ea7ac.cpp:
+    complete
+    .text       start:0x021ea7ac end:0x021ea854
+
+src/ov006/ov006_021eaab8.cpp:
+    complete
+    .text       start:0x021eaab8 end:0x021eab60
+
+src/ov006/ov006_021dd2e8.cpp:
+    complete
+    .text       start:0x021dd2e8 end:0x021dd450
+
+src/ov006/ov006_021ded00.cpp:
+    complete
+    .text       start:0x021ded00 end:0x021dee68
+
+src/ov006/ov006_021e07ec.cpp:
+    complete
+    .text       start:0x021e07ec end:0x021e0954
+
+src/ov006/ov006_021e0d98.cpp:
+    complete
+    .text       start:0x021e0d98 end:0x021e0f00
+
+src/ov006/ov006_021e835c.cpp:
+    complete
+    .text       start:0x021e835c end:0x021e8408
+
+src/ov006/ov006_021dc778.cpp:
+    complete
+    .text       start:0x021dc778 end:0x021dc8f8
+
+src/ov006/ov006_021dcdfc.cpp:
+    complete
+    .text       start:0x021dcdfc end:0x021dcf7c
+
+src/ov006/ov006_021d95ec.cpp:
+    complete
+    .text       start:0x021d95ec end:0x021d96a8
+
+src/ov006/ov006_021e0ca8.cpp:
+    complete
+    .text       start:0x021e0ca8 end:0x021e0d64
+
+src/ov006/ov006_021e1e6c.cpp:
+    complete
+    .text       start:0x021e1e6c end:0x021e1f28
+
+src/ov006/ov006_021e341c.cpp:
+    complete
+    .text       start:0x021e341c end:0x021e34d8
+
+src/ov006/ov006_021e13c8.cpp:
+    complete
+    .text       start:0x021e13c8 end:0x021e1484
+
+src/ov006/ov006_021d94e8.cpp:
+    complete
+    .text       start:0x021d94e8 end:0x021d95a8
+
+src/ov006/ov006_021dc9c8.cpp:
+    complete
+    .text       start:0x021dc9c8 end:0x021dca94
+
+src/ov006/ov006_021e1af0.cpp:
+    complete
+    .text       start:0x021e1af0 end:0x021e1bb4
+
+src/ov006/ov006_021ea328.cpp:
+    complete
+    .text       start:0x021ea328 end:0x021ea3e8
+
+src/ov006/ov006_021d9fc0.cpp:
+    complete
+    .text       start:0x021d9fc0 end:0x021da098
+
+src/ov006/ov006_021d6f10.cpp:
+    complete
+    .text       start:0x021d6f10 end:0x021d6ff0
+
+src/ov006/ov006_021d90e8.cpp:
+    complete
+    .text       start:0x021d90e8 end:0x021d94e8
+
+src/ov006/ov006_021def9c.cpp:
+    complete
+    .text       start:0x021def9c end:0x021df44c
+
+src/ov006/ov006_021ddcc0.cpp:
+    complete
+    .text       start:0x021ddcc0 end:0x021de2e0
+
+src/ov006/ov006_021dbcb8.cpp:
+    complete
+    .text       start:0x021dbcb8 end:0x021dbfb8
+
+src/ov006/ov006_021e2a04.cpp:
+    complete
+    .text       start:0x021e2a04 end:0x021e2f3c
+
+src/ov006/ov006_021dfa60.cpp:
+    complete
+    .text       start:0x021dfa60 end:0x021dfce8
+
+src/ov006/ov006_021e14c8.cpp:
+    complete
+    .text       start:0x021e14c8 end:0x021e16b0
+
+src/ov006/ov006_021d4f64.cpp:
+    complete
+    .text       start:0x021d4f64 end:0x021d54b0
+
+src/ov006/ov006_021db0d8.cpp:
+    complete
+    .text       start:0x021db0d8 end:0x021db1b8
+
+src/ov006/ov006_021ea244.cpp:
+    complete
+    .text       start:0x021ea244 end:0x021ea328
+
+src/ov006/ov006_021d86a0.cpp:
+    complete
+    .text       start:0x021d86a0 end:0x021d8790
+
+src/ov006/ov006_021dbbac.cpp:
+    complete
+    .text       start:0x021dbbac end:0x021dbcb8
+
+src/ov006/ov006_021e663c.cpp:
+    complete
+    .text       start:0x021e663c end:0x021e6740
+
+src/ov006/ov006_021da098.cpp:
+    complete
+    .text       start:0x021da098 end:0x021da19c
+
+src/ov006/ov006_021e63c8.cpp:
+    complete
+    .text       start:0x021e63c8 end:0x021e650c
+
+src/ov006/ov006_021df44c.cpp:
+    complete
+    .text       start:0x021df44c end:0x021df5a0
+
+src/ov006/ov006_021dccc8.cpp:
+    complete
+    .text       start:0x021dccc8 end:0x021dcdfc
+
+src/ov006/ov006_021d8f44.cpp:
+    complete
+    .text       start:0x021d8f44 end:0x021d908c
+
+src/ov006/ov006_021e2f3c.cpp:
+    complete
+    .text       start:0x021e2f3c end:0x021e309c
+
+src/ov006/ov006_021e37d0.cpp:
+    complete
+    .text       start:0x021e37d0 end:0x021e3934
+
+src/ov006/ov006_021d8790.cpp:
+    complete
+    .text       start:0x021d8790 end:0x021d88f8
+
+src/ov006/ov006_021dd450.cpp:
+    complete
+    .text       start:0x021dd450 end:0x021dd5b8
+
+src/ov006/ov006_021d6bc8.cpp:
+    complete
+    .text       start:0x021d6bc8 end:0x021d6d3c
+
+src/ov006/ov006_021eab60.cpp:
+    complete
+    .text       start:0x021eab60 end:0x021eacd8
+
+src/ov006/ov006_021e4ed4.cpp:
+    complete
+    .text       start:0x021e4ed4 end:0x021e5050
+
+src/ov006/ov006_021e81e0.cpp:
+    complete
+    .text       start:0x021e81e0 end:0x021e835c
+
+src/ov006/ov006_021e4d38.cpp:
+    complete
+    .text       start:0x021e4d38 end:0x021e4ed4
+
+src/ov006/ov006_021dc8f8.cpp:
+    complete
+    .text       start:0x021dc8f8 end:0x021dc9c8
+
+src/ov006/ov006_021dcf7c.cpp:
+    complete
+    .text       start:0x021dcf7c end:0x021dd0e4
+
+src/ov006/ov006_021e279c.cpp:
+    complete
+    .text       start:0x021e279c end:0x021e2878
+
+src/ov006/ov006_021e0f00.cpp:
+    complete
+    .text       start:0x021e0f00 end:0x021e10d0
+
+src/ov006/ov006_021e0954.cpp:
+    complete
+    .text       start:0x021e0954 end:0x021e0af4
+
+src/ov006/ov006_021e34d8.cpp:
+    complete
+    .text       start:0x021e34d8 end:0x021e37d0
+
+src/ov006/ov006_021dfce8.cpp:
+    complete
+    .text       start:0x021dfce8 end:0x021e000c
+
+src/ov006/ov006_021cddf8.cpp:
+    complete
+    .text       start:0x021cddf8 end:0x021cdfc4
