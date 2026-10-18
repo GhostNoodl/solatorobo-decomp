@@ -1,4 +1,4 @@
-#include "Main/Heap/GroupHeap.h"
+#include "nnsys/snd/heap.h"
 
 #include "nnsys/fnd/frameheap.h"
 
@@ -7,42 +7,42 @@ void func_0201c414(int a);
 void func_0201c5b0(u32 a);
 
 static void func_02030834(NNSFndList *list);
-static BOOL func_02030878(GroupHeap *self);
+static BOOL func_02030878(NNSSndHeap *self);
 static void func_020308b4(void);
 
-GroupHeap *func_0203053c(void *mem, u32 size) {
+NNSSndHeap *NNS_SndHeapCreate(void *mem, u32 size) {
     u32 end = (u32)mem + size;
     u32 start = ((u32)mem + 3) & ~3;
     void *heap;
     if (start > end) {
         return NULL;
     }
-    if (end - start < sizeof(GroupHeap)) {
+    if (end - start < sizeof(NNSSndHeap)) {
         return NULL;
     }
-    heap = NNS_FndCreateFrmHeapEx((void *)(start + sizeof(GroupHeap)), end - start - sizeof(GroupHeap), 0);
+    heap = NNS_FndCreateFrmHeapEx((void *)(start + sizeof(NNSSndHeap)), end - start - sizeof(NNSSndHeap), 0);
     if (heap == NULL) {
         return NULL;
     }
-    if (func_02030844((GroupHeap *)start, heap)) {
-        return (GroupHeap *)start;
+    if (func_02030844((NNSSndHeap *)start, heap)) {
+        return (NNSSndHeap *)start;
     }
     NNS_FndDestroyFrmHeap(heap);
     return NULL;
 }
 
-void func_020305b0(GroupHeap *self) {
-    func_020305c8(self);
+void NNS_SndHeapDestroy(NNSSndHeap *self) {
+    NNS_SndHeapClear(self);
     NNS_FndDestroyFrmHeap(self->heap);
 }
 
-void func_020305c8(GroupHeap *self) {
-    GroupHeapGroup *group;
+void NNS_SndHeapClear(NNSSndHeap *self) {
+    NNSSndHeapFrame *group;
     BOOL calledDestructor = FALSE;
-    GroupHeapItem *item;
+    NNSSndHeapBlock *item;
 
-    for (group = NNS_FndGetNextListObject(&self->groups, NULL); group != NULL; group = NNS_FndGetNextListObject(&self->groups, NULL)) {
-        for (item = NNS_FndGetNextListObject(&group->items, NULL); item != NULL; item = NNS_FndGetNextListObject(&group->items, item)) {
+    for (group = NNS_FndGetPrevListObject(&self->groups, NULL); group != NULL; group = NNS_FndGetPrevListObject(&self->groups, NULL)) {
+        for (item = NNS_FndGetPrevListObject(&group->items, NULL); item != NULL; item = NNS_FndGetPrevListObject(&group->items, item)) {
             if (item->destructor != NULL) {
                 item->destructor(item + 1, item->size, item->arg0, item->arg1);
                 calledDestructor = TRUE;
@@ -57,13 +57,13 @@ void func_020305c8(GroupHeap *self) {
     func_02030878(self);
 }
 
-void *func_02030684(GroupHeap *self, u32 size, GroupHeapDestructor destructor, u32 arg0, u32 arg1) {
-    GroupHeapItem *item = NNS_FndAllocFromFrmHeapEx(self->heap, ((size + 0x1f) & ~0x1f) + sizeof(GroupHeapItem), 0x20);
-    GroupHeapGroup *group;
+void *NNS_SndHeapAlloc(NNSSndHeap *self, u32 size, NNSSndHeapDisposeCallback destructor, u32 arg0, u32 arg1) {
+    NNSSndHeapBlock *item = NNS_FndAllocFromFrmHeapEx(self->heap, ((size + 0x1f) & ~0x1f) + sizeof(NNSSndHeapBlock), 0x20);
+    NNSSndHeapFrame *group;
     if (item == NULL) {
         return NULL;
     }
-    group = NNS_FndGetNextListObject(&self->groups, NULL);
+    group = NNS_FndGetPrevListObject(&self->groups, NULL);
     item->size = size;
     item->destructor = destructor;
     item->arg0 = arg0;
@@ -72,7 +72,7 @@ void *func_02030684(GroupHeap *self, u32 size, GroupHeapDestructor destructor, u
     return item + 1;
 }
 
-int func_020306ec(GroupHeap *self) {
+int NNS_SndHeapSaveState(NNSSndHeap *self) {
     if (!NNS_FndRecordStateForFrmHeap(self->heap, self->groups.numObjects)) {
         return -1;
     }
@@ -83,20 +83,20 @@ int func_020306ec(GroupHeap *self) {
     return -1;
 }
 
-void func_0203073c(GroupHeap *self, int level) {
-    GroupHeapGroup *group;
+void NNS_SndHeapLoadState(NNSSndHeap *self, int level) {
+    NNSSndHeapFrame *group;
     BOOL calledDestructor;
-    GroupHeapItem *item;
+    NNSSndHeapBlock *item;
 
     item = NULL;
     calledDestructor = FALSE;
     if (level == 0) {
-        func_020305c8(self);
+        NNS_SndHeapClear(self);
         return;
     }
     while (level < self->groups.numObjects) {
-        group = NNS_FndGetNextListObject(&self->groups, NULL);
-        while ((item = NNS_FndGetNextListObject(&group->items, item)) != NULL) {
+        group = NNS_FndGetPrevListObject(&self->groups, NULL);
+        while ((item = NNS_FndGetPrevListObject(&group->items, item)) != NULL) {
             if (item->destructor != NULL) {
                 item->destructor(item + 1, item->size, item->arg0, item->arg1);
                 calledDestructor = TRUE;
@@ -112,26 +112,26 @@ void func_0203073c(GroupHeap *self, int level) {
     func_02030878(self);
 }
 
-u32 func_02030810(GroupHeap *self) {
+u32 NNS_SndHeapGetFreeSize(NNSSndHeap *self) {
     u32 size = NNS_FndGetAllocatableSizeForFrmHeapEx(self->heap, 0x20);
-    if (size < sizeof(GroupHeapItem)) {
+    if (size < sizeof(NNSSndHeapBlock)) {
         return 0;
     }
-    return (size - sizeof(GroupHeapItem)) & ~0x1f;
+    return (size - sizeof(NNSSndHeapBlock)) & ~0x1f;
 }
 
 static void func_02030834(NNSFndList *list) {
     NNS_FndInitList(list, 0);
 }
 
-BOOL func_02030844(GroupHeap *self, void *heap) {
+BOOL func_02030844(NNSSndHeap *self, void *heap) {
     NNS_FndInitList(&self->groups, 0xc);
     self->heap = heap;
     return func_02030878(self) ? TRUE : FALSE;
 }
 
-static BOOL func_02030878(GroupHeap *self) {
-    GroupHeapGroup *group = NNS_FndAllocFromFrmHeapEx(self->heap, sizeof(GroupHeapGroup), 4);
+static BOOL func_02030878(NNSSndHeap *self) {
+    NNSSndHeapFrame *group = NNS_FndAllocFromFrmHeapEx(self->heap, sizeof(NNSSndHeapFrame), 4);
     if (group == NULL) {
         return FALSE;
     }

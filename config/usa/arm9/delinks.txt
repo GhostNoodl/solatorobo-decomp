@@ -4,7 +4,7 @@
     .data       start:0x0208aa80 end:0x0208d940 kind:data align:32
     .bss        start:0x0208d940 end:0x0214b1a0 kind:bss align:32
 
-src/Main/Heap/GroupHeap.c:
+libs/nnsys/snd/snd_heap.c:
     complete
     .text       start:0x0203053c end:0x020308d4
 
@@ -51,3 +51,51 @@ libs/mobiclip/mobiclip_api.cpp:
 libs/mobiclip/mobiclip_player.cpp:
     complete
     .text       start:0x02033df0 end:0x02034600
+
+libs/mobiclip/mobiclip_mem.cpp:
+    complete
+    .text       start:0x02034600 end:0x02034830
+
+libs/mobiclip/mobiclip_file.cpp:
+    complete
+    .text       start:0x02034830 end:0x020349dc
+
+libs/mobiclip/mobiclip_adpcm.c:
+    complete
+    .text       start:0x020349dc end:0x02034b44
+
+src/Main/Res/ResList.c:
+    complete
+    .text       start:0x02034b44 end:0x02035450
+
+src/Main/Res/ResLoader.c:
+    complete
+    .text       start:0x0203562c end:0x02035670
+
+src/Main/Res/ResLoader_2.c:
+    complete
+    .text       start:0x0203584c end:0x02035890
+
+src/Main/Res/ResMgr.cpp:
+    complete
+    .text       start:0x02035934 end:0x02037bb8
+
+src/Main/Res/ResMgr_2.cpp:
+    complete
+    .text       start:0x020381cc end:0x02038504
+
+src/Main/Res/ResHandle.cpp:
+    complete
+    .text       start:0x02038504 end:0x02039720
+
+src/Main/Gfx/GfxMgr.cpp:
+    complete
+    .text       start:0x02039720 end:0x02039844
+
+src/Main/Gfx/GfxMgr_2.cpp:
+    complete
+    .text       start:0x0203994c end:0x0203a0cc
+
+src/Main/Gfx/GfxMgr_3.cpp:
+    complete
+    .text       start:0x0203a408 end:0x0203a5a4

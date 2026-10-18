@@ -112,7 +112,6 @@ extern void func_020184ac(void *thread, void (*func)(void *), void *arg, void *s
 extern void func_02018918(void *thread);
 extern void func_020188b0(void *queue);
 extern void func_02018860(void *queue);
-extern void *func_02021d80(NNSFndList *list, void *object);
 extern void func_02016fa0(const void *src, void *dst, u32 size);
 extern void func_02016e28(void *dst, u32 value, u32 size);
 extern void func_0200ed00(void *file);
@@ -153,8 +152,8 @@ extern int func_0200f038(void *file, void *buf, u32 size);
 extern BOOL func_0200ed2c(void *file);
 extern void func_0203244c(StrmCommand *cmd);
 
-void func_020316c0(u32 prio, GroupHeap *heap);
-BOOL func_020317c4(GroupHeap *heap);
+void func_020316c0(u32 prio, NNSSndHeap *heap);
+BOOL func_020317c4(NNSSndHeap *heap);
 BOOL func_0203188c(StrmHandle *handle, int strmNo, u32 offset);
 void func_020318e8(StrmHandle *handle);
 BOOL func_02031904(StrmHandle *handle, int strmNo, u32 offset);

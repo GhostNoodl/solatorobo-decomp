@@ -6,7 +6,7 @@ extern BOOL func_0202eafc(int playerNo, void *heap, u32 size);
 extern void *func_0202eff8(void *handle, int playerNo, int playerPrio);
 extern void func_0202f094(void *seqPlayer);
 extern void func_0202f0a0(void *seqPlayer, const void *seqBase, u32 seqOffset, void *bank);
-extern GroupHeap *func_0202f168(int playerNo, void *seqPlayer);
+extern NNSSndHeap *func_0202f168(int playerNo, void *seqPlayer);
 extern void func_0202ecd8(void *handle, int volume);
 extern void func_0202ed34(void *handle, int prio);
 extern void func_0202ed94(void *handle, int seqNo);
@@ -64,7 +64,7 @@ BOOL NNS_SndArcPlayerStartSeqArc(void *handle, int seqArcNo, int index) {
 
 BOOL func_020314f4(void *handle, int playerNo, int bankNo, int playerPrio, const NNSSndArcSeqInfo *info, int seqNo) {
     void *seqPlayer = func_0202eff8(handle, playerNo, playerPrio);
-    GroupHeap *heap;
+    NNSSndHeap *heap;
     SndBinaryFile *seq;
     void *bank;
     if (seqPlayer == NULL) {

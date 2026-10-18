@@ -3,11 +3,11 @@
 extern void func_02019278(void *buffer, u32 size);
 extern void func_0201ca68(void *bank, int index, void *waveArc);
 
-BOOL NNS_SndArcLoadGroup(int groupNo, GroupHeap *heap) {
+BOOL NNS_SndArcLoadGroup(int groupNo, NNSSndHeap *heap) {
     return func_020309a4(groupNo, heap) == SND_ARC_LOAD_SUCCESS;
 }
 
-BOOL NNS_SndArcLoadSeq(int seqNo, GroupHeap *heap) {
+BOOL NNS_SndArcLoadSeq(int seqNo, NNSSndHeap *heap) {
     BOOL ret = TRUE;
     if (func_02030aa0(seqNo, 0xff, heap, TRUE, NULL)) {
         ret = FALSE;
@@ -15,7 +15,7 @@ BOOL NNS_SndArcLoadSeq(int seqNo, GroupHeap *heap) {
     return ret;
 }
 
-BOOL NNS_SndArcLoadSeqArc(int seqArcNo, GroupHeap *heap) {
+BOOL NNS_SndArcLoadSeqArc(int seqArcNo, NNSSndHeap *heap) {
     BOOL ret = TRUE;
     if (func_02030b24(seqArcNo, 0xff, heap, TRUE, NULL)) {
         ret = FALSE;
@@ -23,7 +23,7 @@ BOOL NNS_SndArcLoadSeqArc(int seqArcNo, GroupHeap *heap) {
     return ret;
 }
 
-BOOL NNS_SndArcLoadBank(int bankNo, GroupHeap *heap) {
+BOOL NNS_SndArcLoadBank(int bankNo, NNSSndHeap *heap) {
     BOOL ret = TRUE;
     if (func_02030b84(bankNo, 0xff, heap, TRUE, NULL)) {
         ret = FALSE;
@@ -31,7 +31,7 @@ BOOL NNS_SndArcLoadBank(int bankNo, GroupHeap *heap) {
     return ret;
 }
 
-BOOL NNS_SndArcLoadSeqEx(int seqNo, u32 loadFlag, GroupHeap *heap) {
+BOOL NNS_SndArcLoadSeqEx(int seqNo, u32 loadFlag, NNSSndHeap *heap) {
     BOOL ret = TRUE;
     if (func_02030aa0(seqNo, loadFlag, heap, TRUE, NULL)) {
         ret = FALSE;
@@ -39,7 +39,7 @@ BOOL NNS_SndArcLoadSeqEx(int seqNo, u32 loadFlag, GroupHeap *heap) {
     return ret;
 }
 
-int func_020309a4(int groupNo, GroupHeap *heap) {
+int func_020309a4(int groupNo, NNSSndHeap *heap) {
     NNSSndArcGroupInfo *group = func_020301dc(groupNo);
     u32 i;
     int ret;
@@ -78,7 +78,7 @@ int func_020309a4(int groupNo, GroupHeap *heap) {
     return SND_ARC_LOAD_SUCCESS;
 }
 
-int func_02030aa0(int seqNo, u32 loadFlag, GroupHeap *heap, BOOL setAddress, void **out) {
+int func_02030aa0(int seqNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, void **out) {
     NNSSndArcSeqInfo *info = func_0202ff20(seqNo);
     void *seq;
     int ret;
@@ -103,7 +103,7 @@ int func_02030aa0(int seqNo, u32 loadFlag, GroupHeap *heap, BOOL setAddress, voi
     return SND_ARC_LOAD_SUCCESS;
 }
 
-int func_02030b24(int seqArcNo, u32 loadFlag, GroupHeap *heap, BOOL setAddress, void **out) {
+int func_02030b24(int seqArcNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, void **out) {
     NNSSndArcSeqArcInfo *info = func_0202ff84(seqArcNo);
     void *seqArc;
     if (info == NULL) {
@@ -123,7 +123,7 @@ int func_02030b24(int seqArcNo, u32 loadFlag, GroupHeap *heap, BOOL setAddress, 
     return SND_ARC_LOAD_SUCCESS;
 }
 
-int func_02030b84(int bankNo, u32 loadFlag, GroupHeap *heap, BOOL setAddress, void **out) {
+int func_02030b84(int bankNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, void **out) {
     NNSSndArcBankInfo *info = func_0202ffe8(bankNo);
     void *bank;
     int i;
@@ -168,7 +168,7 @@ int func_02030b84(int bankNo, u32 loadFlag, GroupHeap *heap, BOOL setAddress, vo
     return SND_ARC_LOAD_SUCCESS;
 }
 
-int func_02030cc4(int waveArcNo, u32 loadFlag, GroupHeap *heap, BOOL setAddress, void **out) {
+int func_02030cc4(int waveArcNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, void **out) {
     NNSSndArcWaveArcInfo *info = func_0203004c(waveArcNo);
     void *waveArc;
     if (info == NULL) {
@@ -192,7 +192,7 @@ int func_02030cc4(int waveArcNo, u32 loadFlag, GroupHeap *heap, BOOL setAddress,
     return SND_ARC_LOAD_SUCCESS;
 }
 
-void *func_02030d48(u32 fileId, GroupHeapDestructor callback, u32 arg0, u32 arg1, GroupHeap *heap) {
+void *func_02030d48(u32 fileId, NNSSndHeapDisposeCallback callback, u32 arg0, u32 arg1, NNSSndHeap *heap) {
     u32 size = func_02030388(fileId);
     void *buffer;
     if (size == 0) {
@@ -201,7 +201,7 @@ void *func_02030d48(u32 fileId, GroupHeapDestructor callback, u32 arg0, u32 arg1
     if (heap == NULL) {
         return NULL;
     }
-    buffer = func_02030684(heap, size + 0x20, callback, arg0, arg1);
+    buffer = NNS_SndHeapAlloc(heap, size + 0x20, callback, arg0, arg1);
     if (buffer == NULL) {
         return NULL;
     }
@@ -212,10 +212,10 @@ void *func_02030d48(u32 fileId, GroupHeapDestructor callback, u32 arg0, u32 arg1
     return buffer;
 }
 
-void *func_02030dec(u32 fileId, GroupHeap *heap, BOOL setAddress) {
+void *func_02030dec(u32 fileId, NNSSndHeap *heap, BOOL setAddress) {
     void *seq = func_02030498(fileId);
     if (seq == NULL) {
-        seq = func_02030d48(fileId, (GroupHeapDestructor)func_0203111c, setAddress ? (u32)func_0202ff10() : 0, fileId, heap);
+        seq = func_02030d48(fileId, (NNSSndHeapDisposeCallback)func_0203111c, setAddress ? (u32)func_0202ff10() : 0, fileId, heap);
         if (setAddress && seq != NULL) {
             func_020304c0(fileId, seq);
         }
@@ -223,10 +223,10 @@ void *func_02030dec(u32 fileId, GroupHeap *heap, BOOL setAddress) {
     return seq;
 }
 
-void *func_02030e58(u32 fileId, GroupHeap *heap, BOOL setAddress) {
+void *func_02030e58(u32 fileId, NNSSndHeap *heap, BOOL setAddress) {
     void *seqArc = func_02030498(fileId);
     if (seqArc == NULL) {
-        seqArc = func_02030d48(fileId, (GroupHeapDestructor)func_0203111c, setAddress ? (u32)func_0202ff10() : 0, fileId, heap);
+        seqArc = func_02030d48(fileId, (NNSSndHeapDisposeCallback)func_0203111c, setAddress ? (u32)func_0202ff10() : 0, fileId, heap);
         if (setAddress && seqArc != NULL) {
             func_020304c0(fileId, seqArc);
         }
@@ -234,10 +234,10 @@ void *func_02030e58(u32 fileId, GroupHeap *heap, BOOL setAddress) {
     return seqArc;
 }
 
-void *func_02030ec4(u32 fileId, GroupHeap *heap, BOOL setAddress) {
+void *func_02030ec4(u32 fileId, NNSSndHeap *heap, BOOL setAddress) {
     void *bank = func_02030498(fileId);
     if (bank == NULL) {
-        bank = func_02030d48(fileId, (GroupHeapDestructor)func_02031144, setAddress ? (u32)func_0202ff10() : 0, fileId, heap);
+        bank = func_02030d48(fileId, (NNSSndHeapDisposeCallback)func_02031144, setAddress ? (u32)func_0202ff10() : 0, fileId, heap);
         if (setAddress && bank != NULL) {
             func_020304c0(fileId, bank);
         }
@@ -245,10 +245,10 @@ void *func_02030ec4(u32 fileId, GroupHeap *heap, BOOL setAddress) {
     return bank;
 }
 
-void *func_02030f30(u32 fileId, GroupHeap *heap, BOOL setAddress) {
+void *func_02030f30(u32 fileId, NNSSndHeap *heap, BOOL setAddress) {
     void *waveArc = func_02030498(fileId);
     if (waveArc == NULL) {
-        waveArc = func_02030d48(fileId, (GroupHeapDestructor)func_02031174, setAddress ? (u32)func_0202ff10() : 0, fileId, heap);
+        waveArc = func_02030d48(fileId, (NNSSndHeapDisposeCallback)func_02031174, setAddress ? (u32)func_0202ff10() : 0, fileId, heap);
         if (setAddress && waveArc != NULL) {
             func_020304c0(fileId, waveArc);
         }

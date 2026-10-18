@@ -74,10 +74,10 @@ void func_02031fa4(StrmThread *thread, u32 prio) {
 
 void func_0203200c(NNSFndList *list, StrmPlayer *player) {
     u32 state = func_0201a7f0();
-    StrmCommand *cmd = func_02021d80(list, NULL);
+    StrmCommand *cmd = NNS_FndGetNextListObject(list, NULL);
     StrmCommand *next;
     while (cmd != NULL) {
-        next = func_02021d80(list, cmd);
+        next = NNS_FndGetNextListObject(list, cmd);
         if (cmd->player == player) {
             NNS_FndRemoveListObject(list, cmd);
             func_02032110(cmd);
@@ -89,7 +89,7 @@ void func_0203200c(NNSFndList *list, StrmPlayer *player) {
 
 StrmCommand *func_0203207c(NNSFndList *list) {
     u32 state = func_0201a7f0();
-    StrmCommand *cmd = func_02021d80(list, NULL);
+    StrmCommand *cmd = NNS_FndGetNextListObject(list, NULL);
     if (cmd != NULL) {
         NNS_FndRemoveListObject(list, cmd);
         cmd->player->cmdCount--;
@@ -100,7 +100,7 @@ StrmCommand *func_0203207c(NNSFndList *list) {
 
 StrmCommand *func_020320cc(void) {
     u32 state = func_0201a7f0();
-    StrmCommand *cmd = func_02021d80(&data_02096238, NULL);
+    StrmCommand *cmd = NNS_FndGetNextListObject(&data_02096238, NULL);
     if (cmd != NULL) {
         NNS_FndRemoveListObject(&data_02096238, cmd);
     }
@@ -143,7 +143,7 @@ void func_020321d4(int status, int numBuffers, void **buffers, u32 size, int for
     StrmThread *thread;
     int i;
     if (player->cmdCount >= 2) {
-        for (cmd = func_02021d80(&data_02097cb0, NULL); cmd != NULL; cmd = func_02021d80(&data_02097cb0, cmd)) {
+        for (cmd = NNS_FndGetNextListObject(&data_02097cb0, NULL); cmd != NULL; cmd = NNS_FndGetNextListObject(&data_02097cb0, cmd)) {
             if (cmd->player == player) {
                 break;
             }

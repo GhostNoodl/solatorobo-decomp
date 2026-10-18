@@ -97,7 +97,7 @@ BOOL func_02033fa0(MoPlayer *player) {
     prev = player->chunkIndex;
     player->curFrame++;
     player->chunkIndex = (prev + 1) % 2;
-    player->stream->unk_vf14();
+    player->stream->WaitAsync();
     {
         u32 header = *(u32 *)((u8 *)player->chunkBuffers[player->chunkIndex] + (player->chunkOffsets[player->chunkIndex] + player->chunkSizes[player->chunkIndex]));
         player->chunkSizes[prev] = header >> 14;
@@ -105,7 +105,7 @@ BOOL func_02033fa0(MoPlayer *player) {
     }
     player->decoder->data = (u8 *)player->chunkBuffers[player->chunkIndex] + player->chunkOffsets[player->chunkIndex];
     if (player->curFrame < player->numFrames) {
-        player->chunkOffsets[prev] = player->stream->ReadAt(player->chunkBuffers[prev], player->chunkSizes[prev] + 4);
+        player->chunkOffsets[prev] = player->stream->ReadAsync(player->chunkBuffers[prev], player->chunkSizes[prev] + 4);
     }
     {
         int i;
@@ -127,7 +127,7 @@ BOOL func_020340d8(MoPlayer *player, int keyFrame) {
         return FALSE;
     }
     player->curFrame = player->keyFrames[keyFrame].frame;
-    player->stream->unk_vf14();
+    player->stream->WaitAsync();
     player->chunkIndex = 1;
     player->stream->Read(&header, 4);
     player->chunkSizes[0] = header >> 14;

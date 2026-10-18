@@ -2,13 +2,13 @@
 #define NNSYS_SND_SNDARC_H
 
 #include "types.h"
-#include "Main/Heap/GroupHeap.h"
+#include "nnsys/snd/heap.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// NitroSystem sound archive (NNS_SndArc*). GroupHeap is NitroSystem's sound heap (NNSSndHeap).
+// NitroSystem sound archive (NNS_SndArc*).
 
 #define NNS_SND_ARC_LOAD_SEQ    (1 << 0)
 #define NNS_SND_ARC_LOAD_BANK   (1 << 1)
@@ -154,30 +154,30 @@ extern void *func_02030498(u32 fileId);
 extern void func_020304c0(u32 fileId, void *address);
 
 // sndarc_loader.c
-BOOL NNS_SndArcLoadGroup(int groupNo, GroupHeap *heap);
-BOOL NNS_SndArcLoadSeq(int seqNo, GroupHeap *heap);
-BOOL NNS_SndArcLoadSeqArc(int seqArcNo, GroupHeap *heap);
-BOOL NNS_SndArcLoadBank(int bankNo, GroupHeap *heap);
-BOOL NNS_SndArcLoadSeqEx(int seqNo, u32 loadFlag, GroupHeap *heap);
-int func_020309a4(int groupNo, GroupHeap *heap);
-int func_02030aa0(int seqNo, u32 loadFlag, GroupHeap *heap, BOOL setAddress, void **out);
-int func_02030b24(int seqArcNo, u32 loadFlag, GroupHeap *heap, BOOL setAddress, void **out);
-int func_02030b84(int bankNo, u32 loadFlag, GroupHeap *heap, BOOL setAddress, void **out);
-int func_02030cc4(int waveArcNo, u32 loadFlag, GroupHeap *heap, BOOL setAddress, void **out);
-void *func_02030d48(u32 fileId, GroupHeapDestructor callback, u32 arg0, u32 arg1, GroupHeap *heap);
-void *func_02030dec(u32 fileId, GroupHeap *heap, BOOL setAddress);
-void *func_02030e58(u32 fileId, GroupHeap *heap, BOOL setAddress);
-void *func_02030ec4(u32 fileId, GroupHeap *heap, BOOL setAddress);
-void *func_02030f30(u32 fileId, GroupHeap *heap, BOOL setAddress);
-void *func_02030f9c(u32 fileId, GroupHeap *heap, BOOL setAddress);
+BOOL NNS_SndArcLoadGroup(int groupNo, NNSSndHeap *heap);
+BOOL NNS_SndArcLoadSeq(int seqNo, NNSSndHeap *heap);
+BOOL NNS_SndArcLoadSeqArc(int seqArcNo, NNSSndHeap *heap);
+BOOL NNS_SndArcLoadBank(int bankNo, NNSSndHeap *heap);
+BOOL NNS_SndArcLoadSeqEx(int seqNo, u32 loadFlag, NNSSndHeap *heap);
+int func_020309a4(int groupNo, NNSSndHeap *heap);
+int func_02030aa0(int seqNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, void **out);
+int func_02030b24(int seqArcNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, void **out);
+int func_02030b84(int bankNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, void **out);
+int func_02030cc4(int waveArcNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, void **out);
+void *func_02030d48(u32 fileId, NNSSndHeapDisposeCallback callback, u32 arg0, u32 arg1, NNSSndHeap *heap);
+void *func_02030dec(u32 fileId, NNSSndHeap *heap, BOOL setAddress);
+void *func_02030e58(u32 fileId, NNSSndHeap *heap, BOOL setAddress);
+void *func_02030ec4(u32 fileId, NNSSndHeap *heap, BOOL setAddress);
+void *func_02030f30(u32 fileId, NNSSndHeap *heap, BOOL setAddress);
+void *func_02030f9c(u32 fileId, NNSSndHeap *heap, BOOL setAddress);
 void func_020310c4(void *data, void *arc, u32 fileId);
 void func_0203111c(void *data, u32 size, u32 arc, u32 fileId);
 void func_02031144(void *data, u32 size, u32 arc, u32 fileId);
 void func_02031174(void *data, u32 size, u32 arc, u32 fileId);
 void func_020311a4(void *data, u32 size, u32 arc, u32 fileId);
 void func_020311c4(void *data, u32 size, u32 waveArc, u32 index);
-BOOL func_0203120c(SndWaveArc *waveArc, int index, u32 fileId, GroupHeap *heap);
-BOOL func_020312d4(SndWaveArc *waveArc, void *bank, int waveArcIndex, u32 fileId, GroupHeap *heap);
+BOOL func_0203120c(SndWaveArc *waveArc, int index, u32 fileId, NNSSndHeap *heap);
+BOOL func_020312d4(SndWaveArc *waveArc, void *bank, int waveArcIndex, u32 fileId, NNSSndHeap *heap);
 
 // sndarc_player.c
 BOOL NNS_SndArcPlayerSetup(void *heap);

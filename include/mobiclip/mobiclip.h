@@ -14,13 +14,13 @@ struct MoStream {
     virtual void Release();
     virtual BOOL Seek(u32 offset);
     virtual u32 Read(void *buffer, u32 size);
-    virtual u32 ReadAt(void *buffer, u32 size);
-    virtual void unk_vf14();
+    virtual u32 ReadAsync(void *buffer, u32 size);
+    virtual void WaitAsync();
     virtual void Close();
-    /* 0x04 */ u32 unk_04;
-    /* 0x08 */ u32 unk_08;
+    /* 0x04 */ u32 length;
+    /* 0x08 */ u32 position;
     /* 0x0c */ void *file;
-    /* 0x10 */ u8 unk_10;
+    /* 0x10 */ u8 asyncPending;
 }; // size 0x14
 
 #else

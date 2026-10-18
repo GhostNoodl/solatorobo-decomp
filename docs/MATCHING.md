@@ -3,11 +3,11 @@
 ## Quick loop
 
 1. Find a function in the disassembly under `build/usa/asm/` (run `ninja dis` first).
-2. Write C (or C++) for it in a file under `src/`, for example `src/Main/Heap/GroupHeap.c` for main or `src/ov000/...` for an overlay.
+2. Write C (or C++) for it in a file under `src/`, for example `src/Main/Res/ResMgr.cpp` for game code, `libs/<lib>/...` for SDK code or `src/ov000/...` for an overlay.
 3. Check it without a full build:
 
    ```shell
-   python tools/match.py src/Main/Heap/GroupHeap.c func_0203053c
+   python tools/match.py libs/nnsys/snd/snd_heap.c NNS_SndHeapCreate --address 0203053c
    python tools/match.py src/ov000/Foo.c func_ov000_0214b438 --module ov000
    ```
 
@@ -15,7 +15,7 @@
 4. When every function in a contiguous range matches, add the file to the module's `delinks.txt` (`config/usa/arm9/delinks.txt` for main, `config/usa/arm9/overlays/ovNNN/delinks.txt` for overlays):
 
    ```
-   src/Main/Heap/GroupHeap.c:
+   libs/nnsys/snd/snd_heap.c:
        complete
        .text       start:0x0203053c end:0x020308d4
    ```

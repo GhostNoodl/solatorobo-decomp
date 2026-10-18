@@ -995,8 +995,8 @@ NNS_FndAppendListObject kind:function(arm,size=0x54) addr:0x02021c18
 func_02021c6c kind:function(arm,size=0x50) addr:0x02021c6c
 func_02021cbc kind:function(arm,size=0x64) addr:0x02021cbc
 NNS_FndRemoveListObject kind:function(arm,size=0x60) addr:0x02021d20
-func_02021d80 kind:function(arm,size=0x18) addr:0x02021d80
-NNS_FndGetNextListObject kind:function(arm,size=0x14) addr:0x02021d98
+NNS_FndGetNextListObject kind:function(arm,size=0x18) addr:0x02021d80
+NNS_FndGetPrevListObject kind:function(arm,size=0x14) addr:0x02021d98
 func_02021dac kind:function(arm,size=0x68) addr:0x02021dac
 func_02021e14 kind:function(arm,size=0x28) addr:0x02021e14
 func_02021e3c kind:function(arm,size=0x7c) addr:0x02021e3c
@@ -1383,13 +1383,13 @@ func_02030504 kind:function(arm,size=0x14) addr:0x02030504
 func_02030518 kind:function(arm,size=0xc) addr:0x02030518
 func_02030524 kind:function(arm,size=0xc) addr:0x02030524
 func_02030530 kind:function(arm,size=0xc) addr:0x02030530
-func_0203053c kind:function(arm,size=0x74) addr:0x0203053c
-func_020305b0 kind:function(arm,size=0x18) addr:0x020305b0
-func_020305c8 kind:function(arm,size=0xbc) addr:0x020305c8
-func_02030684 kind:function(arm,size=0x68) addr:0x02030684
-func_020306ec kind:function(arm,size=0x50) addr:0x020306ec
-func_0203073c kind:function(arm,size=0xd4) addr:0x0203073c
-func_02030810 kind:function(arm,size=0x24) addr:0x02030810
+NNS_SndHeapCreate kind:function(arm,size=0x74) addr:0x0203053c
+NNS_SndHeapDestroy kind:function(arm,size=0x18) addr:0x020305b0
+NNS_SndHeapClear kind:function(arm,size=0xbc) addr:0x020305c8
+NNS_SndHeapAlloc kind:function(arm,size=0x68) addr:0x02030684
+NNS_SndHeapSaveState kind:function(arm,size=0x50) addr:0x020306ec
+NNS_SndHeapLoadState kind:function(arm,size=0xd4) addr:0x0203073c
+NNS_SndHeapGetFreeSize kind:function(arm,size=0x24) addr:0x02030810
 func_02030834 kind:function(arm,size=0x10) addr:0x02030834 local
 func_02030844 kind:function(arm,size=0x34) addr:0x02030844
 func_02030878 kind:function(arm,size=0x3c) addr:0x02030878 local
@@ -2734,6 +2734,14 @@ func_0207670c kind:function(arm,size=0x4) addr:0x0207670c
 func_02076990 kind:function(arm,size=0x56c) addr:0x02076990
 func_02076f3c kind:function(arm,size=0x1cc) addr:0x02076f3c
 func_02077118 kind:function(arm,size=0x1a0) addr:0x02077118
+data_02077ab8 kind:data(any) addr:0x02077ab8
+data_0207bcb8 kind:data(any) addr:0x0207bcb8
+data_02082254 kind:data(any) addr:0x02082254
+data_020823d4 kind:data(any) addr:0x020823d4
+data_020826d4 kind:data(any) addr:0x020826d4
+data_020826e4 kind:data(any) addr:0x020826e4
+data_02082798 kind:data(any) addr:0x02082798
+data_020827f8 kind:data(any) addr:0x020827f8
 __sinit_0208aa00 kind:function(arm,size=0x24) addr:0x0208aa00
 __sinit_0208aa24 kind:function(arm,size=0x44) addr:0x0208aa24
 .p__sinit_0208aa00 kind:data(word) addr:0x0208aa68

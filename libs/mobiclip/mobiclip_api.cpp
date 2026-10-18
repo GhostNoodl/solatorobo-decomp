@@ -26,8 +26,8 @@ MoPlayer *func_02033580(void *file, u32 flags) {
     MoStream *stream = (MoStream *)func_02034818(sizeof(MoStream));
     MoPlayer *player;
     if (stream != NULL) {
-        stream->unk_04 = 0;
-        stream->unk_08 = 0;
+        stream->length = 0;
+        stream->position = 0;
         *(const u32 **)stream = data_0208b2ac;
     }
     if (stream == NULL) {

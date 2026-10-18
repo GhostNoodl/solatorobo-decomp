@@ -1,6 +1,6 @@
 #include "nnsys/snd/sndarc_stream.h"
 
-BOOL func_020317c4(GroupHeap *heap) {
+BOOL func_020317c4(NNSSndHeap *heap) {
     int i;
     for (i = 0; i < 4; i++) {
         StrmPlayer *player = &data_020965e0[i];
@@ -15,7 +15,7 @@ BOOL func_020317c4(GroupHeap *heap) {
         }
         if (heap != NULL) {
             u32 size = player->chNum << 11;
-            void *buf = func_02030684(heap, size, (GroupHeapDestructor)func_0203213c, (u32)player, 0);
+            void *buf = NNS_SndHeapAlloc(heap, size, (NNSSndHeapDisposeCallback)func_0203213c, (u32)player, 0);
             if (buf == NULL) {
                 return FALSE;
             }
