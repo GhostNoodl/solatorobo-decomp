@@ -28,7 +28,7 @@ typedef struct {
 
 extern "C" {
 
-void func_02011340(void *mtx);
+void MTX_Identity33_(void *mtx);
 void func_0203df0c(void *p);
 
 #define FREE_FIELD(f)          \
@@ -51,7 +51,7 @@ Obj021b6f94 *func_ov000_021b6f94(Obj021b6f94 *self) {
     self->unk_7c = 0;
     self->unk_80 = 0;
     self->unk_84 = 0;
-    func_02011340(self->unk_88);
+    MTX_Identity33_(self->unk_88);
     self->unk_ac = 0x1000;
     self->unk_b0 = 0x1000;
     self->unk_b4 = 0x1000;

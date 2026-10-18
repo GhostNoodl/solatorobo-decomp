@@ -26,7 +26,7 @@ void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 s32 func_0206d1d4(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
-void func_0202a3ec(s32 cmd, void *data, s32 count);
+void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
 void func_ov000_02178a5c(void *self) {
     u16 v;

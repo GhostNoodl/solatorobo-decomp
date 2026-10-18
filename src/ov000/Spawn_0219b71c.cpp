@@ -5,8 +5,8 @@ extern "C" {
 
 s32 func_02040528(s32 max);
 s32 func_02040498(s32 max);
-void *func_02027240(void);
-void func_020117a4(const VecFx32 *v, const void *m, VecFx32 *out);
+void *NNS_G3dGlbGetInvV(void);
+void MTX_MultVec33(const VecFx32 *v, const void *m, VecFx32 *out);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 VObj *func_02065f88(s32 kind, VecFx32 *pos);
 
@@ -20,7 +20,7 @@ VObj *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 k
     v.x = func_02040528(range->x);
     v.y = y;
     v.z = z;
-    func_020117a4(&v, func_02027240(), &v);
+    MTX_MultVec33(&v, NNS_G3dGlbGetInvV(), &v);
     VEC_Add(&v, base, &v);
     scale = min + func_02040498(max - min);
     big = FALSE;

@@ -26,7 +26,7 @@ void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 s32 func_0206d1d4(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
-void func_0202a3ec(s32 cmd, void *data, s32 count);
+void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
 void func_ov000_02178cd0(void *self) {
     s32 scale[3];
@@ -37,7 +37,7 @@ void func_ov000_02178cd0(void *self) {
     scale[0] = 0x1000;
     scale[1] = 0x1000;
     scale[2] = 0x1000;
-    func_0202a3ec(0x1b, scale, 3);
+    NNS_G3dGeBufferOP_N(0x1b, scale, 3);
     LFLD(s32, self, 0x28) = FX_SinCosTable_[((LFLD(s32, self, 0x24) << 14) >> 16) * 2];
     LFLD(VObj *, self, 0x3c)->vfunc_20();
     LFLD(VObj *, self, 0x40)->vfunc_20();

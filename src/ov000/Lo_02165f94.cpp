@@ -2,12 +2,12 @@
 
 extern "C" {
 
-extern u8 data_020927f8[];
+extern u8 NNS_G3dGlb[];
 extern u8 data_02092844[];
 extern u8 data_02092800[];
 extern u8 *data_ov000_021ccd54;
 extern u8 *data_02097dc8;
-void func_02011ff0(void *a, void *b, void *c, void *d);
+void MTX_LookAt(void *a, void *b, void *c, void *d);
 void MIi_CpuCopyFast(void *a, void *b, s32 c);
 void func_ov000_02190758(void *m, void *p, s32 a);
 BOOL func_ov000_021903b4(void *m);
