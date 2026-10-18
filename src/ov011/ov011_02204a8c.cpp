@@ -8,7 +8,7 @@ void func_ov000_0218996c(s32 a, s32 b);
 void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 Ov011V *func_02065f88(s32 id, Ov011Vec *v);
 void func_ov003_021d6054(void *p);
-s32 *func_02027240(void);
+s32 *NNS_G3dGlbGetInvV(void);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
 
 static inline void Ov011_MulVec33(const Ov011Vec *v, const s32 *m, Ov011Vec *out) {
@@ -29,7 +29,7 @@ void func_ov011_02204a8c(Ov011Actor *self) {
         func_02065f88(4, &self->pos)->v0c(0x3800);
     }
     func_ov003_021d6054(self);
-    Ov011_MulVec33(&FLD(Ov011Vec, self, 0xf0), func_02027240(), &v);
+    Ov011_MulVec33(&FLD(Ov011Vec, self, 0xf0), NNS_G3dGlbGetInvV(), &v);
     VEC_Add(&v, &data_02092a50, &self->pos);
 }
 #pragma force_active reset

@@ -142,7 +142,7 @@ void func_ov011_02205674(void *self) {
 }
 
 extern Ov011Vec data_02092a50;
-s32 *func_02027240(void);
+s32 *NNS_G3dGlbGetInvV(void);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
 
@@ -166,7 +166,7 @@ void func_ov011_0220576c(void *self) {
         v.x = 0;
         v.y = -0xa000;
         v.z = -0xa000;
-        Ov011_MulVec33(&v, func_02027240(), &v);
+        Ov011_MulVec33(&v, NNS_G3dGlbGetInvV(), &v);
         VEC_Add(&v, &data_02092a50, &v);
         rot.x = 0;
         rot.y = 0;
