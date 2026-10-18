@@ -120,4 +120,25 @@ Ov014Actor *func_ov014_02201ca4(Ov014Actor *self) {
     return self;
 }
 
+extern char data_ov014_022173ce[];
+extern char data_ov014_022173d9[];
+
+void func_ov014_02201d4c(Ov014Actor *self) {
+    func_ov003_021d0fc0(self);
+    {
+        const char *a = data_ov014_022173ce;
+        const char *b = data_ov014_022173d9;
+        if (a) {
+            STD_CopyString((char *)self + 0x160, a);
+            STD_CopyString((char *)self + 0x180, b);
+            FLD(u8, self, 0x153) |= 2;
+            STD_CopyString((char *)self + 0x19c, a);
+            STD_CopyString((char *)self + 0x1bc, b);
+            FLD(u8, self, 0x153) |= 4;
+        }
+    }
+    FLD(u16, self, 0x150) = 0;
+    FLD(u16, self, 0xea) |= 0x4000;
+}
+
 }
