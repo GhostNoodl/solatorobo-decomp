@@ -7,7 +7,7 @@
 // 16-entry (kind, arg) ring and a pointer-to-member callback that is cleared with
 // __ptmf_null when a command finishes.
 class CmdObj;
-typedef void (CmdObj::*CmdPmf)();
+typedef s32 (CmdObj::*CmdPmf)();
 
 class CmdObj {
 public:

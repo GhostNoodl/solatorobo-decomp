@@ -2308,3 +2308,27 @@ src/ov000/Prot_02186ed4.cpp:
 src/ov000/Task_021c9020.cpp:
     complete
     .text       start:0x021c9020 end:0x021c9540
+
+src/ov000/Lo_02182cb8.cpp:
+    complete
+    .text       start:0x02182cb8 end:0x021833d8
+
+src/ov000/Lo_02184f20.cpp:
+    complete
+    .text       start:0x02184f20 end:0x0218547c
+
+src/ov000/Lo_021859c4.cpp:
+    complete
+    .text       start:0x021859c4 end:0x021860e0
+
+src/ov000/Lo_02187b88.cpp:
+    complete
+    .text       start:0x02187b88 end:0x02188140
+
+src/ov000/Hp_02158ed4.cpp:
+    complete
+    .text       start:0x02158ed4 end:0x02158f30
+
+src/ov000/Lo_02182524.cpp:
+    complete
+    .text       start:0x02182524 end:0x02182590
