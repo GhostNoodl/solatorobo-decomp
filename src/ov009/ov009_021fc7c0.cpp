@@ -102,7 +102,7 @@ void func_ov009_021fc8f4(Ov009Actor *self) {
 }
 
 extern void func_0203f364(Ov009Sub48 *p);
-extern void func_0202a624(void *p, s32 a, s32 b);
+extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void func_ov000_0219b5dc(u16 id, const Ov009Vec *pos, const u16 *rot);
@@ -139,7 +139,7 @@ void func_ov009_021fcad0(Ov009Actor *self) {
         FLD(u16, FLD(u8 *, self, 0x4c), 0x1c) = 0xffff;
         m = self->unk_38;
         m->unk_c2_9 = 2;
-        func_0202a624(FLD(void *, m, 4), 0, 0xc0);
+        NNSi_G3dModifyPolygonAttrMask(FLD(void *, m, 4), 0, 0xc0);
         self->unk_ea_3 = 0;
         func_ov000_0218996c(8, 0xa);
         p = self->pos;

@@ -29,13 +29,13 @@ extern char data_ov009_02216ba7[];
 extern void func_0203f80c(void *p);
 extern void func_0203f990(void *p, s32 v);
 extern void func_0203f9b8(void *p, s32 v);
-extern void func_02011974(void *m, s32 s, s32 c);
-extern void func_02011994(void *m, s32 s, s32 c);
-extern void func_020119b0(void *m, s32 s, s32 c);
-extern void func_02011d40(void *a, void *b, void *out);
+extern void MTX_RotX43_(void *m, s32 s, s32 c);
+extern void MTX_RotY43_(void *m, s32 s, s32 c);
+extern void MTX_RotZ43_(void *m, s32 s, s32 c);
+extern void MTX_Concat43(void *a, void *b, void *out);
 extern s32 func_ov000_021909a8(Ov009Sub38 *m, const char *a, const char *b);
-extern void func_02011820(void *p);
-extern void func_020267e8(void *p, void *cb);
+extern void MTX_Identity43_(void *p);
+extern void NNS_G3dRenderObjSetInitFunc(void *p, void *cb);
 extern void func_ov009_021ff690(Ov009Actor *self);
 extern u8 *func_0206fef8(void *res);
 extern void func_0203f9dc(void *mesh, const void *mtx);
@@ -57,9 +57,9 @@ void func_ov009_02202b48(Ov009Actor *self) {
         FLD(s32, s48, 0x64) = 0;
     }
     FLD(s32, self, 0xf8) = func_ov000_021909a8(self->unk_38, func_020701d4((void *)self->kind), data_ov009_02216ba7);
-    func_02011820(&FLD(u8, self, 0xfc));
+    MTX_Identity43_(&FLD(u8, self, 0xfc));
     m = self->unk_38;
-    func_020267e8(m->unk_24, (void *)func_ov009_021ff690);
+    NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov009_021ff690);
     m->unk_c2_5 = 0;
     self->unk_38->unk_c2_8 = 1;
     self->unk_38->unk_50 = &FLD(u8, self, 0xf8);
@@ -93,26 +93,26 @@ void func_ov009_02202b48(Ov009Actor *self) {
             obj = FLD(void *, self, 0x58);
             ry = self->rot[1];
             rx = self->rot[0];
-            func_02011820(&mt);
+            MTX_Identity43_(&mt);
             if (rz != 0) {
-                func_020119b0(&mt, OV009_SIN(rz), OV009_COS(rz));
+                MTX_RotZ43_(&mt, OV009_SIN(rz), OV009_COS(rz));
                 set = TRUE;
             }
             if (ry != 0) {
                 if (set) {
-                    func_02011994(&t, OV009_SIN(ry), OV009_COS(ry));
-                    func_02011d40(&t, &mt, &mt);
+                    MTX_RotY43_(&t, OV009_SIN(ry), OV009_COS(ry));
+                    MTX_Concat43(&t, &mt, &mt);
                 } else {
-                    func_02011994(&mt, OV009_SIN(ry), OV009_COS(ry));
+                    MTX_RotY43_(&mt, OV009_SIN(ry), OV009_COS(ry));
                     set = TRUE;
                 }
             }
             if (rx != 0) {
                 if (set) {
-                    func_02011974(&t, OV009_SIN(rx), OV009_COS(rx));
-                    func_02011d40(&t, &mt, &mt);
+                    MTX_RotX43_(&t, OV009_SIN(rx), OV009_COS(rx));
+                    MTX_Concat43(&t, &mt, &mt);
                 } else {
-                    func_02011974(&mt, OV009_SIN(rx), OV009_COS(rx));
+                    MTX_RotX43_(&mt, OV009_SIN(rx), OV009_COS(rx));
                     set = TRUE;
                 }
             }

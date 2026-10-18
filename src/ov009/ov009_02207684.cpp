@@ -26,8 +26,8 @@ BOOL func_ov009_02207684(Ov009Actor *self) {
 }
 
 extern void func_0203f2b8(void *p);
-extern void func_0202a624(void *p, s32 a, s32 b);
-extern void func_0202a57c(void *p, s32 a, s32 b);
+extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
+extern void NNSi_G3dModifyMatFlag(void *p, s32 a, s32 b);
 extern void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern void func_ov000_02190758(void *a, const void *b, s32 c);
 void func_ov009_022076b8(Ov009Actor *self) {
@@ -58,13 +58,13 @@ void func_ov009_022076b8(Ov009Actor *self) {
         }
     }
     func_ov000_02190758(&FLD(u8, self, 0x228), self->rot, 0);
-    func_0202a624(FLD(void *, self, 0x22c), 1, 0x3f000000);
-    func_0202a57c(FLD(void *, self, 0x22c), 1, 0x40);
-    func_0202a57c(FLD(void *, self, 0x22c), 1, 0x80);
-    func_0202a57c(FLD(void *, self, 0x22c), 1, 0x200);
-    func_0202a57c(FLD(void *, self, 0x22c), 1, 0x400);
+    NNSi_G3dModifyPolygonAttrMask(FLD(void *, self, 0x22c), 1, 0x3f000000);
+    NNSi_G3dModifyMatFlag(FLD(void *, self, 0x22c), 1, 0x40);
+    NNSi_G3dModifyMatFlag(FLD(void *, self, 0x22c), 1, 0x80);
+    NNSi_G3dModifyMatFlag(FLD(void *, self, 0x22c), 1, 0x200);
+    NNSi_G3dModifyMatFlag(FLD(void *, self, 0x22c), 1, 0x400);
     FLD(u16, self, 0x2ea) |= 0x80;
-    func_0202a624(FLD(void *, self, 0x22c), 1, 0x1f0000);
+    NNSi_G3dModifyPolygonAttrMask(FLD(void *, self, 0x22c), 1, 0x1f0000);
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->unk_3c != NULL) {

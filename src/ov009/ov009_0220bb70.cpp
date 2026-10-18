@@ -4,8 +4,8 @@ extern "C" {
 
 extern void *data_ov009_02215ee4[];
 extern void func_0203f324(Ov009Sub48 *p);
-extern void *func_02027240(void);
-extern void func_020117a4(const Ov009Vec *v, const void *m, Ov009Vec *out);
+extern void *NNS_G3dGlbGetInvV(void);
+extern void MTX_MultVec33(const Ov009Vec *v, const void *m, Ov009Vec *out);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
@@ -58,7 +58,7 @@ void func_ov009_0220bb70(Ov009Actor *self) {
             v.x = x;
             v.y = y;
             v.z = w;
-            func_020117a4(&v, func_02027240(), &v);
+            MTX_MultVec33(&v, NNS_G3dGlbGetInvV(), &v);
             VEC_Add(&v, &p, &v);
             r = func_02040498(0x1000);
             func_02065f88(0x389, &v)->v0c(r + 0x1000);

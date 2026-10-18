@@ -40,8 +40,8 @@ void func_ov009_0220cc24(Ov009Actor *self) {
 
 extern void *data_02097e4c;
 extern void func_0203f364(Ov009Sub48 *p);
-extern void *func_02027240(void);
-extern void func_020117a4(const Ov009Vec *v, const void *m, Ov009Vec *out);
+extern void *NNS_G3dGlbGetInvV(void);
+extern void MTX_MultVec33(const Ov009Vec *v, const void *m, Ov009Vec *out);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
@@ -87,7 +87,7 @@ void func_ov009_0220cd40(Ov009Actor *self) {
             v.x = x;
             v.y = y;
             v.z = w;
-            func_020117a4(&v, func_02027240(), &v);
+            MTX_MultVec33(&v, NNS_G3dGlbGetInvV(), &v);
             VEC_Add(&v, &p, &v);
             s = func_02040498(0x4cd) + 0x4cd;
             n = self->unk_18;
