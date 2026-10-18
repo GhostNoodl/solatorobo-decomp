@@ -135,7 +135,7 @@ extern void func_ov000_021911c8(Ov003InModel *model, s32 v);
 extern s32 func_ov000_0219a2f4(Ov003InVec *pos, s32 a, s32 b);
 extern void func_ov000_02191ec4(Ov003InS3c *p, s32 a, u32 b);
 extern char *func_0207005c(u16 id, s32 n);
-extern int func_0201e7b0(const char *a, const char *b);
+extern int STD_CompareString(const char *a, const char *b);
 extern Ov003InCtl *func_ov000_021985e8(void *p);
 extern void func_ov000_02198c8c(Ov003InCtl *p, u16 id);
 extern void func_0203f324(Ov003InCtl *p);
@@ -213,7 +213,7 @@ skip:
         }
     }
     name = func_0207005c(self->unk_0e, 0);
-    if (name == NULL || func_0201e7b0(name, data_ov003_021fa208) != 0) {
+    if (name == NULL || STD_CompareString(name, data_ov003_021fa208) != 0) {
         if (res->unk_12_12) {
             Ov003InCtl *c = (Ov003InCtl *)func_0203dd9c(0x9c);
             if (c != NULL) {
