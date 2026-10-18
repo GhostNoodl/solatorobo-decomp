@@ -25,7 +25,7 @@ extern BOOL func_ov003_021d984c(void *p, void *d);
 extern void func_ov003_021d95e8(void *p, void *d, s32 n);
 extern void *func_ov000_0219bf90(void);
 extern void func_ov000_0218a358(void *a, const void *b, void *c, s32 d, s32 e, s32 f, s32 g, s32 h);
-extern s32 func_02012ab8(s32 a, s32 b);
+extern s32 FX_Div(s32 a, s32 b);
 extern void func_ov003_021cf3fc(s32 a);
 extern void func_ov010_022075bc(void *p);
 extern void func_ov003_021d8bb8(void *p);
@@ -123,7 +123,7 @@ u16 func_ov010_02208e90(s32 a, s32 b) {
     while (b >= period) {
         b -= period;
     }
-    return (u16)(Ov010_FxMul(func_02012ab8(b, period), 0xffff000) >> 12);
+    return (u16)(Ov010_FxMul(FX_Div(b, period), 0xffff000) >> 12);
 }
 
 static inline void Ov010_02208f14_Body(void *self) {

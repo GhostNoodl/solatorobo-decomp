@@ -49,13 +49,13 @@ extern ActorMgr *data_ov000_021ccd68;
 
 ActorC *func_ov000_0218e640(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
-void func_02012be8(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
+void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *offset, u32 angle);
-u16 func_0201319c(s32 x, s32 z);
-s32 func_02012ab8(s32 num, s32 den);
-void func_02012fb8(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
-void func_02012d78(const VecFx32 *src, VecFx32 *dst);
-u16 func_02013330(s32 x);
+u16 FX_Atan2(s32 x, s32 z);
+s32 FX_Div(s32 num, s32 den);
+void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
+void VEC_Normalize(const VecFx32 *src, VecFx32 *dst);
+u16 FX_AsinIdx(s32 x);
 
 static inline ActorC *FindActor(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
@@ -173,7 +173,7 @@ void func_ov000_02198d28(Body *self, VecFx32 *pos, u32 angle) {
     self->check.y = pos->y;
     self->check.z = pos->z;
     func_01ffc9fc(&tmp, &self->offset, angle);
-    func_02012be8(pos, &tmp, &tmp);
+    VEC_Add(pos, &tmp, &tmp);
     self->pos.x = tmp.x;
     self->pos.y = tmp.y;
     self->pos.z = tmp.z;
@@ -187,13 +187,13 @@ u16 func_ov000_02198da8(Body *self, u16 angle) {
     u16 d;
 
     if (self->unk_50 & 0x40000000) {
-        ret = func_0201319c(self->normal.x, self->normal.z);
+        ret = FX_Atan2(self->normal.x, self->normal.z);
         d = angle - ret;
         if (d > 0x4000 && d < 0xc000) {
             ret = ret - d + 0x8000;
         }
     } else if (self->unk_58 != 0) {
-        ret = func_0201319c(self->target.x - self->pos.x, self->target.z - self->pos.z) + 0x8000;
+        ret = FX_Atan2(self->target.x - self->pos.x, self->target.z - self->pos.z) + 0x8000;
     }
     return ret;
 }
@@ -202,14 +202,14 @@ void func_ov000_02198e34(Body *self, u16 *rot, VecFx32 *v, BOOL flag) {
     VecFx32 dir;
     s32 t;
 
-    t = -func_02012ab8(Dot(&self->normal, v), Dot(&self->normal, &self->normal));
+    t = -FX_Div(Dot(&self->normal, v), Dot(&self->normal, &self->normal));
     if (!flag) {
         t <<= 1;
     }
-    func_02012fb8(t, &self->normal, v, &dir);
-    func_02012d78(&dir, &dir);
-    rot[0] = func_02013330(-dir.y);
-    rot[1] = func_0201319c(dir.x, dir.z);
+    VEC_MultAdd(t, &self->normal, v, &dir);
+    VEC_Normalize(&dir, &dir);
+    rot[0] = FX_AsinIdx(-dir.y);
+    rot[1] = FX_Atan2(dir.x, dir.z);
     rot[2] = 0;
 }
 

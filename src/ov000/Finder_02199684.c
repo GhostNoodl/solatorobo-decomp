@@ -87,8 +87,8 @@ static inline s32 Dist2D(s64 sq) {
     return (s32)(CP_GetSqrtResult32() + 1) >> 1;
 }
 
-u16 func_0201319c(s32 x, s32 z);
-s32 func_02013068(const VecFx32 *a, const VecFx32 *b);
+u16 FX_Atan2(s32 x, s32 z);
+s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
 BOOL func_ov000_02199a34(Finder *self, Shape *s);
 
 static inline BOOL Query_CheckHeight(Query *q, Shape *s) {
@@ -113,7 +113,7 @@ static inline BOOL Finder_CheckAngle(Finder *self, Shape *s) {
     if (lo != hi) {
         u16 a = s->angle;
         if (!s->has_angle) {
-            a = func_0201319c(s->pos.x - q->pos.x, s->pos.z - q->pos.z);
+            a = FX_Atan2(s->pos.x - q->pos.x, s->pos.z - q->pos.z);
         }
         if ((u16)((u16)(a - self->query->dir) - lo) > (u16)(hi - lo)) {
             ok = FALSE;
@@ -198,7 +198,7 @@ BOOL func_ov000_021997e8(Finder *self, Part *part) {
         return FALSE;
     }
     if (part->directional) {
-        u16 a = func_0201319c(s.pos.x - q->pos.x, s.pos.z - q->pos.z);
+        u16 a = FX_Atan2(s.pos.x - q->pos.x, s.pos.z - q->pos.z);
         if ((u16)(a + 0xc000 - part->angle) > 0x8000) {
             return FALSE;
         }

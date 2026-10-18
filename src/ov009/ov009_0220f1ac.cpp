@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_ov000_021ccd64;
 extern void func_ov000_0218bed8(void *mgr, s32 a, Ov009Actor *actor);
-extern void func_02012be8(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
+extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 
 void func_ov009_0220f1ac(Ov009Actor *self) {
     Ov009Vec d;
@@ -12,8 +12,8 @@ void func_ov009_0220f1ac(Ov009Actor *self) {
     d.x = 0x266 - self->unk_9c;
     d.y = -0x15c - self->unk_a0;
     d.z = -self->unk_a4;
-    func_02012fb8(0x66, &d, (Ov009Vec *)&self->unk_9c, (Ov009Vec *)&self->unk_9c);
-    func_02012be8(&self->pos, (Ov009Vec *)&self->unk_9c, &self->pos);
+    VEC_MultAdd(0x66, &d, (Ov009Vec *)&self->unk_9c, (Ov009Vec *)&self->unk_9c);
+    VEC_Add(&self->pos, (Ov009Vec *)&self->unk_9c, &self->pos);
     st = self->unk_40;
     st->timer++;
     if (st->timer > 0x1e0) {

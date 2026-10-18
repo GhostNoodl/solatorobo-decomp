@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 void func_02049a48(void *a, int b, int c, int d, int e);
-s32 func_02012ab8(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 s32 func_02049210(s32 t, s32 a, s32 b);
 extern void *data_0208cca0;
 extern void *data_0208cb74;
@@ -19,7 +19,7 @@ extern u8 data_ov015_022131ac[];
 void func_ov000_021c2310(void *self);
 extern Ov015Shared *data_ov015_02213368;
 extern u8 data_ov015_02213200[];
-void func_02016d1c(u32 val, void *dst, u32 size);
+void MIi_CpuClearFast(u32 val, void *dst, u32 size);
 
 void func_ov015_02210a10(u8 *self) {
     FLD(u32, FLD(u8 *, self, 0x28), 0xc) |= 2;
@@ -34,7 +34,7 @@ BOOL func_ov015_02210a58(u8 *self) {
     BOOL r = FALSE;
     switch (FLD(s32, self, 0x13c)) {
     case 0: {
-        s32 t = func_02012ab8(FLD(s32, self, 0x140) << 12, 0x28000);
+        s32 t = FX_Div(FLD(s32, self, 0x140) << 12, 0x28000);
         FLD(s32, self, 0x1c) = 0x50000;
         FLD(s32, self, 0x20) = func_02049210(t, -0x46000, -0x66000);
         FLD(s32, self, 0x24) = -0x333;
@@ -254,7 +254,7 @@ void func_ov015_0221102c(void) {
         FLD(u16, p, 0x8) = 0xa000;
         FLD(u16, p, 0xa) = 0xd000;
         FLD(u16, p, 0xc) = 0xffff;
-        func_02016d1c(0, p + 0x10, 0x18);
+        MIi_CpuClearFast(0, p + 0x10, 0x18);
         FLD(s32, p, 0x28) = 0;
         FLD(s32, p, 0x2c) = 0;
     }

@@ -338,7 +338,7 @@ extern s32 data_ov002_021f0f84[];
 extern u8 *data_02097dc8;
 extern void *data_02097e4c;
 void func_02049a48(void *a, int b, int c, int d, int e);
-void func_02016cd8(int val, void *dst, u32 size);
+void MIi_CpuClear32(int val, void *dst, u32 size);
 extern VFunc data_ov002_021ef71c[];
 void func_ov002_021e916c(void);
 void func_ov002_021d0b98(Task50 *self);
@@ -502,7 +502,7 @@ extern char data_ov002_021efddd[];
 
 u8 *func_0206ede8(u16 id);
 BOOL func_ov002_021e38f8(s32 *out, void *ev);
-s32 func_02012ab8(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 void func_ov002_021d8148(void *self);
 
 static inline void func_ov002_021d7c04_inline(void *self) {
@@ -519,7 +519,7 @@ void func_ov002_021d83f0(void *self);
 void *func_02043d48(void *a);
 void func_0202a8f0(void *a, void *b);
 void func_0202711c(void *a);
-void func_02016dbc(void *a, void *b);
+void MI_Copy36B(void *a, void *b);
 void func_0202714c(void *a);
 void func_020270a4(void);
 void func_02027ae4(void *a);
@@ -607,7 +607,7 @@ void func_ov000_02153c48(void *a, s32 b, int c, int d, int e);
 
 extern VFunc data_ov002_021efeb8[];
 extern VFunc data_ov002_021f0674[];
-void func_02016cec(void *src, void *dst);
+void MIi_CpuCopy32(void *src, void *dst);
 int func_ov002_021e7ea8(void *a);
 void func_ov002_021e7dac(void *self);
 typedef struct Vec3 {
@@ -866,7 +866,7 @@ void func_ov002_021e5140(void *self);
 void *func_02034ff8(void *a, void *b);
 void *func_02035d2c(void *a);
 void func_02011ff0(void *a, void *b, void *c, void *d);
-void func_02016d68(void *src, void *dst, u32 size);
+void MIi_CpuCopyFast(void *src, void *dst, u32 size);
 extern u8 data_02092844[];
 extern u8 data_02092800[];
 

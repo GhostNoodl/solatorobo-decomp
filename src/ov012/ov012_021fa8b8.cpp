@@ -68,8 +68,8 @@ void func_ov012_021fa9e8(Ov012Actor *self) {
     if (o != NULL) {
         FLD(Ov012Flags8, o, 0xa2).b0 = 0;
     }
-    func_02012be8(&self->pos, data_ov012_0220a498, &self->pos);
-    func_02012be8(&self->pos, data_ov012_0220a480, (u8 *)self + 0x100);
+    VEC_Add(&self->pos, data_ov012_0220a498, &self->pos);
+    VEC_Add(&self->pos, data_ov012_0220a480, (u8 *)self + 0x100);
     FLD(Ov012Vec, self, 0xf4) = self->pos;
     self->pos.y -= 0x11000;
     m = self->unk_48;

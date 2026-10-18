@@ -15,8 +15,8 @@ void *func_0204c0e8(void *a, int id);
 void func_ov000_0215bb14(void *a, void *b);
 void func_ov015_02203ee0(u8 *self);
 void func_ov015_02207c30(u8 *p);
-void func_02012d78(void *src, void *dst);
-void func_02012fb8(s32 scale, const Ov015Vec *dir, const Ov015Vec *base, Ov015Vec *out);
+void VEC_Normalize(void *src, void *dst);
+void VEC_MultAdd(s32 scale, const Ov015Vec *dir, const Ov015Vec *base, Ov015Vec *out);
 BOOL func_ov000_021633ac(void *p);
 extern Ov015Vec data_ov015_02212614;
 extern Ov015Vec data_ov015_02212620;
@@ -121,10 +121,10 @@ void func_ov015_02203ab8(u8 *self) {
     v.x = -0x64a4;
     v.y = 0;
     v.z = 0x3ae1;
-    func_02012d78(&v, &v);
-    func_02012fb8(k, &v, &data_ov015_02212614, &out);
+    VEC_Normalize(&v, &v);
+    VEC_MultAdd(k, &v, &data_ov015_02212614, &out);
     FLD(Ov015Vec, self, 0x44) = out;
-    func_02012fb8(k, &v, &data_ov015_02212620, &out);
+    VEC_MultAdd(k, &v, &data_ov015_02212620, &out);
     FLD(Ov015Vec, self, 0x50) = out;
     if (FLD(void *, self, 0x8c) != NULL && !func_ov000_021633ac(FLD(void *, self, 0x8c))) {
         u32 saved;

@@ -129,7 +129,7 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         sub38 = (ActorSub38 *)self->unk_38;
         if (sub38 != NULL) {
             MsgData8 *data = (MsgData8 *)msg->data;
-            func_02016dbc(data, sub38->unk_84);
+            MI_Copy36B(data, sub38->unk_84);
             sub38->unk_78.x = data->unk_2c.x;
             sub38->unk_78.y = data->unk_2c.y;
             sub38->unk_78.z = data->unk_2c.z;
@@ -230,14 +230,14 @@ BOOL func_ov000_0218d850(Actor *self) {
 }
 
 u16 func_ov000_0218d8f4(Actor *self, VecFx32 *target) {
-    return func_0201319c(target->x - self->pos.x, target->z - self->pos.z);
+    return FX_Atan2(target->x - self->pos.x, target->z - self->pos.z);
 }
 
 void func_ov000_0218d918(Actor *self, VecFx32 *target, s32 step) {
     if (func_01ffc198(&self->pos, target, self->unk_64 + 0x400)) {
         return;
     }
-    self->rot_y = func_01ffc128(func_0201319c(target->x - self->pos.x, target->z - self->pos.z), self->rot_y, step, 1, 0x8000);
+    self->rot_y = func_01ffc128(FX_Atan2(target->x - self->pos.x, target->z - self->pos.z), self->rot_y, step, 1, 0x8000);
 }
 
 void func_ov000_0218d988(Actor *self, Actor *other, s32 step) {
@@ -248,7 +248,7 @@ void func_ov000_0218d988(Actor *self, Actor *other, s32 step) {
     if (other == NULL || other == self) {
         angle = self->rot_y;
     } else {
-        angle = func_0201319c(other->pos.x - self->pos.x, other->pos.z - self->pos.z);
+        angle = FX_Atan2(other->pos.x - self->pos.x, other->pos.z - self->pos.z);
     }
     self->rot_y = func_01ffc128(angle, self->rot_y, step, 1, 0x8000);
 }

@@ -51,7 +51,7 @@ extern ActorMgr *data_ov000_021ccd68;
 
 ActorT *func_ov000_0218e640(ActorMgr *mgr, u16 id);
 s32 _s32_div_f(s32 a, s32 b);
-void func_02012fb8(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
+void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
 
 static inline ActorT *FindActor(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
@@ -105,7 +105,7 @@ u16 func_ov000_02199bc8(Target *self, VecFx32 *pos, u16 t, u16 dur) {
         d.x = self->dest.x - pos->x;
         d.y = self->dest.y - pos->y;
         d.z = self->dest.z - pos->z;
-        func_02012fb8(_s32_div_f(t << 12, dur), &d, pos, pos);
+        VEC_MultAdd(_s32_div_f(t << 12, dur), &d, pos, pos);
         t++;
     } else {
         pos->x = self->dest.x;

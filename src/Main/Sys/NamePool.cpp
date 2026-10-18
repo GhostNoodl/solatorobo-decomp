@@ -40,23 +40,23 @@ u32 data_02097ddc;
 NamePool *data_02097dd8;
 u32 data_02097dd4;
 NamePool *data_02097de4;
-extern u32 func_0201a7f0(void);
-extern void func_0201a804(u32 state);
-extern void *func_02022400(void *heap, u32 size, u32 align);
+extern u32 OS_DisableInterrupts(void);
+extern void OS_RestoreInterrupts(u32 state);
+extern void *NNS_FndAllocFromExpHeapEx(void *heap, u32 size, u32 align);
 extern void func_02016e28(void *dst, u32 value, u32 size);
 void func_0203e300(NamePool *pool, int count);
 
 static inline void *Sys_Alloc(u32 size) {
-    u32 irq = func_0201a7f0();
-    void *p = func_02022400(data_02097dd0->cur, size, data_02097dd0->align);
-    func_0201a804(irq);
+    u32 irq = OS_DisableInterrupts();
+    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->cur, size, data_02097dd0->align);
+    OS_RestoreInterrupts(irq);
     return p;
 }
 
 static inline void *Sys_Alloc04(u32 size, u32 align) {
-    u32 irq = func_0201a7f0();
-    void *p = func_02022400(data_02097dd0->unk_04, size, align);
-    func_0201a804(irq);
+    u32 irq = OS_DisableInterrupts();
+    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->unk_04, size, align);
+    OS_RestoreInterrupts(irq);
     return p;
 }
 
@@ -229,7 +229,7 @@ extern u8 data_02fe04ec;
 extern VramTransfer *data_02fe04f0;
 extern VramTransfer data_02fe04f4[64];
 extern u32 data_02fe00e4;
-extern void func_02019294(u32 addr, u32 size);
+extern void DC_FlushRange(u32 addr, u32 size);
 extern void func_02014aa4(void);
 extern void func_02014b00(u32 src, u32 dst, u32 size);
 extern void func_02014cb8(void);
@@ -305,7 +305,7 @@ u32 func_0203e458(int type, u32 src, u32 dst, u32 size, u32 chunk) {
         t->prev = last;
     }
     t->linked = 1;
-    func_02019294(t->src, t->size);
+    DC_FlushRange(t->src, t->size);
     if (data_02fe00e4 == 0) {
         data_02fe00e4 = 1;
     }

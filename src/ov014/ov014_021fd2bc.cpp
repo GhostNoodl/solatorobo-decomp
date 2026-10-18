@@ -200,9 +200,9 @@ BOOL func_ov014_021fd76c(Ov014Actor *self) {
             d.x = t.x - FLD(Ov014Vec, self, 0x12c).x;
             d.y = t.y - FLD(Ov014Vec, self, 0x12c).y;
             d.z = t.z - FLD(Ov014Vec, self, 0x12c).z;
-            func_02012fb8(0x29, &d, &FLD(Ov014Vec, self, 0x12c), &self->pos);
+            VEC_MultAdd(0x29, &d, &FLD(Ov014Vec, self, 0x12c), &self->pos);
             FLD(Ov014Vec, self, 0x12c) = self->pos;
-            if (func_02013068(&self->pos, &t) <= 0x800) {
+            if (VEC_Distance(&self->pos, &t) <= 0x800) {
                 if (dir == 0) {
                     self->unk_1a = 1;
                 } else {

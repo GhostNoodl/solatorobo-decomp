@@ -71,8 +71,8 @@ extern void func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 v);
 extern s32 func_02040528(s32 max);
-extern void func_02012fb8(s32 scale, const Ov003Vec *dir, const Ov003Vec *base, Ov003Vec *out);
-extern void func_02012be8(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
+extern void VEC_MultAdd(s32 scale, const Ov003Vec *dir, const Ov003Vec *base, Ov003Vec *out);
+extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 extern Ov003BlinkInfo *func_0206fef8(u16 id);
 extern BOOL func_ov000_0218cea4(void *self);
 extern void func_ov000_021903b4(void *model);
@@ -135,7 +135,7 @@ void func_ov003_021f32c0(Ov003Blink *self) {
     v.x = func_02040528(0x400) - self->u.drift.offset.x;
     v.y = -self->u.drift.offset.y;
     v.z = z - self->u.drift.offset.z;
-    func_02012fb8(0x400, &v, &self->u.drift.offset, &self->u.drift.offset);
+    VEC_MultAdd(0x400, &v, &self->u.drift.offset, &self->u.drift.offset);
 }
 
 BOOL func_ov003_021f3348(Ov003Blink *self) {
@@ -160,7 +160,7 @@ BOOL func_ov003_021f3348(Ov003Blink *self) {
         model->scaleY = d;
         model->scaleZ = d + 0x333;
         self->model->alpha = 0x12 - (self->u.drift.phase >> 8);
-        func_02012be8(&self->u.drift.offset, &self->pos, &v);
+        VEC_Add(&self->u.drift.offset, &self->pos, &v);
         model = self->model;
         model->pos.x = v.x;
         model->pos.y = v.y;

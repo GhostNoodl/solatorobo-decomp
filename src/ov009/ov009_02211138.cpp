@@ -5,7 +5,7 @@ extern "C" {
 extern u8 data_ov009_022179b4[];
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
-extern void func_02012d78(const Ov009Vec *in, Ov009Vec *out);
+extern void VEC_Normalize(const Ov009Vec *in, Ov009Vec *out);
 
 void func_ov009_02211138(Ov009Actor *self) {
     Ov009Vec d;
@@ -17,7 +17,7 @@ void func_ov009_02211138(Ov009Actor *self) {
         self->unk_40->state++;
         self->unk_40->timer = 0;
     }
-    if (func_02013068(&self->pos, &FLD(Ov009Vec, self, 0xf0)) <= 0xf6) {
+    if (VEC_Distance(&self->pos, &FLD(Ov009Vec, self, 0xf0)) <= 0xf6) {
         self->pos = FLD(Ov009Vec, self, 0xf0);
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
@@ -27,8 +27,8 @@ void func_ov009_02211138(Ov009Actor *self) {
     d.x = FLD(Ov009Vec, self, 0xf0).x - self->pos.x;
     d.y = FLD(Ov009Vec, self, 0xf0).y - self->pos.y;
     d.z = FLD(Ov009Vec, self, 0xf0).z - self->pos.z;
-    func_02012d78(&d, &d);
-    func_02012fb8(0xf6, &d, &self->pos, &self->pos);
+    VEC_Normalize(&d, &d);
+    VEC_MultAdd(0xf6, &d, &self->pos, &self->pos);
 }
 
 }

@@ -10,8 +10,8 @@ extern u8 data_ov015_02212e68[];
 void func_02049a48(void *a, int b, int c, int d, int e);
 u8 *func_02066774(void *a, void *b, int c, void *d);
 extern u8 data_ov015_02212e55[];
-s32 func_02012ab8(s32 a, s32 b);
-s32 func_02012ad8(s32 a);
+s32 FX_Div(s32 a, s32 b);
+s32 FX_Sqrt(s32 a);
 extern u8 data_ov015_02212eb0[];
 extern u8 data_ov015_02212e0d[];
 void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
@@ -122,13 +122,13 @@ void func_ov015_0220be38(u8 *self, u8 *p) {
     e->v10(&b);
     n = FLD(s32, self, 0xc);
     if (n > 0x28) {
-        s32 s = Ov015_FxMul(func_02012ab8((0x50 - n) << 12, 0x28000), -0x99a) + 0x1000;
+        s32 s = Ov015_FxMul(FX_Div((0x50 - n) << 12, 0x28000), -0x99a) + 0x1000;
         c.x = Ov015_FxMul(FLD(s32, e, 0x40), s);
         c.y = Ov015_FxMul(FLD(s32, e, 0x44), s);
         c.z = Ov015_FxMul(FLD(s32, e, 0x48), s);
         e->v10(&c);
     } else if (n < 10) {
-        s32 s = func_02012ad8(Ov015_FxMul(func_02012ab8((10 - n) << 12, 0xa000), 0x299a) + 0x666);
+        s32 s = FX_Sqrt(Ov015_FxMul(FX_Div((10 - n) << 12, 0xa000), 0x299a) + 0x666);
         d.x = Ov015_FxMul(FLD(s32, e, 0x40), s);
         d.y = Ov015_FxMul(FLD(s32, e, 0x44), s);
         d.z = Ov015_FxMul(FLD(s32, e, 0x48), s);

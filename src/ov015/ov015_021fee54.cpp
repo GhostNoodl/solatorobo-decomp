@@ -2,8 +2,8 @@
 
 extern "C" {
 
-void func_02012fb8(s32 scale, const Ov015Vec *dir, const Ov015Vec *base, Ov015Vec *out);
-void func_02012d78(void *src, void *dst);
+void VEC_MultAdd(s32 scale, const Ov015Vec *dir, const Ov015Vec *base, Ov015Vec *out);
+void VEC_Normalize(void *src, void *dst);
 void func_02049244(Ov015Vec *a, s32 b, Ov015Vec *c, Ov015Vec *d, s32 e);
 
 void func_ov015_021fee54(u8 *self) {
@@ -26,8 +26,8 @@ void func_ov015_021fee54(u8 *self) {
     d1.x = FLD(s32, self, 0x18c) - FLD(s32, self, 0x180);
     d1.y = FLD(s32, self, 0x190) - FLD(s32, self, 0x184);
     d1.z = FLD(s32, self, 0x194) - FLD(s32, self, 0x188);
-    func_02012d78(&d1, &d1);
-    func_02012fb8(FLD(s32, self, 0x198), &d1, &FLD(Ov015Vec, self, 0x18c), &res1);
+    VEC_Normalize(&d1, &d1);
+    VEC_MultAdd(FLD(s32, self, 0x198), &d1, &FLD(Ov015Vec, self, 0x18c), &res1);
     res1.y += 0x1e000;
     prev = FLD(Ov015Vec, self, 0x8);
     func_02049244(&res1, 0x7b, &prev, &res1, 0x1000);
@@ -36,8 +36,8 @@ void func_ov015_021fee54(u8 *self) {
     d2.x = FLD(s32, self, 0x18c) - tgt.x;
     d2.y = FLD(s32, self, 0x190) - tgt.y;
     d2.z = FLD(s32, self, 0x194) - tgt.z;
-    func_02012d78(&d2, &d2);
-    func_02012fb8(FLD(s32, self, 0x198), &d2, &FLD(Ov015Vec, self, 0x18c), &res2);
+    VEC_Normalize(&d2, &d2);
+    VEC_MultAdd(FLD(s32, self, 0x198), &d2, &FLD(Ov015Vec, self, 0x18c), &res2);
     res2.z -= 0x1000;
     FLD(s32, self, 0xd0) = 0;
     FLD(s32, self, 0xd4) = 0x1000;

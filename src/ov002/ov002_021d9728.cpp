@@ -48,7 +48,7 @@ void func_ov002_021d9728(void *self) {
         return;
     }
     {
-        s32 f = func_02012ab8((FIELD(self, 0x94, s32) - FIELD(self, 0x90, s32)) << 12, FIELD(self, 0x94, s32) << 12);
+        s32 f = FX_Div((FIELD(self, 0x94, s32) - FIELD(self, 0x90, s32)) << 12, FIELD(self, 0x94, s32) << 12);
         func_0204918c(&a, f, (u8 *)self + 0x98, (u8 *)self + 0xb0);
         func_0204918c(&b, f, (u8 *)self + 0xa4, (u8 *)self + 0xbc);
     }

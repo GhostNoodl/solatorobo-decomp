@@ -13,7 +13,7 @@ extern u8 data_ov014_02217d40[];
 extern u8 data_ov014_02217d46[];
 extern void func_ov000_021911c8(void *a, s32 b);
 extern Ov014Actor *func_ov000_0219bf90(void);
-extern u16 func_0201319c(s32 x, s32 z);
+extern u16 FX_Atan2(s32 x, s32 z);
 extern u8 data_ov014_02217d4c[];
 extern void func_ov000_02191318(void *a, s32 b);
 extern s32 func_02040498(s32 max);
@@ -77,7 +77,7 @@ void func_ov014_02210ee0(Ov014Actor *self) {
             if (a == NULL || a == self) {
                 ang = self->rot[1];
             } else {
-                ang = func_0201319c(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
+                ang = FX_Atan2(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
             }
             if (ang < 0x71c || ang > 0xf8e3) {
                 self->unk_40->state = 10;

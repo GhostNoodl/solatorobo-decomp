@@ -34,9 +34,9 @@ typedef struct {
 
 extern "C" {
 
-extern s32 func_02013068(Ov003Vec *a, Ov003Vec *b);
-extern void func_02012fb8(s32 scale, Ov003Vec *dir, Ov003Vec *src, Ov003Vec *dst);
-extern void func_02012d78(Ov003Vec *src, Ov003Vec *dst);
+extern s32 VEC_Distance(Ov003Vec *a, Ov003Vec *b);
+extern void VEC_MultAdd(s32 scale, Ov003Vec *dir, Ov003Vec *src, Ov003Vec *dst);
+extern void VEC_Normalize(Ov003Vec *src, Ov003Vec *dst);
 extern s16 func_02040528(s32 max);
 extern s32 func_0200b184(s32 a, s32 b);
 extern u32 data_ov003_021f7d10;
@@ -95,12 +95,12 @@ void func_ov003_021d7b00(Ov003Mover *self) {
     if (self->dist > self->maxDist) {
         self->dist = self->maxDist;
     }
-    d = func_02013068(&self->target, &self->pos);
+    d = VEC_Distance(&self->target, &self->pos);
     reached = TRUE;
     if (d > self->dist) {
         reached = FALSE;
     }
-    func_02012fb8(self->dist, &self->dir, &self->pos, &self->pos);
+    VEC_MultAdd(self->dist, &self->dir, &self->pos, &self->pos);
     if (!reached) {
         return;
     }
@@ -145,7 +145,7 @@ void func_ov003_021d7c08(Ov003Mover *self, const Ov003Vec *target) {
     self->dir.x = target->x - self->pos.x;
     self->dir.y = target->y - self->pos.y;
     self->dir.z = target->z - self->pos.z;
-    func_02012d78(&self->dir, &self->dir);
+    VEC_Normalize(&self->dir, &self->dir);
 }
 
 }

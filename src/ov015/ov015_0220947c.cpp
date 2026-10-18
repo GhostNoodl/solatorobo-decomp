@@ -18,7 +18,7 @@ void func_ov000_021915a0(void *a);
 void func_ov000_02191618(void *a);
 void func_ov000_02191690(void *a);
 void func_ov000_02191318(void *a, s32 b);
-s32 func_02012ab8(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 void func_0203f364(void *a);
 void *func_0203dd9c(u32 size);
 void *func_ov015_0220a0c8(u8 *self);
@@ -28,15 +28,15 @@ void func_0203f3d0(void *a);
 extern u32 data_02fe0f04;
 s32 func_02049130(s32 t, s32 a, s32 b);
 void func_ov015_02209c90(u8 *self);
-u16 func_0201319c(s32 x, s32 z);
+u16 FX_Atan2(s32 x, s32 z);
 void func_ov015_0220daf4(void *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
 void func_0202a1d4(void);
 void func_ov000_021903b4(void *a);
-void func_02012d78(void *src, void *dst);
-void func_02016dbc(const void *src, void *dst);
+void VEC_Normalize(void *src, void *dst);
+void MI_Copy36B(const void *src, void *dst);
 s32 func_01ffc584(void *a, void *b, s32 c, s32 d);
 void func_020117a4(void *a, void *b, void *c);
-void func_02012be8(void *a, void *b, void *c);
+void VEC_Add(void *a, void *b, void *c);
 extern u8 data_ov015_02212e94[];
 extern u8 data_ov015_02212eb0[];
 
@@ -93,7 +93,7 @@ BOOL func_ov015_02209500(u8 *self) {
     FLD(Ov015AnimFlags, self, 0x526).b0 = 1;
     FLD(Ov015Nib09500, self, 0x564).hi = FLD(Ov015Nib09500, self, 0x564).lo;
     FLD(Ov015Nib09500, self, 0x564).lo = 3;
-    FLD(s32, self, 0x48) = (0x800 - 0x37800) - Ov015_FxMul(func_02012ab8(data_ov015_0221332c.unk_00, 0x3e8000), 0x73000);
+    FLD(s32, self, 0x48) = (0x800 - 0x37800) - Ov015_FxMul(FX_Div(data_ov015_0221332c.unk_00, 0x3e8000), 0x73000);
     { s32 v = FLD(s16, func_0206fef8(FLD(u16, self, 0xc4)), 0x10); FLD(s32, self, 0x70) = v; FLD(s32, self, 0x74) = v; FLD(s32, self, 0x78) = v; }
     if (FLD(u8, self, 0x58c) != 0) func_0203f364(self + 0x568);
     FLD(s32, self, 0x590) = 0x100;
@@ -143,14 +143,14 @@ BOOL func_ov015_02209790(u8 *self, BOOL b) {
         FLD(s32, self, 0xfc) = 0;
     }
     if (FLD(s32, self, 0xf4) != 5 && FLD(s32, self, 0xf4) != 6) {
-        FLD(s32, self, 0x48) = (0x800 - 0x37800) - Ov015_FxMul(func_02012ab8(data_ov015_0221332c.unk_00, 0x3e8000), 0x73000);
+        FLD(s32, self, 0x48) = (0x800 - 0x37800) - Ov015_FxMul(FX_Div(data_ov015_0221332c.unk_00, 0x3e8000), 0x73000);
     }
     {
-        s32 t = Ov015_FxMul(func_02012ab8(FLD(s32, self, 0x48) + 0x37000, -0x73000), 0x3e8000);
+        s32 t = Ov015_FxMul(FX_Div(FLD(s32, self, 0x48) + 0x37000, -0x73000), 0x3e8000);
         if (t <= 0x1f4000) {
             FLD(s32, self, 0x7c) = 0x1000;
         } else {
-            FLD(s32, self, 0x7c) = Ov015_FxMul(func_02012ab8(0x3e8000 - t, 0x1f4000), 0x666) + 0x99a;
+            FLD(s32, self, 0x7c) = Ov015_FxMul(FX_Div(0x3e8000 - t, 0x1f4000), 0x666) + 0x99a;
         }
     }
     func_ov015_02209a50(self);
@@ -170,7 +170,7 @@ void func_ov015_02209a50(u8 *self) {
             FLD(u8, self, 0x90)--;
         }
     } else if (FLD(s32, self, 0x44) > -0x32000) {
-        s32 t = func_02012ab8(FLD(s32, self, 0x44) + 0x32000, 0x28000);
+        s32 t = FX_Div(FLD(s32, self, 0x44) + 0x32000, 0x28000);
         s32 k;
         FLD(s32, self, 0x8c) = func_02049130(t, 0x666, 0x1000);
         k = (func_02049130(t, 0xa000, 0x16000) >> 12) & 0xff;
@@ -199,7 +199,7 @@ void func_ov015_02209b80(u8 *self, s32 a, s32 b) {
 }
 
 static inline void Ov015_UpdateMove(u8 *self) {
-    u16 ang = func_0201319c(FLD(s32, self, 0x9c), FLD(s32, self, 0xa4));
+    u16 ang = FX_Atan2(FLD(s32, self, 0x9c), FLD(s32, self, 0xa4));
     Ov015Vec v;
     v = *(Ov015Vec *)(self + 0x40);
     v.y = 0;
@@ -239,11 +239,11 @@ void func_ov015_02209c90(u8 *self) {
     s32 sz = Ov015_FxMul(FLD(s32, self, 0x78), k);
     if (FLD(s32, self, 0x9c) != 0 || FLD(s32, self, 0xa0) != 0 || FLD(s32, self, 0xa4) == 0) {
         *(Ov015Blk09c90 *)&up = data_ov015_02212644;
-        func_02012d78(self + 0x9c, &z);
+        VEC_Normalize(self + 0x9c, &z);
         Ov015_Cross09c90(&up, &z, &x);
-        func_02012d78(&x, &x);
+        VEC_Normalize(&x, &x);
         Ov015_Cross09c90(&z, &x, &up);
-        func_02012d78(&up, &up);
+        VEC_Normalize(&up, &up);
         FLD(Ov015Vec, self, 0x4c) = x;
         FLD(Ov015Vec, self, 0x58) = up;
         FLD(Ov015Vec, self, 0x64) = z;
@@ -259,19 +259,19 @@ void func_ov015_02209c90(u8 *self) {
         FLD(s16, self, 0x520) = 0xa;
     }
     FLD(Ov015VecC, self, 0x2bc) = FLD(Ov015VecC, self, 0x40);
-    func_02016dbc(self + 0x4c, self + 0x2c8);
+    MI_Copy36B(self + 0x4c, self + 0x2c8);
     FLD(s32, self, 0x2ec) = sx;
     FLD(s32, self, 0x2f0) = sy;
     FLD(s32, self, 0x2f4) = sz;
     func_ov000_021903b4(self + 0x244);
     FLD(Ov015VecC, self, 0x4dc) = FLD(Ov015VecC, self, 0x30);
-    func_02016dbc(self + 0xc, self + 0x4e8);
+    MI_Copy36B(self + 0xc, self + 0x4e8);
     func_ov000_021903b4(self + 0x464);
     func_0202a1d4();
 }
 
 s32 func_ov015_02209fb8(s32 x) {
-    s32 t = func_02012ab8(x + 0x37000, -0x73000);
+    s32 t = FX_Div(x + 0x37000, -0x73000);
     return (s32)(((s64)t * 0x3e8000 + 0x800) >> 12);
 }
 
@@ -294,7 +294,7 @@ void func_ov015_0220a058(u8 *self, void *out) {
     v.y = 0;
     v.z = z;
     func_020117a4(&v, self + 0xc, &v);
-    func_02012be8(&v, self + 0x30, out);
+    VEC_Add(&v, self + 0x30, out);
 }
 
 void *func_ov015_0220a0c8(u8 *self) {

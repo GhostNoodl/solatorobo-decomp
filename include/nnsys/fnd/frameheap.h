@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-typedef void *NNSFndHeapHandle;
+#include "nnsys/fnd/heapcommon.h"
 
 #define NNS_FND_FRMHEAP_FREE_HEAD (1 << 0)
 #define NNS_FND_FRMHEAP_FREE_TAIL (1 << 1)

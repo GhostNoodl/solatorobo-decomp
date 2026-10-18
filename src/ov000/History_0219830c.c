@@ -79,7 +79,7 @@ extern ActorMgr *data_ov000_021ccd68;
 
 ActorC *func_ov000_0218e640(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
-void func_02012be8(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
+void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 void func_0203f260(Obj021985e8 *self);
 void func_0203f324(Obj021985e8 *self);
 void func_0203f364(Obj021985e8 *self);
@@ -215,7 +215,7 @@ void func_ov000_021984f4(Obj021984c8 *self, VecFx32 *pos, u16 *rot) {
     angle = rot != NULL ? rot[1] : actor->rot_y;
     self->angle = angle + self->unk_1a;
     func_01ffc9fc(&ofs, &self->offset, angle);
-    func_02012be8(&base, &ofs, &self->pos);
+    VEC_Add(&base, &ofs, &self->pos);
 }
 
 ActorC *func_ov000_021985c0(Obj021984c8 *self) {
@@ -273,7 +273,7 @@ void func_ov000_0219864c(Obj021985e8 *self, VecFx32 *pos, u16 *rot) {
                 base.z = actor->pos.z;
             }
             func_01ffc9fc(&ofs, &self->offset, rot != NULL ? rot[1] : actor->rot_y);
-            func_02012be8(&base, &ofs, &base);
+            VEC_Add(&base, &ofs, &base);
             func_ov000_02198ad8(self, &base, &ofs);
             if (pos != NULL) {
                 pos->x = base.x;

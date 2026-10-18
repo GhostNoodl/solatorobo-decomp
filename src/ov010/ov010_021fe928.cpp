@@ -43,7 +43,7 @@ extern void func_ov000_021915a0(void *a);
 extern void func_ov003_021d88ec(Ov010Cmd *c);
 extern void func_ov003_021d8b60(void *p, Ov010Cmd *c);
 extern s32 func_02040528(s32 max);
-extern void func_02012be8(Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
+extern void VEC_Add(Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
 extern Ov010V *func_02065f88(s32 a, Ov010Vec *b);
 extern void *func_ov000_0218e4cc(void *a, s32 b);
 extern u8 *func_ov000_0219bf90(void);
@@ -127,7 +127,7 @@ void func_ov010_021fe9c8(void *self) {
         off.x = FLD(s32, q, 0xc);
         off.y = FLD(s32, q, 0x10);
         off.z = FLD(s32, q, 0x14);
-        func_02012be8(&v, &off, &v);
+        VEC_Add(&v, &off, &v);
         p = func_02065f88(0x325, &v);
         p->v34(0, 0x4000, 0);
         p->v14(0x2800, 0x2800, 0x2800);

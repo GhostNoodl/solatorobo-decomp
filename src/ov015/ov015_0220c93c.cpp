@@ -11,7 +11,7 @@ extern u8 data_ov015_02212e0d[];
 void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 s32 func_02040528(s32 max);
-void func_02012d78(void *src, void *dst);
+void VEC_Normalize(void *src, void *dst);
 void func_0203f324(void *a);
 
 u8 *func_ov015_0220c93c(u8 *self) {
@@ -98,8 +98,8 @@ BOOL func_ov015_0220caec(u8 *self, u8 *p) {
     FLD(s32, self, 0x1c) = func_02040528(0x1000);
     FLD(s32, self, 0x24) = a;
     FLD(s32, self, 0x20) = 0;
-    func_02012d78(self + 0x1c, self + 0x1c);
-    func_02012d78(self + 0x1c, p + 0x9c);
+    VEC_Normalize(self + 0x1c, self + 0x1c);
+    VEC_Normalize(self + 0x1c, p + 0x9c);
     FLD(s32, p, 0x44) = -0x32000;
     Ov015_SetXZ((s32 *)(p + 0x40), FLD(s32, p, 0x40), FLD(s32, p, 0x48));
     func_0203f324(p + 0x568);

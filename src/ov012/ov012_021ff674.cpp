@@ -36,7 +36,7 @@ void func_ov012_021ff674(Ov012Actor *self) {
             v.y = self->unk_b8.y;
             v.z = self->unk_b8.z;
             func_ov000_0218ddd4(self, &v, 0);
-            if (func_02013068(&self->pos, &self->unk_b8) > 0x800) {
+            if (VEC_Distance(&self->pos, &self->unk_b8) > 0x800) {
                 return;
             }
             switch (FLD(u8, self, 0x102)) {
@@ -85,7 +85,7 @@ void func_ov012_021ff8b4(Ov012Actor *self, s32 idx) {
     v.y = 0x1000;
     v.z = 0x2000;
     func_01ffc9fc(&v, &v, self->rot[1]);
-    func_02012be8(&self->pos, &v, &v);
+    VEC_Add(&self->pos, &v, &v);
     dir = data_ov012_0220a4d4[idx - 1];
     if (FLD(s32, self, 0xf0) >= 0) {
         dir.x = -dir.x;
@@ -93,12 +93,12 @@ void func_ov012_021ff8b4(Ov012Actor *self, s32 idx) {
     dir.x = dir.x - v.x;
     dir.y = dir.y - v.y;
     dir.z = dir.z - v.z;
-    func_02012d78(&dir, &dir);
+    VEC_Normalize(&dir, &dir);
     r[0] = 0;
     r[1] = 0;
     r[2] = 0;
-    r[0] = func_02013330(-dir.y);
-    r[1] = func_0201319c(dir.x, dir.z);
+    r[0] = FX_AsinIdx(-dir.y);
+    r[1] = FX_Atan2(dir.x, dir.z);
     o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, &v, r, 0xffff);
     if (o == NULL) {
         return;

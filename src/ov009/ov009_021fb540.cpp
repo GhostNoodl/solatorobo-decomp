@@ -36,7 +36,7 @@ void func_ov009_021fb5ac(Ov009Actor *self) {
     d.x = FLD(s32, self, 0x100) - self->pos.x;
     d.y = FLD(s32, self, 0x104) - self->pos.y;
     d.z = FLD(s32, self, 0x108) - self->pos.z;
-    func_02012fb8(0xcd, &d, &self->pos, &self->pos);
+    VEC_MultAdd(0xcd, &d, &self->pos, &self->pos);
     func_ov000_021987b8(self->unk_48, 0, 0, 0);
 }
 

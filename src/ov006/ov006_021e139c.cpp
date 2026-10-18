@@ -10,13 +10,13 @@ typedef struct ov006_Unk021e139c {
 
 extern "C" {
 
-int func_02012ab8(int a, int b);
+int FX_Div(int a, int b);
 
 void func_ov006_021e139c(ov006_Unk021e139c *self, int a, int b, u8 c) {
     if (a > b) {
         return;
     }
-    self->unkC = func_02012ab8(a, b);
+    self->unkC = FX_Div(a, b);
     self->unk5 = c;
 }
 

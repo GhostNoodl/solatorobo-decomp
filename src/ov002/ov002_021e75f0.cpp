@@ -6,7 +6,7 @@ extern Vec3 data_ov002_021ef0f8;
 
 extern Vec3 data_ov002_021ef0d4;
 
-void func_02012be8(void *a, void *b, void *c);
+void VEC_Add(void *a, void *b, void *c);
 
 BOOL func_ov002_021e75f0(void *self) {
     void *n;
@@ -35,7 +35,7 @@ BOOL func_ov002_021e75f0(void *self) {
         pos.y = FIELD(m, 0xe0, s32);
         pos.z = FIELD(m, 0xe4, s32);
         func_020117a4(&a, m + 0xb8, &a);
-        func_02012be8(&pos, &a, &a);
+        VEC_Add(&pos, &a, &a);
         func_020117a4(&b, m + 0xb8, &b);
         FIELD(self, 0x50, Vec3) = pos;
         FIELD(self, 0x5c, Vec3) = a;

@@ -7,7 +7,7 @@ extern void func_ov000_02191318(void *a, s32 b);
 extern Ov014Actor *func_ov000_0219bf90(void);
 extern void func_ov000_0218d988(Ov014Actor *self, Ov014Actor *target, s32 a);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
-extern s32 func_02012ab8(s32 a, s32 b);
+extern s32 FX_Div(s32 a, s32 b);
 extern s32 func_02049130(s32 a, s32 b, s32 c);
 
 static inline void Ov014_TimerTick(Ov014Sub40 *s) {
@@ -28,7 +28,7 @@ void func_ov014_02212dd4(Ov014Actor *self) {
         break;
     case 1: {
         u16 t = s->timer;
-        u8 b = func_02049130(func_02012ab8(t << 12, 0x78000), 0x1f000, 0) >> 12;
+        u8 b = func_02049130(FX_Div(t << 12, 0x78000), 0x1f000, 0) >> 12;
         FLD(u8, self->unk_38, 0xbe) = b;
         FLD(u8, self, 0x2e6) = b;
         if (t == 50) {

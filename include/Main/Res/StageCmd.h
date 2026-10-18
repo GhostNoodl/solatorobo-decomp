@@ -330,7 +330,7 @@ extern void func_ov000_0218bc9c(void *mgr, void *obj, int a);
 extern void *func_ov000_0218bddc(void *mgr, u16 id, u8 a);
 extern StageObj3D *func_ov000_0218e750(void *mgr, u16 kind, u16 id, StageVec *pos, s32 r);
 extern void func_ov000_0218b60c(void *obj, u8 *color, StageVec *pos, s16 *rot);
-extern s32 func_02012ab8(s32 a, s32 b);
+extern s32 FX_Div(s32 a, s32 b);
 extern StageObj3D *func_ov000_0218e640(void *mgr, u16 idx);
 extern StageLightObj *func_ov000_0218bd5c(void *mgr, u16 idx);
 extern void func_ov000_02198d28(void *p, StageVec *pos, u16 rot);
@@ -382,7 +382,7 @@ typedef struct StageCamMgr {
 extern StageCamMgr *data_ov000_021ccd6c;
 extern s32 data_02097d78[5];
 extern int func_0205f5c4(StageRes *res, u16 id, u16 idx, u16 posIdx, u16 mode);
-extern void func_02012be8(const StageVec *a, const StageVec *b, StageVec *out);
+extern void VEC_Add(const StageVec *a, const StageVec *b, StageVec *out);
 extern void func_ov000_021b12c0(StagePlayer *player, int a);
 extern void func_ov000_021b1514(StagePlayer *player);
 extern void func_ov000_021b13cc(StagePlayer *player, int a);
@@ -409,7 +409,7 @@ static inline u16 Stage_GetAngle(StageRes *res, u16 arg, u16 def) {
         if (arg & 0x8000) {
             rot = ((u16 *)(res->posEv->pos + (u16)(arg & ~0x8000) * 6))[1];
         } else if (arg != 0xffff) {
-            rot = (u16)((s32)(((s64)func_02012ab8(arg << 12, 0x168000) * 0x10000000 + 0x800) >> 12) >> 12);
+            rot = (u16)((s32)(((s64)FX_Div(arg << 12, 0x168000) * 0x10000000 + 0x800) >> 12) >> 12);
         }
     }
     return rot;
@@ -425,7 +425,7 @@ static inline u16 Stage_GetAngleOr0(StageRes *res, u16 arg) {
     if (arg == 0xffff) {
         return 0;
     }
-    return (u16)((s32)(((s64)func_02012ab8(arg << 12, 0x168000) * 0x10000000 + 0x800) >> 12) >> 12);
+    return (u16)((s32)(((s64)FX_Div(arg << 12, 0x168000) * 0x10000000 + 0x800) >> 12) >> 12);
 }
 
 static inline s32 Stage_EffectId(u16 a) {

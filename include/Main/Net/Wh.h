@@ -182,9 +182,9 @@ void func_02045ef8(WhCbArg *arg);
 void func_020461e4(WhCbArg *arg);
 void func_020468d0(WhCbArg *arg);
 
-extern void func_0201925c(const void *addr, u32 size);
+extern void DC_InvalidateRange(const void *addr, u32 size);
 extern void func_02016fa0(const void *src, void *dst, u32 size);
-extern void func_02019294(const void *addr, u32 size);
+extern void DC_FlushRange(const void *addr, u32 size);
 extern void func_020192b8(void);
 extern int func_02020638(void (*cb)(void *arg));
 extern int func_0202067c(void (*cb)(void *arg), void *bssDesc, void *ssl, BOOL powerSave, int authMode);

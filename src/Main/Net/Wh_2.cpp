@@ -214,7 +214,7 @@ void func_020461e4(WhCbArg *cbArg) {
         break;
     case 5: {
         WhParentParam *pp = &wh->parentParam;
-        func_0201925c(wh->bssDesc, sizeof(wh->bssDesc));
+        DC_InvalidateRange(wh->bssDesc, sizeof(wh->bssDesc));
         if (data_02097e40->unk_84 != 0 && !((BOOL (*)(void *))data_02097e40->unk_84)(wh->bssDesc)) {
             break;
         }

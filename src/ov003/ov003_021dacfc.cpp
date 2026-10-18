@@ -64,7 +64,7 @@ Ov003VecP func_ov003_021dadc0(const Ov003Vec *a, const Ov003Vec *b) {
     d.x = b->x - a->x;
     d.z = b->z - a->z;
     d.y = 0;
-    func_02012d78((Ov003Vec *)&d, (Ov003Vec *)&d);
+    VEC_Normalize((Ov003Vec *)&d, (Ov003Vec *)&d);
     return d;
 }
 

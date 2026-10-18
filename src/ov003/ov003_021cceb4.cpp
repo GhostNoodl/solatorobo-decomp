@@ -84,7 +84,7 @@ extern char data_ov003_021f78c4[];
 extern char data_ov003_021f78cd[];
 extern void func_ov000_021c8408(u32 a, u32 b, u32 c, u32 d, u16 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k);
 extern void func_ov000_021c2208(void *p);
-extern void func_02016cd8(u32 v, void *dst, u32 size);
+extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
 extern Ov003HeapCtx *data_02097dd0;
 extern void func_02041558(void *p);
 extern void func_02041278(void *p);
@@ -115,7 +115,7 @@ void func_ov003_021ccf00(Ov003Title *self) {
     self->unk_80 = 0;
     self->unk_84 = 0;
     self->unk_88 = 0;
-    func_02016cd8(0, self->unk_8c, 0x40);
+    MIi_CpuClear32(0, self->unk_8c, 0x40);
 }
 
 void func_ov003_021ccf6c(Ov003Title *self) {

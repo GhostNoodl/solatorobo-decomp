@@ -75,7 +75,7 @@ ResMdlSet *func_0202ac90(void *file);
 void func_0202714c(VecFx32 *scale);
 void func_0202711c(VecFx32 *trans);
 void func_02011340(Mtx33 *mtx);
-void func_02016dbc(const void *src, void *dst);
+void MI_Copy36B(const void *src, void *dst);
 void func_020270a4(void);
 s32 _s32_div_f(s32 a, s32 b);
 void func_0202a7bc(void *mdl, u32 idx, u32 alpha);

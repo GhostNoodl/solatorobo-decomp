@@ -8,8 +8,8 @@ extern const u8 data_02082798[0x60];
 
 extern void *func_0203dec8(u32 size, int align);
 extern void func_02016fa0(const void *src, void *dst, u32 size);
-extern void func_02019294(const void *addr, u32 size);
-extern void func_02016d1c(u32 value, void *dst, u32 size);
+extern void DC_FlushRange(const void *addr, u32 size);
+extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void func_02014304(const void *src, u32 offset, u32 size);
 extern void func_0201439c(const void *src, u32 offset, u32 size);
 extern void func_02014450(const void *src, u32 offset, u32 size);
@@ -71,7 +71,7 @@ void func_02039a34(GfxMgr *mgr) {
     mgr->unk_046 = 0;
     mgr->unk_000 = -1;
     func_02016fa0(data_02082798, data_02097ce4, 0x60);
-    func_02019294(data_02097ce4, 0x60);
+    DC_FlushRange(data_02097ce4, 0x60);
     mgr->plttSlots[0] = func_0203bdb0(data_02097d48, 3, 4);
     func_02014304(data_02082798, mgr->plttSlots[0] << 5, 0x60);
     mgr->plttSlots[1] = func_0203bdb0(data_02097d48, 3, 5);
@@ -86,7 +86,7 @@ void func_02039a34(GfxMgr *mgr) {
     mgr->unk_654 = func_0203bc20(data_02097d48, 0x4000, 1);
 
     block = (VramBlock *)func_0203dec8(0x80 * sizeof(VramBlock), 4);
-    func_02016d1c(0, block, 0x80 * sizeof(VramBlock));
+    MIi_CpuClearFast(0, block, 0x80 * sizeof(VramBlock));
     block->addr = 0x20;
     block->size = 0x4000 - 0x20;
     block->prev = NULL;
@@ -97,7 +97,7 @@ void func_02039a34(GfxMgr *mgr) {
     mgr->pools[0].numBlocks = 0x80;
 
     block = (VramBlock *)func_0203dec8(0x80 * sizeof(VramBlock), 4);
-    func_02016d1c(0, block, 0x80 * sizeof(VramBlock));
+    MIi_CpuClearFast(0, block, 0x80 * sizeof(VramBlock));
     block->addr = 0x20;
     block->size = 0x4000 - 0x20;
     block->prev = NULL;
@@ -139,7 +139,7 @@ void func_02039c54(GfxMgr *mgr, int mode) {
         mgr->unk_67c = NULL;
     }
     mgr->unk_680 = 0;
-    func_02019294(data_02097ce4, 0x60);
+    DC_FlushRange(data_02097ce4, 0x60);
     mgr->plttSlots[0] = func_0203bdb0(data_02097d48, 3, 4);
     func_02014304(data_02082798, mgr->plttSlots[0] << 5, 0x60);
     mgr->plttSlots[1] = func_0203bdb0(data_02097d48, 3, 5);
@@ -187,7 +187,7 @@ void func_02039e0c(GfxMgr *mgr) {
         func_02016fa0(data_02082798, data_02097ce4, 0x60);
         func_020435e8(pltt, data_02097ce4, 0x60);
         mgr->unk_000 = id;
-        func_02019294(data_02097ce4, 0x60);
+        DC_FlushRange(data_02097ce4, 0x60);
         func_02014450(data_02097ce4, mgr->plttSlots[2] << 5, 0x60);
     }
     mgr->unk_69c[0] = 0;
@@ -231,7 +231,7 @@ void func_02039f84(GfxMgr *mgr) {
         func_02016fa0(data_02082798, data_02097ce4, 0x60);
         func_020435e8(pltt, data_02097ce4, 0x60);
         mgr->unk_000 = id;
-        func_02019294(data_02097ce4, 0x60);
+        DC_FlushRange(data_02097ce4, 0x60);
         func_02014450(data_02097ce4, mgr->plttSlots[2] << 5, 0x60);
     }
 }

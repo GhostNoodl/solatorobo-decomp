@@ -38,7 +38,7 @@ extern void func_0201146c(Ov010Mtx33 *m, s32 s, s32 c);
 extern void func_02011488(Ov010Mtx33 *m, s32 s, s32 c);
 extern void func_020114a4(Ov010Mtx33 *m, s32 s, s32 c);
 extern void func_020117a4(const Ov010Vec *v, const Ov010Mtx33 *m, Ov010Vec *o);
-extern void func_02012be8(Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
+extern void VEC_Add(Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
 extern void func_ov003_021d9f04(Ov010Col *out, const void *p);
 extern void func_ov010_022024c4(u8 *e, u16 a, Ov010Vec *b, Ov010Vec *c, Ov010Col *d);
 extern void func_ov010_02202560(u8 *e, u16 a, Ov010Vec *b, Ov010Vec *c, Ov010Rot *d);
@@ -83,7 +83,7 @@ u8 *func_ov010_02201cc8(Ov010Task *t) {
             func_020117a4(&d, &mx, &d);
             func_020117a4(&d, &my, &d);
             p = FLD(Ov010Vec, obj, 0x70);
-            func_02012be8(&p, &d, &p);
+            VEC_Add(&p, &d, &p);
             func_020117a4(&t->v0c, &mz, &o);
             func_020117a4(&o, &mx, &o);
             func_020117a4(&o, &my, &o);
@@ -133,7 +133,7 @@ u8 *func_ov010_02201f44(Ov010Task *t) {
             p = FLD(Ov010Vec, obj, 0x70);
             OV010_BLKCPY(&d, &t->v18);
             func_ov003_021d9980(&d, FLD(u16, obj, 0x7e), &d);
-            func_02012be8(&p, &d, &p);
+            VEC_Add(&p, &d, &p);
             r = FLD(Ov010Rot, obj, 0x7c);
             r.x = 0;
             r.z = 0;

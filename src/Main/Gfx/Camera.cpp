@@ -10,7 +10,7 @@ extern void func_0204bcb0(Camera *cam);
 extern 
 void func_0204bac8(Camera *cam);
 extern s32 func_01ffbd6c(CamVec *a, CamVec *b, u32 mask, s32 c, s32 d, s32 e);
-extern u16 func_0201319c(s32 y, s32 x);
+extern u16 FX_Atan2(s32 y, s32 x);
 extern void func_02011ff0(CamVec *eye, CamVec *up, CamVec *at, void *out);
 extern void func_02012758(s32 fovy, s32 aspect, s32 n, s32 fovSin, s32 fovCos, s32 scale, void *out);
 extern const s16 FX_SinCosTable_[];
@@ -18,7 +18,7 @@ extern void *data_0208b000[];
 extern s32 func_02040498(s32 max);
 extern void *data_02092a5c;
 extern u32 data_0208b078;
-extern void func_02016d1c(u32 value, void *dst, u32 size);
+extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void func_02011340(void *mtx);
 extern void func_020117a4(const CamVec *v, const void *mtx, CamVec *out);
 
@@ -37,10 +37,10 @@ typedef struct CamAnimWork {
 
 typedef void (*CamAnimFunc)(CamAnimResult *out, s32 *frame, s32 arg);
 extern s32 func_02040528(s32 amp);
-extern void func_02012fb8(s32 scale, const CamVec *dir, const CamVec *base, CamVec *out);
-extern s32 func_02013068(const CamVec *a, const CamVec *b);
+extern void VEC_MultAdd(s32 scale, const CamVec *dir, const CamVec *base, CamVec *out);
+extern s32 VEC_Distance(const CamVec *a, const CamVec *b);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void func_02012be8(const CamVec *a, const CamVec *b, CamVec *out);
+extern void VEC_Add(const CamVec *a, const CamVec *b, CamVec *out);
 typedef struct CamState {
     /* 0x000 */ u8 unk_000[0xfc];
     /* 0x0fc */ u32 dirty;

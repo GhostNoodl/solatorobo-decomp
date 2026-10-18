@@ -35,7 +35,7 @@ extern void func_0203f364(Ov014Sub48 *p);
 extern void func_ov003_021d6a3c(Ov014Actor *self, s32 a, s32 b, s32 c);
 extern Ov014Actor *func_ov000_02192b24(Ov014SpawnDesc *desc);
 extern void func_ov000_0219bebc(Ov014Actor *a, s32 b);
-extern void func_02012be8(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
+extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
 extern void func_ov000_02194074(void *self);
@@ -128,7 +128,7 @@ void func_ov014_021fbb90(Ov014Actor *self, s16 n) {
     if (o == NULL) {
         return;
     }
-    func_02012be8(&self->pos, &data_ov014_02216444, &v);
+    VEC_Add(&self->pos, &data_ov014_02216444, &v);
     o->pos = v;
     o->unk_18 = n;
     func_ov000_0219bebc(o, FLD(s16, self, 0x364));

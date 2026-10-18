@@ -94,7 +94,7 @@ void *func_ov002_021eaca8(void *self) {
 void func_ov002_021eacd0(void *self) {
     FIELD(self, 0x4, s32) = 0;
     FIELD(self, 0x8, s32) = 0;
-    func_02016cd8(0, (u8 *)self + 0x10, 0x30);
+    MIi_CpuClear32(0, (u8 *)self + 0x10, 0x30);
     FIELD(self, 0x40, s32) = 0;
     FIELD(self, 0x44, s32) = 0;
     FIELD(self, 0x48, s32) = 0;

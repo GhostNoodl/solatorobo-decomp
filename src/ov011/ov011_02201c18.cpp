@@ -48,7 +48,7 @@ void func_ov000_02193e5c(void *p, s32 a);
 void func_ov000_0218f110(void *p);
 s32 func_0206fef8(u32 id);
 void func_ov000_0219badc(void *a, void *b, s32 c);
-void func_02012be8(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out);
+void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out);
 BOOL func_ov011_02200b88(Ov011Model2 *self, void *a, u32 b);
 void func_ov011_02200c30(Ov011Model2 *self);
 s32 func_ov011_02200aac(void *p, s32 b);
@@ -212,7 +212,7 @@ BOOL func_ov011_02201f28(Ov011Chr *self, u16 id, const Ov011Vec *off, u16 c, s16
     if (a != NULL) {
         Ov011Vec p;
         p = FLD(Ov011Vec, a, 0x70);
-        func_02012be8(&p, &self->off, &p);
+        VEC_Add(&p, &self->off, &p);
         FLD(Ov011Vec, self->model, 0x78) = p;
     }
     func_ov003_021d7d24(self->s88, 0, 0, 1, 0);
@@ -273,7 +273,7 @@ void func_ov011_02202260(Ov011Chr *self) {
         void *a = Ov011_FindActor(self->id);
         if (a != NULL) {
             p = FLD(Ov011Vec, a, 0x70);
-            func_02012be8(&p, &self->off, &p);
+            VEC_Add(&p, &self->off, &p);
             FLD(Ov011Vec, self->model, 0x78) = p;
         }
         sv = FLD(Ov011Vec, self->model, 0x78);

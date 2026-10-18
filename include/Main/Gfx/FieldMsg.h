@@ -52,7 +52,7 @@ extern const char data_0208ba20[];
 extern void *func_0203dd9c(u32 size);
 extern void func_0204c7d0(TextWin *win);
 extern u32 func_0204c4fc(u32 a, u32 b, u32 c, u32 *outSize, u32 *outArg, BOOL d);
-extern void func_02016d1c(u32 value, void *dst, u32 size);
+extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void func_02039828(VramBlock *block);
 
 }

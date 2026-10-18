@@ -13,8 +13,8 @@ void *func_ov000_021bd198(void *p);
 void func_ov015_02212430(u8 *self);
 void *func_02027240(void *p);
 void func_020117a4(void *a, void *b, void *c);
-void func_02012be8(void *a, void *b, void *c);
-u16 func_0201319c(s32 x, s32 z);
+void VEC_Add(void *a, void *b, void *c);
+u16 FX_Atan2(s32 x, s32 z);
 void func_ov000_021bd624(void *p);
 void func_ov000_021bd7a0(void *p);
 extern void *data_02097e4c;
@@ -103,10 +103,10 @@ void func_ov015_02212264(u8 *self) {
         v.y = 0;
         v.z = 0xa000;
         func_020117a4(&v, m, &v);
-        func_02012be8(&v, self + 0xc, &w);
+        VEC_Add(&v, self + 0xc, &w);
         VCALL(FLD(void *, self, 0x4))->v18(&w);
         VCALL(FLD(void *, self, 0x4))->v10(self + 0x18);
-        VCALL(FLD(void *, self, 0x4))->v34(0xe00, func_0201319c(v.x, v.z), 0);
+        VCALL(FLD(void *, self, 0x4))->v34(0xe00, FX_Atan2(v.x, v.z), 0);
     }
     o = FLD(u8 *, self, 0x8);
     if (o != NULL) {

@@ -122,7 +122,7 @@ void *func_ov003_021da4a8(const Ov003Vec *base, s32 range, void *mgr) {
     v.y = y;
     v.z = 0;
     func_020117a4(&v, func_02027240(), &v);
-    func_02012be8(base, &v, &p);
+    VEC_Add(base, &v, &p);
     return func_02065f88(mgr, &p);
 }
 
@@ -203,7 +203,7 @@ static inline void Ov003Follower_Update(Ov003Follower *self) {
     p = t->pos;
     off = self->offset;
     Ov003_RotYM(&off, (u16)t->rot.y, &off, &m);
-    func_02012be8(&p, &off, &p);
+    VEC_Add(&p, &off, &p);
     self->SetPos(&p);
 }
 
@@ -219,7 +219,7 @@ void func_ov003_021da520(Ov003Follower *self) {
     Ov003Vec p = t->pos;
     Ov003Vec off = self->offset;
     Ov003_RotY(&off, (u16)t->rot.y, &off);
-    func_02012be8(&p, &off, &p);
+    VEC_Add(&p, &off, &p);
     self->SetPos(&p);
 }
 

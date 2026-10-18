@@ -15,7 +15,7 @@ void *func_02023410(int a, u16 b);
 void func_02042628(ov006_Model *model, void *a, ov006_ModelPart *part, int b);
 void func_02016e28(void *dst, int value, u32 size);
 void func_02016fa0(const void *src, void *dst, u32 size);
-void func_02016ca4(int value, void *dst, u32 size);
+void MIi_CpuClear16(int value, void *dst, u32 size);
 int func_02046ab4(ov006_Unk02097e40 *a);
 BOOL func_02045ea4(ov006_Unk02097e40 *a);
 int func_ov006_021e4674(ov006_Unk021ec888 *self);
@@ -94,7 +94,7 @@ void func_ov006_021e4b18(ov006_Unk021ec888 *self, int idx, u16 a, int b, const v
 static inline void ov006_MenuEntry_Clear(ov006_MenuEntry *self) {
     self->unk0_0 = 0;
     self->unk0_4 = 0;
-    func_02016ca4(0, self->unk2, sizeof(self->unk2));
+    MIi_CpuClear16(0, self->unk2, sizeof(self->unk2));
 }
 
 void func_ov006_021e4b90(ov006_Unk021ec888 *self) {

@@ -33,7 +33,7 @@ void func_ov000_02191a24(void *p);
 void func_ov000_0218ea20(void *p);
 void func_02009f64(void *p, s32 n, s32 size, void *dtor);
 void func_01ffc9fc(Ov015V3 *in, Ov015V3 *out, u16 ang);
-void func_02012be8(const void *a, const void *b, void *out);
+void VEC_Add(const void *a, const void *b, void *out);
 
 void *func_ov015_02206f04(void) {
     u8 *p = (u8 *)func_0203dd9c(0x58);
@@ -394,7 +394,7 @@ void func_ov015_02207858(u8 *self) {
     v.x = 0;
     v.y = 0;
     func_01ffc9fc(&v, &v, FLD(u16, self, 0xd22));
-    func_02012be8(self + 0xd14, &v, self + 0xd4c);
+    VEC_Add(self + 0xd14, &v, self + 0xd4c);
     FLD(u16, self, 0xd38) = 10;
 }
 

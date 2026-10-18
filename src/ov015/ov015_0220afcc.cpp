@@ -7,8 +7,8 @@ extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e34[];
 struct Ov015Blk0afcc { s32 w[3]; };
 extern const Ov015Blk0afcc data_ov015_02212650;
-void func_02012d78(void *src, void *dst);
-u16 func_020133a8(s32 x);
+void VEC_Normalize(void *src, void *dst);
+u16 FX_AcosIdx(s32 x);
 
 #define Ov015_Dot0afcc(a, b) ((s32)(((s64)(a)->x * (b)->x + (s64)(a)->y * (b)->y + (s64)(a)->z * (b)->z + 0x800) >> 12))
 void func_ov015_0220afcc(u8 *self) {
@@ -37,8 +37,8 @@ void func_ov015_0220afcc(u8 *self) {
     *(Ov015Blk0afcc *)&base = data_ov015_02212650;
     dir = FLD(Ov015Vec, FLD(u8 *, self, 0x20), 0x9c);
     dir.y = 0;
-    func_02012d78(&dir, &dir);
-    ang = func_020133a8(Ov015_Dot0afcc(&dir, &base));
+    VEC_Normalize(&dir, &dir);
+    ang = FX_AcosIdx(Ov015_Dot0afcc(&dir, &base));
     if (dir.x < 0) ang = 0xffff - ang;
     e->v34(0, ang, 0);
     {

@@ -69,7 +69,7 @@ BOOL func_ov002_021e4dd4(void *n);
 
 void func_ov002_021e8bbc(void *self, void *n);
 
-void func_02016dfc(void *src, void *dst);
+void MI_Copy64B(void *src, void *dst);
 
 typedef struct Blk24_8828 { s32 v[9]; } Blk24_8828;
 
@@ -103,7 +103,7 @@ BOOL func_ov002_021e8828(void *self) {
                 s32 *d = (s32 *)((u8 *)data_0214a420 + 0x38);
                 d[0] = a0; d[1] = a1; d[2] = a2; d[3] = a3; d[4] = a4; d[5] = a5; d[6] = a6; d[7] = a7; d[8] = a8;
             }
-            func_02016dfc(n + 0x74, (u8 *)data_0214a420 + 0x5c);
+            MI_Copy64B(n + 0x74, (u8 *)data_0214a420 + 0x5c);
         }
         if (!r) {
             if (FIELD(n, 0x4, s32) == 9) {

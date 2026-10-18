@@ -112,8 +112,8 @@ extern "C" {
 
 extern const Ov011Vec data_ov011_02207450;
 extern const Ov011Vec data_ov011_0220745c;
-s32 func_02013068(const Ov011Vec *a, const Ov011Vec *b);
-s32 func_02012ab8(s32 a, s32 b);
+s32 VEC_Distance(const Ov011Vec *a, const Ov011Vec *b);
+s32 FX_Div(s32 a, s32 b);
 
 static inline void Ov011Tw_InitA(Ov011Tw *t, const Ov011Vec *from, const Ov011Vec *to) {
     s32 x;
@@ -134,7 +134,7 @@ static inline void Ov011Tw_InitA(Ov011Tw *t, const Ov011Vec *from, const Ov011Ve
     t->v20.x = x;
     t->v20.y = y;
     t->v20.z = z;
-    t->unk_02 = func_02012ab8(0x1000, func_02013068(to, from));
+    t->unk_02 = FX_Div(0x1000, VEC_Distance(to, from));
 }
 
 static inline void Ov011Tw_InitB(Ov011Tw *t, s32 from, s32 to, u16 speed, s32 mul) {
@@ -146,7 +146,7 @@ static inline void Ov011Tw_InitB(Ov011Tw *t, s32 from, s32 to, u16 speed, s32 mu
     t->v14.x = to;
     t->v14.y = to;
     t->v14.z = to;
-    t->unk_04 = Ov011_FxMul(func_02013068(&t->v14, &t->v08), mul);
+    t->unk_04 = Ov011_FxMul(VEC_Distance(&t->v14, &t->v08), mul);
 }
 
 void func_ov011_02200c30(Ov011Model2 *self) {
@@ -502,7 +502,7 @@ void func_02011340(void *m);
 void func_ov000_02193e5c(void *p, s32 a);
 void func_ov000_0218f110(void *p);
 void func_020117a4(const Ov011Vec *v, const void *m, Ov011Vec *out);
-void func_02012be8(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out);
+void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out);
 Ov011V *func_02065f88(s32 id, Ov011Vec *v);
 
 BOOL func_ov011_02201578(Ov011Fx *self) {
@@ -608,7 +608,7 @@ void func_ov011_02201758(Ov011Fx *self) {
             self->state = 1;
             OV011_BLKCPY(&a, &data_ov011_02207420);
             func_020117a4(&self->v0c, self->mtx, &b);
-            func_02012be8(&b, &self->v18, &b);
+            VEC_Add(&b, &self->v18, &b);
             func_02065f88(0x648, &b)->v10(&a);
             break;
         case 1:
@@ -649,7 +649,7 @@ extern "C" {
 extern u8 data_ov011_02207468[];
 void func_ov000_021903b4(void *p);
 void func_02011488(void *m, s32 s, s32 c);
-void func_02016dbc(const void *src, void *dst);
+void MI_Copy36B(const void *src, void *dst);
 
 void func_ov011_0220192c(Ov011Fx *self) {
     Ov011Vec p;
@@ -668,7 +668,7 @@ void func_ov011_0220192c(Ov011Fx *self) {
         return;
     }
     func_020117a4(&self->v0c, self->mtx, &p);
-    func_02012be8(&p, &self->v18, &p);
+    VEC_Add(&p, &self->v18, &p);
     a8 = FLD(s32, self->model, 0xa8);
     ac = FLD(s32, self->model, 0xac);
     b0 = FLD(s32, self->model, 0xb0);
@@ -753,7 +753,7 @@ void func_ov011_02201bac(Ov011Fx *self, u16 ang) {
     if (!self->b0) {
         return;
     }
-    func_02016dbc(m, self->mtx);
+    MI_Copy36B(m, self->mtx);
 }
 
 }

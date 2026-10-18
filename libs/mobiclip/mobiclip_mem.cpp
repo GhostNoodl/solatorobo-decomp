@@ -17,7 +17,7 @@ typedef struct MoCodeMem {
 
 extern MoCodeMem data_02097cbc;
 
-extern void func_02016d68(const void *src, void *dst, u32 size);
+extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 extern void *func_02043e1c(u32 size);
 extern void func_02043e2c(void *ptr);
 
@@ -60,7 +60,7 @@ void *func_0203465c(void) {
     if (data_02097cbc.videoCode == NULL) {
         if (data_02097cbc.largeSize >= 0x659c) {
             data_02097cbc.videoCode = data_02097cbc.largeMem;
-            func_02016d68(MO_VIDEO_CODE, data_02097cbc.largeMem, 0x659c);
+            MIi_CpuCopyFast(MO_VIDEO_CODE, data_02097cbc.largeMem, 0x659c);
             data_02097cbc.largeMem += 0x659c;
             data_02097cbc.largeSize -= 0x659c;
         } else {
@@ -74,7 +74,7 @@ void *func_020346d4(void) {
     if (data_02097cbc.unk_04 == NULL) {
         if (data_02097cbc.smallSize >= 0x2100) {
             data_02097cbc.unk_04 = data_02097cbc.smallMem;
-            func_02016d68(MO_CODE_04, data_02097cbc.smallMem, 0x2100);
+            MIi_CpuCopyFast(MO_CODE_04, data_02097cbc.smallMem, 0x2100);
             data_02097cbc.smallMem += 0x2100;
             data_02097cbc.smallSize -= 0x2100;
         } else {
@@ -88,7 +88,7 @@ void *func_02034740(void) {
     if (data_02097cbc.unk_00 == NULL) {
         if (data_02097cbc.smallSize >= 0x300) {
             data_02097cbc.unk_00 = data_02097cbc.smallMem;
-            func_02016d68(MO_CODE_00, data_02097cbc.smallMem, 0x300);
+            MIi_CpuCopyFast(MO_CODE_00, data_02097cbc.smallMem, 0x300);
             data_02097cbc.smallMem += 0x300;
             data_02097cbc.smallSize -= 0x300;
         } else {
@@ -102,7 +102,7 @@ void *func_020347ac(void) {
     if (data_02097cbc.unk_1c == NULL) {
         if (data_02097cbc.smallSize >= 0x180) {
             data_02097cbc.unk_1c = data_02097cbc.smallMem;
-            func_02016d68(MO_CODE_1C, data_02097cbc.smallMem, 0x180);
+            MIi_CpuCopyFast(MO_CODE_1C, data_02097cbc.smallMem, 0x180);
             data_02097cbc.smallMem += 0x180;
             data_02097cbc.smallSize -= 0x180;
         } else {

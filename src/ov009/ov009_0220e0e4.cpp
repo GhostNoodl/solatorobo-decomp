@@ -12,7 +12,7 @@ extern void func_020114a4(Ov009Mtx33 *m, s32 s, s32 c);
 extern void func_0201146c(Ov009Mtx33 *m, s32 s, s32 c);
 extern void func_02011488(Ov009Mtx33 *m, s32 s, s32 c);
 extern void func_02011610(const Ov009Mtx33 *a, const Ov009Mtx33 *b, Ov009Mtx33 *out);
-extern void func_02016dbc(const Ov009Mtx33 *src, void *dst);
+extern void MI_Copy36B(const Ov009Mtx33 *src, void *dst);
 extern void func_ov000_0218cea4(Ov009Actor *self);
 
 void func_ov009_0220e0e4(Ov009Actor *self) {
@@ -29,7 +29,7 @@ void func_ov009_0220e0e4(Ov009Actor *self) {
     func_02011610(&m, &t, &m);
     func_02011488(&t, OV009_SIN(self->rot[1]), OV009_COS(self->rot[1]));
     func_02011610(&m, &t, &m);
-    func_02016dbc(&m, (u8 *)self->unk_38 + 0x84);
+    MI_Copy36B(&m, (u8 *)self->unk_38 + 0x84);
     self->unk_38->unk_78 = self->pos;
     func_ov000_0218cea4(self);
 }

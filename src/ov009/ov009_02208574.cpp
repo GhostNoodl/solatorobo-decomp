@@ -8,7 +8,7 @@ extern char data_ov009_022172af[];
 extern Ov009Path data_ov009_02215fbc[];
 extern void func_ov000_021911c8(Ov009Sub38 *m, s32 a);
 extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
-extern u16 func_0201319c(s32 x, s32 z);
+extern u16 FX_Atan2(s32 x, s32 z);
 extern void func_ov000_0218db58(Ov009Actor *self, u16 ang, u16 b, s32 c, s32 d);
 extern void func_ov000_0218dbe0(Ov009Actor *self, s32 turn);
 extern void func_0203f2b8(void *p);
@@ -68,7 +68,7 @@ void func_ov009_0220862c(Ov009Multi *self) {
         if (a == NULL || a == self) {
             ang = self->rot[1];
         } else {
-            ang = func_0201319c(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
+            ang = FX_Atan2(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
         }
         func_ov000_0218db58(self, ang, self->unk_492, 0x3800, self->unk_b0->unk_02 << 1);
         if (FLD(s16, self->unk_38, 0xc4) == 1) {

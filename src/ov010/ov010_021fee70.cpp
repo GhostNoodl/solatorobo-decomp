@@ -31,7 +31,7 @@ extern void *func_ov000_0218e4cc(void *a, s32 b);
 extern void *func_ov000_0218e6d0(void *a, u16 b, s32 c);
 extern u8 *func_ov000_0219bf90(void);
 extern u16 func_ov003_021d9c38(Ov010Vec *v);
-extern s32 func_02013068(const Ov010Vec *a, const Ov010Vec *b);
+extern s32 VEC_Distance(const Ov010Vec *a, const Ov010Vec *b);
 extern void func_ov000_0218a358(void *a, void *b, Ov010Rot *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 
 static inline void Ov010_FreeV(void *self, u32 off) {

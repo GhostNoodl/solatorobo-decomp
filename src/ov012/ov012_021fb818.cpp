@@ -97,7 +97,7 @@ void func_ov012_021fba44(Ov012Actor *self) {
     d.x = FLD(Ov012Vec, self, 0xf4).x - self->pos.x;
     d.y = FLD(Ov012Vec, self, 0xf4).y - self->pos.y;
     d.z = FLD(Ov012Vec, self, 0xf4).z - self->pos.z;
-    func_02012fb8(0x52, &d, &self->pos, &self->pos);
+    VEC_MultAdd(0x52, &d, &self->pos, &self->pos);
 }
 }
 

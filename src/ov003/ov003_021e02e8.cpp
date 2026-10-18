@@ -90,7 +90,7 @@ typedef struct {
 extern void *data_ov000_021ccd68;
 extern Ov003Spot *func_ov000_0218e6d0(void *mgr, s32 a, s32 b);
 extern void func_0202a4c8(void *p, s32 a);
-extern void func_02016dd8(void *a, void *b);
+extern void MI_Copy48B(void *a, void *b);
 
 void func_ov003_021e02e8(Ov003Obj *self) {
     u8 buf[0x30];
@@ -114,7 +114,7 @@ void func_ov003_021e02e8(Ov003Obj *self) {
         return;
     }
     func_0202a4c8(buf, 0);
-    func_02016dd8(buf, p->unk_d0);
+    MI_Copy48B(buf, p->unk_d0);
 }
 
 void func_ov003_021e0370(Ov003Obj *self) {
@@ -231,7 +231,7 @@ void func_ov003_021e0448(Ov003Lamp *self) {
         self->work->timer++;
         break;
     }
-    func_02016dd8(self->unk_d0, &m);
+    MI_Copy48B(self->unk_d0, &m);
     m.m[10] -= 0x800;
     func_0203f9dc(self->unk_58, &m);
     if (p == NULL) {
@@ -253,7 +253,7 @@ void func_ov003_021e0448(Ov003Lamp *self) {
     msg.rz = self->unk_80;
     msg.unk_14 = 0;
     func_ov000_0218d398(p, self->unk_0c, 7, 1, sizeof(msg), &msg);
-    func_02016dd8(self->unk_d0, &m2);
+    MI_Copy48B(self->unk_d0, &m2);
     func_ov000_0218d398(p, self->unk_0c, 8, 1, sizeof(m2), &m2);
 }
 

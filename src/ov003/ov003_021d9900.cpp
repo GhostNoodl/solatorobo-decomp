@@ -40,9 +40,9 @@ s32 func_ov003_021d9a80(const Ov003Vec *a, const Ov003Vec *b) {
 }
 
 void func_ov003_021d9aec(Ov003Vec *out, const Ov003Vec *in, s32 max) {
-    s32 len = func_02012d18(in);
+    s32 len = VEC_Mag(in);
     if (len != 0 && len > max) {
-        s32 s = func_02012ab8(max, len);
+        s32 s = FX_Div(max, len);
         out->x = Ov003_FxMul(in->x, s);
         out->y = Ov003_FxMul(in->y, s);
         out->z = Ov003_FxMul(in->z, s);
@@ -52,14 +52,14 @@ void func_ov003_021d9aec(Ov003Vec *out, const Ov003Vec *in, s32 max) {
 }
 
 void func_ov003_021d9b8c(Ov003Vec *out, const Ov003Vec *in, s32 max, s32 sub) {
-    s32 len = func_02012d18(in);
+    s32 len = VEC_Mag(in);
     if (len != 0 && len > max) {
         s32 t = len - sub;
         s32 s;
         if (t < max) {
             t = max;
         }
-        s = func_02012ab8(t, len);
+        s = FX_Div(t, len);
         out->x = Ov003_FxMul(in->x, s);
         out->y = Ov003_FxMul(in->y, s);
         out->z = Ov003_FxMul(in->z, s);
@@ -69,11 +69,11 @@ void func_ov003_021d9b8c(Ov003Vec *out, const Ov003Vec *in, s32 max, s32 sub) {
 }
 
 u16 func_ov003_021d9c38(const Ov003Vec *v) {
-    return func_0201319c(v->x, v->z);
+    return FX_Atan2(v->x, v->z);
 }
 
 u16 func_ov003_021d9c50(const Ov003Vec *a, const Ov003Vec *b) {
-    return func_0201319c(a->x - b->x, a->z - b->z);
+    return FX_Atan2(a->x - b->x, a->z - b->z);
 }
 
 u16 func_ov003_021d9c74(const Ov003Vec *v) {
@@ -94,7 +94,7 @@ void func_ov003_021d9d28(Ov003Vec *out, const Ov003Vec *in, s32 angle, const Ov0
     d.z = in->z - center->z;
     func_02011488(&m, OV003_SIN(angle), OV003_COS(angle));
     func_020117a4(&d, &m, out);
-    func_02012be8(out, center, out);
+    VEC_Add(out, center, out);
 }
 
 }

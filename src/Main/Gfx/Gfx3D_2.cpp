@@ -85,7 +85,7 @@ void func_020435e8(GfxPltt *pltt, u16 *buf, u32 size) {
             v = (FX_MulC(b, 0x1d3) + (FX_MulC(r, 0x4c9) + FX_MulC(g, 0x964))) >> 12;
             buf[i] = v | (v << 5) | (v << 10);
         }
-        func_02019294(buf, size);
+        DC_FlushRange(buf, size);
         return;
     case 1:
         func_020436f8(pltt, buf, size);
@@ -104,7 +104,7 @@ void func_020436f8(GfxPltt *pltt, u16 *buf, u32 size) {
         y = FX_MulC(b, 0x1d3) + (FX_MulC(r, 0x4c9) + FX_MulC(g, 0x964));
         buf[i] = (FX_MulC(y, 0xf0e) >> 12) | ((FX_MulC(y, 0xc8b) >> 12) << 5) | ((FX_MulC(y, 0x964 - 0x49) >> 12) << 10);
     }
-    func_02019294(buf, size);
+    DC_FlushRange(buf, size);
 }
 
 
@@ -203,12 +203,12 @@ void func_02043904(Gfx3DState *st) {
     func_02013e88(st->fogTable);
     st->shading = 0;
     G3X_SetShading(0);
-    func_02016d68(data_02082958, st->toonTable, sizeof(st->toonTable));
+    MIi_CpuCopyFast(data_02082958, st->toonTable, sizeof(st->toonTable));
     func_02013e9c(data_02082958);
     st->edgeMarking = FALSE;
     st->unk_000_5 = FALSE;
     REG_DISP3DCNT &= 0xcfdf;
-    func_02016d68(data_02082900, st->edgeTable, sizeof(st->edgeTable));
+    MIi_CpuCopyFast(data_02082900, st->edgeTable, sizeof(st->edgeTable));
     func_02013e70(data_02082900);
     st->clearColor = 0;
     st->clearPolyId = 0x3f;

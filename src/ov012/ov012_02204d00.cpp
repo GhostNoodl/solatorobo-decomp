@@ -175,7 +175,7 @@ void func_ov012_02205254(Ov012Actor *self) {
     v.y = 0x2ccd;
     v.z = 0x4000;
     func_01ffc9fc(&v, &v, self->rot[1]);
-    func_02012be8(&self->pos, &v, &v);
+    VEC_Add(&self->pos, &v, &v);
     o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, &v, self->rot, 0xffff);
     if (o == NULL) {
         return;
@@ -210,7 +210,7 @@ void func_ov012_022053a4(Ov012Actor *self) {
     v.z = 0x4000;
     v.x = 0;
     func_01ffc9fc(&v, &v, self->rot[1]);
-    func_02012be8(&self->pos, &v, &v);
+    VEC_Add(&self->pos, &v, &v);
     o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, &v, self->rot, 0xffff);
     if (o == NULL) {
         return;

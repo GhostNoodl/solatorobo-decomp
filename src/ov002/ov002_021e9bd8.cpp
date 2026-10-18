@@ -13,7 +13,7 @@ static inline void func_ov002_021e4cd8_inline2(void *self) {
     FIELD(self, 0x1c, s32) = 0;
     FIELD(self, 0x20, s32) = -0x29;
     FIELD(self, 0x24, s32) = 0;
-    func_02016cd8(0, (u8 *)self + 0x28, 0x20);
+    MIi_CpuClear32(0, (u8 *)self + 0x28, 0x20);
     FIELD(self, 0x48, s32) = 0;
     ctx = (u8 *)data_ov002_021f0f98[1];
     if (FIELD(ctx, 0xe0, void *) == NULL) {

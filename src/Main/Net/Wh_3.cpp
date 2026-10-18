@@ -49,7 +49,7 @@ BOOL func_020464e0(WhMgr *wh, int mode, const void *bssDesc) {
     case 2:
     case 4:
         func_02016fa0(bssDesc, wh->bssDesc, sizeof(wh->bssDesc));
-        func_02019294(wh->bssDesc, sizeof(wh->bssDesc));
+        DC_FlushRange(wh->bssDesc, sizeof(wh->bssDesc));
         func_020192b8();
         return WH_StateInStartChild(wh);
     }

@@ -65,7 +65,7 @@ void func_ov002_021d9070(void *self) {
         return;
     }
     func_0202711c((u8 *)self + 0x4);
-    func_02016dbc((u8 *)self + 0x18, data_020928b4);
+    MI_Copy36B((u8 *)self + 0x18, data_020928b4);
     data_020927f8.fc &= ~0xa4;
     func_0202714c((u8 *)self + 0x3c);
     func_020270a4();
@@ -117,7 +117,7 @@ void func_ov002_021e0420(void);
 void func_ov002_021d8d00(void);
 
 static inline void ov002_strSet(char *dst, void **src, u32 n) {
-    func_02016cd8(0, dst, n);
+    MIi_CpuClear32(0, dst, n);
     func_0201e5a0(dst, *src, n);
 }
 

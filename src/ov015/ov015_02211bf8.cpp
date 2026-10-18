@@ -3,7 +3,7 @@
 extern "C" {
 
 extern u8 *data_ov015_0221336c;
-void func_02016dbc(const void *src, void *dst);
+void MI_Copy36B(const void *src, void *dst);
 void func_ov000_021903b4(void *a);
 extern void *data_02097e4c;
 void func_02049a48(void *a, int b, int c, int d, int e);
@@ -53,7 +53,7 @@ void func_ov015_02211ca0(u8 *self) {
     *(Ov015VecC *)(self + 0x240) = *(Ov015VecC *)(self + 0x234);
     data_ov015_0221336c = self;
     *(Ov015VecC *)(self + 0x1c4) = *(Ov015VecC *)(self + 0x27c);
-    func_02016dbc(self + 0x24c, self + 0x1d0);
+    MI_Copy36B(self + 0x24c, self + 0x1d0);
     FLD(s32, self, 0x1f4) = 0x1000;
     FLD(s32, self, 0x1f8) = 0x1000;
     FLD(s32, self, 0x1fc) = 0x1000;

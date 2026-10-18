@@ -1,7 +1,7 @@
 #include "nnsys/snd/sndarc.h"
 
-extern void func_02019278(void *buffer, u32 size);
-extern void func_0201ca68(void *bank, int index, void *waveArc);
+extern void DC_StoreRange(void *buffer, u32 size);
+extern void SND_AssignWaveArc(void *bank, int index, void *waveArc);
 
 BOOL NNS_SndArcLoadGroup(int groupNo, NNSSndHeap *heap) {
     return func_020309a4(groupNo, heap) == SND_ARC_LOAD_SUCCESS;
@@ -159,7 +159,7 @@ int func_02030b84(int bankNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, v
             }
         }
         if (bank != NULL && waveArc != NULL) {
-            func_0201ca68(bank, i, waveArc);
+            SND_AssignWaveArc(bank, i, waveArc);
         }
     }
     if (out != NULL) {
@@ -208,7 +208,7 @@ void *func_02030d48(u32 fileId, NNSSndHeapDisposeCallback callback, u32 arg0, u3
     if (func_020303b0(fileId, buffer, size, 0) != size) {
         return NULL;
     }
-    func_02019278(buffer, size);
+    DC_StoreRange(buffer, size);
     return buffer;
 }
 

@@ -448,8 +448,8 @@ void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 s32 func_02040528(s32 max);
 s32 func_02040498(s32 max);
-void func_02012fb8(s32 scale, const Ov012Vec *dir, const Ov012Vec *base, Ov012Vec *out);
-s32 func_02013068(const Ov012Vec *a, const Ov012Vec *b);
+void VEC_MultAdd(s32 scale, const Ov012Vec *dir, const Ov012Vec *base, Ov012Vec *out);
+s32 VEC_Distance(const Ov012Vec *a, const Ov012Vec *b);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 s32 func_ov000_0219a2f4(Ov012Vec *v, s32 y, s32 b);
 BOOL func_01ffc198(const Ov012Vec *pos, const Ov012Vec *target, s32 dist);
@@ -525,7 +525,7 @@ extern BOOL func_ov000_0218f110(void *p);
 extern BOOL func_ov000_021903b4(void *p);
 extern s32 func_ov003_021d1c00(Ov012Actor *self, Ov012Msg *msg);
 extern Ov012Actor *func_ov000_0218bd5c(void *mgr, u16 id);
-extern void func_02012be8(void *a, const void *b, void *c);
+extern void VEC_Add(void *a, const void *b, void *c);
 extern BOOL func_020621c4(void);
 extern void func_ov003_021d6bac(Ov012Actor *self, const void *p);
 extern void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
@@ -717,9 +717,9 @@ extern const u8 *const data_ov012_0220a57c[];
 
 
 extern "C" {
-extern void func_02012d78(Ov012Vec *a, Ov012Vec *b);
-extern u16 func_02013330(s32 a);
-extern u16 func_0201319c(s32 a, s32 b);
+extern void VEC_Normalize(Ov012Vec *a, Ov012Vec *b);
+extern u16 FX_AsinIdx(s32 a);
+extern u16 FX_Atan2(s32 a, s32 b);
 extern void func_ov003_021da9ac(void *p, s32 a, void *e);
 extern void *func_ov003_021daa3c(void *p, s32 a);
 }

@@ -16,7 +16,7 @@ void func_ov012_02209f80(Ov012Actor *self) {
         break;
     case 1:
         s->timer++;
-        if (s->timer > 0x2d || func_02013068(&self->pos, &self->unk_b8) < 0x1800) {
+        if (s->timer > 0x2d || VEC_Distance(&self->pos, &self->unk_b8) < 0x1800) {
             self->unk_a4 = 0xc00;
             self->unk_40->timer = 0;
             self->unk_40->state++;

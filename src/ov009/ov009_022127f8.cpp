@@ -17,7 +17,7 @@ void func_ov009_022127f8(Ov009Actor *self) {
     case 1:
         st = self->unk_40;
         st->timer++;
-        if (st->timer > 0x3c || func_02013068(&self->pos, &FLD(Ov009Vec, self, 0x128)) < 0x19a) {
+        if (st->timer > 0x3c || VEC_Distance(&self->pos, &FLD(Ov009Vec, self, 0x128)) < 0x19a) {
             if (self->unk_1a == 1) {
                 func_ov000_02198360(self->unk_40, 1, 0);
             } else {
@@ -32,7 +32,7 @@ void func_ov009_022127f8(Ov009Actor *self) {
     case 2:
         st = self->unk_40;
         st->timer++;
-        if (st->timer > 0x78 || func_02013068(&self->pos, &FLD(Ov009Vec, self, 0x128)) < 0x52) {
+        if (st->timer > 0x78 || VEC_Distance(&self->pos, &FLD(Ov009Vec, self, 0x128)) < 0x52) {
             func_ov000_02198360(self->unk_40, 1, 0);
         }
         break;
@@ -40,7 +40,7 @@ void func_ov009_022127f8(Ov009Actor *self) {
     d.x = FLD(Ov009Vec, self, 0x128).x - self->pos.x;
     d.y = FLD(Ov009Vec, self, 0x128).y - self->pos.y;
     d.z = FLD(Ov009Vec, self, 0x128).z - self->pos.z;
-    func_02012fb8(0x7b, &d, &self->pos, &self->pos);
+    VEC_MultAdd(0x7b, &d, &self->pos, &self->pos);
 }
 
 }

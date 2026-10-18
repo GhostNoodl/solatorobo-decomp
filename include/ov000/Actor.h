@@ -276,12 +276,12 @@ extern "C" {
 void func_02016fa0(const void *src, void *dst, u32 size);
 void func_ov000_0218de6c(ActorGroup *group, Actor *actor);
 void func_ov000_0218d398(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-u16 func_0201319c(s32 x, s32 z);
+u16 FX_Atan2(s32 x, s32 z);
 void func_ov000_02198360(void *a, s32 b, s32 c);
 void func_ov000_02190e98(void *a, u32 b, s32 c, s32 d);
 void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-void func_02016dbc(const void *src, void *dst);
+void MI_Copy36B(const void *src, void *dst);
 extern u8 data_ov000_021cc404[];
 BOOL func_01ffc4ec(VecFx32 *v, s32 speed, s32 b);
 s32 func_0203d434(void *rng, s32 range);

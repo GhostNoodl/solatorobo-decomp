@@ -28,7 +28,7 @@ void func_ov002_021e2754(void *self, u16 id) {
         if (p != NULL) {
             *(VFunc **)p = data_ov002_021f000c;
             FIELD(p, 0x4, s32) = 0;
-            func_02016cd8(0, p + 0x8, 0x10);
+            MIi_CpuClear32(0, p + 0x8, 0x10);
             FIELD(p, 0x18, s32) = 0;
             FIELD(p, 0x1c, s32) = 0;
             FIELD(p, 0x20, s32) = 0;

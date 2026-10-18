@@ -19,7 +19,7 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void func_0203e58c(void *ptr);
-extern void func_02016d1c(u32 value, void *dst, u32 size);
+extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
@@ -390,7 +390,7 @@ BOOL func_0204e218(TextWin *win);
 extern void *func_0203dd9c(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
-extern s32 func_02012ab8(s32 a, s32 b);
+extern s32 FX_Div(s32 a, s32 b);
 extern const s16 FX_SinCosTable_[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
@@ -492,7 +492,7 @@ void func_0204f478(s32 num, ...);
 void func_0204f49c(TextWinEx *win);
 
 static inline void TextWin_ClearVram(VramBlock *b) {
-    func_02016d1c(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
+    MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
 }
 
 static inline void TextWinEx_FreeBlocks(TextWinEx *win) {

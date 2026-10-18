@@ -83,9 +83,9 @@ extern HitInfo data_02fe0f14;
 extern int data_02fe0efc;
 extern HitInfo data_02fe0f50[];
 
-extern void func_02012be8(const HitVec *a, const HitVec *b, HitVec *out);
-extern void func_02012d78(const HitVec *src, HitVec *dst);
-extern int func_02012ad8(int x);
+extern void VEC_Add(const HitVec *a, const HitVec *b, HitVec *out);
+extern void VEC_Normalize(const HitVec *src, HitVec *dst);
+extern int FX_Sqrt(int x);
 int func_0203fc78(HitVec *out, HitVec *pos, HitVec *prev, int radius, int a, int b);
 int func_0203fde8(HitVec *out, HitVec *pos, int radius, int a, int b);
 
@@ -158,9 +158,9 @@ int func_0203f3d0(HitSphere *self) {
                 if (lenSq > FX_Mul(r, r)) {
                     continue;
                 }
-                func_02012d78(&d, &d);
+                VEC_Normalize(&d, &d);
                 d.y = 0;
-                r -= func_02012ad8(lenSq);
+                r -= FX_Sqrt(lenSq);
             }
             d.x = FX_Mul(d.x, r + 0x10);
             d.y = FX_Mul(d.y, r + 0x10);
@@ -187,14 +187,14 @@ int func_0203f3d0(HitSphere *self) {
             }
             result = 1;
         }
-        func_02012be8(&min, &max, &d);
-        func_02012be8(&self->push, &d, &self->push);
+        VEC_Add(&min, &max, &d);
+        VEC_Add(&self->push, &d, &self->push);
     }
     if (self->unk_30 != 0) {
         flag = self->unk_25;
         d = self->pos;
         if (data_02fe0f04 != 0) {
-            func_02012be8(&d, &self->push, &d);
+            VEC_Add(&d, &self->push, &d);
             flag = 1;
         }
         if (flag) {
@@ -203,8 +203,8 @@ int func_0203f3d0(HitSphere *self) {
             v.y = 0;
             v.z = 0;
             if (func_0203fc78(&v, &d, &self->unk_0c, self->radius, self->unk_30, self->unk_34) != -0x1000) {
-                func_02012be8(&self->push, &v, &self->push);
-                func_02012be8(&d, &v, &d);
+                VEC_Add(&self->push, &v, &self->push);
+                VEC_Add(&d, &v, &d);
                 info = data_02fe0f14;
                 result |= 2;
                 flag = 1;
@@ -281,8 +281,8 @@ extern HitMesh *data_02fe0f08;
 extern int data_02fe0f0c;
 
 extern void func_02011820(HitMtx *mtx);
-extern int func_02012ac8(int x);
-extern void func_02016dd8(const HitMtx *src, HitMtx *dst);
+extern int FX_Inv(int x);
+extern void MI_Copy48B(const HitMtx *src, HitMtx *dst);
 extern void func_020119cc(const HitMtx *src, HitMtx *dst);
 void func_0203fa0c(HitMesh *mesh);
 void func_0203fb08(HitMesh *mesh);
@@ -351,12 +351,12 @@ void func_0203f990(HitMesh *mesh, HitMeshRes *res) {
 
 void func_0203f9b8(HitMesh *mesh, int scale) {
     mesh->scale = scale;
-    mesh->invScale = func_02012ac8(scale);
+    mesh->invScale = FX_Inv(scale);
     func_0203fa0c(mesh);
 }
 
 void func_0203f9dc(HitMesh *mesh, const HitMtx *mtx) {
-    func_02016dd8(mtx, &mesh->mtx);
+    MI_Copy48B(mtx, &mesh->mtx);
     func_020119cc(mtx, &mesh->invMtx);
     func_0203fa0c(mesh);
 }
@@ -398,7 +398,7 @@ void func_0203fa0c(HitMesh *mesh) {
     mesh->min.x = mesh->mtx.m[3][0] - v.x;
     mesh->min.y = mesh->mtx.m[3][1] - v.y;
     mesh->min.z = mesh->mtx.m[3][2] - v.z;
-    func_02012be8((HitVec *)mesh->mtx.m[3], &v, &mesh->max);
+    VEC_Add((HitVec *)mesh->mtx.m[3], &v, &mesh->max);
 }
 
 void func_0203fb08(HitMesh *mesh) {
@@ -460,7 +460,7 @@ BOOL func_0203fc60(HitMesh *mesh) {
     return mesh->unk_84_1 ? TRUE : FALSE;
 }
 
-extern void func_02012fb8(int fx, const HitVec *a, const HitVec *b, HitVec *out);
+extern void VEC_MultAdd(int fx, const HitVec *a, const HitVec *b, HitVec *out);
 extern int func_01ffbd6c(HitVec *from, HitVec *to, int a, int b, int c, int d);
 extern int func_01ffbf40(HitVec *pos, int radius, int a, int b, int c, int d);
 
@@ -482,17 +482,17 @@ int func_0203fc78(HitVec *out, HitVec *pos, HitVec *prev, int radius, int a, int
         return -0x1000;
     }
     HitVec_Sub(pos, prev, &dir);
-    func_02012d78(&dir, &dir);
-    func_02012fb8(radius, &dir, pos, &p);
+    VEC_Normalize(&dir, &dir);
+    VEC_MultAdd(radius, &dir, pos, &p);
     r = func_01ffbd6c(prev, &p, a, b, 0, -1);
     if (r != -0x1000) {
         if (r > radius) {
-            func_02012fb8(-(radius + 0x10), &dir, &data_02fe0f14.a, &p);
+            VEC_MultAdd(-(radius + 0x10), &dir, &data_02fe0f14.a, &p);
             HitVec_Sub(&p, pos, &p);
         } else {
             HitVec_Sub(prev, pos, &p);
         }
-        func_02012be8(out, &p, out);
+        VEC_Add(out, &p, out);
     }
     return r;
 }
@@ -547,8 +547,8 @@ int func_0203fde8(HitVec *out, HitVec *pos, int radius, int a, int b) {
                 max.z = d.z;
             }
         }
-        func_02012be8(&min, &max, &d);
-        func_02012be8(out, &d, out);
+        VEC_Add(&min, &max, &d);
+        VEC_Add(out, &d, out);
     }
     return r;
 }
@@ -577,16 +577,16 @@ typedef struct HitBounds {
     HitVec16 max;
 } HitBounds;
 
-extern int func_02012d18(const HitVec *v);
-extern int func_02012c54(const HitVec16 *a, const HitVec16 *b);
+extern int VEC_Mag(const HitVec *v);
+extern int VEC_Fx16DotProduct(const HitVec16 *a, const HitVec16 *b);
 
 static inline void HitTri_SetEdge(HitTri *tri, int n, const HitVec16 *a, const HitVec16 *b, HitVec *e) {
     HitVec dir;
     e->x = b->x - a->x;
     e->y = b->y - a->y;
     e->z = b->z - a->z;
-    tri->len[n] = func_02012d18(e);
-    func_02012d78(e, &dir);
+    tri->len[n] = VEC_Mag(e);
+    VEC_Normalize(e, &dir);
     tri->edge[n].x = dir.x;
     tri->edge[n].y = dir.y;
     tri->edge[n].z = dir.z;
@@ -603,7 +603,7 @@ static inline void HitTri_SetNormal(HitTri *tri, HitVec *e) {
     e->x = (int)(((s64)ay * bz - (s64)az * by + 0x800) >> 12);
     e->y = (int)(((s64)az * bx - (s64)ax * bz + 0x800) >> 12);
     e->z = (int)(((s64)ax * by - (s64)ay * bx + 0x800) >> 12);
-    func_02012d78(e, &n);
+    VEC_Normalize(e, &n);
     tri->normal.x = n.x;
     tri->normal.y = n.y;
     tri->normal.z = n.z;
@@ -678,7 +678,7 @@ void func_0203ff94(HitBounds *bounds, HitTri *tri, int value, const HitVec16 *ve
         HitTri_SetEdge(tri, 1, &tri->v[1], &tri->v[2], &e);
         HitTri_SetEdge(tri, 2, &tri->v[2], &tri->v[0], &e);
         HitTri_SetNormal(tri, &e);
-        tri->d = -func_02012c54(&tri->normal, &tri->v[0]);
+        tri->d = -VEC_Fx16DotProduct(&tri->normal, &tri->v[0]);
     }
 }
 

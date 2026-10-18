@@ -22,7 +22,7 @@ BOOL func_ov002_021ede5c(void *self) {
             FIELD(self, 0x10, s32)++;
         }
         if (FIELD(FIELD(self, 0x20, u8 *), 0xe, u16) != 0) {
-            s32 t = func_02012ab8(FIELD(self, 0x14, s32), FIELD(FIELD(self, 0x20, u8 *), 0xe, u16) << 12);
+            s32 t = FX_Div(FIELD(self, 0x14, s32), FIELD(FIELD(self, 0x20, u8 *), 0xe, u16) << 12);
             s32 tot;
             s32 cur;
             if (t >= 0x1000) {

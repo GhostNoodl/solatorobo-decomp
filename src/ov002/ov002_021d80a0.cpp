@@ -14,7 +14,7 @@ void func_ov002_021d80a0(void *self) {
         func_0202a8f0(FIELD(self, 0x7c, void *), func_02043d48(data_02097d48 + 0x8b0));
     }
     func_0202711c((u8 *)self + 0x4);
-    func_02016dbc((u8 *)self + 0x18, data_020928b4);
+    MI_Copy36B((u8 *)self + 0x18, data_020928b4);
     data_020927f8.fc &= ~0xa4;
     func_0202714c((u8 *)self + 0x3c);
     func_020270a4();
@@ -67,7 +67,7 @@ void func_ov002_021d8148(void *self) {
     nc = FIELD(info, 0xc, void *);
     res = func_02035d5c(data_ov002_021efdf6);
     FIELD(self, 0x78, u32 *) = (u32 *)func_02034ec0(res, n8);
-    func_02016cd8(0, buf, sizeof(buf));
+    MIi_CpuClear32(0, buf, sizeof(buf));
     func_0201e5a0(buf, nc, sizeof(buf));
     FIELD(self, 0x7c, void *) = ov002_findEntry((u8 *)func_0202ac90((void *)*FIELD(self, 0x78, u32 *)), buf);
     name = FIELD(info, 0x8, char *);
@@ -82,7 +82,7 @@ void func_ov002_021d8148(void *self) {
     func_020267c0(FIELD(self, 0x80, void *), (void *)func_ov002_021e0420, 0, 4, 2);
     FIELD(FIELD(self, 0x80, void *), 0x2c, void *) = (u8 *)self + 0x9c;
     q = (u32 *)func_02034ff8(res, n8);
-    func_02016cd8(0, buf, sizeof(buf));
+    MIi_CpuClear32(0, buf, sizeof(buf));
     func_0201e5a0(buf, nc, sizeof(buf));
     if (q[0] != 0) {
         void *a = func_0202ad3c((void *)q[0], buf);

@@ -109,7 +109,7 @@ typedef struct {
 extern const s16 FX_SinCosTable_[];
 extern Ov003LtDef data_ov003_021f67c0[];
 extern void func_ov000_02194758(void *self);
-extern void func_02012be8(const Ov003LtVec *a, const Ov003LtVec *b, Ov003LtVec *out);
+extern void VEC_Add(const Ov003LtVec *a, const Ov003LtVec *b, Ov003LtVec *out);
 extern void func_02011820(Ov003LtMtx *m);
 extern void func_02011974(Ov003LtMtx *m, s32 s, s32 c);
 extern void func_02011994(Ov003LtMtx *m, s32 s, s32 c);
@@ -131,7 +131,7 @@ void func_ov003_021e219c(Ov003Lt *self) {
     self->prev.z = self->pos.z;
     def = &data_ov003_021f67c0[self->unk_1a];
     if (self->unk_18 != 0) {
-        func_02012be8(&self->pos, &def->ofs, &self->pos);
+        VEC_Add(&self->pos, &def->ofs, &self->pos);
     }
     obj = self->unk_58;
     if (obj != NULL) {

@@ -6,12 +6,12 @@ extern int data_0208af58;
 extern u8 data_02fe0000[];
 extern void func_02013428(void);
 extern void func_02013618(void);
-extern void func_0201332c(void);
+extern void FX_Init(void);
 extern void func_02019e14(void);
 extern void func_0201b348(void);
 extern void func_0203d770(void);
-extern void func_0201791c(int a, void (*func)(void));
-extern void func_02017b10(int a);
+extern void OS_SetIrqFunction(int a, void (*func)(void));
+extern void OS_EnableIrqMask(int a);
 extern void func_020135d0(int a);
 extern void func_0201ad28(void *dt);
 extern void func_020403e4(int seed, int b);
@@ -25,7 +25,7 @@ extern void func_02015794(void);
 extern void func_02015780(void);
 extern void func_020157bc(void);
 extern void func_020154ec(int a);
-extern void func_02016d1c(u32 value, void *dst, u32 size);
+extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void func_020158a4(void);
 void func_0203d824(void);
 
@@ -35,12 +35,12 @@ void func_0203d6b4(void) {
     func_02013428();
     func_02013618();
     *(volatile u32 *)0x4001000 &= ~0x10000;
-    func_0201332c();
+    FX_Init();
     func_02019e14();
     func_0201b348();
     func_0203d770();
-    func_0201791c(1, func_0203d824);
-    func_02017b10(1);
+    OS_SetIrqFunction(1, func_0203d824);
+    OS_EnableIrqMask(1);
     {
         u16 old = *(volatile u16 *)0x4000208;
         *(volatile u16 *)0x4000208 = 1;
@@ -61,12 +61,12 @@ void func_0203d770(void) {
     func_02015780();
     func_020157bc();
     func_020154ec(0x1ff);
-    func_02016d1c(0, (void *)0x6800000, 0xa4000);
+    MIi_CpuClearFast(0, (void *)0x6800000, 0xa4000);
     func_020158a4();
-    func_02016d1c(0xc0, (void *)0x7000000, 0x400);
-    func_02016d1c(0xc0, (void *)0x7000400, 0x400);
-    func_02016d1c(0, (void *)0x5000000, 0x400);
-    func_02016d1c(0, (void *)0x5000400, 0x400);
+    MIi_CpuClearFast(0xc0, (void *)0x7000000, 0x400);
+    MIi_CpuClearFast(0xc0, (void *)0x7000400, 0x400);
+    MIi_CpuClearFast(0, (void *)0x5000000, 0x400);
+    MIi_CpuClearFast(0, (void *)0x5000400, 0x400);
 }
 
 void func_0203d80c(void) {

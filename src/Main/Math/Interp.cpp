@@ -10,7 +10,7 @@ void func_0204918c(InterpVec *out, s32 t, const InterpVec *from, const InterpVec
     InterpVec d;
     s32 s = Interp_EaseSin(t);
     Interp_VecSub(to, from, &d);
-    func_02012fb8(s, &d, from, out);
+    VEC_MultAdd(s, &d, from, out);
 }
 
 s32 func_02049210(s32 t, s32 from, s32 to) {
@@ -21,8 +21,8 @@ BOOL func_02049244(InterpVec *out, s32 speed, const InterpVec *from, const Inter
     InterpVec d;
     BOOL done = FALSE;
     Interp_VecSub(to, from, &d);
-    if (func_02012d18(&d) > minDist) {
-        func_02012fb8(speed, &d, from, out);
+    if (VEC_Mag(&d) > minDist) {
+        VEC_MultAdd(speed, &d, from, out);
     } else {
         *out = *from;
         done = TRUE;

@@ -15,10 +15,10 @@ typedef struct {
     Ov003Vec unk_84;
 } Ov003Obj7e;
 
-extern void func_02012d78(Ov003Vec *src, Ov003Vec *dst);
+extern void VEC_Normalize(Ov003Vec *src, Ov003Vec *dst);
 extern void func_ov000_0219433c(void *self);
 extern void func_01ffc9fc(Ov003Vec *src, Ov003Vec *dst, u16 angle);
-extern void func_02012be8(Ov003Vec *a, Ov003Vec *b, Ov003Vec *dst);
+extern void VEC_Add(Ov003Vec *a, Ov003Vec *b, Ov003Vec *dst);
 extern void func_0203de1c(void *p);
 extern void func_ov000_0219429c(void *p);
 
@@ -45,7 +45,7 @@ void func_ov003_021dae58(Ov003Obj7e *self) {
     v.y = 0;
     v.z = 0x1000;
     func_01ffc9fc(&v, &v, self->unk_7e);
-    func_02012be8(&v, &self->unk_70, &v);
+    VEC_Add(&v, &self->unk_70, &v);
     self->unk_84.x = v.x;
     self->unk_84.y = v.y;
     self->unk_84.z = v.z;

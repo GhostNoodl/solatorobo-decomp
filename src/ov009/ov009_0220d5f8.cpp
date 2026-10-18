@@ -19,8 +19,8 @@ void func_ov009_0220d5f8(Ov009Actor *self) {
         d.x = FLD(Ov009Vec, self, 0xf0).x - self->pos.x;
         d.y = FLD(Ov009Vec, self, 0xf0).y - self->pos.y;
         d.z = FLD(Ov009Vec, self, 0xf0).z - self->pos.z;
-        func_02012fb8(0x35, &d, &self->pos, &self->pos);
-        if (func_02013068(&self->pos, &FLD(Ov009Vec, self, 0xf0)) >= 0x333) {
+        VEC_MultAdd(0x35, &d, &self->pos, &self->pos);
+        if (VEC_Distance(&self->pos, &FLD(Ov009Vec, self, 0xf0)) >= 0x333) {
             return;
         }
         func_ov000_02198360(self->unk_40, 1, 0);
@@ -37,7 +37,7 @@ void func_ov009_0220d5f8(Ov009Actor *self) {
 extern void *data_ov000_021ccd68;
 extern Ov009Actor *func_ov000_0218e4cc(void *mgr, u16 id);
 extern BOOL func_ov000_0218dfb4(Ov009Actor *a, u16 id);
-extern void func_02012d78(const Ov009Vec *in, Ov009Vec *out);
+extern void VEC_Normalize(const Ov009Vec *in, Ov009Vec *out);
 
 static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {
     return g->unk_d4 != 0;
@@ -45,7 +45,7 @@ static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {
 
 void func_ov009_0220d730(Ov009Actor *self) {
     Ov009Vec d;
-    if (func_02013068(&self->pos, &FLD(Ov009Vec, self, 0xfc)) < 0x19a) {
+    if (VEC_Distance(&self->pos, &FLD(Ov009Vec, self, 0xfc)) < 0x19a) {
         self->unk_9c = func_02040528(0x29) + 0x8f;
         FLD(Ov009Vec, self, 0xfc) = FLD(Ov009Vec, self, 0xf0);
         if (!Ov009_GameIdle() || Ov009Game_IsPaused(data_ov000_021ccd54) || self->unk_40->unk_13 == 0x15) {
@@ -64,8 +64,8 @@ void func_ov009_0220d730(Ov009Actor *self) {
     d.x = FLD(Ov009Vec, self, 0xfc).x - self->pos.x;
     d.y = FLD(Ov009Vec, self, 0xfc).y - self->pos.y;
     d.z = FLD(Ov009Vec, self, 0xfc).z - self->pos.z;
-    func_02012d78(&d, &d);
-    func_02012fb8(self->unk_9c, &d, &self->pos, &self->pos);
+    VEC_Normalize(&d, &d);
+    VEC_MultAdd(self->unk_9c, &d, &self->pos, &self->pos);
 }
 
 }

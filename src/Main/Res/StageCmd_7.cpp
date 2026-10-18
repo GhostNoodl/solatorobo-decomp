@@ -151,7 +151,7 @@ int func_0205eeb4(StageResSlot *slot) {
         if (slot->args[4] & 0x8000) {
             rot[1] = ((s16 *)(res->posEv->pos + (u16)(slot->args[4] & 0x7fff) * 6))[1];
         } else {
-            rot[1] = (s32)(((s64)func_02012ab8(slot->args[4] << 12, 0x168000) * 0x10000000 + 0x800) >> 12) >> 12;
+            rot[1] = (s32)(((s64)FX_Div(slot->args[4] << 12, 0x168000) * 0x10000000 + 0x800) >> 12) >> 12;
         }
     }
     func_ov000_0218b60c(data_02149efc.unk_04, color, &pos, rot);

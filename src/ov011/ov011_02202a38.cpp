@@ -40,11 +40,11 @@ extern u8 data_ov011_022079d0[];
 extern u8 data_ov011_022079b0[];
 extern u8 data_ov011_02207418[];
 extern u8 data_ov011_022074f8[];
-s32 func_02013068(const Ov011Vec *a, const Ov011Vec *b);
-s32 func_02012ab8(s32 a, s32 b);
-void func_02012fb8(s32 scale, const Ov011Vec *dir, const Ov011Vec *base, Ov011Vec *out);
-s32 func_02012d18(const Ov011Vec *v);
-void func_02012be8(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out);
+s32 VEC_Distance(const Ov011Vec *a, const Ov011Vec *b);
+s32 FX_Div(s32 a, s32 b);
+void VEC_MultAdd(s32 scale, const Ov011Vec *dir, const Ov011Vec *base, Ov011Vec *out);
+s32 VEC_Mag(const Ov011Vec *v);
+void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out);
 s32 func_0203db40(void *p);
 void func_ov000_02190a80(void *a, s32 b);
 void func_ov003_021d112c(void *p);
@@ -81,7 +81,7 @@ BOOL func_ov011_02202ac8(Ov011TwA *self, const Ov011Vec *to, const Ov011Vec *fro
     self->from = *from;
     self->to = *to;
     self->cur = *from;
-    self->speed = func_02012ab8(speed, func_02013068(to, from));
+    self->speed = FX_Div(speed, VEC_Distance(to, from));
     return TRUE;
 }
 
@@ -96,7 +96,7 @@ static inline void Ov011_Lerp(s32 t, const Ov011Vec *a, const Ov011Vec *b, Ov011
     d.x = b->x - a->x;
     d.y = b->y - a->y;
     d.z = b->z - a->z;
-    func_02012fb8(t, &d, a, out);
+    VEC_MultAdd(t, &d, a, out);
 }
 
 void func_ov011_02202b74(Ov011TwA *self) {
@@ -168,7 +168,7 @@ BOOL func_ov011_02202d04(Ov011TwB *self, const Ov011Vec *to, const Ov011Vec *fro
     self->cur = *from;
     self->to = *to;
     self->speed = speed;
-    self->dist = Ov011_FxMul(func_02013068(&self->to, &self->cur), 0x14);
+    self->dist = Ov011_FxMul(VEC_Distance(&self->to, &self->cur), 0x14);
     return TRUE;
 }
 
@@ -194,7 +194,7 @@ void func_ov011_02202de0(Ov011TwB *self) {
     d.x = self->to.x - self->cur.x;
     d.y = self->to.y - self->cur.y;
     d.z = self->to.z - self->cur.z;
-    len = func_02012d18(&d);
+    len = VEC_Mag(&d);
     if (len < 0) {
         len = -len;
     }
@@ -202,7 +202,7 @@ void func_ov011_02202de0(Ov011TwB *self) {
         self->cur = self->to;
         self->b1 = 1;
     } else {
-        func_02012fb8(self->speed, &d, &self->cur, &self->cur);
+        VEC_MultAdd(self->speed, &d, &self->cur, &self->cur);
     }
 }
 
@@ -272,7 +272,7 @@ void func_ov011_02202ff0(Ov011Mov *self) {
         return;
     }
     self->vel.y += self->accel;
-    func_02012be8(&self->pos, &self->vel, &self->pos);
+    VEC_Add(&self->pos, &self->vel, &self->pos);
 }
 
 Ov011Vec *func_ov011_02203028(Ov011Mov *self) {

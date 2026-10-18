@@ -83,17 +83,17 @@ void func_02032e58(void *arg) {
     StrmThread *thread = arg;
     StrmCommand *cmd;
     while (TRUE) {
-        func_02018860(&thread->queueHead);
+        OS_SleepThread(&thread->queueHead);
         while (TRUE) {
-            func_02018fcc(thread->mutex);
+            OS_LockMutex(thread->mutex);
             cmd = func_0203207c(&thread->cmdList);
             if (cmd == NULL) {
-                func_0201901c(thread->mutex);
+                OS_UnlockMutex(thread->mutex);
                 break;
             }
             func_0203244c(cmd);
             func_02032110(cmd);
-            func_0201901c(thread->mutex);
+            OS_UnlockMutex(thread->mutex);
         }
     }
 }

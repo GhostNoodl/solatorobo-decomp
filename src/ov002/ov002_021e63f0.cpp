@@ -8,7 +8,7 @@ extern void *data_02092a5c;
 
 extern u32 data_0208b078;
 
-void func_02016d1c(int v, void *dst, u32 size);
+void MIi_CpuClearFast(int v, void *dst, u32 size);
 
 typedef void (*Func0208b000)(void *a, void *b, int c);
 
@@ -34,7 +34,7 @@ void func_ov002_021e63f0(void *self) {
         return;
     }
     data_02092a5c = buf;
-    func_02016d1c(0, buf, 0x188);
+    MIi_CpuClearFast(0, buf, 0x188);
     FIELD(buf, 0xe8, u32) = data_0208b078;
     ((Func0208b000)data_0208b000)((u8 *)self + 0x90, FIELD(self, 0x64, void *), 0);
     fl = FIELD(self, 0x90, u32);

@@ -12,7 +12,7 @@ void func_ov002_021d7e54(void *self) {
     FIELD(self, 0x90, s32) = 0;
     FIELD(self, 0x94, s32) = 0;
     FIELD(self, 0x98, s32) = 0;
-    FIELD(self, 0x9c, s32) = func_02012ab8(0x1f000, 0x1f000);
+    FIELD(self, 0x9c, s32) = FX_Div(0x1f000, 0x1f000);
     FIELD(self, 0xa0, s32) = 0;
     FIELD(self, 0xa4, s32) = 0;
     FIELD(self, 0xa8, s32) = 5;

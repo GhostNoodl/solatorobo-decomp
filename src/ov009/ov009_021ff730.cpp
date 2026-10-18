@@ -45,7 +45,7 @@ void func_ov009_021ff770(Ov009Actor *self) {
         d.x = f8->x - self->pos.x;
         d.y = f8->y - self->pos.y;
         d.z = f8->z - self->pos.z;
-        func_02012fb8(0x52, &d, &self->pos, &self->pos);
+        VEC_MultAdd(0x52, &d, &self->pos, &self->pos);
         break;
     }
     func_ov000_021987b8(self->unk_48, 1, 0, 0);

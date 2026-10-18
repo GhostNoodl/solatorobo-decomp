@@ -101,7 +101,7 @@ extern void *data_ov000_021ccd68;
 extern Ov003DfGlobal *data_ov000_021ccd54;
 extern const Ov003Vec3 data_ov003_021f4c58;
 extern const u8 data_ov003_021f4c50[];
-extern void func_02012be8(const Ov003Vec3 *a, const Ov003Vec3 *b, Ov003Vec3 *out);
+extern void VEC_Add(const Ov003Vec3 *a, const Ov003Vec3 *b, Ov003Vec3 *out);
 extern Ov003DfSpawn *func_ov000_0219be1c(s32 id, const void *pos, const void *rot, u16 a, u16 b);
 extern Ov003DfEffect *func_02065f88(s32 id, const Ov003Vec3 *pos);
 extern Ov003DfActor *func_ov000_0218e6d0(void *mgr, s32 a, s32 b);
@@ -203,7 +203,7 @@ void func_ov003_021df534(Ov003Prop *self) {
     case 0: {
         Ov003Vec3 v;
         Ov003DfSpawn *sp;
-        func_02012be8(&self->unk_70, &data_ov003_021f4c58, &v);
+        VEC_Add(&self->unk_70, &data_ov003_021f4c58, &v);
         sp = func_ov000_0219be1c(0x480b, &v, data_ov003_021f4c50, self->unk_0c, 0xffff);
         if (sp != NULL) {
             sp->unk_18 = 7;

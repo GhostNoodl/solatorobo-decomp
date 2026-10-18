@@ -163,12 +163,12 @@ extern void func_ov000_02198360(void *p, s32 a, s32 b);
 extern BOOL func_ov000_02194c08(void *self);
 extern void func_ov000_02190758(void *anim, Ov003Rot *rot, s32 a);
 extern void func_01ffc9fc(Ov003Vec *dst, const Ov003Vec *src, u16 angle);
-extern void func_02012be8(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
+extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 extern void func_ov000_021903b4(void *anim);
 extern Ov003RtPlayer *func_ov000_0219bf90(void);
 extern void func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
-extern s32 func_02013068(const Ov003Vec *a, const Ov003Vec *b);
+extern s32 VEC_Distance(const Ov003Vec *a, const Ov003Vec *b);
 extern void func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern Ov003Game54 *data_ov000_021ccd54;
@@ -277,7 +277,7 @@ BOOL func_ov003_021e812c(Ov003Rotor *self) {
         for (i = 0; i < self->count; i++) {
             func_ov000_02190758(self->anim, &rot, 0);
             func_01ffc9fc(&v, &data_ov003_021f6afc, rot.y);
-            func_02012be8(&self->pos, &v, &v);
+            VEC_Add(&self->pos, &v, &v);
             self->animPos.x = v.x;
             self->animPos.y = v.y;
             self->animPos.z = v.z;
@@ -306,7 +306,7 @@ void func_ov003_021e8210(Ov003Rotor *self) {
         p.y = pl->pos.y;
         p.z = pl->pos.z;
         p.y = self->pos.y;
-        if (func_02013068(&self->pos, &p) >= 0x5800) {
+        if (VEC_Distance(&self->pos, &p) >= 0x5800) {
             return;
         }
         func_02049f44(data_02097e4c, 0x71, &self->pos, 0);

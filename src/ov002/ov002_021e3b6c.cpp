@@ -8,9 +8,9 @@ void func_ov002_021e3b6c(s32 *out, s32 *v, void *mp) {
     s32 y = FX_MUL(v[0], m[1]) + FX_MUL(v[1], m[5]) + FX_MUL(v[2], m[9]) + m[13];
     s32 z = FX_MUL(v[0], m[2]) + FX_MUL(v[1], m[6]) + FX_MUL(v[2], m[10]) + m[14];
     s32 w = FX_MUL(v[0], m[3]) + FX_MUL(v[1], m[7]) + FX_MUL(v[2], m[11]) + m[15];
-    x = func_02012ab8(x, w);
-    y = func_02012ab8(y, w);
-    z = func_02012ab8(z, w);
+    x = FX_Div(x, w);
+    y = FX_Div(y, w);
+    z = FX_Div(z, w);
     out[0] = FX_MUL(x, 0x7f800) >> 12;
     out[1] = FX_MUL(-y, 0x60000) >> 12;
 }

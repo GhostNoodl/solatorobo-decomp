@@ -20,7 +20,7 @@ extern void func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov003_021ceedc(void *p);
 extern void func_ov003_021cef0c(void *p);
 extern void func_ov000_02198328(void *p);
-extern void func_02016cd8(s32 v, void *p, u32 n);
+extern void MIi_CpuClear32(s32 v, void *p, u32 n);
 extern BOOL func_02035b90(void *a, s32 b);
 extern void func_02036838(void *a, void *b, s32 c, s32 d);
 extern void func_020359d0(void *a, s32 b, s32 c);
@@ -39,7 +39,7 @@ extern void func_0203f2b8(void *p);
 extern s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 extern void func_02011820(void *m);
 extern void func_020267e8(void *a, void *b);
-extern void func_02016ca4(s32 v, void *p, u32 n);
+extern void MIi_CpuClear16(s32 v, void *p, u32 n);
 extern void func_ov003_021cf1f0(void *p, s32 a, s32 b, const void *c);
 
 u8 *func_ov014_0220f7f0(s32 k, Ov014Vec *pos) {
@@ -128,7 +128,7 @@ Ov014Actor *func_ov014_0220f9d0(Ov014Actor *self) {
     FLD(s16, self, 0x15e) = 0;
     func_ov000_02198328((u8 *)self + 0x16c);
     FLD(u16, self, 0xde) = 0xffff;
-    func_02016cd8(0, (u8 *)self + 0xf0, 0x34);
+    MIi_CpuClear32(0, (u8 *)self + 0xf0, 0x34);
     FLD(s32, self, 0x140) = 0;
     FLD(s16, self, 0x14c) = 0;
     FLD(void *, self, 0x154) = NULL;
@@ -254,7 +254,7 @@ void func_ov014_0220fc5c(Ov014Actor *self) {
     p = (u8 *)func_0203dd9c(0x1c);
     if (p != NULL) {
         FLD(void *, p, 0) = data_ov014_02217db0;
-        func_02016ca4(0xffff, p + 4, 4);
+        MIi_CpuClear16(0xffff, p + 4, 4);
         FLD(u16, p, 8) = 0;
         FLD(u8, p, 0xa) = 0;
         FLD(u8, p, 0xb) = 0;

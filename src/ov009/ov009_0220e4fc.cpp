@@ -2,11 +2,11 @@
 
 extern "C" {
 
-extern void func_02012d78(const Ov009Vec *in, Ov009Vec *out);
+extern void VEC_Normalize(const Ov009Vec *in, Ov009Vec *out);
 
 void func_ov009_0220e4fc(Ov009Actor *self) {
     Ov009Vec d;
-    if (func_02013068(&self->pos, &FLD(Ov009Vec, self, 0xfc)) < 0xcd) {
+    if (VEC_Distance(&self->pos, &FLD(Ov009Vec, self, 0xfc)) < 0xcd) {
         Ov009Sub40 *st = self->unk_40;
         st->timer++;
         if (st->timer > 0x1e) {
@@ -24,8 +24,8 @@ void func_ov009_0220e4fc(Ov009Actor *self) {
     d.x = FLD(Ov009Vec, self, 0xfc).x - self->pos.x;
     d.y = FLD(Ov009Vec, self, 0xfc).y - self->pos.y;
     d.z = FLD(Ov009Vec, self, 0xfc).z - self->pos.z;
-    func_02012d78(&d, &d);
-    func_02012fb8(0x7b, &d, &self->pos, &self->pos);
+    VEC_Normalize(&d, &d);
+    VEC_MultAdd(0x7b, &d, &self->pos, &self->pos);
 }
 
 }

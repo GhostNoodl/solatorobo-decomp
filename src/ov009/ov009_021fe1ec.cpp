@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void func_02012be8(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
+extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 
 void func_ov009_021fe1ec(Ov009Actor *self) {
     Ov009Sub40 *st = self->unk_40;
@@ -13,7 +13,7 @@ void func_ov009_021fe1ec(Ov009Actor *self) {
     if (st->timer > 0x50) {
         func_ov000_02198360(self->unk_40, 1, 0);
     }
-    func_02012be8(&self->pos, (Ov009Vec *)&self->unk_9c, &self->pos);
+    VEC_Add(&self->pos, (Ov009Vec *)&self->unk_9c, &self->pos);
     self->unk_9c = Ov009_FxMul(self->unk_9c, 0xf33);
     self->unk_a0 = Ov009_FxMul(self->unk_a0, 0xf33);
     self->unk_a4 = Ov009_FxMul(self->unk_a4, 0xf33);
@@ -32,7 +32,7 @@ void func_ov009_021fe2c8(Ov009Actor *self) {
         self->unk_48->unk_30 = 0x40000000;
         self->unk_40->state++;
     case 1:
-        func_02012be8(&self->pos, (Ov009Vec *)&self->unk_9c, &self->pos);
+        VEC_Add(&self->pos, (Ov009Vec *)&self->unk_9c, &self->pos);
         self->unk_9c = Ov009_FxMul(self->unk_9c, 0xe66);
         self->unk_a0 = Ov009_FxMul(self->unk_a0, 0xe66);
         self->unk_a4 = Ov009_FxMul(self->unk_a4, 0xe66);

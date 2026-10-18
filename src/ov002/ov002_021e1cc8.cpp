@@ -7,7 +7,7 @@ void func_ov002_021e1cc8(void *self) {
     FIELD(self, 0x8, s32) = 0;
     FIELD(self, 0xc, s32) = 0;
     FIELD(self, 0x10, s32) = 0;
-    func_02016cd8(0, (u8 *)self + 0x14, 0x14);
+    MIi_CpuClear32(0, (u8 *)self + 0x14, 0x14);
     FIELD(self, 0x28, s32) = 0;
     func_02016e28((u8 *)self + 0x2c, 0, 10);
     func_02016e28((u8 *)self + 0x36, 0, 10);

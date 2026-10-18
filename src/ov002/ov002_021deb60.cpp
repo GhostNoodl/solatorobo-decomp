@@ -20,7 +20,7 @@ static inline void updateModel(u8 *m) {
     if (FIELD(m, 0x1c, void *) != NULL && func_0203e63c(FIELD(m, 0x20, void *))) {
         func_0202711c(m + 0x38);
         func_0202714c(m + 0x44);
-        func_02016dbc(m + 0x50, data_020928b4);
+        MI_Copy36B(m + 0x50, data_020928b4);
         data_020927f8.fc &= ~0xa4;
         func_020270a4();
         func_02027ae4(FIELD(m, 0x1c, void *));

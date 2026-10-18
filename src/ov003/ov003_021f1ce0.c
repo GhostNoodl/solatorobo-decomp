@@ -66,7 +66,7 @@ extern void func_ov000_021911c8(void *model, s32 v);
 extern Ov003FlickerInfo *func_0206fef8(u16 id);
 extern void *func_0203dd9c(u32 size);
 extern void *func_ov000_02198328(void *p);
-extern void func_02012be8(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
+extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 
 void func_ov003_021f1d6c(Ov003Flicker *self);
 
@@ -159,6 +159,6 @@ void func_ov003_021f1e44(Ov003Flicker *self) {
     self->origin.x = self->pos.x;
     self->origin.y = self->pos.y;
     self->origin.z = self->pos.z;
-    func_02012be8(&self->pos, &e->offset, &self->pos);
+    VEC_Add(&self->pos, &e->offset, &self->pos);
     self->unk_b2 = e->unk_0c;
 }

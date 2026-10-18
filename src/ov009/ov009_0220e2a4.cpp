@@ -19,7 +19,7 @@ void func_ov009_0220e2a4(Ov009Actor *self) {
             Ov009Actor *a;
             s32 r;
             if (FLD(u8, self, 0x108) != 0) {
-                if (func_02013068(&self->pos, &FLD(Ov009Vec, self, 0xf0)) < 0x5000) {
+                if (VEC_Distance(&self->pos, &FLD(Ov009Vec, self, 0xf0)) < 0x5000) {
                     FLD(u8, self, 0x108) = 0;
                 } else {
                     self->unk_b6 = 0x1e;

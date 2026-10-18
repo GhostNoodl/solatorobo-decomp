@@ -50,7 +50,7 @@ extern void func_020359fc(const void *a, const void *b, s32 c, s32 d);
 extern char data_ov003_021f78cd[];
 extern void func_ov000_021c8408(u32 a, u32 b, u32 c, u32 d, u16 e, u32 f, u32 g, u32 h, u32 i, u32 j, u32 k);
 extern void func_ov000_021c2208(void *p);
-extern void func_02016cd8(u32 v, void *dst, u32 size);
+extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
 extern u32 func_02035bd4(const void *a, const void *b, s32 c);
 
 void func_ov003_021cd0f4(Ov003Title *self) {

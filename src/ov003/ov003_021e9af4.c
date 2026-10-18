@@ -30,8 +30,8 @@ typedef struct {
 } Ov003Spin;
 
 extern void func_ov003_021ea234(Ov003Spin *self, Ov003Mtx33 *m, void *rot, u16 angle);
-extern void func_02016dbc(Ov003Mtx33 *src, void *dst);
-extern void func_02012be8(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
+extern void MI_Copy36B(Ov003Mtx33 *src, void *dst);
+extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 extern BOOL func_ov000_02194c08(void *self);
 
 BOOL func_ov003_021e9af4(Ov003Spin *self) {
@@ -40,8 +40,8 @@ BOOL func_ov003_021e9af4(Ov003Spin *self) {
     Ov003SpinModel *model;
     self->visible = 1;
     func_ov003_021ea234(self, &m, self->rot, self->angle);
-    func_02016dbc(&m, self->model->unk_84);
-    func_02012be8(&self->offset, &self->pos, &v);
+    MI_Copy36B(&m, self->model->unk_84);
+    VEC_Add(&self->offset, &self->pos, &v);
     model = self->model;
     model->pos.x = v.x;
     model->pos.y = v.y;

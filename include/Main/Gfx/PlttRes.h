@@ -76,7 +76,7 @@ static inline void PlttRes_Init(PlttRes *res) {
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void func_02016fa0(const void *src, void *dst, u32 size);
-extern void func_02019294(const void *addr, u32 size);
+extern void DC_FlushRange(const void *addr, u32 size);
 
 static inline void PlttRes_SetSrc(PlttRes *res, PlttResSrc *src) {
     PlttResHeader *header;
@@ -97,7 +97,7 @@ static inline void PlttRes_Upload(PlttRes *res, const void *data, u32 offset, u3
     u8 *buf;
     if (res->loaded && data != NULL && (buf = (u8 *)res->buf) != NULL) {
         func_02016fa0(data, buf + offset, size);
-        func_02019294(buf + offset, size);
+        DC_FlushRange(buf + offset, size);
     }
 }
 

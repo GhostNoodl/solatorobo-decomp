@@ -80,7 +80,7 @@ extern void func_ov000_02194758(void *self);
 extern void func_02065804(void *mgr, void *handle);
 extern Ov003EmFx *func_020657b0(void *mgr, void *handle);
 extern void func_02063a14(Ov003EmFx *fx);
-extern s32 func_02012ab8(s32 a, s32 b);
+extern s32 FX_Div(s32 a, s32 b);
 extern void func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void func_ov003_021dc3fc(Ov003EmB *self, s32 a, s32 b);
 extern void func_ov003_021dc840(Ov003EmB *self);
@@ -174,7 +174,7 @@ void func_ov003_021dc27c(Ov003EmB *self) {
             for (i = 0; i < 2; i++) {
                 Ov003EmFx *fx = func_020657b0(data_0214a420, self->handles[i]);
                 if (fx != NULL) {
-                    fx->alpha = func_02012ab8(0, 0x1f000);
+                    fx->alpha = FX_Div(0, 0x1f000);
                     func_02063a14(fx);
                 }
             }

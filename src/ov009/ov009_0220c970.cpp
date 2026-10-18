@@ -43,7 +43,7 @@ void func_ov009_0220c970(Ov009Actor *self) {
 
 extern u8 data_ov009_02215f14[];
 extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b);
-extern void func_02012be8(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
+extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 
 void func_ov009_0220ca64(Ov009Actor *self) {
     Ov009Vec t;
@@ -53,7 +53,7 @@ void func_ov009_0220ca64(Ov009Actor *self) {
     func_ov003_021d112c(self);
     self->unk_9c = 0x52;
     func_01ffc9fc(&t, data_ov009_02215f14, (u16)(func_02040528(0x1e) * 0xb6));
-    func_02012be8(&self->pos, &t, &self->pos);
+    VEC_Add(&self->pos, &t, &self->pos);
     a = func_ov000_0219bf90();
     {
         s32 x = a->pos.x;

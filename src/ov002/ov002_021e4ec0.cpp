@@ -56,7 +56,7 @@ void func_ov002_021e4f48(void *self) {
     }
     if (FIELD(ctx, 0x1f0, Bits8).b1) {
         self = FIELD(self, 0xb4, void *);
-        func_02016dbc(func_02027240(), (u8 *)self + 0x28);
+        MI_Copy36B(func_02027240(), (u8 *)self + 0x28);
     }
 }
 

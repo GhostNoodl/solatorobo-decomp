@@ -5,7 +5,7 @@ extern "C" {
 extern u8 *data_ov015_02213364;
 void func_0202a4c8(void *p, s32 a);
 void func_ov015_02208424(u8 *self);
-void func_02016d1c(u32 val, void *dst, u32 size);
+void MIi_CpuClearFast(u32 val, void *dst, u32 size);
 extern void *data_0208cb74;
 extern void *data_0208cca0;
 void func_02041218(void *p);
@@ -19,7 +19,7 @@ void func_02041c34(void *a, int b, void *cb, void *arg);
 Ov015Glyph *func_ov015_0220848c(void *self, u16 *ctx, Ov015Glyph *e, u16 *count);
 void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src);
 void func_ov015_02208a28(u8 *self, void *p);
-s32 func_02012ab8(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 void *func_02023390(void *a, int b);
 void *func_02023410(void *a, u16 b);
 void func_02042628(void *model, void *a, void *part, int b);
@@ -42,7 +42,7 @@ int func_02054f10(void *a, int b);
 s32 func_0203e63c(void *p);
 extern u8 data_ov015_02212d3c[];
 extern u8 data_ov000_021cac60[];
-s32 func_02012ac8(s32 a);
+s32 FX_Inv(s32 a);
 void func_02011390(void *m, s32 x, s32 y, s32 z);
 void func_02011610(void *a, void *b, void *out);
 void func_02016fa0(const void *src, void *dst, s32 n);
@@ -94,7 +94,7 @@ Ov015Glyph *func_ov015_0220848c(void *self, u16 *ctx, Ov015Glyph *e, u16 *count)
 void func_ov015_02208544(u8 *self) {
     FLD(u32, self, 0xc) |= 0x10000;
     FLD(s32, self, 0x84) = 0;
-    func_02016d1c(0, self + 0x88, 0x20);
+    MIi_CpuClearFast(0, self + 0x88, 0x20);
     FLD(s32, self, 0xa8) = -1;
     FLD(s32, self, 0xb0) = 0;
 }
@@ -208,7 +208,7 @@ void func_ov015_02208790(u8 *self, s32 b, u8 *p) {
     }
     x = Ov015_FxMul(0x1000 - b, FLD(s32, self, 0x58) << 12);
     if (FLD(u32, self, 0xc) & 0x10000) {
-        s32 t = func_02012ab8(FLD(s32, self, 0xb0) << 12, 0xf000);
+        s32 t = FX_Div(FLD(s32, self, 0xb0) << 12, 0xf000);
         t = (s32)(((s64)t * 0xffff000 + 0x800) >> 12);
         x += Ov015_FxMul(FX_SinCosTable_[(t >> 16) * 2 + 1], 0x80000) - 0x80000;
     }
@@ -422,7 +422,7 @@ void func_ov015_02208f7c(u8 *self) {
         return;
     }
     func_0202a4c8(t, 0);
-    func_02011390(m, func_02012ac8(0xa000), func_02012ac8(0xa000), func_02012ac8(0xa000));
+    func_02011390(m, FX_Inv(0xa000), FX_Inv(0xa000), FX_Inv(0xa000));
     func_02011610(t, m, t);
 }
 
@@ -470,7 +470,7 @@ void *func_ov015_02209114(u8 *self) {
     SET_VT(self, data_ov015_022128fc);
     SET_VT(self + 0xc0, data_ov015_02212e84);
     FLD(u16, self, 0xc4) = 0xffff;
-    func_02016d1c(0, self + 0xc6, 0x14);
+    MIi_CpuClearFast(0, self + 0xc6, 0x14);
     FLD(s32, self, 0xdc) = 0;
     FLD(s32, self, 0xe0) = 0;
     FLD(s32, self, 0xe4) = 0;
@@ -484,7 +484,7 @@ void *func_ov015_02209114(u8 *self) {
     func_0203f260(self + 0x568);
     FLD(u16, self, 0x4) = 0xffff;
     FLD(s32, self, 0x8) = 0;
-    func_02016d1c(0, self + 0xc, 0x34);
+    MIi_CpuClearFast(0, self + 0xc, 0x34);
     FLD(s32, self, 0x40) = 0;
     FLD(s32, self, 0x44) = 0;
     FLD(s32, self, 0x48) = 0;

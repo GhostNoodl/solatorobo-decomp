@@ -122,7 +122,7 @@ void func_ov010_022075bc(void *self) {
 
 extern s32 func_ov000_02199128(s32 *out, Ov010Query *q, void **list, s32 max);
 
-extern s32 func_02013068(const Ov010Vec *a, const Ov010Vec *b);
+extern s32 VEC_Distance(const Ov010Vec *a, const Ov010Vec *b);
 extern BOOL func_ov003_021d98bc(Ov010Vec *a, Ov010Vec *b);
 extern void func_ov003_021d9e90(Ov010Vec *a, Ov010Vec *b, Ov010Vec *c, s32 d, s32 e);
 extern void func_ov003_021da2c8(void *self, s32 a, s32 b, s32 c, s32 d);
@@ -147,7 +147,7 @@ void func_ov010_02207828(void *self) {
     t.x = FLD(s32, self, 0xb8);
     t.y = FLD(s32, self, 0xbc);
     t.z = FLD(s32, self, 0xc0);
-    if (func_02013068(&t, &FLD(Ov010Vec, self, 0x70)) >= 0x3000) {
+    if (VEC_Distance(&t, &FLD(Ov010Vec, self, 0x70)) >= 0x3000) {
         FLD(s32, self, 0x9c) += 0x180;
         FLD(s32, self, 0x9c) = Ov010_Clamp(FLD(s32, self, 0x9c), 0, 0xd00);
         Ov010_Move(self);

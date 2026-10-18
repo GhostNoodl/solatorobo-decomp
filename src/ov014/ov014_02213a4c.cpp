@@ -11,7 +11,7 @@ extern void *data_ov000_021ccd64;
 extern void func_ov000_021911c8(void *a, s32 b);
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
-extern s32 func_02012ab8(s32 a, s32 b);
+extern s32 FX_Div(s32 a, s32 b);
 extern s32 func_02049130(s32 a, s32 b, s32 c);
 extern void func_ov000_0218bed8(void *a, s32 b, void *c);
 
@@ -56,7 +56,7 @@ void func_ov014_02213afc(Ov014Actor *self) {
         if (self->unk_40->timer % 30 == 0) {
             func_02065f88(0x38a, &self->pos);
         }
-        b = func_02049130(func_02012ab8(self->unk_40->timer << 12, 0x78000), 0, 0x1f000) >> 12;
+        b = func_02049130(FX_Div(self->unk_40->timer << 12, 0x78000), 0, 0x1f000) >> 12;
         FLD(u8, self->unk_38, 0xbe) = b;
         FLD(u8, self, 0x2e6) = b;
         if (self->unk_40->timer == 0) {

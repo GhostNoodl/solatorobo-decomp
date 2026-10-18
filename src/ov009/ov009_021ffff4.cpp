@@ -8,7 +8,7 @@ extern u8 data_ov009_02215dc0[];
 extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b, s32 c);
-extern void func_02012be8(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
+extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern void func_0203f2b8(void *p);
 
 struct Ov009Byte {
@@ -44,7 +44,7 @@ void func_ov009_02200070(Ov009Actor *self) {
     self->unk_84 = self->pos;
     FLD(u8, self, 0xf0) = 0;
     func_01ffc9fc(&t, data_ov009_02215dc0, 0x5554, 0);
-    func_02012be8(&self->unk_84, &t, &self->pos);
+    VEC_Add(&self->unk_84, &t, &self->pos);
     self->unk_b8 = self->pos;
     switch (self->kind) {
     case 0x5423:

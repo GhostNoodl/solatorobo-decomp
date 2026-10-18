@@ -23,7 +23,7 @@ void func_ov002_021e779c(void *self) {
     g->v258 = FIELD(self, 0x5c, Vec3);
     func_02011ff0((u8 *)self + 0x50, (u8 *)self + 0x68, (u8 *)self + 0x5c, data_02092844);
     g->fc &= ~0xe8;
-    func_02016d68((u8 *)self + 0x74, data_02092800, 0x40);
+    MIi_CpuCopyFast((u8 *)self + 0x74, data_02092800, 0x40);
     g->fc &= ~0x50;
 }
 

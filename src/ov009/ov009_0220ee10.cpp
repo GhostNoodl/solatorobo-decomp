@@ -15,7 +15,7 @@ void func_ov009_0220ee10(Ov009Actor *self) {
         return;
     case 1:
         st->timer++;
-        if (st->timer > 0x28 || func_02013068(&self->pos, &FLD(Ov009Vec, self, 0xfc)) < 0x52) {
+        if (st->timer > 0x28 || VEC_Distance(&self->pos, &FLD(Ov009Vec, self, 0xfc)) < 0x52) {
             func_ov000_02198360(self->unk_40, 1, 0);
             FLD(Ov009Vec, self, 0xfc).x = self->pos.x;
             FLD(Ov009Vec, self, 0xfc).y = self->pos.y;
@@ -24,7 +24,7 @@ void func_ov009_0220ee10(Ov009Actor *self) {
         d.x = FLD(Ov009Vec, self, 0xfc).x - self->pos.x;
         d.y = FLD(Ov009Vec, self, 0xfc).y - self->pos.y;
         d.z = FLD(Ov009Vec, self, 0xfc).z - self->pos.z;
-        func_02012fb8(0xf6, &d, &self->pos, &self->pos);
+        VEC_MultAdd(0xf6, &d, &self->pos, &self->pos);
         break;
     }
 }

@@ -11,10 +11,10 @@ extern char data_ov009_02216b90[];
 extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b);
-extern void func_02012be8(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
+extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void func_ov000_0218d398(Ov009Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-extern void func_02016cd8(u32 v, void *dst, u32 size);
+extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
 extern Ov009Actor *func_ov000_02192b24(void *desc);
 extern s32 func_ov000_021909a8(Ov009Sub38 *m, const char *a, const char *b);
 extern void func_02011820(void *p);
@@ -51,7 +51,7 @@ void func_ov009_022009c8(Ov009Actor *self) {
             }
         }
         func_01ffc9fc(&t, data_ov009_02215dc0, 0x5554);
-        func_02012be8(&self->unk_84, &t, &t);
+        VEC_Add(&self->unk_84, &t, &t);
         self->unk_b8 = t;
         func_02049f44(data_02097e4c, 0x35, &self->pos, 0);
         self->unk_40->state++;
@@ -61,8 +61,8 @@ void func_ov009_022009c8(Ov009Actor *self) {
         d.x = t.x - self->pos.x;
         d.y = t.y - self->pos.y;
         d.z = t.z - self->pos.z;
-        func_02012fb8(0x29, &d, &self->pos, &self->pos);
-        if (func_02013068(&self->pos, &t) <= 0x1000) {
+        VEC_MultAdd(0x29, &d, &self->pos, &self->pos);
+        if (VEC_Distance(&self->pos, &t) <= 0x1000) {
             func_ov000_02198360(self->unk_40, 1, 0);
         }
         break;
@@ -73,7 +73,7 @@ void func_ov009_022009c8(Ov009Actor *self) {
 Ov009Actor *func_ov009_02200b48(Ov009Actor *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = &data_ov009_02216d20;
-    func_02016cd8(0, &FLD(u8, self, 0xf8), 0x34);
+    MIi_CpuClear32(0, &FLD(u8, self, 0xf8), 0x34);
     return self;
 }
 #pragma force_active reset

@@ -64,7 +64,7 @@ extern void func_ov000_021903b4(Ov003Anim *anim);
 extern void *func_0202ac90(s32 a);
 extern void func_02026df0(void *a, s32 b);
 extern void func_01ffc9fc(Ov003Vec *src, Ov003Vec *dst, u16 angle);
-extern void func_02012be8(Ov003Vec *a, Ov003Vec *b, Ov003Vec *dst);
+extern void VEC_Add(Ov003Vec *a, Ov003Vec *b, Ov003Vec *dst);
 extern void func_ov000_02191c24(Ov003Shadow *shadow, Ov003Vec *pos);
 
 BOOL func_ov003_021f3954(Ov003Prop *self) {
@@ -92,7 +92,7 @@ void func_ov003_021f3988(Ov003Prop *self) {
     v.y = 0;
     v.z = 0;
     func_01ffc9fc(&v, &v, self->unk_7e);
-    func_02012be8(&v, &self->pos, &v);
+    VEC_Add(&v, &self->pos, &v);
     self->effectPos.x = v.x;
     self->effectPos.y = v.y;
     self->effectPos.z = v.z;

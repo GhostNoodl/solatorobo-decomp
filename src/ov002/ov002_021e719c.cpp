@@ -23,7 +23,7 @@ void func_ov002_021e719c(void *self) {
     if (now - FIELD(self, 0x18, s32) >= FIELD(self, 0x5c, s32)) {
         a = FIELD(self, 0x58, s32);
     } else {
-        a = func_02049130(func_02012ab8(now - FIELD(self, 0x18, s32), FIELD(self, 0x5c, s32)), FIELD(self, 0x54, s32) << 12, FIELD(self, 0x58, s32) << 12) >> 12;
+        a = func_02049130(FX_Div(now - FIELD(self, 0x18, s32), FIELD(self, 0x5c, s32)), FIELD(self, 0x54, s32) << 12, FIELD(self, 0x58, s32) << 12) >> 12;
     }
     {
         Vec3 zero = {0, 0, 0};
@@ -40,7 +40,7 @@ void func_ov002_021e719c(void *self) {
         data_020927f8.v258 = at;
         func_02011ff0(&zero, &up, &at, data_02092844);
         data_020927f8.fc &= ~0xe8;
-        func_02016d68(g2 + 0xe4, data_02092800, 0x40);
+        MIi_CpuCopyFast(g2 + 0xe4, data_02092800, 0x40);
         data_020927f8.fc &= ~0x50;
         func_02027074();
         t = 2;

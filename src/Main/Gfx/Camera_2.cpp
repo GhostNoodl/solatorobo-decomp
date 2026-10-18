@@ -10,7 +10,7 @@ extern void func_0204bcb0(Camera *cam);
 extern 
 void func_0204bac8(Camera *cam);
 extern s32 func_01ffbd6c(CamVec *a, CamVec *b, u32 mask, s32 c, s32 d, s32 e);
-extern u16 func_0201319c(s32 y, s32 x);
+extern u16 FX_Atan2(s32 y, s32 x);
 extern void func_02011ff0(CamVec *eye, CamVec *up, CamVec *at, void *out);
 extern void func_02012758(s32 fovy, s32 aspect, s32 n, s32 fovSin, s32 fovCos, s32 scale, void *out);
 extern const s16 FX_SinCosTable_[];
@@ -18,7 +18,7 @@ extern void *data_0208b000[];
 extern s32 func_02040498(s32 max);
 extern void *data_02092a5c;
 extern u32 data_0208b078;
-extern void func_02016d1c(u32 value, void *dst, u32 size);
+extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void func_02011340(void *mtx);
 extern void func_020117a4(const CamVec *v, const void *mtx, CamVec *out);
 
@@ -37,10 +37,10 @@ typedef struct CamAnimWork {
 
 typedef void (*CamAnimFunc)(CamAnimResult *out, s32 *frame, s32 arg);
 extern s32 func_02040528(s32 amp);
-extern void func_02012fb8(s32 scale, const CamVec *dir, const CamVec *base, CamVec *out);
-extern s32 func_02013068(const CamVec *a, const CamVec *b);
+extern void VEC_MultAdd(s32 scale, const CamVec *dir, const CamVec *base, CamVec *out);
+extern s32 VEC_Distance(const CamVec *a, const CamVec *b);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void func_02012be8(const CamVec *a, const CamVec *b, CamVec *out);
+extern void VEC_Add(const CamVec *a, const CamVec *b, CamVec *out);
 typedef struct CamState {
     /* 0x000 */ u8 unk_000[0xfc];
     /* 0x0fc */ u32 dirty;
@@ -148,7 +148,7 @@ void func_0204b924(Camera *cam, s32 speed) {
         cam->animFrame = max;
     }
     data_02092a5c = &work;
-    func_02016d1c(0, &work, sizeof(work));
+    MIi_CpuClearFast(0, &work, sizeof(work));
     work.unk_0e8 = data_0208b078;
     func_02011340(res.rot);
     res.trans.x = 0;
@@ -174,7 +174,7 @@ void func_0204b924(Camera *cam, s32 speed) {
         Cam_VecSet(&vec, 0, 0, cam->dist);
         func_020117a4(&vec, res.rot, &vec);
     }
-    func_02012be8(&vec, &res.trans, &vec);
+    VEC_Add(&vec, &res.trans, &vec);
     cam->at.x = vec.x;
     cam->at.y = vec.y;
     cam->at.z = vec.z;
@@ -209,8 +209,8 @@ void func_0204bac8(Camera *cam) {
     if (cam->shakeZ) {
         ofs.z = func_02040528(amp);
     }
-    func_02012be8(&eye, &ofs, &newEye);
-    func_02012be8(&at, &ofs, &newAt);
+    VEC_Add(&eye, &ofs, &newEye);
+    VEC_Add(&at, &ofs, &newAt);
     cam->eye.x = newEye.x;
     cam->eye.y = newEye.y;
     cam->eye.z = newEye.z;
@@ -261,14 +261,14 @@ void func_0204bcb0(Camera *cam) {
                 d.x = cam->eyeTarget.x - eye.x;
                 d.y = cam->eyeTarget.y - eye.y;
                 d.z = cam->eyeTarget.z - eye.z;
-                func_02012fb8(cam->eyeRate, &d, &eye, &eye);
+                VEC_MultAdd(cam->eyeRate, &d, &eye, &eye);
             }
             if (cam->atRate != 0) {
                 CamVec d;
                 d.x = cam->atTarget.x - at.x;
                 d.y = cam->atTarget.y - at.y;
                 d.z = cam->atTarget.z - at.z;
-                func_02012fb8(cam->atRate, &d, &at, &at);
+                VEC_MultAdd(cam->atRate, &d, &at, &at);
             }
             if (cam->upRate != 0) {
                 CamVec d;
@@ -278,7 +278,7 @@ void func_0204bcb0(Camera *cam) {
                 d.x = cam->upTarget.x - up.x;
                 d.y = cam->upTarget.y - up.y;
                 d.z = cam->upTarget.z - up.z;
-                func_02012fb8(cam->upRate, &d, &up, &up);
+                VEC_MultAdd(cam->upRate, &d, &up, &up);
                 cam->up.x = up.x;
                 cam->up.y = up.y;
                 cam->up.z = up.z;
@@ -290,7 +290,7 @@ void func_0204bcb0(Camera *cam) {
                 d.x = cam->atTarget.x - at.x;
                 d.y = cam->atTarget.y - at.y;
                 d.z = cam->atTarget.z - at.z;
-                func_02012fb8(cam->atRate, &d, &at, &at);
+                VEC_MultAdd(cam->atRate, &d, &at, &at);
             }
             break;
         case 2:
@@ -299,7 +299,7 @@ void func_0204bcb0(Camera *cam) {
                 d.x = cam->eyeTarget.x - eye.x;
                 d.y = cam->eyeTarget.y - eye.y;
                 d.z = cam->eyeTarget.z - eye.z;
-                func_02012fb8(cam->eyeRate, &d, &eye, &eye);
+                VEC_MultAdd(cam->eyeRate, &d, &eye, &eye);
             }
             break;
     }
@@ -313,7 +313,7 @@ void func_0204bcb0(Camera *cam) {
         return;
     }
     if (cam->distRate != 0) {
-        s32 dist = func_02013068(&eye, &at);
+        s32 dist = VEC_Distance(&eye, &at);
         cam->dist = dist;
         if (cam->distTarget != dist) {
             cam->dist = dist + Cam_FxMul(cam->distRate, cam->distTarget - dist);
@@ -331,7 +331,7 @@ void func_0204bcb0(Camera *cam) {
 }
 
 u16 func_0204bfa8(Camera *cam) {
-    return func_0201319c(cam->at.x - cam->eye.x, cam->at.z - cam->eye.z);
+    return FX_Atan2(cam->at.x - cam->eye.x, cam->at.z - cam->eye.z);
 }
 
 }

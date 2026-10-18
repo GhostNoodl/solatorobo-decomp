@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_02016cd8(u32 val, void *dst, u32 size);
+void MIi_CpuClear32(u32 val, void *dst, u32 size);
 u8 *func_02070744(u16 id);
 u8 *func_0206ee20(u16 id);
 void func_ov015_022113e8(void *self, void *list, s32 n, u16 a, s32 b);
@@ -22,7 +22,7 @@ struct Ov015ItemList {
 void func_ov015_02211334(Ov015ItemList *self, u16 id) {
     s32 i;
     self->id = id;
-    func_02016cd8(0, self->ents, 0x18);
+    MIi_CpuClear32(0, self->ents, 0x18);
     if (id == 0x800b) {
         return;
     }

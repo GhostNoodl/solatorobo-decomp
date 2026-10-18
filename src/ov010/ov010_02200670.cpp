@@ -144,7 +144,7 @@ extern u8 data_020928b4[];
 extern u8 data_020927f8[];
 extern u8 *data_02097d48;
 extern void func_02011340(void *m);
-extern void func_02016dbc(void *m, void *b);
+extern void MI_Copy36B(void *m, void *b);
 extern void func_0202711c(Ov010Vec *v);
 extern void func_0202714c(Ov010Vec *v);
 extern void func_020270a4(void);

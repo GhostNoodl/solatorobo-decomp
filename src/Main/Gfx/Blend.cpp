@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern int func_02012ab8(int a, int b);
+extern int FX_Div(int a, int b);
 extern void func_0201378c(volatile void *reg, int plane1, int plane2, int ev1, int ev2);
 extern s16 FX_SinCosTable_[];
 
@@ -55,7 +55,7 @@ void func_02042f40(int ch) {
     if (data_02097e24[ch] == 0) {
         return;
     }
-    t = func_02012ab8(data_02097e18[ch] << 12, data_02097e0c[ch] << 12);
+    t = FX_Div(data_02097e18[ch] << 12, data_02097e0c[ch] << 12);
     if (t >= 0x1000) {
         t = 0x1000;
         done = TRUE;

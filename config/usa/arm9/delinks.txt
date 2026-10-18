@@ -4,6 +4,117 @@
     .data       start:0x0208aa80 end:0x0208d940 kind:data align:32
     .bss        start:0x0208d940 end:0x0214b1a0 kind:bss align:32
 
+libs/nitro/fx/fx_cp.c:
+    complete
+    .text       start:0x02012ab8 end:0x02012be8
+
+libs/nitro/fx/fx_vec.c:
+    complete
+    .text       start:0x02012be8 end:0x02012d78
+
+libs/nitro/fx/fx_vec_2.c:
+    complete
+    .text       start:0x02013068 end:0x020130e4
+
+libs/nitro/fx/fx_atan.c:
+    complete
+    .text       start:0x020130e4 end:0x0201332c
+
+libs/nitro/fx/fx.c:
+    complete
+    .text       start:0x0201332c end:0x02013330
+
+libs/nitro/fx/fx_trig.c:
+    complete
+    .text       start:0x02013330 end:0x02013428
+
+libs/nitro/math/math_crc.c:
+    complete
+    .text       start:0x02015fe0 end:0x0201608c
+
+libs/nitro/os/os_irqTable.c:
+    complete
+    .text       start:0x020177b8 end:0x02017904
+    .data       start:0x0208af60 end:0x0208af78
+
+libs/nitro/os/os_interrupt.c:
+    complete
+    .text       start:0x02017904 end:0x02017a94
+
+libs/nitro/os/os_interrupt_2.c:
+    complete
+    .text       start:0x02017ae4 end:0x02017b9c
+
+libs/nitro/os/os_spinLock.c:
+    complete
+    .text       start:0x02017c48 end:0x02018028
+    .bss        start:0x0208ec20 end:0x0208ec24
+
+libs/nitro/os/os_message.c:
+    complete
+    .text       start:0x02018db0 end:0x02018fa8
+
+libs/nitro/os/os_mutex.c:
+    complete
+    .text       start:0x02018fa8 end:0x02019108
+
+libs/nitro/os/os_mutex_2.c:
+    complete
+    .text       start:0x020191e0 end:0x02019228
+
+libs/nitro/snd/snd_interface.c:
+    complete
+    .text       start:0x0201bd50 end:0x0201c124
+
+libs/nitro/snd/snd_main.c:
+    complete
+    .text       start:0x0201c124 end:0x0201c184
+    .bss        start:0x0208f0c0 end:0x0208f0dc
+
+libs/nitro/snd/snd_command.c:
+    complete
+    .text       start:0x0201c184 end:0x0201c864
+    .bss        start:0x0208f0dc end:0x0208f124
+
+libs/nitro/snd/snd_alarm.c:
+    complete
+    .text       start:0x0201c864 end:0x0201c930
+    .bss        start:0x02090bc0 end:0x02090c20
+
+libs/nitro/snd/snd_work.c:
+    complete
+    .text       start:0x0201c930 end:0x0201c9f8
+    .bss        start:0x02090c20 end:0x02090c24
+
+libs/nitro/snd/snd_util.c:
+    complete
+    .text       start:0x0201c9f8 end:0x0201ca68
+
+libs/nitro/snd/snd_bank.c:
+    complete
+    .text       start:0x0201ca68 end:0x0201ce5c
+
+libs/nnsys/fnd/list.c:
+    complete
+    .text       start:0x02021bd4 end:0x02021dac
+
+libs/nnsys/fnd/heapcommon.c:
+    complete
+    .text       start:0x02021dac end:0x02021ee8
+    .bss        start:0x020917e8 end:0x020917f8
+
+libs/nnsys/fnd/expheap.c:
+    complete
+    .text       start:0x02021ee8 end:0x02022008
+
+libs/nnsys/fnd/expheap_2.c:
+    complete
+    .text       start:0x02022174 end:0x020225d0
+
+libs/nnsys/fnd/frameheap.c:
+    complete
+    .text       start:0x020225d0 end:0x0202288c
+
 libs/nnsys/snd/snd_heap.c:
     complete
     .text       start:0x0203053c end:0x020308d4

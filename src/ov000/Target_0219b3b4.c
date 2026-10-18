@@ -51,7 +51,7 @@ extern ActorMgr *data_ov000_021ccd68;
 
 ActorT *func_ov000_0218e640(ActorMgr *mgr, u16 id);
 s32 _s32_div_f(s32 a, s32 b);
-void func_02012fb8(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
+void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
 
 static inline ActorT *FindActor(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;

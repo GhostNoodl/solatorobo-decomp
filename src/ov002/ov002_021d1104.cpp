@@ -19,7 +19,7 @@ Task50 *func_ov002_021d1144(void) {
     if (p != NULL) {
         TaskBase_ctor(p);
         *(VFunc **)p = data_ov002_021ef71c;
-        func_02016cd8(-1, (u8 *)p + 0x3c, 0x20);
+        MIi_CpuClear32(-1, (u8 *)p + 0x3c, 0x20);
         FIELD(p, 0x5c, s32) = 0;
         FIELD(p, 0x60, s32) = -1;
         FIELD(p, 0x64, s32) = 0;

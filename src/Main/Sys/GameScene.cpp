@@ -51,7 +51,7 @@ void func_02055bbc(GameScene *scene) {
         return;
     }
     table = data_020829d0;
-    t = func_02012ab8(scene->shakeTime, scene->shakePeriod) >> 12;
+    t = FX_Div(scene->shakeTime, scene->shakePeriod) >> 12;
     if (scene->shakeLimit != -1 && t >= scene->shakeLimit) {
         scene->shake = 0;
         scene->shakeX = 0;

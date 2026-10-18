@@ -49,7 +49,7 @@ void func_02043d20(void *p, s32 a);
 s32 func_02043d48(void *p);
 void func_0202a3ec(s32 cmd, void *data, s32 n);
 void func_02043db4(s32 a, s32 b, s32 c, s32 d);
-s32 func_02012ab8(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 BOOL func_ov015_021faa74(Ov015Main *self);
 
 static inline Ov015V *Ov015_NewChild(Ov015Main *self, s32 kind) {
@@ -97,7 +97,7 @@ static inline void Ov015Fade_Update(Ov015Fade *f) {
     s32 b = f->unk_09;
     s32 to = b << 12;
     s32 from = a << 12;
-    s32 t = func_02012ab8(f->unk_14, f->unk_0c);
+    s32 t = FX_Div(f->unk_14, f->unk_0c);
     f->unk_18 = (from + Ov015_FxMul(-from + to, t)) >> 12;
     f->unk_14 += 0x1000;
     if (f->unk_14 >= f->unk_0c) {

@@ -27,7 +27,7 @@ extern BOOL func_ov000_021b4738(StagePlayer *player);
 extern int func_0201e7b0(const char *a, const char *b);
 extern DataRes *data_02fe1530;
 extern u16 func_020594bc(DataRes *res, u32 idx, int packed, int sub);
-extern void func_02016ca4(u32 value, void *dst, u32 size);
+extern void MIi_CpuClear16(u32 value, void *dst, u32 size);
 extern const char data_0208be27[];
 extern const char data_0208be34[];
 extern const char data_0208be43[];
@@ -523,7 +523,7 @@ BOOL func_020621f8(void) {
 
 void func_0206222c(void) {
     ObjPoolShared *shared = &data_02fe1534;
-    func_02016ca4(0, shared, 0x82);
+    MIi_CpuClear16(0, shared, 0x82);
     shared->unk_04 = 0;
     shared->r = 0xffff;
     shared->g = 0xffff;

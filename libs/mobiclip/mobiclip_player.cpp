@@ -223,7 +223,7 @@ BOOL func_02034298(MoPlayer *player, void *dst, u32 stride, int mode) {
     return TRUE;
 }
 
-extern void func_02016cbc(const void *src, void *dst, u32 size);
+extern void MIi_CpuCopy16(const void *src, void *dst, u32 size);
 extern int func_02075d4c(MoAudioDecoder *decoder);
 extern void func_0207670c(MoAudioDecoder *decoder);
 extern void func_020349dc(MoAudioDecoder *decoder, u8 *data);
@@ -270,7 +270,7 @@ BOOL func_02034458(MoPlayer *player, void *out) {
         func_020349ec(&player->audioDecoders[player->audioChannel], player->decoder->data, 0x80, out);
         player->decoder->data += 0x80;
     } else {
-        func_02016cbc(player->decoder->data, out, 0x200);
+        MIi_CpuCopy16(player->decoder->data, out, 0x200);
         player->decoder->data += 0x200;
     }
     if (++player->audioChannel == player->audioChannels) {

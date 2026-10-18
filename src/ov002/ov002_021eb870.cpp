@@ -33,7 +33,7 @@ void func_ov002_021eb870(void *self) {
         void *o;
         void *q;
         u8 *a, *b, *c;
-        func_02016d68(p, &rec, size);
+        MIi_CpuCopyFast(p, &rec, size);
         o = func_ov002_021e9380(rec.a, rec.b, rec.c, rec.d, rec.e, rec.f);
         p += size;
         a = (rec.flags & 1) ? p : NULL;

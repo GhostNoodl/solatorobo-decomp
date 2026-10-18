@@ -68,7 +68,7 @@ extern void func_ov000_02194758(void *self);
 extern Ov003Player *func_ov000_0219bf90(void);
 extern BOOL func_01ffc2a4(Ov003Vec3 *a, Ov003Vec3 *b, void *c, void *d);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
-extern void func_02012be8(const Ov003Vec3 *a, const Ov003Vec3 *b, Ov003Vec3 *out);
+extern void VEC_Add(const Ov003Vec3 *a, const Ov003Vec3 *b, Ov003Vec3 *out);
 
 void func_ov003_021e1914(Ov003Prop *self) {
     self->unk_1c = 0;
@@ -109,6 +109,6 @@ void func_ov003_021e19e8(Ov003Prop *self) {
     self->unk_84.x = self->unk_70.x;
     self->unk_84.y = self->unk_70.y;
     self->unk_84.z = self->unk_70.z;
-    func_02012be8(&self->unk_70, &data_ov003_021f6428[self->unk_1a].unk_18, &self->unk_70);
+    VEC_Add(&self->unk_70, &data_ov003_021f6428[self->unk_1a].unk_18, &self->unk_70);
     self->unk_38->unk_c2_0 = 0;
 }

@@ -15,9 +15,9 @@ void func_02031df0(StrmPlayer *player, int frames) {
 }
 
 void func_02031e48(StrmPlayer *player) {
-    func_02018fcc(data_02097c98);
+    OS_LockMutex(data_02097c98);
     if (data_0209622c.altThread != NULL) {
-        func_02018fcc(data_0209622c.altThread->mutex);
+        OS_LockMutex(data_0209622c.altThread->mutex);
     }
     if (player->playing) {
         func_0202f76c(player);
@@ -26,9 +26,9 @@ void func_02031e48(StrmPlayer *player) {
         player->stopFn(player);
     }
     func_02031ee0(player);
-    func_0201901c(data_02097c98);
+    OS_UnlockMutex(data_02097c98);
     if (data_0209622c.altThread != NULL) {
-        func_0201901c(data_0209622c.altThread->mutex);
+        OS_UnlockMutex(data_0209622c.altThread->mutex);
     }
 }
 
@@ -67,13 +67,13 @@ void func_02031f80(StrmPlayer *player) {
 void func_02031fa4(StrmThread *thread, u32 prio) {
     func_020184ac(thread, func_02032e58, thread, thread->stack + sizeof(thread->stack), sizeof(thread->stack), prio);
     NNS_FndInitList(&thread->cmdList, 0);
-    func_02018fa8(thread->mutex);
+    OS_InitMutex(thread->mutex);
     thread->queueHead = thread->queueTail = NULL;
     func_02018918(thread);
 }
 
 void func_0203200c(NNSFndList *list, StrmPlayer *player) {
-    u32 state = func_0201a7f0();
+    u32 state = OS_DisableInterrupts();
     StrmCommand *cmd = NNS_FndGetNextListObject(list, NULL);
     StrmCommand *next;
     while (cmd != NULL) {
@@ -84,34 +84,34 @@ void func_0203200c(NNSFndList *list, StrmPlayer *player) {
         }
         cmd = next;
     }
-    func_0201a804(state);
+    OS_RestoreInterrupts(state);
 }
 
 StrmCommand *func_0203207c(NNSFndList *list) {
-    u32 state = func_0201a7f0();
+    u32 state = OS_DisableInterrupts();
     StrmCommand *cmd = NNS_FndGetNextListObject(list, NULL);
     if (cmd != NULL) {
         NNS_FndRemoveListObject(list, cmd);
         cmd->player->cmdCount--;
     }
-    func_0201a804(state);
+    OS_RestoreInterrupts(state);
     return cmd;
 }
 
 StrmCommand *func_020320cc(void) {
-    u32 state = func_0201a7f0();
+    u32 state = OS_DisableInterrupts();
     StrmCommand *cmd = NNS_FndGetNextListObject(&data_02096238, NULL);
     if (cmd != NULL) {
         NNS_FndRemoveListObject(&data_02096238, cmd);
     }
-    func_0201a804(state);
+    OS_RestoreInterrupts(state);
     return cmd;
 }
 
 void func_02032110(StrmCommand *cmd) {
-    u32 state = func_0201a7f0();
+    u32 state = OS_DisableInterrupts();
     NNS_FndAppendListObject(&data_02096238, cmd);
-    func_0201a804(state);
+    OS_RestoreInterrupts(state);
 }
 
 void func_0203213c(void *data, u32 size, u32 arg0, u32 arg1) {
@@ -119,9 +119,9 @@ void func_0203213c(void *data, u32 size, u32 arg0, u32 arg1) {
     if (data != player->buffer) {
         return;
     }
-    func_02018fcc(data_02097c98);
+    OS_LockMutex(data_02097c98);
     if (data_0209622c.altThread != NULL) {
-        func_02018fcc(data_0209622c.altThread->mutex);
+        OS_LockMutex(data_0209622c.altThread->mutex);
     }
     func_02031e48(player);
     player->buffer = NULL;
@@ -131,9 +131,9 @@ void func_0203213c(void *data, u32 size, u32 arg0, u32 arg1) {
         func_0202f550(player);
         player->chRefCount = 0;
     }
-    func_0201901c(data_02097c98);
+    OS_UnlockMutex(data_02097c98);
     if (data_0209622c.altThread != NULL) {
-        func_0201901c(data_0209622c.altThread->mutex);
+        OS_UnlockMutex(data_0209622c.altThread->mutex);
     }
 }
 
@@ -169,7 +169,7 @@ void func_020321d4(int status, int numBuffers, void **buffers, u32 size, int for
     }
     player->cmdCount++;
     NNS_FndAppendListObject(&thread->cmdList, cmd);
-    func_020188b0(&thread->queueHead);
+    OS_WakeupThread(&thread->queueHead);
 }
 
 void func_02032310(StrmPlayer *player) {

@@ -102,7 +102,7 @@ extern void func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 extern void func_ov000_02199dc0(Ov003S4c *p, void *self);
 extern void func_ov000_0218dbe0(void *self, s32 a);
 extern void func_ov000_021987b8(Ov003Ct *ctl, s32 a, s32 b, s32 c);
-extern s32 func_02012ab8(s32 a, s32 b);
+extern s32 FX_Div(s32 a, s32 b);
 extern void func_02065804(void *mgr, void *p);
 extern Ov003Fx *func_02065f88(s32 id, void *pos);
 
@@ -146,7 +146,7 @@ void func_ov003_021d3a88(Ov003Unk *self) {
             r = self->unk_64;
             t = (r >> 2) + (r >> 3);
             fx->SetScale(r + t, r + t, r + t);
-            fx->unk_7c = func_02012ab8(0x10000, 0x1f000);
+            fx->unk_7c = FX_Div(0x10000, 0x1f000);
         }
         break;
     }

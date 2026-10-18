@@ -17,7 +17,7 @@ void func_ov000_021915a0(void *a);
 void func_ov000_02191618(void *a);
 void func_ov000_02191690(void *a);
 void func_ov000_02191318(void *a, s32 b);
-void func_02016dbc(const void *src, void *dst);
+void MI_Copy36B(const void *src, void *dst);
 void func_ov000_02190a80(void *a, s32 b);
 void *func_ov002_021e4ee4(void *self, s32 a, s32 b);
 void func_ov002_021e6360(void *p);
@@ -144,7 +144,7 @@ BOOL func_ov015_0220e294(u8 *self) {
     o = FLD(void *, self, 0x520);
     if (o != NULL) {
         FLD(Ov015Vec, self, 0x4d0) = FLD(Ov015Vec, o, 0xdc);
-        func_02016dbc((u8 *)o + 0xb8, self + 0x4dc);
+        MI_Copy36B((u8 *)o + 0xb8, self + 0x4dc);
         FLD(Ov015Vec, self, 0x500) = FLD(Ov015Vec, FLD(u8 *, self, 0x520), 0x94);
     }
     func_ov000_02190a80(self + 0x184, FLD(s16, self, 0x490));
@@ -171,14 +171,14 @@ void func_ov015_0220e434(u8 *self) {
         s32 y = Ov015_FxMul(FLD(s32, self, 0x504), k);
         s32 z = Ov015_FxMul(FLD(s32, self, 0x508), k);
         *(Ov015VecC *)(self + 0x1fc) = *(Ov015VecC *)(self + 0x4d0);
-        func_02016dbc(self + 0x4dc, self + 0x208);
+        MI_Copy36B(self + 0x4dc, self + 0x208);
         FLD(s32, self, 0x22c) = x;
         FLD(s32, self, 0x230) = y;
         FLD(s32, self, 0x234) = z;
     }
     func_ov000_021903b4(self + 0x184);
     *(Ov015VecC *)(self + 0x420) = *(Ov015VecC *)(self + 0x4c0);
-    func_02016dbc(self + 0x49c, self + 0x42c);
+    MI_Copy36B(self + 0x49c, self + 0x42c);
     func_ov000_021903b4(self + 0x3a8);
     func_0202a1d4();
 }

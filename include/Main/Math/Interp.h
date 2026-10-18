@@ -15,8 +15,8 @@ typedef struct InterpVec {
 
 extern s16 FX_SinCosTable_[];
 
-extern s32 func_02012d18(const InterpVec *v);
-extern void func_02012fb8(s32 scale, const InterpVec *dir, const InterpVec *base, InterpVec *out);
+extern s32 VEC_Mag(const InterpVec *v);
+extern void VEC_MultAdd(s32 scale, const InterpVec *dir, const InterpVec *base, InterpVec *out);
 
 static inline s32 Interp_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);

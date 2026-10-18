@@ -18,7 +18,7 @@ extern void func_0202717c(int light, int x, int y, int z);
 extern void func_020271b8(int light, u16 color);
 extern void func_020271cc(u16 diffuse, u16 ambient, BOOL setVtxColor);
 extern void func_020271f0(u16 specular, u16 emission, BOOL shininess);
-extern void func_02019294(const void *addr, u32 size);
+extern void DC_FlushRange(const void *addr, u32 size);
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 
@@ -32,7 +32,7 @@ extern void func_02013e70(const u16 *table);
 extern void func_02013e88(const u8 *table);
 extern void func_02013e9c(const u16 *table);
 extern void func_02013eb4(u16 color, int alpha, int depth, int polygonId, BOOL fog);
-extern void func_02016d68(const void *src, void *dst, u32 size);
+extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 extern void func_020128a4(int t, int b, int l, int r, int n, int f, int scaleW, void *mtx);
 extern const u16 data_02082958[];
 extern const u16 data_02082900[];

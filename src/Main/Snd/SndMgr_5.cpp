@@ -30,7 +30,7 @@ extern SndAreaEntry data_0208b7c8[];
 extern s32 data_0208b704;
 extern s32 data_0208b744[];
 
-extern s32 func_02013068(SndVec *vec);
+extern s32 VEC_Distance(SndVec *vec);
 extern u32 func_0200aeec(s32 v);
 extern u32 func_0200ba84(u32 a, u32 b);
 extern u32 func_0200bd08(u32 a, u32 b);

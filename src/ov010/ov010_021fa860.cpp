@@ -105,7 +105,7 @@ extern void func_0201146c(void *m, s32 s, s32 c);
 extern void func_02011488(void *m, s32 s, s32 c);
 extern void func_02011610(void *a, void *b, void *c);
 extern void func_ov003_021d883c(void *a, Ov010Vec *b, void *c, s32 d);
-extern void func_02016dbc(void *m, void *b);
+extern void MI_Copy36B(void *m, void *b);
 extern BOOL func_ov003_021d16cc(void *self);
 extern void func_ov010_0220166c(void *p);
 
@@ -122,7 +122,7 @@ BOOL func_ov010_021faaf0(void *self) {
     func_02011610(m1, m2, m1);
     func_ov003_021d883c((u8 *)self + 0x150, &v, (u8 *)self + 0x70, FLD(s16, self, 0xf2));
     FLD(Ov010Flags8, self, 0x93).b0 = 1;
-    func_02016dbc(m1, FLD(u8 *, self, 0x38) + 0x84);
+    MI_Copy36B(m1, FLD(u8 *, self, 0x38) + 0x84);
     FLD(Ov010Vec, FLD(u8 *, self, 0x38), 0x78) = v;
     r = func_ov003_021d16cc(self);
     func_ov010_0220166c(FLD(void *, self, 0x100));

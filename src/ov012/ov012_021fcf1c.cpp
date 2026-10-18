@@ -41,7 +41,7 @@ void func_ov012_021fcf48(Ov012Actor *self) {
             o = func_ov000_02192b24(&d);
             if (o != NULL) {
                 Ov012Vec t;
-                func_02012be8(&self->pos, &data_ov012_0220a414, &t);
+                VEC_Add(&self->pos, &data_ov012_0220a414, &t);
                 o->pos = t;
                 o->rot[0] = self->rot[0];
                 o->rot[1] = self->rot[1];

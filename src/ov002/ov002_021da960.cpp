@@ -20,11 +20,11 @@ void func_ov002_021da960(void *self) {
     data_020927f8.fc &= ~0x50;
     q = FIELD(w, 0x4, u8 *);
     if (q[0x5c] != 0) {
-        func_02016dbc(q + 0x2c, FIELD(q, 0x8, u8 *) + 0x84);
+        MI_Copy36B(q + 0x2c, FIELD(q, 0x8, u8 *) + 0x84);
         FIELD(FIELD(q, 0x8, u8 *), 0x78, Vec3) = FIELD(q, 0x18, Vec3);
         FIELD(FIELD(q, 0x8, u8 *), 0xa8, Vec3) = FIELD(q, 0x50, Vec3);
         func_ov000_021903b4(FIELD(q, 0x8, void *));
-        func_02016dbc(q + 0x2c, FIELD(q, 0x10, u8 *) + 0x84);
+        MI_Copy36B(q + 0x2c, FIELD(q, 0x10, u8 *) + 0x84);
         FIELD(FIELD(q, 0x10, u8 *), 0x78, Vec3) = FIELD(q, 0x18, Vec3);
         FIELD(FIELD(q, 0x10, u8 *), 0xa8, Vec3) = FIELD(q, 0x50, Vec3);
         func_ov000_021903b4(FIELD(q, 0x10, void *));

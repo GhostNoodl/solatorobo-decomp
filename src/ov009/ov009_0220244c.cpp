@@ -13,7 +13,7 @@ extern void func_ov003_021d4fd8(Ov009Actor *self);
 extern void *data_ov009_02216e78;
 extern char data_ov009_02216b98[];
 extern void *data_02097cdc;
-extern void func_02016cd8(u32 v, void *dst, u32 size);
+extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
 extern BOOL func_02035b90(const char *name, s32 a);
 extern void func_02036838(void *mgr, const char *name, s32 a, s32 b);
 extern BOOL func_ov000_0218cf5c(Ov009Actor *self);
@@ -113,7 +113,7 @@ void func_ov009_022026c8(Ov009Names *self, void *res) {
 Ov009Actor *func_ov009_02202788(Ov009Actor *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = &data_ov009_02216e78;
-    func_02016cd8(0, &FLD(u8, self, 0xf8), 0x34);
+    MIi_CpuClear32(0, &FLD(u8, self, 0xf8), 0x34);
     return self;
 }
 #pragma force_active reset

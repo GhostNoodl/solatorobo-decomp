@@ -83,7 +83,7 @@ int func_0205fa48(StageResSlot *slot) {
             pos.x = pt->x << 4;
             pos.y = pt->y << 4;
             pos.z = pt->z << 4;
-            func_02012be8(&pos, &pt->pos, &pos);
+            VEC_Add(&pos, &pt->pos, &pos);
         }
     }
     if (player != NULL) {

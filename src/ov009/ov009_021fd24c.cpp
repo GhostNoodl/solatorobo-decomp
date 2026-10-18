@@ -52,7 +52,7 @@ void func_ov009_021fd2b4(Ov009Actor *self) {
         d.x = path->end.x - self->pos.x;
         d.y = path->end.y - self->pos.y;
         d.z = path->end.z - self->pos.z;
-        func_02012fb8(0x7b, &d, &self->pos, &self->pos);
+        VEC_MultAdd(0x7b, &d, &self->pos, &self->pos);
         if (func_01ffc198(&self->pos, &path->end, self->unk_64 + 0x800)) {
             Ov009Sub44 *s44 = self->unk_44;
             s44->unk_22_0 = 1;
@@ -82,7 +82,7 @@ void func_ov009_021fd430(Ov009Actor *self) {
     d.x = t->x - self->pos.x;
     d.y = t->y - self->pos.y;
     d.z = t->z - self->pos.z;
-    func_02012fb8(0x31, &d, &self->pos, &self->pos);
+    VEC_MultAdd(0x31, &d, &self->pos, &self->pos);
 }
 
 }

@@ -8,7 +8,7 @@ extern void func_0200ed2c(FSFile *file);
 extern void func_0200ef1c(FSFile *file);
 extern u32 func_0201118c(void *buf, u32 size);
 extern void func_020111dc(int arg);
-extern void func_02015fe0(u16 *table, u32 poly);
+extern void MATHi_CRC16InitTableRev(u16 *table, u32 poly);
 extern void func_02016e28(void *dst, int value, u32 size);
 extern ResLoader *func_0203562c(ResLoader *loader);
 extern void func_02035670(ResLoader *loader);
@@ -290,7 +290,7 @@ void func_020363d8(ResMgr *mgr) {
     mgr->freeNode = mgr->pool;
     mgr->numNodes = 0;
     mgr->loadStep = -1;
-    func_02015fe0(mgr->hashTable, 0xa001);
+    MATHi_CRC16InitTableRev(mgr->hashTable, 0xa001);
 }
 
 void func_020364c0(ResMgr *mgr) {

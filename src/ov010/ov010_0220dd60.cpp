@@ -14,7 +14,7 @@ extern void func_02065860(void *a, s32 b);
 extern void func_020114a4(void *m, s32 s, s32 c);
 extern void func_02011488(void *m, s32 s, s32 c);
 extern void func_02011610(void *a, void *b, void *c);
-extern void func_02016dbc(void *m, void *b);
+extern void MI_Copy36B(void *m, void *b);
 extern s32 func_ov000_021903b4(void *p);
 extern void func_ov000_02190cb0(void *p, s32 a, s32 b, s32 c);
 extern void func_ov000_021915a0(void *p);
@@ -74,7 +74,7 @@ s32 func_ov010_0220de5c(void *self) {
             break;
         }
         FLD(Ov010Vec, FLD(u8 *, self, 0x38), 0x78) = FLD(Ov010Vec, self, 0x70);
-        func_02016dbc((u8 *)self + 0xdc, FLD(u8 *, self, 0x38) + 0x84);
+        MI_Copy36B((u8 *)self + 0xdc, FLD(u8 *, self, 0x38) + 0x84);
         r = func_ov000_021903b4(FLD(void *, self, 0x38));
     }
     return r;

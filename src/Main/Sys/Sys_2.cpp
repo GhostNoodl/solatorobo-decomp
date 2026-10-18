@@ -14,17 +14,17 @@ extern void *func_020198e4(int arena, void *lo, void *hi, int n);
 extern void func_02019718(int arena, void *p);
 extern BOOL func_02018d58(void);
 extern void *func_0201998c(int arena);
-extern void *func_020223c8(void *start, u32 size, int flags);
+extern void *NNS_FndCreateExpHeapEx(void *start, u32 size, int flags);
 extern void func_0203dfb0(void);
 extern void func_0203e024(void);
 extern void func_0201a8a4(void);
 extern void func_0203e6bc(void);
-extern u32 func_0201a7f0(void);
-extern void func_0201a804(u32 state);
-extern void *func_02022400(void *heap, u32 size, u32 align);
-extern void func_02022590(void *heap, void *ptr);
-extern void *func_02021ed0(void *ptr);
-extern u32 func_02022430(void *heap, void *ptr, u32 size);
+extern u32 OS_DisableInterrupts(void);
+extern void OS_RestoreInterrupts(u32 state);
+extern void *NNS_FndAllocFromExpHeapEx(void *heap, u32 size, u32 align);
+extern void NNS_FndFreeToExpHeap(void *heap, void *ptr);
+extern void *NNS_FndFindContainHeap(void *ptr);
+extern u32 NNS_FndResizeForMBlockExpHeap(void *heap, void *ptr, u32 size);
 
 static inline BOOL PAD_DetectFold(void) {
     return (*(volatile u16 *)0x2ffffa8 & 0x8000) >> 15;
@@ -64,8 +64,8 @@ void func_0203d9e8(UnkSys *sys) {
         sys->unk_0c = func_0201998c(0);
         size = 0x1c000;
     }
-    sys->unk_04 = func_020223c8(start, size, 0);
-    sys->unk_08 = func_020223c8(start + size, (u8 *)hi - (start + size), 0);
+    sys->unk_04 = NNS_FndCreateExpHeapEx(start, size, 0);
+    sys->unk_08 = NNS_FndCreateExpHeapEx(start + size, (u8 *)hi - (start + size), 0);
     sys->align = 4;
     data_02097dd0->cur = data_02097dd0->unk_08;
     func_0203dfb0();
@@ -145,61 +145,61 @@ BOOL func_0203dc9c(UnkSysNode *node, BOOL recurse) {
 
 #pragma pop
 void *func_0203dd9c(u32 size) {
-    u32 irq = func_0201a7f0();
-    void *p = func_02022400(data_02097dd0->cur, size, data_02097dd0->align);
-    func_0201a804(irq);
+    u32 irq = OS_DisableInterrupts();
+    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->cur, size, data_02097dd0->align);
+    OS_RestoreInterrupts(irq);
     return p;
 }
 
 void *func_0203dddc(u32 size) {
-    u32 irq = func_0201a7f0();
-    void *p = func_02022400(data_02097dd0->cur, size, data_02097dd0->align);
-    func_0201a804(irq);
+    u32 irq = OS_DisableInterrupts();
+    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->cur, size, data_02097dd0->align);
+    OS_RestoreInterrupts(irq);
     return p;
 }
 
 void func_0203de1c(void *ptr) {
-    u32 irq = func_0201a7f0();
-    func_02022590(data_02097dd0->cur, ptr);
-    func_0201a804(irq);
+    u32 irq = OS_DisableInterrupts();
+    NNS_FndFreeToExpHeap(data_02097dd0->cur, ptr);
+    OS_RestoreInterrupts(irq);
 }
 
 void func_0203de50(void *ptr) {
-    u32 irq = func_0201a7f0();
-    func_02022590(data_02097dd0->cur, ptr);
-    func_0201a804(irq);
+    u32 irq = OS_DisableInterrupts();
+    NNS_FndFreeToExpHeap(data_02097dd0->cur, ptr);
+    OS_RestoreInterrupts(irq);
 }
 
 void *func_0203de84(u32 size, u32 align) {
-    u32 irq = func_0201a7f0();
-    void *p = func_02022400(data_02097dd0->unk_08, size, align);
-    func_0201a804(irq);
+    u32 irq = OS_DisableInterrupts();
+    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->unk_08, size, align);
+    OS_RestoreInterrupts(irq);
     return p;
 }
 
 void *func_0203dec8(u32 size, u32 align) {
-    u32 irq = func_0201a7f0();
-    void *p = func_02022400(data_02097dd0->unk_04, size, align);
-    func_0201a804(irq);
+    u32 irq = OS_DisableInterrupts();
+    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->unk_04, size, align);
+    OS_RestoreInterrupts(irq);
     return p;
 }
 
 void func_0203df0c(void *ptr) {
-    u32 irq = func_0201a7f0();
-    func_02022590(data_02097dd0->unk_08, ptr);
-    func_0201a804(irq);
+    u32 irq = OS_DisableInterrupts();
+    NNS_FndFreeToExpHeap(data_02097dd0->unk_08, ptr);
+    OS_RestoreInterrupts(irq);
 }
 
 void func_0203df40(void *ptr) {
-    u32 irq = func_0201a7f0();
-    func_02022590(data_02097dd0->unk_04, ptr);
-    func_0201a804(irq);
+    u32 irq = OS_DisableInterrupts();
+    NNS_FndFreeToExpHeap(data_02097dd0->unk_04, ptr);
+    OS_RestoreInterrupts(irq);
 }
 
 u32 func_0203df74(void *ptr, u32 size) {
-    u32 irq = func_0201a7f0();
-    u32 ret = func_02022430(func_02021ed0(ptr), ptr, size);
-    func_0201a804(irq);
+    u32 irq = OS_DisableInterrupts();
+    u32 ret = NNS_FndResizeForMBlockExpHeap(NNS_FndFindContainHeap(ptr), ptr, size);
+    OS_RestoreInterrupts(irq);
     return ret;
 }
 

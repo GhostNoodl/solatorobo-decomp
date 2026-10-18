@@ -2,9 +2,9 @@
 
 #include "nnsys/fnd/frameheap.h"
 
-u32 func_0201c61c(void);
-void func_0201c414(int a);
-void func_0201c5b0(u32 a);
+u32 SND_GetCurrentCommandTag(void);
+void SND_FlushCommand(int a);
+void SND_WaitForCommandProc(u32 a);
 
 static void func_02030834(NNSFndList *list);
 static BOOL func_02030878(NNSSndHeap *self);
@@ -141,7 +141,7 @@ static BOOL func_02030878(NNSSndHeap *self) {
 }
 
 static void func_020308b4(void) {
-    u32 state = func_0201c61c();
-    func_0201c414(1);
-    func_0201c5b0(state);
+    u32 state = SND_GetCurrentCommandTag();
+    SND_FlushCommand(1);
+    SND_WaitForCommandProc(state);
 }

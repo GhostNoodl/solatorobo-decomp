@@ -66,7 +66,7 @@ extern char data_ov003_021f7cb6[];
 extern Ov003Pl *func_ov000_0219bf90(void);
 extern void func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
-extern s32 func_02013068(const Ov003Pos *a, const Ov003Pos *b);
+extern s32 VEC_Distance(const Ov003Pos *a, const Ov003Pos *b);
 extern void func_02049f44(void *mgr, s32 id, Ov003Pos *pos, s32 a);
 extern Ov003Eff *func_02065f88(s32 id, const Ov003Pos *pos);
 extern void func_ov003_021d6054(Ov003Act *self);
@@ -125,7 +125,7 @@ void func_ov003_021d732c(Ov003Act *self) {
         v.y = p->pos.y;
         v.z = p->pos.z;
         v.y = self->pos.y;
-        if (func_02013068(&self->pos, &v) < 0xc000) {
+        if (VEC_Distance(&self->pos, &v) < 0xc000) {
             func_ov000_02198360(self->work, 1, 0);
         }
         break;

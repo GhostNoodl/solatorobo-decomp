@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 void func_02049a48(void *a, int b, int c, int d, int e);
-s32 func_02012ab8(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 s32 func_02049210(s32 t, s32 a, s32 b);
 
 BOOL func_ov015_022106f8(u8 *self) {
@@ -21,7 +21,7 @@ BOOL func_ov015_022106f8(u8 *self) {
         }
         break;
     case 2: {
-        s32 t = func_02012ab8(FLD(s32, self, 0x140) << 12, 0x28000);
+        s32 t = FX_Div(FLD(s32, self, 0x140) << 12, 0x28000);
         FLD(s32, self, 0x1c) = 0x50000;
         FLD(s32, self, 0x20) = func_02049210(t, -0x46000, -0x66000);
         FLD(s32, self, 0x24) = -0x333;

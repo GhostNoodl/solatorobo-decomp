@@ -19,7 +19,7 @@ void func_02026470(void *a, void *b, void *c, int d);
 void func_02026678(void *a, void *b);
 
 static inline void ov002_strSet(char *dst, void **src, u32 n) {
-    func_02016cd8(0, dst, n);
+    MIi_CpuClear32(0, dst, n);
     func_0201e5a0(dst, *src, n);
 }
 

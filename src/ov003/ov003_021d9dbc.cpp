@@ -68,15 +68,15 @@ extern Ov003Effect *func_02065f88(void *mgr, const Ov003Vec *pos);
 void func_ov003_021d9dbc(Ov003Vec *out, const Ov003Vec *a, const Ov003Vec *b, s32 dist, s32 yoff) {
     Ov003Vec d;
     Ov003Vec r;
-    if (func_02013068(a, b) <= dist) {
+    if (VEC_Distance(a, b) <= dist) {
         *out = *a;
         return;
     }
     d.x = a->x - b->x;
     d.y = a->y - b->y;
     d.z = a->z - b->z;
-    func_02012d78(&d, &d);
-    func_02012fb8(dist, &d, b, &r);
+    VEC_Normalize(&d, &d);
+    VEC_MultAdd(dist, &d, b, &r);
     if (yoff != 0) {
         r.y += yoff;
     }
@@ -85,7 +85,7 @@ void func_ov003_021d9dbc(Ov003Vec *out, const Ov003Vec *a, const Ov003Vec *b, s3
 
 void func_ov003_021d9e90(Ov003Vec *out, const Ov003Vec *dir, const Ov003Vec *base, s32 scale, s32 yoff) {
     Ov003Vec r;
-    func_02012fb8(scale, dir, base, &r);
+    VEC_MultAdd(scale, dir, base, &r);
     if (yoff != 0) {
         r.y += yoff;
     }
@@ -98,7 +98,7 @@ void func_ov003_021d9edc(u16 id) {
 
 void func_ov003_021d9f04(Ov003Rot *out, const Ov003Vec *v) {
     out->x = Ov003_Pitch(v->y);
-    out->y = func_0201319c(v->x, v->z);
+    out->y = FX_Atan2(v->x, v->z);
     out->z = 0;
 }
 
@@ -107,9 +107,9 @@ void func_ov003_021d9f80(Ov003Rot *out, const Ov003Vec *a, const Ov003Vec *b) {
     d.x = a->x - b->x;
     d.y = a->y - b->y;
     d.z = a->z - b->z;
-    func_02012d78(&d, &d);
+    VEC_Normalize(&d, &d);
     out->x = Ov003_Pitch(d.y);
-    out->y = func_0201319c(d.x, d.z);
+    out->y = FX_Atan2(d.x, d.z);
     out->z = 0;
 }
 
@@ -159,7 +159,7 @@ static inline Ov003Effect *Ov003_SpawnScatter(const Ov003Vec *base, s32 range, v
     v.y = y;
     v.z = 0;
     func_020117a4(&v, func_02027240(), &v);
-    func_02012be8(base, &v, &p);
+    VEC_Add(base, &v, &p);
     return func_02065f88(mgr, &p);
 }
 
@@ -174,7 +174,7 @@ void func_ov003_021da108(Ov003FxActor *self, s32 range, void *mgr, s32 base, s32
         off.y = self->unk_44->pos.y;
         off.z = self->unk_44->pos.z;
     }
-    func_02012be8(&pos, (Ov003Vec *)&off, &pos);
+    VEC_Add(&pos, (Ov003Vec *)&off, &pos);
     r = func_02040498(top - base);
     e = Ov003_SpawnScatter(&pos, range, mgr);
     if (e != NULL) {

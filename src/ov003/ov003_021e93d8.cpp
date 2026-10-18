@@ -74,8 +74,8 @@ extern void func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
 extern s32 func_02040528(s32 max);
-extern void func_02012fb8(s32 scale, const Ov003Vec *dir, const Ov003Vec *base, Ov003Vec *out);
-extern s32 func_02013068(const Ov003Vec *a, const Ov003Vec *b);
+extern void VEC_MultAdd(s32 scale, const Ov003Vec *dir, const Ov003Vec *base, Ov003Vec *out);
+extern s32 VEC_Distance(const Ov003Vec *a, const Ov003Vec *b);
 extern Ov003FlyPlayer *func_ov000_0219bf90(void);
 extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern void func_ov000_0218dbe0(void *self, s32 a);
@@ -146,7 +146,7 @@ void func_ov003_021e9448(Ov003Fly *self) {
         d.x = self->target.x - self->pos.x;
         d.y = self->target.y - self->pos.y;
         d.z = self->target.z - self->pos.z;
-        func_02012fb8(0x3d, &d, &self->pos, &self->pos);
+        VEC_MultAdd(0x3d, &d, &self->pos, &self->pos);
         break;
     }
     }
@@ -161,7 +161,7 @@ void func_ov003_021e9448(Ov003Fly *self) {
         pp.x = pl->pos.x;
         pp.y = pl->pos.y;
         pp.z = pl->pos.z;
-        if (func_02013068(&self->pos, &pp) >= 0x6000) {
+        if (VEC_Distance(&self->pos, &pp) >= 0x6000) {
             return;
         }
     }

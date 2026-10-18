@@ -115,7 +115,7 @@ extern const s16 FX_SinCosTable_[];
 
 extern void func_0203c9e8(int a, int b);
 extern void func_0203cc58(int a, int b, int c);
-extern s32 func_02012ab8(s32 a, s32 b);
+extern s32 FX_Div(s32 a, s32 b);
 extern s32 func_02040498(s32 max);
 extern void func_02043d20(void *obj, int a);
 extern void func_02043d84(void *obj);

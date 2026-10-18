@@ -70,7 +70,7 @@ extern void func_020114a4(void *m, s32 s, s32 c);
 extern void func_0201146c(void *m, s32 s, s32 c);
 extern void func_02011488(void *m, s32 s, s32 c);
 extern void func_02011610(void *a, void *b, void *c);
-extern void func_02016dbc(void *m, void *b);
+extern void MI_Copy36B(void *m, void *b);
 extern void func_ov000_0218cea4(void *self);
 
 static inline void Ov010_022020c8_Init(void *self) {
@@ -138,7 +138,7 @@ void func_ov010_022023c4(void *self) {
     func_02011610(m1, m2, m1);
     func_02011488(m2, OV010_SIN(FLD(u16, self, 0x7e)), OV010_COS(FLD(u16, self, 0x7e)));
     func_02011610(m1, m2, m1);
-    func_02016dbc(m1, FLD(u8 *, self, 0x38) + 0x84);
+    MI_Copy36B(m1, FLD(u8 *, self, 0x38) + 0x84);
     FLD(Ov010Vec, FLD(u8 *, self, 0x38), 0x78) = FLD(Ov010Vec, self, 0x70);
     func_ov000_0218cea4(self);
 }

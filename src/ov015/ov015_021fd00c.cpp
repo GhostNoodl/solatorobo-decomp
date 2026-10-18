@@ -12,12 +12,12 @@ void func_ov015_021fe814(void *self);
 void func_ov015_021feb34(void *self);
 void func_ov015_021fee54(void *self);
 void func_ov015_021ff044(void *self);
-s32 func_02012ab8(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 extern u8 data_ov015_0221253c[];
-s32 func_02012d18(const Ov015Vec *v);
-void func_02012fb8(s32 scale, const Ov015Vec *dir, const Ov015Vec *base, Ov015Vec *out);
-void func_02012be8(const void *a, const void *b, void *out);
-void func_02012d78(void *src, void *dst);
+s32 VEC_Mag(const Ov015Vec *v);
+void VEC_MultAdd(s32 scale, const Ov015Vec *dir, const Ov015Vec *base, Ov015Vec *out);
+void VEC_Add(const void *a, const void *b, void *out);
+void VEC_Normalize(void *src, void *dst);
 
 void func_ov015_021fd00c(u8 *self, s32 mode, const Ov015VecC *v) {
     if (FLD(s32, self, 0x17c) != mode) {
@@ -72,17 +72,17 @@ void func_ov015_021fd0f4(u8 *self, Ov015Vec *out) {
 
     Ov015Vec f;
     s32 ld, le, dot, r;
-    func_02012be8(self + 0x180, data_ov015_0221253c, &c);
+    VEC_Add(self + 0x180, data_ov015_0221253c, &c);
     d.x = c.x - a.x;
     d.y = c.y - a.y;
     d.z = c.z - a.z;
-    ld = func_02012d18(&d);
+    ld = VEC_Mag(&d);
     e.x = b.x - a.x;
     e.y = b.y - a.y;
     e.z = b.z - a.z;
-    le = func_02012d18(&e);
+    le = VEC_Mag(&e);
     dot = (s32)(((s64)e.x * d.x + (s64)e.y * d.y + (s64)e.z * d.z + 0x800) >> 12);
-    r = func_02012ab8(dot, Ov015_FxMul(ld, le));
+    r = FX_Div(dot, Ov015_FxMul(ld, le));
     if (r < 0) r = -r;
     if (r >= lim) {
         *out = b;
@@ -91,9 +91,9 @@ void func_ov015_021fd0f4(u8 *self, Ov015Vec *out) {
     f.x = d.x - e.x;
     f.y = d.y - e.y;
     f.z = d.z - e.z;
-    func_02012fb8(0x52, &f, &e, &e);
-    func_02012d78(&e, &e);
-    func_02012fb8(ld, &e, &a, out);
+    VEC_MultAdd(0x52, &f, &e, &e);
+    VEC_Normalize(&e, &e);
+    VEC_MultAdd(ld, &e, &a, out);
 }
 
 }

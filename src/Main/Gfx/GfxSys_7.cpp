@@ -73,7 +73,7 @@ extern void *func_02014128(void);
 extern void *func_020140d4(void);
 extern void *func_020140f4(void);
 extern void *func_02014148(void);
-extern void func_02016d1c(u32 value, void *dst, u32 size);
+extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 
 }
 
@@ -164,7 +164,7 @@ extern "C" {
 extern void func_02015780(void);
 extern void func_0201576c(void);
 extern void func_02023c9c(void *obj, void *src, int count);
-extern int func_02012ab8(int a, int b);
+extern int FX_Div(int a, int b);
 extern void func_020137a8(volatile void *reg, int a, int b);
 
 static inline u32 GfxReg_GetVisiblePlane(u32 addr) {
@@ -221,7 +221,7 @@ void func_0203ced8(int mode) {
             if (data_02097d8c[ch] == 0) {
                 t = 0x1000;
             } else {
-                t = func_02012ab8(data_02097d64[ch], data_02097d8c[ch]);
+                t = FX_Div(data_02097d64[ch], data_02097d8c[ch]);
                 if (t >= 0x1000) {
                     t = 0x1000;
                 }
@@ -261,7 +261,7 @@ void func_0203d040(int v) {
         return;
     }
     sys = data_02097d44.sys;
-    t = func_02012ab8((v < 0 ? -v : v) << 12, 16 << 12);
+    t = FX_Div((v < 0 ? -v : v) << 12, 16 << 12);
     func_02043d20(data_02097d44.sys->unk_8b0, 0);
     polyAttr = G3_PackPolygonAttr(0, 1, 3, func_02043d48(sys->unk_8b0), FX_Mul(t, 0x1f000) >> 12, 0);
     func_0202a3ec(0x29, &polyAttr, 1);

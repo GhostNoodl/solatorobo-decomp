@@ -122,7 +122,7 @@ void func_ov012_02201d7c(Ov012Actor *self) {
     if (p != NULL) {
         FLD(u16, self, 0xe0) = FLD(u16, p, 0xc);
     }
-    func_02012be8(&self->pos, &data_ov012_0220a54c[FLD(u8, self, 0xe2)], &self->unk_84);
+    VEC_Add(&self->pos, &data_ov012_0220a54c[FLD(u8, self, 0xe2)], &self->unk_84);
     {
         FLD(Ov012Vec, self, 0xd0) = self->unk_84;
     }

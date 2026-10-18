@@ -66,7 +66,7 @@ extern void *data_ov006_021ec444;
 extern u16 data_ov006_021eb840[];
 
 void func_02016e28(void *dst, int value, u32 size);
-void func_02016ca4(int value, void *dst, u32 size);
+void MIi_CpuClear16(int value, void *dst, u32 size);
 
 ov006_Unk0203a4c0 *func_0203a4c0(ov006_Unk02097ce0 *a);
 BOOL func_0203e63c(void *a);

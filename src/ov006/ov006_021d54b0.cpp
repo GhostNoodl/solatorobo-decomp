@@ -97,7 +97,7 @@ int func_02035b90(void *a, int b);
 void func_0204aab0(ov006_Unk02097e48 *a);
 void func_02041558(void *a);
 void func_02041278(void *a);
-void func_02016cd8(int value, void *dst, u32 size);
+void MIi_CpuClear32(int value, void *dst, u32 size);
 
 ov006_Task0 *func_ov006_021d54b0(ov006_Task0 *self) {
     func_ov006_021ccda0(self);
@@ -330,7 +330,7 @@ ov006_Task1 *func_ov006_021d5b04(ov006_Task1 *self) {
     self->unk28 = 0;
     self->unk2C = 0;
     self->unk30 = 0;
-    func_02016cd8(0, self->unk40, sizeof(self->unk40));
+    MIi_CpuClear32(0, self->unk40, sizeof(self->unk40));
     self->unk68 = 0;
     self->unk6C = 1;
     self->unk6D = 0;

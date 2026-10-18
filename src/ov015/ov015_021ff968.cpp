@@ -9,7 +9,7 @@ void func_ov000_02191b04(void *p);
 void func_ov000_0218fee4(void *p);
 void func_ov000_0218ea20(void *p);
 void func_ov015_0220900c(void *p);
-s32 func_02012ab8(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 BOOL func_ov015_022121b4(u8 *self);
 void func_ov015_022123c4(u8 *self);
 void func_ov000_02191318(void *a, s32 b);
@@ -68,7 +68,7 @@ void func_ov015_021ff9e8(u8 *self) {
         s32 q;
         if (m != NULL) m = func_ov015_0220c93c(m);
         func_ov015_02209b80(obj, (s32)m, 5);
-        q = func_02012ab8(i << 12, cnt << 12);
+        q = FX_Div(i << 12, cnt << 12);
         FLD(s32, obj, 0x40) = Ov015_FxMul(q, 0x64000) - 0x32000;
         FLD(s32, obj, 0x44) = -0x32000;
         FLD(s32, obj, 0x48) = Ov015_FxMul(q, -0x41000) - 0x4b000;

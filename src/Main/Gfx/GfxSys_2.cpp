@@ -70,7 +70,7 @@ extern void *func_02014128(void);
 extern void *func_020140d4(void);
 extern void *func_020140f4(void);
 extern void *func_02014148(void);
-extern void func_02016d1c(u32 value, void *dst, u32 size);
+extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 
 void func_0203b924(GfxSys *sys, u16 color) {
     sys->unk_008 = color;
@@ -173,7 +173,7 @@ extern "C" {
 extern void func_02015780(void);
 extern void func_0201576c(void);
 extern void func_02023c9c(void *obj, void *src, int count);
-extern int func_02012ab8(int a, int b);
+extern int FX_Div(int a, int b);
 extern void func_020137a8(volatile void *reg, int a, int b);
 
 static inline u32 GfxReg_GetVisiblePlane(u32 addr) {
