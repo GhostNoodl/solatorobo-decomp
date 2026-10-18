@@ -3,3 +3,7 @@
     .ctor       start:0x0208aa68 end:0x0208aa70 kind:rodata align:4
     .data       start:0x0208aa80 end:0x0208d940 kind:data align:32
     .bss        start:0x0208d940 end:0x0214b1a0 kind:bss align:32
+
+src/Main/Heap/GroupHeap.c:
+    complete
+    .text       start:0x0203053c end:0x020308d4

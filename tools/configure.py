@@ -31,9 +31,10 @@ DSD_VERSION = 'v0.12.1'
 WIBO_VERSION = '0.6.16'
 SJISWRAP_VERSION = 'v1.2.2'
 OBJDIFF_VERSION = 'v3.4.0'
-# TODO: not yet confirmed for Solatorobo, these are Phantom Hourglass's values
-MWCC_VERSION = "2.0/sp1p5"
-DECOMP_ME_COMPILER = "mwcc_30_131"
+# CodeWarrior for DSi 1.6 SP2 (mwccarm 4.0 build 1051). Every DSi version matches the code we've decompiled so far, so the
+# exact version is a best guess; 2.0 versions don't match.
+MWCC_VERSION = "dsi/1.6sp2"
+DECOMP_ME_COMPILER = "mwcc_40_1051"
 CC_FLAGS = " ".join([
     "-O4,p",                # Optimize maximally for performance
     "-enum int",            # Use int-sized enums

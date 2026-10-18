@@ -6,7 +6,7 @@ This repository contains no game code or assets. To build it, you need your own 
 
 ## Status
 
-Very early. The ROM is unpacked and split into about 8,100 functions across the main ARM9 program, ITCM/DTCM and 16 overlays, ready to be matched with [objdiff](https://github.com/encounter/objdiff).
+Very early: 11 of about 8,100 functions matched. The ROM is unpacked and split across the main ARM9 program, ITCM/DTCM and 16 overlays, ready to be matched with [objdiff](https://github.com/encounter/objdiff).
 
 ## About the game's code
 
@@ -16,7 +16,12 @@ Very early. The ROM is unpacked and split into about 8,100 functions across the 
   2. TwlSDK autoload entries are 16 bytes, and DTCM sits at `0x02fe0000`.
   3. The `.ctor` runner isn't the last call in the entrypoint.
   4. The exception table is empty.
+  5. Gap files share a name, which the linker script check wrongly flagged as duplicates.
 - dsd can't rebuild a DSi-enhanced ROM yet (animated banner, arm9i/arm7i), so for now we verify matching code per module with `ninja check` instead of a full ROM SHA1.
+
+## Compiler
+
+The game was built with CodeWarrior for DSi. Every DSi compiler version (mwccarm 4.0 builds 1018 to 1051) matches the code decompiled so far, so we use `dsi/1.6sp2` (build 1051, `mwcc_40_1051` on decomp.me) until a function proves otherwise. The 2.0 compilers that most DS decomps use don't match.
 
 ## Building
 
