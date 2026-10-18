@@ -572,3 +572,11 @@ src/ov006/ov006_021e000c.cpp:
 src/ov006/ov006_021cddf8.cpp:
     complete
     .text       start:0x021cddf8 end:0x021cdfc4
+
+src/ov006/ov006_021d23dc.cpp:
+    complete
+    .text       start:0x021d23dc end:0x021d2b9c
+
+src/ov006/ov006_021d4880.cpp:
+    complete
+    .text       start:0x021d4880 end:0x021d4f64

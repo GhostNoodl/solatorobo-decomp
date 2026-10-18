@@ -19,3 +19,7 @@ src/ov007/ov007_021cdff0.cpp:
 src/ov007/ov007_021cef80.cpp:
     complete
     .text       start:0x021cef80 end:0x021cf474
+
+src/ov007/ov007_021cf474.cpp:
+    complete
+    .text       start:0x021cf474 end:0x021cfa3c
