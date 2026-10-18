@@ -7,3 +7,47 @@
 src/Main/Heap/GroupHeap.c:
     complete
     .text       start:0x0203053c end:0x020308d4
+
+libs/nnsys/snd/sndarc_loader.c:
+    complete
+    .text       start:0x020308d4 end:0x02030f9c
+
+libs/nnsys/snd/sndarc_loader_2.c:
+    complete
+    .text       start:0x020310c4 end:0x0203120c
+
+libs/nnsys/snd/sndarc_loader_3.c:
+    complete
+    .text       start:0x020312d4 end:0x02031394
+
+libs/nnsys/snd/sndarc_player.c:
+    complete
+    .text       start:0x02031394 end:0x020316c0
+
+libs/nnsys/snd/sndarc_stream.c:
+    complete
+    .text       start:0x020317c4 end:0x020319b4
+
+libs/nnsys/snd/sndarc_stream_2.c:
+    complete
+    .text       start:0x02031ac0 end:0x02031b84
+
+libs/nnsys/snd/sndarc_stream_3.c:
+    complete
+    .text       start:0x02031df0 end:0x0203244c
+
+libs/nnsys/snd/sndarc_stream_4.c:
+    complete
+    .text       start:0x02032c54 end:0x02032eac
+
+libs/nnsys/snd/sndarc_util.c:
+    complete
+    .text       start:0x02032eac end:0x02032f90
+
+libs/mobiclip/mobiclip_api.cpp:
+    complete
+    .text       start:0x02033550 end:0x02033858
+
+libs/mobiclip/mobiclip_player.cpp:
+    complete
+    .text       start:0x02033df0 end:0x02034600
