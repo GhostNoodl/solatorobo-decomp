@@ -37,7 +37,7 @@ extern u32 func_0200bd08(u32 a, u32 b);
 extern u32 func_0200b674(u32 a, u32 b);
 extern s32 func_0200b574(u32 a);
 extern void func_0204061c(s32 *out, s32 arg);
-extern void func_0202ec8c(SndHandle *handle, int pause);
+extern void NNS_SndPlayerPause(SndHandle *handle, int pause);
 extern s32 func_02018a4c(void *thread);
 extern void func_020189a4(void *thread, s32 prio);
 
@@ -51,7 +51,7 @@ static inline void SndMgr_StopSe(SndMgr *mgr, s32 id) {
     if (func_02049984(mgr, id, &seqArc, &index) == NULL) {
         return;
     }
-    func_0202ebe8(seqArc, index, 0);
+    NNS_SndPlayerStopSeqBySeqArcIdx(seqArc, index, 0);
 }
 
 void func_02049de8(SndMgr *mgr, s32 id);
@@ -91,9 +91,9 @@ SndHandle *func_02049f44(SndMgr *mgr, s32 id, s32 arg, s32 pan) {
     if (!NNS_SndArcPlayerStartSeqArc(handle, seqArc, index)) {
         return NULL;
     }
-    func_0202ed54(handle, 1, pan);
-    func_0202ed74(handle, 1, p);
-    func_0202ecc4(handle, vol);
+    NNS_SndPlayerSetTrackPitch(handle, 1, pan);
+    NNS_SndPlayerSetTrackPan(handle, 1, p);
+    NNS_SndPlayerSetVolume(handle, vol);
     return handle;
 }
 
@@ -119,7 +119,7 @@ static inline void SndMgr_SetSlotVolume(SndMgr *mgr, u32 slot, s32 volume, s32 f
     if (volume > 0x7f) {
         volume = 0x7f;
     }
-    func_0202ecec(handle, volume, frames);
+    NNS_SndPlayerMoveVolume(handle, volume, frames);
 }
 
 void func_0204a058(SndMgr *mgr, u32 slot, s32 volume, s32 frames) {
@@ -135,7 +135,7 @@ void func_0204a094(SndMgr *mgr, u32 slot, s32 pan) {
     if (handle == NULL) {
         return;
     }
-    func_0202ed54(handle, 1, pan);
+    NNS_SndPlayerSetTrackPitch(handle, 1, pan);
 }
 
 void func_0204a0d4(SndMgr *mgr, u32 slot, s32 pan) {
@@ -147,7 +147,7 @@ void func_0204a0d4(SndMgr *mgr, u32 slot, s32 pan) {
     if (handle == NULL) {
         return;
     }
-    func_0202ed54(handle, 1, pan << 6);
+    NNS_SndPlayerSetTrackPitch(handle, 1, pan << 6);
 }
 
 BOOL func_0204a118(SndMgr *mgr, s32 id) {
@@ -168,7 +168,7 @@ void func_0204a160(SndMgr *mgr) {
     for (i = 0; i < 5; i++) {
         handle = &mgr->seqArc[i];
         if ((handle->player != NULL ? TRUE : FALSE)) {
-            func_0202ec8c(handle, TRUE);
+            NNS_SndPlayerPause(handle, TRUE);
             mgr->unk_70[i] = 1;
         } else {
             mgr->unk_70[i] = 0;
@@ -180,7 +180,7 @@ void func_0204a1c4(SndMgr *mgr) {
     s32 i;
     for (i = 0; i < 5; i++) {
         if (mgr->unk_70[i] != 0) {
-            func_0202ec8c(&mgr->seqArc[i], FALSE);
+            NNS_SndPlayerPause(&mgr->seqArc[i], FALSE);
             mgr->unk_70[i] = 0;
         }
     }
@@ -218,7 +218,7 @@ s32 func_0204a2c8(SndMgr *mgr, s32 seq) {
 }
 
 void func_0204a2e0(SndMgr *mgr, int fadeFrames) {
-    func_0202ec4c(fadeFrames);
+    NNS_SndPlayerStopSeqAll(fadeFrames);
 }
 
 void func_0204a2f0(SndMgr *mgr, s32 id) {

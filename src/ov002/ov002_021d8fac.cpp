@@ -44,7 +44,7 @@ static inline void ov002_Model_PlayPart(void *model, int idx) {
     if (part != NULL && FIELD(part, 0x4, void *) != NULL) {
         anim = FIELD(FIELD(part, 0x4, void *), 0x30, void *);
     } else {
-        anim = func_02023410(FIELD(res, 0x4, void *), **(u16 **)FIELD(func_02023390(FIELD(res, 0xc, void *), idx), 0xc, void *));
+        anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
     }
     func_02042628(model, anim, part, 0);
 }

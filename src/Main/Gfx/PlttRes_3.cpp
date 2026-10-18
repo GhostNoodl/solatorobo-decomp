@@ -9,7 +9,7 @@ extern "C" {
 
 extern u32 (*NNS_GfdDefaultFuncAllocPlttVram)(u32 size, int is4pltt, int opt);
 extern void func_0203e134(const char *name, u32 value);
-extern void func_020241c4(PlttSub *sub, int idx, u32 addr);
+extern void NNS_G2dSetImagePaletteLocation(PlttSub *sub, int idx, u32 addr);
 extern u16 func_0203bdb0(GfxSys *sys, int count, int idx);
 u32 func_02041080(PlttRes *res, int idx, u32 mask, int load);
 u16 func_02041000(int count);
@@ -19,7 +19,7 @@ u16 func_02041060(int count);
 
 
 extern u32 func_0203e458(int type, u32 src, u32 dst, u32 size, u32 chunk);
-extern void func_020243f4(int *fmt, u16 *count, u32 addr, int idx, PlttSub *sub);
+extern void NNS_G2dLoadPaletteEx(int *fmt, u16 *count, u32 addr, int idx, PlttSub *sub);
 
 
 extern void func_0203e58c(u32 id);

@@ -66,8 +66,8 @@ void func_0201e520(void *dst, const char *src);
 void func_020417e0(ov006_Model *self, void *res);
 void func_02041d9c(ov006_Model *self, int a, int b);
 void *func_02035de0(const char *a, const char *b);
-void *func_02023390(int a, int b);
-void *func_02023410(int a, u16 b);
+void *NNS_G2dGetAnimSequenceByIdx(int a, int b);
+void *NNS_G2dGetCellDataByIdx(int a, u16 b);
 void func_02042628(ov006_Model *model, void *a, ov006_ModelPart *part, int b);
 
 #ifdef __cplusplus
@@ -102,7 +102,7 @@ static inline void ov006_Model_PlayPart(ov006_Model *model, int idx) {
     if (part != NULL && part->unk4 != NULL) {
         anim = part->unk4->unk30;
     } else {
-        anim = func_02023410(res->unk4, **((ov006_Unk02023390 *)func_02023390(res->unkC, idx))->unkC);
+        anim = NNS_G2dGetCellDataByIdx(res->unk4, **((ov006_Unk02023390 *)NNS_G2dGetAnimSequenceByIdx(res->unkC, idx))->unkC);
     }
     func_02042628(model, anim, part, 0);
 }

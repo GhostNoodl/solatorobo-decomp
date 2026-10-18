@@ -9,7 +9,7 @@ void func_02031df0(StrmPlayer *player, int frames) {
         func_02031e48(player);
         return;
     }
-    func_02032f04(&player->fader, 0, frames);
+    NNSi_SndFaderSet(&player->fader, 0, frames);
     player->prio = 0;
     player->stopReq = TRUE;
 }
@@ -20,7 +20,7 @@ void func_02031e48(StrmPlayer *player) {
         OS_LockMutex(data_0209622c.altThread->mutex);
     }
     if (player->playing) {
-        func_0202f76c(player);
+        NNS_SndStrmStop(player);
     }
     if (player->active) {
         player->stopFn(player);
@@ -47,7 +47,7 @@ void func_02031ee0(StrmPlayer *player) {
 
 BOOL func_02031f48(StrmPlayer *player, int chNum, u8 *chList) {
     if (player->chRefCount == 0) {
-        if (!func_0202f4f4(player, chNum, chList)) {
+        if (!NNS_SndStrmAllocChannel(player, chNum, chList)) {
             return FALSE;
         }
     }
@@ -60,7 +60,7 @@ void func_02031f80(StrmPlayer *player) {
         return;
     }
     if (--player->chRefCount == 0) {
-        func_0202f550(player);
+        NNS_SndStrmFreeChannel(player);
     }
 }
 
@@ -128,7 +128,7 @@ void func_0203213c(void *data, u32 size, u32 arg0, u32 arg1) {
     player->bufSize = 0;
     player->chNum = 0;
     if (player->chRefCount > 0) {
-        func_0202f550(player);
+        NNS_SndStrmFreeChannel(player);
         player->chRefCount = 0;
     }
     OS_UnlockMutex(data_02097c98);
@@ -185,7 +185,7 @@ void func_02032310(StrmPlayer *player) {
     if (!player->callback(0, (u32 *)&cur, (u32 *)&next, player->callbackArg)) {
         return;
     }
-    info = func_020300b0(next.strmNo);
+    info = NNS_SndArcGetStrmInfo(next.strmNo);
     if (info == NULL) {
         return;
     }

@@ -41,7 +41,7 @@ void func_0204a87c(void) {
 }
 
 void func_0204a904(void) {
-    func_0202ec4c(0);
+    NNS_SndPlayerStopSeqAll(0);
     func_0204a924(SND_QUEUE);
 }
 
@@ -81,7 +81,7 @@ void func_0204ab54(void);
 
 extern "C" {
 
-extern void func_0202e940(void);
+extern void NNS_SndMain(void);
 
 static inline void SndQueue_Push(SndQueue *queue, u16 value) {
     queue->cur = queue->cur->prev;

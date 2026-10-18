@@ -71,8 +71,8 @@ extern void func_02041558(Model *model);
 extern void func_020417e0(Model *model, void *res);
 extern void func_02041d9c(Model *model, int a, int b);
 extern void func_02042628(Model *model, void *tex, ModelPart *part, int a);
-extern void *func_02023390(void *res, int idx);
-extern void *func_02023410(void *res, u16 idx);
+extern void *NNS_G2dGetAnimSequenceByIdx(void *res, int idx);
+extern void *NNS_G2dGetCellDataByIdx(void *res, u16 idx);
 
 #ifdef __cplusplus
 }

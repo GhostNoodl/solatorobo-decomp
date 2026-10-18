@@ -115,14 +115,14 @@ extern void OS_SleepThread(void *queue);
 extern void func_02016fa0(const void *src, void *dst, u32 size);
 extern void func_02016e28(void *dst, u32 value, u32 size);
 extern void func_0200ed00(void *file);
-extern void func_0202f480(void *strm);
-extern BOOL func_0202f4f4(void *strm, int chNum, u8 *chList);
-extern void func_0202f550(void *strm);
-extern BOOL func_0202f578(void *strm, int format, void *buffer, u32 bufSize, u32 timer, int interval, void *callback, void *arg);
-extern void func_0202f718(void *strm);
-extern void func_0202f76c(void *strm);
-extern void func_0202f788(void *strm, int volume);
-extern void func_0202f7f4(void *strm, int ch, int pan);
+extern void NNS_SndStrmInit(void *strm);
+extern BOOL NNS_SndStrmAllocChannel(void *strm, int chNum, u8 *chList);
+extern void NNS_SndStrmFreeChannel(void *strm);
+extern BOOL NNS_SndStrmSetup(void *strm, int format, void *buffer, u32 bufSize, u32 timer, int interval, void *callback, void *arg);
+extern void NNS_SndStrmStart(void *strm);
+extern void NNS_SndStrmStop(void *strm);
+extern void NNS_SndStrmSetVolume(void *strm, int volume);
+extern void NNS_SndStrmSetChannelPan(void *strm, int ch, int pan);
 
 typedef struct StrmCbInfo {
     /* 0x0 */ int playerNo;
@@ -139,7 +139,7 @@ typedef struct FSFileID {
     /* 0x4 */ u32 fileId;
 } FSFileID;
 
-extern FSFileID func_02030478(void);
+extern FSFileID NNS_SndArcGetFileID(void);
 extern void *func_020304dc(void);
 extern u32 func_020304f0(void);
 extern u32 func_02030504(void);
@@ -162,7 +162,7 @@ void func_02031948(StrmHandle *handle, int volume);
 void func_0203195c(StrmHandle *handle, int volume, int frames);
 void func_02031990(StrmHandle *handle);
 void func_0203199c(StrmHandle *handle);
-void func_020319b4(void);
+void NNSi_SndArcStrmMain(void);
 StrmThread *func_02031ac0(void);
 StrmPlayer *func_02031acc(StrmHandle *handle, int playerNo, int prio);
 void func_02031b58(StrmPlayer *player);

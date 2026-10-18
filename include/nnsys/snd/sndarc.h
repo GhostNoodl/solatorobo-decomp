@@ -137,21 +137,22 @@ typedef struct SndSeqArc {
 } SndSeqArc;
 
 // sndarc.c
-extern void *func_0202fef8(void *arc);
-extern void *func_0202ff10(void);
-extern NNSSndArcSeqInfo *func_0202ff20(int seqNo);
-extern NNSSndArcSeqArcInfo *func_0202ff84(int seqArcNo);
-extern NNSSndArcBankInfo *func_0202ffe8(int bankNo);
-extern NNSSndArcWaveArcInfo *func_0203004c(int waveArcNo);
-extern NNSSndArcStrmInfo *func_020300b0(int strmNo);
-extern NNSSndArcPlayerInfo *func_02030114(int playerNo);
-extern NNSSndArcStrmPlayerInfo *func_02030178(int playerNo);
-extern NNSSndArcGroupInfo *func_020301dc(int groupNo);
-extern u32 func_02030360(u32 fileId);
-extern u32 func_02030388(u32 fileId);
-extern int func_020303b0(u32 fileId, void *buffer, int size, int offset);
-extern void *func_02030498(u32 fileId);
-extern void func_020304c0(u32 fileId, void *address);
+struct NNSSndArc;
+struct NNSSndArc *NNS_SndArcSetCurrent(struct NNSSndArc *arc);
+struct NNSSndArc *NNS_SndArcGetCurrent(void);
+extern NNSSndArcSeqInfo *NNS_SndArcGetSeqInfo(int seqNo);
+extern NNSSndArcSeqArcInfo *NNS_SndArcGetSeqArcInfo(int seqArcNo);
+extern NNSSndArcBankInfo *NNS_SndArcGetBankInfo(int bankNo);
+extern NNSSndArcWaveArcInfo *NNS_SndArcGetWaveArcInfo(int waveArcNo);
+extern NNSSndArcStrmInfo *NNS_SndArcGetStrmInfo(int strmNo);
+extern NNSSndArcPlayerInfo *NNS_SndArcGetPlayerInfo(int playerNo);
+extern NNSSndArcStrmPlayerInfo *NNS_SndArcGetStrmPlayerInfo(int playerNo);
+extern NNSSndArcGroupInfo *NNS_SndArcGetGroupInfo(int groupNo);
+extern u32 NNS_SndArcGetFileOffset(u32 fileId);
+extern u32 NNS_SndArcGetFileSize(u32 fileId);
+extern int NNS_SndArcReadFile(u32 fileId, void *buffer, int size, int offset);
+extern void *NNS_SndArcGetFileAddress(u32 fileId);
+extern void NNS_SndArcSetFileAddress(u32 fileId, void *address);
 
 // sndarc_loader.c
 BOOL NNS_SndArcLoadGroup(int groupNo, NNSSndHeap *heap);
@@ -188,11 +189,11 @@ BOOL func_020315f8(void *handle, int playerNo, int bankNo, int playerPrio, const
 
 // sndarc_util.c
 SndSeqArcSeqInfo *func_02032eac(SndSeqArc *seqArc, int index);
-void func_02032eec(SndFader *fader);
-void func_02032f04(SndFader *fader, int target, int frames);
-int func_02032f2c(SndFader *fader);
-void func_02032f60(SndFader *fader);
-BOOL func_02032f78(SndFader *fader);
+void NNSi_SndFaderInit(SndFader *fader);
+void NNSi_SndFaderSet(SndFader *fader, int target, int frames);
+int NNSi_SndFaderGet(SndFader *fader);
+void NNSi_SndFaderUpdate(SndFader *fader);
+BOOL NNSi_SndFaderIsFinished(SndFader *fader);
 
 #ifdef __cplusplus
 }

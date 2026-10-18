@@ -90,7 +90,7 @@ static inline void *Model_GetPartTex(Model *model, s32 idx) {
     if (part != NULL && part->res != NULL) {
         return part->res->tex;
     }
-    return func_02023410(res->texRes, ***(u16 ***)((u8 *)func_02023390(res->mdlRes, idx) + 0xc));
+    return NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
 }
 
 static inline void Model_SetPos(Model *model, s32 x, s32 y) {

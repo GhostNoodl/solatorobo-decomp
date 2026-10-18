@@ -37,8 +37,8 @@ extern void func_02019228(void);
 extern void func_02014304(const void *src, u32 offset, u32 size);
 extern void func_0201439c(const void *src, u32 offset, u32 size);
 extern void NNS_G3dInit(void);
-extern void func_02023a70(void);
-extern void func_02023b44(void *obj, int a, int b, int c);
+extern void NNS_G2dInitOamManagerModule(void);
+extern void NNS_G2dGetNewOamManagerInstanceAsFastTransferMode(void *obj, int a, int b, int c);
 extern void *NNS_GfdGetLnkTexVramManagerWorkSize(int n);
 extern void *NNS_GfdGetLnkPlttVramManagerWorkSize(int n);
 extern void func_0203beac(GfxSys *sys, int state);
@@ -56,7 +56,7 @@ extern "C" {
 extern u8 data_02fe00a0[];
 extern void func_0203c880(GfxSys *sys);
 extern void func_0201369c(int a, int b, int c);
-extern void func_02024160(void *obj);
+extern void NNS_G2dApplyAndResetOamManagerBuffer(void *obj);
 extern void func_02013c04(void);
 extern void func_020438e8(void *obj);
 extern void func_02043d20(void *obj, int a);
@@ -285,7 +285,7 @@ extern "C" {
 
 extern void func_02015780(void);
 extern void func_0201576c(void);
-extern void func_02023c9c(void *obj, void *src, int count);
+extern void NNS_G2dEntryOamManagerOam(void *obj, void *src, int count);
 extern int FX_Div(int a, int b);
 extern void func_020137a8(volatile void *reg, int a, int b);
 

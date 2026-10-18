@@ -13,31 +13,31 @@ SndSeqArcSeqInfo *func_02032eac(SndSeqArc *seqArc, int index) {
     return &seqArc->info[index];
 }
 
-void func_02032eec(SndFader *fader) {
+void NNSi_SndFaderInit(SndFader *fader) {
     fader->origin = fader->target = 0;
     fader->counter = fader->frames = 0;
 }
 
-void func_02032f04(SndFader *fader, int target, int frames) {
-    fader->origin = func_02032f2c(fader);
+void NNSi_SndFaderSet(SndFader *fader, int target, int frames) {
+    fader->origin = NNSi_SndFaderGet(fader);
     fader->target = target;
     fader->frames = frames;
     fader->counter = 0;
 }
 
-int func_02032f2c(SndFader *fader) {
+int NNSi_SndFaderGet(SndFader *fader) {
     if (fader->counter >= fader->frames) {
         return fader->target;
     }
     return fader->origin + (fader->target - fader->origin) * fader->counter / fader->frames;
 }
 
-void func_02032f60(SndFader *fader) {
+void NNSi_SndFaderUpdate(SndFader *fader) {
     if (fader->counter < fader->frames) {
         fader->counter++;
     }
 }
 
-BOOL func_02032f78(SndFader *fader) {
+BOOL NNSi_SndFaderIsFinished(SndFader *fader) {
     return fader->counter >= fader->frames;
 }

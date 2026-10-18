@@ -11,7 +11,7 @@ extern void *data_ov006_021ec434;
 extern u8 data_ov006_021eb840[];
 extern ov006_Unk02097e40 *data_02097e40;
 
-void *func_02023410(int a, u16 b);
+void *NNS_G2dGetCellDataByIdx(int a, u16 b);
 void func_02042628(ov006_Model *model, void *a, ov006_ModelPart *part, int b);
 void func_02016e28(void *dst, int value, u32 size);
 void func_02016fa0(const void *src, void *dst, u32 size);

@@ -40,7 +40,7 @@ BOOL NNS_SndArcLoadSeqEx(int seqNo, u32 loadFlag, NNSSndHeap *heap) {
 }
 
 int func_020309a4(int groupNo, NNSSndHeap *heap) {
-    NNSSndArcGroupInfo *group = func_020301dc(groupNo);
+    NNSSndArcGroupInfo *group = NNS_SndArcGetGroupInfo(groupNo);
     u32 i;
     int ret;
     if (group == NULL) {
@@ -79,7 +79,7 @@ int func_020309a4(int groupNo, NNSSndHeap *heap) {
 }
 
 int func_02030aa0(int seqNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, void **out) {
-    NNSSndArcSeqInfo *info = func_0202ff20(seqNo);
+    NNSSndArcSeqInfo *info = NNS_SndArcGetSeqInfo(seqNo);
     void *seq;
     int ret;
     if (info == NULL) {
@@ -95,7 +95,7 @@ int func_02030aa0(int seqNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, vo
             return SND_ARC_LOAD_ERR_FAILED_LOAD_SEQ;
         }
     } else {
-        seq = func_02030498(info->fileId);
+        seq = NNS_SndArcGetFileAddress(info->fileId);
     }
     if (out != NULL) {
         *out = seq;
@@ -104,7 +104,7 @@ int func_02030aa0(int seqNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, vo
 }
 
 int func_02030b24(int seqArcNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, void **out) {
-    NNSSndArcSeqArcInfo *info = func_0202ff84(seqArcNo);
+    NNSSndArcSeqArcInfo *info = NNS_SndArcGetSeqArcInfo(seqArcNo);
     void *seqArc;
     if (info == NULL) {
         return SND_ARC_LOAD_ERR_INVALID_SEQARC_NO;
@@ -115,7 +115,7 @@ int func_02030b24(int seqArcNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress,
             return SND_ARC_LOAD_ERR_FAILED_LOAD_SEQARC;
         }
     } else {
-        seqArc = func_02030498(info->fileId);
+        seqArc = NNS_SndArcGetFileAddress(info->fileId);
     }
     if (out != NULL) {
         *out = seqArc;
@@ -124,7 +124,7 @@ int func_02030b24(int seqArcNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress,
 }
 
 int func_02030b84(int bankNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, void **out) {
-    NNSSndArcBankInfo *info = func_0202ffe8(bankNo);
+    NNSSndArcBankInfo *info = NNS_SndArcGetBankInfo(bankNo);
     void *bank;
     int i;
     if (info == NULL) {
@@ -136,7 +136,7 @@ int func_02030b84(int bankNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, v
             return SND_ARC_LOAD_ERR_FAILED_LOAD_BANK;
         }
     } else {
-        bank = func_02030498(info->fileId);
+        bank = NNS_SndArcGetFileAddress(info->fileId);
     }
     for (i = 0; i < 4; i++) {
         NNSSndArcWaveArcInfo *waveArcInfo;
@@ -145,7 +145,7 @@ int func_02030b84(int bankNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, v
         if (info->waveArcNo[i] == 0xffff) {
             continue;
         }
-        waveArcInfo = func_0203004c(info->waveArcNo[i]);
+        waveArcInfo = NNS_SndArcGetWaveArcInfo(info->waveArcNo[i]);
         if (waveArcInfo == NULL) {
             return SND_ARC_LOAD_ERR_INVALID_WAVEARC_NO;
         }
@@ -169,7 +169,7 @@ int func_02030b84(int bankNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, v
 }
 
 int func_02030cc4(int waveArcNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress, void **out) {
-    NNSSndArcWaveArcInfo *info = func_0203004c(waveArcNo);
+    NNSSndArcWaveArcInfo *info = NNS_SndArcGetWaveArcInfo(waveArcNo);
     void *waveArc;
     if (info == NULL) {
         return SND_ARC_LOAD_ERR_INVALID_WAVEARC_NO;
@@ -184,7 +184,7 @@ int func_02030cc4(int waveArcNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress
             return SND_ARC_LOAD_ERR_FAILED_LOAD_WAVE;
         }
     } else {
-        waveArc = func_02030498(info->fileId);
+        waveArc = NNS_SndArcGetFileAddress(info->fileId);
     }
     if (out != NULL) {
         *out = waveArc;
@@ -193,7 +193,7 @@ int func_02030cc4(int waveArcNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress
 }
 
 void *func_02030d48(u32 fileId, NNSSndHeapDisposeCallback callback, u32 arg0, u32 arg1, NNSSndHeap *heap) {
-    u32 size = func_02030388(fileId);
+    u32 size = NNS_SndArcGetFileSize(fileId);
     void *buffer;
     if (size == 0) {
         return NULL;
@@ -205,7 +205,7 @@ void *func_02030d48(u32 fileId, NNSSndHeapDisposeCallback callback, u32 arg0, u3
     if (buffer == NULL) {
         return NULL;
     }
-    if (func_020303b0(fileId, buffer, size, 0) != size) {
+    if (NNS_SndArcReadFile(fileId, buffer, size, 0) != size) {
         return NULL;
     }
     DC_StoreRange(buffer, size);
@@ -213,44 +213,44 @@ void *func_02030d48(u32 fileId, NNSSndHeapDisposeCallback callback, u32 arg0, u3
 }
 
 void *func_02030dec(u32 fileId, NNSSndHeap *heap, BOOL setAddress) {
-    void *seq = func_02030498(fileId);
+    void *seq = NNS_SndArcGetFileAddress(fileId);
     if (seq == NULL) {
-        seq = func_02030d48(fileId, (NNSSndHeapDisposeCallback)func_0203111c, setAddress ? (u32)func_0202ff10() : 0, fileId, heap);
+        seq = func_02030d48(fileId, (NNSSndHeapDisposeCallback)func_0203111c, setAddress ? (u32)NNS_SndArcGetCurrent() : 0, fileId, heap);
         if (setAddress && seq != NULL) {
-            func_020304c0(fileId, seq);
+            NNS_SndArcSetFileAddress(fileId, seq);
         }
     }
     return seq;
 }
 
 void *func_02030e58(u32 fileId, NNSSndHeap *heap, BOOL setAddress) {
-    void *seqArc = func_02030498(fileId);
+    void *seqArc = NNS_SndArcGetFileAddress(fileId);
     if (seqArc == NULL) {
-        seqArc = func_02030d48(fileId, (NNSSndHeapDisposeCallback)func_0203111c, setAddress ? (u32)func_0202ff10() : 0, fileId, heap);
+        seqArc = func_02030d48(fileId, (NNSSndHeapDisposeCallback)func_0203111c, setAddress ? (u32)NNS_SndArcGetCurrent() : 0, fileId, heap);
         if (setAddress && seqArc != NULL) {
-            func_020304c0(fileId, seqArc);
+            NNS_SndArcSetFileAddress(fileId, seqArc);
         }
     }
     return seqArc;
 }
 
 void *func_02030ec4(u32 fileId, NNSSndHeap *heap, BOOL setAddress) {
-    void *bank = func_02030498(fileId);
+    void *bank = NNS_SndArcGetFileAddress(fileId);
     if (bank == NULL) {
-        bank = func_02030d48(fileId, (NNSSndHeapDisposeCallback)func_02031144, setAddress ? (u32)func_0202ff10() : 0, fileId, heap);
+        bank = func_02030d48(fileId, (NNSSndHeapDisposeCallback)func_02031144, setAddress ? (u32)NNS_SndArcGetCurrent() : 0, fileId, heap);
         if (setAddress && bank != NULL) {
-            func_020304c0(fileId, bank);
+            NNS_SndArcSetFileAddress(fileId, bank);
         }
     }
     return bank;
 }
 
 void *func_02030f30(u32 fileId, NNSSndHeap *heap, BOOL setAddress) {
-    void *waveArc = func_02030498(fileId);
+    void *waveArc = NNS_SndArcGetFileAddress(fileId);
     if (waveArc == NULL) {
-        waveArc = func_02030d48(fileId, (NNSSndHeapDisposeCallback)func_02031174, setAddress ? (u32)func_0202ff10() : 0, fileId, heap);
+        waveArc = func_02030d48(fileId, (NNSSndHeapDisposeCallback)func_02031174, setAddress ? (u32)NNS_SndArcGetCurrent() : 0, fileId, heap);
         if (setAddress && waveArc != NULL) {
-            func_020304c0(fileId, waveArc);
+            NNS_SndArcSetFileAddress(fileId, waveArc);
         }
     }
     return waveArc;

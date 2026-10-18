@@ -26,8 +26,8 @@ void MIi_CpuClear32(u32 val, void *dst, u32 size);
 void MIi_CpuClearFast(u32 val, void *dst, u32 size);
 void func_02041558(void *p);
 void func_02041278(void *p);
-void *func_02023390(void *a, int b);
-void *func_02023410(void *a, u16 b);
+void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
+void *NNS_G2dGetCellDataByIdx(void *a, u16 b);
 void func_02042628(void *model, void *a, void *part, int b);
 extern u8 data_0208b318[];
 extern u8 data_0208ba30[];
@@ -364,7 +364,7 @@ static inline void Ov015_ModelPlayPart(u8 *m, s32 idx) {
     if (part != NULL && FLD(u8 *, part, 0x4) != NULL) {
         anim = FLD(void *, FLD(u8 *, part, 0x4), 0x30);
     } else {
-        anim = func_02023410(FLD(void *, res, 0x4), **FLD(u16 **, func_02023390(FLD(void *, res, 0xc), idx), 0xc));
+        anim = NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **FLD(u16 **, NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), idx), 0xc));
     }
     func_02042628(m, anim, part, 0);
 }

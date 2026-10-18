@@ -89,16 +89,16 @@ extern SndGlobal data_02097e48;
 extern const s8 data_0208b778[];
 extern const s32 data_0208b688[];
 
-extern void func_0202eb80(SndHandle *handle, int fadeFrames);
-extern void func_0202eb90(int playerNo, int fadeFrames);
-extern void func_0202ebe8(int a, int b, int fadeFrames);
-extern void func_0202ec4c(int fadeFrames);
-extern void func_0202ec9c(SndHandle *handle);
-extern void func_0202ecc4(SndHandle *handle, int value);
-extern void func_0202ecec(SndHandle *handle, int volume, int frames);
-extern void func_0202ed18(SndHandle *handle, int volume);
-extern void func_0202ed54(SndHandle *handle, int trackMask, int value);
-extern void func_0202ed74(SndHandle *handle, int trackMask, int value);
+extern void NNS_SndPlayerStopSeq(SndHandle *handle, int fadeFrames);
+extern void NNS_SndPlayerStopSeqBySeqNo(int playerNo, int fadeFrames);
+extern void NNS_SndPlayerStopSeqBySeqArcIdx(int a, int b, int fadeFrames);
+extern void NNS_SndPlayerStopSeqAll(int fadeFrames);
+extern void NNS_SndHandleInit(SndHandle *handle);
+extern void NNS_SndPlayerSetVolume(SndHandle *handle, int value);
+extern void NNS_SndPlayerMoveVolume(SndHandle *handle, int volume, int frames);
+extern void NNS_SndPlayerSetPlayerPriority(SndHandle *handle, int volume);
+extern void NNS_SndPlayerSetTrackPitch(SndHandle *handle, int trackMask, int value);
+extern void NNS_SndPlayerSetTrackPan(SndHandle *handle, int trackMask, int value);
 
 void func_02049690(SndMgr *mgr);
 SndHandle *func_02049984(SndMgr *mgr, s32 id, s32 *outSeqArc, s32 *outIndex);
@@ -129,7 +129,7 @@ static inline void SndMgr_StopSlot(SndMgr *mgr, s32 idx) {
     if (idx < 0 || idx >= 5) {
         return;
     }
-    func_0202eb80(&mgr->seqArc[idx], 0);
+    NNS_SndPlayerStopSeq(&mgr->seqArc[idx], 0);
 }
 
 static inline void SndMgr_StopStrm(SndMgr *mgr) {

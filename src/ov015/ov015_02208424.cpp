@@ -20,8 +20,8 @@ Ov015Glyph *func_ov015_0220848c(void *self, u16 *ctx, Ov015Glyph *e, u16 *count)
 void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src);
 void func_ov015_02208a28(u8 *self, void *p);
 s32 FX_Div(s32 a, s32 b);
-void *func_02023390(void *a, int b);
-void *func_02023410(void *a, u16 b);
+void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
+void *NNS_G2dGetCellDataByIdx(void *a, u16 b);
 void func_02042628(void *model, void *a, void *part, int b);
 s32 func_02041b10(void *m, void *anim);
 s32 func_02041bb0(void *m, void *anim);
@@ -181,7 +181,7 @@ static inline void *Ov015_MdlAnim0(u8 *m) {
     if (part != NULL && FLD(u8 *, part, 0x4) != NULL) {
         return FLD(void *, FLD(u8 *, part, 0x4), 0x30);
     }
-    return func_02023410(FLD(void *, res, 0x4), **FLD(u16 **, func_02023390(FLD(void *, res, 0xc), 0), 0xc));
+    return NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **FLD(u16 **, NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), 0), 0xc));
 }
 static inline void Ov015_MdlPlay0(u8 *m) {
     u8 *res = FLD(u8 *, m, 0x28);
@@ -194,7 +194,7 @@ static inline void Ov015_MdlPlay0(u8 *m) {
     if (part != NULL && FLD(u8 *, part, 0x4) != NULL) {
         anim = FLD(void *, FLD(u8 *, part, 0x4), 0x30);
     } else {
-        anim = func_02023410(FLD(void *, res, 0x4), **FLD(u16 **, func_02023390(FLD(void *, res, 0xc), 0), 0xc));
+        anim = NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **FLD(u16 **, NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), 0), 0xc));
     }
     func_02042628(m, anim, part, 0);
 }

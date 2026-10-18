@@ -62,8 +62,8 @@ typedef struct TexObj {
 } TexObj;
 
 extern void MTX_Identity22_(TexObjVec *v);
-extern void func_02024178(TexObj *obj);
-extern int func_0202419c(TexObj *obj, int idx);
+extern void NNS_G2dInitImageProxy(TexObj *obj);
+extern int NNS_G2dGetImageLocation(TexObj *obj, int idx);
 extern void func_0203bd40(GfxSys *sys, u32 offset, BOOL sub);
 extern void (*NNS_GfdDefaultFuncFreeTexVram)(u32 key);
 extern void func_0203e58c(u32 id);
@@ -88,11 +88,11 @@ typedef struct TexObjAnim {
     /* 0x0c */ int unk_0c;
 } TexObjAnim;
 
-extern u16 *func_02023390(u16 *dict, int idx);
-extern void func_020246bc(TexObjAnim *anim, u16 *data, void *res);
-extern void func_020246f8(TexObjAnim *anim, u16 *data);
-extern void func_02023a34(TexObjAnim *anim, int type, TexObj *obj, void (*cb)(TexObj *));
-extern void func_02024710(TexObjAnim *anim, int frame);
+extern u16 *NNS_G2dGetAnimSequenceByIdx(u16 *dict, int idx);
+extern void NNS_G2dInitCellAnimation(TexObjAnim *anim, u16 *data, void *res);
+extern void NNS_G2dSetCellAnimationSequence(TexObjAnim *anim, u16 *data);
+extern void NNS_G2dSetAnimCtrlCallBackFunctor(TexObjAnim *anim, int type, TexObj *obj, void (*cb)(TexObj *));
+extern void NNS_G2dTickCellAnimation(TexObjAnim *anim, int frame);
 extern void func_020435e8(GfxPltt *pltt, void *src, u32 size);
 void func_02041c90(TexObj *obj);
 
@@ -184,21 +184,21 @@ void func_02041cb4(TexObj *obj, int idx) {
         return;
     }
     obj->unk_07c = (int)e;
-    func_02024710((TexObjAnim *)e->anim, obj->unk_074);
+    NNS_G2dTickCellAnimation((TexObjAnim *)e->anim, obj->unk_074);
 }
 
 void func_02041cf8(TexObj *obj, int idx) {
-    u16 *data = func_02023390(((TexObjRes *)obj->res)->dict, idx);
+    u16 *data = NNS_G2dGetAnimSequenceByIdx(((TexObjRes *)obj->res)->dict, idx);
     TexObjEntry *e = TexObj_GetEntry(obj, idx);
     TexObjAnim *anim;
     if (e == NULL || (anim = (TexObjAnim *)e->anim) == NULL) {
         return;
     }
-    func_020246bc(anim, data, ((TexObjRes *)obj->res)->unk_04);
-    func_020246f8((TexObjAnim *)e->anim, data);
+    NNS_G2dInitCellAnimation(anim, data, ((TexObjRes *)obj->res)->unk_04);
+    NNS_G2dSetCellAnimationSequence((TexObjAnim *)e->anim, data);
     anim->unk_0c = 1;
-    func_02023a34(anim, 3, obj, func_02041c90);
-    func_02024710((TexObjAnim *)e->anim, 0);
+    NNS_G2dSetAnimCtrlCallBackFunctor(anim, 3, obj, func_02041c90);
+    NNS_G2dTickCellAnimation((TexObjAnim *)e->anim, 0);
 }
 
 extern void func_02039518(void *res);
@@ -269,8 +269,8 @@ typedef struct TexObjRes3 {
 
 extern u32 func_0203bc20(GfxSys *sys, u32 size, BOOL sub);
 extern u32 func_0203e458(int type, u32 src, u32 dst, u32 size, u32 chunk);
-extern void func_02024194(TexObj *obj, int idx, u32 addr);
-extern void func_020241dc(TexObjImageInfo *img, u32 addr, int idx, TexObj *obj);
+extern void NNS_G2dSetImageLocation(TexObj *obj, int idx, u32 addr);
+extern void NNS_G2dLoadImage1DMapping(TexObjImageInfo *img, u32 addr, int idx, TexObj *obj);
 extern void func_0203e098(const char *name, u32 value);
 extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, int is4x4, int opt);
 
@@ -278,7 +278,7 @@ void func_02041e74(TexObj *obj, int idx) {
     TexObjImageInfo *img;
     u32 slot;
     int type;
-    slot = func_0202419c(obj, idx);
+    slot = NNS_G2dGetImageLocation(obj, idx);
     if (slot != -1) {
         return;
     }
@@ -288,22 +288,22 @@ void func_02041e74(TexObj *obj, int idx) {
         img = ((TexObjRes3 *)obj->res)->image;
         if (idx == 1) {
             type = 2;
-            slot = func_0202419c(obj, 1);
+            slot = NNS_G2dGetImageLocation(obj, 1);
             if (slot == -1) {
                 slot = func_0203bc20(data_02097d48, img->size, 0);
             }
         } else {
             type = 5;
-            slot = func_0202419c(obj, 2);
+            slot = NNS_G2dGetImageLocation(obj, 2);
             if (slot == -1) {
                 slot = func_0203bc20(data_02097d48, img->size, 1);
             }
         }
         if ((obj->unk_06c << 30) >> 31) {
             func_0203e458(type, img->data, slot, img->size, 0);
-            func_02024194(obj, idx, slot);
+            NNS_G2dSetImageLocation(obj, idx, slot);
         } else {
-            func_020241dc(img, slot, idx, obj);
+            NNS_G2dLoadImage1DMapping(img, slot, idx, obj);
         }
         ((u16 *)obj->unk_0f0)[idx] = (slot >> 5) >> ((TexObjRes3 *)obj->res)->info[2];
         return;
@@ -317,9 +317,9 @@ void func_02041e74(TexObj *obj, int idx) {
         if ((obj->unk_06c << 30) >> 31) {
             u32 addr = (slot << 15) >> 12;
             func_0203e458(0, img->data, addr, img->size, 0);
-            func_02024194(obj, 0, addr);
+            NNS_G2dSetImageLocation(obj, 0, addr);
         } else {
-            func_020241dc(img, (slot << 15) >> 12, 0, obj);
+            NNS_G2dLoadImage1DMapping(img, (slot << 15) >> 12, 0, obj);
         }
         return;
     default:

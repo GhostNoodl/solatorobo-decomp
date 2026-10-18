@@ -24,22 +24,22 @@ void func_020498ac(SndMgr *mgr, s32 seq) {
     }
     NNS_SndArcPlayerStartSeq(&mgr->bgm, seq);
     if (SndMgr_GetSeqVolume(seq) != 0) {
-        func_0202ecc4(&mgr->bgm, SndMgr_GetSeqVolume(seq));
+        NNS_SndPlayerSetVolume(&mgr->bgm, SndMgr_GetSeqVolume(seq));
     }
     mgr->curBgm = seq;
-    func_0202ed18(&mgr->bgm, 0x7f);
+    NNS_SndPlayerSetPlayerPriority(&mgr->bgm, 0x7f);
 }
 
 void func_02049950(SndMgr *mgr, int volume, int frames) {
-    func_0202ecec(&mgr->bgm, volume, frames);
+    NNS_SndPlayerMoveVolume(&mgr->bgm, volume, frames);
 }
 
 void func_02049960(SndMgr *mgr, int playerNo, int fadeFrames) {
-    func_0202eb90(playerNo, fadeFrames);
+    NNS_SndPlayerStopSeqBySeqNo(playerNo, fadeFrames);
 }
 
 void func_02049974(SndMgr *mgr, int fadeFrames) {
-    func_0202ec4c(fadeFrames);
+    NNS_SndPlayerStopSeqAll(fadeFrames);
 }
 
 SndHandle *func_02049984(SndMgr *mgr, s32 id, s32 *outSeqArc, s32 *outIndex) {
@@ -105,13 +105,13 @@ SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 
     }
     if (volume >= 0) {
         if (targetVolume >= 0 && frames >= 0) {
-            func_0202ecec(handle, volume, 0);
-            func_0202ecec(handle, targetVolume, frames);
+            NNS_SndPlayerMoveVolume(handle, volume, 0);
+            NNS_SndPlayerMoveVolume(handle, targetVolume, frames);
         } else {
-            func_0202ecc4(handle, volume);
+            NNS_SndPlayerSetVolume(handle, volume);
         }
     }
-    func_0202ed18(handle, 0x40);
+    NNS_SndPlayerSetPlayerPriority(handle, 0x40);
     return handle;
 }
 
@@ -141,7 +141,7 @@ s32 func_02049afc(SndMgr *mgr, s32 id) {
     if (!NNS_SndArcPlayerStartSeqArc(handle, seqArc, index)) {
         return -1;
     }
-    func_0202ed18(handle, 0x6e);
+    NNS_SndPlayerSetPlayerPriority(handle, 0x6e);
     mgr->seqArcHandles[i] = handle;
     return i;
 }
@@ -150,7 +150,7 @@ void func_02049bb4(SndMgr *mgr, s32 idx) {
     if (idx < 0 || idx >= 5) {
         return;
     }
-    func_0202eb80(&mgr->seqArc[idx], 0);
+    NNS_SndPlayerStopSeq(&mgr->seqArc[idx], 0);
 }
 
 }

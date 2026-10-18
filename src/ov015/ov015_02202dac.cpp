@@ -6,8 +6,8 @@ extern void *data_ov000_021ccd44;
 u8 *func_ov000_0218084c(void *a, s32 b, s32 c);
 extern void *data_ov000_021ccd40;
 extern void *data_ov000_021ccd38;
-void *func_02023390(void *a, int b);
-void *func_02023410(void *a, int b);
+void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
+void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);
 extern void *data_02097e4c;
 void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
@@ -100,8 +100,8 @@ void func_ov015_02202ec8(u8 *self) {
     if (anim != NULL && (t = FLD(u8 *, anim, 0x4)) != NULL) {
         arg = FLD(void *, t, 0x30);
     } else {
-        void *e = func_02023390(FLD(void *, res, 0xc), 0);
-        arg = func_02023410(FLD(void *, res, 0x4), **(u16 **)FLD(void *, e, 0xc));
+        void *e = NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), 0);
+        arg = NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **(u16 **)FLD(void *, e, 0xc));
     }
     func_02042628(model, arg, anim, 0);
 }

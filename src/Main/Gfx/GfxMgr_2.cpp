@@ -12,8 +12,8 @@ extern void DC_FlushRange(const void *addr, u32 size);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void func_02014304(const void *src, u32 offset, u32 size);
 extern void func_0201439c(const void *src, u32 offset, u32 size);
-extern void func_02014450(const void *src, u32 offset, u32 size);
-extern void func_02014504(const void *src, u32 offset, u32 size);
+extern void GX_LoadOBJPltt(const void *src, u32 offset, u32 size);
+extern void GXS_LoadOBJPltt(const void *src, u32 offset, u32 size);
 extern u16 func_0203bdb0(GfxSys *obj, int a, int b);
 extern void *func_0203bc20(GfxSys *obj, u32 size, int a);
 extern void func_0203df40(void *ptr);
@@ -77,9 +77,9 @@ void func_02039a34(GfxMgr *mgr) {
     mgr->plttSlots[1] = func_0203bdb0(data_02097d48, 3, 5);
     func_0201439c(data_02082798, mgr->plttSlots[1] << 5, 0x60);
     mgr->plttSlots[2] = func_0203bdb0(data_02097d48, 3, 0);
-    func_02014450(data_02082798, mgr->plttSlots[2] << 5, 0x60);
+    GX_LoadOBJPltt(data_02082798, mgr->plttSlots[2] << 5, 0x60);
     mgr->plttSlots[3] = func_0203bdb0(data_02097d48, 3, 2);
-    func_02014504(data_02097ce4, mgr->plttSlots[3] << 5, 0x60);
+    GXS_LoadOBJPltt(data_02097ce4, mgr->plttSlots[3] << 5, 0x60);
     mgr->unk_658 = 0;
     mgr->unk_65c = 0;
     mgr->unk_650 = func_0203bc20(data_02097d48, 0x4000, 0);
@@ -145,9 +145,9 @@ void func_02039c54(GfxMgr *mgr, int mode) {
     mgr->plttSlots[1] = func_0203bdb0(data_02097d48, 3, 5);
     func_0201439c(data_02082798, mgr->plttSlots[1] << 5, 0x60);
     mgr->plttSlots[2] = func_0203bdb0(data_02097d48, 3, 0);
-    func_02014450(data_02082798, mgr->plttSlots[2] << 5, 0x60);
+    GX_LoadOBJPltt(data_02082798, mgr->plttSlots[2] << 5, 0x60);
     mgr->plttSlots[3] = func_0203bdb0(data_02097d48, 3, 2);
-    func_02014504(data_02097ce4, mgr->plttSlots[3] << 5, 0x60);
+    GXS_LoadOBJPltt(data_02097ce4, mgr->plttSlots[3] << 5, 0x60);
     mgr->unk_65c = 0;
     if (mode != 2) {
         mgr->unk_650 = func_0203bc20(data_02097d48, 0x4000, 0);
@@ -188,7 +188,7 @@ void func_02039e0c(GfxMgr *mgr) {
         func_020435e8(pltt, data_02097ce4, 0x60);
         mgr->unk_000 = id;
         DC_FlushRange(data_02097ce4, 0x60);
-        func_02014450(data_02097ce4, mgr->plttSlots[2] << 5, 0x60);
+        GX_LoadOBJPltt(data_02097ce4, mgr->plttSlots[2] << 5, 0x60);
     }
     mgr->unk_69c[0] = 0;
     mgr->unk_69c[1] = 0;
@@ -232,7 +232,7 @@ void func_02039f84(GfxMgr *mgr) {
         func_020435e8(pltt, data_02097ce4, 0x60);
         mgr->unk_000 = id;
         DC_FlushRange(data_02097ce4, 0x60);
-        func_02014450(data_02097ce4, mgr->plttSlots[2] << 5, 0x60);
+        GX_LoadOBJPltt(data_02097ce4, mgr->plttSlots[2] << 5, 0x60);
     }
 }
 

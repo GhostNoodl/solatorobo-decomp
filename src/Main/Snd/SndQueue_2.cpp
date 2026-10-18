@@ -86,7 +86,7 @@ void func_0204ab54(void) {
     s32 i;
     SndMgr *mgr = SND_MGR;
     for (i = 0; i < 5; i++) {
-        func_0202eb80(&mgr->seqArc[i], 0);
+        NNS_SndPlayerStopSeq(&mgr->seqArc[i], 0);
     }
 }
 
@@ -94,7 +94,7 @@ void func_0204ab54(void) {
 
 extern "C" {
 
-extern void func_0202e940(void);
+extern void NNS_SndMain(void);
 
 static inline void SndQueue_Push(SndQueue *queue, u16 value) {
     queue->cur = queue->cur->prev;
@@ -102,7 +102,7 @@ static inline void SndQueue_Push(SndQueue *queue, u16 value) {
 }
 
 void func_0204ab8c(SndQueue *queue) {
-    func_0202e940();
+    NNS_SndMain();
     if (queue->unk_06 != 0xffff) {
         switch (queue->unk_02) {
             case 10:
@@ -115,7 +115,7 @@ void func_0204ab8c(SndQueue *queue) {
                 break;
             case 0:
                 if (queue->unk_04 != 0xffff) {
-                    func_0202eb90(queue->unk_04, queue->unk_08);
+                    NNS_SndPlayerStopSeqBySeqNo(queue->unk_04, queue->unk_08);
                     SndQueue_Push(queue, queue->unk_04);
                     queue->unk_04 = 0xffff;
                     queue->unk_02 = queue->unk_02 + 1;

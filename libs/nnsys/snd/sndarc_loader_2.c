@@ -19,11 +19,11 @@ void func_020310c4(void *data, void *arc, u32 fileId) {
         return;
     }
     state = OS_DisableInterrupts();
-    prev = func_0202fef8(arc);
-    if (data == func_02030498(fileId)) {
-        func_020304c0(fileId, NULL);
+    prev = NNS_SndArcSetCurrent(arc);
+    if (data == NNS_SndArcGetFileAddress(fileId)) {
+        NNS_SndArcSetFileAddress(fileId, NULL);
     }
-    func_0202fef8(prev);
+    NNS_SndArcSetCurrent(prev);
     OS_RestoreInterrupts(state);
 }
 

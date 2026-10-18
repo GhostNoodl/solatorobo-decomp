@@ -96,14 +96,14 @@ extern const char data_0208b308[]; // ".nsbva"
 extern BOOL func_020395a8(const char *a, const char *b, int len);
 extern void func_02039610(char *dst, const char *src, int len);
 extern const char *func_02039644(const char *path);
-extern void func_02024b98(void *out, void *data);
-extern void func_020233d4(void *data, void *out);
-extern void func_02023244(void *data, void *out);
-extern void func_020234d4(void *data, void *out);
-extern void func_02023520(void *data, void *out);
-extern void func_0202356c(void *data, void *out);
-extern void func_020235a8(void *data, void *out);
-extern void func_02023604(void *data, void *out);
+extern void NNS_G2dFontInitAuto(void *out, void *data);
+extern void NNS_G2dGetUnpackedCellBank(void *data, void *out);
+extern void NNS_G2dGetUnpackedAnimBank(void *data, void *out);
+extern void NNS_G2dGetUnpackedCharacterData(void *data, void *out);
+extern void NNS_G2dGetUnpackedBGCharacterData(void *data, void *out);
+extern void NNS_G2dGetUnpackedPaletteData(void *data, void *out);
+extern void NNS_G2dGetUnpackedPaletteCompressInfo(void *data, void *out);
+extern void NNS_G2dGetUnpackedScreenData(void *data, void *out);
 
 void func_02035094(ResList *list, ResRequest *req) {
     ResFileEntry *entry;
@@ -147,41 +147,41 @@ void func_02035094(ResList *list, ResRequest *req) {
         break;
     case 1:
         node->u.data[0] = req->data;
-        func_02024b98(&node->u.data[1], node->u.data[0]);
+        NNS_G2dFontInitAuto(&node->u.data[1], node->u.data[0]);
         break;
     case 2:
         ext = func_02039644(entry->name);
         if (func_0201e7b0(ext, data_0208b2c8) == 0) {
             node->u.data[0] = req->data;
-            func_020233d4(node->u.data[0], &node->u.data[1]);
+            NNS_G2dGetUnpackedCellBank(node->u.data[0], &node->u.data[1]);
         } else if (func_0201e7b0(ext, data_0208b2ce) == 0) {
             node->u.data[2] = req->data;
-            func_02023244(node->u.data[2], &node->u.data[3]);
+            NNS_G2dGetUnpackedAnimBank(node->u.data[2], &node->u.data[3]);
         } else if (func_0201e7b0(ext, data_0208b2d4) == 0) {
             node->u.data[4] = req->data;
-            func_020234d4(node->u.data[4], &node->u.data[5]);
+            NNS_G2dGetUnpackedCharacterData(node->u.data[4], &node->u.data[5]);
         }
         if (func_0201e7b0(ext, data_0208b2da) == 0) {
             node->u.data[6] = req->data;
-            func_020234d4(node->u.data[6], &node->u.data[7]);
+            NNS_G2dGetUnpackedCharacterData(node->u.data[6], &node->u.data[7]);
         } else if (func_0201e7b0(ext, data_0208b2e0) == 0) {
             node->u.data[8] = req->data;
-            func_020235a8(node->u.data[8], &node->u.data[10]);
-            func_0202356c(node->u.data[8], &node->u.data[9]);
+            NNS_G2dGetUnpackedPaletteCompressInfo(node->u.data[8], &node->u.data[10]);
+            NNS_G2dGetUnpackedPaletteData(node->u.data[8], &node->u.data[9]);
         }
         break;
     case 3:
         ext = func_02039644(entry->name);
         if (func_0201e7b0(ext, data_0208b2e6) == 0) {
             node->u.data[0] = req->data;
-            func_02023604(node->u.data[0], &node->u.data[1]);
+            NNS_G2dGetUnpackedScreenData(node->u.data[0], &node->u.data[1]);
         } else if (func_0201e7b0(ext, data_0208b2d4) == 0) {
             node->u.data[2] = req->data;
-            func_02023520(node->u.data[2], &node->u.data[3]);
+            NNS_G2dGetUnpackedBGCharacterData(node->u.data[2], &node->u.data[3]);
         } else if (func_0201e7b0(ext, data_0208b2e0) == 0) {
             node->u.data[4] = req->data;
-            func_020235a8(node->u.data[4], &node->u.data[6]);
-            func_0202356c(node->u.data[4], &node->u.data[5]);
+            NNS_G2dGetUnpackedPaletteCompressInfo(node->u.data[4], &node->u.data[6]);
+            NNS_G2dGetUnpackedPaletteData(node->u.data[4], &node->u.data[5]);
         }
         break;
     case 4:

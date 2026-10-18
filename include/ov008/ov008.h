@@ -176,8 +176,8 @@ void func_ov000_0218fee4(void *p);
     OV008_FREE(field, void *, (func_02041558(p_), func_02041278((u8 *)p_ + 0x88), func_0203de1c(p_)))
 
 extern "C" {
-void *func_02023390(void *a, int b);
-void *func_02023410(void *a, int b);
+void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
+void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);
 }
 
@@ -196,8 +196,8 @@ static inline void Ov008_DrawModel(void *m) {
     if (anim != NULL && (t = FLD(void *, anim, 0x4)) != NULL) {
         arg = FLD(void *, t, 0x30);
     } else {
-        void *e = func_02023390(FLD(void *, res, 0xc), 0);
-        arg = func_02023410(FLD(void *, res, 0x4), **(u16 **)FLD(void *, e, 0xc));
+        void *e = NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), 0);
+        arg = NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **(u16 **)FLD(void *, e, 0xc));
     }
     func_02042628(m, arg, anim, 0);
 }
@@ -206,7 +206,7 @@ static inline void *Ov008_GetTex(void *m, void *res, void *anim) {
     if (anim != NULL && FLD(void *, anim, 0x4) != NULL) {
         return FLD(void *, FLD(void *, anim, 0x4), 0x30);
     }
-    return func_02023410(FLD(void *, res, 0x4), **(u16 **)FLD(void *, func_02023390(FLD(void *, res, 0xc), 0), 0xc));
+    return NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **(u16 **)FLD(void *, NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), 0), 0xc));
 }
 
 static inline void Ov008_DrawModel2(void *m) {

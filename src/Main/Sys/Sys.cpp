@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern int data_0208af58;
+extern int GXi_DmaId;
 extern u8 data_02fe0000[];
 extern void func_02013428(void);
 extern void func_02013618(void);
@@ -31,7 +31,7 @@ void func_0203d824(void);
 
 void func_0203d6b4(void) {
     int dt[8];
-    data_0208af58 = 3;
+    GXi_DmaId = 3;
     func_02013428();
     func_02013618();
     *(volatile u32 *)0x4001000 &= ~0x10000;

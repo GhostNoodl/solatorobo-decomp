@@ -36,7 +36,7 @@ static inline void Model_PlayPart(Model *model, s32 idx) {
     if (part != NULL && part->res != NULL) {
         anim = part->res->tex;
     } else {
-        anim = func_02023410(res->texRes, ***(u16 ***)((u8 *)func_02023390(res->mdlRes, idx) + 0xc));
+        anim = NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
     }
     func_02042628(model, anim, part, 0);
 }

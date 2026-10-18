@@ -60,9 +60,9 @@ static inline void SndMgr_StartBgm(SndMgr *mgr, s32 seq, s32 vol) {
     if (vol < 0 || vol > 100) {
         vol = SndMgr_GetSeqVolume(seq);
     }
-    func_0202ecc4(&mgr->bgm, vol);
+    NNS_SndPlayerSetVolume(&mgr->bgm, vol);
     mgr->curBgm = seq;
-    func_0202ed18(&mgr->bgm, 0x7f);
+    NNS_SndPlayerSetPlayerPriority(&mgr->bgm, 0x7f);
 }
 
 void func_02049690(SndMgr *mgr) {

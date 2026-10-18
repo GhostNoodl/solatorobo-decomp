@@ -57,7 +57,7 @@ typedef struct PlttRes {
 } PlttRes; // size 0x64
 
 extern void func_02016e28(void *dst, u32 value, u32 size);
-extern void func_020241a4(PlttSub *sub);
+extern void NNS_G2dInitImagePaletteProxy(PlttSub *sub);
 
 static inline void PlttRes_Init(PlttRes *res) {
     int i;
@@ -65,7 +65,7 @@ static inline void PlttRes_Init(PlttRes *res) {
     res->loaded = 0;
     func_02016e28(&res->fmt, 0, 0x10);
     func_02016e28(&res->count, 0, 8);
-    func_020241a4(&res->sub);
+    NNS_G2dInitImagePaletteProxy(&res->sub);
     for (i = 0; i < 3; i++) {
         res->maps[i] = NULL;
     }

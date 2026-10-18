@@ -8,8 +8,8 @@ typedef struct {
 
 extern "C" {
 
-void *func_02023410(void *a, int b);
-void *func_02023390(void *a, int b);
+void *NNS_G2dGetCellDataByIdx(void *a, int b);
+void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);
 void func_ov000_0215a8c8(void);
 
@@ -31,7 +31,7 @@ static inline void LoModelPlayPart(void *model, int idx) {
     if (part != NULL && LFLD(void *, part, 0x4) != NULL) {
         anim = LFLD(void *, LFLD(void *, part, 0x4), 0x30);
     } else {
-        anim = func_02023410(LFLD(void *, res, 0x4), **(u16 **)LFLD(void *, func_02023390(LFLD(void *, res, 0xc), idx), 0xc));
+        anim = NNS_G2dGetCellDataByIdx(LFLD(void *, res, 0x4), **(u16 **)LFLD(void *, NNS_G2dGetAnimSequenceByIdx(LFLD(void *, res, 0xc), idx), 0xc));
     }
     func_02042628(model, anim, part, 0);
 }

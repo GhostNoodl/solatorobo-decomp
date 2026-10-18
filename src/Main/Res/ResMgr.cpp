@@ -16,7 +16,7 @@ extern void func_0203584c(ResLoader *loader);
 extern void func_020363d8(ResMgr *mgr);
 extern void func_020381cc(ResMgr *mgr, ResNode *node);
 extern void *func_02038284(ResMgr *mgr, const char *path, int arg2, int arg3);
-extern void func_02024b98(void *out, void *data);
+extern void NNS_G2dFontInitAuto(void *out, void *data);
 extern void func_02036cd8(ResMgr *mgr, ResNode *node);
 extern void func_02036de0(ResMgr *mgr, ResNode *node);
 extern void func_02037270(ResMgr *mgr, ResNode *node);
@@ -38,13 +38,13 @@ extern const char data_0208b393[]; // ".nsbma"
 extern const char data_0208b39a[]; // ".nsbta"
 extern const char data_0208b3a1[]; // ".nsbtp"
 extern const char data_0208b3a8[]; // ".nsbva"
-extern void func_02023520(void *data, void *out);
-extern void func_02023604(void *data, void *out);
-extern void func_020233d4(void *data, void *out);
-extern void func_02023244(void *data, void *out);
-extern void func_020234d4(void *data, void *out);
-extern void func_0202356c(void *data, void *out);
-extern void func_020235a8(void *data, void *out);
+extern void NNS_G2dGetUnpackedBGCharacterData(void *data, void *out);
+extern void NNS_G2dGetUnpackedScreenData(void *data, void *out);
+extern void NNS_G2dGetUnpackedCellBank(void *data, void *out);
+extern void NNS_G2dGetUnpackedAnimBank(void *data, void *out);
+extern void NNS_G2dGetUnpackedCharacterData(void *data, void *out);
+extern void NNS_G2dGetUnpackedPaletteData(void *data, void *out);
+extern void NNS_G2dGetUnpackedPaletteCompressInfo(void *data, void *out);
 extern void *func_0203dd9c(u32 size);
 extern void *func_0203dec8(u32 size, int align);
 extern void func_0203df40(void *ptr);
@@ -572,7 +572,7 @@ void func_02036cd8(ResMgr *mgr, ResNode *node) {
             return;
         }
         func_0200ef1c(&mgr->file);
-        func_02024b98(&node->u.data[1], node->u.data[0]);
+        NNS_G2dFontInitAuto(&node->u.data[1], node->u.data[0]);
         mgr->loadStep = -1;
         node->state = 5;
         break;
@@ -634,7 +634,7 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
             return;
         }
         func_0200ef1c(&mgr->file);
-        func_020233d4(node->u.data[0], &node->u.data[1]);
+        NNS_G2dGetUnpackedCellBank(node->u.data[0], &node->u.data[1]);
         mgr->loadStep = 10;
     case 10:
         RES_LOAD_PART(2, data_0208b360, 20);
@@ -644,7 +644,7 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
             return;
         }
         func_0200ef1c(&mgr->file);
-        func_02023244(node->u.data[2], &node->u.data[3]);
+        NNS_G2dGetUnpackedAnimBank(node->u.data[2], &node->u.data[3]);
         mgr->loadStep = 20;
     case 20:
         RES_LOAD_PART(4, data_0208b366, 30);
@@ -654,7 +654,7 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
             return;
         }
         func_0200ef1c(&mgr->file);
-        func_020234d4(node->u.data[4], &node->u.data[5]);
+        NNS_G2dGetUnpackedCharacterData(node->u.data[4], &node->u.data[5]);
         mgr->loadStep = 30;
     case 30:
         RES_LOAD_PART(6, data_0208b36c, 40);
@@ -664,7 +664,7 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
             return;
         }
         func_0200ef1c(&mgr->file);
-        func_020234d4(node->u.data[6], &node->u.data[7]);
+        NNS_G2dGetUnpackedCharacterData(node->u.data[6], &node->u.data[7]);
         mgr->loadStep = 40;
     case 40:
         func_0201e520(path, node->name);
@@ -682,8 +682,8 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
             return;
         }
         func_0200ef1c(&mgr->file);
-        func_020235a8(node->u.data[8], &node->u.data[10]);
-        func_0202356c(node->u.data[8], &node->u.data[9]);
+        NNS_G2dGetUnpackedPaletteCompressInfo(node->u.data[8], &node->u.data[10]);
+        NNS_G2dGetUnpackedPaletteData(node->u.data[8], &node->u.data[9]);
         mgr->loadStep = -1;
         node->state = 5;
         break;
@@ -709,7 +709,7 @@ void func_02037270(ResMgr *mgr, ResNode *node) {
             return;
         }
         func_0200ef1c(&mgr->file);
-        func_02023604(node->u.data[0], &node->u.data[1]);
+        NNS_G2dGetUnpackedScreenData(node->u.data[0], &node->u.data[1]);
         mgr->loadStep++;
     case 2:
         RES_LOAD_FIRST(2, data_0208b366);
@@ -719,7 +719,7 @@ void func_02037270(ResMgr *mgr, ResNode *node) {
             return;
         }
         func_0200ef1c(&mgr->file);
-        func_02023520(node->u.data[2], &node->u.data[3]);
+        NNS_G2dGetUnpackedBGCharacterData(node->u.data[2], &node->u.data[3]);
         mgr->loadStep++;
     case 4:
         RES_LOAD_FIRST(4, data_0208b372);
@@ -729,8 +729,8 @@ void func_02037270(ResMgr *mgr, ResNode *node) {
             return;
         }
         func_0200ef1c(&mgr->file);
-        func_020235a8(node->u.data[4], &node->u.data[6]);
-        func_0202356c(node->u.data[4], &node->u.data[5]);
+        NNS_G2dGetUnpackedPaletteCompressInfo(node->u.data[4], &node->u.data[6]);
+        NNS_G2dGetUnpackedPaletteData(node->u.data[4], &node->u.data[5]);
         mgr->loadStep = -1;
         node->state = 5;
         break;

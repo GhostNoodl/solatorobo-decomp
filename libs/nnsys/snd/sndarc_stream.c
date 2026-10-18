@@ -4,7 +4,7 @@ BOOL func_020317c4(NNSSndHeap *heap) {
     int i;
     for (i = 0; i < 4; i++) {
         StrmPlayer *player = &data_020965e0[i];
-        NNSSndArcStrmPlayerInfo *info = func_02030178(i);
+        NNSSndArcStrmPlayerInfo *info = NNS_SndArcGetStrmPlayerInfo(i);
         int j;
         if (info == NULL) {
             continue;
@@ -28,7 +28,7 @@ BOOL func_020317c4(NNSSndHeap *heap) {
 }
 
 BOOL func_0203188c(StrmHandle *handle, int strmNo, u32 offset) {
-    NNSSndArcStrmInfo *info = func_020300b0(strmNo);
+    NNSSndArcStrmInfo *info = NNS_SndArcGetStrmInfo(strmNo);
     if (info == NULL) {
         return FALSE;
     }
@@ -71,7 +71,7 @@ void func_0203195c(StrmHandle *handle, int volume, int frames) {
     if (player->stopReq) {
         return;
     }
-    func_02032f04(&player->fader, volume << 8, frames);
+    NNSi_SndFaderSet(&player->fader, volume << 8, frames);
 }
 
 void func_02031990(StrmHandle *handle) {

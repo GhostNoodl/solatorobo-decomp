@@ -158,6 +158,36 @@ typedef struct SNDWaveArc {
 
 typedef struct SNDWaveData SNDWaveData;
 
+struct SNDBankData;
+void SND_StopSeq(s32 player);
+void SND_PrepareSeq(s32 player, const void *seqBase, u32 seqOffset, struct SNDBankData *bank);
+void SND_StartPreparedSeq(s32 player);
+void SND_PauseSeq(s32 player, BOOL flag);
+void SND_SetPlayerVolume(s32 player, s32 volume);
+void SND_SetPlayerChannelPriority(s32 player, s32 prio);
+void SND_SetTrackPitch(s32 player, u32 trackBitMask, s32 pitch);
+void SND_SetTrackPan(s32 player, u32 trackBitMask, s32 pan);
+void SND_SetTrackAllocatableChannel(s32 player, u32 trackBitMask, u32 chnBitMask);
+void SND_StartTimer(u32 chnBitMask, u32 capBitMask, u32 alarmBitMask, u32 flags);
+void SND_StopTimer(u32 chnBitMask, u32 capBitMask, u32 alarmBitMask, u32 flags);
+void SND_SetupAlarm(s32 alarm, u32 tick, u32 period, SNDAlarmHandler handler, void *arg);
+void SND_LockChannel(u32 chnBitMask, u32 flags);
+void SND_UnlockChannel(u32 chnBitMask, u32 flags);
+void SND_SetChannelVolume(u32 chnBitMask, s32 volume, s32 chnDataShift);
+void SND_SetChannelPan(u32 chnBitMask, s32 pan);
+void SND_SetupChannelPcm(s32 chn, s32 waveFormat, const void *dataAddr, s32 loopMode, s32 loopStart,
+                         s32 dataLen, s32 volume, s32 chnDataShift, s32 timer, s32 pan);
+void SND_InvalidateSeqData(const void *start, const void *end);
+void SND_InvalidateBankData(const void *start, const void *end);
+void SND_InvalidateWaveData(const void *start, const void *end);
+void SND_SetOutputSelector(s32 left, s32 right, s32 channel1, s32 channel3);
+
+extern const s16 SNDi_DecibelTable[128];
+
+static inline s16 SND_CalcDecibel(int scale) {
+    return SNDi_DecibelTable[scale];
+}
+
 void SND_Init(void);
 void SNDi_LockMutex(void);
 void SNDi_UnlockMutex(void);

@@ -395,7 +395,7 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
     if (part != NULL && part->res != NULL) {
         tex = part->res->tex;
     } else {
-        tex = func_02023410(res->texRes, ***(u16 ***)((u8 *)func_02023390(res->mdlRes, idx) + 0xc));
+        tex = NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
     }
     func_02042628(model, tex, part, 0);
 }

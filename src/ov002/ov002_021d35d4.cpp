@@ -37,8 +37,8 @@ void func_ov002_021d35d4(Task50 *self) {
     if (anim != NULL && (t = FIELD(anim, 0x4, void *)) != NULL) {
         arg = FIELD(t, 0x30, void *);
     } else {
-        void *e = func_02023390(FIELD(res, 0xc, void *), 0);
-        arg = func_02023410(FIELD(res, 0x4, void *), **(u16 **)FIELD(e, 0xc, void *));
+        void *e = NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), 0);
+        arg = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(e, 0xc, void *));
     }
     func_02042628(model, arg, anim, 0);
 }

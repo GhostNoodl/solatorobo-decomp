@@ -153,6 +153,71 @@ libs/nnsys/gfd/gfd_LinkedListPlttVramMan.c:
     complete
     .text       start:0x02023038 end:0x020231ac
 
+libs/nnsys/g2d/g2d_NAN_load.c:
+    complete
+    .text       start:0x02023208 end:0x020233a8
+
+libs/nnsys/g2d/g2d_NCE_load.c:
+    complete
+    .text       start:0x020233a8 end:0x020234d4
+
+libs/nnsys/g2d/g2d_NCG_load.c:
+    complete
+    .text       start:0x020234d4 end:0x0202356c
+
+libs/nnsys/g2d/g2d_NCL_load.c:
+    complete
+    .text       start:0x0202356c end:0x02023604
+
+libs/nnsys/g2d/g2d_NSC_load.c:
+    complete
+    .text       start:0x02023604 end:0x02023634
+
+libs/nnsys/g2d/g2d_Load.c:
+    complete
+    .text       start:0x02023634 end:0x020236c4
+
+libs/nnsys/g2d/g2d_Animation.c:
+    complete
+    .text       start:0x020236c4 end:0x02023a4c
+
+libs/nnsys/g2d/g2d_OAM.c:
+    complete
+    .text       start:0x02023a4c end:0x02024178
+    .data       start:0x0208afe4 end:0x0208aff8
+
+libs/nnsys/g2d/g2d_Image.c:
+    complete
+    .text       start:0x02024178 end:0x02024550
+
+libs/nnsys/g2d/g2d_SRTControl.c:
+    complete
+    .text       start:0x02024550 end:0x020245e0
+
+libs/nnsys/g2d/g2d_CellAnimation.c:
+    complete
+    .text       start:0x020245e0 end:0x02024730
+
+libs/nnsys/g2d/g2d_CellTransferManager.c:
+    complete
+    .text       start:0x02024a94 end:0x02024ad0
+
+libs/nnsys/g2d/g2d_Font.c:
+    complete
+    .text       start:0x02024ad0 end:0x02024dd0
+
+libs/nnsys/g2d/g2d_NFT_load.c:
+    complete
+    .text       start:0x02026028 end:0x020262c4
+
+libs/nnsys/g2d/internal/g2di_BitReader.c:
+    complete
+    .text       start:0x020262c4 end:0x02026324
+
+libs/nnsys/g2d/internal/g2di_SplitChar.c:
+    complete
+    .text       start:0x02026324 end:0x02026410
+
 libs/nnsys/g3d/kernel.c:
     complete
     .text       start:0x02026410 end:0x02026f34
@@ -231,6 +296,33 @@ libs/nnsys/g3d/xsi.c:
     complete
     .text       start:0x0202e284 end:0x0202e8c4
     .data       start:0x0208b254 end:0x0208b274
+
+libs/nnsys/snd/main.c:
+    complete
+    .text       start:0x0202e8c4 end:0x0202e9b4
+    .bss        start:0x0209576c end:0x0209579c
+
+libs/nnsys/snd/resource_mgr.c:
+    complete
+    .text       start:0x0202e9b4 end:0x0202eac4
+    .bss        start:0x0209579c end:0x020957a8
+
+libs/nnsys/snd/player.c:
+    complete
+    .text       start:0x0202eac4 end:0x0202f480
+
+libs/nnsys/snd/stream.c:
+    complete
+    .text       start:0x0202f480 end:0x0202fa44
+    .bss        start:0x02096080 end:0x02096150
+
+libs/nnsys/snd/capture.c:
+    complete
+    .text       start:0x0202fa44 end:0x0202fca0
+
+libs/nnsys/snd/sndarc.c:
+    complete
+    .text       start:0x0202fca0 end:0x0203053c
 
 libs/nnsys/snd/snd_heap.c:
     complete

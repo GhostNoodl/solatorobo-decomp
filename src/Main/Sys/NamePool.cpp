@@ -230,22 +230,22 @@ extern VramTransfer *data_02fe04f0;
 extern VramTransfer data_02fe04f4[64];
 extern u32 data_02fe00e4;
 extern void DC_FlushRange(u32 addr, u32 size);
-extern void func_02014aa4(void);
-extern void func_02014b00(u32 src, u32 dst, u32 size);
-extern void func_02014cb8(void);
-extern void func_02014d10(void);
-extern void func_02014d44(u32 src, u32 dst, u32 size);
-extern void func_02014de0(void);
-extern void func_020146b4(u32 src, u32 dst, u32 size);
-extern void func_02014450(u32 src, u32 dst, u32 size);
-extern void func_02014878(void);
-extern void func_020148c0(u32 src, u32 dst, u32 size);
-extern void func_0201495c(void);
-extern void func_02014738(u32 src, u32 dst, u32 size);
-extern void func_02014504(u32 src, u32 dst, u32 size);
-extern void func_020149ac(void);
-extern void func_020149c4(u32 src, u32 dst, u32 size);
-extern void func_02014a58(void);
+extern void GX_BeginLoadTex(void);
+extern void GX_LoadTex(u32 src, u32 dst, u32 size);
+extern void GX_EndLoadTex(void);
+extern void GX_BeginLoadTexPltt(void);
+extern void GX_LoadTexPltt(u32 src, u32 dst, u32 size);
+extern void GX_EndLoadTexPltt(void);
+extern void GX_LoadOBJ(u32 src, u32 dst, u32 size);
+extern void GX_LoadOBJPltt(u32 src, u32 dst, u32 size);
+extern void GX_BeginLoadOBJExtPltt(void);
+extern void GX_LoadOBJExtPltt(u32 src, u32 dst, u32 size);
+extern void GX_EndLoadOBJExtPltt(void);
+extern void GXS_LoadOBJ(u32 src, u32 dst, u32 size);
+extern void GXS_LoadOBJPltt(u32 src, u32 dst, u32 size);
+extern void GXS_BeginLoadOBJExtPltt(void);
+extern void GXS_LoadOBJExtPltt(u32 src, u32 dst, u32 size);
+extern void GXS_EndLoadOBJExtPltt(void);
 
 void func_0203e3e8(void) {
     int i;
@@ -411,36 +411,36 @@ void func_0203e6bc(void) {
         }
         switch (type) {
         case 0:
-            func_02014aa4();
-            func_02014b00(src + off, dst + off, n);
-            func_02014cb8();
+            GX_BeginLoadTex();
+            GX_LoadTex(src + off, dst + off, n);
+            GX_EndLoadTex();
             break;
         case 1:
-            func_02014d10();
-            func_02014d44(src + off, dst + off, n);
-            func_02014de0();
+            GX_BeginLoadTexPltt();
+            GX_LoadTexPltt(src + off, dst + off, n);
+            GX_EndLoadTexPltt();
             break;
         case 2:
-            func_020146b4(src + off, dst + off, n);
+            GX_LoadOBJ(src + off, dst + off, n);
             break;
         case 3:
-            func_02014450(src + off, dst + off, n);
+            GX_LoadOBJPltt(src + off, dst + off, n);
             break;
         case 4:
-            func_02014878();
-            func_020148c0(src + off, dst + off, n);
-            func_0201495c();
+            GX_BeginLoadOBJExtPltt();
+            GX_LoadOBJExtPltt(src + off, dst + off, n);
+            GX_EndLoadOBJExtPltt();
             break;
         case 5:
-            func_02014738(src + off, dst + off, n);
+            GXS_LoadOBJ(src + off, dst + off, n);
             break;
         case 6:
-            func_02014504(src + off, dst + off, n);
+            GXS_LoadOBJPltt(src + off, dst + off, n);
             break;
         case 7:
-            func_020149ac();
-            func_020149c4(src + off, dst + off, n);
-            func_02014a58();
+            GXS_BeginLoadOBJExtPltt();
+            GXS_LoadOBJExtPltt(src + off, dst + off, n);
+            GXS_EndLoadOBJExtPltt();
             break;
         }
         budget -= n;

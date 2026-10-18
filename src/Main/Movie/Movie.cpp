@@ -8,7 +8,7 @@ Movie *data_02097e3c;
 extern void *func_0203dd9c(u32 size);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void func_0201e3a8(MovieSleepCb *cb);
-extern void func_0201e3e8(MovieSleepCb *cb);
+extern void PM_AppendPostSleepCallback(MovieSleepCb *cb);
 extern BOOL func_02018d58(void);
 void func_02044670(Movie *m);
 void func_0204479c(Movie *m, int arg);
@@ -89,7 +89,7 @@ void func_02043ef8(Movie *m) {
     func_0201e3a8(&m->preSleep);
     m->postSleep.func = (void (*)(void))func_02043e6c;
     m->postSleep.arg = NULL;
-    func_0201e3e8(&m->postSleep);
+    PM_AppendPostSleepCallback(&m->postSleep);
 }
 
 extern u32 func_02019524(int region);

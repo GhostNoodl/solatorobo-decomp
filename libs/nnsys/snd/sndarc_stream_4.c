@@ -1,7 +1,7 @@
 #include "nnsys/snd/sndarc_stream.h"
 
 void func_02032c54(StrmPlayer *player, u32 fileId) {
-    if (func_02030498(fileId) == NULL) {
+    if (NNS_SndArcGetFileAddress(fileId) == NULL) {
         player->openFn = func_02032cbc;
         player->closeFn = func_02032db4;
         player->readFn = func_02032dc4;
@@ -15,10 +15,10 @@ void func_02032c54(StrmPlayer *player, u32 fileId) {
 }
 
 BOOL func_02032cbc(StrmPlayer *player, u32 fileId) {
-    if (func_020303b0(fileId, &player->header, sizeof(StrmHeader), 0) != sizeof(StrmHeader)) {
+    if (NNS_SndArcReadFile(fileId, &player->header, sizeof(StrmHeader), 0) != sizeof(StrmHeader)) {
         return FALSE;
     }
-    if (!func_0200ee40(player->file, func_02030478())) {
+    if (!func_0200ee40(player->file, NNS_SndArcGetFileID())) {
         void *arc;
         u32 top;
         u32 bottom;
@@ -45,7 +45,7 @@ BOOL func_02032cbc(StrmPlayer *player, u32 fileId) {
             return FALSE;
         }
     }
-    player->fileOffset = func_02030360(fileId);
+    player->fileOffset = NNS_SndArcGetFileOffset(fileId);
     return TRUE;
 }
 
@@ -63,7 +63,7 @@ void func_02032dfc(StrmPlayer *player) {
 }
 
 BOOL func_02032e0c(StrmPlayer *player, u32 fileId) {
-    player->fileOffset = (u32)func_02030498(fileId);
+    player->fileOffset = (u32)NNS_SndArcGetFileAddress(fileId);
     func_02016fa0((void *)player->fileOffset, &player->header, sizeof(StrmHeader));
     return TRUE;
 }

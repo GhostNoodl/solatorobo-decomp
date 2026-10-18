@@ -37,7 +37,7 @@ extern u32 func_0200bd08(u32 a, u32 b);
 extern u32 func_0200b674(u32 a, u32 b);
 extern s32 func_0200b574(u32 a);
 extern void func_0204061c(s32 *out, s32 arg);
-extern void func_0202ec8c(SndHandle *handle, int pause);
+extern void NNS_SndPlayerPause(SndHandle *handle, int pause);
 extern s32 func_02018a4c(void *thread);
 extern void func_020189a4(void *thread, s32 prio);
 
@@ -51,7 +51,7 @@ static inline void SndMgr_StopSe(SndMgr *mgr, s32 id) {
     if (func_02049984(mgr, id, &seqArc, &index) == NULL) {
         return;
     }
-    func_0202ebe8(seqArc, index, 0);
+    NNS_SndPlayerStopSeqBySeqArcIdx(seqArc, index, 0);
 }
 
 void func_02049de8(SndMgr *mgr, s32 id) {
@@ -60,7 +60,7 @@ void func_02049de8(SndMgr *mgr, s32 id) {
     if (func_02049984(mgr, id, &seqArc, &index) == NULL) {
         return;
     }
-    func_0202ebe8(seqArc, index, 0);
+    NNS_SndPlayerStopSeqBySeqArcIdx(seqArc, index, 0);
 }
 
 static inline BOOL SndMgr_IsArea(SndListener *listener, u8 a, u8 b, u8 c) {
@@ -88,7 +88,7 @@ static inline void SndMgr_SetSlotVolume(SndMgr *mgr, u32 slot, s32 volume, s32 f
     if (volume > 0x7f) {
         volume = 0x7f;
     }
-    func_0202ecec(handle, volume, frames);
+    NNS_SndPlayerMoveVolume(handle, volume, frames);
 }
 
 void func_0204a058(SndMgr *mgr, u32 slot, s32 volume, s32 frames);
