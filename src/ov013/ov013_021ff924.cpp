@@ -44,7 +44,7 @@ static inline u32 Ov013_Nearest(const Ov013Vec *p, const Ov013Spot *tbl, u32 n) 
     u32 best = 0;
     u32 i;
     for (i = 0; i < n; i++) {
-        if (func_02013068(p, &tbl[best].pos) > func_02013068(p, &tbl[i].pos)) {
+        if (VEC_Distance(p, &tbl[best].pos) > VEC_Distance(p, &tbl[i].pos)) {
             best = i;
         }
     }

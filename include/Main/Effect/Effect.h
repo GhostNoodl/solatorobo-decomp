@@ -339,8 +339,8 @@ typedef struct EffectGlobal {
 extern EffectGlobal data_0214a41c;
 extern SndMgr *data_02097e4c;
 
-extern s32 func_02012ab8(s32 a, s32 b);
-extern void func_02016cd8(u32 value, void *dst, u32 size);
+extern s32 FX_Div(s32 a, s32 b);
+extern void MIi_CpuClear32(u32 value, void *dst, u32 size);
 extern SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 extern void func_02049f44(SndMgr *mgr, s32 id, void *pos, s32 arg);
 extern BOOL func_0204a118(SndMgr *mgr, s32 id);
@@ -421,7 +421,7 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void *func_0203dd9c(u32 size);
-extern void func_02012be8(const EffectVec *a, const EffectVec *b, EffectVec *out);
+extern void VEC_Add(const EffectVec *a, const EffectVec *b, EffectVec *out);
 extern char data_0208c330[];
 
 typedef struct EffectGlb {
@@ -433,11 +433,11 @@ extern EffectGlb data_020927f8;
 extern u8 data_02092800[];
 extern u8 data_02092844[];
 extern u8 data_020928b4[];
-extern void func_02016dfc(const void *src, void *dst);
-extern void func_02016dd8(const void *src, void *dst);
-extern void func_02016dbc(const void *src, void *dst);
+extern void MI_Copy64B(const void *src, void *dst);
+extern void MI_Copy48B(const void *src, void *dst);
+extern void MI_Copy36B(const void *src, void *dst);
 extern void func_020128a4(int t, int b, int l, int r, int n, int f, int scaleW, void *mtx);
-extern void func_02016d68(const void *src, void *dst, u32 size);
+extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 extern void func_02011820(void *mtx);
 extern void func_02011340(void *mtx);
 extern void func_0202711c(const EffectVec *trans);

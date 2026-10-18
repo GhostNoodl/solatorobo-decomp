@@ -8,7 +8,7 @@ extern char data_ov013_0220b360[];
 extern void func_ov000_02194074(void *self);
 extern void func_ov003_021db244(Ov013Actor *self);
 extern void func_ov003_021dae44(Ov013Actor *self);
-extern u16 func_0201319c(s32 y, s32 x);
+extern u16 FX_Atan2(s32 y, s32 x);
 extern void *func_020657b0(void *a, s32 b);
 extern Ov013Actor *func_ov000_0219bf90(void);
 extern BOOL func_020621c4(void);
@@ -35,7 +35,7 @@ void func_ov013_022065e8(Ov013Actor *self) {
     if (FLD(u16, self, 0xf6) != 0) {
         self->rot[1] += FLD(u16, self, 0xf6);
     } else {
-        self->rot[1] = func_0201319c(self->unk_9c, self->unk_a4);
+        self->rot[1] = FX_Atan2(self->unk_9c, self->unk_a4);
     }
     if (FLD(u8, self, 0xf4) != 0 && FLD(s32, self, 0xbc) != 0) {
         void *p = func_020657b0(data_0214a420, FLD(s32, self, 0xbc));

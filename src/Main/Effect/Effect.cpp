@@ -91,9 +91,9 @@ void func_02063954(EffectObj *obj) {
     }
     v = obj->unk_80;
     if (v < obj->unk_50) {
-        obj->unk_4c = func_02012ab8(v, obj->unk_50);
+        obj->unk_4c = FX_Div(v, obj->unk_50);
     } else if (v > obj->unk_54 && v < 0) {
-        obj->unk_4c = func_02012ab8(v, obj->unk_54);
+        obj->unk_4c = FX_Div(v, obj->unk_54);
     } else {
         obj->unk_4c = 0x1000;
     }
@@ -164,7 +164,7 @@ void func_02063a34(EffectObj *obj) {
     obj->offset.z = 0;
     obj->unk_80 = 0;
     obj->unk_7c = 0x1000;
-    func_02016cd8(-1, obj->cues, sizeof(obj->cues));
+    MIi_CpuClear32(-1, obj->cues, sizeof(obj->cues));
     obj->unk_c4 = 1;
     obj->loopCount = 0;
     obj->loopStart = 0;

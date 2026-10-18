@@ -14,7 +14,7 @@ extern EffectPtclHandler data_0208c940;
 
 void func_02068da8(EffectPtcl *p) {
     p->unk_58 = -1;
-    func_02016d68(data_02082ba4, p->dl, sizeof(p->dl));
+    MIi_CpuCopyFast(data_02082ba4, p->dl, sizeof(p->dl));
     p->tex = NULL;
     p->polyAttr = 0x21200000;
     p->texAddr = -1;

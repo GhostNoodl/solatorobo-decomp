@@ -8,7 +8,7 @@ extern void func_02065804(void *a, s32 b);
 extern void func_ov003_021d36fc(Ov013Actor *self);
 extern void func_ov003_021d3d28(Ov013Actor *self);
 extern Ov013Actor *func_ov000_0218e6d0(void *mgr, u16 a, u16 b);
-extern u16 func_0201319c(s32 y, s32 x);
+extern u16 FX_Atan2(s32 y, s32 x);
 extern char data_ov013_0220b5ca[];
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 extern void func_ov000_0218dbe0(Ov013Actor *self, s32 a);
@@ -103,7 +103,7 @@ void func_ov013_021fd0c8(Ov013Actor *self) {
             if (a != NULL && a->unk_44->unk_22_0 == 1 && a->unk_44->unk_22_1 == 1) {
                 s32 ty = a->pos.y;
                 s32 dist = Ov013_DistXZ(&self->pos, &a->pos);
-                u16 ang = func_0201319c(dist, ty + 0x3800 - self->pos.y);
+                u16 ang = FX_Atan2(dist, ty + 0x3800 - self->pos.y);
                 self->unk_9c = Ov013_FxMul(OV013_SIN(ang), 0x666);
                 self->unk_a0 = Ov013_FxMul(OV013_COS(ang), 0x666);
             }

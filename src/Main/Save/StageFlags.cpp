@@ -4,9 +4,9 @@ extern "C" {
 
 extern StageFlags data_0214aa68;
 extern void *func_0203dec8(u32 size, int align);
-extern void func_02016d1c(u32 value, void *dst, u32 size);
+extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void func_02016e28(void *dst, u32 value, u32 size);
-extern void func_02016cec(const void *src, void *dst, u32 size);
+extern void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 extern u8 data_0214a428[0x640];
 extern void func_0206ccb8(StageFlags *f, u32 a);
 extern u16 func_0206d02c(StageFlags *f);
@@ -29,7 +29,7 @@ void func_0206c44c(void) {
     }
     f = (StageFlags *)func_0203dec8(sizeof(StageFlags), 4);
     data_0214a424 = f;
-    func_02016d1c(0, f, sizeof(StageFlags));
+    MIi_CpuClearFast(0, f, sizeof(StageFlags));
     f->magic = STAGE_FLAGS_MAGIC;
 }
 
@@ -48,10 +48,10 @@ static inline void StageFlags_ClearEntries(StageFlags *f) {
 
 void func_0206c4c4(StageFlags *f) {
     u32 i;
-    func_02016d1c(0, f, sizeof(StageFlags));
+    MIi_CpuClearFast(0, f, sizeof(StageFlags));
     f->magic = STAGE_FLAGS_MAGIC;
-    func_02016d1c(0, data_0214a428, sizeof(data_0214a428));
-    func_02016d1c(0, &data_0214aa68, 0x640);
+    MIi_CpuClearFast(0, data_0214a428, sizeof(data_0214a428));
+    MIi_CpuClearFast(0, &data_0214aa68, 0x640);
     f->unk_01a = 1;
     f->color2.r = 0xfe;
     f->color2.g = 0xfe;
@@ -69,7 +69,7 @@ void func_0206c4c4(StageFlags *f) {
     data_02fe1534.unk_58 = 1;
     {
         StageFlagsInit init = data_02082be4;
-        func_02016cec(&init, f->unk_624, sizeof(f->unk_624));
+        MIi_CpuCopy32(&init, f->unk_624, sizeof(f->unk_624));
     }
     f->unk_639 = 0xff;
 }

@@ -17,7 +17,7 @@ static inline Ov013Actor *Ov013_FindActor(u16 id) {
 }
 extern char data_ov013_0220bea0[];
 extern char data_ov013_0220bea6[];
-extern void func_02012be8(const Ov013Vec *a, const Ov013Vec *b, Ov013Vec *out);
+extern void VEC_Add(const Ov013Vec *a, const Ov013Vec *b, Ov013Vec *out);
 extern void func_ov000_0218ddd4(Ov013Actor *self, Ov013Vec *v, s32 a);
 
 void func_ov013_02209dd4(Ov013Actor *self) {
@@ -42,7 +42,7 @@ void func_ov013_02209dd4(Ov013Actor *self) {
     d.x = FLD(s32, self, 0x100) - self->pos.x;
     d.y = FLD(s32, self, 0x104) - self->pos.y;
     d.z = FLD(s32, self, 0x108) - self->pos.z;
-    func_02012fb8(0xcd, &d, &self->pos, &self->pos);
+    VEC_MultAdd(0xcd, &d, &self->pos, &self->pos);
     func_ov000_021987b8(self->unk_48, 0, 0, 0);
 }
 
@@ -75,7 +75,7 @@ void func_ov013_02209ed8(Ov013Actor *self) {
     d.y = Ov013_FxMul(d.y, 0x33);
     d.z = Ov013_FxMul(d.z, 0x33);
     d.y *= 3;
-    func_02012be8(&self->pos, &d, &self->pos);
+    VEC_Add(&self->pos, &d, &self->pos);
     func_ov000_021987b8(self->unk_48, 1, 0, 0);
 }
 

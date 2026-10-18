@@ -21,7 +21,7 @@ extern void func_ov003_021cf2d8(void *p);
 extern void func_ov003_021d8928(void *p);
 extern void func_ov003_021d8fa8(void *p);
 extern void func_02065804(void *a, s32 b);
-extern void func_02012be8(const Ov013Vec *a, const Ov013Vec *b, Ov013Vec *out);
+extern void VEC_Add(const Ov013Vec *a, const Ov013Vec *b, Ov013Vec *out);
 extern void func_ov003_021cf404(s32 a);
 extern void func_ov003_021cf400(s32 a);
 extern void func_ov003_021cf3fc(s32 a);
@@ -60,7 +60,7 @@ Ov013Actor *func_ov013_021feb0c(Ov013Actor *self) {
 }
 
 static inline void Ov013_AddVec(Ov013Vec *a, Ov013Vec b, Ov013Vec *out) {
-    func_02012be8(a, &b, out);
+    VEC_Add(a, &b, out);
 }
 
 static inline Ov013Vec Ov013_GetOff(Ov013Opt120 *o) {

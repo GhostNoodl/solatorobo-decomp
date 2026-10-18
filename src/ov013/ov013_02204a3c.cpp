@@ -54,7 +54,7 @@ extern void func_ov003_021da40c(void *p);
 extern void func_ov000_0218d7e8(Ov013Actor *self, s32 a);
 extern BOOL func_ov000_021950e8(Ov013Actor *self, Ov013Msg *msg);
 extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
-extern u16 func_0201319c(s32 y, s32 x);
+extern u16 FX_Atan2(s32 y, s32 x);
 extern u8 *func_020704b4(u16 kind);
 extern void func_ov013_02205098(Ov013Actor *self);
 extern void func_ov000_02195d88(Ov013Actor *self);
@@ -73,7 +73,7 @@ static inline Ov013Actor *Ov013_FindActor(u16 id) {
 static inline u16 Ov013_FaceAngle(Ov013Actor *self, Ov013Actor *a) {
     if (a != NULL) {
         if (a != NULL && a != self) {
-            return func_0201319c(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
+            return FX_Atan2(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
         }
         return self->rot[1];
     }

@@ -178,7 +178,7 @@ void func_020650e0(EffectGroup *g, const EffectVec *pos) {
 }
 
 void func_0206516c(EffectObj *obj, const EffectVec *delta) {
-    func_02012be8(&obj->pos, delta, &obj->pos);
+    VEC_Add(&obj->pos, delta, &obj->pos);
 }
 
 void func_02065184(EffectObj *obj, s32 x, s32 y, s32 z) {
@@ -194,7 +194,7 @@ void func_020651b0(EffectGroup *g, const EffectVec *delta) {
     for (c = g->child; c != NULL; c = c->child) {
         c->AddPos(delta);
     }
-    func_02012be8(&g->pos, delta, &g->pos);
+    VEC_Add(&g->pos, delta, &g->pos);
 }
 
 void func_020651fc(EffectObj *obj, s32 x, s32 y, s32 z) {
@@ -230,9 +230,9 @@ void func_020652e4(EffectObj *obj, u16 x, u16 y, u16 z) {
 }
 
 void func_02065310(EffectGroup *g, const EffectVec *scale) {
-    s32 fx = func_02012ab8(scale->x, g->scale.x);
-    s32 fy = func_02012ab8(scale->y, g->scale.y);
-    s32 fz = func_02012ab8(scale->z, g->scale.z);
+    s32 fx = FX_Div(scale->x, g->scale.x);
+    s32 fy = FX_Div(scale->y, g->scale.y);
+    s32 fz = FX_Div(scale->z, g->scale.z);
     EffectObj *c;
     EffectVec v;
     for (c = g->child; c != NULL; c = c->child) {

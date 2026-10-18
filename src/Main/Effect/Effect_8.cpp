@@ -75,7 +75,7 @@ extern void func_0206a138(EffectPartSet *parts);
 extern void func_0206a0d8(EffectPartSet *parts);
 extern void func_0206a0dc(EffectPartSet *parts, u8 *data);
 extern void func_02069248(EffectEmitterSub *sub);
-extern void func_02016cec(const void *src, void *dst, u32 size);
+extern void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 
 void func_02068c40(EffectSetup *setup, EffectObj *obj, s32 id);
 void func_020689ec(EffectSetup *setup, EffectEmitter *em, const char *name);
@@ -197,7 +197,7 @@ void func_02068ab8(EffectSetup *setup, EffectEmitter *em, s32 id) {
         }
         p += size;
     }
-    func_02016cec(p, &em->params, 0x50);
+    MIi_CpuCopy32(p, &em->params, 0x50);
 }
 
 void func_02068b6c(EffectSetup *setup, EffectPartSet *parts, u8 *ids) {

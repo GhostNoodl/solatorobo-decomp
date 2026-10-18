@@ -34,7 +34,7 @@ void func_02041440(void *p, void *name, int c);
 void func_0201e520(void *dst, const void *src);
 void func_020417e0(void *a, void *b);
 void func_02041d9c(void *a, int b, int c);
-s32 func_02012ab8(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 
 Ov008Node *func_ov008_021ccda0(Ov008List *list, s32 a, s16 b, s16 c, s32 d) {
     Ov008Node *n = (Ov008Node *)func_0203dd9c(0x34);
@@ -126,7 +126,7 @@ void func_ov008_021ccf44(void *o) {
         VOBJ(o, 4)->v08();
         FLD(s32, o, 0) = 0x10;
     case 0x10:
-        t = func_02012ab8(0x24000 - FLD(s32, o, 0x54), 0x20000);
+        t = FX_Div(0x24000 - FLD(s32, o, 0x54), 0x20000);
         FLD(s32, o, 0x54) = FLD(s32, o, 0x54) + Ov008_FxMul(-FLD(s32, o, 0x54), 0x333);
         if (FLD(s32, o, 0x54) < 0x800 && FLD(u8, o, 0x68) != 0) {
             FLD(s32, o, 0x64) = -0x400;
@@ -137,7 +137,7 @@ void func_ov008_021ccf44(void *o) {
         func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
         FLD(s32, o, 0) = 0x12;
     case 0x12:
-        t = func_02012ab8(FLD(s32, o, 0x54) + 0x20000, 0x20000);
+        t = FX_Div(FLD(s32, o, 0x54) + 0x20000, 0x20000);
         FLD(s32, o, 0x54) = FLD(s32, o, 0x54) + Ov008_FxMul(FLD(s32, o, 0x54), 0x666);
         if (FLD(s32, o, 0x54) < -0x20000) {
             OV008_FREE_M(FLD(void *, o, 0x50));

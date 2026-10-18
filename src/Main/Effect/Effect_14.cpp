@@ -206,14 +206,14 @@ BOOL func_0206afd4(EffectEmitter *em) {
 }
 
 
-extern void func_02012fb8(s32 scale, const EffectVec *dir, const EffectVec *base, EffectVec *out);
+extern void VEC_MultAdd(s32 scale, const EffectVec *dir, const EffectVec *base, EffectVec *out);
 extern void func_0206924c(EffectEmitterSub *sub, EffectPtcl *p);
 
 static inline BOOL EffectPtcl_Move(EffectPtcl *p) {
     if (p->time > p->unk_b8 && p->unk_b8 >= 0) {
         return FALSE;
     }
-    func_02012fb8(p->speed, &p->dir, &p->pos, &p->pos);
+    VEC_MultAdd(p->speed, &p->dir, &p->pos, &p->pos);
     p->rot.x += p->unk_14;
     p->rot.y += p->unk_16;
     p->rot.z += p->unk_18;

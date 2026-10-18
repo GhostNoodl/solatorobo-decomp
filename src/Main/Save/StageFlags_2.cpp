@@ -4,9 +4,9 @@ extern "C" {
 
 extern StageFlags data_0214aa68;
 extern void *func_0203dec8(u32 size, int align);
-extern void func_02016d1c(u32 value, void *dst, u32 size);
+extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void func_02016e28(void *dst, u32 value, u32 size);
-extern void func_02016cec(const void *src, void *dst, u32 size);
+extern void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 extern u8 data_0214a428[0x640];
 extern void func_0206ccb8(StageFlags *f, u32 a);
 extern u16 func_0206d02c(StageFlags *f);

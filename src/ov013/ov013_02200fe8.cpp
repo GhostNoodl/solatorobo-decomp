@@ -8,7 +8,7 @@ extern u8 data_ov013_0220b090[];
 extern u8 data_ov013_0220b0cc[];
 extern void func_ov000_02191418(void *a, s32 b, s32 c);
 extern void func_ov003_021d9980(Ov013Vec *out, u16 rot, const Ov013Vec *v);
-extern void func_02012be8(const Ov013Vec *a, const Ov013Vec *b, Ov013Vec *out);
+extern void VEC_Add(const Ov013Vec *a, const Ov013Vec *b, Ov013Vec *out);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
 extern void func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
 extern void func_ov013_02203494(Ov013Actor *self, BOOL a, BOOL b, s32 c, void *d);
@@ -21,7 +21,7 @@ static inline Ov013V *Ov013_SpawnFx(s32 id, const Ov013Vec &pos) {
 static inline Ov013Vec Ov013_FrontPos(Ov013Actor *self, const Ov013Vec *off) {
     Ov013Vec v;
     func_ov003_021d9980(&v, self->rot[1], off);
-    func_02012be8(&v, &self->pos, &v);
+    VEC_Add(&v, &self->pos, &v);
     return v;
 }
 

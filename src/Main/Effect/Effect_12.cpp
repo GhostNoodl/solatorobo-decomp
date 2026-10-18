@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void func_02016e28(void *dst, u32 value, u32 size);
-extern void func_02016cec(const void *src, void *dst, u32 size);
+extern void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 extern EffectPartHandler data_0208c948;
 extern EffectPartHandler data_0208c950;
 extern EffectPartHandler data_0208c958;
@@ -24,7 +24,7 @@ BOOL func_0206a0dc(EffectPartSet *s, const u8 *data) {
     s32 i;
     for (i = 0; i < 4; i++) {
         if (!s->slots[i].used) {
-            func_02016cec(data, &s->slots[i], 0x30);
+            MIi_CpuCopy32(data, &s->slots[i], 0x30);
             ret = TRUE;
             s->slots[i].used = ret;
             break;
@@ -69,9 +69,9 @@ BOOL func_0206a218(EffectPartSet *s) {
     return ret;
 }
 
-extern void func_02012fb8(s32 scale, const EffectVec *dir, const EffectVec *base, EffectVec *out);
-extern s32 func_02012d18(const EffectVec *v);
-extern void func_02012d78(const EffectVec *v, EffectVec *out);
+extern void VEC_MultAdd(s32 scale, const EffectVec *dir, const EffectVec *base, EffectVec *out);
+extern s32 VEC_Mag(const EffectVec *v);
+extern void VEC_Normalize(const EffectVec *v, EffectVec *out);
 
 static inline void Effect_VecScale(const EffectVec *v, s32 s, EffectVec *out) {
     out->x = Effect_FxMul(v->x, s);
@@ -82,9 +82,9 @@ static inline void Effect_VecScale(const EffectVec *v, s32 s, EffectVec *out) {
 static inline void EffectPtcl_Accel(EffectPtcl *p, s32 rate, const EffectVec *acc) {
     EffectVec v;
     Effect_VecScale(&p->dir, p->speed, &v);
-    func_02012fb8(rate, acc, &v, &v);
-    p->speed = func_02012d18(&v);
-    func_02012d78(&v, &p->dir);
+    VEC_MultAdd(rate, acc, &v, &v);
+    p->speed = VEC_Mag(&v);
+    VEC_Normalize(&v, &p->dir);
 }
 
 BOOL func_0206a2ec(EffectPartSet *s, EffectPartSlot *slot) {
