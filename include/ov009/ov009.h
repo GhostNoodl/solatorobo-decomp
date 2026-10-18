@@ -147,6 +147,7 @@ struct Ov009Vec {
 static inline s32 Ov009_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
+
 // NitroSDK sin/cos table: s16 sin,cos pairs
 extern "C" const s16 FX_SinCosTable_[];
 #define OV009_SINCOS FX_SinCosTable_
