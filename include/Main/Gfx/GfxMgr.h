@@ -35,20 +35,67 @@ typedef struct GfxPltt {
     int id;
 } GfxPltt;
 
-typedef struct GfxSub {
-    u8 unk_000[0x800];
-    GfxPltt pltt;
-} GfxSub;
+// Node of a VRAM range allocator (GfxVramHeap).
+typedef struct GfxVramNode {
+    /* 0x0 */ struct GfxVramNode *prev;
+    /* 0x4 */ struct GfxVramNode *next;
+    /* 0x8 */ u32 size;
+    /* 0xc */ u32 offset;
+} GfxVramNode;
+
+typedef struct GfxVramHeap {
+    /* 0x00 */ u32 unk_00;
+    /* 0x04 */ u32 unk_04;
+    /* 0x08 */ u32 size;
+    /* 0x0c */ GfxVramNode *tail;
+    /* 0x10 */ GfxVramNode head;
+    /* 0x20 */ GfxVramNode nodes[64];
+} GfxVramHeap; // size 0x420
+
+typedef struct GfxOam {
+    /* 0x0 */ u32 attr01;
+    /* 0x4 */ union {
+        u32 attr23;
+        u16 attr2;
+    };
+} GfxOam;
 
 typedef struct GfxSys {
     /* 0x000 */ int state;
-    /* 0x004 */ u8 unk_004[0x1e0];
-    /* 0x1e4 */ GfxSub sub;
+    /* 0x004 */ int nextState;
+    /* 0x008 */ u16 unk_008;
+    /* 0x00a */ u16 unk_00a;
+    /* 0x00c */ u32 unk_00c;
+    /* 0x010 */ u32 unk_010;
+    /* 0x014 */ void *unk_014;
+    /* 0x018 */ u32 unk_018;
+    /* 0x01c */ void *unk_01c;
+    /* 0x020 */ u32 unk_020;
+    /* 0x024 */ u32 unk_024;
+    /* 0x028 */ u32 unk_028;
+    /* 0x02c */ u8 unk_02c[0x1c];
+    /* 0x048 */ u8 unk_048[0x1c];
+    /* 0x064 */ GfxVramHeap heaps[2];
+    /* 0x8a4 */ u16 slotMasks[6];
+    /* 0x8b0 */ union {
+        u8 unk_8b0[0x134];
+        struct {
+            u8 unk_8b0_0 : 5;
+            u8 unk_8b0_5 : 1;
+            u8 unk_8b0_6 : 2;
+        };
+    };
+    /* 0x9e4 */ GfxPltt pltt;
     /* 0x9e8 */ u8 unk_9e8[0x48];
-    /* 0xa30 */ u8 unk_a30_0 : 4;
+    /* 0xa30 */ u8 unk_a30_0 : 1;
+    /* 0xa30 */ u8 unk_a30_1 : 1;
+    /* 0xa30 */ u8 unk_a30_2 : 1;
+    /* 0xa30 */ u8 unk_a30_3 : 1;
     /* 0xa30 */ u8 unk_a30_4 : 1;
     /* 0xa30 */ u8 unk_a30_5 : 3;
-} GfxSys;
+    /* 0xa31 */ u8 unk_a31[3];
+    /* 0xa34 */ GfxOam oams[12];
+} GfxSys; // size 0xa94
 
 typedef struct GfxFontEntry {
     /* 0x00 */ int index;

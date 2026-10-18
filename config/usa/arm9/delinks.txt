@@ -99,3 +99,85 @@ src/Main/Gfx/GfxMgr_2.cpp:
 src/Main/Gfx/GfxMgr_3.cpp:
     complete
     .text       start:0x0203a408 end:0x0203a5a4
+
+src/Main/Gfx/GfxSys.cpp:
+    complete
+    .text       start:0x0203b6a0 end:0x0203b70c
+
+src/Main/Gfx/GfxSys_2.cpp:
+    complete
+    .text       start:0x0203b924 end:0x0203b96c
+
+src/Main/Gfx/GfxSys_3.cpp:
+    complete
+    .text       start:0x0203ba7c end:0x0203bc20
+
+src/Main/Gfx/GfxSys_4.cpp:
+    complete
+    .text       start:0x0203bd40 end:0x0203c2bc
+
+src/Main/Gfx/GfxSys_5.cpp:
+    complete
+    .text       start:0x0203c880 end:0x0203cc58
+
+src/Main/Gfx/GfxSys_6.cpp:
+    complete
+    .text       start:0x0203cd10 end:0x0203ce3c
+
+src/Main/Gfx/GfxSys_7.cpp:
+    complete
+    .text       start:0x0203ced8 end:0x0203d144
+
+src/Main/Sys/Pad.cpp:
+    complete
+    .text       start:0x0203d1b4 end:0x0203d298
+
+src/Main/Sys/Pad_2.cpp:
+    complete
+    .text       start:0x0203d434 end:0x0203d45c
+
+src/Main/Sys/Touch.cpp:
+    complete
+    .text       start:0x0203d45c end:0x0203d5c4
+
+src/Main/Sys/Sys.cpp:
+    complete
+    .text       start:0x0203d6b4 end:0x0203d8b0
+
+src/Main/Sys/Sys_2.cpp:
+    complete
+    .text       start:0x0203d8e8 end:0x0203dfb0
+
+src/Main/Sys/NamePool.cpp:
+    complete
+    .text       start:0x0203dfb0 end:0x0203f248
+    .bss        start:0x02097dd4 end:0x02097de8
+
+src/Main/Hit/HitSphere.cpp:
+    complete
+    .text       start:0x0203f248 end:0x020403e4
+
+src/Main/Math/MathUtil.cpp:
+    complete
+    .text       start:0x020403e4 end:0x02040be0
+    .bss        start:0x02097de8 end:0x02097e00
+
+src/Main/Gfx/PlttRes.cpp:
+    complete
+    .text       start:0x02040be0 end:0x02040dd8
+
+src/Main/Gfx/PlttRes_2.cpp:
+    complete
+    .text       start:0x02041000 end:0x02041080
+
+src/Main/Gfx/PlttRes_3.cpp:
+    complete
+    .text       start:0x02041218 end:0x02041440
+
+src/Main/Gfx/TexObj.cpp:
+    complete
+    .text       start:0x02041558 end:0x020417e0
+
+src/Main/Gfx/TexObj_2.cpp:
+    complete
+    .text       start:0x02041bb0 end:0x0204205c

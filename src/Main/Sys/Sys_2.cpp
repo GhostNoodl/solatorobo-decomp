@@ -1,0 +1,206 @@
+#include "Main/Res/ResMgr.h"
+
+extern "C" {
+
+extern void *data_02097e44;
+extern int func_020472c4(void *obj);
+extern void func_02013618(void);
+extern void func_02013658(void);
+extern BOOL func_0201e244(BOOL a);
+extern void func_0201dd4c(int a, int b, int c);
+extern void *func_02019524(int arena);
+extern void *func_02019510(int arena);
+extern void *func_020198e4(int arena, void *lo, void *hi, int n);
+extern void func_02019718(int arena, void *p);
+extern BOOL func_02018d58(void);
+extern void *func_0201998c(int arena);
+extern void *func_020223c8(void *start, u32 size, int flags);
+extern void func_0203dfb0(void);
+extern void func_0203e024(void);
+extern void func_0201a8a4(void);
+extern void func_0203e6bc(void);
+extern u32 func_0201a7f0(void);
+extern void func_0201a804(u32 state);
+extern void *func_02022400(void *heap, u32 size, u32 align);
+extern void func_02022590(void *heap, void *ptr);
+extern void *func_02021ed0(void *ptr);
+extern u32 func_02022430(void *heap, void *ptr, u32 size);
+
+static inline BOOL PAD_DetectFold(void) {
+    return (*(volatile u16 *)0x2ffffa8 & 0x8000) >> 15;
+}
+
+void func_0203d8e8(void) {
+    if (PAD_DetectFold()) {
+        if (func_020472c4(data_02097e44) != 0 || data_02097dd0->unk_1f != 0 || data_02097dd0->unk_31 != 0) {
+            if (data_02097dd0->unk_1e == 1) {
+                data_02097dd0->unk_1e = 0;
+                func_02013618();
+                *(volatile u32 *)0x4001000 &= ~0x10000;
+                func_0201e244(FALSE);
+            }
+        } else {
+            func_0201dd4c(0xc, 0, 0);
+        }
+    } else if (data_02097dd0->unk_1e == 0 && func_0201e244(TRUE)) {
+        func_02013658();
+        *(volatile u32 *)0x4001000 |= 0x10000;
+        data_02097dd0->unk_1e = 1;
+    }
+    data_02097dd0->unk_1f = 0;
+}
+
+void func_0203d9e8(UnkSys *sys) {
+    void *lo;
+    u8 *start;
+    u32 size;
+    void *hi;
+    lo = func_02019524(0);
+    hi = func_02019510(0);
+    start = (u8 *)func_020198e4(0, lo, hi, 2);
+    func_02019718(0, hi);
+    size = 0x30000;
+    if (!func_02018d58()) {
+        sys->unk_0c = func_0201998c(0);
+        size = 0x1c000;
+    }
+    sys->unk_04 = func_020223c8(start, size, 0);
+    sys->unk_08 = func_020223c8(start + size, (u8 *)hi - (start + size), 0);
+    sys->align = 4;
+    data_02097dd0->cur = data_02097dd0->unk_08;
+    func_0203dfb0();
+    func_0203e024();
+}
+
+void func_0203daa4(UnkSys *sys) {
+    do {
+        func_0201a8a4();
+    } while (sys->frameWait > sys->vcount);
+    sys->vcount = 0;
+}
+
+void func_0203dacc(UnkSys *sys) {
+    if (sys->frameWait <= 1) {
+        return;
+    }
+    if (sys->frameWait - 1 <= sys->vcount) {
+        return;
+    }
+    do {
+        func_0201a8a4();
+        func_0203e6bc();
+    } while (sys->frameWait - 1 > sys->vcount);
+}
+
+void func_0203db10(UnkSysNode *node) {
+    node->next = NULL;
+    node->value = 0x1000;
+    node->unk_6_0 = 0;
+    node->unk_6_2 = 0;
+    node->unk_6_4 = 0;
+}
+
+#pragma push
+#pragma auto_inline on
+#pragma inline_depth(3)
+int func_0203db40(UnkSysNode *node) {
+    int value = node->value;
+    if (node->next != NULL) {
+        int v = func_0203db40(node->next);
+        if (v != 0x1000) {
+            value = v;
+        }
+    }
+    return value;
+}
+
+#pragma inline_depth(2)
+BOOL func_0203dbb0(UnkSysNode *node, BOOL recurse) {
+    BOOL ret = FALSE;
+    if (!recurse || node->next == NULL) {
+        if (node->unk_6_0 == 2 || node->unk_6_0 == 3) {
+            ret = TRUE;
+        }
+        if (node->value == 0) {
+            ret = TRUE;
+        }
+    } else if (func_0203dbb0(node->next, TRUE)) {
+        ret = TRUE;
+    }
+    return ret;
+}
+
+#pragma inline_depth(3)
+BOOL func_0203dc9c(UnkSysNode *node, BOOL recurse) {
+    BOOL ret = FALSE;
+    if (!recurse || node->next == NULL) {
+        if (node->unk_6_2 == 2 || node->unk_6_2 == 3) {
+            ret = TRUE;
+        }
+    } else if (func_0203dc9c(node->next, TRUE)) {
+        ret = TRUE;
+    }
+    return ret;
+}
+
+#pragma pop
+void *func_0203dd9c(u32 size) {
+    u32 irq = func_0201a7f0();
+    void *p = func_02022400(data_02097dd0->cur, size, data_02097dd0->align);
+    func_0201a804(irq);
+    return p;
+}
+
+void *func_0203dddc(u32 size) {
+    u32 irq = func_0201a7f0();
+    void *p = func_02022400(data_02097dd0->cur, size, data_02097dd0->align);
+    func_0201a804(irq);
+    return p;
+}
+
+void func_0203de1c(void *ptr) {
+    u32 irq = func_0201a7f0();
+    func_02022590(data_02097dd0->cur, ptr);
+    func_0201a804(irq);
+}
+
+void func_0203de50(void *ptr) {
+    u32 irq = func_0201a7f0();
+    func_02022590(data_02097dd0->cur, ptr);
+    func_0201a804(irq);
+}
+
+void *func_0203de84(u32 size, u32 align) {
+    u32 irq = func_0201a7f0();
+    void *p = func_02022400(data_02097dd0->unk_08, size, align);
+    func_0201a804(irq);
+    return p;
+}
+
+void *func_0203dec8(u32 size, u32 align) {
+    u32 irq = func_0201a7f0();
+    void *p = func_02022400(data_02097dd0->unk_04, size, align);
+    func_0201a804(irq);
+    return p;
+}
+
+void func_0203df0c(void *ptr) {
+    u32 irq = func_0201a7f0();
+    func_02022590(data_02097dd0->unk_08, ptr);
+    func_0201a804(irq);
+}
+
+void func_0203df40(void *ptr) {
+    u32 irq = func_0201a7f0();
+    func_02022590(data_02097dd0->unk_04, ptr);
+    func_0201a804(irq);
+}
+
+u32 func_0203df74(void *ptr, u32 size) {
+    u32 irq = func_0201a7f0();
+    u32 ret = func_02022430(func_02021ed0(ptr), ptr, size);
+    func_0201a804(irq);
+    return ret;
+}
+
+}

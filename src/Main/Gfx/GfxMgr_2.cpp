@@ -181,7 +181,7 @@ void func_02039e0c(GfxMgr *mgr) {
     } while (block != NULL);
     mgr->pools[0].alignShift = ((int)(*(volatile u32 *)0x04000000 & 0x300010) >> 20) & 3;
     mgr->pools[1].alignShift = ((int)(*(volatile u32 *)0x04001000 & 0x300010) >> 20) & 3;
-    pltt = &data_02097d48->sub.pltt;
+    pltt = &data_02097d48->pltt;
     id = pltt->id;
     if (mgr->unk_000 != id) {
         func_02016fa0(data_02082798, data_02097ce4, 0x60);
@@ -225,7 +225,7 @@ void func_02039f84(GfxMgr *mgr) {
     } while (block != NULL);
     mgr->pools[0].alignShift = ((int)(*(volatile u32 *)0x04000000 & 0x300010) >> 20) & 3;
     mgr->pools[1].alignShift = ((int)(*(volatile u32 *)0x04001000 & 0x300010) >> 20) & 3;
-    pltt = &data_02097d48->sub.pltt;
+    pltt = &data_02097d48->pltt;
     id = pltt->id;
     if (mgr->unk_000 != id) {
         func_02016fa0(data_02082798, data_02097ce4, 0x60);
