@@ -9,8 +9,41 @@
 
 extern "C" {
 
+typedef struct StageVec {
+    s32 x;
+    s32 y;
+    s32 z;
+} StageVec;
+
+typedef struct StageColor {
+    u8 r;
+    u8 g;
+    u8 b;
+} StageColor;
+
+typedef struct StageItemEntry {
+    /* 0x0 */ u16 id;
+    /* 0x2 */ union {
+        u16 info;
+        struct {
+            u16 a : 3;
+            u16 b : 3;
+            u16 c : 2;
+            u16 used : 1;
+            u16 unk_9 : 7;
+        } bits;
+    };
+} StageItemEntry;
+
+#define STAGE_FLAGS_MAGIC 0x45564153 // 'SAVE'
+#define STAGE_ITEM_ENTRY_MAX 37
+
 typedef struct StageFlags {
-    /* 0x000 */ u8 unk_000[0xc];
+    /* 0x000 */ u32 magic;
+    /* 0x004 */ u32 frameCount;
+    /* 0x008 */ u8 unk_008;
+    /* 0x009 */ u8 unk_009;
+    /* 0x00a */ u8 unk_00a[2];
     /* 0x00c */ u32 unk_00c;
     /* 0x010 */ u8 unk_010[8];
     /* 0x018 */ union {
@@ -23,16 +56,40 @@ typedef struct StageFlags {
             u16 unk_8 : 8;
         } bits18;
     };
-    /* 0x01a */ u8 unk_01a[6];
+    /* 0x01a */ u8 unk_01a;
+    /* 0x01b */ u8 unk_01b[5];
     /* 0x020 */ u32 unk_020;
     /* 0x024 */ u16 unk_024;
-    /* 0x026 */ u8 unk_026[0x4f2];
+    /* 0x026 */ u8 unk_026[2];
+    /* 0x028 */ u16 itemTotal;
+    /* 0x02a */ u8 items[100];
+    /* 0x08e */ StageItemEntry entries[STAGE_ITEM_ENTRY_MAX];
+    /* 0x122 */ u8 bits[8];
+    /* 0x12a */ u8 unk_12a[2];
+    /* 0x12c */ u8 unk_12c[5];
+    /* 0x131 */ StageColor color2;
+    /* 0x134 */ StageColor color;
+    /* 0x137 */ u8 unk_137;
+    /* 0x138 */ u16 unk_138;
+    /* 0x13a */ u8 unk_13a[2];
+    /* 0x13c */ StageVec pos;
+    /* 0x148 */ StageVec target;
+    /* 0x154 */ u16 rotY;
+    /* 0x156 */ u16 targetRotY;
+    /* 0x158 */ u8 unk_158[0x518 - 0x158];
     /* 0x518 */ u32 unk_518_0 : 8;
     /* 0x518 */ u32 unk_518_8 : 8;
-    /* 0x518 */ u32 unk_518_16 : 16;
-    /* 0x51c */ u8 unk_51c[0x60c - 0x51c];
+    /* 0x518 */ u32 unk_518_16 : 8;
+    /* 0x518 */ u32 unk_518_24 : 4;
+    /* 0x518 */ u32 unk_518_28 : 4;
+    /* 0x51c */ u8 buf[0xf0];
     /* 0x60c */ u32 slots[2];
-} StageFlags;
+    /* 0x614 */ u8 unk_614[0x10];
+    /* 0x624 */ u8 unk_624[0x14];
+    /* 0x638 */ u8 unk_638;
+    /* 0x639 */ u8 unk_639;
+    /* 0x63a */ u8 unk_63a[2];
+} StageFlags; // size 0x63c
 
 extern StageFlags *data_0214a424;
 extern void *data_02149ef8;
@@ -101,11 +158,6 @@ static inline BOOL Field_HasEventIn(FieldState *state, s32 ev) {
     return FALSE;
 }
 
-typedef struct StageVec {
-    s32 x;
-    s32 y;
-    s32 z;
-} StageVec;
 
 typedef struct StageShape {
     /* 0x00 */ u8 unk_00[8];
@@ -124,11 +176,6 @@ typedef struct StageArea {
     /* 0x0a */ s16 d;
 } StageArea;
 
-typedef struct StageColor {
-    u8 r;
-    u8 g;
-    u8 b;
-} StageColor;
 
 struct StagePlayer {
     /* 0x000 */ // vtable

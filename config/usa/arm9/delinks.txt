@@ -518,4 +518,96 @@ src/Main/Sys/SysTask.cpp:
 
 src/Main/Sys/SysTask_2.cpp:
     complete
-    .text       start:0x02063374 end:0x02063484
+    .text       start:0x02063374 end:0x02063650
+
+src/Main/Effect/Effect.cpp:
+    complete
+    .text       start:0x0206379c end:0x02064410
+
+src/Main/Effect/Effect_2.cpp:
+    complete
+    .text       start:0x02064b40 end:0x02064b54
+
+src/Main/Effect/Effect_3.cpp:
+    complete
+    .text       start:0x02064d3c end:0x02065b84
+
+src/Main/Effect/Effect_4.cpp:
+    complete
+    .text       start:0x02065eec end:0x02065f88
+
+src/Main/Effect/Effect_5.cpp:
+    complete
+    .text       start:0x02066774 end:0x02066c58
+
+src/Main/Effect/Effect_6.cpp:
+    complete
+    .text       start:0x020671e8 end:0x0206723c
+
+src/Main/Effect/Effect_7.cpp:
+    complete
+    .text       start:0x02068508 end:0x02068544
+
+src/Main/Effect/Effect_8.cpp:
+    complete
+    .text       start:0x02068600 end:0x02068da8
+
+src/Main/Effect/Effect_9.cpp:
+    complete
+    .text       start:0x02068da8 end:0x02068e68
+
+src/Main/Effect/Effect_10.cpp:
+    complete
+    .text       start:0x02069184 end:0x02069300
+
+src/Main/Effect/Effect_12.cpp:
+    complete
+    .text       start:0x0206a0cc end:0x0206a3a4
+
+src/Main/Effect/Effect_13.cpp:
+    complete
+    .text       start:0x0206aad4 end:0x0206ab0c
+
+src/Main/Effect/Effect_14.cpp:
+    complete
+    .text       start:0x0206ad84 end:0x0206b484
+
+src/Main/Effect/Effect_15.cpp:
+    complete
+    .text       start:0x0206b744 end:0x0206b778
+
+src/Main/Effect/Effect_16.cpp:
+    complete
+    .text       start:0x0206b804 end:0x0206b81c
+
+src/Main/Effect/Effect_17.cpp:
+    complete
+    .text       start:0x0206c2dc end:0x0206c44c
+
+src/Main/Save/StageFlags.cpp:
+    complete
+    .text       start:0x0206c44c end:0x0206c824
+
+src/Main/Save/StageFlags_2.cpp:
+    complete
+    .text       start:0x0206c994 end:0x0206cadc
+
+src/Main/Save/StageFlags_3.cpp:
+    complete
+    .text       start:0x0206d02c end:0x0206d0d4
+
+src/Main/Save/StageFlags_4.cpp:
+    complete
+    .text       start:0x0206d1d4 end:0x0206d3f4
+
+src/Main/Save/GameSave.cpp:
+    complete
+    .text       start:0x0206d3f4 end:0x0206d43c
+
+src/Main/Save/GameSave_2.cpp:
+    complete
+    .text       start:0x0206d4dc end:0x0206d99c
+
+src/Main/Save/GameSave_3.cpp:
+    complete
+    .text       start:0x0206dac8 end:0x0206dd6c

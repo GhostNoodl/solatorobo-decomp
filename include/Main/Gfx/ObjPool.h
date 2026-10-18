@@ -55,7 +55,8 @@ typedef struct ObjPoolShared {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u8 unk_02[2];
     /* 0x04 */ u16 unk_04;
-    /* 0x06 */ u8 unk_06[0xa];
+    /* 0x06 */ u16 unk_06;
+    /* 0x08 */ u8 unk_08[8];
     /* 0x10 */ u16 unk_10;
     /* 0x12 */ u16 unk_12;
     /* 0x14 */ u16 unk_14;
@@ -95,6 +96,7 @@ typedef struct ObjPoolShared {
             u16 unk_52;
             u16 unk_54;
             u16 unk_56;
+            u16 unk_58;
         };
     };
     /* 0x5c */ u8 unk_5c[0xc];

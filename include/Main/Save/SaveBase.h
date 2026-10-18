@@ -96,7 +96,7 @@ extern const char data_0208b5fd[];
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
-extern void func_02016e28(void *dst, int val, u32 size);
+extern void func_02016e28(void *dst, u32 val, u32 size);
 extern void func_02016fa0(const void *src, void *dst, u32 size);
 
 BOOL func_02047694(SaveBase *s);
