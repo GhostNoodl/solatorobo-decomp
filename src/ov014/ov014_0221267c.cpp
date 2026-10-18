@@ -52,4 +52,16 @@ static inline void Ov014Names_Set(u8 *n, const char *a, const char *b) {
     FLD(Ov014Flags8, n, 3).b1 = 1;
 }
 
+void func_ov014_02212738(Ov014Actor *self) {
+    func_ov003_021d0fc0(self);
+    {
+        const char *b = data_ov014_02217d8e;
+        u8 *n = (u8 *)self + 0xf0;
+        if (b) {
+            Ov014Names_Set(n, data_ov014_02217d95, b);
+        }
+        FLD(u16, n, 0) = 0;
+    }
+}
+
 }

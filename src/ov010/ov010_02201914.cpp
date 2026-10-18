@@ -67,5 +67,14 @@ static inline Ov010TaskNode *Ov010TaskList_Push(Ov010TaskNode *head, Ov010TaskNo
     }
     return head;
 }
+BOOL func_ov010_022019ac(Ov010TaskList *o) {
+    o->b0 = 1;
+    o->b1 = 0;
+    o->b2 = 0;
+    o->time = 0;
+    o->head = NULL;
+    func_ov003_021d7894(o->pool, 0xc, 0x10);
+    return TRUE;
+}
 
 }

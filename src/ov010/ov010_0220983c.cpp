@@ -49,5 +49,13 @@ void *func_ov010_022098c0(void *self) {
     func_0203de1c(self);
     return self;
 }
+BOOL func_ov010_022098f0(Ov010Trig *self, s32 a) {
+    self->b0 = 1;
+    self->unk_0c = 0;
+    self->unk_10 = a;
+    self->unk_0e = 0;
+    func_ov003_021da48c((u8 *)self + 0x20, 0);
+    return TRUE;
+}
 
 }

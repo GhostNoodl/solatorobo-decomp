@@ -9,6 +9,10 @@ src/ov012/ov012_021fa6a0.cpp:
     complete
     .text       start:0x021fa6a0 end:0x021fa80c
 
+src/ov012/ov012_021fa80c.cpp:
+    complete
+    .text       start:0x021fa80c end:0x021fa8b8
+
 src/ov012/ov012_021fa8b8.cpp:
     complete
     .text       start:0x021fa8b8 end:0x021fab7c
@@ -24,6 +28,10 @@ src/ov012/ov012_021fb818.cpp:
 src/ov012/ov012_021fcf1c.cpp:
     complete
     .text       start:0x021fcf1c end:0x021fd1b0
+
+src/ov012/ov012_021feacc.cpp:
+    complete
+    .text       start:0x021feacc end:0x021fee1c
 
 src/ov012/ov012_021fee1c.cpp:
     complete
@@ -72,6 +80,10 @@ src/ov012/ov012_02206e9c.cpp:
 src/ov012/ov012_02207a38.cpp:
     complete
     .text       start:0x02207a38 end:0x02207b7c
+
+src/ov012/ov012_02207b7c.cpp:
+    complete
+    .text       start:0x02207b7c end:0x02207c40
 
 src/ov012/ov012_02207c40.cpp:
     complete

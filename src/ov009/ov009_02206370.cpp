@@ -234,5 +234,49 @@ Ov009Actor *func_ov009_022069dc(Ov009Actor *self) {
     func_0203de1c(self);
     return self;
 }
+extern void *data_ov000_021ccd64;
+extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
+extern void func_0203f2b8(void *p);
+
+struct Ov009ByteA2 {
+    u8 b0 : 1;
+    u8 b1 : 7;
+};
+
+static inline void Ov009_VecSet3(Ov009Vec *v, s32 x, s32 y, s32 z) {
+    v->x = x;
+    v->y = y;
+    v->z = z;
+}
+
+void func_ov009_022069f8(Ov009Actor *self) {
+    u8 *p;
+    func_ov003_021d112c(self);
+    FLD(Ov009Vec, self, 0xf0) = self->pos;
+    self->pos.y -= 0xc000;
+    FLD(Ov009Vec, self, 0xfc) = FLD(Ov009Vec, self, 0xf0);
+    self->pos.z += 0x18000;
+    {
+        u32 saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->def;
+        if (self->unk_48 != NULL) {
+            void *q = self->unk_48;
+            if (q != NULL) {
+                func_0203f2b8(q);
+                func_0203de1c(q);
+            }
+            self->unk_48 = NULL;
+        }
+        data_02097dd0->cur = saved;
+    }
+    FLD(u16, self, 0x108) = 0;
+    FLD(u16, self, 0x10a) = 0;
+    Ov009_VecSet3(&FLD(Ov009Vec, self->unk_44, 0xc), 0x3800, FLD(s32, self, 0x6c), 0);
+    p = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+    if (p != NULL) {
+        ((Ov009ByteA2 *)(p + 0xa2))->b0 = 0;
+    }
+    FLD(s32, self, 0x10c) = -1;
+}
 
 }

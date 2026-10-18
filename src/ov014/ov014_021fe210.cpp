@@ -25,7 +25,7 @@ static inline void Ov014Spawn_Set(Ov014SpawnDesc *d, u16 k) {
 extern "C" {
 
 struct Ov014V12 { s32 a[3]; };
-extern Ov014Vec data_ov014_02216818[];
+extern const Ov014Vec data_ov014_02216818[];
 extern void func_ov003_021ceff4(void *p);
 extern BOOL func_ov003_021d9edc(s32 a);
 extern void func_ov003_021d87d0(void *p, s32 a);
@@ -94,6 +94,31 @@ void func_ov014_021fe210(Ov014Actor *self) {
     if ((self->unk_30 & 0x200) && self->unk_50[0] != 0) {
         func_ov003_021d87d0((u8 *)self + 0x100, 0);
         func_ov003_021d85c8((u8 *)self + 0x100, 0x1e, 0, 0, 0);
+    }
+}
+void func_ov014_021fe3ec(Ov014Actor *self) {
+    Ov014SpawnDesc desc;
+    Ov014Actor *o;
+    Ov014Spawn_Init(&desc, 0xffff);
+    Ov014Spawn_Set(&desc, 0x482b);
+    o = func_ov000_02192b24(&desc);
+    if (o == NULL) {
+        return;
+    }
+    {
+        const Ov014Vec *p = &data_ov014_02216818[FLD(u8, self, 0x139)];
+        o->pos.x = p->x;
+        o->pos.y = p->y;
+        o->pos.z = p->z;
+    }
+    if (++FLD(u8, self, 0x139) >= 7) {
+        FLD(u8, self, 0x139) = 0;
+    }
+    o->v04();
+    FLD(Ov014Flags8, o, 0x16).b0 = 1;
+    o->unk_90 = self->unk_90;
+    if (FLD(u8 *, o, 0x4c) != NULL) {
+        FLD(u16, FLD(u8 *, o, 0x4c), 0x1c) = self->id;
     }
 }
 

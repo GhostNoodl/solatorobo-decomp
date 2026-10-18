@@ -9,9 +9,29 @@ src/ov011/ov011_021fa6a0.cpp:
     complete
     .text       start:0x021fa6a0 end:0x021fb02c
 
+src/ov011/ov011_021fb38c.cpp:
+    complete
+    .text       start:0x021fb38c end:0x021fb66c
+
 src/ov011/ov011_021fb66c.cpp:
     complete
     .text       start:0x021fb66c end:0x021fb9b8
+
+src/ov011/ov011_021fdfd8.cpp:
+    complete
+    .text       start:0x021fdfd8 end:0x021fe1d4
+
+src/ov011/ov011_021fe9b8.cpp:
+    complete
+    .text       start:0x021fe9b8 end:0x021febd8
+
+src/ov011/ov011_021fef00.cpp:
+    complete
+    .text       start:0x021fef00 end:0x021ff084
+
+src/ov011/ov011_021ff8fc.cpp:
+    complete
+    .text       start:0x021ff8fc end:0x021ffb58
 
 src/ov011/ov011_02200aac.cpp:
     complete
@@ -20,6 +40,10 @@ src/ov011/ov011_02200aac.cpp:
 src/ov011/ov011_02201c18.cpp:
     complete
     .text       start:0x02201c18 end:0x022024d4
+
+src/ov011/ov011_02202538.cpp:
+    complete
+    .text       start:0x02202538 end:0x02202a38
 
 src/ov011/ov011_02202a38.cpp:
     complete
@@ -80,6 +104,10 @@ src/ov011/ov011_0220023c.cpp:
 src/ov011/ov011_02204a8c.cpp:
     complete
     .text       start:0x02204a8c end:0x02204b94
+
+src/ov011/ov011_02204b94.cpp:
+    complete
+    .text       start:0x02204b94 end:0x02204ff0
 
 src/ov011/ov011_02204ff0.cpp:
     complete

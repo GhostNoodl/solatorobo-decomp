@@ -132,5 +132,71 @@ void func_ov014_02201f24(Ov014Actor *self) {
         FLD(u16, self, 0x12c) = 0x1800;
     }
 }
+extern void *data_02097e4c;
+extern Ov014Vec data_ov014_022165e8;
+struct Ov014Blk12 {
+    s32 a[3];
+};
+extern Ov014Actor *func_ov000_0219bf90(void);
+extern BOOL func_ov000_021b4738(Ov014Actor *a);
+extern void func_ov003_021ceff4(void *p);
+extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+
+void func_ov014_02202100(Ov014Actor *self) {
+    Ov014Actor *pl;
+    Ov014Vec v;
+    if (!Ov014_GameIdle()) {
+        return;
+    }
+    self->unk_90 = 0xffff;
+    pl = func_ov000_0219bf90();
+    if (pl != NULL) {
+        self->unk_90 = pl->id;
+        if (func_ov000_021b4738(pl)) {
+            return;
+        }
+    }
+    if (self->unk_40->unk_13 == 1) {
+        u32 f = FLD(u32, self, 0xf4);
+        if (f == 0) {
+            u8 *t = FLD(u8 *, self, 0x140);
+            FLD(u8 *, self, 0x130) = FLD(u8 *, t, 0xc) + FLD(u16, t, 8) * 8;
+            func_ov003_021ceff4((u8 *)self + 0x134);
+            switch (*FLD(s16 *, self, 0x130)) {
+            case 0:
+                FLD(u32, self, 0xf4) |= 4;
+                self->unk_40->flags |= 0x8000;
+                break;
+            case 1:
+                FLD(u32, self, 0xf4) |= 8;
+                FLD(u32, self, 0xf4) |= 0x3000000;
+                self->unk_40->flags |= 0x10000;
+                break;
+            case 2:
+                FLD(u32, self, 0xf4) |= 0x20;
+                self->unk_40->flags |= 0x4000;
+                break;
+            }
+        } else if (f & 1) {
+            self->unk_b6++;
+            if (self->unk_b6 >= 10) {
+                self->unk_b6 = 0;
+                FLD(u32, self, 0xf4) = f ^ 1;
+            }
+        }
+    }
+    if (self->unk_30 & 0x200) {
+        func_02049f44(data_02097e4c, 0x67, &self->pos, 0);
+    }
+    func_ov003_021dacfc(FLD(void *, self, 0xfc));
+    if (self->pos.y <= 0x4519a) {
+        self->unk_40->flags |= 0x200000;
+    }
+    *(Ov014Blk12 *)&v = *(Ov014Blk12 *)&data_ov014_022165e8;
+    v.y = self->pos.y;
+    if (VEC_Distance(&self->pos, &v) > 0xf000) {
+        self->unk_40->flags |= 0x200000;
+    }
+}
 
 }
