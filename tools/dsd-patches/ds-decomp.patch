@@ -1,0 +1,111 @@
+diff --git a/Cargo.toml b/Cargo.toml
+index e1c3ee9..bdea0f4 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -8,3 +8,6 @@ lto = true
+ [profile.release-fast]
+ inherits = "release"
+ lto = false
++
++[patch.crates-io]
++ds-rom = { path = "../ds-rom" }
+diff --git a/lib/src/analysis/ctor.rs b/lib/src/analysis/ctor.rs
+index 302ea7d..2dcbaef 100644
+--- a/lib/src/analysis/ctor.rs
++++ b/lib/src/analysis/ctor.rs
+@@ -31,24 +31,22 @@ pub enum CtorRangeError {
+         ".ctor runner at {address:#010x} not in range of module '{module_kind}:\n{backtrace}'"
+     ))]
+     CtorRunnerNotInRange { address: u32, module_kind: ModuleKind, backtrace: Backtrace },
++    #[snafu(display(".ctor table at {address:#010x} is not in the ARM9 program:\n{backtrace}"))]
++    CtorTableNotInRange { address: u32, backtrace: Backtrace },
+ }
+ 
+ impl CtorRange {
+-    fn find_last_function_call(
+-        function: &Function,
+-        module_code: &[u8],
+-        base_address: u32,
+-    ) -> Option<u32> {
+-        let mut last_called_function = None;
++    fn find_function_calls(function: &Function, module_code: &[u8], base_address: u32) -> Vec<u32> {
++        let mut called_functions = vec![];
+         for ins in function.parser(module_code, base_address) {
+             match &ins {
+                 Ins::Bl { target, .. } | Ins::Blx { target: BlxTarget::Direct(target), .. } => {
+-                    last_called_function = Some(target.addr);
++                    called_functions.push(target.addr);
+                 }
+                 _ => {}
+             }
+         }
+-        last_called_function
++        called_functions
+     }
+ 
+     pub fn find_in_arm9(
+@@ -82,8 +80,25 @@ impl CtorRange {
+             Err(e) => return Err(e.into()),
+         };
+ 
+-        let run_inits_addr = Self::find_last_function_call(&entry_func, entry_code, entry_addr)
+-            .ok_or_else(|| NoEntryFunctionCallsSnafu.build())?;
++        // The .ctor runner is usually the last call in the entrypoint, but TwlSDK titles make more calls after it, so
++        // try each call from last to first until one looks like the .ctor runner
++        let called_functions = Self::find_function_calls(&entry_func, entry_code, entry_addr);
++        let mut last_error = NoEntryFunctionCallsSnafu.build();
++        for &run_inits_addr in called_functions.iter().rev() {
++            match Self::from_run_inits(arm9, code, unknown_autoloads, run_inits_addr) {
++                Ok(range) => return Ok(range),
++                Err(e) => last_error = e,
++            }
++        }
++        Err(last_error)
++    }
++
++    fn from_run_inits(
++        arm9: &Arm9,
++        code: &[u8],
++        unknown_autoloads: &[&Autoload],
++        run_inits_addr: u32,
++    ) -> Result<Self, CtorRangeError> {
+ 
+         let run_inits_offset = (run_inits_addr - arm9.base_address()) as usize;
+         let (run_inits_module_start, run_inits_module_end, run_inits_code) =
+@@ -149,13 +164,17 @@ impl CtorRange {
+             ctor_start_data[3],
+         ]);
+ 
+-        let num_ctors = code[(ctor_start - arm9.base_address()) as usize..]
++        let ctor_offset = ctor_start.wrapping_sub(arm9.base_address()) as usize;
++        if ctor_offset >= code.len() {
++            return CtorTableNotInRangeSnafu { address: ctor_start }.fail();
++        }
++        let num_ctors = code[ctor_offset..]
+             .as_chunks::<4>()
+             .0
+             .iter()
+             .map(|c| u32::from_le_bytes([c[0], c[1], c[2], c[3]]))
+             .position(|ctor| ctor == 0)
+-            .unwrap();
++            .ok_or_else(|| CtorTableNotInRangeSnafu { address: ctor_start }.build())?;
+ 
+         let ctor_end = ctor_start + num_ctors as u32 * 4 + 4;
+ 
+diff --git a/lib/src/analysis/exception.rs b/lib/src/analysis/exception.rs
+index 6dc036a..9bc368e 100644
+--- a/lib/src/analysis/exception.rs
++++ b/lib/src/analysis/exception.rs
+@@ -110,6 +110,12 @@ impl<'a> ExceptionData<'a> {
+             return Ok(None);
+         };
+ 
++        if exceptix_start == exceptix_end {
++            // Empty exception table, e.g. a C++ game built without exceptions
++            log::debug!("Exception table at {exceptix_start:#010x} is empty, ignoring it");
++            return Ok(None);
++        }
++
+         let base_address = arm9.base_address();
+         let start = (exceptix_start - base_address) as usize;
+         let end = (exceptix_end - base_address) as usize;

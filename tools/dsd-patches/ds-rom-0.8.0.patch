@@ -1,0 +1,99 @@
+diff --git a/src/rom/arm9.rs b/src/rom/arm9.rs
+index c530dda..be50665 100644
+--- a/src/rom/arm9.rs
++++ b/src/rom/arm9.rs
+@@ -270,7 +270,7 @@ impl<'a> Arm9<'a> {
+ 
+         let autoload_infos_start = data.len() as u32 + offsets.base_address;
+         for autoload in autoloads {
+-            data.extend(bytemuck::bytes_of(autoload.info().entry()));
++            data.extend(autoload.info().list_bytes());
+         }
+         let autoload_infos_end = data.len() as u32 + offsets.base_address;
+ 
+@@ -507,6 +507,20 @@ impl<'a> Arm9<'a> {
+         if build_info.is_compressed() {
+             CompressedSnafu {}.fail()?;
+         }
++        let start = (build_info.autoload_infos_start - self.base_address()) as usize;
++        let end = (build_info.autoload_infos_end - self.base_address()) as usize;
++        let list = &self.data[start..end];
++        // TwlSDK titles use 16-byte list entries; detect them when the list doesn't fit the 12-byte NITRO layout
++        if list.len() % 12 != 0 && list.len() % 16 == 0 {
++            return Ok(list
++                .chunks_exact(16)
++                .enumerate()
++                .map(|(index, chunk)| {
++                    let w = |i: usize| u32::from_le_bytes(chunk[i * 4..i * 4 + 4].try_into().unwrap());
++                    AutoloadInfo::new_twl([w(0), w(1), w(2), w(3)], index as u32)
++                })
++                .collect());
++        }
+         Ok(self
+             .get_autoload_info_entries(build_info)?
+             .iter()
+diff --git a/src/rom/raw/autoload_info.rs b/src/rom/raw/autoload_info.rs
+index f48faa0..b764f2c 100644
+--- a/src/rom/raw/autoload_info.rs
++++ b/src/rom/raw/autoload_info.rs
+@@ -61,6 +61,10 @@ pub struct AutoloadInfo {
+     pub list_entry: AutoloadInfoEntry,
+     /// The kind of autoload block.
+     pub kind: AutoloadKind,
++    /// Extra word found in TwlSDK autoload list entries, which are 16 bytes instead of 12. It sits between the code size
++    /// and the .bss size, and appears to hold the base address again.
++    #[serde(default, skip_serializing_if = "Option::is_none")]
++    pub twl_extra: Option<u32>,
+ }
+ 
+ /// Errors related to [`AutoloadInfo`].
+@@ -129,11 +133,29 @@ impl AutoloadInfo {
+     pub fn new(list_entry: AutoloadInfoEntry, index: u32) -> Self {
+         let kind = match list_entry.base_address {
+             0x1ff8000 => AutoloadKind::Itcm,
+-            0x27e0000 | 0x27c0000 | 0x23c0000 => AutoloadKind::Dtcm,
++            0x27e0000 | 0x27c0000 | 0x23c0000 | 0x2fe0000 => AutoloadKind::Dtcm,
+             _ => AutoloadKind::Unknown(index),
+         };
+ 
+-        Self { list_entry, kind }
++        Self { list_entry, kind, twl_extra: None }
++    }
++
++    /// Creates a new [`AutoloadInfo`] from a 16-byte TwlSDK autoload list entry.
++    pub fn new_twl(words: [u32; 4], index: u32) -> Self {
++        let [base_address, code_size, extra, bss_size] = words;
++        let mut info = Self::new(AutoloadInfoEntry { base_address, code_size, bss_size }, index);
++        info.twl_extra = Some(extra);
++        info
++    }
++
++    /// Returns the bytes of this entry as it appears in the autoload list.
++    pub fn list_bytes(&self) -> Vec<u8> {
++        let e = &self.list_entry;
++        let words: Vec<u32> = match self.twl_extra {
++            Some(extra) => vec![e.base_address, e.code_size, extra, e.bss_size],
++            None => vec![e.base_address, e.code_size, e.bss_size],
++        };
++        words.iter().flat_map(|w| w.to_le_bytes()).collect()
+     }
+ 
+     /// Returns the index of this [`AutoloadInfo`].
+diff --git a/src/rom/raw/rom.rs b/src/rom/raw/rom.rs
+index 3310763..0ee1c6f 100644
+--- a/src/rom/raw/rom.rs
++++ b/src/rom/raw/rom.rs
+@@ -111,7 +111,12 @@ impl<'a> Rom<'a> {
+         let end = start + header.arm9.size as usize;
+         let data = &self.data[start..end];
+ 
+-        let footer = self.arm9_footer()?;
++        // Some DSi-enhanced titles have no ARM9 footer; fall back to the header's build info offset
++        let footer = match self.arm9_footer() {
++            Ok(footer) => *footer,
++            Err(_) if header.arm9_build_info_offset != 0 => <Arm9Footer as bytemuck::Zeroable>::zeroed(),
++            Err(e) => return Err(e.into()),
++        };
+         let build_info_offset = if header.arm9_build_info_offset == 0 {
+             footer.build_info_offset
+         } else if header.arm9_build_info_offset > header.arm9.offset {
