@@ -31,10 +31,10 @@ DSD_VERSION = 'v0.12.1'
 WIBO_VERSION = '0.6.16'
 SJISWRAP_VERSION = 'v1.2.2'
 OBJDIFF_VERSION = 'v3.4.0'
-# CodeWarrior for DSi 1.6 SP2 (mwccarm 4.0 build 1051). Every DSi version matches the code we've decompiled so far, so the
-# exact version is a best guess; 2.0 versions don't match.
-MWCC_VERSION = "dsi/1.6sp2"
-DECOMP_ME_COMPILER = "mwcc_40_1051"
+# CodeWarrior for DSi 1.3 patch 1 (mwccarm 4.0 build 1036). Some functions have odd-sized stack frames that only
+# dsi/1.1 to dsi/1.3p1 produce, and dsi/1.1 breaks others, so the game was built with something from dsi/1.2 to dsi/1.3p1.
+MWCC_VERSION = "dsi/1.3p1"
+DECOMP_ME_COMPILER = "mwcc_40_1036"
 CC_FLAGS = " ".join([
     "-O4,p",                # Optimize maximally for performance
     "-enum int",            # Use int-sized enums

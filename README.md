@@ -6,7 +6,7 @@ This repository contains no game code or assets. To build it, you need your own 
 
 ## Status
 
-Very early: 11 of about 8,100 functions matched. The ROM is unpacked and split across the main ARM9 program, ITCM/DTCM and 16 overlays, ready to be matched with [objdiff](https://github.com/encounter/objdiff).
+Early: about 200 of 8,100 functions matched. The ROM is unpacked and split across the main ARM9 program, ITCM/DTCM and 16 overlays, ready to be matched with [objdiff](https://github.com/encounter/objdiff).
 
 ## About the game's code
 
@@ -21,7 +21,7 @@ Very early: 11 of about 8,100 functions matched. The ROM is unpacked and split a
 
 ## Compiler
 
-The game was built with CodeWarrior for DSi. Every DSi compiler version (mwccarm 4.0 builds 1018 to 1051) matches the code decompiled so far, so we use `dsi/1.6sp2` (build 1051, `mwcc_40_1051` on decomp.me) until a function proves otherwise. The 2.0 compilers that most DS decomps use don't match.
+The game was built with CodeWarrior for DSi, somewhere between `dsi/1.2` and `dsi/1.3p1` (mwccarm 4.0 builds 1026 to 1036). Some functions have odd-sized stack frames that newer versions don't produce, and `dsi/1.1` breaks other functions. We use `dsi/1.3p1` (`mwcc_40_1036` on decomp.me). The 2.0 compilers that most DS decomps use don't match.
 
 ## Building
 
