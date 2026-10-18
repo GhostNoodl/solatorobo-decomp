@@ -67,7 +67,6 @@ void func_02048be4(void *p);
 void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, const char *b);
 void func_02041c34(ov006_Model *m, int a, void *cb, int b);
-void func_02016e28(void *dst, int value, u32 size);
 void func_ov006_021dd5dc(void);
 void func_ov006_021df19c(ov006_Panel021dfce8 *p);
 
@@ -128,7 +127,7 @@ void func_ov006_021dfce8(ov006_Unk021dfce8 *self) {
         const char *name = data_0208cb7c;
         func_02041218(m1->unk88);
         func_02041440(m1, name, 0);
-        func_0201e520(m1->unk2C, data_0214b105);
+        STD_CopyString(m1->unk2C, data_0214b105);
     }
     item->unk14 = m1;
     func_020417e0(item->unk14, func_02035de0(data_0214b105, data_0208cb7c));
@@ -151,7 +150,7 @@ void func_ov006_021dfce8(ov006_Unk021dfce8 *self) {
         panel->unk20 = 0;
         panel->unk24 = 0;
         MI_CpuClear32(panel->unk28, sizeof(panel->unk28));
-        func_02016e28(panel->unk78, 0, sizeof(panel->unk78));
+        MI_CpuFill8(panel->unk78, 0, sizeof(panel->unk78));
         panel->unk82 = 0;
         panel->unk84 = 0;
         panel->unk88 = 0;

@@ -31,7 +31,7 @@ void func_ov000_02173648(void *self);
 void func_ov000_02153c48(ov006_ListNode *a, int b, int c, int d, int e);
 void MIi_CpuClear32(int value, void *dst, u32 size);
 void func_02040b0c(void *dst, int *dstLen, const void *src, int *srcLen);
-void func_0201e5a0(void *dst, const void *src, u32 size);
+void STD_CopyLString(void *dst, const void *src, u32 size);
 void func_ov006_021d0ab8(ov006_TaskD0 *self);
 
 BOOL func_ov006_021d01ac(ov006_TaskD0 *self) {
@@ -295,7 +295,7 @@ void func_ov006_021d0ab8(ov006_TaskD0 *self) {
             func_02040b0c(self->names[j], &dstLen, (u8 *)menu + 0x60, &srcLen);
             v = ((u8 *)menu)[0x77];
         } else {
-            func_0201e5a0(self->names[j], data_ov006_021ebba8.unk4, 0x30);
+            STD_CopyLString(self->names[j], data_ov006_021ebba8.unk4, 0x30);
             v = 0;
         }
         item->unkC = v;
@@ -314,7 +314,7 @@ static inline void ov006_SlotPacked_Clear(ov006_SlotPacked *self) {
     self->unkC = 0;
     self->unk10 = 0;
     self->unk0_8 = 0;
-    func_02016e28(self->name, 0, sizeof(self->name));
+    MI_CpuFill8(self->name, 0, sizeof(self->name));
 }
 
 static inline void ov006_TaskD0C_Init(ov006_TaskD0C *self) {
@@ -323,7 +323,7 @@ static inline void ov006_TaskD0C_Init(ov006_TaskD0C *self) {
     self->unk3C = 0;
     self->unk3D = 0;
     self->unk40 = 0;
-    func_02016e28(self->names, 0, sizeof(self->names));
+    MI_CpuFill8(self->names, 0, sizeof(self->names));
     self->unk101 = 0;
     ov006_SlotPacked_Clear(&self->unk102);
     self->unk11C = NULL;

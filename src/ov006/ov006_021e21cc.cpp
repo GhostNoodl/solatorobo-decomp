@@ -61,7 +61,7 @@ void func_ov006_021e22e4(ov006_MarkerSet *self) {
         if (name) {
             func_02041218(model->unk88);
             func_02041440(model, name, 0);
-            func_0201e520(model->unk2C, data_ov006_021ec864);
+            STD_CopyString(model->unk2C, data_ov006_021ec864);
         }
     }
     self->model = model;

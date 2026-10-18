@@ -19,7 +19,7 @@ static inline ov006_Slot *ov006_SlotManager_GetSlot(ov006_SlotManager *self, u32
 
 static inline void ov006_SlotSub_Copy(ov006_SlotSub *dst, const ov006_SlotSub *src) {
     if (src != NULL) {
-        func_02016fa0(src, dst, sizeof(ov006_SlotSub));
+        MI_CpuCopy8(src, dst, sizeof(ov006_SlotSub));
     }
 }
 

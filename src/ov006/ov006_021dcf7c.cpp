@@ -28,7 +28,7 @@ void func_ov006_021dcf7c(ov006_Unk021dcf7c *self) {
         if (path) {
             func_02041218(model->unk88);
             func_02041440(model, name, 0);
-            func_0201e520(model->unk2C, path);
+            STD_CopyString(model->unk2C, path);
         }
     }
     self->unkC = model;
@@ -44,7 +44,7 @@ void func_ov006_021dcf7c(ov006_Unk021dcf7c *self) {
         if (path) {
             func_02041218(model->unk88);
             func_02041440(model, name, 0);
-            func_0201e520(model->unk2C, path);
+            STD_CopyString(model->unk2C, path);
         }
     }
     self->unk10 = model;

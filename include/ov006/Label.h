@@ -19,7 +19,7 @@ typedef struct ov006_Label {
 extern "C" {
 #endif
 
-void func_0201e5a0(void *dst, const void *src, u32 size);
+void STD_CopyLString(void *dst, const void *src, u32 size);
 
 #ifdef __cplusplus
 }
@@ -30,12 +30,12 @@ static inline void ov006_Label_Set(ov006_Label *self, const char *a, const char 
     if (a == NULL) {
         self->unk60[0] = 0;
     } else {
-        func_0201e5a0(self->unk60, a, 0x20);
+        STD_CopyLString(self->unk60, a, 0x20);
     }
     if (b == NULL) {
         self->unk80[0] = 0;
     } else {
-        func_0201e5a0(self->unk80, b, 0x20);
+        STD_CopyLString(self->unk80, b, 0x20);
     }
     self->unkA4 = c;
     if (self->state == 0) {

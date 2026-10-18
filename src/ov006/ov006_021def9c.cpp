@@ -97,7 +97,7 @@ void func_ov006_021df19c(ov006_Unk021def9c *self) {
         const char *name = data_0208cb7c;
         func_02041218(m2->unk88);
         func_02041440(m2, name, 0);
-        func_0201e520(m2->unk2C, data_0214b105);
+        STD_CopyString(m2->unk2C, data_0214b105);
     }
     self->unk8C = m2;
     func_020417e0(self->unk8C, func_02035de0(data_0214b105, data_0208cb7c));

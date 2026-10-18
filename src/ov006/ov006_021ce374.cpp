@@ -51,7 +51,7 @@ void func_ov006_021ce3f0(ov006_Emblem *self) {
         if (name) {
             func_02041218(model->unk88);
             func_02041440(model, name, 0);
-            func_0201e520(model->unk2C, data_ov006_021ec864);
+            STD_CopyString(model->unk2C, data_ov006_021ec864);
         }
     }
     self->unk3C = model;
@@ -65,7 +65,7 @@ void func_ov006_021ce3f0(ov006_Emblem *self) {
         const char *name = data_0208ccc0;
         func_02041218(model2->unk88);
         func_02041440(model2, name, 0);
-        func_0201e520(model2->unk2C, file);
+        STD_CopyString(model2->unk2C, file);
     }
     self->unk40 = model2;
     func_020417e0(self->unk40, func_02034d88(func_02035d5c(data_0208cca0), data_0208ccc0));

@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_ov006_021ebcc0;
 
 void func_ov006_021e309c(Object *a);
-void func_02016e28(void *dst, int value, u32 size);
+void MI_CpuFill8(void *dst, u8 value, u32 size);
 
 void func_ov006_021cfe84(ov006_TaskCE *self) {
     if (self->unk44 != NULL) {
@@ -30,7 +30,7 @@ static inline void ov006_TaskD0_Init(ov006_TaskD0 *self) {
     self->base.vtbl = &data_ov006_021ebcc0;
     self->base.state = 0;
     self->base.subState = 0;
-    func_02016e28(self->names, 0, sizeof(self->names));
+    MI_CpuFill8(self->names, 0, sizeof(self->names));
     self->unk104 = NULL;
     self->unk108 = NULL;
     self->unk10C = NULL;

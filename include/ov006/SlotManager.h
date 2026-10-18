@@ -65,7 +65,7 @@ extern void *data_ov006_021ec078;
 extern void *data_ov006_021ec068;
 extern ov006_SlotManager *data_ov006_021ec884;
 
-void MI_CpuFill8(void *dst, int value, u32 size);
+void MI_CpuFill8(void *dst, u8 value, u32 size);
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
 void STD_CopyLString(void *dst, const void *src, u32 size);
 void func_02009e24(void *arr, int count, u32 size, void *ctor, void *dtor);

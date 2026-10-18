@@ -19,7 +19,7 @@ extern void *data_ov006_021ec404;
 extern void *data_ov006_021ec444;
 extern u16 data_ov006_021eb840[];
 
-void MI_CpuFill8(void *dst, int value, u32 size);
+void MI_CpuFill8(void *dst, u8 value, u32 size);
 void MIi_CpuClear16(int value, void *dst, u32 size);
 
 ov006_Unk0203a4c0 *func_0203a4c0(ov006_Unk02097ce0 *a);

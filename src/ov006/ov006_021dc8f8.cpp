@@ -24,7 +24,7 @@ void func_ov006_021dc8f8(ov006_Unk021dc8f8 *self) {
         if (path) {
             func_02041218(model->unk88);
             func_02041440(model, name, 0);
-            func_0201e520(model->unk2C, path);
+            STD_CopyString(model->unk2C, path);
         }
     }
     self->unk2C = model;

@@ -17,9 +17,9 @@ typedef struct ov006_Date {
 
 extern "C" {
 
-void func_0201a9a8(ov006_OwnerInfo *info);
-void func_0201b424(ov006_Date *date);
-void func_0201a98c(u8 *macAddr);
+void OS_GetOwnerInfo(ov006_OwnerInfo *info);
+void RTC_GetDate(ov006_Date *date);
+void OS_GetMacAddress(u8 *macAddr);
 extern const u8 data_ov006_021eb7f0[][2];
 
 void func_ov006_021d8f44(void) {
@@ -38,8 +38,8 @@ void func_ov006_021d8f44(void) {
         }
     }
     n = 0;
-    func_0201a9a8(&info);
-    func_0201b424(&date);
+    OS_GetOwnerInfo(&info);
+    RTC_GetDate(&date);
     if (date.month == info.month) {
         if (date.day == info.day) {
             data_ov006_021ec884->unk14A[n] = 9;
@@ -52,7 +52,7 @@ void func_ov006_021d8f44(void) {
         data_ov006_021ec884->unk14A[n] = n;
         n++;
     }
-    func_0201a98c(mac);
+    OS_GetMacAddress(mac);
     sum = 0;
     for (i = 0; i < 6; i++) {
         sum += mac[i];

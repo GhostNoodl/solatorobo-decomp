@@ -48,8 +48,8 @@ void func_ov006_021cd580(int a, int b, int c);
 void func_ov006_021e4b90(ov006_Unk021ec888 *self);
 void func_ov006_021e463c(ov006_Unk021ec888 *self);
 void *func_0203de84(u32 size, int align);
-void func_02016e28(void *dst, int value, u32 size);
-int func_0201ea94(char *dst, u32 size, const char *fmt, ...);
+void MI_CpuFill8(void *dst, u8 value, u32 size);
+int STD_TSNPrintf(char *dst, u32 size, const char *fmt, ...);
 void MIi_CpuClearFast(u32 data, void *destp, u32 size);
 
 static inline void ov006_Window_SetSel(ov006_Window *w, u16 id) {
@@ -151,8 +151,8 @@ void func_ov006_021d526c(ov006_TaskD37 *self, const char *name, s16 speed, u8 lo
         self->unk74 = (ov006_Anm74 *)func_0203de84(0x100, 4);
     }
     res = self->unk70->unk48;
-    func_02016e28(buf, 0, sizeof(buf));
-    func_0201ea94(buf, sizeof(buf), data_ov006_021ebc60, self->unk70->unk6C, name);
+    MI_CpuFill8(buf, 0, sizeof(buf));
+    STD_TSNPrintf(buf, sizeof(buf), data_ov006_021ebc60, self->unk70->unk6C, name);
     self->unk74->res = (typeof(self->unk74->res))NNS_G3dGetAnmByName(*res, (const NNSG3dResName *)buf);
     self->unk74->frame = 0;
     self->unk74->speed = 0x1000;

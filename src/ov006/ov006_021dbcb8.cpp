@@ -43,7 +43,7 @@ extern "C" {
 extern u8 data_ov006_021ec2fc[];
 extern u8 data_ov006_021ec25c[];
 extern u8 data_0208b318[];
-void func_02016e28(void *dst, int value, u32 size);
+void MI_CpuFill8(void *dst, u8 value, u32 size);
 
 static inline void ov006_Sub021dbacc_Stop(ov006_Sub021dbacc *sub) {
     if (sub->unk24 != 0 || sub->unk4 != 0) {
@@ -73,8 +73,8 @@ ov006_Unk021dbdb0 *func_ov006_021dbcb8(ov006_Unk021dbdb0 *self) {
     VCALL(&self->base.sub, 08);
     self->base.unk4[0] = 0;
     VCALL(&self->base.sub, 08);
-    func_02016e28(self->unk60, 0, 0x20);
-    func_02016e28(self->unk80, 0, 0x20);
+    MI_CpuFill8(self->unk60, 0, 0x20);
+    MI_CpuFill8(self->unk80, 0, 0x20);
     self->unkA0 = 0;
     self->unk8 = 0;
     self->unk4 = 2;

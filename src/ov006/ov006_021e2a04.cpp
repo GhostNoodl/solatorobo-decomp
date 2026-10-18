@@ -48,7 +48,7 @@ void func_ov006_021e2c14(ov006_Unk021e2a04 *self) {
         if (name) {
             func_02041218(model->unk88);
             func_02041440(model, name, 0);
-            func_0201e520(model->unk2C, data_ov006_021ec864);
+            STD_CopyString(model->unk2C, data_ov006_021ec864);
         }
     }
     self->unk10 = model;

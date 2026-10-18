@@ -9,7 +9,7 @@ extern void func_0200ef1c(FSFile *file);
 extern u32 func_0201118c(void *buf, u32 size);
 extern void func_020111dc(int arg);
 extern void MATHi_CRC16InitTableRev(u16 *table, u32 poly);
-extern void MI_CpuFill8(void *dst, int value, u32 size);
+extern void MI_CpuFill8(void *dst, u8 value, u32 size);
 extern ResLoader *func_0203562c(ResLoader *loader);
 extern void func_02035670(ResLoader *loader);
 extern void func_0203584c(ResLoader *loader);
