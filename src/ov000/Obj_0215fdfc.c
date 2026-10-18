@@ -21,3 +21,17 @@ void func_ov000_0215fdfc(Obj0215fdfc *self, s32 index, void *entry) {
     }
     self->unk_10[index] = entry;
 }
+
+void func_ov000_0215fe1c(Obj0215fdfc *self, s32 lo, s32 hi) {
+    self->unk_64 = lo << 12;
+    self->unk_60 = hi << 12;
+    if (self->unk_5c > self->unk_64) {
+        self->unk_5c = self->unk_64;
+    }
+    if (self->unk_68 > self->unk_60) {
+        self->unk_68 = self->unk_60;
+    }
+    if (!self->unk_0c_7) {
+        self->unk_5c = self->unk_64;
+    }
+}

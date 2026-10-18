@@ -43,4 +43,23 @@ void func_ov000_021742b4(Obj021742b4 *self) {
     }
 }
 
+BOOL func_ov000_021742c8(Obj021742b4 *self, Msg021742c8 *msg) {
+    VObj *obj = (VObj *)self->unk_08;
+    if (msg == NULL) {
+        obj->vfunc_0c(0);
+        return TRUE;
+    }
+    if (msg->unk_06 != 0xffff) {
+        if (msg->unk_24 != 0xe) {
+            obj->vfunc_60(msg->unk_06, 1);
+            func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+        } else {
+            func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+        }
+    } else {
+        func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
+    }
+    return TRUE;
+}
+
 }

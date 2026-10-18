@@ -29,4 +29,12 @@ void func_ov000_02172264(VObj *self, s32 a, s32 b, s32 c) {
     self->vfunc_0c(0, 8, c, (a << 16) | b);
 }
 
+
+void func_ov000_02172288(VObj *self, s32 flag, s32 a) {
+    if (flag) {
+        self->vfunc_0c(0, 9, a, 0);
+    } else {
+        self->vfunc_0c(0, 10, a, 0);
+    }
+}
 }

@@ -2,12 +2,7 @@
 #define OV000_TASKLIST_H
 
 #include "ov000/VObj.h"
-
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} VecFx32;
+#include "ov000/Vec.h"
 
 typedef struct {
     void *current;
@@ -72,7 +67,6 @@ extern HeapState *data_02097dd0;
 extern TaskList data_ov000_021ccd34;
 extern Data021ccd30 *data_ov000_021ccd30;
 extern u8 *data_02097d48;
-extern s16 data_02071060[];
 extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbce0[];
 extern const char *data_0208cca0;
