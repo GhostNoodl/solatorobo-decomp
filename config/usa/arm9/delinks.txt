@@ -181,3 +181,87 @@ src/Main/Gfx/TexObj.cpp:
 src/Main/Gfx/TexObj_2.cpp:
     complete
     .text       start:0x02041bb0 end:0x0204205c
+
+src/Main/Gfx/Blend.cpp:
+    complete
+    .text       start:0x02042eac end:0x02042f40
+    .bss        start:0x02097e00 end:0x02097e3c
+
+src/Main/Movie/Movie.cpp:
+    complete
+    .text       start:0x02043e38 end:0x02044a0c
+    .bss        start:0x02097e3c end:0x02097e40
+
+src/Main/Gfx/Gfx3D.cpp:
+    complete
+    .text       start:0x02043064 end:0x02043100
+
+src/Main/Gfx/Gfx3D_2.cpp:
+    complete
+    .text       start:0x020434e0 end:0x02043e38
+
+src/Main/Net/Wh.cpp:
+    complete
+    .text       start:0x02044a0c end:0x020459cc
+    .bss        start:0x02097e40 end:0x02097e44
+
+src/Main/Net/Wh_2.cpp:
+    complete
+    .text       start:0x02045ab4 end:0x02046070
+
+src/Main/Net/Wh_3.cpp:
+    complete
+    .text       start:0x020463c8 end:0x02046c6c
+
+src/Main/Save/SysCard.cpp:
+    complete
+    .text       start:0x02046c6c end:0x0204730c
+    .bss        start:0x02097e44 end:0x02097e48
+
+src/Main/Save/SaveBase.cpp:
+    complete
+    .text       start:0x0204730c end:0x02047724
+
+src/Main/Save/SaveBase_2.cpp:
+    complete
+    .text       start:0x020477fc end:0x02047838
+
+src/Main/Save/SaveBase_3.cpp:
+    complete
+    .text       start:0x02047a20 end:0x02047c2c
+
+src/Main/Save/SaveBase_4.cpp:
+    complete
+    .text       start:0x02047f60 end:0x020481c0
+
+src/Main/Save/SaveBase_5.cpp:
+    complete
+    .text       start:0x0204880c end:0x02048a48
+
+src/Main/Save/SaveBase_6.cpp:
+    complete
+    .text       start:0x02048b8c end:0x02048be4
+
+src/Main/Save/PlayTime.cpp:
+    complete
+    .text       start:0x02048be4 end:0x02048bfc
+
+src/Main/Save/PlayTime_2.cpp:
+    complete
+    .text       start:0x02049088 end:0x02049130
+
+src/Main/Math/Interp.cpp:
+    complete
+    .text       start:0x02049130 end:0x020492e0
+
+src/Main/Snd/SndMgr.cpp:
+    complete
+    .text       start:0x020492e0 end:0x02049344
+
+src/Main/Snd/SndMgr_2.cpp:
+    complete
+    .text       start:0x02049550 end:0x02049690
+
+src/Main/Snd/SndMgr_3.cpp:
+    complete
+    .text       start:0x0204985c end:0x02049bdc
