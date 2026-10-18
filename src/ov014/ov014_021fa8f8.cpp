@@ -76,4 +76,78 @@ void func_ov014_021fa9a8(Ov014Actor *self) {
     func_ov003_021cf1f0((u8 *)self + 0x348, 0, 4, data_ov014_02216480);
 }
 
+void func_ov014_021faae8(Ov014Actor *self) {
+    s32 pct;
+    u8 k;
+    s32 f;
+    u8 *p;
+    Ov014Actor *a;
+    self->unk_93_4 = 0;
+    if (!Ov014_GameIdle()) {
+        return;
+    }
+    self->unk_90 = 0xffff;
+    a = func_ov000_0219bf90();
+    if (a != NULL) {
+        self->unk_90 = a->id;
+    }
+    self->unk_93_4 = 1;
+    k = self->unk_40->unk_13;
+    pct = (u16)(self->unk_50[0] * 100 / self->unk_50[1]);
+    if (k == 1) {
+        f = FLD(s32, self, 0xf4);
+        if (f == 0) {
+            u8 *t = FLD(u8 *, self, 0x354);
+            FLD(u8 *, self, 0x344) = FLD(u8 *, t, 0xc) + FLD(u16, t, 8) * 8;
+            func_ov003_021ceff4((u8 *)self + 0x348);
+            switch (*FLD(s16 *, self, 0x344)) {
+            case 0:
+                FLD(s32, self, 0xf4) |= 4;
+                FLD(u8, self, 0x11f) = 0;
+                self->unk_40->flags |= 0x8000;
+                break;
+            case 1:
+                FLD(s32, self, 0xf4) |= 8;
+                FLD(u8, self, 0x11f) = 0;
+                self->unk_40->flags |= 0x10000;
+                break;
+            }
+        } else if (f & 1) {
+            p = FLD(u8 *, self, 0x344);
+            if (p != NULL) {
+                self->unk_b6++;
+                if (self->unk_b6 >= FLD(u16, p, 6)) {
+                    FLD(s32, self, 0xf4) = f ^ 1;
+                    self->unk_b6 = 0;
+                }
+            } else if ((s32)++self->unk_b6 >= 0x19) {
+                FLD(s32, self, 0xf4) = f ^ 1;
+                self->unk_b6 = 0;
+            }
+        }
+    }
+    if (self->unk_30 & 0x200) {
+        if (func_02040498(1)) {
+            func_02049f44(data_02097e4c, 0x905, &self->pos, 0);
+        } else {
+            func_02049f44(data_02097e4c, 0xa05, &self->pos, 0);
+        }
+        if (self->unk_50[0] != 0 && k != 0xf && k != 0x10) {
+            self->unk_40->flags = 0;
+            self->unk_40->flags |= 0x40000;
+        }
+        if (FLD(s16, self, 0x364) == 0x1000 && pct <= 50 && !(FLD(s32, self, 0xf4) & 0x1000)) {
+            FLD(s32, self, 0xf4) |= 0x1000;
+            self->unk_40->flags = 0;
+            self->unk_40->flags |= 0x200000;
+        }
+        FLD(u16, self, 0x312) = 0x14bf;
+        FLD(u16, self, 0x314) = 0x14bf;
+        FLD(u16, self, 0x316) = 0xb;
+        FLD(u16, self, 0x318) = 0xa;
+    }
+    self->unk_ea_0 = 3;
+}
+
+
 }

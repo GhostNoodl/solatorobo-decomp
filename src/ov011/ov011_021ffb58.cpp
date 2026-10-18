@@ -160,5 +160,32 @@ void func_ov011_021ffe10(void *self) {
     }
     func_ov003_021d5348(self);
 }
+
+Ov011V *func_02065f88(s32 id, Ov011Vec *v);
+void func_ov003_021d6054(void *p);
+void func_ov011_021ffe50(Ov011Fb *self) {
+    if (*self->unk_40 == 0) {
+        Ov011FbObj *o;
+        Ov011V *v;
+        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4812, 0x15);
+        o = self->unk_104;
+        if (o != NULL) {
+            func_ov003_021da48c(o, 0);
+            o->obj.v08();
+            if (o->unk_38 != NULL) {
+                func_02065804(data_0214a420, o->unk_38);
+                o->unk_38 = NULL;
+            }
+        }
+        self->unk_3c->unk_14 = self->unk_64 << 1;
+        self->unk_3c->unk_19 = 0xff;
+        v = func_02065f88(0x69, (Ov011Vec *)((u8 *)self + 0x70));
+        if (v != NULL) {
+            v->v0c(0x2800);
+            v->v24(0, 0x1000, 0);
+        }
+    }
+    func_ov003_021d6054(self);
+}
 #pragma force_active reset
 }

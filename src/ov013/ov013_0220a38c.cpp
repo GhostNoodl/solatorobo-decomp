@@ -6,6 +6,44 @@ extern void *data_ov013_0220bf4c;
 extern void func_ov000_02194074(void *self);
 extern void func_ov000_02194758(void *self);
 
+struct Ov013Pair89 {
+    u8 a;
+    u8 b;
+};
+
+struct Ov013Sub50a {
+    u8 unk_00[0x4];
+    u16 unk_04;
+    u8 unk_06[0x2];
+    Ov013Pair89 unk_08;
+};
+
+static inline void Ov013_SetPair(Ov013Pair89 *d, const Ov013Pair89 *s, u8 b) {
+    d->a = s->a;
+    d->b = b;
+}
+
+void func_ov013_0220a38c(Ov013Actor *self) {
+    Ov013Sub40 *q;
+    if ((((Ov013Sub50a *)self->unk_50)->unk_04 >> 12) == 5) {
+        func_ov000_02198360(self->unk_40, 0x15, 0);
+        return;
+    }
+    q = self->unk_40;
+    if (q->state == 0) {
+        Ov013Sub50a *p;
+        FLD(Ov013Vec, self, 0xb8) = self->pos;
+        p = (Ov013Sub50a *)self->unk_50;
+        if ((u8)(p->unk_08.b + 0xf0) <= 1) {
+            Ov013_SetPair(&p->unk_08, &p->unk_08, 0x20);
+        }
+    }
+    func_ov003_021d5348(self);
+    if (self->unk_40->unk_13 == 4) {
+        func_ov000_02198360(self->unk_40, 1, 0);
+    }
+}
+
 void func_ov013_0220a428(Ov013Actor *self) {
     self->v80();
 }

@@ -1,6 +1,36 @@
 #include "ov012/ov012.h"
 
 extern "C" {
+
+BOOL func_ov012_0220574c(Ov012Actor *self) {
+    BOOL r;
+    if (!(FLD(u32, self, 0xd0) & 0x100000)) {
+        FLD(s32, self, 0x288) = self->pos.x;
+        FLD(s32, self, 0x28c) = self->pos.y;
+        FLD(s32, self, 0x290) = self->pos.z;
+        func_ov000_02190758((u8 *)self + 0x210, self->rot, 0);
+        r = func_ov000_021903b4((u8 *)self + 0x210);
+        if (r && self->unk_3c != NULL && self->unk_48 != NULL) {
+            Ov012Sub48 *m = self->unk_48;
+            u8 v;
+            FLD(s32, self->unk_3c, 0x10) = self->pos.y - FLD(s32, m, 0x6c);
+            v = 1;
+            if (m->unk_54 & 0x10000) {
+                v = 3;
+            }
+            {
+                Ov012Nib *n = &FLD(Ov012Nib, self->unk_3c, 0x18);
+                n->hi = n->lo;
+                n->lo = v;
+            }
+            func_ov000_02191c24(self->unk_3c, &self->pos);
+        }
+    } else {
+        r = func_ov000_02194c08(self);
+    }
+    return r;
+}
+
 void func_ov012_02205818(Ov012Actor *self) {
     if (self->unk_38 != NULL) {
         func_ov000_02190a80(self->unk_38, func_0203db40((u8 *)self + 0x24));

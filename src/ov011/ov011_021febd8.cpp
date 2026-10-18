@@ -1,6 +1,74 @@
 #include "ov011/ov011.h"
 
+struct Ov011Bit01 {
+    u8 b0 : 1;
+    u8 b1 : 1;
+    u8 b2 : 1;
+    u8 rest : 5;
+};
+
+struct Ov011FreeNode {
+    u8 pad[0xc];
+    Ov011FreeNode *next;
+};
+
 extern "C" {
+
+void func_02009fc0(void *arr, u32 size, u32 hdr, void *dtor);
+void *func_ov011_021fb66c(void *self);
+void func_ov011_02201b28(void *p);
+void func_ov011_0220205c(void *p);
+void func_ov011_02202fbc(void *p);
+void func_ov011_021fab74(void *p);
+void func_ov000_0218d46c(void *o, u16 id, s32 c);
+
+void func_ov011_021febd8(u8 *self) {
+    Ov011Node *n;
+    if (FLD(u16, self, 0x20) != 0) {
+        return;
+    }
+    func_ov011_02201b28(self + 0x34);
+    FLD(Ov011Bit01, self, 0xb4).b1 = 0;
+    FLD(u16, self, 0xb6) = 0;
+    FLD(s32, self, 0xb8) = -1;
+    {
+        u32 saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->def;
+        if (FLD(void *, self, 0xbc) != NULL) {
+            func_02009fc0(FLD(void *, self, 0xbc), 0x40, 8, func_ov011_021fb66c);
+            FLD(void *, self, 0xbc) = NULL;
+        }
+        data_02097dd0->cur = saved;
+    }
+    func_ov003_021da48c(self + 0xc8, 0);
+    func_ov011_0220205c(self + 0xdc);
+    func_ov011_02202fbc(self + 0x194);
+    FLD(Ov011Bit01, self, 0x1b4).b1 = 0;
+    FLD(u16, self, 0x1b6) = 0xffff;
+    FLD(s32, self, 0x1bc) = 0;
+    func_ov003_021da48c(self + 0x1c0, 1);
+    func_ov011_021fab74(self + 0x1d4);
+    if (FLD(Ov011Bit01, self, 0x204).b0) {
+        Ov011FreeNode *p = FLD(Ov011FreeNode *, self, 0x208);
+        while (p != NULL) {
+            Ov011FreeNode *next = p->next;
+            if (p != NULL) {
+                func_0203de1c(p);
+            }
+            p = next;
+        }
+        FLD(Ov011FreeNode *, self, 0x208) = NULL;
+    }
+    for (n = FLD(Ov011Node *, self, 0xc); n != NULL; n = n->next) {
+        void *a = Ov011_FindActor(n->id);
+        if (a != NULL) {
+            func_ov000_0218d46c(a, 0xffff, 0x15);
+        }
+    }
+    FLD(Ov011Bit01, self, 0).b2 = 1;
+    FLD(u16, self, 0x20) = 1;
+}
+
 
 extern u8 data_ov011_022078f0[];
 void func_ov011_0220068c(void *self);
