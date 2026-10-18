@@ -12,14 +12,14 @@ void *func_02034d88(void *a, void *b);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
 void func_02041c20(void *model, s32 a, void *b);
-void func_0201e520(void *dst, void *src);
+void STD_CopyString(void *dst, void *src);
 void func_ov000_02173d9c(void);
 void func_ov000_02173648(VObj *self);
 
 static inline void Init(u8 *m, void *s, void *nm) {
     func_02041218(m + 0x88);
     func_02041440(m, nm, 0);
-    func_0201e520(m + 0x2c, s);
+    STD_CopyString(m + 0x2c, s);
 }
 
 void func_ov000_021738d4(VObj *self) {
