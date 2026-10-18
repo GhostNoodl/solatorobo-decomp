@@ -4,3 +4,599 @@
     .ctor       start:0x021ca84c end:0x021ca86c kind:rodata align:4
     .data       start:0x021ca880 end:0x021ccd20 kind:data align:32
     .bss        start:0x021ccd20 end:0x021ccda0 kind:bss align:32
+
+src/ov000/Flags_021519fc.cpp:
+    complete
+    .text       start:0x021519fc end:0x02151ea0
+
+src/ov000/Obj_02151ea0.cpp:
+    complete
+    .text       start:0x02151ea0 end:0x021520ec
+
+src/ov000/Obj_021520ec.cpp:
+    complete
+    .text       start:0x021520ec end:0x02152294
+
+src/ov000/Obj_0216ec64.cpp:
+    complete
+    .text       start:0x0216ec64 end:0x0216f1ac
+
+src/ov000/Obj_02180bec.cpp:
+    complete
+    .text       start:0x02180bec end:0x021814dc
+
+src/ov000/Obj_0218ce20.c:
+    complete
+    .text       start:0x0218ce20 end:0x0218cfc8
+
+src/ov000/History_0219830c.c:
+    complete
+    .text       start:0x0219830c end:0x021984f4
+
+src/ov000/Stub_021601a4.c:
+    complete
+    .text       start:0x021601a4 end:0x021601c4
+
+src/ov000/Obj_0215fdfc.c:
+    complete
+    .text       start:0x0215fdfc end:0x0215fe1c
+
+src/ov000/Obj_02160344.c:
+    complete
+    .text       start:0x02160344 end:0x02160414
+
+src/ov000/List_02154a68.cpp:
+    complete
+    .text       start:0x02154638 end:0x02154c34
+
+src/ov000/Obj_02163648.cpp:
+    complete
+    .text       start:0x02163648 end:0x021640fc
+
+src/ov000/Obj_0214f608.cpp:
+    complete
+    .text       start:0x0214f608 end:0x0214f7a4
+
+src/ov000/Loader_0214b88c.cpp:
+    complete
+    .text       start:0x0214b88c end:0x0214bcc4
+
+src/ov000/Obj_0214e354.cpp:
+    complete
+    .text       start:0x0214e354 end:0x0214e3b4
+
+src/ov000/Obj_0214e718.cpp:
+    complete
+    .text       start:0x0214e718 end:0x0214e7f0
+
+src/ov000/Misc_02152f78.c:
+    complete
+    .text       start:0x02152f78 end:0x02152f8c
+
+src/ov000/Misc_021566a4.c:
+    complete
+    .text       start:0x021566a4 end:0x021566c0
+
+src/ov000/Misc_0215a280.c:
+    complete
+    .text       start:0x0215a280 end:0x0215a2c4
+
+src/ov000/Misc_0215ba2c.c:
+    complete
+    .text       start:0x0215ba2c end:0x0215ba4c
+
+src/ov000/Misc_0215c718.cpp:
+    complete
+    .text       start:0x0215c718 end:0x0215c744
+
+src/ov000/Obj_0215e5f8.c:
+    complete
+    .text       start:0x0215e5f8 end:0x0215e6f0
+
+src/ov000/BufList_0216f1ac.cpp:
+    complete
+    .text       start:0x0216f1ac end:0x0216f5f8
+
+src/ov000/MessageQueue_0216f674.cpp:
+    complete
+    .text       start:0x0216f674 end:0x0216f78c
+
+src/ov000/TaskList_02173528.cpp:
+    complete
+    .text       start:0x02173528 end:0x0217357c
+
+src/ov000/TaskList_021735e8.cpp:
+    complete
+    .text       start:0x021735e8 end:0x021738d4
+
+src/ov000/TaskList_021739c4.cpp:
+    complete
+    .text       start:0x021739c4 end:0x02173a5c
+
+src/ov000/Obj_021742b4.cpp:
+    complete
+    .text       start:0x021742b4 end:0x021742c8
+
+src/ov000/Obj_0217437c.cpp:
+    complete
+    .text       start:0x0217437c end:0x021743bc
+
+src/ov000/Obj_02173bec.c:
+    complete
+    .text       start:0x02173bec end:0x02173c30
+
+src/ov000/Stub_0214b640.cpp:
+    complete
+    .text       start:0x0214b640 end:0x0214b654
+
+src/ov000/Stub_0214b6d0.cpp:
+    complete
+    .text       start:0x0214b6d0 end:0x0214b6d8
+
+src/ov000/Stub_0214c064.cpp:
+    complete
+    .text       start:0x0214c064 end:0x0214c084
+
+src/ov000/Stub_0214c6a0.cpp:
+    complete
+    .text       start:0x0214c6a0 end:0x0214c6b4
+
+src/ov000/Dtor_0214c8e8.cpp:
+    complete
+    .text       start:0x0214c8e8 end:0x0214c934
+
+src/ov000/Stub_0214cfc8.cpp:
+    complete
+    .text       start:0x0214cfc8 end:0x0214cff4
+
+src/ov000/Stub_0214e008.cpp:
+    complete
+    .text       start:0x0214e008 end:0x0214e014
+
+src/ov000/Stub_0214f06c.cpp:
+    complete
+    .text       start:0x0214f06c end:0x0214f090
+
+src/ov000/Stub_021500dc.cpp:
+    complete
+    .text       start:0x021500dc end:0x0215012c
+
+src/ov000/Stub_02151014.cpp:
+    complete
+    .text       start:0x02151014 end:0x02151018
+
+src/ov000/Stub_02151650.cpp:
+    complete
+    .text       start:0x02151650 end:0x02151664
+
+src/ov000/Stub_02152a54.cpp:
+    complete
+    .text       start:0x02152a54 end:0x02152a58
+
+src/ov000/Dtor_02152b2c.cpp:
+    complete
+    .text       start:0x02152b2c end:0x02152bb0
+
+src/ov000/Stub_02153f30.cpp:
+    complete
+    .text       start:0x02153f30 end:0x02153f90
+
+src/ov000/Stub_02155194.cpp:
+    complete
+    .text       start:0x02155194 end:0x021551c4
+
+src/ov000/Stub_021569f0.cpp:
+    complete
+    .text       start:0x021569f0 end:0x021569f8
+
+src/ov000/Stub_021570e8.cpp:
+    complete
+    .text       start:0x021570e8 end:0x021570f0
+
+src/ov000/Stub_02157ddc.cpp:
+    complete
+    .text       start:0x02157ddc end:0x02157df0
+
+src/ov000/Stub_021581c0.cpp:
+    complete
+    .text       start:0x021581c0 end:0x021581d4
+
+src/ov000/Stub_021582ac.cpp:
+    complete
+    .text       start:0x021582ac end:0x021582c0
+
+src/ov000/Stub_02158d90.cpp:
+    complete
+    .text       start:0x02158d90 end:0x02158da8
+
+src/ov000/Stub_02159710.cpp:
+    complete
+    .text       start:0x02159710 end:0x02159720
+
+src/ov000/Stub_02159e38.cpp:
+    complete
+    .text       start:0x02159e38 end:0x02159e40
+
+src/ov000/Stub_0215a04c.cpp:
+    complete
+    .text       start:0x0215a04c end:0x0215a088
+
+src/ov000/Stub_0215a4ec.cpp:
+    complete
+    .text       start:0x0215a4ec end:0x0215a4f4
+
+src/ov000/Stub_0215ad9c.cpp:
+    complete
+    .text       start:0x0215ad9c end:0x0215adbc
+
+src/ov000/Stub_0215bd70.cpp:
+    complete
+    .text       start:0x0215bd70 end:0x0215bd88
+
+src/ov000/Stub_0215bef8.cpp:
+    complete
+    .text       start:0x0215bef8 end:0x0215bf0c
+
+src/ov000/Stub_0215c1a8.cpp:
+    complete
+    .text       start:0x0215c1a8 end:0x0215c1bc
+
+src/ov000/Stub_0215ced8.cpp:
+    complete
+    .text       start:0x0215ced8 end:0x0215cef8
+
+src/ov000/Stub_0215d1a4.cpp:
+    complete
+    .text       start:0x0215d1a4 end:0x0215d1ac
+
+src/ov000/Stub_0215d980.cpp:
+    complete
+    .text       start:0x0215d980 end:0x0215d990
+
+src/ov000/Stub_0215da10.cpp:
+    complete
+    .text       start:0x0215da10 end:0x0215da2c
+
+src/ov000/Stub_0215dacc.cpp:
+    complete
+    .text       start:0x0215dacc end:0x0215dae0
+
+src/ov000/Stub_0215de9c.cpp:
+    complete
+    .text       start:0x0215de9c end:0x0215deb4
+
+src/ov000/Stub_0215e534.cpp:
+    complete
+    .text       start:0x0215e534 end:0x0215e548
+
+src/ov000/Stub_0215f330.cpp:
+    complete
+    .text       start:0x0215f330 end:0x0215f334
+
+src/ov000/Stub_02160fc8.cpp:
+    complete
+    .text       start:0x02160fc8 end:0x02160ff8
+
+src/ov000/Stub_02163224.cpp:
+    complete
+    .text       start:0x02163224 end:0x02163254
+
+src/ov000/Stub_02163594.cpp:
+    complete
+    .text       start:0x02163594 end:0x021635b4
+
+src/ov000/Stub_021645a4.cpp:
+    complete
+    .text       start:0x021645a4 end:0x021645b8
+
+src/ov000/Stub_02165d78.cpp:
+    complete
+    .text       start:0x02165d78 end:0x02165da0
+
+src/ov000/Stub_02167fac.cpp:
+    complete
+    .text       start:0x02167fac end:0x02167fd8
+
+src/ov000/Stub_021684f0.cpp:
+    complete
+    .text       start:0x021684f0 end:0x02168518
+
+src/ov000/Stub_02168ea4.cpp:
+    complete
+    .text       start:0x02168ea4 end:0x02168ee0
+
+src/ov000/Stub_021691dc.cpp:
+    complete
+    .text       start:0x021691dc end:0x021691fc
+
+src/ov000/Stub_0216984c.cpp:
+    complete
+    .text       start:0x0216984c end:0x0216987c
+
+src/ov000/Stub_0216a474.cpp:
+    complete
+    .text       start:0x0216a474 end:0x0216a494
+
+src/ov000/Stub_0216ad04.cpp:
+    complete
+    .text       start:0x0216ad04 end:0x0216ad34
+
+src/ov000/Stub_0216b474.cpp:
+    complete
+    .text       start:0x0216b474 end:0x0216b490
+
+src/ov000/Stub_0216bf18.cpp:
+    complete
+    .text       start:0x0216bf18 end:0x0216bf30
+
+src/ov000/Stub_0216ca64.cpp:
+    complete
+    .text       start:0x0216ca64 end:0x0216ca70
+
+src/ov000/Stub_0216f814.cpp:
+    complete
+    .text       start:0x0216f814 end:0x0216f844
+
+src/ov000/Stub_0216faac.cpp:
+    complete
+    .text       start:0x0216faac end:0x0216fb14
+
+src/ov000/Stub_021700c4.cpp:
+    complete
+    .text       start:0x021700c4 end:0x02170100
+
+src/ov000/Stub_021705dc.cpp:
+    complete
+    .text       start:0x021705dc end:0x02170620
+
+src/ov000/Stub_021708d8.cpp:
+    complete
+    .text       start:0x021708d8 end:0x021708ec
+
+src/ov000/Stub_0217125c.cpp:
+    complete
+    .text       start:0x0217125c end:0x02171270
+
+src/ov000/Stub_02171464.cpp:
+    complete
+    .text       start:0x02171464 end:0x02171478
+
+src/ov000/Stub_021721c8.cpp:
+    complete
+    .text       start:0x021721c8 end:0x02172288
+
+src/ov000/Stub_02172390.cpp:
+    complete
+    .text       start:0x02172390 end:0x02172450
+
+src/ov000/Stub_02172a3c.cpp:
+    complete
+    .text       start:0x02172a3c end:0x02172a60
+
+src/ov000/Stub_02172f70.cpp:
+    complete
+    .text       start:0x02172f70 end:0x02172f7c
+
+src/ov000/Stub_021731e4.cpp:
+    complete
+    .text       start:0x021731e4 end:0x021731f8
+
+src/ov000/Stub_021752cc.cpp:
+    complete
+    .text       start:0x021752cc end:0x021752f0
+
+src/ov000/Dtor_02175e04.cpp:
+    complete
+    .text       start:0x02175e04 end:0x02175e6c
+
+src/ov000/Stub_02175f78.cpp:
+    complete
+    .text       start:0x02175f78 end:0x02175f94
+
+src/ov000/Stub_02176028.cpp:
+    complete
+    .text       start:0x02176028 end:0x02176030
+
+src/ov000/Stub_021761f0.cpp:
+    complete
+    .text       start:0x021761f0 end:0x02176208
+
+src/ov000/Stub_02176264.cpp:
+    complete
+    .text       start:0x02176264 end:0x021762e4
+
+src/ov000/Stub_02176538.cpp:
+    complete
+    .text       start:0x02176538 end:0x02176590
+
+src/ov000/Stub_02177224.cpp:
+    complete
+    .text       start:0x02177224 end:0x02177240
+
+src/ov000/Stub_021782b0.cpp:
+    complete
+    .text       start:0x021782b0 end:0x021782b4
+
+src/ov000/Stub_02178ccc.cpp:
+    complete
+    .text       start:0x02178ccc end:0x02178cd0
+
+src/ov000/Dtor_02178f70.cpp:
+    complete
+    .text       start:0x02178f70 end:0x02178fd8
+
+src/ov000/Dtor_02179560.cpp:
+    complete
+    .text       start:0x02179560 end:0x021795a4
+
+src/ov000/Stub_02179680.cpp:
+    complete
+    .text       start:0x02179680 end:0x02179684
+
+src/ov000/Dtor_0217997c.cpp:
+    complete
+    .text       start:0x0217997c end:0x021799e4
+
+src/ov000/Stub_02179ef0.cpp:
+    complete
+    .text       start:0x02179ef0 end:0x02179ef4
+
+src/ov000/Dtor_02179fcc.cpp:
+    complete
+    .text       start:0x02179fcc end:0x0217a034
+
+src/ov000/Stub_0217a478.cpp:
+    complete
+    .text       start:0x0217a478 end:0x0217a480
+
+src/ov000/Dtor_0217a88c.cpp:
+    complete
+    .text       start:0x0217a88c end:0x0217a8f4
+
+src/ov000/Stub_0217c004.cpp:
+    complete
+    .text       start:0x0217c004 end:0x0217c008
+
+src/ov000/Dtor_0217e9c8.cpp:
+    complete
+    .text       start:0x0217e9c8 end:0x0217ea30
+
+src/ov000/Stub_0217ef34.cpp:
+    complete
+    .text       start:0x0217ef34 end:0x0217ef3c
+
+src/ov000/Dtor_02181ab0.cpp:
+    complete
+    .text       start:0x02181ab0 end:0x02181af4
+
+src/ov000/Stub_02182ad4.cpp:
+    complete
+    .text       start:0x02182ad4 end:0x02182b0c
+
+src/ov000/Stub_0218348c.cpp:
+    complete
+    .text       start:0x0218348c end:0x021834c4
+
+src/ov000/Stub_021837c0.cpp:
+    complete
+    .text       start:0x021837c0 end:0x021837f8
+
+src/ov000/Stub_02184594.cpp:
+    complete
+    .text       start:0x02184594 end:0x021845cc
+
+src/ov000/Stub_021847d8.cpp:
+    complete
+    .text       start:0x021847d8 end:0x02184810
+
+src/ov000/Stub_02184bb0.cpp:
+    complete
+    .text       start:0x02184bb0 end:0x02184be8
+
+src/ov000/Stub_02184d90.cpp:
+    complete
+    .text       start:0x02184d90 end:0x02184dc8
+
+src/ov000/Stub_021857e0.cpp:
+    complete
+    .text       start:0x021857e0 end:0x02185804
+
+src/ov000/Stub_021860e0.cpp:
+    complete
+    .text       start:0x021860e0 end:0x02186158
+
+src/ov000/Stub_021865bc.cpp:
+    complete
+    .text       start:0x021865bc end:0x021865f8
+
+src/ov000/Stub_02186b74.cpp:
+    complete
+    .text       start:0x02186b74 end:0x02186bb0
+
+src/ov000/Stub_02186dbc.cpp:
+    complete
+    .text       start:0x02186dbc end:0x02186df4
+
+src/ov000/Stub_02187114.cpp:
+    complete
+    .text       start:0x02187114 end:0x02187120
+
+src/ov000/Stub_02187350.cpp:
+    complete
+    .text       start:0x02187350 end:0x02187374
+
+src/ov000/Stub_02187564.cpp:
+    complete
+    .text       start:0x02187564 end:0x02187588
+
+src/ov000/Stub_02187a20.cpp:
+    complete
+    .text       start:0x02187a20 end:0x02187a58
+
+src/ov000/Stub_02187b50.cpp:
+    complete
+    .text       start:0x02187b50 end:0x02187b88
+
+src/ov000/Stub_02188670.cpp:
+    complete
+    .text       start:0x02188670 end:0x0218867c
+
+src/ov000/Dtor_02189a38.cpp:
+    complete
+    .text       start:0x02189a38 end:0x02189a74
+
+src/ov000/Stub_02189b14.cpp:
+    complete
+    .text       start:0x02189b14 end:0x02189b28
+
+src/ov000/Stub_0218e0ec.cpp:
+    complete
+    .text       start:0x0218e0ec end:0x0218e0f0
+
+src/ov000/Stub_02193e34.cpp:
+    complete
+    .text       start:0x02193e34 end:0x02193e5c
+
+src/ov000/Stub_0219bf88.cpp:
+    complete
+    .text       start:0x0219bf88 end:0x0219bf90
+
+src/ov000/Stub_021a16ac.cpp:
+    complete
+    .text       start:0x021a16ac end:0x021a16b0
+
+src/ov000/Stub_021b4ebc.cpp:
+    complete
+    .text       start:0x021b4ebc end:0x021b4ed0
+
+src/ov000/Stub_021bce84.cpp:
+    complete
+    .text       start:0x021bce84 end:0x021bce90
+
+src/ov000/Dtor_021c2bdc.cpp:
+    complete
+    .text       start:0x021c2bdc end:0x021c2c0c
+
+src/ov000/Stub_021c54f4.cpp:
+    complete
+    .text       start:0x021c54f4 end:0x021c5508
+
+src/ov000/Stub_021c5fc4.cpp:
+    complete
+    .text       start:0x021c5fc4 end:0x021c5fd0
+
+src/ov000/Dtor_021c879c.cpp:
+    complete
+    .text       start:0x021c879c end:0x021c881c
+
+src/ov000/Dtor_021c8b04.cpp:
+    complete
+    .text       start:0x021c8b04 end:0x021c8be8
+
+src/ov000/Dtor_021c8ff8.cpp:
+    complete
+    .text       start:0x021c8ff8 end:0x021c9020
+
+src/ov000/Stub_021c9540.cpp:
+    complete
+    .text       start:0x021c9540 end:0x021c9544
