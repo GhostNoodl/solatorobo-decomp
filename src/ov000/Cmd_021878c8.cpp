@@ -1,4 +1,4 @@
-#include "ov000/CmdQueue.h"
+#include "ov000/CmdObj.h"
 
 typedef struct {
     u16 b0 : 3;
@@ -27,29 +27,9 @@ typedef struct {
     s32 unk_10;
 } Data021ccd50;
 
-// Read through a plain address: the ROM has no relocation for 0x02070edc.
-typedef struct {
-    s32 a;
-    s32 b;
-} Pair02070edc;
-
-typedef struct {
-    s32 state;
-    u8 pad_04[0xc];
-    s32 kinds[0x10];
-    s32 args[0x10];
-    s32 rd;
-    s32 index;
-    s32 unk_98;
-    Pair02070edc unk_9c;
-    u16 unk_a4;
-    u16 unk_a6;
-    u16 unk_a8;
-} Obj021878c8;
-
 extern Data021ccd50 data_ov000_021ccd50;
 
-s32 func_ov000_021878c8(Obj021878c8 *self) {
+s32 func_ov000_021878c8(CmdObj *self) {
     if (data_ov000_021ccd50.unk_0c != NULL) {
         data_ov000_021ccd50.unk_0c();
     }
@@ -70,26 +50,9 @@ s32 func_ov000_021878c8(Obj021878c8 *self) {
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    CmdQueue_Push((CmdQueue *)self, 0x26, 2);
-    CmdQueue_Push((CmdQueue *)self, 0x21, 1);
-    {
-        const Pair02070edc *c = (const Pair02070edc *)0x02070edc;
-        s32 a = c->a;
-        s32 b = c->b;
-        s32 i = self->rd;
-        self->unk_9c.b = b;
-        self->unk_9c.a = a;
-        self->unk_98 = 0;
-        self->unk_a4 = 0;
-        self->unk_a6 = 0;
-        self->unk_a8 = 0;
-        self->kinds[i] = 0;
-    }
-    self->args[self->rd] = 0;
-    if (++self->rd >= 0x10) {
-        self->rd = 0;
-    }
-    self->state = 5;
+    CmdObj_Push(self, 0x26, 2);
+    CmdObj_Push(self, 0x21, 1);
+    CmdObj_Done(self);
     return 0;
 }
 

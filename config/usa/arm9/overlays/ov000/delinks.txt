@@ -1424,10 +1424,6 @@ src/ov000/Dtor_021c8be8.cpp:
     complete
     .text       start:0x021c8be8 end:0x021c8ff8
 
-src/ov000/Task_021c9020.cpp:
-    complete
-    .text       start:0x021c9020 end:0x021c9198
-
 src/ov000/Stub_021c60f4.cpp:
     complete
     .text       start:0x021c60f4 end:0x021c6140
@@ -2196,3 +2192,119 @@ src/ov000/Lo_02178110.cpp:
 src/ov000/Lo_021b6be4.cpp:
     complete
     .text       start:0x021b6be4 end:0x021b6c60
+
+src/ov000/Lo_021833d8.cpp:
+    complete
+    .text       start:0x021833d8 end:0x0218348c
+
+src/ov000/Lo_021834c4.cpp:
+    complete
+    .text       start:0x021834c4 end:0x021836d0
+
+src/ov000/Lo_02183880.cpp:
+    complete
+    .text       start:0x02183880 end:0x02183a10
+
+src/ov000/Lo_02184810.cpp:
+    complete
+    .text       start:0x02184810 end:0x021848d0
+
+src/ov000/Lo_02184924.cpp:
+    complete
+    .text       start:0x02184924 end:0x02184a04
+
+src/ov000/Lo_02184a1c.cpp:
+    complete
+    .text       start:0x02184a1c end:0x02184bb0
+
+src/ov000/Lo_02184be8.cpp:
+    complete
+    .text       start:0x02184be8 end:0x02184d90
+
+src/ov000/Lo_02184dc8.cpp:
+    complete
+    .text       start:0x02184dc8 end:0x02184ea4
+
+src/ov000/Lo_02186df4.cpp:
+    complete
+    .text       start:0x02186df4 end:0x02186ed4
+
+src/ov000/Lo_02187660.cpp:
+    complete
+    .text       start:0x02187660 end:0x0218781c
+
+src/ov000/Lo_02187a58.cpp:
+    complete
+    .text       start:0x02187a58 end:0x02187b50
+
+src/ov000/Lo_0216f5f8.cpp:
+    complete
+    .text       start:0x0216f5f8 end:0x0216f674
+
+src/ov000/Twl_0214b570.cpp:
+    complete
+    .text       start:0x0214b570 end:0x0214b598
+
+src/ov000/Twl_0214b5e8.cpp:
+    complete
+    .text       start:0x0214b5e8 end:0x0214b640
+
+src/ov000/Twl_0214b6d8.cpp:
+    complete
+    .text       start:0x0214b6d8 end:0x0214b724
+
+src/ov000/Lo_0218722c.cpp:
+    complete
+    .text       start:0x0218722c end:0x02187350
+
+src/ov000/Lo_02187420.cpp:
+    complete
+    .text       start:0x02187420 end:0x02187564
+
+src/ov000/Lo_02186a24.cpp:
+    complete
+    .text       start:0x02186a24 end:0x02186b74
+
+src/ov000/Lo_02186c88.cpp:
+    complete
+    .text       start:0x02186c88 end:0x02186dbc
+
+src/ov000/Lo_021845cc.cpp:
+    complete
+    .text       start:0x021845cc end:0x021847d8
+
+src/ov000/Lo_021855a4.cpp:
+    complete
+    .text       start:0x021855a4 end:0x021857e0
+
+src/ov000/Lo_02188438.cpp:
+    complete
+    .text       start:0x02188438 end:0x02188634
+
+src/ov000/Lo_021b5054.cpp:
+    complete
+    .text       start:0x021b5054 end:0x021b5110
+
+src/ov000/Lo_02188ba0.cpp:
+    complete
+    .text       start:0x02188ba0 end:0x02188ca0
+
+src/ov000/Lo_021862b0.cpp:
+    complete
+    .text       start:0x021862b0 end:0x021865bc
+
+src/ov000/Lo_021866d0.cpp:
+    complete
+    .text       start:0x021866d0 end:0x02186a24
+
+src/ov000/Lo_02183a10.cpp:
+    complete
+    .text       start:0x02183a10 end:0x02183db8
+
+src/ov000/Prot_02186ed4.cpp:
+    complete
+    .text       start:0x02186ed4 end:0x02187114
+
+src/ov000/Task_021c9020.cpp:
+    complete
+    .text       start:0x021c9020 end:0x021c9540

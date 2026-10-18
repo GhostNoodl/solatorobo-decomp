@@ -34,7 +34,7 @@ static inline void Ov013_InitDc(void *self) {
     FLD(s32, self, 0xd8) = 0;
     FLD(void *, self, 0xdc) = NULL;
     FLD(void *, self, 0xe0) = NULL;
-    FLD(Ov013Pmf, self, 0xe4) = *(const Ov013Pmf *)0x02070edc;
+    FLD(Ov013Pmf, self, 0xe4) = NULL;
 }
 
 static inline void Ov013_DtorDc(void *self) {

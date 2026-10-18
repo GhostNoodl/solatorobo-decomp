@@ -2725,6 +2725,7 @@ func_02070874 kind:function(arm,size=0x88) addr:0x02070874
 func_020708fc kind:function(arm,size=0x29c) addr:0x020708fc
 func_02070b98 kind:function(arm,size=0x234) addr:0x02070b98
 func_02070dcc kind:function(arm,size=0x10) addr:0x02070dcc
+__ptmf_null kind:data(any) addr:0x02070edc
 FX_SinCosTable_ kind:data(any) addr:0x02071060
 FX_AtanTable_ kind:data(any) addr:0x02075060
 data_020751fc kind:data(any) addr:0x020751fc
