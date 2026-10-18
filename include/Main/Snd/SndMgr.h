@@ -4,6 +4,7 @@
 #include "types.h"
 #include "nnsys/snd/heap.h"
 #include "nnsys/snd/sndarc.h"
+#include "nnsys/snd/sndarc_stream.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -48,12 +49,43 @@ typedef struct SndMgr {
     /* 0xb8 */ s32 unk_b8[6];
 } SndMgr; // size 0xd0
 
+typedef struct SndQueueNode {
+    /* 0x0 */ u16 value;
+    /* 0x4 */ struct SndQueueNode *next;
+    /* 0x8 */ struct SndQueueNode *prev;
+} SndQueueNode; // size 0xc
+
+#define SND_QUEUE_NODES 8
+
+typedef struct SndQueue {
+    /* 0x00 */ u16 flag0 : 1;
+    /* 0x00 */ u16 flag1 : 1;
+    /* 0x00 */ u16 flag2 : 1;
+    /* 0x00 */ u16 flag3 : 1;
+    /* 0x02 */ u16 unk_02;
+    /* 0x04 */ u16 unk_04;
+    /* 0x06 */ u16 unk_06;
+    /* 0x08 */ u16 unk_08;
+    /* 0x0c */ SndQueueNode nodes[SND_QUEUE_NODES];
+    /* 0x6c */ SndQueueNode *cur;
+    /* 0x70 */ u16 unk_70;
+    /* 0x72 */ u16 unk_72;
+    /* 0x74 */ u16 unk_74;
+    /* 0x78 */ s32 unk_78;
+    /* 0x7c */ u16 unk_7c;
+    /* 0x7e */ u16 unk_7e;
+    /* 0x80 */ u16 unk_80;
+} SndQueue; // size 0x84
+
 typedef struct SndGlobal {
-    /* 0x00 */ void *queue;
+    /* 0x00 */ SndQueue *queue;
     /* 0x04 */ SndMgr *mgr;
 } SndGlobal;
 
+// The sound TU defines these as two globals (queue, mgr); other TUs see them as one struct.
+#ifndef SND_DEFINE_GLOBALS
 extern SndGlobal data_02097e48;
+#endif
 extern const s8 data_0208b778[];
 extern const s32 data_0208b688[];
 
@@ -82,6 +114,40 @@ static inline void SndMgr_RequestLoad(SndMgr *mgr, s32 type, s32 id, s32 arg) {
     mgr->loadArg = arg;
     func_02049690(mgr);
 }
+
+static inline void SndMgr_PlayBgm(SndMgr *mgr, s32 seq) {
+    mgr->curBgm = -1;
+    if (mgr->noAutoPlay) {
+        mgr->playAfterLoad = FALSE;
+    } else {
+        mgr->playAfterLoad = TRUE;
+    }
+    SndMgr_RequestLoad(mgr, 1, seq, -1);
+}
+
+static inline void SndMgr_StopSlot(SndMgr *mgr, s32 idx) {
+    if (idx < 0 || idx >= 5) {
+        return;
+    }
+    func_0202eb80(&mgr->seqArc[idx], 0);
+}
+
+static inline void SndMgr_StopStrm(SndMgr *mgr) {
+    func_0203192c((StrmHandle *)&mgr->strm, 10);
+    mgr->unk_48 = -1;
+}
+
+static inline void SndMgr_SetStrmVolume(SndMgr *mgr, s32 volume, s32 frames) {
+    if (volume < 0) {
+        volume = 0;
+    }
+    if (volume > 0x7f) {
+        volume = 0x7f;
+    }
+    func_0203195c((StrmHandle *)&mgr->strm, volume, frames);
+}
+
+void func_0204a20c(SndMgr *mgr, s32 strmNo);
 
 #ifdef __cplusplus
 }
