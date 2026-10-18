@@ -141,21 +141,21 @@ void func_ov010_0220078c(u8 *o) {
 }
 
 extern u8 data_020928b4[];
-extern u8 data_020927f8[];
+extern u8 NNS_G3dGlb[];
 extern u8 *data_02097d48;
-extern void func_02011340(void *m);
+extern void MTX_Identity33_(void *m);
 extern void MI_Copy36B(void *m, void *b);
-extern void func_0202711c(Ov010Vec *v);
-extern void func_0202714c(Ov010Vec *v);
-extern void func_020270a4(void);
-extern void func_0202a3ec(s32 cmd, const void *data, s32 n);
-extern void func_0201146c(void *m, s32 s, s32 c);
-extern void func_02011488(void *m, s32 s, s32 c);
+extern void NNS_G3dGlbSetBaseTrans(Ov010Vec *v);
+extern void NNS_G3dGlbSetBaseScale(Ov010Vec *v);
+extern void NNS_G3dGlbFlushVP(void);
+extern void NNS_G3dGeBufferOP_N(s32 cmd, const void *data, s32 n);
+extern void MTX_RotX33_(void *m, s32 s, s32 c);
+extern void MTX_RotY33_(void *m, s32 s, s32 c);
 extern u32 func_02043d48(void *p);
-extern void func_0202a1d4(void);
+extern void NNS_G3dGeFlushBuffer(void);
 
 static inline void Ov010_G3End(void) {
-    func_0202a3ec(0x41, NULL, 0);
+    NNS_G3dGeBufferOP_N(0x41, NULL, 0);
 }
 
 }

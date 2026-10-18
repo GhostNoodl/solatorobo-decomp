@@ -280,10 +280,10 @@ typedef struct HitMesh {
 extern HitMesh *data_02fe0f08;
 extern int data_02fe0f0c;
 
-extern void func_02011820(HitMtx *mtx);
+extern void MTX_Identity43_(HitMtx *mtx);
 extern int FX_Inv(int x);
 extern void MI_Copy48B(const HitMtx *src, HitMtx *dst);
-extern void func_020119cc(const HitMtx *src, HitMtx *dst);
+extern void MTX_Inverse43(const HitMtx *src, HitMtx *dst);
 void func_0203fa0c(HitMesh *mesh);
 void func_0203fb08(HitMesh *mesh);
 
@@ -297,8 +297,8 @@ void func_0203f80c(HitMesh *mesh) {
     mesh->table = NULL;
     mesh->unk_84_3 = 0;
     mesh->next = NULL;
-    func_02011820(&mesh->mtx);
-    func_02011820(&mesh->invMtx);
+    MTX_Identity43_(&mesh->mtx);
+    MTX_Identity43_(&mesh->invMtx);
     mesh->extent = 0;
 }
 
@@ -357,7 +357,7 @@ void func_0203f9b8(HitMesh *mesh, int scale) {
 
 void func_0203f9dc(HitMesh *mesh, const HitMtx *mtx) {
     MI_Copy48B(mtx, &mesh->mtx);
-    func_020119cc(mtx, &mesh->invMtx);
+    MTX_Inverse43(mtx, &mesh->invMtx);
     func_0203fa0c(mesh);
 }
 

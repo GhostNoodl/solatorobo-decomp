@@ -137,28 +137,28 @@ extern "C" {
 
 extern HeapState *data_02097dd0;
 
-void func_02011340(void *mtx);
+void MTX_Identity33_(void *mtx);
 void func_0203de1c(void *ptr);
 void func_ov000_02191f18(void);
 void *func_0203dd9c(u32 size);
-ResMdlSet *func_0202ac90(void *file);
-void *func_0202aca0(void *file);
-void func_0202a624(void *mdl, s32 a, u32 mask);
-void func_0202a57c(void *mdl, s32 a, u32 mask);
-void func_02026508(void *obj, void *mdl);
+ResMdlSet *NNS_G3dGetMdlSet(void *file);
+void *NNS_G3dGetTex(void *file);
+void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 a, u32 mask);
+void NNSi_G3dModifyMatFlag(void *mdl, s32 a, u32 mask);
+void NNS_G3dRenderObjInit(void *obj, void *mdl);
 void func_0201e520(char *dst, const char *src);
 void func_0201e78c(char *dst, const char *src);
-s32 func_0202ab2c(void *dict, const char *name);
+s32 NNS_G3dGetResDictIdxByName(void *dict, const char *name);
 BOOL func_0201e7b0(const char *a, const char *b);
-void func_0202676c(void *obj, AnmObj *anm);
+void NNS_G3dRenderObjRemoveAnmObj(void *obj, AnmObj *anm);
 BOOL func_ov000_0218f874(AnimCtrl *self, void *obj, s16 speed);
 BOOL func_ov000_0218fa28(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);
 BOOL func_ov000_0218fb64(AnimCtrl *self, void *obj, void *tex, void *file, s32 index, s16 blend, u8 force);
 s16 *func_ov000_02192a28(s16 *p);
-void func_0201146c(void *mtx, s32 sin, s32 cos);
-void func_02011488(void *mtx, s32 sin, s32 cos);
-void func_020114a4(void *mtx, s32 sin, s32 cos);
-void func_02011610(void *a, void *b, void *ab);
+void MTX_RotX33_(void *mtx, s32 sin, s32 cos);
+void MTX_RotY33_(void *mtx, s32 sin, s32 cos);
+void MTX_RotZ33_(void *mtx, s32 sin, s32 cos);
+void MTX_Concat33(void *a, void *b, void *ab);
 
 static inline void *ResDict_GetDataByIdx(const ResDict *dict, u32 idx) {
     if (dict != NULL && idx < dict->num_entry) {
@@ -193,7 +193,7 @@ static inline AnimCtrl *AnimCtrl_New(void) {
 }
 
 static inline void AnimCtrl_Stop(AnimCtrl *ctrl, void *obj) {
-    func_0202676c(obj, ctrl->cur);
+    NNS_G3dRenderObjRemoveAnmObj(obj, ctrl->cur);
     ctrl->name[0] = 0;
     ctrl->index = 0xff;
     ctrl->playing = 0;
@@ -238,7 +238,7 @@ Model0218fe1c *func_ov000_0218fe1c(Model0218fe1c *self) {
     self->unk_78 = 0;
     self->unk_7c = 0;
     self->unk_80 = 0;
-    func_02011340(self->unk_84);
+    MTX_Identity33_(self->unk_84);
     self->unk_a8 = 0x1000;
     self->unk_ac = 0x1000;
     self->unk_b0 = 0x1000;

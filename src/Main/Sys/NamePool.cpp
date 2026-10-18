@@ -451,10 +451,10 @@ void func_0203e6bc(void) {
 }
 
 
-extern u32 func_02022d30(u32 size, int is4x4, int opt);
-extern int func_02022db4(u32 key);
-extern u32 func_02023094(u32 size, int is4pltt, int opt);
-extern int func_02023168(u32 key);
+extern u32 NNS_GfdAllocLnkTexVram(u32 size, int is4x4, int opt);
+extern int NNS_GfdFreeLnkTexVram(u32 key);
+extern u32 NNS_GfdAllocLnkPlttVram(u32 size, int is4pltt, int opt);
+extern int NNS_GfdFreeLnkPlttVram(u32 key);
 
 static inline NameNode *NamePool_Lookup(NamePool *pool) {
     NameNode *node = pool->usedList;
@@ -485,7 +485,7 @@ u32 func_0203e8e0(u32 size, int is4x4, int opt) {
             return node->key;
         }
     }
-    key = func_02022d30(size, is4x4, opt);
+    key = NNS_GfdAllocLnkTexVram(size, is4x4, opt);
     if (key != 0) {
         data_02097d48->unk_024 += ((key & 0x7fff0000) >> 16) << 4;
         if (pool != NULL) {
@@ -500,7 +500,7 @@ int func_0203ea00(u32 key) {
     if (data_02097de4 != NULL && func_0203e25c(data_02097de4, key) != NULL) {
         return 0;
     }
-    r = func_02022db4(key);
+    r = NNS_GfdFreeLnkTexVram(key);
     if (r != 0) {
         return r;
     }
@@ -517,7 +517,7 @@ u32 func_0203ea6c(u32 size, int is4pltt, int opt) {
             return node->key;
         }
     }
-    key = func_02023094(size, is4pltt, opt);
+    key = NNS_GfdAllocLnkPlttVram(size, is4pltt, opt);
     if (key != 0) {
         data_02097d48->unk_028 += ((key & 0xffff0000) >> 16) << 3;
         if (pool != NULL) {
@@ -532,7 +532,7 @@ int func_0203eb8c(u32 key) {
     if (data_02097dd8 != NULL && func_0203e25c(data_02097dd8, key) != NULL) {
         return 0;
     }
-    r = func_02023168(key);
+    r = NNS_GfdFreeLnkPlttVram(key);
     if (r != 0) {
         return r;
     }
@@ -611,15 +611,15 @@ typedef struct ResTexFull {
     /* 0x38 */ u32 ofsPlttData;
 } ResTexFull;
 
-extern ResTexFull *func_0202aca0(void *res);
-extern void *func_0202ac90(void *res);
-extern u32 func_020267f0(ResTexFull *tex);
-extern u32 func_02026804(ResTexFull *tex);
-extern u32 func_02026818(ResTexFull *tex);
-extern void func_02026df0(void *mdl, ResTexFull *tex);
+extern ResTexFull *NNS_G3dGetTex(void *res);
+extern void *NNS_G3dGetMdlSet(void *res);
+extern u32 NNS_G3dTexGetRequiredSize(ResTexFull *tex);
+extern u32 NNS_G3dTex4x4GetRequiredSize(ResTexFull *tex);
+extern u32 NNS_G3dPlttGetRequiredSize(ResTexFull *tex);
+extern void NNS_G3dBindMdlSet(void *mdl, ResTexFull *tex);
 extern void func_020435e8(GfxPltt *pltt, void *src, u32 size);
-extern u32 (*data_0208afd4)(u32 size, int is4x4, int opt);
-extern u32 (*data_0208afdc)(u32 size, int is4pltt, int opt);
+extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, int is4x4, int opt);
+extern u32 (*NNS_GfdDefaultFuncAllocPlttVram)(u32 size, int is4pltt, int opt);
 
 static inline void NamePool_SetName(NamePool *pool, const char *name, u32 value) {
     if (pool == NULL) {
@@ -641,19 +641,19 @@ BOOL func_0203ed04(const char *name, u32 *res) {
     switch (*res) {
     case 0x30444d42:
     case 0x30585442: {
-        ResTexFull *tex = func_0202aca0(res);
+        ResTexFull *tex = NNS_G3dGetTex(res);
         if (tex != NULL) {
-            u32 texSize = func_020267f0(tex);
-            u32 tex4x4Size = func_02026804(tex);
-            u32 plttSize = func_02026818(tex);
+            u32 texSize = NNS_G3dTexGetRequiredSize(tex);
+            u32 tex4x4Size = NNS_G3dTex4x4GetRequiredSize(tex);
+            u32 plttSize = NNS_G3dPlttGetRequiredSize(tex);
             if (texSize != 0) {
-                tex->texInfo.vramKey = data_0208afd4(texSize, 0, 0);
+                tex->texInfo.vramKey = NNS_GfdDefaultFuncAllocTexVram(texSize, 0, 0);
             } else if (tex4x4Size != 0) {
-                tex->tex4x4Info.vramKey = data_0208afd4(tex4x4Size, 1, 0);
+                tex->tex4x4Info.vramKey = NNS_GfdDefaultFuncAllocTexVram(tex4x4Size, 1, 0);
             }
             if (plttSize != 0) {
                 NamePool_SetName(data_02097dd8, name, 0);
-                tex->plttKey = data_0208afdc(plttSize, tex->tex4x4Info.flag & 0x8000, 0);
+                tex->plttKey = NNS_GfdDefaultFuncAllocPlttVram(plttSize, tex->tex4x4Info.flag & 0x8000, 0);
             }
             func_0203ec08((ResTex *)tex);
             if (!(tex->plttFlag & 1)) {
@@ -669,7 +669,7 @@ BOOL func_0203ed04(const char *name, u32 *res) {
                 }
             }
             if (*res == 0x30444d42) {
-                func_02026df0(func_0202ac90(res), tex);
+                NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(res), tex);
             }
         }
         return TRUE;
@@ -686,15 +686,15 @@ BOOL func_0203ed04(const char *name, u32 *res) {
 }
 
 
-extern void func_02026ea0(void *mdl);
-extern void (*data_0208afd8)(u32 key);
-extern void (*data_0208afe0)(u32 key);
+extern void NNS_G3dReleaseMdlSet(void *mdl);
+extern void (*NNS_GfdDefaultFuncFreeTexVram)(u32 key);
+extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
 
 void func_0203f0b4(u32 *res) {
     switch (*res) {
     case 0x30444d42:
     case 0x30585442: {
-        ResTexFull *tex = func_0202aca0(res);
+        ResTexFull *tex = NNS_G3dGetTex(res);
         u32 plttKey;
         u32 tex4x4Key;
         u32 texKey;
@@ -714,21 +714,21 @@ void func_0203f0b4(u32 *res) {
             }
         }
         if (*res == 0x30444d42) {
-            func_02026ea0(func_0202ac90(res));
+            NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet(res));
         }
         if (plttKey != 0) {
             tex->plttFlag &= ~1;
             tex->plttKey = 0;
-            data_0208afe0(plttKey);
+            NNS_GfdDefaultFuncFreePlttVram(plttKey);
         }
         if (tex4x4Key != 0) {
             tex->tex4x4Info.flag &= ~1;
             tex->tex4x4Info.vramKey = 0;
-            data_0208afd8(tex4x4Key);
+            NNS_GfdDefaultFuncFreeTexVram(tex4x4Key);
         } else if (texKey != 0) {
             tex->texInfo.flag &= ~1;
             tex->texInfo.vramKey = 0;
-            data_0208afd8(texKey);
+            NNS_GfdDefaultFuncFreeTexVram(texKey);
         }
         break;
     }

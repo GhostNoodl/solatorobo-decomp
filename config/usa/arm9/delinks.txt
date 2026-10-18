@@ -4,6 +4,22 @@
     .data       start:0x0208aa80 end:0x0208d940 kind:data align:32
     .bss        start:0x0208d940 end:0x0214b1a0 kind:bss align:32
 
+libs/nitro/fx/fx_mtx22.c:
+    complete
+    .text       start:0x02011218 end:0x02011340
+
+libs/nitro/fx/fx_mtx33.c:
+    complete
+    .text       start:0x02011340 end:0x02011820
+
+libs/nitro/fx/fx_mtx43.c:
+    complete
+    .text       start:0x02011820 end:0x02012104
+
+libs/nitro/fx/fx_mtx44.c:
+    complete
+    .text       start:0x02012104 end:0x02012ab8
+
 libs/nitro/fx/fx_cp.c:
     complete
     .text       start:0x02012ab8 end:0x02012be8
@@ -114,6 +130,107 @@ libs/nnsys/fnd/expheap_2.c:
 libs/nnsys/fnd/frameheap.c:
     complete
     .text       start:0x020225d0 end:0x0202288c
+
+libs/nnsys/gfd/gfd_TexVramMan.c:
+    complete
+    .text       start:0x0202288c end:0x0202289c
+    .data       start:0x0208afd4 end:0x0208afdc
+
+libs/nnsys/gfd/gfd_PlttVramMan.c:
+    complete
+    .text       start:0x0202289c end:0x020228ac
+    .data       start:0x0208afdc end:0x0208afe4
+
+libs/nnsys/gfd/gfdi_LinkedListVramMan_Common.c:
+    complete
+    .text       start:0x020228ac end:0x02022cd0
+
+libs/nnsys/gfd/gfd_LinkedListTexVramMan.c:
+    complete
+    .text       start:0x02022cd0 end:0x02022e20
+
+libs/nnsys/gfd/gfd_LinkedListPlttVramMan.c:
+    complete
+    .text       start:0x02023038 end:0x020231ac
+
+libs/nnsys/g3d/kernel.c:
+    complete
+    .text       start:0x02026410 end:0x02026f34
+
+libs/nnsys/g3d/glbstate.c:
+    complete
+    .text       start:0x02026f34 end:0x0202734c
+
+libs/nnsys/g3d/anm.c:
+    complete
+    .text       start:0x0202734c end:0x020278a0
+
+libs/nnsys/g3d/sbc.c:
+    complete
+    .text       start:0x020278a0 end:0x02029f14
+
+libs/nnsys/g3d/1mat1shp.c:
+    complete
+    .text       start:0x02029f14 end:0x0202a1b4
+
+libs/nnsys/g3d/gecom.c:
+    complete
+    .text       start:0x0202a1b4 end:0x0202a260
+
+libs/nnsys/g3d/gecom_bufferop.c:
+    complete
+    .text       start:0x0202a3ec end:0x0202a4c8
+
+libs/nnsys/g3d/util.c:
+    complete
+    .text       start:0x0202a4c8 end:0x0202a57c
+
+libs/nnsys/g3d/model.c:
+    complete
+    .text       start:0x0202a57c end:0x0202a970
+
+libs/nnsys/g3d/res_struct_accessor.c:
+    complete
+    .text       start:0x0202a970 end:0x0202ace0
+
+libs/nnsys/g3d/res_struct_accessor_anm.c:
+    complete
+    .text       start:0x0202ace0 end:0x0202ae6c
+
+libs/nnsys/g3d/nsbma.c:
+    complete
+    .text       start:0x0202c3b8 end:0x0202c7dc
+
+libs/nnsys/g3d/nsbta.c:
+    complete
+    .text       start:0x0202c7dc end:0x0202cc04
+
+libs/nnsys/g3d/nsbva.c:
+    complete
+    .text       start:0x0202ce9c end:0x0202cf38
+
+libs/nnsys/g3d/basic.c:
+    complete
+    .text       start:0x0202cf38 end:0x0202cfe8
+
+libs/nnsys/g3d/maya.c:
+    complete
+    .text       start:0x0202cfe8 end:0x0202d7a0
+    .data       start:0x0208b214 end:0x0208b234
+
+libs/nnsys/g3d/si3d.c:
+    complete
+    .text       start:0x0202d7a0 end:0x0202dc88
+
+libs/nnsys/g3d/3dsmax.c:
+    complete
+    .text       start:0x0202dc88 end:0x0202e284
+    .data       start:0x0208b234 end:0x0208b254
+
+libs/nnsys/g3d/xsi.c:
+    complete
+    .text       start:0x0202e284 end:0x0202e8c4
+    .data       start:0x0208b254 end:0x0208b274
 
 libs/nnsys/snd/snd_heap.c:
     complete

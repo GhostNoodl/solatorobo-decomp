@@ -83,7 +83,7 @@ void *func_ov002_021e9478(s32 a, s32 b, s32 c, s32 d, u16 e, s32 mode, u8 f, u8 
 
 void *func_02043548(void *p);
 
-void func_02012104(void *p);
+void MTX_Identity44_(void *p);
 
 extern VFunc data_ov002_021f0854[];
 
@@ -105,7 +105,7 @@ void *func_ov002_021e95c4(u8 *a, u8 *b) {
         func_02043548(p + 0x50);
         FIELD(p, 0x4, s32) = 7;
         FIELD(p, 0x4c, s32) = -1;
-        func_02012104(p + 0x74);
+        MTX_Identity44_(p + 0x74);
         *(VFunc **)p = data_ov002_021f0828;
         FIELD(p, 0x4, s32) = 7;
         {
@@ -153,7 +153,7 @@ void *func_ov002_021e95c4(u8 *a, u8 *b) {
     return p;
 }
 
-void func_020128a4(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, void *out);
+void MTX_OrthoW(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, void *out);
 
 extern VFunc data_ov002_021f07fc[];
 
@@ -167,10 +167,10 @@ void *func_ov002_021e97e8(u8 *a, u8 *b) {
         func_02043548(p + 0x50);
         FIELD(p, 0x4, s32) = 7;
         FIELD(p, 0x4c, s32) = -1;
-        func_02012104(p + 0x74);
+        MTX_Identity44_(p + 0x74);
         *(VFunc **)p = data_ov002_021f07fc;
         FIELD(p, 0x4, s32) = 8;
-        func_020128a4(0x60000, -0x60000, -0x80000, 0x80000, 0, 0x20000, 0x400000, p + 0x74);
+        MTX_OrthoW(0x60000, -0x60000, -0x80000, 0x80000, 0, 0x20000, 0x400000, p + 0x74);
         FIELD(p, 0xb4, s32) = 0;
     }
     if (a != NULL) {

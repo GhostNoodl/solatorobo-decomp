@@ -6,7 +6,7 @@ extern void *data_02097e4c;
 extern void *data_ov009_02215d0c[];
 extern void func_ov003_021daab0(void *p);
 extern void func_02049bb4(void *mgr, s32 id);
-extern void func_0202a624(void *p, s32 a, s32 b);
+extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_ov003_021d3d28(Ov009Actor *self);
 extern void func_ov000_02191618(Ov009Sub38 *m);
 extern void func_ov003_021d4fd8(Ov009Actor *self);
@@ -29,7 +29,7 @@ static inline void Ov009_StopEffect(Ov009Actor *self) {
     FLD(s32, self, 0x108) = -1;
     m = self->unk_38;
     m->unk_c2_9 = 3;
-    func_0202a624(m->unk_04, 1, 0xc0);
+    NNSi_G3dModifyPolygonAttrMask(m->unk_04, 1, 0xc0);
 }
 
 void func_ov009_0220244c(Ov009Actor *self) {

@@ -11,16 +11,16 @@ extern
 void func_0204bac8(Camera *cam);
 extern s32 func_01ffbd6c(CamVec *a, CamVec *b, u32 mask, s32 c, s32 d, s32 e);
 extern u16 FX_Atan2(s32 y, s32 x);
-extern void func_02011ff0(CamVec *eye, CamVec *up, CamVec *at, void *out);
-extern void func_02012758(s32 fovy, s32 aspect, s32 n, s32 fovSin, s32 fovCos, s32 scale, void *out);
+extern void MTX_LookAt(CamVec *eye, CamVec *up, CamVec *at, void *out);
+extern void MTX_PerspectiveW(s32 fovy, s32 aspect, s32 n, s32 fovSin, s32 fovCos, s32 scale, void *out);
 extern const s16 FX_SinCosTable_[];
-extern void *data_0208b000[];
+extern void *NNS_G3dFuncAnmJntNsBcaDefault[];
 extern s32 func_02040498(s32 max);
-extern void *data_02092a5c;
-extern u32 data_0208b078;
+extern void *NNS_G3dRS;
+extern u32 NNS_G3dGetJointScale_FuncArray;
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02011340(void *mtx);
-extern void func_020117a4(const CamVec *v, const void *mtx, CamVec *out);
+extern void MTX_Identity33_(void *mtx);
+extern void MTX_MultVec33(const CamVec *v, const void *mtx, CamVec *out);
 
 typedef struct CamAnimResult {
     /* 0x00 */ u32 flags;
@@ -50,7 +50,7 @@ typedef struct CamState {
     /* 0x258 */ CamVec at;
 } CamState;
 
-extern CamState data_020927f8;
+extern CamState NNS_G3dGlb;
 extern u8 data_02092800[];
 extern u8 data_02092844[];
 
@@ -115,7 +115,7 @@ void func_0204b8e8(Camera *cam, void *anim) {
     cam->anim = anim;
     cam->animFrame = 0;
     cam->animSpeed = 0x1000;
-    cam->animFunc = data_0208b000[0];
+    cam->animFunc = NNS_G3dFuncAnmJntNsBcaDefault[0];
     cam->unk_b0 = 0;
     cam->unk_b4 = 0;
     cam->unk_b8 = 0x7f;
@@ -147,15 +147,15 @@ void func_0204b924(Camera *cam, s32 speed) {
     if (cam->animFrame > max) {
         cam->animFrame = max;
     }
-    data_02092a5c = &work;
+    NNS_G3dRS = &work;
     MIi_CpuClearFast(0, &work, sizeof(work));
-    work.unk_0e8 = data_0208b078;
-    func_02011340(res.rot);
+    work.unk_0e8 = NNS_G3dGetJointScale_FuncArray;
+    MTX_Identity33_(res.rot);
     res.trans.x = 0;
     res.trans.y = 0;
     res.trans.z = 0;
-    ((CamAnimFunc)data_0208b000[0])(&res, &cam->animFrame, 0);
-    data_02092a5c = NULL;
+    ((CamAnimFunc)NNS_G3dFuncAnmJntNsBcaDefault[0])(&res, &cam->animFrame, 0);
+    NNS_G3dRS = NULL;
     cam->mode = 0;
     ex = cam->eye.x;
     ey = cam->eye.y;
@@ -172,7 +172,7 @@ void func_0204b924(Camera *cam, s32 speed) {
         vec.z = vec.z - ez;
     } else {
         Cam_VecSet(&vec, 0, 0, cam->dist);
-        func_020117a4(&vec, res.rot, &vec);
+        MTX_MultVec33(&vec, res.rot, &vec);
     }
     VEC_Add(&vec, &res.trans, &vec);
     cam->at.x = vec.x;
@@ -217,17 +217,17 @@ void func_0204bac8(Camera *cam) {
     cam->at.x = newAt.x;
     cam->at.y = newAt.y;
     cam->at.z = newAt.z;
-    data_020927f8.eye.x = cam->eye.x;
-    data_020927f8.eye.y = cam->eye.y;
-    data_020927f8.eye.z = cam->eye.z;
-    data_020927f8.up.x = cam->up.x;
-    data_020927f8.up.y = cam->up.y;
-    data_020927f8.up.z = cam->up.z;
-    data_020927f8.at.x = cam->at.x;
-    data_020927f8.at.y = cam->at.y;
-    data_020927f8.at.z = cam->at.z;
-    func_02011ff0(&cam->eye, &cam->up, &cam->at, data_02092844);
-    data_020927f8.dirty &= ~0xe8;
+    NNS_G3dGlb.eye.x = cam->eye.x;
+    NNS_G3dGlb.eye.y = cam->eye.y;
+    NNS_G3dGlb.eye.z = cam->eye.z;
+    NNS_G3dGlb.up.x = cam->up.x;
+    NNS_G3dGlb.up.y = cam->up.y;
+    NNS_G3dGlb.up.z = cam->up.z;
+    NNS_G3dGlb.at.x = cam->at.x;
+    NNS_G3dGlb.at.y = cam->at.y;
+    NNS_G3dGlb.at.z = cam->at.z;
+    MTX_LookAt(&cam->eye, &cam->up, &cam->at, data_02092844);
+    NNS_G3dGlb.dirty &= ~0xe8;
     cam->eye.x = eye.x;
     cam->eye.y = eye.y;
     cam->eye.z = eye.z;

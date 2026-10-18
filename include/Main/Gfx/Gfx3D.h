@@ -11,13 +11,13 @@ extern "C" {
 #define REG_ALPHA_TEST_REF (*(volatile u16 *)0x4000340)
 #define REG_FOG_COLOR (*(volatile u32 *)0x4000358)
 
-extern void func_0202a1d4(void);
-extern void func_0202a260(const void *list, u32 size);
-extern void func_0202a3ec(int cmd, const void *data, int count);
-extern void func_0202717c(int light, int x, int y, int z);
-extern void func_020271b8(int light, u16 color);
-extern void func_020271cc(u16 diffuse, u16 ambient, BOOL setVtxColor);
-extern void func_020271f0(u16 specular, u16 emission, BOOL shininess);
+extern void NNS_G3dGeFlushBuffer(void);
+extern void NNS_G3dGeSendDL(const void *list, u32 size);
+extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
+extern void NNS_G3dGlbLightVector(int light, int x, int y, int z);
+extern void NNS_G3dGlbLightColor(int light, u16 color);
+extern void NNS_G3dGlbMaterialColorDiffAmb(u16 diffuse, u16 ambient, BOOL setVtxColor);
+extern void NNS_G3dGlbMaterialColorSpecEmi(u16 specular, u16 emission, BOOL shininess);
 extern void DC_FlushRange(const void *addr, u32 size);
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
@@ -33,7 +33,7 @@ extern void func_02013e88(const u8 *table);
 extern void func_02013e9c(const u16 *table);
 extern void func_02013eb4(u16 color, int alpha, int depth, int polygonId, BOOL fog);
 extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
-extern void func_020128a4(int t, int b, int l, int r, int n, int f, int scaleW, void *mtx);
+extern void MTX_OrthoW(int t, int b, int l, int r, int n, int f, int scaleW, void *mtx);
 extern const u16 data_02082958[];
 extern const u16 data_02082900[];
 extern const u16 data_02075614[][4];

@@ -59,7 +59,7 @@ void *func_02035f30(void *a, char *name, s32 b);
 Data02034f5c *func_02034f5c(void *a, char *name);
 char *func_0203ed04(char *name, u32 a);
 void *func_0203ebf8(char *name);
-Data0202aca0 *func_0202aca0(u32 a);
+Data0202aca0 *NNS_G3dGetTex(u32 a);
 BOOL func_0203e63c(void *a);
 void func_0205a6a0(VObj *obj);
 void func_0205a840(VObj *obj, char *a, const char *b);
@@ -111,7 +111,7 @@ void func_ov000_0214b910(Loader *self) {
             name = func_0203ed04(name, entry->unk_00);
         }
         self->unk_14 = func_0203ebf8(name);
-        self->unk_18 = func_0202aca0(entry->unk_00)->unk_08;
+        self->unk_18 = NNS_G3dGetTex(entry->unk_00)->unk_08;
         self->unk_0c = 3;
         break;
     case 3:

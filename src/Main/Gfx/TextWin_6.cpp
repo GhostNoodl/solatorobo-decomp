@@ -12,8 +12,8 @@ struct TextLayout {
 extern "C" {
 
 extern const u32 data_0208ba70[];
-extern void (*data_0208afd8)(void *p);
-extern void (*data_0208afe0)(void *p);
+extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
+extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
@@ -275,7 +275,7 @@ void func_0204e2dc(Model *model, s32 v);
 
 void func_0204e2e4(Model *model, s32 idx);
 
-extern void func_0202a3ec(int cmd, const void *data, int count);
+extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 data_02097d78[];
@@ -286,16 +286,16 @@ u8 *func_0204f354(void) {
 
 void func_0204f368(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc) {
     u32 data = light | (polyMode << 4) | (cullMode << 6) | misc | (polygonId << 24) | (alpha << 16);
-    func_0202a3ec(0x29, &data, 1);
+    NNS_G3dGeBufferOP_N(0x29, &data, 1);
 }
 
 void func_0204f3a0(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr) {
     u32 data = (addr >> 3) | (texFmt << 26) | (texGen << 30) | (s << 20) | (t << 23) | (repeat << 16) | (flip << 18) | (pltt0 << 29);
-    func_0202a3ec(0x2a, &data, 1);
+    NNS_G3dGeBufferOP_N(0x2a, &data, 1);
 }
 
 void func_0204f3ec(void) {
-    func_0202a3ec(0x11, NULL, 0);
+    NNS_G3dGeBufferOP_N(0x11, NULL, 0);
 }
 
 void func_0204f404(s32 x, s32 y, s32 z) {
@@ -303,7 +303,7 @@ void func_0204f404(s32 x, s32 y, s32 z) {
     data[0] = x;
     data[1] = y;
     data[2] = z;
-    func_0202a3ec(0x1c, data, 3);
+    NNS_G3dGeBufferOP_N(0x1c, data, 3);
 }
 
 void func_0204f430(s32 x, s32 y, s32 z) {
@@ -311,16 +311,16 @@ void func_0204f430(s32 x, s32 y, s32 z) {
     data[0] = x;
     data[1] = y;
     data[2] = z;
-    func_0202a3ec(0x1b, data, 3);
+    NNS_G3dGeBufferOP_N(0x1b, data, 3);
 }
 
 void func_0204f45c(u32 color) {
     u32 data = color;
-    func_0202a3ec(0x20, &data, 1);
+    NNS_G3dGeBufferOP_N(0x20, &data, 1);
 }
 
 void func_0204f478(s32 num, ...) {
-    func_0202a3ec(0x12, &num, 1);
+    NNS_G3dGeBufferOP_N(0x12, &num, 1);
 }
 
 void func_0204f49c(TextWinEx *win) {

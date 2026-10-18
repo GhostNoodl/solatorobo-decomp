@@ -58,12 +58,12 @@ typedef struct {
 
 extern "C" {
 
-void func_0202676c(RenderObj *obj, AnmObj *anm);
-void func_02026678(RenderObj *obj, AnmObj *anm);
-void func_02026470(AnmObj *anm, void *res, void *mdl, void *tex);
-void *func_0202ace0(void *file, s32 index);
-void *func_0202ad3c(void *file, const char *name);
-void *func_0202aca0(void *tex);
+void NNS_G3dRenderObjRemoveAnmObj(RenderObj *obj, AnmObj *anm);
+void NNS_G3dRenderObjAddAnmObj(RenderObj *obj, AnmObj *anm);
+void NNS_G3dAnmObjInit(AnmObj *anm, void *res, void *mdl, void *tex);
+void *NNS_G3dGetAnmByIdx(void *file, s32 index);
+void *NNS_G3dGetAnmByName(void *file, const char *name);
+void *NNS_G3dGetTex(void *tex);
 void func_0201e520(char *dst, const char *src);
 void func_0201e78c(char *dst, const char *src);
 BOOL func_0201e7b0(const char *a, const char *b);
@@ -89,7 +89,7 @@ BOOL func_ov000_0218f874(AnimCtrl *self, RenderObj *obj, s16 speed) {
         if (self->cur->ratio >= 0x1000 || self->prev->ratio <= 0) {
             self->blend = 0x1000;
             self->cur->ratio = 0x1000;
-            func_0202676c(obj, self->prev);
+            NNS_G3dRenderObjRemoveAnmObj(obj, self->prev);
             self->prev->ratio = zero;
         } else {
             return FALSE;
@@ -139,7 +139,7 @@ BOOL func_ov000_0218fa28(AnimCtrl *self, RenderObj *obj, ResSet *res, void *file
     self->same = 0;
     ret = FALSE;
     if (name == NULL) {
-        func_0202676c(obj, self->cur);
+        NNS_G3dRenderObjRemoveAnmObj(obj, self->cur);
         self->name[0] = 0;
         self->index = 0xff;
         self->playing = 0;
@@ -156,14 +156,14 @@ BOOL func_ov000_0218fa28(AnimCtrl *self, RenderObj *obj, ResSet *res, void *file
     tex = NULL;
     func_0201e520(buf, res->entries[1].ext);
     func_0201e78c(buf, name);
-    anm = func_0202ad3c(file, buf);
+    anm = NNS_G3dGetAnmByName(file, buf);
     if (anm != NULL) {
         func_0201e520(self->name, name);
         self->index = 0xff;
         if (res->entries[0].handle != NULL) {
             tex = res->entries[0].handle->unk_00;
         }
-        func_ov000_0218fc28(self, obj, anm, func_0202aca0(tex), blend);
+        func_ov000_0218fc28(self, obj, anm, NNS_G3dGetTex(tex), blend);
         ret = TRUE;
     }
     return ret;
@@ -175,7 +175,7 @@ BOOL func_ov000_0218fb64(AnimCtrl *self, RenderObj *obj, void *tex, void *file, 
     self->same = 0;
     ret = FALSE;
     if (index < 0) {
-        func_0202676c(obj, self->cur);
+        NNS_G3dRenderObjRemoveAnmObj(obj, self->cur);
         self->name[0] = 0;
         self->index = 0xff;
         self->playing = 0;
@@ -185,7 +185,7 @@ BOOL func_ov000_0218fb64(AnimCtrl *self, RenderObj *obj, void *tex, void *file, 
         self->same = 1;
         return FALSE;
     }
-    anm = func_0202ace0(file, index);
+    anm = NNS_G3dGetAnmByIdx(file, index);
     if (anm != NULL) {
         self->index = index;
         self->name[0] = 0;
@@ -204,9 +204,9 @@ void func_ov000_0218fc28(AnimCtrl *self, RenderObj *obj, void *res, void *tex, s
     ratio = 0x1000;
     if (blend == 0x1000 || blend == 0 || res == NULL) {
         self->blend = 0x1000;
-        func_0202676c(obj, self->cur);
+        NNS_G3dRenderObjRemoveAnmObj(obj, self->cur);
         if (self->prev != NULL) {
-            func_0202676c(obj, self->prev);
+            NNS_G3dRenderObjRemoveAnmObj(obj, self->prev);
             self->prev->ratio = 0;
         }
     } else {
@@ -215,13 +215,13 @@ void func_ov000_0218fc28(AnimCtrl *self, RenderObj *obj, void *res, void *tex, s
             if (self->blend == 0x1000 || self->cur->ratio > self->prev->ratio) {
                 AnmObj *cur;
                 AnmObj *prev;
-                func_0202676c(obj, self->prev);
+                NNS_G3dRenderObjRemoveAnmObj(obj, self->prev);
                 cur = self->cur;
                 prev = self->prev;
                 self->prev = cur;
                 self->cur = prev;
             } else {
-                func_0202676c(obj, self->cur);
+                NNS_G3dRenderObjRemoveAnmObj(obj, self->cur);
             }
         } else {
             self->prev = self->cur;
@@ -230,11 +230,11 @@ void func_ov000_0218fc28(AnimCtrl *self, RenderObj *obj, void *res, void *tex, s
         }
         ratio = 0;
     }
-    func_02026470(self->cur, res, mdl, tex);
+    NNS_G3dAnmObjInit(self->cur, res, mdl, tex);
     if (ratio != 0x1000) {
         self->cur->ratio = ratio;
     }
-    func_02026678(obj, self->cur);
+    NNS_G3dRenderObjAddAnmObj(obj, self->cur);
     self->speed = 0x1000;
     self->delay = 0;
     self->loop = 0;

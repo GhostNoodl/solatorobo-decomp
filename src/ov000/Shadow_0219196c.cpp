@@ -62,7 +62,7 @@ extern ShadowArc data_ov000_021c9d80;
 extern void *data_02097cdc;
 extern u8 *data_02097d48;
 extern Mtx33 data_020928b4;
-extern GxState data_020927f8;
+extern GxState NNS_G3dGlb;
 
 ShadowRes *func_02035e34(void *file, void *name);
 void func_0203f0b4(void *file);
@@ -71,17 +71,17 @@ void func_020359d0(void *a, int b, int c);
 int func_02035b90(void *a, int b);
 char *func_0203ed04(void *name, void *file);
 void func_0203de1c(void *ptr);
-ResMdlSet *func_0202ac90(void *file);
-void func_0202714c(VecFx32 *scale);
-void func_0202711c(VecFx32 *trans);
-void func_02011340(Mtx33 *mtx);
+ResMdlSet *NNS_G3dGetMdlSet(void *file);
+void NNS_G3dGlbSetBaseScale(VecFx32 *scale);
+void NNS_G3dGlbSetBaseTrans(VecFx32 *trans);
+void MTX_Identity33_(Mtx33 *mtx);
 void MI_Copy36B(const void *src, void *dst);
-void func_020270a4(void);
+void NNS_G3dGlbFlushVP(void);
 s32 _s32_div_f(s32 a, s32 b);
-void func_0202a7bc(void *mdl, u32 idx, u32 alpha);
-void func_0202a744(void *mdl, u32 idx, u32 id);
-void func_0202a6cc(void *mdl, u32 idx, u32 mode);
-void func_02029f14(void *mdl, u32 idx, u32 a, u32 b);
+void NNS_G3dMdlSetMdlAlpha(void *mdl, u32 idx, u32 alpha);
+void NNS_G3dMdlSetMdlPolygonID(void *mdl, u32 idx, u32 id);
+void NNS_G3dMdlSetMdlCullMode(void *mdl, u32 idx, u32 mode);
+void NNS_G3dDraw1Mat1Shp(void *mdl, u32 idx, u32 a, u32 b);
 void func_02043d48(void *p);
 
 static inline void *ResDict_GetDataByIdx(const ResDict *dict, u32 idx) {
@@ -114,7 +114,7 @@ static inline void VEC_Set(VecFx32 *v, s32 x, s32 y, s32 z) {
 }
 
 static inline void *Res_GetMdl(void *file, u32 idx) {
-    ResMdlSet *set = func_0202ac90(file);
+    ResMdlSet *set = NNS_G3dGetMdlSet(file);
     if (set != NULL) {
         ResDictMdlSetData *data = (ResDictMdlSetData *)ResDict_GetDataByIdx(&set->dict, idx);
         if (data != NULL) {

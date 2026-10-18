@@ -122,31 +122,31 @@ extern void func_02043d84(void *obj);
 extern void func_02052fcc(GameScene *scene);
 extern s32 func_020572f8(GameScene *scene, void *p);
 extern void *func_0203972c(void *blocks, u32 count);
-extern void func_0202a3ec(int cmd, const void *data, int count);
+extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
 static inline void G3_Vec(int cmd, int x, int y, int z) {
     int v[3];
     v[0] = x;
     v[1] = y;
     v[2] = z;
-    func_0202a3ec(cmd, v, 3);
+    NNS_G3dGeBufferOP_N(cmd, v, 3);
 }
 
 static inline void G3_Cmd1(int cmd, u32 value) {
     u32 v = value;
-    func_0202a3ec(cmd, &v, 1);
+    NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
 static inline void G3_Vtx(s16 x, s16 y, s16 z) {
     u32 v[2];
     v[0] = (u16)x | ((u16)y << 16);
     v[1] = (u16)z;
-    func_0202a3ec(0x23, v, 2);
+    NNS_G3dGeBufferOP_N(0x23, v, 2);
 }
 
 static inline void G3_VtxXY(s16 x, s16 y) {
     u32 v = (u16)x | ((u16)y << 16);
-    func_0202a3ec(0x25, &v, 1);
+    NNS_G3dGeBufferOP_N(0x25, &v, 1);
 }
 
 static inline s32 GameScene_FxMul(s32 a, s32 b) {

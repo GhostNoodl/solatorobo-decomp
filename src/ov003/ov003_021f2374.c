@@ -49,7 +49,7 @@ typedef struct {
 extern Ov003MultiMgr *data_ov003_021fa680;
 extern const Ov003MultiDef data_ov003_021f7470[];
 
-extern void func_0202a4c8(void *p, s32 a);
+extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_0218f110(s16 *p);
 
@@ -72,7 +72,7 @@ void func_ov003_021f2374(Ov003Multi *self) {
     if (t->group != group) {
         return;
     }
-    func_0202a4c8(t, 0);
+    NNS_G3dGetCurrentMtx(t, 0);
     self->func = NULL;
     self->state = 0;
 }

@@ -4,7 +4,7 @@ typedef struct {
     s32 x, y, z;
 } Ov003Vec3;
 
-extern "C" void func_0202676c(void *a, void *b);
+extern "C" void NNS_G3dRenderObjRemoveAnmObj(void *a, void *b);
 
 typedef struct {
     u16 state;
@@ -173,7 +173,7 @@ static inline void Ov003Obj_Destroy(Ov003Obj *self) {
 static inline void Ov003Model_ResetAnim(Ov003Model *m) {
     Ov003Anim *a = m->unk_10;
     if (a != NULL) {
-        func_0202676c(m->unk_24, a->unk_00);
+        NNS_G3dRenderObjRemoveAnmObj(m->unk_24, a->unk_00);
         a->unk_108 = 0;
         a->unk_110 = 0xff;
         a->unk_111_0 = 0;

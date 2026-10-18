@@ -8,8 +8,8 @@ void func_ov003_021d9900(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
         *out = *in;
         return;
     }
-    func_0201146c(&m, OV003_SIN(angle), OV003_COS(angle));
-    func_020117a4(in, &m, out);
+    MTX_RotX33_(&m, OV003_SIN(angle), OV003_COS(angle));
+    MTX_MultVec33(in, &m, out);
 }
 
 void func_ov003_021d9980(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
@@ -18,8 +18,8 @@ void func_ov003_021d9980(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
         *out = *in;
         return;
     }
-    func_02011488(&m, OV003_SIN(angle), OV003_COS(angle));
-    func_020117a4(in, &m, out);
+    MTX_RotY33_(&m, OV003_SIN(angle), OV003_COS(angle));
+    MTX_MultVec33(in, &m, out);
 }
 
 void func_ov003_021d9a00(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
@@ -28,8 +28,8 @@ void func_ov003_021d9a00(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
         *out = *in;
         return;
     }
-    func_020114a4(&m, OV003_SIN(angle), OV003_COS(angle));
-    func_020117a4(in, &m, out);
+    MTX_RotZ33_(&m, OV003_SIN(angle), OV003_COS(angle));
+    MTX_MultVec33(in, &m, out);
 }
 
 s32 func_ov003_021d9a80(const Ov003Vec *a, const Ov003Vec *b) {
@@ -82,8 +82,8 @@ u16 func_ov003_021d9c74(const Ov003Vec *v) {
 
 void func_ov003_021d9cd0(Ov003Vec *out, const Ov003Vec *in, s32 angle) {
     Ov003Mtx33 m;
-    func_02011488(&m, OV003_SIN(angle), OV003_COS(angle));
-    func_020117a4(in, &m, out);
+    MTX_RotY33_(&m, OV003_SIN(angle), OV003_COS(angle));
+    MTX_MultVec33(in, &m, out);
 }
 
 void func_ov003_021d9d28(Ov003Vec *out, const Ov003Vec *in, s32 angle, const Ov003Vec *center) {
@@ -92,8 +92,8 @@ void func_ov003_021d9d28(Ov003Vec *out, const Ov003Vec *in, s32 angle, const Ov0
     d.x = in->x - center->x;
     d.y = in->y - center->y;
     d.z = in->z - center->z;
-    func_02011488(&m, OV003_SIN(angle), OV003_COS(angle));
-    func_020117a4(&d, &m, out);
+    MTX_RotY33_(&m, OV003_SIN(angle), OV003_COS(angle));
+    MTX_MultVec33(&d, &m, out);
     VEC_Add(out, center, out);
 }
 

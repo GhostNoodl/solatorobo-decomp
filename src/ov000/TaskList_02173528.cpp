@@ -29,7 +29,7 @@ void func_ov000_0217357c(Task *self) {
     scale.x = 0x1000;
     scale.y = 0x1000;
     scale.z = 0x1000;
-    func_0202a3ec(0x1b, &scale, 3);
+    NNS_G3dGeBufferOP_N(0x1b, &scale, 3);
     self->unk_28 = FX_SinCosTable_[((self->unk_24 << 14) >> 16) * 2];
 }
 

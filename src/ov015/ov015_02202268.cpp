@@ -4,7 +4,7 @@ extern "C" {
 
 extern Ov015Globals data_ov015_02213320;
 extern u8 *data_02097d48;
-void func_0202a1d4(void);
+void NNS_G3dGeFlushBuffer(void);
 void func_ov015_02208070(void *p);
 void func_ov015_02209b8c(u8 *self);
 void func_ov015_0220f7a8(u8 *self);
@@ -69,7 +69,7 @@ static inline void Ov015_022022ac_Draw(u8 *self) {
     func_ov000_021903b4(p + 0x13c);
     func_ov000_021903b4(p + 0x35c);
     func_ov000_021903b4(p + 0x57c);
-    func_0202a1d4();
+    NNS_G3dGeFlushBuffer();
     for (n = FLD(u8 *, FLD(u8 *, self, 0x1c), 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
         func_ov015_02209b8c(FLD(u8 *, n, 0x4));
     }
@@ -96,7 +96,7 @@ void func_ov015_022022ac(u8 *self) {
         }
         Ov015_022022ac_Draw(self);
         if (FLD(u8 *, self, 0x90) != NULL) func_ov015_02210d04(FLD(u8 *, self, 0x90));
-        func_0202a1d4();
+        NNS_G3dGeFlushBuffer();
         break;
     case 0x46:
         func_ov015_0220f7a8(FLD(u8 *, self, 0x2c));

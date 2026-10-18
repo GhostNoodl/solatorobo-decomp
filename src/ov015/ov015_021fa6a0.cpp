@@ -47,7 +47,7 @@ void func_ov015_021ff380(void *p);
 void func_ov015_02200194(void *p);
 void func_02043d20(void *p, s32 a);
 s32 func_02043d48(void *p);
-void func_0202a3ec(s32 cmd, void *data, s32 n);
+void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 n);
 void func_02043db4(s32 a, s32 b, s32 c, s32 d);
 s32 FX_Div(s32 a, s32 b);
 BOOL func_ov015_021faa74(Ov015Main *self);
@@ -422,20 +422,20 @@ void func_ov015_021fb088(Ov015Main *self) {
     }
     func_02043d20(data_02097d48 + 0x8b0, 0);
     mtxMode = 2;
-    func_0202a3ec(0x10, &mtxMode, 1);
-    func_0202a3ec(0x11, NULL, 0);
-    func_0202a3ec(0x15, NULL, 0);
+    NNS_G3dGeBufferOP_N(0x10, &mtxMode, 1);
+    NNS_G3dGeBufferOP_N(0x11, NULL, 0);
+    NNS_G3dGeBufferOP_N(0x15, NULL, 0);
     texParam = 0;
-    func_0202a3ec(0x2a, &texParam, 1);
+    NNS_G3dGeBufferOP_N(0x2a, &texParam, 1);
     polyAttr = G3_PackPolygonAttr(0, 0, 3, func_02043d48(data_02097d48 + 0x8b0), fd->unk_18, 0);
-    func_0202a3ec(0x29, &polyAttr, 1);
+    NNS_G3dGeBufferOP_N(0x29, &polyAttr, 1);
     trans[2] = fd->unk_04;
     trans[0] = 0;
     trans[1] = 0;
-    func_0202a3ec(0x1c, trans, 3);
+    NNS_G3dGeBufferOP_N(0x1c, trans, 3);
     func_02043db4(1, 0x100000, 0xc0000, fd->unk_10);
     pop = 1;
-    func_0202a3ec(0x12, &pop, 1);
+    NNS_G3dGeBufferOP_N(0x12, &pop, 1);
 }
 
 void *func_ov015_021fb1c0(void *self) {

@@ -29,10 +29,10 @@ static inline s32 Ov003_FxMul(s32 a, s32 b) {
 
 extern "C" {
 extern const s16 FX_SinCosTable_[];
-extern void func_0201146c(Ov003Mtx33 *m, s32 sin, s32 cos);
-extern void func_02011488(Ov003Mtx33 *m, s32 sin, s32 cos);
-extern void func_020114a4(Ov003Mtx33 *m, s32 sin, s32 cos);
-extern void func_020117a4(const Ov003Vec *v, const Ov003Mtx33 *m, Ov003Vec *out);
+extern void MTX_RotX33_(Ov003Mtx33 *m, s32 sin, s32 cos);
+extern void MTX_RotY33_(Ov003Mtx33 *m, s32 sin, s32 cos);
+extern void MTX_RotZ33_(Ov003Mtx33 *m, s32 sin, s32 cos);
+extern void MTX_MultVec33(const Ov003Vec *v, const Ov003Mtx33 *m, Ov003Vec *out);
 extern s32 FX_Div(s32 a, s32 b);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 extern s32 VEC_Mag(const Ov003Vec *v);

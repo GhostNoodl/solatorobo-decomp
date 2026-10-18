@@ -37,13 +37,13 @@ static inline void updateModel(u8 *m) {
     FIELD(m, 0x3c, s32) = v[1];
     FIELD(m, 0x40, s32) = v[2];
     if (FIELD(m, 0x1c, void *) != NULL && func_0203e63c(FIELD(m, 0x20, void *))) {
-        func_0202711c(m + 0x38);
-        func_0202714c(m + 0x44);
+        NNS_G3dGlbSetBaseTrans(m + 0x38);
+        NNS_G3dGlbSetBaseScale(m + 0x44);
         MI_Copy36B(m + 0x50, data_020928b4);
-        data_020927f8.fc &= ~0xa4;
-        func_020270a4();
-        func_02027ae4(FIELD(m, 0x1c, void *));
-        func_0202a1d4();
+        NNS_G3dGlb.fc &= ~0xa4;
+        NNS_G3dGlbFlushVP();
+        NNS_G3dDraw(FIELD(m, 0x1c, void *));
+        NNS_G3dGeFlushBuffer();
     }
 }
 

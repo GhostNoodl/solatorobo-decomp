@@ -5,9 +5,9 @@ extern "C" {
 extern u8 data_ov015_022132d0[];
 u8 *func_0206ef88(u16 id);
 extern u8 *data_ov015_0221336c;
-void func_0202a4c8(void *p, s32 a);
+void NNS_G3dGetCurrentMtx(void *p, s32 a);
 void func_ov015_02211954(u8 *self);
-void func_02011340(void *a);
+void MTX_Identity33_(void *a);
 extern Ov015Shared *data_ov015_02213368;
 extern const char *data_ov015_02213228[];
 extern const char *data_ov015_02213230[];
@@ -80,7 +80,7 @@ void func_ov015_02211954(u8 *self) {
     if (k != FLD(s32, g, 0xc)) {
         return;
     }
-    func_0202a4c8(&info, 0);
+    NNS_G3dGetCurrentMtx(&info, 0);
     *(Ov015VecC *)(g + 0x234) = info.v;
     FLD(void *, self, 0x24) = NULL;
     FLD(u8, self, 0x92) = 0;
@@ -110,7 +110,7 @@ void func_ov015_02211a1c(u8 *self) {
     FLD(s32, self, 0x240) = 0;
     FLD(s32, self, 0x244) = 0;
     FLD(s32, self, 0x248) = 0;
-    func_02011340(self + 0x24c);
+    MTX_Identity33_(self + 0x24c);
     FLD(s32, self, 0x270) = 0;
     FLD(s32, self, 0x274) = 0;
     FLD(s32, self, 0x278) = 0;

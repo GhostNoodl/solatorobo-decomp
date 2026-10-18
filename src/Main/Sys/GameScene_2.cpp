@@ -41,7 +41,7 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
 
 void func_02055ff0(GameScene *scene, s32 x, s32 y) {
     G3_Vec(0x1b, x << 12, y << 12, 0x1000);
-    func_0202a260(data_0208b3d0[0], data_020828f8[0]);
+    NNS_G3dGeSendDL(data_0208b3d0[0], data_020828f8[0]);
 }
 
 void func_02056044(GameScene *scene, s32 x, s32 y, u32 color, u16 color2) {
@@ -53,7 +53,7 @@ void func_02056044(GameScene *scene, s32 x, s32 y, u32 color, u16 color2) {
     G3_Cmd1(0x20, color2);
     G3_VtxXY(-0x800, 0x800);
     G3_VtxXY(0x800, 0x800);
-    func_0202a3ec(0x41, NULL, 0);
+    NNS_G3dGeBufferOP_N(0x41, NULL, 0);
 }
 
 static inline s32 GameScene_Sin(s32 t) {

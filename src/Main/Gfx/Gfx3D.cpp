@@ -36,7 +36,7 @@ void func_020430b8(int w, int h, int *ws, int *hs) {
 #ifdef NONMATCHING
 static inline void G3_Cmd1(int cmd, u32 value) {
     u32 v = value;
-    func_0202a3ec(cmd, &v, 1);
+    NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
 static inline void G3_Vec(int cmd, int x, int y, int z) {
@@ -44,7 +44,7 @@ static inline void G3_Vec(int cmd, int x, int y, int z) {
     v[0] = x;
     v[1] = y;
     v[2] = z;
-    func_0202a3ec(cmd, v, 3);
+    NNS_G3dGeBufferOP_N(cmd, v, 3);
 }
 
 static inline void G3_TexCoord(int s, int t) {
@@ -55,7 +55,7 @@ static inline void G3_Vtx(s16 x, s16 y, s16 z) {
     u32 v[2];
     v[0] = (u16)x | ((u16)y << 16);
     v[1] = (u16)z;
-    func_0202a3ec(0x23, v, 2);
+    NNS_G3dGeBufferOP_N(0x23, v, 2);
 }
 
 static inline void G3_VtxXY(s16 x, s16 y) {
@@ -130,7 +130,7 @@ void func_02043100(int x, int y, int z, u32 color, const GfxOamAttr *oam, const 
     G3_Vec(0x1c, x, y, z);
     G3_Vec(0x1b, sw, sh, 0x1000);
     if (mtx != NULL) {
-        func_0202a3ec(0x19, mtx, 12);
+        NNS_G3dGeBufferOP_N(0x19, mtx, 12);
     }
     G3_Cmd1(0x20, color);
     G3_Cmd1(0x40, 1);
@@ -142,7 +142,7 @@ void func_02043100(int x, int y, int z, u32 color, const GfxOamAttr *oam, const 
     G3_VtxXY(0x1000, 0);
     G3_TexCoord(s0, t0);
     G3_VtxXY(0, 0);
-    func_0202a3ec(0x41, NULL, 0);
+    NNS_G3dGeBufferOP_N(0x41, NULL, 0);
 }
 #endif
 

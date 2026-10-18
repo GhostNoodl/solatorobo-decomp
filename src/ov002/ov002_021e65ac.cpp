@@ -55,7 +55,7 @@ BOOL func_ov002_021e65ac(void *self) {
             dir.x = 0;
             dir.y = 0;
             dir.z = 0x1000;
-            func_020117a4(&dir, m + 0xb8, &dir);
+            MTX_MultVec33(&dir, m + 0xb8, &dir);
             func_02040578(rot, &dir);
             o->v0x18(&pos);
             o->v0x10(&scale);
@@ -93,7 +93,7 @@ void func_ov002_021e6784(void *self) {
             dir.x = 0;
             dir.y = 0;
             dir.z = 0x1000;
-            func_020117a4(&dir, m + 0xb8, &dir);
+            MTX_MultVec33(&dir, m + 0xb8, &dir);
             func_02040578(rot, &dir);
             o->v0x18(&pos);
             o->v0x10(&scale);

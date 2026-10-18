@@ -12,7 +12,7 @@ void *func_02023390(void *a, int b);
 void *func_02023410(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);
 void func_02043d20(void *a, int b);
-void func_0202a3ec(int cmd, const void *data, int count);
+void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void func_02043db4(int a, s32 b, s32 c, s32 d);
 void func_ov007_021cf474(Ov007Scene *s);
 
@@ -78,13 +78,13 @@ static inline void Ov007_SetupView(void) {
     Ov007Vec v;
     func_02043d20(data_02097d48 + 0x8b0, 0);
     a = 0x20000000;
-    func_0202a3ec(0x2a, &a, 1);
+    NNS_G3dGeBufferOP_N(0x2a, &a, 1);
     b = 0x141f00d0;
-    func_0202a3ec(0x29, &b, 1);
+    NNS_G3dGeBufferOP_N(0x29, &b, 1);
     v.z = -0x3000;
     v.x = 0;
     v.y = 0;
-    func_0202a3ec(0x1c, &v, 3);
+    NNS_G3dGeBufferOP_N(0x1c, &v, 3);
     func_02043db4(1, 0x100000, 0xc0000, 0x7fff);
 }
 
@@ -94,13 +94,13 @@ static inline void Ov007_SetupView1(void) {
     Ov007Vec v;
     func_02043d20(data_02097d48 + 0x8b0, 0);
     a = 0x20000000;
-    func_0202a3ec(0x2a, &a, 1);
+    NNS_G3dGeBufferOP_N(0x2a, &a, 1);
     b = 0x141f00d0;
-    func_0202a3ec(0x29, &b, 1);
+    NNS_G3dGeBufferOP_N(0x29, &b, 1);
     v.z = -0x3000;
     v.x = 0;
     v.y = 0;
-    func_0202a3ec(0x1c, &v, 3);
+    NNS_G3dGeBufferOP_N(0x1c, &v, 3);
     func_02043db4(1, 0x100000, 0xc0000, 0x7fff);
 }
 

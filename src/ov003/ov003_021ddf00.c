@@ -66,7 +66,7 @@ extern void func_ov000_02194758(void *p);
 extern void func_ov000_02197d80(void *p);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
-extern void func_0202a624(void *p, s32 a, s32 b);
+extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_0203f920(void *p);
 extern void func_0203f8d8(void *p);
 extern void func_ov000_02191318(Ov003Mdl *m, s32 a);
@@ -89,7 +89,7 @@ void func_ov003_021ddf34(Ov003Prop *self) {
     case 2:
         func_ov000_02190cb0(self->model, data_ov003_021f803c, 0x1000, 0);
         if (self->unk_1c == 1) {
-            func_0202a624(self->model->unk_04, 0, 0x1f0000);
+            NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 0, 0x1f0000);
             self->model->unk_be = 0;
         }
         if (self->unk_1c != 2) {
@@ -104,7 +104,7 @@ void func_ov003_021ddf34(Ov003Prop *self) {
     case 3:
         func_ov000_02190cb0(self->model, data_ov003_021f8046, 0x1000, 0);
         if (self->unk_1c == 1) {
-            func_0202a624(self->model->unk_04, 1, 0x1f0000);
+            NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 1, 0x1f0000);
         }
         self->unk_cc_0 = 1;
         if (self->unk_58 != NULL) {

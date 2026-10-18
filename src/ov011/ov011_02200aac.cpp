@@ -498,10 +498,10 @@ extern const Ov011Vec data_ov011_02207420;
 void *func_ov000_0218e9c4(void *p);
 void func_ov000_0218ea20(void *p);
 void func_ov000_0218fee4(void *p);
-void func_02011340(void *m);
+void MTX_Identity33_(void *m);
 void func_ov000_02193e5c(void *p, s32 a);
 void func_ov000_0218f110(void *p);
-void func_020117a4(const Ov011Vec *v, const void *m, Ov011Vec *out);
+void MTX_MultVec33(const Ov011Vec *v, const void *m, Ov011Vec *out);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out);
 Ov011V *func_02065f88(s32 id, Ov011Vec *v);
 
@@ -536,7 +536,7 @@ BOOL func_ov011_02201578(Ov011Fx *self) {
         self->v18.y = y;
         self->v18.z = z;
     }
-    func_02011340(self->mtx);
+    MTX_Identity33_(self->mtx);
     func_ov003_021da48c(&self->state, 0);
     func_ov000_02193e5c(self->anim, 0x4812);
     func_ov003_021d7d24(self->s5c, 0, 0, 1, 0);
@@ -607,7 +607,7 @@ void func_ov011_02201758(Ov011Fx *self) {
             self->unk_02 = 0x4cd;
             self->state = 1;
             OV011_BLKCPY(&a, &data_ov011_02207420);
-            func_020117a4(&self->v0c, self->mtx, &b);
+            MTX_MultVec33(&self->v0c, self->mtx, &b);
             VEC_Add(&b, &self->v18, &b);
             func_02065f88(0x648, &b)->v10(&a);
             break;
@@ -648,7 +648,7 @@ extern "C" {
 
 extern u8 data_ov011_02207468[];
 void func_ov000_021903b4(void *p);
-void func_02011488(void *m, s32 s, s32 c);
+void MTX_RotY33_(void *m, s32 s, s32 c);
 void MI_Copy36B(const void *src, void *dst);
 
 void func_ov011_0220192c(Ov011Fx *self) {
@@ -667,7 +667,7 @@ void func_ov011_0220192c(Ov011Fx *self) {
     if (!self->b2) {
         return;
     }
-    func_020117a4(&self->v0c, self->mtx, &p);
+    MTX_MultVec33(&self->v0c, self->mtx, &p);
     VEC_Add(&p, &self->v18, &p);
     a8 = FLD(s32, self->model, 0xa8);
     ac = FLD(s32, self->model, 0xac);
@@ -708,7 +708,7 @@ void func_ov011_02201aac(Ov011Fx *self, const Ov011Vec *pos) {
     self->b2 = 1;
     self->v0c = *pos;
     self->v18 = FLD(Ov011Vec, data_ov011_02207418, 0x20);
-    func_02011340(self->mtx);
+    MTX_Identity33_(self->mtx);
     func_ov003_021da48c(&self->state, 0);
 }
 
@@ -749,7 +749,7 @@ void func_ov011_02201bac(Ov011Fx *self, u16 ang) {
     if (self == NULL) {
         return;
     }
-    func_02011488(m, OV011_SIN(ang), OV011_COS(ang));
+    MTX_RotY33_(m, OV011_SIN(ang), OV011_COS(ang));
     if (!self->b0) {
         return;
     }

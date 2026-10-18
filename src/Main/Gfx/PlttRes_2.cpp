@@ -7,7 +7,7 @@
 extern "C" {
 
 
-extern u32 (*data_0208afdc)(u32 size, int is4pltt, int opt);
+extern u32 (*NNS_GfdDefaultFuncAllocPlttVram)(u32 size, int is4pltt, int opt);
 extern void func_0203e134(const char *name, u32 value);
 extern void func_020241c4(PlttSub *sub, int idx, u32 addr);
 extern u16 func_0203bdb0(GfxSys *sys, int count, int idx);
@@ -40,6 +40,6 @@ extern void func_020243f4(int *fmt, u16 *count, u32 addr, int idx, PlttSub *sub)
 
 extern void func_0203e58c(u32 id);
 extern void func_0203be50(GfxSys *sys, int shift, int count, int idx);
-extern void (*data_0208afe0)(u32 key);
+extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
 
 }

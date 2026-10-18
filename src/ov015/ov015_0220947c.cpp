@@ -10,7 +10,7 @@ extern char data_ov015_02212e14[];
 extern char data_ov015_02212e15[];
 s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 u8 *func_0206fef8(u16 id);
-void func_020267e8(void *a, void *cb);
+void NNS_G3dRenderObjSetInitFunc(void *a, void *cb);
 void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 void func_ov015_022090fc(u8 *self);
 void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
@@ -30,12 +30,12 @@ s32 func_02049130(s32 t, s32 a, s32 b);
 void func_ov015_02209c90(u8 *self);
 u16 FX_Atan2(s32 x, s32 z);
 void func_ov015_0220daf4(void *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
-void func_0202a1d4(void);
+void NNS_G3dGeFlushBuffer(void);
 void func_ov000_021903b4(void *a);
 void VEC_Normalize(void *src, void *dst);
 void MI_Copy36B(const void *src, void *dst);
 s32 func_01ffc584(void *a, void *b, s32 c, s32 d);
-void func_020117a4(void *a, void *b, void *c);
+void MTX_MultVec33(void *a, void *b, void *c);
 void VEC_Add(void *a, void *b, void *c);
 extern u8 data_ov015_02212e94[];
 extern u8 data_ov015_02212eb0[];
@@ -76,7 +76,7 @@ BOOL func_ov015_02209500(u8 *self) {
     FLD(Ov015AnimFlags, self, 0x306).b4 = 0;
     func_ov000_021915a0(self + 0x244);
     FLD(Ov015AnimFlags, self, 0x306).b0 = 1;
-    func_020267e8(self + 0x268, (void *)func_ov015_022090fc);
+    NNS_G3dRenderObjSetInitFunc(self + 0x268, (void *)func_ov015_022090fc);
     FLD(Ov015AnimFlags, self, 0x306).b5 = 0;
     FLD(Ov015AnimFlags, self, 0x306).b8 = 1;
     FLD(u8 *, self, 0x294) = self + 0xc;
@@ -267,7 +267,7 @@ void func_ov015_02209c90(u8 *self) {
     FLD(Ov015VecC, self, 0x4dc) = FLD(Ov015VecC, self, 0x30);
     MI_Copy36B(self + 0xc, self + 0x4e8);
     func_ov000_021903b4(self + 0x464);
-    func_0202a1d4();
+    NNS_G3dGeFlushBuffer();
 }
 
 s32 func_ov015_02209fb8(s32 x) {
@@ -293,7 +293,7 @@ void func_ov015_0220a058(u8 *self, void *out) {
     v.x = 0;
     v.y = 0;
     v.z = z;
-    func_020117a4(&v, self + 0xc, &v);
+    MTX_MultVec33(&v, self + 0xc, &v);
     VEC_Add(&v, self + 0x30, out);
 }
 

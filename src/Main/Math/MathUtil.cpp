@@ -67,11 +67,11 @@ extern s16 FX_SinCosTable_[];
 extern MathMtx43 data_02092844;
 extern MathMtx44 data_02092800;
 
-extern void func_02011820(MathMtx43 *mtx);
+extern void MTX_Identity43_(MathMtx43 *mtx);
 extern int FX_Atan2(int y, int x);
-extern void func_02011994(MathMtx43 *mtx, int sin, int cos);
-extern void func_02011f58(const MathVec *v, const MathMtx43 *mtx, MathVec *out);
-extern void func_02012130(const MathMtx44 *src, MathMtx43 *dst);
+extern void MTX_RotY43_(MathMtx43 *mtx, int sin, int cos);
+extern void MTX_MultVec43(const MathVec *v, const MathMtx43 *mtx, MathVec *out);
+extern void MTX_Copy44To43_(const MathMtx44 *src, MathMtx43 *dst);
 extern int FX_Div(int numer, int denom);
 
 static inline int Math_Mul(int a, int b) {
@@ -87,13 +87,13 @@ static inline void MathVec_Copy(const MathVec *src, MathVec *dst) {
 void func_02040578(u16 *ang, const MathVec *v) {
     MathVec p;
     MathMtx43 mtx;
-    func_02011820(&mtx);
+    MTX_Identity43_(&mtx);
     ((volatile MathVec *)&p)->x = ((volatile MathVec *)v)->x;
     ((volatile MathVec *)&p)->y = ((volatile MathVec *)v)->y;
     ((volatile MathVec *)&p)->z = ((volatile MathVec *)v)->z;
     ang[1] = -FX_Atan2(p.x, p.z);
-    func_02011994(&mtx, FX_SinCosTable_[(ang[1] >> 4) * 2], FX_SinCosTable_[(ang[1] >> 4) * 2 + 1]);
-    func_02011f58(&p, &mtx, &p);
+    MTX_RotY43_(&mtx, FX_SinCosTable_[(ang[1] >> 4) * 2], FX_SinCosTable_[(ang[1] >> 4) * 2 + 1]);
+    MTX_MultVec43(&p, &mtx, &p);
     ang[0] = -FX_Atan2(p.y, p.z);
     ang[2] = 0;
 }
@@ -104,11 +104,11 @@ int func_0204061c(int *out, const MathVec *pos) {
     int z;
     int w;
     int inv;
-    func_02011f58(pos, &data_02092844, &p);
+    MTX_MultVec43(pos, &data_02092844, &p);
     z = p.z;
     w = Math_Mul(z, -0x1000);
-    func_02012130(&data_02092800, &mtx);
-    func_02011f58(&p, &mtx, &p);
+    MTX_Copy44To43_(&data_02092800, &mtx);
+    MTX_MultVec43(&p, &mtx, &p);
     p.x += w;
     p.y += w;
     p.z += w;

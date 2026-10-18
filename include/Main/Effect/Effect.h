@@ -402,13 +402,13 @@ static inline struct EffectObj *Effect_Find(EffectMgr *mgr, u32 id) {
     return NULL;
 }
 
-extern void *func_0202ac90(void *file);
-extern void *func_0202aca0(void *file);
-extern void *func_0202ad3c(void *set, void *name);
-extern void func_02026470(EffectAnmObj *anmObj, void *resAnm, void *resMdl, void *resTex);
-extern void func_02026508(EffectRenderObj *renderObj, void *resMdl);
-extern void func_02026678(EffectRenderObj *renderObj, EffectAnmObj *anmObj);
-extern void func_020267e8(EffectRenderObj *renderObj, void (*func)(void *rs));
+extern void *NNS_G3dGetMdlSet(void *file);
+extern void *NNS_G3dGetTex(void *file);
+extern void *NNS_G3dGetAnmByName(void *set, void *name);
+extern void NNS_G3dAnmObjInit(EffectAnmObj *anmObj, void *resAnm, void *resMdl, void *resTex);
+extern void NNS_G3dRenderObjInit(EffectRenderObj *renderObj, void *resMdl);
+extern void NNS_G3dRenderObjAddAnmObj(EffectRenderObj *renderObj, EffectAnmObj *anmObj);
+extern void NNS_G3dRenderObjSetInitFunc(EffectRenderObj *renderObj, void (*func)(void *rs));
 extern void func_020359d0(const char *arc, s32 b, s32 c);
 extern BOOL func_02035b90(const char *arc, s32 b);
 extern void *func_02035d5c(const char *arc);
@@ -429,21 +429,21 @@ typedef struct EffectGlb {
     u32 flags;
 } EffectGlb;
 
-extern EffectGlb data_020927f8;
+extern EffectGlb NNS_G3dGlb;
 extern u8 data_02092800[];
 extern u8 data_02092844[];
 extern u8 data_020928b4[];
 extern void MI_Copy64B(const void *src, void *dst);
 extern void MI_Copy48B(const void *src, void *dst);
 extern void MI_Copy36B(const void *src, void *dst);
-extern void func_020128a4(int t, int b, int l, int r, int n, int f, int scaleW, void *mtx);
+extern void MTX_OrthoW(int t, int b, int l, int r, int n, int f, int scaleW, void *mtx);
 extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
-extern void func_02011820(void *mtx);
-extern void func_02011340(void *mtx);
-extern void func_0202711c(const EffectVec *trans);
-extern void func_0202714c(const EffectVec *scale);
-extern void func_02027074(void);
-extern void func_02027ae4(EffectRenderObj *renderObj);
+extern void MTX_Identity43_(void *mtx);
+extern void MTX_Identity33_(void *mtx);
+extern void NNS_G3dGlbSetBaseTrans(const EffectVec *trans);
+extern void NNS_G3dGlbSetBaseScale(const EffectVec *scale);
+extern void NNS_G3dGlbFlushP(void);
+extern void NNS_G3dDraw(EffectRenderObj *renderObj);
 extern char data_0208c33c[];
 
 #ifdef __cplusplus

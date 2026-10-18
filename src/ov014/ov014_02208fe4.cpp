@@ -17,11 +17,11 @@ extern s32 func_ov000_0219a510(Ov014Actor *self, u16 mask, Ov014Vec *pos, s32 r,
 extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
 extern void func_ov003_021f0c60(Ov014Actor *self, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_0202a4c8(void *p, s32 a);
+extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov003_021ceedc(void *p);
 extern void func_ov003_021cef0c(void *p);
-extern void func_02011820(void *p);
+extern void MTX_Identity43_(void *p);
 extern Ov014V *func_020657b0(void *a, void *b);
 extern void func_02036838(void *a, void *b, s32 c, s32 d);
 extern void func_020359d0(void *a, s32 b, s32 c);
@@ -40,7 +40,7 @@ extern u8 data_ov014_02217a38[];
 extern void func_ov003_021d112c(Ov014Actor *self);
 extern void func_ov003_021cf1f0(void *p, s32 a, s32 b, const void *c);
 extern s32 func_ov000_021909a8(void *a, const void *b, const void *c);
-extern void func_020267e8(void *a, void *b);
+extern void NNS_G3dRenderObjSetInitFunc(void *a, void *b);
 
 void func_ov014_02208fe4(Ov014Actor *self) {
     Ov014Actor *list[0x20];
@@ -111,7 +111,7 @@ void func_ov014_0220915c(u8 *self) {
     n = FLD(u32, t, 4);
     for (i = 0; i < n; i++) {
         if (k == FLD(s32, t + i * 0x34, 8)) {
-            func_0202a4c8(t + 0xc + i * 0x34, 0);
+            NNS_G3dGetCurrentMtx(t + 0xc + i * 0x34, 0);
             return;
         }
     }
@@ -154,7 +154,7 @@ Ov014Actor *func_ov014_02209280(Ov014Actor *self) {
     FLD(u8, self, 0xfc) = 0;
     for (i = 0; i < 3; i++) {
         ((Ov014Slot *)((u8 *)self + 0x104))[i].id = -1;
-        func_02011820((u8 *)self + 0x108 + i * 0x34);
+        MTX_Identity43_((u8 *)self + 0x108 + i * 0x34);
     }
     FLD(u16, self, 0x1a0) = 0;
     FLD(u16, self, 0x1a2) = 0;
@@ -262,7 +262,7 @@ void func_ov014_0220952c(Ov014Actor *self) {
     FLD(s32, self, 0x138) = func_ov000_021909a8(self->unk_38, data_ov014_02217a1b, data_ov014_02217a28);
     FLD(s32, self, 0x16c) = func_ov000_021909a8(self->unk_38, data_ov014_02217a1b, data_ov014_02217a38);
     m = self->unk_38;
-    func_020267e8(m->unk_24, (void *)func_ov014_022091d4);
+    NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov014_022091d4);
     m->unk_c2_5 = 0;
     self->unk_38->unk_c2_8 = 1;
     self->unk_38->unk_50 = &FLD(u8, self, 0xfc);

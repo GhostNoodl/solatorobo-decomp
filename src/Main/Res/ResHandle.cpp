@@ -352,12 +352,12 @@ typedef struct G3dTex {
     /* 0x14 */ u32 unk_14;
 } G3dTex;
 
-extern G3dTex *func_0202aca0(void *res);
+extern G3dTex *NNS_G3dGetTex(void *res);
 extern void func_0203df74(void *ptr, u32 size);
 extern void *func_0203e458(int arg0, void *arg1, u32 arg2, u32 arg3, int arg4);
 
 void func_02039494(void *res) {
-    G3dTex *tex = func_0202aca0(res);
+    G3dTex *tex = NNS_G3dGetTex(res);
     if (tex != NULL && tex->unk_14 != 0) {
         u32 size = (u8 *)tex + tex->unk_14 - (u8 *)res;
         tex->unk_14 = 0;
@@ -367,7 +367,7 @@ void func_02039494(void *res) {
 
 void *func_020394cc(void *res, void *arg) {
     void *result = NULL;
-    G3dTex *tex = func_0202aca0(res);
+    G3dTex *tex = NNS_G3dGetTex(res);
     if (tex != NULL) {
         u32 size = tex->unk_0c << 3;
         if (size != 0) {

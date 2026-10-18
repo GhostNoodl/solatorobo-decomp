@@ -61,11 +61,11 @@ typedef struct TexObj {
     /* 0x15c */ int unk_15c;
 } TexObj;
 
-extern void func_02011218(TexObjVec *v);
+extern void MTX_Identity22_(TexObjVec *v);
 extern void func_02024178(TexObj *obj);
 extern int func_0202419c(TexObj *obj, int idx);
 extern void func_0203bd40(GfxSys *sys, u32 offset, BOOL sub);
-extern void (*data_0208afd8)(u32 key);
+extern void (*NNS_GfdDefaultFuncFreeTexVram)(u32 key);
 extern void func_0203e58c(u32 id);
 extern void func_02035acc(char *arc, char *name, int mode);
 extern void func_02036838(ResMgr *mgr, char *name, int mode, int opt);
@@ -86,7 +86,7 @@ void func_02041558(TexObj *obj) {
         func_0203bd40(data_02097d48, slot, 1);
     }
     if (obj->texKey != 0) {
-        data_0208afd8(obj->texKey);
+        NNS_GfdDefaultFuncFreeTexVram(obj->texKey);
     }
     func_02024178(obj);
     obj->texKey = 0;
@@ -122,7 +122,7 @@ void func_020416b4(TexObj *obj, int i) {
         func_0203bd40(data_02097d48, e->slot1, 1);
     }
     if (e->key != -1) {
-        data_0208afd8(e->key);
+        NNS_GfdDefaultFuncFreeTexVram(e->key);
     }
     e->slot0 = -1;
     e->slot1 = -1;
@@ -256,6 +256,6 @@ extern u32 func_0203e458(int type, u32 src, u32 dst, u32 size, u32 chunk);
 extern void func_02024194(TexObj *obj, int idx, u32 addr);
 extern void func_020241dc(TexObjImageInfo *img, u32 addr, int idx, TexObj *obj);
 extern void func_0203e098(const char *name, u32 value);
-extern u32 (*data_0208afd4)(u32 size, int is4x4, int opt);
+extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, int is4x4, int opt);
 
 }

@@ -75,7 +75,7 @@ extern void *data_0208ccc0;
 void *func_0203dd9c(u32 size);
 void func_0203de1c(void *ptr);
 void func_02043d20(void *a, s32 b);
-void func_0202a3ec(s32 cmd, void *data, s32 count);
+void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 void func_ov000_0214c1ac(void *a);
 void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, void *b);
@@ -90,7 +90,7 @@ void func_02041278(void *a);
 void func_ov000_02173d9c(void);
 void func_ov000_02173648(Task *task);
 void func_ov000_0214c210(Task *task);
-void func_02012104(void *a);
+void MTX_Identity44_(void *a);
 
 }
 

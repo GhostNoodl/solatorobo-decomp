@@ -12,7 +12,7 @@ extern void func_ov000_02187a20(void *p, s32 a);
 extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
-extern void func_0202a4c8(void *p, s32 a);
+extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 
 void func_ov009_021ff040(Ov009Actor *self) {
     func_ov003_021d5348(self);
@@ -306,7 +306,7 @@ void func_ov009_021ff650(Ov009Actor *self) {
         v = -1;
     }
     if (v == FLD(s32, p, 0)) {
-        func_0202a4c8(p + 4, 0);
+        NNS_G3dGetCurrentMtx(p + 4, 0);
     }
 }
 

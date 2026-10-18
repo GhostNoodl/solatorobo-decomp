@@ -35,18 +35,18 @@ extern "C" {
 
 
 extern u8 data_02fe01e8[];
-extern void func_02013b00(void);
+extern void G3X_Init(void);
 extern void func_02019228(void);
 extern void func_02014304(const void *src, u32 offset, u32 size);
 extern void func_0201439c(const void *src, u32 offset, u32 size);
-extern void func_0202a554(void);
+extern void NNS_G3dInit(void);
 extern void func_02023a70(void);
 extern void func_02023b44(void *obj, int a, int b, int c);
-extern void *func_02022cd0(int n);
-extern void *func_02023038(int n);
+extern void *NNS_GfdGetLnkTexVramManagerWorkSize(int n);
+extern void *NNS_GfdGetLnkPlttVramManagerWorkSize(int n);
 extern void func_0203beac(GfxSys *sys, int state);
-extern void func_0202a1b4(void *arg);
-extern void func_0202a250(int arg);
+extern void NNS_G3dGeSetBuffer(void *arg);
+extern void NNS_G3dGeUseFastDma(int arg);
 extern BOOL func_02018d58(void);
 
 #define REG16(a) (*(volatile u16 *)(a))
@@ -63,8 +63,8 @@ extern void func_02024160(void *obj);
 extern void func_02013c04(void);
 extern void func_020438e8(void *obj);
 extern void func_02043d20(void *obj, int a);
-extern void func_0202a260(void *a, int b);
-extern void func_0202a1d4(void);
+extern void NNS_G3dGeSendDL(void *a, int b);
+extern void NNS_G3dGeFlushBuffer(void);
 extern void *func_02014240(void);
 extern void *func_02014294(void);
 extern void *func_02014260(void);
@@ -87,8 +87,8 @@ extern void *func_0203dec8(u32 size, int align);
 extern void func_02016e28(void *dst, u32 value, u32 size);
 extern void func_02015298(int a);
 extern void func_02015410(int a);
-extern void func_02022cd8(u32 a, u32 b, void *c, void *d, BOOL e);
-extern void func_02023040(u32 a, void *b, void *c, BOOL d);
+extern void NNS_GfdInitLnkTexVramManager(u32 a, u32 b, void *c, void *d, BOOL e);
+extern void NNS_GfdInitLnkPlttVramManager(u32 a, void *b, void *c, BOOL d);
 extern void func_0203c2bc(GfxSys *sys);
 extern void func_0203c638(GfxSys *sys);
 extern void func_0203d770(void);
@@ -102,10 +102,10 @@ extern void func_0203e8e0(void);
 extern void func_0203ea00(void);
 extern void func_0203ea6c(void);
 extern void func_0203eb8c(void);
-extern void *data_0208afd4;
-extern void *data_0208afd8;
-extern void *data_0208afdc;
-extern void *data_0208afe0;
+extern void *NNS_GfdDefaultFuncAllocTexVram;
+extern void *NNS_GfdDefaultFuncFreeTexVram;
+extern void *NNS_GfdDefaultFuncAllocPlttVram;
+extern void *NNS_GfdDefaultFuncFreePlttVram;
 
 static inline void GfxSys_InitTexVram(GfxSys *sys, u32 size) {
     if (sys->unk_018 == 0) {
@@ -113,7 +113,7 @@ static inline void GfxSys_InitTexVram(GfxSys *sys, u32 size) {
     } else {
         func_02016e28((void *)sys->unk_018, 0, (u32)sys->unk_014);
     }
-    func_02022cd8(size, 0, (void *)sys->unk_018, sys->unk_014, TRUE);
+    NNS_GfdInitLnkTexVramManager(size, 0, (void *)sys->unk_018, sys->unk_014, TRUE);
 }
 
 static inline void GfxSys_InitPlttVram(GfxSys *sys, u32 size) {
@@ -122,14 +122,14 @@ static inline void GfxSys_InitPlttVram(GfxSys *sys, u32 size) {
     } else {
         func_02016e28((void *)sys->unk_020, 0, (u32)sys->unk_01c);
     }
-    func_02023040(size, (void *)sys->unk_020, sys->unk_01c, TRUE);
+    NNS_GfdInitLnkPlttVramManager(size, (void *)sys->unk_020, sys->unk_01c, TRUE);
 }
 
 static inline void GfxSys_SetVramFuncs(void) {
-    data_0208afd4 = (void *)func_0203e8e0;
-    data_0208afd8 = (void *)func_0203ea00;
-    data_0208afdc = (void *)func_0203ea6c;
-    data_0208afe0 = (void *)func_0203eb8c;
+    NNS_GfdDefaultFuncAllocTexVram = (void *)func_0203e8e0;
+    NNS_GfdDefaultFuncFreeTexVram = (void *)func_0203ea00;
+    NNS_GfdDefaultFuncAllocPlttVram = (void *)func_0203ea6c;
+    NNS_GfdDefaultFuncFreePlttVram = (void *)func_0203eb8c;
 }
 
 static inline void GfxVramHeap_Init(GfxVramHeap *heap, u32 size) {
@@ -185,7 +185,7 @@ extern "C" {
 
 extern void func_0203d040(int v);
 extern int func_02043d48(void *obj);
-extern void func_0202a3ec(int cmd, const void *data, int count);
+extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void func_02043db4(int a, int b, int c, int d);
 
 typedef struct GfxFadeCtx {
@@ -264,13 +264,13 @@ void func_0203d040(int v) {
     t = FX_Div((v < 0 ? -v : v) << 12, 16 << 12);
     func_02043d20(data_02097d44.sys->unk_8b0, 0);
     polyAttr = G3_PackPolygonAttr(0, 1, 3, func_02043d48(sys->unk_8b0), FX_Mul(t, 0x1f000) >> 12, 0);
-    func_0202a3ec(0x29, &polyAttr, 1);
+    NNS_G3dGeBufferOP_N(0x29, &polyAttr, 1);
     texParam = 0x20000000;
-    func_0202a3ec(0x2a, &texParam, 1);
+    NNS_G3dGeBufferOP_N(0x2a, &texParam, 1);
     trans[0] = 0;
     trans[1] = 0;
     trans[2] = -0x666;
-    func_0202a3ec(0x1c, trans, 3);
+    NNS_G3dGeBufferOP_N(0x1c, trans, 3);
     func_02043db4(1, 0x100000, 0xc0000, v > 0 ? 0x7fff : 0);
 }
 

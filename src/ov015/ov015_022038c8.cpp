@@ -25,8 +25,8 @@ void func_ov000_0217357c(void *self);
 void func_ov015_0220daf4(void *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
 extern u8 data_02092844[];
 extern u8 data_02092800[];
-void func_02011ff0(void *a, void *b, void *c, void *d);
-void func_02012758(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, void *g);
+void MTX_LookAt(void *a, void *b, void *c, void *d);
+void MTX_PerspectiveW(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, void *g);
 void func_ov015_02208070(void *p);
 void *func_0206ec8c(u16 id);
 extern u8 *data_0214a424;
@@ -177,15 +177,15 @@ void func_ov015_02203d60(void) {
 }
 
 static inline void Ov015_02203d64_Cam(u8 *self) {
-    data_020927f8.a = FLD(Ov015Vec, self, 0x44);
-    data_020927f8.b = FLD(Ov015Vec, self, 0x5c);
-    data_020927f8.c = FLD(Ov015Vec, self, 0x50);
-    func_02011ff0(self + 0x44, self + 0x5c, self + 0x50, data_02092844);
-    data_020927f8.fc &= ~0xe8;
+    NNS_G3dGlb.a = FLD(Ov015Vec, self, 0x44);
+    NNS_G3dGlb.b = FLD(Ov015Vec, self, 0x5c);
+    NNS_G3dGlb.c = FLD(Ov015Vec, self, 0x50);
+    MTX_LookAt(self + 0x44, self + 0x5c, self + 0x50, data_02092844);
+    NNS_G3dGlb.fc &= ~0xe8;
     if (FLD(u8, self, 0x7e) == 1) {
-        func_02012758(FLD(s16, self, 0x70), FLD(s16, self, 0x72), FLD(s16, self, 0x74), FLD(s32, self, 0x68),
+        MTX_PerspectiveW(FLD(s16, self, 0x70), FLD(s16, self, 0x72), FLD(s16, self, 0x74), FLD(s32, self, 0x68),
                       FLD(s32, self, 0x6c), 0x1000, data_02092800);
-        data_020927f8.fc &= ~0x50;
+        NNS_G3dGlb.fc &= ~0x50;
         FLD(u8, self, 0x7e) = 0;
     }
 }

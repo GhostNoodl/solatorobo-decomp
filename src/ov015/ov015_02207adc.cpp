@@ -8,7 +8,7 @@ void func_ov015_02208474(u8 *self);
 void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-void func_020267e8(void *a, void *cb);
+void NNS_G3dRenderObjSetInitFunc(void *a, void *cb);
 void func_ov000_02190e98(void *a, s32 b, s32 c, s32 d);
 void func_ov000_021911c8(void *a, s32 b);
 s32 func_ov000_021909a8(void *a, const void *b, const void *c);
@@ -33,7 +33,7 @@ BOOL func_ov015_02207adc(u8 *self) {
     func_ov000_0218ffdc(self + 0x138, self, 0, 1);
     func_ov000_02190cb0(self + 0x138, data_ov015_02212d23, 0x1000, 0);
     func_ov000_021915a0(self + 0x138);
-    func_020267e8(self + 0x15c, (void *)func_ov015_02208474);
+    NNS_G3dRenderObjSetInitFunc(self + 0x15c, (void *)func_ov015_02208474);
     FLD(Ov015AnimFlags, self, 0x1fa).b5 = 0;
     FLD(Ov015AnimFlags, self, 0x1fa).b8 = 1;
     FLD(u8, self, 0xd04) = func_ov000_021909a8(self + 0x138, self + 0x6c, data_ov015_02212d29);

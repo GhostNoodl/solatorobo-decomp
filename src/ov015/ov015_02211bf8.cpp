@@ -8,10 +8,10 @@ void func_ov000_021903b4(void *a);
 extern void *data_02097e4c;
 void func_02049a48(void *a, int b, int c, int d, int e);
 BOOL func_ov000_02191120(void *p);
-void func_02011340(void *a);
-void func_02011488(void *m, s32 s, s32 c);
-void func_020114a4(void *m, s32 s, s32 c);
-void func_02011610(void *a, void *b, void *out);
+void MTX_Identity33_(void *a);
+void MTX_RotY33_(void *m, s32 s, s32 c);
+void MTX_RotZ33_(void *m, s32 s, s32 c);
+void MTX_Concat33(void *a, void *b, void *out);
 void func_ov000_02190a80(void *a, s32 b);
 void *func_02065f88(s32 id, void *pos);
 extern u8 data_ov015_02213286[];
@@ -68,17 +68,17 @@ BOOL func_ov015_02211d14(u8 *self) {
     u16 b = FLD(u16, self, 0x28a);
     r = TRUE;
     BOOL done = FALSE;
-    func_02011340(self + 0x24c);
+    MTX_Identity33_(self + 0x24c);
     if (a != 0) {
-        func_02011488(self + 0x24c, FX_SinCosTable_[((a) >> 4) * 2], FX_SinCosTable_[((a) >> 4) * 2 + 1]);
+        MTX_RotY33_(self + 0x24c, FX_SinCosTable_[((a) >> 4) * 2], FX_SinCosTable_[((a) >> 4) * 2 + 1]);
         done = r;
     }
     if (b != 0) {
         if (done) {
-            func_020114a4(m, FX_SinCosTable_[((b) >> 4) * 2], FX_SinCosTable_[((b) >> 4) * 2 + 1]);
-            func_02011610(m, self + 0x24c, self + 0x24c);
+            MTX_RotZ33_(m, FX_SinCosTable_[((b) >> 4) * 2], FX_SinCosTable_[((b) >> 4) * 2 + 1]);
+            MTX_Concat33(m, self + 0x24c, self + 0x24c);
         } else {
-            func_020114a4(self + 0x24c, FX_SinCosTable_[((b) >> 4) * 2], FX_SinCosTable_[((b) >> 4) * 2 + 1]);
+            MTX_RotZ33_(self + 0x24c, FX_SinCosTable_[((b) >> 4) * 2], FX_SinCosTable_[((b) >> 4) * 2 + 1]);
         }
     }
     if (FLD(s32, self, 0x10) % 10 == 0) {

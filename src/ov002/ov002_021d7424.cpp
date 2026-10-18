@@ -26,7 +26,7 @@ void *func_ov002_021d744c(void *self) {
     FIELD(self, 0x40, s32) = 0x1000;
     FIELD(self, 0x44, s32) = 0x1000;
     FIELD(self, 0x48, s32) = 0x1000;
-    func_02011340((u8 *)self + 0x4c);
+    MTX_Identity33_((u8 *)self + 0x4c);
     return self;
 }
 

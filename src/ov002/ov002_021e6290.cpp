@@ -35,19 +35,19 @@ void func_ov002_021e6360(void *self) {
     u8 *o = FIELD(self, 0x48, u8 *);
     if (FIELD(self, 4, s32) == 2) {
         if (FIELD(self, 0x64, void *) != NULL) {
-            func_0202676c(o + 0x68, FIELD(self, 0x64, void *));
+            NNS_G3dRenderObjRemoveAnmObj(o + 0x68, FIELD(self, 0x64, void *));
         }
         if (FIELD(self, 0x68, void *) != NULL) {
-            func_0202676c(o + 0x68, FIELD(self, 0x68, void *));
+            NNS_G3dRenderObjRemoveAnmObj(o + 0x68, FIELD(self, 0x68, void *));
         }
         if (FIELD(self, 0x6c, void *) != NULL) {
-            func_0202676c(o + 0x68, FIELD(self, 0x6c, void *));
+            NNS_G3dRenderObjRemoveAnmObj(o + 0x68, FIELD(self, 0x6c, void *));
         }
         if (FIELD(self, 0x70, void *) != NULL) {
-            func_0202676c(o + 0x68, FIELD(self, 0x70, void *));
+            NNS_G3dRenderObjRemoveAnmObj(o + 0x68, FIELD(self, 0x70, void *));
         }
         if (FIELD(self, 0x74, void *) != NULL) {
-            func_0202676c(o + 0x68, FIELD(self, 0x74, void *));
+            NNS_G3dRenderObjRemoveAnmObj(o + 0x68, FIELD(self, 0x74, void *));
         }
     } else {
         FIELD(self, 0xe8, Bits8).b2 = 1;

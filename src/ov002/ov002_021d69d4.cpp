@@ -206,7 +206,7 @@ void func_ov002_021d6e48(void *self) {
     FIELD(self, 0x24, s16) = 0;
     FIELD(self, 0x26, s16) = 0;
     FIELD(self, 0x28, s16) = 0;
-    func_02011340((u8 *)self + 0x2c);
+    MTX_Identity33_((u8 *)self + 0x2c);
     FIELD(self, 0x50, s32) = 0x1000;
     FIELD(self, 0x54, s32) = 0x1000;
     FIELD(self, 0x58, s32) = 0x1000;
@@ -226,7 +226,7 @@ void func_ov002_021d6e48(void *self) {
 
 static inline void func_ov002_021d6ec4_release(void *obj) {
     void **res = FIELD(*(void **)obj, 0xc, void **);
-    func_02026ea0(func_0202ac90(res != NULL ? *res : NULL));
+    NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet(res != NULL ? *res : NULL));
 }
 
 void func_ov002_021d6ec4(void *self) {

@@ -55,11 +55,11 @@ static inline void GfxLightVec_Set(GfxLightVec *v, s16 x, s16 y, s16 z) {
 static inline void GfxLight_Apply(GfxLight *light) {
     int i;
     for (i = 0; i < 4; i++) {
-        func_0202717c(i, light->dirs[i].x, light->dirs[i].y, light->dirs[i].z);
-        func_020271b8(i, light->colors[i]);
+        NNS_G3dGlbLightVector(i, light->dirs[i].x, light->dirs[i].y, light->dirs[i].z);
+        NNS_G3dGlbLightColor(i, light->colors[i]);
     }
-    func_020271cc(light->diffuse, light->ambient, TRUE);
-    func_020271f0(light->specular, light->emission, TRUE);
+    NNS_G3dGlbMaterialColorDiffAmb(light->diffuse, light->ambient, TRUE);
+    NNS_G3dGlbMaterialColorSpecEmi(light->specular, light->emission, TRUE);
 }
 
 void func_02043578(GfxLight *light) {
@@ -223,7 +223,7 @@ void func_02043904(Gfx3DState *st) {
     st->light.ambient = 0;
     st->light.specular = 0;
     st->light.emission = 0;
-    func_020128a4(0, 0xc0000, 0, 0x100000, 0, 0x20000, 0x400000, st->unk_13c);
+    MTX_OrthoW(0, 0xc0000, 0, 0x100000, 0, 0x20000, 0x400000, st->unk_13c);
 }
 
 void func_02043b20(Gfx3DState *st) {
@@ -258,9 +258,9 @@ void func_02043b20(Gfx3DState *st) {
 }
 
 void func_02043d20(Gfx3DState *st, BOOL flush) {
-    func_0202a260(data_02fe00e8, 100);
+    NNS_G3dGeSendDL(data_02fe00e8, 100);
     if (flush) {
-        func_0202a1d4();
+        NNS_G3dGeFlushBuffer();
     }
 }
 
@@ -303,10 +303,10 @@ void func_02043db4(int idx, int x, int y, u32 color) {
     scale[0] = x;
     scale[1] = y;
     scale[2] = 0x1000;
-    func_0202a3ec(0x1b, scale, 3);
+    NNS_G3dGeBufferOP_N(0x1b, scale, 3);
     c = color;
-    func_0202a3ec(0x20, &c, 1);
-    func_0202a260(data_0208b3d0[idx], data_020828f8[idx]);
+    NNS_G3dGeBufferOP_N(0x20, &c, 1);
+    NNS_G3dGeSendDL(data_0208b3d0[idx], data_020828f8[idx]);
 }
 
 void *func_02043e1c(u32 size) {

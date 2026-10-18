@@ -16,7 +16,7 @@ u8 func_ov002_021d8b48(void *self) {
 }
 
 void func_ov002_021d8b5c(void *a, void *b, void *c) {
-    func_020117a4(c, b, a);
+    MTX_MultVec33(c, b, a);
 }
 
 u8 func_ov002_021d8b74(void *self) {

@@ -21,11 +21,11 @@ typedef struct {
 } Ov003EaRot;
 
 extern const s16 FX_SinCosTable_[];
-extern void func_02011340(Ov003EaMtx *m);
-extern void func_0201146c(Ov003EaMtx *m, s32 s, s32 c);
-extern void func_02011488(Ov003EaMtx *m, s32 s, s32 c);
-extern void func_020114a4(Ov003EaMtx *m, s32 s, s32 c);
-extern void func_02011610(Ov003EaMtx *a, Ov003EaMtx *b, Ov003EaMtx *out);
+extern void MTX_Identity33_(Ov003EaMtx *m);
+extern void MTX_RotX33_(Ov003EaMtx *m, s32 s, s32 c);
+extern void MTX_RotY33_(Ov003EaMtx *m, s32 s, s32 c);
+extern void MTX_RotZ33_(Ov003EaMtx *m, s32 s, s32 c);
+extern void MTX_Concat33(Ov003EaMtx *a, Ov003EaMtx *b, Ov003EaMtx *out);
 
 #define OV003EA_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003EA_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
@@ -33,35 +33,35 @@ extern void func_02011610(Ov003EaMtx *a, Ov003EaMtx *b, Ov003EaMtx *out);
 void func_ov003_021ea234(void *self, Ov003EaMtx *m, Ov003EaRot *rot, s32 ang) {
     Ov003EaMtx t;
     BOOL set = FALSE;
-    func_02011340(m);
+    MTX_Identity33_(m);
     if (ang != 0) {
-        func_02011488(m, OV003EA_SIN(ang), OV003EA_COS(ang));
+        MTX_RotY33_(m, OV003EA_SIN(ang), OV003EA_COS(ang));
         set = TRUE;
     }
     if (rot->x != 0) {
         if (set) {
-            func_0201146c(&t, OV003EA_SIN(rot->x), OV003EA_COS(rot->x));
-            func_02011610(&t, m, m);
+            MTX_RotX33_(&t, OV003EA_SIN(rot->x), OV003EA_COS(rot->x));
+            MTX_Concat33(&t, m, m);
         } else {
-            func_0201146c(m, OV003EA_SIN(rot->x), OV003EA_COS(rot->x));
+            MTX_RotX33_(m, OV003EA_SIN(rot->x), OV003EA_COS(rot->x));
             set = TRUE;
         }
     }
     if (rot->z != 0) {
         if (set) {
-            func_020114a4(&t, OV003EA_SIN(rot->z), OV003EA_COS(rot->z));
-            func_02011610(&t, m, m);
+            MTX_RotZ33_(&t, OV003EA_SIN(rot->z), OV003EA_COS(rot->z));
+            MTX_Concat33(&t, m, m);
         } else {
-            func_020114a4(m, OV003EA_SIN(rot->z), OV003EA_COS(rot->z));
+            MTX_RotZ33_(m, OV003EA_SIN(rot->z), OV003EA_COS(rot->z));
             set = TRUE;
         }
     }
     if (rot->y != 0) {
         if (set) {
-            func_02011488(&t, OV003EA_SIN(rot->y), OV003EA_COS(rot->y));
-            func_02011610(&t, m, m);
+            MTX_RotY33_(&t, OV003EA_SIN(rot->y), OV003EA_COS(rot->y));
+            MTX_Concat33(&t, m, m);
         } else {
-            func_02011488(m, OV003EA_SIN(rot->y), OV003EA_COS(rot->y));
+            MTX_RotY33_(m, OV003EA_SIN(rot->y), OV003EA_COS(rot->y));
             set = TRUE;
         }
     }

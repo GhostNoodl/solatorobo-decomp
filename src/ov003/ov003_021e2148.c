@@ -110,11 +110,11 @@ extern const s16 FX_SinCosTable_[];
 extern Ov003LtDef data_ov003_021f67c0[];
 extern void func_ov000_02194758(void *self);
 extern void VEC_Add(const Ov003LtVec *a, const Ov003LtVec *b, Ov003LtVec *out);
-extern void func_02011820(Ov003LtMtx *m);
-extern void func_02011974(Ov003LtMtx *m, s32 s, s32 c);
-extern void func_02011994(Ov003LtMtx *m, s32 s, s32 c);
-extern void func_020119b0(Ov003LtMtx *m, s32 s, s32 c);
-extern void func_02011d40(Ov003LtMtx *a, Ov003LtMtx *b, Ov003LtMtx *out);
+extern void MTX_Identity43_(Ov003LtMtx *m);
+extern void MTX_RotX43_(Ov003LtMtx *m, s32 s, s32 c);
+extern void MTX_RotY43_(Ov003LtMtx *m, s32 s, s32 c);
+extern void MTX_RotZ43_(Ov003LtMtx *m, s32 s, s32 c);
+extern void MTX_Concat43(Ov003LtMtx *a, Ov003LtMtx *b, Ov003LtMtx *out);
 extern void func_0203f9dc(void *obj, Ov003LtMtx *m);
 extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
@@ -144,26 +144,26 @@ void func_ov003_021e219c(Ov003Lt *self) {
         rz = self->rot_z;
         ry = self->rot_y;
         rx = self->rot_x;
-        func_02011820(&m);
+        MTX_Identity43_(&m);
         if (rz != 0) {
-            func_020119b0(&m, OV003LT_SIN(rz), OV003LT_COS(rz));
+            MTX_RotZ43_(&m, OV003LT_SIN(rz), OV003LT_COS(rz));
             set = TRUE;
         }
         if (ry != 0) {
             if (set) {
-                func_02011994(&t, OV003LT_SIN(ry), OV003LT_COS(ry));
-                func_02011d40(&t, &m, &m);
+                MTX_RotY43_(&t, OV003LT_SIN(ry), OV003LT_COS(ry));
+                MTX_Concat43(&t, &m, &m);
             } else {
-                func_02011994(&m, OV003LT_SIN(ry), OV003LT_COS(ry));
+                MTX_RotY43_(&m, OV003LT_SIN(ry), OV003LT_COS(ry));
                 set = TRUE;
             }
         }
         if (rx != 0) {
             if (set) {
-                func_02011974(&t, OV003LT_SIN(rx), OV003LT_COS(rx));
-                func_02011d40(&t, &m, &m);
+                MTX_RotX43_(&t, OV003LT_SIN(rx), OV003LT_COS(rx));
+                MTX_Concat43(&t, &m, &m);
             } else {
-                func_02011974(&m, OV003LT_SIN(rx), OV003LT_COS(rx));
+                MTX_RotX43_(&m, OV003LT_SIN(rx), OV003LT_COS(rx));
                 set = TRUE;
             }
         }

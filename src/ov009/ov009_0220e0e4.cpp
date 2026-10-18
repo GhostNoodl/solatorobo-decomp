@@ -7,11 +7,11 @@ struct Ov009Mtx33 {
 };
 
 extern void func_ov003_021d6868(Ov009Actor *self, s32 a);
-extern void func_02011340(Ov009Mtx33 *m);
-extern void func_020114a4(Ov009Mtx33 *m, s32 s, s32 c);
-extern void func_0201146c(Ov009Mtx33 *m, s32 s, s32 c);
-extern void func_02011488(Ov009Mtx33 *m, s32 s, s32 c);
-extern void func_02011610(const Ov009Mtx33 *a, const Ov009Mtx33 *b, Ov009Mtx33 *out);
+extern void MTX_Identity33_(Ov009Mtx33 *m);
+extern void MTX_RotZ33_(Ov009Mtx33 *m, s32 s, s32 c);
+extern void MTX_RotX33_(Ov009Mtx33 *m, s32 s, s32 c);
+extern void MTX_RotY33_(Ov009Mtx33 *m, s32 s, s32 c);
+extern void MTX_Concat33(const Ov009Mtx33 *a, const Ov009Mtx33 *b, Ov009Mtx33 *out);
 extern void MI_Copy36B(const Ov009Mtx33 *src, void *dst);
 extern void func_ov000_0218cea4(Ov009Actor *self);
 
@@ -22,13 +22,13 @@ void func_ov009_0220e0e4(Ov009Actor *self) {
         func_ov003_021d6868(self, 0x3def);
     }
     self->unk_93_0 = 1;
-    func_02011340(&m);
-    func_020114a4(&t, OV009_SIN(self->rot[2]), OV009_COS(self->rot[2]));
-    func_02011610(&m, &t, &m);
-    func_0201146c(&t, OV009_SIN(self->rot[0]), OV009_COS(self->rot[0]));
-    func_02011610(&m, &t, &m);
-    func_02011488(&t, OV009_SIN(self->rot[1]), OV009_COS(self->rot[1]));
-    func_02011610(&m, &t, &m);
+    MTX_Identity33_(&m);
+    MTX_RotZ33_(&t, OV009_SIN(self->rot[2]), OV009_COS(self->rot[2]));
+    MTX_Concat33(&m, &t, &m);
+    MTX_RotX33_(&t, OV009_SIN(self->rot[0]), OV009_COS(self->rot[0]));
+    MTX_Concat33(&m, &t, &m);
+    MTX_RotY33_(&t, OV009_SIN(self->rot[1]), OV009_COS(self->rot[1]));
+    MTX_Concat33(&m, &t, &m);
     MI_Copy36B(&m, (u8 *)self->unk_38 + 0x84);
     self->unk_38->unk_78 = self->pos;
     func_ov000_0218cea4(self);

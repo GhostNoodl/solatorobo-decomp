@@ -319,24 +319,24 @@ void func_02063e24(Effect3D *e) {
     }
     func_0201e520((char *)&name, e->anmName);
     if (e->anmObjs[0] != NULL) {
-        func_02026470(e->anmObjs[0], func_0202ad3c(e->anmFiles[0].data, &name), e->resMdl, NULL);
-        func_02026678(&e->renderObj, e->anmObjs[0]);
+        NNS_G3dAnmObjInit(e->anmObjs[0], NNS_G3dGetAnmByName(e->anmFiles[0].data, &name), e->resMdl, NULL);
+        NNS_G3dRenderObjAddAnmObj(&e->renderObj, e->anmObjs[0]);
     }
     if (e->anmObjs[1] != NULL) {
-        func_02026470(e->anmObjs[1], func_0202ad3c(e->anmFiles[1].data, &name), e->resMdl, NULL);
-        func_02026678(&e->renderObj, e->anmObjs[1]);
+        NNS_G3dAnmObjInit(e->anmObjs[1], NNS_G3dGetAnmByName(e->anmFiles[1].data, &name), e->resMdl, NULL);
+        NNS_G3dRenderObjAddAnmObj(&e->renderObj, e->anmObjs[1]);
     }
     if (e->anmObjs[2] != NULL) {
-        func_02026470(e->anmObjs[2], func_0202ad3c(e->anmFiles[2].data, &name), e->resMdl, NULL);
-        func_02026678(&e->renderObj, e->anmObjs[2]);
+        NNS_G3dAnmObjInit(e->anmObjs[2], NNS_G3dGetAnmByName(e->anmFiles[2].data, &name), e->resMdl, NULL);
+        NNS_G3dRenderObjAddAnmObj(&e->renderObj, e->anmObjs[2]);
     }
     if (e->anmObjs[3] != NULL) {
-        func_02026470(e->anmObjs[3], func_0202ad3c(e->anmFiles[3].data, &name), e->resMdl, e->resTex);
-        func_02026678(&e->renderObj, e->anmObjs[3]);
+        NNS_G3dAnmObjInit(e->anmObjs[3], NNS_G3dGetAnmByName(e->anmFiles[3].data, &name), e->resMdl, e->resTex);
+        NNS_G3dRenderObjAddAnmObj(&e->renderObj, e->anmObjs[3]);
     }
     if (e->anmObjs[4] != NULL) {
-        func_02026470(e->anmObjs[4], func_0202ad3c(e->anmFiles[4].data, &name), e->resMdl, NULL);
-        func_02026678(&e->renderObj, e->anmObjs[4]);
+        NNS_G3dAnmObjInit(e->anmObjs[4], NNS_G3dGetAnmByName(e->anmFiles[4].data, &name), e->resMdl, NULL);
+        NNS_G3dRenderObjAddAnmObj(&e->renderObj, e->anmObjs[4]);
     }
 }
 
@@ -444,7 +444,7 @@ static inline void *Effect_GetMdlByIdx(u8 *mdlSet, u32 idx) {
 void func_02063e0c(EffectPart *part);
 
 BOOL func_020641b8(Effect3D *e) {
-    u8 *mdlSet = (u8 *)func_0202ac90(e->mdlFile->data);
+    u8 *mdlSet = (u8 *)NNS_G3dGetMdlSet(e->mdlFile->data);
     void *mdl;
     u32 *ofs;
     if (mdlSet != NULL && (ofs = (u32 *)Effect_GetResDataByIdx((EffectResDict *)(mdlSet + 8), 0)) != NULL) {
@@ -453,12 +453,12 @@ BOOL func_020641b8(Effect3D *e) {
         mdl = NULL;
     }
     e->resMdl = mdl;
-    e->resTex = func_0202aca0(e->mdlFile->data);
-    func_02026508(&e->renderObj, e->resMdl);
+    e->resTex = NNS_G3dGetTex(e->mdlFile->data);
+    NNS_G3dRenderObjInit(&e->renderObj, e->resMdl);
     if (e->initCallback != NULL) {
-        func_020267e8(&e->renderObj, e->initCallback);
+        NNS_G3dRenderObjSetInitFunc(&e->renderObj, e->initCallback);
     } else {
-        func_020267e8(&e->renderObj, (void (*)(void *))func_02063e0c);
+        NNS_G3dRenderObjSetInitFunc(&e->renderObj, (void (*)(void *))func_02063e0c);
     }
     e->renderObj.ptrUser = e;
     if (e->anmFiles != NULL) {

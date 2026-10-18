@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void func_0202a4c8(void *p, s32 a);
+extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 
 void func_ov009_02211f44(Ov009Actor *self) {
     u8 *p = FLD(u8 *, FLD(void *, self, 0x4), 0x2c);
@@ -16,7 +16,7 @@ void func_ov009_02211f44(Ov009Actor *self) {
         v = -1;
     }
     if (v == FLD(s32, p, 0)) {
-        func_0202a4c8(p + 4, 0);
+        NNS_G3dGetCurrentMtx(p + 4, 0);
     }
 }
 

@@ -197,7 +197,7 @@ extern void func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern u16 func_0206d37c(Ov003Save *save, s32 a);
 extern u16 func_ov003_021ce6fc(u16 v);
-extern void func_0202a4c8(void *p, s32 a);
+extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern u8 data_ov000_021c9fe4;
 extern void *data_02149ef8;
 extern BOOL func_020621f8(void);
@@ -325,13 +325,13 @@ void func_ov003_021ce8c8(Ov003SlotUser *self) {
     Ov003Slot3 *slots = self->owner->slots;
     s32 slot = (self->flags & 0x10) ? self->slot : -1;
     if (slot == slots->id[0] && slots->want0) {
-        func_0202a4c8(slots->sub[0], 0);
+        NNS_G3dGetCurrentMtx(slots->sub[0], 0);
         slots->done0 = 1;
     } else if (slot == slots->id[1] && slots->want1) {
-        func_0202a4c8(slots->sub[1], 0);
+        NNS_G3dGetCurrentMtx(slots->sub[1], 0);
         slots->done1 = 1;
     } else if (slot == slots->id[2] && slots->want2) {
-        func_0202a4c8(slots->sub[2], 0);
+        NNS_G3dGetCurrentMtx(slots->sub[2], 0);
         slots->done2 = 1;
     }
     if (slots->doneMask == slots->wantMask) {

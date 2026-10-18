@@ -518,7 +518,7 @@ struct Ov015Gfx7f8 {
     Ov015Vec b;
     Ov015Vec c;
 };
-extern Ov015Gfx7f8 data_020927f8;
+extern Ov015Gfx7f8 NNS_G3dGlb;
 }
 
 #endif

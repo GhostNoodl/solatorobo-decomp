@@ -62,7 +62,7 @@ extern void func_ov000_0218dfb4(void *obj, u16 id);
 extern BOOL func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(void);
 extern s32 func_02040498(s32 v);
-extern Ov003Mtx33 *func_02027240(void);
+extern Ov003Mtx33 *NNS_G3dGlbGetInvV(void);
 extern Ov003Effect *func_02065f88(void *mgr, const Ov003Vec *pos);
 
 void func_ov003_021d9dbc(Ov003Vec *out, const Ov003Vec *a, const Ov003Vec *b, s32 dist, s32 yoff) {
@@ -158,7 +158,7 @@ static inline Ov003Effect *Ov003_SpawnScatter(const Ov003Vec *base, s32 range, v
     v.x = func_02040528(range);
     v.y = y;
     v.z = 0;
-    func_020117a4(&v, func_02027240(), &v);
+    MTX_MultVec33(&v, NNS_G3dGlbGetInvV(), &v);
     VEC_Add(base, &v, &p);
     return func_02065f88(mgr, &p);
 }
@@ -188,8 +188,8 @@ static inline void Ov003_RotY(Ov003VecP *out, s32 angle, const Ov003VecP *in) {
         *out = *in;
         return;
     }
-    func_02011488(&m, OV003_SIN(angle), OV003_COS(angle));
-    func_020117a4((const Ov003Vec *)in, &m, (Ov003Vec *)out);
+    MTX_RotY33_(&m, OV003_SIN(angle), OV003_COS(angle));
+    MTX_MultVec33((const Ov003Vec *)in, &m, (Ov003Vec *)out);
 }
 
 Ov003VecP func_ov003_021da214(Ov003YawActor *actor) {

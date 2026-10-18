@@ -89,7 +89,7 @@ typedef struct {
 
 extern void *data_ov000_021ccd68;
 extern Ov003Spot *func_ov000_0218e6d0(void *mgr, s32 a, s32 b);
-extern void func_0202a4c8(void *p, s32 a);
+extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void MI_Copy48B(void *a, void *b);
 
 void func_ov003_021e02e8(Ov003Obj *self) {
@@ -113,7 +113,7 @@ void func_ov003_021e02e8(Ov003Obj *self) {
     if (b != id) {
         return;
     }
-    func_0202a4c8(buf, 0);
+    NNS_G3dGetCurrentMtx(buf, 0);
     MI_Copy48B(buf, p->unk_d0);
 }
 
@@ -169,7 +169,7 @@ extern char data_ov003_021f851c[];
 extern char data_ov003_021f8525[];
 extern void func_ov000_02194758(void *self);
 extern u8 func_ov000_021909a8(void *model, s32 a, const char *name);
-extern void func_020267e8(void *p, void *fn);
+extern void NNS_G3dRenderObjSetInitFunc(void *p, void *fn);
 extern void func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 
@@ -179,7 +179,7 @@ void func_ov003_021e0388(Ov003Lamp *self) {
     func_ov000_02194758(self);
     self->unk_100 = func_ov000_021909a8(self->model, 0, data_ov003_021f851c);
     m = self->model;
-    func_020267e8(m->unk_24, func_ov003_021e0370);
+    NNS_G3dRenderObjSetInitFunc(m->unk_24, func_ov003_021e0370);
     m->unk_c2_5 = 0;
     self->model->unk_c2_8 = 1;
     func_ov000_02190cb0(self->model, data_ov003_021f8525, 0x1000, 0);

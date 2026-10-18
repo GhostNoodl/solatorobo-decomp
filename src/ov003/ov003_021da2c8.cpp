@@ -35,7 +35,7 @@ extern Ov003Spawnable *func_ov000_02192b24(Ov003SpawnInfo *info);
 extern Ov003Spawnable *func_ov003_021cfab4(Ov003SpawnInfo *info);
 extern Ov003Spawnable *func_ov000_021b4828(Ov003SpawnInfo *info);
 extern void func_ov000_02198360(Ov003Bits *self, u8 idx, s32 flag);
-extern Ov003Mtx33 *func_02027240(void);
+extern Ov003Mtx33 *NNS_G3dGlbGetInvV(void);
 extern void *func_02065f88(void *mgr, const void *arg);
 
 void func_ov003_021da2c8(Ov003Spring *self, s32 a, s32 b, s32 c, s32 d) {
@@ -121,7 +121,7 @@ void *func_ov003_021da4a8(const Ov003Vec *base, s32 range, void *mgr) {
     v.x = func_02040528(range);
     v.y = y;
     v.z = 0;
-    func_020117a4(&v, func_02027240(), &v);
+    MTX_MultVec33(&v, NNS_G3dGlbGetInvV(), &v);
     VEC_Add(base, &v, &p);
     return func_02065f88(mgr, &p);
 }
@@ -175,8 +175,8 @@ static inline void Ov003_RotY(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
         *out = *in;
         return;
     }
-    func_02011488(&m, OV003_SIN(angle), OV003_COS(angle));
-    func_020117a4(in, &m, out);
+    MTX_RotY33_(&m, OV003_SIN(angle), OV003_COS(angle));
+    MTX_MultVec33(in, &m, out);
 }
 
 static inline void Ov003_RotYM(Ov003Vec *out, s32 angle, const Ov003Vec *in, Ov003Mtx33 *m) {
@@ -184,8 +184,8 @@ static inline void Ov003_RotYM(Ov003Vec *out, s32 angle, const Ov003Vec *in, Ov0
         *out = *in;
         return;
     }
-    func_02011488(m, OV003_SIN(angle), OV003_COS(angle));
-    func_020117a4(in, m, out);
+    MTX_RotY33_(m, OV003_SIN(angle), OV003_COS(angle));
+    MTX_MultVec33(in, m, out);
 }
 
 static inline void Ov003Follower_Update(Ov003Follower *self) {

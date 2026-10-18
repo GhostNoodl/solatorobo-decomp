@@ -8,7 +8,7 @@ typedef struct {
     u16 hi : 6;
 } Rot7c54;
 
-void func_02011488(void *m, s32 s, s32 c);
+void MTX_RotY33_(void *m, s32 s, s32 c);
 
 void func_ov002_021d7c54(void *self, u16 rot) {
     FIELD(self, 0x52, Rot7c54).rot = rot;
@@ -17,28 +17,28 @@ void func_ov002_021d7c54(void *self, u16 rot) {
         FIELD(self, 0x10, s16) = 0;
         FIELD(self, 0x12, s16) = 0;
         FIELD(self, 0x14, s16) = 0;
-        func_02011340((u8 *)self + 0x18);
+        MTX_Identity33_((u8 *)self + 0x18);
         break;
     case 1:
         FIELD(self, 0x10, s16) = 0;
         FIELD(self, 0x12, u16) = 0x3fff;
         FIELD(self, 0x14, s16) = 0;
-        func_02011340((u8 *)self + 0x18);
-        func_02011488((u8 *)self + 0x18, FX_SINCOS(0x3ff * 2), FX_SINCOS(0x3ff * 2 + 1));
+        MTX_Identity33_((u8 *)self + 0x18);
+        MTX_RotY33_((u8 *)self + 0x18, FX_SINCOS(0x3ff * 2), FX_SINCOS(0x3ff * 2 + 1));
         break;
     case 2:
         FIELD(self, 0x10, s16) = 0;
         FIELD(self, 0x12, u16) = 0x7fff;
         FIELD(self, 0x14, s16) = 0;
-        func_02011340((u8 *)self + 0x18);
-        func_02011488((u8 *)self + 0x18, FX_SINCOS(0x7ff * 2), FX_SINCOS(0x7ff * 2 + 1));
+        MTX_Identity33_((u8 *)self + 0x18);
+        MTX_RotY33_((u8 *)self + 0x18, FX_SINCOS(0x7ff * 2), FX_SINCOS(0x7ff * 2 + 1));
         break;
     case 3:
         FIELD(self, 0x10, s16) = 0;
         FIELD(self, 0x12, u16) = 0xbffd;
         FIELD(self, 0x14, s16) = 0;
-        func_02011340((u8 *)self + 0x18);
-        func_02011488((u8 *)self + 0x18, FX_SINCOS(0xbff * 2), FX_SINCOS(0xbff * 2 + 1));
+        MTX_Identity33_((u8 *)self + 0x18);
+        MTX_RotY33_((u8 *)self + 0x18, FX_SINCOS(0xbff * 2), FX_SINCOS(0xbff * 2 + 1));
         break;
     }
 }

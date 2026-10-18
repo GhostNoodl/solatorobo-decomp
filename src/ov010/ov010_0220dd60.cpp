@@ -9,11 +9,11 @@ extern u8 data_ov010_0220f534[];
 extern void func_ov000_02194074(void *self);
 extern void func_ov000_0219429c(void *self);
 extern void func_ov000_02194758(void *self);
-extern void func_02011340(void *m);
+extern void MTX_Identity33_(void *m);
 extern void func_02065860(void *a, s32 b);
-extern void func_020114a4(void *m, s32 s, s32 c);
-extern void func_02011488(void *m, s32 s, s32 c);
-extern void func_02011610(void *a, void *b, void *c);
+extern void MTX_RotZ33_(void *m, s32 s, s32 c);
+extern void MTX_RotY33_(void *m, s32 s, s32 c);
+extern void MTX_Concat33(void *a, void *b, void *c);
 extern void MI_Copy36B(void *m, void *b);
 extern s32 func_ov000_021903b4(void *p);
 extern void func_ov000_02190cb0(void *p, s32 a, s32 b, s32 c);
@@ -25,7 +25,7 @@ static inline void Ov010_0220dd60_Reset(void *self) {
     FLD(s32, self, 0xd0) = -1;
     FLD(s32, self, 0xd4) = 0;
     FLD(s32, self, 0xd8) = 0;
-    func_02011340((u8 *)self + 0xdc);
+    MTX_Identity33_((u8 *)self + 0xdc);
 }
 
 void *func_ov010_0220dd60(void *self) {
@@ -65,12 +65,12 @@ s32 func_ov010_0220de5c(void *self) {
     if (FLD(void *, self, 0x38) != NULL && FLD(s32, self, 0xd0) != -1) {
         switch (FLD(s32, self, 0xd0)) {
         case 0:
-            func_02011488((u8 *)self + 0xdc, OV010_SIN(FLD(u16, self, 0x7e)), OV010_COS(FLD(u16, self, 0x7e)));
+            MTX_RotY33_((u8 *)self + 0xdc, OV010_SIN(FLD(u16, self, 0x7e)), OV010_COS(FLD(u16, self, 0x7e)));
             break;
         case 1:
-            func_020114a4(m, OV010_SIN(0x4000), OV010_COS(0x4000));
-            func_02011488((u8 *)self + 0xdc, OV010_SIN(FLD(u16, self, 0x7e)), OV010_COS(FLD(u16, self, 0x7e)));
-            func_02011610(m, (u8 *)self + 0xdc, (u8 *)self + 0xdc);
+            MTX_RotZ33_(m, OV010_SIN(0x4000), OV010_COS(0x4000));
+            MTX_RotY33_((u8 *)self + 0xdc, OV010_SIN(FLD(u16, self, 0x7e)), OV010_COS(FLD(u16, self, 0x7e)));
+            MTX_Concat33(m, (u8 *)self + 0xdc, (u8 *)self + 0xdc);
             break;
         }
         FLD(Ov010Vec, FLD(u8 *, self, 0x38), 0x78) = FLD(Ov010Vec, self, 0x70);

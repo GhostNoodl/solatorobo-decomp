@@ -262,7 +262,7 @@ void func_02065480(EffectGroup *g, s32 param) {
 
 extern void func_0203db10(void *task);
 extern void func_02043548(EffectCamera *camera);
-extern void func_02012104(void *mtx);
+extern void MTX_Identity44_(void *mtx);
 
 static inline void EffectMgr_Reset(EffectMgr *m) {
     m->state = 0;
@@ -277,7 +277,7 @@ static inline void EffectMgr_Reset(EffectMgr *m) {
     m->count2 = 0;
     m->drawHead = NULL;
     m->useCamera = 0;
-    func_02012104(m->proj);
+    MTX_Identity44_(m->proj);
 }
 
 void func_020654b8(void) {

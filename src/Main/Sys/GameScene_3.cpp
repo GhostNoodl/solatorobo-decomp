@@ -8,11 +8,11 @@ extern "C" {
 extern BOOL func_ov000_021700c4(void *p);
 
 void func_02056c0c(u32 mode, ...) {
-    func_0202a3ec(0x13, &mode, 1);
+    NNS_G3dGeBufferOP_N(0x13, &mode, 1);
 }
 
 void func_02056c30(void) {
-    func_0202a3ec(0x15, NULL, 0);
+    NNS_G3dGeBufferOP_N(0x15, NULL, 0);
 }
 
 BOOL func_02056c48(void) {
@@ -82,7 +82,7 @@ void func_02056d60(GameScene *scene, s32 x, s32 y) {
     G3_VtxXY(0xf9c, 0x1000);
     G3_VtxXY(0xf17, 0);
     G3_VtxXY(0x1000, 0xbac);
-    func_0202a3ec(0x41, NULL, 0);
+    NNS_G3dGeBufferOP_N(0x41, NULL, 0);
 }
 
 }

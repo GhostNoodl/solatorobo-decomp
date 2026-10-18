@@ -14,7 +14,7 @@ static inline int func_ov002_021d7238_find(u8 *res, const char *name) {
     if (dict == NULL) {
         return -1;
     }
-    return func_0202ab2c(dict + 4, name);
+    return NNS_G3dGetResDictIdxByName(dict + 4, name);
 }
 
 void func_ov002_021d7238(void *self) {
@@ -34,10 +34,10 @@ void func_ov002_021d7238(void *self) {
     }
     switch (FIELD(self, 0x68, u16)) {
     case 0x9000:
-        func_0202a7bc(res, idx, 0x1f);
+        NNS_G3dMdlSetMdlAlpha(res, idx, 0x1f);
         break;
     case 0x9001:
-        func_0202a7bc(res, idx, 0);
+        NNS_G3dMdlSetMdlAlpha(res, idx, 0);
         break;
     }
 }

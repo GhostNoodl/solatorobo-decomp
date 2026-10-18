@@ -34,9 +34,9 @@ BOOL func_ov002_021e75f0(void *self) {
         pos.x = FIELD(m, 0xdc, s32);
         pos.y = FIELD(m, 0xe0, s32);
         pos.z = FIELD(m, 0xe4, s32);
-        func_020117a4(&a, m + 0xb8, &a);
+        MTX_MultVec33(&a, m + 0xb8, &a);
         VEC_Add(&pos, &a, &a);
-        func_020117a4(&b, m + 0xb8, &b);
+        MTX_MultVec33(&b, m + 0xb8, &b);
         FIELD(self, 0x50, Vec3) = pos;
         FIELD(self, 0x5c, Vec3) = a;
         FIELD(self, 0x68, Vec3) = b;

@@ -7,7 +7,7 @@
 extern "C" {
 
 
-extern u32 (*data_0208afdc)(u32 size, int is4pltt, int opt);
+extern u32 (*NNS_GfdDefaultFuncAllocPlttVram)(u32 size, int is4pltt, int opt);
 extern void func_0203e134(const char *name, u32 value);
 extern void func_020241c4(PlttSub *sub, int idx, u32 addr);
 extern u16 func_0203bdb0(GfxSys *sys, int count, int idx);
@@ -24,7 +24,7 @@ extern void func_020243f4(int *fmt, u16 *count, u32 addr, int idx, PlttSub *sub)
 
 extern void func_0203e58c(u32 id);
 extern void func_0203be50(GfxSys *sys, int shift, int count, int idx);
-extern void (*data_0208afe0)(u32 key);
+extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
 
 void func_02041218(PlttRes *res) {
     PlttRes_Init(res);
@@ -76,7 +76,7 @@ void func_02041278(PlttRes *res) {
         }
     }
     if (res->key != 0) {
-        data_0208afe0(res->key);
+        NNS_GfdDefaultFuncFreePlttVram(res->key);
         if (res->maps[0] != NULL) {
             func_0203df0c(res->maps[0]);
             res->maps[0] = NULL;

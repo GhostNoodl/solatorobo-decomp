@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_02011610(void *a, void *b, void *c);
+void MTX_Concat33(void *a, void *b, void *c);
 
 void func_ov002_021e4fac(void *self) {
     u8 *o = FIELD(data_ov002_021f0f98[0], 0x1ec, u8 *);
@@ -23,10 +23,10 @@ void func_ov002_021e4fac(void *self) {
     FIELD(m, 0x8, s32) = FX_MUL(sy, FIELD(m, 0x8, s32));
     FIELD(m, 0xc, s32) = FX_MUL(sz, FIELD(m, 0xc, s32));
     if (FIELD(m, 0x0, u32) & 2) {
-        func_02011340(m + 0x28);
+        MTX_Identity33_(m + 0x28);
         FIELD(m, 0x0, u32) &= ~2;
     }
-    func_02011610(m + 0x28, o + 0xb8, m + 0x28);
+    MTX_Concat33(m + 0x28, o + 0xb8, m + 0x28);
     if (FIELD(m, 0x0, u32) & 4) {
         FIELD(m, 0x0, u32) &= ~4;
     }

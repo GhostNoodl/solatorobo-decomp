@@ -17,8 +17,8 @@ extern void func_ov000_0218d398(Ov009Actor *self, u16 id, u8 type, BOOL notify, 
 extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
 extern Ov009Actor *func_ov000_02192b24(void *desc);
 extern s32 func_ov000_021909a8(Ov009Sub38 *m, const char *a, const char *b);
-extern void func_02011820(void *p);
-extern void func_020267e8(void *p, void *cb);
+extern void MTX_Identity43_(void *p);
+extern void NNS_G3dRenderObjSetInitFunc(void *p, void *cb);
 extern void func_ov009_021ff690(Ov009Actor *self);
 
 struct Ov009Byte {
@@ -115,9 +115,9 @@ void func_ov009_02200c5c(Ov009Actor *self) {
     Ov009Sub38 *m;
     func_ov003_021d112c(self);
     FLD(s32, self, 0xf8) = func_ov000_021909a8(self->unk_38, data_ov009_02216b89, data_ov009_02216b90);
-    func_02011820(&FLD(u8, self, 0xfc));
+    MTX_Identity43_(&FLD(u8, self, 0xfc));
     m = self->unk_38;
-    func_020267e8(m->unk_24, (void *)func_ov009_021ff690);
+    NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov009_021ff690);
     m->unk_c2_5 = 0;
     self->unk_38->unk_c2_8 = 1;
     self->unk_38->unk_50 = &FLD(u8, self, 0xf8);

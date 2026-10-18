@@ -15,7 +15,7 @@ extern u8 data_ov014_02217e6c[];
 extern u8 data_ov014_02217d1d[];
 extern u8 *func_02066900(const char *a, const char *b, Ov014Vec *pos);
 extern u8 *func_02066774(const char *a, const char *b, s32 c, Ov014Vec *pos);
-extern void func_0202a4c8(void *p, s32 a);
+extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov003_021ceedc(void *p);
 extern void func_ov003_021cef0c(void *p);
@@ -37,8 +37,8 @@ extern u8 data_ov014_02216f00[];
 extern void func_ov003_021d112c(Ov014Actor *self);
 extern void func_0203f2b8(void *p);
 extern s32 func_ov000_021909a8(void *a, const void *b, const void *c);
-extern void func_02011820(void *m);
-extern void func_020267e8(void *a, void *b);
+extern void MTX_Identity43_(void *m);
+extern void NNS_G3dRenderObjSetInitFunc(void *a, void *b);
 extern void MIi_CpuClear16(s32 v, void *p, u32 n);
 extern void func_ov003_021cf1f0(void *p, s32 a, s32 b, const void *c);
 
@@ -81,7 +81,7 @@ void func_ov014_0220f8a4(u8 *self) {
         k = -1;
     }
     if (k == FLD(s32, t, 0)) {
-        func_0202a4c8(t + 4, 0);
+        NNS_G3dGetCurrentMtx(t + 4, 0);
     }
 }
 
@@ -244,9 +244,9 @@ void func_ov014_0220fc5c(Ov014Actor *self) {
         n->unk_22_1 = 1;
     }
     FLD(s32, self, 0xf0) = func_ov000_021909a8(self->unk_38, data_ov014_02217d2c, data_ov014_02217d33);
-    func_02011820((u8 *)self + 0xf4);
+    MTX_Identity43_((u8 *)self + 0xf4);
     m = self->unk_38;
-    func_020267e8(m->unk_24, (void *)func_ov014_0220f8e4);
+    NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov014_0220f8e4);
     m->unk_c2_5 = 0;
     self->unk_38->unk_c2_8 = 1;
     self->unk_38->unk_50 = &FLD(u8, self, 0xf0);

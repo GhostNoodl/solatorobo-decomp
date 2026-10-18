@@ -9,7 +9,7 @@ void func_ov002_021d7b80(void *self) {
     FIELD(self, 0x10, s16) = 0;
     FIELD(self, 0x12, s16) = 0;
     FIELD(self, 0x14, s16) = 0;
-    func_02011340((u8 *)self + 0x18);
+    MTX_Identity33_((u8 *)self + 0x18);
     FIELD(self, 0x3c, s32) = 0x1000;
     FIELD(self, 0x40, s32) = 0x1000;
     FIELD(self, 0x44, s32) = 0x1000;

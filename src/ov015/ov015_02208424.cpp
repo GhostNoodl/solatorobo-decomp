@@ -3,7 +3,7 @@
 extern "C" {
 
 extern u8 *data_ov015_02213364;
-void func_0202a4c8(void *p, s32 a);
+void NNS_G3dGetCurrentMtx(void *p, s32 a);
 void func_ov015_02208424(u8 *self);
 void MIi_CpuClearFast(u32 val, void *dst, u32 size);
 extern void *data_0208cb74;
@@ -43,8 +43,8 @@ s32 func_0203e63c(void *p);
 extern u8 data_ov015_02212d3c[];
 extern u8 data_ov000_021cac60[];
 s32 FX_Inv(s32 a);
-void func_02011390(void *m, s32 x, s32 y, s32 z);
-void func_02011610(void *a, void *b, void *out);
+void MTX_Scale33_(void *m, s32 x, s32 y, s32 z);
+void MTX_Concat33(void *a, void *b, void *out);
 void func_02016fa0(const void *src, void *dst, s32 n);
 void func_ov015_02208f7c(u8 *self);
 extern u8 data_ov015_022128fc[];
@@ -54,7 +54,7 @@ void func_ov000_0218e9c4(void *a);
 void func_ov000_0218fe1c(void *a);
 void func_ov000_0219196c(void *a);
 void func_0203f260(void *a);
-void func_02011340(void *a);
+void MTX_Identity33_(void *a);
 extern u8 data_ov015_02212eb0[];
 
 void func_ov015_02208424(u8 *self) {
@@ -63,7 +63,7 @@ void func_ov015_02208424(u8 *self) {
     if (id != t[0x30]) {
         return;
     }
-    func_0202a4c8(t, 0);
+    NNS_G3dGetCurrentMtx(t, 0);
     FLD(void *, self, 0x24) = NULL;
     FLD(u8, self, 0x92) = 0;
 }
@@ -421,9 +421,9 @@ void func_ov015_02208f7c(u8 *self) {
     if (id != FLD(s32, t, 0x30)) {
         return;
     }
-    func_0202a4c8(t, 0);
-    func_02011390(m, FX_Inv(0xa000), FX_Inv(0xa000), FX_Inv(0xa000));
-    func_02011610(t, m, t);
+    NNS_G3dGetCurrentMtx(t, 0);
+    MTX_Scale33_(m, FX_Inv(0xa000), FX_Inv(0xa000), FX_Inv(0xa000));
+    MTX_Concat33(t, m, t);
 }
 
 void func_ov015_0220900c(void) {
@@ -488,7 +488,7 @@ void *func_ov015_02209114(u8 *self) {
     FLD(s32, self, 0x40) = 0;
     FLD(s32, self, 0x44) = 0;
     FLD(s32, self, 0x48) = 0;
-    func_02011340(self + 0x4c);
+    MTX_Identity33_(self + 0x4c);
     FLD(s32, self, 0x80) = 0;
     FLD(s32, self, 0x84) = 0;
     FLD(s32, self, 0x88) = 0;

@@ -154,11 +154,11 @@ extern void func_ov000_0214b5bc(void *p);
 extern BOOL func_ov000_02194c08(void *self);
 extern void func_ov000_021bd7a0(void *p);
 extern void *data_ov000_021ccd64;
-extern void *func_0202aca0(void *p);
+extern void *NNS_G3dGetTex(void *p);
 extern void *func_ov000_0214b670(void *p);
 extern void func_020394cc(void *a, void *b);
-extern void *func_0202ac90(void *p);
-extern void func_02026df0(void *a, void *b);
+extern void *NNS_G3dGetMdlSet(void *p);
+extern void NNS_G3dBindMdlSet(void *a, void *b);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 extern s32 func_02040528(s32 max);
 
@@ -339,7 +339,7 @@ void func_ov003_021e5bc4(Ov003Obj *self) {
         if (self->unk_1cc == NULL) {
             h = NULL;
         } else {
-            h = func_0202aca0(*self->unk_1cc);
+            h = NNS_G3dGetTex(*self->unk_1cc);
         }
         if (h != NULL) {
             if (self->kind != 3) {
@@ -352,7 +352,7 @@ void func_ov003_021e5bc4(Ov003Obj *self) {
             } else if (self->unk_60 != NULL) {
                 func_020394cc(*self->unk_1cc, self->unk_60);
             }
-            func_02026df0(func_0202ac90(self->model->unk_00->unk_0c != NULL ? self->model->unk_00->unk_0c->unk_00 : NULL), h);
+            NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(self->model->unk_00->unk_0c != NULL ? self->model->unk_00->unk_0c->unk_00 : NULL), h);
         }
     }
     u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);

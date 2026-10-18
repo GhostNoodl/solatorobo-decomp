@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_02012758(s32 s, s32 c, s32 aspect, s32 n, s32 f, s32 scale, void *mtx);
+void MTX_PerspectiveW(s32 s, s32 c, s32 aspect, s32 n, s32 f, s32 scale, void *mtx);
 
 void func_ov000_021903b4(void *a);
 
@@ -11,13 +11,13 @@ void func_ov002_021da960(void *self) {
     u8 *cam = FIELD(w, 0x8c, u8 *);
     u8 *q;
     u8 *n;
-    data_020927f8.v240 = FIELD(cam, 0x0, Vec3);
-    data_020927f8.v24c = FIELD(cam, 0x18, Vec3);
-    data_020927f8.v258 = FIELD(cam, 0xc, Vec3);
-    func_02011ff0(cam, cam + 0x18, cam + 0xc, data_02092844);
-    data_020927f8.fc &= ~0xe8;
-    func_02012758(FX_SINCOS(0x2aa), FX_SINCOS(0x2ab), 0x1548, 0x333, 0x19000, 0x1000, data_02092800);
-    data_020927f8.fc &= ~0x50;
+    NNS_G3dGlb.v240 = FIELD(cam, 0x0, Vec3);
+    NNS_G3dGlb.v24c = FIELD(cam, 0x18, Vec3);
+    NNS_G3dGlb.v258 = FIELD(cam, 0xc, Vec3);
+    MTX_LookAt(cam, cam + 0x18, cam + 0xc, data_02092844);
+    NNS_G3dGlb.fc &= ~0xe8;
+    MTX_PerspectiveW(FX_SINCOS(0x2aa), FX_SINCOS(0x2ab), 0x1548, 0x333, 0x19000, 0x1000, data_02092800);
+    NNS_G3dGlb.fc &= ~0x50;
     q = FIELD(w, 0x4, u8 *);
     if (q[0x5c] != 0) {
         MI_Copy36B(q + 0x2c, FIELD(q, 0x8, u8 *) + 0x84);

@@ -12,8 +12,8 @@ struct TextLayout {
 extern "C" {
 
 extern const u32 data_0208ba70[];
-extern void (*data_0208afd8)(void *p);
-extern void (*data_0208afe0)(void *p);
+extern void (*NNS_GfdDefaultFuncFreeTexVram)(void *p);
+extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
@@ -110,10 +110,10 @@ void func_0204c8a8(TextWin *win) {
         func_02039828(win->vram);
     }
     if (win->unk_50 != NULL) {
-        data_0208afd8(win->unk_50);
+        NNS_GfdDefaultFuncFreeTexVram(win->unk_50);
     }
     if (win->unk_54 != NULL) {
-        data_0208afe0(win->unk_54);
+        NNS_GfdDefaultFuncFreePlttVram(win->unk_54);
     }
     if (win->unk_68 != NULL) {
         func_0203df0c(win->unk_68);
@@ -420,7 +420,7 @@ void func_0204e2dc(Model *model, s32 v);
 
 void func_0204e2e4(Model *model, s32 idx);
 
-extern void func_0202a3ec(int cmd, const void *data, int count);
+extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 data_02097d78[];

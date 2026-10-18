@@ -100,10 +100,10 @@ BOOL func_ov010_021faa74(void *self) {
 }
 
 extern void func_ov003_021cf4ec(void *p);
-extern void func_020114a4(void *m, s32 s, s32 c);
-extern void func_0201146c(void *m, s32 s, s32 c);
-extern void func_02011488(void *m, s32 s, s32 c);
-extern void func_02011610(void *a, void *b, void *c);
+extern void MTX_RotZ33_(void *m, s32 s, s32 c);
+extern void MTX_RotX33_(void *m, s32 s, s32 c);
+extern void MTX_RotY33_(void *m, s32 s, s32 c);
+extern void MTX_Concat33(void *a, void *b, void *c);
 extern void func_ov003_021d883c(void *a, Ov010Vec *b, void *c, s32 d);
 extern void MI_Copy36B(void *m, void *b);
 extern BOOL func_ov003_021d16cc(void *self);
@@ -115,11 +115,11 @@ BOOL func_ov010_021faaf0(void *self) {
     u8 m2[0x24];
     Ov010Vec v;
     func_ov003_021cf4ec((u8 *)self + 0x1d0);
-    func_020114a4(m1, OV010_SIN(FLD(u16, self, 0x80)), OV010_COS(FLD(u16, self, 0x80)));
-    func_0201146c(m2, OV010_SIN(FLD(u16, self, 0x7c)), OV010_COS(FLD(u16, self, 0x7c)));
-    func_02011610(m1, m2, m1);
-    func_02011488(m2, OV010_SIN(FLD(u16, self, 0x7e)), OV010_COS(FLD(u16, self, 0x7e)));
-    func_02011610(m1, m2, m1);
+    MTX_RotZ33_(m1, OV010_SIN(FLD(u16, self, 0x80)), OV010_COS(FLD(u16, self, 0x80)));
+    MTX_RotX33_(m2, OV010_SIN(FLD(u16, self, 0x7c)), OV010_COS(FLD(u16, self, 0x7c)));
+    MTX_Concat33(m1, m2, m1);
+    MTX_RotY33_(m2, OV010_SIN(FLD(u16, self, 0x7e)), OV010_COS(FLD(u16, self, 0x7e)));
+    MTX_Concat33(m1, m2, m1);
     func_ov003_021d883c((u8 *)self + 0x150, &v, (u8 *)self + 0x70, FLD(s16, self, 0xf2));
     FLD(Ov010Flags8, self, 0x93).b0 = 1;
     MI_Copy36B(m1, FLD(u8 *, self, 0x38) + 0x84);

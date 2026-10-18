@@ -54,7 +54,7 @@ void func_ov002_021e5140(void *self) {
     FIELD(self, 0x1b0, s32) = 0x1000;
     FIELD(self, 0x1b4, s32) = 0x1000;
     FIELD(self, 0x1b8, s32) = 0x1000;
-    func_02011340((u8 *)self + 0x1bc);
+    MTX_Identity33_((u8 *)self + 0x1bc);
     FIELD(self, 0x1e0, s32) = 0;
     FIELD(self, 0x1e4, s32) = 0;
     FIELD(self, 0x1e8, s32) = 0;

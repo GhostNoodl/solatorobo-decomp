@@ -17,11 +17,11 @@ void func_ov002_021e779c(void *self) {
         w->y = y;
         w->z = -0x1000;
     }
-    g = &data_020927f8;
+    g = &NNS_G3dGlb;
     g->v240 = FIELD(self, 0x50, Vec3);
     g->v24c = FIELD(self, 0x68, Vec3);
     g->v258 = FIELD(self, 0x5c, Vec3);
-    func_02011ff0((u8 *)self + 0x50, (u8 *)self + 0x68, (u8 *)self + 0x5c, data_02092844);
+    MTX_LookAt((u8 *)self + 0x50, (u8 *)self + 0x68, (u8 *)self + 0x5c, data_02092844);
     g->fc &= ~0xe8;
     MIi_CpuCopyFast((u8 *)self + 0x74, data_02092800, 0x40);
     g->fc &= ~0x50;

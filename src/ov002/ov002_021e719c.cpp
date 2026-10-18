@@ -4,9 +4,9 @@ extern "C" {
 
 s32 func_02049130(s32 t, s32 a, s32 b);
 
-void func_02027074(void);
+void NNS_G3dGlbFlushP(void);
 
-void func_0202a3ec(int cmd, void *data, int n);
+void NNS_G3dGeBufferOP_N(int cmd, void *data, int n);
 
 void func_02043db4(int a, s32 b, s32 c, u16 d);
 
@@ -35,29 +35,29 @@ void func_ov002_021e719c(void *self) {
         s32 t2;
         s32 t3;
         u8 *g2 = (u8 *)data_ov002_021f0f98[1];
-        data_020927f8.v240 = zero;
-        data_020927f8.v24c = up;
-        data_020927f8.v258 = at;
-        func_02011ff0(&zero, &up, &at, data_02092844);
-        data_020927f8.fc &= ~0xe8;
+        NNS_G3dGlb.v240 = zero;
+        NNS_G3dGlb.v24c = up;
+        NNS_G3dGlb.v258 = at;
+        MTX_LookAt(&zero, &up, &at, data_02092844);
+        NNS_G3dGlb.fc &= ~0xe8;
         MIi_CpuCopyFast(g2 + 0xe4, data_02092800, 0x40);
-        data_020927f8.fc &= ~0x50;
-        func_02027074();
+        NNS_G3dGlb.fc &= ~0x50;
+        NNS_G3dGlbFlushP();
         t = 2;
-        func_0202a3ec(0x10, &t, 1);
-        func_0202a3ec(0x11, NULL, 0);
-        func_0202a3ec(0x15, NULL, 0);
+        NNS_G3dGeBufferOP_N(0x10, &t, 1);
+        NNS_G3dGeBufferOP_N(0x11, NULL, 0);
+        NNS_G3dGeBufferOP_N(0x15, NULL, 0);
         c = 0x3f0000c0 | (a << 16);
-        func_0202a3ec(0x29, &c, 1);
+        NNS_G3dGeBufferOP_N(0x29, &c, 1);
         w.z = FIELD(self, 0x20, s32);
         w.x = 0x80000;
         w.y = 0x60000;
-        func_0202a3ec(0x1c, &w, 3);
+        NNS_G3dGeBufferOP_N(0x1c, &w, 3);
         func_02043db4(0, 0x100000, 0xc0000, FIELD(self, 0x50, u16));
         t2 = 2;
-        func_0202a3ec(0x10, &t2, 1);
+        NNS_G3dGeBufferOP_N(0x10, &t2, 1);
         t3 = 1;
-        func_0202a3ec(0x12, &t3, 1);
+        NNS_G3dGeBufferOP_N(0x12, &t3, 1);
     }
 }
 

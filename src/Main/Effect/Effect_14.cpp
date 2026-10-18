@@ -76,7 +76,7 @@ BOOL func_0206aec0(EffectEmitter *em) {
             func_0203ed04(def->mdlName, f->data);
         }
         em->file = f;
-        em->tex = (EffectResTex *)func_0202aca0(f->data);
+        em->tex = (EffectResTex *)NNS_G3dGetTex(f->data);
         em->unk_2c = 30;
         break;
     }

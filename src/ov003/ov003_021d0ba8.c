@@ -48,7 +48,7 @@ typedef struct {
     u16 unk_ee;
 } Ov003Obj;
 
-extern void func_0202a4c8(void *p, s32 a);
+extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void func_ov000_0218c2d4(Ov003Obj *self);
 extern char data_ov003_021f7ab4[];
 
@@ -137,7 +137,7 @@ void func_ov003_021d0ba8(Ov003Obj *self) {
     }
     for (i = 0; i < 2; i++) {
         if (t->ids[i] != 0xff && id == t->ids[i]) {
-            func_0202a4c8(&t->slots[i], 0);
+            NNS_G3dGetCurrentMtx(&t->slots[i], 0);
             return;
         }
     }

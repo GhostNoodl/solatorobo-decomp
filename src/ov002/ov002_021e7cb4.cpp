@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_020128a4(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, void *out);
+void MTX_OrthoW(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, void *out);
 
 void func_ov002_021e7cb4(void *self) {
     FIELD(self, 0x4, s32) = 0;
@@ -23,7 +23,7 @@ void func_ov002_021e7cb4(void *self) {
     FIELD(self, 0xd8, s32) = 0x1000;
     FIELD(self, 0xdc, s32) = 0;
     FIELD(self, 0xe0, s32) = 0;
-    func_020128a4(0, 0xc0000, 0, 0x100000, 0, 0x20000, 0x400000, (u8 *)self + 0xe4);
+    MTX_OrthoW(0, 0xc0000, 0, 0x100000, 0, 0x20000, 0x400000, (u8 *)self + 0xe4);
     FIELD(self, 0x124, s32) = 0;
     FIELD(self, 0x128, s32) = 0;
     FIELD(self, 0x130, s32) = 0;

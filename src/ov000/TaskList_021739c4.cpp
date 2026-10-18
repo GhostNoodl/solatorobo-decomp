@@ -9,7 +9,7 @@ void func_ov000_021739c4(Task *self) {
     self->unk_44 = 0;
     self->unk_48 = 0;
     self->unk_4c = NULL;
-    func_02012104(self->unk_50);
+    MTX_Identity44_(self->unk_50);
 }
 
 void func_ov000_021739f8(Task *self) {

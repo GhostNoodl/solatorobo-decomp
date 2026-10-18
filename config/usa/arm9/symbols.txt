@@ -146,7 +146,7 @@ func_0200ae84 kind:function(arm,size=0x68) addr:0x0200ae84
 func_0200aeec kind:function(arm,size=0x48) addr:0x0200aeec
 func_0200af34 kind:function(arm,size=0x48) addr:0x0200af34
 func_0200af7c kind:function(arm,size=0x1c0) addr:0x0200af7c
-.L_0200af8c kind:label(arm) addr:0x0200af8c
+_ll_sdiv kind:label(arm) addr:0x0200af8c
 _ll_udiv kind:function(arm,size=0x48) addr:0x0200b13c
 .L_0200b148 kind:label(arm) addr:0x0200b148
 _s32_div_f kind:function(arm,size=0x20c) addr:0x0200b184
@@ -348,38 +348,38 @@ func_0201118c kind:function(arm,size=0x20) addr:0x0201118c
 func_020111ac kind:function(arm,size=0x30) addr:0x020111ac
 func_020111dc kind:function(arm,size=0x2c) addr:0x020111dc
 func_02011208 kind:function(arm,size=0x10) addr:0x02011208
-func_02011218 kind:function(arm,size=0x18) addr:0x02011218
-func_02011230 kind:function(thumb,size=0xc) addr:0x02011230
-func_0201123c kind:function(arm,size=0x54) addr:0x0201123c
-func_02011290 kind:function(arm,size=0xb0) addr:0x02011290
-func_02011340 kind:function(arm,size=0x24) addr:0x02011340
-func_02011364 kind:function(arm,size=0x2c) addr:0x02011364
-func_02011390 kind:function(thumb,size=0x12) addr:0x02011390
-func_020113a4 kind:function(arm,size=0xc8) addr:0x020113a4
-func_0201146c kind:function(thumb,size=0x1c) addr:0x0201146c
-func_02011488 kind:function(thumb,size=0x1c) addr:0x02011488
-func_020114a4 kind:function(thumb,size=0x18) addr:0x020114a4
-func_020114bc kind:function(arm,size=0x154) addr:0x020114bc
-func_02011610 kind:function(arm,size=0x194) addr:0x02011610
-func_020117a4 kind:function(arm,size=0x7c) addr:0x020117a4
-func_02011820 kind:function(arm,size=0x28) addr:0x02011820
-func_02011848 kind:function(arm,size=0x34) addr:0x02011848
-func_0201187c kind:function(arm,size=0xac) addr:0x0201187c
-func_02011928 kind:function(thumb,size=0x16) addr:0x02011928
-func_02011940 kind:function(arm,size=0x34) addr:0x02011940
-func_02011974 kind:function(thumb,size=0x1e) addr:0x02011974
-func_02011994 kind:function(thumb,size=0x1a) addr:0x02011994
-func_020119b0 kind:function(thumb,size=0x1a) addr:0x020119b0
-func_020119cc kind:function(arm,size=0x374) addr:0x020119cc
-func_02011d40 kind:function(arm,size=0x218) addr:0x02011d40
-func_02011f58 kind:function(arm,size=0x98) addr:0x02011f58
-func_02011ff0 kind:function(arm,size=0x114) addr:0x02011ff0
-func_02012104 kind:function(arm,size=0x2c) addr:0x02012104
-func_02012130 kind:function(arm,size=0x34) addr:0x02012130
-func_02012164 kind:function(arm,size=0x3bc) addr:0x02012164
-func_02012520 kind:function(arm,size=0x238) addr:0x02012520
-func_02012758 kind:function(arm,size=0x14c) addr:0x02012758
-func_020128a4 kind:function(arm,size=0x214) addr:0x020128a4
+MTX_Identity22_ kind:function(arm,size=0x18) addr:0x02011218
+MTX_Rot22_ kind:function(thumb,size=0xc) addr:0x02011230
+MTX_ScaleApply22 kind:function(arm,size=0x54) addr:0x0201123c
+MTX_Concat22 kind:function(arm,size=0xb0) addr:0x02011290
+MTX_Identity33_ kind:function(arm,size=0x24) addr:0x02011340
+MTX_Copy33To43_ kind:function(arm,size=0x2c) addr:0x02011364
+MTX_Scale33_ kind:function(thumb,size=0x12) addr:0x02011390
+MTX_ScaleApply33 kind:function(arm,size=0xc8) addr:0x020113a4
+MTX_RotX33_ kind:function(thumb,size=0x1c) addr:0x0201146c
+MTX_RotY33_ kind:function(thumb,size=0x1c) addr:0x02011488
+MTX_RotZ33_ kind:function(thumb,size=0x18) addr:0x020114a4
+MTX_RotAxis33 kind:function(arm,size=0x154) addr:0x020114bc
+MTX_Concat33 kind:function(arm,size=0x194) addr:0x02011610
+MTX_MultVec33 kind:function(arm,size=0x7c) addr:0x020117a4
+MTX_Identity43_ kind:function(arm,size=0x28) addr:0x02011820
+MTX_Copy43To44_ kind:function(arm,size=0x34) addr:0x02011848
+MTX_TransApply43 kind:function(arm,size=0xac) addr:0x0201187c
+MTX_Scale43_ kind:function(thumb,size=0x16) addr:0x02011928
+MTX_ScaleApply43 kind:function(arm,size=0x34) addr:0x02011940
+MTX_RotX43_ kind:function(thumb,size=0x1e) addr:0x02011974
+MTX_RotY43_ kind:function(thumb,size=0x1a) addr:0x02011994
+MTX_RotZ43_ kind:function(thumb,size=0x1a) addr:0x020119b0
+MTX_Inverse43 kind:function(arm,size=0x374) addr:0x020119cc
+MTX_Concat43 kind:function(arm,size=0x218) addr:0x02011d40
+MTX_MultVec43 kind:function(arm,size=0x98) addr:0x02011f58
+MTX_LookAt kind:function(arm,size=0x114) addr:0x02011ff0
+MTX_Identity44_ kind:function(arm,size=0x2c) addr:0x02012104
+MTX_Copy44To43_ kind:function(arm,size=0x34) addr:0x02012130
+MTX_Concat44 kind:function(arm,size=0x3bc) addr:0x02012164
+MTX_FrustumW kind:function(arm,size=0x238) addr:0x02012520
+MTX_PerspectiveW kind:function(arm,size=0x14c) addr:0x02012758
+MTX_OrthoW kind:function(arm,size=0x214) addr:0x020128a4
 FX_Div kind:function(arm,size=0x10) addr:0x02012ab8
 FX_Inv kind:function(arm,size=0x10) addr:0x02012ac8
 FX_Sqrt kind:function(arm,size=0x34) addr:0x02012ad8
@@ -427,17 +427,17 @@ func_020139cc kind:function(arm,size=0x54) addr:0x020139cc
 func_02013a20 kind:function(arm,size=0x40) addr:0x02013a20
 func_02013a60 kind:function(arm,size=0x2c) addr:0x02013a60
 func_02013a8c kind:function(arm,size=0x20) addr:0x02013a8c
-func_02013aac kind:function(arm,size=0x1c) addr:0x02013aac
-func_02013ac8 kind:function(arm,size=0x1c) addr:0x02013ac8
-func_02013ae4 kind:function(arm,size=0x1c) addr:0x02013ae4
-func_02013b00 kind:function(arm,size=0x104) addr:0x02013b00
+G3_LoadMtx43 kind:function(arm,size=0x1c) addr:0x02013aac
+G3_MultMtx43 kind:function(arm,size=0x1c) addr:0x02013ac8
+G3_MultMtx33 kind:function(arm,size=0x1c) addr:0x02013ae4
+G3X_Init kind:function(arm,size=0x104) addr:0x02013b00
 func_02013c04 kind:function(arm,size=0x6c) addr:0x02013c04
 func_02013c70 kind:function(arm,size=0x24) addr:0x02013c70
 func_02013c94 kind:function(arm,size=0x98) addr:0x02013c94
 func_02013d2c kind:function(arm,size=0x90) addr:0x02013d2c
 func_02013dbc kind:function(arm,size=0x54) addr:0x02013dbc
-func_02013e10 kind:function(arm,size=0x30) addr:0x02013e10
-func_02013e40 kind:function(arm,size=0x30) addr:0x02013e40
+G3X_GetClipMtx kind:function(arm,size=0x30) addr:0x02013e10
+G3X_GetVectorMtx kind:function(arm,size=0x30) addr:0x02013e40
 func_02013e70 kind:function(arm,size=0x18) addr:0x02013e70
 func_02013e88 kind:function(arm,size=0x14) addr:0x02013e88
 func_02013e9c kind:function(arm,size=0x18) addr:0x02013e9c
@@ -549,7 +549,7 @@ func_02016ebc kind:function(arm,size=0xe4) addr:0x02016ebc
 func_02016fa0 kind:function(arm,size=0x130) addr:0x02016fa0
 func_020170d0 kind:function(arm,size=0x30) addr:0x020170d0
 func_02017100 kind:function(arm,size=0xa4) addr:0x02017100
-func_020173f0 kind:function(thumb,size=0xe) addr:0x020173f0
+MI_Zero36B kind:function(thumb,size=0xe) addr:0x020173f0
 MI_SwapWord kind:function(arm,size=0x8) addr:0x02017400
 func_02017408 kind:function(arm,size=0x7c) addr:0x02017408
 func_02017484 kind:function(arm,size=0x24) addr:0x02017484
@@ -1027,28 +1027,28 @@ NNS_FndFreeToFrmHeap kind:function(arm,size=0x2c) addr:0x02022784
 NNS_FndGetAllocatableSizeForFrmHeapEx kind:function(arm,size=0x38) addr:0x020227b0
 NNS_FndRecordStateForFrmHeap kind:function(arm,size=0x50) addr:0x020227e8
 NNS_FndFreeByStateToFrmHeap kind:function(arm,size=0x54) addr:0x02022838
-func_0202288c kind:function(arm,size=0x8) addr:0x0202288c
-func_02022894 kind:function(arm,size=0x8) addr:0x02022894
-func_0202289c kind:function(arm,size=0x8) addr:0x0202289c
-func_020228a4 kind:function(arm,size=0x8) addr:0x020228a4
-func_020228ac kind:function(arm,size=0xe4) addr:0x020228ac
-func_02022990 kind:function(arm,size=0xc) addr:0x02022990
-func_0202299c kind:function(arm,size=0x44) addr:0x0202299c
-func_020229e0 kind:function(arm,size=0x5c) addr:0x020229e0
-func_02022a3c kind:function(arm,size=0x14) addr:0x02022a3c
-func_02022a50 kind:function(arm,size=0x16c) addr:0x02022a50
-func_02022bbc kind:function(arm,size=0x84) addr:0x02022bbc
-func_02022c40 kind:function(arm,size=0x90) addr:0x02022c40
-func_02022cd0 kind:function(arm,size=0x8) addr:0x02022cd0
-func_02022cd8 kind:function(arm,size=0x58) addr:0x02022cd8
-func_02022d30 kind:function(arm,size=0x84) addr:0x02022d30
-func_02022db4 kind:function(arm,size=0x6c) addr:0x02022db4
-func_02022e20 kind:function(arm,size=0x218) addr:0x02022e20
-func_02023038 kind:function(arm,size=0x8) addr:0x02023038
-func_02023040 kind:function(arm,size=0x54) addr:0x02023040
-func_02023094 kind:function(arm,size=0xd4) addr:0x02023094
-func_02023168 kind:function(arm,size=0x44) addr:0x02023168
-func_020231ac kind:function(arm,size=0x5c) addr:0x020231ac
+AllocTexVram_ kind:function(arm,size=0x8) addr:0x0202288c local
+FreeTexVram_ kind:function(arm,size=0x8) addr:0x02022894 local
+AllocPlttVram_ kind:function(arm,size=0x8) addr:0x0202289c local
+FreePlttVram_ kind:function(arm,size=0x8) addr:0x020228a4 local
+TryToMergeBlockRegion_ kind:function(arm,size=0xe4) addr:0x020228ac local
+NNSi_GfdInitLnkVramMan kind:function(arm,size=0xc) addr:0x02022990
+NNSi_GfdInitLnkVramBlockPool kind:function(arm,size=0x44) addr:0x0202299c
+NNSi_GfdAddNewFreeBlock kind:function(arm,size=0x5c) addr:0x020229e0
+NNSi_GfdAllocLnkVram kind:function(arm,size=0x14) addr:0x02022a3c
+NNSi_GfdAllocLnkVramAligned kind:function(arm,size=0x16c) addr:0x02022a50
+NNSi_GfdMergeAllFreeBlocks kind:function(arm,size=0x84) addr:0x02022bbc
+NNSi_GfdFreeLnkVram kind:function(arm,size=0x90) addr:0x02022c40
+NNS_GfdGetLnkTexVramManagerWorkSize kind:function(arm,size=0x8) addr:0x02022cd0
+NNS_GfdInitLnkTexVramManager kind:function(arm,size=0x58) addr:0x02022cd8
+NNS_GfdAllocLnkTexVram kind:function(arm,size=0x84) addr:0x02022d30
+NNS_GfdFreeLnkTexVram kind:function(arm,size=0x6c) addr:0x02022db4
+NNS_GfdResetLnkTexVramState kind:function(arm,size=0x218) addr:0x02022e20
+NNS_GfdGetLnkPlttVramManagerWorkSize kind:function(arm,size=0x8) addr:0x02023038
+NNS_GfdInitLnkPlttVramManager kind:function(arm,size=0x54) addr:0x02023040
+NNS_GfdAllocLnkPlttVram kind:function(arm,size=0xd4) addr:0x02023094
+NNS_GfdFreeLnkPlttVram kind:function(arm,size=0x44) addr:0x02023168
+NNS_GfdResetLnkPlttVramState kind:function(arm,size=0x5c) addr:0x020231ac
 func_02023208 kind:function(arm,size=0x3c) addr:0x02023208
 func_02023244 kind:function(arm,size=0xc) addr:0x02023244
 func_02023250 kind:function(arm,size=0x140) addr:0x02023250
@@ -1137,96 +1137,96 @@ func_02026324 kind:function(arm,size=0x14) addr:0x02026324
 func_02026338 kind:function(arm,size=0x70) addr:0x02026338
 func_020263a8 kind:function(arm,size=0x54) addr:0x020263a8
 func_020263fc kind:function(arm,size=0x14) addr:0x020263fc
-func_02026410 kind:function(arm,size=0x60) addr:0x02026410
-func_02026470 kind:function(arm,size=0x98) addr:0x02026470
-func_02026508 kind:function(arm,size=0x54) addr:0x02026508
-func_0202655c kind:function(arm,size=0xb8) addr:0x0202655c
-func_02026614 kind:function(arm,size=0x64) addr:0x02026614
-func_02026678 kind:function(arm,size=0x80) addr:0x02026678
-func_020266f8 kind:function(arm,size=0x74) addr:0x020266f8
-func_0202676c kind:function(arm,size=0x54) addr:0x0202676c
-func_020267c0 kind:function(arm,size=0x14) addr:0x020267c0
-func_020267d4 kind:function(arm,size=0x14) addr:0x020267d4
-func_020267e8 kind:function(arm,size=0x8) addr:0x020267e8
-func_020267f0 kind:function(arm,size=0x14) addr:0x020267f0
-func_02026804 kind:function(arm,size=0x14) addr:0x02026804
-func_02026818 kind:function(arm,size=0x14) addr:0x02026818
-func_0202682c kind:function(arm,size=0x130) addr:0x0202682c
-func_0202695c kind:function(arm,size=0xb8) addr:0x0202695c
-func_02026a14 kind:function(arm,size=0xf4) addr:0x02026a14
-func_02026b08 kind:function(arm,size=0x8c) addr:0x02026b08
-func_02026b94 kind:function(arm,size=0xdc) addr:0x02026b94
-func_02026c70 kind:function(arm,size=0xfc) addr:0x02026c70
-func_02026d6c kind:function(arm,size=0x84) addr:0x02026d6c
-func_02026df0 kind:function(arm,size=0xb0) addr:0x02026df0
-func_02026ea0 kind:function(arm,size=0x94) addr:0x02026ea0
-func_02026f34 kind:function(arm,size=0x140) addr:0x02026f34
-func_02027074 kind:function(arm,size=0x30) addr:0x02027074
-func_020270a4 kind:function(arm,size=0x78) addr:0x020270a4
-func_0202711c kind:function(arm,size=0x30) addr:0x0202711c
-func_0202714c kind:function(arm,size=0x30) addr:0x0202714c
-func_0202717c kind:function(arm,size=0x3c) addr:0x0202717c
-func_020271b8 kind:function(arm,size=0x14) addr:0x020271b8
-func_020271cc kind:function(arm,size=0x24) addr:0x020271cc
-func_020271f0 kind:function(arm,size=0x24) addr:0x020271f0
-func_02027214 kind:function(arm,size=0x2c) addr:0x02027214
-func_02027240 kind:function(arm,size=0x40) addr:0x02027240
-func_02027280 kind:function(arm,size=0x64) addr:0x02027280
-func_020272e4 kind:function(arm,size=0x34) addr:0x020272e4
-func_02027318 kind:function(arm,size=0x34) addr:0x02027318
-func_0202734c kind:function(arm,size=0x6c) addr:0x0202734c
-func_020273b8 kind:function(arm,size=0x70) addr:0x020273b8
-func_02027428 kind:function(arm,size=0x3f0) addr:0x02027428
-func_02027818 kind:function(arm,size=0x88) addr:0x02027818
-func_020278a0 kind:function(arm,size=0x48) addr:0x020278a0
-func_020278e8 kind:function(arm,size=0x198) addr:0x020278e8
-func_02027a80 kind:function(arm,size=0x64) addr:0x02027a80
-func_02027ae4 kind:function(arm,size=0xe0) addr:0x02027ae4
-func_02027bc4 kind:function(arm,size=0x28) addr:0x02027bc4
-func_02027bec kind:function(arm,size=0x28) addr:0x02027bec
-func_02027c14 kind:function(arm,size=0x178) addr:0x02027c14
-func_02027d8c kind:function(arm,size=0xcc) addr:0x02027d8c
-func_02027e58 kind:function(arm,size=0x474) addr:0x02027e58
-func_020282cc kind:function(arm,size=0xb0) addr:0x020282cc
-func_0202837c kind:function(arm,size=0xd4) addr:0x0202837c
-func_02028450 kind:function(arm,size=0xa0) addr:0x02028450
-func_020284f0 kind:function(arm,size=0x45c) addr:0x020284f0
-func_0202894c kind:function(arm,size=0x2ec) addr:0x0202894c
-func_02028c38 kind:function(arm,size=0x34c) addr:0x02028c38
-func_02028f84 kind:function(arm,size=0x748) addr:0x02028f84
-func_020296cc kind:function(arm,size=0xdc) addr:0x020296cc
-func_020297a8 kind:function(arm,size=0x68) addr:0x020297a8
-func_02029810 kind:function(arm,size=0x350) addr:0x02029810
-func_02029b60 kind:function(arm,size=0x3b4) addr:0x02029b60
-func_02029f14 kind:function(arm,size=0x2a0) addr:0x02029f14
-func_0202a1b4 kind:function(arm,size=0x20) addr:0x0202a1b4
-func_0202a1d4 kind:function(arm,size=0x58) addr:0x0202a1d4
-func_0202a22c kind:function(arm,size=0x18) addr:0x0202a22c
-func_0202a244 kind:function(arm,size=0xc) addr:0x0202a244
-func_0202a250 kind:function(arm,size=0x10) addr:0x0202a250
-func_0202a260 kind:function(arm,size=0x18c) addr:0x0202a260
-func_0202a3ec kind:function(arm,size=0xdc) addr:0x0202a3ec
-func_0202a4c8 kind:function(arm,size=0x8c) addr:0x0202a4c8
-func_0202a554 kind:function(arm,size=0x28) addr:0x0202a554
-func_0202a57c kind:function(arm,size=0xa8) addr:0x0202a57c
-func_0202a624 kind:function(arm,size=0xa8) addr:0x0202a624
-func_0202a6cc kind:function(arm,size=0x78) addr:0x0202a6cc
-func_0202a744 kind:function(arm,size=0x78) addr:0x0202a744
-func_0202a7bc kind:function(arm,size=0x78) addr:0x0202a7bc
-func_0202a834 kind:function(arm,size=0x7c) addr:0x0202a834
-func_0202a8b0 kind:function(arm,size=0x40) addr:0x0202a8b0
-func_0202a8f0 kind:function(arm,size=0x40) addr:0x0202a8f0
-func_0202a930 kind:function(arm,size=0x40) addr:0x0202a930
-func_0202a970 kind:function(arm,size=0x1bc) addr:0x0202a970
-func_0202ab2c kind:function(arm,size=0x164) addr:0x0202ab2c
-func_0202ac90 kind:function(arm,size=0x10) addr:0x0202ac90
-func_0202aca0 kind:function(arm,size=0x40) addr:0x0202aca0
-func_0202ace0 kind:function(arm,size=0x5c) addr:0x0202ace0
-func_0202ad3c kind:function(arm,size=0x38) addr:0x0202ad3c
-func_0202ad74 kind:function(arm,size=0x28) addr:0x0202ad74
-func_0202ad9c kind:function(arm,size=0x28) addr:0x0202ad9c
-func_0202adc4 kind:function(arm,size=0x74) addr:0x0202adc4
-func_0202ae38 kind:function(arm,size=0x34) addr:0x0202ae38
+NNS_G3dAnmObjCalcSizeRequired kind:function(arm,size=0x60) addr:0x02026410
+NNS_G3dAnmObjInit kind:function(arm,size=0x98) addr:0x02026470
+NNS_G3dRenderObjInit kind:function(arm,size=0x54) addr:0x02026508
+addLink_ kind:function(arm,size=0xb8) addr:0x0202655c local
+updateHintVec_ kind:function(arm,size=0x64) addr:0x02026614 local
+NNS_G3dRenderObjAddAnmObj kind:function(arm,size=0x80) addr:0x02026678
+removeLink_ kind:function(arm,size=0x74) addr:0x020266f8 local
+NNS_G3dRenderObjRemoveAnmObj kind:function(arm,size=0x54) addr:0x0202676c
+NNS_G3dRenderObjSetCallBack kind:function(arm,size=0x14) addr:0x020267c0
+NNS_G3dRenderObjResetCallBack kind:function(arm,size=0x14) addr:0x020267d4
+NNS_G3dRenderObjSetInitFunc kind:function(arm,size=0x8) addr:0x020267e8
+NNS_G3dTexGetRequiredSize kind:function(arm,size=0x14) addr:0x020267f0
+NNS_G3dTex4x4GetRequiredSize kind:function(arm,size=0x14) addr:0x02026804
+NNS_G3dPlttGetRequiredSize kind:function(arm,size=0x14) addr:0x02026818
+bindMdlTex_Internal_ kind:function(arm,size=0x130) addr:0x0202682c local
+releaseMdlTex_Internal_ kind:function(arm,size=0xb8) addr:0x0202695c local
+NNS_G3dBindMdlTex kind:function(arm,size=0xf4) addr:0x02026a14
+NNS_G3dReleaseMdlTex kind:function(arm,size=0x8c) addr:0x02026b08
+bindMdlPltt_Internal_ kind:function(arm,size=0xdc) addr:0x02026b94 local
+NNS_G3dBindMdlPltt kind:function(arm,size=0xfc) addr:0x02026c70
+NNS_G3dReleaseMdlPltt kind:function(arm,size=0x84) addr:0x02026d6c
+NNS_G3dBindMdlSet kind:function(arm,size=0xb0) addr:0x02026df0
+NNS_G3dReleaseMdlSet kind:function(arm,size=0x94) addr:0x02026ea0
+NNS_G3dGlbInit kind:function(arm,size=0x140) addr:0x02026f34
+NNS_G3dGlbFlushP kind:function(arm,size=0x30) addr:0x02027074
+NNS_G3dGlbFlushVP kind:function(arm,size=0x78) addr:0x020270a4
+NNS_G3dGlbSetBaseTrans kind:function(arm,size=0x30) addr:0x0202711c
+NNS_G3dGlbSetBaseScale kind:function(arm,size=0x30) addr:0x0202714c
+NNS_G3dGlbLightVector kind:function(arm,size=0x3c) addr:0x0202717c
+NNS_G3dGlbLightColor kind:function(arm,size=0x14) addr:0x020271b8
+NNS_G3dGlbMaterialColorDiffAmb kind:function(arm,size=0x24) addr:0x020271cc
+NNS_G3dGlbMaterialColorSpecEmi kind:function(arm,size=0x24) addr:0x020271f0
+NNS_G3dGlbPolygonAttr kind:function(arm,size=0x2c) addr:0x02027214
+NNS_G3dGlbGetInvV kind:function(arm,size=0x40) addr:0x02027240
+calcSrtCameraMtx_ kind:function(arm,size=0x64) addr:0x02027280 local
+NNS_G3dGlbGetWV kind:function(arm,size=0x34) addr:0x020272e4
+NNS_G3dGlbGetInvWV kind:function(arm,size=0x34) addr:0x02027318
+NNSi_G3dAnmBlendMat kind:function(arm,size=0x6c) addr:0x0202734c
+blendScaleVec_ kind:function(arm,size=0x70) addr:0x020273b8 local
+NNSi_G3dAnmBlendJnt kind:function(arm,size=0x3f0) addr:0x02027428
+NNSi_G3dAnmBlendVis kind:function(arm,size=0x88) addr:0x02027818
+G3dDrawInternal_Loop_ kind:function(arm,size=0x48) addr:0x020278a0 local
+G3dDrawInternal_ kind:function(arm,size=0x198) addr:0x020278e8 local
+updateHintVec_ kind:function(arm,size=0x64) addr:0x02027a80 local
+NNS_G3dDraw kind:function(arm,size=0xe0) addr:0x02027ae4
+NNSi_G3dFuncSbc_NOP kind:function(arm,size=0x28) addr:0x02027bc4
+NNSi_G3dFuncSbc_RET kind:function(arm,size=0x28) addr:0x02027bec
+NNSi_G3dFuncSbc_NODE kind:function(arm,size=0x178) addr:0x02027c14
+NNSi_G3dFuncSbc_MTX kind:function(arm,size=0xcc) addr:0x02027d8c
+NNSi_G3dFuncSbc_MAT_InternalDefault kind:function(arm,size=0x474) addr:0x02027e58
+NNSi_G3dFuncSbc_MAT kind:function(arm,size=0xb0) addr:0x020282cc
+NNSi_G3dFuncSbc_SHP_InternalDefault kind:function(arm,size=0xd4) addr:0x0202837c
+NNSi_G3dFuncSbc_SHP kind:function(arm,size=0xa0) addr:0x02028450
+NNSi_G3dFuncSbc_NODEDESC kind:function(arm,size=0x45c) addr:0x020284f0
+NNSi_G3dFuncSbc_BB kind:function(arm,size=0x2ec) addr:0x0202894c
+NNSi_G3dFuncSbc_BBY kind:function(arm,size=0x34c) addr:0x02028c38
+NNSi_G3dFuncSbc_NODEMIX kind:function(arm,size=0x748) addr:0x02028f84
+NNSi_G3dFuncSbc_CALLDL kind:function(arm,size=0xdc) addr:0x020296cc
+NNSi_G3dFuncSbc_POSSCALE kind:function(arm,size=0x68) addr:0x020297a8
+NNSi_G3dFuncSbc_ENVMAP kind:function(arm,size=0x350) addr:0x02029810
+NNSi_G3dFuncSbc_PRJMAP kind:function(arm,size=0x3b4) addr:0x02029b60
+NNS_G3dDraw1Mat1Shp kind:function(arm,size=0x2a0) addr:0x02029f14
+NNS_G3dGeSetBuffer kind:function(arm,size=0x20) addr:0x0202a1b4
+NNS_G3dGeFlushBuffer kind:function(arm,size=0x58) addr:0x0202a1d4
+NNS_G3dGeWaitSendDL kind:function(arm,size=0x18) addr:0x0202a22c
+simpleUnlock_ kind:function(arm,size=0xc) addr:0x0202a244
+NNS_G3dGeUseFastDma kind:function(arm,size=0x10) addr:0x0202a250
+NNS_G3dGeSendDL kind:function(arm,size=0x18c) addr:0x0202a260
+NNS_G3dGeBufferOP_N kind:function(arm,size=0xdc) addr:0x0202a3ec
+NNS_G3dGetCurrentMtx kind:function(arm,size=0x8c) addr:0x0202a4c8
+NNS_G3dInit kind:function(arm,size=0x28) addr:0x0202a554
+NNSi_G3dModifyMatFlag kind:function(arm,size=0xa8) addr:0x0202a57c
+NNSi_G3dModifyPolygonAttrMask kind:function(arm,size=0xa8) addr:0x0202a624
+NNS_G3dMdlSetMdlCullMode kind:function(arm,size=0x78) addr:0x0202a6cc
+NNS_G3dMdlSetMdlPolygonID kind:function(arm,size=0x78) addr:0x0202a744
+NNS_G3dMdlSetMdlAlpha kind:function(arm,size=0x78) addr:0x0202a7bc
+NNS_G3dMdlSetMdlXLDepthUpdate kind:function(arm,size=0x7c) addr:0x0202a834
+NNS_G3dMdlSetMdlCullModeAll kind:function(arm,size=0x40) addr:0x0202a8b0
+NNS_G3dMdlSetMdlPolygonIDAll kind:function(arm,size=0x40) addr:0x0202a8f0
+NNS_G3dMdlSetMdlXLDepthUpdateAll kind:function(arm,size=0x40) addr:0x0202a930
+NNS_G3dGetResDataByName kind:function(arm,size=0x1bc) addr:0x0202a970
+NNS_G3dGetResDictIdxByName kind:function(arm,size=0x164) addr:0x0202ab2c
+NNS_G3dGetMdlSet kind:function(arm,size=0x10) addr:0x0202ac90
+NNS_G3dGetTex kind:function(arm,size=0x40) addr:0x0202aca0
+NNS_G3dGetAnmByIdx kind:function(arm,size=0x5c) addr:0x0202ace0
+NNS_G3dGetAnmByName kind:function(arm,size=0x38) addr:0x0202ad3c
+NNSi_G3dGetTexPatAnmTexNameByIdx kind:function(arm,size=0x28) addr:0x0202ad74
+NNSi_G3dGetTexPatAnmPlttNameByIdx kind:function(arm,size=0x28) addr:0x0202ad9c
+NNSi_G3dGetTexPatAnmFV kind:function(arm,size=0x74) addr:0x0202adc4
+NNSi_G3dGetTexPatAnmDataByIdx kind:function(arm,size=0x34) addr:0x0202ae38
 func_0202ae6c kind:function(arm,size=0x7c) addr:0x0202ae6c
 func_0202aee8 kind:function(arm,size=0x3c) addr:0x0202aee8
 func_0202af24 kind:function(arm,size=0x94) addr:0x0202af24
@@ -1240,55 +1240,55 @@ func_0202b994 kind:function(arm,size=0x180) addr:0x0202b994
 func_0202bb14 kind:function(arm,size=0x404) addr:0x0202bb14
 func_0202bf18 kind:function(arm,size=0x338) addr:0x0202bf18
 func_0202c250 kind:function(arm,size=0x168) addr:0x0202c250
-func_0202c3b8 kind:function(arm,size=0x160) addr:0x0202c3b8
-func_0202c518 kind:function(arm,size=0xec) addr:0x0202c518
-func_0202c604 kind:function(arm,size=0xcc) addr:0x0202c604
-func_0202c6d0 kind:function(arm,size=0x10c) addr:0x0202c6d0
-func_0202c7dc kind:function(arm,size=0xf4) addr:0x0202c7dc
-func_0202c8d0 kind:function(arm,size=0x10c) addr:0x0202c8d0
-func_0202c9dc kind:function(arm,size=0xfc) addr:0x0202c9dc
-func_0202cad8 kind:function(arm,size=0xcc) addr:0x0202cad8
-func_0202cba4 kind:function(arm,size=0x60) addr:0x0202cba4
+GetMatColAnmValue_ kind:function(arm,size=0x160) addr:0x0202c3b8 local
+GetMatColAnmuAlphaValue_ kind:function(arm,size=0xec) addr:0x0202c518 local
+NNSi_G3dAnmObjInitNsBma kind:function(arm,size=0xcc) addr:0x0202c604
+NNSi_G3dAnmCalcNsBma kind:function(arm,size=0x10c) addr:0x0202c6d0
+GetTexSRTAnmVectorVal_ kind:function(arm,size=0xf4) addr:0x0202c7dc local
+GetTexSRTAnmSinCosVal_ kind:function(arm,size=0x10c) addr:0x0202c8d0 local
+GetTexSRTAnm_ kind:function(arm,size=0xfc) addr:0x0202c9dc local
+NNSi_G3dAnmObjInitNsBta kind:function(arm,size=0xcc) addr:0x0202cad8
+NNSi_G3dAnmCalcNsBta kind:function(arm,size=0x60) addr:0x0202cba4
 func_0202cc04 kind:function(arm,size=0xd0) addr:0x0202cc04
 func_0202ccd4 kind:function(arm,size=0xd4) addr:0x0202ccd4
 func_0202cda8 kind:function(arm,size=0x64) addr:0x0202cda8
 func_0202ce0c kind:function(arm,size=0x90) addr:0x0202ce0c
-func_0202ce9c kind:function(arm,size=0x48) addr:0x0202ce9c
-func_0202cee4 kind:function(arm,size=0x54) addr:0x0202cee4
-func_0202cf38 kind:function(arm,size=0x74) addr:0x0202cf38
-func_0202cfac kind:function(arm,size=0x3c) addr:0x0202cfac
-func_0202cfe8 kind:function(arm,size=0xbc) addr:0x0202cfe8
-func_0202d0a4 kind:function(arm,size=0x148) addr:0x0202d0a4
-func_0202d1ec kind:function(arm,size=0x108) addr:0x0202d1ec
-func_0202d2f4 kind:function(arm,size=0xc4) addr:0x0202d2f4
-func_0202d3b8 kind:function(arm,size=0x74) addr:0x0202d3b8
-func_0202d42c kind:function(arm,size=0x4c) addr:0x0202d42c
-func_0202d478 kind:function(arm,size=0xe0) addr:0x0202d478
-func_0202d558 kind:function(arm,size=0xac) addr:0x0202d558
-func_0202d604 kind:function(arm,size=0x40) addr:0x0202d604
-func_0202d644 kind:function(arm,size=0x24) addr:0x0202d644
-func_0202d668 kind:function(arm,size=0x138) addr:0x0202d668
-func_0202d7a0 kind:function(arm,size=0x124) addr:0x0202d7a0
-func_0202d8c4 kind:function(arm,size=0x214) addr:0x0202d8c4
-func_0202dad8 kind:function(arm,size=0x1b0) addr:0x0202dad8
-func_0202dc88 kind:function(arm,size=0x104) addr:0x0202dc88
-func_0202dd8c kind:function(arm,size=0xd8) addr:0x0202dd8c
-func_0202de64 kind:function(arm,size=0x74) addr:0x0202de64
-func_0202ded8 kind:function(arm,size=0x4c) addr:0x0202ded8
-func_0202df24 kind:function(arm,size=0xf4) addr:0x0202df24
-func_0202e018 kind:function(arm,size=0xc8) addr:0x0202e018
-func_0202e0e0 kind:function(arm,size=0x48) addr:0x0202e0e0
-func_0202e128 kind:function(arm,size=0x24) addr:0x0202e128
-func_0202e14c kind:function(arm,size=0x138) addr:0x0202e14c
-func_0202e284 kind:function(arm,size=0x160) addr:0x0202e284
-func_0202e3e4 kind:function(arm,size=0xd8) addr:0x0202e3e4
-func_0202e4bc kind:function(arm,size=0x78) addr:0x0202e4bc
-func_0202e534 kind:function(arm,size=0x50) addr:0x0202e534
-func_0202e584 kind:function(arm,size=0xcc) addr:0x0202e584
-func_0202e650 kind:function(arm,size=0xa0) addr:0x0202e650
-func_0202e6f0 kind:function(arm,size=0x3c) addr:0x0202e6f0
-func_0202e72c kind:function(arm,size=0x24) addr:0x0202e72c
-func_0202e750 kind:function(arm,size=0x174) addr:0x0202e750
+NNSi_G3dAnmObjInitNsBva kind:function(arm,size=0x48) addr:0x0202ce9c
+NNSi_G3dAnmCalcNsBva kind:function(arm,size=0x54) addr:0x0202cee4
+NNSi_G3dSendJointSRTBasic kind:function(arm,size=0x74) addr:0x0202cf38
+NNSi_G3dGetJointScaleBasic kind:function(arm,size=0x3c) addr:0x0202cfac
+NNSi_G3dSendJointSRTMaya kind:function(arm,size=0xbc) addr:0x0202cfe8
+NNSi_G3dGetJointScaleMaya kind:function(arm,size=0x148) addr:0x0202d0a4
+texmtxCalc_flag_ kind:function(arm,size=0x108) addr:0x0202d1ec local
+texmtxCalc_flagS_ kind:function(arm,size=0xc4) addr:0x0202d2f4 local
+texmtxCalc_flagR_ kind:function(arm,size=0x74) addr:0x0202d3b8 local
+texmtxCalc_flagRS_ kind:function(arm,size=0x4c) addr:0x0202d42c local
+texmtxCalc_flagT_ kind:function(arm,size=0xe0) addr:0x0202d478 local
+texmtxCalc_flagTS_ kind:function(arm,size=0xac) addr:0x0202d558 local
+texmtxCalc_flagTR_ kind:function(arm,size=0x40) addr:0x0202d604 local
+texmtxCalc_flagTRS_ kind:function(arm,size=0x24) addr:0x0202d644 local
+NNSi_G3dSendTexSRTMaya kind:function(arm,size=0x138) addr:0x0202d668
+NNSi_G3dSendJointSRTSi3d kind:function(arm,size=0x124) addr:0x0202d7a0
+NNSi_G3dGetJointScaleSi3d kind:function(arm,size=0x214) addr:0x0202d8c4
+NNSi_G3dSendTexSRTSi3d kind:function(arm,size=0x1b0) addr:0x0202dad8
+texmtxCalc_flag_ kind:function(arm,size=0x104) addr:0x0202dc88 local
+texmtxCalc_flagS_ kind:function(arm,size=0xd8) addr:0x0202dd8c local
+texmtxCalc_flagR_ kind:function(arm,size=0x74) addr:0x0202de64 local
+texmtxCalc_flagRS_ kind:function(arm,size=0x4c) addr:0x0202ded8 local
+texmtxCalc_flagT_ kind:function(arm,size=0xf4) addr:0x0202df24 local
+texmtxCalc_flagTS_ kind:function(arm,size=0xc8) addr:0x0202e018 local
+texmtxCalc_flagTR_ kind:function(arm,size=0x48) addr:0x0202e0e0 local
+texmtxCalc_flagTRS_ kind:function(arm,size=0x24) addr:0x0202e128 local
+NNSi_G3dSendTexSRT3dsMax kind:function(arm,size=0x138) addr:0x0202e14c
+texmtxCalc_flag_ kind:function(arm,size=0x160) addr:0x0202e284 local
+texmtxCalc_flagS_ kind:function(arm,size=0xd8) addr:0x0202e3e4 local
+texmtxCalc_flagR_ kind:function(arm,size=0x78) addr:0x0202e4bc local
+texmtxCalc_flagRS_ kind:function(arm,size=0x50) addr:0x0202e534 local
+texmtxCalc_flagT_ kind:function(arm,size=0xcc) addr:0x0202e584 local
+texmtxCalc_flagTS_ kind:function(arm,size=0xa0) addr:0x0202e650 local
+texmtxCalc_flagTR_ kind:function(arm,size=0x3c) addr:0x0202e6f0 local
+texmtxCalc_flagTRS_ kind:function(arm,size=0x24) addr:0x0202e72c local
+NNSi_G3dSendTexSRTXsi kind:function(arm,size=0x174) addr:0x0202e750
 func_0202e8c4 kind:function(arm,size=0x7c) addr:0x0202e8c4
 func_0202e940 kind:function(arm,size=0x30) addr:0x0202e940
 func_0202e970 kind:function(arm,size=0x38) addr:0x0202e970
@@ -2728,6 +2728,8 @@ func_02070dcc kind:function(arm,size=0x10) addr:0x02070dcc
 FX_SinCosTable_ kind:data(any) addr:0x02071060
 FX_AtanTable_ kind:data(any) addr:0x02075060
 sVolumeTable kind:data(any) addr:0x02075310
+matColorMask_ kind:data(any) addr:0x020756e4
+pivotUtil_ kind:data(any) addr:0x02075704
 func_02075810 kind:function(arm,size=0xe4) addr:0x02075810
 func_02075940 kind:function(arm,size=0x138) addr:0x02075940
 func_02075b6c kind:function(arm,size=0x108) addr:0x02075b6c
@@ -2829,45 +2831,45 @@ data_0208af80 kind:data(any) addr:0x0208af80
 data_0208af88 kind:data(any) addr:0x0208af88
 data_0208afc8 kind:data(any) addr:0x0208afc8
 data_0208afd0 kind:data(any) addr:0x0208afd0
-data_0208afd4 kind:data(any) addr:0x0208afd4
-data_0208afd8 kind:data(any) addr:0x0208afd8
-data_0208afdc kind:data(any) addr:0x0208afdc
-data_0208afe0 kind:data(any) addr:0x0208afe0
+NNS_GfdDefaultFuncAllocTexVram kind:data(any) addr:0x0208afd4
+NNS_GfdDefaultFuncFreeTexVram kind:data(any) addr:0x0208afd8
+NNS_GfdDefaultFuncAllocPlttVram kind:data(any) addr:0x0208afdc
+NNS_GfdDefaultFuncFreePlttVram kind:data(any) addr:0x0208afe0
 data_0208afe4 kind:data(any) addr:0x0208afe4
-data_0208aff8 kind:data(any) addr:0x0208aff8
-data_0208affc kind:data(any) addr:0x0208affc
-data_0208b000 kind:data(any) addr:0x0208b000
-data_0208b004 kind:data(any) addr:0x0208b004
-data_0208b008 kind:data(any) addr:0x0208b008
-data_0208b00c kind:data(any) addr:0x0208b00c
-data_0208b010 kind:data(any) addr:0x0208b010
-data_0208b014 kind:data(any) addr:0x0208b014
-data_0208b018 kind:data(any) addr:0x0208b018
-data_0208b01c kind:data(any) addr:0x0208b01c
+NNS_G3dAnmFmtNum kind:data(any) addr:0x0208aff8
+NNS_G3dFuncAnmVisNsBvaDefault kind:data(any) addr:0x0208affc
+NNS_G3dFuncAnmJntNsBcaDefault kind:data(any) addr:0x0208b000
+NNS_G3dFuncAnmMatNsBtaDefault kind:data(any) addr:0x0208b004
+NNS_G3dFuncAnmMatNsBtpDefault kind:data(any) addr:0x0208b008
+NNS_G3dFuncAnmMatNsBmaDefault kind:data(any) addr:0x0208b00c
+NNS_G3dFuncBlendVisDefault kind:data(any) addr:0x0208b010
+NNS_G3dFuncBlendJntDefault kind:data(any) addr:0x0208b014
+NNS_G3dFuncBlendMatDefault kind:data(any) addr:0x0208b018
+NNS_G3dAnmObjInitFuncArray kind:data(any) addr:0x0208b01c
 data_0208b020 kind:data(any) addr:0x0208b020
-data_0208b06c kind:data(any) addr:0x0208b06c
-data_0208b078 kind:data(any) addr:0x0208b078
-data_0208b084 kind:data(any) addr:0x0208b084
-data_0208b094 kind:data(any) addr:0x0208b094
+NNS_G3dSendJointSRT_FuncArray kind:data(any) addr:0x0208b06c
+NNS_G3dGetJointScale_FuncArray kind:data(any) addr:0x0208b078
+NNS_G3dSendTexSRT_FuncArray kind:data(any) addr:0x0208b084
+texImageParamCmd_ kind:data(any) addr:0x0208b094
 data_0208b098 kind:data(any) addr:0x0208b098
 data_0208b0a0 kind:data(any) addr:0x0208b0a0
-data_0208b0a4 kind:data(any) addr:0x0208b0a4
-data_0208b0b4 kind:data(any) addr:0x0208b0b4
-data_0208b0c4 kind:data(any) addr:0x0208b0c4
-data_0208b104 kind:data(any) addr:0x0208b104
+NNS_G3dFuncSbcMatTable kind:data(any) addr:0x0208b0a4
+NNS_G3dFuncSbcShpTable kind:data(any) addr:0x0208b0b4
+prjMapMtx_ kind:data(any) addr:0x0208b0c4
+bbCmd_ kind:data(any) addr:0x0208b104
 data_0208b108 kind:data(any) addr:0x0208b108
 data_0208b110 kind:data(any) addr:0x0208b110
 data_0208b134 kind:data(any) addr:0x0208b134
 data_0208b140 kind:data(any) addr:0x0208b140
-data_0208b14c kind:data(any) addr:0x0208b14c
+bbyCmd_ kind:data(any) addr:0x0208b14c
 data_0208b150 kind:data(any) addr:0x0208b150
 data_0208b158 kind:data(any) addr:0x0208b158
 data_0208b17c kind:data(any) addr:0x0208b17c
 data_0208b188 kind:data(any) addr:0x0208b188
-data_0208b194 kind:data(any) addr:0x0208b194
-data_0208b214 kind:data(any) addr:0x0208b214
-data_0208b234 kind:data(any) addr:0x0208b234
-data_0208b254 kind:data(any) addr:0x0208b254
+NNS_G3dFuncSbcTable kind:data(any) addr:0x0208b194
+calcTexMtx_ kind:data(any) addr:0x0208b214 local
+calcTexMtx_ kind:data(any) addr:0x0208b234 local
+calcTexMtx_ kind:data(any) addr:0x0208b254 local
 data_0208b274 kind:data(any) addr:0x0208b274
 data_0208b27c kind:data(any) addr:0x0208b27c
 data_0208b288 kind:data(any) addr:0x0208b288
@@ -3602,10 +3604,10 @@ data_020917e0 kind:bss addr:0x020917e0
 data_020917e4 kind:bss addr:0x020917e4
 sRootListInitialized kind:bss addr:0x020917e8 local
 sRootList kind:bss addr:0x020917ec local
-data_020917f8 kind:bss addr:0x020917f8
+sLnkTexVramMgr kind:bss addr:0x020917f8
 data_020917fc kind:bss addr:0x020917fc
 data_02091800 kind:bss addr:0x02091800
-data_02091814 kind:bss addr:0x02091814
+sLnkPlttVramMgr kind:bss addr:0x02091814
 data_02091818 kind:bss addr:0x02091818
 data_02091828 kind:bss addr:0x02091828
 data_0209182c kind:bss addr:0x0209182c
@@ -3620,7 +3622,7 @@ data_020925e0 kind:bss addr:0x020925e0
 data_02092600 kind:bss addr:0x02092600
 data_020927ac kind:bss addr:0x020927ac
 data_020927ec kind:bss addr:0x020927ec
-data_020927f8 kind:bss addr:0x020927f8
+NNS_G3dGlb kind:bss addr:0x020927f8
 data_020927fc kind:bss addr:0x020927fc
 data_02092800 kind:bss addr:0x02092800
 data_02092844 kind:bss addr:0x02092844
@@ -3635,8 +3637,8 @@ data_02092928 kind:bss addr:0x02092928
 data_02092958 kind:bss addr:0x02092958
 data_02092a38 kind:bss addr:0x02092a38
 data_02092a50 kind:bss addr:0x02092a50
-data_02092a5c kind:bss addr:0x02092a5c
-data_02092a60 kind:bss addr:0x02092a60
+NNS_G3dRS kind:bss addr:0x02092a5c
+NNS_G3dRSOnGlb kind:bss addr:0x02092a60
 data_02093860 kind:bss addr:0x02093860
 data_02093864 kind:bss addr:0x02093864
 data_02093868 kind:bss addr:0x02093868
@@ -3645,7 +3647,7 @@ data_02093870 kind:bss addr:0x02093870
 data_02093874 kind:bss addr:0x02093874
 data_02093e60 kind:bss addr:0x02093e60
 data_02093ea0 kind:bss addr:0x02093ea0
-data_02095760 kind:bss addr:0x02095760
+NNSi_G3dGeState kind:bss addr:0x02095760
 data_02095764 kind:bss addr:0x02095764
 data_0209576c kind:bss addr:0x0209576c
 data_0209577c kind:bss addr:0x0209577c
