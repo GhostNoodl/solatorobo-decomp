@@ -607,7 +607,7 @@ void func_ov000_02153c48(void *a, s32 b, int c, int d, int e);
 
 extern VFunc data_ov002_021efeb8[];
 extern VFunc data_ov002_021f0674[];
-void MIi_CpuCopy32(void *src, void *dst);
+void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 int func_ov002_021e7ea8(void *a);
 void func_ov002_021e7dac(void *self);
 typedef struct Vec3 {

@@ -58,7 +58,7 @@ void func_ov002_021e7dac(void *self) {
     func_0204ab54(data_02097e48);
     if (FIELD(self, 0x148, u8)) {
         u8 *g = data_02097d48;
-        ((void (*)(void *, void *, u32))MIi_CpuCopy32)((u8 *)self + 0x14c, g + 0x8b0, 0x180);
+        MIi_CpuCopy32((u8 *)self + 0x14c, g + 0x8b0, 0x180);
         func_02043b20(g + 0x8b0);
         FIELD(self, 0x148, u8) = 0;
     }
