@@ -4,7 +4,7 @@ extern "C" {
 
 void func_ov002_021e779c(void *self) {
     void *o = FIELD(self, 0x48, void *);
-    u8 *g;
+    G020927f8 *g;
     if (o != NULL && FIELD(o, 4, s32) == 8) {
         s32 y = FIELD(o, 0x54, s32) + 0x120000;
         s32 x = FIELD(o, 0x50, s32);
@@ -17,14 +17,14 @@ void func_ov002_021e779c(void *self) {
         w->y = y;
         w->z = -0x1000;
     }
-    g = data_020927f8;
-    FIELD(g, 0x240, Vec3) = FIELD(self, 0x50, Vec3);
-    FIELD(g, 0x24c, Vec3) = FIELD(self, 0x68, Vec3);
-    FIELD(g, 0x258, Vec3) = FIELD(self, 0x5c, Vec3);
+    g = &data_020927f8;
+    g->v240 = FIELD(self, 0x50, Vec3);
+    g->v24c = FIELD(self, 0x68, Vec3);
+    g->v258 = FIELD(self, 0x5c, Vec3);
     func_02011ff0((u8 *)self + 0x50, (u8 *)self + 0x68, (u8 *)self + 0x5c, data_02092844);
-    FIELD(g, 0xfc, u32) &= ~0xe8;
+    g->fc &= ~0xe8;
     func_02016d68((u8 *)self + 0x74, data_02092800, 0x40);
-    FIELD(g, 0xfc, u32) &= ~0x50;
+    g->fc &= ~0x50;
 }
 
 BOOL func_ov002_021e7880(void *self) {

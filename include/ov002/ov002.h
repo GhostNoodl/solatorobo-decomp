@@ -220,6 +220,12 @@ static inline Task50 *Task_021cd06c_ctor(Task50 *self) {
 
 #define FIELD(p, off, T) (*(T *)((u8 *)(p) + (off)))
 
+/* NitroSDK sin/cos table: s16 sin,cos pairs */
+extern "C" const s16 FX_SinCosTable_[];
+#define FX_SINCOS_TABLE FX_SinCosTable_
+/* Element i of the table, folded into a single symbol offset. */
+#define FX_SINCOS(i) (FX_SinCosTable_[(i)])
+
 extern void *data_ov000_021ccd40;
 extern void *data_ov000_021ccd38;
 int func_02054f10(void *a, int b);
@@ -485,6 +491,7 @@ void *func_ov002_021d74c0(void *self);
 /* _s32_div_f: returns the quotient in r0 and the remainder in r1. */
 s64 _s32_div_f(s32 a, s32 b);
 #define S32_MOD(a, b) ((s32)(_s32_div_f((a), (b)) >> 32))
+#define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 u8 *func_0206ef50(u16 id);
 void *func_02070dcc(u8 id);
@@ -518,7 +525,6 @@ void func_020270a4(void);
 void func_02027ae4(void *a);
 void func_0202a1d4(void);
 extern u8 data_020928b4[];
-extern u8 data_020927f8[];
 void func_020117a4(void *a, void *b, void *c);
 void func_ov002_021e3b0c(s32 *out, s32 *pos, s32 *origin);
 
@@ -609,6 +615,15 @@ typedef struct Vec3 {
     s32 y;
     s32 z;
 } Vec3;
+typedef struct G020927f8 {
+    u8 pad[0xfc];
+    u32 fc;
+    u8 pad100[0x140];
+    Vec3 v240;
+    Vec3 v24c;
+    Vec3 v258;
+} G020927f8;
+extern G020927f8 data_020927f8;
 void func_ov000_021c524c(void *a, void *b, Vec3 *pos, s32 d);
 
 extern VFunc data_ov000_021ccbe0[];
@@ -702,7 +717,7 @@ static inline void func_ov002_021e4d4c_inline(void *self) {
     }
 }
 
-void func_0204aaec(void *a);
+void func_0204aaec(void *a, void *b);
 void func_ov002_021ec2ac(void *self);
 
 BOOL func_ov002_021d52e0(void *self, void *ev);
@@ -758,7 +773,7 @@ extern VFunc data_ov002_021efe6c[];
 
 void func_02026508(void *a, void *b);
 void *func_0202aca0(void *a);
-void func_ov002_021da184(void *self);
+void func_ov002_021da184(void *self, void *p);
 void func_ov000_021c9544(void *a, void *b);
 typedef struct Bits021d9e38 {
     u16 b0 : 1;
@@ -776,7 +791,7 @@ typedef struct Oam021e7ab8 {
     u32 b1 : 16;
 } Oam021e7ab8;
 
-void func_ov002_021d36b8(void *self);
+void func_ov002_021d36b8(void *self, s32 n);
 extern VFunc data_ov002_021eff74[];
 void func_ov002_021eacd0(void *self);
 void func_02043858(void *p);
