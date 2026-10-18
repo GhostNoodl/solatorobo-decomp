@@ -84,4 +84,15 @@ bool func_ov008_021cff98(Ov008V *self) {
     return Ov008_IsState2(self);
 }
 
+s32 func_ov008_021cffb8(Ov008V *self) {
+    Ov008Cb cb = FLD(Ov008Cb, self, 0x90);
+    s32 r;
+    if (cb == NULL) {
+        return 1;
+    }
+    r = cb(self, Ov008_GetItem(self));
+    FLD(Ov008Cb, self, 0x90) = NULL;
+    return r;
+}
+
 }

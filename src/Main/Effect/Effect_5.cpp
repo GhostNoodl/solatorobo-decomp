@@ -216,4 +216,93 @@ EffectObj *func_02066c38(EffectObj *obj) {
     return obj;
 }
 
+static inline Effect3D *EffectHud_Create(const char *arc, const char *mdl, s32 id) {
+    char buf[0x20];
+    Effect3D *e = EffectHud3D_New();
+    e->unk_20 = id;
+    func_0206e900(buf, arc);
+    STD_CopyString(e->arcName, buf);
+    Effect_SetStr(e->mdlName, mdl);
+    e->unk_c4 = 0;
+    return e;
+}
+
+Effect3D *func_02066c58(void) {
+    const char *arc;
+    const char *mdl;
+    Effect3D *e;
+    mdl = data_0208c374;
+    arc = data_0208c380;
+    e = EffectHud_Create(arc, mdl, 0x2710);
+    return e;
+}
+
+Effect3D *func_02066d10(const EffectVec *pos) {
+    const char *arc;
+    const char *mdl;
+    Effect3D *e;
+    mdl = data_0208c38b;
+    arc = data_0208c397;
+    e = EffectHud_Create(arc, mdl, 0x2714);
+    func_020639d4(e, 0x85, 2);
+    e->SetPos(pos);
+    return e;
+}
+
+Effect3D *func_02066df0(void) {
+    const char *arc;
+    const char *mdl;
+    Effect3D *e;
+    mdl = data_0208c3a1;
+    arc = data_0208c3ad;
+    e = EffectHud_Create(arc, mdl, 0x2711);
+    func_020639d4(e, 0x27, 2);
+    func_020639d4(e, 0x2c, 0x3c);
+    return e;
+}
+
+Effect3D *func_02066ec8(void) {
+    const char *arc;
+    const char *mdl;
+    Effect3D *e;
+    mdl = data_0208c3bb;
+    arc = data_0208c3c7;
+    e = EffectHud_Create(arc, mdl, 0x2712);
+    func_020639d4(e, 0x2c, 2);
+    return e;
+}
+
+Effect3D *func_02066f90(void) {
+    const char *arc;
+    const char *mdl;
+    Effect3D *e;
+    mdl = data_0208c3d6;
+    arc = data_0208c3e2;
+    e = EffectHud_Create(arc, mdl, 0x2713);
+    func_020639d4(e, 0xd, 2);
+    return e;
+}
+
+Effect3D *func_02067058(void) {
+    const char *arc;
+    const char *mdl;
+    Effect3D *e;
+    mdl = data_0208c3f1;
+    arc = data_0208c3fd;
+    e = EffectHud_Create(arc, mdl, 0x2715);
+    func_020639d4(e, 0x2c, 2);
+    return e;
+}
+
+Effect3D *func_02067120(void) {
+    const char *arc;
+    const char *mdl;
+    Effect3D *e;
+    mdl = data_0208c40c;
+    arc = data_0208c418;
+    e = EffectHud_Create(arc, mdl, 0x2716);
+    func_020639d4(e, 0x44, 2);
+    return e;
+}
+
 }

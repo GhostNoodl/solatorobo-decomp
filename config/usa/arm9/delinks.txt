@@ -1296,11 +1296,15 @@ src/Main/Effect/Effect_4.cpp:
 
 src/Main/Effect/Effect_5.cpp:
     complete
-    .text       start:0x02066774 end:0x02066c58
+    .text       start:0x02066774 end:0x020671e8
 
 src/Main/Effect/Effect_6.cpp:
     complete
     .text       start:0x020671e8 end:0x0206723c
+
+src/Main/Effect/EffectSpawn.cpp:
+    complete
+    .text       start:0x02067e9c end:0x02068508
 
 src/Main/Effect/Effect_7.cpp:
     complete

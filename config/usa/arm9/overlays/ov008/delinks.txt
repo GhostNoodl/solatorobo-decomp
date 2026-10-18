@@ -8,13 +8,25 @@ src/ov008/ov008_021ccda0.cpp:
     complete
     .text       start:0x021ccda0 end:0x021cd26c
 
+src/ov008/ov008_021cd26c.cpp:
+    complete
+    .text       start:0x021cd26c end:0x021cd448
+
 src/ov008/ov008_021cd448.cpp:
     complete
     .text       start:0x021cd448 end:0x021cdb00
 
+src/ov008/ov008_021cdb00.cpp:
+    complete
+    .text       start:0x021cdb00 end:0x021cddc8
+
 src/ov008/ov008_021cddc8.cpp:
     complete
     .text       start:0x021cddc8 end:0x021cdebc
+
+src/ov008/ov008_021cec20.cpp:
+    complete
+    .text       start:0x021cec20 end:0x021cf040
 
 src/ov008/ov008_021cf780.cpp:
     complete
@@ -22,7 +34,7 @@ src/ov008/ov008_021cf780.cpp:
 
 src/ov008/ov008_021cff1c.cpp:
     complete
-    .text       start:0x021cff1c end:0x021cffb8
+    .text       start:0x021cff1c end:0x021d0014
 
 src/ov008/ov008_021d0014.cpp:
     complete
