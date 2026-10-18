@@ -25,6 +25,16 @@ typedef struct ModelPart {
     /* 0x08 */ u8 unk_08[0x20];
 } ModelPart; // size 0x28
 
+typedef struct ModelPos {
+    s32 x;
+    s32 y;
+} ModelPos;
+
+typedef struct ModelExtPltt {
+    /* 0x00 */ u8 unk_00[0x60];
+    /* 0x60 */ void *transfer;
+} ModelExtPltt;
+
 // 3D model instance (built by func_02041440, torn down by func_02041558).
 typedef struct Model {
     /* 0x000 */ u8 unk_000[0x28];
@@ -37,12 +47,21 @@ typedef struct Model {
     /* 0x07c */ s32 unk_07c;
     /* 0x080 */ s32 numParts;
     /* 0x084 */ u8 unk_084[4];
-    /* 0x088 */ u8 pltt[0x74];
-    /* 0x0fc */ s32 x;
-    /* 0x100 */ s32 y;
+    /* 0x088 */ u8 pltt[0x60];
+    /* 0x0e8 */ void *plttTransfer;
+    /* 0x0ec */ struct ModelExtPltt *extPltt;
+    /* 0x0f0 */ u8 unk_0f0[0xc];
+    /* 0x0fc */ union {
+        struct {
+            s32 x;
+            s32 y;
+        };
+        ModelPos pos[1];
+    };
     /* 0x104 */ u8 unk_104[0x4c];
     /* 0x150 */ s32 unk_150;
-    /* 0x154 */ u8 unk_154[0xc];
+    /* 0x154 */ u16 color;
+    /* 0x156 */ u8 unk_156[0xa];
 } Model; // size 0x160
 
 extern void func_02041218(void *pltt);

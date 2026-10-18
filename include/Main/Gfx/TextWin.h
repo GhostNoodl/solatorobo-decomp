@@ -26,7 +26,7 @@ struct TextWin {
     virtual void unk_vf14();
     virtual void unk_vf18();
     virtual void unk_vf1c();
-    virtual void unk_vf20();
+    virtual void unk_vf20(int a, int b);
     virtual void unk_vf24();
     virtual void unk_vf28();
     virtual void unk_vf2c();
@@ -70,7 +70,8 @@ struct TextWin {
     /* 0x04 */ u32 unk_4_8 : 5;
     /* 0x04 */ u32 unk_4_13 : 8;
     /* 0x04 */ u32 noShadowShift : 1;
-    /* 0x04 */ u32 unk_4_22 : 3;
+    /* 0x04 */ u32 unk_4_22 : 2;
+    /* 0x04 */ u32 flag24 : 1;
     /* 0x04 */ u32 flag25 : 1;
     /* 0x04 */ u32 flag26 : 1;
     /* 0x04 */ u32 flag27 : 1;

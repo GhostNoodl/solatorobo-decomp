@@ -367,3 +367,111 @@ src/Main/Gfx/Obj3D_2.cpp:
 src/Main/Gfx/Obj3D_3.cpp:
     complete
     .text       start:0x020534c4 end:0x020534dc
+
+src/Main/Gfx/SlidePanel.cpp:
+    complete
+    .text       start:0x0205422c end:0x02054bb4
+
+src/Main/Gfx/SlidePanel_2.cpp:
+    complete
+    .text       start:0x02054f10 end:0x020554e4
+
+src/Main/Gfx/SlidePanel_3.cpp:
+    complete
+    .text       start:0x0205563c end:0x020556a0
+
+src/Main/Gfx/FieldMsg.cpp:
+    complete
+    .text       start:0x020556a0 end:0x0205592c
+
+src/Main/Gfx/FieldMsg_2.cpp:
+    complete
+    .text       start:0x020559c8 end:0x02055aa4
+
+src/Main/Sys/GameScene.cpp:
+    complete
+    .text       start:0x02055aa4 end:0x02055ee0
+
+src/Main/Sys/GameScene_2.cpp:
+    complete
+    .text       start:0x02055ff0 end:0x02056230
+
+src/Main/Sys/GameScene_3.cpp:
+    complete
+    .text       start:0x02056c0c end:0x02056e74
+
+src/Main/Res/DataRes.cpp:
+    complete
+    .text       start:0x02058b50 end:0x02058d10
+
+src/Main/Res/DataRes_2.cpp:
+    complete
+    .text       start:0x02058e18 end:0x02058f2c
+
+src/Main/Res/DataRes_3.cpp:
+    complete
+    .text       start:0x02058fe4 end:0x020590e8
+
+src/Main/Res/DataRes_4.cpp:
+    complete
+    .text       start:0x02059270 end:0x020592c4
+
+src/Main/Res/DataRes_5.cpp:
+    complete
+    .text       start:0x02059428 end:0x02059454
+
+src/Main/Res/DataRes_6.cpp:
+    complete
+    .text       start:0x0205973c end:0x0205983c
+
+src/Main/Gfx/ObjPool.cpp:
+    complete
+    .text       start:0x0205983c end:0x02059c98
+
+src/Main/Gfx/ObjPool_2.cpp:
+    complete
+    .text       start:0x0205a268 end:0x0205a358
+
+src/Main/Res/StageRes.cpp:
+    complete
+    .text       start:0x0205a69c end:0x0205aa98
+
+src/Main/Res/StageRes_2.cpp:
+    complete
+    .text       start:0x0205ae68 end:0x0205b1b4
+
+src/Main/Res/StageRes_3.cpp:
+    complete
+    .text       start:0x0205b1fc end:0x0205b29c
+
+src/Main/Res/StageRes_4.cpp:
+    complete
+    .text       start:0x0205b31c end:0x0205b588
+
+src/Main/Res/StageRes_5.cpp:
+    complete
+    .text       start:0x0205b8c4 end:0x0205b8dc
+
+src/Main/Res/StageCmd_0.cpp:
+    complete
+    .text       start:0x0205beb0 end:0x0205bec8
+
+src/Main/Res/StageCmd.cpp:
+    complete
+    .text       start:0x0205bee4 end:0x0205c234
+
+src/Main/Res/StageCmd_2.cpp:
+    complete
+    .text       start:0x0205c37c end:0x0205c968
+
+src/Main/Res/StageCmd_3.cpp:
+    complete
+    .text       start:0x0205cb9c end:0x0205cbf0
+
+src/Main/Res/StageCmd_4.cpp:
+    complete
+    .text       start:0x0205d000 end:0x0205d044
+
+src/Main/Res/StageCmd_5.cpp:
+    complete
+    .text       start:0x0205d0dc end:0x0205d83c
