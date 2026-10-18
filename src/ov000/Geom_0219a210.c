@@ -56,3 +56,48 @@ s32 func_ov000_0219a2f4(VecFx32 *pos, s32 up, s32 down) {
     }
     return ret;
 }
+
+u16 func_ov000_0219a36c(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask) {
+    VecFx32 a;
+    VecFx32 b;
+    u16 result;
+    u16 base;
+    u16 step;
+    s32 i;
+    s32 idx;
+    s32 x, y, z, s, c;
+
+    a.x = pos->x;
+    a.y = pos->y;
+    a.z = pos->z;
+    result = angle;
+    base = 0x10000 / n;
+    step = base;
+    for (i = 0; i < n; i++) {
+        x = a.x;
+        b.y = a.y;
+        z = a.z;
+        s = FX_SinCosTable_[(angle >> 4) * 2];
+        c = FX_SinCosTable_[(angle >> 4) * 2 + 1];
+        x += FX_Mul(radius, s);
+        z += FX_Mul(radius, c);
+        b.x = x;
+        b.z = z;
+        if (func_01ffbd6c(&a, &b, mask, 0, 0, -1) != -1 << 12) {
+            if (flag != 0) {
+                result = angle;
+                break;
+            }
+        } else if (flag == 0) {
+            result = angle;
+            break;
+        }
+        if ((i & 1) == 0) {
+            angle += step;
+        } else {
+            angle -= step;
+        }
+        step += base;
+    }
+    return result;
+}
