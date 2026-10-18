@@ -64,8 +64,8 @@ void DC_InvalidateRange(void *startAddr, u32 nBytes);
 void DC_FlushRange(const void *startAddr, u32 nBytes);
 void MIi_UncompressBackward(void *bottom);
 void func_0200c118(void *digest, const void *src, int len, const void *key, u32 keylen);
-BOOL func_02015a3c(BOOL enable);
-void func_02015d9c(void *digest, const void *src, int len, const void *key, u32 keylen);
+BOOL MATHi_SetOverlayTableMode(BOOL enable);
+void MATH_CalcHMACSHA1(void *digest, const void *src, int len, const void *key, u32 keylen);
 BOOL FS_OpenFileFast(FSFile *file, FSFileID id);
 BOOL FS_CloseFile(FSFile *file);
 int FS_ReadFile(FSFile *file, void *buffer, int length);
@@ -107,11 +107,11 @@ BOOL FSi_CompareDigest(const u8 *spec_digest, void *src, int len, BOOL use_sdk) 
     } else {
         BOOL old = FALSE;
         if (use_sdk) {
-            old = func_02015a3c(TRUE);
+            old = MATHi_SetOverlayTableMode(TRUE);
         }
-        func_02015d9c(digest, src, len, digest_key, fsi_rom.digest_key_len);
+        MATH_CalcHMACSHA1(digest, src, len, digest_key, fsi_rom.digest_key_len);
         if (use_sdk) {
-            (void)func_02015a3c(old);
+            (void)MATHi_SetOverlayTableMode(old);
         }
     }
     for (i = 0; i < sizeof(digest); i += sizeof(u32)) {

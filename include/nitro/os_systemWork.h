@@ -21,7 +21,7 @@ typedef struct OSSystemWork {
     u32 pxiHandleChecker[2];            /* 0x388 */
     void *mic_last_address;             /* 0x390 */
     u16 mic_sampling_data;              /* 0x394 */
-    u16 pad_396;
+    u16 wm_callback_control;            /* 0x396 */
     u16 wm_rssi_pool;                   /* 0x398 */
     u8 pad_39a[0x3a8 - 0x39a];
     u16 button_XY;                      /* 0x3a8 */

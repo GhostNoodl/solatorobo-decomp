@@ -108,25 +108,25 @@ extern void func_0203de1c(void *ptr);
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void MI_CpuFill8(void *dst, u32 value, u32 size);
-extern int func_0201fd58(void (*cb)(void *arg));
-extern u32 func_0201ffb0(void);
-extern int func_02020080(void);
-extern u16 func_02020114(void);
-extern int func_0202021c(void *buf, void (*cb)(void *arg), u16 dmaNo);
-extern int func_02020294(void (*cb)(void *arg));
-extern int func_020202d0(void (*cb)(void *arg));
-extern int func_02020314(void (*cb)(void *arg), WhParentParam *param);
-extern int func_020204d8(void (*cb)(void *arg));
-extern int func_020204e8(void (*cb)(void *arg));
-extern int func_0202052c(void (*cb)(void *arg), WhScanParam *param);
-extern int func_02020768(void (*cb)(void *arg), u16 aid);
-extern int func_020209d8(void (*cb)(void *arg), void *recvBuf, u16 recvSize, void *sendBuf, u16 sendSize, u16 freq);
-extern int func_02020b78(void (*cb)(void *arg));
-extern int func_02020bf0(void *dsInfo, u16 port, u16 aidBitmap, u16 dataLength, BOOL doubleMode);
-extern int func_02020e30(void *dsInfo);
-extern int func_02021740(void (*cb)(void *arg), void *info, u16 length, u32 ggid, u16 tgid, u8 attr);
-extern int func_02021804(void (*cb)(void *arg), u16 a, u16 b, u16 channel, u16 time);
-extern int func_02021880(void (*cb)(void *arg));
+extern int WM_SetIndCallback(void (*cb)(void *arg));
+extern u32 WM_GetAllowedChannel(void);
+extern int WM_GetDispersionBeaconPeriod(void);
+extern u16 WM_GetDispersionScanPeriod(void);
+extern int WM_Initialize(void *buf, void (*cb)(void *arg), u16 dmaNo);
+extern int WM_Reset(void (*cb)(void *arg));
+extern int WM_End(void (*cb)(void *arg));
+extern int WM_SetParentParameter(void (*cb)(void *arg), WhParentParam *param);
+extern int WM_StartParent(void (*cb)(void *arg));
+extern int WM_EndParent(void (*cb)(void *arg));
+extern int WM_StartScan(void (*cb)(void *arg), WhScanParam *param);
+extern int WM_Disconnect(void (*cb)(void *arg), u16 aid);
+extern int WM_StartMP(void (*cb)(void *arg), void *recvBuf, u16 recvSize, void *sendBuf, u16 sendSize, u16 freq);
+extern int WM_EndMP(void (*cb)(void *arg));
+extern int WM_StartDataSharing(void *dsInfo, u16 port, u16 aidBitmap, u16 dataLength, BOOL doubleMode);
+extern int WM_EndDataSharing(void *dsInfo);
+extern int WM_SetGameInfo(void (*cb)(void *arg), void *info, u16 length, u32 ggid, u16 tgid, u8 attr);
+extern int WM_MeasureChannel(void (*cb)(void *arg), u16 a, u16 b, u16 channel, u16 time);
+extern int WM_SetEntry(void (*cb)(void *arg));
 extern u32 func_0204045c(void);
 
 typedef struct WhCbArg {
@@ -186,10 +186,10 @@ extern void DC_InvalidateRange(const void *addr, u32 size);
 extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern void DC_FlushRange(const void *addr, u32 size);
 extern void DC_WaitWriteBufferEmpty(void);
-extern int func_02020638(void (*cb)(void *arg));
-extern int func_0202067c(void (*cb)(void *arg), void *bssDesc, void *ssl, BOOL powerSave, int authMode);
-extern int func_02020e7c(void *dsInfo, const void *data, void *recv);
-extern void *func_020216bc(void *dsInfo, void *recv, u16 aid);
+extern int WM_EndScan(void (*cb)(void *arg));
+extern int WM_StartConnectEx(void (*cb)(void *arg), void *bssDesc, void *ssl, BOOL powerSave, int authMode);
+extern int WM_StepDataSharing(void *dsInfo, const void *data, void *recv);
+extern void *WM_GetSharedDataAddress(void *dsInfo, void *recv, u16 aid);
 void func_02046418(WhCbArg *arg);
 void func_020465c8(WhCbArg *arg);
 void func_02046774(WhCbArg *arg);
@@ -199,13 +199,13 @@ void func_02045094(WhMgr *wh);
 
 static inline BOOL WH_StateInReset(void) {
     WH_ChangeSysState(3);
-    return WH_CheckResult(func_02020294((void (*)(void *))func_02045530));
+    return WH_CheckResult(WM_Reset((void (*)(void *))func_02045530));
 }
 
 static inline void WH_Reset(WhMgr *wh, void (*cb)(BOOL)) {
     wh->resultCb = cb;
     if (wh->sysState == 5) {
-        int result = func_02020e30(wh->dsInfo);
+        int result = WM_EndDataSharing(wh->dsInfo);
         if (result != 0) {
             WH_SetError(result);
         }

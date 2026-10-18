@@ -4,7 +4,7 @@ extern "C" {
 
 static inline BOOL WH_StateInEndScan(void) {
     WH_ChangeSysState(3);
-    return WH_CheckResult(func_02020638((void (*)(void *))func_02046418));
+    return WH_CheckResult(WM_EndScan((void (*)(void *))func_02046418));
 }
 
 BOOL func_020463c8(void) {
@@ -18,7 +18,7 @@ static inline BOOL WH_StateInStartChild(WhMgr *wh) {
     }
     WH_ChangeSysState(3);
     wh->unk_46 = 0;
-    result = func_0202067c((void (*)(void *))func_020465c8, wh->bssDesc, wh->unk_60, TRUE, 0);
+    result = WM_StartConnectEx((void (*)(void *))func_020465c8, wh->bssDesc, wh->unk_60, TRUE, 0);
     if (result != 2) {
         WH_SetError(result);
         return FALSE;
@@ -60,7 +60,7 @@ static inline BOOL WH_StateInStartChildMP(void) {
     WhMgr *wh;
     WH_ChangeSysState(4);
     wh = data_02097e40;
-    return WH_CheckResult(func_020209d8((void (*)(void *))func_020467b4, wh->recvBuf, wh->recvSize, wh->sendBuf, wh->sendSize, wh->cfg.mpFreq));
+    return WH_CheckResult(WM_StartMP((void (*)(void *))func_020467b4, wh->recvBuf, wh->recvSize, wh->sendBuf, wh->sendSize, wh->cfg.mpFreq));
 }
 
 void func_020465c8(WhCbArg *arg) {
@@ -126,7 +126,7 @@ void func_020467b4(WhCbArg *arg) {
     case 10: {
         WhMgr *wh = data_02097e40;
         if (wh->connectMode == 4) {
-            int result = func_02020bf0(wh->dsInfo, wh->cfg.dsPort, (u16)((1 << (wh->cfg.maxChildren + 1)) - 1), wh->cfg.dsDataSize, wh->cfg.doubleMode);
+            int result = WM_StartDataSharing(wh->dsInfo, wh->cfg.dsPort, (u16)((1 << (wh->cfg.maxChildren + 1)) - 1), wh->cfg.dsDataSize, wh->cfg.doubleMode);
             if (result != 0) {
                 WH_SetError(result);
                 func_02045094(data_02097e40);
@@ -148,7 +148,7 @@ void func_020467b4(WhCbArg *arg) {
 static inline BOOL WH_StateInEndChild(void) {
     int result;
     WH_ChangeSysState(3);
-    result = func_02020768((void (*)(void *))func_02046774, 0);
+    result = WM_Disconnect((void (*)(void *))func_02046774, 0);
     if (result != 2) {
         WH_SetError(result);
         WH_Reset(data_02097e40, NULL);
@@ -168,7 +168,7 @@ void func_020468d0(WhCbArg *arg) {
 }
 
 BOOL func_020469d4(WhMgr *wh, const void *data) {
-    int result = func_02020e7c(wh->dsInfo, data, wh->unk_18e0);
+    int result = WM_StepDataSharing(wh->dsInfo, data, wh->unk_18e0);
     if (result == 7) {
         return TRUE;
     }
@@ -184,7 +184,7 @@ BOOL func_020469d4(WhMgr *wh, const void *data) {
 }
 
 void *func_02046a50(WhMgr *wh, u16 aid) {
-    return func_020216bc(wh->dsInfo, wh->unk_18e0, aid);
+    return WM_GetSharedDataAddress(wh->dsInfo, wh->unk_18e0, aid);
 }
 
 void func_02046a6c(WhMgr *wh, u32 ggid) {

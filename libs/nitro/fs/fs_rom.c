@@ -36,7 +36,7 @@ void CARD_UnlockRom(u16 lock_id);
 BOOL CARD_IsPulledOut(void);
 void func_0200d6d4(u32 dma, const void *src, void *dst, u32 len, MIDmaCallback callback, void *arg, BOOL is_async);
 s32 OS_GetLockID(void);
-int func_0201e7b0(const char *a, const char *b);
+int STD_CompareString(const char *a, const char *b);
 void FS_InitArchive(FSArchive *arc);
 BOOL FS_RegisterArchiveName(FSArchive *arc, const char *name, u32 name_len);
 void FS_NotifyArchiveAsyncEnd(FSArchive *arc, FSResult ret);
@@ -57,7 +57,7 @@ static inline const CARDRomRegion *CARD_GetRomRegionFAT(void) {
 
 BOOL FSi_IsUnreadableRomOffset(FSArchive *arc, u32 offset) {
     BOOL ret = FALSE;
-    if ((func_0201e7b0(FS_GetArchiveName(arc), data_0208af48) == 0) && !OS_IsRunOnTwl()) {
+    if ((STD_CompareString(FS_GetArchiveName(arc), data_0208af48) == 0) && !OS_IsRunOnTwl()) {
         const u8 *header = (const u8 *)CARD_GetOwnRomHeader();
         if (offset >= (*(const u16 *)(header + 0x92) << 19)) {
             ret = TRUE;

@@ -465,7 +465,7 @@ static inline NameNode *NamePool_Lookup(NamePool *pool) {
         return NULL;
     }
     for (; node != NULL; node = node->next) {
-        if (node->hash == pool->hash && node->value == pool->value && func_0201e7b0(node->name, pool->name) == 0) {
+        if (node->hash == pool->hash && node->value == pool->value && STD_CompareString(node->name, pool->name) == 0) {
             node->refCount++;
             pool->name[0] = 0;
             pool->value = 0x87654321;

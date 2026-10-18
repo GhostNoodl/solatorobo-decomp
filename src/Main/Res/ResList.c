@@ -27,7 +27,7 @@ ResList *func_02034b50(ResList *list) {
                 if (hash == 0) {                                  \
                     hash = ResMgr_Hash(data_02097cdc, str);       \
                 }                                                 \
-                if (node->hash == hash && func_0201e7b0(str, node->name) == 0) {  \
+                if (node->hash == hash && STD_CompareString(str, node->name) == 0) {  \
                     break;                                        \
                 }                                                 \
             }                                                     \
@@ -151,20 +151,20 @@ void func_02035094(ResList *list, ResRequest *req) {
         break;
     case 2:
         ext = func_02039644(entry->name);
-        if (func_0201e7b0(ext, data_0208b2c8) == 0) {
+        if (STD_CompareString(ext, data_0208b2c8) == 0) {
             node->u.data[0] = req->data;
             NNS_G2dGetUnpackedCellBank(node->u.data[0], &node->u.data[1]);
-        } else if (func_0201e7b0(ext, data_0208b2ce) == 0) {
+        } else if (STD_CompareString(ext, data_0208b2ce) == 0) {
             node->u.data[2] = req->data;
             NNS_G2dGetUnpackedAnimBank(node->u.data[2], &node->u.data[3]);
-        } else if (func_0201e7b0(ext, data_0208b2d4) == 0) {
+        } else if (STD_CompareString(ext, data_0208b2d4) == 0) {
             node->u.data[4] = req->data;
             NNS_G2dGetUnpackedCharacterData(node->u.data[4], &node->u.data[5]);
         }
-        if (func_0201e7b0(ext, data_0208b2da) == 0) {
+        if (STD_CompareString(ext, data_0208b2da) == 0) {
             node->u.data[6] = req->data;
             NNS_G2dGetUnpackedCharacterData(node->u.data[6], &node->u.data[7]);
-        } else if (func_0201e7b0(ext, data_0208b2e0) == 0) {
+        } else if (STD_CompareString(ext, data_0208b2e0) == 0) {
             node->u.data[8] = req->data;
             NNS_G2dGetUnpackedPaletteCompressInfo(node->u.data[8], &node->u.data[10]);
             NNS_G2dGetUnpackedPaletteData(node->u.data[8], &node->u.data[9]);
@@ -172,13 +172,13 @@ void func_02035094(ResList *list, ResRequest *req) {
         break;
     case 3:
         ext = func_02039644(entry->name);
-        if (func_0201e7b0(ext, data_0208b2e6) == 0) {
+        if (STD_CompareString(ext, data_0208b2e6) == 0) {
             node->u.data[0] = req->data;
             NNS_G2dGetUnpackedScreenData(node->u.data[0], &node->u.data[1]);
-        } else if (func_0201e7b0(ext, data_0208b2d4) == 0) {
+        } else if (STD_CompareString(ext, data_0208b2d4) == 0) {
             node->u.data[2] = req->data;
             NNS_G2dGetUnpackedBGCharacterData(node->u.data[2], &node->u.data[3]);
-        } else if (func_0201e7b0(ext, data_0208b2e0) == 0) {
+        } else if (STD_CompareString(ext, data_0208b2e0) == 0) {
             node->u.data[4] = req->data;
             NNS_G2dGetUnpackedPaletteCompressInfo(node->u.data[4], &node->u.data[6]);
             NNS_G2dGetUnpackedPaletteData(node->u.data[4], &node->u.data[5]);
@@ -192,15 +192,15 @@ void func_02035094(ResList *list, ResRequest *req) {
         break;
     case 6:
         ext = func_02039644(entry->name);
-        if (func_0201e7b0(ext, data_0208b2ec) == 0) {
+        if (STD_CompareString(ext, data_0208b2ec) == 0) {
             node->u.data[0] = req->data;
-        } else if (func_0201e7b0(ext, data_0208b2f3) == 0) {
+        } else if (STD_CompareString(ext, data_0208b2f3) == 0) {
             node->u.data[1] = req->data;
-        } else if (func_0201e7b0(ext, data_0208b2fa) == 0) {
+        } else if (STD_CompareString(ext, data_0208b2fa) == 0) {
             node->u.data[2] = req->data;
-        } else if (func_0201e7b0(ext, data_0208b301) == 0) {
+        } else if (STD_CompareString(ext, data_0208b301) == 0) {
             node->u.data[3] = req->data;
-        } else if (func_0201e7b0(ext, data_0208b308) == 0) {
+        } else if (STD_CompareString(ext, data_0208b308) == 0) {
             node->u.data[4] = req->data;
         }
         break;

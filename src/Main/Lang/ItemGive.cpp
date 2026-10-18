@@ -13,7 +13,7 @@ extern void func_02059428(DataRes *res, SaveRef *ref, u32 id, u16 val);
 extern u32 func_0205975c(DataRes *res, u32 idx);
 extern SaveEntry *func_0205976c(DataRes *res, u32 idx);
 extern u16 func_02059544(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id);
-extern int func_0201e7b0(const char *a, const char *b);
+extern int STD_CompareString(const char *a, const char *b);
 
 static inline u16 Item_Cat(u32 id) {
     return id >> 12;

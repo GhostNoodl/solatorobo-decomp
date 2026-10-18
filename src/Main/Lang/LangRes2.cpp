@@ -53,7 +53,7 @@ static inline void *LangTbl_Find(LangNamedTable *t, const char *name) {
     u32 i;
     for (i = 0; i < t->count; i++) {
         const char *s = (const char *)t + t->entries[i].nameOffset;
-        if (s[0] == name[0] && s[1] == name[1] && func_0201e7b0(s, name) == 0) {
+        if (s[0] == name[0] && s[1] == name[1] && STD_CompareString(s, name) == 0) {
             return (u8 *)t + t->entries[i].dataOffset;
         }
     }

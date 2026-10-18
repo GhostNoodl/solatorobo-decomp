@@ -28,7 +28,7 @@ void func_020556a0(FieldMsg *msg, const char *text) {
     msg->win->unk_vf20(0, 0xc0);
     msg->win->noVram = 1;
     msg->win->flag24 = 1;
-    if (func_0201e7b0(text, data_0208ba20) != 0) {
+    if (STD_CompareString(text, data_0208ba20) != 0) {
         msg->win->rendering = 1;
     } else {
         msg->win->rendering = 0;

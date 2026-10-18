@@ -58,7 +58,7 @@ void func_02038520(ResHandle *handle) {
                     if (hash == 0) {
                         hash = ResMgr_Hash(mgr, handle->arcName);
                     }
-                    if (node->hash == hash && func_0201e7b0(node->u.arc.name, handle->name) == 0) {
+                    if (node->hash == hash && STD_CompareString(node->u.arc.name, handle->name) == 0) {
                         break;
                     }
                 }
@@ -227,7 +227,7 @@ BOOL func_02038ca0(ResHandle *handle) {
                 if (hash == 0) {
                     hash = ResMgr_Hash(mgr, handle->arcName);
                 }
-                if (node->hash == hash && func_0201e7b0(node->u.arc.name, handle->name) == 0) {
+                if (node->hash == hash && STD_CompareString(node->u.arc.name, handle->name) == 0) {
                     break;
                 }
             }
@@ -268,7 +268,7 @@ BOOL func_02038ca0(ResHandle *handle) {
                 if (hash == 0) {                                                                        \
                     hash = ResMgr_Hash(mgr, handle->arcName);                                           \
                 }                                                                                       \
-                if (node->hash == hash && func_0201e7b0(node->u.arc.name, handle->name) == 0) {         \
+                if (node->hash == hash && STD_CompareString(node->u.arc.name, handle->name) == 0) {         \
                     break;                                                                              \
                 }                                                                                       \
             }                                                                                           \

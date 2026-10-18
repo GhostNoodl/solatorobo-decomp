@@ -502,20 +502,20 @@ disableBankForX_ kind:function(arm,size=0xc0) addr:0x020157e4 local
 GX_DisableBankForLCDC kind:function(arm,size=0x14) addr:0x020158a4
 GX_SendFifo48B kind:function(arm,size=0x24) addr:0x020158b8
 GX_InitGXState kind:function(arm,size=0x60) addr:0x020158dc
-func_0201593c kind:function(arm,size=0x44) addr:0x0201593c
-func_02015980 kind:function(arm,size=0x2c) addr:0x02015980
-func_020159ac kind:function(arm,size=0x90) addr:0x020159ac
-func_02015a3c kind:function(arm,size=0x3c) addr:0x02015a3c
-func_02015a78 kind:function(arm,size=0x54) addr:0x02015a78
-func_02015acc kind:function(arm,size=0x94) addr:0x02015acc
-func_02015b60 kind:function(arm,size=0x1f8) addr:0x02015b60
-func_02015d58 kind:function(arm,size=0x44) addr:0x02015d58
-func_02015d9c kind:function(arm,size=0x94) addr:0x02015d9c
-func_02015e30 kind:function(arm,size=0x1b0) addr:0x02015e30
+MATH_CountPopulation kind:function(arm,size=0x44) addr:0x0201593c
+MATHi_SHA1ProcessBlockForOverlay kind:function(arm,size=0x2c) addr:0x02015980 local
+MATHi_SHA1Fill kind:function(arm,size=0x90) addr:0x020159ac local
+MATHi_SetOverlayTableMode kind:function(arm,size=0x3c) addr:0x02015a3c
+MATH_SHA1Init kind:function(arm,size=0x54) addr:0x02015a78
+MATH_SHA1Update kind:function(arm,size=0x94) addr:0x02015acc
+MATH_SHA1GetHash kind:function(arm,size=0x1f8) addr:0x02015b60
+MATH_CalcSHA1 kind:function(arm,size=0x44) addr:0x02015d58
+MATH_CalcHMACSHA1 kind:function(arm,size=0x94) addr:0x02015d9c
+MATHi_CalcHMAC kind:function(arm,size=0x1b0) addr:0x02015e30
 MATHi_CRC16InitTableRev kind:function(arm,size=0x44) addr:0x02015fe0
 MATHi_CRC16UpdateRev kind:function(arm,size=0x40) addr:0x02016024
 MATH_CalcCRC16 kind:function(arm,size=0x28) addr:0x02016064
-func_0201609c kind:function(arm,size=0x31c) addr:0x0201609c
+MATHi_SHA1ProcessBlock kind:function(arm,size=0x31c) addr:0x0201609c
 func_020163b8 kind:function(arm,size=0x18) addr:0x020163b8
 MI_SetWramBank kind:function(arm,size=0x10) addr:0x020163d0
 MIi_DmaFill32 kind:function(arm,size=0x84) addr:0x020163e0
@@ -910,7 +910,7 @@ STD_CopyLString kind:function(arm,size=0x104) addr:0x0201e5a0
 STD_SearchString kind:function(arm,size=0x64) addr:0x0201e6a4
 STD_GetStringLength kind:function(arm,size=0x84) addr:0x0201e708
 STD_ConcatenateString kind:function(arm,size=0x24) addr:0x0201e78c
-func_0201e7b0 kind:function(arm,size=0xb8) addr:0x0201e7b0
+STD_CompareString kind:function(arm,size=0xb8) addr:0x0201e7b0
 STD_CompareNString kind:function(arm,size=0xe8) addr:0x0201e868
 func_0201e950 kind:function(arm,size=0x40) addr:0x0201e950
 string_put_char kind:function(arm,size=0x2c) addr:0x0201e990 local
@@ -919,65 +919,65 @@ string_put_string kind:function(arm,size=0x58) addr:0x0201ea10 local
 STD_TSPrintf kind:function(arm,size=0x2c) addr:0x0201ea68
 STD_TSNPrintf kind:function(arm,size=0x28) addr:0x0201ea94
 STD_TVSNPrintf kind:function(arm,size=0x7dc) addr:0x0201eabc
-func_0201f298 kind:function(arm,size=0x28) addr:0x0201f298
-func_0201f2c0 kind:function(arm,size=0x280) addr:0x0201f2c0
-func_0201f540 kind:function(arm,size=0x70) addr:0x0201f540
-func_0201f5b0 kind:function(arm,size=0x18) addr:0x0201f5b0
-func_0201f5c8 kind:function(arm,size=0x60) addr:0x0201f5c8
-func_0201f628 kind:function(arm,size=0xac) addr:0x0201f628
-func_0201f6d4 kind:function(arm,size=0x70) addr:0x0201f6d4
-func_0201f744 kind:function(arm,size=0x10) addr:0x0201f744
-func_0201f754 kind:function(arm,size=0x1c) addr:0x0201f754
-func_0201f770 kind:function(arm,size=0x44) addr:0x0201f770
-func_0201f7b4 kind:function(arm,size=0x90) addr:0x0201f7b4
-func_0201f844 kind:function(arm,size=0x3e8) addr:0x0201f844
-func_0201fc2c kind:function(arm,size=0x24) addr:0x0201fc2c
-func_0201fc50 kind:function(arm,size=0x30) addr:0x0201fc50
-func_0201fc80 kind:function(arm,size=0x30) addr:0x0201fc80
-func_0201fcb0 kind:function(arm,size=0x34) addr:0x0201fcb0
-func_0201fce4 kind:function(arm,size=0x14) addr:0x0201fce4
-func_0201fcf8 kind:function(arm,size=0xc) addr:0x0201fcf8
+WM_Init kind:function(arm,size=0x28) addr:0x0201f298
+WmInitCore kind:function(arm,size=0x280) addr:0x0201f2c0 local
+WM_Finish kind:function(arm,size=0x70) addr:0x0201f540
+WMi_SetCallbackTable kind:function(arm,size=0x18) addr:0x0201f5b0
+WmGetCommandBuffer4Arm7 kind:function(arm,size=0x60) addr:0x0201f5c8 local
+WMi_SendCommand kind:function(arm,size=0xac) addr:0x0201f628
+WMi_SendCommandDirect kind:function(arm,size=0x70) addr:0x0201f6d4
+WMi_GetSystemWork kind:function(arm,size=0x10) addr:0x0201f744
+WMi_CheckInitialized kind:function(arm,size=0x1c) addr:0x0201f754
+WMi_CheckIdle kind:function(arm,size=0x44) addr:0x0201f770
+WMi_CheckStateEx kind:function(arm,size=0x90) addr:0x0201f7b4
+WmReceiveFifo kind:function(arm,size=0x3e8) addr:0x0201f844 local
+WmClearFifoRecvFlag kind:function(arm,size=0x24) addr:0x0201fc2c local
+WM_GetAID kind:function(arm,size=0x30) addr:0x0201fc50
+WM_GetConnectedAIDs kind:function(arm,size=0x30) addr:0x0201fc80
+WMi_RegisterSleepCallback kind:function(arm,size=0x34) addr:0x0201fcb0
+WMi_DeleteSleepCallback kind:function(arm,size=0x14) addr:0x0201fce4
+WmSleepCallback kind:function(arm,size=0xc) addr:0x0201fcf8 local
 func_0201fd04 kind:function(arm,size=0x2c) addr:0x0201fd04
 func_0201fd30 kind:function(arm,size=0x28) addr:0x0201fd30
-func_0201fd58 kind:function(arm,size=0x44) addr:0x0201fd58
-func_0201fd9c kind:function(arm,size=0xd8) addr:0x0201fd9c
-func_0201fe74 kind:function(arm,size=0x70) addr:0x0201fe74
-func_0201fee4 kind:function(arm,size=0xcc) addr:0x0201fee4
-func_0201ffb0 kind:function(arm,size=0x3c) addr:0x0201ffb0
-func_0201ffec kind:function(arm,size=0x94) addr:0x0201ffec
-func_02020080 kind:function(arm,size=0x94) addr:0x02020080
-func_02020114 kind:function(arm,size=0x98) addr:0x02020114
-func_020201ac kind:function(arm,size=0x70) addr:0x020201ac
-func_0202021c kind:function(arm,size=0x10) addr:0x0202021c
-func_0202022c kind:function(arm,size=0x68) addr:0x0202022c
-func_02020294 kind:function(arm,size=0x3c) addr:0x02020294
-func_020202d0 kind:function(arm,size=0x44) addr:0x020202d0
-func_02020314 kind:function(arm,size=0xf8) addr:0x02020314
-func_0202040c kind:function(arm,size=0x50) addr:0x0202040c
-func_0202045c kind:function(arm,size=0x7c) addr:0x0202045c
-func_020204d8 kind:function(arm,size=0x10) addr:0x020204d8
-func_020204e8 kind:function(arm,size=0x44) addr:0x020204e8
-func_0202052c kind:function(arm,size=0x10c) addr:0x0202052c
-func_02020638 kind:function(arm,size=0x44) addr:0x02020638
-func_0202067c kind:function(arm,size=0xec) addr:0x0202067c
-func_02020768 kind:function(arm,size=0xf0) addr:0x02020768
-func_02020858 kind:function(arm,size=0x180) addr:0x02020858
-func_020209d8 kind:function(arm,size=0x68) addr:0x020209d8
-func_02020a40 kind:function(arm,size=0x138) addr:0x02020a40
-func_02020b78 kind:function(arm,size=0x78) addr:0x02020b78
-func_02020bf0 kind:function(arm,size=0x240) addr:0x02020bf0
-func_02020e30 kind:function(arm,size=0x4c) addr:0x02020e30
-func_02020e7c kind:function(arm,size=0x330) addr:0x02020e7c
-func_020211ac kind:function(arm,size=0xd8) addr:0x020211ac
-func_02021284 kind:function(arm,size=0x134) addr:0x02021284
-func_020213b8 kind:function(arm,size=0xe4) addr:0x020213b8
-func_0202149c kind:function(arm,size=0xd0) addr:0x0202149c
-func_0202156c kind:function(arm,size=0x150) addr:0x0202156c
-func_020216bc kind:function(arm,size=0x54) addr:0x020216bc
-func_02021710 kind:function(arm,size=0x30) addr:0x02021710
-func_02021740 kind:function(arm,size=0xc4) addr:0x02021740
-func_02021804 kind:function(arm,size=0x7c) addr:0x02021804
-func_02021880 kind:function(arm,size=0x54) addr:0x02021880
+WM_SetIndCallback kind:function(arm,size=0x44) addr:0x0201fd58
+WM_SetPortCallback kind:function(arm,size=0xd8) addr:0x0201fd9c
+WM_GetMPSendBufferSize kind:function(arm,size=0x70) addr:0x0201fe74
+WM_GetMPReceiveBufferSize kind:function(arm,size=0xcc) addr:0x0201fee4
+WM_GetAllowedChannel kind:function(arm,size=0x3c) addr:0x0201ffb0
+WM_GetLinkLevel kind:function(arm,size=0x94) addr:0x0201ffec
+WM_GetDispersionBeaconPeriod kind:function(arm,size=0x94) addr:0x02020080
+WM_GetDispersionScanPeriod kind:function(arm,size=0x98) addr:0x02020114
+WM_GetNextTgid kind:function(arm,size=0x70) addr:0x020201ac
+WM_Initialize kind:function(arm,size=0x10) addr:0x0202021c
+WMi_InitializeEx kind:function(arm,size=0x68) addr:0x0202022c
+WM_Reset kind:function(arm,size=0x3c) addr:0x02020294
+WM_End kind:function(arm,size=0x44) addr:0x020202d0
+WM_SetParentParameter kind:function(arm,size=0xf8) addr:0x02020314
+WmCheckParentParameter kind:function(arm,size=0x50) addr:0x0202040c local
+WMi_StartParentEx kind:function(arm,size=0x7c) addr:0x0202045c
+WM_StartParent kind:function(arm,size=0x10) addr:0x020204d8
+WM_EndParent kind:function(arm,size=0x44) addr:0x020204e8
+WM_StartScan kind:function(arm,size=0x10c) addr:0x0202052c
+WM_EndScan kind:function(arm,size=0x44) addr:0x02020638
+WM_StartConnectEx kind:function(arm,size=0xec) addr:0x0202067c
+WM_Disconnect kind:function(arm,size=0xf0) addr:0x02020768
+WMi_StartMP kind:function(arm,size=0x180) addr:0x02020858
+WM_StartMP kind:function(arm,size=0x68) addr:0x020209d8
+WM_SetMPDataToPortEx kind:function(arm,size=0x138) addr:0x02020a40
+WM_EndMP kind:function(arm,size=0x78) addr:0x02020b78
+WM_StartDataSharing kind:function(arm,size=0x240) addr:0x02020bf0
+WM_EndDataSharing kind:function(arm,size=0x4c) addr:0x02020e30
+WM_StepDataSharing kind:function(arm,size=0x330) addr:0x02020e7c
+WmDataSharingSetDataCallback kind:function(arm,size=0xd8) addr:0x020211ac local
+WmDataSharingReceiveCallback_Parent kind:function(arm,size=0x134) addr:0x02021284 local
+WmDataSharingReceiveCallback_Child kind:function(arm,size=0xe4) addr:0x020213b8 local
+WmDataSharingReceiveData kind:function(arm,size=0xd0) addr:0x0202149c local
+WmDataSharingSendDataSet kind:function(arm,size=0x150) addr:0x0202156c local
+WM_GetSharedDataAddress kind:function(arm,size=0x54) addr:0x020216bc
+WmGetSharedDataAddress kind:function(arm,size=0x30) addr:0x02021710 local
+WM_SetGameInfo kind:function(arm,size=0xc4) addr:0x02021740
+WM_MeasureChannel kind:function(arm,size=0x7c) addr:0x02021804
+WM_SetEntry kind:function(arm,size=0x54) addr:0x02021880
 func_020218d4 kind:function(arm,size=0x1c) addr:0x020218d4
 func_020218f0 kind:function(arm,size=0x24) addr:0x020218f0
 CTRDGi_InitCommon kind:function(arm,size=0x38) addr:0x02021914
@@ -2728,6 +2728,9 @@ func_02070dcc kind:function(arm,size=0x10) addr:0x02070dcc
 __ptmf_null kind:data(any) addr:0x02070edc
 FX_SinCosTable_ kind:data(any) addr:0x02071060
 FX_AtanTable_ kind:data(any) addr:0x02075060
+MATHi_SHA1PadLead kind:data(any) addr:0x020751d4
+MATHi_SHA1PadAlign kind:data(any) addr:0x020751d5
+MATHi_HMACSHA1FuncsTemplate kind:data(any) addr:0x020751e0
 data_020751fc kind:data(any) addr:0x020751fc
 SNDi_DecibelTable kind:data(any) addr:0x02075210
 sVolumeTable kind:data(any) addr:0x02075310
@@ -2834,14 +2837,14 @@ data_0208af48 kind:data(any) addr:0x0208af48
 data_0208af4c kind:data(any) addr:0x0208af4c
 data_0208af54 kind:data(any) addr:0x0208af54
 GXi_DmaId kind:data(any) addr:0x0208af58
-data_0208af5c kind:data(any) addr:0x0208af5c
+MATHi_SHA1ProcessBlockFunc kind:data(any) addr:0x0208af5c
 OSi_IrqCallbackInfoIndex kind:data(any) addr:0x0208af60 local
 data_0208af78 kind:data(any) addr:0x0208af78
 OSi_ExtraHeap kind:data(any) addr:0x0208af80 local
 OSi_SetProtectionRegionFunc kind:data(any) addr:0x0208af88 local
 OSi_GetProtectionRegionFunc kind:data(any) addr:0x0208afa8 local
 data_0208afc8 kind:data(any) addr:0x0208afc8
-data_0208afd0 kind:data(any) addr:0x0208afd0
+_ZZ14WM_GetNextTgidvE8tgid_bak kind:data(any) addr:0x0208afd0 local
 NNS_GfdDefaultFuncAllocTexVram kind:data(any) addr:0x0208afd4
 NNS_GfdDefaultFuncFreeTexVram kind:data(any) addr:0x0208afd8
 NNS_GfdDefaultFuncAllocPlttVram kind:data(any) addr:0x0208afdc
@@ -3545,7 +3548,7 @@ data_0208eb5e kind:bss addr:0x0208eb5e
 data_0208eb60 kind:bss addr:0x0208eb60
 data_0208eb62 kind:bss addr:0x0208eb62
 data_0208eb64 kind:bss addr:0x0208eb64
-data_0208eb68 kind:bss addr:0x0208eb68
+MATHi_OverlayTableMode kind:bss addr:0x0208eb68
 MIi_GXDmaParams kind:bss addr:0x0208eb6c local
 OSi_IrqCallbackInfo kind:bss addr:0x0208eb8c
 data_0208eb90 kind:bss addr:0x0208eb90
@@ -3614,15 +3617,12 @@ data_02090c64 kind:bss addr:0x02090c64
 data_02090c7c kind:bss addr:0x02090c7c
 data_02090c80 kind:bss addr:0x02090c80
 data_02090c90 kind:bss addr:0x02090c90
-data_02090ca0 kind:bss addr:0x02090ca0
-data_02090ca8 kind:bss addr:0x02090ca8
-data_02090cb8 kind:bss addr:0x02090cb8
-data_02090cd8 kind:bss addr:0x02090cd8
-data_02090d00 kind:bss addr:0x02090d00
-data_02090d14 kind:bss addr:0x02090d14
-data_02090d24 kind:bss addr:0x02090d24
-data_02090d60 kind:bss addr:0x02090d60
-data_02091760 kind:bss addr:0x02091760
+wmWork kind:bss addr:0x02090ca0 local
+bufMsgQ kind:bss addr:0x02090cb8 local
+bufMsg kind:bss addr:0x02090cd8 local
+cb_Port kind:bss addr:0x02090d00 local
+fifoBuf kind:bss addr:0x02090d60 local
+tmpUserGameInfoBuf kind:bss addr:0x02091760 local
 CTRDGi_EnableFlag kind:bss addr:0x020917e0 local
 CTRDGi_Work kind:bss addr:0x020917e4
 sRootListInitialized kind:bss addr:0x020917e8 local

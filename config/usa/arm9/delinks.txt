@@ -110,7 +110,7 @@ libs/nitro/fx/fx_cp.c:
 
 libs/nitro/fx/fx_vec.c:
     complete
-    .text       start:0x02012be8 end:0x02012d78
+    .text       start:0x02012be8 end:0x02013068
 
 libs/nitro/fx/fx_vec_2.c:
     complete
@@ -176,6 +176,22 @@ libs/nitro/gx/gxstate.c:
     complete
     .text       start:0x020158dc end:0x0201593c
 
+libs/nitro/math/math.c:
+    complete
+    .text       start:0x0201593c end:0x02015980
+
+libs/nitro/math/math_sha1.c:
+    complete
+    .text       start:0x02015980 end:0x02015d58
+
+libs/nitro/math/math_dgt.c:
+    complete
+    .text       start:0x02015d58 end:0x02015e30
+
+libs/nitro/math/math_hmac.c:
+    complete
+    .text       start:0x02015e30 end:0x02015fe0
+
 libs/nitro/math/math_crc.c:
     complete
     .text       start:0x02015fe0 end:0x0201608c
@@ -195,7 +211,7 @@ libs/nitro/mi/mi_dma_gxcommand.c:
 
 libs/nitro/mi/mi_memory.c:
     complete
-    .text       start:0x02016ca4 end:0x02016ebc
+    .text       start:0x02016ca4 end:0x02017400
 
 libs/nitro/mi/mi_swap.c:
     complete
@@ -462,7 +478,7 @@ libs/nitro/spi/pm_2.c:
 
 libs/nitro/std/std_string.c:
     complete
-    .text       start:0x0201e520 end:0x0201e7b0
+    .text       start:0x0201e520 end:0x0201e868
 
 libs/nitro/std/std_string_2.c:
     complete
@@ -471,6 +487,33 @@ libs/nitro/std/std_string_2.c:
 libs/nitro/std/std_sprintf.c:
     complete
     .text       start:0x0201e990 end:0x0201f298
+
+libs/nitro/wm/wm_system.c:
+    complete
+    .text       start:0x0201f298 end:0x0201fd58
+    .bss        start:0x02090ca0 end:0x02091760
+
+libs/nitro/wm/wm_sync.c:
+    complete
+    .text       start:0x0201fd58 end:0x0202021c
+    .data       start:0x0208afd0 end:0x0208afd4
+
+libs/nitro/wm/wm_standard.c:
+    complete
+    .text       start:0x0202021c end:0x02020858
+
+libs/nitro/wm/wm_mp.c:
+    complete
+    .text       start:0x02020858 end:0x02020bf0
+
+libs/nitro/wm/wm_ds.c:
+    complete
+    .text       start:0x02020bf0 end:0x02021740
+
+libs/nitro/wm/wm_etc.c:
+    complete
+    .text       start:0x02021740 end:0x020218d4
+    .bss        start:0x02091760 end:0x020917e0
 
 libs/nitro/ctrdg/ctrdg.c:
     complete

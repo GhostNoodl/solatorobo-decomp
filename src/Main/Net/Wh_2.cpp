@@ -7,7 +7,7 @@ static inline BOOL WH_StateInStartParent(WhMgr *wh) {
     if (wh->sysState == 4 || wh->sysState == 5) {
         return TRUE;
     }
-    result = func_020204d8((void (*)(void *))func_02045b68);
+    result = WM_StartParent((void (*)(void *))func_02045b68);
     if (result != 2) {
         WH_SetError(result);
         return FALSE;
@@ -35,7 +35,7 @@ static inline BOOL WH_StateInStartParentMP(void) {
         return TRUE;
     }
     wh->sysState = 4;
-    result = func_020209d8(wh->portCb, wh->recvBuf, wh->recvSize, wh->sendBuf, wh->sendSize, wh->cfg.mpFreq);
+    result = WM_StartMP(wh->portCb, wh->recvBuf, wh->recvSize, wh->sendBuf, wh->sendSize, wh->cfg.mpFreq);
     if (result != 2) {
         WH_SetError(result);
         return FALSE;
@@ -55,7 +55,7 @@ void func_02045b68(WhCbArg *arg) {
         break;
     case 7:
         if (data_02097e40->judgeCb != NULL && !data_02097e40->judgeCb(arg)) {
-            int result = func_02020768(NULL, arg->aid);
+            int result = WM_Disconnect(NULL, arg->aid);
             if (result != 2) {
                 WH_SetError(result);
                 WH_ChangeSysState(8);
@@ -97,7 +97,7 @@ void func_02045d98(void *p) {
     case 10: {
         WhMgr *wh = data_02097e40;
         if (wh->connectMode == 3) {
-            int result = func_02020bf0(wh->dsInfo, wh->cfg.dsPort, (u16)((1 << (wh->cfg.maxChildren + 1)) - 1), wh->cfg.dsDataSize, wh->cfg.doubleMode);
+            int result = WM_StartDataSharing(wh->dsInfo, wh->cfg.dsPort, (u16)((1 << (wh->cfg.maxChildren + 1)) - 1), wh->cfg.dsDataSize, wh->cfg.doubleMode);
             if (result != 0) {
                 WH_SetError(result);
                 WH_ChangeSysState(8);
@@ -120,7 +120,7 @@ BOOL func_02045ea4(WhMgr *wh) {
     if (wh->sysState != 4 && wh->sysState != 5) {
         return TRUE;
     }
-    return WH_CheckResult(func_02021880(NULL));
+    return WH_CheckResult(WM_SetEntry(NULL));
 }
 
 void func_02045ef8(WhCbArg *arg) {
@@ -129,7 +129,7 @@ void func_02045ef8(WhCbArg *arg) {
         WH_Reset(data_02097e40, NULL);
         return;
     }
-    if (!WH_CheckResult(func_020204e8((void (*)(void *))func_02045d58))) {
+    if (!WH_CheckResult(WM_EndParent((void (*)(void *))func_02045d58))) {
         WH_Reset(data_02097e40, NULL);
     }
 }
@@ -152,7 +152,7 @@ BOOL func_02046070(WhMgr *wh, const u16 *bssid, u16 channel) {
 
 // One branch condition is inverted.
 BOOL func_020460d0(WhMgr *wh) {
-    u32 allowed = func_0201ffb0();
+    u32 allowed = WM_GetAllowedChannel();
     if (allowed == 0x8000) {
         WH_SetError(3);
         return TRUE;
@@ -175,13 +175,13 @@ BOOL func_020460d0(WhMgr *wh) {
         wh->scanParam.channel = wh->scanChannel;
     }
     wh->scanParam.scanBuf = wh->bssDesc;
-    wh->scanParam.maxChannelTime = func_02020114();
-    return WH_CheckResult(func_0202052c((void (*)(void *))func_020461e4, &wh->scanParam));
+    wh->scanParam.maxChannelTime = WM_GetDispersionScanPeriod();
+    return WH_CheckResult(WM_StartScan((void (*)(void *))func_020461e4, &wh->scanParam));
 }
 
 static inline BOOL WH_StateInEndScan(void) {
     WH_ChangeSysState(3);
-    return WH_CheckResult(func_02020638((void (*)(void *))func_02046418));
+    return WH_CheckResult(WM_EndScan((void (*)(void *))func_02046418));
 }
 
 static inline BOOL WH_IsValidGameInfo(WhScanCbArg *arg) {

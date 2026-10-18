@@ -1,2 +1,18 @@
     .text       start:0x01ff8000 end:0x01ffcab8 kind:code align:32
     .bss        start:0x01ffcac0 end:0x01ffcac0 kind:bss align:32
+
+src/Main/Math/MathItcm.cpp:
+    complete
+    .text       start:0x01ffc128 end:0x01ffc318
+
+src/Main/Math/MathItcm_2.cpp:
+    complete
+    .text       start:0x01ffc4ec end:0x01ffc624
+
+src/Main/Math/MathItcm_3.cpp:
+    complete
+    .text       start:0x01ffc828 end:0x01ffc9fc
+
+src/Main/Math/MathItcm_4.cpp:
+    complete
+    .text       start:0x01ffc9fc end:0x01ffcab8

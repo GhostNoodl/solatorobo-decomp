@@ -17,7 +17,7 @@ void func_02044a60(WhCbArg *arg) {
 void func_02044a80(void) {
     WhMgr *wh = data_02097e40;
     WH_ChangeSysState(3);
-    if (func_020202d0((void (*)(void *))func_02044fc0) != 2) {
+    if (WM_End((void (*)(void *))func_02044fc0) != 2) {
         WH_ChangeSysState(8);
     } else {
         wh->initialized = FALSE;
@@ -98,7 +98,7 @@ void func_02044cb8(WhMgr *wh) {
 static inline BOOL WH_StateInInitialize(WhMgr *wh) {
     int result;
     WH_ChangeSysState(3);
-    result = func_0202021c(wh->wmBuf, (void (*)(void *))func_02045004, wh->cfg.unk_00);
+    result = WM_Initialize(wh->wmBuf, (void (*)(void *))func_02045004, wh->cfg.unk_00);
     if (result != 2) {
         WH_SetError(result);
         WH_ChangeSysState(9);
@@ -141,7 +141,7 @@ BOOL func_02044e38(WhMgr *wh, void (*cb)(void *arg)) {
 
 BOOL func_02044f70(WhMgr *wh) {
     WH_ChangeSysState(3);
-    if (func_020202d0((void (*)(void *))func_02044fc0) != 2) {
+    if (WM_End((void (*)(void *))func_02044fc0) != 2) {
         WH_ChangeSysState(8);
         return FALSE;
     }
@@ -165,7 +165,7 @@ void func_02045004(WhCbArg *arg) {
         WH_ChangeSysState(9);
         return;
     }
-    result = func_0201fd58(data_02097e40->indicateCb);
+    result = WM_SetIndCallback(data_02097e40->indicateCb);
     if (result != 0) {
         WH_SetError(result);
         WH_ChangeSysState(9);
@@ -176,12 +176,12 @@ void func_02045004(WhCbArg *arg) {
 
 static inline BOOL WH_StateInEndChildMP(void) {
     WH_ChangeSysState(3);
-    return WH_CheckResult(func_02020b78((void (*)(void *))func_020468d0));
+    return WH_CheckResult(WM_EndMP((void (*)(void *))func_020468d0));
 }
 
 static inline BOOL WH_StateInEndParentMP(void) {
     WH_ChangeSysState(3);
-    return WH_CheckResult(func_02020b78((void (*)(void *))func_02045ef8));
+    return WH_CheckResult(WM_EndMP((void (*)(void *))func_02045ef8));
 }
 
 static inline BOOL WH_EndScan(WhMgr *wh) {
@@ -211,7 +211,7 @@ void func_02045094(WhMgr *wh) {
     WH_ChangeSysState(3);
     switch (wh->connectMode) {
     case 4:
-        if (func_02020e30(wh->dsInfo) != 0) {
+        if (WM_EndDataSharing(wh->dsInfo) != 0) {
             WH_Reset(wh, NULL);
             return;
         }
@@ -221,7 +221,7 @@ void func_02045094(WhMgr *wh) {
         }
         break;
     case 3:
-        if (func_02020e30(wh->dsInfo) != 0) {
+        if (WM_EndDataSharing(wh->dsInfo) != 0) {
             WH_Reset(wh, NULL);
             return;
         }
@@ -271,7 +271,7 @@ BOOL func_020455ac(WhMgr *wh) {
 }
 
 u16 func_02045674(WhMgr *wh, u16 channel) {
-    u32 allowed = func_0201ffb0();
+    u32 allowed = WM_GetAllowedChannel();
     if (allowed == 0x8000) {
         WH_SetError(3);
         WH_ChangeSysState(8);
@@ -288,7 +288,7 @@ u16 func_02045674(WhMgr *wh, u16 channel) {
             return 0x18;
         }
     }
-    return func_02021804((void (*)(void *))func_02045770, 3, 0x11, channel, 0x1e);
+    return WM_MeasureChannel((void (*)(void *))func_02045770, 3, 0x11, channel, 0x1e);
 }
 
 void func_02045770(WhCbArg *arg) {
@@ -375,7 +375,7 @@ void func_02045950(WhMgr *wh, void *info, int length) {
     u8 attr = 0;
     attr |= (u8)(wh->parentParam.entryFlag ? 1 : 0);
     attr |= (u8)(wh->parentParam.multiBootFlag ? 2 : 0);
-    func_02021740(func_0204593c, info, length, wh->parentParam.ggid, wh->parentParam.tgid, attr);
+    WM_SetGameInfo(func_0204593c, info, length, wh->parentParam.ggid, wh->parentParam.tgid, attr);
 }
 
 #ifdef NONMATCHING
@@ -387,7 +387,7 @@ BOOL func_020459cc(WhMgr *wh, int mode, u16 tgid, u16 channel) {
     WH_ChangeSysState(3);
     wh->parentParam.tgid = tgid;
     wh->parentParam.channel = channel;
-    wh->parentParam.beaconPeriod = func_02020080();
+    wh->parentParam.beaconPeriod = WM_GetDispersionBeaconPeriod();
     wh->parentParam.parentMaxSize = wh->cfg.parentSize;
     wh->parentParam.childMaxSize = wh->cfg.childSize;
     wh->parentParam.maxEntry = wh->cfg.maxChildren;
@@ -400,7 +400,7 @@ BOOL func_020459cc(WhMgr *wh, int mode, u16 tgid, u16 channel) {
     case 3: {
         int result;
         WH_ChangeSysState(3);
-        result = func_02020314((void (*)(void *))func_02045ab4, &wh->parentParam);
+        result = WM_SetParentParameter((void (*)(void *))func_02045ab4, &wh->parentParam);
         if (result != 2) {
             WH_SetError(result);
             WH_ChangeSysState(8);

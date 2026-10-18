@@ -79,7 +79,7 @@ void func_02047838(SaveBase *s) {
             s->step++;
             break;
         case 2:
-            if (func_0201e7b0(hdr->magic, s->name) == 0) {
+            if (STD_CompareString(hdr->magic, s->name) == 0) {
                 for (i = 0; i < s->slotCount; i++) {
                     slot = SaveBase_GetSlot(s, i);
                     cks = slot->checksum;

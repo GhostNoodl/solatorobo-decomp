@@ -123,7 +123,7 @@ extern void func_020366d0(ResMgr *mgr, ResNode *node);
 extern char *STD_CopyString(char *dst, const char *src);
 extern u32 STD_GetStringLength(const char *str);
 extern char *STD_ConcatenateString(char *dst, const char *src);
-extern int func_0201e7b0(const char *a, const char *b);
+extern int STD_CompareString(const char *a, const char *b);
 extern u16 MATH_CalcCRC16(u16 *table, const char *str, u32 len);
 
 static inline u16 ResMgr_Hash(ResMgr *mgr, const char *str) {
@@ -152,7 +152,7 @@ static inline ResNode *ResMgr_FindArchive(ResMgr *mgr, const char *name, const c
             if (hash == 0) {
                 hash = ResMgr_Hash(mgr, name);
             }
-            if (node->hash == hash && func_0201e7b0(node->u.arc.name, arcName) == 0) {
+            if (node->hash == hash && STD_CompareString(node->u.arc.name, arcName) == 0) {
                 break;
             }
         }

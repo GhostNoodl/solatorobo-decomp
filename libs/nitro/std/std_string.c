@@ -114,3 +114,38 @@ char *STD_ConcatenateString(char *str1, const char *str2) {
     (void)STD_CopyString(&str1[n], str2);
     return str1;
 }
+
+int STD_CompareString(const char *str1, const char *str2) {
+    int c;
+    u32 align1 = (u32)str1 & 3;
+    u32 align2 = (u32)str2 & 3;
+    int d;
+    int i = 0;
+
+    if ((align1 ^ align2) == 0) {
+        if (align1 != 0) {
+            for (; i + align1 < 4; i++) {
+                c = ((const u8 *)str1)[i];
+                d = ((const u8 *)str2)[i];
+                if (c != d || c == 0) {
+                    return c - d;
+                }
+            }
+        }
+        for (;; i += 4) {
+            u32 w1 = *(const u32 *)(str1 + i);
+            u32 w2 = *(const u32 *)(str2 + i);
+            if (w1 != w2 || STDi_HAS_ZERO(w1)) {
+                break;
+            }
+        }
+    }
+    for (;; i++) {
+        c = ((const u8 *)str1)[i];
+        d = ((const u8 *)str2)[i];
+        if (c != d || c == 0) {
+            return c - d;
+        }
+    }
+    return 0;
+}

@@ -24,7 +24,7 @@ extern void func_ov000_021b1b88(StagePlayer *player, u16 a);
 extern void func_ov000_02188634(FieldState *state, u16 a, u16 b);
 extern u16 func_ov000_0214be8c(void);
 extern BOOL func_ov000_021b4738(StagePlayer *player);
-extern int func_0201e7b0(const char *a, const char *b);
+extern int STD_CompareString(const char *a, const char *b);
 extern DataRes *data_02fe1530;
 extern u16 func_020594bc(DataRes *res, u32 idx, int packed, int sub);
 extern void MIi_CpuClear16(u32 value, void *dst, u32 size);
@@ -335,7 +335,7 @@ void *func_02061d64(u16 idx) {
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
     for (; i < ((StageTblHeader *)res->data)->count; i++) {
-        if (func_0201e7b0(chunk->name, key) == 0) {
+        if (STD_CompareString(chunk->name, key) == 0) {
             goto found;
         }
         chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
@@ -357,7 +357,7 @@ void *func_02061df0(u16 idx) {
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
     for (; i < ((StageTblHeader *)res->data)->count; i++) {
-        if (func_0201e7b0(chunk->name, key) == 0) {
+        if (STD_CompareString(chunk->name, key) == 0) {
             goto found;
         }
         chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
@@ -379,7 +379,7 @@ void *func_02061e7c(u16 idx) {
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
     for (; i < ((StageTblHeader *)res->data)->count; i++) {
-        if (func_0201e7b0(chunk->name, key) == 0) {
+        if (STD_CompareString(chunk->name, key) == 0) {
             goto found;
         }
         chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
@@ -401,7 +401,7 @@ void *func_02061f08(u16 idx) {
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
     for (; i < ((StageTblHeader *)res->data)->count; i++) {
-        if (func_0201e7b0(chunk->name, key) == 0) {
+        if (STD_CompareString(chunk->name, key) == 0) {
             goto found;
         }
         chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
@@ -423,7 +423,7 @@ void *func_02061f94(u16 idx) {
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
     for (; i < ((StageTblHeader *)res->data)->count; i++) {
-        if (func_0201e7b0(chunk->name, key) == 0) {
+        if (STD_CompareString(chunk->name, key) == 0) {
             goto found;
         }
         chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
@@ -445,7 +445,7 @@ void *func_02062020(u16 idx) {
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
     for (; i < ((StageTblHeader *)res->data)->count; i++) {
-        if (func_0201e7b0(chunk->name, key) == 0) {
+        if (STD_CompareString(chunk->name, key) == 0) {
             goto found;
         }
         chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
@@ -467,7 +467,7 @@ void *func_020620ac(u16 idx) {
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
     for (; i < ((StageTblHeader *)res->data)->count; i++) {
-        if (func_0201e7b0(chunk->name, key) == 0) {
+        if (STD_CompareString(chunk->name, key) == 0) {
             goto found;
         }
         chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
@@ -489,7 +489,7 @@ void *func_02062138(u16 idx) {
     u32 i = 0;
     StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
     for (; i < ((StageTblHeader *)res->data)->count; i++) {
-        if (func_0201e7b0(chunk->name, key) == 0) {
+        if (STD_CompareString(chunk->name, key) == 0) {
             goto found;
         }
         chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);

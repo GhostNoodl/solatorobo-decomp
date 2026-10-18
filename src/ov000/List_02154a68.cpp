@@ -92,7 +92,7 @@ extern "C" {
 
 extern HeapState *data_02097dd0;
 
-BOOL func_0201e7b0(const char *a, const char *b);
+BOOL STD_CompareString(const char *a, const char *b);
 void func_0203de1c(void *ptr);
 void *func_0203dd9c(u32 size);
 void func_02041558(Model *model);
@@ -118,7 +118,7 @@ static inline ListEntry *FindById(ListOwner *self, u16 id) {
 static inline ListEntry *FindByName(ListOwner *self, const char *name) {
     ListEntry *entry;
     for (entry = self->entries; entry != NULL; entry = entry->next) {
-        if (!func_0201e7b0(entry->name, name)) {
+        if (!STD_CompareString(entry->name, name)) {
             break;
         }
     }

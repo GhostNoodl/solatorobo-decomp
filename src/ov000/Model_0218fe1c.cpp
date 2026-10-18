@@ -149,7 +149,7 @@ void NNS_G3dRenderObjInit(void *obj, void *mdl);
 void STD_CopyString(char *dst, const char *src);
 void STD_ConcatenateString(char *dst, const char *src);
 s32 NNS_G3dGetResDictIdxByName(void *dict, const char *name);
-BOOL func_0201e7b0(const char *a, const char *b);
+BOOL STD_CompareString(const char *a, const char *b);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, AnmObj *anm);
 BOOL func_ov000_0218f874(AnimCtrl *self, void *obj, s16 speed);
 BOOL func_ov000_0218fa28(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);

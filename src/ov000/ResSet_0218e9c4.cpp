@@ -43,7 +43,7 @@ void func_02035acc(const char *name, const char *ext, s32 type);
 void func_02036838(void *a, const char *name, s32 b, s32 c);
 void STD_CopyString(char *dst, const char *src);
 void STD_ConcatenateString(char *dst, const char *src);
-BOOL func_0201e7b0(const char *a, const char *b);
+BOOL STD_CompareString(const char *a, const char *b);
 
 }
 
@@ -147,7 +147,7 @@ ResSet *func_ov000_0218ea20(ResSet *self) {
 
 void func_ov000_0218ec60(ResSet *self, const char *name, const char *ext, BOOL owned, u8 force) {
     if (name != NULL && ext != NULL) {
-        if (!force && !func_0201e7b0(self->entries[0].name, name) && !func_0201e7b0(self->entries[0].ext, ext)) {
+        if (!force && !STD_CompareString(self->entries[0].name, name) && !STD_CompareString(self->entries[0].ext, ext)) {
             return;
         }
         ResSet_Release0(self);
@@ -167,7 +167,7 @@ void func_ov000_0218ec60(ResSet *self, const char *name, const char *ext, BOOL o
 
 void func_ov000_0218edf0(ResSet *self, const char *name, const char *ext, BOOL owned, u8 force) {
     if (name != NULL && ext != NULL) {
-        if (!force && !func_0201e7b0(self->entries[2].name, name) && !func_0201e7b0(self->entries[1].ext, ext)) {
+        if (!force && !STD_CompareString(self->entries[2].name, name) && !STD_CompareString(self->entries[1].ext, ext)) {
             return;
         }
         ResSet_Release1(self);
@@ -187,7 +187,7 @@ void func_ov000_0218edf0(ResSet *self, const char *name, const char *ext, BOOL o
 
 void func_ov000_0218ef10(ResSet *self, const char *name, const char *ext, BOOL owned, u8 force) {
     if (name != NULL && ext != NULL) {
-        if (!force && !func_0201e7b0(self->entries[3].name, name) && !func_0201e7b0(self->entries[3].ext, ext)) {
+        if (!force && !STD_CompareString(self->entries[3].name, name) && !STD_CompareString(self->entries[3].ext, ext)) {
             return;
         }
         ResSet_Release3(self);

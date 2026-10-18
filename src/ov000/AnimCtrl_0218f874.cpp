@@ -66,7 +66,7 @@ void *NNS_G3dGetAnmByName(void *file, const char *name);
 void *NNS_G3dGetTex(void *tex);
 void STD_CopyString(char *dst, const char *src);
 void STD_ConcatenateString(char *dst, const char *src);
-BOOL func_0201e7b0(const char *a, const char *b);
+BOOL STD_CompareString(const char *a, const char *b);
 void func_ov000_0218fc28(AnimCtrl *self, RenderObj *obj, void *res, void *tex, s16 blend);
 
 BOOL func_ov000_0218f874(AnimCtrl *self, RenderObj *obj, s16 speed) {
@@ -146,7 +146,7 @@ BOOL func_ov000_0218fa28(AnimCtrl *self, RenderObj *obj, ResSet *res, void *file
         self->same = 0;
         return ret;
     }
-    if (!force && !func_0201e7b0(self->name, name)) {
+    if (!force && !STD_CompareString(self->name, name)) {
         self->same = 1;
         return ret;
     }

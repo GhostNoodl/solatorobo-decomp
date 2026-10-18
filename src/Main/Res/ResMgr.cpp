@@ -215,7 +215,7 @@ ResList *func_02035f30(const char *name, const char *arcName, u16 id) {
             if (hash == 0) { \
                 hash = ResMgr_Hash(mgr, name); \
             } \
-            if (node->hash == hash && func_0201e7b0(node->u.arc.name, arcName) == 0) { \
+            if (node->hash == hash && STD_CompareString(node->u.arc.name, arcName) == 0) { \
                 break; \
             } \
         } \
@@ -327,7 +327,7 @@ ResNode *func_0203657c(ResMgr *mgr, const char *name, int type) {
             if (hash == 0) {
                 hash = ResMgr_Hash(mgr, name);
             }
-            if (node->hash == hash && func_0201e7b0(node->name, name) == 0) {
+            if (node->hash == hash && STD_CompareString(node->name, name) == 0) {
                 break;
             }
         }
@@ -434,7 +434,7 @@ ResNode *func_02036860(ResMgr *mgr, const char *name, const char *arcName, int t
                 if (hash == 0) {
                     hash = ResMgr_Hash(mgr, name);
                 }
-                if (node->hash == hash && func_0201e7b0(node->u.arc.name, arcName) == 0) {
+                if (node->hash == hash && STD_CompareString(node->u.arc.name, arcName) == 0) {
                     break;
                 }
             }
