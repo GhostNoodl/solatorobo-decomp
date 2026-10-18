@@ -4,3 +4,419 @@
     .ctor       start:0x02216318 end:0x02216328 kind:rodata align:4
     .data       start:0x02216340 end:0x022183c0 kind:data align:32
     .bss        start:0x022183c0 end:0x022183c0 kind:bss align:32
+
+src/ov009/ov009_021ff040.cpp:
+    complete
+    .text       start:0x021ff040 end:0x021ff730
+
+src/ov009/ov009_021ff730.cpp:
+    complete
+    .text       start:0x021ff730 end:0x021ff908
+
+src/ov009/ov009_021ffff4.cpp:
+    complete
+    .text       start:0x021ffff4 end:0x022001e8
+
+src/ov009/ov009_022009c8.cpp:
+    complete
+    .text       start:0x022009c8 end:0x02200d00
+
+src/ov009/ov009_02200fd4.cpp:
+    complete
+    .text       start:0x02200fd4 end:0x02201150
+
+src/ov009/ov009_022013ac.cpp:
+    complete
+    .text       start:0x022013ac end:0x02201400
+
+src/ov009/ov009_02201470.cpp:
+    complete
+    .text       start:0x02201470 end:0x02201678
+
+src/ov009/ov009_02201848.cpp:
+    complete
+    .text       start:0x02201848 end:0x0220189c
+
+src/ov009/ov009_0220244c.cpp:
+    complete
+    .text       start:0x0220244c end:0x022028a8
+
+src/ov009/ov009_02202acc.cpp:
+    complete
+    .text       start:0x02202acc end:0x02202b48
+
+src/ov009/ov009_02202db4.cpp:
+    complete
+    .text       start:0x02202db4 end:0x02202e18
+
+src/ov009/ov009_02203b8c.cpp:
+    complete
+    .text       start:0x02203b8c end:0x02203bc8
+
+src/ov009/ov009_022040f0.cpp:
+    complete
+    .text       start:0x022040f0 end:0x0220413c
+
+src/ov009/ov009_02204410.cpp:
+    complete
+    .text       start:0x02204410 end:0x02204468
+
+src/ov009/ov009_022049e4.cpp:
+    complete
+    .text       start:0x022049e4 end:0x02204a10
+
+src/ov009/ov009_02205d14.cpp:
+    complete
+    .text       start:0x02205d14 end:0x02206084
+
+src/ov009/ov009_02206370.cpp:
+    complete
+    .text       start:0x02206370 end:0x022069f8
+
+src/ov009/ov009_0220d034.cpp:
+    complete
+    .text       start:0x0220d034 end:0x0220d2d8
+
+src/ov009/ov009_02213f9c.cpp:
+    complete
+    .text       start:0x02213f9c end:0x022141e0
+
+src/ov009/ov009_02215a54.cpp:
+    complete
+    .text       start:0x02215a54 end:0x02215cc4
+
+src/ov009/ov009_021facf0.cpp:
+    complete
+    .text       start:0x021facf0 end:0x021fada8
+
+src/ov009/ov009_021fb298.cpp:
+    complete
+    .text       start:0x021fb298 end:0x021fb3f4
+
+src/ov009/ov009_021fb540.cpp:
+    complete
+    .text       start:0x021fb540 end:0x021fb6b0
+
+src/ov009/ov009_021fb890.cpp:
+    complete
+    .text       start:0x021fb890 end:0x021fb9b0
+
+src/ov009/ov009_021fbbc0.cpp:
+    complete
+    .text       start:0x021fbbc0 end:0x021fc2a8
+
+src/ov009/ov009_021fc7c0.cpp:
+    complete
+    .text       start:0x021fc7c0 end:0x021fc8f4
+
+src/ov009/ov009_021fcce8.cpp:
+    complete
+    .text       start:0x021fcce8 end:0x021fce9c
+
+src/ov009/ov009_021fd24c.cpp:
+    complete
+    .text       start:0x021fd24c end:0x021fd510
+
+src/ov009/ov009_02206ae4.cpp:
+    complete
+    .text       start:0x02206ae4 end:0x02207314
+
+src/ov009/ov009_02207684.cpp:
+    complete
+    .text       start:0x02207684 end:0x022076b8
+
+src/ov009/ov009_022078ac.cpp:
+    complete
+    .text       start:0x022078ac end:0x0220792c
+
+src/ov009/ov009_02207aa0.cpp:
+    complete
+    .text       start:0x02207aa0 end:0x02207ccc
+
+src/ov009/ov009_02207d98.cpp:
+    complete
+    .text       start:0x02207d98 end:0x02207dd0
+
+src/ov009/ov009_02208574.cpp:
+    complete
+    .text       start:0x02208574 end:0x022088d8
+
+src/ov009/ov009_022088d8.cpp:
+    complete
+    .text       start:0x022088d8 end:0x02208b24
+
+src/ov009/ov009_02208fac.cpp:
+    complete
+    .text       start:0x02208fac end:0x02208fe0
+
+src/ov009/ov009_02209218.cpp:
+    complete
+    .text       start:0x02209218 end:0x022093b4
+
+src/ov009/ov009_02211f44.cpp:
+    complete
+    .text       start:0x02211f44 end:0x02211f9c
+
+src/ov009/ov009_02212668.cpp:
+    complete
+    .text       start:0x02212668 end:0x0221268c
+
+src/ov009/ov009_02214360.cpp:
+    complete
+    .text       start:0x02214360 end:0x022143d8
+
+src/ov009/ov009_022144a8.cpp:
+    complete
+    .text       start:0x022144a8 end:0x02214534
+
+src/ov009/ov009_02214810.cpp:
+    complete
+    .text       start:0x02214810 end:0x0221483c
+
+src/ov009/ov009_02214a9c.cpp:
+    complete
+    .text       start:0x02214a9c end:0x02214ac0
+
+src/ov009/ov009_02214fe4.cpp:
+    complete
+    .text       start:0x02214fe4 end:0x022150cc
+
+src/ov009/ov009_0220f9f4.cpp:
+    complete
+    .text       start:0x0220f9f4 end:0x0220fa20
+
+src/ov009/ov009_0220fe78.cpp:
+    complete
+    .text       start:0x0220fe78 end:0x0220fea4
+
+src/ov009/ov009_022117ac.cpp:
+    complete
+    .text       start:0x022117ac end:0x022117e4
+
+src/ov009/ov009_0220ac74.cpp:
+    complete
+    .text       start:0x0220ac74 end:0x0220acb8
+
+src/ov009/ov009_022093b4.cpp:
+    complete
+    .text       start:0x022093b4 end:0x022093f8
+
+src/ov009/ov009_02210760.cpp:
+    complete
+    .text       start:0x02210760 end:0x022107b4
+
+src/ov009/ov009_0220b48c.cpp:
+    complete
+    .text       start:0x0220b48c end:0x0220b4e4
+
+src/ov009/ov009_02210e88.cpp:
+    complete
+    .text       start:0x02210e88 end:0x02210ee0
+
+src/ov009/ov009_02209b20.cpp:
+    complete
+    .text       start:0x02209b20 end:0x02209bdc
+
+src/ov009/ov009_0220abf8.cpp:
+    complete
+    .text       start:0x0220abf8 end:0x0220ac74
+
+src/ov009/ov009_0220ae4c.cpp:
+    complete
+    .text       start:0x0220ae4c end:0x0220aeb8
+
+src/ov009/ov009_022106e4.cpp:
+    complete
+    .text       start:0x022106e4 end:0x02210760
+
+src/ov009/ov009_02210ba8.cpp:
+    complete
+    .text       start:0x02210ba8 end:0x02210ce8
+
+src/ov009/ov009_022137ac.cpp:
+    complete
+    .text       start:0x022137ac end:0x02213814
+
+src/ov009/ov009_022107b4.cpp:
+    complete
+    .text       start:0x022107b4 end:0x0221097c
+
+src/ov009/ov009_0220c93c.cpp:
+    complete
+    .text       start:0x0220c93c end:0x0220c970
+
+src/ov009/ov009_0220c970.cpp:
+    complete
+    .text       start:0x0220c970 end:0x0220cb64
+
+src/ov009/ov009_0220cb64.cpp:
+    complete
+    .text       start:0x0220cb64 end:0x0220cc24
+
+src/ov009/ov009_0220f1ac.cpp:
+    complete
+    .text       start:0x0220f1ac end:0x0220f3ec
+
+src/ov009/ov009_0220e434.cpp:
+    complete
+    .text       start:0x0220e434 end:0x0220e4fc
+
+src/ov009/ov009_0220e4fc.cpp:
+    complete
+    .text       start:0x0220e4fc end:0x0220e5f0
+
+src/ov009/ov009_0220f3ec.cpp:
+    complete
+    .text       start:0x0220f3ec end:0x0220f4b0
+
+src/ov009/ov009_0220bfcc.cpp:
+    complete
+    .text       start:0x0220bfcc end:0x0220c094
+
+src/ov009/ov009_0220a560.cpp:
+    complete
+    .text       start:0x0220a560 end:0x0220a750
+
+src/ov009/ov009_0220a028.cpp:
+    complete
+    .text       start:0x0220a028 end:0x0220a128
+
+src/ov009/ov009_022143d8.cpp:
+    complete
+    .text       start:0x022143d8 end:0x022144a8
+
+src/ov009/ov009_022136fc.cpp:
+    complete
+    .text       start:0x022136fc end:0x022137ac
+
+src/ov009/ov009_02211da4.cpp:
+    complete
+    .text       start:0x02211da4 end:0x02211f44
+
+src/ov009/ov009_02212740.cpp:
+    complete
+    .text       start:0x02212740 end:0x022127f8
+
+src/ov009/ov009_02211270.cpp:
+    complete
+    .text       start:0x02211270 end:0x0221134c
+
+src/ov009/ov009_0220dfe8.cpp:
+    complete
+    .text       start:0x0220dfe8 end:0x0220e0e4
+
+src/ov009/ov009_0220397c.cpp:
+    complete
+    .text       start:0x0220397c end:0x02203b8c
+
+src/ov009/ov009_0220413c.cpp:
+    complete
+    .text       start:0x0220413c end:0x02204230
+
+src/ov009/ov009_021fe1ec.cpp:
+    complete
+    .text       start:0x021fe1ec end:0x021fe3d4
+
+src/ov009/ov009_02209a08.cpp:
+    complete
+    .text       start:0x02209a08 end:0x02209b20
+
+src/ov009/ov009_0220cc24.cpp:
+    complete
+    .text       start:0x0220cc24 end:0x0220cd40
+
+src/ov009/ov009_0220ee10.cpp:
+    complete
+    .text       start:0x0220ee10 end:0x0220ef1c
+
+src/ov009/ov009_02210ee0.cpp:
+    complete
+    .text       start:0x02210ee0 end:0x02210fe4
+
+src/ov009/ov009_02211138.cpp:
+    complete
+    .text       start:0x02211138 end:0x02211270
+
+src/ov009/ov009_02214974.cpp:
+    complete
+    .text       start:0x02214974 end:0x02214a9c
+
+src/ov009/ov009_0221134c.cpp:
+    complete
+    .text       start:0x0221134c end:0x02211470
+
+src/ov009/ov009_0221483c.cpp:
+    complete
+    .text       start:0x0221483c end:0x02214974
+
+src/ov009/ov009_02214e90.cpp:
+    complete
+    .text       start:0x02214e90 end:0x02214fe4
+
+src/ov009/ov009_021fd71c.cpp:
+    complete
+    .text       start:0x021fd71c end:0x021fd830
+
+src/ov009/ov009_0220d90c.cpp:
+    complete
+    .text       start:0x0220d90c end:0x0220da24
+
+src/ov009/ov009_0220d5f8.cpp:
+    complete
+    .text       start:0x0220d5f8 end:0x0220d90c
+
+src/ov009/ov009_0220e0e4.cpp:
+    complete
+    .text       start:0x0220e0e4 end:0x0220e220
+
+src/ov009/ov009_0220d2d8.cpp:
+    complete
+    .text       start:0x0220d2d8 end:0x0220d5f8
+
+src/ov009/ov009_0220da24.cpp:
+    complete
+    .text       start:0x0220da24 end:0x0220dd84
+
+src/ov009/ov009_0220e2a4.cpp:
+    complete
+    .text       start:0x0220e2a4 end:0x0220e434
+
+src/ov009/ov009_0220f868.cpp:
+    complete
+    .text       start:0x0220f868 end:0x0220f9f4
+
+src/ov009/ov009_02210ce8.cpp:
+    complete
+    .text       start:0x02210ce8 end:0x02210e88
+
+src/ov009/ov009_02210fe4.cpp:
+    complete
+    .text       start:0x02210fe4 end:0x02211138
+
+src/ov009/ov009_022127f8.cpp:
+    complete
+    .text       start:0x022127f8 end:0x02212978
+
+src/ov009/ov009_02213814.cpp:
+    complete
+    .text       start:0x02213814 end:0x022139a4
+
+src/ov009/ov009_022124e0.cpp:
+    complete
+    .text       start:0x022124e0 end:0x02212668
+
+src/ov009/ov009_022141e0.cpp:
+    complete
+    .text       start:0x022141e0 end:0x02214360
+
+src/ov009/ov009_02212f30.cpp:
+    complete
+    .text       start:0x02212f30 end:0x022130b4
+
+src/ov009/ov009_022130b4.cpp:
+    complete
+    .text       start:0x022130b4 end:0x0221327c
+
+src/ov009/ov009_0221327c.cpp:
+    complete
+    .text       start:0x0221327c end:0x02213460
