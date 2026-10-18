@@ -313,4 +313,35 @@ void func_ov000_0218e894(ActorMgr *mgr) {
     }
 }
 
+static inline ActorGroup *FindGroupX(ActorMgr *mgr, u16 id) {
+    u16 key = id & 0xf000;
+    ActorGroup *group = mgr->head;
+    ActorGroup *found = NULL;
+    if (key == 0xf000) {
+        found = group;
+    } else {
+        for (; group != NULL; group = group->next) {
+            if (group->key == key) {
+                found = group;
+                break;
+            }
+        }
+    }
+    return found;
+}
+
+void func_ov000_0218e8ec(void *self, u16 kind, s32 type) {
+    ActorGroup *group = FindGroupX(data_ov000_021ccd68, (u16)(kind & 0xf000));
+    Actor *actor;
+    if (group == NULL || (actor = group->head) == NULL) {
+        return;
+    }
+    for (; actor != NULL; actor = actor->next) {
+        if (kind == 0xffff || kind == actor->kind) {
+            u8 buf = type;
+            func_ov000_0218d398(actor, 0xffff, 2, 1, 1, &buf);
+        }
+    }
+}
+
 }

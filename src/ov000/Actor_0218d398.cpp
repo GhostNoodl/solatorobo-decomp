@@ -253,4 +253,23 @@ void func_ov000_0218d988(Actor *self, Actor *other, s32 step) {
     self->rot_y = func_01ffc128(angle, self->rot_y, step, 1, 0x8000);
 }
 
+void func_ov000_0218d9e8(Actor *self, VecFx32 *target, s32 step) {
+    s32 dz;
+    s32 dx;
+    if (func_01ffc198(&self->pos, target, self->unk_64 + 0x400)) {
+        return;
+    }
+    dx = self->pos.x - target->x;
+    dz = self->pos.z - target->z;
+    {
+        s64 sq = (s64)dx * dx;
+        sq += (s64)dz * dz;
+        REG_SQRTCNT = 1;
+        REG_SQRT_PARAM = (u64)(sq << 2);
+    }
+    while (REG_SQRTCNT & 0x8000) {
+    }
+    self->rot_x = func_01ffc128(FX_Atan2(self->pos.y - target->y, (s32)(REG_SQRT_RESULT + 1) >> 1), self->rot_x, step, 1, 0x8000);
+}
+
 }

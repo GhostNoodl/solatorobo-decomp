@@ -2,6 +2,50 @@
 
 extern "C" {
 
+void func_ov000_0218de6c(ActorGroup *group, Actor *actor) {
+    Actor *tail = group->tail;
+    if (tail != NULL) {
+        tail->next = actor;
+    } else {
+        group->head = actor;
+    }
+    actor->prev = tail;
+    actor->next = NULL;
+    group->tail = actor;
+    group->count++;
+    if (!(group->serial & 0xf000)) {
+        actor->id = group->serial | group->key;
+        if (group->serial < 0xfff) {
+            group->serial++;
+        } else {
+            group->serial = 0xf001;
+        }
+    } else {
+        BOOL done = FALSE;
+        do {
+            u16 serial = group->serial & 0xfff;
+            u16 id = group->key | serial;
+            BOOL found = FALSE;
+            Actor *a;
+            for (a = group->head; a != NULL; a = a->next) {
+                if (id == a->id) {
+                    found = TRUE;
+                    break;
+                }
+            }
+            if (!found) {
+                actor->id = id;
+                done = TRUE;
+            }
+            if (serial < 0xfff) {
+                group->serial++;
+            } else {
+                group->serial = 0xf001;
+            }
+        } while (!done);
+    }
+}
+
 void func_ov000_0218df68(ActorGroup *group, Actor *actor) {
     Actor *prev = actor->prev;
     Actor *next = actor->next;

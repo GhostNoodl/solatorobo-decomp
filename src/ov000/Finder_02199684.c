@@ -210,3 +210,31 @@ BOOL func_ov000_021997e8(Finder *self, Part *part) {
     }
     return func_ov000_02199a34(self, &s) ? TRUE : FALSE;
 }
+
+BOOL func_ov000_02199a34(Finder *self, Shape *s) {
+    BOOL ok = TRUE;
+    Query *q = self->query;
+    s32 lo = q->dist_min;
+    s32 hi = q->dist_max;
+
+    if (lo < hi && lo >= 0 && hi >= 0) {
+        s32 d;
+        if (q->flat) {
+            s32 dx = q->pos.x - s->pos.x;
+            s32 dz = q->pos.z - s->pos.z;
+            s64 sq = (s64)dx * dx;
+            sq += (s64)dz * dz;
+            d = Dist2D(sq);
+        } else {
+            d = VEC_Distance(&q->pos, &s->pos);
+        }
+        d -= s->radius;
+        if (d < 0) {
+            d = 0;
+        }
+        if (d < lo || d > hi) {
+            ok = FALSE;
+        }
+    }
+    return ok;
+}
