@@ -1,4 +1,17 @@
-#include "types.h"
+#include "ov003/Vec.h"
+
+struct Ov003Mover {
+    u32 unk_00;
+    u8 active : 1;
+    u8 noSnap : 1;
+    u8 done : 1;
+    s32 speed;
+    s32 dist;
+    s32 maxDist;
+    Ov003Vec pos;
+    Ov003Vec target;
+    Ov003Vec dir;
+};
 
 typedef struct Ov003FreeNode {
     struct Ov003FreeNode *next;
@@ -84,6 +97,22 @@ Ov003PoolOwner *func_ov003_021d7a14(Ov003PoolOwner *self) {
     self->Release();
     func_0203de1c(self);
     return self;
+}
+
+BOOL func_ov003_021d7a44(Ov003Mover *self, const Ov003Vec *target, const Ov003Vec *start, s32 speed, s32 maxDist, u8 noSnap) {
+    self->active = 1;
+    self->noSnap = noSnap;
+    self->done = 0;
+    self->dist = 0;
+    self->speed = speed;
+    self->maxDist = maxDist;
+    self->pos = *start;
+    self->target = *target;
+    self->dir.x = target->x - start->x;
+    self->dir.y = target->y - start->y;
+    self->dir.z = target->z - start->z;
+    func_02012d78(&self->dir, &self->dir);
+    return TRUE;
 }
 
 }

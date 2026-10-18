@@ -76,3 +76,26 @@ BOOL func_ov003_021f3954(Ov003Prop *self) {
     }
     return r;
 }
+
+void func_ov003_021f3988(Ov003Prop *self) {
+    s32 *res;
+    s32 a;
+    Ov003Vec v;
+    func_ov000_021b4c60(self);
+    func_ov000_02190cb0(self->model, data_ov003_021fa662, 0x1000, 0);
+    func_ov000_0218ffdc(&self->anim, &self->unk_b0, 0, 1);
+    a = self->model->unk_08; func_02026df0(func_0202ac90(self->anim.data->unk_0c != NULL ? *self->anim.data->unk_0c : 0), a);
+    func_ov000_02190cb0(&self->anim, data_ov003_021fa668, 0x1000, 0);
+    func_ov000_02191318(&self->anim, -1);
+    func_ov000_02190758(&self->anim, &self->unk_7c, 0);
+    v.x = 0x199a;
+    v.y = 0;
+    v.z = 0;
+    func_01ffc9fc(&v, &v, self->unk_7e);
+    func_02012be8(&v, &self->pos, &v);
+    self->effectPos.x = v.x;
+    self->effectPos.y = v.y;
+    self->effectPos.z = v.z;
+    self->shadow->unk_14 = self->unk_64;
+    self->unk_2d0 = 0;
+}

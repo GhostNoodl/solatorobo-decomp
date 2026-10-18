@@ -41,11 +41,18 @@ static inline void Ov003Sequence_Step(Ov003Sequence *self) {
     if (self->index == self->length) {
         self->index = 0;
     }
-    self->unk_04 = 0;
     self->b1 = 0;
+    self->unk_04 = 0;
     self->b2 = 0;
     self->b3 = 0;
     self->b4 = 0;
+}
+
+void func_ov003_021d96e0(Ov003Sequence *self) {
+    if (!self->active) {
+        return;
+    }
+    Ov003Sequence_Step(self);
 }
 
 void func_ov003_021d9740(Ov003Sequence *self, u8 id) {

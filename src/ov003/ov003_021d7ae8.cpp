@@ -1,10 +1,11 @@
 #include "types.h"
 
-typedef struct {
+struct Ov003Vec {
     s32 x;
     s32 y;
     s32 z;
-} Ov003Vec;
+    Ov003Vec() {}
+};
 
 typedef struct {
     u32 unk_00;
@@ -131,6 +132,20 @@ BOOL func_ov003_021d7bec(Ov003Mover *self) {
         r = self->done;
     }
     return r;
+}
+
+void func_ov003_021d7c08(Ov003Mover *self, const Ov003Vec *target) {
+    if (!self->active) {
+        return;
+    }
+    if (self->done) {
+        return;
+    }
+    self->target = *target;
+    self->dir.x = target->x - self->pos.x;
+    self->dir.y = target->y - self->pos.y;
+    self->dir.z = target->z - self->pos.z;
+    func_02012d78(&self->dir, &self->dir);
 }
 
 }

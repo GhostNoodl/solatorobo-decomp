@@ -66,6 +66,36 @@ extern void func_0201e5a0(void *dst, const void *src, u32 size);
 extern void func_0203de1c(void *p);
 extern void func_ov003_021cf5e8(Ov003Group *self);
 
+extern u8 data_ov003_021f7984[];
+extern void *func_0203dd9c(u32 size);
+
+void func_ov003_021cf1f0(Ov003EntryList *self, u16 id, u16 max, u32 c) {
+    Ov003Entry *e = (Ov003Entry *)func_0203dd9c(sizeof(Ov003Entry));
+    Ov003Entry *p;
+    if (e != NULL) {
+        e->vtbl = data_ov003_021f7984;
+        e->id = id;
+        e->max = max;
+        e->val = 0;
+        e->unk_0c = c;
+        e->next = NULL;
+    }
+    if (self->head == NULL) {
+        self->head = e;
+        self->cur = e;
+    } else {
+        p = self->head;
+        while (p != NULL) {
+            if (p->next == NULL) {
+                break;
+            }
+            p = p->next;
+        }
+        p->next = e;
+    }
+    self->count++;
+}
+
 Ov003Entry *func_ov003_021cf278(Ov003EntryList *self, u16 id, u16 val) {
     Ov003Entry *e;
     for (e = self->head; e != NULL; e = e->next) {
