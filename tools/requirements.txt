@@ -2,3 +2,6 @@ ndspy
 pre-commit
 pyperclip
 requests
+pyyaml
+capstone
+pyelftools
