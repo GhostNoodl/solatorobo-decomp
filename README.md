@@ -6,7 +6,7 @@ This repository contains no game code or assets. To build it, you need your own 
 
 ## Status
 
-Early: about 200 of 8,100 functions matched. The ROM is unpacked and split across the main ARM9 program, ITCM/DTCM and 16 overlays, ready to be matched with [objdiff](https://github.com/encounter/objdiff).
+About 5,300 of 8,100 functions matched (30% of the code). Every overlay with code has matched functions, and much of the TwlSDK and NitroSystem library code (Fnd, FX, OS, SND, Gfd, G3d) is matched under its real names. Run `ninja report` for current numbers in [objdiff](https://github.com/encounter/objdiff).
 
 ## About the game's code
 
