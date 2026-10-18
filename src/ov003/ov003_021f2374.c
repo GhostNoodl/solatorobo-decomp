@@ -5,6 +5,34 @@ typedef struct {
     u8 unk_02[0x136];
 } Ov003MultiSlot;
 
+typedef struct {
+    u8 unk_00[4];
+    void *mdl;
+    u8 unk_08[0x1c];
+    u8 rob[0x84];
+    s32 unk_a8;
+    s32 unk_ac;
+    s32 unk_b0;
+    u8 unk_b4[0xe];
+    u16 unk_c2_0 : 4;
+    u16 unk_c2_4 : 1;
+    u16 unk_c2_5 : 1;
+    u16 unk_c2_6 : 1;
+    u16 unk_c2_7 : 1;
+    u16 unk_c2_8 : 1;
+    u8 unk_c4[0x24];
+} Ov003MultiModel;
+
+typedef struct {
+    s32 m[12];
+    u8 unk_30;
+    u8 unk_31[3];
+} Ov003MultiMtx;
+
+typedef struct {
+    s32 m[9];
+} Ov003MultiMtx33;
+
 typedef struct Ov003Multi Ov003Multi;
 struct Ov003Multi {
     u8 unk_00[8];
@@ -13,12 +41,27 @@ struct Ov003Multi {
     s16 kind;
     u8 unk_1a[0xa];
     void (*func)(Ov003Multi *self);
-    u8 unk_28[0x6a];
+    u8 unk_28[0x48];
+    s32 posX;
+    s32 posY;
+    s32 posZ;
+    u16 rotX;
+    u16 rotY;
+    u16 rotZ;
+    u8 unk_82[0x10];
     u8 state;
     u8 unk_93[0x1b];
     u8 group;
     u8 unk_af;
     Ov003MultiSlot slots[8];
+    Ov003MultiModel models[6];
+    Ov003MultiMtx mtx[6];
+    u8 unk_1118;
+    u8 unk_1119;
+    u8 unk_111a[2];
+    Ov003MultiMtx33 rot;
+    s32 unk_1140[3];
+    s32 unk_114c[3];
 };
 
 typedef struct {
@@ -36,12 +79,14 @@ typedef struct {
 
 typedef struct {
     void *res;
-    u8 unk_04[0xc];
+    s32 x;
+    s32 y;
+    s32 z;
 } Ov003MultiRes;
 
 typedef struct {
     Ov003MultiRes *res;
-    u8 unk_04[4];
+    s8 *map;
     u16 count;
     u8 unk_0a[6];
 } Ov003MultiDef;
@@ -52,6 +97,25 @@ extern const Ov003MultiDef data_ov003_021f7470[];
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_0218f110(s16 *p);
+extern void func_ov000_0218ffdc(Ov003MultiModel *m, Ov003MultiSlot *slot, s32 a, s32 b);
+extern void func_ov000_02190e98(Ov003MultiModel *m, s32 a, s32 b, s32 c);
+extern void func_ov000_021915a0(Ov003MultiModel *m);
+extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, BOOL on, u32 mask);
+extern void NNSi_G3dModifyMatFlag(void *mdl, BOOL on, u32 flag);
+extern u8 func_ov000_021909a8(Ov003MultiModel *m, const void *a, const void *b);
+extern void MTX_Identity43_(Ov003MultiMtx *m);
+extern void NNS_G3dRenderObjSetInitFunc(void *rob, void *func);
+extern char data_ov003_021fa2ce[];
+extern const s16 FX_SinCosTable_[];
+extern void MTX_Identity33_(Ov003MultiMtx33 *m);
+extern void MTX_RotX33_(Ov003MultiMtx33 *m, s32 s, s32 c);
+extern void MTX_RotY33_(Ov003MultiMtx33 *m, s32 s, s32 c);
+extern void MTX_RotZ33_(Ov003MultiMtx33 *m, s32 s, s32 c);
+extern void MTX_Concat33(Ov003MultiMtx33 *a, Ov003MultiMtx33 *b, Ov003MultiMtx33 *out);
+void func_ov003_021f23e0(Ov003Multi *self);
+
+#define OV003MU_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
+#define OV003MU_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
 void func_ov003_021f2374(Ov003Multi *self) {
     Ov003MultiMgr *mgr = data_ov003_021fa680;
@@ -108,3 +172,4 @@ BOOL func_ov003_021f247c(Ov003Multi *self) {
     }
     return r;
 }
+

@@ -122,6 +122,29 @@ extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_0203dd9c(u32 size);
 extern Ov003Plr *func_ov000_0219bf90(void);
 
+void func_ov003_021e3c80(Ov003Prop *self) {
+    s16 n;
+    func_ov000_021975b4(self);
+    if (self->unk_18 >= self->unk_1a) {
+        return;
+    }
+    n = self->unk_18 + 1;
+    self->unk_18 = n;
+    if (self->unk_1a <= n) {
+        Ov003Prop44 *p;
+        func_ov000_02190cb0(self->model, data_ov003_021f8581, 0x2ab, 0);
+        func_ov000_021915a0(self->model);
+        p = self->unk_44;
+        p->unk_22_0 = 0;
+        p->unk_22_1 = 0;
+        self->unk_98 = self->unk_7e + 0x8000;
+        self->unk_1e = 1;
+        func_ov000_02197dec(self, self->unk_18, -1);
+    } else {
+        func_ov000_02190cb0(self->model, data_ov003_021f8587, 0x1000, 0);
+    }
+}
+
 void func_ov003_021e3d34(Ov003Prop *self) {
     if (self->unk_1c == 0) {
         Ov003Prop44 *p = self->unk_44;

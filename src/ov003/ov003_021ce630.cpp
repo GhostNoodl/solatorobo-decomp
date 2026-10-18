@@ -117,6 +117,7 @@ struct Ov003Game30 {
 struct Ov003Area {
     u8 unk_00[5];
     u8 bonus : 4;
+    u8 meter : 4;
 };
 
 struct Ov003Hp {
@@ -345,6 +346,111 @@ void func_ov003_021ce8c8(Ov003SlotUser *self) {
 void func_ov003_021ce9ac(Ov003SlotUser *self) {
     self->func = func_ov003_021ce8c8;
     self->state = 3;
+}
+
+void func_ov003_021ce9c4(u16 exp) {
+    Ov003Area *area;
+    u16 bonus;
+    BOOL boosted;
+    char buf[0x20];
+    if (func_020621f8()) {
+        return;
+    }
+    if (exp == 0) {
+        return;
+    }
+    boosted = FALSE;
+    bonus = 0;
+    if (data_0214a424->mode == 1) {
+        area = func_0206ef10(data_0214a424->area | 0x8000);
+        if (area != NULL) {
+            Ov003Player *pl;
+            bonus = area->bonus;
+            pl = func_ov000_0219bf90();
+            if (pl != NULL) {
+                if (pl->boosted) {
+                    boosted = TRUE;
+                }
+                if (!boosted) {
+                    Ov003_AddMeter((u16)((exp >> 3) + 0x2d) + area->meter);
+                }
+            }
+        }
+    }
+    bonus += exp;
+    func_02040a98(buf, bonus);
+    Ov003Log_Add(5, buf);
+    {
+        Ov003Save *s = data_0214a424;
+        s->exp += bonus;
+        if (s->exp > 99999) {
+            s->exp = 99999;
+        }
+    }
+    {
+        u16 n = 0;
+        s32 lv = data_0214a424->level;
+        u32 e = data_0214a424->exp;
+        u32 *tbl;
+        if ((u32)lv < 1) {
+            lv = 1;
+        }
+        tbl = func_ov000_0219bf7c();
+        for (; lv < data_ov000_021c9fe4; lv++) {
+            if (e < tbl[lv]) {
+                break;
+            }
+            n++;
+        }
+        func_ov003_021cebe8(n);
+    }
+}
+
+void func_ov003_021cebe8(s32 n) {
+    u8 lv;
+    Ov003Player *pl;
+    if (n == 0) {
+        return;
+    }
+    lv = data_0214a424->level;
+    if (lv >= data_ov000_021c9fe4) {
+        return;
+    }
+    if (lv + n > data_ov000_021c9fe4) {
+        n = (u8)(data_ov000_021c9fe4 - lv);
+    }
+    pl = func_ov000_0219bf90();
+    if (pl != NULL) {
+        Ov003Vec pos = pl->pos;
+        Ov003Effect *fx = func_02065f88(0x191, &pos);
+        Ov003Hp *hp;
+        fx->SetTime(0x1400);
+        pl->unk_b44 = fx->handle;
+        Ov003Log_AddEmpty(7);
+        if (data_02149ef8 != NULL) {
+            Ov003Log_Add(0, func_0204c0e8(data_02149ef8, 0x4e));
+        }
+        hp = pl->hp;
+        hp->unk_0a = 0x78;
+        if (pl->unk_b32 < 0x5a) {
+            pl->unk_b32 = 0x5a;
+        }
+        pl->unk_b34 = 0;
+        {
+            u16 m = hp->max + (u16)(n * 100);
+            hp->max = m;
+            hp->cur = m;
+        }
+    }
+    lv += (u8)n;
+    data_0214a424->level = lv;
+    {
+        u32 *tbl = func_ov000_0219bf7c();
+        Ov003Save *s = data_0214a424;
+        if (s->exp < tbl[lv - 1]) {
+            s->exp = tbl[lv - 1];
+        }
+    }
 }
 
 }

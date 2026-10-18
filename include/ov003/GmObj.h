@@ -90,7 +90,9 @@ typedef struct {
 
 typedef struct {
     Ov003Vec3 pos;
-    s32 unk_0c;
+    s16 speed;
+    u8 wait;
+    s8 next;
 } Ov003PathPt;
 
 typedef struct {
@@ -163,6 +165,7 @@ typedef struct Ov003Obj {
     u8 unk_92;
     u8 unk_93_0 : 1;
     u8 unk_93_1 : 3;
+    u8 unk_93_4 : 1;
     u8 unk_94[0x8];
     s32 unk_9c;
     s32 unk_a0;

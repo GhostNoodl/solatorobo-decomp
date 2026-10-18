@@ -228,6 +228,33 @@ static inline void Ov003Sub44_Clear(Ov003Sub44 *s) {
     }
 }
 
+void func_ov003_021e651c(Ov003Obj *self) {
+    switch (self->work->state) {
+    case 0:
+        Ov003Model_ResetAnim(self->model);
+        self->model->unk_be = 20;
+        self->work->state++;
+    case 1: {
+        u8 a;
+        Ov003Work *w = self->work;
+        u16 t;
+        w->timer++;
+        t = w->timer;
+        a = 20 - t;
+        a -= (u8)func_02040498(5);
+        self->model->unk_be = a;
+        if (t <= 12) {
+            return;
+        }
+        func_020627ec(100);
+        func_ov000_02197dec(self, 0xf, 4);
+        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        Ov003Obj_Destroy(self);
+        break;
+    }
+    }
+}
+
 void func_ov003_021e661c(Ov003Obj *self) {
     func_ov000_02194758(self);
     func_ov000_02198360(self->work, 0x20, 0);

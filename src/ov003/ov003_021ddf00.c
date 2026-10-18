@@ -13,18 +13,38 @@ typedef struct {
 } Ov003SubAnim;
 
 typedef struct {
-    u8 unk_00[4];
+    void *list[1];
+} Ov003AnimList;
+
+typedef struct {
+    u8 unk_00[0x48];
+    Ov003AnimList *anims;
+} Ov003MdlRes;
+
+typedef struct {
+    Ov003MdlRes *res;
     void *unk_04;
-    u8 unk_08[0xb6];
+    u8 unk_08[4];
+    void *unk_0c;
+    u8 unk_10[0x14];
+    u8 unk_24[0x9a];
     u8 unk_be;
 } Ov003Mdl;
 
 typedef struct {
     u16 state;
+    u16 timer;
 } Ov003Wk;
 
 typedef struct {
-    u8 unk_00[0x18];
+    u8 unk_00[0x1c];
+    u16 unk_1c;
+} Ov003PropDef;
+
+typedef struct {
+    u8 unk_00[0xc];
+    u16 unk_0c;
+    u8 unk_0e[0xa];
     s16 unk_18;
     s16 unk_1a;
     s16 unk_1c;
@@ -35,7 +55,7 @@ typedef struct {
     u8 unk_3c[4];
     Ov003Wk *work;
     u8 unk_44[8];
-    void *unk_4c;
+    Ov003PropDef *unk_4c;
     u8 unk_50[8];
     void *unk_58;
     u8 unk_5c[0x37];
@@ -200,6 +220,106 @@ void func_ov003_021de0a4(Ov003Prop *self) {
         }
         self->unk_93_1 = (u16)self->unk_18;
         func_ov000_02197dec(self, self->unk_18, -1);
+        break;
+    }
+    }
+}
+
+extern void *data_02097e4c;
+extern BOOL func_ov000_0218fa28(void *ctrl, void *obj, Ov003MdlRes *res, void *file, const char *name, s16 blend, u8 force);
+extern void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void func_ov000_0218996c(s32 a, s32 b);
+extern BOOL func_ov000_02191120(Ov003Mdl *m);
+extern void *func_ov000_02199ba0(Ov003PropDef *def);
+extern void func_ov000_0218d398(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
+
+static inline void Ov003Mdl_PlayAnim0(Ov003Mdl *m, const char *name, s16 blend, u8 force) {
+    const char *n = name;
+    if (m->unk_0c != NULL) {
+        func_ov000_0218fa28(m->unk_0c, m->unk_24, m->res, m->res->anims->list[0], n, blend, force);
+    }
+}
+
+void func_ov003_021de26c(Ov003Prop *self) {
+    switch (self->work->state) {
+    case 0:
+        break;
+    case 10:
+        Ov003Mdl_PlayAnim0(self->model, data_ov003_021f8046, 0x22, 0);
+        func_ov000_02190a30(self->model, 2)->unk_112 = 0x800;
+        if (self->unk_1c == 1 && self->work->timer == 0) {
+            NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 0, 0x1f0000);
+            self->model->unk_be = 0;
+        }
+        self->unk_cc_0 = 1;
+        if (self->unk_58 != NULL) {
+            func_0203f8d8(self->unk_58);
+        }
+        func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
+        func_ov000_0218996c(2, 0x3c);
+        self->work->timer = 0x50;
+        self->work->state++;
+        break;
+    case 11:
+        if (self->unk_1c == 1) {
+            Ov003Wk *w = self->work;
+            if (w->timer != 0) {
+                w->timer--;
+            }
+            if (w->timer < 0x2c) {
+                u8 a = 0x2c - self->work->timer;
+                NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 0, 0x1f0000);
+                self->model->unk_be = a / 2;
+            }
+        }
+        if (!func_ov000_02191120(self->model)) {
+            return;
+        }
+        NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 1, 0x1f0000);
+        self->work->state = 0x32;
+        break;
+    case 20:
+        Ov003Mdl_PlayAnim0(self->model, data_ov003_021f803c, 0x1b, 0);
+        func_ov000_02190a30(self->model, 2)->unk_112 = 0xc00;
+        if (self->unk_1c != 2) {
+            self->unk_cc_0 = 0;
+            if (self->unk_58 != NULL) {
+                func_0203f920(self->unk_58);
+            }
+        }
+        func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
+        func_ov000_0218996c(2, 0x3c);
+        self->work->timer = 0x50;
+        self->work->state++;
+        break;
+    case 21:
+        if (self->unk_1c == 1) {
+            Ov003Wk *w = self->work;
+            if (w->timer != 0) {
+                w->timer--;
+            }
+            if (w->timer <= 0x2c) {
+                NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 0, 0x1f0000);
+                self->model->unk_be = self->work->timer >> 1;
+            }
+        }
+        if (!func_ov000_02191120(self->model)) {
+            return;
+        }
+        if (self->unk_1c == 1) {
+            NNSi_G3dModifyPolygonAttrMask(self->model->unk_04, 0, 0x1f0000);
+            self->model->unk_be = 0;
+        }
+        self->work->state = 0x32;
+        self->work->timer = 0;
+        break;
+    case 0x32: {
+        void *p = func_ov000_02199ba0(self->unk_4c);
+        if (p != NULL) {
+            func_ov000_0218d398(p, self->unk_0c, 3, 1, 0, 0);
+            self->work->state = 0;
+        }
+        self->unk_4c->unk_1c = 0xffff;
         break;
     }
     }

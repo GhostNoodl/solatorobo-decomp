@@ -81,6 +81,38 @@ static inline s32 Ov003_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
+static inline void Ov003_SetSqrtImm64(u64 param) {
+    *(volatile u64 *)0x040002b8 = param;
+}
+
+static inline void Ov003_SetSqrt64(u64 param) {
+    *(volatile u16 *)0x040002b0 = 1;
+    Ov003_SetSqrtImm64(param);
+}
+
+static inline void Ov003_WaitSqrt(void) {
+    while (*(volatile u16 *)0x040002b0 & 0x8000) {
+    }
+}
+
+static inline u32 Ov003_GetSqrtResult32(void) {
+    return *(volatile u32 *)0x040002b4;
+}
+
+static inline s32 Ov003_Dist2D(s64 sq) {
+    Ov003_SetSqrt64((u64)(sq << 2));
+    Ov003_WaitSqrt();
+    return (s32)(Ov003_GetSqrtResult32() + 1) >> 1;
+}
+
+static inline s32 Ov003_DistXZ(const Ov003Vec *a, const Ov003Vec *b) {
+    s32 dx = a->x - b->x;
+    s32 dz = a->z - b->z;
+    s64 sq = (s64)dx * dx;
+    sq += (s64)dz * dz;
+    return Ov003_Dist2D(sq);
+}
+
 void func_ov003_021f3198(Ov003Blink *self);
 
 void func_ov003_021f2f60(Ov003Blink *self) {
@@ -94,3 +126,50 @@ void func_ov003_021f2f60(Ov003Blink *self) {
     self->u.blink.radius = self->unk_1e << 4;
 }
 
+void func_ov003_021f2fac(Ov003Blink *self) {
+    Ov003BlinkTarget *t = func_ov000_0219bf90();
+    switch (self->u.blink.phase) {
+    case 0:
+        if (!func_ov000_02191120(self->model)) {
+            return;
+        }
+        if (Ov003_DistXZ(&self->pos, &t->pos) < self->u.blink.radius) {
+            self->u.blink.phase++;
+            func_ov003_021f3198(self);
+        }
+        break;
+    case 1:
+        if (!func_ov000_02191120(self->model)) {
+            return;
+        }
+        if ((s16)self->pattern & 0xff) {
+            self->u.blink.phase++;
+            func_ov003_021f3198(self);
+        } else {
+            self->model->visible = 0;
+            self->u.blink.phase = 10;
+        }
+        break;
+    case 2:
+        if (!func_ov000_02191120(self->model)) {
+            return;
+        }
+        if (Ov003_DistXZ(&self->pos, &t->pos) > self->u.blink.radius) {
+            self->u.blink.phase++;
+            func_ov003_021f3198(self);
+        }
+        break;
+    case 3:
+        if (!func_ov000_02191120(self->model)) {
+            return;
+        }
+        if ((s16)self->pattern & 0xff00) {
+            self->u.blink.phase = 0;
+            func_ov003_021f3198(self);
+        } else {
+            self->model->visible = 0;
+            self->u.blink.phase = 10;
+        }
+        break;
+    }
+}

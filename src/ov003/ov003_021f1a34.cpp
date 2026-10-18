@@ -128,4 +128,68 @@ BOOL func_ov003_021f1a34(Ov003Pd *self) {
     return r;
 }
 
+extern Ov003PdMsg *data_ov000_021ccd30;
+extern void *data_ov000_021ccd64;
+extern void *func_ov000_0216f674(Ov003PdMsg *mgr, s32 id);
+extern BOOL func_ov000_021700c4(void *p);
+extern void *func_ov000_02173610(s32 id);
+extern Ov003PdPlr *func_ov000_0219bf90(void);
+extern void func_ov000_021bd624(Ov003PdIcon *p);
+extern void func_ov000_021bd314(Ov003PdIcon *p, s32 id);
+extern void func_ov000_0218bed8(void *mgr, s32 a, void *self);
+
+static inline void Ov003Icon_SetPos(Ov003PdIcon *ic, Ov003PdVec *v) {
+    ic->pos.x = v->x;
+    ic->pos.y = v->y;
+    ic->pos.z = v->z;
+}
+
+static inline BOOL Ov003_MsgBusy(void) {
+    Ov003PdMsg *m = data_ov000_021ccd30;
+    if (m == NULL) {
+        return FALSE;
+    }
+    if (func_ov000_0216f674(m, 6) != NULL) {
+        return TRUE;
+    }
+    if (m->unk_11c == NULL) {
+        return FALSE;
+    }
+    return func_ov000_021700c4(m->unk_11c);
+}
+
+void func_ov003_021f1b1c(Ov003Pd *self) {
+    BOOL show = TRUE;
+    if (self->unk_5c != NULL) {
+        Ov003PdSub44 *s;
+        self->unk_5c->flags &= ~2;
+        s = self->unk_44;
+        if (s != NULL && s->unk_22_0 == 1 && s->unk_22_1 == 1 && !Ov003_MsgBusy() && func_ov000_02173610(7) == NULL) {
+            Ov003PdPlr *p = func_ov000_0219bf90();
+            if (p != NULL && p->unk_90 == self->unk_0c) {
+                show = FALSE;
+                self->unk_5c->flags |= 2;
+                Ov003Icon_SetPos(self->unk_5c, &self->pos);
+            }
+        }
+        func_ov000_021bd624(self->unk_5c);
+    }
+    if (self->unk_ac != NULL) {
+        s16 id = self->unk_22;
+        self->unk_ac->flags &= ~2;
+        if (show && id != -1) {
+            Ov003PdPlr *p = func_ov000_0219bf90();
+            if (p != NULL && p->unk_16_2 && self->unk_0e != 0x2105) {
+                func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+                ((Ov003PdV *)self)->Destroy();
+                return;
+            }
+            func_ov000_021bd314(self->unk_ac, id);
+            self->unk_ac->flags |= 2;
+            Ov003Icon_SetPos(self->unk_ac, &self->pos);
+        }
+        func_ov000_021bd624(self->unk_ac);
+    }
+}
+
 }

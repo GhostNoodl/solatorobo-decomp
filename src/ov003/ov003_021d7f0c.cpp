@@ -126,4 +126,70 @@ void func_ov003_021d81d0(Ov003TickerSet *self) {
     Ov003Ticker_Release(&self->tickers[2]);
 }
 
+static inline void Ov003Ticker_SetB3(Ov003Ticker *t, u8 v) {
+    if (t->active) {
+        t->b3 = v;
+    }
+}
+
+static inline BOOL Ov003Ticker_IsRunning(Ov003Ticker *t) {
+    return (t->loop || t->count > 0) ? TRUE : FALSE;
+}
+
+static inline BOOL Ov003Ticker_IsDue(Ov003Ticker *t) {
+    return t->interval <= t->timer ? TRUE : FALSE;
+}
+
+static inline void Ov003Ticker_Update(Ov003Ticker *t) {
+    if (t->active) {
+        BOOL running = Ov003Ticker_IsRunning(t);
+        BOOL due = Ov003Ticker_IsDue(t);
+        if (running) {
+            if (due) {
+                t->timer = 0;
+                t->cur = t->next;
+                t->next = func_02040528(0x1000);
+            } else {
+                t->timer++;
+            }
+            t->count--;
+        }
+    }
+}
+
+void func_ov003_021d82b0(Ov003TickerSet *self) {
+    if (!self->active) {
+        return;
+    }
+    Ov003Ticker_SetB3(&self->tickers[0], self->b3);
+    Ov003Ticker_SetB3(&self->tickers[1], self->b3);
+    Ov003Ticker_SetB3(&self->tickers[2], self->b3);
+    self->b3 = self->b2;
+    if (self->unk_06 >= 0) {
+        self->unk_06--;
+    }
+    if (!self->b1 && self->unk_06 <= 0) {
+        Ov003Ticker_Release(&self->tickers[0]);
+        Ov003Ticker_Release(&self->tickers[1]);
+        Ov003Ticker_Release(&self->tickers[2]);
+    }
+    Ov003Ticker_Update(&self->tickers[0]);
+    Ov003Ticker_Update(&self->tickers[1]);
+    {
+        Ov003Ticker *t = &self->tickers[2];
+        if (t->active) {
+            if (Ov003Ticker_IsRunning(t)) {
+                if (t->interval <= t->timer) {
+                    t->timer = 0;
+                    t->cur = t->next;
+                    t->next = func_02040528(0x1000);
+                } else {
+                    t->timer++;
+                }
+                t->count--;
+            }
+        }
+    }
+}
+
 }

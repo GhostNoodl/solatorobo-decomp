@@ -501,4 +501,71 @@ void func_ov003_021eb48c(Ov003ObjB *self) {
     }
 }
 
+static inline BOOL Ov003Player_Flag(Ov003Player *pl) {
+    return pl->unk_93_4 ? TRUE : FALSE;
+}
+
+void func_ov003_021eb5ec(Ov003ObjB *self) {
+    Ov003Vec3 a;
+    Ov003Vec3 b;
+    Ov003Vec3 v;
+    switch (self->work->state) {
+    case 0:
+        func_ov000_02190cb0(self->model, data_ov003_021f9989, 0x2ab, 0);
+        func_ov000_021911c8(self->model, 0x2800);
+        func_ov000_021915a0(self->model);
+        Ov003Sub44_Clear(self->unk_44);
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
+        self->work->state++;
+        break;
+    case 1:
+        if (self->work->timer >= 10) {
+            if (self->unk_44 == NULL) {
+                break;
+            }
+            BOOL on = FALSE;
+            Ov003Player *pl = func_ov000_0219bf90();
+            Ov003Sub44 *s;
+            if (pl != NULL && pl->unk_b24_1 && !Ov003Player_Flag(pl)) {
+                a.x = self->pos.x;
+                a.y = self->pos.y;
+                a.z = self->pos.z;
+                b.x = pl->pos.x;
+                b.y = pl->pos.y;
+                b.z = pl->pos.z;
+                a.y += self->unk_68;
+                b.y += pl->unk_6c;
+                if (func_01ffbd6c(&a, &b, -1, 0, 0, -1) == -0x1000) {
+                    on = TRUE;
+                }
+            }
+            s = self->unk_44;
+            if (!on) {
+                s->unk_22_0 = 0;
+                s->unk_22_1 = 0;
+            } else {
+                s->unk_22_0 = 1;
+                s->unk_22_1 = 1;
+            }
+        } else {
+            ((volatile Ov003Work *)self->work)->timer++;
+        }
+        break;
+    }
+    self->ctl->unk_9a_5 = 1;
+    self->unk_9c = 0x400;
+    v.x = self->unk_300.x;
+    v.y = self->unk_300.y;
+    v.z = self->unk_300.z;
+    func_ov000_0218ddd4(self, &v, 0x333);
+    func_ov000_021987b8(self->ctl, 1, 0, 0);
+    if (self->ctl->flags & 0x20000000) {
+        return;
+    }
+    func_ov000_02198360(self->work, 4, 0);
+}
+
+
 }

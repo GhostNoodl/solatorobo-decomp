@@ -76,4 +76,24 @@ Ov003Scene *func_ov003_021ccda0(void) {
 void func_ov003_021cce1c(void) {
 }
 
+Ov003OamEntry *func_ov003_021cce20(Ov003OamOwner *owner, u16 *flip, Ov003OamEntry *oam, u16 *count) {
+    s32 i;
+    u16 f = *flip;
+    u32 w = owner->offsetWord;
+    s32 n = *count;
+    s32 dx = (s8)(w >> 8);
+    s32 dy = (s8)w;
+    if (Ov003_Mod2(f) == 0) {
+        dx = -dx;
+    }
+    if (f < 2) {
+        dy = -dy;
+    }
+    for (i = 0; i < n; i++) {
+        oam[i].x += dx;
+        oam[i].y += dy;
+    }
+    return oam;
+}
+
 }

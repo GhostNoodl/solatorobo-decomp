@@ -92,6 +92,91 @@ extern Ov003Spot *func_ov000_0218e6d0(void *mgr, s32 a, s32 b);
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void MI_Copy48B(void *a, void *b);
 
+typedef struct {
+    s32 x, y, z;
+} Ov003LnVec;
+
+typedef struct {
+    s32 m[9];
+} Ov003LnMtx;
+
+typedef struct {
+    u8 unk_00[0x78];
+    Ov003LnVec pos;
+} Ov003LnModel;
+
+typedef struct {
+    u8 unk_00[0x13];
+    u8 kind;
+} Ov003LnKind;
+
+typedef struct {
+    u8 unk_00[0x38];
+    Ov003LnModel *model;
+    u8 unk_3c[4];
+    Ov003LnKind *unk_40;
+    u8 unk_44[0x2c];
+    Ov003LnVec pos;
+    u8 unk_7c[2];
+    u16 rotY;
+    u8 unk_80[4];
+    Ov003LnVec offset;
+} Ov003Line;
+
+
+extern const s16 FX_SinCosTable_[];
+extern void VEC_Add(const Ov003LnVec *a, const Ov003LnVec *b, Ov003LnVec *out);
+extern void MTX_RotY33_(Ov003LnMtx *m, s32 s, s32 c);
+extern void MTX_MultVec33(const Ov003LnVec *v, const Ov003LnMtx *m, Ov003LnVec *out);
+extern void func_ov000_021903b4(Ov003LnModel *model);
+extern BOOL func_ov000_02194c08(void *self);
+
+static inline void Ov003Ln_Draw(Ov003Line *self, const Ov003LnVec *p) {
+    Ov003LnModel *m = self->model;
+    m->pos.x = p->x;
+    m->pos.y = p->y;
+    m->pos.z = p->z;
+    func_ov000_021903b4(self->model);
+}
+
+static inline void Ov003Ln_Sub(const Ov003LnVec *a, const Ov003LnVec *b, Ov003LnVec *o) {
+    o->x = a->x - b->x;
+    o->y = a->y - b->y;
+    o->z = a->z - b->z;
+}
+
+BOOL func_ov003_021e00e8(Ov003Line *self) {
+    Ov003LnVec p;
+    Ov003LnVec d;
+    Ov003LnMtx m;
+    VEC_Add(&self->pos, &self->offset, &p);
+    MTX_RotY33_(&m, FX_SinCosTable_[(self->rotY >> 4) * 2], FX_SinCosTable_[(self->rotY >> 4) * 2 + 1]);
+    d.x = 0xc800;
+    d.y = 0;
+    d.z = 0;
+    MTX_MultVec33(&d, &m, &d);
+    switch (self->unk_40->kind) {
+    default:
+        func_ov000_02194c08(self);
+        break;
+    case 0x21:
+        Ov003Ln_Draw(self, &p);
+        VEC_Add(&p, &d, &p);
+        Ov003Ln_Draw(self, &p);
+        VEC_Add(&p, &d, &p);
+        Ov003Ln_Draw(self, &p);
+        break;
+    case 0x22:
+        Ov003Ln_Draw(self, &p);
+        Ov003Ln_Sub(&p, &d, &p);
+        Ov003Ln_Draw(self, &p);
+        Ov003Ln_Sub(&p, &d, &p);
+        Ov003Ln_Draw(self, &p);
+        break;
+    }
+    return TRUE;
+}
+
 void func_ov003_021e02e8(Ov003Obj *self) {
     u8 buf[0x30];
     Ov003Spot *p;

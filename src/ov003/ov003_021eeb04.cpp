@@ -172,4 +172,58 @@ void func_ov003_021eecd8(Ov003Bridge *self) {
     }
 }
 
+void func_ov003_021eed24(Ov003Bridge *self) {
+    const char *name;
+    func_ov000_02194758(self);
+    if (self->state != 0) {
+        void *res;
+        s32 i;
+        name = data_ov003_021f9fd6;
+        self->unk_cc_0 = 0;
+        if (self->ctl == NULL) {
+            Ov003BrCtl *c = (Ov003BrCtl *)func_0203dd9c(0x9c);
+            if (c != NULL) {
+                c = func_ov000_021985e8(c);
+            }
+            self->ctl = c;
+            func_ov000_02198c8c(c, self->unk_0c);
+            self->ctl->unk_28 = 0x10;
+            self->ctl->unk_38 = self->unk_64;
+            self->ctl->unk_60 = self->unk_6c;
+            c = self->ctl;
+            c->enable = 1;
+            c->visible = 1;
+            func_0203f324(c);
+            c = self->ctl;
+            c->unk_9a_1 = 0;
+            c->unk_9a_4 = 0;
+        }
+        for (i = 0; i < 2; i++) {
+            res = self->res[i];
+            if (res != NULL) {
+                break;
+            }
+        }
+        if (res != NULL) {
+            Ov003BrAnim *a = (Ov003BrAnim *)func_0203dd9c(0xe8);
+            if (a != NULL) {
+                a = func_ov000_0218fe1c(a);
+            }
+            self->anim = a;
+            func_ov000_0218ffdc(a, res, 0, 1);
+            { Ov003Vec v; v.x = self->pos.x; v.y = self->pos.y; v.z = self->pos.z; v.y += self->height << 4; self->anim->pos = v; }
+            func_ov000_02190758(self->anim, self->rot, 0);
+        }
+        func_ov000_02198360(self->work, 1, 1);
+        self->work->state = 10;
+    } else {
+        name = data_ov003_021f9fd0;
+    }
+    if (self->model != NULL) {
+        func_ov000_02190cb0(self->model, name, 0x1000, 0);
+        func_ov000_021915a0(self->model);
+        func_ov000_021911c8(self->model, 0x4cd);
+    }
+}
+
 }
