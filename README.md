@@ -6,7 +6,7 @@ This repository contains no game code or assets. To build it, you need your own 
 
 ## Status
 
-About 5,300 of 8,100 functions matched (30% of the code). Every overlay with code has matched functions, and much of the TwlSDK and NitroSystem library code (Fnd, FX, OS, SND, Gfd, G3d) is matched under its real names. Run `ninja report` for current numbers in [objdiff](https://github.com/encounter/objdiff).
+About 5,300 of 8,100 functions matched (about 30% of the code by size, since the big functions are the hard ones). Every overlay with code has matched functions, and much of the TwlSDK and NitroSystem library code (Fnd, FX, OS, SND, Gfd, G3d) is matched under its real names. Run `ninja report` for current numbers in [objdiff](https://github.com/encounter/objdiff).
 
 ## About the game's code
 
