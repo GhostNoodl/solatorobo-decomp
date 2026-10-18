@@ -69,9 +69,17 @@ src/ov012/ov012_0220574c.cpp:
     complete
     .text       start:0x0220574c end:0x02205990
 
+src/ov012/ov012_02206098.cpp:
+    complete
+    .text       start:0x02206098 end:0x02206374
+
 src/ov012/ov012_02206374.cpp:
     complete
     .text       start:0x02206374 end:0x02206718
+
+src/ov012/ov012_02206bb0.cpp:
+    complete
+    .text       start:0x02206bb0 end:0x02206e9c
 
 src/ov012/ov012_02206e9c.cpp:
     complete

@@ -91,24 +91,6 @@ static inline void Ov011_Msg(u16 id, s32 a, s32 b) {
     func_ov000_0219bdb0(id, 0xffff, 0xe, 1, 0xc, &arg);
 }
 
-#pragma force_active on
-void func_ov011_021fcb84(Ov011Tut *self) {
-    switch (self->state) {
-    case 0: {
-        Ov011_Msg(self->id, 1, 1);
-        Ov011Fade_Run(self->fade, 0x3800, 20);
-        self->state = 1;
-        break;
-    }
-    case 1:
-        self->timer++;
-        if (Ov011Fade_AllDone(self->fade) && self->timer >= 0x50) {
-            self->flags |= 0x10;
-        }
-        break;
-    }
-}
-
 struct Ov011ArgA {
     s32 kind;
     u8 b;
@@ -141,6 +123,55 @@ static inline void Ov011_SendB(u16 id, s32 kind, s16 x, s16 y) {
     b.x = x;
     b.y = y;
     func_ov000_0219bdb0(id, 0xffff, 0xe, 1, 0xc, &b);
+}
+
+extern void *data_02097e4c;
+extern void func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
+
+#pragma force_active on
+void func_ov011_021fc94c(Ov011Tut *self) {
+    self->timer++;
+    switch (self->state) {
+    case 0:
+        Ov011Fade_Run(self->fade, 0x1e66, 40);
+        Ov011_SendB(self->id, 2, 0x1000, 0x1000);
+        Ov011_Msg(self->id, 1, 0);
+        self->state = 1;
+        break;
+    case 1:
+        if (Ov011Fade_AllDone(self->fade) && self->timer > 50) {
+            void *a;
+            self->timer = 0;
+            self->flags |= 8;
+            a = Ov011_FindActor(self->id);
+            if (a != NULL) {
+                Ov011Vec pos;
+                pos.x = FLD(s32, a, 0x70);
+                pos.y = FLD(s32, a, 0x74);
+                pos.z = FLD(s32, a, 0x78);
+                func_02049f44(data_02097e4c, 0x5b, &pos, 0);
+            }
+        }
+        break;
+    }
+}
+
+
+void func_ov011_021fcb84(Ov011Tut *self) {
+    switch (self->state) {
+    case 0: {
+        Ov011_Msg(self->id, 1, 1);
+        Ov011Fade_Run(self->fade, 0x3800, 20);
+        self->state = 1;
+        break;
+    }
+    case 1:
+        self->timer++;
+        if (Ov011Fade_AllDone(self->fade) && self->timer >= 0x50) {
+            self->flags |= 0x10;
+        }
+        break;
+    }
 }
 
 void func_ov011_021fcd00(Ov011Tut *self) {

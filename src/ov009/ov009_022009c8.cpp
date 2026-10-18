@@ -134,4 +134,106 @@ void func_ov009_02200cdc(Ov009Actor *self) {
     func_ov003_021d1e8c(self);
 }
 
+extern void *data_ov000_021ccd68;
+extern void *data_ov009_02215d0c[];
+extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern void MI_Copy48B(const void *src, void *dst);
+extern void func_ov003_021d3008(Ov009Actor *self);
+extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
+
+struct Ov009EaBits {
+    u16 b0 : 3;
+    u16 b3 : 8;
+    u16 b11 : 1;
+    u16 b12 : 1;
+    u16 b13 : 1;
+    u16 b14 : 2;
+};
+
+struct Ov009PosMsg {
+    Ov009Vec pos;
+    u16 rot[3];
+    u32 unk_14;
+};
+
+static inline Ov009Actor *Ov009_FindActor(u16 id) {
+    if (data_ov000_021ccd68 == NULL) {
+        return NULL;
+    }
+    return func_ov000_0218e640(data_ov000_021ccd68, id);
+}
+
+static inline s32 Ov009_Mode(Ov009Actor *a) {
+    return a->unk_40 != NULL ? a->unk_40->unk_13 : 0;
+}
+
+void func_ov009_02200d00(Ov009Actor *self) {
+    Ov009PosMsg msg;
+    u8 mtx[0x30];
+    Ov009Actor *a;
+    u32 zero = 0;
+    s16 t;
+    if (!(FLD(u16, self, 0xf0) & 1)) {
+        u16 *p = self->unk_50;
+        u16 v = self->unk_b0->unk_08;
+        if (*p < v) {
+            *p = v;
+            self->unk_40->flags = zero;
+            func_ov000_02198360(self->unk_40, 0x11, zero);
+        }
+        ((Ov009EaBits *)&FLD(u16, self, 0xea))->b11 = 0;
+        a = Ov009_FindActor(FLD(u16, self, 0xf4));
+        if (a != NULL) {
+            if (Ov009_Mode(a) == 9) {
+                Ov009Sub44 *s = self->unk_44;
+                u8 *q;
+                if (!(s->unk_22_0 == 1 && s->unk_22_1 == 1)) {
+                    s->unk_22_0 = 1;
+                    s->unk_22_1 = 1;
+                }
+                func_ov000_02190cb0(self->unk_38, data_ov009_02215d0c[10], 0x1000, zero);
+                q = (u8 *)self->unk_50;
+                FLD(volatile u8, q, 8) = FLD(volatile u8, q, 8);
+                q[9] = 0x31;
+                func_ov000_02198360(self->unk_40, 0x13, zero);
+            } else {
+                if (((Ov009EaBits *)&FLD(u16, self, 0xea))->b13) {
+                    MI_Copy48B(&FLD(u8, self, 0xfc), mtx);
+                    func_ov000_0218d398(a, self->id, 8, TRUE, 0x30, mtx);
+                    msg.pos = FLD(Ov009Vec, self, 0x120);
+                } else {
+                    msg.pos = self->pos;
+                }
+                msg.rot[0] = self->rot[0];
+                msg.rot[1] = self->rot[1];
+                msg.rot[2] = self->rot[2];
+                msg.unk_14 = zero;
+                func_ov000_0218d398(a, self->id, 7, TRUE, 0x18, &msg);
+                ((Ov009EaBits *)&FLD(u16, self, 0xea))->b0 = 3;
+                goto tail;
+            }
+        }
+        FLD(u16, self, 0xf4) = 0xffff;
+        FLD(u16, self, 0xf0) |= 1;
+        FLD(u16, self, 0xf6) = 0x1800;
+    }
+tail:
+    func_ov003_021d3008(self);
+    if (!(FLD(u16, self, 0xf0) & 1)) {
+        self->unk_94_1 = 1;
+    }
+    if (!(self->unk_48->unk_50 & 0x20000000)) {
+        return;
+    }
+    if (!(self->unk_48->unk_50 & 0x400)) {
+        return;
+    }
+    t = self->unk_1a + 1;
+    if (t % 20 == 0) {
+        t = 0;
+        func_02065f88(0x2bd, &self->pos)->v0c(Ov009_FxMul(FLD(s32, self->unk_38, 0xa8), 0x199a));
+    }
+    self->unk_1a = t;
+}
+
 }

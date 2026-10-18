@@ -23,7 +23,7 @@ src/ov009/ov009_021ffff4.cpp:
 
 src/ov009/ov009_022009c8.cpp:
     complete
-    .text       start:0x022009c8 end:0x02200d00
+    .text       start:0x022009c8 end:0x02200fd4
 
 src/ov009/ov009_02200fd4.cpp:
     complete
@@ -104,6 +104,10 @@ src/ov009/ov009_0220d034.cpp:
 src/ov009/ov009_02213f9c.cpp:
     complete
     .text       start:0x02213f9c end:0x022141e0
+
+src/ov009/ov009_02215714.cpp:
+    complete
+    .text       start:0x02215714 end:0x02215a54
 
 src/ov009/ov009_02215a54.cpp:
     complete
