@@ -60,3 +60,79 @@ void func_ov002_021e2754(void *self, u16 id) {
 }
 
 }
+
+extern "C" {
+void func_02041c18(void *m, int a);
+void func_02041c20(void *a, int b, int c);
+
+static inline void *ov002_021e28b0_GetPart(void *self, int idx) {
+    if (idx >= FIELD(self, 0x80, s32)) {
+        return NULL;
+    }
+    return (u8 *)FIELD(self, 0x78, void *) + idx * 0x28;
+}
+
+static inline void ov002_021e28b0_PlayPart(void *model, int idx) {
+    void *res = FIELD(model, 0x28, void *);
+    void *part;
+    void *anim;
+    if (res == NULL) {
+        return;
+    }
+    part = ov002_021e28b0_GetPart(model, idx);
+    if (part != NULL && FIELD(part, 0x4, void *) != NULL) {
+        anim = FIELD(FIELD(part, 0x4, void *), 0x30, void *);
+    } else {
+        anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
+    }
+    func_02042628(model, anim, part, 0);
+}
+
+static inline void ov002_021e28b0_SetPos(void *m, s32 x, s32 y) {
+    FIELD(m, 0x10c, s32) = x;
+    FIELD(m, 0x110, s32) = y;
+}
+
+static inline s8 ov002_021e28b0_Clamp(void *self, int i) {
+    s16 v = ((s16 *)((u8 *)self + 0x2c))[i] + ((s16 *)((u8 *)self + 0x36))[i];
+    if (v < 0) {
+        v = 0;
+    } else if (v > 99) {
+        v = 99;
+    }
+    return v;
+}
+
+void func_ov002_021e28b0(void *self) {
+    ov002_021e28b0_SetPos(FIELD(self, 0x10, void *), 0x5e000, -0x4a000);
+    ov002_021e28b0_PlayPart(FIELD(self, 0x10, void *), 9);
+    ov002_021e28b0_SetPos(FIELD(self, 0x10, void *), 0x66000, -0x4a000);
+    func_02041c18(FIELD(self, 0x10, void *), 0);
+    func_02041c20(FIELD(self, 0x10, void *), 1, ov002_021e28b0_Clamp(self, 0));
+    ov002_021e28b0_PlayPart(FIELD(self, 0x10, void *), 1);
+    ov002_021e28b0_SetPos(FIELD(self, 0x10, void *), 0x5e000, -0x35000);
+    ov002_021e28b0_PlayPart(FIELD(self, 0x10, void *), 9);
+    ov002_021e28b0_SetPos(FIELD(self, 0x10, void *), 0x66000, -0x35000);
+    func_02041c18(FIELD(self, 0x10, void *), 0);
+    func_02041c20(FIELD(self, 0x10, void *), 1, ov002_021e28b0_Clamp(self, 1));
+    ov002_021e28b0_PlayPart(FIELD(self, 0x10, void *), 1);
+    ov002_021e28b0_SetPos(FIELD(self, 0x10, void *), 0x5e000, -0x20000);
+    ov002_021e28b0_PlayPart(FIELD(self, 0x10, void *), 9);
+    ov002_021e28b0_SetPos(FIELD(self, 0x10, void *), 0x66000, -0x20000);
+    func_02041c18(FIELD(self, 0x10, void *), 0);
+    func_02041c20(FIELD(self, 0x10, void *), 1, ov002_021e28b0_Clamp(self, 2));
+    ov002_021e28b0_PlayPart(FIELD(self, 0x10, void *), 1);
+    ov002_021e28b0_SetPos(FIELD(self, 0x10, void *), 0x5e000, -0xb000);
+    ov002_021e28b0_PlayPart(FIELD(self, 0x10, void *), 9);
+    ov002_021e28b0_SetPos(FIELD(self, 0x10, void *), 0x66000, -0xb000);
+    func_02041c18(FIELD(self, 0x10, void *), 0);
+    func_02041c20(FIELD(self, 0x10, void *), 1, ov002_021e28b0_Clamp(self, 3));
+    ov002_021e28b0_PlayPart(FIELD(self, 0x10, void *), 1);
+    ov002_021e28b0_SetPos(FIELD(self, 0x10, void *), 0x5e000, 0xa000);
+    func_02041c18(FIELD(self, 0x10, void *), 1);
+    func_02041c20(FIELD(self, 0x10, void *), 1, ov002_021e28b0_Clamp(self, 4));
+    ov002_021e28b0_PlayPart(FIELD(self, 0x10, void *), 1);
+    ov002_021e28b0_SetPos(FIELD(self, 0x10, void *), 0x6e000, 0xa000);
+    ov002_021e28b0_PlayPart(FIELD(self, 0x10, void *), 10);
+}
+}

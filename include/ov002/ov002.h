@@ -860,7 +860,7 @@ void func_ov000_0216f844(void *p, int a);
 VObject *func_020657b0(void *a, void *b);
 extern VFunc data_ov002_021f070c[];
 
-extern u8 data_ov002_021eef74[];
+extern const u8 data_ov002_021eef74[];
 
 void func_ov002_021e5140(void *self);
 void *func_02034ff8(void *a, void *b);
