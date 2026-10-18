@@ -3,3 +3,15 @@
     .ctor       start:0x021cfb58 end:0x021cfb58 kind:rodata align:4
     .data       start:0x021cfb60 end:0x021cfc60 kind:data align:32
     .bss        start:0x021cfc60 end:0x021cfc80 kind:bss align:32
+
+src/ov007/ov007_021ccda0.cpp:
+    complete
+    .text       start:0x021ccda0 end:0x021cd628
+
+src/ov007/ov007_021cdff0.cpp:
+    complete
+    .text       start:0x021cdff0 end:0x021ce038
+
+src/ov007/ov007_021cef80.cpp:
+    complete
+    .text       start:0x021cef80 end:0x021cf474
