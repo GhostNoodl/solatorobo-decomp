@@ -271,4 +271,313 @@ void func_ov014_0220fc5c(Ov014Actor *self) {
     FLD(void *, self, 0x134) = (void *)func_ov014_0220f8fc;
 }
 
+struct Ov014Vec16b {
+    s16 x;
+    s16 y;
+    s16 z;
+};
+
+struct Ov014SpawnDescB {
+    u16 kind;
+    u16 flags;
+    u16 unk_04[4];
+    s16 parent;
+};
+
+static inline void Ov014SpawnB_Init(Ov014SpawnDescB *d, u16 k) {
+    s32 i;
+    d->kind = k;
+    d->flags = k & 0xf000;
+    for (i = 0; i < 4; i++) {
+        d->unk_04[i] = 0;
+    }
+    d->parent = -1;
+}
+
+struct Ov014Anim8 {
+    s16 kind;
+    u8 unk_02[0x4];
+    u16 unk_06;
+};
+
+struct Ov014Ctl154 {
+    void *vt;
+    u16 slots[2];
+    u16 unk_08;
+    u8 unk_0a;
+    u8 unk_0b;
+    s32 unk_0c;
+    s32 unk_10;
+    s32 unk_14;
+    s32 unk_18;
+};
+
+extern void *data_ov000_021ccd64;
+extern Ov014Vec data_ov014_02216c18[];
+extern u8 *func_ov000_0219bf90(void);
+extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
+extern void func_ov014_02213cfc(void *p);
+extern void func_ov003_021ceff4(void *p);
+extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDescB *d, Ov014Vec *pos, Ov014Vec16b *rot, u16 a);
+
+static inline BOOL Ov014_WaitB6(Ov014Actor *self) {
+    BOOL r = FALSE;
+    if (self->unk_40->state == 0xffff || FLD(u16, self, 0xb6) == 0) {
+        r = TRUE;
+    } else if (FLD(u16, self, 0xb6) != 0xffff && FLD(u16, self, 0xb6) != 0) {
+        FLD(u16, self, 0xb6)--;
+    }
+    return r;
+}
+
+static inline void Ov014_SpawnPair(Ov014Actor *self) {
+    Ov014Ctl154 *p = FLD(Ov014Ctl154 *, self, 0x154);
+    u32 i;
+    for (i = 0; i < 2; i++) {
+        if (p->slots[i] == 0xffff) {
+            Ov014SpawnDescB desc;
+            Ov014Vec16b rot;
+            Ov014Actor *o;
+            Ov014SpawnB_Init(&desc, 0x5c16);
+            rot.x = 0;
+            rot.y = 0;
+            rot.z = 0;
+            o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &data_ov014_02216c18[i], &rot, 0xffff);
+            FLD(Ov014Flags8, o, 0x16).b0 = 1;
+            p->slots[i] = o->id;
+        }
+    }
+}
+
+void func_ov014_0220fe6c(Ov014Actor *self) {
+    u8 *pl;
+    if (!Ov014_GameIdle()) {
+        return;
+    }
+    self->unk_90 = 0xffff;
+    pl = func_ov000_0219bf90();
+    if (pl != NULL) {
+        self->unk_90 = FLD(u16, pl, 0xc);
+    }
+    if (!FLD(Ov014Flags, self->unk_b0, 0xa).b12) {
+        self->unk_93_4 = 1;
+    }
+    if (*self->unk_50 == 0 || (self->unk_40->flags & 0x200000)) {
+        if (FLD(u16, self, 0xb4) != 0x50) {
+            FLD(u16, self, 0xb6) = 0xffff;
+            FLD(u16, self, 0xb4) = 0x50;
+            self->unk_40->flags |= 0x200000;
+            self->unk_40->state = 0;
+        }
+    }
+    if (self->unk_30 != 0 && (self->unk_30 & 0x200)) {
+        if (*self->unk_50 != 0 && FLD(u8, self, 0x180) != 0) {
+            MIi_CpuCopyFast(&FLD(u16, self, 0xb4), &FLD(u8, self, 0x15c), 0x10);
+            MIi_CpuCopyFast(self->unk_40, &FLD(u8, self, 0x16c), 0x14);
+            FLD(u16, self, 0xb4) = 0x3c;
+            FLD(u16, self, 0xb6) = 0xffff;
+        }
+        if (self->unk_40->flags == 0x15) {
+            *self->unk_50 = 0;
+        }
+    }
+    func_ov014_02213cfc(FLD(void *, self, 0x154));
+    switch (FLD(u16, self, 0xb4)) {
+    case 0:
+        self->unk_40->flags |= 0x100000000ULL;
+        self->unk_40->timer = 0xffff;
+        self->unk_40->state = 0;
+        FLD(u16, self, 0xb4)++;
+        break;
+    case 1:
+        if (self->unk_40->state != 0xffff) {
+            break;
+        }
+        self->unk_40->flags |= 2;
+        self->unk_40->state = 0;
+        Ov014_SpawnPair(self);
+        {
+            u16 m = FLD(u16, self, 0xb4);
+            FLD(u16, self, 0xb6) = 0xf0;
+            FLD(u16, self, 0xb4) = m + 1;
+        }
+        break;
+    case 2:
+        if (FLD(u16, self, 0xb6) != 0) {
+            FLD(u16, self, 0xb6)--;
+        }
+        if (FLD(u16, self, 0xb6) == 0) {
+            FLD(u16, self, 0xb4) = 0xb;
+        }
+        break;
+    case 10: {
+        Ov014Ctl154 *p = FLD(Ov014Ctl154 *, self, 0x154);
+        if (p->unk_0c == 0 && p->unk_08 == 0) {
+            FLD(u16, self, 0xb4) = 0x46;
+            FLD(u16, self, 0xb6) = 0xffff;
+            break;
+        }
+        if (p->unk_0a == 0) {
+            break;
+        }
+        if (!Ov014_WaitB6(self)) {
+            break;
+        }
+        func_ov003_021ceff4(&FLD(u8, self, 0x124));
+        FLD(u16, self, 0xb4)++;
+    }
+    case 11: {
+        u8 *t = FLD(u8 *, self, 0x130);
+        u16 idx = FLD(u16, t, 8);
+        u8 *a = FLD(u8 *, t, 0xc);
+        FLD(u8 *, self, 0x140) = a + idx * 8;
+        switch (*(s16 *)(a + idx * 8)) {
+        case 0:
+        case 1:
+        case 2:
+            FLD(u16, self, 0xb4) = 0x14;
+            break;
+        case 6:
+        case 7:
+        case 8:
+            FLD(u16, self, 0xb4) = 0x1e;
+            break;
+        case 3:
+            FLD(u16, self, 0xb4) = 0x28;
+            break;
+        case 4:
+        case 5:
+            FLD(u16, self, 0xb4) = 0x32;
+            break;
+        }
+        break;
+    }
+    case 0x14:
+        self->unk_40->flags |= 0x4000;
+        self->unk_40->state = 0;
+        FLD(u16, self, 0xb6) = 0xffff;
+        FLD(u16, self, 0xde) = 0;
+        FLD(u16, self, 0xb4)++;
+        break;
+    case 0x15:
+        if (!Ov014_WaitB6(self)) {
+            break;
+        }
+        self->unk_40->flags |= 2;
+        FLD(u16, self, 0xb4) = 10;
+        FLD(u16, self, 0xb6) = FLD(Ov014Anim8 *, self, 0x140)->unk_06;
+        break;
+    case 0x1e: {
+        Ov014Ctl154 *p;
+        s32 v;
+        self->unk_40->flags |= 2;
+        self->unk_40->state = 0;
+        v = FLD(Ov014Anim8 *, self, 0x140)->kind - 6;
+        p = FLD(Ov014Ctl154 *, self, 0x154);
+        if (p->unk_0a != 0) {
+            p->unk_14 = v;
+            p->unk_10 = 0;
+            p->unk_18 = 0;
+        }
+        FLD(u16, self, 0xb4)++;
+        break;
+    }
+    case 0x1f:
+        self->unk_40->flags |= 2;
+        FLD(u16, self, 0xb4) = 10;
+        FLD(u16, self, 0xb6) = FLD(Ov014Anim8 *, self, 0x140)->unk_06;
+        break;
+    case 0x28:
+        FLD(u16, self, 0xde) = 0;
+        FLD(u8, self, 0x180) = 0;
+        func_ov000_02198360(self->unk_40, 0xf, 0);
+        self->unk_40->state = 0;
+        FLD(u16, self, 0xb6) = 0xffff;
+        FLD(u16, self, 0xb4)++;
+        break;
+    case 0x29:
+        if (!Ov014_WaitB6(self)) {
+            break;
+        }
+        self->unk_40->flags |= 2;
+        self->unk_40->state = 0;
+        FLD(u8, self, 0x180) = 1;
+        FLD(u16, self, 0xb4)++;
+        break;
+    case 0x2a: {
+        Ov014Actor *a;
+        u16 id = FLD(u16, self, 0xde);
+        if (data_ov000_021ccd68 == NULL) {
+            a = NULL;
+        } else {
+            a = func_ov000_0218e640(data_ov000_021ccd68, id);
+        }
+        if (a == NULL) {
+            FLD(u16, self, 0xb4) = 10;
+            FLD(u16, self, 0xb6) = FLD(Ov014Anim8 *, self, 0x140)->unk_06;
+        }
+        break;
+    }
+    case 0x32:
+        FLD(u16, self, 0xde) = 0;
+        FLD(u8, self, 0x180) = 0;
+        if (FLD(Ov014Anim8 *, self, 0x140)->kind == 4) {
+            func_ov000_02198360(self->unk_40, 0x10, 0);
+        } else {
+            func_ov000_02198360(self->unk_40, 0x11, 0);
+        }
+        self->unk_40->state = 0;
+        FLD(u16, self, 0xb6) = 0xffff;
+        FLD(u16, self, 0xb4)++;
+        break;
+    case 0x33:
+        if (!Ov014_WaitB6(self)) {
+            break;
+        }
+        FLD(u8, self, 0x180) = 1;
+        self->unk_40->flags |= 2;
+        self->unk_40->state = 0;
+        FLD(u16, self, 0xb4) = 10;
+        FLD(u16, self, 0xb6) = FLD(Ov014Anim8 *, self, 0x140)->unk_06;
+        break;
+    case 0x3c:
+        self->unk_40->flags = 0;
+        self->unk_40->flags |= 0x40000;
+        self->unk_40->state = 0;
+        FLD(u8, self, 0x180) = 0;
+        FLD(u16, self, 0xb6) = 0xffff;
+        FLD(u16, self, 0xb4)++;
+        break;
+    case 0x3d:
+        if (!Ov014_WaitB6(self)) {
+            break;
+        }
+        FLD(u8, self, 0x180) = 1;
+        self->unk_40->flags |= 2;
+        self->unk_40->state = 0;
+        FLD(u16, self, 0xb4) = 10;
+        FLD(u16, self, 0xb6) = 0x1e;
+        break;
+    case 0x46:
+        self->unk_40->flags |= 2;
+        self->unk_40->state = 0;
+        Ov014_SpawnPair(self);
+        {
+            u16 m = FLD(u16, self, 0xb4);
+            FLD(u16, self, 0xb6) = 0x78;
+            FLD(u16, self, 0xb4) = m + 1;
+        }
+        break;
+    case 0x47:
+        if (Ov014_WaitB6(self)) {
+            FLD(u16, self, 0xb4) = 10;
+            FLD(u16, self, 0xb6) = 0x1e;
+        }
+        break;
+    case 0x50:
+    default:
+        break;
+    }
+}
+
 }

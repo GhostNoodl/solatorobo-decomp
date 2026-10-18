@@ -59,7 +59,7 @@ src/ov015/ov015_02202268.cpp:
 
 src/ov015/ov015_02202dac.cpp:
     complete
-    .text       start:0x02202dac end:0x02203298
+    .text       start:0x02202dac end:0x022038c8
 
 src/ov015/ov015_022038c8.cpp:
     complete
