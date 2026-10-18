@@ -136,9 +136,9 @@ extern void func_ov000_02191870(void *model, Ov003Res *res);
 extern Ov003AnimLayer *func_ov000_02190a30(void *model, s32 n);
 extern void func_ov000_02191920(void *model, s32 a, s32 b, s32 c);
 extern u32 func_0200aeec(s32 v);
-extern u32 func_0200b854(u32 a, u32 b);
-extern u32 func_0200ba84(u32 a, u32 b);
-extern s32 func_0200b574(u32 v);
+extern u32 _fadd(u32 a, u32 b);
+extern u32 _fsub(u32 a, u32 b);
+extern s32 _ffix(u32 v);
 extern void *func_ov000_02198328(void *p);
 
 void func_ov003_021f3b30(Ov003Prop *self) {

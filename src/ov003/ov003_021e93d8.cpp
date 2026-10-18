@@ -19,7 +19,9 @@ struct Ov003Game54 {
 };
 
 struct Ov003Unit {
-    u8 unk_00[0xa2];
+    u8 unk_00[0x94];
+    u16 unk_94;
+    u8 unk_96[0xc];
     u8 unk_a2_0 : 5;
     u8 unk_a2_5 : 1;
 };
@@ -39,10 +41,13 @@ struct Ov003FlyLink {
 
 struct Ov003FlyNames {
     const char *names[4];
+    u16 rot[3];
 };
 
 struct Ov003Fly {
-    u8 unk_00[0x20];
+    u8 unk_00[0x1a];
+    s16 unk_1a;
+    u8 unk_1c[4];
     u16 unitId;
     u8 unk_22[0x16];
     void *model;
@@ -52,12 +57,31 @@ struct Ov003Fly {
     Ov003FlyLink *link;
     u8 unk_50[0x20];
     Ov003Vec pos;
-    u8 unk_7c[8];
+    u16 rotX;
+    u16 rotY;
+    u16 rotZ;
+    u8 unk_82[2];
     Ov003Vec home;
-    u8 unk_90[0x10];
+    u8 unk_90[3];
+    u8 unk_93;
+    u8 unk_94[4];
+    u16 unk_98;
+    u8 unk_9a[2];
+    s32 unk_9c;
     s32 speed;
     u8 unk_a4[0x2c];
     Ov003Vec target;
+    Ov003Vec unk_dc;
+    Ov003Vec unk_e8;
+    u8 unk_f4[0xc];
+    u16 unk_100;
+    u8 unk_102;
+};
+
+struct Ov003FlyParam {
+    s32 dist;
+    s32 speed;
+    u8 unk_08[8];
 };
 
 extern "C" {
@@ -66,6 +90,11 @@ extern void *data_ov000_021ccd64;
 extern Ov003Game54 *data_ov000_021ccd54;
 extern const Ov003FlyNames data_ov003_021f6a80;
 extern u8 data_ov003_021f6b20[];
+extern const Ov003FlyParam data_ov003_021f6b5c[];
+extern const s16 FX_SinCosTable_[];
+extern void func_01ffc9fc(Ov003Vec *dst, const Ov003Vec *src, u16 angle);
+extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *ab);
+extern u16 FX_Atan2(s32 y, s32 x);
 extern void func_ov000_0219433c(void *self);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_ov000_02194758(void *self);
@@ -217,4 +246,77 @@ void func_ov003_021e9824(Ov003Fly *self) {
         u->unk_a2_5 = 1;
     }
 }
+
+static inline void Ov003_RotX(Ov003Vec *out, const Ov003Vec *in, u16 ang) {
+    s32 y = 0;
+    s32 z = 0;
+    s32 idx = ang >> 4;
+    s32 s = FX_SinCosTable_[idx * 2];
+    s32 c = FX_SinCosTable_[idx * 2 + 1];
+    if (in->y != 0) {
+        y += (s32)(((s64)c * in->y + 0x800) >> 12);
+        z += (s32)(((s64)s * in->y + 0x800) >> 12);
+    }
+    if (in->z != 0) {
+        y += (s32)(((s64)-s * in->z + 0x800) >> 12);
+        z += (s32)(((s64)c * in->z + 0x800) >> 12);
+    }
+    out->x = in->x;
+    out->y = y;
+    out->z = z;
+}
+
+static inline void Ov003_SetSqrt64(u64 param) {
+    *(volatile u16 *)0x040002b0 = 1;
+    *(volatile u64 *)0x040002b8 = param;
+}
+
+static inline s32 Ov003_Dist2D(s64 sq) {
+    Ov003_SetSqrt64((u64)(sq << 2));
+    while (*(volatile u16 *)0x040002b0 & 0x8000) {
+    }
+    return (s32)(*(volatile u32 *)0x040002b4 + 1) >> 1;
+}
+
+void func_ov003_021e9858(Ov003Fly *self) {
+    const Ov003FlyParam *prm;
+    s32 dx, dz;
+    s64 sq;
+    s32 dist;
+    u16 ang;
+    s32 idx;
+    func_ov000_02194758(self);
+    self->unk_93 = 0;
+    prm = &data_ov003_021f6b5c[(s16)self->unk_1a];
+    self->unk_100 = self->rotY;
+    self->target = self->pos;
+    Ov003Vec v = {0, 0, 0};
+    v.z = prm->dist;
+    Ov003_RotX(&v, &v, self->rotX);
+    func_01ffc9fc(&v, &v, self->rotY);
+    VEC_Add(&v, &self->pos, &v);
+    self->unk_dc = v;
+    self->unk_e8 = self->target;
+    self->home = self->unk_dc;
+    self->unk_102 = 0;
+    dx = self->pos.x - self->unk_dc.x;
+    dz = self->pos.z - self->unk_dc.z;
+    sq = (s64)dx * dx;
+    sq += (s64)dz * dz;
+    dist = Ov003_Dist2D(sq);
+    ang = FX_Atan2(dist, self->unk_dc.y - self->pos.y);
+    idx = ang >> 4;
+    {
+    s32 spd = prm->speed;
+    self->unk_9c = (s32)(((s64)spd * FX_SinCosTable_[idx * 2] + 0x800) >> 12);
+    self->speed = (s32)(((s64)spd * FX_SinCosTable_[idx * 2 + 1] + 0x800) >> 12);
+    }
+    self->unk_98 = self->rotY;
+    self->rotX = data_ov003_021f6a80.rot[0];
+    self->rotY = data_ov003_021f6a80.rot[1];
+    self->rotZ = data_ov003_021f6a80.rot[2];
+    self->rotX = func_ov000_0218bd5c(data_ov000_021ccd64, self->unitId)->unk_94;
+    func_ov000_02198360(self->work, 6, 0);
+}
+
 }

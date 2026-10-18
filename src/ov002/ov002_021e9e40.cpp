@@ -3,9 +3,9 @@
 extern "C" {
 
 extern u32 func_0200aeec(s32 v);
-extern u32 func_0200b854(u32 a, u32 b);
-extern u32 func_0200ba84(u32 a, u32 b);
-extern s32 func_0200b574(u32 v);
+extern u32 _fadd(u32 a, u32 b);
+extern u32 _fsub(u32 a, u32 b);
+extern s32 _ffix(u32 v);
 
 extern u8 data_ov002_021f0878[];
 extern u8 data_ov002_021f087c[];
@@ -39,11 +39,11 @@ void func_ov002_021e9e40(int idx) {
     }
     v = *(s16 *)(data_ov002_021f0880 + off);
     if (v > 0) {
-        f = func_0200b854(0x3f000000, func_0200aeec(v << 12));
+        f = _fadd(0x3f000000, func_0200aeec(v << 12));
     } else {
-        f = func_0200ba84(func_0200aeec(v << 12), 0x3f000000);
+        f = _fsub(func_0200aeec(v << 12), 0x3f000000);
     }
-    v = func_0200b574(f);
+    v = _ffix(f);
     {
         u8 *g3 = GAME;
         FIELD(g3, 0x14, s32) = v;

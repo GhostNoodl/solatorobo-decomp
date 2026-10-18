@@ -147,9 +147,9 @@ extern void func_ov000_02191870(void *model, Ov003Res *res);
 extern Ov003AnimLayer *func_ov000_02190a30(void *model, s32 n);
 extern void func_ov000_02191920(void *model, s32 a, s32 b, s32 c);
 extern u32 func_0200aeec(s32 v);
-extern u32 func_0200b854(u32 a, u32 b);
-extern u32 func_0200ba84(u32 a, u32 b);
-extern s32 func_0200b574(u32 v);
+extern u32 _fadd(u32 a, u32 b);
+extern u32 _fsub(u32 a, u32 b);
+extern s32 _ffix(u32 v);
 extern void *func_ov000_02198328(void *p);
 extern u8 *func_0206ef10(u16 id);
 extern void func_ov000_02191008(Ov003Model *model);
@@ -209,9 +209,9 @@ void func_ov003_021f3e60(Ov003Prop *self) {
             func_ov000_02191920(self->model, 0, 0x1000, 0);
             n = self->count << 12;
             if (self->count != 0) {
-                frame = func_0200b574(func_0200b854(0x3f000000, func_0200aeec(n)));
+                frame = _ffix(_fadd(0x3f000000, func_0200aeec(n)));
             } else {
-                frame = func_0200b574(func_0200ba84(func_0200aeec(n), 0x3f000000));
+                frame = _ffix(_fsub(func_0200aeec(n), 0x3f000000));
             }
             ctl = layer->ctl;
             if (ctl != NULL) {
@@ -292,9 +292,9 @@ void func_ov003_021f3f5c(Ov003Prop *self) {
                 func_ov000_02191920(self->model, 0, 0x1000, 0);
                 n = self->count << 12;
                 if (self->count != 0) {
-                    frame = func_0200b574(func_0200b854(0x3f000000, func_0200aeec(n)));
+                    frame = _ffix(_fadd(0x3f000000, func_0200aeec(n)));
                 } else {
-                    frame = func_0200b574(func_0200ba84(func_0200aeec(n), 0x3f000000));
+                    frame = _ffix(_fsub(func_0200aeec(n), 0x3f000000));
                 }
                 ctl = layer->ctl;
                 if (ctl != NULL) {
