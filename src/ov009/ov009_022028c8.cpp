@@ -50,8 +50,8 @@ void func_ov009_022028c8(Ov009Actor *self) {
     a = func_0207011c((void *)kind);
     b = func_020701d4((void *)kind);
     n = FLD(Ov009Names *, self, 0x34);
-    func_0201e520(&FLD(char, n, 0x88), a);
-    func_0201e520(&FLD(char, n, 0xa8), b);
+    STD_CopyString(&FLD(char, n, 0x88), a);
+    STD_CopyString(&FLD(char, n, 0xa8), b);
     n->unk_03_3 = 1;
     FLD(Ov009Names *, self, 0x34)->unk_00 = 0;
     k = 0x4083;
