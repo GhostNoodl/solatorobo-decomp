@@ -4,3 +4,91 @@
     .ctor       start:0x0220aa74 end:0x0220aa84 kind:rodata align:4
     .data       start:0x0220aaa0 end:0x0220b420 kind:data align:32
     .bss        start:0x0220b420 end:0x0220b420 kind:bss align:32
+
+src/ov012/ov012_021fa6a0.cpp:
+    complete
+    .text       start:0x021fa6a0 end:0x021fa80c
+
+src/ov012/ov012_021fa8b8.cpp:
+    complete
+    .text       start:0x021fa8b8 end:0x021fab7c
+
+src/ov012/ov012_021fb060.cpp:
+    complete
+    .text       start:0x021fb060 end:0x021fb300
+
+src/ov012/ov012_021fb818.cpp:
+    complete
+    .text       start:0x021fb818 end:0x021fbec8
+
+src/ov012/ov012_021fcf1c.cpp:
+    complete
+    .text       start:0x021fcf1c end:0x021fd1b0
+
+src/ov012/ov012_021fee1c.cpp:
+    complete
+    .text       start:0x021fee1c end:0x021fefc8
+
+src/ov012/ov012_021ff674.cpp:
+    complete
+    .text       start:0x021ff674 end:0x021ffd34
+
+src/ov012/ov012_02200200.cpp:
+    complete
+    .text       start:0x02200200 end:0x02200398
+
+src/ov012/ov012_022015a0.cpp:
+    complete
+    .text       start:0x022015a0 end:0x02201910
+
+src/ov012/ov012_02201c70.cpp:
+    complete
+    .text       start:0x02201c70 end:0x02201f48
+
+src/ov012/ov012_02202994.cpp:
+    complete
+    .text       start:0x02202994 end:0x02202e30
+
+src/ov012/ov012_022032f4.cpp:
+    complete
+    .text       start:0x022032f4 end:0x02203420
+
+src/ov012/ov012_02204d00.cpp:
+    complete
+    .text       start:0x02204d00 end:0x0220574c
+
+src/ov012/ov012_02205818.cpp:
+    complete
+    .text       start:0x02205818 end:0x02205990
+
+src/ov012/ov012_02206374.cpp:
+    complete
+    .text       start:0x02206374 end:0x02206718
+
+src/ov012/ov012_02206e9c.cpp:
+    complete
+    .text       start:0x02206e9c end:0x0220717c
+
+src/ov012/ov012_02207a38.cpp:
+    complete
+    .text       start:0x02207a38 end:0x02207b7c
+
+src/ov012/ov012_02207c40.cpp:
+    complete
+    .text       start:0x02207c40 end:0x02207dac
+
+src/ov012/ov012_0220824c.cpp:
+    complete
+    .text       start:0x0220824c end:0x02208294
+
+src/ov012/ov012_02208fd4.cpp:
+    complete
+    .text       start:0x02208fd4 end:0x02209268
+
+src/ov012/ov012_022096fc.cpp:
+    complete
+    .text       start:0x022096fc end:0x02209740
+
+src/ov012/ov012_02209f80.cpp:
+    complete
+    .text       start:0x02209f80 end:0x0220a3c4
