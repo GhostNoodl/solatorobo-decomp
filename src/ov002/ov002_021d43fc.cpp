@@ -38,7 +38,7 @@ void func_ov002_021d44e4(Task50 *self) {
 
 void func_ov002_021d4540(void *dst, u32 size, void *a, void *b, int mode) {
     const u8 *s;
-    func_02016e28(dst, 0, size);
+    MI_CpuFill8(dst, 0, size);
     switch (mode) {
     case 0:
         s = data_ov002_021ef650;
@@ -62,7 +62,7 @@ void func_ov002_021d4540(void *dst, u32 size, void *a, void *b, int mode) {
         s = data_ov002_021ef651;
         break;
     }
-    func_0201ea94(dst, size, data_ov002_021ef665, a, s, b);
+    STD_TSNPrintf(dst, size, data_ov002_021ef665, a, s, b);
 }
 
 Task50 *func_ov002_021d45fc(Task50 *self) {
@@ -410,8 +410,8 @@ Task50 *func_ov002_021d5230(void) {
         FIELD(p, 0x54, s32) = 0;
         FIELD(p, 0x58, s32) = 0;
         FIELD(p, 0x5c, s32) = 0;
-        func_02016e28((u8 *)p + 0x60, 0, 10);
-        func_02016e28((u8 *)p + 0x6a, 0, 10);
+        MI_CpuFill8((u8 *)p + 0x60, 0, 10);
+        MI_CpuFill8((u8 *)p + 0x6a, 0, 10);
         FIELD(p, 0x74, u16) = 0xffff;
     }
     p->v0x8(0x1d, 0x64);
@@ -453,7 +453,7 @@ BOOL func_ov002_021d5350(void *self, void *ev) {
         t = func_ov000_02173610(0x1b);
         if (t != NULL) {
             if (FIELD(t, 0x3c, u8 *) != NULL) {
-                func_02016fa0(owner + 0x60, FIELD(t, 0x3c, u8 *) + 0x2c, 0x14);
+                MI_CpuCopy8(owner + 0x60, FIELD(t, 0x3c, u8 *) + 0x2c, 0x14);
             }
             if (FIELD(t, 0x3c, void *) != NULL) {
                 func_ov002_021e2754(FIELD(t, 0x3c, void *), id);

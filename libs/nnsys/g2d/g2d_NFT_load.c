@@ -11,7 +11,7 @@
 #define NNS_G2D_NFTR_OLD_VER          0x0100
 
 // Called where the SDK's OS_Panic is compiled out for the final ROM.
-void func_0201adf4(void);
+void OS_Terminate(void);
 
 void NNSi_G2dUnpackNFT(NNSG2dBinaryFileHeader *pHeader);
 
@@ -48,7 +48,7 @@ BOOL NNSi_G2dGetUnpackedFont(void *pNftrFile, NNSG2dFontInformation **ppRes) {
     if (!NNS_G2dIsBinFileValid((NNSG2dBinaryFileHeader *)pNftrFile, NNS_G2D_BINFILE_SIG_FONTDATA, NNS_G2D_NFTR_VER)) {
         if (!NNS_G2dIsBinFileValid((NNSG2dBinaryFileHeader *)pNftrFile, NNS_G2D_BINFILE_SIG_FONTDATA, NNS_G2D_NFTR_PREV_VER)) {
             if (!NNS_G2dIsBinFileValid((NNSG2dBinaryFileHeader *)pNftrFile, NNS_G2D_BINFILE_SIG_FONTDATA, NNS_G2D_NFTR_OLD_VER)) {
-                func_0201adf4();
+                OS_Terminate();
             }
             isOldVer = TRUE;
         }

@@ -38,7 +38,7 @@ void func_020556a0(FieldMsg *msg, const char *text) {
     msg->flag16 = 0;
     msg->unk_35c = 0;
     msg->unk_360 = 0;
-    func_0201e520(msg->prevName, msg->name);
+    STD_CopyString(msg->prevName, msg->name);
     msg->unk_312 = msg->unk_310;
 }
 

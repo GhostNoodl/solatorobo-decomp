@@ -120,14 +120,14 @@ extern ResNode *func_0203662c(ResMgr *mgr);
 extern void func_020366d0(ResMgr *mgr, ResNode *node);
 
 // Strings
-extern char *func_0201e520(char *dst, const char *src);
-extern u32 func_0201e708(const char *str);
-extern char *func_0201e78c(char *dst, const char *src);
+extern char *STD_CopyString(char *dst, const char *src);
+extern u32 STD_GetStringLength(const char *str);
+extern char *STD_ConcatenateString(char *dst, const char *src);
 extern int func_0201e7b0(const char *a, const char *b);
 extern u16 MATH_CalcCRC16(u16 *table, const char *str, u32 len);
 
 static inline u16 ResMgr_Hash(ResMgr *mgr, const char *str) {
-    return MATH_CalcCRC16(RES_MGR_HASH_TABLE(mgr), str, func_0201e708(str));
+    return MATH_CalcCRC16(RES_MGR_HASH_TABLE(mgr), str, STD_GetStringLength(str));
 }
 
 static inline BOOL FS_IsBusy(volatile const FSFile *file) {

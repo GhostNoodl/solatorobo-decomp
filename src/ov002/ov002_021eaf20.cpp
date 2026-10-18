@@ -64,12 +64,12 @@ void func_ov002_021eaf20(void *self) {
     func_ov002_021eb0f8(self);
     func_ov002_021eb448(self);
     d = FIELD(self, 0x28, u8 *);
-    func_02016fa0(d + 8, &hdr, 8);
+    MI_CpuCopy8(d + 8, &hdr, 8);
     n = hdr.count;
     src = d + 0x10;
     stride = hdr.stride;
     for (i = 0; i < n; i++) {
-        func_02016fa0(src, &rec, 0x1c);
+        MI_CpuCopy8(src, &rec, 0x1c);
         func_ov002_021e9478(rec.a, rec.b, rec.c, rec.d, rec.e, rec.mode, rec.f, rec.g);
         src += stride;
     }
@@ -81,7 +81,7 @@ void func_ov002_021eaf20(void *self) {
     func_ov002_021e9cec(bufC, 0x20, data_ov002_021f0d0f, 2, ((u8 (*)(void))func_0206e8f0)());
     func_ov002_021e9d7c(bufD, 0x20, FIELD(self, 0x4, void *), 2, ((u8 (*)(void))func_0206e8f0)());
     func_ov002_021e9a50(bufC, bufD);
-    func_02016fa0(FIELD(self, 0x8, u8 *) + 0xc, &x, 4);
+    MI_CpuCopy8(FIELD(self, 0x8, u8 *) + 0xc, &x, 4);
     func_ov002_021e9b28(x);
 }
 
@@ -120,7 +120,7 @@ void func_ov002_021eb0f8(void *self) {
     u8 *src;
     Ent021eb0f8 *tbl;
     s32 i;
-    func_02016fa0(d + 8, &hdr, 8);
+    MI_CpuCopy8(d + 8, &hdr, 8);
     n = hdr.count;
     stride = hdr.stride;
     src = d + 0x10;
@@ -129,7 +129,7 @@ void func_ov002_021eb0f8(void *self) {
         u8 *obj;
         s32 k;
         s32 cnt;
-        func_02016fa0(src, &rec, 6);
+        MI_CpuCopy8(src, &rec, 6);
         switch (rec.type) {
         case 0:
             obj = (u8 *)func_ov002_021e97e8(NULL, NULL);
@@ -196,19 +196,19 @@ typedef struct Rec021eb298 {
 static inline void ov002_addPair(u8 *list, u8 *a, u8 *b, s32 kind) {
     u8 *n;
     for (n = FIELD(list, 0x4, u8 *); n != NULL; n = FIELD(n, 0x4c, u8 *)) {
-        if (func_0201e950(n, a, func_0201e708(n)) == 0 && func_0201e950(n + 0x20, b, func_0201e708(n)) == 0 && FIELD(n, 0x40, s32) == kind) {
+        if (func_0201e950(n, a, STD_GetStringLength(n)) == 0 && func_0201e950(n + 0x20, b, STD_GetStringLength(n)) == 0 && FIELD(n, 0x40, s32) == kind) {
             break;
         }
     }
     if (n == NULL) {
         n = (u8 *)func_0203dd9c(0x50);
-        func_02016e28(n, 0, 0x20);
-        func_02016e28(n + 0x20, 0, 0x20);
+        MI_CpuFill8(n, 0, 0x20);
+        MI_CpuFill8(n + 0x20, 0, 0x20);
         FIELD(n, 0x44, u8) = 0;
         FIELD(n, 0x48, s32) = 0;
         FIELD(n, 0x4c, u8 *) = NULL;
-        func_0201e5a0(n, a, 0x20);
-        func_0201e5a0(n + 0x20, b, 0x20);
+        STD_CopyLString(n, a, 0x20);
+        STD_CopyLString(n + 0x20, b, 0x20);
         FIELD(n, 0x40, s32) = kind;
         FIELD(n, 0x4c, u8 *) = FIELD(list, 0x4, u8 *);
         FIELD(list, 0x4, u8 *) = n;
@@ -234,13 +234,13 @@ void func_ov002_021eb298(void *self) {
     u8 *src;
     s32 i;
     d = FIELD(self, 0x18, u8 *);
-    func_02016fa0(d + 8, hdr, 8);
+    MI_CpuCopy8(d + 8, hdr, 8);
     n = hdr[0];
     src = d + 0x10;
     for (i = 0; i < n; i++) {
         Ent021eb298 *e;
         u8 fl;
-        func_02016fa0(src, &rec, 8);
+        MI_CpuCopy8(src, &rec, 8);
         fl = rec.flags;
         e = &FIELD(self, 0x40, Ent021eb298 *)[i];
         ov002_initEnt(e);

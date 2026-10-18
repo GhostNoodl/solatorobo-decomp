@@ -33,7 +33,7 @@ ov006_Slot *func_ov006_021dafb4(ov006_SlotManager *self, int idx, int type, cons
     ov006_Slot_Clear(slot);
     slot->active = 1;
     slot->unk8 = type;
-    func_02016fa0(name, slot->name, sizeof(slot->name));
+    MI_CpuCopy8(name, slot->name, sizeof(slot->name));
     slot->unk12 = unk12;
     return slot;
 }

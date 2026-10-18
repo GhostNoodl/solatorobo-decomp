@@ -245,7 +245,7 @@ static inline bool func_ov002_isCurrent021ccd40(void *p) {
 
 void func_02041218(void *p);
 void func_02041440(void *p, void *name, int c);
-void func_0201e520(void *p, void *name);
+void STD_CopyString(void *p, void *name);
 void *func_02035f30(void *a, void *b, int c);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *a, void *b);
@@ -391,7 +391,7 @@ extern VFunc data_ov002_021ef91c[];
 
 void func_02009e24(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void *func_ov002_021e473c(void *p);
-void func_02016e28(void *dst, int val, u32 size);
+void MI_CpuFill8(void *dst, int val, u32 size);
 
 extern VFunc data_ov002_021ef99c[];
 
@@ -446,7 +446,7 @@ void *func_0206ec8c(u16 id);
 u8 *func_0206ef10(u16 id);
 void func_ov000_02162b40(void *a, s32 b, s32 c, const char *d, s32 e, const char *f, u8 g, s32 h);
 void func_ov000_021c95ac(void *a, u16 id);
-void func_02016fa0(void *src, void *dst, u32 size);
+void MI_CpuCopy8(void *src, void *dst, u32 size);
 void func_ov002_021e2754(void *a, u16 id);
 extern char data_ov002_021efaeb[];
 extern char data_ov002_021efae1[];
@@ -495,7 +495,7 @@ s64 _s32_div_f(s32 a, s32 b);
 
 u8 *func_0206ef50(u16 id);
 void *func_02070dcc(u8 id);
-void func_0201e554(char *dst, const char *src, u32 n);
+void STD_CopyLStringZeroFill(char *dst, const char *src, u32 n);
 int NNS_G3dGetResDictIdxByName(void *dict, const char *name);
 void NNS_G3dMdlSetMdlAlpha(void *res, int idx, int val);
 extern char data_ov002_021efddd[];
@@ -510,7 +510,7 @@ static inline void func_ov002_021d7c04_inline(void *self) {
     void *v;
     FIELD(self, 0x4a, u8) = info[0] == 0x80 ? 2 : 1;
     v = func_02070dcc(FIELD(self, 0x4b, u8) = info[1]);
-    func_02016fa0(v, (u8 *)self + 0x4c, 8);
+    MI_CpuCopy8(v, (u8 *)self + 0x4c, 8);
     func_ov002_021e38f8((s32 *)((u8 *)self + 0x5c), v);
 }
 
@@ -728,7 +728,7 @@ void func_ov002_021d4540(void *dst, u32 size, void *a, void *b, int mode);
 extern void *data_ov002_021ef5ac[];
 extern u8 data_ov002_021ef650[];
 
-u32 func_0201e708(const void *s);
+u32 STD_GetStringLength(const void *s);
 void func_ov000_021c3d20(void *self);
 void func_ov000_021c4ab8(void *self);
 extern u8 data_ov002_021ef038[];
@@ -758,8 +758,8 @@ void func_ov002_021e391c(s32 *m, int rot);
 extern void *data_ov002_021f0fac[];
 void NNS_G3dRenderObjRemoveAnmObj(void *a, void *b);
 void func_ov002_021eea74(void *p);
-void func_0201e5a0(void *dst, void *src, u32 size);
-void func_0201ea94(void *dst, u32 size, const void *fmt, ...);
+void STD_CopyLString(void *dst, void *src, u32 size);
+void STD_TSNPrintf(void *dst, u32 size, const void *fmt, ...);
 extern void *data_ov002_021f0624[];
 extern u8 data_ov002_021f064c[];
 extern u8 data_ov002_021f0647[];
@@ -837,7 +837,7 @@ void func_ov000_02162a58(void *p);
 void func_ov000_02163594(void *p);
 
 void func_0206e3a0(void *a, void *b);
-void func_02013dbc(int a, void *b, void *c, u16 d);
+void G3X_SetFog(int a, void *b, void *c, u16 d);
 void func_02043b20(void *p);
 void func_ov002_021e5d0c(void *self);
 

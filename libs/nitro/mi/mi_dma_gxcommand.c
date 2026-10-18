@@ -1,0 +1,149 @@
+#include "nitro/gx.h"
+#include "nitro/os.h"
+
+typedef void (*MIDmaCallback)(void *arg);
+
+#define MI_DMA_ENABLE        0x80000000
+#define MI_DMA_IF_ENABLE     0x40000000
+#define MI_DMA_TIMING_GXFIFO 0x38000000
+#define MI_DMA_DEST_FIX      0x00400000
+#define MI_DMA_32BIT_BUS     0x04000000
+#define MI_DMA_SRC_INC       0x00000000
+
+#define MI_CNT_SEND32(size)       (MI_DMA_ENABLE | MI_DMA_DEST_FIX | MI_DMA_32BIT_BUS | ((size) / 4))
+#define MI_CNT_SEND32_IF(size)    (MI_DMA_ENABLE | MI_DMA_IF_ENABLE | MI_DMA_DEST_FIX | MI_DMA_32BIT_BUS | ((size) / 4))
+#define MI_CNT_GXCOPY_IF(size)    (MI_DMA_ENABLE | MI_DMA_IF_ENABLE | MI_DMA_TIMING_GXFIFO | MI_DMA_DEST_FIX | MI_DMA_32BIT_BUS | ((size) / 4))
+
+#define OS_IE_GXFIFO (1UL << 21)
+
+#define MIi_GX_LENGTH_ONCE (118 * sizeof(u32))
+
+// MIi_DmaSetParameters lives in ITCM under its address name
+void func_01ff8020(u32 dmaNo, u32 src, u32 dest, u32 ctrl, u32 mode);
+#define MIi_DmaSetParams(dmaNo, src, dest, ctrl) func_01ff8020(dmaNo, src, dest, ctrl, 0)
+
+void MIi_CheckAnotherAutoDMA(u32 dmaNo, u32 dmaType);
+void MIi_CheckDma0SourceAddress(u32 dmaNo, u32 src, u32 size, u32 dir);
+void MI_WaitDma(u32 dmaNo);
+
+typedef struct {
+    volatile BOOL isBusy;
+    u32 dmaNo;
+    u32 src;
+    u32 length;
+    MIDmaCallback callback;
+    void *arg;
+    GXFifoIntrCond fifoCond;
+    void (*fifoFunc)(void);
+} MIiGXDmaParams;
+
+static MIiGXDmaParams MIi_GXDmaParams = { FALSE };
+
+static void MIi_FIFOCallback(void);
+static void MIi_DMACallback(void *);
+static void MIi_DMAFastCallback(void *);
+
+static inline void MIi_CallCallback(MIDmaCallback callback, void *arg) {
+    if (callback) {
+        (callback)(arg);
+    }
+}
+
+void MI_SendGXCommandAsync(u32 dmaNo, const void *src, u32 commandLength, MIDmaCallback callback, void *arg) {
+    if (commandLength == 0) {
+        MIi_CallCallback(callback, arg);
+        return;
+    }
+
+    while (MIi_GXDmaParams.isBusy) {
+    }
+
+    while (!(G3X_GetCommandFifoStatus() & GX_FIFOSTAT_UNDERHALF)) {
+    }
+
+    MIi_GXDmaParams.isBusy = TRUE;
+    MIi_GXDmaParams.dmaNo = dmaNo;
+    MIi_GXDmaParams.src = (u32)src;
+    MIi_GXDmaParams.length = commandLength;
+    MIi_GXDmaParams.callback = callback;
+    MIi_GXDmaParams.arg = arg;
+
+    MIi_CheckDma0SourceAddress(dmaNo, (u32)src, commandLength, MI_DMA_SRC_INC);
+    MI_WaitDma(dmaNo);
+
+    {
+        OSIntrMode enabled = OS_DisableInterrupts();
+
+        MIi_GXDmaParams.fifoCond = (GXFifoIntrCond)((reg_G3X_GXSTAT & REG_G3X_GXSTAT_FI_MASK) >> REG_G3X_GXSTAT_FI_SHIFT);
+        MIi_GXDmaParams.fifoFunc = OS_GetIrqFunction(OS_IE_GXFIFO);
+
+        G3X_SetFifoIntrCond(GX_FIFOINTR_COND_UNDERHALF);
+        OS_SetIrqFunction(OS_IE_GXFIFO, MIi_FIFOCallback);
+
+        (void)OS_EnableIrqMask(OS_IE_GXFIFO);
+        MIi_FIFOCallback();
+        (void)OS_RestoreInterrupts(enabled);
+    }
+}
+
+static void MIi_FIFOCallback(void) {
+    u32 length;
+    u32 src;
+
+    if (MIi_GXDmaParams.length == 0) {
+        return;
+    }
+
+    length = (MIi_GXDmaParams.length >= MIi_GX_LENGTH_ONCE) ? MIi_GX_LENGTH_ONCE : MIi_GXDmaParams.length;
+    src = MIi_GXDmaParams.src;
+
+    MIi_GXDmaParams.length -= length;
+    MIi_GXDmaParams.src += length;
+
+    if (MIi_GXDmaParams.length == 0) {
+        OSi_EnterDmaCallback(MIi_GXDmaParams.dmaNo, MIi_DMACallback, NULL);
+        MIi_DmaSetParams(MIi_GXDmaParams.dmaNo, src, (u32)REG_GXFIFO_ADDR, MI_CNT_SEND32_IF(length));
+        (void)OS_ResetRequestIrqMask(OS_IE_GXFIFO);
+    } else {
+        MIi_DmaSetParams(MIi_GXDmaParams.dmaNo, src, (u32)REG_GXFIFO_ADDR, MI_CNT_SEND32(length));
+        (void)OS_ResetRequestIrqMask(OS_IE_GXFIFO);
+    }
+}
+
+static void MIi_DMACallback(void *arg) {
+    (void)OS_DisableIrqMask(OS_IE_GXFIFO);
+
+    G3X_SetFifoIntrCond(MIi_GXDmaParams.fifoCond);
+    OS_SetIrqFunction(OS_IE_GXFIFO, MIi_GXDmaParams.fifoFunc);
+
+    MIi_GXDmaParams.isBusy = FALSE;
+
+    MIi_CallCallback(MIi_GXDmaParams.callback, MIi_GXDmaParams.arg);
+}
+
+void MI_SendGXCommandAsyncFast(u32 dmaNo, const void *src, u32 commandLength, MIDmaCallback callback, void *arg) {
+    if (commandLength == 0) {
+        MIi_CallCallback(callback, arg);
+        return;
+    }
+
+    while (MIi_GXDmaParams.isBusy) {
+    }
+
+    MIi_GXDmaParams.isBusy = TRUE;
+    MIi_GXDmaParams.dmaNo = dmaNo;
+    MIi_GXDmaParams.callback = callback;
+    MIi_GXDmaParams.arg = arg;
+
+    MIi_CheckAnotherAutoDMA(dmaNo, MI_DMA_TIMING_GXFIFO);
+    MIi_CheckDma0SourceAddress(dmaNo, (u32)src, commandLength, MI_DMA_SRC_INC);
+    MI_WaitDma(dmaNo);
+
+    OSi_EnterDmaCallback(dmaNo, MIi_DMAFastCallback, NULL);
+    MIi_DmaSetParams(dmaNo, (u32)src, (u32)REG_GXFIFO_ADDR, MI_CNT_GXCOPY_IF(commandLength));
+}
+
+static void MIi_DMAFastCallback(void *arg) {
+    MIi_GXDmaParams.isBusy = FALSE;
+    MIi_CallCallback(MIi_GXDmaParams.callback, MIi_GXDmaParams.arg);
+}

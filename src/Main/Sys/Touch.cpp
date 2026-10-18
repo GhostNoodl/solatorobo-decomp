@@ -38,9 +38,9 @@ typedef struct Touch {
 } Touch; // size 0x30
 
 extern Touch *data_02097dcc;
-extern void func_0201d0d0(void);
-extern void func_0201d144(void *calib);
-extern void func_0201d1d8(void *calib);
+extern void TP_Init(void);
+extern void TP_GetUserInfo(void *calib);
+extern void TP_SetCalibrateParam(void *calib);
 extern void *func_0203dec8(u32 size, int align);
 extern void func_02021b9c(void);
 
@@ -86,9 +86,9 @@ void func_0203d560(void) {
     if (data_02097dcc != NULL) {
         return;
     }
-    func_0201d0d0();
-    func_0201d144(calib);
-    func_0201d1d8(calib);
+    TP_Init();
+    TP_GetUserInfo(calib);
+    TP_SetCalibrateParam(calib);
     tp = (Touch *)func_0203dec8(sizeof(Touch), 4);
     func_0203d4f8(tp);
     data_02097dcc = tp;

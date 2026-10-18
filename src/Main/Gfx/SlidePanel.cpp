@@ -88,7 +88,7 @@ void *func_02054b90(Model *model) {
 }
 
 void func_02054b98(void *dst, u32 size) {
-    func_02016e28(dst, 0, size);
+    MI_CpuFill8(dst, 0, size);
 }
 
 void func_02054bac(Model *model, u32 v) {

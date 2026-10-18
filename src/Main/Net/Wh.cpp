@@ -84,13 +84,13 @@ void func_02044cb8(WhMgr *wh) {
     wh->unk_88 = 0;
     wh->judgeCb = NULL;
     wh->portCb = func_02045d98;
-    func_02016e28(wh->unk_60, 0, sizeof(wh->unk_60));
-    func_02016e28(wh->wmBuf, 0, sizeof(wh->wmBuf));
-    func_02016e28(wh->bssDesc, 0, sizeof(wh->bssDesc));
-    func_02016e28(&wh->scanParam, 0, sizeof(wh->scanParam));
-    func_02016e28(&wh->parentParam, 0, sizeof(wh->parentParam));
-    func_02016e28(wh->dsInfo, 0, sizeof(wh->dsInfo));
-    func_02016e28(wh->unk_18e0, 0, sizeof(wh->unk_18e0));
+    MI_CpuFill8(wh->unk_60, 0, sizeof(wh->unk_60));
+    MI_CpuFill8(wh->wmBuf, 0, sizeof(wh->wmBuf));
+    MI_CpuFill8(wh->bssDesc, 0, sizeof(wh->bssDesc));
+    MI_CpuFill8(&wh->scanParam, 0, sizeof(wh->scanParam));
+    MI_CpuFill8(&wh->parentParam, 0, sizeof(wh->parentParam));
+    MI_CpuFill8(wh->dsInfo, 0, sizeof(wh->dsInfo));
+    MI_CpuFill8(wh->unk_18e0, 0, sizeof(wh->unk_18e0));
 }
 
 #define WH_MAX(a, b) ((a) > (b) ? (a) : (b))
@@ -252,7 +252,7 @@ void func_02045530(WhCbArg *arg) {
 BOOL func_020455ac(WhMgr *wh) {
     u8 macAddr[8];
     u16 result;
-    func_0201a98c(macAddr);
+    OS_GetMacAddress(macAddr);
     wh->channel = 0;
     wh->bestBusyRatio = 0x65;
     WH_ChangeSysState(3);

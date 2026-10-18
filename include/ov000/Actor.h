@@ -273,7 +273,7 @@ typedef struct {
 } Player021ccd54;
 
 extern "C" {
-void func_02016fa0(const void *src, void *dst, u32 size);
+void MI_CpuCopy8(const void *src, void *dst, u32 size);
 void func_ov000_0218de6c(ActorGroup *group, Actor *actor);
 void func_ov000_0218d398(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 u16 FX_Atan2(s32 x, s32 z);

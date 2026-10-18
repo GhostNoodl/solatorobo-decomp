@@ -105,15 +105,15 @@ void func_0206dde4(char *dst, const LangId *id) {
     LangGroup *group = &data_0214b0a8->groups[id->group];
     int len;
 
-    func_0201e520(dst, data_0208cb68);
-    func_0201e78c(dst, group->dir);
-    func_0201e78c(dst, data_0208cb6b);
-    len = func_0201e708(dst);
+    STD_CopyString(dst, data_0208cb68);
+    STD_ConcatenateString(dst, group->dir);
+    STD_ConcatenateString(dst, data_0208cb6b);
+    len = STD_GetStringLength(dst);
     LANGDATA_PUTNUM(dst, len, id->num);
     {
         const char *ext = data_02082bf8[1];
         dst[len] = 0;
-        func_0201e78c(dst, ext);
+        STD_ConcatenateString(dst, ext);
     }
 }
 
@@ -121,13 +121,13 @@ void func_0206dedc(char *dst, const LangId *id) {
     LangGroup *group = &data_0214b0a8->groups[id->group];
     int len;
 
-    func_0201e520(dst, data_0208cb6d);
-    func_0201e78c(dst, group->dir);
-    func_0201e78c(dst, data_0208cb6b);
-    len = func_0201e708(dst);
+    STD_CopyString(dst, data_0208cb6d);
+    STD_ConcatenateString(dst, group->dir);
+    STD_ConcatenateString(dst, data_0208cb6b);
+    len = STD_GetStringLength(dst);
     LANGDATA_PUTNUM(dst, len, id->num);
     dst[len] = 0;
-    func_0201e78c(dst, data_02082bf8[1]);
+    STD_ConcatenateString(dst, data_02082bf8[1]);
 }
 
 void func_0206dfd4(char *dst, const LangId *id);
@@ -194,11 +194,11 @@ typedef struct LangGame54 {
 
 extern LangGame54 *data_ov000_021ccd54;
 
-void func_02013eb4(u16 color, int a, int b, u8 alpha, int c);
-void func_02013e9c(const void *p);
-void func_02013e70(const void *p);
-void func_02013e88(const void *p);
-void func_02013dbc(BOOL enable, int mode, int slope, int offset);
+void G3X_SetClearColor(u16 color, int a, int b, u8 alpha, int c);
+void G3X_SetToonTable(const void *p);
+void G3X_SetEdgeColorTable(const void *p);
+void G3X_SetFogTable(const void *p);
+void G3X_SetFog(BOOL enable, int mode, int slope, int offset);
 void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 
 #define REG_DISP3DCNT (*(vu16 *)0x04000060)
@@ -262,7 +262,7 @@ typedef struct OSOwnerInfo {
     u8 unk_01[0x53];
 } OSOwnerInfo;
 
-void func_0201a9a8(OSOwnerInfo *info);
+void OS_GetOwnerInfo(OSOwnerInfo *info);
 extern const char *data_0208cb88;
 extern char data_0214b105[];
 

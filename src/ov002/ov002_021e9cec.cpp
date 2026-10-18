@@ -4,8 +4,8 @@ extern "C" {
 
 void func_ov002_021e9cec(void *dst, u32 size, void *src, int mode, u8 idx) {
     void *s;
-    func_02016e28(dst, 0, size);
-    func_0201e5a0(dst, src, size);
+    MI_CpuFill8(dst, 0, size);
+    STD_CopyLString(dst, src, size);
     switch (mode) {
     case 0:
         s = data_ov002_021f0624[idx];
@@ -20,14 +20,14 @@ void func_ov002_021e9cec(void *dst, u32 size, void *src, int mode, u8 idx) {
         s = data_ov002_021f064c;
         break;
     }
-    func_0201ea94(dst, size, data_ov002_021f0647, src, s);
+    STD_TSNPrintf(dst, size, data_ov002_021f0647, src, s);
 }
 
 void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx) {
     void *a;
     void *b;
-    func_02016e28(dst, 0, size);
-    func_0201e5a0(dst, src, size);
+    MI_CpuFill8(dst, 0, size);
+    STD_CopyLString(dst, src, size);
     switch (mode) {
     case 0:
         a = data_ov002_021f0624[idx];
@@ -46,7 +46,7 @@ void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx) {
         a = b;
         break;
     }
-    func_0201ea94(dst, size, data_ov002_021f0665, src, a, b);
+    STD_TSNPrintf(dst, size, data_ov002_021f0665, src, a, b);
 }
 
 }

@@ -16,7 +16,7 @@ Task50 *func_ov002_021d22cc(void) {
         for (i = 0; i < 7; i++) {
             func_ov002_021e4904((u8 *)p + 0x4c + i * 0x18);
         }
-        func_02016e28((u8 *)p + 0xf4, 0, 0x20);
+        MI_CpuFill8((u8 *)p + 0xf4, 0, 0x20);
         FIELD(p, 0x114, u8) = 0;
     }
     p->v0x8(0x18, 0x64);

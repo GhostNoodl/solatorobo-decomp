@@ -19,7 +19,7 @@ void func_ov000_0218d398(Actor *self, u16 id, u8 type, BOOL notify, u32 size, co
     msg->id = id;
     msg->type = type;
     if (size != 0 && data != NULL) {
-        func_02016fa0(data, msg->data, size);
+        MI_CpuCopy8(data, msg->data, size);
     }
     if (notify) {
         if (self->vfunc_4c(msg)) {

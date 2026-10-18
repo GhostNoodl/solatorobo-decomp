@@ -64,7 +64,7 @@ static inline void Ov010_FreeV(void *self, u32 off) {
 }
 
 extern u8 data_ov010_0220f024[];
-extern void func_02016e28(void *p, s32 v, s32 n);
+extern void MI_CpuFill8(void *p, s32 v, s32 n);
 
 void func_ov010_02207520(void *self) {
     FLD(u8, self, 0xf0) = 0;
@@ -85,7 +85,7 @@ void func_ov010_02207520(void *self) {
     FLD(s32, self, 0x120) = 0;
     FLD(s32, self, 0x124) = 0;
     FLD(s32, self, 0x128) = -1;
-    func_02016e28((u8 *)self + 0x12c, 0, 0x24);
+    MI_CpuFill8((u8 *)self + 0x12c, 0, 0x24);
     FLD(Ov010Vec, self, 0x150) = FLD(Ov010Vec, data_ov010_0220f024, 0x84);
     FLD(s32, self, 0x15c) = -1;
     FLD(u8, self, 0x170) = 0;

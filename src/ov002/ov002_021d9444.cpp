@@ -4,13 +4,13 @@ extern "C" {
 
 void func_ov002_021d9444(void *self) {
     FIELD(self, 4, s32) = 0;
-    func_02016e28((u8 *)self + 8, 0, 0x64);
+    MI_CpuFill8((u8 *)self + 8, 0, 0x64);
     FIELD(self, 0x6c, s32) = 0;
     FIELD(self, 0x70, s32) = 0;
     FIELD(self, 0x74, u8) = 0;
     FIELD(self, 0x75, u8) = 0;
-    func_02016e28((u8 *)self + 0x76, 0, 10);
-    func_02016e28((u8 *)self + 0x80, 0, 10);
+    MI_CpuFill8((u8 *)self + 0x76, 0, 10);
+    MI_CpuFill8((u8 *)self + 0x80, 0, 10);
     FIELD(self, 0x8a, s16) = 0;
     FIELD(self, 0x8c, s32) = 0;
     FIELD(self, 0x90, s32) = 0;

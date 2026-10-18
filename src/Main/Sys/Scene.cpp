@@ -16,7 +16,7 @@ extern SndMgr *data_02097e4c;
 extern const char *data_0208cb28[];
 
 extern void *func_0203dec8(u32 size, int align);
-extern void func_020137a8(volatile void *reg, int a, int b);
+extern void G2x_SetBlendBrightness_(volatile void *reg, int a, int b);
 extern void func_0206c44c(void);
 extern void func_0206e858(void);
 extern BOOL func_0203dbb0(UnkSysNode *node, BOOL recurse);
@@ -31,7 +31,7 @@ extern void func_0203b948(GfxSys *sys, u16 color);
 extern void func_02043904(void *obj);
 extern BOOL func_02046ac4(void);
 extern void func_0204a2e0(SndMgr *mgr, int fadeFrames);
-extern void func_02013658(void);
+extern void GX_DispOn(void);
 void func_0204af00(SceneMgr *mgr);
 
 void func_0204ae14(void) {
@@ -57,8 +57,8 @@ void func_0204ae14(void) {
         for (i = 0; i < 2; i++) {
             mgr->subOverlays[i] = -1;
         }
-        func_020137a8((volatile void *)0x4000050, 0x3f, 0x10);
-        func_020137a8((volatile void *)0x4001050, 0x3f, 0x10);
+        G2x_SetBlendBrightness_((volatile void *)0x4000050, 0x3f, 0x10);
+        G2x_SetBlendBrightness_((volatile void *)0x4001050, 0x3f, 0x10);
         movie = data_02097e3c;
         movie->names = data_0208cb28;
         movie->unk_0e8 = 2;
@@ -158,7 +158,7 @@ void func_0204af00(SceneMgr *mgr) {
             mgr->state = 0;
             break;
         case 4:
-            func_02013658();
+            GX_DispOn();
             *(vu32 *)0x4001000 |= 0x10000;
             for (i = 0, entry = data_02082998; i < 2; i++, entry++) {
                 if (entry->valid == 1) {

@@ -29,7 +29,7 @@ ov006_Slot *func_ov006_021dab60(ov006_Slot *self) {
 
 void func_ov006_021dab74(ov006_Slot *self, const ov006_SlotSub *src) {
     if (src != NULL) {
-        func_02016fa0(src, &self->sub2C, sizeof(ov006_SlotSub));
+        MI_CpuCopy8(src, &self->sub2C, sizeof(ov006_SlotSub));
     }
 }
 
@@ -39,7 +39,7 @@ ov006_SlotSub *func_ov006_021dab98(ov006_Slot *self) {
 
 void func_ov006_021daba0(ov006_Slot *self, const ov006_SlotSub *src) {
     if (src != NULL) {
-        func_02016fa0(src, &self->sub3C, sizeof(ov006_SlotSub));
+        MI_CpuCopy8(src, &self->sub3C, sizeof(ov006_SlotSub));
     }
 }
 

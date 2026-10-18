@@ -46,13 +46,13 @@ extern const char data_ov000_021ca8ff[];
 extern const char data_ov000_021ca907[];
 extern const char data_ov000_021ca917[];
 
-s32 func_0201e708(const char *str);
+s32 STD_GetStringLength(const char *str);
 void *func_0203dddc(u32 size);
 void *func_0203dd9c(u32 size);
-void func_0201e5a0(char *dst, const char *src, s32 n);
-void func_0201e520(char *dst, const char *src);
-void func_0201e78c(char *dst, const char *src);
-BOOL func_02018d58(void);
+void STD_CopyLString(char *dst, const char *src, s32 n);
+void STD_CopyString(char *dst, const char *src);
+void STD_ConcatenateString(char *dst, const char *src);
+BOOL OS_IsRunOnTwl(void);
 void func_020359fc(void *a, char *name, s32 b, s32 c);
 BOOL func_02035bd4(void *a, char *name, s32 b);
 void *func_02035f30(void *a, char *name, s32 b);
@@ -67,11 +67,11 @@ BOOL func_0205a9c8(VObj *obj);
 s32 func_0205aa30(VObj *obj);
 
 void func_ov000_0214b88c(Loader *self, const char *name) {
-    s32 len = func_0201e708(name);
+    s32 len = STD_GetStringLength(name);
     self->unk_1c = (char *)func_0203dddc(len + 1);
-    func_0201e5a0(self->unk_1c, name, len + 1);
+    STD_CopyLString(self->unk_1c, name, len + 1);
     self->unk_08 = 1;
-    self->unk_04 = func_02018d58() ? 0 : 1;
+    self->unk_04 = OS_IsRunOnTwl() ? 0 : 1;
 }
 
 BOOL func_ov000_0214b8d8(Loader *self) {
@@ -83,7 +83,7 @@ u32 func_ov000_0214b8ec(Loader *self) {
 }
 
 u8 func_ov000_0214b8f4(Loader *self) {
-    if (func_02018d58()) {
+    if (OS_IsRunOnTwl()) {
         return self->unk_00;
     }
     return 1;
@@ -141,8 +141,8 @@ static inline VObj *CreateLoader(void) {
 void func_ov000_0214ba18(void) {
     char path[0x20];
     data_ov000_021ccd24.unk_04 = CreateLoader();
-    func_0201e520(path, data_ov000_021ca8f7);
-    func_0201e78c(path, data_ov000_021ca8ff);
+    STD_CopyString(path, data_ov000_021ca8f7);
+    STD_ConcatenateString(path, data_ov000_021ca8ff);
     func_0205a840(data_ov000_021ccd24.unk_04, path, data_ov000_021ca907);
 }
 
@@ -181,8 +181,8 @@ void func_ov000_0214bb5c(void) {
 void func_ov000_0214bb80(void) {
     char path[0x20];
     data_ov000_021ccd24.unk_08 = CreateLoader();
-    func_0201e520(path, data_ov000_021ca8f7);
-    func_0201e78c(path, data_ov000_021ca8ff);
+    STD_CopyString(path, data_ov000_021ca8f7);
+    STD_ConcatenateString(path, data_ov000_021ca8ff);
     func_0205a840(data_ov000_021ccd24.unk_08, path, data_ov000_021ca917);
 }
 

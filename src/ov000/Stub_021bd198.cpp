@@ -20,7 +20,7 @@ typedef struct {
 
 extern "C" {
 
-void func_02016e28(void *dst, s32 val, u32 size);
+void MI_CpuFill8(void *dst, s32 val, u32 size);
 
 void func_ov000_021bd198(Obj021bd198 *self) {
     s32 i;
@@ -42,7 +42,7 @@ void func_ov000_021bd198(Obj021bd198 *self) {
     self->unk_5c = 0;
     self->unk_60 = 0;
     self->unk_64 = 0;
-    func_02016e28(self->unk_68, 0, sizeof(self->unk_68));
+    MI_CpuFill8(self->unk_68, 0, sizeof(self->unk_68));
     self->unk_68[0] = 4;
 }
 

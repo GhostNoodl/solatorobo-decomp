@@ -9,7 +9,7 @@ extern void *data_02097e4c;
 void func_02049a48(void *a, int b, int c, int d, int e);
 extern u8 data_ov015_022128ec[];
 extern u8 data_ov015_02213188[];
-void func_02016e28(void *dst, u32 value, u32 size);
+void MI_CpuFill8(void *dst, u32 value, u32 size);
 extern u8 *data_ov002_021f0f9c;
 void func_ov002_021e7c1c(void *p);
 void func_ov015_0220ec40(void *self);
@@ -106,7 +106,7 @@ void func_ov015_0220f470(u8 *self) {
         FLD(s32, p, 0x14) = 0;
         FLD(s32, p, 0x18) = 0;
         FLD(s32, p, 0x1c) = 0;
-        func_02016e28(p + 0x20, 0, 0x40);
+        MI_CpuFill8(p + 0x20, 0, 0x40);
         FLD(s32, p, 0x60) = -1;
     }
     FLD(u8 *, self, 0x10) = p;

@@ -38,14 +38,14 @@ void *func_ov002_021e9bd8(void *a, void *b) {
         *(VFunc **)p = data_ov002_021f06bc;
         func_ov002_021ec13c((u8 *)p + 0x94);
         FIELD(p, 0x4, s32) = 4;
-        func_02016e28((u8 *)p + 0x4c, 0, 0x20);
-        func_02016e28((u8 *)p + 0x6c, 0, 0x20);
+        MI_CpuFill8((u8 *)p + 0x4c, 0, 0x20);
+        MI_CpuFill8((u8 *)p + 0x6c, 0, 0x20);
         FIELD(p, 0x8c, s32) = 0;
         FIELD(p, 0x90, s32) = 0;
         func_ov002_021ec1c4((u8 *)p + 0x94);
     }
-    func_0201e5a0((u8 *)p + 0x4c, a, 0x20);
-    func_0201e5a0((u8 *)p + 0x6c, b, 0x20);
+    STD_CopyLString((u8 *)p + 0x4c, a, 0x20);
+    STD_CopyLString((u8 *)p + 0x6c, b, 0x20);
     return p;
 }
 

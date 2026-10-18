@@ -64,7 +64,7 @@ void func_02032dfc(StrmPlayer *player) {
 
 BOOL func_02032e0c(StrmPlayer *player, u32 fileId) {
     player->fileOffset = (u32)NNS_SndArcGetFileAddress(fileId);
-    func_02016fa0((void *)player->fileOffset, &player->header, sizeof(StrmHeader));
+    MI_CpuCopy8((void *)player->fileOffset, &player->header, sizeof(StrmHeader));
     return TRUE;
 }
 
@@ -72,7 +72,7 @@ void func_02032e34(StrmPlayer *player) {
 }
 
 u32 func_02032e38(StrmPlayer *player, void *buf, u32 size, u32 offset) {
-    func_02016fa0((u8 *)player->fileOffset + offset, buf, size);
+    MI_CpuCopy8((u8 *)player->fileOffset + offset, buf, size);
     return size;
 }
 

@@ -149,7 +149,7 @@ void func_020321d4(int status, int numBuffers, void **buffers, u32 size, int for
             }
         }
         for (i = 0; i < cmd->numBuffers; i++) {
-            func_02016e28(cmd->buffers[i], 0, cmd->size);
+            MI_CpuFill8(cmd->buffers[i], 0, cmd->size);
         }
         NNS_FndRemoveListObject(&data_02097cb0, cmd);
         player->cmdCount--;

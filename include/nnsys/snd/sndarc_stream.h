@@ -112,8 +112,8 @@ extern void func_020184ac(void *thread, void (*func)(void *), void *arg, void *s
 extern void func_02018918(void *thread);
 extern void OS_WakeupThread(void *queue);
 extern void OS_SleepThread(void *queue);
-extern void func_02016fa0(const void *src, void *dst, u32 size);
-extern void func_02016e28(void *dst, u32 value, u32 size);
+extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
+extern void MI_CpuFill8(void *dst, u32 value, u32 size);
 extern void func_0200ed00(void *file);
 extern void NNS_SndStrmInit(void *strm);
 extern BOOL NNS_SndStrmAllocChannel(void *strm, int chNum, u8 *chList);

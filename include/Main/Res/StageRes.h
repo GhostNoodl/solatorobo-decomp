@@ -75,8 +75,8 @@ extern const char data_0208be19[];
 extern const char data_0208be20[];
 extern void func_02038520(StageRes *res);
 extern void func_02038b88(StageRes *res, char *arcName, char *name);
-extern char *func_0201e520(char *dst, const char *src);
-extern char *func_0201e6a4(char *str, const char *sub);
+extern char *STD_CopyString(char *dst, const char *src);
+extern char *STD_SearchString(char *str, const char *sub);
 extern void func_0206e900(char *dst, const char *src);
 extern void func_0204bfcc(DataRes *res);
 extern void func_0204bfe4(DataRes *res, const char *arcName, char *name);
@@ -86,7 +86,7 @@ extern int (*data_0208bde8)(StageResSlot *slot);
 extern int func_0205bef8(StageResSlot *slot);
 extern DataRes *data_02fe152c;
 
-extern void func_02016e28(void *dst, u32 value, u32 size);
+extern void MI_CpuFill8(void *dst, u32 value, u32 size);
 
 static inline void Slot_Init(StageResSlot *slot) {
     s8 j;

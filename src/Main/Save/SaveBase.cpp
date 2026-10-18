@@ -5,9 +5,9 @@ extern "C" {
 void func_0204730c(SaveBase *s) {
     u32 n;
     s->header = (SaveHeader *)func_0203de84(s->headerSize, 4);
-    func_02016e28(s->header, 0, s->headerSize);
+    MI_CpuFill8(s->header, 0, s->headerSize);
     s->data = (SaveData *)func_0203de84(s->dataSize, 4);
-    func_02016e28(s->data, 0, s->dataSize);
+    MI_CpuFill8(s->data, 0, s->dataSize);
     n = (s->tmpSize - (s->dataSize * s->slotCount + s->headerSize)) / s->dataSize;
     if (n > 0x80) {
         n = 0x80;

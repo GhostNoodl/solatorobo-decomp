@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void func_02016e28(void *dst, u32 value, u32 size);
+extern void MI_CpuFill8(void *dst, u32 value, u32 size);
 extern void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 extern EffectPartHandler data_0208c948;
 extern EffectPartHandler data_0208c950;
@@ -34,7 +34,7 @@ BOOL func_0206a0dc(EffectPartSet *s, const u8 *data) {
 }
 
 void func_0206a138(EffectPartSet *s) {
-    func_02016e28(s->slots, 0, sizeof(s->slots));
+    MI_CpuFill8(s->slots, 0, sizeof(s->slots));
     s->localTime = 0;
     s->period = 0;
     s->duration = 0;

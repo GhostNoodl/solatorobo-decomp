@@ -47,8 +47,8 @@ Ov014Actor *func_ov014_02212708(Ov014Actor *self) {
 }
 
 static inline void Ov014Names_Set(u8 *n, const char *a, const char *b) {
-    func_0201e520((char *)n + 0x10, a);
-    func_0201e520((char *)n + 0x30, b);
+    STD_CopyString((char *)n + 0x10, a);
+    STD_CopyString((char *)n + 0x30, b);
     FLD(Ov014Flags8, n, 3).b1 = 1;
 }
 

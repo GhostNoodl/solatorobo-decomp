@@ -71,7 +71,7 @@ extern void *func_0203dd9c(u32 size);
 extern Ov003NmLabel *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_021919c8(void *p);
 extern void func_ov000_02191b70(void *p);
-extern void func_0201e520(char *dst, const char *src);
+extern void STD_CopyString(char *dst, const char *src);
 
 void func_ov003_021f3c94(Ov003NmObj *self) {
     Ov003NmInfo *info;
@@ -91,24 +91,24 @@ void func_ov003_021f3c94(Ov003NmObj *self) {
     {
         a = names->name0;
         b = names->name1;
-        func_0201e520(l->name0, a);
-        func_0201e520(l->name1, b);
+        STD_CopyString(l->name0, a);
+        STD_CopyString(l->name1, b);
         l->unk_03_1 = 1;
     }
     l = self->label;
     {
         b = names->name3;
         a = names->name2;
-        func_0201e520(l->name2, a);
-        func_0201e520(l->name3, b);
+        STD_CopyString(l->name2, a);
+        STD_CopyString(l->name3, b);
         l->unk_03_2 = 1;
     }
     self->label->unk_00 = 0;
     if (names->flag) {
         a = names->name0;
         b = names->name1;
-        func_0201e520(self->name0, a);
-        func_0201e520(self->name1, b);
+        STD_CopyString(self->name0, a);
+        STD_CopyString(self->name1, b);
         self->unk_b0 = 0;
         self->unk_b3_2 = 1;
     }

@@ -20,7 +20,7 @@ void NNS_G3dRenderObjAddAnmObj(void *a, void *b);
 
 static inline void ov002_strSet(char *dst, void **src, u32 n) {
     MIi_CpuClear32(0, dst, n);
-    func_0201e5a0(dst, *src, n);
+    STD_CopyLString(dst, *src, n);
 }
 
 static inline void *ov002_findEntry(u8 *d, char *name) {

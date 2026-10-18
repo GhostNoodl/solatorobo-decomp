@@ -10,7 +10,7 @@ extern void *data_0208cb74;
 extern void *data_0208cca0;
 void func_02041218(void *p);
 void func_02041440(void *p, void *name, int c);
-void func_0201e520(void *p, void *name);
+void STD_CopyString(void *p, void *name);
 void *func_02035f30(void *a, void *b, int c);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *a, void *b);
@@ -33,11 +33,11 @@ void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
 s32 func_02043d48(void *p);
 const char *func_0206ffa0(u16 id);
-s32 func_0201e708(const void *s);
+s32 STD_GetStringLength(const void *s);
 s32 func_0201e950(const void *s, const void *t, s32 n);
 s8 **func_0203a4c0(void *p);
 void func_0204cc18(void *p, const char **s);
-void func_0201e5a0(void *dst, const void *src, u32 size);
+void STD_CopyLString(void *dst, const void *src, u32 size);
 int func_02054f10(void *a, int b);
 s32 func_0203e63c(void *p);
 extern u8 data_ov015_02212d3c[];
@@ -45,7 +45,7 @@ extern u8 data_ov000_021cac60[];
 s32 FX_Inv(s32 a);
 void MTX_Scale33_(void *m, s32 x, s32 y, s32 z);
 void MTX_Concat33(void *a, void *b, void *out);
-void func_02016fa0(const void *src, void *dst, s32 n);
+void MI_CpuCopy8(const void *src, void *dst, s32 n);
 void func_ov015_02208f7c(u8 *self);
 extern u8 data_ov015_022128fc[];
 extern u8 data_ov015_02212e84[];
@@ -102,7 +102,7 @@ void func_ov015_02208544(u8 *self) {
 static inline void Ov015Label_Ctor(u8 *l, void *name, void *dict) {
     func_02041218(l + 0x88);
     func_02041440(l, dict, 0);
-    func_0201e520(l + 0x2c, name);
+    STD_CopyString(l + 0x2c, name);
 }
 
 void func_ov015_02208584(u8 *self) {
@@ -269,7 +269,7 @@ void func_ov015_02208a28(u8 *self, void *name) {
     FLD(Ov015Bits08a28, FLD(u8 *, self, 0x84), 0x4).b6 = 1;
     FLD(Ov015Bits08a28, FLD(u8 *, self, 0x84), 0x4).b2 = 1;
     id = func_0206ffa0(0x1000);
-    if (func_0201e950(name, id, func_0201e708(name)) == 0) {
+    if (func_0201e950(name, id, STD_GetStringLength(name)) == 0) {
         FLD(s32, self, 0xac) = 0;
     } else {
         FLD(s32, self, 0xac) = 1;
@@ -303,9 +303,9 @@ void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src) {
             Ov015TagRes *r = &p.res;
             if (r->type == 0) {
                 *outId = r->value;
-                func_0201e5a0(out, func_0206ffa0(*outId), n);
+                STD_CopyLString(out, func_0206ffa0(*outId), n);
             } else if (r->type == 1) {
-                func_0201e5a0(out, p.str, n);
+                STD_CopyLString(out, p.str, n);
             }
         }
     }
@@ -439,7 +439,7 @@ void *func_ov015_02209010(void *self) {
 void func_ov015_02209024(u8 *self, u16 a, const void *src) {
     s32 v;
     FLD(u16, self, 0x4) = a;
-    func_02016fa0(src, self + 0x6, 0x14);
+    MI_CpuCopy8(src, self + 0x6, 0x14);
     v = FLD(u16, self, 0x10) << 12;
     s32 lim;
     if (FLD(s32, self, 0x28) < 0xe10000) {

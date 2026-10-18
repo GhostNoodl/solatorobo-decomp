@@ -50,7 +50,7 @@ extern void func_ov000_0218996c(s32 a, s32 b);
 extern s32 func_02040498(s32 max);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
-extern void func_0201e520(void *dst, const void *src);
+extern void STD_CopyString(void *dst, const void *src);
 extern BOOL func_ov000_021946f8(void *self);
 extern BOOL func_ov000_0218f110(s16 *res);
 

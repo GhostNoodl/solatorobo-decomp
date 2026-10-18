@@ -100,7 +100,7 @@ void func_02038520(ResHandle *handle) {
     }
 
 void func_02038638(ResHandle *handle, const char *name) {
-    func_0201e520(handle->name, name);
+    STD_CopyString(handle->name, name);
     switch (handle->type) {
     case 0:
         RES_HANDLE_LOAD_SYNC(0);
@@ -153,7 +153,7 @@ static inline ResNode *ResHandle_LoadArchive(ResHandle *handle, const char *name
     if (node->refCount == 1 && arcName != NULL && !node->unk_2b_6) {
         node->unk_2b_6 = TRUE;
         node->u.arc.id = id;
-        func_0201e520(node->u.arc.name, arcName);
+        STD_CopyString(node->u.arc.name, arcName);
     }
     return node;
 }
@@ -162,8 +162,8 @@ void func_02038a10(ResHandle *handle, const char *arcName, const char *name) {
     ResMgr *mgr;
     ResNode *node;
     int id;
-    func_0201e520(handle->arcName, arcName);
-    func_0201e520(handle->name, name);
+    STD_CopyString(handle->arcName, arcName);
+    STD_CopyString(handle->name, name);
     id = handle->type;
     node = func_02036860(data_02097cdc, handle->arcName, handle->name, id, TRUE);
     if (node == NULL) {
@@ -172,7 +172,7 @@ void func_02038a10(ResHandle *handle, const char *arcName, const char *name) {
     if (node->refCount == 1 && handle->name != NULL && !node->unk_2b_6) {
         node->unk_2b_6 = TRUE;
         node->u.arc.id = id;
-        func_0201e520(node->u.arc.name, handle->name);
+        STD_CopyString(node->u.arc.name, handle->name);
     }
     mgr = data_02097cdc;
     func_02036b30(mgr, node);
@@ -189,24 +189,24 @@ void func_02038a10(ResHandle *handle, const char *arcName, const char *name) {
 }
 
 void func_02038b0c(ResHandle *handle, const char *name) {
-    func_0201e520(handle->name, name);
+    STD_CopyString(handle->name, name);
     func_02036860(data_02097cdc, handle->name, NULL, handle->type, FALSE);
 }
 
 void func_02038b48(ResHandle *handle, const char *name) {
-    func_0201e520(handle->name, name);
+    STD_CopyString(handle->name, name);
     func_02036860(data_02097cdc, handle->name, NULL, handle->type, TRUE);
 }
 
 void func_02038b88(ResHandle *handle, const char *arcName, const char *name) {
-    func_0201e520(handle->arcName, arcName);
-    func_0201e520(handle->name, name);
+    STD_CopyString(handle->arcName, arcName);
+    STD_CopyString(handle->name, name);
     ResHandle_LoadArchive(handle, handle->arcName, handle->name, handle->type, FALSE);
 }
 
 void func_02038c14(ResHandle *handle, const char *arcName, const char *name) {
-    func_0201e520(handle->arcName, arcName);
-    func_0201e520(handle->name, name);
+    STD_CopyString(handle->arcName, arcName);
+    STD_CopyString(handle->name, name);
     ResHandle_LoadArchive(handle, handle->arcName, handle->name, handle->type, TRUE);
 }
 

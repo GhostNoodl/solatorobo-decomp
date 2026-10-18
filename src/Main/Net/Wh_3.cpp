@@ -48,9 +48,9 @@ BOOL func_020464e0(WhMgr *wh, int mode, const void *bssDesc) {
     switch (mode) {
     case 2:
     case 4:
-        func_02016fa0(bssDesc, wh->bssDesc, sizeof(wh->bssDesc));
+        MI_CpuCopy8(bssDesc, wh->bssDesc, sizeof(wh->bssDesc));
         DC_FlushRange(wh->bssDesc, sizeof(wh->bssDesc));
-        func_020192b8();
+        DC_WaitWriteBufferEmpty();
         return WH_StateInStartChild(wh);
     }
     return FALSE;
@@ -195,8 +195,8 @@ void func_02046a78(WhMgr *wh, const void *src, u32 len) {
     if (len >= 0x18) {
         len = 0x18;
     }
-    func_02016fa0(src, wh->unk_60, len);
-    func_02016e28(wh->unk_60 + len, 0, 0x18 - len);
+    MI_CpuCopy8(src, wh->unk_60, len);
+    MI_CpuFill8(wh->unk_60 + len, 0, 0x18 - len);
 }
 
 u16 func_02046ab4(WhMgr *wh) {

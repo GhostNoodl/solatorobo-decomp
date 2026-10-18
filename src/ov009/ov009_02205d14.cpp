@@ -49,17 +49,17 @@ void func_ov009_02205d94(Ov009Names *self, void *res) {
     u8 *c = func_02070558(res);
     char *s;
     char *t;
-    func_0201e520(self->unk_10, a);
-    func_0201e520(self->unk_30, b);
+    STD_CopyString(self->unk_10, a);
+    STD_CopyString(self->unk_30, b);
     self->unk_03_1 = 1;
     s = (char *)data_ov009_02215d0c[15];
-    func_0201e520(self->unk_4c, s);
-    func_0201e520(self->unk_6c, (char *)data_ov009_02215d0c[14]);
+    STD_CopyString(self->unk_4c, s);
+    STD_CopyString(self->unk_6c, (char *)data_ov009_02215d0c[14]);
     self->unk_03_2 = 1;
     t = FLD(char *, c, 0x28);
     if (t != NULL) {
-        func_0201e520(self->unk_c4, s);
-        func_0201e520(self->unk_e4, t);
+        STD_CopyString(self->unk_c4, s);
+        STD_CopyString(self->unk_e4, t);
         self->unk_03_4 = 1;
     }
     self->unk_00 = 0;

@@ -87,7 +87,7 @@ extern Ov003ResParam *func_02070558(u16 id);
 extern char *func_0207011c(u16 id);
 extern char *func_020701d4(u16 id);
 extern char *func_0207005c(u16 id, s32 n);
-extern void func_0201e520(char *dst, const char *src);
+extern void STD_CopyString(char *dst, const char *src);
 extern void func_ov000_0218f074(Ov003Res *p, char *res, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov003_021d0a2c(Ov003Res *res, u16 id) {
@@ -99,18 +99,18 @@ void func_ov003_021d0a2c(Ov003Res *res, u16 id) {
     if (param->unk_28 != NULL) {
         char *alt = func_020701d4(id);
         if (info->flags.bit0) {
-            func_0201e520(res->unk_10, name);
-            func_0201e520(res->unk_30, alt);
+            STD_CopyString(res->unk_10, name);
+            STD_CopyString(res->unk_30, alt);
             res->unk_03 |= 2;
         }
         if (info->flags.bit1) {
-            func_0201e520(res->unk_4c, name);
-            func_0201e520(res->unk_6c, alt);
+            STD_CopyString(res->unk_4c, name);
+            STD_CopyString(res->unk_6c, alt);
             res->unk_03 |= 4;
         }
         alt = param->unk_28;
-        func_0201e520(res->unk_c4, name);
-        func_0201e520(res->unk_e4, alt);
+        STD_CopyString(res->unk_c4, name);
+        STD_CopyString(res->unk_e4, alt);
         res->unk_03 |= 0x10;
     } else {
         func_ov000_0218f074(res, name, info->flags.bit0 != 0, info->flags.bit1 != 0, 0, 0);
@@ -118,8 +118,8 @@ void func_ov003_021d0a2c(Ov003Res *res, u16 id) {
     a = func_0207005c(id, 0);
     b = func_0207005c(id, 1);
     if (a != NULL && b != NULL) {
-        func_0201e520(res->unk_100, a);
-        func_0201e520(res->unk_120, b);
+        STD_CopyString(res->unk_100, a);
+        STD_CopyString(res->unk_120, b);
         res->unk_03 |= 0x20;
     }
     res->unk_00 = 0;

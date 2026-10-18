@@ -122,7 +122,7 @@ int func_0204061c(int *out, const MathVec *pos) {
 }
 
 
-extern u32 func_0201e708(const char *str);
+extern u32 STD_GetStringLength(const char *str);
 
 u32 func_02040778(char *str, int *outLen) {
     char buf[0x10];
@@ -142,7 +142,7 @@ u32 func_02040778(char *str, int *outLen) {
     if (str[1] != 'x') {
         p = buf;
     }
-    n = func_0201e708(p);
+    n = STD_GetStringLength(p);
     shift = 0;
     value = 0;
     for (; n != 0; n--) {
@@ -273,7 +273,7 @@ void func_02040a98(void *a, void *b) {
 }
 
 char *func_02040ab0(char *str, int ch) {
-    int len = func_0201e708(str);
+    int len = STD_GetStringLength(str);
     int i;
     for (i = 0; i < len; i++) {
         if (!(str[i] & 0x80)) {

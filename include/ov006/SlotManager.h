@@ -65,9 +65,9 @@ extern void *data_ov006_021ec078;
 extern void *data_ov006_021ec068;
 extern ov006_SlotManager *data_ov006_021ec884;
 
-void func_02016e28(void *dst, int value, u32 size);
-void func_02016fa0(const void *src, void *dst, u32 size);
-void func_0201e5a0(void *dst, const void *src, u32 size);
+void MI_CpuFill8(void *dst, int value, u32 size);
+void MI_CpuCopy8(const void *src, void *dst, u32 size);
+void STD_CopyLString(void *dst, const void *src, u32 size);
 void func_02009e24(void *arr, int count, u32 size, void *ctor, void *dtor);
 void func_02009f64(void *arr, int count, u32 size, void *dtor);
 
@@ -84,7 +84,7 @@ static inline void ov006_Slot_Clear(ov006_Slot *self) {
     self->unkE = 0xffff;
     self->unk10 = 0;
     self->unk12 = 0xff;
-    func_02016e28(self->name, 0, sizeof(self->name));
+    MI_CpuFill8(self->name, 0, sizeof(self->name));
     self->sub2C.unk0 = 0;
     self->sub2C.unk2 = 0;
     self->sub2C.unk3 = 0;

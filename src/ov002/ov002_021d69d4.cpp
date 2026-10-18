@@ -212,7 +212,7 @@ void func_ov002_021d6e48(void *self) {
     FIELD(self, 0x58, s32) = 0x1000;
     FIELD(self, 0x5c, u8) = 0;
     FIELD(self, 0x5d, u8) = 0;
-    func_02016e28((u8 *)self + 0x6c, 0, 4);
+    MI_CpuFill8((u8 *)self + 0x6c, 0, 4);
     FIELD(self, 0x60, s32) = 0;
     FIELD(self, 0x64, s32) = 0;
     FIELD(self, 0x68, s16) = 0;

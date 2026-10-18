@@ -3,7 +3,7 @@
 extern "C" {
 
 extern int FX_Div(int a, int b);
-extern void func_0201378c(volatile void *reg, int plane1, int plane2, int ev1, int ev2);
+extern void G2x_SetBlendAlpha_(volatile void *reg, int plane1, int plane2, int ev1, int ev2);
 extern s16 FX_SinCosTable_[];
 
 static inline int FX_SinIdx(int idx) {
@@ -73,9 +73,9 @@ void func_02042f40(int ch) {
         ev2 = 16;
     }
     if (ch == 1) {
-        func_0201378c((volatile void *)0x4000050, 0, data_02097e24[ch], ev1, ev2);
+        G2x_SetBlendAlpha_((volatile void *)0x4000050, 0, data_02097e24[ch], ev1, ev2);
     } else {
-        func_0201378c((volatile void *)0x4001050, 0, data_02097e24[ch], ev1, ev2);
+        G2x_SetBlendAlpha_((volatile void *)0x4001050, 0, data_02097e24[ch], ev1, ev2);
     }
     if (done) {
         data_02097e24[ch] = 0;

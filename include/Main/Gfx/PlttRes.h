@@ -56,15 +56,15 @@ typedef struct PlttRes {
     /* 0x60 */ u32 transfer;
 } PlttRes; // size 0x64
 
-extern void func_02016e28(void *dst, u32 value, u32 size);
+extern void MI_CpuFill8(void *dst, u32 value, u32 size);
 extern void NNS_G2dInitImagePaletteProxy(PlttSub *sub);
 
 static inline void PlttRes_Init(PlttRes *res) {
     int i;
     res->name[0] = 0;
     res->loaded = 0;
-    func_02016e28(&res->fmt, 0, 0x10);
-    func_02016e28(&res->count, 0, 8);
+    MI_CpuFill8(&res->fmt, 0, 0x10);
+    MI_CpuFill8(&res->count, 0, 8);
     NNS_G2dInitImagePaletteProxy(&res->sub);
     for (i = 0; i < 3; i++) {
         res->maps[i] = NULL;
@@ -75,13 +75,13 @@ static inline void PlttRes_Init(PlttRes *res) {
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void func_02016fa0(const void *src, void *dst, u32 size);
+extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern void DC_FlushRange(const void *addr, u32 size);
 
 static inline void PlttRes_SetSrc(PlttRes *res, PlttResSrc *src) {
     PlttResHeader *header;
     PlttResTable *table;
-    func_0201e520(res->name, src->name);
+    STD_CopyString(res->name, src->name);
     header = src->info->header;
     res->fmt = header->fmt;
     res->unk_28 = header->unk_04;
@@ -96,7 +96,7 @@ static inline void PlttRes_SetSrc(PlttRes *res, PlttResSrc *src) {
 static inline void PlttRes_Upload(PlttRes *res, const void *data, u32 offset, u32 size) {
     u8 *buf;
     if (res->loaded && data != NULL && (buf = (u8 *)res->buf) != NULL) {
-        func_02016fa0(data, buf + offset, size);
+        MI_CpuCopy8(data, buf + offset, size);
         DC_FlushRange(buf + offset, size);
     }
 }

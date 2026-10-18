@@ -42,7 +42,7 @@ void func_ov002_021d9728(void *self) {
     }
     t = func_ov000_02173610(0x1b);
     if (t != NULL && FIELD(t, 0x3c, void *) != NULL) {
-        func_02016fa0((u8 *)self + 0x76, FIELD(t, 0x3c, u8 *) + 0x2c, 0x14);
+        MI_CpuCopy8((u8 *)self + 0x76, FIELD(t, 0x3c, u8 *) + 0x2c, 0x14);
     }
     if (FIELD(self, 0x90, s32) < 0) {
         return;

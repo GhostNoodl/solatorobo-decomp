@@ -2,8 +2,8 @@
 
 extern "C" {
 
-extern s32 func_0201e868(const void *a, const char *b, u32 n);
-extern void func_02016fa0(const void *src, void *dst, u32 size);
+extern s32 STD_CompareNString(const void *a, const char *b, u32 n);
+extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern s32 _s32_div_f(s32 a, s32 b);
 extern char data_0208c7fe[];
 extern char data_0208c806[];

@@ -109,8 +109,8 @@ BOOL func_020590b0(DataRes *res) {
 }
 
 
-extern void func_02016e28(void *dst, u32 value, u32 size);
-extern void func_02016fa0(const void *src, void *dst, u32 size);
+extern void MI_CpuFill8(void *dst, u32 value, u32 size);
+extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 
 u32 func_020590e8(DataRes *res, u8 *buf, u32 size);
 

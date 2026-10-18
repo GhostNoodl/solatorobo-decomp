@@ -25,7 +25,7 @@ BOOL func_ov002_021e6c0c(void *self) {
             FIELD(self, 0xbc, s16) = 0;
             FIELD(self, 0xc0, s32) = FIELD(self, 0xb0, s32);
             FIELD(self, 0x14c, s32) = FIELD(self, 0xac, s32);
-            func_02016e28((u8 *)self + 0xc4, 0, 0x80);
+            MI_CpuFill8((u8 *)self + 0xc4, 0, 0x80);
             FIELD(self, 0x144, void *) = (u8 *)self + 0xc4;
             has = FALSE;
             s = FIELD(self, 0xac, char *);

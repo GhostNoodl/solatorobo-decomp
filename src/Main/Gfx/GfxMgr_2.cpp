@@ -7,7 +7,7 @@ extern u8 data_02097ce4[];
 extern const u8 data_02082798[0x60];
 
 extern void *func_0203dec8(u32 size, int align);
-extern void func_02016fa0(const void *src, void *dst, u32 size);
+extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern void DC_FlushRange(const void *addr, u32 size);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void func_02014304(const void *src, u32 offset, u32 size);
@@ -70,7 +70,7 @@ void func_02039a34(GfxMgr *mgr) {
     }
     mgr->unk_046 = 0;
     mgr->unk_000 = -1;
-    func_02016fa0(data_02082798, data_02097ce4, 0x60);
+    MI_CpuCopy8(data_02082798, data_02097ce4, 0x60);
     DC_FlushRange(data_02097ce4, 0x60);
     mgr->plttSlots[0] = func_0203bdb0(data_02097d48, 3, 4);
     func_02014304(data_02082798, mgr->plttSlots[0] << 5, 0x60);
@@ -184,7 +184,7 @@ void func_02039e0c(GfxMgr *mgr) {
     pltt = &data_02097d48->pltt;
     id = pltt->id;
     if (mgr->unk_000 != id) {
-        func_02016fa0(data_02082798, data_02097ce4, 0x60);
+        MI_CpuCopy8(data_02082798, data_02097ce4, 0x60);
         func_020435e8(pltt, data_02097ce4, 0x60);
         mgr->unk_000 = id;
         DC_FlushRange(data_02097ce4, 0x60);
@@ -228,7 +228,7 @@ void func_02039f84(GfxMgr *mgr) {
     pltt = &data_02097d48->pltt;
     id = pltt->id;
     if (mgr->unk_000 != id) {
-        func_02016fa0(data_02082798, data_02097ce4, 0x60);
+        MI_CpuCopy8(data_02082798, data_02097ce4, 0x60);
         func_020435e8(pltt, data_02097ce4, 0x60);
         mgr->unk_000 = id;
         DC_FlushRange(data_02097ce4, 0x60);

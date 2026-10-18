@@ -48,8 +48,8 @@ BOOL func_02047724(SaveBase *s) {
 void func_020477fc(SaveBase *s, void *src, u32 size) {}
 
 void func_02047800(SaveBase *s, SaveHeader *hdr) {
-    func_02016e28(hdr, 0, s->headerSize);
-    func_0201e520(hdr->magic, s->name);
+    MI_CpuFill8(hdr, 0, s->headerSize);
+    STD_CopyString(hdr->magic, s->name);
     hdr->curSlot = 0xff;
     hdr->backupIdx = 0xff;
 }

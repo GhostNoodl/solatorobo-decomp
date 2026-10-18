@@ -22,7 +22,7 @@ void func_ov000_0216c018(void *self);
 void func_ov000_0216c310(void *self);
 void func_ov000_0216c6fc(void *self);
 s32 func_02043d84(void *a);
-void func_02016e28(void *dst, s32 v, s32 size);
+void MI_CpuFill8(void *dst, s32 v, s32 size);
 void func_ov000_0216bcbc(void *self);
 
 void func_ov000_0216adc0(void *self, s32 a, s32 b) {

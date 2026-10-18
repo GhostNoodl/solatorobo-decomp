@@ -44,9 +44,90 @@ libs/nitro/fx/fx_trig.c:
     complete
     .text       start:0x02013330 end:0x02013428
 
+libs/nitro/gx/gx.c:
+    complete
+    .text       start:0x020135a8 end:0x0201378c
+
+libs/nitro/gx/g2.c:
+    complete
+    .text       start:0x0201378c end:0x020137cc
+
+libs/nitro/gx/g3.c:
+    complete
+    .text       start:0x020137cc end:0x02013884
+
+libs/nitro/gx/g3b.c:
+    complete
+    .text       start:0x02013884 end:0x02013aac
+
+libs/nitro/gx/g3imm.c:
+    complete
+    .text       start:0x02013aac end:0x02013b00
+
+libs/nitro/gx/g3x.c:
+    complete
+    .text       start:0x02013b00 end:0x02013edc
+
+libs/nitro/gx/g3x_2.c:
+    complete
+    .text       start:0x02013fc0 end:0x020140d4
+
+libs/nitro/gx/gx_bgcnt.c:
+    complete
+    .text       start:0x020140d4 end:0x02014304
+
+libs/nitro/gx/gx_vramcnt.c:
+    complete
+    .text       start:0x02014e30 end:0x02015510
+
+libs/nitro/gx/gx_vramcnt_2.c:
+    complete
+    .text       start:0x020155ac end:0x020158b8
+
+libs/nitro/gx/gxasm.c:
+    complete
+    .text       start:0x020158b8 end:0x020158dc
+
+libs/nitro/gx/gxstate.c:
+    complete
+    .text       start:0x020158dc end:0x0201593c
+
 libs/nitro/math/math_crc.c:
     complete
     .text       start:0x02015fe0 end:0x0201608c
+
+libs/nitro/mi/mi_wram.c:
+    complete
+    .text       start:0x020163d0 end:0x020163e0
+
+libs/nitro/mi/mi_dma.c:
+    complete
+    .text       start:0x020163e0 end:0x020169bc
+
+libs/nitro/mi/mi_dma_gxcommand.c:
+    complete
+    .text       start:0x020169bc end:0x02016ca4
+    .bss        start:0x0208eb6c end:0x0208eb8c
+
+libs/nitro/mi/mi_memory.c:
+    complete
+    .text       start:0x02016ca4 end:0x02016ebc
+
+libs/nitro/mi/mi_swap.c:
+    complete
+    .text       start:0x02017400 end:0x02017408
+
+libs/nitro/mi/mi_dma_card.c:
+    complete
+    .text       start:0x02017408 end:0x02017484
+
+libs/nitro/mi/mi_uncomp_stream.c:
+    complete
+    .text       start:0x02017484 end:0x0201771c
+
+libs/nitro/os/os_irqHandler.c:
+    complete
+    .text       start:0x02017744 end:0x020177b8
 
 libs/nitro/os/os_irqTable.c:
     complete
@@ -57,9 +138,22 @@ libs/nitro/os/os_interrupt.c:
     complete
     .text       start:0x02017904 end:0x02017a94
 
+libs/nitro/os/os_interrupt_1.c:
+    complete
+    .text       start:0x02017a94 end:0x02017ae4
+
 libs/nitro/os/os_interrupt_2.c:
     complete
     .text       start:0x02017ae4 end:0x02017b9c
+
+libs/nitro/os/os_irqStackChecker.c:
+    complete
+    .text       start:0x02017b9c end:0x02017bd0
+
+libs/nitro/os/os_reset_pxi.c:
+    complete
+    .text       start:0x02017bd0 end:0x02017c48
+    .bss        start:0x0208ec1c end:0x0208ec20
 
 libs/nitro/os/os_spinLock.c:
     complete
@@ -77,6 +171,141 @@ libs/nitro/os/os_mutex.c:
 libs/nitro/os/os_mutex_2.c:
     complete
     .text       start:0x020191e0 end:0x02019228
+
+libs/nitro/os/os_cache.c:
+    complete
+    .text       start:0x02019228 end:0x020192ec
+
+libs/nitro/os/os_init.c:
+    complete
+    .text       start:0x020192ec end:0x02019384
+
+libs/nitro/os/os_arena.c:
+    complete
+    .text       start:0x02019384 end:0x020194a0
+
+libs/nitro/os/os_arena_2.c:
+    complete
+    .text       start:0x02019510 end:0x02019538
+
+libs/nitro/os/os_arena_3.c:
+    complete
+    .text       start:0x02019704 end:0x02019798
+
+libs/nitro/os/os_alloc.c:
+    complete
+    .text       start:0x02019798 end:0x0201998c
+    .bss        start:0x0208eec0 end:0x0208eee4
+
+libs/nitro/os/os_alloc_2.c:
+    complete
+    .text       start:0x0201998c end:0x02019ab8
+    .data       start:0x0208af80 end:0x0208af88
+
+libs/nitro/os/os_tcm.c:
+    complete
+    .text       start:0x02019ab8 end:0x02019aec
+
+libs/nitro/os/os_protectionUnit.c:
+    complete
+    .text       start:0x02019aec end:0x02019b0c
+
+libs/nitro/os/os_protectionRegion.c:
+    complete
+    .text       start:0x02019b0c end:0x02019bd0
+    .data       start:0x0208af88 end:0x0208afc8
+
+libs/nitro/os/os_exception.c:
+    complete
+    .text       start:0x02019bd0 end:0x02019dcc
+    .bss        start:0x0208eee4 end:0x0208ef84
+
+libs/nitro/os/os_timer.c:
+    complete
+    .text       start:0x02019dcc end:0x02019e14
+    .bss        start:0x0208ef84 end:0x0208ef88
+
+libs/nitro/os/os_tick.c:
+    complete
+    .text       start:0x02019e14 end:0x02019fac
+    .bss        start:0x0208ef88 end:0x0208ef98
+
+libs/nitro/os/os_alarm.c:
+    complete
+    .text       start:0x02019fac end:0x0201a3e0
+    .bss        start:0x0208ef98 end:0x0208efa4
+
+libs/nitro/os/os_valarm.c:
+    complete
+    .text       start:0x0201a3e0 end:0x0201a7dc
+    .bss        start:0x0208efa4 end:0x0208efb8
+
+libs/nitro/os/os_system.c:
+    complete
+    .text       start:0x0201a7dc end:0x0201a8c4
+
+libs/nitro/os/os_boot.c:
+    complete
+    .text       start:0x0201a8c4 end:0x0201a938
+    .bss        start:0x0208efb8 end:0x0208efc0
+
+libs/nitro/os/os_reset.c:
+    complete
+    .text       start:0x0201a938 end:0x0201a98c
+    .bss        start:0x0208efc0 end:0x0208efc4
+
+libs/nitro/os/os_ownerInfo.c:
+    complete
+    .text       start:0x0201a98c end:0x0201aa28
+
+libs/nitro/os/os_vramExclusive.c:
+    complete
+    .text       start:0x0201aa60 end:0x0201ab20
+    .bss        start:0x0208efc4 end:0x0208efdc
+
+libs/nitro/os/os_deliverArg.c:
+    complete
+    .text       start:0x0201ab20 end:0x0201ad28
+    .bss        start:0x0208efdc end:0x0208eff0
+
+libs/nitro/os/os_entropy.c:
+    complete
+    .text       start:0x0201ad28 end:0x0201adf4
+
+libs/nitro/os/os_terminate_proc.c:
+    complete
+    .text       start:0x0201ae80 end:0x0201ae9c
+
+libs/nitro/os/os_event.c:
+    complete
+    .text       start:0x0201ae9c end:0x0201af94
+
+libs/nitro/pxi/pxi_fifo.c:
+    complete
+    .text       start:0x0201b058 end:0x0201b348
+    .bss        start:0x0208effc end:0x0208f000
+
+libs/nitro/rtc/rtc_external.c:
+    complete
+    .text       start:0x0201b348 end:0x0201b5c4
+    .bss        start:0x0208f080 end:0x0208f0a8
+
+libs/nitro/rtc/rtc_external_2.c:
+    complete
+    .text       start:0x0201ba1c end:0x0201baac
+
+libs/nitro/rtc/rtc_internal.c:
+    complete
+    .text       start:0x0201baac end:0x0201bb18
+
+libs/nitro/rtc/rtc_convert.c:
+    complete
+    .text       start:0x0201bb18 end:0x0201bbd4
+
+libs/nitro/os/os_twl_0201bbd4.c:
+    complete
+    .text       start:0x0201bbd4 end:0x0201bd50
+    .bss        start:0x0208f0a8 end:0x0208f0c0
 
 libs/nitro/snd/snd_interface.c:
     complete
@@ -109,6 +338,36 @@ libs/nitro/snd/snd_util.c:
 libs/nitro/snd/snd_bank.c:
     complete
     .text       start:0x0201ca68 end:0x0201ce5c
+
+libs/nitro/spi/tp.c:
+    complete
+    .text       start:0x0201ce5c end:0x0201d4b4
+    .bss        start:0x02090c24 end:0x02090c60
+
+libs/nitro/spi/pm_2.c:
+    complete
+    .text       start:0x0201e280 end:0x0201e520
+
+libs/nitro/std/std_string.c:
+    complete
+    .text       start:0x0201e520 end:0x0201e7b0
+
+libs/nitro/std/std_string_2.c:
+    complete
+    .text       start:0x0201e868 end:0x0201e990
+
+libs/nitro/std/std_sprintf.c:
+    complete
+    .text       start:0x0201e990 end:0x0201f298
+
+libs/nitro/ctrdg/ctrdg.c:
+    complete
+    .text       start:0x020218f0 end:0x02021b9c
+    .bss        start:0x020917e0 end:0x020917e8
+
+libs/nitro/ctrdg/ctrdg_proc.c:
+    complete
+    .text       start:0x02021b9c end:0x02021bd4
 
 libs/nnsys/fnd/list.c:
     complete
@@ -205,6 +464,10 @@ libs/nnsys/g2d/g2d_CellTransferManager.c:
 libs/nnsys/g2d/g2d_Font.c:
     complete
     .text       start:0x02024ad0 end:0x02024dd0
+
+libs/nnsys/g2d/g2d_CharCanvas.c:
+    complete
+    .text       start:0x02024dd0 end:0x02026028
 
 libs/nnsys/g2d/g2d_NFT_load.c:
     complete
@@ -952,7 +1215,6 @@ src/Main/Lang/ItemGive_3.cpp:
     complete
     .text       start:0x0206f954 end:0x0206f9dc
 
-
 src/Main/Lang/ParamKind.cpp:
     complete
     .text       start:0x02070dcc end:0x02070ddc
@@ -973,7 +1235,6 @@ src/Main/Lang/LangData_4.cpp:
     complete
     .text       start:0x0206e8f0 end:0x0206ec48
 
-
 src/Main/Effect/EffectSnd.cpp:
     complete
     .text       start:0x02069f10 end:0x02069f3c
@@ -981,4 +1242,3 @@ src/Main/Effect/EffectSnd.cpp:
 src/Main/Lang/TblRes.cpp:
     complete
     .text       start:0x020702c8 end:0x020708fc
-

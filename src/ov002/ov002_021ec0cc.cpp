@@ -9,10 +9,10 @@ void func_ov002_021ec0cc(void *self) {
     }
     p = FIELD(self, 0xc, u8 *) + (FIELD(self, 0x18, s16) + FIELD(self, 0x1a, s16));
     FIELD(self, 0xc, u8 *) = p;
-    func_02016fa0(p, (u8 *)self + 0x10, 0xe);
+    MI_CpuCopy8(p, (u8 *)self + 0x10, 0xe);
     p += FIELD(self, 0x18, s16);
     FIELD(self, 0x20, u8 *) = p;
-    FIELD(self, 0x24, u8 *) = p + (func_0201e708(p) + 1);
+    FIELD(self, 0x24, u8 *) = p + (STD_GetStringLength(p) + 1);
     FIELD(self, 0x8, s16)++;
 }
 
@@ -66,13 +66,13 @@ void func_ov002_021ec1e0(void *self, void *src) {
     FIELD(self, 0xc, u32) = 0;
     FIELD(self, 0x10, s16) = 0;
     FIELD(self, 0x14, u8 *) = NULL;
-    func_02016fa0(p, &n, 2);
+    MI_CpuCopy8(p, &n, 2);
     FIELD(self, 0x10, s16) = n;
     if (FIELD(self, 0x10, s16) == 0) {
         return;
     }
     for (q = p + 2; i < FIELD(self, 0x10, s16); i++, q += 0x10) {
-        func_02016fa0(q, rec, 0x10);
+        MI_CpuCopy8(q, rec, 0x10);
         if (rec[1] == 6 || rec[1] == 8) {
             FIELD(self, 0xc, u32) |= 1 << (rec[2] / 256);
         }

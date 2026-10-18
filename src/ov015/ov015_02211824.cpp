@@ -12,7 +12,7 @@ extern Ov015Shared *data_ov015_02213368;
 extern const char *data_ov015_02213228[];
 extern const char *data_ov015_02213230[];
 extern const char *data_ov015_02213208[];
-void func_0201e520(void *dst, const void *src);
+void STD_CopyString(void *dst, const void *src);
 s32 func_ov000_0218f110(void *a);
 
 void func_ov015_02211824(void) {
@@ -122,8 +122,8 @@ void func_ov015_02211a1c(u8 *self) {
 }
 
 static inline void Ov015_SetPairB(u8 *l, s32 i, const void *a, const void *b) {
-    func_0201e520(l + 0x10 + i * 0x3c, a);
-    func_0201e520(l + 0x30 + i * 0x3c, b);
+    STD_CopyString(l + 0x10 + i * 0x3c, a);
+    STD_CopyString(l + 0x30 + i * 0x3c, b);
     l[3] |= 2 << i;
 }
 void func_ov015_02211a74(u8 *self) {

@@ -94,7 +94,7 @@ BOOL func_ov002_021e79c4(void *self) {
             *(vu16 *)0x04000060 &= 0xcfdf;
         }
         if (!FIELD(self, 0x4c, Bits16).b3) {
-            func_02013dbc(0, FIELD(g, 8, void *), FIELD(g, 0xc, void *), FIELD(g, 0x10, u16));
+            G3X_SetFog(0, FIELD(g, 8, void *), FIELD(g, 0xc, void *), FIELD(g, 0x10, u16));
             FIELD(g, 0, Bits8).b3 = 0;
         }
         func_02043b20(g);

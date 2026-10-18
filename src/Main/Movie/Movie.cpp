@@ -7,9 +7,9 @@ Movie *data_02097e3c;
 
 extern void *func_0203dd9c(u32 size);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_0201e3a8(MovieSleepCb *cb);
+extern void PM_AppendPreSleepCallback(MovieSleepCb *cb);
 extern void PM_AppendPostSleepCallback(MovieSleepCb *cb);
-extern BOOL func_02018d58(void);
+extern BOOL OS_IsRunOnTwl(void);
 void func_02044670(Movie *m);
 void func_0204479c(Movie *m, int arg);
 void func_02043ef8(Movie *m);
@@ -86,14 +86,14 @@ void func_02043ef8(Movie *m) {
     m->buf = NULL;
     m->preSleep.func = (void (*)(void))func_02043e38;
     m->preSleep.arg = NULL;
-    func_0201e3a8(&m->preSleep);
+    PM_AppendPreSleepCallback(&m->preSleep);
     m->postSleep.func = (void (*)(void))func_02043e6c;
     m->postSleep.arg = NULL;
     PM_AppendPostSleepCallback(&m->postSleep);
 }
 
-extern u32 func_02019524(int region);
-extern u32 func_02019510(int region);
+extern u32 OS_GetArenaLo(int region);
+extern u32 OS_GetArenaHi(int region);
 extern u32 func_02034600(void);
 extern u32 func_0203460c(void);
 extern void func_02034614(u32 addr, u32 size);
@@ -142,20 +142,20 @@ void func_02043f70(Movie *m) {
     case 1:
         func_02044538(m);
         data_02097d48->nextState = 3;
-        lo = func_02019524(3);
-        size = func_02019510(3) - lo;
+        lo = OS_GetArenaLo(3);
+        size = OS_GetArenaHi(3) - lo;
         if (size >= func_02034600()) {
             size = func_02034600();
         }
-        func_02034614(func_02019524(3), size);
-        lo = func_02019524(4);
-        size = func_02019510(4) - lo;
+        func_02034614(OS_GetArenaLo(3), size);
+        lo = OS_GetArenaLo(4);
+        size = OS_GetArenaHi(4) - lo;
         if (size >= func_0203460c()) {
             size = func_0203460c();
         }
-        func_02034634(func_02019524(4), size);
-        func_0201e520(path, data_0208b3d8);
-        func_0201e78c(path, m->name);
+        func_02034634(OS_GetArenaLo(4), size);
+        STD_CopyString(path, data_0208b3d8);
+        STD_ConcatenateString(path, m->name);
         func_0200ed00(m->file);
         if (!func_0200f158(m->file, path)) {
             m->state = 0;
@@ -271,12 +271,12 @@ void func_02044494(int arg) {
 }
 
 void func_020444b0(Movie *m, int idx, int mode, BOOL loop) {
-    func_0201e520(m->name, m->names[idx]);
+    STD_CopyString(m->name, m->names[idx]);
     m->state = 1;
     *(u8 *)((u8 *)m + 0x14a) = 0;
     m->loop = (u8)loop;
     if (mode < 0) {
-        if (func_02018d58()) {
+        if (OS_IsRunOnTwl()) {
             mode = TRUE;
         } else {
             mode = FALSE;

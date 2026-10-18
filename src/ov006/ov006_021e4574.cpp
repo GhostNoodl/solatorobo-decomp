@@ -11,8 +11,8 @@ extern void *data_ov006_021ec434;
 extern u8 data_ov006_021eb840[];
 extern ov006_Unk02097e40 *data_02097e40;
 
-void func_02016e28(void *dst, int value, u32 size);
-void func_02016fa0(const void *src, void *dst, u32 size);
+void MI_CpuFill8(void *dst, int value, u32 size);
+void MI_CpuCopy8(const void *src, void *dst, u32 size);
 void MIi_CpuClear16(int value, void *dst, u32 size);
 int func_02046ab4(ov006_Unk02097e40 *a);
 BOOL func_02045ea4(ov006_Unk02097e40 *a);

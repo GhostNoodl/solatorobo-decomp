@@ -81,7 +81,7 @@ void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, void *b);
 void func_02041218(void *a);
 void func_02041440(Model *model, void *a, s32 b);
-void func_0201e520(void *a, const char *b);
+void STD_CopyString(void *a, const char *b);
 void func_020417e0(Model *model, void *a);
 void func_02041d9c(Model *model, s32 a, s32 b);
 void func_02041c20(Model *model, s32 a, void *b);
@@ -109,7 +109,7 @@ static inline Model *Model_NewDefault(void) {
         const char *name = data_0208cca0;
         func_02041218(model->unk_88);
         func_02041440(model, a, 0);
-        func_0201e520(model->unk_2c, name);
+        STD_CopyString(model->unk_2c, name);
     }
     return model;
 }

@@ -38,7 +38,7 @@ static inline void Effect_SetStr(char *dst, const char *src) {
     if (src == NULL) {
         dst[0] = 0;
     } else {
-        func_0201e520(dst, src);
+        STD_CopyString(dst, src);
     }
 }
 

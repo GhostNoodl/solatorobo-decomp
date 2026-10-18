@@ -11,7 +11,7 @@ void func_02041440(void *p, void *name, int c);
 void func_020417e0(void *a, void *b);
 void func_02041d9c(void *a, int b, int c);
 void func_02041c34(void *a, int b, void *cb, void *arg);
-void func_0201e520(void *p, void *name);
+void STD_CopyString(void *p, void *name);
 extern char data_ov015_022128ab[];
 extern char data_ov015_022128b5[];
 extern void *data_0208cc94;
@@ -30,7 +30,7 @@ Ov015Glyph *func_ov015_021fb408(void *self, u16 *ctx, Ov015Glyph *e, u16 *count)
 
 static inline void Ov015_LabelInit(u8 *t, void *dict, void *name) {
     func_02041440(t, dict, 0);
-    func_0201e520(t + 0x2c, name);
+    STD_CopyString(t + 0x2c, name);
 }
 
 s32 func_ov015_021fb474(u8 *self) {

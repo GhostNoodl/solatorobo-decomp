@@ -5,13 +5,13 @@ extern "C" {
 extern StageFlags data_0214aa68;
 extern void *func_0203dec8(u32 size, int align);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02016e28(void *dst, u32 value, u32 size);
+extern void MI_CpuFill8(void *dst, u32 value, u32 size);
 extern void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 extern u8 data_0214a428[0x640];
 extern void func_0206ccb8(StageFlags *f, u32 a);
 extern u16 func_0206d02c(StageFlags *f);
 
-extern void func_02016fa0(const void *src, void *dst, u32 size);
+extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern s32 func_020591a4(DataRes *res, u8 *buf, s32 a);
 extern s32 func_02062370(u8 *buf);
 extern void func_ov000_02181c4c(u8 *dst, u8 *buf);
@@ -57,11 +57,11 @@ void func_0206c4c4(StageFlags *f) {
     f->color2.g = 0xfe;
     f->color2.b = 0xfe;
     f->unk_024 = 0;
-    func_02016e28(f->items, 0, sizeof(f->items));
+    MI_CpuFill8(f->items, 0, sizeof(f->items));
     StageFlags_ClearEntries(data_0214a424);
-    func_02016e28(f->bits, 0, sizeof(f->bits));
+    MI_CpuFill8(f->bits, 0, sizeof(f->bits));
     func_0206ccb8(f, 0x9000);
-    func_02016e28(f->unk_12c, 0, sizeof(f->unk_12c));
+    MI_CpuFill8(f->unk_12c, 0, sizeof(f->unk_12c));
     func_0206d02c(f);
     for (i = 0; i < 2; i++) {
         f->slots[i] = -1;
@@ -95,7 +95,7 @@ void func_0206c620(StageFlags *f) {
         f->color2.g = p[5];
         f->color2.b = p[6];
     }
-    func_02016fa0(f, data_0214a428, sizeof(StageFlags));
+    MI_CpuCopy8(f, data_0214a428, sizeof(StageFlags));
 }
 
 static inline void StageFlags_SaveBuf(StageFlags *f) {
@@ -114,7 +114,7 @@ static inline void StageFlags_SaveBuf(StageFlags *f) {
 
 void func_0206c670(StageFlags *f) {
     StageFlags_SaveBuf(f);
-    func_02016fa0(f, data_0214a428, sizeof(StageFlags));
+    MI_CpuCopy8(f, data_0214a428, sizeof(StageFlags));
 }
 
 void func_0206c72c(StageFlags *f, StageColor *rgb) {
@@ -147,7 +147,7 @@ void func_0206c72c(StageFlags *f, StageColor *rgb) {
         func_02062724(&f->pos);
         f->rotY = func_02062754();
     }
-    func_02016fa0(f, &data_0214aa68, sizeof(StageFlags));
+    MI_CpuCopy8(f, &data_0214aa68, sizeof(StageFlags));
 }
 
 }

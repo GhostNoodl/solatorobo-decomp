@@ -94,7 +94,7 @@ void func_ov002_021d60dc(void *self) {
                     u8 buf[0x14];
                     func_ov000_021c95fc(buf);
                     if (FIELD(x, 0x3c, void *) != NULL) {
-                        func_02016fa0(buf, (u8 *)FIELD(x, 0x3c, void *) + 0x2c, 0x14);
+                        MI_CpuCopy8(buf, (u8 *)FIELD(x, 0x3c, void *) + 0x2c, 0x14);
                     }
                     if (FIELD(x, 0x3c, void *) != NULL) {
                         func_ov002_021e2690(FIELD(x, 0x3c, void *), 0, 0);

@@ -27,7 +27,7 @@ void func_ov002_021d7238(void *self) {
         return;
     }
     MIi_CpuClear32(0, name, 0x10);
-    func_0201e554(name, data_ov002_021efddd, 0x10);
+    STD_CopyLStringZeroFill(name, data_ov002_021efddd, 0x10);
     idx = func_ov002_021d7238_find(res, name);
     if (idx < 0) {
         return;

@@ -9,7 +9,7 @@ extern void func_0200ef1c(FSFile *file);
 extern u32 func_0201118c(void *buf, u32 size);
 extern void func_020111dc(int arg);
 extern void MATHi_CRC16InitTableRev(u16 *table, u32 poly);
-extern void func_02016e28(void *dst, int value, u32 size);
+extern void MI_CpuFill8(void *dst, int value, u32 size);
 extern ResLoader *func_0203562c(ResLoader *loader);
 extern void func_02035670(ResLoader *loader);
 extern void func_0203584c(ResLoader *loader);
@@ -107,7 +107,7 @@ void func_020359fc(const char *name, const char *arcName, u16 id, u8 toFront) {
     }
     node->unk_2b_6 = TRUE;
     node->u.arc.id = id;
-    func_0201e520(node->u.arc.name, arcName);
+    STD_CopyString(node->u.arc.name, arcName);
 }
 
 void func_02035a74(ResList *list) {
@@ -283,7 +283,7 @@ void func_020363d8(ResMgr *mgr) {
     data_02097dd0->cur = data_02097dd0->unk_08;
     func_02035670(mgr->loader);
     for (i = 0; i < RES_MGR_NODE_COUNT; i++) {
-        func_02016e28(&mgr->pool[i], 0, sizeof(ResNode));
+        MI_CpuFill8(&mgr->pool[i], 0, sizeof(ResNode));
     }
     mgr->head = NULL;
     mgr->tail = NULL;
@@ -350,7 +350,7 @@ ResNode *func_0203662c(ResMgr *mgr) {
         }
     } else {
         node = (ResNode *)func_0203dec8(sizeof(ResNode), 4);
-        func_02016e28(node, 0, sizeof(ResNode));
+        MI_CpuFill8(node, 0, sizeof(ResNode));
         node->heapAllocated = TRUE;
     }
     mgr->numNodes++;
@@ -359,7 +359,7 @@ ResNode *func_0203662c(ResMgr *mgr) {
 
 static inline void ResMgr_FreeNode(ResMgr *mgr, ResNode *node) {
     if (!node->heapAllocated) {
-        func_02016e28(node, 0, sizeof(ResNode));
+        MI_CpuFill8(node, 0, sizeof(ResNode));
         mgr->freeNode = node;
     } else {
         func_0203df40(node);
@@ -465,7 +465,7 @@ ResNode *func_02036860(ResMgr *mgr, const char *name, const char *arcName, int t
         node->refCount = 1;
         node->state = 2;
         node->type = type;
-        func_0201e520(node->name, name);
+        STD_CopyString(node->name, name);
         node->hash = ResMgr_Hash(mgr, name);
         if (toFront) {
             kick = TRUE;
@@ -557,8 +557,8 @@ void func_02036cd8(ResMgr *mgr, ResNode *node) {
     char path[0x28];
     switch (mgr->loadStep) {
     case 0:
-        func_0201e520(path, node->name);
-        func_0201e78c(path, data_0208b354);
+        STD_CopyString(path, node->name);
+        STD_ConcatenateString(path, data_0208b354);
         node->u.data[0] = func_02038284(mgr, path, 0, 0);
         if (node->u.data[0] != NULL) {
             mgr->loadStep++;
@@ -584,8 +584,8 @@ static inline bool ResMgr_IsReadDone(ResMgr *mgr) {
 }
 
 #define RES_LOAD_FIRST(slot, ext)                                   \
-    func_0201e520(path, node->name);                                \
-    func_0201e78c(path, ext);                                       \
+    STD_CopyString(path, node->name);                                \
+    STD_ConcatenateString(path, ext);                                       \
     node->u.data[slot] = func_02038284(mgr, path, 0, 0);            \
     if (node->u.data[slot] != NULL) {                               \
         mgr->loadStep++;                                            \
@@ -595,8 +595,8 @@ static inline bool ResMgr_IsReadDone(ResMgr *mgr) {
     node->state = 7;
 
 #define RES_LOAD_PART(slot, ext, nextStep)                          \
-    func_0201e520(path, node->name);                                \
-    func_0201e78c(path, ext);                                       \
+    STD_CopyString(path, node->name);                                \
+    STD_ConcatenateString(path, ext);                                       \
     node->u.data[slot] = func_02038284(mgr, path, 0, 0);            \
     if (node->u.data[slot] != NULL) {                               \
         mgr->loadStep++;                                            \
@@ -619,8 +619,8 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
         node->u.data[8] = NULL;
         node->u.data[9] = NULL;
         node->u.data[10] = NULL;
-        func_0201e520(path, node->name);
-        func_0201e78c(path, data_0208b35a);
+        STD_CopyString(path, node->name);
+        STD_ConcatenateString(path, data_0208b35a);
         node->u.data[0] = func_02038284(mgr, path, 0, 0);
         if (node->u.data[0] != NULL) {
             mgr->loadStep++;
@@ -667,8 +667,8 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
         NNS_G2dGetUnpackedCharacterData(node->u.data[6], &node->u.data[7]);
         mgr->loadStep = 40;
     case 40:
-        func_0201e520(path, node->name);
-        func_0201e78c(path, data_0208b372);
+        STD_CopyString(path, node->name);
+        STD_ConcatenateString(path, data_0208b372);
         node->u.data[8] = func_02038284(mgr, path, 0, 0);
         if (node->u.data[8] != NULL) {
             mgr->loadStep++;
@@ -760,8 +760,8 @@ RES_LOAD_SINGLE(func_02037640, data_0208b385)
 
 
 #define RES_LOAD_OPTIONAL(slot, ext, nextStep)                      \
-    func_0201e520(path, node->name);                                \
-    func_0201e78c(path, ext);                                       \
+    STD_CopyString(path, node->name);                                \
+    STD_ConcatenateString(path, ext);                                       \
     node->u.data[slot] = func_02038284(mgr, path, 0, 0);            \
     if (node->u.data[slot] == NULL) {                               \
         mgr->loadStep = nextStep;                                   \

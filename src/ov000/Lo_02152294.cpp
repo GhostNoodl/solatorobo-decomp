@@ -27,7 +27,7 @@ void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
-void func_0201e520(void *dst, void *src);
+void STD_CopyString(void *dst, void *src);
 
 #define LO_MODEL_NEW(out, NAME, ARC)                 \
     do {                                             \
@@ -39,7 +39,7 @@ void func_0201e520(void *dst, void *src);
             arc_ = ARC;                              \
             func_02041218(m_ + 0x88);                \
             func_02041440(m_, name_, 0);             \
-            func_0201e520(m_ + 0x2c, arc_);          \
+            STD_CopyString(m_ + 0x2c, arc_);          \
         }                                            \
         out = m_;                                    \
     } while (0)

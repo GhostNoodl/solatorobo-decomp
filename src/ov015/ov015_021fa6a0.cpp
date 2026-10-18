@@ -19,7 +19,7 @@ extern char data_0214b105[];
 extern u8 *data_ov000_021ccd54;
 extern void **data_0214a420;
 void func_02036838(void *a, void *b, int c, int d);
-void func_02013720(u32 reg, s32 v);
+void GXx_SetMasterBrightness_(u32 reg, s32 v);
 void func_020359d0(void *a, int b, int c);
 s32 func_02035b90(void *a, int b);
 
@@ -234,8 +234,8 @@ void func_ov015_021fa8ec(Ov015Main *self) {
     if (data_ov000_021ccd54 != NULL) {
         *data_0214a420 = data_ov000_021ccd54 + 8;
     }
-    func_02013720(0x400006c, 0);
-    func_02013720(0x400106c, 0);
+    GXx_SetMasterBrightness_(0x400006c, 0);
+    GXx_SetMasterBrightness_(0x400106c, 0);
 }
 
 void *func_ov015_021faa54(void *self) {

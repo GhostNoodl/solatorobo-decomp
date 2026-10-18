@@ -64,8 +64,8 @@ void NNS_G3dAnmObjInit(AnmObj *anm, void *res, void *mdl, void *tex);
 void *NNS_G3dGetAnmByIdx(void *file, s32 index);
 void *NNS_G3dGetAnmByName(void *file, const char *name);
 void *NNS_G3dGetTex(void *tex);
-void func_0201e520(char *dst, const char *src);
-void func_0201e78c(char *dst, const char *src);
+void STD_CopyString(char *dst, const char *src);
+void STD_ConcatenateString(char *dst, const char *src);
 BOOL func_0201e7b0(const char *a, const char *b);
 void func_ov000_0218fc28(AnimCtrl *self, RenderObj *obj, void *res, void *tex, s16 blend);
 
@@ -154,11 +154,11 @@ BOOL func_ov000_0218fa28(AnimCtrl *self, RenderObj *obj, ResSet *res, void *file
         ((u32 *)buf)[i] = 0;
     }
     tex = NULL;
-    func_0201e520(buf, res->entries[1].ext);
-    func_0201e78c(buf, name);
+    STD_CopyString(buf, res->entries[1].ext);
+    STD_ConcatenateString(buf, name);
     anm = NNS_G3dGetAnmByName(file, buf);
     if (anm != NULL) {
-        func_0201e520(self->name, name);
+        STD_CopyString(self->name, name);
         self->index = 0xff;
         if (res->entries[0].handle != NULL) {
             tex = res->entries[0].handle->unk_00;

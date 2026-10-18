@@ -23,7 +23,7 @@ void func_02048868(SaveBase *s) {
             s->step = 2;
             break;
         case 2:
-            func_02016e28((u8 *)hdr + off, 0, s->slotSize);
+            MI_CpuFill8((u8 *)hdr + off, 0, s->slotSize);
             s->step = 3;
         case 3:
             if (SaveBase_WriteHeader(s, hdr) != 1) {

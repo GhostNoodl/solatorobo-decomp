@@ -317,7 +317,7 @@ void func_02063e24(Effect3D *e) {
     for (i = 0; i < 4; i++) {
         name.val[i] = 0;
     }
-    func_0201e520((char *)&name, e->anmName);
+    STD_CopyString((char *)&name, e->anmName);
     if (e->anmObjs[0] != NULL) {
         NNS_G3dAnmObjInit(e->anmObjs[0], NNS_G3dGetAnmByName(e->anmFiles[0].data, &name), e->resMdl, NULL);
         NNS_G3dRenderObjAddAnmObj(&e->renderObj, e->anmObjs[0]);
@@ -395,10 +395,10 @@ BOOL func_0206408c(Effect3D *e) {
     switch (e->unk_2c) {
     case 0:
         if (e->anmName[0] == 0) {
-            func_0201e520(e->anmName, e->mdlName);
+            STD_CopyString(e->anmName, e->mdlName);
         }
         if (e->arcName[0] == 0) {
-            func_0201e520(e->arcName, data_0208c330);
+            STD_CopyString(e->arcName, data_0208c330);
             e->unk_2c += 2;
             break;
         }

@@ -13,8 +13,8 @@ extern ov006_Unk02097e40 *data_02097e40;
 
 void *NNS_G2dGetCellDataByIdx(int a, u16 b);
 void func_02042628(ov006_Model *model, void *a, ov006_ModelPart *part, int b);
-void func_02016e28(void *dst, int value, u32 size);
-void func_02016fa0(const void *src, void *dst, u32 size);
+void MI_CpuFill8(void *dst, int value, u32 size);
+void MI_CpuCopy8(const void *src, void *dst, u32 size);
 void MIi_CpuClear16(int value, void *dst, u32 size);
 int func_02046ab4(ov006_Unk02097e40 *a);
 BOOL func_02045ea4(ov006_Unk02097e40 *a);

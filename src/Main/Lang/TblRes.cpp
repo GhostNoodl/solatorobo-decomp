@@ -169,32 +169,32 @@ extern char *func_02040ab0(char *str, int c);
 void func_020707e8(char *dst, const char *fmt, const char *arg, int c) {
     char buf[0x80];
     char *p;
-    func_0201e708(fmt);
-    func_0201e520(buf, fmt);
+    STD_GetStringLength(fmt);
+    STD_CopyString(buf, fmt);
     p = func_02040ab0(buf, c);
     if (p != NULL) {
         *p = 0;
-        func_0201e520(dst, buf);
-        func_0201e78c(dst, arg);
-        func_0201e78c(dst, p + 1);
+        STD_CopyString(dst, buf);
+        STD_ConcatenateString(dst, arg);
+        STD_ConcatenateString(dst, p + 1);
     } else {
-        func_0201e520(dst, fmt);
+        STD_CopyString(dst, fmt);
     }
 }
 
 static inline void Tbl_Format(char *dst, const char *fmt, const char *arg) {
     char buf[0x80];
     char *p;
-    func_0201e708(fmt);
-    func_0201e520(buf, fmt);
+    STD_GetStringLength(fmt);
+    STD_CopyString(buf, fmt);
     p = func_02040ab0(buf, '%');
     if (p != NULL) {
         *p = 0;
-        func_0201e520(dst, buf);
-        func_0201e78c(dst, arg);
-        func_0201e78c(dst, p + 1);
+        STD_CopyString(dst, buf);
+        STD_ConcatenateString(dst, arg);
+        STD_ConcatenateString(dst, p + 1);
     } else {
-        func_0201e520(dst, fmt);
+        STD_CopyString(dst, fmt);
     }
 }
 

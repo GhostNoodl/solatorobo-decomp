@@ -25,7 +25,7 @@ void func_ov002_021eb870(void *self) {
     s32 i;
     s32 count;
     s32 size;
-    func_02016fa0(p + 8, hdr, 8);
+    MI_CpuCopy8(p + 8, hdr, 8);
     count = hdr[0];
     size = hdr[1];
     p += 0x10;

@@ -96,8 +96,8 @@ extern const char data_0208b5fd[];
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
-extern void func_02016e28(void *dst, u32 val, u32 size);
-extern void func_02016fa0(const void *src, void *dst, u32 size);
+extern void MI_CpuFill8(void *dst, u32 val, u32 size);
+extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 
 BOOL func_02047694(SaveBase *s);
 BOOL func_02047724(SaveBase *s);
@@ -166,7 +166,7 @@ static inline void SaveBase_BuildData(SaveBase *s) {
     SaveData *data = s->data;
     data->slotIdx = idx;
     data->size = s->dataSize;
-    func_02016fa0(src, &data->slot, s->slotSize);
+    MI_CpuCopy8(src, &data->slot, s->slotSize);
     size = s->dataSize;
     n = size - (s->slotSize + 4);
     if (n != 0) {

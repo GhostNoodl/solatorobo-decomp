@@ -99,7 +99,7 @@ void func_02041558(Model *model);
 void func_02041278(void *a);
 void func_02041218(void *a);
 void func_02041440(Model *model, void *a, s32 b);
-void func_0201e520(void *a, const char *b);
+void STD_CopyString(void *a, const char *b);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(Model *model, void *a);
@@ -167,7 +167,7 @@ void func_ov000_021546ec(ListOwner *self, const char *name, void *a, u32 b) {
     if (model != NULL) {
         func_02041218(model->unk_88);
         func_02041440(model, a, 0);
-        func_0201e520(model->unk_2c, name);
+        STD_CopyString(model->unk_2c, name);
     }
     self->unk_b8_model = model;
     func_020417e0(self->unk_b8_model, func_02034d88(func_02035d5c(model->unk_2c), self->unk_b8_model->unk_4c));
@@ -197,7 +197,7 @@ void func_ov000_021547e8(ListOwner *self, const char *name, void *a, void *b) {
     if (model != NULL) {
         func_02041218(model->unk_88);
         func_02041440(model, a, 0);
-        func_0201e520(model->unk_2c, name);
+        STD_CopyString(model->unk_2c, name);
     }
     self->unk_bc = model;
     func_020417e0(self->unk_bc, func_02034d88(func_02035d5c(model->unk_2c), self->unk_bc->unk_4c));

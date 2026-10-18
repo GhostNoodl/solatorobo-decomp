@@ -139,10 +139,10 @@ extern void *const data_ov003_021f4c64[2];
 extern char data_ov003_021f85b8[];
 extern void func_ov000_0219433c(void *self);
 extern void *func_0207011c(u16 id);
-extern void func_0201e520(void *dst, const void *src);
-extern void func_0201e78c(void *dst, const char *s);
+extern void STD_CopyString(void *dst, const void *src);
+extern void STD_ConcatenateString(void *dst, const char *s);
 extern void *func_02039674(void *p);
-extern BOOL func_02018d58(void);
+extern BOOL OS_IsRunOnTwl(void);
 extern void *func_0203dd9c(u32 size);
 extern void *func_ov000_0214b570(void *p);
 extern void func_ov000_0214b5e8(void *p, void *t);
@@ -281,15 +281,15 @@ void func_ov003_021e5a18(Ov003Obj *self) {
         if (self->kind == 3) {
             id = 0x4053;
         }
-        func_0201e520(buf, func_0207011c(id));
-        func_0201e78c(buf, data_ov003_021f85b8);
+        STD_CopyString(buf, func_0207011c(id));
+        STD_ConcatenateString(buf, data_ov003_021f85b8);
         r = func_02039674(buf);
-        func_0201e520(self->unk_1d0, buf);
-        func_0201e520(self->unk_1f0, r);
+        STD_CopyString(self->unk_1d0, buf);
+        STD_CopyString(self->unk_1f0, r);
         t = NULL;
         self->res = 0;
         self->unk_d3 |= 0x20;
-        if (func_02018d58()) {
+        if (OS_IsRunOnTwl()) {
             if ((u16)(s16)(self->kind - 1) <= 1) {
                 if (id == 0x4053) {
                     t = data_ov003_021f4c64[1];

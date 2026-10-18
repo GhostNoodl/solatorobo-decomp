@@ -557,7 +557,7 @@ void func_0206228c(void) {
 }
 
 int func_020622ec(u8 *buf, u32 size) {
-    func_02016e28(buf, 0, size);
+    MI_CpuFill8(buf, 0, size);
     buf[0] = data_02fe1534.unk_02[0];
     buf[1] = data_02fe1534.unk_02[1];
     buf[2] = data_02fe1534.unk_52_bytes[0];

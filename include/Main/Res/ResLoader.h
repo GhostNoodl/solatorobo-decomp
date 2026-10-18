@@ -25,18 +25,18 @@ typedef struct ResLoader {
 } ResLoader;
 
 
-extern void func_020174a8(void *ctx, void *dst, const void *header);
-extern void func_02017484(void *ctx, void *dst, const void *header);
-extern int func_020174ec(void *ctx, const void *src, u32 size);
-extern int func_02017598(void *ctx, const void *src, u32 size);
+extern void MI_InitUncompContextLZ(void *ctx, void *dst, const void *header);
+extern void MI_InitUncompContextRL(void *ctx, void *dst, const void *header);
+extern int MI_ReadUncompRL8(void *ctx, const void *src, u32 size);
+extern int MI_ReadUncompLZ8(void *ctx, const void *src, u32 size);
 extern void func_020184ac(void *thread, void (*func)(void *), void *arg, void *stack, u32 stackSize, u32 prio);
 extern void func_020186a8(void *thread);
 extern BOOL func_020187fc(void *thread);
 extern void func_02018810(void *thread);
 extern void func_02018918(void *thread);
 extern void func_02018988(void *thread, u32 prio);
-extern BOOL func_02018d58(void);
-extern void *func_020197dc(int arena, void *heap, u32 size);
+extern BOOL OS_IsRunOnTwl(void);
+extern void *OS_AllocFromHeap(int arena, void *heap, u32 size);
 extern void *func_0203de84(u32 size, int align);
 extern void *func_0203dec8(u32 size, int align);
 
@@ -79,8 +79,8 @@ static inline u8 *ResRing_GetWritePtr(ResRing *ring) {
         }                                                 \
     }
 
-RES_RING_FILL_FUNC(ResRing_FillLZ, func_02017598)
-RES_RING_FILL_FUNC(ResRing_FillHuff, func_020174ec)
+RES_RING_FILL_FUNC(ResRing_FillLZ, MI_ReadUncompLZ8)
+RES_RING_FILL_FUNC(ResRing_FillHuff, MI_ReadUncompRL8)
 
 static inline void ResRing_Init(ResRing *ring) {
     ring->buf = NULL;

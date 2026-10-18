@@ -71,8 +71,8 @@ void *func_ov002_021e9a50(void *a, void *b) {
         func_ov002_021ebedc((u8 *)p + 0x8c);
         func_ov002_021e6a14(p);
     }
-    func_0201e5a0((u8 *)p + 0x4c, a, 0x20);
-    func_0201e5a0((u8 *)p + 0x6c, b, 0x20);
+    STD_CopyLString((u8 *)p + 0x4c, a, 0x20);
+    STD_CopyLString((u8 *)p + 0x6c, b, 0x20);
     return p;
 }
 

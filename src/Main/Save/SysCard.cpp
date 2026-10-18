@@ -56,7 +56,7 @@ void func_02046cd0(SysCard *card) {
 void func_02046d1c(SysCard *card) {
     s32 id;
     func_0200c1b4();
-    id = func_02018028();
+    id = OS_GetLockID();
     if (id == -3) {
         return;
     }

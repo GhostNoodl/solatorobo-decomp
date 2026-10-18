@@ -100,8 +100,8 @@ void func_0205a840(StageRes *res, const char *arcName, const char *name) {
     func_02038b88(res, arc, file);
     if (res->sub == NULL) {
         DataRes *sub;
-        func_0201e520(file, name);
-        func_0201e520(func_0201e6a4(file, data_0208be17), data_0208be19);
+        STD_CopyString(file, name);
+        STD_CopyString(STD_SearchString(file, data_0208be17), data_0208be19);
         sub = (DataRes *)func_0203dd9c(0x58);
         if (sub != NULL) {
             *(const u32 **)sub = data_0208b318;
@@ -114,8 +114,8 @@ void func_0205a840(StageRes *res, const char *arcName, const char *name) {
     }
     if (res->posEv == NULL) {
         PosEvRes *posEv;
-        func_0201e520(file, name);
-        func_0201e520(func_0201e6a4(file, data_0208be17), data_0208be20);
+        STD_CopyString(file, name);
+        STD_CopyString(STD_SearchString(file, data_0208be17), data_0208be20);
         posEv = (PosEvRes *)func_0203dd9c(0x5c);
         if (posEv != NULL) {
             *(const u32 **)posEv = data_0208b318;

@@ -209,7 +209,7 @@ extern const char *data_0208cca0;
 static inline Model *Model_Init(Model *model, const char *name, const char *file, int a) {
     func_02041218(model->pltt);
     func_02041440(model, file, a);
-    func_0201e520(model->name, name);
+    STD_CopyString(model->name, name);
     return model;
 }
 
@@ -219,7 +219,7 @@ struct TextModel : Model {
     TextModel(const char *name, const char *file, int a) {
         func_02041218(pltt);
         func_02041440(this, file, a);
-        func_0201e520(this->name, name);
+        STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
         return func_0203dd9c(size);
@@ -262,7 +262,7 @@ void func_0204dff8(TextWin *win);
 Model *func_0204e238(Model *model, const char *name, const char *file, int a) {
     func_02041218(model->pltt);
     func_02041440(model, file, a);
-    func_0201e520(model->name, name);
+    STD_CopyString(model->name, name);
     return model;
 }
 

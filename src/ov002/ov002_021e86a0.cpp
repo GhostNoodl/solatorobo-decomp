@@ -32,7 +32,7 @@ BOOL func_ov002_021e86a0(void *self) {
             void *name = data_ov002_021f0104[2];
             func_02041218((u8 *)m + 0x88);
             func_02041440(m, name, 0);
-            func_0201e520((u8 *)m + 0x2c, file);
+            STD_CopyString((u8 *)m + 0x2c, file);
         }
         FIELD(self, 0x124, void *) = m;
         tbl = data_ov002_021f0104;

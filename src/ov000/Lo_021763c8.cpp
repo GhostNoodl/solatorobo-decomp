@@ -17,8 +17,8 @@ extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
-void func_0201e520(void *buf, const void *s);
-void func_0201e78c(void *buf, const void *s);
+void STD_CopyString(void *buf, const void *s);
+void STD_ConcatenateString(void *buf, const void *s);
 void func_0205a840(void *p, void *buf, const void *s);
 void *func_0204c0e8(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
@@ -41,8 +41,8 @@ void func_ov000_021763c8(void) {
             func_0205a6a0(obj);
         }
         LFLD(VObj *, data_ov000_021ccd34, 0x14) = obj;
-        func_0201e520(buf, data_ov000_021cba18);
-        func_0201e78c(buf, data_ov000_021cba20);
+        STD_CopyString(buf, data_ov000_021cba18);
+        STD_ConcatenateString(buf, data_ov000_021cba20);
         func_0205a840(LFLD(VObj *, data_ov000_021ccd34, 0x14), buf, data_ov000_021cba28);
     }
     LFLD(s8, data_ov000_021ccd34, 1) = LFLD(s8, data_ov000_021ccd34, 1) + 1;

@@ -68,7 +68,7 @@ void func_ov002_021d8148(void *self) {
     res = func_02035d5c(data_ov002_021efdf6);
     FIELD(self, 0x78, u32 *) = (u32 *)func_02034ec0(res, n8);
     MIi_CpuClear32(0, buf, sizeof(buf));
-    func_0201e5a0(buf, nc, sizeof(buf));
+    STD_CopyLString(buf, nc, sizeof(buf));
     FIELD(self, 0x7c, void *) = ov002_findEntry((u8 *)NNS_G3dGetMdlSet((void *)*FIELD(self, 0x78, u32 *)), buf);
     name = FIELD(info, 0x8, char *);
     if (FIELD(self, 0x78, u32 *) != NULL) {
@@ -83,7 +83,7 @@ void func_ov002_021d8148(void *self) {
     FIELD(FIELD(self, 0x80, void *), 0x2c, void *) = (u8 *)self + 0x9c;
     q = (u32 *)func_02034ff8(res, n8);
     MIi_CpuClear32(0, buf, sizeof(buf));
-    func_0201e5a0(buf, nc, sizeof(buf));
+    STD_CopyLString(buf, nc, sizeof(buf));
     if (q[0] != 0) {
         void *a = NNS_G3dGetAnmByName((void *)q[0], buf);
         if (a != NULL) {

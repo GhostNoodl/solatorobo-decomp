@@ -67,9 +67,9 @@ extern "C" {
 
 extern u32 data_ov003_021f79a8;
 extern Ov003HeapCtx *data_02097dd0;
-extern u32 func_0201e708(const char *s);
+extern u32 STD_GetStringLength(const char *s);
 extern void *func_0203dddc(u32 size);
-extern void func_0201e5a0(void *dst, const void *src, u32 size);
+extern void STD_CopyLString(void *dst, const void *src, u32 size);
 extern void func_0203de1c(void *p);
 void func_ov003_021cf5e8(Ov003Group *self);
 
@@ -154,9 +154,9 @@ void func_ov003_021cf340(const char *str) {
     u32 n;
     data_02097dd0->cur = data_02097dd0->alt;
     data_02097dd0->cur = old;
-    n = func_0201e708(str) + 1;
+    n = STD_GetStringLength(str) + 1;
     buf = func_0203dddc(n * 2 - n);
-    func_0201e5a0(buf, str, func_0201e708(str) + 1);
+    STD_CopyLString(buf, str, STD_GetStringLength(str) + 1);
 }
 
 void func_ov003_021cf39c(void *self, const char *str) {
@@ -165,9 +165,9 @@ void func_ov003_021cf39c(void *self, const char *str) {
     u32 n;
     data_02097dd0->cur = data_02097dd0->alt;
     data_02097dd0->cur = old;
-    n = func_0201e708(str) + 1;
+    n = STD_GetStringLength(str) + 1;
     buf = func_0203dddc(n * 2 - n);
-    func_0201e5a0(buf, str, func_0201e708(str) + 1);
+    STD_CopyLString(buf, str, STD_GetStringLength(str) + 1);
 }
 
 void func_ov003_021cf3fc() {

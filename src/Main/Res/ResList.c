@@ -64,8 +64,8 @@ void *func_02034c34(ResList *list, const char *dir, const char *name) {
     char *str = path;
     void *result;
     ResNode *node;
-    func_0201e520(str, dir);
-    func_0201e78c(str, name);
+    STD_CopyString(str, dir);
+    STD_ConcatenateString(str, name);
     result = NULL;
     RES_LIST_SEARCH(list, str, 0);
     if (node != NULL) {
@@ -134,7 +134,7 @@ void func_02035094(ResList *list, ResRequest *req) {
             last->next = node;
         }
         if (entry->type == 0) {
-            func_0201e520(node->name, entry->name);
+            STD_CopyString(node->name, entry->name);
         } else {
             func_02039610(node->name, entry->name, 0x18);
         }

@@ -35,7 +35,7 @@ extern Ov003Current *data_ov000_021ccd40;
 extern u32 data_ov000_021ccd38;
 extern u32 data_ov003_021f78f4;
 extern u32 data_ov000_021cc060;
-extern void func_02016e28(char *dst, s32 c);
+extern void MI_CpuFill8(char *dst, s32 c);
 extern const char *func_0204c0e8(void *mgr, s32 id);
 extern void func_0203de1c(void *p);
 
@@ -43,7 +43,7 @@ void func_ov003_021ce2a8(void *self, char *dst, u32 size, const char *arg) {
     u32 n = 0;
     const char *fmt;
     u32 max;
-    func_02016e28(dst, n);
+    MI_CpuFill8(dst, n);
     max = size - 1;
     fmt = func_0204c0e8(data_02149ef8, 0x5c);
     while (*fmt != 0 && n < max) {

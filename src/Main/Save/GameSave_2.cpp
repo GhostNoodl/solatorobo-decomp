@@ -25,11 +25,11 @@ void func_0206d50c(GameSave *s, GameSaveSlot *slot) {
 }
 
 void func_0206d5ac(GameSave *s, void *dst) {
-    func_02016fa0(data_0214a428, dst, sizeof(data_0214a428));
+    MI_CpuCopy8(data_0214a428, dst, sizeof(data_0214a428));
 }
 
 void func_0206d5c4(GameSave *s, const void *src) {
-    func_02016fa0(src, data_0214a428, sizeof(data_0214a428));
+    MI_CpuCopy8(src, data_0214a428, sizeof(data_0214a428));
 }
 
 void func_0206d5e0(GameSave *s) {

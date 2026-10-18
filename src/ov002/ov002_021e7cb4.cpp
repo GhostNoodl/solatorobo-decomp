@@ -14,9 +14,9 @@ void func_ov002_021e7cb4(void *self) {
     FIELD(self, 0x1a, u8) = 1;
     FIELD(self, 0x1c, s32) = -1;
     FIELD(self, 0x20, s32) = 0;
-    func_02016e28((u8 *)self + 0x24, 0, 0x20);
+    MI_CpuFill8((u8 *)self + 0x24, 0, 0x20);
     FIELD(self, 0x44, s32) = 0;
-    func_02016e28((u8 *)self + 0x48, 0, 0x20);
+    MI_CpuFill8((u8 *)self + 0x48, 0, 0x20);
     FIELD(self, 0x68, s32) = 0;
     FIELD(self, 0xd0, s32) = 0;
     FIELD(self, 0xd4, s32) = -1;
@@ -34,14 +34,14 @@ void func_ov002_021e7cb4(void *self) {
     FIELD(self, 0x148, u8) = 0;
     FIELD(self, 0x12c, s32) = 0xff;
     FIELD(self, 0x138, s16) = 0;
-    func_02016e28((u8 *)self + 0x14c, 0, 0x180);
+    MI_CpuFill8((u8 *)self + 0x14c, 0, 0x180);
 }
 
 void func_ov002_021e8c0c(void *self);
 
 void func_0204ab54(void *p);
 
-void func_02013720(u32 reg, int v);
+void GXx_SetMasterBrightness_(u32 reg, int v);
 
 extern void *data_ov002_021f0104[];
 
@@ -65,8 +65,8 @@ void func_ov002_021e7dac(void *self) {
     FIELD(data_02097d48, 0x4, s32) = 1;
     FIELD(data_0214a420, 0x10, u8) = 0;
     FIELD(data_0214a420, 0x34, u8) = 0;
-    func_02013720(0x400006c, 0);
-    func_02013720(0x400106c, 0);
+    GXx_SetMasterBrightness_(0x400006c, 0);
+    GXx_SetMasterBrightness_(0x400106c, 0);
 }
 
 }

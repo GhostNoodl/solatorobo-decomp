@@ -22,8 +22,8 @@ int func_02046ab4(ov006_Unk02097e40 *a);
 BOOL func_020469d4(ov006_Unk02097e40 *a, ov006_MenuEntry *entry);
 int func_02046abc(ov006_Unk02097e40 *a);
 ov006_MenuEntry *func_02046a50(ov006_Unk02097e40 *a, int idx);
-void func_0201a9a8(void *a);
-void func_02016fa0(const void *src, void *dst, u32 size);
+void OS_GetOwnerInfo(void *a);
+void MI_CpuCopy8(const void *src, void *dst, u32 size);
 
 void func_ov006_021e5e00(ov006_Unk021ec888 *self) {
     ov006_ObjectHolder *holder = self->unk1D8;
@@ -93,8 +93,8 @@ void func_ov006_021e5fec(void) {
 
 u32 func_ov006_021e60b4(void *dst, u32 size) {
     ov006_TempBuffer buf;
-    func_0201a9a8(&buf);
-    func_02016fa0(buf.data, dst, size);
+    OS_GetOwnerInfo(&buf);
+    MI_CpuCopy8(buf.data, dst, size);
     return size;
 }
 

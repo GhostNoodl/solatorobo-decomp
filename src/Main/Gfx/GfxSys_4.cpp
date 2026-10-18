@@ -33,7 +33,7 @@ extern "C" {
 
 extern u8 data_02fe01e8[];
 extern void G3X_Init(void);
-extern void func_02019228(void);
+extern void DC_FlushAll(void);
 extern void func_02014304(const void *src, u32 offset, u32 size);
 extern void func_0201439c(const void *src, u32 offset, u32 size);
 extern void NNS_G3dInit(void);
@@ -44,7 +44,7 @@ extern void *NNS_GfdGetLnkPlttVramManagerWorkSize(int n);
 extern void func_0203beac(GfxSys *sys, int state);
 extern void NNS_G3dGeSetBuffer(void *arg);
 extern void NNS_G3dGeUseFastDma(int arg);
-extern BOOL func_02018d58(void);
+extern BOOL OS_IsRunOnTwl(void);
 
 #define REG16(a) (*(volatile u16 *)(a))
 #define REG32(a) (*(volatile u32 *)(a))
@@ -55,21 +55,21 @@ extern "C" {
 
 extern u8 data_02fe00a0[];
 extern void func_0203c880(GfxSys *sys);
-extern void func_0201369c(int a, int b, int c);
+extern void GX_SetGraphicsMode(int a, int b, int c);
 extern void NNS_G2dApplyAndResetOamManagerBuffer(void *obj);
-extern void func_02013c04(void);
+extern void G3X_Reset(void);
 extern void func_020438e8(void *obj);
 extern void func_02043d20(void *obj, int a);
 extern void NNS_G3dGeSendDL(void *a, int b);
 extern void NNS_G3dGeFlushBuffer(void);
-extern void *func_02014240(void);
-extern void *func_02014294(void);
-extern void *func_02014260(void);
-extern void *func_020142b4(void);
-extern void *func_02014128(void);
-extern void *func_020140d4(void);
-extern void *func_020140f4(void);
-extern void *func_02014148(void);
+extern void *G2S_GetBG0CharPtr(void);
+extern void *G2S_GetBG1CharPtr(void);
+extern void *G2_GetBG1CharPtr(void);
+extern void *G2_GetBG2CharPtr(void);
+extern void *G2S_GetBG1ScrPtr(void);
+extern void *G2S_GetBG0ScrPtr(void);
+extern void *G2_GetBG1ScrPtr(void);
+extern void *G2_GetBG2ScrPtr(void);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 
 void func_0203bd40(GfxSys *sys, u32 offset, BOOL sub) {
@@ -140,19 +140,19 @@ void func_0203be50(GfxSys *sys, int shift, int count, int idx) {
 extern "C" {
 
 extern void *func_0203dec8(u32 size, int align);
-extern void func_02016e28(void *dst, u32 value, u32 size);
-extern void func_02015298(int a);
-extern void func_02015410(int a);
+extern void MI_CpuFill8(void *dst, u32 value, u32 size);
+extern void GX_SetBankForTex(int a);
+extern void GX_SetBankForTexPltt(int a);
 extern void NNS_GfdInitLnkTexVramManager(u32 a, u32 b, void *c, void *d, BOOL e);
 extern void NNS_GfdInitLnkPlttVramManager(u32 a, void *b, void *c, BOOL d);
 extern void func_0203c2bc(GfxSys *sys);
 extern void func_0203c638(GfxSys *sys);
 extern void func_0203d770(void);
-extern void func_02013704(int a);
-extern void func_020154ec(int a);
-extern void func_02014ec8(int a);
+extern void GXS_SetGraphicsMode(int a);
+extern void GX_SetBankForLCDC(int a);
+extern void GX_SetBankForBG(int a);
 extern void func_02015510(int a);
-extern void func_020155ac(int a);
+extern void GX_SetBankForSubOBJ(int a);
 extern void func_02039c54(GfxMgr *mgr, int state);
 extern void func_0203e8e0(void);
 extern void func_0203ea00(void);
@@ -167,7 +167,7 @@ static inline void GfxSys_InitTexVram(GfxSys *sys, u32 size) {
     if (sys->unk_018 == 0) {
         sys->unk_018 = (u32)func_0203dec8((u32)sys->unk_014, 4);
     } else {
-        func_02016e28((void *)sys->unk_018, 0, (u32)sys->unk_014);
+        MI_CpuFill8((void *)sys->unk_018, 0, (u32)sys->unk_014);
     }
     NNS_GfdInitLnkTexVramManager(size, 0, (void *)sys->unk_018, sys->unk_014, TRUE);
 }
@@ -176,7 +176,7 @@ static inline void GfxSys_InitPlttVram(GfxSys *sys, u32 size) {
     if (sys->unk_020 == 0) {
         sys->unk_020 = (u32)func_0203dec8((u32)sys->unk_01c, 4);
     } else {
-        func_02016e28((void *)sys->unk_020, 0, (u32)sys->unk_01c);
+        MI_CpuFill8((void *)sys->unk_020, 0, (u32)sys->unk_01c);
     }
     NNS_GfdInitLnkPlttVramManager(size, (void *)sys->unk_020, sys->unk_01c, TRUE);
 }
@@ -212,9 +212,9 @@ void func_0203beac(GfxSys *sys, int state) {
         if (sys->state != 3) {
             func_0203c2bc(sys);
         } else {
-            func_0201369c(1, 5, 1);
-            func_02015298(7);
-            func_02015410(0x60);
+            GX_SetGraphicsMode(1, 5, 1);
+            GX_SetBankForTex(7);
+            GX_SetBankForTexPltt(0x60);
             GfxSys_InitTexVram(sys, 0x60000);
             GfxSys_InitPlttVram(sys, 0x8000);
             GfxSys_SetVramFuncs();
@@ -225,17 +225,17 @@ void func_0203beac(GfxSys *sys, int state) {
         sys->unk_a30_0 = 1;
         sys->unk_a30_1 = 0;
         func_0203d770();
-        func_0201369c(1, 3, 1);
-        func_02013704(5);
-        func_020154ec(0x1ff);
-        func_02015298(3);
-        func_02015410(0x60);
+        GX_SetGraphicsMode(1, 3, 1);
+        GXS_SetGraphicsMode(5);
+        GX_SetBankForLCDC(0x1ff);
+        GX_SetBankForTex(3);
+        GX_SetBankForTexPltt(0x60);
         GfxSys_InitTexVram(sys, 0x40000);
         GfxSys_InitPlttVram(sys, 0x8000);
         GfxSys_SetVramFuncs();
-        func_02014ec8(0x10);
+        GX_SetBankForBG(0x10);
         func_02015510(4);
-        func_020155ac(8);
+        GX_SetBankForSubOBJ(8);
         REG16(0x400100c) = (u16)((REG16(0x400100c) & 0x43) | 0x84 | 0x4000);
         REG32(0x4001000) = (REG32(0x4001000) & ~0x60) | 0x20;
         REG16(0x400000a) = (u16)((REG16(0x400000a) & 0x43) | 0xe00);
@@ -261,8 +261,8 @@ void func_0203beac(GfxSys *sys, int state) {
         }
         sys->unk_a30_3 = 0;
         sys->unk_a30_2 = 1;
-        func_0201369c(2, 0, 0);
-        func_020154ec(3);
+        GX_SetGraphicsMode(2, 0, 0);
+        GX_SetBankForLCDC(3);
         break;
     case 4:
         func_0203c638(sys);
@@ -275,19 +275,19 @@ void func_0203beac(GfxSys *sys, int state) {
 
 extern "C" {
 
-extern void func_020150cc(int a);
-extern void func_0201561c(int a);
+extern void GX_SetBankForOBJ(int a);
+extern void GX_SetBankForSubOBJExtPltt(int a);
 extern void func_02043904(void *obj);
 
 }
 
 extern "C" {
 
-extern void func_02015780(void);
-extern void func_0201576c(void);
+extern void GX_ResetBankForSubOBJ(void);
+extern void GX_ResetBankForSubBG(void);
 extern void NNS_G2dEntryOamManagerOam(void *obj, void *src, int count);
 extern int FX_Div(int a, int b);
-extern void func_020137a8(volatile void *reg, int a, int b);
+extern void G2x_SetBlendBrightness_(volatile void *reg, int a, int b);
 
 static inline u32 GfxReg_GetVisiblePlane(u32 addr) {
     return (REG32(addr) & 0x1f00) >> 8;

@@ -29,13 +29,13 @@ void func_02064d3c(EffectObj *obj, EffectObj *child) {
 void func_02064d74(EffectGroup *g, const char *prefix, const char *name, const char *suffix) {
     if (name != NULL) {
         if (prefix != NULL) {
-            func_0201e520(g->name, prefix);
-            func_0201e78c(g->name, name);
+            STD_CopyString(g->name, prefix);
+            STD_ConcatenateString(g->name, name);
         } else {
-            func_0201e520(g->name, name);
+            STD_CopyString(g->name, name);
         }
         if (suffix != NULL) {
-            func_0201e78c(g->name, suffix);
+            STD_ConcatenateString(g->name, suffix);
         }
     } else {
         g->name[0] = 0;

@@ -7,7 +7,7 @@ void func_02047a20(SaveBase *s) {
     switch (s->step) {
         case 0:
             s->tmpBuf = func_0203de84(s->tmpSize, 4);
-            func_02016e28(s->tmpBuf, 0, s->tmpSize);
+            MI_CpuFill8(s->tmpBuf, 0, s->tmpSize);
             s->InitHeader(hdr);
             s->step = 1;
             break;

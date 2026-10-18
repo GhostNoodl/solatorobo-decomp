@@ -146,11 +146,11 @@ typedef struct LangGame54 {
 
 extern LangGame54 *data_ov000_021ccd54;
 
-void func_02013eb4(u16 color, int a, int b, u8 alpha, int c);
-void func_02013e9c(const void *p);
-void func_02013e70(const void *p);
-void func_02013e88(const void *p);
-void func_02013dbc(BOOL enable, int mode, int slope, int offset);
+void G3X_SetClearColor(u16 color, int a, int b, u8 alpha, int c);
+void G3X_SetToonTable(const void *p);
+void G3X_SetEdgeColorTable(const void *p);
+void G3X_SetFogTable(const void *p);
+void G3X_SetFog(BOOL enable, int mode, int slope, int offset);
 void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 
 #define REG_DISP3DCNT (*(vu16 *)0x04000060)
@@ -214,7 +214,7 @@ typedef struct OSOwnerInfo {
     u8 unk_01[0x53];
 } OSOwnerInfo;
 
-void func_0201a9a8(OSOwnerInfo *info);
+void OS_GetOwnerInfo(OSOwnerInfo *info);
 extern const char *data_0208cb88;
 extern char data_0214b105[];
 
@@ -257,17 +257,17 @@ void func_0206e900(char *dst, const char *src) {
         suffix = data_0208cc6f;
         break;
     }
-    func_0201e520(buf, src);
-    dot = func_0201e6a4(buf, data_0208cc83);
+    STD_CopyString(buf, src);
+    dot = STD_SearchString(buf, data_0208cc83);
     if (dot == NULL) {
         ext[0] = 0;
     } else {
-        func_0201e520(ext, dot);
+        STD_CopyString(ext, dot);
         *dot = 0;
     }
-    func_0201e78c(buf, suffix);
-    func_0201e78c(buf, ext);
-    func_0201e520(dst, buf);
+    STD_ConcatenateString(buf, suffix);
+    STD_ConcatenateString(buf, ext);
+    STD_CopyString(dst, buf);
 }
 
 }

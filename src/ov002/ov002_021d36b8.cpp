@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_0201e78c(char *dst, const char *src);
+void STD_ConcatenateString(char *dst, const char *src);
 
 void func_ov002_021d36b8(void *self, s32 n) {
     char num[4];
@@ -37,8 +37,8 @@ void func_ov002_021d36b8(void *self, s32 n) {
     num[0] = n / 10 + '0';
     num[1] = n % 10 + '0';
     num[2] = 0;
-    func_0201e520(buf, data_ov002_021ef5ac[5]);
-    func_0201e78c(buf, num);
+    STD_CopyString(buf, data_ov002_021ef5ac[5]);
+    STD_ConcatenateString(buf, num);
     FIELD(self, 0xc8, VObject *)->v0x24(data_ov002_021ef5ac[2], buf);
     FIELD(self, 0xcc, s32) = n;
 }

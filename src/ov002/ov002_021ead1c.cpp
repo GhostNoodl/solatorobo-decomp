@@ -16,12 +16,12 @@ void func_ov002_021ead1c(void *self, u8 *a, s32 b, u8 c) {
     FIELD(self, 0x4, s32) = b;
     FIELD(self, 0x8, u8 *) = a;
     FIELD(self, 0xc, u8) = c;
-    func_02016fa0(a + 8, &hdr, 4);
+    MI_CpuCopy8(a + 8, &hdr, 4);
     func_ov002_021eb964(self);
-    func_02016fa0(FIELD(self, 0x18, u8 *) + 8, &n0, 4);
-    func_02016fa0(FIELD(self, 0x1c, u8 *) + 8, &n1, 4);
-    func_02016fa0(FIELD(self, 0x20, u8 *) + 8, &n2, 4);
-    func_02016fa0(FIELD(self, 0x24, u8 *) + 8, &n3, 4);
+    MI_CpuCopy8(FIELD(self, 0x18, u8 *) + 8, &n0, 4);
+    MI_CpuCopy8(FIELD(self, 0x1c, u8 *) + 8, &n1, 4);
+    MI_CpuCopy8(FIELD(self, 0x20, u8 *) + 8, &n2, 4);
+    MI_CpuCopy8(FIELD(self, 0x24, u8 *) + 8, &n3, 4);
     if (n0 > 0) {
         FIELD(self, 0x40, void *) = func_0203dddc(n0 * 0x1c);
         FIELD(self, 0x50, s32) = n0;

@@ -49,7 +49,7 @@ struct Ov003Hit {
 
 struct Ov003Game30;
 extern "C" Ov003Game30 *data_ov000_021ccd30;
-extern "C" void func_0201e520(char *dst, const char *src);
+extern "C" void STD_CopyString(char *dst, const char *src);
 
 struct Ov003Slot3 {
     u8 sub[3][0x30];
@@ -143,7 +143,7 @@ static inline void Ov003Log_Add(s32 type, const char *text) {
         if (text == NULL) {
             log->entries[log->idx].text[0] = 0;
         } else {
-            func_0201e520(log->entries[log->idx].text, text);
+            STD_CopyString(log->entries[log->idx].text, text);
         }
         log->idx++;
         if (log->idx >= 16) {

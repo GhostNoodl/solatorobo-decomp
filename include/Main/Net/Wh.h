@@ -107,7 +107,7 @@ extern void *func_0203dd9c(u32 size);
 extern void func_0203de1c(void *ptr);
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void func_02016e28(void *dst, u32 value, u32 size);
+extern void MI_CpuFill8(void *dst, u32 value, u32 size);
 extern int func_0201fd58(void (*cb)(void *arg));
 extern u32 func_0201ffb0(void);
 extern int func_02020080(void);
@@ -168,7 +168,7 @@ static inline void WH_CalcBufferSizes(WhConfig *cfg) {
 
 void func_02044fc0(WhCbArg *arg);
 void func_02044a80(void);
-extern void func_0201a98c(u8 *macAddr);
+extern void OS_GetMacAddress(u8 *macAddr);
 void func_02045004(WhCbArg *arg);
 void func_02045530(WhCbArg *arg);
 void func_02044cb8(WhMgr *wh);
@@ -183,9 +183,9 @@ void func_020461e4(WhCbArg *arg);
 void func_020468d0(WhCbArg *arg);
 
 extern void DC_InvalidateRange(const void *addr, u32 size);
-extern void func_02016fa0(const void *src, void *dst, u32 size);
+extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern void DC_FlushRange(const void *addr, u32 size);
-extern void func_020192b8(void);
+extern void DC_WaitWriteBufferEmpty(void);
 extern int func_02020638(void (*cb)(void *arg));
 extern int func_0202067c(void (*cb)(void *arg), void *bssDesc, void *ssl, BOOL powerSave, int authMode);
 extern int func_02020e7c(void *dsInfo, const void *data, void *recv);

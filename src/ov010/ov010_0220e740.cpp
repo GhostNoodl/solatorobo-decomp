@@ -20,7 +20,7 @@ struct Ov010Path {
 
 extern "C" {
 
-extern void func_02016fa0(s32 a, void *b, s32 c);
+extern void MI_CpuCopy8(s32 a, void *b, s32 c);
 extern void func_ov003_021da48c(void *p, s32 a);
 
 BOOL func_ov010_0220e740(Ov010Path *self, s32 a, s32 b, s32 c, const Ov010Vec *v, s32 e) {
@@ -33,7 +33,7 @@ BOOL func_ov010_0220e740(Ov010Path *self, s32 a, s32 b, s32 c, const Ov010Vec *v
     self->unk_0c = e;
     self->unk_10 = 0x1000;
     self->unk_1c = *v;
-    func_02016fa0(b, self->unk_28, c);
+    MI_CpuCopy8(b, self->unk_28, c);
     func_ov003_021da48c(self->unk_58, 1);
     return TRUE;
 }

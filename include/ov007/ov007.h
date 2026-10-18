@@ -362,7 +362,7 @@ void *func_02034d88(Ov007V *a, void *b);
 void func_020417e0(void *a, void *b);
 void func_02041d9c(void *a, int b, int c);
 BOOL func_02054f10(void *a, int b);
-BOOL func_02018d58(void);
+BOOL OS_IsRunOnTwl(void);
 void func_ov000_02180660(int a, int b);
 void func_ov000_02180754(void);
 void *func_ov000_02173610(int id);

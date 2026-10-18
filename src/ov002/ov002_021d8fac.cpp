@@ -118,7 +118,7 @@ void func_ov002_021d8d00(void);
 
 static inline void ov002_strSet(char *dst, void **src, u32 n) {
     MIi_CpuClear32(0, dst, n);
-    func_0201e5a0(dst, *src, n);
+    STD_CopyLString(dst, *src, n);
 }
 
 static inline void *ov002_findEntry(u8 *d, char *name) {
@@ -151,7 +151,7 @@ void func_ov002_021d91d8(void *self) {
     NNS_G3dRenderObjSetCallBack(FIELD(self, 0x80, void *), (void *)func_ov002_021e0420, 0, 4, 2);
     FIELD(FIELD(self, 0x80, void *), 0x2c, void *) = (u8 *)self + 0xa4;
     q = (u32 *)func_02034ff8(res, FIELD(info, 0x8, void *));
-    func_0201e5a0(buf, FIELD(info, 0xc, void *), sizeof(buf));
+    STD_CopyLString(buf, FIELD(info, 0xc, void *), sizeof(buf));
     a = NNS_G3dGetAnmByName((void *)q[1], buf);
     FIELD(self, 0x88, void *) = func_0203de84(NNS_G3dAnmObjCalcSizeRequired(a, FIELD(self, 0x7c, void *)), 4);
     NNS_G3dAnmObjInit(FIELD(self, 0x88, void *), a, FIELD(self, 0x7c, void *), (int)NNS_G3dGetTex((void *)*FIELD(self, 0x78, u32 *)));
@@ -164,7 +164,7 @@ void func_ov002_021d91d8(void *self) {
             void *nm = data_0208cc88;
             func_02041218((u8 *)m + 0x88);
             func_02041440(m, nm, 0);
-            func_0201e520((u8 *)m + 0x2c, file);
+            STD_CopyString((u8 *)m + 0x2c, file);
         }
         FIELD(self, 0x90, void *) = m;
         func_020417e0(FIELD(self, 0x90, void *), func_02035de0(data_0208cc94, data_0208cc88));

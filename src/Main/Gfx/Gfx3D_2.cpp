@@ -192,7 +192,7 @@ void func_02043904(Gfx3DState *st) {
     st->fogOffset = 0x7d80;
     st->fogMode = 0;
     st->fogSlope = 5;
-    func_02013dbc(FALSE, 0, 5, st->fogOffset);
+    G3X_SetFog(FALSE, 0, 5, st->fogOffset);
     st->fogColor = 0;
     st->fog = FALSE;
     st->fogAlpha = 0x1f;
@@ -200,19 +200,19 @@ void func_02043904(Gfx3DState *st) {
     for (i = 0; i < 0x20; i++) {
         st->fogTable[i] = i * 0x7f / 0x1f;
     }
-    func_02013e88(st->fogTable);
+    G3X_SetFogTable(st->fogTable);
     st->shading = 0;
     G3X_SetShading(0);
     MIi_CpuCopyFast(data_02082958, st->toonTable, sizeof(st->toonTable));
-    func_02013e9c(data_02082958);
+    G3X_SetToonTable(data_02082958);
     st->edgeMarking = FALSE;
     st->unk_000_5 = FALSE;
     REG_DISP3DCNT &= 0xcfdf;
     MIi_CpuCopyFast(data_02082900, st->edgeTable, sizeof(st->edgeTable));
-    func_02013e70(data_02082900);
+    G3X_SetEdgeColorTable(data_02082900);
     st->clearColor = 0;
     st->clearPolyId = 0x3f;
-    func_02013eb4(0, 0x1f, 0x7fff, 0x3f, TRUE);
+    G3X_SetClearColor(0, 0x1f, 0x7fff, 0x3f, TRUE);
     for (i = 0; i < 4; i++) {
         st->light.dirs[i].x = 0xfd7;
         st->light.dirs[i].y = -0xfd7;
@@ -236,24 +236,24 @@ void func_02043b20(Gfx3DState *st) {
     G3X_AntiAlias(st->antiAlias);
     if (st->fog) {
         G3X_SetFogColor(st->fogColor, st->fogAlpha);
-        func_02013e88(st->fogTable);
-        func_02013dbc(TRUE, st->fogMode, st->fogSlope, st->fogOffset);
+        G3X_SetFogTable(st->fogTable);
+        G3X_SetFog(TRUE, st->fogMode, st->fogSlope, st->fogOffset);
     } else {
-        func_02013dbc(FALSE, st->fogMode, st->fogSlope, st->fogOffset);
+        G3X_SetFog(FALSE, st->fogMode, st->fogSlope, st->fogOffset);
     }
     if (st->shading == 0) {
         G3X_SetShading(0);
     } else {
         G3X_SetShading(1);
     }
-    func_02013e9c(st->toonTable);
+    G3X_SetToonTable(st->toonTable);
     if (st->edgeMarking) {
         REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3000) | 0x20;
-        func_02013e70(st->edgeTable);
+        G3X_SetEdgeColorTable(st->edgeTable);
     } else {
         REG_DISP3DCNT &= 0xcfdf;
     }
-    func_02013eb4(st->clearColor, 0x1f, 0x7fff, st->clearPolyId, TRUE);
+    G3X_SetClearColor(st->clearColor, 0x1f, 0x7fff, st->clearPolyId, TRUE);
     GfxLight_Apply(&st->light);
 }
 

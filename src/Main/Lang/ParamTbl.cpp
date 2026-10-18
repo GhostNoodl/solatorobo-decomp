@@ -51,7 +51,7 @@ void func_0206ecd4(void *self, char *dst, u32 id) {
     if (cat == 1) {
         ParamItem *item = &((ParamItem *)data_0208d268[(u16)cat])[Param_Idx(id)];
         char *q;
-        func_0201e520(buf, str);
+        STD_CopyString(buf, str);
         dst[0] = 0;
         q = func_02040ab0(buf, '?');
         if (q != NULL) {
@@ -60,15 +60,15 @@ void func_0206ecd4(void *self, char *dst, u32 id) {
             if (q[1] == '?') {
                 q++;
             }
-            func_0201e520(dst, buf);
-            func_0201e78c(dst, num);
-            func_0201e78c(dst, q + 1);
+            STD_CopyString(dst, buf);
+            STD_ConcatenateString(dst, num);
+            STD_ConcatenateString(dst, q + 1);
         }
         if (dst[0] == 0) {
-            func_0201e520(dst, str);
+            STD_CopyString(dst, str);
         }
     } else {
-        func_0201e520(dst, str);
+        STD_CopyString(dst, str);
     }
 }
 

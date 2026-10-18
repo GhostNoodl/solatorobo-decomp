@@ -6,7 +6,7 @@ void DC_InvalidateRange(void *startAddr, u32 nBytes);
 void DC_FlushRange(const void *startAddr, u32 nBytes);
 void GX_LoadOAM(const void *pSrc, u32 offset, u32 szByte);
 void GXS_LoadOAM(const void *pSrc, u32 offset, u32 szByte);
-void func_020163e0(u32 dmaNo, void *dest, u32 data, u32 size, BOOL enable);
+void MIi_DmaFill32(u32 dmaNo, void *dest, u32 data, u32 size, BOOL enable);
 
 #define OAM_SETTING_INVISIBLE 192
 #define NUM_HW_OAM_ATTR       128
@@ -237,7 +237,7 @@ static inline u32 GetDefaultDMA_(void) {
 
 static inline void NNSi_G2dDmaFill32(u32 dmaNo, void *dest, u32 data, u32 size) {
     if (dmaNo != (u32)-1) {
-        func_020163e0(dmaNo, dest, data, size, TRUE);
+        MIi_DmaFill32(dmaNo, dest, data, size, TRUE);
     } else {
         MI_CpuFill32(dest, data, size);
     }

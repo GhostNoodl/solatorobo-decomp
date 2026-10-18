@@ -31,7 +31,7 @@ void *func_0206e7d0(u8 id);
 void func_02070874(char *dst, const char *fmt, ...);
 void func_02049a48(void *a, int b, int c, int d, int e);
 void func_02041440(void *p, void *name, int c);
-void func_0201e520(void *dst, const void *src);
+void STD_CopyString(void *dst, const void *src);
 void func_020417e0(void *a, void *b);
 void func_02041d9c(void *a, int b, int c);
 s32 FX_Div(s32 a, s32 b);
@@ -112,7 +112,7 @@ void func_ov008_021ccf44(void *o) {
         if (m != NULL) {
             func_02041218((u8 *)m + 0x88);
             func_02041440(m, (u8 *)o + 0x28, 1);
-            func_0201e520((u8 *)m + 0x2c, (u8 *)o + 0x8);
+            STD_CopyString((u8 *)m + 0x2c, (u8 *)o + 0x8);
         }
         FLD(void *, o, 0x50) = m;
         func_020417e0(FLD(void *, o, 0x50), (void *)VOBJ(o, 4)->v10());

@@ -146,11 +146,11 @@ typedef struct LangGame54 {
 
 extern LangGame54 *data_ov000_021ccd54;
 
-void func_02013eb4(u16 color, int a, int b, u8 alpha, int c);
-void func_02013e9c(const void *p);
-void func_02013e70(const void *p);
-void func_02013e88(const void *p);
-void func_02013dbc(BOOL enable, int mode, int slope, int offset);
+void G3X_SetClearColor(u16 color, int a, int b, u8 alpha, int c);
+void G3X_SetToonTable(const void *p);
+void G3X_SetEdgeColorTable(const void *p);
+void G3X_SetFogTable(const void *p);
+void G3X_SetFog(BOOL enable, int mode, int slope, int offset);
 void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 
 #define REG_DISP3DCNT (*(vu16 *)0x04000060)
@@ -224,8 +224,8 @@ void func_0206e6e4(void) {
     char *str;
     u8 i;
 
-    func_0201e520(buf, data_02082bf8[0]);
-    func_0201e78c(buf, data_02082bf8[1]);
+    STD_CopyString(buf, data_02082bf8[0]);
+    STD_ConcatenateString(buf, data_02082bf8[1]);
     func_0206e900(buf, buf);
     table = *func_02034b98(res, buf);
     data_0214b0a8 = table;
@@ -235,11 +235,11 @@ void func_0206e6e4(void) {
     if (i < table->numGroups) {
         for (; i < data_0214b0a8->numGroups; i++) {
             group->name = str;
-            str += func_0201e708(str) + 1;
+            str += STD_GetStringLength(str) + 1;
             group->dir = str;
-            str += func_0201e708(str) + 1;
+            str += STD_GetStringLength(str) + 1;
             group->unk_08 = str;
-            str += func_0201e708(str) + 1;
+            str += STD_GetStringLength(str) + 1;
             group++;
         }
     }
@@ -269,7 +269,7 @@ typedef struct OSOwnerInfo {
     u8 unk_01[0x53];
 } OSOwnerInfo;
 
-void func_0201a9a8(OSOwnerInfo *info);
+void OS_GetOwnerInfo(OSOwnerInfo *info);
 extern const char *data_0208cb88;
 extern char data_0214b105[];
 

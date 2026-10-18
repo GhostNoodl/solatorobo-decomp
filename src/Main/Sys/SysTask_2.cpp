@@ -121,12 +121,12 @@ BOOL func_02063484(Unk0214a418 *self) {
                     res = (SysTaskRes *)func_ov000_0218e9c4(res);
                 }
                 self->unk_08 = res;
-                func_0201e520(res->name0, buf);
-                func_0201e520(res->path0, data_0208c1b5);
+                STD_CopyString(res->name0, buf);
+                STD_CopyString(res->path0, data_0208c1b5);
                 res->flags |= 2;
                 r = (SysTaskRes *)self->unk_08;
-                func_0201e520(r->name1, buf);
-                func_0201e520(r->path1, data_0208c1b5);
+                STD_CopyString(r->name1, buf);
+                STD_CopyString(r->path1, data_0208c1b5);
                 r->flags |= 4;
                 cont = TRUE;
                 ((SysTaskRes *)self->unk_08)->state = 0;

@@ -5,14 +5,14 @@ extern "C" {
 void func_ov002_021e6a14(void *self) {
     FIELD(self, 4, s32) = 5;
     FIELD(self, 0x20, s32) = -0x29;
-    func_02016e28((u8 *)self + 0x4c, 0, 0x20);
-    func_02016e28((u8 *)self + 0x6c, 0, 0x20);
+    MI_CpuFill8((u8 *)self + 0x4c, 0, 0x20);
+    MI_CpuFill8((u8 *)self + 0x6c, 0, 0x20);
     func_ov002_021ebfd0((u8 *)self + 0x8c);
     FIELD(self, 0xb4, s32) = 0;
     FIELD(self, 0xb8, s32) = 0;
     FIELD(self, 0xbc, s16) = 0;
     FIELD(self, 0xc0, s32) = 0;
-    func_02016e28((u8 *)self + 0xc4, 0, 0x80);
+    MI_CpuFill8((u8 *)self + 0xc4, 0, 0x80);
     FIELD(self, 0x144, void *) = (u8 *)self + 0xc4;
     FIELD(self, 0x148, s32) = 0xff;
     FIELD(self, 0x150, s32) = 6;

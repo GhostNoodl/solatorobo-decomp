@@ -22,7 +22,7 @@ void func_ov000_0216c018(void *self);
 void func_ov000_0216c310(void *self);
 void func_ov000_0216c6fc(void *self);
 s32 func_02043d84(void *a);
-void func_02016e28(void *dst, s32 v, s32 size);
+void MI_CpuFill8(void *dst, s32 v, s32 size);
 void func_ov000_0216bcbc(void *self);
 
 void func_ov000_0216bf30(void *self) {
@@ -37,7 +37,7 @@ void func_ov000_0216bf30(void *self) {
     LFLD(s32, self, 0x248) = 0;
     LFLD(s32, self, 0x24c) = 0;
     LFLD(s32, self, 0x250) = 0;
-    func_02016e28((u8 *)self + 0x254, 0, 0x108);
+    MI_CpuFill8((u8 *)self + 0x254, 0, 0x108);
     LFLD(s32, self, 0x35c) = 0;
 }
 

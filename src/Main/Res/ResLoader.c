@@ -23,11 +23,11 @@ void func_02035450(ResLoader *loader) {
         if (ring != NULL) {
             switch (entry->attr2 & 0xf0) {
             case 0x10:
-                func_020174a8(lzCtx, req->data, &entry->attr2);
+                MI_InitUncompContextLZ(lzCtx, req->data, &entry->attr2);
                 ResRing_FillLZ(ring, lzCtx);
                 break;
             case 0x30:
-                func_02017484(huffCtx, req->data, &entry->attr2);
+                MI_InitUncompContextRL(huffCtx, req->data, &entry->attr2);
                 ResRing_FillHuff(ring, huffCtx);
                 break;
             }
@@ -54,9 +54,9 @@ void func_02035670(ResLoader *loader) {
     func_02018988(loader, 0x4c);
     blockSize = 0x2000;
     numBlocks = 3;
-    if (!func_02018d58()) {
+    if (!OS_IsRunOnTwl()) {
         blockSize = 0x1540;
-        buf = func_020197dc(0, data_02097dd0->unk_0c, 0x3fc0);
+        buf = OS_AllocFromHeap(0, data_02097dd0->unk_0c, 0x3fc0);
     } else {
         buf = func_0203dec8(0x6000, 4);
     }

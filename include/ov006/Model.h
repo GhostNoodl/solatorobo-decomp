@@ -62,7 +62,7 @@ void func_02041558(ov006_Model *self);
 void func_02041278(void *self);
 void func_02041218(void *self);
 void func_02041440(ov006_Model *self, const char *name, int a);
-void func_0201e520(void *dst, const char *src);
+void STD_CopyString(void *dst, const char *src);
 void func_020417e0(ov006_Model *self, void *res);
 void func_02041d9c(ov006_Model *self, int a, int b);
 void *func_02035de0(const char *a, const char *b);

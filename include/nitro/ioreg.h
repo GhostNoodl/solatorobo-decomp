@@ -7122,4 +7122,2869 @@ typedef vu64 REGType64v;
     ((u32)(decimal_m8) << REG_G3X_VECMTX_RESULT_8_DECIMAL_m8_SHIFT))
 #endif
 
+
+// ---- ioreg_GXS.h ----
+/*
+ * Definition of Register offsets, addresses and variables.
+ */
+
+
+/* DB_DISPCNT */
+
+#define REG_DB_DISPCNT_OFFSET                              0x1000
+#define REG_DB_DISPCNT_ADDR                                (HW_REG_BASE + REG_DB_DISPCNT_OFFSET)
+#define reg_GXS_DB_DISPCNT                                 (*( REGType32v *) REG_DB_DISPCNT_ADDR)
+
+/* DB_MASTER_BRIGHT */
+
+#define REG_DB_MASTER_BRIGHT_OFFSET                        0x106c
+#define REG_DB_MASTER_BRIGHT_ADDR                          (HW_REG_BASE + REG_DB_MASTER_BRIGHT_OFFSET)
+#define reg_GXS_DB_MASTER_BRIGHT                           (*( REGType16v *) REG_DB_MASTER_BRIGHT_ADDR)
+
+
+/*
+ * Definitions of Register fields
+ */
+
+
+/* DB_DISPCNT */
+
+#define REG_GXS_DB_DISPCNT_O_SHIFT                         31
+#define REG_GXS_DB_DISPCNT_O_SIZE                          1
+#define REG_GXS_DB_DISPCNT_O_MASK                          0x80000000
+
+#define REG_GXS_DB_DISPCNT_BG_SHIFT                        30
+#define REG_GXS_DB_DISPCNT_BG_SIZE                         1
+#define REG_GXS_DB_DISPCNT_BG_MASK                         0x40000000
+
+#define REG_GXS_DB_DISPCNT_OH_SHIFT                        23
+#define REG_GXS_DB_DISPCNT_OH_SIZE                         1
+#define REG_GXS_DB_DISPCNT_OH_MASK                         0x00800000
+
+#define REG_GXS_DB_DISPCNT_EXOBJ_SHIFT                     20
+#define REG_GXS_DB_DISPCNT_EXOBJ_SIZE                      2
+#define REG_GXS_DB_DISPCNT_EXOBJ_MASK                      0x00300000
+
+#define REG_GXS_DB_DISPCNT_MODE_SHIFT                      16
+#define REG_GXS_DB_DISPCNT_MODE_SIZE                       1
+#define REG_GXS_DB_DISPCNT_MODE_MASK                       0x00010000
+
+#define REG_GXS_DB_DISPCNT_OW_SHIFT                        15
+#define REG_GXS_DB_DISPCNT_OW_SIZE                         1
+#define REG_GXS_DB_DISPCNT_OW_MASK                         0x00008000
+
+#define REG_GXS_DB_DISPCNT_W1_SHIFT                        14
+#define REG_GXS_DB_DISPCNT_W1_SIZE                         1
+#define REG_GXS_DB_DISPCNT_W1_MASK                         0x00004000
+
+#define REG_GXS_DB_DISPCNT_W0_SHIFT                        13
+#define REG_GXS_DB_DISPCNT_W0_SIZE                         1
+#define REG_GXS_DB_DISPCNT_W0_MASK                         0x00002000
+
+#define REG_GXS_DB_DISPCNT_DISPLAY_SHIFT                   8
+#define REG_GXS_DB_DISPCNT_DISPLAY_SIZE                    5
+#define REG_GXS_DB_DISPCNT_DISPLAY_MASK                    0x00001f00
+
+#define REG_GXS_DB_DISPCNT_BLANK_SHIFT                     7
+#define REG_GXS_DB_DISPCNT_BLANK_SIZE                      1
+#define REG_GXS_DB_DISPCNT_BLANK_MASK                      0x00000080
+
+#define REG_GXS_DB_DISPCNT_OBJMAP_SHIFT                    4
+#define REG_GXS_DB_DISPCNT_OBJMAP_SIZE                     3
+#define REG_GXS_DB_DISPCNT_OBJMAP_MASK                     0x00000070
+
+#define REG_GXS_DB_DISPCNT_BGMODE_SHIFT                    0
+#define REG_GXS_DB_DISPCNT_BGMODE_SIZE                     3
+#define REG_GXS_DB_DISPCNT_BGMODE_MASK                     0x00000007
+
+#define REG_GXS_DB_DISPCNT_OBJMAP_CH_SHIFT                 4
+#define REG_GXS_DB_DISPCNT_OBJMAP_CH_SIZE                  1
+#define REG_GXS_DB_DISPCNT_OBJMAP_CH_MASK                  0x00000010
+
+#define REG_GXS_DB_DISPCNT_OBJMAP_BM_SHIFT                 5
+#define REG_GXS_DB_DISPCNT_OBJMAP_BM_SIZE                  2
+#define REG_GXS_DB_DISPCNT_OBJMAP_BM_MASK                  0x00000060
+
+#define REG_GXS_DB_DISPCNT_EXOBJ_CH_SHIFT                  20
+#define REG_GXS_DB_DISPCNT_EXOBJ_CH_SIZE                   2
+#define REG_GXS_DB_DISPCNT_EXOBJ_CH_MASK                   0x00300000
+
+#ifndef SDK_ASM
+#define REG_GXS_DB_DISPCNT_FIELD( o, bg, oh, exobj, mode, ow, w1, w0, display, blank, objmap, bgmode, objmap_ch, objmap_bm, exobj_ch ) \
+    (u32)( \
+    ((u32)(o) << REG_GXS_DB_DISPCNT_O_SHIFT) | \
+    ((u32)(bg) << REG_GXS_DB_DISPCNT_BG_SHIFT) | \
+    ((u32)(oh) << REG_GXS_DB_DISPCNT_OH_SHIFT) | \
+    ((u32)(exobj) << REG_GXS_DB_DISPCNT_EXOBJ_SHIFT) | \
+    ((u32)(mode) << REG_GXS_DB_DISPCNT_MODE_SHIFT) | \
+    ((u32)(ow) << REG_GXS_DB_DISPCNT_OW_SHIFT) | \
+    ((u32)(w1) << REG_GXS_DB_DISPCNT_W1_SHIFT) | \
+    ((u32)(w0) << REG_GXS_DB_DISPCNT_W0_SHIFT) | \
+    ((u32)(display) << REG_GXS_DB_DISPCNT_DISPLAY_SHIFT) | \
+    ((u32)(blank) << REG_GXS_DB_DISPCNT_BLANK_SHIFT) | \
+    ((u32)(objmap) << REG_GXS_DB_DISPCNT_OBJMAP_SHIFT) | \
+    ((u32)(bgmode) << REG_GXS_DB_DISPCNT_BGMODE_SHIFT) | \
+    ((u32)(objmap_ch) << REG_GXS_DB_DISPCNT_OBJMAP_CH_SHIFT) | \
+    ((u32)(objmap_bm) << REG_GXS_DB_DISPCNT_OBJMAP_BM_SHIFT) | \
+    ((u32)(exobj_ch) << REG_GXS_DB_DISPCNT_EXOBJ_CH_SHIFT))
+#endif
+
+
+/* DB_MASTER_BRIGHT */
+
+#define REG_GXS_DB_MASTER_BRIGHT_E_MOD_SHIFT               14
+#define REG_GXS_DB_MASTER_BRIGHT_E_MOD_SIZE                2
+#define REG_GXS_DB_MASTER_BRIGHT_E_MOD_MASK                0xc000
+
+#define REG_GXS_DB_MASTER_BRIGHT_E_VALUE_SHIFT             0
+#define REG_GXS_DB_MASTER_BRIGHT_E_VALUE_SIZE              5
+#define REG_GXS_DB_MASTER_BRIGHT_E_VALUE_MASK              0x001f
+
+#ifndef SDK_ASM
+#define REG_GXS_DB_MASTER_BRIGHT_FIELD( e_mod, e_value ) \
+    (u16)( \
+    ((u32)(e_mod) << REG_GXS_DB_MASTER_BRIGHT_E_MOD_SHIFT) | \
+    ((u32)(e_value) << REG_GXS_DB_MASTER_BRIGHT_E_VALUE_SHIFT))
+#endif
+
+
+
+// ---- ioreg_G2S.h ----
+/*
+ * Definition of Register offsets, addresses and variables.
+ */
+
+
+/* DB_BG0CNT */
+
+#define REG_DB_BG0CNT_OFFSET                               0x1008
+#define REG_DB_BG0CNT_ADDR                                 (HW_REG_BASE + REG_DB_BG0CNT_OFFSET)
+#define reg_G2S_DB_BG0CNT                                  (*( REGType16v *) REG_DB_BG0CNT_ADDR)
+
+/* DB_BG1CNT */
+
+#define REG_DB_BG1CNT_OFFSET                               0x100a
+#define REG_DB_BG1CNT_ADDR                                 (HW_REG_BASE + REG_DB_BG1CNT_OFFSET)
+#define reg_G2S_DB_BG1CNT                                  (*( REGType16v *) REG_DB_BG1CNT_ADDR)
+
+/* DB_BG2CNT */
+
+#define REG_DB_BG2CNT_OFFSET                               0x100c
+#define REG_DB_BG2CNT_ADDR                                 (HW_REG_BASE + REG_DB_BG2CNT_OFFSET)
+#define reg_G2S_DB_BG2CNT                                  (*( REGType16v *) REG_DB_BG2CNT_ADDR)
+
+/* DB_BG3CNT */
+
+#define REG_DB_BG3CNT_OFFSET                               0x100e
+#define REG_DB_BG3CNT_ADDR                                 (HW_REG_BASE + REG_DB_BG3CNT_OFFSET)
+#define reg_G2S_DB_BG3CNT                                  (*( REGType16v *) REG_DB_BG3CNT_ADDR)
+
+/* DB_BG0OFS */
+
+#define REG_DB_BG0OFS_OFFSET                               0x1010
+#define REG_DB_BG0OFS_ADDR                                 (HW_REG_BASE + REG_DB_BG0OFS_OFFSET)
+#define reg_G2S_DB_BG0OFS                                  (*( REGType32v *) REG_DB_BG0OFS_ADDR)
+
+/* DB_BG0HOFS */
+
+#define REG_DB_BG0HOFS_OFFSET                              0x1010
+#define REG_DB_BG0HOFS_ADDR                                (HW_REG_BASE + REG_DB_BG0HOFS_OFFSET)
+#define reg_G2S_DB_BG0HOFS                                 (*( REGType16v *) REG_DB_BG0HOFS_ADDR)
+
+/* DB_BG0VOFS */
+
+#define REG_DB_BG0VOFS_OFFSET                              0x1012
+#define REG_DB_BG0VOFS_ADDR                                (HW_REG_BASE + REG_DB_BG0VOFS_OFFSET)
+#define reg_G2S_DB_BG0VOFS                                 (*( REGType16v *) REG_DB_BG0VOFS_ADDR)
+
+/* DB_BG1OFS */
+
+#define REG_DB_BG1OFS_OFFSET                               0x1014
+#define REG_DB_BG1OFS_ADDR                                 (HW_REG_BASE + REG_DB_BG1OFS_OFFSET)
+#define reg_G2S_DB_BG1OFS                                  (*( REGType32v *) REG_DB_BG1OFS_ADDR)
+
+/* DB_BG1HOFS */
+
+#define REG_DB_BG1HOFS_OFFSET                              0x1014
+#define REG_DB_BG1HOFS_ADDR                                (HW_REG_BASE + REG_DB_BG1HOFS_OFFSET)
+#define reg_G2S_DB_BG1HOFS                                 (*( REGType16v *) REG_DB_BG1HOFS_ADDR)
+
+/* DB_BG1VOFS */
+
+#define REG_DB_BG1VOFS_OFFSET                              0x1016
+#define REG_DB_BG1VOFS_ADDR                                (HW_REG_BASE + REG_DB_BG1VOFS_OFFSET)
+#define reg_G2S_DB_BG1VOFS                                 (*( REGType16v *) REG_DB_BG1VOFS_ADDR)
+
+/* DB_BG2OFS */
+
+#define REG_DB_BG2OFS_OFFSET                               0x1018
+#define REG_DB_BG2OFS_ADDR                                 (HW_REG_BASE + REG_DB_BG2OFS_OFFSET)
+#define reg_G2S_DB_BG2OFS                                  (*( REGType32v *) REG_DB_BG2OFS_ADDR)
+
+/* DB_BG2HOFS */
+
+#define REG_DB_BG2HOFS_OFFSET                              0x1018
+#define REG_DB_BG2HOFS_ADDR                                (HW_REG_BASE + REG_DB_BG2HOFS_OFFSET)
+#define reg_G2S_DB_BG2HOFS                                 (*( REGType16v *) REG_DB_BG2HOFS_ADDR)
+
+/* DB_BG2VOFS */
+
+#define REG_DB_BG2VOFS_OFFSET                              0x101a
+#define REG_DB_BG2VOFS_ADDR                                (HW_REG_BASE + REG_DB_BG2VOFS_OFFSET)
+#define reg_G2S_DB_BG2VOFS                                 (*( REGType16v *) REG_DB_BG2VOFS_ADDR)
+
+/* DB_BG3OFS */
+
+#define REG_DB_BG3OFS_OFFSET                               0x101c
+#define REG_DB_BG3OFS_ADDR                                 (HW_REG_BASE + REG_DB_BG3OFS_OFFSET)
+#define reg_G2S_DB_BG3OFS                                  (*( REGType32v *) REG_DB_BG3OFS_ADDR)
+
+/* DB_BG3HOFS */
+
+#define REG_DB_BG3HOFS_OFFSET                              0x101c
+#define REG_DB_BG3HOFS_ADDR                                (HW_REG_BASE + REG_DB_BG3HOFS_OFFSET)
+#define reg_G2S_DB_BG3HOFS                                 (*( REGType16v *) REG_DB_BG3HOFS_ADDR)
+
+/* DB_BG3VOFS */
+
+#define REG_DB_BG3VOFS_OFFSET                              0x101e
+#define REG_DB_BG3VOFS_ADDR                                (HW_REG_BASE + REG_DB_BG3VOFS_OFFSET)
+#define reg_G2S_DB_BG3VOFS                                 (*( REGType16v *) REG_DB_BG3VOFS_ADDR)
+
+/* DB_BG2PA */
+
+#define REG_DB_BG2PA_OFFSET                                0x1020
+#define REG_DB_BG2PA_ADDR                                  (HW_REG_BASE + REG_DB_BG2PA_OFFSET)
+#define reg_G2S_DB_BG2PA                                   (*( REGType16v *) REG_DB_BG2PA_ADDR)
+
+/* DB_BG2PB */
+
+#define REG_DB_BG2PB_OFFSET                                0x1022
+#define REG_DB_BG2PB_ADDR                                  (HW_REG_BASE + REG_DB_BG2PB_OFFSET)
+#define reg_G2S_DB_BG2PB                                   (*( REGType16v *) REG_DB_BG2PB_ADDR)
+
+/* DB_BG2PC */
+
+#define REG_DB_BG2PC_OFFSET                                0x1024
+#define REG_DB_BG2PC_ADDR                                  (HW_REG_BASE + REG_DB_BG2PC_OFFSET)
+#define reg_G2S_DB_BG2PC                                   (*( REGType16v *) REG_DB_BG2PC_ADDR)
+
+/* DB_BG2PD */
+
+#define REG_DB_BG2PD_OFFSET                                0x1026
+#define REG_DB_BG2PD_ADDR                                  (HW_REG_BASE + REG_DB_BG2PD_OFFSET)
+#define reg_G2S_DB_BG2PD                                   (*( REGType16v *) REG_DB_BG2PD_ADDR)
+
+/* DB_BG2X */
+
+#define REG_DB_BG2X_OFFSET                                 0x1028
+#define REG_DB_BG2X_ADDR                                   (HW_REG_BASE + REG_DB_BG2X_OFFSET)
+#define reg_G2S_DB_BG2X                                    (*( REGType32v *) REG_DB_BG2X_ADDR)
+
+/* DB_BG2Y */
+
+#define REG_DB_BG2Y_OFFSET                                 0x102c
+#define REG_DB_BG2Y_ADDR                                   (HW_REG_BASE + REG_DB_BG2Y_OFFSET)
+#define reg_G2S_DB_BG2Y                                    (*( REGType32v *) REG_DB_BG2Y_ADDR)
+
+/* DB_BG3PA */
+
+#define REG_DB_BG3PA_OFFSET                                0x1030
+#define REG_DB_BG3PA_ADDR                                  (HW_REG_BASE + REG_DB_BG3PA_OFFSET)
+#define reg_G2S_DB_BG3PA                                   (*( REGType16v *) REG_DB_BG3PA_ADDR)
+
+/* DB_BG3PB */
+
+#define REG_DB_BG3PB_OFFSET                                0x1032
+#define REG_DB_BG3PB_ADDR                                  (HW_REG_BASE + REG_DB_BG3PB_OFFSET)
+#define reg_G2S_DB_BG3PB                                   (*( REGType16v *) REG_DB_BG3PB_ADDR)
+
+/* DB_BG3PC */
+
+#define REG_DB_BG3PC_OFFSET                                0x1034
+#define REG_DB_BG3PC_ADDR                                  (HW_REG_BASE + REG_DB_BG3PC_OFFSET)
+#define reg_G2S_DB_BG3PC                                   (*( REGType16v *) REG_DB_BG3PC_ADDR)
+
+/* DB_BG3PD */
+
+#define REG_DB_BG3PD_OFFSET                                0x1036
+#define REG_DB_BG3PD_ADDR                                  (HW_REG_BASE + REG_DB_BG3PD_OFFSET)
+#define reg_G2S_DB_BG3PD                                   (*( REGType16v *) REG_DB_BG3PD_ADDR)
+
+/* DB_BG3X */
+
+#define REG_DB_BG3X_OFFSET                                 0x1038
+#define REG_DB_BG3X_ADDR                                   (HW_REG_BASE + REG_DB_BG3X_OFFSET)
+#define reg_G2S_DB_BG3X                                    (*( REGType32v *) REG_DB_BG3X_ADDR)
+
+/* DB_BG3Y */
+
+#define REG_DB_BG3Y_OFFSET                                 0x103c
+#define REG_DB_BG3Y_ADDR                                   (HW_REG_BASE + REG_DB_BG3Y_OFFSET)
+#define reg_G2S_DB_BG3Y                                    (*( REGType32v *) REG_DB_BG3Y_ADDR)
+
+/* DB_WIN0H */
+
+#define REG_DB_WIN0H_OFFSET                                0x1040
+#define REG_DB_WIN0H_ADDR                                  (HW_REG_BASE + REG_DB_WIN0H_OFFSET)
+#define reg_G2S_DB_WIN0H                                   (*( REGType16v *) REG_DB_WIN0H_ADDR)
+
+/* DB_WIN1H */
+
+#define REG_DB_WIN1H_OFFSET                                0x1042
+#define REG_DB_WIN1H_ADDR                                  (HW_REG_BASE + REG_DB_WIN1H_OFFSET)
+#define reg_G2S_DB_WIN1H                                   (*( REGType16v *) REG_DB_WIN1H_ADDR)
+
+/* DB_WIN0V */
+
+#define REG_DB_WIN0V_OFFSET                                0x1044
+#define REG_DB_WIN0V_ADDR                                  (HW_REG_BASE + REG_DB_WIN0V_OFFSET)
+#define reg_G2S_DB_WIN0V                                   (*( REGType16v *) REG_DB_WIN0V_ADDR)
+
+/* DB_WIN1V */
+
+#define REG_DB_WIN1V_OFFSET                                0x1046
+#define REG_DB_WIN1V_ADDR                                  (HW_REG_BASE + REG_DB_WIN1V_OFFSET)
+#define reg_G2S_DB_WIN1V                                   (*( REGType16v *) REG_DB_WIN1V_ADDR)
+
+/* DB_WININ */
+
+#define REG_DB_WININ_OFFSET                                0x1048
+#define REG_DB_WININ_ADDR                                  (HW_REG_BASE + REG_DB_WININ_OFFSET)
+#define reg_G2S_DB_WININ                                   (*( REGType16v *) REG_DB_WININ_ADDR)
+
+/* DB_WINOUT */
+
+#define REG_DB_WINOUT_OFFSET                               0x104a
+#define REG_DB_WINOUT_ADDR                                 (HW_REG_BASE + REG_DB_WINOUT_OFFSET)
+#define reg_G2S_DB_WINOUT                                  (*( REGType16v *) REG_DB_WINOUT_ADDR)
+
+/* DB_MOSAIC */
+
+#define REG_DB_MOSAIC_OFFSET                               0x104c
+#define REG_DB_MOSAIC_ADDR                                 (HW_REG_BASE + REG_DB_MOSAIC_OFFSET)
+#define reg_G2S_DB_MOSAIC                                  (*( REGType16v *) REG_DB_MOSAIC_ADDR)
+
+/* DB_BLDCNT */
+
+#define REG_DB_BLDCNT_OFFSET                               0x1050
+#define REG_DB_BLDCNT_ADDR                                 (HW_REG_BASE + REG_DB_BLDCNT_OFFSET)
+#define reg_G2S_DB_BLDCNT                                  (*( REGType16v *) REG_DB_BLDCNT_ADDR)
+
+/* DB_BLDALPHA */
+
+#define REG_DB_BLDALPHA_OFFSET                             0x1052
+#define REG_DB_BLDALPHA_ADDR                               (HW_REG_BASE + REG_DB_BLDALPHA_OFFSET)
+#define reg_G2S_DB_BLDALPHA                                (*( REGType16v *) REG_DB_BLDALPHA_ADDR)
+
+/* DB_BLDY */
+
+#define REG_DB_BLDY_OFFSET                                 0x1054
+#define REG_DB_BLDY_ADDR                                   (HW_REG_BASE + REG_DB_BLDY_OFFSET)
+#define reg_G2S_DB_BLDY                                    (*( REGType16v *) REG_DB_BLDY_ADDR)
+
+
+/*
+ * Definitions of Register fields
+ */
+
+
+/* DB_BG0CNT */
+
+#define REG_G2S_DB_BG0CNT_SCREENSIZE_SHIFT                 14
+#define REG_G2S_DB_BG0CNT_SCREENSIZE_SIZE                  2
+#define REG_G2S_DB_BG0CNT_SCREENSIZE_MASK                  0xc000
+
+#define REG_G2S_DB_BG0CNT_BGPLTTSLOT_SHIFT                 13
+#define REG_G2S_DB_BG0CNT_BGPLTTSLOT_SIZE                  1
+#define REG_G2S_DB_BG0CNT_BGPLTTSLOT_MASK                  0x2000
+
+#define REG_G2S_DB_BG0CNT_SCREENBASE_SHIFT                 8
+#define REG_G2S_DB_BG0CNT_SCREENBASE_SIZE                  5
+#define REG_G2S_DB_BG0CNT_SCREENBASE_MASK                  0x1f00
+
+#define REG_G2S_DB_BG0CNT_COLORMODE_SHIFT                  7
+#define REG_G2S_DB_BG0CNT_COLORMODE_SIZE                   1
+#define REG_G2S_DB_BG0CNT_COLORMODE_MASK                   0x0080
+
+#define REG_G2S_DB_BG0CNT_MOSAIC_SHIFT                     6
+#define REG_G2S_DB_BG0CNT_MOSAIC_SIZE                      1
+#define REG_G2S_DB_BG0CNT_MOSAIC_MASK                      0x0040
+
+#define REG_G2S_DB_BG0CNT_CHARBASE_SHIFT                   2
+#define REG_G2S_DB_BG0CNT_CHARBASE_SIZE                    4
+#define REG_G2S_DB_BG0CNT_CHARBASE_MASK                    0x003c
+
+#define REG_G2S_DB_BG0CNT_PRIORITY_SHIFT                   0
+#define REG_G2S_DB_BG0CNT_PRIORITY_SIZE                    2
+#define REG_G2S_DB_BG0CNT_PRIORITY_MASK                    0x0003
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG0CNT_FIELD( screensize, bgplttslot, screenbase, colormode, mosaic, charbase, priority ) \
+    (u16)( \
+    ((u32)(screensize) << REG_G2S_DB_BG0CNT_SCREENSIZE_SHIFT) | \
+    ((u32)(bgplttslot) << REG_G2S_DB_BG0CNT_BGPLTTSLOT_SHIFT) | \
+    ((u32)(screenbase) << REG_G2S_DB_BG0CNT_SCREENBASE_SHIFT) | \
+    ((u32)(colormode) << REG_G2S_DB_BG0CNT_COLORMODE_SHIFT) | \
+    ((u32)(mosaic) << REG_G2S_DB_BG0CNT_MOSAIC_SHIFT) | \
+    ((u32)(charbase) << REG_G2S_DB_BG0CNT_CHARBASE_SHIFT) | \
+    ((u32)(priority) << REG_G2S_DB_BG0CNT_PRIORITY_SHIFT))
+#endif
+
+
+/* DB_BG1CNT */
+
+#define REG_G2S_DB_BG1CNT_SCREENSIZE_SHIFT                 14
+#define REG_G2S_DB_BG1CNT_SCREENSIZE_SIZE                  2
+#define REG_G2S_DB_BG1CNT_SCREENSIZE_MASK                  0xc000
+
+#define REG_G2S_DB_BG1CNT_BGPLTTSLOT_SHIFT                 13
+#define REG_G2S_DB_BG1CNT_BGPLTTSLOT_SIZE                  1
+#define REG_G2S_DB_BG1CNT_BGPLTTSLOT_MASK                  0x2000
+
+#define REG_G2S_DB_BG1CNT_SCREENBASE_SHIFT                 8
+#define REG_G2S_DB_BG1CNT_SCREENBASE_SIZE                  5
+#define REG_G2S_DB_BG1CNT_SCREENBASE_MASK                  0x1f00
+
+#define REG_G2S_DB_BG1CNT_COLORMODE_SHIFT                  7
+#define REG_G2S_DB_BG1CNT_COLORMODE_SIZE                   1
+#define REG_G2S_DB_BG1CNT_COLORMODE_MASK                   0x0080
+
+#define REG_G2S_DB_BG1CNT_MOSAIC_SHIFT                     6
+#define REG_G2S_DB_BG1CNT_MOSAIC_SIZE                      1
+#define REG_G2S_DB_BG1CNT_MOSAIC_MASK                      0x0040
+
+#define REG_G2S_DB_BG1CNT_CHARBASE_SHIFT                   2
+#define REG_G2S_DB_BG1CNT_CHARBASE_SIZE                    4
+#define REG_G2S_DB_BG1CNT_CHARBASE_MASK                    0x003c
+
+#define REG_G2S_DB_BG1CNT_PRIORITY_SHIFT                   0
+#define REG_G2S_DB_BG1CNT_PRIORITY_SIZE                    2
+#define REG_G2S_DB_BG1CNT_PRIORITY_MASK                    0x0003
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG1CNT_FIELD( screensize, bgplttslot, screenbase, colormode, mosaic, charbase, priority ) \
+    (u16)( \
+    ((u32)(screensize) << REG_G2S_DB_BG1CNT_SCREENSIZE_SHIFT) | \
+    ((u32)(bgplttslot) << REG_G2S_DB_BG1CNT_BGPLTTSLOT_SHIFT) | \
+    ((u32)(screenbase) << REG_G2S_DB_BG1CNT_SCREENBASE_SHIFT) | \
+    ((u32)(colormode) << REG_G2S_DB_BG1CNT_COLORMODE_SHIFT) | \
+    ((u32)(mosaic) << REG_G2S_DB_BG1CNT_MOSAIC_SHIFT) | \
+    ((u32)(charbase) << REG_G2S_DB_BG1CNT_CHARBASE_SHIFT) | \
+    ((u32)(priority) << REG_G2S_DB_BG1CNT_PRIORITY_SHIFT))
+#endif
+
+
+/* DB_BG2CNT */
+
+#define REG_G2S_DB_BG2CNT_SCREENSIZE_SHIFT                 14
+#define REG_G2S_DB_BG2CNT_SCREENSIZE_SIZE                  2
+#define REG_G2S_DB_BG2CNT_SCREENSIZE_MASK                  0xc000
+
+#define REG_G2S_DB_BG2CNT_AREAOVER_SHIFT                   13
+#define REG_G2S_DB_BG2CNT_AREAOVER_SIZE                    1
+#define REG_G2S_DB_BG2CNT_AREAOVER_MASK                    0x2000
+
+#define REG_G2S_DB_BG2CNT_SCREENBASE_SHIFT                 8
+#define REG_G2S_DB_BG2CNT_SCREENBASE_SIZE                  5
+#define REG_G2S_DB_BG2CNT_SCREENBASE_MASK                  0x1f00
+
+#define REG_G2S_DB_BG2CNT_COLORMODE_SHIFT                  7
+#define REG_G2S_DB_BG2CNT_COLORMODE_SIZE                   1
+#define REG_G2S_DB_BG2CNT_COLORMODE_MASK                   0x0080
+
+#define REG_G2S_DB_BG2CNT_MOSAIC_SHIFT                     6
+#define REG_G2S_DB_BG2CNT_MOSAIC_SIZE                      1
+#define REG_G2S_DB_BG2CNT_MOSAIC_MASK                      0x0040
+
+#define REG_G2S_DB_BG2CNT_CHARBASE_SHIFT                   2
+#define REG_G2S_DB_BG2CNT_CHARBASE_SIZE                    4
+#define REG_G2S_DB_BG2CNT_CHARBASE_MASK                    0x003c
+
+#define REG_G2S_DB_BG2CNT_PRIORITY_SHIFT                   0
+#define REG_G2S_DB_BG2CNT_PRIORITY_SIZE                    2
+#define REG_G2S_DB_BG2CNT_PRIORITY_MASK                    0x0003
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG2CNT_FIELD( screensize, areaover, screenbase, colormode, mosaic, charbase, priority ) \
+    (u16)( \
+    ((u32)(screensize) << REG_G2S_DB_BG2CNT_SCREENSIZE_SHIFT) | \
+    ((u32)(areaover) << REG_G2S_DB_BG2CNT_AREAOVER_SHIFT) | \
+    ((u32)(screenbase) << REG_G2S_DB_BG2CNT_SCREENBASE_SHIFT) | \
+    ((u32)(colormode) << REG_G2S_DB_BG2CNT_COLORMODE_SHIFT) | \
+    ((u32)(mosaic) << REG_G2S_DB_BG2CNT_MOSAIC_SHIFT) | \
+    ((u32)(charbase) << REG_G2S_DB_BG2CNT_CHARBASE_SHIFT) | \
+    ((u32)(priority) << REG_G2S_DB_BG2CNT_PRIORITY_SHIFT))
+#endif
+
+
+/* DB_BG3CNT */
+
+#define REG_G2S_DB_BG3CNT_SCREENSIZE_SHIFT                 14
+#define REG_G2S_DB_BG3CNT_SCREENSIZE_SIZE                  2
+#define REG_G2S_DB_BG3CNT_SCREENSIZE_MASK                  0xc000
+
+#define REG_G2S_DB_BG3CNT_AREAOVER_SHIFT                   13
+#define REG_G2S_DB_BG3CNT_AREAOVER_SIZE                    1
+#define REG_G2S_DB_BG3CNT_AREAOVER_MASK                    0x2000
+
+#define REG_G2S_DB_BG3CNT_SCREENBASE_SHIFT                 8
+#define REG_G2S_DB_BG3CNT_SCREENBASE_SIZE                  5
+#define REG_G2S_DB_BG3CNT_SCREENBASE_MASK                  0x1f00
+
+#define REG_G2S_DB_BG3CNT_COLORMODE_SHIFT                  7
+#define REG_G2S_DB_BG3CNT_COLORMODE_SIZE                   1
+#define REG_G2S_DB_BG3CNT_COLORMODE_MASK                   0x0080
+
+#define REG_G2S_DB_BG3CNT_MOSAIC_SHIFT                     6
+#define REG_G2S_DB_BG3CNT_MOSAIC_SIZE                      1
+#define REG_G2S_DB_BG3CNT_MOSAIC_MASK                      0x0040
+
+#define REG_G2S_DB_BG3CNT_CHARBASE_SHIFT                   2
+#define REG_G2S_DB_BG3CNT_CHARBASE_SIZE                    4
+#define REG_G2S_DB_BG3CNT_CHARBASE_MASK                    0x003c
+
+#define REG_G2S_DB_BG3CNT_PRIORITY_SHIFT                   0
+#define REG_G2S_DB_BG3CNT_PRIORITY_SIZE                    2
+#define REG_G2S_DB_BG3CNT_PRIORITY_MASK                    0x0003
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG3CNT_FIELD( screensize, areaover, screenbase, colormode, mosaic, charbase, priority ) \
+    (u16)( \
+    ((u32)(screensize) << REG_G2S_DB_BG3CNT_SCREENSIZE_SHIFT) | \
+    ((u32)(areaover) << REG_G2S_DB_BG3CNT_AREAOVER_SHIFT) | \
+    ((u32)(screenbase) << REG_G2S_DB_BG3CNT_SCREENBASE_SHIFT) | \
+    ((u32)(colormode) << REG_G2S_DB_BG3CNT_COLORMODE_SHIFT) | \
+    ((u32)(mosaic) << REG_G2S_DB_BG3CNT_MOSAIC_SHIFT) | \
+    ((u32)(charbase) << REG_G2S_DB_BG3CNT_CHARBASE_SHIFT) | \
+    ((u32)(priority) << REG_G2S_DB_BG3CNT_PRIORITY_SHIFT))
+#endif
+
+
+/* DB_BG0OFS */
+
+#define REG_G2S_DB_BG0OFS_VOFFSET_SHIFT                    16
+#define REG_G2S_DB_BG0OFS_VOFFSET_SIZE                     9
+#define REG_G2S_DB_BG0OFS_VOFFSET_MASK                     0x01ff0000
+
+#define REG_G2S_DB_BG0OFS_HOFFSET_SHIFT                    0
+#define REG_G2S_DB_BG0OFS_HOFFSET_SIZE                     9
+#define REG_G2S_DB_BG0OFS_HOFFSET_MASK                     0x000001ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG0OFS_FIELD( voffset, hoffset ) \
+    (u32)( \
+    ((u32)(voffset) << REG_G2S_DB_BG0OFS_VOFFSET_SHIFT) | \
+    ((u32)(hoffset) << REG_G2S_DB_BG0OFS_HOFFSET_SHIFT))
+#endif
+
+
+/* DB_BG0HOFS */
+
+#define REG_G2S_DB_BG0HOFS_OFFSET_SHIFT                    0
+#define REG_G2S_DB_BG0HOFS_OFFSET_SIZE                     9
+#define REG_G2S_DB_BG0HOFS_OFFSET_MASK                     0x01ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG0HOFS_FIELD( offset ) \
+    (u16)( \
+    ((u32)(offset) << REG_G2S_DB_BG0HOFS_OFFSET_SHIFT))
+#endif
+
+
+/* DB_BG0VOFS */
+
+#define REG_G2S_DB_BG0VOFS_OFFSET_SHIFT                    0
+#define REG_G2S_DB_BG0VOFS_OFFSET_SIZE                     9
+#define REG_G2S_DB_BG0VOFS_OFFSET_MASK                     0x01ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG0VOFS_FIELD( offset ) \
+    (u16)( \
+    ((u32)(offset) << REG_G2S_DB_BG0VOFS_OFFSET_SHIFT))
+#endif
+
+
+/* DB_BG1OFS */
+
+#define REG_G2S_DB_BG1OFS_VOFFSET_SHIFT                    16
+#define REG_G2S_DB_BG1OFS_VOFFSET_SIZE                     9
+#define REG_G2S_DB_BG1OFS_VOFFSET_MASK                     0x01ff0000
+
+#define REG_G2S_DB_BG1OFS_HOFFSET_SHIFT                    0
+#define REG_G2S_DB_BG1OFS_HOFFSET_SIZE                     9
+#define REG_G2S_DB_BG1OFS_HOFFSET_MASK                     0x000001ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG1OFS_FIELD( voffset, hoffset ) \
+    (u32)( \
+    ((u32)(voffset) << REG_G2S_DB_BG1OFS_VOFFSET_SHIFT) | \
+    ((u32)(hoffset) << REG_G2S_DB_BG1OFS_HOFFSET_SHIFT))
+#endif
+
+
+/* DB_BG1HOFS */
+
+#define REG_G2S_DB_BG1HOFS_OFFSET_SHIFT                    0
+#define REG_G2S_DB_BG1HOFS_OFFSET_SIZE                     9
+#define REG_G2S_DB_BG1HOFS_OFFSET_MASK                     0x01ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG1HOFS_FIELD( offset ) \
+    (u16)( \
+    ((u32)(offset) << REG_G2S_DB_BG1HOFS_OFFSET_SHIFT))
+#endif
+
+
+/* DB_BG1VOFS */
+
+#define REG_G2S_DB_BG1VOFS_OFFSET_SHIFT                    0
+#define REG_G2S_DB_BG1VOFS_OFFSET_SIZE                     9
+#define REG_G2S_DB_BG1VOFS_OFFSET_MASK                     0x01ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG1VOFS_FIELD( offset ) \
+    (u16)( \
+    ((u32)(offset) << REG_G2S_DB_BG1VOFS_OFFSET_SHIFT))
+#endif
+
+
+/* DB_BG2OFS */
+
+#define REG_G2S_DB_BG2OFS_VOFFSET_SHIFT                    16
+#define REG_G2S_DB_BG2OFS_VOFFSET_SIZE                     9
+#define REG_G2S_DB_BG2OFS_VOFFSET_MASK                     0x01ff0000
+
+#define REG_G2S_DB_BG2OFS_HOFFSET_SHIFT                    0
+#define REG_G2S_DB_BG2OFS_HOFFSET_SIZE                     9
+#define REG_G2S_DB_BG2OFS_HOFFSET_MASK                     0x000001ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG2OFS_FIELD( voffset, hoffset ) \
+    (u32)( \
+    ((u32)(voffset) << REG_G2S_DB_BG2OFS_VOFFSET_SHIFT) | \
+    ((u32)(hoffset) << REG_G2S_DB_BG2OFS_HOFFSET_SHIFT))
+#endif
+
+
+/* DB_BG2HOFS */
+
+#define REG_G2S_DB_BG2HOFS_OFFSET_SHIFT                    0
+#define REG_G2S_DB_BG2HOFS_OFFSET_SIZE                     9
+#define REG_G2S_DB_BG2HOFS_OFFSET_MASK                     0x01ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG2HOFS_FIELD( offset ) \
+    (u16)( \
+    ((u32)(offset) << REG_G2S_DB_BG2HOFS_OFFSET_SHIFT))
+#endif
+
+
+/* DB_BG2VOFS */
+
+#define REG_G2S_DB_BG2VOFS_OFFSET_SHIFT                    0
+#define REG_G2S_DB_BG2VOFS_OFFSET_SIZE                     9
+#define REG_G2S_DB_BG2VOFS_OFFSET_MASK                     0x01ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG2VOFS_FIELD( offset ) \
+    (u16)( \
+    ((u32)(offset) << REG_G2S_DB_BG2VOFS_OFFSET_SHIFT))
+#endif
+
+
+/* DB_BG3OFS */
+
+#define REG_G2S_DB_BG3OFS_VOFFSET_SHIFT                    16
+#define REG_G2S_DB_BG3OFS_VOFFSET_SIZE                     9
+#define REG_G2S_DB_BG3OFS_VOFFSET_MASK                     0x01ff0000
+
+#define REG_G2S_DB_BG3OFS_HOFFSET_SHIFT                    0
+#define REG_G2S_DB_BG3OFS_HOFFSET_SIZE                     9
+#define REG_G2S_DB_BG3OFS_HOFFSET_MASK                     0x000001ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG3OFS_FIELD( voffset, hoffset ) \
+    (u32)( \
+    ((u32)(voffset) << REG_G2S_DB_BG3OFS_VOFFSET_SHIFT) | \
+    ((u32)(hoffset) << REG_G2S_DB_BG3OFS_HOFFSET_SHIFT))
+#endif
+
+
+/* DB_BG3HOFS */
+
+#define REG_G2S_DB_BG3HOFS_OFFSET_SHIFT                    0
+#define REG_G2S_DB_BG3HOFS_OFFSET_SIZE                     9
+#define REG_G2S_DB_BG3HOFS_OFFSET_MASK                     0x01ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG3HOFS_FIELD( offset ) \
+    (u16)( \
+    ((u32)(offset) << REG_G2S_DB_BG3HOFS_OFFSET_SHIFT))
+#endif
+
+
+/* DB_BG3VOFS */
+
+#define REG_G2S_DB_BG3VOFS_OFFSET_SHIFT                    0
+#define REG_G2S_DB_BG3VOFS_OFFSET_SIZE                     9
+#define REG_G2S_DB_BG3VOFS_OFFSET_MASK                     0x01ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG3VOFS_FIELD( offset ) \
+    (u16)( \
+    ((u32)(offset) << REG_G2S_DB_BG3VOFS_OFFSET_SHIFT))
+#endif
+
+
+/* DB_BG2PA */
+
+#define REG_G2S_DB_BG2PA_S_SHIFT                           15
+#define REG_G2S_DB_BG2PA_S_SIZE                            1
+#define REG_G2S_DB_BG2PA_S_MASK                            0x8000
+
+#define REG_G2S_DB_BG2PA_INTEGER_DX_SHIFT                  8
+#define REG_G2S_DB_BG2PA_INTEGER_DX_SIZE                   7
+#define REG_G2S_DB_BG2PA_INTEGER_DX_MASK                   0x7f00
+
+#define REG_G2S_DB_BG2PA_DECIMAL_DX_SHIFT                  0
+#define REG_G2S_DB_BG2PA_DECIMAL_DX_SIZE                   8
+#define REG_G2S_DB_BG2PA_DECIMAL_DX_MASK                   0x00ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG2PA_FIELD( s, integer_dx, decimal_dx ) \
+    (u16)( \
+    ((u32)(s) << REG_G2S_DB_BG2PA_S_SHIFT) | \
+    ((u32)(integer_dx) << REG_G2S_DB_BG2PA_INTEGER_DX_SHIFT) | \
+    ((u32)(decimal_dx) << REG_G2S_DB_BG2PA_DECIMAL_DX_SHIFT))
+#endif
+
+
+/* DB_BG2PB */
+
+#define REG_G2S_DB_BG2PB_S_SHIFT                           15
+#define REG_G2S_DB_BG2PB_S_SIZE                            1
+#define REG_G2S_DB_BG2PB_S_MASK                            0x8000
+
+#define REG_G2S_DB_BG2PB_INTEGER_DMX_SHIFT                 8
+#define REG_G2S_DB_BG2PB_INTEGER_DMX_SIZE                  7
+#define REG_G2S_DB_BG2PB_INTEGER_DMX_MASK                  0x7f00
+
+#define REG_G2S_DB_BG2PB_DECIMAL_DMX_SHIFT                 0
+#define REG_G2S_DB_BG2PB_DECIMAL_DMX_SIZE                  8
+#define REG_G2S_DB_BG2PB_DECIMAL_DMX_MASK                  0x00ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG2PB_FIELD( s, integer_dmx, decimal_dmx ) \
+    (u16)( \
+    ((u32)(s) << REG_G2S_DB_BG2PB_S_SHIFT) | \
+    ((u32)(integer_dmx) << REG_G2S_DB_BG2PB_INTEGER_DMX_SHIFT) | \
+    ((u32)(decimal_dmx) << REG_G2S_DB_BG2PB_DECIMAL_DMX_SHIFT))
+#endif
+
+
+/* DB_BG2PC */
+
+#define REG_G2S_DB_BG2PC_S_SHIFT                           15
+#define REG_G2S_DB_BG2PC_S_SIZE                            1
+#define REG_G2S_DB_BG2PC_S_MASK                            0x8000
+
+#define REG_G2S_DB_BG2PC_INTEGER_DY_SHIFT                  8
+#define REG_G2S_DB_BG2PC_INTEGER_DY_SIZE                   7
+#define REG_G2S_DB_BG2PC_INTEGER_DY_MASK                   0x7f00
+
+#define REG_G2S_DB_BG2PC_DECIMAL_DY_SHIFT                  0
+#define REG_G2S_DB_BG2PC_DECIMAL_DY_SIZE                   8
+#define REG_G2S_DB_BG2PC_DECIMAL_DY_MASK                   0x00ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG2PC_FIELD( s, integer_dy, decimal_dy ) \
+    (u16)( \
+    ((u32)(s) << REG_G2S_DB_BG2PC_S_SHIFT) | \
+    ((u32)(integer_dy) << REG_G2S_DB_BG2PC_INTEGER_DY_SHIFT) | \
+    ((u32)(decimal_dy) << REG_G2S_DB_BG2PC_DECIMAL_DY_SHIFT))
+#endif
+
+
+/* DB_BG2PD */
+
+#define REG_G2S_DB_BG2PD_S_SHIFT                           15
+#define REG_G2S_DB_BG2PD_S_SIZE                            1
+#define REG_G2S_DB_BG2PD_S_MASK                            0x8000
+
+#define REG_G2S_DB_BG2PD_INTEGER_DMY_SHIFT                 8
+#define REG_G2S_DB_BG2PD_INTEGER_DMY_SIZE                  7
+#define REG_G2S_DB_BG2PD_INTEGER_DMY_MASK                  0x7f00
+
+#define REG_G2S_DB_BG2PD_DECIMAL_DMY_SHIFT                 0
+#define REG_G2S_DB_BG2PD_DECIMAL_DMY_SIZE                  8
+#define REG_G2S_DB_BG2PD_DECIMAL_DMY_MASK                  0x00ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG2PD_FIELD( s, integer_dmy, decimal_dmy ) \
+    (u16)( \
+    ((u32)(s) << REG_G2S_DB_BG2PD_S_SHIFT) | \
+    ((u32)(integer_dmy) << REG_G2S_DB_BG2PD_INTEGER_DMY_SHIFT) | \
+    ((u32)(decimal_dmy) << REG_G2S_DB_BG2PD_DECIMAL_DMY_SHIFT))
+#endif
+
+
+/* DB_BG2X */
+
+#define REG_G2S_DB_BG2X_S_SHIFT                            27
+#define REG_G2S_DB_BG2X_S_SIZE                             1
+#define REG_G2S_DB_BG2X_S_MASK                             0x08000000
+
+#define REG_G2S_DB_BG2X_INTEGER_SX_SHIFT                   8
+#define REG_G2S_DB_BG2X_INTEGER_SX_SIZE                    19
+#define REG_G2S_DB_BG2X_INTEGER_SX_MASK                    0x07ffff00
+
+#define REG_G2S_DB_BG2X_DECIMAL_SX_SHIFT                   0
+#define REG_G2S_DB_BG2X_DECIMAL_SX_SIZE                    8
+#define REG_G2S_DB_BG2X_DECIMAL_SX_MASK                    0x000000ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG2X_FIELD( s, integer_sx, decimal_sx ) \
+    (u32)( \
+    ((u32)(s) << REG_G2S_DB_BG2X_S_SHIFT) | \
+    ((u32)(integer_sx) << REG_G2S_DB_BG2X_INTEGER_SX_SHIFT) | \
+    ((u32)(decimal_sx) << REG_G2S_DB_BG2X_DECIMAL_SX_SHIFT))
+#endif
+
+
+/* DB_BG2Y */
+
+#define REG_G2S_DB_BG2Y_S_SHIFT                            27
+#define REG_G2S_DB_BG2Y_S_SIZE                             1
+#define REG_G2S_DB_BG2Y_S_MASK                             0x08000000
+
+#define REG_G2S_DB_BG2Y_INTEGER_SY_SHIFT                   8
+#define REG_G2S_DB_BG2Y_INTEGER_SY_SIZE                    19
+#define REG_G2S_DB_BG2Y_INTEGER_SY_MASK                    0x07ffff00
+
+#define REG_G2S_DB_BG2Y_DECIMAL_SY_SHIFT                   0
+#define REG_G2S_DB_BG2Y_DECIMAL_SY_SIZE                    8
+#define REG_G2S_DB_BG2Y_DECIMAL_SY_MASK                    0x000000ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG2Y_FIELD( s, integer_sy, decimal_sy ) \
+    (u32)( \
+    ((u32)(s) << REG_G2S_DB_BG2Y_S_SHIFT) | \
+    ((u32)(integer_sy) << REG_G2S_DB_BG2Y_INTEGER_SY_SHIFT) | \
+    ((u32)(decimal_sy) << REG_G2S_DB_BG2Y_DECIMAL_SY_SHIFT))
+#endif
+
+
+/* DB_BG3PA */
+
+#define REG_G2S_DB_BG3PA_S_SHIFT                           15
+#define REG_G2S_DB_BG3PA_S_SIZE                            1
+#define REG_G2S_DB_BG3PA_S_MASK                            0x8000
+
+#define REG_G2S_DB_BG3PA_INTEGER_DX_SHIFT                  8
+#define REG_G2S_DB_BG3PA_INTEGER_DX_SIZE                   7
+#define REG_G2S_DB_BG3PA_INTEGER_DX_MASK                   0x7f00
+
+#define REG_G2S_DB_BG3PA_DECIMAL_DX_SHIFT                  0
+#define REG_G2S_DB_BG3PA_DECIMAL_DX_SIZE                   8
+#define REG_G2S_DB_BG3PA_DECIMAL_DX_MASK                   0x00ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG3PA_FIELD( s, integer_dx, decimal_dx ) \
+    (u16)( \
+    ((u32)(s) << REG_G2S_DB_BG3PA_S_SHIFT) | \
+    ((u32)(integer_dx) << REG_G2S_DB_BG3PA_INTEGER_DX_SHIFT) | \
+    ((u32)(decimal_dx) << REG_G2S_DB_BG3PA_DECIMAL_DX_SHIFT))
+#endif
+
+
+/* DB_BG3PB */
+
+#define REG_G2S_DB_BG3PB_S_SHIFT                           15
+#define REG_G2S_DB_BG3PB_S_SIZE                            1
+#define REG_G2S_DB_BG3PB_S_MASK                            0x8000
+
+#define REG_G2S_DB_BG3PB_INTEGER_DMX_SHIFT                 8
+#define REG_G2S_DB_BG3PB_INTEGER_DMX_SIZE                  7
+#define REG_G2S_DB_BG3PB_INTEGER_DMX_MASK                  0x7f00
+
+#define REG_G2S_DB_BG3PB_DECIMAL_DMX_SHIFT                 0
+#define REG_G2S_DB_BG3PB_DECIMAL_DMX_SIZE                  8
+#define REG_G2S_DB_BG3PB_DECIMAL_DMX_MASK                  0x00ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG3PB_FIELD( s, integer_dmx, decimal_dmx ) \
+    (u16)( \
+    ((u32)(s) << REG_G2S_DB_BG3PB_S_SHIFT) | \
+    ((u32)(integer_dmx) << REG_G2S_DB_BG3PB_INTEGER_DMX_SHIFT) | \
+    ((u32)(decimal_dmx) << REG_G2S_DB_BG3PB_DECIMAL_DMX_SHIFT))
+#endif
+
+
+/* DB_BG3PC */
+
+#define REG_G2S_DB_BG3PC_S_SHIFT                           15
+#define REG_G2S_DB_BG3PC_S_SIZE                            1
+#define REG_G2S_DB_BG3PC_S_MASK                            0x8000
+
+#define REG_G2S_DB_BG3PC_INTEGER_DY_SHIFT                  8
+#define REG_G2S_DB_BG3PC_INTEGER_DY_SIZE                   7
+#define REG_G2S_DB_BG3PC_INTEGER_DY_MASK                   0x7f00
+
+#define REG_G2S_DB_BG3PC_DECIMAL_DY_SHIFT                  0
+#define REG_G2S_DB_BG3PC_DECIMAL_DY_SIZE                   8
+#define REG_G2S_DB_BG3PC_DECIMAL_DY_MASK                   0x00ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG3PC_FIELD( s, integer_dy, decimal_dy ) \
+    (u16)( \
+    ((u32)(s) << REG_G2S_DB_BG3PC_S_SHIFT) | \
+    ((u32)(integer_dy) << REG_G2S_DB_BG3PC_INTEGER_DY_SHIFT) | \
+    ((u32)(decimal_dy) << REG_G2S_DB_BG3PC_DECIMAL_DY_SHIFT))
+#endif
+
+
+/* DB_BG3PD */
+
+#define REG_G2S_DB_BG3PD_S_SHIFT                           15
+#define REG_G2S_DB_BG3PD_S_SIZE                            1
+#define REG_G2S_DB_BG3PD_S_MASK                            0x8000
+
+#define REG_G2S_DB_BG3PD_INTEGER_DMY_SHIFT                 8
+#define REG_G2S_DB_BG3PD_INTEGER_DMY_SIZE                  7
+#define REG_G2S_DB_BG3PD_INTEGER_DMY_MASK                  0x7f00
+
+#define REG_G2S_DB_BG3PD_DECIMAL_DMY_SHIFT                 0
+#define REG_G2S_DB_BG3PD_DECIMAL_DMY_SIZE                  8
+#define REG_G2S_DB_BG3PD_DECIMAL_DMY_MASK                  0x00ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG3PD_FIELD( s, integer_dmy, decimal_dmy ) \
+    (u16)( \
+    ((u32)(s) << REG_G2S_DB_BG3PD_S_SHIFT) | \
+    ((u32)(integer_dmy) << REG_G2S_DB_BG3PD_INTEGER_DMY_SHIFT) | \
+    ((u32)(decimal_dmy) << REG_G2S_DB_BG3PD_DECIMAL_DMY_SHIFT))
+#endif
+
+
+/* DB_BG3X */
+
+#define REG_G2S_DB_BG3X_S_SHIFT                            27
+#define REG_G2S_DB_BG3X_S_SIZE                             1
+#define REG_G2S_DB_BG3X_S_MASK                             0x08000000
+
+#define REG_G2S_DB_BG3X_INTEGER_SX_SHIFT                   8
+#define REG_G2S_DB_BG3X_INTEGER_SX_SIZE                    19
+#define REG_G2S_DB_BG3X_INTEGER_SX_MASK                    0x07ffff00
+
+#define REG_G2S_DB_BG3X_DECIMAL_SX_SHIFT                   0
+#define REG_G2S_DB_BG3X_DECIMAL_SX_SIZE                    8
+#define REG_G2S_DB_BG3X_DECIMAL_SX_MASK                    0x000000ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG3X_FIELD( s, integer_sx, decimal_sx ) \
+    (u32)( \
+    ((u32)(s) << REG_G2S_DB_BG3X_S_SHIFT) | \
+    ((u32)(integer_sx) << REG_G2S_DB_BG3X_INTEGER_SX_SHIFT) | \
+    ((u32)(decimal_sx) << REG_G2S_DB_BG3X_DECIMAL_SX_SHIFT))
+#endif
+
+
+/* DB_BG3Y */
+
+#define REG_G2S_DB_BG3Y_S_SHIFT                            27
+#define REG_G2S_DB_BG3Y_S_SIZE                             1
+#define REG_G2S_DB_BG3Y_S_MASK                             0x08000000
+
+#define REG_G2S_DB_BG3Y_INTEGER_SY_SHIFT                   8
+#define REG_G2S_DB_BG3Y_INTEGER_SY_SIZE                    19
+#define REG_G2S_DB_BG3Y_INTEGER_SY_MASK                    0x07ffff00
+
+#define REG_G2S_DB_BG3Y_DECIMAL_SY_SHIFT                   0
+#define REG_G2S_DB_BG3Y_DECIMAL_SY_SIZE                    8
+#define REG_G2S_DB_BG3Y_DECIMAL_SY_MASK                    0x000000ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BG3Y_FIELD( s, integer_sy, decimal_sy ) \
+    (u32)( \
+    ((u32)(s) << REG_G2S_DB_BG3Y_S_SHIFT) | \
+    ((u32)(integer_sy) << REG_G2S_DB_BG3Y_INTEGER_SY_SHIFT) | \
+    ((u32)(decimal_sy) << REG_G2S_DB_BG3Y_DECIMAL_SY_SHIFT))
+#endif
+
+
+/* DB_WIN0H */
+
+#define REG_G2S_DB_WIN0H_LEFTX_SHIFT                       8
+#define REG_G2S_DB_WIN0H_LEFTX_SIZE                        8
+#define REG_G2S_DB_WIN0H_LEFTX_MASK                        0xff00
+
+#define REG_G2S_DB_WIN0H_RIGHTX_SHIFT                      0
+#define REG_G2S_DB_WIN0H_RIGHTX_SIZE                       8
+#define REG_G2S_DB_WIN0H_RIGHTX_MASK                       0x00ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_WIN0H_FIELD( leftx, rightx ) \
+    (u16)( \
+    ((u32)(leftx) << REG_G2S_DB_WIN0H_LEFTX_SHIFT) | \
+    ((u32)(rightx) << REG_G2S_DB_WIN0H_RIGHTX_SHIFT))
+#endif
+
+
+/* DB_WIN1H */
+
+#define REG_G2S_DB_WIN1H_LEFTX_SHIFT                       8
+#define REG_G2S_DB_WIN1H_LEFTX_SIZE                        8
+#define REG_G2S_DB_WIN1H_LEFTX_MASK                        0xff00
+
+#define REG_G2S_DB_WIN1H_RIGHTX_SHIFT                      0
+#define REG_G2S_DB_WIN1H_RIGHTX_SIZE                       8
+#define REG_G2S_DB_WIN1H_RIGHTX_MASK                       0x00ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_WIN1H_FIELD( leftx, rightx ) \
+    (u16)( \
+    ((u32)(leftx) << REG_G2S_DB_WIN1H_LEFTX_SHIFT) | \
+    ((u32)(rightx) << REG_G2S_DB_WIN1H_RIGHTX_SHIFT))
+#endif
+
+
+/* DB_WIN0V */
+
+#define REG_G2S_DB_WIN0V_UPY_SHIFT                         8
+#define REG_G2S_DB_WIN0V_UPY_SIZE                          8
+#define REG_G2S_DB_WIN0V_UPY_MASK                          0xff00
+
+#define REG_G2S_DB_WIN0V_DOWNY_SHIFT                       0
+#define REG_G2S_DB_WIN0V_DOWNY_SIZE                        8
+#define REG_G2S_DB_WIN0V_DOWNY_MASK                        0x00ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_WIN0V_FIELD( upy, downy ) \
+    (u16)( \
+    ((u32)(upy) << REG_G2S_DB_WIN0V_UPY_SHIFT) | \
+    ((u32)(downy) << REG_G2S_DB_WIN0V_DOWNY_SHIFT))
+#endif
+
+
+/* DB_WIN1V */
+
+#define REG_G2S_DB_WIN1V_UPY_SHIFT                         8
+#define REG_G2S_DB_WIN1V_UPY_SIZE                          8
+#define REG_G2S_DB_WIN1V_UPY_MASK                          0xff00
+
+#define REG_G2S_DB_WIN1V_DOWNY_SHIFT                       0
+#define REG_G2S_DB_WIN1V_DOWNY_SIZE                        8
+#define REG_G2S_DB_WIN1V_DOWNY_MASK                        0x00ff
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_WIN1V_FIELD( upy, downy ) \
+    (u16)( \
+    ((u32)(upy) << REG_G2S_DB_WIN1V_UPY_SHIFT) | \
+    ((u32)(downy) << REG_G2S_DB_WIN1V_DOWNY_SHIFT))
+#endif
+
+
+/* DB_WININ */
+
+#define REG_G2S_DB_WININ_WIN1IN_SHIFT                      8
+#define REG_G2S_DB_WININ_WIN1IN_SIZE                       6
+#define REG_G2S_DB_WININ_WIN1IN_MASK                       0x3f00
+
+#define REG_G2S_DB_WININ_WIN0IN_SHIFT                      0
+#define REG_G2S_DB_WININ_WIN0IN_SIZE                       6
+#define REG_G2S_DB_WININ_WIN0IN_MASK                       0x003f
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_WININ_FIELD( win1in, win0in ) \
+    (u16)( \
+    ((u32)(win1in) << REG_G2S_DB_WININ_WIN1IN_SHIFT) | \
+    ((u32)(win0in) << REG_G2S_DB_WININ_WIN0IN_SHIFT))
+#endif
+
+
+/* DB_WINOUT */
+
+#define REG_G2S_DB_WINOUT_OBJWININ_SHIFT                   8
+#define REG_G2S_DB_WINOUT_OBJWININ_SIZE                    6
+#define REG_G2S_DB_WINOUT_OBJWININ_MASK                    0x3f00
+
+#define REG_G2S_DB_WINOUT_WINOUT_SHIFT                     0
+#define REG_G2S_DB_WINOUT_WINOUT_SIZE                      6
+#define REG_G2S_DB_WINOUT_WINOUT_MASK                      0x003f
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_WINOUT_FIELD( objwinin, winout ) \
+    (u16)( \
+    ((u32)(objwinin) << REG_G2S_DB_WINOUT_OBJWININ_SHIFT) | \
+    ((u32)(winout) << REG_G2S_DB_WINOUT_WINOUT_SHIFT))
+#endif
+
+
+/* DB_MOSAIC */
+
+#define REG_G2S_DB_MOSAIC_OBJVSIZE_SHIFT                   12
+#define REG_G2S_DB_MOSAIC_OBJVSIZE_SIZE                    4
+#define REG_G2S_DB_MOSAIC_OBJVSIZE_MASK                    0xf000
+
+#define REG_G2S_DB_MOSAIC_OBJHSIZE_SHIFT                   8
+#define REG_G2S_DB_MOSAIC_OBJHSIZE_SIZE                    4
+#define REG_G2S_DB_MOSAIC_OBJHSIZE_MASK                    0x0f00
+
+#define REG_G2S_DB_MOSAIC_BGVSIZE_SHIFT                    4
+#define REG_G2S_DB_MOSAIC_BGVSIZE_SIZE                     4
+#define REG_G2S_DB_MOSAIC_BGVSIZE_MASK                     0x00f0
+
+#define REG_G2S_DB_MOSAIC_BGHSIZE_SHIFT                    0
+#define REG_G2S_DB_MOSAIC_BGHSIZE_SIZE                     4
+#define REG_G2S_DB_MOSAIC_BGHSIZE_MASK                     0x000f
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_MOSAIC_FIELD( objvsize, objhsize, bgvsize, bghsize ) \
+    (u16)( \
+    ((u32)(objvsize) << REG_G2S_DB_MOSAIC_OBJVSIZE_SHIFT) | \
+    ((u32)(objhsize) << REG_G2S_DB_MOSAIC_OBJHSIZE_SHIFT) | \
+    ((u32)(bgvsize) << REG_G2S_DB_MOSAIC_BGVSIZE_SHIFT) | \
+    ((u32)(bghsize) << REG_G2S_DB_MOSAIC_BGHSIZE_SHIFT))
+#endif
+
+
+/* DB_BLDCNT */
+
+#define REG_G2S_DB_BLDCNT_PLANE2_SHIFT                     8
+#define REG_G2S_DB_BLDCNT_PLANE2_SIZE                      6
+#define REG_G2S_DB_BLDCNT_PLANE2_MASK                      0x3f00
+
+#define REG_G2S_DB_BLDCNT_EFFECT_SHIFT                     6
+#define REG_G2S_DB_BLDCNT_EFFECT_SIZE                      2
+#define REG_G2S_DB_BLDCNT_EFFECT_MASK                      0x00c0
+
+#define REG_G2S_DB_BLDCNT_PLANE1_SHIFT                     0
+#define REG_G2S_DB_BLDCNT_PLANE1_SIZE                      6
+#define REG_G2S_DB_BLDCNT_PLANE1_MASK                      0x003f
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BLDCNT_FIELD( plane2, effect, plane1 ) \
+    (u16)( \
+    ((u32)(plane2) << REG_G2S_DB_BLDCNT_PLANE2_SHIFT) | \
+    ((u32)(effect) << REG_G2S_DB_BLDCNT_EFFECT_SHIFT) | \
+    ((u32)(plane1) << REG_G2S_DB_BLDCNT_PLANE1_SHIFT))
+#endif
+
+
+/* DB_BLDALPHA */
+
+#define REG_G2S_DB_BLDALPHA_EVB_SHIFT                      8
+#define REG_G2S_DB_BLDALPHA_EVB_SIZE                       5
+#define REG_G2S_DB_BLDALPHA_EVB_MASK                       0x1f00
+
+#define REG_G2S_DB_BLDALPHA_EVA_SHIFT                      0
+#define REG_G2S_DB_BLDALPHA_EVA_SIZE                       5
+#define REG_G2S_DB_BLDALPHA_EVA_MASK                       0x001f
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BLDALPHA_FIELD( evb, eva ) \
+    (u16)( \
+    ((u32)(evb) << REG_G2S_DB_BLDALPHA_EVB_SHIFT) | \
+    ((u32)(eva) << REG_G2S_DB_BLDALPHA_EVA_SHIFT))
+#endif
+
+
+/* DB_BLDY */
+
+#define REG_G2S_DB_BLDY_EVY_SHIFT                          0
+#define REG_G2S_DB_BLDY_EVY_SIZE                           5
+#define REG_G2S_DB_BLDY_EVY_MASK                           0x001f
+
+#ifndef SDK_ASM
+#define REG_G2S_DB_BLDY_FIELD( evy ) \
+    (u16)( \
+    ((u32)(evy) << REG_G2S_DB_BLDY_EVY_SHIFT))
+#endif
+
+
+
+// ---- ioreg_MI.h ----
+/*
+ * Definition of Register offsets, addresses and variables.
+ */
+
+
+/* DMA0SAD */
+
+#define REG_DMA0SAD_OFFSET                                 0x0b0
+#define REG_DMA0SAD_ADDR                                   (HW_REG_BASE + REG_DMA0SAD_OFFSET)
+#define reg_MI_DMA0SAD                                     (*( REGType32v *) REG_DMA0SAD_ADDR)
+
+/* DMA0DAD */
+
+#define REG_DMA0DAD_OFFSET                                 0x0b4
+#define REG_DMA0DAD_ADDR                                   (HW_REG_BASE + REG_DMA0DAD_OFFSET)
+#define reg_MI_DMA0DAD                                     (*( REGType32v *) REG_DMA0DAD_ADDR)
+
+/* DMA0CNT */
+
+#define REG_DMA0CNT_OFFSET                                 0x0b8
+#define REG_DMA0CNT_ADDR                                   (HW_REG_BASE + REG_DMA0CNT_OFFSET)
+#define reg_MI_DMA0CNT                                     (*( REGType32v *) REG_DMA0CNT_ADDR)
+
+/* DMA1SAD */
+
+#define REG_DMA1SAD_OFFSET                                 0x0bc
+#define REG_DMA1SAD_ADDR                                   (HW_REG_BASE + REG_DMA1SAD_OFFSET)
+#define reg_MI_DMA1SAD                                     (*( REGType32v *) REG_DMA1SAD_ADDR)
+
+/* DMA1DAD */
+
+#define REG_DMA1DAD_OFFSET                                 0x0c0
+#define REG_DMA1DAD_ADDR                                   (HW_REG_BASE + REG_DMA1DAD_OFFSET)
+#define reg_MI_DMA1DAD                                     (*( REGType32v *) REG_DMA1DAD_ADDR)
+
+/* DMA1CNT */
+
+#define REG_DMA1CNT_OFFSET                                 0x0c4
+#define REG_DMA1CNT_ADDR                                   (HW_REG_BASE + REG_DMA1CNT_OFFSET)
+#define reg_MI_DMA1CNT                                     (*( REGType32v *) REG_DMA1CNT_ADDR)
+
+/* DMA2SAD */
+
+#define REG_DMA2SAD_OFFSET                                 0x0c8
+#define REG_DMA2SAD_ADDR                                   (HW_REG_BASE + REG_DMA2SAD_OFFSET)
+#define reg_MI_DMA2SAD                                     (*( REGType32v *) REG_DMA2SAD_ADDR)
+
+/* DMA2DAD */
+
+#define REG_DMA2DAD_OFFSET                                 0x0cc
+#define REG_DMA2DAD_ADDR                                   (HW_REG_BASE + REG_DMA2DAD_OFFSET)
+#define reg_MI_DMA2DAD                                     (*( REGType32v *) REG_DMA2DAD_ADDR)
+
+/* DMA2CNT */
+
+#define REG_DMA2CNT_OFFSET                                 0x0d0
+#define REG_DMA2CNT_ADDR                                   (HW_REG_BASE + REG_DMA2CNT_OFFSET)
+#define reg_MI_DMA2CNT                                     (*( REGType32v *) REG_DMA2CNT_ADDR)
+
+/* DMA3SAD */
+
+#define REG_DMA3SAD_OFFSET                                 0x0d4
+#define REG_DMA3SAD_ADDR                                   (HW_REG_BASE + REG_DMA3SAD_OFFSET)
+#define reg_MI_DMA3SAD                                     (*( REGType32v *) REG_DMA3SAD_ADDR)
+
+/* DMA3DAD */
+
+#define REG_DMA3DAD_OFFSET                                 0x0d8
+#define REG_DMA3DAD_ADDR                                   (HW_REG_BASE + REG_DMA3DAD_OFFSET)
+#define reg_MI_DMA3DAD                                     (*( REGType32v *) REG_DMA3DAD_ADDR)
+
+/* DMA3CNT */
+
+#define REG_DMA3CNT_OFFSET                                 0x0dc
+#define REG_DMA3CNT_ADDR                                   (HW_REG_BASE + REG_DMA3CNT_OFFSET)
+#define reg_MI_DMA3CNT                                     (*( REGType32v *) REG_DMA3CNT_ADDR)
+
+/* DMA0_CLR_DATA */
+
+#define REG_DMA0_CLR_DATA_OFFSET                           0x0e0
+#define REG_DMA0_CLR_DATA_ADDR                             (HW_REG_BASE + REG_DMA0_CLR_DATA_OFFSET)
+#define reg_MI_DMA0_CLR_DATA                               (*( REGType32v *) REG_DMA0_CLR_DATA_ADDR)
+
+/* DMA1_CLR_DATA */
+
+#define REG_DMA1_CLR_DATA_OFFSET                           0x0e4
+#define REG_DMA1_CLR_DATA_ADDR                             (HW_REG_BASE + REG_DMA1_CLR_DATA_OFFSET)
+#define reg_MI_DMA1_CLR_DATA                               (*( REGType32v *) REG_DMA1_CLR_DATA_ADDR)
+
+/* DMA2_CLR_DATA */
+
+#define REG_DMA2_CLR_DATA_OFFSET                           0x0e8
+#define REG_DMA2_CLR_DATA_ADDR                             (HW_REG_BASE + REG_DMA2_CLR_DATA_OFFSET)
+#define reg_MI_DMA2_CLR_DATA                               (*( REGType32v *) REG_DMA2_CLR_DATA_ADDR)
+
+/* DMA3_CLR_DATA */
+
+#define REG_DMA3_CLR_DATA_OFFSET                           0x0ec
+#define REG_DMA3_CLR_DATA_ADDR                             (HW_REG_BASE + REG_DMA3_CLR_DATA_OFFSET)
+#define reg_MI_DMA3_CLR_DATA                               (*( REGType32v *) REG_DMA3_CLR_DATA_ADDR)
+
+/* MCCNT0 */
+
+#define REG_MCCNT0_OFFSET                                  0x1a0
+#define REG_MCCNT0_ADDR                                    (HW_REG_BASE + REG_MCCNT0_OFFSET)
+#define reg_MI_MCCNT0                                      (*( REGType16v *) REG_MCCNT0_ADDR)
+
+/* MCD0 */
+
+#define REG_MCD0_OFFSET                                    0x1a2
+#define REG_MCD0_ADDR                                      (HW_REG_BASE + REG_MCD0_OFFSET)
+#define reg_MI_MCD0                                        (*( REGType16v *) REG_MCD0_ADDR)
+
+/* MCD1 */
+
+#define REG_MCD1_OFFSET                                    0x100010
+#define REG_MCD1_ADDR                                      (HW_REG_BASE + REG_MCD1_OFFSET)
+#define reg_MI_MCD1                                        (*( REGType32v *) REG_MCD1_ADDR)
+
+/* MCCNT1 */
+
+#define REG_MCCNT1_OFFSET                                  0x1a4
+#define REG_MCCNT1_ADDR                                    (HW_REG_BASE + REG_MCCNT1_OFFSET)
+#define reg_MI_MCCNT1                                      (*( REGType32v *) REG_MCCNT1_ADDR)
+
+/* MCCMD0 */
+
+#define REG_MCCMD0_OFFSET                                  0x1a8
+#define REG_MCCMD0_ADDR                                    (HW_REG_BASE + REG_MCCMD0_OFFSET)
+#define reg_MI_MCCMD0                                      (*( REGType32v *) REG_MCCMD0_ADDR)
+
+/* MCCMD1 */
+
+#define REG_MCCMD1_OFFSET                                  0x1ac
+#define REG_MCCMD1_ADDR                                    (HW_REG_BASE + REG_MCCMD1_OFFSET)
+#define reg_MI_MCCMD1                                      (*( REGType32v *) REG_MCCMD1_ADDR)
+
+/* EXMEMCNT */
+
+#define REG_EXMEMCNT_OFFSET                                0x204
+#define REG_EXMEMCNT_ADDR                                  (HW_REG_BASE + REG_EXMEMCNT_OFFSET)
+#define reg_MI_EXMEMCNT                                    (*( REGType16v *) REG_EXMEMCNT_ADDR)
+
+
+/*
+ * Definitions of Register fields
+ */
+
+
+/* DMA0SAD */
+
+#define REG_MI_DMA0SAD_DMASRC_SHIFT                        0
+#define REG_MI_DMA0SAD_DMASRC_SIZE                         28
+#define REG_MI_DMA0SAD_DMASRC_MASK                         0x0fffffff
+
+#ifndef SDK_ASM
+#define REG_MI_DMA0SAD_FIELD( dmasrc ) \
+    (u32)( \
+    ((u32)(dmasrc) << REG_MI_DMA0SAD_DMASRC_SHIFT))
+#endif
+
+
+/* DMA0DAD */
+
+#define REG_MI_DMA0DAD_DMADEST_SHIFT                       0
+#define REG_MI_DMA0DAD_DMADEST_SIZE                        28
+#define REG_MI_DMA0DAD_DMADEST_MASK                        0x0fffffff
+
+#ifndef SDK_ASM
+#define REG_MI_DMA0DAD_FIELD( dmadest ) \
+    (u32)( \
+    ((u32)(dmadest) << REG_MI_DMA0DAD_DMADEST_SHIFT))
+#endif
+
+
+/* DMA0CNT */
+
+#define REG_MI_DMA0CNT_E_SHIFT                             31
+#define REG_MI_DMA0CNT_E_SIZE                              1
+#define REG_MI_DMA0CNT_E_MASK                              0x80000000
+
+#define REG_MI_DMA0CNT_I_SHIFT                             30
+#define REG_MI_DMA0CNT_I_SIZE                              1
+#define REG_MI_DMA0CNT_I_MASK                              0x40000000
+
+#define REG_MI_DMA0CNT_MODE_SHIFT                          27
+#define REG_MI_DMA0CNT_MODE_SIZE                           3
+#define REG_MI_DMA0CNT_MODE_MASK                           0x38000000
+
+#define REG_MI_DMA0CNT_SB_SHIFT                            26
+#define REG_MI_DMA0CNT_SB_SIZE                             1
+#define REG_MI_DMA0CNT_SB_MASK                             0x04000000
+
+#define REG_MI_DMA0CNT_CM_SHIFT                            25
+#define REG_MI_DMA0CNT_CM_SIZE                             1
+#define REG_MI_DMA0CNT_CM_MASK                             0x02000000
+
+#define REG_MI_DMA0CNT_SAR_SHIFT                           23
+#define REG_MI_DMA0CNT_SAR_SIZE                            2
+#define REG_MI_DMA0CNT_SAR_MASK                            0x01800000
+
+#define REG_MI_DMA0CNT_DAR_SHIFT                           21
+#define REG_MI_DMA0CNT_DAR_SIZE                            2
+#define REG_MI_DMA0CNT_DAR_MASK                            0x00600000
+
+#define REG_MI_DMA0CNT_WORDCNT_SHIFT                       0
+#define REG_MI_DMA0CNT_WORDCNT_SIZE                        21
+#define REG_MI_DMA0CNT_WORDCNT_MASK                        0x001fffff
+
+#ifndef SDK_ASM
+#define REG_MI_DMA0CNT_FIELD( e, i, mode, sb, cm, sar, dar, wordcnt ) \
+    (u32)( \
+    ((u32)(e) << REG_MI_DMA0CNT_E_SHIFT) | \
+    ((u32)(i) << REG_MI_DMA0CNT_I_SHIFT) | \
+    ((u32)(mode) << REG_MI_DMA0CNT_MODE_SHIFT) | \
+    ((u32)(sb) << REG_MI_DMA0CNT_SB_SHIFT) | \
+    ((u32)(cm) << REG_MI_DMA0CNT_CM_SHIFT) | \
+    ((u32)(sar) << REG_MI_DMA0CNT_SAR_SHIFT) | \
+    ((u32)(dar) << REG_MI_DMA0CNT_DAR_SHIFT) | \
+    ((u32)(wordcnt) << REG_MI_DMA0CNT_WORDCNT_SHIFT))
+#endif
+
+
+/* DMA1SAD */
+
+#define REG_MI_DMA1SAD_DMASRC_SHIFT                        0
+#define REG_MI_DMA1SAD_DMASRC_SIZE                         28
+#define REG_MI_DMA1SAD_DMASRC_MASK                         0x0fffffff
+
+#ifndef SDK_ASM
+#define REG_MI_DMA1SAD_FIELD( dmasrc ) \
+    (u32)( \
+    ((u32)(dmasrc) << REG_MI_DMA1SAD_DMASRC_SHIFT))
+#endif
+
+
+/* DMA1DAD */
+
+#define REG_MI_DMA1DAD_DMADEST_SHIFT                       0
+#define REG_MI_DMA1DAD_DMADEST_SIZE                        28
+#define REG_MI_DMA1DAD_DMADEST_MASK                        0x0fffffff
+
+#ifndef SDK_ASM
+#define REG_MI_DMA1DAD_FIELD( dmadest ) \
+    (u32)( \
+    ((u32)(dmadest) << REG_MI_DMA1DAD_DMADEST_SHIFT))
+#endif
+
+
+/* DMA1CNT */
+
+#define REG_MI_DMA1CNT_E_SHIFT                             31
+#define REG_MI_DMA1CNT_E_SIZE                              1
+#define REG_MI_DMA1CNT_E_MASK                              0x80000000
+
+#define REG_MI_DMA1CNT_I_SHIFT                             30
+#define REG_MI_DMA1CNT_I_SIZE                              1
+#define REG_MI_DMA1CNT_I_MASK                              0x40000000
+
+#define REG_MI_DMA1CNT_MODE_SHIFT                          27
+#define REG_MI_DMA1CNT_MODE_SIZE                           3
+#define REG_MI_DMA1CNT_MODE_MASK                           0x38000000
+
+#define REG_MI_DMA1CNT_SB_SHIFT                            26
+#define REG_MI_DMA1CNT_SB_SIZE                             1
+#define REG_MI_DMA1CNT_SB_MASK                             0x04000000
+
+#define REG_MI_DMA1CNT_CM_SHIFT                            25
+#define REG_MI_DMA1CNT_CM_SIZE                             1
+#define REG_MI_DMA1CNT_CM_MASK                             0x02000000
+
+#define REG_MI_DMA1CNT_SAR_SHIFT                           23
+#define REG_MI_DMA1CNT_SAR_SIZE                            2
+#define REG_MI_DMA1CNT_SAR_MASK                            0x01800000
+
+#define REG_MI_DMA1CNT_DAR_SHIFT                           21
+#define REG_MI_DMA1CNT_DAR_SIZE                            2
+#define REG_MI_DMA1CNT_DAR_MASK                            0x00600000
+
+#define REG_MI_DMA1CNT_WORDCNT_SHIFT                       0
+#define REG_MI_DMA1CNT_WORDCNT_SIZE                        21
+#define REG_MI_DMA1CNT_WORDCNT_MASK                        0x001fffff
+
+#ifndef SDK_ASM
+#define REG_MI_DMA1CNT_FIELD( e, i, mode, sb, cm, sar, dar, wordcnt ) \
+    (u32)( \
+    ((u32)(e) << REG_MI_DMA1CNT_E_SHIFT) | \
+    ((u32)(i) << REG_MI_DMA1CNT_I_SHIFT) | \
+    ((u32)(mode) << REG_MI_DMA1CNT_MODE_SHIFT) | \
+    ((u32)(sb) << REG_MI_DMA1CNT_SB_SHIFT) | \
+    ((u32)(cm) << REG_MI_DMA1CNT_CM_SHIFT) | \
+    ((u32)(sar) << REG_MI_DMA1CNT_SAR_SHIFT) | \
+    ((u32)(dar) << REG_MI_DMA1CNT_DAR_SHIFT) | \
+    ((u32)(wordcnt) << REG_MI_DMA1CNT_WORDCNT_SHIFT))
+#endif
+
+
+/* DMA2SAD */
+
+#define REG_MI_DMA2SAD_DMASRC_SHIFT                        0
+#define REG_MI_DMA2SAD_DMASRC_SIZE                         28
+#define REG_MI_DMA2SAD_DMASRC_MASK                         0x0fffffff
+
+#ifndef SDK_ASM
+#define REG_MI_DMA2SAD_FIELD( dmasrc ) \
+    (u32)( \
+    ((u32)(dmasrc) << REG_MI_DMA2SAD_DMASRC_SHIFT))
+#endif
+
+
+/* DMA2DAD */
+
+#define REG_MI_DMA2DAD_DMADEST_SHIFT                       0
+#define REG_MI_DMA2DAD_DMADEST_SIZE                        28
+#define REG_MI_DMA2DAD_DMADEST_MASK                        0x0fffffff
+
+#ifndef SDK_ASM
+#define REG_MI_DMA2DAD_FIELD( dmadest ) \
+    (u32)( \
+    ((u32)(dmadest) << REG_MI_DMA2DAD_DMADEST_SHIFT))
+#endif
+
+
+/* DMA2CNT */
+
+#define REG_MI_DMA2CNT_E_SHIFT                             31
+#define REG_MI_DMA2CNT_E_SIZE                              1
+#define REG_MI_DMA2CNT_E_MASK                              0x80000000
+
+#define REG_MI_DMA2CNT_I_SHIFT                             30
+#define REG_MI_DMA2CNT_I_SIZE                              1
+#define REG_MI_DMA2CNT_I_MASK                              0x40000000
+
+#define REG_MI_DMA2CNT_MODE_SHIFT                          27
+#define REG_MI_DMA2CNT_MODE_SIZE                           3
+#define REG_MI_DMA2CNT_MODE_MASK                           0x38000000
+
+#define REG_MI_DMA2CNT_SB_SHIFT                            26
+#define REG_MI_DMA2CNT_SB_SIZE                             1
+#define REG_MI_DMA2CNT_SB_MASK                             0x04000000
+
+#define REG_MI_DMA2CNT_CM_SHIFT                            25
+#define REG_MI_DMA2CNT_CM_SIZE                             1
+#define REG_MI_DMA2CNT_CM_MASK                             0x02000000
+
+#define REG_MI_DMA2CNT_SAR_SHIFT                           23
+#define REG_MI_DMA2CNT_SAR_SIZE                            2
+#define REG_MI_DMA2CNT_SAR_MASK                            0x01800000
+
+#define REG_MI_DMA2CNT_DAR_SHIFT                           21
+#define REG_MI_DMA2CNT_DAR_SIZE                            2
+#define REG_MI_DMA2CNT_DAR_MASK                            0x00600000
+
+#define REG_MI_DMA2CNT_WORDCNT_SHIFT                       0
+#define REG_MI_DMA2CNT_WORDCNT_SIZE                        21
+#define REG_MI_DMA2CNT_WORDCNT_MASK                        0x001fffff
+
+#ifndef SDK_ASM
+#define REG_MI_DMA2CNT_FIELD( e, i, mode, sb, cm, sar, dar, wordcnt ) \
+    (u32)( \
+    ((u32)(e) << REG_MI_DMA2CNT_E_SHIFT) | \
+    ((u32)(i) << REG_MI_DMA2CNT_I_SHIFT) | \
+    ((u32)(mode) << REG_MI_DMA2CNT_MODE_SHIFT) | \
+    ((u32)(sb) << REG_MI_DMA2CNT_SB_SHIFT) | \
+    ((u32)(cm) << REG_MI_DMA2CNT_CM_SHIFT) | \
+    ((u32)(sar) << REG_MI_DMA2CNT_SAR_SHIFT) | \
+    ((u32)(dar) << REG_MI_DMA2CNT_DAR_SHIFT) | \
+    ((u32)(wordcnt) << REG_MI_DMA2CNT_WORDCNT_SHIFT))
+#endif
+
+
+/* DMA3SAD */
+
+#define REG_MI_DMA3SAD_DMASRC_SHIFT                        0
+#define REG_MI_DMA3SAD_DMASRC_SIZE                         28
+#define REG_MI_DMA3SAD_DMASRC_MASK                         0x0fffffff
+
+#ifndef SDK_ASM
+#define REG_MI_DMA3SAD_FIELD( dmasrc ) \
+    (u32)( \
+    ((u32)(dmasrc) << REG_MI_DMA3SAD_DMASRC_SHIFT))
+#endif
+
+
+/* DMA3DAD */
+
+#define REG_MI_DMA3DAD_DMADEST_SHIFT                       0
+#define REG_MI_DMA3DAD_DMADEST_SIZE                        28
+#define REG_MI_DMA3DAD_DMADEST_MASK                        0x0fffffff
+
+#ifndef SDK_ASM
+#define REG_MI_DMA3DAD_FIELD( dmadest ) \
+    (u32)( \
+    ((u32)(dmadest) << REG_MI_DMA3DAD_DMADEST_SHIFT))
+#endif
+
+
+/* DMA3CNT */
+
+#define REG_MI_DMA3CNT_E_SHIFT                             31
+#define REG_MI_DMA3CNT_E_SIZE                              1
+#define REG_MI_DMA3CNT_E_MASK                              0x80000000
+
+#define REG_MI_DMA3CNT_I_SHIFT                             30
+#define REG_MI_DMA3CNT_I_SIZE                              1
+#define REG_MI_DMA3CNT_I_MASK                              0x40000000
+
+#define REG_MI_DMA3CNT_MODE_SHIFT                          27
+#define REG_MI_DMA3CNT_MODE_SIZE                           3
+#define REG_MI_DMA3CNT_MODE_MASK                           0x38000000
+
+#define REG_MI_DMA3CNT_SB_SHIFT                            26
+#define REG_MI_DMA3CNT_SB_SIZE                             1
+#define REG_MI_DMA3CNT_SB_MASK                             0x04000000
+
+#define REG_MI_DMA3CNT_CM_SHIFT                            25
+#define REG_MI_DMA3CNT_CM_SIZE                             1
+#define REG_MI_DMA3CNT_CM_MASK                             0x02000000
+
+#define REG_MI_DMA3CNT_SAR_SHIFT                           23
+#define REG_MI_DMA3CNT_SAR_SIZE                            2
+#define REG_MI_DMA3CNT_SAR_MASK                            0x01800000
+
+#define REG_MI_DMA3CNT_DAR_SHIFT                           21
+#define REG_MI_DMA3CNT_DAR_SIZE                            2
+#define REG_MI_DMA3CNT_DAR_MASK                            0x00600000
+
+#define REG_MI_DMA3CNT_WORDCNT_SHIFT                       0
+#define REG_MI_DMA3CNT_WORDCNT_SIZE                        21
+#define REG_MI_DMA3CNT_WORDCNT_MASK                        0x001fffff
+
+#ifndef SDK_ASM
+#define REG_MI_DMA3CNT_FIELD( e, i, mode, sb, cm, sar, dar, wordcnt ) \
+    (u32)( \
+    ((u32)(e) << REG_MI_DMA3CNT_E_SHIFT) | \
+    ((u32)(i) << REG_MI_DMA3CNT_I_SHIFT) | \
+    ((u32)(mode) << REG_MI_DMA3CNT_MODE_SHIFT) | \
+    ((u32)(sb) << REG_MI_DMA3CNT_SB_SHIFT) | \
+    ((u32)(cm) << REG_MI_DMA3CNT_CM_SHIFT) | \
+    ((u32)(sar) << REG_MI_DMA3CNT_SAR_SHIFT) | \
+    ((u32)(dar) << REG_MI_DMA3CNT_DAR_SHIFT) | \
+    ((u32)(wordcnt) << REG_MI_DMA3CNT_WORDCNT_SHIFT))
+#endif
+
+
+/* DMA0_CLR_DATA */
+
+/* DMA1_CLR_DATA */
+
+/* DMA2_CLR_DATA */
+
+/* DMA3_CLR_DATA */
+
+/* MCCNT0 */
+
+#define REG_MI_MCCNT0_E_SHIFT                              15
+#define REG_MI_MCCNT0_E_SIZE                               1
+#define REG_MI_MCCNT0_E_MASK                               0x8000
+
+#define REG_MI_MCCNT0_I_SHIFT                              14
+#define REG_MI_MCCNT0_I_SIZE                               1
+#define REG_MI_MCCNT0_I_MASK                               0x4000
+
+#define REG_MI_MCCNT0_SEL_SHIFT                            13
+#define REG_MI_MCCNT0_SEL_SIZE                             1
+#define REG_MI_MCCNT0_SEL_MASK                             0x2000
+
+#define REG_MI_MCCNT0_BUSY_SHIFT                           7
+#define REG_MI_MCCNT0_BUSY_SIZE                            1
+#define REG_MI_MCCNT0_BUSY_MASK                            0x0080
+
+#define REG_MI_MCCNT0_MODE_SHIFT                           6
+#define REG_MI_MCCNT0_MODE_SIZE                            1
+#define REG_MI_MCCNT0_MODE_MASK                            0x0040
+
+#define REG_MI_MCCNT0_BAUDRATE_SHIFT                       0
+#define REG_MI_MCCNT0_BAUDRATE_SIZE                        2
+#define REG_MI_MCCNT0_BAUDRATE_MASK                        0x0003
+
+#ifndef SDK_ASM
+#define REG_MI_MCCNT0_FIELD( e, i, sel, busy, mode, baudrate ) \
+    (u16)( \
+    ((u32)(e) << REG_MI_MCCNT0_E_SHIFT) | \
+    ((u32)(i) << REG_MI_MCCNT0_I_SHIFT) | \
+    ((u32)(sel) << REG_MI_MCCNT0_SEL_SHIFT) | \
+    ((u32)(busy) << REG_MI_MCCNT0_BUSY_SHIFT) | \
+    ((u32)(mode) << REG_MI_MCCNT0_MODE_SHIFT) | \
+    ((u32)(baudrate) << REG_MI_MCCNT0_BAUDRATE_SHIFT))
+#endif
+
+
+/* MCD0 */
+
+#define REG_MI_MCD0_DATA_SHIFT                             0
+#define REG_MI_MCD0_DATA_SIZE                              8
+#define REG_MI_MCD0_DATA_MASK                              0x00ff
+
+#ifndef SDK_ASM
+#define REG_MI_MCD0_FIELD( data ) \
+    (u16)( \
+    ((u32)(data) << REG_MI_MCD0_DATA_SHIFT))
+#endif
+
+
+/* MCD1 */
+
+/* MCCNT1 */
+
+#define REG_MI_MCCNT1_START_SHIFT                          31
+#define REG_MI_MCCNT1_START_SIZE                           1
+#define REG_MI_MCCNT1_START_MASK                           0x80000000
+
+#define REG_MI_MCCNT1_WR_SHIFT                             30
+#define REG_MI_MCCNT1_WR_SIZE                              1
+#define REG_MI_MCCNT1_WR_MASK                              0x40000000
+
+#define REG_MI_MCCNT1_CT_SHIFT                             27
+#define REG_MI_MCCNT1_CT_SIZE                              1
+#define REG_MI_MCCNT1_CT_MASK                              0x08000000
+
+#define REG_MI_MCCNT1_PC_SHIFT                             24
+#define REG_MI_MCCNT1_PC_SIZE                              3
+#define REG_MI_MCCNT1_PC_MASK                              0x07000000
+
+#define REG_MI_MCCNT1_RDY_SHIFT                            23
+#define REG_MI_MCCNT1_RDY_SIZE                             1
+#define REG_MI_MCCNT1_RDY_MASK                             0x00800000
+
+#define REG_MI_MCCNT1_L2_SHIFT                             16
+#define REG_MI_MCCNT1_L2_SIZE                              6
+#define REG_MI_MCCNT1_L2_MASK                              0x003f0000
+
+#define REG_MI_MCCNT1_L1_SHIFT                             0
+#define REG_MI_MCCNT1_L1_SIZE                              13
+#define REG_MI_MCCNT1_L1_MASK                              0x00001fff
+
+#ifndef SDK_ASM
+#define REG_MI_MCCNT1_FIELD( start, wr, ct, pc, rdy, l2, l1 ) \
+    (u32)( \
+    ((u32)(start) << REG_MI_MCCNT1_START_SHIFT) | \
+    ((u32)(wr) << REG_MI_MCCNT1_WR_SHIFT) | \
+    ((u32)(ct) << REG_MI_MCCNT1_CT_SHIFT) | \
+    ((u32)(pc) << REG_MI_MCCNT1_PC_SHIFT) | \
+    ((u32)(rdy) << REG_MI_MCCNT1_RDY_SHIFT) | \
+    ((u32)(l2) << REG_MI_MCCNT1_L2_SHIFT) | \
+    ((u32)(l1) << REG_MI_MCCNT1_L1_SHIFT))
+#endif
+
+
+/* MCCMD0 */
+
+#define REG_MI_MCCMD0_CMD3_SHIFT                           24
+#define REG_MI_MCCMD0_CMD3_SIZE                            8
+#define REG_MI_MCCMD0_CMD3_MASK                            0xff000000
+
+#define REG_MI_MCCMD0_CMD2_SHIFT                           16
+#define REG_MI_MCCMD0_CMD2_SIZE                            8
+#define REG_MI_MCCMD0_CMD2_MASK                            0x00ff0000
+
+#define REG_MI_MCCMD0_CMD1_SHIFT                           8
+#define REG_MI_MCCMD0_CMD1_SIZE                            8
+#define REG_MI_MCCMD0_CMD1_MASK                            0x0000ff00
+
+#define REG_MI_MCCMD0_CMD0_SHIFT                           0
+#define REG_MI_MCCMD0_CMD0_SIZE                            8
+#define REG_MI_MCCMD0_CMD0_MASK                            0x000000ff
+
+#ifndef SDK_ASM
+#define REG_MI_MCCMD0_FIELD( cmd3, cmd2, cmd1, cmd0 ) \
+    (u32)( \
+    ((u32)(cmd3) << REG_MI_MCCMD0_CMD3_SHIFT) | \
+    ((u32)(cmd2) << REG_MI_MCCMD0_CMD2_SHIFT) | \
+    ((u32)(cmd1) << REG_MI_MCCMD0_CMD1_SHIFT) | \
+    ((u32)(cmd0) << REG_MI_MCCMD0_CMD0_SHIFT))
+#endif
+
+
+/* MCCMD1 */
+
+#define REG_MI_MCCMD1_CMD7_SHIFT                           24
+#define REG_MI_MCCMD1_CMD7_SIZE                            8
+#define REG_MI_MCCMD1_CMD7_MASK                            0xff000000
+
+#define REG_MI_MCCMD1_CMD6_SHIFT                           16
+#define REG_MI_MCCMD1_CMD6_SIZE                            8
+#define REG_MI_MCCMD1_CMD6_MASK                            0x00ff0000
+
+#define REG_MI_MCCMD1_CMD5_SHIFT                           8
+#define REG_MI_MCCMD1_CMD5_SIZE                            8
+#define REG_MI_MCCMD1_CMD5_MASK                            0x0000ff00
+
+#define REG_MI_MCCMD1_CMD4_SHIFT                           0
+#define REG_MI_MCCMD1_CMD4_SIZE                            8
+#define REG_MI_MCCMD1_CMD4_MASK                            0x000000ff
+
+#ifndef SDK_ASM
+#define REG_MI_MCCMD1_FIELD( cmd7, cmd6, cmd5, cmd4 ) \
+    (u32)( \
+    ((u32)(cmd7) << REG_MI_MCCMD1_CMD7_SHIFT) | \
+    ((u32)(cmd6) << REG_MI_MCCMD1_CMD6_SHIFT) | \
+    ((u32)(cmd5) << REG_MI_MCCMD1_CMD5_SHIFT) | \
+    ((u32)(cmd4) << REG_MI_MCCMD1_CMD4_SHIFT))
+#endif
+
+
+/* EXMEMCNT */
+
+#define REG_MI_EXMEMCNT_EP_SHIFT                           15
+#define REG_MI_EXMEMCNT_EP_SIZE                            1
+#define REG_MI_EXMEMCNT_EP_MASK                            0x8000
+
+#define REG_MI_EXMEMCNT_IFM_SHIFT                          14
+#define REG_MI_EXMEMCNT_IFM_SIZE                           1
+#define REG_MI_EXMEMCNT_IFM_MASK                           0x4000
+
+#define REG_MI_EXMEMCNT_MP_SHIFT                           11
+#define REG_MI_EXMEMCNT_MP_SIZE                            1
+#define REG_MI_EXMEMCNT_MP_MASK                            0x0800
+
+#define REG_MI_EXMEMCNT_CP_SHIFT                           7
+#define REG_MI_EXMEMCNT_CP_SIZE                            1
+#define REG_MI_EXMEMCNT_CP_MASK                            0x0080
+
+#define REG_MI_EXMEMCNT_PHI_SHIFT                          5
+#define REG_MI_EXMEMCNT_PHI_SIZE                           2
+#define REG_MI_EXMEMCNT_PHI_MASK                           0x0060
+
+#define REG_MI_EXMEMCNT_ROM2nd_SHIFT                       4
+#define REG_MI_EXMEMCNT_ROM2nd_SIZE                        1
+#define REG_MI_EXMEMCNT_ROM2nd_MASK                        0x0010
+
+#define REG_MI_EXMEMCNT_ROM1st_SHIFT                       2
+#define REG_MI_EXMEMCNT_ROM1st_SIZE                        2
+#define REG_MI_EXMEMCNT_ROM1st_MASK                        0x000c
+
+#define REG_MI_EXMEMCNT_RAM_SHIFT                          0
+#define REG_MI_EXMEMCNT_RAM_SIZE                           2
+#define REG_MI_EXMEMCNT_RAM_MASK                           0x0003
+
+#ifndef SDK_ASM
+#define REG_MI_EXMEMCNT_FIELD( ep, ifm, mp, cp, phi, rom2nd, rom1st, ram ) \
+    (u16)( \
+    ((u32)(ep) << REG_MI_EXMEMCNT_EP_SHIFT) | \
+    ((u32)(ifm) << REG_MI_EXMEMCNT_IFM_SHIFT) | \
+    ((u32)(mp) << REG_MI_EXMEMCNT_MP_SHIFT) | \
+    ((u32)(cp) << REG_MI_EXMEMCNT_CP_SHIFT) | \
+    ((u32)(phi) << REG_MI_EXMEMCNT_PHI_SHIFT) | \
+    ((u32)(rom2nd) << REG_MI_EXMEMCNT_ROM2nd_SHIFT) | \
+    ((u32)(rom1st) << REG_MI_EXMEMCNT_ROM1st_SHIFT) | \
+    ((u32)(ram) << REG_MI_EXMEMCNT_RAM_SHIFT))
+#endif
+
+
+
+// ---- ioreg_OS.h ----
+/*
+ * Definition of Register offsets, addresses and variables.
+ */
+
+
+/* TM0CNT_L */
+
+#define REG_TM0CNT_L_OFFSET                                0x100
+#define REG_TM0CNT_L_ADDR                                  (HW_REG_BASE + REG_TM0CNT_L_OFFSET)
+#define reg_OS_TM0CNT_L                                    (*( REGType16v *) REG_TM0CNT_L_ADDR)
+
+/* TM0CNT_H */
+
+#define REG_TM0CNT_H_OFFSET                                0x102
+#define REG_TM0CNT_H_ADDR                                  (HW_REG_BASE + REG_TM0CNT_H_OFFSET)
+#define reg_OS_TM0CNT_H                                    (*( REGType16v *) REG_TM0CNT_H_ADDR)
+
+/* TM1CNT_L */
+
+#define REG_TM1CNT_L_OFFSET                                0x104
+#define REG_TM1CNT_L_ADDR                                  (HW_REG_BASE + REG_TM1CNT_L_OFFSET)
+#define reg_OS_TM1CNT_L                                    (*( REGType16v *) REG_TM1CNT_L_ADDR)
+
+/* TM1CNT_H */
+
+#define REG_TM1CNT_H_OFFSET                                0x106
+#define REG_TM1CNT_H_ADDR                                  (HW_REG_BASE + REG_TM1CNT_H_OFFSET)
+#define reg_OS_TM1CNT_H                                    (*( REGType16v *) REG_TM1CNT_H_ADDR)
+
+/* TM2CNT_L */
+
+#define REG_TM2CNT_L_OFFSET                                0x108
+#define REG_TM2CNT_L_ADDR                                  (HW_REG_BASE + REG_TM2CNT_L_OFFSET)
+#define reg_OS_TM2CNT_L                                    (*( REGType16v *) REG_TM2CNT_L_ADDR)
+
+/* TM2CNT_H */
+
+#define REG_TM2CNT_H_OFFSET                                0x10a
+#define REG_TM2CNT_H_ADDR                                  (HW_REG_BASE + REG_TM2CNT_H_OFFSET)
+#define reg_OS_TM2CNT_H                                    (*( REGType16v *) REG_TM2CNT_H_ADDR)
+
+/* TM3CNT_L */
+
+#define REG_TM3CNT_L_OFFSET                                0x10c
+#define REG_TM3CNT_L_ADDR                                  (HW_REG_BASE + REG_TM3CNT_L_OFFSET)
+#define reg_OS_TM3CNT_L                                    (*( REGType16v *) REG_TM3CNT_L_ADDR)
+
+/* TM3CNT_H */
+
+#define REG_TM3CNT_H_OFFSET                                0x10e
+#define REG_TM3CNT_H_ADDR                                  (HW_REG_BASE + REG_TM3CNT_H_OFFSET)
+#define reg_OS_TM3CNT_H                                    (*( REGType16v *) REG_TM3CNT_H_ADDR)
+
+/* IME */
+
+#define REG_IME_OFFSET                                     0x208
+#define REG_IME_ADDR                                       (HW_REG_BASE + REG_IME_OFFSET)
+#define reg_OS_IME                                         (*( REGType16v *) REG_IME_ADDR)
+
+/* IE */
+
+#define REG_IE_OFFSET                                      0x210
+#define REG_IE_ADDR                                        (HW_REG_BASE + REG_IE_OFFSET)
+#define reg_OS_IE                                          (*( REGType32v *) REG_IE_ADDR)
+
+/* IF */
+
+#define REG_IF_OFFSET                                      0x214
+#define REG_IF_ADDR                                        (HW_REG_BASE + REG_IF_OFFSET)
+#define reg_OS_IF                                          (*( REGType32v *) REG_IF_ADDR)
+
+/* PAUSE */
+
+#define REG_PAUSE_OFFSET                                   0x300
+#define REG_PAUSE_ADDR                                     (HW_REG_BASE + REG_PAUSE_OFFSET)
+#define reg_OS_PAUSE                                       (*( REGType16v *) REG_PAUSE_ADDR)
+
+
+/*
+ * Definitions of Register fields
+ */
+
+
+/* TM0CNT_L */
+
+#define REG_OS_TM0CNT_L_TIMER0CNT_SHIFT                    0
+#define REG_OS_TM0CNT_L_TIMER0CNT_SIZE                     16
+#define REG_OS_TM0CNT_L_TIMER0CNT_MASK                     0xffff
+
+#ifndef SDK_ASM
+#define REG_OS_TM0CNT_L_FIELD( timer0cnt ) \
+    (u16)( \
+    ((u32)(timer0cnt) << REG_OS_TM0CNT_L_TIMER0CNT_SHIFT))
+#endif
+
+
+/* TM0CNT_H */
+
+#define REG_OS_TM0CNT_H_E_SHIFT                            7
+#define REG_OS_TM0CNT_H_E_SIZE                             1
+#define REG_OS_TM0CNT_H_E_MASK                             0x0080
+
+#define REG_OS_TM0CNT_H_I_SHIFT                            6
+#define REG_OS_TM0CNT_H_I_SIZE                             1
+#define REG_OS_TM0CNT_H_I_MASK                             0x0040
+
+#define REG_OS_TM0CNT_H_PS_SHIFT                           0
+#define REG_OS_TM0CNT_H_PS_SIZE                            2
+#define REG_OS_TM0CNT_H_PS_MASK                            0x0003
+
+#ifndef SDK_ASM
+#define REG_OS_TM0CNT_H_FIELD( e, i, ps ) \
+    (u16)( \
+    ((u32)(e) << REG_OS_TM0CNT_H_E_SHIFT) | \
+    ((u32)(i) << REG_OS_TM0CNT_H_I_SHIFT) | \
+    ((u32)(ps) << REG_OS_TM0CNT_H_PS_SHIFT))
+#endif
+
+
+/* TM1CNT_L */
+
+#define REG_OS_TM1CNT_L_TIMER1CNT_SHIFT                    0
+#define REG_OS_TM1CNT_L_TIMER1CNT_SIZE                     16
+#define REG_OS_TM1CNT_L_TIMER1CNT_MASK                     0xffff
+
+#ifndef SDK_ASM
+#define REG_OS_TM1CNT_L_FIELD( timer1cnt ) \
+    (u16)( \
+    ((u32)(timer1cnt) << REG_OS_TM1CNT_L_TIMER1CNT_SHIFT))
+#endif
+
+
+/* TM1CNT_H */
+
+#define REG_OS_TM1CNT_H_E_SHIFT                            7
+#define REG_OS_TM1CNT_H_E_SIZE                             1
+#define REG_OS_TM1CNT_H_E_MASK                             0x0080
+
+#define REG_OS_TM1CNT_H_I_SHIFT                            6
+#define REG_OS_TM1CNT_H_I_SIZE                             1
+#define REG_OS_TM1CNT_H_I_MASK                             0x0040
+
+#define REG_OS_TM1CNT_H_CH_SHIFT                           2
+#define REG_OS_TM1CNT_H_CH_SIZE                            1
+#define REG_OS_TM1CNT_H_CH_MASK                            0x0004
+
+#define REG_OS_TM1CNT_H_PS_SHIFT                           0
+#define REG_OS_TM1CNT_H_PS_SIZE                            2
+#define REG_OS_TM1CNT_H_PS_MASK                            0x0003
+
+#ifndef SDK_ASM
+#define REG_OS_TM1CNT_H_FIELD( e, i, ch, ps ) \
+    (u16)( \
+    ((u32)(e) << REG_OS_TM1CNT_H_E_SHIFT) | \
+    ((u32)(i) << REG_OS_TM1CNT_H_I_SHIFT) | \
+    ((u32)(ch) << REG_OS_TM1CNT_H_CH_SHIFT) | \
+    ((u32)(ps) << REG_OS_TM1CNT_H_PS_SHIFT))
+#endif
+
+
+/* TM2CNT_L */
+
+#define REG_OS_TM2CNT_L_TIMER2CNT_SHIFT                    0
+#define REG_OS_TM2CNT_L_TIMER2CNT_SIZE                     16
+#define REG_OS_TM2CNT_L_TIMER2CNT_MASK                     0xffff
+
+#ifndef SDK_ASM
+#define REG_OS_TM2CNT_L_FIELD( timer2cnt ) \
+    (u16)( \
+    ((u32)(timer2cnt) << REG_OS_TM2CNT_L_TIMER2CNT_SHIFT))
+#endif
+
+
+/* TM2CNT_H */
+
+#define REG_OS_TM2CNT_H_E_SHIFT                            7
+#define REG_OS_TM2CNT_H_E_SIZE                             1
+#define REG_OS_TM2CNT_H_E_MASK                             0x0080
+
+#define REG_OS_TM2CNT_H_I_SHIFT                            6
+#define REG_OS_TM2CNT_H_I_SIZE                             1
+#define REG_OS_TM2CNT_H_I_MASK                             0x0040
+
+#define REG_OS_TM2CNT_H_CH_SHIFT                           2
+#define REG_OS_TM2CNT_H_CH_SIZE                            1
+#define REG_OS_TM2CNT_H_CH_MASK                            0x0004
+
+#define REG_OS_TM2CNT_H_PS_SHIFT                           0
+#define REG_OS_TM2CNT_H_PS_SIZE                            2
+#define REG_OS_TM2CNT_H_PS_MASK                            0x0003
+
+#ifndef SDK_ASM
+#define REG_OS_TM2CNT_H_FIELD( e, i, ch, ps ) \
+    (u16)( \
+    ((u32)(e) << REG_OS_TM2CNT_H_E_SHIFT) | \
+    ((u32)(i) << REG_OS_TM2CNT_H_I_SHIFT) | \
+    ((u32)(ch) << REG_OS_TM2CNT_H_CH_SHIFT) | \
+    ((u32)(ps) << REG_OS_TM2CNT_H_PS_SHIFT))
+#endif
+
+
+/* TM3CNT_L */
+
+#define REG_OS_TM3CNT_L_TIMER2CNT_SHIFT                    0
+#define REG_OS_TM3CNT_L_TIMER2CNT_SIZE                     16
+#define REG_OS_TM3CNT_L_TIMER2CNT_MASK                     0xffff
+
+#ifndef SDK_ASM
+#define REG_OS_TM3CNT_L_FIELD( timer2cnt ) \
+    (u16)( \
+    ((u32)(timer2cnt) << REG_OS_TM3CNT_L_TIMER2CNT_SHIFT))
+#endif
+
+
+/* TM3CNT_H */
+
+#define REG_OS_TM3CNT_H_E_SHIFT                            7
+#define REG_OS_TM3CNT_H_E_SIZE                             1
+#define REG_OS_TM3CNT_H_E_MASK                             0x0080
+
+#define REG_OS_TM3CNT_H_I_SHIFT                            6
+#define REG_OS_TM3CNT_H_I_SIZE                             1
+#define REG_OS_TM3CNT_H_I_MASK                             0x0040
+
+#define REG_OS_TM3CNT_H_CH_SHIFT                           2
+#define REG_OS_TM3CNT_H_CH_SIZE                            1
+#define REG_OS_TM3CNT_H_CH_MASK                            0x0004
+
+#define REG_OS_TM3CNT_H_PS_SHIFT                           0
+#define REG_OS_TM3CNT_H_PS_SIZE                            2
+#define REG_OS_TM3CNT_H_PS_MASK                            0x0003
+
+#ifndef SDK_ASM
+#define REG_OS_TM3CNT_H_FIELD( e, i, ch, ps ) \
+    (u16)( \
+    ((u32)(e) << REG_OS_TM3CNT_H_E_SHIFT) | \
+    ((u32)(i) << REG_OS_TM3CNT_H_I_SHIFT) | \
+    ((u32)(ch) << REG_OS_TM3CNT_H_CH_SHIFT) | \
+    ((u32)(ps) << REG_OS_TM3CNT_H_PS_SHIFT))
+#endif
+
+
+/* IME */
+
+#define REG_OS_IME_IME_SHIFT                               0
+#define REG_OS_IME_IME_SIZE                                1
+#define REG_OS_IME_IME_MASK                                0x0001
+
+#ifndef SDK_ASM
+#define REG_OS_IME_FIELD( ime ) \
+    (u16)( \
+    ((u32)(ime) << REG_OS_IME_IME_SHIFT))
+#endif
+
+
+/* IE */
+
+#define REG_OS_IE_GF_SHIFT                                 21
+#define REG_OS_IE_GF_SIZE                                  1
+#define REG_OS_IE_GF_MASK                                  0x00200000
+
+#define REG_OS_IE_MI_SHIFT                                 20
+#define REG_OS_IE_MI_SIZE                                  1
+#define REG_OS_IE_MI_MASK                                  0x00100000
+
+#define REG_OS_IE_MC_SHIFT                                 19
+#define REG_OS_IE_MC_SIZE                                  1
+#define REG_OS_IE_MC_MASK                                  0x00080000
+
+#define REG_OS_IE_IFN_SHIFT                                18
+#define REG_OS_IE_IFN_SIZE                                 1
+#define REG_OS_IE_IFN_MASK                                 0x00040000
+
+#define REG_OS_IE_IFE_SHIFT                                17
+#define REG_OS_IE_IFE_SIZE                                 1
+#define REG_OS_IE_IFE_MASK                                 0x00020000
+
+#define REG_OS_IE_A7_SHIFT                                 16
+#define REG_OS_IE_A7_SIZE                                  1
+#define REG_OS_IE_A7_MASK                                  0x00010000
+
+#define REG_OS_IE_I_D_SHIFT                                13
+#define REG_OS_IE_I_D_SIZE                                 1
+#define REG_OS_IE_I_D_MASK                                 0x00002000
+
+#define REG_OS_IE_K_SHIFT                                  12
+#define REG_OS_IE_K_SIZE                                   1
+#define REG_OS_IE_K_MASK                                   0x00001000
+
+#define REG_OS_IE_D3_SHIFT                                 11
+#define REG_OS_IE_D3_SIZE                                  1
+#define REG_OS_IE_D3_MASK                                  0x00000800
+
+#define REG_OS_IE_D2_SHIFT                                 10
+#define REG_OS_IE_D2_SIZE                                  1
+#define REG_OS_IE_D2_MASK                                  0x00000400
+
+#define REG_OS_IE_D1_SHIFT                                 9
+#define REG_OS_IE_D1_SIZE                                  1
+#define REG_OS_IE_D1_MASK                                  0x00000200
+
+#define REG_OS_IE_D0_SHIFT                                 8
+#define REG_OS_IE_D0_SIZE                                  1
+#define REG_OS_IE_D0_MASK                                  0x00000100
+
+#define REG_OS_IE_T3_SHIFT                                 6
+#define REG_OS_IE_T3_SIZE                                  1
+#define REG_OS_IE_T3_MASK                                  0x00000040
+
+#define REG_OS_IE_T2_SHIFT                                 5
+#define REG_OS_IE_T2_SIZE                                  1
+#define REG_OS_IE_T2_MASK                                  0x00000020
+
+#define REG_OS_IE_T1_SHIFT                                 4
+#define REG_OS_IE_T1_SIZE                                  1
+#define REG_OS_IE_T1_MASK                                  0x00000010
+
+#define REG_OS_IE_T0_SHIFT                                 3
+#define REG_OS_IE_T0_SIZE                                  1
+#define REG_OS_IE_T0_MASK                                  0x00000008
+
+#define REG_OS_IE_VE_SHIFT                                 2
+#define REG_OS_IE_VE_SIZE                                  1
+#define REG_OS_IE_VE_MASK                                  0x00000004
+
+#define REG_OS_IE_HB_SHIFT                                 1
+#define REG_OS_IE_HB_SIZE                                  1
+#define REG_OS_IE_HB_MASK                                  0x00000002
+
+#define REG_OS_IE_VB_SHIFT                                 0
+#define REG_OS_IE_VB_SIZE                                  1
+#define REG_OS_IE_VB_MASK                                  0x00000001
+
+#ifndef SDK_ASM
+#define REG_OS_IE_FIELD( gf, mi, mc, ifn, ife, a7, i_d, k, d3, d2, d1, d0, t3, t2, t1, t0, ve, hb, vb ) \
+    (u32)( \
+    ((u32)(gf) << REG_OS_IE_GF_SHIFT) | \
+    ((u32)(mi) << REG_OS_IE_MI_SHIFT) | \
+    ((u32)(mc) << REG_OS_IE_MC_SHIFT) | \
+    ((u32)(ifn) << REG_OS_IE_IFN_SHIFT) | \
+    ((u32)(ife) << REG_OS_IE_IFE_SHIFT) | \
+    ((u32)(a7) << REG_OS_IE_A7_SHIFT) | \
+    ((u32)(i_d) << REG_OS_IE_I_D_SHIFT) | \
+    ((u32)(k) << REG_OS_IE_K_SHIFT) | \
+    ((u32)(d3) << REG_OS_IE_D3_SHIFT) | \
+    ((u32)(d2) << REG_OS_IE_D2_SHIFT) | \
+    ((u32)(d1) << REG_OS_IE_D1_SHIFT) | \
+    ((u32)(d0) << REG_OS_IE_D0_SHIFT) | \
+    ((u32)(t3) << REG_OS_IE_T3_SHIFT) | \
+    ((u32)(t2) << REG_OS_IE_T2_SHIFT) | \
+    ((u32)(t1) << REG_OS_IE_T1_SHIFT) | \
+    ((u32)(t0) << REG_OS_IE_T0_SHIFT) | \
+    ((u32)(ve) << REG_OS_IE_VE_SHIFT) | \
+    ((u32)(hb) << REG_OS_IE_HB_SHIFT) | \
+    ((u32)(vb) << REG_OS_IE_VB_SHIFT))
+#endif
+
+
+/* IF */
+
+#define REG_OS_IF_GF_SHIFT                                 21
+#define REG_OS_IF_GF_SIZE                                  1
+#define REG_OS_IF_GF_MASK                                  0x00200000
+
+#define REG_OS_IF_MI_SHIFT                                 20
+#define REG_OS_IF_MI_SIZE                                  1
+#define REG_OS_IF_MI_MASK                                  0x00100000
+
+#define REG_OS_IF_MC_SHIFT                                 19
+#define REG_OS_IF_MC_SIZE                                  1
+#define REG_OS_IF_MC_MASK                                  0x00080000
+
+#define REG_OS_IF_IFN_SHIFT                                18
+#define REG_OS_IF_IFN_SIZE                                 1
+#define REG_OS_IF_IFN_MASK                                 0x00040000
+
+#define REG_OS_IF_IFE_SHIFT                                17
+#define REG_OS_IF_IFE_SIZE                                 1
+#define REG_OS_IF_IFE_MASK                                 0x00020000
+
+#define REG_OS_IF_A7_SHIFT                                 16
+#define REG_OS_IF_A7_SIZE                                  1
+#define REG_OS_IF_A7_MASK                                  0x00010000
+
+#define REG_OS_IF_I_D_SHIFT                                13
+#define REG_OS_IF_I_D_SIZE                                 1
+#define REG_OS_IF_I_D_MASK                                 0x00002000
+
+#define REG_OS_IF_K_SHIFT                                  12
+#define REG_OS_IF_K_SIZE                                   1
+#define REG_OS_IF_K_MASK                                   0x00001000
+
+#define REG_OS_IF_D3_SHIFT                                 11
+#define REG_OS_IF_D3_SIZE                                  1
+#define REG_OS_IF_D3_MASK                                  0x00000800
+
+#define REG_OS_IF_D2_SHIFT                                 10
+#define REG_OS_IF_D2_SIZE                                  1
+#define REG_OS_IF_D2_MASK                                  0x00000400
+
+#define REG_OS_IF_D1_SHIFT                                 9
+#define REG_OS_IF_D1_SIZE                                  1
+#define REG_OS_IF_D1_MASK                                  0x00000200
+
+#define REG_OS_IF_D0_SHIFT                                 8
+#define REG_OS_IF_D0_SIZE                                  1
+#define REG_OS_IF_D0_MASK                                  0x00000100
+
+#define REG_OS_IF_T3_SHIFT                                 6
+#define REG_OS_IF_T3_SIZE                                  1
+#define REG_OS_IF_T3_MASK                                  0x00000040
+
+#define REG_OS_IF_T2_SHIFT                                 5
+#define REG_OS_IF_T2_SIZE                                  1
+#define REG_OS_IF_T2_MASK                                  0x00000020
+
+#define REG_OS_IF_T1_SHIFT                                 4
+#define REG_OS_IF_T1_SIZE                                  1
+#define REG_OS_IF_T1_MASK                                  0x00000010
+
+#define REG_OS_IF_T0_SHIFT                                 3
+#define REG_OS_IF_T0_SIZE                                  1
+#define REG_OS_IF_T0_MASK                                  0x00000008
+
+#define REG_OS_IF_VE_SHIFT                                 2
+#define REG_OS_IF_VE_SIZE                                  1
+#define REG_OS_IF_VE_MASK                                  0x00000004
+
+#define REG_OS_IF_HB_SHIFT                                 1
+#define REG_OS_IF_HB_SIZE                                  1
+#define REG_OS_IF_HB_MASK                                  0x00000002
+
+#define REG_OS_IF_VB_SHIFT                                 0
+#define REG_OS_IF_VB_SIZE                                  1
+#define REG_OS_IF_VB_MASK                                  0x00000001
+
+#ifndef SDK_ASM
+#define REG_OS_IF_FIELD( gf, mi, mc, ifn, ife, a7, i_d, k, d3, d2, d1, d0, t3, t2, t1, t0, ve, hb, vb ) \
+    (u32)( \
+    ((u32)(gf) << REG_OS_IF_GF_SHIFT) | \
+    ((u32)(mi) << REG_OS_IF_MI_SHIFT) | \
+    ((u32)(mc) << REG_OS_IF_MC_SHIFT) | \
+    ((u32)(ifn) << REG_OS_IF_IFN_SHIFT) | \
+    ((u32)(ife) << REG_OS_IF_IFE_SHIFT) | \
+    ((u32)(a7) << REG_OS_IF_A7_SHIFT) | \
+    ((u32)(i_d) << REG_OS_IF_I_D_SHIFT) | \
+    ((u32)(k) << REG_OS_IF_K_SHIFT) | \
+    ((u32)(d3) << REG_OS_IF_D3_SHIFT) | \
+    ((u32)(d2) << REG_OS_IF_D2_SHIFT) | \
+    ((u32)(d1) << REG_OS_IF_D1_SHIFT) | \
+    ((u32)(d0) << REG_OS_IF_D0_SHIFT) | \
+    ((u32)(t3) << REG_OS_IF_T3_SHIFT) | \
+    ((u32)(t2) << REG_OS_IF_T2_SHIFT) | \
+    ((u32)(t1) << REG_OS_IF_T1_SHIFT) | \
+    ((u32)(t0) << REG_OS_IF_T0_SHIFT) | \
+    ((u32)(ve) << REG_OS_IF_VE_SHIFT) | \
+    ((u32)(hb) << REG_OS_IF_HB_SHIFT) | \
+    ((u32)(vb) << REG_OS_IF_VB_SHIFT))
+#endif
+
+
+/* PAUSE */
+
+#define REG_OS_PAUSE_MOD_SHIFT                             14
+#define REG_OS_PAUSE_MOD_SIZE                              2
+#define REG_OS_PAUSE_MOD_MASK                              0xc000
+
+#define REG_OS_PAUSE_CHK_SHIFT                             0
+#define REG_OS_PAUSE_CHK_SIZE                              1
+#define REG_OS_PAUSE_CHK_MASK                              0x0001
+
+#ifndef SDK_ASM
+#define REG_OS_PAUSE_FIELD( mod, chk ) \
+    (u16)( \
+    ((u32)(mod) << REG_OS_PAUSE_MOD_SHIFT) | \
+    ((u32)(chk) << REG_OS_PAUSE_CHK_SHIFT))
+#endif
+
+
+
+// ---- ioreg_PXI.h ----
+/*
+ * Definition of Register offsets, addresses and variables.
+ */
+
+
+/* SUBPINTF */
+
+#define REG_SUBPINTF_OFFSET                                0x180
+#define REG_SUBPINTF_ADDR                                  (HW_REG_BASE + REG_SUBPINTF_OFFSET)
+#define reg_PXI_SUBPINTF                                   (*( REGType16v *) REG_SUBPINTF_ADDR)
+
+/* SUBP_FIFO_CNT */
+
+#define REG_SUBP_FIFO_CNT_OFFSET                           0x184
+#define REG_SUBP_FIFO_CNT_ADDR                             (HW_REG_BASE + REG_SUBP_FIFO_CNT_OFFSET)
+#define reg_PXI_SUBP_FIFO_CNT                              (*( REGType16v *) REG_SUBP_FIFO_CNT_ADDR)
+
+/* SEND_FIFO */
+
+#define REG_SEND_FIFO_OFFSET                               0x188
+#define REG_SEND_FIFO_ADDR                                 (HW_REG_BASE + REG_SEND_FIFO_OFFSET)
+#define reg_PXI_SEND_FIFO                                  (*( REGType32v *) REG_SEND_FIFO_ADDR)
+
+/* RECV_FIFO */
+
+#define REG_RECV_FIFO_OFFSET                               0x100000
+#define REG_RECV_FIFO_ADDR                                 (HW_REG_BASE + REG_RECV_FIFO_OFFSET)
+#define reg_PXI_RECV_FIFO                                  (*( REGType32v *) REG_RECV_FIFO_ADDR)
+
+
+/*
+ * Definitions of Register fields
+ */
+
+
+/* SUBPINTF */
+
+#define REG_PXI_SUBPINTF_I_SHIFT                           14
+#define REG_PXI_SUBPINTF_I_SIZE                            1
+#define REG_PXI_SUBPINTF_I_MASK                            0x4000
+
+#define REG_PXI_SUBPINTF_IREQ_SHIFT                        13
+#define REG_PXI_SUBPINTF_IREQ_SIZE                         1
+#define REG_PXI_SUBPINTF_IREQ_MASK                         0x2000
+
+#define REG_PXI_SUBPINTF_A9STATUS_SHIFT                    8
+#define REG_PXI_SUBPINTF_A9STATUS_SIZE                     4
+#define REG_PXI_SUBPINTF_A9STATUS_MASK                     0x0f00
+
+#define REG_PXI_SUBPINTF_A7STATUS_SHIFT                    0
+#define REG_PXI_SUBPINTF_A7STATUS_SIZE                     4
+#define REG_PXI_SUBPINTF_A7STATUS_MASK                     0x000f
+
+#ifndef SDK_ASM
+#define REG_PXI_SUBPINTF_FIELD( i, ireq, a9status, a7status ) \
+    (u16)( \
+    ((u32)(i) << REG_PXI_SUBPINTF_I_SHIFT) | \
+    ((u32)(ireq) << REG_PXI_SUBPINTF_IREQ_SHIFT) | \
+    ((u32)(a9status) << REG_PXI_SUBPINTF_A9STATUS_SHIFT) | \
+    ((u32)(a7status) << REG_PXI_SUBPINTF_A7STATUS_SHIFT))
+#endif
+
+
+/* SUBP_FIFO_CNT */
+
+#define REG_PXI_SUBP_FIFO_CNT_E_SHIFT                      15
+#define REG_PXI_SUBP_FIFO_CNT_E_SIZE                       1
+#define REG_PXI_SUBP_FIFO_CNT_E_MASK                       0x8000
+
+#define REG_PXI_SUBP_FIFO_CNT_ERR_SHIFT                    14
+#define REG_PXI_SUBP_FIFO_CNT_ERR_SIZE                     1
+#define REG_PXI_SUBP_FIFO_CNT_ERR_MASK                     0x4000
+
+#define REG_PXI_SUBP_FIFO_CNT_RECV_RI_SHIFT                10
+#define REG_PXI_SUBP_FIFO_CNT_RECV_RI_SIZE                 1
+#define REG_PXI_SUBP_FIFO_CNT_RECV_RI_MASK                 0x0400
+
+#define REG_PXI_SUBP_FIFO_CNT_RECV_FULL_SHIFT              9
+#define REG_PXI_SUBP_FIFO_CNT_RECV_FULL_SIZE               1
+#define REG_PXI_SUBP_FIFO_CNT_RECV_FULL_MASK               0x0200
+
+#define REG_PXI_SUBP_FIFO_CNT_RECV_EMP_SHIFT               8
+#define REG_PXI_SUBP_FIFO_CNT_RECV_EMP_SIZE                1
+#define REG_PXI_SUBP_FIFO_CNT_RECV_EMP_MASK                0x0100
+
+#define REG_PXI_SUBP_FIFO_CNT_SEND_CL_SHIFT                3
+#define REG_PXI_SUBP_FIFO_CNT_SEND_CL_SIZE                 1
+#define REG_PXI_SUBP_FIFO_CNT_SEND_CL_MASK                 0x0008
+
+#define REG_PXI_SUBP_FIFO_CNT_SEND_TI_SHIFT                2
+#define REG_PXI_SUBP_FIFO_CNT_SEND_TI_SIZE                 1
+#define REG_PXI_SUBP_FIFO_CNT_SEND_TI_MASK                 0x0004
+
+#define REG_PXI_SUBP_FIFO_CNT_SEND_FULL_SHIFT              1
+#define REG_PXI_SUBP_FIFO_CNT_SEND_FULL_SIZE               1
+#define REG_PXI_SUBP_FIFO_CNT_SEND_FULL_MASK               0x0002
+
+#define REG_PXI_SUBP_FIFO_CNT_SEND_EMP_SHIFT               0
+#define REG_PXI_SUBP_FIFO_CNT_SEND_EMP_SIZE                1
+#define REG_PXI_SUBP_FIFO_CNT_SEND_EMP_MASK                0x0001
+
+#ifndef SDK_ASM
+#define REG_PXI_SUBP_FIFO_CNT_FIELD( e, err, recv_ri, recv_full, recv_emp, send_cl, send_ti, send_full, send_emp ) \
+    (u16)( \
+    ((u32)(e) << REG_PXI_SUBP_FIFO_CNT_E_SHIFT) | \
+    ((u32)(err) << REG_PXI_SUBP_FIFO_CNT_ERR_SHIFT) | \
+    ((u32)(recv_ri) << REG_PXI_SUBP_FIFO_CNT_RECV_RI_SHIFT) | \
+    ((u32)(recv_full) << REG_PXI_SUBP_FIFO_CNT_RECV_FULL_SHIFT) | \
+    ((u32)(recv_emp) << REG_PXI_SUBP_FIFO_CNT_RECV_EMP_SHIFT) | \
+    ((u32)(send_cl) << REG_PXI_SUBP_FIFO_CNT_SEND_CL_SHIFT) | \
+    ((u32)(send_ti) << REG_PXI_SUBP_FIFO_CNT_SEND_TI_SHIFT) | \
+    ((u32)(send_full) << REG_PXI_SUBP_FIFO_CNT_SEND_FULL_SHIFT) | \
+    ((u32)(send_emp) << REG_PXI_SUBP_FIFO_CNT_SEND_EMP_SHIFT))
+#endif
+
+
+/* SEND_FIFO */
+
+/* RECV_FIFO */
+
+
+// ---- ioreg_PAD.h ----
+/*
+ * Definition of Register offsets, addresses and variables.
+ */
+
+
+/* KEYINPUT */
+
+#define REG_KEYINPUT_OFFSET                                0x130
+#define REG_KEYINPUT_ADDR                                  (HW_REG_BASE + REG_KEYINPUT_OFFSET)
+#define reg_PAD_KEYINPUT                                   (*(const REGType16v *) REG_KEYINPUT_ADDR)
+
+/* KEYCNT */
+
+#define REG_KEYCNT_OFFSET                                  0x132
+#define REG_KEYCNT_ADDR                                    (HW_REG_BASE + REG_KEYCNT_OFFSET)
+#define reg_PAD_KEYCNT                                     (*( REGType16v *) REG_KEYCNT_ADDR)
+
+
+/*
+ * Definitions of Register fields
+ */
+
+
+/* KEYINPUT */
+
+#define REG_PAD_KEYINPUT_L_SHIFT                           9
+#define REG_PAD_KEYINPUT_L_SIZE                            1
+#define REG_PAD_KEYINPUT_L_MASK                            0x0200
+
+#define REG_PAD_KEYINPUT_R_SHIFT                           8
+#define REG_PAD_KEYINPUT_R_SIZE                            1
+#define REG_PAD_KEYINPUT_R_MASK                            0x0100
+
+#define REG_PAD_KEYINPUT_DOWN_SHIFT                        7
+#define REG_PAD_KEYINPUT_DOWN_SIZE                         1
+#define REG_PAD_KEYINPUT_DOWN_MASK                         0x0080
+
+#define REG_PAD_KEYINPUT_UP_SHIFT                          6
+#define REG_PAD_KEYINPUT_UP_SIZE                           1
+#define REG_PAD_KEYINPUT_UP_MASK                           0x0040
+
+#define REG_PAD_KEYINPUT_LEFT_SHIFT                        5
+#define REG_PAD_KEYINPUT_LEFT_SIZE                         1
+#define REG_PAD_KEYINPUT_LEFT_MASK                         0x0020
+
+#define REG_PAD_KEYINPUT_RIGHT_SHIFT                       4
+#define REG_PAD_KEYINPUT_RIGHT_SIZE                        1
+#define REG_PAD_KEYINPUT_RIGHT_MASK                        0x0010
+
+#define REG_PAD_KEYINPUT_START_SHIFT                       3
+#define REG_PAD_KEYINPUT_START_SIZE                        1
+#define REG_PAD_KEYINPUT_START_MASK                        0x0008
+
+#define REG_PAD_KEYINPUT_SEL_SHIFT                         2
+#define REG_PAD_KEYINPUT_SEL_SIZE                          1
+#define REG_PAD_KEYINPUT_SEL_MASK                          0x0004
+
+#define REG_PAD_KEYINPUT_B_SHIFT                           1
+#define REG_PAD_KEYINPUT_B_SIZE                            1
+#define REG_PAD_KEYINPUT_B_MASK                            0x0002
+
+#define REG_PAD_KEYINPUT_A_SHIFT                           0
+#define REG_PAD_KEYINPUT_A_SIZE                            1
+#define REG_PAD_KEYINPUT_A_MASK                            0x0001
+
+#ifndef SDK_ASM
+#define REG_PAD_KEYINPUT_FIELD( l, r, down, up, left, right, start, sel, b, a ) \
+    (u16)( \
+    ((u32)(l) << REG_PAD_KEYINPUT_L_SHIFT) | \
+    ((u32)(r) << REG_PAD_KEYINPUT_R_SHIFT) | \
+    ((u32)(down) << REG_PAD_KEYINPUT_DOWN_SHIFT) | \
+    ((u32)(up) << REG_PAD_KEYINPUT_UP_SHIFT) | \
+    ((u32)(left) << REG_PAD_KEYINPUT_LEFT_SHIFT) | \
+    ((u32)(right) << REG_PAD_KEYINPUT_RIGHT_SHIFT) | \
+    ((u32)(start) << REG_PAD_KEYINPUT_START_SHIFT) | \
+    ((u32)(sel) << REG_PAD_KEYINPUT_SEL_SHIFT) | \
+    ((u32)(b) << REG_PAD_KEYINPUT_B_SHIFT) | \
+    ((u32)(a) << REG_PAD_KEYINPUT_A_SHIFT))
+#endif
+
+
+/* KEYCNT */
+
+#define REG_PAD_KEYCNT_LOGIC_SHIFT                         15
+#define REG_PAD_KEYCNT_LOGIC_SIZE                          1
+#define REG_PAD_KEYCNT_LOGIC_MASK                          0x8000
+
+#define REG_PAD_KEYCNT_INTR_SHIFT                          14
+#define REG_PAD_KEYCNT_INTR_SIZE                           1
+#define REG_PAD_KEYCNT_INTR_MASK                           0x4000
+
+#define REG_PAD_KEYCNT_L_SHIFT                             9
+#define REG_PAD_KEYCNT_L_SIZE                              1
+#define REG_PAD_KEYCNT_L_MASK                              0x0200
+
+#define REG_PAD_KEYCNT_R_SHIFT                             8
+#define REG_PAD_KEYCNT_R_SIZE                              1
+#define REG_PAD_KEYCNT_R_MASK                              0x0100
+
+#define REG_PAD_KEYCNT_DOWN_SHIFT                          7
+#define REG_PAD_KEYCNT_DOWN_SIZE                           1
+#define REG_PAD_KEYCNT_DOWN_MASK                           0x0080
+
+#define REG_PAD_KEYCNT_UP_SHIFT                            6
+#define REG_PAD_KEYCNT_UP_SIZE                             1
+#define REG_PAD_KEYCNT_UP_MASK                             0x0040
+
+#define REG_PAD_KEYCNT_LEFT_SHIFT                          5
+#define REG_PAD_KEYCNT_LEFT_SIZE                           1
+#define REG_PAD_KEYCNT_LEFT_MASK                           0x0020
+
+#define REG_PAD_KEYCNT_RIGHT_SHIFT                         4
+#define REG_PAD_KEYCNT_RIGHT_SIZE                          1
+#define REG_PAD_KEYCNT_RIGHT_MASK                          0x0010
+
+#define REG_PAD_KEYCNT_START_SHIFT                         3
+#define REG_PAD_KEYCNT_START_SIZE                          1
+#define REG_PAD_KEYCNT_START_MASK                          0x0008
+
+#define REG_PAD_KEYCNT_SEL_SHIFT                           2
+#define REG_PAD_KEYCNT_SEL_SIZE                            1
+#define REG_PAD_KEYCNT_SEL_MASK                            0x0004
+
+#define REG_PAD_KEYCNT_B_SHIFT                             1
+#define REG_PAD_KEYCNT_B_SIZE                              1
+#define REG_PAD_KEYCNT_B_MASK                              0x0002
+
+#define REG_PAD_KEYCNT_A_SHIFT                             0
+#define REG_PAD_KEYCNT_A_SIZE                              1
+#define REG_PAD_KEYCNT_A_MASK                              0x0001
+
+#ifndef SDK_ASM
+#define REG_PAD_KEYCNT_FIELD( logic, intr, l, r, down, up, left, right, start, sel, b, a ) \
+    (u16)( \
+    ((u32)(logic) << REG_PAD_KEYCNT_LOGIC_SHIFT) | \
+    ((u32)(intr) << REG_PAD_KEYCNT_INTR_SHIFT) | \
+    ((u32)(l) << REG_PAD_KEYCNT_L_SHIFT) | \
+    ((u32)(r) << REG_PAD_KEYCNT_R_SHIFT) | \
+    ((u32)(down) << REG_PAD_KEYCNT_DOWN_SHIFT) | \
+    ((u32)(up) << REG_PAD_KEYCNT_UP_SHIFT) | \
+    ((u32)(left) << REG_PAD_KEYCNT_LEFT_SHIFT) | \
+    ((u32)(right) << REG_PAD_KEYCNT_RIGHT_SHIFT) | \
+    ((u32)(start) << REG_PAD_KEYCNT_START_SHIFT) | \
+    ((u32)(sel) << REG_PAD_KEYCNT_SEL_SHIFT) | \
+    ((u32)(b) << REG_PAD_KEYCNT_B_SHIFT) | \
+    ((u32)(a) << REG_PAD_KEYCNT_A_SHIFT))
+#endif
+
+
+
+// ---- ioreg_CP.h ----
+/*
+ * Definition of Register offsets, addresses and variables.
+ */
+
+
+/* DIVCNT */
+
+#define REG_DIVCNT_OFFSET                                  0x280
+#define REG_DIVCNT_ADDR                                    (HW_REG_BASE + REG_DIVCNT_OFFSET)
+#define reg_CP_DIVCNT                                      (*( REGType16v *) REG_DIVCNT_ADDR)
+
+/* DIV_NUMER */
+
+#define REG_DIV_NUMER_OFFSET                               0x290
+#define REG_DIV_NUMER_ADDR                                 (HW_REG_BASE + REG_DIV_NUMER_OFFSET)
+#define reg_CP_DIV_NUMER                                   (*( REGType64v *) REG_DIV_NUMER_ADDR)
+
+/* DIV_NUMER_L */
+
+#define REG_DIV_NUMER_L_OFFSET                             0x290
+#define REG_DIV_NUMER_L_ADDR                               (HW_REG_BASE + REG_DIV_NUMER_L_OFFSET)
+#define reg_CP_DIV_NUMER_L                                 (*( REGType32v *) REG_DIV_NUMER_L_ADDR)
+
+/* DIV_NUMER_H */
+
+#define REG_DIV_NUMER_H_OFFSET                             0x294
+#define REG_DIV_NUMER_H_ADDR                               (HW_REG_BASE + REG_DIV_NUMER_H_OFFSET)
+#define reg_CP_DIV_NUMER_H                                 (*( REGType32v *) REG_DIV_NUMER_H_ADDR)
+
+/* DIV_DENOM */
+
+#define REG_DIV_DENOM_OFFSET                               0x298
+#define REG_DIV_DENOM_ADDR                                 (HW_REG_BASE + REG_DIV_DENOM_OFFSET)
+#define reg_CP_DIV_DENOM                                   (*( REGType64v *) REG_DIV_DENOM_ADDR)
+
+/* DIV_DENOM_L */
+
+#define REG_DIV_DENOM_L_OFFSET                             0x298
+#define REG_DIV_DENOM_L_ADDR                               (HW_REG_BASE + REG_DIV_DENOM_L_OFFSET)
+#define reg_CP_DIV_DENOM_L                                 (*( REGType32v *) REG_DIV_DENOM_L_ADDR)
+
+/* DIV_DENOM_H */
+
+#define REG_DIV_DENOM_H_OFFSET                             0x29c
+#define REG_DIV_DENOM_H_ADDR                               (HW_REG_BASE + REG_DIV_DENOM_H_OFFSET)
+#define reg_CP_DIV_DENOM_H                                 (*( REGType32v *) REG_DIV_DENOM_H_ADDR)
+
+/* DIV_RESULT */
+
+#define REG_DIV_RESULT_OFFSET                              0x2a0
+#define REG_DIV_RESULT_ADDR                                (HW_REG_BASE + REG_DIV_RESULT_OFFSET)
+#define reg_CP_DIV_RESULT                                  (*( REGType64v *) REG_DIV_RESULT_ADDR)
+
+/* DIV_RESULT_L */
+
+#define REG_DIV_RESULT_L_OFFSET                            0x2a0
+#define REG_DIV_RESULT_L_ADDR                              (HW_REG_BASE + REG_DIV_RESULT_L_OFFSET)
+#define reg_CP_DIV_RESULT_L                                (*( REGType32v *) REG_DIV_RESULT_L_ADDR)
+
+/* DIV_RESULT_H */
+
+#define REG_DIV_RESULT_H_OFFSET                            0x2a4
+#define REG_DIV_RESULT_H_ADDR                              (HW_REG_BASE + REG_DIV_RESULT_H_OFFSET)
+#define reg_CP_DIV_RESULT_H                                (*( REGType32v *) REG_DIV_RESULT_H_ADDR)
+
+/* DIVREM_RESULT */
+
+#define REG_DIVREM_RESULT_OFFSET                           0x2a8
+#define REG_DIVREM_RESULT_ADDR                             (HW_REG_BASE + REG_DIVREM_RESULT_OFFSET)
+#define reg_CP_DIVREM_RESULT                               (*( REGType64v *) REG_DIVREM_RESULT_ADDR)
+
+/* DIVREM_RESULT_L */
+
+#define REG_DIVREM_RESULT_L_OFFSET                         0x2a8
+#define REG_DIVREM_RESULT_L_ADDR                           (HW_REG_BASE + REG_DIVREM_RESULT_L_OFFSET)
+#define reg_CP_DIVREM_RESULT_L                             (*( REGType32v *) REG_DIVREM_RESULT_L_ADDR)
+
+/* DIVREM_RESULT_H */
+
+#define REG_DIVREM_RESULT_H_OFFSET                         0x2ac
+#define REG_DIVREM_RESULT_H_ADDR                           (HW_REG_BASE + REG_DIVREM_RESULT_H_OFFSET)
+#define reg_CP_DIVREM_RESULT_H                             (*( REGType32v *) REG_DIVREM_RESULT_H_ADDR)
+
+/* SQRTCNT */
+
+#define REG_SQRTCNT_OFFSET                                 0x2b0
+#define REG_SQRTCNT_ADDR                                   (HW_REG_BASE + REG_SQRTCNT_OFFSET)
+#define reg_CP_SQRTCNT                                     (*( REGType16v *) REG_SQRTCNT_ADDR)
+
+/* SQRT_RESULT */
+
+#define REG_SQRT_RESULT_OFFSET                             0x2b4
+#define REG_SQRT_RESULT_ADDR                               (HW_REG_BASE + REG_SQRT_RESULT_OFFSET)
+#define reg_CP_SQRT_RESULT                                 (*( REGType32v *) REG_SQRT_RESULT_ADDR)
+
+/* SQRT_PARAM */
+
+#define REG_SQRT_PARAM_OFFSET                              0x2b8
+#define REG_SQRT_PARAM_ADDR                                (HW_REG_BASE + REG_SQRT_PARAM_OFFSET)
+#define reg_CP_SQRT_PARAM                                  (*( REGType64v *) REG_SQRT_PARAM_ADDR)
+
+/* SQRT_PARAM_L */
+
+#define REG_SQRT_PARAM_L_OFFSET                            0x2b8
+#define REG_SQRT_PARAM_L_ADDR                              (HW_REG_BASE + REG_SQRT_PARAM_L_OFFSET)
+#define reg_CP_SQRT_PARAM_L                                (*( REGType32v *) REG_SQRT_PARAM_L_ADDR)
+
+/* SQRT_PARAM_H */
+
+#define REG_SQRT_PARAM_H_OFFSET                            0x2bc
+#define REG_SQRT_PARAM_H_ADDR                              (HW_REG_BASE + REG_SQRT_PARAM_H_OFFSET)
+#define reg_CP_SQRT_PARAM_H                                (*( REGType32v *) REG_SQRT_PARAM_H_ADDR)
+
+
+/*
+ * Definitions of Register fields
+ */
+
+
+/* DIVCNT */
+
+#define REG_CP_DIVCNT_BUSY_SHIFT                           15
+#define REG_CP_DIVCNT_BUSY_SIZE                            1
+#define REG_CP_DIVCNT_BUSY_MASK                            0x8000
+
+#define REG_CP_DIVCNT_DIV0_SHIFT                           14
+#define REG_CP_DIVCNT_DIV0_SIZE                            1
+#define REG_CP_DIVCNT_DIV0_MASK                            0x4000
+
+#define REG_CP_DIVCNT_MODE_SHIFT                           0
+#define REG_CP_DIVCNT_MODE_SIZE                            2
+#define REG_CP_DIVCNT_MODE_MASK                            0x0003
+
+#ifndef SDK_ASM
+#define REG_CP_DIVCNT_FIELD( busy, div0, mode ) \
+    (u16)( \
+    ((u32)(busy) << REG_CP_DIVCNT_BUSY_SHIFT) | \
+    ((u32)(div0) << REG_CP_DIVCNT_DIV0_SHIFT) | \
+    ((u32)(mode) << REG_CP_DIVCNT_MODE_SHIFT))
+#endif
+
+
+/* DIV_NUMER */
+
+/* DIV_NUMER_L */
+
+/* DIV_NUMER_H */
+
+/* DIV_DENOM */
+
+/* DIV_DENOM_L */
+
+/* DIV_DENOM_H */
+
+/* DIV_RESULT */
+
+/* DIV_RESULT_L */
+
+/* DIV_RESULT_H */
+
+/* DIVREM_RESULT */
+
+/* DIVREM_RESULT_L */
+
+/* DIVREM_RESULT_H */
+
+/* SQRTCNT */
+
+#define REG_CP_SQRTCNT_BUSY_SHIFT                          15
+#define REG_CP_SQRTCNT_BUSY_SIZE                           1
+#define REG_CP_SQRTCNT_BUSY_MASK                           0x8000
+
+#define REG_CP_SQRTCNT_MODE_SHIFT                          0
+#define REG_CP_SQRTCNT_MODE_SIZE                           1
+#define REG_CP_SQRTCNT_MODE_MASK                           0x0001
+
+#ifndef SDK_ASM
+#define REG_CP_SQRTCNT_FIELD( busy, mode ) \
+    (u16)( \
+    ((u32)(busy) << REG_CP_SQRTCNT_BUSY_SHIFT) | \
+    ((u32)(mode) << REG_CP_SQRTCNT_MODE_SHIFT))
+#endif
+
+
+/* SQRT_RESULT */
+
+/* SQRT_PARAM */
+
+/* SQRT_PARAM_L */
+
+/* SQRT_PARAM_H */
+
+
+// ---- ioreg_EXI.h ----
+/*
+ * Definition of Register offsets, addresses and variables.
+ */
+
+
+/* SIODATA32 */
+
+#define REG_SIODATA32_OFFSET                               0x120
+#define REG_SIODATA32_ADDR                                 (HW_REG_BASE + REG_SIODATA32_OFFSET)
+#define reg_EXI_SIODATA32                                  (*( REGType32v *) REG_SIODATA32_ADDR)
+
+/* SIOCNT */
+
+#define REG_SIOCNT_OFFSET                                  0x128
+#define REG_SIOCNT_ADDR                                    (HW_REG_BASE + REG_SIOCNT_OFFSET)
+#define reg_EXI_SIOCNT                                     (*( REGType16v *) REG_SIOCNT_ADDR)
+
+/* SIOSEL */
+
+#define REG_SIOSEL_OFFSET                                  0x12c
+#define REG_SIOSEL_ADDR                                    (HW_REG_BASE + REG_SIOSEL_OFFSET)
+#define reg_EXI_SIOSEL                                     (*( REGType16v *) REG_SIOSEL_ADDR)
+
+
+/*
+ * Definitions of Register fields
+ */
+
+
+/* SIODATA32 */
+
+#define REG_EXI_SIODATA32_H_SHIFT                          16
+#define REG_EXI_SIODATA32_H_SIZE                           16
+#define REG_EXI_SIODATA32_H_MASK                           0xffff0000
+
+#define REG_EXI_SIODATA32_L_SHIFT                          0
+#define REG_EXI_SIODATA32_L_SIZE                           16
+#define REG_EXI_SIODATA32_L_MASK                           0x0000ffff
+
+#ifndef SDK_ASM
+#define REG_EXI_SIODATA32_FIELD( h, l ) \
+    (u32)( \
+    ((u32)(h) << REG_EXI_SIODATA32_H_SHIFT) | \
+    ((u32)(l) << REG_EXI_SIODATA32_L_SHIFT))
+#endif
+
+
+/* SIOCNT */
+
+#define REG_EXI_SIOCNT_TSEND_SHIFT                         3
+#define REG_EXI_SIOCNT_TSEND_SIZE                          1
+#define REG_EXI_SIOCNT_TSEND_MASK                          0x0008
+
+#define REG_EXI_SIOCNT_TRECV_SHIFT                         2
+#define REG_EXI_SIOCNT_TRECV_SIZE                          1
+#define REG_EXI_SIOCNT_TRECV_MASK                          0x0004
+
+#ifndef SDK_ASM
+#define REG_EXI_SIOCNT_FIELD( tsend, trecv ) \
+    (u16)( \
+    ((u32)(tsend) << REG_EXI_SIOCNT_TSEND_SHIFT) | \
+    ((u32)(trecv) << REG_EXI_SIOCNT_TRECV_SHIFT))
+#endif
+
+
+/* SIOSEL */
+
+#define REG_EXI_SIOSEL_SEL_SHIFT                           0
+#define REG_EXI_SIOSEL_SEL_SIZE                            1
+#define REG_EXI_SIOSEL_SEL_MASK                            0x0001
+
+#ifndef SDK_ASM
+#define REG_EXI_SIOSEL_FIELD( sel ) \
+    (u16)( \
+    ((u32)(sel) << REG_EXI_SIOSEL_SEL_SHIFT))
+#endif
+
+
+
 #endif

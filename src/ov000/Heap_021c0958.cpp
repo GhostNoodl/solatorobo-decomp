@@ -34,7 +34,7 @@ extern "C" {
 BOOL func_ov000_021bd374(Obj021c0958 *self, s32 len);
 void func_ov000_021c04e4(void);
 void func_02041c34(void *model, s32 a, void *cb, void *arg);
-void func_02016e28(void *dst, s32 val, u32 size);
+void MI_CpuFill8(void *dst, s32 val, u32 size);
 
 static inline BOOL Obj021c0958_Wait(Obj021c0958 *self) {
     if (!(self->unk_00_1 == 1 ? TRUE : FALSE) || (self->unk_00_3 == 1 ? TRUE : FALSE)) {
@@ -73,7 +73,7 @@ void func_ov000_021c0958(Obj021c0958 *self) {
             if (self->unk_60 != NULL) {
                 self->unk_60(self);
             }
-            func_02016e28(&self->unk_68, 0, 0x24);
+            MI_CpuFill8(&self->unk_68, 0, 0x24);
             self->unk_68 = 4;
             self->unk_44 = -1;
             self->unk_60 = NULL;

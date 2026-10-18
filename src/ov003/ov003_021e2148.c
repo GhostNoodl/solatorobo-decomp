@@ -35,8 +35,8 @@ extern char data_ov003_021f857a[];
 extern void func_ov000_0219433c(void *self);
 extern char *func_0207011c(u16 id);
 extern char *func_02039674(char *p);
-extern void func_0201e520(char *dst, const char *src);
-extern void func_0201e78c(char *dst, const char *s);
+extern void STD_CopyString(char *dst, const char *src);
+extern void STD_ConcatenateString(char *dst, const char *s);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 
 void func_ov003_021e2090(Ov003Prop *self) {
@@ -47,10 +47,10 @@ void func_ov003_021e2090(Ov003Prop *self) {
     if (def->unk_02_3 && def->unk_01 == 1) {
         char buf[0x18];
         char *name = func_0207011c(self->unk_0e);
-        func_0201e520(buf, func_02039674(name));
-        func_0201e78c(buf, data_ov003_021f857a);
-        func_0201e520(self->unk_158, name);
-        func_0201e520(self->unk_178, buf);
+        STD_CopyString(buf, func_02039674(name));
+        STD_ConcatenateString(buf, data_ov003_021f857a);
+        STD_CopyString(self->unk_158, name);
+        STD_CopyString(self->unk_178, buf);
         self->unk_d3 |= 8;
         self->unk_d0 = 0;
     }

@@ -410,7 +410,7 @@ void func_ov003_021d0c1c(Ov009Actor *self);
 char *func_0207011c(void *res);
 char *func_020701d4(void *res);
 u8 *func_02070558(void *res);
-void func_0201e520(char *dst, const char *src);
+void STD_CopyString(char *dst, const char *src);
 }
 
 #endif

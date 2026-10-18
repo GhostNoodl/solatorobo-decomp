@@ -74,8 +74,8 @@ static inline void Ov013_DtorDc(void *self) {
 }
 
 static inline void Ov013_SetRes(Ov013Names *p, const char *a, const char *b) {
-    func_0201e520(p->unk_10, a);
-    func_0201e520(p->unk_30, b);
+    STD_CopyString(p->unk_10, a);
+    STD_CopyString(p->unk_30, b);
     p->unk_03_1 = 1;
 }
 

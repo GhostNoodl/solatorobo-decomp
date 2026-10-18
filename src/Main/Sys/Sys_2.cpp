@@ -4,20 +4,20 @@ extern "C" {
 
 extern void *data_02097e44;
 extern int func_020472c4(void *obj);
-extern void func_02013618(void);
-extern void func_02013658(void);
+extern void GX_DispOff(void);
+extern void GX_DispOn(void);
 extern BOOL func_0201e244(BOOL a);
 extern void func_0201dd4c(int a, int b, int c);
-extern void *func_02019524(int arena);
-extern void *func_02019510(int arena);
-extern void *func_020198e4(int arena, void *lo, void *hi, int n);
-extern void func_02019718(int arena, void *p);
-extern BOOL func_02018d58(void);
+extern void *OS_GetArenaLo(int arena);
+extern void *OS_GetArenaHi(int arena);
+extern void *OS_InitAlloc(int arena, void *lo, void *hi, int n);
+extern void OS_SetArenaLo(int arena, void *p);
+extern BOOL OS_IsRunOnTwl(void);
 extern void *func_0201998c(int arena);
 extern void *NNS_FndCreateExpHeapEx(void *start, u32 size, int flags);
 extern void func_0203dfb0(void);
 extern void func_0203e024(void);
-extern void func_0201a8a4(void);
+extern void OS_WaitVBlankIntr(void);
 extern void func_0203e6bc(void);
 extern u32 OS_DisableInterrupts(void);
 extern void OS_RestoreInterrupts(u32 state);
@@ -35,7 +35,7 @@ void func_0203d8e8(void) {
         if (func_020472c4(data_02097e44) != 0 || data_02097dd0->unk_1f != 0 || data_02097dd0->unk_31 != 0) {
             if (data_02097dd0->unk_1e == 1) {
                 data_02097dd0->unk_1e = 0;
-                func_02013618();
+                GX_DispOff();
                 *(volatile u32 *)0x4001000 &= ~0x10000;
                 func_0201e244(FALSE);
             }
@@ -43,7 +43,7 @@ void func_0203d8e8(void) {
             func_0201dd4c(0xc, 0, 0);
         }
     } else if (data_02097dd0->unk_1e == 0 && func_0201e244(TRUE)) {
-        func_02013658();
+        GX_DispOn();
         *(volatile u32 *)0x4001000 |= 0x10000;
         data_02097dd0->unk_1e = 1;
     }
@@ -55,12 +55,12 @@ void func_0203d9e8(UnkSys *sys) {
     u8 *start;
     u32 size;
     void *hi;
-    lo = func_02019524(0);
-    hi = func_02019510(0);
-    start = (u8 *)func_020198e4(0, lo, hi, 2);
-    func_02019718(0, hi);
+    lo = OS_GetArenaLo(0);
+    hi = OS_GetArenaHi(0);
+    start = (u8 *)OS_InitAlloc(0, lo, hi, 2);
+    OS_SetArenaLo(0, hi);
     size = 0x30000;
-    if (!func_02018d58()) {
+    if (!OS_IsRunOnTwl()) {
         sys->unk_0c = func_0201998c(0);
         size = 0x1c000;
     }
@@ -74,7 +74,7 @@ void func_0203d9e8(UnkSys *sys) {
 
 void func_0203daa4(UnkSys *sys) {
     do {
-        func_0201a8a4();
+        OS_WaitVBlankIntr();
     } while (sys->frameWait > sys->vcount);
     sys->vcount = 0;
 }
@@ -87,7 +87,7 @@ void func_0203dacc(UnkSys *sys) {
         return;
     }
     do {
-        func_0201a8a4();
+        OS_WaitVBlankIntr();
         func_0203e6bc();
     } while (sys->frameWait - 1 > sys->vcount);
 }

@@ -27,7 +27,7 @@ extern SysCard *data_02097e44;
 
 extern void *func_0203dd9c(u32 size);
 extern u16 func_0200c1b4(void);
-extern s32 func_02018028(void);
+extern s32 OS_GetLockID(void);
 extern void func_0200c3a4(u16 lockId);
 extern void func_0200c3b4(u16 lockId);
 extern BOOL func_0200d034(u32 type);

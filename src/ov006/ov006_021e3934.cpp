@@ -65,7 +65,7 @@ extern void *data_ov006_021ec404;
 extern void *data_ov006_021ec444;
 extern u16 data_ov006_021eb840[];
 
-void func_02016e28(void *dst, int value, u32 size);
+void MI_CpuFill8(void *dst, int value, u32 size);
 void MIi_CpuClear16(int value, void *dst, u32 size);
 
 ov006_Unk0203a4c0 *func_0203a4c0(ov006_Unk02097ce0 *a);
@@ -245,7 +245,7 @@ void func_ov006_021e3dd4(ov006_ModelHolder *self, int a) {
     if (model != NULL) {
         func_02041218(model->unk88);
         func_02041440(model, name, 0);
-        func_0201e520(model->unk2C, file);
+        STD_CopyString(model->unk2C, file);
     }
     self->model = model;
     func_020417e0(self->model, func_02035de0(file, name));

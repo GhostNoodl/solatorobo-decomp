@@ -90,7 +90,7 @@ void func_020481c0(SaveBase *s) {
             break;
         case 5:
             hdr->curSlot = s->curSlot;
-            func_02016fa0(&data->slot, (u8 *)hdr + off, s->slotSize);
+            MI_CpuCopy8(&data->slot, (u8 *)hdr + off, s->slotSize);
             s->step = 100;
         case 6:
             if (SaveBase_WriteHeader(s, hdr) != 1) {

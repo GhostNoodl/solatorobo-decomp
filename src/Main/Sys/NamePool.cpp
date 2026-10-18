@@ -43,7 +43,7 @@ NamePool *data_02097de4;
 extern u32 OS_DisableInterrupts(void);
 extern void OS_RestoreInterrupts(u32 state);
 extern void *NNS_FndAllocFromExpHeapEx(void *heap, u32 size, u32 align);
-extern void func_02016e28(void *dst, u32 value, u32 size);
+extern void MI_CpuFill8(void *dst, u32 value, u32 size);
 void func_0203e300(NamePool *pool, int count);
 
 static inline void *Sys_Alloc(u32 size) {
@@ -83,7 +83,7 @@ void func_0203e024(void) {
 }
 
 static inline int NamePool_Hash(const char *name) {
-    int len = (int)func_0201e708(name);
+    int len = (int)STD_GetStringLength(name);
     int hash;
     int i;
     if (len > 16) {
@@ -104,7 +104,7 @@ void func_0203e098(const char *name, u32 value) {
     if (pool == NULL) {
         return;
     }
-    func_0201e520(pool->name, name);
+    STD_CopyString(pool->name, name);
     pool->value = value;
     pool->hash = NamePool_Hash(name);
 }
@@ -114,7 +114,7 @@ void func_0203e134(const char *name, u32 value) {
     if (pool == NULL) {
         return;
     }
-    func_0201e520(pool->name, name);
+    STD_CopyString(pool->name, name);
     pool->value = value;
     pool->hash = NamePool_Hash(name);
 }
@@ -126,7 +126,7 @@ NameNode *func_0203e1d0(NamePool *pool, u32 key) {
     if (next != NULL) {
         next->prev = NULL;
     }
-    func_0201e520(node->name, pool->name);
+    STD_CopyString(node->name, pool->name);
     node->unk_20 = 0;
     node->hash = pool->hash;
     node->value = pool->value;
@@ -192,7 +192,7 @@ void func_0203e300(NamePool *pool, int count) {
     NameNode *nodes;
     int i;
     pool->nodes = (NameNode *)Sys_Alloc04(count * sizeof(NameNode), 4);
-    func_02016e28(pool->nodes, 0, 4);
+    MI_CpuFill8(pool->nodes, 0, 4);
     nodes = pool->nodes;
     nodes[0].prev = NULL;
     nodes[0].next = &nodes[1];
@@ -625,7 +625,7 @@ static inline void NamePool_SetName(NamePool *pool, const char *name, u32 value)
     if (pool == NULL) {
         return;
     }
-    func_0201e520(pool->name, name);
+    STD_CopyString(pool->name, name);
     pool->value = value;
     pool->hash = NamePool_Hash(name);
 }
