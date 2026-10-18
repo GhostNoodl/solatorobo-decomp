@@ -2628,3 +2628,91 @@ src/ov000/Group_0218c040.cpp:
 src/ov000/Lo_02157df0.cpp:
     complete
     .text       start:0x02157df0 end:0x02157fc0
+
+src/ov000/Fade_021bc474.cpp:
+    complete
+    .text       start:0x021bc474 end:0x021bc644
+
+src/ov000/Text_0215cfd0.cpp:
+    complete
+    .text       start:0x0215cfd0 end:0x0215d1a4
+
+src/ov000/Drop_0219b400.cpp:
+    complete
+    .text       start:0x0219b400 end:0x0219b5dc
+
+src/ov000/Win_0215f334.cpp:
+    complete
+    .text       start:0x0215f334 end:0x0215f514
+
+src/ov000/Text_021bbd94.cpp:
+    complete
+    .text       start:0x021bbd94 end:0x021bbf78
+
+src/ov000/Loader_021633ac.cpp:
+    complete
+    .text       start:0x021633ac end:0x02163594
+
+src/ov000/Robo_021b03c8.cpp:
+    complete
+    .text       start:0x021b03c8 end:0x021b05b0
+
+src/ov000/TextWin_021c628c.cpp:
+    complete
+    .text       start:0x021c628c end:0x021c6474
+
+src/ov000/Robo_0219c54c.cpp:
+    complete
+    .text       start:0x0219c54c end:0x0219c73c
+
+src/ov000/Scene_02171270.cpp:
+    complete
+    .text       start:0x02171270 end:0x02171464
+
+src/ov000/Menu_021774a4.cpp:
+    complete
+    .text       start:0x021774a4 end:0x02177698
+
+src/ov000/Lo_0219a5c8.cpp:
+    complete
+    .text       start:0x0219a5c8 end:0x0219a7bc
+
+src/ov000/Frame_0215a088.cpp:
+    complete
+    .text       start:0x0215a088 end:0x0215a280
+
+src/ov000/Win_02179684.cpp:
+    complete
+    .text       start:0x02179684 end:0x0217987c
+
+src/ov000/Lo_0217c008.cpp:
+    complete
+    .text       start:0x0217c008 end:0x0217cddc
+
+src/ov000/Obj_0216f8b0.cpp:
+    complete
+    .text       start:0x0216f8b0 end:0x0216faac
+
+src/ov000/Lo_02177028.cpp:
+    complete
+    .text       start:0x02177028 end:0x02177224
+
+src/ov000/Cam_02160414.cpp:
+    complete
+    .text       start:0x02160414 end:0x02160534
+
+src/ov000/Robo_021b05b0.cpp:
+    complete
+    .text       start:0x021b05b0 end:0x021b06dc
+
+src/ov000/Robo_021b4560.cpp:
+    complete
+    .text       start:0x021b4560 end:0x021b468c
+
+src/ov000/Lo_0214e7f0.cpp:
+    complete
+    .text       start:0x0214e7f0 end:0x0214e920
+
+src/ov000/Obj_021658e8.cpp:
+    complete
+    .text       start:0x021658e8 end:0x02165a20
