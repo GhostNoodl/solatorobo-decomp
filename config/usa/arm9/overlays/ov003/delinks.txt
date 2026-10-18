@@ -504,3 +504,11 @@ src/ov003/ov003_021e2b50.c:
 src/ov003/ov003_021e9b74.cpp:
     complete
     .text       start:0x021e9b74 end:0x021ea234
+
+src/ov003/ov003_021f0c60.cpp:
+    complete
+    .text       start:0x021f0c60 end:0x021f1420
+
+src/ov003/ov003_021d16cc.cpp:
+    complete
+    .text       start:0x021d16cc end:0x021d1b88
