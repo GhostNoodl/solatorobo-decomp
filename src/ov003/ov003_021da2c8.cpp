@@ -126,4 +126,119 @@ void *func_ov003_021da4a8(const Ov003Vec *base, s32 range, void *mgr) {
     return func_02065f88(mgr, &p);
 }
 
+struct Ov003URot {
+    u16 x;
+    u16 y;
+    u16 z;
+};
+
+class Ov003Follower {
+public:
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0c();
+    virtual void v10();
+    virtual void v14();
+    virtual void SetPos(Ov003Vec *pos);
+    virtual void v1c();
+    virtual void v20();
+    virtual void v24();
+    virtual void v28();
+    virtual void v2c();
+    virtual void SetRot(Ov003URot *rot);
+    u32 target;
+    Ov003Vec offset;
+    u8 unk_14[0x50];
+    Ov003URot rot;
+};
+
+struct Ov003FollowTgt {
+    u8 unk_00[0x70];
+    Ov003Vec pos;
+    Ov003URot rot;
+};
+
+extern void *data_ov000_021ccd68;
+extern Ov003FollowTgt *func_ov000_0218e640(void *mgr, u16 id);
+
+static inline Ov003FollowTgt *Ov003_FindActor(u16 id) {
+    if (data_ov000_021ccd68 == NULL) {
+        return NULL;
+    }
+    return func_ov000_0218e640(data_ov000_021ccd68, id);
+}
+
+static inline void Ov003_RotY(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
+    Ov003Mtx33 m;
+    if (angle == 0) {
+        *out = *in;
+        return;
+    }
+    func_02011488(&m, OV003_SIN(angle), OV003_COS(angle));
+    func_020117a4(in, &m, out);
+}
+
+static inline void Ov003_RotYM(Ov003Vec *out, s32 angle, const Ov003Vec *in, Ov003Mtx33 *m) {
+    if (angle == 0) {
+        *out = *in;
+        return;
+    }
+    func_02011488(m, OV003_SIN(angle), OV003_COS(angle));
+    func_020117a4(in, m, out);
+}
+
+static inline void Ov003Follower_Update(Ov003Follower *self) {
+    Ov003FollowTgt *t;
+    Ov003Vec p;
+    Ov003Vec off;
+    Ov003Mtx33 m;
+    if (self == NULL) {
+        return;
+    }
+    t = Ov003_FindActor(self->target);
+    if (t == NULL) {
+        return;
+    }
+    p = t->pos;
+    off = self->offset;
+    Ov003_RotYM(&off, (u16)t->rot.y, &off, &m);
+    func_02012be8(&p, &off, &p);
+    self->SetPos(&p);
+}
+
+void func_ov003_021da520(Ov003Follower *self) {
+    Ov003FollowTgt *t;
+    if (self == NULL) {
+        return;
+    }
+    t = Ov003_FindActor(self->target);
+    if (t == NULL) {
+        return;
+    }
+    Ov003Vec p = t->pos;
+    Ov003Vec off = self->offset;
+    Ov003_RotY(&off, (u16)t->rot.y, &off);
+    func_02012be8(&p, &off, &p);
+    self->SetPos(&p);
+}
+
+void func_ov003_021da620(Ov003Follower *self) {
+    Ov003FollowTgt *t;
+    if (self == NULL) {
+        return;
+    }
+    Ov003Follower_Update(self);
+    t = Ov003_FindActor(self->target);
+    if (t == NULL) {
+        return;
+    }
+    Ov003URot r;
+    r.x = self->rot.x;
+    r.y = self->rot.y;
+    r.z = self->rot.z;
+    r.y = t->rot.y;
+    self->SetRot(&r);
+}
+
 }

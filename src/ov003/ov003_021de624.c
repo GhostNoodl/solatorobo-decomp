@@ -2,6 +2,7 @@
 
 typedef void (*VFunc)(void *);
 
+
 extern void func_0203de1c(void *p);
 extern void func_ov000_0219429c(void *p);
 
@@ -37,4 +38,3 @@ void *func_ov003_021de698(void *self) {
     func_0203de1c(self);
     return self;
 }
-

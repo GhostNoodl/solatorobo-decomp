@@ -45,6 +45,13 @@ static inline s32 Ov003Kind_Get(Ov003Kind *k) {
     return k != NULL ? k->kind : 0;
 }
 
+struct Ov003YawActor {
+    u8 unk_00[0x44];
+    Ov003Attach *unk_44;
+    u8 unk_48[0x36];
+    u16 yaw;
+};
+
 extern "C" {
 
 extern Ov003Game54 *data_ov000_021ccd54;
@@ -173,6 +180,25 @@ void func_ov003_021da108(Ov003FxActor *self, s32 range, void *mgr, s32 base, s32
     if (e != NULL) {
         e->SetTime(base + r);
     }
+}
+
+static inline void Ov003_RotY(Ov003VecP *out, s32 angle, const Ov003VecP *in) {
+    Ov003Mtx33 m;
+    if (angle == 0) {
+        *out = *in;
+        return;
+    }
+    func_02011488(&m, OV003_SIN(angle), OV003_COS(angle));
+    func_020117a4((const Ov003Vec *)in, &m, (Ov003Vec *)out);
+}
+
+Ov003VecP func_ov003_021da214(Ov003YawActor *actor) {
+    Ov003VecP v = data_ov003_021f4988;
+    if (actor != NULL && actor->unk_44 != NULL) {
+        v = *(Ov003VecP *)&actor->unk_44->pos;
+        Ov003_RotY(&v, actor->yaw, &v);
+    }
+    return v;
 }
 
 }

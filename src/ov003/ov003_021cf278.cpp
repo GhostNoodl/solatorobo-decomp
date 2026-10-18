@@ -32,13 +32,20 @@ typedef struct {
     void **vtbl;
 } Ov003VObj;
 
+class Ov003RelObj {
+public:
+    virtual void v00();
+    virtual void Release();
+};
+
 typedef struct {
-    u32 unk_00;
+    u8 flag : 1;
+    u16 unk_02;
     Ov003VObj *obj;
 } Ov003Item;
 
 typedef struct Ov003Link {
-    u32 unk_00;
+    u16 key;
     Ov003Item *item;
     struct Ov003Link *next;
 } Ov003Link;
@@ -64,7 +71,7 @@ extern u32 func_0201e708(const char *s);
 extern void *func_0203dddc(u32 size);
 extern void func_0201e5a0(void *dst, const void *src, u32 size);
 extern void func_0203de1c(void *p);
-extern void func_ov003_021cf5e8(Ov003Group *self);
+void func_ov003_021cf5e8(Ov003Group *self);
 
 extern u8 data_ov003_021f7984[];
 extern void *func_0203dd9c(u32 size);
@@ -231,6 +238,106 @@ void func_ov003_021cf4ec(Ov003Group *self) {
             ((VFunc)l->item->obj->vtbl[4])(l->item->obj);
         }
     }
+}
+
+Ov003Link *func_ov003_021cf6e8(Ov003Link *head, Ov003Link *n);
+
+void *func_ov003_021cf52c(Ov003Group *self, void *obj, u16 key4, u16 key8) {
+    void *ret = NULL;
+    if (self->active) {
+        Ov003Item *item;
+        Ov003Link *a;
+        Ov003Link *b;
+        ret = obj;
+        item = (Ov003Item *)func_0203dd9c(sizeof(Ov003Item));
+        a = (Ov003Link *)func_0203dd9c(sizeof(Ov003Link));
+        b = (Ov003Link *)func_0203dd9c(sizeof(Ov003Link));
+        item->flag = 0;
+        item->unk_02 = self->unk_02;
+        item->obj = (Ov003VObj *)obj;
+        a->item = item;
+        a->key = key4;
+        a->next = NULL;
+        b->item = item;
+        b->key = key8;
+        b->next = NULL;
+        self->unk_02++;
+        self->list4 = func_ov003_021cf6e8(self->list4, a);
+        self->list8 = func_ov003_021cf6e8(self->list8, b);
+    }
+    return ret;
+}
+
+void func_ov003_021cf5e8(Ov003Group *self) {
+    Ov003Link *next;
+    Ov003Link *l;
+    if (!self->active) {
+        return;
+    }
+    for (l = self->list4; l != NULL; l = next) {
+        void *old;
+        next = l->next;
+        if (l->item->flag) {
+            old = data_02097dd0->cur;
+            data_02097dd0->cur = data_02097dd0->alt;
+            if (l->item->obj != NULL) {
+                Ov003RelObj *o = (Ov003RelObj *)l->item->obj;
+                if (o != NULL) {
+                    o->Release();
+                }
+                l->item->obj = NULL;
+            }
+            data_02097dd0->cur = old;
+        }
+        old = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->alt;
+        if (l->item != NULL) {
+            func_0203de1c(l->item);
+            l->item = NULL;
+        }
+        data_02097dd0->cur = old;
+        func_0203de1c(l);
+    }
+    self->list4 = NULL;
+    for (l = self->list8; l != NULL; l = next) {
+        next = l->next;
+        func_0203de1c(l);
+    }
+    self->list8 = NULL;
+    self->unk_02 = 0;
+}
+
+Ov003Link *func_ov003_021cf6e8(Ov003Link *head, Ov003Link *n) {
+    Ov003Link *ret = NULL;
+    Ov003Link *prev = NULL;
+    Ov003Link *cur;
+    if (n == NULL) {
+        ret = head;
+    } else if (head == NULL) {
+        ret = n;
+        n->next = prev;
+    } else {
+        for (cur = head; cur != NULL; cur = cur->next) {
+            if (n->key >= cur->key) {
+                if (prev == NULL) {
+                    n->next = head;
+                    ret = n;
+                } else {
+                    prev->next = n;
+                    ret = head;
+                    n->next = cur;
+                }
+                break;
+            }
+            prev = cur;
+        }
+        if (prev != NULL && prev->next == NULL) {
+            prev->next = n;
+            ret = head;
+            n->next = NULL;
+        }
+    }
+    return ret;
 }
 
 }

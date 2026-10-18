@@ -20,11 +20,15 @@ struct Ov003Mtx33 {
     s32 m[9];
 };
 
+#define OV003_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
+#define OV003_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
+
 static inline s32 Ov003_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
 extern "C" {
+extern const s16 FX_SinCosTable_[];
 extern void func_0201146c(Ov003Mtx33 *m, s32 sin, s32 cos);
 extern void func_02011488(Ov003Mtx33 *m, s32 sin, s32 cos);
 extern void func_020114a4(Ov003Mtx33 *m, s32 sin, s32 cos);

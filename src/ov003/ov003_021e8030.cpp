@@ -180,6 +180,56 @@ extern void func_ov000_021953b4(void *self);
 extern void func_02065804(void *mgr, void *handle);
 BOOL func_ov003_021e83d0(Ov003Rotor *self);
 
+extern s32 **func_ov000_02190a30(void *model, s32 a);
+
+static inline BOOL Ov003Game54_IsBusy(Ov003Game54 *g) {
+    return g->unk_90 != g->unk_94;
+}
+
+static inline BOOL Ov003Game54_IsIdle(Ov003Game54 *g) {
+    if (Ov003Game54_IsBusy(g)) {
+        return FALSE;
+    }
+    if (g->state != 3) {
+        return FALSE;
+    }
+    return TRUE;
+}
+
+static inline BOOL Ov003_Game54Idle(void) {
+    Ov003Game54 *g = data_ov000_021ccd54;
+    if (g != NULL) {
+        return Ov003Game54_IsIdle(g);
+    }
+    return TRUE;
+}
+
+BOOL func_ov003_021e7ee4(Ov003Rotor *self) {
+    Ov003Rot rot;
+    Ov003Vec v;
+    s32 d;
+    s32 t;
+    s32 *p;
+    if (func_ov000_0219bf90()->input[0] != 0 && Ov003_Game54Idle()) {
+        rot = self->rot;
+        rot.x += 0x4000;
+        d = 0;
+        p = *func_ov000_02190a30(self->model, 0);
+        if (p != NULL) {
+            d = *p;
+        }
+        if (d > 0x32000) {
+            d = 0x64000 - d;
+        }
+        t = d - 0x19000;
+        v.x = (t >> 1) - (t >> 3) + 0x1800;
+        v.y = 0x3333;
+        v.z = -0x667;
+        return func_ov000_0219aae8(self, self, self->link->a, self->link->b, 2, &v, &rot, 0x3333 - 0x1000, 0x4000 - 0x3333, 100, 0x1000);
+    }
+    return FALSE;
+}
+
 void func_ov003_021e8030(Ov003Rotor *self) {
     Ov003Unit *u;
     func_ov000_0219433c(self);
