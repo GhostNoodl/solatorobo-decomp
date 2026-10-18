@@ -512,3 +512,11 @@ src/ov003/ov003_021f0c60.cpp:
 src/ov003/ov003_021d16cc.cpp:
     complete
     .text       start:0x021d16cc end:0x021d1b88
+
+src/ov003/ov003_021eeecc.cpp:
+    complete
+    .text       start:0x021eeecc end:0x021ef558
+
+src/ov003/ov003_021cd1e4.cpp:
+    complete
+    .text       start:0x021cd1e4 end:0x021cd64c
