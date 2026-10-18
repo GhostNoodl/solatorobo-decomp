@@ -8,6 +8,10 @@ src/ov007/ov007_021ccda0.cpp:
     complete
     .text       start:0x021ccda0 end:0x021cd628
 
+src/ov007/ov007_021cd628.cpp:
+    complete
+    .text       start:0x021cd628 end:0x021cdff0
+
 src/ov007/ov007_021cdff0.cpp:
     complete
     .text       start:0x021cdff0 end:0x021ce038
