@@ -16,6 +16,10 @@
 #define SDK_NULL_ASSERT(x) ((void)0)
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // ---- gxcommon.h ----
 #define GX_DEFAULT_DMAID    (3)
 #define GX_DMA_NOT_USE      ((u32) ~0)
@@ -1132,6 +1136,10 @@ static inline GXFifoStat G3X_GetCommandFifoStatus (void)
 	                                       REG_G3X_GXSTAT_E_MASK)) >> REG_G3X_GXSTAT_F_SHIFT);
 }
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif
