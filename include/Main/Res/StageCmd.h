@@ -96,7 +96,7 @@ extern void *data_02149ef8;
 extern int (*const data_0208bf9c[])(StageResSlot *slot);
 extern const u32 data_02082a28[];
 extern BOOL func_0206f21c(u16 id, int a);
-extern void func_0206f5e4(u16 id, int a);
+extern BOOL func_0206f5e4(u16 id, int a);
 extern void func_ov000_02184ea4(FieldState *state, u16 id);
 extern void func_ov000_02184bb0(FieldState *state, u16 a);
 extern void func_ov000_02184d90(FieldState *state, u16 a);

@@ -714,7 +714,7 @@ src/Main/Res/StageCmd_7.cpp:
 
 src/Main/Res/StageCmd_8.cpp:
     complete
-    .text       start:0x0205f8f8 end:0x0205fdb0
+    .text       start:0x0205f8f8 end:0x0205fe10
 
 src/Main/Res/StageCmd_9.cpp:
     complete
@@ -802,7 +802,7 @@ src/Main/Effect/Effect_14.cpp:
 
 src/Main/Effect/Effect_15.cpp:
     complete
-    .text       start:0x0206b744 end:0x0206b778
+    .text       start:0x0206b744 end:0x0206b804
 
 src/Main/Effect/Effect_16.cpp:
     complete
@@ -839,3 +839,54 @@ src/Main/Save/GameSave_2.cpp:
 src/Main/Save/GameSave_3.cpp:
     complete
     .text       start:0x0206dac8 end:0x0206dd6c
+
+src/Main/Lang/ParamTbl.cpp:
+    complete
+    .text       start:0x0206ec48 end:0x0206f21c
+
+src/Main/Lang/LangRes2.cpp:
+    complete
+    .text       start:0x0206f9dc end:0x0206faec
+
+src/Main/Lang/ItemGive.cpp:
+    complete
+    .text       start:0x0206f21c end:0x0206f6d4
+
+src/Main/Lang/ItemGive_2.cpp:
+    complete
+    .text       start:0x0206f788 end:0x0206f85c
+
+src/Main/Lang/ItemGive_3.cpp:
+    complete
+    .text       start:0x0206f954 end:0x0206f9dc
+
+
+src/Main/Lang/ParamKind.cpp:
+    complete
+    .text       start:0x02070dcc end:0x02070ddc
+
+src/Main/Lang/LangData.cpp:
+    complete
+    .text       start:0x0206dd6c end:0x0206dfd4
+
+src/Main/Lang/LangData_2.cpp:
+    complete
+    .text       start:0x0206e150 end:0x0206e3a0
+
+src/Main/Lang/LangData_3.cpp:
+    complete
+    .text       start:0x0206e648 end:0x0206e858
+
+src/Main/Lang/LangData_4.cpp:
+    complete
+    .text       start:0x0206e8f0 end:0x0206ec48
+
+
+src/Main/Effect/EffectSnd.cpp:
+    complete
+    .text       start:0x02069f10 end:0x02069f3c
+
+src/Main/Lang/TblRes.cpp:
+    complete
+    .text       start:0x020702c8 end:0x020708fc
+

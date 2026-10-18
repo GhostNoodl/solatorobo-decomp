@@ -132,4 +132,27 @@ void func_0205fc88(u32 flags) {
 }
 
 
+
+static inline void Stage_SetMark(const StageVec *v, u16 rot, u16 active) {
+    s32 x = v->x;
+    s32 y = v->y;
+    s32 z = v->z;
+    x += 8;
+    y += 8;
+    z += 8;
+    data_02fe1534.unk_16 = active;
+    data_02fe1534.unk_18 = x >> 4;
+    data_02fe1534.unk_1a = y >> 4;
+    data_02fe1534.unk_1c = z >> 4;
+    data_02fe1534.unk_1e = rot;
+}
+
+int func_0205fdb0(StageResSlot *slot) {
+    StagePlayer *player = func_ov000_0219bf90();
+    if (player != NULL) {
+        Stage_SetMark(&player->pos, player->rot[1], 1);
+    }
+    return 1;
+}
+
 }
