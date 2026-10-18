@@ -159,13 +159,6 @@ typedef struct StageCamera {
     /* 0xfc */ u16 w;
 } StageCamera;
 
-typedef struct StageFieldInfo {
-    /* 0x00 */ u8 unk_00[0xa];
-    /* 0x0a */ u8 unk_0a;
-} StageFieldInfo;
-
-extern StageFieldInfo *data_ov000_021ccd6c;
-
 int func_0205c83c(StageResSlot *slot) {
     u16 a = slot->args[0];
     StageRes *res = slot->res;

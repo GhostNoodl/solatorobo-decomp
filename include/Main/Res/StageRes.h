@@ -54,7 +54,8 @@ typedef struct StageResSlot {
     /* 0x04 */ union {
         u16 unk_04;
         struct {
-            u16 unk_04_0 : 9;
+            u16 unk_04_0 : 8;
+            u16 flag8 : 1;
             u16 flag9 : 1;
             u16 unk_04_10 : 6;
         } bits;

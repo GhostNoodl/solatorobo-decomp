@@ -5,11 +5,6 @@ extern "C" {
 extern int func_0205cbf0(StageResSlot *slot);
 extern void func_0205b348(void);
 
-typedef struct StagePlayer {
-    /* 0x000 */ u8 unk_000[0xb2a];
-    /* 0xb2a */ u8 unk_b2a;
-} StagePlayer;
-
 extern void func_ov000_02183858(FieldState *state, u16 a);
 extern void func_ov000_0218386c(FieldState *state, u16 a);
 extern void func_ov000_02186dbc(FieldState *state);
@@ -19,8 +14,6 @@ extern void func_ov000_021723fc(FieldPlayer *player, u16 a, u16 b, u16 c);
 extern void func_ov000_0217242c(FieldPlayer *player, int mode, u16 a);
 extern void func_ov000_02185804(FieldState *state, u16 a);
 extern void func_ov000_02185918(FieldState *state, u16 a);
-extern void func_ov000_021b1110(StagePlayer *player, int a);
-extern StagePlayer *func_ov000_0219bf90(void);
 
 extern void func_ov000_02182590(u8 *p);
 extern void func_ov000_021836d0(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e);

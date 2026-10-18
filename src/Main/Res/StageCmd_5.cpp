@@ -6,10 +6,6 @@ extern int func_0205cbf0(StageResSlot *slot);
 
 extern void func_0205b348(void);
 
-typedef struct StagePlayer {
-    /* 0x000 */ u8 unk_000[0xb2a];
-    /* 0xb2a */ u8 unk_b2a;
-} StagePlayer;
 
 extern void func_ov000_02183858(FieldState *state, u16 a);
 
@@ -29,10 +25,6 @@ extern void func_ov000_02185804(FieldState *state, u16 a);
 
 extern void func_ov000_02185918(FieldState *state, u16 a);
 
-extern void func_ov000_021b1110(StagePlayer *player, int a);
-
-extern StagePlayer *func_ov000_0219bf90(void);
-
 extern void func_ov000_02182590(u8 *p);
 
 extern void func_ov000_021836d0(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e);
@@ -40,6 +32,10 @@ extern void func_ov000_021836d0(FieldState *state, u16 a, u16 b, u16 c, u16 d, u
 extern void func_ov000_0218372c(FieldState *state, u16 a);
 
 extern void func_ov000_021837c0(FieldState *state);
+
+extern void func_ov000_02172450(FieldPlayer *player, int a);
+
+extern void func_ov000_02172518(FieldPlayer *player, u32 id, u8 *pos, BOOL flag);
 
 extern void func_ov000_021837f8(FieldState *state, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f);
 
@@ -218,5 +214,233 @@ int func_0205d7e4(StageResSlot *slot) {
     }
     return 1;
 }
+
+
+int func_0205d83c(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    func_ov000_02172450(data_ov000_021ccd30, 0);
+    Field_PushEvent(data_ov000_021ccd54, 0x17, 0);
+    return 1;
+}
+
+int func_0205d8c4(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    {
+        StageRes *res = slot->res;
+        u8 *pos = NULL;
+        BOOL flag = slot->args[2] != 0 ? TRUE : FALSE;
+        u32 id;
+        switch (slot->args[0]) {
+        case 0:
+            id = 0x2712;
+            break;
+        case 1:
+            id = 0x2713;
+            break;
+        case 2:
+            id = 0x2715;
+            break;
+        case 3:
+            id = 0x2716;
+            break;
+        case 4:
+            id = 0x2716;
+            break;
+        case 5:
+            id = 0x2717;
+            break;
+        case 6:
+            id = 0x44f;
+            break;
+        }
+        if (slot->args[1] & 0x8000) {
+            pos = res->posEv->pos + (u16)(slot->args[1] & ~0x8000) * 6;
+        }
+        func_ov000_02172518(data_ov000_021ccd30, id, pos, flag);
+    }
+    Field_PushEvent(data_ov000_021ccd54, 0x17, 0);
+    return 1;
+}
+
+
+int func_0205d9fc(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    if (slot->args[0] != 0) {
+        if (Field_IsPlayerActing()) {
+            func_ov000_02172288(data_ov000_021ccd30, 0, 0);
+            Field_PushEvent(data_ov000_021ccd54, 0x19, 0);
+            return -0x63;
+        }
+        func_ov000_02172288(data_ov000_021ccd30, 1, slot->args[1]);
+        Field_PushEvent(data_ov000_021ccd54, 0x18, 0);
+    } else {
+        func_ov000_02172288(data_ov000_021ccd30, 0, 0);
+        Field_PushEvent(data_ov000_021ccd54, 0x19, 0);
+    }
+    return 1;
+}
+
+int func_0205db70(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    data_02fe1534.unk_2e = slot->args[2];
+    data_02fe1534.unk_30 = slot->args[3];
+    func_ov000_021722c4(data_ov000_021ccd30, 1, slot->args[0], slot->args[1], data_02fe1534.unk_2e, data_02fe1534.unk_30);
+    return 1;
+}
+
+int func_0205dbfc(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    data_02fe1534.unk_2e = 0;
+    data_02fe1534.unk_30 = 0;
+    func_ov000_021722c4(data_ov000_021ccd30, 0, 0, 0, 0, 0);
+    return 1;
+}
+
+int func_0205dc74(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    Actor_SetDir(data_ov000_021ccd30->unk_11c, data_02fe1534.unk_2e, data_02fe1534.unk_30);
+    return 1;
+}
+
+int func_0205dcd8(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    func_ov000_02172338(data_ov000_021ccd30, 1, slot->args[0], slot->args[1] * 60, slot->args[2]);
+    return 1;
+}
+
+int func_0205dd4c(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    func_ov000_02172338(data_ov000_021ccd30, 0, 0, 0x7fffffff, 0);
+    return 1;
+}
+
+int func_0205dda4(StageResSlot *slot) {
+    FieldActorState *st;
+    if (!func_ov000_021705ec(data_ov000_021ccd30->unk_11c)) {
+        return -0x63;
+    }
+    st = data_ov000_021ccd30->unk_11c->state;
+    if (st->bits.flag9 == 1 ? TRUE : FALSE) {
+        return 1;
+    }
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    switch (slot->args[0]) {
+    case 0:
+        st->flags |= 0x80;
+        break;
+    case 1:
+        st->flags &= ~0x80;
+        break;
+    case 2:
+        {
+            u32 f = st->flags & ~0x10000;
+            st->unk_20 = st->unk_1c;
+            st->flags = f | 0x120;
+        }
+        break;
+    case 3:
+        func_ov000_0216da78(st);
+        break;
+    }
+    return 1;
+}
+
+int func_0205de88(StageResSlot *slot) {
+    FieldActorState *st;
+    if (slot->args[0] == 0 || slot->args[0] == 2) {
+        Slot_Push(slot->res, 0x135, slot->args[0]);
+        return 1;
+    }
+    if (!func_ov000_021705ec(data_ov000_021ccd30->unk_11c)) {
+        return -0x63;
+    }
+    st = data_ov000_021ccd30->unk_11c->state;
+    if (st->bits.flag9 == 1 ? TRUE : FALSE) {
+        return 1;
+    }
+    switch (slot->args[0]) {
+    case 1:
+        st->flags &= ~0x80;
+        break;
+    case 3:
+        st->flags &= ~0x80;
+        Slot_Push(slot->res, 0x135, slot->args[0]);
+        break;
+    }
+    return 1;
+}
+
+int func_0205e04c(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    {
+        u16 arg = slot->args[1];
+        StageRes *res = slot->res;
+        u16 hi = (arg >> 12) & 8;
+        u16 id = arg & ~0x8000;
+        func_ov000_02172390(data_ov000_021ccd30, slot->args[0], func_0204c0e8(hi ? data_02149ef8 : (void *)res->sub, id));
+    }
+    Field_PushEvent(data_ov000_021ccd54, 0x1a, 0);
+    return 1;
+}
+
+int func_0205e114(StageResSlot *slot) {
+    FieldState *state = data_ov000_021ccd54;
+    if (Field_IsEventPending(state)) {
+        return -0x63;
+    }
+    func_ov000_02186158(state, slot->args[0]);
+    return 1;
+}
+
+int func_0205e158(StageResSlot *slot) {
+    FieldState *state = data_ov000_021ccd54;
+    if (Field_IsEventPending(state)) {
+        return -0x63;
+    }
+    func_ov000_02186204(state, slot->args[0]);
+    return 1;
+}
+
+int func_0205e19c(StageResSlot *slot) {
+    if (Field_HasEvent(0xa)) {
+        return -0x63;
+    }
+    {
+        u16 b;
+        u16 id = slot->args[0];
+        if (id != 0) {
+            b = slot->args[1];
+            Stage_FindObj(id, b);
+        }
+    }
+    if (data_02149efc.unk_14 != NULL || data_02149efc.unk_04 != NULL) {
+        data_02fe1534.unk_80 = 1;
+    } else {
+        data_02fe1534.unk_80 = 0;
+    }
+    return 1;
+}
+
+
 
 }

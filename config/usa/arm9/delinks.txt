@@ -474,4 +474,48 @@ src/Main/Res/StageCmd_4.cpp:
 
 src/Main/Res/StageCmd_5.cpp:
     complete
-    .text       start:0x0205d0dc end:0x0205d83c
+    .text       start:0x0205d0dc end:0x0205e29c
+
+src/Main/Res/StageCmd_6.cpp:
+    complete
+    .text       start:0x0205e5a8 end:0x0205e5c4
+
+src/Main/Res/StageCmd_7.cpp:
+    complete
+    .text       start:0x0205e818 end:0x0205f47c
+
+src/Main/Res/StageCmd_8.cpp:
+    complete
+    .text       start:0x0205f8f8 end:0x0205fdb0
+
+src/Main/Res/StageCmd_9.cpp:
+    complete
+    .text       start:0x020600cc end:0x02060278
+
+src/Main/Res/StageCmd_10.cpp:
+    complete
+    .text       start:0x02060364 end:0x020605fc
+
+src/Main/Res/StageCmd_11.cpp:
+    complete
+    .text       start:0x02060714 end:0x02060a08
+
+src/Main/Res/StageCmd_12.cpp:
+    complete
+    .text       start:0x02060be4 end:0x020613bc
+
+src/Main/Res/StageCmd_13.cpp:
+    complete
+    .text       start:0x020613bc end:0x02062844
+
+src/Main/Res/StageRes_6.cpp:
+    complete
+    .text       start:0x02062844 end:0x0206298c
+
+src/Main/Sys/SysTask.cpp:
+    complete
+    .text       start:0x0206298c end:0x02062ac8
+
+src/Main/Sys/SysTask_2.cpp:
+    complete
+    .text       start:0x02063374 end:0x02063484
