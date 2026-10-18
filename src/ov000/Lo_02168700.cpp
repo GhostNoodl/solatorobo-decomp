@@ -16,7 +16,7 @@ typedef struct {
 extern void *data_ov000_021ccd54;
 extern u8 *data_02097d48;
 void *func_ov000_0219bf90(void *self);
-void func_02012be8(void *a, void *b, void *c);
+void VEC_Add(void *a, void *b, void *c);
 BOOL func_0203dc9c(void *a, s32 b);
 void func_ov000_0216c018(void *self);
 void func_ov000_0216c310(void *self);
@@ -33,7 +33,7 @@ void func_ov000_02168700(void *self) {
     LFLD(s32, self, 0x80) = LFLD(s32, p, 0x70);
     LFLD(s32, self, 0x84) = LFLD(s32, p, 0x74);
     LFLD(s32, self, 0x88) = LFLD(s32, p, 0x78);
-    func_02012be8((u8 *)self + 0x80, (u8 *)self + 0xa0, (u8 *)self + 0x80);
+    VEC_Add((u8 *)self + 0x80, (u8 *)self + 0xa0, (u8 *)self + 0x80);
 }
 
 }

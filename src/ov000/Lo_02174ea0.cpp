@@ -10,7 +10,7 @@ extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void func_0204c7d0(void *p);
 void func_0203cc58(s32 a, s32 b, s32 c);
-s32 func_02012ab8(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 void func_02043d20(void *a, s32 b);
 void func_0202a3ec(s32 cmd, void *data, s32 count);
 void func_ov000_0217558c(void *self);

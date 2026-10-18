@@ -3,7 +3,7 @@
 extern "C" {
 
 extern const s16 FX_SinCosTable_[];
-s32 func_02012ab8(s32 a, s32 b);
+s32 FX_Div(s32 a, s32 b);
 u16 func_0204045c(void);
 
 void func_ov000_02169d40(void *self) {
@@ -14,7 +14,7 @@ void func_ov000_02169d40(void *self) {
             LFLD(s32, self, 4) = 2;
         }
     }
-    if (func_02012ab8(LFLD(s32, self, 0x5c), LFLD(s32, self, 0x60)) <= LFLD(s32, self, 0x4c)) {
+    if (FX_Div(LFLD(s32, self, 0x5c), LFLD(s32, self, 0x60)) <= LFLD(s32, self, 0x4c)) {
         LFLD(s32, self, 0x44) += 0x222000;
         if (LFLD(s32, self, 0x44) >= 0x8000000) {
             LFLD(s32, self, 0x44) -= 0x8000000;
