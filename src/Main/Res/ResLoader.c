@@ -50,8 +50,8 @@ void func_02035670(ResLoader *loader) {
     u32 blockSize;
     u16 numBlocks;
     void *buf;
-    func_020184ac(loader, (void (*)(void *))func_02035450, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
-    func_02018988(loader, 0x4c);
+    OS_CreateThread(loader, (void (*)(void *))func_02035450, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
+    OS_SetThreadStackWarningOffset(loader, 0x4c);
     blockSize = 0x2000;
     numBlocks = 3;
     if (!OS_IsRunOnTwl()) {
@@ -79,11 +79,11 @@ BOOL func_02035740(ResLoader *loader, ResRequest *req) {
     loader->req.name = req->name;
     loader->req.unk_28 = req->unk_28;
     loader->req.index = req->index;
-    if (func_020187fc(loader)) {
-        func_020184ac(loader, (void (*)(void *))func_02035450, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
-        func_02018988(loader, 0x4c);
+    if (OS_IsThreadTerminated(loader)) {
+        OS_CreateThread(loader, (void (*)(void *))func_02035450, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
+        OS_SetThreadStackWarningOffset(loader, 0x4c);
     }
-    func_02018918(loader);
+    OS_WakeupThreadDirect(loader);
     return TRUE;
 }
 #endif
@@ -98,6 +98,6 @@ void func_0203581c(ResLoader *loader) {
     loader->req.data = NULL;
     loader->req.index = 0;
     loader->req.name.str[0] = '\0';
-    func_02018810(loader);
+    OS_SleepThreadDirect(loader);
 }
 #endif

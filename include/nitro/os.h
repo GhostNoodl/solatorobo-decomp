@@ -44,17 +44,63 @@ typedef struct OSMutexQueue {
     OSMutex *tail;
 } OSMutexQueue;
 
+typedef struct CPContext {
+    u64 div_numer;  // 0x00
+    u64 div_denom;  // 0x08
+    u64 sqrt;       // 0x10
+    u16 div_mode;   // 0x18
+    u16 sqrt_mode;  // 0x1a
+} CPContext;
+
+typedef struct OSContext {
+    u32 cpsr;             // 0x00
+    u32 r[13];            // 0x04
+    u32 sp;               // 0x38
+    u32 lr;               // 0x3c
+    u32 pc_plus4;         // 0x40
+    u32 sp_svc;           // 0x44
+    CPContext cp_context; // 0x48
+} OSContext; // size 0x64
+
+typedef struct OSThreadLink {
+    OSThread *prev;
+    OSThread *next;
+} OSThreadLink;
+
+typedef void (*OSThreadDestructor)(void *);
+
+#define OS_THREAD_STATE_WAITING    0
+#define OS_THREAD_STATE_READY      1
+#define OS_THREAD_STATE_TERMINATED 2
+
 struct OSThread {
-    u8 unk_00[0x84];
-    OSMutex *mutex;          // 0x84
-    OSMutexQueue mutexQueue; // 0x88
-};
+    OSContext context;               // 0x00
+    u32 state;                       // 0x64
+    OSThread *next;                  // 0x68
+    u32 id;                          // 0x6c
+    u32 priority;                    // 0x70
+    void *profiler;                  // 0x74
+    struct OSThreadQueue *queue;     // 0x78
+    OSThreadLink link;               // 0x7c
+    OSMutex *mutex;                  // 0x84
+    OSMutexQueue mutexQueue;         // 0x88
+    u32 stackTop;                    // 0x90
+    u32 stackBottom;                 // 0x94
+    u32 stackWarningOffset;          // 0x98
+    OSThreadQueue joinQueue;         // 0x9c
+    void *specific[3];               // 0xa4
+    struct OSiAlarm *alarmForSleep;  // 0xb0
+    OSThreadDestructor destructor;   // 0xb4
+    void *userParameter;             // 0xb8
+    int systemErrno;                 // 0xbc
+}; // size 0xc0
 
 typedef struct OSThreadInfo {
     u16 isNeedRescheduling; // 0x00
     u16 irqDepth;           // 0x02
     OSThread *current;      // 0x04
     OSThread *list;         // 0x08
+    void *switchCallback;   // 0x0c
 } OSThreadInfo;
 
 extern OSThreadInfo OSi_ThreadInfo;

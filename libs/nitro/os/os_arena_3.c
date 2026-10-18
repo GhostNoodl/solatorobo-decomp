@@ -35,8 +35,8 @@ typedef struct OSiArenaState {
 extern OSiArenaState data_0208eeb8;
 #define OSi_MainExArenaEnabled (data_0208eeb8.mainExArenaEnabled)
 
-u32 func_02018cd8(void);
-#define OS_GetConsoleType func_02018cd8
+u32 OS_GetConsoleType(void);
+#define OS_GetConsoleType OS_GetConsoleType
 
 void *OS_GetArenaHi(OSArenaId id);
 void *OS_GetArenaLo(OSArenaId id);

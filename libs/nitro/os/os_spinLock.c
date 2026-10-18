@@ -187,3 +187,43 @@ void OSi_FreeCardBus(void) {
 u16 OS_ReadOwnerOfLockWord(OSLockWord *lockp) {
     return lockp->ownerID;
 }
+
+#pragma force_active on
+
+asm s32 OS_GetLockID(void) {
+    ldr r3, =0x2ffffb0
+    ldr r1, [r3, #0]
+    clz r2, r1
+    cmp r2, #32
+    movne r0, #0x40
+    bne @1
+    add r3, r3, #4
+    ldr r1, [r3, #0]
+    clz r2, r1
+    cmp r2, #32
+    ldr r0, =0xfffffffd
+    bxeq lr
+    mov r0, #0x60
+@1:
+    add r0, r0, r2
+    mov r1, #0x80000000
+    mov r1, r1, lsr r2
+    ldr r2, [r3, #0]
+    bic r2, r2, r1
+    str r2, [r3, #0]
+    bx lr
+}
+
+asm void OS_ReleaseLockID(register u16 lockID) {
+    ldr r3, =0x2ffffb0
+    cmp r0, #0x60
+    addpl r3, r3, #4
+    subpl r0, r0, #0x60
+    submi r0, r0, #0x40
+    mov r1, #0x80000000
+    mov r1, r1, lsr r0
+    ldr r2, [r3, #0]
+    orr r2, r2, r1
+    str r2, [r3, #0]
+    bx lr
+}

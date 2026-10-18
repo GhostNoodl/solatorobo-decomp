@@ -8,7 +8,7 @@ extern "C" {
 extern const char data_02005068[];
 extern const u32 data_0208b2ac[];
 
-extern void func_02004eb0(const char *string);
+extern void OSi_ReferSymbol(const char *string);
 extern void *func_02034818(u32 size);
 extern void func_02034824(void *ptr);
 extern BOOL func_02034830(MoStream *stream, void *file);
@@ -18,7 +18,7 @@ extern void func_02043e2c(void *ptr);
 
 
 BOOL func_02033550(MoPlayer *player, MoStream *stream, u32 flags) {
-    func_02004eb0(data_02005068);
+    OSi_ReferSymbol(data_02005068);
     return func_02033858(player, stream, flags);
 }
 

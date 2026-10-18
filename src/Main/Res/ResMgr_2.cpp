@@ -7,11 +7,11 @@ typedef struct ResData {
     /* 0x04 */ void *data[11];
 } ResData;
 
-extern void func_0200ed00(FSFile *file);
-extern void func_0200ef1c(FSFile *file);
-extern int func_0200f08c(FSFile *file, void *buf, u32 size);
-extern BOOL func_0200f158(FSFile *file, const char *path);
-extern u32 func_0200f168(FSFile *file);
+extern void FS_InitFile(FSFile *file);
+extern void FS_CloseFile(FSFile *file);
+extern int FS_ReadFileAsync(FSFile *file, void *buf, u32 size);
+extern BOOL FS_OpenFile(FSFile *file, const char *path);
+extern u32 FS_GetLength(FSFile *file);
 extern ResList *func_02034b50(ResList *list);
 extern void func_0203835c(ResData *data);
 extern void func_0203de1c(void *ptr);
@@ -54,19 +54,19 @@ void *func_02038284(ResMgr *mgr, const char *path, u32 size, void *buf) {
     void *dst = NULL;
     BOOL ok = FS_IsFile(&mgr->file);
     if (!ok) {
-        func_0200ed00(&mgr->file);
-        ok = func_0200f158(&mgr->file, path);
+        FS_InitFile(&mgr->file);
+        ok = FS_OpenFile(&mgr->file, path);
     }
     if (ok) {
         if (size == 0) {
-            size = func_0200f168(&mgr->file);
+            size = FS_GetLength(&mgr->file);
         }
         dst = buf;
         if (buf == NULL) {
             dst = func_0203de84(size, 4);
         }
-        if (func_0200f08c(&mgr->file, dst, size) == -1) {
-            func_0200ef1c(&mgr->file);
+        if (FS_ReadFileAsync(&mgr->file, dst, size) == -1) {
+            FS_CloseFile(&mgr->file);
             if (buf == NULL && dst != NULL) {
                 func_0203df0c(dst);
                 dst = NULL;

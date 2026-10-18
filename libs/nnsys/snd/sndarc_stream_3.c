@@ -65,11 +65,11 @@ void func_02031f80(StrmPlayer *player) {
 }
 
 void func_02031fa4(StrmThread *thread, u32 prio) {
-    func_020184ac(thread, func_02032e58, thread, thread->stack + sizeof(thread->stack), sizeof(thread->stack), prio);
+    OS_CreateThread(thread, func_02032e58, thread, thread->stack + sizeof(thread->stack), sizeof(thread->stack), prio);
     NNS_FndInitList(&thread->cmdList, 0);
     OS_InitMutex(thread->mutex);
     thread->queueHead = thread->queueTail = NULL;
-    func_02018918(thread);
+    OS_WakeupThreadDirect(thread);
 }
 
 void func_0203200c(NNSFndList *list, StrmPlayer *player) {

@@ -19,8 +19,8 @@ typedef struct {
 extern PMiWork_02090c60 data_02090c60;
 
 void OS_SpinWaitSysCycles(u32 cycles);
-u32 func_0201dad0(u32 a, u32 b);
-u32 func_0201e244(u32 a);
+u32 PM_SetBackLight(u32 a, u32 b);
+u32 PM_SetLCDPower(u32 a);
 
 BOOL func_0201e280(void) {
     return (*(vu16 *)0x04000304 & 1) ? TRUE : FALSE;
@@ -136,10 +136,10 @@ void func_0201e45c(void) {
     data_0208afc8 = 14;
 
     if (func_0201e280() != TRUE) {
-        while (func_0201dad0(2, 0) != 0) {
+        while (PM_SetBackLight(2, 0) != 0) {
             OS_SpinWaitSysCycles(0x51d23);
         }
-        while (func_0201e244(1) == 0) {
+        while (PM_SetLCDPower(1) == 0) {
             OS_SpinWaitSysCycles(5);
         }
     }

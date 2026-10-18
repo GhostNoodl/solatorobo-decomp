@@ -11,13 +11,13 @@ void OS_InitException(void);
 void func_0201771c(void);
 void OS_InitVAlarm(void);
 void OSi_InitVramExclusive(void);
-void func_02018360(void);
+void OS_InitThread(void);
 void OS_InitReset(void);
 void func_0203d5b8(void);
-void func_0200c1b4(void);
+void CARD_Init(void);
 void func_020163b8(void);
 void func_0201bbd4(void);
-void func_0201d5a8(void);
+void PM_Init(void);
 void func_0201af94(void);
 
 void OS_Init(void);
@@ -53,15 +53,15 @@ void func_02019318 (void)
     func_0201771c();
     OS_InitVAlarm();
     OSi_InitVramExclusive();
-    func_02018360();
+    OS_InitThread();
     OS_InitReset();
     func_0203d5b8();
-    func_0200c1b4();
+    CARD_Init();
     func_020163b8();
     if (OS_IsRunOnTwl() == TRUE) {
         func_0201bbd4();
     }
-    func_0201d5a8();
+    PM_Init();
     OSi_WaitVCount0();
     if (OS_IsRunOnTwl() == TRUE) {
         func_0201af94();

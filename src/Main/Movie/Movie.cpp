@@ -21,9 +21,9 @@ extern void SND_LockChannel(int chMask, int flags);
 extern void SND_UnlockChannel(int chMask, int flags);
 extern void SND_SetupChannelPcm(int ch, int fmt, const void *data, int loop, int loopStart, u32 len, int volume, int volumeDiv, int timer, int pan);
 extern void SND_FlushCommand(int flags);
-extern int func_020187fc(Movie *m);
-extern void func_020186a8(Movie *m);
-extern void func_02018810(Movie *m, int arg);
+extern int OS_IsThreadTerminated(Movie *m);
+extern void OS_DestroyThread(Movie *m);
+extern void OS_SleepThreadDirect(Movie *m, int arg);
 extern void OS_SleepThread(int arg);
 extern void func_0203df40(void *ptr);
 extern void func_0203365c(void *audio);
@@ -34,7 +34,7 @@ extern BOOL func_0203370c(void *audio);
 extern BOOL func_02033754(void *audio);
 extern u32 func_020337c0(void *audio);
 extern void func_020337d8(void *audio, s16 *dst);
-extern void func_0200ef1c(void *file);
+extern void FS_CloseFile(void *file);
 extern void DC_StoreRange(const void *addr, u32 size);
 extern void func_02049564(void *obj, int a, int b);
 extern void *data_02097e4c;
@@ -98,8 +98,8 @@ extern u32 func_02034600(void);
 extern u32 func_0203460c(void);
 extern void func_02034614(u32 addr, u32 size);
 extern void func_02034634(u32 addr, u32 size);
-extern void func_0200ed00(void *file);
-extern BOOL func_0200f158(void *file, const char *path);
+extern void FS_InitFile(void *file);
+extern BOOL FS_OpenFile(void *file, const char *path);
 extern void *func_02033580(void *file, int n);
 extern u32 func_020336c4(void *audio);
 extern u32 func_020336ac(void *audio);
@@ -109,9 +109,9 @@ extern void func_02033730(void *audio);
 extern void func_02033778(void *audio, u32 vram, int stride, int mode);
 extern NNSSndHeap *func_02049550(void *obj, int idx);
 extern void *func_0203dec8(u32 size, u32 align);
-extern void func_020184ac(Movie *m, void (*cb)(int), int arg, void *buf, u32 size, int prio);
-extern void func_02018918(Movie *m);
-extern void func_02018988(Movie *m, int arg);
+extern void OS_CreateThread(Movie *m, void (*cb)(int), int arg, void *buf, u32 size, int prio);
+extern void OS_WakeupThreadDirect(Movie *m);
+extern void OS_SetThreadStackWarningOffset(Movie *m, int arg);
 extern const char data_0208b3d8[];
 void func_02044494(int arg);
 void func_02044538(Movie *m);
@@ -156,14 +156,14 @@ void func_02043f70(Movie *m) {
         func_02034634(OS_GetArenaLo(4), size);
         STD_CopyString(path, data_0208b3d8);
         STD_ConcatenateString(path, m->name);
-        func_0200ed00(m->file);
-        if (!func_0200f158(m->file, path)) {
+        FS_InitFile(m->file);
+        if (!FS_OpenFile(m->file, path)) {
             m->state = 0;
             return;
         }
         m->audio = func_02033580(m->file, 10);
         if (m->audio == NULL) {
-            func_0200ef1c(m->file);
+            FS_CloseFile(m->file);
             m->state = 0;
             return;
         }
@@ -191,15 +191,15 @@ void func_02043f70(Movie *m) {
             MIi_CpuClearFast(0, m->bufR, m->bufSize);
         }
         m->buf = func_0203dec8(0x300, 4);
-        func_020184ac(m, func_02044494, 0, (u8 *)m->buf + 0x300, 0x300, 0x11);
-        func_02018988(m, 0x4c);
+        OS_CreateThread(m, func_02044494, 0, (u8 *)m->buf + 0x300, 0x300, 0x11);
+        OS_SetThreadStackWarningOffset(m, 0x4c);
         Movie_SetFrameWait(60 / (m->unk_140 >> 24));
         m->state = 2;
         return;
     case 2:
         MIi_CpuClearFast(0, (void *)0x6800000, 0x18000);
         MIi_CpuClearFast(0, (void *)0x6820000, 0x18000);
-        func_02018918(m);
+        OS_WakeupThreadDirect(m);
         m->playing = TRUE;
         m->state = 3;
         return;
@@ -237,13 +237,13 @@ void func_02043f70(Movie *m) {
             m->unk_138 = 0;
             func_02033730(m->audio);
         }
-        func_02018918(m);
+        OS_WakeupThreadDirect(m);
         return;
     case 7:
         if (m->paused) {
             return;
         }
-        func_02018918(m);
+        OS_WakeupThreadDirect(m);
         m->state = 8;
         return;
     case 8:
@@ -312,8 +312,8 @@ void func_02044538(Movie *m) {
     }
     data_02097d48->unk_a30_2 = 0;
     Movie_StopSound(m);
-    if (func_020187fc(m) == 0) {
-        func_020186a8(m);
+    if (OS_IsThreadTerminated(m) == 0) {
+        OS_DestroyThread(m);
         if (m->buf != NULL) {
             func_0203df40(m->buf);
             m->buf = NULL;
@@ -324,7 +324,7 @@ void func_02044538(Movie *m) {
     }
     m->numQueued = 0;
     func_0203365c(m->audio);
-    func_0200ef1c(m->file);
+    FS_CloseFile(m->file);
     if (m->bufL != NULL || m->bufR != NULL) {
         func_02049564(data_02097e4c, 1, 1);
     }
@@ -337,7 +337,7 @@ void func_02044670(Movie *m) {
     if (!m->playing) {
         return;
     }
-    func_02018810(m, 0);
+    OS_SleepThreadDirect(m, 0);
     data_02097d48->unk_a30_2 = 0;
     Movie_StopSound(m);
     if (m->channels != 0) {

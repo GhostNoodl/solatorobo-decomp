@@ -6,8 +6,8 @@ extern void *data_02097e44;
 extern int func_020472c4(void *obj);
 extern void GX_DispOff(void);
 extern void GX_DispOn(void);
-extern BOOL func_0201e244(BOOL a);
-extern void func_0201dd4c(int a, int b, int c);
+extern BOOL PM_SetLCDPower(BOOL a);
+extern void PM_GoSleepMode(int a, int b, int c);
 extern void *OS_GetArenaLo(int arena);
 extern void *OS_GetArenaHi(int arena);
 extern void *OS_InitAlloc(int arena, void *lo, void *hi, int n);
@@ -37,12 +37,12 @@ void func_0203d8e8(void) {
                 data_02097dd0->unk_1e = 0;
                 GX_DispOff();
                 *(volatile u32 *)0x4001000 &= ~0x10000;
-                func_0201e244(FALSE);
+                PM_SetLCDPower(FALSE);
             }
         } else {
-            func_0201dd4c(0xc, 0, 0);
+            PM_GoSleepMode(0xc, 0, 0);
         }
-    } else if (data_02097dd0->unk_1e == 0 && func_0201e244(TRUE)) {
+    } else if (data_02097dd0->unk_1e == 0 && PM_SetLCDPower(TRUE)) {
         GX_DispOn();
         *(volatile u32 *)0x4001000 |= 0x10000;
         data_02097dd0->unk_1e = 1;

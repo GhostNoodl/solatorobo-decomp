@@ -25,7 +25,7 @@ static inline void SysCard_End(SysCard *card) {
 }
 
 static inline BOOL SysCard_IsReady(void) {
-    return (u8)func_0200d074() == 1 ? TRUE : FALSE;
+    return (u8)CARD_GetCurrentBackupType() == 1 ? TRUE : FALSE;
 }
 
 void func_02046c6c(void) {
@@ -55,7 +55,7 @@ void func_02046cd0(SysCard *card) {
 
 void func_02046d1c(SysCard *card) {
     s32 id;
-    func_0200c1b4();
+    CARD_Init();
     id = OS_GetLockID();
     if (id == -3) {
         return;
@@ -64,12 +64,12 @@ void func_02046d1c(SysCard *card) {
     if (card->state != 8) {
         SysCard_Lock(card);
     }
-    if (!func_0200d034(0xd01)) {
+    if (!CARD_IdentifyBackup(0xd01)) {
         func_020471f0(data_02097e44, 11);
     }
     SysCard_Unlock(card);
-    card->totalSize = func_0200d0b0();
-    card->sectorSize = func_0200d088();
+    card->totalSize = CARD_GetBackupPageSize();
+    card->sectorSize = CARD_GetBackupTotalSize();
     if (card->state != 7) {
         SysCard_SetState(card, 1);
     } else {
@@ -99,7 +99,7 @@ s32 func_02046e48(SysCard *card, void *dst, u32 src, u32 len) {
         SysCard_End(card);
         return 2;
     }
-    func_0200cfc8(src, (u32)dst, len, func_02046fac, card, TRUE, 6, 1, 0);
+    CARDi_RequestStreamCommand(src, (u32)dst, len, func_02046fac, card, TRUE, 6, 1, 0);
     func_020471f0(data_02097e44, 11);
     return 0;
 }
@@ -129,7 +129,7 @@ s32 func_02047004(SysCard *card, u32 dst, const void *src, u32 len) {
         SysCard_End(card);
         return 2;
     }
-    func_0200cfc8((u32)src, dst, len, func_02047198, card, TRUE, 8, 10, 2);
+    CARDi_RequestStreamCommand((u32)src, dst, len, func_02047198, card, TRUE, 8, 10, 2);
     func_020471f0(data_02097e44, 11);
     return 0;
 }
@@ -147,7 +147,7 @@ BOOL func_020471f0(SysCard *card, s32 err) {
         return FALSE;
     }
     if (err == 11) {
-        switch (func_0200c2e0()) {
+        switch (CARD_GetResultCode()) {
             case 0: card->error = 0; break;
             case 1: card->error = 1; break;
             case 2: card->error = 2; break;

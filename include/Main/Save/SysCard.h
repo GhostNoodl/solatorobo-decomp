@@ -26,18 +26,18 @@ typedef struct SysCard {
 extern SysCard *data_02097e44;
 
 extern void *func_0203dd9c(u32 size);
-extern u16 func_0200c1b4(void);
+extern u16 CARD_Init(void);
 extern s32 OS_GetLockID(void);
-extern void func_0200c3a4(u16 lockId);
-extern void func_0200c3b4(u16 lockId);
-extern BOOL func_0200d034(u32 type);
-extern u32 func_0200d0b0(void);
-extern u32 func_0200d088(void);
-extern u32 func_0200d074(void);
-extern s32 func_0200c2e0(void);
-extern BOOL func_0200d8f0(void);
-extern BOOL func_0200d0d0(void);
-extern void func_0200cfc8(u32 src, u32 dst, u32 len, void (*cb)(void *), void *arg, BOOL async, s32 type, s32 retry, s32 mode);
+extern void CARD_LockBackup(u16 lockId);
+extern void CARD_UnlockBackup(u16 lockId);
+extern BOOL CARD_IdentifyBackup(u32 type);
+extern u32 CARD_GetBackupPageSize(void);
+extern u32 CARD_GetBackupTotalSize(void);
+extern u32 CARD_GetCurrentBackupType(void);
+extern s32 CARD_GetResultCode(void);
+extern BOOL CARD_TryWaitRomAsync(void);
+extern BOOL CARD_TryWaitBackupAsync(void);
+extern void CARDi_RequestStreamCommand(u32 src, u32 dst, u32 len, void (*cb)(void *), void *arg, BOOL async, s32 type, s32 retry, s32 mode);
 extern BOOL func_02036328(void);
 
 void func_02046d1c(SysCard *card);
@@ -49,14 +49,14 @@ BOOL func_020471f0(SysCard *card, s32 err);
 
 static inline void SysCard_Lock(SysCard *card) {
     if (card->lockCount == 0) {
-        func_0200c3a4(card->lockId);
+        CARD_LockBackup(card->lockId);
         card->lockCount++;
     }
 }
 
 static inline void SysCard_Unlock(SysCard *card) {
     if (card->state != 8 && card->lockCount != 0) {
-        func_0200c3b4(card->lockId);
+        CARD_UnlockBackup(card->lockId);
         card->lockCount--;
     }
 }
@@ -79,9 +79,9 @@ static inline void SysCard_Reset(SysCard *card) {
 
 // Returns TRUE while the last backup access has not finished successfully.
 static inline BOOL SysCard_IsBusy(void) {
-    BOOL done = func_0200d8f0();
+    BOOL done = CARD_TryWaitRomAsync();
     if (done) {
-        done = func_0200d0d0();
+        done = CARD_TryWaitBackupAsync();
     }
     func_020471f0(data_02097e44, 11);
     return done ? FALSE : TRUE;

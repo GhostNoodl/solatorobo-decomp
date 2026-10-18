@@ -18,7 +18,7 @@ BOOL func_02032cbc(StrmPlayer *player, u32 fileId) {
     if (NNS_SndArcReadFile(fileId, &player->header, sizeof(StrmHeader), 0) != sizeof(StrmHeader)) {
         return FALSE;
     }
-    if (!func_0200ee40(player->file, NNS_SndArcGetFileID())) {
+    if (!FS_OpenFileFast(player->file, NNS_SndArcGetFileID())) {
         void *arc;
         u32 top;
         u32 bottom;
@@ -36,8 +36,8 @@ BOOL func_02032cbc(StrmPlayer *player, u32 fileId) {
         if (bottom == 0) {
             return FALSE;
         }
-        opened = func_0200ee98(player->file, arc, 1);
-        set = func_0200ef30(player->file, top, bottom);
+        opened = FS_OpenFileEx(player->file, arc, 1);
+        set = FS_SetSeekCache(player->file, top, bottom);
         if (!opened) {
             return FALSE;
         }
@@ -50,16 +50,16 @@ BOOL func_02032cbc(StrmPlayer *player, u32 fileId) {
 }
 
 void func_02032db4(StrmPlayer *player) {
-    func_0200ef1c(player->file);
+    FS_CloseFile(player->file);
 }
 
 u32 func_02032dc4(StrmPlayer *player, void *buf, u32 size, u32 offset) {
-    func_0200f00c(player->file, player->fileOffset + offset, 0);
-    return func_0200f038(player->file, buf, size);
+    FS_SeekFile(player->file, player->fileOffset + offset, 0);
+    return FS_ReadFile(player->file, buf, size);
 }
 
 void func_02032dfc(StrmPlayer *player) {
-    func_0200ed2c(player->file);
+    FS_CancelFile(player->file);
 }
 
 BOOL func_02032e0c(StrmPlayer *player, u32 fileId) {

@@ -38,8 +38,8 @@ extern u32 func_0200b674(u32 a, u32 b);
 extern s32 func_0200b574(u32 a);
 extern void func_0204061c(s32 *out, s32 arg);
 extern void NNS_SndPlayerPause(SndHandle *handle, int pause);
-extern s32 func_02018a4c(void *thread);
-extern void func_020189a4(void *thread, s32 prio);
+extern s32 OS_GetThreadPriority(void *thread);
+extern void OS_SetThreadPriority(void *thread, s32 prio);
 
 s32 func_02049bdc(SndMgr *mgr, s32 id, s32 pan);
 
@@ -197,8 +197,8 @@ void func_0204a20c(SndMgr *mgr, s32 strmNo) {
         if (mgr->unk_5b) {
             prio = 0x11;
         }
-        if (prio != func_02018a4c(thread)) {
-            func_020189a4(thread, prio);
+        if (prio != OS_GetThreadPriority(thread)) {
+            OS_SetThreadPriority(thread, prio);
         }
     } else {
         mgr->unk_48 = -1;

@@ -4,10 +4,10 @@ extern "C" {
 
 typedef struct ResLoader ResLoader;
 
-extern void func_0200ed2c(FSFile *file);
-extern void func_0200ef1c(FSFile *file);
-extern u32 func_0201118c(void *buf, u32 size);
-extern void func_020111dc(int arg);
+extern void FS_CancelFile(FSFile *file);
+extern void FS_CloseFile(FSFile *file);
+extern u32 FS_TryLoadTable(void *buf, u32 size);
+extern void FS_Init(int arg);
 extern void MATHi_CRC16InitTableRev(u16 *table, u32 poly);
 extern void MI_CpuFill8(void *dst, u8 value, u32 size);
 extern ResLoader *func_0203562c(ResLoader *loader);
@@ -269,11 +269,11 @@ void func_020363d8(ResMgr *mgr) {
     u32 size;
     int i;
     ResLoader *loader;
-    func_020111dc(-1);
+    FS_Init(-1);
     mgr->unk_7bb4 = NULL;
-    size = func_0201118c(NULL, 0);
+    size = FS_TryLoadTable(NULL, 0);
     mgr->unk_7bb4 = func_0203dec8(size, 4);
-    func_0201118c(mgr->unk_7bb4, size);
+    FS_TryLoadTable(mgr->unk_7bb4, size);
     data_02097dd0->cur = data_02097dd0->unk_04;
     loader = (ResLoader *)func_0203dd9c(0x40c);
     if (loader != NULL) {
@@ -373,10 +373,10 @@ void func_020366d0(ResMgr *mgr, ResNode *node) {
 
 static inline void ResMgr_StopLoading(ResMgr *mgr) {
     if (FS_IsBusy(&mgr->file)) {
-        func_0200ed2c(&mgr->file);
+        FS_CancelFile(&mgr->file);
     }
     if (FS_IsFile(&mgr->file)) {
-        func_0200ef1c(&mgr->file);
+        FS_CloseFile(&mgr->file);
     }
     mgr->loadStep = -1;
     func_0203584c(mgr->loader);
@@ -522,7 +522,7 @@ void func_02036b30(ResMgr *mgr, ResNode *node) {
             if (!FS_IsSucceeded(&mgr->file)) {
                 return;
             }
-            func_0200ef1c(&mgr->file);
+            FS_CloseFile(&mgr->file);
             mgr->loadStep = -1;
             node->state = 5;
             break;
@@ -571,7 +571,7 @@ void func_02036cd8(ResMgr *mgr, ResNode *node) {
         if (!FS_IsSucceeded(&mgr->file)) {
             return;
         }
-        func_0200ef1c(&mgr->file);
+        FS_CloseFile(&mgr->file);
         NNS_G2dFontInitAuto(&node->u.data[1], node->u.data[0]);
         mgr->loadStep = -1;
         node->state = 5;
@@ -633,7 +633,7 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
         if (!ResMgr_IsReadDone(mgr)) {
             return;
         }
-        func_0200ef1c(&mgr->file);
+        FS_CloseFile(&mgr->file);
         NNS_G2dGetUnpackedCellBank(node->u.data[0], &node->u.data[1]);
         mgr->loadStep = 10;
     case 10:
@@ -643,7 +643,7 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
         if (!ResMgr_IsReadDone(mgr)) {
             return;
         }
-        func_0200ef1c(&mgr->file);
+        FS_CloseFile(&mgr->file);
         NNS_G2dGetUnpackedAnimBank(node->u.data[2], &node->u.data[3]);
         mgr->loadStep = 20;
     case 20:
@@ -653,7 +653,7 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
         if (!ResMgr_IsReadDone(mgr)) {
             return;
         }
-        func_0200ef1c(&mgr->file);
+        FS_CloseFile(&mgr->file);
         NNS_G2dGetUnpackedCharacterData(node->u.data[4], &node->u.data[5]);
         mgr->loadStep = 30;
     case 30:
@@ -663,7 +663,7 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
         if (!ResMgr_IsReadDone(mgr)) {
             return;
         }
-        func_0200ef1c(&mgr->file);
+        FS_CloseFile(&mgr->file);
         NNS_G2dGetUnpackedCharacterData(node->u.data[6], &node->u.data[7]);
         mgr->loadStep = 40;
     case 40:
@@ -681,7 +681,7 @@ void func_02036de0(ResMgr *mgr, ResNode *node) {
         if (!FS_IsSucceeded(&mgr->file)) {
             return;
         }
-        func_0200ef1c(&mgr->file);
+        FS_CloseFile(&mgr->file);
         NNS_G2dGetUnpackedPaletteCompressInfo(node->u.data[8], &node->u.data[10]);
         NNS_G2dGetUnpackedPaletteData(node->u.data[8], &node->u.data[9]);
         mgr->loadStep = -1;
@@ -708,7 +708,7 @@ void func_02037270(ResMgr *mgr, ResNode *node) {
         if (!ResMgr_IsReadDone(mgr)) {
             return;
         }
-        func_0200ef1c(&mgr->file);
+        FS_CloseFile(&mgr->file);
         NNS_G2dGetUnpackedScreenData(node->u.data[0], &node->u.data[1]);
         mgr->loadStep++;
     case 2:
@@ -718,7 +718,7 @@ void func_02037270(ResMgr *mgr, ResNode *node) {
         if (!ResMgr_IsReadDone(mgr)) {
             return;
         }
-        func_0200ef1c(&mgr->file);
+        FS_CloseFile(&mgr->file);
         NNS_G2dGetUnpackedBGCharacterData(node->u.data[2], &node->u.data[3]);
         mgr->loadStep++;
     case 4:
@@ -728,7 +728,7 @@ void func_02037270(ResMgr *mgr, ResNode *node) {
         if (!FS_IsSucceeded(&mgr->file)) {
             return;
         }
-        func_0200ef1c(&mgr->file);
+        FS_CloseFile(&mgr->file);
         NNS_G2dGetUnpackedPaletteCompressInfo(node->u.data[4], &node->u.data[6]);
         NNS_G2dGetUnpackedPaletteData(node->u.data[4], &node->u.data[5]);
         mgr->loadStep = -1;
@@ -748,7 +748,7 @@ void func_02037270(ResMgr *mgr, ResNode *node) {
             if (!FS_IsSucceeded(&mgr->file)) {                      \
                 return;                                             \
             }                                                       \
-            func_0200ef1c(&mgr->file);                              \
+            FS_CloseFile(&mgr->file);                              \
             mgr->loadStep = -1;                                     \
             node->state = 5;                                        \
             break;                                                  \
@@ -774,7 +774,7 @@ RES_LOAD_SINGLE(func_02037640, data_0208b385)
     if (!ResMgr_IsReadDone(mgr)) {                                  \
         return;                                                     \
     }                                                               \
-    func_0200ef1c(&mgr->file);                                      \
+    FS_CloseFile(&mgr->file);                                      \
     mgr->loadStep = nextStep;
 
 void func_0203773c(ResMgr *mgr, ResNode *node) {

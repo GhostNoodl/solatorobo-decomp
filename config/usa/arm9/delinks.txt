@@ -4,6 +4,90 @@
     .data       start:0x0208aa80 end:0x0208d940 kind:data align:32
     .bss        start:0x0208d940 end:0x0214b1a0 kind:bss align:32
 
+libs/nitro/card/card_common.c:
+    complete
+    .text       start:0x0200c140 end:0x0200c594
+
+libs/nitro/card/card_common_2.c:
+    complete
+    .text       start:0x0200c5bc end:0x0200c608
+
+libs/nitro/card/card_common_3.c:
+    complete
+    .text       start:0x0200c678 end:0x0200c8f8
+
+libs/nitro/card/card_request.c:
+    complete
+    .text       start:0x0200c8f8 end:0x0200ca48
+
+libs/nitro/card/card_backup.c:
+    complete
+    .text       start:0x0200cbe0 end:0x0200d0dc
+
+libs/nitro/card/card_rom.c:
+    complete
+    .text       start:0x0200d0dc end:0x0200d36c
+
+libs/nitro/card/card_rom_2.c:
+    complete
+    .text       start:0x0200d488 end:0x0200d85c
+
+libs/nitro/card/card_pullOut.c:
+    complete
+    .text       start:0x0200d8e4 end:0x0200d9d0
+
+libs/nitro/card/card_pullOut_2.c:
+    complete
+    .text       start:0x0200da28 end:0x0200dac8
+
+libs/nitro/cp/cp_context.c:
+    complete
+    .text       start:0x0200dac8 end:0x0200db44
+
+libs/nitro/fs/fs_archive.c:
+    complete
+    .text       start:0x0200db44 end:0x0200e8a0
+
+libs/nitro/fs/fs_archive_2.c:
+    complete
+    .text       start:0x0200e9a0 end:0x0200ed74
+
+libs/nitro/fs/fs_file.c:
+    complete
+    .text       start:0x0200ed74 end:0x0200f038
+
+libs/nitro/fs/fs_file_2.c:
+    complete
+    .text       start:0x0200f038 end:0x0200f158
+
+libs/nitro/fs/fs_file_3.c:
+    complete
+    .text       start:0x0200f158 end:0x0200f180
+
+libs/nitro/fs/fs_overlay.c:
+    complete
+    .text       start:0x0200f180 end:0x0200f274
+
+libs/nitro/fs/fs_overlay_2.c:
+    complete
+    .text       start:0x0200f3f0 end:0x0200f844
+
+libs/nitro/fs/fs_romfat.c:
+    complete
+    .text       start:0x0200f844 end:0x0201094c
+
+libs/nitro/fs/fs_romfat_2.c:
+    complete
+    .text       start:0x0201094c end:0x02010cec
+
+libs/nitro/fs/fs_mem.c:
+    complete
+    .text       start:0x02010cec end:0x02010ea8
+
+libs/nitro/fs/fs_rom.c:
+    complete
+    .text       start:0x02010ea8 end:0x02011218
+
 libs/nitro/fx/fx_mtx22.c:
     complete
     .text       start:0x02011218 end:0x02011340
@@ -157,8 +241,20 @@ libs/nitro/os/os_reset_pxi.c:
 
 libs/nitro/os/os_spinLock.c:
     complete
-    .text       start:0x02017c48 end:0x02018028
+    .text       start:0x02017c48 end:0x020180b0
     .bss        start:0x0208ec20 end:0x0208ec24
+
+libs/nitro/os/os_thread.c:
+    complete
+    .text       start:0x020180b0 end:0x02018bb8
+
+libs/nitro/os/os_context.c:
+    complete
+    .text       start:0x02018bb8 end:0x02018cd8
+
+libs/nitro/os/os_emulator.c:
+    complete
+    .text       start:0x02018cd8 end:0x02018db0
 
 libs/nitro/os/os_message.c:
     complete
@@ -344,6 +440,22 @@ libs/nitro/spi/tp.c:
     .text       start:0x0201ce5c end:0x0201d4b4
     .bss        start:0x02090c24 end:0x02090c60
 
+libs/nitro/spi/pm.c:
+    complete
+    .text       start:0x0201d4b4 end:0x0201d648
+
+libs/nitro/spi/pm_3.c:
+    complete
+    .text       start:0x0201d768 end:0x0201db9c
+
+libs/nitro/spi/pm_4.c:
+    complete
+    .text       start:0x0201dbe8 end:0x0201dca4
+
+libs/nitro/spi/pm_5.c:
+    complete
+    .text       start:0x0201e044 end:0x0201e280
+
 libs/nitro/spi/pm_2.c:
     complete
     .text       start:0x0201e280 end:0x0201e520
@@ -525,6 +637,18 @@ libs/nnsys/g3d/res_struct_accessor_anm.c:
     complete
     .text       start:0x0202ace0 end:0x0202ae6c
 
+libs/nnsys/g3d/nsbca.c:
+    complete
+    .text       start:0x0202ae6c end:0x0202b048
+
+libs/nnsys/g3d/nsbca_2.c:
+    complete
+    .text       start:0x0202b1c8 end:0x0202b7c0
+
+libs/nnsys/g3d/nsbca_3.c:
+    complete
+    .text       start:0x0202bf18 end:0x0202c3b8
+
 libs/nnsys/g3d/nsbma.c:
     complete
     .text       start:0x0202c3b8 end:0x0202c7dc
@@ -532,6 +656,14 @@ libs/nnsys/g3d/nsbma.c:
 libs/nnsys/g3d/nsbta.c:
     complete
     .text       start:0x0202c7dc end:0x0202cc04
+
+libs/nnsys/g3d/nsbtp.c:
+    complete
+    .text       start:0x0202cc04 end:0x0202ccd4
+
+libs/nnsys/g3d/nsbtp_2.c:
+    complete
+    .text       start:0x0202cda8 end:0x0202ce9c
 
 libs/nnsys/g3d/nsbva.c:
     complete

@@ -61,12 +61,12 @@ typedef struct NNSSndArc {
     /* 0x9c */ s32 loadBlockSize;
 } NNSSndArc; // size 0xa0
 
-extern BOOL func_0200ed74(FSFileID *fileId, const char *path); // FS_ConvertPathToFileID
-extern void func_0200ed00(void *file);                         // FS_InitFile
-extern BOOL func_0200ee40(void *file, FSFileID id);            // FS_OpenFileFast
-extern BOOL func_0200ee98(void *file, const char *path, u32 mode);
-extern BOOL func_0200f00c(void *file, int offset, int origin); // FS_SeekFile
-extern int func_0200f038(void *file, void *buf, u32 size);     // FS_ReadFile
+extern BOOL FS_ConvertPathToFileID(FSFileID *fileId, const char *path); // FS_ConvertPathToFileID
+extern void FS_InitFile(void *file);                         // FS_InitFile
+extern BOOL FS_OpenFileFast(void *file, FSFileID id);            // FS_OpenFileFast
+extern BOOL FS_OpenFileEx(void *file, const char *path, u32 mode);
+extern BOOL FS_SeekFile(void *file, int offset, int origin); // FS_SeekFile
+extern int FS_ReadFile(void *file, void *buf, u32 size);     // FS_ReadFile
 
 extern NNSSndArc *data_020961ec; // sCurrent
 
@@ -98,17 +98,17 @@ void NNS_SndArcInit(NNSSndArc *arc, const char *filePath, NNSSndHeap *heap, BOOL
     arc->altTop = 0;
     arc->altBottom = 0;
 
-    result = func_0200ed74(&arc->fileId, filePath);
+    result = FS_ConvertPathToFileID(&arc->fileId, filePath);
     if (result) {
-        func_0200ed00(arc->file);
-        result = func_0200ee40(arc->file, arc->fileId);
+        FS_InitFile(arc->file);
+        result = FS_OpenFileFast(arc->file, arc->fileId);
         if (!result) {
             return;
         }
     } else {
         arc->fileId.arc = NULL;
         arc->fileId.fileId = (u32)-1;
-        result = func_0200ee98(arc->file, filePath, 1);
+        result = FS_OpenFileEx(arc->file, filePath, 1);
         if (!result) {
             return;
         }
@@ -128,12 +128,12 @@ BOOL NNS_SndArcSetup(NNSSndArc *arc, NNSSndHeap *heap, BOOL symbolLoadFlag) {
     BOOL result;
     s32 readSize;
 
-    result = func_0200f00c(arc->file, 0, 0);
+    result = FS_SeekFile(arc->file, 0, 0);
     if (!result) {
         return FALSE;
     }
 
-    readSize = func_0200f038(arc->file, &arc->header, sizeof(arc->header));
+    readSize = FS_ReadFile(arc->file, &arc->header, sizeof(arc->header));
     if (readSize != sizeof(arc->header)) {
         return FALSE;
     }
@@ -143,11 +143,11 @@ BOOL NNS_SndArcSetup(NNSSndArc *arc, NNSSndHeap *heap, BOOL symbolLoadFlag) {
         if (arc->info == NULL) {
             return FALSE;
         }
-        result = func_0200f00c(arc->file, (s32)arc->header.infoOffset, 0);
+        result = FS_SeekFile(arc->file, (s32)arc->header.infoOffset, 0);
         if (!result) {
             return FALSE;
         }
-        readSize = func_0200f038(arc->file, arc->info, (s32)arc->header.infoSize);
+        readSize = FS_ReadFile(arc->file, arc->info, (s32)arc->header.infoSize);
         if (readSize != arc->header.infoSize) {
             return FALSE;
         }
@@ -156,11 +156,11 @@ BOOL NNS_SndArcSetup(NNSSndArc *arc, NNSSndHeap *heap, BOOL symbolLoadFlag) {
         if (arc->fat == NULL) {
             return FALSE;
         }
-        result = func_0200f00c(arc->file, (s32)arc->header.fatOffset, 0);
+        result = FS_SeekFile(arc->file, (s32)arc->header.fatOffset, 0);
         if (!result) {
             return FALSE;
         }
-        readSize = func_0200f038(arc->file, arc->fat, (s32)arc->header.fatSize);
+        readSize = FS_ReadFile(arc->file, arc->fat, (s32)arc->header.fatSize);
         if (readSize != arc->header.fatSize) {
             return FALSE;
         }
@@ -170,12 +170,12 @@ BOOL NNS_SndArcSetup(NNSSndArc *arc, NNSSndHeap *heap, BOOL symbolLoadFlag) {
             if (arc->symbol == NULL) {
                 return FALSE;
             }
-            result = func_0200f00c(arc->file, (s32)arc->header.symbolDataOffset, 0);
+            result = FS_SeekFile(arc->file, (s32)arc->header.symbolDataOffset, 0);
             if (!result) {
                 return FALSE;
             }
 
-            readSize = func_0200f038(arc->file, arc->symbol, (s32)arc->header.symbolDataSize);
+            readSize = FS_ReadFile(arc->file, arc->symbol, (s32)arc->header.symbolDataSize);
             if (readSize != arc->header.symbolDataSize) {
                 return FALSE;
             }
@@ -298,10 +298,10 @@ s32 NNS_SndArcReadFile(u32 fileId, void *buffer, s32 size, s32 offset) {
             break;
         }
 
-        if (!func_0200f00c(arc->file, (s32)(file->offset + currentOffset), 0)) {
+        if (!FS_SeekFile(arc->file, (s32)(file->offset + currentOffset), 0)) {
             return -1;
         }
-        readSize = func_0200f038(arc->file, destAddress, requestSize);
+        readSize = FS_ReadFile(arc->file, destAddress, requestSize);
         if (readSize < 0) {
             return readSize;
         }

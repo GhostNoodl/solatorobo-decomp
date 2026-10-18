@@ -83,10 +83,10 @@ static inline void Scene_SetSubOverlay(SceneMgr *mgr, s32 id, s32 idx) {
         return;
     }
     if (mgr->subOverlays[idx] != -1) {
-        func_0200f7f8(0, mgr->subOverlays[idx]);
+        FS_UnloadOverlay(0, mgr->subOverlays[idx]);
     }
     if (id != -1) {
-        func_0200f7a4(0, id);
+        FS_LoadOverlay(0, id);
     }
     mgr->subOverlays[idx] = id;
 }
@@ -140,10 +140,10 @@ void func_0204af00(SceneMgr *mgr) {
         case 3:
             if (mgr->next.overlay != mgr->cur.overlay) {
                 if (mgr->cur.overlay != -1) {
-                    func_0200f7f8(0, mgr->cur.overlay);
+                    FS_UnloadOverlay(0, mgr->cur.overlay);
                 }
                 if (mgr->next.overlay != -1) {
-                    func_0200f7a4(0, mgr->next.overlay);
+                    FS_LoadOverlay(0, mgr->next.overlay);
                 }
             }
             if (mgr->next.onEnter != NULL) {

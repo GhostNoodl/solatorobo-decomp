@@ -4,8 +4,8 @@ void func_0203584c(ResLoader *loader) {
     loader->req.index = 0;
     loader->state = 0;
     ResRequest_Init(&loader->req);
-    if (!func_020187fc(loader)) {
-        func_020186a8(loader);
+    if (!OS_IsThreadTerminated(loader)) {
+        OS_DestroyThread(loader);
     }
 }
 
