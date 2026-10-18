@@ -75,4 +75,49 @@ void func_ov009_02201574(Ov009Actor *self) {
     }
 }
 
+extern u8 data_ov009_02215dd8[];
+extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
+extern void func_020639d4(void *p, s32 a, s32 b);
+extern void func_02049bb4(void *mgr, s32 id);
+extern Ov009Actor *func_ov000_0219bf90(void);
+extern BOOL func_ov003_021daa0c(void *mgr, s32 id);
+extern void func_ov003_021da9ac(void *mgr, s32 id, void *obj);
+extern void func_ov003_021daa6c(void *mgr, s32 id);
+extern void func_ov003_021daae4(void *mgr, s32 id, const Ov009Vec *pos, s32 a, s32 b, const void *c, s32 d);
+extern void func_ov003_021dacfc(void *mgr);
+void func_ov009_02201678(Ov009Actor *self) {
+    Ov009V *obj;
+    Ov009Vec v;
+    func_ov003_021d1e8c(self);
+    if (FLD(u8, self, 0xf4) != 0) {
+        self->unk_94_1 = 1;
+        if (FLD(s8, self, 0xf5) == 1) {
+            if (!func_ov003_021daa0c(FLD(void *, self, 0x104), 0xfd)) {
+                if (self->unk_40->unk_13 != 0x15) {
+                    obj = func_02065f88(0x322, &self->pos);
+                    obj->v20(data_ov009_02215dd8);
+                    obj->v0c(0xccd);
+                    FLD(s32, obj, 0xc8) = -1;
+                    func_020639d4(obj, 0x78, 0);
+                    func_ov003_021da9ac(FLD(void *, self, 0x104), 0xfd, obj);
+                }
+            } else {
+                func_ov003_021daae4(FLD(void *, self, 0x104), 0xfd, &self->pos, 0, 0, data_ov009_02215dd8, 0);
+            }
+            if (self->unk_40->unk_13 != 0xf && func_ov003_021daa0c(FLD(void *, self, 0x104), 0xfb)) {
+                func_ov003_021daa6c(FLD(void *, self, 0x104), 0xfb);
+                func_02049bb4(data_02097e4c, FLD(s32, self, 0x108));
+                FLD(s32, self, 0x108) = -1;
+            }
+            if (func_ov003_021daa0c(FLD(void *, self, 0x104), 0xfa)) {
+                v = func_ov000_0219bf90()->pos;
+                func_ov003_021daae4(FLD(void *, self, 0x104), 0xfa, &v, 0, 0, 0, 0);
+            }
+        }
+    } else if (FLD(s8, self, 0xf5) == 1 && func_ov003_021daa0c(FLD(void *, self, 0x104), 0xfd)) {
+        func_ov003_021daa6c(FLD(void *, self, 0x104), 0xfd);
+    }
+    func_ov003_021dacfc(FLD(void *, self, 0x104));
+}
+
 }

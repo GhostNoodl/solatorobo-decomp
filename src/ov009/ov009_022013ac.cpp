@@ -31,8 +31,15 @@ void func_ov009_022013ac(Ov009Actor *self) {
 
 static inline void Ov009_PlayAnim(Ov009Sub38 *m, void *anim) {
     if (FLD(void *, m, 0x1c) != NULL) {
-        func_ov000_0218fa28(m, &FLD(u8, m, 0x24), FLD(u8 *, m, 0), FLD(void *, FLD(u8 *, FLD(u8 *, m, 0), 0x48), 0x10), anim, 0x1000, 0);
+        func_ov000_0218fa28((Ov009Sub38 *)FLD(void *, m, 0x1c), &FLD(u8, m, 0x24), FLD(u8 *, m, 0), FLD(void *, FLD(u8 *, FLD(u8 *, m, 0), 0x48), 0x10), anim, 0x1000, 0);
     }
+}
+
+void func_ov009_02201400(Ov009Actor *self) {
+    Ov009Sub38 *m = self->unk_38;
+    void *anim = FLD(u8, self, 0xf4) != 0 ? data_ov009_02215d0c[6] : data_ov009_02215d0c[12];
+    Ov009_PlayAnim(m, anim);
+    func_ov003_021d1b88(self);
 }
 
 }

@@ -125,4 +125,32 @@ BOOL func_ov015_02211f54(u8 *self) {
     return r;
 }
 
+void VEC_Normalize(void *src, void *dst);
+u16 FX_Atan2(s32 x, s32 z);
+void func_ov000_02191618(void *a);
+void func_ov015_02211fc0(u8 *self, const Ov015VecC *to, const Ov015VecC *from) {
+    Ov015Vec d;
+    s32 x, y, z;
+    if (from != NULL) {
+        *(Ov015VecC *)(self + 0x270) = *from;
+    } else {
+        FLD(s32, self, 0x270) = 0;
+        FLD(s32, self, 0x274) = 0;
+        FLD(s32, self, 0x278) = 0;
+    }
+    Ov015VecC t(*to);
+    *(Ov015VecC *)(self + 0x27c) = t;
+    d.x = t.x - FLD(s32, self, 0x270);
+    d.y = t.y - FLD(s32, self, 0x274);
+    d.z = t.z - FLD(s32, self, 0x278);
+    VEC_Normalize(&d, &d);
+    FLD(u16, self, 0x288) = FX_Atan2(d.x, d.z) + 0x7fff;
+    func_ov000_02190cb0(self + 0x14c, data_ov015_02213280, 0x1000, 0);
+    func_ov000_021911c8(self + 0x14c, (s16)FLD(s32, self, 0x28c));
+    func_ov000_02191318(self + 0x14c, 0);
+    func_ov000_02191618(self + 0x14c);
+    FLD(Ov015AnimFlags, self, 0x20e).b0 = 1;
+    FLD(s32, self, 0x8) = 1;
+}
+
 }

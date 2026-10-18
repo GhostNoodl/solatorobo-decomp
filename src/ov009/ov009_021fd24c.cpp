@@ -85,4 +85,58 @@ void func_ov009_021fd430(Ov009Actor *self) {
     VEC_MultAdd(0x31, &d, &self->pos, &self->pos);
 }
 
+extern void *data_02097e4c;
+extern s32 func_02040498(s32 max);
+extern Ov009Actor *func_ov000_02199f60(void *p);
+extern u16 FX_Atan2(s32 y, s32 x);
+extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+static inline u16 Ov009_AngleTo(Ov009Actor *a, Ov009Actor *b) {
+    if (a != NULL && a != b) {
+        return FX_Atan2(a->pos.x - b->pos.x, a->pos.z - b->pos.z);
+    }
+    return b->rot[1];
+}
+
+void func_ov009_021fd510(Ov009Actor *self) {
+    Ov009Vec d;
+    Ov009Sub40 *st;
+    switch (self->unk_40->state) {
+    case 0: {
+        Ov009Actor *p;
+        FLD(Ov009Vec, self, 0xfc) = self->pos;
+        if (self->unk_18 == 1) {
+            FLD(s32, self, 0x100) -= func_02040498(0x800) + 0x1000;
+        } else {
+            FLD(s32, self, 0x100) -= func_02040498(0x800) + 0x2800;
+        }
+        if (FLD(s32, self, 0x100) < FLD(s32, self, 0xf4) - 0x1000) {
+            FLD(s32, self, 0x100) = FLD(s32, self, 0xf4) - 0x1000;
+        }
+        if (FLD(u8, data_ov000_021ccd54, 0xca) != 0x11) {
+            p = func_ov000_02199f60(self->unk_50);
+            if (p != NULL) {
+                u16 a = Ov009_AngleTo(self, p);
+                FLD(s32, self, 0xfc) += Ov009_FxMul(OV009_SIN(a), 0x1000);
+                FLD(s32, self, 0x104) += Ov009_FxMul(OV009_COS(a), 0x1000);
+            }
+        }
+        if (self->unk_18 == 1) {
+            func_02049f44(data_02097e4c, 0xd03, &self->pos, 0);
+        }
+        self->unk_40->state++;
+    }
+    case 1:
+        st = self->unk_40;
+        st->timer++;
+        if (st->timer > 0x2d) {
+            func_ov000_02198360(self->unk_40, 1, 0);
+        }
+        d.x = FLD(Ov009Vec, self, 0xfc).x - self->pos.x;
+        d.y = FLD(Ov009Vec, self, 0xfc).y - self->pos.y;
+        d.z = FLD(Ov009Vec, self, 0xfc).z - self->pos.z;
+        VEC_MultAdd(0x31, &d, &self->pos, &self->pos);
+        break;
+    }
+}
+
 }

@@ -351,4 +351,72 @@ s32 func_ov015_02202be8(void) {
     return 1;
 }
 
+extern void *data_0208cca0;
+extern void *data_0208ccc0;
+void func_02041218(void *p);
+void func_02041440(void *p, void *name, int c);
+void func_0201e520(void *p, void *name);
+void *func_02035d5c(void *a);
+void *func_02034d88(void *a, void *b);
+void func_020417e0(void *a, void *b);
+void func_02041d9c(void *a, int b, int c);
+void func_02041c20(void *a, int b, void *c);
+void func_0203cb78(s32 a, s32 b, s32 c);
+void func_ov000_02173648(void *p);
+void func_ov015_02206bf0(void);
+static inline void Ov015Label_Ctor2(u8 *l, void *name, void *dict) {
+    func_02041218(l + 0x88);
+    func_02041440(l, dict, 0);
+    func_0201e520(l + 0x2c, name);
+}
+void func_ov015_02202bf0(u8 *self) {
+    Ov015Bgm *p = (Ov015Bgm *)data_02097e48;
+    void *name;
+    void *file;
+    u8 *l;
+    if (p->active) {
+        if (p->unk6 != 0xffff || p->unk4 != 0x25) {
+            u16 v;
+            if (p->unk2 != 10 && p->unk2 != 0) {
+                if (p->unk6 != 0xffff) {
+                    func_0204aab0(p);
+                }
+                v = 1;
+            } else {
+                v = 0;
+            }
+            p->unk2 = v;
+            p->unk6 = 0x25;
+            p->unk8 = 10;
+        }
+    }
+    FLD(u32, self, 0x4) &= ~2;
+    if (VCALL(self)->v28()) return;
+    l = (u8 *)func_0203dd9c(0x160);
+    if (l != NULL) {
+        file = data_0208cca0;
+        name = data_0208ccc0;
+        func_02041218(l + 0x88);
+        func_02041440(l, name, 0);
+        func_0201e520(l + 0x2c, file);
+    }
+    FLD(u8 *, self, 0x3c) = l;
+    func_020417e0(FLD(void *, self, 0x3c), func_02034d88(func_02035d5c(data_0208cca0), data_0208ccc0));
+    FLD(u32, FLD(u8 *, self, 0x3c), 0x6c) |= 2;
+    func_02041d9c(FLD(void *, self, 0x3c), 0, 0);
+    {
+        u8 *p = FLD(u8 *, self, 0x3c);
+        FLD(s32, p, 0xfc) = 0;
+        FLD(s32, p, 0x100) = 0;
+    }
+    FLD(s32, FLD(u8 *, self, 0x3c), 0x150) = 0xfffe019a;
+    FLD(void *, FLD(u8 *, self, 0x3c), 0x158) = (void *)func_ov015_02206bf0;
+    func_02041c20(FLD(void *, self, 0x3c), 0, self + 0x44);
+    FLD(s32, self, 0x2c) = 0;
+    FLD(u8, self, 0x40) = 1;
+    func_ov000_02173648(self);
+    func_0203cb78(0x14000, 0, 1);
+    func_0203cb78(0x14000, 0, 0);
+}
+
 }

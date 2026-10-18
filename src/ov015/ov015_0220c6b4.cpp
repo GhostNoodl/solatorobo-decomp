@@ -41,4 +41,44 @@ void func_ov015_0220c6c8(u8 *self, u8 *p) {
     }
 }
 
+BOOL func_ov015_0220c810(u8 *self) {
+    Ov015Stat *g = &data_ov015_0221332c;
+    s32 max = FLD(s32, FLD(u8 *, self, 0x18), 0xe4);
+    u8 *p;
+    BOOL r = TRUE;
+    if (g->unk_14 == 4) {
+        if (g->unk_1c != 0) {
+            FLD(s32, self, 0x10) = FLD(s32, self, 0x10) + max / 24;
+        } else {
+            FLD(s32, self, 0x10) = 0;
+        }
+    } else {
+        FLD(s32, self, 0x10) = FLD(s32, self, 0x10) - 0x19;
+    }
+    if (FLD(s32, self, 0x10) < -0x19a) {
+        FLD(s32, self, 0x10) = -0x19a;
+    } else if (FLD(s32, self, 0x10) > max) {
+        FLD(s32, self, 0x10) = max;
+    }
+    {
+        Ov015VecC pos(FLD(Ov015VecC, FLD(u8 *, self, 0x18), 0x40));
+        pos.y += FLD(s32, self, 0x10);
+        if (pos.y < -0x32000) {
+            pos.y = -0x32000;
+        } else if (pos.y > -0xa000) {
+            pos.y = -0xa000;
+        }
+        FLD(Ov015VecC, FLD(u8 *, self, 0x18), 0x40) = pos;
+    }
+    s32 c = --FLD(s32, self, 0xc);
+    s32 y = FLD(s32, FLD(u8 *, self, 0x18), 0x44);
+    if (c < 0 || y >= -0xa000) {
+        s32 t = FX_Div(0x4b0000 - (FLD(s32, self, 0xc) << 12), 0x4b0000);
+        u8 *o = FLD(u8 *, self, 0x18);
+        FLD(s32, o, 0xdc) = Ov015_FxMul(t, FLD(s32, o, 0xdc));
+        r = FALSE;
+    }
+    return r;
+}
+
 }

@@ -221,4 +221,63 @@ void func_ov009_021fc228(Ov009Actor *self) {
     self->unk_ea_6 = 1;
 }
 
+extern void *data_02097e4c;
+extern void func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
+extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
+extern void func_ov000_0218d398(Ov009Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+struct Ov009HitMsg {
+    u8 a;
+    u16 b;
+    u16 c;
+};
+
+void func_ov009_021fc2a8(Ov009Actor *self) {
+    Ov009Actor *p;
+    if (!Ov009_GameIdle()) {
+        return;
+    }
+    if (FLD(u8, self, 0xf0) == 0) {
+        func_ov003_021d1e8c(self);
+    }
+    p = func_ov000_0218d240(self);
+    if (p != NULL && *p->unk_50 != 0 && self->unk_40->unk_13 != 0x13) {
+        Ov009Vec a;
+        a.x = self->pos.x;
+        a.y = self->pos.y;
+        a.z = self->pos.z;
+        a.y -= 0x1000;
+        if (func_01ffc584(&p->pos, &a, self->unk_64 + p->unk_64, FLD(s32, self, 0x68) + 0x1000)) {
+            s32 m = p->unk_40 != NULL ? p->unk_40->unk_13 : 0;
+            if (m == 7 || m == 0x16 || m == 0x17 || (u8)(m + 0xf1) <= 2) {
+                self->unk_40->flags |= 0x80000;
+                func_0204a028(data_02097e4c, 0x1e, &self->pos, 0xc);
+                FLD(u8, self, 0xf0) = 0x3c;
+            } else if (Ov009_GameIdle() && FLD(u8, self, 0xf0) == 0) {
+                Ov009HitMsg msg;
+                Ov009Vec d;
+                msg.a = 1;
+                msg.b = 0x333;
+                msg.c = 0xf;
+                func_ov000_0218d398(p, self->id, 0xb, TRUE, 6, &msg);
+                {
+                    s32 x = p->pos.x;
+                    s32 y = p->pos.y;
+                    s32 z = p->pos.z;
+                    d.x = x - self->pos.x;
+                    d.y = y - self->pos.y;
+                    d.z = z - self->pos.z;
+                }
+                VEC_MultAdd(0x59a, &d, &self->pos, &self->pos);
+            }
+        }
+        if (FLD(u8, self, 0xf0) != 0) {
+            FLD(u8, self, 0xf0)--;
+        }
+    }
+    if (FLD(s16, self->unk_38, 0xc4) == 1) {
+        func_0204a028(data_02097e4c, 0x1e, &self->pos, 0xc);
+    }
+}
+
 }

@@ -25,4 +25,88 @@ BOOL func_ov009_02207d98(Ov009Multi *self) {
     return r;
 }
 
+struct Ov009Query {
+    u32 unk_00;
+    Ov009Vec pos;
+    u16 unk_10;
+    u16 unk_12;
+    u16 unk_14;
+    u16 unk_16;
+    u16 unk_18;
+    u8 unk_1a[2];
+    s32 unk_1c;
+    s32 unk_20;
+    s32 unk_24;
+    s32 unk_28;
+    u16 unk_2c;
+    u8 unk_2e_0 : 2;
+    u8 unk_2e_2 : 1;
+    u8 unk_2e_3 : 1;
+    u8 unk_2e_4 : 4;
+};
+
+static inline void Ov009Query_Set(Ov009Query *q, const Ov009Vec *pos, u16 ang) {
+    q->pos = *pos;
+    q->unk_10 = ang;
+    q->unk_00 = 0;
+}
+
+extern s32 func_ov000_02199180(Ov009Query *q, Ov009Vec *pos, Ov009Actor **out, s32 max);
+
+void func_ov009_02207dd0(Ov009Actor *self) {
+    Ov009Query q;
+    Ov009Actor *res[0x20];
+    s32 n;
+    s32 i;
+    if (!Ov009_GameIdle()) {
+        return;
+    }
+    switch (FLD(u16, self, 0xb4)) {
+    case 0:
+        if (self->unk_40->unk_13 != 1 || FLD(u8, self, 0x490) != 4) {
+            return;
+        }
+        self->unk_90 = 0xffff;
+        q.unk_2c = 0xffff;
+        *(u8 *)((u8 *)&q + 0x2e) = 0;
+        q.unk_16 = 0xcc00;
+        q.unk_18 = 0x3400;
+        q.unk_1c = 0;
+        q.unk_20 = 0xa000;
+        q.unk_2e_2 = 1;
+        q.unk_24 = -0x1000;
+        q.unk_14 = 0xffff;
+        q.unk_28 = 0x3000;
+        q.unk_2e_3 = 1;
+        q.unk_12 = 0x22;
+        q.unk_2c = self->id;
+        Ov009Query_Set(&q, &FLD(Ov009Vec, self, 0x494), FLD(u16, self, 0x492));
+        n = func_ov000_02199180(&q, &q.pos, res, 0x20);
+        for (i = 0; i < n; i++) {
+            Ov009Actor *a = res[i];
+            if (a != NULL && a->kind != self->kind) {
+                self->unk_90 = res[i]->id;
+                if (VEC_Distance(&self->pos, &FLD(Ov009Vec, self, 0x494)) > 0x3c00) {
+                    return;
+                }
+                if (VEC_Distance(&self->pos, &res[i]->pos) > 0x5800) {
+                    return;
+                }
+                self->unk_40->flags |= 0x8000;
+                FLD(u16, self, 0xb6) = 0;
+                FLD(u16, self, 0xb4)++;
+                return;
+            }
+        }
+        break;
+    case 1:
+        FLD(u16, self, 0xb6)++;
+        if (FLD(u16, self, 0xb6) > 200) {
+            FLD(u16, self, 0xb4) = 0;
+            FLD(u16, self, 0xb6) = 0;
+        }
+        break;
+    }
+}
+
 }

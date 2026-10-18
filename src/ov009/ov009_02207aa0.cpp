@@ -68,4 +68,22 @@ BOOL func_ov009_02207cc4(void) {
     return FALSE;
 }
 
+static inline void Set(Ov009Multi *self, Ov009Vec p, u16 r) { self->unk_494.x = p.x; self->unk_492 = r; self->unk_494.y = p.y; self->unk_494.z = p.z; }
+void func_ov009_02207ccc(Ov009Multi *self) {
+    s32 i;
+    func_ov003_021d112c(self);
+    self->unk_492 = self->rot[1];
+    self->unk_494 = self->pos;
+    for (i = 0; i < 4; i++) {
+        s32 f = 1;
+        if (i == 0) f = 2;
+        func_ov000_0218ffdc(&self->models[i], FLD(void *, self, 0x34), f, 0);
+        self->models[i].unk_78 = self->pos;
+        func_ov000_02190758(&self->models[i], self->rot, 0);
+    }
+    self->unk_490 = 4;
+    FLD(void *, self->unk_50, 0x18) = (void *)func_ov009_02207cc4;
+    self->unk_ea_6 = 1;
+}
+
 }

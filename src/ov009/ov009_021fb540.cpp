@@ -40,4 +40,48 @@ void func_ov009_021fb5ac(Ov009Actor *self) {
     func_ov000_021987b8(self->unk_48, 0, 0, 0);
 }
 
+extern s32 func_02040528(s32 range);
+extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
+void func_ov009_021fb6b0(Ov009Actor *self) {
+    Ov009Vec d;
+    Ov009Sub40 *st;
+    switch (self->unk_40->state) {
+    case 0:
+        func_ov000_02190cb0(self->unk_38, data_ov009_02216ab6, 0x200, 0);
+        func_ov000_021915a0(self->unk_38);
+        self->unk_40->state++;
+    case 1:
+        st = self->unk_40;
+        if (st->timer != 0) {
+            st->timer--;
+        }
+        if (st->timer == 0) {
+            self->unk_40->timer = 0x3c;
+            FLD(Ov009Vec, self, 0x100) = self->unk_b8;
+            FLD(Ov009Vec, self, 0x100).x += func_02040528(0x8cd);
+            FLD(Ov009Vec, self, 0x100).z += func_02040528(0x8cd);
+            FLD(Ov009Vec, self, 0x100).y += func_02040528(0x8cd);
+            if (self->unk_1a != 0) {
+                FLD(Ov009Vec, self, 0x100).y += 0x1c00;
+            } else {
+                FLD(Ov009Vec, self, 0x100).y += 0x1400;
+            }
+        }
+        break;
+    }
+    d.x = FLD(Ov009Vec, self, 0x100).x - self->pos.x;
+    d.y = FLD(Ov009Vec, self, 0x100).y - self->pos.y;
+    d.z = FLD(Ov009Vec, self, 0x100).z - self->pos.z;
+    d.x = Ov009_FxMul(d.x, 0x33);
+    d.y = Ov009_FxMul(d.y, 0x33);
+    d.z = Ov009_FxMul(d.z, 0x33);
+    d.y *= 3;
+    VEC_Add(&self->pos, &d, &self->pos);
+    if (self->pos.y - FLD(Ov009Vec, self, 0x100).y > 0x3000) {
+        self->unk_48->unk_30 = 0x80000000;
+    }
+    func_ov000_021987b8(self->unk_48, 1, 0, 0);
+    self->unk_48->unk_30 = 0xc0000000;
+}
+
 }

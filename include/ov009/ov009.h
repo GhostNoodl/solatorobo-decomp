@@ -189,7 +189,8 @@ struct Ov009Sub44 {
     u8 unk_20[0x2];
     u16 unk_22_0 : 1;
     u16 unk_22_1 : 1;
-    u16 unk_22_2 : 14;
+    u16 unk_22_2 : 2;
+    u16 unk_22_4 : 12;
 };
 
 struct Ov009Sub48 {
