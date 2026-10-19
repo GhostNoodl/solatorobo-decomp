@@ -107,3 +107,4 @@ If the target reuses `r1`-`r3` right before a call as if they held nothing, the 
 - 12-byte `ldm`/`stm` copies: copy through a `struct { s32 w[3]; }` lvalue, e.g. `*(Blk12 *)&v = data;`.
 - Copying a source struct into a local first (`Vec t = pl->pos;`) keeps its fields in registers across an inline sqrt or other long sequences.
 - To get the target's argument order around a null-checked call, read the argument into a local first: `u16 id = self->ids[i]; a = mgr == NULL ? NULL : f(mgr, id);`.
+- `const` changes scheduling. If the target hoists a load or reorders loads across stores where your build doesn't, try `const`: on a pointer parameter (`const Slot *self`), on an extern rodata table (`extern const Ent data_x[];`), or on an extern string (`namespace K { extern "C" const char data_x[]; }`, used as `(char *)K::data_x`). A const extern's address is loaded early, like a literal, and you don't have to claim the shared pool.
