@@ -260,5 +260,83 @@ void func_ov011_022059f8(void *self) {
         break;
     }
 }
+
+struct Ov011Ea {
+    u16 b0 : 6;
+    u16 b6 : 2;
+    u16 rest : 8;
+};
+
+struct Ov011Bits22 {
+    u8 pad[0x22];
+    u16 b0 : 1;
+    u16 b1 : 1;
+    u16 rest : 14;
+};
+
+void NNSi_G3dModifyPolygonAttrMask(void *mdl, u32 a, u32 mask);
+
+#define OV011_F32_TO_FX32(f) ((s32)(((f) > 0) ? (f) * 4096.0f + 0.5f : (f) * 4096.0f - 0.5f))
+
+void func_ov011_02205bc4(void *self) {
+    u16 *st = FLD(u16 *, self, 0x40);
+    switch (st[0]) {
+    case 0: {
+        void *p = FLD(void *, self, 0x38);
+        FLD(s32, p, 0xa8) = 0;
+        FLD(s32, p, 0xac) = 0;
+        FLD(s32, p, 0xb0) = 0;
+        FLD(u8, FLD(void *, self, 0x38), 0xbe) = 0;
+        FLD(Ov011C2, FLD(void *, self, 0x38), 0xc2).b0 = 1;
+        FLD(u16 *, self, 0x40)[0]++;
+        break;
+    }
+    case 1:
+        st[1]++;
+        if (st[1] < 0xb4) {
+            u16 t = FLD(u16 *, self, 0x40)[1];
+            s32 sc = OV011_F32_TO_FX32(0.11f * t / 180.0f) + 0x1c3;
+            void *p = FLD(void *, self, 0x38);
+            FLD(s32, p, 0xa8) = sc;
+            FLD(s32, p, 0xac) = sc;
+            FLD(s32, p, 0xb0) = sc;
+            FLD(u8, FLD(void *, self, 0x38), 0xbe) = FLD(u16 *, self, 0x40)[1] * 31 / 180;
+        } else {
+            void *p = FLD(void *, self, 0x38);
+            FLD(s32, p, 0xa8) = 0x385;
+            FLD(s32, p, 0xac) = 0x385;
+            FLD(s32, p, 0xb0) = 0x385;
+            FLD(u8, FLD(void *, self, 0x38), 0xbe) = 0x1f;
+            NNSi_G3dModifyPolygonAttrMask(FLD(void *, FLD(void *, self, 0x38), 4), 1, 0x1f0000);
+            FLD(u16 *, self, 0x40)[1] = 0;
+            FLD(u16 *, self, 0x40)[0]++;
+        }
+        break;
+    case 2:
+        st[1]++;
+        if (st[1] > 0x3c) {
+            Ov011Game54 *g;
+            func_020627a0(FLD(u16, self, 0xe), FLD(u16, self, 0xc));
+            func_020627dc(4);
+            g = data_ov000_021ccd54;
+            FLD(u8, g, 0xac) = 1;
+            func_ov000_02182590((u8 *)g + 0xac);
+            FLD(u16 *, self, 0x40)[1] = 0;
+            FLD(u16 *, self, 0x40)[0]++;
+        }
+        break;
+    case 3:
+        st[1]++;
+        if (st[1] > 0x78 && Ov011_GameIdle()) {
+            Ov011Bits22 *q;
+            FLD(Ov011Ea, self, 0xea).b6 = 0;
+            q = FLD(Ov011Bits22 *, self, 0x44);
+            q->b0 = 1;
+            q->b1 = 1;
+            func_ov000_02198360(FLD(u16 *, self, 0x40), 1, 0);
+        }
+        break;
+    }
+}
 #pragma force_active reset
 }

@@ -45,6 +45,10 @@ src/ov015/ov015_0220015c.cpp:
     complete
     .text       start:0x0220015c end:0x022003ec
 
+src/ov015/ov015_022003ec.cpp:
+    complete
+    .text       start:0x022003ec end:0x0220064c
+
 src/ov015/ov015_02200a18.cpp:
     complete
     .text       start:0x02200a18 end:0x02200d50
