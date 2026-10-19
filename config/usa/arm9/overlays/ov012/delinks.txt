@@ -119,7 +119,7 @@ src/ov012/ov012_0220824c.cpp:
 
 src/ov012/ov012_02208fd4.cpp:
     complete
-    .text       start:0x02208fd4 end:0x02209268
+    .text       start:0x02208c0c end:0x02209268
 
 src/ov012/ov012_022096fc.cpp:
     complete
@@ -127,4 +127,4 @@ src/ov012/ov012_022096fc.cpp:
 
 src/ov012/ov012_02209f80.cpp:
     complete
-    .text       start:0x02209f80 end:0x0220a3c4
+    .text       start:0x02209bd4 end:0x0220a3c4

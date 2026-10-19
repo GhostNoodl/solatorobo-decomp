@@ -127,4 +127,4 @@ src/ov011/ov011_02205e9c.cpp:
 
 src/ov011/ov011_022071b4.cpp:
     complete
-    .text       start:0x022071b4 end:0x02207258
+    .text       start:0x022063b0 end:0x02207258
