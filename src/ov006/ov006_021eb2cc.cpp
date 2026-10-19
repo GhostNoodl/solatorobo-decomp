@@ -1,3 +1,5 @@
+#pragma pool_strings on
+#pragma dont_reuse_strings off
 #include "ov006/ov006.h"
 
 typedef struct ov006_Vec021eb2cc {

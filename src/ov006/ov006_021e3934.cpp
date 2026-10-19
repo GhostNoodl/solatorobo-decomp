@@ -1,3 +1,5 @@
+#pragma pool_strings on
+#pragma dont_reuse_strings off
 #include "ov006/Window.h"
 
 typedef struct ov006_Unk0203a4c0 {

@@ -1,3 +1,5 @@
+#pragma pool_strings on
+#pragma dont_reuse_strings off
 #include "ov006/SlotManager.h"
 
 extern "C" {

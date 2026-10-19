@@ -36,7 +36,7 @@ parser.add_argument("-q", "--quiet", action="store_true", help="Only print the n
 args = parser.parse_args()
 
 CC_FLAGS = [
-    "-O4,p", "-enum", "int", "-char", "signed", "-str", "reuse,pool", "-proc", "arm946e", "-gccext,on", "-fp", "soft",
+    "-O4,p", "-enum", "int", "-char", "signed", "-str", "noreuse", "-proc", "arm946e", "-gccext,on", "-fp", "soft",
     "-inline", "noauto", "-Cpp_exceptions", "off", "-RTTI", "off", "-interworking", "-w", "off", "-sym", "on",
     "-gccinc", "-nolink", "-msgstyle", "gcc", "-i", str(root_path / "include"), "-d", args.version,
 ]
