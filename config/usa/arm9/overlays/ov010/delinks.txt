@@ -117,6 +117,10 @@ src/ov010/ov010_02202c9c.cpp:
     complete
     .text       start:0x022029a4 end:0x02202d9c
 
+src/ov010/ov010_02202d9c.cpp:
+    complete
+    .text       start:0x02202d9c end:0x022033d0
+
 src/ov010/ov010_022033d0.cpp:
     complete
     .text       start:0x022033d0 end:0x0220366c
