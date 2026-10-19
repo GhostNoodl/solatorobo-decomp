@@ -83,4 +83,92 @@ void func_ov009_02200070(Ov009Actor *self) {
     data_02097dd0->cur = saved;
 }
 
+extern Ov009Actor *func_ov000_0219bf90(void);
+extern void func_ov000_0218d398(Ov009Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+extern void func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, Ov009Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern Ov009V *func_02065f88(s32 id, Ov009Vec *pos);
+extern s32 VEC_Distance(const Ov009Vec *a, const Ov009Vec *b);
+
+struct Ov009Bits3 {
+    u16 b0 : 3;
+};
+
+struct Ov009Bits32 {
+    u32 b0 : 1;
+    u32 b1 : 1;
+};
+
+struct Ov009HitMsg2 {
+    u8 a;
+    u16 b;
+    u16 c;
+};
+
+static inline s32 Ov009_StateOf(Ov009Sub40 *s) {
+    return s != NULL ? s->unk_13 : 0;
+}
+
+void func_ov009_022001e8(Ov009Actor *self) {
+    Ov009Vec v;
+    Ov009HitMsg2 msg;
+    Ov009Actor *pl;
+    func_ov003_021d1e8c(self);
+    pl = func_ov000_0219bf90();
+    if (pl == NULL || *pl->unk_50 == 0) {
+        return;
+    }
+    if (!(FLD(u8, self, 0xf0) & 1)) {
+        return;
+    }
+    if (Ov009_StateOf(pl->unk_40) == 7 || Ov009_StateOf(pl->unk_40) == 0x16 || Ov009_StateOf(pl->unk_40) == 0x10) {
+        FLD(u8, self, 0xf0) ^= 1;
+        func_ov000_02198360(self->unk_40, 0x13, 0);
+    } else if (FLD(Ov009Bits3, func_ov000_0219bf90(), 0xb22).b0 == 4) {
+        FLD(u8, self, 0xf0) ^= 1;
+        func_ov000_02198360(self->unk_40, 0x13, 0);
+    } else if (Ov009_GameIdle()) {
+        s16 cnt = FLD(s16, self, 0x18);
+        switch (self->kind) {
+        case 0x5424:
+            msg.a = 1;
+            msg.b = 0x333;
+            msg.c = 0xf;
+            func_ov000_0218d398(pl, self->id, 0xb, TRUE, 6, &msg);
+            cnt++;
+            if (cnt % 200 == 0) {
+                Ov009V *e;
+                cnt = 0;
+                func_ov000_0219aae8(self, self, 0xa, 1, 2, NULL, 0, 0x2000, 0, -1, 0x1000);
+                v.x = pl->pos.x;
+                v.y = pl->pos.y;
+                v.z = pl->pos.z;
+                e = func_02065f88(0x38b, &v);
+                e->v0c(0xb33);
+                e->v24(0, 0x1000, 0);
+                func_0204a028(data_02097e4c, 0x54, &v, -5);
+            }
+            FLD(s16, self, 0x18) = cnt;
+            break;
+        case 0x5423:
+            if (FLD(Ov009Bits32, pl, 0xb24).b1) {
+                cnt++;
+                if (cnt % 100 == 0) {
+                    cnt = 0;
+                    func_0204a028(data_02097e4c, 0x36, &self->pos, -10);
+                }
+                FLD(s16, self, 0x18) = cnt;
+                msg.a = 2;
+                msg.c = 8;
+                func_ov000_0218d398(pl, self->id, 0xb, TRUE, 6, &msg);
+            }
+            break;
+        }
+    }
+    if (self->kind == 0x5423 && VEC_Distance(&self->pos, &FLD(Ov009Vec, self, 0xf8)) > FLD(s32, self, 0xf4)) {
+        FLD(u8, self, 0xf0) ^= 1;
+        func_ov000_02198360(self->unk_40, 0x13, 0);
+    }
+}
+
 }

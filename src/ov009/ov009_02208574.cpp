@@ -29,6 +29,122 @@ static inline Ov009Actor *Ov009_FindActor(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
+extern char data_ov009_022172bb[];
+extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
+extern s32 func_02040528(s32 n);
+extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
+extern void VEC_MultAdd(s32 k, const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
+
+static inline u16 Ov009_AngTo(Ov009Actor *self, Ov009Actor *a) {
+    if (a == NULL || a == self) {
+        return self->rot[1];
+    }
+    return FX_Atan2(a->pos.x - self->pos.x, a->pos.z - self->pos.z);
+}
+
+void func_ov009_02208204(Ov009Multi *self) {
+    Ov009Vec off;
+    Ov009Vec d;
+    s32 k = 0x66;
+    BOOL moved = FALSE;
+    u16 ang = self->unk_492;
+    switch (self->unk_40->state) {
+    case 0:
+        if (self->unk_490 < 4) {
+            self->unk_40->state = 10;
+            self->unk_40->timer = 0xf0;
+            off.x = 0;
+            off.y = 0;
+            off.z = 0;
+            k = 0x19a;
+            moved = TRUE;
+            break;
+        }
+        func_ov000_02190cb0(self->unk_38, data_ov009_022172bb, 0x200, 0);
+        func_ov000_021915a0(self->unk_38);
+        self->unk_40->state++;
+    case 1: {
+        Ov009Actor *a;
+        u16 a2 = self->unk_492;
+        a = func_ov000_0218d240(self);
+        if (a != NULL) {
+            a2 = Ov009_AngTo(self, a);
+        }
+        func_ov000_0218db58(self, a2, self->unk_492, 0x3000, self->unk_b0->unk_02);
+        {
+            Ov009Sub40 *s = self->unk_40;
+            if (s->timer != 0) {
+                s->timer--;
+            }
+            if (s->timer == 0) {
+                s32 x;
+                s32 y;
+                s32 z;
+                self->unk_40->timer = 0x2d;
+                z = func_02040528(0x59a);
+                y = func_02040528(0x59a);
+                x = func_02040528(0x4cd);
+                off.x = x;
+                off.y = y;
+                off.z = z;
+                ang = self->rot[1];
+                moved = TRUE;
+            }
+        }
+        break;
+    }
+    case 10: {
+        Ov009Sub40 *s = self->unk_40;
+        k = 0x59a;
+        if (s->timer != 0) {
+            s->timer--;
+        }
+        if (s->timer <= 0x19) {
+            func_ov000_02190cb0(self->unk_38, data_ov009_022172bb, 0xa4, 0);
+            func_ov000_021915a0(self->unk_38);
+            self->unk_40->state++;
+        }
+        self->rot[1] = func_01ffc128(self->unk_492, self->rot[1], self->unk_b0->unk_02 << 1, 1, 0x8000);
+        break;
+    }
+    case 11: {
+        Ov009Sub40 *s = self->unk_40;
+        k = 0xcd;
+        if (s->timer != 0) {
+            s->timer--;
+        }
+        if (s->timer == 0) {
+            off.x = 0;
+            off.y = 0;
+            off.z = 0;
+            moved = TRUE;
+            if (++self->unk_490 < 4) {
+                self->unk_40->timer = 0x2d;
+            } else {
+                self->unk_490 = 4;
+                func_ov000_02190cb0(self->unk_38, data_ov009_022172bb, 0x200, 0);
+                func_ov000_021915a0(self->unk_38);
+                self->unk_40->state = 1;
+            }
+        }
+        self->rot[1] = func_01ffc128(self->unk_492, self->rot[1], self->unk_b0->unk_02 << 1, 1, 0x8000);
+        break;
+    }
+    }
+    if (moved) {
+        s32 r = self->unk_490 * 0xc00;
+        FLD(s32, self, 0x4a4) = self->unk_494.y;
+        FLD(s32, self, 0x4a0) = self->unk_494.x + Ov009_FxMul(r, OV009_SIN(ang));
+        FLD(s32, self, 0x4a8) = self->unk_494.z + Ov009_FxMul(r, OV009_COS(ang));
+        VEC_Add(&FLD(Ov009Vec, self, 0x4a0), &off, &FLD(Ov009Vec, self, 0x4a0));
+    }
+    d.x = FLD(s32, self, 0x4a0) - self->pos.x;
+    d.y = FLD(s32, self, 0x4a4) - self->pos.y;
+    d.z = FLD(s32, self, 0x4a8) - self->pos.z;
+    VEC_MultAdd(k, &d, &self->pos, &self->pos);
+}
+
 void func_ov009_02208574(Ov009Multi *self) {
     if (self->unk_490 > 1) {
         self->unk_490 -= 2;
