@@ -2848,3 +2848,51 @@ src/ov000/Lo_02154c34.cpp:
 src/ov000/Lo_0215b054.cpp:
     complete
     .text       start:0x0215b054 end:0x0215b2e4
+
+src/ov000/Lo_021b5110.cpp:
+    complete
+    .text       start:0x021b5110 end:0x021b53a8
+
+src/ov000/Dtor_0218c3e0.cpp:
+    complete
+    .text       start:0x0218c3e0 end:0x0218cbc8
+
+src/ov000/Lo_021569f8.cpp:
+    complete
+    .text       start:0x021569f8 end:0x02156ca0
+
+src/ov000/Oam3D_0214fcfc.cpp:
+    complete
+    .text       start:0x0214fcfc end:0x0214ffac
+
+src/ov000/Phys_02197ad0.cpp:
+    complete
+    .text       start:0x02197ad0 end:0x02197d80
+
+src/ov000/Win_021c37f0.cpp:
+    complete
+    .text       start:0x021c37f0 end:0x021c3aa0
+
+src/ov000/Robo_021a7574.cpp:
+    complete
+    .text       start:0x021a7574 end:0x021a7af0
+
+src/ov000/Obj_02170620.cpp:
+    complete
+    .text       start:0x02170620 end:0x021708d8
+
+src/ov000/Anim_0216b1b4.cpp:
+    complete
+    .text       start:0x0216b1b4 end:0x0216b474
+
+src/ov000/Obj_02179ab8.cpp:
+    complete
+    .text       start:0x02179ab8 end:0x02179d78
+
+src/ov000/Msg_021950e8.cpp:
+    complete
+    .text       start:0x021950e8 end:0x021953b4
+
+src/ov000/Robo_0219d730.cpp:
+    complete
+    .text       start:0x0219d730 end:0x0219d9fc
