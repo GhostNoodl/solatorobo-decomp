@@ -87,7 +87,7 @@ src/ov012/ov012_02206098.cpp:
 
 src/ov012/ov012_02206374.cpp:
     complete
-    .text       start:0x02206374 end:0x02206718
+    .text       start:0x02206374 end:0x02206bb0
 
 src/ov012/ov012_02206bb0.cpp:
     complete
@@ -111,7 +111,7 @@ src/ov012/ov012_02207b7c.cpp:
 
 src/ov012/ov012_02207c40.cpp:
     complete
-    .text       start:0x02207c40 end:0x02207dac
+    .text       start:0x02207c40 end:0x0220824c
 
 src/ov012/ov012_0220824c.cpp:
     complete
@@ -123,7 +123,7 @@ src/ov012/ov012_02208fd4.cpp:
 
 src/ov012/ov012_022096fc.cpp:
     complete
-    .text       start:0x022096fc end:0x02209740
+    .text       start:0x02209268 end:0x02209bd4
 
 src/ov012/ov012_02209f80.cpp:
     complete
