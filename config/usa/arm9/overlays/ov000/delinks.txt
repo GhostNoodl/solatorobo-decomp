@@ -1025,6 +1025,10 @@ src/ov000/Lo_021540b0.cpp:
     complete
     .text       start:0x021540b0 end:0x02154128
 
+src/ov000/Oam_02154128.cpp:
+    complete
+    .text       start:0x02154128 end:0x0215429c
+
 src/ov000/Lo_02154ec4.cpp:
     complete
     .text       start:0x02154ec4 end:0x02155160
@@ -3044,6 +3048,10 @@ src/ov000/Spawn_0218ab00.cpp:
 src/ov000/Oam_021c77bc.cpp:
     complete
     .text       start:0x021c77bc end:0x021c782c
+
+src/ov000/Oam_021c782c.cpp:
+    complete
+    .text       start:0x021c782c end:0x021c79a0
 
 src/ov000/Lo_02161280.cpp:
     complete
