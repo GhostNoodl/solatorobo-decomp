@@ -41,6 +41,10 @@ src/ov000/Obj_0215fdfc.c:
     complete
     .text       start:0x0215fdfc end:0x0215fe60
 
+src/ov000/Obj_0215fe60.cpp:
+    complete
+    .text       start:0x0215fe60 end:0x021601a4
+
 src/ov000/Obj_02160344.c:
     complete
     .text       start:0x02160344 end:0x02160414
@@ -64,6 +68,10 @@ src/ov000/Loader_0214b88c.cpp:
 src/ov000/Obj_0214e354.cpp:
     complete
     .text       start:0x0214e354 end:0x0214e3b4
+
+src/ov000/Lo_0214e3b4.cpp:
+    complete
+    .text       start:0x0214e3b4 end:0x0214e718
 
 src/ov000/Obj_0214e718.cpp:
     complete
@@ -1809,6 +1817,10 @@ src/ov000/Gfx_021ba858.cpp:
     complete
     .text       start:0x021ba858 end:0x021ba92c
 
+src/ov000/Text_021ba92c.cpp:
+    complete
+    .text       start:0x021ba92c end:0x021bac78
+
 src/ov000/Widget_021820bc.cpp:
     complete
     .text       start:0x021820bc end:0x02182190
@@ -2224,6 +2236,10 @@ src/ov000/Lo_021c5a0c.cpp:
 src/ov000/Lo_021c0d50.cpp:
     complete
     .text       start:0x021c0d50 end:0x021c0e30
+
+src/ov000/Heap_021c0e30.cpp:
+    complete
+    .text       start:0x021c0e30 end:0x021c1180
 
 src/ov000/Lo_0214db04.cpp:
     complete
@@ -3088,3 +3104,19 @@ src/ov000/Cmd_02188ca0.cpp:
 src/ov000/Spawn_0218b9ec.cpp:
     complete
     .text       start:0x0218b9ec end:0x0218bb34
+
+src/ov000/Robo_021a3e50.cpp:
+    complete
+    .text       start:0x021a3e50 end:0x021a4194
+
+src/ov000/Robo_021a98bc.cpp:
+    complete
+    .text       start:0x021a98bc end:0x021a9be8
+
+src/ov000/Body_021987b8.c:
+    complete
+    .text       start:0x021987b8 end:0x02198ad8
+
+src/ov000/Win_0215f618.cpp:
+    complete
+    .text       start:0x0215f618 end:0x0215f970
