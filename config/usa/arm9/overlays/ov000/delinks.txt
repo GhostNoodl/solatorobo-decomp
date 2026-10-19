@@ -185,6 +185,10 @@ src/ov000/Stub_02151650.cpp:
     complete
     .text       start:0x02151610 end:0x02151664
 
+src/ov000/Menu_02151664.cpp:
+    complete
+    .text       start:0x02151664 end:0x021519fc
+
 src/ov000/Lo_02152740.cpp:
     complete
     .text       start:0x02152740 end:0x02152a54
@@ -196,6 +200,10 @@ src/ov000/Stub_02152a54.cpp:
 src/ov000/Dtor_02152b2c.cpp:
     complete
     .text       start:0x02152b2c end:0x02152cbc
+
+src/ov000/Text_02153c48.cpp:
+    complete
+    .text       start:0x02153c48 end:0x02153f30
 
 src/ov000/Stub_02153f30.cpp:
     complete
@@ -721,6 +729,10 @@ src/ov000/Fade_0214c1ac.cpp:
     complete
     .text       start:0x0214c1ac end:0x0214c2d0
 
+src/ov000/Menu_0214c2d0.cpp:
+    complete
+    .text       start:0x0214c2d0 end:0x0214c668
+
 src/ov000/Scene_0214ca8c.cpp:
     complete
     .text       start:0x0214ca8c end:0x0214cb44
@@ -1028,6 +1040,10 @@ src/ov000/Lo_021540b0.cpp:
 src/ov000/Oam_02154128.cpp:
     complete
     .text       start:0x02154128 end:0x0215429c
+
+src/ov000/Menu_0215429c.cpp:
+    complete
+    .text       start:0x0215429c end:0x02154638
 
 src/ov000/Lo_02154ec4.cpp:
     complete
@@ -2024,6 +2040,10 @@ src/ov000/Lo_0216295c.cpp:
 src/ov000/Robo_0219ff8c.cpp:
     complete
     .text       start:0x0219ff8c end:0x021a0268
+
+src/ov000/Robo_021a09b8.cpp:
+    complete
+    .text       start:0x021a09b8 end:0x021a0d4c
 
 src/ov000/Lo_021a15e0.cpp:
     complete
@@ -3120,6 +3140,10 @@ src/ov000/Robo_021a3e50.cpp:
 src/ov000/Robo_021a98bc.cpp:
     complete
     .text       start:0x021a98bc end:0x021a9be8
+
+src/ov000/Robo_021ac080.cpp:
+    complete
+    .text       start:0x021ac080 end:0x021ac3ec
 
 src/ov000/Body_021987b8.c:
     complete
