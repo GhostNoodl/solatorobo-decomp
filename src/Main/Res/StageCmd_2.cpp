@@ -209,4 +209,127 @@ int func_0205c83c(StageResSlot *slot) {
     return 1;
 }
 
+typedef struct StageCamRot {
+    u16 v[3];
+} StageCamRot;
+
+typedef struct StageVecA {
+    s32 v[3];
+} StageVecA;
+
+typedef struct StageFieldCam {
+    virtual void Update();
+    /* 0x04 */ u8 unk_04[0x98];
+    /* 0x9c */ u8 active : 1;
+    /* 0x9c */ u8 unk_9c_1 : 7;
+    /* 0x9d */ u8 unk_9d[0x3d];
+    /* 0xda */ u8 unk_da_0 : 1;
+    /* 0xda */ u8 hasTarget : 1;
+    /* 0xda */ u8 mode : 2;
+    /* 0xda */ u8 axisX : 1;
+    /* 0xda */ u8 axisY : 1;
+    /* 0xda */ u8 axisZ : 1;
+    /* 0xda */ u8 unk_da_7 : 1;
+    /* 0xdb */ u8 unk_db[0xd];
+    /* 0xe8 */ StageVec target;
+    /* 0xf4 */ s32 z;
+    /* 0xf8 */ u16 x;
+    /* 0xfa */ u16 y;
+} StageFieldCam;
+
+typedef struct StageFieldCamState {
+    /* 0x000 */ u8 unk_000[0xd3];
+    /* 0x0d3 */ u8 camSet;
+    /* 0x0d4 */ u8 unk_0d4[4];
+    /* 0x0d8 */ StageVec camPos;
+    /* 0x0e4 */ StageCamRot camRot;
+    /* 0x0ec */ s32 camDist;
+    /* 0x0f0 */ u16 camScale;
+    /* 0x0f4 */ StageFieldCam cam;
+} StageFieldCamState;
+
+typedef struct StageFieldPlayerPos {
+    /* 0x000 */ u8 unk_000[0x104];
+    /* 0x104 */ StageVec pos;
+} StageFieldPlayerPos;
+
+typedef struct StageCamInfo {
+    StageCamRot rot;
+    StageVec pos;
+} StageCamInfo;
+
+int func_0205c968(StageResSlot *slot) {
+    StageCamInfo info;
+    s32 dist;
+    u16 a;
+    StageRes *res;
+    StageFieldCamState *st;
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    a = slot->args[0];
+    dist = 0;
+    info.pos.x = 0;
+    info.pos.y = 0;
+    info.pos.z = 0;
+    info.rot.v[0] = 0;
+    info.rot.v[1] = 0;
+    info.rot.v[2] = 0;
+    res = slot->res;
+    if (a == 0x1000) {
+        StageVec *pp = &((StageFieldPlayerPos *)data_ov000_021ccd54)->pos;
+        info.pos.x = pp->x;
+        info.pos.y = pp->y;
+        info.pos.z = pp->z;
+    } else if (a & 0x8000) {
+        StagePos *p = &((StagePos *)res->posEv->pos)[(u16)(a & 0x7fff)];
+        info.pos.x = p->x << 4;
+        info.pos.y = p->y << 4;
+        info.pos.z = p->z << 4;
+    } else {
+        StageObj3D *obj;
+        if (data_ov000_021ccd68 == NULL) {
+            obj = NULL;
+        } else {
+            obj = (StageObj3D *)func_ov000_0218e6d0(data_ov000_021ccd68, a & 0xf000, a);
+        }
+        if (obj != NULL) {
+            info.pos.x = obj->pos.x;
+            info.pos.y = obj->pos.y;
+            info.pos.z = obj->pos.z;
+        } else {
+            return 1;
+        }
+    }
+    a = slot->args[1];
+    if (a & 0x8000) {
+        StagePos *p = &((StagePos *)res->posEv->pos)[(u16)(a & 0x7fff)];
+        info.rot.v[0] = p->x;
+        info.rot.v[1] = p->y;
+        info.rot.v[2] = 0;
+        dist = p->z << 4;
+    }
+    st = (StageFieldCamState *)data_ov000_021ccd54;
+    st->camSet = 1;
+    st->camPos.x = info.pos.x;
+    st->camPos.y = info.pos.y;
+    st->camPos.z = info.pos.z;
+    st->camRot = info.rot;
+    st->camDist = dist;
+    st->camScale = 0x1000;
+    st->cam.target.x = info.pos.x;
+    st->cam.target.y = info.pos.y;
+    st->cam.target.z = info.pos.z;
+    st->cam.hasTarget = 1;
+    st->cam.x = st->camRot.v[0];
+    st->cam.axisX = 1;
+    st->cam.y = st->camRot.v[1];
+    st->cam.axisY = 1;
+    st->cam.z = st->camDist;
+    st->cam.mode = 1;
+    st->cam.active = 0;
+    st->cam.Update();
+    return 1;
+}
+
 }

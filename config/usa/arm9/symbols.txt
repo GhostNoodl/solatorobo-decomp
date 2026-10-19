@@ -35,30 +35,30 @@ func_02004fd4 kind:function(arm,size=0x28) addr:0x02004fd4
 func_02004ffc kind:function(arm,size=0x34) addr:0x02004ffc
 data_02005068 kind:data(any) addr:0x02005068
 main kind:function(arm,size=0xe0) addr:0x02005090
-func_02005170 kind:function(arm,size=0x28) addr:0x02005170
-func_02005198 kind:function(arm,size=0x44) addr:0x02005198
+abort kind:function(arm,size=0x28) addr:0x02005170
+exit kind:function(arm,size=0x44) addr:0x02005198
 func_020051dc kind:function(arm,size=0x11c) addr:0x020051dc
-func_020052f8 kind:function(arm,size=0x64) addr:0x020052f8
+__flush_all kind:function(arm,size=0x64) addr:0x020052f8
 abs kind:function(arm,size=0xc) addr:0x0200535c
-func_02005368 kind:function(arm,size=0x4) addr:0x02005368
-func_0200536c kind:function(arm,size=0x28) addr:0x0200536c
-func_02005394 kind:function(arm,size=0x84) addr:0x02005394
-func_02005418 kind:function(arm,size=0xe4) addr:0x02005418
-func_020054fc kind:function(arm,size=0x94) addr:0x020054fc
-func_02005590 kind:function(arm,size=0x1c) addr:0x02005590
-func_020055ac kind:function(arm,size=0x70) addr:0x020055ac
-func_0200561c kind:function(arm,size=0x38) addr:0x0200561c
-func_02005654 kind:function(arm,size=0x14) addr:0x02005654
-func_02005668 kind:function(arm,size=0x1c) addr:0x02005668
-func_02005684 kind:function(arm,size=0x78) addr:0x02005684
+__convert_from_newlines kind:function(arm,size=0x4) addr:0x02005368
+__prep_buffer kind:function(arm,size=0x28) addr:0x0200536c
+__flush_buffer kind:function(arm,size=0x84) addr:0x02005394
+fflush kind:function(arm,size=0xe4) addr:0x02005418
+__msl_count_bits64 kind:function(arm,size=0x94) addr:0x020054fc
+__signbitd kind:function(arm,size=0x1c) addr:0x02005590
+__fpclassifyd kind:function(arm,size=0x70) addr:0x020055ac
+__mbtowc_noconv kind:function(arm,size=0x38) addr:0x0200561c
+__wctomb_noconv kind:function(arm,size=0x14) addr:0x02005654
+wctomb kind:function(arm,size=0x1c) addr:0x02005668
+wcstombs kind:function(arm,size=0x78) addr:0x02005684
 func_020056fc kind:function(arm,size=0x20) addr:0x020056fc
-func_0200571c kind:function(arm,size=0x2c) addr:0x0200571c
-func_02005748 kind:function(arm,size=0x50c) addr:0x02005748
-func_02005c54 kind:function(arm,size=0x250) addr:0x02005c54
-func_02005ea4 kind:function(arm,size=0x2d4) addr:0x02005ea4
-func_02006178 kind:function(arm,size=0x4ac) addr:0x02006178
-func_02006624 kind:function(arm,size=0x114) addr:0x02006624
-func_02006738 kind:function(arm,size=0x710) addr:0x02006738
+memchr kind:function(arm,size=0x2c) addr:0x0200571c
+parse_format kind:function(arm,size=0x50c) addr:0x02005748
+long2str kind:function(arm,size=0x250) addr:0x02005c54
+longlong2str kind:function(arm,size=0x2d4) addr:0x02005ea4
+double2hex kind:function(arm,size=0x4ac) addr:0x02006178
+round_decimal kind:function(arm,size=0x114) addr:0x02006624
+float2str kind:function(arm,size=0x710) addr:0x02006738
 func_02006e48 kind:function(arm,size=0x8ac) addr:0x02006e48
 func_020076f4 kind:function(arm,size=0x44) addr:0x020076f4
 func_02007738 kind:function(arm,size=0x64) addr:0x02007738
@@ -66,32 +66,31 @@ func_0200779c kind:function(arm,size=0x2c) addr:0x0200779c
 func_020077c8 kind:function(arm,size=0x28) addr:0x020077c8
 func_020077f0 kind:function(arm,size=0x4) addr:0x020077f0
 func_020077f4 kind:function(arm,size=0x128) addr:0x020077f4
-func_0200791c kind:function(arm,size=0x1c) addr:0x0200791c
-func_02007938 kind:function(arm,size=0x50) addr:0x02007938
-func_02007988 kind:function(arm,size=0x38) addr:0x02007988
-func_020079c0 kind:function(arm,size=0x6c) addr:0x020079c0
-func_02007a2c kind:function(arm,size=0x4c) addr:0x02007a2c
-func_02007a78 kind:function(arm,size=0x4) addr:0x02007a78
-func_02007a7c kind:function(arm,size=0x40) addr:0x02007a7c
-func_02007abc kind:function(arm,size=0xc4) addr:0x02007abc
-func_02007b80 kind:function(arm,size=0x180) addr:0x02007b80
-func_02007d00 kind:function(arm,size=0x9c) addr:0x02007d00
-func_02007d9c kind:function(arm,size=0x380) addr:0x02007d9c
-func_0200811c kind:function(arm,size=0x180) addr:0x0200811c
-func_0200829c kind:function(arm,size=0xac) addr:0x0200829c
-func_02008348 kind:function(arm,size=0x28) addr:0x02008348
-func_02008370 kind:function(arm,size=0x20) addr:0x02008370
-func_02008390 kind:function(arm,size=0xc0) addr:0x02008390
-func_02008450 kind:function(arm,size=0x260) addr:0x02008450
+strlen kind:function(arm,size=0x1c) addr:0x0200791c
+strncpy kind:function(arm,size=0x50) addr:0x02007938
+strchr kind:function(arm,size=0x38) addr:0x02007988
+__must_round kind:function(arm,size=0x6c) addr:0x020079c0
+__dorounddecup kind:function(arm,size=0x50) addr:0x02007a2c
+__rounddec kind:function(arm,size=0x40) addr:0x02007a7c
+__ull2dec kind:function(arm,size=0xc4) addr:0x02007abc
+__timesdec kind:function(arm,size=0x180) addr:0x02007b80
+__str2dec kind:function(arm,size=0x9c) addr:0x02007d00
+__two_exp kind:function(arm,size=0x380) addr:0x02007d9c
+__num2dec_internal kind:function(arm,size=0x180) addr:0x0200811c
+__num2dec kind:function(arm,size=0xac) addr:0x0200829c
+copysign kind:function(arm,size=0x28) addr:0x02008348
+fabs kind:function(arm,size=0x20) addr:0x02008370
+frexp kind:function(arm,size=0xc0) addr:0x02008390
+ldexp kind:function(arm,size=0x260) addr:0x02008450
 func_020086b0 kind:function(arm,size=0x24) addr:0x020086b0
 func_020086d4 kind:function(arm,size=0xc) addr:0x020086d4
 func_020086e0 kind:function(arm,size=0x4) addr:0x020086e0
 func_020086e4 kind:function(arm,size=0x4) addr:0x020086e4
 func_020086e8 kind:function(arm,size=0x8) addr:0x020086e8
 func_020086f0 kind:function(arm,size=0x4) addr:0x020086f0
-func_020086f4 kind:function(arm,size=0x50) addr:0x020086f4
-func_02008744 kind:function(arm,size=0x44) addr:0x02008744
-func_02008788 kind:function(arm,size=0x8) addr:0x02008788
+__read_console kind:function(arm,size=0x50) addr:0x020086f4
+__write_console kind:function(arm,size=0x44) addr:0x02008744
+__close_console kind:function(arm,size=0x8) addr:0x02008788
 func_02008790 kind:function(arm,size=0x84) addr:0x02008790
 func_02008814 kind:function(arm,size=0x84) addr:0x02008814
 func_02008898 kind:function(arm,size=0x64) addr:0x02008898
@@ -135,12 +134,12 @@ func_0200a168 kind:function(arm,size=0x20) addr:0x0200a168
 func_0200a188 kind:function(arm,size=0x28) addr:0x0200a188
 func_0200a1b0 kind:function(arm,size=0x30) addr:0x0200a1b0
 func_0200a1e0 kind:function(arm,size=0x4c) addr:0x0200a1e0
-func_0200a22c kind:function(arm,size=0x318) addr:0x0200a22c
-func_0200a55c kind:function(arm,size=0x3b4) addr:0x0200a55c
-func_0200a910 kind:function(arm,size=0x364) addr:0x0200a910
-func_0200ac74 kind:function(arm,size=0x9c) addr:0x0200ac74
-func_0200ad10 kind:function(arm,size=0x8c) addr:0x0200ad10
-func_0200ad9c kind:function(arm,size=0x8c) addr:0x0200ad9c
+_dadd kind:function(arm,size=0x318) addr:0x0200a22c
+_dsub kind:function(arm,size=0x3b4) addr:0x0200a55c
+_dmul kind:function(arm,size=0x364) addr:0x0200a910
+_dls kind:function(arm,size=0x9c) addr:0x0200ac74
+_deq kind:function(arm,size=0x8c) addr:0x0200ad10
+_dneq kind:function(arm,size=0x8c) addr:0x0200ad9c
 _fgr kind:function(arm,size=0x5c) addr:0x0200ae28
 func_0200ae84 kind:function(arm,size=0x68) addr:0x0200ae84
 func_0200aeec kind:function(arm,size=0x48) addr:0x0200aeec
@@ -149,12 +148,13 @@ func_0200af7c kind:function(arm,size=0x1c0) addr:0x0200af7c
 _ll_sdiv kind:label(arm) addr:0x0200af8c
 _ll_udiv kind:function(arm,size=0x48) addr:0x0200b13c
 .L_0200b148 kind:label(arm) addr:0x0200b148
+_ull_mod kind:label(arm) addr:0x0200b148
 _s32_div_f kind:function(arm,size=0x20c) addr:0x0200b184
 _u32_div_f kind:function(arm,size=0x1e4) addr:0x0200b390
 .L_0200b398 kind:label(arm) addr:0x0200b398
 _ffix kind:function(arm,size=0x34) addr:0x0200b574
 func_0200b5a8 kind:function(arm,size=0x40) addr:0x0200b5a8
-func_0200b5e8 kind:function(arm,size=0x8c) addr:0x0200b5e8
+_ll_ufrom_d kind:function(arm,size=0x8c) addr:0x0200b5e8
 _fmul kind:function(arm,size=0x1e0) addr:0x0200b674
 _fadd kind:function(arm,size=0x21c) addr:0x0200b854
 func_0200ba70 kind:function(arm,size=0x8) addr:0x0200ba70
@@ -2725,6 +2725,7 @@ func_02070874 kind:function(arm,size=0x88) addr:0x02070874
 func_020708fc kind:function(arm,size=0x29c) addr:0x020708fc
 func_02070b98 kind:function(arm,size=0x234) addr:0x02070b98
 func_02070dcc kind:function(arm,size=0x10) addr:0x02070dcc
+__ctype_mapC kind:data(any) addr:0x02070ddc
 __ptmf_null kind:data(any) addr:0x02070edc
 FX_SinCosTable_ kind:data(any) addr:0x02071060
 FX_AtanTable_ kind:data(any) addr:0x02075060
@@ -2788,37 +2789,37 @@ data_0208abd0 kind:data(any) addr:0x0208abd0
 data_0208abe0 kind:data(any) addr:0x0208abe0
 data_0208ac38 kind:data(any) addr:0x0208ac38
 data_0208acc0 kind:data(any) addr:0x0208acc0
-data_0208ad80 kind:data(any) addr:0x0208ad80
-data_0208ad88 kind:data(any) addr:0x0208ad88
-data_0208ad90 kind:data(any) addr:0x0208ad90
-data_0208ad94 kind:data(any) addr:0x0208ad94
-data_0208ad98 kind:data(any) addr:0x0208ad98
-data_0208ada0 kind:data(any) addr:0x0208ada0
-data_0208ada8 kind:data(any) addr:0x0208ada8
-data_0208adac kind:data(any) addr:0x0208adac
+@541 kind:data(any) addr:0x0208ad80 local
+@542 kind:data(any) addr:0x0208ad88 local
+@543 kind:data(any) addr:0x0208ad90 local
+@544 kind:data(any) addr:0x0208ad94 local
+@545 kind:data(any) addr:0x0208ad98 local
+@546 kind:data(any) addr:0x0208ada0 local
+@547 kind:data(any) addr:0x0208ada8 local
+@548 kind:data(any) addr:0x0208adac local
 data_0208adb0 kind:data(any) addr:0x0208adb0
 data_0208adb4 kind:data(any) addr:0x0208adb4
-data_0208adb8 kind:data(any) addr:0x0208adb8
-data_0208ade8 kind:data(any) addr:0x0208ade8
-data_0208ae10 kind:data(any) addr:0x0208ae10
-data_0208ae28 kind:data(any) addr:0x0208ae28
-data_0208ae38 kind:data(any) addr:0x0208ae38
-data_0208ae40 kind:data(any) addr:0x0208ae40
-data_0208ae48 kind:data(any) addr:0x0208ae48
-data_0208ae50 kind:data(any) addr:0x0208ae50
-data_0208ae58 kind:data(any) addr:0x0208ae58
-data_0208ae5c kind:data(any) addr:0x0208ae5c
-data_0208ae60 kind:data(any) addr:0x0208ae60
-data_0208ae64 kind:data(any) addr:0x0208ae64
-data_0208ae68 kind:data(any) addr:0x0208ae68
-data_0208ae6c kind:data(any) addr:0x0208ae6c
-data_0208ae70 kind:data(any) addr:0x0208ae70
-data_0208ae74 kind:data(any) addr:0x0208ae74
-data_0208ae78 kind:data(any) addr:0x0208ae78
-data_0208ae7c kind:data(any) addr:0x0208ae7c
-data_0208ae80 kind:data(any) addr:0x0208ae80
-data_0208ae84 kind:data(any) addr:0x0208ae84
-data_0208ae88 kind:data(any) addr:0x0208ae88
+@257 kind:data(any) addr:0x0208adb8 local
+@258 kind:data(any) addr:0x0208ade8 local
+@259 kind:data(any) addr:0x0208ae10 local
+@260 kind:data(any) addr:0x0208ae28 local
+@261 kind:data(any) addr:0x0208ae38 local
+@262 kind:data(any) addr:0x0208ae40 local
+@263 kind:data(any) addr:0x0208ae48 local
+@264 kind:data(any) addr:0x0208ae50 local
+@265 kind:data(any) addr:0x0208ae58 local
+@266 kind:data(any) addr:0x0208ae5c local
+@267 kind:data(any) addr:0x0208ae60 local
+@268 kind:data(any) addr:0x0208ae64 local
+@269 kind:data(any) addr:0x0208ae68 local
+@270 kind:data(any) addr:0x0208ae6c local
+@271 kind:data(any) addr:0x0208ae70 local
+@272 kind:data(any) addr:0x0208ae74 local
+@273 kind:data(any) addr:0x0208ae78 local
+@274 kind:data(any) addr:0x0208ae7c local
+@275 kind:data(any) addr:0x0208ae80 local
+@276 kind:data(any) addr:0x0208ae84 local
+@277 kind:data(any) addr:0x0208ae88 local
 data_0208ae8c kind:data(any) addr:0x0208ae8c
 data_0208ae94 kind:data(any) addr:0x0208ae94
 data_0208ae9c kind:data(any) addr:0x0208ae9c

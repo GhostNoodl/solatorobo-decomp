@@ -4,6 +4,76 @@
     .data       start:0x0208aa80 end:0x0208d940 kind:data align:32
     .bss        start:0x0208d940 end:0x0214b1a0 kind:bss align:32
 
+src/Main/Sys/GameMain.cpp:
+    complete
+    .text       start:0x02005090 end:0x02005170
+
+libs/msl/abort_exit.c:
+    complete
+    .text       start:0x02005170 end:0x020051dc
+
+libs/msl/ansi_files.c:
+    complete
+    .text       start:0x020052f8 end:0x0200535c
+
+libs/msl/arith.c:
+    complete
+    .text       start:0x0200535c end:0x02005368
+
+libs/msl/buffer_io.c:
+    complete
+    .text       start:0x02005368 end:0x02005418
+
+libs/msl/file_io.c:
+    complete
+    .text       start:0x02005418 end:0x020054fc
+
+libs/msl/math_double.c:
+    complete
+    .text       start:0x020054fc end:0x0200561c
+
+libs/msl/mbstring.c:
+    complete
+    .text       start:0x0200561c end:0x020056fc
+
+libs/msl/mem.c:
+    complete
+    .text       start:0x020056fc end:0x02005748
+
+libs/msl/printf.c:
+    complete
+    .text       start:0x02005748 end:0x02006e48
+    .data       start:0x0208ad80 end:0x0208adb0
+
+libs/msl/string.c:
+    complete
+    .text       start:0x0200791c end:0x020079c0
+
+libs/msl/ansi_fp.c:
+    complete
+    .text       start:0x020079c0 end:0x02008348
+    .data       start:0x0208adb8 end:0x0208ae8c
+
+libs/msl/s_copysign.c:
+    complete
+    .text       start:0x02008348 end:0x02008370
+
+libs/msl/s_fabs.c:
+    complete
+    .text       start:0x02008370 end:0x02008390
+
+libs/msl/s_frexp.c:
+    complete
+    .text       start:0x02008390 end:0x02008450
+
+libs/msl/s_ldexp.c:
+    complete
+    .text       start:0x02008450 end:0x020086b0
+
+libs/msl/console_io.c:
+    complete
+    .text       start:0x020086b0 end:0x02008790
+
 libs/nitro/card/card_common.c:
     complete
     .text       start:0x0200c140 end:0x0200c594
@@ -1220,7 +1290,7 @@ src/Main/Res/StageCmd.cpp:
 
 src/Main/Res/StageCmd_2.cpp:
     complete
-    .text       start:0x0205c37c end:0x0205c968
+    .text       start:0x0205c37c end:0x0205cb9c
 
 src/Main/Res/StageCmd_3.cpp:
     complete
@@ -1228,7 +1298,7 @@ src/Main/Res/StageCmd_3.cpp:
 
 src/Main/Res/StageCmd_4.cpp:
     complete
-    .text       start:0x0205d000 end:0x0205d044
+    .text       start:0x0205d000 end:0x0205d0dc
 
 src/Main/Res/StageCmd_5.cpp:
     complete

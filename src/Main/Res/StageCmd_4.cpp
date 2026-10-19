@@ -34,6 +34,41 @@ int func_0205d00c(StageResSlot *slot) {
     return 1;
 }
 
-int func_0205d044(StageResSlot *slot);
+typedef struct FieldStateBits {
+    /* 0x000 */ u8 unk_000[0x18c];
+    /* 0x18c */ u8 unk_18c;
+    /* 0x18d */ u8 unk_18d;
+    /* 0x18e */ u8 unk_18e;
+    /* 0x18f */ u8 unk_18f;
+    /* 0x190 */ u8 flag0 : 1;
+    /* 0x190 */ u8 flag1 : 1;
+    /* 0x190 */ u8 flag2 : 1;
+    /* 0x190 */ u8 flag3 : 1;
+    /* 0x190 */ u8 flag4 : 1;
+    /* 0x190 */ u8 unk_190_5 : 3;
+} FieldStateBits;
+
+int func_0205d044(StageResSlot *slot) {
+    FieldState *state = data_ov000_021ccd54;
+    FieldStateBits *b;
+    u16 v;
+    u16 a0;
+    if (Field_HasEvent(10)) {
+        return -0x63;
+    }
+    v = slot->args[1];
+    a0 = slot->args[0];
+    b = (FieldStateBits *)state;
+    b->flag2 = 1;
+    b->flag3 = 1;
+    b->flag4 = 1;
+    b->unk_18d = a0;
+    b->unk_18e = v;
+    b->unk_18f = v;
+    if (slot->args[2] != 0) {
+        b->unk_18c = 1;
+    }
+    return 1;
+}
 
 }
