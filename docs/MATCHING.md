@@ -30,3 +30,38 @@
 - Call other functions and use data by their `symbols.txt` names (`func_02021d98`, `data_0208f0dc`) and declare them `extern`. Rename a symbol in `symbols.txt` once you know what it is.
 - The game is C++ (overlays have static initializers), but plain functions compile the same as C. Use `extern "C"` or `.c` files to keep `symbols.txt` names unmangled.
 - NitroSystem (NNS) and TwlSDK headers go in `include/nnsys/` and `include/nitro/`. Write declarations from scratch; don't copy SDK headers.
+
+## String literals
+
+The game was built with `-str reuse,pool`: in each source file, equal string literals are one object, and all of the file's literals are packed back to back, in the order the compiled code first uses them, into one `@stringBase0` object in `.data`. The linker starts every object's `.data` on a 4-byte boundary, so a pool always starts aligned.
+
+Write strings as real literals, not `extern char data_...[]`. MWCC treats a literal's address as a constant and may load it into a saved register early, which an `extern` array never does. If the target keeps string addresses in `r4`-`r11` across calls, only literals will match. Named arrays (`char s[] = "..."`) behave like `extern`.
+
+1. See what the function loads, the pool it sits in, and every function that loads from that pool (`*` marks functions not in any `delinks.txt` file):
+
+   ```shell
+   python tools/strrefs.py ov006 func_ov006_021db65c
+   python tools/strrefs.py ov006 --pools        # every pool in the module
+   ```
+
+2. Your file can only compile the pool if it contains every function that loads a string in it, and if the first string your file uses is the pool's first string. If not, keep `extern` for now. Often this means merging neighbouring files, since the original source file was bigger than our split. Equal strings in different pools are from different source files.
+3. Write the literals. `python tools/strrefs.py ov006 --literalize src/ov006/foo.cpp` prints the file with each string symbol replaced by its literal. Prototypes need `const char *` parameters.
+4. Add the pool to the file's `delinks.txt` entry. End it at the next 4-byte boundary, since the linker pads there anyway:
+
+   ```
+   src/ov006/ov006_021db65c.cpp:
+       complete
+       .text       start:0x021db65c end:0x021db8c4
+       .data       start:0x021ec080 end:0x021ec094
+   ```
+
+5. Rewrite `symbols.txt` and `relocs.txt` so they describe one pool object instead of separate strings:
+
+   ```shell
+   python tools/strrefs.py ov006 --claim 0x021ec080 0x021ec094
+   ```
+
+   This renames the pool's first symbol to `@stringBase0` (local, sized to the range), removes the symbols inside the pool, and turns each load of a later string into `to:<pool start> add:<offset>`.
+6. Run `ninja`.
+
+If the original file also had other `.data` next to the pool (vtables, tables of string pointers), your `.data` range has to cover and define those too.

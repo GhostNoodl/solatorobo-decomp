@@ -13,8 +13,6 @@ extern "C" {
 
 extern ov006_Unk02097ce0 *data_02097ce0;
 extern void *data_ov006_021ec424;
-extern char data_ov006_021ec44c[];
-extern char data_ov006_021ec455[];
 extern void *data_ov006_021ec404;
 extern void *data_ov006_021ec444;
 extern u16 data_ov006_021eb840[];
@@ -178,8 +176,8 @@ ov006_ModelHolder *func_ov006_021e3d5c(ov006_ModelHolder *self) {
 }
 
 void func_ov006_021e3dd4(ov006_ModelHolder *self, int a) {
-    const char *file = data_ov006_021ec44c;
-    const char *name = data_ov006_021ec455;
+    const char *file = "menu/net";
+    const char *name = "wireless_slv";
     ov006_Model *model;
     OV006_DELETE_MODEL(self->model);
     model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));

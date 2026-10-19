@@ -25,3 +25,4 @@ build.ninja
 /extract/*/
 /objdiff.json
 __pycache__/
+/tools/mwccarm
