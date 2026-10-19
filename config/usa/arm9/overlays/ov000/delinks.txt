@@ -557,6 +557,10 @@ src/ov000/Stub_02193e34.cpp:
     complete
     .text       start:0x02193e34 end:0x02193e5c
 
+src/ov000/Res_02193e5c.cpp:
+    complete
+    .text       start:0x02193e5c end:0x02194074
+
 src/ov000/Stub_0219bf88.cpp:
     complete
     .text       start:0x0219bf7c end:0x0219bfbc
@@ -868,6 +872,10 @@ src/ov000/Lo_021731a0.cpp:
 src/ov000/Lo_021731f8.cpp:
     complete
     .text       start:0x021731f8 end:0x021732a8
+
+src/ov000/Fade_021732a8.cpp:
+    complete
+    .text       start:0x021732a8 end:0x02173528
 
 src/ov000/Lo_021740b0.cpp:
     complete
@@ -1450,7 +1458,7 @@ src/ov000/Stub_021848d0.cpp:
 
 src/ov000/Stub_0218c208.cpp:
     complete
-    .text       start:0x0218c208 end:0x0218c25c
+    .text       start:0x0218c208 end:0x0218c2d4
 
 src/ov000/Stub_02181efc.cpp:
     complete
@@ -1945,9 +1953,17 @@ src/ov000/Lo_0218b60c.cpp:
     complete
     .text       start:0x0218b60c end:0x0218b700
 
+src/ov000/Lo_021c4fdc.cpp:
+    complete
+    .text       start:0x021c4fdc end:0x021c5028
+
 src/ov000/Lo_021c5028.cpp:
     complete
     .text       start:0x021c5028 end:0x021c5128
+
+src/ov000/Lo_021c5128.cpp:
+    complete
+    .text       start:0x021c5128 end:0x021c524c
 
 src/ov000/Lo_021814dc.cpp:
     complete
@@ -2499,7 +2515,7 @@ src/ov000/Lo_0216eaf8.cpp:
 
 src/ov000/Cam_02162124.cpp:
     complete
-    .text       start:0x02162124 end:0x02162294
+    .text       start:0x02162124 end:0x021627ac
 
 src/ov000/Snd_02161fac.cpp:
     complete

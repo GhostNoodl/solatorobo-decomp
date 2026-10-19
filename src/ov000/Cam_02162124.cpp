@@ -57,4 +57,50 @@ u8 *func_ov000_02162124(u8 *self) {
     return self;
 }
 
+void func_ov000_0218ec60(void *p, s32 a, s32 b, s32 c, s32 d);
+void func_ov000_0218edf0(void *p, s32 a, s32 b, s32 c, s32 d);
+void func_02009f64(void *arr, int n, u32 size, void (*dtor)(void *));
+void func_ov000_0218fee4(void *p);
+
+// Same slot helpers as Slot_02161cd4.cpp (the camera's sub-object at +4).
+static inline void StopSlot02162294(u8 *self, u8 i) {
+    if (i > 2) {
+        return;
+    }
+    func_ov000_0218ec60(self + 0x78 + i * 0x138, 0, 0, 1, 0);
+    func_ov000_0218edf0((u8 *)self + 0x78 + i * 0x138, 0, 0, 1, 0);
+    LFLD(u16, self + i * 0x138, 0x78) = 0;
+    func_ov000_0218edf0(self + 0x2e8 + i * 0x138, 0, 0, 1, 0);
+    LFLD(u16, (u8 *)self + i * 0x138, 0x2e8) = 0;
+}
+
+static inline void SlotDtor02162294(u8 *self) {
+    LFLD(void *, self, 0) = data_ov000_021cabd8;
+    StopSlot02162294(self, LFLD(u8, self, 5));
+    StopSlot02162294(self, (LFLD(u8, self, 5) & 1) ^ 1);
+    func_02009f64(self + 0x2e8, 2, 0x138, func_ov000_0218ea20);
+    func_02009f64(self + 0x78, 2, 0x138, func_ov000_0218ea20);
+}
+
+static inline void CamDtor02162294(u8 *self) {
+    u8 *sub;
+    LFLD(void *, self, 0) = data_ov000_021cabc8;
+    StopSlot02162294(self + 4, LFLD(u8, self + 4, 5));
+    StopSlot02162294(self + 4, (LFLD(u8, self + 4, 5) & 1) ^ 1);
+    func_ov000_0218fee4(self + 0x55c);
+    sub = self + 4;
+    SlotDtor02162294(sub);
+}
+
+u8 *func_ov000_02162294(u8 *self) {
+    CamDtor02162294(self);
+    return self;
+}
+
+u8 *func_ov000_0216251c(u8 *self) {
+    CamDtor02162294(self);
+    func_0203de1c(self);
+    return self;
+}
+
 }
