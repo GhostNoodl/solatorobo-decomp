@@ -112,8 +112,73 @@ BOOL func_020590b0(DataRes *res) {
 extern void MI_CpuFill8(void *dst, u32 value, u32 size);
 extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 
-u32 func_020590e8(DataRes *res, u8 *buf, u32 size);
+u32 func_020590e8(DataRes *res, u8 *buf, u32 size) {
+    SaveLayout *layout;
+    u32 n;
+    u32 pos;
+    SaveBlock *b;
+    u32 i;
+    u8 *src;
+    layout = (SaveLayout *)res->data;
+    pos = 0;
+    MI_CpuFill8(buf, 0, size);
+    buf[pos++] = layout->count;
+    for (i = 0; i < layout->count; i++) {
+        b = &layout->blocks[i];
+        n = ((b->bits + 7) & ~7) >> 3;
+        if (pos + 2 < size) {
+            buf[pos] = ((u8 *)&n)[0];
+            buf[pos + 1] = ((u8 *)&n)[1];
+        }
+        pos += 2;
+        src = (u8 *)layout->blocks + b->offset;
+        if (pos + n < size) {
+            MI_CpuCopy8(src, buf + pos, n);
+        }
+        pos += n;
+    }
+    return (pos + 1) & ~1;
+}
 
-u32 func_020591a4(DataRes *res, u8 *buf, BOOL keepSome);
+u32 func_020591a4(DataRes *res, u8 *buf, BOOL keepSome) {
+    SaveLayout *layout;
+    u32 pos;
+    u32 i;
+    u32 n;
+    u32 count;
+    u8 stored;
+    BOOL copy;
+    layout = (SaveLayout *)res->data;
+    pos = 0;
+    count = layout->count;
+    stored = buf[pos++];
+    if (stored <= count) {
+        count = stored;
+    }
+    for (i = 0; i < count; i++) {
+        SaveBlock *b = &layout->blocks[i];
+        u16 tmp;
+        u32 bytes;
+        u8 *dst;
+        ((u8 *)&tmp)[0] = buf[pos];
+        ((u8 *)&tmp)[1] = buf[pos + 1];
+        bytes = ((b->bits + 7) & ~7) >> 3;
+        pos += 2;
+        n = tmp;
+        if (n >= bytes) {
+            n = bytes;
+        }
+        copy = TRUE;
+        dst = (u8 *)layout->blocks + b->offset;
+        if (keepSome && (i == 0 || i == 2 || i == 1 || i == 5)) {
+            copy = FALSE;
+        }
+        if (copy) {
+            MI_CpuCopy8(buf + pos, dst, n);
+        }
+        pos += n;
+    }
+    return (pos + 1) & ~1;
+}
 
 }

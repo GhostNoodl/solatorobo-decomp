@@ -958,7 +958,7 @@ src/Main/Gfx/GfxSys_5.cpp:
 
 src/Main/Gfx/GfxSys_6.cpp:
     complete
-    .text       start:0x0203cd10 end:0x0203ce3c
+    .text       start:0x0203cd10 end:0x0203ced8
 
 src/Main/Gfx/GfxSys_7.cpp:
     complete
@@ -1017,6 +1017,10 @@ src/Main/Gfx/TexObj.cpp:
 src/Main/Gfx/TexObj_2.cpp:
     complete
     .text       start:0x02041bb0 end:0x0204205c
+
+src/Main/Gfx/TexObj_3.cpp:
+    complete
+    .text       start:0x02042720 end:0x020429a0
 
 src/Main/Gfx/Blend.cpp:
     complete
@@ -1186,7 +1190,7 @@ src/Main/Gfx/TextWinOam.cpp:
 
 src/Main/Gfx/TextWin_8.cpp:
     complete
-    .text       start:0x0204ffb0 end:0x0204ffdc
+    .text       start:0x0204fd60 end:0x0204ffdc
 
 src/Main/Gfx/TextWin_9.cpp:
     complete
@@ -1214,7 +1218,7 @@ src/Main/Sys/SceneShake.cpp:
 
 src/Main/Gfx/Obj3D_2.cpp:
     complete
-    .text       start:0x020520fc end:0x02052178
+    .text       start:0x020520fc end:0x0205221c
 
 src/Main/Gfx/SceneDraw.cpp:
     complete
@@ -1266,7 +1270,7 @@ src/Main/Res/DataRes_2.cpp:
 
 src/Main/Res/DataRes_3.cpp:
     complete
-    .text       start:0x02058fe4 end:0x020590e8
+    .text       start:0x02058fe4 end:0x02059270
 
 src/Main/Res/DataRes_4.cpp:
     complete
@@ -1286,7 +1290,7 @@ src/Main/Gfx/ObjPool.cpp:
 
 src/Main/Gfx/ObjPool_2.cpp:
     complete
-    .text       start:0x0205a268 end:0x0205a358
+    .text       start:0x0205a028 end:0x0205a358
 
 src/Main/Res/StageRes.cpp:
     complete
@@ -1318,7 +1322,7 @@ src/Main/Res/StageCmd.cpp:
 
 src/Main/Res/StageCmd_2.cpp:
     complete
-    .text       start:0x0205c37c end:0x0205cb9c
+    .text       start:0x0205c2fc end:0x0205cb9c
 
 src/Main/Res/StageCmd_3.cpp:
     complete

@@ -93,6 +93,4 @@ int func_0205c140(StageResSlot *slot) {
 
 void func_0205c234(u16 a, u16 b);
 
-int func_0205c2fc(StageResSlot *slot);
-
 }

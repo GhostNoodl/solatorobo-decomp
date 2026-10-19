@@ -2,6 +2,25 @@
 
 extern "C" {
 
+int func_0205c2fc(StageResSlot *slot) {
+    u16 id = slot->args[0];
+    switch ((s32)(((u32)id << 4) >> 16) - 1) {
+    case 0:
+        return 1;
+    case 1:
+        if (!func_0206f21c(id, 1)) {
+            func_ov000_02184ea4(data_ov000_021ccd54, id);
+        }
+        break;
+    case 3:
+    case 4:
+    case 5:
+        func_0206f5e4(id, 1);
+        break;
+    }
+    return 1;
+}
+
 int func_0205c37c(StageResSlot *slot) {
     if (slot == NULL) {
         if (StageRes_Last()->args[0] == 2) {

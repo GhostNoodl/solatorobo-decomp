@@ -321,11 +321,113 @@ BOOL func_0204f5bc(TextWinEx *win);
 
 void func_0204f784(TextWinEx *win);
 
-BOOL func_0204ffb0(int idx) {
+typedef struct TextWinTitle {
+    /* 0x000 */ u16 started : 1;
+    /* 0x000 */ u16 active : 1;
+    /* 0x000 */ u16 flag2 : 1;
+    /* 0x000 */ u16 waiting : 1;
+    /* 0x000 */ u16 autoAdvance : 1;
+    /* 0x000 */ u16 rising : 1;
+    /* 0x000 */ u16 flag6 : 1;
+    /* 0x000 */ u16 fading : 1;
+    /* 0x000 */ u16 done : 1;
+    /* 0x000 */ u16 failed : 1;
+    /* 0x002 */ s8 timer;
+    /* 0x004 */ s16 waitCount;
+    /* 0x008 */ s32 offset;
+    /* 0x00c */ u8 unk_0c[0xc];
+    /* 0x018 */ s32 seq;
+    /* 0x01c */ u8 unk_1c[8];
+    /* 0x024 */ s32 value;
+    /* 0x028 */ s32 required;
+    /* 0x02c */ u8 unk_2c[0x1e0];
+    /* 0x20c */ s32 phase;
+} TextWinTitle;
+
+typedef struct TextWinFieldDisp {
+    /* 0x0 */ u8 unk_00[0xe];
+    /* 0xe */ u8 unk_0e_0 : 2;
+    /* 0xe */ u8 mode : 2;
+} TextWinFieldDisp;
+
+extern TextWinFieldDisp *data_ov000_021ccd54;
+extern void func_0203c9e8(int value, int ch);
+extern void func_0203cb78(int duration, int mode, int ch);
+extern void func_0203cc58(int duration, int mode, int ch);
+extern s32 func_0204a2c8(SndMgr *mgr, s32 seq);
+extern void func_02049870(SndMgr *mgr, s32 seq);
+extern void func_02049950(SndMgr *mgr, int volume, int frames);
+
+static inline BOOL TextWin_IsState4(int idx) {
     if (data_02097d78[3] == 4) {
         return TRUE;
     }
     return data_02097d78[idx] == 4 ? TRUE : FALSE;
+}
+
+BOOL func_0204fd60(TextWinTitle *t) {
+    if (!t->active) {
+        return TRUE;
+    }
+    if (t->done) {
+        return FALSE;
+    }
+    if (!t->started) {
+        t->started = 1;
+        t->timer = 0x78;
+        func_0203cb78(0, 0, 0);
+        data_ov000_021ccd54->mode = 2;
+    }
+    if (t->fading && TextWin_IsState4(0)) {
+        t->fading = 0;
+        t->done = 1;
+        data_ov000_021ccd54->mode = 0;
+        return FALSE;
+    }
+    t->timer--;
+    if (t->rising) {
+        t->offset += 0x1000;
+    } else {
+        t->offset -= 0x1000;
+    }
+    if (t->waiting == 1) {
+        BOOL next = FALSE;
+        if (t->autoAdvance == 1) {
+            t->waitCount++;
+            if (t->waitCount > 0x5a) {
+                next = TRUE;
+            }
+        } else if (data_02097dc8->trig & 1) {
+            next = TRUE;
+        }
+        if (next) {
+            t->waitCount = 0;
+            t->rising = 0;
+            t->waiting = 0;
+            if (t->value < t->required) {
+                t->failed = 1;
+            } else {
+                t->fading = 1;
+                func_0203c9e8(0x3f, -1);
+                func_0203cc58(0x78000, 2, 0);
+                if (t->seq != -1) {
+                    s32 vol = func_0204a2c8(data_02097e4c, t->seq);
+                    func_02049870(data_02097e4c, t->seq);
+                    func_02049950(data_02097e4c, 0, 0);
+                    func_02049950(data_02097e4c, vol, 0xf0);
+                }
+            }
+        }
+    }
+    t->phase += 0x1000;
+    if (t->phase >= 0x3c000) {
+        t->phase -= 0x3c000;
+    }
+    return TRUE;
+}
+
+BOOL func_0204ffb0(int idx) {
+    return TextWin_IsState4(idx);
 }
 
 TextLayout *func_0205070c(TextLayout *layout);

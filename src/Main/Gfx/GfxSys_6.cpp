@@ -246,4 +246,28 @@ static inline u32 G3_PackPolygonAttr(int light, int polyMode, int cullMode, int 
     return (u32)(light | (polyMode << 4) | (cullMode << 6) | misc | (polygonID << 24) | (alpha << 16));
 }
 
+// The context is copied out and back one word at a time, so both sides are volatile.
+void func_0203ce3c(void) {
+    volatile GfxFadeCtx ctx;
+    volatile GfxSysHolder *h = &data_02097d44;
+    GfxFadeFunc func = (GfxFadeFunc)h->unk_8;
+    if (func == NULL) {
+        h->fadeState[3] = 0;
+        return;
+    }
+    ctx.unk_00 = h->unk_0;
+    ctx.state = h->fadeState[3];
+    ctx.timer = h->fadeTimer[3];
+    ctx.duration = h->fadeDuration[3];
+    ctx.start = h->fadeStart[3];
+    ctx.end = h->fadeEnd[3];
+    h->fadeState[3] = func((GfxFadeCtx *)&ctx);
+    h->unk_0 = ctx.unk_00;
+    h->fadeState[3] = ctx.state;
+    h->fadeTimer[3] = ctx.timer;
+    h->fadeDuration[3] = ctx.duration;
+    h->fadeStart[3] = ctx.start;
+    h->fadeEnd[3] = ctx.end;
+}
+
 }
