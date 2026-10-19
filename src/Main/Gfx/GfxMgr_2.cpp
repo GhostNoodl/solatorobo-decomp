@@ -236,4 +236,134 @@ void func_02039f84(GfxMgr *mgr) {
     }
 }
 
+// Draws a text canvas as 1D OBJs, or moves the OAM entries cached by an earlier draw.
+typedef struct GfxCanvasVT {
+    void (*drawGlyph)(void);
+    void (*clear)(GfxCell *canvas, int cl);
+} GfxCanvasVT;
+
+typedef struct GfxOamBits {
+    u32 y : 8;
+    u32 unk_8 : 8;
+    u32 x : 9;
+    u32 unk_25 : 7;
+    u32 charName : 10;
+    u32 prio : 2;
+    u32 pltt : 4;
+    u32 unk_16 : 16;
+} GfxOamBits;
+
+typedef struct GfxOamCache {
+    /* 0x0 */ u8 valid;
+    /* 0x4 */ GfxOam *oams;
+    /* 0x8 */ u16 unk_08;
+    /* 0xa */ u16 count;
+    /* 0xc */ s32 which;
+} GfxOamCache;
+
+extern void NNS_G2dCharCanvasInitForOBJ1D(GfxCell *canvas, void *charBase, int w, int h, int colorMode);
+extern int NNS_G2dArrangeOBJ1D(GfxOam *oam, int w, int h, int x, int y, int color, int charName, int vramMode);
+extern void *func_0203bbfc(GfxSys *sys, int which);
+extern void NNS_G2dEntryOamManagerOam(void *mgr, const GfxOam *oam, u16 num);
+
+static inline void GfxOam_SetX(GfxOam *oam, u16 x) { ((GfxOamBits *)oam)->x = x; }
+static inline void GfxOam_SetY(GfxOam *oam, u16 y) { ((GfxOamBits *)oam)->y = y & 0x1ff; }
+static inline s32 GfxOam_GetX(GfxOam *oam) {
+    s32 x = ((GfxOamBits *)oam)->x;
+    if (x > 0xff) {
+        x |= ~0xff;
+    }
+    return x;
+}
+
+static inline s32 GfxOam_GetY(GfxOam *oam) {
+    s32 y = ((GfxOamBits *)oam)->y;
+    if (y > 0x7f) {
+        y |= ~0xff;
+    }
+    return y;
+}
+
+void func_0203a0cc(GfxMgr *mgr, VramBlock *block, GfxCell *canvas, int width, int height, int pltt) {
+    u32 base;
+    int h;
+    int which;
+    GfxOam *oams;
+    GfxOam buf[128];
+    int shift;
+    u32 a2;
+    int i;
+    u32 a0;
+    int w;
+    GfxOamCache *cache;
+    int n;
+    cache = (GfxOamCache *)mgr->unk_658;
+    mgr->unk_658 = 0;
+    if (cache == NULL || !cache->valid) {
+        w = (width + 7) >> 3;
+        h = (height + 7) >> 3;
+        if (data_020827f8[mgr->unk_004].mode == 4) {
+            pltt += mgr->plttSlots[2];
+            shift = mgr->pools[0].alignShift;
+            base = 0x6400000;
+            which = 0;
+        } else {
+            pltt += mgr->plttSlots[3];
+            shift = mgr->pools[1].alignShift;
+            base = 0x6600000;
+            which = 1;
+        }
+        NNS_G2dCharCanvasInitForOBJ1D(canvas, (void *)(base + block->addr), w, h, 4);
+        if (!block->unk_10_2) {
+            ((GfxCanvasVT *)((u32 *)canvas)[5])->clear(canvas, 0);
+        }
+        if (!block->unk_10_29) {
+            return;
+        }
+        oams = cache != NULL ? cache->oams : buf;
+        n = NNS_G2dArrangeOBJ1D(oams, w, h, mgr->unk_00c, mgr->unk_00e, 0, (block->addr >> 5) >> shift, shift);
+        if (cache != NULL) {
+            cache->which = which;
+            cache->count = n;
+            cache->valid = 1;
+        }
+        {
+            s16 prio = mgr->unk_012;
+            u32 dis = block->unk_10_30 ? 0 : 0x200;
+            u32 mode = block->unk_10_31 ? 1 : 0;
+            a2 = (prio << 10) | (pltt << 12);
+            a0 = dis | (mode << 10);
+        }
+        for (i = 0; i < n; i++) {
+            oams[i].attr01 = (oams[i].attr01 & 0xc1ffe0ff) | a0;
+            oams[i].attr2 = (oams[i].attr2 & ~0xfc00) | a2;
+        }
+        NNS_G2dEntryOamManagerOam(func_0203bbfc(data_02097d48, which), oams, n);
+    } else {
+        GfxOam *oam = cache->oams;
+        s32 dx;
+        s32 dy;
+        u16 j;
+        if (!block->unk_10_29) {
+            return;
+        }
+        dx = mgr->unk_00c - GfxOam_GetX(oam);
+        dy = mgr->unk_00e - GfxOam_GetY(oam);
+        for (j = 0; j < cache->count; j++, oam++) {
+            s32 x = GfxOam_GetX(oam);
+            s32 y;
+            x += dx;
+            GfxOam_SetX(oam, x);
+            y = GfxOam_GetY(oam);
+            y += dy;
+            GfxOam_SetY(oam, y);
+            ((GfxOamBits *)oam)->pltt = pltt & 0xf;
+        }
+        {
+            void *om = func_0203bbfc(data_02097d48, cache->which);
+            NNS_G2dEntryOamManagerOam(om, cache->oams, cache->count);
+        }
+    }
+}
+
 }

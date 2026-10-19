@@ -1014,7 +1014,7 @@ src/Main/Res/ResList.c:
 
 src/Main/Res/ResLoader.c:
     complete
-    .text       start:0x0203562c end:0x0203584c
+    .text       start:0x02035450 end:0x0203584c
 
 src/Main/Res/ResLoader_2.c:
     complete
@@ -1038,15 +1038,15 @@ src/Main/Gfx/GfxMgr.cpp:
 
 src/Main/Gfx/GfxMgr_2.cpp:
     complete
-    .text       start:0x0203994c end:0x0203a0cc
+    .text       start:0x0203994c end:0x0203a408
 
 src/Main/Gfx/GfxMgr_3.cpp:
     complete
-    .text       start:0x0203a408 end:0x0203a5a4
+    .text       start:0x0203a408 end:0x0203a984
 
 src/Main/Gfx/GfxMgrText.cpp:
     complete
-    .text       start:0x0203aab0 end:0x0203acb8
+    .text       start:0x0203aab0 end:0x0203b12c
 
 src/Main/Gfx/GfxSys.cpp:
     complete
@@ -1326,7 +1326,7 @@ src/Main/Gfx/TextWin_10.cpp:
 
 src/Main/Gfx/TextWin_11.cpp:
     complete
-    .text       start:0x02050e94 end:0x02050ebc
+    .text       start:0x02050b50 end:0x02050ebc
 
 src/Main/Gfx/TextWin_12.cpp:
     complete

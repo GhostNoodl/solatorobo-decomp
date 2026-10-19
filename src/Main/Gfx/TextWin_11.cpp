@@ -344,6 +344,74 @@ void func_020507d8(TextBox *box);
 
 void func_020508e4(TextWin *win);
 
+void func_02050ea4(Model *model, u32 v);
+extern void func_02041c5c(Model *model, void *fn);
+extern void func_02041c20(Model *model, int a, void *arg);
+extern void func_02041c18(Model *model, int a);
+extern void *func_0204fc4c(TextWin *win, const u16 *cmd, void *oam, u16 *count);
+
+// Updates the text box cursor model: creates it on first use, then animates its position and alpha.
+void func_02050b50(TextBox *box) {
+    s32 r;
+    s16 s;
+    s32 y;
+    int i;
+    u8 alpha;
+    if (box->model == NULL) {
+        Model *m = (Model *)func_0203dd9c(0x160);
+        if (m != NULL) {
+            Model_Init(m, data_0208cca0, data_0208cb74, 0);
+        }
+        box->model = m;
+        func_020417e0(box->model, func_02034d88(func_02035d5c(m->name), box->model->unk_04c));
+        box->model->flags |= 2;
+        func_02041d9c(box->model, 0, 2);
+        box->model->flags |= 0x80000;
+        func_02041c5c(box->model, (void *)func_0204fc4c);
+        func_02041c20(box->model, 2, box);
+        func_02041c18(box->model, 1);
+        return;
+    }
+    r = FX_Div(box->unk_008, 0xf000);
+    if (r >= 0x1000) {
+        box->unk_008 = 0xf000;
+        r = 0x1000;
+    } else if (r < 0) {
+        box->unk_008 = 0;
+        r = 0;
+        if (box->flag9) {
+            box->flag9 = 0;
+            if ((s32)box->unk_024 < (s32)box->unk_028) {
+                box->flag6 = 1;
+                for (i = 0; i < 3; i++) {
+                    if (box->lines[i].obj != NULL) {
+                        box->lines[i].unk_90 = (i + 1) * 30;
+                        // Byte-offset form: the target computes this address from box->lines, not box.
+                        ((TextBoxLine *)((u8 *)box->lines + i * sizeof(TextBoxLine)))->unk_94 |= 2;
+                        box->lines[i].unk_98 = 0x1000;
+                    }
+                }
+            }
+        }
+    }
+    s = FX_SinCosTable_[((r << 14) >> 16) * 2];
+    if (box->flag5) {
+        y = TextWin_FxMul(0x1000 - s, 0x10000) >> 12;
+    } else {
+        y = TextWin_FxMul(0x1000 - s, -0x10000) >> 12;
+    }
+    r = FX_Div(box->unk_20c, 0x3c000);
+    if (r >= 0x1000) {
+        r -= 0x1000;
+    }
+    alpha = TextWin_FxMul(TextWin_FxMul(s, TextWin_FxMul(FX_SinCosTable_[((r << 15) >> 16) * 2], 0x800) + 0x800), 0x1e000) >> 12;
+    if (alpha != 0) {
+        box->model->flags = (box->model->flags & ~0x7c) | (((u32)alpha << 27) >> 25);
+        Model_SetPos(box->model, (y + 0x6c) << 12, 0x4c000);
+        Model_ApplyPart(box->model, 2);
+    }
+}
+
 void func_02050e94(Model *model) {
     model->flags |= 0x80000;
 }

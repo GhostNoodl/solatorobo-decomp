@@ -1,7 +1,6 @@
 #include "Main/Res/ResLoader.h"
 
-// Non-matching: registers of ring/size/dst are rotated.
-#ifdef NONMATCHING
+// Decompresses the requested file into the ring buffer, then waits for the next request.
 void func_02035450(ResLoader *loader) {
     ResRequest *req = NULL;
     ResFileEntry *entry = NULL;
@@ -12,14 +11,15 @@ void func_02035450(ResLoader *loader) {
         switch (loader->state) {
         case 1:
             req = &loader->req;
-            loader->state = 2;
             entry = &req->entries[req->index];
+            loader->state = 2;
         case 2:
             break;
         default:
             continue;
         }
-        ring = &loader->ring;
+        // The comma expression gives ring the callee-saved register the original uses.
+        ring = (0, &loader->ring);
         if (ring != NULL) {
             switch (entry->attr2 & 0xf0) {
             case 0x10:
@@ -35,7 +35,6 @@ void func_02035450(ResLoader *loader) {
         loader->state = 3;
     }
 }
-#endif
 
 ResLoader *func_0203562c(ResLoader *loader) {
     ResRing_Init(&loader->ring);

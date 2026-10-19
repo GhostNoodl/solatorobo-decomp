@@ -17,7 +17,8 @@ typedef struct VramBlock {
     /* 0x10 */ u32 temporary : 1;
     /* 0x10 */ u32 unk_10_2 : 1;
     /* 0x10 */ u32 kind : 3;
-    /* 0x10 */ u32 unk_10_6 : 16;
+    /* 0x10 */ u32 unk_10_6 : 8;
+    /* 0x10 */ u32 unk_10_14 : 8;
     /* 0x10 */ u32 pad : 7;
     /* 0x10 */ u32 unk_10_29 : 1;
     /* 0x10 */ u32 unk_10_30 : 1;

@@ -157,7 +157,17 @@ typedef struct TextBoxLine {
 
 // Multi-line text box.
 typedef struct TextBox {
-    /* 0x000 */ u16 unk_000;
+    /* 0x000 */ union {
+        u16 unk_000;
+        struct {
+            u16 unk_000_0 : 5;
+            u16 flag5 : 1;
+            u16 flag6 : 1;
+            u16 unk_000_7 : 2;
+            u16 flag9 : 1;
+            u16 unk_000_10 : 6;
+        };
+    };
     /* 0x002 */ u8 unk_002;
     /* 0x003 */ u8 unk_003;
     /* 0x004 */ u16 unk_004;
