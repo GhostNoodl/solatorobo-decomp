@@ -170,7 +170,7 @@ void *func_02030dec(u32 fileId, NNSSndHeap *heap, BOOL setAddress);
 void *func_02030e58(u32 fileId, NNSSndHeap *heap, BOOL setAddress);
 void *func_02030ec4(u32 fileId, NNSSndHeap *heap, BOOL setAddress);
 void *func_02030f30(u32 fileId, NNSSndHeap *heap, BOOL setAddress);
-void *func_02030f9c(u32 fileId, NNSSndHeap *heap, BOOL setAddress);
+void *LoadWaveArcTable(u32 fileId, NNSSndHeap *heap, BOOL setAddress);
 void func_020310c4(void *data, void *arc, u32 fileId);
 void func_0203111c(void *data, u32 size, u32 arc, u32 fileId);
 void func_02031144(void *data, u32 size, u32 arc, u32 fileId);

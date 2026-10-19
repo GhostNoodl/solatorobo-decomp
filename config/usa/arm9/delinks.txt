@@ -644,7 +644,7 @@ libs/nitro/spi/pm_4.c:
 
 libs/nitro/spi/pm_5.c:
     complete
-    .text       start:0x0201e044 end:0x0201e280
+    .text       start:0x0201dd4c end:0x0201e280
 
 libs/nitro/spi/pm_2.c:
     complete
@@ -872,7 +872,7 @@ libs/nnsys/g3d/nsbca_2.c:
 
 libs/nnsys/g3d/nsbca_3.c:
     complete
-    .text       start:0x0202bf18 end:0x0202c3b8
+    .text       start:0x0202b994 end:0x0202c3b8
 
 libs/nnsys/g3d/nsbma.c:
     complete
@@ -952,6 +952,10 @@ libs/nnsys/snd/sndarc_loader.c:
     complete
     .text       start:0x020308d4 end:0x02030f9c
 
+libs/nnsys/snd/sndarc_loader_4.cpp:
+    complete
+    .text       start:0x02030f9c end:0x020310c4
+
 libs/nnsys/snd/sndarc_loader_2.c:
     complete
     .text       start:0x020310c4 end:0x020312d4
@@ -966,7 +970,7 @@ libs/nnsys/snd/sndarc_player.c:
 
 libs/nnsys/snd/sndarc_stream.c:
     complete
-    .text       start:0x020317c4 end:0x02031ac0
+    .text       start:0x020316c0 end:0x02031ac0
 
 libs/nnsys/snd/sndarc_stream_2.c:
     complete

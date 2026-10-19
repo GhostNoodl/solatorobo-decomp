@@ -176,7 +176,7 @@ int func_02030cc4(int waveArcNo, u32 loadFlag, NNSSndHeap *heap, BOOL setAddress
     }
     if (loadFlag & NNS_SND_ARC_LOAD_WAVE) {
         if (info->flags & 1) {
-            waveArc = func_02030f9c(info->fileId, heap, setAddress);
+            waveArc = LoadWaveArcTable(info->fileId, heap, setAddress);
         } else {
             waveArc = func_02030f30(info->fileId, heap, setAddress);
         }

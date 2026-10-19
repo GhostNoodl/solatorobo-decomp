@@ -44,6 +44,265 @@ static inline void vecCross_ (const VecFx32 * a, const VecFx32 * b, VecFx32 * ax
 #endif
 
 
+// Scale animation data stores each frame as a (scale, inverse scale) pair.
+typedef struct { fx16 s, invs; } ScaleFx16;
+typedef struct { fx32 s, invs; } ScaleFx32;
+
+void getScaleDataEx_ (fx32 * s_invs, fx32 Frame, const u32 * pData, const NNSG3dResJntAnm * pJntAnm)
+{
+    const void * pArray = (const void *)((const u8 *)pJntAnm + *(pData + 1));
+    NNSG3dJntAnmSInfo info = (NNSG3dJntAnmSInfo) * pData;
+
+    u32 last_interp;
+    u32 idx;
+    u32 idx_sub;
+    fx32 remainder;
+    int step;
+    u32 step_shift;
+    u32 frame;
+
+    frame = (u32)FX_Whole(Frame);
+
+    if (frame == pJntAnm->numFrame - 1) {
+
+        if (!(info & NNS_G3D_JNTANM_SINFO_STEP_MASK)) {
+            idx = frame;
+        } else if (info & NNS_G3D_JNTANM_SINFO_STEP_2) {
+            idx = (frame >> 1) + (frame & 1);
+        } else {
+            idx = (frame >> 2) + (frame & 3);
+        }
+
+        if (pJntAnm->flag & NNS_G3D_JNTANM_OPTION_END_TO_START_INTERPOLATION) {
+            idx_sub = 0;
+            goto SCALE_EX_0_1;
+        } else {
+            if (info & NNS_G3D_JNTANM_SINFO_FX16ARRAY) {
+                const ScaleFx16 * p = (const ScaleFx16 *)pArray;
+                *s_invs = p[idx].s;
+                *(s_invs + 1) = p[idx].invs;
+            } else {
+                const ScaleFx32 * p = (const ScaleFx32 *)pArray;
+                *s_invs = p[idx].s;
+                *(s_invs + 1) = p[idx].invs;
+            }
+            return;
+        }
+    }
+
+    if (!(info & NNS_G3D_JNTANM_SINFO_STEP_MASK)) {
+        goto SCALE_EX_0;
+    }
+
+    last_interp = ((u32)info & NNS_G3D_JNTANM_SINFO_LAST_INTERP_MASK) >>
+                  NNS_G3D_JNTANM_SINFO_LAST_INTERP_SHIFT;
+
+    if (info & NNS_G3D_JNTANM_SINFO_STEP_2) {
+        if (frame >= last_interp) {
+            idx = (last_interp >> 1);
+            idx_sub = idx + 1;
+            goto SCALE_EX_0_1;
+        } else {
+            idx = frame >> 1;
+            idx_sub = idx + 1;
+            remainder = Frame & (FX32_ONE * 2 - 1);
+            step = 2;
+            step_shift = 1;
+            goto SCALE_EX;
+        }
+    } else {
+        if (frame >= last_interp) {
+            idx = (frame >> 2) + (frame & 3);
+            idx_sub = idx + 1;
+            goto SCALE_EX_0_1;
+        } else {
+            idx = frame >> 2;
+            idx_sub = idx + 1;
+            remainder = Frame & (FX32_ONE * 4 - 1);
+            step = 4;
+            step_shift = 2;
+            goto SCALE_EX;
+        }
+    }
+SCALE_EX_0:
+    idx = frame;
+    idx_sub = idx + 1;
+SCALE_EX_0_1:
+    remainder = Frame & (FX32_ONE - 1);
+    step = 1;
+    step_shift = 0;
+SCALE_EX:
+    {
+        fx32 s0, s1, invs0, invs1;
+        if (info & NNS_G3D_JNTANM_SINFO_FX16ARRAY) {
+            const ScaleFx16 * p = (const ScaleFx16 *)pArray;
+            s0 = p[idx].s;
+            invs0 = p[idx].invs;
+            s1 = p[idx_sub].s;
+            invs1 = p[idx_sub].invs;
+        } else {
+            const ScaleFx32 * p = (const ScaleFx32 *)pArray;
+            s0 = p[idx].s;
+            invs0 = p[idx].invs;
+            s1 = p[idx_sub].s;
+            invs1 = p[idx_sub].invs;
+        }
+
+        *s_invs = ((s0 * step) + (((s1 - s0) * remainder) >> FX32_SHIFT)) >> step_shift;
+        *(s_invs + 1) = ((invs0 * step) + (((invs1 - invs0) * remainder) >> FX32_SHIFT)) >> step_shift;
+    }
+    return;
+}
+
+void getRotData_ (MtxFx33 * pRot, fx32 Frame, const u32 * pData, const NNSG3dResJntAnm * pJntAnm)
+{
+    u32 frame = (u32)FX_Whole(Frame);
+    const u16 * pArray = (const u16 *)((const u8 *)pJntAnm + *(pData + 1));
+    const void * pArrayRot3 = (const void *)((const u8 *)pJntAnm + pJntAnm->ofsRot3);
+    const void * pArrayRot5 = (const void *)((const u8 *)pJntAnm + pJntAnm->ofsRot5);
+    NNSG3dJntAnmRInfo info = (NNSG3dJntAnmRInfo) * pData;
+    u32 last_interp;
+    u32 idx;
+    u32 idx_sub;
+
+    if (!(info & NNS_G3D_JNTANM_RINFO_STEP_MASK)) {
+        idx = frame;
+        goto ROT_NONINTERP;
+    }
+
+    last_interp = ((u32)info & NNS_G3D_JNTANM_RINFO_LAST_INTERP_MASK) >>
+                  NNS_G3D_JNTANM_RINFO_LAST_INTERP_SHIFT;
+
+    if (info & NNS_G3D_JNTANM_RINFO_STEP_2) {
+        if (frame & 1) {
+            if (frame > last_interp) {
+                idx = (last_interp >> 1) + 1;
+                goto ROT_NONINTERP;
+            } else {
+                idx = frame >> 1;
+                goto ROT_INTERP_2;
+            }
+        } else {
+            idx = frame >> 1;
+            goto ROT_NONINTERP;
+        }
+    } else {
+        if (frame & 3) {
+            if (frame > last_interp) {
+                idx = (last_interp >> 2) + (frame & 3);
+                goto ROT_NONINTERP;
+            }
+
+            if (frame & 1) {
+                MtxFx33 r;
+                BOOL doCross = FALSE;
+
+                if (frame & 2) {
+                    idx_sub = (frame >> 2);
+                    idx = idx_sub + 1;
+                } else {
+                    idx = (frame >> 2);
+                    idx_sub = idx + 1;
+                }
+
+                doCross |= getRotDataByIdx_(pRot,
+                                            pArrayRot3,
+                                            pArrayRot5,
+                                            (NNSG3dJntAnmRIdx)pArray[idx]);
+                doCross |= getRotDataByIdx_(&r,
+                                            pArrayRot3,
+                                            pArrayRot5,
+                                            (NNSG3dJntAnmRIdx)pArray[idx_sub]);
+
+                pRot->_00 = (pRot->_00 * 3 + r._00) >> (2 * ROT_FILTER_SHIFT);
+                pRot->_01 = (pRot->_01 * 3 + r._01) >> (2 * ROT_FILTER_SHIFT);
+                pRot->_02 = (pRot->_02 * 3 + r._02) >> (2 * ROT_FILTER_SHIFT);
+                pRot->_10 = (pRot->_10 * 3 + r._10) >> (2 * ROT_FILTER_SHIFT);
+                pRot->_11 = (pRot->_11 * 3 + r._11) >> (2 * ROT_FILTER_SHIFT);
+                pRot->_12 = (pRot->_12 * 3 + r._12) >> (2 * ROT_FILTER_SHIFT);
+
+#ifdef G3D_NORMALIZE_ROT_MTX
+                VEC_Normalize((VecFx32 *)(&pRot->_00), (VecFx32 *)(&pRot->_00));
+                VEC_Normalize((VecFx32 *)(&pRot->_10), (VecFx32 *)(&pRot->_10));
+#endif
+                if (!doCross) {
+                    pRot->_20 = (pRot->_20 * 3 + r._20) >> (2 * ROT_FILTER_SHIFT);
+                    pRot->_21 = (pRot->_21 * 3 + r._21) >> (2 * ROT_FILTER_SHIFT);
+                    pRot->_22 = (pRot->_22 * 3 + r._22) >> (2 * ROT_FILTER_SHIFT);
+#ifdef G3D_NORMALIZE_ROT_MTX
+                    VEC_Normalize((VecFx32 *)(&pRot->_20), (VecFx32 *)(&pRot->_20));
+#endif
+                } else {
+                    vecCross_((const VecFx32 *)&pRot->_00,
+                              (const VecFx32 *)&pRot->_10,
+                              (VecFx32 *)&pRot->_20);
+                }
+                return;
+            } else {
+                idx = frame >> 2;
+                goto ROT_INTERP_2;
+            }
+        } else {
+            idx = frame >> 2;
+            goto ROT_NONINTERP;
+        }
+    }
+ROT_INTERP_2:
+    {
+        MtxFx33 r;
+        BOOL doCross = FALSE;
+
+        doCross |= getRotDataByIdx_(pRot,
+                                    pArrayRot3,
+                                    pArrayRot5,
+                                    (NNSG3dJntAnmRIdx)pArray[idx]);
+        doCross |= getRotDataByIdx_(&r,
+                                    pArrayRot3,
+                                    pArrayRot5,
+                                    (NNSG3dJntAnmRIdx)*(pArray + idx + 1));
+
+        pRot->_00 = (pRot->_00 + r._00) >> ROT_FILTER_SHIFT;
+        pRot->_01 = (pRot->_01 + r._01) >> ROT_FILTER_SHIFT;
+        pRot->_02 = (pRot->_02 + r._02) >> ROT_FILTER_SHIFT;
+        pRot->_10 = (pRot->_10 + r._10) >> ROT_FILTER_SHIFT;
+        pRot->_11 = (pRot->_11 + r._11) >> ROT_FILTER_SHIFT;
+        pRot->_12 = (pRot->_12 + r._12) >> ROT_FILTER_SHIFT;
+
+#ifdef G3D_NORMALIZE_ROT_MTX
+        VEC_Normalize((VecFx32 *)(&pRot->_00), (VecFx32 *)(&pRot->_00));
+        VEC_Normalize((VecFx32 *)(&pRot->_10), (VecFx32 *)(&pRot->_10));
+#endif
+        if (!doCross) {
+            pRot->_20 = (pRot->_20 + r._20) >> ROT_FILTER_SHIFT;
+            pRot->_21 = (pRot->_21 + r._21) >> ROT_FILTER_SHIFT;
+            pRot->_22 = (pRot->_22 + r._22) >> ROT_FILTER_SHIFT;
+#ifdef G3D_NORMALIZE_ROT_MTX
+            VEC_Normalize((VecFx32 *)(&pRot->_20), (VecFx32 *)(&pRot->_20));
+#endif
+        } else {
+            vecCross_((const VecFx32 *)&pRot->_00,
+                      (const VecFx32 *)&pRot->_10,
+                      (VecFx32 *)&pRot->_20);
+        }
+        return;
+    }
+ROT_NONINTERP:
+    if (getRotDataByIdx_(pRot,
+                         pArrayRot3,
+                         pArrayRot5,
+                         (NNSG3dJntAnmRIdx)pArray[idx])) {
+        vecCross_((const VecFx32 *)&pRot->_00,
+                  (const VecFx32 *)&pRot->_10,
+                  (VecFx32 *)&pRot->_20);
+    } else {
+#ifdef G3D_NORMALIZE_ROT_MTX
+        VEC_Normalize((VecFx32 *)(&pRot->_20), (VecFx32 *)(&pRot->_20));
+#endif
+    }
+    return;
+}
+
+
 void getRotDataEx_ (MtxFx33 * pRot, fx32 Frame, const u32 * pData, const NNSG3dResJntAnm * pJntAnm)
 {
     const void * pArray = (const void *)((const u8 *)pJntAnm + *(pData + 1));

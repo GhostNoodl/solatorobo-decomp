@@ -1,6 +1,41 @@
 #include "nnsys/snd/sndarc_stream.h"
 #include "nitro/snd.h"
 
+// Built at a lower optimization level: both setup loops jump to their test first instead of being rotated.
+#pragma optimization_level 2
+void NNS_SndArcStrmInit(u32 prio, NNSSndHeap *heap) {
+    int i;
+    int j;
+
+    if (data_0209622c.initialized) {
+        func_020317c4(heap);
+        return;
+    }
+    data_0209622c.initialized = TRUE;
+
+    NNS_FndInitList(&data_02096238, 0);
+    for (i = 0; i < 8; i++) {
+        NNS_FndAppendListObject(&data_02096238, &data_0209625c[i]);
+    }
+    OS_InitMutex(data_02096244);
+    data_0209622c.unk_8 = data_020963e0;
+
+    for (j = 0; j < 4; j++) {
+        StrmPlayer *player = &data_020965e0[j];
+        player->active = FALSE;
+        FS_InitFile(player->file);
+        NNS_SndStrmInit(player->strm);
+        player->playerNo = j;
+        player->chNum = 0;
+        player->buffer = NULL;
+        player->bufSize = 0;
+        player->chRefCount = 0;
+    }
+    func_020317c4(heap);
+    func_02031fa4(&data_02096bd0, prio);
+}
+#pragma optimization_level reset
+
 BOOL func_020317c4(NNSSndHeap *heap) {
     int i;
     for (i = 0; i < 4; i++) {

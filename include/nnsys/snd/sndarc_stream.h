@@ -152,7 +152,7 @@ extern int FS_ReadFile(void *file, void *buf, u32 size);
 extern BOOL FS_CancelFile(void *file);
 extern void func_0203244c(StrmCommand *cmd);
 
-void func_020316c0(u32 prio, NNSSndHeap *heap);
+void NNS_SndArcStrmInit(u32 prio, NNSSndHeap *heap);
 BOOL func_020317c4(NNSSndHeap *heap);
 BOOL func_0203188c(StrmHandle *handle, int strmNo, u32 offset);
 void func_020318e8(StrmHandle *handle);
