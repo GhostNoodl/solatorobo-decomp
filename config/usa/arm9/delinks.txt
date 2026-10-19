@@ -1362,7 +1362,7 @@ src/Main/Gfx/SlidePanel.cpp:
 
 src/Main/Gfx/SlidePanel_2.cpp:
     complete
-    .text       start:0x02054f10 end:0x020554e4
+    .text       start:0x02054f10 end:0x0205563c
 
 src/Main/Gfx/SlidePanel_3.cpp:
     complete
@@ -1422,7 +1422,7 @@ src/Main/Gfx/ObjPool_2.cpp:
 
 src/Main/Res/StageRes.cpp:
     complete
-    .text       start:0x0205a69c end:0x0205aa98
+    .text       start:0x0205a69c end:0x0205ae68
 
 src/Main/Res/StageRes_2.cpp:
     complete
@@ -1582,7 +1582,7 @@ src/Main/Effect/Effect_17.cpp:
 
 src/Main/Save/StageFlags.cpp:
     complete
-    .text       start:0x0206c44c end:0x0206c824
+    .text       start:0x0206c44c end:0x0206c994
 
 src/Main/Save/StageFlags_2.cpp:
     complete

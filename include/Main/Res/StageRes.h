@@ -23,8 +23,9 @@ struct StageRes {
     virtual void unk_vf30();
     virtual void unk_vf34();
     virtual void unk_vf38();
-    virtual void unk_vf3c(u16 *cmd);
+    virtual u16 unk_vf3c(u16 *cmd);
     virtual u16 Eval(u16 *cmd, int mode, u16 val);
+    virtual u16 unk_vf44(u16 *cmd);
     /* 0x04 */ char arcName[0x20];
     /* 0x24 */ char name[0x20];
     /* 0x44 */ int type;
@@ -41,7 +42,7 @@ struct StageRes {
     /* 0x6e */ u16 condCount;
     /* 0x70 */ u16 opStack[0x10];
     /* 0x90 */ u16 opCount;
-    /* 0x92 */ u8 unk_92[0x20];
+    /* 0x92 */ u16 blockStack[0x10];
     /* 0xb2 */ u16 unk_b2;
     /* 0xb4 */ u16 *varId;
     /* 0xb8 */ u16 op;

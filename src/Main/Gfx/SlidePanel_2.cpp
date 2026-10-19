@@ -71,4 +71,76 @@ BOOL func_020554c8(SlidePanel *panel) {
     return panel->state <= 3 ? TRUE : FALSE;
 }
 
+void func_020554e4(SlidePanel *panel) {
+    if (panel->pltt != NULL) {
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
+        {
+            void *p = panel->pltt;
+            if (p != NULL) {
+                if (p != NULL) {
+                    func_02041278(p);
+                    func_0203de1c(p);
+                }
+                panel->pltt = NULL;
+            }
+        }
+        data_02097dd0->cur = saved;
+    }
+    if (panel->model != NULL) {
+        {
+            // The target reads x before y.
+            s32 x = *(volatile s32 *)&panel->model->x;
+            s32 y = panel->model->y;
+            Model_SetPos(panel->nextModel, x, y);
+        }
+        {
+            void *saved = data_02097dd0->cur;
+            data_02097dd0->cur = data_02097dd0->unk_08;
+            {
+                Model *p = panel->model;
+                if (p != NULL) {
+                    if (p != NULL) {
+                        func_02041558(p);
+                        func_02041278(p->pltt);
+                        func_0203de1c(p);
+                    }
+                    panel->model = NULL;
+                }
+            }
+            data_02097dd0->cur = saved;
+        }
+    }
+    if (panel->model2 != NULL) {
+        {
+            // The target reads x before y.
+            s32 x = *(volatile s32 *)&panel->model2->x;
+            s32 y = panel->model2->y;
+            Model_SetPos(panel->nextModel2, x, y);
+        }
+        {
+            void *saved = data_02097dd0->cur;
+            data_02097dd0->cur = data_02097dd0->unk_08;
+            {
+                Model *p = panel->model2;
+                if (p != NULL) {
+                    if (p != NULL) {
+                        func_02041558(p);
+                        func_02041278(p->pltt);
+                        func_0203de1c(p);
+                    }
+                    panel->model2 = NULL;
+                }
+            }
+            data_02097dd0->cur = saved;
+        }
+    }
+    panel->model = panel->nextModel;
+    panel->pltt = panel->nextPltt;
+    panel->model2 = panel->nextModel2;
+    panel->nextModel = NULL;
+    panel->nextPltt = NULL;
+    panel->nextModel2 = NULL;
+}
+
 }

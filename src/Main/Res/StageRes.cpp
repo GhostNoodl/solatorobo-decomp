@@ -164,6 +164,143 @@ BOOL func_0205aa30(StageRes *res) {
     return TRUE;
 }
 
-void func_0205aa98(void);
+u8 func_0205ae84(StageRes *res);
+void func_0205af4c(StageRes *res, u16 val);
+
+#define STAGE_SKIP 0x8fff
+
+BOOL func_0205aa98(StageRes *res, BOOL force) {
+    if (res->data == NULL) {
+        return FALSE;
+    }
+    if (!force && !res->unk_58) {
+        return FALSE;
+    }
+    res->unk_58 = 0;
+    res->unk_5a = 0;
+    data_02149efc.unk_0c = 0;
+    data_02149efc.unk_00 = 0;
+    while (res->size > res->unk_54 * 2) {
+        u16 *cmd = (u16 *)res->data + res->unk_54;
+        u16 c = *cmd;
+        switch (c & 0xff) {
+        case 1:
+            res->condCount = 0;
+            res->opCount = 0;
+            res->unk_54++;
+            break;
+        case 0x20:
+            res->unk_54 += res->unk_vf3c(cmd);
+            res->condStack[res->condCount++] = res->unk_5b;
+            break;
+        case 4:
+            if (func_0205ae84(res)) {
+                res->unk_54 += 2;
+            } else {
+                if (cmd[1] == 0) {
+                    goto end;
+                }
+                res->unk_54 += cmd[1] >> 1;
+            }
+            res->varId = NULL;
+            break;
+        case 2:
+            res->unk_54 += cmd[1] >> 1;
+            break;
+        case 3:
+            res->unk_54++;
+            break;
+        case 5:
+            res->unk_54 += res->Eval(cmd + 1, 0, 0);
+            {
+                u16 v = res->value;
+                res->blockStack[res->unk_b2++] = v;
+            }
+            res->unk_54++;
+            break;
+        case 6: {
+            u16 top = res->blockStack[res->unk_b2 - 1];
+            u16 len = cmd[1];
+            u16 skip;
+            if (top == STAGE_SKIP) {
+                skip = len / 2;
+            } else {
+                skip = res->Eval(cmd + 2, 0, 0) + 2;
+                if (top == res->value) {
+                    res->blockStack[res->unk_b2 - 1] = STAGE_SKIP;
+                } else {
+                    skip = len / 2;
+                }
+            }
+            res->unk_54 += skip;
+            break;
+        }
+        case 7: {
+            u16 len = cmd[1];
+            u16 skip = 2;
+            if (res->blockStack[res->unk_b2 - 1] == STAGE_SKIP) {
+                skip = len / 2;
+            } else {
+                res->blockStack[res->unk_b2 - 1] = STAGE_SKIP;
+            }
+            res->unk_54 += skip;
+            break;
+        }
+        case 8:
+            res->unk_b2--;
+            res->unk_54++;
+            break;
+        case 0x10:
+            res->opStack[res->opCount++] = c;
+            res->unk_54++;
+            break;
+        case 0x11:
+            res->opStack[res->opCount++] = c;
+            res->unk_54++;
+            break;
+        case 0x12:
+            res->opStack[res->opCount++] = c;
+            res->unk_54++;
+            break;
+        case 0x30:
+            res->condCount = 0;
+            res->opCount = 0;
+            res->varId = NULL;
+            res->unk_59 = 0;
+            res->unk_54 += res->unk_vf44(cmd);
+            if (res->unk_59) {
+                goto end;
+            }
+            if (res->unk_5a) {
+                return TRUE;
+            }
+            break;
+        case 0x40:
+            res->condCount = 0;
+            res->opCount = 0;
+            if (res->varId == NULL) {
+                res->unk_54 += res->Eval(cmd, 0, 0);
+                res->varId = cmd;
+            } else {
+                u16 v = res->value;
+                res->unk_54 += res->Eval(cmd, 0, 0);
+                func_0205af4c(res, v);
+                res->varId = NULL;
+            }
+            break;
+        default:
+            if (c >= 0x50 && c < 0x60) {
+                res->op = c;
+                res->unk_54++;
+                break;
+            }
+            goto end;
+        }
+    }
+end:
+    res->unk_54 = 0;
+    res->unk_b2 = 0;
+    return TRUE;
+}
 
 }

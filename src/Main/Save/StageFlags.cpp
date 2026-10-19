@@ -150,4 +150,30 @@ void func_0206c72c(StageFlags *f, StageColor *rgb) {
     MI_CpuCopy8(f, &data_0214aa68, sizeof(StageFlags));
 }
 
+void func_0206c824(StageFlags *f) {
+    StagePlayer *pl;
+    StageFlags_SaveBuf(f);
+    pl = func_ov000_0219bf90();
+    if (pl == NULL) {
+        f->bits18.unk_0 = 1;
+    } else {
+        f->pos = pl->pos;
+        f->rotY = pl->rot[1];
+        f->target = pl->target;
+        f->targetRotY = pl->targetRot[1];
+        {
+            StageColor *c = &pl->color;
+            f->color.r = c->r;
+            f->color.g = c->g;
+            f->color.b = c->b;
+        }
+        f->bits18.unk_0 = 0;
+    }
+    f->unk_138 = 0xffff;
+    f->color2.r = data_02fe1534.r;
+    f->color2.g = data_02fe1534.g;
+    f->color2.b = data_02fe1534.b;
+    f->frameCount = data_02097dd0->frameCount;
+}
+
 }
