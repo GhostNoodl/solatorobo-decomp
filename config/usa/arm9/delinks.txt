@@ -1298,7 +1298,7 @@ src/Main/Gfx/TextWin_5.cpp:
 
 src/Main/Gfx/TextWin_13.cpp:
     complete
-    .text       start:0x0204eb3c end:0x0204edd8
+    .text       start:0x0204eb3c end:0x0204f354
 
 src/Main/Gfx/TextWin_6.cpp:
     complete

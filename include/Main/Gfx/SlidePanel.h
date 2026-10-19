@@ -22,9 +22,14 @@ extern BOOL func_02042958(Model *model, u32 slot, ModelPart *part);
 extern SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 
 typedef struct SlidePanelItem {
-    /* 0x00 */ u32 unk_00_0 : 2;
-    /* 0x00 */ u32 active : 1;
-    /* 0x00 */ u32 unk_00_3 : 29;
+    /* 0x00 */ union {
+        u32 bits;
+        struct {
+            u32 unk_00_0 : 2;
+            u32 active : 1;
+            u32 unk_00_3 : 29;
+        };
+    };
     /* 0x04 */ s32 state;
     /* 0x08 */ u16 unk_08;
     /* 0x0a */ u16 unk_0a;

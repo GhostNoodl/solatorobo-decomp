@@ -70,7 +70,8 @@ struct TextWin {
     /* 0x04 */ u32 unk_4_8 : 5;
     /* 0x04 */ u32 unk_4_13 : 8;
     /* 0x04 */ u32 noShadowShift : 1;
-    /* 0x04 */ u32 unk_4_22 : 2;
+    /* 0x04 */ u32 flag22 : 1;
+    /* 0x04 */ u32 flag23 : 1;
     /* 0x04 */ u32 flag24 : 1;
     /* 0x04 */ u32 flag25 : 1;
     /* 0x04 */ u32 flag26 : 1;
@@ -160,10 +161,15 @@ typedef struct TextBox {
     /* 0x000 */ union {
         u16 unk_000;
         struct {
-            u16 unk_000_0 : 5;
+            u16 flag0 : 1;
+            u16 flag1 : 1;
+            u16 flag2 : 1;
+            u16 flag3 : 1;
+            u16 flag4 : 1;
             u16 flag5 : 1;
             u16 flag6 : 1;
-            u16 unk_000_7 : 2;
+            u16 flag7 : 1;
+            u16 flag8 : 1;
             u16 flag9 : 1;
             u16 unk_000_10 : 6;
         };
