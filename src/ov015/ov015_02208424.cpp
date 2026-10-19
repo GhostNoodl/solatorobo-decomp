@@ -57,6 +57,105 @@ void func_0203f260(void *a);
 void MTX_Identity33_(void *a);
 extern u8 data_ov015_02212eb0[];
 
+void func_ov000_02191c24(void *a, void *b);
+void func_ov000_02190758(void *m, const void *rot, s32 c);
+void func_ov000_021903b4(void *m);
+void MI_Copy36B(const void *src, void *dst);
+void NNS_G3dGeFlushBuffer(void);
+u16 FX_Atan2(s32 y, s32 x);
+void VEC_Normalize(const Ov015Vec *src, Ov015Vec *dst);
+void VEC_Add(const Ov015Vec *a, const Ov015Vec *b, Ov015Vec *out);
+void VEC_MultAdd(s32 a, const Ov015Vec *v1, const Ov015Vec *v2, Ov015Vec *out);
+
+#define OV015_SQRTCNT (*(volatile u16 *)0x40002b0)
+#define OV015_SQRT_RESULT (*(volatile u32 *)0x40002b4)
+#define OV015_SQRT_PARAM (*(volatile u64 *)0x40002b8)
+
+static inline s32 Ov015_FxMul64(s32 a, s64 b) {
+    return (s32)((a * b + 0x800) >> 12);
+}
+
+void func_ov015_02208070(u8 *self) {
+    Ov015Vec p;
+    Ov015Vec d;
+    Ov015Vec out;
+    Ov015Vec diff;
+    u16 rot[3];
+    if (FLD(u16, self, 0xd38) != 0x32) {
+        return;
+    }
+    data_ov015_02213364 = self;
+    if (FLD(u8, self, 0xd41) != 0) {
+        func_ov000_02191c24(self + 0xcb8, self + 0xd14);
+    }
+    FLD(Ov015Vec, self, 0x1b0) = FLD(Ov015Vec, self, 0xd14);
+    func_ov000_02190758(self + 0x138, self + 0xd20, 0);
+    func_ov000_021903b4(self + 0x138);
+    {
+        s32 h;
+        p = FLD(Ov015Vec, self, 0xcf8);
+        d.x = FLD(s32, self, 0xd4c) - p.x;
+        d.y = FLD(s32, self, 0xd50) - p.y;
+        d.z = FLD(s32, self, 0xd54) - p.z;
+        {
+            s64 sq = (s64)d.x * d.x;
+            sq += (s64)d.z * d.z;
+            OV015_SQRTCNT = 1;
+            OV015_SQRT_PARAM = (u64)(sq * 4);
+        }
+        while (OV015_SQRTCNT & 0x8000) {
+        }
+        h = ((s32)OV015_SQRT_RESULT + 1) >> 1;
+        rot[0] = 0;
+        rot[1] = 0;
+        rot[2] = 0;
+        rot[0] = FX_Atan2(-d.y, h);
+        rot[1] = FX_Atan2(d.x, d.z);
+        VEC_Normalize(&d, &d);
+        d.x = Ov015_FxMul(d.x, 0x1c00);
+        d.y = Ov015_FxMul(d.y, 0x1c00);
+        d.z = Ov015_FxMul(d.z, 0x1c00);
+        switch (FLD(u16, self, 0xd3c)) {
+        case 1: {
+            s32 i;
+            for (i = 0; i < 8; i++) {
+                func_ov000_02190758(self + 0x358 + i * 0xe8, rot, 0);
+                FLD(Ov015Vec, self + i * 0xe8, 0x3d0) = p;
+                func_ov000_021903b4(self + 0x358 + i * 0xe8);
+                VEC_Add(&d, &p, &p);
+            }
+            FLD(Ov015Vec, self, 0xd08) = p;
+            break;
+        }
+        case 2:
+            MI_Copy36B(self + 0xcd4, self + 0xc54);
+            FLD(Ov015Vec, self, 0xc48) = p;
+            func_ov000_021903b4(self + 0xbd0);
+            break;
+        }
+    }
+    NNS_G3dGeFlushBuffer();
+    data_ov015_02213364 = NULL;
+    if (FLD(u8, self, 0xd42) == 0) {
+        return;
+    }
+    if (FLD(Ov015V *, self, 0xd28) != NULL) {
+        s32 t = FX_Div(FLD(s32, self, 0xd2c) << 12, 0x5a000);
+        diff.x = FLD(s32, self, 0xcf8) - FLD(s32, self, 0xd08);
+        diff.y = FLD(s32, self, 0xcfc) - FLD(s32, self, 0xd0c);
+        diff.z = FLD(s32, self, 0xd00) - FLD(s32, self, 0xd10);
+        VEC_MultAdd(t, &diff, &FLD(Ov015Vec, self, 0xd08), &out);
+        FLD(Ov015V *, self, 0xd28)->v18(&out);
+    }
+    if (FLD(Ov015V *, self, 0xd30) != NULL) {
+        s32 t = FX_Div(FLD(s32, self, 0xd34) << 12, 0xa000);
+        s32 sc = Ov015_FxMul64(t, 0x6000) + 0xc000;
+        s32 v = Ov015_FxMul64(FLD(s32, self, 0xd44), sc);
+        FLD(Ov015V *, self, 0xd30)->v14(v, v, v);
+        FLD(Ov015V *, self, 0xd30)->v18(self + 0xd4c);
+    }
+}
+
 void func_ov015_02208424(u8 *self) {
     u8 *t = data_ov015_02213364 + 0xcd4;
     s32 id = (FLD(u32, self, 0x8) & 0x10) ? FLD(u8, self, 0xae) : -1;

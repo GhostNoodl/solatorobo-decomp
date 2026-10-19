@@ -409,4 +409,131 @@ void func_ov015_022102fc(u8 *self) {
     VCALL(FLD(void *, self, 0x10))->v2c();
 }
 
+
+extern void *data_0208cc88;
+extern void *data_0208cc94;
+extern void *data_02149ef8;
+extern u8 data_0208ba70[];
+extern u8 *data_02097ce0;
+extern u8 data_ov000_021cac60[];
+extern u8 data_ov000_021cadcc[];
+extern u8 data_ov015_02212d3c[];
+void func_0204c030(void *p);
+s32 func_0204c08c(void *p, u16 id, void *buf, s32 n);
+void func_02041218(void *p);
+void func_02041440(void *p, void *name, int c);
+void STD_CopyString(void *p, void *name);
+void *func_02035de0(void *a, void *b);
+void func_020417e0(void *a, void *b);
+void func_02041d9c(void *a, int b, int c);
+void func_0204c7d0(void *p);
+void *func_0204c0e8(void *a, s32 b);
+s32 func_0204c4fc(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
+void func_0204ca70(void *p);
+void func_ov015_02208544(u8 *self);
+void func_0204c2f4(void *p, s32 n, void *src);
+void func_ov000_0215bb14(void *a, void *b);
+void func_ov015_0220866c(u8 *self, void *msg);
+
+struct Ov015Bits10314 {
+    u32 b0 : 8;
+    u32 f8 : 5;
+    u32 rest : 19;
+};
+
+static inline void Ov015T_SetXYZ16(u8 *o, s16 x, s16 y, s16 z) {
+    FLD(s16, o, 0x64) = x;
+    FLD(s16, o, 0x66) = y;
+    FLD(s16, o, 0x68) = z;
+}
+
+static inline void Ov015T_SetXYZ32(u8 *o, s32 x, s32 y, s32 z) {
+    FLD(s32, o, 0x58) = x;
+    FLD(s32, o, 0x5c) = y;
+    FLD(s32, o, 0x60) = z;
+}
+
+BOOL func_ov015_02210314(u8 *self) {
+    u8 *p;
+    func_0204c030(FLD(void *, self, 0x10));
+    FLD(s32, self, 0xb0) = func_0204c08c(FLD(void *, self, 0x10), FLD(u16, self, 0xc), self + 0x30, 0x20);
+    p = (u8 *)func_0203dd9c(0x160);
+    if (p != NULL) {
+        void *file = data_0208cc94;
+        void *name = data_0208cc88;
+        func_02041218(p + 0x88);
+        func_02041440(p, name, 0);
+        STD_CopyString(p + 0x2c, file);
+    }
+    FLD(u8 *, self, 0x14) = p;
+    func_020417e0(FLD(void *, self, 0x14), func_02035de0(data_0208cc94, data_0208cc88));
+    FLD(u32, FLD(u8 *, self, 0x14), 0x6c) |= 2;
+    func_02041d9c(FLD(void *, self, 0x14), 0, 0x1d);
+    FLD(s32, FLD(u8 *, self, 0x14), 0x150) = -0xccd;
+    p = (u8 *)func_0203dd9c(0xb8);
+    if (p != NULL) {
+        SET_VT(p, data_0208ba70);
+        func_0204c7d0(p);
+    }
+    FLD(u8 *, self, 0x18) = p;
+    FLD(s32, p, 0x28) = 4;
+    {
+        void *t = func_0204c0e8(data_02149ef8, 0x118);
+        p = FLD(u8 *, self, 0x18);
+        FLD(void *, p, 0x24) = t;
+        FLD(s32, p, 0x4c) = func_0204c4fc(FLD(s32, p, 0x28), FLD(s32, p, 0x38), FLD(void *, p, 0x24), p + 0x44, p + 0x48,
+                                          FLD(s8, p, 0x37) != 0);
+        FLD(s32, data_02097ce0, 0x4) = FLD(s32, p, 0x28);
+    }
+    FLD(s16, FLD(u8 *, self, 0x18), 0x74) = 0x7fff;
+    FLD(s16, FLD(u8 *, self, 0x18), 0x76) = 0x67f;
+    FLD(s32, FLD(u8 *, self, 0x18), 0x78) = 0x7000;
+    FLD(u32, FLD(u8 *, self, 0x18), 0x4) |= 0x40;
+    FLD(u32, FLD(u8 *, self, 0x18), 0x4) |= 0x1000000;
+    VCALL(FLD(u8 *, self, 0x18))->v14();
+    FLD(Ov015Bits10314, FLD(u8 *, self, 0x18), 0x4).f8 = 0x1e;
+    FLD(u32, FLD(u8 *, self, 0x18), 0x4) |= 0x40000000;
+    FLD(u32, FLD(u8 *, self, 0x18), 0x4) |= 4;
+    func_0204ca70(FLD(u8 *, self, 0x18));
+    p = (u8 *)func_0203dd9c(0x8c);
+    if (p != NULL) {
+        SET_VT(p, data_ov000_021cac60);
+        VCALL(p)->v28();
+        SET_VT(p, data_ov000_021cadcc);
+        VCALL(p)->v28();
+    }
+    FLD(u8 *, self, 0x28) = p;
+    FLD(s32, p, 0x24) = 0xf8;
+    Ov015T_SetXYZ32(FLD(u8 *, self, 0x28), -0x100, 0, -0xccd);
+    FLD(s32, FLD(u8 *, self, 0x28), 0x2c) = 1;
+    FLD(u32, FLD(u8 *, self, 0x28), 0xc) |= 0x80000;
+    FLD(s32, FLD(u8 *, self, 0x28), 0x20) = 3;
+    Ov015T_SetXYZ16(FLD(u8 *, self, 0x28), 4, 0x86, -0xccd);
+    VCALL(FLD(u8 *, self, 0x28))->v08();
+    p = (u8 *)func_0203dd9c(0xb4);
+    if (p != NULL) {
+        SET_VT(p, data_ov000_021cac60);
+        VCALL(p)->v28();
+        SET_VT(p, data_ov015_02212d3c);
+        func_ov015_02208544(p);
+    }
+    FLD(u8 *, self, 0x2c) = p;
+    Ov015T_SetXYZ16(p, 0, 0x7b, -0x99a);
+    Ov015T_SetXYZ32(FLD(u8 *, self, 0x2c), -0x100, 0, -0x99a);
+    FLD(s32, FLD(u8 *, self, 0x2c), 0x2c) = 1;
+    FLD(u32, FLD(u8 *, self, 0x2c), 0xc) &= ~0x10000;
+    VCALL(FLD(u8 *, self, 0x2c))->v08();
+    if (FLD(u8 *, self, 0x28) != NULL && FLD(void *, self, 0x30) != NULL) {
+        u8 *o;
+        func_0204c2f4(self + 0xb8, 0x80, FLD(void *, self, 0x30));
+        func_ov000_0215bb14(FLD(u8 *, self, 0x28), self + 0xb8);
+        VCALL(FLD(u8 *, self, 0x28))->v70();
+        FLD(u32, FLD(u8 *, FLD(u8 *, self, 0x28), 0x84), 0x4) |= 0x4000000;
+        o = FLD(u8 *, self, 0x28);
+        VCALL(FLD(u8 *, o, 0x84))->v1c(FLD(s16, o, 0x64) + FLD(s32, o, 0x24) - 0x14, FLD(s16, o, 0x66) + FLD(s32, o, 0x28) - 0xc, -0xcbd);
+        func_ov015_0220866c(FLD(u8 *, self, 0x2c), FLD(void *, self, 0x30));
+    }
+    return TRUE;
+}
+
 }

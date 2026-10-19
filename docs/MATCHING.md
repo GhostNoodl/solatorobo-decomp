@@ -273,3 +273,12 @@ The linker strips functions that nothing references. If `ninja` reports a matche
   - `021c17dc` (77). MWCC keeps the shared `0x40` copy size in a callee-saved register, which shifts every allocation.
   - `02181c4c` (55, stack-temp scheduling).
   - `0217a1f8` (3). MWCC derives `-1` from `0x78` (`sub r2, r1, #0x79`) where the target uses `mvn`.
+
+## Stack slots, split stores and repeated bodies (overlays 9–15, round 17)
+
+- **Decrement a timer only if it is nonzero, reading it once.** When the target loads the timer once, tests it, and stores `t-1`, write `u16 t = *(volatile u16 *)&st->timer; if (t) st->timer = t - 1;`. With a plain `if (st->timer) st->timer--;` the compiler reloads the field (`func_ov014_0220abf8`).
+- **Splitting a store that the compiler merged.** If the target stores the same field twice (a clamp to `lim`, then a compare, then a store of `mn`), keep both stores in the source and put the first one *before* the second compare. A `volatile` store did not keep the two stores apart (`func_ov015_0220064c`).
+- **Moving a local's stack slot.** Locals declared inside a `static inline` helper get their slots in expansion order, below the caller's function-level locals. Moving a computation into an inline function moves its local to the lowest slot (`func_ov014_022033a8`). Block-scoped `Vec v = {0,0,0}` locals likewise go after the function-level ones. Reordering local declarations also shifts the slots.
+- **Statement order in large camera bodies.** Several ov015 camera functions (`021fe218`, `021fe548`, `021fd634`) differ only in the order of independent loads and stores. A small script that permutes the candidate statements and runs `tools/match.py` on each version found the order faster than editing by hand.
+- **Prepending a function.** When the unmatched function sits directly before an existing `complete` file, move that file's delinks `start` down and prepend the function. The file name can stay the same (`func_ov015_02208070`, `func_ov014_0220abf8`).
+- **Repeated bodies inlined into a dispatcher.** `func_ov015_021fd900` contains the full bodies of `021fe814`, `021fd634` and `021feb34`. Copying them into the file as static inlines produces a frame of 0x1cc where the target has 0x184, plus calls to `Ov015Vec` constructors, because the class has an empty user-written constructor. A plain-old-data (POD) vector type for the inline locals is the next thing to try.

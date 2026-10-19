@@ -97,4 +97,145 @@ BOOL func_ov015_022003ec(u8 *self, u8 *a, u8 *b, u8 *c) {
     return ok;
 }
 
+
+extern u8 *data_02097dc8;
+extern void *data_02097e4c;
+void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+Ov015V *func_02065f88(s32 id, void *pos);
+void func_ov015_02200a18(u8 *self, Ov015Stat *g);
+s32 func_ov015_022090bc(u8 *p);
+s32 func_ov015_02200d50(u8 *self, Ov015Stat *g, s32 v);
+s32 func_ov015_02200ec8(u8 *self, Ov015Stat *g, s32 v);
+
+struct Ov015Cam0c {
+    u8 pad[0x24];
+    Ov015Vec pos;
+};
+
+static inline s32 Ov015B_FxMul64(s32 a, s64 b) {
+    return (s32)((a * b + 0x800) >> 12);
+}
+
+void func_ov015_0220064c(u8 *self, u8 *a, u8 *b) {
+    u8 *pad = data_02097dc8;
+    u16 trg = FLD(u16, pad, 0x12);
+    u16 cont = FLD(u16, pad, 0x10);
+    Ov015Stat *g = &data_ov015_0221332c;
+    s32 dir;
+    s32 lim;
+    s32 mn;
+    if (trg & 1) {
+        FLD(s32, self, 0x10) = 6;
+    } else {
+        s32 t = FLD(s32, self, 0x10);
+        FLD(s32, self, 0x10) = t > -0x3c ? t - 1 : -0x3c;
+    }
+    if (g->unk_28 == 3) {
+        FLD(s32, self, 0x10) = -0x3c;
+    }
+    if (FLD(s32, self, 0x10) == 6) {
+        func_02049a48(data_02097e4c, 0, 0x7f, -1, -1);
+        func_02065f88(0x6d, &FLD(Ov015Cam0c, a + 0xcd4, 0).pos)->v14(0x800, 0x800, 0x800);
+    }
+    g->unk_1c = FLD(s32, self, 0x10) > 0;
+    g->unk_1d = FLD(s32, self, 0x10) == 6;
+    if (g->unk_1c) {
+        g->unk_20 += 0x1000;
+        if (g->unk_20 > 0x3e8000) {
+            g->unk_20 = 0x3e8000;
+        }
+    } else {
+        g->unk_20 = 0;
+    }
+    if (cont & 0x20) {
+        FLD(u16, a, 0xd3a) = 2;
+        dir = 3;
+    } else if (cont & 0x10) {
+        FLD(u16, a, 0xd3a) = 1;
+        dir = 2;
+    } else if (cont & 0x80) {
+        FLD(u16, a, 0xd3a) = 3;
+        dir = 4;
+    } else {
+        FLD(u16, a, 0xd3a) = 0;
+        dir = 1;
+    }
+    if (g->unk_28 == 3) {
+        dir = 1;
+    }
+    if (dir == 1) {
+        g->unk_18 = 0;
+    } else if (g->unk_14 == dir) {
+        g->unk_18 = g->unk_18 + (g->unk_18 < 0x3e8000 ? 0x1000 : 0);
+    } else {
+        g->unk_18 = 0x1000;
+    }
+    g->unk_14 = dir;
+    g->unk_08 = FLD(s32, b, 0xf4);
+    g->unk_0c = FLD(s32, b, 0xdc);
+    g->unk_10 = FLD(s32, b, 0xbc);
+    func_ov015_02200a18(self, g);
+    lim = func_ov015_022090bc(FLD(u8 *, self, 0x28) + 0xc0);
+    mn = FLD(s32, FLD(u8 *, self, 0x30), 0x18);
+    switch (FLD(s32, FLD(u8 *, self, 0x28), 0xf4)) {
+    case 2:
+        FLD(s32, self, 0x18) = func_ov015_02200d50(self, g, FLD(s32, self, 0x18));
+        break;
+    case 3: {
+        s32 v = FLD(s32, self, 0x18);
+        if (g->unk_28 == 0 && g->unk_1c) {
+            v -= 0x1ec;
+        } else {
+            v = Ov015B_FxMul64(v, 0xe66);
+        }
+        FLD(s32, self, 0x18) = v;
+        break;
+    }
+    case 4:
+        FLD(s32, self, 0x18) = func_ov015_02200ec8(self, g, FLD(s32, self, 0x18));
+        break;
+    }
+    if (FLD(s32, self, 0x18) < lim) {
+        lim = FLD(s32, self, 0x18);
+    }
+    FLD(s32, self, 0x18) = lim;
+    if (lim > mn) {
+        mn = lim;
+    }
+    FLD(s32, self, 0x18) = mn;
+    FLD(s16, a, 0xd3e) = -mn;
+    if (FLD(u16, a, 0xd48) == 1) {
+        s32 m = g->unk_14;
+        s32 n = g->unk_10;
+        BOOL ok = TRUE;
+        if (!((m == 3 && n == 2) || (m == 2 && n == 3) || (m == 4 && n == 4) || (m != 1 && m != 0 && n == 1))) {
+            if (g->unk_08 != 3) {
+                ok = FALSE;
+            }
+        }
+        {
+            s32 v70 = FLD(s32, b, 0x70);
+            FLD(u8, a, 0xd42) = (ok & (FLD(s32, self, 0x10) > -0x1e)) ? 1 : 0;
+            FLD(s32, a, 0xd44) = v70;
+        }
+    }
+    {
+        s32 cur = g->unk_00;
+        s32 nv = cur + FLD(s32, self, 0x18);
+        if (nv < 0) {
+            nv = 0;
+        }
+        if (nv > 0x3e8000) {
+            nv = 0x3e8000;
+        }
+        g->unk_00 = nv;
+        g->unk_04 = nv - cur;
+        if (nv >= 0x2bc000 && (FLD(s32, self, 0xc) >> 12) % 60 == 0) {
+            func_02049a48(data_02097e4c, 0x37, -1, -1, -1);
+        }
+    }
+    g->unk_2c = FLD(s32, self, 0xc) >> 12;
+    FLD(s32, b, 0xe8) = FLD(s32, self, 0xc);
+}
+
 }
