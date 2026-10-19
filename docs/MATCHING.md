@@ -165,3 +165,9 @@ Some casts change no values but still change MWCC's output:
 - Compare operand order matters: `a->tgt != a->cur` and `a->cur != a->tgt` load and compare in different registers.
 - A dummy `case X: break;` moves the pivot of the binary-tree compare sequence MWCC emits for a sparse `switch`.
 - To keep argument evaluation order around a nested call, hoist the plain arguments into locals first, then put the call's result in a local declared after them: `s32 a = p->a; s32 b = p->b; s32 r = g(x); f(a, b, r);`.
+- Some files were built at a lower optimization level. Signs: loops aren't rotated (a `b` to the test at the bottom), loop-invariant loads stay inside the loop, and near misses at the default level won't close. Put `#pragma optimization_level 2` at the top of the file (after a comment saying why) and re-check. Several ov006 functions (`021dc578`, `021e46e8`, `021e5050`) need it.
+- A struct or array local that's stored to the stack but never read back comes from an aggregate initializer of non-constant values, e.g. `Rgb c = {r, g, b}; game->next = c;` in an inline. If any initializer is a constant, MWCC loads it from a rodata template instead. Plain field assignments get optimized away.
+- Byte-by-byte copies that load two bytes before storing them (`ldrb r2; ldrb r1; strb r2; strb r1`) are a struct assignment of a small `u8 c[3]` struct, not field-by-field copies.
+- A shift of a `u16` table value done as `lsr` rather than `asr` is `/ 2` on an `int` (the compiler knows it's non-negative). `>> 1` gives `asr`.
+- An integer local the target allocates later than you do (a higher callee-saved register) may be unsigned in the original (`u32 x = v.x & ~0xfff;`).
+- If two parallel computations (x then y) come out with the registers and loads swapped, the original may finish one before starting the other: `dx = ...; x = ...; self->x = x; dy = ...; y = ...; self->y = y;` instead of computing both and then storing both.
