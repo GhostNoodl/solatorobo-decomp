@@ -126,4 +126,17 @@ BOOL func_ov013_02205bcc(Ov013Actor *self) {
     return func_ov000_02194c08(self);
 }
 
+void func_ov013_02205bec(Ov013Actor *self, const Ov013Vec *v, u16 id, u16 plid, u16 r, u16 rot) {
+    FLD(Ov013Flags8, self, 0xce).b0 = 0;
+    FLD(Ov013Flags8, self, 0xce).b1 = 0;
+    self->pos = *v;
+    FLD(u16, FLD(void *, self, 0x4c), 0x1c) = id;
+    self->unk_90 = plid;
+    self->unk_98 = r;
+    self->rot[1] = rot;
+    func_ov003_021d9980((u8 *)self + 0xd4, self->unk_98, data_ov013_0220b2cc);
+    FLD(u16, self, 0xd2) = 0x280;
+    func_ov000_02198360(self->unk_40, 0xe, 0);
+}
+
 }

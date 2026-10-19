@@ -1,3 +1,7 @@
+// func_ov015_021fd900 inlines three full camera bodies. With the default inline size limit,
+// MWCC stops inlining the Ov015Vec constructors and copies inside them.
+#pragma inline_max_size(512)
+
 #include "ov015/ov015.h"
 
 extern "C" {
@@ -5,11 +9,11 @@ extern "C" {
 void func_ov015_021fb240(Ov015VecC *dst, const Ov015VecC *src);
 void func_ov015_021fd288(u8 *self);
 void func_ov015_021fd634(u8 *self);
-void func_ov015_021fd900(void *self);
-void func_ov015_021fe218(void *self);
-void func_ov015_021fe548(void *self);
-void func_ov015_021fe814(void *self);
-void func_ov015_021feb34(void *self);
+void func_ov015_021fd900(u8 *self);
+void func_ov015_021fe218(u8 *self);
+void func_ov015_021fe548(u8 *self);
+void func_ov015_021fe814(u8 *self);
+void func_ov015_021feb34(u8 *self);
 void func_ov015_021fee54(void *self);
 void func_ov015_021ff044(void *self);
 s32 FX_Div(s32 a, s32 b);
@@ -126,6 +130,8 @@ static inline void Ov015SetFovy(Ov015Persp *p, s32 deg) {
     p->dirty = 1;
 }
 
+extern Ov015Vec data_ov015_022125cc;
+extern Ov015Vec data_ov015_02212530;
 extern Ov015Vec data_ov015_022125e4;
 
 static inline s32 Ov015Cam_Approach(s32 cur, s32 tgt, s32 eps, s32 k) {
@@ -212,6 +218,325 @@ void func_ov015_021fd634(u8 *self) {
     VEC_Normalize(&d, &d);
     VEC_MultAdd(FLD(s32, self, 0x198), &d, &FLD(Ov015Vec, self, 0x18c), &res);
     FLD(Ov015Vec, self, 0x8) = res;
+    p = FLD(Ov015Vec, self, 0x8);
+    t = FLD(Ov015Vec, self, 0x14);
+    up = FLD(Ov015Vec, self, 0x20);
+    FLD(Ov015Vec, self, 0xc4) = p;
+    d2.x = t.x - p.x;
+    d2.y = t.y - p.y;
+    d2.z = t.z - p.z;
+    VEC_Normalize(&d2, &d2);
+    c.x = (s32)(((s64)d2.y * up.z - (s64)d2.z * up.y + 0x800) >> 12);
+    c.y = (s32)(((s64)d2.z * up.x - (s64)d2.x * up.z + 0x800) >> 12);
+    c.z = (s32)(((s64)d2.x * up.y - (s64)d2.y * up.x + 0x800) >> 12);
+    VEC_Normalize(&c, &c);
+    MTX_RotAxis33(&m, &c, FX_SinCosTable_[0xdfc * 2], FX_SinCosTable_[0xdfc * 2 + 1]);
+    MTX_MultVec33(&d2, &m, &r);
+    VEC_Add(&r, &p, &r);
+    FLD(Ov015Vec, self, 0xd0) = r;
+    Ov015SetFovy(&FLD(Ov015Persp, self, 0xe8), 0x1e000);
+}
+
+static inline void Ov015Cam_ZoomOut(u8 *self) {
+    Ov015Vec a;
+    Ov015Vec o;
+    Ov015Vec res;
+    Ov015Vec d;
+    Ov015Vec d2;
+    Ov015Vec c;
+    Ov015Mtx33 m;
+    Ov015Vec r;
+    Ov015Vec p;
+    Ov015Vec up;
+    Ov015Vec t;
+    a = FLD(Ov015Vec, self, 0x180);
+    o = FLD(Ov015Vec, self, 0x14);
+    func_02049244(&o, 0x19a, &o, &a, 0x29);
+    FLD(Ov015Vec, self, 0x14) = o;
+    d.x = FLD(s32, self, 0x18c) - o.x;
+    d.y = FLD(s32, self, 0x190) - o.y;
+    d.z = FLD(s32, self, 0x194) - o.z;
+    VEC_Normalize(&d, &d);
+    VEC_MultAdd(FLD(s32, self, 0x198), &d, &FLD(Ov015Vec, self, 0x18c), &res);
+    FLD(Ov015Vec, self, 0x8) = res;
+    {
+        s32 deg = FLD(s32, self, 0x3c);
+        Ov015SetFovy(&FLD(Ov015Persp, self, 0x2c), deg > 0xf000 ? deg - 0xc00 : 0xf000);
+    }
+    p = FLD(Ov015Vec, self, 0x8);
+    t = FLD(Ov015Vec, self, 0x14);
+    up = FLD(Ov015Vec, self, 0x20);
+    FLD(Ov015Vec, self, 0xc4) = p;
+    d2.x = t.x - p.x;
+    d2.y = t.y - p.y;
+    d2.z = t.z - p.z;
+    VEC_Normalize(&d2, &d2);
+    c.x = (s32)(((s64)d2.y * up.z - (s64)d2.z * up.y + 0x800) >> 12);
+    c.y = (s32)(((s64)d2.z * up.x - (s64)d2.x * up.z + 0x800) >> 12);
+    c.z = (s32)(((s64)d2.x * up.y - (s64)d2.y * up.x + 0x800) >> 12);
+    VEC_Normalize(&c, &c);
+    MTX_RotAxis33(&m, &c, FX_SinCosTable_[0xdfc * 2], FX_SinCosTable_[0xdfc * 2 + 1]);
+    MTX_MultVec33(&d2, &m, &r);
+    VEC_Add(&r, &p, &r);
+    FLD(Ov015Vec, self, 0xd0) = r;
+    Ov015SetFovy(&FLD(Ov015Persp, self, 0xe8), 0x1e000);
+}
+
+static inline void Ov015Cam_Follow(u8 *self) {
+    Ov015Vec res;
+    Ov015Vec o;
+    Ov015Vec d;
+    Ov015Vec d2;
+    Ov015Vec c;
+    Ov015Mtx33 m;
+    Ov015Vec r;
+    Ov015Vec p;
+    Ov015Vec up;
+    Ov015Vec t;
+    func_02049244(&FLD(Ov015Vec, self, 0x18c), 0x29, &FLD(Ov015Vec, self, 0x18c), &data_ov015_022125e4, 0x29);
+    FLD(s32, self, 0x198) = Ov015Cam_Approach(FLD(s32, self, 0x198), 0x5a3d, 0x29, 0x7b);
+    func_ov015_021fd0f4(self, &o);
+    FLD(Ov015Vec, self, 0x14) = o;
+    d.x = FLD(s32, self, 0x18c) - o.x;
+    d.y = FLD(s32, self, 0x190) - o.y;
+    d.z = FLD(s32, self, 0x194) - o.z;
+    VEC_Normalize(&d, &d);
+    VEC_MultAdd(FLD(s32, self, 0x198), &d, &FLD(Ov015Vec, self, 0x18c), &res);
+    FLD(Ov015Vec, self, 0x8) = res;
+    p = FLD(Ov015Vec, self, 0x8);
+    t = FLD(Ov015Vec, self, 0x14);
+    up = FLD(Ov015Vec, self, 0x20);
+    FLD(Ov015Vec, self, 0xc4) = p;
+    d2.x = t.x - p.x;
+    d2.y = t.y - p.y;
+    d2.z = t.z - p.z;
+    VEC_Normalize(&d2, &d2);
+    c.x = (s32)(((s64)d2.y * up.z - (s64)d2.z * up.y + 0x800) >> 12);
+    c.y = (s32)(((s64)d2.z * up.x - (s64)d2.x * up.z + 0x800) >> 12);
+    c.z = (s32)(((s64)d2.x * up.y - (s64)d2.y * up.x + 0x800) >> 12);
+    VEC_Normalize(&c, &c);
+    MTX_RotAxis33(&m, &c, FX_SinCosTable_[0xdfc * 2], FX_SinCosTable_[0xdfc * 2 + 1]);
+    MTX_MultVec33(&d2, &m, &r);
+    VEC_Add(&r, &p, &r);
+    FLD(Ov015Vec, self, 0xd0) = r;
+    Ov015SetFovy(&FLD(Ov015Persp, self, 0xe8), 0x1e000);
+}
+
+static inline void Ov015Cam_ZoomIn(u8 *self) {
+    Ov015Vec a;
+    Ov015Vec o;
+    Ov015Vec res;
+    Ov015Vec d;
+    Ov015Vec d2;
+    Ov015Vec c;
+    Ov015Mtx33 m;
+    Ov015Vec r;
+    Ov015Vec p;
+    Ov015Vec up;
+    Ov015Vec t;
+    a = FLD(Ov015Vec, self, 0x180);
+    o = FLD(Ov015Vec, self, 0x14);
+    func_02049244(&o, 0x19a, &o, &a, 0x29);
+    FLD(Ov015Vec, self, 0x14) = o;
+    d.x = FLD(s32, self, 0x18c) - o.x;
+    d.y = FLD(s32, self, 0x190) - o.y;
+    d.z = FLD(s32, self, 0x194) - o.z;
+    VEC_Normalize(&d, &d);
+    VEC_MultAdd(FLD(s32, self, 0x198), &d, &FLD(Ov015Vec, self, 0x18c), &res);
+    FLD(Ov015Vec, self, 0x8) = res;
+    {
+        s32 deg = FLD(s32, self, 0x3c);
+        Ov015SetFovy(&FLD(Ov015Persp, self, 0x2c), deg < 0x1e000 ? deg + 0xc00 : 0x1e000);
+    }
+    p = FLD(Ov015Vec, self, 0x8);
+    t = FLD(Ov015Vec, self, 0x14);
+    up = FLD(Ov015Vec, self, 0x20);
+    FLD(Ov015Vec, self, 0xc4) = p;
+    d2.x = t.x - p.x;
+    d2.y = t.y - p.y;
+    d2.z = t.z - p.z;
+    VEC_Normalize(&d2, &d2);
+    c.x = (s32)(((s64)d2.y * up.z - (s64)d2.z * up.y + 0x800) >> 12);
+    c.y = (s32)(((s64)d2.z * up.x - (s64)d2.x * up.z + 0x800) >> 12);
+    c.z = (s32)(((s64)d2.x * up.y - (s64)d2.y * up.x + 0x800) >> 12);
+    VEC_Normalize(&c, &c);
+    MTX_RotAxis33(&m, &c, FX_SinCosTable_[0xdfc * 2], FX_SinCosTable_[0xdfc * 2 + 1]);
+    MTX_MultVec33(&d2, &m, &r);
+    VEC_Add(&r, &p, &r);
+    FLD(Ov015Vec, self, 0xd0) = r;
+    Ov015SetFovy(&FLD(Ov015Persp, self, 0xe8), 0x1e000);
+}
+
+void func_ov015_021fd900(u8 *self) {
+    if (FLD(s32, self, 0x19c) > 0x1e) {
+        if (data_ov015_0221332c.unk_00 > 0xfa000) {
+            Ov015Cam_ZoomOut(self);
+        } else {
+            Ov015Cam_Follow(self);
+        }
+    } else {
+        Ov015Cam_ZoomIn(self);
+    }
+    FLD(s32, self, 0x19c)--;
+    if (FLD(s32, self, 0x19c) < 0) {
+        FLD(s32, self, 0x19c) = 0;
+    }
+}
+
+void func_ov015_021fe218(u8 *self) {
+    Ov015Vec p;
+    Ov015Vec r;
+    Ov015Mtx33 m;
+    Ov015Vec c;
+    Ov015Vec d2;
+    Ov015Vec d;
+    Ov015Vec o;
+    Ov015Vec res;
+    Ov015Vec up;
+    Ov015Vec t;
+    func_02049244(&FLD(Ov015Vec, self, 0x18c), 0x29, &FLD(Ov015Vec, self, 0x18c), &data_ov015_02212530, 0x29);
+    FLD(s32, self, 0x198) = Ov015Cam_Approach(FLD(s32, self, 0x198), 0x4cd, 0x29, 0x7b);
+    func_02049244(&FLD(Ov015Vec, self, 0x18c), 0x29, &FLD(Ov015Vec, self, 0x18c), &data_ov015_022125e4, 0x29);
+    FLD(s32, self, 0x198) = Ov015Cam_Approach(FLD(s32, self, 0x198), 0x5a3d, 0x29, 0x7b);
+    func_ov015_021fd0f4(self, &o);
+    FLD(Ov015Vec, self, 0x14) = o;
+    d.x = FLD(s32, self, 0x18c) - o.x;
+    d.y = FLD(s32, self, 0x190) - o.y;
+    d.z = FLD(s32, self, 0x194) - o.z;
+    VEC_Normalize(&d, &d);
+    VEC_MultAdd(FLD(s32, self, 0x198), &d, &FLD(Ov015Vec, self, 0x18c), &res);
+    FLD(Ov015Vec, self, 0x8) = res;
+    p = FLD(Ov015Vec, self, 0x8);
+    t = FLD(Ov015Vec, self, 0x14);
+    up = FLD(Ov015Vec, self, 0x20);
+    FLD(Ov015Vec, self, 0xc4) = p;
+    d2.x = t.x - p.x;
+    d2.y = t.y - p.y;
+    d2.z = t.z - p.z;
+    VEC_Normalize(&d2, &d2);
+    c.x = (s32)(((s64)d2.y * up.z - (s64)d2.z * up.y + 0x800) >> 12);
+    c.y = (s32)(((s64)d2.z * up.x - (s64)d2.x * up.z + 0x800) >> 12);
+    c.z = (s32)(((s64)d2.x * up.y - (s64)d2.y * up.x + 0x800) >> 12);
+    VEC_Normalize(&c, &c);
+    MTX_RotAxis33(&m, &c, FX_SinCosTable_[0xdfc * 2], FX_SinCosTable_[0xdfc * 2 + 1]);
+    MTX_MultVec33(&d2, &m, &r);
+    VEC_Add(&r, &p, &r);
+    FLD(Ov015Vec, self, 0xd0) = r;
+    Ov015SetFovy(&FLD(Ov015Persp, self, 0xe8), 0x1e000);
+}
+
+void func_ov015_021fe548(u8 *self) {
+    Ov015Vec o;
+    Ov015Vec res;
+    Ov015Vec d;
+    Ov015Vec d2;
+    Ov015Vec c;
+    Ov015Mtx33 m;
+    Ov015Vec r;
+    Ov015Vec p;
+    Ov015Vec up;
+    Ov015Vec t;
+    func_02049244(&FLD(Ov015Vec, self, 0x18c), 0x29, &FLD(Ov015Vec, self, 0x18c), &data_ov015_022125cc, 0x29);
+    FLD(s32, self, 0x198) = Ov015Cam_Approach(FLD(s32, self, 0x198), 0x5a3d, 0x29, 0x7b);
+    func_ov015_021fd0f4(self, &o);
+    FLD(Ov015Vec, self, 0x14) = o;
+    d.x = FLD(s32, self, 0x18c) - o.x;
+    d.y = FLD(s32, self, 0x190) - o.y;
+    d.z = FLD(s32, self, 0x194) - o.z;
+    VEC_Normalize(&d, &d);
+    VEC_MultAdd(FLD(s32, self, 0x198), &d, &FLD(Ov015Vec, self, 0x18c), &res);
+    FLD(Ov015Vec, self, 0x8) = res;
+    p = FLD(Ov015Vec, self, 0x8);
+    t = FLD(Ov015Vec, self, 0x14);
+    up = FLD(Ov015Vec, self, 0x20);
+    FLD(Ov015Vec, self, 0xc4) = p;
+    d2.x = t.x - p.x;
+    d2.y = t.y - p.y;
+    d2.z = t.z - p.z;
+    VEC_Normalize(&d2, &d2);
+    c.x = (s32)(((s64)d2.y * up.z - (s64)d2.z * up.y + 0x800) >> 12);
+    c.y = (s32)(((s64)d2.z * up.x - (s64)d2.x * up.z + 0x800) >> 12);
+    c.z = (s32)(((s64)d2.x * up.y - (s64)d2.y * up.x + 0x800) >> 12);
+    VEC_Normalize(&c, &c);
+    MTX_RotAxis33(&m, &c, FX_SinCosTable_[0xdfc * 2], FX_SinCosTable_[0xdfc * 2 + 1]);
+    MTX_MultVec33(&d2, &m, &r);
+    VEC_Add(&r, &p, &r);
+    FLD(Ov015Vec, self, 0xd0) = r;
+    Ov015SetFovy(&FLD(Ov015Persp, self, 0xe8), 0x1e000);
+}
+
+
+void func_ov015_021fe814(u8 *self) {
+    Ov015Vec a;
+    Ov015Vec o;
+    Ov015Vec res;
+    Ov015Vec d;
+    Ov015Vec d2;
+    Ov015Vec c;
+    Ov015Mtx33 m;
+    Ov015Vec r;
+    Ov015Vec p;
+    Ov015Vec up;
+    Ov015Vec t;
+    a = FLD(Ov015Vec, self, 0x180);
+    o = FLD(Ov015Vec, self, 0x14);
+    func_02049244(&o, 0x19a, &o, &a, 0x29);
+    FLD(Ov015Vec, self, 0x14) = o;
+    d.x = FLD(s32, self, 0x18c) - o.x;
+    d.y = FLD(s32, self, 0x190) - o.y;
+    d.z = FLD(s32, self, 0x194) - o.z;
+    VEC_Normalize(&d, &d);
+    VEC_MultAdd(FLD(s32, self, 0x198), &d, &FLD(Ov015Vec, self, 0x18c), &res);
+    FLD(Ov015Vec, self, 0x8) = res;
+    {
+        s32 deg = FLD(s32, self, 0x3c);
+        Ov015SetFovy(&FLD(Ov015Persp, self, 0x2c), deg > 0xf000 ? deg - 0xc00 : 0xf000);
+    }
+    p = FLD(Ov015Vec, self, 0x8);
+    t = FLD(Ov015Vec, self, 0x14);
+    up = FLD(Ov015Vec, self, 0x20);
+    FLD(Ov015Vec, self, 0xc4) = p;
+    d2.x = t.x - p.x;
+    d2.y = t.y - p.y;
+    d2.z = t.z - p.z;
+    VEC_Normalize(&d2, &d2);
+    c.x = (s32)(((s64)d2.y * up.z - (s64)d2.z * up.y + 0x800) >> 12);
+    c.y = (s32)(((s64)d2.z * up.x - (s64)d2.x * up.z + 0x800) >> 12);
+    c.z = (s32)(((s64)d2.x * up.y - (s64)d2.y * up.x + 0x800) >> 12);
+    VEC_Normalize(&c, &c);
+    MTX_RotAxis33(&m, &c, FX_SinCosTable_[0xdfc * 2], FX_SinCosTable_[0xdfc * 2 + 1]);
+    MTX_MultVec33(&d2, &m, &r);
+    VEC_Add(&r, &p, &r);
+    FLD(Ov015Vec, self, 0xd0) = r;
+    Ov015SetFovy(&FLD(Ov015Persp, self, 0xe8), 0x1e000);
+}
+
+void func_ov015_021feb34(u8 *self) {
+    Ov015Vec a;
+    Ov015Vec o;
+    Ov015Vec res;
+    Ov015Vec d;
+    Ov015Vec d2;
+    Ov015Vec c;
+    Ov015Mtx33 m;
+    Ov015Vec r;
+    Ov015Vec p;
+    Ov015Vec up;
+    Ov015Vec t;
+    a = FLD(Ov015Vec, self, 0x180);
+    o = FLD(Ov015Vec, self, 0x14);
+    func_02049244(&o, 0x19a, &o, &a, 0x29);
+    FLD(Ov015Vec, self, 0x14) = o;
+    d.x = FLD(s32, self, 0x18c) - o.x;
+    d.y = FLD(s32, self, 0x190) - o.y;
+    d.z = FLD(s32, self, 0x194) - o.z;
+    VEC_Normalize(&d, &d);
+    VEC_MultAdd(FLD(s32, self, 0x198), &d, &FLD(Ov015Vec, self, 0x18c), &res);
+    FLD(Ov015Vec, self, 0x8) = res;
+    {
+        s32 deg = FLD(s32, self, 0x3c);
+        Ov015SetFovy(&FLD(Ov015Persp, self, 0x2c), deg < 0x1e000 ? deg + 0xc00 : 0x1e000);
+    }
     p = FLD(Ov015Vec, self, 0x8);
     t = FLD(Ov015Vec, self, 0x14);
     up = FLD(Ov015Vec, self, 0x20);

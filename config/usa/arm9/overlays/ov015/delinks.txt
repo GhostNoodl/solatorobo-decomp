@@ -11,7 +11,7 @@ src/ov015/ov015_021fa6a0.cpp:
 
 src/ov015/ov015_021fb408.cpp:
     complete
-    .text       start:0x021fb408 end:0x021fb5d4
+    .text       start:0x021fb408 end:0x021fb758
 
 src/ov015/ov015_021fb758.cpp:
     complete
@@ -23,11 +23,7 @@ src/ov015/ov015_021fce4c.cpp:
 
 src/ov015/ov015_021fd00c.cpp:
     complete
-    .text       start:0x021fd00c end:0x021fd900
-
-src/ov015/ov015_021fe218.cpp:
-    complete
-    .text       start:0x021fe218 end:0x021fee54
+    .text       start:0x021fd00c end:0x021fee54
 
 src/ov015/ov015_021fee54.cpp:
     complete
