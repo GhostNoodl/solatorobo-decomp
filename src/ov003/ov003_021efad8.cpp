@@ -192,6 +192,154 @@ static inline s32 Ov003Bx_MaxDist(const Ov003BxVec *a, const Ov003BxVec *b) {
     return dx;
 }
 
+#define BXF(T, p, off) (*(T *)((u8 *)(p) + (off)))
+
+typedef struct {
+    u16 unk_c2_0 : 1;
+    u16 unk_c2_1 : 3;
+    u16 unk_c2_4 : 1;
+} Ov003BxMdlBits;
+
+typedef struct {
+    u16 id;
+    u16 kind;
+    u16 unk_04[4];
+    s16 unk_0c;
+} Ov003BxSpawnInfo;
+
+typedef struct {
+    u8 unk_00[0x16];
+    u8 unk_16_0 : 1;
+} Ov003BxSpawned;
+
+extern void *data_ov000_021ccd64;
+extern s32 func_02040528(s32 n);
+extern s32 func_02040498(s32 n);
+extern BOOL func_01ffc584(Ov003BxVec *a, Ov003BxVec *b, s32 r, s32 h);
+extern void func_0203f324(Ov003BxCtl *ctl);
+extern void *func_0206fef8(u16 id);
+extern Ov003BxSpawned *func_ov000_0218bf1c(void *mgr, Ov003BxSpawnInfo *info, void *pos, Ov003BxRot *rot, u16 a);
+
+static inline void Ov003Bx_SetScale(void *m, s32 s) {
+    BXF(s32, m, 0xa8) = s;
+    BXF(s32, m, 0xac) = s;
+    BXF(s32, m, 0xb0) = s;
+}
+
+void func_ov003_021ef70c(Ov003Bx *self) {
+    BOOL ok = FALSE;
+    Ov003BxPlayer *pl;
+    switch (self->work->state) {
+    case 0: {
+        Ov003BxS44 *s;
+        Ov003BxCtl *ctl;
+        BXF(Ov003BxMdlBits, self->model, 0xc2).unk_c2_0 = 0;
+        BXF(Ov003BxMdlBits, self->model, 0xc2).unk_c2_4 = 0;
+        s = self->unk_44;
+        if (s != NULL) {
+            s->unk_22_0 = 0;
+            s->unk_22_1 = 0;
+        }
+        ctl = self->ctl;
+        ctl->unk_9a_0 = 0;
+        ctl->unk_9a_3 = 0;
+        func_0203f364(ctl);
+        BXF(s32, self->ctl, 0x30) = 0;
+        BXF(s32, self->ctl, 0x4c) = 0x14000;
+        BXF(s32, BXF(void *, self, 0x3c), 0xc) = 0x14000;
+        if (self->unk_1a >= 1) {
+            s32 r = self->unk_1c << 4;
+            self->pos.x += func_02040528(r);
+            self->pos.z += func_02040528(r);
+        }
+        if (self->unk_b0->unk_01 == 0) {
+            self->rot.y = func_02040498(0xffff);
+        }
+        self->work->state++;
+    }
+    case 1:
+        if (BXF(s16, self, 0x1e) != 0) {
+            self->work->timer = func_02040498(0x15);
+            ok = TRUE;
+        } else {
+            pl = func_ov000_0219bf90();
+            if (pl != NULL) {
+                Ov003BxVec v;
+                v.x = self->pos.x;
+                v.y = self->pos.y;
+                v.z = self->pos.z;
+                v.y -= 0x4000;
+                if (func_01ffc584(&pl->pos, &v, BXF(s32, pl, 0x64) + 0x8000, 0x8000)) {
+                    func_ov000_0218996c(6, 0x16);
+                    func_02049f44(data_02097e4c, 0x53, &self->pos, 0);
+                    if (self->unk_1a < 0) {
+                        self->pos = pl->pos;
+                    }
+                    ok = TRUE;
+                }
+            }
+        }
+        if (!ok) {
+            return;
+        }
+        BXF(Ov003BxMdlBits, self->model, 0xc2).unk_c2_0 = true;
+        Ov003Bx_SetScale(self->model, 0);
+        self->pos.y += 0x7800;
+        self->work->state++;
+        return;
+    case 2: {
+        Ov003BxS44 *s;
+        Ov003BxCtl *ctl;
+        self->work->timer++;
+        if (self->work->timer == 0x16) {
+            func_ov000_0218996c(10, 0x19);
+            func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
+            return;
+        }
+        if (self->work->timer <= 0x23) {
+            return;
+        }
+        s = self->unk_44;
+        if (s != NULL) {
+            s->unk_22_0 = true;
+            s->unk_22_1 = 1;
+        }
+        ctl = self->ctl;
+        ctl->unk_9a_0 = true;
+        ctl->unk_9a_3 = 1;
+        func_0203f324(ctl);
+        {
+            u8 *info = (u8 *)func_0206fef8(BXF(u16, self, 0xe));
+            void *m = self->model;
+            Ov003Bx_SetScale(m, BXF(s16, info, 0x10));
+        }
+        BXF(u16, self->unk_4c, 0x1c) = BXF(u16, self, 0xc);
+        self->unk_a0 = -0x59a;
+        BXF(s32, self, 0xa8) = 0x52;
+        func_ov000_02198360(self->work, 4, 0);
+        if (self->unk_1a > 1) {
+            Ov003BxSpawnInfo info;
+            Ov003BxSpawned *o;
+            s32 i;
+            info.id = BXF(u16, self, 0xe);
+            info.kind = BXF(u16, self, 0xe) & 0xf000;
+            for (i = 0; i < 4; i++) {
+                info.unk_04[i] = 0;
+            }
+            info.unk_0c = -1;
+            info.unk_04[1] = self->unk_1a - 1;
+            info.unk_04[2] = self->unk_1c;
+            info.unk_04[3] = 1;
+            o = func_ov000_0218bf1c(data_ov000_021ccd64, &info, (u8 *)self + 0x84, &self->rot, 0xffff);
+            if (o != NULL) {
+                o->unk_16_0 = true;
+            }
+        }
+        return;
+    }
+    }
+}
+
 static inline BOOL Ov003Bx_Flag(Ov003BxS4c *p) {
     return p->unk_18_2 ? TRUE : FALSE;
 }

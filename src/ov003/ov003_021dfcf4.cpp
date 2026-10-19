@@ -36,7 +36,9 @@ typedef struct {
 } Ov003FvLv;
 
 typedef struct {
-    u8 unk_00[0x68];
+    u8 unk_00[0x44];
+    Ov003FvCol col44;
+    u8 unk_47[0x21];
     Ov003FvCol col;
 } Ov003FvArea;
 
@@ -97,6 +99,7 @@ extern const s16 FX_SinCosTable_[];
 extern void func_02049564(void *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
 extern void func_ov000_0218999c(s32 a, s32 b);
+extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern Ov003FvPlayer *func_ov000_0219bf90(void);
 extern void func_ov000_021b6b4c(Ov003FvCtx *ctx, u16 a, Ov003FvVec *v);
@@ -145,6 +148,108 @@ static inline void Ov003Fv_Bgm(Ov003FvSnd *q, u16 id) {
     q->unk_74 = id;
     q->unk_70 = 0;
 }
+
+void func_ov003_021df8fc(Ov003Fv *self) {
+    u8 r;
+    Ov003FvGame *gm;
+    Ov003FvPlayer *pl;
+    Ov003FvArea *area;
+    Ov003FvWork *w;
+    u8 g;
+    u8 b;
+    Ov003FvVec d;
+    Ov003FvVec v;
+    Ov003FvMtx m;
+    Ov003FvCol col;
+    w = self->work;
+    switch (w->state) {
+    case 0:
+        func_02049564(data_02097e4c, 1, 1);
+        func_ov000_02187a20(data_ov000_021ccd54, 2);
+        self->unk_84.x = 0;
+        self->unk_84.y = 0;
+        self->unk_84.z = 0;
+        self->unk_9c = 0;
+        self->unk_a0 = 0;
+        self->work->state++;
+        return;
+    case 1:
+        if (Ov003Fv_HasEvent(data_ov000_021ccd54, 0x25)) {
+            return;
+        }
+        func_ov000_0218996c(5, 0xf);
+        func_02049a48(data_02097e4c, 0x46, -1, -1, -1);
+        self->work->state++;
+        return;
+    case 2:
+        w->timer++;
+        if (w->timer > 300 && self->unk_1a == 0) {
+            area = data_ov000_021ccd6c->area;
+            if (Ov003Fv_Level(data_ov000_021ccd6c->lv) >= 2) {
+                pl = func_ov000_0219bf90();
+                if (!(pl->unk_b24_1 ? TRUE : FALSE) && Ov003Fv_SameCol(&data_ov000_021ccd54->unk_ca, Ov003Fv_PlCol(pl))) {
+                    data_ov000_021ccd6c->unk_1f0 = self->unk_0e;
+                    d.x = pl->unk_75c.x;
+                    d.y = pl->unk_75c.y;
+                    d.z = pl->unk_75c.z;
+                    d.x -= self->pos.x;
+                    d.y -= self->pos.y;
+                    d.z -= self->pos.z;
+                    func_ov000_021b6b4c(data_ov000_021ccd6c, pl->unk_0c, &d);
+                }
+                func_020627a0(self->unk_0e, self->unk_0c);
+                func_020627dc(4);
+                data_ov000_021ccd54->unk_ac = 1;
+                r = area->col44.r;
+                g = area->col44.g;
+                b = area->col44.b;
+                {
+                    gm = data_ov000_021ccd54;
+                    if (r == 0xff) {
+                        r = gm->unk_ca.r;
+                    }
+                    if (g == 0xff) {
+                        g = gm->unk_ca.g;
+                    }
+                    if (b == 0xff) {
+                        b = gm->unk_ca.b;
+                    }
+                }
+                func_0203cc58(0x3c000, 2, 0);
+                func_ov000_02188140(data_ov000_021ccd54, 1, 0, 0);
+                col.r = r;
+                col.g = g;
+                col.b = b;
+                func_ov000_02188ca0(&col, 1);
+            }
+            self->work->state++;
+        }
+        if (self->work->timer == 0x20) {
+            Ov003Fv_Bgm(data_02097e48, 0x222);
+        }
+        if (self->work->timer == 0x60) {
+            func_02049a48(data_02097e4c, 0x223, -1, -1, -1);
+        }
+        if ((self->work->timer & 0x3f) == 0) {
+            func_ov000_0218999c(3, 10);
+        }
+        break;
+    }
+    self->unk_9c += 2;
+    if (self->unk_9c > 0x266) {
+        self->unk_9c = 0x266;
+    }
+    self->unk_a0 += self->unk_9c;
+    if (self->unk_a0 > 0xc800) {
+        self->unk_a0 -= 0xc800;
+    }
+    MTX_RotY33_(&m, FX_SinCosTable_[(self->rotY >> 4) * 2], FX_SinCosTable_[(self->rotY >> 4) * 2 + 1]);
+    v.x = -self->unk_a0;
+    v.y = 0;
+    v.z = 0;
+    MTX_MultVec33(&v, &m, &self->unk_84);
+}
+
 
 void func_ov003_021dfcf4(Ov003Fv *self) {
     u8 r;

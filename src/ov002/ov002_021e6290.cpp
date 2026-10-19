@@ -2,6 +2,30 @@
 
 extern "C" {
 
+void func_ov002_021e61b4(void *self) {
+    char name[0x10];
+    void *anm;
+    FIELD(self, 0x4, s32) = 3;
+    MI_CpuFill8(name, 0, sizeof(name));
+    if (FIELD(self, 0x54, void *) != NULL) {
+        STD_CopyLString(name, FIELD(self, 0x54, void *), sizeof(name));
+    } else {
+        STD_CopyLString(name, FIELD(self, 0x50, void *), sizeof(name));
+    }
+    anm = NNS_G3dGetAnmByName(*FIELD(self, 0x60, void **), name);
+    FIELD(self, 0x64, void *) = func_0203de84(0x100, 4);
+    FIELD(FIELD(self, 0x64, void *), 0x8, void *) = anm;
+    FIELD(FIELD(self, 0x64, void *), 0x0, s32) = 0;
+    FIELD(FIELD(self, 0x64, void *), 0x4, s32) = 0x1000;
+    FIELD(FIELD(self, 0x64, void *), 0xc, void *) = (void *)NNS_G3dFuncAnmJntNsBcaDefault;
+    FIELD(FIELD(self, 0x64, void *), 0x10, s32) = 0;
+    FIELD(FIELD(self, 0x64, void *), 0x14, s32) = 0;
+    FIELD(FIELD(self, 0x64, void *), 0x18, u8) = 0x7f;
+    FIELD(FIELD(self, 0x64, void *), 0x19, u8) = 0;
+    func_ov002_021e63f0(self);
+    func_ov002_021e6290(self);
+}
+
 void func_ov002_021e6290(void *self) {
     void *m;
     s32 cur;

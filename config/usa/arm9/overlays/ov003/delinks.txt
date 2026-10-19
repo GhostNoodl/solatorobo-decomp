@@ -114,7 +114,7 @@ src/ov003/ov003_021f3a94.c:
 
 src/ov003/ov003_021efad8.cpp:
     complete
-    .text       start:0x021efad8 end:0x021efde8
+    .text       start:0x021ef70c end:0x021efde8
 
 src/ov003/ov003_021ef558.cpp:
     complete
@@ -480,7 +480,7 @@ src/ov003/ov003_021f1624.cpp:
 
 src/ov003/ov003_021dfcf4.cpp:
     complete
-    .text       start:0x021dfcf4 end:0x021e00e8
+    .text       start:0x021df8fc end:0x021e00e8
 
 src/ov003/ov003_021e5e70.cpp:
     complete

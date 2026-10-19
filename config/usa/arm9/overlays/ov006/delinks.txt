@@ -120,7 +120,7 @@ src/ov006/ov006_021d0188.cpp:
 
 src/ov006/ov006_021d0f44.cpp:
     complete
-    .text       start:0x021d0f44 end:0x021d0f50
+    .text       start:0x021d0f44 end:0x021d1490
 
 src/ov006/ov006_021d1694.cpp:
     complete
