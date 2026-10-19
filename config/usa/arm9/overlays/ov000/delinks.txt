@@ -2629,6 +2629,10 @@ src/ov000/Oam3D_021c79a0.cpp:
     complete
     .text       start:0x021c79a0 end:0x021c7af8
 
+src/ov000/G3_021c7af8.cpp:
+    complete
+    .text       start:0x021c7af8 end:0x021c7f88
+
 src/ov000/Oam3D_021570f0.cpp:
     complete
     .text       start:0x021570f0 end:0x0215724c
@@ -2784,6 +2788,10 @@ src/ov000/Ser_02181af4.cpp:
 src/ov000/Lo_02178b10.cpp:
     complete
     .text       start:0x02178b10 end:0x02178ccc
+
+src/ov000/Robo_0219c8e0.cpp:
+    complete
+    .text       start:0x0219c8e0 end:0x0219cbf8
 
 src/ov000/Robo_0219cbf8.cpp:
     complete
@@ -3148,6 +3156,10 @@ src/ov000/Lo_021c56c0.cpp:
 src/ov000/Hit_0219a8bc.cpp:
     complete
     .text       start:0x0219a8bc end:0x0219af3c
+
+src/ov000/Hit_0219af3c.cpp:
+    complete
+    .text       start:0x0219af3c end:0x0219b3b4
 
 src/ov000/Area_02165e2c.cpp:
     complete
