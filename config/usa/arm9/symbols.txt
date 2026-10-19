@@ -2729,12 +2729,15 @@ __ctype_mapC kind:data(any) addr:0x02070ddc
 __ptmf_null kind:data(any) addr:0x02070edc
 FX_SinCosTable_ kind:data(any) addr:0x02071060
 FX_AtanTable_ kind:data(any) addr:0x02075060
+data_02075164 kind:data(any) addr:0x02075164
+data_02075174 kind:data(any) addr:0x02075174
 MATHi_SHA1PadLead kind:data(any) addr:0x020751d4
 MATHi_SHA1PadAlign kind:data(any) addr:0x020751d5
 MATHi_HMACSHA1FuncsTemplate kind:data(any) addr:0x020751e0
 data_020751fc kind:data(any) addr:0x020751fc
 SNDi_DecibelTable kind:data(any) addr:0x02075210
 sVolumeTable kind:data(any) addr:0x02075310
+data_020755e4 kind:data(any) addr:0x020755e4
 data_02075644 kind:data(any) addr:0x02075644
 data_0207566c kind:data(any) addr:0x0207566c
 data_02075678 kind:data(any) addr:0x02075678

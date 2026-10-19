@@ -1,4 +1,5 @@
 #include "nnsys/snd/sndarc_stream.h"
+#include "nitro/snd.h"
 
 BOOL func_020317c4(NNSSndHeap *heap) {
     int i;
@@ -83,5 +84,52 @@ void func_0203199c(StrmHandle *handle) {
     if (player != NULL) {
         player->handle = NULL;
         handle->player = NULL;
+    }
+}
+
+void NNSi_SndArcStrmMain(void) {
+    StrmPlayer *player;
+    int playerNo;
+
+    for (playerNo = 0; playerNo < 4; playerNo++) {
+        player = &data_020965e0[playerNo];
+
+        if (!player->active) {
+            continue;
+        }
+
+        if (player->unk_11c == 0) {
+            func_02031e48(player);
+            continue;
+        }
+
+        if (player->startReq && player->unk_120 != 0) {
+            NNS_SndStrmStart(player->strm);
+            player->playing = TRUE;
+            player->startReq = FALSE;
+        }
+
+        if (!player->playing) {
+            continue;
+        }
+
+        NNSi_SndFaderUpdate(&player->fader);
+
+        {
+            int volume = SNDi_DecibelTable[player->volume];
+            int fader = NNSi_SndFaderGet(&player->fader) >> 8;
+            int user = player->userVolume;
+            // "- -volume" only swaps the operands of the add to the target's order.
+            volume = SNDi_DecibelTable[user] + (SNDi_DecibelTable[fader] - -volume);
+
+            if (volume != player->curVolume) {
+                NNS_SndStrmSetVolume(player->strm, volume);
+                player->curVolume = volume;
+            }
+        }
+
+        if (player->stopReq && NNSi_SndFaderIsFinished(&player->fader)) {
+            func_02031e48(player);
+        }
     }
 }

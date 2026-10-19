@@ -8,6 +8,8 @@ import sys
 import subprocess
 from typing import Any, Generator
 
+from mwcc_versions import FILE_MWCC_VERSIONS
+
 import ninja_syntax
 from get_platform import Platform, get_platform
 
@@ -284,7 +286,7 @@ def main():
         n.newline()
 
         # -MMD excludes all includes instead of just system includes for some reason, so use -MD instead.
-        mwcc_cmd = f'{WINE} {SJISWRAP} "{CC}" {CC_FLAGS} {CC_INCLUDES} $cc_flags -d $game_version -MD -c $in -o $basedir'
+        mwcc_cmd = f'{WINE} {SJISWRAP} "$cc" {CC_FLAGS} {CC_INCLUDES} $cc_flags -d $game_version -MD -c $in -o $basedir'
         mwcc_implicit = [CC, SJISWRAP]
         if platform.system != "windows":
             transform_dep = "tools/transform_dep.py"
@@ -551,12 +553,17 @@ def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: lis
             cc_flags.append("-lang=c++")
         elif is_c(source_file):
             cc_flags.append("-lang=c")
+        cc = CC
+        mwcc_version = FILE_MWCC_VERSIONS.get(Path(os.path.relpath(source_file, root_path)).as_posix())
+        if mwcc_version is not None:
+            cc = os.path.join('.', str(mwcc_root / mwcc_version / "mwccarm.exe"))
         n.build(
             inputs=str(source_file),
             implicit=mwcc_implicit,
             rule="mwcc",
             outputs=str(src_obj_path.with_suffix(".o")),
             variables={
+                "cc": cc,
                 "game_version": project.game_version,
                 "cc_flags": " ".join(cc_flags),
                 "basedir": os.path.dirname(src_obj_path),

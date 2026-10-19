@@ -2,7 +2,7 @@
 #define NNSYS_FND_EXPHEAP_INTERNAL_H
 
 // Shared by expheap.c and expheap_2.c. The SDK keeps all of this in one file with static helpers;
-// it is split around AllocUsedBlockFromFreeBlock, which does not match yet.
+// expheap.c (up to AllocUsedBlockFromFreeBlock) is built with dsi/1.1, see tools/mwcc_versions.py.
 
 #include "nnsys/fnd/expheap.h"
 

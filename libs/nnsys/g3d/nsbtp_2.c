@@ -2,7 +2,30 @@
 
 #pragma force_active on
 
-void SetTexParamaters_ (const NNSG3dResTex * pTex, const NNSG3dResName * pTexName, NNSG3dMatAnmResult * pResult);
+void SetTexParamaters_ (const NNSG3dResTex * pTex, const NNSG3dResName * pTexName, NNSG3dMatAnmResult * pResult)
+{
+    const NNSG3dResDictTexData * pData = NNS_G3dGetTexDataByName(pTex, pTexName);
+
+    {
+        const u32 vramOffset = ((pData->texImageParam & NNS_G3D_TEXIMAGE_PARAM_TEXFMT_MASK) != (GX_TEXFMT_COMP4x4 << NNS_G3D_TEXIMAGE_PARAM_TEXFMT_SHIFT)) ?
+                               NNS_GfdGetTexKeyAddr(pTex->texInfo.vramKey) >> NNS_GFD_TEXKEY_ADDR_SHIFT :
+                               NNS_GfdGetTexKeyAddr(pTex->tex4x4Info.vramKey) >> NNS_GFD_TEXKEY_ADDR_SHIFT;
+
+        pResult->prmTexImage &= 0xc00f0000;
+        pResult->prmTexImage |= pData->texImageParam + vramOffset;
+    }
+
+    pResult->origWidth = (u16)((pData->extraParam & NNS_G3D_TEXIMAGE_PARAMEX_ORIGW_MASK) >> NNS_G3D_TEXIMAGE_PARAMEX_ORIGW_SHIFT);
+    pResult->origHeight = (u16)((pData->extraParam & NNS_G3D_TEXIMAGE_PARAMEX_ORIGH_MASK) >> NNS_G3D_TEXIMAGE_PARAMEX_ORIGH_SHIFT);
+
+    {
+        u32 w = (pData->extraParam & NNS_G3D_TEXIMAGE_PARAMEX_ORIGW_MASK) >> NNS_G3D_TEXIMAGE_PARAMEX_ORIGW_SHIFT;
+        u32 h = (pData->extraParam & NNS_G3D_TEXIMAGE_PARAMEX_ORIGH_MASK) >> NNS_G3D_TEXIMAGE_PARAMEX_ORIGH_SHIFT;
+
+        pResult->magW = (w != pResult->origWidth) ? FX_Div((fx32)(w << FX32_SHIFT), (fx32)(pResult->origWidth << FX32_SHIFT)) : FX32_ONE;
+        pResult->magH = (h != pResult->origHeight) ? FX_Div((fx32)(h << FX32_SHIFT), (fx32)(pResult->origHeight << FX32_SHIFT)) : FX32_ONE;
+    }
+}
 
 void SetPlttParamaters_ (const NNSG3dResTex * pTex, const NNSG3dResName * pPlttName, NNSG3dMatAnmResult * pResult)
 {

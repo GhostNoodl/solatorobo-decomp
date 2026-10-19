@@ -84,3 +84,48 @@ BOOL OS_TryLockMutex(OSMutex *mutex) {
     (void)OS_RestoreInterrupts(enabled);
     return locked;
 }
+
+// Built at a higher optimization level: at the default level the mutex word stays in a register
+// for the thread-owned case instead of being reloaded before the shared decrement.
+#pragma optimization_level 3
+void OSi_UnlockMutexCore(OSMutex *mutex, u32 type) {
+    OSIntrMode enabled = OS_DisableInterrupts();
+    OSThread *current = OS_GetCurrentThread();
+    BOOL unlocked = FALSE;
+
+    if (type != OS_MUTEX_TYPE_NONE && type != OSi_GetMutexType(mutex)) {
+        (void)OS_RestoreInterrupts(enabled);
+        return;
+    }
+
+    switch (OSi_GetMutexType(mutex)) {
+    case OS_MUTEX_TYPE_STD:
+    case OS_MUTEX_TYPE_W:
+        if (mutex->thread == current) {
+            OSi_DecreaseMutexCount(mutex);
+            if (OSi_GetMutexCount(mutex) == 0) {
+                unlocked = TRUE;
+            }
+        }
+        break;
+    case OS_MUTEX_TYPE_R:
+        OSi_DecreaseMutexCount(mutex);
+        if (OSi_GetMutexCount(mutex) == 0) {
+            unlocked = TRUE;
+        }
+        break;
+    default:
+        (void)OS_RestoreInterrupts(enabled);
+        return;
+    }
+
+    if (unlocked) {
+        OSi_DequeueItem(current, mutex);
+        mutex->thread = NULL;
+        OSi_SetMutexType(mutex, OS_MUTEX_TYPE_NONE);
+        OS_WakeupThread(&mutex->queue);
+    }
+
+    (void)OS_RestoreInterrupts(enabled);
+}
+#pragma optimization_level reset
