@@ -72,7 +72,43 @@ extern void func_02036838(ResMgr *mgr, char *name, int mode, int opt);
 
 
 void func_020416b4(TexObj *obj, int i);
-void func_02041440(TexObj *obj, const char *name, u8 owned);
+
+void func_02041440(TexObj *obj, const char *name, u8 owned) {
+    int i;
+    obj->owned = owned;
+    obj->unk_06c = 0;
+    obj->unk_070 = 0;
+    obj->entries = NULL;
+    obj->unk_07c = 0;
+    obj->count = 0;
+    obj->res = NULL;
+    obj->unk_074 = 0x1000;
+    obj->unk_084 = 0;
+    obj->unk_085 = 0;
+    PlttRes_Init(&obj->pltt);
+    obj->plttPtr = NULL;
+    obj->texKey = 0;
+    for (i = 0; i < 3; i++) {
+        obj->pairs[i].a = 0;
+        obj->pairs[i].b = 0;
+        MTX_Identity22_(&obj->vecs[i]);
+    }
+    NNS_G2dInitImageProxy(obj);
+    obj->unk_150 = 0;
+    obj->unk_144 = 0x800;
+    obj->unk_148 = 0x800;
+    obj->unk_14c = 0x800;
+    obj->unk_154 = 0x7fff;
+    obj->unk_158 = 0;
+    obj->unk_15c = 0;
+    obj->arcName[0] = 0;
+    if (name == NULL) {
+        obj->name[0] = 0;
+        return;
+    }
+    STD_GetStringLength(name);
+    STD_CopyString(obj->name, name);
+}
 
 void func_02041558(TexObj *obj) {
     u16 i;

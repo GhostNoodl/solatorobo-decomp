@@ -155,6 +155,25 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
     func_02042628(model, tex, part, 0);
 }
 
-void func_02055ee0(GameScene *scene);
+void func_02055ee0(GameScene *scene) {
+    s32 t;
+    s32 sn;
+    Model *model;
+    if (scene->flag27 == 1) {
+        return;
+    }
+    t = FX_Div(scene->unk_018 << 12, 0x28000);
+    if (t >= 0x1000) {
+        scene->unk_018 = 0;
+        t = 0x1000;
+    }
+    sn = FX_SinCosTable_[((t << 14) >> 16) * 2];
+    model = scene->model;
+    model->x = 0x68000;
+    sn = GameScene_FxMul(sn, 0x6000) >> 12;
+    model->y = (sn + 0x50) << 12;
+    scene->model->unk_150 = -0x99a;
+    Model_ApplyPart(scene->model, 4);
+}
 
 }

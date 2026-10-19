@@ -130,7 +130,25 @@ void func_0206dedc(char *dst, const LangId *id) {
     STD_ConcatenateString(dst, data_02082bf8[1]);
 }
 
-void func_0206dfd4(char *dst, const LangId *id);
+void func_0206dfd4(char *dst, const LangId *id) {
+    LangGroup *group = &data_0214b0a8->groups[id->group];
+    int len;
+
+    STD_CopyString(dst, data_0208cb70);
+    STD_ConcatenateString(dst, group->dir);
+    STD_ConcatenateString(dst, data_0208cb6b);
+    len = STD_GetStringLength(dst);
+    LANGDATA_PUTNUM(dst, len, id->num);
+    dst[len] = '_';
+    {
+        u8 n; int len2; u8 d;
+        n = id->num2;
+        len2 = len + 1;
+        LANGDATA_PUTNUM2(dst, len2, n, d)
+        dst[len2] = 0;
+    }
+    STD_ConcatenateString(dst, data_02082bf8[1]);
+}
 
 u8 *func_0206e150(LangBlockA *b);
 

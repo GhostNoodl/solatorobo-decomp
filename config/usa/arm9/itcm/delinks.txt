@@ -1,6 +1,18 @@
     .text       start:0x01ff8000 end:0x01ffcab8 kind:code align:32
     .bss        start:0x01ffcac0 end:0x01ffcac0 kind:bss align:32
 
+src/Main/Math/MathItcm_0.cpp:
+    complete
+    .text       start:0x01ff8330 end:0x01ff8464
+
+src/Main/Hit/HitMeshItcm.cpp:
+    complete
+    .text       start:0x01ffb83c end:0x01ffbd6c
+
+src/Main/Hit/HitRayItcm.cpp:
+    complete
+    .text       start:0x01ffbd6c end:0x01ffc128
+
 src/Main/Math/MathItcm.cpp:
     complete
     .text       start:0x01ffc128 end:0x01ffc318

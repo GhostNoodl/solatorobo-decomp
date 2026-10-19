@@ -422,6 +422,7 @@ extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void *func_0203dd9c(u32 size);
 extern void VEC_Add(const EffectVec *a, const EffectVec *b, EffectVec *out);
+extern void VEC_MultAdd(s32 a, const EffectVec *v1, const EffectVec *v2, EffectVec *out);
 extern char data_0208c330[];
 
 typedef struct EffectGlb {

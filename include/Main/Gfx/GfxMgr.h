@@ -119,9 +119,9 @@ typedef struct GfxMgr {
     /* 0x000 */ int unk_000;
     /* 0x004 */ u32 unk_004;
     /* 0x008 */ u32 unk_008;
-    /* 0x00c */ u16 unk_00c;
-    /* 0x00e */ u16 unk_00e;
-    /* 0x010 */ u16 unk_010;
+    /* 0x00c */ s16 unk_00c;
+    /* 0x00e */ s16 unk_00e;
+    /* 0x010 */ s16 unk_010;
     /* 0x012 */ u16 unk_012;
     /* 0x014 */ GfxFont *fonts[10];
     /* 0x03c */ u8 fontHeights[10];
@@ -133,8 +133,8 @@ typedef struct GfxMgr {
     /* 0x658 */ u32 unk_658;
     /* 0x65c */ u32 unk_65c;
     /* 0x660 */ VramPool pools[2];
-    /* 0x678 */ u16 unk_678;
-    /* 0x67a */ u16 unk_67a;
+    /* 0x678 */ s16 unk_678;
+    /* 0x67a */ s16 unk_67a;
     /* 0x67c */ void *unk_67c;
     /* 0x680 */ u32 unk_680;
     /* 0x684 */ u8 unk_684[0x18];

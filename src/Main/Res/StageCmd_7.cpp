@@ -260,4 +260,32 @@ int func_0205f354(StageResSlot *slot) {
 }
 
 
+int func_0205f47c(StageResSlot *slot) {
+    void *o = NULL;
+    StageObj3D *l = NULL;
+    u16 id;
+    s32 m;
+    if (Field_HasEvent(0xc)) {
+        return -0x63;
+    }
+    id = slot->args[0];
+    if (id == 0xffff) {
+        l = (StageObj3D *)data_02149efc.unk_14;
+    } else if (id != 0) {
+        o = func_ov000_0218e4cc(data_ov000_021ccd68, id & 0xf000);
+    } else if (slot->args[1] == 0xffff) {
+        l = Stage_FindObj3DByIdx(data_02fe1534.unk_26);
+    } else {
+        l = Stage_FindObj3DByIdx(slot->args[1]);
+    }
+    m = slot->args[2] == 10 ? 6 : slot->args[2] + 0x21;
+    if (o != NULL) {
+        func_ov000_0218e044(o, slot->args[0], m);
+    }
+    if (l != NULL) {
+        func_ov000_0218d46c(l, 0xffff, m);
+    }
+    return 1;
+}
+
 }

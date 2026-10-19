@@ -43,9 +43,11 @@ typedef struct StageFlags {
     /* 0x004 */ u32 frameCount;
     /* 0x008 */ u8 unk_008;
     /* 0x009 */ u8 unk_009;
-    /* 0x00a */ u8 unk_00a[2];
+    /* 0x00a */ u16 unk_00a;
     /* 0x00c */ u32 unk_00c;
-    /* 0x010 */ u8 unk_010[8];
+    /* 0x010 */ u32 unk_010;
+    /* 0x014 */ u16 unk_014;
+    /* 0x016 */ u16 unk_016;
     /* 0x018 */ union {
         u16 unk_018;
         struct {
@@ -57,7 +59,8 @@ typedef struct StageFlags {
         } bits18;
     };
     /* 0x01a */ u8 unk_01a;
-    /* 0x01b */ u8 unk_01b[5];
+    /* 0x01b */ u8 unk_01b;
+    /* 0x01c */ u32 unk_01c;
     /* 0x020 */ u32 unk_020;
     /* 0x024 */ u16 unk_024;
     /* 0x026 */ u8 unk_026[2];
@@ -65,7 +68,7 @@ typedef struct StageFlags {
     /* 0x02a */ u8 items[100];
     /* 0x08e */ StageItemEntry entries[STAGE_ITEM_ENTRY_MAX];
     /* 0x122 */ u8 bits[8];
-    /* 0x12a */ u8 unk_12a[2];
+    /* 0x12a */ u16 shapeId;
     /* 0x12c */ u8 unk_12c[5];
     /* 0x131 */ StageColor color2;
     /* 0x134 */ StageColor color;
@@ -84,8 +87,12 @@ typedef struct StageFlags {
     /* 0x518 */ u32 unk_518_28 : 4;
     /* 0x51c */ u8 buf[0xf0];
     /* 0x60c */ u32 slots[2];
-    /* 0x614 */ u8 unk_614[0x10];
-    /* 0x624 */ u8 unk_624[0x14];
+    /* 0x614 */ u32 unk_614;
+    /* 0x618 */ u32 unk_618;
+    /* 0x61c */ u16 unk_61c;
+    /* 0x61e */ u8 unk_61e[2];
+    /* 0x620 */ u32 unk_620;
+    /* 0x624 */ u32 unk_624[5];
     /* 0x638 */ u8 unk_638;
     /* 0x639 */ u8 unk_639;
     /* 0x63a */ u8 unk_63a[2];

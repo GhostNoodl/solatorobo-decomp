@@ -542,3 +542,43 @@ void func_02050e94(Model *model);
 void func_02050ea4(Model *model, u32 v);
 
 }
+
+extern "C" {
+
+void func_0204dff8(TextWin *win) {
+    s16 t = win->unk_18;
+    s32 r;
+    s16 s;
+    if (win->model == NULL) {
+        if (win->flag31 ? TRUE : FALSE) {
+            Model *m = (Model *)func_0203dd9c(0x160);
+            if (m != NULL) {
+                Model_Init(m, data_0208cc8c, data_0208cb84, 0);
+            }
+            win->model = m;
+        } else {
+            Model *m = (Model *)func_0203dd9c(0x160);
+            if (m != NULL) {
+                Model_Init(m, data_0208cca0, data_0208cb74, 0);
+            }
+            win->model = m;
+        }
+        {
+            void *res = func_02035d5c(win->model->name);
+            func_020417e0(win->model, func_02034d88(res, win->model->unk_04c));
+        }
+        win->model->flags |= 2;
+        func_02041d9c(win->model, 0, 4);
+        return;
+    }
+    r = FX_Div(((u32)t % 40) << 12, 0x28000);
+    if (r >= 0x1000) {
+        r = 0x1000;
+    }
+    s = FX_SinCosTable_[((r << 14) >> 16) * 2];
+    Model_SetPos(win->model, (win->unk_1a - 0x80) << 12, (win->unk_1c + (TextWin_FxMul(s, 0x6000) >> 12) - 0x60) << 12);
+    win->model->unk_150 = win->unk_1e;
+    Model_ApplyPart(win->model, 4);
+}
+
+}

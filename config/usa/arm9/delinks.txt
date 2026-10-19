@@ -45,6 +45,10 @@ libs/msl/printf.c:
     .text       start:0x02005748 end:0x02006e48
     .data       start:0x0208ad80 end:0x0208adb0
 
+libs/msl/signal.c:
+    complete
+    .text       start:0x020077f4 end:0x0200791c
+
 libs/msl/string.c:
     complete
     .text       start:0x0200791c end:0x020079c0
@@ -928,6 +932,10 @@ src/Main/Gfx/GfxMgr_3.cpp:
     complete
     .text       start:0x0203a408 end:0x0203a5a4
 
+src/Main/Gfx/GfxMgrText.cpp:
+    complete
+    .text       start:0x0203aab0 end:0x0203acb8
+
 src/Main/Gfx/GfxSys.cpp:
     complete
     .text       start:0x0203b6a0 end:0x0203b70c
@@ -1004,7 +1012,7 @@ src/Main/Gfx/PlttRes_3.cpp:
 
 src/Main/Gfx/TexObj.cpp:
     complete
-    .text       start:0x02041558 end:0x020417e0
+    .text       start:0x02041440 end:0x020417e0
 
 src/Main/Gfx/TexObj_2.cpp:
     complete
@@ -1144,6 +1152,10 @@ src/Main/Gfx/TextWin.cpp:
     complete
     .text       start:0x0204c4d4 end:0x0204c4fc
 
+src/Main/Gfx/TextWinScan.cpp:
+    complete
+    .text       start:0x0204c6bc end:0x0204c7d0
+
 src/Main/Gfx/TextWin_2.cpp:
     complete
     .text       start:0x0204c7d0 end:0x0204cc18
@@ -1154,7 +1166,7 @@ src/Main/Gfx/TextWin_3.cpp:
 
 src/Main/Gfx/TextWin_4.cpp:
     complete
-    .text       start:0x0204d7e0 end:0x0204dff8
+    .text       start:0x0204d7e0 end:0x0204e218
 
 src/Main/Gfx/TextWin_5.cpp:
     complete
@@ -1167,6 +1179,10 @@ src/Main/Gfx/TextWin_6.cpp:
 src/Main/Gfx/TextWin_7.cpp:
     complete
     .text       start:0x0204f784 end:0x0204f804
+
+src/Main/Gfx/TextWinOam.cpp:
+    complete
+    .text       start:0x0204fc4c end:0x0204fd60
 
 src/Main/Gfx/TextWin_8.cpp:
     complete
@@ -1192,9 +1208,17 @@ src/Main/Gfx/Obj3D.cpp:
     complete
     .text       start:0x02051f3c end:0x02051f70
 
+src/Main/Sys/SceneShake.cpp:
+    complete
+    .text       start:0x02051f70 end:0x020520fc
+
 src/Main/Gfx/Obj3D_2.cpp:
     complete
     .text       start:0x020520fc end:0x02052178
+
+src/Main/Gfx/SceneDraw.cpp:
+    complete
+    .text       start:0x0205311c end:0x02053254
 
 src/Main/Gfx/Obj3D_3.cpp:
     complete
@@ -1222,7 +1246,7 @@ src/Main/Gfx/FieldMsg_2.cpp:
 
 src/Main/Sys/GameScene.cpp:
     complete
-    .text       start:0x02055aa4 end:0x02055ee0
+    .text       start:0x02055aa4 end:0x02055ff0
 
 src/Main/Sys/GameScene_2.cpp:
     complete
@@ -1314,7 +1338,7 @@ src/Main/Res/StageCmd_6.cpp:
 
 src/Main/Res/StageCmd_7.cpp:
     complete
-    .text       start:0x0205e818 end:0x0205f47c
+    .text       start:0x0205e818 end:0x0205f5c4
 
 src/Main/Res/StageCmd_8.cpp:
     complete
@@ -1326,7 +1350,7 @@ src/Main/Res/StageCmd_9.cpp:
 
 src/Main/Res/StageCmd_10.cpp:
     complete
-    .text       start:0x02060364 end:0x020605fc
+    .text       start:0x02060364 end:0x02060714
 
 src/Main/Res/StageCmd_11.cpp:
     complete
@@ -1376,6 +1400,10 @@ src/Main/Effect/Effect_6.cpp:
     complete
     .text       start:0x020671e8 end:0x0206723c
 
+src/Main/Effect/EffectBurst.cpp:
+    complete
+    .text       start:0x02067984 end:0x02067b08
+
 src/Main/Effect/EffectSpawn.cpp:
     complete
     .text       start:0x02067e9c end:0x02068508
@@ -1394,7 +1422,7 @@ src/Main/Effect/Effect_9.cpp:
 
 src/Main/Effect/Effect_10.cpp:
     complete
-    .text       start:0x02069184 end:0x02069300
+    .text       start:0x02069184 end:0x02069b3c
 
 src/Main/Effect/Effect_12.cpp:
     complete
@@ -1426,11 +1454,11 @@ src/Main/Save/StageFlags.cpp:
 
 src/Main/Save/StageFlags_2.cpp:
     complete
-    .text       start:0x0206c994 end:0x0206cadc
+    .text       start:0x0206c994 end:0x0206ccb8
 
 src/Main/Save/StageFlags_3.cpp:
     complete
-    .text       start:0x0206d02c end:0x0206d0d4
+    .text       start:0x0206ccb8 end:0x0206d0d4
 
 src/Main/Save/StageFlags_4.cpp:
     complete
@@ -1474,7 +1502,7 @@ src/Main/Lang/ParamKind.cpp:
 
 src/Main/Lang/LangData.cpp:
     complete
-    .text       start:0x0206dd6c end:0x0206dfd4
+    .text       start:0x0206dd6c end:0x0206e150
 
 src/Main/Lang/LangData_2.cpp:
     complete
@@ -1487,6 +1515,10 @@ src/Main/Lang/LangData_3.cpp:
 src/Main/Lang/LangData_4.cpp:
     complete
     .text       start:0x0206e8f0 end:0x0206ec48
+
+src/Main/Effect/Effect_11.cpp:
+    complete
+    .text       start:0x02069e04 end:0x02069f10
 
 src/Main/Effect/EffectSnd.cpp:
     complete

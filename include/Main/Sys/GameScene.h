@@ -65,7 +65,9 @@ struct GameScene {
     /* 0x008 */ u8 unk_008[0xc];
     /* 0x014 */ Model *model;
     /* 0x018 */ s16 unk_018;
-    /* 0x01a */ u8 unk_01a[0x9e];
+    /* 0x01a */ u8 unk_01a[0x6a];
+    /* 0x084 */ s32 shakeType;
+    /* 0x088 */ u8 unk_088[0x30];
     /* 0x0b8 */ u32 unk_b8_0 : 4;
     /* 0x0b8 */ u32 flag4 : 1;
     /* 0x0b8 */ u32 unk_b8_5 : 6;

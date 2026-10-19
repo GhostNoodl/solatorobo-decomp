@@ -117,4 +117,48 @@ int func_020605a4(StageResSlot *slot) {
     return 1;
 }
 
+static inline BOOL ObjPoolParam_HasRot(ObjPoolParam *prm) {
+    if (prm->ry == 0 && prm->rz == 0) {
+        return FALSE;
+    }
+    return TRUE;
+}
+
+int func_020605fc(StageResSlot *slot) {
+    ObjPoolParam *prm = (ObjPoolParam *)(slot->res->posEv->ev + slot->args[0] * 12);
+    if (slot->args[1] == 0) {
+        ObjPool *pool = data_02149efc.pool;
+        BOOL rot = ObjPoolParam_HasRot(prm);
+        if (rot) {
+            func_02059c98(pool, slot->args[0], prm, 0);
+        } else {
+            ObjPoolEntry *e = func_02059b14(pool, slot->args[0], prm);
+            HitSphere *h;
+            e->kind = 3;
+            h = (HitSphere *)func_0203dd9c(sizeof(HitSphere));
+            if (h != NULL) {
+                func_0203f260(h);
+            }
+            e->obj = h;
+            h->radius = e->unk_18;
+            ((HitSphere *)e->obj)->group = -1;
+            h = (HitSphere *)e->obj;
+            h->unk_0c = h->pos;
+            h->pos.x = e->x;
+            h->pos.y = e->y;
+            h->pos.z = e->z;
+            if (((HitSphere *)e->obj)->active != 1) {
+                func_0203f324((HitSphere *)e->obj);
+            }
+        }
+    } else {
+        ObjPool *pool = data_02149efc.pool;
+        BOOL rot = ObjPoolParam_HasRot(prm);
+        if (rot) {
+            func_02059c98(pool, slot->args[0], prm, 1);
+        }
+    }
+    return 1;
+}
+
 }
