@@ -195,7 +195,9 @@ struct StagePlayer {
     virtual void unk_vf18();
     /* 0x004 */ u8 unk_004[0x11];
     /* 0x015 */ u8 unk_015;
-    /* 0x016 */ u8 unk_016[0x5a];
+    /* 0x016 */ u8 unk_016[0x52];
+    /* 0x068 */ s32 unk_68;
+    /* 0x06c */ u8 unk_06c[4];
     /* 0x070 */ StageVec pos;
     /* 0x07c */ u16 rot[3];
     /* 0x082 */ u8 unk_082[0x75c - 0x82];
@@ -311,7 +313,9 @@ struct StageObj3D {
     /* 0x10 */ u8 unk_10[8];
     /* 0x18 */ s16 params[0x18];
     /* 0x48 */ void *unk_48;
-    /* 0x4c */ u8 unk_4c[0x24];
+    /* 0x4c */ u8 unk_4c[0x1c];
+    /* 0x68 */ s32 unk_68;
+    /* 0x6c */ u8 unk_6c[4];
     /* 0x70 */ StageVec pos;
     /* 0x7c */ u16 rot[3];
     /* 0x82 */ u8 unk_82[0x1a];
@@ -388,6 +392,37 @@ typedef struct StageCamMgr {
 
 extern StageCamMgr *data_ov000_021ccd6c;
 extern s32 data_02097d78[5];
+// Camera request block inside the field state (data_ov000_021ccd54).
+typedef struct StageAng {
+    u16 x;
+    u16 y;
+    u16 z;
+} StageAng;
+
+typedef struct StageCamCur {
+    /* 0x00 */ u8 unk_00[0x10];
+    /* 0x10 */ StageVec pos;
+    /* 0x1c */ u8 unk_1c[0x26];
+    /* 0x42 */ StageAng ang;
+} StageCamCur;
+
+typedef struct StageCamView {
+    /* 0x00 */ u8 unk_00[0xd4];
+    /* 0xd4 */ u32 active;
+    /* 0xd8 */ StageVec pos;
+    /* 0xe4 */ StageAng ang;
+    /* 0xea */ u8 unk_ea[2];
+    /* 0xec */ s32 dist;
+    /* 0xf0 */ u16 unk_f0;
+    /* 0xf2 */ u8 unk_f2[2];
+    /* 0xf4 */ StageCamCur cur;
+} StageCamView;
+
+static inline BOOL StageCam_IsActive(void) {
+    StageCamView *cam = (StageCamView *)data_ov000_021ccd54;
+    return cam->active != 0;
+}
+
 extern int func_0205f5c4(StageRes *res, u16 id, u16 idx, u16 posIdx, u16 mode);
 extern void VEC_Add(const StageVec *a, const StageVec *b, StageVec *out);
 extern void func_ov000_021b12c0(StagePlayer *player, int a);

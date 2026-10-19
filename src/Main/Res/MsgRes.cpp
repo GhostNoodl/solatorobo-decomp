@@ -59,7 +59,22 @@ BOOL func_0204c030(MsgRes *res) {
     return TRUE;
 }
 
-void func_0204c08c(MsgRes *res, s32 idx, char **out, s32 max);
+u32 func_0204c08c(MsgRes *res, s32 idx, char **out, s32 max) {
+    u32 e = res->entries[idx];
+    s32 i = 0;
+    u32 n = (e & 0xff000000) >> 24;
+    char *str = res->strings + (e & ~0xff000000);
+    for (; i < n; i++) {
+        if (i < max) {
+            out[i] = str;
+        }
+        while (*str != 0) {
+            str++;
+        }
+        str++;
+    }
+    return n;
+}
 
 char *func_0204c0e8(MsgRes *res, s32 idx);
 

@@ -288,4 +288,78 @@ int func_0205f47c(StageResSlot *slot) {
     return 1;
 }
 
+
+static inline s32 StageCam_Mul(s32 a, s64 b) {
+    return (a * b + 0x800) >> 12;
+}
+
+int func_0205f5c4(StageRes *res, u16 id, u16 idx, u16 posIdx, u16 mode) {
+    StageObj3D *o;
+    StagePlayer *pl;
+    StageAng ang;
+    StageVec d;
+    StageVec pos;
+    s32 dist;
+    StageCamView *cam;
+    StageCamCur *cur;
+    if (StageCam_IsActive() || Field_IsBusy()) {
+        return -0x63;
+    }
+    if (id == 0xffff) {
+        o = (StageObj3D *)data_02149efc.unk_14;
+    } else if (id != 0) {
+        o = Stage_FindObj3DPtr(id);
+    } else if (idx == 0xffff) {
+        o = Stage_FindObj3DByIdx(data_02fe1534.unk_26);
+    } else {
+        o = Stage_FindObj3DByIdx(idx);
+    }
+    if (o != NULL && (pl = func_ov000_0219bf90()) != NULL) {
+        cur = &((StageCamView *)data_ov000_021ccd54)->cur;
+        if (posIdx != 0) {
+            s16 *p = (s16 *)(res->posEv->pos + (u16)(posIdx & 0x7fff) * 6);
+            // Written as s16 and read back as u16, which keeps ang on the stack.
+            ((s16 *)&ang)[0] = p[0];
+            ((s16 *)&ang)[1] = p[1];
+            ((s16 *)&ang)[2] = 0;
+            dist = p[2] << 4;
+            {
+                u16 cx = cur->ang.x;
+                u16 cy = cur->ang.y;
+                if (ang.x == 0xffff) {
+                    ang.x = cx;
+                }
+                if (ang.y == 0xffff) {
+                    ang.y = cy;
+                }
+            }
+        } else {
+            ang = cur->ang;
+            dist = 0xa000;
+        }
+        if (mode == 0) {
+            d = o->pos;
+            pos = pl->pos;
+            d.x -= pos.x;
+            d.y -= pos.y;
+            d.z -= pos.z;
+            d.x = StageCam_Mul(d.x, 0x733);
+            d.y = StageCam_Mul(d.y, 0x733);
+            d.z = StageCam_Mul(d.z, 0x733);
+            d.y = pl->unk_68;
+            VEC_Add(&d, &pos, &pos);
+        } else if (mode == 1) {
+            pos = o->pos;
+            pos.y += o->unk_68;
+        }
+        cam = (StageCamView *)data_ov000_021ccd54;
+        cam->active = 0xffff;
+        cam->pos = pos;
+        cam->ang = ang;
+        cam->dist = dist;
+        cam->unk_f0 = 0x1000;
+    }
+    return 1;
+}
+
 }

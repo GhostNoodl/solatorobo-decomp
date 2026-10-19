@@ -35,7 +35,7 @@ void func_0204bfe4(MsgRes *res, const char *arcName, const char *name);
 
 BOOL func_0204c030(MsgRes *res);
 
-void func_0204c08c(MsgRes *res, s32 idx, char **out, s32 max);
+u32 func_0204c08c(MsgRes *res, s32 idx, char **out, s32 max);
 
 char *func_0204c0e8(MsgRes *res, s32 idx) {
     return res->strings + (res->entries[idx] & ~0xff000000);

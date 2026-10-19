@@ -1261,7 +1261,7 @@ src/Main/Gfx/Camera_2.cpp:
 
 src/Main/Res/MsgRes.cpp:
     complete
-    .text       start:0x0204bfcc end:0x0204c08c
+    .text       start:0x0204bfcc end:0x0204c0e8
 
 src/Main/Res/MsgRes_2.cpp:
     complete
@@ -1282,7 +1282,7 @@ src/Main/Gfx/TextWinScan.cpp:
 
 src/Main/Gfx/TextWin_2.cpp:
     complete
-    .text       start:0x0204c7d0 end:0x0204cc18
+    .text       start:0x0204c7d0 end:0x0204cef4
 
 src/Main/Gfx/TextWin_3.cpp:
     complete
@@ -1470,7 +1470,7 @@ src/Main/Res/StageCmd_6.cpp:
 
 src/Main/Res/StageCmd_7.cpp:
     complete
-    .text       start:0x0205e818 end:0x0205f5c4
+    .text       start:0x0205e818 end:0x0205f8f8
 
 src/Main/Res/StageCmd_8.cpp:
     complete
@@ -1530,11 +1530,11 @@ src/Main/Effect/Effect_5.cpp:
 
 src/Main/Effect/Effect_6.cpp:
     complete
-    .text       start:0x020671e8 end:0x0206723c
+    .text       start:0x020671e8 end:0x02067984
 
 src/Main/Effect/EffectBurst.cpp:
     complete
-    .text       start:0x02067984 end:0x02067b08
+    .text       start:0x02067984 end:0x02067e9c
 
 src/Main/Effect/EffectSpawn.cpp:
     complete
@@ -1562,11 +1562,11 @@ src/Main/Effect/Effect_12.cpp:
 
 src/Main/Effect/Effect_13.cpp:
     complete
-    .text       start:0x0206aad4 end:0x0206ab0c
+    .text       start:0x0206aad4 end:0x0206ad84
 
 src/Main/Effect/Effect_14.cpp:
     complete
-    .text       start:0x0206ad84 end:0x0206b484
+    .text       start:0x0206ad84 end:0x0206b744
 
 src/Main/Effect/Effect_15.cpp:
     complete

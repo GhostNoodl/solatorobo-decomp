@@ -493,4 +493,76 @@ void func_02050e94(Model *model);
 
 void func_02050ea4(Model *model, u32 v);
 
+BOOL func_0204cc18(TextWin *win, char **pp) {
+    char *p = *pp;
+    win->code = -1;
+    switch (*p) {
+    case 'p':
+        if (p[1] == 's') {
+            *pp = win->unk_vf28(p + 2);
+        } else {
+            *pp = win->unk_vf24(p + 2);
+        }
+        return TRUE;
+    case 'd':
+        *pp = win->unk_vf2c(p + 1);
+        return TRUE;
+    case 'q':
+        *pp = win->unk_vf30(p + 1);
+        return TRUE;
+    case 'r':
+        *pp = win->unk_vf34(p + 1);
+        return TRUE;
+    case 'f':
+        *pp = win->unk_vf38(p + 1);
+        return TRUE;
+    case 'm':
+        *pp = win->unk_vf3c(p + 1);
+        return TRUE;
+    case 'c':
+        *pp = win->unk_vf40(p + 1);
+        return TRUE;
+    case 'a':
+        *pp = win->unk_vf44(p + 1);
+        return TRUE;
+    case 'w':
+        *pp = win->unk_vf48(p + 1);
+        return TRUE;
+    case 'e':
+        *pp = win->unk_vf50(p + 1);
+        return TRUE;
+    case 'h':
+        *pp = win->unk_vf54(p + 1);
+        return TRUE;
+    case 'b':
+        *pp = win->unk_vf58(p + 1);
+        return TRUE;
+    case 'v':
+        *pp = win->unk_vf5c(p + 1);
+        return TRUE;
+    case 'i':
+        *pp = win->unk_vf60(p + 1);
+        return TRUE;
+    case 's':
+        *pp = win->unk_vf64(p + 1);
+        return TRUE;
+    case 'o':
+        *pp = win->unk_vf68(p + 1);
+        return TRUE;
+    case 't':
+        *pp = win->unk_vf6c(p + 1);
+        return TRUE;
+    case 'k':
+        *pp = win->unk_vf70(p + 1);
+        return TRUE;
+    case 'n':
+        *pp = win->unk_vf74(p + 1);
+        return TRUE;
+    case 'z':
+        *pp = win->unk_vf78(p + 1);
+        return TRUE;
+    }
+    return FALSE;
+}
+
 }

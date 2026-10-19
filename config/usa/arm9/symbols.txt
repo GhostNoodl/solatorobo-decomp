@@ -2774,6 +2774,7 @@ data_02082998 kind:data(any) addr:0x02082998
 data_020829d0 kind:data(any) addr:0x020829d0
 data_02082a28 kind:data(any) addr:0x02082a28
 data_02082ba4 kind:data(any) addr:0x02082ba4
+data_02082bdc kind:data(any) addr:0x02082bdc
 data_02082be4 kind:data(any) addr:0x02082be4
 data_02082bf8 kind:data(any) addr:0x02082bf8
 __sinit_0208aa00 kind:function(arm,size=0x24) addr:0x0208aa00

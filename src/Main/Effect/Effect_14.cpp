@@ -306,4 +306,84 @@ EffectPtcl *func_0206b340(EffectEmitter *em) {
     return em->ptcls;
 }
 
+typedef struct EffectMtx43 {
+    s32 m[4][3];
+} EffectMtx43;
+
+typedef struct EffectMtx43V {
+    EffectVec r[4];
+} EffectMtx43V;
+
+typedef struct EffectMtx33 {
+    s32 m[3][3];
+} EffectMtx33;
+
+extern s32 func_0206379c(void);
+extern void func_02068e68(EffectPtcl *p, s32 type, void *mtx, s32 arg);
+
+static inline s32 Effect_Cross(s32 a, s32 b, s32 c, s32 d) {
+    return (s32)(((s64)a * b - (s64)c * d + 0x800) >> 12);
+}
+
+static inline void Effect_Billboard(EffectMtx43V *m, const EffectVec *dir) {
+    s32 cz = ((s32 *)data_02092844)[8];
+    s32 cy = ((s32 *)data_02092844)[5];
+    s32 cx = ((s32 *)data_02092844)[2];
+    s32 ux = Effect_Cross(dir->y, cz, dir->z, cy);
+    s32 uy = Effect_Cross(dir->z, cx, dir->x, cz);
+    s32 uz = Effect_Cross(dir->x, cy, dir->y, cx);
+    m->r[0].x = ux;
+    m->r[0].y = uy;
+    m->r[0].z = uz;
+    m->r[1].x = Effect_Cross(uy, cz, uz, cy);
+    m->r[1].y = Effect_Cross(uz, cx, ux, cz);
+    m->r[1].z = Effect_Cross(ux, cy, uy, cx);
+    m->r[2].x = cx;
+    m->r[2].y = cy;
+    m->r[2].z = cz;
+}
+
+void func_0206b484(EffectEmitter *em) {
+    EffectMtx33 rot;
+    EffectVec scale;
+    EffectMtx43 bb;
+    EffectMtx43V m;
+    EffectPtcl *p;
+    NNS_G3dGlbSetBaseTrans(&em->pos);
+    MTX_Identity33_(&rot);
+    MI_Copy36B(&rot, data_020928b4);
+    NNS_G3dGlb.flags &= ~0xa4;
+    {
+        s32 k = em->unk_4c;
+        scale.x = Effect_FxMul(em->scale.x, k);
+        scale.y = Effect_FxMul(em->scale.y, k);
+        scale.z = Effect_FxMul(em->scale.z, k);
+    }
+    NNS_G3dGlbSetBaseScale(&scale);
+    NNS_G3dGlbFlushP();
+    bb.m[0][0] = ((s32 *)data_02092844)[0];
+    bb.m[0][1] = ((s32 *)data_02092844)[3];
+    bb.m[0][2] = ((s32 *)data_02092844)[6];
+    bb.m[1][0] = ((s32 *)data_02092844)[1];
+    bb.m[1][1] = ((s32 *)data_02092844)[4];
+    bb.m[1][2] = ((s32 *)data_02092844)[7];
+    bb.m[2][0] = ((s32 *)data_02092844)[2];
+    bb.m[2][1] = ((s32 *)data_02092844)[5];
+    bb.m[2][2] = ((s32 *)data_02092844)[8];
+    bb.m[3][0] = 0;
+    bb.m[3][1] = 0;
+    bb.m[3][2] = 0;
+    for (p = func_0206b340(em); p != NULL; p = p->next) {
+        p->unk_a0 = func_0206379c();
+        if (em->unk_28 == 1) {
+            func_02068e68(p, em->unk_28, &bb, em->unk_7c);
+        } else if (em->unk_28 == 4) {
+            Effect_Billboard(&m, &p->dir);
+            func_02068e68(p, em->unk_28, &m, em->unk_7c);
+        } else {
+            func_02068e68(p, em->unk_28, NULL, em->unk_7c);
+        }
+    }
+}
+
 }
