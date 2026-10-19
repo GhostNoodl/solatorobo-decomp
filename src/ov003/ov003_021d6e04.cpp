@@ -1,5 +1,8 @@
 #include "types.h"
 
+#pragma pool_strings on
+#pragma dont_reuse_strings off
+
 typedef struct {
     s32 x, y, z;
 } Ov003Pos;
@@ -52,7 +55,9 @@ typedef struct {
     s32 unk_68;
     s32 unk_6c;
     Ov003Pos pos;
-    u8 pad_7c[0x74];
+    u16 rot_x;
+    u16 rot_y;
+    u8 pad_80[0x70];
     void *unk_f0;
 } Ov003Act;
 
@@ -75,6 +80,10 @@ public:
     virtual void v1c();
     virtual void v20();
     virtual void SetRot(s32 x, s32 y, s32 z);
+    virtual void v28();
+    virtual void v2c();
+    virtual void v30();
+    virtual void SetDir(u16 x, u16 y, u16 z);
     u8 pad_04[0x20];
     void *unk_24;
     u8 pad_28[0x14];
@@ -84,7 +93,6 @@ public:
 extern "C" {
 
 extern void *data_02097e4c;
-extern char data_ov003_021f7cb6[];
 extern Ov003Pl *func_ov000_0219bf90(void);
 extern void func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
@@ -94,6 +102,94 @@ extern Ov003Eff *func_02065f88(s32 id, const Ov003Pos *pos);
 extern void func_ov003_021d6054(Ov003Act *self);
 extern void func_ov003_021d1e8c(Ov003Act *self);
 extern void func_ov000_02198360(void *p, s32 a, s32 b);
+
+typedef struct {
+    s16 v[9];
+} Ov003Route;
+
+extern const Ov003Route data_ov003_021f484c[];
+extern u16 FX_Atan2(s32 x, s32 z);
+extern void VEC_MultAdd(s32 scale, const Ov003Pos *dir, const Ov003Pos *base, Ov003Pos *out);
+extern BOOL func_01ffc198(Ov003Pos *a, Ov003Pos *b, s32 r);
+extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
+
+void func_ov003_021d6e04(Ov003Act *self) {
+    const char *run = "run00";
+    const Ov003Route *r;
+    Ov003Pos t;
+    Ov003Pos d;
+    Ov003Pos d2;
+    Ov003Eff *fx;
+    Ov003S44 *s;
+    Ov003W *w;
+    switch (self->work->state) {
+    case 0:
+        func_ov000_02190cb0(self->model, run, 0x2ab, 0);
+        func_ov000_021915a0(self->model);
+        r = &data_ov003_021f484c[self->unk_1a - 1];
+        self->pos.x = r->v[0] << 4;
+        self->pos.y = r->v[1] << 4;
+        self->pos.z = r->v[2] << 4;
+        t.x = r->v[3] << 4;
+        t.y = r->v[4] << 4;
+        t.z = r->v[5] << 4;
+        self->rot_y = FX_Atan2(t.x - self->pos.x, t.z - self->pos.z);
+        s = self->unk_44;
+        s->unk_22_0 = 0;
+        s->unk_22_1 = 0;
+        self->work->state++;
+        break;
+    case 1:
+        r = &data_ov003_021f484c[self->unk_1a - 1];
+        t.x = r->v[3] << 4;
+        t.y = r->v[4] << 4;
+        t.z = r->v[5] << 4;
+        d.x = t.x - self->pos.x;
+        d.y = t.y - self->pos.y;
+        d.z = t.z - self->pos.z;
+        VEC_MultAdd(0xcd, &d, &self->pos, &self->pos);
+        if (!func_01ffc198(&self->pos, &t, self->unk_64 + 0x800)) {
+            return;
+        }
+        r = &data_ov003_021f484c[self->unk_1a - 1];
+        t.x = r->v[6] << 4;
+        t.y = r->v[7] << 4;
+        t.z = r->v[8] << 4;
+        func_ov000_02190cb0(self->model, "nut00", 0x2ab, 0);
+        func_ov000_021915a0(self->model);
+        self->rot_y = func_01ffc128(FX_Atan2(t.x - self->pos.x, t.z - self->pos.z), self->rot_y, 0x200, 1, 0x8000);
+        w = self->work;
+        w->timer++;
+        if (w->timer <= 0x14) {
+            return;
+        }
+        fx = func_02065f88(0x192, &self->pos);
+        fx->SetRot(0, self->unk_6c, 0);
+        fx->SetDir(0, FX_Atan2(t.x - self->pos.x, t.z - self->pos.z), 0);
+        func_02049f44(data_02097e4c, 0x57, &self->pos, 0);
+        func_ov000_02190cb0(self->model, run, 0x2ab, 0);
+        func_ov000_021915a0(self->model);
+        self->work->state++;
+        break;
+    case 2:
+        r = &data_ov003_021f484c[self->unk_1a - 1];
+        t.x = r->v[6] << 4;
+        t.y = r->v[7] << 4;
+        t.z = r->v[8] << 4;
+        d2.x = t.x - self->pos.x;
+        d2.y = t.y - self->pos.y;
+        d2.z = t.z - self->pos.z;
+        VEC_MultAdd(0xcd, &d2, &self->pos, &self->pos);
+        if (!func_01ffc198(&self->pos, &t, self->unk_64 + 0x800)) {
+            return;
+        }
+        s = self->unk_44;
+        s->unk_22_0 = 1;
+        s->unk_22_1 = 1;
+        func_ov000_02198360(self->work, 1, 0);
+        break;
+    }
+}
 
 void func_ov003_021d71c8(Ov003Act *self) {
     if (self->work->state == 0 && self->unk_0e == 0x5815) {
@@ -137,7 +233,7 @@ void func_ov003_021d7270(Ov003Act *self) {
 void func_ov003_021d732c(Ov003Act *self) {
     switch (self->work->state) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov003_021f7cb6, 0x1000, 0);
+        func_ov000_02190cb0(self->model, "nut00", 0x1000, 0);
         func_ov000_021915a0(self->model);
         self->work->state++;
     case 1: {
@@ -173,7 +269,7 @@ void func_ov003_021d73dc(Ov003Act *self) {
     case 0: {
         Ov003Ctl *ctl;
         Ov003S44 *s;
-        func_ov000_02190cb0(self->model, data_ov003_021f7cb6, 0x1000, 0);
+        func_ov000_02190cb0(self->model, "nut00", 0x1000, 0);
         func_ov000_021915a0(self->model);
         func_ov000_021911c8(self->model, 0xccd);
         ctl = self->ctl;

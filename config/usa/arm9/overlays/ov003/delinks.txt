@@ -409,9 +409,10 @@ src/ov003/ov003_021d1b88.c:
     complete
     .text       start:0x021d1b88 end:0x021d1e30
 
-src/ov003/ov003_021d71c8.cpp:
+src/ov003/ov003_021d6e04.cpp:
     complete
-    .text       start:0x021d71c8 end:0x021d7780
+    .text       start:0x021d6e04 end:0x021d7780
+    .data       start:0x021f7cb0 end:0x021f7cbc
 
 src/ov003/ov003_021d3524.c:
     complete
