@@ -35,4 +35,48 @@ ov006_MenuNode *func_ov006_021e48e8(ov006_MenuNode *self) {
     return self;
 }
 
+// The timer is read again here instead of reusing the value tested by the caller.
+static inline void ov006_MenuNode_Tick(ov006_MenuNode *n) {
+    u8 t = ((volatile ov006_MenuNode *)n)->timer;
+    if (t != 0) {
+        n->timer = t - 1;
+    }
+}
+
+static inline void ov006_MenuNode_Delete(ov006_MenuNode *node) {
+    OV006_DELETE_OBJECT(node);
+}
+
+static inline void ov006_Menu_Unlink(ov006_Unk021ec888 *self, ov006_MenuNode *n) {
+    if (self->nodes == n) {
+        self->nodes = n->next;
+    }
+    if (n->prev != NULL) {
+        n->prev->next = n->next;
+    }
+    if (n->next != NULL) {
+        n->next->prev = n->prev;
+    }
+}
+
+void func_ov006_021e48fc(ov006_Unk021ec888 *self) {
+    ov006_MenuNode *n = self->nodes;
+    ov006_MenuNode *next;
+    if (n == NULL) {
+        return;
+    }
+    do {
+        next = n->next;
+        if (n->timer == 0) {
+            ov006_Menu_Unlink(self, n);
+            ov006_MenuNode_Delete(n);
+            self->unk24--;
+            self->unk26 = 1;
+        } else {
+            ov006_MenuNode_Tick(n);
+        }
+        n = next;
+    } while (n != NULL);
+}
+
 }

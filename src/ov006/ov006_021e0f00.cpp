@@ -1,3 +1,4 @@
+#include "nitro/fx.h"
 #include "ov006/Caption.h"
 
 typedef struct ov006_Unk021e0f00 {
@@ -6,7 +7,21 @@ typedef struct ov006_Unk021e0f00 {
     ov006_Anim *unk20;
 } ov006_Unk021e0f00;
 
+typedef struct ov006_Fader021e10d0 {
+    void *vtbl;
+    u8 unk4;
+    u8 unk5;
+    u8 unk6[2];
+    s32 unk8;
+    s32 unkC;
+    u8 unk10[0xc];
+    void *unk1C;
+    void *unk20;
+} ov006_Fader021e10d0;
+
 extern "C" {
+
+BOOL func_02054f10(void *a, int b);
 
 void func_ov006_021e0f00(ov006_Unk021e0f00 *self) {
     ov006_Model *model;
@@ -43,6 +58,32 @@ void func_ov006_021e0f00(ov006_Unk021e0f00 *self) {
     func_02041d9c(self->unk1C, 2, 5);
     func_02041d9c(self->unk1C, 2, 6);
     func_02041d9c(self->unk1C, 2, 7);
+}
+
+static inline s32 ov006_ApproachFx(s32 cur, s32 target, fx32 rate) {
+    s32 d = target - cur;
+    if ((d < 0 ? -d : d) > 0x29) {
+        return cur + FX_Mul(d, rate);
+    }
+    return cur;
+}
+
+void func_ov006_021e10d0(ov006_Fader021e10d0 *self) {
+    if (!self->unk4) {
+        if (self->unk1C == NULL) {
+            return;
+        }
+        if (!func_02054f10(self->unk1C, 0xffff)) {
+            return;
+        }
+        self->unk4 = 1;
+    }
+    if (self->unk5) {
+        self->unk8 = ov006_ApproachFx(self->unk8, self->unkC, 0x19a);
+    } else {
+        self->unk8 = self->unkC;
+    }
+    VCALL(self->unk20, 8C);
 }
 
 }
