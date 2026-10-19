@@ -18,7 +18,7 @@ src/Main/Sys/GameMain.cpp:
 
 libs/msl/abort_exit.c:
     complete
-    .text       start:0x02005170 end:0x020051dc
+    .text       start:0x02005170 end:0x020052f8
 
 libs/msl/ansi_files.c:
     complete
@@ -1402,11 +1402,11 @@ src/Main/Res/DataRes_3.cpp:
 
 src/Main/Res/DataRes_4.cpp:
     complete
-    .text       start:0x02059270 end:0x020592c4
+    .text       start:0x02059270 end:0x02059428
 
 src/Main/Res/DataRes_5.cpp:
     complete
-    .text       start:0x02059428 end:0x02059454
+    .text       start:0x02059428 end:0x0205973c
 
 src/Main/Res/DataRes_6.cpp:
     complete
@@ -1558,7 +1558,7 @@ src/Main/Effect/Effect_10.cpp:
 
 src/Main/Effect/Effect_12.cpp:
     complete
-    .text       start:0x0206a0cc end:0x0206a3a4
+    .text       start:0x02069f3c end:0x0206aad4
 
 src/Main/Effect/Effect_13.cpp:
     complete
@@ -1614,7 +1614,8 @@ src/Main/Lang/ParamTbl.cpp:
 
 src/Main/Lang/LangRes2.cpp:
     complete
-    .text       start:0x0206f9dc end:0x0206faec
+    .text       start:0x0206f9dc end:0x0206fef8
+    .data       start:0x0208d29c end:0x0208d2b4
 
 src/Main/Lang/ItemGive.cpp:
     complete

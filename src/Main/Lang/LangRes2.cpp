@@ -1,3 +1,5 @@
+#pragma pool_strings on
+#pragma dont_reuse_strings off
 #include "Main/Lang/LangData.h"
 #include "Main/Res/ResMgr.h"
 
@@ -49,11 +51,13 @@ extern const char *data_0208cca4;
 extern void *func_0203dd9c(u32 size);
 extern void func_0206e900(char *dst, const char *src);
 
-static inline void *LangTbl_Find(LangNamedTable *t, const char *name) {
+static inline void *LangTbl_Find(void **data, const char *name) {
+    const char *nm = name;
+    LangNamedTable *t = (LangNamedTable *)*data;
     u32 i;
     for (i = 0; i < t->count; i++) {
         const char *s = (const char *)t + t->entries[i].nameOffset;
-        if (s[0] == name[0] && s[1] == name[1] && STD_CompareString(s, name) == 0) {
+        if (s[0] == nm[0] && s[1] == nm[1] && STD_CompareString(s, nm) == 0) {
             return (u8 *)t + t->entries[i].dataOffset;
         }
     }
@@ -96,15 +100,23 @@ void func_0206facc(void) {
     data_0214b160.res->Load();
 }
 
-extern char data_0208d29c[];
-extern char data_0208d29f[];
-extern char data_0208d2a2[];
-extern char data_0208d2a5[];
-extern char data_0208d2a8[];
-extern char data_0208d2ab[];
-extern char data_0208d2ae[];
-extern char data_0208d2b1[];
 
-void func_0206faec(void);
+void func_0206faec(void) {
+    LangNamedTable *t;
+    void **data;
+    if (data_0214b160.res->IsLoaded()) {
+        return;
+    }
+    data_0214b160.res->unk_vf30();
+    data = data_0214b160.res->GetData();
+    data_0214b160.items[0] = LangTbl_Find(data, "mc");
+    data_0214b160.items[1] = LangTbl_Find(data, "sc");
+    data_0214b160.items[2] = LangTbl_Find(data, "nc");
+    data_0214b160.items[3] = LangTbl_Find(data, "gm");
+    data_0214b160.items[4] = LangTbl_Find(data, "en");
+    data_0214b160.items[5] = LangTbl_Find(data, "so");
+    data_0214b160.items[6] = LangTbl_Find(data, "ac");
+    data_0214b160.items[7] = LangTbl_Find(data, "fs");
+}
 
 }

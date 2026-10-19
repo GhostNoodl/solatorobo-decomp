@@ -89,6 +89,14 @@ extern void *func_0203dd9c(u32 size);
 extern void func_0203de1c(void *ptr);
 extern void func_0206e900(char *dst, const char *src);
 
+static inline SaveBlock *DataRes_Block(DataRes *res, u32 idx) {
+    return &((SaveLayout *)res->data)->blocks[idx];
+}
+
+static inline SaveEntry *DataRes_Table(DataRes *res, u32 idx) {
+    return (SaveEntry *)((u8 *)((SaveLayout *)res->data)->blocks + ((SaveLayout *)res->data)->blocks[idx].tableOffset);
+}
+
 }
 
 #endif
