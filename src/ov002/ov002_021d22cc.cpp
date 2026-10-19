@@ -8,7 +8,7 @@ Task50 *func_ov002_021d22cc(void) {
         int i;
         TaskBase_ctor(p);
         *(VFunc **)p = data_ov002_021ef99c;
-        func_02009e24((u8 *)p + 0x4c, 7, 0x18, func_ov002_021e4714, (void (*)(void *))func_ov002_021e473c);
+        __cxa_vec_ctor((u8 *)p + 0x4c, 7, 0x18, func_ov002_021e4714, (void (*)(void *))func_ov002_021e473c);
         p->unk_3c = NULL;
         p->unk_40 = NULL;
         p->unk_44 = NULL;

@@ -31,7 +31,7 @@ extern s32 data_0208b704;
 extern s32 data_0208b744[];
 
 extern s32 VEC_Distance(SndVec *vec);
-extern u32 func_0200aeec(s32 v);
+extern u32 _fflt(s32 v);
 extern u32 _fsub(u32 a, u32 b);
 extern u32 _fdiv(u32 a, u32 b);
 extern u32 _fmul(u32 a, u32 b);

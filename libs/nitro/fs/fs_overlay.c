@@ -49,8 +49,7 @@ typedef struct MWiDestructorChain {
     void *obj;
 } MWiDestructorChain;
 
-extern MWiDestructorChain *data_0208de90;
-#define __global_destructor_chain data_0208de90
+extern MWiDestructorChain *__global_destructor_chain;
 
 extern u8 data_0208d800[];
 extern u8 data_0208d940[];

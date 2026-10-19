@@ -217,7 +217,7 @@ void func_0203de1c(void *p);
 void *func_0203dd9c(u32 size);
 void func_0203de50(void *p);
 void *func_0203dddc(u32 size);
-void func_02009f64(void *arr, s32 count, u32 size, void *dtor);
+void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 void *func_ov000_0218e640(void *mgr, u16 id);
 void *func_ov000_0219bf90(void);
 void func_ov003_021da40c(void *p);

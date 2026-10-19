@@ -99,7 +99,7 @@ extern "C" {
 
 extern const Ov011Mgr2Entry data_ov011_022072d8[];
 void func_ov003_021d79ec(void *p);
-void func_02009fc0(void *arr, u32 size, u32 hdr, void *dtor);
+void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
 void func_ov003_021da40c(void *p);
 void func_ov003_021da48c(void *p, s32 a);
 void func_ov011_0220205c(void *p);
@@ -120,7 +120,7 @@ static inline void Ov011Mgr2_Reset(Ov011Mgr2 *self) {
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->arr8 != NULL) {
-        func_02009fc0(self->arr8, 0x40, 8, func_ov011_021fb66c);
+        __cxa_vec_delete(self->arr8, 0x40, 8, func_ov011_021fb66c);
         self->arr8 = NULL;
     }
     data_02097dd0->cur = saved;

@@ -389,7 +389,7 @@ void func_ov002_021e4714(void *p);
 void func_ov002_021e49a0(void *p);
 extern VFunc data_ov002_021ef91c[];
 
-void func_02009e24(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
+void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void *func_ov002_021e473c(void *p);
 void MI_CpuFill8(void *dst, int val, u32 size);
 
@@ -405,7 +405,7 @@ void func_ov002_021d3ccc(void *self);
 
 void *func_ov002_021e49c0(void *p);
 void func_ov002_021d25ec(Task50 *self);
-void func_02009f64(void *arr, int n, u32 size, void (*dtor)(void *));
+void __cxa_vec_cleanup(void *arr, int n, u32 size, void (*dtor)(void *));
 extern VFunc data_ov002_021ef684[];
 void func_ov000_021c2310(void *self);
 

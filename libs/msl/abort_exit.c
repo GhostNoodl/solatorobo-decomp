@@ -10,7 +10,7 @@ typedef struct MSLExitState {
 extern MSLExitState data_0208d940;
 
 extern int func_020077f4(int sig);
-extern void func_02009ac8(void);
+extern void __destroy_global_chain(void);
 extern void func_020051dc(int status);
 
 void exit(int status);
@@ -23,7 +23,7 @@ void abort(void) {
 
 void exit(int status) {
     if (!data_0208d940.aborting) {
-        func_02009ac8();
+        __destroy_global_chain();
         if (data_0208d940.console_exit) {
             data_0208d940.console_exit();
             data_0208d940.console_exit = NULL;

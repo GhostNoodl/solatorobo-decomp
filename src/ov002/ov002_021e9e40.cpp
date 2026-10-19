@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern u32 func_0200aeec(s32 v);
+extern u32 _fflt(s32 v);
 extern u32 _fadd(u32 a, u32 b);
 extern u32 _fsub(u32 a, u32 b);
 extern s32 _ffix(u32 v);
@@ -39,9 +39,9 @@ void func_ov002_021e9e40(int idx) {
     }
     v = *(s16 *)(data_ov002_021f0880 + off);
     if (v > 0) {
-        f = _fadd(0x3f000000, func_0200aeec(v << 12));
+        f = _fadd(0x3f000000, _fflt(v << 12));
     } else {
-        f = _fsub(func_0200aeec(v << 12), 0x3f000000);
+        f = _fsub(_fflt(v << 12), 0x3f000000);
     }
     v = _ffix(f);
     {

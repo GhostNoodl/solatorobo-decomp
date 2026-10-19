@@ -44,13 +44,13 @@ Ov009Actor *func_ov009_0220d0c8(Ov009Actor *self) {
 }
 
 Ov009Actor *func_ov009_0220d0f8(Ov009Actor *self) {
-    func_02009f64(&FLD(u8, self, 0xf0), 4, 0xe8, (void *)func_ov000_0218fee4);
+    __cxa_vec_cleanup(&FLD(u8, self, 0xf0), 4, 0xe8, (void *)func_ov000_0218fee4);
     func_ov003_021d0edc(self);
     return self;
 }
 
 Ov009Actor *func_ov009_0220d128(Ov009Actor *self) {
-    func_02009f64(&FLD(u8, self, 0xf0), 4, 0xe8, (void *)func_ov000_0218fee4);
+    __cxa_vec_cleanup(&FLD(u8, self, 0xf0), 4, 0xe8, (void *)func_ov000_0218fee4);
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;

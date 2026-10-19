@@ -12,7 +12,7 @@ extern void func_ov000_0218dbe0(Ov013Actor *self, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
 extern u32 _ffltu(u32 a);
 extern u32 _fmul(u32 a, u32 b);
-extern s32 func_0200b5a8(u32 a);
+extern s32 _ffixu(u32 a);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
@@ -62,7 +62,7 @@ void func_ov013_021fdc30(Ov013Actor *self) {
     }
     {
         Ov013Sub44 *n;
-        u16 w = func_0200b5a8(_fmul(0x3f4ccccd, _ffltu(FLD(u16, FLD(void *, self, 0x4c), 8))));
+        u16 w = _ffixu(_fmul(0x3f4ccccd, _ffltu(FLD(u16, FLD(void *, self, 0x4c), 8))));
         func_ov000_0219aae8(self, self, w, 0x20, 1 << (t->id >> 12), NULL, NULL, self->unk_64 + 0x1000, 0xccd, 100, 0x1000);
         func_02065f88(0x66, &self->pos);
         func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
@@ -147,7 +147,7 @@ void func_ov013_021fdedc(Ov013Actor *self) {
             func_ov000_02191690(self->unk_38);
             p = FLD(Ov013Stat *, self, 0x4c);
             v = *p;
-            v.h4 = func_0200b5a8(_fmul(0x3fa66666, _ffltu(p->h4)));
+            v.h4 = _ffixu(_fmul(0x3fa66666, _ffltu(p->h4)));
             // fake match: re-reading byte 0 after the call keeps it out of a callee-saved register
             v.b0 = FLD(u8, p, 0);
             *p = v;
@@ -297,7 +297,7 @@ void func_ov013_021fdedc(Ov013Actor *self) {
     case 0x33: {
         Ov013Actor *t = Ov013_FindActor(self->unk_90);
         if (t != NULL) {
-            u16 w = func_0200b5a8(_fmul(0x3f99999a, _ffltu(FLD(u16, FLD(void *, self, 0x4c), 8))));
+            u16 w = _ffixu(_fmul(0x3f99999a, _ffltu(FLD(u16, FLD(void *, self, 0x4c), 8))));
             Ov013Blk12 b = *(Ov013Blk12 *)data_ov013_0220aec4;
             func_ov000_0219aae8(self, self, w, 0x20, 1 << (t->id >> 12), &b, NULL, 0x3000, 0, 100, 0x1000);
         }

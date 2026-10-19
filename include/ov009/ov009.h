@@ -381,7 +381,7 @@ static inline BOOL Ov009_GameIdle(void) {
 extern "C" {
 void func_0203de1c(void *p);
 void *func_0203dd9c(u32 size);
-void func_02009f64(void *arr, s32 count, u32 size, void *dtor);
+void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 void func_ov003_021d0edc(void *self);
 void func_ov000_02198360(void *a, s32 b, s32 c);
 void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);

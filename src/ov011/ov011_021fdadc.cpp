@@ -65,7 +65,7 @@ Ov011Link *func_ov011_021fdadc(Ov011Link *head, Ov011Link *n) {
     return head;
 }
 
-void func_02009fc0(void *arr, u32 size, u32 hdr, void *dtor);
+void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
 void *func_ov011_021fb66c(void *self);
 void func_ov011_02201b28(void *p);
 void func_ov011_0220205c(void *p);
@@ -112,7 +112,7 @@ void func_ov011_021fdb28(u8 *self) {
             u32 saved = data_02097dd0->cur;
             data_02097dd0->cur = data_02097dd0->def;
             if (FLD(void *, self, 0xbc) != NULL) {
-                func_02009fc0(FLD(void *, self, 0xbc), 0x40, 8, func_ov011_021fb66c);
+                __cxa_vec_delete(FLD(void *, self, 0xbc), 0x40, 8, func_ov011_021fb66c);
                 FLD(void *, self, 0xbc) = NULL;
             }
             data_02097dd0->cur = saved;

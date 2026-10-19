@@ -273,7 +273,7 @@ void *func_ov015_0221114c(void *self) {
     return self;
 }
 
-extern u32 func_0200aeec(s32 v);
+extern u32 _fflt(s32 v);
 extern u32 _fadd(u32 a, u32 b);
 extern u32 _fsub(u32 a, u32 b);
 extern s32 _ffix(u32 v);
@@ -323,9 +323,9 @@ u32 func_ov015_02211160(u8 *self, u16 *out, u32 n) {
                 u16 w = FLD(u16, e + k * 2, 0xa);
                 u32 f;
                 if (w > 0) {
-                    f = _fadd(0x3f000000, func_0200aeec(w << 12));
+                    f = _fadd(0x3f000000, _fflt(w << 12));
                 } else {
-                    f = _fsub(func_0200aeec(w << 12), 0x3f000000);
+                    f = _fsub(_fflt(w << 12), 0x3f000000);
                 }
                 acc += _ffix(f) / 100;
                 if (rnd <= acc) {

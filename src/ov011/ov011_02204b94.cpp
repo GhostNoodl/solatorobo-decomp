@@ -44,7 +44,7 @@ Ov011Actor *func_ov011_02204b94(Ov011Actor *self) {
     Ov011_FreeTwl(&FLD(void *, self, 0x364));
     Ov011_FreeTwl(&FLD(void *, self, 0x368));
     func_02036838(data_02097cdc, data_ov011_02207c35, 7, 0);
-    func_02009f64(&FLD(u8, self, 0xf4), 2, 0x138, (void *)func_ov000_0218ea20);
+    __cxa_vec_cleanup(&FLD(u8, self, 0xf4), 2, 0x138, (void *)func_ov000_0218ea20);
     func_ov003_021d0edc(self);
     return self;
 }
@@ -54,7 +54,7 @@ Ov011Actor *func_ov011_02204c80(Ov011Actor *self) {
     Ov011_FreeTwl(&FLD(void *, self, 0x364));
     Ov011_FreeTwl(&FLD(void *, self, 0x368));
     func_02036838(data_02097cdc, data_ov011_02207c35, 7, 0);
-    func_02009f64(&FLD(u8, self, 0xf4), 2, 0x138, (void *)func_ov000_0218ea20);
+    __cxa_vec_cleanup(&FLD(u8, self, 0xf4), 2, 0x138, (void *)func_ov000_0218ea20);
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;

@@ -2,7 +2,7 @@
 
 typedef void (*VFunc)(void *);
 
-extern void func_02009f64(void *arr, int count, int size, void *dtor);
+extern void __cxa_vec_cleanup(void *arr, int count, int size, void *dtor);
 extern void func_ov000_0218fee4(void *p);
 void *func_ov003_021e75bc(void *self);
 
@@ -138,9 +138,9 @@ void *func_ov003_021e7518(void *self) {
 }
 
 void *func_ov003_021e7534(void *self) {
-    func_02009f64((u8 *)self + 0x92c, 3, 0x98, func_ov003_021e75bc);
-    func_02009f64((u8 *)self + 0x6cc, 4, 0x98, func_ov003_021e75bc);
-    func_02009f64((u8 *)self + 0x46c, 4, 0x98, func_ov003_021e75bc);
+    __cxa_vec_cleanup((u8 *)self + 0x92c, 3, 0x98, func_ov003_021e75bc);
+    __cxa_vec_cleanup((u8 *)self + 0x6cc, 4, 0x98, func_ov003_021e75bc);
+    __cxa_vec_cleanup((u8 *)self + 0x46c, 4, 0x98, func_ov003_021e75bc);
     func_ov000_0218fee4((u8 *)self + 0x340);
     func_ov000_0218ea20((u8 *)self + 0x208);
     func_ov000_0218ea20((u8 *)self + 0xd0);
@@ -154,9 +154,9 @@ void *func_ov003_021e75bc(void *self) {
 }
 
 void *func_ov003_021e75d0(void *self) {
-    func_02009f64((u8 *)self + 0x92c, 3, 0x98, func_ov003_021e75bc);
-    func_02009f64((u8 *)self + 0x6cc, 4, 0x98, func_ov003_021e75bc);
-    func_02009f64((u8 *)self + 0x46c, 4, 0x98, func_ov003_021e75bc);
+    __cxa_vec_cleanup((u8 *)self + 0x92c, 3, 0x98, func_ov003_021e75bc);
+    __cxa_vec_cleanup((u8 *)self + 0x6cc, 4, 0x98, func_ov003_021e75bc);
+    __cxa_vec_cleanup((u8 *)self + 0x46c, 4, 0x98, func_ov003_021e75bc);
     func_ov000_0218fee4((u8 *)self + 0x340);
     func_ov000_0218ea20((u8 *)self + 0x208);
     func_ov000_0218ea20((u8 *)self + 0xd0);

@@ -109,7 +109,7 @@ Task50 *func_ov002_021d46e4(Task50 *self) {
 Task50 *func_ov002_021d4738(Task50 *self) {
     *(VFunc **)self = data_ov002_021ef99c;
     func_ov002_021d25ec(self);
-    func_02009f64((u8 *)self + 0x4c, 7, 0x18, (void (*)(void *))func_ov002_021e473c);
+    __cxa_vec_cleanup((u8 *)self + 0x4c, 7, 0x18, (void (*)(void *))func_ov002_021e473c);
     TaskBase_dtor(self);
     func_0203de1c(self);
     return self;
@@ -118,7 +118,7 @@ Task50 *func_ov002_021d4738(Task50 *self) {
 Task50 *func_ov002_021d4794(Task50 *self) {
     *(VFunc **)self = data_ov002_021ef99c;
     func_ov002_021d25ec(self);
-    func_02009f64((u8 *)self + 0x4c, 7, 0x18, (void (*)(void *))func_ov002_021e473c);
+    __cxa_vec_cleanup((u8 *)self + 0x4c, 7, 0x18, (void (*)(void *))func_ov002_021e473c);
     TaskBase_dtor(self);
     return self;
 }

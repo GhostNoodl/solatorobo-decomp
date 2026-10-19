@@ -39,7 +39,7 @@ void func_ov003_021d7ce0(void *p);
 void func_ov003_021d7d8c(void *p);
 void func_ov003_021d7dd0(void *p);
 void func_ov003_021d7d24(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_02009e24(void *arr, s32 count, u32 size, void *ctor, void *dtor);
+void __cxa_vec_ctor(void *arr, s32 count, u32 size, void *ctor, void *dtor);
 void *func_ov000_0218e9c4(void *p);
 void *func_ov000_0218fe1c(void *p);
 void func_ov000_0218ea20(void *p);
@@ -151,7 +151,7 @@ Ov011Chr *func_ov011_02201c18(Ov011Chr *self) {
     Ov011TwB_Ctor(self->m28.m3c);
     self->m28.b0 = 0;
     func_ov003_021d7ca8(self->s88);
-    func_02009e24(self->s94, 3, 0xc, func_ov003_021d7ca8, func_ov003_021d7ce0);
+    __cxa_vec_ctor(self->s94, 3, 0xc, func_ov003_021d7ca8, func_ov003_021d7ce0);
     self->b0 = 0;
     self->b1 = 0;
     p = func_0203dd9c(0x138);
@@ -181,13 +181,13 @@ static inline void Ov011TwA_Dtor(void *obj) {
 
 extern "C" {
 
-void func_02009f64(void *arr, s32 count, u32 size, void *dtor);
+void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 
 Ov011Chr *func_ov011_02201d10(Ov011Chr *self) {
     Ov011Chr_Reset(self);
     Ov011_FreeAnimP(&self->anim);
     Ov011_FreeModelP(&self->model);
-    func_02009f64(self->s94, 3, 0xc, func_ov003_021d7ce0);
+    __cxa_vec_cleanup(self->s94, 3, 0xc, func_ov003_021d7ce0);
     func_ov003_021d7ce0(self->s88);
     Ov011Model2_Reset(&self->m28);
     Ov011TwB_Dtor(self->m28.m3c);

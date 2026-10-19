@@ -26,12 +26,12 @@ void func_ov000_0218e9c4(void *p);
 void func_ov000_0218fe1c(void *p);
 void func_ov000_0218fee4(void *p);
 void func_ov000_021919c8(void *p);
-void func_02009e24(void *p, s32 n, s32 size, void *ctor, void *dtor);
+void __cxa_vec_ctor(void *p, s32 n, s32 size, void *ctor, void *dtor);
 extern void **data_0214a420;
 s32 func_02065748(void *a, void *b);
 void func_ov000_02191a24(void *p);
 void func_ov000_0218ea20(void *p);
-void func_02009f64(void *p, s32 n, s32 size, void *dtor);
+void __cxa_vec_cleanup(void *p, s32 n, s32 size, void *dtor);
 void func_01ffc9fc(Ov015V3 *in, Ov015V3 *out, u16 ang);
 void VEC_Add(const void *a, const void *b, void *out);
 
@@ -337,7 +337,7 @@ void *func_ov015_0220765c(u8 *self) {
     func_ov000_0218e9c4(self);
     func_ov000_0218fe1c(self + 0x138);
     func_ov000_0218e9c4(self + 0x220);
-    func_02009e24(self + 0x358, 8, 0xe8, (void *)func_ov000_0218fe1c, (void *)func_ov000_0218fee4);
+    __cxa_vec_ctor(self + 0x358, 8, 0xe8, (void *)func_ov000_0218fe1c, (void *)func_ov000_0218fee4);
     func_ov000_0218e9c4(self + 0xa98);
     func_ov000_0218fe1c(self + 0xbd0);
     func_ov000_021919c8(self + 0xcb8);
@@ -381,7 +381,7 @@ void *func_ov015_02207738(u8 *self) {
     func_ov000_02191a24(self + 0xcb8);
     func_ov000_0218fee4(self + 0xbd0);
     func_ov000_0218ea20(self + 0xa98);
-    func_02009f64(self + 0x358, 8, 0xe8, (void *)func_ov000_0218fee4);
+    __cxa_vec_cleanup(self + 0x358, 8, 0xe8, (void *)func_ov000_0218fee4);
     func_ov000_0218ea20(self + 0x220);
     func_ov000_0218fee4(self + 0x138);
     func_ov000_0218ea20(self);

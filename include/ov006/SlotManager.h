@@ -68,8 +68,8 @@ extern ov006_SlotManager *data_ov006_021ec884;
 void MI_CpuFill8(void *dst, u8 value, u32 size);
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
 void STD_CopyLString(void *dst, const void *src, u32 size);
-void func_02009e24(void *arr, int count, u32 size, void *ctor, void *dtor);
-void func_02009f64(void *arr, int count, u32 size, void *dtor);
+void __cxa_vec_ctor(void *arr, int count, u32 size, void *ctor, void *dtor);
+void __cxa_vec_cleanup(void *arr, int count, u32 size, void *dtor);
 
 void func_ov006_021dab5c(ov006_Slot *self);
 ov006_Slot *func_ov006_021daad8(ov006_Slot *self);

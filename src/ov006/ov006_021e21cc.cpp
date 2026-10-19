@@ -25,13 +25,13 @@ extern void *data_ov006_021ec2cc;
 extern char data_ov006_021ec1a9[];
 extern char data_ov006_021ec864[];
 
-void func_02009f64(void *arr, int count, u32 size, void *dtor);
+void __cxa_vec_cleanup(void *arr, int count, u32 size, void *dtor);
 void func_ov006_021e1f68(void *self);
 
 static inline void ov006_MarkerSet_Dtor(ov006_MarkerSet *self) {
     self->vtbl = &data_ov006_021ec2cc;
     OV006_DELETE_MODEL(self->model);
-    func_02009f64(self->markers, 4, sizeof(self->markers[0]), func_ov006_021e1f68);
+    __cxa_vec_cleanup(self->markers, 4, sizeof(self->markers[0]), func_ov006_021e1f68);
 }
 
 ov006_MarkerSet *func_ov006_021e21cc(ov006_MarkerSet *self) {

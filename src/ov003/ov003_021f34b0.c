@@ -23,7 +23,7 @@ typedef struct {
 extern u32 data_ov003_021fa648;
 extern void func_ov000_021b4c60(void *self);
 extern void func_0206fef8(u16 kind);
-extern void func_02009f64(void *arr, int count, int size, void *dtor);
+extern void __cxa_vec_cleanup(void *arr, int count, int size, void *dtor);
 extern void func_ov000_0218fee4(void *p);
 extern void func_ov000_0218ea20(void *p);
 extern void func_ov000_0218c928(void *p);
@@ -87,15 +87,15 @@ void *func_ov003_021f3550(void *self) {
 }
 
 void *func_ov003_021f356c(void *self) {
-    func_02009f64((u8 *)self + 0xa70, 6, 0xe8, func_ov000_0218fee4);
-    func_02009f64((u8 *)self + 0xb0, 8, 0x138, func_ov000_0218ea20);
+    __cxa_vec_cleanup((u8 *)self + 0xa70, 6, 0xe8, func_ov000_0218fee4);
+    __cxa_vec_cleanup((u8 *)self + 0xb0, 8, 0x138, func_ov000_0218ea20);
     func_ov000_0218c928(self);
     return self;
 }
 
 void *func_ov003_021f35b4(void *self) {
-    func_02009f64((u8 *)self + 0xa70, 6, 0xe8, func_ov000_0218fee4);
-    func_02009f64((u8 *)self + 0xb0, 8, 0x138, func_ov000_0218ea20);
+    __cxa_vec_cleanup((u8 *)self + 0xa70, 6, 0xe8, func_ov000_0218fee4);
+    __cxa_vec_cleanup((u8 *)self + 0xb0, 8, 0x138, func_ov000_0218ea20);
     func_ov000_0218c928(self);
     func_0203de1c(self);
     return self;
