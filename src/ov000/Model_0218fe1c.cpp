@@ -274,4 +274,69 @@ Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *self) {
     return self;
 }
 
+BOOL func_ov000_0218ffdc(Model0218fe1c *self, ResSet *res, u8 idx, BOOL anim) {
+    void *file;
+    ResMdlSet *set;
+    self->unk_c0 = idx;
+    self->res = res;
+    file = res->mdl_handle != NULL ? res->mdl_handle->unk_00 : NULL;
+    if (file == NULL) {
+        return FALSE;
+    }
+    self->mdl = NULL;
+    self->unk_c2_0 = TRUE;
+    self->unk_c2_4 = 1;
+    set = NNS_G3dGetMdlSet(file);
+    {
+        void *mdl;
+        ResDictMdlSetData *data;
+        if (set != NULL && (data = (ResDictMdlSetData *)ResDict_GetDataByIdx(&set->dict, idx)) != NULL) {
+            mdl = (u8 *)set + data->offset;
+        } else {
+            mdl = NULL;
+        }
+        self->mdl = mdl;
+    }
+    self->tex = NNS_G3dGetTex(file);
+    NNSi_G3dModifyPolygonAttrMask(self->mdl, FALSE, 0x8000);
+    NNSi_G3dModifyPolygonAttrMask(self->mdl, FALSE, 0x1f0000);
+    NNSi_G3dModifyPolygonAttrMask(self->mdl, FALSE, 0x3f000000);
+    NNSi_G3dModifyMatFlag(self->mdl, FALSE, 0x40);
+    NNSi_G3dModifyMatFlag(self->mdl, FALSE, 0x80);
+    NNSi_G3dModifyMatFlag(self->mdl, FALSE, 0x200);
+    NNSi_G3dModifyMatFlag(self->mdl, FALSE, 0x400);
+    self->unk_c2_7 = 0;
+    self->unk_c2_9 = 3;
+    NNS_G3dRenderObjInit(self->unk_24, self->mdl);
+    FreeOnHeap(&self->unk_0c);
+    FreeOnHeap(&self->unk_10);
+    FreeOnHeap(&self->unk_14);
+    FreeOnHeap(&self->unk_18);
+    FreeOnHeap(&self->unk_1c);
+    self->unk_c2_1 = 0;
+    if (anim && res->anims != NULL) {
+        AnimList *anims = res->anims;
+        self->unk_c2_1 = 1;
+        if (anims->list[0] != NULL) {
+            self->unk_0c = AnimCtrl_New();
+        }
+        if (anims->list[1] != NULL) {
+            self->unk_10 = AnimCtrl_New();
+        }
+        if (anims->list[2] != NULL) {
+            self->unk_14 = AnimCtrl_New();
+        }
+        if (anims->list[3] != NULL) {
+            self->unk_18 = AnimCtrl_New();
+        }
+        if (anims->list[4] != NULL) {
+            self->unk_1c = AnimCtrl_New();
+        }
+    }
+    self->unk_be = 0x1f;
+    self->unk_ba = 0;
+    self->unk_bc = 0;
+    return TRUE;
+}
+
 }

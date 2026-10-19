@@ -671,7 +671,7 @@ src/ov000/AnimCtrl_0218f874.cpp:
 
 src/ov000/Model_0218fe1c.cpp:
     complete
-    .text       start:0x0218fe1c end:0x0218ffdc
+    .text       start:0x0218fe1c end:0x021903b4
 
 src/ov000/Model_02190a30.cpp:
     complete
@@ -1160,6 +1160,10 @@ src/ov000/Lo_0216b490.cpp:
 src/ov000/Lo_0216c954.cpp:
     complete
     .text       start:0x0216c954 end:0x0216c9b0
+
+src/ov000/Oam_0216d5b0.cpp:
+    complete
+    .text       start:0x0216d5b0 end:0x0216d9dc
 
 src/ov000/Lo_0216d9dc.cpp:
     complete
@@ -2109,6 +2113,10 @@ src/ov000/Lo_021738d4.cpp:
     complete
     .text       start:0x021738d4 end:0x021739c4
 
+src/ov000/Lo_0217adfc.cpp:
+    complete
+    .text       start:0x0217adfc end:0x0217b230
+
 src/ov000/Lo_0217b230.cpp:
     complete
     .text       start:0x0217b230 end:0x0217b324
@@ -2952,6 +2960,10 @@ src/ov000/TextWin_0215d758.cpp:
 src/ov000/Win_021c5d9c.cpp:
     complete
     .text       start:0x021c5d9c end:0x021c5fc4
+
+src/ov000/Lo_0217d66c.cpp:
+    complete
+    .text       start:0x0217d66c end:0x0217dba4
 
 src/ov000/Lo_0217dba4.cpp:
     complete
