@@ -5,7 +5,7 @@ typedef struct ov006_Prop63c8 {
     u8 unk4[0xa8];
     int unkAC;
     u8 unkB0[0xe8];
-    int unk198;
+    void *unk198;
     u16 unk19C;
     u8 unk19E;
     u8 unk19F;
@@ -47,6 +47,11 @@ void func_ov000_0218fe1c(void *p);
 u8 func_ov006_021d8d9c(void);
 int func_ov006_021d8d4c(void);
 int func_ov006_021d8de0(void);
+extern void *data_02097e4c;
+void func_02049bb4(void *a, s32 b);
+void func_ov000_0218fee4(void *p);
+void func_ov000_0218c928(void *self);
+void func_0203de1c(void *p);
 
 ov006_Prop63c8 *func_ov006_021e63c8(ov006_Prop63c8 *self) {
     int i;
@@ -111,6 +116,27 @@ ov006_Prop63c8 *func_ov006_021e63c8(ov006_Prop63c8 *self) {
     }
     self->unk227 = 0;
     self->unk226 = 0;
+    return self;
+}
+
+static inline void ov006_Prop63c8_Dtor(ov006_Prop63c8 *self) {
+    self->vtbl = data_ov006_021ec4f4;
+    OV006_DELETE_OBJECT(self->unk198);
+    if (self->unk1FE > 0) {
+        func_02049bb4(data_02097e4c, self->unk1FE);
+    }
+    func_ov000_0218fee4(self->unkB0);
+    func_ov000_0218c928(self);
+}
+
+ov006_Prop63c8 *func_ov006_021e650c(ov006_Prop63c8 *self) {
+    ov006_Prop63c8_Dtor(self);
+    return self;
+}
+
+ov006_Prop63c8 *func_ov006_021e65a0(ov006_Prop63c8 *self) {
+    ov006_Prop63c8_Dtor(self);
+    func_0203de1c(self);
     return self;
 }
 

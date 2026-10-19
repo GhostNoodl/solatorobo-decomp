@@ -207,5 +207,48 @@ void func_ov008_021cf040(Ov008Mgr3 *m) {
 }
 
 
+void func_ov008_021cf5c8(s32 type, Ov008V *list, Ov008ListInfo *info) {
+    s32 yy;
+    s32 sx;
+    void *mgr;
+    s32 sy;
+    void *item;
+    void *m;
+    void *pos;
+    s32 scroll;
+    mgr = FLD(void *, list, 0x8);
+    switch (type) {
+    case 0:
+    case 1:
+    case 2:
+        break;
+    case 3:
+        item = info->item;
+        m = FLD(void *, mgr, 0xe8);
+        pos = FLD(void *, item, 0x1c);
+        if (!Ov008_ItemOn(item)) {
+            break;
+        }
+        yy = info->y;
+        if (!Ov008_ListVisible(list, yy)) {
+            break;
+        }
+        FLD(Ov008ObjFlags, m, 0x6c).b19 = 1;
+        FLD(Ov008ObjFlags, m, 0x6c).b20 = 0;
+        scroll = FLD(s32, list, 0xd0) >> 12;
+        FLD(s32, m, 0x150) = info->z - 0xa0;
+        sx = info->x + FLD(s32, pos, 0x44) - 0x78 - scroll;
+        sy = info->y + (FLD(s32, pos, 0x48) >> 1) - 0x60;
+        FLD(s32, m, 0xfc) = sx << 12;
+        FLD(s32, m, 0x100) = sy << 12;
+        FLD(Ov008ObjFlags, m, 0x6c).pal = (u8)info->pal;
+        FLD(Ov008ObjFlags, m, 0x6c).prio = 0x1e;
+        FLD(Ov008ObjFlags, m, 0x6c).b21 = 1;
+        FLD(u8, m, 0x85) = (u8)(FLD(u8, m, 0x85) & 0xfe) | 1;
+        Ov008_DrawModelIdx(m, 3);
+        FLD(u8, m, 0x85) &= 0xfe;
+        break;
+    }
+}
 
 }

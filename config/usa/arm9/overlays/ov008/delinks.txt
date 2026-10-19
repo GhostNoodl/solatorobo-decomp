@@ -34,7 +34,7 @@ src/ov008/ov008_021cec20.cpp:
 
 src/ov008/ov008_021cf040.cpp:
     complete
-    .text       start:0x021cf040 end:0x021cf5c8
+    .text       start:0x021cf040 end:0x021cf780
 
 src/ov008/ov008_021cf780.cpp:
     complete
