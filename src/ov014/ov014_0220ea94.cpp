@@ -82,4 +82,29 @@ BOOL func_ov014_0220eb14(Ov014Actor *self) {
     return r;
 }
 
+
+// The result is kept in the parameter slot: the original reuses a's register
+// for the return value.
+s32 func_ov014_0220ec18(s16 *a, u8 *b) {
+    s32 **q;
+    s32 prev;
+    if (a[0] == 5) {
+        prev = 0;
+        q = func_ov000_02190a30(b, 0);
+        if (q != NULL && *q != NULL) {
+            prev = **q;
+        }
+        a = (s16 *)func_ov000_02191318(b, ((u16 *)a)[1] << 12);
+        if (q != NULL) {
+            s32 cur = (*q != NULL) ? **q : 0;
+            if (prev >= cur) {
+                FLD(u32, b, 0xe4) |= 0x20000000;
+            }
+        }
+    } else {
+        a = (s16 *)func_ov000_02191f18(a, b);
+    }
+    return (s32)a;
+}
+
 }
