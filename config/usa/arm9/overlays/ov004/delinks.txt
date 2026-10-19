@@ -16,6 +16,10 @@ src/ov004/ov004_021cd050.c:
     complete
     .text       start:0x021cd050 end:0x021cd4c0
 
+src/ov004/ov004_021cd4c0.c:
+    complete
+    .text       start:0x021cd4c0 end:0x021cd714
+
 src/ov004/ov004_021cd714.c:
     complete
     .text       start:0x021cd714 end:0x021cd750
@@ -28,10 +32,22 @@ src/ov004/ov004_021cdb30.c:
     complete
     .text       start:0x021cdb30 end:0x021cdc20
 
+src/ov004/ov004_021ce2ec.c:
+    complete
+    .text       start:0x021ce2ec end:0x021ce574
+
 src/ov004/ov004_021ce574.c:
     complete
     .text       start:0x021ce574 end:0x021ce7d8
 
+src/ov004/ov004_021ce7d8.c:
+    complete
+    .text       start:0x021ce7d8 end:0x021ce874
+
 src/ov004/ov004_021ce874.c:
     complete
     .text       start:0x021ce874 end:0x021ceaac
+
+src/ov004/ov004_021cf5cc.c:
+    complete
+    .text       start:0x021cf5cc end:0x021cf7a0

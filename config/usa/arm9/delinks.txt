@@ -4,6 +4,14 @@
     .data       start:0x0208aa80 end:0x0208d940 kind:data align:32
     .bss        start:0x0208d940 end:0x0214b1a0 kind:bss align:32
 
+libs/nitro/init/crt0.c:
+    complete
+    .text       start:0x02004800 end:0x02004f7c
+
+libs/nitro/init/crt0_2.c:
+    complete
+    .text       start:0x02004fd4 end:0x02004ffc
+
 src/Main/Sys/GameMain.cpp:
     complete
     .text       start:0x02005090 end:0x02005170
@@ -1603,3 +1611,11 @@ src/Main/Effect/EffectSnd.cpp:
 src/Main/Lang/TblRes.cpp:
     complete
     .text       start:0x020702c8 end:0x020708fc
+
+libs/mobiclip/mobiclip_asm_02075940.c:
+    complete
+    .text       start:0x02075940 end:0x02075d4c
+
+libs/mobiclip/mobiclip_asm_02076990.c:
+    complete
+    .text       start:0x02076990 end:0x02076efc

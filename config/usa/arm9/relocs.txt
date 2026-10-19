@@ -16,6 +16,7 @@ from:0x0200498c kind:arm_call to:0x02004da0 module:main
 from:0x020049c0 kind:load to:0x02004fd4 module:main
 from:0x020049d8 kind:load to:0x02004ffc module:main
 from:0x020049dc kind:load to:0x02fe0000 module:dtcm
+from:0x020049ec kind:load to:0x02004fb0 module:main
 from:0x020049f0 kind:load to:0x01ff80f0 module:itcm
 from:0x020049f8 kind:load to:0x02005090 module:main
 from:0x02004a94 kind:load to:0x02fe0000 module:dtcm
@@ -30,6 +31,8 @@ from:0x02004c84 kind:arm_call to:0x02004df4 module:main
 from:0x02004cb0 kind:arm_call to:0x02004ed4 module:main
 from:0x02004cc0 kind:arm_call to:0x02004d50 module:main
 from:0x02004cd4 kind:arm_call to:0x02004f20 module:main
+from:0x02004d3c kind:arm_branch to:0x02004ea8 module:main
+from:0x02004d40 kind:load to:0x02004fb0 module:main
 from:0x02004d44 kind:load to:0x02fe0000 module:dtcm
 from:0x02004d98 kind:load to:0x02fe0000 module:dtcm
 from:0x02004dec kind:load to:0x02fe0000 module:dtcm

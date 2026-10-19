@@ -1,6 +1,6 @@
 func_01ff8020 kind:function(arm,size=0xd0) addr:0x01ff8020
-func_01ff80f0 kind:function(arm,size=0x58) addr:0x01ff80f0
-func_01ff8148 kind:function(arm,size=0x160) addr:0x01ff8148
+OS_IrqHandler kind:function(arm,size=0x58) addr:0x01ff80f0
+OS_IrqHandler_ThreadSwitch kind:function(arm,size=0x160) addr:0x01ff8148
 func_01ff82a8 kind:function(arm,size=0x30) addr:0x01ff82a8
 func_01ff82d8 kind:function(arm,size=0x58) addr:0x01ff82d8
 func_01ff8330 kind:function(arm,size=0x134) addr:0x01ff8330
