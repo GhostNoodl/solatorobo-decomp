@@ -176,3 +176,17 @@ Some casts change no values but still change MWCC's output:
 - If a register swap involves an inline's parameter or a block-scoped local, expand the inline by hand and declare the variable at function level; its declaration position relative to the other locals then picks the register (`func_ov006_021e0480`, and `info` before `id` in the ov006 `021d4118` draft).
 - Nesting about four inlines deep makes MWCC emit a `bl` to the innermost one instead of inlining it. Flatten the helpers if a call shows up that the target doesn't have.
 - A stack struct copy the target keeps (`Vec3 v = src;`) needs the init-declaration form. Declaring first and assigning later lets MWCC scalarize the struct and drop the stack stores.
+
+## DSProtect code (ov004)
+
+- These functions were built at a higher optimization level than the rest. `#pragma optimization_level 3` at the top of the file closed the RC4 encrypt routine.
+- Pointers are stored offset by `0x3200`. To get a `sym+0x3200` relocation, declare the target as a data array (`extern u8 func_xxx[];`). Arithmetic on an array folds into the addend; on a function symbol it does not.
+- Write `(u32)(sym + 0x3200) - 0x6400` to keep a separate `sub`.
+- Functions that nothing calls by name get dead-stripped, and the symbol check then fails. Wrap the file in `#pragma force_active on` / `#pragma force_active reset`.
+- The cache flush (`mcr p15` loops) works as an inline-asm block inside a `static inline` function, using `@label` labels.
+
+## Small tricks
+
+- Assigning `true` to a 1-bit bitfield in C++ gave the target's `bic`+`orr` insertion (`func_ov003_021d7894`).
+- An `s32` loop index compared as `(u32)i == count - 1` changed the compare and register allocation enough to match.
+- Declaring a read-only table `const` (`extern const T tbl[];`) changed scheduling around its loads.

@@ -50,7 +50,7 @@ src/ov003/ov003_021d6cf4.cpp:
 
 src/ov003/ov003_021d7780.cpp:
     complete
-    .text       start:0x021d7780 end:0x021d7894
+    .text       start:0x021d7780 end:0x021d7948
 
 src/ov003/ov003_021d7948.cpp:
     complete
@@ -520,3 +520,7 @@ src/ov003/ov003_021eeecc.cpp:
 src/ov003/ov003_021cd1e4.cpp:
     complete
     .text       start:0x021cd1e4 end:0x021cd64c
+
+src/ov003/ov003_021f01a4.cpp:
+    complete
+    .text       start:0x021f01a4 end:0x021f0258

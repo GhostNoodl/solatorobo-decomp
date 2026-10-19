@@ -9,7 +9,7 @@ ovid = int(mod[2:])
 cfg = os.path.join(R, 'config/usa/arm9/overlays', mod)
 size = None
 for l in open(os.path.join(cfg, 'symbols.txt')):
-    m = re.match(r'\S+ kind:function\(arm,size=0x([0-9a-f]+)\) addr:0x([0-9a-f]+)', l)
+    m = re.match(r'\S+ kind:function\(arm,size=0x([0-9a-f]+)\S*\) addr:0x([0-9a-f]+)', l)
     if m and int(m[2], 16) == a:
         size = int(m[1], 16)
 if size is None:

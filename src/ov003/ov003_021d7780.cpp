@@ -38,6 +38,7 @@ extern void func_ov003_021d0edc(void *p);
 extern void *func_0203dd9c(u32 size);
 extern void func_0203de1c(void *p);
 extern void func_0203df0c(void *p);
+extern void *func_0203de84(u32 size, s32 align);
 extern void *func_ov000_0218e640(void *mgr, u16 id);
 
 void *func_ov003_021d7780(void *self) {
@@ -99,6 +100,33 @@ Ov003Pool *func_ov003_021d7858(Ov003Pool *self) {
         self->freeList = NULL;
     }
     return self;
+}
+
+BOOL func_ov003_021d7894(Ov003Pool *self, s32 size, s32 count) {
+    s32 pad = size % 4 == 0 ? 0 : 4 - size % 4;
+    u32 stride;
+    u8 *p;
+    s32 i;
+    if (pad != 0) {
+        size = (u16)(size + pad);
+    }
+    stride = size + 4;
+    self->elemSize = size;
+    self->active = true;
+    p = (u8 *)func_0203de84(stride * count, 4);
+    self->buf = p;
+    self->end = p + stride * count;
+    self->freeList = (Ov003FreeNode *)p;
+    for (i = 0; i < count; i++) {
+        BOOL last = (u32)i == count - 1;
+        if (last) {
+            ((Ov003FreeNode *)p)->next = NULL;
+        } else {
+            ((Ov003FreeNode *)p)->next = (Ov003FreeNode *)(p + stride);
+        }
+        p += stride;
+    }
+    return TRUE;
 }
 
 }
