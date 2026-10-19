@@ -759,7 +759,7 @@ src/ov000/Misc_0214dcc4.cpp:
 
 src/ov000/Lo_02178fd8.cpp:
     complete
-    .text       start:0x02178fd8 end:0x021790ac
+    .text       start:0x02178fd8 end:0x0217942c
 
 src/ov000/Lo_0217942c.cpp:
     complete
@@ -1414,7 +1414,7 @@ src/ov000/Stub_02180838.cpp:
 
 src/ov000/Stub_021b08d8.cpp:
     complete
-    .text       start:0x021b08d8 end:0x021b08ec
+    .text       start:0x021b08d8 end:0x021b0c50
 
 src/ov000/Stub_021bd300.cpp:
     complete
@@ -1458,7 +1458,7 @@ src/ov000/Stub_021b14e8.cpp:
 
 src/ov000/Stub_021c34cc.cpp:
     complete
-    .text       start:0x021c34cc end:0x021c34fc
+    .text       start:0x021c34cc end:0x021c37bc
 
 src/ov000/Stub_021c37bc.cpp:
     complete
@@ -2972,6 +2972,14 @@ src/ov000/TextWin_0215bb14.cpp:
 src/ov000/Mtx_021b4c60.cpp:
     complete
     .text       start:0x021b4c60 end:0x021b4ebc
+
+src/ov000/Robo_021aa5c8.cpp:
+    complete
+    .text       start:0x021aa5c8 end:0x021aa978
+
+src/ov000/Model_021903b4.cpp:
+    complete
+    .text       start:0x021903b4 end:0x02190758
 
 src/ov000/Mtx_02190758.cpp:
     complete
