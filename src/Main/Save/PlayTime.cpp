@@ -41,14 +41,7 @@ void func_02048bfc(PlayTime *t, BOOL toMinutes) {
     PlayTime_Normalize(t, toMinutes);
 }
 
-void func_02048cf0(PlayTime *t, u16 hours, u16 minutes, u16 seconds, u16 millis) {
-    if (PlayTime_ToMillis(t) > hours * 3600000 + minutes * 60000 + seconds * 1000 + millis) {
-        t->hours = hours;
-        t->minutes = minutes;
-        t->seconds = seconds;
-        t->millis = millis;
-    }
-}
+// func_02048cf0 is in PlayTime_1.cpp.
 
 void func_02048d58(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
     dst->millis = a->millis + b->millis;

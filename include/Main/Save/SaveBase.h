@@ -161,11 +161,11 @@ static inline void SaveBase_BuildSlot(SaveBase *s) {
 static inline void SaveBase_BuildData(SaveBase *s) {
     s32 idx = s->curSlot;
     SaveSlot *src = SaveBase_GetSlot(s, idx);
-    u32 size;
+    u32 size = s->dataSize;
     u32 n;
     SaveData *data = s->data;
     data->slotIdx = idx;
-    data->size = s->dataSize;
+    data->size = size;
     MI_CpuCopy8(src, &data->slot, s->slotSize);
     size = s->dataSize;
     n = size - (s->slotSize + 4);

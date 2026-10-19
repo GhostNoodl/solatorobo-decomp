@@ -44,8 +44,9 @@ ResLoader *func_0203562c(ResLoader *loader) {
     return loader;
 }
 
-// Non-matching
-#ifdef NONMATCHING
+// The original keeps numBlocks in a register and multiplies: constant propagation was off here.
+#pragma push
+#pragma opt_propagation off
 void func_02035670(ResLoader *loader) {
     u32 blockSize;
     u16 numBlocks;
@@ -62,42 +63,31 @@ void func_02035670(ResLoader *loader) {
     }
     ResRing_Setup(&loader->ring, buf, blockSize, numBlocks);
 }
-#endif
+#pragma pop
 
-// Non-matching
-#ifdef NONMATCHING
 BOOL func_02035740(ResLoader *loader, ResRequest *req) {
     BOOL result = FALSE;
-    if (loader->state != 0) {
-        return result;
+    if (loader->state == 0) {
+        loader->state = 1;
+        loader->req.unk_00 = req->unk_00;
+        loader->req.unk_04 = req->unk_04;
+        loader->req.entries = req->entries;
+        loader->req.data = req->data;
+        loader->req.name = req->name;
+        loader->req.unk_28 = req->unk_28;
+        loader->req.index = req->index;
+        if (OS_IsThreadTerminated(loader)) {
+            OS_CreateThread(loader, (void (*)(void *))func_02035450, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
+            OS_SetThreadStackWarningOffset(loader, 0x4c);
+        }
+        OS_WakeupThreadDirect(loader);
+        result = TRUE;
     }
-    loader->state = 1;
-    loader->req.unk_00 = req->unk_00;
-    loader->req.unk_04 = req->unk_04;
-    loader->req.entries = req->entries;
-    loader->req.data = req->data;
-    loader->req.name = req->name;
-    loader->req.unk_28 = req->unk_28;
-    loader->req.index = req->index;
-    if (OS_IsThreadTerminated(loader)) {
-        OS_CreateThread(loader, (void (*)(void *))func_02035450, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
-        OS_SetThreadStackWarningOffset(loader, 0x4c);
-    }
-    OS_WakeupThreadDirect(loader);
-    return TRUE;
+    return result;
 }
-#endif
 
-// Non-matching
-#ifdef NONMATCHING
 void func_0203581c(ResLoader *loader) {
     loader->state = 0;
-    loader->req.unk_00 = 0;
-    loader->req.unk_04 = 0;
-    loader->req.entries = NULL;
-    loader->req.data = NULL;
-    loader->req.index = 0;
-    loader->req.name.str[0] = '\0';
-    OS_SleepThreadDirect(loader);
+    ResRequest_Init(&loader->req);
+    OS_SleepThreadDirect(loader, NULL);
 }
-#endif

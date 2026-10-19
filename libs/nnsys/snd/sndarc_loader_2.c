@@ -55,3 +55,40 @@ void func_020311c4(void *data, u32 size, u32 waveArc, u32 index) {
     }
     SND_InvalidateWaveData(data, (u8 *)data + size);
 }
+
+extern u32 SND_GetWaveDataCount(const SndWaveArc *waveArc);
+extern void DC_StoreRange(const void *startAddr, u32 nBytes);
+
+// LoadSingleWave: loads one wave of a wave archive into the heap, unless it is already loaded.
+BOOL func_0203120c(SndWaveArc *waveArc, int index, u32 fileId, NNSSndHeap *heap) {
+    u32 count;
+    u32 *p;
+    u32 waveOffset;
+    u32 waveSize;
+    void *buffer;
+    if (SND_GetWaveDataAddress(waveArc, index) != NULL) {
+        return TRUE;
+    }
+    count = SND_GetWaveDataCount(waveArc);
+    // p[15] is waveOffset[waveCount + index]; indexing from the struct base matches the target's addressing.
+    p = (u32 *)waveArc + (waveArc->waveCount + index);
+    waveOffset = p[15];
+    if (index < count - 1) {
+        waveSize = p[16] - waveOffset;
+    } else {
+        waveSize = waveArc->fileSize - waveOffset;
+    }
+    if (heap == NULL) {
+        return FALSE;
+    }
+    buffer = NNS_SndHeapAlloc(heap, waveSize + 0x20, func_020311c4, (u32)waveArc, index);
+    if (buffer == NULL) {
+        return FALSE;
+    }
+    if (NNS_SndArcReadFile(fileId, buffer, waveSize, waveOffset) != waveSize) {
+        return FALSE;
+    }
+    DC_StoreRange(buffer, waveSize);
+    SND_SetWaveDataAddress(waveArc, index, buffer);
+    return TRUE;
+}

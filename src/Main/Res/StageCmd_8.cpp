@@ -155,4 +155,65 @@ int func_0205fdb0(StageResSlot *slot) {
     return 1;
 }
 
+u16 func_020600cc(StageResSlot *slot, StageVec *pos, u16 *rot, u16 *idx);
+extern void func_ov000_0219cbf8(StagePlayer *player, StageVec *pos, u16 *rot);
+extern void func_ov000_02184594(FieldState *state);
+
+int func_0205fe10(StageResSlot *slot) {
+    StagePlayer *player;
+    u16 flags;
+    u16 idx;
+    u16 rot[3];
+    StageVec pos;
+    player = func_ov000_0219bf90();
+    flags = slot->args[2];
+    switch (slot->bits.unk_04_0) {
+    case 0:
+        if (Field_HasEvent(9)) {
+            return -0x63;
+        }
+        func_020600cc(slot, &pos, rot, &idx);
+        if (idx == 0xfe) {
+            data_02fe1534.unk_16 = 1;
+            data_ov000_021ccd6c->unk_0a = 0xff;
+        } else if (idx == 0xffff) {
+            if (data_ov000_021ccd6c->unk_0a == 0xff && player != NULL) {
+                func_ov000_0219cbf8(player, &pos, rot);
+                if (!(flags & 0x20)) {
+                    player->unk_vf18();
+                }
+                {
+                    StageVec *v = (StageVec *)((u8 *)data_ov000_021ccd6c + 0x24);
+                    v->x = pos.x;
+                    v->y = pos.y;
+                    v->z = pos.z;
+                }
+            }
+            Stage_SetMark(&pos, rot[1], 1);
+            data_ov000_021ccd6c->unk_0a = 0xff;
+            if (player != NULL && !Field_HasEvent(10)) {
+                data_02fe1534.unk_16 = 0;
+            }
+        } else {
+            data_ov000_021ccd6c->unk_0a = idx;
+        }
+        data_ov000_021ccd6c->next = 0xff;
+        if (flags == 0) {
+            break;
+        }
+        slot->bits.unk_04_0 = 1;
+    case 1:
+        if (!Stage_IsWirelessReady() || Field_IsEventPending(data_ov000_021ccd54)) {
+            return -0x63;
+        }
+        if (player == NULL) {
+            func_ov000_02184594(data_ov000_021ccd54);
+            return -0x63;
+        }
+        func_0205fc88(flags);
+        break;
+    }
+    return 1;
+}
+
 }

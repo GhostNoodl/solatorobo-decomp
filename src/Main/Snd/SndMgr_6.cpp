@@ -243,7 +243,45 @@ typedef struct SndCmd {
     /* 0x4 */ s16 args[6];
 } SndCmd;
 
-void func_0204a3b8(SndMgr *mgr, SndCmd *cmd);
+// This matches, but it stays in the gap: nothing references the TWL-only functions after it
+// (0x0204a598-0x0204a87c), so once it leaves the gap the linker strips that gap.
+#ifdef SNDMGR_DELINK_0204A3B8
+void func_0204a3b8(SndMgr *mgr, SndCmd *cmd) {
+    switch (cmd->type) {
+    case 0:
+        mgr->playAfterLoad = TRUE;
+        SndMgr_RequestLoad(mgr, 1, cmd->args[0], cmd->args[2]);
+        break;
+    case 1:
+        NNS_SndPlayerStopSeqBySeqNo(cmd->args[0], 10);
+        break;
+    case 3:
+        NNS_SndPlayerStopSeqBySeqNo(cmd->args[0], cmd->args[2]);
+        break;
+    case 6:
+        func_02049c80(mgr, cmd->args[0], cmd->args[1], cmd->args[2], cmd->args[3], cmd->args[4], cmd->args[5]);
+        break;
+    case 7:
+        if (cmd->args[2] == 1) {
+            SndMgr_StopSlot(mgr, mgr->seqArcSlots[cmd->args[5]]);
+            mgr->seqArcNext--;
+        } else {
+            SndMgr_StopSe(mgr, cmd->args[0]);
+        }
+        break;
+    case 12:
+        if (cmd->args[4] == 1) {
+            SndMgr_SetSlotVolume(mgr, mgr->seqArcSlots[cmd->args[5]], cmd->args[2], cmd->args[3]);
+        }
+        break;
+    case 9:
+        func_0204a20c(mgr, cmd->args[1]);
+        break;
+    case 10:
+        SndMgr_StopStrm(mgr);
+        break;
+    }
+}
+#endif
 
 }
-// @exclude func_0204a3b8

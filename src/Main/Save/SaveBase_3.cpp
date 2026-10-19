@@ -43,7 +43,6 @@ void func_02047a20(SaveBase *s) {
     }
 }
 
-#ifdef NONMATCHING
 void func_02047c2c(SaveBase *s) {
     SaveHeader *hdr = s->header;
     switch (s->step) {
@@ -84,6 +83,5 @@ void func_02047c2c(SaveBase *s) {
             break;
     }
 }
-#endif
 
 }

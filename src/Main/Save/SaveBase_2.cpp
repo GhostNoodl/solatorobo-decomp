@@ -54,16 +54,16 @@ void func_02047800(SaveBase *s, SaveHeader *hdr) {
     hdr->backupIdx = 0xff;
 }
 
-#ifdef NONMATCHING
 void func_02047838(SaveBase *s) {
     SaveSlot *slot;
-    u8 cks;
-    const u8 *p;
-    u8 x;
     s32 i;
-    u32 j;
-    u32 n;
+    u8 x;
     BOOL ok;
+    const u8 *p;
+    u32 n;
+    u32 size;
+    u32 j;
+    u8 cks;
     SaveHeader *hdr = s->header;
     switch (s->step) {
         case 0:
@@ -81,10 +81,11 @@ void func_02047838(SaveBase *s) {
         case 2:
             if (STD_CompareString(hdr->magic, s->name) == 0) {
                 for (i = 0; i < s->slotCount; i++) {
-                    slot = SaveBase_GetSlot(s, i);
+                    size = s->slotSize;
+                    slot = (SaveSlot *)((u8 *)s->header + (i * size + 0x14));
                     cks = slot->checksum;
                     if (cks != 0 || (slot->flags & 1)) {
-                        n = s->slotSize - 1;
+                        n = size - 1;
                         x = 0;
                         p = (const u8 *)slot + 1;
                         for (j = 0; j < n; j++) {
@@ -104,6 +105,5 @@ void func_02047838(SaveBase *s) {
             break;
     }
 }
-#endif
 
 }

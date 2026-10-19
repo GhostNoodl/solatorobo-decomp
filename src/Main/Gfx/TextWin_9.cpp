@@ -346,7 +346,29 @@ static inline void TextBoxLine_Init(TextBoxLine *line) {
     line->unk_98 = 0;
 }
 
-void func_02050748(TextBox *box);
+void func_02050748(TextBox *box) {
+    int i;
+    box->unk_000 = 0;
+    box->unk_003 = 0;
+    box->unk_002 = 0;
+    box->unk_004 = 0;
+    box->unk_008 = 0;
+    box->model = NULL;
+    box->pltt = 8;
+    box->lineHeight = 6;
+    box->unk_018 = -1;
+    box->unk_01c = 0;
+    box->unk_020 = 0;
+    box->unk_024 = 0;
+    box->unk_028 = 0;
+    for (i = 0; i < 3; i++) {
+        TextBoxLine_Init(&box->lines[i]);
+    }
+    box->obj = NULL;
+    box->unk_204 = 0;
+    box->unk_208 = 0;
+    box->unk_20c = 0;
+}
 
 void func_020507d8(TextBox *box);
 

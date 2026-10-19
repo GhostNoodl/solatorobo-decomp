@@ -53,6 +53,10 @@ libs/msl/printf.c:
     .text       start:0x02005748 end:0x02006e48
     .data       start:0x0208ad80 end:0x0208adb0
 
+libs/msl/printf_2.c:
+    complete
+    .text       start:0x020076f4 end:0x020077f4
+
 libs/msl/signal.c:
     complete
     .text       start:0x020077f4 end:0x0200791c
@@ -918,7 +922,7 @@ libs/nnsys/snd/sndarc_loader.c:
 
 libs/nnsys/snd/sndarc_loader_2.c:
     complete
-    .text       start:0x020310c4 end:0x0203120c
+    .text       start:0x020310c4 end:0x020312d4
 
 libs/nnsys/snd/sndarc_loader_3.c:
     complete
@@ -974,7 +978,7 @@ src/Main/Res/ResList.c:
 
 src/Main/Res/ResLoader.c:
     complete
-    .text       start:0x0203562c end:0x02035670
+    .text       start:0x0203562c end:0x0203584c
 
 src/Main/Res/ResLoader_2.c:
     complete
@@ -1136,11 +1140,11 @@ src/Main/Save/SaveBase.cpp:
 
 src/Main/Save/SaveBase_2.cpp:
     complete
-    .text       start:0x020477fc end:0x02047838
+    .text       start:0x020477fc end:0x02047a20
 
 src/Main/Save/SaveBase_3.cpp:
     complete
-    .text       start:0x02047a20 end:0x02047c2c
+    .text       start:0x02047a20 end:0x02047f60
 
 src/Main/Save/SaveBase_4.cpp:
     complete
@@ -1157,6 +1161,10 @@ src/Main/Save/SaveBase_6.cpp:
 src/Main/Save/PlayTime.cpp:
     complete
     .text       start:0x02048be4 end:0x02048bfc
+
+src/Main/Save/PlayTime_1.cpp:
+    complete
+    .text       start:0x02048cf0 end:0x02048d58
 
 src/Main/Save/PlayTime_2.cpp:
     complete
@@ -1270,7 +1278,7 @@ src/Main/Gfx/TextWin_8.cpp:
 
 src/Main/Gfx/TextWin_9.cpp:
     complete
-    .text       start:0x0205070c end:0x02050748
+    .text       start:0x0205070c end:0x020507d8
 
 src/Main/Gfx/TextWin_10.cpp:
     complete
@@ -1426,7 +1434,7 @@ src/Main/Res/StageCmd_7.cpp:
 
 src/Main/Res/StageCmd_8.cpp:
     complete
-    .text       start:0x0205f8f8 end:0x0205fe10
+    .text       start:0x0205f8f8 end:0x020600cc
 
 src/Main/Res/StageCmd_9.cpp:
     complete

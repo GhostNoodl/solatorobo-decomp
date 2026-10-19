@@ -32,7 +32,7 @@ extern int MI_ReadUncompLZ8(void *ctx, const void *src, u32 size);
 extern void OS_CreateThread(void *thread, void (*func)(void *), void *arg, void *stack, u32 stackSize, u32 prio);
 extern void OS_DestroyThread(void *thread);
 extern BOOL OS_IsThreadTerminated(void *thread);
-extern void OS_SleepThreadDirect(void *thread);
+extern void OS_SleepThreadDirect(void *thread, void *queue);
 extern void OS_WakeupThreadDirect(void *thread);
 extern void OS_SetThreadStackWarningOffset(void *thread, u32 prio);
 extern BOOL OS_IsRunOnTwl(void);
