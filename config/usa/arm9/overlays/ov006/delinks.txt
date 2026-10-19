@@ -166,6 +166,10 @@ src/ov006/ov006_021dfa24.cpp:
     complete
     .text       start:0x021dfa24 end:0x021dfa60
 
+src/ov006/ov006_021e0480.cpp:
+    complete
+    .text       start:0x021e0480 end:0x021e07b0
+
 src/ov006/ov006_021e07b0.cpp:
     complete
     .text       start:0x021e07b0 end:0x021e07ec

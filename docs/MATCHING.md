@@ -171,3 +171,8 @@ Some casts change no values but still change MWCC's output:
 - A shift of a `u16` table value done as `lsr` rather than `asr` is `/ 2` on an `int` (the compiler knows it's non-negative). `>> 1` gives `asr`.
 - An integer local the target allocates later than you do (a higher callee-saved register) may be unsigned in the original (`u32 x = v.x & ~0xfff;`).
 - If two parallel computations (x then y) come out with the registers and loads swapped, the original may finish one before starting the other: `dx = ...; x = ...; self->x = x; dy = ...; y = ...; self->y = y;` instead of computing both and then storing both.
+- `#pragma optimization_level 3` also exists in some ov002 files. If a near miss won't close at O4 or O2, try O3 together with different declaration orders of the locals; `func_ov002_021dcf00` needed both (with initializers moved to plain assignments).
+- An extra `{ }` block around locals changes scheduling. If a draft wraps its locals in an inner block, try declaring them at function level instead (`func_ov002_021e8cc4`).
+- If a register swap involves an inline's parameter or a block-scoped local, expand the inline by hand and declare the variable at function level; its declaration position relative to the other locals then picks the register (`func_ov006_021e0480`, and `info` before `id` in the ov006 `021d4118` draft).
+- Nesting about four inlines deep makes MWCC emit a `bl` to the innermost one instead of inlining it. Flatten the helpers if a call shows up that the target doesn't have.
+- A stack struct copy the target keeps (`Vec3 v = src;`) needs the init-declaration form. Declaring first and assigning later lets MWCC scalarize the struct and drop the stack stores.
