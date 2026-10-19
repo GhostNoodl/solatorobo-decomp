@@ -325,4 +325,15 @@ void func_ov011_022024ac(Ov011Chr *self, u16 v) {
 }
 
 
+Ov011Vec func_ov011_022024d4(const Ov011Chr *self) {
+    Ov011Vec v = data_ov011_02207438;
+    if (self->b0) {
+        void *m = self->model;
+        v.x = FLD(s32, m, 0x78);
+        v.y = FLD(s32, m, 0x7c);
+        v.z = FLD(s32, m, 0x80);
+    }
+    return v;
+}
+
 }

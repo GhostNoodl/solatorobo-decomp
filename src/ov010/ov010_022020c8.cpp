@@ -47,7 +47,22 @@ static inline void Ov010Snd_Init(Ov010Snd *s, u16 id) {
     s->unk_1c = -0x125e;
 }
 
+class Ov010Cls;
+typedef void (Ov010Cls::*Ov010Fn)();
+
+struct Ov010FnEnt {
+    s32 key;
+    Ov010Fn fn;
+};
+
+struct Ov010FnTbl2 {
+    s32 w[6];
+};
+
 extern "C" {
+
+extern u8 *data_ov000_021ccd54;
+extern const Ov010FnTbl2 data_ov010_0220f00c;
 
 extern u8 data_ov010_0220fe5c[];
 extern const u8 data_ov003_021f4340;
@@ -219,6 +234,41 @@ void func_ov010_02202608(void *self) {
     }
     FLD(Ov010Snd *, self, 0xd8) = s;
     Ov010Snd_Init(s, FLD(u16, self, 0xc));
+}
+
+static inline BOOL Ov010_GBusy(u8 *g) {
+    return FLD(s32, g, 0x90) != FLD(s32, g, 0x94) ? TRUE : FALSE;
+}
+
+static inline BOOL Ov010_GIdle(void) {
+    u8 *g = data_ov000_021ccd54;
+    if (g != NULL) {
+        if (Ov010_GBusy(g)) {
+            return FALSE;
+        }
+        if (FLD(s32, g, 0) != 3) {
+            return FALSE;
+        }
+        return TRUE;
+    }
+    return TRUE;
+}
+
+void func_ov010_02202750(Ov010Cls *self) {
+    Ov010FnEnt tbl[2];
+    s32 key;
+    u32 i;
+    if (!Ov010_GIdle()) {
+        return;
+    }
+    *(Ov010FnTbl2 *)tbl = data_ov010_0220f00c;
+    key = FLD(s32, self, 0xd4);
+    for (i = 0; i < 2; i++) {
+        if (key == ((const Ov010FnEnt *)tbl)[i].key && *(s32 *)&tbl[i].fn != 0) {
+            (self->*tbl[i].fn)();
+            break;
+        }
+    }
 }
 
 

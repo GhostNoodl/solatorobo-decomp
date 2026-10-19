@@ -39,7 +39,7 @@ src/ov011/ov011_02200aac.cpp:
 
 src/ov011/ov011_02201c18.cpp:
     complete
-    .text       start:0x02201c18 end:0x022024d4
+    .text       start:0x02201c18 end:0x02202538
 
 src/ov011/ov011_02202538.cpp:
     complete

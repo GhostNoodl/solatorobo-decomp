@@ -171,4 +171,31 @@ void func_ov010_02209074(void *p) {
     FLD(s32, p, 0xdc) = 0;
 }
 
+extern s32 func_ov003_021d9a80(const Ov010Vec *a, const Ov010Vec *b);
+BOOL func_ov010_022090b4(s32 type, const s32 *rect, const s32 *circ, const Ov010Vec *p) {
+    BOOL r;
+    switch (type) {
+    case 0: {
+        BOOL ox = (p->x < rect[0] || rect[2] < p->x);
+        BOOL oz = (p->z < rect[1] || rect[3] < p->z);
+        r = (ox || oz);
+        break;
+    }
+    case 1: {
+        Ov010Vec a = {0, 0, 0};
+        r = FALSE;
+        a.x = p->x;
+        a.z = p->z;
+        Ov010Vec b = {0, 0, 0};
+        b.x = circ[0];
+        b.z = circ[2];
+        if (func_ov003_021d9a80(&a, &b) > Ov010_FxMul(circ[3], circ[3])) {
+            r = TRUE;
+        }
+        break;
+    }
+    }
+    return r;
+}
+
 }

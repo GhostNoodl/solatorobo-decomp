@@ -65,6 +65,14 @@ src/ov012/ov012_02203420.cpp:
     complete
     .text       start:0x02203420 end:0x02203b2c
 
+src/ov012/ov012_02203b2c.cpp:
+    complete
+    .text       start:0x02203b2c end:0x0220422c
+
+src/ov012/ov012_02204904.cpp:
+    complete
+    .text       start:0x02204904 end:0x02204d00
+
 src/ov012/ov012_02204d00.cpp:
     complete
     .text       start:0x02204d00 end:0x0220574c

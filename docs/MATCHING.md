@@ -226,3 +226,11 @@ The linker strips functions that nothing references. If `ninja` reports a matche
 - **Sub-object pointer declared, then assigned.** In `func_ov000_02162294`, the call that tears down the inlined member needed `u8 *sub; ... sub = self + 4; Dtor(sub);` placed after the other calls. An initialized `u8 *sub = self + 4;` or a plain `self + 4` gets a different register.
 - **Factories that switch over `new`.** Write each case's `operator new` and constructor as its own `static inline` helper. That stopped MWCC from cross-jumping the cases and gave the target layout in `func_ov000_021b4828`. That function still has a def/vt register swap; the draft is parked.
 - **Pooled small constants in G3 wrappers.** `func_ov000_021535a8`, `0215d4b4` and `0215b2e4` load constants like `0x2a` with `ldr rX,=imm`, where any version would normally emit `mov`. Neither pragmas nor other compiler versions reproduced this. These may be hand-written asm or inline G3 macros writing through a volatile pointer. Not solved yet.
+
+## Local initializers and accumulation order (overlays 9–14)
+
+- **Const cast on one table read.** When only the key comparison in a table scan needs the early-scheduled load, cast that one read: `key == ((const Ent *)tbl)[i].key && tbl[i].fn != 0` (`func_ov010_02202750`).
+- **Zero-initialized vectors declared in place.** `Vec a = {0, 0, 0};` declared right before its fields are set, rather than at the top of the function, gave the target's store order and stack slots (`func_ov010_022090b4`).
+- **Struct copy as an initializer.** `Rot r = *(Rot *)self->rot;` followed by a field overwrite kept the `ldm`/`stm` copy where an assignment after the declaration did not (`func_ov009_0220387c`).
+- **Sum of squares order.** MWCC emits the terms of `sq = dx * dx; sq += dz * dz;` as `smull` for `dz` then `smlal` for `dx`, so write the terms in the reverse of the order in which the target multiplies them.
+- **Copy, then add to one field.** `FLD(Vec, 0xd8) = pos; FLD(s32, 0xdc) += h / 2;` matched where computing the adjusted vector first did not (`func_ov014_0220ee9c`).

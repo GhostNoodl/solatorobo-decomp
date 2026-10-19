@@ -377,6 +377,10 @@ src/ov009/ov009_0220dfe8.cpp:
     complete
     .text       start:0x0220dfe8 end:0x0220e0e4
 
+src/ov009/ov009_0220387c.cpp:
+    complete
+    .text       start:0x0220387c end:0x0220397c
+
 src/ov009/ov009_0220397c.cpp:
     complete
     .text       start:0x0220397c end:0x02203b8c
