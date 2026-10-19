@@ -190,3 +190,18 @@ Some casts change no values but still change MWCC's output:
 - Assigning `true` to a 1-bit bitfield in C++ gave the target's `bic`+`orr` insertion (`func_ov003_021d7894`).
 - An `s32` loop index compared as `(u32)i == count - 1` changed the compare and register allocation enough to match.
 - Declaring a read-only table `const` (`extern const T tbl[];`) changed scheduling around its loads.
+
+## Branches that the compiler merged
+
+MWCC merges identical code at the end of two branches (tail merging), and that can leave an unconditional branch to a branch behind. If the target has a jump pattern that if-conversion would normally remove, the original probably repeated code:
+
+- `cmp; bgt L; b Clamp` before a block that both paths share: the source had two branches with identical bodies, e.g. `if (a <= b) { CLAMP } else if (x == 0) { CLAMP } else { ... }` (`func_ov000_02158120`). An `||` condition or a `goto` gives a plain `ble`.
+- `cmp; beq L; b M; L: mov r1, #c; M: bl f`: two calls to the same function that differ in one argument, `if (id != 0xffff) { t = f(d, id); } else { t = f(d, 0x8d); }`. The other arguments must already sit in registers, so read them into locals first (`void *d = data_x;`). A ternary or an `if` that changes `id` gives `moveq r1, #c` instead (`func_ov000_0215e344`).
+
+## Reassigning a variable
+
+If the target computes a value into a variable's own callee-saved register (`asr r5, r5, #12` while `r5` held `y`) and does it earlier than your code, write it as an assignment to that variable, `y = (y >> 12) + 2;`, before the other statements, instead of passing `(y >> 12) + 2` as an argument (`func_ov000_02159720`).
+
+## Functions nothing calls
+
+The linker strips functions that nothing references. If `ninja` reports a matched function as "not found by name in linked binary", check `relocs.txt` for calls to it (`grep to:0x<addr>` over every module); if there are none, wrap it in `#pragma force_active on` / `#pragma force_active reset`. The same applies to what your range leaves behind: an undecompiled gap is kept only while something in it is referenced, so don't split off a range that leaves an unreferenced function alone in a gap (`func_ov000_0214b654` is in, `0214b670` waits for `0214b68c`).

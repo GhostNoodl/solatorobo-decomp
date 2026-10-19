@@ -1,3 +1,6 @@
+/* Built at a lower optimization level: 02197dec only matches with it. */
+#pragma optimization_level 2
+
 #include "types.h"
 
 typedef struct {
@@ -46,7 +49,7 @@ static inline int SaveData_GetNibble(s32 row, s32 idx) {
     return (data_0214a424->flags[row][idx / 8] >> ((idx % 8) * 4)) & 0xf;
 }
 
-static inline void Obj_StoreValue(Obj02197d80 *self, u32 value) {
+static inline void Obj_StoreValue(Obj02197d80 *self, u8 value) {
     u8 idx = self->index;
     s32 row;
 
@@ -68,4 +71,18 @@ void func_ov000_02197d80(Obj02197d80 *self) {
     }
     row = func_0206e7ec(data_ov000_021ccd54->unk_ca, data_ov000_021ccd54->unk_cb);
     self->value = SaveData_GetNibble(row, idx) & 7;
+}
+
+void func_ov000_02197dec(Obj02197d80 *self, u8 value, s16 sfx) {
+    Obj_StoreValue(self, value);
+    if (sfx > 0 && func_ov000_0219bf90() != NULL && !func_ov000_021b4738()) {
+        func_020627a0(self->kind, self->id);
+        func_020627dc(sfx);
+        {
+            Player021ccd54 *pl = data_ov000_021ccd54;
+            pl->unk_ac = 1;
+            func_ov000_02182590(&pl->unk_ac);
+        }
+    }
+    func_020627c8();
 }
