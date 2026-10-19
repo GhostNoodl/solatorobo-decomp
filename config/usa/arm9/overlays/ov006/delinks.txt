@@ -9,6 +9,10 @@ src/ov006/ov006_021ccda0.cpp:
     complete
     .text       start:0x021ccda0 end:0x021cd5a8
 
+src/ov006/ov006_021cd5a8.cpp:
+    complete
+    .text       start:0x021cd5a8 end:0x021cd914
+
 src/ov006/ov006_021d54b0.cpp:
     complete
     .text       start:0x021d54b0 end:0x021d5b98
@@ -69,6 +73,10 @@ src/ov006/ov006_021e5e00.cpp:
 src/ov006/ov006_021ea3e8.cpp:
     complete
     .text       start:0x021ea3e8 end:0x021ea548
+
+src/ov006/ov006_021ce048.cpp:
+    complete
+    .text       start:0x021ce048 end:0x021ce374
 
 src/ov006/ov006_021ce374.cpp:
     complete
@@ -249,6 +257,10 @@ src/ov006/ov006_021ddc70.cpp:
 src/ov006/ov006_021d95a8.cpp:
     complete
     .text       start:0x021d95a8 end:0x021d95ec
+
+src/ov006/ov006_021e6740.cpp:
+    complete
+    .text       start:0x021e6740 end:0x021e6a6c
 
 src/ov006/ov006_021e6a6c.cpp:
     complete
