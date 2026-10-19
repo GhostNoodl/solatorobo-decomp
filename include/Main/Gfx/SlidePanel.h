@@ -29,9 +29,17 @@ typedef struct SlidePanelItem {
     /* 0x08 */ u16 unk_08;
     /* 0x0a */ u16 unk_0a;
     /* 0x0c */ u16 unk_0c;
-    /* 0x0e */ u8 unk_0e[0xe];
+    /* 0x0e */ u16 unk_0e;
+    /* 0x10 */ void *unk_10;
+    /* 0x14 */ void *unk_14;
+    /* 0x18 */ void *unk_18;
     /* 0x1c */ void *unk_1c;
-    /* 0x20 */ u8 unk_20[0x2c];
+    /* 0x20 */ s32 pos[3];
+    /* 0x2c */ s32 scale[3];
+    /* 0x38 */ u16 rot[3];
+    /* 0x40 */ u32 unk_40;
+    /* 0x44 */ u32 unk_44;
+    /* 0x48 */ u8 unk_48;
 } SlidePanelItem; // size 0x4c
 
 // Owner of the SlidePanel helpers at 0x02055654 (the class of func_020534dc).
@@ -58,7 +66,11 @@ typedef struct SlidePanel {
     /* 0x000 */ u32 visible : 1;
     /* 0x000 */ u32 flag20 : 1;
     /* 0x000 */ u32 moving : 1;
-    /* 0x000 */ u32 unk_0_22 : 5;
+    /* 0x000 */ u32 flag22 : 1;
+    /* 0x000 */ u32 flag23 : 1;
+    /* 0x000 */ u32 flag24 : 1;
+    /* 0x000 */ u32 flag25 : 1;
+    /* 0x000 */ u32 flag26 : 1;
     /* 0x000 */ u32 flag27 : 1;
     /* 0x000 */ u32 unk_0_28 : 4;
     /* 0x004 */ u32 unk_04;
@@ -68,7 +80,8 @@ typedef struct SlidePanel {
     /* 0x00e */ u16 unk_0e;
     /* 0x010 */ u16 unk_10;
     /* 0x012 */ u16 unk_12;
-    /* 0x014 */ u32 unk_14;
+    /* 0x014 */ u16 unk_14;
+    /* 0x016 */ u16 unk_16;
     /* 0x018 */ s32 frame;
     /* 0x01c */ s32 frames;
     /* 0x020 */ s32 unk_20;
@@ -82,7 +95,8 @@ typedef struct SlidePanel {
     /* 0x040 */ s32 pos;
     /* 0x044 */ SlidePanelItem items[3];
     /* 0x128 */ u8 unk_128;
-} SlidePanel;
+    /* 0x129 */ u8 unk_129[0x1f];
+} SlidePanel; // size 0x148
 
 static inline void *Model_GetPartTex(Model *model, s32 idx) {
     ModelRes *res = model->res;

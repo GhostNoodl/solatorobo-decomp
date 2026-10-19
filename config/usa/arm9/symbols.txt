@@ -147,7 +147,6 @@ _ffltu kind:function(arm,size=0x48) addr:0x0200af34
 func_0200af7c kind:function(arm,size=0x1c0) addr:0x0200af7c
 _ll_sdiv kind:label(arm) addr:0x0200af8c
 _ll_udiv kind:function(arm,size=0x48) addr:0x0200b13c
-.L_0200b148 kind:label(arm) addr:0x0200b148
 _ull_mod kind:label(arm) addr:0x0200b148
 _s32_div_f kind:function(arm,size=0x20c) addr:0x0200b184
 _u32_div_f kind:function(arm,size=0x1e4) addr:0x0200b390
