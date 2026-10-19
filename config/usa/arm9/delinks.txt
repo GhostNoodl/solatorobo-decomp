@@ -1112,7 +1112,7 @@ src/Main/Math/MathUtil.cpp:
 
 src/Main/Gfx/PlttRes.cpp:
     complete
-    .text       start:0x02040be0 end:0x02040dd8
+    .text       start:0x02040be0 end:0x02041000
 
 src/Main/Gfx/PlttRes_2.cpp:
     complete
@@ -1160,6 +1160,10 @@ src/Main/Net/Wh.cpp:
 src/Main/Net/Wh_2.cpp:
     complete
     .text       start:0x02045ab4 end:0x02046070
+
+src/Main/Net/WhScan.cpp:
+    complete
+    .text       start:0x020460d0 end:0x020463c8
 
 src/Main/Net/Wh_3.cpp:
     complete

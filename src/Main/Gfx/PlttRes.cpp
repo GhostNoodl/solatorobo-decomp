@@ -35,12 +35,75 @@ u16 func_02041040(int count);
 u16 func_02041060(int count);
 
 
-extern u32 func_0203e458(int type, u32 src, u32 dst, u32 size, u32 chunk);
-extern void NNS_G2dLoadPaletteEx(int *fmt, u16 *count, u32 addr, int idx, PlttSub *sub);
-
-
-extern void func_0203e58c(u32 id);
-extern void func_0203be50(GfxSys *sys, int shift, int count, int idx);
-extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
+void func_02040dd8(PlttRes *res, int idx, bool load) {
+    u32 addr;
+    u16 *saved;
+    u16 (*alloc)(int);
+    u16 tmp[0x10];
+    u16 i;
+    if (res->maps[idx] != NULL) {
+        return;
+    }
+    if (res->fmt == 4) {
+        res->unk_28 = 1;
+    }
+    if (res->unk_28 == 0) {
+        switch (idx) {
+        case 1:
+            alloc = func_02041000;
+            break;
+        case 2:
+            alloc = func_02041020;
+            break;
+        }
+    } else {
+        switch (idx) {
+        case 1:
+            alloc = func_02041040;
+            break;
+        case 2:
+            alloc = func_02041060;
+            break;
+        }
+    }
+    addr = 0;
+    res->maps[idx] = (s8 *)func_0203de84(0x10, 4);
+    for (i = 0; i < 0x10; i++) {
+        res->maps[idx][i] = -1;
+    }
+    saved = res->table;
+    res->table = tmp;
+    if (idx == 0) {
+        u16 n;
+        func_0203e134(res->name, res->loaded);
+        n = res->count;
+        if (res->fmt == 3) {
+            res->key = NNS_GfdDefaultFuncAllocPlttVram(n << 5, 0, 0);
+        } else {
+            res->key = NNS_GfdDefaultFuncAllocPlttVram(n << 9, 0, 0);
+        }
+        for (i = 0; i < res->count; i++) {
+            res->maps[idx][saved[i]] = i;
+            tmp[i] = i;
+        }
+        addr = (u16)res->key << 3;
+    } else {
+        for (i = 0; i < res->count; i++) {
+            u16 v = alloc(1);
+            res->maps[idx][saved[i]] = v;
+            tmp[i] = v;
+        }
+    }
+    res->table = saved;
+    {
+        u32 t = func_02041080(res, idx, 0xffff, load);
+        if (load) {
+            res->transfer = t;
+            res->sub.fmt = res->fmt;
+            res->sub.unk_04 = res->unk_28;
+            NNS_G2dSetImagePaletteLocation(&res->sub, idx, addr);
+        }
+    }
+}
 
 }

@@ -168,6 +168,7 @@ Some casts change no values but still change MWCC's output:
 - A dummy `case X: break;` moves the pivot of the binary-tree compare sequence MWCC emits for a sparse `switch`.
 - To keep argument evaluation order around a nested call, hoist the plain arguments into locals first, then put the call's result in a local declared after them: `s32 a = p->a; s32 b = p->b; s32 r = g(x); f(a, b, r);`.
 - Some files were built at a lower optimization level. Signs: loops aren't rotated (a `b` to the test at the bottom), loop-invariant loads stay inside the loop, and near misses at the default level won't close. Put `#pragma optimization_level 2` at the top of the file (after a comment saying why) and re-check. Several ov006 functions (`021dc578`, `021e46e8`, `021e5050`) need it.
+- The Nintendo wireless helper code (`src/Main/Net/Wh*.cpp`, NitroSDK's `wh.c`) was built at `#pragma optimization_level 2`: at O4 a scan loop's exit came out as `beq top` instead of the target's `bne exit; b top` (`func_020460d0`). Two `Wh.cpp` functions (`02045674`, `0204587c`) still need O4, so the pragma goes on a whole file only after checking the file's other functions.
 - A struct or array local that's stored to the stack but never read back comes from an aggregate initializer of non-constant values, e.g. `Rgb c = {r, g, b}; game->next = c;` in an inline. If any initializer is a constant, MWCC loads it from a rodata template instead. Plain field assignments get optimized away.
 - Byte-by-byte copies that load two bytes before storing them (`ldrb r2; ldrb r1; strb r2; strb r1`) are a struct assignment of a small `u8 c[3]` struct, not field-by-field copies.
 - A shift of a `u16` table value done as `lsr` rather than `asr` is `/ 2` on an `int` (the compiler knows it's non-negative). `>> 1` gives `asr`.
@@ -192,6 +193,9 @@ Some casts change no values but still change MWCC's output:
 - Assigning `true` to a 1-bit bitfield in C++ gave the target's `bic`+`orr` insertion (`func_ov003_021d7894`).
 - An `s32` loop index compared as `(u32)i == count - 1` changed the compare and register allocation enough to match.
 - Declaring a read-only table `const` (`extern const T tbl[];`) changed scheduling around its loads.
+- A parameter typed `bool` instead of `int`/`BOOL` changes when MWCC moves it out of its argument register. In `func_02040dd8` a flag that was spilled and then passed to a call next to a constant (`0xffff`) only came out in the target's order as `bool load`.
+- Passing the same member address (`wh->bssDesc`) to several calls: a function-level local set once (`u8 *bssDesc; ... bssDesc = wh->bssDesc;`) gives different callee-saved registers from repeating the expression. The permuter found this for `func_020461e4`.
+- In a pointer-walking loop, `u32 w = *q; q++;` and `u32 w = *q++;` schedule differently. Recomputing an expression where it is used (`((Fn)DEC(*lp))(&ctx)`) can also beat keeping a copy in a local, because MWCC then CSEs it into the register the target uses (the ov004 `021cdc6c` family).
 
 ## Branches that the compiler merged
 
