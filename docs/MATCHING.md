@@ -87,6 +87,8 @@ The `extern "C"` keeps the symbol name unmangled, so the relocation still points
 
 If the target loads the same field twice where your code loads it once (for example `ldrh r0, [r2, #2]; cmp r0, #3; ... ldrh r0, [r2, #2]; add r0, r0, #1`), make the second access go through a `volatile` lvalue, such as `(*(volatile u16 *)(p + 0x6e))++` or a `volatile Foo *` local. The non-volatile accesses around it still merge as usual. To load a bitfield byte once and test two of its bits from that one copy, read it into a local with `*(volatile u8 *)` and cast the local's address to the bitfield struct.
 
+A stack-passed parameter (the fifth argument onward) that the target reloads from `[sp, #N]` before each use can be declared `volatile` in the signature, for example `void f(..., volatile bool b2)`. This is how `func_ov003_021d85c8` matched: it passes `b2` to three inlined calls.
+
 ## Unused argument registers
 
 If the target reuses `r1`-`r3` right before a call as if they held nothing, the callee may take fewer parameters than your prototype says. Check the callee's own disassembly to see which argument registers it actually reads.

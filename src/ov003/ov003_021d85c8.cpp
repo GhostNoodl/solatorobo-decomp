@@ -104,6 +104,47 @@ extern void VEC_MultAdd(s32 scale, const Ov003Vec *dir, const Ov003Vec *src, Ov0
 extern void func_0203de1c(void *p);
 extern void *func_0203dd9c(u32 size);
 extern void func_ov000_02198328(void *p);
+extern s32 func_02040528(s32 max);
+
+static inline void Ov003Ticker_Reset(Ov003Ticker *t) {
+    if (t->active) {
+        t->active = false;
+        t->loop = false;
+        t->b2 = false;
+        t->count = 0;
+        t->interval = 0;
+        t->timer = 0;
+        t->next = 0;
+        t->cur = 0;
+    }
+}
+
+static inline void Ov003Ticker_Start(Ov003Ticker *t, s16 count, s16 interval, bool loop, bool b2) {
+    t->active = true;
+    t->loop = loop;
+    t->b3 = false;
+    t->b2 = b2;
+    t->count = count;
+    t->interval = interval;
+    t->cur = func_02040528(0x1000);
+    t->next = t->cur;
+}
+
+// b2 is volatile because the target reloads it from the stack for each ticker.
+void func_ov003_021d85c8(Ov003TickerSet *self, s16 count, s16 interval, bool loop, volatile bool b2) {
+    if (!self->active) {
+        return;
+    }
+    Ov003Ticker_Reset(&self->tickers[0]);
+    Ov003Ticker_Reset(&self->tickers[1]);
+    Ov003Ticker_Reset(&self->tickers[2]);
+    self->count = count;
+    self->loop = loop;
+    Ov003Ticker_Start(&self->tickers[0], count, interval, loop, b2);
+    Ov003Ticker_Start(&self->tickers[1], count, interval, loop, b2);
+    Ov003Ticker_Start(&self->tickers[2], count, interval, loop, b2);
+}
+
 
 void func_ov003_021d87d0(Ov003TickerSet *self, bool v) {
     if (self->active) {
