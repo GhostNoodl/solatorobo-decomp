@@ -38,7 +38,7 @@ data_02005068 kind:data(any) addr:0x02005068
 main kind:function(arm,size=0xe0) addr:0x02005090
 abort kind:function(arm,size=0x28) addr:0x02005170
 exit kind:function(arm,size=0x44) addr:0x02005198
-func_020051dc kind:function(arm,size=0x11c) addr:0x020051dc
+__exit kind:function(arm,size=0x11c) addr:0x020051dc
 __flush_all kind:function(arm,size=0x64) addr:0x020052f8
 abs kind:function(arm,size=0xc) addr:0x0200535c
 __convert_from_newlines kind:function(arm,size=0x4) addr:0x02005368

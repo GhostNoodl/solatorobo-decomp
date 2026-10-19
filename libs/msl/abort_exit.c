@@ -36,7 +36,7 @@ static inline void __end_critical_region(int region) {
 
 extern int func_020077f4(int sig);
 extern void __destroy_global_chain(void);
-extern void func_020051dc(int status);
+extern void __exit(int status);
 extern int fflush(void *file);
 extern void func_020086d4(void);
 
@@ -56,10 +56,10 @@ void exit(int status) {
             data_0208d940.console_exit = NULL;
         }
     }
-    func_020051dc(status);
+    __exit(status);
 }
 
-void func_020051dc(int status) {
+void __exit(int status) {
     __begin_critical_region(atexit_funcs_access);
     while (data_0208d940.atexit_curr_func > 0) {
         (*data_0208d950[--data_0208d940.atexit_curr_func])();
