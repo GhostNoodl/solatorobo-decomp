@@ -43,6 +43,14 @@ typedef struct {
     u16 rot_z;
 } ActorC;
 
+typedef struct {
+    u8 unk_00[0x2c];
+    u32 unk_2c;
+} HitInfo02198ad8;
+
+extern HitInfo02198ad8 data_02fe0f14;
+s32 func_ov000_0219a2f4(VecFx32 *pos, s32 a, s32 b);
+
 typedef struct ActorMgr ActorMgr;
 
 extern ActorMgr *data_ov000_021ccd68;
@@ -145,6 +153,60 @@ static inline s32 Finder_FindAll(Finder *self, Query *q, ActorL **out, s32 max) 
         }
     }
     return n;
+}
+
+void func_ov000_02198ad8(Body *self, VecFx32 *pos, const VecFx32 *vel) {
+    s32 y0;
+    self->check.x = pos->x;
+    self->check.y = pos->y;
+    self->check.z = pos->z;
+    self->check.y -= vel->y;
+    if (self->unk_9a_7) {
+        self->check.y -= self->unk_38;
+    }
+    if (self->unk_9a_4) {
+        s32 h = self->unk_4c;
+        s32 r = self->unk_48;
+        if (r == 0) {
+            r = self->unk_38 >> 1;
+        }
+        y0 = self->check.y;
+        if (func_ov000_0219a2f4(&self->check, r + vel->y, -h) != -0x1000) {
+            BOOL hit = FALSE;
+            if (self->unk_9a_5) {
+                if (self->check.y - y0 >= -0x666) {
+                    hit = TRUE;
+                }
+            } else {
+                if (self->check.y - y0 >= -0x7b) {
+                    hit = TRUE;
+                }
+            }
+            if (hit) {
+                BOOL ok = TRUE;
+                if (!self->unk_9a_6 && (data_02fe0f14.unk_2c & 0x400)) {
+                    ok = FALSE;
+                }
+                if (ok) {
+                    pos->y = self->check.y + vel->y;
+                }
+                if (self->unk_9a_7) {
+                    pos->y += self->unk_38;
+                }
+                self->unk_50 |= data_02fe0f14.unk_2c;
+            }
+            self->unk_54 |= data_02fe0f14.unk_2c;
+        }
+    }
+    self->prev.x = self->pos.x;
+    self->prev.y = self->pos.y;
+    self->prev.z = self->pos.z;
+    self->pos.x = pos->x;
+    self->pos.y = pos->y;
+    self->pos.z = pos->z;
+    pos->x -= vel->x;
+    pos->y -= vel->y;
+    pos->z -= vel->z;
 }
 
 void func_ov000_02198c8c(Body *self, u16 id) {

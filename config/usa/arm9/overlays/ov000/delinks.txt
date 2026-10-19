@@ -675,7 +675,7 @@ src/ov000/ActorEx_021953b4.cpp:
 
 src/ov000/Body_02198c8c.c:
     complete
-    .text       start:0x02198c8c end:0x02199180
+    .text       start:0x02198ad8 end:0x02199180
 
 src/ov000/Body_021992b4.c:
     complete
@@ -839,7 +839,7 @@ src/ov000/Lo_02178a5c.cpp:
 
 src/ov000/Lo_02178cd0.cpp:
     complete
-    .text       start:0x02178cd0 end:0x02178dcc
+    .text       start:0x02178cd0 end:0x02178f70
 
 src/ov000/Lo_0217006c.cpp:
     complete
@@ -1407,6 +1407,10 @@ src/ov000/Stub_021c7000.cpp:
 src/ov000/Stub_021c5bac.cpp:
     complete
     .text       start:0x021c5bac end:0x021c5bd4
+
+src/ov000/Lo_021c5bd4.cpp:
+    complete
+    .text       start:0x021c5bd4 end:0x021c5d9c
 
 src/ov000/Stub_021b14e8.cpp:
     complete
@@ -3035,7 +3039,7 @@ src/ov000/Lo_021c56c0.cpp:
 
 src/ov000/Hit_0219a8bc.cpp:
     complete
-    .text       start:0x0219a8bc end:0x0219aae8
+    .text       start:0x0219a8bc end:0x0219af3c
 
 src/ov000/Area_02165e2c.cpp:
     complete
