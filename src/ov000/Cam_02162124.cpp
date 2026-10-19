@@ -59,7 +59,7 @@ u8 *func_ov000_02162124(u8 *self) {
 
 void func_ov000_0218ec60(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0218edf0(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_02009f64(void *arr, int n, u32 size, void (*dtor)(void *));
+void __cxa_vec_cleanup(void *arr, int n, u32 size, void (*dtor)(void *));
 void func_ov000_0218fee4(void *p);
 
 // Same slot helpers as Slot_02161cd4.cpp (the camera's sub-object at +4).
@@ -78,8 +78,8 @@ static inline void SlotDtor02162294(u8 *self) {
     LFLD(void *, self, 0) = data_ov000_021cabd8;
     StopSlot02162294(self, LFLD(u8, self, 5));
     StopSlot02162294(self, (LFLD(u8, self, 5) & 1) ^ 1);
-    func_02009f64(self + 0x2e8, 2, 0x138, func_ov000_0218ea20);
-    func_02009f64(self + 0x78, 2, 0x138, func_ov000_0218ea20);
+    __cxa_vec_cleanup(self + 0x2e8, 2, 0x138, func_ov000_0218ea20);
+    __cxa_vec_cleanup(self + 0x78, 2, 0x138, func_ov000_0218ea20);
 }
 
 static inline void CamDtor02162294(u8 *self) {
