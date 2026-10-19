@@ -84,6 +84,44 @@ void func_0203b948(GfxSys *sys, u16 color) {
     func_0201439c(&sys->unk_00a, 0, 2);
 }
 
+void func_0203b96c(GfxSys *sys) {
+    GfxSys *g;
+    {
+        // The target loads state before nextState; only a volatile read keeps that order.
+        int s = *(volatile int *)&sys->state;
+        int n = sys->nextState;
+        if (s != n) {
+            func_0203beac(sys, n);
+        }
+    }
+    if (sys->state == 2) {
+        func_0203c880(sys);
+    } else if (sys->state == 3 && sys->unk_a30_2) {
+        if (!sys->unk_a30_3) {
+            GX_SetGraphicsMode(6, 0, 0);
+            sys->unk_a30_3 = 1;
+        } else {
+            GX_SetGraphicsMode(2, 0, 0);
+            sys->unk_a30_3 = 0;
+        }
+    }
+    NNS_G2dApplyAndResetOamManagerBuffer(sys->unk_02c);
+    NNS_G2dApplyAndResetOamManagerBuffer(sys->unk_048);
+    G3X_Reset();
+    func_020438e8(sys->unk_8b0);
+    g = data_02097d44.sys;
+    if (g->unk_8b0_5) {
+        REG32(0x4000000) = (REG32(0x4000000) & ~0xe000) | 0x2000;
+        if (OS_IsRunOnTwl()) {
+            return;
+        }
+        func_02043d20(g->unk_8b0, 0);
+        NNS_G3dGeSendDL(data_02fe00a0, 0x44);
+    } else {
+        REG32(0x4000000) &= ~0xe000;
+    }
+}
+
 }
 
 extern "C" {

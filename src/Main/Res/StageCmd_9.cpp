@@ -83,4 +83,19 @@ int func_020601e0(StageResSlot *slot) {
     return 1;
 }
 
+int func_02060278(StageResSlot *slot) {
+    StagePlayer *player = func_ov000_0219bf90();
+    if (player == NULL || Field_HasEvent(9) || !Stage_IsWirelessReady()) {
+        return -0x63;
+    }
+    if (player != NULL) {
+        u8 rgb[3];
+        rgb[0] = slot->args[0];
+        rgb[1] = slot->args[1];
+        rgb[2] = slot->args[2];
+        player->color = *(StageColor *)rgb;
+    }
+    return 1;
+}
+
 }

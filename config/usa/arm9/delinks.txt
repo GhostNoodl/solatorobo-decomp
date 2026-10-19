@@ -1054,7 +1054,7 @@ src/Main/Gfx/GfxSys.cpp:
 
 src/Main/Gfx/GfxSys_2.cpp:
     complete
-    .text       start:0x0203b924 end:0x0203b96c
+    .text       start:0x0203b924 end:0x0203ba7c
 
 src/Main/Gfx/GfxSys_3.cpp:
     complete
@@ -1346,11 +1346,11 @@ src/Main/Sys/SceneShake.cpp:
 
 src/Main/Gfx/Obj3D_2.cpp:
     complete
-    .text       start:0x020520fc end:0x0205221c
+    .text       start:0x020520fc end:0x02052fcc
 
 src/Main/Gfx/SceneDraw.cpp:
     complete
-    .text       start:0x0205311c end:0x02053254
+    .text       start:0x02052fcc end:0x02053254
 
 src/Main/Gfx/Obj3D_3.cpp:
     complete
@@ -1478,7 +1478,7 @@ src/Main/Res/StageCmd_8.cpp:
 
 src/Main/Res/StageCmd_9.cpp:
     complete
-    .text       start:0x020600cc end:0x02060278
+    .text       start:0x020600cc end:0x02060364
 
 src/Main/Res/StageCmd_10.cpp:
     complete

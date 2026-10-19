@@ -39,6 +39,33 @@ static inline void Scene_SetProjectionMtx(const MtxFx44 *mtx) {
     NNS_G3dGlb.flag &= ~0x50;
 }
 
+void func_02052fcc(GameScene *scene) {
+    MtxFx44 proj;
+    MtxFx43 cam;
+    MtxFx43 *glbCam;
+    MtxFx44 ortho;
+    int j;
+    int i;
+    NNS_G3dGeFlushBuffer();
+    MI_Copy64B(&data_02092800, &proj);
+    MI_Copy48B(&data_02092844, &cam);
+    MTX_OrthoW(0x60000, -0x60000, -0x80000, 0x80000, 0, 0x20000, 0x400000, &ortho);
+    Scene_SetProjectionMtx(&ortho);
+    glbCam = &data_02092844;
+    MTX_Identity43_(glbCam);
+    data_02092844.m[3][2] = 0;
+    NNS_G3dGlbPolygonAttr(0, 0, 3, 0, 0, 0);
+    func_02053254(scene, 1, &((SceneDrawData *)scene)->mainParts[1], 1);
+    for (j = 0; j < 2; j++) {
+        for (i = 0; i < 5; i++) {
+            func_02053254(scene, j, &((SceneDrawData *)scene)->objs[i].parts[j], 1);
+        }
+    }
+    NNS_G3dGeFlushBuffer();
+    Scene_SetProjectionMtx(&proj);
+    MI_Copy48B(&cam, glbCam);
+}
+
 void func_0205311c(GameScene *scene) {
     MtxFx44 proj;
     MtxFx43 cam;
