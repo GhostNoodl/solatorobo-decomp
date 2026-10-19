@@ -14,9 +14,130 @@ extern u8 *data_ov002_021f0f9c;
 void func_ov002_021e7c1c(void *p);
 void func_ov015_0220ec40(void *self);
 
+extern Ov015Shared *data_ov015_02213368;
+extern u8 *data_0214a424;
+void func_ov000_0215d980(void *a, s32 b, s32 c);
+
 static inline BOOL Ov015_IsKind5f1a4(u8 *o) {
     return FLD(s32, o, 0x4) == 5 ? TRUE : FALSE;
 }
+
+static inline void Ov015_SetMoney2(u8 *g, u32 v) {
+    if (v > 99999) {
+        v = 99999;
+    }
+    FLD(u32, g, 0x618) = v;
+}
+BOOL func_ov015_0220ed70(u8 *self) {
+    BOOL r = TRUE;
+    switch (FLD(s32, self, 0x18)) {
+    case 0:
+        func_ov015_021fa6f8((Ov015Fade *)func_ov015_021fa6d0(), 0, 0xf, 0x3c000, 0x2639);
+        FLD(s32, self, 0x18)++;
+    case 1: {
+        Ov015Fade *f = (Ov015Fade *)func_ov015_021fa6d0();
+        if (f->unk_14 >= f->unk_0c) {
+            FLD(s32, self, 0x1c) = 0;
+            FLD(s32, self, 0x18)++;
+        }
+        break;
+    }
+    case 2:
+        if (FLD(s32, self, 0x1c) > 0x3c000) {
+            FLD(s32, self, 0x18) = 10;
+            FLD(s32, self, 0x1c) = 0;
+        } else {
+            FLD(s32, self, 0x1c) += 0x1000;
+        }
+        break;
+    case 10:
+        if (FLD(s32, self, 0x1c) <= FLD(s32, FLD(u8 *, self, 0x4), 0x34)) {
+            FLD(s32, self, 0x1c) += 0x1000;
+        } else {
+            FLD(s32, self, 0x1c) = 0;
+            FLD(s32, self, 0x18) = 0x14;
+            FLD(u32, FLD(u8 *, self, 0x14), 0xc) &= ~2;
+        }
+        break;
+    case 0x14: {
+        s32 n = FLD(s32, data_ov015_02213368, 0x28);
+        if (n != 0) {
+            if (FLD(u16, data_02097dc8, 0x12) & 1) {
+                func_ov000_0215d980(FLD(u8 *, self, 0x10), FLD(s32, FLD(u8 *, self, 0x10), 0x8c) + n, 0);
+                func_ov000_0215d980(FLD(u8 *, self, 0xc), 0, 0);
+                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                FLD(s32, self, 0x18) = 0x1e;
+            }
+        } else {
+            FLD(s32, self, 0x18) = 0x28;
+            FLD(s32, self, 0x1c) = 0;
+        }
+        break;
+    }
+    case 0x1e: {
+        u8 *a = FLD(u8 *, self, 0x10);
+        if (FLD(s32, a, 0x8c) != FLD(s32, a, 0x88) || FLD(s32, FLD(u8 *, self, 0xc), 0x8c) != FLD(s32, FLD(u8 *, self, 0xc), 0x88)) {
+            if (FLD(u16, data_02097dc8, 0x12) & 1) {
+                func_ov000_0215d980(FLD(u8 *, self, 0x10), FLD(s32, FLD(u8 *, self, 0x10), 0x8c), 1);
+                func_ov000_0215d980(FLD(u8 *, self, 0xc), 0, 1);
+            } else {
+                if (++FLD(s32, self, 0x1c) % 4 == 0) {
+                    func_02049a48(data_02097e4c, 0x18, -1, -1, -1);
+                }
+                break;
+            }
+        }
+        func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
+        FLD(s32, self, 0x18) = 0x28;
+        FLD(s32, self, 0x1c) = 0;
+        break;
+    }
+    case 0x28:
+        if (FLD(s32, self, 0x1c) >= 0x14000) {
+            if (FLD(u16, data_02097dc8, 0x12) & 1) {
+                func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
+                Ov015_SetMoney2(data_0214a424, FLD(u32, FLD(u8 *, self, 0x10), 0x8c));
+                FLD(u32, FLD(u8 *, self, 0x4), 0xc) |= 2;
+                FLD(u32, FLD(u8 *, self, 0x8), 0xc) |= 2;
+                FLD(u32, FLD(u8 *, self, 0xc), 0xc) |= 2;
+                FLD(u32, FLD(u8 *, self, 0x10), 0xc) |= 2;
+                FLD(u32, FLD(u8 *, self, 0x14), 0xc) |= 2;
+                FLD(s32, self, 0x18) = 0x32;
+                FLD(s32, self, 0x1c) = 0;
+            }
+        } else {
+            FLD(s32, self, 0x1c) += 0x1000;
+        }
+        break;
+    case 0x32:
+        if (Ov015_IsKind5f1a4(FLD(u8 *, self, 0x4)) && Ov015_IsKind5f1a4(FLD(u8 *, self, 0x8)) && Ov015_IsKind5f1a4(FLD(u8 *, self, 0x14))) {
+            FLD(s32, self, 0x18) = 0x3c;
+        }
+        break;
+    case 0x3c:
+        if (FLD(s32, self, 0x1c) <= 0xa000) {
+            FLD(s32, self, 0x1c) += 0x1000;
+        } else {
+            FLD(s32, self, 0x1c) = 0;
+            FLD(s32, self, 0x18) = -1;
+        }
+        break;
+    default:
+        FLD(s32, self, 0x18) = -1;
+        r = FALSE;
+        break;
+    }
+    if (FLD(s32, self, 0x18) >= 10) {
+        FLD(Ov015V *, self, 0x4)->v1c();
+        FLD(Ov015V *, self, 0x8)->v1c();
+        FLD(Ov015V *, self, 0xc)->v1c();
+        FLD(Ov015V *, self, 0x10)->v1c();
+        FLD(Ov015V *, self, 0x14)->v1c();
+    }
+    return r;
+}
+
+
 BOOL func_ov015_0220f1a4(u8 *self) {
     BOOL r = TRUE;
     switch (FLD(s32, self, 0x18)) {
@@ -137,7 +258,6 @@ void func_ov015_021fa75c(Ov015Fade *self);
 void func_ov015_0220f878(u8 *self);
 void func_ov015_0220fb78(u8 *self);
 void func_ov015_0220e634(void *a, s32 b);
-BOOL func_ov015_0220ed70(void *p);
 static inline void Ov015_SetCam14(s32 v) {
     u8 *g = data_ov002_021f0f9c;
     FLD(s32, g, 0x14) = v;
@@ -185,7 +305,7 @@ BOOL func_ov015_0220f568(u8 *self) {
         BOOL ok = TRUE;
         switch (FLD(s32, FLD(u8 *, self, 0x10), 0x60)) {
         case 1:
-            ok = func_ov015_0220ed70(FLD(void *, self, 0x10));
+            ok = func_ov015_0220ed70(FLD(u8 *, self, 0x10));
             break;
         case 0:
             ok = func_ov015_0220f1a4(FLD(u8 *, self, 0x10));

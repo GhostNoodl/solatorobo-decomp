@@ -39,11 +39,11 @@ src/ov012/ov012_021fee1c.cpp:
 
 src/ov012/ov012_021ff674.cpp:
     complete
-    .text       start:0x021ff674 end:0x021ffd34
+    .text       start:0x021ff20c end:0x021ffd34
 
 src/ov012/ov012_02200200.cpp:
     complete
-    .text       start:0x02200200 end:0x02200398
+    .text       start:0x02200200 end:0x02200cd4
 
 src/ov012/ov012_022015a0.cpp:
     complete

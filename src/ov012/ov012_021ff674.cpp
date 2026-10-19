@@ -1,6 +1,152 @@
 #include "ov012/ov012.h"
 
 extern "C" {
+extern const Ov012Vec data_ov012_0220a4d4[];
+extern const Ov012Vec data_ov012_0220a4bc[];
+extern char data_ov012_0220ab27[];
+void func_ov012_021ff8b4(Ov012Actor *self, s32 idx);
+
+void func_ov012_021ff20c(Ov012Actor *self) {
+    s32 off;
+    func_ov000_0218d240(self);
+    off = 0;
+    switch (FLD(u8, self, 0x102)) {
+    case 0:
+        off = -0x1000;
+        break;
+    case 1:
+        off = 0x1000;
+        break;
+    }
+    switch (self->unk_40->state) {
+    case 0: {
+        u8 *t;
+        func_ov000_02190cb0(self->unk_38, data_ov012_0220a3c4[0], 0x1000, 0);
+        self->unk_9c = self->unk_b0->unk_00;
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
+        {
+            s32 x = self->pos.x + off;
+            s32 y = self->pos.y;
+            s32 z = self->pos.z;
+            Ov012_VecSet(&self->unk_b8, x, y, z);
+        }
+        t = (u8 *)Ov012_FindRes(0x5000, 0x5c02);
+        if (t == NULL) {
+            goto st1;
+        }
+        {
+            u16 pct = FLD(u16, FLD(u8 *, t, 0x50), 0) * 100 / FLD(u16, FLD(u8 *, t, 0x50), 2);
+            u16 n;
+            if (pct <= 20) {
+                FLD(u8, self, 0x103) = 10;
+                n = 5;
+            } else {
+                FLD(u8, self, 0x103) = 0x28;
+                n = 3;
+            }
+            FLD(u16, FLD(u8 *, self, 0x4c), 0x1e) = n;
+        }
+        self->unk_40->state++;
+    }
+    case 1:
+    st1: {
+        Ov012Vec v;
+        if (!func_ov000_02191120(self->unk_38)) {
+            return;
+        }
+        v = self->unk_b8;
+        func_ov000_0218ddd4(self, &v, 0);
+        if (VEC_Distance(&self->pos, &self->unk_b8) > 0) {
+            return;
+        }
+        func_ov000_02190cb0(self->unk_38, data_ov012_0220ab27, 0x400, 0);
+        func_ov000_02191418(self->unk_38, FLD(u8, self, 0x103), 0);
+        self->unk_40->timer = 0;
+        self->unk_40->state++;
+        return;
+    }
+    case 2: {
+        Ov012Vec d;
+        Ov012Sub40 *s;
+        s32 k = FLD(u16, FLD(u8 *, self, 0x4c), 0x1e) - 1;
+        d.x = data_ov012_0220a4d4[k].x;
+        d.y = data_ov012_0220a4d4[k].y;
+        d.z = data_ov012_0220a4d4[k].z;
+        if (FLD(s32, self, 0xf0) >= 0) {
+            d.x = Ov012_FxMul(d.x, -0x1000);
+        }
+        func_ov000_0218d918(self, &d, 0x19a);
+        s = self->unk_40;
+        s->timer++;
+        if (s->timer < FLD(u8, self, 0x103)) {
+            return;
+        }
+        self->unk_40->timer = 0;
+        self->unk_40->state++;
+        return;
+    }
+    case 3:
+        func_ov012_021ff8b4(self, FLD(u16, FLD(u8 *, self, 0x4c), 0x1e));
+        self->unk_40->state++;
+        return;
+    case 4: {
+        u16 n;
+        if (!func_ov000_02191120(self->unk_38)) {
+            return;
+        }
+        n = FLD(u16, FLD(u8 *, self, 0x4c), 0x1e) - 1;
+        FLD(u16, FLD(u8 *, self, 0x4c), 0x1e) = n;
+        func_ov000_02190cb0(self->unk_38, data_ov012_0220a3c4[0], 0x400, 0);
+        if (n != 0) {
+            self->unk_40->state = 1;
+            return;
+        }
+        {
+            s32 x = self->pos.x - off;
+            s32 y = self->pos.y;
+            s32 z = self->pos.z;
+            Ov012_VecSet(&self->unk_b8, x, y, z);
+        }
+        self->unk_40->state = 10;
+        return;
+    }
+    case 10: {
+        Ov012Vec v;
+        s32 a;
+        Ov012Sub40 *s;
+        s = self->unk_40;
+        s->timer++;
+        if (s->timer <= 20) {
+            return;
+        }
+        func_ov000_0218d918(self, (void *)&data_ov012_0220a4bc[FLD(u8, self, 0x102)], 0x19a);
+        if (!func_ov000_02191120(self->unk_38)) {
+            return;
+        }
+        v = self->unk_b8;
+        func_ov000_0218ddd4(self, &v, 0);
+        if (VEC_Distance(&self->pos, &self->unk_b8) > 0x800) {
+            return;
+        }
+        switch (FLD(u8, self, 0x102)) {
+        case 0:
+            a = 4;
+            break;
+        case 1:
+            a = 8;
+            break;
+        }
+        func_ov000_0219bd20(0x5c02, self->kind, 0xe, 1, 4, &a);
+        func_ov000_02198360(self->unk_40, 1, 0);
+        break;
+    }
+    }
+}
+}
+
+extern "C" {
 extern const Ov012Vec data_ov012_0220a4bc[];
 void func_ov012_021ff674(Ov012Actor *self) {
     s32 off = 0;
