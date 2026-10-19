@@ -228,7 +228,7 @@ The linker strips functions that nothing references. If `ninja` reports a matche
 - **Repeated calls in both branches.** If both arms end in the same `STD_CopyString; STD_CopyString; flags |= 0x10` sequence and the target has the tail-merged jump, write the whole sequence in each branch rather than hoisting it out (`func_ov000_02193e5c`).
 - **Chained flag tests as nested BOOL inlines.** If the target computes `mov r0,#0` and then sets `r0=1` in steps, write each condition as an inline `BOOL r = FALSE; if (a && Inner(self)) r = TRUE; return r;` that calls the next one (`func_ov000_021732a8`, four levels deep). Flat `&&` chains give a different branch layout.
 - **Sub-object pointer declared, then assigned.** In `func_ov000_02162294`, the call that tears down the inlined member needed `u8 *sub; ... sub = self + 4; Dtor(sub);` placed after the other calls. An initialized `u8 *sub = self + 4;` or a plain `self + 4` gets a different register.
-- **Factories that switch over `new`.** Write each case's `operator new` and constructor as its own `static inline` helper. That stopped MWCC from cross-jumping the cases and gave the target layout in `func_ov000_021b4828`. That function still has a def/vt register swap; the draft is parked.
+- **Factories that switch over `new`.** Write each case's `operator new` and constructor as its own `static inline` helper. That stopped MWCC from cross-jumping the cases and gave the target layout in `func_ov000_021b4828`. That function was matched in round 18.
 - **Pooled small constants in G3 wrappers.** `func_ov000_021535a8`, `0215d4b4` and `0215b2e4` load constants like `0x2a` with `ldr rX,=imm`, where any version would normally emit `mov`. Neither pragmas nor other compiler versions reproduced this. These may be hand-written asm or inline G3 macros writing through a volatile pointer. Not solved yet.
 
 ## Local initializers and accumulation order (overlays 9–14)
@@ -248,3 +248,28 @@ The linker strips functions that nothing references. If `ninja` reports a matche
 - **Element copies plus the following call's pointer in one block.** In `func_ov009_021fde1c`, the target interleaves a `Vec` copy, `t.y += 0x1400` and the `data+0xf4` pointer for the next call. It matched only with `{ Src *g = ...; t = pl->pos; t.y += 0x1400; ang = Get(g); }`.
 - **Read the field before the constant stores.** `{ s32 y = FLD(s32, self, 0x6c); v.x = 0; v.y = y; v.z = 0x1000; }` fixed the register shift in `func_ov012_02208c0c`. So did `s32 z = Rand(..) + 0x2400; v.x = 0; v.y = 0; v.z = z;` in `func_ov009_0220aeb8`. A plain `v.y = FLD(...)` between the stores did not.
 - **Widen an inline's last parameter.** Declaring an inline's trailing parameter `s32` instead of `u8` removed a stray `and #0xff` and fixed the allocation in `func_ov011_02206e18`.
+## More patterns (ov000, round 18)
+
+- **Two zero words sharing a register.** When the target clears two adjacent words through one scratch register (`mov r0,#0; str r0; str r0` with a shared base), `LFLD(s64, st, 4) = 0` reproduced it (`func_ov000_021b06dc`).
+- **Avoid address CSE across a key compare.** Read the table key through `*(s32 *)((u8 *)tbl + i * 12)`, with an `s32` key variable, so MWCC does not reuse the entry address for the later pointer-to-member call. Pointer-to-member dispatch is written `(((Cls *)self)->*tbl[i].fn)()` (`func_ov000_021b06dc`).
+- **Store order z then x.** `s32 x = pos.x + dx; pos.z += dz; pos.x = x;` gives the early x sum with the z store first (`func_ov000_0218dbe0`).
+- **Re-read the field in each FX multiply.** Hoisting `(s64)spd` into a local produced a full 64x64 multiply. Reading `self->unk_9c` again in each multiply, with the operand order the `smull` uses, gave the target.
+- **Float compare against zero.** `if (v != 0.0f)` with an `s32 v` emits `_fflt` and then `_fneq(0, f)`.
+- **12-byte vector mask.** `v.x = mul; v.y = 0; v.x &= ~0xfff; v.y &= ~0xfff;` gives the target's `and r2, r0, #0` (`func_ov000_0217de7c`).
+- **Narrow parameter types fix spill order.** A `u8` (or `u16`) parameter instead of `BOOL` fixed the parameter-spill order. An if/else that repeats the call gives the target's `beq; b` fallback shape (`func_ov000_021b6994`).
+- **Boolean return order.** `if (x != 3) return FALSE; return TRUE;` gives the `movne #0` / `moveq #1` order. `b12 != 3 ? A : B` gives the right branch sense (`func_ov000_021a16b0`).
+- **Use the global array directly.** Write `data_ov000_021ccd34[...]`, not a local alias, so the inline CSE reuses the top-level load. The declaration order of `u32 saved` and `VObj *next` fixed a register swap (`func_ov000_02180900`).
+- **Shared `return 0` enables tail merge.** Restructuring so that both paths reach one `return 0` enabled the cross-jump tail merge (`func_ov000_021778f0`).
+- **OAM SetPos.** `e->x = (u16)(x - 0x80)` keeps `-8 - 0x80` from being folded. A `u32` value gives unsigned division through `umull`. The OAM words are `y:8, :8, x:9, :7` and `tile:10, prio:2, pal:4`.
+- **Packing two halfwords.** `((a & 0xffff) << 16) | (b & 0xffff)` with `s32` parameters gives `lsl`/`lsl` + `orr ..., lsr #16`. `(a << 16) | (u16)b` and `(u32)(b << 16) >> 16` do not (`func_ov000_021722c4`).
+- **`fl = FALSE; if (cond) fl = TRUE;`** gives `mov r9,#0; moveq r9,#1`, where `fl = cond` gives a `moveq/movne` pair (`func_ov000_02172f7c` draft).
+- **Known blockers.** The `0214b4xx` TWL functions are `module:none`. The `__sinit_ov000_*` functions are blocked. In `func_ov000_021c14f4`, the camera `g+0x1ec` base cannot be reproduced.
+- **Register-only drafts that are still parked.**
+  - `func_ov000_021c2e64` (7). The permuter got it to 2 by giving the `CalcY` inline a `volatile u32` return type. That is not plausible source, so the draft is still parked.
+  - `0216607c` (8, row/list register).
+  - `0218e12c` (22, mgr/group swap). A decl-order search took it from 37 to 22 by reversing the decl order.
+  - `021708ec` (11, mq/end swap inside the message-queue lookup inline). That function needs a local `FindById` variant that reads `writeIndex` before `readIndex`.
+  - `02199180` (27, loop-invariant registers). `02199554` has the same shape.
+  - `021c17dc` (77). MWCC keeps the shared `0x40` copy size in a callee-saved register, which shifts every allocation.
+  - `02181c4c` (55, stack-temp scheduling).
+  - `0217a1f8` (3). MWCC derives `-1` from `0x78` (`sub r2, r1, #0x79`) where the target uses `mvn`.

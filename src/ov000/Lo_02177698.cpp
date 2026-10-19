@@ -97,3 +97,91 @@ s32 func_ov000_021777d4(u8 *self, u16 id) {
     return 0;
 }
 }
+
+extern "C" {
+extern u8 data_ov000_021cac60[];
+extern u8 data_ov000_021cad50[];
+BOOL func_0206f21c(u16 a, s32 b);
+void func_ov000_0215c1bc(void *self, s32 id, void *v);
+void func_ov000_02153c48(u8 *self, s32 a, BOOL show, BOOL center, u8 d);
+
+static inline void AddCount021778f0(u16 n) {
+    u8 *g = data_0214a424;
+    LFLD(u16, g, 0x24) += n;
+    if (LFLD(u16, g, 0x24) > 9999) {
+        LFLD(u16, g, 0x24) = 9999;
+    }
+}
+
+static inline void ResetItem021778f0(u8 *item) {
+    if (LFLD(s32, item, 0x10) == 1) {
+        LFLD(s32, item, 0x10) = 0;
+        LFLD(s32, item, 0xc) = -1;
+        LFLD(s32, item, 0x24) = 0xe;
+        if (LFLD(void *, item, 0x1c) != NULL) {
+            func_ov000_02153c48(item, 8, TRUE, 0, 0);
+        }
+    }
+}
+
+BOOL func_ov000_021778f0(u8 *self, u8 *item) {
+    u16 id = LFLD(u16, item, 6);
+    switch (((id >> 12) & 0xffff) - 1) {
+    case 0:
+        if (!func_ov000_021777d4(self, id)) {
+            if (id == 0x1002) {
+                AddCount021778f0(1);
+            } else if (id == 0x1003) {
+                AddCount021778f0(5);
+            }
+            return FALSE;
+        }
+        return TRUE;
+    case 1:
+        if (func_0206f21c(id, TRUE)) {
+            if (func_ov000_021777d4(self, id)) {
+                func_0206f21c(id, FALSE);
+                return TRUE;
+            }
+            ResetItem021778f0(item);
+        } else {
+            if (LFLD(VObj *, self, 0x58) == NULL) {
+                VObj *o = (VObj *)func_0203dd9c(0xe8);
+                if (o != NULL) {
+                    VOBJ_SET_VTABLE(o, data_ov000_021cac60);
+                    o->vfunc_28();
+                    VOBJ_SET_VTABLE(o, data_ov000_021cad50);
+                    o->vfunc_28();
+                }
+                LFLD(VObj *, self, 0x58) = o;
+            }
+            LFLD(s32, LFLD(VObj *, self, 0x58), 0x1c) = 4;
+            LFLD(VObj *, self, 0x58)->vfunc_08();
+            LFLD(u32, LFLD(VObj *, self, 0x58), 0xc) |= 0x20000;
+            func_ov000_0215c1bc(LFLD(VObj *, self, 0x58), 0x8000, func_0204c0e8(data_02149ef8, 0x9e));
+            LFLD(s16, LFLD(VObj *, self, 0x58), 0x68) = -0x199a;
+            LFLD(VObj *, self, 0x58)->vfunc_70();
+        }
+        break;
+    case 4:
+        if (func_0206f21c(id, TRUE)) {
+            if (func_ov000_021777d4(self, id)) {
+                func_0206f21c(id, FALSE);
+                return TRUE;
+            }
+            LFLD(VObj *, self, 0x4c)->vfunc_70(item);
+        }
+        break;
+    case 7:
+        if (func_0206f21c(id, TRUE)) {
+            if (func_ov000_021777d4(self, id)) {
+                func_0206f21c(id, FALSE);
+                return TRUE;
+            }
+            ResetItem021778f0(item);
+        }
+        break;
+    }
+    return FALSE;
+}
+}

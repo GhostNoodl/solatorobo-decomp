@@ -73,4 +73,109 @@ static inline Actor *FindActor2(u16 id) {
     return mgr != NULL ? MgrFind(mgr, id) : NULL;
 }
 
+extern u8 data_0208ccc8[];
+
+static inline BOOL LoTakeMode(void *self) {
+    VObj *cur = LFLD(VObj *, data_ov000_021ccd34, 0xc);
+    if (LFLD(LoTaskFlags, self, 0).st != 0) {
+        if (cur != NULL) {
+            LFLD(u32, cur, 4) |= 2;
+        }
+        if (LFLD(LoTaskFlags, self, 0).st == 1) {
+            LFLD(s32, self, 4) = 5;
+        } else {
+            LFLD(s32, self, 4) = 7;
+        }
+        LFLD(LoTaskFlags, self, 0).st = 0;
+        return TRUE;
+    }
+    return FALSE;
+}
+
+BOOL func_ov000_02180900(void *self) {
+    VObj *t;
+    VObj *cur;
+    u32 saved;
+    VObj *next;
+    if (LFLD(s32, self, 4) == 0) {
+        return FALSE;
+    }
+    cur = LFLD(VObj *, data_ov000_021ccd34, 0xc);
+    switch (LFLD(s32, self, 4)) {
+    case 1:
+        LFLD(s32, self, 4) = 2;
+    case 2:
+        LFLD(s32, self, 4) = 3;
+    case 3:
+        LFLD(s32, self, 0x4c) = 7;
+        ((VObj *)((u8 *)self + 8))->vfunc_1c(LFLD(void *, data_0208ccc8, 0));
+        LFLD(s32, self, 4) = 12;
+        break;
+    case 12:
+        if (!LoTakeMode(self)) {
+            if (LFLD(LoTaskFlags, self, 0).b0) {
+                if (cur != NULL) {
+                    cur->vfunc_0c(0);
+                }
+            } else {
+                LFLD(u8, data_ov000_021ccd34, 0) = 0;
+            }
+        }
+        break;
+    case 5:
+        LFLD(VObj *, self, 0x54)->vfunc_10();
+        LFLD(s32, self, 4) = 6;
+    case 6:
+        if (!LFLD(VObj *, self, 0x54)->vfunc_14()) {
+            break;
+        }
+        LFLD(s32, self, 4) = 7;
+    case 7:
+        if (cur != NULL) {
+            break;
+        }
+        for (t = LFLD(VObj *, data_ov000_021ccd34, 8); t != NULL; t = next) {
+            next = LFLD(VObj *, t, 0x38);
+            if (LBIT(t, 4).b2) {
+                if (LFLD(VObj *, t, 0x34) != NULL) {
+                    LFLD(VObj *, LFLD(VObj *, t, 0x34), 0x38) = next;
+                } else {
+                    LFLD(VObj *, data_ov000_021ccd34, 8) = next;
+                }
+                if (LFLD(VObj *, t, 0x38) != NULL) {
+                    LFLD(VObj *, LFLD(VObj *, t, 0x38), 0x34) = LFLD(VObj *, t, 0x34);
+                }
+                LFLD(VObj *, t, 0x34) = NULL;
+                LFLD(VObj *, t, 0x38) = NULL;
+                LO_HEAP_PUSH(saved);
+                if (t != NULL) {
+                    if (t != NULL) {
+                        t->vfunc_04();
+                    }
+                }
+                LO_HEAP_POP(saved);
+            }
+        }
+        if (!LoTakeMode(self)) {
+            if (LFLD(VObj *, self, 0x54) != NULL) {
+                LFLD(VObj *, self, 0x54)->vfunc_50();
+                LFLD(VObj *, self, 0x54)->vfunc_18();
+                LFLD(VObj *, self, 0x54) = NULL;
+                LFLD(s32, self, 4) = 12;
+                break;
+            }
+            LFLD(s32, data_ov000_021ccd34, 4) = 0;
+            LFLD(s32, self, 4) = 0;
+            LFLD(LoTaskFlags, self, 0).b1 = 1;
+            return FALSE;
+        }
+        break;
+    }
+    for (t = LFLD(VObj *, data_ov000_021ccd34, 8); t != NULL; t = next) {
+        next = LFLD(VObj *, t, 0x38);
+        t->vfunc_68();
+    }
+    return TRUE;
+}
+
 }
