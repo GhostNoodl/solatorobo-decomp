@@ -365,4 +365,103 @@ void func_ov014_022144f8(Ov014Actor *self) {
     }
 }
 
+extern Ov014Vec *func_ov000_0218d2e0(void *self);
+
+#define OV014_SQRTCNT (*(volatile u16 *)0x40002b0)
+#define OV014_SQRT_RESULT (*(volatile u32 *)0x40002b4)
+#define OV014_SQRT_PARAM (*(volatile u64 *)0x40002b8)
+
+static inline s32 Ov014k_FxMul64(s32 a, s64 b) {
+    return (a * b + 0x800) >> 12;
+}
+
+void func_ov014_02214f10(Ov014Actor *self) {
+    Ov014Vec d;
+    Ov014Vec v;
+    switch (self->unk_40->state) {
+    case 0: {
+        Ov014Vec *p;
+        {
+            u8 *q = FLD(u8 *, self, 0x4c);
+            FLD(s32, q, 0x50) = 0x1000;
+            FLD(s32, q, 0x54) = 0x29;
+            FLD(s32, q, 0x58) = 0;
+        }
+        self->unk_48->unk_30 = 0;
+        p = func_ov000_0218d2e0(self);
+        if (p != NULL) {
+            s32 r;
+            s32 dx;
+            s32 dz;
+            d = *p;
+            d.y = d.y - self->pos.y;
+            {
+                s64 sq;
+                dx = self->pos.x - d.x;
+                dz = self->pos.z - d.z;
+                sq = (s64)dx * dx;
+                sq += (s64)dz * dz;
+                OV014_SQRTCNT = 1;
+                OV014_SQRT_PARAM = (u64)(sq * 4);
+            }
+            while (OV014_SQRTCNT & 0x8000) {
+            }
+            r = (s32)(OV014_SQRT_RESULT + 1) >> 1;
+            d.x = Ov014_FxMul(r, OV014_SIN(self->rot[1]));
+            d.z = Ov014_FxMul(r, OV014_COS(self->rot[1]));
+            VEC_Normalize(&d, &d);
+            self->unk_9c = Ov014k_FxMul64(d.x, 0x39a);
+            self->unk_a0 = Ov014k_FxMul64(d.y, 0x39a);
+            self->unk_a4 = Ov014k_FxMul64(d.z, 0x39a);
+        } else {
+            self->unk_9c = OV014_SIN(self->rot[1]);
+            self->unk_a4 = OV014_COS(self->rot[1]);
+            self->unk_9c = Ov014k_FxMul64(self->unk_9c, 0x39a);
+            self->unk_a0 = Ov014k_FxMul64(self->unk_a0, 0x39a);
+            self->unk_a4 = Ov014k_FxMul64(self->unk_a4, 0x39a);
+        }
+        {
+            Ov014Sub48 *m = self->unk_48;
+            m->unk_50 = 0;
+            m->unk_54 = 0;
+            FLD(u32, m, 0x58) = 0;
+        }
+        self->unk_40->state++;
+        break;
+    }
+    case 1:
+        VEC_Add(&self->pos, (Ov014Vec *)&self->unk_9c, &self->pos);
+        if (!(self->unk_48->unk_50 & 0xe0000000)) {
+            if (!func_ov014_022143f4(self)) {
+                break;
+            }
+        }
+        {
+            u16 mask;
+            s32 r;
+            Ov014Actor *a;
+            r = self->unk_64 + 0xccd;
+            v.y = FLD(s32, self, 0x6c);
+            v.x = 0;
+            v.z = 0;
+            mask = 0;
+            a = func_ov000_02199ba0(FLD(void *, self, 0x4c));
+            if (a != NULL) {
+                mask = ~(1 << ((u16)(a->id & 0xf000) >> 12));
+            }
+            mask &= (u16)~(1 << ((u16)(self->id & 0xf000) >> 12));
+            func_ov000_0219aae8(self, a, FLD(u16, FLD(void *, self, 0x4c), 8), FLD(u16, FLD(void *, self, 0x4c), 0xa), mask, &v, 0,
+                                r, 0, 0x64, 0x1000);
+        }
+        FLD(u16, FLD(void *, self, 0x4c), 0x1c) = 0xffff;
+        {
+            s32 sc = self->unk_64;
+            Ov014V *f = func_02066900(data_ov014_02218040, data_ov014_0221805b, &self->pos);
+            f->v14(sc, sc, sc);
+        }
+        func_ov000_02198360(self->unk_40, 0x15, 0);
+        break;
+    }
+}
+
 }
