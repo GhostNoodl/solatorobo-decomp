@@ -105,6 +105,43 @@ BOOL func_0206f21c(u16 a, s32 b);
 void func_ov000_0215c1bc(void *self, s32 id, void *v);
 void func_ov000_02153c48(u8 *self, s32 a, BOOL show, BOOL center, u8 d);
 
+static inline void ShowMsg021778f0(u8 *self, s32 msg) {
+    if (LFLD(VObj *, self, 0x58) == NULL) {
+        VObj *o = (VObj *)func_0203dd9c(0xe8);
+        if (o != NULL) {
+            VOBJ_SET_VTABLE(o, data_ov000_021cac60);
+            o->vfunc_28();
+            VOBJ_SET_VTABLE(o, data_ov000_021cad50);
+            o->vfunc_28();
+        }
+        LFLD(VObj *, self, 0x58) = o;
+    }
+    LFLD(s32, LFLD(VObj *, self, 0x58), 0x1c) = 4;
+    LFLD(VObj *, self, 0x58)->vfunc_08();
+    LFLD(u32, LFLD(VObj *, self, 0x58), 0xc) |= 0x20000;
+    func_ov000_0215c1bc(LFLD(VObj *, self, 0x58), 0x8000, func_0204c0e8(data_02149ef8, msg));
+    LFLD(s16, LFLD(VObj *, self, 0x58), 0x68) = -0x199a;
+    LFLD(VObj *, self, 0x58)->vfunc_70();
+}
+
+static inline BOOL IsUnset021778f0(u8 *p) {
+    return LFLD(s32, p, 0xc) == -1;
+}
+
+static inline BOOL IsCost021778f0(u32 c) {
+    return c == (u32)-1;
+}
+
+static inline void Snd021778f0(s32 id) {
+    func_02049a48(data_02097e4c, id, -1, -1, -1);
+}
+
+static inline void SetBit021778f0(void *p) {
+    if (p != NULL) {
+        LFLD(u32, p, 0xc) |= 2;
+    }
+}
+
 static inline void AddCount021778f0(u16 n) {
     u8 *g = data_0214a424;
     LFLD(u16, g, 0x24) += n;
@@ -145,22 +182,7 @@ BOOL func_ov000_021778f0(u8 *self, u8 *item) {
             }
             ResetItem021778f0(item);
         } else {
-            if (LFLD(VObj *, self, 0x58) == NULL) {
-                VObj *o = (VObj *)func_0203dd9c(0xe8);
-                if (o != NULL) {
-                    VOBJ_SET_VTABLE(o, data_ov000_021cac60);
-                    o->vfunc_28();
-                    VOBJ_SET_VTABLE(o, data_ov000_021cad50);
-                    o->vfunc_28();
-                }
-                LFLD(VObj *, self, 0x58) = o;
-            }
-            LFLD(s32, LFLD(VObj *, self, 0x58), 0x1c) = 4;
-            LFLD(VObj *, self, 0x58)->vfunc_08();
-            LFLD(u32, LFLD(VObj *, self, 0x58), 0xc) |= 0x20000;
-            func_ov000_0215c1bc(LFLD(VObj *, self, 0x58), 0x8000, func_0204c0e8(data_02149ef8, 0x9e));
-            LFLD(s16, LFLD(VObj *, self, 0x58), 0x68) = -0x199a;
-            LFLD(VObj *, self, 0x58)->vfunc_70();
+            ShowMsg021778f0(self, 0x9e);
         }
         break;
     case 4:
@@ -183,5 +205,45 @@ BOOL func_ov000_021778f0(u8 *self, u8 *item) {
         break;
     }
     return FALSE;
+}
+
+s32 func_ov000_02177bd8(VObj *self, u8 *item) {
+    u8 *o = LFLD(u8 *, self, 8);
+    u8 *m = LFLD(u8 *, o, 0x4c);
+    u8 *obj = (0, LFLD(u8 *, o, 0x40));
+    u8 *node = GetNth(m);
+    u16 type;
+    if (item == NULL) {
+        Snd021778f0(0x1f);
+        return 0;
+    }
+    type = LFLD(u16, item, 6);
+    if (type == 0) {
+        u32 cost = LFLD(u32, node, 0xc);
+        if (IsCost021778f0(cost)) {
+            ShowMsg021778f0(o, 0x9f);
+        } else if (LFLD(u32, obj, 0x8c) >= cost) {
+            if (func_ov000_021778f0(o, node)) {
+                SetBit021778f0(LFLD(void *, o, 0x3c));
+                SetBit021778f0(LFLD(void *, o, 0x40));
+                SetBit021778f0(LFLD(void *, o, 0x44));
+                SetBit021778f0(LFLD(void *, o, 0x48));
+                SetBit021778f0(LFLD(void *, o, 0x4c));
+                SetBit021778f0(LFLD(void *, o, 0x50));
+                SetBit021778f0(LFLD(void *, o, 0x58));
+                ((VObj *)o)->vfunc_3c();
+                return 0;
+            }
+        } else {
+            Snd021778f0(0x20);
+            ShowMsg021778f0(o, 0x9b);
+        }
+        return 0;
+    }
+    if (type != 1) {
+        return 1;
+    }
+    Snd021778f0(0x1f);
+    return 0;
 }
 }
