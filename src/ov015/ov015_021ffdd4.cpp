@@ -8,6 +8,8 @@ void func_ov015_02209790(u8 *self, s32 a);
 void func_ov015_0221234c(u8 *self);
 void func_ov015_022123c4(u8 *self);
 void *func_ov015_021fffc4(u8 *self);
+BOOL func_ov015_02209ff0(u8 *self, void *a);
+Ov015V *func_02065f88(s32 id, void *pos);
 
 struct Ov015Bits8a0 {
     u8 b0 : 2;
@@ -74,6 +76,48 @@ BOOL func_ov015_021ffdd4(u8 *self) {
 
 BOOL func_ov015_021fffb0(Ov015Obj30 *self) {
     return self->unk_08 >= 2 ? TRUE : FALSE;
+}
+
+class Ov015Eff {
+public:
+    virtual void v00();
+    virtual void v04();
+    virtual void v08(s32 a);
+    virtual void v0c(s32 a);
+    virtual void v10();
+    virtual void v14(s32 x, s32 y, s32 z);
+};
+void *func_ov015_021fffc4(u8 *self) {
+    u8 *found = NULL;
+    u8 *n = FLD(u8 *, FLD(u8 *, self, 0x24), 0x4);
+    while (n != NULL) {
+        u8 *obj = FLD(u8 *, n, 0x4);
+        n = FLD(u8 *, n, 0xc);
+        if (func_ov015_02209ff0(obj, FLD(u8 *, self, 0x14) + 0x234)) {
+            Ov015Vec v;
+            Ov015Eff *e;
+            v = FLD(Ov015Vec, FLD(u8 *, self, 0x14), 0x240);
+            found = obj;
+            e = (Ov015Eff *)func_02065f88(0x69, &v);
+            e->v08(1);
+            e->v14(0x5800, 0x5800, 0x5800);
+            e = (Ov015Eff *)func_02065f88(0x69, &v);
+            e->v08(1);
+            e->v14(0x3800, 0x3800, 0x3800);
+            e = (Ov015Eff *)func_02065f88(0x6c, &v);
+            FLD(s32, e, 0x50) = -0x64000;
+            e->v08(1);
+            e->v14(0x6800, 0x6800, 0x6800);
+            FLD(s32, e, 0x3c) = 0x1800;
+            v.y += 0x5000;
+            e = (Ov015Eff *)func_02065f88(0x44c, &v);
+            e->v08(1);
+            FLD(s32, e, 0x50) = -0xa000;
+            e->v0c(0x1400);
+            break;
+        }
+    }
+    return found;
 }
 
 }

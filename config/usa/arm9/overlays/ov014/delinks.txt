@@ -197,7 +197,7 @@ src/ov014/ov014_022053f8.cpp:
 
 src/ov014/ov014_022142fc.cpp:
     complete
-    .text       start:0x022142fc end:0x022144f8
+    .text       start:0x022142fc end:0x02214f10
 
 src/ov014/ov014_02213e18.cpp:
     complete
