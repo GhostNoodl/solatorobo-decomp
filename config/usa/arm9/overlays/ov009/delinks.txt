@@ -43,7 +43,7 @@ src/ov009/ov009_02201848.cpp:
 
 src/ov009/ov009_0220244c.cpp:
     complete
-    .text       start:0x0220244c end:0x022028a8
+    .text       start:0x0220244c end:0x022028c8
 
 src/ov009/ov009_022028c8.cpp:
     complete

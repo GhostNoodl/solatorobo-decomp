@@ -27,7 +27,7 @@ src/ov011/ov011_021fe9b8.cpp:
 
 src/ov011/ov011_021fef00.cpp:
     complete
-    .text       start:0x021fef00 end:0x021ff084
+    .text       start:0x021fef00 end:0x021ff24c
 
 src/ov011/ov011_021ff8fc.cpp:
     complete

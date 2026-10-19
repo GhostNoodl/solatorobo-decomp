@@ -19,6 +19,58 @@ extern void *data_ov000_021ccd68;
 extern Ov014Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern void func_ov000_0219bdb0(u16 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 
+BOOL func_ov014_02213e18(Ov014Watch *self);
+BOOL func_ov014_02213f74(Ov014Watch *self);
+BOOL func_ov014_02214138(Ov014Watch *self);
+
+BOOL func_ov014_02213cfc(Ov014Watch *self) {
+    u16 prev = self->count;
+    u16 n = 0;
+    u16 i;
+    BOOL r;
+    for (i = 0; i < 2; i++) {
+        u16 id = self->ids[i];
+        Ov014Actor *a = data_ov000_021ccd68 == NULL ? NULL : func_ov000_0218e640(data_ov000_021ccd68, id);
+        if (a != NULL) {
+            n++;
+        } else {
+            self->ids[i] = 0xffff;
+        }
+    }
+    if (n < prev) {
+        self->unk_0b = 1;
+    }
+    if (n == 0) {
+        if (prev != n) {
+            self->timer = 3000;
+        }
+    } else {
+        self->timer = -1;
+    }
+    self->count = n;
+    if (self->timer > 0) {
+        self->timer--;
+    } else if (self->timer < 0) {
+        self->timer = -1;
+    }
+    switch (self->mode) {
+    case 0:
+        r = func_ov014_02213e18(self);
+        break;
+    case 1:
+        r = func_ov014_02213f74(self);
+        break;
+    case 2:
+        r = func_ov014_02214138(self);
+        break;
+    default:
+        r = FALSE;
+        break;
+    }
+    self->unk_0a = !r;
+    return r;
+}
+
 BOOL func_ov014_02213e18(Ov014Watch *self) {
     BOOL r = TRUE;
     switch (self->step) {

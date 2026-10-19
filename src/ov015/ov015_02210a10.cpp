@@ -273,4 +273,75 @@ void *func_ov015_0221114c(void *self) {
     return self;
 }
 
+extern u32 func_0200aeec(s32 v);
+extern u32 _fadd(u32 a, u32 b);
+extern u32 _fsub(u32 a, u32 b);
+extern s32 _ffix(u32 v);
+extern u8 *func_0206f040(u16 id);
+extern s32 func_02040498(s32 max);
+
+u32 func_ov015_02211160(u8 *self, u16 *out, u32 n) {
+    u32 cnt = 0;
+    MIi_CpuClearFast(0xffff, out, n * 2);
+    switch (FLD(u32, self, 0x4)) {
+    case 3:
+        cnt++;
+        out[0] = 0x800b;
+        break;
+    case 4:
+        cnt++;
+        FLD(u16, self, 0x8) = 0xa005;
+        out[0] = 0x8008;
+        break;
+    case 5:
+        cnt++;
+        FLD(u16, self, 0x8) = 0xa005;
+        out[0] = 0x8003;
+        break;
+    case 1:
+    case 2: {
+        u32 i;
+        for (i = cnt; i < n; i++) {
+            out[i] = 0x800a;
+            cnt++;
+        }
+        break;
+    }
+    default: {
+        u32 j;
+        for (j = 0; j < n; j++) {
+            u32 k;
+            s32 rnd;
+            s32 acc;
+            u32 m;
+            u8 *e;
+            e = func_0206f040(FLD(u16, self, 0xa));
+            m = e[1];
+            rnd = func_02040498(0x1000);
+            acc = 0;
+            for (k = 0; k < m; k++) {
+                u16 w = FLD(u16, e + k * 2, 0xa);
+                u32 f;
+                if (w > 0) {
+                    f = _fadd(0x3f000000, func_0200aeec(w << 12));
+                } else {
+                    f = _fsub(func_0200aeec(w << 12), 0x3f000000);
+                }
+                acc += _ffix(f) / 100;
+                if (rnd <= acc) {
+                    break;
+                }
+            }
+            if (k >= m) {
+                k = m - 1;
+            }
+            out[j] = FLD(u16, e + k * 2, 0x2);
+            cnt++;
+        }
+        break;
+    }
+    }
+    return cnt;
+}
+
 }

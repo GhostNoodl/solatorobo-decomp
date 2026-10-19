@@ -90,4 +90,72 @@ void func_ov011_021fef00(Ov011Actor *self) {
     FLD(u8, self, 0x15) = 2;
 }
 
+extern void *data_02097e4c;
+extern const char *const data_ov011_02207258[];
+extern void func_0204a028(void *a, s32 b, Ov011Vec *c, s32 d);
+extern void func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
+void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+void func_ov000_021915a0(void *a);
+BOOL func_ov003_021d1c00(Ov011Actor *self, u8 *msg);
+
+BOOL func_ov011_021ff084(Ov011Actor *self, u8 *msg) {
+    if (msg[5] == 0xe) {
+        switch (FLD(s32, msg, 0x8)) {
+        case 1: {
+            Ov011Sub40 *st;
+            s32 sub = FLD(s32, msg, 0xc);
+            if (sub == 0) {
+                st = FLD(Ov011Sub40 *, self, 0x104);
+                if (st->unk_13 == 0) {
+                    st->flags |= 2;
+                    func_0204a028(data_02097e4c, 9, &self->pos, -2);
+                }
+            } else if (sub == 1) {
+                st = FLD(Ov011Sub40 *, self, 0x104);
+                if (st->unk_13 == 1) {
+                    st->flags |= 4;
+                    func_02049f44(data_02097e4c, 0x5b, &self->pos, 0);
+                }
+            } else if (sub == 2) {
+                st = FLD(Ov011Sub40 *, self, 0x104);
+                if (st->unk_13 == 2) {
+                    st->flags |= 8;
+                }
+            }
+            break;
+        }
+        case 2: {
+            u8 *p = FLD(u8 *, self, 0x108);
+            if (p != NULL) {
+                FLD(u8, p, 0) = msg[0xc];
+                FLD(s16, p, 2) = FLD(s16, msg, 0xe);
+                FLD(s16, p, 4) = FLD(s16, msg, 0x10);
+            }
+            break;
+        }
+        case 3:
+            if (msg[0xc] != 0) {
+                Ov011Small4 *s = FLD(Ov011Small4 *, self, 0x10c);
+                s->f.b0 = 1;
+                s->f.b1 = 1;
+                s->f.b2 = 1;
+                s->a = 0;
+            } else {
+                Ov011Small4 *s = FLD(Ov011Small4 *, self, 0x10c);
+                s->f.b0 = 0;
+                s->f.b1 = 0;
+                s->f.b2 = 0;
+                s->a = 0;
+                func_ov000_02190cb0(self->unk_38, data_ov011_02207258[0], 0x1000, 0);
+                func_ov000_021915a0(self->unk_38);
+            }
+            break;
+        }
+        self->unk_30 |= 1 << msg[5];
+        msg[5] = 0;
+        return TRUE;
+    }
+    return func_ov003_021d1c00(self, msg);
+}
+
 }

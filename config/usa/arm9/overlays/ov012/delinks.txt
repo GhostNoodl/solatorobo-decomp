@@ -31,7 +31,7 @@ src/ov012/ov012_021fcf1c.cpp:
 
 src/ov012/ov012_021feacc.cpp:
     complete
-    .text       start:0x021feacc end:0x021fee1c
+    .text       start:0x021fe8b4 end:0x021fee1c
 
 src/ov012/ov012_021fee1c.cpp:
     complete

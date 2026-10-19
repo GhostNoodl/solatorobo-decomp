@@ -14,6 +14,58 @@ extern void func_ov000_0218996c(s32 a, s32 b);
 extern void VEC_MultAdd(s32 s, const Ov012Vec *a, const Ov012Vec *b, Ov012Vec *out);
 extern s32 VEC_Distance(const Ov012Vec *a, const Ov012Vec *b);
 
+
+static inline s32 Ov012_FxMulFe8b4(s32 a, s32 b) {
+    return (s32)(((s64)a * b + 0x800) >> 12);
+}
+
+void func_ov012_021fe8b4(Ov012Actor *self, const Ov012Vec *p, u8 n) {
+    Ov012Vec d;
+    d.x = p->x - self->pos.x;
+    d.y = p->y - self->pos.y;
+    d.z = p->z - self->pos.z;
+    func_01ffc9fc(&d, &d, 0xffff - self->rot[1]);
+    func_ov000_0218d918(self, (u8 *)self + 0x124, FLD(s32, self, 0x130));
+    switch (FLD(u8, self, 0x134)) {
+    case 0:
+        if (d.x > 0 && !(FLD(u32, self, 0x10c) & 0x1000000)) {
+            if (FLD(u8, self, 0x135) == 0) {
+                FLD(u8, self, 0x135) = n;
+            }
+            if (--FLD(u8, self, 0x135) == 0) {
+                FLD(u32, self, 0x10c) |= 0x1000000;
+            }
+        }
+        if ((self->rot[1] < 0xe87a && self->rot[1] > 0xbff4) || (FLD(u32, self, 0x10c) & 0x1000000)) {
+            FLD(s32, self, 0x124) = Ov012_FxMulFe8b4(FLD(s32, self, 0x124), -0x1000);
+            FLD(u8, self, 0x134) = 1;
+            FLD(u8, self, 0x135) = 0;
+            if (FLD(u32, self, 0x10c) & 0x1000000) {
+                FLD(u32, self, 0x10c) ^= 0x1000000;
+            }
+        }
+        break;
+    case 1:
+        if (d.x < 0 && !(FLD(u32, self, 0x10c) & 0x1000000)) {
+            if (FLD(u8, self, 0x135) == 0) {
+                FLD(u8, self, 0x135) = n;
+            }
+            if (--FLD(u8, self, 0x135) == 0) {
+                FLD(u32, self, 0x10c) |= 0x1000000;
+            }
+        }
+        if ((self->rot[1] > 0x1776 && self->rot[1] < 0x4000) || (FLD(u32, self, 0x10c) & 0x1000000)) {
+            FLD(s32, self, 0x124) = Ov012_FxMulFe8b4(FLD(s32, self, 0x124), -0x1000);
+            FLD(u8, self, 0x134) = 0;
+            FLD(u8, self, 0x135) = 0;
+            if (FLD(u32, self, 0x10c) & 0x1000000) {
+                FLD(u32, self, 0x10c) ^= 0x1000000;
+            }
+        }
+        break;
+    }
+}
+
 struct Ov012Feacc {
     u8 pad[0x394];
     Ov012Vec v[2];

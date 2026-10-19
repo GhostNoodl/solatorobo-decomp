@@ -1,5 +1,30 @@
 #include "ov014/ov014.h"
 
+typedef void (Ov014Actor::*Ov014ActorPmf)();
+
+struct Ov014PmfEntry {
+    u32 kind;
+    Ov014ActorPmf fn;
+};
+
+struct Ov014D8a4Sub44 {
+    Ov014Vec pos;
+    s32 unk_0c;
+    s32 unk_10;
+    u8 unk_14[0x8];
+    s32 unk_1c;
+    u8 unk_20[0x2];
+    u16 unk_22_0 : 4;
+    u16 unk_22_4 : 1;
+    u16 unk_22_5 : 11;
+};
+
+struct Ov014D8a4Icon {
+    u8 unk_00[0x50];
+    Ov014Vec pos;
+    s32 unk_5c;
+};
+
 extern "C" {
 
 extern void *data_ov000_021ccd64;
@@ -215,6 +240,66 @@ BOOL func_ov014_021fd76c(Ov014Actor *self) {
     r = func_ov003_021d16cc(self);
     self->pos = saved;
     return r;
+}
+
+extern const Ov014PmfEntry data_ov014_022168c4[];
+extern void func_ov000_0219af3c(Ov014Actor *self, void *icon);
+extern void func_ov000_021bd624(void *icon);
+extern void func_ov000_0219a210(Ov014Vec *pos, Ov014Vec *v, u16 ang);
+extern void func_ov003_021d3008(Ov014Actor *self);
+
+static inline void Ov014_Dispatch(Ov014Actor *self, u32 kind) {
+    s32 i;
+    for (i = 0; i < 0x15; i++) {
+        if (data_ov014_022168c4[i].kind != kind) {
+            continue;
+        }
+        (self->*data_ov014_022168c4[i].fn)();
+        return;
+    }
+}
+
+void func_ov014_021fd8a4(Ov014Actor *self) {
+    switch (FLD(s16, self, 0xf0)) {
+    case 0:
+        FLD(u8, self, 0xec) = 0;
+        Ov014_Dispatch(self, self->unk_40->unk_13);
+        if (FLD(void *, self, 0x5c) != NULL && Ov014_GameIdle()) {
+            Ov014Vec pos;
+            s32 r;
+            func_ov000_0219af3c(self, FLD(void *, self, 0x5c));
+            if (self->unk_44 != NULL) {
+                Ov014D8a4Sub44 *s44 = (Ov014D8a4Sub44 *)self->unk_44;
+                pos = s44->pos;
+                if (s44->unk_22_4) {
+                    Ov014Vec v;
+                    v.z = s44->unk_1c;
+                    v.x = 0;
+                    v.y = 0;
+                    func_ov000_0219a210(&pos, &v, self->rot[1]);
+                }
+                r = ((Ov014D8a4Sub44 *)self->unk_44)->unk_10;
+                if (r == 0) {
+                    r = ((Ov014D8a4Sub44 *)self->unk_44)->unk_1c;
+                }
+            } else {
+                pos = self->pos;
+                r = FLD(s32, self, 0x68);
+                if (r == 0) {
+                    r = self->unk_64;
+                }
+            }
+            FLD(Ov014D8a4Icon *, self, 0x5c)->pos = pos;
+            FLD(Ov014D8a4Icon *, self, 0x5c)->unk_5c = r;
+            func_ov000_021bd624(FLD(void *, self, 0x5c));
+        }
+        self->unk_40->flags = 0;
+        break;
+    case 1:
+        func_ov003_021d3008(self);
+        break;
+    }
+    ((Ov014V *)((u8 *)self + 0x100))->v0c();
 }
 
 }

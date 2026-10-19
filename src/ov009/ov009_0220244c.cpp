@@ -137,4 +137,10 @@ Ov009Actor *func_ov009_0220282c(Ov009Actor *self) {
     return self;
 }
 
+BOOL func_ov009_022028a8(Ov009Actor *self) {
+    BOOL r = func_ov003_021d16cc(self);
+    self->unk_1e = r ? 1 : 0;
+    return r;
+}
+
 }

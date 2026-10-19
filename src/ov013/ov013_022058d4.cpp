@@ -80,6 +80,33 @@ static inline u16 Ov013_FaceAngle(Ov013Actor *self, Ov013Actor *a) {
     return self->unk_98 + 0x7fff;
 }
 
+void func_ov013_02205760(Ov013Actor *self) {
+    Ov013Offs5 offs;
+    u16 ang;
+    u32 i;
+    u16 lvl;
+    if (self->unk_40->state != 0) {
+        return;
+    }
+    offs = *(Ov013Offs5 *)(data_ov013_0220b290 + 0xe);
+    ang = Ov013_FaceAngle(self, Ov013_FindActor(self->unk_90));
+    lvl = FLD(u16, FLD(void *, self, 0x4c), 0x1c);
+    for (i = 0; i < 5; i++) {
+        Ov013Actor *c;
+        Ov013Rot r = {0, 0, 0};
+        r.y = ang + offs.v[i];
+        c = func_ov003_021da32c(0x480a);
+        if (c != NULL) {
+            c->pos = self->pos;
+            FLD(Ov013Rot, c, 0x7c) = r;
+            c->unk_90 = self->unk_90;
+            FLD(u16, FLD(void *, c, 0x4c), 0x1c) = lvl;
+            FLD(void *, c, 0x60) = data_ov013_0220b324;
+        }
+    }
+    func_ov000_02198360(self->unk_40, 0x15, 1);
+}
+
 void func_ov013_022058d4(Ov013Actor *self) {
     func_ov000_02197dec(self, 0xf, 0x63);
     func_ov000_0218bed8(data_ov000_021ccd64, 0, self);

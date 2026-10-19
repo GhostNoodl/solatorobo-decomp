@@ -100,3 +100,10 @@ If the target reuses `r1`-`r3` right before a call as if they held nothing, the 
 - To keep a data address in a callee-saved register across a call, load it into a local at the top of the function (`u8 *tmpl = data_x;`).
 - If the target loads a field before an unrelated store, read it into a temp first (`s32 z = p.z; p.y += ...; use z`).
 - Clearing bitfields in several fields of one sub-object without reloading the pointer: take a local pointer once (`Bits *q = self->unk_44; q->a = 0; q->b = 0;`).
+- A bool built in `r1` after a call (`mov r1,#1; cmp r0,#0; moveq r1,#0`) while `r0` is returned unchanged: `BOOL r = f(); field = r ? 1 : 0; return r;`.
+- Declaring extern tables `const` (`extern const char *const tbl[];`) lets the compiler schedule the load across stores, which some targets need.
+- A named local tends to get a callee-saved register, while a repeated expression (merged by CSE) gets a scratch one. Try both forms when two registers are swapped. Reordering local declarations (even inserting an unused-looking `s32 i` between two others) also changes allocation, so script a permutation pass.
+- Unsigned byte range check `add rX, rX, #0xff; and rX, rX, #0xff; cmp rX, #1`: `if ((u8)(x + 0xff) > 1)`.
+- 12-byte `ldm`/`stm` copies: copy through a `struct { s32 w[3]; }` lvalue, e.g. `*(Blk12 *)&v = data;`.
+- Copying a source struct into a local first (`Vec t = pl->pos;`) keeps its fields in registers across an inline sqrt or other long sequences.
+- To get the target's argument order around a null-checked call, read the argument into a local first: `u16 id = self->ids[i]; a = mgr == NULL ? NULL : f(mgr, id);`.
