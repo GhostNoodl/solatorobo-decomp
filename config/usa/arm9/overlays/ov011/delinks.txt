@@ -101,6 +101,10 @@ src/ov011/ov011_0220023c.cpp:
     complete
     .text       start:0x0220023c end:0x0220068c
 
+src/ov011/ov011_0220068c.cpp:
+    complete
+    .text       start:0x0220068c end:0x02200aac
+
 src/ov011/ov011_02204a8c.cpp:
     complete
     .text       start:0x02204a8c end:0x02204b94
