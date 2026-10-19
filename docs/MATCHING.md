@@ -301,3 +301,13 @@ The linker strips functions that nothing references. If `ninja` reports a matche
 - **if/else gives `movge`/`movlt`.** A ternary `x = c >= k ? 1 : 2` gave `mov #1; movlt #2`. Writing an if/else that stores in both arms, after taking the `&Dup::` pointer, gave the target's pair of conditional moves and the right store order (`func_ov015_021fb5d4`).
 - **Re-read a field in a call argument.** `func_ov003_021d9980(..., self->unk_98, ...)` right after `self->unk_98 = r;` matched, where passing the parameter `r` did not (`func_ov013_02205bec`).
 - **Persp init order.** For a camera init that inlines `SetFovy` (`func_ov015_021fce94`, parked at 13), the closest order was: set the fovy angle, then `n`, then `dirty = 1` as a separate statement, then `f`. The rest is a swap of the registers holding `1` and `0x119a`.
+
+## Overlay IDs as linker symbols, and blockers (overlays 2–8, round ovlow1)
+
+- **`OVERLAY_N_ID` literals.** Small constants that are loaded from the literal pool with no relocation (`ldr r4, =0x9` … `=0xe`) are linker absolute symbols. Declare them as `extern u8 OVERLAY_9_ID[];` and use `(s32)OVERLAY_9_ID` in the code (for example as switch results). Plain integer constants become `mov` immediates and do not match (`func_ov003_021cf77c`).
+- **Whole-struct copy inside a copy inline.** `*d = *s` inside a small copy helper gave the target's interleaved `ldr/ldr/str/str` for Pair copies. Field-by-field copies scheduled differently (`func_ov003_021eb818` draft).
+- **Jump-table size needs an empty case.** If the target's jump table has an entry for a value that does nothing, add `case N: break;` so the table size matches (`func_ov006_021cf420` draft, which needs `case 7`).
+- **Blockers.**
+  - **Shared string pools.** The ov006 pool (`0x021ebbb0`..`0x021ebc65`) and the ov003 pool (`0x021f8564`..`0x021f85c1`) are used by many functions in many files. Externs declared as `const char[]` do not reproduce the early literal loads. With real string literals, `func_ov006_021d3f04` reaches 0 diffs and `func_ov003_021e44dc` reaches 7, but the literals only work if one file claims the whole pool.
+  - **`func_ov006_021cf414`.** This is a vtable entry (the vtable at `0x021ebda4` references it), so it cannot be stripped as an unreferenced gap function. Its body is `ldr r1,[r0,#0x4c]; cmp r1,#0; bx lr`, which has no value return. No variant of the C source has reproduced it.
+  - **`func_ov004_021cd97c`** (DSProtect decryption, `optimization_level 3`). It is at 24 diffs and only register allocation differs: the loop index and the word temporaries are swapped between r4 and r7.
