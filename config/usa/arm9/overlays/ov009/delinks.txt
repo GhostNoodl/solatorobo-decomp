@@ -303,7 +303,7 @@ src/ov009/ov009_022137ac.cpp:
 
 src/ov009/ov009_022107b4.cpp:
     complete
-    .text       start:0x022107b4 end:0x0221097c
+    .text       start:0x022107b4 end:0x02210ba8
 
 src/ov009/ov009_0220c93c.cpp:
     complete

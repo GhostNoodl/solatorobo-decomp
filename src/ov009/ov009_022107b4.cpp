@@ -69,4 +69,55 @@ void func_ov009_022108e0(Ov009Actor *self) {
     FLD(u16, self, 0xea) |= 0x400;
 }
 
+extern Ov009Actor *func_ov000_0219bf90(void);
+extern void VEC_Normalize(const Ov009Vec *src, Ov009Vec *dst);
+static inline s32 Ov009_Sqrt64(s64 v) {
+    *(volatile u16 *)0x40002b0 = 1;
+    *(u64 *)0x40002b8 = (u64)v << 2;
+    while (*(volatile u16 *)0x40002b0 & 0x8000) {
+    }
+    return (*(volatile s32 *)0x40002b4 + 1) >> 1;
+}
+static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
+    s64 sq;
+    s32 dz = a->z - b->z;
+    s32 dx = a->x - b->x;
+    sq = (s64)dx * dx;
+    sq += (s64)dz * dz;
+    return Ov009_Sqrt64(sq);
+}
+void func_ov009_0221097c(Ov009Actor *self) {
+    Ov009Vec d;
+    Ov009Actor *pl;
+    Ov009Vec t;
+    if (!Ov009_GameIdle()) {
+        return;
+    }
+    if ((u8)(self->unk_40->unk_13 + 0xff) > 1) {
+        return;
+    }
+    if (self->unk_b6 != 0) {
+        self->unk_b6--;
+    }
+    if (self->unk_b6 != 0) {
+        return;
+    }
+    pl = func_ov000_0219bf90();
+    self->unk_90 = pl->id;
+    t = pl->pos;
+    if (Ov009_DistXZ(&self->pos, &t) < 0x7000) {
+        self->unk_40->flags |= 0x8000;
+        self->unk_b6 = 0x96;
+        return;
+    }
+    d.x = t.x - FLD(s32, self, 0xf0);
+    d.y = t.y + 0x4800 - FLD(s32, self, 0xf4);
+    d.z = t.z - FLD(s32, self, 0xf8);
+    VEC_Normalize(&d, &d);
+    VEC_MultAdd(0x5000, &d, &FLD(Ov009Vec, self, 0xf0), &d);
+    if (Ov009_DistXZ(&d, &self->pos) > 0x1800) {
+        self->unk_b8 = d;
+        self->unk_40->flags |= 4;
+    }
+}
 }
