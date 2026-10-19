@@ -2896,3 +2896,35 @@ src/ov000/Msg_021950e8.cpp:
 src/ov000/Robo_0219d730.cpp:
     complete
     .text       start:0x0219d730 end:0x0219d9fc
+
+src/ov000/Lo_0215ae80.cpp:
+    complete
+    .text       start:0x0215ae80 end:0x0215af64
+
+src/ov000/Spawn_0218ab00.cpp:
+    complete
+    .text       start:0x0218ab00 end:0x0218ac98
+
+src/ov000/Oam_021c77bc.cpp:
+    complete
+    .text       start:0x021c77bc end:0x021c782c
+
+src/ov000/Lo_02161280.cpp:
+    complete
+    .text       start:0x02161280 end:0x021614b0
+
+src/ov000/Lo_02177f40.cpp:
+    complete
+    .text       start:0x02177f40 end:0x02178010
+
+src/ov000/Robo_02196060.cpp:
+    complete
+    .text       start:0x02196060 end:0x02196258
+
+src/ov000/Text_021c524c.cpp:
+    complete
+    .text       start:0x021c524c end:0x021c5324
+
+src/ov000/Model_021b86a4.cpp:
+    complete
+    .text       start:0x021b86a4 end:0x021b87d8
