@@ -60,4 +60,55 @@ void func_ov010_0220c390(void *self) {
     func_ov000_0219763c(self);
     func_ov000_0219aae8(self, self, FLD(u16, FLD(void *, self, 0x4c), 0x8), FLD(u16, FLD(void *, self, 0x4c), 0xa), 2, NULL, 0, 0x1b33, 0, 0x57e, 0x1000);
 }
+struct Ov010Rot3 {
+    u16 x;
+    u16 y;
+    u16 z;
+};
+extern u8 data_ov010_0220f534[];
+extern void func_ov003_021da48c(void *p, s32 a);
+
+void func_ov010_0220c49c(u8 *self) {
+    s32 y;
+    s32 z;
+    s32 x;
+    FLD(Ov010Flags8, self, 0xce).b0 = 0;
+    FLD(Ov010Flags8, self, 0xce).b1 = 0;
+    FLD(Ov010Flags8, self, 0xce).b2 = 0;
+    FLD(Ov010Flags8, self, 0xce).b3 = 0;
+    FLD(u8, self, 0xcf) = 0;
+    FLD(u16, self, 0xd0) = 0xffff;
+    FLD(u16, self, 0xd2) = 0xffff;
+    FLD(u16, self, 0xd4) = 0;
+    FLD(u16, self, 0xd6) = 0;
+    FLD(s32, self, 0xd8) = 0;
+    FLD(s32, self, 0xdc) = -1;
+    FLD(s32, self, 0xe0) = 0;
+    FLD(s32, self, 0xe4) = 0;
+    FLD(s32, self, 0xe8) = 0;
+    FLD(s32, self, 0xec) = 0;
+    Ov010_VecCopy(&FLD(Ov010Vec, self, 0xf0), &FLD(Ov010Vec, data_ov010_0220f534, 0x60));
+    x = FLD(Ov010Vec, self, 0xf0).x;
+    y = FLD(Ov010Vec, self, 0xf0).y;
+    z = FLD(Ov010Vec, self, 0xf0).z;
+    Ov010_VecSet(&FLD(Ov010Vec, self, 0xfc), x, y, z);
+    Ov010_VecSet(&FLD(Ov010Vec, self, 0x108), x, y, z);
+    Ov010_VecSet(&FLD(Ov010Vec, self, 0x114), x, y, z);
+    func_ov003_021da48c(self + 0x158, 0);
+    func_ov003_021da48c(self + 0x16c, 0);
+    FLD(u16, self, 0x180) = 0xffff;
+    FLD(u16, self, 0x182) = 0xffff;
+    Ov010_VecSet(&FLD(Ov010Vec, self, 0x184), x, y, z);
+    {
+        const Ov010Rot3 *s = &FLD(Ov010Rot3, data_ov010_0220f534, 0x10);
+        u16 a, b, c;
+        FLD(Ov010Rot3, self, 0x190).x = a = s->x;
+        FLD(Ov010Rot3, self, 0x190).y = b = s->y;
+        FLD(Ov010Rot3, self, 0x190).z = c = s->z;
+        FLD(Ov010Rot3, self, 0x196).x = a;
+        FLD(Ov010Rot3, self, 0x196).y = b;
+        FLD(Ov010Rot3, self, 0x196).z = c;
+    }
+}
+
 }

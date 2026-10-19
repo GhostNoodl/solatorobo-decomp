@@ -91,4 +91,65 @@ void func_ov013_02205914(Ov013Actor *self) {
     func_ov000_0219763c(self);
 }
 
+extern void *data_02097e4c;
+extern void func_ov003_021da108(Ov013Actor *self, s32 a, s32 b, s32 c, s32 d);
+extern void func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
+
+static inline s32 Ov013_Clamp(s32 v, s32 lo, s32 hi) {
+    if (v > hi) {
+        return hi;
+    }
+    if (v < lo) {
+        return lo;
+    }
+    return v;
+}
+
+static inline void Ov013_SetAlpha(Ov013Sub38 *m, s32 a) {
+    FLD(u8, m, 0xbe) = Ov013_Clamp(a, 1, 31);
+}
+
+void func_ov013_02205928(Ov013Actor *self) {
+    volatile Ov013Sub40 *s = self->unk_40;
+    switch (s->state) {
+    case 0:
+        FLD(u16, self, 0xd0) = 0;
+        if (s->timer >= 3) {
+            s->timer = 0;
+            self->unk_40->state = 1;
+        } else {
+            s->timer++;
+            return;
+        }
+    case 1:
+        Ov013_SetAlpha(self->unk_38, 31 - self->unk_40->timer);
+        if (self->unk_40->timer % 10 == 0) {
+            func_ov003_021da108(self, 0x2800, 0x38b, 0x1000, 0x1000);
+            func_02049f44(data_02097e4c, 0x1a, &self->pos, 0);
+        }
+        if (self->unk_40->timer == 0) {
+            u8 *g = (u8 *)data_ov000_021ccd54;
+            FLD(Ov013Flags8, g, 0x190).b2 = 1;
+            FLD(Ov013Flags8, g, 0x190).b3 = 1;
+            FLD(Ov013Flags8, g, 0x190).b4 = 1;
+            g[0x18d] = 20;
+            g[0x18e] = 0xf;
+            g[0x18f] = 0xf;
+        }
+        if (self->unk_40->timer < 30) {
+            ((volatile Ov013Sub40 *)self->unk_40)->timer++;
+        } else {
+            self->unk_40->timer = 0;
+            self->unk_40->state = 2;
+        }
+        break;
+    case 2:
+        self->unk_38->unk_c2_0 = 0;
+        func_ov000_02197dec(self, 0xf, 0x63);
+        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        self->v08();
+        break;
+    }
+}
+
 }

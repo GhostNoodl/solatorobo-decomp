@@ -84,4 +84,64 @@ static inline Ov010TaskNode *Ov010TaskList_Push(Ov010TaskNode *head, Ov010TaskNo
     return head;
 }
 
+struct Ov010TLFlags {
+    u8 b0 : 1;
+    u8 b1 : 1;
+    u8 b2 : 1;
+    u8 b3 : 5;
+};
+
+struct Ov010TLView {
+    void *vtbl;
+    Ov010TLFlags f;
+};
+
+#define Ov010TL_V(o) (*(volatile u8 *)((u8 *)(o) + 4))
+#define Ov010TL_B0(v) (((Ov010TLFlags *)&(v))->b0)
+#define Ov010TL_B1(v) (((Ov010TLFlags *)&(v))->b1)
+
+Ov010V *func_ov010_02201ad4(Ov010TaskList *o, Ov010V *(*fn)(void), u32 time) {
+    Ov010V *obj = NULL;
+    Ov010TaskNode *n;
+    u8 v;
+    if (o->b0 && (v = Ov010TL_V(o), Ov010TL_B0(v)) && !Ov010TL_B1(v)) {
+        obj = fn();
+        n = func_ov003_021d7980(o->pool);
+        n->obj = obj;
+        n->time = time;
+        n->next = NULL;
+        o->head = Ov010TaskList_Push(o->head, n);
+    }
+    return obj;
+}
+
+void func_ov010_02201b48(Ov010TaskList *o) {
+    Ov010TaskNode *next;
+    Ov010TaskNode *n;
+    u32 saved;
+    u8 v;
+    if (!o->b0) {
+        return;
+    }
+    v = Ov010TL_V(o);
+    if (!Ov010TL_B0(v) || Ov010TL_B1(v)) {
+        return;
+    }
+    for (n = o->head; n != NULL; n = next) {
+        next = n->next;
+        saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->def;
+        if (n->obj != NULL) {
+            Ov010V *p = n->obj;
+            if (p != NULL) {
+                p->v04();
+            }
+            n->obj = NULL;
+        }
+        data_02097dd0->cur = saved;
+        func_ov003_021d79ac(o->pool, n);
+    }
+    o->head = NULL;
+}
+
 }

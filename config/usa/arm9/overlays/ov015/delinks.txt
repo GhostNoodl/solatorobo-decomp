@@ -13,6 +13,10 @@ src/ov015/ov015_021fb408.cpp:
     complete
     .text       start:0x021fb408 end:0x021fb5d4
 
+src/ov015/ov015_021fb758.cpp:
+    complete
+    .text       start:0x021fb758 end:0x021fc40c
+
 src/ov015/ov015_021fce4c.cpp:
     complete
     .text       start:0x021fce4c end:0x021fce94

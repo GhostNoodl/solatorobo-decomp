@@ -70,3 +70,23 @@ Write strings as real literals, not `extern char data_...[]`. MWCC treats a lite
 6. Run `ninja`.
 
 If the original file also had other `.data` next to the pool (vtables, tables of string pointers), your `.data` range has to cover and define those too.
+
+## Duplicate literal-pool entries
+
+Sometimes the target's literal pool holds the same symbol twice (`.word data_x` ... `.word data_x`), while MWCC merges every use of one declaration into one entry. MWCC keys pool entries by declaration, so declare the symbol a second time in a namespace and use that name for the reference that gets its own entry:
+
+```cpp
+namespace Dup { extern "C" Ov015Stat data_ov015_0221332c; }   // outside any extern "C" block
+
+st = &Dup::data_ov015_0221332c;   // second pool entry, same symbol in the object
+```
+
+The `extern "C"` keeps the symbol name unmangled, so the relocation still points at the same symbol. A block-scope `extern` redeclaration does not work; it is merged with the file-scope one.
+
+## Reloads the compiler would normally merge
+
+If the target loads the same field twice where your code loads it once (for example `ldrh r0, [r2, #2]; cmp r0, #3; ... ldrh r0, [r2, #2]; add r0, r0, #1`), make the second access go through a `volatile` lvalue, such as `(*(volatile u16 *)(p + 0x6e))++` or a `volatile Foo *` local. The non-volatile accesses around it still merge as usual. To load a bitfield byte once and test two of its bits from that one copy, read it into a local with `*(volatile u8 *)` and cast the local's address to the bitfield struct.
+
+## Unused argument registers
+
+If the target reuses `r1`-`r3` right before a call as if they held nothing, the callee may take fewer parameters than your prototype says. Check the callee's own disassembly to see which argument registers it actually reads.
