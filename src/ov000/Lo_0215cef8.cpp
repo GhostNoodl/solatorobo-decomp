@@ -31,4 +31,29 @@ void func_ov000_0215cef8(void *self) {
     }
 }
 
+void func_ov000_0215cf38(LoArr98 *self) {
+    s32 i;
+    for (i = 0; i < 12; i++) {
+        u32 saved;
+        VObj *p;
+        LO_HEAP_PUSH(saved);
+        p = self->arr[(u32)i];
+        if (p != NULL) {
+            if (p != NULL) {
+                p->vfunc_04();
+            }
+            self->arr[i] = NULL;
+        }
+        LO_HEAP_POP(saved);
+    }
+    if (LFLD(void *, self, 0x8c) != NULL) {
+        func_0203df0c(LFLD(void *, self, 0x8c));
+        LFLD(void *, self, 0x8c) = NULL;
+    }
+    if (LFLD(void *, self, 0x90) != NULL) {
+        func_0203df0c(LFLD(void *, self, 0x90));
+        LFLD(void *, self, 0x90) = NULL;
+    }
+}
+
 }

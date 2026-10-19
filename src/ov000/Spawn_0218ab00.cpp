@@ -1,6 +1,45 @@
 #include "nitro/fx.h"
 
 typedef struct {
+    u8 b0 : 4;
+    u8 b4 : 1;
+    u8 b5 : 1;
+    u8 b6 : 1;
+    u8 b7 : 1;
+} Bits0218a9d8;
+
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    u16 unk_08;
+    u8 unk_0a;
+    u8 unk_0b;
+    u16 unk_0c;
+    u16 unk_0e;
+    u8 unk_10[0x20];
+    u16 unk_30;
+    u16 unk_32;
+    u16 unk_34[4];
+    s16 unk_3c;
+    u8 unk_3e[3];
+    u8 unk_41[3];
+    VecFx32 box[4];
+    s32 unk_74[5];
+    s32 unk_88;
+    s32 unk_8c;
+    s32 unk_90;
+    u16 unk_94;
+    u16 unk_96;
+    u16 unk_98;
+    u16 unk_9a;
+    s32 unk_9c;
+    u8 unk_a0;
+    u8 unk_a1;
+    Bits0218a9d8 unk_a2;
+    u8 unk_a3;
+} Obj0218a9d8;
+
+typedef struct {
     VecFx32 from;
     VecFx32 to;
     u16 angle;
@@ -91,6 +130,63 @@ typedef struct {
 } Obj0218ac98;
 
 extern "C" {
+
+Obj0218a9d8 *func_ov000_0218a9d8(Obj0218a9d8 *self) {
+    s32 i;
+    self->unk_00 = 0;
+    self->unk_04 = 0;
+    self->unk_08 = 0xffff;
+    self->unk_0a = 1;
+    self->unk_0b = 0;
+    self->unk_0c = 0xffff;
+    self->unk_0e = 0xffff;
+    self->unk_30 = 0xffff;
+    self->unk_32 = 0xf000;
+    for (i = 0; i < 4; i++) {
+        self->unk_34[i] = 0;
+    }
+    self->unk_3c = -1;
+    self->unk_3e[0] = 0xff;
+    self->unk_3e[1] = 0xff;
+    self->unk_3e[2] = 0xff;
+    self->unk_41[0] = 0xff;
+    self->unk_41[1] = 0xff;
+    self->unk_41[2] = 0xff;
+    self->unk_88 = 0;
+    self->unk_8c = 0;
+    self->unk_90 = 0;
+    self->unk_94 = 0;
+    self->unk_96 = 0;
+    self->unk_98 = 0;
+    self->unk_74[0] = 0x37000;
+    self->unk_74[1] = 0x39000;
+    self->unk_74[2] = 0x14000;
+    self->unk_74[3] = 0x16000;
+    self->unk_74[4] = 0x32000;
+    self->box[0].x = -self->unk_74[0];
+    self->box[0].y = -self->unk_74[2];
+    self->box[0].z = -self->unk_74[0];
+    self->box[1].x = self->unk_74[0];
+    self->box[1].y = self->unk_74[2];
+    self->box[1].z = self->unk_74[0];
+    self->box[2].x = -self->unk_74[1];
+    self->box[2].y = -self->unk_74[3];
+    self->box[2].z = -self->unk_74[1];
+    self->box[3].x = self->unk_74[1];
+    self->box[3].y = self->unk_74[3];
+    self->box[3].z = self->unk_74[1];
+    self->unk_9c = 0;
+    self->unk_9a = 0;
+    self->unk_a0 = 0;
+    self->unk_a1 = 0;
+    *(u8 *)&self->unk_a2 = 0xff;
+    self->unk_a2.b4 = 0;
+    self->unk_a2.b5 = 0;
+    self->unk_a2.b6 = 0;
+    self->unk_a3 = 0xff;
+    return self;
+}
+
 
 extern Glob0218ac98 *data_ov000_021ccd54;
 extern Mgr0218ac98 *data_ov000_021ccd64;

@@ -175,7 +175,7 @@ src/ov000/Stub_02152a54.cpp:
 
 src/ov000/Dtor_02152b2c.cpp:
     complete
-    .text       start:0x02152b2c end:0x02152bb0
+    .text       start:0x02152b2c end:0x02152cbc
 
 src/ov000/Stub_02153f30.cpp:
     complete
@@ -975,7 +975,7 @@ src/ov000/Lo_021540b0.cpp:
 
 src/ov000/Lo_02154ec4.cpp:
     complete
-    .text       start:0x02154ec4 end:0x02154fb0
+    .text       start:0x02154ec4 end:0x02155160
 
 src/ov000/Lo_0215a2c4.cpp:
     complete
@@ -999,7 +999,7 @@ src/ov000/Lo_0215ce8c.cpp:
 
 src/ov000/Lo_0215cef8.cpp:
     complete
-    .text       start:0x0215cef8 end:0x0215cf38
+    .text       start:0x0215cef8 end:0x0215cfd0
 
 src/ov000/Lo_0215d990.cpp:
     complete
@@ -1181,6 +1181,10 @@ src/ov000/Lo_02161c14.cpp:
     complete
     .text       start:0x02161c14 end:0x02161cd4
 
+src/ov000/Slot_02161cd4.cpp:
+    complete
+    .text       start:0x02161cd4 end:0x02161fac
+
 src/ov000/Lo_0216906c.cpp:
     complete
     .text       start:0x0216906c end:0x0216912c
@@ -1207,7 +1211,7 @@ src/ov000/Lo_02153fd8.cpp:
 
 src/ov000/Lo_0216e894.cpp:
     complete
-    .text       start:0x0216e894 end:0x0216e968
+    .text       start:0x0216e894 end:0x0216eaf8
 
 src/ov000/Lo_021773cc.cpp:
     complete
@@ -1550,7 +1554,7 @@ src/ov000/Stub_0219bd20.cpp:
 
 src/ov000/Stub_021bd198.cpp:
     complete
-    .text       start:0x021bd198 end:0x021bd228
+    .text       start:0x021bd198 end:0x021bd300
 
 src/ov000/Stub_021c414c.cpp:
     complete
@@ -1728,6 +1732,10 @@ src/ov000/Gfx_021ba858.cpp:
 src/ov000/Widget_021820bc.cpp:
     complete
     .text       start:0x021820bc end:0x02182190
+
+src/ov000/Widget_02182190.cpp:
+    complete
+    .text       start:0x02182190 end:0x02182374
 
 src/ov000/Stub_0218547c.cpp:
     complete
@@ -2407,7 +2415,7 @@ src/ov000/Menu_021581d4.cpp:
 
 src/ov000/Lo_021b1814.cpp:
     complete
-    .text       start:0x021b1814 end:0x021b1d28
+    .text       start:0x021b1814 end:0x021b1dd8
 
 src/ov000/Lo_021b1dd8.cpp:
     complete
@@ -2475,7 +2483,7 @@ src/ov000/Lo_0219a0b0.cpp:
 
 src/ov000/Cam_021627ac.cpp:
     complete
-    .text       start:0x021627ac end:0x02162910
+    .text       start:0x021627ac end:0x0216295c
 
 src/ov000/Lo_02181f54.cpp:
     complete
@@ -2731,7 +2739,7 @@ src/ov000/Mtx_021c1e78.cpp:
 
 src/ov000/Menu_021c67e4.cpp:
     complete
-    .text       start:0x021c67e4 end:0x021c69e4
+    .text       start:0x021c67e4 end:0x021c6d28
 
 src/ov000/ActorEx_02195410.cpp:
     complete
@@ -2903,7 +2911,7 @@ src/ov000/Lo_0215ae80.cpp:
 
 src/ov000/Spawn_0218ab00.cpp:
     complete
-    .text       start:0x0218ab00 end:0x0218ac98
+    .text       start:0x0218a9d8 end:0x0218ac98
 
 src/ov000/Oam_021c77bc.cpp:
     complete
@@ -2923,8 +2931,44 @@ src/ov000/Robo_02196060.cpp:
 
 src/ov000/Text_021c524c.cpp:
     complete
-    .text       start:0x021c524c end:0x021c5324
+    .text       start:0x021c524c end:0x021c54f4
 
 src/ov000/Model_021b86a4.cpp:
     complete
     .text       start:0x021b86a4 end:0x021b87d8
+
+src/ov000/Cmd_02189194.cpp:
+    complete
+    .text       start:0x02189194 end:0x0218996c
+
+src/ov000/Lo_0218819c.cpp:
+    complete
+    .text       start:0x0218819c end:0x02188438
+
+src/ov000/Lo_021c4230.cpp:
+    complete
+    .text       start:0x021c4230 end:0x021c4460
+
+src/ov000/Lo_021c56c0.cpp:
+    complete
+    .text       start:0x021c56c0 end:0x021c588c
+
+src/ov000/Hit_0219a8bc.cpp:
+    complete
+    .text       start:0x0219a8bc end:0x0219aae8
+
+src/ov000/Area_02165e2c.cpp:
+    complete
+    .text       start:0x02165e2c end:0x02165f94
+
+src/ov000/Obj_02173c30.cpp:
+    complete
+    .text       start:0x02173c30 end:0x02173d9c
+
+src/ov000/Cmd_02188ca0.cpp:
+    complete
+    .text       start:0x02188ca0 end:0x02188d28
+
+src/ov000/Spawn_0218b9ec.cpp:
+    complete
+    .text       start:0x0218b9ec end:0x0218bb34

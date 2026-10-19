@@ -243,4 +243,18 @@ void func_ov000_021b1b88(VObj *self, s32 mode) {
     LFLD(Bits021b1a54, self, 0xb22).b13 = 1;
     SetSt((u8 *)self, st);
 }
+
+void func_ov000_021b1d28(u8 *self) {
+    u32 st = LFLD(Bits021b1a54, self, 0xb22).st;
+    switch (st) {
+    case 4:
+    case 5:
+        return;
+    }
+    if (st != 2 && st != 3) {
+        st = 2;
+    }
+    LFLD(Bits021b1a54, self, 0xb22).b13 = 0;
+    SetSt(self, st);
+}
 }

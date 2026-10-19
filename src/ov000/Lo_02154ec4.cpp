@@ -1,4 +1,10 @@
 #include "ov000/LoCommon.h"
+#include "nitro/fx.h"
+
+typedef struct {
+    s32 d;
+    VecFx32 pos;
+} Arg02154fb0;
 
 extern "C" {
 
@@ -62,6 +68,53 @@ void func_ov000_02154f34(VObj *self) {
     self->vfunc_cc();
     self->vfunc_d0();
     self->vfunc_48(2, 0);
+}
+
+BOOL func_02054f10(void *p, s32 a);
+
+static inline void VecAdd(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab) {
+    ab->x = a->x + b->x;
+    ab->y = a->y + b->y;
+    ab->z = a->z + b->z;
+}
+
+static inline BOOL NoB5(VObj *self) {
+    return !LBIT(self, 0xc).b5 ? TRUE : FALSE;
+}
+
+void func_ov000_02154fb0(VObj *self, s32 a, VecFx32 *pos, s32 d) {
+    Arg02154fb0 arg;
+    s32 v;
+    if (LFLD(s32, self, 0x44) == 0) {
+        arg.d = d;
+        arg.pos = *pos;
+        v = a;
+    } else {
+        v = self->vfunc_18(&arg.pos, &arg.d, LO_FX_MUL(a, 0x1000 - LFLD(s32, self, 0x44)));
+        {
+            VecFx32 ofs;
+            ofs.x = LFLD(s16, self, 0x64) << 12;
+            ofs.y = LFLD(s16, self, 0x66) << 12;
+            ofs.z = 0;
+            VecAdd(&arg.pos, &ofs, &arg.pos);
+        }
+    }
+    if (LFLD(u32, self, 0xc) & 0x80000) {
+        self->vfunc_d4(v, &arg.pos, arg.d);
+    }
+    self->vfunc_64(v, &arg.pos, arg.d);
+    if (NoB5(self)) {
+        self->vfunc_d8(v, &arg.pos, arg.d);
+    }
+    self->vfunc_e8(v, &arg.pos, arg.d);
+    if (!func_02054f10(LFLD(void *, self, 0x10), 0xffff)) {
+        return;
+    }
+    if (LFLD(u32, self, 0xc) & 0x40000) {
+        self->vfunc_ec(v, &arg.pos, arg.d);
+    }
+    self->vfunc_60(a, pos, d);
+    LFLD(u32, self, 0xc) |= 0x200;
 }
 
 }

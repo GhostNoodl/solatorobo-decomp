@@ -108,3 +108,52 @@ If the target reuses `r1`-`r3` right before a call as if they held nothing, the 
 - Copying a source struct into a local first (`Vec t = pl->pos;`) keeps its fields in registers across an inline sqrt or other long sequences.
 - To get the target's argument order around a null-checked call, read the argument into a local first: `u16 id = self->ids[i]; a = mgr == NULL ? NULL : f(mgr, id);`.
 - `const` changes scheduling. If the target hoists a load or reorders loads across stores where your build doesn't, try `const`: on a pointer parameter (`const Slot *self`), on an extern rodata table (`extern const Ent data_x[];`), or on an extern string (`namespace K { extern "C" const char data_x[]; }`, used as `(char *)K::data_x`). A const extern's address is loaded early, like a literal, and you don't have to claim the shared pool.
+
+## Narrow temporaries
+
+When the target unpacks a field into pieces in a different order (or into different registers) than your code, try giving the pieces their own narrow-typed locals, declared in the order the target computes them. MWCC schedules a `u16`/`u8` temporary differently from a value used straight in an expression or passed to an inline:
+
+```cpp
+s32 arg = self->args[i];
+u16 hi = (u32)arg >> 16;   // target computes the high half first
+u16 lo = arg;
+Start(self, lo, hi, self->kinds[i]);
+```
+
+```cpp
+u16 arg = self->unk_a6;
+u16 kind = arg & 0xff;          // 'and #0xff' before 'and #0xf'
+u8 mode = (arg >> 8) & 0xf;
+```
+
+A short script that writes every combination of declaration order and types and runs `tools/match.py -q` on each finds these quickly.
+
+## `const` on source pointers
+
+MWCC uses `const` when it orders loads and stores: a struct copy from a `const T *` loads every field before storing, while the same copy from a plain `T *` interleaves loads and stores (`ldrb; ldrb; strb; strb; ldrb; strb` for a 3-byte struct). If a copy from a parameter loads everything up front, make that parameter `const`.
+
+## Where a bitfield store sits decides which loads are shared
+
+MWCC reuses a field address (and sometimes the loaded halfword) only within a stretch of code with no store to that field in between. If the target reloads a bitfield word with a freshly computed address, and that reload is shared with a later inline, move the store so it sits next to the code that shares it, after any unrelated branches. For example, in `func_ov000_021b1d28` the target clears `b13` after normalising `st`, not before:
+
+```cpp
+if (st != 2 && st != 3) {
+    st = 2;
+}
+LFLD(Bits021b1a54, self, 0xb22).b13 = 0;
+SetSt(self, st);
+```
+
+## Boolean flags from conditions
+
+If a flag computed in an `if` hoists a constant into the wrong register, write it as an expression: `on = a != 0 && b < c;` rather than `on = FALSE; if (a != 0 && b < c) on = TRUE;`.
+
+## Casts that change register allocation or CSE
+
+Some casts change no values but still change MWCC's output:
+
+- **`(u32)` on a loop index used as an array subscript.** If the loop counter and a temporary in the loop body are in swapped callee-saved registers, write `p = self->arr[(u32)i];` (only on the load). This matched `func_ov000_0215cf38` and `func_ov000_021bd228`, where the body is a heap-scoped delete.
+- **`(u8 *)` on a pointer that is already `u8 *`.** MWCC shares an address computation between two calls only when the two expressions have the same form. If the target recomputes `self + 0x78 + i * 0x138` for each call, but shares it in one place, cast some of the uses. `func_ov000_02161cd4` needed a specific mix, which a script that tried each combination found.
+- **An unsigned zero.** `if (n > 0)` on a `u8` becomes `cmp; beq`. Comparing against a `u32 zero = 0;` local gives `cmp; bls` instead (`func_ov000_02181c4c`).
+- **A `u32` counter in a list walk.** In a "find the i-th node" loop (`for (n = head; n; n = n->next) { if (k == i) break; k++; }`), declaring `k` as `u32` swaps the registers of `k` and `i` in the compare (`func_ov000_021c6b28`).
+- **Load, then accumulate.** If the registers of some temporaries are swapped, try copying the fields into locals first (`s32 x = p.x; s32 y = p.y;`) and adding the offsets in later statements (`x += ...;`), instead of computing each sum in its initializer. This fixed the last register swaps in `func_ov000_021c6b28`.

@@ -63,7 +63,7 @@ void func_0203de1c(void *p);
 void func_02041558(void *p);
 void func_02041278(void *p);
 void func_ov000_02173648(void *self);
-void func_ov000_02178dcc(void *p);
+void func_ov000_02178dcc(void *p, BOOL add);
 
 #ifdef __cplusplus
 }

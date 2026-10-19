@@ -32,4 +32,28 @@ void func_ov000_021627ac(u8 *self) {
     LFLD(s32, self, 0x700) = 0;
 }
 
+void func_ov000_02162910(u8 *self, const VecFx32 *eye, const VecFx32 *at, const VecFx32 *up) {
+    s32 ex = eye->x;
+    s32 ey = eye->y;
+    s32 ez = eye->z;
+    s32 ax = at->x;
+    s32 ay = at->y;
+    s32 az = at->z;
+    s32 ux = up->x;
+    s32 uy = up->y;
+    s32 uz = up->z;
+    // Storing at.y once ahead of the rest gives the original load order
+    // (at is read first, with ldmib).
+    LFLD(s32, self, 0x654) = ay;
+    LFLD(s32, self, 0x644) = ex;
+    LFLD(s32, self, 0x648) = ey;
+    LFLD(s32, self, 0x64c) = ez;
+    LFLD(s32, self, 0x650) = ax;
+    LFLD(s32, self, 0x654) = ay;
+    LFLD(s32, self, 0x658) = az;
+    LFLD(s32, self, 0x65c) = ux;
+    LFLD(s32, self, 0x660) = uy;
+    LFLD(s32, self, 0x664) = uz;
+}
+
 }

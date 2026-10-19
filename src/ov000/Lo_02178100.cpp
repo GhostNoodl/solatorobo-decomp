@@ -18,8 +18,8 @@ void func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
-void func_ov000_02178100(void *self) {
-    func_ov000_02178dcc(LFLD(void *, self, 8));
+void func_ov000_02178100(void *self, BOOL add) {
+    func_ov000_02178dcc(LFLD(void *, self, 8), add);
 }
 
 }
