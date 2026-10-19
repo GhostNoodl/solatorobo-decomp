@@ -63,15 +63,15 @@ src/ov015/ov015_02202dac.cpp:
 
 src/ov015/ov015_022038c8.cpp:
     complete
-    .text       start:0x022038c8 end:0x02204284
+    .text       start:0x022038c8 end:0x022048a0
 
 src/ov015/ov015_022048a0.cpp:
     complete
-    .text       start:0x022048a0 end:0x02205034
+    .text       start:0x022048a0 end:0x0220566c
 
 src/ov015/ov015_0220566c.cpp:
     complete
-    .text       start:0x0220566c end:0x02205df0
+    .text       start:0x0220566c end:0x02206564
 
 src/ov015/ov015_02206564.cpp:
     complete

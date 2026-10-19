@@ -307,4 +307,170 @@ s32 func_ov015_0220427c(void) {
     return 1;
 }
 
+extern u8 data_ov000_021cac60[];
+extern u8 data_ov000_021caec8[];
+extern u8 data_ov000_021cb4a8[];
+extern u8 data_ov000_021cb5a8[];
+extern u8 data_ov000_021cadcc[];
+extern u8 data_ov000_021cae48[];
+extern u8 data_ov015_022129c0[];
+extern u8 data_ov015_02212990[];
+extern u8 data_ov015_0221299d[];
+extern u8 data_ov015_02213360[];
+void func_ov000_02157c90(void *a, void *b);
+void func_ov000_02157d2c(void *a, void *b);
+u16 *func_0206ef88(u16 id);
+void *func_0206ec48(u16 id);
+void func_ov000_0215d980(void *a, void *b, s32 c);
+void func_ov000_02163224(void *p);
+void func_ov000_021632f0(void *p, s32 a, void *b, void *c, s32 d);
+void func_ov000_02173648(void *self);
+
+static inline void Ov015_SetXYZ16(u8 *o, s16 x, s16 y, s16 z) {
+    FLD(s16, o, 0x64) = x;
+    FLD(s16, o, 0x66) = y;
+    FLD(s16, o, 0x68) = z;
+}
+
+static inline void Ov015_SetXYZ32(u8 *o, s32 x, s32 y, s32 z) {
+    FLD(s32, o, 0x58) = x;
+    FLD(s32, o, 0x5c) = y;
+    FLD(s32, o, 0x60) = z;
+}
+
+void func_ov015_02204284(u8 *self) {
+    u8 *p;
+    void *res;
+    s32 i;
+    u16 id;
+    u8 *o;
+    if (VCALL(self)->v28()) {
+        return;
+    }
+    res = data_02149ef8;
+    p = (u8 *)func_0203dd9c(0xe0);
+    if (p != NULL) {
+        SET_VT(p, data_ov000_021cac60);
+        VCALL(p)->v28();
+        SET_VT(p, data_ov000_021caec8);
+        VCALL(p)->v28();
+        SET_VT(p, data_ov000_021cb4a8);
+        VCALL(p)->v28();
+    }
+    FLD(u8 *, self, 0x3c) = p;
+    VCALL(FLD(u8 *, self, 0x3c))->v10(func_0204c0e8(res, 0xc6));
+    VCALL(FLD(u8 *, self, 0x3c))->v14(func_0204c0e8(res, 0xc7));
+    FLD(s32, FLD(u8 *, self, 0x3c), 0x20) = 5;
+    FLD(s32, FLD(u8 *, self, 0x3c), 0x24) = 0xf8;
+    Ov015_SetXYZ16(FLD(u8 *, self, 0x3c), 0, 0x2c, -0xccd);
+    Ov015_SetXYZ32(FLD(u8 *, self, 0x3c), -0x100, 0, -0xccd);
+    FLD(s32, FLD(u8 *, self, 0x3c), 0x2c) = 1;
+    FLD(u32, FLD(u8 *, self, 0x3c), 0xc) |= 0x400000;
+    FLD(u8, FLD(u8 *, self, 0x3c), 0xc0) = 0x78;
+    FLD(u32, FLD(u8 *, self, 0x3c), 0xc) &= ~0x800000;
+    FLD(u8, FLD(u8 *, self, 0x3c), 0xc1) = 5;
+    switch (FLD(s32, self, 0xc)) {
+    case 1:
+    case 2:
+        for (i = 0; i < 8; i++) {
+            u16 *e;
+            id = i | 0xa000;
+            e = func_0206ef88(id);
+            o = (u8 *)VCALL(FLD(u8 *, self, 0x3c))->v74(func_0206ec48(id), id, 0xffff, *e);
+            if (i > 0) {
+                FLD(s32, o, 0x24) = 0xe;
+                FLD(s32, o, 0x10) = -1;
+            }
+        }
+        break;
+    default:
+        for (i = 1; i < 8; i++) {
+            u16 *e;
+            id = i | 0xa000;
+            e = func_0206ef88(id);
+            VCALL(FLD(u8 *, self, 0x3c))->v74(func_0206ec48(id), id, 0xffff, *e);
+        }
+        break;
+    }
+    func_ov000_02157c90(FLD(u8 *, self, 0x3c), func_0204c0e8(res, 0xa4));
+    func_ov000_02157d2c(FLD(u8 *, self, 0x3c), func_0204c0e8(res, 0x3e));
+    {
+        u8 *o = FLD(u8 *, self, 0x3c);
+        VCALL(o)->va8(func_ov000_02154b58(o, 0));
+    }
+    FLD(void *, FLD(u8 *, self, 0x3c), 0x84) = (void *)func_ov015_02204030;
+    FLD(void *, FLD(u8 *, self, 0x3c), 0x88) = (void *)func_ov015_02203fec;
+    FLD(u8 *, FLD(u8 *, self, 0x3c), 0x8) = self;
+    VCALL(FLD(u8 *, self, 0x3c))->v08();
+    p = (u8 *)func_0203dd9c(0x8c);
+    if (p != NULL) {
+        SET_VT(p, data_ov000_021cac60);
+        VCALL(p)->v28();
+        SET_VT(p, data_ov000_021cadcc);
+        VCALL(p)->v28();
+    }
+    FLD(u8 *, self, 0x40) = p;
+    FLD(s32, FLD(u8 *, self, 0x40), 0x24) = 0xf8;
+    FLD(s32, FLD(u8 *, self, 0x40), 0x20) = 2;
+    Ov015_SetXYZ16(FLD(u8 *, self, 0x40), 4, 0x95, -0xccd);
+    Ov015_SetXYZ32(FLD(u8 *, self, 0x40), -0x100, 0, -0xccd);
+    FLD(s32, FLD(u8 *, self, 0x40), 0x2c) = 1;
+    {
+        void *s = func_0206ec8c(FLD(u16, FLD(u8 *, FLD(u8 *, self, 0x3c), 0x94), 6));
+        if (FLD(void *, self, 0x40) != NULL) {
+            func_ov000_0215bb14(FLD(void *, self, 0x40), s);
+            VCALL(FLD(void *, self, 0x40))->v70();
+        }
+    }
+    VCALL(FLD(u8 *, self, 0x40))->v08();
+    p = (u8 *)func_0203dd9c(0xe0);
+    if (p != NULL) {
+        SET_VT(p, data_ov000_021cac60);
+        VCALL(p)->v28();
+        SET_VT(p, data_ov000_021caec8);
+        VCALL(p)->v28();
+        SET_VT(p, data_ov000_021cb5a8);
+        VCALL(p)->v28();
+    }
+    FLD(u8 *, self, 0x44) = p;
+    FLD(u32, FLD(u8 *, self, 0x44), 0xc) |= 0x4000000;
+    FLD(s32, FLD(u8 *, self, 0x44), 0x2c) = 1;
+    Ov015_SetXYZ16(FLD(u8 *, self, 0x44), 0x91, 0x12, -0x333);
+    Ov015_SetXYZ32(FLD(u8 *, self, 0x44), 0x100, 0, -0x333);
+    FLD(u32, FLD(u8 *, self, 0x44), 0xc) |= 0x20000000;
+    VCALL(FLD(u8 *, self, 0x44))->vf4(1, func_0204c0e8(res, 0x32));
+    VCALL(FLD(u8 *, self, 0x44))->vf4(2, func_0204c0e8(res, 0x33));
+    VCALL(FLD(u8 *, self, 0x44))->v08();
+    p = (u8 *)func_0203dd9c(0x98);
+    if (p != NULL) {
+        SET_VT(p, data_ov000_021cac60);
+        VCALL(p)->v28();
+        SET_VT(p, data_ov000_021cae48);
+        VCALL(p)->v28();
+    }
+    FLD(u8 *, self, 0x48) = p;
+    Ov015_SetXYZ16(FLD(u8 *, self, 0x48), 0x86, 0x87, -0xccd);
+    Ov015_SetXYZ32(FLD(u8 *, self, 0x48), 0x100, 0, -0xccd);
+    FLD(s32, FLD(u8 *, self, 0x48), 0x2c) = 1;
+    func_ov000_0215d980(FLD(u8 *, self, 0x48), FLD(void *, data_0214a424, 0x20), 0);
+    VCALL(FLD(u8 *, self, 0x48))->v08();
+    if (FLD(s32, self, 0xc) == 1 && data_ov015_02213360[1] == 0) {
+        p = (u8 *)func_0203dd9c(0x2c);
+        if (p != NULL) {
+            SET_VT(p, data_ov015_022129c0);
+            func_ov000_02163224(p);
+        }
+        FLD(u8 *, self, 0x50) = p;
+        func_ov000_021632f0(FLD(u8 *, self, 0x50), 6, data_ov015_02212990, data_ov015_0221299d, 0);
+        FLD(u32, FLD(u8 *, self, 0x3c), 0xc) |= 4;
+        FLD(u32, FLD(u8 *, self, 0x44), 0xc) |= 2;
+        FLD(u32, FLD(u8 *, self, 0x40), 0xc) |= 2;
+    }
+    FLD(s32, self, 0x20) = FLD(s32, FLD(u8 *, self, 0x3c), 0x34);
+    func_ov000_02173648(self);
+    if (++data_ov015_02213360[1] > 100) {
+        data_ov015_02213360[1] = 100;
+    }
+}
+
 }

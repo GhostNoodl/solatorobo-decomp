@@ -199,7 +199,7 @@ src/ov010/ov010_0220adb8.cpp:
 
 src/ov010/ov010_0220b7b0.cpp:
     complete
-    .text       start:0x0220b7b0 end:0x0220b924
+    .text       start:0x0220b7b0 end:0x0220c2a4
 
 src/ov010/ov010_0220c2a4.cpp:
     complete
