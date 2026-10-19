@@ -1066,7 +1066,7 @@ src/Main/Gfx/GfxSys_4.cpp:
 
 src/Main/Gfx/GfxSys_5.cpp:
     complete
-    .text       start:0x0203c880 end:0x0203cc58
+    .text       start:0x0203c880 end:0x0203cd10
 
 src/Main/Gfx/GfxSys_6.cpp:
     complete
@@ -1132,7 +1132,7 @@ src/Main/Gfx/TexObj_2.cpp:
 
 src/Main/Gfx/TexObj_3.cpp:
     complete
-    .text       start:0x02042720 end:0x020429a0
+    .text       start:0x02042628 end:0x020429a0
 
 src/Main/Gfx/Blend.cpp:
     complete
@@ -1245,7 +1245,7 @@ src/Main/Snd/SndQueue.cpp:
 
 src/Main/Snd/SndQueue_2.cpp:
     complete
-    .text       start:0x0204aa90 end:0x0204ae14
+    .text       start:0x0204a924 end:0x0204ae14
 
 src/Main/Sys/Scene.cpp:
     complete
@@ -1430,7 +1430,7 @@ src/Main/Res/StageRes_2.cpp:
 
 src/Main/Res/StageRes_3.cpp:
     complete
-    .text       start:0x0205b1fc end:0x0205b29c
+    .text       start:0x0205b1fc end:0x0205b31c
 
 src/Main/Res/StageRes_4.cpp:
     complete
@@ -1656,9 +1656,13 @@ src/Main/Effect/EffectSnd.cpp:
     complete
     .text       start:0x02069f10 end:0x02069f3c
 
+src/Main/Lang/TblEntry.cpp:
+    complete
+    .text       start:0x0206fef8 end:0x020701d4
+
 src/Main/Lang/TblRes.cpp:
     complete
-    .text       start:0x020702c8 end:0x020708fc
+    .text       start:0x020702c8 end:0x02070dcc
 
 libs/mobiclip/mobiclip_asm_02075940.c:
     complete

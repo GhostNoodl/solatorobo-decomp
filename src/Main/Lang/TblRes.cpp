@@ -113,6 +113,39 @@ static inline TblEntry *Tbl_GetEntry(s32 id) {
     return &entries[Tbl_Remap(id)];
 }
 
+// These lookups re-read cat->ranges at each use, unlike the TBL_*_BODY ones.
+static inline TblEntry *Tbl_FindEntry(s32 id) {
+    TblCat *cat = &data_0208d6d0[(u16)((id >> 12) - 1)];
+    u16 idx = id & 0xfff;
+    TblEntry *entries = data_0214b164[id >> 12];
+    if (cat->ranges != NULL) {
+        int i = 0;
+        while (cat->ranges[i].start <= idx) {
+            i++;
+        }
+        if (i != 0) {
+            idx = idx - cat->ranges[i - 1].start + cat->ranges[i - 1].base;
+        }
+    }
+    return &entries[idx];
+}
+
+static inline TblEntry *Tbl_FindEntryT(s32 type, s32 id) {
+    u16 idx = id & 0xfff;
+    TblCat *cat = &data_0208d6d0[(u16)(type - 1)];
+    TblEntry *entries = data_0214b164[(int)id >> 12];
+    if (cat->ranges != NULL) {
+        int i = 0;
+        while (cat->ranges[i].start <= idx) {
+            i++;
+        }
+        if (i != 0) {
+            idx = idx - cat->ranges[i - 1].start + cat->ranges[i - 1].base;
+        }
+    }
+    return &entries[idx];
+}
+
 static inline void *Tbl_GetOffset(TblEntry *e, int i) {
     return e->offsets[i] != 0 ? (u8 *)e + e->offsets[i] : NULL;
 }
@@ -206,7 +239,20 @@ extern const char *data_0208ccc4;
 extern const char *data_0208cc98;
 extern const char *data_0208ccb8;
 
-void func_020708fc(s32 id, char *dst);
+void func_020708fc(s32 id, char *dst) {
+    switch (id >> 12) {
+    case 1:
+        Tbl_Format(dst, data_0208ccc4, (const char *)Tbl_GetOffset(Tbl_FindEntry(id), 1));
+        break;
+    case 2:
+        if (id == 0x2001) {
+            STD_CopyString(dst, data_0208cc98);
+            break;
+        }
+        Tbl_Format(dst, data_0208ccb8, (const char *)Tbl_GetOffset(Tbl_FindEntry(id), 1));
+        break;
+    }
+}
 
 extern const char *data_0208ccbc;
 extern const char *data_0208ccb4;
@@ -215,6 +261,27 @@ extern char data_0208d2b4[];
 extern char data_0208d2b9[];
 extern int func_0200779c(char *dst, const char *fmt, ...);
 
-void func_02070b98(s32 id, char *dst, int unused, int num);
+void func_02070b98(s32 id, char *dst, int unused, int num) {
+    char numBuf[8];
+    char name[0x20];
+    const char *fmt;
+    s32 type = id >> 12;
+    switch (type) {
+    case 1:
+        fmt = data_0208ccbc;
+        break;
+    case 2:
+        fmt = data_0208ccb4;
+        break;
+    }
+    func_0200779c(numBuf, data_0208d2b4);
+    STD_CopyString(name, (const char *)Tbl_GetOffset(Tbl_FindEntryT(type, id), 1));
+    STD_ConcatenateString(name, numBuf);
+    Tbl_Format(dst, fmt, name);
+    func_0200779c(numBuf, data_0208d2b9, num);
+    STD_CopyString(name, data_0208ccac);
+    STD_ConcatenateString(name, numBuf);
+    Tbl_Format(dst, dst, name);
+}
 
 }

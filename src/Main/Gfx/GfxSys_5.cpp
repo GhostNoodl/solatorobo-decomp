@@ -303,6 +303,36 @@ void func_0203cb78(int duration, int mode, int ch) {
     }
 }
 
+void func_0203cc58(int duration, int mode, int ch) {
+    int end;
+    if (ch != -1) {
+        if (ch == 3) {
+            data_02097d44.fadeState[3] = 3;
+            data_02097d44.fadeTimer[3] = 0;
+            data_02097d44.fadeDuration[3] = duration;
+            data_02097d44.fadeStart[3] = 0;
+            data_02097d44.fadeEnd[3] = 0;
+            return;
+        }
+        end = ch + 1;
+    } else {
+        ch = 0;
+        end = 2;
+    }
+    for (; ch < end; ch++) {
+        data_02097d78[ch] = 3;
+        data_02097d64[ch] = 0;
+        data_02097d8c[ch] = duration;
+        if (mode == 1) {
+            data_02097da0[ch] = 0;
+            data_02097d50[ch] = 16;
+        } else {
+            data_02097da0[ch] = 0;
+            data_02097d50[ch] = -16;
+        }
+    }
+}
+
 }
 
 extern "C" {

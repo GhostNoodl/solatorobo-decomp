@@ -11,7 +11,6 @@ extern void *func_0203dec8(u32 size, int align);
 extern SndMgr *func_020492e0(SndMgr *mgr);
 extern void func_02049344(SndMgr *mgr);
 void func_0204a3b8(SndMgr *mgr, struct SndCmd *cmd);
-void func_0204a924(SndQueue *queue);
 
 typedef struct SndCmd {
     /* 0x0 */ s16 unk_0;
@@ -23,15 +22,18 @@ void func_0204a87c(void);
 
 void func_0204a904(void);
 
-static inline void SndQueue_Reset(SndQueue *queue) {
-    s32 i;
-    queue->nodes[0].prev = &queue->nodes[1];
+// The neighbour links are byte offsets from the node array: the target computes i * 12 once
+// and adds -12 and +12 to it.
+static inline void SndQueue_ResetNodes(SndQueue *queue) {
+    int i;
     queue->nodes[0].value = 0xffff;
     queue->nodes[0].next = &queue->nodes[SND_QUEUE_NODES - 1];
+    queue->nodes[0].prev = &queue->nodes[1];
     for (i = 1; i < SND_QUEUE_NODES - 1; i++) {
+        u32 off = i * sizeof(SndQueueNode);
         queue->nodes[i].value = 0xffff;
-        queue->nodes[i].next = &queue->nodes[i - 1];
-        queue->nodes[i].prev = &queue->nodes[i + 1];
+        queue->nodes[i].next = (SndQueueNode *)((u8 *)queue->nodes + (off - sizeof(SndQueueNode)));
+        queue->nodes[i].prev = (SndQueueNode *)((u8 *)queue->nodes + (off + sizeof(SndQueueNode)));
     }
     queue->nodes[i].value = 0xffff;
     queue->nodes[i].next = &queue->nodes[i - 1];
@@ -39,9 +41,28 @@ static inline void SndQueue_Reset(SndQueue *queue) {
     queue->cur = &queue->nodes[0];
 }
 
-void func_0204a924(SndQueue *queue);
+void func_0204a924(SndQueue *queue) {
+    queue->flag0 = 1;
+    queue->flag1 = 0;
+    queue->flag2 = 0;
+    queue->flag3 = 1;
+    queue->unk_02 = 0;
+    queue->unk_04 = 0xffff;
+    queue->unk_06 = 0xffff;
+    queue->unk_08 = 10;
+    queue->unk_70 = 0;
+    queue->unk_7c = 0;
+    queue->unk_72 = 0xffff;
+    queue->unk_74 = 0xffff;
+    queue->unk_78 = -1;
+    queue->unk_7e = 0xffff;
+    queue->unk_80 = 0xffff;
+    SndQueue_ResetNodes(queue);
+}
 
-void func_0204aa10(SndQueue *queue);
+void func_0204aa10(SndQueue *queue) {
+    SndQueue_ResetNodes(queue);
+}
 
 void func_0204aa90(SndQueue *queue) {
     queue->cur->value = 0xffff;

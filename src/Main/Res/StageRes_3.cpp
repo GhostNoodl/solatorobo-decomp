@@ -43,6 +43,30 @@ StageResSlot *func_0205b23c(u16 id) {
     return NULL;
 }
 
-StageResSlot *func_0205b29c(u16 *ids);
+StageResSlot *func_0205b29c(u16 *ids) {
+    StageResSlot *slot;
+    s32 i;
+    s32 end;
+    u16 *p;
+    end = data_02149efc.slotEnd;
+    i = data_02149efc.slotStart;
+    if (i == data_02149efc.slotEnd) {
+        return NULL;
+    }
+    do {
+        slot = &data_02149f18[i];
+        p = ids;
+        while (*p != 0) {
+            if (slot->id == *p++) {
+                return slot;
+            }
+        }
+        i++;
+        if (i >= 0x40) {
+            i = 0;
+        }
+    } while (i != end);
+    return NULL;
+}
 
 }

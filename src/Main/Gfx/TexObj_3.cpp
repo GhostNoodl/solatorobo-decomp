@@ -38,6 +38,33 @@ extern void *func_0203bbfc(GfxSys *sys, int which);
 
 BOOL func_02042958(TexObj *obj, int idx, TexObjEntry *e);
 
+void func_02042720(TexObj *obj, int idx, TexObjOam *oam, void *cell, TexObjEntry *e, u8 affine);
+void func_020429a0(TexObj *obj, TexObjOam *oam, void *cell, TexObjEntry *e, int affine);
+
+static inline void TexObj_ReleaseTransfer(u32 *p) {
+    if (*p != 0 && func_0203e63c(*p)) {
+        *p = 0;
+    }
+}
+
+void func_02042628(TexObj *obj, void *cell, TexObjEntry *e, u8 affine) {
+    TexObjOam oam[0x80];
+    if (((obj->unk_06c << 25) >> 27) == 0) {
+        return;
+    }
+    TexObj_ReleaseTransfer(&obj->pltt.transfer);
+    TexObj_ReleaseTransfer(&obj->plttPtr->transfer);
+    if (obj->unk_085 & 2) {
+        func_02042720(obj, 1, oam, cell, e, affine);
+    }
+    if (obj->unk_085 & 4) {
+        func_02042720(obj, 2, oam, cell, e, affine);
+    }
+    if (obj->unk_085 & 1) {
+        func_020429a0(obj, oam, cell, e, affine);
+    }
+}
+
 void func_02042720(TexObj *obj, int idx, TexObjOam *oam, void *cell, TexObjEntry *e, u8 affine) {
     NNSG2dOamManagerInstance *mgr;
     TexObjPair trans;
