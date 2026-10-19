@@ -166,7 +166,7 @@ void NNSi_SndArcStrmMain(void);
 StrmThread *func_02031ac0(void);
 StrmPlayer *func_02031acc(StrmHandle *handle, int playerNo, int prio);
 void func_02031b58(StrmPlayer *player);
-BOOL func_02031b84(StrmHandle *handle, NNSSndArcStrmInfo *info, int playerNo, int prio, u32 strmNo, u32 offset, u32 a6, u32 a7, void *a8, u32 a9);
+BOOL func_02031b84(StrmHandle *handle, const NNSSndArcStrmInfo *info, int playerNo, int prio, u32 strmNo, u32 offset, u32 a6, u32 a7, void *a8, u32 a9);
 void func_02031df0(StrmPlayer *player, int frames);
 void func_02031e48(StrmPlayer *player);
 void func_02031ee0(StrmPlayer *player);

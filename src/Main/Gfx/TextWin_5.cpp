@@ -372,4 +372,84 @@ void func_02050e94(Model *model);
 
 void func_02050ea4(Model *model, u32 v);
 
+typedef u16 (*TextWinCharFn)(const char **s);
+
+typedef struct TextWinFont {
+    /* 0x0 */ s8 *info;
+    /* 0x4 */ TextWinCharFn splitChar;
+} TextWinFont;
+
+extern GfxCell *func_0203a4a4(GfxMgr *mgr);
+extern void *func_0203a4c0(GfxMgr *mgr);
+extern void func_0203a4d4(GfxMgr *mgr, void *arg);
+extern void func_0203a0cc(GfxMgr *mgr, VramBlock *block, GfxCell *cell, u32 size, u32 arg, s32 color);
+extern void func_0204cc18(TextWin *win, const char **s);
+extern int NNS_G2dCharCanvasDrawChar(const void *canvas, const void *font, int x, int y, int color, u16 c);
+
+void func_0204e358(TextWin *win) {
+    s32 color;
+    const char *s;
+    s32 hi;
+    s32 x;
+    TextWinCharFn fn;
+    u16 c;
+    s32 lineH;
+    GfxCell *cell;
+    TextWinFont *font;
+    s32 y;
+    cell = func_0203a4a4(data_02097ce0);
+    hi = win->unk_2c >> 4;
+    color = win->unk_2c % 16 + 1;
+    if (win->vram == NULL) {
+        win->vram = func_020397fc(win->vramSize, win->vramArg, 0);
+    }
+    win->vram->unk_10_31 = win->flag5;
+    if (win->lines != NULL) {
+        func_0203a4d4(data_02097ce0, win->lines);
+    }
+    func_0203a0cc(data_02097ce0, win->vram, cell, win->vramSize, win->vramArg, hi);
+    if (!win->vram->temporary) {
+        if (win->vram->temporary || win->vram->unk_10_2) {
+            return;
+        }
+    }
+    font = (TextWinFont *)func_0203a4c0(data_02097ce0);
+    fn = font->splitChar;
+    s = (const char *)win->unk_24;
+    lineH = win->unk_38 + font->info[1];
+    y = 0;
+    while (*s != 0) {
+        x = 0;
+        while ((c = fn(&s)) != 0) {
+            if (c == '\n') {
+                color = win->unk_2c % 15 + 1;
+                break;
+            }
+            if ((s8)win->unk_37 == 0) {
+                if (c == '\\') {
+                    c = fn(&s);
+                } else if (c == '<') {
+                    func_0204cc18(win, &s);
+                    if (win->code == 0x10) {
+                        color = win->value % 15 + 1;
+                    }
+                    continue;
+                } else if ((s8)win->unk_36 == 0) {
+                    if (c == 0x3001) {
+                        c = ' ';
+                    } else if (c == 0x3002) {
+                        c = ' ';
+                    }
+                }
+            }
+            x += NNS_G2dCharCanvasDrawChar(cell, font, x, y, color, c);
+            if (*s == 0) {
+                break;
+            }
+        }
+        y += lineH;
+    }
+    win->vram->unk_10_2 = 1;
+}
+
 }
