@@ -157,3 +157,11 @@ Some casts change no values but still change MWCC's output:
 - **An unsigned zero.** `if (n > 0)` on a `u8` becomes `cmp; beq`. Comparing against a `u32 zero = 0;` local gives `cmp; bls` instead (`func_ov000_02181c4c`).
 - **A `u32` counter in a list walk.** In a "find the i-th node" loop (`for (n = head; n; n = n->next) { if (k == i) break; k++; }`), declaring `k` as `u32` swaps the registers of `k` and `i` in the compare (`func_ov000_021c6b28`).
 - **Load, then accumulate.** If the registers of some temporaries are swapped, try copying the fields into locals first (`s32 x = p.x; s32 y = p.y;`) and adding the offsets in later statements (`x += ...;`), instead of computing each sum in its initializer. This fixed the last register swaps in `func_ov000_021c6b28`.
+- The last-declared local gets the lowest stack address; to move a buffer to `sp+0`, declare it last.
+- For loop- or switch-carried constants, assign the constant before the arithmetic that uses it (`k = 3; x = a * k + b;`) to get the target's scheduling.
+- To stop an `s64` constant from being folded, store it and read it back (`FLD(s64, p, 8) = 0x1000; v = FLD(s64, p, 8) * x;`).
+- The extra `and rX, rX, #0xff` before `lsl #12`: take a `u32` parameter and write `(u8)n << 12`.
+- Read an id into a local before an inlined find (`u16 id = self->id; e = Find(mgr, id);`), or the load moves into the loop.
+- Compare operand order matters: `a->tgt != a->cur` and `a->cur != a->tgt` load and compare in different registers.
+- A dummy `case X: break;` moves the pivot of the binary-tree compare sequence MWCC emits for a sparse `switch`.
+- To keep argument evaluation order around a nested call, hoist the plain arguments into locals first, then put the call's result in a local declared after them: `s32 a = p->a; s32 b = p->b; s32 r = g(x); f(a, b, r);`.

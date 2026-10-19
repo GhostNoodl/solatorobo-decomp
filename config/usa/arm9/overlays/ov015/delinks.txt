@@ -83,7 +83,7 @@ src/ov015/ov015_0220566c.cpp:
 
 src/ov015/ov015_02206564.cpp:
     complete
-    .text       start:0x02206564 end:0x02206bf0
+    .text       start:0x02206564 end:0x02206f04
 
 src/ov015/ov015_02206f04.cpp:
     complete

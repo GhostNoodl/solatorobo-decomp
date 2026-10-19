@@ -21,6 +21,126 @@ static inline void *Ov010_FindObjById(u16 id) {
     return NULL;
 }
 
+struct Ov010AnMsg {
+    u8 f0;
+    u8 f1;
+    u16 ang;
+    u8 kind;
+    u8 pad;
+    u16 id;
+};
+
+extern void *data_0214a420;
+extern void func_02065860(void *a, void *b);
+extern void func_ov003_021da48c(void *p, s32 a);
+extern void *func_ov000_0218e4cc(void *mgr, s32 a);
+extern u16 func_ov000_0219a874(void *a, void *b, s32 c);
+extern u16 func_ov010_02207a44(s32 i);
+extern void func_ov000_0219bdb0(u16 a, u16 b, s32 c, s32 d, s32 e, Ov010AnMsg *msg);
+extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
+
+void func_ov010_0220b40c(u8 *self) {
+    Ov010Vec p;
+    Ov010Blk12 q;
+    Ov010AnMsg msg;
+    u8 c;
+    switch (FLD(u16, FLD(void *, self, 0x40), 0)) {
+    case 0: {
+        u8 *fx = FLD(u8 *, self, 0xec);
+        u8 n;
+        if (FLD(Ov010Flags8, fx, 0).b0) {
+            n = FLD(u8, fx, 0x6b);
+        } else {
+            n = 0;
+        }
+        if (n == 1) {
+            if (FLD(volatile Ov010Flags8, fx, 0).b0) {
+                func_02065860(data_0214a420, FLD(void *, fx, 8));
+                FLD(s32, fx, 8) = 0;
+                func_ov000_02198360(fx + 0x58, 1, 0);
+            }
+            fx = FLD(u8 *, self, 0xec);
+            if (FLD(Ov010Flags8, fx, 0).b0) {
+                FLD(u16, fx, 2) = 0;
+                FLD(u16, fx, 4) = 0x50;
+                func_ov003_021da48c(fx + 0x58, 2);
+            }
+            FLD(Ov010Flags8, self, 0xce).b3 = 0;
+        }
+        FLD(u16, self, 0xd6) = 0;
+        FLD(u16, FLD(void *, self, 0x40), 0) = 1;
+    }
+    case 1:
+        if (FLD(Ov010Flags8, self, 0xce).b3) {
+            FLD(u16, FLD(void *, self, 0x40), 0) = 2;
+        }
+        return;
+    case 2:
+        if (FLD(u16, FLD(void *, self, 0x40), 2) % 8 == 0) {
+            BOOL found = FALSE;
+            u8 *o = FLD(u8 *, func_ov000_0218e4cc(data_ov000_021ccd68, 0x4000), 0xc);
+            for (; o != NULL; o = FLD(u8 *, o, 8)) {
+                if (o != self && FLD(u16, o, 0xe) == 0x4817) {
+                    BOOL ok = FALSE;
+                    if (o != NULL && FLD(s32, o, 0xd8) == 7) {
+                        u8 *s = FLD(u8 *, o, 0x40);
+                        if ((s != NULL ? FLD(u8, s, 0x13) : 0) != 0x12) {
+                            ok = TRUE;
+                        }
+                    }
+                    if (ok) {
+                        c = 3;
+                        found = TRUE;
+                        func_ov000_0218d398(o, FLD(u16, self, 0xc), 0xe, 1, 1, &c);
+                        FLD(u16, self, 0xd6)++;
+                        break;
+                    }
+                }
+            }
+            if (!found) {
+                FLD(u16, FLD(void *, self, 0x40), 0) = 3;
+            }
+        }
+        FLD(u16, FLD(void *, self, 0x40), 2)++;
+        return;
+    case 3: {
+        u8 *a;
+        u8 *b;
+        Ov010V *e;
+        FLD(u16, self, 0xd6)++;
+        a = (u8 *)Ov010_FindObjById(FLD(u16, self, 0x180));
+        b = (u8 *)Ov010_FindObjById(FLD(u16, self, 0x182));
+        if (a != NULL && b != NULL) {
+            u16 ang = func_ov000_0219a874(FLD(void *, a, 0x50), FLD(void *, b, 0x50), func_ov010_02207a44(FLD(u16, self, 0xd6)));
+            msg.f0 = 0;
+            msg.f1 = FLD(u16, self, 0xd6);
+            msg.ang = ang;
+            msg.kind = 0x11;
+            msg.id = FLD(u16, self, 0xc);
+            func_ov000_0219bdb0(FLD(u16, self, 0x180), FLD(u16, self, 0x182), 0xe, 0, 8, &msg);
+            p.x = FLD(s32, a, 0x70);
+            p.y = FLD(s32, a, 0x74);
+            p.z = FLD(s32, a, 0x78);
+            e = func_02065f88(0x38f, &p);
+            e->v0c(0x2800);
+            e->v24(0, FLD(s32, a, 0x68) >> 1, 0);
+        }
+        q = FLD(Ov010Blk12, self, 0x70);
+        e = func_02065f88(0x321, (Ov010Vec *)&q);
+        e->v0c(0x1000);
+        FLD(void *, e, 0xdc) = (void *)func_ov010_02209074;
+        FLD(s32, e, 4) = 6;
+        FLD(Ov010Flags, FLD(void *, self, 0x38), 0xc2).b0 = 0;
+        FLD(u16, FLD(void *, self, 0x40), 0) = 4;
+        return;
+    }
+    case 4:
+        func_ov000_02198360(FLD(void *, self, 0x40), 0x15, 0);
+        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4817, 0x15);
+        break;
+    }
+}
+
 void func_ov010_0220b7b0(void *self) {
     if (FLD(u16, FLD(void *, self, 0x40), 0) != 0) {
         return;
@@ -66,7 +186,6 @@ void func_ov010_0220b8f8(void *self) {
 extern Ov010Vec data_ov010_0220f54c;
 extern Ov010Vec data_ov010_0220f594;
 extern void *data_02097e4c;
-extern void *data_0214a420;
 extern void func_0203f324(void *p);
 extern void func_0203f364(void *p);
 extern void func_ov000_0218dbe0(void *self, s32 a);
@@ -81,12 +200,9 @@ extern void func_ov003_021d9f04(void *out, const void *p);
 extern void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 extern s32 func_02040498(s32 max);
 extern void *func_ov000_02199ba0(void *p);
-extern u16 func_ov000_0219a874(void *a, void *b, s32 c);
 extern Ov010V *func_ov003_021da7e8(s32 id, void *src, const Ov010Vec *ofs);
 extern void func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
 extern s32 func_ov003_021d9a80(const Ov010Vec &a, const Ov010Vec *b);
-extern void *func_ov000_0218e4cc(void *mgr, s32 a);
-extern void func_02065860(void *a, void *b);
 
 #define OV010_FXMUL_K(a, k) ((s32)(((s64)(a) * (k) + 0x800) >> 12))
 
