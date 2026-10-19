@@ -2,6 +2,14 @@
 
 extern "C" {
 
+BOOL func_ov002_021e4578(const Vec2 *pos, const Vec2 *d, void *a, void *b) {
+    Vec2 p;
+    Vec2 out;
+    p.x = pos->x + d->x;
+    p.y = pos->y + d->y;
+    return !func_ov002_021e3dac(&p, a, b, &out);
+}
+
 BOOL func_ov002_021e45c4(void *self, void *list, void *a2) {
     Vec2 p;
     Vec2 q;
