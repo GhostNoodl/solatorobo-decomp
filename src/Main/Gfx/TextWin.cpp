@@ -1,6 +1,7 @@
 #define SND_DEFINE_GLOBALS
 #include "Main/Gfx/TextWin.h"
 #include "Main/Snd/SndMgr.h"
+#include "nnsys/g2d/g2d_Font.h"
 
 // Base of the text layout helper; its vtable stays in asm.
 struct TextLayout {
@@ -24,6 +25,99 @@ extern void func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
 extern void func_0205bef8(void *cmd);
+
+typedef u16 (*TextScanCharFn)(const char **s);
+
+// Stack copy of a TextWin used only for tag parsing.
+typedef struct TextScanParser {
+    /* 0x00 */ const u32 *vt;
+    /* 0x04 */ u8 unk_04[0x7c];
+    /* 0x80 */ s32 code;
+    /* 0x84 */ s32 value;
+    /* 0x88 */ u8 unk_88[0x30];
+} TextScanParser;
+
+extern void *func_0203a4c0(GfxMgr *mgr);
+void func_0204c7d0(TextWin *win);
+void func_0204cc18(TextScanParser *p, const char **s);
+
+// Copies the visible characters of str into out (keeping tag 0x10 verbatim)
+// and returns the width of the last line.
+s32 func_0204c2f4(char *out, s32 outSize, const char *str) {
+    const char *s;
+    TextScanParser p;
+    const char *tmp;
+    TextScanCharFn fn;
+    const char *start;
+    u16 c;
+    s32 len;
+    s32 maxW;
+    NNSG2dFont *f;
+    s32 w;
+    u32 n;
+    u32 i;
+    if (str == NULL) {
+        return 0;
+    }
+    f = (NNSG2dFont *)func_0203a4c0(data_02097ce0);
+    fn = (TextScanCharFn)f->cbCharSpliter;
+    len = 0;
+    s = str;
+    p.vt = data_0208ba70;
+    func_0204c7d0((TextWin *)&p);
+    maxW = 0;
+    w = 0;
+    // The outer loop is entered at its test and tests *s twice there.
+    goto test;
+    do {
+        while (start = s, (c = fn(&s)) != 0) {
+            if (c == '\n') {
+                maxW = w > maxW ? w : maxW;
+                w = 0;
+            }
+            if (c == '\\') {
+                start = s;
+                c = fn(&s);
+            } else if (c == '<') {
+                tmp = s;
+                func_0204cc18(&p, &tmp);
+                if (p.code == 0x10) {
+                    out[len++] = c;
+                    do {
+                        c = fn(&s);
+                        if (len < outSize - 1) {
+                            out[len++] = c;
+                        }
+                    } while (c != '>');
+                } else {
+                    s = tmp;
+                }
+                start = s;
+            }
+            n = s - start;
+            if (n != 0) {
+                for (i = 0; i < n; i++) {
+                    if (len < outSize - 1) {
+                        out[len++] = start[i];
+                    }
+                }
+                out[len] = 0;
+                w += NNS_G2dFontGetCharWidth(f, c);
+            }
+            if (*s == 0) {
+                break;
+            }
+        }
+    test:
+        if (*s == 0) {
+            break;
+        }
+    } while (*s != 0);
+    p.vt = data_0208ba70;
+    ((TextLayout *)&p)->Clear();
+    return w;
+}
+
 
 TextLayout *func_0204c4d4(TextLayout *layout) {
     *(const u32 **)layout = data_0208ba70;

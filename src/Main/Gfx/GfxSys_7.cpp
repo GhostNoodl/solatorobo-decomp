@@ -274,4 +274,18 @@ void func_0203d040(int v) {
     func_02043db4(1, 0x100000, 0xc0000, v > 0 ? 0x7fff : 0);
 }
 
+// Blends two RGB555 colors; t is fx32 in [0, 0x1000].
+u16 func_0203d144(int c0, int c1, int t) {
+    int r0 = c0 & 0x1f;
+    int r1 = c1 & 0x1f;
+    int g0 = (c0 >> 5) & 0x1f;
+    int g1 = (c1 >> 5) & 0x1f;
+    int b0 = (c0 >> 10) & 0x1f;
+    int b1 = (c1 >> 10) & 0x1f;
+    r0 = ((r1 - r0) * t + (r0 << 12)) >> 12;
+    b0 = ((b1 - b0) * t + (b0 << 12)) >> 12;
+    g0 = ((g1 - g0) * t + (g0 << 12)) >> 12;
+    return r0 | (g0 << 5) | (b0 << 10);
+}
+
 }

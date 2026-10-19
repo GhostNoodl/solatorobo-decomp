@@ -80,6 +80,30 @@ static inline int Oam_GetHeight(const OamShape *shape) {
     return 8 << data_020828c8[shapeBit][sizeBit];
 }
 
+// Sums the OAM widths of a cell's attributes.
+u32 func_02041b10(void *unused, OamList *list) {
+    OamAttrs a;
+    u32 total;
+    u16 n;
+    u16 i;
+    OamAttrs *attrs;
+    total = 0;
+    n = list->count;
+    i = 0;
+    if (i < n) {
+        attrs = list->attrs;
+        do {
+            a.attr0 = attrs[i].attr0;
+            a.attr1 = attrs[i].attr1;
+            a.attr2 = attrs[i].attr2;
+            OamShape shape = Oam_GetShape(&a);
+            total += Oam_GetWidth(&shape);
+            i++;
+        } while (i < n);
+    }
+    return total;
+}
+
 u32 func_02041bb0(void *unused, OamRes *res) {
     u32 total = 0;
     OamAttrs a = *res->attrs;
