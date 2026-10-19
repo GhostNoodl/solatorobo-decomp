@@ -90,3 +90,13 @@ If the target loads the same field twice where your code loads it once (for exam
 ## Unused argument registers
 
 If the target reuses `r1`-`r3` right before a call as if they held nothing, the callee may take fewer parameters than your prototype says. Check the callee's own disassembly to see which argument registers it actually reads.
+
+## Fixed-point multiplies and other small patterns
+
+- `umull` + `mla` with a constant means a 64-bit multiply by a literal: `(s32)(((s64)x * 0x29 + 0x800) >> 12)`, or an inline `FxMul(x, 0x333)` after constant propagation. If the target uses `smull` with the constant in a register, the multiplier was read back from memory: `FLD(dc) = 0x333; x = FxMul(x, FLD(dc));` (the store is forwarded, but the multiply stays signed).
+- `sub r0, r2, r2` (one load used twice) comes from subtracting two different lvalues for the same address, such as `self->pos.x - FLD(s32, self, 0x70)`. The front end doesn't fold them, and CSE merges the loads later.
+- Stack slots: locals get addresses in declaration order (the first declared sits highest), and locals of inline functions are placed after the caller's own locals, in expansion order. Use this to move a matrix or temp vector below the others.
+- `Vec o = {0, 0, 0};` stores the zeros through the address register (`str rX, [rY]`, `[rY, #4]`, ...) rather than through `sp`-relative stores.
+- To keep a data address in a callee-saved register across a call, load it into a local at the top of the function (`u8 *tmpl = data_x;`).
+- If the target loads a field before an unrelated store, read it into a temp first (`s32 z = p.z; p.y += ...; use z`).
+- Clearing bitfields in several fields of one sub-object without reloading the pointer: take a local pointer once (`Bits *q = self->unk_44; q->a = 0; q->b = 0;`).
