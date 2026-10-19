@@ -193,4 +193,34 @@ void func_ov013_02204978(Ov013Actor *self, u16 a) {
     FLD(Ov013Flags8, self, 0xce).b1 = 1;
 }
 
+struct Ov013Anim8 {
+    u16 h8;
+    u16 ha;
+    u32 wc;
+};
+
+struct Ov013Anim10 {
+    u8 b0;
+    u8 b1;
+    u8 b2;
+    u8 b3;
+    u16 speed;
+    u16 h6;
+    u16 h8[2];
+    u32 wc;
+};
+
+void func_ov013_0220498c(Ov013Actor *self, s16 v) {
+    u8 *p;
+    Ov013Anim10 t;
+    if (FLD(u8, self, 0x14) != 2) {
+        return;
+    }
+    FLD(u16, self, 0xd4) = v;
+    p = func_020704b4(self->kind);
+    t = *FLD(Ov013Anim10 *, self, 0x4c);
+    t.speed = Ov013_FxMul((s32)(FLD(u16, p, 4) << 12), (s32)v) >> 12;
+    *FLD(Ov013Anim10 *, self, 0x4c) = t;
+}
+
 }

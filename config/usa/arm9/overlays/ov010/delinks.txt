@@ -143,7 +143,7 @@ src/ov010/ov010_02206f54.cpp:
 
 src/ov010/ov010_02207520.cpp:
     complete
-    .text       start:0x02207520 end:0x02208018
+    .text       start:0x02207520 end:0x022085d0
 
 src/ov010/ov010_022085d0.cpp:
     complete
@@ -160,6 +160,10 @@ src/ov010/ov010_022089d8.cpp:
 src/ov010/ov010_02208c3c.cpp:
     complete
     .text       start:0x02208c3c end:0x022090b4
+
+src/ov010/ov010_02209190.cpp:
+    complete
+    .text       start:0x02209190 end:0x022092c8
 
 src/ov010/ov010_022092c8.cpp:
     complete

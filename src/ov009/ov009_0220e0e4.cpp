@@ -34,4 +34,23 @@ void func_ov009_0220e0e4(Ov009Actor *self) {
     func_ov000_0218cea4(self);
 }
 
+extern void func_ov000_0218d7e8(Ov009Actor *self, s32 a);
+extern void func_ov003_021d2e28(Ov009Actor *self);
+
+void func_ov009_0220e220(Ov009Actor *self) {
+    Ov009Sub40 *s = self->unk_40;
+    BOOL run = TRUE;
+    u64 f = s->flags;
+    u8 k = s->unk_13;
+    if ((f & 0x40000) || (f & 0x80000)) {
+        if (k == 0xf || k == 0xe || k == 0x21 || k == 0x20 || k == 0x12 || k == 0x13) {
+            run = FALSE;
+            func_ov000_0218d7e8(self, k);
+        }
+    }
+    if (run) {
+        func_ov003_021d2e28(self);
+    }
+}
+
 }
