@@ -2716,3 +2716,135 @@ src/ov000/Lo_0214e7f0.cpp:
 src/ov000/Obj_021658e8.cpp:
     complete
     .text       start:0x021658e8 end:0x02165a20
+
+src/ov000/Model_02164a94.cpp:
+    complete
+    .text       start:0x02164a94 end:0x02164c50
+
+src/ov000/Lo_021b1540.cpp:
+    complete
+    .text       start:0x021b1540 end:0x021b1740
+
+src/ov000/Mtx_021c1e78.cpp:
+    complete
+    .text       start:0x021c1e78 end:0x021c2078
+
+src/ov000/Menu_021c67e4.cpp:
+    complete
+    .text       start:0x021c67e4 end:0x021c69e4
+
+src/ov000/ActorEx_02195410.cpp:
+    complete
+    .text       start:0x02195410 end:0x02195618
+
+src/ov000/Model_021bce90.cpp:
+    complete
+    .text       start:0x021bce90 end:0x021bd09c
+
+src/ov000/Cam_0218a358.cpp:
+    complete
+    .text       start:0x0218a358 end:0x0218a56c
+
+src/ov000/Model_0216e67c.cpp:
+    complete
+    .text       start:0x0216e67c end:0x0216e894
+
+src/ov000/MQ_02172588.cpp:
+    complete
+    .text       start:0x02172588 end:0x021729d0
+
+src/ov000/Lo_02151018.cpp:
+    complete
+    .text       start:0x02151018 end:0x0215123c
+
+src/ov000/Lo_021699f0.cpp:
+    complete
+    .text       start:0x021699f0 end:0x02169c14
+
+src/ov000/TextWin_0215d758.cpp:
+    complete
+    .text       start:0x0215d758 end:0x0215d980
+
+src/ov000/Win_021c5d9c.cpp:
+    complete
+    .text       start:0x021c5d9c end:0x021c5fc4
+
+src/ov000/Lo_0217dba4.cpp:
+    complete
+    .text       start:0x0217dba4 end:0x0217ddd4
+
+src/ov000/Win_0217a8f4.cpp:
+    complete
+    .text       start:0x0217a8f4 end:0x0217ab30
+
+src/ov000/Model_02168374.cpp:
+    complete
+    .text       start:0x02168374 end:0x02168490
+
+src/ov000/Lo_0216a608.cpp:
+    complete
+    .text       start:0x0216a608 end:0x0216a7dc
+
+src/ov000/Lo_02160ff8.cpp:
+    complete
+    .text       start:0x02160ff8 end:0x02161238
+
+src/ov000/Win_0215f0ec.cpp:
+    complete
+    .text       start:0x0215f0ec end:0x0215f330
+
+src/ov000/Lo_0214f7a4.cpp:
+    complete
+    .text       start:0x0214f7a4 end:0x0214f9ec
+
+src/ov000/TextWin_02167d64.cpp:
+    complete
+    .text       start:0x02167d64 end:0x02167fac
+
+src/ov000/Actor_0218cbc8.cpp:
+    complete
+    .text       start:0x0218cbc8 end:0x0218ce20
+
+src/ov000/TextWin_0215bb14.cpp:
+    complete
+    .text       start:0x0215bb14 end:0x0215bd70
+
+src/ov000/Mtx_021b4c60.cpp:
+    complete
+    .text       start:0x021b4c60 end:0x021b4ebc
+
+src/ov000/Mtx_02190758.cpp:
+    complete
+    .text       start:0x02190758 end:0x021909a8
+
+src/ov000/Lo_0214fa8c.cpp:
+    complete
+    .text       start:0x0214fa8c end:0x0214fcfc
+
+src/ov000/Mtx_021b8014.cpp:
+    complete
+    .text       start:0x021b8014 end:0x021b8284
+
+src/ov000/Lo_02150cb0.cpp:
+    complete
+    .text       start:0x02150cb0 end:0x02150f24
+
+src/ov000/Lo_0214f390.cpp:
+    complete
+    .text       start:0x0214f390 end:0x0214f608
+
+src/ov000/Hit_021b288c.cpp:
+    complete
+    .text       start:0x021b288c end:0x021b2b08
+
+src/ov000/TextWin_0215e0c0.cpp:
+    complete
+    .text       start:0x0215e0c0 end:0x0215e344
+
+src/ov000/Lo_02154c34.cpp:
+    complete
+    .text       start:0x02154c34 end:0x02154ec4
+
+src/ov000/Lo_0215b054.cpp:
+    complete
+    .text       start:0x0215b054 end:0x0215b2e4
