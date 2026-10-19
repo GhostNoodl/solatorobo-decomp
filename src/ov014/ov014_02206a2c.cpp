@@ -191,4 +191,165 @@ void func_ov014_02206dd4(Ov014Actor *self) {
     }
 }
 
+struct Ov014HitArg {
+    u8 a;
+    u8 pad;
+    u16 b;
+    u16 c;
+};
+
+struct Ov014HitBox {
+    Ov014Vec min;
+    Ov014Vec max;
+    u16 rot[3];
+    u16 unk_1e;
+    u32 unk_20;
+    Ov014Vec v;
+    s32 unk_30;
+};
+
+struct Ov014PlFlags {
+    u32 b0 : 1;
+    u32 b1 : 1;
+};
+
+#define OV014_FXMUL_K(a, k) ((s32)(((s64)(a) * (k) + 0x800) >> 12))
+
+extern void func_ov000_0218d398(Ov014Actor *t, u16 id, s32 a, s32 b, s32 c, Ov014HitArg *arg);
+extern void func_ov003_021daae4(void *p, s32 a, Ov014Vec *v, void *b, void *c, void *d, s32 e);
+extern void func_ov003_021daa6c(void *p, s32 a);
+extern void func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void MIi_CpuClear32(u32 data, void *dest, u32 size);
+extern void func_ov000_0218ddd4(Ov014Actor *self, Ov014Vec *v, s32 a);
+extern u8 *func_ov000_0219bf90(void);
+extern void VEC_Normalize(const Ov014Vec *in, Ov014Vec *out);
+extern BOOL func_01ffc318(Ov014Vec *a, Ov014Vec *pos, Ov014Vec *min, Ov014Vec *max, u16 *rot);
+extern void func_ov000_0219b808(u16 id, Ov014Vec *pos, Ov014HitBox *box, s32 a, s32 b);
+extern Ov014Vec data_ov014_02216a34;
+extern Ov014Vec data_ov014_02216a28;
+extern Ov014Actor *func_ov000_0218d240(Ov014Actor *self);
+
+static inline void Ov014i_HitFrom(Ov014Actor *self, Ov014HitBox *box, Ov014Vec *d, Ov014Vec *from, Ov014Vec *at) {
+    d->x = self->pos.x - from->x;
+    d->y = self->pos.y - from->y;
+    d->z = self->pos.z - from->z;
+    d->y = 0;
+    VEC_Normalize(d, d);
+    box->v.x = d->x = OV014_FXMUL_K(d->x, 0x7b);
+    box->v.y = d->y = OV014_FXMUL_K(d->y, 0x7b);
+    box->v.z = d->z = OV014_FXMUL_K(d->z, 0x7b);
+    box->unk_30 = -1;
+    func_ov000_0219b808(self->id, at, box, 0, 0);
+}
+
+static inline BOOL Ov014i_AnyHit(Ov014Actor *self, Ov014Actor **list) {
+    s32 n = func_ov000_0219a510(self, 2, &self->pos, Ov014_FxMul(FLD(s32, self, 0xd4), 0xb33), 0x800, list);
+    s32 i;
+    if (n != 0) {
+        for (i = 0; i < n; i++) {
+            if (list[i] != NULL && func_ov000_021985c0(list[i]) != NULL) {
+                return TRUE;
+            }
+        }
+    }
+    return FALSE;
+}
+
+void func_ov014_02206f40(Ov014Actor *self) {
+    Ov014Actor *list[0x20];
+    Ov014Vec p;
+    Ov014Vec sc;
+    Ov014HitBox box;
+    Ov014Vec d;
+    Ov014Vec v2;
+    Ov014Actor *t;
+    Ov014Sub40 *s;
+    u8 *pl;
+    t = func_ov000_0218d240(self);
+    if (t == NULL) {
+        return;
+    }
+    s = self->unk_40;
+    switch (s->state) {
+    case 0:
+        FLD(u16, self, 0xd8) = 0;
+        s->state++;
+        return;
+    case 1:
+        break;
+    default:
+        return;
+    }
+    p.x = t->pos.x;
+    p.y = t->pos.y;
+    p.z = t->pos.z;
+    if (t->unk_50[0] != 0) {
+        if (Ov014i_AnyHit(self, list) && t != NULL) {
+            Ov014HitArg arg;
+            arg.b = 0x666;
+            arg.a = 1;
+            arg.c = 1;
+            func_ov000_0218d398(t, self->id, 0xb, 1, 6, &arg);
+            p.y += 0x1800;
+            if (!func_ov003_021daa0c(FLD(void *, self, 0xdc), 0xfe)) {
+                Ov014V *e = func_02065f88(0xcb, &p);
+                e->v34(0, 0, 0x7fff);
+                e->v0c(0x800);
+                MIi_CpuClear32(-1, (u8 *)e + 0x84, 0x40);
+                func_0204a028(data_02097e4c, 0x11, &self->pos, -10);
+                func_ov003_021da9ac(FLD(void *, self, 0xdc), 0xfe, e);
+            } else {
+                func_ov003_021daae4(FLD(void *, self, 0xdc), 0xfe, &p, 0, 0, 0, 0);
+            }
+        } else {
+            func_ov003_021daa6c(FLD(void *, self, 0xdc), 0xfe);
+        }
+    } else {
+        func_ov000_02198360(s, 0x15, 0);
+    }
+    p.y = self->pos.y;
+    self->unk_9c = 0x52;
+    func_ov000_0218ddd4(self, &p, 0);
+    sc.x = FLD(s32, self, 0xd4);
+    sc.y = FLD(s32, self, 0xd4);
+    sc.z = FLD(s32, self, 0xd4);
+    func_ov003_021daae4(FLD(void *, self, 0xdc), 0xff, &self->pos, self->rot, &sc, data_ov014_022169c8, 0);
+    if (t->unk_50[0] != 0) {
+        p = t->pos;
+        box.unk_1e = 2;
+        box.unk_20 = 0x20000000;
+        box.rot[0] = self->rot[0];
+        box.rot[1] = self->rot[1];
+        box.rot[2] = self->rot[2];
+        pl = func_ov000_0219bf90();
+        if (pl != NULL && (FLD(Ov014PlFlags, pl, 0xb24).b1 ? TRUE : FALSE) == TRUE) {
+            box.min.x = -0xa000;
+            box.min.y = -0x800;
+            box.min.z = -0xa000;
+            box.max.x = 0xa000;
+            box.max.y = 0x800;
+            box.max.z = 0xa000;
+            Ov014i_HitFrom(self, &box, &d, &p, &self->pos);
+        } else if (pl != NULL && (FLD(Ov014PlFlags, pl, 0xb24).b1 ? TRUE : FALSE) == FALSE) {
+            box.min.x = -0x1000;
+            box.min.y = -0x800;
+            box.min.z = -0x1000;
+            box.max.x = 0x1000;
+            box.max.y = 0x800;
+            box.max.z = 0x1000;
+            v2 = FLD(Ov014Vec, pl, 0x75c);
+            if (func_01ffc318(&v2, &self->pos, &data_ov014_02216a34, &data_ov014_02216a28, self->rot)) {
+                Ov014i_HitFrom(self, &box, &d, &v2, &v2);
+            }
+            if (func_01ffc318(&p, &self->pos, &data_ov014_02216a34, &data_ov014_02216a28, self->rot)) {
+                Ov014i_HitFrom(self, &box, &d, &p, &p);
+            }
+        }
+    }
+    FLD(u16, self, 0xd8)++;
+    if (FLD(u16, self, 0xd8) >= 300) {
+        func_ov000_02198360(self->unk_40, 0x15, 0);
+    }
+}
+
 }
