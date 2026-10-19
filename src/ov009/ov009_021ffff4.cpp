@@ -171,4 +171,147 @@ void func_ov009_022001e8(Ov009Actor *self) {
     }
 }
 
+extern void *data_ov009_02215d0c[];
+extern u8 data_ov009_02215dcc[];
+extern void func_ov000_0218d918(Ov009Actor *self, const Ov009Vec *v, s32 a);
+extern void func_ov000_0218dbe0(Ov009Actor *self, s32 a);
+extern u16 FX_Atan2(s32 y, s32 x);
+typedef void (*Ov009RotFn)(Ov009Vec *out, const void *a, s32 b);
+
+static inline s32 Ov009_Sqrt64(s64 v) {
+    *(volatile u16 *)0x40002b0 = 1;
+    *(volatile u64 *)0x40002b8 = (u64)v << 2;
+    while (*(volatile u16 *)0x40002b0 & 0x8000) {
+    }
+    return (*(volatile s32 *)0x40002b4 + 1) >> 1;
+}
+
+static inline BOOL Ov009_TickTimer(Ov009Sub40 *s) {
+    if (s->timer != 0) {
+        s->timer--;
+    }
+    return s->timer == 0;
+}
+
+static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {
+    return g->unk_d4 != 0;
+}
+
+void func_ov009_02200534(Ov009Actor *self) {
+    Ov009Vec plpos;
+    Ov009Vec off;
+    Ov009Vec d;
+    Ov009Actor *pl;
+    Ov009Sub40 *st;
+    s32 speed;
+    u16 ang;
+    if (!Ov009_GameIdle()) {
+        return;
+    }
+    if (Ov009Game_IsPaused(data_ov000_021ccd54)) {
+        return;
+    }
+    pl = func_ov000_0219bf90();
+    if (pl == NULL) {
+        return;
+    }
+    plpos = pl->pos;
+    switch (self->unk_40->state) {
+    case 0:
+        func_ov000_02190cb0(self->unk_38, data_ov009_02215d0c[9], 0x1000, 0);
+        func_ov000_021915a0(self->unk_38);
+        self->unk_9c = 0;
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
+        self->unk_40->timer = 0;
+        self->unk_40->state++;
+        break;
+    case 1:
+        st = self->unk_40;
+        if (st->timer != 0) {
+            st->timer--;
+        }
+        if (st->timer == 0) {
+            self->unk_40->timer = 0x3c;
+            FLD(Ov009Vec, self, 0x104) = self->unk_b8;
+            FLD(s32, self, 0x104) += func_02040528(0x800);
+            FLD(s32, self, 0x10c) += func_02040528(0x800);
+            FLD(s32, self, 0x108) += func_02040528(0x800);
+        }
+        d.x = FLD(s32, self, 0x104) - self->pos.x;
+        d.y = FLD(s32, self, 0x108) - self->pos.y;
+        d.z = FLD(s32, self, 0x10c) - self->pos.z;
+        VEC_MultAdd(0x52, &d, &self->pos, &self->pos);
+        if (VEC_Distance(&self->unk_84, &plpos) <= FLD(s32, self, 0xf4)) {
+            self->unk_40->state++;
+        }
+        break;
+    case 2: {
+        s64 sq;
+        s32 dz;
+        s32 dx;
+        self->unk_84 = self->pos;
+        ((Ov009RotFn)func_01ffc9fc)(&off, data_ov009_02215dcc, 0x5554);
+        VEC_Add(&plpos, &off, &plpos);
+        dz = self->pos.z - plpos.z;
+        dx = self->pos.x - plpos.x;
+        sq = (s64)dx * dx;
+        sq += (s64)dz * dz;
+        ang = FX_Atan2(Ov009_Sqrt64(sq), plpos.y - self->pos.y);
+        switch (self->kind) {
+        case 0x5423:
+            speed = 0x800;
+            break;
+        case 0x5424:
+            speed = 0x333;
+            break;
+        }
+        self->unk_9c = Ov009_FxMul(speed, OV009_SIN(ang));
+        self->unk_a0 = Ov009_FxMul(speed, OV009_COS(ang));
+        func_ov000_0218d918(self, &plpos, 0x1000);
+        self->unk_98 = self->rot[1];
+        func_ov000_0218dbe0(self, 0);
+        if (VEC_Distance(&self->pos, &plpos) > 0x1000) {
+            return;
+        }
+        self->unk_9c = 0;
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
+        if (self->kind == 0x5423) {
+            self->unk_9c = 0x4cd;
+        } else {
+            self->unk_9c = speed;
+        }
+        self->unk_40->state++;
+        self->unk_40->timer = 0;
+        FLD(u8, self, 0xf0) |= 1;
+        break;
+    }
+    case 3:
+        func_ov000_0218dbe0(self, 0);
+        self->pos.y = plpos.y + 0x2000;
+        func_ov000_0218d918(self, &plpos, 0x19a);
+        self->unk_98 = self->rot[1];
+        self->unk_84 = plpos;
+        st = self->unk_40;
+        if (st->timer != 0) {
+            st->timer--;
+        }
+        if (st->timer != 0) {
+            return;
+        }
+        {
+            s32 se = 0x80;
+            if (self->kind == 0x5423) {
+                se = 0xa;
+            }
+            func_02049f44(data_02097e4c, se, &self->pos, 0);
+        }
+        self->unk_40->timer = 0x1e;
+        break;
+    }
+}
+
 }

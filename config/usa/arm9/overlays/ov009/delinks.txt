@@ -19,7 +19,7 @@ src/ov009/ov009_021ff730.cpp:
 
 src/ov009/ov009_021ffff4.cpp:
     complete
-    .text       start:0x021ffff4 end:0x02200534
+    .text       start:0x021ffff4 end:0x022009c8
 
 src/ov009/ov009_022009c8.cpp:
     complete

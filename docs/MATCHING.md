@@ -208,3 +208,12 @@ If the target computes a value into a variable's own callee-saved register (`asr
 
 The linker strips functions that nothing references. If `ninja` reports a matched function as "not found by name in linked binary", check `relocs.txt` for calls to it (`grep to:0x<addr>` over every module); if there are none, wrap it in `#pragma force_active on` / `#pragma force_active reset`. The same applies to what your range leaves behind: an undecompiled gap is kept only while something in it is referenced, so don't split off a range that leaves an unreferenced function alone in a gap (`func_ov000_0214b654` is in, `0214b670` waits for `0214b68c`).
 - **A comma expression on a local's initial load.** `actor = (0, self->list->actor);` computes the same value but changes which callee-saved register the local gets (the permuter found this; it moved `actor` from `r5` to the target's `r7` in `func_ov011_021fb02c` and halved the diff). Try it on the one local whose register is shifted when every other value is shifted with it.
+
+## Inline arguments and struct results (overlays 9–13)
+
+- **Pass a field expression straight into an inline.** `Ov011_SetTw(FLD(Ov011Tw108 *, self, 0x108), 0, 0x1000)` in each branch, instead of a local hoisted above the `if`, let MWCC hoist the pointer load and a constant shared by the branches above the branch, as the target does (`func_ov011_02200310`).
+- **Give a struct-returning inline the source pointer.** `Ov010_MkRotZ(q)` reading `FLD(u16, q, 8)` inside the inline fixed a register swap that `MkRotZ(q->ang)` caused (`func_ov010_021fb5c8`).
+- **Narrow before a narrow-parameter inline.** `u8 a = v; SetAlpha(self, a);` gave the target's clamp sequence.
+- **Materialized bool.** `BOOL on = FALSE; if (pl) on = bits != 0;` gives the `movne/moveq` pair stored as a value.
+- **Scalarized struct result.** `Vec res; if (..) res = d; else if (..) res = r1; else res = r2; *out = res;` gives a single `stm r0, {r8, r9, r10}`. A function that appears to return a `Vec` is really `void f(Vec *out, ...)`.
+- **64-bit dot products.** An inline that copies components into `s64` locals and multiplies them gives the generic `umull`/`mla` sequence (`func_ov013_02205c74` draft).
