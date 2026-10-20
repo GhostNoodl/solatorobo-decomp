@@ -1330,7 +1330,7 @@ src/Main/Gfx/TextWin_10.cpp:
 
 src/Main/Gfx/TextWin_11.cpp:
     complete
-    .text       start:0x02050b50 end:0x02050ebc
+    .text       start:0x02050b50 end:0x02050f70
 
 src/Main/Gfx/TextWin_12.cpp:
     complete

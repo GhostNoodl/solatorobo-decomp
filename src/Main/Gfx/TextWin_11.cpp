@@ -420,4 +420,71 @@ void func_02050ea4(Model *model, u32 v) {
     model->flags = (model->flags & ~0x7c) | ((v << 27) >> 25);
 }
 
+// OAM entries of a name label: y in the low byte of word 0, palette in word 1.
+typedef struct NameOam {
+    u32 y : 8;
+    u32 unk_0_8 : 24;
+    u32 charName : 10;
+    u32 priority : 2;
+    u32 cParam : 4;
+    u32 unk_4_16 : 16;
+} NameOam;
+
+typedef struct NameOwnerSub {
+    /* 0x00 */ u8 unk_00[0x12];
+    /* 0x12 */ u16 id;
+    /* 0x14 */ u8 unk_14[0x20];
+    /* 0x34 */ char name[1];
+} NameOwnerSub;
+
+typedef struct NameOwner {
+    /* 0x000 */ u8 unk_000[0x3c0];
+    /* 0x3c0 */ NameOwnerSub sub;
+} NameOwner;
+
+typedef struct NameOamInfo {
+    /* 0x0 */ u16 unk_0;
+    /* 0x4 */ u32 unk_4;
+    /* 0x8 */ NameOwner *owner;
+} NameOamInfo;
+
+const char *func_0206ffa0(s32 id);
+int STD_CompareString(const char *a, const char *b);
+
+// Recolours the last 4 OAM entries of a name label when the owner is not
+// the default character (0x1000).
+NameOam *func_02050ebc(void *self, NameOamInfo *info, NameOam *oam, u16 *num) {
+    NameOam *last;
+    NameOwner *owner;
+    u16 n;
+    u32 pal;
+    char *name;
+    int i;
+    const char *str;
+    n = *num;
+    last = &oam[n - 1];
+    if (info->unk_0 == 0) {
+        owner = info->owner;
+        name = owner->sub.name;
+        pal = last->cParam;
+        oam = last - 3;
+        n = 4;
+        str = func_0206ffa0(0x1000);
+        if (name != NULL) {
+            if (STD_CompareString(name, str) != 0) {
+                pal++;
+            }
+        } else if (((NameOwnerSub *)((s32)owner + 0x3c0))->id != 0x1000) {
+            // The integer add keeps 0x3c0 apart from the field offset.
+            pal++;
+        }
+        for (i = 0; i < 4; i++) {
+            oam[i].y = 0;
+            oam[i].cParam = pal;
+        }
+    }
+    *num = n;
+    return oam;
+}
+
 }
