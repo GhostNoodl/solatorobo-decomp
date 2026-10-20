@@ -502,6 +502,10 @@ src/ov006/ov006_021d6f10.cpp:
     complete
     .text       start:0x021d6f10 end:0x021d6ff0
 
+src/ov006/ov006_021d6ff0.cpp:
+    complete
+    .text       start:0x021d6ff0 end:0x021d86a0
+
 src/ov006/ov006_021d90e8.cpp:
     complete
     .text       start:0x021d90e8 end:0x021d94e8
