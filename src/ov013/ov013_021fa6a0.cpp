@@ -15,7 +15,7 @@ extern void func_ov003_021d1c00(Ov013Actor *self, Ov013Msg *msg);
 extern Ov013Actor *func_ov000_0218d240(Ov013Actor *self);
 extern void func_ov000_0218d988(Ov013Actor *self, Ov013Actor *t, s32 a);
 extern Ov013Actor *func_ov000_0218e4cc(void *mgr, u16 id);
-extern s32 func_ov000_0218dfb4(Ov013Actor *a, u16 id);
+extern u16 func_ov000_0218dfb4(Ov013Actor *a, u16 id);
 extern Ov013Actor *func_ov000_0218e6d0(void *mgr, u16 a, u16 b);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
