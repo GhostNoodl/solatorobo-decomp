@@ -20,6 +20,166 @@ struct Ov012Rot16T {
 #define OV012T_SQRT_RESULT (*(volatile u32 *)0x40002b4)
 #define OV012T_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
+}
+
+struct Ov012Query {
+    Ov012Vec pos;
+    u16 unk_0c;
+    u16 mask;
+    u16 kind;
+    u16 unk_12;
+    u16 unk_14;
+    s32 unk_18;
+    s32 unk_1c;
+    s32 unk_20;
+    s32 unk_24;
+    u16 exclude;
+    union {
+        u8 flags;
+        struct {
+            u8 b0 : 1;
+            u8 b1 : 1;
+            u8 b2 : 1;
+            u8 b3 : 5;
+        } bits;
+    };
+};
+
+static inline void Ov012_Query_Init(Ov012Query *q) {
+    q->mask = 0;
+    q->kind = 0xffff;
+    q->unk_12 = 0;
+    q->unk_14 = 0;
+    q->unk_18 = 0;
+    q->unk_1c = 0;
+    q->unk_20 = 0;
+    q->unk_24 = 0;
+    q->exclude = 0xffff;
+    q->flags = 0;
+}
+
+static inline void Ov012_Query_SetPosRot(Ov012Query *q, const Ov012Vec *pos, u16 rot) {
+    q->pos = *pos;
+    q->unk_0c = rot;
+}
+
+extern "C" {
+
+extern char data_ov012_0220b347[];
+extern s32 func_ov000_02199128(s32 *out, Ov012Query *q, void **list, s32 max);
+extern void func_ov000_02191418(void *p, s32 a, s32 b);
+
+#define OV012Q_SQRTCNT (*(volatile u16 *)0x40002b0)
+#define OV012Q_SQRT_RESULT (*(volatile u32 *)0x40002b4)
+#define OV012Q_SQRT_PARAM (*(volatile u64 *)0x40002b8)
+
+void func_ov012_02208858(Ov012Actor *self) {
+    switch (self->unk_40->state) {
+    case 0:
+        func_ov000_02190cb0(self->unk_38, data_ov012_0220b347, 0x1000, 0);
+        func_ov000_021911c8(self->unk_38, 0xccd);
+        self->unk_9c = 0;
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
+        self->unk_40->state++;
+        if (self->unk_1a == 0) {
+            func_02049f44(data_02097e4c, 0x600, &self->pos, 0);
+        }
+    case 1: {
+        Ov012Actor *list[0x20];
+        Ov012Sub48 *p48;
+        self->unk_44->unk_22_1 = 0;
+        p48 = self->unk_48;
+        p48->unk_9a_3 = 0;
+        func_0203f364(p48);
+        Ov012Query q;
+        Ov012Vec v;
+        s32 out;
+        Ov012Rot16T r;
+        Ov012Actor *tgt;
+        s32 n;
+        s32 i;
+        u16 ang;
+        Ov012_Query_Init(&q);
+        Ov012_Query_SetPosRot(&q, &self->pos, self->rot[1]);
+        q.mask = 0x10;
+        q.kind = 0x480e;
+        q.unk_18 = 0;
+        q.unk_1c = 0x3000;
+        q.bits.b1 = 1;
+        q.bits.b2 = 0;
+        out = 0;
+        n = func_ov000_02199128(&out, &q, (void **)list, 0x20);
+        if (n != 0) {
+            tgt = Ov012_FindActor(self->unk_90);
+            if ((tgt == NULL || tgt == self) != 0) {
+                ang = self->rot[1];
+            } else {
+                ang = FX_Atan2(tgt->pos.x - self->pos.x, tgt->pos.z - self->pos.z);
+            }
+            for (i = 0; i < n; i++) {
+                Ov012Actor *a = list[i];
+                if (a != NULL && FLD(void *, a, 0x4c) != NULL && FLD(u16, FLD(void *, a, 0x4c), 0x1c) != 0xffff &&
+                    FLD(u16, FLD(void *, a, 0x4c), 0x1c) != self->id) {
+                    Ov012Actor *o;
+                    a->v08();
+                    r.x = 0;
+                    r.y = ang;
+                    r.z = 0;
+                    v = list[i]->pos;
+                    if (tgt != NULL) {
+                        s32 sq_r;
+                        {
+                            s64 sq;
+                            s32 dx = tgt->pos.x - v.x;
+                            s32 dz = tgt->pos.z - v.z;
+                            sq = (s64)dx * dx;
+                            sq += (s64)dz * dz;
+                            OV012Q_SQRTCNT = 1;
+                            OV012Q_SQRT_PARAM = (u64)(sq * 4);
+                        }
+                        while (OV012Q_SQRTCNT & 0x8000) {
+                        }
+                        sq_r = (s32)(OV012Q_SQRT_RESULT + 1) >> 1;
+                        r.x = FX_Atan2(v.y, sq_r);
+                    }
+                    o = func_ov003_021d69f0(self, 0x480e, &v, &r, tgt);
+                    if (o != NULL) {
+                        FLD(void *, o, 0x60) = data_ov012_0220a88c;
+                        if (func_020621c4()) {
+                            func_ov000_0219bebc(o, 0x1800);
+                        }
+                    }
+                    func_02065f88(0x69, &v)->v0c(0xccd);
+                    func_02049f44(data_02097e4c, 0x2c, &self->pos, 0);
+                }
+            }
+        }
+        func_ov000_02191418(self->unk_38, 0, 1);
+        if (!func_ov000_02191120(self->unk_38)) {
+            break;
+        }
+        func_ov000_02190cb0(self->unk_38, data_ov012_0220b341, 0x19a, 0);
+        func_ov000_021915a0(self->unk_38);
+        self->unk_40->state++;
+        break;
+    }
+    case 2: {
+        Ov012Sub40 *s = self->unk_40;
+        s->timer++;
+        if (s->timer > 0x5a) {
+            func_ov000_02198360(self->unk_40, 1, 0);
+        }
+        break;
+    }
+    }
+}
+
+}
+
+extern "C" {
+
 static inline u16 Ov012_HpPct(Ov012Actor *self) {
     return self->unk_50[0] * 100 / self->unk_50[1];
 }
