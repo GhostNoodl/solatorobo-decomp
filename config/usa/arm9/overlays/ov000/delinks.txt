@@ -397,9 +397,9 @@ src/ov000/Stub_021708d8.cpp:
     complete
     .text       start:0x021708d8 end:0x021708ec
 
-src/ov000/Stub_0217125c.cpp:
+src/ov000/Task_02170a58.cpp:
     complete
-    .text       start:0x0217125c end:0x02171270
+    .text       start:0x02170a58 end:0x02171270
 
 src/ov000/Stub_02171464.cpp:
     complete
@@ -1047,7 +1047,7 @@ src/ov000/Lo_0214f9ec.cpp:
 
 src/ov000/Lo_021502d8.cpp:
     complete
-    .text       start:0x021502d8 end:0x02150338
+    .text       start:0x021502d8 end:0x02150b78
 
 src/ov000/Lo_02150c38.cpp:
     complete
@@ -1119,7 +1119,7 @@ src/ov000/Lo_0215f514.cpp:
 
 src/ov000/Lo_02162b40.cpp:
     complete
-    .text       start:0x02162b40 end:0x02162bd4
+    .text       start:0x02162b40 end:0x02163224
 
 src/ov000/Lo_02163254.cpp:
     complete
