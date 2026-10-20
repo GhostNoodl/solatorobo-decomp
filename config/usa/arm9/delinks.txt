@@ -1450,7 +1450,7 @@ src/Main/Res/StageRes_5.cpp:
 
 src/Main/Res/StageCmd_0.cpp:
     complete
-    .text       start:0x0205beb0 end:0x0205bec8
+    .text       start:0x0205beb0 end:0x0205bee4
 
 src/Main/Res/StageCmd.cpp:
     complete
