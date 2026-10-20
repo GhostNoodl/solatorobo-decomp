@@ -625,6 +625,10 @@ src/ov000/Robo_021a19a0.cpp:
     complete
     .text       start:0x021a19a0 end:0x021a1c2c
 
+src/ov000/Robo_021a1c2c.cpp:
+    complete
+    .text       start:0x021a1c2c end:0x021a2670
+
 src/ov000/Factory_021b4828.cpp:
     complete
     .text       start:0x021b4828 end:0x021b4adc
@@ -1991,7 +1995,7 @@ src/ov000/TextWin_021c2c0c.cpp:
 
 src/ov000/Heap_021b8ecc.cpp:
     complete
-    .text       start:0x021b8ecc end:0x021b9010
+    .text       start:0x021b8ecc end:0x021b9a84
 
 src/ov000/Heap_021b4f28.cpp:
     complete
@@ -3268,6 +3272,10 @@ src/ov000/Robo_021a4194.cpp:
 src/ov000/Robo_021a98bc.cpp:
     complete
     .text       start:0x021a98bc end:0x021a9be8
+
+src/ov000/Robo_021a9be8.cpp:
+    complete
+    .text       start:0x021a9be8 end:0x021aa5c8
 
 src/ov000/Robo_021abc88.cpp:
     complete
