@@ -1422,11 +1422,11 @@ src/Main/Res/DataRes_6.cpp:
 
 src/Main/Gfx/ObjPool.cpp:
     complete
-    .text       start:0x0205983c end:0x02059c98
+    .text       start:0x0205983c end:0x0205a028
 
 src/Main/Gfx/ObjPool_2.cpp:
     complete
-    .text       start:0x0205a028 end:0x0205a358
+    .text       start:0x0205a028 end:0x0205a69c
 
 src/Main/Res/StageRes.cpp:
     complete
