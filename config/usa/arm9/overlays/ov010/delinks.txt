@@ -141,6 +141,10 @@ src/ov010/ov010_02204204.cpp:
     complete
     .text       start:0x02204204 end:0x0220441c
 
+src/ov010/ov010_022046ac.cpp:
+    complete
+    .text       start:0x022046ac end:0x02204aac
+
 src/ov010/ov010_02204aac.cpp:
     complete
     .text       start:0x02204aac end:0x02204cdc
