@@ -912,3 +912,7 @@ src/ov002/ov002_021ecb90.cpp:
 src/ov002/ov002_021ee1a8.cpp:
     complete
     .text       start:0x021ee1a8 end:0x021ee4d0
+
+src/ov002/ov002_021d1cf8.cpp:
+    complete
+    .text       start:0x021d1cf8 end:0x021d1e44
