@@ -31,7 +31,7 @@ src/ov009/ov009_022009c8.cpp:
 
 src/ov009/ov009_02200fd4.cpp:
     complete
-    .text       start:0x02200fd4 end:0x02201150
+    .text       start:0x02200fd4 end:0x022013ac
 
 src/ov009/ov009_022013ac.cpp:
     complete
@@ -187,7 +187,7 @@ src/ov009/ov009_02207aa0.cpp:
 
 src/ov009/ov009_02207d98.cpp:
     complete
-    .text       start:0x02207d98 end:0x02207fd8
+    .text       start:0x02207d98 end:0x02208204
 
 src/ov009/ov009_02208574.cpp:
     complete

@@ -109,4 +109,78 @@ void func_ov009_02207dd0(Ov009Actor *self) {
     }
 }
 
+
+extern void func_ov003_021d3008(Ov009Actor *self);
+extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *o);
+extern u16 FX_Atan2(s32 y, s32 x);
+
+static inline s32 Ov009m_Mul(s32 a, s64 b) {
+    return (s32)((a * b + 0x800) >> 12);
+}
+
+static inline s32 Ov009m_Sqrt64(s64 v) {
+    *(volatile u16 *)0x40002b0 = 1;
+    *(volatile u64 *)0x40002b8 = (u64)v << 2;
+    while (*(volatile u16 *)0x40002b0 & 0x8000) {
+    }
+    return (*(volatile s32 *)0x40002b4 + 1) >> 1;
+}
+
+static inline s32 Ov009m_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
+    s64 sq;
+    s32 dz = a->z - b->z;
+    s32 dx = a->x - b->x;
+    sq = (s64)dx * dx;
+    sq += (s64)dz * dz;
+    return Ov009m_Sqrt64(sq);
+}
+
+static inline void Ov009m_VecSub(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *o) {
+    o->x = a->x - b->x;
+    o->y = a->y - b->y;
+    o->z = a->z - b->z;
+}
+
+static inline void Ov009m_VecScale(Ov009Vec *v, s32 k) {
+    v->x = Ov009m_Mul(v->x, k);
+    v->y = Ov009m_Mul(v->y, k);
+    v->z = Ov009m_Mul(v->z, k);
+}
+
+void func_ov009_02207fd8(Ov009Multi *self) {
+    Ov009Vec p;
+    Ov009Vec d;
+    s32 i;
+    s32 len;
+    s32 s;
+    u16 rot[3];
+    func_ov003_021d3008(self);
+    Ov009m_VecSub(&self->pos, &self->unk_494, &d);
+    Ov009m_VecScale(&d, 0x555);
+    p = self->unk_494;
+    for (i = 2; i < 4; i++) {
+        VEC_Add(&d, &p, &p);
+        self->models[i].unk_78 = p;
+    }
+    len = Ov009m_DistXZ(&self->pos, &self->unk_494);
+    rot[0] = 0;
+    rot[1] = 0;
+    rot[2] = 0;
+    rot[0] = FX_Atan2(self->unk_494.y - self->pos.y, len);
+    rot[1] = FX_Atan2(self->pos.x - self->unk_494.x, self->pos.z - self->unk_494.z);
+    func_ov000_02190758(&self->models[1], rot, 0);
+    FLD(s32, &self->models[1], 0xa8) = 0x1000;
+    s = Ov009m_Mul(len, 0x666);
+    FLD(s32, &self->models[1], 0xac) = 0x1000;
+    FLD(s32, &self->models[1], 0xb0) = s;
+    func_ov000_02190758(&self->models[2], rot, 0);
+    FLD(s32, &self->models[2], 0xa8) = 0x1000;
+    FLD(s32, &self->models[2], 0xac) = 0x1000;
+    FLD(s32, &self->models[2], 0xb0) = s;
+    func_ov000_02190758(&self->models[3], rot, 0);
+    FLD(s32, &self->models[3], 0xa8) = 0x1000;
+    FLD(s32, &self->models[3], 0xac) = 0x1000;
+    FLD(s32, &self->models[3], 0xb0) = s;
+}
+
 }

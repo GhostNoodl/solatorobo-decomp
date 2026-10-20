@@ -58,4 +58,78 @@ void func_ov009_022010f0(Ov009Actor *self) {
     func_ov003_021d4b68(self);
 }
 
+
+extern void func_ov000_02191780(Ov009Sub38 *m);
+extern void func_ov000_0219bdb0(u16 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
+
+static inline void Ov009_Msg(Ov009Actor *self, u8 v) {
+    u8 f = v;
+    func_ov000_0219bdb0(FLD(u16, self, 0xf4), self->kind, 6, 1, 1, &f);
+}
+
+void func_ov009_02201150(Ov009Actor *self) {
+    Ov009Actor *a;
+    switch (self->unk_40->state) {
+    case 0:
+        func_ov000_02190cb0(self->unk_38, data_ov009_02215d0c[7], 0x400, 0);
+        self->unk_9c = 0;
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
+        {
+            u16 id = FLD(u16, self, 0xf4);
+            a = data_ov000_021ccd68 == NULL ? NULL : func_ov000_0218e640(data_ov000_021ccd68, id);
+        }
+        if (a != NULL) {
+            Ov009Sub44 *q = self->unk_44;
+            q->unk_22_0 = 0;
+            q->unk_22_1 = 0;
+            q = a->unk_44;
+            q->unk_22_0 = 1;
+            q->unk_22_1 = 1;
+            Ov009_Msg(self, 0);
+            self->unk_40->timer = 0;
+            self->unk_40->state = 0x1e;
+        } else {
+            Ov009Sub44 *q = self->unk_44;
+            q->unk_22_0 = 1;
+            q->unk_22_1 = 1;
+            FLD(u16, self, 0xf4) = 0xffff;
+            FLD(u16, self, 0xf0) |= 1;
+            FLD(u16, self, 0xf6) = 0x1800;
+        }
+    case 0x1e: {
+        Ov009Sub40 *w = self->unk_40;
+        w->timer++;
+        if (w->timer == 0x96) {
+            func_ov000_02190cb0(self->unk_38, data_ov009_02215d0c[7], 0x1000, 0);
+            func_ov000_02191780(self->unk_38);
+            {
+                Ov009Sub44 *q = self->unk_44;
+                q->unk_22_0 = 1;
+                q->unk_22_1 = 1;
+            }
+            {
+                u16 id = FLD(u16, self, 0xf4);
+                a = data_ov000_021ccd68 == NULL ? NULL : func_ov000_0218e640(data_ov000_021ccd68, id);
+            }
+            if (a != NULL) {
+                Ov009Sub44 *q = a->unk_44;
+                q->unk_22_0 = 0;
+                q->unk_22_1 = 0;
+                Ov009_Msg(self, 1);
+            } else {
+                FLD(u16, self, 0xf4) = 0xffff;
+                FLD(u16, self, 0xf0) |= 1;
+                FLD(u16, self, 0xf6) = 0x1800;
+            }
+        } else if (w->timer >= 0xa5) {
+            self->unk_40->timer = 0;
+            func_ov000_02198360(self->unk_40, 1, 0);
+        }
+        break;
+    }
+    }
+}
+
 }
