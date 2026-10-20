@@ -86,13 +86,6 @@ static inline BOOL VerifyLoadedData(SaveBase *s) {
     return TRUE;
 }
 
-static inline u32 BackupDataOffset(SaveBase *s, s32 idx) {
-    u32 off = s->dataSize * s->slotCount;
-    off += s->baseOffset + s->headerSize;
-    off += idx * s->dataSize;
-    return off;
-}
-
 void func_020481c0(SaveBase *s) {
     u32 off = s->curSlot * s->slotSize + 0x14;
     SaveHeader *hdr = s->header;
@@ -122,7 +115,7 @@ void func_020481c0(SaveBase *s) {
             s->backupIdx = hdr->backupIdx;
             s->backupStart = hdr->backupIdx;
         case 3:
-            if (func_02046e48(data_02097e44, data, BackupDataOffset(s, s->backupIdx), s->dataSize) != 1) {
+            if (func_02046e48(data_02097e44, data, SaveBase_BackupOffset(s, s->backupIdx), s->dataSize) != 1) {
                 s->step = 4;
             }
             break;

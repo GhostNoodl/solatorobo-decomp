@@ -1192,7 +1192,7 @@ src/Main/Save/SaveBase_4.cpp:
 
 src/Main/Save/SaveBase_5.cpp:
     complete
-    .text       start:0x0204880c end:0x02048a48
+    .text       start:0x0204880c end:0x02048b8c
 
 src/Main/Save/SaveBase_6.cpp:
     complete

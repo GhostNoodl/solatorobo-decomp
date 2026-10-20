@@ -371,3 +371,8 @@ The linker strips functions that nothing references. If `ninja` reports a matche
 
 - **An inline that returns a vector struct by value** creates the extra stack temporaries some targets have. In `func_ov013_022038a8`, `static inline Ov013Vec Ov013_Around(const Ov013Vec *base, u16 r)` builds the vector in a local and returns it, and `Ov013Vec c = Ov013_Around(...);` gives the target's additional stack slots and copies. An out-pointer version does not.
 - **A `const` pointer parameter can change codegen.** Declaring the function's `pos` parameter as `const Ov013Vec *` took `func_ov013_022038a8` from 12 diffs to 0.
+
+## Reusing a sibling file's helper (main, round 28)
+
+- **Look for the same computation in the neighbouring files before rewriting it.** `func_02048a48` (a backup write in `SaveBase_5.cpp`) sat at 9 diffs for several rounds: its pool loads came out in the wrong order with every expression form of the backup offset. `SaveBase_4.cpp` already had a matched `BackupDataOffset` written as load-then-accumulate (`off = dataSize * slotCount; off += baseOffset + headerSize; off += idx * dataSize;`). Using that body (now `SaveBase_BackupOffset` in `SaveBase.h`) matched at once.
+- **A null test keeps a sub-object address unfolded.** In the parked `func_02050ebc`, the target reads `owner->sub.id` (offset 0x3d2) as `add r0, r4, #0x3c0; ldrh r0, [r0, #0x12]`, where MWCC folds every plain form into `#0x300` + `#0xd2`. Only `(sub = &owner->sub) != NULL && sub->id != 0x1000` kept the `#0x3c0` add (3 diffs: `adds` and conditional loads remain). The original's form is still unknown.

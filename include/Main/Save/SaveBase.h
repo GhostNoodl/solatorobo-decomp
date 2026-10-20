@@ -128,7 +128,10 @@ static inline u32 SaveBase_DataOffset(SaveBase *s, s32 idx) {
 }
 
 static inline u32 SaveBase_BackupOffset(SaveBase *s, s32 idx) {
-    return s->baseOffset + s->headerSize + s->dataSize * s->slotCount + idx * s->dataSize;
+    u32 off = s->dataSize * s->slotCount;
+    off += s->baseOffset + s->headerSize;
+    off += idx * s->dataSize;
+    return off;
 }
 
 static inline void SaveBase_BuildSlot(SaveBase *s) {

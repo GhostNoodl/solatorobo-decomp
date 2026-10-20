@@ -40,7 +40,6 @@ void func_02048868(SaveBase *s) {
     }
 }
 
-#ifdef NONMATCHING
 BOOL func_02048a48(SaveBase *s, SaveHeader *hdr) {
     switch (s->step) {
         case 100:
@@ -66,6 +65,5 @@ BOOL func_02048a48(SaveBase *s, SaveHeader *hdr) {
     }
     return TRUE;
 }
-#endif
 
 }
