@@ -3103,7 +3103,7 @@ src/ov000/Win_021c37f0.cpp:
 
 src/ov000/Robo_021a7574.cpp:
     complete
-    .text       start:0x021a7574 end:0x021a7af0
+    .text       start:0x021a70b0 end:0x021a7af0
 
 src/ov000/Obj_02170620.cpp:
     complete
@@ -3236,3 +3236,27 @@ src/ov000/Body_021987b8.c:
 src/ov000/Win_0215f618.cpp:
     complete
     .text       start:0x0215f618 end:0x0215f970
+
+src/ov000/Ai_02197ee0.cpp:
+    complete
+    .text       start:0x02197ee0 end:0x0219830c
+
+src/ov000/ActorEx_02194758.cpp:
+    complete
+    .text       start:0x02194758 end:0x02194c08
+
+src/ov000/Robo_021aef50.cpp:
+    complete
+    .text       start:0x021aef50 end:0x021af464
+
+src/ov000/Gfx_021ba338.cpp:
+    complete
+    .text       start:0x021ba338 end:0x021ba858
+
+src/ov000/Robo_021a5d00.cpp:
+    complete
+    .text       start:0x021a5d00 end:0x021a6280
+
+src/ov000/Robo_021af464.cpp:
+    complete
+    .text       start:0x021af464 end:0x021afaf8

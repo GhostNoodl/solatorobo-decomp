@@ -82,6 +82,145 @@ static inline s32 FxMul64(s64 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
+extern u8 data_ov000_021cc64e[];
+extern u8 data_ov000_021cc68a[];
+extern u8 data_ov000_021cc690[];
+extern u8 data_ov000_021ca090[];
+extern void *data_02097e4c;
+void func_ov000_02191318(void *a, s32 frame);
+void func_ov000_02191780(void *a);
+void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+s32 func_01ffbd6c(void *a, void *b, s32 c, s32 d, s32 e, s32 f);
+void VEC_MultAdd(s32 a, const void *v1, const void *v2, void *out);
+void func_ov000_0218d398(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+
+typedef struct {
+    s32 x, y, z;
+} Vec021a70b0;
+
+typedef struct {
+    u16 x, y, z;
+} Rot021a70b0;
+
+typedef struct {
+    Vec021a70b0 pos;
+    Rot021a70b0 rot;
+    u8 pad[2];
+    s32 unk_14;
+} Msg021a70b0;
+
+typedef struct {
+    u16 b0 : 3;
+    u16 b3 : 1;
+    u16 b4 : 12;
+} B22_021a70b0;
+
+void func_ov000_021a70b0(u8 *self) {
+    switch (LFLD(State021a783c *, self, 0x40)->state) {
+    case 0:
+        if (LFLD(B22_021a70b0, self, 0xb22).b3) {
+            func_ov000_02190cb0(LFLD(void *, self, 0x38), data_ov000_021cc64e, 0x555, 0);
+            func_ov000_02191318(LFLD(void *, self, 0x38), 0xa000);
+            func_ov000_02191780(LFLD(void *, self, 0x38));
+        } else if (LFLD(B24_021a783c, self, 0xb24).lock == 1) {
+            func_ov000_02190cb0(LFLD(void *, self, 0x38), data_ov000_021cc68a, 0x555, 0);
+        } else {
+            func_ov000_02190cb0(LFLD(void *, self, 0x38), data_ov000_021cc690, 0x333, 0);
+            {
+                u8 *m = LFLD(u8 *, self, 0x38);
+                LFLD(void *, m, 0xd8) = data_ov000_021ca090;
+                LFLD(void *, m, 0xdc) = data_ov000_021ca090;
+            }
+        }
+        if (LFLD(s32, self, 0xa0) > 0) {
+            LFLD(s32, self, 0xa0) = 0;
+        }
+        LFLD(s32, self, 0xa4) = 0x99a;
+        LFLD(s32, self, 0xa8) = 10;
+        LFLD(State021a783c *, self, 0x40)->state++;
+        break;
+    case 1: {
+        u16 ang;
+        u8 *t = func_ov000_0218d240(self);
+        if (t != NULL) {
+            ang = AngleTo(self, t);
+        } else {
+            ang = LFLD(u16, self, 0x7e);
+            if (LFLD(u8, self, 0x15) == 1 && (LFLD(u16, self, 0xb68) & 0xf0)) {
+                ang = CamYaw((Cam021a783c *)(data_ov000_021ccd54 + 0xf4)) + LFLD(u16, self, 0xb6e);
+            }
+        }
+        LFLD(u16, self, 0x7e) = func_01ffc128(ang, LFLD(u16, self, 0x7e), 0x59a, 1, 0x8000);
+        if (LFLD(B24_021a783c, self, 0xb24).lock != 0 &&
+            (LFLD(s16, LFLD(u8 *, self, 0x38), 0xc4) == 1 || LFLD(B22_021a70b0, self, 0xb22).b3)) {
+            u8 *a;
+            func_02049a48(data_02097e4c, 0x301, -1, -1, -1);
+            a = FindActor021a783c(LFLD(u16, self, 0xb1c));
+            if (a != NULL) {
+                func_ov000_0218d46c(a, LFLD(u16, self, 0xc), 0xb);
+                if (a != NULL) {
+                    Msg021a70b0 m;
+                    Vec021a70b0 v;
+                    if (LFLD(Vec021a70b0 *, a, 0x48) != NULL) {
+                        v = *LFLD(Vec021a70b0 *, a, 0x48);
+                    } else {
+                        v = LFLD(Vec021a70b0, a, 0x70);
+                    }
+                    if (func_01ffbd6c(self + 0x70, &v, -1, 0, 0, -1) != -0x1000) {
+                        v.x -= LFLD(s32, self, 0x70);
+                        v.y -= LFLD(s32, self, 0x74);
+                        v.z -= LFLD(s32, self, 0x78);
+                        VEC_MultAdd(0xc00, &v, self + 0x70, &v);
+                        m.pos = v;
+                        m.rot = LFLD(Rot021a70b0, a, 0x7c);
+                        m.unk_14 = 0;
+                        func_ov000_0218d398(a, LFLD(u16, self, 0xc), 7, TRUE, sizeof(Msg021a70b0), &m);
+                    }
+                }
+            }
+            LFLD(B24_021a783c, self, 0xb24).lock = 0;
+            LFLD(u16, self, 0xb1c) = 0xffff;
+            LFLD(u16, self, 0xb1e) = 0xffff;
+            LFLD(B24_021a783c, self, 0xb24).f7 = LFLD(B24_021a783c, self, 0xb24).b9;
+            LFLD(State021a783c *, self, 0x40)->state++;
+        }
+    }
+    case 2:
+        if (func_ov000_02191120(LFLD(void *, self, 0x38))) {
+            func_ov000_02190cb0(LFLD(void *, self, 0x38), data_ov000_021cc5e3, 0x200, 0);
+            LFLD(State021a783c *, self, 0x40)->state++;
+            LFLD(State021a783c *, self, 0x40)->timer = 0;
+            LFLD(s32, self, 0xa4) = 0x800;
+        }
+        break;
+    case 3: {
+        State021a783c *st = LFLD(State021a783c *, self, 0x40);
+        st->timer++;
+        if (st->timer > 15) {
+            LFLD(s32, self, 0xa8) = 0x52;
+            func_ov000_02198360(LFLD(State021a783c *, self, 0x40), 1, 0);
+        }
+        break;
+    }
+    }
+    func_ov000_021b1fac(self, FALSE, 0);
+    if (!LBIT(self, 0xb24).b1) {
+        return;
+    }
+    if (!(LFLD(u32, LFLD(u8 *, self, 0x48), 0x54) & 0x400)) {
+        return;
+    }
+    LFLD(u16, self, 0x98) = FX_Atan2(LFLD(s32, self, 0xaf0) - LFLD(s32, self, 0x70),
+                                     LFLD(s32, self, 0xaf8) - LFLD(s32, self, 0x78));
+    LFLD(s32, self, 0x9c) = 0x66;
+    LFLD(s32, self, 0xa4) = 0;
+    if (!LBIT(self, 0xb24).b17 || (LFLD(u32, LFLD(u8 *, self, 0x48), 0x50) & 0x40000000)) {
+        LFLD(s32, self, 0xa0) = 0x200;
+    }
+    LFLD(s32, self, 0xa8) = 0x52;
+    LBIT(self, 0xb24).b17 = 1;
+}
+
 void func_ov000_021a7574(u8 *self) {
     switch (LFLD(State021a783c *, self, 0x40)->state) {
     case 0:
