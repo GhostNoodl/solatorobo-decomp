@@ -279,7 +279,7 @@ src/ov000/Stub_0215bef8.cpp:
 
 src/ov000/Stub_0215c1a8.cpp:
     complete
-    .text       start:0x0215c1a8 end:0x0215c1bc
+    .text       start:0x0215c1a8 end:0x0215c718
 
 src/ov000/Stub_0215ced8.cpp:
     complete
@@ -3272,3 +3272,7 @@ src/ov000/Lo_02156d48.cpp:
 src/ov000/Lo_021640fc.cpp:
     complete
     .text       start:0x021640fc end:0x021643e8
+
+src/ov000/Lo_0214d304.cpp:
+    complete
+    .text       start:0x0214d304 end:0x0214d994
