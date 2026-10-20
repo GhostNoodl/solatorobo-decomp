@@ -50,27 +50,29 @@ VramBlock *func_02039828(VramBlock *block) {
     return func_0203994c(data_02097ce0, block);
 }
 
-#ifdef NONMATCHING
 VramBlock *func_02039844(GfxMgr *mgr, VramPool *pool, u32 size) {
-    VramBlock *block;
-    int count;
     u32 align;
-    VramBlock *spare;
-    int i;
     u32 mask;
+    int i;
+    u32 shift;
+    VramBlock *block;
+    VramBlock *spare;
+    int count;
     block = pool->blocks;
-    count = pool->numBlocks;
-    align = 0x20 << pool->alignShift;
     if (size == 0) {
         size = 0x20;
     }
+    count = pool->numBlocks;
+    i = 0x20;
+    if ((u32)pool & 3) i = 0x20;
+    align = i << pool->alignShift;
     spare = block;
     for (i = 0; i < count; i++, spare++) {
         if (spare->size == 0) {
             break;
         }
     }
-    if (i == count) {
+    if (i == pool->numBlocks) {
         return NULL;
     }
     mask = align - 1;
@@ -99,6 +101,5 @@ VramBlock *func_02039844(GfxMgr *mgr, VramPool *pool, u32 size) {
     } while (block != NULL);
     return NULL;
 }
-#endif
 
 }

@@ -1009,3 +1009,20 @@ Nothing matched this round, so TU1 is still not merged. Drafts are in `scratchpa
 - **The 32 zero bytes at the start of ITCM.** Nothing refers to `0x01ff8000`..`0x01ff8020`. While `func_01ff8020` was unmatched they were part of its gap object; as a gap of their own, the linker dead-strips them and everything after moves down by 0x20. `mi_dma_itcm.c` now starts with a `#pragma force_active on` asm block of eight `andeq r0, r0, r0` (the zero word), named `ITCMi_Pad` and listed as `kind:data(any)` in `symbols.txt`, because `dsd` refuses to analyse it as a function. Written as `dcd 0` it links the same, but the report shows it at 40%.
 - **`MIi_DmaSetParameters` matched on the first try** (TwlSDK, `libs/nitro/mi/mi_dma_itcm.c`). Its mode bits are 1 = no interrupt disable, 2 = the dummy reads and DMA0 clear, 4 = skip the clear, 0x10/0x20 = 32/16-bit fill source. The names in `mi_dma.c` (`NOINT = 2`, `WAIT = 4`) do not follow this.
 - **`func_01ffae08` (13), `func_01ff868c` (36), `func_01ff9f9c` / `func_01ff9060`: unchanged.** `const` pointer locals and `const` copies of the subtract/scale inlines, `s64` accumulators for the distance, struct copies of the scaled position, and `tdv.py` over every assignment did not move the two `ae08` spots.
+
+## Main-module triage, a field cached in a local, and the TWL blocker (round mainmid1)
+
+- **Triage.** The full table of unmatched main functions outside the TU1/TU2 sets is in `scratchpad/mainmid1/triage.md`. About 25 small main functions can't be matched yet because at least one `bl` goes into TWL-only code: its reloc in `relocs.txt` is `module:none`. Examples are `func_0200c0c4`, `func_020163b8`, `func_0200d85c` and `func_02049344`; the table has the full list. Most of the rest are library code (SDK, NNS, MSL) or register-allocation near-misses.
+- **`func_02039844` matched (`GfxMgr.cpp`).** Two changes were needed:
+  - **The `0x20` register.** It shared a register with the loop index. Building it in the reused index variable with the two-definition trick fixed that: `i = 0x20; if ((u32)pool & 3) i = 0x20; align = i << pool->alignShift;`.
+  - **The load order.** The target loads `numBlocks` (`[r1, #8]`) before `alignShift` (`[r1]`). Ours got this order when `count = pool->numBlocks;` comes right before that line and `count` is used only in the loop condition. The later `i == pool->numBlocks` must still read the field: reusing `count` there too, or moving the read to the top of the function, gives a different register or 64 differences.
+- **`func_0203b12c` (1 → 13): mul operand order.** The target's `mul r3, r2, r5` (`bpp * db`) comes out when the product is written in both of its uses: `dst = buf + (((u16)bpp * db) >> 3); db = ((u16)bpp * db) & 7;`. That moves the registers around (23). A climb over the declaration order (`declhc.py`) brings it back to 13, and now only `db` and `b` are swapped in the inner loop. These did not help: the types of `b` and `db`, `b` declared in the inner block, and a `7 - db` local.
+- **`func_0206d43c` (28 → 14).** Write the align inline as `u32 m = total - 1; x += m; return x & ~m;`. Keep `dataSize` in a local `d` and use `s->dataSize * s->slotCount + d`, so the compiler doesn't factor `a*b + a` into `a*(b+1)`. The rest is registers. It still has to share a file with `func_0206d99c` (the `CODASAVE` pool).
+- **Unchanged.**
+  - `func_02041080` (7). A two-definition `z = 0` before `if (load)` gives the target's structure, but `z` lands in `r0` instead of `r2` (11).
+  - `func_0203d298` (7). Moving `prev = pad->prev;` before the `0x30` fixup gives 8 → 7.
+  - `WH_ChangeSysState` (`02046070`, `020459cc`), `func_0206e858`, `func_02049690` and `func_0206f6d4`: no new form helped.
+- **Tools.** In `scratchpad/mainmid1/`:
+  - `declhc.py src func N` hill-climbs the order of the top declaration block.
+  - `var.py base func 'old' variants.txt` scores text replacements (variants separated by `====`).
+  - `sd.py` and `sdr.py` give the aligned diff count, raw and register-normalised.

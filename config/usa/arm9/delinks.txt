@@ -1038,7 +1038,7 @@ src/Main/Res/ResHandle.cpp:
 
 src/Main/Gfx/GfxMgr.cpp:
     complete
-    .text       start:0x02039720 end:0x02039844
+    .text       start:0x02039720 end:0x0203994c
 
 src/Main/Gfx/GfxMgr_2.cpp:
     complete
