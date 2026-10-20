@@ -124,6 +124,10 @@ src/ov003/ov003_021ed140.c:
     complete
     .text       start:0x021ed058 end:0x021ed15c
 
+src/ov003/ov003_021ed15c.cpp:
+    complete
+    .text       start:0x021ed15c end:0x021ed520
+
 src/ov003/ov003_021d85c8.cpp:
     complete
     .text       start:0x021d85c8 end:0x021d883c
