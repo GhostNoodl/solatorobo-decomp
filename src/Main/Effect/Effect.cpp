@@ -513,4 +513,183 @@ BOOL func_02064400(Effect3D *e) {
     return func_02064308(e, e->time);
 }
 
+
+typedef struct EfMtx33 {
+    EffectVec r[3];
+} EfMtx33;
+
+
+extern const s16 FX_SinCosTable_[];
+extern void VEC_Normalize(const EffectVec *in, EffectVec *out);
+extern const EfMtx33 *NNS_G3dGlbGetInvV(void);
+extern void MTX_RotX33_(EfMtx33 *m, s32 s, s32 c);
+extern void MTX_RotY33_(EfMtx33 *m, s32 s, s32 c);
+extern void MTX_RotZ33_(EfMtx33 *m, s32 s, s32 c);
+extern void MTX_Concat33(const EfMtx33 *a, const EfMtx33 *b, EfMtx33 *out);
+extern void MTX_MultVec33(const EffectVec *v, const EfMtx33 *m, EffectVec *out);
+
+#define EF_SIN(a) FX_SinCosTable_[((a) >> 4) * 2]
+#define EF_COS(a) FX_SinCosTable_[((a) >> 4) * 2 + 1]
+
+static inline void Ef_VecSet(EffectVec *v, s32 x, s32 y, s32 z) {
+    v->x = x;
+    v->y = y;
+    v->z = z;
+}
+
+static inline s32 Ef_FxMul(s32 a, s32 b) {
+    return (s32)(((s64)a * b + 0x800) >> 12);
+}
+
+static inline void Ef_Cross(const EffectVec *a, const EffectVec *b, EffectVec *out) {
+    s32 x = (s32)(((s64)a->y * b->z - (s64)a->z * b->y + 0x800) >> 12);
+    s32 y = (s32)(((s64)a->z * b->x - (s64)a->x * b->z + 0x800) >> 12);
+    s32 z = (s32)(((s64)a->x * b->y - (s64)a->y * b->x + 0x800) >> 12);
+    out->x = x;
+    out->y = y;
+    out->z = z;
+}
+
+static inline s32 Ef_Dot(const EffectVec *a, const EffectVec *b) {
+    return (s32)(((s64)a->x * b->x + (s64)a->y * b->y + (s64)a->z * b->z + 0x800) >> 12);
+}
+
+static inline void Ef_RotYXZ(EfMtx33 *m, const EffectRot *rot) {
+    u16 rx;
+    u16 ry;
+    u16 rz;
+    EfMtx33 t;
+    BOOL set;
+    ry = rot->y;
+    rz = rot->z;
+    rx = rot->x;
+    set = FALSE;
+    MTX_Identity33_(m);
+    if (ry != 0) {
+        MTX_RotY33_(m, EF_SIN(ry), EF_COS(ry));
+        set = TRUE;
+    }
+    if (rx != 0) {
+        if (set) {
+            MTX_RotX33_(&t, EF_SIN(rx), EF_COS(rx));
+            MTX_Concat33(&t, m, m);
+        } else {
+            MTX_RotX33_(m, EF_SIN(rx), EF_COS(rx));
+            set = TRUE;
+        }
+    }
+    if (rz != 0) {
+        if (set) {
+            MTX_RotZ33_(&t, EF_SIN(rz), EF_COS(rz));
+            MTX_Concat33(&t, m, m);
+        } else {
+            MTX_RotZ33_(m, EF_SIN(rz), EF_COS(rz));
+            set = TRUE;
+        }
+    }
+}
+
+static inline void Ef_RotZYX(EfMtx33 *m, const EffectRot *rot) {
+    u16 rx;
+    u16 ry;
+    u16 rz;
+    EfMtx33 t;
+    BOOL set;
+    ry = rot->y;
+    rx = rot->x;
+    rz = rot->z;
+    set = FALSE;
+    MTX_Identity33_(m);
+    if (rz != 0) {
+        MTX_RotZ33_(m, EF_SIN(rz), EF_COS(rz));
+        set = TRUE;
+    }
+    if (ry != 0) {
+        if (set) {
+            MTX_RotY33_(&t, EF_SIN(ry), EF_COS(ry));
+            MTX_Concat33(&t, m, m);
+        } else {
+            MTX_RotY33_(m, EF_SIN(ry), EF_COS(ry));
+            set = TRUE;
+        }
+    }
+    if (rx != 0) {
+        if (set) {
+            MTX_RotX33_(&t, EF_SIN(rx), EF_COS(rx));
+            MTX_Concat33(&t, m, m);
+        } else {
+            MTX_RotX33_(m, EF_SIN(rx), EF_COS(rx));
+            set = TRUE;
+        }
+    }
+}
+
+void func_02064410(Effect3D *e) {
+    EffectVec trans;
+    EfMtx33 rot;
+    EffectVec dir;
+    EffectVec side;
+    EfMtx33 r;
+    EffectVec zv;
+    EffectVec up;
+    EffectVec xv;
+    EffectVec scale;
+    trans.x = Ef_FxMul(e->offset.x, e->scale.x);
+    trans.y = Ef_FxMul(e->offset.y, e->scale.y);
+    trans.z = Ef_FxMul(e->offset.z, e->scale.z);
+    if (e->posPtr != NULL) {
+        VEC_Add(&trans, e->posPtr, &trans);
+    } else {
+        VEC_Add(&trans, &e->pos, &trans);
+    }
+    NNS_G3dGlbSetBaseTrans(&trans);
+    if (e->unk_28 == 1) {
+        MI_Copy36B(NNS_G3dGlbGetInvV(), &rot);
+    } else if (e->unk_28 == 2) {
+        EffectVec up2;
+        up2.x = 0;
+        up2.y = 0x1000;
+        up2.z = 0;
+        dir.x = ((s32 *)data_02092844)[2];
+        dir.y = ((s32 *)data_02092844)[5];
+        dir.z = ((s32 *)data_02092844)[8];
+        Ef_Cross(&up2, &dir, &side);
+        VEC_Normalize(&side, &side);
+        Ef_Cross(&side, &up2, &dir);
+        VEC_Normalize(&dir, &dir);
+        rot.r[0] = side;
+        rot.r[1] = up2;
+        rot.r[2] = dir;
+    } else if (e->unk_28 == 3) {
+        const EfMtx33 *inv = NNS_G3dGlbGetInvV();
+        Ef_VecSet(&zv, inv->r[2].x, inv->r[2].y, inv->r[2].z);
+        Ef_VecSet(&xv, inv->r[0].x, inv->r[0].y, inv->r[0].z);
+        Ef_VecSet(&up, 0, 0x1000, 0);
+        Ef_RotYXZ(&r, &e->rot);
+        MTX_MultVec33(&up, &r, &up);
+        VEC_MultAdd(-Ef_Dot(&up, &zv), &zv, &up, &up);
+        VEC_Normalize(&up, &up);
+        Ef_Cross(&up, &zv, &xv);
+        VEC_Normalize(&xv, &xv);
+        rot.r[0] = xv;
+        rot.r[1] = up;
+        rot.r[2] = zv;
+    } else if (e->unk_29) {
+        Ef_RotYXZ(&rot, &e->rot);
+    } else {
+        Ef_RotZYX(&rot, &e->rot);
+    }
+    MI_Copy36B(&rot, data_020928b4);
+    NNS_G3dGlb.flags &= ~0xa4;
+    {
+        s32 k = e->unk_4c;
+        scale.x = Ef_FxMul(e->scale.x, k);
+        scale.y = Ef_FxMul(e->scale.y, k);
+        scale.z = Ef_FxMul(e->scale.z, k);
+    }
+    NNS_G3dGlbSetBaseScale(&scale);
+    NNS_G3dGlbFlushP();
+    NNS_G3dDraw(&e->renderObj);
+}
+
 }

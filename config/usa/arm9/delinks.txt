@@ -1438,7 +1438,7 @@ src/Main/Res/StageRes_4.cpp:
 
 src/Main/Res/StageRes_5.cpp:
     complete
-    .text       start:0x0205b8c4 end:0x0205b8dc
+    .text       start:0x0205b8c4 end:0x0205beb0
 
 src/Main/Res/StageCmd_0.cpp:
     complete
@@ -1502,7 +1502,7 @@ src/Main/Res/StageRes_6.cpp:
 
 src/Main/Sys/SysTask.cpp:
     complete
-    .text       start:0x0206298c end:0x02062ac8
+    .text       start:0x0206298c end:0x02063374
 
 src/Main/Sys/SysTask_2.cpp:
     complete
@@ -1510,7 +1510,7 @@ src/Main/Sys/SysTask_2.cpp:
 
 src/Main/Effect/Effect.cpp:
     complete
-    .text       start:0x0206379c end:0x02064410
+    .text       start:0x0206379c end:0x02064b40
 
 src/Main/Effect/Effect_2.cpp:
     complete
@@ -1522,7 +1522,7 @@ src/Main/Effect/Effect_3.cpp:
 
 src/Main/Effect/Effect_4.cpp:
     complete
-    .text       start:0x02065eec end:0x02065f88
+    .text       start:0x02065eec end:0x02066774
 
 src/Main/Effect/Effect_5.cpp:
     complete
