@@ -125,6 +125,70 @@ TextLayout *func_0204c4d4(TextLayout *layout) {
     return layout;
 }
 
+// Measures str: the widest line in *outW and the total height in *outH.
+// Returns the number of characters; raw skips escapes and tags.
+s32 func_0204c4fc(s32 font, s32 spacing, const char *str, s32 *outW, s32 *outH, bool raw) {
+    const char *s;
+    TextScanParser p;
+    u16 c;
+    s32 w;
+    s32 n;
+    NNSG2dFont *f;
+    TextScanCharFn fn;
+    s32 maxW;
+    s32 h;
+    data_02097ce0->unk_004 = font;
+    f = (NNSG2dFont *)func_0203a4c0(data_02097ce0);
+    fn = (TextScanCharFn)f->cbCharSpliter;
+    s = str;
+    p.vt = data_0208ba70;
+    func_0204c7d0((TextWin *)&p);
+    n = 0;
+    w = 0;
+    maxW = 0;
+    h = spacing + f->pRes->pGlyph->cellHeight;
+    while (*s != 0) {
+        while ((c = fn(&s)) != 0) {
+            if (c == '\n') {
+                if (w > maxW) {
+                    maxW = w;
+                }
+                w = 0;
+                h += spacing + f->pRes->pGlyph->cellHeight;
+                break;
+            }
+            if (!raw) {
+                if (c == '\\') {
+                    c = fn(&s);
+                } else if (c == '<') {
+                    func_0204cc18(&p, &s);
+                    if (*s == 0) {
+                        break;
+                    }
+                    continue;
+                }
+            }
+            w += NNS_G2dFontGetCharWidth(f, c);
+            n++;
+            if (*s == 0) {
+                break;
+            }
+        }
+    }
+    if (w > maxW) {
+        maxW = w;
+    }
+    if (outW != NULL) {
+        *outW = maxW;
+    }
+    if (outH != NULL) {
+        *outH = h;
+    }
+    p.vt = data_0208ba70;
+    ((TextLayout *)&p)->Clear();
+    return n;
+}
+
 void func_0204c7d0(TextWin *win);
 
 void func_0204c8a8(TextWin *win);

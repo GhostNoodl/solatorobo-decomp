@@ -1278,7 +1278,7 @@ src/Main/Res/MsgRes_3.cpp:
 
 src/Main/Gfx/TextWin.cpp:
     complete
-    .text       start:0x0204c2f4 end:0x0204c4fc
+    .text       start:0x0204c2f4 end:0x0204c6bc
 
 src/Main/Gfx/TextWinScan.cpp:
     complete
