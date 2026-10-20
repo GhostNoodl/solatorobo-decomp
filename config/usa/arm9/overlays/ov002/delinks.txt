@@ -499,7 +499,7 @@ src/ov002/ov002_021e1cc8.cpp:
 
 src/ov002/ov002_021e1d28.cpp:
     complete
-    .text       start:0x021e1d28 end:0x021e1ed8
+    .text       start:0x021e1d28 end:0x021e23ac
 
 src/ov002/ov002_021e23ac.cpp:
     complete
