@@ -2717,6 +2717,10 @@ src/ov000/Heap_021c3bb0.cpp:
     complete
     .text       start:0x021c3bb0 end:0x021c3d20
 
+src/ov000/Unit_021c3d20.cpp:
+    complete
+    .text       start:0x021c3d20 end:0x021c3fd4
+
 src/ov000/Ctor_0219bfbc.cpp:
     complete
     .text       start:0x0219bfbc end:0x0219c24c
@@ -3253,6 +3257,10 @@ src/ov000/Robo_021a3e50.cpp:
     complete
     .text       start:0x021a3e50 end:0x021a4194
 
+src/ov000/Robo_021a4194.cpp:
+    complete
+    .text       start:0x021a4194 end:0x021a4a6c
+
 src/ov000/Robo_021a98bc.cpp:
     complete
     .text       start:0x021a98bc end:0x021a9be8
@@ -3264,6 +3272,10 @@ src/ov000/Robo_021abc88.cpp:
 src/ov000/Robo_021ac080.cpp:
     complete
     .text       start:0x021ac080 end:0x021ac844
+
+src/ov000/Robo_021ac844.cpp:
+    complete
+    .text       start:0x021ac844 end:0x021ad130
 
 src/ov000/Body_021987b8.c:
     complete
