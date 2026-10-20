@@ -30,4 +30,57 @@ BOOL func_01ffc584(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h) {
     return ret;
 }
 
+
+// h is volatile so that it is read once, into a register, where the cylinder test starts (the
+// target loads it after the first compare instead of at its use).
+BOOL func_01ffc624(VecFx32 *p, const VecFx32 *trans, u16 *rot, fx32 r, volatile fx32 h) {
+    MtxFx43 m;
+    VecFx32 v;
+    MtxFx43 tmp;
+    BOOL init;
+    u16 rz;
+    u16 ry;
+    u16 rx;
+    BOOL ret;
+
+    ry = rot[1];
+    rz = rot[2];
+    rx = rot[0];
+    init = FALSE;
+    MTX_Identity43(&m);
+    if (ry != 0) {
+        MTX_RotY43(&m, HitSinIdx(ry), HitCosIdx(ry));
+        init = TRUE;
+    }
+    if (rx != 0) {
+        if (init) {
+            MTX_RotX43(&tmp, HitSinIdx(rx), HitCosIdx(rx));
+            MTX_Concat43(&tmp, &m, &m);
+        } else {
+            MTX_RotX43(&m, HitSinIdx(rx), HitCosIdx(rx));
+            init = TRUE;
+        }
+    }
+    if (rz != 0) {
+        if (init) {
+            MTX_RotZ43(&tmp, HitSinIdx(rz), HitCosIdx(rz));
+            MTX_Concat43(&tmp, &m, &m);
+        } else {
+            MTX_RotZ43(&m, HitSinIdx(rz), HitCosIdx(rz));
+        }
+    }
+    m._30 = trans->x;
+    m._31 = trans->y;
+    m._32 = trans->z;
+    MTX_Inverse43(&m, &m);
+    MTX_MultVec43(p, &m, &v);
+    ret = FALSE;
+    if (HitInCylinder(&v, r, h)) {
+        if (HitMagSqXZ(&v) <= FX_Mul(r, r)) {
+            ret = TRUE;
+        }
+    }
+    return ret;
+}
+
 }

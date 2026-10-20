@@ -57,4 +57,48 @@ BOOL func_01ffc2a4(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max) {
     return HitInBox(&d, min, max);
 }
 
+
+BOOL func_01ffc318(VecFx32 *p, const VecFx32 *trans, VecFx32 *min, VecFx32 *max, u16 *rot) {
+    MtxFx43 m;
+    VecFx32 v;
+    MtxFx43 tmp;
+    BOOL init;
+    u16 rz;
+    u16 ry;
+    u16 rx;
+
+    ry = rot[1];
+    rz = rot[2];
+    rx = rot[0];
+    init = FALSE;
+    MTX_Identity43(&m);
+    if (ry != 0) {
+        MTX_RotY43(&m, HitSinIdx(ry), HitCosIdx(ry));
+        init = TRUE;
+    }
+    if (rx != 0) {
+        if (init) {
+            MTX_RotX43(&tmp, HitSinIdx(rx), HitCosIdx(rx));
+            MTX_Concat43(&tmp, &m, &m);
+        } else {
+            MTX_RotX43(&m, HitSinIdx(rx), HitCosIdx(rx));
+            init = TRUE;
+        }
+    }
+    if (rz != 0) {
+        if (init) {
+            MTX_RotZ43(&tmp, HitSinIdx(rz), HitCosIdx(rz));
+            MTX_Concat43(&tmp, &m, &m);
+        } else {
+            MTX_RotZ43(&m, HitSinIdx(rz), HitCosIdx(rz));
+        }
+    }
+    m._30 = trans->x;
+    m._31 = trans->y;
+    m._32 = trans->z;
+    MTX_Inverse43(&m, &m);
+    MTX_MultVec43(p, &m, &v);
+    return HitInBox(&v, min, max);
+}
+
 }

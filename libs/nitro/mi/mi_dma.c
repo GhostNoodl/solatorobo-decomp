@@ -52,9 +52,8 @@ typedef void (*MIDmaCallback)(void *arg);
         while (*dmaCntp & REG_MI_DMA0CNT_E_MASK) {}           \
     } while (0)
 
-// MIi_DmaSetParameters lives in ITCM under its address name
-void func_01ff8020(u32 dmaNo, u32 src, u32 dest, u32 ctrl, u32 mode);
-#define MIi_DmaSetParameters func_01ff8020
+// MIi_DmaSetParameters lives in ITCM (mi_dma_itcm.c)
+void MIi_DmaSetParameters(u32 dmaNo, u32 src, u32 dest, u32 ctrl, u32 mode);
 void OSi_EnterDmaCallback(u32 dmaNo, void (*callback)(void *), void *arg);
 void MIi_CheckDma0SourceAddress(u32 dmaNo, u32 src, u32 size, u32 dir);
 void MI_WaitDma(u32 dmaNo);
