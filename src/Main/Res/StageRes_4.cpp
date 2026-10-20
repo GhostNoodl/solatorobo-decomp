@@ -135,5 +135,74 @@ u16 func_0205b588(StageRes *res, u16 *cmd) {
     return len;
 }
 
+// Writes n bits of val, LSB first, from bit `start` of block idx's data.
+static inline void DataRes_WriteBits(DataRes *res, u32 idx, s32 n, u16 start, u16 val) {
+    u8 *bytes;
+    u16 i;
+    bytes = (u8 *)((SaveLayout *)res->data)->blocks + ((SaveLayout *)res->data)->blocks[idx].offset;
+    for (i = 0; i < n; i++) {
+        int pos = start + i;
+        u8 v = (val >> i) & 1;
+        u16 byte = pos >> 3;
+        u8 sh = pos & 7;
+        bytes[byte] &= ~(1 << sh);
+        bytes[byte] |= v << sh;
+    }
+}
+
+#define STAGE_VARS ((u16 *)&data_02fe1534)
+
+u16 func_0205b68c(StageRes *res, u16 *cmd, BOOL set, u16 value) {
+    u16 type = cmd[1];
+    u16 len = 2;
+    if (!set) {
+        switch (type) {
+        case 1:
+            res->value = STAGE_VARS[cmd[2]];
+            len++;
+            break;
+        case 2: {
+            u16 v = cmd[2];
+            int n = v & 0xff;
+            res->value = DataRes_ReadBits(data_02fe152c, (v & 0xff00) >> 8, n, cmd[3]);
+            len += 2;
+            break;
+        }
+        case 3:
+            len++;
+            res->value = cmd[2];
+            break;
+        }
+    } else {
+        switch (type) {
+        case 1: {
+            u16 idx = cmd[2];
+            if (idx < 0x38) {
+                data_02149efc.unk_00++;
+            }
+            if (STAGE_VARS[0] != 1) {
+                STAGE_VARS[idx] = value;
+            } else if (idx >= 0x38 && idx <= 0x3b) {
+                STAGE_VARS[cmd[2]] = value;
+            }
+            len++;
+            break;
+        }
+        case 2:
+            data_02149efc.unk_00++;
+            if (STAGE_VARS[0] != 1) {
+                u16 v = cmd[2];
+                int n = v & 0xff;
+                DataRes_WriteBits(data_02fe152c, (v & 0xff00) >> 8, n, cmd[3], value);
+            }
+            len += 2;
+            break;
+        case 3:
+            len++;
+            break;
+        }
+    }
+    return len;
+}
 
 }
