@@ -30,18 +30,5 @@ data_ov007_021cfba8 kind:data(any) addr:0x021cfba8
 data_ov007_021cfbb4 kind:data(any) addr:0x021cfbb4
 data_ov007_021cfbc0 kind:data(any) addr:0x021cfbc0
 data_ov007_021cfbcc kind:data(any) addr:0x021cfbcc
-data_ov007_021cfbd8 kind:data(any) addr:0x021cfbd8
-data_ov007_021cfbe7 kind:data(any) addr:0x021cfbe7
-data_ov007_021cfbf1 kind:data(any) addr:0x021cfbf1
-data_ov007_021cfbfd kind:data(any) addr:0x021cfbfd
-data_ov007_021cfc0a kind:data(any) addr:0x021cfc0a
-data_ov007_021cfc14 kind:data(any) addr:0x021cfc14
-data_ov007_021cfc20 kind:data(any) addr:0x021cfc20
-data_ov007_021cfc2c kind:data(any) addr:0x021cfc2c
-data_ov007_021cfc36 kind:data(any) addr:0x021cfc36
-data_ov007_021cfc40 kind:data(any) addr:0x021cfc40
-data_ov007_021cfc4a kind:data(any) addr:0x021cfc4a
-data_ov007_021cfc56 kind:data(any) addr:0x021cfc56
-data_ov007_021cfc59 kind:data(any) addr:0x021cfc59
-data_ov007_021cfc5c kind:data(any) addr:0x021cfc5c
+@stringBase0 kind:data(byte[0x87]) addr:0x021cfbd8 local
 data_ov007_021cfc60 kind:bss addr:0x021cfc60

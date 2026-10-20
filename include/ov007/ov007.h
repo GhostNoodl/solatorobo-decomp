@@ -233,7 +233,6 @@ extern "C" {
 extern Ov007Scene *data_ov007_021cfc60;
 extern u8 *data_02097d48;
 extern void *data_0208b318;
-extern char data_ov007_021cfbd8[];
 extern void *data_ov000_021ccd54;
 extern void *data_ov000_021cac60;
 extern void *data_ov000_021cad50;
