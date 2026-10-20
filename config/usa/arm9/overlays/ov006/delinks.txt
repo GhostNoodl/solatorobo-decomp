@@ -386,6 +386,10 @@ src/ov006/ov006_021db1b8.cpp:
     complete
     .text       start:0x021db1b8 end:0x021db258
 
+src/ov006/ov006_021db258.cpp:
+    complete
+    .text       start:0x021db258 end:0x021db65c
+
 src/ov006/ov006_021db8c4.cpp:
     complete
     .text       start:0x021db8c4 end:0x021db95c
