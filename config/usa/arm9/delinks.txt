@@ -994,7 +994,7 @@ libs/mobiclip/mobiclip_api.cpp:
 
 libs/mobiclip/mobiclip_player.cpp:
     complete
-    .text       start:0x02033df0 end:0x02034600
+    .text       start:0x02033858 end:0x02034600
 
 libs/mobiclip/mobiclip_mem.cpp:
     complete

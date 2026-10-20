@@ -63,7 +63,7 @@ typedef struct MoKeyFrame {
 
 typedef struct MoPlayer {
     /* 0x00 */ MoStream *stream;
-    /* 0x04 */ u8 unk_04[0x4];
+    /* 0x04 */ s8 magic[4];
     /* 0x08 */ s8 signature[4];
     /* 0x0c */ u32 numFrames;
     /* 0x10 */ u32 width;

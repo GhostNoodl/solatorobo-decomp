@@ -1,8 +1,149 @@
 #include "mobiclip/mobiclip.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
 extern void func_02043e2c(void *ptr);
+extern void *func_02043e1c(u32 size);
+extern void *func_0203465c(void);
+extern void *func_020346d4(void);
+extern void *func_02034740(void);
+extern u32 func_020347ac(void);
+
+#define MOFLD(type, p, off) (*(type *)((u8 *)(p) + (off)))
+
+BOOL func_02033858(MoPlayer *player, MoStream *stream, u32 flags) {
+    u32 i;
+    s32 k;
+    s32 k2;
+    u32 pos;
+    u32 header;
+    s8 tag[2];
+    u16 size;
+    MoVideoDecoder *dec;
+
+    player->stream = stream;
+    player->dataOffset = stream->position;
+    if (!stream->Read(player->magic, 0x30)) {
+        return FALSE;
+    }
+    if (player->magic[0] != 'M' || player->magic[1] != 'O' || player->magic[2] != 'D' || player->magic[3] != 'S' ||
+        player->signature[0] != 'N' || (player->signature[1] != '2' && player->signature[1] != '3') ||
+        MOFLD(u16, player, 0xa) != 10) {
+        return FALSE;
+    }
+    if (player->signature[0] == 'N' && player->signature[1] == '3') {
+        do {
+            if (!player->stream->Read(tag, 2)) {
+                return FALSE;
+            }
+            if (!player->stream->Read(&size, 2)) {
+                return FALSE;
+            }
+            if (!player->stream->Seek((size << 2) + player->stream->position)) {
+                return FALSE;
+            }
+        } while (!(tag[0] == 'H' && tag[1] == 'E'));
+    }
+    if (player->audioCodec != 0 && player->audioCodec != 1 && player->audioCodec != 2 && player->audioCodec != 3 &&
+        player->audioCodec != 4) {
+        return FALSE;
+    }
+    dec = (MoVideoDecoder *)func_02043e1c(0x454);
+    player->decoder = dec;
+    MIi_CpuClearFast(0, dec, 0x454);
+    player->decodeFunc = (int (*)(MoVideoDecoder *))func_0203465c();
+    MOFLD(void *, player->decoder, 0x3c) = func_020346d4();
+    MOFLD(u32, player->decoder, 0x40) = 0x2079bb8;
+    MOFLD(u32, player->decoder, 0x44) = func_020347ac() + 0x40;
+    MOFLD(u32, player, 0x4c) = player->width;
+    MOFLD(u32, player, 0x50) = player->height;
+    MOFLD(void *, player, 0x54) = func_02034740();
+    MOFLD(u32, player->decoder, 0x4) = player->width;
+    MOFLD(u32, player->decoder, 0x8) = player->height;
+    if (player->width > 0x100) {
+        return FALSE;
+    }
+    if (flags < 6) {
+        return FALSE;
+    }
+    player->numBuffers = flags;
+    player->framesY = (void **)func_02043e1c(flags * 4);
+    if (player->framesY == NULL) {
+        return FALSE;
+    }
+    player->framesUV = (void **)func_02043e1c(player->numBuffers * 4);
+    if (player->framesUV == NULL) {
+        return FALSE;
+    }
+    for (i = 0; i < player->numBuffers; i++) {
+        player->framesY[i] = func_02043e1c(player->height << 8);
+        if (player->framesY[i] == NULL) {
+            return FALSE;
+        }
+        player->framesUV[i] = func_02043e1c((player->height >> 1) << 8);
+        if (player->framesUV[i] == NULL) {
+            return FALSE;
+        }
+        MIi_CpuClearFast(0, player->framesY[i], player->height << 8);
+        MI_CpuFill8(player->framesUV[i], 0x80, (player->height >> 1) << 8);
+    }
+    player->unk_64 = (u32 *)func_02043e1c(player->numBuffers * 4);
+    if (player->unk_64 == NULL) {
+        return FALSE;
+    }
+    player->curFrame = 0;
+    player->refIndices[0] = 0;
+    for (k = 1; k < 6; k++) {
+        player->refIndices[k] = player->numBuffers - k;
+    }
+    player->curBuffer = 0;
+    player->decodedFrames = 0;
+    player->shownFrames = 0;
+    for (k = 0; k < 2; k++) {
+        player->chunkBuffers[k] = func_02043e1c(MOFLD(u32, player, 0x24) + 0x400);
+        if (player->chunkBuffers[k] == NULL) {
+            return FALSE;
+        }
+    }
+    if (player->audioCodec != 0) {
+        player->audioDecoders = (MoAudioDecoder *)func_02043e1c(player->audioChannels * sizeof(MoAudioDecoder));
+        if (player->audioDecoders == NULL) {
+            return FALSE;
+        }
+        MIi_CpuClearFast(0, player->audioDecoders, player->audioChannels * sizeof(MoAudioDecoder));
+    }
+    pos = player->stream->position;
+    player->stream->Seek(MOFLD(u32, player, 0x2c) + player->dataOffset);
+    player->keyFrames = (MoKeyFrame *)func_02043e1c(player->numKeyFrames * 8);
+    if (!player->stream->Read(player->keyFrames, player->numKeyFrames * 8)) {
+        return FALSE;
+    }
+    player->stream->Seek(pos);
+    if (player->audioCodec == 1) {
+        u32 pos2 = player->stream->position;
+        player->stream->Seek(player->unk_28 + player->dataOffset);
+        for (k2 = 0; k2 < player->audioChannels; k2++) {
+            if (!player->stream->Read((u8 *)&player->audioDecoders[k2] + 0x8c0, 0xc34)) {
+                return FALSE;
+            }
+            MOFLD(u32, &player->audioDecoders[k2], 0x14f4) = 2;
+        }
+        player->stream->Seek(pos2);
+    } else if (player->audioCodec == 2) {
+        for (k = 0; k < player->audioChannels; k++) {
+            MOFLD(u32, &player->audioDecoders[k], 0x1cc) = 2;
+        }
+    }
+    player->stream->Read(&header, 4);
+    player->chunkSizes[0] = header >> 14;
+    player->chunkSamples[0] = header & 0x3fff;
+    player->chunkOffsets[0] = 0;
+    player->stream->Read(player->chunkBuffers[0], player->chunkSizes[0] + 4);
+    player->chunkIndex = 1;
+    return TRUE;
+}
+
 
 BOOL func_020340d8(MoPlayer *player, int keyFrame);
 
@@ -170,8 +311,6 @@ BOOL func_020341bc(MoPlayer *player) {
     return TRUE;
 }
 
-extern void *func_02043e1c(u32 size);
-extern u32 func_020347ac(void);
 extern void func_02075810(MoYuvParams *params);
 extern void func_02032f90(void *conv);
 
