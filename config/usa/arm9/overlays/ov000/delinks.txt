@@ -2613,6 +2613,10 @@ src/ov000/Obj_021c2d48.cpp:
     complete
     .text       start:0x021c2d48 end:0x021c2e64
 
+src/ov000/Obj_021c2e64.cpp:
+    complete
+    .text       start:0x021c2e64 end:0x021c2f10
+
 src/ov000/Lo_02177698.cpp:
     complete
     .text       start:0x02177698 end:0x02177ec4
@@ -3380,6 +3384,10 @@ src/ov000/Lo_0214d304.cpp:
 src/ov000/Hud_021c2450.cpp:
     complete
     .text       start:0x021c2450 end:0x021c28cc
+
+src/ov000/Hud_021c28cc.cpp:
+    complete
+    .text       start:0x021c28cc end:0x021c2a88
 
 src/ov000/Mgr_021b5dc0.cpp:
     complete
