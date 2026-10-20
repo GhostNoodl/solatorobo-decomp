@@ -75,4 +75,47 @@ void func_ov015_0220ad68(u8 *self, u8 *p) {
     func_ov015_0220b1b8(self);
 }
 
+BOOL func_ov015_0220ae90(u8 *self) {
+    u8 *p = FLD(u8 *, self, 0x20);
+    s32 acc = FLD(s16, p, 0xd2);
+    s32 dec = FLD(s32, p, 0xe0);
+    Ov015Stat *st = &data_ov015_0221332c;
+    if ((u32)self & 3) {
+        dec = FLD(s32, p, 0xe0);
+    }
+    s32 lim;
+    s32 sp;
+    s32 v;
+    FLD(s32, self, 0x10) = FLD(s32, self, 0xc);
+    if (st->unk_1c != 0 && st->unk_28 != 3) {
+        FLD(s32, self, 0xc) -= dec;
+        FLD(s16, self, 0xa) = 10;
+        FLD(s16, self, 0x1c) = 6;
+    } else {
+        if (FLD(s16, self, 0xa) <= 0) {
+            FLD(s32, self, 0xc) += acc << 4;
+        } else {
+            FLD(s16, self, 0xa)--;
+        }
+        FLD(s16, self, 0x1c)--;
+        if (FLD(s16, self, 0x1c) <= 0) {
+            FLD(s16, self, 0x1c) = 0;
+        }
+    }
+    v = FLD(u16, p, 0xd0) << 12;
+    sp = FLD(s32, p, 0xe8);
+    if (sp < 0xe10000) {
+        lim = Ov015_FxMul(v, 0x1000);
+    } else if (sp < 0x1c20000) {
+        lim = Ov015_FxMul(v, 0xccd);
+    } else {
+        lim = Ov015_FxMul(v, 0xb33);
+    }
+    if (FLD(s32, self, 0xc) > lim) {
+        FLD(s32, self, 0xc) = lim;
+    }
+    FLD(s32, p, 0xdc) = FLD(s32, self, 0xc);
+    return FLD(s32, self, 0xc) <= 0;
+}
+
 }

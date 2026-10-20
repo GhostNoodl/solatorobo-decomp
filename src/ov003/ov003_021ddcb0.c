@@ -36,3 +36,20 @@ void func_ov003_021ddcb0(Ov003Prop *self) {
         u->unk_a2_0 = 0;
     }
 }
+
+void func_ov003_021ddce4(Ov003Prop *self) {
+    Ov003Part44 *p;
+    func_ov000_02194758(self);
+    p = self->unk_44;
+    if (self->unk_18 == 0) {
+        if ((u32)self & 3) {
+            p = self->unk_44;
+        }
+        p->unk_22_0 = FALSE;
+        p->unk_22_1 = FALSE;
+    } else {
+        p->unk_22_0 = 1;
+        p->unk_22_1 = 1;
+    }
+    self->unk_93_1 = (u8)(u16)self->unk_18;
+}

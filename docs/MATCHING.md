@@ -1026,3 +1026,39 @@ Nothing matched this round, so TU1 is still not merged. Drafts are in `scratchpa
   - `declhc.py src func N` hill-climbs the order of the top declaration block.
   - `var.py base func 'old' variants.txt` scores text replacements (variants separated by `====`).
   - `sd.py` and `sdr.py` give the aligned diff count, raw and register-normalised.
+
+## Two-definition sweep over every near-miss, and arms that stay predicated (all overlays, round ovhi21)
+
+This round scored every draft of every unmatched overlay function below `0x500` bytes (four newest drafts each, 541 compiles) and ran `tdc.py` (literal as a two-definition variable, `TDNEAR=6`) and `tdv.py` (second definition after each assignment, `TDV_SPAN=1`) on the best draft of all 44 functions at 2 to 10 diffs, then `tdv2.py` (below) on the 37 that were left. Eight functions reached 0, and seven of them went into the build. Drafts are in `scratchpad/ovhi21/d/auto/<func>/` (`base.*` is the starting draft, `*.tdc`/`*.tdv`/`*.tdv2` the best variant).
+
+- **Matched by `tdc.py`, a constant made into a two-definition variable just before its use:**
+  - `func_ov006_021cd914` (2 to 0): the `u32 idx = 0xffff` that a `switch` then overwrites. `noIdx = 0xffff; if ((u32)type & 3) { noIdx = 0xffff; } ... u32 idx = noIdx;` at the top of `case 7` puts `mov r7, #0xff` after the pool load, as in the target. The condition here is on an `int` parameter, so it can be true at run time. That is harmless because the second definition stores the same value.
+  - `func_ov006_021e9f80` (2 to 0): the `0x8000` busy mask of the `SQRTCNT` poll loop, defined right before the `s64` sum. This moves `ldr r2, [r5]` below the first `smull`.
+  - `func_ov014_02202a34` (4 to 0): the `0x100` in `(u8 *)self + 0x100`, passed as the pointer argument of `func_ov003_021d85c8`. With `(u8 *)self + off`, the `add r0` and the stack-argument `str` move to the target's places.
+  - `func_ov003_021eb818` (8 to 0): the `1` stored to `data_ov000_021ccd54->unk_ac` at the end of the `if` arm. It has to use struct-copy versions of the `PartA`/`PartB` copy inlines (`*d = *s`). The field-by-field versions that its neighbours `021eba54`/`021ebae4` need give 8 diffs here. Both pairs are now in `ov003_021eba54.cpp` (`Ov003PartA_Assign` and `Ov003PartA_Copy`).
+  - `func_ov015_022078bc` (9 to 0) matches with `self + kq` (`kq = 0xcb8`) for `func_ov000_02191b70`, but it is not in the build: it uses real literals from the ov015 pool `0x02212ccc..0x02212d2f`. That pool also holds the strings of the pointer tables at `0x02212cac..0x02212ccb` and two strings of `func_ov015_02207adc`, and contains `"mc/c1rob4"` and `"c1rob4cha"` twice. With `extern` arrays it gives 103 diffs.
+- **Matched by `tdv.py`:** `func_ov015_0220ae90` (5 to 0) needs `if ((u32)self & 3) { dec = FLD(s32, p, 0xe0); }` after the declarations. `tdc.py` also found a form with the `0` of `st->unk_1c != 0`.
+- **A second definition inside one arm keeps both arms predicated.** `func_ov003_021ddce4` (3 to 0, found by `tdv.py`): the target clears two bits with `biceq ... biceq` in one arm and sets them with `bicne; orrne ...` in the other. MWCC hoisted the common first `bic r0, r0, #1` out of both arms. `if ((u32)self & 3) { p = self->unk_44; }` as the first statement of the `then` arm stops that. The same works for `func_ov013_022001b8` (3 to 0), which needs `movne r3, #0; moveq r3, #1` for a `mode == 1` argument (round ovhi19). Every ternary and bool form gave `mov r3, #1; cmp; movne r3, #0`. This one matches:
+
+  ```c
+  BOOL m;
+  if (FLD(u8, self, 0x15d) != 1) {
+      m = FALSE;
+      if ((u32)self & 3) {
+          m = FALSE;
+      }
+  } else {
+      m = TRUE;
+  }
+  func_ov013_02202dc8(self, 0xa00, 0x1000, m, 0);
+  ```
+
+  A second definition of `m`, or of a `b = 0x1000` set in both arms, works in either arm when it comes after the arm's own assignment. A second definition of an `Ov013Actor *s = self` copy that is passed to the call works anywhere in either arm. All of these need the `!= 1` condition. With `== 1`, the best is 2. When the target has a pair of predicated instructions where ours has one unconditional instruction before the `cmp`, put a second definition into one arm.
+- **`tdv2.py`** puts the second definition at every later statement of the function, at any block depth (`TDV_MAXD` lines, default 12), not only right after the assignment. Since the condition is never true for an aligned pointer, any position keeps the behaviour. `TDV_IN=<inline>` (also for `tdv.py`, and `TDC_IN` for `tdc.py`) runs the search inside an inline that the function uses. On its own, it found no match this round.
+- **Smaller results (not matched):**
+  - `func_ov000_0217a1f8` (3 to 2): `kq = 0x78` with two definitions before `func_ov000_0217a328((u8 *)self, kq, -1)` gives the target's `mvn r2, #0`. Now only `mov r1, #0x78` is scheduled before `mov r0, r4`. A two-definition `-1` instead puts `mvn r2` first. Wrapper inlines, a two-definition `self` copy and other types for `kq` stay at 2.
+  - `func_ov000_0218a5ec` (4 to 2): a two-definition `k = 0x8000` for the stack argument, with the `to`/`from` loads in locals `a`/`b` (order `t, k, a, b`, then the `if`), gives the target's `ip` register and the store last. `mov ip, #0x8000` is still scheduled after the two `ldrh`.
+  - `func_ov002_021e2690` (2): storing `0x34` before `0x30`, as the target does, swaps the hoisted `8`/`3` registers (4). Two-definition `8`/`3` before the loop, at the top, or in the loop body (`tdc.py`) are all worse.
+  - `func_ov003_021ead50` (2) and `func_ov000_0219badc` (5): no matched object in the build has `cmp; <op>ne; beq` (checked with `llvm-objdump` over all 2015 objects). The only `<op>ne` followed by an `eq` branch is `cmpne`, which comes from `&&`/`||` chains. Second definitions in either arm of the two `if (t)` forms did not help.
+  - `func_ov003_021d883c` (2): a two-definition `d` pointer, a struct copy and copy inlines all load `z` above the two stores.
+  - These did not move: `021e1204`, `02211b2c`, `021be5dc` (also the `ToDepth`/`CalcDepth` forms and `TDC_IN=CalcDepth`), `021e1bb4` (`tdv`/`tdc`/`tdv2` inside `ov006_Caption_Draw`), `0220640c` (two-definition `0`/`1` arguments of `func_0203cb78` at every position of case 0), `021e51f8` (the `1` passed to `Ov006_Begin` goes to `r0` instead of `r1` with any inline parameter type, a `menu` local or a two-definition argument), `02201bf4` and `021d5b98`/`021d5e68` (string pools).

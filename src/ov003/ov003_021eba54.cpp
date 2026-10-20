@@ -435,6 +435,68 @@ static inline BOOL Ov003Game_HasEvent(Ov003Game54 *g, const s32 *ids) {
     return FALSE;
 }
 
+static inline void Ov003PartA_Assign(Ov003PartA *d, const Ov003PartA *s) {
+    if (s != NULL) {
+        *d = *s;
+    }
+}
+
+static inline void Ov003PartB_Assign(Ov003PartB *d, const Ov003PartB *s) {
+    if (s != NULL) {
+        *d = *s;
+    }
+}
+
+void func_ov003_021eb818(Ov003ObjB *self) {
+    s32 sfxOn;
+    if (self->unk_310) {
+        Ov003Fx *fx;
+        Ov003PartSrc *src;
+        Ov003Part *p;
+        Ov003Ctl *c;
+        self->unk_310 = 0;
+        fx = func_02065f88(0x1f4, &self->pos);
+        fx->SetScale(0x1800, 0x1800, 0x1800);
+        fx->SetRot(0, 0xccd, 0);
+        func_02065f88(0x44c, &self->pos)->SetRot(0, 0x2000, 0);
+        func_0204a20c(data_02097e4c, func_02040498(1) + 0x7c);
+        src = func_020704b4(self->unk_0e);
+        p = self->unk_4c;
+        Ov003PartA_Assign(&p->a, &src->a);
+        Ov003PartB_Assign(&p->b, &src->b);
+        self->unk_4c->unk_18_1 = 1;
+        p = self->unk_4c;
+        self->unk_90 = p->unk_1c;
+        p->unk_1c = 0xffff;
+        self->unk_9c = 0x66;
+        self->unk_a0 = 0x400;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0x52;
+        c = self->ctl;
+        c->unk_50[0] = 0;
+        c->unk_50[1] = 0;
+        c->unk_50[2] = 0;
+        func_ov000_02198360(self->work, 4, 1);
+        c = self->ctl;
+        c->unk_9a_0 = 1;
+        c->unk_9a_3 = 1;
+        func_0203f324(c);
+        self->ctl->unk_9a |= 0x12;
+        self->ctl->unk_38 = self->unk_64;
+        func_020627b4();
+        func_020627a0(self->unk_0e, self->unk_0c);
+        func_020627dc(0x8001);
+        sfxOn = 1;
+        if ((u32)self & 3) {
+            sfxOn = 1;
+        }
+        data_ov000_021ccd54->unk_ac = sfxOn;
+    } else {
+        func_ov000_02198360(self->work, 4, 0);
+    }
+    Ov003Sub44_Clear(self->unk_44);
+}
+
 void func_ov003_021eba54(Ov003ObjB *self) {
     if (self->unk_310) {
         Ov003Ctl_Enable(self);

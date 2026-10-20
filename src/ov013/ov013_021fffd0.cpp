@@ -65,4 +65,19 @@ void func_ov013_021fffd0(Ov013Actor *self) {
     }
 }
 
+extern void func_ov013_02202dc8(Ov013Actor *self, u16 a, s32 b, BOOL c, u16 d);
+
+void func_ov013_022001b8(Ov013Actor *self) {
+    BOOL m;
+    if (FLD(u8, self, 0x15d) != 1) {
+        m = FALSE;
+        if ((u32)self & 3) {
+            m = FALSE;
+        }
+    } else {
+        m = TRUE;
+    }
+    func_ov013_02202dc8(self, 0xa00, 0x1000, m, 0);
+}
+
 }

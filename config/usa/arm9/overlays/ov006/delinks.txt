@@ -13,6 +13,10 @@ src/ov006/ov006_021cd5a8.cpp:
     complete
     .text       start:0x021cd5a8 end:0x021cd914
 
+src/ov006/ov006_021cd914.cpp:
+    complete
+    .text       start:0x021cd914 end:0x021cddf8
+
 src/ov006/ov006_021d54b0.cpp:
     complete
     .text       start:0x021d54b0 end:0x021d5b98
@@ -743,3 +747,7 @@ src/ov006/ov006_021d8914.cpp:
 src/ov006/ov006_021e9c5c.cpp:
     complete
     .text       start:0x021e9c5c end:0x021e9f80
+
+src/ov006/ov006_021e9f80.cpp:
+    complete
+    .text       start:0x021e9f80 end:0x021ea244
