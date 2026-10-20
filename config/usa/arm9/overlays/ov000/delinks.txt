@@ -3085,6 +3085,10 @@ src/ov000/Lo_0214f7a4.cpp:
     complete
     .text       start:0x0214f7a4 end:0x0214f9ec
 
+src/ov000/MiniMap_021675ec.cpp:
+    complete
+    .text       start:0x021675ec end:0x02167d64
+
 src/ov000/TextWin_02167d64.cpp:
     complete
     .text       start:0x02167d64 end:0x02167fac
