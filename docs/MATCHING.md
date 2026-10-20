@@ -343,3 +343,15 @@ The linker strips functions that nothing references. If `ninja` reports a matche
 - **Bitfield/field store order is source order.** In `func_ov003_021f27ec` the camera block only matched as `fa`, `da_5 = 1`, `fc`, `da_6 = 1`, interleaving the bitfield sets with the halfword stores.
 - **Right-to-left argument evaluation.** In a call with two calls as arguments, the rightmost runs first. Write `Add(list, k, Get(g, 0x48 + k), Get(g, 0x160 + k))` when the target calls `0x160` first.
 - **A zero passed to a call.** `f = 0;` written right before the call that receives `f` (instead of at the top) kept the zero in the target's register (`func_ov006_021e96cc` draft).
+
+## Factories, colour copies and large switches (ov000, round hi9)
+
+- **Block-local temp for each `new` in a big factory switch.** Write every case as `{ u8 *t = (u8 *)Alloc(size); if (t) { Ctor(t, ...); } p = t; } break;`. With the `new` result assigned straight to the shared `p`, MWCC merges the identical case tails.
+- **3-byte colour copy.** Copy an RGB triple as a struct, `*(Rgb3 *)dst = *(const Rgb3 *)src;` with `struct Rgb3 { u8 v[3]; };`. Three `u8 r, g, b` locals schedule differently.
+- **Mapping cases to bodies in a large sparse switch.** A small script that parses the jump table and the `cmp` tree from the disassembly and prints each case value with its body label (`parse.py`, `gen.py` in the hi9 scratch `gen/` folder) saves a lot of manual tracing.
+
+## Inline wrappers and reused zero registers (ov000, round hi10)
+
+- **A BOOL inline can fix a register swap.** In `func_ov000_021a4a6c`, an r1/r2 swap went away once the fall-height test was moved into `static inline BOOL Falling(u8 *self) { BOOL drop = FALSE; ... return drop; }` and called as `BOOL drop = Falling(self);`.
+- **`orr r0, r1, r3` where you expect `orr r0, r1, #0`.** MWCC reuses a register known to hold 0 as the high half of a 64-bit OR. In `func_ov000_0219efc0`, `r3` was a pointer set to NULL before an `if`/`else`. Declare that variable once, before the branch, rather than inside each arm.
+- **Layout follows source order for `else` chains too.** If the target puts the `|= 0x80` body before the `|= 0x4000` body, write `if (m != 3) { if (...) |= 0x80; } else { |= 0x4000; }` instead of `if (m == 3) ... else if ...`. In a switch, put `default:` first when its body comes first.
