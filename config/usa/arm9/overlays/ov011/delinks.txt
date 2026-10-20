@@ -85,6 +85,10 @@ src/ov011/ov011_021fe1d4.cpp:
     complete
     .text       start:0x021fe1d4 end:0x021fe3b4
 
+src/ov011/ov011_021fe3b4.cpp:
+    complete
+    .text       start:0x021fe3b4 end:0x021fe9b8
+
 src/ov011/ov011_021febd8.cpp:
     complete
     .text       start:0x021febd8 end:0x021fef00

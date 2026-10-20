@@ -496,4 +496,131 @@ void func_ov014_0220c09c(Ov014Actor *self) {
     }
 }
 
+
+extern u8 data_ov014_02217a60[];
+extern u8 data_ov014_02217a90[];
+extern u8 data_ov014_02217a96[];
+extern void func_02065860(void *a, void *b);
+extern void func_ov000_0218d988(Ov014Actor *self, Ov014Actor *t, s32 a);
+extern void func_ov000_0218ddd4(Ov014Actor *self, Ov014Vec *p, s32 a);
+
+void func_ov014_0220cd74(Ov014Actor *self) {
+    Ov014Vec p2;
+    Ov014Vec p1;
+    Ov014Vec p0;
+    Ov014Sub40 *s = self->unk_40;
+    switch (s->state) {
+    case 0:
+        func_ov000_02190cb0(self->unk_38, data_ov014_02217a60, 0xcd, 0);
+        func_ov000_02191318(self->unk_38, 0);
+        func_ov000_02191618(self->unk_38);
+        FLD(u8, self, 0xfc) = 1;
+        func_02065860(data_0214a420, FLD(void *, self, 0x1dc));
+        FLD(void *, self, 0x1dc) = NULL;
+        func_02065860(data_0214a420, FLD(void *, self, 0x1e0));
+        FLD(void *, self, 0x1e0) = NULL;
+        self->unk_40->state++;
+        self->unk_40->timer = 0x14;
+        break;
+    case 1: {
+        Ov014Actor *t = Ov014e_FindById(self->unk_90);
+        Ov014Sub40 *w;
+        if (self->unk_40->timer == 0x14) {
+            u16 a;
+            Ov014V *e;
+            p2 = self->unk_48->unk_68;
+            if (t != NULL) {
+                a = (t != NULL && t != self) ? FX_Atan2(t->pos.x - self->pos.x, t->pos.z - self->pos.z) : self->rot[1];
+            }
+            e = (Ov014V *)func_02065f88(0x67, &p2);
+            e->v34(0, a, 0);
+            e->v0c(0x2000);
+        }
+        FLD(u16, self->unk_48, 0x9a) |= 0x20;
+        FLD(u16, self->unk_48, 0x9a) |= 0x20;
+        self->unk_9c = Ov014_FxMul(self->unk_b0->unk_00, FX_Div(self->unk_40->timer << 12, 0x14000)) + 0x333;
+        if (t != NULL) {
+            func_ov000_0218d988(self, t, self->unk_b0->unk_02);
+            p1 = t->pos;
+            func_ov000_0218ddd4(self, &p1, 0);
+        }
+        w = self->unk_40;
+        if (w->timer != 0) {
+            w->timer--;
+        }
+        if (w->timer != 0) {
+            break;
+        }
+        p0 = self->unk_48->unk_68;
+        ((Ov014V *)func_02065f88(0x6d, &p0))->v0c(0x2000);
+        self->unk_40->state = 10;
+        break;
+    }
+    case 10:
+        FLD(u32, self, 0xf4) = 0;
+        func_ov000_02190cb0(self->unk_38, data_ov014_02217a90, 0xcd, 0);
+        func_ov000_02191318(self->unk_38, 0);
+        func_ov000_02191618(self->unk_38);
+        FLD(u16, self, 0xf8) = FLD(u16, FLD(void *, self, 0xf0), 4);
+        self->unk_40->state++;
+        break;
+    case 11:
+        FLD(u16, self, 0xf8)--;
+        FLD(u32, self, 0xf4) ^= 1;
+        s->state++;
+        self->unk_40->timer = 0x14;
+    case 12: {
+        Ov014Sub40 *w;
+        if (FLD(s16, self->unk_38, 0xc4) == 1) {
+            Ov014e_Shake((u8 *)data_ov000_021ccd54, 0x14, 10, 10);
+        }
+        w = self->unk_40;
+        if (w->timer != 0) {
+            w->timer--;
+        }
+        if (w->timer != 0) {
+            Ov014Actor *t = Ov014e_FindById(self->unk_90);
+            if (t != NULL) {
+                func_ov000_0218d988(self, t, self->unk_b0->unk_02);
+            }
+        }
+        if (!func_ov000_02191120(self->unk_38)) {
+            break;
+        }
+        if (FLD(u16, self, 0xf8) != 0) {
+            s32 sp;
+            func_ov000_02190cb0(self->unk_38, FLD(u32, self, 0xf4) != 0 ? data_ov014_02217a96 : data_ov014_02217a90, 0xcd, 0);
+            sp = FX_Div(0x50000, FLD(u16, FLD(void *, self, 0xf0), 2) << 12);
+            if (sp > 0x2000) {
+                sp = 0x2000;
+            } else if (sp < 0x800) {
+                sp = 0x800;
+            }
+            func_ov000_021911c8(self->unk_38, (s16)sp);
+            func_ov000_02191318(self->unk_38, 0);
+            func_ov000_02191618(self->unk_38);
+            self->unk_40->state = 11;
+        } else {
+            self->unk_40->state = 0x14;
+            self->unk_40->timer = 0xf;
+        }
+        break;
+    }
+    case 0x14: {
+        Ov014Sub40 *w;
+        if (!func_ov000_02191120(self->unk_38)) {
+            break;
+        }
+        w = self->unk_40;
+        if (w->timer != 0) {
+            w->timer--;
+        }
+        if (w->timer == 0) {
+            FLD(u8, self, 0xfc) = 0;
+            self->unk_40->state = 0xffff;
+        }
+        break;
+    }
+    }
+}
 }
