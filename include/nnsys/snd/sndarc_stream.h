@@ -18,8 +18,20 @@ typedef struct StrmHeader {
     /* 0x1b */ u8 unk_1b;
     /* 0x1c */ u16 sampleRate;
     /* 0x1e */ u16 timer;
-    /* 0x20 */ u8 unk_20[0x20];
+    /* 0x20 */ u32 loopStart;
+    /* 0x24 */ u32 sampleCount;
+    /* 0x28 */ u32 dataOffset;
+    /* 0x2c */ u32 numBlocks;
+    /* 0x30 */ u32 blockSize;
+    /* 0x34 */ u32 blockSamples;
+    /* 0x38 */ u32 lastBlockSize;
+    /* 0x3c */ u32 lastBlockSamples;
 } StrmHeader; // size 0x40
+
+typedef struct StrmAdpcmState {
+    /* 0x0 */ s16 pred;
+    /* 0x2 */ u8 index;
+} StrmAdpcmState; // size 0x4
 
 struct StrmHandle;
 
@@ -29,7 +41,7 @@ typedef struct StrmPlayer {
     /* 0x0ac */ u32 fileOffset;
     /* 0x0b0 */ StrmHeader header;
     /* 0x0f0 */ SndFader fader;
-    /* 0x100 */ u8 unk_100[0x18];
+    /* 0x100 */ StrmAdpcmState adpcm[6];
     /* 0x118 */ BOOL active : 1;
     /* 0x118 */ BOOL playing : 1;
     /* 0x118 */ BOOL startReq : 1;
@@ -37,7 +49,7 @@ typedef struct StrmPlayer {
     /* 0x118 */ BOOL unk_118_4 : 1;
     /* 0x118 */ BOOL unk_118_5 : 1;
     /* 0x118 */ BOOL mono : 1;
-    /* 0x11c */ int unk_11c;
+    /* 0x11c */ volatile int unk_11c;
     /* 0x120 */ volatile int unk_120;
     /* 0x124 */ int cmdCount;
     /* 0x128 */ int chRefCount;

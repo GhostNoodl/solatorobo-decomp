@@ -214,3 +214,218 @@ void func_02032310(StrmPlayer *player) {
     }
     player->unk_118_5 = FALSE;
 }
+
+extern void DC_FlushRange(const void *addr, u32 size);
+extern const s8 data_0207574c[16];
+extern const s16 data_0207575c[89];
+
+typedef enum { NNS_SND_STRM_FORMAT_PCM8, NNS_SND_STRM_FORMAT_PCM16 } NNSSndStrmFormat;
+typedef void (*StrmDataCallback)(int status, int numBuffers, void **buffers, u32 size, NNSSndStrmFormat format, u32 arg);
+
+static inline s16 StrmDecodeAdpcm(StrmAdpcmState *st, u32 data) {
+    int step;
+    int pred;
+    int index;
+    int diff;
+    pred = st->pred;
+    index = st->index;
+    step = data_0207575c[index];
+    diff = step >> 3;
+    if (data & 4) {
+        diff += step;
+    }
+    if (data & 2) {
+        diff += step >> 1;
+    }
+    if (data & 1) {
+        diff += step >> 2;
+    }
+    if (data & 8) {
+        pred -= diff;
+        if (pred < -0x8000) {
+            pred = -0x8000;
+        }
+    } else {
+        pred += diff;
+        if (pred > 0x7fff) {
+            pred = 0x7fff;
+        }
+    }
+    index += data_0207574c[data];
+    if (index < 0) {
+        index = 0;
+    } else if (index > 88) {
+        index = 88;
+    }
+    st->pred = pred;
+    st->index = index;
+    return pred;
+}
+
+void func_0203244c(StrmCommand *cmd) {
+    StrmPlayer *player;
+    BOOL loop;
+    unsigned long offset;
+    u32 remain;
+    u32 blockSize;
+    u32 blockOffset;
+    u32 filePos;
+    u32 samples;
+    u32 outSize;
+    u32 readSize;
+    int ch;
+    u32 block;
+    u32 blockSamples;
+    u32 readOffset;
+    s16 *dst;
+    u8 *src;
+    StrmAdpcmState *st;
+    u32 readLen;
+
+    player = cmd->player;
+    if (player->unk_118_5 && player->unk_11c > 0) {
+        player->unk_11c--;
+    }
+    remain = cmd->size;
+    offset = 0;
+    while (remain != 0) {
+        if (player->unk_118_5) {
+            for (ch = 0; ch < cmd->numBuffers; ch++) {
+                MI_CpuFill8((u8 *)cmd->buffers[ch] + offset, 0, remain);
+            }
+            break;
+        }
+        block = player->startOffset / player->header.blockSamples;
+        if (block < player->header.numBlocks - 1) {
+            blockSamples = player->header.blockSamples;
+            blockSize = player->header.blockSize;
+        } else {
+            blockSize = player->header.lastBlockSize;
+            blockSamples = player->header.lastBlockSamples;
+        }
+        samples = remain;
+        blockOffset = player->startOffset - block * player->header.blockSamples;
+        if (player->header.format != 0) {
+            samples = remain >> 1;
+        }
+        if (player->unk_118_4) {
+            if (blockOffset == 0) {
+                player->unk_118_4 = FALSE;
+            } else {
+                samples = blockOffset;
+                blockOffset = 0;
+            }
+        }
+        loop = FALSE;
+        if (blockOffset + samples >= blockSamples) {
+            samples = blockSamples - blockOffset;
+            if (block >= player->header.numBlocks - 1) {
+                if (player->header.loop) {
+                    loop = TRUE;
+                } else {
+                    player->unk_118_5 = TRUE;
+                }
+            }
+        }
+        readOffset = blockOffset;
+        outSize = samples;
+        switch (player->header.format) {
+        case 0:
+            readSize = samples;
+            break;
+        case 1:
+            outSize = samples * 2;
+            readSize = outSize;
+            readOffset = blockOffset * 2;
+            break;
+        case 2:
+            readSize = ((blockOffset + samples + 1) >> 1) - (blockOffset >> 1);
+            readOffset = blockOffset >> 1;
+            if (blockOffset == 0) {
+                readSize += 4;
+            } else {
+                readOffset += 4;
+            }
+            outSize *= 2;
+            break;
+        }
+        filePos = block * player->header.blockSize * player->header.channels + readOffset;
+        filePos += player->header.dataOffset;
+        for (ch = 0; ch < cmd->numBuffers; ch++) {
+            src = (u8 *)cmd->buffers[ch] + offset;
+            dst = (s16 *)src;
+            if (ch < player->header.channels) {
+                if (player->header.format == 2) {
+                    OS_LockMutex(data_02096244);
+                    src = (u8 *)data_0209622c.unk_8;
+                }
+                readLen = player->readFn(player, src, readSize, filePos + ch * blockSize);
+                if (readLen != readSize) {
+                    player->unk_118_5 = TRUE;
+                    outSize = 0;
+                    samples = 0;
+                    loop = FALSE;
+                    if (player->header.format == 2) {
+                        OS_UnlockMutex(data_02096244);
+                    }
+                    break;
+                }
+                if (player->header.format == 2) {
+                    u8 *in;
+                    u32 k;
+                    u32 end;
+                    u8 *work;
+                    st = &player->adpcm[ch];
+                    work = (u8 *)data_0209622c.unk_8;
+                    in = work;
+                    if (blockOffset == 0) {
+                        in = work + 4;
+                        *st = *(StrmAdpcmState *)work;
+                    }
+                    end = blockOffset + samples;
+                    k = blockOffset;
+                    if (blockOffset & 1) {
+                        *dst++ = StrmDecodeAdpcm(st, (*in >> 4) & 0xf);
+                        k++;
+                        in++;
+                    }
+                    for (; k < (end & ~1); k += 2, in++) {
+                        *dst++ = StrmDecodeAdpcm(st, *in & 0xf);
+                        *dst++ = StrmDecodeAdpcm(st, (*in >> 4) & 0xf);
+                    }
+                    if (k < end) {
+                        *dst = StrmDecodeAdpcm(st, *in & 0xf);
+                    }
+                    OS_UnlockMutex(data_02096244);
+                }
+            } else if (player->mono) {
+                MI_CpuFill8(src, 0, outSize);
+            } else {
+                MI_CpuCopy8((u8 *)cmd->buffers[0] + offset, src, outSize);
+            }
+        }
+        if (player->unk_118_4) {
+            player->unk_118_4 = FALSE;
+        } else {
+            if (loop) {
+                player->startOffset = player->header.loopStart;
+            } else {
+                player->startOffset += samples;
+            }
+            offset += outSize;
+            remain -= outSize;
+            if (player->unk_118_5 && player->callback != NULL) {
+                func_02032310(player);
+            }
+        }
+    }
+    if (player->unk_13c != 0) {
+        ((StrmDataCallback)player->unk_13c)(cmd->unk_0c, cmd->numBuffers, cmd->buffers, cmd->size, player->header.format == 0 ? NNS_SND_STRM_FORMAT_PCM8 : NNS_SND_STRM_FORMAT_PCM16, player->unk_140);
+    }
+    for (ch = 0; ch < cmd->numBuffers; ch++) {
+        DC_FlushRange(cmd->buffers[ch], cmd->size);
+    }
+    if (cmd->unk_0c == 0) {
+        player->unk_120 = 1;
+    }
+}

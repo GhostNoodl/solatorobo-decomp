@@ -978,7 +978,7 @@ libs/nnsys/snd/sndarc_stream_2.c:
 
 libs/nnsys/snd/sndarc_stream_3.c:
     complete
-    .text       start:0x02031df0 end:0x0203244c
+    .text       start:0x02031df0 end:0x02032c54
 
 libs/nnsys/snd/sndarc_stream_4.c:
     complete

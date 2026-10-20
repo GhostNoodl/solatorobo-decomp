@@ -3731,6 +3731,8 @@ from:0x02032ab4 kind:arm_call to:0x02016e28 module:main
 from:0x02032ad0 kind:arm_call to:0x02016fa0 module:main
 from:0x02032b80 kind:arm_call to:0x02032310 module:main
 from:0x02032c08 kind:arm_call to:0x02019294 module:main
+from:0x02032c44 kind:load to:0x0207574c module:main
+from:0x02032c48 kind:load to:0x0207575c module:main
 from:0x02032c4c kind:load to:0x02096244 module:main
 from:0x02032c50 kind:load to:0x0209622c module:main
 from:0x02032c60 kind:arm_call to:0x02030498 module:main

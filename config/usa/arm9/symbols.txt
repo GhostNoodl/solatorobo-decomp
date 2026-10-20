@@ -2746,6 +2746,8 @@ data_020756a4 kind:data(any) addr:0x020756a4
 matColorMask_ kind:data(any) addr:0x020756e4
 pivotUtil_ kind:data(any) addr:0x02075704
 data_02075728 kind:data(any) addr:0x02075728
+data_0207574c kind:data(any) addr:0x0207574c
+data_0207575c kind:data(any) addr:0x0207575c
 func_02075810 kind:function(arm,size=0xe4) addr:0x02075810
 func_02075940 kind:function(arm,size=0x138) addr:0x02075940
 func_02075a78 kind:function(arm,size=0xf4) addr:0x02075a78
