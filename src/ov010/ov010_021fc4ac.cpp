@@ -1,5 +1,8 @@
 #include "ov010/ov010.h"
 
+// A non-const view of the attach offset: loads from it must stay after earlier stores
+namespace NC { extern "C" Ov010Vec data_ov010_0220ec20; }
+
 extern "C" {
 
 struct Ov010Cmd {
@@ -545,6 +548,222 @@ void func_ov010_021fcf70(void *self) {
         FLD(u16, cam, 6) = 0;
     }
     FLD(u16 *, self, 0x50)[5] = 5;
+}
+
+
+extern BOOL func_ov003_021d8b34(void *p, s32 a);
+extern void func_ov003_021d8a7c(void *p, s32 a);
+extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
+extern void func_0203cb78(s32 a, s32 b, s32 c);
+extern void func_ov000_0219b71c(Ov010Vec *pos, Ov010Vec *s, s32 a, s32 b, s32 c, s32 d);
+extern void func_ov000_0218996c(s32 a, s32 b);
+extern u16 func_ov003_021d9c38(const Ov010Vec *v);
+extern void func_02065804(void *a, s32 b);
+extern void func_02049bb4(void *a, s32 b);
+extern void func_ov003_021d6a3c(void *self, s32 a, s32 b, s32 c);
+extern void func_ov003_021da48c(void *p, s32 a);
+extern Ov010V *func_ov003_021da7e8(s32 id, void *src, const Ov010Vec *ofs);
+extern s32 VEC_Mag(const Ov010Vec *v);
+extern char data_ov010_0220fc25[];
+extern const Ov010Vec data_ov010_0220fa94;
+extern u8 data_ov010_0220fa2c[];
+extern void *data_0214a420;
+
+static inline s32 Ov010f_FxMul64(s32 a, s64 b) {
+    return (a * b + 0x800) >> 12;
+}
+
+static inline Ov010Vec Ov010f_AttachPos(void *self) {
+    Ov010Vec r;
+    Ov010Vec v = NC::data_ov010_0220ec20;
+    void *p;
+    if (self != NULL && (p = FLD(void *, self, 0x44)) != NULL) {
+        u16 ry;
+        v.x = FLD(s32, p, 0xc);
+        v.y = FLD(s32, p, 0x10);
+        v.z = FLD(s32, p, 0x14);
+        ry = FLD(u16, self, 0x7e);
+        func_ov003_021d9900(&v, FLD(u16, self, 0x7c), &v);
+        func_ov003_021d9980(&v, ry, &v);
+    }
+    OV010_BLKCPY(&r, &v);
+    VEC_Add(&r, &FLD(Ov010Vec, self, 0x70), &r);
+    return r;
+}
+
+void func_ov010_021fd694(void *self) {
+    switch (FLD(u16, FLD(u8 *, self, 0x40), 0)) {
+    case 0:
+        if (func_ov003_021d8b34((u8 *)self + 0x1c0, 1)) {
+            Ov010e_Cmd((u8 *)self + 0x1c0, 2, 1);
+        } else {
+            func_ov003_021d8a7c((u8 *)self + 0x1c0, 3);
+        }
+        if (FLD(Ov010Flags8b, self, 0x138).b0 && FLD(s32, self, 0x140) == 1) {
+            FLD(s32, self, 0x140) = 2;
+            FLD(u16, self, 0x13c) = 0;
+        }
+        func_ov010_0220172c(FLD(void *, self, 0x100));
+        func_ov003_021d97fc((u8 *)self + 0x1ac, 1);
+        FLD(u16, FLD(u8 *, self, 0x50), 0) = 0;
+        {
+            u8 *s44 = FLD(u8 *, self, 0x44);
+            FLD(Ov010Flags, s44, 0x22).b0 = 0;
+            FLD(Ov010Flags, s44, 0x22).b1 = 0;
+        }
+        FLD(u16, FLD(u8 *, self, 0x4c), 0x1c) = 0xffff;
+        FLD(s32, self, 0x120) = FLD(s32, data_ov010_0220ebc0, 0x60);
+        FLD(s32, self, 0x124) = FLD(s32, data_ov010_0220ebc0, 0x64);
+        FLD(s32, self, 0x128) = FLD(s32, data_ov010_0220ebc0, 0x68);
+        {
+            u8 *c = FLD(u8 *, self, 0x108);
+            FLD(Ov010Flags8b, c, 4).b2 = 1;
+            FLD(u16, c, 6) = 0;
+        }
+        {
+            u8 *cam = FLD(u8 *, self, 0x104);
+            FLD(u8, cam, 4) = 0;
+            FLD(u16, cam, 6) = 0xf00;
+        }
+        func_ov000_0218e8ec(data_ov000_021ccd68, 0x4829, 0x15);
+        FLD(u16, FLD(u8 *, self, 0x40), 0) = 10;
+        break;
+    case 10:
+        func_ov000_02191418(FLD(void *, self, 0x38), 5, 1);
+        func_ov000_02190cb0(FLD(void *, self, 0x38), data_ov010_0220fc19, 0x266, 1);
+        func_ov000_021915a0(FLD(void *, self, 0x38));
+        func_ov003_021d68e0(self, 0x14bf, 0x739f, 10);
+        FLD(u16, FLD(u8 *, self, 0x40), 0) = 11;
+    case 11:
+        if (FLD(u16, FLD(u8 *, self, 0x40), 2) < 5) {
+            (*(volatile u16 *)&FLD(u16, FLD(u8 *, self, 0x40), 2))++;
+            break;
+        }
+        func_0203cb78(0x1e000, 1, 0);
+        FLD(u16, FLD(u8 *, self, 0x40), 2) = 0;
+        FLD(u16, FLD(u8 *, self, 0x40), 0) = 0x14;
+        break;
+    case 0x14:
+        if (FLD(u16, FLD(u8 *, self, 0x40), 2) % 20 == 0) {
+            Ov010Vec pos = Ov010f_AttachPos(self);
+            Ov010Vec sc;
+            sc.x = FLD(s32, self, 0x64);
+            sc.y = FLD(s32, self, 0x68);
+            sc.z = FLD(s32, self, 0x64);
+            func_ov000_0219b71c(&pos, &sc, 0x733, 0xccd, 3, 0x32);
+            func_ov000_0218996c(0x14, 8);
+            func_02049f44(data_02097e4c, 0x35, &pos, 0);
+        }
+        if (FLD(s32, self, 0xf4) == 0) {
+            Ov010Vec o = {0, 0, 0};
+            o.y = 0x61b2;
+            FLD(s32, self, 0xf4) = FLD(s32, func_ov003_021da7e8(0x390, self, &o), 0x24);
+        }
+        VEC_MultAdd(0x10, &data_ov010_0220fa64, &FLD(Ov010Vec, self, 0x120), &FLD(Ov010Vec, self, 0x120));
+        VEC_MultAdd(10, &data_ov010_0220ec44, &FLD(Ov010Vec, self, 0x120), &FLD(Ov010Vec, self, 0x120));
+        func_ov003_021d9aec(&FLD(Ov010Vec, self, 0x120), &FLD(Ov010Vec, self, 0x120), 0x180);
+        VEC_Add(&FLD(Ov010Vec, self, 0x70), &FLD(Ov010Vec, self, 0x120), &FLD(Ov010Vec, self, 0x70));
+        FLD(u16, self, 0x7e) = func_01ffc128(func_ov003_021d9c38(&data_ov010_0220ed04), FLD(u16, self, 0x7e), 0x80, 1, 0x8000);
+        if (FLD(u16, FLD(u8 *, self, 0x40), 2) > 0x28) {
+            FLD(Ov010Flags8b, self, 0x93).b4 = 0;
+        }
+        if (FLD(u16, FLD(u8 *, self, 0x40), 2) % 25 == 0) {
+            func_02049f44(data_02097e4c, 0x44, (u8 *)self + 0x70, 0);
+        }
+        if (FLD(u16, FLD(u8 *, self, 0x40), 2) >= 0x78) {
+            FLD(u16, FLD(u8 *, self, 0x40), 2) = 0;
+            FLD(u16, FLD(u8 *, self, 0x40), 0) = 0x1e;
+        } else {
+            FLD(u16, FLD(u8 *, self, 0x40), 2) = (*(volatile u16 *)&FLD(u16, FLD(u8 *, self, 0x40), 2)) + 1;
+        }
+        break;
+    case 0x1e: {
+        Ov010V *e;
+        func_02065804(data_0214a420, FLD(s32, self, 0xf4));
+        FLD(s32, self, 0xf4) = 0;
+        Ov010Vec pos2 = Ov010f_AttachPos(self);
+        func_02065f88(4, &pos2)->v0c(0x3000);
+        e = func_02065f88(0x131, &pos2);
+        e->v0c(0x2800);
+        e->v34(0, func_ov003_021d9c38(&data_ov010_0220fa64), 0);
+        func_02065f88(0x68, &pos2)->v0c(0x4800);
+        func_02049a48(data_02097e4c, 0xb05, -1, -1, -1);
+        func_02049f44(data_02097e4c, 0x19, &pos2, 0);
+        VEC_MultAdd(0x800, &data_ov010_0220fa64, &FLD(Ov010Vec, self, 0x120), &FLD(Ov010Vec, self, 0x120));
+        func_ov000_02190cb0(FLD(void *, self, 0x38), data_ov010_0220fc25, 0x800, 1);
+        func_ov000_021915a0(FLD(void *, self, 0x38));
+        FLD(u16, FLD(u8 *, self, 0x40), 0) = 0x1f;
+    }
+    case 0x1f:
+        VEC_Add(&FLD(Ov010Vec, self, 0x70), &FLD(Ov010Vec, self, 0x120), &FLD(Ov010Vec, self, 0x70));
+        func_ov003_021d9b8c(&FLD(Ov010Vec, self, 0x120), &FLD(Ov010Vec, self, 0x120), 0x200, 0x30);
+        FLD(u16, FLD(u8 *, self, 0x40), 2)++;
+        if (FLD(u16, FLD(u8 *, self, 0x40), 2) >= 0x3c) {
+            FLD(s32, self, 0x120) = Ov010f_FxMul64(FLD(s32, self, 0x120), 0x600);
+            FLD(s32, self, 0x124) = Ov010f_FxMul64(FLD(s32, self, 0x124), 0x600);
+            FLD(s32, self, 0x128) = Ov010f_FxMul64(FLD(s32, self, 0x128), 0x600);
+            FLD(u16, FLD(u8 *, self, 0x40), 2) = 0;
+            FLD(u16, FLD(u8 *, self, 0x40), 0) = 0x28;
+        }
+        break;
+    case 0x28: {
+        Ov010Vec d;
+        Ov010Vec n;
+        d.x = 0xcf1b - FLD(s32, self, 0x70);
+        d.y = 0x1796 - FLD(s32, self, 0x74);
+        d.z = -0xa46f - FLD(s32, self, 0x78);
+        VEC_Normalize(&d, &n);
+        VEC_MultAdd(0x20, &n, &FLD(Ov010Vec, self, 0x120), &FLD(Ov010Vec, self, 0x120));
+        func_ov003_021d9aec(&FLD(Ov010Vec, self, 0x120), &FLD(Ov010Vec, self, 0x120), 0x800);
+        VEC_Add(&FLD(Ov010Vec, self, 0x70), &FLD(Ov010Vec, self, 0x120), &FLD(Ov010Vec, self, 0x70));
+        if (VEC_Mag(&d) <= 0x2800) {
+            FLD(u16, FLD(u8 *, self, 0x40), 0) = 0x32;
+        }
+        break;
+    }
+    case 0x32:
+        FLD(s32, self, 0x120) = Ov010f_FxMul64(FLD(s32, self, 0x120), 0xf00);
+        FLD(s32, self, 0x124) = Ov010f_FxMul64(FLD(s32, self, 0x124), 0xf00);
+        FLD(s32, self, 0x128) = Ov010f_FxMul64(FLD(s32, self, 0x128), 0xf00);
+        VEC_Add(&FLD(Ov010Vec, self, 0x70), &FLD(Ov010Vec, self, 0x120), &FLD(Ov010Vec, self, 0x70));
+        if (VEC_Mag(&FLD(Ov010Vec, self, 0x120)) <= 0x100) {
+            FLD(s32, self, 0x120) = FLD(s32, data_ov010_0220ebc0, 0x60);
+            FLD(s32, self, 0x124) = FLD(s32, data_ov010_0220ebc0, 0x64);
+            FLD(s32, self, 0x128) = FLD(s32, data_ov010_0220ebc0, 0x68);
+            FLD(u16, FLD(u8 *, self, 0x40), 0) = 0x3c;
+            func_ov003_021d8a7c((u8 *)self + 0x1c0, 1);
+            {
+                u8 *o = FLD(u8 *, self, 0x104);
+                if (FLD(u8, o, 4) == 0) {
+                    FLD(u8, o, 4) = 1;
+                    OV010_BLKCPY(o + 0x4c, &data_ov010_0220fa94);
+                    FLD(s16, o, 0x58) = FLD(s16, data_ov010_0220fa2c, 0x74);
+                    FLD(s16, o, 0x5a) = FLD(s16, data_ov010_0220fa2c, 0x76);
+                    FLD(u16, o, 0x5c) = FLD(u16, data_ov010_0220fa2c, 0x78);
+                    FLD(s16, o, 0x5e) = FLD(s16, data_ov010_0220fa2c, 0x7a);
+                    FLD(s16, o, 0x60) = FLD(s16, data_ov010_0220fa2c, 0x7c);
+                    FLD(s16, o, 0x62) = FLD(s16, data_ov010_0220fa2c, 0x7e);
+                    FLD(s16, o, 0x64) = FLD(s16, data_ov010_0220fa2c, 0x80);
+                    FLD(s16, o, 0x66) = FLD(s16, data_ov010_0220fa2c, 0x82);
+                    func_ov003_021da48c(o + 0x38, 0);
+                }
+            }
+        }
+        break;
+    case 0x3c:
+        FLD(u16, FLD(u8 *, self, 0x40), 2)++;
+        if (FLD(u16, FLD(u8 *, self, 0x40), 2) >= 0x14) {
+            FLD(u16, FLD(u8 *, self, 0x40), 2) = 0;
+            FLD(u16, FLD(u8 *, self, 0x40), 0) = 100;
+        }
+        break;
+    case 100:
+        func_02049bb4(data_02097e4c, FLD(s32, self, 0x11c));
+        Ov010e_Cmd((u8 *)self + 0x1c0, 1, 1);
+        func_ov003_021d6a3c(self, FLD(Ov010Flags8b, self, 0xf0).b2, 1, 1);
+        func_ov000_02198360(FLD(void *, self, 0x40), 0x2c, 0);
+        break;
+    }
 }
 
 }

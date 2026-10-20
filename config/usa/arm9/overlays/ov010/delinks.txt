@@ -31,7 +31,7 @@ src/ov010/ov010_021fbb40.cpp:
 
 src/ov010/ov010_021fc4ac.cpp:
     complete
-    .text       start:0x021fc4ac end:0x021fd694
+    .text       start:0x021fc4ac end:0x021fe084
 
 src/ov010/ov010_021fe084.cpp:
     complete
