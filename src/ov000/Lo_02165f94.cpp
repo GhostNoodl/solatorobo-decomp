@@ -59,4 +59,71 @@ u8 *func_ov000_02165f94(void *self) {
     return p->rgb;
 }
 
+typedef struct Item0216607c Item0216607c;
+
+typedef struct {
+    u8 pad_00[0xb];
+    u8 count;
+    u8 pad_0c[0xc];
+    Item0216607c *items;
+} Node0216607c;
+
+struct Item0216607c {
+    Node0216607c *node;
+    u8 pad_04[8];
+    s32 a;
+    s32 b;
+    u8 key;
+    u8 pad_15[3];
+};
+
+typedef struct {
+    u32 unk_00;
+    Item0216607c **list;
+} Slot0216607c;
+
+typedef struct {
+    u8 pad_00[8];
+    u8 count;
+    u8 pad_09[0xc7f];
+    Slot0216607c *slots;
+    u8 pad_c8c[0x28];
+    Item0216607c *cur;
+} Ctx0216607c;
+
+Node0216607c *func_ov000_0216607c(void *self, Node0216607c *node, u8 *outIdx, BOOL deep) {
+    Ctx0216607c *ctx = LFLD(Ctx0216607c *, self, 0x30);
+    Item0216607c **lst;
+    u8 i;
+    u8 k;
+    for (i = 0; i < node->count; i++) {
+        if (ctx->cur->key == node->items[i].key) {
+            *outIdx = i;
+            return node;
+        }
+    }
+    if (deep) {
+        Slot0216607c *slot = &ctx->slots[ctx->cur->key];
+        u8 n = ctx->count;
+        // A hand-rotated loop: the list load sits after the entry check, as in the target.
+        i = 0;
+        if (i < n) {
+            lst = slot->list;
+            do {
+                Item0216607c *it = lst[i];
+                if (it != NULL && it->a == node->items->a && it->b == node->items->b) {
+                    Node0216607c *nd = it->node;
+                    for (k = 0; k < nd->count; k++) {
+                        if (&nd->items[k] == it) {
+                            *outIdx = k;
+                            return it->node;
+                        }
+                    }
+                }
+            } while (++i < n);
+        }
+    }
+    return NULL;
+}
+
 }

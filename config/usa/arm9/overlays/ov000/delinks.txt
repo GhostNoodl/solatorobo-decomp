@@ -377,6 +377,10 @@ src/ov000/Lo_0216ca70.cpp:
     complete
     .text       start:0x0216ca70 end:0x0216d14c
 
+src/ov000/Lo_0216d14c.cpp:
+    complete
+    .text       start:0x0216d14c end:0x0216d474
+
 src/ov000/Stub_0216f814.cpp:
     complete
     .text       start:0x0216f814 end:0x0216f844
@@ -1205,6 +1209,10 @@ src/ov000/Lo_0216d9dc.cpp:
     complete
     .text       start:0x0216d9dc end:0x0216df28
 
+src/ov000/Lo_0216df28.cpp:
+    complete
+    .text       start:0x0216df28 end:0x0216e574
+
 src/ov000/Lo_0216e574.cpp:
     complete
     .text       start:0x0216e574 end:0x0216e5d0
@@ -1359,7 +1367,7 @@ src/ov000/Lo_0215c0c4.cpp:
 
 src/ov000/Lo_02165f94.cpp:
     complete
-    .text       start:0x02165f94 end:0x0216607c
+    .text       start:0x02165f94 end:0x02166180
 
 src/ov000/Lo_02156ca0.cpp:
     complete
@@ -3265,6 +3273,10 @@ src/ov000/Obj_02173c30.cpp:
     complete
     .text       start:0x02173c30 end:0x02173d9c
 
+src/ov000/Lo_02173d9c.cpp:
+    complete
+    .text       start:0x02173d9c end:0x021740b0
+
 src/ov000/Cmd_02188ca0.cpp:
     complete
     .text       start:0x02188ca0 end:0x02188d28
@@ -3312,6 +3324,10 @@ src/ov000/Body_021987b8.c:
 src/ov000/Win_0215f618.cpp:
     complete
     .text       start:0x0215f618 end:0x0215f970
+
+src/ov000/Lo_0215f970.cpp:
+    complete
+    .text       start:0x0215f970 end:0x0215fdfc
 
 src/ov000/Ai_02197ee0.cpp:
     complete
