@@ -1356,6 +1356,10 @@ src/Main/Gfx/Obj3D_3.cpp:
     complete
     .text       start:0x020534c4 end:0x020534dc
 
+src/Main/Gfx/SlideScene.cpp:
+    complete
+    .text       start:0x020534dc end:0x0205422c
+
 src/Main/Gfx/SlidePanel.cpp:
     complete
     .text       start:0x0205422c end:0x02054bb4
@@ -1518,7 +1522,7 @@ src/Main/Effect/Effect_2.cpp:
 
 src/Main/Effect/Effect_3.cpp:
     complete
-    .text       start:0x02064d3c end:0x02065b84
+    .text       start:0x02064d3c end:0x02065eec
 
 src/Main/Effect/Effect_4.cpp:
     complete

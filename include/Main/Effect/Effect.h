@@ -426,9 +426,13 @@ extern void VEC_MultAdd(s32 a, const EffectVec *v1, const EffectVec *v2, EffectV
 extern char data_0208c330[];
 
 typedef struct EffectGlb {
-    u8 unk_00[0xfc];
-    u32 flags;
-} EffectGlb;
+    /* 0x000 */ u8 unk_00[0xfc];
+    /* 0x0fc */ u32 flags;
+    /* 0x100 */ u8 unk_100[0x140];
+    /* 0x240 */ EffectVec camPos;
+    /* 0x24c */ EffectVec camUp;
+    /* 0x258 */ EffectVec camTarget;
+} EffectGlb; // NNSG3dGlb
 
 extern EffectGlb NNS_G3dGlb;
 extern u8 data_02092800[];

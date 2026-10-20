@@ -1,4 +1,5 @@
 #include "Main/Effect/Effect.h"
+#include "Main/Gfx/GfxMgr.h"
 
 extern "C" {
 
@@ -504,6 +505,113 @@ void func_02065ac0(EffectMgr *m) {
         }
         break;
     }
+}
+
+}
+
+extern "C" {
+
+typedef struct EffectBlk12 {
+    s32 w[3];
+} EffectBlk12;
+
+typedef struct EffectMtx33 {
+    s32 m[9];
+} EffectMtx33;
+
+extern BOOL func_0203dc9c(void *node, BOOL recurse);
+extern u8 data_020928d8[];
+extern u8 data_020928e4[];
+extern void MTX_LookAt(const EffectVec *camPos, const EffectVec *camUp, const EffectVec *target, void *mtx);
+extern int func_02043d60(void *st, int n);
+
+static inline void Effect_GlbLookAt(const EffectVec *camPos, const EffectVec *camUp, const EffectVec *target) {
+    NNS_G3dGlb.camPos = *camPos;
+    NNS_G3dGlb.camUp = *camUp;
+    NNS_G3dGlb.camTarget = *target;
+    MTX_LookAt(camPos, camUp, target, data_02092844);
+    NNS_G3dGlb.flags &= ~0xe8;
+}
+
+static inline void Effect_GlbSetProj(const void *proj) {
+    MIi_CpuCopyFast(proj, data_02092800, 0x40);
+    NNS_G3dGlb.flags &= ~0x50;
+}
+
+static inline void Effect_GlbSetBaseRot(const EffectMtx33 *rot) {
+    MI_Copy36B(rot, data_020928b4);
+    NNS_G3dGlb.flags &= ~0xa4;
+}
+
+void func_02065b84(EffectMgr *m) {
+    EffectMtx33 rot;
+    EffectVec trans;
+    EffectVec scale;
+    EffectVec camPos;
+    EffectVec camTarget;
+    EffectVec camUp;
+    u8 proj[0x40];
+    EffectObj *o;
+    EffectObj *next;
+    u8 mask;
+    s32 *cam;
+    u32 n;
+    if (!func_0203dc9c(m, TRUE) && m->state == 3) {
+        data_0214a41c.polyIdBase = data_02097d48->unk_8b0[1];
+        data_0214a41c.polyIdCounter = 0;
+    } else {
+        return;
+    }
+    rot = *(EffectMtx33 *)data_020928b4;
+    *(EffectBlk12 *)&trans = *(EffectBlk12 *)data_020928d8;
+    *(EffectBlk12 *)&scale = *(EffectBlk12 *)data_020928e4;
+    camPos = NNS_G3dGlb.camPos;
+    camTarget = NNS_G3dGlb.camTarget;
+    camUp = NNS_G3dGlb.camUp;
+    MI_Copy64B(data_02092800, proj);
+    if (m->useCamera) {
+        Effect_GlbSetProj(m->proj);
+        Effect_GlbLookAt(&m->camera.pos, &m->camera.up, &m->camera.target);
+    }
+    o = m->head;
+    if (o != NULL) {
+        cam = (s32 *)data_02092844;
+        for (; o != NULL; o = o->next) {
+            o->unk_80 = ((s64)o->pos.x * cam[2] + (s64)o->pos.y * cam[5] + (s64)o->pos.z * cam[8]) >> 12;
+            o->unk_80 += cam[11];
+            o->unk_80 += o->unk_18;
+        }
+    }
+    func_02065920(m);
+    o = m->drawHead;
+    if (!m->drawFilter) {
+        for (; o != NULL; o = next) {
+            next = o->drawNext;
+            func_02063954(o);
+        }
+    } else {
+        mask = data_02097d48->unk_a30_4 ? 1 : 2;
+        for (; o != NULL;) {
+            EffectObj *n2 = o->drawNext;
+            if (mask & (u8)o->unk_d4) {
+                func_02063954(o);
+            }
+            o = n2;
+        }
+    }
+    Effect_GlbSetBaseRot(&rot);
+    NNS_G3dGlbSetBaseTrans(&trans);
+    NNS_G3dGlbSetBaseScale(&scale);
+    if (m->useCamera) {
+        Effect_GlbLookAt(&camPos, &camTarget, &camUp);
+        Effect_GlbSetProj(m->proj);
+    }
+    n = data_0214a41c.polyIdCounter;
+    if (n >= 0x10) {
+        n = 0x10;
+        data_0214a41c.polyIdCounter = n;
+    }
+    func_02043d60(data_02097d48->unk_8b0, (u8)n);
 }
 
 }
