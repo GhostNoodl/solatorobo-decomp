@@ -91,7 +91,7 @@ src/ov013/ov013_02204768.cpp:
 
 src/ov013/ov013_02204a3c.cpp:
     complete
-    .text       start:0x02204a3c end:0x02205098
+    .text       start:0x02204a3c end:0x02205760
 
 src/ov013/ov013_022058d4.cpp:
     complete

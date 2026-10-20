@@ -19,7 +19,7 @@ src/ov015/ov015_021fb758.cpp:
 
 src/ov015/ov015_021fce4c.cpp:
     complete
-    .text       start:0x021fce4c end:0x021fce94
+    .text       start:0x021fcb1c end:0x021fce94
 
 src/ov015/ov015_021fd00c.cpp:
     complete
