@@ -1377,6 +1377,10 @@ src/ov000/Lo_02165f94.cpp:
     complete
     .text       start:0x02165f94 end:0x02166180
 
+src/ov000/Lo_02166be8.cpp:
+    complete
+    .text       start:0x02166be8 end:0x0216715c
+
 src/ov000/Lo_02156ca0.cpp:
     complete
     .text       start:0x02156ca0 end:0x02156d48
