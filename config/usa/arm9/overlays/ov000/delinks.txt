@@ -3285,6 +3285,10 @@ src/ov000/Spawn_0218b9ec.cpp:
     complete
     .text       start:0x0218b9ec end:0x0218bb34
 
+src/ov000/Robo_021a2d64.cpp:
+    complete
+    .text       start:0x021a2d64 end:0x021a3220
+
 src/ov000/Robo_021a3220.cpp:
     complete
     .text       start:0x021a3220 end:0x021a3e50
