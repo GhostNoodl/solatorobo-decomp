@@ -328,3 +328,8 @@ The linker strips functions that nothing references. If `ninja` reports a matche
 - **A split constant.** `sub r0, rX, #0x34000` followed by `sub r0, r0, #0x10000` came from `SetV(&v, 0, -0x34000, 0); v.y -= 0x10000;`, not from one `-0x44000`.
 - **A callee's declared return type changes scheduling.** In `func_ov012_02205990`, a `mov r1, #0xa` and an `ldr r0, [r7, #0x40]` after a call were in the wrong order until `func_02049a48` was declared returning `void *` (it returns a sound handle) instead of `void`. The permuter found it by trying a `long long` return. When a load or `mov` right after a `bl` is out of order, check the callee's return type.
 - **Folded null guard on string arguments.** A `NewModel2(nm, arc)` inline that copies its arguments into locals (`char *n = nm; char *a = arc; if (n) {...}`) keeps the string loads hoisted into saved registers without emitting a real compare, since the guard folds away on literals (`src/ov000/Lo_0217ef3c.cpp`).
+
+## Ternaries and block-scoped vectors (overlays 9–14, round ovhi10)
+
+- **An angle as a ternary inside the null check.** `if (t) a = (t && t != self) ? FX_Atan2(...) : self->rot[1];` fixed a register swap that the equivalent if/else caused.
+- **A block-scoped vector with an initializer stays on the stack.** `Ov014Vec b2 = data;` inside a block kept the stack copy, and putting the null path in a trailing `else` instead of an early `return` gave the target's layout.
