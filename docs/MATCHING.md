@@ -333,3 +333,13 @@ The linker strips functions that nothing references. If `ninja` reports a matche
 
 - **An angle as a ternary inside the null check.** `if (t) a = (t && t != self) ? FX_Atan2(...) : self->rot[1];` fixed a register swap that the equivalent if/else caused.
 - **A block-scoped vector with an initializer stays on the stack.** `Ov014Vec b2 = data;` inside a block kept the stack copy, and putting the null path in a trailing `else` instead of an early `return` gave the target's layout.
+
+## Assignment versus initialisation, references and getters (overlays 2–8, round ovlo4)
+
+- **Plain assignment after the declaration.** `Rot rot; ...; rot = self->rot; rot.x += ...;` matched where `Rot rot = self->rot;` at the top stayed far off. The init-declaration moves the copy and changes slot order.
+- **C++ reference alias.** Declaring `T *&ref = p;` and writing through `ref` fixed a register swap that the permuter could not reach otherwise.
+- **Tiny static inline getter.** Wrapping a repeated call expression in a one-line `static inline` getter fixed the register order of its results.
+- **`bool` normalisation needs C++.** A helper returning `g->a != g->b` gives the target's `movne/moveq` pair only in a `.cpp` file (`func_ov003_021f27ec`). The same helper in `.c` does not.
+- **Bitfield/field store order is source order.** In `func_ov003_021f27ec` the camera block only matched as `fa`, `da_5 = 1`, `fc`, `da_6 = 1`, interleaving the bitfield sets with the halfword stores.
+- **Right-to-left argument evaluation.** In a call with two calls as arguments, the rightmost runs first. Write `Add(list, k, Get(g, 0x48 + k), Get(g, 0x160 + k))` when the target calls `0x160` first.
+- **A zero passed to a call.** `f = 0;` written right before the call that receives `f` (instead of at the top) kept the zero in the target's register (`func_ov006_021e96cc` draft).

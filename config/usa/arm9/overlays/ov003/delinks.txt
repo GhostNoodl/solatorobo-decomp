@@ -529,3 +529,7 @@ src/ov003/ov003_021cd1e4.cpp:
 src/ov003/ov003_021f01a4.cpp:
     complete
     .text       start:0x021f01a4 end:0x021f07d8
+
+src/ov003/ov003_021f27ec.cpp:
+    complete
+    .text       start:0x021f27ec end:0x021f2dd0
