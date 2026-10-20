@@ -1933,6 +1933,10 @@ src/ov000/Heap_021bacf4.cpp:
     complete
     .text       start:0x021bacf4 end:0x021badd4
 
+src/ov000/G3_021badd4.cpp:
+    complete
+    .text       start:0x021badd4 end:0x021bb248
+
 src/ov000/Heap_021c5508.cpp:
     complete
     .text       start:0x021c5508 end:0x021c55e8
