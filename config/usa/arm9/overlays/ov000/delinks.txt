@@ -3300,3 +3300,23 @@ src/ov000/Lo_021640fc.cpp:
 src/ov000/Lo_0214d304.cpp:
     complete
     .text       start:0x0214d304 end:0x0214d994
+
+src/ov000/Hud_021c2450.cpp:
+    complete
+    .text       start:0x021c2450 end:0x021c28cc
+
+src/ov000/Mgr_021b5dc0.cpp:
+    complete
+    .text       start:0x021b5dc0 end:0x021b628c
+
+src/ov000/Robo_02196c40.cpp:
+    complete
+    .text       start:0x02196c40 end:0x021971c4
+
+src/ov000/Robo_021ab68c.cpp:
+    complete
+    .text       start:0x021ab68c end:0x021abc88
+
+src/ov000/Robo_021aaf80.cpp:
+    complete
+    .text       start:0x021aaf80 end:0x021ab68c
