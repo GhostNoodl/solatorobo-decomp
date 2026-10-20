@@ -111,4 +111,28 @@ void func_ov003_021d7dd0(Ov003Ticker *self) {
     self->count--;
 }
 
+
+static inline s32 FxMul(s32 a, s32 b) { return (s32)(((s64)a * b + 0x800) >> 12); }
+s16 func_ov003_021d7e58(Ov003Ticker *self) {
+    s16 v;
+    s32 cur;
+    s16 r = 0;
+    s32 d;
+    if (self->active && !self->b3) {
+        if (self->b2) {
+            d = self->interval - self->timer;
+            if (d == 0) {
+                v = self->next;
+            } else {
+                cur = self->cur;
+                v = cur + (s16)FxMul(self->next - cur, 0x1000 / d);
+            }
+        } else {
+            v = self->next;
+        }
+        r = (v > 0x1000) ? 0x1000 : ((v < -0x1000) ? -0x1000 : v);
+    }
+    return r;
+}
+
 }

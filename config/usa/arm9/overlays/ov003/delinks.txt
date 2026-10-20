@@ -66,7 +66,7 @@ src/ov003/ov003_021d7c78.cpp:
 
 src/ov003/ov003_021d7d8c.cpp:
     complete
-    .text       start:0x021d7d8c end:0x021d7e58
+    .text       start:0x021d7d8c end:0x021d7f0c
 
 src/ov003/ov003_021d7f0c.cpp:
     complete

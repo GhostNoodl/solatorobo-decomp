@@ -230,4 +230,80 @@ Ov010Node *func_ov010_0220db74(Ov010Node *head, Ov010Node *node) {
     return head;
 }
 
+static inline long Ov010Coll_Count(Ov010Coll *self) {
+    u8 r = 0;
+    if (self->b0) {
+        r = self->count;
+    }
+    return r;
+}
+
+static inline u16 Ov010Coll_Id(Ov010Coll *self, s32 i) {
+    u16 r = 0xffff;
+    if (self->b0 && i >= 0 && i < self->count) {
+        r = self->ids[i];
+    }
+    return r;
+}
+
+static inline BOOL Ov010_ObjGone(void *obj) {
+    BOOL r = FALSE;
+    if (obj == NULL) {
+        r = TRUE;
+    } else {
+        switch (FLD(s32, obj, 0xd8)) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            r = TRUE;
+            break;
+        }
+    }
+    return r;
+}
+
+static inline void Ov010Coll_Kill(Ov010Coll *self, Ov010Node *n) {
+    if (self->b0 && n != NULL) {
+        Ov010V *obj = (Ov010V *)Ov010_FindObjById(n->id);
+        if (obj != NULL) {
+            obj->v08();
+        }
+        self->list = func_ov010_0220db74(self->list, n);
+        func_ov003_021d79ac(self->pool, n);
+    }
+}
+
+static inline void Ov010Coll_KillId(Ov010Coll *self, u16 id) {
+    Ov010Node *n;
+    if (self->b0) {
+        for (n = self->list; n != NULL; n = n->next) {
+            if (n->id == id) {
+                Ov010Coll_Kill(self, n);
+                return;
+            }
+        }
+    }
+}
+
+void func_ov010_0220dbc0(Ov010Coll *self) {
+    s32 i;
+    Ov010Node *n;
+    u16 id;
+    if (self->b0) {
+        self->count = 0;
+        for (n = self->list; n != NULL; n = n->next) {
+            Ov010_FindObjById(n->id);
+            self->ids[self->count] = n->id;
+            self->count++;
+        }
+    }
+    for (i = 0; i < Ov010Coll_Count(self); i++) {
+        id = Ov010Coll_Id(self, i);
+        if (Ov010_ObjGone(Ov010_FindObjById(id))) {
+            Ov010Coll_KillId(self, id);
+        }
+    }
+}
+
 }
