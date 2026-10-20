@@ -169,6 +169,10 @@ src/ov000/Stub_0214e008.cpp:
     complete
     .text       start:0x0214e008 end:0x0214e074
 
+src/ov000/Lo_0214e9e4.cpp:
+    complete
+    .text       start:0x0214e9e4 end:0x0214f06c
+
 src/ov000/Stub_0214f06c.cpp:
     complete
     .text       start:0x0214f06c end:0x0214f090
@@ -244,6 +248,10 @@ src/ov000/Stub_02159710.cpp:
 src/ov000/Lo_02159720.cpp:
     complete
     .text       start:0x02159720 end:0x021597dc
+
+src/ov000/Lo_02159aac.cpp:
+    complete
+    .text       start:0x02159aac end:0x02159e38
 
 src/ov000/Stub_02159e38.cpp:
     complete
@@ -813,6 +821,10 @@ src/ov000/Lo_0217ddd4.cpp:
     complete
     .text       start:0x0217ddd4 end:0x0217df5c
 
+src/ov000/Lo_0217df5c.cpp:
+    complete
+    .text       start:0x0217df5c end:0x0217e560
+
 src/ov000/Lo_0217ed94.cpp:
     complete
     .text       start:0x0217ed94 end:0x0217ef34
@@ -824,6 +836,10 @@ src/ov000/Lo_0217f8d0.cpp:
 src/ov000/Lo_0217fcc4.cpp:
     complete
     .text       start:0x0217fcc4 end:0x0217fd70
+
+src/ov000/Lo_0217fd70.cpp:
+    complete
+    .text       start:0x0217fd70 end:0x02180350
 
 src/ov000/Lo_02175e6c.cpp:
     complete
@@ -880,6 +896,10 @@ src/ov000/Lo_02178a5c.cpp:
 src/ov000/Lo_02178cd0.cpp:
     complete
     .text       start:0x02178cd0 end:0x02178f70
+
+src/ov000/Dtor_0216fb14.cpp:
+    complete
+    .text       start:0x0216fb14 end:0x0217006c
 
 src/ov000/Lo_0217006c.cpp:
     complete
@@ -2960,6 +2980,10 @@ src/ov000/TextWin_0215d758.cpp:
 src/ov000/Win_021c5d9c.cpp:
     complete
     .text       start:0x021c5d9c end:0x021c5fc4
+
+src/ov000/Lo_0217d0c4.cpp:
+    complete
+    .text       start:0x0217d0c4 end:0x0217d66c
 
 src/ov000/Lo_0217d66c.cpp:
     complete
