@@ -988,6 +988,10 @@ libs/nnsys/snd/sndarc_util.c:
     complete
     .text       start:0x02032eac end:0x02032f90
 
+libs/mobiclip/mobiclip_asm_02032f90.c:
+    complete
+    .text       start:0x02032f90 end:0x02033550
+
 libs/mobiclip/mobiclip_api.cpp:
     complete
     .text       start:0x02033550 end:0x02033858
@@ -1462,7 +1466,7 @@ src/Main/Res/StageCmd_3.cpp:
 
 src/Main/Res/StageCmd_4.cpp:
     complete
-    .text       start:0x0205d000 end:0x0205d0dc
+    .text       start:0x0205cbf0 end:0x0205d0dc
 
 src/Main/Res/StageCmd_5.cpp:
     complete
@@ -1546,7 +1550,7 @@ src/Main/Effect/EffectSpawn.cpp:
 
 src/Main/Effect/Effect_7.cpp:
     complete
-    .text       start:0x02068508 end:0x02068544
+    .text       start:0x02068508 end:0x02068600
 
 src/Main/Effect/Effect_8.cpp:
     complete
