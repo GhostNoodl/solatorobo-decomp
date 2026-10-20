@@ -313,6 +313,75 @@ char *func_0204d57c(TextWin *win, char *p) {
     return p + 2;
 }
 
+static inline char *TextWin_FindComma(char *p) {
+    while (*p != '>') {
+        if (*p == ',') {
+            return p;
+        }
+        p++;
+    }
+    return NULL;
+}
+
+static inline int TextWin_CopyParen(const char *s, char *dst) {
+    int j = 0;
+    dst[0] = 0;
+    if (s[j + 1] != '(') {
+        return j;
+    }
+    j++;
+    while (s[j + 1] != ')') {
+        dst[0] = s[j++ + 1];
+        dst++;
+    }
+    dst[0] = 0;
+    return j + 1;
+}
+
+char *func_0204d5bc(TextWin *win, char *p) {
+    char buf[0x10];
+    char *q;
+    long i;
+    char c;
+    win->code = 0;
+    win->value = func_02040778(p, NULL);
+    win->args[0] = 0;
+    win->args[1] = 0;
+    win->args[2] = 1;
+    p += 4;
+    q = TextWin_FindComma(p);
+    while (q != NULL) {
+        c = q[1];
+        if (c == 'n') {
+            win->args[0] = -1;
+            p += 2;
+        } else if (c == 'f') {
+            win->args[0] = func_02040778(q + 2, NULL);
+            p += 4;
+        } else if (c == 'o') {
+            for (i = 2;; i++) {
+                c = q[i];
+                if (c == ',' || c == '>') {
+                    break;
+                }
+                if (c == 'n') {
+                    i += TextWin_CopyParen(q + i, win->text);
+                    win->args[1] |= 1;
+                } else if (c == 'i') {
+                    win->args[1] |= 2;
+                } else if (c == 't') {
+                    i += TextWin_CopyParen(q + i, buf);
+                    win->args[2] = (u16)(func_02040778(buf, NULL) + 1);
+                    win->args[1] |= 4;
+                }
+            }
+            p += i;
+        }
+        q = TextWin_FindComma(p);
+    }
+    return p + 1;
+}
+
 char *func_0204d7e0(TextWin *win, char *p);
 
 char *func_0204d82c(TextWin *win, char *p);

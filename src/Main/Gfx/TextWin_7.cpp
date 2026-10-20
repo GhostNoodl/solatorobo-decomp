@@ -1,6 +1,7 @@
 #define SND_DEFINE_GLOBALS
 #include "Main/Gfx/TextWin.h"
 #include "Main/Snd/SndMgr.h"
+#include "nnsys/g2d/g2d_Font.h"
 
 // Base of the text layout helper; its vtable stays in asm.
 struct TextLayout {
@@ -337,6 +338,146 @@ void func_0204f784(TextWinEx *win) {
         return;
     }
     func_0203972c(win->blocks, count);
+}
+
+extern void *func_0203a4c0(GfxMgr *mgr);
+extern void func_0203a4dc(GfxMgr *mgr, void *arg);
+extern void func_0203a5a4(GfxMgr *mgr, u16 c);
+BOOL func_0204cc18(TextWin *win, char **pp);
+
+s32 func_0204f804(TextWinEx *win) {
+    BOOL stop;
+    s32 lineH;
+    s16 n;
+    char *saved;
+    s32 color;
+    NNSiG2dSplitCharCallback fn;
+    s32 pad;
+    u16 c;
+    NNSG2dFont *font;
+    data_02097ce0->unk_004 = win->unk_28;
+    data_02097ce0->unk_012 = win->unk_34;
+    n = 0;
+    if (win->unk_3c4 >= 0) {
+        return n;
+    }
+    win->unk_3c4 = win->unk_3c8;
+    if (win->flag3 || win->flag25) {
+        return 0;
+    }
+    if (*(char *)win->unk_3d8 != 0) {
+        font = (NNSG2dFont *)func_0203a4c0(data_02097ce0);
+        fn = font->cbCharSpliter;
+        pad = 0;
+        stop = FALSE;
+        lineH = win->unk_38 + font->pRes->linefeed;
+        color = win->unk_2c;
+        saved = (char *)win->unk_3d8;
+        while ((c = fn((const void **)&win->unk_3d8)) != 0) {
+            if (c == '\n') {
+                win->unk_3c = win->originX;
+                win->unk_40 += lineH;
+                saved = (char *)win->unk_3d8;
+                continue;
+            }
+            if (c == '\\') {
+                c = fn((const void **)&win->unk_3d8);
+            } else if (c == '<') {
+                func_0204cc18(win, (char **)&win->unk_3d8);
+                switch (win->code) {
+                case 0x14:
+                    func_0204cb28(win, win->unk_3d8);
+                    stop = TRUE;
+                    break;
+                case 0x11:
+                    if (win->value == 0) {
+                        win->unk_3c8 = 3;
+                    } else if (win->value == 1) {
+                        win->unk_3c8 = 1;
+                    } else if (win->value == 2) {
+                        win->unk_3c8 = 0;
+                    } else if (win->value == 3) {
+                        win->unk_3c8 = 7;
+                    }
+                    break;
+                case 0x12:
+                    win->unk_3c4 += win->value;
+                    stop = TRUE;
+                    break;
+                case 0x10:
+                    color = win->value;
+                    win->unk_2c = color;
+                    break;
+                }
+                saved = (char *)win->unk_3d8;
+                if (!stop) {
+                    continue;
+                }
+            } else if (c == 0x3001) {
+                c = ' ';
+                pad = 8;
+            } else if (c == 0x3002) {
+                c = ' ';
+                pad = 0x10;
+            } else if (c == ' ') {
+                pad = -win->unk_3c8;
+            }
+            if (stop) {
+                win->unk_3d8 = (s32)saved;
+                break;
+            }
+            win->blockIds[win->numBlocks] = c;
+            if (win->blocks[win->numBlocks] == NULL) {
+                u16 idx = NNS_G2dFontFindGlyphIndex(font, c);
+                const NNSG2dCharWidths *widths;
+                NNSG2dFontGlyph *glyph;
+                if (idx == 0xffff) {
+                    idx = font->pRes->alterCharIndex;
+                }
+                widths = NNS_G2dFontGetCharWidthsFromIndex(font, idx);
+                glyph = font->pRes->pGlyph;
+                win->blocks[win->numBlocks] = func_020397fc(widths->left + glyph->cellWidth, glyph->cellHeight, 0);
+            }
+            func_0203a4dc(data_02097ce0, win->blocks[win->numBlocks]);
+            TextWin_SetOrigin(win->unk_3c, win->unk_40);
+            data_02097ce0->unk_008 = color;
+            func_0203a5a4(data_02097ce0, c);
+            n++;
+            if (win->flag23 == 1 && (c < 0x80 || c > 0xaf)) {
+                func_02049a48(data_02097e4c, 0x23, 0xe, -1, -1);
+            }
+            win->unk_3c = data_02097ce0->unk_00c;
+            if (win->numBlocks + 1 < 0x80) {
+                win->numBlocks++;
+            }
+            win->unk_3cc++;
+            if (win->unk_3c8 != 0) {
+                if (pad != 0) {
+                    win->unk_3c4 = pad + win->unk_3c8;
+                } else {
+                    win->unk_3c4 = win->unk_3c8;
+                }
+            } else {
+                win->unk_3c4 = 0;
+            }
+            break;
+        }
+    }
+    if (*(char *)win->unk_3d8 == 0) {
+        if (win->page >= win->numPages) {
+            win->OnSkip();
+        } else {
+            if (!win->flag28) {
+                win->unk_1a = win->unk_3c + 8;
+                win->unk_1c = win->unk_40 + 0xc;
+            }
+            win->page++;
+            win->unk_3d8++;
+            win->flag25 = 1;
+            win->unk_18 = 0;
+        }
+    }
+    return n;
 }
 
 BOOL func_0204ffb0(int idx);

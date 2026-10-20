@@ -1290,7 +1290,7 @@ src/Main/Gfx/TextWin_2.cpp:
 
 src/Main/Gfx/TextWin_3.cpp:
     complete
-    .text       start:0x0204cef4 end:0x0204d5bc
+    .text       start:0x0204cef4 end:0x0204d7e0
 
 src/Main/Gfx/TextWin_4.cpp:
     complete
@@ -1310,7 +1310,7 @@ src/Main/Gfx/TextWin_6.cpp:
 
 src/Main/Gfx/TextWin_7.cpp:
     complete
-    .text       start:0x0204f784 end:0x0204f804
+    .text       start:0x0204f784 end:0x0204fc4c
 
 src/Main/Gfx/TextWinOam.cpp:
     complete
