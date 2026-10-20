@@ -78,7 +78,8 @@ typedef struct SlidePanel {
     /* 0x000 */ u32 flag26 : 1;
     /* 0x000 */ u32 flag27 : 1;
     /* 0x000 */ u32 unk_0_28 : 4;
-    /* 0x004 */ u32 unk_04;
+    /* 0x004 */ u32 textPos : 16;
+    /* 0x004 */ u32 unk_04_16 : 16;
     /* 0x008 */ u16 unk_08;
     /* 0x00a */ u16 unk_0a;
     /* 0x00c */ u16 unk_0c;

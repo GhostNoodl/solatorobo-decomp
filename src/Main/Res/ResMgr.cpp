@@ -1,8 +1,7 @@
 #include "Main/Res/ResMgr.h"
+#include "Main/Res/ResLoader.h"
 
 extern "C" {
-
-typedef struct ResLoader ResLoader;
 
 extern void FS_CancelFile(FSFile *file);
 extern void FS_CloseFile(FSFile *file);
@@ -15,7 +14,7 @@ extern void func_02035670(ResLoader *loader);
 extern void func_0203584c(ResLoader *loader);
 extern void func_020363d8(ResMgr *mgr);
 extern void func_020381cc(ResMgr *mgr, ResNode *node);
-extern void *func_02038284(ResMgr *mgr, const char *path, int arg2, int arg3);
+extern void *func_02038284(ResMgr *mgr, const char *path, u32 size, void *buf);
 extern void NNS_G2dFontInitAuto(void *out, void *data);
 extern void func_02036cd8(ResMgr *mgr, ResNode *node);
 extern void func_02036de0(ResMgr *mgr, ResNode *node);
@@ -814,6 +813,244 @@ void func_0203773c(ResMgr *mgr, ResNode *node) {
         }
         break;
     }
+}
+
+typedef struct ResArcHeader {
+    /* 0x0 */ u8 unk_00[6];
+    /* 0x6 */ u16 count;
+} ResArcHeader;
+
+extern const char data_0208b3af[];
+extern ResList *func_02034b44(ResList *list);
+extern void func_02035094(ResList *list, ResRequest *req);
+extern BOOL func_02035740(ResLoader *loader, ResRequest *req);
+extern void func_0203581c(ResLoader *loader);
+extern u8 *func_02035890(ResRing *ring);
+extern u32 func_02035904(ResRing *ring);
+extern BOOL FS_SeekFile(FSFile *file, s32 offset, int whence);
+extern void func_0203df0c(void *ptr);
+
+static inline BOOL ResName_Match(const char *a, const char *b) {
+    int i;
+    for (i = 0; i < 0x20; i++) {
+        if (a[i] == '.' && (b[i] == '.' || b[i] == '\0')) {
+            break;
+        }
+        if (a[i] == '\0' && (b[i] == '.' || b[i] == '\0')) {
+            break;
+        }
+        if (b[i] != a[i]) {
+            return FALSE;
+        }
+    }
+    return TRUE;
+}
+
+BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
+    char path[0x28];
+    BOOL again;
+    ResRequest *req;
+    again = FALSE;
+    req = (ResRequest *)&node->u;
+    switch (mgr->loadStep) {
+    case 0:
+        req->unk_00 = 0;
+        req->unk_04 = 0;
+        req->entries = NULL;
+        req->data = NULL;
+        req->index = 0;
+        STD_CopyString(path, node->name);
+        STD_ConcatenateString(path, data_0208b3af);
+        req->unk_04 = (u32)func_0203dec8(8, 4);
+        if (func_02038284(mgr, path, 8, (void *)req->unk_04) != NULL) {
+            again = TRUE;
+            mgr->loadStep = 1;
+        } else {
+            mgr->loadStep = 100;
+        }
+        break;
+    case 1: {
+        u32 size;
+        if (!FS_IsSucceeded(&mgr->file)) {
+            break;
+        }
+        size = ((ResArcHeader *)req->unk_04)->count << 5;
+        req->entries = (ResFileEntry *)func_0203de84(size, -4);
+        if (func_02038284(mgr, NULL, size, req->entries) != NULL) {
+            mgr->loadStep = 3;
+            again = TRUE;
+        } else {
+            mgr->loadStep = 100;
+        }
+        break;
+    }
+    case 3: {
+        ResList *list;
+        if (!ResMgr_IsReadDone(mgr)) {
+            break;
+        }
+        list = (ResList *)func_0203dd9c(4);
+        if (list != NULL) {
+            list = func_02034b44(list);
+        }
+        req->unk_00 = (u32)list;
+        mgr->loadStep = 4;
+    }
+    case 4: {
+        ResFileEntry *entry = NULL;
+        u32 size;
+        if (!node->unk_2b_6) {
+            entry = &req->entries[req->index];
+        } else {
+            u16 i;
+            u32 offset = 0;
+            for (i = req->index; i < ((ResArcHeader *)req->unk_04)->count; i++) {
+                entry = &req->entries[i];
+                if (req->unk_28 == entry->type) {
+                    BOOL found = FALSE;
+                    if (req->unk_28 != 0) {
+                        if (ResName_Match(req->name.str, entry->name)) {
+                            found = TRUE;
+                        }
+                    } else if (STD_CompareString(entry->name, req->name.str) == 0) {
+                        found = TRUE;
+                    }
+                    if (found) {
+                        req->index = i;
+                        break;
+                    }
+                }
+                offset += entry->unk_18_8;
+            }
+            if (i >= ((ResArcHeader *)req->unk_04)->count) {
+                mgr->loadStep = 50;
+                again = TRUE;
+                break;
+            }
+            if (offset != 0) {
+                FS_SeekFile(&mgr->file, offset, 1);
+            }
+        }
+        size = entry->attr2 >> 8;
+        req->data = func_0203de84(size, 4);
+        if (entry->attr2 & 0xf0) {
+            ResLoader *loader = mgr->loader;
+            ResRing *ring;
+            u8 *buf;
+            loader->ring.total = entry->unk_18_8;
+            loader->ring.readPos = 0;
+            loader->ring.writePos = 0;
+            ring = &loader->ring;
+            buf = func_02035890(ring);
+            if (buf == NULL) {
+                break;
+            }
+            func_02038284(mgr, NULL, func_02035904(ring), buf);
+            if (func_02035740(mgr->loader, req)) {
+                mgr->loadStep = 30;
+                again = TRUE;
+            } else {
+                mgr->loadStep = 20;
+            }
+        } else if (func_02038284(mgr, NULL, size, req->data) != NULL) {
+            mgr->loadStep = 10;
+            again = TRUE;
+        } else {
+            mgr->loadStep = 100;
+        }
+        break;
+    }
+    case 10:
+        if (FS_IsSucceeded(&mgr->file)) {
+            mgr->loadStep = 41;
+            again = TRUE;
+        }
+        break;
+    case 20:
+        if (func_02035740(mgr->loader, req)) {
+            mgr->loadStep = 30;
+            again = TRUE;
+        }
+        break;
+    case 30: {
+        ResLoader *loader;
+        u32 size;
+        u8 *buf;
+        if (!FS_IsSucceeded(&mgr->file)) {
+            break;
+        }
+        loader = mgr->loader;
+        loader->ring.readPos += func_02035904(&loader->ring);
+        size = func_02035904(&loader->ring);
+        if (size == 0) {
+            mgr->loadStep = 40;
+            again = TRUE;
+            break;
+        }
+        buf = func_02035890(&loader->ring);
+        if (buf == NULL) {
+            mgr->loadStep = 31;
+            break;
+        }
+        func_02038284(mgr, NULL, size, buf);
+        break;
+    }
+    case 31: {
+        ResLoader *loader = mgr->loader;
+        u8 *buf = func_02035890(&loader->ring);
+        if (buf == NULL) {
+            break;
+        }
+        func_02038284(mgr, NULL, func_02035904(&loader->ring), buf);
+        mgr->loadStep = 30;
+        break;
+    }
+    case 40:
+        if (mgr->loader->state != 3) {
+            break;
+        }
+        func_0203581c(mgr->loader);
+    case 41:
+        func_02035094((ResList *)req->unk_00, req);
+        req->data = NULL;
+        req->index++;
+        if (((ResArcHeader *)req->unk_04)->count > req->index) {
+            mgr->loadStep = 4;
+            again = TRUE;
+            break;
+        }
+    case 50:
+        if (req->unk_04 != 0) {
+            func_0203df40((void *)req->unk_04);
+            req->unk_04 = 0;
+        }
+        if (req->entries != NULL) {
+            func_0203df0c(req->entries);
+            req->entries = NULL;
+        }
+        FS_CloseFile(&mgr->file);
+        mgr->loadStep = -1;
+        node->state = 5;
+        break;
+    case 100:
+        if (req->unk_04 != 0) {
+            func_0203df40((void *)req->unk_04);
+            req->unk_04 = 0;
+        }
+        if (req->entries != NULL) {
+            func_0203df0c(req->entries);
+            req->entries = NULL;
+        }
+        if (req->data != NULL) {
+            func_0203df0c(req->data);
+            req->data = NULL;
+        }
+        FS_CloseFile(&mgr->file);
+        mgr->loadStep = -1;
+        node->state = 7;
+        break;
+    }
+    return again;
 }
 
 }

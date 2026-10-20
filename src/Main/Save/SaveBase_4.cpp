@@ -35,7 +35,64 @@ void func_02048164(SaveBase *s) {
     SaveBase_LoadData(s);
 }
 
-#ifdef NONMATCHING
+static inline BOOL VerifyLoadedData(SaveBase *s) {
+    u32 size;
+    SaveData *data;
+    data = s->data;
+    size = s->dataSize;
+    if (data->slotIdx != s->curSlot || data->size != size || (data->slot.flags & 2)) {
+        return FALSE;
+    }
+    {
+        u32 n = s->slotSize - 1;
+        if (n != 0) {
+            u8 cks;
+            u8 x;
+            const u8 *p;
+            u32 i;
+            BOOL ok;
+            x = 0;
+            p = (const u8 *)&data->slot + 1;
+            cks = data->slot.checksum;
+            for (i = 0; i < n; i++) {
+                x ^= p[i];
+            }
+            ok = (x ^ cks) == 0;
+            if (!ok) {
+                return FALSE;
+            }
+        }
+    }
+    {
+        u32 n = size - (s->slotSize + 4);
+        if (n != 0) {
+            u8 cks;
+            u8 x;
+            const u8 *p;
+            u32 i;
+            BOOL ok;
+            x = 0;
+            p = (const u8 *)data + (size - n);
+            cks = data->checksum;
+            for (i = 0; i < n; i++) {
+                x ^= p[i];
+            }
+            ok = (x ^ cks) == 0;
+            if (!ok) {
+                return FALSE;
+            }
+        }
+    }
+    return TRUE;
+}
+
+static inline u32 BackupDataOffset(SaveBase *s, s32 idx) {
+    u32 off = s->dataSize * s->slotCount;
+    off += s->baseOffset + s->headerSize;
+    off += idx * s->dataSize;
+    return off;
+}
+
 void func_020481c0(SaveBase *s) {
     u32 off = s->curSlot * s->slotSize + 0x14;
     SaveHeader *hdr = s->header;
@@ -51,7 +108,7 @@ void func_020481c0(SaveBase *s) {
                 return;
             }
             SysCard_EndAccess();
-            if (!SaveBase_CheckData(s)) {
+            if (!VerifyLoadedData(s)) {
                 s->step = 2;
             } else {
                 s->step = 5;
@@ -65,7 +122,7 @@ void func_020481c0(SaveBase *s) {
             s->backupIdx = hdr->backupIdx;
             s->backupStart = hdr->backupIdx;
         case 3:
-            if (func_02046e48(data_02097e44, data, SaveBase_BackupOffset(s, s->backupIdx), s->dataSize) != 1) {
+            if (func_02046e48(data_02097e44, data, BackupDataOffset(s, s->backupIdx), s->dataSize) != 1) {
                 s->step = 4;
             }
             break;
@@ -74,7 +131,7 @@ void func_020481c0(SaveBase *s) {
                 return;
             }
             SysCard_EndAccess();
-            if (!SaveBase_CheckData(s)) {
+            if (!VerifyLoadedData(s)) {
                 s->backupIdx--;
                 if (s->backupIdx >= s->backupCount) {
                     s->backupIdx = s->backupCount - 1;
@@ -123,6 +180,4 @@ void func_020481c0(SaveBase *s) {
             break;
     }
 }
-#endif
-
 }

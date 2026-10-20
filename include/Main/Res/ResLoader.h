@@ -3,6 +3,10 @@
 
 #include "Main/Res/ResMgr.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // Background thread that decompresses files as their data streams into a ring buffer.
 
 typedef struct ResRing {
@@ -107,13 +111,17 @@ static inline void ResRing_Setup(ResRing *ring, void *buf, u32 blockSize, u16 nu
     ring->numBlocks = numBlocks;
     ring->bufSize = size;
     if (buf != NULL) {
-        ring->buf = buf;
+        ring->buf = (u8 *)buf;
         return;
     }
-    ring->buf = func_0203de84(size, 4);
+    ring->buf = (u8 *)func_0203de84(size, 4);
     ring->flags = (ring->flags & ~1) | 1;
 }
 
 void func_02035450(struct ResLoader *loader);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -1022,7 +1022,7 @@ src/Main/Res/ResLoader_2.c:
 
 src/Main/Res/ResMgr.cpp:
     complete
-    .text       start:0x02035934 end:0x02037bb8
+    .text       start:0x02035934 end:0x020381cc
 
 src/Main/Res/ResMgr_2.cpp:
     complete
@@ -1188,7 +1188,7 @@ src/Main/Save/SaveBase_3.cpp:
 
 src/Main/Save/SaveBase_4.cpp:
     complete
-    .text       start:0x02047f60 end:0x020481c0
+    .text       start:0x02047f60 end:0x0204880c
 
 src/Main/Save/SaveBase_5.cpp:
     complete
