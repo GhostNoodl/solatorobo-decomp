@@ -313,3 +313,9 @@ The linker strips functions that nothing references. If `ninja` reports a matche
   - **Shared string pools.** The ov006 pool (`0x021ebbb0`..`0x021ebc65`) and the ov003 pool (`0x021f8564`..`0x021f85c1`) are used by many functions in many files. Externs declared as `const char[]` do not reproduce the early literal loads. With real string literals, `func_ov006_021d3f04` reaches 0 diffs and `func_ov003_021e44dc` reaches 7, but the literals only work if one file claims the whole pool.
   - **`func_ov006_021cf414`.** This is a vtable entry (the vtable at `0x021ebda4` references it), so it cannot be stripped as an unreferenced gap function. Its body is `ldr r1,[r0,#0x4c]; cmp r1,#0; bx lr`, which has no value return. No variant of the C source has reproduced it.
   - **`func_ov004_021cd97c`** (DSProtect decryption, `optimization_level 3`). It is at 24 diffs and only register allocation differs: the loop index and the word temporaries are swapped between r4 and r7.
+
+## Inline helpers and pointer locals (main, round 23)
+
+- **Wrapping a body in a `static inline` helper** pushes its parameters later in register allocation, which can fix a rotation among the callee-saved registers. Nested inlines inside it become `bl` calls unless the file has `#pragma inline_max_size(4096)`.
+- **A pointer local for an address passed to several calls** (`ResRing *ring = &loader->ring;`) can reorder the whole callee-saved register assignment. The permuter finds these as `new_varN`.
+- **Recognise inlined helpers.** `func_0205b588` inlines the whole body of `func_02059454` (read N bits from a save block). Copying that body as a `static inline` fixed the loop's instruction order. The registers matched only once the inline took `(u32 idx, s32 n, u16 start)` and the caller computed `int n = v & 0xff;` into a local before the call.

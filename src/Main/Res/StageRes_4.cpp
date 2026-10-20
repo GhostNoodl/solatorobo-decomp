@@ -99,6 +99,41 @@ BOOL func_0205b4ac(void) {
 
 u16 func_0205b068(StageRes *res, u16 *cmd, u16 val);
 
-u16 func_0205b588(StageRes *res, u16 *cmd);
+// Reads n bits, LSB first, from bit `start` of block idx's data (an inlined func_02059454).
+static inline u16 DataRes_ReadBits(DataRes *res, u32 idx, s32 n, u16 start) {
+    u16 r;
+    u16 i;
+    u8 *bytes;
+    bytes = (u8 *)((SaveLayout *)res->data)->blocks + ((SaveLayout *)res->data)->blocks[idx].offset;
+    r = 0;
+    for (i = 0; i < n; i++) {
+        int pos = start + i;
+        u16 byte = pos >> 3;
+        u8 sh = pos & 7;
+        u8 v = (bytes[byte] >> sh) & 1;
+        r |= v << i;
+    }
+    return r;
+}
+
+u16 func_0205b588(StageRes *res, u16 *cmd) {
+    u16 len = 2;
+    switch (cmd[1]) {
+    case 1:
+        len++;
+        return func_0205b068(res, cmd + len, ((u16 *)&data_02fe1534)[cmd[2]]) + len;
+    case 2: {
+        u16 val;
+        u16 v = cmd[2];
+        int n = v & 0xff;
+        val = DataRes_ReadBits(data_02fe152c, (v & 0xff00) >> 8, n, cmd[3]);
+        len += 2;
+        return func_0205b068(res, cmd + len, val) + len;
+    }
+    }
+    res->unk_5b = 0;
+    return len;
+}
+
 
 }
