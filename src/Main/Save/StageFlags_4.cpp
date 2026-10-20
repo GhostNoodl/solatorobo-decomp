@@ -6,6 +6,46 @@ extern u8 *func_0206ede8(u16 id);
 
 #define STAGE_ITEM_NONE 0xffff
 
+static inline u16 StageFlags_ItemType(u32 id) {
+    return id >> 12;
+}
+
+static inline u16 StageFlags_ItemIdx(u32 id) {
+    return id & 0xfff;
+}
+
+// `used` is a BOOL here but a u8 parameter of func_0206d0d4; that mix gives the target's load order of the two stack arguments.
+static inline void StageFlags_SetEntryBits(StageFlags *f, s32 i, u8 x, u8 y, u8 rot, BOOL used) {
+    f->entries[i].bits.a = x;
+    f->entries[i].bits.b = y;
+    f->entries[i].bits.c = rot;
+    f->entries[i].bits.used = used;
+}
+
+BOOL func_0206d0d4(StageFlags *f, u16 id, u8 x, u8 y, u8 rot, u8 used) {
+    s32 i;
+    BOOL ok;
+    ok = TRUE;
+    if (StageFlags_ItemType(id) - 1 != 1 || StageFlags_ItemIdx(id) >= 0x53) {
+        return FALSE;
+    }
+    for (i = 0; i < STAGE_ITEM_ENTRY_MAX; i++) {
+        if (f->entries[i].id == STAGE_ITEM_NONE) {
+            break;
+        }
+    }
+    if (i == STAGE_ITEM_ENTRY_MAX) {
+        ok = FALSE;
+    } else {
+        f->entries[i].id = id;
+        StageFlags_SetEntryBits(f, i, x, y, rot, used);
+        if (*func_0206ede8(id) != 0x80) {
+            f->itemTotal++;
+        }
+    }
+    return ok;
+}
+
 u8 func_0206d1d4(StageFlags *f, u16 id) {
     u8 n = 0;
     s32 i;

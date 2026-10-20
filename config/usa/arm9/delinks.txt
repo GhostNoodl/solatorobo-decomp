@@ -1598,7 +1598,7 @@ src/Main/Save/StageFlags_3.cpp:
 
 src/Main/Save/StageFlags_4.cpp:
     complete
-    .text       start:0x0206d1d4 end:0x0206d3f4
+    .text       start:0x0206d0d4 end:0x0206d3f4
 
 src/Main/Save/GameSave.cpp:
     complete
