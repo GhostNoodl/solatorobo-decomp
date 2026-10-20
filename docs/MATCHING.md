@@ -959,3 +959,29 @@ No TU2 blocker matched this round, so TU2 is still not merged. Drafts are in `sc
   - `func_ov013_022001b8` (3 to 2, `d/01b8/v_xb1BOOL.cpp`): `if (mode == 1) { m = TRUE; b = 0x1000; } else { m = FALSE; b = 0x1000; }` (the round ovhi19 constant-in-both-arms trick) moves the `0x1000` out of the constant pool order. The target keeps both `movne r3, #0` and `moveq r3, #1`, and in every arm order and condition sense we tried, one of the two `mov`s is hoisted above the `cmp`. A `switch` gave the same result.
   - These did not move: `func_ov002_021e2690` (2): two-definition `t`/`m` for the `8`/`3` stores at every position, and a two-definition loop index with `for` or `do`. `func_ov003_021e1204` (2): `switch` on the kind (9), every type for `k` or a `v` copy, and two-definition `e`/`k`. `func_ov003_021ead50` (2): `Set` returning `BOOL` in four shapes. No matched object in the build has `cmp; strne; beq`, so there is no known source pattern for that sequence. `func_ov015_02211b2c` (2): name, index or anim-pointer locals at every position, and two-definition forms for each argument. `func_ov000_021be5dc` (3): `s64` accumulators, `z` at function scope, and two-definition `z`. `func_ov000_02153804` (17), `func_ov015_021fce94` (13) and `func_ov010_0220640c` (6): `tdc.py`, two-definition `sx`/`sy`/`t`, and a two-definition `dirty` value inside `Ov015Cam_Init` (139 or worse, because the `if` blocks split the inlined code).
 - **Tools.** `scratchpad/ovhi20/t/tdc.py` (literal to two-definition variable, at every position), `t/tdv.py` (adds a second definition after each simple assignment; `TDV_SPAN=n` also tries the next `n` lines) and `t/vr.py base func module varfile` (runs a list of `(name, [(old, new)])` variants in parallel and writes `v_<name>` next to the base file).
+## Sweeping pool words for table entries, and block-local swap-loop indexes (all overlays, round big14)
+
+No new matches this round. Drafts are in `scratchpad/big14/d/` and `scratchpad/big14/best/`.
+
+- **The table-entry sweep found no new cases.** `scratchpad/big14/t/tblsweep.py ROOT` disassembles every function that is below 100% in `build/usa/report.json`. It reads each `ldr rX, [pc, #n]` pool word that points into `0x02000000..0x02400000`. It prints the words that land inside a data symbol (own overlay first, then main) at a non-zero offset, and the words that land inside a named data symbol (not `data_`/`func_`) that has a `data_` symbol in between. `t/uses.py ROOT module pooladdr` shows the instructions that use one pool word. The hits (`scratchpad/big14/sweep_raw*.txt`):
+  - `FX_SinCosTable_ + 0xf00/0x1f00/0x2f00`, read with `ldrsh [rX, #0xfc]`/`#0xfe`, in `ov000_021c6d64` and `ov002_021d98ac`/`021dd9dc`/`021df2ec`. These are the constant angles `0x3ff0`/`0x7ff0`/`0xbff0` (index `0x3ff`/`0x7ff`/`0xbff`). Every draft of these four already writes `FX_SinCosTable_[(0x3fff >> 4) * 2]` or `FX_SINCOS(0x3ff * 2)`.
+  - `data_020755e4 + 0x30`/`+ 0x48` (two `u16 [3][4]` OBJ size tables) in `02024730`, `02043100` and `ov000_021c8408`. `data_02075728 + 1..3` (`pivotUtil_` rows) in `getMdlRot_`. `data_020827f8 + 4`, `data_02082864 + 0x20/0x28` and `data_02082998 + 0x30` are struct-array members. The drafts already index these as arrays.
+  - `0x0214dc20` and `0x021ce9ac` are function addresses in another overlay (`func_ov000_0214dc20`, `func_ov003_021ce9ac`), not table entries. `GXi_VRamLockId + 2`/`+ 0x1e` and `NNS_G3dGlb + n` are library struct fields.
+  
+  None of the big near-misses (`02171478`, `02204428`, `021ad8ac`, `021fc0b8`, `021fe2a4`, `021fb1b4`, `021ff24c`) has such a pool word. A grep of every draft for literal pointer casts (`*)0x02......`) found only the `0x02071160` that round big13 fixed, plus strings and `OSi_ReferSymbol` addresses.
+- **`func_ov013_021fb1b4`: give the reverse-swap loop its own block-local `u8` indexes (40 to 26, `best/b1b4_26.cpp`).** In the target, the `for (i = 0, j = 3; j > i; i++, j--) Ov013_VecSwap(...)` loop has `i` in `r7` and `j` in `r8`. The function-scope `i`/`j` swapped them. `{ u8 a; u8 b; for (a = 0, b = 3; b > a; a++, b--) ... }` fixes all 14 of those diffs. `s32`/`u32` indexes there give 59 to 60. Declaring `b` before `a`, or `u8 b = 3; u8 a = 0;`, keeps 40.
+
+  The other 26 diffs are one rotation in case 1's pole loop. The target has `i` in `r7` (it shares the register of the function's first zero), `cnt` in `r6`, `on` in `r8` and `unk_64`/`prev` in `sb`. These all kept 26 or more:
+  - the 127 subsets of `z`/`on`/`i`/`prev`/`cnt`/`range`/`cur` moved into a case-1 block;
+  - `cnt = 0` or `i = 0` placed before each statement of the case;
+  - `cnt = shake` and `i = shake`;
+  - `u8 i = 0` or `u8 cnt = 0` at function scope;
+  - 215 type combinations of `i`/`cnt`/`on`;
+  - `on` reused as `j`, or `on` and `prev`/`cur` as block locals;
+  - `return` in place of `break`;
+  - 60 steps of `hc2.py`.
+- **Unchanged:**
+  - `02204428` (6): `data_02092a38` as `Ov011Vec[2]`, `s32[]`, a two-vector struct, pointer locals, getter inlines and `dx = B.x; dx = A.x - dx` forms on one or both axes all gave 6 or 7. A struct that covers both globals (`a50` = `a38 + 0x18`) makes MWCC use one base register (29).
+  - `021fc0b8` (13): the target sets `mov sl, #1` (for `on`) before the `s != NULL` test and loads the removal's zero into `r6` in the inner loop's preheader. Its inner node is `r8`, while ours reuses the outer node's `r6`. Not solved.
+  - `02171478` (11), `021ad8ac` (6), `021fe2a4` (22), `021ff24c` (`best/f24c_s10.cpp`, 10 structural and 96 aligned): not changed.
+  - `pprep.sh` and `tools/permuter/run.sh` still fail on the ov011 and ov013 drafts: the class-to-struct conversion breaks derived-to-base pointer conversions such as `Ov013_Show(self)`. So the permuter was not run.
