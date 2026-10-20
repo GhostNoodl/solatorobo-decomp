@@ -1434,7 +1434,7 @@ src/Main/Res/StageRes.cpp:
 
 src/Main/Res/StageRes_2.cpp:
     complete
-    .text       start:0x0205ae68 end:0x0205b1b4
+    .text       start:0x0205ae68 end:0x0205b1fc
 
 src/Main/Res/StageRes_3.cpp:
     complete

@@ -915,3 +915,34 @@ No TU2 blocker matched this round, so TU2 is still not merged. Drafts are in `sc
   - `021fc0b8` (13): swapping the zero stores, a chained store, `FALSE`/`NULL` zeros and moving the `delete` all gave 13 or more.
   - `021fb1b4` (40): not retried.
 - **Tools.** `scratchpad/big13/t/var2.py func module variants.py` runs a list of `(path + name, [(old, new), ...])` edits in parallel. With `SDSCRIPT=sdr.py` it scores with registers normalised away (`t/sdr.py`), which shows whether a draft's remaining diffs are only register assignment.
+
+## TU2 blockers, round 6 (round mainpool11)
+
+`func_0205b1b4` matched (now at the end of `StageRes_2.cpp`, whose `delinks.txt` entry grows to `0x0205b1fc` and now meets `StageRes_3.cpp`). Five TU2 blockers are left, so TU2 is still not merged. Drafts and test files are in `scratchpad/mainpool11/` (`d/`, `b18/`, `x/`).
+
+- **A two-definition zero sets the handler store's register: `func_0205b1b4` matched.** The round mainpool8 trick also works for a zero that has to be set up before an unrelated store:
+
+  ```c
+  u32 zero;
+  zero = 0;
+  if ((u32)data_02149f18 & 3) {
+      zero = 0;
+  }
+  data_0208bde8 = func_0205bef8;
+  data_02149efc.slotStart = zero;
+  ...
+  MI_CpuFill8(data_02149f18, zero, sizeof(data_02149f18));
+  ```
+
+  The zero is now a variable defined above the handler store, so the function pointer can't share its register and goes to `r2`, as in the target. The backend deletes the redundant second definition and the `if`, so neither leaves any code. The stores stay in source order, and the scheduler still puts the `mov r1, #0` after the handler store. Before this, a zero store had to come first in the source, which put the stores in the wrong order.
+- **The same trick does not help the other blockers.** The `if` splits the block until late in the backend. The zero reuse pass and the coloring run before the block is merged back, so they see the extra block:
+  - In `func_0205c234` a two-definition address (`g = &data_02149efc;` after `args[1]`, `if ((u32)slot & 3) g = &data_02149efc;` after `args[5]`, `start = g->slotStart;`) gives the target's schedule: the address `ldr` comes right after `strh r1, [r4, #0xa]`, two stores ahead of the load. But the `NULL` in the `else` no longer reuses the zero register, and `slot` and the zero swap (`r4`/`r5`), so the result is 41. All 210 position pairs of the two lines (`t/ins2.py`) score 26 or worse. A constant address is always generated at its use, and the scheduler puts it exactly one store ahead of the load. That held in every reproduction (`x/s*.c`, compiled with `x/mc.sh`), whatever the pointer's origin or form. These forms all gave the same schedule: named-field unions for `args`, `u16 *` and laundered pointers, comma expressions, an inline taking `&data_02149efc` as a parameter, and dead or `volatile` early reads. The address only moves earlier when it gets a register that no earlier instruction in the block uses (it then goes to the top of the block).
+  - In `func_0205e29c` a two-definition zero for `unk_80` is merged into the zero that the `Field_HasEvent` loop hoisted into `r4` (163 or worse, at every position). In `func_0205e5c4` a two-definition zero or address for the `unk_14`/`unk_04` stores gives 13 or worse.
+- **`func_02060b18` (16): the key's registers follow the condition's `args[1]`.** The target keeps the condition's `args[1]` in `ip`. In ours it is in `r2`, and the `a`/`b` swap in both key computations follows from that. These all left the code unchanged at 16:
+  - the 864 combinations of `u8`/`u16`/`u32`/`int` locals for the three key bytes (declaration order × assignment order × 3 key expressions);
+  - all 6 parameter orders of `Flags_MakeKey2`, with `u8` and `u32` parameters and 5 key expressions;
+  - `hi`/`lo` locals in branch 1, in every type and order.
+  
+  The permuter's only improvement (15) reads an uninitialised `StageResSlot *` copy, so it is not valid code. It does show that `args[1]` moves to `ip` when a second pointer to the slot is live in branch 2.
+- **Unchanged:** `func_0205e5c4` (2), `func_0205c234` (2), `func_0205e29c` (9), `func_02060a08` (13) and `func_02060b18` (16). The permuter found nothing valid: about 26 minutes (3000–3500 iterations) each on `c234`, `0a08` and `b18`, and 10 minutes (1900 iterations) on `e5c4`. For `e5c4` this was the first run: `base.c` had to be turned into C by replacing each run of `virtual` methods with one `void *__vt;` and adding `typedef struct X X;` for every struct; the same conversion is in `pe29/`. Wrapping `GetArea` around a `GetArea2(res, i)` inline makes `e29c` worse (12).
+- **Tools.** `scratchpad/mainpool11/t/ins2.py src func lo hi "lineA" ["lineB"]` inserts one line, or two lines in order, at every position between source lines `lo` and `hi`, and scores each result. `REPL="old|||new@@@..."` applies replacements first. Use it to place the two lines of the two-definition trick. `t/psetup.sh` and `t/prun.sh` are the round mainpool7 permuter scripts, pointed at this clone.

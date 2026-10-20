@@ -154,6 +154,19 @@ u16 func_0205b068(StageRes *res, u16 *cmd, u16 val) {
     return len;
 }
 
-void func_0205b1b4(void);
+void func_0205b1b4(void) {
+    /* The zero is a variable with two definitions (see docs/MATCHING.md, round mainpool11). */
+    u32 zero;
+    zero = 0;
+    if ((u32)data_02149f18 & 3) {
+        zero = 0;
+    }
+    data_0208bde8 = func_0205bef8;
+    data_02149efc.slotStart = zero;
+    data_02149efc.slotEnd = zero;
+    data_02149efc.unk_0c = zero;
+    data_02149efc.unk_00 = zero;
+    MI_CpuFill8(data_02149f18, zero, sizeof(data_02149f18));
+}
 
 }
