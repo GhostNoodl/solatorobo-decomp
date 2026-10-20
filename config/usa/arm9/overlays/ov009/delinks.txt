@@ -97,6 +97,10 @@ src/ov009/ov009_022049e4.cpp:
     complete
     .text       start:0x022049e4 end:0x02204a10
 
+src/ov009/ov009_02205490.cpp:
+    complete
+    .text       start:0x02205490 end:0x02205d14
+
 src/ov009/ov009_02205d14.cpp:
     complete
     .text       start:0x02205d14 end:0x02206084
