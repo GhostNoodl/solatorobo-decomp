@@ -9,6 +9,10 @@ src/ov015/ov015_021fa6a0.cpp:
     complete
     .text       start:0x021fa6a0 end:0x021fb25c
 
+src/ov015/ov015_021fb25c.cpp:
+    complete
+    .text       start:0x021fb25c end:0x021fb408
+
 src/ov015/ov015_021fb408.cpp:
     complete
     .text       start:0x021fb408 end:0x021fb758
