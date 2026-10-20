@@ -71,4 +71,30 @@ BOOL func_02055898(void) {
     return Field_IsPlayerBusy();
 }
 
+// Same VRAM-free loop as func_02051210: the bases are variables with two
+// definitions (the second is dead but keeps the optimizer from propagating
+// them), and `i` is a `long`, which gives the target's register order.
+void func_0205592c(GlyphCache *cache) {
+    long i;
+    u8 *objBase;
+    u8 *subObjBase;
+    cache->flag0 = 0;
+    cache->count = 0;
+    objBase = (u8 *)0x6400000;
+    subObjBase = (u8 *)0x6600000;
+    if ((u32)cache & 3) {
+        objBase = (u8 *)0x6400000;
+        subObjBase = (u8 *)0x6600000;
+    }
+    for (i = 0; i < 0x80; i++) {
+        if (cache->blocks[i] != NULL) {
+            VramBlock *b = cache->blocks[i];
+            MIi_CpuClearFast(0, (b->kind == 4 ? objBase : subObjBase) + b->addr, b->size - b->pad);
+            func_02039828(cache->blocks[i]);
+            cache->blocks[i] = NULL;
+            cache->ids[i] = 0;
+        }
+    }
+}
+
 }

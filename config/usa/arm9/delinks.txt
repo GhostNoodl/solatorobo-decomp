@@ -1338,7 +1338,7 @@ src/Main/Gfx/TextWin_12.cpp:
 
 src/Main/Gfx/SlideWin.cpp:
     complete
-    .text       start:0x020518bc end:0x02051a34
+    .text       start:0x02051210 end:0x02051a34
 
 src/Main/Gfx/Obj3D.cpp:
     complete
@@ -1378,7 +1378,7 @@ src/Main/Gfx/SlidePanel_3.cpp:
 
 src/Main/Gfx/FieldMsg.cpp:
     complete
-    .text       start:0x020556a0 end:0x0205592c
+    .text       start:0x020556a0 end:0x020559c8
 
 src/Main/Gfx/FieldMsg_2.cpp:
     complete
