@@ -77,3 +77,159 @@ void func_ov012_02205864(Ov012Actor *self) {
     func_ov000_02198360(self->unk_40, 0xb, 0);
 }
 }
+
+extern "C" {
+extern void func_ov012_022065d8(Ov012Actor *self);
+extern void func_ov012_02206508(Ov012Actor *self);
+extern void func_ov012_02206098(Ov012Actor *self);
+extern void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+extern const Ov012Vec data_ov012_0220a84c[];
+
+static inline s32 Ov012_FxMul64d(s32 a, s64 b) {
+    return (s32)((a * b + 0x800) >> 12);
+}
+
+static inline s32 Ov012_Dist84(Ov012Actor *self) {
+    s64 sq;
+    s32 dx = self->pos.x - self->unk_84.x;
+    s32 dz = self->pos.z - self->unk_84.z;
+    sq = (s64)dx * dx;
+    sq += (s64)dz * dz;
+    return Ov012_Sqrt2(sq);
+}
+
+void func_ov012_02205990(Ov012Actor *self) {
+    Ov012Vec v;
+    u8 b;
+    Ov012Actor *g;
+    Ov012Actor *pl;
+    Ov012Vec pp;
+    g = (Ov012Actor *)func_ov000_02199ba0(FLD(void *, self, 0x4c));
+    if (g != NULL) {
+    {
+        Ov012Sub48 *m = g->unk_48;
+        if (m != NULL && m->unk_9a_3) {
+            m->unk_9a_3 = 0;
+            func_0203f364(m);
+        }
+    }
+    if (g->kind == 0x1000) {
+        func_ov012_02206098(self);
+        return;
+    }
+    pl = func_ov000_0218d240(self);
+    pp = pl->pos;
+    switch (self->unk_40->state) {
+    case 0: {
+        s32 d;
+        u16 a;
+        Ov012Sub48 *m = self->unk_48;
+        m->unk_50 = 0;
+        m->unk_54 = 0;
+        FLD(u32, m, 0x58) = 0;
+        if (FLD(u8, self, 0xd4) == 0) {
+            d = Ov012_Dist84(self);
+            a = FX_Atan2(d, self->unk_84.y - self->pos.y);
+            self->unk_9c = Ov012_FxMul(OV012_SIN(a), 0x400);
+            self->unk_a0 = Ov012_FxMul(OV012_COS(a), 0x400);
+            self->unk_40->state++;
+        } else {
+            self->unk_40->state = 10;
+        }
+        break;
+    }
+    case 1:
+        func_ov000_0218d918(self, &self->unk_84, 0x1000);
+        func_ov000_0218ddd4(self, &self->unk_84, 0);
+        func_ov012_022065d8(self);
+        func_ov000_021987b8(self->unk_48, 1, 0, 0);
+        if (VEC_Distance(&self->pos, &self->unk_84) <= 0x800) {
+            Ov012Sub48 *m;
+            Ov012Sub44 *n;
+            Ov012V *o;
+            FLD(u32, self, 0xd0) = 0x100000;
+            FLD(Ov012Flags, self, 0x2d2).b0 = 0;
+            self->unk_38->unk_c2_0 = 1;
+            n = self->unk_44;
+            n->unk_22_0 = 0;
+            n->unk_22_1 = 0;
+            m = self->unk_48;
+            m->unk_9a_0 = 0;
+            m->unk_9a_3 = 0;
+            func_0203f364(m);
+            m = self->unk_48;
+            m->unk_9a_2 = 0;
+            m->unk_9a_5 = 0;
+            o = func_02065f88(0x57c, &self->pos);
+            o->v0c(0x2000);
+            o = func_02065f88(0x6b, &self->pos);
+            o->v0c(0x2000);
+            func_02049f44(data_02097e4c, 0x1a, &self->pos, 0);
+            func_02049a48(data_02097e4c, 0x4f, 0x6e, -1, -1);
+            func_ov012_02206508(self);
+            self->unk_40->state = 10;
+        }
+        if (self->unk_48->unk_50 & 0x60000000) {
+            func_ov000_02198360(self->unk_40, 0x15, 0);
+        }
+        break;
+    case 10: {
+        s32 d;
+        u16 a;
+        func_01ffc9fc(&v, (Ov012Vec *)&data_ov012_0220a84c[FLD(u8, self, 0xd4)], self->rot[1]);
+        VEC_Add(&v, &self->pos, &self->unk_84);
+        d = Ov012_Dist84(self);
+        a = FX_Atan2(d, self->unk_84.y - self->pos.y);
+        self->unk_9c = Ov012_FxMul64d(OV012_SIN(a), 0x2b8);
+        self->unk_a0 = Ov012_FxMul64d(OV012_COS(a), 0x2b8);
+        b = 1;
+        func_ov000_0219bd20(0x5c03, self->kind, 6, 1, 1, &b);
+        self->unk_40->state++;
+        break;
+    }
+    case 11: {
+        Ov012Sub40 *s;
+        func_ov000_0218d918(self, &self->unk_84, 0x7b);
+        self->unk_98 = self->rot[1];
+        func_ov000_0218dbe0(self, 0);
+        func_ov012_022065d8(self);
+        s = self->unk_40;
+        s->timer++;
+        if (s->timer > FLD(u8, self, 0xd4) * 0x28 + 100) {
+            self->unk_40->state++;
+        }
+        if (self->unk_40->timer == 0x1e) {
+            Ov012Sub44 *n = self->unk_44;
+            n->unk_22_0 = 1;
+            n->unk_22_1 = 1;
+        }
+        break;
+    }
+    case 12: {
+        s32 d;
+        u16 a;
+        self->unk_84 = pp;
+        d = Ov012_Dist84(self);
+        a = FX_Atan2(d, pp.y - self->pos.y);
+        self->unk_9c = Ov012_FxMul64d(OV012_SIN(a), 0x333);
+        self->unk_a0 = Ov012_FxMul64d(OV012_COS(a), 0x333);
+        func_02049de8(data_02097e4c, 0x4f);
+        self->unk_40->state++;
+        break;
+    }
+    case 13:
+        func_ov000_0218d918(self, &self->unk_84, 0x19a);
+        self->unk_98 = self->rot[1];
+        func_ov000_0218dbe0(self, 0);
+        func_ov012_022065d8(self);
+        func_ov000_021987b8(self->unk_48, 1, 0, 0);
+        if (self->unk_48->unk_50 & 0x60000000) {
+            func_ov000_02198360(self->unk_40, 0x15, 0);
+        }
+        break;
+    }
+    } else {
+        func_ov000_02198360(self->unk_40, 0x15, 0);
+    }
+}
+}
