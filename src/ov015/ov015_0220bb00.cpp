@@ -165,4 +165,128 @@ BOOL func_ov015_0220c1b8(u8 *self, u8 *p) {
     return TRUE;
 }
 
+
+BOOL func_ov015_0220c810(u8 *self, u8 *p);
+void func_ov015_0220c6c8(u8 *self, u8 *p);
+s32 func_02040498(s32 n);
+void func_ov000_02191618(void *a);
+void VEC_Normalize(void *src, void *dst);
+extern u8 data_ov015_02212e74[];
+
+BOOL func_ov015_0220c21c(u8 *self, u8 *p) {
+    BOOL ret = TRUE;
+    s32 a;
+    s32 off;
+    s32 t;
+    s32 v;
+    FLD(u8 *, self, 0x18) = p;
+    if (FLD(s32, self, 0x4) != 0 && FLD(s32, self, 0x4) != 5 && !func_ov015_0220c810(self, p)) {
+        FLD(s32, self, 0x4) = 5;
+        FLD(s32, self, 0x8) = 0x5a;
+        func_ov000_02190cb0(p + 0x244, data_ov015_02212e74, 0x19a, 0);
+        FLD(u16, p, 0x104) = 0x800;
+        func_ov000_02191618(p + 0x244);
+        FLD(s32, p, 0xbc) = 0;
+    }
+    switch (FLD(s32, self, 0x4)) {
+    case 0: {
+        Ov015VecC t(FLD(Ov015VecC, p, 0x40));
+        t.y -= FX_Div(0x28000, 0x1e000);
+        FLD(Ov015VecC, p, 0x40) = t;
+        if (FLD(s32, self, 0x8) == 0) {
+            s32 s = func_02040498(1) ? 3 : 4;
+            FLD(s32, self, 0x4) = s;
+            FLD(s32, self, 0x14) = s == 3 ? FLD(s32, p, 0xb0) : -FLD(s32, p, 0xac);
+            FLD(s32, self, 0x8) = 0x1e;
+            FLD(u16, p, 0x104) = 0x800;
+            FLD(s32, p, 0xbc) = 4;
+        }
+        break;
+    }
+    case 1: {
+        Ov015VecC t(FLD(Ov015VecC, p, 0x40));
+        t.x -= Ov015_FxMul(FLD(s16, FLD(u8 *, self, 0x18), 0xca) << 4, 0x19a) + 0x800;
+        FLD(Ov015VecC, p, 0x40) = t;
+        if (t.x < FLD(s32, self, 0x14)) {
+            FLD(s32, self, 0x4) = 4;
+            FLD(s32, self, 0x8) = 0x1e;
+        }
+        break;
+    }
+    case 2: {
+        Ov015VecC t(FLD(Ov015VecC, p, 0x40));
+        t.x += Ov015_FxMul(FLD(s16, FLD(u8 *, self, 0x18), 0xca) << 4, 0x19a) + 0x800;
+        FLD(Ov015VecC, p, 0x40) = t;
+        if (t.x > FLD(s32, self, 0x14)) {
+            FLD(s32, self, 0x4) = 3;
+            FLD(s32, self, 0x8) = 0x1e;
+        }
+        break;
+    }
+    case 3: {
+        off = 0;
+        a = Ov015_FxMul(FLD(s16, FLD(u8 *, self, 0x18), 0xca) << 4, 0x19a) + 0x800;
+        t = FX_Div((FLD(s32, self, 0x8) - 0x1e) >> 1, 0xf);
+        v = Ov015_FxMul(a >> 1, Ov015_FxMul(t, t));
+        FLD(s32, FLD(u8 *, self, 0x18), 0xa8) = v;
+        {
+            Ov015VecC q(FLD(Ov015VecC, p, 0x40));
+            q.x -= v;
+            FLD(Ov015VecC, p, 0x40) = q;
+        }
+        {
+            Ov015Vec d2 = FLD(Ov015Vec, p, 0x9c);
+            if (d2.x > -0x1000) off = -0xcd;
+            d2.z = -0x1000;
+            d2.x += off;
+            VEC_Normalize(&d2, p + 0x9c);
+        }
+        if (FLD(s32, self, 0x8) == 0xf) {
+            func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
+        }
+        if (FLD(s32, self, 0x8) <= 0) {
+            s32 w;
+            FLD(s32, self, 0x4) = 1;
+            w = FLD(s32, p, 0xac);
+            if (w < 0) w = -w;
+            FLD(s32, self, 0x14) = -func_02040498(w);
+        }
+        break;
+    }
+    case 4: {
+        off = 0;
+        a = Ov015_FxMul(FLD(s16, FLD(u8 *, self, 0x18), 0xca) << 4, 0x19a) + 0x800;
+        t = FX_Div((FLD(s32, self, 0x8) - 0x1e) >> 1, 0xf);
+        v = Ov015_FxMul(a >> 1, Ov015_FxMul(t, t));
+        FLD(s32, FLD(u8 *, self, 0x18), 0xa8) = v;
+        {
+            Ov015VecC q(FLD(Ov015VecC, p, 0x40));
+            q.x += v;
+            FLD(Ov015VecC, p, 0x40) = q;
+        }
+        {
+            Ov015Vec d2 = FLD(Ov015Vec, p, 0x9c);
+            if (d2.x < 0x1000) off = 0xcd;
+            d2.z = -0x1000;
+            d2.x += off;
+            VEC_Normalize(&d2, p + 0x9c);
+        }
+        if (FLD(s32, self, 0x8) == 0xf) {
+            func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
+        }
+        if (FLD(s32, self, 0x8) <= 0) {
+            FLD(s32, self, 0x4) = 2;
+            FLD(s32, self, 0x14) = func_02040498(FLD(s32, p, 0xb0));
+        }
+        break;
+    }
+    case 5:
+        func_ov015_0220c6c8(self, p);
+        if (FLD(s32, self, 0x8) == 0) ret = FALSE;
+        break;
+    }
+    if (--FLD(s32, self, 0x8) < 0) FLD(s32, self, 0x8) = 0;
+    return ret;
+}
+
 }

@@ -119,7 +119,7 @@ src/ov015/ov015_0220b620.cpp:
 
 src/ov015/ov015_0220bb00.cpp:
     complete
-    .text       start:0x0220bb00 end:0x0220c21c
+    .text       start:0x0220bb00 end:0x0220c6b4
 
 src/ov015/ov015_0220c6b4.cpp:
     complete
@@ -159,7 +159,7 @@ src/ov015/ov015_0220f7a8.cpp:
 
 src/ov015/ov015_022106f8.cpp:
     complete
-    .text       start:0x022106f8 end:0x02210860
+    .text       start:0x022106f8 end:0x02210a10
 
 src/ov015/ov015_02210a10.cpp:
     complete
