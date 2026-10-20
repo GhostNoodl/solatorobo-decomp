@@ -355,3 +355,7 @@ The linker strips functions that nothing references. If `ninja` reports a matche
 - **A BOOL inline can fix a register swap.** In `func_ov000_021a4a6c`, an r1/r2 swap went away once the fall-height test was moved into `static inline BOOL Falling(u8 *self) { BOOL drop = FALSE; ... return drop; }` and called as `BOOL drop = Falling(self);`.
 - **`orr r0, r1, r3` where you expect `orr r0, r1, #0`.** MWCC reuses a register known to hold 0 as the high half of a 64-bit OR. In `func_ov000_0219efc0`, `r3` was a pointer set to NULL before an `if`/`else`. Declare that variable once, before the branch, rather than inside each arm.
 - **Layout follows source order for `else` chains too.** If the target puts the `|= 0x80` body before the `|= 0x4000` body, write `if (m != 3) { if (...) |= 0x80; } else { |= 0x4000; }` instead of `if (m == 3) ... else if ...`. In a switch, put `default:` first when its body comes first.
+
+## Duplicated per-arm adjustments (overlays 2–8, round ovlo5)
+
+- **One temp per arm instead of a shared one.** When the target computes a small adjustment separately in each `if`/`else` arm, write it out in each arm with its own block-local temp (`if (held & 0x40) { if (kind == 5) { u16 t = a; steer += t; base += t; } else { u16 t = b; steer += t; base += t; } }`) rather than picking one shared `t` with a ternary first. That fixed the scheduling in the ov006 car function `func_ov006_021e8ef8`.
