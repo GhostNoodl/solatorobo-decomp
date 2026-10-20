@@ -487,7 +487,7 @@ src/ov002/ov002_021e0c28.cpp:
 
 src/ov002/ov002_021e0e78.cpp:
     complete
-    .text       start:0x021e0e78 end:0x021e0ff8
+    .text       start:0x021e0e78 end:0x021e1148
 
 src/ov002/ov002_021e1148.cpp:
     complete
@@ -615,7 +615,7 @@ src/ov002/ov002_021e6290.cpp:
 
 src/ov002/ov002_021e63f0.cpp:
     complete
-    .text       start:0x021e63f0 end:0x021e6508
+    .text       start:0x021e63f0 end:0x021e659c
 
 src/ov002/ov002_021e659c.cpp:
     complete

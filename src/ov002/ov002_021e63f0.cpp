@@ -1,5 +1,18 @@
 #include "ov002/ov002.h"
 
+/* The frame read sits in every arm of the mode switch; the arms are tail-merged
+   into one block that loads 0x7c before the join loads the rate at 0x88. */
+static inline s32 Ov002Anm_Frame(void *self) {
+    switch (FIELD(self, 0x84, s32)) {
+    case 1:
+        return FIELD(self, 0x7c, s32);
+    case 0:
+        return FIELD(self, 0x7c, s32);
+    default:
+        return FIELD(self, 0x7c, s32);
+    }
+}
+
 extern "C" {
 
 void func_ov002_021e6508(void *self, void *out);
@@ -52,6 +65,25 @@ void func_ov002_021e63f0(void *self) {
         FIELD(self, 0x9c, s32) = 0x1000;
     }
     NNS_G3dRS = NULL;
+}
+
+void func_ov002_021e6508(void *self, void *out) {
+    s32 n = FIELD(FIELD(out, 0x8, u8 *), 0x4, u16) << 12;
+    s32 f;
+    f = Ov002Anm_Frame(self);
+    f = FX_MUL(f, FIELD(self, 0x88, s32));
+    if (FIELD(self, 0x78, s32) == 0) {
+        if (f >= n - 0x1000) {
+            f = n - 0x1000;
+        }
+        FIELD(out, 0x0, s32) = f;
+    } else if (FIELD(self, 0x78, s32) == 1) {
+        if (FIELD(self, 0x7c, s32) >= FIELD(self, 0x8c, s32) && FIELD(self, 0x8c, s32) >= 0) {
+            FIELD(out, 0x0, s32) = n - 0x1000;
+            return;
+        }
+        FIELD(out, 0x0, s32) = f % n;
+    }
 }
 
 }

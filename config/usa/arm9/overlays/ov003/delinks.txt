@@ -18,6 +18,10 @@ src/ov003/ov003_021de624.c:
     complete
     .text       start:0x021de624 end:0x021de6b4
 
+src/ov003/ov003_021de6b4.cpp:
+    complete
+    .text       start:0x021de6b4 end:0x021de778
+
 
 src/ov003/ov003_021ea858.c:
     complete
