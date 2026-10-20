@@ -2,6 +2,58 @@
 
 extern "C" {
 
+void NNS_G3dRenderObjSetCallBack(void *a, void *fn, int b, int c, int d);
+void NNS_G3dRenderObjResetCallBack(void *a);
+void func_ov002_021e4f48(void *self);
+
+static inline void ov002_021e5b08_Scale(Vec3 *out, const Vec3 *in, s32 s) {
+    out->x = FX_MUL(in->x, s);
+    out->y = FX_MUL(in->y, s);
+    out->z = FX_MUL(in->z, s);
+}
+
+void func_ov002_021e5b08(void *self) {
+    VObject *o;
+    if (FIELD(data_ov002_021f0f98[1], 0xd0, s32) <= FIELD(self, 0x18, s32)) {
+        return;
+    }
+    switch (FIELD(data_ov002_021f0f98[1], 0xc, s32)) {
+    case 1:
+        o = FIELD(self, 0x1e0, VObject *);
+        break;
+    case 2:
+        o = FIELD(self, 0x1e4, VObject *);
+        break;
+    default:
+        o = FIELD(self, 0x1e0, VObject *);
+        break;
+    }
+    o->v0x20();
+    if (FIELD(self, 0x1f0, Bits8).b0) {
+        Vec3 v;
+        ov002_021e5b08_Scale(&v, &FIELD(self, 0x1b0, Vec3), 0x64000);
+        v.z = 0x1000;
+        NNS_G3dGlbSetBaseScale(&v);
+        ov002_021e5b08_Scale(&v, &FIELD(self, 0x1a4, Vec3), 0x64000);
+        v.z = FIELD(self, 0x20, s32);
+        NNS_G3dGlbSetBaseTrans(&v);
+        MI_Copy36B((u8 *)self + 0x1bc, data_020928b4);
+        NNS_G3dGlb.fc &= ~0xa4;
+    } else {
+        MI_Copy36B((u8 *)self + 0x1bc, data_020928b4);
+        NNS_G3dGlb.fc &= ~0xa4;
+        NNS_G3dGlbSetBaseTrans((u8 *)self + 0x1a4);
+        NNS_G3dGlbSetBaseScale((u8 *)self + 0x1b0);
+    }
+    NNS_G3dGlbFlushVP();
+    data_ov002_021f0f98[0] = self;
+    NNS_G3dRenderObjSetCallBack((u8 *)self + 0x68, (void *)func_ov002_021e4f48, 0, 6, 2);
+    NNS_G3dDraw((u8 *)self + 0x68);
+    NNS_G3dRenderObjResetCallBack((u8 *)self + 0x68);
+    data_ov002_021f0f98[0] = NULL;
+}
+
+
 void func_ov002_021e5cf4(void) {
 }
 

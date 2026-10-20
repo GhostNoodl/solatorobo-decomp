@@ -1,6 +1,38 @@
 #include "ov002/ov002.h"
 
 extern "C" {
+u32 NNS_G3dAnmObjCalcSizeRequired(void *a, void *b);
+void NNS_G3dAnmObjInit(void *a, void *b, void *c, int d);
+void NNS_G3dRenderObjAddAnmObj(void *a, void *b);
+
+static inline void ov002_021e5fe4_Load(void **slot, void *set, char *name, void *mdl, void *tex, void *robj) {
+    void *a = NNS_G3dGetAnmByName(set, name);
+    if (a != NULL) {
+        *slot = func_0203de84(NNS_G3dAnmObjCalcSizeRequired(a, mdl), 4);
+        NNS_G3dAnmObjInit(*slot, a, mdl, (int)tex);
+        NNS_G3dRenderObjAddAnmObj(robj, *slot);
+    }
+}
+
+void func_ov002_021e5fe4(void *self) {
+    char name[0x10];
+    void *obj = FIELD(self, 0x48, void *);
+    void *mdl = FIELD(obj, 0x60, void *);
+    void *tex = FIELD(obj, 0x64, void *);
+    MI_CpuFill8(name, 0, sizeof(name));
+    if (FIELD(self, 0x54, void *) != NULL) {
+        STD_CopyLString(name, FIELD(self, 0x54, void *), sizeof(name));
+    } else {
+        STD_CopyLString(name, FIELD(self, 0x50, void *), sizeof(name));
+    }
+    ov002_021e5fe4_Load(&FIELD(self, 0x64, void *), FIELD(self, 0x60, void **)[0], name, mdl, tex, (u8 *)obj + 0x68);
+    ov002_021e5fe4_Load(&FIELD(self, 0x68, void *), FIELD(self, 0x60, void **)[1], name, mdl, tex, (u8 *)obj + 0x68);
+    ov002_021e5fe4_Load(&FIELD(self, 0x6c, void *), FIELD(self, 0x60, void **)[2], name, mdl, tex, (u8 *)obj + 0x68);
+    ov002_021e5fe4_Load(&FIELD(self, 0x70, void *), FIELD(self, 0x60, void **)[3], name, mdl, tex, (u8 *)obj + 0x68);
+    ov002_021e5fe4_Load(&FIELD(self, 0x74, void *), FIELD(self, 0x60, void **)[4], name, mdl, tex, (u8 *)obj + 0x68);
+    func_ov002_021e63f0(self);
+    func_ov002_021e6290(self);
+}
 
 void func_ov002_021e61b4(void *self) {
     char name[0x10];

@@ -603,11 +603,11 @@ src/ov002/ov002_021e5a10.cpp:
 
 src/ov002/ov002_021e5cf4.cpp:
     complete
-    .text       start:0x021e5cf4 end:0x021e5fe4
+    .text       start:0x021e5b08 end:0x021e5fe4
 
 src/ov002/ov002_021e6290.cpp:
     complete
-    .text       start:0x021e61b4 end:0x021e63f0
+    .text       start:0x021e5fe4 end:0x021e63f0
 
 src/ov002/ov002_021e63f0.cpp:
     complete

@@ -427,4 +427,112 @@ void func_ov003_021efad8(Ov003Bx *self) {
     func_ov000_021987b8(self->ctl, 1, 0, 0);
 }
 
+static inline s32 Ov003Bx_MaxDist2(const Ov003BxVec *a, const Ov003BxVec *b) {
+    s32 dx = b->x;
+    s32 dy = b->y;
+    s32 dz = b->z;
+    dx = a->x - dx;
+    dy = a->y - dy;
+    dz = a->z - dz;
+    if (dx < 0) {
+        dx = -dx;
+    }
+    if (dy < 0) {
+        dy = -dy;
+    }
+    if (dx < dy) {
+        dx = dy;
+    }
+    if (dz < 0) {
+        dz = -dz;
+    }
+    if (dx < dz) {
+        dx = dz;
+    }
+    return dx;
+}
+
+void func_ov003_021efde8(Ov003Bx *self) {
+    const Ov003BxDef *def = &data_ov003_021f6e60[self->unk_b0->unk_01];
+    Ov003BxPlayer *pl = func_ov000_0219bf90();
+    s32 d = Ov003Bx_MaxDist2(&self->pos, &pl->pos);
+    Ov003BxWork *w;
+    if (d > 0x20000) {
+        if (self->unk_bc != NULL) {
+            func_02065860(data_0214a420, self->unk_bc);
+            self->unk_bc = NULL;
+        }
+        self->work->state = 0;
+    }
+    w = self->work;
+    switch (w->state) {
+    case 0:
+        if (self->unk_1a < 0 && VEC_Distance(&self->pos, &pl->pos) > 0x3000) {
+            return;
+        }
+        self->work->state = 10;
+        return;
+    case 10: {
+        Ov003BxFx *e = func_02065f88(def->id, &self->pos);
+        if (e == NULL) {
+            return;
+        }
+        self->unk_bc = e->unk_24;
+        e->SetRot(&self->rot);
+        e->SetSize(def->size);
+        if (self->unk_1a != 0 && d <= 0xc000 && Ov003_GameIdle()) {
+            s32 snd = 0x54;
+            s32 a = 3;
+            if (def->id == 0x25a) {
+                snd = 0x80;
+                a = -0xc;
+            }
+            func_0204a028(data_02097e4c, snd, &self->pos, a);
+        }
+        self->work->state++;
+        return;
+    }
+    case 11: {
+        s32 n = self->unk_1a;
+        if (n > 0 && ++w->timer > n) {
+            {
+                if (self->unk_bc != NULL) {
+                    func_02065860(data_0214a420, self->unk_bc);
+                }
+                self->unk_bc = NULL;
+                self->work->state++;
+                self->work->timer = 0;
+            }
+        }
+        if (!Ov003_GameIdle()) {
+            return;
+        }
+        {
+            Ov003BxVec pos;
+            Ov003BxRot rot;
+            rot.x = self->rot.x + def->rx;
+            rot.y = self->rot.y + def->ry;
+            rot.z = self->rot.z + def->rz;
+            pos.x = def->ox << 4;
+            pos.y = def->oy << 4;
+            pos.z = def->oz << 4;
+            func_ov000_0219aae8(self, self, def->unk_04, def->unk_06, 2, &pos, &rot, def->unk_0e << 4, def->unk_10 << 4, def->unk_18, def->unk_1a);
+        }
+        return;
+    }
+    case 12: {
+        s32 lim = self->unk_1c;
+        w->timer++;
+        if (lim == 0) {
+            lim = 0x3c;
+        }
+        if (w->timer > lim) {
+            self->work->state = 10;
+            self->work->timer = 0;
+        }
+        return;
+    }
+    }
+}
+
 }
