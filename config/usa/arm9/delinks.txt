@@ -1586,7 +1586,7 @@ src/Main/Effect/Effect_15.cpp:
 
 src/Main/Effect/Effect_16.cpp:
     complete
-    .text       start:0x0206b804 end:0x0206bab8
+    .text       start:0x0206b804 end:0x0206c2dc
 
 src/Main/Effect/Effect_17.cpp:
     complete

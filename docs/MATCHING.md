@@ -1641,3 +1641,24 @@ One new match: `func_ov000_021782e0` (0x77c bytes, menu builder), now `src/ov000
   - `tdan.py` anneals over sets of two-definition replacements.
   - `near2.py` and `tmpify.py` move statements and wrap a statement's `self` field base in a pointer local, both printing our prologue.
   - `m/m.sh` prints our code for a small test file that defines the target function's name.
+
+## Inline-local stack order and mid-block initialised declarations (main, round mainfresh3)
+
+- **`0206bab8` matched (310 / 163 to 0, `Effect_16.cpp`).** The particle-emit function had a wrong stack layout and the wrong order of its zero stores. These changes fixed it:
+  - **Locals of an inlined function are placed after all of the caller's locals, so they get lower addresses.** The target's rotation matrices sit below the caller's vectors. Moving the rotation code into inlines that each own their `EffectMtx43 tmp` (`Effect_MtxRotXZ` and `Effect_MtxRotYXZ`) gave the target's frame. Inside `Effect_MtxRotYXZ` the order of the declarations (`tmp, ry, rx, rz, rotated`) also matters.
+  - **A C++ declaration with an aggregate initialiser between statements** (`EffectVec c = {0,0,0};` after `p->origin = em->pos;`) emits its zero stores at that point. At function scope the stores move to the function entry.
+  - **An inline that takes `const s32 &base`** (`Effect_RandScale`) loads `base` after the `rand` call in its body, as the target does. Taking `base` by value loads it before the call.
+  - Some forms had to match the target exactly:
+    - Use the existing `EffectPtcl_SetCmds` inline, not open-coded stores (it gives load-load-store-store).
+    - Write `v.x`, `v.y = 0`, `v.z` in that order, with no radius local.
+    - Write `out.x = c.x + rand(...)` (forward the zero vector).
+    - The angle comes from `func_02040498`, not `func_02040528`.
+  - The remaining `bl`/`blx` differences on the Thumb `MTX_*` calls are interworking, as in the already-matched `0206b81c`.
+- **`02069b3c` (66 / 21 to 44 / 4, scratch `d/9b3c_44.cpp`).** The target only partly tail-merges the arms. Writing `p->unk_50 = idx;` in each arm, with a block-local `s32 i` in the second arm, merges only the `0x50` store, as the target does. Writing the palette address as `((u16)p->tex->plttVramKey + pltt[0]) << 3` loads the key before `pltt[0]`. One register swap is left: the target keeps param + key in `r3`, the register `data[0]` was loaded into, and ours uses `r1`.
+- **`02053254` (95 / 60 to 79 / 20, `d/3254_79.cpp`; the permuter's version `d/3254_p84.c` is at 84 / 18).** Changes that helped:
+  - In the else arm, write the direction flag as nested ifs: `if (mode == 0x1000) { if (flip == 1) dir = -1; } else { if (flip == 0) dir = -1; }`.
+  - Statement order in the else arm is `sy`, `sx = FxMul(...) & ~0xfff`, `sz`.
+  - The permuter read `scene->unk_b8_0` into a local before `if (b == 0)`.
+  
+  The remaining problem: our build hoists the `~0xfff` mask to the function entry, and the target rebuilds it in each block.
+- **No change on the register-only near-misses:** `02068e68`, `02056e74`, `0204205c`, `020417e0` and `02056230`. Tried with the declaration grid, the between-statements grid, `tdv2`, typed constants, index and pointer forms, and split loop indices.
