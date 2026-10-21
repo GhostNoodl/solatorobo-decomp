@@ -1542,3 +1542,29 @@ Four functions of 0x100 to 0x500 bytes matched after their old drafts sat at 26 
   - Inside an if/else, an early `return` in one arm keeps a predicated `strge`/`strlt` pair (`ov000_021c3158`: 38 to 4, 0 masked). Only an r4/r8 swap is left.
   - `ov011_021fb9b8` went from 27 to 16. `ov002_021d1f70` went from 56 to 39 after a 360-way statement-order sweep. `ov012_021fefc8` is still at 23 raw, with 2 masked diffs left (registers only).
   - Turning `opt_common_subs` off did not help any of these.
+
+## Declarations between statements, and a register-only sweep (round gridsweep1)
+
+`func_ov006_021e1bb4` matched this round, as `src/ov006/ov006_021e1bb4.cpp`. Drafts, logs and tools are in `scratchpad/gridsweep1/` (`d/<mod>_<addr>/`, `q*.log`, `t/`).
+
+- **The match was one declaration moved between two statements.** The last 3 diffs (`ip`/`sl` swapped for `e->unk4` and `anim->unk48`) were inside the `ov006_Caption_Draw` inline. Moving `s32 h = e->unk4;` down from the declaration list to just after `w -= *(int *)anim->unk44;` (a C++ declaration in the middle of the block) matches. Earlier rounds tried all 720 orders of the declaration list, `scope.py` order moves, `hcm.py` and `combo2.py`, but none of them placed a declaration between statements. In C++ drafts, also try each declaration (with its initialiser) at every statement position before its first use, inside inlines too.
+- **The sibling `func_ov006_021e0b80` did not follow.** It is the same caption code as a function. The 1bb4 body written as a function gives 32 diffs, while the old `ox`/`oy` draft gives 8. A grid over both drafts did not get below 8.
+- **`func_0204f524` (TU1 blocker), 8 → 6.** The `scratchpad/mainpool12/d/f524_8_zcopy.c` form needs `u8 *c;` declared before `u8 *a;` (`d/0204f524/zl2.c`). The constants then take the target's `a`/`c` order. Only `z` and `c` are still swapped: `z` gets `r7`, where the target has `r4`. All 480 combinations of declaration order, `n` type (`long`, `u16`) and `z` type (`u16`, `u8`) give 6 or worse. So do block-scoped `i`, `z` or `c`, a `z = n` inside the `if`, and other types for `n`, `i` and `z`.
+- **No other function moved.** These were swept:
+  - Every draft in the round's score directories was rescored, raw and register-normalised (`scores.txt`). This gave 45 functions with 4 or fewer diffs after normalisation, plus about 15 with 5 to 10.
+  - Each got a single-move sweep over every local, the function's own and each inline's: every declaration slot of every enclosing block, and the last 8 statement positions before the first use (`GRID_ONLY1=1 GRID_NS=8`).
+  - The 0-diff ones also got the full pair grid: every pair of locals at every pair of positions, then `int`/`long`/`u32`/`s32` type pairs.
+  - About 30,000 compiles in all. In most of these functions, nearly every move compiles to the same code. Examples: all 646 single moves in `021c4460`, all 124 moves of `h`/`d` in `0206d43c`, and 765 of 850 moves in `021be5dc`.
+- **Hand work that did not match:**
+  - `0206d43c` (18 → 12 raw, still 0 after normalisation). The permuter found it: compute the `tmpSize` argument into an `int` temporary before `s->baseOffset = 0` (`d/d43c/p75.cpp`). The same change does nothing in `0206d99c`. These also gave 18: the inline written as `(x + m) & ~m`, an extra copy, a `SysCard *` local, an `int` parameter, `SaveBase_BackupOffset`/`DataOffset`, and every operand order of the `h` argument.
+  - `021e51f8`: the target keeps the constant `1` in `r1`. Loading `data_02097e40` into a local before the store gives `r1`, but then the global is not loaded again. These stay at 2: the full `func_ov006_021e4bec` body as the inline, a hoisted `menu` or `v`, and every parameter type.
+  - `02049690`: the `seq`/`vol` registers inside `SndMgr_StartBgm` stay swapped with swapped parameters, caller locals in either order, a volume local, and a ternary.
+  - `02189b44`: the `vx`/`vz` block stays at 5 with swapped orders, pointer indexing, cached `pos` fields, and no locals.
+  - `021be5dc`: an hour of the permuter found nothing.
+- **Tools** (in `scratchpad/gridsweep1/t/`):
+  - `grid.py src func mod`. Stage 1 tries single moves of every local. Stage 2 is a pair grid, with locals whose single moves changed the code tried first. Stage 3 tries type pairs. Environment variables: `GRID_IN=<inline>`, `GRID_NS`, `GRID_MAX`, `GRID_ONLY1`, `GRID_NOTYPE`.
+  - `sc.py` gives the raw and normalised score from one compile, plus a hash of the code.
+  - `gather.py` and `scoreall.py` score every draft in a set of directories.
+  - `inls.py` lists the inlines (with locals) that a function reaches.
+  - `gq.sh` is a job queue.
+  - `prun.sh` runs the permuter on main or overlay functions.
