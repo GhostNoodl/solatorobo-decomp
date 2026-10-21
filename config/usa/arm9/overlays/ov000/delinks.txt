@@ -3389,6 +3389,10 @@ src/ov000/Robo_021af464.cpp:
     complete
     .text       start:0x021af464 end:0x021afaf8
 
+src/ov000/Robo_021afaf8.cpp:
+    complete
+    .text       start:0x021afaf8 end:0x021b03c8
+
 src/ov000/Lo_02183db8.cpp:
     complete
     .text       start:0x02183db8 end:0x02184498
