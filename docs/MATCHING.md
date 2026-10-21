@@ -1762,3 +1762,23 @@ This round ran `pairarr.py`/`pa_iter.sh` on the best draft of every unmatched fu
     - `021eca14` (5/5 to 7/2): reading `FIELD(p, 0xc, u16)` into a local before the `0x49` store gets the target's load order. A register swap is left.
 - **Blocked:** `func_ov006_021d3f04` matches exactly (`scratchpad/ovlow1/d3f04.cpp`, checked with `match.py`), but its strings share the `0x021ebc04` pool object with the unmatched `021d4118`.
 - Drafts and tools are in `scratchpad/ovmid3/` (`best/`, `d/`, `r/`, `t/`). `t/lev.sh dir file func mod` runs pp3, pairarr, dup and td1 on one draft. `t/unm.py` lists the unmatched functions in a size range. `t/asm.sh func` prints the target asm from `build/usa/asm`.
+
+## Several locals as trailing parameters at once (overlays, round ovmid4)
+
+- **New match: `func_ov002_021df2ec`** (0x4c8 bytes, `src/ov002/ov002_021df2ec.cpp`). Four of its locals (`y`, `x`, `id`, `w`) are declared as extra trailing parameters: `void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w)`. Two other changes were also needed:
+  - `id` must be `u16`.
+  - In the final block, `py` must be assigned before `px`.
+  - What is left in `match.py` is one `bl`/`blx` interworking difference, which the linker fixes.
+  - One local as a parameter (the pp3 K=1 or K=2 sweeps) was not enough. The order of the extra parameters matters, because the last parameter gets the lowest callee-saved register. `t/pps.py` writes random subsets and orders of locals as parameters, and `t/greedy.sh` repeats K=1 and keeps the best each time. Of about a dozen functions in the queue, only `021df2ec` matched this way.
+- **Gains from the same lever, not matched yet** (raw / masked):
+  - `0218867c`: 80/27 to 22/6. The draft takes the parameters `(CmdObj *self, u32 n_1, void *ents, void *blk)`. The case-1 global goes in a block local, and the player struct is read with `map` at `0x772`. What is left is two things:
+    - An `arg`/`done` register swap. Two-definition constants on `one` and `done` make it worse.
+    - The case-1 `g` load is hoisted.
+  - `02160534`: 73/17 to 17/17 with the parameters `..., s32 d, s32 y, s32 x`. Only the spill slots of two locals are left.
+  - `0216c310`: 106/11 to 67/11 with the parameters `(u8 *self, s32 y, u8 *next, u8 *n)`. The middle multiply/BOOL block still differs structurally.
+- **`021e96cc`: the ovmid3 13/2 draft is wrong.** Swapping `MidR`'s operands changes what the function does. The best draft that does the same as the target is 14/2. It computes `u16 d = b.y; d = d - a.y;` in each block.
+- **`0218e12c`: 28/0 to 17/0.** The teardown is hand-inlined, `saved` is a parameter, and the locals are declared in the order `aprev, anext, gnext, gprev, saved, mgr, group`. What is left is a `saved`/`group` register swap. I tried every order of the five inner locals and about 400 random sets of parameters. None of them gained anything.
+- **`021998ac`** needs `#pragma optimization_level 2`. Without it, loop-invariant code motion hoists the sin/cos table loads. The `SetRot` tail merge is still unsolved.
+- **`0215b2e4` and `0215b598`** load small constants from the literal pool. No matched code does this, so I skipped them.
+- **No change** on `021eca14` (best 5/5 or 6/3). The target loads `0x1f` into `r0`, and loads `p` first.
+- The drafts are in `scratchpad/ovmid4/d/`. The tools are in `scratchpad/ovmid4/t/`, and `t/unm.py` now covers ov000 to ov008.

@@ -461,6 +461,10 @@ src/ov002/ov002_021df1c4.cpp:
     complete
     .text       start:0x021df1c4 end:0x021df2ec
 
+src/ov002/ov002_021df2ec.cpp:
+    complete
+    .text       start:0x021df2ec end:0x021df7b4
+
 src/ov002/ov002_021df7b4.cpp:
     complete
     .text       start:0x021df7b4 end:0x021df7f0
