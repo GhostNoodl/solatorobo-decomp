@@ -1212,3 +1212,65 @@ Neither pool could be merged this round: `func_ov003_021e1204` and `func_ov003_0
 - **`&data_02fe0f50[23]` and `q->owner` read twice finished `9f9c`.** The last 14 diffs were the owner pointer: ours folded `owner + 8` for `MI_Copy48B` into a post-indexed `ldr r2, [r0], #8`. The round itcm4 alias fix (`info = &data_02fe0f50[23]` instead of `&data_02fe14b4`) plus `info->distSq = FX_Mul(FX_Mul(dist, block->mtx._00), q->owner->scale); MI_Copy48B(&q->owner->mtx, &m);` (no `owner` local) matches; either change alone does not.
 - **Stack layout follows declaration order.** With the sphere body fixed, `9060` differed only in stack offsets (`p`/`e`/`m` at `0xc4`/`0xd0`/`0xdc` in the target). Declaring `MtxFx43 m; VecFx32 e; VecFx32 p;` in that order (later declarations get lower addresses here) matched; the other five orders gave 41 to 67 raw diffs. When only `[sp, #N]` offsets differ, permute the declarations of the address-taken locals.
 - **Tools.** `t/mktmpl.py`/`t/mktmpl2.py` turn a draft into a template with `{{name|A|B}}` product, `[[name%%a%%b%%c]]` permutation and `<<name%%alt0%%alt1>>` alternative markers; `t/climb2.py` (greedy sweep) and `t/anneal.py` (random plateau walk) search them with `sd.py` raw and masked scores. `t/pat800.py` lists functions whose rounding uses a register for `0x800` or for the zero high word (only `9f9c` has both). `t/mc.sh` compiles a small reproduction and disassembles it with capstone (`t/odis.py`).
+
+## Finishing the ovmid1 batch: widths, inline declaration order and zero-register CSE (overlays under 0x500 bytes, round ovmid2)
+
+No new matches this round. The `tdc.py`/`tdv.py` pass and the statement-run climb now cover all 78 functions from ovmid1. Drafts improved as follows:
+
+- **`func_ov006_021cf420` (68 to 15):**
+  - `tdc` found a two-definition `kq = 7` for the case-5 state store.
+  - The count has to be `u16 n`, which gives the target's `lsrs`/`beq`/`bhi`.
+  - Case-4 locals are declared in the order `blk, n, i, ent`.
+  - What is left: the zero register (`r6`) and `blk` (`r7`) are swapped, and MWCC merges the case-4/5 tail, which the target keeps in case 4.
+- **`func_ov003_021e6274` (14 to 8):**
+  - Using `u8 n` everywhere gives exactly the target's instructions, but `self` and `t` swap registers, which costs 46 diffs.
+  - The best form uses:
+    - `u8 n` in case 0;
+    - a separate `u16 k` in case 2 (`k = self->unk_18 & 0xff; ... k = (k - 1) & 0xff;`);
+    - a local `s32, s32` prototype for `func_ov000_02197dec`. The callee's parameter width decides whether MWCC masks the arguments.
+  - What is left: one `and #0xff` before the `u8` bit-field store.
+- **`func_ov000_02199180` (14 to 10):** inside the `DistSq` inline, declare `dz, dx, dy` in that order.
+- **`func_ov000_021c4460` (12 to 10):** use the sibling loop shape from `List_021c403c`: `for (i = 0; n != NULL; n = n->next, i++) { if (i == idx) break; }`, with block-local `n`/`idx`/`i`.
+- **`func_ov009_02208b24` (31 to 21):**
+  - The target compares against `0x19a`, which is in its literal pool.
+  - Writing `<= 0x19a` makes MWCC derive the value from the nearby `0x66` (`add r1, r4, #0x134`).
+  - A two-definition `0x66` fixes the compare but scores 28 overall, so the draft keeps `< 0x19b`.
+- **`func_ov000_021ff908` (9):**
+  - Writing the plain literals with no zero variable reproduces the target's zero-register CSE (`sub r2, rZ, #0xa000`) exactly.
+  - Only the register numbers differ (`self`/zero are `r5`/`r4`, the target has `r4`/`r5`), so this form scores 38, and the 9-diff draft stays best.
+- **Other drafts:**
+  - **`021fee10`:** 125 to 44.
+  - **`021e7ea8`:** 70 to 42.
+  - **`021d36fc`:** 31 to 20.
+  - **`021d1f70`:** 55 to 45.
+  - **`021dd9dc`:** 57 to 49.
+  - **`021d16a0`:** 48 to 43.
+  - **`021c3158`:** 40 to 38.
+  - **`021e7004`:** 23 to 21.
+  - **`021fb9b8`:** 35 to 27, from the statement-run climb.
+  - **`021688c4`:** 42 to 35, from the statement-run climb.
+  - **`021dfcc0`:** 43 to 38, from the statement-run climb.
+  - **`021fb02c`:** 13 to 6.
+  - **`021d98ac`:** 43 to 42.
+- **A pattern to watch for:** in `021e6274` and `021c4460`, a `tdv2` second store (for example `self->unk_a4 = n`) fixes the register swap but adds an instruction. That means the original register order comes from a value that stays live longer, not from a hidden second store.
+- **Blocked:** `func_ov015_02201344` (29) keeps literal addresses in saved registers. Its pool (`0x02212830..0x022128e1`) is shared with `func_ov015_0220182c` and other functions, so it is blocked on the string pool.
+- **No change:**
+  - `021ec010` (2): `ldr r5, [r1]` is scheduled ahead of `mov r4, r0`.
+  - `021fff38` (7)
+  - `021708ec` (11)
+  - `021c6d64` (11)
+  - `021ffd0c` / `021ffe8c` (13)
+  - `021ff21c` (15): the same `Rot`-copy problem.
+  - `021d8d00` (13)
+  - `0218a670` (12)
+  - `02152f8c` (13)
+  - `021b628c` (13)
+  - `02153804` (17)
+  - `021bb33c` (18)
+  - `0220b1b8` (18): `s32 ad` gives the target's shape, but the registers differ.
+  - `0220a128` (82): registers only.
+- **Tools:**
+  - `ins.py src func mod 'stmt'` tries `if (INSCOND) { stmt }` before every line.
+  - `q.sh` runs a queue of `dir|cmd` jobs.
+  - `bestof.sh dir func mod` scores every draft in a directory.
+  - `.tdc`/`.tdv` outputs compile as C because of their extension, so copy them to `.cpp` before scoring.
