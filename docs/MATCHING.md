@@ -1568,3 +1568,25 @@ Four functions of 0x100 to 0x500 bytes matched after their old drafts sat at 26 
   - `inls.py` lists the inlines (with locals) that a function reaches.
   - `gq.sh` is a job queue.
   - `prun.sh` runs the permuter on main or overlay functions.
+
+## Register colouring on the mainfresh2 near-misses (main, round mainreg1)
+
+`func_0204b43c` (camera update, 17 raw / 0 masked before) matched and is appended to `src/Main/Gfx/Camera.cpp`. Drafts and tools are in the scratchpad under `mainreg1/` (`v/<addr>/`, `t/`).
+
+- **Read a field into a local before the statement that would load it first.** In both arms of the `cam->mode` switch the target loads `cam->at.y` (or `cam->eye.y`) into the register after the hi/sum pair of the first `Cam_FxMul`, and our draft put it before them. Writing `s32 y = cam->at.y;` as the first statement of the arm, then the three stores in the old order, rotates the three registers into place (17 to 5). The loads still come out in the same scheduled order; only the colouring changes. When three values in a straight run are rotated, try reading the odd one into a local one or two statements earlier.
+- **A second definition to split a result from its increment.** The last 5 diffs were the square root: the target loads `REG_SQRT_RESULT` into `r0`, computes `+ 1` into `r1` and loads `a.y` into `r2`; ours kept the result, the `+ 1` and the argument in one register. The form that matches splits the sqrt inline into a start-and-wait inline and writes the rest out:
+  ```c
+  Cam_SqrtStart(sq);
+  by = b.y;
+  root = (s32)REG_SQRT_RESULT;
+  ay = a.y;
+  q = root + 1;
+  if (root & 0x40000000) {
+      q = root + 1;
+  }
+  ang = FX_Atan2(by - ay, q >> 1);
+  ```
+  Without the second definition of `q` (or one of `by`/`ay` in the same place) it stays at 5. `(r + 1) / 2` also gives the target's registers, but adds the sign fix-up. A search over the statement orders, declaration orders and two-definition targets of these four locals (`v/b43c/v10.py`, 1152 variants) found it early (the run was stopped there): statements `by, root, ay, q`, declared `root, q, ay, by`.
+- **`02068e68` (41 / 2 to 26 / 1, `d/8e68_26_1.cpp`): a two-definition table pointer gives the x rotation its own table load.** The target loads `FX_SinCosTable_` into a callee-saved register for the y and z rotations but loads it again for the x rotation. `if ((u32)p & 3) { tbl = FX_SinCosTable_; }` as the first statement of the `else` arm (before `u16 rzz = p->rot.z;`) stops the x rotation's `FX_SinCosTable_[...]` from reusing `tbl`, and gives the reload (37 / 1). Declaring `tbl` at function scope (found by `fscope.py`) fixes `alpha` and the `rotated` flag (26 / 1). Two diffs are left. `type` and the hoisted `1` are swapped (`r5`/`r4` against `r4`/`r5`). The target sets `rotated = TRUE` in the x arm with `mov r6, r5` (a copy of the hoisted `1`), and ours uses `mov r6, #1`. None of these changed it: types and positions of `rotated`, `rotated++`/`|= 1`/`= rx != 0`, a `BOOL` rotate-if inline, a local copy of `type`, the order of the three angle reads, `tdc`/`tdv2`/`near`/`pre`, the declaration grid and the permuter.
+- **No change:** `02056e74` (4 / 0), `0204205c` (8 / 0), `020417e0` (24 / 2) and `02056230` (42 / 0). `tsw` and `pre` ran on all four. `tdc` ran on `6e74`, `205c` and `6230`, and `tdv2` on `6e74`, `205c` and `6230`. The declaration grid ran on `6e74`. For `020417e0`, second definitions of the first loop's zero, of its index, or of a `NULL` local all hoist the `NULL` to entry, and other loop forms or `NULL` spellings change nothing. `6e74` also had 64-bit temporaries in every declaration order with second definitions. `205c` had temporaries for the three attributes in every load, store and declaration order, plus inline copy helpers. `6230` had `i = 0` and `first` moved to every earlier statement. `trunc2.py` shows that the `6230` swap flips inside the big panel block (the `if` over `first` and the draw loop). The target colours `s` before the hoisted zero, and our build colours the zero first.
+- **Tools.** `t/grid.py src func mod` tries every declaration order reachable by moving one or two declarations (`GRID_ONLY=a,b` limits the moved names, `GRID_ALL=1` tries every permutation). `t/tsw.py` tries other integer types for every declaration. `t/pre.py` reads each field expression of a statement into a block-local `__typeof__` temporary one to three statements earlier (`PRE_TD=1` adds a second definition). `t/trunc2.py src func regex` cuts the function after every top-level statement and prints the first matching instruction, to see where a register choice flips. `t/prun2.sh dir secs` runs the permuter on an existing directory (it sets `PERM_FUNC`, which `fakeobjdump.py` needs).
