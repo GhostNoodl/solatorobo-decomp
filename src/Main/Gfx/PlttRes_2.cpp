@@ -42,4 +42,70 @@ extern void func_0203e58c(u32 id);
 extern void func_0203be50(GfxSys *sys, int shift, int count, int idx);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
 
+u32 func_02041080(PlttRes *res, int idx, u32 mask, int load) {
+    u16 bit;
+    u16 tbl[16];
+    u32 ret;
+    u16 *orig;
+    u32 addr;
+    u16 count;
+    u16 i;
+    if (res->maps[idx] == NULL) {
+        return 0;
+    }
+    addr = (u16)res->key << 3;
+    ret = 0;
+    count = res->count;
+    orig = res->table;
+    for (i = 0; i < count; i++) {
+        tbl[i] = res->maps[idx][orig[i]];
+    }
+    if (load) {
+        int type;
+        u16 j;
+        u32 size;
+        if (idx == 1) {
+            if (res->unk_28 == 1) {
+                type = 4;
+            } else {
+                type = 3;
+            }
+        } else if (idx == 2) {
+            if (res->unk_28 == 1) {
+                type = 7;
+            } else {
+                type = 6;
+            }
+        } else {
+            type = 1;
+        }
+        size = 0x20;
+        if (res->fmt != 3) {
+            size = 0x200;
+        }
+        if (idx == 0 && mask == 0xffff) {
+            ret = func_0203e458(type, (u32)res->buf, addr, size * count, 0);
+        } else {
+            j = 0;
+            if (j < count) {
+                // Defined twice so the 1 is set once in the loop preheader.
+                bit = 1;
+                if ((u32)res & 3) {
+                    bit = 1;
+                }
+                do {
+                    if (mask & (bit << j)) {
+                        ret = func_0203e458(type, (u32)res->buf + size * j, addr + size * tbl[j], size, 0);
+                    }
+                } while (++j < count);
+            }
+        }
+    } else {
+        res->table = tbl;
+        NNS_G2dLoadPaletteEx(&res->fmt, &res->count, addr, idx, &res->sub);
+        res->table = orig;
+    }
+    return ret;
+}
+
 }

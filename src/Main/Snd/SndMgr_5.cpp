@@ -30,7 +30,7 @@ extern SndAreaEntry data_0208b7c8[];
 extern s32 data_0208b704;
 extern s32 data_0208b744[];
 
-extern s32 VEC_Distance(SndVec *vec);
+extern s32 VEC_Distance(const SndVec *a, const SndVec *b);
 extern u32 _fflt(s32 v);
 extern u32 _fsub(u32 a, u32 b);
 extern u32 _fdiv(u32 a, u32 b);
@@ -67,7 +67,47 @@ static inline BOOL SndMgr_IsArea(SndListener *listener, u8 a, u8 b, u8 c) {
     return (listener->a == a && listener->b == b && listener->c == c) ? TRUE : FALSE;
 }
 
-s32 func_02049e20(SndMgr *mgr, s32 arg);
+// The listener bytes are compared through a pointer taken from the global inside the loop,
+// so the first one is loaded in every iteration, as in the target.
+static inline BOOL SndMgr_IsAreaAt(const u8 *p, u8 a, u8 b, u8 c) {
+    BOOL r = FALSE;
+    if (p[0] == a && p[1] == b && p[2] == c) {
+        r = TRUE;
+    }
+    return r;
+}
+
+s32 func_02049e20(SndMgr *mgr, const SndVec *pos) {
+    SndListener *listener = data_ov000_021ccd54;
+    s32 *range = NULL;
+    s32 i;
+    SndVec vec;
+    s32 dist;
+    s32 vol;
+    for (i = 0; i < data_0208b700; i++) {
+        SndAreaEntry *e = &data_0208b7c8[i];
+        u8 a = e->a;
+        u8 b = e->b;
+        u8 c = e->c;
+        range = e->range;
+        if (SndMgr_IsAreaAt(&data_ov000_021ccd54->a, a, b, c)) {
+            break;
+        }
+    }
+    if (range == NULL) {
+        return 0;
+    }
+    vec = listener->pos;
+    dist = VEC_Distance(&vec, pos);
+    vol = (s32)(((float)(range[1] + range[0]) - (float)dist) / (float)range[1] * 127.0f);
+    if (vol < 0) {
+        vol = 0;
+    }
+    if (vol > 0x7f) {
+        vol = 0x7f;
+    }
+    return vol;
+}
 
 SndHandle *func_02049f44(SndMgr *mgr, s32 id, s32 arg, s32 pan);
 

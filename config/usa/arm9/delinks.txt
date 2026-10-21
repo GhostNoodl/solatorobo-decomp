@@ -1120,7 +1120,7 @@ src/Main/Gfx/PlttRes.cpp:
 
 src/Main/Gfx/PlttRes_2.cpp:
     complete
-    .text       start:0x02041000 end:0x02041080
+    .text       start:0x02041000 end:0x02041218
 
 src/Main/Gfx/PlttRes_3.cpp:
     complete
@@ -1236,7 +1236,7 @@ src/Main/Snd/SndMgr_4.cpp:
 
 src/Main/Snd/SndMgr_5.cpp:
     complete
-    .text       start:0x02049de8 end:0x02049e20
+    .text       start:0x02049de8 end:0x02049f44
 
 src/Main/Snd/SndMgr_6.cpp:
     complete

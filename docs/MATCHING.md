@@ -1121,3 +1121,35 @@ The list was every unmatched overlay function under 0x500 bytes whose best draft
 - **Focused permuter runs are fast.** With `PERM_RANDOMIZE( ... )` around just the statements that differ (balanced braces, inside the loop), the 0x9d4-byte function ran at about 4 iterations a second, against about 3 a second for a whole-function run that found nothing in 15 minutes. `scratchpad/itcm4/prun.sh` is `itcm3/prun.sh` pointed at this clone.
 - **`const` sweep (part 1).** `scratchpad/itcm4/t/pat2.py` is `itcm3/t/pat.py` limited to the ARM functions that `report.json` lists as unmatched, with the overlay bases read from `arm9_overlays/overlays.yaml`. The old script read none of the overlays, because there is no `.yaml` beside each `.bin`. It finds 12 functions where the target loads three words from one base into descending registers and then stores them in order: main `0205e29c`; ov000 `02189b44`, `0219d9fc`, `021a0d4c`, `021aa978`, `021b4130`, `021bd8ac`; ov009 `02208b24`; ov011 `021fc0b8`, `02203ef0`; ov014 `0220a67c`, `022153e0`. In every best draft that was checked, these spots already compile to the same pattern (plain struct copies). The remaining diffs are elsewhere, so `const` had nothing to fix. `021b4130` has no draft. Variants with any offsets (`pat3.py`) or halfwords (`pat4.py`) found nothing new.
 - **`func_01ff9f9c` (154 masked) and `func_01ff9060` (320 to 312 masked): not matched.** The new tricks barely move them. In `9060` (regenerated in `scratchpad/itcm4/9060/g3.cpp`), reusing `root`, `&data_02fe0f50[23]` and `HitVecScale` save 8 masked diffs. In `9f9c` the record-pointer change does nothing. The real blocker is the constants. The target sets a zero in `r3` at entry, uses it as the high word of every rounding add (`adc rX, rY, r3`, with `0x800` in a register too), and builds the edge threshold as `sub r0, r3, #5`, which it spills once for all three edges. `ae08` spills the threshold the same way but builds it with `mvn r0, #4`. A `zero` local in the threshold (`< zero - 5`, initialised at entry or at its declaration), `found = 0` at entry (frame 0x11c, closer to the target's 0x118 but `found` is spilled) and `x + 5 < 0` (worse) did not reproduce it. About 450 iterations of whole-function permuter on `9f9c` (base score 13295, best 7775) found only noise, such as moving one edge subtraction into a function-scope temporary.
+## A preheader constant, a global re-read in a loop, and main near-misses (round mainmid2)
+
+`func_02041080` (`PlttRes_2.cpp`) and `func_02049e20` (`SndMgr_5.cpp`) matched this round. Drafts are in `scratchpad/mainmid2/d/` and `scratchpad/mainmid2/nm/`.
+
+- **`func_02041080`: a constant in the loop preheader.** The target sets the `1` of `bit << j` once, after the `j < count` guard and before the loop. Write the loop as `j = 0; if (j < count) { bit = 1; if ((u32)res & 3) bit = 1; do { ... } while (++j < count); }`, with `u16 bit;` declared first. A plain `for` puts the constant before the guard, or rebuilds it in the body.
+- **`func_02049e20`: a global read again in every iteration.** The target loads `data_ov000_021ccd54` again inside the search loop. Two changes were needed:
+  - Pass `&data_ov000_021ccd54->a` to a small pointer inline (`SndMgr_IsAreaAt`).
+  - Copy the table entry's bytes into locals (`u8 a = e->a; ...`) before the call.
+  
+  Without these, MWCC hoists `listener->a` out of the loop. The second parameter is `const SndVec *pos`. `VEC_Distance` now takes `const` pointers.
+- **Near-misses that improved:**
+  - **`func_02064b54` (28 → 20).** An `if`/`else` with a `VEC_Add` in each branch gives the target's tail-merged call (`beq; b; add r1`).
+  - **`func_02063650` (17 → 2).** A two-definition global address: `gc = &data_02092844; if ((u32)self & 3) gc = ...;`. Only the scheduling of one `ldr` is left.
+  - **`func_0206f6d4` (22 → 15).** Use `int item = k + 0x7000;` and pass it to an inline that takes a `u16`.
+  - **`func_0206d99c` (70 → 40), drafted with `func_0206d43c` in one file (they share the `CODASAVE` pool).** MWCC folds `(x - a) + a`. Writing one side as `+ (s->slotSize + sizeof(u32))` keeps both the `sub` and the `add`. The align-down is an inline.
+  - **`func_02042f40` (18 → 8).** Only with a hacky duplicate-call form found by `tdv.py`.
+- **`func_0203c2bc` (never drafted before).** The draft is `d/c2bc/a.cpp`, appended to `GfxSys_4.cpp`. It uses inlines for the texture and palette VRAM setup and for the heap init. Every instruction is right after register normalisation (4 differences), but `sys` gets `sb` instead of `r4` (116 raw). `tdc.py` found that a two-definition `0x80` before `func_02015510` splits the block and gives `sys` `r4` (74 raw), but adds other differences. Placing it would move the end of `GfxSys_4.cpp` to `0x0203c638`.
+- **Unchanged or blocked:**
+  - **`func_0204a3b8` is already matched** (`SndMgr_6.cpp`, under `SNDMGR_DELINK_0204A3B8`). It can't be placed until the TWL gap after it is resolved.
+  - **`func_0206e858`.** The target loads the pool word for `data_0214b105` twice. `data_0214b104.name` followed by `data_0214b105` gives the right sequence, but 4 pool words instead of 3.
+  - **`func_02015510` (19).** The switch tree uses a different pivot (target `0x80`) and drops case 0.
+  - These are still a few register or scheduling differences:
+    - `func_0203b12c` (1)
+    - `func_0203d298` (7)
+    - `func_0206d43c` (14)
+    - `func_02049690` (10)
+    - `func_0203a984` (10)
+    - `func_0206e3a0` (2)
+  - `func_020429a0` (a large 3D OAM builder) and `func_02024730` (NNS cell-to-OAM library code) were not drafted.
+- **Tools.** In `scratchpad/mainmid2/`:
+  - `fdis.py func_X` disassembles a main function with relocs and symbols. It is not called `dis.py`, which would shadow the standard `dis` module that capstone imports.
+  - `t/sd.py` fails at once when a file `t/KILL` exists. Use it to stop a batch `tdc`/`tdv` run without killing its children.
