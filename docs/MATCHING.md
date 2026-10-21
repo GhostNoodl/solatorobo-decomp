@@ -1367,3 +1367,31 @@ No new matches. This round tested the round itcm5 finding (function-scope tempor
   - `0218a5ec`: reusing the dead `s`/`e`/`x` for `t`/`k` (2 at best).
   - `021ffd0c`: field copies interleaved with the vector copy (27 to 29).
 - **Pool-bound:** `021e1204` (2) and `021e6274` (8) did not change, so the ov003 pool merge is still blocked. `021cf420` (15) is register-only at its core (the entry zero is `r6`, the target has `r7`), but it is ov006-pool-bound with three far-off users.
+## TU2 blockers, round 7: where a sunk global store goes (main, round mainpool13)
+
+Nothing matched this round, so TU2 is still not merged. Drafts and tools are in `scratchpad/mainpool13/` (`d/`, `t/`).
+
+- **The bare-block tools find nothing on TU2.** `blk.py`, `near.py` (`NEAR` up to 8) and `fscope.py` (with `FS_PAIRS`) left all five blockers unchanged: `0205e5c4` 2, `0205c234` 2, `0205e29c` 9, `02060a08` 13 and `02060b18` 16. `blk.py` finds no bare block next to a simple statement in the last three.
+  - In `c234`, `t/c2gen.py` wrapped every contiguous run of the second set of stores in a bare block (760 variants, also with `start` in a nested block). The block never changes the code. Only the position of `start = data_02149efc.slotStart;` matters.
+  - In `e5c4`, `t/e5gen.py` combined orders with `unk_14` before `unk_04`, the start of the `{ id ... }` block and an inner bare block (8616 variants). The best is 4, the round mainpool9 form (`res`, both stores, then `id`). `e5_g4.cpp` has the target's registers and store order but loads `id` after the stores.
+- **A zero store to a global sinks or stays depending on its offset and the global's declared size.** Take `e5c4` with one store in place of the pair, written as `*(u32 *)((u8 *)&G + off) = 0`:
+  - With `data_02149efc` (`ObjPoolGlobals`, 0x1c bytes), a store at `+0x10` or above (including offsets past the end, up to `+0x100`) is scheduled just after the two `slot` loads, with its address and zero.
+  - A store below `+0x10` sinks, together with its address `ldr` and `mov #0`, to just before the `LightParam_Init` key store at `[sp, #0x10]`. That moves the registers (`id` goes to `sb`, and there is an extra push).
+  - The threshold follows the size of the declared type, not the field types: a 4-byte type or a 0x1c-byte `u32[7]` struct keeps `+0x14` up, a 0x18-byte one sinks below `+0xc`, a 0x20-byte one below `+0x10`, and a `u32[16]` sinks up to `+0x2c`. `data_02fe1534` and `data_02149f18` sink at every offset tried.
+  - The `slot` loads, the parameter struct's size, the field types, the base spelling (index, cast, member of `pool`) and the store's type (`u32`, `s32`, `StageRes **`) make no difference.
+
+  So with the source order `unk_14`, `unk_04`, the `unk_04` store sinks (17). With `unk_04`, `unk_14`, the store order drags `unk_04` up with `unk_14` (2). Padding `ObjPoolGlobals` to sizes up to 0x504 bytes, or declaring it as `[1]` or `[]`, does not give the target's order (17 to 18). `__restrict` on `slot` lets the loads move above the stores, but it changes the whole schedule (20 to 33). An `unk_04 = unk_14` copy, `NULL`-returning inlines, setter inlines and local `o`/`l` copies all stay at 17.
+- **`func_0205e29c` (9): the late `unk_14` store follows from the register swap.** In the target, the `Stage_FindObj3D` result (merged with the `unk_80` zero) is in `r3`, so its `str [r7, #0x14]` can sink to just before the `bl`. In ours it is in `r2`, which `and r2, r8, #0xff` overwrites, so the store has to come first. These all stay at 9 or worse:
+  - redeclaring `data_ov000_021ccd64` with other types;
+  - loading it into a local before the `unk_14` store (15, because this drops the inline's second `id == 0` test);
+  - `Stage_FindLight1` and `u8` forms of the inline;
+  - 72 type and declaration orders of `id`/`b`;
+  - five spellings of the `GetArea` multiply.
+- **`func_0205c234` (2).** The `ldr` of a constant address always lands one store before its load. These did not move it:
+  - a two-definition `g` placed anywhere from the loop exit to `start`, with `start` after `args[3]` and five conditions (35 or worse);
+  - a copy `h = g` of a `g` with two definitions at the top (42, because `g` lives in `ip` the whole time);
+  - writing the function with `Slot_Alloc`/`Slot_Init` and a `Slot_Last` inline (45, because `slotEnd` is loaded again);
+  - seven spellings of the `slotStart` read;
+  - compiling it as C++;
+  - other `-proc` values.
+- **Tools.** In `scratchpad/mainpool13/t/`: the bigsweep1 tools pointed at this clone, plus `e5gen.py`, `e5dec.py` (scope and order of `id`/`type`/`lo`, 162 variants, all 17), `e5ty.py` (declared type of `data_02149efc`), `c2gen.py`, `e29v.py`, `e29ty.py`, and `hdr.sh` (compiles a draft against a copy of `StageCmd.h` with one extern redeclared).
