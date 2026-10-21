@@ -1339,3 +1339,31 @@ Nothing matched this round, so TU1 is still not merged. Drafts and tools are in 
 - **`func_02051a34` (35).** Moving `Model *m` to function scope changes the result a lot with its position (98 to 35), but no position beats 35, and a 600-round declaration climb with it found nothing. A two-definition mask variable (`s32 mk`, `win->args[0] != (mk >> 16)`, the `textPos` store written as `(w & mk) | (((u32)(u16)pos << 16) >> 16)`) gives the target's instructions, but `mk` gets `fp` (the target puts the mask in `r6`) and its `mov`/`rsb` move into the entry block (44). Defining `mk` in the inner loop's preheader needs the inner `while` written as `if (...) { ...; do { } while (...); }` with an `if (c == 0)` second definition. That puts the `mov`/`rsb` in the target's place, but it turns the outer loop into a guarded form (102). `if ((u32)win & 3)` there is hoisted out of the loop and stays.
 - **`func_0204ffdc` (52).** `v/dyins.py` put `if ((u32)box & 3) { dy = 0; }` before every statement, with `s32` and `long dy` (about 260 compiles): none was below 52. `long dy` keeps `dy` as a variable everywhere, but `busy` then gets its own `mov #0`. Copies from multi-definition locals (`dx = 0; dy = dx; if (...) dy = dx;`, also with `i`, `alpha`, `t` and `long` sources) behave like the constant. Function-scope `ln`/`j`, reusing `line`/`i` for the final loop (175) and function-scope `x`/`y` did not help either.
 - **`func_020508f4` (8).** `tdv2.py` (259 placements), block-scoped `n`, `i`, `tag` and `c`, and reusing the `str` parameter instead of `s` (40) left the `fn`/`dst` swap.
+
+## Scope moves on overlay near-misses (overlays under 0x500 bytes, round ovhi22)
+
+No new matches. This round tested the round itcm5 finding (function-scope temporaries decide registers, declaration order decides stack slots) on 24 overlay near-misses with 2 to 15 diffs. Drafts, logs and tools are in `scratchpad/ovhi22/` (`d/<mod>_<addr>/base.*`, `scope*.out`, `tdv2_a.out`).
+
+- **`t/scope.py src func mod`** builds every scope move for one function (or for an inline with `SCOPE_IN=<name>`) and scores each move alone, then pairs of the best `SCOPE_PAIRS` (default 24). `SCOPE_DRY=<dir>` writes the variants without compiling them. The moves are:
+  - `hoist`: every block-scoped declaration of a name goes to an enclosing block, up to function scope. Initialisers become assignments in place. In `.c` files the assignment goes after the block's declarations.
+  - `hoistgrp`: all block-scoped names of one type in the same blocks move together, plus every 3-name subset when a group has 4 to 6 names. This is the round itcm5 `cx, cy, cz` move.
+  - `sink`: a declaration moves into the innermost block that holds all of its uses, or into any block in between.
+  - `wrap`: a declaration's use spans (for example two loops that share an index) each get a new block with their own declaration. The tool tries each span alone and all spans together.
+  - `merge`: two block-scoped names of one type whose line ranges do not overlap become one function-scope variable.
+  - `uninit`: `T a = e;` becomes `T a;` plus `a = e;` after the declaration list.
+  - `order`: each function-scope declaration moves to every other slot of the declaration list.
+- **Sanity check:** on the pre-fix itcm5 draft (`itcm5/9f9c/g4.cpp`), `hoistgrp cx+cy+cz` takes the masked score from 197 to 153. That is the known lever, so the tool does find this kind of move.
+- **Results on the overlay batch:** about 7,400 compiles across all runs. No move improved any of the 24 functions. Many moves changed nothing at all, which means MWCC gave the same code whatever the scope. In the drafts that use an inline (`021708ec` `Lo_FindMsg`, `021be5dc` `CalcDepth`, `02199180` `DistSq9180`), declaration order inside the inline does matter. Writing the same body by hand in the caller does not: `02199180` scores 10 for all 18 orders and scopes of `dz, dx, dy`.
+- **Other tools on the same drafts:** `tdv2.py` (`TDV_MAXD=8`) on the ten ovmid2 drafts found `021d8d00` 13 to 12 (a second `chr = last->chr` right after its declaration, `best/d8d00_12.cpp`; still 7 with registers masked). It also found the known `021c4460` 10 to 9, which needs an extra `self->unk_a4 = n` store and so is not real.
+- **Hand forms that did not move (all scored):**
+  - `021e2690`: function-scope `8`/`3` variables in any declaration or assignment order, a scoped `t = 8` at every level with the swapped store order. Copy propagation removes them; the store order still sets the registers.
+  - `02211b2c`: a `self + 0x14c` pointer local for any subset of the four calls, the name argument in a local, `char *` and index spellings.
+  - `021e1204`: no entry pointer, an assignment inside the `if`, a table local, function-scope `k`, `k` reused for `unk_06`, `e` in its own block.
+  - `021ec010`: every position of `p = *src`, a `self` copy, other types for `z` (`s32`/`int`/`u16`/`u32` give 32).
+  - `021be5dc`: function-scope `z`, reusing `q`/`w`, `ToDepth2`/`ToDepth3`, operand order of every `FX_MUL`.
+  - `021fff38`: all 24 orders of the `t` stores and the `home` load (best 7), temporaries for `x`/`y`/`z` at either scope (copy-propagated, 8), a setter inline (8).
+  - `021c4460`: declaration order in the walk block matters (10 to 27) but never gives the target's `n`/`idx` registers. Reusing `key`/`kq` for the index or the counter gave 10 to 27.
+  - `0220640c`: a wrapper inline around `func_0203cb78` that holds 0 to 5 of the preceding stores (6 everywhere).
+  - `0218a5ec`: reusing the dead `s`/`e`/`x` for `t`/`k` (2 at best).
+  - `021ffd0c`: field copies interleaved with the vector copy (27 to 29).
+- **Pool-bound:** `021e1204` (2) and `021e6274` (8) did not change, so the ov003 pool merge is still blocked. `021cf420` (15) is register-only at its core (the entry zero is `r6`, the target has `r7`), but it is ov006-pool-bound with three far-off users.
