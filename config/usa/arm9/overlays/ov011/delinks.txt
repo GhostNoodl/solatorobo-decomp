@@ -53,13 +53,25 @@ src/ov011/ov011_022030b4.cpp:
     complete
     .text       start:0x022030b4 end:0x022038ac
 
+src/ov011/ov011_022038ac.cpp:
+    complete
+    .text       start:0x022038ac end:0x02203de4
+
 src/ov011/ov011_02203de4.cpp:
     complete
     .text       start:0x02203de4 end:0x02203ef0
 
+src/ov011/ov011_02203ef0.cpp:
+    complete
+    .text       start:0x02203ef0 end:0x022042fc
+
 src/ov011/ov011_022042fc.cpp:
     complete
     .text       start:0x022042fc end:0x02204428
+
+src/ov011/ov011_02204428.cpp:
+    complete
+    .text       start:0x02204428 end:0x02204a8c
 
 src/ov011/ov011_021fc0a0.cpp:
     complete

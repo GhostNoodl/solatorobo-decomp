@@ -1395,3 +1395,41 @@ Nothing matched this round, so TU2 is still not merged. Drafts and tools are in 
   - compiling it as C++;
   - other `-proc` values.
 - **Tools.** In `scratchpad/mainpool13/t/`: the bigsweep1 tools pointed at this clone, plus `e5gen.py`, `e5dec.py` (scope and order of `id`/`type`/`lo`, 162 variants, all 17), `e5ty.py` (declared type of `data_02149efc`), `c2gen.py`, `e29v.py`, `e29ty.py`, and `hdr.sh` (compiles a draft against a copy of `StageCmd.h` with one extern redeclared).
+
+## Pointer locals plus array indexing for operand order (round bigsweep2)
+
+- **The trick.** MWCC chose the wrong evaluation order for `FX_Atan2(a.x - b.x, a.z - b.z)` on two globals: it loaded the z term first. Writing the operands as indexes through block-local pointers gives the target's x-first order and its registers:
+  ```c
+  {
+      const s32 *b = (const s32 *)&data_02092a38;
+      const s32 *a = (const s32 *)&data_02092a50;
+      self->rot[1] = FX_Atan2(b[0] - a[0], b[2] - a[2]);
+  }
+  ```
+- **Both parts are needed.** Pointer locals with `->x` still scored 6. Casts with indexes but no locals also scored 6. Our working theory is that an offset-0 field access counts as cheaper when MWCC orders the operands, and the index form hides that.
+- **Matches from this trick:**
+  - `ov011_022038ac`
+  - `ov011_02204428` (a long-standing 6-diff)
+  - `ov011_02203ef0` (0x40c bytes)
+- **Where it did not help:**
+  - `ov000_0219d9fc`: the `0x9ac < 0x9ae` u16 compare kept its load order. We tried index, swapped, casts, temporaries and `!(<=)`.
+  - `ov000_021ffb90`: 7 against 8, with a different shape.
+- **Partial gains, not yet matches:**
+  - `ov013_021fc7e0`, 9 → 6: move the `+0x3c = 0xb33` store after the `v14(0x800,0x800,0x800)` call.
+  - `ov000_02171478`: `u32 index = (u32)i < LEN ? i : i - LEN;` gives the target's `mov; subhs`. An end/index register swap remains.
+  - `ov000_0219e998`: assigning `ok = GIdle...()` gives the target's structure. Only an r0/r1 swap remains.
+  - `ov000_021a2670`: inlining `(u16 >> 12) != 5` and placing `anm` right after `lock` fixes the 0xb24 register.
+- **Scratch tools:**
+  - `vrf.py`: applies variants inside one function; an `@TOP@` prefix applies the edit to the whole file.
+  - `fsn.py`: applies all neutral `fscope` moves together.
+  - `pipe.sh`: runs fsn, then blk, then blk again.
+- **No gain:**
+  - `0220cbe8`: we could not stop `p+0x168` from being folded.
+  - `021fc688`
+  - `021e8ef8`: also 1300+ permuter iterations.
+  - `02189b44`
+  - `021d3e14`
+  - `021b209c`
+  - `021afaf8`
+  - `021fc0b8`
+  - `021ad8ac`
