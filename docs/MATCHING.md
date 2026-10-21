@@ -1610,3 +1610,34 @@ This round found no new matches. Drafts are in the scratchpad under `ovfresh2/d/
   - `pa_iter.sh` runs `pairarr.py` greedily.
   - `kqpos.py` moves a two-definition constant block to every statement position.
 - **Permuter:** Its C front end rejects C++ inheritance (`struct A : public B`), and struct names used without `struct`.
+## Unused parameters as locals fix a whole-function register rotation (ov000, round bigfresh2)
+
+One new match: `func_ov000_021782e0` (0x77c bytes, menu builder), now `src/ov000/Lo_021782e0.cpp`. Drafts and tools are in `scratchpad/bigfresh2/` (`best/`, `t/`, `m/` for the small experiments).
+
+- **The fix.** Start from the clean redraft (`82e0_clean_146_sdr0.cpp`: 146 raw, 0 masked, no two-definition tricks). Declare `g` (`data_02149ef8`) and the loop's `m` as parameters instead of locals: `void func_ov000_021782e0(VObj *self, void *g, VObj *m)`. The function still assigns both before use. `g` alone gives the target's whole prologue (`g` r4, `self` r5, `1` r6, `0` r7, vtable r8) and 18 raw diffs. What is left is an `id`/`m` swap in the loop, and `m` as a parameter fixes it (0). Turning any other local into a parameter changes nothing or makes it worse. Adding an unused parameter without moving a local into it also changes nothing.
+- **Why it works.** These conclusions come from small test functions in `m/`. When the callee-saved registers are tight, MWCC assigns registers in this order:
+  1. parameters, the last parameter first (it gets the lowest register);
+  2. the hoisted constants, in reverse order of first use;
+  3. long-lived locals, in declaration order.
+
+  With few live values the order is simply reverse creation order. A local therefore never gets a lower register than a hoisted constant, whatever its name, initialiser or declaration position. That is why bigfresh1 could not move `g` out of r8. When the target puts a local-looking value (a loaded global) in r4, below the hoisted `1`/`0`, try making it a parameter.
+- **Declaration order still matters between locals.** A long-lived local declared later is assigned later. On the 48-raw draft, a vtable-pointer local declared after `g` (with `g` declared first) moved the vtable to r8 (48 to 37). The parameter form made this unnecessary.
+- **`func_ov000_02176714` (43 to 29 raw, 2 masked).** Making the loop's `tbl` a parameter fixes the `tbl`/`a` swap in the loop (`best/6714_29_sdr2_tblparam.cpp`). What is left is one r4/r6 swap across the whole function. The hoisted `1` is assigned before `-0x1ccd` and the loop's `base`; the target assigns `-0x1ccd`, `0`, `1` (reverse first use). A two-definition `0x130` in the loop gives exactly the target prologue (`-0x1ccd` r4, `0` r5, `1` r6), but only because it takes `1` out of the loop, and the frame shrinks (56). So the weight of `1`'s uses in the loop is what moves it ahead. These made no difference:
+  - parameter, local, single-definition and two-definition forms of `-0x1ccd` and `1` (at one use and at all uses);
+  - every pair and triple of locals as parameters;
+  - a separate parameter for the object in each switch case;
+  - a declaration grid over the loop block;
+  - 15 minutes of two-definition annealing (`t/tdan.py`).
+- **`func_ov010_02201064` (190 to 176 raw, 6 masked).** Making the block-local `all` a parameter gives the 14. The fresh `mov r1, #0` for the `last` stores is still missing. A two-definition zero after `func_02040528(2)` (`s32`/`int`/`u16`/`u8`, used for the three stores and/or the `0x7a` store and the call) merges with the hoisted r5 zero. The other attempts (inline helpers with a zero parameter, a parameter zero) changed nothing or made it worse.
+- **Tools** (in `scratchpad/bigfresh2/t/`):
+  - `pparam2.py src func outdir K [force]` writes every subset of up to K locals turned into parameters. It also handles initialised declarations.
+  - `bo.sh func mod files...` gives the raw score and our prologue for many files in parallel.
+  - `fam.py log` groups a `tdc` log by the registers of `g`/`self`/`1`/`0`/vtable.
+  - `tdc.py` now prints our prologue after `##` and has these options:
+    - `TDRX=<regex>` for non-numeric operands such as `g` or a vtable symbol;
+    - `TDPARAM=1` makes the two-definition variable a parameter;
+    - `TDSINGLE=1` gives it a single definition.
+  - `td2j.py` specs take `LIT:N:NEAR:TYPE:SKIP`.
+  - `tdan.py` anneals over sets of two-definition replacements.
+  - `near2.py` and `tmpify.py` move statements and wrap a statement's `self` field base in a pointer local, both printing our prologue.
+  - `m/m.sh` prints our code for a small test file that defines the target function's name.

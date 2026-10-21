@@ -477,6 +477,10 @@ src/ov000/Stub_021782b0.cpp:
     complete
     .text       start:0x021782b0 end:0x021782e0
 
+src/ov000/Lo_021782e0.cpp:
+    complete
+    .text       start:0x021782e0 end:0x02178a5c
+
 src/ov000/Stub_02178ccc.cpp:
     complete
     .text       start:0x02178ccc end:0x02178cd0
