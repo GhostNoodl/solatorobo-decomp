@@ -4,7 +4,6 @@ extern "C" {
 
 void func_02054254(SlidePanel *panel);
 
-void func_02054bb4(SlidePanel *panel);
 
 
 BOOL func_02054f10(Model *model, u32 idx) {

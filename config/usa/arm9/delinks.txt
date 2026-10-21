@@ -1140,7 +1140,7 @@ src/Main/Gfx/TexObj_2.cpp:
 
 src/Main/Gfx/TexObj_3.cpp:
     complete
-    .text       start:0x02042628 end:0x020429a0
+    .text       start:0x02042628 end:0x02042eac
 
 src/Main/Gfx/Blend.cpp:
     complete
@@ -1370,7 +1370,7 @@ src/Main/Gfx/SlideScene.cpp:
 
 src/Main/Gfx/SlidePanel.cpp:
     complete
-    .text       start:0x0205422c end:0x02054bb4
+    .text       start:0x0205422c end:0x02054f10
 
 src/Main/Gfx/SlidePanel_2.cpp:
     complete

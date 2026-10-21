@@ -1451,3 +1451,21 @@ Nothing matched this round, so TU2 is still not merged. Drafts and tools are in 
   - `bo.sh func files...` scores many drafts in parallel, giving the raw and the register-normalised score.
   - `scope.py` now builds its pair stage from the best moves of both kinds: non-order moves and order moves (`SCOPE_ORD`, `SCOPE_DELTA`). Before, every pair conflicted. `SCOPE_NOORDER=1` turns order moves off.
   - `sq.sh` and `tq.sh` are job queues.
+## Big main functions redrafted from scratch (main, round mainfresh1)
+
+Two new matches: `func_02054bb4` (17 diffs before) in `SlidePanel.cpp`, and `func_020429a0` (never drafted before) in `TexObj_3.cpp`. Drafts and tools are in `scratchpad/mainfresh1/` (`d/`, `t/`).
+
+- **`02054bb4`: one inlined copy that takes a reference.** The panel's edge width is read through `SlidePanel_GetEdge3(panel, res)`. That function uses `Model_GetWidth` for kinds 1 to 3, and `Model_GetWidthR` (which takes `ModelRes *&res`) only for kind 4. The function-scope `res` is passed by reference into exactly one inlined copy. This gives the target's register colouring. Every version that passed `res` by value, or by reference into every copy, stayed at 17.
+- **`020429a0`: the tricks that matched it.**
+  - **The `asm {}` identity matrix stops loop rotation.** The `TexObj_SetTransMtx` asm block (the same one as `Box_SetMtx` in `ObjPool.cpp`) turns off loop rotation for the whole function. All the loops become "branch to the test" loops and reload `count` on every pass, as in the target.
+  - **A separate `int i` for each loop**, declared in the loop's own block, gives each index its own web (66 to 24).
+  - **Bitfield reads are not shared between statements.** Each `FB(obj)->hflip`-style test loads the word again, which gives the target's repeated `ldr [sl, #0x6c]`. Write the flags as `if (FB(obj)->hflip ? TRUE : FALSE) hflip = TRUE; else hflip = FALSE;`.
+  - **Read the OAM shape through `*(const u32 *)&oam[i]`.** With `*(u32 *)`, the load was shared with the bitfield store (11). The `const` read gives 3.
+  - **The polygon attribute** is `G3_PolygonAttr(0, 0, 2, id, TexObj_GetAlpha(obj), TexObj_GetPolyMisc(obj))`. `misc` is built in its own inline (`u32 m = 0; if (..) m |= 0x4000; ...`). This gives the target's `mov r3, #0` / `orrne` registers.
+  - **Stack slots follow declaration order.** A local declared later gets a lower address.
+  - The new symbol `data_0208288c` was needed in `symbols.txt`.
+- **No change:**
+  - `0204b43c` stays at 17. FxMul reference temporaries and the `near`/`blk`/`scope`/`fscope` tools did not move it.
+  - `02056230` stays at 42. The `sb`/`sl` swap did not move with fake reference variables.
+  - In `02069b3c`, the target does not tail-merge the display-list stores, and a switch or early returns do not stop ours from doing it.
+  - `02043100` is still `NONMATCHING`. A bitfield-struct draft (`d/3100/b.cpp`, 166 raw / 85 normalised, against 158 / 91 in the tree) gets closer on registers. The target loads `attr01` again for each bitfield and makes `~0xff` from `0xc000c000 asr 22`.
