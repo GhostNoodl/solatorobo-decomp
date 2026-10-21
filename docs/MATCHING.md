@@ -1527,3 +1527,18 @@ There are no new matches this round. The drafts are in the scratchpad under `mai
   - `0204b43c` stays at 17 / 0, `02056230` at 42 / 0 (an `sb`/`sl` swap), and `02068e68` at 41 / 2. In `02068e68`, the target reloads `FX_SinCosTable_` for the x rotation only.
   - In `02069b3c` (66 / 21), an empty `asm {}` does not stop the tail merge.
 - **Permuter:** Its C front end needs C structs instead of classes, `void *vtbl` casts for virtual calls, and `sizeof(TexObjEntry)` replaced with `0x28` in `base.c`.
+## Overlay mid-size functions redrafted structure-first (round ovfresh1)
+
+Four functions of 0x100 to 0x500 bytes matched after their old drafts sat at 26 to 62 diffs. Each fix was structural, not a register shuffle.
+
+- **One member through a whole-struct local** (`ov003_021d6bac`). The target keeps a 16-byte frame with the sub-struct at `sp+8`. Write `Ov003Stat s; s.sub = p->sub;`, scale through `&s.sub.atk`, then copy back with `p->sub = s.sub;`. A local of just the sub-struct type gives the wrong offset. Copy the scalar fields 0 to 7 into separate scalar locals.
+- **A block-local copy for subtraction operands** (`ov003_021daae4`). `{ Ov003Vec base = o->base; vp.x -= base.x; ... }` reproduces the target's three loads ahead of the subtracts. A block-local `Ov003VecP vp = data_...;` is hoisted out of the loop by MWCC, which matches.
+- **A "dead" getter result is really an argument** (`ov000_021bb8dc`). The target keeps the getter's `r0` and passes it to three calls. Declare the getter as returning `void *` and pass the value through.
+- **Duplicate the tail instead of `goto`** (`ov000_021bb8dc`). One case reached a shared statement through a `goto`. Write the statement plus `break` in both places and MWCC tail-merges it the target's way.
+- **A `BOOL ok = TRUE; if (!f()) ok = FALSE; return ok;` inline** materialises the flag exactly as the target does.
+- **`#pragma opt_common_subs off` for a global reloaded after every block** (`ov006_021d16a0`). Wrap only the function, then `#pragma opt_common_subs reset`. Make the min-search inline's index and result `u8`. This replaced a file-level `optimization_level 2` hack.
+- **Near-misses, no match found:**
+  - Reading bitfields into locals before the stores shares one load (`ov002_021dd9dc`: 57 raw to 28 raw, 0 masked). Only a register swap is left.
+  - Inside an if/else, an early `return` in one arm keeps a predicated `strge`/`strlt` pair (`ov000_021c3158`: 38 to 4, 0 masked). Only an r4/r8 swap is left.
+  - `ov011_021fb9b8` went from 27 to 16. `ov002_021d1f70` went from 56 to 39 after a 360-way statement-order sweep. `ov012_021fefc8` is still at 23 raw, with 2 masked diffs left (registers only).
+  - Turning `opt_common_subs` off did not help any of these.

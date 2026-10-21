@@ -52,6 +52,10 @@ src/ov003/ov003_021f4248.c:
 
 
 
+src/ov003/ov003_021d6bac.cpp:
+    complete
+    .text       start:0x021d6bac end:0x021d6cf4
+
 src/ov003/ov003_021d6cf4.cpp:
     complete
     .text       start:0x021d6cf4 end:0x021d6e04
@@ -199,7 +203,7 @@ src/ov003/ov003_021da2c8.cpp:
 
 src/ov003/ov003_021da788.cpp:
     complete
-    .text       start:0x021da788 end:0x021daae4
+    .text       start:0x021da788 end:0x021dacfc
 
 src/ov003/ov003_021dacfc.cpp:
     complete

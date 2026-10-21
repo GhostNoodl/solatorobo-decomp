@@ -46,10 +46,39 @@ struct Ov003HeapCtx {
     void *alt;
 };
 
+
+struct Ov003VecP {
+    s32 x;
+    s32 y;
+    s32 z;
+};
+
+class Ov003FxObj {
+public:
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0c();
+    virtual void v10(s32 a);
+    virtual void v14();
+    virtual void v18();
+    virtual void v1c();
+    virtual void SetPos(Ov003Vec *v);
+    virtual void v24();
+    virtual void v28();
+    virtual void v2c();
+    virtual void v30(s32 a);
+    u8 unk_04[0x54];
+    Ov003Vec base;
+};
+
 extern "C" {
 
 extern Ov003HeapCtx *data_02097dd0;
 extern void *data_0214a420;
+extern const Ov003VecP data_ov003_021f4988;
+extern Ov003FxObj *func_020657b0(void *mgr, void *handle);
+extern void func_01ffc9fc(Ov003Vec *out, const Ov003Vec *in, u16 ang);
 extern u8 data_ov003_021f7cc4[];
 extern void *func_02065f88(void *mgr, const void *arg);
 extern void func_02065804(void *mgr, void *handle);
@@ -179,6 +208,58 @@ void func_ov003_021daab0(Ov003FxList *self) {
     Ov003FxNode *n;
     for (n = self->head; n != NULL; n = n->next) {
         func_02065804(data_0214a420, n->handle);
+    }
+}
+
+static inline void Ov003_RotX(Ov003Vec *out, const Ov003Vec *in, u16 ang) {
+    s32 y = 0;
+    s32 z = 0;
+    s32 idx = ang >> 4;
+    s32 s = FX_SinCosTable_[idx * 2];
+    s32 c = FX_SinCosTable_[idx * 2 + 1];
+    if (in->y != 0) {
+        y += (s32)(((s64)c * in->y + 0x800) >> 12);
+        z += (s32)(((s64)s * in->y + 0x800) >> 12);
+    }
+    if (in->z != 0) {
+        y += (s32)(((s64)-s * in->z + 0x800) >> 12);
+        z += (s32)(((s64)c * in->z + 0x800) >> 12);
+    }
+    out->x = in->x;
+    out->y = y;
+    out->z = z;
+}
+
+void func_ov003_021daae4(Ov003FxList *self, u8 id, const Ov003Vec *pos, s32 a, s32 b, const Ov003Vec *ofs, const u16 *rot) {
+    Ov003FxNode *n;
+    for (n = self->head; n != NULL; n = n->next) {
+        if (id == n->id) {
+            Ov003FxObj *o = func_020657b0(data_0214a420, n->handle);
+            if (o != NULL) {
+                Ov003VecP vp = data_ov003_021f4988;
+                if (ofs != NULL) {
+                    *(Ov003Vec *)&vp = *ofs;
+                }
+                if (rot != NULL) {
+                    Ov003_RotX((Ov003Vec *)&vp, (Ov003Vec *)&vp, rot[0]);
+                    func_01ffc9fc((Ov003Vec *)&vp, (Ov003Vec *)&vp, rot[1]);
+                }
+                VEC_Add((Ov003Vec *)&vp, pos, (Ov003Vec *)&vp);
+                {
+                    Ov003Vec base = o->base;
+                    vp.x -= base.x;
+                    vp.y -= base.y;
+                    vp.z -= base.z;
+                }
+                o->SetPos((Ov003Vec *)&vp);
+                if (a != 0) {
+                    o->v30(a);
+                }
+                if (b != 0) {
+                    o->v10(b);
+                }
+            }
+        }
     }
 }
 
