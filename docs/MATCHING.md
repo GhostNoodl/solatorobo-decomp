@@ -1300,3 +1300,33 @@ No new matches this round. The `tdc.py`/`tdv.py` pass and the statement-run clim
   - `ptools/` runs decomp-permuter on main functions (`PERM_MODULE=main`, and `PERM_LANG=c` for C files).
   - `prun.sh draft addr secs` runs one permuter job. `pqueue.sh` runs a queue of jobs and stops when a file `STOPQ` exists.
   - `t/tvol.py` and `t/tvw.py` try the `volatile` forms.
+## Block-local temporaries and statement placement (overlays 0x500 bytes and up, round bigsweep1)
+
+- **Match.** `func_ov003_021ed6b8` (0xbf0 bytes) went from 6 diffs to 0. A store that sits next to a block-local temporary has to go inside that temporary's `{}` block. In case 0 the target wants `q.unk_18 = 0;` inside the block that declares `s32 r = self->unk_64 + 0x400;`, not just before it. Moving a statement into or out of a bare block changes how MWCC schedules it, even when the statement does not use the block's variables.
+- **Tools** (in `scratchpad/bigsweep1/t/`):
+  - `blk.py src func mod` moves up to `BLK_K` statements from just before or just after each bare block into it, at every position, and writes the best result to `src.blk`.
+  - `near.py` moves each simple statement up to `NEAR` line slots in either direction, crossing braces.
+  - `fscope.py` moves block-nested declarations to function scope.
+  - `summ.py` prints base/best per tool log and marks gains with `<<<`.
+
+  `blk.py` and `near.py` both find the ed6b8 match unaided.
+- **Gains** (raw seqdiff; none of these is a match yet):
+
+  | Function | Before | After | How |
+  |---|---|---|---|
+  | `ov010_02201064` | 185 | 76 | `fscope` |
+  | `ov000_021782e0` | 146 | 85 | two `blk` passes |
+  | `ov000_02176714` | 68 | 50 | `blk` |
+  | `ov000_02164c50` | 234 | 215 | `fscope` |
+  | `ov010_022000d8` | 69 | 62 | `fscope` |
+  | `ov000_0218867c` | 80 | 73 | `fscope` |
+  | `ov012_02200cd4` | 104 | 95 | `fscope` |
+  | `ov000_021a2670` | 13 | 9 | by hand |
+  | `ov015_021fce2c` | 24 | 20 | by hand |
+- **Still stuck:**
+  - `0219e998`: the `if (ok)` block nested inside `!b0 && p50->a == 0` gives the right structure, but r0/r1 stay swapped.
+  - `021b209c`: `sub = NULL; if (actor) sub = ...` fixes the sub half. The `streq r5` for a NULL actor is still unsolved.
+  - `0220a67c`: the target tail-merges its two arms, and no draft reproduces that.
+  - `021afaf8`: an r5/r7 swap (sdr 2).
+  - `021fc0b8`: the zero is hoisted even with a two-definition variable in the preheader.
+  - `0219d9fc`: the 0x9ae/0x9ac load order did not change with any locals, inlines or two-definition form.

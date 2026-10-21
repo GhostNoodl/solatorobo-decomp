@@ -35,6 +35,10 @@ src/ov003/ov003_021ed520.c:
     complete
     .text       start:0x021ed520 end:0x021ed6b8
 
+src/ov003/ov003_021ed6b8.cpp:
+    complete
+    .text       start:0x021ed6b8 end:0x021ee2a8
+
 
 src/ov003/ov003_021f07d8.c:
     complete
