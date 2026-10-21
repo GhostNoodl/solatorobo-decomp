@@ -1510,3 +1510,20 @@ No new matches. This round redrafted far-off big functions from the target's sta
 - **Permuter:** 40 minutes on the clean `021782e0` draft found only the `o = self` copy noise (735 to 650); 40 minutes from the two-variable draft found the merged `k` (545 to 220, i.e. 112 to 48 raw); 40 more minutes from `82e0_48_sdr0.cpp` and 80 minutes on `6714_43_sdr2.cpp` found nothing.
 - **`func_ov010_02201064` (76): the beam setters read the active byte again.** In the second loop the target reloads `b[0]` for the outer test of `SetA`/`SetB` but reuses the getter's load inside `Idle`. Writing the setters' outer test as `*b != 0` (the getter and `Idle` keep `FLD(u8, b, 0)`) gives that reload and removes the `0xffff` pool word (11 to 6 masked), but the loop registers move (190 raw, `1064_deref_190_sdr6.c`). The other masked diff is the zero for the `last` stores: the target builds a fresh `mov r1, #0` and keeps it for the `0x7a` store and both `func_ov000_02198360` zeros; ours stores the hoisted `r5` zero. `u16`/`FALSE` zeros, a chained store, a pointer copy and statements moved before the call did not change it.
 - **Tools** (in `scratchpad/bigfresh1/t/`): `vv.py base func mod varfile` runs `(name, [(old, new)])` variants with raw and masked scores; `trunc.py src func a b` compiles the function cut after every `b`-th top-level statement and prints the prologue registers, to find where a register order flips; `tdall.py` replaces every use of one literal with a single two-definition variable; `td2j.py` is a joint two-literal `tdc`; `tdc.py` takes `TDWRITE=<variant>` to write one variant from a log; `split.py` moves the tail of a function into an inline at every statement.
+
+## Big main functions, round 2: type-keyed CSE and a hoisted NULL (main, round mainfresh2)
+
+There are no new matches this round. The drafts are in the scratchpad under `mainfresh2/d/`. Scores are raw / register-masked seqdiff.
+
+- **Header fix:** In `GameScene.h`, `unk_vfb0` now takes `(int a, int b)` and `func_02043d84` returns `s32`. With this change, the old `02056e74` draft compiles again.
+- **`020417e0` (TexObj init, new draft, now 24 / 2):** It would append to `TexObj.cpp`, ending at `0x02041b10`. Three findings:
+  - **CSE is keyed by the access type.** Read the loop bound through a second struct view, `((const TexObjResB *)res)->bank->numSeq`, and pass `res->dict` as the argument. The target then reloads `[res,#0xc]` on every iteration. Through a single type the two loads are CSE'd.
+  - **A `const` source pointer lets loads move above stores.** With a `const TexObjRes *res` parameter, the scheduler can hoist the `ldr [res,#0xc]` above the `obj->res` and `obj->entries` stores, as in the target.
+  - **An address-taken counter changes allocation.** Pass the loop counter to an inline as `const u16 &idx` (the permuter found the same effect with `*&i`). This took the score from 87 to 24.
+  - **Remaining diff:** The `NULL` stored in loop 2 is hoisted to the zero at function entry (`mov fp, r4`). The target copies it from loop 2's `i = 0` (`mov fp, sl`). Small test files show that any earlier loop causes this hoist, and an inner loop blocks it. No source form tried has fixed it.
+- **`0204205c` (OAM cell copy, was 20, now 8 / 0):** The copy is written elementwise in the order `attr1, attr0, attr2`. Only an `r2`/`r3` swap of the attr0/attr1 loads remains. It would append to `TexObj_2.cpp`, ending at `0x02042628`.
+- **No change:**
+  - `02056e74` stays at 4 / 0. Only the colouring around `GameScene_FxMul(s, -0x80000)` differs.
+  - `0204b43c` stays at 17 / 0, `02056230` at 42 / 0 (an `sb`/`sl` swap), and `02068e68` at 41 / 2. In `02068e68`, the target reloads `FX_SinCosTable_` for the x rotation only.
+  - In `02069b3c` (66 / 21), an empty `asm {}` does not stop the tail merge.
+- **Permuter:** Its C front end needs C structs instead of classes, `void *vtbl` casts for virtual calls, and `sizeof(TexObjEntry)` replaced with `0x28` in `base.c`.

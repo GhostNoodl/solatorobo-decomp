@@ -52,7 +52,7 @@ struct GameScene {
     virtual void unk_vfa4();
     virtual void unk_vfa8();
     virtual void UpdateAc();
-    virtual void unk_vfb0();
+    virtual void unk_vfb0(int a, int b);
     virtual void UpdateB4(void *p);
     /* 0x004 */ u32 flag0 : 1;
     /* 0x004 */ u32 unk_04_1 : 1;
@@ -120,7 +120,7 @@ extern void func_0203cc58(int a, int b, int c);
 extern s32 FX_Div(s32 a, s32 b);
 extern s32 func_02040498(s32 max);
 extern void func_02043d20(void *obj, int a);
-extern void func_02043d84(void *obj);
+extern s32 func_02043d84(void *obj);
 extern void func_02052fcc(GameScene *scene);
 extern s32 func_020572f8(GameScene *scene, void *p);
 extern void *func_0203972c(void *blocks, u32 count);
