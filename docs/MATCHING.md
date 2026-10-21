@@ -1469,3 +1469,33 @@ Two new matches: `func_02054bb4` (17 diffs before) in `SlidePanel.cpp`, and `fun
   - `02056230` stays at 42. The `sb`/`sl` swap did not move with fake reference variables.
   - In `02069b3c`, the target does not tail-merge the display-list stores, and a switch or early returns do not stop ours from doing it.
   - `02043100` is still `NONMATCHING`. A bitfield-struct draft (`d/3100/b.cpp`, 166 raw / 85 normalised, against 158 / 91 in the tree) gets closer on registers. The target loads `attr01` again for each bitfield and makes `~0xff` from `0xc000c000 asr 22`.
+## Sweeping the pointer-local index trick over every near-miss (round opsweep1)
+
+No new matches this round. Drafts and tools are in `scratchpad/opsweep1/`.
+
+- **The rewriter.** `t/rw.py draft func module outdir` finds field reads in one function: `g.x`, `p->x`, `g.arr[2].x`, and the `LFLD`/`FLD`/`FIELD` macros. It routes them through block-local pointers indexed by the field offset, then scores every variant and greedily combines the ones that help. The variants are:
+  - per statement: all reads, each base alone, and pairs of bases;
+  - windows of 2–3 adjacent sibling statements that share a base, with reads only or with writes too;
+  - one pointer per global or parameter at function scope;
+  - each with and without `const`.
+
+  The generated text is written so that it needs no type information:
+  ```c
+  const __typeof__(g.x) *_pp0 = (const __typeof__(g.x) *)&g;
+  ... _pp0[((u32)&(*(__typeof__(g) *)0).x) / sizeof(__typeof__(g.x))] ...
+  ```
+  Fields of another type reuse the same pointer through a cast, `((const __typeof__(g.z) *)_pp0)[...]`. The cast is a no-op and does not lose the effect. On the old `ov011_022038ac` draft the rewriter rebuilds bigsweep2's fix by itself (6 → 0). The computed-offset form and the `__typeof__` form both score 0, the same as the hand-written `b[0] - a[0]`. A pointer to the first field read (`&g.x`, then `[0]` and `[2]`) also works. One pointer per field (`&g.z`, then `[0]`) does not.
+- **Result.** The sweep covered 52 drafts with ≤ 15 differences: `ovhi22`, `ovmid2/best`, `bigsweep2`, `mainmid3`, and the TU1/TU2 drafts in `mainpool12`/`mainpool13`. It compiled about 11,000 variants, of which about 1,900 failed to compile, mostly on bit-fields. Nothing reached a match.
+  - Almost every variant left the score unchanged.
+  - The only reduction (`ov010_021ffd0c`, 13 → 12) is a scoring artefact: the pointer is hoisted to the top of the function.
+  - The remaining near-misses are register choice or store/pool-load scheduling, not the evaluation order of two reads.
+  - The trick is specific to the operands of one binary expression (`a.x - b.x`) on globals.
+- **What was checked by hand:**
+  - `ov003_021d883c` (2). The target copies the default vector as `ldr x; ldr y; str x; str y; ldr z; str z`. This is the only such sequence in the ROM (`t/pat_ll.py` scans every ARM function).
+    - An 8-byte struct copy through a pointer, `*(Ov003XY *)&v = *(const Ov003XY *)&p[2];` with `const s32 *p = (const s32 *)&g`, gives the paired loads and stores with the right registers. With that copy, `z` read through `p` is hoisted above the stores (2). Read as `g.v.z` it stays below them, but then the base register is `r2` instead of `r0` (6).
+    - An `s64` copy loads the high word first.
+    - 25 minutes of permuter on the `g.v.z` form found nothing.
+  - `ov000_0219d9fc` (3). The `0x9ac < 0x9ae` load order did not respond to pointers from `self` or `self + 0x900`, separate pointers, one-sided casts, `+ 0` or inlines with parameters. A `BOOL` inline materialises the compare.
+  - `0205e5c4` and `0205c234` (TU2) are store and pool-reload scheduling. Pointer-index stores and moving the read to each position gave no fix.
+  - `ov006_021e1bb4` is a register swap on `w - anim44` / `h - anim48` inside the inline. Index forms, swapped order and combined declarations did not change it.
+- **Main functions owned by mainmid4:** no fix found for `0206e858`, `0203b12c`, `0206e3a0`, `0203d298`, `0203a984`, `02049690` or `0206f6d4`.
