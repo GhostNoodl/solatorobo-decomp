@@ -1344,6 +1344,10 @@ src/Main/Gfx/SlideWin.cpp:
     complete
     .text       start:0x02051210 end:0x02051a34
 
+src/Main/Gfx/SlideWin_2.cpp:
+    complete
+    .text       start:0x02051a34 end:0x02051f3c
+
 src/Main/Gfx/Obj3D.cpp:
     complete
     .text       start:0x02051f3c end:0x02051f70
@@ -1395,6 +1399,10 @@ src/Main/Sys/GameScene.cpp:
 src/Main/Sys/GameScene_2.cpp:
     complete
     .text       start:0x02055ff0 end:0x02056230
+
+src/Main/Sys/SlideDrawScene.cpp:
+    complete
+    .text       start:0x02056230 end:0x02056c0c
 
 src/Main/Sys/GameScene_3.cpp:
     complete

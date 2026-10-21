@@ -15,7 +15,7 @@ src/ov011/ov011_021fb38c.cpp:
 
 src/ov011/ov011_021fb66c.cpp:
     complete
-    .text       start:0x021fb66c end:0x021fb9b8
+    .text       start:0x021fb66c end:0x021fbe08
 
 src/ov011/ov011_021fdfd8.cpp:
     complete

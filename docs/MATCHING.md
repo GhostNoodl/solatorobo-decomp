@@ -1662,3 +1662,28 @@ One new match: `func_ov000_021782e0` (0x77c bytes, menu builder), now `src/ov000
   
   The remaining problem: our build hoists the `~0xfff` mask to the function entry, and the target rebuilds it in each block.
 - **No change on the register-only near-misses:** `02068e68`, `02056e74`, `0204205c`, `020417e0` and `02056230`. Tried with the declaration grid, the between-statements grid, `tdv2`, typed constants, index and pointer forms, and split loop indices.
+## Sweeping locals-as-parameters over the register-only near misses (round bigfresh3)
+
+Four new matches, all found by turning one or two locals into extra parameters that the function assigns before use (`scratchpad/bigfresh3/t/pp3.py`, then a plain raw-score sort):
+
+| Function | Before (raw/masked) | Change |
+|---|---|---|
+| `func_ov011_021fb9b8` | 12/0 | `owner` (the list's actor) as a parameter. Appended to `src/ov011/ov011_021fb66c.cpp`. |
+| `func_ov002_021dd9dc` | 28/0 | `w` and `obj` as parameters, together. Either one alone makes it worse (`w` 50, `obj` 66). New file `src/ov002/ov002_021dd9dc.cpp` (keeps the draft's file-wide `#pragma opt_loop_invariants off`). |
+| `func_02051a34` | 35/0 | `fn` (the font's split-char function pointer) as a parameter. New file `src/Main/Gfx/SlideWin_2.cpp`. |
+| `func_02056230` | 42/0 | The panel loop index `i` as a parameter. New file `src/Main/Sys/SlideDrawScene.cpp`, plus the symbol `data_020829c8` (a `u16[3]` colour table that the function copies), which was missing from `symbols.txt`. |
+
+- **When the lever fires.** In all four, the swap was between a long-lived local and another value: a hoisted constant, an inline's local or a second long-lived local. In each case one of the two locals needed a lower register than its declaration order gave it. Making it a parameter moved it ahead. In `021fb9b8` this swaps `head`/`owner` (r8/sb). None of the four needed a second change.
+- **It is not a rule that parameters get the lowest registers.** In `func_ov002_021d1f70`, making `x` a parameter moved it from r4 up to sb. In `func_ov000_021688c4`, the extra `a5` parameter went to r4 and shifted everything else up. So treat the lever as a search dimension: try every local and every pair, and also both parameter orders for a pair (`PERM=1`).
+- **Landing.** When a header or the same file declares the function with the old signature, C++ `extern "C"` refuses the overload. For scoring, `pp3.py` (`HDR=1`) wraps the old declarations in `#define f f_hdr` / `#undef f`. For landing, put the function in its own translation unit, which is what all four did. Callers in other files keep their old prototype. The extra parameter is never read before it is written, so the call site does not change.
+- **No effect** (every single local and every pair as parameters, 0 gain):
+  - `ov000_021c3158` (4), `021688c4` (20), `0214dd3c` (49), `021dfcc0` (29, both orders), `021d1f70` (28);
+  - `func_02056e74` (4; the diff is the scratch register of a 64-bit multiply, and seven multiply spellings change nothing);
+  - `func_0204205c` (8; scratch registers again), `func_02068e68` (26), `func_020417e0` (24).
+  
+  These are not callee-saved rotations, or not ones a parameter reaches. In `021c3158`, sharing `res` between the two blocks, a `name`/`res` reuse, and inline-parameter forms of the model constructor also changed nothing.
+- **Partial:** `func_ov002_021e7ea8` 34 to 28 with `gx` and `ret` as parameters (`bigfresh3/d/e7ea8/gxret.cpp`).
+- **Tools** (`scratchpad/bigfresh3/t/`):
+  - `pp3.py src func outdir K` works for any return type. It renames block-scoped duplicate locals (`a_0`, `a_1`) so that each can be chosen separately, and takes `HDR=1` and `PERM=1` (see above).
+  - `ppd.sh` / `ppdx.sh` drive it and score with `sc.sh` (raw score, parallel).
+  - `scan.sh func mod` scores the newest scratchpad drafts of a function to find the best one.

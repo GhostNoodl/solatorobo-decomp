@@ -433,6 +433,10 @@ src/ov002/ov002_021dd9d4.cpp:
     complete
     .text       start:0x021dd9d4 end:0x021dd9dc
 
+src/ov002/ov002_021dd9dc.cpp:
+    complete
+    .text       start:0x021dd9dc end:0x021ddcbc
+
 src/ov002/ov002_021ddcbc.cpp:
     complete
     .text       start:0x021ddcbc end:0x021dddd0
