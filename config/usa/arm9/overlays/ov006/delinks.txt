@@ -618,17 +618,10 @@ src/ov006/ov006_021dd450.cpp:
     complete
     .text       start:0x021dd450 end:0x021dd5b8
 
-src/ov006/ov006_021d6140.cpp:
+src/ov006/ov006_021d5b98.cpp:
     complete
-    .text       start:0x021d6140 end:0x021d630c
-
-src/ov006/ov006_021d630c.cpp:
-    complete
-    .text       start:0x021d630c end:0x021d6724
-
-src/ov006/ov006_021d6724.cpp:
-    complete
-    .text       start:0x021d6724 end:0x021d6bc8
+    .text       start:0x021d5b98 end:0x021d6bc8
+    .data       start:0x021ebfe0 end:0x021ec034
 
 src/ov006/ov006_021d6bc8.cpp:
     complete
