@@ -18,7 +18,8 @@ typedef struct HitTri {
     /* 0x14 */ s16 v[3][3];
     /* 0x26 */ s16 n[3];
     /* 0x2c */ s16 e[3][3];
-    /* 0x3e */ u8 unk_3e[0xe];
+    /* 0x3e */ u8 unk_3e[2];
+    /* 0x40 */ fx32 elen[3]; // length of each edge along its unit vector e[i]
 } HitTri; // size 0x4c
 
 typedef struct HitTriBlock {
@@ -73,6 +74,23 @@ typedef struct HitTriRay {
     /* 0xb8 */ u32 mask2;
     /* 0xbc */ fx32 best;
 } HitTriRay;
+
+typedef struct HitTriSphere {
+    /* 0x00 */ HitTriOwner *owner;
+    /* 0x04 */ u8 unk_04[0x6c];
+    /* 0x70 */ VecFx32 min;
+    /* 0x7c */ VecFx32 max;
+    /* 0x88 */ fx32 localRadius;
+    /* 0x8c */ fx32 radius;
+    /* 0x90 */ fx32 radiusSq;
+    /* 0x94 */ VecFx32 local;
+    /* 0xa0 */ VecFx32 center;
+    /* 0xac */ s32 mode1;
+    /* 0xb0 */ s32 mode2;
+    /* 0xb4 */ u32 mask1;
+    /* 0xb8 */ u32 mask2;
+    /* 0xbc */ fx32 best;
+} HitTriSphere;
 
 typedef struct HitTriInfo {
     /* 0x00 */ VecFx32 pos;
