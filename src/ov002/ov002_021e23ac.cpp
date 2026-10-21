@@ -106,4 +106,53 @@ void func_ov002_021e2528(void *self) {
     ov002_Model_PlayPart(FIELD(self, 0x4, void *), 0);
 }
 
+typedef struct ov002_Caption021e2690 {
+    void *vtbl;
+    void *anim;
+    s32 text;
+    s32 x;
+    s32 y;
+    s32 nextX;
+    s32 nextY;
+    s32 unk1C;
+    s32 fromX;
+    s32 fromY;
+    s32 toX;
+    s32 toY;
+    s32 timer;
+    u8 mode;
+} ov002_Caption021e2690;
+
+void func_ov002_021e2690(void *self, u8 a, int b) {
+    void *res = data_02149ef8;
+    u16 *row = data_ov002_021ef058[a];
+    s32 i;
+    for (i = 0; i < 5; i++) {
+        u16 id = row[i];
+        s32 s;
+        ov002_Caption021e2690 *c;
+        if (b == 0 && id == data_ov002_021ef058[FIELD(self, 0x40, u8)][i]) {
+            continue;
+        }
+        s = (s32)func_0204c0e8(res, id);
+        c = ((ov002_Caption021e2690 **)((u8 *)self + 0x14))[i];
+        if (s != 0) {
+            c->text = s;
+            {
+                s32 tx = c->nextX - 0x80;
+                s32 ty = c->nextY;
+                c->fromX = c->x;
+                c->fromY = c->y;
+                c->toX = tx;
+                c->toY = ty;
+            }
+            // The first timer store is dead, but it makes 8 take r4 ahead of 3.
+            c->timer = 8;
+            c->mode = 3;
+            c->timer = 8;
+        }
+    }
+    FIELD(self, 0x40, u8) = a;
+}
+
 }

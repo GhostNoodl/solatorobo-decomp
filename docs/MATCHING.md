@@ -1704,3 +1704,21 @@ This round ran `pairarr.py`/`pa_iter.sh` on the best draft of every unmatched fu
   - `drive.sh list` runs `pa_iter.sh` over a list of `path func module` lines.
   - `drive_inl.sh list` runs `pairarr.py` inside every inline the function uses. `inls.py file func` lists those inlines.
   - `gather2.py` finds drafts and picks the function from the file name or the parent directory name.
+## Clean redrafts of small near-misses, and a dead store that orders hoisted constants (round nearfresh1)
+
+- **New match: `func_ov002_021e2690`** (2 raw diffs before).
+  - The redraft uses the sibling `Caption` struct layout (see `ov002_021e0c28.cpp`), with `tx`/`ty` block locals and the stores in the target's order (`mode`, then `timer`).
+  - The last 2 diffs were the registers of two constants hoisted out of the loop (8 and 3).
+  - MWCC gives loop-hoisted constants registers in the order of their first use in IR. A dead store that comes first, `c->timer = 8; c->mode = 3; c->timer = 8;`, gives 8 the earlier register. The target's store order stays the same, because the dead store is removed.
+- **A new local can replace the comma hack.** `lx = x + 0x4c` stops the `(x+0x4c)-0x80 → x-0x34` fold just as `x = (0, x + 0x4c)` does (`ov000_0217e560`).
+  - In that function the fold is not the last problem: the remaining diffs move between the 0x84/0x8c/0x94 groups and the 0x98 group.
+- **`ov011_021fff38`: the data view sets the alias behaviour.** A cast view `((s32 *)&struct)` keeps loads after stack stores; an `extern s32[]` view lets them be hoisted.
+  - With the cast view and `y = D58[9]; t.x = D58[8]; t.y = y - 0x2000;`, the top of the function matches.
+  - The middle still has the `d[1]` load hoisted above the copy of `p` (best: 6 raw / 2 normalised).
+- **`ov015_021ffb90`:** pointer forms of `Ov015Vec` get the right load order, but they bring in an `add r0,r2,#0x114` / `[r0,#0xc08]` artifact (best: 7/4).
+- **`ov009_02208b24`:** the draft in src has a semantic error. The target is `cmp; bgt` with pool constant 0x19a, so the condition is `<= 0x19a`, not `< 0x19b`. Fixing only that makes the score worse (21/7 → 30/13), so the draft needs to be redrafted further.
+- **Did not move from their base score:**
+  - `ov000_0217a1f8` (2): the target's `mvn r2,#0` appears nowhere else in the ROM.
+  - `ov000_0218a5ec` (2), `ov015_02211b2c` (2), `ov002_021ec010` (2), `ov011_021fb02c` (needs the comma hack).
+  - `ov010_0220640c` (6/2), `ov006_021e0b80` (8/7; 600 statement orders tried).
+- **Dead-store sweep:** inserting a duplicate assignment at earlier positions, run over 25 overlay candidates, found no new matches. The permuter only accepts C drafts; C++ drafts fail at setup with a syntax error.
