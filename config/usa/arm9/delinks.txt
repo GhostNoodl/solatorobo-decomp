@@ -1140,7 +1140,7 @@ src/Main/Gfx/TexObj_3.cpp:
 
 src/Main/Gfx/Blend.cpp:
     complete
-    .text       start:0x02042eac end:0x02042f40
+    .text       start:0x02042eac end:0x02043064
     .bss        start:0x02097e00 end:0x02097e3c
 
 src/Main/Movie/Movie.cpp:
@@ -1514,7 +1514,7 @@ src/Main/Sys/SysTask.cpp:
 
 src/Main/Sys/SysTask_2.cpp:
     complete
-    .text       start:0x02063374 end:0x02063650
+    .text       start:0x02063374 end:0x0206379c
 
 src/Main/Effect/Effect.cpp:
     complete

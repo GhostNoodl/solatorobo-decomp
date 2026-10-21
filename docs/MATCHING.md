@@ -1274,3 +1274,29 @@ No new matches this round. The `tdc.py`/`tdv.py` pass and the statement-run clim
   - `q.sh` runs a queue of `dir|cmd` jobs.
   - `bestof.sh dir func mod` scores every draft in a directory.
   - `.tdc`/`.tdv` outputs compile as C because of their extension, so copy them to `.cpp` before scoring.
+## Fields of `NNS_G3dGlb`, a `volatile` inline parameter, and main near-misses (round mainmid3)
+
+`func_02063650` (`SysTask_2.cpp`) and `func_02042f40` (`Blend.cpp`) matched this round. Drafts are in `scratchpad/mainmid3/d/`.
+
+- **`func_02063650`: name the address as a field of a global struct.** `data_02092800` and `data_02092844` are `NNS_G3dGlb.projMtx` (+0x8) and `NNS_G3dGlb.cameraMtx` (+0x4c), where `NNS_G3dGlb` is at `0x020927f8`.
+  - Declare a struct for it (`SysG3dGlb` in `SysTask_2.cpp`) and write `&NNS_G3dGlb.projMtx` and `gc = &NNS_G3dGlb.cameraMtx`. MWCC then loads one base address and schedules it like the target.
+  - The plain local `gc` is still needed: without it the diff is 17. The two-definition trick is no longer needed.
+  - A cast such as `(*(T *)&data_020927f8).field` does not work, because it gives separate `base + offset` adds.
+  - When a function uses two globals that are close together, check whether they are fields of one library global.
+- **`func_02042f40`: a `volatile` by-value parameter on an inline.** `static inline int FX_SinIdx(volatile int idx) { return FX_SinCosTable_[idx * 2]; }` matches exactly and causes no stack traffic. It replaces last round's duplicate-call hack.
+  - The effect comes from the inline's own parameter. Wrapping the argument in an identity inline that takes a `volatile int` gives only 16.
+  - `t/tvol.py` tries `volatile` on each inline parameter in a file. A sweep over every other target gave nothing.
+- **Unchanged.** Each line gives the best form and the number of differences:
+  - `func_0203b12c` (1): the order of the `mul` operands does not respond to source order, casts or the types of the operands.
+  - `func_0206e3a0` (2): the `orr`/`strh` scheduling of the fog colour. 3000+ permuter iterations gave no gain.
+  - `func_0203d298` (7), `func_02049690` (10), `func_0203a984` (10): orders, locals, inline variants and every compiler version stayed the same.
+  - `func_0206d43c` (18 raw) and `func_0206d99c` (40 raw) are 0 after register normalisation (`d/d99c/c2.cpp`). For `d99c`, write the align-down as `p &= ~(totalSize - 1)`.
+  - `func_0206f6d4`: the form `u16 item = k + 0x7000;` (`d/f6d4/u16a.cpp`) has 1 difference after normalisation, but 22 raw.
+  - `func_02015510`: adding a fake `case 5` to the default gives 1 difference (`cmp #5` against the target's `cmp #4`). This form is not usable.
+  - `func_02064b54` (20): the target stores `0x1000` to `scale.z` last.
+  - `func_0203c2bc` (4 after normalisation): `sys` should be in `r4`.
+  - `func_0206e858`: both loads of the same pool word are always merged into one.
+- **Tools.** In `scratchpad/mainmid3/`:
+  - `ptools/` runs decomp-permuter on main functions (`PERM_MODULE=main`, and `PERM_LANG=c` for C files).
+  - `prun.sh draft addr secs` runs one permuter job. `pqueue.sh` runs a queue of jobs and stops when a file `STOPQ` exists.
+  - `t/tvol.py` and `t/tvw.py` try the `volatile` forms.

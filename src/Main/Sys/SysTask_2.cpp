@@ -1,4 +1,5 @@
 #include "Main/Sys/SysTask.h"
+#include "nitro/fx.h"
 
 extern "C" {
 
@@ -173,6 +174,73 @@ BOOL func_02063484(Unk0214a418 *self) {
         }
     } while (cont);
     return done;
+}
+
+}
+
+extern "C" {
+
+typedef struct SysG3dGlb {
+    /* 0x00 */ u32 cmd0;
+    /* 0x04 */ u32 mtxmode;
+    /* 0x08 */ MtxFx44 projMtx;
+    /* 0x48 */ u32 cmd1;
+    /* 0x4c */ MtxFx43 cameraMtx;
+    /* 0x7c */ u8 unk_7c[0x80];
+    /* 0xfc */ u32 flag;
+} SysG3dGlb;
+
+typedef struct SysTaskModel {
+    /* 0x00 */ u8 unk_00[0x78];
+    /* 0x78 */ VecFx32 pos;
+} SysTaskModel;
+
+extern SysG3dGlb NNS_G3dGlb;
+extern const VecFx32 data_02082b98;
+
+extern void NNS_G3dGeFlushBuffer(void);
+extern void MI_Copy64B(const void *src, void *dst);
+extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
+extern void NNS_G3dGlbPolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
+extern void func_ov000_02190a80(void *a, s32 b);
+extern void func_ov000_021903b4(void *a);
+extern BOOL func_ov000_02191120(void *a);
+
+static inline void SysTask_SetProjectionMtx(const MtxFx44 *mtx) {
+    MIi_CpuCopyFast(mtx, &NNS_G3dGlb.projMtx, sizeof(MtxFx44));
+    NNS_G3dGlb.flag &= ~0x50;
+}
+
+static inline void SysTaskModel_SetPos(SysTaskModel *m, const VecFx32 *v) {
+    m->pos.x = v->x;
+    m->pos.y = v->y;
+    m->pos.z = v->z;
+}
+
+void func_02063650(Unk0214a418 *self) {
+    MtxFx44 proj;
+    MtxFx43 cam;
+    MtxFx44 ortho;
+    MtxFx43 *gc;
+    NNS_G3dGeFlushBuffer();
+    gc = &NNS_G3dGlb.cameraMtx;
+    MI_Copy64B(&NNS_G3dGlb.projMtx, &proj);
+    MI_Copy48B(gc, &cam);
+    MTX_OrthoW(0xf5c, -0xf5c, -0x147b, 0x147b, 0, 0x20000, 0x400000, &ortho);
+    SysTask_SetProjectionMtx(&ortho);
+    MTX_Identity43_(gc);
+    gc->m[3][2] = 0;
+    NNS_G3dGlbPolygonAttr(0, 0, 3, 0, 0, 0);
+    func_ov000_02190a80(self->unk_0c, 0x1000);
+    {
+        VecFx32 v = data_02082b98;
+        SysTaskModel_SetPos((SysTaskModel *)self->unk_0c, &v);
+    }
+    func_ov000_021903b4(self->unk_0c);
+    NNS_G3dGeFlushBuffer();
+    SysTask_SetProjectionMtx(&proj);
+    MI_Copy48B(&cam, gc);
+    func_ov000_02191120(self->unk_0c);
 }
 
 }

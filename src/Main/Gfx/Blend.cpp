@@ -6,7 +6,8 @@ extern int FX_Div(int a, int b);
 extern void G2x_SetBlendAlpha_(volatile void *reg, int plane1, int plane2, int ev1, int ev2);
 extern s16 FX_SinCosTable_[];
 
-static inline int FX_SinIdx(int idx) {
+// `volatile` keeps the index a separate value: without it the lerp's registers differ.
+static inline int FX_SinIdx(volatile int idx) {
     return FX_SinCosTable_[idx * 2];
 }
 
@@ -45,8 +46,6 @@ BOOL func_02042ef8(int ch) {
     return TRUE;
 }
 
-#ifdef NONMATCHING
-// Register allocation differs around the lerp.
 void func_02042f40(int ch) {
     int t;
     int ev1;
@@ -81,6 +80,5 @@ void func_02042f40(int ch) {
         data_02097e24[ch] = 0;
     }
 }
-#endif
 
 }
