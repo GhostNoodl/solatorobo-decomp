@@ -1,9 +1,10 @@
 #include "ov015/ov015.h"
 
+#pragma pool_strings on
+#pragma dont_reuse_strings off
+
 extern "C" {
 
-extern u8 data_ov015_02212d23[];
-extern u8 data_ov015_02212d29[];
 void func_ov015_02208474(u8 *self);
 void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
@@ -28,15 +29,85 @@ struct Ov015Anim8Host {
     u8 pad[0x358];
     Ov015Anim8 e[8];
 };
+void STD_CopyString(void *p, const char *name);
+BOOL func_ov000_0218f110(void *p);
+void func_ov000_02191b70(void *p);
+BOOL func_ov000_02191b9c(void *p);
+extern const char *data_ov015_02212cac[];
+extern const char *data_ov015_02212cb4[];
+extern const char *data_ov015_02212cbc[];
+extern const char *data_ov015_02212cc4[];
+
+static inline void Ov015_SetModel(u8 *o, const char *file, const char *name) {
+    STD_CopyString(o + 0x10, file);
+    STD_CopyString(o + 0x30, name);
+    FLD(u8, o, 0x3) |= 2;
+}
+static inline void Ov015_SetAnim(u8 *o, const char *file, const char *name) {
+    STD_CopyString(o + 0x4c, file);
+    STD_CopyString(o + 0x6c, name);
+    FLD(u8, o, 0x3) |= 4;
+}
+
+struct Bf8 { u8 b0:1; u8 b1:1; u8 r:6; };
+BOOL func_ov015_022078bc(u8 *self) {
+    s32 kq;
+    BOOL r = FALSE;
+    switch (FLD(u16, self, 0xd38)) {
+    case 10:
+        Ov015_SetModel(self, data_ov015_02212cc4[FLD(u16, self, 0xd48)], data_ov015_02212cac[FLD(u16, self, 0xd48)]);
+        Ov015_SetAnim(self, "mc/c1rob4", "c1rob4");
+        FLD(s16, self, 0x0) = 0;
+        Ov015_SetModel(self + 0x220, data_ov015_02212cc4[FLD(u16, self, 0xd48)], data_ov015_02212cb4[FLD(u16, self, 0xd48)]);
+        Ov015_SetAnim(self + 0x220, "mc/c1rob4", "c1rob4cha");
+        FLD(s16, self, 0x220) = 0;
+        {
+            const char *n = data_ov015_02212cbc[FLD(u16, self, 0xd48)];
+            STD_CopyString(self + 0xaa8, data_ov015_02212cc4[FLD(u16, self, 0xd48)]);
+            STD_CopyString(self + 0xac8, n);
+        }
+        FLD(s16, self, 0xa98) = 0;
+        FLD(Bf8, self, 0xa9b).b1 = 1;
+        kq = 0xcb8;
+        if ((u32)self & 3) {
+            kq = 0xcb8;
+        }
+        func_ov000_02191b70(self + kq);
+        FLD(u16, self, 0xd38) = 20;
+        break;
+    case 20: {
+        BOOL ok = TRUE;
+        BOOL t;
+        u8 k;
+        if (FLD(s16, self, 0x0) >= 0 && !func_ov000_0218f110(self)) ok = FALSE;
+        if (FLD(s16, self, 0x220) >= 0 && !func_ov000_0218f110(self + 0x220)) ok = FALSE;
+        if (FLD(s16, self, 0xa98) >= 0 && !func_ov000_0218f110(self + 0xa98)) ok = FALSE;
+        k = FLD(u8, self, 0xcd3);
+        t = TRUE;
+        if (k != 3 && k != 0) t = FALSE;
+        if (!t && !func_ov000_02191b9c(self + 0xcb8)) ok = FALSE;
+        if (ok) {
+            FLD(u16, self, 0xd38) = 30;
+            r = TRUE;
+        }
+        break;
+    }
+    case 30:
+        r = TRUE;
+        break;
+    }
+    return r;
+}
+
 BOOL func_ov015_02207adc(u8 *self) {
     s32 i;
     func_ov000_0218ffdc(self + 0x138, self, 0, 1);
-    func_ov000_02190cb0(self + 0x138, data_ov015_02212d23, 0x1000, 0);
+    func_ov000_02190cb0(self + 0x138, "ang00", 0x1000, 0);
     func_ov000_021915a0(self + 0x138);
     NNS_G3dRenderObjSetInitFunc(self + 0x15c, (void *)func_ov015_02208474);
     FLD(Ov015AnimFlags, self, 0x1fa).b5 = 0;
     FLD(Ov015AnimFlags, self, 0x1fa).b8 = 1;
-    FLD(u8, self, 0xd04) = func_ov000_021909a8(self + 0x138, self + 0x6c, data_ov015_02212d29);
+    FLD(u8, self, 0xd04) = func_ov000_021909a8(self + 0x138, self + 0x6c, "ang05");
     for (i = 0; i < 8; i++) {
         Ov015Anim8Host *h = (Ov015Anim8Host *)self;
         func_ov000_0218ffdc(h->e[i].anim, self + 0x220, 0, 1);
