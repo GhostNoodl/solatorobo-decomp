@@ -3001,6 +3001,10 @@ src/ov000/Cam_02160414.cpp:
     complete
     .text       start:0x02160414 end:0x02160534
 
+src/ov000/ov000_02160534.cpp:
+    complete
+    .text       start:0x02160534 end:0x021609ec
+
 src/ov000/Robo_021b05b0.cpp:
     complete
     .text       start:0x021b05b0 end:0x021b06dc
