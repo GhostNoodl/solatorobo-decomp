@@ -1153,3 +1153,51 @@ The list was every unmatched overlay function under 0x500 bytes whose best draft
 - **Tools.** In `scratchpad/mainmid2/`:
   - `fdis.py func_X` disassembles a main function with relocs and symbols. It is not called `dis.py`, which would shadow the standard `dis` module that capstone imports.
   - `t/sd.py` fails at once when a file `t/KILL` exists. Use it to stop a batch `tdc`/`tdv` run without killing its children.
+
+## ov003 and ov006 pool blockers (round ovpool2)
+
+Neither pool could be merged this round: `func_ov003_021e1204` and `func_ov003_021e6274` still differ, and the three ov006 blockers are far from matching. Drafts are in `scratchpad/ovpool2/best/`.
+
+- **`func_ov003_021e44dc` matches with real literals (3 to 0, `best/44dc_match_literals.cpp`).** Drop the `Ov003Big_Load` inline. Load `name` into a local before the first call, and assign `ext` with a plain statement after that call:
+
+  ```c
+  const char *name = "gm/g1plt01";
+  const char *ext;
+  func_ov000_0218f074(&self->res, (char *)name, 1, 0, 0, 1);
+  ext = "g1plt01e";
+  self->res = 0;
+  STD_CopyString(self->unk_290, name);
+  STD_CopyString(self->unk_2b0, ext);
+  ```
+
+  An inline parameter, or an initialised local, is loaded at the top of the function. A plain assignment after the call is loaded after it, as in the target. The literals appear in pool order (`name` first). A two-definition `ext` gives 16 to 47 at every position. With `extern char[]` names instead of literals, this form has 7 diffs: the addresses are rebuilt at each use, not held in `r6`/`r7`. So this function can only go in with the pool merge.
+- **`func_ov003_021e6274`: `n` must be `u8`, but then the decrement moves (14 to 8, `best/6274_u16mask_8.cpp`).** The target masks with `and #0xff`, so `n` is 8-bit. These remove every mask except one:
+  - `u16 n` with `n = self->unk_18 & 0xff` and `n = (n - 1) & 0xff`;
+  - `u32`/`s32` `n` with `(u8)` casts;
+  - `s32 a` in the prototype of `func_ov000_02197dec`.
+
+  The remaining diff is the `and r1, r5, #0xff` that MWCC emits before the 3-bit field store `self->unk_93_1 = n`. Any store expression other than a plain `u8` (`n & 7`, `(u16)n`, `n | 0`, an inline setter) keeps an instruction there. With `u8 n` the store has no extra instruction, but the new `and` of `n = n - 1` is scheduled above the store's `lsl`. That gives the new `n` its own register, which rotates `self` and the part pointer (46; 6 with registers ignored). These all kept that order:
+  - `n--`, `n -= 1`, `--n` as the argument, and post-decrement in the store;
+  - a separate `u8`/`s32` local for the old or the new value;
+  - inlines for the store and for the animation call;
+  - a re-read `self->unk_18` for the store;
+  - storing through a `u8 *`.
+
+  Two-definition locals around the store (`u8 m = n - 1; if ((u32)self & 3) m = n - 1; self->unk_93_1 = n; n = m;`, `best/6274_u8_twodef_struct2.cpp`) get the field insert into the target's order (2 with registers ignored), but the `and` still comes first. A barrier between the store and the decrement puts the whole store first (11). 40 minutes of the permuter found only invalid forms (stores moved into dead code after a `break`).
+- **`func_ov003_021e1204` (2): unchanged.** The target loads `unk_16` into the entry pointer's register (`ldrh r1, [r1, #0x16]`), and every form we tried loads it into `r0`:
+  - shift and mask expressions, divisions, and `s16`/`u32`/`s32` locals for the loaded value;
+  - inlines taking the value, the entry, or the whole `if` block;
+  - `const` entry pointers;
+  - `u16`/`u32` bit-fields;
+  - reading the entry again through `self->table`;
+  - a live copy of `unk_06`;
+  - a pointer local for `&self->unk_d0`;
+  - every position and type of `k`;
+  - compiling it as C++.
+
+  The bit-field reads in matched code (`func_ov003_021cee68` and others) do load into the base register, but here a bit-field gave `r0` too. 25 minutes of the permuter found nothing.
+- **ov006:**
+  - `func_ov006_021d4118` (31 to 26, `best/d4118_26.cpp`): `tdc.py` made the `0xffff` in `self->unk4A != 0xffff` a two-definition variable, which fixes the load order of `data_ov006_021eb6fe[data_ov006_021ec884->unk5]`. What is left is the camera block. The target reads `rot.x`/`rot.y` before the two vector copies and `rot.z` after them. Declaration orders, store orders, by-value or `const` inlines and a non-`const` table did not change this.
+  - `func_ov006_021cec68`: register rotations only. `tdc.py` with the `0x8b0` offset as a two-definition variable gave 44 to 38 (`best/cec68_38.cpp`).
+  - `func_ov006_021cf420` (68): still structurally different (49 with registers ignored).
+- **Tools.** `scratchpad/ovpool2/t/` has `tdc.py`, `tdv.py`, `tdv2.py`, `vr.py` and `hcm.py` pointed at this clone. `sdr.py` scores with registers normalised. Use it to see whether a variant changed the instruction order when the raw count stays the same: all of the 46-diff `u8` variants of `021e6274` look identical by raw count.
