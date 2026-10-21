@@ -71,7 +71,7 @@ src/ov011/ov011_021fc94c.cpp:
 
 src/ov011/ov011_021fd4a4.cpp:
     complete
-    .text       start:0x021fd4a4 end:0x021fd4d8
+    .text       start:0x021fd4a4 end:0x021fd638
 
 src/ov011/ov011_021fdadc.cpp:
     complete

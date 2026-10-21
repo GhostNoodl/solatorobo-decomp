@@ -1062,3 +1062,44 @@ This round scored every draft of every unmatched overlay function below `0x500` 
   - `func_ov003_021ead50` (2) and `func_ov000_0219badc` (5): no matched object in the build has `cmp; <op>ne; beq` (checked with `llvm-objdump` over all 2015 objects). The only `<op>ne` followed by an `eq` branch is `cmpne`, which comes from `&&`/`||` chains. Second definitions in either arm of the two `if (t)` forms did not help.
   - `func_ov003_021d883c` (2): a two-definition `d` pointer, a struct copy and copy inlines all load `z` above the two stores.
   - These did not move: `021e1204`, `02211b2c`, `021be5dc` (also the `ToDepth`/`CalcDepth` forms and `TDC_IN=CalcDepth`), `021e1bb4` (`tdv`/`tdc`/`tdv2` inside `ov006_Caption_Draw`), `0220640c` (two-definition `0`/`1` arguments of `func_0203cb78` at every position of case 0), `021e51f8` (the `1` passed to `Ov006_Begin` goes to `r0` instead of `r1` with any inline parameter type, a `menu` local or a two-definition argument), `02201bf4` and `021d5b98`/`021d5e68` (string pools).
+
+## Two-definition locals on mid-size overlay drafts (overlays under 0x500 bytes, round ovmid1)
+
+The list was every unmatched overlay function under 0x500 bytes whose best draft had more than 10 diffs. That was 168 candidates; 145 had drafts and 78 were left after removing string-pool, dsprot/TWL and `__sinit` functions. The batch ran `tdc.py` (with `TDNEAR=5`) and then `tdv.py` on 47 of them, and a statement-run climb (`runs.py` plus `hcm.py`) on 30. Drafts are in `scratchpad/ovmid1/best/` and `scratchpad/ovmid1/b/<addr>/`.
+
+- **Matched: `func_ov011_021fd4d8`** (added to `src/ov011/ov011_021fd4a4.cpp`). The base draft had 16 diffs. A two-definition `kq = 0x20; if ((u32)self & 3) { kq = 0x20; }` used in `self + kq` took it to 10. An hcm climb over the order of the 0x1d4 to 0x1ec field stores took it to 0.
+- **`func_ov002_021ec010` (22 to 2):** a two-definition `s16 z = 0`, used for every zero store. The `-1` store is written `z - 1`. What is left is the order of `mov r4, r0` and `ldr r5, [r1]`, which 15 minutes of the permuter did not fix.
+- **`func_ov011_021fff38` (19 to 7):** a two-definition pointer to `data_ov011_02207258`, placed after the stack copy `p = *(Ov011Vec *)(self->unk_48 + 0x68);` in case 2, plus explicit `t.y`, `t.z`, `t.x` stores before the `home` declaration.
+- **`func_ov009_021ff908` (38 to 9):** a two-definition `s32 z = 0` placed before `v = self->unk_b8;`, then passed as both zero arguments of `func_ov000_021987b8`.
+- **Smaller gains:**
+  - **`func_ov002_021d8d00` (24 to 13):** `s32 chr` instead of `s16`, read before `val`, and `y`/`x` assigned after the clamp.
+  - **`func_ov011_021fb02c` (13 to 6):** `dx`/`dy`/`dz` declared before the entity pointer.
+  - **`func_ov015_02201344` (154 to 29):** a two-definition `kq = 0x30`.
+  - **`0217ea30`:** 70 to 33.
+  - **`021bb8dc`:** 100 to 62.
+  - **`021d6bac`:** 75 to 62.
+  - **`021c6d64`:** 19 to 11.
+  - **`021daae4`:** 30 to 26, from moving `v.y -= b->y`.
+- **Tools:**
+  - `tdc.py` takes `TDLIT`, which limits the literals it tries.
+  - `fx.py` applies replacements inside one function only. Plain `vr.py` replacements also hit other functions in the same file.
+  - `runs.py` turns each run of three or more simple statements into an hcm block.
+  - `batch.sh` and `batch3.sh` run these tools over a list.
+- **Stuck:**
+  - **`021ffd0c` / `021ffe8c` (13, ov010):** in the target, the 6-byte `Ov010Rot` copy keeps the table base in `r3` and loads `z` after the vector `ldm`/`stm`. These all failed:
+    - field copies in every order
+    - by-value inlines
+    - two-definition bases
+    - other struct layouts
+    - pointer copies
+  - **`021daae4`:** `def` and `vp` have swapped stack slots compared with the target, and the target reads `v` straight from the stack. Declaring `vp` first, or using a plain `Ov003Vec` local, gives 86 to 104.
+  - **No change:**
+    - `0214bcc4` (13)
+    - `021708ec` (11, the same `mq`/`end` swap as `02171478`)
+    - `02199554` (19)
+    - `021d6a3c` (16)
+    - `0220acb8` (15)
+    - `0214dd3c` (55, registers only)
+    - `0218a670` (12, schedule only)
+    - `021fefc8` (23; two-definition table bases make it worse)
+    - `021e6eb0` (25)
