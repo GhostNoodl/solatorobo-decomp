@@ -1433,3 +1433,21 @@ Nothing matched this round, so TU2 is still not merged. Drafts and tools are in 
   - `021afaf8`
   - `021fc0b8`
   - `021ad8ac`
+
+## Declaration-position grids, a product temporary, and main near-misses (round mainmid4)
+
+- **`func_0203b12c` (now `src/Main/Gfx/GfxMgrText_2.cpp`).** It needed two changes.
+  - The pixel offset is `bpp * pos`. With `db = (u16)bpp * db`, the destination is an operand, so the `mul` puts `db` first. Writing the product in both of its uses (`dst = buf + (((u16)bpp * pos) >> 3); db = ((u16)bpp * pos) & 7;`) keeps `bpp` first.
+  - The callee-saved registers then rotated. Single scope moves did not fix this, and neither did pairs from `scope.py`. A grid over the declaration positions of two locals (`pos` and `b`, each at every top-level slot) found the order: `int pos;` first, and `u32 b;` after `u32 cur;`. If a pair search finds nothing, try every position of two variables, not just moves between block and function scope.
+  - The function could not be appended to `GfxMgrText.cpp`, because that file's local `GfxNnsFont` prototypes conflict with `nnsys/g2d/g2d_Font.h`. So it went into a new file.
+- **`func_0203c2bc` (4 diffs after register normalisation).** `sys` lands in r4 if any one of these statements is removed: `REG16(0x4000050)=0`, `func_02043904(...)`, the palette init, or some of the `REG32` writes. So the cause is register pressure, not the scope of a local. Moving `REG16(0x4000050)=0` earlier helps, but it reorders `volatile` writes, so it is not a valid fix.
+- **`func_0206e858`.** Address constants are CSE'd across calls no matter how the code is written. These all failed: labels, blocks, constant conditions, inlines, `volatile` casts on the global, `static const` pointers and table forms. Putting the calls inside switch arms does give two loads of the same pool word, but the tail-merge shape is wrong.
+- **`func_02015510`.** A fake `case 5` or `case 6` in `default` brings the switch pivot to `0x80`, leaving one diff: `cmp #5` or `cmp #6` where the target has `cmp #4`. No case set found so far gives an upper bound of 4.
+- **Unchanged:**
+  - `0206d43c` and `0206d99c`: these two share a pool. Over 240 variants of inline, manual expansion and declaration order were tried.
+  - `0203d298`, `02049690`, `0203a984`, `0206f6d4`, `02064b54` and `0206e3a0`.
+  - Permuter runs of an hour on `a984` and `9690` did not improve them.
+- **Tools.** In `scratchpad/mainmid4/t/`:
+  - `bo.sh func files...` scores many drafts in parallel, giving the raw and the register-normalised score.
+  - `scope.py` now builds its pair stage from the best moves of both kinds: non-order moves and order moves (`SCOPE_ORD`, `SCOPE_DELTA`). Before, every pair conflicted. `SCOPE_NOORDER=1` turns order moves off.
+  - `sq.sh` and `tq.sh` are job queues.
