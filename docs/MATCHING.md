@@ -1782,3 +1782,17 @@ This round ran `pairarr.py`/`pa_iter.sh` on the best draft of every unmatched fu
 - **`0215b2e4` and `0215b598`** load small constants from the literal pool. No matched code does this, so I skipped them.
 - **No change** on `021eca14` (best 5/5 or 6/3). The target loads `0x1f` into `r0`, and loads `p` first.
 - The drafts are in `scratchpad/ovmid4/d/`. The tools are in `scratchpad/ovmid4/t/`, and `t/unm.py` now covers ov000 to ov008.
+
+## Spill order by type, a scale local before calls, and cached OAM words (main, round mainfresh5)
+
+- **`020572f8` (still 6 / 6, scratch draft only).** Spill stores in the prologue follow the type of the local: a narrower local is stored first. Within one type class, `nameChanged` is always stored first. Changing types fixes the order of the two zero stores, but MWCC then stops if-converting `case 36`. Net result: no gain.
+- **`02053254` (76 / 16 to 36 raw).** Two changes helped:
+  - Assign a function-scope `scale = dir << 12;` before the `SetPos`/`func_ov000_02190758` calls. This stops MWCC from sinking the shift past the `bl`.
+  - Use one two-definition mask `kq = ~0xfff; if ((u32)scene & 3) kq = ~0xfff;` for both `x &= kq` and `y &= kq`. The mask is then materialised in the tail block, not at function entry.
+  - After those two changes, a hill-climb over locals-as-parameters, one-element arrays and the declaration grid did the rest.
+  - The diffs left are register colouring in the middle block and the order of the `0x78`/`0x7c` store tail.
+- **`02024730` (`NNS_G2dMakeCellToOams`, new draft, 85 raw).** Changes that helped:
+  - **Give the shape mask a signed type.** The target uses `asr` for the `(shape & 0xc000) >> 14` index and `lsr` for the `0xc0000000` part. Declare the shape as `s32`, as an `int` enum would be.
+  - **Read `attr01` once.** Load it into a local and pass the value to the `G2_GetOBJEffect` inline. The target reuses that load for the shape mask. Reading through the pointer twice reloads it.
+  - **Write `G2_SetOBJEffect` as `if (effect != 0x100 && effect != 0x300) plain; else with rsParam;`.** This matches the branch layout.
+  - **Open issue: the frame is `0x18`, not `0x20`.** In the target, `_01` and `_11` are spilled and the centre correction is written as `-hw*4096 + _00*hw + _10*hh`. That expression form gives the right `rsb`/`mla` chain. It also makes MWCC spill `isDouble` instead of the loop counter, which costs 143 against 85 for the other form.
