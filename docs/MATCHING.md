@@ -1722,3 +1722,25 @@ This round ran `pairarr.py`/`pa_iter.sh` on the best draft of every unmatched fu
   - `ov000_0218a5ec` (2), `ov015_02211b2c` (2), `ov002_021ec010` (2), `ov011_021fb02c` (needs the comma hack).
   - `ov010_0220640c` (6/2), `ov006_021e0b80` (8/7; 600 statement orders tried).
 - **Dead-store sweep:** inserting a duplicate assignment at earlier positions, run over 25 overlay candidates, found no new matches. The permuter only accepts C drafts; C++ drafts fail at setup with a syntax error.
+
+## Two-definition constants and a hand-rotated loop (main, round mainfresh4)
+
+- **`020572f8` (605 / 203 to 6 / 6, scratch draft only).** The function sits in the `main_84` gap with `02056e74`, so it was not placed. The changes that helped, in order of size:
+  - **Keep VRAM bases out of constant propagation.** The target selects between registers (`mov r10, r11; movne r10, r5`), not between immediates. Writing each base twice, `v4 = 0x6400000; if ((u32)win & 3) v4 = 0x6400000;`, keeps it in a register. Pass `v4` and `v6` into the helper inlines as parameters.
+  - **Rotate the loop by hand.** `if ((c = fn(&win->str)) != 0) { setup; do { ... } while ((c = fn(&win->str)) != 0); }` puts the setup (here the two VRAM bases) in the preheader, after the first test, as the target does.
+  - **Turn an unused parameter into the local that needs the low register.** The second parameter (`void *p` in the caller) became `SlideMsg *msg`. The body still assigns `msg = win->msgs;`. This fixed a whole-function register rotation.
+  - **Merge the early returns into one `if (a || b || ...) return 0;`.** Separate `if`s give separate return blocks.
+  - **Statement and declaration order inside blocks.** Stores through `msg` (a known offset from `win`) can be reordered by the scheduler. The order of the source statements inside each block still decides most of the schedule.
+  - The last three diffs did not move:
+    - two prologue stores to the same zero, swapped
+    - one store scheduled across an address computation
+    - two pool loads swapped
+  - I tried every position of the `stop`/`nameChanged` initialisers, chained assignments and type swaps.
+- **`02043100` (158 / 91 to 141 / 78, the `NONMATCHING` draft in `Gfx3D.cpp` is updated).** Changes that helped:
+  - Declare `trans[3]` and `scale[3]` at function scope.
+  - Assign `shape`, `name` and `ox` as statements, not as initialisers.
+  - Flatten the nested inlines. The nesting depth of inline locals changes the stack slots.
+  - Read the OAM attributes through a bitfield struct (`GfxOamBits`).
+  - The permuter found nothing better (40 min).
+- **`02053254` (79 / 20 to 76 / 16).** Writing the `y` mask with the same two-definition form helped (`kq = 0xfff; if ((u32)scene & 3) kq = 0xfff; y &= ~kq;`). Using it for `x` as well gives 74 / 20. Most of the `~0xfff` masks are still hoisted to the function entry.
+- **`02069b3c`:** no change from 44 / 4.
