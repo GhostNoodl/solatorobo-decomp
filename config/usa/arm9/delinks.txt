@@ -156,7 +156,7 @@ libs/runtime/FP_fastI_fpinit.c:
 
 libs/nitro/card/card_common.c:
     complete
-    .text       start:0x0200c140 end:0x0200c594
+    .text       start:0x0200c140 end:0x0200c5bc
 
 libs/nitro/card/card_common_2.c:
     complete

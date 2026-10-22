@@ -250,3 +250,14 @@ BOOL CARDi_TryWaitAsync(void) {
     return !(cardi_common.flag & CARD_STAT_BUSY);
 }
 
+
+#pragma push
+#pragma opt_propagation off
+void CARDi_InitResources(void) {
+    CARDiCommon *p = &cardi_common;
+    p->lock_owner = OS_LOCK_ID_ERROR;
+    p->lock_ref = 0;
+    p->lock_target = CARD_TARGET_NONE;
+    OS_InitThreadQueue(&p->lock_queue);
+}
+#pragma pop
