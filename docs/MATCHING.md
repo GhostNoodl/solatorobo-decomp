@@ -2167,3 +2167,28 @@ Four new matches, all from one recipe. Scores are raw / register-masked seqdiff.
   - `ov002_021e0488` (65 / 32). `s32 out[3]` gives the target's 0x78 frame, but puts `tmpl` below `out` (56 / 23).
   - `ov000_0215b2e4`, `0215b598`, `0215d4b4` and `021535a8` are still the pooled-G3-constant blocker. An empty `asm {}` does not change the code; `asm { nop }` breaks it.
 - Drafts and tools are in `scratchpad/ovmid7/` (`d/<tag>/`, `lev/<tag>/res.txt`, `ch/<tag>/`, `t/`).
+
+## Constant hoisting threshold, materialised flags, and `const` inline params (largest functions, round bigfresh7)
+
+No new matches. Drafts are in the scratchpad under `bigfresh7/d/<tag>/`. Scores are raw / register- and stack-masked seqdiff.
+
+| Function | Before | After | Change |
+|---|---|---|---|
+| `func_ov003_021d8fc0` | 457 / 184 | 325 / 81 (`d/8fc0/b3.cpp`) | Three changes. (1) `Seq_IsValid(const Ov003Sequence *self) { BOOL r = FALSE; if (self->active) { r = self->entries != NULL; } return r; }` gives the target's two separate checks with a reload in between. (2) Empty `case 0: case 1: case 2: break;` in `Seq_Run` turns the compare chain into the target's jump table. (3) Cases 3/4 use `Seq_SetPair(self, Seq_Cur(self))`, and the entry test is `Seq_IsCtl(const Ov003SeqEntry &e)` (by reference, so there is no copy). Still different: the loop makes three struct copies where the target makes two, and the final `e = Seq_Cur(self)` is CSE'd from the loop copy, where the target reloads it. |
+| `func_ov000_021743bc` | 129 / 2 | 121 / 4 (`d/43bc/n4.cpp`) | `new` expressions on small classes with a `static operator new` that calls `func_0203dd9c` and a ctor (the pattern from `Menu_0215429c.cpp`) give the `movs rX, r0; beq` allocation tests. Passing `g` as a parameter, and reordering the `func_0205976c`/`func_0205975c` locals, gets to 121. The target colours 1→r4, 0→r5, o→r6, g→r7. We put `g` in sb (as a parameter) or r4 (as a local). Declaration permutations and greedy found nothing better. |
+| `func_ov000_02191f18` | 220 / 130 | 393 / 78 (`d/1f18/best_393_78m.cpp`) | Each of cases 8–13 writes the scale out in full: `h = m->unk_cc; sc = (s16)m->unk_ce; k = FALSE; if (h < 0) h = 0x64; if (sc != 0 && sc != 0x1000) k = TRUE; c = p[N]; if (k) c = ...;`. This gives the target's materialised flag. Raw is worse because we hoist 0, 0x1000 and 1, and the target hoists only 1. Keep `a0.cpp` (220 raw) as the raw base. |
+| `func_ov008_021ce518` | 1 / 1 | 1 / 1 | The only diff is the switch root, `cmp #0x15` against `#0x14`. Dummy cases 18 or 19 mapped to default move the root to 0x14 but leave a dead `cmp #0x13`. Not solved. |
+
+- **Constant hoisting threshold, micro-tested (`bigfresh7/x/`).** MWCC hoists a constant into a callee-saved register at function entry when it has **5 or more register uses**; 4 uses are not hoisted. Compare-immediate uses do not count. The threshold does not change with:
+  - the literal's form: `0`, `0L`, `0u`, `(u16)0`, `static const`, `enum`, or `FX32_CONST`;
+  - the parameter type (s16, u16 or u32);
+  - wrapping the use in an inline.
+
+  Zero stores inside a loop, together with other zero stores, also push the zero to entry. Under high register pressure only some constants are hoisted. When the target keeps a constant local and we hoist it (1f18, 8fc0), the fix is to have fewer uses, not to write the literal differently.
+- **Materialised bool (`mov rX,#0 ... movne rX,#1; cmp rX,#0`).** Two forms produce it:
+  - `BOOL k = 0;` and `if (cond) k = 1;` with other statements between them, and the `k` test after a load;
+  - `r = 0; if (a) { r = b != NULL; }` inside an inline.
+
+  A plain `k = FALSE; if (a && b) k = TRUE;` is jump-threaded away, or comes out as `movne`/`moveq`.
+- **A `const T *self` inline parameter keeps a bitfield byte reload.** With it, `if (!self->active) return; if (!IsValid(self)) return;` stay as two loads. With a non-const pointer, the second load is CSE'd.
+- Passing a struct by value to an inline, or returning one, makes a stack temporary. Use `const &` to avoid the copy.
