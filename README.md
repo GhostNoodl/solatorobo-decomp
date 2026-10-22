@@ -1,12 +1,35 @@
+<div align="center">
+
 # Solatorobo: Red the Hunter decompilation
 
-A work-in-progress matching decompilation of *Solatorobo: Red the Hunter* (Nintendo DS, DSi-enhanced, USA).
+*A matching decompilation of CyberConnect2's 2010 airship adventure for the Nintendo DS*
+
+![Platform](https://img.shields.io/badge/platform-Nintendo%20DS%20%2F%20DSi-d7263d?style=flat-square)
+![Region](https://img.shields.io/badge/region-USA-2f7fd8?style=flat-square)
+![Compiler](https://img.shields.io/badge/compiler-CodeWarrior%20dsi%2F1.3p1-6c5ce7?style=flat-square)
+![No assets](https://img.shields.io/badge/ROM%20%26%20assets-not%20included-444?style=flat-square)
+
+<img src="docs/progress.svg" alt="Decompilation progress" width="720">
+
+<!-- progress:start -->
+**83.6%** of the code and **7,749 / 8,201** functions match the original game (updated 2026-10-22). Fully matched: Overlay 7.
+<!-- progress:end -->
+
+</div>
+
+## What is this?
+
+This project rebuilds *Solatorobo: Red the Hunter* (Nintendo DS, DSi-enhanced, USA) from C and C++ source that compiles to the exact same machine code as the original game. Every matched function is checked byte for byte against the retail cartridge.
 
 This repository contains no game code or assets. To build it, you need your own legally dumped copy of the game.
 
-## Status
+<details>
+<summary><b>Progress by module</b></summary>
+<br>
+<img src="docs/progress_modules.svg" alt="Progress by module" width="720">
+</details>
 
-About 6,800 of 8,200 functions matched (about 50% of the code by size, since the big functions are the hard ones). Every overlay with code has matched functions, and most of the TwlSDK and NitroSystem library code (FS, CARD, WM, OS, FX, MI, GX, SND, MATH, Fnd, Gfd, G2d, G3d) is matched under its real names. Run `ninja report` for current numbers in [objdiff](https://github.com/encounter/objdiff).
+Most of the TwlSDK and NitroSystem library code (FS, CARD, WM, OS, FX, MI, GX, SND, MATH, Fnd, Gfd, G2d, G3d) is matched under its real names. Run `ninja report` for live numbers in [objdiff](https://github.com/encounter/objdiff), and `python tools/progress.py` to redraw the bars above.
 
 ## About the game's code
 
@@ -32,6 +55,10 @@ The game was built with CodeWarrior for DSi, somewhere between `dsi/1.2` and `ds
 5. `python tools/configure.py usa`, then `ninja`.
 
 The first `ninja` run builds the patched dsd, which takes a few minutes.
+
+## Contributing
+
+[`docs/MATCHING.md`](docs/MATCHING.md) collects every compiler quirk and matching trick we've found so far, from register colouring to string pools. Start there before tackling a function.
 
 ## Credits
 
