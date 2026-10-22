@@ -205,4 +205,73 @@ BOOL func_ov000_02191b9c(Shadow *self) {
     return ret;
 }
 
+void func_ov000_02191c24(Shadow *self, VecFx32 *pos) {
+    VecFx32 scale;
+    VecFx32 trans;
+    Mtx33 mtx;
+    u8 alpha;
+    if (self->mdl == NULL || self->type != self->prev) {
+        if (self->res != NULL) {
+            self->mdl = Res_GetMdl(self->res->file, self->type);
+        }
+    }
+    if (self->mdl == NULL) {
+        return;
+    }
+    if (self->unk_10 > self->unk_0c) {
+        return;
+    }
+    {
+        /* two-definition constant: gives 0x1000 the register after unk_14 */
+        s32 one = 0x1000;
+        if ((u32)self & 3) one = 0x1000;
+        scale.x = self->unk_14;
+        scale.y = one;
+        scale.z = self->unk_14;
+    }
+    NNS_G3dGlbSetBaseScale(&scale);
+    trans = *pos;
+    if (self->type <= 1) {
+        trans.y += 0x800 - self->unk_10;
+    } else {
+        trans.y += 0xcd - self->unk_10;
+    }
+    NNS_G3dGlbSetBaseTrans(&trans);
+    if (self->type == 1 || self->type == 3) {
+        MTX_Identity33_(&mtx);
+        MI_Copy36B(&mtx, &data_020928b4);
+        NNS_G3dGlb.unk_fc &= ~0xa4;
+    }
+    NNS_G3dGlbFlushVP();
+    alpha = self->alpha;
+    if (alpha == 0xff) {
+        u8 a = (self->unk_10 * 15) / self->unk_0c;
+        if (a < 1) {
+            a = 1;
+        } else if (a > 15) {
+            a = 15;
+        }
+        alpha = 16 - a;
+    }
+    NNS_G3dMdlSetMdlAlpha(self->mdl, 0, alpha);
+    if (self->type <= 1) {
+        u8 id;
+        NNS_G3dMdlSetMdlPolygonID(self->mdl, 0, 0);
+        NNS_G3dMdlSetMdlCullMode(self->mdl, 0, 1);
+        NNS_G3dDraw1Mat1Shp(self->mdl, 0, 0, 1);
+        id = self->unk_1a;
+        if (id == 0) {
+            id = 5;
+        }
+        NNS_G3dMdlSetMdlPolygonID(self->mdl, 0, id);
+        NNS_G3dMdlSetMdlCullMode(self->mdl, 0, 3);
+        NNS_G3dDraw1Mat1Shp(self->mdl, 0, 0, 1);
+    } else {
+        u8 id = data_02097d48[0x8b1];
+        func_02043d48(data_02097d48 + 0x8b0);
+        NNS_G3dMdlSetMdlPolygonID(self->mdl, 0, id);
+        NNS_G3dDraw1Mat1Shp(self->mdl, 0, 0, 1);
+    }
+}
+
 }

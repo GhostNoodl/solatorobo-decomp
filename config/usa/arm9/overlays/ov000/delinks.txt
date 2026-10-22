@@ -715,7 +715,7 @@ src/ov000/Model_02190a30.cpp:
 
 src/ov000/Shadow_0219196c.cpp:
     complete
-    .text       start:0x0219196c end:0x02191c24
+    .text       start:0x0219196c end:0x02191ec4
 
 src/ov000/Shadow_02191ec4.cpp:
     complete
@@ -3008,6 +3008,10 @@ src/ov000/Lo_02177028.cpp:
 src/ov000/Cam_02160414.cpp:
     complete
     .text       start:0x02160414 end:0x02160534
+
+src/ov000/ov000_02160534.cpp:
+    complete
+    .text       start:0x02160534 end:0x021609ec
 
 src/ov000/Robo_021b05b0.cpp:
     complete

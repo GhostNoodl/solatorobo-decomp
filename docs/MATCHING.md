@@ -1843,3 +1843,26 @@ Two new matches in ov000. Drafts and tools are in `scratchpad/bigfresh4/` (`d/`,
   - `ov000_021ad8ac`, `ov013_021fc7e0` and `ov015_0220cbe8` all stay at 6 / 6. In `cbe8` the target keeps `add r7, r4, #0x168`, and every sub-pointer form folds it.
   - `ov013_021fb1b4` (26 / 0): a single-move declaration grid of 5329 variants.
 - **`func_0206e858` (main) still has two pool words for `data_0214b105`.** The target shares one literal-pool word with `LangData_3.cpp`. Every spelling either emits a second word or keeps the address in a register through CSE. That covers over 200 pairs, `volatile`, `static const` pointers, loop and `goto` forms, and the pragmas `opt_common_subs`, `opt_propagation`, `optimization_level` and `optimize_for_size`. It probably needs the function to sit in the same TU as the other user of the word (`d/e858/`).
+## An unused register parameter as a spilled local, a pragma swap, and a two-definition scale constant (overlays, round ovmid5)
+
+Three new matches:
+
+| Function | Before (raw/masked) | Change |
+|---|---|---|
+| `func_ov000_02160534` (0x4b8) | 17/17 | New file `src/ov000/ov000_02160534.cpp`. |
+| `func_ov002_021d98ac` (0x358) | 43/36 | New file `src/ov002/ov002_021d98ac.cpp`. |
+| `func_ov000_02191c24` (0x2a0) | 4/4 | Appended to `src/ov000/Shadow_0219196c.cpp`. |
+
+- **Use an unused register parameter for a local that spills (`02160534`).** The only diffs were the stack slots of two spills: `pid` and the 64-bit copy of `d`. The target has `pid` at the lower slot. Declaration order, statement order, types, one-element arrays and trailing stack parameters did not change the slots. A trailing parameter is spilled to its own home slot, which gives a different frame. The second argument `a` (in `r1`) is never read, so the fix was to rename it `pid` and assign it in the body. A parameter's virtual register is created before every local, which gives it the target's slot order. When a function has an unused `r0` to `r3` parameter, try each local in it before adding trailing parameters.
+- **`match.py` does not compare `bl` targets.** With 0 diffs in `match.py`, the ROM check still failed for `02160534`. The draft called `_ffltu` (from `(float)(u32)`), and the target calls `_fflt`. Casting the operand to `s32` fixed it. When the check fails after a 0, compare the bytes (`cmp -l extract/usa/arm9_overlays/ovNNN.bin build/usa/build/arm9_ovNNN.bin`) and read the target's call names with `t/asm.sh`.
+- **`#pragma opt_loop_invariants off`, not `optimization_level 2` (`021d98ac`).** Level 2 stops the sin/cos table loads from being hoisted, but it also turns off the tail merge of the three `MTX_RotY33_` calls in the `SetRot` switch. `opt_loop_invariants off` keeps the merge (43 to 22).
+- **Read two bitfields of one halfword into locals before both stores (`021d98ac`).** `s32 x = m->bits.x; s32 z = m->bits.z; n->a = x; n->b = z;` loads the halfword once and extracts both fields before the stores, as the target does. Writing the fields straight into the stores loads the halfword twice. A struct copy (`Size98ac sz = ...`) goes through the stack. Hand-written shifts on a loaded `u16` get the order wrong. With `u8` locals the code is worse. `s32`, `u32` and `u16` all match. The only diff left in `match.py` is the `bl`/`blx` to the Thumb `MTX_RotY33_`, which the linker fixes.
+- **A two-definition constant for one store of a vector (`02191c24`).** The target loads `unk_14` into `r1` and the constant `0x1000` into `r2`. Every store order, a dead first store, the `SetScaleXZ`/`VEC_Set` inlines, a block local, `u32` and one-element arrays all gave the reverse (5/0) or worse. `s32 one = 0x1000; if ((u32)self & 3) one = 0x1000;`, used only for `scale.y`, matches.
+- **No change:**
+  - `0218e12c` (17/0): every subset and order of up to three of its locals as parameters (139 variants), and block-scoped `group`, `gprev`/`gnext` and `aprev`/`anext`.
+  - `0218867c` (22/6): all 24 orders of `kind`/`arg`/`one`/`done`, and `arg`, `done` or `one` as a parameter in each position.
+  - `0219badc` (5/4): an `|= 0x40` store, and an inline or split `if` for the event-table tail (`strne` before `popeq` in the target).
+  - `0218a670` (12/6): every order of the case 20 to 22 statements, `code++`, `pairarr` and `dup`.
+  - `021512b4` (35/3): a widget-draw inline for the six `+0x70` store / `vfunc_20` / `vfunc_90` triples, the unused `a` as `x`/`y`/`h`, and a constant local. The first `x` is still folded into the add, and the target keeps it in `r5`.
+  - `021e83d0` (6/5): `r`/`i` as parameters, and a two-definition `0x1666`.
+- Drafts and tools are in `scratchpad/ovmid5/` (`d/`, `t/`). `t/best.sh mod addr` scores every scratchpad draft named after an address and prints the best three.
