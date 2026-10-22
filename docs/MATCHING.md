@@ -2044,3 +2044,26 @@ Drafts are in `scratchpad/poolfresh1/` (`best/`, `d/<func>/`). Scores are raw / 
   - `ov006_021cf420`. Without the two-definition `kq`, case 5's tail merges into case 4's (60). An inline with a state parameter, a local `st`, and the case-4 locals as parameters (80 sets) change nothing; `state + 2` breaks the merge but costs 32.
   - `0204f524` / `0204f5bc`. The natural form (`win->numBlocks = 0;` and a constant ternary, no two-definition `a`/`c`) gives the target's instructions with a rotation (12: `i` `r7`, `0x6600000` `r5`). Parameters for `i`, `a` or `c` do not move it.
   - `02060a08` (10 / 0): all 54 orders and groupings of the four OR terms.
+## Constant-zero folding, a switch-value local, and more on the 7-call limit (ov000 0x021a0000+ and ov009–ov015, round bigfresh6)
+
+No new matches. Drafts are in `scratchpad/bigfresh6/best/` and `scratchpad/bigfresh6/d/`, and tools are in `scratchpad/bigfresh6/t/`. `t/alt.py file func mod < spec` scores literal-text alternatives; blocks are separated by `====` and the first block is the original. `t/perm.py file func mod < block` tries every order of a block of lines. Scores are raw / register-masked seqdiff.
+
+| Function | Before | After | Change |
+|---|---|---|---|
+| `func_ov012_02200cd4` | 101 / 31 | 98 / 35 | `dz = o->pos.z; dz = self->pos.z - dz;` (and the same for `dx`), with `sq = (s64)dx * dx; sq += (s64)dz * dz;`. This gives the target's load order (`o` first), a plain `sub` with no `rsb`, and z squared first. MWCC emits the two products in the reverse of source order. |
+| `func_ov010_02205444` | 40 / 12 | 24 / 15 | `u16 s = st->state;` before the `0xf2` store, then `switch (s)`. This gives the target's `st`/state registers (`r3`/`r2`), but the `ldrh` is then scheduled before the `strb`. Every form that loads after the store goes back to `r2`/`r1` (24 grid variants). |
+| `func_ov000_021a2670` | 13 / 5 | 9 / 10 | `anm = data_ov000_021ca080[lock];` moved before the `0xa8`/`0xa0` stores. `lock` then gets `r8`, as in the target, but the `0x53f` and table pool loads swap order. |
+
+- **What the remaining diffs are:**
+  - `0cd4`: `s32 j = hit - 1;` is folded to `-1` in our build. The target keeps `sub r7, r5, #1` and sign-extends `j` at the call. These did not stop the folding: `hit` as a parameter, other types for `hit` and `j`, and a declaration with a separate assignment.
+  - `5444` case 10: the target loads `t = self->0xf8` before the `ang >> 4` index math. Nothing changed this: 120 declaration orders, line orders, the explicit `FxMul` forms, `MTX_RotY33_` written out, or `swapadj`/`amove`.
+- **`ov014_022153e0`, the 7-call block (still 6 / 6):**
+  - The limit is not an instruction count. Removing the four `g` stores or adding four more does not change the scheduling. Removing one call does.
+  - The unscheduled part also moves with the order of the calls. With the sound call first in the block, the first effect and half of the second are scheduled, and only the last virtual call's setup is left in source order.
+  - None of these made a difference: typed (non-variadic) virtuals through a local class, reusing `e` for both effects, block-scoped `e`/`e2`, the first call in the `if` condition through a comma operator, or a `for` loop over the two effects. The loop is not unrolled; it stays a loop.
+- **`ov012_021fbec8` (still 24 / 0):**
+  - The `px`/`lim` swap is a two-colour swap. In both builds `px` shares a register with `o`, and `lim` shares one with the CSE'd zero. None of these changed it: caller declaration orders, inline declaration orders (120), the position of a hoisted `o`/`e` (121), `px`/`lim`/`t` types, a two-definition zero, `pp3` K=2, and `ppi` on `Bec8_S1`/`Bec8_S11`.
+  - In `Bec8_S11`, `s->timer++; if (s->timer <= ent->unk_04 + 0x28)` with no `w` gives the right registers. But the `unk_04` load then moves after the `strh` (22 / 2).
+- **`ov000_021ad8ac` (6 / 6):** the two tail-merged `func_01ffc128` branches order `mov r0, #imm` before the stack-argument store. Branch 1 also hoists the `tgt` pool load. Neither of these changed it: statement orders in either branch, a two-definition constant (`TDLIT`, 212 variants), or the shared call written once with variable arguments (24).
+- **`ov000_021b209c` (8):** an explicit `if`/`else` for `FindActor` instead of the inline gives 8 / 7. The NULL path still goes through `moveq r0, r5` where the target stores `r5` directly.
+- `tools/permuter` cannot parse these C++ drafts (`Syntax error in base.c`).
