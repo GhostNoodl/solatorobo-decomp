@@ -525,6 +525,10 @@ src/ov000/Dtor_0217e9c8.cpp:
     complete
     .text       start:0x0217e9c8 end:0x0217ea30
 
+src/ov000/Lo_0217ea30.cpp:
+    complete
+    .text       start:0x0217ea30 end:0x0217ed94
+
 src/ov000/Stub_0217ef34.cpp:
     complete
     .text       start:0x0217ef34 end:0x0217ef3c
