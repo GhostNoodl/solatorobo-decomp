@@ -31,6 +31,40 @@
 - The game is C++ (overlays have static initializers), but plain functions compile the same as C. Use `extern "C"` or `.c` files to keep `symbols.txt` names unmangled.
 - NitroSystem (NNS) and TwlSDK headers go in `include/nnsys/` and `include/nitro/`. Write declarations from scratch; don't copy SDK headers.
 
+## Permuting C++ drafts
+
+`tools/permuter/cxxperm.py` is a random permuter that works on source text, so it takes any draft `tools/match.py` takes: C++ classes, member and virtual calls, references and `extern "C"` blocks included. decomp-permuter (`tools/permuter/run.sh`) needs the draft lowered to C first, and that often fails on these drafts.
+
+```shell
+python3 tools/permuter/cxxperm.py draft.cpp func_ov014_022153e0 --module ov014 --time 900 -j 2 --inlines --stop-on-zero
+```
+
+It compiles the draft with the project's flags and scores it against the base ROM. Then it applies one to three random rewrites at a time and keeps any result whose score is no worse. Every new best is written to `build/cxxperm/<function>/out-<score>-*.cpp` (change this with `-o`). It only rewrites the bodies of the target function, the functions named with `--funcs` and, with `--inlines`, every `static inline` in the file. It expects one statement per line, which is how the drafts are written. Set `TMPDIR` to keep its compiler temporaries out of `/tmp`.
+
+The score is the aligned instruction diff plus the same diff with register names removed. A register-only miss of N instructions scores N; a wrong instruction scores 2. `blx` counts as `bl`, because the linker picks the instruction for Thumb callees. A result is a match when the instruction listing matches exactly, as `ninja` would find. `--score-only` prints the draft's score.
+
+Rewrites (choose a subset with `--rewrites move,temp,...`):
+
+- `move`: move a statement, compound statement or declaration by 1 to 3 places within its block. It doesn't cross `case` labels, `break` or `return`, or a statement that reads or writes a local the moved one writes.
+- `scope`: move a block declaration to the function's leading declarations, or move a function-level declaration into the smallest non-loop block that holds all of its uses.
+- `dummy`: insert an unused `s32 _pN;`, or remove one.
+- `temp` / `inline`: hoist a call argument, a right-hand side, an `if` operand or a parenthesized subexpression into `__typeof__(e) _tN = e;` before the statement, or put such a temporary back.
+- `rename`: from a function-level `x = e;` onwards, use a new variable instead of `x`.
+- `arr1`: turn a local into a one-element array.
+- `param`: turn a scalar or pointer local of the target function into an extra trailing parameter. The function has C linkage, so callers don't change.
+- `comma`: `x = e;` to `x = (0, e);` and back.
+- `split`: `T x = e;` to `T x; x = e;` and back.
+- `comm`, `cond`, `ifswap`: swap commutative operands, rewrite `x != 0` as `x` and the reverse, and swap `if`/`else` arms by negating the condition.
+
+`move` and `ifswap` don't know about aliasing or calls with side effects, and `param` changes the signature. Check each result by hand and write the change that matters as normal source.
+
+The source lines of the instructions that differ come from the object's DWARF line table. By default, 80% of rewrites must touch a line within three lines of one of them (`--focus`). Each compile takes about 0.3 s, so one job does about 350 a minute on an idle machine.
+
+First sweep (round permtool1, 15 to 20 minutes per function, 2,300 to 20,000 compiles each). No new matches:
+
+- `ov002_021dfcc0` went from 10 / 0 to 8 / 0, with `mgr` as a trailing parameter and `unit = (0, ...)`. The swapped pair is now `mgr` and `map_1[0]`.
+- These did not move: `ov012_021fbec8` (24 / 0), `ov014_022153e0` (6 / 6, the 7-call block), `ov012_021fc688`, `021fdfa0` (2 / 2), `021fab7c` (6 / 6), `02056e74` (4 / 0), `ov000_0218e12c` (17 / 0), `ov000_021ad8ac` (6 / 6) and `ov006_021d4118` (26 / 4).
+
 ## String literals
 
 Most of the game was built with `-str reuse,pool`: in each source file, equal string literals are one object, and all of the file's literals are packed back to back, in the order the compiled code first uses them, into one `@stringBase0` object in `.data`. The linker starts every object's `.data` on a 4-byte boundary, so a pool always starts aligned.

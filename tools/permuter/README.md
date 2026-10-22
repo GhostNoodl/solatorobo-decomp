@@ -1,4 +1,15 @@
-# decomp-permuter helpers for MWCC/ARM
+# Permuter tools for MWCC/ARM
+
+`cxxperm.py` is a self-contained random permuter that rewrites the source text directly, so it runs on
+C++ drafts as they are (see "Permuting C++ drafts" in `docs/MATCHING.md`, or `cxxperm.py --help`):
+
+```shell
+python3 tools/permuter/cxxperm.py draft.cpp func_ov014_022153e0 --module ov014 --time 900 -j 2 --inlines
+```
+
+The rest of this directory is glue for decomp-permuter, which needs C.
+
+## decomp-permuter
 
 Glue for running [decomp-permuter](https://github.com/simonlindholm/decomp-permuter) on overlay
 functions. The permuter only parses C, so these scripts turn a C++ draft into permuter C and
