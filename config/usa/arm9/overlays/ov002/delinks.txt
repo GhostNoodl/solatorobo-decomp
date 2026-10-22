@@ -309,6 +309,10 @@ src/ov002/ov002_021d8c34.cpp:
     complete
     .text       start:0x021d8c34 end:0x021d8d00
 
+src/ov002/ov002_021d8d00.cpp:
+    complete
+    .text       start:0x021d8d00 end:0x021d8e48
+
 src/ov002/ov002_021d8e48.cpp:
     complete
     .text       start:0x021d8e48 end:0x021d8fac
@@ -452,6 +456,10 @@ src/ov002/ov002_021dddd0.cpp:
 src/ov002/ov002_021dded4.cpp:
     complete
     .text       start:0x021dded4 end:0x021ddf18
+
+src/ov002/ov002_021ddf18.cpp:
+    complete
+    .text       start:0x021ddf18 end:0x021de544
 
 src/ov002/ov002_021deb2c.cpp:
     complete
@@ -612,6 +620,10 @@ src/ov002/ov002_021e5140.cpp:
 src/ov002/ov002_021e5344.cpp:
     complete
     .text       start:0x021e5344 end:0x021e5974
+
+src/ov002/ov002_021e5974.cpp:
+    complete
+    .text       start:0x021e5974 end:0x021e5a10
 
 src/ov002/ov002_021e5a10.cpp:
     complete

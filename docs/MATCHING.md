@@ -2103,3 +2103,33 @@ No new matches. 78 functions between 0x40 and 0x600 bytes are still unmatched in
 
 - **Pragmas do nothing here.** `mwccarm.exe` contains 74 hidden `opt_*` pragma names (list in `ovhimid1/optlist.txt`). `t/prag2.py` wraps one function in `#pragma push` / `<p> on|off` / `#pragma pop` for each of them and for the documented ones (`scheduling`, `ARM_scheduling`, `auto_inline`, `ANSI_strict` and others). It gave the same score on every variant of `fab7c` and `fd0c`. Unknown pragmas are silent under `-w off`, so a pragma that does nothing cannot be told apart from one the compiler did not recognise.
 - **No change** from `tdc`, `amove`, `swapadj`, `pp3` or `sib` (`t/lev.sh`) on `021be5dc` (3 / 0), `021c3158` (4 / 0), `021fce94` (4 / 4), `02206084` (5 / 5), `0220640c` (6 / 2), `02211b2c` (2 / 2) or `ov010_02200a00` (2 / 2). `021b3e90` (5 / 1) and `ov010_02201bf4` (4 / 0) did not move either. Taking the address of `v` in `02201bf4` gives the right registers but adds a stack frame.
+## Locals as parameters, then parameter order, then statement moves (overlays, round ovmid7)
+
+Four new matches, all from one recipe. Scores are raw / register-masked seqdiff.
+
+| Function | Before | Change |
+|---|---|---|
+| `func_ov002_021e5974` (0x9c, model-setup vfunc) | 12 / 0 | The loop pointer `p` becomes an unused second parameter. New file `src/ov002/ov002_021e5974.cpp`. |
+| `func_ov002_021ddf18` (0x62c, menu/cursor setup) | 131 / 2 | `cam` and `w` as parameters (36 / 2). Then `h = ...n1;` before `w = ...n0;` (a `sib.py` swap, 32 / 0). Then the parameter order `(self, owner, s32 h, u8 *cam, s32 w)`, with `h` as a third extra parameter (0). New file `src/ov002/ov002_021ddf18.cpp`. |
+| `func_ov008_021cfa38` (0x4e4) | 89 / 0 | `ents` and `i` as parameters (29 / 2), then `res` (20 / 2), then the order `(m, u16 i, Ov008SaveEnt *ents, void *res)` (0). New file `src/ov008/ov008_021cfa38.cpp`. |
+| `func_ov002_021d8d00` (0x148, two-digit OAM number) | 20 / 4 | `div`, `x`, `chr` and `k` as trailing parameters (6 / 4). Then `y = m->0x100;` as a plain `s32`, with `(u16)y & 0x1ff` in the loop's store instead of before the loop. Then the `y`/`x` loads move above `if (val >= 100) val = 99;` (`sib.py`, 0). New file `src/ov002/ov002_021d8d00.cpp`. |
+
+- **The recipe (`scratchpad/ovmid7/t/chain.sh src func mod tag`):**
+  1. `pp3.py` with `K=2`, `PERM=1` and `HDR=1`: every one or two locals as trailing parameters, in every order.
+  2. `pperm.py src func nkeep out` on the best result: every order of the added parameters, and every order with one more top-level local added. In `021ddf18` and `021cfa38` this step went from 32 or 20 to 0. In `ov002_021dedf0` it went from 9 to 5.
+  3. `sib.py` (statement-unit permutations, W=3) on that best result, then check each hit by hand.
+
+  Earlier rounds ran step 1 without `PERM` (new parameters only in one order) and never ran step 2. They also picked candidates by masked score ≤ 10, so drafts like `021e5974` (12 / 0) and `021cfa38` (89 / 0) were never swept in their current form. Run the chain on every draft whose masked score is 0, whatever the raw score.
+- **Write a loop-invariant mask in the loop body (`021d8d00`).** The target computes `(u16)m->0x100 & 0x1ff & 0xff` before the loop, after the clamp and the other preheader code. With the mask written before the loop, its longer dependence chain is scheduled first in the block. What matches is a plain `s32 y = m->0x100;` (placed with the `x` load, above the clamp) and `oam[n].y = (u16)y & 0x1ff;` in the loop: LICM hoists the mask to the end of the preheader.
+- **Per-branch tails for a jump to a jump (`ov000_0217ea30`).** In the target, two of the three `if` arms end their null-`new` test with `beq` to a lone `b` at the end of that arm. Only the last arm jumps straight to the shared code. This is a tail merge done after branch optimisation: the arms first ended with the same instructions, and those were merged later. Writing `o = new ...; self->0x3c = o; o->vfunc_10(b);` at the end of each arm, not once after the `if`, gives the target's whole branch layout (70 / 0 to 58 / 0). Putting all the setup code that follows into each arm is too much (108).
+  - With `a` and `b` as locals instead of parameters, `self` gets the target's `r4` (18 / 9). But then `b` and `o` swap, and one arm's tail no longer merges.
+  - Drafts: `scratchpad/ovmid7/d/ea30/w2.cpp` (58 / 0) and `g4/v002.cpp` (18 / 9).
+- **`ov002_021dedf0`: 19 / 0 to 5 / 0** (`d/dedf0/w2.cpp`). The remaining diff swaps `cols` and the hoisted `i * cols` product. A hand-written `row = i * cols` gets the target's register, but it is scheduled before the inner loop's zero-trip test (6 / 2). This is the same trade-off as the `func_ov002_021e0ff8` note: a hand-written loop invariant gets a late register, and an LICM-hoisted one is placed right but gets an early register. K=3 with every parameter order (1112 variants) also stays at 5.
+- **No change, not worth repeating:**
+  - `021971c4` (87 / 6) is a pure three-way rotation of `self`, `tgt` and the zero register. The masked 6 is an alignment artefact of `difflib`. Nothing changed it at all: `a` with or without `= NULL`, `a` hoisted to every top position, a two-definition zero passed as the `func_ov000_02190cb0` argument, and every K=2 parameter set.
+  - `ov006_021e6eb0` (23 / 10 to 10 / 8). The target computes and stores `trig` before `release`, with both `(u16)~x` casts. 600 forms gave at best 10 / 8 (`d/6eb0/g1/v030.cpp`): statement orders, casts, local types, explicit temporaries and inline helpers.
+  - `ov003_021d883c` (3 / 2). An 8-byte struct copy of `x`/`y` gives the old order. An `s64` copy loads the high word first. None of these pragmas changed it: `optimization_level 0..3`, `opt_*`, `peephole`, `schedule`, `scheduling`.
+  - `ov000_0219d9fc` (3 / 2). `0x9ae > 0x9ac` loads in the target's order, but puts the values in `r1`/`r0` instead of `r2`/`r1`. Locals, inline compares and casts did not fix it.
+  - `ov002_021e0488` (65 / 32). `s32 out[3]` gives the target's 0x78 frame, but puts `tmpl` below `out` (56 / 23).
+  - `ov000_0215b2e4`, `0215b598`, `0215d4b4` and `021535a8` are still the pooled-G3-constant blocker. An empty `asm {}` does not change the code; `asm { nop }` breaks it.
+- Drafts and tools are in `scratchpad/ovmid7/` (`d/<tag>/`, `lev/<tag>/res.txt`, `ch/<tag>/`, `t/`).
