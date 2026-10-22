@@ -2067,3 +2067,22 @@ No new matches. Drafts are in `scratchpad/bigfresh6/best/` and `scratchpad/bigfr
 - **`ov000_021ad8ac` (6 / 6):** the two tail-merged `func_01ffc128` branches order `mov r0, #imm` before the stack-argument store. Branch 1 also hoists the `tgt` pool load. Neither of these changed it: statement orders in either branch, a two-definition constant (`TDLIT`, 212 variants), or the shared call written once with variable arguments (24).
 - **`ov000_021b209c` (8):** an explicit `if`/`else` for `FindActor` instead of the inline gives 8 / 7. The NULL path still goes through `moveq r0, r5` where the target stores `r5` directly.
 - `tools/permuter` cannot parse these C++ drafts (`Syntax error in base.c`).
+
+## String-pool blockers, round 2: where the remaining diffs come from (round poolfresh2)
+
+No new matches, so no pool is unblocked. The drafts are in `scratchpad/poolfresh2/best/`, and the variant sets are in `d/<func>/`. Scores are raw / register-masked seqdiff.
+
+- **The ov006 pool `0x021ebc04..0x021ebc65` depends only on `021d4118`.** Every string from `"nut00"` on is loaded by functions in `0x021d3498..0x021d5b98`. The only gaps there are `021d3f04`, which matches (`scratchpad/ovlow1/d3f04.cpp`), and `021d4118`. The string before it, `" "`, ends exactly at `0x021ebc04`. So the pool can probably be split there, and `021cf420` (in the `0x021ebbb0` part) is not needed for it.
+- **`func_ov006_021d4118` is still 26 / 4.** Only the camera block differs. In the target, `fp` holds the `data_ov006_021eb6fc` base from `rot.x`/`rot.y` (loaded before the two `ldm`/`stm` vector copies) until `rot.z` (loaded after them), and `0x4400` is in `r3`. In our build the three `ldrh` stay together and `0x4400` gets `fp`. Unchanged at 26 or worse, about 600 variants:
+  - declaration and store orders;
+  - `rot` copied field by field, or with `rot.z` read after the vector copies;
+  - a table pointer local, in the block or at function scope;
+  - inlines that take each argument by value or by pointer, or that copy inside the inline;
+  - direct field stores, and `0x4400` written inside the inline;
+  - comma expressions, a C++ reference, one-element arrays.
+  The permuter cannot parse the draft as it is (the `VCALL(x, 08)` octal token), so it was not run.
+- **`func_ov003_021e6274` (9):** `int c = (u8)self->unk_18;` gives the target's `ldrsh` plus `and #0xff`. The extra `and r1, r5, #0xff` for the bit-field store stays with an `int`, `u16`, `u32` or `s16` `c`, and with an explicit cast, `c & 7`, a `u8` setter inline or a bit-field view in another container. Every form in which the `and` goes away (a `u8` `c`, or a `u32` bit-field view) brings back the `self`/`t` rotation (46). The cause: `n = c - 1` gets its `and #0xff` scheduled before the bit-field insert, so `n` cannot share `r5` with `c`. Writing `c - 1` directly in both uses with a `u16 c` (`best/e6274_6_nolocal_n.cpp`) scores 6 / 4, but the instructions do not line up any better.
+- **`func_0204f5bc` (12 to 1, the round-mainpool8 floor):** the two-definition bases from `SlideWin.cpp` (`b4`/`b6` with `if ((u32)win & 3)`) plus a function-scope `long k` declared before them (`best/f5bc_1_k0.cpp`). What is left is the round-mainpool8 problem: `mov r4, #0` instead of `mov r4, r5`, or (DUIS order) the `strb` after the base `mov`s. Bit-field views of `numBlocks` make it a read-modify-write (6 or more), so this lever does not fix it.
+- **`func_0205e5c4` (2):** the target stores `unk_14` before `unk_04`. Every form that stores in that order needs one more callee-saved register (17): a chained assignment, a pointer local, a zero local, an inline, all 80 orders of the block and 216 type and declaration combinations.
+- **Bit-field lever, no gain:** `ov003_021e1204` (the `unk_a2_0`/`unk_cc` clears in 8 forms, 2 or worse), `020508f4` (`box->flag4 = 1` for `unk_000 |= 0x10`, still 8 / 0), `0204f5bc` (above).
+- **Also unchanged:** `ov003_021e1204`, where reusing the index variable for `unk_16` (40 variants) keeps the load in `r0`. `ov006_021cf420`, where the `r6`/`r7` swap of the zero and `blk` survives moving the case-4 locals to function scope (93 variants). Without `kq`, storing `state` right after `unk1C` in case 5 scores 34 / 7.
