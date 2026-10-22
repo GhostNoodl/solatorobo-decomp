@@ -2015,3 +2015,32 @@ Three new matches. Drafts are in the scratchpad under `mainfresh7/d/`. Scores ar
   - `func_02046070` (6): local copies, parameters and a block local for the `WH_ChangeSysState` value and pointer.
   - `splitx`, `amove`, `swapadj` and `sib` over `02056e74` (4), `02046070` (6), `0203d298` (7), `0204205c` (8), `020459cc` (9), `0203a984` (10), `02006e48` (13), `0206f85c` (14), `02047724` (15), `0206f6d4` (15) and `02049c80` (22) found nothing, and neither did `swapadj` with `SW_K=5` (`q/q.log`). Moving the inlined multiply into an `FxMul` inline (four forms, both operand orders) leaves `02056e74` at 4.
 - **The remaining main gaps** (`mainfresh7/gaps.txt`, ranked in `mainfresh7/scan.out`): apart from the skip list, the functions without drafts all have a `module:none` reloc (TWL-only code) or are hand-written asm (`02004f94`, `02075810`, `02075d4c`, the `02009508` epilogue fragment). `02058d10`, `02058f2c` and `0204c158` are at 0 with literals but are TU1/TU2 string-pool blockers.
+## Bitfield stores as a register lever, and string-pool blockers redrafted (round poolfresh1)
+
+Drafts are in `scratchpad/poolfresh1/` (`best/`, `d/<func>/`). Scores are raw / register-masked seqdiff.
+
+- **New match: `func_ov006_021cec68`** (0x6e8 bytes, the network menu task's init), now `src/ov006/ov006_021cec68.cpp` with its own `.text` range `0x021cec68..0x021cf350`. Its two strings are `extern` arrays, so it lands without the ov006 pool (which still needs `021cf420` and `021d4118`). The fix is one statement. The draft had `g[0x8b0] |= 0x30;` on the byte at `data_02097d48 + 0x8b0`; writing it as two one-bit bitfield stores matched it (7 to 0):
+
+  ```c
+  ((ov006_Bits8b0 *)(g + 0x8b0))->b4 = 1;
+  ((ov006_Bits8b0 *)(g + 0x8b0))->b5 = 1;
+  ```
+
+  MWCC merges the two read-modify-writes into the same `ldrb; orr #0x30; strb`, so the instructions do not change. The register allocation does: `g` moves to `r4` and the hoisted `&data_ov006_021ec884` to `r5`, as in the target. Matched code in ov002 (`021ccda0`, `021e779c`) already writes this byte as bitfields. `n` and `res` stay parameters (the parsweep lever).
+- **Try it on other register-only near misses.** If a draft ORs or clears several bits of one field at once and only registers differ, write the bits as separate bitfield stores, and the reverse. It did nothing on `ov006_021cf420` (`flags |= 6` as `f.b1`/`f.b2`) or `02060a08` (the packed slot word as a bitfield or `u8` struct is 42).
+- **`func_ov003_021e6274`: 45 to 9 without hacks** (`best/e6274_9_u16c.cpp`, no `(u32)self & 3`). In case 2, read the slot into a separate `u16 c` and keep `n` for the decremented value:
+
+  ```c
+  c = self->unk_18;
+  if (c == self->unk_93_1 || c == 0) return;
+  func_ov000_02197dec(self, c, -1);
+  self->unk_93_1 = c;
+  n = c - 1;
+  ```
+
+  The `self`/`t` swap through the whole function is gone, and `n` takes `r5` with the bitfield value in `ip`, as in the target. What is left is one extra `and r1, r5, #0xff`, because a `u16` (or `s32`/`u32`) `c` is converted to the `u8` bit-field type. With `u8 c` the `and` goes, but the store's value computation is sunk past `n = c - 1`, `n` gets a new register and `self`/`t` rotate again (46). Every `u8 c` form tried stays at 46: 30 declaration orders, block scope, manual read-modify-write of the byte, a separate index variable, a `PlayAnim(self, idx)` inline (40 variants), other container types for the bit-field.
+- **No change:**
+  - `ov003_021e1204` (2). About 700 variants: `k` types and declaration orders, `switch`, `Kind` inlines on the entry or the value, a dispatch inline, a variable reused for `unk_06` and the kind, a `lo:12, kind:4` bitfield view (3), `goto`. The load of `unk_16` always takes `r0`; the target puts it in `r1` (the dead entry pointer).
+  - `ov006_021cf420`. Without the two-definition `kq`, case 5's tail merges into case 4's (60). An inline with a state parameter, a local `st`, and the case-4 locals as parameters (80 sets) change nothing; `state + 2` breaks the merge but costs 32.
+  - `0204f524` / `0204f5bc`. The natural form (`win->numBlocks = 0;` and a constant ternary, no two-definition `a`/`c`) gives the target's instructions with a rotation (12: `i` `r7`, `0x6600000` `r5`). Parameters for `i`, `a` or `c` do not move it.
+  - `02060a08` (10 / 0): all 54 orders and groupings of the four OR terms.
