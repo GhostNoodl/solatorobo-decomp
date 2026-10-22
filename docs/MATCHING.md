@@ -1973,3 +1973,25 @@ Drafts and logs are in `scratchpad/parsweep3/` (`d/`, `drive.log`, `sib4.log`, `
 
   With these, 021971c4 is down to a register rotation only (masked 15 to 6).
 - An exhaustive grid that hoists block declarations and moves declarations one at a time gave no gains on about 20 near-miss functions. When the remaining difference is a register rotation, declaration position alone rarely fixes it.
+
+## Inline locals as parameters, two-definition constants, and a 7-call scheduling limit (ov000 0x021a0000+ and ov009–ov015, round bigfresh5)
+
+No new matches. The drafts are in `scratchpad/bigfresh5/best/` and `scratchpad/bigfresh5/d/`, and the tools are in `scratchpad/bigfresh5/t/`. Scores are raw / register-masked seqdiff.
+
+| Function | Before | After | What helped |
+|---|---|---|---|
+| `func_ov014_022153e0` | 203 / 32 | 6 / 6 | A two-definition `kq = 1` used in case 0 (`tdc.py`). The `SIN` store moved before the `f0` increment in cases 10 and 11. `v1.y = 0; v1.y -= 0x2000;` for the subtract from the zero register. The `0x14` case written as `FxMul(...) + 0x1000` with a separate `0xf33` store. |
+| `func_ov012_021fbec8` | 40 / 2 | 24 / 0 | The `Bec8_S1` inline's local `t` became an inline parameter called with `0` (`ppi.py`), with the inline locals reordered to `z, y, x, lim, s`. A `u16 w = ent->unk_04;` before `timer++`. A two-definition `kz = 0` in `S1e`. |
+| `func_ov015_0220182c` | 262 | 190 / 33 | Two-definition `0x7fff`. |
+| `func_ov015_021fc40c` | 107 | 90 / 22 | Two-definition `4` for `blinkIdx` (`tdc.py`). |
+| `func_ov010_0220c758` | 41 / 2 | 36 | Two-definition `0xffff`. |
+| `func_ov010_02206974` | 152 | 150 | Two-definition constant. |
+| `func_ov000_021a0d4c` | 78 / 32 | 112 / 14 | The masked score improved. The low-byte range check is written `(u16)(lo + 0xfffd) <= 1`, and each flag check as `if (ok) { ok = TRUE; if (x != 0) ok = FALSE; }`. The busy check is still if-converted where the target keeps a branch. |
+
+- **Two-definition constant (`tdc.py`).** `T kq = LIT; if ((u32)self & 3) kq = LIT;` keeps a constant in its own register instead of an immediate or a CSE'd copy. `t/tdchain.sh` applies the best variant and runs again. Rename the earlier `kq` before each round, or every variant of the next round fails to compile on a duplicate declaration.
+- **MWCC skips part of the scheduling in a basic block with 7 or more calls.** In `53e0` case 2, the second effect's virtual calls stay in source order. Removing any one call from the block makes the scheduler interleave them as the target does. Labels, `do { } while (0)`, `goto` and inline wrappers do not split the block. The last 6 / 6 of `53e0` is this, and the cause is probably different source structure for that case.
+- **Inline locals as inline parameters (`ppi.py`).** This works the same way as the locals-as-parameters lever, but inside an inline. Permuting the order of the inline's own local declarations then moved the remaining registers.
+- **No gain:**
+  - `ov000_021a2670` stays at 13 / 5. Tried: the register of `lock`, permutations, struct forms, and an inlined case body.
+  - `ov000_021a4a10` stays at 169. With stack offsets masked (`t/sdrs.py`) the diff is about 40, mostly one spill of `self + 0x10c`.
+  - `ov000_021a7af0` stays at 160 / 66. Most of the diff is in how the constants `0x200` and `0x52` are built, and in scheduling order.
