@@ -2209,3 +2209,22 @@ One new match. Drafts are in the scratchpad under `smallsweep1/d/<tag>/`. Scores
 - **The ovmid7 chain finds nothing on small functions.** `ct/chain.sh` (`pp3` K=2 with `PERM`, `pperm`, `sib` W=3, retargeted to this clone) ran on `02047724` (15 / 0), `0206f85c` (14 / 0), `020459cc` (9 / 0), `02046070` (6 / 0), `ov003_021d883c`, `ov003_021ead50`, `ov015_02211b2c` and `ov000_0217a1f8`. None moved. It cannot read the plain C drafts (`02201bf4`, `020701d4`); their `pp3` output does not compile.
 - **`cxxperm.py` found nothing either:** 15 minutes each on `HandleUnexpected` (12126 compiles, still 2), `02046070` with `--inlines` (5836, still 6) and `020459cc` (3495, still 9).
 - **`cxxperm.py` on a clone without it.** Copy permtool1's `tools/permuter/cxxperm.py` to the scratchpad and set its `ROOT` to the clone. A draft that includes a header from its own source directory needs the path relative to `include/` (`"../libs/runtime/ExceptionHandler.h"`).
+
+## How MWCC lowers a sparse `switch`, and permuter runs on the largest drafts (round bigfresh8)
+
+No new matches. Drafts are in the scratchpad under `bigfresh8/d/<tag>/`. Scores are cxxperm scores (aligned + register-masked), except where noted.
+
+| Function | Before | After | Notes |
+|---|---|---|---|
+| `func_ov000_021743bc` | 121 / 4 (match.py) | 118 / 2 (`d/43bc/v2.cpp`) | In the `func_0205976c` / `func_0205975c` inline, declare `a`, `t`, `i`, `n` first and then assign `t = data_02fe152c->unk_4c;` before `a = ...`. The target loads `t` before the first call. What is left is `g` in `sb` (target `r7`), plus the order of `mov r0, rT` / `mov r1, #0x1a` before `func_ov000_02154b58`. Writing it with a `u16` id variable, a `?:`, an inline or a cast on the literal does not change that order. |
+| `func_ov000_02166180` | 621 | 402 (`d/6180/perm/out-402-*.cpp`) | In the second loop, pass `pos[j].x + ex` straight to the inline (s32). The draft's `s16 x, y` locals add `lsl`/`asr` pairs. The rest came from cxxperm, mostly locals turned into trailing parameters. That result is too noisy to land as it is. |
+| `func_ov000_021652e4` | 333 | 258 (`d/52e4/perm/out-258-*.cpp`) | cxxperm only. Spill slots are the main difference: the target's order from `sp` up is `i`, `tbl`, `y0`, `x0`, `row`, then the template copy. Reordering the declarations changes almost nothing (328). |
+| `func_ov003_021d8fc0` | 610 | 488 (`d/8fc0/perm/out-488-*.cpp`) | cxxperm on bigfresh7's `b3.cpp`, 13,000 compiles. The struct-copy count is unchanged. |
+| `func_ov008_021ce518` | 1 / 1 | 1 / 1 | Switch root, not solved. The rules below show why. |
+
+How MWCC lowers a sparse `switch` (worked out with one-line test files):
+
+- **3 or fewer cases** become a linear `cmp`/`beq` chain. **4 or more** become a binary tree. A node is the sorted case at index `(n-1)/2` and is emitted as `cmp k; bgt right; bge k_body; left...`.
+- **Cases close together form a cluster** when `hi - lo + 1 <= 2 * count`, for example `{30,31}`, `{30,33}` or `{16,18,20}`, but not `{30,34}` or `{16,20}`. A cluster is one node: `cmp hi; bgt right; cmp lo; blt left; beq lo_body; cmp v; beq ...` for each other member, in ascending order.
+- **Cases that go to `default`** stay in the tree and keep their compares. The only exception is the last compare of a chain (`beq D; b D` becomes `b D`). That is how `case 21: default:` in `ce518` gives the cluster `{16,20,21}` with root `cmp #0x15` and no compare for 21.
+- The target's `cmp #0x14; bgt; cmp #0x10; blt; beq; cmp #0x14; beq` is a cluster `{16,20}` with nothing between them. Under these rules that cannot happen without a dead compare inside the chain. These all fail: dummy cases 0–45 (alone, sharing each real body, or as an empty `case X: break;`), pairs of dummies from -100 to 1000, every source order of the case blocks, case ranges (MWCC has no `case a ... b`), and the pragmas `optimize_for_size`, `optimization_level 1-4`, `switch_tables`, `opt_*` and `peephole`. Dense sets such as 16–20 become a jump table.
