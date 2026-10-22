@@ -2086,3 +2086,20 @@ No new matches, so no pool is unblocked. The drafts are in `scratchpad/poolfresh
 - **`func_0205e5c4` (2):** the target stores `unk_14` before `unk_04`. Every form that stores in that order needs one more callee-saved register (17): a chained assignment, a pointer local, a zero local, an inline, all 80 orders of the block and 216 type and declaration combinations.
 - **Bit-field lever, no gain:** `ov003_021e1204` (the `unk_a2_0`/`unk_cc` clears in 8 forms, 2 or worse), `020508f4` (`box->flag4 = 1` for `unk_000 |= 0x10`, still 8 / 0), `0204f5bc` (above).
 - **Also unchanged:** `ov003_021e1204`, where reusing the index variable for `unk_16` (40 variants) keeps the load in `r0`. `ov006_021cf420`, where the `r6`/`r7` swap of the zero and `blk` survives moving the case-4 locals to function scope (93 variants). Without `kq`, storing `state` right after `unk1C` in case 5 scores 34 / 7.
+
+## Shared pool words, struct-typed table copies, and pragmas that change nothing (ov000 0x021a0000+ and ov009–ov015, round ovhimid1)
+
+No new matches. 78 functions between 0x40 and 0x600 bytes are still unmatched in this range. Drafts are in the scratchpad under `ovhimid1/d/<tag>/`. Scores are raw / register-masked seqdiff.
+
+| Function | Before | After | Change |
+|---|---|---|---|
+| `func_ov010_021ffd0c` | 11 / 12 | 15 / 3 (`d/fd0c/z_s1.cpp`) | The table is declared with a struct type, `struct Ov010TblF { u8 pad[0x3c]; Ov010Rot r; }; namespace D { extern "C" Ov010TblF data_ov010_0220ebc0; }`, and copied as `Ov010Rot r = D::data_ov010_0220ebc0.r;`. Copying a 6-byte `u16` struct out of a named global object gives the target's chunked order (load x, load y, store x, store y, load z, store z). Copying through a cast pointer loads all three values first. |
+| `func_ov010_021ffe8c` | 13 / 10 | 15 / 3 (`d/fe8c/s1.cpp`) | The same trick with `pad[0x36]`. |
+| `func_ov012_021fab7c` | 6 / 6 | 6 / 6 (`d/ab7ch/t_e.cpp`) | The pool word is now right. A second declaration of a symbol (a `namespace Dup { extern "C" ... }` alias next to the header's extern) gets its own literal pool word, so every use, including both `func_ov000_02190cb0` arguments, must go through the same declaration. What is left is the scheduling of the x/y loads around `mov r6,r0`. |
+| `func_ov009_021ff908` | 38 / 4 clean | 18 / 5 (`d/f908h/g_E.cpp`) | A clean redraft (`c0.cpp`) gives the right structure without the earlier hacked zero. A two-definition `0x3000` constant (`t1.cpp`, 20 / 4) puts `self` in r4 and the zero in r5, as in the target. The target still keeps `&p` in r6 and `d` in r5. |
+| `func_ov014_0220a67c` | 27 / 19 | 16 / 18 (`d/a67ch/n_c2.cpp`) | The else arm is `self->unk_b8 = data_ov014_02216aa8[func_02040498(6)];`. The target merges the stores of both arms into one tail and loads x, y and z from three literal bases (T, T+4, T+8). |
+| `func_ov000_021c8408` | 5 / 4 | 8 / 2 (`d/8408h/v_d.cpp`) | Uses `G3_TexImageParam(tex->fmt, 1, ws, hs, 0, 0, tex->unk_10, addr)` instead of open-coding the bitfield. |
+| `func_ov015_0220b1b8` | 18 / 6 | 20 / 4 (`d/b1b8h/s1.cpp`) | `s32 ad`. The target sets a separate local zero for the high word of the `0x4cd` multiply; ours reuses the shared zero in r8. `FxMul` inlines, operand swaps and casts all leave it at 20 / 4. |
+
+- **Pragmas do nothing here.** `mwccarm.exe` contains 74 hidden `opt_*` pragma names (list in `ovhimid1/optlist.txt`). `t/prag2.py` wraps one function in `#pragma push` / `<p> on|off` / `#pragma pop` for each of them and for the documented ones (`scheduling`, `ARM_scheduling`, `auto_inline`, `ANSI_strict` and others). It gave the same score on every variant of `fab7c` and `fd0c`. Unknown pragmas are silent under `-w off`, so a pragma that does nothing cannot be told apart from one the compiler did not recognise.
+- **No change** from `tdc`, `amove`, `swapadj`, `pp3` or `sib` (`t/lev.sh`) on `021be5dc` (3 / 0), `021c3158` (4 / 0), `021fce94` (4 / 4), `02206084` (5 / 5), `0220640c` (6 / 2), `02211b2c` (2 / 2) or `ov010_02200a00` (2 / 2). `021b3e90` (5 / 1) and `ov010_02201bf4` (4 / 0) did not move either. Taking the address of `v` in `02201bf4` gives the right registers but adds a stack frame.
