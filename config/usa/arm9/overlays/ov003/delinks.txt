@@ -227,7 +227,7 @@ src/ov003/ov003_021f1ce0.c:
 
 src/ov003/ov003_021f2374.c:
     complete
-    .text       start:0x021f2374 end:0x021f24ec
+    .text       start:0x021f2374 end:0x021f27ec
 
 src/ov003/ov003_021f3198.c:
     complete

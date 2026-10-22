@@ -173,3 +173,82 @@ BOOL func_ov003_021f247c(Ov003Multi *self) {
     return r;
 }
 
+
+void func_ov003_021f24ec(Ov003Multi *self) {
+    const Ov003MultiDef *def = &data_ov003_021f7470[self->kind];
+    Ov003MultiRes *res;
+    s8 *map;
+    s32 idx;
+    Ov003MultiModel *m;
+    s32 i;
+    BOOL set;
+    Ov003MultiMtx33 t;
+    u16 rz;
+    u16 ry;
+    u16 rx;
+    map = def->map;
+    for (i = 0; i < 6; i++) {
+        idx = map[i];
+        if (idx < 0) {
+            idx = 0;
+        }
+        m = &self->models[i];
+        func_ov000_0218ffdc(m, &self->slots[idx], 0, 1);
+        m->unk_c2_4 = 0;
+        func_ov000_02190e98(m, 0, 0x1000, 0);
+        func_ov000_021915a0(m);
+        m->unk_a8 = def->res[idx].x;
+        m->unk_ac = def->res[idx].y;
+        m->unk_b0 = def->res[idx].z;
+        NNSi_G3dModifyPolygonAttrMask(m->mdl, TRUE, 0x3f000000);
+        NNSi_G3dModifyMatFlag(m->mdl, TRUE, 0x40);
+        NNSi_G3dModifyMatFlag(m->mdl, TRUE, 0x80);
+        NNSi_G3dModifyMatFlag(m->mdl, TRUE, 0x200);
+        NNSi_G3dModifyMatFlag(m->mdl, TRUE, 0x400);
+        m->unk_c2_7 = 1;
+        NNSi_G3dModifyPolygonAttrMask(m->mdl, TRUE, 0x1f0000);
+        {
+            u8 r = func_ov000_021909a8(m, 0, data_ov003_021fa2ce);
+            self->mtx[i].unk_30 = r;
+        }
+        MTX_Identity43_(&self->mtx[i]);
+        NNS_G3dRenderObjSetInitFunc(m->rob, func_ov003_021f23e0);
+        m->unk_c2_5 = 0;
+        m->unk_c2_8 = 1;
+    }
+    self->unk_1118 = 5;
+    self->unk_1119 = 0xff;
+    rz = self->rotZ;
+    ry = self->rotY;
+    rx = self->rotX;
+    set = FALSE;
+    MTX_Identity33_(&self->rot);
+    if (rz != 0) {
+        MTX_RotZ33_(&self->rot, OV003MU_SIN(rz), OV003MU_COS(rz));
+        set = TRUE;
+    }
+    if (ry != 0) {
+        if (set) {
+            MTX_RotY33_(&t, OV003MU_SIN(ry), OV003MU_COS(ry));
+            MTX_Concat33(&t, &self->rot, &self->rot);
+        } else {
+            MTX_RotY33_(&self->rot, OV003MU_SIN(ry), OV003MU_COS(ry));
+            set = TRUE;
+        }
+    }
+    if (rx != 0) {
+        if (set) {
+            MTX_RotX33_(&t, OV003MU_SIN(rx), OV003MU_COS(rx));
+            MTX_Concat33(&t, &self->rot, &self->rot);
+        } else {
+            MTX_RotX33_(&self->rot, OV003MU_SIN(rx), OV003MU_COS(rx));
+            set = TRUE;
+        }
+    }
+    self->unk_1140[0] = self->posX;
+    self->unk_1140[1] = self->posY;
+    self->unk_1140[2] = self->posZ;
+    self->unk_114c[0] = self->posX;
+    self->unk_114c[1] = self->posY;
+    self->unk_114c[2] = self->posZ;
+}

@@ -1957,3 +1957,19 @@ Drafts and logs are in `scratchpad/parsweep3/` (`d/`, `drive.log`, `sib4.log`, `
     - `sib` W=4 (676 variants).
 - **Lesson from `020572f8`:** a fix that failed on an older draft (here the spill-type change) can work once another diff is gone. Re-run old single-lever ideas after each structural gain.
 - **`ov006_021e96cc`** goes from 14 to 13 with `u16 d = b.y - a.y;` in one statement (`d/96cc/f_d1.cpp`). The 3 `bl`/`blx` diffs are interworking. In the target, `d` reuses `b.y`'s register and the result reuses `a.y`'s. The target also loads `b.x` before the `look.y` store. Forms that store into a local or into `a` change the x block's branch layout and score 33.
+
+## Hoisting block locals and statement order (overlays, round ovmid6)
+
+- `func_ov003_021f24ec` (43/14 before) matched after three changes together:
+  - Move the block-scoped loop locals (`m`, `idx`) to function scope, declared after `map` and before `i`.
+  - In the loop body, order the statements as `idx = map[i]`, then the `idx < 0` clamp, then `m = &self->models[i]`.
+  - Read `def->res[idx].x` directly instead of caching `def->res` in a local.
+
+  No one of these changes was enough alone; the register allocation only matched with all three.
+- `smulbb` for a constant power of ten (`div = 10`) comes from `div = 1; for (k = 1; k < 2; k++) div *= 10;`. The loop is unrolled late, after the multiply has been chosen. This helped 021e0488 (76/47 to 65/32) and its twin `func_ov002_021d8d00`.
+- Before hand-writing inlines, reuse ones that already match:
+  - Caption drawing is in `src/ov006/ov006_021e1bb4.cpp`.
+  - SaveData nibble get/set is in `src/ov000/Save_02197d80.c`.
+
+  With these, 021971c4 is down to a register rotation only (masked 15 to 6).
+- An exhaustive grid that hoists block declarations and moves declarations one at a time gave no gains on about 20 near-miss functions. When the remaining difference is a register rotation, declaration position alone rarely fixes it.
