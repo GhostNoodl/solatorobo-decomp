@@ -1866,3 +1866,43 @@ Three new matches:
   - `021512b4` (35/3): a widget-draw inline for the six `+0x70` store / `vfunc_20` / `vfunc_90` triples, the unused `a` as `x`/`y`/`h`, and a constant local. The first `x` is still folded into the add, and the target keeps it in `r5`.
   - `021e83d0` (6/5): `r`/`i` as parameters, and a two-definition `0x1666`.
 - Drafts and tools are in `scratchpad/ovmid5/` (`d/`, `t/`). `t/best.sh mod addr` scores every scratchpad draft named after an address and prints the best three.
+## Open-coded searches, a u16 setter inline, and the remaining main triage (main, round mainfresh6)
+
+Two new matches: `func_0203bc20` (VRAM range allocator, new file `src/Main/Gfx/GfxVramAlloc.cpp`, never drafted before) and `func_02048bfc` (play-time normalise, in `PlayTime.cpp`, 56 raw before). Drafts are in the scratchpad under `mainfresh6/d/`.
+
+- **`func_0203bc20`, from 74 raw to 0.**
+  - A first draft with a `GfxVramHeap_NewNode` inline for the free-node search (used twice) was right after register normalisation.
+  - Writing the search out at both places, with `node` and `i` at function scope, and trying all 720 declaration orders gave 12. Only a `cur`/`i` swap was left.
+  - `pp3.py` then found the fix: `cur` and `node` as extra parameters (`u32 func_0203bc20(GfxSys *sys, u32 size, BOOL sub, GfxVramNode *cur, GfxVramNode *node)`). The callers keep their 3-argument prototypes.
+  - Separate inlines for the two searches gave 15, and two parameters on that version did not help. Open-coding was what made the parameter lever reach 0.
+- **`func_02048bfc`, from 56 to 0.** The old drafts had the right operations but the wrong narrowing and schedule. Three changes fixed it:
+  - **Store through an inline with `u16` parameters.** `PlayTime_Set(t, h, min, sec, ms)` narrows every value with `lsl`/`lsr` before its `strh`, as the target does. A plain `t->seconds = sec;` drops the narrowing.
+  - **Order the work as quotient, then remainder.** Compute `ms % 1000` and `s % 60` before the next carry: `s = (u16)(ms / 1000) + t->seconds; ms %= 1000; sec = s % 60; m = s / 60 + t->minutes; min = m % 60; h = m / 60 + t->hours;`.
+  - **Put the quotient first in each sum** (`s / 60 + t->minutes`, `(u16)(ms / 1000) + t->seconds`). The field-first form costs 5 to 9 register diffs.
+- **The same inline in `func_02048d58` (add) and `func_02048e74` (subtract).**
+  - `func_02048d58` is now right after register normalisation (66 to 29 raw). The reciprocal of 1000 and one quotient swap `r4`/`r5`. No order of the four sums, operand order or inline declaration order (720 tried) changed this.
+  - In `func_02048e74` (161 to 124 raw), compute all four fields into `int` locals and store them together, so that the loads from `ToMillis` are reused. Clear with `PlayTime_Set(dst, 0, 0, 0, 0)` (the target inlines the clear) and write the test as `ToMillis(a) < ToMillis(b)`.
+  - Both are in the `NONMATCHING` block of `PlayTime.cpp`.
+- **`func_02049c80` (53 to 22 raw).** Draft: `d/c80/h/best_22.cpp`.
+  - The target keeps `-1` in `r4` from the entry, for the first return, for the three `!= -1` tests and for `-1 - 0x7f`. A two-definition local (`s32 none = -1; if ((u32)mgr & 3) none = -1;`) gives this (53 to 36).
+  - `result` as a parameter and `handle` as a one-element array give 22.
+  - What is left: two `mov r0, r6` before the first two calls, because the target loads `useSlot` and `slot` into `r2` and keeps `mgr` in `r0`. Locals as parameters with K=3, a `self` copy and an inline for the start path did not change it.
+- **`func_0203b70c`: the old draft stored the OAM words in the wrong order.** `oam->attr23 = 0` comes first, then `attr01`, then `attr2` (31 raw, 4 masked; `d/b70/a.cpp`). The old order cleared `attr2` after writing it. What is left is the zero/address register pair in the six-array clear loop.
+- **SDK functions blocked by linker-defined constants.** These sit in pool words with no reloc, so a C literal folds into an immediate:
+  - `OS_GetInitArenaLo` (`0xd000000`, which fits an immediate, is a pool load in the target);
+  - `OS_GetInitArenaHi` (`0x1000` and `0x800` are compared with 0 at run time);
+  - `FS_LoadOverlayInfo` (the overlay count `0x10` comes from the pool).
+  
+  They need an absolute symbol in the link, so they stay in the gaps.
+- **`RtcCommonCallback` and other blocked functions.** `RtcCommonCallback` has a `bl` into TWL-only code (`module:none`), as do the GX load functions, `func_0200d85c` and the rest of the mainmid1 list. The main functions that are not blocked and not owned by other workers all have drafts now.
+- **No change:**
+  - `func_0200d36c` (card ROM read, 5): `word`/`data` use `r1`/`r0` instead of `r3`/`r1`. The draft needs `#pragma optimization_level 2` plus `opt_propagation off` to get the target's loop shape at all. No other pragma pair, no compiler version and no loop form moved the 5.
+  - `func_0203c2bc` (93 / 4): parameter, `register`, `const`, alias and one-element-array forms of `sys` all stay at 93.
+  - `func_0206e3a0` (2): five forms of the fog-colour write.
+  - `func_02015510` and `getScaleData_` were not changed.
+  - `hill.sh` over `0203d298`, `0203a984`, `020459cc`, `0206f85c`, `02047724`, `0206f6d4` and `02064b54` found nothing.
+- **Tool fixes** (scratchpad `mainfresh6/t/`):
+  - `hill.sh` no longer takes `pairarr2.py`'s "N variants" line as a score.
+  - `hillc.sh` is a copy of `hill.sh` that keeps `.c` drafts as `.c`.
+  - `scanall.sh func` scores the newest scratchpad drafts that define a function.
+  - `grid.py` needs `t/tmp` to exist.

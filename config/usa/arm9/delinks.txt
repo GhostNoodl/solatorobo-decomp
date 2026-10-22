@@ -1068,6 +1068,10 @@ src/Main/Gfx/GfxSys_3.cpp:
     complete
     .text       start:0x0203ba7c end:0x0203bc20
 
+src/Main/Gfx/GfxVramAlloc.cpp:
+    complete
+    .text       start:0x0203bc20 end:0x0203bd40
+
 src/Main/Gfx/GfxSys_4.cpp:
     complete
     .text       start:0x0203bd40 end:0x0203c2bc
@@ -1208,7 +1212,7 @@ src/Main/Save/SaveBase_6.cpp:
 
 src/Main/Save/PlayTime.cpp:
     complete
-    .text       start:0x02048be4 end:0x02048bfc
+    .text       start:0x02048be4 end:0x02048cf0
 
 src/Main/Save/PlayTime_1.cpp:
     complete

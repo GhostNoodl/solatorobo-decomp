@@ -9,40 +9,50 @@ void func_02048be4(PlayTime *t) {
     t->millis = 0;
 }
 
-#ifdef NONMATCHING
-static inline void PlayTime_Normalize(PlayTime *t, BOOL toMinutes) {
-    u16 hours;
-    u16 minutes;
-    u16 millis = t->millis;
-    int seconds = t->seconds + (u16)(millis / 1000);
-    int mins;
-    millis = millis % 1000;
-    t->seconds = seconds % 60;
-    mins = t->minutes + seconds / 60;
-    minutes = mins % 60;
-    hours = t->hours + mins / 60;
-    if (hours >= 1000) {
-        hours = 999;
-    }
-    if (toMinutes) {
-        minutes = hours * 60 + minutes;
-        hours = 0;
-    }
+// The fields are stored through an inline with u16 parameters, so every result is narrowed to
+// 16 bits before its store. The carries are written as `quotient + field`.
+static inline void PlayTime_Set(PlayTime *t, u16 hours, u16 minutes, u16 seconds, u16 millis) {
     t->hours = hours;
     t->minutes = minutes;
+    t->seconds = seconds;
     t->millis = millis;
 }
 
-static inline u32 PlayTime_ToMillis(const PlayTime *t) {
-    return t->hours * 3600000 + t->minutes * 60000 + t->seconds * 1000 + t->millis;
+// Carries millis into seconds, seconds into minutes and minutes into hours; hours saturate at 999.
+// With toMinutes, the hours are folded into the minutes.
+static inline void PlayTime_Normalize(PlayTime *t, BOOL toMinutes) {
+    u16 ms = t->millis;
+    u16 sec, min, h;
+    int s, m;
+    s = (u16)(ms / 1000) + t->seconds;
+    ms = ms % 1000;
+    sec = s % 60;
+    m = s / 60 + t->minutes;
+    min = m % 60;
+    h = m / 60 + t->hours;
+    if (h >= 1000) {
+        h = 999;
+    }
+    if (toMinutes) {
+        min = h * 60 + min;
+        h = 0;
+    }
+    PlayTime_Set(t, h, min, sec, ms);
 }
 
 void func_02048bfc(PlayTime *t, BOOL toMinutes) {
     PlayTime_Normalize(t, toMinutes);
 }
 
+#ifdef NONMATCHING
+static inline u32 PlayTime_ToMillis(const PlayTime *t) {
+    return t->hours * 3600000 + t->minutes * 60000 + t->seconds * 1000 + t->millis;
+}
+
 // func_02048cf0 is in PlayTime_1.cpp.
 
+// Only registers differ (29 raw diffs): the reciprocal of 1000 and the
+// second quotient swap r4/r5.
 void func_02048d58(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
     dst->millis = a->millis + b->millis;
     dst->seconds = a->seconds + b->seconds;
@@ -51,19 +61,26 @@ void func_02048d58(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
     PlayTime_Normalize(dst, FALSE);
 }
 
+// 124 raw diffs: the fields are computed into locals and stored together, as in the target,
+// but the register allocation and the schedule of the borrows still differ.
 void func_02048e74(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
+    int ms, sec, min, h;
     int borrow;
     if (PlayTime_ToMillis(a) < PlayTime_ToMillis(b)) {
-        func_02048be4(dst);
+        PlayTime_Set(dst, 0, 0, 0, 0);
         return;
     }
-    dst->millis = (a->millis + (1000 - b->millis)) % 1000;
+    ms = (a->millis + (1000 - b->millis)) % 1000;
     borrow = a->millis < b->millis ? 1 : 0;
-    dst->seconds = (a->seconds + (60 - b->seconds) - borrow) % 60;
+    sec = (a->seconds + (60 - b->seconds) - borrow) % 60;
     borrow = a->seconds - borrow < b->seconds ? 1 : 0;
-    dst->minutes = (a->minutes + (60 - b->minutes) - borrow) % 60;
+    min = (a->minutes + (60 - b->minutes) - borrow) % 60;
     borrow = a->minutes - borrow < b->minutes ? 1 : 0;
-    dst->hours = a->hours - b->hours - borrow;
+    h = a->hours - b->hours - borrow;
+    dst->millis = ms;
+    dst->seconds = sec;
+    dst->minutes = min;
+    dst->hours = h;
     PlayTime_Normalize(dst, FALSE);
 }
 #endif
