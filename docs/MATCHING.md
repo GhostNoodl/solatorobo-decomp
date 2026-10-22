@@ -1906,3 +1906,54 @@ Two new matches: `func_0203bc20` (VRAM range allocator, new file `src/Main/Gfx/G
   - `hillc.sh` is a copy of `hill.sh` that keeps `.c` drafts as `.c`.
   - `scanall.sh func` scores the newest scratchpad drafts that define a function.
   - `grid.py` needs `t/tmp` to exist.
+## Third locals-as-parameters sweep: a statement move plus a narrower flag type (round parsweep3)
+
+Drafts and logs are in `scratchpad/parsweep3/` (`d/`, `drive.log`, `sib4.log`, `scan.log`). Scores are raw / register-masked seqdiff.
+
+- **New match: `func_020572f8`** (0x1858 bytes, the slide-window text renderer, 6 / 6 before). It is in the new file `src/Main/Gfx/SlideWin_3.cpp`, which has its own `.text` range `0x020572f8..0x02058b50`. The range leaves `02056e74` in the gap before it. Two changes:
+  - **Statement move (`sib.py`, 6 to 2).** Call `SlideWin_ResetWait(win)` (`win->unk_b5c = 0; win->unk_7c = 0;`) before `if (!msg->active) SlideMsg_Open(msg);`, not after. This is safe: `msg` is `win + 0xc0` (size 0x364), so its stores cannot reach `0x7c` or `0xb5c`.
+  - **The two zero spill stores in the prologue (2 to 0).** Declare `u8 stop; u8 nameChanged;` (`stop` was `BOOL`) and assign `stop = adv; nameChanged = adv;` in that order. mainfresh5 found that narrower locals are spilled first, but on the old draft the type change broke the if-conversion of `case 36`. After the statement move it no longer does.
+  - A 120-variant grid shows what matters: any 8- or 16-bit type for `stop`, `stop` declared first, and `stop` assigned first. `BOOL`/`s32`/`u32` for `stop` leave the 2 diffs, and a 32-bit `nameChanged` gives 19 or more. `tools/match.py` confirms the match.
+
+- **The full sweep** (`norm.py`, then `greedy.sh`, which alternates `pp3` K=2 with `PERM` and `argpar`, then `sib.py` W=3) ran on the best draft of every unmatched function that has a draft in `ovmid4/d`, `mainfresh5/d`, `mainfresh4/d`, `ovmid3/best` or `nearfresh1/d` and was not in parsweep2's list. `t/cands.py` builds that list and `t/drive.sh` runs it.
+  - Gains, none of them close to a match:
+    - `func_02043100`: 140 to 124. `addr`, `o`, `name` and `shape` become parameters (`d/g_3100/g2.cpp`).
+    - `func_02024730`: 85 to 84 (one `argpar` site).
+  - No change: `ov000_02153804` (17), `ov002_021eca14` (5), `ov006_021e96cc` (14), `0203b70c` (28), `02053254` (36), `02069b3c` (44), `ov000_0219763c` (93). For `020572f8`, the `sib` step after greedy gave the match above.
+  - The `nearfresh1` drafts and the other `ovmid3` drafts were all in parsweep2's list already. The current best drafts of those functions are the same files parsweep2 used, or other workers' newer drafts.
+- **`sib.py` hits need a semantic check.** Besides the `020572f8` move, it gave three false hits this round:
+  - `ov000_0216c310` went from 67 to 25 by moving the `n->0x14` store after the `vfunc_1c` call. That call reads `0x14`, and the target stores `0x14` before `0x18`, so the move is wrong.
+  - `02043100` went from 124 to 110 by moving `t0 = t1 - 0x1000` in the `flipV` swap. That turns the swap into a double subtract.
+  - `ov006_021cec68` went from 7 to 6 (W=4) by moving `g = data_02097d48;` after its uses.
+
+  A large `sib` gain on a function with structural diffs is usually alignment luck. Read the target asm around the moved statement before you trust it.
+- **parsweep2 leftovers, still unsolved:**
+  - `ov002_021dfcc0` (10 / 0): the `mgr` / `TryMove`-result swap (`r6`/`r8`). None of these changed it:
+    - the result as a caller local (every declaration slot, by reference) or as a parameter (worse);
+    - `mgr` as a parameter (22);
+    - other types and shapes of the inline's result;
+    - all 298 K=3 parameter sets (`pp3`);
+    - `sib` W=4 (492 variants).
+  - `ov012_021fc688` (2 / 2): `add r6, sp, #0` is still scheduled before the `Rot3` copy. None of these moved it:
+    - a pointer local for `&r`;
+    - a one-element array;
+    - `base` passed by value or by reference;
+    - `ry` as an inline parameter;
+    - a declaration swap.
+  - `02060a08` (10 / 0):
+    - All 24 parameter orders of `Flags_AddSlot` change nothing.
+    - So do 48 parameter-type and cast combinations for `a`/`b`.
+    - Caller locals or parameters for the inline's arguments make it worse (192 variants, best 18).
+    - The diff is an `a`/`b` colouring swap (`lr`/`r4`). The OR operand order is already right.
+  - `ov006_021cec68` (7 / 0, hack-free): putting the `0x8b0` block in an inline (six forms), `g` as a parameter in every position, and a pointer-to-global parameter for `data_ov006_021ec884` all leave the hoisted pool address below `g`.
+  - `ov003_021e6274` (45 / 2): `self`/`t` are swapped through the whole function. Re-parameterising `self`, dropping `me`, and making `t` a parameter or a local in another position all stay at exactly 45.
+  - `ov000_02153804` (17 / 0): `sy` and `t` are swapped (`r8`/`sb`). None of these changed it:
+    - all 120 declaration orders;
+    - the 20 valid statement orders of the prologue;
+    - other types for `t`, `q`, `sy` and `n`;
+    - block-scoping `t`, `sy` or `n`;
+    - reusing `sy` for `n`;
+    - 250 random parameter sets (`pps.py`);
+    - `sib` W=4 (676 variants).
+- **Lesson from `020572f8`:** a fix that failed on an older draft (here the spill-type change) can work once another diff is gone. Re-run old single-lever ideas after each structural gain.
+- **`ov006_021e96cc`** goes from 14 to 13 with `u16 d = b.y - a.y;` in one statement (`d/96cc/f_d1.cpp`). The 3 `bl`/`blx` diffs are interworking. In the target, `d` reuses `b.y`'s register and the result reuses `a.y`'s. The target also loads `b.x` before the `look.y` store. Forms that store into a local or into `a` change the x block's branch layout and score 33.
