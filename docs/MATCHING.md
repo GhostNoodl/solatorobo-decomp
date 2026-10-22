@@ -1820,3 +1820,26 @@ Two new matches. Drafts and tools are in `scratchpad/parsweep2/` (`d/<tag>/`, `t
   - `sib.py src func out [W]` and `sibw.sh list` are the statement-unit permutations.
   - `greedy.sh dir func mod file` alternates `pp3` and `argpar` from the best result until nothing improves.
   - `unm.py` lists the unmatched functions from the delinks ranges.
+
+## Inline local declaration form, and assignment moves after the parameter lever (ov000, round bigfresh4)
+
+Two new matches in ov000. Drafts and tools are in `scratchpad/bigfresh4/` (`d/`, `lev/`, `q/`, `t/`). Scores are raw / register-masked seqdiff.
+
+| Function | Before | Change |
+|---|---|---|
+| `func_ov000_021bd8ac` (0x8fc bytes) | 107 / 0 | The model-allocation inline declares its name pointer uninitialised at the top, before the initialised allocation: `char *nm; u8 *m = func_0203dd9c(0x160); if (m != NULL) { nm = *name; ... }`. Writing `char *nm = *name;` inside the `if`, or putting `nm` after `m`, leaves the pool/argument registers rotated. New file `src/ov000/ov000_021bd8ac.cpp`. |
+| `func_ov000_021c194c` (0x52c bytes) | 11 / 2 | `flag` and `p` as parameters (`pp3`), then the `flag = FALSE;` that `pp3` puts at the top moves down to just before `if (!self->flags.b1) { self->unk_44 -= 0x1000; ...`. The parameter lever fixes the registers; the move fixes the scheduling. New file `src/ov000/ov000_021c194c.cpp`. |
+
+- `func_ov000_021afaf8` was found independently with the same fix (`anm`/`def` as parameters, then `big = TRUE;` first in case 3). It landed as `Robo_021afaf8.cpp` from round parsweep2.
+- **After `pp3`, move the assignments it adds.** `pp3` turns `T x = v;` into `x = v;` at the declaration point. That point is often wrong for scheduling. `t/amove.py src func mod out` moves each one-line assignment up and down by up to `AM_MAX` statements. `t/swapadj.py` moves whole statement units within a block by up to `SW_K=2`. `t/splitdecl.py` splits an initialised nested declaration into a top declaration plus an assignment at every slot, and also does the reverse. `t/qrun.sh queue log` runs lines of the form `tool src func mod tag` one after another.
+- **Partial gains (not landed):**
+  - `ov012_021fbec8`: 76 / 6 to 40 / 2 (two swapadj passes, `d/fbec8_s2.cpp`).
+  - `ov010_0220c758`: 61 / 0 to 41 / 2 (`t` as a parameter).
+  - `ov000_021a2670`: 9 / 10 to 13 / 5 (`anm` assigned before the `if`).
+  - `ov012_021fc688` and `ov012_021fdfa0` are both at 2 / 2. They share one cause: `Ov012_Fx2` schedules `add r6, sp, #0` before the struct-copy stores, and the target schedules it after the `y` store.
+- **No gain:**
+  - `ov000_02176714` (29 / 2): 80 forms of the hoisted `1` / `-0x1ccd`, plus amove and swapadj.
+  - `ov010_02201064` (176 / 6): splitdecl, amove and swapadj.
+  - `ov000_021ad8ac`, `ov013_021fc7e0` and `ov015_0220cbe8` all stay at 6 / 6. In `cbe8` the target keeps `add r7, r4, #0x168`, and every sub-pointer form folds it.
+  - `ov013_021fb1b4` (26 / 0): a single-move declaration grid of 5329 variants.
+- **`func_0206e858` (main) still has two pool words for `data_0214b105`.** The target shares one literal-pool word with `LangData_3.cpp`. Every spelling either emits a second word or keeps the address in a register through CSE. That covers over 200 pairs, `volatile`, `static const` pointers, loop and `goto` forms, and the pragmas `opt_common_subs`, `opt_propagation`, `optimization_level` and `optimize_for_size`. It probably needs the function to sit in the same TU as the other user of the word (`d/e858/`).

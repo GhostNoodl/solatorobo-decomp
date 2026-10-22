@@ -1508,6 +1508,10 @@ src/ov000/Mtx_021c17dc.cpp:
     complete
     .text       start:0x021c17dc end:0x021c194c
 
+src/ov000/ov000_021c194c.cpp:
+    complete
+    .text       start:0x021c194c end:0x021c1e78
+
 src/ov000/Stub_021c2078.cpp:
     complete
     .text       start:0x021c2078 end:0x021c2090
@@ -2000,6 +2004,10 @@ src/ov000/Heap_021c61a8.cpp:
 src/ov000/Stub_021bd7a0.cpp:
     complete
     .text       start:0x021bd7a0 end:0x021bd8ac
+
+src/ov000/ov000_021bd8ac.cpp:
+    complete
+    .text       start:0x021bd8ac end:0x021be1a8
 
 src/ov000/Stub_021bbc68.cpp:
     complete
