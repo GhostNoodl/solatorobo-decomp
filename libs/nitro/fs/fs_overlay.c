@@ -112,3 +112,64 @@ FSFileID FS_GetOverlayFileID(const FSOverlayInfo *p_ovi) {
     return ret;
 }
 
+// Overlay count from the linker script (dsd defines __OVERLAY_COUNT as an absolute symbol), so the
+// value is a relocated pool word as in the SDK build.
+extern char __OVERLAY_COUNT[];
+#define SDK_OVERLAY_NUMBER ((u32)__OVERLAY_COUNT)
+
+typedef struct FSRomHeaderOvt {
+    u8 unk_00[0x50];
+    CARDRomRegion main_ovt; // 0x50
+    CARDRomRegion sub_ovt;  // 0x58
+} FSRomHeaderOvt;
+
+const u8 *CARD_GetOwnRomHeader(void);
+BOOL FS_CreateFileFromRom(FSFile *file, u32 offset, u32 size);
+u32 FS_GetFileImageTop(const FSFile *file);
+u32 FS_GetFileLength(FSFile *file);
+
+BOOL FS_LoadOverlayInfo(FSOverlayInfo *p_ovi, u32 target, u32 id) {
+    BOOL retval = FALSE;
+    const u32 pos = id * sizeof(FSOverlayInfoHeader);
+    const CARDRomRegion *pr = (target == 0) ? &fsi_rom.ovt9 : &fsi_rom.ovt7;
+    if (id >= SDK_OVERLAY_NUMBER && !OS_IsRunOnTwl()) {
+    } else if (pr->offset != 0) {
+        if (pos < pr->length) {
+            FSFile file[1];
+            FS_InitFile(file);
+            MI_CpuCopy8((const void *)(pr->offset + pos), p_ovi, sizeof(FSOverlayInfoHeader));
+            p_ovi->target = target;
+            if (FS_OpenFileFast(file, FS_GetOverlayFileID(p_ovi))) {
+                p_ovi->file_pos.offset = FS_GetFileImageTop(file);
+                p_ovi->file_pos.length = FS_GetFileLength(file);
+                FS_CloseFile(file);
+                retval = TRUE;
+            }
+        }
+    } else {
+        if (target == 0) {
+            pr = &((const FSRomHeaderOvt *)CARD_GetOwnRomHeader())->main_ovt;
+        } else {
+            pr = &((const FSRomHeaderOvt *)CARD_GetOwnRomHeader())->sub_ovt;
+        }
+        if (pos < pr->length) {
+            FSFile file[1];
+            FS_InitFile(file);
+            if (FS_CreateFileFromRom(file, pr->offset + pos, pr->offset + pr->length)) {
+                if (FS_ReadFile(file, p_ovi, sizeof(FSOverlayInfoHeader)) != sizeof(FSOverlayInfoHeader)) {
+                    FS_CloseFile(file);
+                } else {
+                    FS_CloseFile(file);
+                    p_ovi->target = target;
+                    if (FS_OpenFileFast(file, FS_GetOverlayFileID(p_ovi))) {
+                        p_ovi->file_pos.offset = FS_GetFileImageTop(file);
+                        p_ovi->file_pos.length = FS_GetFileLength(file);
+                        FS_CloseFile(file);
+                        retval = TRUE;
+                    }
+                }
+            }
+        }
+    }
+    return retval;
+}

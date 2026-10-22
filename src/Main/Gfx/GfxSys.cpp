@@ -64,6 +64,64 @@ extern BOOL OS_IsRunOnTwl(void);
 #define REG16(a) (*(volatile u16 *)(a))
 #define REG32(a) (*(volatile u32 *)(a))
 
+void func_0203b70c(GfxSys *sys) {
+    int i;
+    GfxOam *oam;
+    G3X_Init();
+    sys->unk_008 = 0;
+    DC_FlushAll();
+    func_02014304(&sys->unk_008, 0, 2);
+    sys->unk_00a = 0;
+    DC_FlushAll();
+    func_0201439c(&sys->unk_00a, 0, 2);
+    NNS_G3dInit();
+    NNS_G2dInitOamManagerModule();
+    NNS_G2dGetNewOamManagerInstanceAsFastTransferMode(sys->unk_02c, 0, 0x80, 0);
+    NNS_G2dGetNewOamManagerInstanceAsFastTransferMode(sys->unk_048, 0, 0x80, 1);
+    sys->unk_014 = NNS_GfdGetLnkTexVramManagerWorkSize(0x20);
+    sys->unk_018 = 0;
+    sys->unk_01c = NNS_GfdGetLnkPlttVramManagerWorkSize(0x20);
+    sys->unk_020 = 0;
+    sys->unk_024 = 0;
+    sys->unk_028 = 0;
+    sys->nextState = 1;
+    func_0203beac(sys, 1);
+    for (i = 0; i < 5; i++) {
+        data_02097db4[i] = 0;
+        data_02097d78[i] = 0;
+        data_02097d64[i] = 0;
+        data_02097d8c[i] = 0;
+        data_02097da0[i] = 0;
+        data_02097d50[i] = 0;
+    }
+    data_02097d44.unk_8 = 0;
+    data_02097d44.unk_0 = 0;
+    oam = sys->oams;
+    for (i = 0; i < 12; i++) {
+        // y is declared after the first store; declared above it, the zero and the clear-loop
+        // addresses take other registers.
+        int x = (u32)(i << 30) >> 24;
+        oam->attr23 = 0;
+        int y = (i >> 2) << 6;
+        oam->attr01 = 0xc0000c00 | (y & 0xff) | (x << 16);
+        oam->attr2 = (((y >> 3) << 5) + (x >> 3)) | 0xf000;
+        oam++;
+    }
+    NNS_G3dGeSetBuffer(data_02fe01e8);
+    NNS_G3dGeUseFastDma(1);
+    sys->unk_a30_0 = 1;
+    sys->unk_a30_1 = 0;
+    REG16(0x400004a) = (REG16(0x400004a) & ~0x3f) | 0;
+    REG16(0x4000048) = (REG16(0x4000048) & ~0x3f) | 0x3f;
+    if (!OS_IsRunOnTwl()) {
+        REG16(0x4000040) = 0x1ff;
+        REG16(0x4000044) = 0xbf;
+    } else {
+        REG32(0x4004008) |= 8;
+        REG16(0x4000040) = 0x1ff;
+        REG16(0x4000044) = 0x1bf;
+    }
+}
 }
 
 extern "C" {

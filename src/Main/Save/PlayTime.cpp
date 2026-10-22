@@ -24,8 +24,9 @@ static inline void PlayTime_Normalize(PlayTime *t, BOOL toMinutes) {
     u16 ms = t->millis;
     u16 sec, min, h;
     int s, m;
-    s = (u16)(ms / 1000) + t->seconds;
+    s = (u16)(ms / 1000);
     ms = ms % 1000;
+    s += t->seconds;
     sec = s % 60;
     m = s / 60 + t->minutes;
     min = m % 60;
@@ -44,23 +45,33 @@ void func_02048bfc(PlayTime *t, BOOL toMinutes) {
     PlayTime_Normalize(t, toMinutes);
 }
 
-#ifdef NONMATCHING
 static inline u32 PlayTime_ToMillis(const PlayTime *t) {
     return t->hours * 3600000 + t->minutes * 60000 + t->seconds * 1000 + t->millis;
 }
 
-// func_02048cf0 is in PlayTime_1.cpp.
+// Caps the play time at the given value. The target reloads millis from the stack for the store.
+void func_02048cf0(PlayTime *t, u16 hours, u16 minutes, u16 seconds, volatile u16 millis) {
+    if (PlayTime_ToMillis(t) > hours * 3600000 + minutes * 60000 + seconds * 1000 + millis) {
+        t->hours = hours;
+        t->minutes = minutes;
+        t->seconds = seconds;
+        t->millis = millis;
+    }
+}
 
-// Only registers differ (29 raw diffs): the reciprocal of 1000 and the
-// second quotient swap r4/r5.
+// The millis and seconds sums go through int locals; written straight into the stores, the
+// reciprocal of 1000 and the millis remainder swap registers.
 void func_02048d58(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
-    dst->millis = a->millis + b->millis;
-    dst->seconds = a->seconds + b->seconds;
+    int ms = a->millis + b->millis;
+    int sec = a->seconds + b->seconds;
+    dst->millis = ms;
+    dst->seconds = sec;
     dst->minutes = a->minutes + b->minutes;
     dst->hours = a->hours + b->hours;
     PlayTime_Normalize(dst, FALSE);
 }
 
+#ifdef NONMATCHING
 // 124 raw diffs: the fields are computed into locals and stored together, as in the target,
 // but the register allocation and the schedule of the borrows still differ.
 void func_02048e74(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
