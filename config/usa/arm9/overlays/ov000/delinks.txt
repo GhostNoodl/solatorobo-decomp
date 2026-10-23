@@ -3181,6 +3181,10 @@ src/ov000/Hit_021b288c.cpp:
     complete
     .text       start:0x021b288c end:0x021b2b08
 
+src/ov000/Cam_021b2b08.cpp:
+    complete
+    .text       start:0x021b2b08 end:0x021b2d48
+
 src/ov000/TextWin_0215e0c0.cpp:
     complete
     .text       start:0x0215e0c0 end:0x0215e4fc
