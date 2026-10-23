@@ -107,4 +107,65 @@ s32 func_ov015_02200bf4(u8 *self, u8 *b, s32 c) {
     return na;
 }
 
+static inline s32 Ov015Stat_GetUnk14(Ov015Stat *g) {
+    return g->unk_14;
+}
+
+s32 func_ov015_02200d50(u8 *self, Ov015Stat *g, s32 v) {
+    s32 t3 = Ov015Stat_GetUnk14(g);
+    s32 st = g->unk_28;
+    s32 t4 = g->unk_10;
+    u8 f = g->unk_1c;
+    BOOL ok;
+    switch (st) {
+    case 3:
+        v += 0x29;
+        break;
+    case 2:
+        v = 0x999;
+        break;
+    default: {
+        if (f) {
+            if (v > 0) {
+                v = 0;
+            }
+            v -= 0x52;
+        } else {
+            v += 0x7b;
+        }
+        {
+            BOOL c;
+            BOOL b;
+            BOOL a;
+            a = FALSE;
+            ok = TRUE;
+            c = TRUE;
+            b = TRUE;
+            if (t3 == 3 && t4 == 2) a = TRUE;
+            if (!a) { if (!(t3 == 2 && t4 == 3)) b = FALSE; }
+            if (!b) { if (!(t3 == 4 && t4 == 4)) c = FALSE; }
+            if (!c) { if (t3 == 1 || t3 == 0 || t4 != 1) ok = FALSE; }
+        }
+        if (ok) {
+            if (v > 0) {
+                v = 0;
+            }
+            if ((FLD(s32, self, 0xc) >> 12) % 20 == 0) {
+                func_02049a48(data_02097e4c, 0x48, -1, -1, -1);
+            }
+        } else {
+            v += 0x7b;
+            if ((FLD(s32, self, 0xc) >> 12) % 5 == 0) {
+                func_02049a48(data_02097e4c, 2, -1, -1, -1);
+            }
+        }
+        break;
+    }
+    }
+    if (v < FLD(s32, FLD(u8 *, self, 0x30), 0x1c)) {
+        v = FLD(s32, FLD(u8 *, self, 0x30), 0x1c);
+    }
+    return v;
+}
+
 }

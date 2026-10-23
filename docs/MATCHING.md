@@ -2325,3 +2325,19 @@ No new matches. Every function below was redrafted from the target asm without o
   - d744: `self` is `r6` instead of `r4`. Inline parameter types, `continue` instead of a nested `if`, function-level loop locals, and moving the draws or the loop into inlines all stay at 28 / 0.
   - 0488: one extra 4-byte stack slot (the target frame is 0x78 with an unused slot at `sp+0x18`) and the spill-slot order.
 - Drafts are in `scratchpad/ovmid10/d/`, and tools (`sc.py`, `sc.sh`, `tdis9.py`, `ppa.sh`) are in `scratchpad/ovmid10/t/`.
+## Two cameras through one base pointer, case order, and inline accessors (ov000 0x021a0000+ and ov009–ov015, round ovhimid3)
+
+- **`func_ov015_021fce94` (no source before; first draft 127 / 81, now 0).** This function sets up the two cameras of an `Ov015CamPair`. Write one `Ov015Cam_Init(Ov015Cam *c, s32 ay, s32 az)` inline and call it on `&self->cam0` and `&self->cam1`. The scheduler then interleaves the two cameras' stores the way the target does. If the cameras are reached through `FLD` offsets or through a second pointer, the stores come out one camera after the other. The fovy update inside the inline is the usual `(s64)deg * 0xb60b60b60b + 0x80000000000 >> 44` sin/cos lookup, and the `pos`, `at` and `up` vectors go through a `V3Set` inline.
+- **`func_ov015_02200d50` (first draft 47 / 40, now 0).** Three things were needed:
+  - The `switch` lists `case 3` before `case 2`. MWCC keeps source case order in the compare chain.
+  - The BOOL chain uses separate flags (`BOOL c; BOOL b; BOOL a; a = FALSE; ok = TRUE; c = TRUE; b = TRUE;`), not one accumulator.
+  - The first field is read through a one-line inline accessor (`Ov015Stat_GetUnk14(g)`). This renames a temporary the same way as the permuter's `(0, x)` comma trick, without the hack.
+- **What helped on the near misses:**
+  - An inline helper for repeated circle-point code stops the sin/cos table address from being hoisted, and the frame then matches (`ov010_02204030`).
+  - Inline G3 command wrappers (`Cmd1`, `Vtx`, `VtxXY`, `Vec`) give stack temporaries the target's layout (`ov010_02200a00`).
+  - For a table lookup with an unsigned bound, use `k < sizeof(table)` inside an inline; that gives `blo` (`ov010_0220441c`, 8 / 0).
+  - Copy table entries through a `const` pointer to `tbl[i]` (`ov012_021fefc8`, 26 / 2).
+- **What did not help:**
+  - Passing an argument-order setter inline (`Set(s, x, y)`) instead of two stores does not change the `ldm` merge of `pos->x` and `pos->y` in `ov000_021c6d64`.
+  - Neither do `y`-before-`x` statement orders or precomputed `scroll * 6` and `width / 2` locals.
+  - In `ov000_021bd474` (2 / 0), only two `asr #31` sign extensions are swapped. Swapping the final updates, the declaration order, the `FxMul` form and the branch shape all leave it at 2 or make it worse.

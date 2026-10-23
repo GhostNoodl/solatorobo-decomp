@@ -138,4 +138,40 @@ void *func_ov015_021fce6c(u8 *self) {
     return self;
 }
 
+static inline void Ov015Cam_SetFovy(Ov015Cam *c, s32 deg) {
+    u16 idx;
+    c->fovyDeg = deg;
+    c->fovy = (u16)(((s64)c->fovyDeg * 0xb60b60b60bLL + 0x80000000000LL) >> 44);
+    idx = (u16)(c->fovy >> 1);
+    c->fovySin = FX_SinCosTable_[(idx >> 4) * 2];
+    c->fovyCos = FX_SinCosTable_[(idx >> 4) * 2 + 1];
+    c->unk_3e = 1;
+}
+
+static inline void Ov015_V3Set(Ov015V3 *v, s32 x, s32 y, s32 z) {
+    v->x = x;
+    v->y = y;
+    v->z = z;
+}
+
+static inline void Ov015Cam_Init(Ov015Cam *c, s32 ay, s32 az) {
+    Ov015_V3Set(&c->pos, 0, 0x2000, 0x2000);
+    Ov015_V3Set(&c->at, 0, ay, az);
+    Ov015_V3Set(&c->up, 0, 0x1000, 0);
+    Ov015Cam_SetFovy(c, 0x1e000);
+    c->near = 0x119a;
+    c->far = 0x7d0000;
+    c->unk_3e = 1;
+    c->unk_40 = 0;
+}
+
+void func_ov015_021fce94(Ov015CamPair *self) {
+    Ov015Cam_Init(&self->cam0, 0x2000, -0x1000);
+    Ov015Cam_Init(&self->cam1, -0x1800, 0);
+    self->unk_18c = -0x333;
+    self->unk_190 = 0x6400;
+    self->unk_194 = -0x1000;
+    self->unk_198 = 0x5a3d;
+}
+
 }
