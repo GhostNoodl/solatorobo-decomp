@@ -297,4 +297,196 @@ void func_02041e74(TexObj *obj, int idx) {
     }
 }
 
+
+typedef union TexObjOamA {
+    struct {
+        u16 attr0;
+        u16 attr1;
+        u16 attr2;
+        u16 attr3;
+    };
+    struct {
+        u32 attr01;
+        u32 charName : 10;
+        u32 unk_4_10 : 22;
+    };
+} TexObjOamA;
+
+typedef struct TexObjCell {
+    /* 0x0 */ u16 numOam;
+    /* 0x4 */ const OamAttrs *attrs;
+} TexObjCell;
+
+typedef struct TexObjImgCopy {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ u16 unk_02;
+    /* 0x04 */ int fmt;
+    /* 0x08 */ u32 unk_08;
+    /* 0x0c */ u32 unk_0c;
+    /* 0x10 */ u32 size;
+    /* 0x14 */ u32 data;
+} TexObjImgCopy;
+
+typedef struct TexObjSeq {
+    /* 0x00 */ u8 unk_00[0xc];
+    /* 0x0c */ u16 **frames;
+} TexObjSeq;
+
+typedef struct TexObjRes4 {
+    /* 0x00 */ u8 unk_00[0x4];
+    /* 0x04 */ void *cells;
+    /* 0x08 */ u8 unk_08[0x4];
+    /* 0x0c */ u16 *dict;
+    /* 0x10 */ u8 unk_10[0x4];
+    /* 0x14 */ TexObjImgCopy *image;
+    /* 0x18 */ u32 unk_18;
+    /* 0x1c */ TexObjImgCopy *image0;
+} TexObjRes4;
+
+extern TexObjCell *NNS_G2dGetCellDataByIdx(void *cells, int idx);
+
+void func_0204205c(TexObj *obj, int idx, int value) {
+    TexObjEntry *e;
+    TexObjRes4 *res;
+    const TexObjCell *cell;
+    u16 n;
+    u32 total;
+    u32 size;
+    u32 first;
+    u32 slot;
+    int type;
+    TexObjImgCopy *img;
+    TexObjImgCopy info;
+    TexObjOamA a;
+    u16 i;
+    int shift;
+    int fmt;
+
+    res = (TexObjRes4 *)obj->res;
+    e = TexObj_GetEntry(obj, value);
+    if (e != NULL && e->anim != NULL) {
+        cell = *(TexObjCell **)((u8 *)e->anim + 0x30);
+    } else {
+        cell = NNS_G2dGetCellDataByIdx(res->cells, *((TexObjSeq *)NNS_G2dGetAnimSequenceByIdx(res->dict, value))->frames[0]);
+    }
+    n = cell->numOam;
+    obj->unk_084 |= (u8)(1 << idx);
+    total = 0;
+    switch (idx) {
+    case 1:
+    case 2:
+        img = ((TexObjRes4 *)obj->res)->image;
+        shift = (obj->unk_020 & 0x700000) >> 20;
+        info = *img;
+        for (i = 0; i < n; i = (u16)(i + 1)) {
+            u16 attr0 = cell->attrs[i].attr0;
+            fmt = img->fmt;
+            a.attr1 = cell->attrs[i].attr1;
+            a.attr2 = cell->attrs[i].attr2;
+            a.attr0 = attr0;
+            {
+                OamShape shape = Oam_GetShape((OamAttrs *)&a);
+                const u16 shapeBit = (u16)((shape & 0xc000) >> 14);
+                const u16 sizeBit = (u16)((shape & 0xc0000000) >> 30);
+                int w = data_02082898[shapeBit][sizeBit];
+                int h = data_020828c8[shapeBit][sizeBit];
+                switch (fmt) {
+                case 1:
+                    size = ((8 << w) << h) << 3;
+                    break;
+                case 2:
+                    size = ((8 << w) << h) << 1;
+                    break;
+                case 3:
+                    size = ((8 << w) << h) << 2;
+                    break;
+                case 4:
+                    size = ((8 << w) << h) << 3;
+                    break;
+                case 6:
+                    size = ((8 << w) << h) << 3;
+                    break;
+                }
+            }
+            total += size; total = (total + ((0x20 << shift) - 1)) & ~((0x20 << shift) - 1);
+            if (i == 0) {
+                first = a.charName << (shift + 5);
+            }
+        }
+        if ((&e->key)[idx] == -1) {
+            if (idx == 1) {
+                type = 2;
+                slot = func_0203bc20(data_02097d48, total, 0);
+            } else {
+                type = 5;
+                slot = func_0203bc20(data_02097d48, total, 1);
+            }
+            (&e->key)[idx] = slot;
+        }
+        info.size = total;
+        info.data += first;
+        if ((obj->unk_06c << 30) >> 31) {
+            e->transfers[idx] = func_0203e458(type, info.data, slot, info.size, 0);
+            return;
+        }
+        ((int *)obj)[idx] = -1;
+        NNS_G2dLoadImage1DMapping((TexObjImageInfo *)&info, slot, idx, obj);
+        ((int *)obj)[idx] = -1;
+        return;
+    case 0:
+        img = ((TexObjRes4 *)obj->res)->image0;
+        shift = (obj->unk_020 & 0x700000) >> 20;
+        info = *img;
+        for (i = 0; i < n; i = (u16)(i + 1)) {
+            u16 attr0 = cell->attrs[i].attr0;
+            fmt = img->fmt;
+            a.attr1 = cell->attrs[i].attr1;
+            a.attr2 = cell->attrs[i].attr2;
+            a.attr0 = attr0;
+            {
+                OamShape shape = Oam_GetShape((OamAttrs *)&a);
+                const u16 shapeBit = (u16)((shape & 0xc000) >> 14);
+                const u16 sizeBit = (u16)((shape & 0xc0000000) >> 30);
+                int w = data_02082898[shapeBit][sizeBit];
+                int h = data_020828c8[shapeBit][sizeBit];
+                switch (fmt) {
+                case 1:
+                    size = ((8 << w) << h) << 3;
+                    break;
+                case 2:
+                    size = ((8 << w) << h) << 1;
+                    break;
+                case 3:
+                    size = ((8 << w) << h) << 2;
+                    break;
+                case 4:
+                    size = ((8 << w) << h) << 3;
+                    break;
+                case 6:
+                    size = ((8 << w) << h) << 3;
+                    break;
+                }
+            }
+            total += size; total = (total + ((0x20 << shift) - 1)) & ~((0x20 << shift) - 1);
+            if (i == 0) {
+                first = a.charName << (shift + 5);
+            }
+        }
+        if ((&e->key)[idx] == -1) {
+            func_0203e098(obj->name, value);
+            (&e->key)[idx] = NNS_GfdDefaultFuncAllocTexVram(total, 0, 0);
+        }
+        info.size = total;
+        info.data += first;
+        if ((obj->unk_06c << 30) >> 31) {
+            e->transfers[idx] = func_0203e458(0, info.data, ((u32)(&e->key)[idx] << 15) >> 12, info.size, 0);
+            return;
+        }
+        ((int *)obj)[idx] = -1;
+        NNS_G2dLoadImage1DMapping((TexObjImageInfo *)&info, ((u32)(&e->key)[idx] << 15) >> 12, 0, obj);
+        ((int *)obj)[idx] = -1;
+        return;
+    }
+}
+
 }

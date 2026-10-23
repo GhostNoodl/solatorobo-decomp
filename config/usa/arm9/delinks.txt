@@ -176,7 +176,7 @@ libs/nitro/card/card_request.c:
 
 libs/nitro/card/card_backup.c:
     complete
-    .text       start:0x0200cbe0 end:0x0200d0dc
+    .text       start:0x0200ca48 end:0x0200d0dc
 
 libs/nitro/card/card_rom.c:
     complete
@@ -864,7 +864,7 @@ libs/nnsys/g3d/res_struct_accessor_anm.c:
 
 libs/nnsys/g3d/nsbca.c:
     complete
-    .text       start:0x0202ae6c end:0x0202b048
+    .text       start:0x0202ae6c end:0x0202b1c8
 
 libs/nnsys/g3d/nsbca_2.c:
     complete
@@ -1140,7 +1140,7 @@ src/Main/Gfx/TexObj.cpp:
 
 src/Main/Gfx/TexObj_2.cpp:
     complete
-    .text       start:0x02041b10 end:0x0204205c
+    .text       start:0x02041b10 end:0x02042628
 
 src/Main/Gfx/TexObj_3.cpp:
     complete

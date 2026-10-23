@@ -27,6 +27,76 @@ u32 CARD_GetBackupSectorSize(void);
 
 void CARDi_RequestStreamCommandCore(CARDiCommon *p);
 
+void CARDi_RequestStreamCommandCore(CARDiCommon *p) {
+    // Declared first and assigned separately, in this order, for the register allocation.
+    u8 *buf;
+    int req_type;
+    int req_mode;
+    int retry_count;
+    u32 size;
+
+    req_type = (int)p->req_type;
+    req_mode = (int)p->req_mode;
+    retry_count = p->req_retry;
+    size = sizeof(backup_cache_page_buf);
+
+    SDK_USING_BACKUP();
+
+    if (req_type == CARD_REQ_ERASE_SECTOR_BACKUP) {
+        size = CARD_GetBackupSectorSize();
+    } else if (req_type == CARD_REQ_ERASE_SUBSECTOR_BACKUP) {
+        size = cardi_common.cmd->spec.subpage_size;
+    }
+
+    do {
+        const u32 len = (size < p->len) ? size : p->len;
+        p->cmd->len = len;
+
+        if ((p->flag & CARD_STAT_CANCEL) != 0) {
+            p->flag &= ~CARD_STAT_CANCEL;
+            p->cmd->result = CARD_RESULT_CANCELED;
+            break;
+        }
+
+        buf = backup_cache_page_buf;
+        switch (req_mode) {
+            case CARD_REQUEST_MODE_RECV:
+                DC_InvalidateRange(buf, len);
+                p->cmd->src = p->src;
+                p->cmd->dest = (u32)buf;
+                break;
+            case CARD_REQUEST_MODE_SEND:
+            case CARD_REQUEST_MODE_SEND_VERIFY:
+                MI_CpuCopy8((const void *)p->src, buf, len);
+                DC_FlushRange(buf, len);
+                DC_WaitWriteBufferEmpty();
+                p->cmd->src = (u32)buf;
+                p->cmd->dest = p->dst;
+                break;
+            case CARD_REQUEST_MODE_SPECIAL:
+                p->cmd->src = p->src;
+                p->cmd->dest = p->dst;
+                break;
+        }
+
+        if (!CARDi_Request(p, req_type, retry_count)) {
+            break;
+        }
+
+        if (req_mode == CARD_REQUEST_MODE_SEND_VERIFY) {
+            if (!CARDi_Request(p, CARD_REQ_VERIFY_BACKUP, 1)) {
+                break;
+            }
+        } else if (req_mode == CARD_REQUEST_MODE_RECV) {
+            MI_CpuCopy8(buf, (void *)p->dst, len);
+        }
+
+        p->src += len;
+        p->dst += len;
+        p->len -= len;
+    } while (p->len > 0);
+}
+
 void CARDi_IdentifyBackupCore2(int type) {
     CARDiCommandArg *const p = cardi_common.cmd;
 
