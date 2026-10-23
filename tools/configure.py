@@ -33,10 +33,12 @@ DSD_VERSION = 'v0.12.1'
 WIBO_VERSION = '0.6.16'
 SJISWRAP_VERSION = 'v1.2.2'
 OBJDIFF_VERSION = 'v3.4.0'
-# CodeWarrior for DSi 1.3 patch 1 (mwccarm 4.0 build 1036). Some functions have odd-sized stack frames that only
-# dsi/1.1 to dsi/1.3p1 produce, and dsi/1.1 breaks others, so the game was built with something from dsi/1.2 to dsi/1.3p1.
-MWCC_VERSION = "dsi/1.3p1"
-DECOMP_ME_COMPILER = "mwcc_40_1036"
+# CodeWarrior for DSi 1.3 (mwccarm 4.0 build 1034). Some functions have odd-sized stack frames that only dsi/1.1 to
+# dsi/1.3p1 produce, dsi/1.1 breaks others, and a few fold a u16 truncation into the next operand (`lsl rA, rB, #16`
+# then `rsb rC, rD, rA, lsr #16`) as only dsi/1.2 to dsi/1.3 do. So the game was built with something from dsi/1.2 to
+# dsi/1.3. Every matched function also matches with dsi/1.3.
+MWCC_VERSION = "dsi/1.3"
+DECOMP_ME_COMPILER = "mwcc_40_1034"
 CC_FLAGS = " ".join([
     "-O4,p",                # Optimize maximally for performance
     "-enum int",            # Use int-sized enums

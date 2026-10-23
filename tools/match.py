@@ -29,7 +29,7 @@ parser.add_argument("function", help="Symbol name in the compiled object")
 parser.add_argument("--module", default="main", help="main, itcm, dtcm or ovNNN")
 parser.add_argument("--address", type=lambda x: int(x, 16), help="Address in the base ROM (default: taken from the name)")
 parser.add_argument("--version", default="usa")
-parser.add_argument("--compiler", default=None, help="Compiler version under tools/mwccarm (default: dsi/1.3p1, or the file's entry in mwcc_versions.py)")
+parser.add_argument("--compiler", default=None, help="Compiler version under tools/mwccarm (default: dsi/1.3, or the file's entry in mwcc_versions.py)")
 parser.add_argument("--all-compilers", action="store_true", help="Only print a diff count for every compiler version")
 parser.add_argument("--wine", default=str(root_path / "wibo"))
 parser.add_argument("-q", "--quiet", action="store_true", help="Only print the number of differing instructions")
@@ -139,7 +139,7 @@ if args.compiler is None:
         relative_source = Path(os.path.relpath(args.source.resolve(), root_path.resolve())).as_posix()
     except ValueError:
         relative_source = None
-    args.compiler = FILE_MWCC_VERSIONS.get(relative_source, "dsi/1.3p1")
+    args.compiler = FILE_MWCC_VERSIONS.get(relative_source, "dsi/1.3")
 result = compile_function(args.compiler)
 if isinstance(result, str):
     print(result)

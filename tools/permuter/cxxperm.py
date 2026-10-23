@@ -1023,7 +1023,7 @@ def main():
     p.add_argument("--module", default="main", help="main, itcm, dtcm or ovNNN")
     p.add_argument("--address", type=lambda x: int(x, 16), help="default: taken from the name")
     p.add_argument("--version", default="usa")
-    p.add_argument("--compiler", default=None, help="default: dsi/1.3p1, or the file's entry in mwcc_versions.py")
+    p.add_argument("--compiler", default=None, help="default: dsi/1.3, or the file's entry in mwcc_versions.py")
     p.add_argument("--wine", default=str(ROOT / "wibo"))
     p.add_argument("--funcs", default="", help="comma-separated extra functions whose bodies may be rewritten")
     p.add_argument("--inlines", action="store_true", help="also rewrite every `static inline` function in the file")
@@ -1046,7 +1046,7 @@ def main():
             rel = Path(os.path.relpath(args.source.resolve(), ROOT)).as_posix()
         except ValueError:
             rel = None
-        args.compiler = FILE_MWCC_VERSIONS.get(rel, "dsi/1.3p1")
+        args.compiler = FILE_MWCC_VERSIONS.get(rel, "dsi/1.3")
     args.rewrites = [r for r in args.rewrites.split(",") if r]
     for r in args.rewrites:
         if r not in REWRITES:
