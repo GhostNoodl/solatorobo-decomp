@@ -1528,6 +1528,10 @@ src/ov000/Stub_021c7000.cpp:
     complete
     .text       start:0x021c7000 end:0x021c7038
 
+src/ov000/Gauge_021c7038.cpp:
+    complete
+    .text       start:0x021c7038 end:0x021c740c
+
 src/ov000/Stub_021c5bac.cpp:
     complete
     .text       start:0x021c5bac end:0x021c5bd4
