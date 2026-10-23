@@ -265,4 +265,83 @@ void func_ov015_021ff9e8(u8 *self) {
     }
 }
 
+
+extern u8 *data_02097dc8;
+extern void *data_02097e4c;
+BOOL func_ov015_0220a028(u8 *self, void *a);
+void func_ov015_0221234c(u8 *self);
+void func_ov015_02212250(u8 *self, s32 a);
+void func_ov015_02207c30(u8 *p);
+u16 FX_Atan2(s32 y, s32 x);
+Ov015V *func_02065f88(s32 id, void *pos);
+void func_02049a48(void *a, int b, int c, int d, int e);
+
+BOOL func_ov015_021ffb90(u8 *self) {
+    BOOL r = FALSE;
+    u8 *found;
+    u8 *n;
+    func_ov015_021fd00c(FLD(u8 *, self, 0x20), 7, FLD(u8 *, self, 0x10) + 0xc);
+    if (FLD(u8, self, 0xc) != 0) return r;
+    if (FLD(u16, data_02097dc8, 0x12) & 1) {
+        Ov015Vec v = FLD(Ov015Vec, FLD(u8 *, self, 0x10), 0xc);
+        Ov015V *e;
+        VCALL(FLD(void *, self, 0x14))->v28(&v, r);
+        r = TRUE;
+        FLD(u16, FLD(u8 *, self, 0x1c), 0xd3c) = r;
+        e = func_02065f88(0x325, &FLD(Ov015Vec, FLD(u8 *, self, 0x1c) + 0xcd4, 0x24));
+        FLD(s32, e, 0xd4) = 3;
+        func_02049a48(data_02097e4c, 0x19, -1, -1, -1);
+    }
+    found = NULL;
+    n = FLD(u8 *, FLD(u8 *, self, 0x24), 0x4);
+    while (n != NULL) {
+        u8 *obj = FLD(u8 *, n, 0x4);
+        Ov015Vec v;
+        n = FLD(u8 *, n, 0xc);
+        v = FLD(Ov015Vec, FLD(u8 *, self, 0x10), 0xc);
+        if (func_ov015_0220a028(obj, &v)) {
+            found = obj;
+            break;
+        }
+    }
+    if (found != NULL) {
+        s32 d = Ov015_FxMul64(FLD(s32, found, 0x70), 0x14000);
+        Ov015VecC t(FLD(Ov015VecC, found, 0x40));
+        t.y += d;
+        if (t.y < 0) t.y = 0;
+        FLD(Ov015VecC, FLD(u8 *, self, 0x10), 0x24) = t;
+        func_ov015_0221234c(FLD(u8 *, self, 0x10));
+    } else {
+        func_ov015_022123c4(FLD(u8 *, self, 0x10));
+    }
+    func_ov015_02212250(FLD(u8 *, self, 0x10), 0);
+    for (n = FLD(u8 *, FLD(u8 *, self, 0x24), 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
+        func_ov015_02209790(FLD(u8 *, n, 0x4), 1);
+    }
+    func_ov015_02207c30(FLD(u8 *, self, 0x1c));
+    {
+        u8 *q = FLD(u8 *, self, 0x10);
+        u8 *d = FLD(u8 *, self, 0x1c);
+        FLD(s32, d, 0xd4c) = FLD(s32, q, 0xc);
+        FLD(s32, d, 0xd50) = FLD(s32, q, 0x10);
+        FLD(s32, d, 0xd54) = FLD(s32, q, 0x14);
+    }
+    {
+        u8 *dd = FLD(u8 *, self, 0x1c);
+        u8 *qq = FLD(u8 *, self, 0x10);
+        s32 dx = FLD(s32, dd, 0xd14);
+        s32 dz = FLD(s32, dd, 0xd1c);
+        u16 a;
+        dx = FLD(s32, qq, 0xc) - dx;
+        dz = FLD(s32, qq, 0x14) - dz;
+        a = FX_Atan2(dx, dz);
+        u8 *d;
+        d = FLD(u8 *, self, 0x1c);
+        FLD(u16, d, 0xd20) = 0;
+        FLD(u16, d, 0xd22) = a;
+        FLD(u16, d, 0xd24) = 0;
+    }
+    return r;
+}
+
 }
