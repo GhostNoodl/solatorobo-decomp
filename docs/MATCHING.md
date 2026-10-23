@@ -2253,3 +2253,32 @@ Three new matches. Scores are raw / register-masked seqdiff.
   - `ov000_021597dc` (18 / 2): the target loads `trig` as a `u16` with no `and #0xff`, but a `u16` `trig` reorders the start of the function (34).
   - `ov006_021e6eb0` (10 / 8): 200 more forms of the `trig`/`release` block (types `u16`/`u32`, cast placement, declaration order) stay at 10 / 8 or worse. The target has a `(u16)` cast on both `~old` and `~cur`; ours drops one.
 - Tools are in `scratchpad/ovmid8/t/`: `ppa.sh` (above, `K=` for pairs), `ppaiter.sh` (repeats `ppa.sh` on its best result), and `alt.py file func mod < spec` (scores text alternatives; blocks are separated by `====`, the first is the original, `KEEP=dir` writes them out).
+## Fresh redrafts with sibling idioms, `const` tables, and the permuter for register order (ov000 0x021a0000+ and ov009–ov015, round ovhimid2)
+
+Five new matches, each confirmed with `tools/match.py` and a full `ninja` build whose ROM check passes. Drafts are in the scratchpad under `ovhimid2/d/<tag>/`. Scores are raw / register-masked seqdiff; a `bl`/`blx` diff on a thumb SDK call is a linker artefact and is not counted.
+
+- **`func_ov010_02206974` (148 to 0) and `func_ov014_0220a67c` (103 to 0): declare the table `const`.** Both drafts were exact apart from the order of a table load and a store. Declaring the table as `extern void *const data_...[]` (6974) or `extern const Ov014Vec data_...[]` (a67c) lets the scheduler hoist the load above the store, as in the target. When the file you merge into already declares the symbol with another type, put the `const` declaration in a namespace, `namespace Ov010T6974 { extern "C" void *const data_ov010_0220f024[]; }`, and use `(const char *)Ov010T6974::data_ov010_0220f024[i]`. `extern "C"` makes it the same symbol.
+- **`func_ov010_022000d8` (68 / 40 to 0), the fx-object update in `ov010_021fff80.cpp`.** What fixed it:
+  - an aggregate initialiser for the rotation, `Ov010FxRot rot = {0, 0, 0};`, then the two field stores;
+  - the idle test as a `const Ov010FxObj *` inline that returns a `BOOL r = TRUE; if (o->b0 && o->sw.mode != 0) r = FALSE;`;
+  - mode 2's cases 0 and 1 as one `case 0: case 1:` with `if (o->sw.state == 0) { ... }` inside;
+  - the two handles copied into a block-local `s32 h[2]` with a `u32 i` loop at the end.
+- **`func_ov000_021b4130` (no draft before; first draft 428, then 0).** The function is new in `src/ov000/Robo_021b4130.cpp`, a gap of its own. The steps that mattered:
+  - The actor lookup as the usual `FindActor(u16 id)` inline. The target loads the id before the manager's null test, so the argument has to be evaluated before the inline body.
+  - The target places `switch` cases 0 and 1 after the common tail. Write `default:` first, and put the tail (the matrix translation and the `MI_Copy48B`) inside it, ending with `return`.
+  - A `VecSet(&v, x, y, z)` inline for the three vector stores whose loads all come before the stores.
+  - The bitfield-looking `(x << 25) >> 16` is `(u16)(LFLD(u16, g, 0xa) << 9)`, a plain halfword shifted and truncated, not a 7-bit field.
+  - The sin/cos block: `sn`, `cs` and `d` as locals, then `cs = FX_Mul(d, cs); sn = FX_Mul(d, sn); v.x += sn; v.z += cs; v.y -= 0x800;`. A statement-order search over that block found it.
+- **`func_ov009_0220a128` (90 to 0), modelled on `func_ov009_0220aeb8`.** The first draft had 0 masked diffs, but every long-lived value was in the reverse register (target `f` r4, zero r5, `pl` r6, `st` r7, `self` r8; draft `self` r4 up to `st` r8). Declaration order, types, inlines for the repeated blocks and two-definition tricks did not change it. Taking `f` out of the locals moved `self` to r8, which showed that `f` was being coloured as a local. The permuter (`--inlines`, 232 compiles) then found the target's colouring. Cleaned up, the form is:
+  - `st` as a parameter, `void func_ov009_0220a128(Ov009Actor *self, u8 st)`, assigned in the first test. This is the locals-as-parameters trick from round ovmid7; making it a local again costs 12.
+  - `u32 f = ...`, `BOOL flag = ...` and `Ov009Actor *pl = ...` declared where they are first assigned, not at the top of the function.
+  - In the respawn case, `z` and `y` declared at function level, and `s32 t = self->pos.z; z = t;` inside the block. `z = self->pos.z` directly costs 4.
+- **`func_ov009_02208b24` (fresh draft, 94).** The sqrt sequence copies the ov014 idiom (`OV014E_SQRTCNT`). The second stack vector and the `ldm`/`stm` copy come from a `Toward(self, const Vec *t, s32 k)` inline with `Vec d; Vec q = *t;`: the last-declared local sits highest. Swapping the `state` and `p` declarations is worth 16. The `0x19a` compare is still derived from the `0x66` (`add r1, r4, #0x134`). `< 0x19b` gives the pool load but the wrong constant. A two-definition `k` inside `Toward` fixes the compare (61) but is not clean (`x/b.cpp`).
+- **`func_ov014_0220f3f0` (fresh draft, 89 / 12), the box-distance helper called by `func_ov014_0220f20c`.** The draft uses `RotYXZ` from `Robo_021b3738.cpp` and an axis inline that takes `const s32 *ext`. The extent is read once into `e` for the test and the `FX_Div`, and reread for the `VEC_MultAdd` scale. The dot product is `dot = x + y + z` in one expression; that gives the target's y, x, z multiply order, and three `+=` statements do not. What is left is `&ax`: the target keeps it in `r6` across each `if (d > 0x1000)` block.
+- **Near misses, with the best drafts:**
+  - `ov012_021ffd34` (`d/fd34/c.cpp`, 30, register-only);
+  - `ov011_021fd638` (`d/d638/k3.cpp`, 32 / 5);
+  - `ov000_021bb33c` (`d/b33c/p5.cpp`, 19);
+  - `ov010_0220c758` (`d/c758/s1.cpp`, 40: a `u8 *m` parameter and a `u16 t[1]` array local, both hacks; the clean `a.cpp` is 91 / 2);
+  - `ov015_022113e8` (`d/13e8/d1.cpp`, 104 / 7; the permuter reached 36 only with junk parameters);
+  - `ov015_0220b1b8` (`d/b1b8/b.cpp`, 100).

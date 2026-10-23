@@ -383,7 +383,7 @@ src/ov009/ov009_0220a560.cpp:
 
 src/ov009/ov009_0220a028.cpp:
     complete
-    .text       start:0x0220a028 end:0x0220a128
+    .text       start:0x0220a028 end:0x0220a560
 
 src/ov009/ov009_022143d8.cpp:
     complete
