@@ -2282,3 +2282,24 @@ Five new matches, each confirmed with `tools/match.py` and a full `ninja` build 
   - `ov010_0220c758` (`d/c758/s1.cpp`, 40: a `u8 *m` parameter and a `u16 t[1]` array local, both hacks; the clean `a.cpp` is 91 / 2);
   - `ov015_022113e8` (`d/13e8/d1.cpp`, 104 / 7; the permuter reached 36 only with junk parameters);
   - `ov015_0220b1b8` (`d/b1b8/b.cpp`, 100).
+
+## A size-guarded fill splits the slot address across a call (overlays, round ovmid9)
+
+One new match. Scores are raw / register-masked seqdiff.
+
+| Function | Before | Change |
+|---|---|---|
+| `func_ov006_021dacb0` (0x184, `SlotManager` create) | 24 / 7 | The inlined slot clear writes the name fill as `{ u32 n = sizeof(self->name); if (n != 0) { MI_CpuFill8(self->name, 0, n); } }`. The one-element `i_1[1]` counter from ovmid8 is no longer needed. New file `src/ov006/ov006_021dacb0.cpp`, with a local copy of the inline (`ov006_Slot_ClearGuarded`). |
+
+- **What the guard changes.** In the target, the slot loop keeps only the offset `i * 0x4c` in a callee-saved register. It computes `p + off` once for the stores before the `MI_CpuFill8` call and again for the stores after it. With a plain call, MWCC CSEs `p + off` across the call and keeps the slot pointer in the callee-saved register instead. The `if` puts a block boundary around the call, so the two address computations stay separate. Every other form changed nothing: `p->slots[i].field` written out, a re-taken `&p->slots[i]` after the call, the sub-struct clears as separate inlines, a `goto` label after the call. `if (sizeof(...) != 0)` (a constant condition) and `if (self->name)` do not work either; only the `u32 n` local with `if (n != 0)` does.
+- **The header inline cannot take the guard.** `func_ov006_021daea0` (already matched, same `ov006_SlotManager_Reset`) goes from 0 to 23 with the guarded fill, while `func_ov006_021dafb4` stays at 0. The game had two versions of the slot clear, so the guarded one is a local inline in the new file.
+- **Try this when** the target recomputes `base + offset` after a call and keeps only the offset in a callee-saved register, while our build keeps the summed pointer.
+- **Partial gains (drafts in `scratchpad/ovmid9/d/`):**
+  - `ov000_021688c4`: 28 / 8 to 20 / 0 (`88c4/b1.cpp`) by writing `unk_21 = 0` right after `unk_20 = 0`. The target does the two flag stores before the alpha multiply. What is left is a three-way rotation: the target puts `a5` (`alpha & 0x1f`) in `sb` and the `Model_PlayPart` model and resource pointers in `r7`/`r8`; ours has `a5` in `r7`. `ppa.sh`, a local copy of `Model_PlayPart` in four forms, moving or removing `a5`, and 20 minutes of cxxperm (19,930 compiles) do not fix it.
+  - `ov000_0214b1a0` (G3 quad draw, no earlier ovmid draft): 16 / 16 to 12 / 12 (`b1a0/c.cpp`). The third vertex is `0x08000800`, not `0x07ff0800` (the target computes it as `rsb r0, sb, #0x10000`). The scale's `y` is not masked with `0xff`. The vector commands copy `pos` and `scale` through `s32 x = p->x; s32 y = p->y; s32 z = p->z;` locals into an `s32 v[3]`. The target loads `y` and `z` together (`ldmib`), stores `z`, then loads `x`. An 8-byte copy of `y`/`z` (`*(s64 *)&v[1] = *(const s64 *)&p->y`) gives the `ldmib` but not the register order (16 / 8, `b1a0/k6/v006.cpp`). 72 declaration and store orders, struct copies, loops, two-level inlines, `ppa.sh` and 20 minutes of cxxperm with `--inlines` (29,040 compiles) stay at 12 or above.
+- **No change:**
+  - `ov000_02199554` / `02199180` (13 / 0, 14 / 0): the scratch-register rotation in the distance loop does not move with an early-return or store-both inline for the distance, `a` at function level, a `VecFx32` difference struct, an `s64` accumulator, a `dist` pointer, reloading `found[i]`, or an `out` reload. Putting the three arrays into one struct moves the registers, but in another wrong pattern (46). cxxperm with `--inlines` found nothing in 20 minutes (19,466 compiles).
+  - `ov000_0218867c` (22 / 6): the target loads `data_02fe1534` at the store in case 1, after the loop. Ours loads it at the top of the case into `sb`, which shifts `arg` and `done` (`r6`/`r8` swapped). Writing the global directly, a found-`n`-th inline, `while`, `if`/`else` stores and a `goto` all hoist it too, and are worse (28 to 50). All 24 orders of the `kind`/`arg`/`one`/`done` declarations stay at 22.
+  - `ov003_021ea588` (50 / 30): the target uses `sl` and gets all of `func_ov000_0219aae8`'s stack arguments into registers before it stores them. An inline wrapper for the call and all 120 orders of the `a`/`b`/`v.x`/`v.y`/`v.z` statements stay at 50 or worse.
+  - `ov006_021e309c` (51 / 19): five forms of the `Caption_Draw` argument expressions (separate `dx`/`dy` locals, operand order, a cached anim pointer) compile the same.
+- Tools are in `scratchpad/ovmid9/t/` (the ovmid8 tools pointed at this clone, plus `tdis9.py`).
