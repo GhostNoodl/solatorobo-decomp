@@ -32,7 +32,11 @@ struct Ov011FbScl {
 };
 
 struct Ov011FbObj {
-    u8 pad[0x14];
+    u16 cnt;
+    u8 pad02[2];
+    u64 flags;
+    u8 pad0c[7];
+    u8 state;
     Ov011V obj;
     u8 pad18[0x20];
     void *unk_38;
@@ -49,11 +53,17 @@ struct Ov011Fb {
     u8 pad[0x3c];
     Ov011FbSub *unk_3c;
     u16 *unk_40;
-    u8 pad44[0xc];
+    u8 pad44[4];
+    u8 *unk_48;
+    u8 pad4c[4];
     u16 *unk_50;
     u8 pad54[0x10];
     s32 unk_64;
-    u8 pad68[0x88];
+    u8 pad68[0x2c];
+    u8 f94_0 : 1;
+    u8 f94_m : 2;
+    u8 f94_r : 5;
+    u8 pad95[0x5b];
     u8 b0 : 1;
     u8 b1 : 1;
     u8 restf0 : 6;
@@ -186,6 +196,119 @@ void func_ov011_021ffe50(Ov011Fb *self) {
         }
     }
     func_ov003_021d6054(self);
+}
+
+struct Ov011FxDesc {
+    u8 pad[4];
+    const char *name;
+    const char *arc;
+    u8 pad0c[0x14];
+    Ov011Vec pos;
+};
+extern Ov011FxDesc data_ov011_02207258;
+extern Ov011Vec data_ov011_02207278;
+Ov011V *func_02066900(const char *arc, const char *name, const Ov011Vec *pos);
+Ov011V *func_020657b0(void *m, void *id);
+void func_02065860(void *m, void *id);
+BOOL func_ov011_02202d04(void *self, const Ov011Vec *to, const Ov011Vec *from, s16 speed);
+void func_ov003_021da40c(void *p);
+
+#define D58 ((s32 *)&data_ov011_02207258)
+static inline void VSet_ff38(Ov011Vec *v, s32 x, s32 y, s32 z) {
+    v->x = x;
+    v->y = y;
+    v->z = z;
+}
+
+void func_ov011_021fff38(Ov011Fb *self) {
+    Ov011Vec t;
+    Ov011Vec arr_[2];
+
+    Ov011FbObj *o;
+    Ov011Vec *home;
+
+    s32 y;
+    home = (Ov011Vec *)&data_ov011_02207278;
+    y = D58[9];
+    t.x = D58[8];
+    t.y = y - 0x2000;
+    t.z = D58[10];
+    o = self->unk_104;
+    if (o == NULL) {
+        return;
+    }
+    switch (o->state) {
+    case 0:
+        break;
+    case 1: {
+        u8 n;
+        s32 v = self->unk_3c->unk_14;
+        n = self->unk_3c->unk_19;
+        if (n == 0xff) {
+            n = 0xf;
+        }
+        v += Ov011_FxMul(0x8000 - v, 0x333);
+        if (n >= 0x1e) {
+            n = 0x1e;
+        } else {
+            n++;
+        }
+        self->unk_3c->unk_14 = v;
+        self->unk_3c->unk_19 = n;
+        break;
+    }
+    case 2:
+        if (o->cnt == 0) {
+            Ov011V *g;
+            o->obj.v08();
+            func_ov011_02202d04(&self->unk_104->obj, &t, home, 0x19a);
+            self->unk_104->cnt++;
+            arr_[1] = *(Ov011Vec *)(self->unk_48 + 0x68);
+            g = func_02066900((const char *)((volatile s32 *)D58)[2], (const char *)((volatile s32 *)D58)[1], &arr_[1]);
+            self->unk_104->unk_38 = FLD(void *, g, 0x24);
+            FLD(s32, g, 0xc8) = -1;
+        }
+        if (self->unk_104->unk_38 != NULL) {
+            Ov011V *e = func_020657b0(data_0214a420, self->unk_104->unk_38);
+            if (e != NULL) {
+                arr_[0] = *(Ov011Vec *)(self->unk_48 + 0x68);
+                e->v18(&arr_[0]);
+            }
+        }
+        self->f94_m = 1;
+        break;
+    case 3:
+        if (o->cnt == 0) {
+            o->obj.v08();
+            func_ov011_02202d04(&self->unk_104->obj, home, &t, 0x19a);
+            self->unk_104->cnt++;
+            if (self->unk_104->unk_38 != NULL) {
+                func_02065860(data_0214a420, self->unk_104->unk_38);
+                self->unk_104->unk_38 = NULL;
+            }
+            self->b0 = 0;
+        } else {
+            s32 v;
+            v = self->unk_3c->unk_14;
+            u8 n = self->unk_3c->unk_19;
+            if (n <= 0xf) {
+                n = 0xf;
+                if (o->obj.v14()) {
+                    self->unk_104->obj.v08();
+                    self->f94_m = 0;
+                    self->unk_104->flags |= 1;
+                }
+            } else {
+                n--;
+                v += Ov011_FxMul((self->unk_64 << 1) - v, 0x59a);
+            }
+            self->unk_3c->unk_14 = v;
+            self->unk_3c->unk_19 = n;
+        }
+        break;
+    }
+    func_ov003_021da40c(self->unk_104);
+    self->unk_104->obj.v0c();
 }
 #pragma force_active reset
 }

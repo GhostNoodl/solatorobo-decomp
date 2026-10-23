@@ -287,7 +287,7 @@ src/ov009/ov009_0220b48c.cpp:
 
 src/ov009/ov009_0220b70c.cpp:
     complete
-    .text       start:0x0220b70c end:0x0220b8a0
+    .text       start:0x0220b70c end:0x0220bb70
 
 src/ov009/ov009_0220bb70.cpp:
     complete
