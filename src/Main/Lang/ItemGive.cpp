@@ -15,6 +15,14 @@ extern SaveEntry *func_0205976c(DataRes *res, u32 idx);
 extern u16 func_02059544(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id);
 extern int STD_CompareString(const char *a, const char *b);
 
+static inline u16 Item_Cat16(u16 id) {
+    return id >> 12;
+}
+
+static inline u16 Item_Idx16(u16 id) {
+    return id & 0xfff;
+}
+
 static inline u16 Item_Cat(u32 id) {
     return id >> 12;
 }
@@ -166,7 +174,29 @@ typedef struct ItemDef {
     /* 0x0c */ s16 parts[4];
 } ItemDef;
 
-u16 func_0206f6d4(s32 id, s32 *slot);
+u16 func_0206f6d4(s32 id, s32 *slot) {
+    u16 found = 0;
+    int k;
+    int j;
+    if (Item_Cat(id) != 6) {
+        return found;
+    }
+    for (k = 0; k < 16; k++) {
+        u16 item = k + 0x7000;
+        s16 *parts = ((ItemDef *)data_0208d268[(u16)(Item_Cat16(item) - 1)])[Item_Idx16(item)].parts;
+        for (j = 0; j < 4; j++) {
+            if (id == parts[j]) {
+                found = item;
+                if (slot != NULL) {
+                    *slot = j;
+                }
+                goto end;
+            }
+        }
+    }
+end:
+    return found;
+}
 
 u16 func_0206f788(u16 id);
 

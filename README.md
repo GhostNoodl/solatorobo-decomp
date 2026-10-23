@@ -6,7 +6,7 @@
 
 ![Platform](https://img.shields.io/badge/platform-Nintendo%20DS%20%2F%20DSi-d7263d?style=flat-square)
 ![Region](https://img.shields.io/badge/region-USA-2f7fd8?style=flat-square)
-![Compiler](https://img.shields.io/badge/compiler-CodeWarrior%20dsi%2F1.3p1-6c5ce7?style=flat-square)
+![Compiler](https://img.shields.io/badge/compiler-CodeWarrior%20dsi%2F1.3-6c5ce7?style=flat-square)
 ![No assets](https://img.shields.io/badge/ROM%20%26%20assets-not%20included-444?style=flat-square)
 
 <img src="docs/progress.svg" alt="Decompilation progress" width="720">
@@ -44,7 +44,7 @@ Most of the TwlSDK and NitroSystem library code (FS, CARD, WM, OS, FX, MI, GX, S
 
 ## Compiler
 
-The game was built with CodeWarrior for DSi, somewhere between `dsi/1.2` and `dsi/1.3p1` (mwccarm 4.0 builds 1026 to 1036). Some functions have odd-sized stack frames that newer versions don't produce, and `dsi/1.1` breaks other functions. We use `dsi/1.3p1` (`mwcc_40_1036` on decomp.me). The 2.0 compilers that most DS decomps use don't match.
+The game was built with CodeWarrior for DSi, somewhere between `dsi/1.2` and `dsi/1.3` (mwccarm 4.0 builds 1026 to 1034). Some functions have odd-sized stack frames that newer versions don't produce, `dsi/1.1` breaks other functions, and a few fold a `u16` truncation into the next instruction's operand, which `dsi/1.3p1` no longer does. We use `dsi/1.3` (`mwcc_40_1034` on decomp.me). The prebuilt NitroSystem files that need `dsi/1.1` are listed in `tools/mwcc_versions.py`. The 2.0 compilers that most DS decomps use don't match.
 
 ## Building
 
