@@ -256,3 +256,61 @@ s32 func_ov000_02199454(Finder *self, Query *q, Part **list, s32 count) {
     }
     return n;
 }
+
+s32 func_ov000_02198efc(s32 count, SortLink *links, s32 *keys);
+
+static inline s32 DistSq9554(const VecFx32 *a, const VecFx32 *b) {
+    s32 x = a->x;
+    s32 y = a->y;
+    s32 z = a->z;
+
+    x -= b->x;
+    y -= b->y;
+    z -= b->z;
+    return (s32)(((s64)x * x + (s64)y * y + (s64)z * z + 0x800) >> 12);
+}
+
+s32 func_ov000_02199554(Finder *self, Query *q, Part **out, s32 max) {
+    Part *found[32];
+    s32 dist[32];
+    SortLink links[32];
+    s32 i;
+    s32 n;
+    s32 cur;
+    Part *part;
+
+    if (q == NULL) {
+        return 0;
+    }
+    n = 0;
+    if (q != NULL) {
+        part = NULL;
+        for (; n < max; n++) {
+            part = func_ov000_021992b4(self, q, part);
+            if (part == NULL) {
+                break;
+            }
+            out[n] = part;
+        }
+    }
+    if (n > 1) {
+        if (n > 32) {
+            n = 32;
+        }
+        for (i = 0; i < n; i++) {
+            Part *a = out[i];
+            found[i] = a;
+            if (a != NULL) {
+                dist[i] = DistSq9554((VecFx32 *)a, &q->pos);
+            } else {
+                dist[i] = 0x7fffffff;
+            }
+        }
+        cur = func_ov000_02198efc(n, links, dist);
+        for (i = 0; i < n; i++) {
+            out[i] = found[cur];
+            cur = links[cur].next;
+        }
+    }
+    return n;
+}

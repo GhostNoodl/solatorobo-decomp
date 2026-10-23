@@ -751,11 +751,11 @@ src/ov000/ActorEx_021953b4.cpp:
 
 src/ov000/Body_02198c8c.c:
     complete
-    .text       start:0x02198ad8 end:0x02199180
+    .text       start:0x02198ad8 end:0x021992b4
 
 src/ov000/Body_021992b4.c:
     complete
-    .text       start:0x021992b4 end:0x02199554
+    .text       start:0x021992b4 end:0x02199684
 
 src/ov000/Target_02199b00.c:
     complete
@@ -3273,6 +3273,10 @@ src/ov000/Robo_02196060.cpp:
     complete
     .text       start:0x02196060 end:0x02196258
 
+src/ov000/Robo_02196258.cpp:
+    complete
+    .text       start:0x02196258 end:0x02196860
+
 src/ov000/Robo_02196860.cpp:
     complete
     .text       start:0x02196860 end:0x02196c40
@@ -3440,6 +3444,10 @@ src/ov000/Mgr_021b5dc0.cpp:
 src/ov000/Robo_02196c40.cpp:
     complete
     .text       start:0x02196c40 end:0x021971c4
+
+src/ov000/Robo_021971c4.cpp:
+    complete
+    .text       start:0x021971c4 end:0x021974b0
 
 src/ov000/Robo_021ab68c.cpp:
     complete
