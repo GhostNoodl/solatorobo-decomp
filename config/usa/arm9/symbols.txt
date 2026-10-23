@@ -515,6 +515,7 @@ MATHi_CalcHMAC kind:function(arm,size=0x1b0) addr:0x02015e30
 MATHi_CRC16InitTableRev kind:function(arm,size=0x44) addr:0x02015fe0
 MATHi_CRC16UpdateRev kind:function(arm,size=0x40) addr:0x02016024
 MATH_CalcCRC16 kind:function(arm,size=0x28) addr:0x02016064
+MATHi_SHA1K kind:data(any) addr:0x0201608c
 MATHi_SHA1ProcessBlock kind:function(arm,size=0x31c) addr:0x0201609c
 func_020163b8 kind:function(arm,size=0x18) addr:0x020163b8
 MI_SetWramBank kind:function(arm,size=0x10) addr:0x020163d0
