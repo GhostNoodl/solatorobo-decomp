@@ -2303,3 +2303,25 @@ One new match. Scores are raw / register-masked seqdiff.
   - `ov003_021ea588` (50 / 30): the target uses `sl` and gets all of `func_ov000_0219aae8`'s stack arguments into registers before it stores them. An inline wrapper for the call and all 120 orders of the `a`/`b`/`v.x`/`v.y`/`v.z` statements stay at 50 or worse.
   - `ov006_021e309c` (51 / 19): five forms of the `Caption_Draw` argument expressions (separate `dx`/`dy` locals, operand order, a cached anim pointer) compile the same.
 - Tools are in `scratchpad/ovmid9/t/` (the ovmid8 tools pointed at this clone, plus `tdis9.py`).
+
+## Register-held constants and fresh redrafts without a match (overlays, round ovmid10)
+
+No new matches. Every function below was redrafted from the target asm without opening the old draft. Scores are raw / register-masked seqdiff.
+
+| Function | Old draft | Fresh draft | What moved it |
+|---|---|---|---|
+| `ov000_02196258` (0x608) | — | 34 / 0 (`d/6258/best34.cpp`) | `s32 zero = 0;` local for the `adc rX, rY, r4` and the `umull`/`mla`/`mla` s64 multiply; scale loads written as `y = FX(sc->y); z = FX(sc->z); x = FX(sc->x);` then stores `x, y, z`; nibble update as `u8 val = 0xf; val \|= Get(row, idx) & 8; Set(row, idx, val);` |
+| `ov003_021cd744` (0x1d8) | — | 28 / 0 (`d/d744/z1.cpp`) | sibling-style `(u16)(s16)self->unk_69` loop bound |
+| `ov000_02165a20` (0x358) | 45 / 0 | 68 / 0 clean (`d/5a20/e1.cpp`); 45 / 0 with `ppa.sh` parameters | `head = tail = 0` (one chained assignment) fixes the store order |
+| `ov002_021e0488` (0x23c) | 65 / 32 | 41 / 30 (`d/0488/r1.cpp`); cxxperm 37 / 28 | locals-as-parameters like the matched twin `ov002_021d8d00`, `n = 0` before `MTX_Copy43To44_`, `y` computed after the clamp |
+| `ov000_0216715c` (0x490) | 135 / 89 | 147 / 45 (`d/715c/n1.cpp`) | endpoints kept pre-shifted (`<< 12`), lerp as `LO_FX_MUL(b - a, t) + a` |
+| `ov000_021971c4` (0x2ec) | 87 / 6 | 85 / 4 (`d/71c4/a.cpp`) | `u32 none = 0xffff;` and `s32 zero = 0;` locals for the constants the target keeps in callee-saved registers |
+
+- **Constants in callee-saved registers.** When the target keeps `0` or `0xffff` in `r4`–`r7` across calls (`mov r4, #0` in the prologue, then `str r4, [sp]`, `adc ..., r4`, `cmp r0, r5`), declare a named local (`s32 zero = 0;`, `u32 none = 0xffff;`) and use it at every site. MWCC then keeps it in one register instead of rematerialising it at each use.
+- **Inline arguments appear to be evaluated right to left**, which matters when matching the load order at an inlined call site.
+- **What is left (no source form moved it):**
+  - 6258 and 71c4: in the inlined `GetNibble`, the target puts `mod = q + ror(t)` in `q`'s register, while ours lands in `t`'s. Every Get/Set spelling, `idx`/`row` type, the matched `Save_02197d80.c` inlines (`Obj_StoreValue` with a `value` parameter), O2/O3 pragmas and all compiler versions compile the same.
+  - 71c4 also has a four-way rotation (target `self`=`r7`, `zero`=`r4`, `none`=`r5`, `tgt`=`r6`; ours `r4`/`r5`/`r6`/`r7`). All six declaration orders, `u8 *self` as the parameter, separate `tgt` assignment and `int`/`u16` constants do not change it; neither does `ppa.sh`.
+  - d744: `self` is `r6` instead of `r4`. Inline parameter types, `continue` instead of a nested `if`, function-level loop locals, and moving the draws or the loop into inlines all stay at 28 / 0.
+  - 0488: one extra 4-byte stack slot (the target frame is 0x78 with an unused slot at `sp+0x18`) and the spill-slot order.
+- Drafts are in `scratchpad/ovmid10/d/`, and tools (`sc.py`, `sc.sh`, `tdis9.py`, `ppa.sh`) are in `scratchpad/ovmid10/t/`.
