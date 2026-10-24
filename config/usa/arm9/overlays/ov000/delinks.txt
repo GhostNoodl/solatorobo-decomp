@@ -3508,3 +3508,19 @@ src/ov000/Lo_02161994.cpp:
 src/ov000/Menu_021c6d64.cpp:
     complete
     .text       start:0x021c6d64 end:0x021c7000
+
+src/ov000/Twl_0214b438.cpp:
+    complete
+    .text       start:0x0214b438 end:0x0214b570
+
+src/ov000/Twl_0214b598.cpp:
+    complete
+    .text       start:0x0214b598 end:0x0214b5e8
+
+src/ov000/Twl_0214b670.cpp:
+    complete
+    .text       start:0x0214b670 end:0x0214b6d0
+
+src/ov000/Twl_0214b724.cpp:
+    complete
+    .text       start:0x0214b724 end:0x0214b88c

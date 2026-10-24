@@ -156,7 +156,7 @@ libs/runtime/FP_fastI_fpinit.c:
 
 libs/nitro/svc/svc_twl.c:
     complete
-    .text       start:0x0200c0c4 end:0x0200c118
+    .text       start:0x0200c0c4 end:0x0200c140
 
 libs/nitro/card/card_common.c:
     complete
@@ -468,7 +468,7 @@ libs/nitro/os/os_arena.c:
 
 libs/nitro/os/os_arena_2.c:
     complete
-    .text       start:0x02019510 end:0x02019538
+    .text       start:0x02019510 end:0x02019704
 
 libs/nitro/os/os_arena_3.c:
     complete
