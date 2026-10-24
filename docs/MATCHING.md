@@ -2758,3 +2758,37 @@ The ranked list, with a note on each entry's known state, is `scratchpad/twins1/
   - `ov000_0217a1f8` is the first part of `Lo_0217abd8` (stored at `0x44`, with `func_ov000_0217a328(self, 0x78, -1)` added). It is 3 diffs, the known `-1`-from-`0x78` derivation.
 - A second cxxperm run of 20 minutes on each best (`--slack 2`, about 15,000–19,000 compiles) did not get either one lower (18 and 6).
 - **Fragment search** (`scratchpad/twins1/t/frag.py mod func start end`) looks for the best window of matched code that is like an address range of a leftover. With registers masked, it only returned shared idioms (FX multiplies and vector copies). It did not help.
+## Flag scope in a switch, BOOL returns as expressions, and fresh zeros (ov000 above 0x021a0000 and ov009–ov015, round ovhimid8)
+
+- **Match: `func_ov010_02209948`** (new file `src/ov010/ov010_02209948.cpp`, 0x6e8 bytes, a wave/spawn state machine). The earlier draft was 19 / 5. Three changes matched it:
+  - **Where the flag lives decides which register holds TRUE.** Case `0x10` uses a function-scope `BOOL ok;`, declared without an initialiser and set (`ok = TRUE;`) at the top of the case. Case `0x41` uses its own block-local `BOOL ok = TRUE;`. With one function-level `ok = TRUE` before the `switch`, the flag coalesced with the hoisted TRUE constant and every later register shifted.
+  - **Write the `0x41` loop in place.** Do not put it in an `AllDone()` inline that returns the flag.
+  - **Return a BOOL as an expression.** Write `return self->timer % (0x19 / (self->unk_0a - 1)) == 0;` and not `BOOL r = TRUE; if (...) r = FALSE; return r;`. The expression form builds the result after the division call (`moveq/movne`), as the target does.
+- **A spilled local that the target reloads.** In `func_ov000_021b209c`, `actor = FindActor(id); sub = NULL; if (actor != NULL) sub = actor->unk_4c;` (an inline with an early `return NULL`) gives the target's `str r0, [sp, #0x1c]; ldr r0, [sp, #0x1c]` reload. That took the draft from 9 / 5 to 10 / 9 with one instruction left over (`ovhimid8/d/209c/k/A0B2.cpp`, match.py 501, because the pool shifts by one word). The target stores the hoisted zero directly (`streq r5, [sp, #0x1c]`). Our build first copies it into the call-result register (`moveq r0, r5; streq r0`). Five inline forms, a plain `if`/`else`, a ternary, `u8 *actor[1]` and `volatile` did not remove the copy.
+- **Fresh zero against hoisted zero.** Some targets materialise a fresh `mov rX, #0` for one block and set the hoisted zero register only later; our build uses the hoisted register throughout, or the other way round. Seen in `ov015_0220b1b8`, `ov010_02201064` and `ov011_021fd638`. In `021fd638` our build hoists the `e->unk_08 = 0` zero to function entry, while the target hoists it only to the inner loop's preheader. Literal forms, inlines, zero locals and splitmod changed none of them. A 15-minute cxxperm on `021fd638` found nothing.
+- **Constants are rematerialised at their use.** Compare `ov013_021fc7e0`: the target loads `0xb33` into `r2` while `0x800` is already in `r1` (the two overlap). None of the following made two constants overlap:
+  - a constant passed through an inline parameter;
+  - a local holding the constant;
+  - a comma expression inside a call argument, e.g. `v14(0x800, (o->f3c = 0xb33, 0x800), 0x800)`.
+
+  The same holds in `ov010_0220640c`, where the target's arguments `1` and `0` are set up before the `0x98` store block. Inlines that return one of the arguments, in every argument position, and seven forms of the `+=` expression all give the same hash.
+- **New tools (in `$S/ovhimid8/t/`):**
+  - `lperm.py base func mod start end` scores every order of the given lines and writes the best one to `base.lp.<ext>`. Use it in place of `hcorder.py` on drafts that use `LFLD(...)`: `hcorder.py` treats `LFLD(` as a call and then finds no legal moves.
+  - `boolsw.py` rewrites the flag-style BOOL returns of inlines (`r = TRUE; if (c) r = FALSE; return r;`) as expressions and scores each one. A sweep over 27 near-miss drafts (`bsw/res.txt`) improved nothing beyond `02209948`.
+- **Still open** (scored raw / register-masked under dsi/1.3; drafts in `$S/ovhimid8/d/`):
+  - `ov009_02206084`: 5 / 5. The target loads `pl->id` before the bitfield `ldrb`. 120 declaration orders and cxxperm did not change it.
+  - `021a2670`: 9 / 5. The `b24` word is in `r3`; the target has it in `r2`.
+  - `021c8408`: 5 / 2. The target loads the `texBase` stack parameter first.
+  - `021b3e90`: 7 / 1 (`a.cpp`, with the compare written as `cam->unk_d6 - 1 != cam->unk_d4`). What remains is our `movne r0, r4` against the target's unconditional `mov`.
+  - `ov010_02203f08`: 24 / 11.
+  - `ov010_0220c758`: a whole-function register rotation.
+  - `ov012_021fab7c`: 6 / 6, scheduling only. The six-byte `rot` copy loads come after `mov r6, r0` in our build and before it in the target. Inlines, a block-local `n` and a field-by-field copy did not move them, and all compilers give 8.
+  - `ov010_02200a00`: 2 / 2. Clearing the `0xa4` flags as three bitfield writes does not merge them into one `bic`.
+  - `ov013_021fee10`: 0 / 0 by seqdiff but 5 in `match.py` (`ovhimid6/d/fee10/v5.cpp`). The draft reads `anim` through a second declaration of the same symbol (`namespace Kee10 { extern "C" const u8 data_ov013_0220aedc[]; }`). That declaration gets its own literal pool word, and the target has only one word for the symbol. With the second declaration removed (`ovhimid8/d/ee10/a.cpp`), the `anim` load counts as aliasing the stores to `o3` that come before it. The compiler then schedules it after them, writes the `b0`/`b1` bitfield byte out early, and rotates every register (110 / 10). These did not fix that:
+    - making the main declaration `const` (18 / 16): the first-block and `x2` loads are hoisted above the `ar`/`o2` stores, which the target does not do;
+    - a struct type for the table, or a `const` member;
+    - `__restrict` on `o3`;
+    - 360 interleavings of `anim`, `b0 = 0` and `b1 = 0` with the other `o3` stores (`d/ee10/g/`, best `match.py` 20).
+
+    The closest single-declaration draft is `d/ee10/q1.cpp` (18 / 13, `match.py` 21), which moves `b0 = 0; b1 = 0;` after the `anim` read.
+  - `021bb33c`: 2 / 2. The target's `moveq r0, #0; streq` is not a materialised BOOL: `BOOL k = Keep(self); if (!k) self->fx = (Fx33c *)k;` emits the full `movne #1; moveq #0; cmp`, giving 9 / 9.
