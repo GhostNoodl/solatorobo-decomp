@@ -3552,3 +3552,7 @@ src/ov000/Twl_0214b670.cpp:
 src/ov000/Twl_0214b724.cpp:
     complete
     .text       start:0x0214b724 end:0x0214b88c
+
+src/ov000/Cam_02189b44.cpp:
+    complete
+    .text       start:0x02189b44 end:0x0218a358
