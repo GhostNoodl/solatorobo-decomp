@@ -94,9 +94,17 @@ libs/runtime/ExceptionHandler.c:
     complete
     .text       start:0x02008790 end:0x02008a20
 
+libs/runtime/ExceptionHandler_unwind.cpp:
+    complete
+    .text       start:0x02008a20 end:0x02009510
+
 libs/runtime/ExceptionHandler_2.c:
     complete
     .text       start:0x02009510 end:0x020096e4
+
+libs/runtime/ExceptionHandler_unexp.cpp:
+    complete
+    .text       start:0x020096e4 end:0x02009744
 
 libs/runtime/ExceptionHandler_3.c:
     complete
