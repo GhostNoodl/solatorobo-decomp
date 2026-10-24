@@ -2641,3 +2641,19 @@ About 70 relocations in main (and more in the overlays) point into the TWL-only 
 - **Game code calling TWL SDK.** `func_0203d5c4` (system init), `func_0203d8b0`, `func_0203c638` (TWL graphics reset, with the `GfxSys_5.cpp` inlines and `(int)(DISPCNT & 0x300010) >> 20` for the `asr`), `func_02049344` (sound init) and `func_0204a598`..`0204a7dc` (camera-shutter sound loading, `SndMgr_6.cpp`).
 - **Overlays.** The same `abs_symbols.txt` is shared by every module (there is one `.lcf`), so the overlay TWL callers (`func_ov000_0214b438`..`0214b810` and others in the old notes) can use it too.
 - **Renames:** `func_02013428` `GX_Init`, `func_02014304` `GX_LoadBGPltt`, `func_0201439c` `GXS_LoadBGPltt`, `func_020147bc` `GXS_LoadBG3Scr`, `func_020194a0` `OS_InitArenaEx`.
+
+## Narrow stack parameters, a NULL-handling inline and a reused `u8` counter (ov000 above 0x021a0000 and ov009–ov015, round ovhimid7)
+
+- **Match: `func_ov000_021b70c0`** (`src/ov000/Mdl_021b70c0.cpp`, 0x520 bytes). It needed four changes to the old bigsweep1 draft:
+  - **Stack parameters typed `u8`.** The target's prologue copies its stack arguments (`ldr r4, [sp, #0x28]; str r4, [sp, #0x28]` ...) in a fixed order. Declaring `needMat` and `nsub` as `u8` instead of `BOOL`/`u32` moved those copies into the target's order.
+  - **The inline handles a NULL set itself.** `GetMdlByIdx(set, i)` starts with `if (set != NULL)` and returns NULL otherwise, in place of the caller-side `if (set) m = Get(set, i); else m = NULL;`. Both NULL paths then merge, giving the target's `addne; bne join; mov rX, #0`.
+  - **A reused function-scope `u8 i`.** `self->unk_bb = 0; i = self->unk_bb;` gives the target's unmasked index register.
+  - **A trailing unused `void *tex` parameter.** It fixes the register order of `mdl` and `tex`.
+- **New tool:** `$S/ovhimid7/t/ptype.py src func module outdir` scores each parameter retyped one at a time (`u8`/`s8`/`u16`/`s16`/`int`/`u32`/`BOOL`/pointer), plus pairs of the stack parameters. Run on eight other drafts, it found nothing.
+- **Partial gains:**
+  - `func_ov014_0220f3f0`: 67 / 12 → 28 / 12 (`d/f3f0/b2.cpp`), from `s32 dx, dy, dz` difference locals in the axis inline after `VEC_Normalize`. Still open:
+    - a register swap in block 1;
+    - the target computes `&ax` late into `r6`, but any pointer variable we use for it is hoisted.
+  - `func_ov010_021ff21c`: 20 / 10 → 15 / 12 (`d/f21c/c2.cpp`). Reading the rot struct through a `namespace D { extern "C" const u8 data_...[]; }` view hoists the table load. The `ldrh` order (0x2c, 0x2a, 0x2e) still differs.
+  - `func_ov000_021ad130`: 21 / 9 → 21 / 6 (`d/ad130/h/A1.cpp`). It now uses the `CmdQueue` loop of the matched siblings `Lo_02166be8` and `Widget_02182590` (`for (i = q->unk_90; i != q->index;)`). Six-byte `ldrh/ldrh/strh/strh/ldrh/strh` runs are a struct copy of `u16[3]`. The target still loads the queue pointer after the copies.
+- **No progress (attempts in the round report):** `021b3e90` (5 / 1, `movne` against an unconditional `mov`), `021aa978`, `ov010_02205444`, `021b209c`, `ov013_02205c74`, `021b628c`, `ov015_021fc40c`, `021c8408` (5 / 2) and `ov015_02211b2c` (2 / 2).
