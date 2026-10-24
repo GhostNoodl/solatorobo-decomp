@@ -10,6 +10,8 @@
 #   extract  a pure `A op B` inside a statement, an if/switch condition or an argument
 #            ->  `s32 sm_tN = A; sm_tN op= B;` before the statement, with sm_tN in its place
 #            (also u32 for >> / %). --no-extract turns this off.
+#   For `-`, both also get the right-operand split `T v = B; v = A - v;` (labels ending in `r`),
+#   which loads B first and keeps the result in B's register (round ovhimid5).
 # Singles and pairs of the best singles (plus "every site at once") are scored with tools/match.py
 # (raw and register-masked sequence diff). The best states (--beam) are kept and expanded again.
 # A final sweep moves one declaration within its run, or swaps two adjacent plain statements.
@@ -207,6 +209,9 @@ def is_decl(s):
 
 OPS = {'|': 0, '^': 1, '&': 2, '<<': 3, '>>': 3, '+': 4, '-': 4, '*': 5, '/': 5, '%': 5}
 COMM = set('+*&|^')
+TYPES = {'s8', 'u8', 's16', 'u16', 's32', 'u32', 's64', 'u64', 'int', 'char', 'short', 'long', 'void', 'BOOL',
+         'fx32', 'fx16', 'f32', 'vu8', 'vu16', 'vu32', 'const'}
+RSPLIT = {'-'}  # non-commutative ops that also get the right-operand split (round ovhimid5)
 CASTTY = re.compile(r'^\s*(?:const\s+|unsigned\s+|signed\s+|struct\s+|volatile\s+)*'
                     r'(?:s8|u8|s16|u16|s32|u32|s64|u64|int|char|short|long|unsigned|BOOL|fx32|fx16|void|f32|vu8|vu16|vu32|[A-Z]\w*)\s*\**\s*$')
 
@@ -328,6 +333,8 @@ def gen_extract(t, func, typ='s32'):
                 lo = m.find('(', s0); hi = match_close(m, lo, '(', ')')
                 if lo < 0 or hi < 0 or hi > e: continue
                 rng = (lo + 1, hi)
+            elif w == 'return':
+                rng = (s0 + 6, e)
             elif is_decl(m[s0:e]):
                 if '=' not in m[s0:e]: continue
                 rng = (m.find('=', s0) + 1, e)
@@ -343,14 +350,18 @@ def gen_extract(t, func, typ='s32'):
             for x, y in sorted(set(subs)):
                 ex = m[x:y]
                 if IMPURE.search(ex) or re.search(r'\b[su]64\b|long long', ex): continue
-                if ex.strip() == whole and rng[0] != s0 and w not in ('if', 'switch'): continue
+                if ex.strip() == whole and rng[0] != s0 and w not in ('if', 'switch', 'return'): continue
                 ia, op, ib = split_expr(ex)
                 A = strip_parens(t[x:x + ia]); B = strip_parens(t[x + ib:y])
-                forms = [(A, B, '')] + ([(B, A, 'c')] if op in COMM else [])
+                if not A or not B or A in TYPES or B in TYPES: continue  # e.g. `FLD(u8 *, p, 4)`
+                forms = [(A, B, '')] + ([(B, A, 'c')] if op in COMM else []) + ([(A, B, 'r')] if op in RSPLIT else [])
                 for ty in [typ] + (['u32'] if op in ('>>', '/', '%') else []):
                     for X, Y, tag in forms:
                         n += 1; v = 'sm_t%d' % n
-                        ins = '%s %s = %s; %s %s= %s;\n%s' % (ty, v, X, v, op, Y, ind)
+                        if tag == 'r':  # split from the right operand: `x = B; x = A op x;`
+                            ins = '%s %s = %s; %s = %s %s %s;\n%s' % (ty, v, Y, v, X, op, v, ind)
+                        else:
+                            ins = '%s %s = %s; %s %s= %s;\n%s' % (ty, v, X, v, op, Y, ind)
                         out.append(('%s:%d:x%s%s%s' % (f, line, op, tag, '' if ty == typ else ty), [(s0, s0, ins), (x, y, v)]))
     return out
 
@@ -396,6 +407,7 @@ def gen_split(t, func):
             forms = []
             if v not in idents(Bm): forms.append((A, B, ''))
             if op in COMM and v not in idents(Am): forms.append((B, A, 'c'))
+            if op in RSPLIT and v not in idents(Am): forms.append((A, B, 'r'))
             # end of the declaration run that follows this statement in the same block
             j = si + 1; runend = None
             while j < len(sts) and sts[j][2] == blk and is_decl(m[sts[j][0]:sts[j][1]].strip()):
@@ -403,8 +415,12 @@ def gen_split(t, func):
             line = t.count('\n', 0, s0) + 1
             ind = re.match(r'[ \t]*', t[t.rfind('\n', 0, s0) + 1:]).group(0)
             for X, Y, tag in forms:
-                first = (ty + v + ' = ' + X + ';') if kind == 'D' else (v + ' = ' + X + ';')
-                mod = ' ' + v + ' ' + op + '= ' + Y + ';'
+                if tag == 'r':  # split from the right operand: `T v = B; v = A op v;`
+                    first = (ty + v + ' = ' + Y + ';') if kind == 'D' else (v + ' = ' + Y + ';')
+                    mod = ' ' + v + ' = ' + X + ' ' + op + ' ' + v + ';'
+                else:
+                    first = (ty + v + ' = ' + X + ';') if kind == 'D' else (v + ' = ' + X + ';')
+                    mod = ' ' + v + ' ' + op + '= ' + Y + ';'
                 lab = '%s:%d:%s%s' % (f, line, op, tag)
                 out.append((lab, [(s0, e + 1, first + mod)]))
                 if runend is not None:
@@ -500,7 +516,7 @@ def combos(V, top):
     for tag in ('', '@run'):
         groups = {}
         for lab, ed in V:
-            if lab.endswith('c' + tag) or (tag == '' and lab.endswith('@run')) or (tag and not lab.endswith(tag)):
+            if lab.endswith('c' + tag) or lab.endswith('r' + tag) or (tag == '' and lab.endswith('@run')) or (tag and not lab.endswith(tag)):
                 continue
             groups.setdefault(lab.split(':')[0], []).append((lab, ed))
         allg = []

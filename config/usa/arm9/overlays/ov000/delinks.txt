@@ -65,6 +65,10 @@ src/ov000/Loader_0214b88c.cpp:
     complete
     .text       start:0x0214b88c end:0x0214bcc4
 
+src/ov000/Lo_0214bcc4.c:
+    complete
+    .text       start:0x0214bcc4 end:0x0214be28
+
 src/ov000/Obj_0214e354.cpp:
     complete
     .text       start:0x0214e354 end:0x0214e3b4
