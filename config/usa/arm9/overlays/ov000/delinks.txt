@@ -1433,6 +1433,10 @@ src/ov000/Lo_0215d3bc.cpp:
     complete
     .text       start:0x0215d3bc end:0x0215d4b4
 
+src/ov000/G3_0215d4b4.cpp:
+    complete
+    .text       start:0x0215d4b4 end:0x0215d758
+
 src/ov000/Lo_021681fc.cpp:
     complete
     .text       start:0x021681fc end:0x021682fc
@@ -2337,6 +2341,10 @@ src/ov000/Lo_021532d0.cpp:
     complete
     .text       start:0x021532d0 end:0x021535a8
 
+src/ov000/G3_021535a8.cpp:
+    complete
+    .text       start:0x021535a8 end:0x02153804
+
 src/ov000/Lo_0215a4f4.cpp:
     complete
     .text       start:0x0215a4f4 end:0x0215a7d8
@@ -3224,6 +3232,10 @@ src/ov000/Lo_02154c34.cpp:
 src/ov000/Lo_0215b054.cpp:
     complete
     .text       start:0x0215b054 end:0x0215b2e4
+
+src/ov000/G3_0215b2e4.cpp:
+    complete
+    .text       start:0x0215b2e4 end:0x0215b598
 
 src/ov000/Lo_021b5110.cpp:
     complete
