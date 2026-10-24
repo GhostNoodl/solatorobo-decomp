@@ -2668,3 +2668,27 @@ About 70 relocations in main (and more in the overlays) point into the TWL-only 
 - **ARM targets called from Thumb (`func_0200c118`).** MWLD picks `bl`/`blx` from the target's `$a`/`$t` mapping symbol, which an absolute symbol does not have (an `SHN_ABS` `STT_FUNC` symbol in an object, even with an absolute `$a` beside it, still gets `bl`; a zero-size section is dropped). `abs_symbols.txt` now takes a third column, `name addr arm`. For those, `tools/lcf_abs.py` writes `build/usa/abs_arm.o` with one 4-byte ARM section `.abs.<name>` per entry (holding `$a` and the global function), adds a memory region `ABS_<name> : ORIGIN = addr > build/abs_<name>.bin` and a section placing it there, and appends the object to `objects.txt` (the `lcf` rule now passes the objects file). The stub's bytes go to their own `.bin`, never into the ROM, and `dsd check symbols` accepts the extra symbol. `func_0200c118` is appended to `libs/nitro/svc/svc_twl.c`.
   - `tools/match.py` cannot check Thumb calls (it shows the unrelocated `bl` halves, 6 lines for `func_0200c118` and for the matched `func_0200c0fc` alike), and `objdiff` scores `func_0200c118` at 96%, because dsd delinks a `module:none` call as raw bytes (`blx`) while our object has a relocated `bl`. The module check is byte-exact.
 - **Linker constants (`OS_GetInitArenaHi`, `OS_GetInitArenaLo`).** The same list holds the SDK's link-time constants: `SDK_SYS_STACKSIZE 0x1000`, `SDK_IRQ_STACKSIZE 0x800` and `SDK_SECTION_ARENA_EX_START 0x0d000000`, used as `extern char X[];` and `(s32)X`. Only values whose use the compiler would otherwise fold need a symbol: the stack sizes (tested against 0 at run time) and `0x0d000000` (a pool load in the target although it would fit a `mov`). The other pool words (`0x022183c0`, `0x02298140`, `0x01ffcac0`, `0x02fe15c0`, `0x02fff000`, `0x02fff680`, `0x023e0000`) are plain constants, which keeps their objdiff rows clean. `HW_DTCM` is dsd's `__DTCM_LO`. Both functions follow the TwlSDK `os_arena.c` switch (cases `MAIN`, `MAINEX`, `ITCM`, `DTCM`, `SHARED`, `WRAM_MAIN`; `MAINEX` tests the console size inside the `OS_IsRunOnTwl()` branches), and both matched first time. Appended to `libs/nitro/os/os_arena_2.c`, which now ends at `0x02019704`, directly before `os_arena_3.c`.
+
+## Twin search, statement-order climbing and vfunc arity (ov000 below 0x021a0000 and ov001–ov008, round ovlo13)
+
+- **Twin search.** Disassemble every unmatched function and every matched function in all modules (main and the overlays) with capstone. Replace the registers with `R` and the branch targets and pool offsets with placeholders. Then rank the matched functions by `difflib` ratio, using a 4-gram prefilter to find candidates. Below about 0.6, the matches came from shared inlines such as `PlayPart` or the heap-scope delete, and are not useful. The script is `scratchpad/ovlo13/t/twins2.py <list>`, with environment variables `K` (n-gram size), `CF` (prefilter fraction) and `TH` (ratio). It found:
+  - `ov006_021e0b80` ↔ `ov006_021e1bb4`;
+  - `ov000_021597dc` ↔ `ov000_02155770`.
+
+  Both are now matched.
+- **Start from the twin's inline and climb the statement order.** For `func_ov006_021e0b80`, the caption draw inline from `ov006_021e1bb4.cpp`, written out flat, was already close. What was left was only scheduling, and source order breaks the scheduler's ties. `scratchpad/ovlo13/t/hcorder.py` does a beam hill-climb over single moves and swaps of the statements in a range. It never reorders two statements where one writes a variable the other reads or writes, and calls and braces stay fixed. It found the matching order. `hcall.py` runs the climb over every run of three or more simple statements in a draft. A queue of 20 old leftovers gained nothing from it: their diffs are register colouring, not scheduling.
+- **Vfunc arity shows in the registers.** `func_ov000_021597dc` is the list handler of `Lo_02155770.cpp` without the item and sub-menu cases. Its vfunc calls set `mov r2, #0` and load the vtable into `r3` instead of `r2`. That means each call has one more argument (`vfunc_ac(1, 0)` and so on). Also, the `0x94` NULL test comes before the `b2`/`b1` checks.
+- **Some old drafts are semantically wrong.** The splitsweep `021e6eb0` draft (9 / 8) stores `trig = ~old` before the `&=`. The 13 / 2 `021e96cc` drafts pass their arguments swapped. The correct forms score 30 / 15 (`ovlo13/d/6eb0`) and 13 / 4 (`ovlo13/d/96cc`). Check the semantics before you build on a low score.
+- **Still open** (best drafts in `scratchpad/ovlo13/d/`, scored under dsi/1.3):
+  - `0215e6f0`: 11 / 0, `x`/`mask`/`buf0` register rotation.
+  - `021708ec`: 11 / 0, `mq`/`end` swap.
+  - `ov003_021cd744`: 28 / 0, `self` should be in `r4`.
+  - `021688c4`: 20 / 0.
+  - `0217e560`: 6 / 6 and `0218a670`: 12 / 6. Both are scheduling-only, and no source change alters the hash.
+  - `0219badc`: 5 / 4.
+  - `ov003_021e83d0`: 6 / 5.
+  - `ov006_021e7004`: 21 / 10.
+  - `ov002_021d3e14`: 18 / 0. The zero register `r5`/`r6` is swapped with `g`/`base`. Its twin is `Lo_021782e0`. Moving `g`, using a `zero` local, declaration orders and scoping all leave the code unchanged.
+  - `0218e12c`: 18 / 0 (`ovmid8/pa/0218e12c/base.cpp`). A flat form with the right inner registers is 35 / 3 (`ovlo13/d/e12c`).
+  - `ov006_021e2490`: 17 / 0. It does not change across 72 type/declaration-order variants.
+  - `0214b724`/`0214b810` are TWL-only (`module:none`).
