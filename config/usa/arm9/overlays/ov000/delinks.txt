@@ -1544,6 +1544,10 @@ src/ov000/Stub_021b14e8.cpp:
     complete
     .text       start:0x021b14e8 end:0x021b1540
 
+src/ov000/Stub_021c3158.cpp:
+    complete
+    .text       start:0x021c3158 end:0x021c34cc
+
 src/ov000/Stub_021c34cc.cpp:
     complete
     .text       start:0x021c34cc end:0x021c37bc
@@ -2916,6 +2920,10 @@ src/ov000/Lo_0217cddc.cpp:
 src/ov000/Ser_02181af4.cpp:
     complete
     .text       start:0x02181af4 end:0x02181c4c
+
+src/ov000/Ser_02181c4c.cpp:
+    complete
+    .text       start:0x02181c4c end:0x02181d70
 
 src/ov000/Lo_02178b10.cpp:
     complete

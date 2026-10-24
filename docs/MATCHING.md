@@ -39,9 +39,9 @@
 python3 tools/permuter/cxxperm.py draft.cpp func_ov014_022153e0 --module ov014 --time 900 -j 2 --inlines --stop-on-zero
 ```
 
-It compiles the draft with the project's flags and scores it against the base ROM. Then it applies one to three random rewrites at a time and keeps any result whose score is no worse. Every new best is written to `build/cxxperm/<function>/out-<score>-*.cpp` (change this with `-o`). It only rewrites the bodies of the target function, the functions named with `--funcs` and, with `--inlines`, every `static inline` in the file. It expects one statement per line, which is how the drafts are written. Set `TMPDIR` to keep its compiler temporaries out of `/tmp`.
+It compiles the draft with the project's flags and scores it against the base ROM. Then it applies one to three random rewrites at a time and keeps any result whose score is no worse. Every new best is written to `build/cxxperm/<function>/out-<score>-*.cpp` (change this with `-o`). It only rewrites the bodies of the target function, the functions named with `--funcs` and, with `--inlines`, every `static inline` in the file. It expects one statement per line, which is how the drafts are written (a definition's `{` may be on its own line). Set `TMPDIR` to keep its compiler temporaries out of `/tmp`.
 
-The score is the aligned instruction diff plus the same diff with register names removed. A register-only miss of N instructions scores N; a wrong instruction scores 2. `blx` counts as `bl`, because the linker picks the instruction for Thumb callees. A result is a match when the instruction listing matches exactly, as `ninja` would find. `--score-only` prints the draft's score.
+The score is the aligned instruction diff plus the same diff with register names removed. A register-only miss of N instructions scores N; a wrong instruction scores 2. `blx` counts as `bl`, because the linker picks the instruction for Thumb callees. `bl` targets are compared by address: the draft's callee is looked up by name in every `symbols.txt`, and callees with no entry there (static helpers, local names) are masked. So two calls with the same argument setup can't swap unnoticed. A result is a match when the instruction listing matches exactly, as `ninja` would find. `--score-only` prints the draft's score.
 
 Rewrites (choose a subset with `--rewrites move,temp,...`):
 
@@ -55,8 +55,10 @@ Rewrites (choose a subset with `--rewrites move,temp,...`):
 - `comma`: `x = e;` to `x = (0, e);` and back.
 - `split`: `T x = e;` to `T x; x = e;` and back.
 - `comm`, `cond`, `ifswap`: swap commutative operands, rewrite `x != 0` as `x` and the reverse, and swap `if`/`else` arms by negating the condition.
+- `type`: change the integer type of a local or a parameter (`s32`, `u32`, `u16`, `s16`, `u8`, `BOOL`, ...).
+- `incdec`: `x++;`, `++x;` and `x += 1;`, and `x op= e;` to `x = x op (e);` and back.
 
-`move` and `ifswap` don't know about aliasing or calls with side effects, and `param` changes the signature. Check each result by hand and write the change that matters as normal source.
+`move` treats `&x` as a write of `x`, so a call that fills a local through a pointer stays before the code that reads it. Apart from that, `move` and `ifswap` don't know about aliasing or calls with side effects, and `param` changes the signature. Check each result by hand and write the change that matters as normal source.
 
 The source lines of the instructions that differ come from the object's DWARF line table. By default, 80% of rewrites must touch a line within three lines of one of them (`--focus`). Each compile takes about 0.3 s, so one job does about 350 a minute on an idle machine.
 
@@ -64,6 +66,17 @@ First sweep (round permtool1, 15 to 20 minutes per function, 2,300 to 20,000 com
 
 - `ov002_021dfcc0` went from 10 / 0 to 8 / 0, with `mgr` as a trailing parameter and `unit = (0, ...)`. The swapped pair is now `mgr` and `map_1[0]`.
 - These did not move: `ov012_021fbec8` (24 / 0), `ov014_022153e0` (6 / 6, the 7-call block), `ov012_021fc688`, `021fdfa0` (2 / 2), `021fab7c` (6 / 6), `02056e74` (4 / 0), `ov000_0218e12c` (17 / 0), `ov000_021ad8ac` (6 / 6) and `ov006_021d4118` (26 / 4).
+
+Second sweep (round permsweep2: 57 runs of 8 to 10 minutes at `-j 4`, on drafts whose register-masked score was 0 to 15). The two matches had been near-misses for several rounds:
+
+- `ov000_021c3158` (4 / 0, a register-only miss) needed two changes together, and each one alone made it worse (10 and 12). `cxxperm` found them as `name = (0, self->unk_34)` in the model inline and `res_0 = (0, func_02035f30(...))` as an initialiser. The landed source writes both as small inline getters (`ObjName021c3158`, `LoadObjRes021c3158`), which give the same code. A one-change-at-a-time hand search can't find a pair like this.
+- `ov000_02181c4c` (3 / 3) needed the non-empty branch first (`if (buf[0] != zero) {...} else {...}`) and `off += 10` moved up between the two `Get2v` copies in that branch. Neither change helps alone.
+- `func_0204205c` (8 / 0) also matched here: `attr0` read into a local at the top of the loop, before `fmt = img->fmt`. It had already been matched on main (round mainmid5), so it was dropped.
+- Improved but not matched: `0206f85c` 32 to 14 (`u16 i` from the new `type` rewrite, now a pure `r6`/`sb` swap; `d/6f85cb.cpp`), `ov006_021e6eb0` 22 to 13 (`u32 old`, `u8 t = cur & ~old`, `held` stored before `trig`), `ov015_02211b2c` 8 to 4 (`b8 = 1` after `b5 = 0`).
+- No change in 10 minutes: most of the 1-to-5 near-misses (`0205e5c4`, `0200d36c`, `0204f524`, `0204f5bc`, `ov006_021cf414`, `ov008_021ce518`, `ov006_021e51f8`, `ov003_021e1204`, `ov000_021be5dc`, `ov000_0217a1f8`) and the register-only mid-range (`020508f4`, `ov000_021c4460`, `02060a08`, `020459cc`, `02047724`, `ov000_02153804`).
+- Ablating a win: undoing one hunk at a time doesn't work when `rename` or `arr1` touched many lines, because the reverted file no longer compiles. Look for the hunks that change code order or types (`move`, `temp`, `comma`, `type`), apply only those to the original draft, and drop the rest.
+
+Tool changes this round. The scorer now compares `bl` targets: one bad result had moved `OS_GetOwnerInfo(&info)` past the `switch` that reads `info`, and it scored better with targets masked. `move` treats `&x` as a write of `x`. There are new `type` and `incdec` rewrites. A definition whose `{` sits on the next line is accepted.
 
 ## String literals
 

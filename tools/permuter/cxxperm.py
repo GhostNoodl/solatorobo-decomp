@@ -27,12 +27,15 @@ keeps the result if the score did not get worse. Rewrites:
   split    split `T x = e;` into `T x; x = e;`, or join the two back
   cond     `if (x != 0)` <-> `if (x)`, `if (x == 0)` <-> `if (!x)`
   ifswap   `if (c) {A} else {B}` -> `if (!(c)) {B} else {A}`
+  type     change the integer type of a local or a parameter (s32, u16, u8, BOOL, ...)
+  incdec   `x++;` <-> `++x;` <-> `x += 1;`, and `x op= e;` <-> `x = x op (e);`
 
 Every rewrite that changes the score for the better is written to the output directory, named by
 its score. The score is the number of differing instructions after aligning the two listings
 (insertions and deletions count once), plus the same count with registers renamed away, so a
 register-only miss scores half as much as a wrong instruction. `blx` counts as `bl`, since the linker
-picks it for Thumb callees. A result is a match when its listing equals the target's.
+picks it for Thumb callees, and `bl` targets are compared by address (callees the draft can't name by
+a symbols.txt symbol are masked), so swapping two calls with the same argument setup is a miss. A result is a match when its listing equals the target's.
 
 Rewrites keep the program's meaning in most cases (moves are refused when they would cross a
 use or assignment of a local they touch), but they do not know about memory aliasing or calls with
@@ -84,6 +87,25 @@ def module_code(version, module):
     return (extract / "arm9_overlays" / overlay["file_name"]).read_bytes(), overlay["base_address"]
 
 
+def symbol_addresses(version, module):
+    """Name -> address of every function symbol, the given module's own symbols taking precedence."""
+    cfg = ROOT / "config" / version / "arm9"
+    own = cfg / "symbols.txt"
+    if module in ("itcm", "dtcm"):
+        own = cfg / module / "symbols.txt"
+    elif module != "main":
+        own = cfg / "overlays" / module / "symbols.txt"
+    paths = sorted(cfg.glob("**/symbols.txt"))
+    paths = [q for q in paths if q != own] + [own]
+    out = {}
+    for path in paths:
+        for line in path.read_text().splitlines():
+            m = re.match(r"(\S+) kind:function\([^)]*\) addr:0x([0-9a-f]+)", line)
+            if m:
+                out[m[1]] = int(m[2], 16) & ~1
+    return out
+
+
 def symbol_size(version, module, func, address):
     cfg = ROOT / "config" / version / "arm9"
     path = cfg / "symbols.txt"
@@ -115,6 +137,9 @@ class Scorer:
         self.target_code = code[self.address - base:self.address - base + size]
         self.md = capstone.Cs(capstone.CS_ARCH_ARM, capstone.CS_MODE_ARM)
         self.src_dir = args.src_dir
+        # bl targets are compared by address; callees whose address is unknown are masked (see init_calls)
+        self.symaddr = symbol_addresses(args.version, args.module)
+        self.masked_calls = set()
 
     def compile(self, text):
         src = os.path.join(self.workdir, "x" + self.suffix)
@@ -136,16 +161,21 @@ class Scorer:
                     sec = elf.get_section(sym["st_shndx"])
                     data = sec.data()[start:start + sym["st_size"]]
                     relocated = set()
+                    calls = {}
+                    symtab = elf.get_section_by_name(".symtab")
                     for rs in elf.iter_sections():
                         if rs.header["sh_type"] in ("SHT_REL", "SHT_RELA") and rs.header["sh_info"] == sym["st_shndx"]:
                             for rel in rs.iter_relocations():
                                 o = rel["r_offset"] - start
                                 if 0 <= o < len(data) and rel["r_info_type"] == 2:
                                     relocated.add(o)
-                    return (data, relocated, line_rows(elf, self.func, "x" + self.suffix)), ""
+                                elif 0 <= o < len(data):
+                                    calls[o] = self.symaddr.get(symtab.get_symbol(rel["r_info_sym"]).name)
+                    return (data, (relocated, calls), line_rows(elf, self.func, "x" + self.suffix)), ""
         return None, f"symbol {self.func} not found"
 
-    def disasm(self, code, relocated):
+    def disasm(self, code, relocated, calls=None):
+        """calls: offset -> callee address for our code (None: unknown); omitted for the target."""
         lines = []
         off = 0
         while off < len(code):
@@ -161,9 +191,35 @@ class Scorer:
                 if ins.mnemonic.rstrip("sw.") in ("bl", "blx", "b") and ins.op_str.startswith("#"):
                     # the linker turns bl into blx for Thumb callees
                     t = "bl" if ins.mnemonic == "blx" else ins.mnemonic
+                    if t == "bl":
+                        if calls is None:
+                            dest = int(ins.op_str[1:], 16) & ~1
+                            if dest not in self.masked_calls:
+                                t = "bl %#x" % dest
+                        elif calls.get(off) is not None and calls[off] not in self.masked_calls:
+                            t = "bl %#x" % calls[off]
                 lines.append(t)
             off += 4
         return lines
+
+    def init_calls(self, text):
+        """Masks the bl targets that the draft's own code can't name: callees missing from symbols.txt
+        (static helpers, unnamed symbols), paired with the target's calls by a masked alignment of the draft."""
+        res, _ = self.compile(text)
+        if res is None:
+            return
+        code, (relocated, calls), _ = res
+        ours = self.disasm(code, relocated, calls)
+        saved, self.masked_calls = self.masked_calls, set()
+        theirs = self.disasm(self.target_code, relocated)
+        self.masked_calls = saved
+        strip = lambda x: "bl" if x.startswith("bl ") else x
+        sm = difflib.SequenceMatcher(None, [strip(x) for x in ours], [strip(x) for x in theirs], autojunk=False)
+        for op, i1, i2, j1, j2 in sm.get_opcodes():
+            if op == "equal":
+                for i, j in zip(range(i1, i2), range(j1, j2)):
+                    if ours[i] == "bl" and theirs[j].startswith("bl "):
+                        self.masked_calls.add(int(theirs[j][3:], 16))
 
     def score(self, text):
         """Returns (key, positional diffs, aligned diffs, register-free aligned diffs) or None on a compile error."""
@@ -171,8 +227,8 @@ class Scorer:
         res, _ = self.compile(text)
         if res is None:
             return None
-        code, relocated, rows = res
-        ours = self.disasm(code, relocated)
+        code, (relocated, calls), rows = res
+        ours = self.disasm(code, relocated, calls)
         theirs = self.disasm(self.target_code, relocated)
         pos = sum(1 for i in range(max(len(ours), len(theirs)))
                   if i >= len(ours) or i >= len(theirs) or ours[i] != theirs[i])
@@ -364,6 +420,19 @@ def func_bodies(lines, names):
     return out
 
 
+def join_brace_lines(text):
+    """Puts a definition's `{` on its own line back onto the head line, as func_bodies expects."""
+    lines = text.split("\n")
+    out = []
+    for l in lines:
+        if l.strip() == "{" and out and out[-1] and not out[-1][0].isspace() and ")" in out[-1] \
+                and not out[-1].rstrip().endswith((";", "{", "}", ",")) and not out[-1].startswith("#"):
+            out[-1] = out[-1].rstrip() + " {"
+            continue
+        out.append(l)
+    return "\n".join(out)
+
+
 def inline_names(lines):
     names = set()
     for l in lines:
@@ -422,8 +491,14 @@ ASSIGN = re.compile(r"(?<![=!<>.>])\b([A-Za-z_]\w*)\s*(?:\[[^\]]*\]\s*)*(?:[-+*/
                     r"|\b([A-Za-z_]\w*)\s*(?:\[[^\]]*\]\s*)*(?:\+\+|--)|(?:\+\+|--)\s*([A-Za-z_]\w*)")
 
 
+# `&x` hands x to code that may write it (a call, or a pointer that is written through later)
+# (unary when it follows an operator, a bracket or a cast; `(a) & b` also counts, which only blocks a move)
+ADDR = re.compile(r"(?:^|[^&\w\]\s.]|\breturn)\s*&\s*([A-Za-z_]\w*)")
+
+
 def writes(text):
-    return {a or b or c for a, b, c in ASSIGN.findall(code_of(text))}
+    t = code_of(text)
+    return {a or b or c for a, b, c in ASSIGN.findall(t)} | set(ADDR.findall(t))
 
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -907,10 +982,87 @@ def m_rename(lines, regions, rng, st):
     return None
 
 
+INT_TYPES = ["s32", "u32", "int", "s16", "u16", "s8", "u8", "BOOL", "long", "unsigned int", "unsigned short",
+             "short", "unsigned char", "char", "fx32"]
+TYPE_DECL = re.compile(r"^(\s*(?:const\s+|volatile\s+|register\s+)*)(unsigned int|unsigned short|unsigned char|"
+                       r"s32|u32|int|s16|u16|s8|u8|BOOL|long|short|char|fx32)(\s+\**\s*[A-Za-z_]\w*\s*(?:\[[^\]]*\])?\s*(?:=.*)?;\s*)$")
+
+
+def m_type(lines, regions, rng, st):
+    """Change the integer type of a local or of a parameter of the rewritten functions."""
+    cands = []
+    for o, c in regions:
+        for i in range(o + 1, c):
+            if TYPE_DECL.match(lines[i]):
+                cands.append((i, None))
+        # parameters on the definition's line(s), as `type name` between the parentheses
+        j = o
+        while j > 0 and "(" not in lines[j]:
+            j -= 1
+        cands.append((j, "param"))
+    rng.shuffle(cands)
+    for i, kind in cands[:8]:
+        l = lines[i]
+        if kind is None:
+            m = TYPE_DECL.match(l)
+            t = rng.choice([x for x in INT_TYPES if x != m[2]])
+            return lines[:i] + [m[1] + t + m[3]] + lines[i + 1:]
+        lp = l.find("(")
+        if lp < 0:
+            continue
+        hits = [mm for mm in re.finditer(r"(?<=[(,])(\s*(?:const\s+)?)(unsigned int|unsigned short|unsigned char|s32|u32|int|"
+                                         r"s16|u16|s8|u8|BOOL|long|short|char|fx32)(\s+[A-Za-z_]\w*\s*)(?=[,)])", l[lp:])]
+        if not hits:
+            continue
+        mm = rng.choice(hits)
+        t = rng.choice([x for x in INT_TYPES if x != mm[2]])
+        a, b = lp + mm.start(2), lp + mm.end(2)
+        return lines[:i] + [l[:a] + t + l[b:]] + lines[i + 1:]
+    return None
+
+
+INCDEC = re.compile(r"^(\s*)(?:(\+\+|--)\s*([A-Za-z_][\w.\->\[\]]*)|([A-Za-z_][\w.\->\[\]]*)\s*(\+\+|--)|"
+                    r"([A-Za-z_][\w.\->\[\]]*)\s*([-+*/%&|^]|<<|>>)=\s*(.+?)|([A-Za-z_][\w.\->\[\]]*)\s*=\s*(.+?))\s*;\s*$")
+
+
+def m_incdec(lines, regions, rng, st):
+    """`x++;` <-> `++x;` <-> `x += 1;`, and `x op= e;` <-> `x = x op (e);` for statement-level updates."""
+    idx = body_lines(lines, regions)
+    rng.shuffle(idx)
+    for i in idx:
+        l = lines[i]
+        m = INCDEC.match(code_of(l))
+        if not m or l.rstrip() != code_of(l).rstrip():
+            continue
+        ind = m[1]
+        if m[2] or m[5]:
+            x, op = (m[3], m[2]) if m[2] else (m[4], m[5])
+            forms = ["%s%s;" % (op, x), "%s%s;" % (x, op), "%s %s= 1;" % (x, op[0]), "%s = %s %s 1;" % (x, x, op[0])]
+        elif m[6]:
+            x, op, e = m[6], m[7], m[8]
+            forms = ["%s = %s %s (%s);" % (x, x, op, e)]
+            if e.strip() == "1" and op in "+-":
+                forms += ["%s%s;" % (x, op * 2), "%s%s;" % (op * 2, x)]
+        else:
+            x, e = m[9], m[10]
+            mm = re.match(r"^%s\s*([-+*/%%&|^]|<<|>>)\s*\((.*)\)$|^%s\s*([-+*/%%&|^]|<<|>>)\s*([\w.]+)$"
+                          % (re.escape(x), re.escape(x)), e.strip())
+            if not mm:
+                continue
+            op, rhs = (mm[1], mm[2]) if mm[1] else (mm[3], mm[4])
+            forms = ["%s %s= %s;" % (x, op, rhs)]
+        cur = l.strip()
+        forms = [f for f in forms if f != cur]
+        if not forms:
+            continue
+        return lines[:i] + [ind + rng.choice(forms)] + lines[i + 1:]
+    return None
+
+
 REWRITES = {"move": (m_move, 6), "dummy": (m_dummy, 2), "temp": (m_temp, 2), "inline": (m_inline, 1),
             "comm": (m_comm, 1), "split": (m_split, 1), "cond": (m_cond, 1), "ifswap": (m_ifswap, 1),
             "comma": (m_comma, 1), "arr1": (m_arr1, 1), "scope": (m_scope, 2), "param": (m_param, 1),
-            "rename": (m_rename, 1)}
+            "rename": (m_rename, 1), "type": (m_type, 1), "incdec": (m_incdec, 1)}
 
 
 def mutate(text, names, rng, st, kinds):
@@ -966,6 +1118,7 @@ def worker(wid, args, base, base_score, names, deadline, outdir, suffix, stop, l
     rng = random.Random(args.seed * 1000 + wid if args.seed is not None else None)
     workdir = tempfile.mkdtemp(prefix="cxxperm%d_" % wid, dir=args.tmpdir)
     scorer = Scorer(args, suffix, workdir)
+    scorer.init_calls(base)
     st = {"n": 1000 * (wid + 1), "func": args.function}
     cur, cur_s = base, base_score
     best, best_s = base, base_score
@@ -1054,7 +1207,7 @@ def main():
     args.src_dir = str(args.source.resolve().parent)
     args.tmpdir = os.environ.get("TMPDIR") or None
     suffix = args.source.suffix if args.source.suffix in (".c", ".cpp") else ".cpp"
-    base = args.source.read_text()
+    base = join_brace_lines(args.source.read_text())
     names = {args.function} | {n for n in args.funcs.split(",") if n}
     if args.inlines:
         names |= inline_names(base.split("\n"))
@@ -1067,6 +1220,7 @@ def main():
         res, err = scorer.compile(base)
         if res is None:
             sys.exit("the draft does not compile:\n" + err)
+        scorer.init_calls(base)
         base_score = scorer.score(base)
     finally:
         shutil.rmtree(workdir, ignore_errors=True)
