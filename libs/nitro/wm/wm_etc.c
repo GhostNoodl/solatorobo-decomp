@@ -70,3 +70,14 @@ WMErrCode WM_SetEntry(WMCallbackFunc callback, BOOL enabled) {
 
     return WM_ERRCODE_OPERATING;
 }
+
+BOOL OS_IsRunOnTwl(void);
+u32 func_0221ca68(void);  /* TWL only */
+
+u32 func_020218d4(void)
+{
+    if (!OS_IsRunOnTwl()) {
+        return 3;
+    }
+    return func_0221ca68();
+}

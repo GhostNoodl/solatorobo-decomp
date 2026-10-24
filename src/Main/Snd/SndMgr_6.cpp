@@ -243,9 +243,6 @@ typedef struct SndCmd {
     /* 0x4 */ s16 args[6];
 } SndCmd;
 
-// This matches, but it stays in the gap: nothing references the TWL-only functions after it
-// (0x0204a598-0x0204a87c), so once it leaves the gap the linker strips that gap.
-#ifdef SNDMGR_DELINK_0204A3B8
 void func_0204a3b8(SndMgr *mgr, SndCmd *cmd) {
     switch (cmd->type) {
     case 0:
@@ -282,6 +279,128 @@ void func_0204a3b8(SndMgr *mgr, SndCmd *cmd) {
         break;
     }
 }
-#endif
+
+typedef struct SndFile {
+    u8 data[0x48];
+} SndFile;
+
+extern u32 FS_GetFileLength(void *file);
+extern void DC_StoreRange(const void *startAddr, u32 nBytes);
+extern void OS_Terminate(void);
+extern void OS_Sleep(u32 msec);
+extern BOOL OS_IsRunOnTwl(void);
+extern void *func_0203de84(u32 size, u32 align);
+extern void func_0203df0c(void *ptr);
+extern char data_0208b6e0[];
+/* TWL only */
+extern void func_0228ee0c(u32 a, u32 b);
+extern void func_0228f2c4(u32 a, u32 b);
+extern void func_0221defc(SndFile *file);
+extern BOOL func_0221df38(SndFile *file, u32 a, u32 b);
+extern s32 func_0221d814(u32 *out);
+extern void func_0221dfa0(void);
+extern void func_02219778(void *buf, s32 len);
+extern s32 func_022198cc(void);
+
+// Nothing in the NDS build calls the TWL-only functions below.
+#pragma force_active on
+
+static inline void SndMgr_TwlOpen(void) {
+    SndFile file;
+
+    func_0228ee0c(1, 0);
+    func_0228f2c4(1, 0);
+    func_0228ee0c(2, 0);
+    func_0228f2c4(2, 0);
+    FS_InitFile(&file);
+    if (OS_IsRunOnTwl()) {
+        func_0221defc(&file);
+    }
+    if (!(OS_IsRunOnTwl() ? func_0221df38(&file, 1, 1) : FALSE)) {
+        OS_Terminate();
+    }
+    FS_CloseFile(&file);
+}
+
+BOOL func_0204a598(SndMgr *mgr) {
+    SndFile file;
+    u32 status;
+    s32 result;
+    s32 len;
+
+    if (mgr->unk_a0 != 0) {
+        return FALSE;
+    }
+    SndMgr_TwlOpen();
+    mgr->unk_a0 = (s32)func_0203de84(0x10000, 4);
+    result = 4;
+    if (OS_IsRunOnTwl() == TRUE) {
+        result = func_0221d814(&status);
+    }
+    if (result != 0) {
+        OS_Terminate();
+        return FALSE;
+    }
+    if (status != 0) {
+        OS_Terminate();
+        return FALSE;
+    }
+    if (!FS_OpenFileEx(&file, (void *)data_0208b6e0, 1)) {
+        OS_Terminate();
+        return FALSE;
+    }
+    len = FS_GetFileLength(&file);
+    mgr->unk_a4 = len;
+    if (FS_ReadFile(&file, (void *)mgr->unk_a0, len) == -1) {
+        OS_Terminate();
+        return FALSE;
+    }
+    FS_CloseFile(&file);
+    DC_StoreRange((void *)mgr->unk_a0, mgr->unk_a4);
+    return TRUE;
+}
+
+void func_0204a734(SndMgr *mgr) {
+    if (OS_IsRunOnTwl()) {
+        func_0221dfa0();
+    }
+    if (mgr->unk_a0 != 0) {
+        func_0203df0c((void *)mgr->unk_a0);
+        mgr->unk_a0 = 0;
+    }
+}
+
+static inline s32 SndMgr_TwlIsBusy(void) {
+    s32 busy = 0;
+    if (OS_IsRunOnTwl()) {
+        busy = func_022198cc();
+    }
+    return busy;
+}
+
+void func_0204a768(SndMgr *mgr) {
+    void *buf = (void *)mgr->unk_a0;
+    s32 len;
+
+    if (buf == NULL) {
+        return;
+    }
+    len = mgr->unk_a4;
+    if (OS_IsRunOnTwl()) {
+        func_02219778(buf, len);
+    }
+    while (SndMgr_TwlIsBusy()) {
+        OS_Sleep(100);
+    }
+    if (OS_IsRunOnTwl()) {
+        func_0221dfa0();
+    }
+}
+
+void func_0204a7dc(void) {
+    SndMgr_TwlOpen();
+}
+
+#pragma force_active reset
 
 }

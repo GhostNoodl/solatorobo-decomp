@@ -201,3 +201,24 @@ void func_0200d6d4(u32 dma, const void *src, void *dst, u32 len, MIDmaCallback c
         (void)CARDi_ExecuteOldTypeTask(func_0200d688, is_async);
     }
 }
+
+void CARD_LockRom(u16 lock_id);
+void CARD_UnlockRom(u16 lock_id);
+s32 OS_GetLockID(void);
+void OS_ReleaseLockID(u16 lockID);
+extern u8 data_0208e56c[0x88];
+void func_0228cd7c(void);
+
+void func_0200d85c(void) {
+    rom_stat.read_func = func_0200d36c;
+    if (OS_GetBootType() == 1 && *(u32 *)(CARD_GetOwnRomHeader() + 0x80) != 0) {
+        u16 id = (u16)OS_GetLockID();
+        CARD_LockRom(id);
+        (void)func_0200d36c(NULL, data_0208e56c, *(u32 *)(CARD_GetOwnRomHeader() + 0x80), 0x88);
+        CARD_UnlockRom(id);
+        OS_ReleaseLockID(id);
+    }
+    if (OS_IsRunOnTwl()) {
+        func_0228cd7c();
+    }
+}

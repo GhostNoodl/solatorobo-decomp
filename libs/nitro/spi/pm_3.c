@@ -185,3 +185,21 @@ u32 PMi_ForceToPowerOffAsyncAndWait(void) {
 
     return commandResult;
 }
+
+void MI_StopAllDma(void);
+void OS_Halt(void);
+void func_0228e020(void);  /* TWL only */
+
+void PM_ForceToPowerOff(void) {
+    while (PMi_ForceToPowerOffAsyncAndWait() != PM_RESULT_SUCCESS) {
+        OS_SpinWaitSysCycles(PM_BUSY_WAIT_CYCLES);
+    }
+    (void)OS_DisableInterrupts();
+    MI_StopAllDma();
+    if (OS_IsRunOnTwl()) {
+        func_0228e020();
+    }
+    while (1) {
+        OS_Halt();
+    }
+}

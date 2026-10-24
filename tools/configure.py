@@ -305,7 +305,7 @@ def main():
 
         n.rule(
             name="lcf",
-            command=f"{DSD} {DSD_BASE_FLAGS} lcf -c $config_path"
+            command=f"{DSD} {DSD_BASE_FLAGS} lcf -c $config_path && {PYTHON} tools/lcf_abs.py $lcf_file $abs_symbols"
         )
         n.newline()
 
@@ -626,13 +626,16 @@ def add_delink_and_lcf_builds(n: ninja_syntax.Writer, project: Project):
 
     lcf_file = project.arm9_lcf_file()
     objects_file = project.arm9_objects_file()
+    abs_symbols = str(project.arm9_config_yaml().parent / "abs_symbols.txt")
     n.build(
         inputs=project.delinks_files + [str(rom_config)],
-        implicit=DSD,
+        implicit=[DSD, abs_symbols, "tools/lcf_abs.py"],
         rule="lcf",
         outputs=[lcf_file, objects_file],
         variables={
             "config_path": str(project.arm9_config_yaml()),
+            "lcf_file": str(lcf_file),
+            "abs_symbols": abs_symbols,
         }
     )
     n.newline()

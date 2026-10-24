@@ -217,3 +217,30 @@ void G3X_SetClearColor (GXRgb rgb, int alpha, int depth, int polygonID, BOOL fog
     reg_G3X_CLEAR_COLOR = val;
     reg_G3X_CLEAR_DEPTH = (u16)depth;
 }
+
+void MIi_DmaFill32(u32 dmaNo, void *dest, u32 data, u32 size, BOOL wait);
+void MIi_DmaFill32Async(u32 dmaNo, void *dest, u32 data, u32 size, void (*callback)(void *), void *arg, BOOL wait);
+void func_0228de30(u32 ndmaNo, void *dest, u32 data, u32 size);  /* MI_NDmaFill (TWL only) */
+void func_0228ded8(u32 ndmaNo, void *dest, u32 data, u32 size, void (*callback)(void *), void *arg);  /* MI_NDmaFillAsync */
+
+void G3X_InitTable (void)
+{
+    int i;
+
+    if (GXi_DmaId != (u32)-1) {
+        if (GXi_DmaId > 3) {
+            func_0228ded8(GXi_DmaId - 4, (void *)0x04000330, 0, 0x10, NULL, NULL);
+            func_0228de30(GXi_DmaId - 4, (void *)0x04000360, 0, 0x60);
+        } else {
+            MIi_DmaFill32Async(GXi_DmaId, (void *)0x04000330, 0, 0x10, NULL, NULL, TRUE);
+            MIi_DmaFill32(GXi_DmaId, (void *)0x04000360, 0, 0x60, TRUE);
+        }
+    } else {
+        MI_CpuClear32((void *)0x04000330, 0x10);
+        MI_CpuClear32((void *)0x04000360, 0x60);
+    }
+
+    for (i = 0; i < 32; i++) {
+        *(vu32 *)0x040004d0 = 0;
+    }
+}

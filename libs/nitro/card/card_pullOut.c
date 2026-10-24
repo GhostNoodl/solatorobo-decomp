@@ -71,3 +71,28 @@ void func_0200d930(u32 tag, u32 data, BOOL err) {
 BOOL CARD_IsPulledOut(void) {
     return pullout_stat.isCardPulledOut;
 }
+
+void PM_ForceToPowerOff(void);
+void MI_StopAllDma(void);
+void func_0200da78(u32 data, u32 wait);
+void func_0228f864(void);  /* TWL only */
+void func_0228e020(void);  /* TWL only */
+
+static inline BOOL PAD_DetectFold(void) {
+    return (BOOL)((*(vu16 *)0x02ffffa8 & 0x8000) >> 15);
+}
+
+void func_0200d9d0(void) {
+    if (PAD_DetectFold()) {
+        PM_ForceToPowerOff();
+    }
+    if (OS_IsRunOnTwl()) {
+        func_0228f864();
+    }
+    func_0200da78(1, 1);
+    MI_StopAllDma();
+    if (OS_IsRunOnTwl()) {
+        func_0228e020();
+    }
+    OS_Terminate();
+}

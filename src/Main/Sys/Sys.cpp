@@ -4,7 +4,7 @@ extern "C" {
 
 extern int GXi_DmaId;
 extern u8 data_02fe0000[];
-extern void func_02013428(void);
+extern void GX_Init(void);
 extern void GX_DispOff(void);
 extern void FX_Init(void);
 extern void OS_InitTick(void);
@@ -29,10 +29,61 @@ extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void GX_DisableBankForLCDC(void);
 void func_0203d824(void);
 
+extern void OS_Init(void);
+extern void OS_EnableITCM(void);
+extern void OS_EnableDTCM(void);
+extern void *OS_AllocFromArenaLo(int id, u32 size, int align);
+extern void MI_CpuFill8(void *dest, u8 data, u32 size);
+extern BOOL OS_IsRunOnTwl(void);
+void func_0203d9e8(UnkSys *sys);
+void func_0203d80c(void);
+/* TWL only */
+extern void func_0228f87c(int a);
+extern void func_0228f808(void *info);
+extern void func_0228f7bc(void);
+
+void func_0203d5c4(void) {
+    UnkSys *sys;
+    OS_Init();
+    OS_EnableITCM();
+    OS_EnableDTCM();
+    if (data_02097dd0 != NULL) {
+        return;
+    }
+    sys = (UnkSys *)OS_AllocFromArenaLo(0, sizeof(UnkSys), 4);
+    data_02097dd0 = sys;
+    sys->cur = NULL;
+    sys->unk_04 = NULL;
+    sys->unk_08 = NULL;
+    sys->unk_0c = (void *)-1;
+    sys->frameCount = 0;
+    sys->vblankFunc = NULL;
+    sys->frameWait = 1;
+    sys->vcount = 0;
+    sys->unk_1e = 0;
+    sys->unk_1f = 0;
+    MI_CpuFill8(sys->unk_20, 0, sizeof(sys->unk_20));
+    sys->unk_30 = 0;
+    sys->unk_31 = 0;
+    sys->node.next = NULL;
+    sys->node.value = 0x1000;
+    sys->node.unk_6_0 = 0;
+    sys->node.unk_6_2 = 0;
+    sys->node.unk_6_4 = 0;
+    func_0203d9e8(data_02097dd0);
+    sys = data_02097dd0;
+    if (OS_IsRunOnTwl()) {
+        func_0228f87c(0);
+        sys->unk_20[0] = (u32)func_0203d80c;
+        sys->unk_20[1] = 0;
+        func_0228f808(sys->unk_20);
+    }
+}
+
 void func_0203d6b4(void) {
     int dt[8];
     GXi_DmaId = 3;
-    func_02013428();
+    GX_Init();
     GX_DispOff();
     *(volatile u32 *)0x4001000 &= ~0x10000;
     FX_Init();
@@ -89,6 +140,15 @@ void func_0203d824(void) {
         sys->vcount++;
     }
     *(volatile u32 *)((u32)data_02fe0000 + 0x3ff8) |= 1;
+}
+
+void func_0203d8b0(void) {
+    if (OS_IsRunOnTwl()) {
+        UnkSys *sys = data_02097dd0;
+        if (sys->unk_30 == 1 && sys->unk_31 == 0) {
+            func_0228f7bc();
+        }
+    }
 }
 
 }

@@ -2622,3 +2622,22 @@ One new match, confirmed with `tools/match.py` and a full `ninja` build (0 FAILE
   - `static const` objects in C and C++.
 
   The target loads a pooled constant again at each use, without CSE, even though it derives other constants from the same values (`rsb r0, r7, #0xe40`). So the constants probably came through some macro or inline form we have not found yet.
+## Calls into TWL-only code: absolute symbols in the `.lcf` (main, round mainmid7)
+
+46 new matches in main, all confirmed with `tools/match.py` and a full `ninja` build (0 FAILED, every ROM check OK). Drafts are in the scratchpad under `mainmid7/d/`.
+
+About 70 relocations in main (and more in the overlays) point into the TWL-only region (`0x0221xxxx`, `0x0228xxxx`). `relocs.txt` marks them `module:none`, because no module of the NDS ROM defines those addresses. Until now, every function with such a `bl` stayed in a gap: a C call needs a symbol, and the linker had none.
+
+- **The lever.** `config/usa/arm9/abs_symbols.txt` lists `name addr` pairs. The `lcf` rule now runs `tools/lcf_abs.py` after `dsd lcf`, which writes `name = addr;` next to `__OVERLAY_COUNT` in `build/usa/arm9.lcf`. Declare the callee in C under that name (`void func_0228de80(u32 ndmaNo, ...);`) and the linker resolves the `bl`. `dsd check symbols` ignores the extra absolute symbols. Add a line for every new TWL callee you use. TWL data works the same way (`data_022919dc`, an `OSTitleId` in TWL `.bss`).
+- **Thumb callers.** Give a Thumb target its address with bit 0 set (`func_0228caa0 0x0228caa1`), and the linker emits a Thumb `bl`. An ARM target called from Thumb needs `blx`, and an absolute symbol always gets `bl`, so `func_0200c118` (blx to `0x0228cc6c`) stays in the gap.
+- **Unreferenced TWL functions get stripped.** Nothing in the NDS build calls the TWL-only paths (`func_0204a598`..`0204a7dc`, the GX loaders, the TWL SVC wrappers), so once they leave the gap `-dead` removes them and everything after them shifts. Put them under `#pragma force_active on`. This also fixes the old note on `func_0204a3b8`, which is now placed.
+- **The SDK structure transfers directly.** Most of these are TwlSDK/NitroSystem functions whose NITRO versions were already matched. The TWL versions add an `OS_IsRunOnTwl()` branch or a `dmaNo > 3` NDMA branch:
+  - `gx_load.c` is now one file from `0x02014304` to `0x02014e30` (21 functions, the old `gx_load_2/3/4.c` merged in). The `GXi_DmaCopy16/32`, `GXi_DmaCopy32Async` and `GXi_WaitDma` inlines are `if (dmaNo != -1) { if (dmaNo > 3) MI_NDma...(dmaNo - 4, ...) else MIi_Dma...(..., TRUE); } else MI_CpuCopy...`. Only the 16-bit one checks alignment before the NDMA copy. All matched first time.
+  - `GX_Init` and `G3X_InitTable` test `GXi_DmaId > 3` once, then make both fill calls in each arm, reloading `GXi_DmaId` for the second. Two calls to one inline (one test each) do not match.
+  - `NNS_G3dGeSendDL`: the TWL wrapper reads `GXi_DmaId` after `OS_IsRunOnTwl()`, inside the wrapper, not as an argument.
+  - `RtcCommonCallback` is the NitroSDK body plus an `OS_IsRunOnTwl() == TRUE` default case, with explicit empty cases 3–5 and 11–15 (needed for the 16-entry jump table). In `RTC_SEQ_GET_DATETIME` the target masks the whole word for the year (`and #0xff`, written `*(u32 *)pSrc & 0xff`), while `RTC_SEQ_GET_DATE` extracts the bitfield (`lsl`/`lsr`).
+  - `func_0201d648` (`PMi_CommonCallback`): the jump tables needed the empty cases (`0x62`, inner `1`..`3`), and case `0x61` written before `0x60`. Case `0x60` then becomes a branch into `0x61`'s tail.
+  - `func_0201dca4` (PM DMA stop): a `switch` on the DMA mode with case `0x28000000` first, and `if (!(cnt & 0x02000000)) MI_WaitDma(i); else MI_StopDma(i);` in `default`.
+- **Game code calling TWL SDK.** `func_0203d5c4` (system init), `func_0203d8b0`, `func_0203c638` (TWL graphics reset, with the `GfxSys_5.cpp` inlines and `(int)(DISPCNT & 0x300010) >> 20` for the `asr`), `func_02049344` (sound init) and `func_0204a598`..`0204a7dc` (camera-shutter sound loading, `SndMgr_6.cpp`).
+- **Overlays.** The same `abs_symbols.txt` is shared by every module (there is one `.lcf`), so the overlay TWL callers (`func_ov000_0214b438`..`0214b810` and others in the old notes) can use it too.
+- **Renames:** `func_02013428` `GX_Init`, `func_02014304` `GX_LoadBGPltt`, `func_0201439c` `GXS_LoadBGPltt`, `func_020147bc` `GXS_LoadBG3Scr`, `func_020194a0` `OS_InitArenaEx`.

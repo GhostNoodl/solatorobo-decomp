@@ -37,8 +37,8 @@ extern "C" {
 extern u8 data_02fe01e8[];
 extern void G3X_Init(void);
 extern void DC_FlushAll(void);
-extern void func_02014304(const void *src, u32 offset, u32 size);
-extern void func_0201439c(const void *src, u32 offset, u32 size);
+extern void GX_LoadBGPltt(const void *src, u32 offset, u32 size);
+extern void GXS_LoadBGPltt(const void *src, u32 offset, u32 size);
 extern void NNS_G3dInit(void);
 extern void NNS_G2dInitOamManagerModule(void);
 extern void NNS_G2dGetNewOamManagerInstanceAsFastTransferMode(void *obj, int a, int b, int c);

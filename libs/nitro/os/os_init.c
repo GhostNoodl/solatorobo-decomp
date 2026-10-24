@@ -4,7 +4,7 @@
 void PXI_Init(void);
 void OS_InitArena(void);
 void OS_InitLock(void);
-void func_020194a0(void);
+void OS_InitArenaEx(void);
 void OS_InitIrqTable(void);
 void OS_SetIrqStackChecker(void);
 void OS_InitException(void);
@@ -46,7 +46,7 @@ void func_02019318 (void)
     PXI_Init();
     OS_InitArena();
     OS_InitLock();
-    func_020194a0();
+    OS_InitArenaEx();
     OS_InitIrqTable();
     OS_SetIrqStackChecker();
     OS_InitException();

@@ -130,3 +130,23 @@ void OS_GetOwnerInfo (OSOwnerInfo * info)
     info->nickName[OS_OWNERINFO_NICKNAME_MAX] = 0;
     info->comment[OS_OWNERINFO_COMMENT_MAX] = 0;
 }
+
+BOOL OS_IsRunOnTwl(void);
+u32 func_0228f5d8(void);  /* TWL only */
+u32 func_0228f600(void);  /* TWL only */
+
+u32 func_0201aa28 (void)
+{
+    if (!OS_IsRunOnTwl()) {
+        return 1;
+    }
+    return func_0228f5d8();
+}
+
+u32 func_0201aa44 (void)
+{
+    if (!OS_IsRunOnTwl()) {
+        return 0;
+    }
+    return func_0228f600();
+}

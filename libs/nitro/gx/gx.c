@@ -1,5 +1,6 @@
 #include "nitro/gx.h"
 #include "nitro/os.h"
+#include "nitro/mi.h"
 
 #define GX_DISPMODE_OFF      0
 #define GX_DISPMODE_GRAPHICS 1
@@ -8,7 +9,7 @@ void MI_WaitDma(u32 dmaNo);
 void func_0201e504(void);
 
 // sIsDispOn and GXi_DmaId (.data), sDispMode and GXi_VRamLockId (.bss) are
-// shared with GX_Init, which stays in the gap.
+// shared with GX_Init.
 typedef struct {
     u16 isDispOn;
     u32 dmaId;
@@ -22,6 +23,56 @@ extern GXiBssBlock data_0208eb0c;
 #define sIsDispOn  (data_0208af54.isDispOn)
 #define GXi_DmaIdX (data_0208af54.dmaId)
 #define sDispMode  (data_0208eb0c.dispMode)
+
+#define GXi_POWER_ALL 0x20e
+
+void GX_InitGXState(void);
+s32 OS_GetLockID(void);
+void OS_Terminate(void);
+void MIi_DmaFill32(u32 dmaNo, void *dest, u32 data, u32 size, BOOL wait);
+void func_0228de30(u32 ndmaNo, void *dest, u32 data, u32 size);  /* MI_NDmaFill (TWL only) */
+
+void GX_Init(void) {
+    reg_GX_POWCNT |= REG_GX_POWCNT_DSEL_MASK;
+    reg_GX_POWCNT = (u16)((reg_GX_POWCNT & ~GXi_POWER_ALL) | GXi_POWER_ALL);  /* GX_SetPower(GX_POWER_ALL) */
+    reg_GX_POWCNT |= REG_GX_POWCNT_LCD_MASK;                                    /* GXi_PowerLCD(TRUE) */
+    GX_InitGXState();
+    {
+        s32 lockResult;
+        while (data_0208eb0c.vramLockId == 0) {
+            lockResult = OS_GetLockID();
+            if (lockResult == -3) {
+                OS_Terminate();
+            }
+            data_0208eb0c.vramLockId = (u16)lockResult;
+        }
+    }
+    reg_GX_DISPSTAT = 0;
+    reg_GX_DISPCNT = 0;
+    if (GXi_DmaIdX != (u32)-1) {
+        if (GXi_DmaIdX > 3) {
+            func_0228de30(GXi_DmaIdX - 4, (void *)REG_BG0CNT_ADDR, 0, 0x60);
+            reg_GX_MASTER_BRIGHT = 0;
+            func_0228de30(GXi_DmaIdX - 4, (void *)REG_DB_DISPCNT_ADDR, 0, 0x70);
+        } else {
+            MIi_DmaFill32(GXi_DmaIdX, (void *)REG_BG0CNT_ADDR, 0, 0x60, TRUE);
+            reg_GX_MASTER_BRIGHT = 0;
+            MIi_DmaFill32(GXi_DmaIdX, (void *)REG_DB_DISPCNT_ADDR, 0, 0x70, TRUE);
+        }
+    } else {
+        MI_CpuClear32((void *)REG_BG0CNT_ADDR, 0x60);
+        reg_GX_MASTER_BRIGHT = 0;
+        MI_CpuClear32((void *)REG_DB_DISPCNT_ADDR, 0x70);
+    }
+    reg_G2_BG2PA = 0x100;
+    reg_G2_BG2PD = 0x100;
+    reg_G2_BG3PA = 0x100;
+    reg_G2_BG3PD = 0x100;
+    reg_G2S_DB_BG2PA = 0x100;
+    reg_G2S_DB_BG2PD = 0x100;
+    reg_G2S_DB_BG3PA = 0x100;
+    reg_G2S_DB_BG3PD = 0x100;
+}
 
 void GX_SetVCountEqVal(s32 val) {
     reg_GX_DISPSTAT = (u16)((reg_GX_DISPSTAT & (REG_GX_DISPSTAT_VBLK_MASK |

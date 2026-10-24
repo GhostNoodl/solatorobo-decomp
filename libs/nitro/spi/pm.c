@@ -7,7 +7,7 @@ u32 OS_GetCpsrIrq(void);
 void PXIi_HandlerRecvFifoNotEmpty(void);
 void PXI_Init(void);
 void WaitByLoop(s32 count);
-void func_0201d648(u32 tag, u32 data, BOOL err);
+void func_0201d648(PXIFifoTag tag, u32 data, BOOL err);
 
 void PMi_WaitBusy(void) {
     volatile BOOL *p = &PMi_Work.lock;
@@ -65,4 +65,68 @@ void PM_Init(void) {
     PXI_SetFifoRecvCallback(PXI_FIFO_TAG_PM, (PXIFifoCallback)func_0201d648);
 
     PMi_Work.lcdOffCount = PMi_Work.lcdOnCount = OS_GetVBlankCount();
+}
+
+typedef struct {
+    void (*func)(void *arg);
+    void *arg;
+} PMiTwlNotify;
+
+void func_0228f770(u32 param);  /* TWL only */
+
+void func_0201d648(PXIFifoTag tag, u32 data, BOOL err) {
+    u16 command;
+    u16 pxiResult;
+    BOOL callCallback = TRUE;
+
+    command = (u16)((data & 0x7f00) >> 8);
+    pxiResult = (u16)(data & 0xff);
+
+    if (err) {
+        PMi_CallCallbackAndUnlock((command == 0x61 || command == 0x62) ? 1 : 2);
+        return;
+    }
+
+    switch (command) {
+    case 0x61:
+        if (PMi_Work.data) {
+            *PMi_Work.data = pxiResult;
+        }
+        pxiResult = PM_RESULT_SUCCESS;
+        break;
+    case 0x60:
+        pxiResult = PM_RESULT_SUCCESS;
+        break;
+    case 0x62:
+        break;
+    case 0x63:
+        PMi_Work.wakeUp = TRUE;
+        break;
+    case 0x70:
+        switch (pxiResult) {
+        case 0:
+            func_0228f770(1);
+            *(u32 *)0x02fff684 = 1;
+            break;
+        case 1:
+        case 2:
+        case 3:
+            break;
+        case 4:
+            if (((PMiTwlNotify *)0x022919f0)->func) {
+                ((PMiTwlNotify *)0x022919f0)->func(((PMiTwlNotify *)0x022919f0)->arg);
+            }
+            break;
+        case 5:
+            func_0228f770(2);
+            *(u32 *)0x02fff684 = 1;
+            break;
+        }
+        callCallback = FALSE;
+        break;
+    }
+
+    if (callCallback) {
+        PMi_CallCallbackAndUnlock(pxiResult);
+    }
 }

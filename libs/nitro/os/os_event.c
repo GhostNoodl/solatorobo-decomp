@@ -59,3 +59,40 @@ void OS_SignalEvent (OSEvent *event, u32 setPattern)
 
     (void)OS_RestoreInterrupts(enabled);
 }
+
+typedef u64 OSTitleId;
+typedef struct OSDeliverArgInfo {
+    u8 data[0x300];
+} OSDeliverArgInfo;
+
+void OS_InitDeliverArgInfo(OSDeliverArgInfo *info, int binSize);
+int OS_EncodeDeliverArg(void);
+int OS_DecodeDeliverArg(void);
+void OS_SetDeliverArgStateInvalid(void);
+OSTitleId OS_GetTitleIdLastBootedApp(void);
+
+extern OSTitleId data_022919dc;  /* TWL-only .bss */
+OSTitleId func_0228f624(OSTitleId id, OSTitleId mask);  /* TWL only */
+
+void func_0201af94(void)
+{
+    OSDeliverArgInfo argInfo;
+    s8 c;
+
+    OS_InitDeliverArgInfo(&argInfo, 0);
+    if (OS_DecodeDeliverArg() == 0) {
+        data_022919dc = OS_GetTitleIdLastBootedApp();
+    }
+    if (data_022919dc != 0 && func_0228f624(data_022919dc, (OSTitleId)-1) == 0) {
+        goto clear;
+    }
+    c = (s8)(data_022919dc >> 24);
+    if (c == '0' || c == '1' || c == '2' || c == '3' || c == '4') {
+clear:
+        data_022919dc = 0;
+        OS_InitDeliverArgInfo(&argInfo, 0);
+        (void)OS_EncodeDeliverArg();
+    } else {
+        OS_SetDeliverArgStateInvalid();
+    }
+}

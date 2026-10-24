@@ -154,6 +154,10 @@ libs/runtime/FP_fastI_fpinit.c:
     complete
     .text       start:0x0200c0c0 end:0x0200c0c4
 
+libs/nitro/svc/svc_twl.c:
+    complete
+    .text       start:0x0200c0c4 end:0x0200c118
+
 libs/nitro/card/card_common.c:
     complete
     .text       start:0x0200c140 end:0x0200c5bc
@@ -184,11 +188,11 @@ libs/nitro/card/card_rom.c:
 
 libs/nitro/card/card_rom_2.c:
     complete
-    .text       start:0x0200d488 end:0x0200d85c
+    .text       start:0x0200d488 end:0x0200d8e4
 
 libs/nitro/card/card_pullOut.c:
     complete
-    .text       start:0x0200d8e4 end:0x0200d9d0
+    .text       start:0x0200d8e4 end:0x0200da28
 
 libs/nitro/card/card_pullOut_2.c:
     complete
@@ -288,7 +292,7 @@ libs/nitro/fx/fx_trig.c:
 
 libs/nitro/gx/gx.c:
     complete
-    .text       start:0x020135a8 end:0x0201378c
+    .text       start:0x02013428 end:0x0201378c
 
 libs/nitro/gx/g2.c:
     complete
@@ -308,7 +312,7 @@ libs/nitro/gx/g3imm.c:
 
 libs/nitro/gx/g3x.c:
     complete
-    .text       start:0x02013b00 end:0x02013edc
+    .text       start:0x02013b00 end:0x02013fc0
 
 libs/nitro/gx/g3x_2.c:
     complete
@@ -320,19 +324,7 @@ libs/nitro/gx/gx_bgcnt.c:
 
 libs/nitro/gx/gx_load.c:
     complete
-    .text       start:0x02014878 end:0x020148c0
-
-libs/nitro/gx/gx_load_2.c:
-    complete
-    .text       start:0x020149ac end:0x020149c4
-
-libs/nitro/gx/gx_load_3.c:
-    complete
-    .text       start:0x02014aa4 end:0x02014b00
-
-libs/nitro/gx/gx_load_4.c:
-    complete
-    .text       start:0x02014d10 end:0x02014d44
+    .text       start:0x02014304 end:0x02014e30
 
 libs/nitro/gx/gx_vramcnt.c:
     complete
@@ -376,7 +368,7 @@ libs/nitro/math/math_sha1_arm.c:
 
 libs/nitro/mi/mi_wram.c:
     complete
-    .text       start:0x020163d0 end:0x020163e0
+    .text       start:0x020163b8 end:0x020163e0
 
 libs/nitro/mi/mi_dma.c:
     complete
@@ -401,7 +393,7 @@ libs/nitro/mi/mi_dma_card.c:
 
 libs/nitro/mi/mi_uncomp_stream.c:
     complete
-    .text       start:0x02017484 end:0x0201771c
+    .text       start:0x02017484 end:0x02017744
 
 libs/nitro/os/os_irqHandler.c:
     complete
@@ -472,7 +464,7 @@ libs/nitro/os/os_init.c:
 
 libs/nitro/os/os_arena.c:
     complete
-    .text       start:0x02019384 end:0x020194a0
+    .text       start:0x02019384 end:0x02019510
 
 libs/nitro/os/os_arena_2.c:
     complete
@@ -546,7 +538,7 @@ libs/nitro/os/os_reset.c:
 
 libs/nitro/os/os_ownerInfo.c:
     complete
-    .text       start:0x0201a98c end:0x0201aa28
+    .text       start:0x0201a98c end:0x0201aa60
 
 libs/nitro/os/os_vramExclusive.c:
     complete
@@ -564,11 +556,11 @@ libs/nitro/os/os_entropy.c:
 
 libs/nitro/os/os_terminate_proc.c:
     complete
-    .text       start:0x0201ae80 end:0x0201ae9c
+    .text       start:0x0201adf4 end:0x0201ae9c
 
 libs/nitro/os/os_event.c:
     complete
-    .text       start:0x0201ae9c end:0x0201af94
+    .text       start:0x0201ae9c end:0x0201b058
 
 libs/nitro/pxi/pxi_fifo.c:
     complete
@@ -577,7 +569,7 @@ libs/nitro/pxi/pxi_fifo.c:
 
 libs/nitro/rtc/rtc_external.c:
     complete
-    .text       start:0x0201b348 end:0x0201b5c4
+    .text       start:0x0201b348 end:0x0201ba1c
     .bss        start:0x0208f080 end:0x0208f0a8
 
 libs/nitro/rtc/rtc_external_2.c:
@@ -636,15 +628,15 @@ libs/nitro/spi/tp.c:
 
 libs/nitro/spi/pm.c:
     complete
-    .text       start:0x0201d4b4 end:0x0201d648
+    .text       start:0x0201d4b4 end:0x0201d768
 
 libs/nitro/spi/pm_3.c:
     complete
-    .text       start:0x0201d768 end:0x0201db9c
+    .text       start:0x0201d768 end:0x0201dbe8
 
 libs/nitro/spi/pm_4.c:
     complete
-    .text       start:0x0201dbe8 end:0x0201dca4
+    .text       start:0x0201dbe8 end:0x0201dd4c
 
 libs/nitro/spi/pm_5.c:
     complete
@@ -690,7 +682,7 @@ libs/nitro/wm/wm_ds.c:
 
 libs/nitro/wm/wm_etc.c:
     complete
-    .text       start:0x02021740 end:0x020218d4
+    .text       start:0x02021740 end:0x020218f0
     .bss        start:0x02091760 end:0x020917e0
 
 libs/nitro/ctrdg/ctrdg.c:
@@ -844,7 +836,7 @@ libs/nnsys/g3d/1mat1shp.c:
 
 libs/nnsys/g3d/gecom.c:
     complete
-    .text       start:0x0202a1b4 end:0x0202a260
+    .text       start:0x0202a1b4 end:0x0202a3ec
 
 libs/nnsys/g3d/gecom_bufferop.c:
     complete
@@ -1082,7 +1074,7 @@ src/Main/Gfx/GfxSys_4.cpp:
 
 src/Main/Gfx/GfxSys_5.cpp:
     complete
-    .text       start:0x0203c880 end:0x0203cd10
+    .text       start:0x0203c638 end:0x0203cd10
 
 src/Main/Gfx/GfxSys_6.cpp:
     complete
@@ -1106,7 +1098,7 @@ src/Main/Sys/Touch.cpp:
 
 src/Main/Sys/Sys.cpp:
     complete
-    .text       start:0x0203d6b4 end:0x0203d8b0
+    .text       start:0x0203d5c4 end:0x0203d8e8
 
 src/Main/Sys/Sys_2.cpp:
     complete
@@ -1228,7 +1220,7 @@ src/Main/Math/Interp.cpp:
 
 src/Main/Snd/SndMgr.cpp:
     complete
-    .text       start:0x020492e0 end:0x02049344
+    .text       start:0x020492e0 end:0x02049550
 
 src/Main/Snd/SndMgr_2.cpp:
     complete
@@ -1252,7 +1244,7 @@ src/Main/Snd/SndMgr_5.cpp:
 
 src/Main/Snd/SndMgr_6.cpp:
     complete
-    .text       start:0x02049f44 end:0x0204a3b8
+    .text       start:0x02049f44 end:0x0204a87c
 
 src/Main/Snd/SndQueue.cpp:
     complete

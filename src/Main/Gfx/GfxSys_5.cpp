@@ -34,8 +34,8 @@ extern "C" {
 extern u8 data_02fe01e8[];
 extern void G3X_Init(void);
 extern void DC_FlushAll(void);
-extern void func_02014304(const void *src, u32 offset, u32 size);
-extern void func_0201439c(const void *src, u32 offset, u32 size);
+extern void GX_LoadBGPltt(const void *src, u32 offset, u32 size);
+extern void GXS_LoadBGPltt(const void *src, u32 offset, u32 size);
 extern void NNS_G3dInit(void);
 extern void NNS_G2dInitOamManagerModule(void);
 extern void NNS_G2dGetNewOamManagerInstanceAsFastTransferMode(void *obj, int a, int b, int c);
@@ -170,6 +170,42 @@ static inline u32 GfxReg_GetVisiblePlane(u32 addr) {
 
 static inline void GfxReg_SetVisiblePlane(u32 addr, u32 plane) {
     REG32(addr) = (REG32(addr) & ~0x1f00) | (plane << 8);
+}
+
+extern void OS_Terminate(void);
+extern void func_02224c1c(void);  /* TWL only */
+
+static inline u32 GfxReg_GetObjCharShift(u32 addr) {
+    int mode = (int)(REG32(addr) & 0x300010);
+    return (mode >> 20) & 3;
+}
+
+void func_0203c638(GfxSys *sys) {
+    int i;
+
+    if (!OS_IsRunOnTwl()) {
+        OS_Terminate();
+    }
+    func_02224c1c();
+    sys->unk_a30_0 = 1;
+    sys->unk_a30_1 = 0;
+    sys->unk_00c = 0;
+    sys->unk_010 = 1;
+    GfxSys_InitTexVram(sys, 0x40000);
+    GfxSys_InitPlttVram(sys, 0x8000);
+    GfxSys_SetVramFuncs();
+    GfxVramHeap_Init(&sys->heaps[0], 0x8000 << GfxReg_GetObjCharShift(0x4000000));
+    GfxVramHeap_Init(&sys->heaps[1], 0x8000 << GfxReg_GetObjCharShift(0x4001000));
+    for (i = 0; i < 6; i++) {
+        sys->slotMasks[i] = 0;
+    }
+    if (data_02097ce0 != NULL) {
+        GfxMgr *mgr;
+        func_02039c54(data_02097ce0, 1);
+        mgr = data_02097ce0;
+        mgr->unk_678 = 0x14;
+        mgr->unk_67a = 0x16;
+    }
 }
 
 void func_0203c880(GfxSys *sys) {

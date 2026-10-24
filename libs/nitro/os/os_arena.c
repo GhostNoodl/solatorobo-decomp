@@ -47,3 +47,21 @@ void OS_InitArena (void)
     OS_InitArenaHiAndLo(OS_ARENA_SHARED);
     OS_InitArenaHiAndLo(OS_ARENA_WRAM_MAIN);
 }
+
+u32 OS_GetConsoleType(void);
+BOOL OS_IsRunOnTwl(void);
+void OS_SetProtectionRegionEx(int regionNo, u32 address, u32 sizeStr);
+void func_0228f5bc(void);  /* TWL only */
+
+void OS_InitArenaEx (void)
+{
+    (void)OS_GetConsoleType();
+    OS_InitArenaHiAndLo(OS_ARENA_MAINEX);
+
+    if (!OS_IsRunOnTwl()) {
+        OS_SetProtectionRegionEx(1, 0x02000000, 0x2a);
+        OS_SetProtectionRegionEx(2, 0x027ff000, 0x16);
+    } else {
+        func_0228f5bc();
+    }
+}

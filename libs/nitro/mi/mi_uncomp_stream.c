@@ -197,3 +197,17 @@ asm s32 MI_ReadUncompLZ8 (register MIUncompContextLZ * context, register const u
 #define TREE_END_MASK 0x80
 
 #pragma thumb reset
+
+void MI_SetWramBank(int cnt);
+BOOL OS_IsRunOnTwl(void);
+void MI_StopDma(u32 dmaNo);
+void func_0228de18(void);  /* TWL only */
+
+void func_0201771c (void)
+{
+    MI_SetWramBank(3);
+    if (OS_IsRunOnTwl()) {
+        func_0228de18();
+    }
+    MI_StopDma(0);
+}
