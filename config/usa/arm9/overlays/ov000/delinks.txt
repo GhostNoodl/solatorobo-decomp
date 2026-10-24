@@ -3517,6 +3517,10 @@ src/ov000/Menu_021c6d64.cpp:
     complete
     .text       start:0x021c6d64 end:0x021c7000
 
+src/ov000/Twl_0214b1a0.c:
+    complete
+    .text       start:0x0214b1a0 end:0x0214b438
+
 src/ov000/Twl_0214b438.cpp:
     complete
     .text       start:0x0214b438 end:0x0214b570
