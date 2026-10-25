@@ -92,11 +92,6 @@ typedef struct ov006_TaskD1F {
     ov006_Unk021e139c *gauges[4];
 } ov006_TaskD1F;
 
-typedef struct ov006_Unk021ebba8 {
-    const char *unk0;
-    const char *unk4;
-} ov006_Unk021ebba8;
-
 typedef struct ov006_TaskHead {
     void *vtbl;
     union {
