@@ -17,17 +17,9 @@ src/ov012/ov012_021fa8b8.cpp:
     complete
     .text       start:0x021fa8b8 end:0x021fab7c
 
-src/ov012/ov012_021fb060.cpp:
-    complete
-    .text       start:0x021fb060 end:0x021fb818
-
-src/ov012/ov012_021fb818.cpp:
-    complete
-    .text       start:0x021fb818 end:0x021fbec8
-
 src/ov012/ov012_0220a8d8.cpp:
     complete
-    .text       start:0x021fbec8 end:0x021fe8b4
+    .text       start:0x021fab7c end:0x021fe8b4
     .rodata     start:0x0220a3c4 end:0x0220a480
     .init       start:0x0220a8d8 end:0x0220a99c
     .ctor       start:0x0220aa74 end:0x0220aa78
