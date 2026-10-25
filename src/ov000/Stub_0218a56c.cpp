@@ -46,4 +46,29 @@ s32 func_ov000_0218a56c(Lerp0218a56c *self, s32 v) {
     return self->y0 + FX_Mul(self->y1 - self->y0, FX_Div(v - x0, x1 - x0));
 }
 
+/* The angle form of the lerp above; the const pointee lets the 0x8000 stack argument go out before the
+ * two halfword loads. */
+u16 func_ov000_0218a5ec(const LerpAngle0218a5ec *self, s32 v) {
+    s32 x0 = self->x0;
+    s32 x1 = self->x1;
+    u16 r = 0;
+    if (x0 < x1) {
+        if (v < x0) {
+            r = self->y0;
+        } else if (v > x1) {
+            r = self->y1;
+        }
+    } else {
+        if (v > x0) {
+            r = self->y0;
+        } else if (v < x1) {
+            r = self->y1;
+        }
+    }
+    if (r == 0) {
+        r = func_01ffc128(self->y1, self->y0, FX_Div(v - x0, x1 - x0), 1, 0x8000);
+    }
+    return r;
+}
+
 }

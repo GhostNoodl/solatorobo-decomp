@@ -808,7 +808,7 @@ void func_ov002_021e6360(void *self);
 void *func_ov002_021e9974(s32 a, s32 b, s16 c, void *d);
 
 void *func_02035fe8(void *a, void *b);
-void func_ov002_021ec010(void *p, void *src);
+void func_ov002_021ec010(void *p, const void *src);
 extern VFunc data_ov002_021f07ac[];
 void *func_ov002_021ebf28(void *p);
 
