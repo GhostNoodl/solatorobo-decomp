@@ -118,7 +118,8 @@ def count_diffs(ours: list[str], theirs: list[str]) -> int:
 base_code, base_address = module_code()
 address = args.address
 if address is None:
-    address = int(args.function.rsplit("_", 1)[-1], 16)
+    # Static initialisers are named after their file: __sinit_ov002_021ef130.cpp
+    address = int(args.function.rsplit("_", 1)[-1].split(".", 1)[0], 16)
 
 if args.all_compilers:
     for exe in sorted((root_path / "tools" / "mwccarm").glob("**/mwccarm.exe")):

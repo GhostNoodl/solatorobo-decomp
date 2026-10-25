@@ -467,12 +467,12 @@ data_ov006_021eb908 kind:data(any) addr:0x021eb908
 data_ov006_021eb918 kind:data(any) addr:0x021eb918
 data_ov006_021eb930 kind:data(any) addr:0x021eb930
 data_ov006_021eb954 kind:data(any) addr:0x021eb954
-__sinit_ov006_021ebabc kind:function(arm,size=0x20) addr:0x021ebabc
-__sinit_ov006_021ebadc kind:function(arm,size=0x20) addr:0x021ebadc
-__sinit_ov006_021ebafc kind:function(arm,size=0x1c) addr:0x021ebafc
-.p__sinit_ov006_021ebabc kind:data(word) addr:0x021ebb18
-.p__sinit_ov006_021ebadc kind:data(word) addr:0x021ebb1c
-.p__sinit_ov006_021ebafc kind:data(word) addr:0x021ebb20
+__sinit_ov006_021ebabc.cpp kind:function(arm,size=0x20) addr:0x021ebabc local
+__sinit_ov006_021ebadc.cpp kind:function(arm,size=0x20) addr:0x021ebadc local
+__sinit_ov006_021ebafc.cpp kind:function(arm,size=0x1c) addr:0x021ebafc local
+.p__sinit_ov006_021ebabc.cpp kind:data(word) addr:0x021ebb18 local
+.p__sinit_ov006_021ebadc.cpp kind:data(word) addr:0x021ebb1c local
+.p__sinit_ov006_021ebafc.cpp kind:data(word) addr:0x021ebb20 local
 data_ov006_021ebb48 kind:data(any) addr:0x021ebb48
 data_ov006_021ebb58 kind:data(any) addr:0x021ebb58
 data_ov006_021ebb78 kind:data(any) addr:0x021ebb78
@@ -481,7 +481,7 @@ data_ov006_021ebb91 kind:data(any) addr:0x021ebb91
 data_ov006_021ebb94 kind:data(any) addr:0x021ebb94
 data_ov006_021ebb9b kind:data(any) addr:0x021ebb9b
 data_ov006_021ebba0 kind:data(any) addr:0x021ebba0
-data_ov006_021ebba8 kind:data(any) addr:0x021ebba8
+data_ov006_021ebba8 kind:data(word) addr:0x021ebba8
 data_ov006_021ebbb0 kind:data(any) addr:0x021ebbb0
 data_ov006_021ebbc5 kind:data(any) addr:0x021ebbc5
 data_ov006_021ebbd1 kind:data(any) addr:0x021ebbd1
@@ -511,7 +511,7 @@ data_ov006_021ebec0 kind:data(any) addr:0x021ebec0
 data_ov006_021ebf40 kind:data(any) addr:0x021ebf40
 data_ov006_021ebfc0 kind:data(any) addr:0x021ebfc0
 @stringBase0 kind:data(byte[0x54]) addr:0x021ebfe0 local
-data_ov006_021ec034 kind:data(any) addr:0x021ec034
+data_ov006_021ec034 kind:data(word) addr:0x021ec034 local
 data_ov006_021ec040 kind:data(any) addr:0x021ec040
 data_ov006_021ec068 kind:data(any) addr:0x021ec068
 data_ov006_021ec078 kind:data(any) addr:0x021ec078

@@ -3560,3 +3560,15 @@ src/ov000/Twl_0214b724.cpp:
 src/ov000/Cam_02189b44.cpp:
     complete
     .text       start:0x02189b44 end:0x0218a358
+
+src/ov000/ov000_021ca80c.cpp:
+    complete
+    .init       start:0x021ca80c end:0x021ca82c
+    .ctor       start:0x021ca864 end:0x021ca868
+    .data       start:0x021cc994 end:0x021cc998
+
+src/ov000/ov000_021ca82c.cpp:
+    complete
+    .init       start:0x021ca82c end:0x021ca84c
+    .ctor       start:0x021ca868 end:0x021ca86c
+    .data       start:0x021ccc64 end:0x021ccc68

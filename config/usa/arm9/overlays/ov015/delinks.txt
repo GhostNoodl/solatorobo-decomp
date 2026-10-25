@@ -197,3 +197,45 @@ src/ov015/ov015_02211bf8.cpp:
 src/ov015/ov015_022120c0.cpp:
     complete
     .text       start:0x022120c0 end:0x02212524
+
+src/ov015/ov015_0221268c.cpp:
+    complete
+    .init       start:0x0221268c end:0x022126ac
+    .ctor       start:0x0221278c end:0x02212790
+    .data       start:0x022127c0 end:0x022127c4
+
+src/ov015/ov015_022126ac.cpp:
+    complete
+    .init       start:0x022126ac end:0x022126cc
+    .ctor       start:0x02212790 end:0x02212794
+    .data       start:0x0221282c end:0x02212830
+
+src/ov015/ov015_022126cc.cpp:
+    complete
+    .init       start:0x022126cc end:0x022126ec
+    .ctor       start:0x02212794 end:0x02212798
+    .data       start:0x0221298c end:0x02212990
+
+src/ov015/ov015_022126ec.cpp:
+    complete
+    .init       start:0x022126ec end:0x0221270c
+    .ctor       start:0x02212798 end:0x0221279c
+    .data       start:0x02212c80 end:0x02212c84
+
+src/ov015/ov015_0221270c.cpp:
+    complete
+    .init       start:0x0221270c end:0x0221272c
+    .ctor       start:0x0221279c end:0x022127a0
+    .data       start:0x02212d30 end:0x02212d34
+
+src/ov015/ov015_0221274c.cpp:
+    complete
+    .init       start:0x0221274c end:0x0221276c
+    .ctor       start:0x022127a4 end:0x022127a8
+    .data       start:0x02212f84 end:0x02212f88
+
+src/ov015/ov015_0221276c.cpp:
+    complete
+    .init       start:0x0221276c end:0x0221278c
+    .ctor       start:0x022127a8 end:0x022127ac
+    .data       start:0x022131f4 end:0x022131f8

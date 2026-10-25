@@ -768,3 +768,21 @@ src/ov006/ov006_021e9c5c.cpp:
 src/ov006/ov006_021e9f80.cpp:
     complete
     .text       start:0x021e9f80 end:0x021ea244
+
+src/ov006/ov006_021ebabc.cpp:
+    complete
+    .init       start:0x021ebabc end:0x021ebadc
+    .ctor       start:0x021ebb18 end:0x021ebb1c
+    .data       start:0x021ebba8 end:0x021ebbac
+
+src/ov006/ov006_021ebadc.cpp:
+    complete
+    .init       start:0x021ebadc end:0x021ebafc
+    .ctor       start:0x021ebb1c end:0x021ebb20
+    .data       start:0x021ec034 end:0x021ec038
+
+src/ov006/ov006_021ebafc.cpp:
+    complete
+    .init       start:0x021ebafc end:0x021ebb18
+    .ctor       start:0x021ebb20 end:0x021ebb24
+    .data       start:0x021ec484 end:0x021ec48c

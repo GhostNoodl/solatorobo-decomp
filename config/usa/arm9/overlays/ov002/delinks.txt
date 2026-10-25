@@ -956,3 +956,27 @@ src/ov002/ov002_021ee1a8.cpp:
 src/ov002/ov002_021d1cf8.cpp:
     complete
     .text       start:0x021d1cf8 end:0x021d1e44
+
+src/ov002/ov002_021ef130.cpp:
+    complete
+    .init       start:0x021ef130 end:0x021ef150
+    .ctor       start:0x021ef3a8 end:0x021ef3ac
+    .data       start:0x021ef3e0 end:0x021ef3e4
+
+src/ov002/ov002_021ef190.cpp:
+    complete
+    .init       start:0x021ef190 end:0x021ef1b0
+    .ctor       start:0x021ef3b4 end:0x021ef3b8
+    .data       start:0x021efd94 end:0x021efd98
+
+src/ov002/ov002_021ef1b0.cpp:
+    complete
+    .init       start:0x021ef1b0 end:0x021ef1d0
+    .ctor       start:0x021ef3b8 end:0x021ef3bc
+    .data       start:0x021eff90 end:0x021eff94
+
+src/ov002/ov002_021ef1d0.cpp:
+    complete
+    .init       start:0x021ef1d0 end:0x021ef1f0
+    .ctor       start:0x021ef3bc end:0x021ef3c0
+    .data       start:0x021f00c8 end:0x021f00cc
