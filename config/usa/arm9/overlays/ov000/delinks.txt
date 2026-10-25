@@ -657,6 +657,10 @@ src/ov000/Robo_021a1c2c.cpp:
     complete
     .text       start:0x021a1c2c end:0x021a2670
 
+src/ov000/Robo_021a2670.cpp:
+    complete
+    .text       start:0x021a2670 end:0x021a2d64
+
 src/ov000/Factory_021b4828.cpp:
     complete
     .text       start:0x021b4828 end:0x021b4adc
