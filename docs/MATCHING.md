@@ -3146,3 +3146,33 @@ No new matches. Drafts are in the scratchpad under `ovbig3/d/` (`52e4/`, `0488/`
 - **Why the target loaded each object through its own pool word.** MWCC reuses one base register for objects in the same section of the TU (`str r1, [r2, #0xcc]`), unless they are more than 4K apart. It addresses a weak object through its own symbol, though. Rounds block6 and block7 blamed the TU's layout for both stubs. The fix is `__declspec(weak)` on the object the stub writes through its own word: the `ptmf` table `0x021cc1a0` and the `ResHandle` at `0x0214b0b8`. Weak objects stay where they are defined in the layout. `symbols.txt` must mark them `weak`, or `dsd check symbols` fails ("expected to be weak but is non-weak"). This doesn't help `ov000_021ca6a0`: there the target reaches the struct from the `scale` base (`ip + 4`), and making any of its three objects weak gives 21 diffs. It is still 7 (`r4`/`lr`).
 - **`ov000_021ca70c`.** The file defines `.data` `0x021cc0d8`..`0x021cc398`: the photo block, the TU's eight file-name format strings (`"scpdmy.ccscp"`, `"scp%s.ccscp"`, `"script/"` and so on, written as `char` arrays, which MWCC packs unaligned as in the ROM), a vtable written as `u32[2]` plus 18 function pointers (`0x021cc150`/`158`, needs `#pragma explicit_zero_data on`), and the 42-entry `{key, ptmf}` handler table. The table's 40 non-null handlers are C functions in matched files. So the entry holds a union `{Fn pm; {Fn fn; s32 adj;} raw;}`, the two null entries are `.pm = 0` (a `__ptmf_null` copy) and the rest are `.raw = {func, 0}`, which keeps the handlers C functions. `.rodata` `0x021c9d44`/`d48` come after an empty `asm` function, in address order. Symbols: `data_ov000_021cc0e0`, `0e8` and `1a4` removed, their relocs now `add:`; `data_ov000_021cc150`, `data_ov000_021c9d48` added. `Cmd_02189194.cpp` read entry 0's handler as `data_ov000_021cc1a4`. It now uses `(CmdEntry *)(data_ov000_021cc1a0 + 4)`, which still gives the `+4` pool word and matches.
 - **`__sinit_0208aa24`** is `__declspec(weak) ResHandle data_0214b0b8;` with an inline `ResHandle() { Clear(); }`, after `void *data_0214b0a8;` (the TU's `.bss` base). The destructor-chain node between them is the compiler's `@9` (`symbols.txt` names it `@9 ... local`, as dsd checks it by name). The `.bss` range is `0x0214b0a8`..`0x0214b104`, the first main `.bss` delink. `ResHandle.cpp` stays C-style, but its destructors now carry the mangled names that the compiler-generated code refers to: `func_020396f8` is `_ZN9ResHandleD1Ev`, `func_020396a4` is `_ZN9ResHandleD0Ev`. The C functions in `ResHandle.cpp` were renamed to match. `_ZTV9ResHandle` was added at `0x0208b310`, and `data_0208b318` (the address point) is kept for the C readers.
+## The SDK register-inline lever has almost no unmatched targets left (round sdkinl1)
+
+No new matches. Drafts and tools are in the scratchpad under `sdkinl1/` (`t/scan.py`, `t/scan2.py`, `ioscan.txt`, `e3a0/`, `e7ea8/`, `d298/`, `d36c/`).
+
+- **Scope.** `t/scan.py` lists every function in the `_dsd_gap@*.o` objects (197 unmatched functions) whose literal pool holds a word in `0x04000000`–`0x04001fff`. `t/scan2.py` also looks for the address built as an immediate (`mov`/`add rX, #0x4000000`). There are 15 hits. Only two write GX/G2/G3X registers and are not blocked:
+  - `func_0206e3a0`: `DISP3DCNT` and `FOG_COLOR`.
+  - `func_ov002_021e7ea8`: `MASTER_BRIGHT` and `DISP3DCNT`.
+  
+  The other hits:
+  - `func_02015510`: `VRAMCNT`, the `GX_SetBankForSubBG` switch-pivot blocker.
+  - `func_0203d298`: `KEYINPUT`, already in the `PAD_Read` shape.
+  - `func_0200d36c`: card `MCCNT1`.
+  - The `func_0204e5d4` and `func_0204ffdc` string-pool blockers.
+  - ov004.
+  - Six DIV/SQRT users (`0x40002b0`) whose diffs are elsewhere in the function.
+  
+  The `immediate` hits in ov000/ov002 are flag `orr`s, not register addresses.
+- **`func_ov002_021e7ea8` (20 raw / 0 masked).** The miss is a whole `r6`/`r8` swap in `case 0`: the brightness value against the hoisted `0x400006c` constant. MWCC CSEs `0x400106c` as `+0x1000` and `DISP3DCNT` as `-0xc` from that constant. Writing the pair as the real SDK inlines did not move it: `GX_SetMasterBrightness(b); GXS_SetMasterBrightness(b);`, with `GXx_SetMasterBrightness_(vu16 *, int)` as in `nitro/gx_disp.h`. Neither did the SDK `G3X_EdgeMarking(FALSE)`. The draft's `kq`/`gx` hacks are needed: a clean `case 0` goes to 90+. Comma, `long` and dummy-local forms also had no effect, and so did 27k `cxxperm` compiles with `--inlines`.
+- **`func_0206e3a0` (2 / 2).** The target schedules `strh alpha` before `orr ip, color, alpha, lsl #16`. These all stay at 2:
+  - Computing the value into a temporary before, between or after the two stores.
+  - Putting the write in its own block.
+  - `int` locals and `(u32)alpha << 16`.
+  - Taking the register address into a local.
+  - A `volatile` alpha store.
+  
+  Moving the write between the stores gives 7. Storing alpha first or reading through `const u16 *q` gives 5. Neither the earlier `mainbig1`/`mainbig2` variants nor about 15 minutes of `cxxperm` found anything better.
+- **Not a register lever:**
+  - `func_0203d298` (7) is register allocation in `trig`/`release`. Every operand-order form is 7 or worse.
+  - `func_0200d36c` (5 / 0) is the TwlSDK `CARDi_ReadRomWithCPU` loop. The plain SDK `word`/`ctrl` loop gives 8 with the draft's pragmas and 51 without them.
+- **Lesson.** The `func_0203c2bc` lever (write each register write as an SDK inline) has been used up on the current unmatched set. Before a new round on it, re-run `t/scan.py` after new functions are delinked.
