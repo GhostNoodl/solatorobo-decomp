@@ -3776,3 +3776,20 @@ Drafts are in the scratchpad under `near8/` (one folder per function). Scores ar
   - `ov006_021cf414` (`ldr r1, [r0, #0x4c]; cmp r1, #0; bx lr`): no other function in the ROM has this. Thirteen dead-test forms compile to just `bx lr` or worse.
   - `ov006_021e51f8` (2 / 0), `ov000_0219b808` (4 / 0), `ov011_021fb02c` (6 / 0), `ov000_021c4460` (10 / 0), `ov002_021eca14` (7 / 2; `near8/ca14/c.cpp` has the target's load order), `ov000_021b3e90` (7 / 1) and `ov003_021d112c` (14 / 2): these are single register or store-order swaps. Hand variants (locals, `const` pointees, field re-reads, the twin's loop) leave them unchanged.
 - **Lesson.** When the target puts an intermediate value from a cached field in a fresh register, try reading the field again in each expression, not only in the statements after it. The loads are CSE'd anyway, but the colouring follows the source's separate reads.
+
+## A whole-vector inline whose last component is then overwritten: `02064b54` matches (main, round mainbig5)
+
+Drafts are in the scratchpad under `mainbig5/` (one folder per function, `s*.py` are `vv.py` specs). Scores are raw / register-masked.
+
+- **`func_02064b54` (20 / 4 to 0), appended to `src/Main/Effect/Effect_2.cpp` (`.text` now `0x02064b40..0x02064d3c`).** The target stores `scale.z = 0x1000` after `scale.y`, and every direct form let MWCC move the constant store up before the `y` product. Scaling all three components with an inline, `Effect_VecScale(&scale, &e->scale, 0x64000)` (`d->x/y/z = Effect_FxMul(s->x/y/z, k)`), and then writing `scale.z = 0x1000;` matches. The `z` product is dead and removed, but its store keeps the `y`/`z` store order. An inline that scales only `x`/`y`, or one that stores the `0x1000` itself, stays at 20 / 4.
+- **No gain:**
+  - `0204f524` (2 / 2): the twin `0205592c`'s form (`long i` and base locals) gives 12 / 2. With the twin's dead `if ((u32)win & 3)` re-definition of the bases and `i = 0; win->numBlocks = i;` it gets to 3 / 3; the `NULL` is then `mov r4, #0` instead of a copy of `i`. An inverted ternary (`b->kind != 4 ? sub : obj`) is a pure three-register rotation (12 / 1).
+  - `0203a984` (10 / 0): a clean three-parameter draft (`mainbig5/a984/c.cpp`, block-local `ox`/`nm`/`oy`) reaches the same 10 / 0 as the old draft, which reused two fake parameters. Re-reading through `blocks[i]`, a block-local `b`, a word copy of `unk_14`, statement orders and 120 local-type/order combinations stay at 10.
+  - `0206f85c` (14 / 0): the `n`/`count` registers are swapped. Separate `x`/`y` booleans (no one-element array), `done` re-defined, `int n`, the twin `ov002_021cf314`'s `u8 *` block form, `b = 0x101`, count types and 1,700 declaration orders stay at 14 or worse.
+  - `0206e3a0` (2 / 2): field re-reads, an SDK-style `G3X_SetFogColor(rgb, int alpha)` inline, compound `v |=`, store orders and dead stores stay at 2 or get worse.
+  - `0206d43c` (12 / 0): re-reading `totalSize` in the `Align` inline, compound `x &= ~m` and a second definition of `h` stay at 12.
+  - `0205c234` (2 / 2): the `slotStart` read placed between any two `args` stores, a re-read in the test, or a pointer to the globals stay at 2–7.
+  - `0200d36c` (5 / 0): the SDK's `word`/`ctrl`/`data` loop with `word++` as its own statement gives 5 (with `word++` inside the index, 8). `ctrl`/`data` declared outside the loop, a `u32 *` view and an inline page reader change nothing.
+  - `02056e74` (4 / 0): an `FX_Mul`-style inline with either operand order, the macro form and a re-defined `x` stay at 4.
+  - `020417e0` (24 / 2): `n` types and placement and a single `a` local for the anim pointer stay at 24 or get worse. The `NULL` still comes from the first loop's zero.
+- **Lesson.** If MWCC moves a constant store to a struct ahead of a computed store that comes before it in the target, try writing the whole struct through an inline (all components computed) and then overwrite the constant component. The dead store disappears, but the stores keep the target's order.

@@ -1549,7 +1549,7 @@ src/Main/Effect/Effect.cpp:
 
 src/Main/Effect/Effect_2.cpp:
     complete
-    .text       start:0x02064b40 end:0x02064b54
+    .text       start:0x02064b40 end:0x02064d3c
 
 src/Main/Effect/Effect_3.cpp:
     complete
