@@ -84,4 +84,67 @@ u32 func_ov013_02205c64(Ov013Actor *self) {
     return FLD(Ov013Flags8, self, 0xce).b0;
 }
 
+struct Ov013Mtx33 {
+    s32 m[3][3];
+};
+
+static inline void VEC_Subtract(const Ov013Vec *a, const Ov013Vec *b, Ov013Vec *o) {
+    o->x = a->x - b->x;
+    o->y = a->y - b->y;
+    o->z = a->z - b->z;
+}
+
+extern void VEC_Normalize(const Ov013Vec *a, Ov013Vec *b);
+extern void MTX_RotAxis33(Ov013Mtx33 *m, const Ov013Vec *v, s32 s, s32 c);
+extern void MTX_MultVec33(const Ov013Vec *v, const Ov013Mtx33 *m, Ov013Vec *o);
+
+static inline s32 Ov013_Dot(const Ov013Vec *a, const Ov013Vec *b) {
+    return (s32)(((s64)a->x * b->x + (s64)a->y * b->y + (s64)a->z * b->z + 0x800) >> 12);
+}
+
+static inline s32 Ov013_Dot2(const Ov013Vec *a, const Ov013Vec *b) {
+    s64 ax = a->x;
+    s64 ay = a->y;
+    s64 az = a->z;
+    s64 bx = b->x;
+    s64 by = b->y;
+    s64 bz = b->z;
+    return (s32)((az * bz + (ax * bx + ay * by) + 0x800) >> 12);
+}
+
+static inline void Ov013_Cross(const Ov013Vec *a, const Ov013Vec *b, Ov013Vec *o) {
+    s32 x = (s32)(((s64)a->y * b->z - (s64)a->z * b->y + 0x800) >> 12);
+    s32 y = (s32)(((s64)a->z * b->x - (s64)a->x * b->z + 0x800) >> 12);
+    s32 z = (s32)(((s64)a->x * b->y - (s64)a->y * b->x + 0x800) >> 12);
+    o->x = x;
+    o->y = y;
+    o->z = z;
+}
+
+void func_ov013_02205c74(Ov013Vec *out, const Ov013Vec *a, const Ov013Vec *b, const Ov013Vec *v, u16 ang) {
+    Ov013Vec d;
+    Ov013Vec axis;
+    Ov013Mtx33 m1;
+    Ov013Mtx33 m2;
+    Ov013Vec r1;
+    Ov013Vec r2;
+    Ov013Vec res;
+    VEC_Subtract(a, b, &d);
+    VEC_Normalize(&d, &d);
+    Ov013_Cross(v, &d, &axis);
+    MTX_RotAxis33(&m1, &axis, FX_SinCosTable_[(ang >> 4) * 2], FX_SinCosTable_[(ang >> 4) * 2 + 1]);
+    MTX_RotAxis33(&m2, &axis, FX_SinCosTable_[((u16)(0xffff - ang) >> 4) * 2], FX_SinCosTable_[((u16)(0xffff - ang) >> 4) * 2 + 1]);
+    MTX_MultVec33(v, &m1, &r1);
+    MTX_MultVec33(v, &m2, &r2);
+    bool behind = 0 != (Ov013_Dot(&r1, v) < Ov013_Dot(&d, v));
+    if (behind) {
+        res = d;
+    } else if (Ov013_Dot2(&r1, &d) > Ov013_Dot2(&r2, &d)) {
+        res = r1;
+    } else {
+        res = r2;
+    }
+    *out = res;
+}
+
 }
