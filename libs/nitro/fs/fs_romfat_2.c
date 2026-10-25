@@ -36,7 +36,7 @@ typedef FSResult (*FS_ARCHIVE_WRITE_FUNC)(FSArchive *, const void *, u32, u32);
 typedef FSResult (*FS_ARCHIVE_PROC_FUNC)(FSFile *, FSCommandType);
 
 #define CONTEXT(arc) ((FSROMFATArchiveContext *)(arc)->userdata)
-#define FSiArchiveRomFatInterface ((const FSArchiveInterface *)0x02070f60)
+extern const FSArchiveInterface FSiArchiveRomFatInterface; // fs_romfat_rodata.c
 
 const void *CARD_GetRomHeader(void);
 BOOL FS_MountArchive(FSArchive *arc, void *userdata, const FSArchiveInterface *vtbl);
@@ -89,16 +89,16 @@ BOOL FS_LoadArchive(FSArchive *arc, u32 base, u32 fat, u32 fat_size, u32 fnt, u3
     context->read_func = read_func ? read_func : FSi_ReadMemCallback;
     context->write_func = write_func ? write_func : FSi_WriteMemCallback;
     context->load_mem = NULL;
-    return FS_MountArchive(arc, context, FSiArchiveRomFatInterface);
+    return FS_MountArchive(arc, context, &FSiArchiveRomFatInterface);
 }
 
 BOOL FSi_GetFileLengthIfProc(FSFile *file, u32 *length) {
-    return (file->arc->vtbl == FSiArchiveRomFatInterface) &&
+    return (file->arc->vtbl == &FSiArchiveRomFatInterface) &&
            (FSi_ROMFAT_GetFileLength(file->arc, file, length) == FS_RESULT_SUCCESS);
 }
 
 BOOL FSi_GetFilePositionIfProc(FSFile *file, u32 *length) {
-    return (file->arc->vtbl == FSiArchiveRomFatInterface) &&
+    return (file->arc->vtbl == &FSiArchiveRomFatInterface) &&
            (FSi_ROMFAT_GetFilePosition(file->arc, file, length) == FS_RESULT_SUCCESS);
 }
 

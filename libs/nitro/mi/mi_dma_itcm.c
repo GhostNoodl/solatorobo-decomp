@@ -10,20 +10,20 @@
 #define MIi_DMA_MODE_SRC16   0x0020
 
 // The first 0x20 bytes of ITCM are zero and nothing refers to them. As a separate gap they were
-// dead-stripped at link time, so they are emitted here as zero words (andeq r0, r0, r0) and kept
-// with force_active.
+// dead-stripped at link time, so they are emitted here as zero words and kept with force_active.
+// They are data words (`dcd`): the delinked target marks them `$d` (dsd delink -M).
 #pragma force_active on
 void ITCMi_Pad(void);
 
 asm void ITCMi_Pad(void) {
-    andeq r0, r0, r0
-    andeq r0, r0, r0
-    andeq r0, r0, r0
-    andeq r0, r0, r0
-    andeq r0, r0, r0
-    andeq r0, r0, r0
-    andeq r0, r0, r0
-    andeq r0, r0, r0
+    dcd 0
+    dcd 0
+    dcd 0
+    dcd 0
+    dcd 0
+    dcd 0
+    dcd 0
+    dcd 0
 }
 #pragma force_active reset
 

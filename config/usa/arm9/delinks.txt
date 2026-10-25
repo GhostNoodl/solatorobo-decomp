@@ -1700,6 +1700,50 @@ src/Main/Lang/TblRes.cpp:
     complete
     .text       start:0x020702c8 end:0x02070dcc
 
+libs/msl/ctype.c:
+    complete
+    .text       start:0x02070ddc end:0x02070edc
+
+libs/runtime/ptmf.c:
+    complete
+    .text       start:0x02070edc end:0x02070ee4
+
+libs/nitro/card/card_common_rodata.c:
+    complete
+    .text       start:0x02070ee4 end:0x02070eec
+
+libs/nitro/fs/fs_romfat_rodata.c:
+    complete
+    .text       start:0x02070f2c end:0x02071060
+
+libs/nitro/fx/fx_const.c:
+    complete
+    .text       start:0x02071060 end:0x02075164
+
+libs/nitro/gx/gx_load_rodata.c:
+    complete
+    .text       start:0x02075164 end:0x020751d4
+
+libs/nitro/math/math_dgt_rodata.c:
+    complete
+    .text       start:0x020751e0 end:0x020751fc
+
+libs/nitro/snd/snd_util_rodata.c:
+    complete
+    .text       start:0x02075210 end:0x02075310
+
+libs/nnsys/g3d/sbc_rodata.c:
+    complete
+    .text       start:0x020756e4 end:0x02075728
+
+libs/nnsys/g3d/nsbca_rodata.c:
+    complete
+    .text       start:0x02075728 end:0x0207574c
+
+libs/nnsys/snd/sndarc_stream_rodata.c:
+    complete
+    .text       start:0x0207574c end:0x02075810
+
 libs/mobiclip/mobiclip_asm_02075940.c:
     complete
     .text       start:0x02075940 end:0x02075d4c

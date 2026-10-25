@@ -103,7 +103,8 @@ mwcc_path        = mwcc_root / MWCC_VERSION
 
 # Includes
 includes = [
-    root_path / "include"
+    root_path / "include",
+    root_path / "build" / "gen",  # Formula tables written by tools/gen_tables.py
 ]
 for root, dirs, _ in os.walk(libs_path):
     for dir in dirs:
@@ -275,9 +276,11 @@ def main():
         )
         n.newline()
 
+        # -M: give every data symbol a `$d` mapping symbol. objdiff panics on a code section with no
+        # mapping symbol, and main's read-only tables live in .text (see libs/msl/ctype.c).
         n.rule(
             name="delink",
-            command=f"{DSD} {DSD_BASE_FLAGS} delink --config-path $config_path"
+            command=f"{DSD} {DSD_BASE_FLAGS} delink -M --config-path $config_path"
         )
         n.newline()
 
@@ -336,6 +339,12 @@ def main():
         n.rule(
             name="objdiff_report",
             command=f"{OBJDIFF} report generate -o $out"
+        )
+        n.newline()
+
+        n.rule(
+            name="gen_tables",
+            command=f"{PYTHON} tools/gen_tables.py $out_dir"
         )
         n.newline()
 
@@ -547,7 +556,20 @@ def add_mwld_and_rom_builds(n: ninja_syntax.Writer, project: Project):
     n.newline()
 
 
+GEN_TABLES_DIR = build_path / "gen"
+GEN_TABLES = ["fx_sincos.inc", "fx_atan.inc", "snd_decibel.inc"]
+
+
 def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: list[str]):
+    gen_tables = [str(GEN_TABLES_DIR / name) for name in GEN_TABLES]
+    n.build(
+        inputs="tools/gen_tables.py",
+        rule="gen_tables",
+        outputs=gen_tables,
+        variables={"out_dir": str(GEN_TABLES_DIR)},
+    )
+    n.newline()
+
     for source_file in get_c_cpp_files([src_path, libs_path]):
         src_obj_path = project.game_build / source_file
         cc_flags: list[str] = []
@@ -562,6 +584,7 @@ def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: lis
         n.build(
             inputs=str(source_file),
             implicit=mwcc_implicit,
+            order_only=gen_tables,
             rule="mwcc",
             outputs=str(src_obj_path.with_suffix(".o")),
             variables={

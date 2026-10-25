@@ -9181,9 +9181,6 @@ from:0x02070fbc kind:load to:0x02010820 module:main
 from:0x02070fd0 kind:load to:0x0201094c module:main
 from:0x02070fe0 kind:load to:0x020107b0 module:main
 from:0x02070fe4 kind:load to:0x02010808 module:main
-from:0x02071f10 kind:load to:0x020e0fde module:main
-from:0x020741ac kind:load to:0x0208f021 module:main
-from:0x020741b0 kind:load to:0x020ef022 module:main
 from:0x02075644 kind:load to:0x02026338 module:main
 from:0x02075648 kind:load to:0x02026324 module:main
 from:0x0207564c kind:load to:0x020263a8 module:main

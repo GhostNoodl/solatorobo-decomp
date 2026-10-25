@@ -57,6 +57,7 @@ extern u8 data_0208d940[];
 #define SDK_OVERLAY_DIGEST_END data_0208d940
 
 extern const char data_0208af3c[];
+extern const u8 data_02070eec[]; // the 0x40-byte overlay digest key
 
 void IC_InvalidateRange(void *startAddr, u32 nBytes);
 void DC_InvalidateRange(void *startAddr, u32 nBytes);
@@ -82,7 +83,7 @@ void func_0200f180(void) {
         fsi_rom.ovt7.offset = 0;
         fsi_rom.ovt7.length = 0;
     }
-    fsi_rom.digest_key = (const void *)0x02070eec;
+    fsi_rom.digest_key = data_02070eec;
     fsi_rom.digest_key_len = 0x40;
     fsi_rom.arc_rom = FS_FindArchive(data_0208af3c, 3);
 }

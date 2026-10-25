@@ -19,6 +19,7 @@ BOOL CARD_TryWaitBackupAsync(void);
 BOOL CARD_WaitBackupAsync(void);
 
 extern u32 data_0208de94;
+extern const u8 data_02070ee4[]; // card_common_rodata.c
 extern CARDiCommandArg data_0208dea0;
 extern u32 data_0208e540;
 
@@ -125,7 +126,7 @@ const void *CARDi_GetRomAccessor(u32 type) {
 
     if (type <= 3) {
         if (!isTwl) {
-            accessor = (const void *)0x02070ee4;
+            accessor = data_02070ee4;
         } else if (OS_IsRunOnTwl()) {
             accessor = (const void *)0x0228cce8;
         } else {
