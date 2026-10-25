@@ -357,3 +357,143 @@ void func_ov012_021ffcd0(Ov012Actor *self, Ov012Msg *msg) {
     func_ov003_021d1c00(self, msg);
 }
 }
+
+
+extern "C" {
+extern const Ov012Vec data_ov012_0220a4a4[];
+void func_ov012_021ffd34(Ov012Actor *self) {
+    Ov012Vec v;
+    Ov012Vec w;
+    s32 n;
+    s32 n2;
+    u8 b;
+    Ov012Actor *pl;
+    u8 kind;
+    if (!Ov012_GameIdle()) {
+        return;
+    }
+    self->unk_90 = 0xffff;
+    pl = func_ov000_0219bf90();
+    if (pl != NULL) {
+        self->unk_90 = pl->id;
+    }
+    v = pl->pos;
+    VEC_Distance(&self->pos, &v);
+    kind = self->unk_40->unk_13;
+    {
+        u16 *hp = self->unk_50;
+        u16 mx = self->unk_b0->unk_08;
+        if (hp[0] < mx) {
+            hp[0] = mx;
+        }
+    }
+    if (self->unk_30 & 0x40) {
+        switch (FLD(u16, self, 0x104)) {
+        case 1: {
+            Ov012Sub44 *q;
+            Ov012Sub48 *m;
+            self->unk_38->unk_c2_0 = 0;
+            q = self->unk_44;
+            q->unk_22_0 = 0;
+            q->unk_22_1 = 0;
+            m = self->unk_48;
+            m->unk_9a_0 = 0;
+            m->unk_9a_3 = 0;
+            func_0203f364(m);
+            m = self->unk_48;
+            m->unk_9a_1 = 0;
+            m->unk_9a_4 = 0;
+            m = self->unk_48;
+            m->unk_9a_2 = 0;
+            m->unk_9a_5 = 0;
+            self->unk_9c = 0;
+            self->unk_a0 = 0;
+            self->unk_a4 = 0;
+            self->unk_a8 = 0;
+            FLD(u32, self, 0x100) |= 0x200000;
+            break;
+        }
+        case 2: {
+            if (FLD(u32, self, 0x100) & 0x200000) {
+                FLD(u32, self, 0x100) ^= 0x200000;
+            }
+            self->unk_38->unk_c2_0 = 1;
+            FLD(Ov012Vec, self, 0xf0) = data_ov012_0220a4a4[FLD(u8, self, 0x106)];
+            self->pos = data_ov012_0220a4bc[FLD(u8, self, 0x106)];
+            n = 3;
+            switch (FLD(u8, self, 0x106)) {
+            case 0:
+                self->rot[1] = 0xbff4;
+                break;
+            case 1:
+                self->rot[1] = 0x4000;
+                break;
+            }
+            func_ov000_0219bd20(0x5c02, self->kind, 0xe, 1, 4, &n);
+            break;
+        }
+        case 4:
+            self->unk_38->unk_c2_0 = 1;
+            FLD(u32, self, 0x100) |= 4;
+            self->unk_40->flags |= 0x8000;
+            break;
+        case 8:
+            self->unk_38->unk_c2_0 = 1;
+            FLD(u32, self, 0x100) |= 8;
+            self->unk_40->flags |= 0x10000;
+            break;
+        case 0x10:
+            FLD(u32, self, 0x100) |= 0x1000;
+            break;
+        }
+        FLD(s16, self, 0x104) = 0;
+    }
+    if (self->pos.y <= -0x14000) {
+        Ov012Sub44 *q;
+        self->unk_38->unk_c2_0 = 0;
+        q = self->unk_44;
+        q->unk_22_0 = 0;
+        q->unk_22_1 = 0;
+        self->unk_9c = 0;
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
+        FLD(u16, FLD(u8 *, self, 0x4c), 0x1c) = 0xffff;
+        n2 = 0xc;
+        func_ov000_0219bd20(0x5c02, self->kind, 0xe, 1, 4, &n2);
+        FLD(u32, self, 0x100) = 1;
+        self->unk_40->flags |= 2;
+    }
+    switch (kind) {
+    case 0x14:
+        FLD(u32, self, 0x100) = 0x800;
+        break;
+    case 11: {
+        Ov012Actor *o = (Ov012Actor *)Ov012_FindRes(0x5000, 0x5c02);
+        if (o != NULL) {
+            w = o->pos;
+            VEC_Distance(&self->pos, &w);
+            FLD(u32, self, 0x100) |= 0x100;
+            if (FLD(u32, self, 0x100) & 0x200) {
+                FLD(u32, self, 0x100) ^= 0x200;
+            }
+            if (FLD(u32, self, 0x100) & 0x800) {
+                FLD(u32, self, 0x100) ^= 0x800;
+            }
+            self->unk_48->unk_30 = 0;
+        }
+        break;
+    }
+    case 10:
+        FLD(u32, self, 0x100) |= 0x200;
+        b = 1;
+        func_ov000_0219bd20(0x5c02, self->kind, 6, 1, 1, &b);
+        break;
+    }
+    if ((FLD(u32, self, 0x100) & 0x200000) && (FLD(u32, self, 0x100) & 0x1000)) {
+        self->unk_40->flags = 0;
+        self->unk_40->flags |= 0x200000;
+    }
+    func_ov003_021dacfc(FLD(void *, self, 0x108));
+}
+}

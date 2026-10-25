@@ -1520,6 +1520,10 @@ src/ov000/Stub_021c14dc.cpp:
     complete
     .text       start:0x021c14dc end:0x021c14f4
 
+src/ov000/ov000_021c14f4.cpp:
+    complete
+    .text       start:0x021c14f4 end:0x021c17dc
+
 src/ov000/Mtx_021c17dc.cpp:
     complete
     .text       start:0x021c17dc end:0x021c194c
