@@ -336,14 +336,16 @@ data_ov010_0220ef68 kind:data(any) addr:0x0220ef68
 data_ov010_0220ef80 kind:data(any) addr:0x0220ef80
 data_ov010_0220ef8c kind:data(byte[0xc]) addr:0x0220ef8c
 data_ov010_0220ef98 kind:data(any) addr:0x0220ef98
-data_ov010_0220efa4 kind:data(any) addr:0x0220efa4
+data_ov010_0220ef9c kind:data(any) addr:0x0220ef9c local
+data_ov010_0220efa4 kind:data(any) addr:0x0220efa4 weak
 data_ov010_0220efb0 kind:data(any) addr:0x0220efb0
-data_ov010_0220efbc kind:data(any) addr:0x0220efbc
+data_ov010_0220efbc kind:data(any) addr:0x0220efbc weak
 data_ov010_0220efc8 kind:data(any) addr:0x0220efc8
 data_ov010_0220efd0 kind:data(any) addr:0x0220efd0
 data_ov010_0220efdc kind:data(any) addr:0x0220efdc
-data_ov010_0220efe8 kind:data(any) addr:0x0220efe8
-data_ov010_0220f000 kind:data(any) addr:0x0220f000
+data_ov010_0220efe8 kind:data(any) addr:0x0220efe8 weak
+data_ov010_0220eff4 kind:data(byte[0xc]) addr:0x0220eff4
+data_ov010_0220f000 kind:data(any) addr:0x0220f000 weak
 data_ov010_0220f00c kind:data(any) addr:0x0220f00c
 data_ov010_0220f024 kind:data(any) addr:0x0220f024
 data_ov010_0220f098 kind:data(any) addr:0x0220f098
@@ -379,14 +381,14 @@ data_ov010_0220f5a0 kind:data(any) addr:0x0220f5a0
 data_ov010_0220f5b8 kind:data(any) addr:0x0220f5b8
 __sinit_ov010_0220f5dc.cpp kind:function(arm,size=0x24c) addr:0x0220f5dc local
 __sinit_ov010_0220f828.cpp kind:function(arm,size=0x48) addr:0x0220f828 local
-__sinit_ov010_0220f870 kind:function(arm,size=0x74) addr:0x0220f870
-__sinit_ov010_0220f8e4 kind:function(arm,size=0x74) addr:0x0220f8e4
+__sinit_ov010_0220f870.cpp kind:function(arm,size=0x74) addr:0x0220f870 local
+__sinit_ov010_0220f8e4.cpp kind:function(arm,size=0x74) addr:0x0220f8e4 local
 __sinit_ov010_0220f958 kind:function(arm,size=0x5c) addr:0x0220f958
 __sinit_ov010_0220f9b4.cpp kind:function(arm,size=0x48) addr:0x0220f9b4 local
 .p__sinit_ov010_0220f5dc.cpp kind:data(word) addr:0x0220f9fc local
 .p__sinit_ov010_0220f828.cpp kind:data(word) addr:0x0220fa00 local
-.p__sinit_ov010_0220f870 kind:data(word) addr:0x0220fa04
-.p__sinit_ov010_0220f8e4 kind:data(word) addr:0x0220fa08
+.p__sinit_ov010_0220f870.cpp kind:data(word) addr:0x0220fa04 local
+.p__sinit_ov010_0220f8e4.cpp kind:data(word) addr:0x0220fa08 local
 .p__sinit_ov010_0220f958 kind:data(word) addr:0x0220fa0c
 .p__sinit_ov010_0220f9b4.cpp kind:data(word) addr:0x0220fa10 local
 data_ov010_0220fa20 kind:data(any) addr:0x0220fa20
@@ -434,16 +436,17 @@ data_ov010_0220fd82 kind:data(any) addr:0x0220fd82
 data_ov010_0220fd90 kind:data(byte[0xc]) addr:0x0220fd90 local
 data_ov010_0220fd9c kind:data(any) addr:0x0220fd9c
 data_ov010_0220fdab kind:data(any) addr:0x0220fdab
-data_ov010_0220fdc0 kind:data(any) addr:0x0220fdc0
-data_ov010_0220fdc8 kind:data(any) addr:0x0220fdc8
-data_ov010_0220fde0 kind:data(any) addr:0x0220fde0
+data_ov010_0220fdc0 kind:data(any) addr:0x0220fdc0 local
+data_ov010_0220fdc8 kind:data(any) addr:0x0220fdc8 weak
+data_ov010_0220fdd4 kind:data(byte[0xc]) addr:0x0220fdd4 local
+data_ov010_0220fde0 kind:data(byte[0xc]) addr:0x0220fde0 weak
 data_ov010_0220fdf4 kind:data(any) addr:0x0220fdf4
 data_ov010_0220fe08 kind:data(any) addr:0x0220fe08
 data_ov010_0220fe1c kind:data(any) addr:0x0220fe1c
 data_ov010_0220fe30 kind:data(any) addr:0x0220fe30
 data_ov010_0220fe38 kind:data(any) addr:0x0220fe38
-data_ov010_0220fe44 kind:data(any) addr:0x0220fe44
-data_ov010_0220fe50 kind:data(any) addr:0x0220fe50
+data_ov010_0220fe44 kind:data(any) addr:0x0220fe44 weak
+data_ov010_0220fe50 kind:data(any) addr:0x0220fe50 weak
 data_ov010_0220fe5c kind:data(any) addr:0x0220fe5c
 data_ov010_0220fe6c kind:data(any) addr:0x0220fe6c
 data_ov010_0220fefc kind:data(any) addr:0x0220fefc

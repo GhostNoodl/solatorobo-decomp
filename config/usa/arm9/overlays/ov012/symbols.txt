@@ -198,11 +198,14 @@ data_ov012_0220a534 kind:data(byte[0xc]) addr:0x0220a534 local
 data_ov012_0220a540 kind:data(any) addr:0x0220a540
 data_ov012_0220a54c kind:data(any) addr:0x0220a54c
 data_ov012_0220a57c kind:data(any) addr:0x0220a57c
+data_ov012_0220a580 kind:data(any) addr:0x0220a580
+data_ov012_0220a584 kind:data(any) addr:0x0220a584
+data_ov012_0220a588 kind:data(any) addr:0x0220a588
 data_ov012_0220a58e kind:data(any) addr:0x0220a58e
 data_ov012_0220a59a kind:data(any) addr:0x0220a59a
 data_ov012_0220a5a2 kind:data(any) addr:0x0220a5a2
 data_ov012_0220a5ac kind:data(any) addr:0x0220a5ac
-data_ov012_0220a5d0 kind:data(any) addr:0x0220a5d0
+data_ov012_0220a5d0 kind:data(byte[0xc]) addr:0x0220a5d0 weak
 data_ov012_0220a5e8 kind:data(any) addr:0x0220a5e8
 data_ov012_0220a5f4 kind:data(any) addr:0x0220a5f4
 data_ov012_0220a600 kind:data(any) addr:0x0220a600
@@ -231,11 +234,11 @@ data_ov012_0220a8c8 kind:data(any) addr:0x0220a8c8
 data_ov012_0220a8d0 kind:data(any) addr:0x0220a8d0
 __sinit_ov012_0220a8d8.cpp kind:function(arm,size=0xc4) addr:0x0220a8d8 local
 __sinit_ov012_0220a99c.cpp kind:function(arm,size=0x48) addr:0x0220a99c local
-__sinit_ov012_0220a9e4 kind:function(arm,size=0x48) addr:0x0220a9e4
+__sinit_ov012_0220a9e4.cpp kind:function(arm,size=0x48) addr:0x0220a9e4 local
 __sinit_ov012_0220aa2c.cpp kind:function(arm,size=0x48) addr:0x0220aa2c local
 .p__sinit_ov012_0220a8d8.cpp kind:data(word) addr:0x0220aa74 local
 .p__sinit_ov012_0220a99c.cpp kind:data(word) addr:0x0220aa78 local
-.p__sinit_ov012_0220a9e4 kind:data(word) addr:0x0220aa7c
+.p__sinit_ov012_0220a9e4.cpp kind:data(word) addr:0x0220aa7c local
 .p__sinit_ov012_0220aa2c.cpp kind:data(word) addr:0x0220aa80 local
 data_ov012_0220aaa0 kind:data(any) addr:0x0220aaa0
 data_ov012_0220aaa6 kind:data(any) addr:0x0220aaa6
@@ -268,7 +271,7 @@ data_ov012_0220afa0 kind:data(any) addr:0x0220afa0
 data_ov012_0220afa6 kind:data(any) addr:0x0220afa6
 data_ov012_0220afac kind:data(any) addr:0x0220afac
 data_ov012_0220afb2 kind:data(any) addr:0x0220afb2
-data_ov012_0220afb8 kind:data(any) addr:0x0220afb8
+data_ov012_0220afb8 kind:data(any) addr:0x0220afb8 weak
 data_ov012_0220afc4 kind:data(any) addr:0x0220afc4
 data_ov012_0220afca kind:data(any) addr:0x0220afca
 data_ov012_0220afd0 kind:data(any) addr:0x0220afd0

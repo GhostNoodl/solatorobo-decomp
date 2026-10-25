@@ -266,10 +266,10 @@ data_ov013_0220b3d4 kind:data(any) addr:0x0220b3d4
 data_ov013_0220b3e0 kind:data(any) addr:0x0220b3e0
 data_ov013_0220b3f8 kind:data(any) addr:0x0220b3f8
 data_ov013_0220b404 kind:data(any) addr:0x0220b404
-__sinit_ov013_0220b410 kind:function(arm,size=0x34) addr:0x0220b410
+__sinit_ov013_0220b410.cpp kind:function(arm,size=0x34) addr:0x0220b410 local
 __sinit_ov013_0220b444.cpp kind:function(arm,size=0x100) addr:0x0220b444 local
 __sinit_ov013_0220b544.cpp kind:function(arm,size=0x48) addr:0x0220b544 local
-.p__sinit_ov013_0220b410 kind:data(word) addr:0x0220b58c
+.p__sinit_ov013_0220b410.cpp kind:data(word) addr:0x0220b58c local
 .p__sinit_ov013_0220b444.cpp kind:data(word) addr:0x0220b590 local
 .p__sinit_ov013_0220b544.cpp kind:data(word) addr:0x0220b594 local
 data_ov013_0220b5a0 kind:data(any) addr:0x0220b5a0

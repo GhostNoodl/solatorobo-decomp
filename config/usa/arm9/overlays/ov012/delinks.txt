@@ -143,6 +143,13 @@ src/ov012/ov012_0220a99c.cpp:
     .ctor       start:0x0220aa78 end:0x0220aa7c
     .data       start:0x0220aef0 end:0x0220af08
 
+src/ov012/ov012_0220a9e4.cpp:
+    complete
+    .rodata     start:0x0220a57c end:0x0220a5dc
+    .init       start:0x0220a9e4 end:0x0220aa2c
+    .ctor       start:0x0220aa7c end:0x0220aa80
+    .data       start:0x0220afa0 end:0x0220afc4
+
 src/ov012/ov012_0220aa2c.cpp:
     complete
     .rodata     start:0x0220a808 end:0x0220a840

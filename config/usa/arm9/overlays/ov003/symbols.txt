@@ -664,10 +664,10 @@ data_ov003_021f4350 kind:data(byte[0xc]) addr:0x021f4350 local
 data_ov003_021f435c kind:data(any) addr:0x021f435c
 data_ov003_021f4360 kind:data(any) addr:0x021f4360 local
 data_ov003_021f4368 kind:data(byte[0xc]) addr:0x021f4368 local
-data_ov003_021f4374 kind:data(any) addr:0x021f4374
+data_ov003_021f4374 kind:data(any) addr:0x021f4374 local
 data_ov003_021f437c kind:data(any) addr:0x021f437c
-data_ov003_021f4388 kind:data(any) addr:0x021f4388
-data_ov003_021f4394 kind:data(any) addr:0x021f4394
+data_ov003_021f4388 kind:data(any) addr:0x021f4388 weak
+data_ov003_021f4394 kind:data(byte[0xc]) addr:0x021f4394 weak
 data_ov003_021f43ac kind:data(any) addr:0x021f43ac
 data_ov003_021f43bc kind:data(any) addr:0x021f43bc
 data_ov003_021f43cc kind:data(any) addr:0x021f43cc
@@ -879,14 +879,14 @@ data_ov003_021f7694 kind:data(any) addr:0x021f7694
 __sinit_ov003_021f76b4.cpp kind:function(arm,size=0x20) addr:0x021f76b4 local
 __sinit_ov003_021f76d4.cpp kind:function(arm,size=0x48) addr:0x021f76d4 local
 __sinit_ov003_021f771c.cpp kind:function(arm,size=0x48) addr:0x021f771c local
-__sinit_ov003_021f7764 kind:function(arm,size=0x74) addr:0x021f7764
+__sinit_ov003_021f7764.cpp kind:function(arm,size=0x74) addr:0x021f7764 local
 __sinit_ov003_021f77d8.cpp kind:function(arm,size=0x48) addr:0x021f77d8 local
 __sinit_ov003_021f7820.cpp kind:function(arm,size=0x28) addr:0x021f7820 local
 __sinit_ov003_021f7848.cpp kind:function(arm,size=0x48) addr:0x021f7848 local
 .p__sinit_ov003_021f76b4.cpp kind:data(word) addr:0x021f7890 local
 .p__sinit_ov003_021f76d4.cpp kind:data(word) addr:0x021f7894 local
 .p__sinit_ov003_021f771c.cpp kind:data(word) addr:0x021f7898 local
-.p__sinit_ov003_021f7764 kind:data(word) addr:0x021f789c
+.p__sinit_ov003_021f7764.cpp kind:data(word) addr:0x021f789c local
 .p__sinit_ov003_021f77d8.cpp kind:data(word) addr:0x021f78a0 local
 .p__sinit_ov003_021f7820.cpp kind:data(word) addr:0x021f78a4 local
 .p__sinit_ov003_021f7848.cpp kind:data(word) addr:0x021f78a8 local
@@ -912,8 +912,10 @@ data_ov003_021f79f4 kind:data(any) addr:0x021f79f4
 data_ov003_021f79fa kind:data(any) addr:0x021f79fa
 data_ov003_021f7a00 kind:data(any) addr:0x021f7a00
 data_ov003_021f7a06 kind:data(any) addr:0x021f7a06
-data_ov003_021f7a20 kind:data(any) addr:0x021f7a20
-data_ov003_021f7a2c kind:data(any) addr:0x021f7a2c
+data_ov003_021f7a0c kind:data(any) addr:0x021f7a0c local
+data_ov003_021f7a14 kind:data(byte[0xc]) addr:0x021f7a14 local
+data_ov003_021f7a20 kind:data(any) addr:0x021f7a20 weak
+data_ov003_021f7a2c kind:data(byte[0xc]) addr:0x021f7a2c weak
 data_ov003_021f7a38 kind:data(any) addr:0x021f7a38
 data_ov003_021f7a48 kind:data(any) addr:0x021f7a48
 data_ov003_021f7a60 kind:data(any) addr:0x021f7a60
