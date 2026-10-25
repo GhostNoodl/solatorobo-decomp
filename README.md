@@ -12,7 +12,7 @@
 <img src="docs/progress.svg" alt="Decompilation progress" width="720">
 
 <!-- progress:start -->
-**86.6%** of the code and **7,886 / 8,201** functions match the original game (updated 2026-10-25). Fully matched: Overlay 7.
+**86.7%** of the code and **7,896 / 8,201** functions match the original game (updated 2026-10-25). Fully matched: Overlay 7.
 <!-- progress:end -->
 
 </div>
