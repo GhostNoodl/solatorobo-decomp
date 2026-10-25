@@ -3709,3 +3709,31 @@ Tools and drafts are in the scratchpad under `twins1/r2/`. `tw2.py ROOT out.tsv`
   - `ov003_021cd744`: writing the mask test as `if (mask & (1 << i))` with `unk_48` first fixes the branch sense, but it stays at 28 / 0. A typed copy of `ov006_Model_PlayPart` also gives 28.
   - `ov000_021be5dc` and `021c14f4`: their `q - 0x1000` depth sequence occurs in no matched function.
 - **Lesson.** When loads come out in the wrong order around a call or a stack argument, try `const` on the pointee of the parameter that is read, and at the same time take out any ordering hack that was added for it.
+## A struct pointer at a non-immediate offset gives `021c14f4` its separate `add #0x1ec`; no new matches (ov000, ov006, ov012, round ovmid2)
+
+No new matches. The best drafts are in the scratchpad under `ovmid2/n/best/`. Scores are raw / register-masked (`sc2.py`). Tools are in `ovmid2/tt/` (round ovmid1's tools, pointed at the `ovmid2` clone).
+
+- **`ov000_021c14f4`: 23 / 14 to 3 / 0 (`14f4_3_0.cpp`).**
+  1. **The `add`.** MWCC folds a pointer local's constant offset into its loads when the offset is an ARM immediate. When it is not, MWCC splits it into an immediate `add` plus a remainder that it folds into the loads. So the camera fields go in a sub-struct at camera `+0x400`, read through an inline that takes the sub-struct pointer: `CalcSub(&data_02097d48->cam.sub, ...)`. `0x1ec + 0x400 = 0x5ec` is not an immediate, so MWCC splits it into the target's `add r1, r1, #0x1ec`, and the loads read `[r1, #0x83c]`, `#0x838` and `#0x828`. That also fixes the whole-function register rotation, so no base class and no null check are needed. Other sub-struct offsets from `0x400` to `0x820` work too. `0x818` and `0x824` do not.
+     - **Without the sub-struct.** `(s32 *)&c->pad[0] + 0x100` gets the `add` but keeps the rotation (58 / 0). `s32 *f = &c->a; f[5]` makes the offset `0xa14`, which MWCC splits into `add #0x214` plus loads at `+0x800` (13 / 8).
+     - **Immediate offsets fold back.** With an immediate offset (`(s32 *)c`, `u8 *` casts, `&c->pad[0]`, `&c->w[0]`) the offset folds back into the loads (64 / 6).
+  2. **`b = FX_MUL(proj[0x28], z) + proj[0x38]; q = FX_Div(b + a, a << 1)`.** This gives the target's `add r0, r0, r1` operand order. No order of the three-term sum does.
+  3. **Still open: `q - 0x1000` gets `r3` and the product low word gets `r4`; the target has them the other way round.** None of these changed it:
+     - a named `d`, `q -= 0x1000`, a one-element `d` or result array, or the subtraction done by the caller;
+     - preloading `s->b`/`s->c`, including through `volatile`;
+     - operand orders, `s64` casts and parameter types;
+     - array, `VecFx32` and 4x4-matrix field layouts;
+     - a member-function `Calc`, or 50 orders of the case-10 declarations;
+     - other compiler versions (all `dsi/1.1`–`1.3p1` give 3);
+     - a 15-minute `cxxperm` run (19,054 compiles).
+     
+     The target looks as if `b` were loaded before the subtraction when registers are allocated, which keeps `r0` busy.
+- **`ov006_021e6eb0`: 25 / 14 to 10 / 8, but the shape is wrong (`6eb0_10_8_shape.cpp`).** Writing one of `trig` / `release` without the inner `(u16)` (for example `trig = (u16)(cur & ~old)`) drops a register (the push becomes `{r4, r5, r6, lr}` as in the target). It also drops that expression's `lsl`/`lsr`, which the target has. With both `(u16)~x` forms, the score is 30 / 15 whatever else changes: declaration order, `u16`/`u32`/`int`/`s16` locals (200 variants), statement order, temporaries, inlines, a pad sub-struct or the xor idiom. MWCC always loads `sub->buttons` first and computes both `mvn`s before the first store. The target loads `held` first and stores `trig` before it computes `~cur`.
+- **`ov012_021fefc8`: 23 / 4 to 26 / 2 (`efc8_26_2.cpp`).** The target's pool loads `0x0220a4bc` before `0x0220a4a4`, so the `q` (position table) pointer is declared before `p`. With plain `Ov012_VecCopy` for both copies, that fixes the whole-function `self`/zero swap. What is left is one extra callee-saved register in case 2: the target keeps `unk_38` in `r7`, `side` in `sb` and the `side * 0xc` offset in `r2`. `side` types, scope, a model local or inline, `+ side` pointer forms and a 15-minute `cxxperm` run (12,589 compiles) do not change it. `ov012_021ffd34` has the same block.
+- **`ov000_0216715c`: 103 / 77 to 70 / 39 with `cxxperm` noise (`715c_perm_70_39.cpp`); the clean draft is 114 / 48 (`715c_clean_114_48.cpp`).** The clean draft makes `x0` an `s32` instead of `long`, puts `x0`, `y0`, `s`, `x1`, `y1` in that order, and uses a `Lerp(a, b, s) = FX_MUL(b - a, s) + a` inline. MWCC still folds `(x1 << 12) - (x0 << 12)` into `(x1 - x0) << 12`, and the target does not. A `(u32)` cast on one operand stops the fold but costs a frame slot (173).
+- **No gain:**
+  - `ov003_021cd744` (28 / 0): counter and mask types, `u16` inline parameters, declaration orders, a ternary model, a `self` copy and a one-element mask all stay at 28, and so does a 10-minute `cxxperm` run.
+  - `ov010_02204030` (15 / 8): an inline that stores the zeros and calls `MTX_RotY33_`, non-`const` or `volatile` table reads, aliasing `v.z` stores and aggregate initialisers all stay at 15 or get worse.
+  - `ov000_0218867c`: the 22 / 6 draft relies on fake parameters, and its case-1 loop (`if (n_0 == 0) break;`) looks wrong, so it was not pursued.
+  - `ov009_021ff908`: it has a twin (`0220487c`), so it was left to round twins1.
+- **Lesson.** When the target has `add rX, rX, #k` with small load offsets after it, and every pointer form folds `k` back, look for a struct pointer whose total offset is *not* an ARM immediate. MWCC splits that offset, and the immediate part can be exactly the target's `k`.
