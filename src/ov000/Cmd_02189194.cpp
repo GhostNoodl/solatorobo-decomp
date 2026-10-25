@@ -122,7 +122,7 @@ extern State021ccd50 data_ov000_021ccd50;
 extern Mgr021ccd30 *data_ov000_021ccd30;
 extern s32 data_02097d78[];
 extern Obj021ccd70 *data_ov000_021ccd70;
-extern CmdEntry data_ov000_021cc1a4[];
+extern u8 data_ov000_021cc1a0[];
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 extern Obj02097dc8 *data_02097dc8;
@@ -209,18 +209,22 @@ static inline BOOL TaskHasVal(Task118 *t) {
     return (TaskVal(t) != 0 ? TRUE : FALSE) ? TRUE : FALSE;
 }
 
+// The handler table (ov000_021ca70c.cpp) is {key, handler} entries; this file reads it from the
+// handler of entry 0, four bytes in.
+#define CMD_ENTRIES ((CmdEntry *)(data_ov000_021cc1a0 + 4))
+
 #define PMF_PTR(f) (*(void **)&(f))
 
 static inline CmdPmf GetFn(s32 kind) {
     if (kind == 0) {
         return NULL;
     }
-    return data_ov000_021cc1a4[kind].fn;
+    return CMD_ENTRIES[kind].fn;
 }
 
 static inline void Start(CmdObj *self, u16 a, u16 b, s32 kind) {
     if (kind != 0) {
-        self->unk_9c = data_ov000_021cc1a4[kind].fn;
+        self->unk_9c = CMD_ENTRIES[kind].fn;
     } else {
         self->unk_9c = NULL;
     }

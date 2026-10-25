@@ -3600,3 +3600,10 @@ src/ov000/ov000_021ca678.cpp:
     .init       start:0x021ca678 end:0x021ca6a0
     .ctor       start:0x021ca850 end:0x021ca854
     .data       start:0x021ca8b0 end:0x021ca8cc
+
+src/ov000/ov000_021ca70c.cpp:
+    complete
+    .rodata     start:0x021c9d44 end:0x021c9d4c
+    .init       start:0x021ca70c end:0x021ca77c
+    .ctor       start:0x021ca858 end:0x021ca85c
+    .data       start:0x021cc0d8 end:0x021cc398

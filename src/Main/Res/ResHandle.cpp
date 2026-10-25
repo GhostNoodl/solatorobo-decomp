@@ -466,7 +466,8 @@ const char *func_02039674(const char *path) {
 extern const void *data_0208b318[];
 extern void func_0203de1c(void *ptr);
 
-ResHandle *func_020396a4(ResHandle *handle) {
+// ResHandle::~ResHandle (deleting).
+ResHandle *_ZN9ResHandleD0Ev(ResHandle *handle) {
     *(const void ***)handle = data_0208b318;
     handle->Unload();
     func_0203de1c(handle);
@@ -482,7 +483,8 @@ BOOL func_020396e8(ResHandle *handle) {
     return TRUE;
 }
 
-ResHandle *func_020396f8(ResHandle *handle) {
+// ResHandle::~ResHandle (complete); LangHandle.cpp registers it as the global handle's destructor.
+ResHandle *_ZN9ResHandleD1Ev(ResHandle *handle) {
     *(const void ***)handle = data_0208b318;
     handle->Unload();
     return handle;

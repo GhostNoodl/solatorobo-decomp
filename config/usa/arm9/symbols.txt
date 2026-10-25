@@ -1604,10 +1604,10 @@ func_020395a8 kind:function(arm,size=0x68) addr:0x020395a8
 func_02039610 kind:function(arm,size=0x34) addr:0x02039610
 func_02039644 kind:function(arm,size=0x30) addr:0x02039644
 func_02039674 kind:function(arm,size=0x30) addr:0x02039674
-func_020396a4 kind:function(arm,size=0x30) addr:0x020396a4
+_ZN9ResHandleD0Ev kind:function(arm,size=0x30) addr:0x020396a4
 func_020396d4 kind:function(arm,size=0x14) addr:0x020396d4
 func_020396e8 kind:function(arm,size=0x10) addr:0x020396e8
-func_020396f8 kind:function(arm,size=0x28) addr:0x020396f8
+_ZN9ResHandleD1Ev kind:function(arm,size=0x28) addr:0x020396f8
 func_02039720 kind:function(arm,size=0xc) addr:0x02039720
 func_0203972c kind:function(arm,size=0x24) addr:0x0203972c
 func_02039750 kind:function(arm,size=0xac) addr:0x02039750
@@ -2786,9 +2786,9 @@ data_02082bdc kind:data(any) addr:0x02082bdc
 data_02082be4 kind:data(any) addr:0x02082be4
 data_02082bf8 kind:data(any) addr:0x02082bf8
 __sinit_Obj3D_2.cpp kind:function(arm,size=0x24) addr:0x0208aa00 local
-__sinit_0208aa24 kind:function(arm,size=0x44) addr:0x0208aa24
+__sinit_LangHandle.cpp kind:function(arm,size=0x44) addr:0x0208aa24 local
 .p__sinit_Obj3D_2.cpp kind:data(word) addr:0x0208aa68 local
-.p__sinit_0208aa24 kind:data(word) addr:0x0208aa6c
+.p__sinit_LangHandle.cpp kind:data(word) addr:0x0208aa6c local
 data_0208aa80 kind:data(any) addr:0x0208aa80
 data_0208ab64 kind:data(any) addr:0x0208ab64
 data_0208ab68 kind:data(any) addr:0x0208ab68
@@ -2915,6 +2915,7 @@ data_0208b2f3 kind:data(any) addr:0x0208b2f3
 data_0208b2fa kind:data(any) addr:0x0208b2fa
 data_0208b301 kind:data(any) addr:0x0208b301
 data_0208b308 kind:data(any) addr:0x0208b308
+_ZTV9ResHandle kind:data(any) addr:0x0208b310
 data_0208b318 kind:data(any) addr:0x0208b318
 data_0208b354 kind:data(any) addr:0x0208b354
 data_0208b35a kind:data(any) addr:0x0208b35a
@@ -3776,8 +3777,8 @@ data_0214a424 kind:bss addr:0x0214a424
 data_0214a428 kind:bss addr:0x0214a428
 data_0214aa68 kind:bss addr:0x0214aa68
 data_0214b0a8 kind:bss addr:0x0214b0a8
-data_0214b0ac kind:bss addr:0x0214b0ac
-data_0214b0b8 kind:bss addr:0x0214b0b8
+@9 kind:bss addr:0x0214b0ac local
+data_0214b0b8 kind:bss addr:0x0214b0b8 weak
 data_0214b104 kind:bss addr:0x0214b104
 data_0214b105 kind:bss addr:0x0214b105
 data_0214b128 kind:bss addr:0x0214b128

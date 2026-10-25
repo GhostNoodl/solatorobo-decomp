@@ -1707,3 +1707,9 @@ libs/mobiclip/mobiclip_asm_02075940.c:
 libs/mobiclip/mobiclip_asm_02076990.c:
     complete
     .text       start:0x02076990 end:0x02076efc
+
+src/Main/Lang/LangHandle.cpp:
+    complete
+    .init       start:0x0208aa24 end:0x0208aa68
+    .ctor       start:0x0208aa6c end:0x0208aa70
+    .bss        start:0x0214b0a8 end:0x0214b104
