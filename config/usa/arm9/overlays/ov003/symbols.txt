@@ -965,22 +965,7 @@ data_ov003_021f852b kind:data(any) addr:0x021f852b
 data_ov003_021f8531 kind:data(any) addr:0x021f8531
 data_ov003_021f8537 kind:data(any) addr:0x021f8537
 data_ov003_021f8540 kind:data(any) addr:0x021f8540
-data_ov003_021f8564 kind:data(any) addr:0x021f8564
-data_ov003_021f8569 kind:data(any) addr:0x021f8569
-data_ov003_021f856e kind:data(any) addr:0x021f856e
-data_ov003_021f8574 kind:data(any) addr:0x021f8574
-data_ov003_021f857a kind:data(any) addr:0x021f857a
-data_ov003_021f857c kind:data(any) addr:0x021f857c
-data_ov003_021f8581 kind:data(any) addr:0x021f8581
-data_ov003_021f8587 kind:data(any) addr:0x021f8587
-data_ov003_021f858d kind:data(any) addr:0x021f858d
-data_ov003_021f8593 kind:data(any) addr:0x021f8593
-data_ov003_021f859e kind:data(any) addr:0x021f859e
-data_ov003_021f85a7 kind:data(any) addr:0x021f85a7
-data_ov003_021f85ac kind:data(any) addr:0x021f85ac
-data_ov003_021f85b2 kind:data(any) addr:0x021f85b2
-data_ov003_021f85b8 kind:data(any) addr:0x021f85b8
-data_ov003_021f85ba kind:data(any) addr:0x021f85ba
+@stringBase0 kind:data(byte[0x5c]) addr:0x021f8564 local
 data_ov003_021f85c0 kind:data(any) addr:0x021f85c0
 data_ov003_021f8638 kind:data(any) addr:0x021f8638
 data_ov003_021f86d0 kind:data(any) addr:0x021f86d0
