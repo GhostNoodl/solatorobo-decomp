@@ -205,6 +205,10 @@ src/ov000/Dtor_02152b2c.cpp:
     complete
     .text       start:0x02152b2c end:0x02152cbc
 
+src/ov000/G3_02153804.cpp:
+    complete
+    .text       start:0x02153804 end:0x02153c48
+
 src/ov000/Text_02153c48.cpp:
     complete
     .text       start:0x02153c48 end:0x02153f30
@@ -684,6 +688,10 @@ src/ov000/Stub_021c54f4.cpp:
 src/ov000/Stub_021c5fc4.cpp:
     complete
     .text       start:0x021c5fc4 end:0x021c5fd0
+
+src/ov000/Sprite_021c8408.cpp:
+    complete
+    .text       start:0x021c8408 end:0x021c879c
 
 src/ov000/Dtor_021c879c.cpp:
     complete
