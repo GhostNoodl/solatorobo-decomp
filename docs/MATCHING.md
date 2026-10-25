@@ -3289,3 +3289,28 @@ Five more functions match by moving them into the `__sinit` file that defines th
 - **Where the entries go.** Each moved sinit entry sits directly after the file whose `.text` ends where the new range starts. The `.init`/`.rodata`/`.data` of those entries now come before other sinit files' sections in `delinks.txt`, and the ROM still matches.
 - **The scanner, round 2.** `t/scan2.py` also tracks pool words that point inside a sinit file's range, and counts only `[r, #off]` accesses that land on a different symbol. It adds `ov010_02201064` (176 / 6), `ov010_0220c758` (a whole-function register rotation; it reads `0220f54c` through that object's own word, so this was a false hit) and `ov003_021ea588` (perm5's target). In `func_020459cc` the `.bss` hit is a false one: the scanner does not clear the register on `ldr r0, [r0]`, and the draft was already compiled inside `Wh.cpp` (9).
 - **Tried, no change:** `ov010_02205444` in `ov010_0220f958.cpp` (26, the same `strb`/`ldrh` order and case-10 diffs). Not tried: `ov010_021fbda0`, which would need `ov010_0220f5dc.cpp` extended down past `021fe2a4` (12 / 7, a real control-flow diff); `ov011_021ff24c` (96 / 10); `ov009_02204a10`; and `0204e5d4` (string pool).
+
+## Permuter pass on the drafts that recently got closer: only one-element arrays and fake parameters help (round perm5)
+
+No new matches. Drafts, outputs and tools are in the scratchpad under `perm5/` (`d/`, `out/`, `t/`). `t/vv.py base func mod outdir name:old=>new|||old=>new ...` scores text-replacement variants. `t/dearr.py in out var...` turns `T v[1]` back into a scalar (and `nop` drops the permuter's `_pNNNN` dummies). Use these to ablate a permuter result by concept when line-hunk ablation (`t/ablate.py`) can't, because the array edits are spread over many lines.
+
+- **About 8 minutes of `cxxperm` each with 1 job (`--inlines` where the file has inlines). These found nothing:**
+  - `ov009_0220acb8` (6 / 6), twice;
+  - `ov003_021d112c` (14 / 2);
+  - `ov003_021ea588` (17 / 9);
+  - `ov003_021ead50` (2 / 2);
+  - `ov012_02200cd4` (72 / 27);
+  - `0203d298` (7 / 2);
+  - `0200d36c` (5 / 0);
+  - `0206e3a0` (2 / 2);
+  - `ov002_021e7ea8`. `sdkinl1/e7ea8/b.cpp` scores 28 / 0 with `sc.py`, not 20; 20 is the positional count.
+- **`func_ov000_0218cfc8` (8 / 2, `midfresh2/cfc8/n1.cpp`) can reach 3 / 2 (`perm5/d/cv/m2.cpp`), but not in a form that can land.** The gain needs `Actor *ret[1]` and `Actor *next[1]`. With `ret` as a scalar it is 33, and with `next` as a scalar it is 11. The permuter's other edits do nothing: `0xf000 == key`, `(0, ...)`, `g2` moved into the block, the declaration order, and the dummies. The last miss is one scratch register: the target loads `data_ov000_021ccd68` through `r1` before `ret = NULL` (`mov r1, #0`), while ours uses `r3`. A `mgr` local loaded before `ret = NULL`, either order of the `id`/`ret` declarations, and calling the header's `ActorMgr_FindActor` (46 / 5) did not fix it. A second 7-minute run on `m2.cpp` found nothing either.
+- **`func_ov000_021652e4` (185 / 53).** `cxxperm` reached 91 / 46 (`out/52e4/out-139-0-1253.cpp`). That needs seven fake parameters (`col`, `j` and `h` matter) and `row[1]`, `i[1]` and `pe[1]` arrays. With those taken out it is 159 / 56. Line-ablated against the old draft, the real edits give 156 / 56 (`d/c52/clean_ab.cpp`):
+  - `k` and `rx` declared at function scope;
+  - `t = tbl[...]` moved after the two `pos[k]` stores;
+  - the part loop's `t` load after `pos->y = sy`;
+  - `pe` advanced after `D_CNT++`;
+  - `hy` assigned separately.
+  
+  That is fewer raw diffs but more masked ones. A second run from that draft reached 126 / 49, again only with fake parameters and arrays.
+- **Lesson.** On these drafts the permuter's gains come only from one-element arrays and fake parameters. Both change which virtual register MWCC numbers first, not the code. A draft that only improves through them is stuck on register allocation that the source shape doesn't control, so don't permute it again without a structural redraft.
