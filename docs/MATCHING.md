@@ -3495,3 +3495,25 @@ No new matches. Of 159 unmatched overlay functions (ov004 excluded), 66 are not 
 - **`ov011_021fb02c` (6 / 0).** `j` and `dz` swap `r5`/`r8`. `dz` (or `dy`/`dz`) at function scope, an `actor - a` operand split, `u8 *` reads, `int`/`u32` for `j` and moving the `e`/`n` declarations all stay at 6 or get worse.
 - **`ov006_021e51f8` (2 / 0).** The `1` for `Ov006_Begin` is in `r0`, and the target has it in `r1`. An `s32` parameter, a `u8 *` store, two-definition `1`/`v`, a pointer local, a no-parameter inline and a pointer-to-pointer parameter all compile the same.
 - **Lesson.** The overlay leftovers that nobody had touched today are single-register or single-scheduling misses that many rounds have already tried. Today's levers don't move them, so each needs a source shape no one has found yet.
+## Today's levers on the main near-misses: no new matches (main, round fresh6)
+
+No new matches. Drafts and variant specs are in the scratchpad under `fresh6/d/<func>/` (`b.*` is the rescored base, `s*.py` the `vv.py` specs). `fresh6/unm.txt` lists the 65 unmatched main functions (ITCM and DTCM have none). `fresh6/scored.tsv` rescores the 30 newest drafts of each candidate under current main. `fresh6/t/vv.py` now resolves the base path and keeps its extension.
+
+- **Scope.** Not counted: the BIOS thumb stubs, hand asm, `__sinit_*`, the TU1/TU2 string-pool blockers, and every function already covered in today's sections. That leaves 11 functions, plus one more try at `02049c80`. Best drafts as they score today (raw / masked): `02056e74` 4 / 0, `02046070` 6 / 0, `0203a984` 10 / 0, `0206d43c` 12 / 0, `02060a08` 13 / 0, `02060b18` 16 / 0, `02064b54` 20 / 4, `020417e0` 24 / 2 (`mainfresh3/d/17_best2.cpp`), `02053254` 36 / 10, `02069b3c` 44 / 4, `02048e74` 134 / 32. None of these has changed since its last round.
+- **`02049c80` (22 / 5).** The target passes the incoming `r0` to both first calls and uses the `r6` copy only for field accesses. That suggests two variables: the parameter, used for the calls, and a copy, used for the fields. Things that compile to the same 22 / 5:
+  - a `self` copy used for the fields or for the calls, at the top or block-local in the slot arm;
+  - a two-definition `self`;
+  - a `u8 *`/`u32` byte-pointer view for the slot-arm stores;
+  - a `useSlot` local, `(u8)` or `== 0` tests, a block-local `slot` or `handle`;
+  - all 48 local orders that put `none` in the first three slots (the rest give 36–40).
+  
+  MWCC propagates each copy, so it never becomes the second vreg.
+- **These did not move:**
+  - **`02056e74`:** the product's operand order, `+ 0x800` placement, block-local or `s64` temporaries, a two-definition `-0x80000` or `s`, `x = s; x = 0x1000 - x;`, the sine select as an `if`/`else` (inverted or with the subtraction in both arms) and `-(1 << 19)`. They give 4–94; the `asr` still goes to the `-1` register.
+  - **`02046070`:** `WH_ChangeSysState` with a `u32`/`u16` parameter, a pointer local, a `u8 *` or `int *` field pointer, or a returned value. Also a two-definition state constant and a local definition of `data_02097e40` (it is defined in `Wh.cpp`, which may be the same unity TU).
+  - **`0203a984`:** `b` block-local, the order of the `name`/`ox`/`oy` statements, a `unk_14` local, `|` operand order, and an `o = &buf[i]` pointer (10–51).
+  - **`0206d43c`:** `GameSave_Align` written as `(x + m) & ~m`, `m -= 1`, `x = m + x` or with a `y` temporary, and five header-size forms (12–25). `data_02097e44` is defined in `SysCard.cpp`, so the "compile with its data" lever does not apply.
+  - **`02060a08`:** seven key-expression orders, one of them `k = b; k = (a << 24) | k;` (13–75).
+  - **`02064b54`:** `scale.z` set first, a `VecSet` inline, a two-definition `0x1000` and/or `0x64000`, a `y` temporary, and a `scale` pointer (20–39). The `0x1000` store is still scheduled before `y`.
+  - **`020417e0`:** the anim pointer set in both arms, an inverted test, a block-local `NULL`, and loop 1 written by hand with its own or a shared `u16 i` (24–111). The `NULL` is still hoisted to entry (`mov fp, r4`).
+  - **`02069b3c`:** `key + param`, `param += key`, `+=` in both arms, an inverted test, a `u32` key, and `x = key; x = param + x;` (44–73). `param += key` does put the sum in place (`add r3, r3, r1`), but it breaks the earlier `FX_Mul` block (73 / 8).
