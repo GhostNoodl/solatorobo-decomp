@@ -254,6 +254,11 @@ src/ov006/ov006_021d40a8.cpp:
     complete
     .text       start:0x021d40a8 end:0x021d4118
 
+src/ov006/ov006_021d4118.cpp:
+    complete
+    .text       start:0x021d4118 end:0x021d4880
+    .rodata     start:0x021eb6fc end:0x021eb708
+
 src/ov006/ov006_021ead68.cpp:
     complete
     .text       start:0x021ead68 end:0x021ead6c

@@ -430,6 +430,7 @@ func_ov006_021eb6bc kind:function(arm,size=0x1c) addr:0x021eb6bc
 data_ov006_021eb6d8 kind:data(any) addr:0x021eb6d8
 data_ov006_021eb6fc kind:data(any) addr:0x021eb6fc
 data_ov006_021eb6fe kind:data(any) addr:0x021eb6fe
+data_ov006_021eb702 kind:data(any) addr:0x021eb702
 data_ov006_021eb708 kind:data(any) addr:0x021eb708
 data_ov006_021eb710 kind:data(any) addr:0x021eb710
 data_ov006_021eb71c kind:data(any) addr:0x021eb71c
