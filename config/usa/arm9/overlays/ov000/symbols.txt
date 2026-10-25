@@ -1614,6 +1614,9 @@ data_ov000_021c9fc4 kind:data(byte[0xc]) addr:0x021c9fc4 local
 data_ov000_021c9fd0 kind:data(any) addr:0x021c9fd0
 data_ov000_021c9fe4 kind:data(any) addr:0x021c9fe4
 data_ov000_021c9fe8 kind:data(any) addr:0x021c9fe8
+data_ov000_021c9feb kind:data(any) addr:0x021c9feb
+data_ov000_021c9fee kind:data(any) addr:0x021c9fee
+data_ov000_021c9ff2 kind:data(any) addr:0x021c9ff2
 data_ov000_021c9ff8 kind:data(any) addr:0x021c9ff8
 data_ov000_021ca000 kind:data(any) addr:0x021ca000
 data_ov000_021ca00c kind:data(any) addr:0x021ca00c

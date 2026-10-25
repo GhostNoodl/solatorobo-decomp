@@ -3425,6 +3425,11 @@ src/ov000/Robo_021ac844.cpp:
     complete
     .text       start:0x021ac844 end:0x021ad130
 
+src/ov000/Robo_021ad130.cpp:
+    complete
+    .text       start:0x021ad130 end:0x021ad8ac
+    .rodata     start:0x021c9fe8 end:0x021c9ff8
+
 src/ov000/Body_021987b8.c:
     complete
     .text       start:0x021987b8 end:0x02198ad8
