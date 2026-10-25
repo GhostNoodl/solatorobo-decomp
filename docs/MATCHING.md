@@ -2850,3 +2850,26 @@ One new match, `func_ov000_02189b44` (0x814, a camera path update; new file `src
 - **`0217b324` (45 / 14): the target keeps `"%.2d"` in `fp`.** In the hours/minutes/seconds block the target loads the format string once into `fp` and passes `mov r1, fp` to all three `func_0200779c` calls, and reloads the `3600` magic instead. Our build keeps the three division constants and reloads the string from the pool for each call. In a small test file the literal (or an `extern`) is CSE'd into a saved register; inside this function it is not, with literals under `pool_strings`, an `extern`, a block-local `const char *`, an `AppendNum2` inline (string inside or as a parameter), or `opt_propagation`/`opt_common_subs`/`opt_lifetimes`/`opt_dead_assignments` off. One more instruction comes from that, and the rest of the diff is the register shift after it.
 - **`0219d9fc` (3 / 2):** the target loads `0x9ae` into `r2` before `0x9ac` into `r1` and compares `cmp r1, r2`. Every form we wrote loads the left operand first, or, with `0x9ae > 0x9ac`, loads in the target's order but compares the other way (`bls`) with `r1`/`r0`. Locals for either side, casts, `volatile`, comma forms, pointer forms, bit-field reads of the two halves, `s16` and a 32-bit read with `>> 16` all give 3 or more (`giants2/d/d9fc/v_a*/`).
 - **No change:** `02171478` (11 / 2, the `end`/`index` swap) and `02176714` / `021743bc` (the hoisted-constant rotation of the menu-builder family) were not moved by `hoistsplit.py`; their drafts have almost no split sites.
+
+## Cross-jump direction, a `bool` temporary and the giant leftovers (ov000_021b5578, ov003_021cd91c, ov012_021fd708, round bigfresh9)
+
+Drafts are in `scratchpad/bigfresh9/d/`. Scores are seqdiff raw / register-masked.
+
+- **Cross-jumping keeps the earliest copy of a tail.** In `func_ov000_021b5578` (a 0x848-byte state machine), several cases end in `strb rX, [self, #8]; b end`. MWCC keeps the first copy in the source (or the copy that falls through into `end`), and the other cases branch to it. The target kept the copy in case `0x1e`. The fix is to write the earlier cases as `st = X; goto set;`, with `set: self->state = st; break;` inside case `0x1e`. This fixed the branch layout, from 160 / 28 to about 100 / 2.
+- **Smaller fixes in the same function:**
+  - The new-node list append wants `Node *tl = self->tail; bool has = tl != NULL; if (has) ...`. A C++ `bool` temporary allocates differently from a plain test.
+  - An unsigned `div` for the nibble index comes from a block-local `u8` copy of `e->flag` made before the `SetNibble` call.
+  - The target's redundant `beq` is a double null check: `if (r != NULL) { if (r != NULL) ... } }`.
+  - A function-scope `BOOL ok = TRUE` coalesces with the hoisted constant `1` (`r8`).
+  - Reading `n = self->unk_10->n_ents` before the `func_0206e1bc` call fixes the case-0x10 loop registers. A cxxperm run found this.
+- **What is left in `021b5578`: the `data_ov000_021ccd54` load.** The target loads the global once into `r6` before the first call and keeps `t` (the call result) in `sb`. Two drafts are each one step from it:
+  - `d/5578_C.cpp` (57 / 0) writes `u8 *g = data_ov000_021ccd54; t = func_0206e7d0(data_ov000_021ccd54[0xca]);`. The code is right, but `g` and `t` swap colours.
+  - `d/5578_n.cpp` (5 / 2; the shift inflates `match.py`'s count) defines `g` after the call. The colours are right, but MWCC reloads the global after the call.
+  - None of these closed the gap: about 40 single-line forms (inline helpers, a temporary copy, the comma operator, `register`, `const`, `g` or `t` as a parameter or a one-element array), all 720 declaration and placement orders of the head locals, `ppa.sh`, and three cxxperm runs of 15 to 20 minutes. Writing `t = f(g[0xca])` instead of indexing the global changes the whole allocation (140 / 6).
+  - Both drafts still use parameter hacks: `u8 f2` (the flag copy) and `Lang *t`.
+- **`func_ov012_021fd708`** (`d/d708c.cpp`, 37 / 11; the old `ovhi7` draft was 39 / 13). Writing the case-10 `else` arm first fixed one block. Three blocks are left:
+  - The `Ov012_Fx2` inline's `add rX, sp, #0` is scheduled early, which rotates the `r5`, `r6` and `r7` registers. This is the known blocker.
+  - The order of the `r14` struct copy.
+  - The `lim` load in case 11.
+- **`func_ov003_021cd91c`** (`d/cd91c3.cpp`, 86 / 20): the target keeps a non-constant zero in `sb`, copied at the switch head, and also uses `sl`. Every zero local was propagated away, and a two-definition hack made the draft worse.
+- `func_ov010_02209948` was drafted here too (`d/9948_landed.cpp`), but ovhimid8 landed it first.
