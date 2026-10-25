@@ -797,7 +797,7 @@ void func_ov002_021eacd0(void *self);
 void func_02043858(void *p);
 void func_ov002_021e7cb4(void *self);
 
-BOOL func_ov002_021e41cc(Vec2 *a, Vec2 *b, void *c, void *d, int e);
+BOOL func_ov002_021e41cc(Vec2 *a, Vec2 *b, void *c, void *d, Vec2 *out);
 void func_ov002_021e63f0(void *self);
 void *func_ov002_021e4ee4(void *self, s32 kind, s32 min);
 void func_ov002_021e61b4(void *p);
