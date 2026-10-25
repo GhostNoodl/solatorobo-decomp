@@ -45,25 +45,13 @@ src/ov010/ov010_021fee70.cpp:
     complete
     .text       start:0x021fee70 end:0x021ff21c
 
-src/ov010/ov010_021ff3d0.cpp:
+src/ov010/ov010_0220f5dc.cpp:
     complete
-    .text       start:0x021ff3d0 end:0x021ff924
-
-src/ov010/ov010_021ff924.cpp:
-    complete
-    .text       start:0x021ff924 end:0x021ffa6c
-
-src/ov010/ov010_021ffa6c.cpp:
-    complete
-    .text       start:0x021ffa6c end:0x021ffc98
-
-src/ov010/ov010_021ffc98.cpp:
-    complete
-    .text       start:0x021ffc98 end:0x021ffd0c
-
-src/ov010/ov010_021ffe04.cpp:
-    complete
-    .text       start:0x021ffe04 end:0x021ffe8c
+    .text       start:0x021ff21c end:0x021fff80
+    .rodata     start:0x0220ebc0 end:0x0220ed10
+    .init       start:0x0220f5dc end:0x0220f828
+    .ctor       start:0x0220f9fc end:0x0220fa00
+    .data       start:0x0220fa2c end:0x0220fbd0
 
 src/ov010/ov010_021fff80.cpp:
     complete
@@ -268,13 +256,6 @@ src/ov010/ov010_0220ea84.cpp:
 src/ov010/ov010_0220ebb0.cpp:
     complete
     .text       start:0x0220ebb0 end:0x0220ebc0
-
-src/ov010/ov010_0220f5dc.cpp:
-    complete
-    .rodata     start:0x0220ebc0 end:0x0220ed10
-    .init       start:0x0220f5dc end:0x0220f828
-    .ctor       start:0x0220f9fc end:0x0220fa00
-    .data       start:0x0220fa2c end:0x0220fbd0
 
 src/ov010/ov010_0220f828.cpp:
     complete

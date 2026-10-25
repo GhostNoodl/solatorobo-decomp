@@ -144,6 +144,14 @@ src/ov003/ov003_021d85c8.cpp:
     complete
     .text       start:0x021d85c8 end:0x021d883c
 
+src/ov003/ov003_021f77d8.cpp:
+    complete
+    .text       start:0x021d883c end:0x021d88ec
+    .rodata     start:0x021f4980 end:0x021f4994
+    .init       start:0x021f77d8 end:0x021f7820
+    .ctor       start:0x021f78a0 end:0x021f78a4
+    .data       start:0x021f7cbc end:0x021f7cd0
+
 src/ov003/ov003_021d88ec.cpp:
     complete
     .text       start:0x021d88ec end:0x021d8c60
@@ -607,13 +615,6 @@ src/ov003/ov003_021f7764.cpp:
     .init       start:0x021f7764 end:0x021f77d8
     .ctor       start:0x021f789c end:0x021f78a0
     .data       start:0x021f79d0 end:0x021f7a38
-
-src/ov003/ov003_021f77d8.cpp:
-    complete
-    .rodata     start:0x021f4980 end:0x021f4994
-    .init       start:0x021f77d8 end:0x021f7820
-    .ctor       start:0x021f78a0 end:0x021f78a4
-    .data       start:0x021f7cbc end:0x021f7cd0
 
 src/ov003/ov003_021f7848.cpp:
     complete
