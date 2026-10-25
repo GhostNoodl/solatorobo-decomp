@@ -3239,3 +3239,32 @@ No new matches. Drafts are in the scratchpad under `midfresh2/` (`cfc8/`, `f21c/
 - **`func_ov010_02204030` (22 / 10).** Every one of these compiles to the same code: the first block written with the zero stores before or after `z`, `v.x = v.y = 0`, a `z` temporary, `Ov010_VecSet`, the sin/cos values read into locals first, the table index in a local (`k`, `k * 2`, `k << 1`), inline `Sn`/`Cs`/`Rot`/`Pt` helpers, and the SDK `MTX_RotY33` wrapper. The target still moves the two zero stores (from `r4`) after the table loads. Moving `y = c->y` after the call is worse (24 / 12).
 - **`func_0206d99c` (36 / 0).** A shared `Save_SetSlots(s, count, size)` inline used for both layouts scores 57 / 8. The register-only diff begins at the first `smulbb`: the target puts the product in `r1` and the device pointer in `r2`.
 - **`func_ov009_0220acb8` (6 / 6).** Nothing new was tried here beyond midfresh1's list.
+
+## A sequence interpreter redrafted from the target: comma temporaries and a pointer kept across a switch (ov003, round ovbig6)
+
+No new matches. Drafts are in the scratchpad under `ovbig6/d/`. `ovbig6/t/sc2.py func mod files...` prints raw, register-masked and register-plus-stack-offset-masked scores, and `t/md2.py` is the matching diff. `t/tdis.py ov addr size` disassembles the target with branch targets.
+
+- **`func_ov003_021d8fc0` (0x628) went from 457 / 250 (`ovlo4b/d/d8fc0b.cpp`) to 292 / 154 (`ovbig6/d/best_292_154.cpp`).** With stack offsets masked as well, it is 61 diffs. Of the old draft's remaining diffs, 209 were structural.
+  - **The 15 stack copies.** The frame is `0x5c`: 15 six-byte copies of an entry. 12 of them are inline by-value parameters or locals, in source order from `sp+0x54` down: `Wait.e`, `Wait→Goto.e`, `Exec.e`, `Rand.e`, `Rand.t`, `Exec→Goto.e`, `IsCtl.e`, `Run.e`, three `SetPair.e`, `Count.e`. The other three, at `sp+0xc`, `6` and `0`, are compiler temporaries made **after** inlining.
+    - A named local in the outer function gets a slot **above** every inline temporary, so it can't be one of those three.
+    - Passing `self->entries[self->index]` straight to an inline makes no temporary at all.
+    - What does give them is a comma expression: `#define SEQ_CUR(s) ((void)0, (s)->entries[(s)->index])`. That is an assert-style accessor macro, and its rvalue gets a temporary in the late group.
+    - The loop `while ((ctl = Seq_IsCtl(SEQ_CUR(self)))) Seq_Exec(self, SEQ_CUR(self));` CSEs both uses into one temporary. That is the target's `sp+6`: the body copies it into `Exec.e`.
+  - **The order of the inline slots is still wrong.** The target lays them out depth-first (each nested inline's copy follows its parent's). Ours is breadth-first: all depth-1 parameters come first, then depth 2. None of these changed the order:
+    - `#pragma inline_bottom_up on`, `inline_bottom_up_once` or `inline_depth(n)`;
+    - C++ member inlines;
+    - non-`static` `inline`;
+    - a dummy function that uses the inlines first;
+    - every compiler version.
+    
+    A wrapper inline around the whole body is not inlined at all. This accounts for most of the raw-minus-masked gap.
+  - **`Run` takes a pointer and copies from it.** `Seq_Run(self, &self->entries[self->index], ctl)` with `SeqEntry e = ((void)0, *p);` inside, and `Seq_SetPair(self, *p)` in cases 3–5. After the flags store, the target reloads the six bytes from the one address computed before the switch (`ldrb rX, [r0, #n]`). A by-value `e`, or re-reading `self->entries[self->index]`, either keeps the bytes in registers (`and #0xff`) or recomputes the address in each case.
+  - **`case 0: case 1: case 2: break;` in `Run` gives the 6-entry jump table** (`cmp ip, #5; addls pc`). Without it, MWCC emits a compare chain: 350 to 307 raw.
+  - **`Wait` case 3 is `timer = 0; Next(); ClearFlags();`.** That order gives the target's `strh timer` between the index reload and the `cmp`, where `Next(); timer = 0;` does not (297 to 292). The `b4` path keeps `Next(); timer = 0;` (it shares the tail at `0x021d9160`).
+  - **The prologue rereads the flags byte for the `ok` test.** Only a `volatile` read gives this, `if (((volatile Seq *)self)->active && self->entries != NULL)`: 321 / 183 to 313 / 171. The best draft has it, but it is probably not the original. A separate `Seq_IsValid` inline, or folding the two tests into one `||`, has no effect.
+  - **Left:**
+    - the push uses `{r4-r7}` against ours `{r4-r8, sb}`;
+    - the final `Seq_CurIsCtl` test computes its address with `mla` from the loop's `entries` register, and the copy that follows computes it again (ours CSEs the two);
+    - the `Rand` copy store order;
+    - the slot order above.
+- `func_ov000_02191f18` was not started (still 341 / 184, `ov000hi9/d/1f18_o3.cpp`).
