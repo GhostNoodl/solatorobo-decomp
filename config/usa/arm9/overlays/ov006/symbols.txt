@@ -491,16 +491,7 @@ data_ov006_021ebbec kind:data(any) addr:0x021ebbec
 data_ov006_021ebbf5 kind:data(any) addr:0x021ebbf5
 data_ov006_021ebc01 kind:data(any) addr:0x021ebc01
 data_ov006_021ebc02 kind:data(any) addr:0x021ebc02
-data_ov006_021ebc04 kind:data(any) addr:0x021ebc04
-data_ov006_021ebc0a kind:data(any) addr:0x021ebc0a
-data_ov006_021ebc1c kind:data(any) addr:0x021ebc1c
-data_ov006_021ebc2d kind:data(any) addr:0x021ebc2d
-data_ov006_021ebc37 kind:data(any) addr:0x021ebc37
-data_ov006_021ebc3e kind:data(any) addr:0x021ebc3e
-data_ov006_021ebc4a kind:data(any) addr:0x021ebc4a
-data_ov006_021ebc58 kind:data(any) addr:0x021ebc58
-data_ov006_021ebc5c kind:data(any) addr:0x021ebc5c
-data_ov006_021ebc60 kind:data(any) addr:0x021ebc60
+@stringBase0 kind:data(byte[0x64]) addr:0x021ebc04 local
 data_ov006_021ebc70 kind:data(any) addr:0x021ebc70
 data_ov006_021ebc80 kind:data(any) addr:0x021ebc80
 data_ov006_021ebc98 kind:data(any) addr:0x021ebc98
