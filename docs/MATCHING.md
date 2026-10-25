@@ -3661,3 +3661,37 @@ Drafts and scores are in the scratchpad under `ovmid1/` (`rescore.txt` rescores 
 - **`func_ov010_02204030` (22 / 10 to 15 / 8, `d/4030/best_15_8.cpp`): the table index in its own local.** `i0 = (ang >> 4) * 2; sn = TBL[i0]; cs = TBL[i0 + 1];` gives the target's `(i0 + 1) << 1` index and its two pool loads. What is left is the two zero stores, which the target schedules after the table loads. All 240 orders of the six statements, pointer/inline/array/`u8 *` stores, a zero local, comma expressions and chained assignments compile the same. A `volatile` or non-`const` table read is worse.
 - **No gain:** `ov000_0216715c` (108 / 82 to 103 / 77 by swapping the `ox` and `i` declarations; `const` table and `x1`/`y1` order changes do nothing). `ov006_021e7004`: every order of the `dp`/`dy`/`hp`/`hy`/`p`/`y` statements and the split-sum forms give 21–98. `ov002_021e0488` was not redrafted: its missing `0x18` frame slot is still the blocker.
 - **Lesson.** When a matched twin has the same inline, copy its body first, then search statement orders per call site. Two expansions of one inline can need two different statement orders, because each call site is scheduled in its own context.
+## `ov000_02164c50` has no structural diffs left; `ov000_021652e4` gets the target's `0x44` frame (round ovgiant3)
+
+No new matches. The best drafts are in the scratchpad under `ovgiant3/best/`. Scores are raw / register-masked / register-and-`sp`-masked (`sc2.py`). Tools are in `ovgiant3/t/` and point at the `ovgiant3` clone: `rsum.py src func mod [win]` prints the ours-to-target register mapping for each window of aligned instructions, `md.py match.txt` prints the masked diff, and `arr.py`/`garr.py` turn one local at a time into a one-element array (`garr.py` keeps the best one each round).
+
+- **`ov000_02164c50`: 234 / 11 to 185 / 0 (`4c50_clean185.cpp`).** The draft is clean. With one-element arrays for `p`, `e` (second loop) and both `sz` it is 151 / 0 (`4c50_arr151.cpp`). In order:
+  1. **The entry walker reads the counts through a struct.** `Next02164c50` now reads `((Ent *)e)->n6` / `->n7`, with `struct { u8 pad[6]; u8 n6; u8 n7; }`. The loop bound still reads `e[6]`. The two forms are not CSE'd together, so the walker reloads `e[6]` after the inner loop (`ldrb r6, [sl, #6]`) as the target does. This was the missing instruction (8 masked to 0). When the target reloads a byte that the draft reuses, check whether the two reads use different access paths.
+  2. **`0x24` reads `oa`, not `cell->4` again.** Writing `LFLD(u16, p, 0x24) = base + LFLD(OamW2, oa, 4).tile` drops our second `ldr [r0, #4]`.
+  3. **`oa = cell->4` comes before the `0xc90` store.** That gives the target's load order.
+  4. **The max is `p[9] < s[0x10] ? s[0x10] : p[9]`.** That gives the target's `movhs fp, r0` into the `s[0x10]` register.
+  
+  **What is left is one rotation over the whole function.** Ours has zero/`m` in `r4`, `arg` in `r5`, `self` in `r6`, `0xce0`/`2`/`res` in `r7`/`sb` and `p` in `r8`. The target has `arg` `r4`, `self` `r5`, zero/`m` `r6`, `p` `r7`, and `0xce0`/`2`/`res` `r8`. So the target colours both parameters before the hoisted zero. These left it unchanged:
+  - a named `u32 z = 0`;
+  - `self`/`arg` copies, in either order;
+  - a block-scoped `m`, and `m = new M` (a class with a `static operator new` and a constructor calling `func_02041218`);
+  - every function-scope declaration order;
+  - `sz = 0xce0`;
+  - `u32` counters with `(u8)`/`(u16)` steps for `i`, `n1` and `n2`;
+  - `while` forms, and a member function on `this`.
+  
+  Truncating the function changes the prologue's colours each time, so the rotation follows the whole graph. A 45-minute `cxxperm` run without `param`/`dummy` rewrites, from the array draft, did not get below its start.
+- **`ov000_021652e4`: the two unused frame words are the lower half of a two-element template.** `Oam tt[2]; tt[1] = *D_OAM(0);` with `oam[k] = tt[1]` and `*oam = tt[1]` (or `u32 tt[4]` used through `*(Oam *)&tt[2]`) gives `sub sp, #0x44` with the template at `0x3c`/`0x40`, as in the target. The other forms tried are below.
+  - **Scalarised, frame `0x2c`.** `Oam tt[2]` using `tt[0]`, or a struct `{ Pos p; Oam t; }`, is split into scalars.
+  - **Frame `0x44`, but the template is at `0x34`.** `{ Oam t; Pos p; }` keeps the frame size with the template in the wrong place.
+  - **Dropped.** Plain dead locals are removed, even when their address goes to a no-op inline.
+  
+  On the clean draft (`perm5/d/c52/clean_ab.cpp`, 156 / 56 / 27) this gives 162 / 55 / 35 (`52e4_frame44.cpp`). The template slots now line up, but the spill slots below them are still in a different order. The target also loads the template's second word and spills it to a slot at the head of each loop (`ldr [sp, #0x40]; str [sp, #0x18]`). On the faked-parameter 106 draft it is worse (125). A 20-minute `cxxperm` run from the new frame reached 135 / 52 / 35, with too much noise to land.
+- **`ov009_02204a10` stays at 49 / 25.** In the `0x666` block the target loads `d.z` only after the `d.x` store, then stores `d.y = 0`, and the two multiplies reuse the same registers. Every source form tried keeps the early `d.z` load:
+  - plain field statements;
+  - `dz`/`dx` temporaries in any order;
+  - `d.x` written outside the block (57 / 21: the order is right but the registers are worse);
+  - a `Vec *` pointer local;
+  - a `Scale(&d, &d)` inline, also for `f`/`g`.
+  
+  In the five-arc loop, `u32 i` with a `(u8)` step, a block-scoped `i`, and block-local `v`/`g` change nothing (block-local `g` is worse).
