@@ -3793,3 +3793,23 @@ Drafts are in the scratchpad under `mainbig5/` (one folder per function, `s*.py`
   - `02056e74` (4 / 0): an `FX_Mul`-style inline with either operand order, the macro form and a re-defined `x` stay at 4.
   - `020417e0` (24 / 2): `n` types and placement and a single `a` local for the anim pointer stay at 24 or get worse. The `NULL` still comes from the first loop's zero.
 - **Lesson.** If MWCC moves a constant store to a struct ahead of a computed store that comes before it in the target, try writing the whole struct through an inline (all components computed) and then overwrite the constant component. The dead store disappears, but the stores keep the target's order.
+
+## The near7 levers as a source-rewrite sweep: `ov015_02211b2c` and `ov006_021e2490` match (ov006, ov015, round lever9)
+
+Tools and logs are in the scratchpad under `lever9/` (`t/` points at the `lever9` clone). `t/lv.py func mod draft outdir tag` rewrites one draft in the target function and in the `static`/`inline` functions it calls. It scores each edit alone with `sc2.py`, then greedily combines non-overlapping edits that tie or improve, and repeats on the result (`ROUNDS`, default 2; a second round is often needed, because an uncache and a hoist on the same line overlap). The edit kinds are:
+
+- `H`: hoist a call argument, operand or condition into a new `__typeof__(E) t = E;` local.
+- `H2`: second definition (`t = E2; t = E[E2:=t];`).
+- `HR`/`HR2`: the same with an existing scalar local reused.
+- `C`/`Cs`: `x = a op b` to `x = a; x op= b` (both orders when commutative).
+- `U`: drop a local that caches a field read (`T v = p->f;`, a separate `v = p->f;`, or `v = &tbl[i]`) and read the field at every use.
+- `U1`: the same at one use only.
+- `R`: cache a field read that occurs twice.
+
+`t/ro.py` (const2's, now covering every `.rodata` range) gave the `const` variants. `t/mklist.py` takes up to three distinct top drafts per unmatched function from const2's `pick_scored.txt`, twins1's `scored.txt`, near7's `au/` and the ovmid2/near7 folders, with the giants and near8's functions left out. The sweep re-finds near7's `021c14f4` (`H2`) and `021fefc8` (`U`, then `U` again in round 2) from their pre-near7 drafts. It ran over 69 drafts (all functions up to 13 raw, and some up to 20) before the time ran out (`run1a.log`, `run1b.log`).
+
+- **`func_ov015_02211b2c` (2 / 2 to 0), appended to `src/ov015/ov015_02211824.cpp` (`.text` now ends at `0x02211bf8`).** `H2` on the last call: `s32 r = data_ov015_02213368->unk_2c; r = func_ov000_021909a8(self + 0x14c, data_ov015_02213210[r], NULL); FLD(s32, self, 0xc) = r;`. Using the same local for the index and the result fixes the registers. A separate `idx` local, or `FLD(...) = r = ...`, stays at 2.
+- **`func_ov006_021e2490` (13 / 0 to 0), new file `src/ov006/ov006_021e2490.cpp`.** This is round ovhi21's permuter draft. The sweep's `U1` was the key edit: in the `u16` `PlayPart16` inline, keep `res = model->unk28` for the null test but re-read `model->unk28->unkC` in the `NNS_G2dGetAnimSequenceByIdx` call. Re-reading in the null test instead, with `res->unkC` kept, also matches. Reading `res` in both places gives 17 / 0. The permuter's `new_var` noise and the extra hoists were not needed. Two things are needed: the `(SeqFn16)` cast that passes `idx` as a `u16`, and `u32` `x`/`y`.
+- **Improved, not matched:** `ov000_021b3e90` 5 / 1 to 1 / 1 (`3e90/b.cpp`: `dp = cam->unk_d4; if (cam->unk_d6 - 1 != dp)`; the remaining diff is `movne r0, r4` where the target has an unconditional `mov`). `ov000_021708ec` 11 / 0 to 5 / 0, `021c8408` 8 / 2 to 6 / 0, `ov010_021fe2a4` 13 / 9 to 12 / 7, `02200a00` 8 to 7. The best files are under `sw/<func>/`.
+- **`ro.py` with the levers:** none of the swept drafts got better from a `.rodata` `const`. 77 of the 86 drafts have no `.rodata` extern.
+- **Lesson.** The near7 levers can be automated. Score-guided `__typeof__` hoists and uncaches find register-only fixes in a minute per draft. Clean the result up by hand afterwards: replace `__typeof__` with the real type, drop the tie edits the greedy pass picked up, and check which single edit matters.

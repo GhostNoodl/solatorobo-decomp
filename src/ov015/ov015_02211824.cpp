@@ -141,4 +141,29 @@ BOOL func_ov015_02211b00(u8 *self) {
     return r;
 }
 
+
+void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+void func_ov000_02191618(void *a);
+void NNS_G3dRenderObjSetInitFunc(void *a, void *cb);
+s32 func_ov000_021909a8(void *a, const void *b, const void *c);
+extern u8 data_ov015_02213280[];
+extern const char *data_ov015_02213210[];
+
+BOOL func_ov015_02211b2c(u8 *self) {
+    func_ov000_0218ffdc(self + 0x14c, self + 0x14, 0, 1);
+    func_ov000_02190cb0(self + 0x14c, data_ov015_02213280, 0x1000, 0);
+    func_ov000_02191618(self + 0x14c);
+    FLD(Ov015AnimFlags, self, 0x20e).b4 = 0;
+    FLD(Ov015AnimFlags, self, 0x20e).b2 = 0;
+    FLD(Ov015AnimFlags, self, 0x20e).b0 = 0;
+    NNS_G3dRenderObjSetInitFunc(self + 0x170, (void *)func_ov015_022119d0);
+    FLD(Ov015AnimFlags, self, 0x20e).b5 = 0;
+    FLD(Ov015AnimFlags, self, 0x20e).b8 = 1;
+    s32 r = data_ov015_02213368->unk_2c;
+    r = func_ov000_021909a8(self + 0x14c, data_ov015_02213210[r], NULL);
+    FLD(s32, self, 0xc) = r;
+    return TRUE;
+}
+
 }
