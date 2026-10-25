@@ -3257,6 +3257,10 @@ src/ov000/G3_0215b2e4.cpp:
     complete
     .text       start:0x0215b2e4 end:0x0215b598
 
+src/ov000/G3_0215b598.cpp:
+    complete
+    .text       start:0x0215b598 end:0x0215b8f0
+
 src/ov000/Lo_021b5110.cpp:
     complete
     .text       start:0x021b5110 end:0x021b53a8
