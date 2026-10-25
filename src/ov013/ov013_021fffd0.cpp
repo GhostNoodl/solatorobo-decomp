@@ -8,7 +8,12 @@ struct Ov013Spot {
 extern "C" {
 
 extern const Ov013Spot data_ov013_0220b900[];
-extern const Ov013Spot data_ov013_0220b958[];
+struct Ov013SpotBlock {
+    char name[16];
+    void (*fn[6])(void);
+    Ov013Spot far[4];
+};
+extern const Ov013SpotBlock data_ov013_0220b930;
 extern void func_ov013_021fe948(Ov013Vec *outPos, u16 *outRot, const Ov013Spot *list, u32 count, void *exclude);
 extern BOOL func_ov013_02203ea4(Ov013Actor *self, Ov013Vec *pos);
 extern void func_ov003_021d969c(void *p, s32 a);
@@ -46,15 +51,15 @@ void func_ov013_021fffd0(Ov013Actor *self) {
             FLD(u16, self, 0xfc) = data_ov013_0220b900[best].rot;
             break;
         case 3:
-            best = Ov013_Nearest(&p, data_ov013_0220b958, 4);
-            FLD(Ov013Vec, self, 0x114) = data_ov013_0220b958[best].pos;
-            FLD(u16, self, 0xfc) = data_ov013_0220b958[best].rot;
+            best = Ov013_Nearest(&p, data_ov013_0220b930.far, 4);
+            FLD(Ov013Vec, self, 0x114) = data_ov013_0220b930.far[best].pos;
+            FLD(u16, self, 0xfc) = data_ov013_0220b930.far[best].rot;
             break;
         case 2:
             func_ov013_021fe948(&FLD(Ov013Vec, self, 0x114), &FLD(u16, self, 0xfc), data_ov013_0220b900, 3, (u8 *)self + 0x108);
             break;
         case 4:
-            func_ov013_021fe948(&FLD(Ov013Vec, self, 0x114), &FLD(u16, self, 0xfc), data_ov013_0220b958, 4, (u8 *)self + 0x108);
+            func_ov013_021fe948(&FLD(Ov013Vec, self, 0x114), &FLD(u16, self, 0xfc), data_ov013_0220b930.far, 4, (u8 *)self + 0x108);
             break;
         }
     }
