@@ -3609,3 +3609,23 @@ No new matches. The best draft is `scratchpad/g6180/best.cpp` (74 / 4 with `ovbi
 - **The relocation.** The `dy` word is `data_ov000_021c9b40 + 1`. Writing `data_ov000_021c9b41[sec * 4]` (as `extern const s8[]`) for `dy` gives the same code and the target's symbol. The cleaner way to land it is to remove the interior symbol `data_ov000_021c9b41` and change the `0x02166be4` reloc to `to:0x021c9b40 add:0x1`, as was done for the interior symbols in rounds block9 and block11. This function is the table's only reader. The function belongs at the end of `src/ov000/Lo_02165f94.cpp`, because that file's `.text` ends at `0x02166180`. Compiling it there changes nothing.
 - **Prologue: `&&` gets the schedule, `if` gets the `mov` order.** `Busy` written as `return h != NULL && h->state != 0;` hoists the `data_ov000_021ccd54` load and the `0x3fff…` mask load as in the target. The only diffs left are `movne #1; strne` placed before `moveq #0; streq`. Every control-flow form gets `moveq` first but loses the hoist (5). Those forms are `if (...) return FALSE; return TRUE;` (the `LoAnimValid` shape in `Lo_02165f94.cpp`), result variables, enum ternaries, and a nested `if` inline. `!Idle()` gives 13–14, and moving the `g`, `tbl2`, `h` and `p` statements changes nothing.
 - **Register rotation (70 raw lines) is unchanged.** The affected registers are `oams`/`pos`/`j` in the first loop, `n`/`off`/`pal + off` in the busy block, and `c`/`d`/`s` in `FindNode`. A full `dmove.py` round over the 40 declarations, block-scoped `n`/`off`/`c`/`d`, `int`/`u32`/`u16` types for `off`, `c`, `d` and the inline parameters, direct `tbl2[m].c` reads, and swapped `+` operands leave it unchanged or make it worse.
+
+## The wrong-prototype check on the main near-misses: no new matches (main, round protomain)
+
+No new matches. Tools are in the scratchpad under `protomain/t/` (round proto8's tools re-pointed, plus `agg.py`, `callsite.py` and `hdr.py`). The scope was the 65 unmatched main functions (ITCM and DTCM have none) minus the BIOS stubs, `__sinit_*`, hand asm, `02004ffc` and round mainpool's ten pool blockers: 28 functions and the 23,104 drafts of them found anywhere in the scratchpad (`protomain/allcands.txt`).
+
+- **Checks run.**
+  - `agg.py` runs `proto2.py` over every draft and merges the reports.
+  - `callsite.py` counts the arguments at each call site in the body and its inlines, and compares that with the registers the callee reads in the ROM. It catches callees that come from headers, which `romargs.py` skips.
+  - `callreg.py` compares the argument registers set before each `bl` in ours and the target, on the best draft of each function.
+  - `selfsig.py` compares each draft's own signature with how callers declare it.
+  - `hdr.py` and `decldiff.txt` list every matched definition that some header or file declares differently. These were crossed with the `bl` targets of the unmatched functions.
+- **The one real count mismatch makes no difference.** `func_0200d36c` declares `func_0200da28(void)`, but the matched definition in `card_pullOut_2.c` is `(u32 id)`. This is the SDK's `CARDi_CheckPulledOutCore(CARDi_ReadRomIDCore())`. Writing `func_0200da28(func_0200d1f0())` still scores 5 / 0, because `r0` already holds the ID. `card_rom_2.c` has the same `(void)` declaration and still matches. Drafts of `0200d36c` include `card_private.h`, so score them from `libs/nitro/card/`.
+- **Width fixes that did not help.**
+  - `0206f85c`: `func_02059544`'s last parameter as `u16`, from 14 to 30.
+  - `020417e0`: `NNS_G2dGetAnimSequenceByIdx` with a `u16` index, from 24 to 27.
+  - `0206e3a0`: `G3X_SetClearColor` with an `int` alpha, still 2 / 2.
+  - `02056e74`: `func_02042628` with a `u8` last parameter, or `NNS_G2dGetAnimSequenceByIdx` with a `u16` index, both edited in `Model.h`, still 4 / 0.
+  - `02049c80`: the `NNS_SndPlayerSetTrackPan`/`Pitch` mask is the constant `1`, and the other callees agree with the ROM's registers.
+- **False positives.** `callreg.py` flags `02053254`'s first call, but its `r3` is `x` being stored to the model, not an argument. `proto2.py`'s `split_params` counts `->` and `>>` as closing brackets, so it miscounts arguments at call sites; `callsite.py` uses a bracket-only splitter.
+- **`020459cc` (9 / 0) and `02046070` (6 / 0) have the same diff.** At each `WH_ChangeSysState`, the target loads the global pointer into a new register and reuses the pool-address register for the constant (`ldr r1, [r0]; mov r0, #3`). Ours does the opposite. A plain `static` function with `#pragma auto_inline on`, or a macro, gives the same 9.
