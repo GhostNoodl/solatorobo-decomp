@@ -40,3 +40,10 @@ only by a full `ninja` and `ninja report`):
   containing only data. Every remaining gap in `.text` must keep at least one function symbol.
 * `dcd` words are data to objdiff, so a function containing them scores below 100% even though
   the bytes match.
+
+## asmblob.py
+
+For position-independent hand-written code with tables inside it (the Mobiclip video decoder),
+`asmblob.py` splits code from data with a flow analysis instead of symbols, and writes one
+`asm` block per given range (`NAME:START:END:code|data`). See its docstring; `--verify` checks
+the bytes, and `--labels` prints the `kind:label(arm[,data])` lines for symbols.txt.

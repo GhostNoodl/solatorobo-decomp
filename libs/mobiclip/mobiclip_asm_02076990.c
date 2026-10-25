@@ -1,9 +1,11 @@
-// Actimagine Mobiclip audio decoder, hand-written ARM assembly (bitstream/parameter unpacking;
-// the pc-relative tables it reads stay in the surrounding gaps).
+// Actimagine Mobiclip audio decoder, hand-written ARM assembly (bitstream/parameter unpacking).
+// The tables before it that it reads pc-relatively stay in the gap; the 16-entry table after it
+// (`add r12, pc, #0x24`) is data_02076efc.
 
 #pragma force_active on
 
 void func_02076990(void);
+void data_02076efc(void);
 
 asm void func_02076990(void) {
     ldrh r3, [r0], #2
@@ -355,3 +357,23 @@ asm void func_02076990(void) {
     mov pc, lr
 }
 
+// The 16 signed words read by the `add r12, pc, #0x24` / `ldr r4, [r12, r8, lsl #2]` at the end
+// of func_02076990, indexed by a 4-bit field.
+asm void data_02076efc(void) {
+    dcd 0xffffd998
+    dcd 0xffffe224
+    dcd 0xffffeaac
+    dcd 0xfffff334
+    dcd 0xfffffbbc
+    dcd 0x00000444
+    dcd 0x00000ccc
+    dcd 0x00001554
+    dcd 0x00001ddc
+    dcd 0x00002668
+    dcd 0x00002ef0
+    dcd 0x00003778
+    dcd 0x00004000
+    dcd 0x00004888
+    dcd 0x00005110
+    dcd 0x000057ff
+}

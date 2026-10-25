@@ -1750,7 +1750,19 @@ libs/mobiclip/mobiclip_asm_02075940.c:
 
 libs/mobiclip/mobiclip_asm_02076990.c:
     complete
-    .text       start:0x02076990 end:0x02076efc
+    .text       start:0x02076990 end:0x02076f3c
+
+libs/mobiclip/mobiclip_asm_02076f3c.c:
+    complete
+    .text       start:0x02076f3c end:0x02077ab8
+
+libs/mobiclip/mobiclip_tables_02077ab8.c:
+    complete
+    .text       start:0x02077ab8 end:0x0207bcb8
+
+libs/mobiclip/mobiclip_video_0207bcb8.c:
+    complete
+    .text       start:0x0207bcb8 end:0x02082254
 
 src/Main/Lang/LangHandle.cpp:
     complete

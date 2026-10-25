@@ -9,6 +9,28 @@ index e1c3ee9..bdea0f4 100644
 +
 +[patch.crates-io]
 +ds-rom = { path = "../ds-rom" }
+diff --git a/cli/src/analysis/data.rs b/cli/src/analysis/data.rs
+index 8b92f88..85e6de9 100644
+--- a/cli/src/analysis/data.rs
++++ b/cli/src/analysis/data.rs
+@@ -152,7 +152,7 @@ fn add_function_calls_as_relocations(
+ 
+                 let mode = match &symbol.kind {
+                     SymbolKind::Function(SymFunction { mode, .. })
+-                    | SymbolKind::Label(SymLabel { external: true, mode }) => mode,
++                    | SymbolKind::Label(SymLabel { external: true, mode, .. }) => mode,
+ 
+                     SymbolKind::Label(SymLabel { external: false, .. })
+                     | SymbolKind::Undefined
+@@ -251,7 +251,7 @@ fn find_symbol_candidates(
+                 let (_, symbol) = symbol_map.by_address(pointer & !1).unwrap()?;
+                 let symbol_is_thumb = match &symbol.kind {
+                     SymbolKind::Function(function) => function.mode == InstructionMode::Thumb,
+-                    SymbolKind::Label(SymLabel { external: true, mode }) => {
++                    SymbolKind::Label(SymLabel { external: true, mode, .. }) => {
+                         *mode == InstructionMode::Thumb
+                     }
+                     SymbolKind::Label(SymLabel { external: false, .. })
 diff --git a/cli/src/cmd/lcf.rs b/cli/src/cmd/lcf.rs
 index c27c4be..4fb3a29 100644
 --- a/cli/src/cmd/lcf.rs
@@ -24,6 +46,18 @@ index c27c4be..4fb3a29 100644
              let filename = file.name.rsplit_once(['/', '\\']).unwrap_or(("", &file.name)).1;
              match delink_files.entry(filename.to_string()) {
                  hash_map::Entry::Occupied(occupied_entry) => {
+diff --git a/cli/src/config/symbol.rs b/cli/src/config/symbol.rs
+index 63fe7dc..e29b5ae 100644
+--- a/cli/src/config/symbol.rs
++++ b/cli/src/config/symbol.rs
+@@ -115,6 +115,7 @@ impl SymbolExt for Symbol {
+     fn mapping_symbol_name(&self) -> Option<&str> {
+         match self.kind {
+             SymbolKind::Undefined => None,
++            SymbolKind::Label(SymLabel { data: true, .. }) => Some("$d"),
+             SymbolKind::Function(SymFunction { mode, .. })
+             | SymbolKind::Label(SymLabel { mode, .. }) => match mode {
+                 InstructionMode::Arm => Some("$a"),
 diff --git a/lib/src/analysis/ctor.rs b/lib/src/analysis/ctor.rs
 index 302ea7d..2dcbaef 100644
 --- a/lib/src/analysis/ctor.rs
@@ -124,3 +158,58 @@ index 6dc036a..9bc368e 100644
          let base_address = arm9.base_address();
          let start = (exceptix_start - base_address) as usize;
          let end = (exceptix_end - base_address) as usize;
+diff --git a/lib/src/config/symbol.rs b/lib/src/config/symbol.rs
+index 66e937c..7d69f7b 100644
+--- a/lib/src/config/symbol.rs
++++ b/lib/src/config/symbol.rs
+@@ -984,6 +984,7 @@ impl Symbol {
+             kind: SymbolKind::Label(SymLabel {
+                 external: false,
+                 mode: InstructionMode::from_thumb(thumb),
++                data: false,
+             }),
+             addr,
+             ambiguous: false,
+@@ -999,6 +1000,7 @@ impl Symbol {
+             kind: SymbolKind::Label(SymLabel {
+                 external: true,
+                 mode: InstructionMode::from_thumb(thumb),
++                data: false,
+             }),
+             addr,
+             ambiguous: false,
+@@ -1387,6 +1389,10 @@ pub struct SymLabel {
+     #[serde(skip_serializing_if = "is_false", default)]
+     pub external: bool,
+     pub mode: InstructionMode,
++    /// `kind:label(arm,data)`: data inside hand-written code (a table or literal pool the
++    /// analysis does not find). Delinking gives it a `$d` mapping symbol instead of `$a`.
++    #[serde(skip_serializing_if = "is_false", default)]
++    pub data: bool,
+ }
+ 
+ #[derive(Debug, Snafu)]
+@@ -1397,13 +1403,21 @@ pub enum SymLabelParseError {
+ 
+ impl SymLabel {
+     fn parse(options: &str, context: &ParseContext) -> Result<Self, SymLabelParseError> {
+-        Ok(Self { external: true, mode: InstructionMode::parse(options, context)? })
++        let (mode, data) = match options.split_once(',') {
++            Some((mode, "data")) => (mode, true),
++            _ => (options, false),
++        };
++        Ok(Self { external: true, mode: InstructionMode::parse(mode, context)?, data })
+     }
+ }
+ 
+ impl Display for SymLabel {
+     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+-        write!(f, "{}", self.mode)
++        write!(f, "{}", self.mode)?;
++        if self.data {
++            write!(f, ",data")?;
++        }
++        Ok(())
+     }
+ }
+ 
