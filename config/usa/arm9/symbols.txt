@@ -2731,8 +2731,8 @@ data_02070ee4 kind:data(byte[0x8]) addr:0x02070ee4
 data_02070eec kind:data(byte[0x40]) addr:0x02070eec
 FX_SinCosTable_ kind:data(byte[0x4000]) addr:0x02071060
 FX_AtanTable_ kind:data(byte[0x104]) addr:0x02075060
-data_02075164 kind:data(byte[0x10]) addr:0x02075164
-data_02075174 kind:data(byte[0x60]) addr:0x02075174
+sTexPlttStartAddrTable kind:data(byte[0x10]) addr:0x02075164
+sTexStartAddrTable kind:data(byte[0x60]) addr:0x02075174
 MATHi_SHA1PadLead kind:data(any) addr:0x020751d4
 MATHi_SHA1PadAlign kind:data(any) addr:0x020751d5
 MATHi_HMACSHA1FuncsTemplate kind:data(byte[0x1c]) addr:0x020751e0

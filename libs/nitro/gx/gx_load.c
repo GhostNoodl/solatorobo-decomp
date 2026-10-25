@@ -43,8 +43,8 @@ typedef struct {
 
 extern GXLoadObjState data_0208eb10;
 extern GXLoadTexState data_0208eb2c;
-extern const GXTexStartAddr data_02075174[];  /* sTexStartAddrTable */
-extern const u16 data_02075164[];  /* sTexPlttStartAddrTable */
+extern const GXTexStartAddr sTexStartAddrTable[];  /* sTexStartAddrTable */
+extern const u16 sTexPlttStartAddrTable[];  /* sTexPlttStartAddrTable */
 
 #define GXi_DMA_NOT_USE ((u32)-1)
 
@@ -197,9 +197,9 @@ void GXS_EndLoadOBJExtPltt(void)
 void GX_BeginLoadTex (void)
 {
     data_0208eb2c.tex = GX_ResetBankForTex();
-    data_0208eb2c.texLCDCBlk1 = data_02075174[data_0208eb2c.tex].blk1 << 12;
-    data_0208eb2c.texLCDCBlk2 = data_02075174[data_0208eb2c.tex].blk2 << 12;
-    data_0208eb2c.szTexBlk1 = data_02075174[data_0208eb2c.tex].szBlk1 << 12;
+    data_0208eb2c.texLCDCBlk1 = sTexStartAddrTable[data_0208eb2c.tex].blk1 << 12;
+    data_0208eb2c.texLCDCBlk2 = sTexStartAddrTable[data_0208eb2c.tex].blk2 << 12;
+    data_0208eb2c.szTexBlk1 = sTexStartAddrTable[data_0208eb2c.tex].szBlk1 << 12;
 }
 
 void GX_LoadTex(const void *pSrc, u32 destSlotAddr, u32 szByte)
@@ -238,7 +238,7 @@ void GX_EndLoadTex(void)
 void GX_BeginLoadTexPltt (void)
 {
     data_0208eb2c.texPltt = GX_ResetBankForTexPltt();
-    data_0208eb2c.texPlttLCDCBlk = data_02075164[data_0208eb2c.texPltt >> 4] << 12;
+    data_0208eb2c.texPlttLCDCBlk = sTexPlttStartAddrTable[data_0208eb2c.texPltt >> 4] << 12;
 }
 
 void GX_LoadTexPltt(const void *pSrc, u32 destSlotAddr, u32 szByte)

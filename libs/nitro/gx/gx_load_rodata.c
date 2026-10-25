@@ -22,18 +22,18 @@
 
 // const u16 sTexPlttStartAddrTable[8], indexed by the E | F << 1 | G << 2 bank mask: the first
 // bank of a contiguous set, or 0 when E and G are used without F.
-void data_02075164(void);
+void sTexPlttStartAddrTable(void);
 // const GXTexStartAddr sTexStartAddrTable[16], indexed by the A | B << 1 | C << 2 | D << 3 mask.
-void data_02075174(void);
+void sTexStartAddrTable(void);
 
-asm void data_02075164(void) {
+asm void sTexPlttStartAddrTable(void) {
     dcd E2(0, VRAM_E)      // -, E
     dcd E2(VRAM_F, VRAM_E) // F, EF
     dcd E2(VRAM_G, 0)      // G, EG
     dcd E2(VRAM_F, VRAM_E) // FG, EFG
 }
 
-asm void data_02075174(void) {
+asm void sTexStartAddrTable(void) {
     TEX2(0, 0, 0, VRAM_A, 0, 0) // -; A
     TEX2(VRAM_B, 0, 0, VRAM_A, 0, 0) // B; AB
     TEX2(VRAM_C, 0, 0, VRAM_A, VRAM_C, BANK_SIZE) // C; A C
