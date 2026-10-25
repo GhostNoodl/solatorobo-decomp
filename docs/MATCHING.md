@@ -3629,3 +3629,21 @@ No new matches. Tools are in the scratchpad under `protomain/t/` (round proto8's
   - `02049c80`: the `NNS_SndPlayerSetTrackPan`/`Pitch` mask is the constant `1`, and the other callees agree with the ROM's registers.
 - **False positives.** `callreg.py` flags `02053254`'s first call, but its `r3` is `x` being stored to the model, not an argument. `proto2.py`'s `split_params` counts `->` and `>>` as closing brackets, so it miscounts arguments at call sites; `callsite.py` uses a bracket-only splitter.
 - **`020459cc` (9 / 0) and `02046070` (6 / 0) have the same diff.** At each `WH_ChangeSysState`, the target loads the global pointer into a new register and reuses the pool-address register for the constant (`ldr r1, [r0]; mov r0, #3`). Ours does the opposite. A plain `static` function with `#pragma auto_inline on`, or a macro, gives the same 9.
+## A `u32` counter truncated with `(u8)` fixes the `FindNode` registers; `ov000_02166180` from 74 / 4 to 51 / 4 (round g6180b)
+
+No new matches. The best draft is `scratchpad/g6180b/best51.cpp` (51 / 4 with `sc2.py`). `best51_41.cpp` is the same draft with `dy` read as `data_ov000_021c9b41[sec * 4]` (`extern const s8[]`), which is the form to land. Both score 51 / 4. Tools are in `g6180b/t/` and point at the `g6180b` clone.
+
+- **`FindNode` (74 to 51 raw).** Declare the inline's counter as `u32 s;` and step it with `s = (u8)(s + 1)`. That keeps the target's `add r2, r6, #1; and r6, r2, #0xff` and gives `c`/`d`/`s` the target's `r7`/`r0`/`r6`. A plain `u8 s` gets the wrong registers, and a `u32`/`int` counter without the cast drops the `and`. `unsigned` gives the same result as `u32`. `int`, `s32`, `u16` and `s16` give 53 / 6.
+- **The busy block's `off`.** `off = (m == h->count - 1) ? 0 : 2;` and `if (m == h->count - 1) off = 0; else off = 2;` give the target's `mov r8, #0; movne r8, #2` and the target's `0x14` register (74 to 70). `m != ...` forms and `off = 0; if (...) off = 2;` do not. `n` and the `n[0xa]` / `pal + off` temporaries are still swapped (`r2`/`r6`).
+- **Prologue, still open.** These all give the `&&` result (`movne` before `moveq`): `!(h == NULL || x == 0)`, ternaries, `bool`/`u8`/`int`/`u32` return types, `!!`, `(BOOL)` and `^ 0`. `if (h == NULL || x == 0) return FALSE; else return TRUE;` and `if (...) b = FALSE; else b = TRUE;` get the `moveq` order. But the `data_ov000_021ccd54` load then sinks below the test (5). A `dmove.py` pass over the ten prologue statements does not fix that. Writing the test inline in the caller is worse (61–97), and so are `?:` stores or `if` forms at the call site (83–105).
+- **No effect on the first loop's `oams`/`pos`/`j` rotation:**
+  - a full `dmove.py` pass over the 39 declarations (the busy block is also unchanged);
+  - fresh variables for each reused local in each region (webs are split anyway);
+  - `pos`/`oams` scoping, `+` operand order (the compiler canonicalises it);
+  - `o = &oams[j]`, `(oams + j)->`, `[(u8)j]`;
+  - `u32 m`/`u32 i` with `(u8)` steps;
+  - two-definition `oams`/`pos`/`n`/`off` (they add code);
+  - a hand-hoisted `ex - 4`/`ey - 4`, and moving the loop into an inline taking `u8 &j` (151).
+  
+  In every remaining rotation, the target gives the user variables (`oams`, `pos`, `n`, and before this round `c`) the higher registers and the temporaries the lower ones. Our build does the opposite.
+- **`ov000_021a7af0`: 160 / 66 to 155 / 61** (`scratchpad/g6180b/7af0/best155.cpp`). In case `0x1e`, store `0x9c = 0x200` before `0xa8 = 0x52` and `0xa4 = 0xef6`. The constant registers at the switch head still come out as `0x52, 0x200` where the target has `0x200, 0x52`. Reordering the five copies of the `0x66`/`0x200`/`0x52` block (`Bump`) is worse in every order tried (165–225).
