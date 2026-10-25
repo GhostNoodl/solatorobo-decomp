@@ -417,6 +417,10 @@ src/ov000/Stub_021708d8.cpp:
     complete
     .text       start:0x021708d8 end:0x021708ec
 
+src/ov000/Lo_021708ec.cpp:
+    complete
+    .text       start:0x021708ec end:0x02170a58
+
 src/ov000/Task_02170a58.cpp:
     complete
     .text       start:0x02170a58 end:0x02171270
@@ -2208,6 +2212,10 @@ src/ov000/Robo_021a0268.cpp:
 src/ov000/Robo_021a09b8.cpp:
     complete
     .text       start:0x021a09b8 end:0x021a0d4c
+
+src/ov000/Robo_021a0d4c.cpp:
+    complete
+    .text       start:0x021a0d4c end:0x021a15e0
 
 src/ov000/Lo_021a15e0.cpp:
     complete
