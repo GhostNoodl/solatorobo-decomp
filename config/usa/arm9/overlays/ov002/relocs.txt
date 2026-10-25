@@ -3388,8 +3388,8 @@ from:0x021eef40 kind:load to:0x021f0f2c module:overlay(2)
 from:0x021eef44 kind:load to:0x0208b318 module:main
 from:0x021eef8c kind:load to:0x021e4674 module:overlay(2)
 from:0x021eef94 kind:load to:0x021e46c4 module:overlay(2)
-from:0x021ef11c kind:load to:0x021f0dcc module:overlay(2)
-from:0x021ef120 kind:load to:0x021f0dc4 module:overlay(2)
+from:0x021ef11c kind:load to:0x021f0d88 add:0x44 module:overlay(2)
+from:0x021ef120 kind:load to:0x021f0d88 add:0x3c module:overlay(2)
 from:0x021ef13c kind:arm_call to:0x02012ab8 module:main
 from:0x021ef14c kind:load to:0x021ef3e0 module:overlay(2)
 from:0x021ef15c kind:arm_call to:0x02012ab8 module:main

@@ -4,13 +4,17 @@ extern "C" {
 
 extern u8 *data_ov000_021ccd70;
 
-typedef struct Pair021efa94 { s32 a; s32 b; } Pair021efa94;
+extern const char data_ov002_021efaa0[];
+extern const char data_ov002_021efaad[];
 
-extern Pair021efa94 data_ov002_021efa94;
+typedef struct Pair021efa94 { const char *a; const char *b; s32 scale; } Pair021efa94;
+
+extern const Pair021efa94 data_ov002_021efa94;
+const Pair021efa94 data_ov002_021efa94 = { data_ov002_021efaa0, data_ov002_021efaad, FX_Div(256 << 12, 15 << 12) };
 
 void func_ov000_02163224(void *o);
 
-void func_ov000_021632f0(void *o, u16 id, s32 a, s32 b, int z);
+void func_ov000_021632f0(void *o, u16 id, const char *a, const char *b, int z);
 
 static inline BOOL ov002_isIdle637c(void) {
     return FIELD(data_ov000_021ccd70, 4, void *) == NULL;

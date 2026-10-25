@@ -3572,3 +3572,17 @@ src/ov000/ov000_021ca82c.cpp:
     .init       start:0x021ca82c end:0x021ca84c
     .ctor       start:0x021ca868 end:0x021ca86c
     .data       start:0x021ccc64 end:0x021ccc68
+
+src/ov000/ov000_021ca77c.cpp:
+    complete
+    .rodata     start:0x021c9d88 end:0x021c9d9c
+    .init       start:0x021ca77c end:0x021ca7c4
+    .ctor       start:0x021ca85c end:0x021ca860
+    .data       start:0x021cc440 end:0x021cc454
+
+src/ov000/ov000_021ca7c4.cpp:
+    complete
+    .rodata     start:0x021c9fbc end:0x021c9fd0
+    .init       start:0x021ca7c4 end:0x021ca80c
+    .ctor       start:0x021ca860 end:0x021ca864
+    .data       start:0x021cc510 end:0x021cc524

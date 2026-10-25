@@ -4,7 +4,19 @@ extern "C" {
 
 extern char data_ov011_02207da4[];
 extern char data_ov011_02207c35[];
-extern void *data_ov011_02207500[];
+struct Ov011PhotoCfg {
+    void *photo;
+    void *photoB;
+    void *photoA;
+    char photo1[8];
+    char photo0[8];
+};
+extern Ov011PhotoCfg data_ov011_02207be0;
+extern void *const data_ov011_02207500[2];
+void *const data_ov011_02207500[2] = { data_ov011_02207be0.photo1, data_ov011_02207be0.photo0 };
+Ov011PhotoCfg data_ov011_02207be0 = {
+    data_ov011_02207500[0], data_ov011_02207500[1], data_ov011_02207500[0], "photo01", "photo00",
+};
 extern void *data_02097cdc;
 void func_ov000_0214b598(void *p);
 void *func_ov000_0214b570(void *p);

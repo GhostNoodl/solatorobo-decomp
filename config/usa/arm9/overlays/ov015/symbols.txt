@@ -398,7 +398,7 @@ __sinit_ov015_022126ac.cpp kind:function(arm,size=0x20) addr:0x022126ac local
 __sinit_ov015_022126cc.cpp kind:function(arm,size=0x20) addr:0x022126cc local
 __sinit_ov015_022126ec.cpp kind:function(arm,size=0x20) addr:0x022126ec local
 __sinit_ov015_0221270c.cpp kind:function(arm,size=0x20) addr:0x0221270c local
-__sinit_ov015_0221272c kind:function(arm,size=0x20) addr:0x0221272c
+__sinit_ov015_0221272c.cpp kind:function(arm,size=0x20) addr:0x0221272c local
 __sinit_ov015_0221274c.cpp kind:function(arm,size=0x20) addr:0x0221274c local
 __sinit_ov015_0221276c.cpp kind:function(arm,size=0x20) addr:0x0221276c local
 .p__sinit_ov015_0221268c.cpp kind:data(word) addr:0x0221278c local
@@ -406,7 +406,7 @@ __sinit_ov015_0221276c.cpp kind:function(arm,size=0x20) addr:0x0221276c local
 .p__sinit_ov015_022126cc.cpp kind:data(word) addr:0x02212794 local
 .p__sinit_ov015_022126ec.cpp kind:data(word) addr:0x02212798 local
 .p__sinit_ov015_0221270c.cpp kind:data(word) addr:0x0221279c local
-.p__sinit_ov015_0221272c kind:data(word) addr:0x022127a0
+.p__sinit_ov015_0221272c.cpp kind:data(word) addr:0x022127a0 local
 .p__sinit_ov015_0221274c.cpp kind:data(word) addr:0x022127a4 local
 .p__sinit_ov015_0221276c.cpp kind:data(word) addr:0x022127a8 local
 data_ov015_022127c0 kind:data(word) addr:0x022127c0 local

@@ -128,6 +128,10 @@ src/ov011/ov011_02204a8c.cpp:
 src/ov011/ov011_02204b94.cpp:
     complete
     .text       start:0x02204b94 end:0x02204ff0
+    .rodata     start:0x02207500 end:0x02207508
+    .init       start:0x02207850 end:0x02207874
+    .ctor       start:0x0220787c end:0x02207880
+    .data       start:0x02207be0 end:0x02207bfc
 
 src/ov011/ov011_02204ff0.cpp:
     complete

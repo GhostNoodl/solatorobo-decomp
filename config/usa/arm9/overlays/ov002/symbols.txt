@@ -649,24 +649,24 @@ data_ov002_021ef0ec kind:data(any) addr:0x021ef0ec
 data_ov002_021ef0f8 kind:data(any) addr:0x021ef0f8
 data_ov002_021ef104 kind:data(any) addr:0x021ef104
 data_ov002_021ef110 kind:data(any) addr:0x021ef110
-data_ov002_021ef11c kind:data(any) addr:0x021ef11c
+data_ov002_021ef11c kind:data(any) addr:0x021ef11c local
 data_ov002_021ef124 kind:data(any) addr:0x021ef124
 __sinit_ov002_021ef130.cpp kind:function(arm,size=0x20) addr:0x021ef130 local
-__sinit_ov002_021ef150 kind:function(arm,size=0x20) addr:0x021ef150
-__sinit_ov002_021ef170 kind:function(arm,size=0x20) addr:0x021ef170
+__sinit_ov002_021ef150.cpp kind:function(arm,size=0x20) addr:0x021ef150 local
+__sinit_ov002_021d637c.cpp kind:function(arm,size=0x20) addr:0x021ef170 local
 __sinit_ov002_021ef190.cpp kind:function(arm,size=0x20) addr:0x021ef190 local
 __sinit_ov002_021ef1b0.cpp kind:function(arm,size=0x20) addr:0x021ef1b0 local
 __sinit_ov002_021ef1d0.cpp kind:function(arm,size=0x20) addr:0x021ef1d0 local
 __sinit_ov002_021ef1f0 kind:function(arm,size=0x190) addr:0x021ef1f0
-__sinit_ov002_021ef380 kind:function(arm,size=0x28) addr:0x021ef380
+__sinit_ov002_021ef380.cpp kind:function(arm,size=0x28) addr:0x021ef380 local
 .p__sinit_ov002_021ef130.cpp kind:data(word) addr:0x021ef3a8 local
-.p__sinit_ov002_021ef150 kind:data(word) addr:0x021ef3ac
-.p__sinit_ov002_021ef170 kind:data(word) addr:0x021ef3b0
+.p__sinit_ov002_021ef150.cpp kind:data(word) addr:0x021ef3ac local
+.p__sinit_ov002_021d637c.cpp kind:data(word) addr:0x021ef3b0 local
 .p__sinit_ov002_021ef190.cpp kind:data(word) addr:0x021ef3b4 local
 .p__sinit_ov002_021ef1b0.cpp kind:data(word) addr:0x021ef3b8 local
 .p__sinit_ov002_021ef1d0.cpp kind:data(word) addr:0x021ef3bc local
 .p__sinit_ov002_021ef1f0 kind:data(word) addr:0x021ef3c0
-.p__sinit_ov002_021ef380 kind:data(word) addr:0x021ef3c4
+.p__sinit_ov002_021ef380.cpp kind:data(word) addr:0x021ef3c4 local
 data_ov002_021ef3e0 kind:data(word) addr:0x021ef3e0 local
 data_ov002_021ef3e4 kind:data(any) addr:0x021ef3e4
 data_ov002_021ef3ec kind:data(any) addr:0x021ef3ec
@@ -916,8 +916,6 @@ data_ov002_021f0d6e kind:data(any) addr:0x021f0d6e
 data_ov002_021f0d75 kind:data(any) addr:0x021f0d75
 data_ov002_021f0d7d kind:data(any) addr:0x021f0d7d
 data_ov002_021f0d88 kind:data(any) addr:0x021f0d88
-data_ov002_021f0dc4 kind:data(any) addr:0x021f0dc4
-data_ov002_021f0dcc kind:data(any) addr:0x021f0dcc
 data_ov002_021f0ddc kind:data(any) addr:0x021f0ddc
 data_ov002_021f0de9 kind:data(any) addr:0x021f0de9
 data_ov002_021f0df6 kind:data(any) addr:0x021f0df6
