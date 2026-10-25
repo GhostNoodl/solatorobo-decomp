@@ -309,41 +309,17 @@ src/ov003/ov003_021ec9e0.cpp:
     complete
     .text       start:0x021ec9e0 end:0x021ed058
 
-src/ov003/ov003_021e93d8.cpp:
-    complete
-    .text       start:0x021e93d8 end:0x021e9af4
-
-src/ov003/ov003_021e9af4.c:
-    complete
-    .text       start:0x021e9af4 end:0x021e9b74
-
-src/ov003/ov003_021ea3d0.c:
-    complete
-    .text       start:0x021ea234 end:0x021ea588
-
 src/ov003/ov003_021e8030.cpp:
     complete
     .text       start:0x021e7ee4 end:0x021e83d0
 
 src/ov003/ov003_021f7848.cpp:
     complete
-    .text       start:0x021e83d0 end:0x021e8544
+    .text       start:0x021e83d0 end:0x021ea858
     .rodata     start:0x021f6a80 end:0x021f6af0
     .init       start:0x021f7848 end:0x021f7890
     .ctor       start:0x021f78a8 end:0x021f78ac
     .data       start:0x021f90e0 end:0x021f910c
-
-src/ov003/ov003_021e8544.cpp:
-    complete
-    .text       start:0x021e8544 end:0x021e8a70
-
-src/ov003/ov003_021e8a70.cpp:
-    complete
-    .text       start:0x021e8a70 end:0x021e8eb0
-
-src/ov003/ov003_021e8eb0.cpp:
-    complete
-    .text       start:0x021e8eb0 end:0x021e93d8
 
 src/ov003/ov003_021e7274.c:
     complete
@@ -553,10 +529,6 @@ src/ov003/ov003_021cfab4.cpp:
 src/ov003/ov003_021e2b50.c:
     complete
     .text       start:0x021e2b50 end:0x021e3890
-
-src/ov003/ov003_021e9b74.cpp:
-    complete
-    .text       start:0x021e9b74 end:0x021ea234
 
 src/ov003/ov003_021f0c60.cpp:
     complete
