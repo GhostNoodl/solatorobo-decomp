@@ -47,7 +47,7 @@ src/ov012/ov012_021ff674.cpp:
 
 src/ov012/ov012_02200200.cpp:
     complete
-    .text       start:0x02200200 end:0x02200cd4
+    .text       start:0x02200200 end:0x022015a0
 
 src/ov012/ov012_022015a0.cpp:
     complete
