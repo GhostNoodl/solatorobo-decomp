@@ -827,7 +827,7 @@ data_ov003_021f6a96 kind:data(any) addr:0x021f6a96
 data_ov003_021f6a9e kind:data(any) addr:0x021f6a9e
 data_ov003_021f6acc kind:data(any) addr:0x021f6acc
 data_ov003_021f6ad8 kind:data(any) addr:0x021f6ad8
-data_ov003_021f6ae4 kind:data(any) addr:0x021f6ae4
+data_ov003_021f6ae4 kind:data(byte[0xc]) addr:0x021f6ae4 local
 data_ov003_021f6af0 kind:data(any) addr:0x021f6af0
 data_ov003_021f6afc kind:data(any) addr:0x021f6afc
 data_ov003_021f6b08 kind:data(any) addr:0x021f6b08
@@ -882,14 +882,14 @@ __sinit_ov003_021f771c.cpp kind:function(arm,size=0x48) addr:0x021f771c local
 __sinit_ov003_021f7764 kind:function(arm,size=0x74) addr:0x021f7764
 __sinit_ov003_021f77d8.cpp kind:function(arm,size=0x48) addr:0x021f77d8 local
 __sinit_ov003_021f7820.cpp kind:function(arm,size=0x28) addr:0x021f7820 local
-__sinit_ov003_021f7848 kind:function(arm,size=0x48) addr:0x021f7848
+__sinit_ov003_021f7848.cpp kind:function(arm,size=0x48) addr:0x021f7848 local
 .p__sinit_ov003_021f76b4.cpp kind:data(word) addr:0x021f7890 local
 .p__sinit_ov003_021f76d4.cpp kind:data(word) addr:0x021f7894 local
 .p__sinit_ov003_021f771c.cpp kind:data(word) addr:0x021f7898 local
 .p__sinit_ov003_021f7764 kind:data(word) addr:0x021f789c
 .p__sinit_ov003_021f77d8.cpp kind:data(word) addr:0x021f78a0 local
 .p__sinit_ov003_021f7820.cpp kind:data(word) addr:0x021f78a4 local
-.p__sinit_ov003_021f7848 kind:data(word) addr:0x021f78a8
+.p__sinit_ov003_021f7848.cpp kind:data(word) addr:0x021f78a8 local
 data_ov003_021f78c0 kind:data(word) addr:0x021f78c0 local
 data_ov003_021f78c4 kind:data(any) addr:0x021f78c4
 data_ov003_021f78cd kind:data(any) addr:0x021f78cd
@@ -1002,7 +1002,7 @@ data_ov003_021f90e0 kind:data(any) addr:0x021f90e0
 data_ov003_021f90e6 kind:data(any) addr:0x021f90e6
 data_ov003_021f90ec kind:data(any) addr:0x021f90ec
 data_ov003_021f90f8 kind:data(any) addr:0x021f90f8
-data_ov003_021f9100 kind:data(any) addr:0x021f9100
+data_ov003_021f9100 kind:data(byte[0xc]) addr:0x021f9100 local
 data_ov003_021f9114 kind:data(any) addr:0x021f9114
 data_ov003_021f91ac kind:data(any) addr:0x021f91ac
 data_ov003_021f9244 kind:data(any) addr:0x021f9244

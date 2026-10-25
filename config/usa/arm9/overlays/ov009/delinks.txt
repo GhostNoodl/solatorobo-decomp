@@ -554,3 +554,17 @@ src/ov009/ov009_02216288.cpp:
     .init       start:0x02216288 end:0x022162d0
     .ctor       start:0x02216320 end:0x02216324
     .data       start:0x02217994 end:0x022179a8
+
+src/ov009/ov009_022161f8.cpp:
+    complete
+    .rodata     start:0x02215d0c end:0x02215d9c
+    .init       start:0x022161f8 end:0x02216240
+    .ctor       start:0x02216318 end:0x0221631c
+    .data       start:0x02216ad4 end:0x02216b68
+
+src/ov009/ov009_02216240.cpp:
+    complete
+    .rodata     start:0x02215ee4 end:0x02215f2c
+    .init       start:0x02216240 end:0x02216288
+    .ctor       start:0x0221631c end:0x02216320
+    .data       start:0x02217278 end:0x0221729c

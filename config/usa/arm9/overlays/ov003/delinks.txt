@@ -607,3 +607,10 @@ src/ov003/ov003_021f77d8.cpp:
     .init       start:0x021f77d8 end:0x021f7820
     .ctor       start:0x021f78a0 end:0x021f78a4
     .data       start:0x021f7cbc end:0x021f7cd0
+
+src/ov003/ov003_021f7848.cpp:
+    complete
+    .rodata     start:0x021f6a80 end:0x021f6af0
+    .init       start:0x021f7848 end:0x021f7890
+    .ctor       start:0x021f78a8 end:0x021f78ac
+    .data       start:0x021f90e0 end:0x021f910c

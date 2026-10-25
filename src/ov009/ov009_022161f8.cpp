@@ -1,0 +1,77 @@
+#include <nitro/fx.h>
+
+// A header's zero rotation and vector, plus copies made at startup, among this TU's motion
+// and effect names, the 16 pointers to them, and the offsets and sizes other functions read.
+typedef struct {
+    u32 a;
+    u32 b;
+    u32 c;
+} Ov009Blk12;
+
+extern const char *const data_ov009_02215d0c;
+extern const s32 data_ov009_02215d54[2];
+extern const s32 data_ov009_02215d5c[2];
+extern const s16 data_ov009_02215d64[4];
+extern const Ov009Blk12 data_ov009_02215d6c;
+extern const VecFx32 data_ov009_02215d78;
+extern const VecFx32 data_ov009_02215d84;
+extern char data_ov009_02216ad4[];
+extern char data_ov009_02216ada[];
+extern char data_ov009_02216ae0[];
+extern char data_ov009_02216ae6[];
+extern char data_ov009_02216aec[];
+extern char data_ov009_02216af2[];
+extern char data_ov009_02216afe[];
+extern char data_ov009_02216b04[];
+extern char data_ov009_02216b0a[];
+extern char data_ov009_02216b10[];
+extern char data_ov009_02216b17[];
+extern char data_ov009_02216b1e[];
+extern char data_ov009_02216b25[];
+extern char data_ov009_02216b2f[];
+extern char data_ov009_02216b39[];
+extern char data_ov009_02216b43[];
+extern char data_ov009_02216b4f[];
+static const char *const data_ov009_02215d44 = data_ov009_02216b17;
+static const char *const data_ov009_02215d40 = data_ov009_02216b1e;
+static const char *const data_ov009_02215d10 = data_ov009_02216b25;
+char data_ov009_02216afe[] = "dmg12";
+const char *const data_ov009_02215d0c = data_ov009_02216ae0;
+static const char *const data_ov009_02215d38 = data_ov009_02216b39;
+char data_ov009_02216b2f[] = "en/e1hun1";
+static const char *const data_ov009_02215d48 = data_ov009_02216b2f;
+static const char *const data_ov009_02215d18 = data_ov009_02216aec;
+const s32 data_ov009_02215d54[2] = {0xe02, 0xf02};
+char data_ov009_02216b4f[] = "ef3di1hdi10";
+const s16 data_ov009_02215d64[4] = {0x1000, 0x1000, 0x2000, 0x1000};
+char data_ov009_02216b0a[] = "run00";
+static const char *const data_ov009_02215d34 = data_ov009_02216af2;
+char data_ov009_02216ada[] = "nut10";
+static const char *const data_ov009_02215d28 = data_ov009_02216ada;
+char data_ov009_02216b43[] = "ef3di1hdi11";
+char data_ov009_02216b17[] = "e1hun1";
+const Ov009Blk12 data_ov009_02215d6c = {0x02520000, 0, 0xffff};
+char data_ov009_02216ae6[] = "att01";
+char data_ov009_02216af2[] = "dmg00";
+static const char *const data_ov009_02215d1c = data_ov009_02216ae6;
+const VecFx32 data_ov009_02215d84 = {0, 0x2f33, 0x2733};
+char data_ov009_02216b1e[] = "e1top1";
+static const VecFx32 data_ov009_02215d90 = {0, 0, 0};
+char data_ov009_02216b39[] = "en/e1top1";
+const s32 data_ov009_02215d5c[2] = {0xd02, 0x1002};
+static const VecFx16 data_ov009_02215d4c = {0, 0, 0};
+char data_ov009_02216ad4[] = "nut00";
+char data_ov009_02216b10[] = "e1hdi2";
+char data_ov009_02216b25[] = "en/e1hdi2";
+static const char *const data_ov009_02215d30 = data_ov009_02216ad4;
+static const VecFx16 data_ov009_02216af8 = data_ov009_02215d4c;
+static const char *const data_ov009_02215d3c = data_ov009_02216b04;
+static const char *const data_ov009_02215d20 = data_ov009_02216afe;
+static const char *const data_ov009_02215d2c = data_ov009_02216b0a;
+char data_ov009_02216ae0[] = "att00";
+char data_ov009_02216aec[] = "att10";
+static const char *const data_ov009_02215d14 = data_ov009_02216b10;
+static const char *const data_ov009_02215d24 = data_ov009_02216ad4;
+const VecFx32 data_ov009_02215d78 = {0, 0x3800, 0};
+char data_ov009_02216b04[] = "nut01";
+static const VecFx32 data_ov009_02216b5c = data_ov009_02215d90;
