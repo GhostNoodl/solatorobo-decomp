@@ -3581,3 +3581,23 @@ No new matches. Drafts are in the scratchpad under `ovbig13/d/<addr>/` (`6180/wz
   - `ov000_02164c50` (234 / 11): a register rotation from the first instruction.
   - `ov009_02204a10`: the best draft is `giants1/d/4a10/lp/pdz.cpp` at 49 / 25.
   - `ov000_021652e4` (106 / 46 / 23 `sp`-masked): the target's frame has 8 unused bytes at `[sp, #0x34]`. Unused `Oam` or `Pos` locals are dropped, and a `tmpl = src` copy is worse (152).
+
+## The wrong-prototype check on every overlay near-miss: two matches (ov000, ov010, round proto8)
+
+Tools are in the scratchpad under `proto8/t/`. `proto2.py cands` compares every callee declaration in a draft (and in the draft's own inlines) with the matched definition's parameter count, scalar widths and return type. `narrow.py` keeps only the differences that involve a count or a narrow type. `romargs.py cands` reads each callee's ROM code and reports a call where the callee reads `r1`–`r3` before writing them but the draft passes fewer arguments. `selfsig.py` compares a draft's own signature with how matched callers declare it. `fixsig.py draft callee out` rewrites one declaration to the matched widths. The candidates were 55 unmatched overlay functions at raw ≤ 20, plus 39 above that (ov004 and `ov000_02166180` left out).
+
+- **`func_ov010_0220441c` (8 / 0 to 0).** The draft declared `func_ov003_021d982c(void *p)`. Its matched definition is `(Ov003Sequence *self, u8 v)`, and the ROM passes `1` in `r1`: the `1` of the `1ull << n` expansion is reused as the argument. `func_ov003_021d982c(self + 0x160, 1)` moves the `1` from `r2` to `r1`, and the `1 << n` operand swap that round fresh5 chased goes away. This is the same lever as round pool3's: a constant or load that lands in an odd argument register before a call is an argument of that call.
+- **`func_ov000_021b628c` (16 / 0 to 0), in two steps.**
+  1. **The callee prototypes.** `func_0206e230`/`func_0206e264` take the `LangBlockB *` (`self->unk_14`), and the draft declared them `(void)`. The target keeps `unk_14` in `r0` and tests its bytes through `r1`. Passing `self->unk_14` gives 12 / 0.
+  2. **A copy and two compound subtractions.** The rest was the sine/cosine offset block. `t = pos; t.x -= FX_SinCosTable_[...]; t.z -= FX_SinCosTable_[... + 1];` matches. `t.y = pos.y; t.x = pos.x - ...;` gives 12. Other forms tried: `z` first (23), `y` last (14–16), an index local, a table-pointer local or negated operands (12), and a `&table[i]` pointer (19).
+- **Checked, no gain.**
+  - **Width-only differences (118 single-callee rewrites with `fixsig.py`).** None scored better. Most compile the same, and the rest are worse or fail to build.
+  - **`ov000_021512b4`.** `func_ov000_0214bf2c` is defined `(void)`, but the ROM caller loads a `u16` into `r0` first, so the draft's argument is correct. The callee just ignores it.
+  - **`ov010_02205444` (24 / 15).** The same `func_ov003_021d969c(self + 0x160, 1)` fix applies (`r1` still holds the entry's `1`), but it compiles to identical code.
+  - **`ov006_021e51f8`.** The `r1` that holds the `1` is not an argument of `func_02045ea4`.
+  - **`ov000_021c4460`.** Its `r1`/`r2` difference is the `VOLR` reload of `unk_e4`, not a prototype. Dropping it gives 10 / 0.
+  - **`ov008_021ce518`.** The remaining 1 / 1 is the switch pivot.
+  - **Other reports.** The other `romargs.py` reports are struct returns (hidden `r0`) or regex misreads of call sites.
+- **New files:**
+  - `src/ov010/ov010_0220441c.cpp` (`.text 0x0220441c..0x022046ac`);
+  - `src/ov000/Cam_021b628c.cpp` (`.text 0x021b628c..0x021b65ec`).
