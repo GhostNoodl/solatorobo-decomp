@@ -2093,9 +2093,9 @@ func_020520fc kind:function(arm,size=0x64) addr:0x020520fc
 func_02052160 kind:function(arm,size=0x18) addr:0x02052160
 func_02052178 kind:function(arm,size=0xa4) addr:0x02052178
 func_0205221c kind:function(arm,size=0x40c) addr:0x0205221c
-func_02052628 kind:function(arm,size=0x2c4) addr:0x02052628
-func_020528ec kind:function(arm,size=0x300) addr:0x020528ec
-func_02052bec kind:function(arm,size=0x3e0) addr:0x02052bec
+_ZN12Obj3DAnimCls13func_02052628EiP13Obj3DAnimSlot kind:function(arm,size=0x2c4) addr:0x02052628
+_ZN12Obj3DAnimCls13func_020528ecEiP13Obj3DAnimSlot kind:function(arm,size=0x300) addr:0x020528ec
+_ZN12Obj3DAnimCls13func_02052becEiP13Obj3DAnimSlot kind:function(arm,size=0x3e0) addr:0x02052bec
 func_02052fcc kind:function(arm,size=0x150) addr:0x02052fcc
 func_0205311c kind:function(arm,size=0x138) addr:0x0205311c
 func_02053254 kind:function(arm,size=0x270) addr:0x02053254
@@ -2785,9 +2785,9 @@ data_02082ba4 kind:data(any) addr:0x02082ba4
 data_02082bdc kind:data(any) addr:0x02082bdc
 data_02082be4 kind:data(any) addr:0x02082be4
 data_02082bf8 kind:data(any) addr:0x02082bf8
-__sinit_0208aa00 kind:function(arm,size=0x24) addr:0x0208aa00
+__sinit_Obj3D_2.cpp kind:function(arm,size=0x24) addr:0x0208aa00 local
 __sinit_0208aa24 kind:function(arm,size=0x44) addr:0x0208aa24
-.p__sinit_0208aa00 kind:data(word) addr:0x0208aa68
+.p__sinit_Obj3D_2.cpp kind:data(word) addr:0x0208aa68 local
 .p__sinit_0208aa24 kind:data(word) addr:0x0208aa6c
 data_0208aa80 kind:data(any) addr:0x0208aa80
 data_0208ab64 kind:data(any) addr:0x0208ab64
