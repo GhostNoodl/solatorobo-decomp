@@ -3524,3 +3524,23 @@ No new matches. Drafts and variant specs are in the scratchpad under `fresh6/d/<
 - **A non-inline call's literal arguments were pooled left to right here.** `func_02035acc("ac/c1dum1", "c1dum1", 6)` puts `"ac/c1dum1"` first, which is the target's order. The right-to-left rule above was seen with inlined calls, so check the ROM rather than reorder by hand.
 - **`relchk.py` reports every `@stringBase0` load as BAD**, because it resolves the name to a main-module symbol. Compare the offsets with the `add:` values that `--claim` wrote; the ROM check is what decides.
 - **Still blocked.** The first half of the ov006 pool (`0x021ebbac..0x021ebc04`, with the `.data` word at `0x021ebbac`) needs `021cf414`/`021cf420`. The ov003 pool `0x021f8564..0x021f85c1` cannot be split (`"nut00"` is used from `021e1a68` to `021e6fb4`), so it still needs `021e1204` (2) and `021e6274` (9) besides `021e44dc` (0 with literals). Main TU1 (`0x0208b9dc`, needed for `0204c158`) still has `0204e5d4`, `0204f524`, `0204f5bc`, `0204ffdc` and `020508f4` unmatched in its span. TU2 (`0x0208bdec`, needed for `02058d10` and `02058f2c`) still has `0205c234`, `0205e29c`, `0205e5c4`, `02060a08` and `02060b18`.
+## Sequencer and fx-block redrafts: `ov003_021d8fc0` and `ov012_021fbec8` match (round bigd7)
+
+Drafts and scores are under `bigd7/d/` in the scratchpad.
+
+- **`ov003_021d8fc0` (274 / 139 to 0).** This is a full redraft from the asm, now `src/ov003/ov003_021d8fc0.cpp`. In order, the steps that moved it:
+  1. **Test the real flag.** The old draft's `ctl` local was really `!self->b2`. Dropping it fixed the push set.
+  2. **Write Wait and Exec as blocks.** Writing them out as blocks inside the main function, instead of as inlines, fixed the frame.
+  3. **Add volatile views.** The target re-reads `index` and `entries` where ours had CSE'd them. `*(volatile u16 *)&s->index` and `*(SeqEntry *volatile *)&s->entries` (the `VIDX`/`VENT` macros) reproduce the re-reads. Use them only at the reads that the target re-reads.
+  4. **Reuse `*p`.** Using `*p` twice as a struct value (`SeqEntry e = *p;` and then `Seq_Count(self, *p)`) makes CSE create a late temp, which gives the target's last stack slot.
+  5. **Merge the common tail.** Writing the `if`/`else` with the shared `timer = 0; ClearFlags` after it reproduces the target's merged tail.
+  6. **Fix statement order.** `Seq_Next(self); self->timer = 0;`, with Next first, fixed the last register swaps.
+- **`ov012_021fbec8` (17 / 0 to 0).** The `S1` inline is now written out as a block in `case 1:`. The outer locals are declared `pl, idx, ent, lim, t, px`, and the block's vectors are declared `d0, t0, d1, v1, v2`. That fixed the `px`/`lim` swap. The TU's `.text` now starts at `0x021fbec8`. `ov012_021fab7c` cannot fold into this TU because other files cover `021fb060`–`021fbec8`.
+- **Stack slot order (mini tests, every compiler version):**
+  1. Function-scope locals come first, then block locals, in declaration order from the top of the frame.
+  2. Inline params and locals come next, breadth-first by inline depth. Locals inside one inline are allocated in reverse declaration order.
+  3. CSE temps are allocated last.
+  
+  `#pragma inline_bottom_up`, `inline_depth` and `always_inline` have no effect on this order.
+- **`relchk.py` false positive.** It reports `UNK <section>` for a pool load of the TU's own `.rodata` (`data_ov012_0220a3c4`), because MWCC relocates against the section symbol. The function `021fc688`, which was already matched, shows the same thing.
+- **No movement:** `ov000_021b9b14` stays at 104 / 11. Reading `data_02097d48` directly instead of through `g` gives 265 / 75. `ov000_02191f18` stays at 84 masked. Other compiler versions and the inline/parameter variants gave nothing.
