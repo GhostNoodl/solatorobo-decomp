@@ -220,6 +220,10 @@ src/ov006/ov006_021cf360.cpp:
     complete
     .text       start:0x021cf360 end:0x021cf414
 
+src/ov006/ov006_021cf414.cpp:
+    complete
+    .text       start:0x021cf414 end:0x021cf420
+
 src/ov006/ov006_021cf420.cpp:
     complete
     .text       start:0x021cf420 end:0x021cf7c4
