@@ -268,3 +268,10 @@ src/ov010/ov010_0220ea84.cpp:
 src/ov010/ov010_0220ebb0.cpp:
     complete
     .text       start:0x0220ebb0 end:0x0220ebc0
+
+src/ov010/ov010_0220f828.cpp:
+    complete
+    .rodata     start:0x0220ef68 end:0x0220ef98
+    .init       start:0x0220f828 end:0x0220f870
+    .ctor       start:0x0220fa00 end:0x0220fa04
+    .data       start:0x0220fd70 end:0x0220fd9c

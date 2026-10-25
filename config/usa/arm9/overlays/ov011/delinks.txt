@@ -152,3 +152,17 @@ src/ov011/ov011_02205e9c.cpp:
 src/ov011/ov011_022071b4.cpp:
     complete
     .text       start:0x022063b0 end:0x02207258
+
+src/ov011/ov011_02207808.cpp:
+    complete
+    .rodata     start:0x02207418 end:0x02207444
+    .init       start:0x02207808 end:0x02207850
+    .ctor       start:0x02207878 end:0x0220787c
+    .data       start:0x02207994 end:0x022079a8
+
+src/ov011/ov011_022077c0.cpp:
+    complete
+    .rodata     start:0x02207258 end:0x02207284
+    .init       start:0x022077c0 end:0x02207808
+    .ctor       start:0x02207874 end:0x02207878
+    .data       start:0x022078a0 end:0x022078c0

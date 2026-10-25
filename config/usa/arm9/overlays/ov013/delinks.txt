@@ -160,3 +160,10 @@ src/ov013/ov013_0220a940.cpp:
 src/ov013/ov013_0220ade8.cpp:
     complete
     .text       start:0x0220aca0 end:0x0220ae48
+
+src/ov013/ov013_0220b544.cpp:
+    complete
+    .rodata     start:0x0220b290 end:0x0220b2cc
+    .init       start:0x0220b544 end:0x0220b58c
+    .ctor       start:0x0220b594 end:0x0220b598
+    .data       start:0x0220ba44 end:0x0220ba58

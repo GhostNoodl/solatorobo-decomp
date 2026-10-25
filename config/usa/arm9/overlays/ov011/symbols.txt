@@ -209,7 +209,7 @@ data_ov011_022073a0 kind:data(any) addr:0x022073a0
 data_ov011_02207418 kind:data(any) addr:0x02207418
 data_ov011_02207420 kind:data(any) addr:0x02207420
 data_ov011_0220742c kind:data(any) addr:0x0220742c
-data_ov011_02207438 kind:data(any) addr:0x02207438
+data_ov011_02207438 kind:data(byte[0xc]) addr:0x02207438
 data_ov011_02207450 kind:data(any) addr:0x02207450
 data_ov011_0220745c kind:data(any) addr:0x0220745c
 data_ov011_02207468 kind:data(any) addr:0x02207468
@@ -236,21 +236,21 @@ data_ov011_022076bc kind:data(any) addr:0x022076bc
 data_ov011_022076be kind:data(any) addr:0x022076be
 data_ov011_022076cc kind:data(any) addr:0x022076cc
 data_ov011_022076ce kind:data(any) addr:0x022076ce
-__sinit_ov011_022077c0 kind:function(arm,size=0x48) addr:0x022077c0
-__sinit_ov011_02207808 kind:function(arm,size=0x48) addr:0x02207808
+__sinit_ov011_022077c0.cpp kind:function(arm,size=0x48) addr:0x022077c0 local
+__sinit_ov011_02207808.cpp kind:function(arm,size=0x48) addr:0x02207808 local
 __sinit_ov011_02204b94.cpp kind:function(arm,size=0x24) addr:0x02207850 local
-.p__sinit_ov011_022077c0 kind:data(word) addr:0x02207874
-.p__sinit_ov011_02207808 kind:data(word) addr:0x02207878
+.p__sinit_ov011_022077c0.cpp kind:data(word) addr:0x02207874 local
+.p__sinit_ov011_02207808.cpp kind:data(word) addr:0x02207878 local
 .p__sinit_ov011_02204b94.cpp kind:data(word) addr:0x0220787c local
 data_ov011_022078a0 kind:data(any) addr:0x022078a0
 data_ov011_022078ac kind:data(any) addr:0x022078ac
-data_ov011_022078b4 kind:data(any) addr:0x022078b4
+data_ov011_022078b4 kind:data(byte[0xc]) addr:0x022078b4 local
 data_ov011_022078c0 kind:data(any) addr:0x022078c0
 data_ov011_022078cf kind:data(any) addr:0x022078cf
 data_ov011_022078e1 kind:data(any) addr:0x022078e1
 data_ov011_022078f0 kind:data(any) addr:0x022078f0
-data_ov011_02207994 kind:data(any) addr:0x02207994
-data_ov011_0220799c kind:data(any) addr:0x0220799c
+data_ov011_02207994 kind:data(any) addr:0x02207994 local
+data_ov011_0220799c kind:data(byte[0xc]) addr:0x0220799c local
 data_ov011_022079b0 kind:data(any) addr:0x022079b0
 data_ov011_022079d0 kind:data(any) addr:0x022079d0
 data_ov011_022079f0 kind:data(any) addr:0x022079f0

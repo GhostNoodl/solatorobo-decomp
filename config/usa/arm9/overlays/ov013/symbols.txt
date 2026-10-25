@@ -235,7 +235,7 @@ data_ov013_0220b280 kind:data(any) addr:0x0220b280 ambiguous
 data_ov013_0220b290 kind:data(any) addr:0x0220b290
 data_ov013_0220b2a8 kind:data(any) addr:0x0220b2a8
 data_ov013_0220b2b4 kind:data(any) addr:0x0220b2b4
-data_ov013_0220b2c0 kind:data(any) addr:0x0220b2c0
+data_ov013_0220b2c0 kind:data(byte[0xc]) addr:0x0220b2c0 local
 data_ov013_0220b2cc kind:data(any) addr:0x0220b2cc
 data_ov013_0220b2d8 kind:data(any) addr:0x0220b2d8
 data_ov013_0220b2ec kind:data(any) addr:0x0220b2ec
@@ -254,10 +254,10 @@ data_ov013_0220b3f8 kind:data(any) addr:0x0220b3f8
 data_ov013_0220b404 kind:data(any) addr:0x0220b404
 __sinit_ov013_0220b410 kind:function(arm,size=0x34) addr:0x0220b410
 __sinit_ov013_0220b444 kind:function(arm,size=0x100) addr:0x0220b444
-__sinit_ov013_0220b544 kind:function(arm,size=0x48) addr:0x0220b544
+__sinit_ov013_0220b544.cpp kind:function(arm,size=0x48) addr:0x0220b544 local
 .p__sinit_ov013_0220b410 kind:data(word) addr:0x0220b58c
 .p__sinit_ov013_0220b444 kind:data(word) addr:0x0220b590
-.p__sinit_ov013_0220b544 kind:data(word) addr:0x0220b594
+.p__sinit_ov013_0220b544.cpp kind:data(word) addr:0x0220b594 local
 data_ov013_0220b5a0 kind:data(any) addr:0x0220b5a0
 data_ov013_0220b5a4 kind:data(any) addr:0x0220b5a4
 data_ov013_0220b5b8 kind:data(any) addr:0x0220b5b8
@@ -298,8 +298,8 @@ data_ov013_0220b968 kind:data(any) addr:0x0220b968
 data_ov013_0220b978 kind:data(any) addr:0x0220b978
 data_ov013_0220b988 kind:data(any) addr:0x0220b988
 data_ov013_0220b9a0 kind:data(any) addr:0x0220b9a0
-data_ov013_0220ba44 kind:data(any) addr:0x0220ba44
-data_ov013_0220ba4c kind:data(any) addr:0x0220ba4c
+data_ov013_0220ba44 kind:data(any) addr:0x0220ba44 local
+data_ov013_0220ba4c kind:data(byte[0xc]) addr:0x0220ba4c local
 data_ov013_0220ba58 kind:data(any) addr:0x0220ba58
 data_ov013_0220ba60 kind:data(any) addr:0x0220ba60
 data_ov013_0220ba6c kind:data(any) addr:0x0220ba6c

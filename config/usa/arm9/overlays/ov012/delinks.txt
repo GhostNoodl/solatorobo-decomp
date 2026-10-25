@@ -128,3 +128,17 @@ src/ov012/ov012_022096fc.cpp:
 src/ov012/ov012_02209f80.cpp:
     complete
     .text       start:0x02209bd4 end:0x0220a3c4
+
+src/ov012/ov012_0220a99c.cpp:
+    complete
+    .rodata     start:0x0220a510 end:0x0220a540
+    .init       start:0x0220a99c end:0x0220a9e4
+    .ctor       start:0x0220aa78 end:0x0220aa7c
+    .data       start:0x0220aef0 end:0x0220af08
+
+src/ov012/ov012_0220aa2c.cpp:
+    complete
+    .rodata     start:0x0220a808 end:0x0220a840
+    .init       start:0x0220aa2c end:0x0220aa74
+    .ctor       start:0x0220aa80 end:0x0220aa84
+    .data       start:0x0220b088 end:0x0220b09c
