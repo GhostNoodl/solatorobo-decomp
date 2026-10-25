@@ -3561,3 +3561,23 @@ No new matches, so neither main pool is claimed. Drafts and tools are in the scr
   - **`0204f524` (2 / 2):** `G2_GetOBJCharPtr`/`G2S_GetOBJCharPtr`-style inlines for the two VRAM bases (in the ternary, in a `base` local or in a clear inline), two ternary orientations, five types for `i` and three loop-init forms (90 variants) give 12 / 1 at best. That is the natural form's rotation.
   - **`02060a08` / `02060b18`:** the matched `Flags_AddSlot`/`Flags_ClearSlot` inlines from `StageCmd_11.cpp`, which take a `flags` pointer, give 108 and 26. Slot-pointer inlines for `b18`'s branch 2 (the permuter's "second slot pointer" hint from round mainpool11) give 23–40.
   - **`0205c234` (2):** `s32` parameters (as the ov000/ov003 callers declare them) change nothing. The header's `Slot_Alloc` + `StageRes_Last` form gives 48.
+## A sprite-update giant redrafted from the target: `ov000_02166180` from 392 / 116 to 128 / 30 (round ovbig13)
+
+No new matches. Drafts are in the scratchpad under `ovbig13/d/<addr>/` (`6180/wz2.cpp` is the best `02166180` draft). `ovbig13/t/dmove.py base func mod start end` is a greedy search that moves one declaration line at a time. Scores are raw / register-masked / register-and-`sp`-masked (`t/sc2.py`).
+
+- **`ov000_02166180` (0xa68 bytes), in order of gain:**
+  1. **Write the on-screen test out at each call site.** The old draft had a `Put(o, x, y)` inline. The target computes `&oams[j]` separately in each arm of the `x < 8 || x > 0xf8 || ...` test, and CSE then reuses that address for the later palette stores. A `PUTM(o, X, Y)` macro (`if (...) SetXY(o, 0, 0xc0); else SetXY(o, X, Y);`) reproduces this: 392 / 116 to 300 / 86.
+  2. **Use `s32` coordinate temporaries.** Use `xx = ps->x + ex; yy = ps->y + ey;` in place of `s16` locals or arguments passed straight through, and the same for the two `nd->0x18` tails. That gives 278 / 77.
+  3. **Compute `yy` before `xx`.** The target loads `pos[j].y` before `pos[j].x`. Computing `yy` first gives 215 / 47.
+  4. **Put `ex - 4` and `ey - 4` in temporaries before the inner `PUTM`.** This reproduces the target's spilled `ex - 4`: a store to `[sp, #0x1c]` that is reloaded at once, while `ey - 4` stays in `r1` across the loop. That gives 159 / 34.
+  5. **Declare `u8 sec;` and mask it in its own statement.** With `sec = (a + 0x1000) / 0x2000; sec &= 7;`, the struct index `&tbl[sec]` (`add r0, r0, r1, lsl #2`) stays separate from the `s8` index `sec * 4`, as in the target. Every other type or form folds both indexes into one shared `lsl #29` (142 / 30). Our build still emits an extra `and #0xff`.
+  6. **Register-only gains (raw 146 to 128):** declaring `ex`, `ey` and `pos` inside the `i` loop, `r` after `p`, and writing the compare as `r.a == g[0xcb]`.
+- **Still open in `02166180`.**
+  - **Prologue.** The target loads `data_ov000_021ccd54` into `ip` before the busy test. Moving the `g` statement does not change the schedule.
+  - **The `dy` load needs `data_ov000_021c9b41`.** The target loads `dy` from its own pool word. With that symbol, MWCC sinks the `dy` load to the `y` insert after the first store to `[p, #0x14]`, which scores 161 / 53. The 128 draft reads `dy` as `((s8 *)data_ov000_021c9b40)[sec * 4 + 1]`, which is the wrong relocation, so it can't land as it is.
+  - **Register rotation** remains in the busy and `tbl2` blocks (`c`/`d`, `n`/`off`).
+- **Looked at, not redrafted.** None of these drafts is structurally far off:
+  - `ov000_021a7af0` (160 / 66): the diffs are where `0x200` and `0x52` are materialised.
+  - `ov000_02164c50` (234 / 11): a register rotation from the first instruction.
+  - `ov009_02204a10`: the best draft is `giants1/d/4a10/lp/pdz.cpp` at 49 / 25.
+  - `ov000_021652e4` (106 / 46 / 23 `sp`-masked): the target's frame has 8 unused bytes at `[sp, #0x34]`. Unused `Oam` or `Pos` locals are dropped, and a `tmpl = src` copy is worse (152).
