@@ -1078,7 +1078,7 @@ src/Main/Gfx/GfxVramAlloc.cpp:
 
 src/Main/Gfx/GfxSys_4.cpp:
     complete
-    .text       start:0x0203bd40 end:0x0203c2bc
+    .text       start:0x0203bd40 end:0x0203c638
 
 src/Main/Gfx/GfxSys_5.cpp:
     complete
@@ -1694,7 +1694,7 @@ src/Main/Effect/EffectSnd.cpp:
 
 src/Main/Lang/TblEntry.cpp:
     complete
-    .text       start:0x0206fef8 end:0x020701d4
+    .text       start:0x0206fef8 end:0x020702c8
 
 src/Main/Lang/TblRes.cpp:
     complete

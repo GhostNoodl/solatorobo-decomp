@@ -271,6 +271,83 @@ void func_0203beac(GfxSys *sys, int state) {
     sys->state = state;
 }
 
+extern void GX_SetBankForOBJ(int a);
+extern void GX_SetBankForSubOBJExtPltt(int a);
+extern void func_02043904(void *obj);
+
+// NitroSDK-style register inlines (GX_SetVisiblePlane, G2_SetBGnPriority, ...).
+// With the same writes spelled out as plain REG expressions, func_0203c2bc
+// keeps sys in sb instead of r4.
+static inline void GX_SetVisiblePlane(int plane) {
+    REG32(0x4000000) = (u32)((REG32(0x4000000) & ~0x1f00) | (plane << 8));
+}
+static inline void GXS_SetVisiblePlane(int plane) {
+    REG32(0x4001000) = (u32)((REG32(0x4001000) & ~0x1f00) | (plane << 8));
+}
+static inline void G2_SetBG0Priority(int p) { REG16(0x4000008) = (u16)((REG16(0x4000008) & ~3) | (p << 0)); }
+static inline void G2_SetBG1Priority(int p) { REG16(0x400000a) = (u16)((REG16(0x400000a) & ~3) | (p << 0)); }
+static inline void G2_SetBG2Priority(int p) { REG16(0x400000c) = (u16)((REG16(0x400000c) & ~3) | (p << 0)); }
+static inline void G2S_SetBG0Priority(int p) { REG16(0x4001008) = (u16)((REG16(0x4001008) & ~3) | (p << 0)); }
+static inline void G2S_SetBG1Priority(int p) { REG16(0x400100a) = (u16)((REG16(0x400100a) & ~3) | (p << 0)); }
+static inline void GX_SetOBJVRamModeChar(int mode) { REG32(0x4000000) = (u32)(REG32(0x4000000) & ~(0x300000 | 0x10) | mode); }
+static inline void GXS_SetOBJVRamModeChar(int mode) { REG32(0x4001000) = (u32)(REG32(0x4001000) & ~(0x300000 | 0x10) | mode); }
+static inline int GX_GetOBJVRamModeChar(void) { return (int)(REG32(0x4000000) & (0x300000 | 0x10)); }
+static inline int GXS_GetOBJVRamModeChar(void) { return (int)(REG32(0x4001000) & (0x300000 | 0x10)); }
+static inline void G2S_SetBG0Control(int screenSize, int colorMode, int screenBase, int charBase, int bgExtPltt) {
+    REG16(0x4001008) = (u16)((REG16(0x4001008) & (3 | 0x40)) | (screenSize << 14) | (colorMode << 7) | (screenBase << 8) | (charBase << 2) | (bgExtPltt << 13));
+}
+static inline void G2S_SetBG1Control(int screenSize, int colorMode, int screenBase, int charBase, int bgExtPltt) {
+    REG16(0x400100a) = (u16)((REG16(0x400100a) & (3 | 0x40)) | (screenSize << 14) | (colorMode << 7) | (screenBase << 8) | (charBase << 2) | (bgExtPltt << 13));
+}
+static inline void G2_BlendNone(void) { REG16(0x4000050) = 0; }
+
+void func_0203c2bc(GfxSys *sys) {
+    int i;
+    REG16(0x4000304) = (u16)(REG16(0x4000304) & ~0x8000);
+    func_0203d770();
+    GX_SetGraphicsMode(1, 5, 1);
+    GXS_SetGraphicsMode(5);
+    GX_SetBankForLCDC(0x1ff);
+    GX_SetBankForTex(7);
+    GX_SetBankForTexPltt(0x60);
+    GfxSys_InitTexVram(sys, 0x60000);
+    GfxSys_InitPlttVram(sys, 0x8000);
+    GfxSys_SetVramFuncs();
+    GX_SetBankForOBJ(0x10);
+    func_02015510(0x80);
+    GX_SetBankForSubOBJ(8);
+    GX_SetBankForSubOBJExtPltt(0x100);
+    GX_SetVisiblePlane(0x11);
+    GXS_SetVisiblePlane(0x10);
+    G2_SetBG0Priority(3);
+    G2_SetBG1Priority(0);
+    G2_SetBG2Priority(0);
+    G2S_SetBG0Priority(0);
+    G2S_SetBG1Priority(0);
+    GX_SetOBJVRamModeChar(0x100010);
+    GXS_SetOBJVRamModeChar(0x200010);
+    G2S_SetBG0Control(0, 0, 0xf, 1, 0);
+    G2S_SetBG1Control(0, 0, 7, 0, 0);
+    sys->unk_a30_0 = 1;
+    sys->unk_a30_1 = 0;
+    G2_BlendNone();
+    func_02043904(sys->unk_8b0);
+    sys->unk_00c = 0;
+    sys->unk_010 = 1;
+    GfxVramHeap_Init(&sys->heaps[0], 0x8000 << ((GX_GetOBJVRamModeChar() >> 20) & 3));
+    GfxVramHeap_Init(&sys->heaps[1], 0x8000 << ((GXS_GetOBJVRamModeChar() >> 20) & 3));
+    for (i = 0; i < 6; i++) {
+        sys->slotMasks[i] = 0;
+    }
+    if (data_02097ce0 != NULL) {
+        GfxMgr *mgr;
+        func_02039c54(data_02097ce0, 1);
+        mgr = data_02097ce0;
+        mgr->unk_678 = 0x14;
+        mgr->unk_67a = 0x16;
+    }
+}
+
 }
 
 extern "C" {
