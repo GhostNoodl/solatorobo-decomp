@@ -302,6 +302,10 @@ libs/nitro/gx/gx.c:
     complete
     .text       start:0x02013428 end:0x0201378c
 
+libs/nitro/gx/gx_data.c:
+    complete
+    .data       start:0x0208af54 end:0x0208af5c
+
 libs/nitro/gx/g2.c:
     complete
     .text       start:0x0201378c end:0x020137cc
@@ -357,6 +361,10 @@ libs/nitro/math/math.c:
 libs/nitro/math/math_sha1.c:
     complete
     .text       start:0x02015980 end:0x02015d58
+
+libs/nitro/math/math_sha1_data.c:
+    complete
+    .data       start:0x0208af5c end:0x0208af60
 
 libs/nitro/math/math_dgt.c:
     complete
@@ -449,6 +457,10 @@ libs/nitro/os/os_context.c:
 libs/nitro/os/os_emulator.c:
     complete
     .text       start:0x02018cd8 end:0x02018db0
+
+libs/nitro/os/os_emulator_data.c:
+    complete
+    .data       start:0x0208af78 end:0x0208af80
 
 libs/nitro/os/os_message.c:
     complete
@@ -834,9 +846,17 @@ libs/nnsys/g3d/anm.c:
     complete
     .text       start:0x0202734c end:0x020278a0
 
+libs/nnsys/g3d/anm_data.c:
+    complete
+    .data       start:0x0208aff8 end:0x0208b06c
+
 libs/nnsys/g3d/sbc.c:
     complete
     .text       start:0x020278a0 end:0x02029f14
+
+libs/nnsys/g3d/sbc_data.c:
+    complete
+    .data       start:0x0208b06c end:0x0208b214
 
 libs/nnsys/g3d/1mat1shp.c:
     complete
@@ -1724,13 +1744,37 @@ libs/nitro/gx/gx_load_rodata.c:
     complete
     .text       start:0x02075164 end:0x020751d4
 
+libs/nitro/math/math_sha1_rodata.c:
+    complete
+    .text       start:0x020751d4 end:0x020751e0
+
 libs/nitro/math/math_dgt_rodata.c:
     complete
     .text       start:0x020751e0 end:0x020751fc
 
+libs/nitro/os/os_emulator_rodata.c:
+    complete
+    .text       start:0x020751fc end:0x02075210
+
 libs/nitro/snd/snd_util_rodata.c:
     complete
-    .text       start:0x02075210 end:0x02075310
+    .text       start:0x02075210 end:0x020755e4
+
+libs/nnsys/gfd/gfd_LinkedListTexVramMan_rodata.c:
+    complete
+    .text       start:0x020755e4 end:0x02075614
+
+libs/nnsys/g2d/g2d_ObjSize_rodata.c:
+    complete
+    .text       start:0x02075614 end:0x02075644
+
+libs/nnsys/g2d/g2d_Font_rodata.c:
+    complete
+    .text       start:0x02075644 end:0x02075654
+
+libs/nnsys/g2d/g2d_CharCanvas_rodata.c:
+    complete
+    .text       start:0x02075660 end:0x020756e4
 
 libs/nnsys/g3d/sbc_rodata.c:
     complete

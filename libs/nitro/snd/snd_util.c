@@ -2,7 +2,7 @@
 
 #define SND_VOL_DB_MIN (-723)
 
-// Static in the SDK; referenced through an unrelocated pool constant here.
+// Static in the SDK; defined in snd_util_rodata.c (main's read-only data is in .text).
 extern const u8 sVolumeTable[-SND_VOL_DB_MIN + 1];
 
 u16 SND_CalcChannelVolume(int dB) {

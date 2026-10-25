@@ -4,7 +4,7 @@
 extern const u32 matColorMask_[8];
 extern const u8 pivotUtil_[9][4];
 
-// The static data of this file stays in the gap (it is reached through interior labels):
+// The static data of this file is in sbc_data.c (a data-only file linked right after this one):
 //   texImageParamCmd_[0..1] is PRJMAP's TEXIMAGE_PARAM command, [2..3] is ENVMAP's.
 extern u32 texImageParamCmd_[4];
 extern MtxFx44 prjMapMtx_;

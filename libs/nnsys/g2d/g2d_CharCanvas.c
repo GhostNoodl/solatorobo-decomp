@@ -268,7 +268,7 @@ void ClearLine(const NNSG2dCharCanvas * pCC, int cl);
 void ClearAreaLine(const NNSG2dCharCanvas * pCC, int cl, int x, int y, int w, int h);
 void ClearArea1D(const NNSG2dCharCanvas * pCC, int cl, int x, int y, int w, int h);
 
-// The vtables and lookup tables are reached without relocations, so they stay in .rodata outside this file.
+// The vtables and lookup tables are in g2d_CharCanvas_rodata.c (main's read-only data is in .text).
 extern const NNSiG2dCharCanvasVTable data_0207566c; // VTABLE_BG
 extern const NNSiG2dCharCanvasVTable data_02075678; // VTABLE_OBJ1D
 extern const ObjectSize data_02075684[4][4];       // GetMaxObjectSize objs

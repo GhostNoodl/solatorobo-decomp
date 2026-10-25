@@ -35,9 +35,10 @@ void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void func_02043064(const void *attr, u32 *w, u32 *h);
 extern const int data_ov000_021ca614[];
 
-extern const u8 data_020755e4[];
-#define TBL_W ((const u16 (*)[4])(data_020755e4 + 0x48))
-#define TBL_H ((const u16 (*)[4])(data_020755e4 + 0x30))
+extern const u16 data_02075614[3][4]; // OBJ heights [shape][size]
+extern const u16 data_0207562c[3][4]; // OBJ widths [shape][size]
+#define TBL_W data_0207562c
+#define TBL_H data_02075614
 
 static inline void G3_Vec(int cmd, int x, int y, int z) {
     int v[3];

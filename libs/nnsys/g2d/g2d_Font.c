@@ -1,7 +1,7 @@
 #include "nnsys/g2d/g2d_Font.h"
 
-// spliterTable {UTF8, UTF16, ShiftJIS, 1Byte}; the code reaches it without a relocation, so it
-// stays in .rodata outside this file.
+// spliterTable {UTF8, UTF16, ShiftJIS, 1Byte}, in g2d_Font_rodata.c (main's read-only data is in
+// .text).
 extern const NNSiG2dSplitCharCallback data_02075644[];
 
 static u16 GetGlyphIndex(const NNSG2dFontCodeMap *pMap, u16 c) {

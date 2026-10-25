@@ -74,6 +74,9 @@ MODULE_LD_FLAGS = " ".join([
 # Only passed to the final arm9.o link
 ARM9_LD_FLAGS = " ".join([
     "-m Entry",             # Set entry function
+    # Unreferenced data left in a gap between matched read-only data files in main's .text: with
+    # nothing referencing it, -dead would strip the gap object and shift everything after it.
+    "-force_active data_02075654",
 ])
 DSD_OBJDIFF_ARGS = " ".join([
     "--scratch",                        # Metadata for creating decomp.me scratches
@@ -557,7 +560,7 @@ def add_mwld_and_rom_builds(n: ninja_syntax.Writer, project: Project):
 
 
 GEN_TABLES_DIR = build_path / "gen"
-GEN_TABLES = ["fx_sincos.inc", "fx_atan.inc", "snd_decibel.inc"]
+GEN_TABLES = ["fx_sincos.inc", "fx_atan.inc", "snd_decibel.inc", "snd_volume.inc"]
 
 
 def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: list[str]):
