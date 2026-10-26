@@ -1678,7 +1678,7 @@ src/Main/Lang/ItemGive.cpp:
 
 src/Main/Lang/ItemGive_2.cpp:
     complete
-    .text       start:0x0206f788 end:0x0206f85c
+    .text       start:0x0206f788 end:0x0206f954
 
 src/Main/Lang/ItemGive_3.cpp:
     complete

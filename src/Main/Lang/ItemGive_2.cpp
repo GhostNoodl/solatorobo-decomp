@@ -12,7 +12,7 @@ extern u16 func_0205973c(DataRes *res, SaveRef *ref, u32 id);
 extern void func_02059428(DataRes *res, SaveRef *ref, u32 id, u16 val);
 extern u32 func_0205975c(DataRes *res, u32 idx);
 extern SaveEntry *func_0205976c(DataRes *res, u32 idx);
-extern u16 func_02059544(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id);
+extern u16 func_02059544(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u16 sub);
 extern int STD_CompareString(const char *a, const char *b);
 
 static inline u16 Item_Cat(u32 id) {
@@ -90,7 +90,40 @@ u16 func_0206f788(u16 id) {
     return mask;
 }
 
-BOOL func_0206f85c(u32 n);
+BOOL func_0206f85c(u32 n) {
+    BOOL done;
+    int a;
+    int b;
+    u16 i;
+    SaveBlock *block;
+    SaveEntry *entries;
+    u32 count;
+    done = FALSE;
+    block = (SaveBlock *)(data_02fe152c->data + 0x10) + n;
+    entries = func_0205976c(data_02fe152c, n);
+    count = func_0205975c(data_02fe152c, n);
+    a = 0;
+    b = 0;
+    switch (n) {
+    case 8:
+        a = 1;
+        b = a + 0x100;
+        break;
+    case 9:
+        a = 1;
+        b = a + 0x100;
+        break;
+    }
+    for (i = 0; i < count; i++) {
+        BOOL x = (func_02059544(data_02fe152c, block, entries, a, i) & 1) ? TRUE : FALSE;
+        BOOL y = func_02059544(data_02fe152c, block, entries, b, i) == 0 ? TRUE : FALSE;
+        done = (x & y) ? TRUE : FALSE;
+        if (done) {
+            break;
+        }
+    }
+    return done;
+}
 
 BOOL func_0206f954(void);
 
