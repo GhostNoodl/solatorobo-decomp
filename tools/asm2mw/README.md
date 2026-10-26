@@ -22,8 +22,11 @@ How words are emitted:
   words are `dcd`;
 * branches inside a function: `@L<addr>` labels; branches leaving it with no relocation: raw `dcd`
   with the instruction in a comment. `--add-relocs` instead adds the missing relocation to
-  `relocs.txt` for *unconditional* branches to a function start (dsd delinks every
-  `arm_call`/`arm_branch` as unconditional, so conditional ones must stay raw);
+  `relocs.txt` for *unconditional* branches to a function start. The patched dsd keeps the
+  condition field when it delinks an `arm_call`/`arm_branch`, so a conditional branch to a
+  function start can also be written with its symbol once you add its `relocs.txt` line by hand
+  (`blne func_02075a78` in `libs/mobiclip/mobiclip_asm_02075810.c`). A branch into the middle of
+  a function stays raw: the MWCC assembler has no `sym+offset` branch operand;
 * zero words and anything capstone cannot decode: `dcd`.
 
 `--verify` compiles the result with the project's MWCC flags and compares every function's

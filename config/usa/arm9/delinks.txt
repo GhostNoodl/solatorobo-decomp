@@ -6,11 +6,11 @@
 
 libs/nitro/init/crt0.c:
     complete
-    .text       start:0x02004800 end:0x02004f7c
+    .text       start:0x02004800 end:0x02004fd4
 
 libs/nitro/init/crt0_2.c:
     complete
-    .text       start:0x02004fd4 end:0x02004ffc
+    .text       start:0x02004fd4 end:0x02005030
 
 src/Main/Sys/GameMain.cpp:
     complete
@@ -1788,9 +1788,17 @@ libs/nnsys/snd/sndarc_stream_rodata.c:
     complete
     .text       start:0x0207574c end:0x02075810
 
+libs/mobiclip/mobiclip_asm_02075810.c:
+    complete
+    .text       start:0x02075810 end:0x02075940
+
 libs/mobiclip/mobiclip_asm_02075940.c:
     complete
     .text       start:0x02075940 end:0x02075d4c
+
+libs/mobiclip/mobiclip_asm_02075d4c.c:
+    complete
+    .text       start:0x02075d4c end:0x02076990
 
 libs/mobiclip/mobiclip_asm_02076990.c:
     complete

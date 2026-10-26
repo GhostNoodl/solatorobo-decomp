@@ -46,6 +46,40 @@ index c27c4be..4fb3a29 100644
              let filename = file.name.rsplit_once(['/', '\\']).unwrap_or(("", &file.name)).1;
              match delink_files.entry(filename.to_string()) {
                  hash_map::Entry::Occupied(occupied_entry) => {
+diff --git a/cli/src/config/section.rs b/cli/src/config/section.rs
+index fc97134..ebdd945 100644
+--- a/cli/src/config/section.rs
++++ b/cli/src/config/section.rs
+@@ -36,11 +36,18 @@ impl SectionExt for Section {
+             let from = relocation.from_address();
+             let offset = (from - self.start_address()) as usize;
+ 
+-            // Clear bits in `code` to treat them as the implicit addend
++            // Clear bits in `code` to treat them as the implicit addend. ARM `bl`/`b` keep their
++            // condition field, so a conditional branch to another object delinks as itself.
++            let cond = match code[offset + 3] & 0xf0 {
++                0xf0 => 0xe0,
++                cond => cond,
++            };
++            let arm_bl = [0xfe, 0xff, 0xff, cond | 0x0b];
++            let arm_b = [0xfe, 0xff, 0xff, cond | 0x0a];
+             let ins = match relocation.kind() {
+                 RelocationKind::ArmCall => {
+                     // R_ARM_PC24
+-                    &[0xfe, 0xff, 0xff, 0xeb] // bl #0
++                    &arm_bl // bl #0
+                 }
+                 RelocationKind::ArmCallThumb => {
+                     // R_ARM_XPC25
+@@ -56,7 +63,7 @@ impl SectionExt for Section {
+                 }
+                 RelocationKind::ArmBranch => {
+                     // R_ARM_PC24
+-                    &[0xfe, 0xff, 0xff, 0xea] // b #0
++                    &arm_b // b #0
+                 }
+                 RelocationKind::Load
+                 | RelocationKind::OverlayId
 diff --git a/cli/src/config/symbol.rs b/cli/src/config/symbol.rs
 index 63fe7dc..e29b5ae 100644
 --- a/cli/src/config/symbol.rs

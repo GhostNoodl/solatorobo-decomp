@@ -1,13 +1,14 @@
-// NitroSDK/TwlSDK crt0 (hybrid ROM start-up code), hand-written assembly.
-// Conditional branches that dsd has no relocation for are emitted as raw words (dcd) with the
-// target in a comment, as in libs/runtime/FP_fastI_*.c.
+// NitroSDK/TwlSDK crt0 (hybrid ROM start-up code), hand-written assembly, followed by the TWL
+// and NITRO module parameter blocks that the start-up code and the ROM tools read.
 
 #pragma force_active on
 
 void __call_static_initializers(void);
 void _fp_init(void);
 void func_0203d5c4(void);
-extern char BuildInfo[];
+extern char data_0208d940[];
+extern char data_020925e0[];
+extern char data_02092600[];
 extern char OS_IrqHandler[];
 extern char data_02fe0000[];
 extern char func_02004fd4[];
@@ -27,6 +28,9 @@ void OSi_ReferSymbol(void);
 void INITi_IsRunOnTwl(void);
 void INITi_Copy32(void);
 void INITi_Fill32(void);
+void data_02004f7c(void);
+void func_02004f94(void);
+void BuildInfo(void);
 
 asm void Entry(void) {
     mov r12, #0x4000000
@@ -123,7 +127,7 @@ asm void Entry(void) {
     ldr r0, [r3, #0xc]
     ldr r2, [r3, #0x10]
     subs r2, r2, r0
-    dcd 0xcb00016c // blgt INITi_Fill32
+    blgt INITi_Fill32
     ldr r1, =data_02fe0000
     add r1, r1, #0x3fc0
     add r1, r1, #0x3c
@@ -538,3 +542,41 @@ asm void INITi_Fill32(void) {
     bx lr
 }
 
+// TWL module parameters: the LTD autoload list, its end, the LTD autoload start, the end of
+// the compressed LTD static area (all in TWL-only memory, so plain numbers), then the TWL
+// code magic.
+asm void data_02004f7c(void) {
+    dcd 0x02479424
+    dcd 0x02479434
+    dcd 0x02400004
+    dcd 0x0242afa0
+    dcd 0xdec01463
+    dcd 0x6314c0de
+}
+
+// Waits until the halfword at r0 equals r1, with a short delay between reads.
+asm void func_02004f94(void) {
+@L02004f94:
+    ldrh r2, [r0]
+    cmp r1, r2
+    bxeq lr
+    mov r3, #0x10
+@L02004fa4:
+    subs r3, r3, #1
+    bne @L02004fa4
+    b @L02004f94
+}
+
+// NITRO module parameters: the autoload list, its end, the autoload start, the static .bss
+// start and end, the compressed static end (none), the SDK version ID and the NITRO code magic.
+asm void BuildInfo(void) {
+    dcd data_020925e0
+    dcd data_02092600
+    dcd data_0208d940
+    dcd data_0208d940
+    dcd 0x0214b1a0
+    dcd 0
+    dcd 0x05047531
+    dcd 0xdec00621
+    dcd 0x2106c0de
+}

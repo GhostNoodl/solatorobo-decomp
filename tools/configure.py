@@ -77,6 +77,8 @@ ARM9_LD_FLAGS = " ".join([
     # Unreferenced data left in a gap between matched read-only data files in main's .text: with
     # nothing referencing it, -dead would strip the gap object and shift everything after it.
     "-force_active data_02075654",
+    # The same for the SDK data after crt0's helpers (0x02005030..0x02005090).
+    "-force_active data_02005030",
 ])
 DSD_OBJDIFF_ARGS = " ".join([
     "--scratch",                        # Metadata for creating decomp.me scratches
