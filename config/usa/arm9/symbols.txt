@@ -518,7 +518,7 @@ MATHi_CalcHMAC kind:function(arm,size=0x1b0) addr:0x02015e30
 MATHi_CRC16InitTableRev kind:function(arm,size=0x44) addr:0x02015fe0
 MATHi_CRC16UpdateRev kind:function(arm,size=0x40) addr:0x02016024
 MATH_CalcCRC16 kind:function(arm,size=0x28) addr:0x02016064
-MATHi_SHA1K kind:data(any) addr:0x0201608c
+MATHi_SHA1K kind:data(byte[0x10]) addr:0x0201608c
 MATHi_SHA1ProcessBlock kind:function(arm,size=0x31c) addr:0x0201609c
 func_020163b8 kind:function(arm,size=0x18) addr:0x020163b8
 MI_SetWramBank kind:function(arm,size=0x10) addr:0x020163d0
@@ -552,7 +552,7 @@ MI_CpuFill8 kind:function(arm,size=0x94) addr:0x02016e28
 func_02016ebc kind:function(arm,size=0xe4) addr:0x02016ebc
 MI_CpuCopy8 kind:function(arm,size=0x130) addr:0x02016fa0
 func_020170d0 kind:function(arm,size=0x30) addr:0x020170d0
-func_02017100 kind:function(arm,size=0xa4) addr:0x02017100
+func_02017100 kind:function(arm,size=0x2f0) addr:0x02017100
 MI_Zero36B kind:function(thumb,size=0xe) addr:0x020173f0
 MI_SwapWord kind:function(arm,size=0x8) addr:0x02017400
 MIi_CardDmaCopy32 kind:function(arm,size=0x7c) addr:0x02017408

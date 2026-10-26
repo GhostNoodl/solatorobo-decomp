@@ -10,6 +10,11 @@ void func_ov004_021cf764(void);
 extern char DSProt_BSS[];
 extern char data_ov004_021cf7bc[];
 extern char func_ov004_021ce7d8[];
+extern char func_ov004_021cdc6c[];
+extern char func_ov004_021cde0c[];
+extern char func_ov004_021cdfac[];
+extern char func_ov004_021ce14c[];
+void func_ov004_021ce574(void);
 void func_ov004_021ce2ec(void);
 void func_ov004_021ce374(void);
 void func_ov004_021ce3fc(void);
@@ -48,7 +53,7 @@ asm void func_ov004_021ce2ec(void) {
     ldmeqia sp!, {pc}
     dcd DSProt_BSS+0x1
     dcd DSProt_BSS+0x3
-    dcd func_ov004_021cdc20+0x324c
+    dcd func_ov004_021cdc6c+0x3200
     dcd DSProt_BSS+0x3384
     dcd 0x00000000
     dcd func_ov004_021ce7d8+0x68000000
@@ -86,7 +91,7 @@ asm void func_ov004_021ce374(void) {
     ldmeqia sp!, {pc}
     dcd DSProt_BSS+0x1
     dcd DSProt_BSS+0x3
-    dcd func_ov004_021cdc20+0x358c
+    dcd func_ov004_021cdfac+0x3200
     dcd DSProt_BSS+0x3384
     dcd 0x00000000
     dcd func_ov004_021ce7d8+0x68000000
@@ -124,7 +129,7 @@ asm void func_ov004_021ce3fc(void) {
     ldmeqia sp!, {pc}
     dcd DSProt_BSS+0x1
     dcd DSProt_BSS+0x3
-    dcd func_ov004_021cdc20+0x33ec
+    dcd func_ov004_021cde0c+0x3200
     dcd DSProt_BSS+0x3384
     dcd 0x00000000
     dcd func_ov004_021ce7d8+0x68000000
@@ -162,7 +167,7 @@ asm void func_ov004_021ce484(void) {
     ldmeqia sp!, {pc}
     dcd DSProt_BSS+0x1
     dcd DSProt_BSS+0x3
-    dcd func_ov004_021cdc20+0x372c
+    dcd func_ov004_021ce14c+0x3200
     dcd DSProt_BSS+0x3384
     dcd 0x00000000
     dcd func_ov004_021ce7d8+0x68000000
@@ -181,7 +186,7 @@ asm void func_ov004_021ce50c(void) {
     stmia r0!, {r1, r2, r3, r4, r5, r6, r7, r8, r9, r10}
     orr r0, pc, #0
     adds r0, r0, #4
-    dcd 0x1a00000c // bne func_ov004_021ce574
+    bne func_ov004_021ce574
     dcd func_ov004_021ce2ec+0x3200
     dcd DSProt_BSS+0x3270
     dcd func_ov004_021ce374+0x3200

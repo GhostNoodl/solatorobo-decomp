@@ -47,10 +47,25 @@ index c27c4be..4fb3a29 100644
              match delink_files.entry(filename.to_string()) {
                  hash_map::Entry::Occupied(occupied_entry) => {
 diff --git a/cli/src/config/section.rs b/cli/src/config/section.rs
-index fc97134..ebdd945 100644
+index fc97134..c0ecb77 100644
 --- a/cli/src/config/section.rs
 +++ b/cli/src/config/section.rs
-@@ -36,11 +36,18 @@ impl SectionExt for Section {
+@@ -30,17 +30,33 @@ impl SectionExt for Section {
+ 
+         for relocation in self.relocations(module) {
+             if relocation.module() == &RelocationModule::None {
++                // A Thumb `blx` to code outside every module (TWL-only memory) keeps its raw bits,
++                // but the compiled object has `bl` with a relocation that mwld turns into `blx`.
++                // Write it as the `bl` of the same offset so objdiff sees the same instruction.
++                if matches!(relocation.kind(), RelocationKind::ThumbCallArm) {
++                    let offset = (relocation.from_address() - self.start_address()) as usize;
++                    if code[offset + 3] & 0xf8 == 0xe8 {
++                        code[offset + 3] |= 0x10;
++                    }
++                }
+                 continue;
+             }
+ 
              let from = relocation.from_address();
              let offset = (from - self.start_address()) as usize;
  
@@ -71,7 +86,7 @@ index fc97134..ebdd945 100644
                  }
                  RelocationKind::ArmCallThumb => {
                      // R_ARM_XPC25
-@@ -56,7 +63,7 @@ impl SectionExt for Section {
+@@ -56,7 +72,7 @@ impl SectionExt for Section {
                  }
                  RelocationKind::ArmBranch => {
                      // R_ARM_PC24

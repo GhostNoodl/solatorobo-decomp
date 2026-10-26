@@ -10,6 +10,7 @@ extern char func_ov004_021ce634[];
 extern char func_ov004_021ce6f8[];
 void func_ov004_021ce7d8(void);
 void func_ov004_021ce848(void);
+void func_ov004_021ce574(void);
 
 asm void func_ov004_021ce7d8(void) {
     stmfd sp!, {r0, r1, r2, r3}
@@ -43,7 +44,7 @@ asm void func_ov004_021ce7d8(void) {
 asm void func_ov004_021ce848(void) {
     orr r0, pc, #0
     adds r0, r0, #4
-    dcd 0x1affff47 // bne func_ov004_021ce574
+    bne func_ov004_021ce574
     dcd func_ov004_021ce6f8+0x3200
     dcd DSProt_BSS+0x32d4
     dcd func_ov004_021ce634+0x3200

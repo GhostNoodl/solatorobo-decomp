@@ -19,6 +19,7 @@ typedef struct CatchInfo {
 extern DestructorChain *__global_destructor_chain;
 extern VoidFunc thandler;
 void abort(void);
+extern VoidFunc ARM9_CTOR_START[]; // defined by the linker script, the start of main's .ctor
 void _ZSt9terminatev(void);
 
 void __end__catch(CatchInfo *catchinfo) {
@@ -29,7 +30,7 @@ void __end__catch(CatchInfo *catchinfo) {
 
 void __call_static_initializers(void) {
     VoidFunc *p;
-    for (p = (VoidFunc *)0x0208aa68; p != NULL && *p != NULL; p++) {
+    for (p = ARM9_CTOR_START; p != NULL && *p != NULL; p++) {
         (*p)();
     }
 }

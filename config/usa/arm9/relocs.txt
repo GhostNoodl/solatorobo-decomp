@@ -391,8 +391,6 @@ from:0x0200a138 kind:arm_call to:0x02008814 module:main
 from:0x0200a198 kind:arm_call to:0x02008814 module:main
 from:0x0200a1a8 kind:arm_call to:0x02008814 module:main
 from:0x0200a228 kind:arm_branch to:0x0200997c module:main
-from:0x0200afc8 kind:arm_call to:0x0200b184 module:main
-from:0x0200b16c kind:arm_call to:0x0200b398 module:main
 from:0x0200c0c8 kind:thumb_call_arm to:0x02018da4 module:main
 from:0x0200c0d0 kind:thumb_call_arm to:0x0201adf4 module:main
 from:0x0200c0d6 kind:thumb_call to:0x0228caa0 module:none
@@ -1649,10 +1647,12 @@ from:0x02019cc0 kind:arm_call to:0x02019cd0 module:main
 from:0x02019cc4 kind:arm_call to:0x02019d50 module:main
 from:0x02019d4c kind:load to:0x0208ef14 module:main
 from:0x02019d80 kind:arm_call to:0x02019aec module:main
+from:0x02019da0 kind:arm_call to:0x02019afc module:main
 from:0x02019db4 kind:load to:0x0208eee4 module:main
 from:0x02019dbc kind:load to:0x0208ef14 module:main
 from:0x02019dc0 kind:load to:0x0208eee8 module:main
 from:0x02019dc4 kind:load to:0x0208eef0 module:main
+from:0x02019dc8 kind:load to:0x02019d50 add:0x50 module:main
 from:0x02019dec kind:load to:0x0208ef84 module:main
 from:0x02019e10 kind:load to:0x0208ef84 module:main
 from:0x02019e38 kind:arm_call to:0x02019dcc module:main

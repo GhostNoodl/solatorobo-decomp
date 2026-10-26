@@ -126,7 +126,7 @@ libs/runtime/ExceptionHandler_arm.cpp:
     complete
     .text       start:0x0200a06c end:0x0200a22c
 
-libs/runtime/FP_fastI_dadd.c:
+libs/runtime/FP_fastI_dadd.s:
     complete
     .text       start:0x0200a22c end:0x0200a910
 
@@ -138,7 +138,7 @@ libs/runtime/FP_fastI_cmp.c:
     complete
     .text       start:0x0200ac74 end:0x0200af7c
 
-libs/runtime/FP_fastI_div.c:
+libs/runtime/FP_fastI_div.s:
     complete
     .text       start:0x0200af7c end:0x0200b574
 
@@ -150,7 +150,7 @@ libs/runtime/FP_fastI_fmul.c:
     complete
     .text       start:0x0200b674 end:0x0200b854
 
-libs/runtime/FP_fastI_fadd.c:
+libs/runtime/FP_fastI_fadd.s:
     complete
     .text       start:0x0200b854 end:0x0200bd08
 

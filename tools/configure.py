@@ -129,6 +129,7 @@ OBJDIFF = os.path.join('.', str(root_path / f"objdiff-cli{EXE}"))
 SJISWRAP = os.path.join('.', "sjiswrap.exe")
 CC = os.path.join('.', str(mwcc_path / "mwccarm.exe"))
 LD = os.path.join('.', str(mwcc_path / "mwldarm.exe"))
+AS = os.path.join('.', str(mwcc_path / "mwasmarm.exe"))
 PYTHON = sys.executable
 
 
@@ -308,6 +309,14 @@ def main():
             name="mwcc",
             command=mwcc_cmd,
             depfile="$basefile.d",
+        )
+        n.newline()
+
+        # Hand-written .s files (see libs/runtime/FP_fastI_div.s): the MWCC inline assembler can't
+        # define a second global label in one block or branch to `sym+offset`, mwasmarm can.
+        n.rule(
+            name="mwasm",
+            command=f'{WINE} "{AS}" -proc arm5TE -msgstyle gcc -c $in -o $out',
         )
         n.newline()
 
@@ -577,6 +586,15 @@ def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: lis
 
     for source_file in get_c_cpp_files([src_path, libs_path]):
         src_obj_path = project.game_build / source_file
+        if is_asm(source_file):
+            n.build(
+                inputs=str(source_file),
+                implicit=[AS] + ([WINE] if WINE == DEFAULT_WIBO_PATH else []),
+                rule="mwasm",
+                outputs=str(src_obj_path.with_suffix(".o")),
+            )
+            n.newline()
+            continue
         cc_flags: list[str] = []
         if is_cpp(source_file):
             cc_flags.append("-lang=c++")
@@ -617,7 +635,7 @@ def get_c_cpp_files(dirs: list[Path]):
         for root, _, files in os.walk(dir):
             root = Path(root)
             for file in files:
-                if is_cpp(file) or is_c(file):
+                if is_cpp(file) or is_c(file) or is_asm(file):
                     yield root / file
 
 
@@ -627,6 +645,10 @@ def is_cpp(name: str | Path):
 
 def is_c(name: str | Path):
     return Path(name).suffix in [".c"]
+
+
+def is_asm(name: str | Path):
+    return Path(name).suffix in [".s"]
 
 
 def add_delink_and_lcf_builds(n: ninja_syntax.Writer, project: Project):
