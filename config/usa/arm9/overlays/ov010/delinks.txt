@@ -83,7 +83,7 @@ src/ov010/ov010_02201914.cpp:
 
 src/ov010/ov010_022019f4.cpp:
     complete
-    .text       start:0x022019f4 end:0x02201bf4
+    .text       start:0x022019f4 end:0x02201c34
 
 src/ov010/ov010_02201c34.cpp:
     complete

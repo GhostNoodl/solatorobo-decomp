@@ -91,20 +91,15 @@ struct Ov010TLFlags {
     u8 b3 : 5;
 };
 
-struct Ov010TLView {
-    void *vtbl;
-    Ov010TLFlags f;
-};
-
-#define Ov010TL_V(o) (*(volatile u8 *)((u8 *)(o) + 4))
-#define Ov010TL_B0(v) (((Ov010TLFlags *)&(v))->b0)
-#define Ov010TL_B1(v) (((Ov010TLFlags *)&(v))->b1)
+// The flags byte read through its own type, so MWCC does not merge it with an earlier o->b0 read.
+static inline const Ov010TLFlags *Ov010TL_Flags(const Ov010TaskList *o) {
+    return (const Ov010TLFlags *)((const u8 *)o + 4);
+}
 
 Ov010V *func_ov010_02201ad4(Ov010TaskList *o, Ov010V *(*fn)(void), u32 time) {
     Ov010V *obj = NULL;
     Ov010TaskNode *n;
-    u8 v;
-    if (o->b0 && (v = Ov010TL_V(o), Ov010TL_B0(v)) && !Ov010TL_B1(v)) {
+    if (o->b0 && Ov010TL_Flags(o)->b0 && !Ov010TL_Flags(o)->b1) {
         obj = fn();
         n = func_ov003_021d7980(o->pool);
         n->obj = obj;
@@ -119,12 +114,10 @@ void func_ov010_02201b48(Ov010TaskList *o) {
     Ov010TaskNode *next;
     Ov010TaskNode *n;
     u32 saved;
-    u8 v;
     if (!o->b0) {
         return;
     }
-    v = Ov010TL_V(o);
-    if (!Ov010TL_B0(v) || Ov010TL_B1(v)) {
+    if (!Ov010TL_Flags(o)->b0 || Ov010TL_Flags(o)->b1) {
         return;
     }
     for (n = o->head; n != NULL; n = next) {
@@ -142,6 +135,18 @@ void func_ov010_02201b48(Ov010TaskList *o) {
         func_ov003_021d79ac(o->pool, n);
     }
     o->head = NULL;
+}
+
+void func_ov010_02201bf4(Ov010TaskList *o) {
+    if (!o->b0) {
+        return;
+    }
+    if (!Ov010TL_Flags(o)->b0 || Ov010TL_Flags(o)->b1) {
+        return;
+    }
+    if (o->head != NULL) {
+        o->b1 = 1;
+    }
 }
 
 }
