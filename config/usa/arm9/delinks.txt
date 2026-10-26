@@ -50,8 +50,8 @@ libs/msl/mem.c:
 
 libs/msl/printf.c:
     complete
-    .text       start:0x02005748 end:0x02006e48
-    .data       start:0x0208ad80 end:0x0208adb0
+    .text       start:0x02005748 end:0x020076f4
+    .data       start:0x0208ad80 end:0x0208adb8
 
 libs/msl/printf_2.c:
     complete
@@ -344,7 +344,7 @@ libs/nitro/gx/gx_vramcnt.c:
 
 libs/nitro/gx/gx_vramcnt_2.c:
     complete
-    .text       start:0x020155ac end:0x020158b8
+    .text       start:0x02015510 end:0x020158b8
 
 libs/nitro/gx/gxasm.c:
     complete

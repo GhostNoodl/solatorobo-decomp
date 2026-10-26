@@ -346,7 +346,7 @@ def compile_c(repo, src_text, workdir):
     c = os.path.join(workdir, "t.c")
     o = os.path.join(workdir, "t.o")
     open(c, "w").write("#pragma force_active on\n\n" + src_text)
-    cmd = ["./wibo", "./sjiswrap.exe", "./tools/mwccarm/dsi/1.3/mwccarm.exe", "-O4,p", "-enum", "int",
+    cmd = [sys.executable, "tools/fpucw.py", "./wibo", "./sjiswrap.exe", "./tools/mwccarm/dsi/1.3/mwccarm.exe", "-O4,p", "-enum", "int",
            "-char", "signed", "-str", "noreuse", "-proc", "arm946e", "-gccext,on", "-fp", "soft",
            "-inline", "noauto", "-lang=c", "-Cpp_exceptions", "off", "-RTTI", "off", "-interworking",
            "-w", "off", "-nolink", "-msgstyle", "gcc", "-i", "include", "-c", c, "-o", o]

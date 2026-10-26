@@ -149,7 +149,9 @@ class Scorer:
         if os.path.exists(out):
             os.remove(out)
         # -gccinc searches the source's own directory first, so also pass the draft's directory
-        r = subprocess.run([self.wine, str(self.exe), *self.flags, "-i", self.src_dir, self.lang, "-c", src, "-o", out],
+        # tools/fpucw.py gives mwccarm the x87 control word it gets on Windows
+        fpucw = [sys.executable, str(ROOT / "tools" / "fpucw.py")] if os.name != "nt" else []
+        r = subprocess.run([*fpucw, self.wine, str(self.exe), *self.flags, "-i", self.src_dir, self.lang, "-c", src, "-o", out],
                            capture_output=True, text=True, env=dict(os.environ, TMPDIR=self.workdir))
         if not os.path.exists(out):
             return None, r.stdout + r.stderr

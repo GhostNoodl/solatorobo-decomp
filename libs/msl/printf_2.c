@@ -1,6 +1,6 @@
 #include "types.h"
 
-// The tail of printf.c after __pformatter (func_02006e48), which is not decompiled yet.
+// The tail of printf.c after __pformatter (func_02006e48).
 
 typedef char *va_list;
 #define va_start(ap, parm) ((ap) = (va_list)((char *)((unsigned long)(&parm) & ~3U) + ((sizeof(parm) + 3U) & ~3U)))

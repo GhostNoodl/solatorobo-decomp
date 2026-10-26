@@ -300,6 +300,10 @@ def main():
         mwcc_cmd = f'{WINE} {SJISWRAP} "$cc" {CC_FLAGS} {CC_INCLUDES} $cc_flags -d $game_version -MD -c $in -o $basedir'
         mwcc_implicit = [CC, SJISWRAP]
         if platform.system != "windows":
+            # Give mwccarm the x87 control word it gets on Windows (see tools/fpucw.py).
+            fpucw = "tools/fpucw.py"
+            mwcc_cmd = f"$python {fpucw} " + mwcc_cmd
+            mwcc_implicit.append(fpucw)
             transform_dep = "tools/transform_dep.py"
             mwcc_cmd += f" && $python {transform_dep} $basefile.d $basefile.d"
             mwcc_implicit.append(transform_dep)

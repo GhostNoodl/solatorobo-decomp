@@ -25,6 +25,7 @@
 
 ## Tips
 
+- Compile through `tools/fpucw.py` (the build, `tools/match.py` and the permuters already do). Without it, wibo runs mwccarm at the wrong x87 precision and some `switch` statements cluster differently from the ROM (round swtree).
 - Local variable declaration order changes register allocation. If only registers differ, try reordering the declarations, or move initializations out of the declarations.
 - `static` functions must be marked `local` in `symbols.txt`, or `ninja` fails the symbol check.
 - Call other functions and use data by their `symbols.txt` names (`func_02021d98`, `data_0208f0dc`) and declare them `extern`. Rename a symbol in `symbols.txt` once you know what it is.
@@ -212,7 +213,7 @@ Some casts change no values but still change MWCC's output:
 - The extra `and rX, rX, #0xff` before `lsl #12`: take a `u32` parameter and write `(u8)n << 12`.
 - Read an id into a local before an inlined find (`u16 id = self->id; e = Find(mgr, id);`), or the load moves into the loop.
 - Compare operand order matters: `a->tgt != a->cur` and `a->cur != a->tgt` load and compare in different registers.
-- A dummy `case X: break;` moves the pivot of the binary-tree compare sequence MWCC emits for a sparse `switch`.
+- A dummy `case X: break;` moves the pivot of the binary-tree compare sequence MWCC emits for a sparse `switch`. The full lowering rules, and a simulator, are in round swtree near the end of this file.
 - To keep argument evaluation order around a nested call, hoist the plain arguments into locals first, then put the call's result in a local declared after them: `s32 a = p->a; s32 b = p->b; s32 r = g(x); f(a, b, r);`.
 - Some files were built at a lower optimization level. Signs: loops aren't rotated (a `b` to the test at the bottom), loop-invariant loads stay inside the loop, and near misses at the default level won't close. Put `#pragma optimization_level 2` at the top of the file (after a comment saying why) and re-check. Several ov006 functions (`021dc578`, `021e46e8`, `021e5050`) need it.
 - The Nintendo wireless helper code (`src/Main/Net/Wh*.cpp`, NitroSDK's `wh.c`) was built at `#pragma optimization_level 2`: at O4 a scan loop's exit came out as `beq top` instead of the target's `bne exit; b top` (`func_020460d0`). Two `Wh.cpp` functions (`02045674`, `0204587c`) still need O4, so the pragma goes on a whole file only after checking the file's other functions.
@@ -496,7 +497,7 @@ The linker strips functions that nothing references. If `ninja` reports a matche
 - **Early-return OR chain against a range check.** `sig[1] == '2' || sig[1] == '3'` inside a big `&&` condition became `sub; lsl; asr; and; cmp #1; bhi`. Writing the whole header test as `if (a != 'M' || ... || (sig[1] != '2' && sig[1] != '3') || ver != 10) return FALSE;` kept the target's `cmp #0x32; cmpne #0x33`.
 - **Signed header bytes.** `ldrsb` on magic bytes means the field is `s8` (renamed `MoPlayer::unk_04` to `s8 magic[4]`).
 - **Unmerged identical `if` arms in MSL `__pformatter`.** The target keeps both arms of `if (argument_options == long_double_argument) x = va_arg(arg, long double); else x = va_arg(arg, double);`, and keeps separate `size_t`/`ptrdiff_t` arms in the integer cases. Using the distinct types (`long double`, `size_t`, `ptrdiff_t = long`) instead of the same type in each arm stopped MWCC merging them (161 to 13 aligned diffs). The rest is the switch tree (see below).
-- **Switch trees: what changes them and what does not.** In a test file, the order of the case blocks and of the labels inside a block never changed the compare tree. Extra labels that only fall into `default:` did change it, as did the number of labels in each half. The same set of labels gave a different tree inside `__pformatter` than in a small test function, so try label changes in the real function. When you brute-force candidate sources, give every parallel job its own temporary directory: two jobs sharing one `t.c`/`t.o` silently score each other's output.
+- **Switch trees: what changes them and what does not.** (See round swtree for the actual algorithm.) In a test file, the order of the case blocks and of the labels inside a block never changed the compare tree. Extra labels that only fall into `default:` did change it, as did the number of labels in each half. The same set of labels gave a different tree inside `__pformatter` than in a small test function, so try label changes in the real function. When you brute-force candidate sources, give every parallel job its own temporary directory: two jobs sharing one `t.c`/`t.o` silently score each other's output.
 - **An uninitialised use that moves a register rotation.** In `func_02056230`, `if (panel && panel) {}` placed just before the `dy` computation (with `panel` not yet assigned) fixed the r5/r6 rotation of `pltt`/`sy`/`lift` and the second loop's `i`/`panel` (120 to 42 diffs). The permuter found it. Equivalent real code was not found: reading other variables there, or initialising `panel` at the top, did not reproduce it.
 - **A 6-byte OAM copy followed by a 32-bit bitfield read.** `func_0204205c` copies three halfwords of an OAM entry to the stack and then reads `charName` with `ldr [sp, #0x24]; lsl #22; lsr #22`. A union of four `u16` and `{ u32 attr01; u32 charName : 10; ... }` reproduces that; `a.attr2 & 0x3ff` gives `ldrh` and `and`.
 - **Read a switch operand into a local before a stack copy.** The same function loads `img->fmt` before the OAM copy. With `switch (img->fmt)` after the copy, the halfword stores to the stack were assumed to alias it and the load stayed late. `fmt = img->fmt;` before the copy fixed it (42 to 22 diffs).
@@ -2235,7 +2236,7 @@ No new matches. Drafts are in the scratchpad under `bigfresh8/d/<tag>/`. Scores 
 | `func_ov003_021d8fc0` | 610 | 488 (`d/8fc0/perm/out-488-*.cpp`) | cxxperm on bigfresh7's `b3.cpp`, 13,000 compiles. The struct-copy count is unchanged. |
 | `func_ov008_021ce518` | 1 / 1 | 1 / 1 | Switch root, not solved. The rules below show why. |
 
-How MWCC lowers a sparse `switch` (worked out with one-line test files):
+How MWCC lowers a sparse `switch` (worked out with one-line test files; superseded by round swtree, which reads the rules from the compiler and explains the `{16,20}` cluster below as the x87-precision case):
 
 - **3 or fewer cases** become a linear `cmp`/`beq` chain. **4 or more** become a binary tree. A node is the sorted case at index `(n-1)/2` and is emitted as `cmp k; bgt right; bge k_body; left...`.
 - **Cases close together form a cluster** when `hi - lo + 1 <= 2 * count`, for example `{30,31}`, `{30,33}` or `{16,18,20}`, but not `{30,34}` or `{16,20}`. A cluster is one node: `cmp hi; bgt right; cmp lo; blt left; beq lo_body; cmp v; beq ...` for each other member, in ascending order.
@@ -3086,7 +3087,7 @@ One new match, `func_ov002_021e3dac` (0x420, the puzzle-grid test "does this rot
 No new matches. Drafts and tools are in `scratchpad/mainbig1/` (`6e48/`, `e3a0/`, `8e68/`, `3100/`, `t/`, `twins_main.tsv`).
 
 - **Scope.** 16 main functions of 0x200 bytes or more are unmatched. Five are TU1/TU2 string-pool blockers (`0204e5d4`, `0204ffdc`, `020508f4`, `0205e29c`, `0205e5c4`). The rest have drafts from earlier rounds; none of them moved.
-- **`func_02006e48` (MSL `__pformatter`, 13 / 13) is all switch clustering.** The case set matches the target: every unused slot in the target's `d`..`u` jump table goes to `default`. But the target builds the table over `d`..`u`, with `c` and `x` compared on their own, and ours builds it over `d`..`o`, comparing `s`, `u` and `x`. Things that do not change it:
+- **`func_02006e48` (MSL `__pformatter`, 13 / 13) is all switch clustering.** (Solved in round swtree: the original label set matches once the compiler runs at Windows x87 precision.) The case set matches the target: every unused slot in the target's `d`..`u` jump table goes to `default`. But the target builds the table over `d`..`u`, with `c` and `x` compared on their own, and ours builds it over `d`..`o`, comparing `s`, `u` and `x`. Things that do not change it:
   - Every compiler under `tools/mwccarm` (`1.2/*` needs `(const char *)` casts on `parse_format`'s returns), `optimization_level`/`optimize_for_size` pragmas, the case-label order within or between arms, and the switch operand type (`int`, `u16`, `s16`, `long`; `s8` and `unsigned` are worse).
   - Extra case labels sent to the `default` arm (semantically a no-op). One extra value anywhere in `h`..`w` makes the table `d`..`x` (7 / 7, so the score drops, but the table is still wrong). Removing a real case moves both tables, so the split depends on the whole case list (a median split), not on local density.
   - `6e48/sw/sw.py` rebuilds the switch alone, with the same arm grouping, and prints the table ranges; it reproduces our `A`..`G` / `d`..`o` split. Single extra values (0x00–0xfe) and pairs of extra values in 0x20–0x7f (`sw2.py`) never give `d`..`u` (about 3,800 builds). The case values or the arm grouping must differ from the MSL source we have in some way not yet found.
@@ -4219,3 +4220,54 @@ The lever from `ov010_02201bf4` (`src/ov010/ov010_022019f4.cpp`): MWCC merges tw
   - `0206e3a0`: the fog colour is written back from `env` (a const view, or either half alone) and gives 2–7. The `bfsweep` draft scored 1 / 0 / 0 is a permuter output with the wrong value in the `orr`.
   - `0205e5c4`: the 120 legal orders of its six head statements give 4 at best. Stores ordered `unk_14` then `unk_04` give the target's order, but the frame grows by `r3`/`sb`.
   - `ov000_021b3e90`, `ov010_02200a00` (the hoisted `mov r8, #0`; zero locals, block initialisers and moving the `fc` clear all give 2–26; its two `blx` lines are link-time and do not count), `ov009_02206084` (an `id` local or swapped stores give 14), and `ov008_021ce518`, `02171478`, `0200d36c`, `0219b808` and `021be5dc`, which are switch-tree or register-only diffs that this lever does not address.
+
+## How MWCC lowers a `switch`, read from the compiler, and the x87 precision of the build (round swtree)
+
+Three new matches: `func_02006e48` (MSL `__pformatter`, appended to `libs/msl/printf.c`), `func_ov008_021ce518` (new file `src/ov008/ov008_021ce518.cpp`) and `func_02015510` (`GX_SetBankForSubBG`, added to `libs/nitro/gx/gx_vramcnt_2.c`). All three were already right in earlier drafts. What kept them from matching was the build: MWCC decides switch clusters with the x87 FPU, and under wibo the FPU ran at a different precision from the original Windows build.
+
+### The fix: `tools/fpucw.py`
+
+`mwccarm.exe` never sets the x87 control word. It uses whatever the OS gives a new thread, which on Windows is `0x27F` (53-bit, double precision). Linux starts every process at `0x37F` (64-bit precision), and wibo 0.6.16 keeps it. The cluster test below divides `count / range` in the FPU and compares the result with the double constant `0.4`. At 64-bit precision an exact 2/5 (`{16,20}`, 4/10, 6/15, ...) comes out just below the rounded-up double `0.4`, so the merge is refused. At 53-bit precision the two are equal and the merge happens. The ROM was built the second way.
+
+`tools/fpucw.py program args...` starts the program under `ptrace`, sets the control word to `0x27F` right after the `execve`, and detaches. The `mwcc` rule in `tools/configure.py` (non-Windows only), `tools/match.py`, `tools/permuter/cxxperm.py`, `tools/permuter/cc.sh` and `tools/asm2mw/asm2mw.py` now run the compiler through it. A full rebuild with the wrapper gave the same bytes for all 2,384 objects, so nothing that already matched depended on the old precision. **Scratch scripts that call `./wibo ... mwccarm.exe` directly still compile the old way.** Put `python3 tools/fpucw.py` in front of `./wibo`, or score with `tools/match.py`. The wrapper costs about 20 ms per compile.
+
+### The algorithm
+
+This was read from `mwccarm.exe` (dsi/1.3; every compiler under `tools/mwccarm` behaves the same). The cluster pass is at `0x5a21f0`, the tree builder at `0x5a2090`, and the per-cluster emitters at `0x52b1d0` (`CodeGenSwitch.c`). `scratchpad/swtree/t/swsim.py` implements it. It predicted the clusters of 1,500 random switches exactly in each precision mode (`--strict` gives the old wibo behaviour).
+
+1. **Case list.** Every `case` label is one entry, including labels that share the `default` body (`case 'p': default:`) and empty `case N: break;` labels. Arm grouping, the order of the labels in the source, and where `default` sits make no difference. The list is sorted by value: unsigned for `u32`/`unsigned` operands, signed otherwise (`u8`/`s8`/`u16` promote to `int`). Unsigned operands also get `bhi`/`bhs` instead of `bgt`/`bge`. Each `switch` statement, nested or not, is lowered on its own.
+2. **Three or fewer cases**: a linear `cmp`/`beq` chain in ascending order, then `b default`.
+3. **Cluster pass.** For four or more cases, with `c[]` the sorted values and `S[k]` the first case of cluster `k`:
+
+   ```
+   k = 0
+   for i in 0 .. n-1:
+       S[k] = i
+       while k > 0:
+           range = c[i] - c[k-1] + 1      # c[k-1]: indexed by CLUSTER number, not c[S[k-1]]
+           count = i - k + 2              # likewise: i - (k-1) + 1
+           if count / range < 0.4: break  # x87; at 53-bit precision exactly 0.4 merges
+           k -= 1                         # cluster k joins cluster k-1
+       k += 1
+   ```
+
+   The intended test was "cases `S[k-1]..i` fill at least 40% of their range". The shipped code indexes the case array by the cluster number instead. While every cluster so far is a single case, `k-1 == S[k-1]` and the test is the intended one. After a cluster of `s` cases forms, the reference value `c[k-1]` lags `s-1` cases behind the cluster's real start. Three consequences:
+   - **The first cluster is the honest one.** For example, `{100..103}` followed by `{120..125}`: the later group is measured from a stale low value, so `120`, `121` and `122` stay single compares and only `123..125` merge, giving `T[100..103] 120 121 122 C[123..125]`. With a two-case first cluster, only `120` is left out.
+   - **One case can merge several clusters at once** (the `while` loop walks back). `{100..103}` + `{112..116}` becomes one table `T[100..116]` (when `116` arrives it merges the singles `112..115` and the first table in one go), while `{100..103}` + `{112..115}` stays `T[100..103]` and four singles. The deciding test is `count/range` from the stale reference, not the density of the whole run.
+   - **Adding or removing a label anywhere before a cluster** (even one that goes to `default`) shifts every later stale index. That is why extra default labels move tables around unpredictably.
+4. **Cluster kinds.** A cluster of 4 or more cases is a jump table, 2–3 cases are a range compare, and 1 case is a single compare.
+5. **Tree.** A binary search over the clusters: `build(lo, hi)` takes `mid = (lo + hi) / 2` and emits cluster `mid`, then `build(lo, mid-1)`, then `build(mid+1, hi)`. With `m` clusters the root is cluster `(m-1)/2`.
+   - A single case: `cmp v; bgt right; bge body` (`beq body; b default` when there is no left subtree), then the left subtree.
+   - A range compare: `cmp hi; bgt right; cmp lo; blt left; beq body_lo; cmp v; beq body_v` for each other member; then `b default`.
+   - A table: `cmp hi; bgt right; subs rX, v, #lo; addpl pc, pc, rX, lsl #2; b left`, then one `b` per value (gaps go to `default`). With no tree around it: `sub`, `cmp #(hi-lo)`, `addls pc`.
+   - A table whose lowest case is 1..7 starts at 0 instead (no `sub`). The limit is 3 for Thumb.
+   - A compare whose only outcome is `default` disappears (`beq D; b D` becomes `b D`).
+6. **Bit tests.** A switch whose cases all go to one body (`case 1: case 5: case 9: ... return 1; default: return 0;`) can become `sub; cmp; tst mask, 1 << x` (`IsLogicalSelectionBitTestBeneficial`) and no tree at all.
+
+How to use it: write down the target's clusters from the disassembly (`addls`/`addpl` tables, `cmp hi; bgt; cmp lo; blt` ranges, single compares), list the draft's labels, and run `swsim.py` on them. If no label set gives the target's clusters, the structure is wrong somewhere else. Brute force over extra labels in the simulator takes seconds; with the compiler it took thousands of builds.
+
+### The three matches
+
+- **`__pformatter`.** The original MSL label set (`% A E F G X a c d e f g i n o s u x`, no `'p'`) gives `'%' T[A..G] 'X' 'a' 'c' T[d..u] 'x'` at 53-bit precision, which is the target. At 64-bit it gives `T[d..o] C[s..x]`. A `case 'p':` (from the mainnm draft, 7 diffs) gives `T[d..x]` in both modes. Under the stale rule, `T[d..u]` followed by a single `'x'` cannot happen at 64-bit precision with any set of extra labels: `u` merges against `c[5]` with `count/range = 12/30`, and that is exactly 0.4. The function goes at the end of `printf.c`, whose `.text` now ends at `0x020076f4`. Its `""` and `L""` literals are the compiler's `@1185`/`@1186` (`symbols.txt`, `local`), so `printf.c`'s `.data` now ends at `0x0208adb8`.
+- **`ov008_021ce518`.** `big11/d/ce518_none.cpp` (the draft without the dummy `case 21:`) is 0. Round bigfresh8's "`{16,20}` cannot be a cluster" was the 2/5 case. The window allocation of case 11 is written out inline: the `Ov008_NewWin()` inline from the draft costs 13 diffs.
+- **`func_02015510`** is NitroSDK `GX_SetBankForSubBG`, placed right after `GxSetBankForSubBG` in `gx_vramcnt_2.c` (start moved to `0x02015510`). The mainbig6 and mainlow12 drafts were already exact.

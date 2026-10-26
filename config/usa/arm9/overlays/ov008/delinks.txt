@@ -28,6 +28,10 @@ src/ov008/ov008_021cdebc.cpp:
     complete
     .text       start:0x021cdebc end:0x021ce518
 
+src/ov008/ov008_021ce518.cpp:
+    complete
+    .text       start:0x021ce518 end:0x021cec20
+
 src/ov008/ov008_021cec20.cpp:
     complete
     .text       start:0x021cec20 end:0x021cf040

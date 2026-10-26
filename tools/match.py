@@ -61,7 +61,9 @@ def compile_function(compiler: str) -> tuple[bytes, bool, set[int]] | str:
     with tempfile.TemporaryDirectory() as temp_dir:
         out = os.path.join(temp_dir, "out.o")
         exe = root_path / "tools" / "mwccarm" / compiler / "mwccarm.exe"
-        result = subprocess.run([args.wine, str(exe), *CC_FLAGS, lang, "-c", str(args.source), "-o", out],
+        # tools/fpucw.py gives mwccarm the x87 control word it gets on Windows
+        fpucw = [sys.executable, str(root_path / "tools" / "fpucw.py")] if os.name != "nt" else []
+        result = subprocess.run([*fpucw, args.wine, str(exe), *CC_FLAGS, lang, "-c", str(args.source), "-o", out],
                                 capture_output=True, text=True)
         if not os.path.exists(out):
             return result.stdout + result.stderr

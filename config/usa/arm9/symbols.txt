@@ -2912,8 +2912,8 @@ data_0208acc0 kind:data(any) addr:0x0208acc0
 @546 kind:data(any) addr:0x0208ada0 local
 @547 kind:data(any) addr:0x0208ada8 local
 @548 kind:data(any) addr:0x0208adac local
-data_0208adb0 kind:data(any) addr:0x0208adb0
-data_0208adb4 kind:data(any) addr:0x0208adb4
+@1185 kind:data(any) addr:0x0208adb0 local
+@1186 kind:data(any) addr:0x0208adb4 local
 @257 kind:data(any) addr:0x0208adb8 local
 @258 kind:data(any) addr:0x0208ade8 local
 @259 kind:data(any) addr:0x0208ae10 local
