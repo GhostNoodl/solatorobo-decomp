@@ -1,9 +1,13 @@
-// One source file for 0x0205983c..0x02060a08 (the object pool and the stage script
-// interpreter). These functions read and write the scalars at 0x02149efc..0x02149f14 from
-// one literal: MWCC addresses every small .bss object defined in a translation unit from
-// the start of its .bss, so the objects and all of their users have to be in one file.
-// The former files are kept as they were, each in its own namespace, so that their local
-// typedefs, inlines and extern declarations do not clash.
+// One source file for 0x02058d10..0x02062844: the data and flag resources, the object
+// pool and the stage script interpreter. It is one translation unit because its string
+// literals share one pool (0x0208bdec..0x0208be8c), and because the scalars at
+// 0x02149efc..0x02149f14 are addressed from one .bss literal. The former files are kept
+// as they were, each in its own namespace, so that their local typedefs, inlines and
+// extern declarations do not clash.
+#pragma pool_strings on
+#pragma dont_reuse_strings off
+#include "Main/Res/DataRes.h"
+#include "Main/Gfx/TextWin.h"
 #include "Main/Gfx/ObjPool.h"
 #include "nitro/fx.h"
 #include "Main/Sys/Field.h"
@@ -12,8 +16,14 @@
 #include "Main/Hit/HitSphere.h"
 #define SND_DEFINE_GLOBALS
 #include "Main/Snd/SndMgr.h"
+#include "Main/Gfx/GfxMgr.h"
 
 extern "C" {
+
+int func_0205bef8(StageResSlot *slot);
+
+// .data
+int (*data_0208bde8)(StageResSlot *slot) = func_0205bef8;
 
 // .bss, laid out in reverse order of definition from 0x02149efc.
 s32 data_02149f14;
@@ -26,6 +36,566 @@ u32 data_02149efc;
 StageResSlot data_02149f18[0x40];
 
 }
+
+// ---- DataRes_2
+namespace m_DataRes_2 {
+
+extern "C" {
+
+extern const u32 data_0208ba70[];
+
+extern const u32 data_0208bbc8[];
+
+extern const u32 data_0208bb1c[];
+
+extern const u32 data_0208bf14[];
+
+extern const u32 data_0208be94[];
+
+extern DataRes *data_02fe1530;
+
+extern DataRes *data_02fe152c;
+
+int STD_TSPrintf(char *dst, const char *fmt, ...);
+
+static inline BOOL TextWin_IsFlag29(TextWin *win) {
+    return win->flag29 == 1 ? TRUE : FALSE;
+}
+
+static inline void DataRes_Reset(DataRes *res) {
+    res->type = 0;
+    res->data = NULL;
+    res->end = NULL;
+    res->unk_54 = 0;
+}
+
+static inline DataRes *DataRes_New(u32 size, const u32 *vtbl) {
+    DataRes *res = (DataRes *)func_0203dd9c(size);
+    if (res != NULL) {
+        *(const u32 **)res = data_0208b318;
+        res->Clear();
+        *(const u32 **)res = vtbl;
+        res->Clear();
+    }
+    return res;
+}
+
+static inline void DataRes_Open152c(const char *arcName, const char *name) {
+    char arc[0x20];
+    char file[0x20];
+    func_0206e900(arc, arcName);
+    func_0206e900(file, name);
+    data_02fe152c->Open(arc, file);
+}
+
+static inline void DataRes_Open1530(const char *arcName, const char *name) {
+    char arc[0x20];
+    char file[0x20];
+    func_0206e900(arc, arcName);
+    func_0206e900(file, name);
+    data_02fe1530->Open(arc, file);
+}
+
+static inline void DataRes_Open1530_18(const char *arcName, const char *name) {
+    char arc[0x20];
+    char file[0x20];
+    func_0206e900(arc, arcName);
+    func_0206e900(file, name);
+    data_02fe1530->Open18(arc, file);
+}
+
+void func_02058d10(BOOL flag) {
+    if (data_02fe1530 != NULL) {
+        return;
+    }
+    data_02fe1530 = DataRes_New(0x54, data_0208bf14);
+    if (flag) {
+        DataRes_Open1530_18("script/cmninfo", "str.ccstr");
+    } else {
+        DataRes_Open1530("script/cmninfo", "str.ccstr");
+    }
+}
+
+void func_02058e18(void) {
+    void *heap = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
+    if (data_02fe1530 != NULL) {
+        if (data_02fe1530 != NULL) {
+            data_02fe1530->DeletingDtor();
+        }
+        data_02fe1530 = NULL;
+    }
+    data_02097dd0->cur = heap;
+}
+
+DataRes *func_02058e74(DataRes *res) {
+    *(const u32 **)res = data_0208bf14;
+    res->Unload();
+    *(const u32 **)res = data_0208b318;
+    res->Unload();
+    func_0203de1c(res);
+    return res;
+}
+
+void func_02058ec0(DataRes *res) {
+    res->type = 0;
+    res->data = NULL;
+    res->end = NULL;
+}
+
+void func_02058ed4(DataRes *res) {
+    res->Clear();
+}
+
+BOOL func_02058ee8(DataRes *res) {
+    u8 *data;
+    if (res->loaded) {
+        return TRUE;
+    }
+    data = *(u8 **)res->GetData();
+    res->data = data;
+    res->end = data + *(u32 *)(data + 8);
+    res->loaded = TRUE;
+    return TRUE;
+}
+
+// Never called, so the linker strips it, but its format string stays in the pool.
+static void DataRes_FormatName(char *buf, const char *name, int idx) {
+    STD_TSPrintf(buf, "%s_%.3d", name, idx);
+}
+
+void func_02058f2c(void) {
+    if (data_02fe152c != NULL) {
+        return;
+    }
+    data_02fe152c = DataRes_New(0x50, data_0208be94);
+    DataRes_Open152c("script/cmninfo", "flg.ccflg");
+}
+
+}
+
+}  // namespace m_DataRes_2
+
+// ---- DataRes_3
+namespace m_DataRes_3 {
+
+extern "C" {
+
+extern const u32 data_0208ba70[];
+
+extern const u32 data_0208bbc8[];
+
+extern const u32 data_0208bb1c[];
+
+extern const u32 data_0208bf14[];
+
+extern const u32 data_0208be94[];
+
+extern DataRes *data_02fe1530;
+
+extern DataRes *data_02fe152c;
+
+static inline BOOL TextWin_IsFlag29(TextWin *win) {
+    return win->flag29 == 1 ? TRUE : FALSE;
+}
+
+static inline void DataRes_Reset(DataRes *res) {
+    res->type = 0;
+    res->data = NULL;
+    res->end = NULL;
+    res->unk_54 = 0;
+}
+
+static inline DataRes *DataRes_New(u32 size, const u32 *vtbl) {
+    DataRes *res = (DataRes *)func_0203dd9c(size);
+    if (res != NULL) {
+        *(const u32 **)res = data_0208b318;
+        res->Clear();
+        *(const u32 **)res = vtbl;
+        res->Clear();
+    }
+    return res;
+}
+
+static inline void DataRes_Open152c(const char *arcName, const char *name) {
+    char arc[0x20];
+    char file[0x20];
+    func_0206e900(arc, arcName);
+    func_0206e900(file, name);
+    data_02fe152c->Open(arc, file);
+}
+
+static inline void DataRes_Open1530(const char *arcName, const char *name) {
+    char arc[0x20];
+    char file[0x20];
+    func_0206e900(arc, arcName);
+    func_0206e900(file, name);
+    data_02fe1530->Open(arc, file);
+}
+
+static inline void DataRes_Open1530_18(const char *arcName, const char *name) {
+    char arc[0x20];
+    char file[0x20];
+    func_0206e900(arc, arcName);
+    func_0206e900(file, name);
+    data_02fe1530->Open18(arc, file);
+}
+
+void func_02058fe4(void) {
+    void *heap = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
+    if (data_02fe152c != NULL) {
+        if (data_02fe152c != NULL) {
+            data_02fe152c->DeletingDtor();
+        }
+        data_02fe152c = NULL;
+    }
+    data_02097dd0->cur = heap;
+}
+
+DataRes *func_02059040(DataRes *res) {
+    *(const u32 **)res = data_0208be94;
+    res->Unload();
+    *(const u32 **)res = data_0208b318;
+    res->Unload();
+    func_0203de1c(res);
+    return res;
+}
+
+void func_0205908c(DataRes *res) {
+    res->type = 0;
+    res->data = NULL;
+}
+
+void func_0205909c(DataRes *res) {
+    res->Clear();
+}
+
+BOOL func_020590b0(DataRes *res) {
+    if (res->loaded) {
+        return TRUE;
+    }
+    res->data = *(u8 **)res->GetData();
+    res->loaded = TRUE;
+    return TRUE;
+}
+
+
+extern void MI_CpuFill8(void *dst, u32 value, u32 size);
+extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
+
+u32 func_020590e8(DataRes *res, u8 *buf, u32 size) {
+    SaveLayout *layout;
+    u32 n;
+    u32 pos;
+    SaveBlock *b;
+    u32 i;
+    u8 *src;
+    layout = (SaveLayout *)res->data;
+    pos = 0;
+    MI_CpuFill8(buf, 0, size);
+    buf[pos++] = layout->count;
+    for (i = 0; i < layout->count; i++) {
+        b = &layout->blocks[i];
+        n = ((b->bits + 7) & ~7) >> 3;
+        if (pos + 2 < size) {
+            buf[pos] = ((u8 *)&n)[0];
+            buf[pos + 1] = ((u8 *)&n)[1];
+        }
+        pos += 2;
+        src = (u8 *)layout->blocks + b->offset;
+        if (pos + n < size) {
+            MI_CpuCopy8(src, buf + pos, n);
+        }
+        pos += n;
+    }
+    return (pos + 1) & ~1;
+}
+
+u32 func_020591a4(DataRes *res, u8 *buf, BOOL keepSome) {
+    SaveLayout *layout;
+    u32 pos;
+    u32 i;
+    u32 n;
+    u32 count;
+    u8 stored;
+    BOOL copy;
+    layout = (SaveLayout *)res->data;
+    pos = 0;
+    count = layout->count;
+    stored = buf[pos++];
+    if (stored <= count) {
+        count = stored;
+    }
+    for (i = 0; i < count; i++) {
+        SaveBlock *b = &layout->blocks[i];
+        u16 tmp;
+        u32 bytes;
+        u8 *dst;
+        ((u8 *)&tmp)[0] = buf[pos];
+        ((u8 *)&tmp)[1] = buf[pos + 1];
+        bytes = ((b->bits + 7) & ~7) >> 3;
+        pos += 2;
+        n = tmp;
+        if (n >= bytes) {
+            n = bytes;
+        }
+        copy = TRUE;
+        dst = (u8 *)layout->blocks + b->offset;
+        if (keepSome && (i == 0 || i == 2 || i == 1 || i == 5)) {
+            copy = FALSE;
+        }
+        if (copy) {
+            MI_CpuCopy8(buf + pos, dst, n);
+        }
+        pos += n;
+    }
+    return (pos + 1) & ~1;
+}
+
+}
+
+}  // namespace m_DataRes_3
+
+// ---- DataRes_4
+namespace m_DataRes_4 {
+
+extern "C" {
+
+u32 func_020591a4(DataRes *res, u8 *buf, BOOL keepSome);
+
+u32 func_02059270(DataRes *res, u8 *buf) {
+    return func_020591a4(res, buf, TRUE);
+}
+
+void func_02059280(DataRes *res, SaveRef *ref, u32 idx, u16 unk) {
+    ref->idx = idx;
+    ref->unk_04 = unk;
+    ref->block = &((SaveLayout *)res->data)->blocks[idx];
+    ref->table = (SaveEntry *)((u8 *)((SaveLayout *)res->data)->blocks + ((SaveLayout *)res->data)->blocks[idx].tableOffset);
+    ref->count = ((SaveLayout *)res->data)->blocks[idx].count;
+}
+
+// Writes the low (packed & 0xff) bits of val, LSB first, starting at bit
+// (packed >> 8) & 0xff past the entry's bit position in the block's data.
+static inline void DataRes_WriteBitsAt(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, int sub, u16 val) {
+    u8 *bytes;
+    int n;
+    int start;
+    u16 i;
+    start = ((packed >> 8) & 0xff) + entries[sub].bit;
+    bytes = (u8 *)((SaveLayout *)res->data)->blocks + block->offset;
+    n = packed & 0xff;
+    for (i = 0; i < n; i++) {
+        int pos = start + i;
+        u8 v = (val >> i) & 1;
+        u8 sh = pos & 7;
+        u16 byte = pos >> 3;
+        bytes[byte] &= ~(1 << sh);
+        bytes[byte] |= v << sh;
+    }
+}
+
+void func_020592c4(DataRes *res, u32 idx, int packed, int sub, u16 val) {
+    SaveBlock *b = DataRes_Block(res, idx);
+    SaveEntry *t = DataRes_Table(res, idx);
+    DataRes_WriteBitsAt(res, b, t, packed, sub, val);
+}
+
+void func_02059360(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id, u16 val) {
+    u16 i;
+    int start;
+    u8 *bytes;
+    int n;
+    for (i = 0; i < block->count; i++) {
+        if (id == entries[i].id) {
+            break;
+        }
+    }
+    start = ((packed >> 8) & 0xff) + entries[i].bit;
+    bytes = (u8 *)((SaveLayout *)res->data)->blocks + block->offset;
+    n = packed & 0xff;
+    for (i = 0; i < n; i++) {
+        int pos = start + i;
+        u8 v = (val >> i) & 1;
+        u8 sh = pos & 7;
+        u16 byte = pos >> 3;
+        bytes[byte] &= ~(1 << sh);
+        bytes[byte] |= v << sh;
+    }
+}
+
+}
+
+}  // namespace m_DataRes_4
+
+// ---- DataRes_5
+namespace m_DataRes_5 {
+
+extern "C" {
+
+void func_02059360(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id, u16 val);
+
+void func_02059428(DataRes *res, SaveRef *ref, u32 id, u16 val) {
+    func_02059360(res, ref->block, ref->table, ref->unk_04, id, val);
+}
+
+u16 func_02059454(DataRes *res, u32 idx, int n, int start) {
+    u16 r;
+    u16 i;
+    u8 *bytes;
+    bytes = (u8 *)((SaveLayout *)res->data)->blocks + ((SaveLayout *)res->data)->blocks[idx].offset;
+    r = 0;
+    for (i = 0; i < n; i++) {
+        int pos = start + i;
+        u16 byte = pos >> 3;
+        u8 sh = pos & 7;
+        u8 v = (bytes[byte] >> sh) & 1;
+        r |= v << i;
+    }
+    return r;
+}
+
+// Reads (packed & 0xff) bits, LSB first, starting at bit (packed >> 8) & 0xff
+// past the entry's bit position in the block's data.
+static inline u16 DataRes_ReadBitsAt(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, int sub) {
+    u16 r;
+    int n;
+    u8 *bytes;
+    int start;
+    u16 i;
+    start = ((packed >> 8) & 0xff) + entries[sub].bit;
+    bytes = (u8 *)((SaveLayout *)res->data)->blocks + block->offset;
+    n = packed & 0xff;
+    r = 0;
+    for (i = 0; i < n; i++) {
+        int pos = start + i;
+        u16 byte = pos >> 3;
+        u8 sh = pos & 7;
+        u8 v = (bytes[byte] >> sh) & 1;
+        r |= v << i;
+    }
+    return r;
+}
+
+// Same, for the entry whose id matches.
+static inline u16 DataRes_ReadBitsById(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id) {
+    u16 r;
+    u16 i;
+    int n;
+    u8 *bytes;
+    int start;
+    for (i = 0; i < block->count; i++) {
+        if (id == entries[i].id) {
+            break;
+        }
+    }
+    start = ((packed >> 8) & 0xff) + entries[i].bit;
+    bytes = (u8 *)((SaveLayout *)res->data)->blocks + block->offset;
+    n = packed & 0xff;
+    r = 0;
+    for (i = 0; i < n; i++) {
+        int pos = start + i;
+        u16 byte = pos >> 3;
+        u8 sh = pos & 7;
+        u8 v = (bytes[byte] >> sh) & 1;
+        r |= v << i;
+    }
+    return r;
+}
+
+u16 func_020594bc(DataRes *res, u32 idx, int packed, int sub) {
+    SaveBlock *b = DataRes_Block(res, idx);
+    SaveEntry *t = DataRes_Table(res, idx);
+    return DataRes_ReadBitsAt(res, b, t, packed, sub);
+}
+
+u16 func_02059544(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u16 sub) {
+    return DataRes_ReadBitsAt(res, block, entries, packed, sub);
+}
+
+u16 func_020595c4(DataRes *res, u32 idx, int packed, u32 id) {
+    SaveBlock *b = DataRes_Block(res, idx);
+    SaveEntry *t = DataRes_Table(res, idx);
+    return DataRes_ReadBitsById(res, b, t, packed, id);
+}
+
+u16 func_02059688(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id) {
+    return DataRes_ReadBitsById(res, block, entries, packed, id);
+}
+
+}
+
+}  // namespace m_DataRes_5
+
+// ---- DataRes_6
+namespace m_DataRes_6 {
+
+extern "C" {
+
+
+
+u16 func_02059688(DataRes *res, SaveBlock *block, SaveEntry *entries, int packed, u32 id);
+
+u16 func_0205973c(DataRes *res, SaveRef *ref, u32 id) {
+    return func_02059688(res, ref->block, ref->table, ref->unk_04, id);
+}
+
+u32 func_0205975c(DataRes *res, u32 idx) {
+    return ((SaveLayout *)res->data)->blocks[idx].count;
+}
+
+SaveEntry *func_0205976c(DataRes *res, u32 idx) {
+    return (SaveEntry *)((u8 *)((SaveLayout *)res->data)->blocks + ((SaveLayout *)res->data)->blocks[idx].tableOffset);
+}
+
+typedef struct ResChunk {
+    /* 0x00 */ u32 magic;
+    /* 0x04 */ u32 next;
+    /* 0x08 */ u32 dataOffset;
+    /* 0x0c */ u32 count;
+} ResChunk;
+
+typedef struct ResFileHeader {
+    /* 0x00 */ u32 magic;
+    /* 0x04 */ u32 size;
+    /* 0x08 */ u32 firstChunk;
+} ResFileHeader;
+
+BOOL func_02059784(PosEvRes *res) {
+    ResFileHeader *hdr;
+    ResChunk *chunk;
+    u32 next;
+    if (res->loaded) {
+        return TRUE;
+    }
+    hdr = *(ResFileHeader **)res->GetData();
+    if (hdr->size == 0) {
+        return TRUE;
+    }
+    chunk = (ResChunk *)((u8 *)hdr + hdr->firstChunk);
+    next = 0;
+    res->posCount = 0;
+    res->pos = NULL;
+    if (chunk->magic == 0x534f5054) {
+        res->posCount = chunk->count;
+        res->pos = (u8 *)chunk + chunk->dataOffset;
+        next = chunk->next;
+    }
+    res->evCount = 0;
+    res->ev = NULL;
+    chunk = (ResChunk *)((u8 *)chunk + next);
+    if (chunk->magic == 0x50564554) {
+        res->evCount = chunk->count;
+        res->ev = (u8 *)chunk + chunk->dataOffset;
+    }
+    res->loaded = TRUE;
+    return TRUE;
+}
+
+}
+
+}  // namespace m_DataRes_6
 
 // ---- ObjPool
 namespace m_ObjPool {
@@ -713,7 +1283,7 @@ void func_0205a840(StageRes *res, const char *arcName, const char *name) {
     if (res->sub == NULL) {
         DataRes *sub;
         STD_CopyString(file, name);
-        STD_CopyString(STD_SearchString(file, data_0208be17), data_0208be19);
+        STD_CopyString(STD_SearchString(file, "."), ".ccmes");
         sub = (DataRes *)func_0203dd9c(0x58);
         if (sub != NULL) {
             *(const u32 **)sub = data_0208b318;
@@ -727,7 +1297,7 @@ void func_0205a840(StageRes *res, const char *arcName, const char *name) {
     if (res->posEv == NULL) {
         PosEvRes *posEv;
         STD_CopyString(file, name);
-        STD_CopyString(STD_SearchString(file, data_0208be17), data_0208be20);
+        STD_CopyString(STD_SearchString(file, "."), ".cctmp");
         posEv = (PosEvRes *)func_0203dd9c(0x5c);
         if (posEv != NULL) {
             *(const u32 **)posEv = data_0208b318;
@@ -3515,37 +4085,6 @@ extern u16 func_0204aac4(SndQueue *queue);
 extern void func_0204aa90(SndQueue *queue);
 int func_02060898(u16 id, u16 idx, int val);
 
-static inline u32 *Flags_FindFreeSlot(StageFlags *flags) {
-    u32 i;
-    for (i = 0; i < 2; i++) {
-        if (flags->slots[i] == 0xffffffff) {
-            return &flags->slots[i];
-        }
-    }
-    return NULL;
-}
-
-static inline u32 Flags_MakeKey(u8 a, u8 b, u8 c, u8 d) {
-    return ((u32)(a << 24) | ((u32)(b << 24) >> 8) | ((u32)(c << 24) >> 16)) | d;
-}
-
-static inline void Flags_AddSlot(StageFlags *flags, u8 a, u8 b, u8 c, u8 d) {
-    u32 *p = Flags_FindFreeSlot(flags);
-    if (p != NULL) {
-        *p = Flags_MakeKey(a, b, c, d);
-    }
-}
-
-static inline void Flags_ClearSlot(StageFlags *flags, u8 a, u8 b, u8 c) {
-    u32 key = Flags_MakeKey(a, b, c, 0);
-    u32 i;
-    for (i = 0; i < 2; i++) {
-        if (key == (flags->slots[i] & ~0xff)) {
-            flags->slots[i] = 0xffffffff;
-        }
-    }
-}
-
 u16 func_020600cc(StageResSlot *slot, StageVec *pos, u16 *rot, u16 *idx) {
     StageRes *res;
     u16 ang;
@@ -3616,37 +4155,6 @@ extern void func_0204aab0(SndQueue *queue, u16 value);
 extern u16 func_0204aac4(SndQueue *queue);
 extern void func_0204aa90(SndQueue *queue);
 int func_02060898(u16 id, u16 idx, int val);
-
-static inline u32 *Flags_FindFreeSlot(StageFlags *flags) {
-    u32 i;
-    for (i = 0; i < 2; i++) {
-        if (flags->slots[i] == 0xffffffff) {
-            return &flags->slots[i];
-        }
-    }
-    return NULL;
-}
-
-static inline u32 Flags_MakeKey(u8 a, u8 b, u8 c, u8 d) {
-    return ((u32)(a << 24) | ((u32)(b << 24) >> 8) | ((u32)(c << 24) >> 16)) | d;
-}
-
-static inline void Flags_AddSlot(StageFlags *flags, u8 a, u8 b, u8 c, u8 d) {
-    u32 *p = Flags_FindFreeSlot(flags);
-    if (p != NULL) {
-        *p = Flags_MakeKey(a, b, c, d);
-    }
-}
-
-static inline void Flags_ClearSlot(StageFlags *flags, u8 a, u8 b, u8 c) {
-    u32 key = Flags_MakeKey(a, b, c, 0);
-    u32 i;
-    for (i = 0; i < 2; i++) {
-        if (key == (flags->slots[i] & ~0xff)) {
-            flags->slots[i] = 0xffffffff;
-        }
-    }
-}
 
 int func_02060364(StageResSlot *slot) {
     StageRes *res;
@@ -3782,37 +4290,6 @@ extern u16 func_0204aac4(SndQueue *queue);
 extern void func_0204aa90(SndQueue *queue);
 int func_02060898(u16 id, u16 idx, int val);
 
-static inline u32 *Flags_FindFreeSlot(StageFlags *flags) {
-    u32 i;
-    for (i = 0; i < 2; i++) {
-        if (flags->slots[i] == 0xffffffff) {
-            return &flags->slots[i];
-        }
-    }
-    return NULL;
-}
-
-static inline u32 Flags_MakeKey(u8 a, u8 b, u8 c, u8 d) {
-    return ((u32)(a << 24) | ((u32)(b << 24) >> 8) | ((u32)(c << 24) >> 16)) | d;
-}
-
-static inline void Flags_AddSlot(StageFlags *flags, u8 a, u8 b, u8 c, u8 d) {
-    u32 *p = Flags_FindFreeSlot(flags);
-    if (p != NULL) {
-        *p = Flags_MakeKey(a, b, c, d);
-    }
-}
-
-static inline void Flags_ClearSlot(StageFlags *flags, u8 a, u8 b, u8 c) {
-    u32 key = Flags_MakeKey(a, b, c, 0);
-    u32 i;
-    for (i = 0; i < 2; i++) {
-        if (key == (flags->slots[i] & ~0xff)) {
-            flags->slots[i] = 0xffffffff;
-        }
-    }
-}
-
 int func_02060714(StageResSlot *slot) {
     u16 id = slot->args[0];
     ObjPool *pool = data_02149f0c;
@@ -3913,3 +4390,1016 @@ int func_020609e8(StageResSlot *slot) {
 }
 
 }  // namespace m_StageCmd_11
+
+// ---- Flags
+namespace m_Flags {
+
+extern "C" {
+
+static inline u32 *Flags_FindFreeSlot(void) {
+    StageFlags *flags = data_0214a424;
+    u32 i;
+    for (i = 0; i < 2; i++) {
+        if (flags->slots[i] == 0xffffffff) {
+            return &flags->slots[i];
+        }
+    }
+    return NULL;
+}
+
+// A slot holds the key a:b:c:d, high byte first.
+static inline void Flags_AddSlot(u8 d, u8 c, u8 b, u8 a) {
+    u32 *p = Flags_FindFreeSlot();
+    if (p != NULL) {
+        *p = ((a & 0xff) << 24) | ((b & 0xff) << 16) | ((c & 0xff) << 8) | (d & 0xff);
+    }
+}
+
+static inline void Flags_AddSlotArgs(StageResSlot *slot) {
+    Flags_AddSlot(slot->args[0], slot->args[1], slot->args[2], slot->args[3]);
+}
+
+// Clears every slot whose key matches a:b:c, whatever its low byte.
+static inline void Flags_ClearSlot(u8 c, u8 b, u8 a) {
+    StageFlags *flags = data_0214a424;
+    u32 i;
+    u32 key = ((a & 0xff) << 24) | ((b & 0xff) << 16) | ((c & 0xff) << 8);
+    for (i = 0; i < 2; i++) {
+        if (key == (flags->slots[i] & ~0xff)) {
+            flags->slots[i] = 0xffffffff;
+        }
+    }
+}
+
+int func_02060a08(StageResSlot *slot) {
+    if (slot->args[0] == 2) {
+        u8 hi = slot->args[1] >> 8;
+        Flags_AddSlot(slot->args[0], 0, slot->args[1], hi);
+    } else {
+        Flags_AddSlotArgs(slot);
+    }
+    return 1;
+}
+
+int func_02060b18(StageResSlot *slot) {
+    if (slot->args[1] == 0xff && slot->args[2] == 0xff) {
+        Flags_ClearSlot(0, slot->args[0], slot->args[0] >> 8);
+    } else {
+        Flags_ClearSlot(slot->args[0], slot->args[1], slot->args[2]);
+    }
+    return 1;
+}
+
+}
+
+}  // namespace m_Flags
+
+// ---- StageCmd_12
+namespace m_StageCmd_12 {
+
+extern "C" {
+
+extern void func_0205fc88(u32 flags);
+extern void func_ov000_02184594(FieldState *state);
+extern ObjPoolEntry *func_02059b14(ObjPool *pool, u16 id, ObjPoolParam *param);
+extern void func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
+extern SndQueue *data_02097e48;
+extern SndMgr *data_02097e4c;
+extern void func_ov000_02187a20(FieldState *state, u16 a);
+extern void func_0204aa10(SndQueue *queue);
+extern void func_02049564(SndMgr *mgr, int a, int b);
+extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
+extern void func_0204aab0(SndQueue *queue, u16 value);
+extern u16 func_0204aac4(SndQueue *queue);
+extern void func_0204aa90(SndQueue *queue);
+int func_02060898(u16 id, u16 idx, int val);
+
+int func_02060be4(StageResSlot *slot) {
+    FieldState *state = data_ov000_021ccd54;
+    if (Field_IsEventPending(state)) {
+        return -0x63;
+    }
+    func_ov000_02187a20(state, slot->args[0]);
+    return 1;
+}
+
+int func_02060c28(StageResSlot *slot) {
+    if (Field_HasEvent(0x11) || Field_HasEvent(0x18)) {
+        return -0x63;
+    }
+    switch (slot->args[0]) {
+    case 0:
+        data_02097e48->flag0 = 0;
+        break;
+    case 1:
+        data_02097e48->flag0 = 1;
+        break;
+    case 2:
+        data_02097e48->flag2 = 0;
+        break;
+    case 3:
+        if (Field_HasEvent(0xa)) {
+            return -0x63;
+        }
+        func_0204aa10(data_02097e48);
+        data_02097e48->flag2 = 1;
+        {
+            SndQueue *q = data_02097e48;
+            if (q->flag3) {
+                q->unk_06 = 0x8000;
+                q->unk_08 = 10;
+                q->unk_02 = 0;
+            }
+        }
+        break;
+    case 4:
+        data_02097e48->flag3 = 0;
+        break;
+    case 5:
+        data_02097e48->flag3 = 1;
+        break;
+    case 6:
+        func_02049564(data_02097e4c, 1, 1);
+        break;
+    }
+    return 1;
+}
+
+int func_02060e0c(StageResSlot *slot) {
+    if (Field_HasEvent(0x27) || Field_HasEvent(0x11) || Field_HasEvent(0x18)) {
+        return -0x63;
+    }
+    {
+        SndQueue *q = data_02097e48;
+        if (q->unk_06 != 0xffff ? TRUE : FALSE) {
+            func_ov000_02188140(data_ov000_021ccd54, 1, 0, 0);
+            return -0x63;
+        }
+        func_0204aab0(q, slot->args[0]);
+    }
+    return 1;
+}
+
+int func_02060f58(StageResSlot *slot) {
+    if (Field_HasEvent(0x11) || Field_HasEvent(0x18)) {
+        return -0x63;
+    }
+    {
+        u16 id = slot->args[0];
+        SndQueue *q = data_02097e48;
+        if (q->flag0) {
+            if (!(q->unk_06 == 0xffff && q->unk_04 == id)) {
+                if (q->unk_02 != 10 && q->unk_02 != 0) {
+                    if (q->unk_06 != 0xffff) {
+                        func_0204aab0(q, q->unk_06);
+                    }
+                    q->unk_02 = 1;
+                } else {
+                    q->unk_02 = 0;
+                }
+                q->unk_06 = id;
+                q->unk_08 = 10;
+            }
+        }
+    }
+    return 1;
+}
+
+int func_02061088(StageResSlot *slot) {
+    if (Field_HasEvent(0x11) || Field_HasEvent(0x18)) {
+        return -0x63;
+    }
+    {
+        SndQueue *q = data_02097e48;
+        if (q->flag0) {
+            u16 cur = func_0204aac4(q);
+            if (!(q->unk_06 == 0xffff && q->unk_04 == cur)) {
+                if (cur == 0xffff) {
+                    if (q->flag2 == 1 && q->flag3) {
+                        q->unk_06 = 0x8000;
+                        q->unk_08 = 10;
+                        q->unk_02 = 0;
+                    }
+                } else {
+                    q->unk_06 = cur;
+                    q->unk_08 = 10;
+                    q->unk_02 = 0;
+                }
+                func_0204aa90(q);
+            }
+        }
+    }
+    return 1;
+}
+
+int func_020611c8(StageResSlot *slot) {
+    if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    if (slot->args[0] != 0) {
+        u16 n = slot->args[0];
+        SndQueue *q = data_02097e48;
+        if (q->flag3) {
+            q->unk_06 = 0x8000;
+            q->unk_08 = n;
+            q->unk_02 = 0;
+        }
+    } else {
+        SndQueue *q = data_02097e48;
+        if (q->flag3) {
+            q->unk_06 = 0x8000;
+            q->unk_08 = 10;
+            q->unk_02 = 0;
+        }
+    }
+    return 1;
+}
+
+int func_02061270(StageResSlot *slot) {
+    if (Field_HasEvent(0x11) || Field_HasEvent(0x25)) {
+        return -0x63;
+    }
+    {
+        u16 id = slot->args[0];
+        SndQueue *q = data_02097e48;
+        if (!(q->flag0 == 1 && q->unk_74 == 0xffff && q->unk_72 == id)) {
+            q->unk_74 = id;
+            q->unk_70 = 0;
+        }
+    }
+    return 1;
+}
+
+int func_02061360(StageResSlot *slot) {
+    if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    {
+        SndQueue *q = data_02097e48;
+        q->unk_74 = 0x8000;
+        q->unk_70 = 0;
+    }
+    return 1;
+}
+
+}
+
+}  // namespace m_StageCmd_12
+
+// ---- StageCmd_13
+namespace m_StageCmd_13 {
+
+extern "C" {
+
+extern SndMgr *data_02097e4c;
+extern SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
+extern void func_02049de8(SndMgr *mgr, u16 id);
+extern void func_0204a284(SndMgr *mgr, int a);
+extern void func_ov000_021bc3ec(FieldState *state, u16 a, s32 b);
+extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
+extern void func_0203c9e8(int a, int b);
+extern void func_0203cc58(int a, int b, int c);
+extern int func_0203ca84(int a);
+extern void func_0203cb78(s32 a, int b, int c);
+extern void func_0203ca24(int h, int a, int b);
+extern void func_ov000_02187374(FieldState *state, u16 a);
+extern void func_ov000_0218348c(FieldState *state, u8 a);
+extern void func_ov000_02182ad4(FieldState *state);
+extern void func_ov000_02182b0c(FieldState *state);
+extern void func_ov000_021b1b88(StagePlayer *player, u16 a);
+extern void func_ov000_02188634(FieldState *state, u16 a, u16 b);
+extern u16 func_ov000_0214be8c(void);
+extern BOOL func_ov000_021b4738(StagePlayer *player);
+extern int STD_CompareString(const char *a, const char *b);
+extern DataRes *data_02fe1530;
+extern u16 func_020594bc(DataRes *res, u32 idx, int packed, int sub);
+extern void MIi_CpuClear16(u32 value, void *dst, u32 size);
+
+typedef struct StageTblChunk {
+    /* 0x00 */ char name[0x10];
+    /* 0x10 */ u32 size;
+    /* 0x14 */ u8 unk_14[8];
+    /* 0x1c */ u16 offsets[1];
+} StageTblChunk;
+
+typedef struct StageTblHeader {
+    /* 0x00 */ u8 unk_00[0xc];
+    /* 0x0c */ u32 count;
+    /* 0x10 */ StageTblChunk chunks[1];
+} StageTblHeader;
+
+
+static inline BOOL Stage_IsWirelessIdle(void) {
+    return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
+}
+
+static inline void Shared_SetFog(u16 r, u16 g, u16 b) {
+    data_02fe1534.unk_52 = r;
+    data_02fe1534.unk_54 = g;
+    data_02fe1534.unk_56 = b;
+}
+
+static inline BOOL Shared_TestFlag(u16 mask) {
+    return (data_02fe1534.posFlags & mask) ? TRUE : FALSE;
+}
+
+static inline BOOL Shared_HasMark(void) {
+    return data_02fe1534.unk_16 != 0 ? TRUE : FALSE;
+}
+
+int func_020613bc(StageResSlot *slot) {
+    if (Field_HasEvent(0x11) || Field_HasEvent(0x25)) {
+        return -0x63;
+    }
+    func_02049a48(data_02097e4c, slot->args[0], -1, -1, -1);
+    return 1;
+}
+
+int func_0206149c(StageResSlot *slot) {
+    if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    func_02049de8(data_02097e4c, slot->args[0]);
+    return 1;
+}
+
+int func_020614f4(StageResSlot *slot) {
+    if (Field_HasEvent(0x11) || Field_HasEvent(0x25)) {
+        return -0x63;
+    }
+    func_0204a20c(data_02097e4c, slot->args[0]);
+    return 1;
+}
+
+int func_020615bc(StageResSlot *slot) {
+    if (slot->args[1] == 0 && Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    func_0204a284(data_02097e4c, -1);
+    return 1;
+}
+
+int func_02061614(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    func_ov000_021bc3ec(data_ov000_021ccd70, slot->args[0], slot->args[1] << 12);
+    return 1;
+}
+
+int func_02061668(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    func_ov000_021bc458(data_ov000_021ccd70);
+    return 1;
+}
+
+int func_020616b0(StageResSlot *slot) {
+    data_02097d48->pltt.id = slot->args[0];
+    return 1;
+}
+
+int func_020616cc(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    data_02097d48->pltt.id = -1;
+    return 1;
+}
+
+int func_02061710(StageResSlot *slot) {
+    if (!slot->bits.flag8 && Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    if (Stage_IsWirelessIdle()) {
+        int mode;
+        switch (slot->args[2]) {
+        case 0:
+            mode = 0;
+            break;
+        case 1:
+            mode = 1;
+            break;
+        case 3:
+            mode = 3;
+            break;
+        default:
+            mode = -1;
+            break;
+        }
+        func_0203c9e8(0x3f, 0);
+        func_0203cc58(slot->args[0] << 12, slot->args[1] != 0 ? 1 : 2, mode);
+    }
+    return 1;
+}
+
+int func_020617ec(StageResSlot *slot) {
+    if (!slot->bits.flag8 && Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    if (Stage_IsWirelessReady()) {
+        int h = func_0203ca84(0);
+        func_0203cb78(slot->args[0] << 12, 2, 0);
+        func_0203ca24(h, 0, 0);
+    }
+    return 1;
+}
+
+int func_0206189c(StageResSlot *slot) {
+    if (Stage_IsWirelessReady()) {
+        return 1;
+    }
+    return -0x63;
+}
+
+int func_020618d4(StageResSlot *slot) {
+    if (!Stage_IsWirelessIdle()) {
+        return -0x63;
+    }
+    return 1;
+}
+
+int func_02061904(StageResSlot *slot) {
+    FieldState *state = data_ov000_021ccd54;
+    if (Field_IsEventPending(state)) {
+        return -0x63;
+    }
+    func_ov000_02188140(state, slot->args[0], slot->args[1], 0);
+    return 1;
+}
+
+int func_02061950(StageResSlot *slot) {
+    FieldState *state = data_ov000_021ccd54;
+    if (Field_IsEventPending(state)) {
+        return -0x63;
+    }
+    func_ov000_02188140(state, slot->args[0], slot->args[1], 1);
+    return 1;
+}
+
+int func_020619a0(StageResSlot *slot) {
+    FieldState *state = data_ov000_021ccd54;
+    if (Field_IsEventPending(state)) {
+        return -0x63;
+    }
+    func_ov000_02188140(state, 1, 0, 0);
+    return 1;
+}
+
+int func_020619ec(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    return 1;
+}
+
+int func_02061a1c(StageResSlot *slot) {
+    FieldState *state = data_ov000_021ccd54;
+    if (Field_IsEventPending(state)) {
+        return -0x63;
+    }
+    func_ov000_02187374(state, slot->args[0]);
+    return 1;
+}
+
+int func_02061a60(StageResSlot *slot) {
+    FieldState *state = data_ov000_021ccd54;
+    if (Field_IsEventPending(state)) {
+        return -0x63;
+    }
+    func_ov000_0218348c(state, slot->args[0]);
+    return 1;
+}
+
+int func_02061aa8(StageResSlot *slot) {
+    FieldState *state = data_ov000_021ccd54;
+    if (Field_IsEventPending(state)) {
+        return -0x63;
+    }
+    func_ov000_02182ad4(state);
+    return 1;
+}
+
+int func_02061ae4(StageResSlot *slot) {
+    FieldState *state = data_ov000_021ccd54;
+    if (Field_IsEventPending(state)) {
+        return -0x63;
+    }
+    func_ov000_02182b0c(state);
+    return 1;
+}
+
+int func_02061b20(StageResSlot *slot) {
+    if (Field_IsEventPending(data_ov000_021ccd54)) {
+        return -0x63;
+    }
+    switch (slot->args[0]) {
+    case 0:
+        if (slot->args[1] == 0) {
+            data_0214a424->bits18.flag7 = 0;
+        } else if (slot->args[1] == 1) {
+            data_0214a424->bits18.flag7 = 1;
+        }
+        break;
+    case 1:
+        if (slot->args[1] != data_0214a424->bits18.mode) {
+            StagePlayer *player = func_ov000_0219bf90();
+            if (player != NULL) {
+                func_ov000_021b1b88(player, slot->args[1]);
+                Field_PushEvent(data_ov000_021ccd54, 0xb, 0);
+            } else {
+                data_0214a424->bits18.mode = slot->args[1];
+            }
+        }
+        break;
+    }
+    return 1;
+}
+
+int func_02061c44(StageResSlot *slot) {
+    FieldState *state = data_ov000_021ccd54;
+    if (Field_IsEventPending(state)) {
+        return -0x63;
+    }
+    func_ov000_02188634(state, slot->args[0], slot->args[1]);
+    return 1;
+}
+
+int func_02061c8c(StageResSlot *slot) {
+    ObjPoolShared *shared = &data_02fe1534;
+    switch (slot->args[0]) {
+    case 0:
+        shared->unk_80 = func_ov000_0214be8c();
+        break;
+    case 1: {
+        StagePlayer *player = func_ov000_0219bf90();
+        if (player != NULL) {
+            StageObj3D *o = Stage_FindObj3DByIdx(player->unk_b1c);
+            if (o == NULL) {
+                shared->unk_80 = 0;
+            } else {
+                shared->unk_80 = 1;
+                shared->unk_24 = o->unk_0e;
+                shared->unk_26 = o->unk_0c;
+            }
+        }
+        break;
+    }
+    case 2: {
+        StagePlayer *player = func_ov000_0219bf90();
+        if (player != NULL) {
+            if (func_ov000_021b4738(player)) {
+                shared->unk_80 = 1;
+            } else {
+                shared->unk_80 = 0;
+            }
+        } else {
+            shared->unk_80 = 0;
+        }
+        break;
+    }
+    }
+    return 1;
+}
+
+u16 func_02061d54(u16 a) {
+    return a & ~0x8000;
+}
+
+void *func_02061d64(u16 idx) {
+    DataRes *res = data_02fe1530;
+    const char *key = "SceneCondTbl";
+    u32 i = 0;
+    StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
+    for (; i < ((StageTblHeader *)res->data)->count; i++) {
+        if (STD_CompareString(chunk->name, key) == 0) {
+            goto found;
+        }
+        chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
+    }
+    chunk = NULL;
+found:
+    {
+        u16 off = chunk->offsets[idx];
+        if (off == 0xffff) {
+            return NULL;
+        }
+        return res->end + off;
+    }
+}
+
+void *func_02061df0(u16 idx) {
+    DataRes *res = data_02fe1530;
+    const char *key = "MissionNameTbl";
+    u32 i = 0;
+    StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
+    for (; i < ((StageTblHeader *)res->data)->count; i++) {
+        if (STD_CompareString(chunk->name, key) == 0) {
+            goto found;
+        }
+        chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
+    }
+    chunk = NULL;
+found:
+    {
+        u16 off = chunk->offsets[idx];
+        if (off == 0xffff) {
+            return NULL;
+        }
+        return res->end + off;
+    }
+}
+
+void *func_02061e7c(u16 idx) {
+    DataRes *res = data_02fe1530;
+    const char *key = "QuestNameTbl";
+    u32 i = 0;
+    StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
+    for (; i < ((StageTblHeader *)res->data)->count; i++) {
+        if (STD_CompareString(chunk->name, key) == 0) {
+            goto found;
+        }
+        chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
+    }
+    chunk = NULL;
+found:
+    {
+        u16 off = chunk->offsets[idx];
+        if (off == 0xffff) {
+            return NULL;
+        }
+        return res->end + off;
+    }
+}
+
+void *func_02061f08(u16 idx) {
+    DataRes *res = data_02fe1530;
+    const char *key = "QuestOptTbl";
+    u32 i = 0;
+    StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
+    for (; i < ((StageTblHeader *)res->data)->count; i++) {
+        if (STD_CompareString(chunk->name, key) == 0) {
+            goto found;
+        }
+        chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
+    }
+    chunk = NULL;
+found:
+    {
+        u16 off = chunk->offsets[idx];
+        if (off == 0xffff) {
+            return NULL;
+        }
+        return res->end + off;
+    }
+}
+
+void *func_02061f94(u16 idx) {
+    DataRes *res = data_02fe1530;
+    const char *key = "ImageTbl";
+    u32 i = 0;
+    StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
+    for (; i < ((StageTblHeader *)res->data)->count; i++) {
+        if (STD_CompareString(chunk->name, key) == 0) {
+            goto found;
+        }
+        chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
+    }
+    chunk = NULL;
+found:
+    {
+        u16 off = chunk->offsets[idx];
+        if (off == 0xffff) {
+            return NULL;
+        }
+        return res->end + off;
+    }
+}
+
+void *func_02062020(u16 idx) {
+    DataRes *res = data_02fe1530;
+    const char *key = "KeyItemNameTbl";
+    u32 i = 0;
+    StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
+    for (; i < ((StageTblHeader *)res->data)->count; i++) {
+        if (STD_CompareString(chunk->name, key) == 0) {
+            goto found;
+        }
+        chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
+    }
+    chunk = NULL;
+found:
+    {
+        u16 off = chunk->offsets[idx];
+        if (off == 0xffff) {
+            return NULL;
+        }
+        return res->end + off;
+    }
+}
+
+void *func_020620ac(u16 idx) {
+    DataRes *res = data_02fe1530;
+    const char *key = "SavePosTbl";
+    u32 i = 0;
+    StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
+    for (; i < ((StageTblHeader *)res->data)->count; i++) {
+        if (STD_CompareString(chunk->name, key) == 0) {
+            goto found;
+        }
+        chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
+    }
+    chunk = NULL;
+found:
+    {
+        u16 off = chunk->offsets[idx];
+        if (off == 0xffff) {
+            return NULL;
+        }
+        return res->end + off;
+    }
+}
+
+void *func_02062138(u16 idx) {
+    DataRes *res = data_02fe1530;
+    const char *key = "HelpNameTbl";
+    u32 i = 0;
+    StageTblChunk *chunk = ((StageTblHeader *)res->data)->chunks;
+    for (; i < ((StageTblHeader *)res->data)->count; i++) {
+        if (STD_CompareString(chunk->name, key) == 0) {
+            goto found;
+        }
+        chunk = (StageTblChunk *)((u8 *)chunk + chunk->size);
+    }
+    chunk = NULL;
+found:
+    {
+        u16 off = chunk->offsets[idx];
+        if (off == 0xffff) {
+            return NULL;
+        }
+        return res->end + off;
+    }
+}
+
+BOOL func_020621c4(void) {
+    BOOL r = TRUE;
+    if (func_020594bc(data_02fe152c, 5, r, 8) == 0) {
+        r = FALSE;
+    }
+    return r;
+}
+
+BOOL func_020621f8(void) {
+    BOOL r = TRUE;
+    if (func_020594bc(data_02fe152c, 5, r, 9) == 0) {
+        r = FALSE;
+    }
+    return r;
+}
+
+void func_0206222c(void) {
+    ObjPoolShared *shared = &data_02fe1534;
+    MIi_CpuClear16(0, shared, 0x82);
+    shared->unk_04 = 0;
+    shared->r = 0xffff;
+    shared->g = 0xffff;
+    shared->b = 0xffff;
+    shared->unk_10 = 0xffff;
+    shared->unk_12 = 0xffff;
+    shared->unk_4c = 0xffff;
+    shared->unk_4e = 0xffff;
+    shared->unk_50 = 0xffff;
+    shared->unk_52 = 0x8000;
+    shared->unk_54 = 0x8000;
+    shared->unk_56 = 0x8000;
+}
+
+void func_0206228c(void) {
+    data_02fe1534.unk_00 = 0;
+    data_02fe1534.unk_42 = 0;
+    data_02fe1534.unk_44 = 0;
+    data_02fe1534.unk_20 = 0xffff;
+    data_02fe1534.unk_24 = 0;
+    data_02fe1534.unk_26 = 0;
+    data_02fe1534.unk_28 = 0;
+    data_02fe1534.unk_22 = 0;
+    data_02fe1534.unk_2a = 0;
+    data_02fe1534.unk_32 = 0;
+    data_02fe1534.unk_70 = 0;
+    data_02fe1534.unk_72 = 0;
+    data_02fe1534.unk_74 = 0;
+    data_02fe1534.unk_76 = 0;
+    data_02fe1534.unk_14 &= ~0x3c0;
+}
+
+int func_020622ec(u8 *buf, u32 size) {
+    MI_CpuFill8(buf, 0, size);
+    buf[0] = data_02fe1534.unk_02[0];
+    buf[1] = data_02fe1534.unk_02[1];
+    buf[2] = data_02fe1534.unk_52_bytes[0];
+    buf[3] = data_02fe1534.unk_52_bytes[1];
+    buf[4] = data_02fe1534.unk_52_bytes[2];
+    buf[5] = data_02fe1534.unk_52_bytes[3];
+    buf[6] = data_02fe1534.unk_52_bytes[4];
+    buf[7] = data_02fe1534.unk_52_bytes[5];
+    buf[8] = data_02fe1534.unk_52_bytes[6];
+    buf[9] = data_02fe1534.unk_52_bytes[7];
+    buf[10] = data_02fe1534.unk_52_bytes[8];
+    buf[11] = data_02fe1534.unk_52_bytes[9];
+    return 12;
+}
+
+int func_02062370(u8 *buf) {
+    data_02fe1534.unk_02[0] = buf[0];
+    data_02fe1534.unk_02[1] = buf[1];
+    data_02fe1534.unk_52_bytes[0] = buf[2];
+    data_02fe1534.unk_52_bytes[1] = buf[3];
+    data_02fe1534.unk_52_bytes[2] = buf[4];
+    data_02fe1534.unk_52_bytes[3] = buf[5];
+    data_02fe1534.unk_52_bytes[4] = buf[6];
+    data_02fe1534.unk_52_bytes[5] = buf[7];
+    data_02fe1534.unk_52_bytes[6] = buf[8];
+    data_02fe1534.unk_52_bytes[7] = buf[9];
+    data_02fe1534.unk_52_bytes[8] = buf[10];
+    data_02fe1534.unk_52_bytes[9] = buf[11];
+    return 12;
+}
+
+void func_020623e0(void) {
+    data_02fe1534.unk_44 = 2;
+    data_02fe1534.unk_42 = 3;
+}
+
+void func_020623fc(void) {
+    data_02fe1534.unk_42 = 5;
+}
+
+void func_02062410(void) {
+    data_02fe1534.unk_42 = 6;
+}
+
+void func_02062424(const StageColor *c) {
+    data_02fe1534.unk_44 = 1;
+    data_02fe1534.r = c->r;
+    data_02fe1534.g = c->g;
+    data_02fe1534.b = c->b;
+    data_02fe1534.unk_68 = 0;
+    data_02fe1534.unk_6a = 0;
+    data_02fe1534.unk_6c = 0;
+    data_02fe1534.unk_6e = 0;
+    data_02fe1534.unk_80 = data_ov000_021ccd6c->unk_0a;
+}
+
+void func_02062478(const StageColor *c) {
+    data_02fe1534.unk_44 = 2;
+    data_02fe1534.unk_4c = c->r;
+    data_02fe1534.unk_4e = c->g;
+    data_02fe1534.unk_50 = c->b;
+    data_02fe1534.unk_80 = data_ov000_021ccd6c->unk_0a;
+}
+
+void func_020624b8(void) {
+    data_02fe1534.unk_4c = 0xffff;
+    data_02fe1534.unk_4e = 0xffff;
+    data_02fe1534.unk_50 = 0xffff;
+}
+
+BOOL func_020624d8(void) {
+    u16 v = data_02fe1534.unk_52;
+    return (v != 0xffff && v != 0x8000) ? TRUE : FALSE;
+}
+
+void func_02062500(const StageColor *c) {
+    data_02fe1534.unk_52 = c->r;
+    data_02fe1534.unk_54 = c->g;
+    data_02fe1534.unk_56 = c->b;
+}
+
+void func_02062524(void) {
+    data_02fe1534.unk_52 = 0x8000;
+    data_02fe1534.unk_54 = 0x8000;
+    data_02fe1534.unk_56 = 0x8000;
+}
+
+void func_02062540(StageVec *out) {
+    s32 x = data_02fe1534.posX;
+    s32 y = data_02fe1534.posY;
+    s32 z = data_02fe1534.posZ;
+    data_02fe1534.posFlags &= ~1;
+    out->x = x << 4;
+    out->y = y << 4;
+    out->z = z << 4;
+}
+
+u16 func_02062588(void) {
+    data_02fe1534.posFlags &= ~2;
+    return data_02fe1534.unk_3c;
+}
+
+u16 func_020625ac(void) {
+    data_02fe1534.posFlags &= ~4;
+    return data_02fe1534.unk_3e;
+}
+
+s32 func_020625d0(void) {
+    s16 v = data_02fe1534.unk_40;
+    data_02fe1534.posFlags &= ~8;
+    return v << 4;
+}
+
+BOOL func_020625f8(void) {
+    return Shared_TestFlag(1) ? TRUE : FALSE;
+}
+
+BOOL func_02062620(void) {
+    return Shared_TestFlag(2) ? TRUE : FALSE;
+}
+
+BOOL func_02062648(void) {
+    return Shared_TestFlag(4) ? TRUE : FALSE;
+}
+
+BOOL func_02062670(void) {
+    return Shared_TestFlag(8) ? TRUE : FALSE;
+}
+
+BOOL func_02062698(void) {
+    return Shared_HasMark() ? TRUE : FALSE;
+}
+
+void func_020626c0(void) {
+    data_02fe1534.unk_16 = 0;
+}
+
+void func_020626d4(StageVec *pos, u16 rot) {
+    data_02fe1534.unk_16 = 1;
+    if (pos == NULL) {
+        return;
+    }
+    data_02fe1534.unk_18 = (pos->x + 8) >> 4;
+    data_02fe1534.unk_1a = (pos->y + 8) >> 4;
+    data_02fe1534.unk_1c = (pos->z + 8) >> 4;
+    data_02fe1534.unk_1e = rot;
+}
+
+void func_02062724(StageVec *out) {
+    out->x = data_02fe1534.unk_18 << 4;
+    out->y = data_02fe1534.unk_1a << 4;
+    out->z = data_02fe1534.unk_1c << 4;
+}
+
+u16 func_02062754(void) {
+    return data_02fe1534.unk_1e;
+}
+
+void func_02062764(u16 clear, u16 set) {
+    data_02fe1534.unk_14 &= (u16)~clear;
+    data_02fe1534.unk_14 |= set;
+}
+
+void func_02062790(u16 a) {
+    data_02fe1534.unk_20 = a;
+}
+
+void func_020627a0(u16 a, u16 b) {
+    data_02fe1534.unk_24 = a;
+    data_02fe1534.unk_26 = b;
+}
+
+void func_020627b4(void) {
+    data_02fe1534.unk_22 = 1;
+}
+
+void func_020627c8(void) {
+    data_02fe1534.unk_22 = 0;
+}
+
+void func_020627dc(u16 a) {
+    data_02fe1534.unk_28 = a;
+}
+
+void func_020627ec(u16 a) {
+    data_02fe1534.unk_2a = a;
+}
+
+void func_020627fc(u16 a) {
+    data_02fe1534.unk_32 = a;
+}
+
+void func_0206280c(u16 a) {
+    data_02fe1534.unk_80 = a;
+}
+
+void func_0206281c(void) {
+    data_02fe1534.unk_7c = 0xffff;
+}
+
+u16 func_02062834(void) {
+    return data_02fe1534.unk_7c;
+}
+
+}
+
+}  // namespace m_StageCmd_13

@@ -6961,7 +6961,7 @@ from:0x02058de0 kind:arm_call to:0x0206e900 module:main
 from:0x02058e04 kind:load to:0x02fe1530 module:dtcm
 from:0x02058e08 kind:load to:0x0208b318 module:main
 from:0x02058e0c kind:load to:0x0208bf14 module:main
-from:0x02058e10 kind:load to:0x0208bdf6 module:main
+from:0x02058e10 kind:load to:0x0208bdec add:0xa module:main
 from:0x02058e14 kind:load to:0x0208bdec module:main
 from:0x02058e6c kind:load to:0x02097dd0 module:main
 from:0x02058e70 kind:load to:0x02fe1530 module:dtcm
@@ -6974,8 +6974,8 @@ from:0x02058fac kind:arm_call to:0x0206e900 module:main
 from:0x02058fd0 kind:load to:0x02fe152c module:dtcm
 from:0x02058fd4 kind:load to:0x0208b318 module:main
 from:0x02058fd8 kind:load to:0x0208be94 module:main
-from:0x02058fdc kind:load to:0x0208bdf6 module:main
-from:0x02058fe0 kind:load to:0x0208be0d module:main
+from:0x02058fdc kind:load to:0x0208bdec add:0xa module:main
+from:0x02058fe0 kind:load to:0x0208bdec add:0x21 module:main
 from:0x02059038 kind:load to:0x02097dd0 module:main
 from:0x0205903c kind:load to:0x02fe152c module:dtcm
 from:0x02059078 kind:arm_call to:0x0203de1c module:main
@@ -7068,11 +7068,11 @@ from:0x0205a924 kind:arm_call to:0x0201e520 module:main
 from:0x0205a92c kind:arm_call to:0x0203dd9c module:main
 from:0x0205a97c kind:arm_call to:0x0206e900 module:main
 from:0x0205a98c kind:arm_call to:0x0206e900 module:main
-from:0x0205a9b0 kind:load to:0x0208be17 module:main
-from:0x0205a9b4 kind:load to:0x0208be19 module:main
+from:0x0205a9b0 kind:load to:0x0208bdec add:0x2b module:main
+from:0x0205a9b4 kind:load to:0x0208bdec add:0x2d module:main
 from:0x0205a9b8 kind:load to:0x0208b318 module:main
 from:0x0205a9bc kind:load to:0x0208ba30 module:main
-from:0x0205a9c0 kind:load to:0x0208be20 module:main
+from:0x0205a9c0 kind:load to:0x0208bdec add:0x34 module:main
 from:0x0205a9c4 kind:load to:0x0208bed4 module:main
 from:0x0205aa78 kind:arm_call to:0x0204c030 module:main
 from:0x0205aa88 kind:arm_call to:0x02059784 module:main
@@ -7600,28 +7600,28 @@ from:0x02061d4c kind:load to:0x02fe1534 module:dtcm
 from:0x02061d50 kind:load to:0x021ccd68 module:overlay(0)
 from:0x02061d98 kind:arm_call to:0x0201e7b0 module:main
 from:0x02061de4 kind:load to:0x02fe1530 module:dtcm
-from:0x02061de8 kind:load to:0x0208be27 module:main
+from:0x02061de8 kind:load to:0x0208bdec add:0x3b module:main
 from:0x02061e24 kind:arm_call to:0x0201e7b0 module:main
 from:0x02061e70 kind:load to:0x02fe1530 module:dtcm
-from:0x02061e74 kind:load to:0x0208be34 module:main
+from:0x02061e74 kind:load to:0x0208bdec add:0x48 module:main
 from:0x02061eb0 kind:arm_call to:0x0201e7b0 module:main
 from:0x02061efc kind:load to:0x02fe1530 module:dtcm
-from:0x02061f00 kind:load to:0x0208be43 module:main
+from:0x02061f00 kind:load to:0x0208bdec add:0x57 module:main
 from:0x02061f3c kind:arm_call to:0x0201e7b0 module:main
 from:0x02061f88 kind:load to:0x02fe1530 module:dtcm
-from:0x02061f8c kind:load to:0x0208be50 module:main
+from:0x02061f8c kind:load to:0x0208bdec add:0x64 module:main
 from:0x02061fc8 kind:arm_call to:0x0201e7b0 module:main
 from:0x02062014 kind:load to:0x02fe1530 module:dtcm
-from:0x02062018 kind:load to:0x0208be5c module:main
+from:0x02062018 kind:load to:0x0208bdec add:0x70 module:main
 from:0x02062054 kind:arm_call to:0x0201e7b0 module:main
 from:0x020620a0 kind:load to:0x02fe1530 module:dtcm
-from:0x020620a4 kind:load to:0x0208be65 module:main
+from:0x020620a4 kind:load to:0x0208bdec add:0x79 module:main
 from:0x020620e0 kind:arm_call to:0x0201e7b0 module:main
 from:0x0206212c kind:load to:0x02fe1530 module:dtcm
-from:0x02062130 kind:load to:0x0208be74 module:main
+from:0x02062130 kind:load to:0x0208bdec add:0x88 module:main
 from:0x0206216c kind:arm_call to:0x0201e7b0 module:main
 from:0x020621b8 kind:load to:0x02fe1530 module:dtcm
-from:0x020621bc kind:load to:0x0208be7f module:main
+from:0x020621bc kind:load to:0x0208bdec add:0x93 module:main
 from:0x020621e0 kind:arm_call to:0x020594bc module:main
 from:0x020621f4 kind:load to:0x02fe152c module:dtcm
 from:0x02062214 kind:arm_call to:0x020594bc module:main

@@ -1451,38 +1451,11 @@ src/Main/Res/DataRes.cpp:
     complete
     .text       start:0x02058b50 end:0x02058d10
 
-src/Main/Res/DataRes_2.cpp:
-    complete
-    .text       start:0x02058e18 end:0x02058f2c
-
-src/Main/Res/DataRes_3.cpp:
-    complete
-    .text       start:0x02058fe4 end:0x02059270
-
-src/Main/Res/DataRes_4.cpp:
-    complete
-    .text       start:0x02059270 end:0x02059428
-
-src/Main/Res/DataRes_5.cpp:
-    complete
-    .text       start:0x02059428 end:0x0205973c
-
-src/Main/Res/DataRes_6.cpp:
-    complete
-    .text       start:0x0205973c end:0x0205983c
-
 src/Main/Res/Stage.cpp:
     complete
-    .text       start:0x0205983c end:0x02060a08
+    .text       start:0x02058d10 end:0x02062844
+    .data       start:0x0208bde8 end:0x0208be8c
     .bss        start:0x02149efc end:0x0214a418
-
-src/Main/Res/StageCmd_12.cpp:
-    complete
-    .text       start:0x02060be4 end:0x020613bc
-
-src/Main/Res/StageCmd_13.cpp:
-    complete
-    .text       start:0x020613bc end:0x02062844
 
 src/Main/Res/StageRes_6.cpp:
     complete

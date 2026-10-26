@@ -8,9 +8,6 @@ extern const u32 data_0208bbc8[];
 extern const u32 data_0208bb1c[];
 extern const u32 data_0208bf14[];
 extern const u32 data_0208be94[];
-extern const char data_0208bdf6[];
-extern const char data_0208bdec[];
-extern const char data_0208be0d[];
 extern DataRes *data_02fe1530;
 extern DataRes *data_02fe152c;
 

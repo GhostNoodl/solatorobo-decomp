@@ -3084,20 +3084,7 @@ data_0208bb1c kind:data(any) addr:0x0208bb1c
 data_0208bbc8 kind:data(any) addr:0x0208bbc8
 data_0208bc80 kind:data(any) addr:0x0208bc80
 data_0208bde8 kind:data(any) addr:0x0208bde8
-data_0208bdec kind:data(any) addr:0x0208bdec
-data_0208bdf6 kind:data(any) addr:0x0208bdf6
-data_0208be0d kind:data(any) addr:0x0208be0d
-data_0208be17 kind:data(any) addr:0x0208be17
-data_0208be19 kind:data(any) addr:0x0208be19
-data_0208be20 kind:data(any) addr:0x0208be20
-data_0208be27 kind:data(any) addr:0x0208be27
-data_0208be34 kind:data(any) addr:0x0208be34
-data_0208be43 kind:data(any) addr:0x0208be43
-data_0208be50 kind:data(any) addr:0x0208be50
-data_0208be5c kind:data(any) addr:0x0208be5c
-data_0208be65 kind:data(any) addr:0x0208be65
-data_0208be74 kind:data(any) addr:0x0208be74
-data_0208be7f kind:data(any) addr:0x0208be7f
+@stringBase0 kind:data(byte[0xa0]) addr:0x0208bdec local
 data_0208be94 kind:data(any) addr:0x0208be94
 data_0208bed4 kind:data(any) addr:0x0208bed4
 data_0208bf14 kind:data(any) addr:0x0208bf14
