@@ -1114,7 +1114,7 @@ src/Main/Gfx/GfxSys_7.cpp:
 
 src/Main/Sys/Pad.cpp:
     complete
-    .text       start:0x0203d1b4 end:0x0203d298
+    .text       start:0x0203d1b4 end:0x0203d434
 
 src/Main/Sys/Pad_2.cpp:
     complete

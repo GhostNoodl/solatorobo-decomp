@@ -60,4 +60,50 @@ void func_0203d1b4(void) {
     data_02097dd0->cur = data_02097dd0->unk_08;
 }
 
+void func_0203d298(Pad *pad) {
+    u16 bit;
+    int i;
+    pad->prev = pad->cur;
+    if (pad->useForced) {
+        int j;
+        pad->cur = pad->forced;
+        for (j = 0; j < 12; j++) {
+            pad->counters[j] = 0;
+        }
+        pad->useForced = 0;
+    } else if (PAD_DetectFold()) {
+        pad->cur = 0;
+        pad->prev = 0;
+    } else {
+        pad->cur = Pad_ReadFiltered();
+    }
+    if ((pad->cur & 0xc0) == 0xc0) {
+        pad->cur &= ~0xc0;
+    }
+    if ((pad->cur & 0x30) == 0x30) {
+        pad->cur &= ~0x30;
+    }
+    pad->trig = pad->cur;
+    pad->trig &= (u16)~pad->prev;
+    pad->release = pad->prev;
+    pad->release &= (u16)~pad->cur;
+    pad->repeat = 0;
+    for (i = 0, bit = 1; i < 12; bit <<= 1, i++) {
+        if (!(pad->cur & bit)) {
+            pad->counters[i] = 0;
+        } else {
+            u8 n = ++pad->counters[i];
+            if (n >= pad->repeatDelay) {
+                u8 d = n - pad->repeatDelay;
+                if (d == 0 || d >= pad->repeatRate) {
+                    pad->repeat |= bit;
+                    pad->counters[i] = pad->repeatDelay;
+                }
+            } else if (n == 1) {
+                pad->repeat |= bit;
+            }
+        }
+    }
+}
+
 }
