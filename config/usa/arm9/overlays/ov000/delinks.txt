@@ -921,6 +921,10 @@ src/ov000/Lo_021766c4.cpp:
     complete
     .text       start:0x021766c4 end:0x02176714
 
+src/ov000/Lo_02176714.cpp:
+    complete
+    .text       start:0x02176714 end:0x02176ff4
+
 src/ov000/Lo_02176ff4.cpp:
     complete
     .text       start:0x02176ff4 end:0x02177028
@@ -1296,6 +1300,10 @@ src/ov000/Lo_0215e548.cpp:
 src/ov000/Lo_0216881c.cpp:
     complete
     .text       start:0x0216881c end:0x021688c4
+
+src/ov000/Lo_021688c4.cpp:
+    complete
+    .text       start:0x021688c4 end:0x02168cb0
 
 src/ov000/Lo_021694e0.cpp:
     complete
