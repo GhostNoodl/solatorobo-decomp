@@ -1700,6 +1700,10 @@ src/Main/Lang/LangData_2.cpp:
     complete
     .text       start:0x0206e150 end:0x0206e3a0
 
+src/Main/Lang/LangData_5.cpp:
+    complete
+    .text       start:0x0206e3a0 end:0x0206e648
+
 src/Main/Lang/LangData_3.cpp:
     complete
     .text       start:0x0206e648 end:0x0206e858

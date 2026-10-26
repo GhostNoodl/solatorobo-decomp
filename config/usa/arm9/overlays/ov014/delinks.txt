@@ -56,6 +56,10 @@ src/ov014/ov014_022054f8.cpp:
     complete
     .text       start:0x022054f8 end:0x02205634
 
+src/ov014/ov014_02205634.cpp:
+    complete
+    .text       start:0x02205634 end:0x02205924
+
 src/ov014/ov014_02205924.cpp:
     complete
     .text       start:0x02205924 end:0x02205c1c
