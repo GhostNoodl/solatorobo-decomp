@@ -67,7 +67,7 @@ void func_ov009_022130b4(Ov009Actor *self) {
         if (o != NULL) {
             o->unk_1a = 1;
         }
-        if (*(volatile u16 *)&self->unk_40->state < 5) {
+        if (Ov009Sub40_State(self->unk_40) < 5) {
             self->unk_40->state++;
             return;
         }

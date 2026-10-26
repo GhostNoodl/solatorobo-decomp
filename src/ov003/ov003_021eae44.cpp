@@ -550,7 +550,7 @@ void func_ov003_021eb5ec(Ov003ObjB *self) {
                 s->unk_22_1 = 1;
             }
         } else {
-            ((volatile Ov003Work *)self->work)->timer++;
+            self->work->timer = ((const Ov003Work *)self->work)->timer + 1;
         }
         break;
     }

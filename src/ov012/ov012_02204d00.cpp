@@ -38,7 +38,7 @@ void func_ov012_02204dbc(Ov012Actor *self) {
     if (FLD(u32, self, 0xf0) & 8) {
     t = func_ov000_0218d240(self);
     s = self->unk_40;
-    switch (*(volatile u16 *)&s->state) {
+    switch (Ov012Sub40_State(s)) {
     case 0:
         m = self->unk_48;
         m->unk_9a_0 = 0;

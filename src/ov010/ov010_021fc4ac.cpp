@@ -454,7 +454,7 @@ void func_ov010_021fcf70(void *self) {
             FLD(u16, FLD(u8 *, self, 0x40), 2) = 0;
             FLD(u16, FLD(u8 *, self, 0x40), 0) = 0x14;
         } else {
-            (*(volatile u16 *)&FLD(u16, FLD(u8 *, self, 0x40), 2))++;
+            FLD(u16, FLD(u8 *, self, 0x40), 2) = FLD(const u16, FLD(u8 *, self, 0x40), 2) + 1;
         }
         break;
     case 0x14:
@@ -636,7 +636,7 @@ void func_ov010_021fd694(void *self) {
         FLD(u16, FLD(u8 *, self, 0x40), 0) = 11;
     case 11:
         if (FLD(u16, FLD(u8 *, self, 0x40), 2) < 5) {
-            (*(volatile u16 *)&FLD(u16, FLD(u8 *, self, 0x40), 2))++;
+            FLD(u16, FLD(u8 *, self, 0x40), 2) = FLD(const u16, FLD(u8 *, self, 0x40), 2) + 1;
             break;
         }
         func_0203cb78(0x1e000, 1, 0);
@@ -674,7 +674,7 @@ void func_ov010_021fd694(void *self) {
             FLD(u16, FLD(u8 *, self, 0x40), 2) = 0;
             FLD(u16, FLD(u8 *, self, 0x40), 0) = 0x1e;
         } else {
-            FLD(u16, FLD(u8 *, self, 0x40), 2) = (*(volatile u16 *)&FLD(u16, FLD(u8 *, self, 0x40), 2)) + 1;
+            FLD(u16, FLD(u8 *, self, 0x40), 2) = FLD(const u16, FLD(u8 *, self, 0x40), 2) + 1;
         }
         break;
     case 0x1e: {

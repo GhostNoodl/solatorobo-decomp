@@ -81,7 +81,8 @@ void func_ov006_021d2c84(ov006_TaskD1F *self) {
     func_ov000_02162a20(self->unk58);
     {
         ov006_Actor58 *a = self->unk58;
-        ov006_Actor58_SetPos(a, *(volatile s32 *)&a->pos.x, FX_Mul(FX_SinCosTable_[((u16)(self->unk44 << 8) >> 4) * 2], 0x4cd), a->pos.z);
+        // x is read through a const view, so it is not merged with the earlier read of a->pos.
+        ov006_Actor58_SetPos(a, ((const ov006_Actor58 *)a)->pos.x, FX_Mul(FX_SinCosTable_[((u16)(self->unk44 << 8) >> 4) * 2], 0x4cd), a->pos.z);
     }
     ov006_Actor58_SetRot(self->unk58, 0, self->unk44 * 0x90, 0);
     self->unk44 = (u16)(self->unk44 + 1);

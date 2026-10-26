@@ -117,7 +117,7 @@ void func_ov014_02210ee0(Ov014Actor *self) {
 void func_ov014_022110bc(Ov014Actor *self) {
     Ov014Sub40 *s = self->unk_40;
     Ov014Wave *p = FLD(Ov014Wave *, self, 0x140);
-    switch (*(volatile u16 *)&s->state) {
+    switch (Ov014Sub40_State(s)) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov014_02217d4c, 0x19a, 0);
         func_ov000_021915a0(self->unk_38);
@@ -155,7 +155,7 @@ void func_ov014_022110bc(Ov014Actor *self) {
         }
         break;
     case 21:
-        if (*(volatile u16 *)&s->timer != 0) {
+        if (Ov014Sub40_Timer(s) != 0) {
             Ov014_TimerTick(s);
             return;
         }
@@ -169,7 +169,7 @@ void func_ov014_022110bc(Ov014Actor *self) {
         self->unk_40->state--;
         break;
     case 30:
-        if (*(volatile u16 *)&s->timer == 0) {
+        if (Ov014Sub40_Timer(s) == 0) {
             s->state = 0xffff;
         } else {
             Ov014_TimerTick(s);
@@ -252,7 +252,7 @@ extern s32 VEC_Mag(const Ov014Vec *v);
 extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDescB *d, Ov014Vec *pos, Ov014Vec16b *rot, u16 a);
 
 void func_ov014_02211538(Ov014Actor *self) {
-    switch (*(volatile u16 *)&self->unk_40->state) {
+    switch (Ov014Sub40_State(self->unk_40)) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov014_02217d4c, 0xcd, 0);
         func_ov000_02191318(self->unk_38, 0);
@@ -343,7 +343,7 @@ void func_ov014_02211538(Ov014Actor *self) {
     }
     case 3: {
         Ov014Sub40 *s = self->unk_40;
-        if (*(volatile u16 *)&s->timer == 0) {
+        if (Ov014Sub40_Timer(s) == 0) {
             s->state++;
             break;
         }
@@ -376,7 +376,7 @@ struct Ov014WaveB {
 };
 
 void func_ov014_02211980(Ov014Actor *self) {
-    switch (*(volatile u16 *)&self->unk_40->state) {
+    switch (Ov014Sub40_State(self->unk_40)) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov014_02217d4c, 0xcd, 0);
         func_ov000_02191318(self->unk_38, 0);

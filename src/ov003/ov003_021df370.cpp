@@ -395,7 +395,7 @@ void func_ov003_021df6f4(Ov003Prop *self) {
             ((Ov003DfObj *)self)->Destroy();
             return;
         }
-        ((volatile u16 *)self->unk_40)[1]++;
+        ((u16 *)self->unk_40)[1] = ((const u16 *)self->unk_40)[1] + 1;
         self->unk_70.x -= 0x66;
         self->unk_70.y -= 0x3d;
         if (self->unk_7c > 0xe800) {

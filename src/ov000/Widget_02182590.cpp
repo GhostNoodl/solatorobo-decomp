@@ -55,7 +55,7 @@ void func_ov000_02182590(Obj02182590 *self) {
     if (self->unk_00 == 0) {
         return;
     }
-    // The comma expression, the reused wr and the volatile reload below give the target's registers
+    // The comma expression, the reused wr and the const-view reload below give the target's registers
     // and its second load of the queue pointer.
     q = (0, data_ov000_021ccd50.unk_04);
     wr = q->unk_90;
@@ -64,7 +64,7 @@ void func_ov000_02182590(Obj02182590 *self) {
     if (CmdQueue_Has2(q, rd, wr, 6)) {
         return;
     }
-    if (CmdQueue_Has2(*(CmdQueue *volatile *)&data_ov000_021ccd50.unk_04, rd, wr, 7)) {
+    if (CmdQueue_Has2(*(CmdQueue *const *)&data_ov000_021ccd50.unk_04, rd, wr, 7)) {
         return;
     }
     self->unk_00 = 0;

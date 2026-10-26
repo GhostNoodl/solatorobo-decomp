@@ -14,8 +14,8 @@ extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 extern void func_ov000_0218bed8(void *a, s32 b, void *c);
 
 void func_ov014_022075f4(Ov014Actor *self) {
-    // volatile read keeps the state reload in case 1 (no CSE with the switch value)
-    switch (*(volatile u16 *)&self->unk_40->state) {
+    // The const read keeps the state reload in case 1 (no CSE with the switch value).
+    switch (Ov014Sub40_State(self->unk_40)) {
     case 0:
         func_ov003_021daa6c(FLD(void *, self, 0xdc), 0xfe);
         self->unk_40->state++;

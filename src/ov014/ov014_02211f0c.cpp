@@ -87,7 +87,7 @@ void func_ov014_02212050(Ov014Actor *self) {
     Ov014Vec v1;
     Ov014Vec v3;
     u8 b;
-    switch (*(volatile u16 *)&self->unk_40->state) {
+    switch (Ov014Sub40_State(self->unk_40)) {
     case 0: {
         Ov014Game54 *g;
         Ov014Sub44 *n;

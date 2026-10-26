@@ -65,7 +65,7 @@ static inline s32 Ov010_TeamBit(u16 id) {
 
 void func_ov010_022033d0(void *self) {
     u16 *st = FLD(u16 *, self, 0x40);
-    if (*(volatile u16 *)&st[0] == 0) {
+    if (((const u16 *)st)[0] == 0) {
         Ov010V *e;
         Ov010FxSet *s;
         st[0]++;

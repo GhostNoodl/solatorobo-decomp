@@ -167,9 +167,9 @@ void func_ov003_021da9ac(Ov003FxList *self, u8 id, Ov003Handled *obj) {
         self->head = node;
     } else {
         Ov003FxNode *p = self->head;
-        // The volatile read keeps p->next from being reused across iterations
+        // The read through a const view keeps p->next from being reused across iterations
         while (p->next != NULL) {
-            p = ((Ov003FxNode volatile *)p)->next;
+            p = ((const Ov003FxNode *)p)->next;
         }
         p->next = node;
     }

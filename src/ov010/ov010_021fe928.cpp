@@ -137,7 +137,7 @@ void func_ov010_021fe9c8(void *self) {
 void func_ov010_021febfc(void *self) {
     Ov010Cmd cmd;
     u16 *st = FLD(u16 *, self, 0x40);
-    if (*(volatile u16 *)st != 0) {
+    if (*(const u16 *)st != 0) {
         return;
     }
     st[0]++;

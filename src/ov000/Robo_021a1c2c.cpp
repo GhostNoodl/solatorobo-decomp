@@ -91,9 +91,9 @@ void func_ov000_021a1c2c(u8 *self) {
     char *name;
     s32 se;
 
-    switch (LFLD(State_021a1c2c *, self, 0x40)->st) {
+    switch (LFLD(const State_021a1c2c *, self, 0x40)->st) {
     case 0:
-        (*(volatile u16 *)&LFLD(State_021a1c2c *, self, 0x40)->st)++;
+        LFLD(State_021a1c2c *, self, 0x40)->st++;
         LFLD(u8, self, 0xb2b) = 0;
         B24(self).b16 = 0;
         B24(self).b18 = 0;

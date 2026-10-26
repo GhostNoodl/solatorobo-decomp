@@ -149,10 +149,10 @@ static inline s32 Ov014b_Mul64(s32 a, s64 b) {
 }
 
 void func_ov014_0220b74c(Ov014Actor *self) {
-    switch (self->unk_40->state) {
+    switch (Ov014Sub40_State(self->unk_40)) {
     case 0:
-        // The target reloads the state it just switched on.
-        (*(volatile u16 *)&self->unk_40->state)++;
+        // The target reloads the state it just switched on (the switch reads it through the const view).
+        self->unk_40->state++;
         self->unk_40->timer = 0x5a;
         break;
     case 1: {

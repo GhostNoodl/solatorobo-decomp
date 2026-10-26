@@ -27,7 +27,7 @@ void func_ov014_02202330(Ov014Actor *self) {
     Ov014Sub40 *s = self->unk_40;
     s32 hp = Ov014e_FxMul64(FLD(s32, m38, 0xa8), 0x1333);
     s32 v = FLD(s32, self, 0x330);
-    switch (*(volatile u16 *)&s->state) {
+    switch (Ov014Sub40_State(s)) {
     case 0: {
         void *anim = data_ov014_02216500[3];
         Ov014V *e;

@@ -8,9 +8,9 @@ extern void func_ov000_0218dbe0(Ov009Actor *self, s32 turn);
 
 void func_ov009_021fc51c(Ov009Actor *self) {
     Ov009Sub40 *st;
-    switch (self->unk_40->state) {
+    switch (Ov009Sub40_State(self->unk_40)) {
     case 0:
-        (*(volatile u16 *)&self->unk_40->state)++;
+        self->unk_40->state++;
         if (self->unk_a8 == 0) {
             self->unk_a8 = 0x52;
         }

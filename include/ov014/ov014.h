@@ -242,6 +242,16 @@ struct Ov014Sub40 {
     u8 unk_13;
 };
 
+// Reads through a const view: MWCC does not merge these with an earlier plain read of the same field,
+// so a state machine re-reads state/timer where the target does (instead of `volatile` casts).
+static inline u16 Ov014Sub40_State(const Ov014Sub40 *s) {
+    return s->state;
+}
+
+static inline u16 Ov014Sub40_Timer(const Ov014Sub40 *s) {
+    return s->timer;
+}
+
 struct Ov014Sub44 {
     u8 unk_00[0x10];
     s32 unk_10;

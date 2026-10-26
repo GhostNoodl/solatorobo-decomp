@@ -164,7 +164,7 @@ void func_ov013_02205928(Ov013Actor *self) {
             g[0x18f] = 0xf;
         }
         if (self->unk_40->timer < 30) {
-            ((volatile Ov013Sub40 *)self->unk_40)->timer++;
+            self->unk_40->timer = ((const Ov013Sub40 *)self->unk_40)->timer + 1;
         } else {
             self->unk_40->timer = 0;
             self->unk_40->state = 2;

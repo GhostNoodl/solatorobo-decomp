@@ -232,7 +232,7 @@ void func_ov011_02202130(Ov011Chr *self) {
     if (!self->b0) {
         return;
     }
-    if (!FLD(volatile Ov011Flags8, self, 0).b1) {
+    if (!FLD(const Ov011Flags8, self, 0).b1) {
         if (FLD(s16, self->anim, 0) < 0) {
             s32 r;
             self->b1 = 1;

@@ -38,7 +38,7 @@ static inline void Ov014_TimerTick(Ov014Sub40 *s) {
 
 void func_ov014_02212f8c(Ov014Actor *self) {
     Ov014Sub40 *s = self->unk_40;
-    switch (*(volatile u16 *)&s->state) {
+    switch (Ov014Sub40_State(s)) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov014_02217d3a, 0x19a, 0);
         func_ov000_021915a0(self->unk_38);
@@ -48,7 +48,7 @@ void func_ov014_02212f8c(Ov014Actor *self) {
     case 1:
         func_ov000_0218d988(self, func_ov000_0219bf90(), 0x400);
         s = self->unk_40;
-        if (*(volatile u16 *)&s->timer == 0) {
+        if (Ov014Sub40_Timer(s) == 0) {
             s->state++;
             self->unk_40->timer = 30;
         } else {
@@ -56,7 +56,7 @@ void func_ov014_02212f8c(Ov014Actor *self) {
         }
         break;
     case 2:
-        if (*(volatile u16 *)&s->timer == 0) {
+        if (Ov014Sub40_Timer(s) == 0) {
             s->state--;
             self->unk_40->timer = 60;
         } else {
@@ -68,7 +68,7 @@ void func_ov014_02212f8c(Ov014Actor *self) {
 
 void func_ov014_0221308c(Ov014Actor *self) {
     Ov014Sub40 *s = self->unk_40;
-    switch (*(volatile u16 *)&s->state) {
+    switch (Ov014Sub40_State(s)) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov014_02217d3a, 0x19a, 0);
         func_ov000_021915a0(self->unk_38);
@@ -78,7 +78,7 @@ void func_ov014_0221308c(Ov014Actor *self) {
     case 10:
         func_ov000_0218d988(self, func_ov000_0218d240(self), 0x400);
         s = self->unk_40;
-        if (*(volatile u16 *)&s->timer == 0) {
+        if (Ov014Sub40_Timer(s) == 0) {
             func_02065f88(0x5e2, (Ov014Vec *)((u8 *)self + 0x33c))->v14(0x2000, 0x2000, 0x2000);
             self->unk_40->state++;
             self->unk_40->timer = 60;
@@ -87,7 +87,7 @@ void func_ov014_0221308c(Ov014Actor *self) {
         }
         break;
     case 11:
-        if (*(volatile u16 *)&s->timer == 0) {
+        if (Ov014Sub40_Timer(s) == 0) {
             func_ov000_02190cb0(self->unk_38, data_ov014_02217d4c, 0x19a, 0);
             func_ov000_02191618(self->unk_38);
             self->unk_40->state++;
@@ -113,7 +113,7 @@ void func_ov014_0221308c(Ov014Actor *self) {
         }
         break;
     case 20:
-        if (*(volatile u16 *)&s->timer == 0) {
+        if (Ov014Sub40_Timer(s) == 0) {
             s->state = 0xffff;
         } else {
             Ov014_TimerTick(s);
@@ -133,7 +133,7 @@ extern Ov014Actor *func_ov000_0218e640(void *mgr, u16 id);
 
 void func_ov014_02213318(Ov014Actor *self) {
     Ov014Sub40 *s = self->unk_40;
-    switch (*(volatile u16 *)&s->state) {
+    switch (Ov014Sub40_State(s)) {
     case 0: {
         s32 base;
         u16 ang;
@@ -150,7 +150,7 @@ void func_ov014_02213318(Ov014Actor *self) {
     case 10:
         self->rot[1] = func_01ffc128(FLD(u16, self, 0x34c), self->rot[1], 0x400, 1, 0x8000);
         s = self->unk_40;
-        if (*(volatile u16 *)&s->timer == 0) {
+        if (Ov014Sub40_Timer(s) == 0) {
             func_02065f88(0x5dd, (Ov014Vec *)((u8 *)self + 0x33c))->v14(0x2000, 0x2000, 0x2000);
             self->unk_40->state++;
             self->unk_40->timer = 0x3c;
@@ -159,7 +159,7 @@ void func_ov014_02213318(Ov014Actor *self) {
         }
         break;
     case 11:
-        if (*(volatile u16 *)&s->timer == 0) {
+        if (Ov014Sub40_Timer(s) == 0) {
             func_ov000_02190cb0(self->unk_38, data_ov014_02217d4c, 0x19a, 0);
             func_ov000_02191618(self->unk_38);
             self->unk_40->state++;
@@ -186,7 +186,7 @@ void func_ov014_02213318(Ov014Actor *self) {
         }
         break;
     case 13:
-        if (*(volatile u16 *)&s->timer == 0) {
+        if (Ov014Sub40_Timer(s) == 0) {
             s->state = 0x14;
         } else {
             Ov014Actor *a;

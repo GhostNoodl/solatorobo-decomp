@@ -31,9 +31,10 @@ extern s32 func_02040498(s32 n);
 
 #define SEQ_CUR(s) ((void)0, (s)->entries[(s)->index])
 /* The target re-reads index (and, before Seq_Run, entries) instead of reusing the
-   value loaded for the previous copy, so these reads go through volatile views. */
+   value loaded for the previous copy, so these reads go through separate views: a const one
+   for entries, and a volatile one for index (Seq_Next increments it through VIDX too). */
 #define VIDX(s) (*(volatile u16 *)&(s)->index)
-#define VENT(s) (*(SeqEntry *volatile *)&(s)->entries)
+#define VENT(s) (*(SeqEntry *const *)&(s)->entries)
 
 static inline void Seq_Next(Seq *self) {
     VIDX(self)++;

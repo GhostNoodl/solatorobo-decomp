@@ -33,7 +33,7 @@ BOOL func_02065748(void *mgr, void *p);
 void MI_Copy36B(const void *src, void *dst);
 
 static inline s32 Ov011_Progress(Ov011Chr *c, s32 n) {
-    return FX_Div(n << 12, FLD(volatile s16, c, 6) << 12);
+    return FX_Div(n << 12, FLD(const s16, c, 6) << 12);
 }
 
 void func_ov011_02202538(Ov011Chr *self) {
@@ -90,7 +90,7 @@ void func_ov011_022026b4(Ov011Chr *self) {
         Ov011Vec t;
         s16 a;
         s16 b;
-        s32 r = FX_Div(self->unk_08 << 12, FLD(volatile s16, self, 6) << 12);
+        s32 r = FX_Div(self->unk_08 << 12, FLD(const s16, self, 6) << 12);
         s32 lo = self->unk_04;
         s32 hi = self->unk_02;
         s32 v = lo + Ov011_FxMul(hi - lo, r);

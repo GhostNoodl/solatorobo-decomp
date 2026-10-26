@@ -181,6 +181,11 @@ struct Ov009Sub40 {
     u8 unk_13;
 };
 
+// A read through a const view, which MWCC does not merge with an earlier plain read of the state.
+static inline u16 Ov009Sub40_State(const Ov009Sub40 *s) {
+    return s->state;
+}
+
 struct Ov009Sub44 {
     u8 unk_00[0x10];
     s32 unk_10;

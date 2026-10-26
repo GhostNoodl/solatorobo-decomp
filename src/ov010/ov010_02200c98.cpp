@@ -33,7 +33,7 @@ BOOL func_ov010_02200c98(u8 *o) {
         if (FLD(u16, o, 0x6e) < 0xb) {
             v = 0x14000;
             FLD(s32, o, 0x14) = v;
-            (*(volatile u16 *)(o + 0x6e))++;
+            FLD(u16, o, 0x6e) = FLD(const u16, o, 0x6e) + 1;
             break;
         }
         FLD(u16, o, 0x6c) = 3;

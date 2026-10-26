@@ -8,7 +8,8 @@ typedef Ov013Vec VecFx32;
 // object: its far[] entries are initialised before the separate near-spot array.
 // func_ov013_021fee10 at the end is part of this TU: it reads data_ov013_0220aee0 and
 // data_ov013_0220af28 through the .rodata base plus an offset. The second read of af28's x is
-// reloaded in the target, so it goes through a volatile view.
+// reloaded in the target, so it goes through a cast view of the vector (a second access path that
+// MWCC does not merge with the first read).
 struct Ov013Rot { u16 x, y, z; };
 struct Ov013Spot { VecFx32 pos; u16 rot; };
 struct Ov013SpotBlock { char name[16]; void (*fn[6])(void); Ov013Spot far[4]; };
@@ -235,7 +236,7 @@ void func_ov013_021fee10(Ov013Actor *self) {
     o2->b0 = 1;
     o2->unk_02 = 0;
     {
-        s32 x2 = ((volatile VecFx32 *)&data_ov013_0220af28)->x;
+        s32 x2 = ((const VecFx32 *)&data_ov013_0220af28)->x;
         o2->v.x = x2;
         o2->v.y = y;
         o2->v.z = z;

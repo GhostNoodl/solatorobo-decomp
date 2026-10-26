@@ -318,7 +318,7 @@ void func_ov014_0220d890(Ov014Actor *self) {
         }
         {
             Ov014Sub40 *s = self->unk_40;
-            u16 t = *(volatile u16 *)&s->timer;
+            u16 t = Ov014Sub40_Timer(s);
             if (t != 0) {
                 s->timer = t - 1;
             }

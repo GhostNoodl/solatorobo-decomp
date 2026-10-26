@@ -475,7 +475,7 @@ void func_ov013_02205098(Ov013Actor *self) {
                 break;
             }
         } else {
-            ((volatile Ov013Sub40 *)self->unk_40)->timer++;
+            self->unk_40->timer = ((const Ov013Sub40 *)self->unk_40)->timer + 1;
             break;
         }
     }

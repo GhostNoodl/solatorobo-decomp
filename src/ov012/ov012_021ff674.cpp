@@ -161,7 +161,7 @@ void func_ov012_021ff674(Ov012Actor *self) {
         break;
     }
     s = self->unk_40;
-    switch (*(volatile u16 *)&s->state) {
+    switch (Ov012Sub40_State(s)) {
     case 0:
         func_ov000_0218e8ec(data_ov000_021ccd68, 0x480b, 0x15);
         func_ov000_02190cb0(self->unk_38, data_ov012_0220a3c4[0], 0x400, 0);

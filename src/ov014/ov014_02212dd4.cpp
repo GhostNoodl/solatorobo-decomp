@@ -18,7 +18,7 @@ static inline void Ov014_TimerTick(Ov014Sub40 *s) {
 
 void func_ov014_02212dd4(Ov014Actor *self) {
     Ov014Sub40 *s = self->unk_40;
-    switch (*(volatile u16 *)&s->state) {
+    switch (Ov014Sub40_State(s)) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov014_02217d3a, 0x19a, 0);
         func_ov000_02191318(self->unk_38, 0);
@@ -44,7 +44,7 @@ void func_ov014_02212dd4(Ov014Actor *self) {
         }
         func_ov000_0218d988(self, func_ov000_0219bf90(), 0x400);
         s = self->unk_40;
-        if (*(volatile u16 *)&s->timer == 0) {
+        if (Ov014Sub40_Timer(s) == 0) {
             s->state++;
         } else {
             Ov014_TimerTick(s);

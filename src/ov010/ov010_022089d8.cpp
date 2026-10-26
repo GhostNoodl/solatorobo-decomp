@@ -75,7 +75,7 @@ void func_ov010_022089d8(void *self) {
     }
     case 1:
     case 2: {
-        if (*(volatile u16 *)&FLD(u16 *, self, 0x40)[0] == 0) {
+        if (FLD(const u16 *, self, 0x40)[0] == 0) {
             FLD(u16 *, self, 0x40)[0]++;
             anim = TRUE;
         }

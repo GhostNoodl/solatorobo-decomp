@@ -75,7 +75,7 @@ void func_ov000_021a98bc(u8 *self) {
         break;
     case 10:
         if (LFLD(s16, LFLD(u8 *, self, 0x38), 0xc4) == 1) {
-            (*(volatile u16 *)&s->state)++;
+            s->state = ((const State021a98bc *)s)->state + 1;
         }
         break;
     case 11:

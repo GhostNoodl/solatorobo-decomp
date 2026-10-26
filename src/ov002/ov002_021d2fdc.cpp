@@ -101,7 +101,8 @@ void func_ov002_021d2fdc(void *self) {
         void *t = data_ov000_021ccd30;
         if (t != NULL) {
             if (ov002_HasActive(t) && FIELD(t, 0x118, void *) != NULL) {
-                func_ov000_0216f844((void *)*(volatile u32 *)((u8 *)t + 0x118), 0);
+                // Read as a u32, so MWCC does not reuse the void * load from the test above.
+                func_ov000_0216f844((void *)FIELD(t, 0x118, u32), 0);
             }
         }
     }

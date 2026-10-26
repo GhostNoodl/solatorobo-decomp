@@ -566,7 +566,7 @@ void func_ov003_021d5348(Ov003Kb *self) {
     case 11: {
         Ov003KbWork *w = self->work;
         if (self->tgt == NULL) {
-            (*(volatile u16 *)&w->state)++;
+            w->state = ((const Ov003KbWork *)w)->state + 1;
             return;
         }
         if (w->timer != 0) {

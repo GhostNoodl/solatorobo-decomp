@@ -27,7 +27,7 @@ struct Ov014G190A {
 };
 
 static inline void Ov014_TickA(Ov014Sub40 *st) {
-    u16 t = *(volatile u16 *)&st->timer;
+    u16 t = Ov014Sub40_Timer(st);
     if (t != 0) {
         st->timer = t - 1;
     }

@@ -35,9 +35,9 @@ ov006_MenuNode *func_ov006_021e48e8(ov006_MenuNode *self) {
     return self;
 }
 
-// The timer is read again here instead of reusing the value tested by the caller.
+// The timer is read again (through a const view) instead of reusing the value tested by the caller.
 static inline void ov006_MenuNode_Tick(ov006_MenuNode *n) {
-    u8 t = ((volatile ov006_MenuNode *)n)->timer;
+    u8 t = ((const ov006_MenuNode *)n)->timer;
     if (t != 0) {
         n->timer = t - 1;
     }
