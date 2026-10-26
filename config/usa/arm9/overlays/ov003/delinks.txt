@@ -355,7 +355,7 @@ src/ov003/ov003_021e0800.c:
 
 src/ov003/ov003_021eab10.cpp:
     complete
-    .text       start:0x021eab10 end:0x021ead50
+    .text       start:0x021eab10 end:0x021eae44
 
 src/ov003/ov003_021eae44.cpp:
     complete

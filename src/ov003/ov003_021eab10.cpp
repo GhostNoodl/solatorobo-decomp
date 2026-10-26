@@ -54,7 +54,9 @@ typedef struct {
 typedef struct {
     u8 unk_00[0x78];
     Ov003Vec3 pos;
-    u8 unk_84[0x3a];
+    u8 unk_84[0x30];
+    u16 unk_b4;
+    u8 unk_b6[0x8];
     u8 alpha;
     u8 unk_bf[0x9];
 } Ov003Anim;
@@ -246,6 +248,40 @@ BOOL func_ov003_021ead1c(Ov003Obj *self) {
         r = FALSE;
     }
     return r;
+}
+
+void func_ov003_021ead50(Ov003Obj *self) {
+    Ov003AnimTbl *tbl;
+    Ov003Player *pl;
+    func_ov000_02194758(self);
+    tbl = NULL;
+    func_ov000_0218ffdc(&self->anim, &self->res, 0, 1);
+    self->anim.unk_b4 = self->unk_0c;
+    if (self->unk_190 != NULL) {
+        tbl = &(*self->unk_190)->tbl;
+    }
+    if (tbl != NULL) {
+        self->unk_2d8 = tbl;
+        if (tbl != NULL && tbl->flag == 0) {
+            self->unk_2dc = tbl->entries[tbl->count];
+        }
+    }
+    func_ov000_02190cb0(&self->anim, data_ov003_021f9967, 0x1000, 0);
+    pl = func_ov000_0219bf90();
+    if (pl == NULL || !pl->unk_16_2) {
+        return;
+    }
+    if (self->unk_4c == NULL) {
+        void *mem = func_0203dd9c(0x5c);
+        if (mem != NULL) {
+            mem = func_ov000_02199b00(mem);
+        }
+        self->unk_4c = (Ov003Part *)mem;
+    }
+    self->unk_4c->unk_03 = 0xb;
+    self->unk_4c->unk_00 = 7;
+    self->unk_4c->unk_01 = 4;
+    self->unk_4c->unk_02 = 0;
 }
 
 }
