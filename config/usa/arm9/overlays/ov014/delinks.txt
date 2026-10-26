@@ -153,6 +153,10 @@ src/ov014/ov014_022152d4.cpp:
     complete
     .text       start:0x022152d4 end:0x022153e0
 
+src/ov014/ov014_022153e0.cpp:
+    complete
+    .text       start:0x022153e0 end:0x02215ffc
+
 src/ov014/ov014_02216300.cpp:
     complete
     .text       start:0x02215ffc end:0x02216430
