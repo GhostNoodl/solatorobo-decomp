@@ -4378,3 +4378,55 @@ static inline void ov006_Model_PlayPartChk(ov006_Model *model, int idx) {
 
 - `ov002_021d3e14` (18 / 0): with `sim3.py` and the spill check, the only single moves that give the target are the hoisted `0` (`v84`) into `(60.5, 62.5)` — between `base` and `i`, so in the named block — or `base` above `84`. A sweep of every pair of positions for `g` and `base` below the named block finds nothing. `0` is a constant the code generator hoists. No object can be numbered above it, and a named local that holds `0` is constant-propagated away. Six variants that initialise a declared local to `0` (`count`, `p`, `i`, `id`, `base`, `tbl`) leave the code unchanged.
 - `ov002_021d1f70` (35 / 0) spills `d`, `v44` and one temp in round 1. `sim3.py` reproduces both rounds, so it can now be analysed. The diff asks for nine nodes to change colour: `x`, `z`, the `o[0x51]` CSE, both inlined models and their `res`, one `part` and the `y << 12` CSE. No single renumbering does more than two of them (`z` into the CSE band, `[36.5, 61.5]`). A greedy search over pairs gets to six wrong and stops (`d1greedy.py`). The target is several moves away, and the moves have not been tied to source yet. The checking form of `PlayPart` from `021de6bc` changes nothing at the two call sites in the function body, and makes things worse (132) at the second call site inside `DrawCount`.
+
+## Codegen temps versus objects: `ov002_021e7ea8` and `ov002_021d3e14` match (round vphase)
+
+Round rgraph2 explained how *objects* (named locals, inline temps, CSEs, split lifetimes, `?:` results) are numbered. This round looked at the other kind of vreg: the **codegen temp**, a value with no object behind it (`obj=-` in the `ra.sh` dump). Two register-only misses matched once a value was moved from one kind to the other.
+
+### Tools (scratchpad `vphase/re/`)
+
+- `an.sh DRAFT FUNC MODULE DIR` runs `match.py`, dumps the graph and pcode (`dumpv.sh`), logs object creation (`lw.sh` + `join.py`), and runs `want.py`.
+- `want.py DIR MATCHTXT` lines up the final round's pcode with our disassembly. It matches register tuples and `k2` immediates, using a longest-common-subsequence pass and then the nearest unpaired instruction. Each vreg then gets the target's register at the same position. The result goes to `DIR/tgt.json`, so nobody has to write the "want" dict by hand. It is reliable on short functions. In long functions with repeated call sequences the alignment can slip, so check `novote` and fill in a few nodes by hand.
+- `sw1.py RA.out @tgt.json [procs] [moves]` lists every single move that gives the target with no other node changing, on top of optional fixed moves. `pair.py` sweeps a grid over two nodes, `gr.py` does a beam search, and `tryp.py` shows the wrong nodes after a given set of moves. All of them use `wi.colour_rounds`, so they handle spills. `ONLY=a,b,c` limits `sw1.py` to some nodes, which helps on big graphs.
+
+### Which values are codegen temps
+
+- A codegen temp is numbered when the code generator first produces it, in statement order, above every object. That includes the hoisted constants (`mov rX, #0` lifted to the top of the function), which get their number at their first use. "Above the hoisted `0`" therefore means "a codegen temp, not an object".
+- **A local that is assigned once is folded into the codegen temp that defines it, unless a call lies between the definition and the first use.** In that case it stays an object in the named block. Toys (`vphase/toy/k1`–`k5`) show this. With `base = *(u8 **)(D + 0x4c)` and then a loop calling `F(base + 0x110, ...)`, `base` is a codegen temp. With `tbl = T(D, 8)` between the definition and the loop, `base` is an object. Calls inside the loop, after the first use, do not matter.
+- **A local that copies a global (`g = data_x;`) is forward-substituted.** Every use becomes a load of the global, and those loads are merged into one CSE object. **A local defined as a load plus a constant (`p = data_x + 0x8b0`, `blk = data->unk_4c + 0x110`) is forward-substituted as a tree.** The load inside it is computed once and stays a codegen temp, even across calls. The add is done again at each use, or folded into the addressing mode (`ldrb r2, [r6, #0x8b0]`).
+
+### `ov002_021e7ea8` (56 / 0, the dejunk draft)
+
+`want.py` and `sw1.py` gave two moves. `gx` had to go below `ret` (anywhere `16.5 … 42.5`). The `data_02097d48` load (a CSE, `35`) had to go above the hoisted `0` (`63.5 … 83.5`), so it had to be a codegen temp. Declaring `ret` before `gx` handles the first move. For the second, `case 0` drops `g` and writes
+
+```c
+gx = data_02097d48 + 0x8b0;
+...
+FIELD(gx, 0, Bits8).b4 = 0;
+FIELD(gx, 0, Bits8).b5 = 1;
+```
+
+The load is now one codegen temp shared by `gx` and the bit-field access (`ldrb r2, [r6, #0x8b0]`), and the function matches (`src/ov002/ov002_021e7ea8.cpp`). Neither change is enough alone (72 diffs with only the declaration order).
+
+### `ov002_021d3e14` (18 / 0, the round rgraph2 "unreachable" one)
+
+Round rgraph2's what-if said `base` had to be numbered above the hoisted `0` (`84`), which seemed impossible for a named local. It is possible for a codegen temp. `base` is loaded before the `func_0205976c`/`func_0205975c` calls and used only as `base + 0x110` in the loop. Pointing the local at the sub-block instead,
+
+```c
+blk = FIELD(data_02fe152c, 0x4c, u8 *) + 0x110;
+... func_02059544(data_02fe152c, blk, tbl, 1, i) ...
+```
+
+makes the load a codegen temp (the `+ 0x110` is still done in the loop, as in the ROM), and the function matches (`src/ov002/ov002_021d3e14.cpp`).
+
+### Same lever, not matched yet
+
+- `ov000_02176714` (dejunk draft, 73 / 2): it has the same `Items` loop, `base + 0x130`. With `base = ... + 0x130` the draft goes to **15, all registers** (`vphase/6714/e1.cpp`). Two exact single moves remain. Either `tbl` goes below the `tbl[i].b` CSE (`id`, anywhere `16.5 … 65.5`, the split-lifetime or `?:` band), or the `id` CSE goes to `70.5`, between the inline's `i` and `tbl`. Every declaration order of the inline's locals, `id` declared at each position in the inline, and the `Ov002_Avail` shape from `021d3e14` stay at 15.
+- `ov000_021743bc` (`big4/43bc/bfv/s12.cpp`, 113): `t + 0x70` in `Has021743bc` gives 105.
+
+### Looked at, and why they are not register-numbering problems
+
+- `ov000_0219b808` (4): the target's `ldrh r1, [r7, #0x7c]` interferes with the physical `r1` in our pcode, because the `Send` inline's struct copy is placed between the argument moves. That is pcode order, not numbering.
+- `ov000_021be5dc` (3): the `z - 0x1000` temp has to be numbered below the `smull` result temps. The code generator gives the result registers numbers before it evaluates the operands. So the subtraction would have to be an object, and a single-use value never survives as one. `ToDepth2`, an `s64` temporary, a local for `g[0xa28]` and argument forms all stay at 3.
+- `ov011_021fc0b8`, `ov000_0218cfc8` and `ov000_021b3e90` have instruction-order or condition differences, not only register ones.
+- Many drafts listed in `bfsweep/best1.txt` are permuter output (parameters reused as locals, `(0, x)`, `__typeof__` temps, one-element arrays). These include `0214dd3c`, `021512b4`, `021688c4`, `0216c310`, `0217558c` and `021d1f70`. Their what-ifs point at objects that exist only because of the junk. The `021688c4` draft without the junk parameter is still 20, and it needs the `a5` local numbered inside the second `Model_PlayPart` expansion's inline band.

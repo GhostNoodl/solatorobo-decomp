@@ -193,6 +193,10 @@ src/ov002/ov002_021d3dd4.cpp:
     complete
     .text       start:0x021d3dd4 end:0x021d3e14
 
+src/ov002/ov002_021d3e14.cpp:
+    complete
+    .text       start:0x021d3e14 end:0x021d43fc
+
 src/ov002/ov002_021d43fc.cpp:
     complete
     .text       start:0x021d43fc end:0x021d54f0
@@ -719,6 +723,10 @@ src/ov002/ov002_021e779c.cpp:
 src/ov002/ov002_021e7cb4.cpp:
     complete
     .text       start:0x021e7cb4 end:0x021e7ea8
+
+src/ov002/ov002_021e7ea8.cpp:
+    complete
+    .text       start:0x021e7ea8 end:0x021e828c
 
 src/ov002/ov002_021e86a0.cpp:
     complete
