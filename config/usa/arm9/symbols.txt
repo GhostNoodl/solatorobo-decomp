@@ -3858,7 +3858,12 @@ data_02149ef0 kind:bss addr:0x02149ef0
 data_02149ef4 kind:bss addr:0x02149ef4
 data_02149ef8 kind:bss addr:0x02149ef8
 data_02149efc kind:bss addr:0x02149efc
+data_02149f00 kind:bss addr:0x02149f00
+data_02149f04 kind:bss addr:0x02149f04
+data_02149f08 kind:bss addr:0x02149f08
 data_02149f0c kind:bss addr:0x02149f0c
+data_02149f10 kind:bss addr:0x02149f10
+data_02149f14 kind:bss addr:0x02149f14
 data_02149f18 kind:bss addr:0x02149f18
 data_0214a418 kind:bss addr:0x0214a418
 data_0214a41c kind:bss addr:0x0214a41c

@@ -1471,81 +1471,10 @@ src/Main/Res/DataRes_6.cpp:
     complete
     .text       start:0x0205973c end:0x0205983c
 
-src/Main/Gfx/ObjPool.cpp:
+src/Main/Res/Stage.cpp:
     complete
-    .text       start:0x0205983c end:0x0205a028
-
-src/Main/Gfx/ObjPool_2.cpp:
-    complete
-    .text       start:0x0205a028 end:0x0205a69c
-
-src/Main/Res/StageRes.cpp:
-    complete
-    .text       start:0x0205a69c end:0x0205ae68
-
-src/Main/Res/StageRes_2.cpp:
-    complete
-    .text       start:0x0205ae68 end:0x0205b1fc
-
-src/Main/Res/StageRes_3.cpp:
-    complete
-    .text       start:0x0205b1fc end:0x0205b31c
-
-src/Main/Res/StageRes_4.cpp:
-    complete
-    .text       start:0x0205b31c end:0x0205b8c4
-
-src/Main/Res/StageRes_5.cpp:
-    complete
-    .text       start:0x0205b8c4 end:0x0205beb0
-
-src/Main/Res/StageCmd_0.cpp:
-    complete
-    .text       start:0x0205beb0 end:0x0205bee4
-
-src/Main/Res/StageCmd.cpp:
-    complete
-    .text       start:0x0205bee4 end:0x0205c234
-
-src/Main/Res/StageCmd_2.cpp:
-    complete
-    .text       start:0x0205c2fc end:0x0205cb9c
-
-src/Main/Res/StageCmd_3.cpp:
-    complete
-    .text       start:0x0205cb9c end:0x0205cbf0
-
-src/Main/Res/StageCmd_4.cpp:
-    complete
-    .text       start:0x0205cbf0 end:0x0205d0dc
-
-src/Main/Res/StageCmd_5.cpp:
-    complete
-    .text       start:0x0205d0dc end:0x0205e29c
-
-src/Main/Res/StageCmd_6.cpp:
-    complete
-    .text       start:0x0205e5a8 end:0x0205e5c4
-
-src/Main/Res/StageCmd_7.cpp:
-    complete
-    .text       start:0x0205e818 end:0x0205f8f8
-
-src/Main/Res/StageCmd_8.cpp:
-    complete
-    .text       start:0x0205f8f8 end:0x020600cc
-
-src/Main/Res/StageCmd_9.cpp:
-    complete
-    .text       start:0x020600cc end:0x02060364
-
-src/Main/Res/StageCmd_10.cpp:
-    complete
-    .text       start:0x02060364 end:0x02060714
-
-src/Main/Res/StageCmd_11.cpp:
-    complete
-    .text       start:0x02060714 end:0x02060a08
+    .text       start:0x0205983c end:0x02060a08
+    .bss        start:0x02149efc end:0x0214a418
 
 src/Main/Res/StageCmd_12.cpp:
     complete

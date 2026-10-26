@@ -1,6 +1,7 @@
 #ifndef MAIN_RES_STAGECMD_H
 #define MAIN_RES_STAGECMD_H
 
+#include "nitro/fx.h"
 #include "Main/Res/StageRes.h"
 #include "Main/Sys/Field.h"
 
@@ -9,11 +10,7 @@
 
 extern "C" {
 
-typedef struct StageVec {
-    s32 x;
-    s32 y;
-    s32 z;
-} StageVec;
+typedef VecFx32 StageVec;
 
 typedef struct StageColor {
     u8 r;
@@ -299,8 +296,8 @@ static inline void Stage_FindObj(u16 id, u16 b) {
     if (id == 0) {
         return;
     }
-    data_02149efc.unk_14 = Stage_FindObj3D(id);
-    data_02149efc.unk_04 = func_ov000_0218bd9c(data_ov000_021ccd64, id, b & 0xff);
+    data_02149f10 = Stage_FindObj3D(id);
+    data_02149f00 = func_ov000_0218bd9c(data_ov000_021ccd64, id, b & 0xff);
 }
 
 struct StageObj3D {
@@ -424,7 +421,6 @@ static inline BOOL StageCam_IsActive(void) {
 }
 
 extern int func_0205f5c4(StageRes *res, u16 id, u16 idx, u16 posIdx, u16 mode);
-extern void VEC_Add(const StageVec *a, const StageVec *b, StageVec *out);
 extern void func_ov000_021b12c0(StagePlayer *player, int a);
 extern void func_ov000_021b1514(StagePlayer *player);
 extern void func_ov000_021b13cc(StagePlayer *player, int a);

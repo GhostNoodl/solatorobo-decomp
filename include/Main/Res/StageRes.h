@@ -100,36 +100,36 @@ static inline void Slot_Init(StageResSlot *slot) {
 }
 
 static inline StageResSlot *Slot_Alloc(void) {
-    s32 end = data_02149efc.slotEnd;
+    s32 end = data_02149f04;
     StageResSlot *slot = &data_02149f18[end];
-    data_02149efc.slotEnd = end + 1;
-    if (data_02149efc.slotEnd >= 0x40) {
-        data_02149efc.slotEnd = 0;
+    data_02149f04 = end + 1;
+    if (data_02149f04 >= 0x40) {
+        data_02149f04 = 0;
     }
     Slot_Init(slot);
     return slot;
 }
 
 static inline StageResSlot *StageRes_Peek(void) {
-    if (data_02149efc.slotStart == data_02149efc.slotEnd) {
+    if (data_02149f14 == data_02149f04) {
         return NULL;
     }
-    return &data_02149f18[data_02149efc.slotStart];
+    return &data_02149f18[data_02149f14];
 }
 
 static inline void StageRes_Pop(void) {
-    if (data_02149efc.slotStart == data_02149efc.slotEnd) {
+    if (data_02149f14 == data_02149f04) {
         return;
     }
-    data_02149efc.slotStart++;
-    if (data_02149efc.slotStart >= 0x40) {
-        data_02149efc.slotStart = 0;
+    data_02149f14++;
+    if (data_02149f14 >= 0x40) {
+        data_02149f14 = 0;
     }
 }
 
 static inline StageResSlot *StageRes_Last(void) {
-    s32 end = data_02149efc.slotEnd;
-    if (data_02149efc.slotStart == end) {
+    s32 end = data_02149f04;
+    if (data_02149f14 == end) {
         return NULL;
     }
     end -= 1;

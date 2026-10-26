@@ -41,15 +41,6 @@ typedef struct ObjPool {
     /* 0x010 */ ObjPoolEntry entries[16];
 } ObjPool;
 
-typedef struct ObjPoolGlobals {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ void *unk_04;
-    /* 0x08 */ s32 slotEnd;
-    /* 0x0c */ u32 unk_0c;
-    /* 0x10 */ ObjPool *pool;
-    /* 0x14 */ void *unk_14;
-    /* 0x18 */ s32 slotStart;
-} ObjPoolGlobals;
 
 typedef struct ObjPoolShared {
     /* 0x00 */ u16 unk_00;
@@ -116,7 +107,14 @@ typedef struct ObjPoolShared {
 
 extern "C" {
 
-extern ObjPoolGlobals data_02149efc;
+// TU2's own .bss scalars (StageRes/StageCmd/ObjPool), laid out from 0x02149efc.
+extern u32 data_02149efc;
+extern void *data_02149f00;
+extern s32 data_02149f04; // slot ring end
+extern u32 data_02149f08;
+extern ObjPool *data_02149f0c;
+extern void *data_02149f10;
+extern s32 data_02149f14; // slot ring start
 extern ObjPoolShared data_02fe1534;
 extern UnkSys *data_02097dd0;
 extern void *func_0203dd9c(u32 size);
