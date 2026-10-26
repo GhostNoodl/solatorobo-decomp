@@ -4581,3 +4581,33 @@ So a scheduling-only miss is often a block that was rescheduled when the ROM's w
 - `func_0205c234` (2): loading after `args[3]` (non-volatile) leaves the address `ldr` one slot late. It is a tie between `strh` (class 1) and the next op (class 0).
 - `func_0205e5c4` (2): stores to the same global through a literal address keep their order. Stores through a pointer base at different offsets do not. Swapping the `unk_14`/`unk_04` stores changes the allocation (6 to 15). All 36 placements and 120 permutations were tried, and the best was 6.
 - `pbscan.sh` was run on the 24 best unmatched drafts with 1 to 12 raw differences, including `ov000_02171478`, `ov010_02200a00`, `ov009_02206084`, `ov000_021b3e90`, `func_0205c234`, `func_0205e5c4`, `func_02056e74` and `ov000_0219b808`. It forced each block, one at a time, into a post-allocation reschedule or a normal-mode first schedule. No function reached 0, and none improved on its base score. Their misses come from list order or register allocation, not from block mode. So the two levers above (removing a coalesced copy, and making a block's last store non-volatile so it can merge) are the only ones found this round.
+
+## SDK inline forms in the unmatched drafts: `func_02068e68` matches (round sdkf)
+
+This round went through the best draft of every unmatched function. It looked for hardware and SDK accesses: `REG_*` and raw `0x04xxxxxx` registers, DIV/SQRT/CP, G3 commands (direct or through `NNS_G3dGeBufferOP_N`), `MI_Cpu*`, `OS_*` IRQ/lock calls and DMA. Where a draft re-implemented an SDK inline by hand, it was rewritten in the inline's real form. Scratchpad: `sdkf/` (`scan.py` lists the bl targets and I/O literals of each unmatched function's target, `diffs.txt` has the first mismatching lines of every best draft at 30 or less, and `conv/` has a converter from the game-style `G3_Cmd1`/`G3_Vec` wrappers to `NNS_G3dGe*` forms).
+
+### Matched
+
+- `func_02068e68` (was 26 / 1, now 0, appended to `src/Main/Effect/Effect_9.cpp`, which now ends at `0x02069184`). This is the particle draw: `TexImageParam`/`TexPlttBase`, `PolygonAttr`, `MtxMode`, `PushMtx`, `Translate`, rotation by `MTX_Rot*33`/`MTX_Concat33`, `Scale`, `Color`, `SendDL`, `PopMtx`. The old draft hand-rolled every command as `NNS_G3dGeBufferOP_N(op, &local, n)` with function-level locals. It also needed a `(u32)p & 3` hack to keep `FX_SinCosTable_` in a register for the Y/Z rotations. The rewrite uses the NitroSystem inline forms (`nnsys/g3d.h`): `NNS_G3dGeMtxMode`/`NNS_G3dGePopMtx` pass the address of their own parameter, and `NNS_G3dGePolygonAttr`/`TexPlttBase`/`Color` each pack into their own temporary. It also uses `FX_SinIdx`/`FX_CosIdx` and `MTX_RotX33`/`Y33`/`Z33`. With these forms, and no hack, the register allocation matched the ROM at once: the constant `1` sits in `r5` and `type` in `r4`, and MWCC CSEs the table address for the Y/Z rotations by itself. Three things then fixed the stack slots and the load order:
+  - **`VEC_Set` for the translate and scale vectors.** The target loads `pos.z`, `pos.y`, `pos.x` and then stores `x`, `y`, `z`, which is the argument order of an inline. The two vectors are function-level `VecFx32` locals declared between the matrices (`rz`, `rot`, `trans`, `tmp`, `scale`), passed to `NNS_G3dGeTranslateVec`/`ScaleVec`. With `NNS_G3dGeTranslate(x, y, z)` (an inline-local vector) the vector slots land below the matrices.
+  - **The inlines' temporaries go below every function-level local, in expansion order** (round 17). The ROM has `TexPlttBase`'s slot below the `else` branch's `TEXIMAGE_PARAM` word. So the `else` branch writes its constant through a plain block local (`u32 texParam = 0x21200000;`) and not through `NNS_G3dGeTexImageParam`. Block locals rank with the function's own locals, above the inline temporaries.
+  - **Declaration order of the three `u16` angles** (`rz`, `ry`, `rx`) gives their registers.
+
+  `nnsys/g3d.h` and `nitro/fx.h` cannot be included next to `Main/Effect/Effect.h` (it declares `MTX_*`/`NNS_G3dGlb` with its own types), so the file carries local copies of the few inlines it needs.
+
+### No change
+
+- **Plain `u64 *` for `SQRT_PARAM` in the other sqrt users.** `ov006_021e7004`, `ov009_02206084`, `ov009_02208b24` and `ov013_021fc7e0` all use the `vu64` spelling. With the SDK's plain pointer (the round sched lever) every one scores the same, and none of their remaining diffs is near the sqrt.
+- **The `NNS_G3dGe*` forms in other G3 drafts.** These drafts were converted mechanically (`conv/conv.py`, `G3_Cmd1(0x12, n)` to `NNS_G3dGePopMtx(n)` and so on):
+  - `ov000_02152f8c` stays at 13 and `ov000_021b9b14` at 140.
+  - `02056e74` stays at 4, and it no longer needs the `s = 0x1000 - *&s` hack.
+  - `ov010_02200a00` is 6 (`sdkf/a00/c0.cpp`, also without the old `opt_unpromotetypes` pragma). It uses `NNS_G3dGlbSetBaseRot` (`MI_Copy36B` to `prmBaseRot`, `flag &= ~0xa4`), `VEC_Set`, `NNS_G3dGeBegin`/`End`/`Vtx`/`VtxXY`. The last miss is the `mov r8, #0` for the zero vector, which the target schedules after the flag update.
+  - A 10-minute `cxxperm` run on `a00` and a 15-minute run on `e74` found nothing.
+- **`func_02043100` with `NNS_G3dGe*` forms** (`sdkf/3100/`) goes from 225 to 250. Two details of the target are worth keeping for a rewrite. The texture coordinates are packed through `GX_FX16ST` (`(s16)(x >> 8)`, so `lsl #8; asr #16; lsl #16; lsr #16`). `color` is not truncated before the `COLOR` command, so the parameter is a `GXRgb`. The first block reads `attr01`/`attr23` with one `ldm` for the shape mask and `charNo`, and reads `x`/`y` through bitfields.
+- **`ov010_02204030`** (`sdkf/4030/p10.cpp`, 20 + 6 `blx`, was 15 / 8 with `__typeof__`/`lv_t` junk). The clean form uses `u16 cur = ang;`, `VEC_Set(&v, 0, 0, FX_Mul(r, FX32_ONE))`, `MTX_RotY33(&m, FX_SinIdx(..), FX_CosIdx(..))`, `y = c->y` before the rotation and `best, i, y, d` declaration order. It matches except for the entry block. There the target stores `v.z` first and the two zeros (in `r4`) after the sin/cos loads. In every order we write, the scheduler hoists the zero stores to the top. `pbscan.sh` gives no 0 in either mode. A 12-minute `cxxperm` run only reached 26, through a one-element array.
+- **Checked, no lever.**
+  - `0200d36c` (`CARDi_ReadRomWithCPU`: `((u32 *)ptr)[word++] = data` gives 8).
+  - `0204e5d4`: its `OS_DisableIrq`/`OS_EnableIrq` pair is already in the SDK shape.
+  - `0204f524`/`0204f5bc`: `G2_GetOBJCharPtr`/`G2S_GetOBJCharPtr` give the same code as the literals.
+  - `ov000_0217a1f8`: `s8`/`int`/`u32` for the `-1` parameter all give 3.
+  - `ov000_021be5dc`: an `FX_MulInline` function in place of the macro also gives 3.

@@ -1609,7 +1609,7 @@ src/Main/Effect/Effect_8.cpp:
 
 src/Main/Effect/Effect_9.cpp:
     complete
-    .text       start:0x02068da8 end:0x02068e68
+    .text       start:0x02068da8 end:0x02069184
 
 src/Main/Effect/Effect_10.cpp:
     complete
