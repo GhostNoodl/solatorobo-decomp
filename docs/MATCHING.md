@@ -4271,3 +4271,50 @@ How to use it: write down the target's clusters from the disassembly (`addls`/`a
 - **`__pformatter`.** The original MSL label set (`% A E F G X a c d e f g i n o s u x`, no `'p'`) gives `'%' T[A..G] 'X' 'a' 'c' T[d..u] 'x'` at 53-bit precision, which is the target. At 64-bit it gives `T[d..o] C[s..x]`. A `case 'p':` (from the mainnm draft, 7 diffs) gives `T[d..x]` in both modes. Under the stale rule, `T[d..u]` followed by a single `'x'` cannot happen at 64-bit precision with any set of extra labels: `u` merges against `c[5]` with `count/range = 12/30`, and that is exactly 0.4. The function goes at the end of `printf.c`, whose `.text` now ends at `0x020076f4`. Its `""` and `L""` literals are the compiler's `@1185`/`@1186` (`symbols.txt`, `local`), so `printf.c`'s `.data` now ends at `0x0208adb8`.
 - **`ov008_021ce518`.** `big11/d/ce518_none.cpp` (the draft without the dummy `case 21:`) is 0. Round bigfresh8's "`{16,20}` cannot be a cluster" was the 2/5 case. The window allocation of case 11 is written out inline: the `Ov008_NewWin()` inline from the draft costs 13 diffs.
 - **`func_02015510`** is NitroSDK `GX_SetBankForSubBG`, placed right after `GxSetBankForSubBG` in `gx_vramcnt_2.c` (start moved to `0x02015510`). The mainbig6 and mainlow12 drafts were already exact.
+
+## Inside the register allocator: how MWCC numbers vregs, and what that fixes (round rgraph)
+
+Round giantsD built a window into mwccarm's colouring: `ra.sh`/`ra.py` run the compiler under gdb, break on the graph colourer and dump, per round, the interference graph (one line per vreg: colour, flags, spill cost, neighbours and the debug name of the object behind it), the simplify order and the whole pcode with vreg operands. `sim.py` replays simplify and colouring in Python. This round used them on the register-only near-misses to find out *which vreg numbering* each target needs, and then which source constructs produce which numbering. The numbering rules below are the useful part; no function landed from them yet.
+
+### The allocator, confirmed
+
+- The integer register class is **14 wide**. `sim.py` reproduces the compiler's simplify order and every colour exactly at `K=14` on real functions (`ov006_021de6bc`, 381 nodes, and `ov000_02165a20`, 254 nodes: order identical, zero colour mismatches). `K=13` and `K=15` reproduce neither. On `ov002_021d3e14` the order comes out slightly different but every colour still matches, so treat the order as a bonus and the colours as the check. Nodes are pushed while their degree is `< K`; when every remaining node is saturated, the one with the smallest `cost/degree` is pushed (flag `0x80` and `0x400` nodes last).
+- Colouring walks the stack back and takes the **lowest free register**, from `r0-r3, r12, r14` first and then `r4 … r11` opened one at a time as the volatile ones run out. Because the simplify order mostly mirrors the vreg numbers, the practical rule is: **among values that interfere, the higher-numbered vreg is coloured first and gets the lower register.**
+- The dump is only usable when the graph colours without spilling. `ov002_021d1f70` spills (`c=-1` nodes, the `str [sp]`s in the target), the compiler then rebuilds and re-colours, and `sim.py` does not follow that yet.
+
+### Where vreg numbers come from
+
+Read off the pcode dumps of `ov006_021de6bc` (381 vregs) and `ov002_021d1f70` (210):
+
+1. `v0 … v15` are the physical registers; the parameters follow at `v16`.
+2. The function-scope named locals occupy **one contiguous block, numbered in reverse declaration order** — the first declared local has the highest number, and inner-scope declarations continue the same descending run. `ov006_021de6bc` declares `m0, pair, item, m1` and then `py, px, pz`, `x, y`, `m`, and gets `m0=123, pair=122, item=121, m1=120, py=119, pz=118, x=117, y=116, m=115`. `ov002_021d1f70` declares `v44, d, n, x, o, y, z` and gets `v44=71, d=70, o=68, x=69, z=66, y=67`. A local the compiler folds away (`px`, `n`) takes no number and the rest close up.
+3. **Above** that block is the ordinary expression-temp pool, which *ascends* with first definition (`124 … 380` in `021de6bc`, `65 … 253` in `02165a20`).
+4. **Below** it are the temps of inlined calls (`17 … 114`, `16 … 53`), and at the very bottom the extra lifetimes of multiply-assigned locals and some long-lived CSEs. In `021de6bc` the inline temps run *downward* with first definition (`112, 109, 106, … 77`) while those bottom values run upward (`50, 51, 54, 59`).
+
+   This layout is not universal: in `ov000_02165a20` the locals and the low temps interleave in the same range (`w=64, p=62, e=60, k=58, k=54, best=55` with temps at `59, 61, 63`), because that function declares `e` and `k` twice in two inner scopes. Dump the graph rather than predicting the numbers; what the dump is for is telling you *which* number has to move, and the rules below say which source change moves it.
+
+### The rule that decides register-only misses
+
+**A local that is assigned more than once keeps its named-local number only for its first lifetime. Every later lifetime gets a vreg from the bottom pool, below every inline temp, so it is coloured last among the values it interferes with and gets the highest register.**
+
+In `ov006_021de6bc` the four `self->unk34` blocks are the same inline called four times. Three of them pass a model pointer the compiler numbers high — `m1=120` (a local assigned once) and `87` (an ordinary temp, no local) — and both come out in `r5`, like the ROM. The two blocks that assign to `m0`, which was already used earlier, get vregs `50` and `51` for the same pointer: numbered *below* the inline's own `res` temp (`96`, `93`), coloured after it, and so put in `r7` where the ROM has `r5`. Those 16 instructions are the whole remaining diff. A toy with the same shape (four calls to one branching inline, a live `x`/`y` pair around them) shows it in isolation: one local reused across two call sites gives the second site's pointer vreg 25 and `r10`; two separate locals give it vreg 50 and `r7`, with nothing else in the function moving.
+
+So the lever is lifetimes, not declaration order:
+
+- to push a value into a **higher** register, fold it into a local that is already live earlier in the function (make it a second lifetime);
+- to pull it into a **lower** register, split the local so that the value is a first lifetime.
+
+### Two corollaries about declaration order
+
+- **Order only matters between locals whose lifetimes interfere.** Twenty-four declaration orders of four pointer locals, each assigned once at a different call site of `ov006_021de6bc`, compile to identical code (all 132 diffs). A local that is assigned once and used nearby is coalesced with the temp that defines it and never reaches the graph at all (toys `h3.cpp`/`b3.txt`).
+- **Adding or removing one *used* local is a blunt instrument.** It shifts the named block and both temp pools by one and can recolour everything: dropping one local from the `021de6bc` draft moved `self` from `r4` to `r5` and took the function from 16 diffs to 109. Six-local variants of the same draft (one local per call site, every declaration order) all score 114 or 132. Prefer changing a lifetime over adding a declaration.
+
+### The what-if method, and what it says about the remaining misses
+
+With a dump in hand, `wi2.py`-style renumbering proves what the target needs before touching the source: move a node's number, re-run `sim.py`, and check that the ROM's register swap appears *and* that no other node changes colour.
+
+- `ov006_021de6bc` (16 diffs, registers only): swapping the model pointer with the inline's `res` temp in the two `m0` blocks (`50 ↔ 96`, `51 ↔ 93`) gives the target's registers with zero collateral changes. Every source shape tried keeps the model below `res` there.
+- `ov000_02165a20` (38 diffs, all of them `r7 ↔ r8`): `FindArea`'s loop pointer (`27`) has to be renumbered anywhere between the second lifetime of `w` (`30`) and the top of the low pool (`53`); that flips exactly the eleven nodes the ROM wants and nothing else. A sweep of every single-node move in the graph finds no other way to it. Splitting `w` into two locals does the opposite — it raises the second value to a named number (`59`) — and hand-inlining `FindArea` to make its pointer a function-scope local changes the control flow (12 wrong instructions).
+- `ov002_021d3e14` (18 diffs, all of them `r5 ↔ r6`): the hoisted `0` has to be numbered inside the named-local block, just below `g` — then `0` takes `r6` and both `g` and `base` take `r5`, which is the target, with nothing else moving. A local assigned `0` once does not do it: it is coalesced into the same hoisted constant and the graph is unchanged (`z2…z5` variants). Writing the field triples as `SetA`/`SetB` inlines with `0` as an argument does not either — same 18 diffs, same graph.
+
+All three are now one known vreg swap away rather than an unexplained register miss.
