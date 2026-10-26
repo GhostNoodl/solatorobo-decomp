@@ -299,6 +299,7 @@ The linker strips functions that nothing references. If `ninja` reports a matche
 ## More patterns (ov000, round 18)
 
 - **Two zero words sharing a register.** When the target clears two adjacent words through one scratch register (`mov r0,#0; str r0; str r0` with a shared base), `LFLD(s64, st, 4) = 0` reproduced it (`func_ov000_021b06dc`).
+- **One read through the struct, the rest through the cached local.** In `func_02047724` the draft cached `data = s->data` and used `data` everywhere. Writing only the first use as `s->data->size` (the rest stay `data->...`) moved two callee-saved registers into place (15 diffs to 6). A two-statement form of a later difference, `n = slotSize + 4; n = s->dataSize - n;`, fixed the rest. Neither change alone matched, and the permuter only found junk that pointed at the `n` statement. (round beam1)
 - **Avoid address CSE across a key compare.** Read the table key through `*(s32 *)((u8 *)tbl + i * 12)`, with an `s32` key variable, so MWCC does not reuse the entry address for the later pointer-to-member call. Pointer-to-member dispatch is written `(((Cls *)self)->*tbl[i].fn)()` (`func_ov000_021b06dc`).
 - **Store order z then x.** `s32 x = pos.x + dx; pos.z += dz; pos.x = x;` gives the early x sum with the z store first (`func_ov000_0218dbe0`).
 - **Re-read the field in each FX multiply.** Hoisting `(s64)spd` into a local produced a full 64x64 multiply. Reading `self->unk_9c` again in each multiply, with the operand order the `smull` uses, gave the target.

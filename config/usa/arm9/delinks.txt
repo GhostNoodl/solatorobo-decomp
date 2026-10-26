@@ -1212,7 +1212,7 @@ src/Main/Save/SysCard.cpp:
 
 src/Main/Save/SaveBase.cpp:
     complete
-    .text       start:0x0204730c end:0x02047724
+    .text       start:0x0204730c end:0x020477fc
 
 src/Main/Save/SaveBase_2.cpp:
     complete
