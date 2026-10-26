@@ -7,7 +7,7 @@
 
 src/ov011/ov011_021fa6a0.cpp:
     complete
-    .text       start:0x021fa6a0 end:0x021fb02c
+    .text       start:0x021fa6a0 end:0x021fb38c
 
 src/ov011/ov011_021fb38c.cpp:
     complete

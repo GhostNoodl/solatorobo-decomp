@@ -306,3 +306,92 @@ void func_ov011_021facc4(Ov011Mgr *self) {
 }
 
 }
+
+extern "C" {
+
+BOOL func_ov003_021d7a44(void *self, const Ov011Vec *target, const Ov011Vec *start, s32 speed, s32 maxDist, u8 noSnap);
+void func_ov003_021d7c08(void *self, const Ov011Vec *target);
+void func_ov011_02201214(void *self, void *p);
+
+static inline Ov011PNode *Ov011_NewPNode(const Ov011Vec *v) {
+    Ov011PNode *n = (Ov011PNode *)func_0203dd9c(0x10);
+    n->v.x = v->x;
+    n->v.y = v->y;
+    n->v.z = v->z;
+    n->next = NULL;
+    return n;
+}
+
+void func_ov011_021fb02c(Ov011Mgr *self) {
+    Ov011Vec v;
+    Ov011Vec p;
+    Ov011Vec v2;
+    void *a;
+    u16 i;
+    s32 j;
+    Ov011Ent *e;
+    void *actor;
+    BOOL ok;
+    actor = self->list->actor;
+    if (self->state == 0) {
+        v = FLD(Ov011Vec, actor, 0x70);
+        v.y += 0x6800;
+        for (i = 0; i < self->count; i++) {
+            a = Ov011_FindActor(self->ids[i]);
+            if (a != NULL) {
+                p = FLD(Ov011Vec, a, 0x70);
+                func_ov003_021d7a44(&self->arr8[i], &v, &p, 0x52, 0x3000, 0);
+            }
+        }
+        self->state++;
+        return;
+    }
+    v2 = FLD(Ov011Vec, actor, 0x70);
+    v2.y += 0x6800;
+    for (s32 k = 0; k < self->count; k++) {
+        func_ov003_021d7c08(&self->arr8[k], &v2);
+    }
+    ok = TRUE;
+    for (i = 0; i < self->count; i++) {
+        a = Ov011_FindActor(self->ids[i]);
+        if (a != NULL) {
+            FLD(Ov011Vec, a, 0x70) = *(Ov011Vec *)self->arr8[i].v10();
+            if (!self->arr8[i].v14()) {
+                ok = FALSE;
+            }
+        }
+    }
+    if (!ok) {
+        return;
+    }
+    for (j = 0; j < self->count; j++) {
+        a = Ov011_FindActor(self->ids[j]);
+        if (a != NULL) {
+            Ov011Vec delta;
+            Ov011PNode *n;
+            delta.x = FLD(s32, a, 0x70) - FLD(s32, actor, 0x70);
+            delta.y = FLD(s32, a, 0x74) - FLD(s32, actor, 0x74);
+            delta.z = FLD(s32, a, 0x78) - FLD(s32, actor, 0x78);
+            e = self->unk_18;
+            n = NULL;
+            if (e->b0) {
+                Ov011PNode *q = Ov011_NewPNode(&delta);
+                e->unk_04 = Ov011_PushNode(e->unk_04, q);
+                n = q;
+                e->b1 = 0;
+                e->unk_08 = 0;
+            }
+            func_ov011_02201214(a, n);
+        }
+    }
+    for (i = 0; i < self->count; i++) {
+        self->arr8[i].v08();
+    }
+    if (self->unk_04 == 0) {
+        self->flags |= 4;
+    } else if (self->unk_04 == 1) {
+        self->flags |= 0x20;
+    }
+}
+
+}
