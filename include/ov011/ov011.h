@@ -221,7 +221,7 @@ void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 void *func_ov000_0218e640(void *mgr, u16 id);
 void *func_ov000_0219bf90(void);
 void func_ov003_021da40c(void *p);
-void func_ov003_021da48c(void *p, s32 a);
+void func_ov003_021da48c(void *p, u8 a);
 }
 
 static inline BOOL Ov011Game_IsBusy(Ov011Game54 *g) {

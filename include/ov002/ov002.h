@@ -168,9 +168,9 @@ extern VFunc data_ov002_021ef530[];
 extern char data_ov002_021ef3e4[];
 extern char data_ov002_021ef3ec[];
 extern char data_ov002_021ef3f8[];
-void func_02035acc(void *a, void *b, int c);
-int func_020359fc(void *a, void *b, int c, int d);
-int func_02035bd4(void *a, void *b, int c);
+void func_02035acc(void *a, void *b, u16 c);
+int func_020359fc(void *a, void *b, u16 c, u8 d);
+int func_02035bd4(void *a, void *b, u16 c);
 void func_02041558(void *p);
 void func_02041278(void *p);
 void *func_ov000_0218084c(void *a, int b, int c);
@@ -231,7 +231,7 @@ extern void *data_ov000_021ccd38;
 int func_02054f10(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
+void func_02042628(void *a, void *b, void *c, u8 d);
 void func_ov000_0217357c(void *self);
 extern char data_ov002_021ef3f9[];
 
@@ -246,7 +246,7 @@ static inline bool func_ov002_isCurrent021ccd40(void *p) {
 void func_02041218(void *p);
 void func_02041440(void *p, void *name, int c);
 void STD_CopyString(void *p, void *name);
-void *func_02035f30(void *a, void *b, int c);
+void *func_02035f30(void *a, void *b, u16 c);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *a, void *b);
 void func_02041d9c(void *a, int b, int c);
@@ -332,7 +332,7 @@ typedef void (*Callback)(void *);
 extern VFunc data_ov002_021efa1c[];
 extern VFunc data_ov002_021ef89c[];
 
-s16 *func_0206ee90(u16 id);
+s16 *func_0206ee90(u32 id);
 void func_0203c9e8(int a, int b);
 extern s32 data_ov002_021f0f84[];
 extern u8 *data_02097dc8;
@@ -442,9 +442,9 @@ void func_ov000_02163254(void *self);
 extern VFunc data_ov000_021caec8[];
 extern VFunc data_ov000_021cac60[];
 
-void *func_0206ec8c(u16 id);
-u8 *func_0206ef10(u16 id);
-void func_ov000_02162b40(void *a, s32 b, s32 c, const char *d, s32 e, const char *f, u8 g, s32 h);
+void *func_0206ec8c(u32 id);
+u8 *func_0206ef10(u32 id);
+void func_ov000_02162b40(void *a, s32 b, s32 c, const char *d, s32 e, const char *f, s32 g, s16 h);
 void func_ov000_021c95ac(void *a, u16 id);
 void MI_CpuCopy8(void *src, void *dst, u32 size);
 void func_ov002_021e2754(void *a, u16 id);
@@ -493,8 +493,8 @@ s64 _s32_div_f(s32 a, s32 b);
 #define S32_MOD(a, b) ((s32)(_s32_div_f((a), (b)) >> 32))
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
-u8 *func_0206ef50(u16 id);
-void *func_02070dcc(u8 id);
+u8 *func_0206ef50(u32 id);
+void *func_02070dcc(int id);
 void STD_CopyLStringZeroFill(char *dst, const char *src, u32 n);
 int NNS_G3dGetResDictIdxByName(void *dict, const char *name);
 void NNS_G3dMdlSetMdlAlpha(void *res, int idx, int val);
@@ -603,7 +603,7 @@ extern VFunc data_ov002_021f0cf8[];
 extern VFunc data_ov002_021f0ef4[];
 extern void *data_ov002_021f0fa0[];
 void *func_ov000_02154b58(void *a, void *b);
-void func_ov000_02153c48(void *a, s32 b, int c, int d, int e);
+void func_ov000_02153c48(void *a, s32 b, int c, int d, u8 e);
 
 extern VFunc data_ov002_021efeb8[];
 extern VFunc data_ov002_021f0674[];
@@ -722,7 +722,7 @@ void func_ov002_021ec2ac(void *self);
 
 BOOL func_ov002_021d52e0(void *self, void *ev);
 typedef BOOL (*EvCallback)(void *, void *);
-void func_ov000_02152294(void *self, int a, int b, EvCallback cb);
+void func_ov000_02152294(void *self, u16 a, int b, EvCallback cb);
 int func_0206e8f0(void *self);
 void func_ov002_021d4540(void *dst, u32 size, void *a, void *b, int mode);
 extern void *data_ov002_021ef5ac[];
@@ -821,7 +821,7 @@ extern u8 data_ov002_021ef665[];
 extern VFunc data_ov002_021f000c[];
 
 void *func_ov000_0214b8ec(void *p);
-void func_ov000_0214b1a0(Vec3 *a, Vec3 *b, u8 c, void *d);
+void func_ov000_0214b1a0(Vec3 *a, Vec3 *b, s32 c, void *d);
 extern Vec3 data_ov002_021ef124;
 
 extern u8 data_ov002_021f064d[];
@@ -837,7 +837,7 @@ void func_ov000_02162a58(void *p);
 void func_ov000_02163594(void *p);
 
 void func_0206e3a0(void *a, void *b);
-void G3X_SetFog(int a, void *b, void *c, u16 d);
+void G3X_SetFog(int a, void *b, void *c, int d);
 void func_02043b20(void *p);
 void func_ov002_021e5d0c(void *self);
 

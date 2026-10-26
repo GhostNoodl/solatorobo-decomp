@@ -178,7 +178,7 @@ void func_ov000_0218fee4(void *p);
 extern "C" {
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
+void func_02042628(void *a, void *b, void *c, u8 d);
 }
 
 static inline void Ov008_DrawModel(void *m) {

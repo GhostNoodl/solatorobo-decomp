@@ -10,7 +10,7 @@ extern u8 data_ov012_0220a4bc[];
 extern u8 data_ov012_0220a4c0[];
 extern u8 data_ov012_0220a4c4[];
 extern void func_02049f44(void *a, s32 b, Ov012Vec *c, s32 d);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 extern void VEC_MultAdd(s32 s, const Ov012Vec *a, const Ov012Vec *b, Ov012Vec *out);
 extern s32 VEC_Distance(const Ov012Vec *a, const Ov012Vec *b);
 

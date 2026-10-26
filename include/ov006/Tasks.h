@@ -183,7 +183,7 @@ void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 void func_ov000_02163224(void *self);
 void func_ov000_02163254(void *self);
-void func_ov000_021632f0(void *self, int a, const char *b, const char *c, int d);
+void func_ov000_021632f0(void *self, int a, const char *b, const char *c, u8 d);
 BOOL func_ov000_021633ac(void *self);
 void func_ov000_02163594(void *self);
 
@@ -209,7 +209,7 @@ extern s32 data_02097d78[];
 void func_ov000_0218084c(void *a, int b, int c);
 void func_0203cc58(int a, int b, int c);
 void func_0203cb78(int a, int b, int c);
-int func_ov000_02154b58(void *a, int b);
+int func_ov000_02154b58(void *a, u16 b);
 
 #ifdef __cplusplus
 }

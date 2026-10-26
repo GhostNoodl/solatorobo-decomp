@@ -101,7 +101,7 @@ extern const Ov011Mgr2Entry data_ov011_022072d8[];
 void func_ov003_021d79ec(void *p);
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
 void func_ov003_021da40c(void *p);
-void func_ov003_021da48c(void *p, s32 a);
+void func_ov003_021da48c(void *p, u8 a);
 void func_ov011_0220205c(void *p);
 void func_ov011_02202130(void *p);
 void func_ov011_02202fbc(void *p);
@@ -262,7 +262,7 @@ struct Ov011ArgB {
     u8 pad2[2];
 };
 
-void func_ov000_0219bdb0(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
+void func_ov000_0219bdb0(u16 a, u16 b, u8 c, s32 d, s32 e, void *f);
 u32 func_ov011_02201244(void *self);
 void *func_ov011_02201254(void *self);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);

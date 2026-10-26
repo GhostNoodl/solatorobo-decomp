@@ -548,7 +548,7 @@ extern void *data_ov000_021ccd68;
 extern void func_0203f364(Ov012Sub48 *p);
 extern Ov012Actor *func_ov000_0219bf90(void);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
-extern void *func_ov000_0218e6d0(void *mgr, s32 a, s32 b);
+extern void *func_ov000_0218e6d0(void *mgr, u16 a, u16 b);
 extern void func_ov003_021daa6c(void *p, s32 a);
 extern void func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov000_021984f4(void *p, s32 a, s32 b);
@@ -668,7 +668,7 @@ extern void *func_ov000_021985c0(void *p);
 extern void func_ov003_021f0c60(void *self, s32 a);
 extern void func_02049de8(void *a, s32 b);
 extern void func_020639d4(void *e, s32 a, s32 b);
-extern void func_ov000_0218996c(s32 a, s32 b);
+extern void func_ov000_0218996c(u8 a, u8 b);
 }
 
 
@@ -755,12 +755,12 @@ extern void func_ov003_021d3d28(void *self);
 
 extern "C" {
 extern BOOL func_ov000_021983b0(void *p, s32 a, s32 b, s32 c);
-extern void func_ov000_02191418(void *p, s32 a, s32 b);
+extern void func_ov000_02191418(void *p, u16 a, s32 b);
 }
 
 
 extern "C" {
-extern s32 func_ov003_021d9edc(s32 kind);
+extern s32 func_ov003_021d9edc(u16 kind);
 }
 
 

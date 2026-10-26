@@ -88,8 +88,8 @@ void func_ov003_021d79d0(void *p);
 void func_ov011_02202a70(void *p);
 void func_ov011_02202a54(void *p);
 void func_ov003_021da40c(void *p);
-void func_ov003_021da48c(void *p, s32 a);
-void func_ov011_022011fc(void *a, s32 b);
+void func_ov003_021da48c(void *p, u8 a);
+void func_ov011_022011fc(void *a, u8 b);
 
 void func_ov011_021fa7dc(Ov011Mgr *self) {
     u32 saved;
@@ -227,9 +227,9 @@ struct Ov011Msg {
     s32 c;
 };
 
-void func_ov000_0219bdb0(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
+void func_ov000_0219bdb0(u16 a, u16 b, u8 c, s32 d, s32 e, void *f);
 void func_ov011_022011c8(void *a, s32 b);
-void func_ov011_02202ac8(void *p, Ov011Vec *a, Ov011Vec *b, s32 c, s32 d);
+void func_ov011_02202ac8(void *p, Ov011Vec *a, Ov011Vec *b, s32 c, u8 d);
 
 static inline void Ov011_Send(u16 id, s32 a, s32 b) {
     Ov011Msg m;

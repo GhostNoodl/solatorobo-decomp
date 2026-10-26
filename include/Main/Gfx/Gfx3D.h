@@ -14,7 +14,7 @@ extern "C" {
 extern void NNS_G3dGeFlushBuffer(void);
 extern void NNS_G3dGeSendDL(const void *list, u32 size);
 extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
-extern void NNS_G3dGlbLightVector(int light, int x, int y, int z);
+extern void NNS_G3dGlbLightVector(int light, s16 x, s16 y, s16 z);
 extern void NNS_G3dGlbLightColor(int light, u16 color);
 extern void NNS_G3dGlbMaterialColorDiffAmb(u16 diffuse, u16 ambient, BOOL setVtxColor);
 extern void NNS_G3dGlbMaterialColorSpecEmi(u16 specular, u16 emission, BOOL shininess);

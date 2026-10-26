@@ -97,8 +97,8 @@ extern void NNS_SndHandleInit(SndHandle *handle);
 extern void NNS_SndPlayerSetVolume(SndHandle *handle, int value);
 extern void NNS_SndPlayerMoveVolume(SndHandle *handle, int volume, int frames);
 extern void NNS_SndPlayerSetPlayerPriority(SndHandle *handle, int volume);
-extern void NNS_SndPlayerSetTrackPitch(SndHandle *handle, int trackMask, int value);
-extern void NNS_SndPlayerSetTrackPan(SndHandle *handle, int trackMask, int value);
+extern void NNS_SndPlayerSetTrackPitch(SndHandle *handle, u16 trackMask, int value);
+extern void NNS_SndPlayerSetTrackPan(SndHandle *handle, u16 trackMask, int value);
 
 void func_02049690(SndMgr *mgr);
 SndHandle *func_02049984(SndMgr *mgr, s32 id, s32 *outSeqArc, s32 *outIndex);

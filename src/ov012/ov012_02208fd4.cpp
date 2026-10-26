@@ -8,7 +8,7 @@ extern char data_ov012_0220b335[];
 extern u8 data_ov012_0220a88c[];
 extern void func_ov000_021911c8(void *p, s32 a);
 extern s32 func_ov000_02191318(void *a, s32 b);
-extern Ov012Actor *func_ov003_021d69f0(Ov012Actor *self, u16 kind, Ov012Vec *pos, void *rot, Ov012Actor *tgt);
+extern Ov012Actor *func_ov003_021d69f0(Ov012Actor *self, s32 kind, Ov012Vec *pos, void *rot, Ov012Actor *tgt);
 
 struct Ov012Rot16T {
     u16 x;
@@ -67,7 +67,7 @@ extern "C" {
 
 extern char data_ov012_0220b347[];
 extern s32 func_ov000_02199128(s32 *out, Ov012Query *q, void **list, s32 max);
-extern void func_ov000_02191418(void *p, s32 a, s32 b);
+extern void func_ov000_02191418(void *p, u16 a, s32 b);
 
 #define OV012Q_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV012Q_SQRT_RESULT (*(volatile u32 *)0x40002b4)

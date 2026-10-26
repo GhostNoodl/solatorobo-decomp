@@ -278,7 +278,7 @@ void func_ov000_0218de6c(ActorGroup *group, Actor *actor);
 void func_ov000_0218d398(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 u16 FX_Atan2(s32 x, s32 z);
 void func_ov000_02198360(void *a, s32 b, s32 c);
-void func_ov000_02190e98(void *a, u32 b, s32 c, s32 d);
+void func_ov000_02190e98(void *a, u32 b, s16 c, u8 d);
 void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void MI_Copy36B(const void *src, void *dst);
@@ -291,7 +291,7 @@ void func_ov000_0218bed8(void *a, s32 b, Actor *actor);
 extern Player021ccd54 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;
 BOOL func_01ffc198(void *pos, void *target, s32 dist);
-u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, u16 b);
 }
 
 #endif

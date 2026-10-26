@@ -89,7 +89,7 @@ extern const ov006_Price021da208 data_ov006_021eb7e4;
 void *func_0204c0e8(void *a, int id);
 void func_ov000_02157c90(void *a, const void *b);
 void func_ov000_02157d2c(void *a, const void *b);
-int func_ov000_02154b58(void *a, int b);
+int func_ov000_02154b58(void *a, u16 b);
 void func_ov000_021c3af4(void *self);
 void func_ov000_021c54f4(void *self);
 void func_ov000_021c55e8(void *self, const void *a);

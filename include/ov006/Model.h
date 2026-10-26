@@ -68,7 +68,7 @@ void func_02041d9c(ov006_Model *self, int a, int b);
 void *func_02035de0(const char *a, const char *b);
 void *NNS_G2dGetAnimSequenceByIdx(int a, int b);
 void *NNS_G2dGetCellDataByIdx(int a, u16 b);
-void func_02042628(ov006_Model *model, void *a, ov006_ModelPart *part, int b);
+void func_02042628(ov006_Model *model, void *a, ov006_ModelPart *part, u8 b);
 
 #ifdef __cplusplus
 }
