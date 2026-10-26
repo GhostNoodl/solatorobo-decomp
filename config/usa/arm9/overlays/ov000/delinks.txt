@@ -2149,6 +2149,10 @@ src/ov000/Robo_021b1fac.cpp:
     complete
     .text       start:0x021b1fac end:0x021b209c
 
+src/ov000/Robo_021b209c.cpp:
+    complete
+    .text       start:0x021b209c end:0x021b288c
+
 src/ov000/Spawn_0219b71c.cpp:
     complete
     .text       start:0x0219b71c end:0x0219b808
@@ -3224,6 +3228,10 @@ src/ov000/Mtx_021b4c60.cpp:
 src/ov000/Robo_021aa5c8.cpp:
     complete
     .text       start:0x021aa5c8 end:0x021aa978
+
+src/ov000/Robo_021aa978.cpp:
+    complete
+    .text       start:0x021aa978 end:0x021aaf80
 
 src/ov000/Model_021903b4.cpp:
     complete
