@@ -4319,3 +4319,62 @@ With a dump in hand, `wi2.py`-style renumbering proves what the target needs bef
 - `ov002_021d3e14` (18 diffs, all of them `r5 ↔ r6`): the hoisted `0` has to be numbered inside the named-local block, just below `g` — then `0` takes `r6` and both `g` and `base` take `r5`, which is the target, with nothing else moving. A local assigned `0` once does not do it: it is coalesced into the same hoisted constant and the graph is unchanged (`z2…z5` variants). Writing the field triples as `SetA`/`SetB` inlines with `0` as an argument does not either — same 18 diffs, same graph.
 
 All three are now one known vreg swap away rather than an unexplained register miss.
+
+## The vreg allocator traced, and two register-only misses matched (round rgraph2)
+
+This round put breakpoints inside mwccarm (1.3, `dsi/1.3/mwccarm.exe` under wibo and gdb) on the code that hands out vreg numbers, so the numbering rules of round rgraph are now read off the compiler instead of guessed. Two of the three "one vreg swap away" functions matched with a source change found from that: `ov000_02165a20` and `ov006_021de6bc`.
+
+### Who hands out the numbers
+
+- `0x507830` gives one Object its vreg (`used_virtual_registers[class]++`, the counter at `0x65b860`). It is called once for the parameters and then from the loop at `0x507d60`, which walks the function's **local-object list** (head at `0x65e28c`). Every object is prepended to that list when it is created (`0x4aa440`), so the walk sees the newest object first: **vregs `17 …` go to local objects in reverse order of creation.** Everything numbered above the named locals is allocated later, during code generation, in ascending order. Compiler temps are named `@N` with `N` a running creation counter, so the dump's `obj=@N` already tells you the creation order.
+- The objects are created in fixed phases, and logging the creating call site of each one (break on `0x4aa440`, read `[esp]` and the return addresses on the stack) gives this order, oldest (highest vreg) first:
+  1. named locals, as the parser meets their declarations (`0x4ace06`);
+  2. the inliner, call site by call site in source order: first a temp for every argument that is not a plain variable or constant (`0x4a8592`), then the inline's own locals (`0x4a8603`); nested inlines come in through `0x4a41e1`;
+  3. a few post-inline temps (`0x4a819a`);
+  4. the global optimizer (`0x4748fd` → `0x4f4a12`): loop passes (`0x561ebb`, `0x58fce4`, `0x59b50b`), then **CSE** (`0x5961cd`, one object per common subexpression, created when its second occurrence is found), then **lifetime splitting** (`0x59d3ff`, the extra lifetimes of locals assigned more than once);
+  5. the back end's lowering of `?:` (`0x5077d0` → `0x59dc60`), which makes three objects per conditional expression. In `ov006_021de6bc` all 33 of vregs `17 … 49` are these — the `part` value of every inlined `GetPart` (`return idx >= n ? NULL : &parts[idx]`) — and they are numbered below everything else.
+
+  So "inline temps sit below the named locals and extra lifetimes sit below the inline temps" (round rgraph) is the phase order. The practical lever is: **an equivalent spelling that makes a different phase create the object moves its number by a whole band.**
+- Tools (scratchpad `rgraph2/re/`): `vo.sh FILE` logs every `0x507830` call (vreg, object name); `lw.sh FILE` (env `LWOUT`) also logs each object's creation call stack; `join.py LWOUT N` joins the two into "vreg, name, creation order, first N return addresses".
+
+### Simplify, decoded
+
+The simplify loop at `0x526b90` was disassembled and `sim3.py` now follows it exactly: sweep the nodes in index order, pushing every node whose current degree is below `K` (neighbours lose 1, or 2 if either node has flag `0x200`), and repeat the sweep while anything was pushed; the nodes left over form the spill list **in descending index order**, and the candidate is the first one with the strictly smallest `cost / current degree` (flag `0x80` counts as `3.4e38`, `0x400` as `1.7e38`). So ties go to the **highest**-numbered node; `sim.py` broke them the other way, which is why it got `ov002_021d3e14`'s order slightly wrong and `ov002_021d1f70`'s spill choice wrong. `sim3.py` reproduces the simplify order and every colour of all six dumped rounds (`021de6bc`, `02165a20`, both rounds of `021d3e14` and both rounds of `021d1f70`).
+
+For functions that spill, `wi.py`'s `colour_rounds(dump, moves)` applies a renumbering to every dumped round and reports whether round 1 still spills the same nodes. While it does, the next round's graph is the dumped one (spill code only adds nodes above the old count), so the answer for the final round is exact; when the spill set changes, the what-if is out of reach and the function needs a recompile.
+
+### `ov000_02165a20`: a `?:` returned through another inline (matched)
+
+The loop pointer of `FindArea` (also `start` afterwards) was vreg `27` = `@201`, a `?:` temp from the back end. `FindArea` ended with `return GetArea(w, b);`, and `GetArea` is `return i >= w->count ? NULL : &w->areas[i];`, so the inline's merged return value came from the `?:` lowering — bottom of the pool. Writing that tail out as
+
+```c
+if (b >= w->count) {
+    return NULL;
+}
+return &w->areas[b];
+```
+
+lets the inliner's own object for `s` carry the value (vreg `48`, inside the `(30, 53)` window round rgraph asked for) and the function matches (`src/ov000/Area_02165a20.cpp`). `GetArea` itself keeps the `?:` form for its other two call sites.
+
+### `ov006_021de6bc`: test the field, then copy it (matched)
+
+The model pointer had to be numbered above the inline's `res`. Logging creation showed why no ordering of locals could do it: `res` (`ov006_ModelRes *res = model->unk28; if (res == NULL) return;`) is an inline local, while the pointer in the two bad blocks was a split lifetime of `m0` (phase 4, below every inline local). What works is to move `res` down a band instead, into CSE, with a local copy of the inline:
+
+```c
+static inline void ov006_Model_PlayPartChk(ov006_Model *model, int idx) {
+    ov006_ModelRes *res;
+    ...
+    if (model->unk28 == NULL) {
+        return;
+    }
+    res = model->unk28;
+    ...
+}
+```
+
+`model->unk28` now occurs twice, so CSE creates the object that holds it, and `res` itself is copy-propagated away. Each expansion's `res` lands in the CSE band (`51 … 73`), in call order, under every pointer. The pointers were also made first lifetimes again: blocks 1, 2 and 4 pass `self->unk34` directly (an argument temp, phase 2) and block 3 keeps `m1`, so `m0` is assigned once. Neither change is enough alone. The checking form with the `m0` blocks kept gives 16 diffs, the direct arguments alone 114, and both together in only one of the two blocks 8. With both blocks fixed but the plain inline left at block 3's `m1` call, it is 114. The function matches when every `PlayPart` call in it uses the checking form (`src/ov006/ov006_021de6bc.cpp`). A grid of what-ifs had shown the condition first: `res` anywhere in `[37.5, 58.5]` with the pointer anywhere above it.
+
+### Still open
+
+- `ov002_021d3e14` (18 / 0): with `sim3.py` and the spill check, the only single moves that give the target are the hoisted `0` (`v84`) into `(60.5, 62.5)` — between `base` and `i`, so in the named block — or `base` above `84`. A sweep of every pair of positions for `g` and `base` below the named block finds nothing. `0` is a constant the code generator hoists. No object can be numbered above it, and a named local that holds `0` is constant-propagated away. Six variants that initialise a declared local to `0` (`count`, `p`, `i`, `id`, `base`, `tbl`) leave the code unchanged.
+- `ov002_021d1f70` (35 / 0) spills `d`, `v44` and one temp in round 1. `sim3.py` reproduces both rounds, so it can now be analysed. The diff asks for nine nodes to change colour: `x`, `z`, the `o[0x51]` CSE, both inlined models and their `res`, one `part` and the `y << 12` CSE. No single renumbering does more than two of them (`z` into the CSE band, `[36.5, 61.5]`). A greedy search over pairs gets to six wrong and stops (`d1greedy.py`). The target is several moves away, and the moves have not been tied to source yet. The checking form of `PlayPart` from `021de6bc` changes nothing at the two call sites in the function body, and makes things worse (132) at the second call site inside `DrawCount`.

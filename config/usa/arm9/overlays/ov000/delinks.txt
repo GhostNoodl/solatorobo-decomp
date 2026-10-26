@@ -1061,6 +1061,10 @@ src/ov000/Lo_02164708.cpp:
     complete
     .text       start:0x02164708 end:0x02164a94
 
+src/ov000/Area_02165a20.cpp:
+    complete
+    .text       start:0x02165a20 end:0x02165d78
+
 src/ov000/Lo_02165da0.cpp:
     complete
     .text       start:0x02165da0 end:0x02165e2c
