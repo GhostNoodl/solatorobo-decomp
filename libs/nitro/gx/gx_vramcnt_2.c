@@ -739,7 +739,7 @@ static inline void GxSetBankForSubBG (GXVRamSubBG sub_bg)
     GX_VRAMCNT_SetLCDC_(gGXState.vramCnt.lcdc);
 }
 
-void func_02015510 (GXVRamSubBG sub_bg)
+void GX_SetBankForSubBG (GXVRamSubBG sub_bg)
 {
     GxSetBankForSubBG(sub_bg);
 }

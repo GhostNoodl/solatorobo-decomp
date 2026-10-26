@@ -808,7 +808,7 @@ extern void func_020077c8(const char *msg, void *ptr, int err);
 
 #define conversion_buff_size 512
 
-int func_02006e48(void *(*WriteProc)(void *, const char *, u32), void *WriteProcArg, const char *format_str, va_list arg, int is_secure) {
+int __pformatter(void *(*WriteProc)(void *, const char *, u32), void *WriteProcArg, const char *format_str, va_list arg, int is_secure) {
     int num_chars, chars_written, field_width;
     const char *format_ptr;
     const char *curr_format;

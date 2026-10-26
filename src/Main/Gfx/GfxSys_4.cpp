@@ -151,7 +151,7 @@ extern void func_0203d770(void);
 extern void GXS_SetGraphicsMode(int a);
 extern void GX_SetBankForLCDC(int a);
 extern void GX_SetBankForBG(int a);
-extern void func_02015510(int a);
+extern void GX_SetBankForSubBG(int a);
 extern void GX_SetBankForSubOBJ(int a);
 extern void func_02039c54(GfxMgr *mgr, int state);
 extern void func_0203e8e0(void);
@@ -234,7 +234,7 @@ void func_0203beac(GfxSys *sys, int state) {
         GfxSys_InitPlttVram(sys, 0x8000);
         GfxSys_SetVramFuncs();
         GX_SetBankForBG(0x10);
-        func_02015510(4);
+        GX_SetBankForSubBG(4);
         GX_SetBankForSubOBJ(8);
         REG16(0x400100c) = (u16)((REG16(0x400100c) & 0x43) | 0x84 | 0x4000);
         REG32(0x4001000) = (REG32(0x4001000) & ~0x60) | 0x20;
@@ -314,7 +314,7 @@ void func_0203c2bc(GfxSys *sys) {
     GfxSys_InitPlttVram(sys, 0x8000);
     GfxSys_SetVramFuncs();
     GX_SetBankForOBJ(0x10);
-    func_02015510(0x80);
+    GX_SetBankForSubBG(0x80);
     GX_SetBankForSubOBJ(8);
     GX_SetBankForSubOBJExtPltt(0x100);
     GX_SetVisiblePlane(0x11);

@@ -1,6 +1,6 @@
 #include "types.h"
 
-// The tail of printf.c after __pformatter (func_02006e48).
+// The tail of printf.c after __pformatter (__pformatter).
 
 typedef char *va_list;
 #define va_start(ap, parm) ((ap) = (va_list)((char *)((unsigned long)(&parm) & ~3U) + ((sizeof(parm) + 3U) & ~3U)))
@@ -12,7 +12,7 @@ typedef struct __OutStrCtrl {
 } __OutStrCtrl;
 
 extern void *func_020056fc(void *dst, const void *src, u32 n);
-extern int func_02006e48(void *(*WriteProc)(void *, const char *, u32), void *WriteProcArg, const char *format_str, va_list arg, int is_secure);
+extern int __pformatter(void *(*WriteProc)(void *, const char *, u32), void *WriteProcArg, const char *format_str, va_list arg, int is_secure);
 
 extern void (*data_0208de70)(void *a, void *b, void *c);
 
@@ -31,7 +31,7 @@ int func_02007738(char *s, u32 n, const char *format, va_list arg) {
     osc.CharStr = s;
     osc.MaxCharCount = n;
     osc.CharsWritten = 0;
-    end = func_02006e48(func_020076f4, &osc, format, arg, 0);
+    end = __pformatter(func_020076f4, &osc, format, arg, 0);
     if (s) {
         if (end < n) {
             s[end] = '\0';

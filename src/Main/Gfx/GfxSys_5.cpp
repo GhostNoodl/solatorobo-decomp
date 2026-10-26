@@ -92,7 +92,7 @@ extern void func_0203d770(void);
 extern void GXS_SetGraphicsMode(int a);
 extern void GX_SetBankForLCDC(int a);
 extern void GX_SetBankForBG(int a);
-extern void func_02015510(int a);
+extern void GX_SetBankForSubBG(int a);
 extern void GX_SetBankForSubOBJ(int a);
 extern void func_02039c54(GfxMgr *mgr, int state);
 extern void func_0203e8e0(void);
@@ -214,7 +214,7 @@ void func_0203c880(GfxSys *sys) {
         GfxReg_SetVisiblePlane(0x4001000, (GfxReg_GetVisiblePlane(0x4001000) & ~0x10) | 4);
         GfxReg_SetVisiblePlane(0x4000000, (GfxReg_GetVisiblePlane(0x4000000) & ~2) | 4);
         GX_ResetBankForSubOBJ();
-        func_02015510(4);
+        GX_SetBankForSubBG(4);
         GX_SetBankForLCDC(8);
         REG32(0x4000064) = 0x80330010;
         GX_SetGraphicsMode(0xe, 0, 1);

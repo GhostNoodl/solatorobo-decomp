@@ -165,7 +165,7 @@ extern void func_0203d770(void);
 extern void GXS_SetGraphicsMode(int a);
 extern void GX_SetBankForLCDC(int a);
 extern void GX_SetBankForBG(int a);
-extern void func_02015510(int a);
+extern void GX_SetBankForSubBG(int a);
 extern void GX_SetBankForSubOBJ(int a);
 extern void func_02039c54(GfxMgr *mgr, int state);
 extern void func_0203e8e0(void);
