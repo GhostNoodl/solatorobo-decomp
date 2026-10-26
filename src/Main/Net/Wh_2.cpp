@@ -116,11 +116,11 @@ void func_02045d98(void *p) {
     }
 }
 
-BOOL func_02045ea4(WhMgr *wh) {
+BOOL func_02045ea4(WhMgr *wh, BOOL enabled) {
     if (wh->sysState != 4 && wh->sysState != 5) {
         return TRUE;
     }
-    return WH_CheckResult(WM_SetEntry(NULL));
+    return WH_CheckResult(WM_SetEntry(NULL, enabled));
 }
 
 void func_02045ef8(WhCbArg *arg) {

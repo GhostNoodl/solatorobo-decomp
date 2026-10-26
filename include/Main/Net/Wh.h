@@ -126,7 +126,7 @@ extern int WM_StartDataSharing(void *dsInfo, u16 port, u16 aidBitmap, u16 dataLe
 extern int WM_EndDataSharing(void *dsInfo);
 extern int WM_SetGameInfo(void (*cb)(void *arg), void *info, u16 length, u32 ggid, u16 tgid, u8 attr);
 extern int WM_MeasureChannel(void (*cb)(void *arg), u16 a, u16 b, u16 channel, u16 time);
-extern int WM_SetEntry(void (*cb)(void *arg));
+extern int WM_SetEntry(void (*cb)(void *arg), BOOL enabled);
 extern u32 func_0204045c(void);
 
 typedef struct WhCbArg {
