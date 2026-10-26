@@ -125,6 +125,28 @@ static inline fx32 FX_MulInline(fx32 v1, fx32 v2) {
 }
 #define FX_Mul(v1, v2) FX_MulInline(v1, v2)
 
+// fx_trig.h: idx is an angle index from 0 to 65535 (0 to 2*pi)
+static inline fx16 FX_SinIdx(int idx) {
+    return FX_SinCosTable_[((idx >> 4) << 1)];
+}
+
+static inline fx16 FX_CosIdx(int idx) {
+    return FX_SinCosTable_[((idx >> 4) << 1) + 1];
+}
+
+// fx_vec.h
+static inline void VEC_Set(VecFx32 *a, fx32 x, fx32 y, fx32 z) {
+    a->x = x;
+    a->y = y;
+    a->z = z;
+}
+
+static inline void VEC_Fx16Set(VecFx16 *a, fx16 x, fx16 y, fx16 z) {
+    a->x = x;
+    a->y = y;
+    a->z = z;
+}
+
 static inline fx32 FX_Mul32x64cInline(fx32 v32, fx64c v64c) {
     fx64c tmp = v64c * v32 + 0x80000000LL;
     return (fx32)(tmp >> FX64C_SHIFT);

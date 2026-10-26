@@ -61,6 +61,10 @@ src/ov010/ov010_02200670.cpp:
     complete
     .text       start:0x02200670 end:0x02200a00
 
+src/ov010/ov010_02200a00.cpp:
+    complete
+    .text       start:0x02200a00 end:0x02200c98
+
 src/ov010/ov010_02200c98.cpp:
     complete
     .text       start:0x02200c98 end:0x02200d94
