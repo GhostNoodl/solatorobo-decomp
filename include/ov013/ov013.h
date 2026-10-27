@@ -445,7 +445,7 @@ void *func_0203dd9c(u32 size);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 void func_ov003_021d0edc(void *self);
 void func_ov000_02198360(void *a, s32 b, s32 c);
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 s32 func_02040528(s32 max);
 s32 func_02040498(s32 max);
