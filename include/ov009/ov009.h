@@ -154,6 +154,27 @@ extern "C" const s16 FX_SinCosTable_[];
 #define OV009_SIN(a) (OV009_SINCOS[((a) >> 4) * 2])
 #define OV009_COS(a) (OV009_SINCOS[((a) >> 4) * 2 + 1])
 
+// View of the Main EffectObj (Main/Effect/Effect.h) with its real virtual
+// signatures, for the objects returned by func_02065f88, using ov009's vector
+// type. vf0c takes one argument at these call sites.
+class Ov009Eff {
+public:
+    virtual void Dtor();
+    virtual void Delete();
+    virtual void SetParam(s32 param);
+    virtual void vf0c(s32 v);
+    virtual void SetScale(const Ov009Vec *scale);
+    virtual void SetScaleXYZ(s32 x, s32 y, s32 z);
+    virtual void SetPos(const Ov009Vec *pos);
+    virtual void SetPosXYZ(s32 x, s32 y, s32 z);
+    virtual void AddPos(const Ov009Vec *delta);
+    virtual void AddPosXYZ(s32 x, s32 y, s32 z);
+    virtual void vf28();
+    virtual void vf2c();
+    virtual void SetRot(const void *rot);
+    virtual void SetRotXYZ(u16 x, u16 y, u16 z);
+};
+
 struct Ov009Sub38 {
     void *unk_00;
     void *unk_04;
@@ -388,8 +409,8 @@ void func_0203de1c(void *p);
 void *func_0203dd9c(u32 size);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 void func_ov003_021d0edc(void *self);
-void func_ov000_02198360(void *a, s32 b, s32 c);
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 s32 func_02040528(s32 max);
 s32 func_02040498(s32 max);

@@ -5,9 +5,9 @@ extern "C" {
 extern void *const data_ov009_02215d0c[];
 extern void *data_02097e4c;
 extern void *data_0214a420;
-extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
+extern Ov009Eff *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void func_01ffc9fc(Ov009Vec *dst, const Ov009Vec *src, s32 angle);
-extern void func_020639d4(Ov009V *o, s32 a, s32 b);
+extern void func_020639d4(Ov009Eff *o, s32 a, s32 b);
 extern s32 FX_Div(s32 a, s32 b);
 extern void func_0203f324(Ov009Sub48 *p);
 extern Ov009Actor *func_ov000_0219bf90(void);
@@ -50,7 +50,7 @@ void func_ov009_02205490(Ov009Actor *self) {
     Ov009Actor *pl;
     s32 ply;
     Ov009Sub40 *st;
-    Ov009V *o;
+    Ov009Eff *o;
     Ov009Sub44 *s44;
     Ov009Sub48 *s48;
     s32 t;
@@ -81,13 +81,13 @@ void func_ov009_02205490(Ov009Actor *self) {
         t = st->timer;
         if (t % 15 == 0) {
             o = func_02065f88(0x12c, &self->unk_84);
-            o->v24(0, 0x800, 0);
-            o->v0c(0x1800);
+            o->AddPosXYZ(0, 0x800, 0);
+            o->vf0c(0x1800);
         }
         if (t == 0x32) {
             self->unk_38->unk_c2_0 = 1;
             o = func_02065f88(0x192, &self->pos);
-            o->v34(0x4000, 0, 0);
+            o->SetRotXYZ(0x4000, 0, 0);
             func_020639d4(o, 0x54, 0);
             self->unk_9c = 0;
             self->unk_a4 = 0;
@@ -112,7 +112,7 @@ void func_ov009_02205490(Ov009Actor *self) {
             func_02065804(data_0214a420, FLD(s32, self, 0xf8));
             FLD(s32, self, 0xf8) = 0;
             o = func_02065f88(0x68, &self->pos);
-            o->v24(0, 0x400, 0);
+            o->AddPosXYZ(0, 0x400, 0);
             FLD(s32, o, 0x7c) = FX_Div(0x1e000, 0x1f000);
             func_02049f44(data_02097e4c, 0x80, &self->pos, 0);
             s48 = self->unk_48;
@@ -173,13 +173,13 @@ void func_ov009_02205490(Ov009Actor *self) {
         self->pos.y += Ov009_FxMul(v2.y - self->pos.y, 0x1000);
         VEC_Distance(&self->pos, &v2);
         o = func_02065f88(0x389, &self->pos);
-        o->v0c(0x3000);
+        o->vf0c(0x3000);
         h = Ov009_GetAng((Ov009AngSrc *)((u8 *)data_ov000_021ccd54 + 0xf4));
         r.x = 0;
         r.y = 0;
         r.z = -0x800;
         func_01ffc9fc(&r, &r, h);
-        o->v20(&r);
+        o->AddPos(&r);
         self->unk_38->unk_c2_0 = 1;
         self->unk_40->timer = 0;
         self->unk_40->state++;
@@ -193,7 +193,7 @@ void func_ov009_02205490(Ov009Actor *self) {
         if (h >= FLD(s32, self, 0x100)) {
             h = FLD(u32, self, 0x100);
             o = func_02065f88(0x69, &self->pos);
-            o->v0c(0xccd);
+            o->vf0c(0xccd);
             func_02065f88(0x38a, &self->pos);
             s48 = self->unk_48;
             s48->unk_9a_0 = 1;
@@ -216,7 +216,7 @@ void func_ov009_02205490(Ov009Actor *self) {
         if (t2 == 10) {
             o = func_02065f88(0x322, &self->pos);
             FLD(s32, self, 0xf8) = FLD(s32, o, 0x24);
-            o->v0c(0x199a);
+            o->vf0c(0x199a);
             func_020639d4(o, 0x7a, 0);
         }
         if (t2 >= 10) {

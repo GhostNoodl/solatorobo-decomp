@@ -18,7 +18,6 @@ extern void *data_02097e4c;
 
 extern Ov014Actor *func_ov000_02199ba0(void *p);
 extern Ov014Actor *func_ov000_0218d240(Ov014Actor *self);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
 extern void func_ov014_02215ffc(Ov014Actor *self);
 extern void func_ov000_021911c8(void *a, s32 b);
 extern void MTX_Identity33_(Ov014Mtx33 *m);
