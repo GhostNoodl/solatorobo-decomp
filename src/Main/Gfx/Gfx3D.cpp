@@ -100,8 +100,10 @@ void func_02043100(int x, int y, int z, u32 color, const GfxOamAttr *oam, const 
     u32 pal;
     u32 ws;
     u32 hs;
-    shape = *(const u32 *)oam & 0xc000c000;
+    shape = oam->attr01 & 0xc000c000;
     name = o->charNo;
+    h = data_02075614[(shape & 0xc000) >> 14][(shape & 0xc0000000) >> 30];
+    w = data_0207562c[(shape & 0xc000) >> 14][(shape & 0xc0000000) >> 30];
     ox = o->x;
     if (ox > 0xff) {
         ox |= ~0xff;
@@ -110,8 +112,6 @@ void func_02043100(int x, int y, int z, u32 color, const GfxOamAttr *oam, const 
     if (oy > 0x7f) {
         oy |= ~0xff;
     }
-    h = data_02075614[(shape & 0xc000) >> 14][(shape & 0xc0000000) >> 30];
-    w = data_0207562c[(shape & 0xc000) >> 14][(shape & 0xc0000000) >> 30];
     y += oy << 12;
     x += ox << 12;
     if ((y >> 12) + h <= 0) {
