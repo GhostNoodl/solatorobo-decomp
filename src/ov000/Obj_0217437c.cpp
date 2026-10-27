@@ -53,11 +53,16 @@ BOOL func_ov000_02174380(void) {
 }
 
 #ifdef NONMATCHING
-// func_ov000_021743bc: 123 raw / 2 register-masked (round gO). Real one-argument signature
-// (the target overwrites r1 before reading it); the model-load blocks use block-local file/nm
-// pointers as in the matched ov002 loaders. Left: the colour of g (data_02149ef8), which the
-// target gives r7 after the 1/0 constants and o; the colouring model needs the Has loop's n, i
-// and result numbered above g, which an inline cannot do.
+// func_ov000_021743bc: 123 raw / 2 register-masked (round gO; 124 / 2 with pool offsets masked).
+// Real one-argument signature (the target overwrites r1 before reading it); the model-load blocks
+// use block-local file/nm pointers as in the matched ov002 loaders. The +0x40 list (vtable
+// 021caec8) and +0x44 box (vtable 021cb5a8) are called through their real slot types (round r43):
+// every slot is void except 0x74, func_ov000_021549a0, which leaves the new entry in r0 and is
+// used as a return value by the matched ov002_021ce410. With that slot void, an automatic
+// 100-instruction block split survives after the second AddItem and the score drops to 143 / 14.
+// Left: the colour of g (data_02149ef8), which the target gives r7 after the 1/0 constants and o;
+// the colouring model needs the Has loop's n, i and result numbered above g, which an inline
+// cannot do.
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
@@ -69,6 +74,119 @@ typedef struct {
 } Bits021743bc;
 
 struct Glyph02174168;
+
+class MenuList021743bc {
+public:
+    virtual void vf00();
+    virtual void vf04();
+    virtual void Show();
+    virtual void vf0c();
+    virtual void SetTitleId(s32 id);
+    virtual void SetTitle(const char *src);
+    virtual void vf18();
+    virtual void vf1c();
+    virtual void vf20();
+    virtual void vf24();
+    virtual void vf28();
+    virtual void vf2c();
+    virtual void vf30();
+    virtual void vf34();
+    virtual void vf38();
+    virtual void vf3c();
+    virtual void vf40();
+    virtual void vf44();
+    virtual void vf48();
+    virtual void vf4c();
+    virtual void vf50();
+    virtual void vf54();
+    virtual void vf58();
+    virtual void vf5c();
+    virtual void vf60();
+    virtual void vf64();
+    virtual void vf68();
+    virtual void vf6c();
+    virtual void vf70();
+    virtual void *AddItem(const char *name, u16 id, u16 a, u32 b);
+    virtual void vf78();
+    virtual void vf7c();
+    virtual void vf80();
+    virtual void vf84();
+    virtual void vf88();
+    virtual void vf8c();
+    virtual void vf90();
+    virtual void vf94();
+    virtual void vf98();
+    virtual void vf9c();
+    virtual void vfa0();
+    virtual void vfa4();
+    virtual void Select(void *e);
+};
+
+class MenuBox021743bc {
+public:
+    virtual void vf00();
+    virtual void vf04();
+    virtual void Show();
+    virtual void vf0c();
+    virtual void vf10();
+    virtual void vf14();
+    virtual void vf18();
+    virtual void vf1c();
+    virtual void vf20();
+    virtual void vf24();
+    virtual void vf28();
+    virtual void vf2c();
+    virtual void vf30();
+    virtual void vf34();
+    virtual void vf38();
+    virtual void vf3c();
+    virtual void vf40();
+    virtual void vf44();
+    virtual void vf48();
+    virtual void vf4c();
+    virtual void vf50();
+    virtual void vf54();
+    virtual void vf58();
+    virtual void vf5c();
+    virtual void vf60();
+    virtual void vf64();
+    virtual void vf68();
+    virtual void vf6c();
+    virtual void vf70();
+    virtual void vf74();
+    virtual void vf78();
+    virtual void vf7c();
+    virtual void vf80();
+    virtual void vf84();
+    virtual void vf88();
+    virtual void vf8c();
+    virtual void vf90();
+    virtual void vf94();
+    virtual void vf98();
+    virtual void vf9c();
+    virtual void vfa0();
+    virtual void vfa4();
+    virtual void vfa8();
+    virtual void vfac();
+    virtual void vfb0();
+    virtual void vfb4();
+    virtual void vfb8();
+    virtual void vfbc();
+    virtual void vfc0();
+    virtual void vfc4();
+    virtual void vfc8();
+    virtual void vfcc();
+    virtual void vfd0();
+    virtual void vfd4();
+    virtual void vfd8();
+    virtual void vfdc();
+    virtual void vfe0();
+    virtual void vfe4();
+    virtual void vfe8();
+    virtual void vfec();
+    virtual void vff0();
+    virtual void SetText(s32 b, const void *c);
+};
 
 extern "C" {
 void *func_0203dd9c(u32 size);
@@ -186,9 +304,9 @@ void func_ov000_021743bc(VObj *self) {
         LFLD(s16, s_1, 0x68) = -0x1ccd;
     }
     LFLD(u32, LFLD(void *, self, 0x44), 0xc) |= 0x20000000;
-    LFLD(VObj *, self, 0x44)->vfunc_f4(1, func_0204c0e8(g, 0x32));
-    LFLD(VObj *, self, 0x44)->vfunc_f4(2, func_0204c0e8(g, 0x33));
-    LFLD(VObj *, self, 0x44)->vfunc_08();
+    LFLD(MenuBox021743bc *, self, 0x44)->SetText(1, func_0204c0e8(g, 0x32));
+    LFLD(MenuBox021743bc *, self, 0x44)->SetText(2, func_0204c0e8(g, 0x33));
+    LFLD(MenuBox021743bc *, self, 0x44)->Show();
     o = (VObj *)func_0203dd9c(0xd4);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -197,8 +315,8 @@ void func_ov000_021743bc(VObj *self) {
         o->vfunc_28();
     }
     LFLD(VObj *, self, 0x40) = o;
-    LFLD(VObj *, self, 0x40)->vfunc_10(func_0204c0e8(g, 0xb8));
-    LFLD(VObj *, self, 0x40)->vfunc_14(func_0204c0e8(g, 0xb9));
+    LFLD(MenuList021743bc *, self, 0x40)->SetTitleId((s32)func_0204c0e8(g, 0xb8));
+    LFLD(MenuList021743bc *, self, 0x40)->SetTitle((const char *)func_0204c0e8(g, 0xb9));
     LFLD(s32, LFLD(void *, self, 0x40), 0x34) = 0x6000;
     LFLD(void *, LFLD(void *, self, 0x40), 0x8) = self;
     LFLD(s32, LFLD(void *, self, 0x40), 0x24) = 0x6c;
@@ -214,10 +332,10 @@ void func_ov000_021743bc(VObj *self) {
     LFLD(u32, LFLD(void *, self, 0x40), 0xc) &= ~0x10000;
     LFLD(void *, LFLD(void *, self, 0x40), 0x78) = (void *)func_ov000_021742b4;
     LFLD(void *, LFLD(void *, self, 0x40), 0x84) = (void *)func_ov000_021742c8;
-    LFLD(VObj *, self, 0x40)->vfunc_74(func_0204c0e8(g, 0xba), 0x1a, 0xffff, 0xffff);
-    LFLD(VObj *, self, 0x40)->vfunc_74(func_0204c0e8(g, 0xc2), 6, 0xffff, 0xffff);
-    LFLD(VObj *, self, 0x40)->vfunc_74(func_0204c0e8(g, 0x112), 0xf, 0xffff, 0xffff);
-    LFLD(VObj *, self, 0x40)->vfunc_74(func_0204c0e8(g, 0x118), 5, 0xffff, 0xffff);
+    LFLD(MenuList021743bc *, self, 0x40)->AddItem((const char *)func_0204c0e8(g, 0xba), 0x1a, 0xffff, 0xffff);
+    LFLD(MenuList021743bc *, self, 0x40)->AddItem((const char *)func_0204c0e8(g, 0xc2), 6, 0xffff, 0xffff);
+    LFLD(MenuList021743bc *, self, 0x40)->AddItem((const char *)func_0204c0e8(g, 0x112), 0xf, 0xffff, 0xffff);
+    LFLD(MenuList021743bc *, self, 0x40)->AddItem((const char *)func_0204c0e8(g, 0x118), 5, 0xffff, 0xffff);
     if (func_020594bc(data_02fe152c, 5, 1, 0) == 0) {
         LFLD(s32, func_ov000_02154b58(LFLD(void *, self, 0x40), 0x1a), 0x24) = 0xe;
     }
@@ -228,14 +346,14 @@ void func_ov000_021743bc(VObj *self) {
         LFLD(s32, func_ov000_02154b58(LFLD(void *, self, 0x40), 5), 0x24) = 0xe;
     }
     {
-        VObj *t = LFLD(VObj *, self, 0x40);
+        MenuList021743bc *t = LFLD(MenuList021743bc *, self, 0x40);
         if (LFLD(s32, &data_ov000_021ccd34, 4) == 0) {
-            t->vfunc_a8(func_ov000_02154b58(t, 0x1a));
+            t->Select(func_ov000_02154b58(t, 0x1a));
         } else {
-            t->vfunc_a8(func_ov000_02154b58(t, (u16)LFLD(s32, &data_ov000_021ccd34, 4)));
+            t->Select(func_ov000_02154b58(t, (u16)LFLD(s32, &data_ov000_021ccd34, 4)));
         }
     }
-    LFLD(VObj *, self, 0x40)->vfunc_08();
+    LFLD(MenuList021743bc *, self, 0x40)->Show();
     {
         u8 *s_3 = LFLD(u8 *, self, 0x40);
         LFLD(void *, s_3, 0x6c) = data_ov000_021c9c28;
