@@ -1,3 +1,5 @@
+#include "nitro/gx.h"
+#include "nitro/gx_bgcnt.h"
 #include "Main/Gfx/FieldMsg.h"
 #include "Main/Sys/Field.h"
 
@@ -71,22 +73,18 @@ BOOL func_02055898(void) {
     return Field_IsPlayerBusy();
 }
 
-// Same VRAM-free loop as func_02051210: the bases are variables with two
-// definitions (the second is dead but keeps the optimizer from propagating
-// them), and `i` is a `long`, which gives the target's register order.
+// Same VRAM-free loop as func_02051210: the OBJ VRAM bases are read with the
+// SDK getters into locals before the loop, and `i` is a `long`.
 void func_0205592c(GlyphCache *cache) {
     long i;
     u8 *objBase;
     u8 *subObjBase;
     cache->flag0 = 0;
     cache->count = 0;
-    objBase = (u8 *)0x6400000;
-    subObjBase = (u8 *)0x6600000;
-    if ((u32)cache & 3) {
-        objBase = (u8 *)0x6400000;
-        subObjBase = (u8 *)0x6600000;
-    }
-    for (i = 0; i < 0x80; i++) {
+    i = 0;
+    objBase = (u8 *)G2_GetOBJCharPtr();
+    subObjBase = (u8 *)G2S_GetOBJCharPtr();
+    for (; i < 0x80; i++) {
         if (cache->blocks[i] != NULL) {
             VramBlock *b = cache->blocks[i];
             MIi_CpuClearFast(0, (b->kind == 4 ? objBase : subObjBase) + b->addr, b->size - b->pad);

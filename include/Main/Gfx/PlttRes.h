@@ -56,7 +56,9 @@ typedef struct PlttRes {
     /* 0x60 */ u32 transfer;
 } PlttRes; // size 0x64
 
+#ifndef NITRO_MI_H
 extern void MI_CpuFill8(void *dst, u32 value, u32 size);
+#endif
 extern void NNS_G2dInitImagePaletteProxy(PlttSub *sub);
 
 static inline void PlttRes_Init(PlttRes *res) {

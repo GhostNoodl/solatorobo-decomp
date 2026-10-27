@@ -139,6 +139,8 @@ static inline void G3_Cmd1(int cmd, u32 value) {
     NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
+// Buffered vertex commands, for files that do not include the SDK G3 header.
+#ifndef NITRO_GX_H
 static inline void G3_Vtx(s16 x, s16 y, s16 z) {
     u32 v[2];
     v[0] = (u16)x | ((u16)y << 16);
@@ -150,6 +152,7 @@ static inline void G3_VtxXY(s16 x, s16 y) {
     u32 v = (u16)x | ((u16)y << 16);
     NNS_G3dGeBufferOP_N(0x25, &v, 1);
 }
+#endif
 
 static inline s32 GameScene_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);

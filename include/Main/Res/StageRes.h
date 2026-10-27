@@ -84,7 +84,9 @@ extern int (*data_0208bde8)(StageResSlot *slot);
 extern int func_0205bef8(StageResSlot *slot);
 extern DataRes *data_02fe152c;
 
+#ifndef NITRO_MI_H
 extern void MI_CpuFill8(void *dst, u32 value, u32 size);
+#endif
 
 static inline void Slot_Init(StageResSlot *slot) {
     s8 j;

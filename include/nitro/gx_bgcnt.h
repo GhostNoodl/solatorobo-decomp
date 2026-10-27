@@ -5,6 +5,10 @@
 #include "nitro/gx_disp.h"
 #include "nitro/mmap.h"
 
+#ifndef SDK_WARNING
+#define SDK_WARNING(exp, ...) ((void)0)
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

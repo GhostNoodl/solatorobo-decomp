@@ -152,7 +152,13 @@ typedef struct TextBoxLine {
     /* 0x88 */ s32 unk_88;
     /* 0x8c */ s32 unk_8c;
     /* 0x90 */ s32 unk_90;
-    /* 0x94 */ s32 unk_94;
+    /* 0x94 */ union {
+        s32 unk_94;
+        struct {
+            u32 fadeIn : 1;
+            u32 fadeOut : 1;
+        };
+    };
     /* 0x98 */ s32 unk_98;
 } TextBoxLine; // size 0x9c
 
@@ -184,12 +190,12 @@ typedef struct TextBox {
     /* 0x018 */ s32 unk_018;
     /* 0x01c */ u32 unk_01c;
     /* 0x020 */ u32 unk_020;
-    /* 0x024 */ u32 unk_024;
-    /* 0x028 */ u32 unk_028;
+    /* 0x024 */ s32 unk_024;
+    /* 0x028 */ s32 unk_028;
     /* 0x02c */ TextBoxLine lines[3];
     /* 0x200 */ TextBoxObj *obj;
-    /* 0x204 */ u32 unk_204;
-    /* 0x208 */ u32 unk_208;
+    /* 0x204 */ s32 unk_204;
+    /* 0x208 */ s32 unk_208;
     /* 0x20c */ u32 unk_20c;
 } TextBox;
 

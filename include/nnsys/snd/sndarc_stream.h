@@ -115,6 +115,8 @@ extern u8 data_02097c98[0x18];
 extern NNSFndList data_02097cb0;
 extern const s16 data_02075210[];
 
+// Loose prototypes for files that do not include the SDK OS header.
+#ifndef NITRO_OS_H
 extern u32 OS_DisableInterrupts(void);
 extern void OS_RestoreInterrupts(u32 state);
 extern void OS_InitMutex(void *mutex);
@@ -124,8 +126,11 @@ extern void OS_CreateThread(void *thread, void (*func)(void *), void *arg, void 
 extern void OS_WakeupThreadDirect(void *thread);
 extern void OS_WakeupThread(void *queue);
 extern void OS_SleepThread(void *queue);
+#endif
 extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
+#ifndef NITRO_MI_H
 extern void MI_CpuFill8(void *dst, u32 value, u32 size);
+#endif
 extern void FS_InitFile(void *file);
 extern void NNS_SndStrmInit(void *strm);
 extern BOOL NNS_SndStrmAllocChannel(void *strm, int chNum, u8 *chList);
