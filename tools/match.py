@@ -137,12 +137,12 @@ if args.all_compilers:
     exit(0)
 
 if args.compiler is None:
-    from mwcc_versions import FILE_MWCC_VERSIONS
+    from mwcc_versions import mwcc_version_for
     try:
         relative_source = Path(os.path.relpath(args.source.resolve(), root_path.resolve())).as_posix()
     except ValueError:
         relative_source = None
-    args.compiler = FILE_MWCC_VERSIONS.get(relative_source, "dsi/1.3")
+    args.compiler = mwcc_version_for(relative_source, "dsi/1.3")
 result = compile_function(args.compiler)
 if isinstance(result, str):
     print(result)

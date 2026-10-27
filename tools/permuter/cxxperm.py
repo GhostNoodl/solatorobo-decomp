@@ -1196,12 +1196,12 @@ def main():
     if args.address is None:
         args.address = int(args.function.rsplit("_", 1)[-1], 16)
     if args.compiler is None:
-        from mwcc_versions import FILE_MWCC_VERSIONS
+        from mwcc_versions import mwcc_version_for
         try:
             rel = Path(os.path.relpath(args.source.resolve(), ROOT)).as_posix()
         except ValueError:
             rel = None
-        args.compiler = FILE_MWCC_VERSIONS.get(rel, "dsi/1.3")
+        args.compiler = mwcc_version_for(rel, "dsi/1.3")
     args.rewrites = [r for r in args.rewrites.split(",") if r]
     for r in args.rewrites:
         if r not in REWRITES:

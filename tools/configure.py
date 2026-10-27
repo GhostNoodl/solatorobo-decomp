@@ -8,7 +8,7 @@ import sys
 import subprocess
 from typing import Any, Generator
 
-from mwcc_versions import FILE_MWCC_VERSIONS
+from mwcc_versions import mwcc_version_for
 
 import ninja_syntax
 from get_platform import Platform, get_platform
@@ -605,7 +605,7 @@ def add_mwcc_builds(n: ninja_syntax.Writer, project: Project, mwcc_implicit: lis
         elif is_c(source_file):
             cc_flags.append("-lang=c")
         cc = CC
-        mwcc_version = FILE_MWCC_VERSIONS.get(Path(os.path.relpath(source_file, root_path)).as_posix())
+        mwcc_version = mwcc_version_for(Path(os.path.relpath(source_file, root_path)).as_posix())
         if mwcc_version is not None:
             cc = os.path.join('.', str(mwcc_root / mwcc_version / "mwccarm.exe"))
         n.build(
