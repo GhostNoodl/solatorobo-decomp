@@ -5010,3 +5010,52 @@ No new match. Scratch files are in `scratchpad/gR/` (`ms.py`, `nm.py` and the bi
 - **Re-scored best drafts.** `02166180` 45 / 0 (`vphase3/6180/best45.cpp`), `020417e0` 25 / 3 (`mainI/17.cpp`), `02049c80` 27 / 10 (`mainI/c80.cpp`, which still has the `(u32)mgr & 3` two-definition `none` and so is not landable), `021b9b14` 107 / 33 (`giantsB/d/9b14mv1/best.cpp`), `02191f18` 378 / 222 (`ov000hi9/d/1f18_o3.cpp`). `ov009_02208b24`'s best (`near5/d/8b24/abl.cpp`) is 14 / 4 only with its fake parameters and a `(u32)self & 3` hack. The honest `near4/d/8b24/k2.cpp` is 29 / 11.
 - **`02166180` is now in the tree** under `#ifdef NONMATCHING` at the end of `src/ov000/Lo_02165f94.cpp` (that file's `.text` ends at `0x02166180`). The only changes from `best45.cpp` are that it uses the host file's `Node0216607c *func_ov000_0216607c(void *, Node0216607c *, u8 *, BOOL)` with casts at the two calls, and that it drops the duplicate include and `extern`. It scores 45 / 0 in place. The colour dump names the wrong nodes in the first loop: `oams` (node 144) and `pos` (111) get `r3`/`r8` where the target has `sb`/`sl`, and `j` (92) and the `&oams[j]` CSE address (91) get `sb`/`sl` where the target has `r3`/`r8`. Moving `j` and `&oams[j]` above `oams`/`pos` in the colouring order, or the reverse, makes things worse in the model (32–54 wrong nodes, against 21).
 - **`020417e0`: where the hoisted `NULL` comes from.** In the target, the `NULL` register is `mov fp, sl` *after* the second loop's `bls` guard, copied from that loop's `i = 0` (round cderiv's derivation from a known-constant register). In ours it is `mov fp, r4` in the entry block, before the first loop's guard, copied from `n = 0`. So the target hoists that `NULL` only as far as the second loop's preheader, and ours hoists it to the entry block. These do not move it (`17/`): the count loop written in the function with its own `u16 j` (25 / 3), the same loop sharing the second loop's `i` (88 / 3), a function-level `i` for the second loop (25 / 3), `u16 *seq` for the sequence pointer (25 / 3), the arms swapped (28 / 7), `NULL` stored first and then overwritten (41 / 20), and `void *a = NULL; if (...) a = anims; Set(a)` (116 / 30).
+
+## How an inlined `FX_Mul` gets its vreg numbers: no spelling changes the order (round fxS)
+
+No new match. This round traced how mwccarm (`dsi/1.3`) numbers the vregs of the 64-bit multiply in an inlined `FX_Mul` (`umull`/`mla` or `smull`, then `+ 0x800`, then `>> 12`). The two near-misses that need a different order inside that expansion, `02056e74` and `ov003_021cd91c`, can't get it from any spelling of the multiply. Scratch files are in `scratchpad/fxS/`: `tc.py FILE` compiles a toy with the game flags, `vr.sh FILE...` prints each toy's sign-word, `+ 0x800` and `umull` vregs from the colouring dump, `re/` holds the bigM RA tools pointed at the fxS clone, `re/vw2.sh` (env `VWOUT`) logs every write of the class-0 vreg counter `0x65b860` through a hardware watchpoint, with the return addresses on the stack, and `scan.py` lists every `umull … adds #0x800` expansion in the built objects.
+
+### The lowering order, traced
+
+The watchpoint log on a one-statement toy (`x = FX_Mul(s, -0x80000) >> 12`) shows which code allocates each number:
+
+1. objects (parameters, named locals, CSE objects) through `0x507830`, as in round rgraph2;
+2. the `(s32)(… >> 12)` result pair (`0x502684`/`0x502694`, under `0x501712`);
+3. the 64-bit `+ 0x800` result pair. The binary-op lowering at `0x553cf0` **allocates its result pair on entry** (`0x553d11`/`0x553d1d`), before it dispatches into its operands (`call *0x65e298(,%ebx,4)` at `0x553d35`);
+4. the product pair, from the same routine called from the multiply lowering (`0x5021cc`);
+5. the operand's widening `(s64)s`: a copy of the low word and the **sign word** (`0x553697`/`0x5536ab`, under `0x501855`), allocated while the multiply is being expanded;
+6. after code generation, the constants of the multiplier (`-1`, `-0x80000`, `0xb000`) are materialised by a separate pass (`0x5282c8`/`0x5282ec`, from `0x529e2c`/`0x529f04`, under `0x474fa5`), so they get the highest numbers.
+
+So within one expression tree the numbers always run shift < add < product < (operand copy, sign word) < constants. The code generator numbers top-down, the parent before its operands, and nothing in the tree can be numbered before its parent.
+
+### Every spelling reaches the code generator as the same tree
+
+All of these give the same instructions and the same numbers in a toy (sign `v26` > add `v21`, product `v23/v24`), because the front end and the optimizer forward-substitute every single-use piece back into one tree:
+
+- the SDK inline from `nitro/fx.h` (`(fx32)(((fx64)(v1) * v2 + 0x800LL) >> FX32_SHIFT)`), the macro `((fx32)(((fx64)(a) * (b) + 0x800) >> 12))` and `GameScene_FxMul`;
+- a separate rounding add (`p = (fx64)s * b; p += 0x800; x = p >> 12`), the add and shift in separate statements, `0x800 + …` first, the operands swapped, `(fx64)s * (fx64)-0x80000`, a `(u64)` cast before the shift;
+- an `fx64` local for the operand (`t = s`, `t = (fx64)s`, `t = 0x1000 - s`), an inline with `fx64` parameters, an inline returning the `fx64` product, a rounding inline `R(fx64 v)`, and five inline-local forms (`fx64 t = (fx64)a * b; …`, `t += 0x800`, the result in a local).
+
+`/ 4096` in place of `>> 12` is the only spelling that changes anything, and it changes the code itself (signed division), not just the numbers.
+
+### What does number the inner parts first: CSE
+
+When the same widening or product occurs twice, the CSE pass makes it an object (`0x507830`, from `0x507de8`) and puts its assignment in a statement of its own, placed before the first use. That statement is lowered first, so its codegen temps get numbers below the whole multiply tree that uses them:
+
+- `x = FX_Mul(s, 0xb000); z = FX_Mul(s, 0x1f000);` (or both in one call): the CSE'd `(s64)s` gives the sign word `v21`/`v24`, below both adds (`v24`/`v27`, `v30`/`v33`). With only one multiply of `s`, the sign is numbered after the add (`cs1`–`cs4`).
+- Two different roundings of the same product `(fx64)s * 0xb000`: the product pair (`v20/v21`) and the sign (`v23`) come out below the add (`v26`).
+- The pcode position does not move. The CSE'd sign is still emitted where the multiply first needs it, after the first `mla`. So a target whose sign word is in place but numbered low (as in `02056e74`) is consistent with a CSE'd widening.
+- A 64-bit local that is assigned in two branches is a split-lifetime object, so its sign word is numbered low too (`q_br`), but then the `asr` goes into each branch.
+
+The duplicated-statement form does not count as a second use. `u8 r = (FX_Mul(s, 0xb000) + 0x14000) >> 12; u8 g = <same>;` is merged by value numbering before CSE, and the code and numbers are those of one expression (`co0`/`co1`).
+
+### The two targets
+
+- **`02056e74` (4 / 0).** The sign word of `s` (`asr r4, r4, #0x1f`, node 185) needs a number below the `+ 0x800` (180). By the order above, that requires a second use of `(s64)s` (or of `s >> 31`) somewhere, so that CSE makes it an object. The target function has one multiply of that `s`, and the sign word dies at the `mla` that uses it. A second use the real code doesn't have would be a junk match. Without the `*&s` in the draft (`s = 0x1000 - s;`) it is also 4. With an `fx64` local for `0x1000 - s` (`w = 0x1000 - s`, `w = 0x1000 - *&s`, `w = (s64)(0x1000 - *&s)`) it is 14: the local is forward-substituted, and the subtraction is pulled into the tree (as when it is passed straight to the inline).
+- **`ov003_021cd91c` (43 / 23).** In `Ov003Cd_Color` the widening of `s` is already CSE'd across the `0xb000` and `0x1f000` multiplies (one `asr r2, r3, #0x1f` serves both, numbered 283 below the add, 288). What the target also needs is the `0xb000` product's high word (291) below the add and shift (288, 286). That would take a second use of the product `(fx64)s * 0xb000` itself. The colour has none: `r` and `g` are the same value, and writing them as two equal expressions is merged before CSE.
+
+### Other drafts blocked on the same order
+
+From the docs and this trace, these misses also need an operand or product numbered below its parent's result: `ov000_021be5dc` (3, the `z - 0x1000` operand below the `smull` result; round near7's second-definition form `r = z - 0x1000; r = FX_MUL(r, k)` makes the operand a split-lifetime object and fixes the pair, but moves the camera load, 18 / 7) and `ov011_021fd638` (24 / 2, the ring loop's `Ov011_FxMul` temps, at least three moves). Matched earlier by changing *where* the tree is lowered, not its inner order: `ov000_02152f8c` (round bigM, the shift folded into the local so it is lowered at the assignment) and `func_0205cbf0` (the multiply statement moved after the three stores).
+
+Rule of thumb: inside one `FX_Mul` expansion the order is fixed (shift, add, product, sign word, then constants). An inner part can only be numbered earlier if it becomes an object. That takes a CSE with a real second use, a split lifetime of a 64-bit local, or a separate statement that isn't forward-substituted. Don't spend time on spellings of the multiply itself.
