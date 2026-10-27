@@ -21,9 +21,13 @@ src/ov004/ov004_021cd714.c:
     complete
     .text       start:0x021cd714 end:0x021cd750
 
+src/ov004/ov004_021cd750.c:
+    complete
+    .text       start:0x021cd750 end:0x021cd7dc
+
 src/ov004/ov004_021cd7dc.c:
     complete
-    .text       start:0x021cd7dc end:0x021cd97c
+    .text       start:0x021cd7dc end:0x021cdb30
 
 src/ov004/ov004_021cdb30.c:
     complete
