@@ -342,7 +342,7 @@ extern SndMgr *data_02097e4c;
 extern s32 FX_Div(s32 a, s32 b);
 extern void MIi_CpuClear32(u32 value, void *dst, u32 size);
 extern SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
-extern void func_02049f44(SndMgr *mgr, s32 id, void *pos, s32 arg);
+extern SndHandle *func_02049f44(SndMgr *mgr, s32 id, const void *pos, s32 pitch);
 extern BOOL func_0204a118(SndMgr *mgr, s32 id);
 extern void func_02049de8(SndMgr *mgr, s32 id);
 

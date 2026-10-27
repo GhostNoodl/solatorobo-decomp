@@ -36,7 +36,7 @@ extern u32 _fsub(u32 a, u32 b);
 extern u32 _fdiv(u32 a, u32 b);
 extern u32 _fmul(u32 a, u32 b);
 extern s32 _ffix(u32 a);
-extern void func_0204061c(s32 *out, s32 arg);
+extern void func_0204061c(s32 *out, const SndVec *pos);
 extern void NNS_SndPlayerPause(SndHandle *handle, int pause);
 extern s32 OS_GetThreadPriority(void *thread);
 extern void OS_SetThreadPriority(void *thread, s32 prio);
@@ -60,24 +60,24 @@ static inline BOOL SndMgr_IsArea(SndListener *listener, u8 a, u8 b, u8 c) {
     return (listener->a == a && listener->b == b && listener->c == c) ? TRUE : FALSE;
 }
 
-s32 func_02049e20(SndMgr *mgr, s32 arg);
+s32 func_02049e20(SndMgr *mgr, const SndVec *pos);
 
-SndHandle *func_02049f44(SndMgr *mgr, s32 id, s32 arg, s32 pan) {
+SndHandle *func_02049f44(SndMgr *mgr, s32 id, const SndVec *vec, s32 pitch) {
     s32 seqArc;
     s32 index;
     s32 vol;
-    s32 pos[2];
+    s32 out[2];
     s32 p;
     SndHandle *handle;
     if (id < 0) {
         return NULL;
     }
-    vol = func_02049e20(mgr, arg);
+    vol = func_02049e20(mgr, vec);
     if (vol <= 0) {
         return NULL;
     }
-    func_0204061c(pos, arg);
-    p = pos[0] - 0x80;
+    func_0204061c(out, vec);
+    p = out[0] - 0x80;
     if (p > 0x7f) {
         p = 0x7f;
     }
@@ -91,17 +91,17 @@ SndHandle *func_02049f44(SndMgr *mgr, s32 id, s32 arg, s32 pan) {
     if (!NNS_SndArcPlayerStartSeqArc(handle, seqArc, index)) {
         return NULL;
     }
-    NNS_SndPlayerSetTrackPitch(handle, 1, pan);
+    NNS_SndPlayerSetTrackPitch(handle, 1, pitch);
     NNS_SndPlayerSetTrackPan(handle, 1, p);
     NNS_SndPlayerSetVolume(handle, vol);
     return handle;
 }
 
-SndHandle *func_0204a028(SndMgr *mgr, s32 id, s32 arg, s32 pan) {
-    if (pan < -0x200 || pan > 0x1ff) {
+SndHandle *func_0204a028(SndMgr *mgr, s32 id, const SndVec *vec, s32 pitch) {
+    if (pitch < -0x200 || pitch > 0x1ff) {
         return NULL;
     }
-    return func_02049f44(mgr, id, arg, pan << 6);
+    return func_02049f44(mgr, id, vec, pitch << 6);
 }
 
 static inline SndHandle *SndMgr_GetSlotHandle(SndMgr *mgr, u32 slot) {

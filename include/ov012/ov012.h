@@ -570,7 +570,7 @@ extern BOOL func_0204985c(void *a);
 
 
 extern "C" {
-extern void func_02049f44(void *a, s32 b, Ov012Vec *c, s32 d);
+extern struct SndHandle *func_02049f44(void *mgr, s32 id, const Ov012Vec *pos, s32 pitch);
 extern void func_ov003_021daab0(void *p);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(void *a, const void *b, s32 c, s32 d, s32 e, s32 f);

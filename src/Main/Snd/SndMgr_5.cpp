@@ -36,7 +36,7 @@ extern u32 _fsub(u32 a, u32 b);
 extern u32 _fdiv(u32 a, u32 b);
 extern u32 _fmul(u32 a, u32 b);
 extern s32 _ffix(u32 a);
-extern void func_0204061c(s32 *out, s32 arg);
+extern void func_0204061c(s32 *out, const SndVec *pos);
 extern void NNS_SndPlayerPause(SndHandle *handle, int pause);
 extern s32 OS_GetThreadPriority(void *thread);
 extern void OS_SetThreadPriority(void *thread, s32 prio);
@@ -109,9 +109,9 @@ s32 func_02049e20(SndMgr *mgr, const SndVec *pos) {
     return vol;
 }
 
-SndHandle *func_02049f44(SndMgr *mgr, s32 id, s32 arg, s32 pan);
+SndHandle *func_02049f44(SndMgr *mgr, s32 id, const SndVec *pos, s32 pitch);
 
-SndHandle *func_0204a028(SndMgr *mgr, s32 id, s32 arg, s32 pan);
+SndHandle *func_0204a028(SndMgr *mgr, s32 id, const SndVec *pos, s32 pitch);
 
 static inline SndHandle *SndMgr_GetSlotHandle(SndMgr *mgr, u32 slot) {
     return slot >= 5 ? NULL : mgr->seqArcHandles[slot];

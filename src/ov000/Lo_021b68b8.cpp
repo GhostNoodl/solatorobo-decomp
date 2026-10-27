@@ -26,8 +26,6 @@ typedef struct {
 
 extern "C" {
 s32 FX_Div(s32 a, s32 b);
-void func_ov000_0217df5c(void *self, void *v);
-void func_ov000_0217e560(void *self, void *v);
 BOOL func_01ffc318(void *a, Item021b68b8 *item, VecFx32 *min, VecFx32 *max, Rot3 *rot);
 
 Item021b68b8 *func_ov000_021b68b8(u8 *self, void *arg) {
