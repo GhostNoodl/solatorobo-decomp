@@ -2,12 +2,7 @@
 #define OV000_MESSAGEQUEUE_H
 
 #include "ov000/VObj.h"
-
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
+#include "ov000/HeapScope.h"
 
 class ListBuffer : public VObj {
 public:

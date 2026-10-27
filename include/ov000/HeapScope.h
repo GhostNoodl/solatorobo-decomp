@@ -13,9 +13,11 @@ typedef struct HeapState {
     void *unk_08;
 } HeapState;
 
+struct Model;
+
 extern HeapState *data_02097dd0;
 void func_0203de1c(void *p);
-void func_02041558(void *m);
+void func_02041558(struct Model *model);
 void func_02041278(void *p);
 
 #ifdef __cplusplus
@@ -40,7 +42,7 @@ void func_02041278(void *p);
     }
 
 #define MODEL_DELETE(p)                \
-    func_02041558(p);                  \
+    func_02041558((struct Model *)(p)); \
     func_02041278((u8 *)(p) + 0x88);   \
     func_0203de1c(p)
 
