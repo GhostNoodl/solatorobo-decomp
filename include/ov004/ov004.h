@@ -28,14 +28,10 @@ struct Ov004Heap {
 
 typedef void *(*Ov004Cb)(void *a, s32 b);
 
-struct Ov004Global {
-    Ov004Cb cb;
-    Ov004V *obj;
-};
-
 extern "C" {
 extern Ov004Heap *data_02097dd0;
-extern Ov004Global data_ov004_021cf860;
+extern Ov004Cb data_ov004_021cf860;
+extern Ov004V *data_ov004_021cf864;
 extern s32 data_ov004_021cf868;
 extern void *data_ov004_021cf86c[2];
 extern u8 data_ov004_021cf808[];

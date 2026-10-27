@@ -6,11 +6,8 @@
 
 src/ov004/ov004_021ccda0.cpp:
     complete
-    .text       start:0x021ccda0 end:0x021cce88
-
-src/ov004/ov004_021ccf10.cpp:
-    complete
-    .text       start:0x021ccf10 end:0x021cd050
+    .text       start:0x021ccda0 end:0x021cd050
+    .bss        start:0x021cf860 end:0x021cf868
 
 src/ov004/ov004_021cd050.c:
     complete
@@ -30,7 +27,7 @@ src/ov004/ov004_021cd7dc.c:
 
 src/ov004/ov004_021cdb30.c:
     complete
-    .text       start:0x021cdb30 end:0x021cdc20
+    .text       start:0x021cdb30 end:0x021cdc6c
 
 src/ov004/ov004_021cdc6c.c:
     complete
@@ -54,4 +51,4 @@ src/ov004/ov004_021ce874.c:
 
 src/ov004/ov004_021cf5cc.c:
     complete
-    .text       start:0x021cf5cc end:0x021cf7a0
+    .text       start:0x021cf544 end:0x021cf7a0
