@@ -4788,3 +4788,16 @@ What this round found (no new matches):
 - **`0217558c` (2 / 2, `scratchpad/aw/558c/z4.cpp`).** The two stores of the first `Model_SetPos(M5C, x << 12, -0x18000)` are both generic, so `str x -> str y` is an edge. That gives the `M5C` load height 11 against 10 for `mov #0x18000`, and the load is scheduled first. Cutting the edge brings both to height 10, but the load still wins on `dl` (69 against 70, and `dl` is not recomputed). A `Model *` local, `s32` locals for both values, `s32 *` element stores and a `y` local declared earlier all give 2 / 2.
 - **`ov013_021fc7e0` (4 / 4).** In the store-first form (`o->f3c = k; o->v14(s, s, s);`) the pre-RA pass fills the slot after `ldr =0xb33` with `mov r0, o` (height 8, because the vtable load comes next) and not with `mov r1, #0x800` (height 5). The target's `0xb33` in `r2` needs the `0x800` there. Real prototypes for all seven callees that differ change nothing.
 - **Prototype sweep (`ap.py`) over the 22 unmatched drafts from `perm4/best.tsv`:** no score improved. Real narrow types on `func_ov011_02202488`/`022024ac` (`u16`, in `021fc0b8`) and `func_ov000_02176590` (`s16`, in `0218867c`) make those drafts worse, so those drafts need the casts reworked as well as the prototype. `s32` locals for the loaded values in `ov002_021eca14` (`S3`'s `v` and the `0x1f`) and `ov009_02206084` (`pl->id` read before the bit-field store) give 7 / 2 and 14 / 8, the same as the old forms.
+
+## Two register-numbering levers, and the main near-misses they did not move (round mainG)
+
+Two ways to change the vreg number a value gets, found in the previous round:
+
+- **A load placed before a store that may alias it is not forward-substituted.** It stays a value of its own statement and keeps that statement's early vreg number, instead of being renumbered at its use. Moving a load above (or below) a generic store is therefore a numbering move, not only a scheduling one.
+- **A local reused across branches or separate lifetimes gets a split-lifetime object, numbered low** (the object band below the named locals). Giving one lifetime its own local, or folding two locals into one, moves that value in or out of the band.
+
+Tried on the main near-misses this round, no new match (drafts in `scratchpad/mainG/`):
+
+- **`02056e74` (4).** Every assignment of the four `s` lifetimes (first scale, second sine, `0x1000 - s`, `(y >> 12) - base`) to one of three locals: 26 forms at 4, the rest 14. `s64` locals for the operand, a block-local `s64`, `-0x80000LL`, `(s64)-0x80000` and an `s64` written through the ternary are 4 to 32. The sign word still comes after the add pair.
+- **`0203a984` (10).** A clean draft with no parameter reuse (`ox`, `y`, `nm` as block locals) is also 10. All 120 orders of the four loop loads and the two `buf[i]` stores give 10 when `attr01` is stored before `attr2`, and 44 or worse otherwise.
+- **`0206d43c` (12, clean draft `vmain/d43c/o.cpp`).** One `size` local for all three sizes, or `size` reused only for the total, stays at 12. Macro forms of `Align` that read `totalSize` twice (`(x + a - 1) & ~(a - 1)` and three variants) are 25 to 37.
