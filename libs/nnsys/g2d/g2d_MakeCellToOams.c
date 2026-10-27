@@ -88,7 +88,7 @@ static inline void MulMtx22(const MtxFx22 *m, const NNSG2dFVec2 *v, NNSG2dFVec2 
     }
 }
 
-u16 func_02024730(GXOamAttr *pDstOams, u16 numDstOam, const NNSG2dCellData *pCell, const MtxFx22 *pMtxSR,
+u16 NNS_G2dMakeCellToOams(GXOamAttr *pDstOams, u16 numDstOam, const NNSG2dCellData *pCell, const MtxFx22 *pMtxSR,
                   const NNSG2dFVec2 *pBaseTrans, u16 affineIndex, BOOL bDoubleAffine) {
     u16 i;
     NNSG2dFVec2 objTrans;

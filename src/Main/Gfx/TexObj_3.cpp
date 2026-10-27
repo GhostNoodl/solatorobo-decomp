@@ -48,7 +48,7 @@ typedef struct TexObjTexRes {
 } TexObjTexRes;
 
 extern BOOL func_0203e63c(u32 id);
-extern u16 func_02024730(TexObjOam *dst, u16 max, void *cell, const void *mtx, const TexObjPair *trans, u16 affineIdx, BOOL doubleAffine);
+extern u16 NNS_G2dMakeCellToOams(TexObjOam *dst, u16 max, void *cell, const void *mtx, const TexObjPair *trans, u16 affineIdx, BOOL doubleAffine);
 
 extern void *func_0203bbfc(GfxSys *sys, int which);
 
@@ -106,9 +106,9 @@ void func_02042720(TexObj *obj, int idx, TexObjOam *oam, void *cell, TexObjEntry
     trans.b = obj->pairs[idx].b + 0x60000;
     if (affine) {
         TexObjVec *mtx = &obj->vecs[idx];
-        count = func_02024730(oam, 0x80, cell, mtx, &trans, NNS_G2dEntryOamManagerAffine(mgr, (const MtxFx22 *)mtx), TRUE);
+        count = NNS_G2dMakeCellToOams(oam, 0x80, cell, mtx, &trans, NNS_G2dEntryOamManagerAffine(mgr, (const MtxFx22 *)mtx), TRUE);
     } else {
-        count = func_02024730(oam, 0x80, cell, NULL, &trans, 0, FALSE);
+        count = NNS_G2dMakeCellToOams(oam, 0x80, cell, NULL, &trans, 0, FALSE);
     }
     if (obj->unk_084 & (1 << idx)) {
         u32 base;
@@ -251,7 +251,7 @@ void func_020429a0(TexObj *obj, TexObjOam *oam, void *cell, TexObjEntry *e, u8 a
         vflip = FALSE;
     }
     G3_PolygonAttr(0, 0, 2, FB(obj)->polyId, TexObj_GetAlpha(obj), TexObj_GetPolyMisc(obj));
-    count = func_02024730(oam, 0x80, cell, NULL, NULL, 0, FALSE);
+    count = NNS_G2dMakeCellToOams(oam, 0x80, cell, NULL, NULL, 0, FALSE);
     if ((obj->unk_084 & 1) ? TRUE : FALSE) {
         u32 base;
         int i;
