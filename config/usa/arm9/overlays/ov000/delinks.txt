@@ -429,6 +429,10 @@ src/ov000/Stub_02171464.cpp:
     complete
     .text       start:0x02171464 end:0x02171478
 
+src/ov000/Task_02171478.cpp:
+    complete
+    .text       start:0x02171478 end:0x02172078
+
 src/ov000/Stub_021721c8.cpp:
     complete
     .text       start:0x021721c8 end:0x021722c4
