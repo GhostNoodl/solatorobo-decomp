@@ -1,7 +1,7 @@
-// ov000 .text 0x0217bd88..0x0217e560, part of the Menu translation unit (.text 0x021763c8..0x02180350,
+// ov000 .text 0x0217bd88..0x0217e9c8, part of the Menu translation unit (.text 0x021763c8..0x02180350,
 // string pool 0x021cba18..0x021cbac0). The former files are kept as they were, each in its own
 // namespace, so that their local typedefs, inlines and extern declarations do not clash. The TU
-// is split at the functions that do not match yet (0217a1f8, 0217b324, 0217e560); once they do,
+// is split at the functions that do not match yet (0217a1f8, 0217b324); once they do,
 // the four parts become one file and the pool can be claimed.
 #include "ov000/VObj.h"
 #include "ov000/LoCommon.h"
@@ -1434,4 +1434,183 @@ void func_ov000_0217df5c(u8 *self, LoVec0217df5c *pos) {
 }
 
 }  // namespace m_Lo_0217df5c
+#undef MF
+
+// ---- Lo_0217e560
+namespace m_Lo_0217e560 {
+
+typedef struct {
+    u32 b0 : 2;
+    u32 f2 : 5;
+    u32 f7 : 6;
+    u32 pad13 : 6;
+    u32 b19 : 1;
+    u32 b20 : 1;
+    u32 b21 : 1;
+    u32 rest : 10;
+} LoMdlFlags0217e560;
+
+#define MF(m) LFLD(LoMdlFlags0217e560, m, 0x6c)
+
+extern "C" {
+
+extern u8 *data_02097d48;
+u8 func_02043d48(void *p);
+extern s16 FX_SinCosTable_[];
+s32 FX_Div(s32 a, s32 b);
+void *NNS_G2dGetCellDataByIdx(void *a, int b);
+void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
+void func_02042628(void *a, void *b, void *c, int d);
+
+static inline void *LoModelGetPart(void *self, int idx) {
+    if (idx >= LFLD(s32, self, 0x80)) {
+        return NULL;
+    }
+    return (u8 *)LFLD(void *, self, 0x78) + idx * 0x28;
+}
+
+static inline void LoModelPlayPart(void *model, int idx) {
+    void *res = LFLD(void *, model, 0x28);
+    void *part;
+    void *anim;
+    if (res == NULL) {
+        return;
+    }
+    part = LoModelGetPart(model, idx);
+    if (part != NULL && LFLD(void *, part, 0x4) != NULL) {
+        anim = LFLD(void *, LFLD(void *, part, 0x4), 0x30);
+    } else {
+        anim = NNS_G2dGetCellDataByIdx(LFLD(void *, res, 0x4), **(u16 **)LFLD(void *, NNS_G2dGetAnimSequenceByIdx(LFLD(void *, res, 0xc), idx), 0xc));
+    }
+    func_02042628(model, anim, part, 0);
+}
+
+static inline void LoSetPosFx0217e560(void *m, s32 x, s32 y) {
+    LFLD(s32, m, 0xfc) = x;
+    LFLD(s32, m, 0x100) = y;
+}
+
+// The menu items (func_ov000_0217b230) are 0xb8-byte TextWins. Main/Gfx/TextWin.h clashes with
+// LoCommon.h, so this is its vtable up to Render (0x90). SetPos (0x20) and Render return void.
+struct LoTextWin {
+    virtual void unk_vf00();
+    virtual void unk_vf04();
+    virtual void unk_vf08();
+    virtual void OnSkip();
+    virtual void unk_vf10();
+    virtual void unk_vf14();
+    virtual void unk_vf18();
+    virtual void unk_vf1c();
+    virtual void unk_vf20(int a, int b);
+    virtual char *unk_vf24(char *p);
+    virtual char *unk_vf28(char *p);
+    virtual char *unk_vf2c(char *p);
+    virtual char *unk_vf30(char *p);
+    virtual char *unk_vf34(char *p);
+    virtual char *unk_vf38(char *p);
+    virtual char *unk_vf3c(char *p);
+    virtual char *unk_vf40(char *p);
+    virtual char *unk_vf44(char *p);
+    virtual char *unk_vf48(char *p);
+    virtual char *ParseEscape(char *p);
+    virtual char *unk_vf50(char *p);
+    virtual char *unk_vf54(char *p);
+    virtual char *unk_vf58(char *p);
+    virtual char *unk_vf5c(char *p);
+    virtual char *unk_vf60(char *p);
+    virtual char *unk_vf64(char *p);
+    virtual char *unk_vf68(char *p);
+    virtual char *unk_vf6c(char *p);
+    virtual char *unk_vf70(char *p);
+    virtual char *unk_vf74(char *p);
+    virtual char *unk_vf78(char *p);
+    virtual void unk_vf7c();
+    virtual void unk_vf80();
+    virtual void unk_vf84();
+    virtual void unk_vf88();
+    virtual void unk_vf8c();
+    virtual void Render();
+};
+#define OBJ(off) LFLD(LoTextWin *, self, off)
+
+static inline void Row0217e560(u8 *self, int off, s32 x, s32 y) {
+    OBJ(off)->unk_vf20(x + 0x12, y);
+    OBJ(off)->Render();
+    OBJ(off + 4)->unk_vf20(x + 0x87 - LFLD(s32, OBJ(off + 4), 0x44), y);
+    OBJ(off + 4)->Render();
+}
+void func_ov000_0217e560(u8 *self, s32 *pos) {
+    s32 x = pos[0] >> 12;
+    u8 *g = data_02097d48;
+    s32 step;
+    s32 a;
+    s32 s;
+    s16 i;
+    s32 y = pos[1] >> 12;
+    s32 y0;
+    s32 t;
+    s32 lx;
+    if (OBJ(0x74) != NULL) {
+        OBJ(0x74)->unk_vf20(x + 0x80 - (LFLD(s32, OBJ(0x74), 0x44) >> 1), y + 0x1e);
+        OBJ(0x74)->Render();
+    }
+    if (OBJ(0x78) != NULL) {
+        OBJ(0x78)->unk_vf20(x + 0x80 - (LFLD(s32, OBJ(0x78), 0x44) >> 1), y + 0x2b);
+        OBJ(0x78)->Render();
+    }
+    Row0217e560(self, 0x7c, x, y + 0x3d);
+    Row0217e560(self, 0x84, x, y + 0x4a);
+    Row0217e560(self, 0x8c, x, y + 0x57);
+    Row0217e560(self, 0x94, x, y + 0x64);
+    OBJ(0x9c)->unk_vf20(x + 0xbd - (LFLD(s32, OBJ(0x9c), 0x44) >> 1), y + 0xa0);
+    OBJ(0x9c)->Render();
+    t = LFLD(s32, self, 0x40) % 0x5a000;
+    if (t <= 0x1e000) {
+        s32 r = FX_Div(t, 0x1e000);
+        if (r > 0x1000) {
+            r = 0x1000;
+        }
+        s = FX_SinCosTable_[((r << 14) >> 16) * 2];
+    } else if (t <= 0x5a000) {
+        s32 r = FX_Div(t - 0x1e000, 0x3c000);
+        if (r > 0x1000) {
+            r = 0x1000;
+        }
+        s = FX_SinCosTable_[((r << 14) >> 16) * 2 + 1];
+    } else {
+        s = 0;
+    }
+    a = (LO_FX_MUL(s, 0x10000) >> 12) + 0xf;
+    lx = x + 0x4c;
+    step = 0;
+    if (LFLD(s16, self, 0xb8) == 4) {
+        y0 = y + 0x75;
+        step = 0xe;
+    } else if (LFLD(s16, self, 0xb8) == 3) {
+        y0 = y + 0x79;
+        step = 0x10;
+    } else if (LFLD(s16, self, 0xb8) == 2) {
+        y0 = y + 0x80;
+        step = 0x12;
+    } else {
+        y0 = y + 0x89;
+    }
+    for (i = 0; i < LFLD(s16, self, 0xb8); i++) {
+        ((LoTextWin **)(self + 0xa8))[i]->unk_vf20(lx - (LFLD(s32, ((LoTextWin **)(self + 0xa8))[i], 0x44) >> 1), y0 + i * step);
+        ((LoTextWin **)(self + 0xa8))[i]->Render();
+    }
+    {
+        s32 py = (LFLD(s16, self, 0xba) * step + y0 - 0x5a) << 12;
+        MF(LFLD(void *, self, 0xa0)).b19 = 1;
+        MF(LFLD(void *, self, 0xa0)).f7 = func_02043d48(g + 0x8b0);
+        MF(LFLD(void *, self, 0xa0)).f2 = (u8)a;
+        LoSetPosFx0217e560(LFLD(void *, self, 0xa0), (lx - 0x80) << 12, py);
+    }
+    LFLD(s32, LFLD(void *, self, 0xa0), 0x150) = -0x1c8d;
+    LoModelPlayPart(LFLD(void *, self, 0xa0), 4);
+}
+
+}
+
+}  // namespace m_Lo_0217e560
 #undef MF

@@ -104,9 +104,6 @@ void func_ov000_021754bc(void *self) {
 
 }
 
-#ifdef NONMATCHING
-// func_ov000_0217558c: 2 raw / 2 register-masked diffs, real signature (self only), no fake locals.
-// The ROM schedules mov r0, #0x18000 before the M5C load in the first SetPos block (see docs/MATCHING.md, round aliasW).
 #include "ov000/ModelPart.h"
 #include "ov000/VObj.h"
 
@@ -136,7 +133,49 @@ static inline s32 Clamp99(s16 v) {
     return v;
 }
 
-#define TEXT(off) ((VObj *)((u8 *)self + (off)))
+// The text windows embedded at 0x60 + 0xb8 * n are TextWins. Main/Gfx/TextWin.h clashes with
+// LoCommon.h here, so this is its vtable up to Render (0x90). SetPos (0x20) and Render return void.
+struct LoTextWin {
+    virtual void unk_vf00();
+    virtual void unk_vf04();
+    virtual void unk_vf08();
+    virtual void OnSkip();
+    virtual void unk_vf10();
+    virtual void unk_vf14();
+    virtual void unk_vf18();
+    virtual void unk_vf1c();
+    virtual void unk_vf20(int a, int b);
+    virtual char *unk_vf24(char *p);
+    virtual char *unk_vf28(char *p);
+    virtual char *unk_vf2c(char *p);
+    virtual char *unk_vf30(char *p);
+    virtual char *unk_vf34(char *p);
+    virtual char *unk_vf38(char *p);
+    virtual char *unk_vf3c(char *p);
+    virtual char *unk_vf40(char *p);
+    virtual char *unk_vf44(char *p);
+    virtual char *unk_vf48(char *p);
+    virtual char *ParseEscape(char *p);
+    virtual char *unk_vf50(char *p);
+    virtual char *unk_vf54(char *p);
+    virtual char *unk_vf58(char *p);
+    virtual char *unk_vf5c(char *p);
+    virtual char *unk_vf60(char *p);
+    virtual char *unk_vf64(char *p);
+    virtual char *unk_vf68(char *p);
+    virtual char *unk_vf6c(char *p);
+    virtual char *unk_vf70(char *p);
+    virtual char *unk_vf74(char *p);
+    virtual char *unk_vf78(char *p);
+    virtual void unk_vf7c();
+    virtual void unk_vf80();
+    virtual void unk_vf84();
+    virtual void unk_vf88();
+    virtual void unk_vf8c();
+    virtual void Render();
+};
+
+#define TEXT(off) ((LoTextWin *)((u8 *)self + (off)))
 #define M5C LFLD(Model *, self, 0x5c)
 
 static inline void Model_PlayPartChk(Model *model, s32 idx) {
@@ -179,18 +218,18 @@ void func_ov000_0217558c(void *self) {
     func_ov000_0219bf90();
     MODEL_FLAGS(M5C)->polygon_id = func_02043d48(g);
     xi = x >> 12;
-    TEXT(0x60)->vfunc_20(xi + 0xc2 - (LFLD(s32, self, 0xa4) >> 1), 0x30);
-    TEXT(0x60)->vfunc_90();
-    TEXT(0x118)->vfunc_20(0x92 + xi, 0x3e);
-    TEXT(0x118)->vfunc_90();
-    TEXT(0x1d0)->vfunc_20(xi + 0x92, 0x4c);
-    TEXT(0x1d0)->vfunc_90();
-    TEXT(0x288)->vfunc_20(xi + 0x92, 0x5a);
-    TEXT(0x288)->vfunc_90();
-    TEXT(0x340)->vfunc_20(xi + 0x92, 0x68);
-    TEXT(0x340)->vfunc_90();
-    TEXT(0x3f8)->vfunc_20(xi + 0x92, 0x76);
-    TEXT(0x3f8)->vfunc_90();
+    TEXT(0x60)->unk_vf20(xi + 0xc2 - (LFLD(s32, self, 0xa4) >> 1), 0x30);
+    TEXT(0x60)->Render();
+    TEXT(0x118)->unk_vf20(0x92 + xi, 0x3e);
+    TEXT(0x118)->Render();
+    TEXT(0x1d0)->unk_vf20(xi + 0x92, 0x4c);
+    TEXT(0x1d0)->Render();
+    TEXT(0x288)->unk_vf20(xi + 0x92, 0x5a);
+    TEXT(0x288)->Render();
+    TEXT(0x340)->unk_vf20(xi + 0x92, 0x68);
+    TEXT(0x340)->Render();
+    TEXT(0x3f8)->unk_vf20(xi + 0x92, 0x76);
+    TEXT(0x3f8)->Render();
     func_02041c20(M5C, 6, 2);
     x = xi + 0x5a;
     Model_SetPos(M5C, x << 12, -0x18000);
@@ -223,4 +262,3 @@ void func_ov000_0217558c(void *self) {
 }
 
 }
-#endif
