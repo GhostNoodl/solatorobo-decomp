@@ -5059,3 +5059,38 @@ The duplicated-statement form does not count as a second use. `u8 r = (FX_Mul(s,
 From the docs and this trace, these misses also need an operand or product numbered below its parent's result: `ov000_021be5dc` (3, the `z - 0x1000` operand below the `smull` result; round near7's second-definition form `r = z - 0x1000; r = FX_MUL(r, k)` makes the operand a split-lifetime object and fixes the pair, but moves the camera load, 18 / 7) and `ov011_021fd638` (24 / 2, the ring loop's `Ov011_FxMul` temps, at least three moves). Matched earlier by changing *where* the tree is lowered, not its inner order: `ov000_02152f8c` (round bigM, the shift folded into the local so it is lowered at the assignment) and `func_0205cbf0` (the multiply statement moved after the three stores).
 
 Rule of thumb: inside one `FX_Mul` expansion the order is fixed (shift, add, product, sign word, then constants). An inner part can only be numbered earlier if it becomes an object. That takes a CSE with a real second use, a split lifetime of a 64-bit local, or a separate statement that isn't forward-substituted. Don't spend time on spellings of the multiply itself.
+## How the allocator picks what to spill, and which values it rematerialises: no new match (round spT)
+
+No new match. This round traced the spill side of mwccarm 1.3's colouring (rounds rgraph/rgraph2 covered numbering and simplify) to find out why `func_ov000_0217b324` reloads its `"%.2d"` address three times where the ROM keeps it in `fp`. Tools are in the scratchpad under `spT/`.
+
+### The spill loop (mwccarm `dsi/1.3`)
+
+- **Driver `0x5272b0` → `0x527370`.** For each register class: build the graph and the costs (`0x51b0b0`), simplify (`0x526b90`), colour (`0x526f30`). If a node gets no colour, `0x527094` sets node flag `0x1`, `0x5b1cf0` writes the spill code, the round counter `0x65b9c0` goes up (at most 10 rounds), and the loop starts again. So the allocator is optimistic (Briggs-style): a node picked as a spill candidate is only spilled if it really finds no free register when it is coloured.
+- **Which nodes can be rematerialised (`0x51af70`).** For every vreg it walks all the defs. A vreg with exactly one def keeps that instruction in node `+0x8`. A second def clears it and sets node flag `0x40`. Then `0x50fcd0` tests the def. It must have class byte `+0x2a == 0xe`, no `0x300` in its flags `+0xc`, and an opcode from a fixed list. **Opcodes 170 and 171 always pass** (170 is the address of a symbol or stack object, 171 is a pool constant). So do 23, 27, 117, 122, 220 with two operands, 447, 461, 520, 547, 548, 574, 698 and 706. Copies (162) and a few others pass only when the source is the frame object (`0x65bc68`). So **every single-def string address, pool constant and stack address is rematerialisable**. `const`, `static const char[]` against a literal, and a named local against a temp make no difference to this (see below).
+- **Spill cost (`0x5b1590`, final loop at `0x5b1930`).** Per node, `U` (`+0x10`) is the weighted use count and `D` (`+0x14`) the weighted def count. The weight is the block's `+0x24` frequency, or 1 when the flag at `0x65ecad` is set. `C` (`+0x18`) counts the copy instructions the vreg takes part in, unweighted. Then:
+  - rematerialisable: `cost = U − D − C`
+  - node flag `0x8000`: `cost = 2U − 1 − C`
+  - otherwise: `cost = 2U + D − C`
+
+  A rematerialisable value whose only uses are copies into argument registers therefore has a **negative** cost. Its uses are mostly copies, and those count in `C` instead of making `U` larger. In `0217b324`, `buf` gets −5, `num` and `"%.2d"` −2 each, and the stack-address and `#4` temps −1 to −3. The division constants get 0 or 1, because they feed `umull`, not copies. When simplify blocks, it picks the smallest `cost / current degree` (round rgraph2), so all of these negative nodes are spill candidates before any ordinary value.
+- `re/sim4.py` is `sim3.py` plus a log of each blocked pick (node, metric, degree, the runners-up). `re/sim.py` now reads the extra `u= d= cp= rm=` fields that `re/ra.py` prints. With them, the round-1 spill set of `0217b324` is reproduced exactly (21 nodes).
+
+### What `0217b324` needs
+
+- **The three reloads are spill-and-remat of node 336 (`"%.2d"`, op170, cost −2).** It is picked as a candidate at `−2/28` and then finds no colour. Making it non-rematerialisable in the compiler (`spT/nr.sh`: `NR="336"` forces `0x50fcd0` to fail for that node) keeps it in a register, but then the `216000` constant is reloaded instead: 40 / 13 masked against 45 / 14. In the model this is zero-sum. Any cost from 0 up for 336 alone keeps 336 and spills the `0x91a2b3c5` constant (562) instead.
+- **The ROM behaves as if none of the four pool values in that block is rematerialisable.** `NR="336 567 570 562"` (the string and the three magic or divisor constants) gives `fp`, `r5`, `r4`, `r7` exactly as in the target. Our function also gets the target's length back, so the pool offsets line up: 23 / 11 raw, 22 / 10 masked. In the model, every cost of at least 2 for all four removes 336 from the round-1 spill set and adds nothing. The stack addresses stay rematerialised, as in the ROM. The 10 masked lines left are temp registers (`r0`/`r1` in the ROM against `r3`/`r4`/`r7`) and the place of the `ldr` of `rec->time`. The ROM loads `rec->time` first and the string after `0x36b06e71`, but with the string kept, ours loads the string first.
+- **Source shapes tried, none moves it.** A function-scope `const char *fmt = "%.2d"` with the initialiser at the top, either declared first or declared last, gives 150 / 77. `char *` and `const char *const` give the same. Assigning it just before the first call, or just after `msg = ...`, gives 45 / 14 or 150 / 77. `static const char fmt[] = "%.2d"` gives 45 / 14. A pointer variable is single-def and is copy-propagated into the same op170. The only way to turn rematerialisation off is a second def of the same vreg (node flag `0x40`) or a def that is not on the opcode list. The first needs a join, such as a `?:` or an assignment on both arms of a real branch, that the ROM does not have. No compiler version changes it (every `dsi` build gives the same code).
+- So the target's source must make those four values non-rematerialisable, or cost at least about 2 each, by a construct not found yet. A higher block weight (`+0x24`, loop frequency) raises `U − D` but not `C`. A loop would help the constants and not a value used only through copies, and there is no loop in the ROM anyway.
+
+### The other register-only near-misses
+
+- **`ov000_0215e6f0` (9 / 0):** one colouring round, nothing spilled. Its miss is colouring order only, and the spill rule does not apply.
+- **`ov000_021743bc` (123 / 2, the `NONMATCHING` block):** round 2 spills `@195` and two rematerialised temps (298 at −2, 313 at −1). Forcing them non-rematerialisable makes things worse: 140 / 18 and 160 / 28 masked. Those reloads are in the ROM too, and the `g`/`1`/`0`/`o` rotation is colouring order (round gO).
+
+### Tools (scratchpad `spT/`)
+
+- `nr.sh SRC OUT.o` compiles with env `NR="nodes"`, which forces those nodes non-rematerialisable, or `FR="nodes"`, which forces them rematerialisable. The breakpoint is at `0x51b085`, after `0x50fcd0` returns. The node index applies to every function in the file.
+- `sc.sh SRC` runs `nr.sh` and scores the result with `msp.py`. Set `OBJ=file.o` to score an object you already have, and `FN`/`MOD` to choose the function.
+- `rm.py` logs every rematerialisation test: node, opcode, class byte and flags.
+- `wc.sh`/`wc.py` put a hardware watchpoint on one node's cost field (`BRK`, `NODE`). This is how `0x5b1930` was found.
+- `xd.py LO HI` prints the compiler disassembly between two addresses.
