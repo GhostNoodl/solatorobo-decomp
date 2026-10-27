@@ -5125,3 +5125,53 @@ No new match. The constant decisions come from four backend passes, not from the
 - **`func_ov011_021fd638` (24 / 2).** Same picture (`mcl.sh` on `bigN/d638/n1.cpp`): the zero group has 7 instances, and the inner-loop zero is the only movable one. It is not even in the inner preheader at step 4, and it walks all the way to the entry. bigN's toys hoist it to the entry by LICM (count 1), not by step 4. The target's inner-preheader `mov r7, #0` therefore means that the inner LICM worked, the outer one did not, and the zero group had fewer than 5 instances.
 - **`func_ov015_021fc40c` and `0220b1b8` (fresh case zeros).** Under step 4, a zero is built fresh in every case only if the function has at most 4 extended blocks that need it. Count the target's `mov #0` blocks (including loop-counter and argument zeros) before trying source forms. If the draft has 5 or more, the extra one is a block that the target does not split, or a zero the target gets from somewhere else.
 - **Not re-traced:** `0217a1f8`, `02049c80` and `ov009_02208b24` are derivation questions (round cderiv). Derivation runs with step 2's extended-block scope. It was not traced separately this round.
+
+## The full rematerialisation test, and the natural spellings that do not pass it: no new match (round spW)
+
+No new match. This round followed round spT on `func_ov000_0217b324` (45 / 14 masked). It looked for a source construct that keeps `"%.2d"` and the three division constants from being rematerialised. None of the natural spellings does that. The tools are in the scratchpad under `spW/`. They are spT's tools pointed at the `spW` clone, plus `rm.sh` (the `rm.py` log now flushes), `bw.sh`/`bw.py` (block weights), `f8.sh` (node flag `0x800` writer) and `var.py` (builds a variant of the time section).
+
+### The whole test (mwccarm `dsi/1.3`, `0x51af70` and `0x50fcd0`)
+
+A node keeps its single def as a rematerialisation candidate only when the vreg is not a fixed register and its node flags have none of these bits:
+
+- `0x10`/`0x20`: the vreg is half of a register pair. These come from a per-block pair list (`0x51adcd`/`0x51adf9`).
+- `0x40`: the vreg has a second def.
+- `0x800`: the vreg is an operand with flag `0x8` in an instruction with flag `0x8`. These are set at `0x51a642`, which is never reached for `0217b324`.
+
+The def must also pass `0x50fcd0`: class `0xe`, no `0x300` in its flags, and an opcode from the list. The full list is 23, 27, 117, 122, 147\*, 162\*\*, 170, 171, 220\*, 447, 461, 520, 538\*\*, 547, 548, 574\*\*, 608\*\*, 670\*\*\*, 698 and 706. Here \* means only with `+0x2b == 2`, \*\* means a copy-like op whose source is the frame object (or `0x65bb54`), and \*\*\* means frame object only.
+
+The cost loop at `0x5b1930` looks at node `+0x8` **before** flag `0x8000`. So `0x8000` (cost `2U − 1 − C`) never applies to a node that can be rematerialised, and it is no lever here.
+
+### Block weights
+
+Block weight `+0x24` is 1 for every block outside a loop and 8 inside one (`bw.sh` on `0217b324`: 154 blocks of weight 1, plus the 10 blocks of the `items[]` loop with weight 8). A `do { } while (0)` has no back edge and keeps weight 1. Only a real loop around the time section would raise `U − D` above 2, and the ROM has no loop there.
+
+### Spellings tried (`rm.sh` def list and `sc.sh` score)
+
+| Spelling | Def list | Score |
+|---|---|---|
+| Inline `AppendNum(buf, num, fmt, v)` with `"%.2d"` passed as a parameter | identical to base | 55 / 22 |
+| Inline `AppendNum(buf, num, v)` with the literal inside | identical | 45 / 14 |
+| One inline `AppendTime(buf, num, rec)` holding all three | identical | 45 / 14 |
+| Inline `Hours`/`Minutes`/`Seconds(u32)` | identical | 45 / 14 |
+| Named `u32 h/m/s` locals in their own blocks | identical | 45 / 14 |
+| `(s32)` casts on the quotients | identical | 45 / 14 |
+| `60 * 60 * 60` spelling of the divisors | identical | 45 / 14 |
+| Each statement pair inside `do { } while (0)` | identical | 45 / 14 |
+| One `const char *fmt` assigned `"%d"` earlier and then `"%.2d"` (two defs in source) | identical: both defs are copy-propagated into op170 and the variable disappears | 56 / 14 |
+| File-scope `static const char *sTimeFmt` (not `const` itself) | not op170 any more, but it loads through the pointer (`ldr rX, [rY]`), which the ROM does not do | 30 / 14 |
+
+Inline parameters are fully transparent at this level: their copies are gone before register allocation. The magic constants are always op171, because the backend emits them from the division and no source spelling reaches them.
+
+### Conclusion
+
+The ROM's `fp`/`r5`/`r4`/`r7` cannot come from any natural spelling of this statement block with `dsi/1.3`. Every route that disables rematerialisation needs one of these: a second def that survives copy propagation (a real join), a register pair, an inline-asm-style operand flag, or a real loop. Each of them adds code that the ROM does not have. The next leads are outside the time block:
+
+- something that changes which node simplify blocks on at `−2/28`, for example an extra cheap rematerialisable candidate earlier in the region;
+- a different compiler build for this one TU (only `dsi` builds were checked, all identical).
+
+`0217b324` stays at 45 / 14 in the split-file form, and the pooled `menu/m1.cpp` is still blocked on it and on `0217a1f8`.
+
+### `0215e6f0` and `021743bc`
+
+Not changed by this round. spT's result stands: `0215e6f0` spills nothing, and the extra reloads in `021743bc` are in the ROM too. The rematerialisation rule therefore has nothing to fix in either one.
