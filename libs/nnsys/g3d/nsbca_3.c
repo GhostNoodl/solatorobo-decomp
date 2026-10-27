@@ -48,6 +48,108 @@ static inline void vecCross_ (const VecFx32 * a, const VecFx32 * b, VecFx32 * ax
 typedef struct { fx16 s, invs; } ScaleFx16;
 typedef struct { fx32 s, invs; } ScaleFx32;
 
+void getScaleData_ (fx32 * s_invs, fx32 Frame, const u32 * pData, const NNSG3dResJntAnm * pJntAnm)
+{
+    u32 frame = (u32)FX_Whole(Frame);
+    const void * pArray = (const void *)((const u8 *)pJntAnm + *(pData + 1));
+    NNSG3dJntAnmSInfo info = (NNSG3dJntAnmSInfo) * pData;
+    u32 last_interp;
+    u32 idx;
+    u32 idx_sub;
+
+    if (!(info & NNS_G3D_JNTANM_SINFO_STEP_MASK)) {
+        idx = frame;
+        goto SCALE_NONINTERP;
+    }
+
+    last_interp = ((u32)info & NNS_G3D_JNTANM_SINFO_LAST_INTERP_MASK) >>
+                  NNS_G3D_JNTANM_SINFO_LAST_INTERP_SHIFT;
+
+    if (info & NNS_G3D_JNTANM_SINFO_STEP_2) {
+        if (frame & 1) {
+            if (frame > last_interp) {
+                idx = (last_interp >> 1) + 1;
+                goto SCALE_NONINTERP;
+            } else {
+                idx = frame >> 1;
+                goto SCALE_INTERP_2;
+            }
+        } else {
+            idx = frame >> 1;
+            goto SCALE_NONINTERP;
+        }
+    } else {
+        if (frame & 3) {
+            if (frame > last_interp) {
+                idx = (last_interp >> 2) + (frame & 3);
+                goto SCALE_NONINTERP;
+            }
+
+            if (frame & 1) {
+                fx32 v, v_sub;
+                if (frame & 2) {
+                    idx_sub = (frame >> 2);
+                    idx = idx_sub + 1;
+                } else {
+                    idx = (frame >> 2);
+                    idx_sub = idx + 1;
+                }
+
+                if (info & NNS_G3D_JNTANM_SINFO_FX16ARRAY) {
+                    const ScaleFx16 * p = (const ScaleFx16 *)pArray;
+
+                    v = p[idx].s;
+                    v_sub = p[idx_sub].s;
+                    *s_invs = (v + (v << 1) + v_sub) >> 2;
+
+                    v = p[idx].invs;
+                    v_sub = p[idx_sub].invs;
+                    *(s_invs + 1) = (v + (v << 1) + v_sub) >> 2;
+                } else {
+                    const ScaleFx32 * p = (const ScaleFx32 *)pArray;
+
+                    v = p[idx].s;
+                    v_sub = p[idx_sub].s;
+                    *s_invs = (fx32)(((fx64)v + v + v + v_sub) >> 2);
+
+                    v = p[idx].invs;
+                    v_sub = p[idx_sub].invs;
+                    *(s_invs + 1) = (fx32)(((fx64)v + v + v + v_sub) >> 2);
+                }
+                return;
+            } else {
+                idx = frame >> 2;
+                goto SCALE_INTERP_2;
+            }
+        } else {
+            idx = frame >> 2;
+            goto SCALE_NONINTERP;
+        }
+    }
+SCALE_NONINTERP:
+    if (info & NNS_G3D_JNTANM_SINFO_FX16ARRAY) {
+        const ScaleFx16 * p = (const ScaleFx16 *)pArray;
+        *s_invs = p[idx].s;
+        *(s_invs + 1) = p[idx].invs;
+    } else {
+        const ScaleFx32 * p = (const ScaleFx32 *)pArray;
+        *s_invs = p[idx].s;
+        *(s_invs + 1) = p[idx].invs;
+    }
+    return;
+SCALE_INTERP_2:
+    if (info & NNS_G3D_JNTANM_SINFO_FX16ARRAY) {
+        const ScaleFx16 * p = (const ScaleFx16 *)pArray;
+        *s_invs = (p[idx].s + (p + idx + 1)->s) >> 1;
+        *(s_invs + 1) = (p[idx].invs + (p + idx + 1)->invs) >> 1;
+    } else {
+        const ScaleFx32 * p = (const ScaleFx32 *)pArray;
+        *s_invs = (p[idx].s + (p + idx + 1)->s) >> 1;
+        *(s_invs + 1) = (p[idx].invs + (p + idx + 1)->invs) >> 1;
+    }
+    return;
+}
+
 void getScaleDataEx_ (fx32 * s_invs, fx32 Frame, const u32 * pData, const NNSG3dResJntAnm * pJntAnm)
 {
     const void * pArray = (const void *)((const u8 *)pJntAnm + *(pData + 1));

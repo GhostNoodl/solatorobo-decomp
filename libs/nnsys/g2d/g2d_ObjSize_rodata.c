@@ -1,6 +1,5 @@
 // The OBJ height and width in pixels for each shape (square, horizontal, vertical) and size
-// (0-3), the [shape][size] tables the g2d code at 0x02024730..0x02024a94 (still in the gap) and
-// the game's sprite code read.
+// (0-3), the [shape][size] tables g2d_MakeCellToOams.c and the game's sprite code read.
 //
 // main keeps its read-only data inside .text (see libs/msl/ctype.c); this is C data in a read-only
 // user section named ".text" (see libs/nitro/math/math_sha1_rodata.c).

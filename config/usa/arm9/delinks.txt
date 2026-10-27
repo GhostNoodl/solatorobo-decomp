@@ -810,6 +810,10 @@ libs/nnsys/g2d/g2d_CellAnimation.c:
     complete
     .text       start:0x020245e0 end:0x02024730
 
+libs/nnsys/g2d/g2d_MakeCellToOams.c:
+    complete
+    .text       start:0x02024730 end:0x02024a94
+
 libs/nnsys/g2d/g2d_CellTransferManager.c:
     complete
     .text       start:0x02024a94 end:0x02024ad0
@@ -896,7 +900,7 @@ libs/nnsys/g3d/nsbca_2.c:
 
 libs/nnsys/g3d/nsbca_3.c:
     complete
-    .text       start:0x0202b994 end:0x0202c3b8
+    .text       start:0x0202b7c0 end:0x0202c3b8
 
 libs/nnsys/g3d/nsbma.c:
     complete
