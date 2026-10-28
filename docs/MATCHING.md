@@ -5214,3 +5214,30 @@ The inner-loop zero (`e->unk_08 = 0`, block 13) is not moved by LICM. Step 4 mov
 ### Not reached
 
 `func_020417e0`, the LICM limit, and the derivation traces (`02049c80`, `ov009_02208b24`) were not worked on this round. For `020417e0`, check whether the walk out of block 34 reaches a high-pressure predecessor first. Block 5's pressure only counts if the walk visits it before the target.
+## The scheduler's pressure score, and a return value that sits in its own block: no new match (round nmZ)
+
+No new match. Scratch files are in `scratchpad/nmZ/` (`ms.py` for this clone, `t/` the hzU pass dumper with `marks_main.txt` as `marks.txt` so it also dumps the passes after "move constant loads", `sch/` the bigN `sd7.sh`/`st.sh`/`tr.sh`, `640c/` and `ca14/` the variants).
+
+### The pressure score (`0x50ce40`, mwccarm `dsi/1.3`)
+
+The score starts at `0x10`. For each operand that is a use, the remaining-use counter of that register (`0x636868[class][reg]`) goes down by one; if it reaches 0 (a last use) the score goes down. For each operand that is a def (and not also a use) of a register whose remaining-use counter is not 0, the score goes up by `0x636878[class] − 0x636870[class]`. A def whose value has no use left in the block costs nothing. Registers marked kind 2 in `0x65af58` are skipped. Every call (`op157`) lists `r0`–`r3` as operands, so an argument register always has a later use in a block that contains another call: `mov r2, #0` for an argument costs exactly as much as a load, and the tie goes to list order.
+
+### `ov010_0220640c` (6 / 2)
+
+- The pre-allocation list of case 0 is `ldrh 0x98; ldrh 0x7e; …; stores; mov r0, #0x1e000; mov r1, v39; mov r2, #0; bl`. In pressure mode (live 20, limit 14) `mov r1, v39` goes first because it is the last use of the `1` register, then the `0x98` load wins the tie with `mov r2, #0` by list order. The ROM's `mov r1, r4; mov r2, #0` before both loads needs `mov r2, #0` listed before the loads or cheaper than them, and by the score above it is only cheaper if `r2` had no later use in the block, which the following calls rule out.
+- Passing the inline's result as any of the three arguments (`f(0x1e000, 1, Jump(self))` returning 0, `f(0x1e000, Jump(self), 0)` returning 1, `f(Jump(self), 1, 0)` returning `0x1e000`) gives the same list: argument moves are always emitted at the call (6 / 2 each).
+- So the ROM's `0` is not a fresh argument constant in the same block as the loads in our sense. It would have to be a value defined earlier in the block and coalesced into `r2` (a vreg holding `0` whose only use is that argument), and nothing in the case-0 source before the jump uses a `0`. Still open.
+
+### `ov002_021eca14` (7 / 2): the `return TRUE` was its own block
+
+- The masked misses are the case-1 tail: the ROM has `0x1f` in `r0`, the pointer and `v` in `r1`, and `mov r0, #1` after both stores. In ours the pre-allocation scheduler fills the `ldrh` latency slot (cycle 3) with `mov r0, #1`, because codegen emits `v0 = 1` in the same block as the stores, so `r0` is defined while `0x1f` is live and `0x1f` cannot get `r0`.
+- `goto done; … return FALSE; done: return TRUE;` (the `ca14/r5.cpp` form) puts `v0 = 1` in a block of its own, and then the whole case-1 tail gets the ROM's registers and order exactly (`ldr r1; mov r0, #0x1f; ldrh r1; strb r0; str r1`). The score is 10 / 10 only because that block is laid out after the `return FALSE` block (`b` plus a second `mov r0, #1; pop`). Every form that puts the `return TRUE` right after the stores in source (`t1`: `goto fail` for the false paths and `return TRUE` after the `switch`; `if (0) { done: … }`; an inline returning `TRUE`; a block-local `BOOL r`; `s1`/`s2`: the `||`/`&&` forms of the `0x38` test) is merged with the stores block before scheduling and gives 7 / 2 again. A duplicated store sequence in both arms of the `0x38` test (for tail merging) is 28 / 21.
+- So the ROM's source has a `return TRUE` block that is still separate when the first scheduler runs (more than one predecessor, or not adjacent at the first block merge) but is laid out directly after the stores. Which construct does that is the open question; the merge passes (`merge0`, `0x5135b0`, `0x52ad70`) are the place to trace next.
+
+### `ov000_021b3e90` (7 / 1)
+
+One shape tried: the `unk_d6 - 1 != unk_d4` exit as `if (…) { b6 = 0; } else { b6 = 1; … switch … }` with the single `return ret` at the end (`3e90/n1.cpp`) is 15 / 6: the false arm becomes a predicated `ldrbne/bicne/strbne; bne` to the shared exit, so the head merge of the `0x9c` load is lost too. Also wrapping the rest in `if (cam != NULL)` is 35 / 27.
+
+### Not reached
+
+`0219b808`, `021c4460` and `0215e6f0` were not changed this round.
