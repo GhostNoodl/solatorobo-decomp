@@ -5392,3 +5392,32 @@ The loop's `idx` and `i` were folded into the function-level `key` and `kq` (`c4
 ### Not reached
 
 `ov000_0219b808` and `ov000_0215e6f0` were not changed this round.
+## The LICM limit is an all-or-nothing gate on outermost loops: no new match (round lcA)
+
+No new match. Tools are round hzY's, pointed at the lcA clone, in the scratchpad under `lcA/t/`. New: `lg.sh FILE OUT` prints, for every loop that loop-invariant code motion visits, its blocks, its child loop, its weight and (when it is checked) the instruction count and the verdict; `DET=1` also lists each counted instruction. `wt.sh` (`VREG=n`) watches one constant instruction's list links and prints the call stack of whatever moves it.
+
+### Where LICM really is (mwccarm `dsi/1.3`)
+
+Round hzU placed LICM inside the second `0x514b50` call. It is not there. When the loop analysis `0x517220(1)` returns non-zero, the driver jumps to `0x474f62`, which calls **`0x5196b0`** before coming back to the `AFTER LOCAL LOOP INVARIANT CODE MOTION` dump. (The `0x514b50` dump only looks like the place because the `0x474f62` detour sits between the two dumps.) `0x5196b0` walks the loop tree children-first (`0x519680`) and runs `0x5194f0` on each loop. That function moves invariant instructions to the loop's preheader (`0x5175a0` classifies each instruction, and `0x5184b0`/`0x5186c0` move it), and repeats until nothing changes. `0x5193a0` runs a second time over the same tree, because option `0x65ecad` is 0 under the game flags.
+
+### The gate (`0x5a2540`)
+
+Before any motion, `0x5194f0` asks `0x5a2540(loop)` whether the loop may be touched:
+
+- A loop with **no child loop** is always processed.
+- A loop with weight `+0x50` **above 8** is always processed. The weight is 8 per nesting level (8 for an outermost loop, 64 for a loop inside it), so any loop nested inside another loop always passes.
+- Otherwise (an **outermost loop that contains another loop**), it counts the instructions in every block of the loop, inner loops included. It skips instructions with flag `0x10` (branches) and the rematerialisable constant ops of `0x50fcd0` (`mov #k`, pool address loads). If the count is **above 32**, the whole loop is skipped. Nothing at all moves out of it.
+
+So there is no partial LICM inside one loop. hzU's `t3` "partial" case is two loops: the inner `j` loop (no child, always processed) moves its own `0`/`-1` into its own preheader, and the outer loop is refused as a whole (`t3v`: count 34/38). `f3`-style toys with a small outer body (count 7–9) move everything out of both loops. `toy/th*.c` confirms the threshold. With N statements `q[k] = p[2k] + p[2k+1]` plus `g(p, 77)` and an inner `h(j)` loop, the counts are 4N+7 on the first pass and 4N+9 on the second. At N=5 (27/29) `#0x4d` is hoisted. At N=6 (31/33) the first pass hoists `#0x4d`, but the second is refused, so the `q` pool load stays in the loop. At N=7 (35/37) `#0x4d` is built inside the loop.
+
+### Applied to the two LICM targets
+
+- **`func_020417e0`.** The outer `i` loop contains the `ClearEntry` `j` loop, and counts **65** on the first pass and 74 on the second (20 loads, 10 adds, 7 stores, 6 calls, ...). That is far above 32. The ROM's loop body is the same size, so the ROM's outer loop was refused as well. The target's `NULL` in preheader 34 therefore comes from step 4 ("move constant loads"), not from LICM, and the open question is only why the ROM's step 4 stops at 34 (`34->5`, block 5 `p=6` here). Dropping the inner loop (`d17/noclear.cpp`) only works because the outer loop then has no child and skips the count. It moves every constant out, which the target does not.
+- **`ov011_021fd638`.** The outer `while (n != NULL)` loop contains the `Ov011Ent_Remove` loop and counts **37** (44 on the second pass), so it is refused. The inner loop is blocks `[14, 10]` and has no constants. The `e->unk_08 = 0` store is in block 13, the `break` path, which is outside the inner loop. So the target's inner-preheader `mov r7, #0` cannot be LICM output either. An accepted outer loop would have moved it out of the `while` loop altogether. As in `020417e0`, the fix has to come from step 4 refusing `82->9`, which needs block 9 above 10 (it is 8).
+- **General rule for drafts:** a constant built inside an outermost loop that has an inner loop is moved by LICM only if the outer loop has 32 or fewer non-constant, non-branch instructions. Below that, everything invariant goes to the preheader. Above it, nothing does, and only step 4 can move it.
+
+### `ov015_021fc40c`: what merges `Bob`'s `return 0`
+
+The ph dumps of `hzY/c40c/y1.cpp` show this. At codegen, each case's `n < 5` block holds `mov v106, #0; mov v85, v106` (`Bob`'s result). After the **first local CSE** (`0x514b50` mode 0, extended-block scope), it is `mov v106, v96; mov v85, v96`, a copy of the entry zero. The `n < 5` block has a single predecessor, so it belongs to the extended block that starts at the entry and runs through the switch compare and the case block, and the zero is still available there. 32 zero instructions at codegen become 17 after this pass. So the merge happens in step 2, before LICM, coalescing and step 4. Keeping it separate needs either a join in front of `Bob`'s zero block (two predecessors), or no live zero earlier in that extended block. The case's own `SetV(&a, ..., 0)` already supplies one, so removing the entry `flip = FALSE` alone cannot do it.
+
+The `Bob` spellings tried all keep the merge and all score the same as `y1` (141 / 58): a result variable with an `if`/`else if` chain (`vA`), `r = 0` first with nested tests (`vB`), `else if` returns (`vC`), a nested `?:` (`vD`), an `int` return (`vE`) and a `u32` return (`vF`). Reversing the tests so that `return 0` comes last (`vG`) is worse (170 / 85). None of them puts `Bob`'s zero after a join, and so far no natural `Bob` does. Still open.
