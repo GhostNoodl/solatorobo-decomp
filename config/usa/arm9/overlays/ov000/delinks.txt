@@ -685,6 +685,10 @@ src/ov000/Shadow_02191ec4.cpp:
     complete
     .text       start:0x02191ec4 end:0x02191f18
 
+src/ov000/AnimEvent_02191f18.cpp:
+    complete
+    .text       start:0x02191f18 end:0x02192a28
+
 src/ov000/AnimEvent_02192a28.cpp:
     complete
     .text       start:0x02192a28 end:0x02192b24
