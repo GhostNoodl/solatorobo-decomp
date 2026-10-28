@@ -5369,3 +5369,26 @@ No new match, and `tools/` is unchanged. Scratch files are in `scratchpad/smX/` 
 - **`ov009_0220acb8` (best `smV/acb8/a2.cpp` 6 / 6 pcmask): the extra pair is the `(u16)` cast.** The target has no `lsr #16; lsl #16` truncation of `(u32)(f0 * 0x4000) >> 16`. Dropping the cast (`acb8/v1.cpp`) gives the target's instruction set, but 15 / 11: the `ldrh` of `0xf0` gets `r2` instead of `r1`, so the WAR edge that keeps it after `add r1, r7, #0x33` in the post-RA schedule is gone. `sw1.py` and a restricted two-move search agree: the `ldrh`/`lsl` temps (71, 72) must be numbered after the `0x64`/`0x1000` stack-argument constants (79, 80). The rule behind it: **an argument expression that contains a call is lowered (and numbered) before every other argument; call-free arguments are lowered stack arguments first, register arguments after.** With the call result in a named or inline local (`u16 b = func_ov000_02199e94(...)`, `Ov009_AddQ(base, q)`), the `f0` part does come after the constants, but the call result becomes an object in a callee-saved register (`mov r4, r0`, 40 / 17 and worse). The operand order, `+=` forms, `s32`/`u32` locals, `u16` truncation inside the inline and direct calls give 15 / 11 or worse.
 - **Re-scores of the other honest bases (unchanged):** `ov000_021be5dc` 3 / 0 (`gridsweep1/d/be5dc/t7.cpp`), `ov002_021e0488` 37 / 28 (`ovmid10/.../x.cpp`), `ov010_02204030` 22 / 10 for the clean `sdkf/4030/p10.cpp` (the 15 / 8 `lever10` draft uses `__typeof__` junk), `ov009_02206084` 5 / 5 (`smV/6084/i_base.cpp`). `perm5/d/acb8.cpp` no longer compiles (`Ov009Eff` redefined by the current header).
 - **`ov009_02206084`:** not changed. In the target the `strh` of `id` also comes before the `strb`, so the source order is `id` first. That leaves smV's height tie (`ldrb` 31 against `ldrh` 30) as the only blocker.
+## One variable for the key delta and the new pitch: `ov000_021b3e90` matches (round mgX)
+
+`ov000_021b3e90` matches and is now `src/ov000/Cam_021b3e90.cpp` (a new `complete` entry `0x021b3e90`..`0x021b4130` in ov000's `delinks.txt`). Scratch files are in `scratchpad/mgX/` (mgW's `ms.py`, `t/`, `sch/` and smX's `re/`, `pipe.sh` pointed at the mgX clone; `3e90/x1.cpp` is the match, `c4460/r_*.cpp` the variable-reuse tries below).
+
+### `ov000_021b3e90`: what colours `dp` `r0`
+
+- The source writes `dp = 0;` at the start of the continue block (after `cam->unk_9c.b6 = 1;`, as mgW's `va.cpp`) **and uses `dp` itself for the new pitch**: `dp += cam->pitch; if (dp > 0x8000) { … t = 0x10000 - dp; … } else if (dp > 0x2800) { dp = 0x2800; } cam->unk_f8 = dp;`. mgW's drafts had a separate `u16 p = dp + cam->pitch`.
+- Why it works, in the colouring model (`re/sim3.py`): `simplify` pushes every node with degree below 14 in ascending number order, so those are coloured in descending number order, and named locals are numbered below every temp. With a separate `p`, `dp` (node 50 in `va.cpp`) has only 12 neighbours, is pushed in the first sweep and is coloured after all the temps. The `0x9c` load and the case-0 temps take `r0` and `r1` first, so `dp` gets `r2` (42 / 26). With `p` merged into `dp`, its live range runs through the `0x8000` block and it has 23 neighbours (node 49 in `x1.cpp`). It goes onto the high list and is pushed in a later sweep, so it is coloured second, right after `ret` (`r4`) and before `dy`, `cam`, `self` and every temp, and takes `r0`. Then both successors of the `d6 - 1 != d4` test start `ldrb r1, [r6, #0x9c]; mov r0, r4`, the post-RA head merge lifts both instructions above the predicated exit, and the whole function matches.
+- The general lever: **a named local is coloured before the temps only when its degree is at least 14 when `simplify` reaches it.** Two short-lived locals written as one longer-lived variable (the "reuse the variable" style) is one natural way to get there. Declaration order and types cannot do it, because they only renumber the local inside the object band.
+- The old draft never set `dp` on the path where neither key bit is set. The match sets it in the continue block, which is what the target does.
+
+### `ov010_0220640c` (6 / 2): not solved
+
+- In both the target and ours, the `0` that `mov r4, #0` puts in the switch head (used by cases 1 and 2) is dead in case 0, where `r4` is reused for the `1`. So the case-0 `mov r2, #0` cannot be a copy of that zero without a second callee-saved register, and the target has none (`push {r3, r4, r5, lr}`).
+- Nothing in the case-0 source before `func_0203cb78` holds a `0` in a register: the two bitfield clears are `bic`, and the `Ov010_Jump640c` stores use other constants. So mgW's coalesced-zero lever has nothing to copy here. Still open.
+
+### `ov000_021c4460` (10 / 0): variable reuse does not help
+
+The loop's `idx` and `i` were folded into the function-level `key` and `kq` (`c4460/r_*.cpp`: `idx` as `key` 12, `idx` as `kq` 26, `i` as `kq` 27, `i` as `key` 10, both 10 or 27). `n` and `idx` would have to be coloured before the `unk_e4` load (node 102), and none of these gives them enough degree.
+
+### Not reached
+
+`ov000_0219b808` and `ov000_0215e6f0` were not changed this round.
