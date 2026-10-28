@@ -140,6 +140,8 @@ void *func_ov011_021fc0a0(void *self) {
 #ifdef NONMATCHING
 // func_ov011_021fc0b8: 13 raw / 3 register-masked diffs, real signature (self only).
 // In case 2 the ROM keeps the 1 passed as on in sl and sets the list-removal zero inside the inner loop; this draft hoists the zero instead.
+// Round hzZ: the whole difference is one refused step of the move-constant-loads pass (the removal zero, loop head
+// to the inner preheader); forcing that refusal in the compiler gives 2 / 2. See docs/MATCHING.md.
 
 struct Ov011Slot {
     u8 b0 : 1;
