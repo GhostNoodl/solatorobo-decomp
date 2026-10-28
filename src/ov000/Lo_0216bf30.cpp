@@ -186,3 +186,111 @@ void func_ov000_0216c018(void *obj) {
 }
 
 }
+
+#ifdef NONMATCHING
+// func_ov000_0216c310: 121 / 27 (raw / register-masked), 103 / 8 with branch targets and pool offsets masked.
+// Round bgG's clean redraft (no permuter temporaries; the earlier best had __typeof__ noise and was 124 / 27).
+// The 8 masked lines are scheduling around the IsCurNode test and m - 0x80000 that follow from the colouring:
+// the ROM colours n, next, y before self and the two loop-invariant temps (data_02071060 and self + 0x360);
+// ours pushes self last in simplify (pass 5, alone) and colours it first. No single degree offset, forced
+// low/high node or declaration order (24 orders, block-scope y/s/m/r/h) changes that.
+// This file's .text ends at 0x0216c310, so the function belongs here once it matches.
+extern "C" {
+
+extern void *data_0214a420;
+extern const s16 FX_SinCosTable_[];
+s32 FX_Div(s32 a, s32 b);
+BOOL func_02065748(void *p, VObj *obj);
+
+static inline BOOL IsCur0216c310(u8 *self) {
+    return LFLD(void *, self, 0x35c) != NULL ? TRUE : FALSE;
+}
+
+static inline void Release0216c310(u8 *slot) {
+    if (LFLD(VObj *, slot, 8) != NULL && --LFLD(s32, slot, 0) == 0) {
+        LO_FREE_V(slot, 8);
+    }
+}
+
+static inline BOOL IsCurNode0216c310(u8 *self, u8 *n) {
+    return LFLD(u8 *, self, 0x35c) == n ? TRUE : FALSE;
+}
+
+void func_ov000_0216c310(void *self) {
+    u8 *n;
+    u8 *next;
+    s32 y;
+    u8 *prev;
+    s32 s;
+    s32 m;
+    s32 r;
+    u8 *h;
+    prev = NULL;
+    for (n = LFLD(u8 *, self, 0x24c); n != NULL; n = next) {
+        next = LFLD(u8 *, n, 0x28);
+        if (LFLD(u32, n, 0) & 4) {
+            if (IsCur0216c310((u8 *)self)) {
+                LFLD(s32, n, 0x10) += LO_FX_MUL(LFLD(s32, self, 0), 0x400);
+            } else if (++LFLD(s32, n, 0x20) > 0x3c) {
+                LFLD(s32, n, 0x10) += LO_FX_MUL(LFLD(s32, self, 0), 0x800);
+            }
+            y = LFLD(s32, n, 0x10);
+        } else {
+            y = 0;
+        }
+        if (n != NULL) {
+            if (LFLD(u32, n, 0) & 2) {
+                LFLD(s32, n, 0xc) += LFLD(s32, self, 0);
+                r = FX_Div(LFLD(s32, n, 0xc), 0x10000);
+                if (r >= 0x1000) {
+                    LFLD(u32, n, 0) &= ~2;
+                    LFLD(u32, n, 0) |= 4;
+                    LFLD(s32, n, 0xc) = 0x10000;
+                    LFLD(s32, n, 0x1c) = prev != NULL ? LFLD(s32, prev, 0x10) & 0x7ffff000 : 0;
+                    r = 0x1000;
+                }
+                s = FX_SinCosTable_[(r << 14 >> 16) * 2];
+            } else {
+                s = 0x1000;
+            }
+            m = LO_FX_MUL(s, 0x88000) - 0x80000;
+            if (IsCurNode0216c310((u8 *)self, n) && y > 0x8000) {
+                LFLD(void *, self, 0x35c) = NULL;
+            }
+            LFLD(s32, n, 0x14) = m >> 12;
+            LFLD(s32, n, 0x18) = (0x24000 - y) >> 12;
+            if (LFLD(s32, n, 4) == 7 && LFLD(VObj *, n, 0x24) != NULL) {
+                if (func_02065748(data_0214a420, LFLD(VObj *, n, 0x24))) {
+                    LFLD(VObj *, n, 0x24)->vfunc_14(0x1000, 0x1000, 0x1000);
+                    LFLD(VObj *, n, 0x24)->vfunc_1c((LFLD(s32, n, 0x14) << 12) - 0x51000, -((LFLD(s32, n, 0x18) << 12) - 0x5b000), -0x400);
+                } else {
+                    LFLD(VObj *, n, 0x24) = NULL;
+                }
+            }
+            if (LFLD(s32, n, 0x18) < -0x10) {
+                h = LFLD(u8 *, self, 0x24c);
+                if (h == LFLD(u8 *, self, 0x250)) {
+                    LFLD(void *, self, 0x250) = NULL;
+                    LFLD(void *, self, 0x24c) = NULL;
+                } else {
+                    LFLD(void *, self, 0x24c) = LFLD(void *, h, 0x28);
+                }
+                Release0216c310((u8 *)self + 0x360 + data_ov000_021c9bb4[LFLD(s32, n, 4)].a * 12);
+                Release0216c310((u8 *)self + 0x360 + data_ov000_021c9bb4[LFLD(s32, n, 4)].b * 12);
+                LFLD(s32, n, 4) = -1;
+                LFLD(u32, n, 0) = 0;
+                LFLD(void *, n, 0x28) = NULL;
+                LO_FREE_V(n, 8);
+                if (LFLD(VObj *, n, 0x24) != NULL && func_02065748(data_0214a420, LFLD(VObj *, n, 0x24))) {
+                    LFLD(s32, LFLD(VObj *, n, 0x24), 0x1c) = 4;
+                }
+                LFLD(VObj *, n, 0x24) = NULL;
+                n = NULL;
+            }
+        }
+        prev = n;
+    }
+}
+
+}
+#endif
