@@ -5312,3 +5312,31 @@ No new match. Tools are round hzX's, pointed at the hzY clone, in the scratchpad
 ### Sweep
 
 Of the functions where earlier rounds saw a fresh zero against a hoisted one, these are still unmatched: `ov010_02201064` (the `last` stores' fresh `mov r1, #0`), `ov010_021fe2a4` (the `0x12f` block's `mov r7, #0`), `ov003_021cd91c` and `ov014_0220f3f0` (`&ax` in `r6`, which is a stack address and not a constant group). Round ovmid placed `021fe2a4`'s fresh zero at the top of an `if` body (it lives across the `AttachWorld` join). The step that has to be refused there leaves the body for the condition block. If the body is entered only from that block, this step also has a single predecessor, and the `?:` lever does not apply. This was not traced this round. There is no honest base draft for `02201064` (its drafts use the fake `all` parameter, see round honL), so it was not retried.
+
+## Block merging, branch tail merge and a coalesced zero: no new match (round mgW)
+
+No new match. Scratch files are in the scratchpad under `mgW/` (nmZ's `ms.py`, `t/` and `sch/` pointed at the mgW clone; `rd.py LO HI OV` disassembles a target range with branch targets; `ca14/gen.py` writes the `m*`/`g*` variants; `3e90/v*.cpp` the `021b3e90` variants).
+
+### Merge 0 (`0x5116d0` and its test `0x504fa0`), exactly
+
+For each block B in layout order, with P its layout predecessor (`B+4`): B is merged into P when P's layout successor is B, P has exactly one successor edge and it goes to B, B has exactly one predecessor edge, `P.flags & 0x111` and `B.flags & 0x112` are 0, the loop depths (`+0x2c`) are equal, and P's last instruction is not a call (`& 8`) or a volatile access (`& 0x180`); a last instruction that is a branch is allowed only if it jumps to B. The only writers of block flags `0x10` and `0x100` (`0x52b04b`, `0x52c50f`) run after scheduling, so before the first scheduler a source label only survives as a block boundary if it is **not laid out directly after its only predecessor, or has two or more predecessors**. That is why `ca14/t3.cpp` (`if (0) { done: return TRUE; }`, laid out straight after the stores) merges again and `r5.cpp` (`done:` after `return FALSE`) does not.
+
+### No layout or jump clean-up after the branch tail merge
+
+The branch tail merge (`0x52ad70`, a fixed-point loop over `0x52acd0` per block) runs after both schedulers. Tested on `021eca14` with the case-1 stores written twice (`ca14/m1`–`m7`, `g1`, `g2`):
+
+- When two predecessors of the `return TRUE` join end with the same instructions, the copy that **falls through** into the join is kept and the other one is replaced by a `b` to it (`m1`/`m5`: the `p38 != NULL` arm becomes `b`; `m2`/`m6`/`m7`: the `p38 == NULL` arm does). With the copy laid out after the join (`g1`, by `goto`), the copy before the join is kept.
+- The block left holding only that `b` is **never removed**, a conditional branch to it is not retargeted, and a `b` to the next instruction stays (`m5` ends `beq FALSE; b +4; stores`).
+- In every variant each stores copy sits in a block without `mov r0, #1`, so the stores come out in exactly the ROM's registers and order; the score is 8 / 8 or 9 / 9 because of that one leftover `b` (and the `bne +8; b` pair where the leftover copy was the then-arm).
+
+So the ROM's case-1 tail cannot come from a tail-merged duplicate either: that always leaves a branch the ROM does not have. Together with merge 0 above, the ROM needs a `return TRUE` block that is laid out right after the stores and has a second predecessor at merge 0 which leaves no instruction behind (a conditional branch removed or if-converted between merge 0 and the end). No source construct that does that was found. `021eca14` stays at 7 / 2 (`t1`/`c.cpp`); `r5` (10 / 10) and `m5` (9 / 9) are the forms with the right case-1 code.
+
+### `ov000_021b3e90` (7 / 1): the target's `mov r0, r4` is `dp = 0`, head-merged
+
+- The draft never initialises `dp` (it is read when neither key bit is set). The target's `r0` at the switch is 0: `dp` is `u16 dp = 0` semantics, and it lives in `r0` from the `d6 - 1 != d4` exit to the `if (dp != 0)` test.
+- `dp = 0;` written just before the `d6 - 1 != d4` test (`3e90/vg.cpp`; also `return FALSE` or `return dp` in the exit, `vh`/`vi`/`vl`) gives **8 / 2 with every register as in the target**: the exit's `mov r0, #0` is a local-CSE copy of `dp`, so `dp` is coalesced into `r0`. The only miss is that `mov r0, r4` is in the compare block, and the pre-RA scheduler puts it in the `ldrh` latency slot.
+- In the target it comes after `cmp` and after the `ldrb [r6, #0x9c]`, i.e. it is the second instruction head-merged (`0x5135b0`) from both successors: the exit block starts `ldrb r1; mov r0, r4` and the continue block `ldrb r1; mov r0, r4 (dp = 0)`. That needs `dp = 0` at the start of the continue block **and** `dp` coloured `r0`. With `dp = 0` in the continue block (`va`, `vb`, `vc`, `vj`, `vk`, `vm`–`vr`, every declaration order, `s32`/`u32`/`int`/`s16` types) nothing copies `dp` into `r0`, it gets `r2`, the `0x9c` value takes `r0`, and the score is 42 / 26 or worse. Still open: what gives `dp` a preference for `r0` when its definition is after the exit.
+
+### Not reached
+
+`ov010_0220640c`, `0219b808`, `021c4460` and `0215e6f0` were not changed this round.
