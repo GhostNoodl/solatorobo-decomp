@@ -129,9 +129,10 @@ Node0216607c *func_ov000_0216607c(void *self, Node0216607c *node, u8 *outIdx, BO
 }
 
 #ifdef NONMATCHING
-// func_ov000_02166180: 45 / 0 (raw / register-masked), real signature, register colouring only.
-// Rounds g6180, g6180b and vphase3 draft. About 21 wrong colour nodes remain: oams/pos/j and the
-// &oams[j] address in the first loop, the PalIdx temps after it, and n/off/pal+off in the busy block.
+// func_ov000_02166180: 44 / 0 (raw / register-masked), real signature, register colouring only.
+// Rounds g6180, g6180b and vphase3 draft; round dgB reuses pos for the part's position pointer
+// (was a separate ps), which gives pos the ROM's sl. About 20 wrong colour nodes remain: oams/j and
+// the &oams[j] address in the first loop, the PalIdx temps after it, and n/off/pal+off in the busy block.
 // This file's .text ends at 0x02166180, so the function belongs here once it matches.
 
 typedef struct {
@@ -254,7 +255,6 @@ void func_ov000_02166180(u8 *self) {
     u8 c;
     u8 *nd;
     s16 x;
-    Pos6180 *ps;
     u8 *n;
     u8 *g;
     u8 *p;
@@ -308,9 +308,9 @@ void func_ov000_02166180(u8 *self) {
         if (f) {
             for (j = 0; j < r[0xa]; j++) {
                 pt = LFLD(u8 *, r, 0x14) + j * 0x14;
-                ps = LFLD(Pos6180 *, pt, 0);
+                pos = LFLD(Pos6180 *, pt, 0);
                 o = LFLD(Oam6180 *, pt, 4);
-                xx = ps->x + ex; yy = ps->y + ey; PUTM(o, xx, yy)
+                xx = pos->x + ex; yy = pos->y + ey; PUTM(o, xx, yy)
                 o->w1.pal = pal[PalIdx6180(p)];
             }
         }
