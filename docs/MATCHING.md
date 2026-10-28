@@ -5521,3 +5521,26 @@ bgC's draft was 17 with registers masked, but 314 raw: every callee-saved regist
 The general lever: when a whole function is off by one or more callee-saved registers, find the node that is out of place in `ra.sh`'s `order` line, then use `simo.py` to find which node numbers would put it where the target has it, and get that number by declaring the variable later, or another variable earlier.
 
 Not reached: `ov000_021b9b14` (bgC's `h2.cpp` is 129 / 52 with today's headers, pcmask 108 / 30), `ov000_0216715c`, `ov000_0216c310` and `ov009_02204a10` were not changed.
+
+## The pointer-bit test in `02208b24` replaced by call arguments; the 12-byte copy and case 5 still open: no new match (round cdD)
+
+No new match, and no source or `tools/` change. Scratch is in `scratchpad/cdD/`: `t/` is round cdC's tool set pointed at this clone, plus `sc2.py TARGET OURS [show]` (difflib count with branch targets and pool offsets masked; the target is `bv/t.txt`, one instruction per line), `run.sh FILE` (compile and score `02208b24`), `only.py`/`an.sh FILE DIR` (strip the TU's other two functions, then run the colouring dump, `match.py` and `want.py` into `DIR`, so `re/s1r.py` sees one graph). `re/` is round dgB's model pointed at this clone. The best honest-so-far draft is `cdD/best.cpp` (= `bv/q1/inl001.cpp`).
+
+### Case 3: no pointer-bit test needed
+
+- **Why near4's `if ((u32)self & 3) spd = p->end.x;` helped.** Without it (cdC's `j1`, 30 masked here), `p->end.x` occurs twice. The front end's CSE turns it into a statement of its own before the first `FX_Mul`, so the speed load gets a number below the whole multiply tree (`v145` in `aj1`). `s1r.py` on that dump: moving it to 154–156 (after the sine table address and offset) fixes 8 of 12 wrong nodes. The target therefore lowers the speed *inside* the first multiply, after the sine operand, and shares it with the second multiply only later (one `ldr r3, [r5, #0xc]` feeds both `smull`s).
+- **Two plain statements reload.** `self->unk_9c = FX(p->end.x, SIN); self->unk_a0 = FX(p->end.x, COS);` has a store between the loads, so the backend reloads (`ldr` twice, 27). The target computes both products before either store.
+- **bgC's lever does it.** `static inline void Ov009_SetVelXZ(Ov009Actor *self, s32 x, s32 z) { self->unk_9c = x; self->unk_a0 = z; }` called as `Ov009_SetVelXZ(self, Ov009_FxMul(p->end.x, OV009_SIN(ang)), Ov009_FxMul(OV009_COS(ang), p->end.x));` gives the target's single speed load in `r3`, the target's sine/cosine index code (`lsl r2, r0, #1; add r0, r2, #1; …`) and the target's first `smull r0, r5, r3, r2`. Operand order matters: the second product must be written cosine first. Both speed-first (`b1`) or sine first (`n2`) give 30. Named `sn`/`cs`, plain `x`/`z` locals instead of the inline, and declaration order give the same 19 (`q1/`, 36 variants).
+- **What's left in case 3 (4 instructions).** The second product pair is `smull r3, r2, r1, r3` / `adc r1, r5, r4` against the target's `smull r2, r1, r3, r1` / `adc r3, r5, r4`. In the model (`an3`, want `{151: 3, 161: 2, 163: 2, 164: 1, 168: 1}`) the single moves that fix it are the second product's low word after 165 or its high word at 153–155. Within one `FX_Mul` tree that order is fixed (round fxS), so it needs another tree shape. Not found.
+
+### The 12-byte copy
+
+The target's case 6 copies `v` to `v3` as `ldm r0, {r0, r1, r2}; stm r3, {r0, r1, r2}` after storing `v` to the stack. Every same-type copy (`v3 = v`, `v3 = self->unk_b8`, `v3 = v = …`, `v = v3` after `v3 = …`, member by member, through a `const Ov009Vec *`, through an inline `Ov009Vec_Copy(&v, &v3)`) stops the store-load pass. The result then has 244 instructions against the target's 262 (154 masked). Only the cast-to-`Ov009Blk12b` copy keeps the pass firing, so the function still can't land honestly.
+
+### Case 5
+
+cdC's order problem is unchanged. All 18 orders of the six case-5 statements (`bv/pm/`) were tried, plus a temp for the rotation, an inline that takes the rotation and offset as arguments (`x1`, `x3`), and a function-level `off` in every declaration slot (`w*`). Loading `off` before the `strh` (the target's order) always moves it to `r4` and shifts `x`/`y`/`z` (25). Loading it after the `strh` gives the target's registers but the wrong order (18). In the target, the offset is loaded early but numbered late, which no source order tried produces.
+
+### Not reached
+
+`02049c80` was not reworked.
