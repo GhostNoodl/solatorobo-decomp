@@ -99,7 +99,9 @@ void func_02040d94(void *res, void *a, s32 b, s32 c);
 void func_02040dd8(void *res, s32 a, s32 b);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void func_ov000_021652e4(void *self, u8 *p, u8 *rec, u8 *e);
+struct Out_52e4;
+struct Def_52e4;
+void func_ov000_021652e4(void *self, u8 *p, struct Out_52e4 *rec, const struct Def_52e4 *e);
 
 static inline void *LoModelGetPart(void *self, int idx) {
     if (idx >= LFLD(s32, self, 0x80)) {
@@ -238,10 +240,232 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
             u32 off = i * 0x1c;
             LFLD(u32, LFLD(u8 *, p, 0xc84) + off, 0) = LFLD(u32, e, 0);
             LFLD(u8, LFLD(u8 *, p, 0xc84) + off, 8) = i;
-            func_ov000_021652e4(self, p, LFLD(u8 *, p, 0xc84) + off, e);
+            func_ov000_021652e4(self, p, (struct Out_52e4 *)(LFLD(u8 *, p, 0xc84) + off), (const struct Def_52e4 *)e);
             e = Next02164c50(e);
         }
     }
+}
+
+}
+#endif
+
+#ifdef NONMATCHING
+// func_ov000_021652e4: 156 raw / 56 register-masked (round rtF), real four-argument signature
+// (the only caller, func_ov000_021652a8, passes four), no fake parameters, comma or one-element
+// array forms (the cxxperm drafts at 91 / 46 needed seven fake parameters). What is left is the
+// spill-slot order (target: i, tbl, y0, x0, row at sp+0..0x10) and colouring in the parts loop.
+
+
+extern "C" {
+
+extern u8 data_ov000_021c9b60[];
+extern u8 data_ov000_021c9b72[];
+extern u8 data_ov000_021c9b7b[];
+extern u8 data_ov000_021c9b69[];
+extern s8 data_ov000_021c9acc[];
+extern u8 data_ov000_021c9a9c[];
+s32 FX_Div(s32 a, s32 b);
+
+typedef struct {
+    u32 y : 8;
+    u32 a : 8;
+    u32 x : 9;
+    u32 b : 3;
+    u32 hf : 1;
+    u32 vf : 1;
+    u32 c : 2;
+    u32 tile : 10;
+    u32 prio : 2;
+    u32 pal : 4;
+    u32 rest : 16;
+} Oam_52e4;
+
+typedef struct {
+    s32 x;
+    s32 y;
+} Pos_52e4;
+
+typedef struct {
+    Pos_52e4 *pos;
+    Oam_52e4 *oam;
+    s32 x;
+    s32 y;
+    u8 c[4];
+} Part_52e4;
+
+typedef struct {
+    void *owner;
+    s32 a;
+    s32 b;
+    s32 x;
+    s32 y;
+    u8 c;
+    u8 pad[3];
+} Hit_52e4;
+
+typedef struct {
+    s32 x;
+    s32 y;
+    u8 c[4];
+} PartDef_52e4;
+
+typedef struct {
+    s32 x;
+    s32 y;
+    s32 a;
+    s32 b;
+    u8 c;
+    u8 pad[3];
+} HitDef_52e4;
+
+typedef struct Def_52e4 {
+    u8 pad0[4];
+    u8 w;
+    u8 h;
+    u8 nHit;
+    u8 nPart;
+    HitDef_52e4 hits[1];
+} Def_52e4;
+
+
+typedef struct Out_52e4 {
+    u8 pad0[4];
+    u16 unk_04;
+    u8 w;
+    u8 h;
+    u8 slot;
+    u8 n;
+    u8 nPart;
+    u8 nHit;
+    Pos_52e4 *pos;
+    Oam_52e4 *oam;
+    Part_52e4 *parts;
+    Hit_52e4 *hits;
+} Out_52e4;
+
+#define D_CNT_52e4 LFLD(u8, d, 1)
+#define D_OAM_52e4(i) (&((Oam_52e4 *)((u8 *)d + 0x2c))[i])
+#define D_POS_52e4(i) (&((Pos_52e4 *)((u8 *)d + 0x65c))[i])
+
+void func_ov000_021652e4(void *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
+    s32 col; s32 k; s32 j; s32 rx; Hit_52e4 *h;
+    Oam_52e4 tmpl = *D_OAM_52e4(0);
+    const u8 *tbl;
+    s32 row;
+    u8 i;
+    Part_52e4 *p;
+    const PartDef_52e4 *pe;
+    if (def->w == 1) {
+        tbl = def->h == 1 ? data_ov000_021c9b60 : data_ov000_021c9b72;
+    } else {
+        tbl = def->h == 1 ? data_ov000_021c9b7b : data_ov000_021c9b69;
+    }
+    o->pos = D_POS_52e4(D_CNT_52e4);
+    o->oam = D_OAM_52e4(D_CNT_52e4);
+    o->n = 0;
+    o->unk_04 = 0;
+    o->w = def->w;
+    o->h = def->h;
+    s32 x0 = -((o->w * 8) >> 1);
+    s32 y0 = -((o->h * 8) >> 1);
+    for (row = 0; row < def->h; row++) {
+        s32 ry = row == 0 ? 0 : (row == def->h - 1 ? 2 : 1);
+        for (col = 0; col < def->w; col++) {
+            rx = col == 0 ? 0 : (col == def->w - 1 ? 2 : 1);
+            u8 t;
+            k = o->n;
+            Oam_52e4 *oam = o->oam;
+            Pos_52e4 *pos = o->pos;
+            oam[k] = tmpl;
+            pos[k].x = x0 + col * 8;
+            pos[k].y = y0 + row * 8;
+            oam[k].x = (u16)pos[k].x;
+            t = (tbl[ry * 3 + rx]);
+            oam[k].y = (u16)pos[k].y & 0x1ff;
+            oam[k].tile += (t & ~0xc0) - 1;
+            oam[k].pal = LFLD(s8 *, d, 0xc90)[oam[k].pal];
+            if (t & 0x40) {
+                oam[k].hf = 1;
+            }
+            if (tbl[ry * 3 + rx] & 0x80) {
+                oam[k].vf = 1;
+            }
+            o->n++;
+        }
+    }
+    D_CNT_52e4 += o->n;
+    o->nPart = def->nPart;
+    o->parts = &LFLD(Part_52e4 *, d, 0xc7c)[LFLD(u8, d, 6)];
+    pe = (const PartDef_52e4 *)def->hits;
+    if (def->nHit != 0) {
+        pe = (const PartDef_52e4 *)&def->hits[def->nHit];
+    }
+    p = o->parts;
+    for (i = 0; i < def->nPart; i++) {
+        s32 ax;
+        s32 ay;
+        u8 t;
+        Pos_52e4 *pos;
+        Oam_52e4 *oam;
+        p->pos = D_POS_52e4(D_CNT_52e4);
+        pos = p->pos;
+        p->oam = D_OAM_52e4(D_CNT_52e4);
+        oam = p->oam;
+        p->c[0] = pe->c[0];
+        p->c[1] = pe->c[1];
+        p->c[2] = pe->c[2];
+        p->c[3] = pe->c[3];
+        *oam = tmpl;
+        ax = FX_Div(pe->x, 0x1000);
+        ay = FX_Div(pe->y, 0x1000);
+        ax = LO_FX_MUL(ax, 0x8000);
+        p->x = ax >> 12;
+        ay = LO_FX_MUL(ay, 0x8000);
+        p->y = ay >> 12;
+        {
+        s32 sx = data_ov000_021c9acc[pe->c[0] * 2] + (ax >> 12);
+        s32 sy = data_ov000_021c9acc[pe->c[0] * 2 + 1] + (ay >> 12);
+        pos->y = sy;
+        t = data_ov000_021c9a9c[pe->c[0]];
+        pos->x = sx;
+        }
+        oam->x = (u16)pos->x;
+        oam->y = (u16)pos->y & 0x1ff;
+        oam->tile += (t & ~0xc0) - 1;
+        oam->pal = LFLD(s8 *, d, 0xc90)[oam->pal];
+        if (t & 0x40) {
+            oam->hf = 1;
+        }
+        if (data_ov000_021c9a9c[pe->c[0]] & 0x80) {
+            oam->vf = 1;
+        }
+        p++;
+        D_CNT_52e4 = D_CNT_52e4 + 1;
+        pe = (const PartDef_52e4 *)((u8 *)pe + 0xc);
+    }
+    LFLD(u8, d, 6) += o->nPart;
+    o->nHit = def->nHit;
+    h = &LFLD(Hit_52e4 *, d, 0xc80)[LFLD(u8, d, 7)];
+    o->hits = h;
+    const HitDef_52e4 * he = def->hits;
+    for (j = 0; j < o->nHit; j++) {
+        u8 c = he->c;
+        LFLD(Hit_52e4 **, LFLD(u8 *, d, 0xc88) + c * 8, 4)[o->slot] = h;
+        h->owner = o;
+        h->a = he->a;
+        h->c = c;
+        h->b = he->b;
+        {
+            s32 hy;
+            s32 hx = FX_Div(he->x, 0x1000);
+            hy = FX_Div(he->y, 0x1000);
+            h->x = (LO_FX_MUL(hx, 0x8000) >> 12) + 0x80;
+            h->y = (LO_FX_MUL(hy, 0x8000) >> 12) + 0x58;
+        }
+        he += 1;
+        h++;
+    }
+    LFLD(u8, d, 7) += o->nHit;
 }
 
 }
