@@ -5175,3 +5175,42 @@ The ROM's `fp`/`r5`/`r4`/`r7` cannot come from any natural spelling of this stat
 ### `0215e6f0` and `021743bc`
 
 Not changed by this round. spT's result stands: `0215e6f0` spills nothing, and the extra reloads in `021743bc` are in the ROM too. The rematerialisation rule therefore has nothing to fix in either one.
+
+## The pressure walk stops at the first predecessor: `ov015_0220b1b8` matches (round hzX)
+
+`func_ov015_0220b1b8` matches (appended to `src/ov015/ov015_0220afcc.cpp`, whose `.text` range now ends at `0x0220b620`). The tools are round hzU's, pointed at the hzX clone, in the scratchpad under `hzX/t/`. `mcl.py` now also prints the per-block pressure table before every move when `PT=1` is set (`PT 12:7 13:8 ...`). `hzX/ev.sh FILE FUNC MOD` prints the zero group's moves with their pressures, plus the `ms.py` score.
+
+### What the "path" in step 4 really is (`0x5263f0`)
+
+Round hzU's rule said that a step is refused when any block on a path from the instance's block back to the target block has pressure above 10. The walk is narrower than that:
+
+- It starts at the **predecessors** of the instance's block. The instance's own block is never checked.
+- It goes through the predecessor list in order and recurses into each predecessor's own predecessors. It **returns as soon as it reaches the target block**, and the target's pressure counts. Any predecessors after that one are never looked at.
+- `0x526390` then adds 1 to every block along the same walk, the target included.
+
+So at a join, only the paths through the predecessors listed **before** the dominator are checked. For `if (c) { S }`, the join's predecessors are `[cond, S]`, so the walk reaches the target at once and never looks at `S`. For `x = c ? a : b;`, the join's predecessors are `[then, else]`, so the `then` block is checked first.
+
+### `0220b1b8`
+
+The target builds the zero for the `ad > 0x4cd` multiply in that test block (`mov r0, #0`), and builds a second zero (`mov r8, #0`) in the store block after the `if`. That means the store block's zero was refused at the step to the test block. The multiply body (block 16) has pressure 12, but `if (ad > 0x4cd) py += ...;` lists the join's predecessors as `[15, 16]`, so the walk never sees block 16 (`17->15 p=9`). Written as a conditional expression, the predecessors become `[16, 17]`, the walk sees block 16, and the step is refused (`18->15 p=12 REFUSE`):
+
+```c
+py = ad > 0x4cd ? py + (s32)(((s64)d * 0x4cdLL + 0x800LL) >> 12) : py;
+```
+
+That gives 0 / 0. The `if` forms tried (`ad` computed three ways, `FxMul` inline, a `{} else` arm, an inverted test with an empty then-arm) all keep `[cond, body]` and stay at 36 / 21. `py += c ? X : 0` gets the refusal too, but it adds a zero (26 / 23).
+
+**Rule:** when a constant the target builds fresh after an `if` would be hoisted past it in our build, and the `if` body has high pressure, try the `?:` form, or any form that makes the arm the join's first predecessor.
+
+### `ov015_021fc40c` (no match; `giantsC/best/c40c_66_24_clean.cpp`, 101 / 62 under `ms.py`)
+
+- **Why the draft's case zeros vanish.** In the clean draft, `b.y = 0; b.z = 0;` come before `Bob` in each case. The entry block, the switch compares and each case block form one extended block, so the first local CSE turns those zeros into copies of the entry's `flip = FALSE` zero (`v96`). Pass `0x516180` then coalesces that zero with `Bob`'s result variable into one multi-definition vreg (`v83`: `0`, `0x6aaa`, `0xd554`, `0x14000`). This is the "entry copy" seen since giantsC. The target uses the entry zero (`r2`) only for `a.z` and `Bob`'s `return 0`.
+- **With the `b` stores after `Bob`** (`hzX/c40c/x1.cpp`), each `Bob` join gets its own zero (blocks 12, 20 and 28). The group has 18 instances, and each join zero moves to its case block (`12->5 p=8`) and then to the entry (four zero copies at entry, 135 / 61). The target keeps them fresh, so in the target `12->5` is refused, which needs pressure above 10 in block 5 or 6. The target also stops the post-switch zero in the blink-test block. Ours goes on (`35->30 p=10`: block 31, the `n % 6 < 3` arm, is at exactly 10). So the target has at least one more value live through the blink test and the case blocks than our draft. That value was not found. `SetV(&b, Bob(n), 0, 0)` traces the same as `x1`.
+
+### `ov011_021fd638` (no match; `bigN/d638/n1.cpp`, 27 / 5)
+
+The inner-loop zero (`e->unk_08 = 0`, block 13) is not moved by LICM. Step 4 moves it 13 → 11 → 10 → 82 (the inner preheader, where the target keeps it) → 9 → 8 → … → 1. The step out of the preheader checks only block 9 (the `n != NULL` guard after `e->b0`), and block 9's pressure is 8. The target needs either block 9 above 10, or block 9 empty (step 4 also refuses an empty target block), or fewer than 5 zero instances. Ours has 7: the `FindActor` NULL, this one, the two `NULL` argument zeros, the two `i = 0` table-loop counters, and the `cnt`/`i` zero. The target builds all of them fresh, so all seven are real. Not solved.
+
+### Not reached
+
+`func_020417e0`, the LICM limit, and the derivation traces (`02049c80`, `ov009_02208b24`) were not worked on this round. For `020417e0`, check whether the walk out of block 34 reaches a high-pressure predecessor first. Block 5's pressure only counts if the walk visits it before the target.

@@ -124,7 +124,7 @@ src/ov015/ov015_0220ab84.cpp:
 
 src/ov015/ov015_0220afcc.cpp:
     complete
-    .text       start:0x0220afcc end:0x0220b1b8
+    .text       start:0x0220afcc end:0x0220b620
 
 src/ov015/ov015_0220b620.cpp:
     complete
