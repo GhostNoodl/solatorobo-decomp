@@ -36,6 +36,10 @@ void func_ov000_0214dcc4(Obj0214dcc4 *self) {
 // (plain `u8 *g = data_ov000_021ccd54;`) it is 70 / 0. Left: key / Key(p) / insert-walk p colouring.
 // Round raB: address accessors for the list head, next and unk_36, a for walk and O1-O3 give 28 or
 // worse; the ramerge colour model does not reproduce this graph (13 nodes differ).
+// Round qpH, all 28 / 0 unless noted: k and g in Key split into their own statements (declared first,
+// assigned later, either order), Key as a Node member function (with or without this->), a pk local for
+// Key(p), key as u32 (28) or s32 (29 / 1), the walk as a for with last = p in the step, Key(p) < key,
+// a const Node * for Key. u32/s32 k is 115 / 106, key before the head load 38 / 15, the && walk 129.
 #include "ov000/LoCommon.h"
 
 extern "C" {
