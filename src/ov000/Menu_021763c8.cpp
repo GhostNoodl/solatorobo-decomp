@@ -2647,3 +2647,44 @@ void func_ov000_0217a1d8(void) {
 }
 
 }  // namespace m_Lo_0217a1d8
+
+#ifdef NONMATCHING
+// func_ov000_0217a1f8: 2 raw / 2 register-masked diffs (round o4C; was 3 / 3). The text argument is
+// the "no text" id (func_ov000_0217a328 tests b != -1). As a literal, MWCC derives the -1 from the
+// 0x78 argument (sub r2, r1, #0x79); as an enum local it is a fresh mvn r2, #0 as in the ROM. Left:
+// the ROM lists mov r1, #0x78 before the mvn, we list it after. See docs/MATCHING.md, round o4C.
+// ---- Lo_0217a1f8
+namespace m_Lo_0217a1f8 {
+
+typedef enum { LO_TEXT_NONE = -1 } LoTextId;
+
+extern "C" {
+VObj *func_ov000_02176208(void);
+void func_ov000_0217a328(VObj *self, s32 a, s32 b);
+void func_ov000_02173648(VObj *self);
+
+void func_ov000_0217a1f8(VObj *self) {
+    VObj *o;
+    LoTextId txt;
+    LFLD(u32, self, 4) &= ~2;
+    if (self->vfunc_28() != 0) {
+        return;
+    }
+    txt = LO_TEXT_NONE;
+    func_ov000_0217a328(self, 0x78, txt);
+    {
+        LoCreateFn fn = LFLD(LoCreateFn, data_ov000_021ccd34, 0x18);
+        if (fn == NULL) {
+            LFLD(LoCreateFn, data_ov000_021ccd34, 0x18) = fn = (LoCreateFn)func_ov000_02176208;
+        }
+        o = (VObj *)fn();
+    }
+    LFLD(VObj *, self, 0x44) = o;
+    o->vfunc_08();
+    func_ov000_02173648(self);
+}
+
+}
+
+}  // namespace m_Lo_0217a1f8
+#endif
