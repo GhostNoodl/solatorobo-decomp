@@ -70,11 +70,13 @@ void func_ov010_02200ee0(u8 *o) {
 }
 
 #ifdef NONMATCHING
-// func_ov010_02201064: 83 / 9 (raw / register-masked, round bgO; was 193 / 9 once the old draft's
-// volatile counter increment is gone). Each beam-list walk has its own pointer (n1, n2, n): with one
-// reused n the later webs were compiler temps and the second loop was coloured differently. Left: the
-// ROM keeps a fresh `mov r1, #0` after func_02040528(2) for the `last` resets (ours reuses the hoisted
-// r5 zero), and the GetA/SetA temporaries in the second loop are coloured differently.
+// func_ov010_02201064: 78 / 3 (raw / register-masked, round bgP; was 83 / 9 in round bgO). Each beam-list
+// walk has its own pointer (n1, n2, n): with one reused n the later webs were compiler temps and the second loop
+// was coloured differently. The `last` resets come after the `s` adjustment: the ?: puts a block boundary in
+// front of them, so their zero is not CSE'd with the Ov010k_Mul zeros of the block before (which step 4 hoists);
+// it is shared with the 0x7a store and the func_ov000_02198360 zero arguments and is already r1 at step 4, so it
+// stays a fresh `mov r1, #0`, as in the ROM. Left: register colouring of the GetA/SetA temporaries and the
+// 0xffff constant in the second walk (same instructions as the ROM).
 extern "C" {
 
 extern const Ov010Vec data_ov010_0220ef80;
@@ -219,10 +221,11 @@ void func_ov010_02201064(u8 *self) {
             t = func_02040498(10) + 10;
             {
                 s32 s = func_02040528(2);
+                s = s > 0 ? s + 0x16 : s - 0x16;
                 FLD(u8, last, 0) = 0;
                 FLD(u16, last, 2) = 0;
                 FLD(u16, last, 4) = 0;
-                FLD(u16, last, 6) = s > 0 ? s + 0x16 : s - 0x16;
+                FLD(u16, last, 6) = s;
             }
             if (FLD(u8, last, 0xc) != 0 && FLD(u8, last, 0x8b) == 5) {
                 FLD(u16, last, 0x7a) = 0;
