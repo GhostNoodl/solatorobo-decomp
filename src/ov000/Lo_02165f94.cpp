@@ -135,6 +135,10 @@ Node0216607c *func_ov000_0216607c(void *self, Node0216607c *node, u8 *outIdx, BO
 // and i for the busy and else loops (was n and m), which fixes the busy block. Left: oams/j and the
 // &oams[j] address in the first oams loop; the colouring model needs the j value temp numbered above
 // g/p and oams below ey, which no declaration order gives.
+// Round bgN: with all three nodes free, every zero-miss numbering has the j value above g (130..145)
+// and oams in the temp range below the &oams[j] temp. Toys show the j value is an IRO temp whenever
+// it is used across blocks (named copies `jx = j`, u8 or s32, are turned into a temp too), and IRO
+// temps are numbered below every user variable, so this needs a different structure, not an order.
 // This file's .text ends at 0x02166180, so the function belongs here once it matches.
 
 typedef struct {

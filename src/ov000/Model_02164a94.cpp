@@ -264,6 +264,10 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
 // last user variable and got the lowest node; declared first it is numbered above col/h/j/k/rx,
 // which fixes the hit loop's colours. The parts loop is still off (the &oam[k]/pos temps and the
 // post-allocation schedule).
+// Round bgN: 76 / 27. The parts loop's `oam`/`pos` were block locals (the lowest user variables);
+// declared at function level between `p` and `pe` (only that slot, of 132) they fix the pe/oam
+// colours. Left: the col loop (rx, tbl + ry * 3, &oam[k], col) and the sx/sy block's schedule; a
+// node-renumbering beam search finds no single moves under 28 wrong, so it is not one temp.
 
 
 extern "C" {
@@ -368,6 +372,8 @@ void func_ov000_021652e4(void *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
     const u8 *tbl;
     u8 i;
     Part_52e4 *p;
+    Oam_52e4 *oam;
+    Pos_52e4 *pos;
     const PartDef_52e4 *pe;
     if (def->w == 1) {
         if (def->h == 1) {
@@ -427,8 +433,6 @@ void func_ov000_021652e4(void *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
         s32 ax;
         s32 ay;
         u8 t;
-        Pos_52e4 *pos;
-        Oam_52e4 *oam;
         p->pos = D_POS_52e4(D_CNT_52e4);
         pos = p->pos;
         p->oam = D_OAM_52e4(D_CNT_52e4);

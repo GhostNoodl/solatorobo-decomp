@@ -49,8 +49,12 @@ void func_ov002_021d1f20(Task50 *self) {
 }
 
 #ifdef NONMATCHING
-// func_ov002_021d1f70: 35 raw / 0 register-masked diffs, real signature (self only), no pragma or one-element arrays.
-// Register colouring only: the ROM has n in r4 and x in r6, this draft has them the other way round.
+// func_ov002_021d1f70: 24 raw / 0 register-masked diffs, real signature (self only), no pragma or one-element arrays.
+// Register colouring only. Round bgN (was 35): a u8 n was folded into an int temp (every use is
+// promoted), so n is s32 (and DrawCount's parameter too) and stays a user variable above x; the
+// first PlayPart's model goes through m, declared between n and x. Left: DrawCount's by << 12 (the
+// CSE temp of the three SetPos y stores) has to be numbered between the res objects of DrawCount's
+// first and second PlayPart; as an IRO temp it is newer than every inline object.
 #include "ov002/ov002.h"
 
 extern "C" {
@@ -85,7 +89,7 @@ static inline void ov002_SetPos(void *o, s32 x, s32 y) {
     FIELD(o, 0x100, s32) = y << 12;
 }
 
-static inline void ov002_DrawCount(void *self, u8 n, s32 d) {
+static inline void ov002_DrawCount(void *self, s32 n, s32 d) {
     s32 bx = FIELD(self, 0x50, s32) + 0x50;
     s32 by = FIELD(self, 0x54, s32) - 0x44;
     FIELD(FIELD(self, 0x48, void *), 0x150, s32) = FIELD(self, 0x58, s32) + 0x20;
@@ -103,7 +107,8 @@ static inline void ov002_DrawCount(void *self, u8 n, s32 d) {
 void func_ov002_021d1f70(void *self) {
     s32 v44;
     s32 d;
-    u8 n;
+    s32 n;
+    void *m;
     s32 x;
     u8 *o;
     s32 y;
@@ -117,7 +122,8 @@ void func_ov002_021d1f70(void *self) {
     z = FIELD(self, 0x58, s32) + 0x20;
     ov002_SetPos(FIELD(self, 0x4c, void *), x, y + 9);
     FIELD(FIELD(self, 0x4c, void *), 0x150, s32) = z;
-    ov002_Model_PlayPart(FIELD(self, 0x4c, void *), 4);
+    m = FIELD(self, 0x4c, void *);
+    ov002_Model_PlayPart(m, 4);
     ov002_SetPos(FIELD(self, 0x48, void *), x + 0x10, y);
     FIELD(FIELD(self, 0x48, void *), 0x150, s32) = z;
     func_02041c20(FIELD(self, 0x48, void *), 6, v44);
