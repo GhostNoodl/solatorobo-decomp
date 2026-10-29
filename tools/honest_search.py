@@ -534,6 +534,11 @@ class Gen:
 
 # ------------------------------------------------------------------------------------------- concrete types
 
+def unwrap(err):
+    """Join MWCC's wrapped message lines (each continuation repeats the `file:line: ` prefix)."""
+    return re.sub(r"\n[^\n]*?:\d+: ", "", err)
+
+
 def resolve_types(scorer, text):
     """Replace every `__typeof__(e) v = e;` by the concrete type the compiler reports for e."""
     lines = text.split("\n")
@@ -542,13 +547,13 @@ def resolve_types(scorer, text):
         if not m: continue
         probe = list(lines)
         probe[i] = m.group(1) + "struct HsProbe { int x; } *hs_probe = &(%s);" % m.group(2)
-        err = scorer.compile("\n".join(probe), keep_err=True)
+        err = unwrap(scorer.compile("\n".join(probe), keep_err=True))
         t = None
-        mm = re.search(r"'([^']*) \*' to 'HsProbe \*'", err) or re.search(r"from '([^']*) \*' to", err)
+        mm = re.search(r"'([^']*?) ?\*' to ?'[^']*HsProbe \*'", err) or re.search(r"from '([^']*?) ?\*' to", err)
         if mm: t = mm.group(1)
         else:
             probe[i] = m.group(1) + "struct HsProbe { int x; } hs_probe = (%s);" % m.group(2)
-            err = scorer.compile("\n".join(probe), keep_err=True)
+            err = unwrap(scorer.compile("\n".join(probe), keep_err=True))
             mm = re.search(r"from '([^']*)' to", err)
             if mm: t = mm.group(1)
         if t:

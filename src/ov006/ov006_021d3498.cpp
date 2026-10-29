@@ -527,8 +527,13 @@ static inline void ov006_SetCam2(void *self, ov006_Vec32 at, ov006_Vec32 up, ov0
     F(self, 0xbc, u16) = 1;
 }
 
+// Message ids of the window texts, and the "no saved cursor" value of unk4A.
+typedef enum { OV006_MSG_D4118_BODY = 0x12b } Ov006MsgD4118;
+typedef enum { OV006_CURSOR_NONE = 0xffff } Ov006Cursor;
+
 void func_ov006_021d4118(ov006_TaskD37 *self) {
-    s32 kq;
+    Ov006MsgD4118 body;
+    Ov006Cursor none;
     void *res;
     ov006_Info021daaa8 *info;
     u16 id;
@@ -538,7 +543,8 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     res = data_02149ef8;
     self->unk50 = ov006_NewWindow_caec8();
     VCALL(self->unk50, 10, func_0204c0e8(res, 0x12a));
-    VCALL(self->unk50, 14, func_0204c0e8(res, 0x12b));
+    body = OV006_MSG_D4118_BODY;
+    VCALL(self->unk50, 14, func_0204c0e8(res, body));
     self->unk50->unk4A = 0x2c00;
     self->unk50->unk20 = 5;
     self->unk50->unk24 = 0x9c;
@@ -551,14 +557,11 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     self->unk50->flags &= ~0x20000;
     self->unk50->flags &= ~0x40000;
     self->unk50->flags &= ~0x10000;
+    none = OV006_CURSOR_NONE;
     func_ov006_021cd580(5, self->unk50, 0);
-    kq = 0xffff;
-    if ((u32)self & 3) {
-        kq = 0xffff;
-    }
     VCALL(self->unk50, 08);
     func_ov000_021548cc(self->unk50, data_ov006_021eb6fe[data_ov006_021ec884->unk5]);
-    if (self->unk4A != kq && self->head.unkC == 0) {
+    if (self->unk4A != none && self->head.unkC == 0) {
         ov006_Window *w = self->unk50;
         VCALL(w, A8, func_ov000_02154b58(w, self->unk4A));
     } else {
