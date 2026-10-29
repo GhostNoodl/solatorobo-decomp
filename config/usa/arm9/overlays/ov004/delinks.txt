@@ -53,6 +53,10 @@ src/ov004/ov004_021ce874.c:
     complete
     .text       start:0x021ce874 end:0x021ceaac
 
+src/ov004/ov004_021ceaac.c:
+    complete
+    .text       start:0x021ceaac end:0x021cf544
+
 src/ov004/ov004_021cf5cc.c:
     complete
     .text       start:0x021cf544 end:0x021cf7a0
