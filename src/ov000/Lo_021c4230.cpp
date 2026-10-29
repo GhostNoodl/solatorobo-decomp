@@ -82,6 +82,9 @@ void func_ov000_021c4230(u8 *self) {
 // value accessors in every combination (raA/raB), a Decide inline for the callback (local, parameter or
 // plain), i/idx in s32/u32/int, idx == i, for/while walk shapes, idx read before the head. u8/u16/s16
 // counters give 77-78. Earlier drafts: cmA/o/r3/c4460/best.cpp (with an unused kq local, dropped here).
+// Round raC: the walk as a LineAt(self, idx) inline (idx, n and i become temps) gives idx the ROM's r0
+// but swaps n/i (11 / 0). ramerge on that graph (pairs) needs the unk_e4 load numbered among the
+// temps (16-30); a callback local or a Decide getter is propagated back to a codegen load (11).
 
 typedef struct Line021c4460 {
     u8 pad[0x28];

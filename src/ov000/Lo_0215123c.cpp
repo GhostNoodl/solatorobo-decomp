@@ -68,6 +68,10 @@ void func_ov000_0215123c(void *self) {
 // Neither is reachable: bx must outlive the virtual calls, so it is an object; reusing x for it, or a dead x
 // with (x >> 12) at every use, turns it into an @ object, which is numbered even lower (30 / 0 both). A
 // constant local (s32 z, also assigned twice) is propagated (23 / 0); an enum local is 115 / 62.
+// Round raC: the depth store and text call in a PutText/SetDepth inline (23), PosX/PosY/CenterX getters
+// (23; on bx 30), Model_SetPos written in place (77-174). The PlayPart(0xb) model read into a local m
+// makes it a user variable (23, now m/bx swap); ramerge then wants bx numbered before self or the
+// constant between m and bx, neither reachable.
 extern "C" {
 
 extern u8 *data_02097ce0;

@@ -40,6 +40,9 @@ void func_ov000_0214dcc4(Obj0214dcc4 *self) {
 // assigned later, either order), Key as a Node member function (with or without this->), a pk local for
 // Key(p), key as u32 (28) or s32 (29 / 1), the walk as a for with last = p in the step, Key(p) < key,
 // a const Node * for Key. u32/s32 k is 115 / 106, key before the head load 38 / 15, the && walk 129.
+// Round raC: Key(m) written in place into key (28), a separate q for the insert walk (70; p must stay
+// the shared @ web). Only Key(p) written in place in the walk with u8 *g / u16 k locals gives 26 / 0,
+// but that duplicates Key's body, so it is not kept.
 #include "ov000/LoCommon.h"
 
 extern "C" {

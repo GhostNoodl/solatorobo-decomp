@@ -11,6 +11,9 @@
 // Tried, all 11 / 0 or worse: x - 0x80 split into its own statement in SetPos, a u16/u32 local there, a
 // u16 sx assigned in each branch (it becomes a dead @ object), a BOOL local for the test, x read in two
 // statements (107), pal read later (23 / 9), a p = pal + b1 local (11 or 98), loops for the entries (106+).
+// Round raC (all 11 / 0): SetPos written in place (x first; y first is 43-111), inline getters that turn
+// x, pal, the last entry and the BOOL test into temps, u16/s16 SetPos parameters (14 / 4); a u16 x - 0x80
+// computed once before the branch is 107.
 typedef struct OamEntry0215e6f0 {
     u32 y : 8;
     u32 unk_00_8 : 8;

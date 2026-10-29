@@ -49,15 +49,18 @@ void func_ov002_021d1f20(Task50 *self) {
 }
 
 #ifdef NONMATCHING
-// func_ov002_021d1f70: 24 raw / 0 register-masked diffs, real signature (self only), no pragma or one-element arrays.
+// func_ov002_021d1f70: 12 raw / 0 register-masked diffs, real signature (self only), no pragma or one-element arrays.
 // Register colouring only. Round bgN (was 35): a u8 n was folded into an int temp (every use is
-// promoted), so n is s32 (and DrawCount's parameter too) and stays a user variable above x; the
-// first PlayPart's model goes through m, declared between n and x. Left: DrawCount's by << 12 (the
-// CSE temp of the three SetPos y stores) has to be numbered between the res objects of DrawCount's
-// first and second PlayPart; as an IRO temp it is newer than every inline object. Round raA
-// (ramerge.py multi-target): any one of holder older than the second res, second res newer than the
-// holder, or first res newer than the holder fixes all six nodes. SetPos locals, a nested helper with a
-// pre-shifted y parameter and a block-local fy after the first PlayPart all leave it an IRO temp.
+// promoted), so n is s32 and stays a user variable above x; the first PlayPart's model goes through m,
+// declared between n and x. Round raC (was 24): SetPos takes fx32 values (the shifts are at the call
+// sites) and the count drawing, called only here, is written in place, so the shared y (fy) is a user
+// variable instead of an IRO CSE temp of by << 12 (20). The PlayPart(8) model read into num, declared
+// between bx and fy, moves that PlayPart's model and res temps into place (12; reusing m gives 17).
+// Left: fy (ours r7, ROM r8) and the res temp of the PlayPart(6) calls around it (ours r8, ROM r7).
+// ramerge.py: fy numbered between those two res temps, that res numbered between fy and num (both
+// would need an inline local to become a user variable or the reverse), or fy merged with the res
+// of the function's own PlayPart(0x48, 6). A local for any other PlayPart's model (all 212 subsets and
+// orders with fy) stays at 12. Kept as an inline (DrawCount with its own fy local) it is 24 again.
 #include "ov002/ov002.h"
 
 extern "C" {
@@ -88,23 +91,8 @@ static inline void ov002_Model_PlayPart(void *model, int idx) {
 }
 
 static inline void ov002_SetPos(void *o, s32 x, s32 y) {
-    FIELD(o, 0xfc, s32) = x << 12;
-    FIELD(o, 0x100, s32) = y << 12;
-}
-
-static inline void ov002_DrawCount(void *self, s32 n, s32 d) {
-    s32 bx = FIELD(self, 0x50, s32) + 0x50;
-    s32 by = FIELD(self, 0x54, s32) - 0x44;
-    FIELD(FIELD(self, 0x48, void *), 0x150, s32) = FIELD(self, 0x58, s32) + 0x20;
-    ov002_SetPos(FIELD(self, 0x48, void *), bx, by);
-    func_02041c20(FIELD(self, 0x48, void *), 6, n - d);
-    ov002_Model_PlayPart(FIELD(self, 0x48, void *), 6);
-    ov002_SetPos(FIELD(self, 0x48, void *), bx + 10, by);
-    ov002_Model_PlayPart(FIELD(self, 0x48, void *), 8);
-    ov002_SetPos(FIELD(self, 0x48, void *), bx + 0x14, by);
-    func_02041c20(FIELD(self, 0x48, void *), 6, n);
-    ov002_Model_PlayPart(FIELD(self, 0x48, void *), 6);
-    func_02041c20(FIELD(self, 0x48, void *), 6, 0);
+    FIELD(o, 0xfc, s32) = x;
+    FIELD(o, 0x100, s32) = y;
 }
 
 void func_ov002_021d1f70(void *self) {
@@ -116,6 +104,9 @@ void func_ov002_021d1f70(void *self) {
     u8 *o;
     s32 y;
     s32 z;
+    s32 bx;
+    void *num;
+    s32 fy;
     o = FIELD(FIELD(self, 0x3c, u8 *), 0x88, u8 *);
     x = FIELD(self, 0x50, s32) - 0x6c;
     y = FIELD(self, 0x54, s32) - 0x44;
@@ -123,16 +114,28 @@ void func_ov002_021d1f70(void *self) {
     n = o[0x51];
     d = n - o[0x50];
     z = FIELD(self, 0x58, s32) + 0x20;
-    ov002_SetPos(FIELD(self, 0x4c, void *), x, y + 9);
+    ov002_SetPos(FIELD(self, 0x4c, void *), x << 12, (y + 9) << 12);
     FIELD(FIELD(self, 0x4c, void *), 0x150, s32) = z;
     m = FIELD(self, 0x4c, void *);
     ov002_Model_PlayPart(m, 4);
-    ov002_SetPos(FIELD(self, 0x48, void *), x + 0x10, y);
+    ov002_SetPos(FIELD(self, 0x48, void *), (x + 0x10) << 12, y << 12);
     FIELD(FIELD(self, 0x48, void *), 0x150, s32) = z;
     func_02041c20(FIELD(self, 0x48, void *), 6, v44);
     ov002_Model_PlayPart(FIELD(self, 0x48, void *), 6);
     func_02041c20(FIELD(self, 0x48, void *), 6, 0);
-    ov002_DrawCount(self, n, d);
+    bx = FIELD(self, 0x50, s32) + 0x50;
+    fy = (FIELD(self, 0x54, s32) - 0x44) << 12;
+    FIELD(FIELD(self, 0x48, void *), 0x150, s32) = FIELD(self, 0x58, s32) + 0x20;
+    ov002_SetPos(FIELD(self, 0x48, void *), bx << 12, fy);
+    func_02041c20(FIELD(self, 0x48, void *), 6, n - d);
+    ov002_Model_PlayPart(FIELD(self, 0x48, void *), 6);
+    ov002_SetPos(FIELD(self, 0x48, void *), (bx + 10) << 12, fy);
+    num = FIELD(self, 0x48, void *);
+    ov002_Model_PlayPart(num, 8);
+    ov002_SetPos(FIELD(self, 0x48, void *), (bx + 0x14) << 12, fy);
+    func_02041c20(FIELD(self, 0x48, void *), 6, n);
+    ov002_Model_PlayPart(FIELD(self, 0x48, void *), 6);
+    func_02041c20(FIELD(self, 0x48, void *), 6, 0);
 }
 
 }

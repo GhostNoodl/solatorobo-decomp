@@ -22,6 +22,7 @@ void func_0206d3f4(GameSave *s) {
 // gives it, every Align spelling (12 forms, round qpB alsweep.py) is 12 or worse, and honest_search
 // (40 iterations) finds nothing. It shares the CODASAVE string pool with func_0206d99c.
 // Rounds x up to the card's page size (SysCard::totalSize).
+// Round raC: AlignUp written in place for the header or d, and the n sum as an inline: 11 / 2 to 21 / 4.
 static inline u32 GameSave_AlignUp(u32 x) {
     u32 m = data_02097e44->totalSize; m -= 1;
     x += m;

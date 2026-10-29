@@ -145,6 +145,8 @@ Node0216607c *func_ov000_0216607c(void *self, Node0216607c *node, u8 *outIdx, BO
 // new graph still needs oams numbered among the temps (below &oams[j]) and the j value above g: a reused
 // pointer (o or a fresh ob) for oams changes the code (360+), a PosAt accessor too gives 27 or 79.
 // This file's .text ends at 0x02166180, so the function belongs here once it matches.
+// Round raC (27 / 0): oams/pos from Oams/Poss getters, or the busy loop on o so oams has one
+// definition, leave oams a user variable (node 145), so the jkH temp rule does not apply here.
 
 typedef struct {
     u32 y : 8;
