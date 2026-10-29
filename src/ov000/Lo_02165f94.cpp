@@ -129,10 +129,12 @@ Node0216607c *func_ov000_0216607c(void *self, Node0216607c *node, u8 *outIdx, BO
 }
 
 #ifdef NONMATCHING
-// func_ov000_02166180: 44 / 0 (raw / register-masked), real signature, register colouring only.
+// func_ov000_02166180: 31 / 0 (raw / register-masked), real signature, register colouring only.
 // Rounds g6180, g6180b and vphase3 draft; round dgB reuses pos for the part's position pointer
-// (was a separate ps), which gives pos the ROM's sl. About 20 wrong colour nodes remain: oams/j and
-// the &oams[j] address in the first loop, the PalIdx temps after it, and n/off/pal+off in the busy block.
+// (was a separate ps), which gives pos the ROM's sl. Round bgL reuses r for the busy block's node
+// and i for the busy and else loops (was n and m), which fixes the busy block. Left: oams/j and the
+// &oams[j] address in the first oams loop; the colouring model needs the j value temp numbered above
+// g/p and oams below ey, which no declaration order gives.
 // This file's .text ends at 0x02166180, so the function belongs here once it matches.
 
 typedef struct {
@@ -255,7 +257,6 @@ void func_ov000_02166180(u8 *self) {
     u8 c;
     u8 *nd;
     s16 x;
-    u8 *n;
     u8 *g;
     u8 *p;
     u8 *r;
@@ -267,7 +268,6 @@ void func_ov000_02166180(u8 *self) {
     u8 *cam;
     u8 *anim;
     u8 d;
-    u8 m;
     s32 off;
     u8 i;
     u8 busy;
@@ -341,15 +341,15 @@ void func_ov000_02166180(u8 *self) {
     }
     if (busy) {
         h = LFLD(Hdr6180 *, LFLD(u8 *, self, 0x30), 0xcdc);
-        for (m = 0; m < h->count; m++) {
-            n = h->nodes[m];
-            off = (m == h->count - 1) ? 0 : 2;
-            for (j = 0; j < n[0xa]; j++) {
-                o = LFLD(Oam6180 *, LFLD(u8 *, n, 0x14) + j * 0x14, 4);
+        for (i = 0; i < h->count; i++) {
+            r = h->nodes[i];
+            off = (i == h->count - 1) ? 0 : 2;
+            for (j = 0; j < r[0xa]; j++) {
+                o = LFLD(Oam6180 *, LFLD(u8 *, r, 0x14) + j * 0x14, 4);
                 o->w1.pal = (pal + off)[PalIdx6180(p)];
             }
-            oams = LFLD(Oam6180 *, n, 0x10);
-            for (j = 0; j < n[9]; j++) {
+            oams = LFLD(Oam6180 *, r, 0x10);
+            for (j = 0; j < r[9]; j++) {
                 oams[j].w1.pal = (pal + off)[PalIdx6180(p)];
             }
         }
@@ -364,15 +364,15 @@ void func_ov000_02166180(u8 *self) {
             o->w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) - 2);
         }
     } else {
-        for (m = 0; m < 2; m++) {
-            if (tbl2[m].a == 0xff || tbl2[m].a == 2) {
+        for (i = 0; i < 2; i++) {
+            if (tbl2[i].a == 0xff || tbl2[i].a == 2) {
                 continue;
             }
-            if (p[4] != tbl2[m].b) {
+            if (p[4] != tbl2[i].b) {
                 continue;
             }
-            c = tbl2[m].c;
-            d = tbl2[m].d;
+            c = tbl2[i].c;
+            d = tbl2[i].d;
             if (c != 0xff) {
                 en = FindNode6180(self, c, d);
             } else {
@@ -393,7 +393,7 @@ void func_ov000_02166180(u8 *self) {
             }
             it = LFLD(u8 *, nd, 0x18) + j * 0x18;
             xx = LFLD(s32, it, 0xc) - (ox >> 12) - 4; yy = LFLD(s32, it, 0x10) - (oy >> 12) - 0xc; PUTM(o, xx, yy)
-            switch (tbl2[m].a) {
+            switch (tbl2[i].a) {
             case 0:
             case 1:
                 LFLD(u32, o, 0) = (LFLD(u32, o, 0) & 0x3fff3fff) | 0x40000000;

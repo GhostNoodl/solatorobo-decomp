@@ -127,7 +127,7 @@ src/ov000/Obj_021742b4.cpp:
 
 src/ov000/Obj_0217437c.cpp:
     complete
-    .text       start:0x0217437c end:0x021743bc
+    .text       start:0x0217437c end:0x02174ea0
 
 src/ov000/Obj_02173bec.c:
     complete

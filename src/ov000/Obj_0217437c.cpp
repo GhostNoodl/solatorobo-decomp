@@ -52,17 +52,8 @@ BOOL func_ov000_02174380(void) {
 
 }
 
-#ifdef NONMATCHING
-// func_ov000_021743bc: 123 raw / 2 register-masked (round gO; 124 / 2 with pool offsets masked).
-// Real one-argument signature (the target overwrites r1 before reading it); the model-load blocks
-// use block-local file/nm pointers as in the matched ov002 loaders. The +0x40 list (vtable
-// 021caec8) and +0x44 box (vtable 021cb5a8) are called through their real slot types (round r43):
-// every slot is void except 0x74, func_ov000_021549a0, which leaves the new entry in r0 and is
-// used as a return value by the matched ov002_021ce410. With that slot void, an automatic
-// 100-instruction block split survives after the second AddItem and the score drops to 143 / 14.
-// Left: the colour of g (data_02149ef8), which the target gives r7 after the 1/0 constants and o;
-// the colouring model needs the Has loop's n, i and result numbered above g, which an inline
-// cannot do.
+// func_ov000_021743bc: the item search is written out with the caller's own locals (round bgL); as a
+// static inline its objects are numbered below g and every callee-saved register rotates by one.
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
@@ -74,6 +65,11 @@ typedef struct {
 } Bits021743bc;
 
 struct Glyph02174168;
+
+// Item ids of the +0x40 list; the first item is also the default cursor position.
+typedef enum {
+    MENU021743BC_ITEM_TOP = 0x1a
+} MenuItem021743bc;
 
 class MenuList021743bc {
 public:
@@ -229,19 +225,6 @@ void func_ov000_021742b4(Obj021742b4 *self);
 BOOL func_ov000_021742c8(Obj021742b4 *self, Msg021742c8 *msg);
 struct Glyph02174168 *func_ov000_02174168(u8 *self, u16 *cmd, struct Glyph02174168 *arr, u16 *count);
 
-static inline BOOL Has021743bc(void) {
-    void *t = LFLD(void *, data_02fe152c, 0x4c);
-    void *a = func_0205976c(data_02fe152c, 3);
-    u32 n = func_0205975c(data_02fe152c, 3);
-    u16 i;
-    for (i = 0; i < n; i++) {
-        if (func_02059544(data_02fe152c, (u8 *)t + 0x70, a, 1, i) != 0) {
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
 static inline BOOL IsMode4_021743bc(void) {
     BOOL r;
     if (data_02097d78[3] == 4) {
@@ -258,18 +241,24 @@ static inline void InitWin021743bc(u8 *p, void *s) {
     LFLD(s32, p, 0x28) = 4;
     LFLD(s32, p, 0x4c) = func_0204c4fc(LFLD(s32, p, 0x28), LFLD(s32, p, 0x38), LFLD(const char *, p, 0x24), (s32 *)(p + 0x44), (s32 *)(p + 0x48), LFLD(s8, p, 0x37) != 0);
     LFLD(s32, data_02097ce0, 0x4) = LFLD(s32, p, 0x28);
+    LFLD(u32, p, 0x4) |= 0x40;
+    LFLD(u32, p, 0x4) |= 0x41000000;
     LFLD(s32, p, 0x78) = 0x8000;
     LFLD(u16, p, 0x74) = 0x4fdf;
     LFLD(u16, p, 0x76) = 0x1e1e;
-    LFLD(u32, p, 0x4) |= 0x40;
-    LFLD(u32, p, 0x4) |= 0x41000000;
     LFLD(u32, p, 0x4) |= 4;
     func_0204ca70(p);
     LFLD(s32, p, 0x70) = -0x1cad;
 }
 
 void func_ov000_021743bc(VObj *self) {
+    void *sub;
+    BOOL has;
+    u16 i;
     void *g;
+    void *a;
+    u32 n;
+    u8 *m2;
     VObj *o;
     u8 *m;
     void *res;
@@ -342,13 +331,25 @@ void func_ov000_021743bc(VObj *self) {
     if (func_ov000_021824d0(data_ov000_021ccd54 + 0xac, 0) == 0) {
         LFLD(s32, func_ov000_02154b58(LFLD(void *, self, 0x40), 0xf), 0x24) = 0xe;
     }
-    if (!Has021743bc()) {
+    sub = LFLD(void *, data_02fe152c, 0x4c);
+    a = func_0205976c(data_02fe152c, 3);
+    n = func_0205975c(data_02fe152c, 3);
+    for (i = 0; i < n; i++) {
+        if (func_02059544(data_02fe152c, (u8 *)sub + 0x70, a, 1, i) != 0) {
+            has = TRUE;
+            goto found;
+        }
+    }
+    has = FALSE;
+found:
+    if (!has) {
         LFLD(s32, func_ov000_02154b58(LFLD(void *, self, 0x40), 5), 0x24) = 0xe;
     }
     {
         MenuList021743bc *t = LFLD(MenuList021743bc *, self, 0x40);
         if (LFLD(s32, &data_ov000_021ccd34, 4) == 0) {
-            t->Select(func_ov000_02154b58(t, 0x1a));
+            MenuItem021743bc id = MENU021743BC_ITEM_TOP;
+            t->Select(func_ov000_02154b58(t, id));
         } else {
             t->Select(func_ov000_02154b58(t, (u16)LFLD(s32, &data_ov000_021ccd34, 4)));
         }
@@ -374,16 +375,16 @@ void func_ov000_021743bc(VObj *self) {
     func_02041d9c(LFLD(void *, self, 0x58), 0, 0xffff);
     LFLD(s32, LFLD(void *, self, 0x58), 0x150) = -0x1cbd;
     res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-    m = (u8 *)func_0203dd9c(0x160);
-    if (m != NULL) {
+    m2 = (u8 *)func_0203dd9c(0x160);
+    if (m2 != NULL) {
         void *file = data_0208cc94;
         void *nm = data_0208cc88;
-        func_02041218(m + 0x88);
-        func_02041440(m, nm, 0);
-        STD_CopyString(m + 0x2c, file);
+        func_02041218(m2 + 0x88);
+        func_02041440(m2, nm, 0);
+        STD_CopyString(m2 + 0x2c, file);
     }
-    LFLD(u8 *, self, 0x5c) = m;
-    func_020417e0(m, res);
+    LFLD(u8 *, self, 0x5c) = m2;
+    func_020417e0(m2, res);
     LFLD(u32, LFLD(void *, self, 0x5c), 0x6c) |= 2;
     func_02041d9c(LFLD(void *, self, 0x5c), 0, 6);
     func_02041d9c(LFLD(void *, self, 0x5c), 0, 9);
@@ -420,4 +421,3 @@ void func_ov000_021743bc(VObj *self) {
 }
 
 }
-#endif
