@@ -48,6 +48,10 @@ void func_ov000_0214dcc4(Obj0214dcc4 *self) {
 // KeyR(p, g) with a function-level g, so g is a user variable there. A caller-held k (KeyR(p, u16 &k)) or
 // both give 26 too, at every declaration slot; also passing g to Key(m) gives 28. Left: key / p / g / k
 // are r5 / r8 / r7 / r4 here and r7 / r5 / r4 / r8 in the ROM (the colour model still differs by 13 nodes).
+// Round bgZ: bgY's observation (the ROM's g is r4 in both Key(m) and the walk) is two webs that happen to share
+// a colour, not one variable: with a shared function-level g passed to both KeyR calls, our two g webs still get
+// r5 / r7. A KeyRR(p, u8 *&g, u16 &k) taking both g and k from the caller, for Key(m) (into key) and the walk,
+// gives 26 or 28 in all 120 declaration orders of p / last / key / g / k.
 #include "ov000/LoCommon.h"
 
 extern "C" {

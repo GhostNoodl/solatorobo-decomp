@@ -271,6 +271,10 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
 
 // Round bgW: 89 / 25 (raw / aligned-masked). Not moved; the 25 masked lines are the col loop's
 // `tbl[ry * 3 + rx]` / `[sp]` reload placement and the sx/sy block, as bgN described.
+// Round bgZ: 84 / 21. The col loop takes element pointers `e = &o->oam[k]` and `q = &o->pos[k]` (declared
+// right after `k = o->n`) instead of block-local copies of o->oam / o->pos indexed by k; the ROM's
+// &oam[k] / &pos[k] are computed once, after the tmpl word store. Swapping the e/q declarations (88 / 34),
+// q->x before the tmpl copy (88 / 35), or reading t after the a01.y store (106 / 36) is worse.
 
 extern "C" {
 
@@ -404,21 +408,21 @@ void func_ov000_021652e4(void *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
             rx = col == 0 ? 0 : (col == def->w - 1 ? 2 : 1);
             u8 t;
             k = o->n;
-            Oam_52e4 *oam = o->oam;
-            Pos_52e4 *pos = o->pos;
-            oam[k] = tmpl;
-            pos[k].x = x0 + col * 8;
-            pos[k].y = y0 + row * 8;
-            oam[k].a01.x = (u16)pos[k].x;
+            Oam_52e4 *e = &o->oam[k];
+            Pos_52e4 *q = &o->pos[k];
+            *e = tmpl;
+            q->x = x0 + col * 8;
+            q->y = y0 + row * 8;
+            e->a01.x = (u16)q->x;
             t = (tbl[ry * 3 + rx]);
-            oam[k].a01.y = (u16)pos[k].y & 0x1ff;
-            oam[k].a23.tile += (t & ~0xc0) - 1;
-            oam[k].a23.pal = LFLD(s8 *, d, 0xc90)[oam[k].a23.pal];
+            e->a01.y = (u16)q->y & 0x1ff;
+            e->a23.tile += (t & ~0xc0) - 1;
+            e->a23.pal = LFLD(s8 *, d, 0xc90)[e->a23.pal];
             if (t & 0x40) {
-                oam[k].a01.hf = 1;
+                e->a01.hf = 1;
             }
             if (tbl[ry * 3 + rx] & 0x80) {
-                oam[k].a01.vf = 1;
+                e->a01.vf = 1;
             }
             o->n++;
         }
