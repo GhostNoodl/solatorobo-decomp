@@ -269,6 +269,8 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
 // colours. Left: the col loop (rx, tbl + ry * 3, &oam[k], col) and the sx/sy block's schedule; a
 // node-renumbering beam search finds no single moves under 28 wrong, so it is not one temp.
 
+// Round bgW: 89 / 25 (raw / aligned-masked). Not moved; the 25 masked lines are the col loop's
+// `tbl[ry * 3 + rx]` / `[sp]` reload placement and the sx/sy block, as bgN described.
 
 extern "C" {
 

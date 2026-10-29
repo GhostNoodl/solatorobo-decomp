@@ -61,19 +61,34 @@ s32 func_02049bdc(SndMgr *mgr, s32 id, s32 pan) {
 s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pan, s32 pitch, s32 useSlot, u32 slot);
 
 #ifdef NONMATCHING
-// The slot check sits before the zero, so the returns build -1 the way the ROM
-// does (fresh for the slot check, zero - 1 after the calls) and -1 is hoisted
-// into r4. The ROM tests useSlot only once, with the slot check inside the
-// useSlot arm (round svA).
+// 60 raw / 12 aligned-masked (round bgW; was 85 / 24). The ROM tests useSlot once, with the slot check
+// inside the useSlot arm after the zero (round svA). Written that way with a plain `if (slot >= 5)
+// return -1;` the slot return is derived from the zero (`sub r0, r5, #1`), the -1 group is only four
+// and is not hoisted into r4. In the ROM the slot return is a fresh `mvn` and the result < 0 return is
+// zero - 1, so the slot-fail block must lie outside the zero's extended block. A slot-load inline
+// whose early return joins its result (SndMgr_LoadSlot) gives the -1 group of five and the hoisted r4
+// (cmp r8, r4 / sub r0, r4, #0x7f), but the join then breaks the extended block for the result < 0
+// return instead (fresh `mvnlt`), and result shares the zero's register (6 saved registers, ROM 8).
+// Tried (bgW): a BOOL slot-valid inline (87 / 18, the join survives as movlo + cmp), the inline with
+// `r = -1` and an if (59 / 13), the result < 0 test inside the inline (84 / 17), `return result` for
+// it (82 / 25), the two-test form with the arms swapped or nested (84 / 49); honest_search from this
+// draft (916 compiles): nothing.
+static inline s32 SndMgr_LoadSlot(SndMgr *mgr, s32 id, u32 slot) {
+    s32 r;
+    if (slot >= 5) {
+        return -1;
+    }
+    r = func_02049afc(mgr, id);
+    mgr->seqArcSlots[slot] = r;
+    return r;
+}
+
 s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pitch, s32 pan, s32 useSlot, u32 slot) {
     SndHandle *handle;
     s32 seqArc;
     s32 index;
     s32 result;
     if (id < 0) {
-        return -1;
-    }
-    if (useSlot && slot >= 5) {
         return -1;
     }
     result = 0;
@@ -86,8 +101,7 @@ s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pitch, s32 pan, s32 useSl
             return -1;
         }
     } else {
-        result = func_02049afc(mgr, id);
-        mgr->seqArcSlots[slot] = result;
+        result = SndMgr_LoadSlot(mgr, id, slot);
         if (result < 0) {
             return -1;
         }

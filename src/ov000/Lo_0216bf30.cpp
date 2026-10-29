@@ -213,6 +213,13 @@ void func_ov000_0216c018(void *obj) {
 // Round pmA: not a block-boundary problem. Every loop block starts at 35-38 live (preheader constants), so no
 // split can reach normal mode; list permutations of the multiply block and `m -= 0x80000` after the test
 // (173 / 27) do not help either.
+// Round bgW: 176 / 24 -> 65 / 23 (raw / aligned-masked, scratch bgW/sa.sh) with `m` computed after the IsCurNode
+// test (qpG's form): the multiply then leaves the pressure-mode test block, the ip zero and `movne r0, ip` go and
+// the length is the ROM's. The ROM interleaves the umull with the test (ldr 0x35c after the adds) and puts only
+// the `- 0x80000` after `strgt`, which is the split form (`m = LO_FX_MUL(s, 0x88000);` before the test,
+// `(m - 0x80000) >> 12` after it): that brings the ip zero back (173 / 27), with any IsCurNode spelling
+// (`== n`, if/else returns, if/else result variable: 173-185). What is left is the self/y colouring (r6/sb
+// against the ROM's r7/r6) of rounds bgG/hzS and the interleave.
 // This file's .text ends at 0x0216c310, so the function belongs here once it matches.
 extern "C" {
 
@@ -274,10 +281,10 @@ void func_ov000_0216c310(void *self) {
             } else {
                 s = 0x1000;
             }
-            m = LO_FX_MUL(s, 0x88000) - 0x80000;
             if (IsCurNode0216c310((u8 *)self, n) && y > 0x8000) {
                 LFLD(void *, self, 0x35c) = NULL;
             }
+            m = LO_FX_MUL(s, 0x88000) - 0x80000;
             LFLD(s32, n, 0x14) = m >> 12;
             LFLD(s32, n, 0x18) = (0x24000 - y) >> 12;
             if (LFLD(s32, n, 4) == 7 && LFLD(VObj *, n, 0x24) != NULL) {
