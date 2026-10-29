@@ -54,7 +54,10 @@ void func_ov002_021d1f20(Task50 *self) {
 // promoted), so n is s32 (and DrawCount's parameter too) and stays a user variable above x; the
 // first PlayPart's model goes through m, declared between n and x. Left: DrawCount's by << 12 (the
 // CSE temp of the three SetPos y stores) has to be numbered between the res objects of DrawCount's
-// first and second PlayPart; as an IRO temp it is newer than every inline object.
+// first and second PlayPart; as an IRO temp it is newer than every inline object. Round raA
+// (ramerge.py multi-target): any one of holder older than the second res, second res newer than the
+// holder, or first res newer than the holder fixes all six nodes. SetPos locals, a nested helper with a
+// pre-shifted y parameter and a block-local fy after the first PlayPart all leave it an IRO temp.
 #include "ov002/ov002.h"
 
 extern "C" {

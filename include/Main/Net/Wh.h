@@ -151,6 +151,13 @@ static inline void WH_ChangeSysState(int state) {
     data_02097e40->sysState = state;
 }
 
+// The API entry points (func_020459cc, func_02046070) write the state through this accessor. At O2 the
+// inline's result is evaluated before the stored value, which gives those functions' register order
+// (round raA); the callbacks use WH_ChangeSysState.
+static inline int *WH_SysState(WhMgr *wh) {
+    return &wh->sysState;
+}
+
 static inline BOOL WH_CheckResult(int result) {
     if (result != 2) {
         WH_SetError(result);

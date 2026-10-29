@@ -13,6 +13,14 @@ one at a time; round bgS's sim.py) and checks that it reproduces the dump's colo
          register REG with no other node changing colour. A hit names the value NODE must share a
          live range with in the ROM (same variable lifetime, or joined by a copy).
   renum  the positions NODE could be renumbered to (alone) that give REG with nothing else changing.
+
+    python3 tools/ramerge.py RA OBJ NODE:REG [NODE:REG ...] [--graph N] [--pairs]   (round raA)
+
+Multi-target form, for misses where two or more values must change register together (a swap). It lists every
+single merge of any two nodes and every single renumbering of any node (not only the targets) that gives all
+the targets their registers with every other node unchanged; --pairs also tries every renumbering of two nodes
+at once (slow on big graphs). --graph N picks the Nth colour graph (1-based) instead of the last one that has
+OBJ. A renumbering "renum K to P" means node K is moved just before node P in the numbering (P = count: last).
 """
 import copy, sys
 
@@ -91,7 +99,68 @@ def merge(N, a, b):
     return nodes
 
 
+def pick(path, obj, graph=None):
+    nblk = open(path).read().count('=== ')
+    if graph: return graph - 1
+    for w in range(nblk - 1, -1, -1):
+        f, c, N, names = parse(path, w)
+        if obj in names.values(): return w
+    sys.exit('no graph has a local named %s' % obj)
+
+
+def renum(N0, first, moves):
+    """moves: list of (node, pos): node is placed just before original node number pos (pos past the end: last)."""
+    order = sorted(N0)
+    for node, pos in moves:
+        order = [k for k in order if k != node]
+        idx = next((i for i, k in enumerate(order) if k >= pos), len(order))
+        order = order[:idx] + [node] + order[idx:]
+    m = {old: i + first for i, old in enumerate(order)}
+    nodes = {m[o]: dict(n, nb=[m.get(j, j) if j >= first else j for j in n['nb']]) for o, n in N0.items()}
+    return nodes, {v: k for k, v in m.items()}
+
+
+def multi(args):
+    path, obj = args[0], args[1]
+    graph = None; pairs = '--pairs' in args
+    if '--graph' in args: graph = int(args[args.index('--graph') + 1])
+    tg = {}
+    for a in args[2:]:
+        if ':' in a: n, r = a.split(':'); tg[int(n)] = int(r)
+    which = pick(path, obj, graph)
+    first, cnt, N0, names = parse(path, which)
+    c0 = run(first, cnt, N0)
+    bad = [i for i in c0 if c0[i] != N0[i]['c']]
+    print('graph %d: model %s the dump (%d nodes differ)' % (which + 1, 'reproduces' if not bad else 'does NOT reproduce', len(bad)))
+    want = dict(c0); want.update(tg)
+    ok = lambda col: all(col.get(i) == want[i] for i in want)
+    keys = sorted(N0)
+    for a in keys:
+        for b in keys:
+            if b <= a or b in N0[a]['nb']: continue
+            col = run(first, cnt, merge(N0, a, b)); col[b] = col.get(a)
+            if ok(col): print('merge %d (%s) with %d (%s): OK' % (a, names[a], b, names[b]))
+    def tryr(moves):
+        nodes, inv = renum(N0, first, moves)
+        col = run(first, first + len(nodes), nodes)
+        return ok({inv[i]: c for i, c in col.items()})
+    poss = keys + [max(keys) + 1]
+    single = []
+    for k in keys:
+        for pos in poss:
+            if pos in (k, k + 1): continue
+            if tryr([(k, pos)]): single.append((k, pos)); print('renum %d (%s) to before %d: OK' % (k, names[k], pos))
+    if pairs and not single:
+        cand = sorted(set(tg) | {j for t in tg for j in N0[t]['nb'] if j >= first})
+        for i, k in enumerate(cand):
+            for k2 in cand[i + 1:]:
+                for p in poss:
+                    for p2 in poss:
+                        if tryr([(k, p), (k2, p2)]): print('renum %d to before %d and %d to before %d: OK' % (k, p, k2, p2))
+
+
 def main():
+    if any(':' in a for a in sys.argv[3:]): return multi(sys.argv[1:])
     path, obj, node, reg = sys.argv[1], sys.argv[2], int(sys.argv[3]), int(sys.argv[4])
     nblk = open(path).read().count('=== ')
     which = None

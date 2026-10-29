@@ -378,39 +378,4 @@ void func_02045950(WhMgr *wh, void *info, int length) {
     WM_SetGameInfo(func_0204593c, info, length, wh->parentParam.ggid, wh->parentParam.tgid, attr);
 }
 
-#ifdef NONMATCHING
-// Register allocation differs.
-BOOL func_020459cc(WhMgr *wh, int mode, u16 tgid, u16 channel) {
-    wh->recvSize = wh->cfg.parentRecvSize;
-    wh->sendSize = wh->cfg.parentSendSize;
-    wh->connectMode = mode;
-    WH_ChangeSysState(3);
-    wh->parentParam.tgid = tgid;
-    wh->parentParam.channel = channel;
-    wh->parentParam.beaconPeriod = WM_GetDispersionBeaconPeriod();
-    wh->parentParam.parentMaxSize = wh->cfg.parentSize;
-    wh->parentParam.childMaxSize = wh->cfg.childSize;
-    wh->parentParam.maxEntry = wh->cfg.maxChildren;
-    wh->parentParam.KS_Flag = 0;
-    wh->parentParam.CS_Flag = 0;
-    wh->parentParam.multiBootFlag = 0;
-    wh->parentParam.entryFlag = 1;
-    switch (mode) {
-    case 1:
-    case 3: {
-        int result;
-        WH_ChangeSysState(3);
-        result = WM_SetParentParameter((void (*)(void *))func_02045ab4, &wh->parentParam);
-        if (result != 2) {
-            WH_SetError(result);
-            WH_ChangeSysState(8);
-            return FALSE;
-        }
-        return TRUE;
-    }
-    }
-    return FALSE;
-}
-#endif
-
 }

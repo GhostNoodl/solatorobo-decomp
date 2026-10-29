@@ -1199,11 +1199,11 @@ src/Main/Net/Wh.cpp:
 
 src/Main/Net/Wh_2.cpp:
     complete
-    .text       start:0x02045ab4 end:0x02046070
+    .text       start:0x020459cc end:0x02046070
 
 src/Main/Net/WhScan.cpp:
     complete
-    .text       start:0x020460d0 end:0x020463c8
+    .text       start:0x02046070 end:0x020463c8
 
 src/Main/Net/Wh_3.cpp:
     complete

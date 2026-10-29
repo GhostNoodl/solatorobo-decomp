@@ -45,6 +45,12 @@ VObj *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 k
 // func_ov000_0219b808: 0 register-masked / 4 raw diffs (round cmA; was 4 / 6). The message's rot is copied
 // x, y, z in field order with the q->unk_30 read in a named local first; this gives the ROM's instruction
 // order. Left: the x and y copies take r2/lr where the ROM has r1/r3 (the arguments' registers).
+// Round raA: this is the pre-allocation schedule, not numbering. The block is in pressure mode, so ties
+// go to list order; ours lists the unk_30 load before the x load, so two argument moves fill the x load's
+// latency and x is live across the r1 move. The ROM's registers need the x load listed first and the
+// unk_30 load between it and the x store (the colour model then gives r1/r3 with x, y, z, unk_30
+// numbered in that order). Reading unk_30 after the x store adds a store-to-load edge, and a local
+// for x is forwarded back past the unk_30 load (out-pointer inlines, struct copies, typed locals too).
 #include "ov000/Actor.h"
 namespace m_Spawn_0219b808 {
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))

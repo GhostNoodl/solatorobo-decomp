@@ -6,22 +6,19 @@
 
 extern "C" {
 
-#ifdef NONMATCHING
-// Register allocation differs.
 BOOL func_02046070(WhMgr *wh, const u16 *bssid, u16 channel) {
-    WH_ChangeSysState(2);
+    *WH_SysState(data_02097e40) = 2;
     wh->scanChannel = channel;
     wh->scanParam.channel = 0;
     wh->scanParam.bssid[2] = bssid[2];
     wh->scanParam.bssid[1] = bssid[1];
     wh->scanParam.bssid[0] = bssid[0];
     if (!func_020460d0(wh)) {
-        WH_ChangeSysState(8);
+        *WH_SysState(data_02097e40) = 8;
         return FALSE;
     }
     return TRUE;
 }
-#endif
 
 BOOL func_020460d0(WhMgr *wh) {
     u32 allowed = WM_GetAllowedChannel();
