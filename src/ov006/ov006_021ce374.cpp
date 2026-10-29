@@ -367,17 +367,6 @@ static inline void *ov006_NewList_ccb54(void) {
     return w;
 }
 
-static inline void *ov006_NewItem_cca28(void) {
-    void *w = func_0203dd9c(0x34);
-    if (w != NULL) {
-        *(void **)w = &data_ov006_021ebc80;
-        func_ov000_021c22d8(w);
-        *(void **)w = &data_ov000_021cca28;
-        func_ov000_021c5fc4(w);
-    }
-    return w;
-}
-
 static inline u8 ov006_SlotManager_Get14A(ov006_SlotManager *self, u8 i) {
     if (i < 3) {
         return self->unk14A[i];
@@ -385,9 +374,9 @@ static inline u8 ov006_SlotManager_Get14A(ov006_SlotManager *self, u8 i) {
     return 0;
 }
 
-// res is a local; declaring it as a parameter gives the target register allocation. As a
-// user variable it numbers above every temp (22 diffs at best, round jkE).
-void func_ov006_021cec68(ov006_TaskCE *self, void *res) {
+// The list items are constructed in place through `item` (round jkH): with a `NewItem` inline
+// the inline's result is a compiler temp, numbered below `res`, and the two swap registers.
+void func_ov006_021cec68(ov006_TaskCE *self) {
     u8 n;
     u8 i;
     u8 k;
@@ -409,7 +398,7 @@ void func_ov006_021cec68(ov006_TaskCE *self, void *res) {
     func_ov006_021daea0(data_ov006_021ec884);
     self->base.unk20 = 0x19000;
     VCALL(self, 3C);
-    res = data_02149ef8;
+    void *res = data_02149ef8;
     self->unk44 = ov006_NewWindow_caec8();
     VCALL(self->unk44, 10, func_0204c0e8(res, 0x122));
     VCALL(self->unk44, 14, func_0204c0e8(res, 0x123));
@@ -461,7 +450,13 @@ void func_ov006_021cec68(ov006_TaskCE *self, void *res) {
             for (i = 0; i < 3; i++) {
                 e = func_ov006_021d8f20(ov006_SlotManager_Get14A(data_ov006_021ec884, i));
                 if (e != NULL) {
-                    item = ov006_NewItem_cca28();
+                    item = func_0203dd9c(0x34);
+                    if (item != NULL) {
+                        *(void **)item = &data_ov006_021ebc80;
+                        func_ov000_021c22d8(item);
+                        *(void **)item = &data_ov000_021cca28;
+                        func_ov000_021c5fc4(item);
+                    }
                     func_ov000_021c5fd0(item, func_0204c0e8(res, e->name));
                     func_ov000_021c3fd4(self->unk50, item);
                 }
