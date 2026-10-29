@@ -1,7 +1,7 @@
-// ov000 .text 0x0217a26c..0x0217b324, part of the Menu translation unit (.text 0x021763c8..0x02180350,
+// ov000 .text 0x0217a26c..0x0217bd88, part of the Menu translation unit (.text 0x021763c8..0x02180350,
 // string pool 0x021cba18..0x021cbac0). The former files are kept as they were, each in its own
 // namespace, so that their local typedefs, inlines and extern declarations do not clash. The TU
-// is split at the functions that do not match yet (0217a1f8, 0217b324); once they do,
+// is split at the function that does not match yet (0217a1f8); once it does,
 // the three parts become one file and the pool can be claimed.
 #include "ov000/LoCommon.h"
 #include "ov000/VObj.h"
@@ -720,3 +720,250 @@ Obj0217b230 *func_ov000_0217b230(void *unused, s32 a1, s32 a2) {
 }
 
 }  // namespace m_Lo_0217b230
+
+// ---- Menu_0217b324
+namespace m_Menu_0217b324 {
+
+typedef struct {
+    u16 language_color;
+    u16 birthday;
+    u16 nickName[11];
+    u16 nickNameLength;
+    u16 comment[27];
+    u16 commentLength;
+} OwnerInfo;
+
+typedef struct {
+    u8 unk_00;
+    u8 flags;
+    u8 pad_02[6];
+    u32 time;
+    s32 unk_0c;
+    u32 lo : 8;
+    u32 lv : 8;
+    u32 b16 : 8;
+    u32 b24 : 4;
+    u32 hi : 4;
+} SaveRec;
+
+typedef struct {
+    u8 unk_00[0x28];
+    u8 *recs;
+    u8 pad_2c[4];
+    s32 stride;
+} SaveList;
+
+typedef struct {
+    u8 b70;
+    u8 b71;
+    u8 pad_72[2];
+    VObj *p74;
+    VObj *p78;
+    VObj *p7c;
+    VObj *p80;
+    VObj *p84;
+    VObj *p88;
+    VObj *p8c;
+    VObj *p90;
+    VObj *p94;
+    VObj *p98;
+    VObj *p9c;
+} Slot;
+
+typedef struct {
+    u8 pad_00[0x70];
+    s32 unk_70;
+    s16 unk_74;
+    s16 unk_76;
+    u8 pad_78[0x20];
+    char name[0x20];
+} Item;
+
+typedef struct {
+    u8 pad_00[0x5c];
+    SaveList *list;
+    u8 pad_60[0x10];
+    Slot slots[1];
+    u8 pad_a0[8];
+    Item *items[4];
+    s16 count;
+    s16 unk_ba;
+} Self;
+
+
+extern "C" {
+extern void *data_02149ef8;
+extern char data_ov000_021cba5d[];
+extern char data_ov000_021cba5f[];
+extern char data_ov000_021cba62[];
+extern char data_ov000_021cba68[];
+extern char data_ov000_021cba6d[];
+extern char data_ov000_021cba6f[];
+extern char data_ov000_021cba71[];
+extern char data_ov000_021cba73[];
+char *func_0204c0e8(void *msg, s32 id);
+void STD_CopyString(void *buf, const void *s);
+void STD_ConcatenateString(void *buf, const void *s);
+void func_02040a98(char *dst, s32 n);
+void func_02070874(char *dst, const char *src, const char *arg);
+char *func_02061df0(u16 lv);
+char *func_020620ac(u16 id);
+void func_0200779c(char *dst, const char *fmt, ...);
+void OS_GetOwnerInfo(OwnerInfo *info);
+void func_02040b0c(char *dst, s32 *dstLen, const u16 *src, s32 *srcLen);
+BOOL OS_IsRunOnTwl(void);
+Item *func_ov000_0217b230(Self *self, const char *str, s32 a2);
+
+#define FREE_SLOT(f)                         \
+    do {                                     \
+        u32 saved;                           \
+        LO_HEAP_PUSH(saved);                 \
+        if (self->slots[idx].f != NULL) {               \
+            VObj *p_ = self->slots[idx].f;              \
+            if (p_ != NULL) {                \
+                p_->vfunc_04();              \
+            }                                \
+            self->slots[idx].f = NULL;                  \
+        }                                    \
+        LO_HEAP_POP(saved);                  \
+    } while (0)
+
+#define ADD_ITEM(id, str)                                                                  \
+    self->items[self->count] = func_ov000_0217b230(self, func_0204c0e8(msg, id), 4);       \
+    STD_CopyString(self->items[self->count]->name, str);                                   \
+    self->items[self->count]->unk_74 = 0x7fff;                                             \
+    self->items[self->count]->unk_76 = 0x7fff;                                             \
+    self->items[self->count]->unk_70 = -0x1c4d;                                            \
+    self->count++
+
+// The three time parts reuse the scratch variable n (the level number above). Its first two defs are then
+// not forwarded into the calls, so the division is listed before the num/format arguments, as in the ROM
+// (round pmA). STD_CopyString is void in this TU; its char * form adds a result copy that moves the
+// automatic 100-instruction block split from before OS_GetOwnerInfo to after it.
+void func_ov000_0217b324(Self *self, s32 idx) {
+    char buf[0x80];
+    char tmp[0x80];
+    OwnerInfo info;
+    char num[0x10];
+    s32 max;
+    s32 len;
+    BOOL flag;
+    SaveRec *rec;
+    u8 lv;
+    void *msg;
+    s32 n;
+    long i;
+
+    msg = data_02149ef8;
+    rec = (SaveRec *)(self->list->recs + (idx * self->list->stride + 0x14));
+    flag = FALSE;
+    FREE_SLOT(p74);
+    FREE_SLOT(p78);
+    FREE_SLOT(p7c);
+    FREE_SLOT(p80);
+    FREE_SLOT(p84);
+    FREE_SLOT(p88);
+    FREE_SLOT(p8c);
+    FREE_SLOT(p90);
+    FREE_SLOT(p94);
+    FREE_SLOT(p98);
+    FREE_SLOT(p9c);
+    self->slots[idx].b71 = 0;
+    self->slots[idx].b70 = rec->flags;
+    self->slots[idx].b71 = rec->hi;
+    lv = rec->lv & ~0xc0;
+    if (lv > 20) {
+        buf[0] = 0;
+    } else if (lv <= 10) {
+        buf[0] = 0;
+    } else {
+        STD_CopyString(buf, func_0204c0e8(msg, 0xb3));
+        func_02040a98(num, 2);
+        func_02070874(buf, buf, num);
+        STD_ConcatenateString(buf, data_ov000_021cba5d);
+    }
+    STD_CopyString(tmp, func_0204c0e8(msg, 0xb4));
+    if (lv > 21) {
+        n = -1;
+    } else if (lv > 20) {
+        n = lv - 20;
+        if (rec->hi) {
+            flag = TRUE;
+        }
+    } else {
+        n = lv > 10 ? lv - 10 : lv;
+    }
+    if (n != -1) {
+        if (flag) {
+            STD_CopyString(tmp, func_0204c0e8(msg, 0xb7));
+        } else if (n != 0) {
+            func_02040a98(num, n);
+            func_02070874(tmp, tmp, num);
+        } else {
+            STD_CopyString(tmp, func_0204c0e8(msg, 0xb5));
+        }
+        STD_ConcatenateString(buf, tmp);
+        self->slots[idx].p74 = (VObj *)func_ov000_0217b230(self, buf, 4);
+        STD_CopyString(buf, func_02061df0(lv));
+        self->slots[idx].p78 = (VObj *)func_ov000_0217b230(self, buf, 8);
+    }
+    func_0200779c(buf, data_ov000_021cba5f, rec->lo);
+    self->slots[idx].p80 = (VObj *)func_ov000_0217b230(self, buf, 4);
+    self->slots[idx].p7c = (VObj *)func_ov000_0217b230(self, func_0204c0e8(msg, 0xae), 4);
+    func_0200779c(buf, data_ov000_021cba5f, rec->unk_0c);
+    self->slots[idx].p88 = (VObj *)func_ov000_0217b230(self, buf, 4);
+    self->slots[idx].p84 = (VObj *)func_ov000_0217b230(self, func_0204c0e8(msg, 0xaf), 4);
+    {
+        u8 b = rec->b16;
+        if (b == 0xff) {
+            self->slots[idx].p90 = (VObj *)func_ov000_0217b230(self, data_ov000_021cba62, 4);
+        } else {
+            self->slots[idx].p90 = (VObj *)func_ov000_0217b230(self, func_020620ac(b), 4);
+        }
+    }
+    self->slots[idx].p8c = (VObj *)func_ov000_0217b230(self, func_0204c0e8(msg, 0xb0), 4);
+    STD_CopyString(buf, func_0204c0e8(msg, 0xb2));
+    n = rec->time / 216000;
+    func_0200779c(num, data_ov000_021cba68, n);
+    func_02070874(buf, buf, num);
+    n = rec->time % 216000 / 3600;
+    func_0200779c(num, data_ov000_021cba68, n);
+    func_02070874(buf, buf, num);
+    n = rec->time % 216000 % 3600 / 60;
+    func_0200779c(num, data_ov000_021cba68, n);
+    func_02070874(buf, buf, num);
+    self->slots[idx].p98 = (VObj *)func_ov000_0217b230(self, buf, 4);
+    self->slots[idx].p94 = (VObj *)func_ov000_0217b230(self, func_0204c0e8(msg, 0xb1), 4);
+    OS_GetOwnerInfo(&info);
+    max = 0x80;
+    len = info.nickNameLength;
+    func_02040b0c(buf, &max, info.nickName, &len);
+    self->slots[idx].p9c = (VObj *)func_ov000_0217b230(self, buf, 4);
+    ((Item *)self->slots[idx].p9c)->unk_70 = -0x1c4d;
+    self->count = 0;
+    for (i = 0; i < 4; i++) {
+        u32 saved;
+        LO_HEAP_PUSH(saved);
+        if (self->items[i] != NULL) {
+            VObj *p_ = (VObj *)self->items[i];
+            if (p_ != NULL) {
+                p_->vfunc_04();
+            }
+            self->items[i] = NULL;
+        }
+        LO_HEAP_POP(saved);
+    }
+    if (rec->flags & 8) {
+        ADD_ITEM(0xab, data_ov000_021cba6d);
+        self->unk_ba = 1;
+    }
+    ADD_ITEM(0xac, data_ov000_021cba6f);
+    if (OS_IsRunOnTwl()) {
+        ADD_ITEM(0xad, data_ov000_021cba71);
+    }
+    ADD_ITEM(0x19c, data_ov000_021cba73);
+}
+
+}
+
+}  // namespace m_Menu_0217b324

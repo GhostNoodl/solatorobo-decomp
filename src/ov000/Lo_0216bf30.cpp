@@ -210,6 +210,9 @@ void func_ov000_0216c018(void *obj) {
 // because the pre-allocation scheduler runs the multiply block in pressure mode (38 values live in, mostly hoisted
 // cheap constants that local CSE will not merge in a loop preheader) and puts ldr [self, #0x35c] before the umull.
 // Loop forms, multiply spellings and moving m after the IsCurNode test give no gain; see docs/MATCHING.md, qpG.
+// Round pmA: not a block-boundary problem. Every loop block starts at 35-38 live (preheader constants), so no
+// split can reach normal mode; list permutations of the multiply block and `m -= 0x80000` after the test
+// (173 / 27) do not help either.
 // This file's .text ends at 0x0216c310, so the function belongs here once it matches.
 extern "C" {
 

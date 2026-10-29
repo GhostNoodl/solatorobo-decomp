@@ -6430,3 +6430,50 @@ No new match. `func_ov002_021d1f70` goes from 24 / 0 to **12 / 0** (raw / regist
 - **`0200d36c`:** the CPU read loop as an inline moves `word`/`ctrl`/`data` one register down (`r2`/`r1`/`r0`, 8 / 0). So the ROM's extra `r0` node is outside the loop body.
 - **`02069b3c` (44 / 4):** `param += key` in `Effect_GetTexImageParam`, `SetTexImage` written in place, and the polyAttr store used as the argument give 64–131.
 - **Not retried:** `0219b808` (scheduling, round raA), `0216715c` (bgU), `0206d99c`.
+### Round pmA
+
+**Matched: `func_ov000_0217b324`** (was 271 raw / 19 aligned-masked). It is appended to `src/ov000/Menu_0217a26c.cpp` in its own `m_Menu_0217b324` namespace, and that file's `.text` now runs to `0x0217bd88`, so it joins `Menu_0217bd88.cpp`. The Menu TU now waits only on `0217a1f8`. The strings come in through the existing `data_ov000_021cba5d..73` pool symbols, so the pool stays unclaimed. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK. Scratch is in the session scratchpad `pmA/`:
+- `t/bk.py` (run it with `t/bk.sh FILE OUT.o`, or `t/sc.sh FILE [FUNC MOD]` for a match score under gdb) dumps every block before merge 0, after merge 0 and before the pre-allocation scheduler. For each scheduled block it gives the max live count and the number of pressure picks.
+  - Env: `BK_ST=1` logs each statement-hook call (`h`, the generic count, the block's last instruction). `BK_LIVE=1` adds the live-in set and the live count at every pick, and `BK_PL=1` adds the pre-scheduler list. `PB=fn:blk` logs the picks of one block.
+  - `FS="fn:h,h,..."` forces a block split at those statement-hook calls (the same label that the 100-instruction rule makes). `NM=blk,..` with `NMF=fn` forces normal mode for those blocks.
+  - `RO=fn:blk` rewrites a block's list before scheduling. With `ROLO`/`ROHI` (`ROM=all` also moves the `op170` address defs) it moves the argument moves after the computation. `ROP=i,j,...` gives an explicit permutation.
+- `t/cand.py TOY CANDS.py` substitutes `PRE`/`SPLIT` candidates into a toy. For each one it prints the instruction count, the branches in the output, the block sizes after merge 0 (`C` = ends in a call), and each scheduled block as `n:maxlive:pressurepicks`.
+
+**Branch-free pre-allocation block boundaries: what the source can make** (toys in `pmA/toy/`, `c1`–`c3`):
+- **Labels and scopes make nothing.** None of these leaves a pcode label: a user label with no `goto`, `goto L; L:`, `{ }`, `if (0)`, `while (0)`, `if (1) {...}`, `switch (1)` and `for (i = 0; i < 1; i++)` with a call body, constant ternaries, `1 && (...)`, or `return` / `if (k)` / early return in a `void` inline with constant arguments. All of these are one block even straight after a `void` call. Neither are conditions that the IR folds, such as a local array's address `!= 0`, `x == x`, `x & 0`, a constant local, or `"lit" ? :`.
+- **Calls are not boundaries.** A call (and a runtime division helper call) does not start a block. It only stops merge 0 from joining a block that ends in it.
+- **The only boundaries are these three.** At merge 0 a block boundary exists only where codegen defined a label. That happens (a) at an IR label that survived IR optimisation, which always has a real branch to it, or (b) at the automatic split when a block holds more than 100 generic instructions (`0x50e1a0`). (c) A third case only has code at `-O1` and below (`0x65ed03`).
+- **An if-converted diamond is a boundary with no branch.** `v = x ? 3 : 4`, `if (x & 1) k = 3;`, `x < 10 ? x : 10`, `x != 0` and an inline `if (x & 1) return 3; return 4;` stay separate blocks at merge 0 (the join has two predecessors) and in the pre-allocation scheduler. The join block's live count starts again from its live-ins, so in the toy it is in normal mode (`maxlive` 11). If-conversion runs only after allocation: `0x512cd0`, inside the post-allocation branch loop `0x5135b0` (called at `0x474dfd`), which also runs merge 0 again (`0x51363a`). So the output has `cmp` + `moveq`/`movne` and no branch. This is the honest source of a mid-block boundary when the ROM shows a predicated pair there. It is no use where the ROM has no conditional instruction.
+- **Every other boundary is visible in the output.** It shows as a branch, a predicated instruction, a conditional return (`popne`), or the automatic split after a `void` call (round splitP). There is also the post-allocation deletion of a branch-to-next when an arm becomes empty, but that needs a dead store or test.
+
+**Why `0217b324` was not a block problem** (`pmA/b324/`):
+- **Real splits don't give the ROM.** Splits forced through the statement hook (`FS`), which survive merge 0 once `STD_CopyString` is `void`, never give the ROM. Before statement 2 the score is unchanged. Before statements 1 and 2 it is 270 / 20, and before every time statement 269 / 56.
+- **A one-statement block still enters pressure mode.** Its live-ins are 8–12 (`sp`, `self`, `rec`, `msg`, the slot-offset temps, then the hoisted `num`, `"%.2d"` and magic). The count then rises by one for each argument-register def. So a block holding one `printf` + division statement goes into pressure mode after about 8 picks, whatever the block layout.
+- **qpK's "normal mode" result came from the order, not the mode.** Forcing normal mode gave the ROM's order. The ROM itself is in pressure mode, with a different **list order**.
+- **The list-order oracle.** `RO=1:66 ROM=all ROLO=16 ROHI=49` moves the `num`/`"%.2d"` address defs and the `r0`/`r1` moves after the division in time statements 1 and 2, and only there. That gives **0 / 0**. Doing the same to statement 3 gives 225–229: the ROM's statement 3 keeps the IR order. The ROM's `mov r1, fp` right after the statement-3 load is pressure mode taking the last use of `fp` (delta 0).
+
+**Rule F: a reused local is substituted only at its last defs.** IR copy propagation forwards a single-use local's value into its use, and then the call's simple arguments are listed first (`r0`, `r1`, then the expression straight into `r2`). Take a local that is assigned several times in one straight-line run, each value used once (toy `c13`):
+- On its own, only the **last two** defs are forwarded (3 defs: `D F | F D | F D`; 5 defs: the first three stay).
+- When it was also assigned (and used) in an earlier block, such as inside an `if`, only the **last** def is forwarded.
+- A def that is not forwarded stays a statement of its own. Its expression is then listed before the call's `op170`/argument moves (`D F`).
+- Also not forwarded: a local or inline parameter used twice (`loc2`, `inlp2`), a def separated from its use by a call (`sep`), the same expression twice in one argument list (IR CSE, `dbl`), and an argument containing a call or real control flow.
+- These are forwarded and change nothing: a single-def local in any form (`const`, `register`, `h /= k`, `h = ...` inside the argument, statement expressions), inline parameters of any type (including `const u32 &`), inline helpers with constant-folded `if`/`switch`/early return, the comma operator, `&num[0]`, casts, and function-pointer calls.
+
+**The fix.** `0217b324` reuses the scratch `s32 n` (the level number from the `lv` code above, assigned inside the `if` chain) for the three time parts:
+
+```c
+n = rec->time / 216000;
+func_0200779c(num, "%.2d", n);
+func_02070874(buf, buf, num);
+n = rec->time % 216000 / 3600;
+...
+n = rec->time % 216000 % 3600 / 60;
+```
+
+By rule F only the seconds def is forwarded, which is exactly the ROM's list order (11 / 6). The rest was the automatic split: with `char *STD_CopyString` the result copies push the generic count past 100 just after the `void` `OS_GetOwnerInfo`, and the split survives merge 0. The OwnerInfo statements were then scheduled in normal mode (`ldrh r4; mov r5, #0x80; add r1; ...`) instead of the ROM's `ldrh r2; mov r0, #0x80; str; str`. The Menu TU declares `STD_CopyString`/`STD_ConcatenateString` as `void` everywhere, and with that there is no split: 0 / 0. Reusing `max` or `len` instead of `n` gives 283 / 32. Reusing `i` (no earlier use in another block, so the last two defs are forwarded) gives 20 / 6.
+
+**`ov000_0216c310` and `ov010_02204030`: not block problems.**
+- `0216c310`: every block of the loop body starts at 35–38 live (the preheader holds about 30 hoisted constants and copies, rule B). The multiply block is already a join (`s` if/else) and ends at the `IsCurNode` compare, whose `? TRUE : FALSE` is an if-converted diamond. No block boundary can lower a count that starts at 37. List permutations of the multiply block (`ROP`) give 176 / 24 or worse. Spellings that move `- 0x80000` after the test, as the ROM's `sub` placement suggests (`m -= 0x80000`, `(m - 0x80000) >> 12`, reusing `s`), give 173 / 27. qpG's normal-mode 6 means the ROM has far fewer values live into that loop, which is a loop-structure or hoisting question.
+- `02204030` (26 / 12 for `qpA/4030/p10.cpp`): the ROM is in pressure mode too. Normal mode for block 0 gives 96 / 36, block 2 gives 80 / 32, and both give 97 / 48. Forced splits at every statement of block 0 give 26 / 12, or 33 / 14 after the `MTX_RotY33` call. Moving the two zero stores (and `c->y`) later in the list leaves 26 / 12, or 99 raw when a store crosses a load. Rule F forms with `sn`/`cs`/`z` locals reused in the loop give 26 / 12 to 44 / 24 (`z` alone: 27 / 10).
+
+**How to read a pressure-mode miss now.** Normal mode giving the ROM under gdb does not prove that the ROM was in normal mode. When the block's live-ins are already near 14, the ROM was almost certainly in pressure mode with a different list order. Check that with the `RO`/`ROP` oracle first. Then look for a rule F source difference: reused scratch locals, a value used twice, or a call between a def and its use.
