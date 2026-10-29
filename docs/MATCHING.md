@@ -6636,3 +6636,29 @@ Prototype audit. No new match (8133 before and after); one hack removed from mat
 - The unused helper externs were removed.
 
 **`ov003_021cd1e4`** keeps its "fake match" `if (name)`. No prototype (`STD_CopyString` returning `char *`, `func_02041440` taking `u8`) and no inline spelling of the init (`Ov003TlSpr_Init` with the two literals) removes it: 79 / 76 without it.
+
+### Round raH
+
+No new match, no score changed. `ov000_0219b808` stays at 4 / 0, and `ov000_0218867c` at 45 raw / 11 aligned-masked. `0216c310` was not reached. The `0219b808` `NONMATCHING` comment now records why no source gives the ROM's numbering. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK. Scratch is in `scratchpad/raH/`:
+- `t/` is raG's `bk`/`sd7` set pointed at this clone. `bk.py` also dumps around pcode expansion (`BK_FULL=PRE-52A,POST-52A`) and `0x51b900` (`PRE-51B9,POST-51B9`).
+- `t/vw.sh FILE` logs every new vreg (a watchpoint on the counter `0x65b860`) with the statement-hook count and the return addresses on the stack, into `FILE.vw`.
+- `t/cp.sh FILE` (`CP_PAT=` an instruction string, `CP_FN=` the function) reports after each early backend pass whether that instruction still exists.
+- `ex.sh NAME < body` swaps a body in for `0219b808`'s message lines and prints the score and that block's rot/`unk_30` nodes. `sw.py` runs the `RO`/`ROP` list sweeps.
+
+- **Rule: a local's def is a codegen temp unless a call stops the local CSE from forwarding it.**
+  - Every user local and IR temp gets an object vreg at function start (`0x507855`, nodes 16–42).
+  - Codegen writes `x = load` as `ldr vT; mov vObj, vT`, with `vT` numbered at that statement.
+  - The first local CSE (`0x514b50`, called at `0x474a4a`) rewrites the later uses of `vObj` to `vT`. DCE (`0x519700`) then deletes the copy, so the value keeps its list-order number. This holds for block- and function-scope locals, reused scratches split into webs, and defs that stay where they are written (rule F).
+  - A call between the def and the use stops that rewrite (`toy/k1`). The copy then survives to coalescing, which keeps the **object** number. That is `z` in `0219b71c`, and `rz` read before `VEC_Add` in `0219b808` (node `v41`).
+  - Stack stores, a `u16` store through a pointer and a store to the loaded address itself do not stop it (`toy/t1`–`t3`, `k3`).
+- **Rule: only two passes before scheduling make vregs out of list order.** These are `0x51b900` (pool address loads, `op170`) and pcode expansion `0x52a5a0`, which splits an op into two and gives the new intermediate a vreg (large `ldrb` offsets as `add` + load, `u16` narrowing as `lsl` + `lsr`). The destination keeps its number. LICM (`0x517220`) hoists the call constants (`0x18`, `7`, `1`) and `&m` to the preheader, so the call block starts with 16 live-ins (pressure mode). Move-constant-loads makes no move in `0219b808`.
+- **`0219b808`: no source can number `unk_30` after `z` while listing its load before the `x` store.**
+  - Under the first rule, `z` could only be an object if a call came between its load and its store. Under the second, neither late pass applies to `ldr [q, #0x30]`.
+  - The reused-`r` form with the `unk_14` store before the `z` store (`g1`) gives exactly the ROM's second passing list, but it still numbers `x < unk < y < z` (4 / 2).
+  - Also no gain: a `Msg *` for the stores (folded to `sp` before codegen), struct copies (`e2`, `e3`, 12 / 7 and 12 / 6), and a `GetK` getter (12 / 7).
+- **`0219b808` oracle sweeps.**
+  - Moving the call's argument moves (`mov r0`–`r3`) to every slot of the 105 rot/`unk_30` lists that keep the draft's load order (945 lists) gives at best 4 / 0.
+  - The same sweep with raG's `v1` numbering (`x < y < z < unk`) gave at best 8 / 7. That run was stopped at 2,300 of 8,505 lists, and the slot of the stack-argument stores was also varied.
+  - Normal mode for the call block (`NM=25 NMF=2`) gives 8 / 4.
+  - So putting the message construction inside the call's argument list would not help either.
+- **`0218867c`:** an enum-typed zero for the case-1 loop's `n_0 == 0` test (lfA, meant to supply qpD's extra live value) changes the code. A function-level `want` gives 315, a case-local `want` 281, and an enum `n_0` 288 raw (from 45).

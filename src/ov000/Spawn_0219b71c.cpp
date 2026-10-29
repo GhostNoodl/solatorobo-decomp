@@ -58,6 +58,12 @@ VObj *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 k
 // local (r = rot.x; v = q->unk_30; m.rot.x = r; r = rot.y; ...) gives exactly that list, but unk_30 is still
 // numbered before y/z: 4 / 2. Codegen numbers temps in list order, so no statement order (all 2520 orders of
 // four locals: best 4 / 0) or inline spelling gives both; honest_search on that form found nothing.
+// Round raH: the only things that number a value against its list position are (a) a local's object vreg
+// that survives because the backend local CSE (0x514b50) cannot forward its load copy past a call, (b) vregs
+// made after codegen (pool addresses at 0x51b900, pcode expansion splits at 0x52a5a0). Stores, aliasing u16
+// stores and pointer stores do not stop the forwarding, there is no call between VEC_Add and the send, and
+// neither late pass applies to an ldr [q, #0x30]. Argument moves placed anywhere in the list (945 + 2300
+// oracle lists, either numbering) and normal-mode scheduling (8 / 4) give nothing better.
 #include "ov000/Actor.h"
 namespace m_Spawn_0219b808 {
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
