@@ -198,6 +198,9 @@ void func_ov000_0216c018(void *obj) {
 // the ROM colours n, next, y before self and the two loop-invariant temps (data_02071060 and self + 0x360);
 // ours pushes self last in simplify (pass 5, alone) and colours it first. No single degree offset, forced
 // low/high node or declaration order (24 orders, block-scope y/s/m/r/h) changes that.
+// Round mcA: 103 / 8 -> 68 / 8 (pool-masked; 105 / 10 -> 68 / 10 by tools' count). Each released slot goes through
+// a named `sl` local instead of straight into the inline (so it is a user variable, numbered by declaration,
+// not an inline parameter), with the locals declared s, m, r, y, h, sl, prev, n, next. The masked lines are unchanged.
 // This file's .text ends at 0x0216c310, so the function belongs here once it matches.
 extern "C" {
 
@@ -221,14 +224,15 @@ static inline BOOL IsCurNode0216c310(u8 *self, u8 *n) {
 }
 
 void func_ov000_0216c310(void *self) {
-    u8 *n;
-    u8 *next;
-    s32 y;
-    u8 *prev;
     s32 s;
     s32 m;
     s32 r;
+    s32 y;
     u8 *h;
+    u8 *sl;
+    u8 *prev;
+    u8 *n;
+    u8 *next;
     prev = NULL;
     for (n = LFLD(u8 *, self, 0x24c); n != NULL; n = next) {
         next = LFLD(u8 *, n, 0x28);
@@ -279,8 +283,10 @@ void func_ov000_0216c310(void *self) {
                 } else {
                     LFLD(void *, self, 0x24c) = LFLD(void *, h, 0x28);
                 }
-                Release0216c310((u8 *)self + 0x360 + data_ov000_021c9bb4[LFLD(s32, n, 4)].a * 12);
-                Release0216c310((u8 *)self + 0x360 + data_ov000_021c9bb4[LFLD(s32, n, 4)].b * 12);
+                sl = (u8 *)self + 0x360 + data_ov000_021c9bb4[LFLD(s32, n, 4)].a * 12;
+                Release0216c310(sl);
+                sl = (u8 *)self + 0x360 + data_ov000_021c9bb4[LFLD(s32, n, 4)].b * 12;
+                Release0216c310(sl);
                 LFLD(s32, n, 4) = -1;
                 LFLD(u32, n, 0) = 0;
                 LFLD(void *, n, 0x28) = NULL;

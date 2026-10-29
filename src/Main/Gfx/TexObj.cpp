@@ -295,3 +295,109 @@ extern void func_0203e098(const char *name, u32 value);
 extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, int is4x4, int opt);
 
 }
+
+#ifdef NONMATCHING
+// func_020417e0: 11 raw / 4 register-masked (was 26 / 4). Round mcA: InitAnim's `anim` is declared before
+// `data`, which numbers it below `data` (inline locals are numbered in their own declaration order) and gives
+// the ROM's sb/r8 in the entry loop. Left: (1) the ROM sets the NULL arm's zero (`mov fp, sl`) in the second
+// loop's preheader, ours hoists it to the entry with the count loop's zero; (2) in the inlined SetData/Upload the
+// ROM needs `data` numbered below Upload's reloaded `size`, which no order of the header inlines' parameters gives
+// (the front end merges the parameter copies into SetData's `data`, created before Upload's `size`).
+extern "C" {
+typedef struct TexObjBank {
+    u16 numSeq;
+} TexObjBank;
+
+typedef struct TexObjResB {
+    /* 0x00 */ u32 unk_00;
+    /* 0x04 */ void *unk_04;
+    /* 0x08 */ u32 unk_08;
+    /* 0x0c */ TexObjBank *bank;
+} TexObjResB;
+
+static inline void TexObj_InitAnim(TexObj *obj, int idx) {
+    TexObjAnim *anim;
+    u16 *data = NNS_G2dGetAnimSequenceByIdx(((TexObjRes *)obj->res)->dict, idx);
+    TexObjEntry *e = TexObj_GetEntry(obj, idx);
+    if (e == NULL || (anim = (TexObjAnim *)e->anim) == NULL) {
+        return;
+    }
+    NNS_G2dInitCellAnimation(anim, data, ((TexObjRes *)obj->res)->unk_04);
+    NNS_G2dSetCellAnimationSequence((TexObjAnim *)e->anim, data);
+    anim->unk_0c = 1;
+    NNS_G2dSetAnimCtrlCallBackFunctor(anim, 3, obj, func_02041c90);
+    NNS_G2dTickCellAnimation((TexObjAnim *)e->anim, 0);
+}
+
+static inline void TexObj_SetEntryAnim(TexObj *obj, int idx, void *anim) {
+    obj->entries[idx].anim = anim;
+}
+
+static inline void TexObj_ClearEntry(TexObj *obj, int idx) {
+    u16 j;
+    for (j = 0; j < 3; j++) {
+        obj->entries[idx].transfers[j] = 0;
+        (&obj->entries[idx].key)[j] = -1;
+    }
+}
+
+static inline void TexObj_SetupAnim(TexObj *obj, int idx) {
+    if (obj->entries[idx].anim != NULL) {
+        TexObj_InitAnim(obj, idx);
+    }
+}
+
+static inline int TexObj_CountAnims(const TexObjRes *res) {
+    u16 i;
+    int n = 0;
+    for (i = 0; i < ((const TexObjResB *)res)->bank->numSeq; i++) {
+        if (*NNS_G2dGetAnimSequenceByIdx(res->dict, i) > 1) {
+            n++;
+        }
+    }
+    return n;
+}
+
+static inline void TexObj_ResetEntry(TexObj *obj, const u16 &idx) {
+    obj->entries[idx].index = idx;
+    obj->entries[idx].unk_08 = 0;
+    obj->entries[idx].unk_0c = 0;
+}
+
+void func_020417e0(TexObj *obj, const TexObjRes *res) {
+    int n;
+    u16 count;
+    u8 *anims;
+    GfxPltt *pltt;
+    obj->res = (void *)res;
+    n = TexObj_CountAnims(res);
+    count = *res->dict;
+    obj->count = count;
+    obj->entries = (TexObjEntry *)func_0203de84(count * sizeof(TexObjEntry) + n * 0x58, 4);
+    anims = (u8 *)obj->entries + count * sizeof(TexObjEntry);
+    {
+    u16 i;
+    for (i = 0; i < ((const TexObjResB *)res)->bank->numSeq; i++) {
+        if (*NNS_G2dGetAnimSequenceByIdx(res->dict, i) > 1) {
+            TexObj_SetEntryAnim(obj, i, anims);
+            anims += 0x58;
+        } else {
+            TexObj_SetEntryAnim(obj, i, NULL);
+        }
+        TexObj_ResetEntry(obj, i);
+        TexObj_ClearEntry(obj, i);
+        TexObj_SetupAnim(obj, i);
+    }
+    }
+    pltt = &data_02097d48->pltt;
+    if (pltt->id == -1) {
+        PlttRes_SetSrc(&obj->pltt, (PlttResSrc *)obj);
+    } else {
+        PlttRes_SetSrc(&obj->pltt, (PlttResSrc *)obj);
+        PlttRes_SetData(&obj->pltt, ((PlttResSrc *)obj)->info->header->data, obj->pltt.size);
+        func_020435e8(pltt, obj->pltt.buf, obj->pltt.size);
+    }
+    obj->plttPtr = &obj->pltt;
+}
+}
+#endif
