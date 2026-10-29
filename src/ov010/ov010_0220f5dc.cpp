@@ -259,16 +259,16 @@ void func_ov010_021ff21c(void *self) {
     if (Ov010_PlBusy(pl)) {
         return;
     }
-    Ov010Vec pp[1];
-    Ov010_VecCopy(pp, &FLD(Ov010Vec, pl, 0x70));
+    Ov010Vec pp;
+    Ov010_VecCopy(&pp, &FLD(Ov010Vec, pl, 0x70));
     if (FLD(u8, self, 4) == 0) {
         FLD(Ov010Vec, self, 0xc) = Ov010_TargetPos();
     }
     Ov010Vec d;
-    Ov010_VecSub(&FLD(Ov010Vec, self, 0xc), pp, &d);
+    Ov010_VecSub(&FLD(Ov010Vec, self, 0xc), &pp, &d);
     Ov010Rot r = data_ov010_0220ebea;
     r.y = func_ov003_021d9c38(&d);
-    s32 dist = VEC_Distance(pp, &FLD(Ov010Vec, self, 0xc));
+    s32 dist = VEC_Distance(&pp, &FLD(Ov010Vec, self, 0xc));
     func_ov000_0218a358((u8 *)data_ov000_021ccd54 + 0xf4, &FLD(Ov010Vec, self, 0xc), &r, FLD(s32, self, 8) + dist + 0x10000, 0, 0x1000, 0x1000, 1);
 }
 

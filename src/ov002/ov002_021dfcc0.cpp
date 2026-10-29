@@ -56,15 +56,20 @@ static inline BOOL ov002_TryMove(u8 *g, s32 dx, s32 dy, void *map) {
 
 extern "C" {
 
-void func_ov002_021dfcc0(void *self, u8 *cam, void *mgr) {
-    void *mgr_p[1] = {mgr};
+static inline u8 *GetUnit021dfcc0(void *self) { return FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *); }
+static inline u8 *GetMap021dfcc0(u8 *unit) { return FIELD(FIELD(unit, 0x4, u8 *), 0x6c, u8 *); }
+static inline void *GetMgr021dfcc0(void) { return data_02149ef8; }
+
+void func_ov002_021dfcc0(void *self) {
+    u8 *cam;
+    void *mgr;
     u8 *cur;
     u8 *pad = data_02097dc8;
     s32 trg = FIELD(pad, 0x12, u16);
     u16 rep = FIELD(pad, 0x16, u16);
-    u8 *unit = (0, FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *));
-    mgr_p[0] = data_02149ef8;
-    u8 *map[1];
+    u8 *unit = GetUnit021dfcc0(self);
+    mgr = GetMgr021dfcc0();
+    u8 *map;
     if (trg & 2) {
         if (FIELD(FIELD(self, 0x10, u8 *), 0xac, s32) != 1) {
             return;
@@ -84,7 +89,7 @@ void func_ov002_021dfcc0(void *self, u8 *cam, void *mgr) {
         func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
         return;
     }
-    map[0] = FIELD(FIELD(unit, 0x4, u8 *), 0x6c, u8 *);
+    map = GetMap021dfcc0(unit);
     if (rep & 0xf0) {
         Vec2 d = {0, 0};
         Vec2 p;
@@ -100,7 +105,7 @@ void func_ov002_021dfcc0(void *self, u8 *cam, void *mgr) {
             d.x++;
         }
         cur = FIELD(self, 0x10, u8 *);
-        if (ov002_TryMove(cur, d.x, d.y, map[0])) {
+        if (ov002_TryMove(cur, d.x, d.y, map)) {
             ov002_SyncCursor(self);
             return;
         }
@@ -108,12 +113,12 @@ void func_ov002_021dfcc0(void *self, u8 *cam, void *mgr) {
         p = *(Vec2 *)(g + 0x54);
         p.x += d.x;
         p.y += d.y;
-        func_ov002_021e3dac(&p, map[0], g + 0x4c, &out);
-        if (out.x < FIELD(map[0], 0x4, Nibbles16).n2) {
+        func_ov002_021e3dac(&p, map, g + 0x4c, &out);
+        if (out.x < FIELD(map, 0x4, Nibbles16).n2) {
             return;
         }
         {
-            void *s = func_0204c0e8(mgr_p[0], 0x10c);
+            void *s = func_0204c0e8(mgr, 0x10c);
             u8 *o = FIELD(self, 0x4, u8 *);
             func_ov000_0215bb14(FIELD(o, 0x20, void *), s);
             VC(FIELD(o, 0x20, void *), 0x70)();
@@ -130,9 +135,9 @@ void func_ov002_021dfcc0(void *self, u8 *cam, void *mgr) {
         return;
     }
     if (trg & 0x100) {
-        func_ov002_021d8c34(FIELD(self, 0x10, void *), -1, map[0]);
+        func_ov002_021d8c34(FIELD(self, 0x10, void *), -1, map);
     } else if (trg & 0x200) {
-        func_ov002_021d8c34(FIELD(self, 0x10, void *), 1, map[0]);
+        func_ov002_021d8c34(FIELD(self, 0x10, void *), 1, map);
     }
     ov002_SyncCursor(self);
     func_02049bdc(data_02097e4c, 0x47, 6);

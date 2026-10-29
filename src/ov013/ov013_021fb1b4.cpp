@@ -127,12 +127,12 @@ extern "C" {
 
 void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, Ov013Vec *cur) {
     BOOL shake = FALSE;
-    Ov013Vec v_1[1];
+    Ov013Vec v_1;
     s32 z_0;
     u8 on;
     u8 i;
     Ov013Sub40 *s = self->unk_40;
-    u8 cnt_1[1];
+    u8 cnt_1;
     s32 range;
     switch (s->state) {
     case 0: {
@@ -162,21 +162,21 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
         break;
     }
     case 1:
-        Ov013_VecCopy(&v_1[0], &self->unk_b8);
-        func_ov000_0218ddd4(self, &v_1[0], 0);
-        if (VEC_Distance(&self->pos, &v_1[0]) == 0) {
+        Ov013_VecCopy(&v_1, &self->unk_b8);
+        func_ov000_0218ddd4(self, &v_1, 0);
+        if (VEC_Distance(&self->pos, &v_1) == 0) {
             func_ov000_02190cb0(self->unk_38, data_ov013_0220b5ca, 0x89, 0);
             func_ov000_021915a0(self->unk_38);
             func_02049a48(data_02097e4c, 0x4f, -1, -1, -1);
             range = 0xf000 - (self->unk_64 << 3);
             z_0 = Ov013_FxMul(func_02040528(0x1000), range) - 0x7800;
-            for (cnt_1[0] = 0, i = 0; i < 4; i++) {
+            for (cnt_1 = 0, i = 0; i < 4; i++) {
                 POLE(self, i)->v.x = Ov013_FxMul(func_020404e0(), 0x3800) + i * 0x3800 - 0x7000;
                 on = 0;
                 POLE(self, i)->v.y = 0;
                 POLE(self, i)->v.z = z_0 + Ov013_FxMul(func_02040528(0x1000), self->unk_64);
-                if (cnt_1[0] < 2 && (!(func_02040420() & 1) || i > 1)) {
-                    cnt_1[0]++;
+                if (cnt_1 < 2 && (!(func_02040420() & 1) || i > 1)) {
+                    cnt_1++;
                     on = 1;
                 }
                 POLE(self, i)->on = on;
@@ -191,10 +191,10 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
             }
             if (func_02040498(0x63) % 2 == 0) {
                 self->side = 1;
-                Ov013_VecSet(&v_1[0], -0xc000, 0x8800, z_0);
+                Ov013_VecSet(&v_1, -0xc000, 0x8800, z_0);
             } else {
                 self->side = 0;
-                Ov013_VecSet(&v_1[0], 0xc000, 0x8800, z_0);
+                Ov013_VecSet(&v_1, 0xc000, 0x8800, z_0);
                 {
                     u8 a_1;
                     u8 b;
@@ -203,7 +203,7 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
                     }
                 }
             }
-            Ov013_VecCopy(&self->unk_b8, &v_1[0]);
+            Ov013_VecCopy(&self->unk_b8, &v_1);
             self->unk_a4 = 0;
             self->unk_a8 = 0;
             self->unk_9c = 0x4cd;
@@ -212,17 +212,17 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
             self->unk_40->timer = 0;
             break;
         }
-        if (self->pos.x == v_1[0].x && self->pos.z == v_1[0].z) {
+        if (self->pos.x == v_1.x && self->pos.z == v_1.z) {
             self->pos.y += self->unk_a0;
-            if (self->pos.y > v_1[0].y) {
-                self->pos.y = v_1[0].y;
+            if (self->pos.y > v_1.y) {
+                self->pos.y = v_1.y;
             }
         }
         break;
     case 0x13:
-        Ov013_VecCopy(&v_1[0], &self->unk_b8);
-        func_ov000_0218ddd4(self, &v_1[0], 0);
-        func_ov000_0218d918(self, &v_1[0], 0x400);
+        Ov013_VecCopy(&v_1, &self->unk_b8);
+        func_ov000_0218ddd4(self, &v_1, 0);
+        func_ov000_0218d918(self, &v_1, 0x400);
         if (self->pos.y > 0x3000) {
             Ov013Sub44 *n_1 = self->unk_44;
             Ov013Sub48 *m;
@@ -234,38 +234,38 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
             func_0203f364(m);
             shake = TRUE;
         }
-        if (VEC_Distance(&self->pos, &v_1[0]) == 0) {
+        if (VEC_Distance(&self->pos, &v_1) == 0) {
             self->unk_a4 = 0;
             self->unk_a8 = 0;
             self->unk_9c = 0x266;
             self->unk_a0 = -0x11f;
             {
-                s32 z_1 = v_1[0].z;
+                s32 z_1 = v_1.z;
                 if (self->side != 0) {
-                    Ov013_VecSet(&v_1[0], 0xc000, 0x8800, z_1);
+                    Ov013_VecSet(&v_1, 0xc000, 0x8800, z_1);
                 } else {
-                    Ov013_VecSet(&v_1[0], -0xc000, 0x8800, z_1);
+                    Ov013_VecSet(&v_1, -0xc000, 0x8800, z_1);
                 }
             }
-            Ov013_VecCopy(&self->unk_b8, &v_1[0]);
-            func_ov000_0218d918(self, &v_1[0], 0x400);
+            Ov013_VecCopy(&self->unk_b8, &v_1);
+            func_ov000_0218d918(self, &v_1, 0x400);
             self->unk_40->state = 0x14;
             self->unk_40->timer = 0;
             break;
         }
-        if (self->pos.x == v_1[0].x && self->pos.z == v_1[0].z) {
+        if (self->pos.x == v_1.x && self->pos.z == v_1.z) {
             self->pos.y += self->unk_a0;
-            if (self->pos.y > v_1[0].y) {
-                self->pos.y = v_1[0].y;
+            if (self->pos.y > v_1.y) {
+                self->pos.y = v_1.y;
             }
         }
         break;
     case 0x14: {
         s32 d;
         s32 k;
-        Ov013_VecCopy(&v_1[0], &self->unk_b8);
-        func_ov000_0218ddd4(self, &v_1[0], 0);
-        func_ov000_0218d918(self, &v_1[0], 0x400);
+        Ov013_VecCopy(&v_1, &self->unk_b8);
+        func_ov000_0218ddd4(self, &v_1, 0);
+        func_ov000_0218d918(self, &v_1, 0x400);
         shake = TRUE;
         if (self->side != 0) {
             d = self->pos.x + 0xc000;
@@ -279,10 +279,10 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
             self->unk_a0 = 0x11f;
         }
         pos = &self->pos;
-        if (Ov013_DistXZ(pos, &v_1[0]) == 0) {
-            Ov013_VecSet(&v_1[0], 0, 0, -0x14000);
-            Ov013_VecCopy(&self->unk_b8, &v_1[0]);
-            func_ov000_0218d918(self, &v_1[0], 0x1000);
+        if (Ov013_DistXZ(pos, &v_1) == 0) {
+            Ov013_VecSet(&v_1, 0, 0, -0x14000);
+            Ov013_VecCopy(&self->unk_b8, &v_1);
+            func_ov000_0218d918(self, &v_1, 0x1000);
             self->unk_98 = self->rot[1];
             self->unk_a4 = 0;
             self->unk_a8 = 0;
@@ -323,15 +323,15 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
         break;
     }
     case 0x63:
-        Ov013_VecCopy(&v_1[0], &self->unk_b8);
-        func_ov000_0218d918(self, &v_1[0], 0x400);
+        Ov013_VecCopy(&v_1, &self->unk_b8);
+        func_ov000_0218d918(self, &v_1, 0x400);
         Ov013_Show(self);
         if (self->pos.y > 0x3000) {
             shake = TRUE;
         }
-        if (func_01ffc584(&self->pos, &v_1[0], self->unk_9c, 0x5000)) {
-            self->pos.x = v_1[0].x;
-            self->pos.z = v_1[0].z;
+        if (func_01ffc584(&self->pos, &v_1, self->unk_9c, 0x5000)) {
+            self->pos.x = v_1.x;
+            self->pos.z = v_1.z;
             self->rot[1] = func_01ffc128(0, self->rot[1], self->unk_b0->unk_02, 1, 0x8000);
             self->unk_9c = 0;
             self->unk_a0 = -0xcd;

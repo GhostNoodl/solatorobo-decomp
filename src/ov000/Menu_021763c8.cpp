@@ -1003,10 +1003,14 @@ BOOL func_ov000_021778f0(u8 *self, u8 *item) {
     return FALSE;
 }
 
+static inline u8 *GetObj02177bd8(u8 *o) {
+    return LFLD(u8 *, o, 0x40);
+}
+
 s32 func_ov000_02177bd8(VObj *self, u8 *item) {
     u8 *o = LFLD(u8 *, self, 8);
     u8 *m = LFLD(u8 *, o, 0x4c);
-    u8 *obj = (0, LFLD(u8 *, o, 0x40));
+    u8 *obj = GetObj02177bd8(o);
     u8 *node = GetNth(m);
     u16 type;
     if (item == NULL) {

@@ -46,6 +46,10 @@ static inline BOOL IsBusy(void) {
     return data_02149efc != NULL ? TRUE : FALSE;
 }
 
+static inline CmdQueue *GetQueue02182590(void) {
+    return data_ov000_021ccd50.unk_04;
+}
+
 void func_ov000_02182590(Obj02182590 *self) {
     VObj *w;
     CmdQueue *q;
@@ -55,9 +59,9 @@ void func_ov000_02182590(Obj02182590 *self) {
     if (self->unk_00 == 0) {
         return;
     }
-    // The comma expression, the reused wr and the const-view reload below give the target's registers
+    // The getter, the reused wr and the const-view reload below give the target's registers
     // and its second load of the queue pointer.
-    q = (0, data_ov000_021ccd50.unk_04);
+    q = GetQueue02182590();
     wr = q->unk_90;
     rd = wr;
     wr = q->index;

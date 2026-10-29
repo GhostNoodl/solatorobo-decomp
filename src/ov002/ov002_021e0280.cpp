@@ -1,4 +1,3 @@
-#define func_ov002_021e0280 func_ov002_021e0280_hdr
 #include "ov002/ov002.h"
 
 extern "C" {
@@ -30,17 +29,18 @@ static inline void updateModel(u8 *m) {
     }
 }
 
-#undef func_ov002_021e0280
-// Callers pass only self. The loop counter `i` is declared as an unused second
-// parameter because that gives the target's register allocation.
-// `sh` is a one-element array for the same reason.
-void func_ov002_021e0280(void *self, s32 i) {
-    u8 *sh[1];
+// Callers pass only self. One local `i` holds the state and is then the row counter,
+// and the shape pointer comes from a getter inline (round tmA; the old draft used a fake
+// second parameter for `i` and a one-element `sh` array).
+static inline u8 *GetShape021e0280(u8 *o) { return o + 0x4c; }
+
+void func_ov002_021e0280(void *self) {
+    u8 *sh;
     s32 j;
     s32 rows;
     s32 cols;
     u8 *o;
-    s32 st;
+    s32 i;
     Vec2 pos;
     Vec2 org;
     Vec2 v;
@@ -49,25 +49,25 @@ void func_ov002_021e0280(void *self, s32 i) {
     if (o == NULL) {
         return;
     }
-    st = FIELD(o, 0xac, s32);
-    if (st == 8 || st == 0 || st == 9) {
+    i = FIELD(o, 0xac, s32);
+    if (i == 8 || i == 0 || i == 9) {
         return;
     }
-    sh[0] = o + 0x4c;
+    sh = GetShape021e0280(o);
     pos.x = FIELD(o, 0x54, s32);
     pos.y = FIELD(o, 0x58, s32);
-    if (sh[0] == NULL) {
+    if (sh == NULL) {
         return;
     }
-    func_ov002_021e38f8(&org.x, sh[0]);
-    rows = FIELD(sh[0], 0x4, Nibbles16).n3;
-    cols = FIELD(sh[0], 0x4, Nibbles16).n2;
+    func_ov002_021e38f8(&org.x, sh);
+    rows = FIELD(sh, 0x4, Nibbles16).n3;
+    cols = FIELD(sh, 0x4, Nibbles16).n2;
     for (i = 0; i < rows; i++) {
         for (j = 0; j < cols; j++) {
-            if (FIELD(sh[0], 0x0, u8 *)[i * cols + j] == 1) {
+            if (FIELD(sh, 0x0, u8 *)[i * cols + j] == 1) {
                 v.x = j;
                 v.y = i;
-                func_ov002_021e3a18(&out, (u8)FIELD(sh[0], 0x6, Bits021e0280).rot, &v, &org, &pos);
+                func_ov002_021e3a18(&out, (u8)FIELD(sh, 0x6, Bits021e0280).rot, &v, &org, &pos);
                 u8 *m = FIELD(self, 0x14, u8 *);
                 FIELD(m, 0x74, s32) = out.x;
                 FIELD(m, 0x78, s32) = out.y;

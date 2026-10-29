@@ -88,6 +88,8 @@ static inline void ov002_CamMove(u8 *c, const Vec3 *pos, s32 tx, s32 ty, s32 tz)
     FIELD(c, 0xc4, s32) = tz;
 }
 
+static inline void *GetMgr021ddf18(void) { return data_02149ef8; }
+
 // h, cam and w are locals passed as unused register parameters (the locals-as-parameters lever).
 void func_ov002_021ddf18(void *self, void *owner, s32 h, u8 *cam, s32 w) {
     void *g;
@@ -95,7 +97,7 @@ void func_ov002_021ddf18(void *self, void *owner, s32 h, u8 *cam, s32 w) {
     u8 *c;
     FIELD(self, 0x4, void *) = owner;
     cam = FIELD(owner, 0x4, u8 *);
-    g = (0, data_02149ef8);
+    g = GetMgr021ddf18();
     p = (VObject *)func_0203dd9c(0xf4);
     if (p != NULL) {
         *(VFunc **)p = data_ov000_021cac60;

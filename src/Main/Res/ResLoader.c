@@ -1,6 +1,10 @@
 #include "Main/Res/ResLoader.h"
 
 // Decompresses the requested file into the ring buffer, then waits for the next request.
+static inline ResRing *GetRing02035450(ResLoader *loader) {
+    return &loader->ring;
+}
+
 void func_02035450(ResLoader *loader) {
     ResRequest *req = NULL;
     ResFileEntry *entry = NULL;
@@ -18,8 +22,7 @@ void func_02035450(ResLoader *loader) {
         default:
             continue;
         }
-        // The comma expression gives ring the callee-saved register the original uses.
-        ring = (0, &loader->ring);
+        ring = GetRing02035450(loader);
         if (ring != NULL) {
             switch (entry->attr2 & 0xf0) {
             case 0x10:

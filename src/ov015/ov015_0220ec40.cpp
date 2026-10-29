@@ -51,13 +51,17 @@ static inline void Ov015_SetXYZ32(u8 *o, s32 x, s32 y, s32 z) {
     FLD(s32, o, 0x60) = z;
 }
 
+static inline void *GetRes0220e634(void) {
+    return data_02149ef8;
+}
+
 void func_ov015_0220e634(u8 *self, s32 mode) {
     u8 *sh;
     s32 i;
     u8 *p;
     Ov015ItemEnt *items;
     void *res;
-    res = (0, data_02149ef8);
+    res = GetRes0220e634();
     sh = data_ov015_02213368;
     FLD(s32, self, 0x60) = mode;
     p = (u8 *)func_0203dd9c(0xf0);

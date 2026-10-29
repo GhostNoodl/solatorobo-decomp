@@ -104,6 +104,10 @@ static inline BOOL HasPending0216c018(u8 *self) {
     return LFLD(s32, self, 0x244) != LFLD(s32, self, 0x248) ? TRUE : FALSE;
 }
 
+static inline u8 *GetCur0216c018(u8 *self) {
+    return self + 4 + LFLD(s32, self, 0x244) * 0x24;
+}
+
 void func_ov000_0216c018(void *obj) {
     u8 *self = (u8 *)obj;
     s32 sc;
@@ -129,7 +133,7 @@ void func_ov000_0216c018(void *obj) {
     if (LFLD(void *, self, 0x35c) != NULL ? TRUE : FALSE) {
         return;
     }
-    e = (0, self + 4 + LFLD(s32, self, 0x244) * 0x24);
+    e = GetCur0216c018(self);
     tbl = data_ov000_021c9bb4;
     for (i = 0; i < 6; i++) {
         if (!(LFLD(u32, self + i * 0x2c, 0x254) & 1)) {
