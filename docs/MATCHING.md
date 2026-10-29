@@ -5956,3 +5956,37 @@ No new match. Three in-tree drafts improve by declaration placement only: `func_
   - `021652e4`: the col loop's `k`, `oam`, `pos` are temps, but the ROM reloads `o->n` for `o->n++` too, so `o->n = k + 1` (rule 2) is worse (118 / 35).
 - **Rule 2 and rule 1 tries that gave nothing:** `021fc0b8` `list = self->list; n = list->head;` (35) and a separate case-2 actor pointer (13); `02166180` a separate else-branch counter or pointer for each of `m`, `k`, `nd`, `it`, `o`, `xx`, `yy`, at four declaration slots each (28 variants, all 44 / 0); `021e7004` `curPitch`/`curYaw` locals (same code) and six orders of the `sq` sum (23 to 36).
 - **Declaration sweeps with no gain** (top run, `USE`, `INNER`, greedy): `021d1f70`, `021fc0b8`, `0218867c`, `021743bc`, `0214dd3c`, `021652e4`, `021b9b14`, `02166180`, `0216c310`, `02048e74`, `02049c80`, `021e7004`, `ov003_021cd91c`, `ov011_021fd638`.
+
+### Round hzT
+
+No new match, no source change. This round reads the whole move-constant-loads step 4 (`0x526af0`, run from the backend driver at `0x474c54` after the peephole forward pass `0x5261c0` and coalesce `0x51b0e0`) and lists every way it can refuse a move. Scratch is in `scratchpad/hzT/`. `t/` and `t1/` are hzS's tools pointed at the hzT clone. New tools:
+- `t/tr.sh` (`FN=` MCL index, `G=k2:0` group filter) traces every decision under gdb: each block's position, idom, preds, instruction count, pressure and flags, then every instance check, walk visit, pressure result, empty-target test and insert/reuse.
+- `t/pl.sh` (`BLK=`, `FN=`) prints the per-instruction liveness the pressure pass counts.
+- `t/cfg.sh` prints the CFG (`id:ninstr[preds]`) after each backend pass, and `t/cfgat.py` the front-end CFG next to the one at step 4.
+- `toy/run.sh X.c` shows a toy's front-end and step-4 CFG, its empty blocks and a hash of its final code.
+- `tvt.sh NAME` (`020417e0`) and `vt.sh NAME` (`ov011_021fc0b8`) score a replacement loop body from `tv/` or `v/`.
+
+**Step 4, in full.** `0x517220(0)` redoes the loop analysis. `0x502f80` rebuilds the depth-first order `0x65e204` (preorder, via `0x504d00`) and liveness. `0x5b1040` writes each block's maximum GPR pressure to `0x65a8c0`. It starts from the live-out count (`0x5b0ee0`/`0x503040`) and walks the block backwards (`0x5b0f30`: drop defs, operand flag 2, then add uses, flag 1); physical registers count too. `0x514c10` computes iterative dominators (bitsets `0x65e238`, by block id). `0x526750` builds the idom-children bitsets `0x648b18` (`0x5266f0`/`0x526690` take the deepest dominator, which is correct). `0x526870` groups the constant loads (opcodes 170/171/547) by value: `0x5261f0` compares `+0x3e`, plus `+0x42` for 170 and 547. `0x5262a0` sorts the groups by count, largest first (comparator `0x526280`). `0x526950` processes them.
+
+Every refusal (every instruction from `0x5261f0` to `0x526ae7` read):
+- (a) Groups with fewer than 5 members are skipped (3 if `0x65ecad` is set).
+- (b) Blocks are visited from the last to the first entry of `0x65e204`, so a dominator is always visited after its children. Only instances in the idom children of the current block are collected (`0x5268f0`).
+- (c) The instance's destination must be a virtual register (≥ `0x652168`).
+- (d) The instance must carry flag `0x80000` at `+0x10` (already moved once), or have at most one definition. `0x526310` counts definitions on the list `0x658608[class][vreg]`, which is built near `0x5163d0`.
+- (e) Pressure. `0x5265c0` clears block flag 4 (`0x526370`). The walk `0x5263f0` then goes up from the instance block's predecessors and stops at the target, taking the highest pressure on the way. The step is refused if that maximum is above 10 (20 if `0x65ecad`). The walk's return value is ignored.
+- (f) `0x5264f0` refuses a target block that has no instructions (first instruction `+0x14` is 0), and asserts that the instance block is not the target.
+
+On success, `0x526470` scans the target from its tail for an equal constant and reuses it if it is flagged, or virtual with one definition. Otherwise it inserts a new load flagged `0x80000` (`0x5046d0`). `0x526390` adds 1 to every block on the walk, once per group (block flag `0x8000` is reset per group). The original becomes a copy (op `0xa2`, `0x504720`) and is unlinked (`0x504b30`). Nothing else is tested: no loop depth, calls, volatile, branch shape, block size or dominance frontier.
+
+- **Rule: for these two functions the only honest refusal is (f), an empty target block.**
+  - Pressure does not explain the ROM. `020417e0` would need block 5 at 11 instead of 6. `ov011_021fc0b8` would need block 55 three higher while block 94 stays at 10 or below, which means values live only on the edge that skips the loop.
+  - Conditions (a) to (d) hold for both instances (`tr.sh`).
+- **How (f) happens.** The front-end CFG has no empty blocks apart from entry and exit. The loop analysis always adds a fresh preheader, holding the `op151` branch, plus empty latch and exit pads. A block E between an explicit guard `if` and a do-while exists only if the source puts a statement there that survives the front end. Dead statements, labels, `;` and copies of unmodified variables are dropped before that.
+- **Making E empty.** If E's only content is a copy that coalesce removes before step 4, E is empty at step 4. The step from the preheader into E is then refused and the constant stays in the preheader. E disappears later, so the rest of the code does not change.
+  - Toy `toy/m2.c`: `if (p != 0) { q = p; do ... } while (q != 0); }`. The trace shows `target B8 first=0`, and the insert/reuse step returns 0.
+  - Real code (`tv/t1.txt`, `020417e0`): `u16 i = 0; if (i < numSeq) { u8 *p = anims; do { ...p... } while (++i < numSeq); }`. E is `6:0[5]` at step 4 and the score is 9 / 2, the same as hzS's `FORCE=34:5`. With `if (numSeq != 0)` it is 10 / 3. The inline do-while is 13 / 6 and the inline `for` is 11 / 4; neither has an E.
+  - **Not applied.** The form is a hand-rotated loop plus a pointer copy that exists only to make E. That is junk by the rules, and it does not reach a match either: the `r7`/`r8` swap and the pool words remain.
+- **`ov011_021fc0b8` (`94->55`).**
+  - The ROM's `movne r8, r1` comes before the guard. That puts `n = head` in block 55, and E needs some other copy that coalesce removes. A copy placed after the guard stays after the `beq` in the final code (toy `c1.c`).
+  - `head` stays live through the loop, because the call's reload of `e->unk_04` is CSE'd onto it. So a copy of `head` is never coalesced away. `v/r1` (inner inline with a modified node parameter) and `v/r2` (`n = head` after the guard) keep `mov v78, v62` in E and score 17 / 8. `v/r3` and `v/r4` (a reload of the head, or `e->unk_04`, in E) are propagated by the front end, leave no E, and score 17 / 7.
+  - No natural source found.
