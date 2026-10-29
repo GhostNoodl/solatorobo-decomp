@@ -234,10 +234,13 @@ void func_ov015_021fb758(u8 *self) {
 }
 
 #ifdef NONMATCHING
-// func_ov015_021fc40c: 24 / 9 (raw / register-masked, round bgM). The case zeros are kept per
-// arm because z has three definitions (refusal (d) of move-constant-loads step 4), and the
-// g (the Ov015Stat pointer) is live across the blink test, which keeps the FX_Mul zero in that block
-// (pressure 11). Left: colouring of z (r3, ROM r0) and of the alpha block's old alpha / res.
+// func_ov015_021fc40c: 13 / 9 (raw / register-masked; 4 of those are pool relocations, so the
+// code differs only in z's register). Rounds bgM and bgO. The case zeros are kept per arm because z
+// has three definitions (refusal (d) of move-constant-loads step 4), and g (the Ov015Stat pointer) is
+// live across the blink test, which keeps the FX_Mul zero in that block (pressure 11). In the alpha
+// block, the old alpha goes to its own local and the model passed to the PlayPart inline is read into
+// m (round bgO). Left: z gets r3 (ROM r0), because case 2's -Bob value is a codegen value and is
+// coloured before the z object.
 extern "C" {
 
 void func_0204b420(void *p);
@@ -418,18 +421,21 @@ void func_ov015_021fc40c(void *self, s32 mode) {
     }
     if (FLD(s32, self, 0x20) <= 0) {
         u32 al;
+        u8 old;
+        void *m;
         n = FLD(s32, self, 0x8) % 20;
         al = (u8)(Ov015_FxMul(FX_SinCosTable_[(Ov015_FxMul(0x7fff, FX_Div(n << 12, 0x14000)) >> 4) * 2], 0x3c000) >> 12);
         if (al > 30) {
             al = 30;
         }
-        n = Ov015c_SetAlpha(FLD(void *, self, 0x24), al);
+        old = Ov015c_SetAlpha(FLD(void *, self, 0x24), al);
         Ov015c_SetPos(FLD(void *, self, 0x24), 0, -0x1c000);
         FLD(s32, FLD(void *, self, 0x24), 0x150) = -0x1666;
-        Ov015c_PlayPart(FLD(void *, self, 0x24), alphaIdx, 0);
+        m = FLD(void *, self, 0x24);
+        Ov015c_PlayPart(m, alphaIdx, 0);
         FLD(s32, FLD(void *, self, 0x24), 0x150) = -0x199a;
         Ov015c_PlayPart(FLD(void *, self, 0x24), 0x16, 0);
-        FLD(Ov015cFlags, FLD(void *, self, 0x24), 0x6c).alpha = n;
+        FLD(Ov015cFlags, FLD(void *, self, 0x24), 0x6c).alpha = old;
     }
     VEC_Add(&b, &a, &a);
     if (flip) {
