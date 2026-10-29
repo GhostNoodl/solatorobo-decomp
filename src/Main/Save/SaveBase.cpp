@@ -138,17 +138,16 @@ BOOL func_02047694(SaveBase *s) {
 }
 
 BOOL func_02047724(SaveBase *s) {
-    u32 slotSize;
     u8 *p;
-    SaveData *data;
     u8 *slot;
     u32 i;
+    u32 slotSize;
+    SaveData *data;
     u32 n;
-    u8 cks;
     slotSize = s->slotSize;
     data = s->data;
-    slot = (u8 *)SaveBase_GetSlot(s, s->curSlot);
-    if (s->data->size != s->dataSize || (data->slot.flags & 2)) {
+    slot = (u8 *)s->header + (s->curSlot * slotSize + 0x14);
+    if (data->size != s->dataSize || (data->slot.flags & 2)) {
         return FALSE;
     }
     p = (u8 *)&data->slot;
@@ -162,13 +161,13 @@ BOOL func_02047724(SaveBase *s) {
     n = slotSize + 4;
     n = s->dataSize - n;
     if (n != 0) {
+        u8 cks;
         u8 x;
-        BOOL ok;
         const u8 *q;
+        BOOL ok;
         x = 0;
+        q = (const u8 *)data + (s->dataSize - n);
         cks = data->checksum;
-        q = (const u8 *)data;
-        q += (s->dataSize - n);
         for (i = 0; i < n; i++) {
             x ^= q[i];
         }

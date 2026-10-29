@@ -2,49 +2,6 @@
 
 extern "C" {
 
-#ifdef NONMATCHING
-BOOL func_02047724(SaveBase *s) {
-    u32 slotSize;
-    u8 *p;
-    SaveData *data;
-    u8 *slot;
-    u32 i;
-    u32 n;
-    slotSize = s->slotSize;
-    data = s->data;
-    slot = (u8 *)SaveBase_GetSlot(s, s->curSlot);
-    if (data->size != s->dataSize || (data->slot.flags & 2)) {
-        return FALSE;
-    }
-    p = (u8 *)&data->slot;
-    for (i = 0; i < slotSize; i++) {
-        if (*p != *slot) {
-            return FALSE;
-        }
-        p++;
-        slot++;
-    }
-    n = s->dataSize - (slotSize + 4);
-    if (n != 0) {
-        u8 cks;
-        u8 x;
-        const u8 *q;
-        BOOL ok;
-        x = 0;
-        q = (const u8 *)data + (s->dataSize - n);
-        cks = data->checksum;
-        for (i = 0; i < n; i++) {
-            x ^= q[i];
-        }
-        ok = (x ^ cks) == 0;
-        if (!ok) {
-            return FALSE;
-        }
-    }
-    return TRUE;
-}
-#endif
-
 void func_020477fc(SaveBase *s, void *src, u32 size) {}
 
 void func_02047800(SaveBase *s, SaveHeader *hdr) {

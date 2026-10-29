@@ -2911,7 +2911,7 @@ src/ov000/Obj_021658e8.cpp:
 
 src/ov000/Model_02164a94.cpp:
     complete
-    .text       start:0x02164a94 end:0x02164c50
+    .text       start:0x02164a94 end:0x021652e4
 
 src/ov000/Lo_021b1540.cpp:
     complete

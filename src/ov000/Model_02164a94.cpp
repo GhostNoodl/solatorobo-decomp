@@ -67,9 +67,6 @@ void func_ov000_02164a94(u8 *self) {
 
 }
 
-#ifdef NONMATCHING
-// func_ov000_02164c50: 185 raw / 0 register-masked diffs, real two-argument signature.
-// Whole-function rotation of the callee-saved registers (self, arg and the hoisted zero).
 #include "types.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
@@ -203,6 +200,7 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
         u16 n2 = 0;
         s32 i;
         s32 j;
+        s32 k;
         u8 *e = arg + 0xc;
         for (i = 0; i < p[8]; i++) {
             u8 *s;
@@ -228,14 +226,14 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
         MI_CpuFill8(LFLD(void *, p, 0xc84), 0, p[8] * 0x1c);
         LFLD(void *, p, 0xc88) = func_0203de84(p[9] << 3, 4);
         MI_CpuFill8(LFLD(void *, p, 0xc88), 0, p[9] << 3);
-        for (i = 0; i < p[9]; i++) {
-            LFLD(void *, LFLD(u8 *, p, 0xc88) + i * 8, 4) = func_0203de84(p[8] << 2, 4);
-            MI_CpuFill8(LFLD(void *, LFLD(u8 *, p, 0xc88) + i * 8, 4), 0, p[8] << 2);
+        for (k = 0; k < p[9]; k++) {
+            LFLD(void *, LFLD(u8 *, p, 0xc88) + k * 8, 4) = func_0203de84(p[8] << 2, 4);
+            MI_CpuFill8(LFLD(void *, LFLD(u8 *, p, 0xc88) + k * 8, 4), 0, p[8] << 2);
         }
     }
     {
-        u8 *e = arg + 0xc;
         u8 i;
+        u8 *e = arg + 0xc;
         for (i = 0; i < p[8]; i++) {
             u32 off = i * 0x1c;
             LFLD(u32, LFLD(u8 *, p, 0xc84) + off, 0) = LFLD(u32, e, 0);
@@ -247,7 +245,6 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
 }
 
 }
-#endif
 
 #ifdef NONMATCHING
 // func_ov000_021652e4: 156 raw / 56 register-masked (round rtF), real four-argument signature
@@ -263,6 +260,10 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
 // gives the ascending node order (reverse declaration) the ROM shows. Left: colouring and
 // scheduling in the parts loop (all 120 orders of col/h/j/k/rx and the col-loop block locals
 // give 117 / 27).
+// Round frC: 100 / 27. `he` (the hit-def walk pointer) was declared at its first use, so it was the
+// last user variable and got the lowest node; declared first it is numbered above col/h/j/k/rx,
+// which fixes the hit loop's colours. The parts loop is still off (the &oam[k]/pos temps and the
+// post-allocation schedule).
 
 
 extern "C" {
@@ -358,6 +359,7 @@ typedef struct Out_52e4 {
 #define D_POS_52e4(i) (&((Pos_52e4 *)((u8 *)d + 0x65c))[i])
 
 void func_ov000_021652e4(void *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
+    const HitDef_52e4 *he;
     s32 col; Hit_52e4 *h; s32 j; s32 k; s32 rx;
     Oam_52e4 tmpl = *D_OAM_52e4(0);
     s32 row;
@@ -467,7 +469,7 @@ void func_ov000_021652e4(void *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
     o->nHit = def->nHit;
     h = &LFLD(Hit_52e4 *, d, 0xc80)[LFLD(u8, d, 7)];
     o->hits = h;
-    const HitDef_52e4 * he = def->hits;
+    he = def->hits;
     for (j = 0; j < o->nHit; j++) {
         u8 c = he->c;
         LFLD(Hit_52e4 **, LFLD(u8 *, d, 0xc88) + c * 8, 4)[o->slot] = h;
