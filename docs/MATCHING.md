@@ -6197,3 +6197,22 @@ Junk removal in matched code (tmD's leftover list). No new match, no function lo
 - **`0203a984`:** `ramerge.py` needs the `blocks[i]` temp (`b`) numbered after `nm`'s result vreg, or `nm` below `b`. Codegen gives an assignment's result vreg before its operands, and IRO always lifts `b = blocks[i]` into its own statement first, whatever the spelling (`blocks[i]` in `nm`'s expression, every field through `blocks[i]`, `b`/`nm` at every scope). If `b` and `nm` stayed user objects, `nm, b` declared first would work, but both are dead objects (copy-propagated). O2 is 50 / 17, O3 10 / 0.
 - **`021d1f70`:** the multi-target search confirms bgN. Any one of these fixes all six wrong nodes: the `by << 12` holder older than the second `PlayPart`'s `res`, that `res` newer than the holder, or the first `res` newer than the holder. The holder is an IRO CSE temp in every form tried (`SetPos` locals in four orders, a nested `DrawRest` helper with a pre-shifted `y` used twice, a block-local `fy`).
 - **Not reached:** `0200d36c` (the only drafts are permuter scratch files with `arr_[2]` arrays) and `02166180`.
+
+### Round qpA
+
+No new match, no source change. The full table of remaining functions (size, doc mentions, current masked / raw score, best draft, note) is in `scratchpad/qpA/remaining.tsv`; its `020459cc` and `02046070` rows are stale (both matched since). Partway through, the main module went to qpB, so the `0203b4ac`, `0206e858` and `02069b3c` notes below are handed over. Scratch is in `scratchpad/qpA/`: `sc.py SRC FUNC [MOD]` (honest_search score of one draft), `rom.py FUNC [MOD]` (ROM listing), bgT's `sch/` re-pointed at the qpA clone, and one directory per draft.
+
+- **`0203b4ac` (main, for qpB): 14 / 59 → 11 / 51** (`b4ac/clean.cpp`). Starting from `mainmid5/d/b4ac/ip/030.cpp`:
+  - a `u8 *base = canvas->charBase;` local is read right after `nx = cx1 - cx0;`, before the `nx < 0` return, and `dst = base + charSize * cx0`;
+  - `rowStride = charSize * canvas->param` comes after the `glyphBytes` line;
+  - `s = src + j * srcStride` comes first in the loop body;
+  - the declarations are in honest_search's order.
+
+  What is left is the prologue colouring (the ROM has `canvas` r6, `w` r4, `x` r8, `h` ip, `end`/`cx1` fp, `nx` sb) and the stack slots of `srcStride` and `j`. These did not help: reading `h` after the `w == 0` test (11 / 50, worse masked), all 120 orders of the prologue statements, and NNS-style `n1`/`n2` rewrites (43 / 41). `ramerge.py` does not reproduce this colour graph (6 nodes differ), so its what-if search cannot be used here.
+- **`ov000_0218a670` (6 / 12): the cycle-1 condition.**
+  - The ROM order is `ldr; str 0; str pos; str lo; reload; add; str hi`. For it, at cycle 1 either the zero store must have no latency-2 memory edge from the `*a` load, or a second ready node must outrank the `code = a + 1` add.
+  - That second node could be an in-block zero `mov`, or a copy that coalescing later removes. But copies of `a`, of the value, or of a zero local are all propagated before scheduling, and move-constant-loads hoists the three zeros into the preheader before scheduling.
+  - About 20 generated variants (`a670/gen*.py`) and honest_search found nothing better than 6.
+- **`ov010_02204030` (12 / 26): pressure mode.** The first block has 14 live values, so the pre-allocation scheduler runs in pressure mode. In our build the zero `mov` (`c2`) fills an early stall slot; the ROM stores its zeros after the table loads. honest_search (`4030/hs/`) found nothing.
+- **`0206e858` (main, for qpB, 4 / 10).** With a call per case there are two separate literal loads, but each case schedules its loads first because they are urgent (`dl0`). A form with a local for the language opens `r6` instead of rematerialising.
+- **`02069b3c` (main, for qpB, 4 / 44).** The ROM coalesces the `param + key` sum into `r3` (`param`); our build puts it in `r1`. honest_search found nothing.
