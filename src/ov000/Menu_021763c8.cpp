@@ -2,7 +2,7 @@
 // string pool 0x021cba18..0x021cbac0). The former files are kept as they were, each in its own
 // namespace, so that their local typedefs, inlines and extern declarations do not clash. The TU
 // is split at the functions that do not match yet (0217a1f8, 0217b324); once they do,
-// the four parts become one file and the pool can be claimed.
+// the three parts become one file and the pool can be claimed.
 #include "ov000/LoCommon.h"
 #include "ov000/VObj.h"
 #include "nitro/fx.h"
