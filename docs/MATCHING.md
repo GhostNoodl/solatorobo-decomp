@@ -6570,3 +6570,30 @@ Pointer-bit removal in matched code. **One of the ten functions is now honest an
   - `02041080` (case B). An enum `bit` (any of three positions) is still rebuilt in the loop as `mov r0, #1` (37–38). `~others << j` with an enum `~1` (Rule G) is 63–65.
   - `ov015_022078bc` (7 / 5, case A). Here the needed boundary comes after a store (`.b1 = 1`), not after a call. So it cannot be a 100-instruction split: `FS` at hooks 34–37 gives 7 / 8, because merge 0 joins the halves again. `char *STD_CopyString` gives 7 / 7.
   - `ov003_021eb818`, `ov006_021e9f80` (case A, post-allocation run). No statement in either function passes 100 (`cnt.sh`), so the split lever does not apply. Not retried beyond the trick-free scores (11 and 2).
+### Round raG
+
+No new match, no score changed. `ov000_0219b808` stays at 4 / 0 and `ov011_021fc0b8` at 13 / 3 (raw / register-masked; hzR's `msp.py`, which aligns the listings; the plain scorer gives 26 / 17). Their `NONMATCHING` comments now say why. `0218867c` was not reached. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK. Scratch is in `scratchpad/raG/`:
+- `t/` is pmA's `bk`/`sd7` set pointed at this clone. `RO=2:25 ROP=...` reorders `0219b808`'s call block.
+- `pl.sh FILE` prints the score and the pre-scheduler list of that block. `sub.py` swaps in a replacement for the message lines.
+- `topo*.py` / `ord*.res` hold the oracle sweeps, and `so.py` / `so.txt` the 2520-order source sweep.
+- `z/` is hzR's `mcl` tools pointed at this clone (`z/c/rem.py` swaps in another `Ov011Ent_Remove`).
+
+- **`0219b808`: the list order is necessary but not enough.** raA said the ROM needs the list `x` load, `unk_30` load, `x` store. pmA's `RO`/`ROP` oracle confirms that this is required, but it does not give the ROM on its own.
+  - With the draft's numbering (`unk_30` = `v115`, below `x`/`y`/`z`), all 35 dependency-respecting orders of the eight rot/`unk_30` nodes fall short of 0. The interleaved order gives 4 / 2: `unk_30` and `z` swap `ip`/`lr`, and the two stores swap.
+  - With `unk_30` numbered after `z` (sources `v1`, `vD`, `vJ`, where the `unk_30` read comes after the three rot loads), the interleaved list gives **0 / 0**. Two variants pass: `x` ld, `unk` ld, `x` st, `y` ld, `y` st, `z` ld, `z` st, `unk` st, and the same with the last two stores swapped. No other order of 420 passes.
+  - `ramerge.py` multi-target on the interleaved form (`117:12 119:14`) agrees. The fix is to renumber `unk_30` anywhere after `z`, or `z` anywhere before `unk_30`, including the object range.
+- **Rule: within a block, codegen numbers temps in list order.** Every spelling tried numbers the `x`/`y`/`z`/`unk_30` loads in their list order, so "listed before the `x` store, numbered after `z`" cannot come from straight-line source. The spellings tried were:
+  - block or function-scope locals and reference-out inlines (`GetRot(r, u16 &x, ...)`, `Get16`, `GetV`);
+  - inline value parameters, in either argument order (arguments are numbered and listed together);
+  - struct copies (stores get flag `0x40`, but the graph and the numbering are the same);
+  - typed `v` locals (`u32`, `int`, `long`, `BOOL`, `register`).
+  
+  A local whose def is not forwarded stays at its statement, but it is still a codegen temp. It is not one of the low-numbered objects (nodes 16–42 of this graph), which would satisfy "`z` before `unk_30`".
+- **Closest honest form.** One scratch `u16 r` reused for the three halves plus a `v` local (`r = rot.x; v = q->unk_30; m.rot.x = r; r = rot.y; m.rot.y = r; r = rot.z; m.rot.z = r; m.unk_14 = v;`) gives exactly the ROM's list. Rule F keeps the first def in place and forwards the other two. The numbering is still `x < unk < y < z`, so the result is 4 / 2. `honest_search --loose` from that form (1382 compiles) found only the old 4 / 0.
+- **Statement-order sweep.** All 2520 orders of `rx`/`ry`/`rz`/`v` defs and stores (`so.py`) give at best 4 / 0. Running all 16 combinations of `x`/`y`/`z` through a `Get16(&rot.c, u16 &)` reference inline at four `v` positions also gives at best 4 / 0, because the reference inline is forwarded like a plain local.
+- **Rule C, read in full (`0x5264f0` / `0x526470`, called from the move step `0x5265c0`):** after the pressure check (`0x5263f0`, limit 10), `0x5264f0` places the moved constant in the target block.
+  - It fails only when the target block has **no instructions** (its first-instruction pointer is null). Then the step is refused (`ok=0`, seen only for moves into block 0).
+  - Otherwise `0x526470` scans the target from its tail for the same opcode with an equal constant (`0x5261f0`). If that load is flagged `0x80000`, or its register is virtual with at most one def, the moved load becomes a copy of it (`mov orig, reused`, opcode `0xa2`).
+  - In every other case the scan gives up, and a new vreg (`0x65b860++`) is loaded at the target and flagged `0x80000`. The source instruction always becomes a copy, and `0x526390` adds 1 to the pressure of every block on the path, once per group.
+  - **Reuse versus re-insert never stops a walk.** The candidate test at the group's block visit (`0x526a52`) has the same condition as the reuse test: a virtual register, plus flag `0x80000` or a single def. So a reused single-def zero (an enum or user local) is itself moved from its block when that block is visited. Only pressure above 10 or a target block with no instructions refuses a step.
+- **`021fc0b8` / `021fd638`: the enum-zero tries.** `Ov011PathIdx idx = OV011_PATH_IDX_START` (= 0) was stored as `e->unk_08 = idx` in three places: at the top of `Remove`'s `if`, in the loop body (IR LICM puts it in preheader 94) and before the `if`. In all three the zero just starts the same walk (`94->55 p=8` … `52->47` refused), at 26 / 3. A zero that is a real vreg can't keep the ROM's preheader `mov r6, #0`. The refusal still needs block 55 at 11 (rounds hzR/cvZ), or an empty block between the guard and the preheader. Both functions share the inline, so this applies to `021fd638` unchanged.

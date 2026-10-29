@@ -51,6 +51,13 @@ VObj *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 k
 // unk_30 load between it and the x store (the colour model then gives r1/r3 with x, y, z, unk_30
 // numbered in that order). Reading unk_30 after the x store adds a store-to-load edge, and a local
 // for x is forwarded back past the unk_30 load (out-pointer inlines, struct copies, typed locals too).
+// Round raG: the list order alone is not enough. Under gdb (pmA's RO/ROP oracle) every dependency-respecting
+// order of the 8 rot/unk_30 nodes fails with this draft's numbering (unk_30 lowest; interleaved: 4 / 2). The ROM needs
+// both the interleaved list (x load, unk_30 load, x store, y, z, unk_14 store) and unk_30 numbered after z
+// (ramerge: renumber either one past the other). One scratch local reused for the three halves plus a v
+// local (r = rot.x; v = q->unk_30; m.rot.x = r; r = rot.y; ...) gives exactly that list, but unk_30 is still
+// numbered before y/z: 4 / 2. Codegen numbers temps in list order, so no statement order (all 2520 orders of
+// four locals: best 4 / 0) or inline spelling gives both; honest_search on that form found nothing.
 #include "ov000/Actor.h"
 namespace m_Spawn_0219b808 {
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))

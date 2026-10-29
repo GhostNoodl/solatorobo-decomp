@@ -142,6 +142,10 @@ void *func_ov011_021fc0a0(void *self) {
 // In case 2 the ROM keeps the 1 passed as on in sl and sets the list-removal zero in the inner preheader; this draft hoists the zero further.
 // Rounds hzZ/hzR: the whole difference is one refused step of the move-constant-loads pass (the removal zero, inner
 // preheader to the n != NULL guard); forcing that refusal in the compiler gives 0 / 0. See docs/MATCHING.md.
+// Round raG: rule C (0x526470) only decides whether a moved zero reuses an equal constant or gets a new load;
+// it never refuses a step (0x5264f0 fails only when the target block has no instructions at all). A reused
+// single-def zero is itself a move candidate when its block is visited, so an enum zero local (declared at the
+// top of Remove, in the loop body, or before the if) just starts the same walk (26 / 3).
 
 struct Ov011Slot {
     u8 b0 : 1;
