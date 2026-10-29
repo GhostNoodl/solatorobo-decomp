@@ -219,6 +219,8 @@ void func_ov000_02166be8(u8 *self) {
 // read-modify-write of oam word 0, as in the ROM (MATCHING.md, round bgS). With fxA's `d`
 // local, `oy` declared before `ox` (ox gets sp+0x14) and the r-field compares written field
 // first, everything but the outer sine's register matches (ours r1, the ROM r6).
+// Round bgU: tools/ramerge.py shows the ROM's sine shares f_0's live range (the only single
+// coalesce that gives r6 with nothing else moving); no honest source for that found yet.
 #include "ov000/Vec.h"
 
 typedef struct {
