@@ -29,77 +29,77 @@ static inline s32 Ov015_Pick(const u16 *tbl, s32 max, s32 mod, s32 amt, s32 id) 
     return id;
 }
 
-// The loop index `j` is an extra trailing parameter (callers pass five arguments); it only steers
-// register allocation.
-void func_ov015_022113e8(void *self, Ov015ItemEnt *list, s32 n, u16 a, s32 budget, s32 j) {
+static inline BOOL Ov015_InList(const Ov015ItemEnt *list, s32 cnt, s32 id) {
+    s32 j;
+    BOOL found = FALSE;
+    for (j = 0; j < cnt; j++) {
+        if (list[j].id != 0xffff && id == list[j].id) {
+            found = TRUE;
+        }
+    }
+    return found;
+}
+
+static inline BOOL Ov015_InTable(const u16 *tbl, s32 n, s32 id) {
+    BOOL found = FALSE;
+    s32 j;
+    for (j = 0; j < n; j++) {
+        if (id == tbl[j]) {
+            found = TRUE;
+            break;
+        }
+    }
+    return found;
+}
+
+void func_ov015_022113e8(void *self, Ov015ItemEnt *list, s32 n, u16 a, s32 budget) {
     s32 cnt;
-    s32 rnd;
     s32 i;
-    s32 id;
-    s32 start;
+    s32 j;
+    s32 rest;
     s32 price;
     s32 num;
     s32 sub;
-    BOOL found[1];
-    s32 rest[1]; // one-element array: register allocation
+    s32 id;
     if (list == NULL || n <= 0) {
         return;
     }
     cnt = 0;
     MI_CpuFill8(list, 0, n * 8);
-    rnd = func_02040528(budget) + 0x1000;
-    rest[0] = (s32)(((s64)(a << 12) * rnd + 0x800) >> 12) >> 12;
-    while (rest[0] > 0 && cnt < n) {
+    // rest first holds the random scale (fx32, 1.0 and up), then the amount it scales
+    rest = func_02040528(budget) + 0x1000;
+    rest = (s32)(((s64)(a << 12) * rest + 0x800) >> 12) >> 12;
+    while (rest > 0 && cnt < n) {
         id = 0xffff;
-        if (rest[0] < 20) {
-            id = Ov015_Pick(data_ov015_0221265c, 1, 2, rest[0], id);
-        } else if (rest[0] < 200) {
-            id = Ov015_Pick(data_ov015_02212660, 4, 5, rest[0], id);
-        } else if (rest[0] < 2000) {
-            id = Ov015_Pick(data_ov015_0221267a, 8, 9, rest[0], id);
+        if (rest < 20) {
+            id = Ov015_Pick(data_ov015_0221265c, 1, 2, rest, id);
+        } else if (rest < 200) {
+            id = Ov015_Pick(data_ov015_02212660, 4, 5, rest, id);
+        } else if (rest < 2000) {
+            id = Ov015_Pick(data_ov015_0221267a, 8, 9, rest, id);
         } else {
-            id = Ov015_Pick(data_ov015_0221266a, 7, 8, rest[0], id);
+            id = Ov015_Pick(data_ov015_0221266a, 7, 8, rest, id);
         }
-        found[0] = FALSE;
-        for (j = 0; j < cnt; j++) {
-            if (list[j].id != 0xffff && id == list[j].id) {
-                found[0] = TRUE;
-            }
-        }
-        if (found[0]) {
+        if (Ov015_InList(list, cnt, id)) {
             continue;
         }
         if (id != 0xffff) {
             price = FLD(u16, func_0206ee20(id), 0x2);
-            found[0] = FALSE;
-            for (j = 0; j < 8; j++) {
-                if (id == data_ov015_0221266a[j]) {
-                    found[0] = TRUE;
-                    break;
-                }
-            }
-            if (found[0]) {
-                num = rest[0] / price;
+            if (Ov015_InTable(data_ov015_0221266a, 8, id)) {
+                num = rest / price;
                 if (num >= 2) {
                     num = 2;
                 }
                 sub = price * num;
             } else {
-                found[0] = FALSE;
-                for (j = 0; j < 9; j++) {
-                    if (id == data_ov015_0221267a[j]) {
-                        found[0] = TRUE;
-                        break;
-                    }
-                }
-                if (found[0]) {
+                if (Ov015_InTable(data_ov015_0221267a, 9, id)) {
                     num = func_02040498(5) + 15;
-                    if (num > rest[0] / price) {
-                        num = rest[0] / price;
+                    if (num > rest / price) {
+                        num = rest / price;
                     }
                     sub = price * num;
                 } else {
-                    num = rest[0] / price;
+                    num = rest / price;
                     sub = price * num;
                 }
             }
@@ -110,7 +110,7 @@ void func_ov015_022113e8(void *self, Ov015ItemEnt *list, s32 n, u16 a, s32 budge
         list[cnt].id = id;
         list[cnt].count = num;
         cnt++;
-        rest[0] -= sub;
+        rest -= sub;
     }
     for (i = 0; i < n; i++) {
         for (j = n - 1; j > 1; j--) {

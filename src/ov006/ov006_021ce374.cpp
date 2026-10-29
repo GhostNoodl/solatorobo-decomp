@@ -385,8 +385,10 @@ static inline u8 ov006_SlotManager_Get14A(ov006_SlotManager *self, u8 i) {
     return 0;
 }
 
-// n and res are locals. Declaring them as parameters gives the target register allocation.
-void func_ov006_021cec68(ov006_TaskCE *self, u8 n, void *res) {
+// res is a local; declaring it as a parameter gives the target register allocation. As a
+// user variable it numbers above every temp (22 diffs at best, round jkE).
+void func_ov006_021cec68(ov006_TaskCE *self, void *res) {
+    u8 n;
     u8 i;
     u8 k;
     ov006_Entry021cec68 *e;
@@ -453,10 +455,7 @@ void func_ov006_021cec68(ov006_TaskCE *self, u8 n, void *res) {
         if (data_ov006_021ec884->unk149 == 0) {
             self->unk50 = (ov006_Window *)ov006_NewList_ccb54();
             func_ov000_021c55e8(self->unk50, func_0204c0e8(res, 0x183));
-            if (n == 1) {
-                n = 2;
-            }
-            self->unk50->unk20 = n;
+            self->unk50->unk20 = (n == 1) ? 2 : n;
             self->unk50->unk24 = 0xc0;
             ov006_Window_SetRot(self->unk50, 0x20, 0x3c, -0x1ccd);
             for (i = 0; i < 3; i++) {

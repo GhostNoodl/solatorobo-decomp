@@ -90,8 +90,10 @@ static inline void ov002_CamMove(u8 *c, const Vec3 *pos, s32 tx, s32 ty, s32 tz)
 
 static inline void *GetMgr021ddf18(void) { return data_02149ef8; }
 
-// h, cam and w are locals passed as unused register parameters (the locals-as-parameters lever).
-void func_ov002_021ddf18(void *self, void *owner, s32 h, u8 *cam, s32 w) {
+// h and cam are locals passed as unused register parameters (the locals-as-parameters lever).
+// As user variables they number above every temp and the registers rotate (124-127 diffs, round jkE).
+void func_ov002_021ddf18(void *self, void *owner, s32 h, u8 *cam) {
+    s32 w;
     void *g;
     VObject *p;
     u8 *c;

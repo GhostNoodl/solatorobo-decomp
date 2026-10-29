@@ -88,11 +88,12 @@ static inline BOOL Ov008Entry_IsSet(Ov008Entry *e) {
     return Ov008Entry_Flag(e) ? TRUE : FALSE;
 }
 
-// i, ents and res are locals passed as unused register parameters (the locals-as-parameters lever,
-// then a parameter-order sweep); see docs/MATCHING.md round ovmid7.
-void func_ov008_021cfa38(Ov008Mgr2 *m, u16 i, Ov008SaveEnt *ents, void *res) {
-    res = data_02149ef8;
+// i and ents are locals passed as unused register parameters (the locals-as-parameters lever,
+// then a parameter-order sweep); see docs/MATCHING.md round ovmid7. As locals they get user-variable
+// nodes, which are all above the temps, and the loop's registers rotate (71-89 diffs, round jkE).
+void func_ov008_021cfa38(Ov008Mgr2 *m, u16 i, Ov008SaveEnt *ents) {
     VObj *p;
+    void *res;
     Ov008Entry *it;
     u8 *base;
     u32 cnt;
@@ -100,6 +101,7 @@ void func_ov008_021cfa38(Ov008Mgr2 *m, u16 i, Ov008SaveEnt *ents, void *res) {
     u32 flags;
     u32 ok;
     Ov008Tag tag;
+    res = data_02149ef8;
     p = (VObj *)func_0203dd9c(0xd4);
     if (p != NULL) {
         FLD(void *, p, 0) = &data_ov000_021cac60;
