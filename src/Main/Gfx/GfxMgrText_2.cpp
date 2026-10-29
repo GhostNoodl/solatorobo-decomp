@@ -126,4 +126,124 @@ void func_0203b12c(GfxMgr *mgr, const char *str) {
     mgr->unk_69c[3] = height;
 }
 
+#ifdef NONMATCHING
+// func_0203b4ac: 11 register-masked / 51 raw (round qpA, honest_search scorer). The `base = canvas->charBase`
+// read sits before the `nx < 0` return (the ROM loads it there), `rowStride` comes after `glyphBytes`, and
+// `s` is set first in the loop body. Left: the prologue colouring (ROM: canvas r6, w r4, x r8, h ip,
+// end/cx1 fp, nx sb) and the stack slots of srcStride and j; ramerge.py does not reproduce this graph.
+// NNSG2dCharCanvas embedded in GfxMgr at 0x684.
+typedef struct GfxTextCanvas {
+    /* 0x00 */ u8 *charBase;
+    /* 0x04 */ u32 areaWidth;
+    /* 0x08 */ u32 areaHeight;
+    /* 0x0c */ u8 dstBpp;
+    /* 0x10 */ u32 param;
+} GfxTextCanvas;
+
+// Copies the 1bpp text mask at mgr->unk_67c into the 4bpp canvas, drawing set pixels in the given color.
+void func_0203b4ac(GfxMgr *mgr, int color) {
+    u8 *dst;
+    int h;
+    u32 *p;
+    GfxTextCanvas *canvas;
+    u32 charSize;
+    int end;
+    u32 *pend;
+    int k;
+    u8 *s;
+    u32 cy1;
+    int nx;
+    u32 word;
+    u32 glyphBytes;
+    u32 cx0;
+    u32 b;
+    u32 rowStride;
+    u8 glyphRaw;
+    int x;
+    int sh;
+    u32 j;
+    GfxFont *font;
+    int srcOff;
+    int wb;
+    int w;
+    int srcStride;
+    u32 cx1;
+    u8 *src;
+    u8 *base;
+    canvas = (GfxTextCanvas *)mgr->unk_684;
+    w = mgr->unk_69c[1];
+    x = mgr->unk_00c & ~7;
+    font = mgr->fonts[mgr->unk_004];
+    charSize = (canvas->dstBpp * 64) / 8;
+    h = mgr->unk_69c[3];
+    if (w == 0) {
+        return;
+    }
+    end = x + w;
+    if (end < 0) {
+        return;
+    }
+    if (h < 0) {
+        return;
+    }
+    cx0 = 0;
+    if (x > 0) {
+        cx0 = (u32)x >> 3;
+    }
+    cx1 = (u32)(end + 7) >> 3;
+    if (canvas->areaWidth <= cx1) {
+        cx1 = canvas->areaWidth;
+    }
+    cy1 = (u32)(h + 7) >> 3;
+    if (canvas->areaHeight <= cy1) {
+        cy1 = canvas->areaHeight;
+    }
+    nx = cx1 - cx0;
+    base = canvas->charBase;
+    if (nx < 0) {
+        return;
+    }
+    if ((int)cy1 < 0) {
+        return;
+    }
+    dst = base + charSize * cx0;
+    glyphRaw = font->res->info[6];
+    glyphBytes = (u32)(glyphRaw << 6) >> 6;
+    rowStride = charSize * canvas->param;
+    wb = w >> 3;
+    srcStride = wb << 3;
+    if (x < 0) {
+        srcOff = -x >> 3;
+    } else {
+        srcOff = 0;
+    }
+    src = (u8 *)mgr->unk_67c + srcOff * glyphBytes;
+    for (j = 0; j < cy1; j++) {
+        s = src + j * srcStride;
+        p = (u32 *)(dst + j * rowStride);
+        pend = (u32 *)((u8 *)p + charSize * nx);
+        k = 0;
+        while (p < pend) {
+            b = *s;
+            if (b != 0) {
+                word = *p;
+                for (sh = 0; sh < 32 && b != 0; sh += 4, b = (u8)(b << 1)) {
+                    if (b & 0x80) {
+                        word = (word & ~(0xf << sh)) | (color << sh);
+                    }
+                }
+                *p = word;
+            }
+            k++;
+            s += wb;
+            p++;
+            if (k >= 8) {
+                s -= srcStride - glyphRaw;
+                k = 0;
+            }
+        }
+    }
+}
+#endif
+
 }
