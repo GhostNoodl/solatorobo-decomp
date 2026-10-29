@@ -207,6 +207,9 @@ void func_ov000_02166be8(u8 *self) {
 // Real signature (self, p), as LoTail in Lo_02164708.cpp calls it. The old draft's third
 // parameter k stood in for a block-scope local plus f_0 set by if/else (see MATCHING.md, round bgJ).
 // Left: the sine temp in r6, the oam/anim temps at entry, and inner-loop colouring.
+// Round fxA: `s32 d = b - a; return LO_FX_MUL(d, s) + a;` in Lerp715c gives the ROM's smull
+// operand order (difference in Rm, sine in Rs) and 116 / 66 (109 with branch targets and pool
+// offsets masked), but the inner block's loads then schedule further from the ROM (masked 58 -> 66).
 #include "ov000/Vec.h"
 
 typedef struct {
