@@ -210,6 +210,9 @@ void func_ov000_02166be8(u8 *self) {
 // Round fxA: `s32 d = b - a; return LO_FX_MUL(d, s) + a;` in Lerp715c gives the ROM's smull
 // operand order (difference in Rm, sine in Rs) and 116 / 66 (109 with branch targets and pool
 // offsets masked), but the inner block's loads then schedule further from the ROM (masked 58 -> 66).
+// Round frD: 112 / 53 (99 / 40 masked, from 113 / 45). The struct-typed `oam` template is
+// declared at its first use (`Oam715c oam = LFLD(Oam715c, p, 0x2c);`, rule 3 of round frC) and
+// `oy` after `r` (tools/declsweep.py --use, greedy).
 #include "ov000/Vec.h"
 
 typedef struct {
@@ -268,12 +271,11 @@ static inline BOOL Busy715c(u8 *self) {
 static inline s32 Lerp715c(s32 a, s32 b, s32 s) { return LO_FX_MUL(b - a, s) + a; }
 void func_ov000_0216715c(u8 *self, u8 *p) {
     u8 ii;
-    s32 oy;
     s32 s;
     s32 y0;
     u8 *r;
-    Oam715c oam;
     s32 ox;
+    s32 oy;
     u8 *pt;
     u8 *q;
     s32 x1;
@@ -295,7 +297,7 @@ void func_ov000_0216715c(u8 *self, u8 *p) {
     BOOL f_1;
     kind = LFLD(u8 *, p, 0xcb4)[0x14];
     anim = LFLD(u8 *, p, 0xc88) + kind * 8;
-    oam = LFLD(Oam715c, p, 0x2c);
+    Oam715c oam = LFLD(Oam715c, p, 0x2c);
     g = (u8 *)data_ov000_021ccd54;
     mgr = func_0203bbfc(data_02097d48, 1);
     ox = LFLD(s32, p, 0xcbc);

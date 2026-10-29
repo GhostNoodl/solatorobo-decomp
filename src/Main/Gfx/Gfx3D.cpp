@@ -81,6 +81,8 @@ static inline void Gfx_GetOamShift(const OamShape *sp, u32 *w, u32 *h) {
     *h = data_020828c8[shapeBit][sizeBit];
 }
 
+// func_02043100 (round frD): 109 / 63, 110 / 62 with branch targets and pool offsets masked
+// (was 122 / 66, 123 / 63): `s0` declared after `h`/`w` (tools/declsweep.py single move).
 void func_02043100(int x, int y, int z, u32 color, const GfxOamAttr *oam, const GfxOamTex *tex, u32 texBase, u32 plttBase, const void *mtx) {
     int trans[3];
     int scale[3];
@@ -93,10 +95,10 @@ void func_02043100(int x, int y, int z, u32 color, const GfxOamAttr *oam, const 
     int oy;
     u32 addr;
     int fmt;
-    int s0;
     int s1;
     int t0;
     int t1;
+    int s0;
     u32 pal;
     u32 ws;
     u32 hs;

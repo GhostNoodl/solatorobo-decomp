@@ -99,6 +99,7 @@ void func_0205311c(GameScene *scene) {
 // forwarded to its store past the `if`, the mask group gets 5 extended blocks and step 4 of
 // move-constant-loads hoists the else arm's mask to the entry. The target still does the `x`
 // mask before the predicated `addeq`, and colours `o` in `r6`.
+// Round frD: 65 / 16. `dir` declared after `t` (tools/declsweep.py single move; it was second).
 typedef struct Obj3254Model {
     /* 0x00 */ u8 unk_00[0x78];
     /* 0x78 */ s32 x;
@@ -183,11 +184,11 @@ static inline void Obj3254Model_SetScale(Obj3254Model *m, s32 x, s32 y, s32 z) {
 void func_02053254(GameScene *scene, int a, void *obj, int b) {
     Obj3254Part *part = (Obj3254Part *)obj;
     s32 x;
-    s32 dir;
     Draw3254 *d;
     s32 y;
     s32 tx;
     Obj3254Type *t;
+    s32 dir;
     s32 v;
     s32 sx;
     s32 sz;
