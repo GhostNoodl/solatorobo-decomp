@@ -112,3 +112,76 @@ void func_0200d320(void) {
     }
 }
 
+
+#ifdef NONMATCHING
+// func_0200d36c (CARDi_ReadRomWithCPU, round raB): 5 / 0 (raw / register-masked), honest.
+// The SDK read loop at -O2 with opt_propagation off (only that pair gives the target's loop shape and
+// the `mov r0, r7; cmp r8, r0` page-size compare). Left: the read loop's word/data/ctrl are coloured
+// r1/r0/r2 here and r3/r1/r2 in the ROM, so in the ROM some node coloured r0 interferes with all three
+// across the loop, although nothing in the target's loop reads r0 (rounds svA, frC, raB).
+// This file's .text ends at 0x0200d36c, so the function belongs here once it matches.
+#define CARD_ROM_PAGE_SIZE 0x200
+
+typedef struct CARDiRomCache {
+    BOOL flush_dc;  // 0x00
+    u32 cache_page; // 0x04
+} CARDiRomCache;
+
+extern CARDiRomCache data_0208af30;
+extern u32 data_0208e600[CARD_ROM_PAGE_SIZE / sizeof(u32)];
+void func_0200da28(u32 id);
+
+#pragma push
+#pragma optimization_level 2
+#pragma opt_propagation off
+int func_0200d36c(void *userdata, void *buffer, u32 offset, u32 length) {
+    int retval = (int)length;
+    u32 cachedPage = data_0208af30.cache_page;
+    u8 *const cacheBuffer = (u8 *)data_0208e600;
+
+    (void)userdata;
+    while (length > 0) {
+        u8 *ptr = (u8 *)buffer;
+        u32 n = CARD_ROM_PAGE_SIZE;
+        const u32 pos = offset & ~(CARD_ROM_PAGE_SIZE - 1);
+
+        if (pos == cachedPage) {
+            ptr = cacheBuffer;
+        } else {
+            if (pos != offset || ((u32)buffer & 3) != 0 || length < n) {
+                cachedPage = pos;
+                ptr = cacheBuffer;
+            }
+            func_0200d1a8(pos);
+            {
+                u32 word = 0;
+                for (;;) {
+                    const u32 ctrl = reg_MI_MCCNT1;
+                    if ((ctrl & REG_MI_MCCNT1_RDY_MASK) != 0) {
+                        u32 data = reg_MI_MCD1;
+                        if (word < CARD_ROM_PAGE_SIZE / sizeof(u32)) {
+                            ((u32 *)ptr)[word] = data;
+                            word++;
+                        }
+                    }
+                    if ((ctrl & REG_MI_MCCNT1_START_MASK) == 0) {
+                        break;
+                    }
+                }
+            }
+        }
+        if (ptr == cacheBuffer) {
+            const u32 mod = offset - pos;
+            n = (length <= CARD_ROM_PAGE_SIZE - mod) ? length : (CARD_ROM_PAGE_SIZE - mod);
+            MI_CpuCopy8(cacheBuffer + mod, buffer, n);
+        }
+        buffer = (u8 *)buffer + n;
+        offset += n;
+        length -= n;
+    }
+    func_0200da28(func_0200d1f0());
+    data_0208af30.cache_page = cachedPage;
+    return retval;
+}
+#pragma pop
+#endif

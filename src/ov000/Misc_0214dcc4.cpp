@@ -34,6 +34,8 @@ void func_ov000_0214dcc4(Obj0214dcc4 *self) {
 // (ovlo12/d/dd3c/m2.cpp) read the game-state pointer through a one-element array g[1]; reading
 // it through a getter inline (GetG0214dd3c) numbers the two g temps the same way. Without either
 // (plain `u8 *g = data_ov000_021ccd54;`) it is 70 / 0. Left: key / Key(p) / insert-walk p colouring.
+// Round raB: address accessors for the list head, next and unk_36, a for walk and O1-O3 give 28 or
+// worse; the ramerge colour model does not reproduce this graph (13 nodes differ).
 #include "ov000/LoCommon.h"
 
 extern "C" {

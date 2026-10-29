@@ -129,7 +129,7 @@ Node0216607c *func_ov000_0216607c(void *self, Node0216607c *node, u8 *outIdx, BO
 }
 
 #ifdef NONMATCHING
-// func_ov000_02166180: 31 / 0 (raw / register-masked), real signature, register colouring only.
+// func_ov000_02166180: 27 / 0 (raw / register-masked), real signature, register colouring only.
 // Rounds g6180, g6180b and vphase3 draft; round dgB reuses pos for the part's position pointer
 // (was a separate ps), which gives pos the ROM's sl. Round bgL reuses r for the busy block's node
 // and i for the busy and else loops (was n and m), which fixes the busy block. Left: oams/j and the
@@ -139,6 +139,11 @@ Node0216607c *func_ov000_0216607c(void *self, Node0216607c *node, u8 *outIdx, BO
 // and oams in the temp range below the &oams[j] temp. Toys show the j value is an IRO temp whenever
 // it is used across blocks (named copies `jx = j`, u8 or s32, are turned into a temp too), and IRO
 // temps are numbered below every user variable, so this needs a different structure, not an order.
+// Round raB: 27 / 0. The second loop's OAM entries are reached through an OamAt6180 accessor
+// (u32 index; a u8 index gives 31). That makes the j value the newest temp and gives &oams[j] the ROM's
+// r8. Left: oams (r3, ROM sb) and the j value (sb, ROM r3) are swapped. bgN's placement search on the
+// new graph still needs oams numbered among the temps (below &oams[j]) and the j value above g: a reused
+// pointer (o or a fresh ob) for oams changes the code (360+), a PosAt accessor too gives 27 or 79.
 // This file's .text ends at 0x02166180, so the function belongs here once it matches.
 
 typedef struct {
@@ -209,6 +214,10 @@ static inline void SetXY6180(Oam6180 *o, u16 x, u16 y) {
 }
 
 #define PUTM(o, X, Y) if ((X) < 8 || (X) > 0xf8 || (Y) < 8 || (Y) > 0xb8) { SetXY6180(o, 0, 0xc0); } else { SetXY6180(o, X, Y); }
+static inline Oam6180 *OamAt6180(Oam6180 *o, u32 j) {
+    return &o[j];
+}
+
 static inline BOOL Busy6180(u8 *self) {
     u8 *h = LFLD(u8 *, LFLD(u8 *, self, 0x30), 0xcdc);
     return h != NULL && LFLD(u16, h, 0x10a) != 0;
@@ -326,20 +335,20 @@ void func_ov000_02166180(u8 *self) {
             yy += ey;
             xx += ex;
             if (xx < 8 || xx > 0xf8 || yy < 8 || yy > 0xb8) {
-                SetXY6180(&oams[j], 0, 0xc0);
+                SetXY6180(OamAt6180(oams, j), 0, 0xc0);
             } else {
-                SetXY6180(&oams[j], xx, yy);
+                SetXY6180(OamAt6180(oams, j), xx, yy);
             }
             if (LFLD(RBits6180, r, 0).a == g[0xcb] && LFLD(RBits6180, r, 0).b == g[0xcc]) {
                 xx = ex - 4; yy = ey - 4; PUTM(&LFLD(Oam6180, p, 0xc), xx, yy)
                 LFLD(Oam6180, p, 0xc).w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) - 2);
-                oams[j].w1.pal = pal[PalIdx6180(p)];
+                OamAt6180(oams, j)->w1.pal = pal[PalIdx6180(p)];
             } else if (LFLD(RBits6180, r, 0).f0) {
-                oams[j].w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) + 2);
+                OamAt6180(oams, j)->w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) + 2);
             } else if (LFLD(RBits6180, r, 0).f2) {
-                oams[j].w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) + 1);
+                OamAt6180(oams, j)->w1.pal = *(LFLD(s8 *, p, 0xc90) + PalIdx6180(p) + 1);
             } else {
-                oams[j].w1.pal = LFLD(s8 *, p, 0xc90)[PalIdx6180(p)];
+                OamAt6180(oams, j)->w1.pal = LFLD(s8 *, p, 0xc90)[PalIdx6180(p)];
             }
         }
     }
