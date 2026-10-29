@@ -6731,3 +6731,29 @@ No new match. Two in-tree `NONMATCHING` drafts improve (raw / aligned register-m
 - **`02043100`: backend CSE ignores the C access path.** The pre-allocation local CSE merges two loads of one address in an extended block whatever the source spelling: a const view for the shape read becomes `mov r6, r5` (230 / 67). A struct copy `GfxOamAttr a = *oam` folds away (126), or, address-taken for the bitfields, gives the ROM's `ldm` but stores the copy (frame +8) and takes `x` from it (223 / 54). The ROM shows no branch or predicated instruction between its `ldm` and the `x` reload.
 - **`021cd91c` (both drafts): the three leftovers are pressure-mode picks, not list order.** The two `Ov003Cd_Color` copies (blocks of 48, maxlive 20–21) pick g's `lsr` at live 14, while the ROM finishes the `mla`/`adc` chain first. `RO`/`ROP` moves of the b chain, the g tail or the argument loads leave 48 / 23 unchanged, and normal mode for either block is worse (63–80). The case-10 alpha block is one block across both calls; the ROM loads `unk48` before the `asr` of the call result and the `021cce20` pool word after `unk4C`. `fx32` result locals with `(u8)(a >> 12)` at each store, a `u16 c` colour local, swapped `g`/`b` statements and `FX_Mul` spellings of `g` all give the same code.
 - **`02048e74`:** on pmC's draft all 24 orders of the four field stores give 60–63 raw, none better than 62 / 10 masked.
+### Round qpL
+
+No new match, and no score changed. The four drafts stay where they were: `ov009_02204a10` at 33 aligned-masked / 295 raw, `ov009_0220acb8` at 6 / 47 (qpC's `acb8.cpp`, aligned / raw), `ov009_02206084` at 5 / 7, and `ov006_021e7004` at 12 / 22. The `NONMATCHING` comments of `02204a10` and `021e7004` record this round. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK. Scratch is in `scratchpad/qpL/`:
+- `sc.sh SRC FUNC MOD` defines `NONMATCHING`, then prints the raw score and qpD's aligned-masked score (the diff goes to `last.diff`). `vt.py SRC FUNC MOD VARS.py` scores replacement sets.
+- `pt.sh`, `licm.sh` and `t/` are qpD's move-constant-loads and pass-dump tools, pointed at this clone. `od.py` is bgV's disassembler. `scan0.py` scans the built objects for `mov rA, #0; mov rB, rA` followed by an instruction that redefines `rA`.
+- `4a10/`, `acb8/`, `6084/`, `toy/` hold the drafts and toys.
+
+- **`02204a10`: the ROM's merged zero has no source form we can find.**
+  - raH's call rule does reach the base. A `tr = ((Ov009Trail *)self)->trail` local, set before the `0219a510` call and used for the `VEC_Distance` argument, keeps its object vreg (31 aligned / 326 raw). But `tr` is then live across the list loop, so it stays in `fp`. Set right before the loop, it is copy-propagated and changes nothing (33).
+  - A toy loop (`VEC_Normalize`, x/z `* 0x666`, `y = 0`, `VEC_Add`) also leaves the `g.y` zero and the two lowered high-word zeros as **three** preheader nodes (`toy/t1.cpp`). Separate zeros are normal for any such loop.
+  - Moving `i = 0` out of block 64, or putting a store after it there, does not merge them either. With `i = 0` gone, the zeros skip block 64 and are refused at block 57. With the extra store, they still stop at `i`'s multi-def zero.
+  - `scan0.py` finds no matched function with the ROM's `mov rA, #0; mov rB, rA; <rA redefined>` shape, so no matched code shows the source shape that makes it.
+  - Other forms tried, with no gain:
+    - `g.y` first, `{x, 0, z}` initialisers, swapped `FxMul` arguments and `0x800LL`;
+    - no `continue`, a `while` loop, and a block-scope `g`.
+  - An enum zero local for `g.y` gives the ROM's frame (32 / 233), but the enum takes the `[sp, #0x10]` slot instead of the base, as qpD found. It is not kept.
+  - Diagnostic, not kept: using `v` in place of `g` (the wrong stack layout) does spill the base to `[sp, #0x10]`, with `&v` in `fp`. So the spill choice depends on how many stack-address nodes are live across the loop.
+- **`0220acb8`: raH's second rule explains why only the `(u16)` cast colours right.** `ramerge.py` needs the `ldrh f0` or `lsl` temp numbered after the `0x1000` constant (qpC). raH found that only two passes before scheduling make vregs out of list order: pool address loads, and pcode expansion (a large-offset load split into `add` + load, or a `u16` narrowing split into `lsl` + `lsr`).
+  - Neither applies to `ldrh [self, #0xf0]` (its offset fits) or to the plain `<< 14` / `>> 16`.
+  - The cast's narrowing does go through pcode expansion. That expansion gives the late number, and with it the right colours, but it also adds the `lsr; lsl` pair that the ROM does not have.
+  - So the ROM's term needs one IR op that expands into `lsl #14` + `lsr #16`, such as an unsigned bit-field extract. No spelling of that fits a 16-bit `ldrh` field. Not solved.
+- **`02206084`: still a height difference** (bgV), not a numbering or block question.
+  - With `id` first, these give 7–19: a `u8 |= 0x10` flag write in either order, an `id` local, and the `p` copies moved first.
+  - The ROM's `ldrh` first still needs the `id` path to be one cycle taller.
+- **`021e7004`: not retried beyond re-scoring.** raH's rules and rule F do not reach it. The residue is still bgV's `c=1` `t->x` tie and pmB's `hp`/`hy` tail-merge difference.
+- **Overlap:** pmC's `honest_search` sweep covers the same drafts. This round did not run `honest_search` on them.

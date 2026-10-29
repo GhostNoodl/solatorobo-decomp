@@ -91,6 +91,7 @@ void func_ov006_021e6eb0(ov006_Prop021e6eb0 *self) {
 // Round pmB: reusing one scratch for dp/hp (and for dy/hy), so that rule F keeps the earlier
 // definitions as statements, gives 22 / 12 at best (reuse inside one angle) and 176-180 / 46 when
 // one local carries both angles; computing y before p gives 28 / 14.
+// Round qpL: not a numbering or block question (raH/rule F do not reach it); left as bgV/pmB found.
 
 typedef struct ov006_Aim7004Tgt {
     s32 x;

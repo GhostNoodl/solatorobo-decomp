@@ -29,6 +29,12 @@ void func_ov009_022049e4(Ov009Actor *self) {
 // Merging them by hand under gdb puts the zero in fp, not a spill (42 aligned, worse). "mov r0, #0;
 // mov r4, r0" is post-allocation CSE of a constant move. See docs/MATCHING.md, round qpG.
 // See docs/MATCHING.md, round qpD.
+// Round qpL: a toy loop (Normalize, x/z * 0x666, y = 0, VEC_Add) also keeps the g.y zero and the
+// two lowered high-word zeros as three preheader nodes, and no matched object has the ROM's
+// "mov rA, #0; mov rB, rA; <rA redefined>" shape, so no source for the merged zero was found. A
+// `tr = trail` base local set before the 0219a510 call (raH: a call between def and use keeps the
+// object vreg) is 31 aligned / 326 raw, but tr is then live across the list loop and stays in fp.
+// Reusing v for g (wrong layout, diagnostic only) does flip the spill to the base at [sp, #0x10].
 extern "C" {
 
 extern void *const data_ov009_02215d0c[];
