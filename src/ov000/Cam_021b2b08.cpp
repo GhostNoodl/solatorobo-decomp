@@ -12,7 +12,7 @@ extern "C" {
 extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd54;
 void *func_ov000_0218e640(void *mgr, u16 id);
-void func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 u16 func_0204bfa8(void *cam);
 void func_ov000_0218db58(void *self, u16 angle, u16 center, u16 range, s32 step);
 void func_ov000_0218d398(void *t, u16 id, s32 a, s32 b, s32 c, void *arg);

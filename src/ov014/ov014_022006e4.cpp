@@ -10,7 +10,7 @@ extern void *data_02097e4c;
 extern void func_ov000_02191690(void *a);
 extern void func_ov000_02191708(void *a);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *v);
-extern void func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 
 void func_ov014_022006e4(Ov014Actor *self) {
@@ -325,8 +325,8 @@ void func_ov014_02200a88(Ov014Actor *self) {
 extern const Ov014Vec data_ov014_02216564;
 extern const Ov014Vec data_ov014_022165b8;
 extern void func_ov000_0218d918(Ov014Actor *self, Ov014Vec *v, s32 a);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
-extern BOOL func_ov003_021d9edc(s32 kind);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern u16 func_ov003_021d9edc(s32 kind);
 
 void func_ov014_022010a4(Ov014Actor *self) {
     Ov014Vec v;

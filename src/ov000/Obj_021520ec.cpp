@@ -22,7 +22,7 @@ extern void *data_02097e4c;
 extern Dtcm02fe1534 data_02fe1534;
 
 void func_0206281c(void);
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 
 VObj *func_ov000_021520ec(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021caac8);

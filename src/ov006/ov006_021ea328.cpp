@@ -24,7 +24,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 ov006_Fx021ea328 *func_02065f88(int id, void *pos);
-void func_02049f44(void *a, int b, void *c, int d);
+void *func_02049f44(void *a, int b, void *c, int d);
 
 void func_ov006_021ea328(ov006_Prop021ea328 *self) {
     self->unk1F6 += 3000;

@@ -6,8 +6,8 @@ extern u8 data_ov010_022102e0[];
 extern void *data_0214a420;
 extern const Ov010Vec data_ov010_0220f57c;
 extern u8 data_ov010_0220f534[];
-extern void func_ov000_02194074(void *self);
-extern void func_ov000_0219429c(void *self);
+extern void *func_ov000_02194074(void *self);
+extern void *func_ov000_0219429c(void *self);
 extern void func_ov000_02194758(void *self);
 extern void MTX_Identity33_(void *m);
 extern void func_02065860(void *a, s32 b);
@@ -16,10 +16,10 @@ extern void MTX_RotY33_(void *m, s32 s, s32 c);
 extern void MTX_Concat33(void *a, void *b, void *c);
 extern void MI_Copy36B(void *m, void *b);
 extern s32 func_ov000_021903b4(void *p);
-extern void func_ov000_02190cb0(void *p, s32 a, s32 b, s32 c);
+extern BOOL func_ov000_02190cb0(void *p, s32 a, s32 b, s32 c);
 extern void func_ov000_021915a0(void *p);
 extern void func_0203f364(void *p);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 static inline void Ov010_0220dd60_Reset(void *self) {
     FLD(s32, self, 0xd0) = -1;
@@ -221,7 +221,7 @@ extern void *data_02097e4c;
 extern s32 FX_Div(s32 a, s32 b);
 extern void func_02065804(void *a, s32 b);
 extern Ov010V *func_02066774(const void *a, const void *b, s32 c, Ov010Vec *pos);
-extern void func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
 
 static inline void Ov010_TrailApply(Ov010V *o, s16 s, u32 n) {
     o->v14(s, s, s);

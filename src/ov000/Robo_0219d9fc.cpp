@@ -74,7 +74,7 @@ extern u8 *data_02097d48;
 extern u8 data_ov000_021ca320[];
 u8 *func_ov000_0218e640(void *mgr, u16 id);
 void func_ov000_02191ec4(void *a, s32 b, u32 c);
-void func_02043d9c(void *p);
+int func_02043d9c(void *p);
 void func_ov000_02190758(void *model, void *rot, s32 a);
 BOOL func_ov000_021903b4(void *model);
 void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);

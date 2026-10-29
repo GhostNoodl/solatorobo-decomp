@@ -3,13 +3,13 @@
 extern "C" {
 
 extern void *data_02097e4c;
-void func_02049f44(void *a, s32 b, void *c, s32 d);
+void *func_02049f44(void *a, s32 b, void *c, s32 d);
 void func_ov003_021d4fd8(void *p);
 void func_ov003_021d5348(void *p);
 
 void func_ov003_021d5900(void *p);
 void func_ov000_0218e8ec(void *mgr, u16 id, s32 c);
-void func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 void func_02065804(void *a, void *b);
 extern void *data_0214a420;
 

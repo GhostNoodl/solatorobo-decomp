@@ -4,7 +4,7 @@ namespace NA { extern "C" u8 data_ov010_0220f534[]; }
 extern "C" {
 extern void *data_0214a420;
 extern void func_02065860(void *a, s32 b);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void func_ov003_021da48c(void *p, s32 a);
 extern BOOL func_ov000_021950e8(void *self, u8 *msg);
 
@@ -57,7 +57,7 @@ BOOL func_ov010_0220adb8(void *self, u8 *msg) {
 }
 
 extern void func_ov000_02194758(void *self);
-extern void func_ov000_02198328(void *p);
+extern void *func_ov000_02198328(void *p);
 extern void func_0203f364(void *p);
 extern u8 data_ov010_0220f534[];
 extern Ov010Vec data_ov010_0220f594;

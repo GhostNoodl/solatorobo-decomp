@@ -383,7 +383,6 @@ struct Ov015VecC {
 
 void *func_0203dd9c(u32 size);
 void func_0203de1c(void *p);
-s64 _s32_div_f(s32 a, s32 b);
 u64 _u32_div_f(u32 a, u32 b);
 
 // Heap selector: [0] = current, [1], [2] = alternate

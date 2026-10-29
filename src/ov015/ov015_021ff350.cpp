@@ -6,8 +6,8 @@ extern u8 data_ov015_0221292c[];
 void func_ov015_022120fc(void *p);
 extern u8 data_ov015_022132e0[];
 void func_ov015_02211a18(void *p);
-void func_ov000_0218fee4(void *p);
-void func_ov000_0218ea20(void *p);
+void *func_ov000_0218fee4(void *p);
+void *func_ov000_0218ea20(void *p);
 
 void func_ov015_021ff350(Ov015Obj30 *self) {
     Ov015Obj30_Clear(self);

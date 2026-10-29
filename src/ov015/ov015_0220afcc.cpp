@@ -55,7 +55,7 @@ s32 FX_Div(s32 a, s32 b);
 Ov015V *func_02065f88(s32 id, void *pos);
 void func_02065860(void *a, void *b);
 s32 func_02040528(s32 n);
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 extern u8 data_ov015_02212e40[];
 extern u8 data_ov015_02212e0d[];

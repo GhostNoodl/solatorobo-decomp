@@ -26,7 +26,7 @@ void func_02041c5c(void *obj, void *value);
 void func_02041c18(void *obj, s32 value);
 u8 *func_0206ede8(u16 id);
 void func_ov000_021566c0(void *self, void *msg, s32 c, s32 d, u8 e, u8 f);
-void func_ov000_02161bc4(void);
+void *func_ov000_02161bc4(void);
 
 static inline BOOL LoFadeDone(void) {
     LoFadeP a;

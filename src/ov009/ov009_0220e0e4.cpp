@@ -13,7 +13,7 @@ extern void MTX_RotX33_(Ov009Mtx33 *m, s32 s, s32 c);
 extern void MTX_RotY33_(Ov009Mtx33 *m, s32 s, s32 c);
 extern void MTX_Concat33(const Ov009Mtx33 *a, const Ov009Mtx33 *b, Ov009Mtx33 *out);
 extern void MI_Copy36B(const Ov009Mtx33 *src, void *dst);
-extern void func_ov000_0218cea4(Ov009Actor *self);
+extern BOOL func_ov000_0218cea4(Ov009Actor *self);
 
 void func_ov009_0220e0e4(Ov009Actor *self) {
     Ov009Mtx33 m;

@@ -38,7 +38,7 @@ extern void func_ov003_021d97fc(void *p, s32 a);
 extern void func_ov003_021d9740(void *p, s32 a);
 extern void func_ov010_021fbb40(void *self);
 extern void func_ov003_021da48c(void *p, s32 a);
-extern void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+extern BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
 extern void func_ov003_021d88ec(Ov010Cmd *c);
 extern void func_ov003_021d8b60(void *p, Ov010Cmd *c);

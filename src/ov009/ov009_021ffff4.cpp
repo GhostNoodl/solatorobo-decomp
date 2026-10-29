@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
 extern u8 data_ov009_02215dc0[];
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b, s32 c);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
@@ -85,8 +85,8 @@ void func_ov009_02200070(Ov009Actor *self) {
 
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void func_ov000_0218d398(Ov009Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-extern void func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
-extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, Ov009Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, Ov009Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern Ov009V *func_02065f88(s32 id, Ov009Vec *pos);
 extern s32 VEC_Distance(const Ov009Vec *a, const Ov009Vec *b);
 

@@ -8,7 +8,7 @@ extern Ov009Actor *func_ov000_021985c0(void *p);
 extern void func_ov003_021f0c60(Ov009Actor *self, s32 a);
 extern s32 func_0203db40(void *p);
 extern void func_ov000_02190a80(Ov009Sub38 *m, s32 a);
-extern void func_ov000_0219429c(void *self);
+extern void *func_ov000_0219429c(void *self);
 
 void func_ov009_02215a54(Ov009Actor *self) {
     func_ov000_02198360(self->unk_40, 0x15, 0);

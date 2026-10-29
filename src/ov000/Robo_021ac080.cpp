@@ -32,13 +32,13 @@ extern u8 data_ov000_021cc636[];
 extern u8 *data_0214a424;
 extern u8 *data_ov000_021ccd54;
 extern void *data_02097e4c;
-void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_02062764(s32 a, s32 b);
 u16 func_ov000_0219a36c(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask);
-void func_02049f44(void *a, s32 b, void *c, s32 d);
+void *func_02049f44(void *a, s32 b, void *c, s32 d);
 u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
-void func_ov000_02198360(void *p, s32 a, s32 b);
+BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 static inline void SetRgb021ac080(u8 *g, u8 r, u8 gr, u8 b) {
     LFLD(u8, g, 0x134) = r;
@@ -172,7 +172,7 @@ extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern char data_ov000_021cc6c6[];
 extern char data_ov000_021cc6cc[];
-void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_02191008(void *p);
 void func_02049bb4(void *mgr, s32 id);
 void func_ov000_0218996c(s32 a, s32 b);
@@ -185,7 +185,7 @@ void func_ov000_02191418(void *a, s32 b, s32 c);
 BOOL func_ov000_02191120(void *a);
 BOOL func_ov000_02191508(void *m);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
-void func_ov000_02198360(void *s, s32 a, s32 b);
+BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 u16 FX_Atan2(s32 x, s32 z);
 u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 

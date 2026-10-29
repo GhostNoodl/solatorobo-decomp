@@ -1,6 +1,6 @@
 #include "ov010/ov010.h"
 extern "C" {
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 void func_ov010_02202838(void *self) {
     void *m = FLD(void *, self, 0x40);

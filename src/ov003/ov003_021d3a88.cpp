@@ -93,12 +93,12 @@ typedef struct {
 extern "C" {
 
 extern s32 func_02040528(s32 max);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 extern void *data_02097e4c;
 extern void *data_0214a420;
 extern void func_0203f324(Ov003Ct *ctl);
-extern void func_02049f44(void *mgr, s32 id, void *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 extern void func_ov000_02199dc0(Ov003S4c *p, void *self);
 extern void func_ov000_0218dbe0(void *self, s32 a);
 extern void func_ov000_021987b8(Ov003Ct *ctl, s32 a, s32 b, s32 c);

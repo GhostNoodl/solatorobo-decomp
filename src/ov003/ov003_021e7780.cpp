@@ -114,8 +114,8 @@ extern "C" {
 extern Ov003Game54 *data_ov000_021ccd54;
 extern const char *const data_ov003_021f6a80[];
 extern void func_ov000_02194758(void *self);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
-extern void func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *model, s32 a);
 BOOL func_ov003_021e7ee4(Ov003Rotor *self);
@@ -126,9 +126,9 @@ extern const Ov003Vec data_ov003_021f6b44[];
 extern void *data_02097e4c;
 extern void func_01ffc9fc(Ov003Vec *src, Ov003Vec *dst, u16 angle);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
-extern void func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern BOOL func_ov000_02191120(void *p);
-extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
 
 static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
     return g->unk_90 != g->unk_94;

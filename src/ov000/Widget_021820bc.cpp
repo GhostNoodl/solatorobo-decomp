@@ -23,7 +23,7 @@ extern "C" {
 
 extern Dtcm02fe1534 data_02fe1534;
 BOOL func_0205a9c8(Widget021820bc *w);
-void func_0205aa30(Widget021820bc *w);
+BOOL func_0205aa30(Widget021820bc *w);
 
 BOOL func_ov000_021820bc(Panel021820bc *self, BOOL notify) {
     Widget021820bc *w = self->unk_10;

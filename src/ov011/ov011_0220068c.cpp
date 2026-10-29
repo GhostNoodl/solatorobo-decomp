@@ -59,9 +59,9 @@ void func_ov011_0220205c(void *p);
 void func_ov011_02202fbc(void *p);
 void func_ov011_021fa7dc(void *p);
 void func_ov011_02202f04(void *p);
-void func_ov011_02201d10(void *p);
-void func_ov011_0220154c(void *p);
-void func_ov011_02202cac(void *p);
+void *func_ov011_02201d10(void *p);
+void *func_ov011_0220154c(void *p);
+void *func_ov011_02202cac(void *p);
 
 static inline void Ov011B_FreeBuf(u8 *b) {
     if (FLD(Ov011Bit01, b, 0x10).b0) {

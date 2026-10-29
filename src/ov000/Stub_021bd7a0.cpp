@@ -13,7 +13,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_0218ea20(void *p);
+void *func_ov000_0218ea20(void *p);
 
 void func_ov000_021bd7a0(void *self) {
     void (*fn)(void *) = *(void (**)(void *))((u8 *)self + 0x64);

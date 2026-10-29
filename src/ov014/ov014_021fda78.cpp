@@ -56,7 +56,7 @@ extern const u8 data_ov014_0221652c[];
 extern const u8 data_ov014_02216524[];
 extern const u8 data_ov014_0221655c[];
 extern void func_ov003_021d112c(Ov014Actor *self);
-extern void func_ov003_021d8198(void *p);
+extern BOOL func_ov003_021d8198(void *p);
 extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_0203f364(Ov014Sub48 *p);
 extern void func_0203f324(Ov014Sub48 *p);

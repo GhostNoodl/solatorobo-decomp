@@ -4,7 +4,7 @@ extern "C" {
 BOOL func_ov002_021e45c4(void *g, void *a, void *b);
 BOOL func_ov002_021e4578(Vec2 *pos, Vec2 *d, void *a, void *b);
 void func_ov002_021d8c34(void *self, s32 d, void *map);
-void func_02049bdc(void *a, int b, int c);
+s32 func_02049bdc(void *a, int b, int c);
 }
 
 static inline void ov002_CamMove(u8 *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {

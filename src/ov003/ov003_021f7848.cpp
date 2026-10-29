@@ -366,18 +366,18 @@ extern const Ov003RtNames data_ov003_021f6a80;
 extern void func_ov000_0219433c(void *self);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_ov000_02194758(void *self);
-extern void func_ov000_0218ffdc(void *anim, void *res, s32 a, s32 b);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_0218ffdc(void *anim, void *res, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern BOOL func_ov000_02194c08(void *self);
 extern void func_ov000_02190758(void *anim, Ov003Rot *rot, s32 a);
 extern void func_01ffc9fc(Ov003Vec *dst, const Ov003Vec *src, u16 angle);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
-extern void func_ov000_021903b4(void *anim);
+extern BOOL func_ov000_021903b4(void *anim);
 extern Ov003RtPlayer *func_ov000_0219bf90(void);
-extern void func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern s32 VEC_Distance(const Ov003Vec *a, const Ov003Vec *b);
-extern void func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern Ov003Game54 *data_ov000_021ccd54;
 extern const u16 data_ov003_021f6a96[];
@@ -388,7 +388,7 @@ extern void func_ov000_021953b4(void *self);
 extern void func_02065804(void *mgr, void *handle);
 extern Ov003SwFx *func_02065f88(s32 id, const Ov003Vec *pos);
 extern Ov003SwFx *func_020657b0(void *mgr, void *handle);
-extern void func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 BOOL func_ov003_021e83d0(Ov003Rotor *self);
 
 void func_ov003_021e8544(Ov003Swing *self) {
@@ -663,7 +663,7 @@ extern "C" {
 
 extern void *data_ov000_021ccd64;
 extern void func_ov000_02196c40(void *self);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_02194758(void *self);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 extern s32 func_02040498(s32 max);
@@ -707,14 +707,14 @@ extern const Ov003Vec data_ov003_021f6ad8;
 extern Ov003Game54 *data_ov000_021ccd54;
 extern void *data_02097e4c;
 extern void *data_0214a420;
-extern void func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021911c8(void *p, s32 a);
 extern void func_ov000_021915a0(void *p);
 extern Ov003MvFx *func_02065f88(s32 id, const Ov003Vec *pos);
 extern Ov003MvFx *func_020657b0(void *mgr, void *handle);
-extern void func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern Ov003MvPlayer *func_ov000_0219bf90(void);
-extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
 
 static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
     return g->unk_90 != g->unk_94;
@@ -957,7 +957,7 @@ struct Ov003Gate {
 extern "C" {
 
 extern void *data_ov000_021ccd64;
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_02194758(void *self);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 
@@ -984,15 +984,15 @@ extern void *data_ov000_021ccd68;
 extern const Ov003Vec data_ov003_021f6af0;
 extern const Ov003Vec data_ov003_021f6b08;
 extern Ov003GtPlayer *func_ov000_0219bf90(void);
-extern void func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_02191690(void *p);
 extern void func_ov000_02191708(void *p);
-extern void func_ov000_02191318(void *p, s32 a);
-extern void func_ov000_0218ffdc(void *anim, void *res, s32 a, s32 b);
+extern void *func_ov000_02191318(void *p, s32 a);
+extern BOOL func_ov000_0218ffdc(void *anim, void *res, s32 a, s32 b);
 extern s32 VEC_Distance(const Ov003Vec *a, const Ov003Vec *b);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
-extern void func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
-extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
+extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
 extern void *func_ov000_0218e6d0(void *mgr, s32 a, s32 b);
 extern s32 func_ov000_0219a7bc(void *self, s32 a, Ov003Vec *pos, s32 r, s32 b, Ov003GtObj **list);
 extern Ov003GtSub *func_ov000_02199ba0(void *p);
@@ -1257,15 +1257,15 @@ extern u16 FX_Atan2(s32 y, s32 x);
 extern void func_ov000_0219433c(void *self);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_ov000_02194758(void *self);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
-extern void func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
 extern s32 func_02040528(s32 max);
 extern void VEC_MultAdd(s32 scale, const Ov003Vec *dir, const Ov003Vec *base, Ov003Vec *out);
 extern s32 VEC_Distance(const Ov003Vec *a, const Ov003Vec *b);
 extern Ov003FlyPlayer *func_ov000_0219bf90(void);
-extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern void func_ov000_0218dbe0(void *self, s32 a);
 
 static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
@@ -1627,14 +1627,14 @@ extern const Ov003Vec data_ov003_021f6acc;
 extern const s16 FX_SinCosTable_[];
 extern void func_01ffc9fc(Ov003Vec *dst, const Ov003Vec *src, u16 angle);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *ab);
-extern void func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern s32 VEC_Distance(const Ov003Vec *a, const Ov003Vec *b);
 extern Ov003FlyPlayer *func_ov000_0219bf90(void);
-extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern void func_ov000_0218dbe0(void *self, s32 a);
 extern void func_ov000_0218d918(void *self, const Ov003Vec *v, s32 a);
-extern void func_0204a028(void *mgr, s32 id, const Ov003Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, const Ov003Vec *pos, s32 a);
 
 static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
     return g->unk_90 != g->unk_94;
@@ -1796,7 +1796,7 @@ typedef struct {
 } Ov003Spin2;
 
 extern BOOL func_ov000_02194c08(void *self);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 typedef struct {
     s32 m[9];
@@ -2021,7 +2021,7 @@ extern void *data_02097e4c;
 extern void func_ov000_0218dbe0(void *self, s32 a);
 extern s32 func_ov000_0219a2f4(Ov003EaVec *v, s32 y, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_02049f44(void *mgr, s32 id, Ov003EaVec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov003EaVec *pos, s32 a);
 
 static inline s32 Ov003Eb_FxMul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);

@@ -9,8 +9,8 @@ extern void *data_02fe152c;
 Ent0214bcc4 *func_0205976c(void *a, s32 b);
 s32 func_02061f08(u16 id);
 u32 func_ov000_0214bf2c(u16 a);
-BOOL func_020594bc(void *a, int b, int c, int d);
-BOOL func_02059544(void *a, void *b, void *c, s32 d, s32 e);
+u16 func_020594bc(void *a, int b, int c, int d);
+u16 func_02059544(void *a, void *b, void *c, s32 d, s32 e);
 
 u16 func_ov000_0214bcc4(s32 kind, s32 idx) {
     u8 *base;

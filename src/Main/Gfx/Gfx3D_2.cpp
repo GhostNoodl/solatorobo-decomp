@@ -32,7 +32,7 @@ typedef struct GfxCamPos {
     int v[9];
 } GfxCamPos;
 
-void func_02043548(GfxCamPos *p) {
+GfxCamPos *func_02043548(GfxCamPos *p) {
     p->v[0] = 0;
     p->v[1] = 0;
     p->v[2] = 0;
@@ -42,6 +42,7 @@ void func_02043548(GfxCamPos *p) {
     p->v[6] = 0;
     p->v[7] = 0x1000;
     p->v[8] = 0;
+    return p;
 }
 
 

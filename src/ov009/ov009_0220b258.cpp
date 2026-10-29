@@ -11,7 +11,7 @@ extern void func_ov000_02191418(void *m, s32 a, s32 b);
 extern BOOL func_ov000_02191508(void *m);
 extern void func_ov000_0218dbe0(Ov009Actor *self, s32 turn);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 void func_ov009_0220b258(Ov009Actor *self) {
     Ov009Sub40 *st = self->unk_40;
     Ov009Sub44 *s44;

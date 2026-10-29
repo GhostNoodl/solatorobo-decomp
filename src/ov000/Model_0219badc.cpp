@@ -162,10 +162,6 @@ ResMdlSet *NNS_G3dGetMdlSet(void *file);
 BOOL NNS_G3dBindMdlSet(ResMdlSet *set, void *tex);
 void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 a, u32 mask);
 void NNSi_G3dModifyMatFlag(void *mdl, s32 a, u32 mask);
-u32 _fflt(s32 v);
-u32 _fadd(u32 a, u32 b);
-u32 _fsub(u32 a, u32 b);
-s32 _ffix(u32 v);
 BOOL func_ov000_0218ffdc(Model0218fe1c *self, Res0219badc *res, u8 mode, s32 e);
 void func_ov000_02190e98(Model0218fe1c *self, s32 index, s16 blend, u8 force);
 void func_ov000_021915a0(Model0218fe1c *self);
@@ -214,17 +210,17 @@ void func_ov000_0219badc(Model0218fe1c *self, Res0219badc *res, const Cfg0219bad
     ctrl = func_ov000_02190a30(self, 3);
     if (ctrl != NULL) {
         u32 v;
-        u32 f;
+        float f;
         s32 frame;
         self->unk_c2_6 = 1;
         func_ov000_02191920(self, 0, 0x1000, 0);
         v = cfg->frame;
         if (v > 0) {
-            f = _fadd(0x3f000000, _fflt(v << 12));
+            f = (float)(s32)(v << 12) + 0.5f;
         } else {
-            f = _fsub(_fflt(v << 12), 0x3f000000);
+            f = (float)(s32)(v << 12) - 0.5f;
         }
-        frame = _ffix(f);
+        frame = (s32)f;
         if (ctrl->cur != NULL) {
             if (frame >= 0) {
                 ctrl->cur->frame = frame;

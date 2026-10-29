@@ -25,8 +25,8 @@ extern void func_ov010_02204030(Ov010Vec *out, void *c, const Ov010Vec *target, 
 extern void VEC_Normalize(Ov010Vec *a, Ov010Vec *b);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern Ov010V *func_ov010_0220eaf0(void *self, Ov010Vec *pos, Ov010Vec *p);
-extern void func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
-extern void func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
+extern BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 extern void func_ov010_02207828(void *self);
 extern void func_ov000_0218d918(void *self, void *t, s32 a);
 extern void func_ov003_021d969c(void *p, s32 a);

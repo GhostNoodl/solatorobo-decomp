@@ -10,7 +10,7 @@ extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
 extern void func_ov000_0219a210(Ov009Vec *v, const Ov009Vec *a, u16 b);
 extern Ov009Actor *func_ov003_021d69f0(Ov009Actor *self, u16 kind, const Ov009Vec *pos, const void *rot, Ov009Actor *t);
 extern void func_ov000_0218d46c(Ov009Actor *a, u16 id, s32 b);
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 
 void func_ov009_02210ce8(Ov009Actor *self) {
     Ov009Actor *t = func_ov000_0218d240(self);

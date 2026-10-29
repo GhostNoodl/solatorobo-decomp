@@ -20,7 +20,6 @@ extern u8 data_ov010_0220ffc4[];
 extern u8 data_ov010_02210154[];
 extern u8 *data_ov000_021ccd54;
 extern void *data_0214a420;
-extern s32 _s32_div_f(s32 a, s32 b);
 extern BOOL func_ov003_021d984c(void *p, void *d);
 extern void func_ov003_021d95e8(void *p, void *d, s32 n);
 extern void *func_ov000_0219bf90(void);
@@ -28,11 +27,11 @@ extern void func_ov000_0218a358(void *a, const void *b, void *c, s32 d, s32 e, s
 extern s32 FX_Div(s32 a, s32 b);
 extern void func_ov003_021cf3fc(s32 a);
 extern void func_ov010_022075bc(void *p);
-extern void func_ov003_021d8bb8(void *p);
-extern void func_ov003_021d7fc0(void *p);
-extern void func_ov010_0220d7c0(void *p);
+extern void *func_ov003_021d8bb8(void *p);
+extern void *func_ov003_021d7fc0(void *p);
+extern void *func_ov010_0220d7c0(void *p);
 extern void func_ov003_021d8f34(void *p);
-extern void func_ov003_021d0edc(void *p);
+extern void *func_ov003_021d0edc(void *p);
 extern void func_02065804(void *a, s32 b);
 
 static inline void Ov010_PlayIfIdle(void *self, void *anim, s32 n) {
@@ -43,7 +42,7 @@ static inline void Ov010_PlayIfIdle(void *self, void *anim, s32 n) {
 
 void func_ov010_02208c3c(void *self) {
     u16 *p = FLD(u16 *, self, 0x50);
-    s32 r = _s32_div_f(p[0] << 12, p[1]);
+    s32 r = (p[0] << 12) / p[1];
     if (r <= 0x554) {
         Ov010_PlayIfIdle(self, data_ov010_0220f220, 0x14);
     } else if (r <= 0xccd) {

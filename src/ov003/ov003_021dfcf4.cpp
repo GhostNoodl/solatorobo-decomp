@@ -100,7 +100,7 @@ extern void func_02049564(void *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
 extern void func_ov000_0218999c(s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern Ov003FvPlayer *func_ov000_0219bf90(void);
 extern void func_ov000_021b6b4c(Ov003FvCtx *ctx, u16 a, Ov003FvVec *v);
 extern void func_020627a0(u16 a, u16 b);

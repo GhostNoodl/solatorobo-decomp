@@ -143,7 +143,7 @@ extern void func_ov000_0219864c(Ov003InCtl *p, s32 a, s32 b);
 extern Ov003InS44 *func_ov000_021984c8(void *p);
 extern Ov003InS4c *func_ov000_02199b00(void *p);
 extern void func_ov000_021bd198(Ov003InIcon *p);
-extern void func_ov000_021bd314(Ov003InIcon *p, s32 id);
+extern BOOL func_ov000_021bd314(Ov003InIcon *p, s32 id);
 extern void func_ov000_02190758(Ov003InModel *model, u16 *rot, s32 a);
 
 static inline void Ov003In_Icon(Ov003InIcon *icon, u16 id) {

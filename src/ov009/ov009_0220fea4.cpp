@@ -10,13 +10,13 @@ extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
 extern void func_ov000_02191708(void *p);
 extern void func_ov000_02191690(void *p);
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void func_ov000_0218dbe0(Ov009Actor *self, s32 a);
 extern Ov009Actor *func_ov003_021d69f0(Ov009Actor *self, u16 kind, const Ov009Vec *pos, const void *rot, Ov009Actor *t);
 extern void func_ov000_0218d46c(Ov009Actor *a, u16 id, s32 msg);
 extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
-extern void func_ov000_0219aae8(Ov009Actor *self, Ov009Actor *src, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+extern BOOL func_ov000_0219aae8(Ov009Actor *self, Ov009Actor *src, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 extern void func_ov000_0218996c(s32 a, s32 b);
 
 static inline Ov009Actor *Ov009_FindActor(u16 id) {

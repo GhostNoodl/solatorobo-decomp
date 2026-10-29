@@ -31,15 +31,10 @@ extern s32 data_0208b704;
 extern s32 data_0208b744[];
 
 extern s32 VEC_Distance(const SndVec *a, const SndVec *b);
-extern u32 _fflt(s32 v);
-extern u32 _fsub(u32 a, u32 b);
-extern u32 _fdiv(u32 a, u32 b);
-extern u32 _fmul(u32 a, u32 b);
-extern s32 _ffix(u32 a);
-extern void func_0204061c(s32 *out, const SndVec *pos);
+extern int func_0204061c(s32 *out, const SndVec *pos);
 extern void NNS_SndPlayerPause(SndHandle *handle, int pause);
 extern s32 OS_GetThreadPriority(void *thread);
-extern void OS_SetThreadPriority(void *thread, s32 prio);
+extern BOOL OS_SetThreadPriority(void *thread, s32 prio);
 
 s32 func_02049bdc(SndMgr *mgr, s32 id, s32 pan);
 

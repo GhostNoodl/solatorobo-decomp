@@ -29,7 +29,7 @@ extern char data_ov008_021d0462[];
 void func_ov000_02153f90(void *p);
 void *func_0206e7d0(u8 id);
 void func_02070874(char *dst, const char *fmt, ...);
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 void func_02041440(void *p, void *name, int c);
 void STD_CopyString(void *dst, const void *src);
 void func_020417e0(void *a, void *b);

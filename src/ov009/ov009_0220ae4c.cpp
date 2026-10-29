@@ -26,7 +26,7 @@ extern void *data_02097e4c;
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void func_0203f364(Ov009Sub48 *p);
 extern BOOL func_01ffc624(const Ov009Vec *a, const Ov009Vec *b, Ov009RotS *r, s32 c, s32 d);
 

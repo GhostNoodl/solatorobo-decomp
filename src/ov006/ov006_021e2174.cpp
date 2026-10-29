@@ -15,7 +15,7 @@ typedef struct ov006_Unk021e2174 {
 extern "C" {
 
 extern u8 data_ov006_021ec2cc[];
-void func_ov006_021e1f28(void);
+void *func_ov006_021e1f28(void);
 void func_ov006_021e1f68(void);
 
 ov006_Unk021e2174 *func_ov006_021e2174(ov006_Unk021e2174 *self) {

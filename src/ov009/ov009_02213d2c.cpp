@@ -8,8 +8,8 @@ extern u8 data_ov009_022179f1[];
 extern u8 data_ov009_022179b4[];
 extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern void func_ov000_021911c8(void *model, s32 a);
-extern void func_ov000_02191318(Ov009Sub38 *m, s32 a);
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_ov000_02191318(Ov009Sub38 *m, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void func_ov000_0218ddd4(Ov009Actor *self, Ov009Vec *v, s32 a);
 extern s32 func_02040498(s32 max);
 

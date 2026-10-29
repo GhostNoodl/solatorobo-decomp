@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_ov015_02212db8[];
 void func_0203f364(void *a);
 extern void *data_02097e4c;
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 u8 *func_02066774(void *a, void *b, int c, void *d);
 extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e34[];
@@ -17,8 +17,8 @@ u16 FX_Atan2(s32 x, s32 z);
 extern u8 data_ov015_02212ecc[];
 extern u8 data_ov015_02212eb0[];
 extern u8 data_ov015_02212e47[];
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void func_ov000_02191318(void *a, s32 b);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+void *func_ov000_02191318(void *a, s32 b);
 extern u8 data_ov015_02212e68[];
 extern u8 data_ov015_02212e0d[];
 BOOL func_ov000_02191120(void *p);
@@ -135,9 +135,10 @@ BOOL func_ov015_0220d7d0(u8 *self, Ov015Vec *out, Ov015Vec *pos) {
     return r;
 }
 
-void func_ov015_0220d878(u8 *self) {
+u8 *func_ov015_0220d878(u8 *self) {
     SET_VT(self, data_ov015_02212ecc);
     FLD(s32, self, 0x4) = 0;
+    return self;
 }
 
 void *func_ov015_0220d890(void *self) {

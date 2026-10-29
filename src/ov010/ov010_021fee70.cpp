@@ -23,7 +23,7 @@ extern u8 data_ov010_0220ebc0[];
 extern void func_ov003_021cf404(s32 a);
 extern void func_ov003_021cf400(s32 a);
 extern void func_02065804(void *a, s32 b);
-extern void func_ov010_02200db8(void *p);
+extern void *func_ov010_02200db8(void *p);
 extern void func_ov003_021d8fa8(void *p);
 extern void func_ov003_021cf480(void *p);
 extern void func_ov010_021fedd4(void *self);

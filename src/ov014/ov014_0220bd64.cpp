@@ -5,10 +5,10 @@ extern "C" {
 extern void *data_02097e4c;
 extern u8 data_ov014_02217a4e[];
 extern u8 data_ov014_02217a48[];
-extern void func_ov000_02191318(void *a, s32 b);
+extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_021911c8(void *a, s32 b);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
-extern void func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
 void func_020627a0(u16 a, u16 b);

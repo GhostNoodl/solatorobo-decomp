@@ -25,7 +25,7 @@ extern s32 func_02040528(s32 a);
 extern s32 func_02040498(s32 a);
 
 extern void *func_ov000_0218e4cc(void *mgr, s32 a);
-extern u32 func_ov000_0218dfb4(void *p, s32 a);
+extern u16 func_ov000_0218dfb4(void *p, s32 a);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
 
 

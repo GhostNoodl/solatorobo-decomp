@@ -63,7 +63,7 @@ BOOL func_ov000_0218d494(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg);
 ov006_Effect6ac4 *func_02065f88(int id, void *pos);
 void *func_020657b0(void *a, int b);
 void func_02063a14(void *p);
-void func_02049f44(void *a, int b, void *c, int d);
+void *func_02049f44(void *a, int b, void *c, int d);
 
 static inline void ov006_Prop6ac4_Ack(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg) {
     self->unk30 |= 1 << msg->unk5;

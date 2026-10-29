@@ -2,7 +2,7 @@
 
 extern "C" {
 extern void *func_ov000_0218e4cc(void *mgr, s32 kind);
-extern u32 func_ov000_0218dfb4(void *p, s32 kind);
+extern u16 func_ov000_0218dfb4(void *p, s32 kind);
 
 static inline u16 Ov012_HpPct(Ov012Actor *self) {
     return self->unk_50[0] * 100 / self->unk_50[1];

@@ -16,7 +16,7 @@ void func_02042628(ov006_Model *model, void *a, ov006_ModelPart *part, u8 b);
 void MI_CpuFill8(void *dst, u8 value, u32 size);
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
 void MIi_CpuClear16(u16 value, void *dst, u32 size);
-int func_02046ab4(ov006_Unk02097e40 *a);
+u16 func_02046ab4(ov006_Unk02097e40 *a);
 BOOL func_02045ea4(ov006_Unk02097e40 *a, BOOL enabled);
 int func_ov006_021e4674(ov006_Unk021ec888 *self);
 

@@ -12,7 +12,7 @@ extern Ov014Actor *func_ov000_0218d240(Ov014Actor *self);
 extern void func_0203f364(Ov014Sub48 *p);
 extern void func_ov014_02205924(Ov014Actor *self);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *v);
-extern void func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void *data_02097e4c;
 
 #define OV014_SQRTCNT (*(volatile u16 *)0x40002b0)

@@ -29,7 +29,7 @@ typedef struct {
 extern "C" {
 extern char data_ov000_021cc84c[];
 extern char data_ov000_021cc850[];
-void func_020359d0(void *a, s32 b, s32 c);
+void *func_020359d0(void *a, s32 b, s32 c);
 BOOL func_02035b90(void *a, s32 b);
 void *func_02035d5c(void *a);
 u32 *func_02034ec0(void *a, char *b);

@@ -6,7 +6,7 @@ extern "C" {
 extern u8 data_0208b318[];
 extern u8 data_0208bf54[];
 void func_0205a6e8(void *ptr);
-void func_0204b2c0(void *self);
+void *func_0204b2c0(void *self);
 void VEC_Add(const void *a, const void *b, void *out);
 extern u8 data_ov000_021cc3a0[];
 extern u8 data_ov000_021c9d4c[];

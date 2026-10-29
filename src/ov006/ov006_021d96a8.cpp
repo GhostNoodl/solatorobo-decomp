@@ -55,10 +55,10 @@ void *func_02046a50(void *a, int idx);
 void func_0203cb78(s32 a, int b, int c);
 void func_0203cc58(s32 a, int b, int c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 u16 func_ov006_021e60e8(int type, u16 mask);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
-void func_ov006_021e4c5c(ov006_Unk021ec888 *self);
+BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self);
 void func_ov006_021e5e00(ov006_Unk021ec888 *p);
 void func_ov006_021e4a80(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 

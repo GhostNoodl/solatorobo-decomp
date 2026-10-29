@@ -36,16 +36,16 @@ extern const Ov003SVec data_ov003_021f7694[];
 extern BOOL func_ov000_0218cf5c(void *self);
 extern BOOL func_ov000_0218f110(s16 *p);
 extern void func_ov000_021b4c60(void *self);
-extern void func_ov000_0218ffdc(void *anim, s16 *res, s32 a, s32 b);
-extern void func_ov000_02190cb0(void *anim, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_0218ffdc(void *anim, s16 *res, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *anim, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *anim);
 extern void func_ov000_02190758(void *anim, void *p, s32 a);
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
 extern s32 **func_ov000_02190a30(void *a, s32 b);
-extern void func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern BOOL func_ov000_0218cea4(void *self);
-extern void func_ov000_021903b4(void *anim);
+extern BOOL func_ov000_021903b4(void *anim);
 
 BOOL func_ov003_021f371c(Ov003Prop *self) {
     BOOL r = func_ov000_0218cf5c(self);

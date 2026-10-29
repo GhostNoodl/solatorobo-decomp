@@ -29,10 +29,10 @@ extern char data_ov000_021cc61e[];
 extern char data_ov000_021cc624[];
 extern char data_ov000_021cc62a[];
 extern char *data_ov000_021ca050[];
-void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_ov000_021911c8(void *a, s32 b);
-void func_ov000_02198360(void *st, s32 state, s32 x);
+BOOL func_ov000_02198360(void *st, s32 state, s32 x);
 void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
 u16 FX_Atan2(s32 y, s32 x);
 

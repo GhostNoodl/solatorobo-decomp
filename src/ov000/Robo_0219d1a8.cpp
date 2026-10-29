@@ -38,21 +38,21 @@ extern "C" {
 
 extern u8 *data_0214a424;
 extern char data_ov000_021cc60f[];
-void func_ov003_021ce630(void);
-void func_ov003_021ce6fc(void);
-void func_ov003_021ce79c(void);
-void func_ov003_021ce7c0(void);
+void *func_ov003_021ce630(void);
+u16 func_ov003_021ce6fc(void);
+u16 func_ov003_021ce79c(void);
+u16 func_ov003_021ce7c0(void);
 void *func_0203dd9c(u32 size);
 Info0219d1a8 *func_0206fef8(u16 id);
-void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-u8 func_ov000_021909a8(void *m, void *p, const char *name);
+BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+s32 func_ov000_021909a8(void *m, void *p, const char *name);
 void func_ov000_0219c8e0(u8 *self);
 void func_ov000_02198c8c(void *o, u16 id);
 void func_0203f364(void *o);
 void *func_ov000_021984c8(void *p);
 void *func_ov000_02198328(void *p);
 void *func_ov000_021bd198(void *p);
-void func_ov000_021bd314(void *p, s32 a);
+BOOL func_ov000_021bd314(void *p, s32 a);
 void func_02062764(s32 a, s32 b);
 
 static inline void *NewObj44_0219d1a8(void) {

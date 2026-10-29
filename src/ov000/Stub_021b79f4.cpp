@@ -56,10 +56,10 @@ void func_0203f920(void *p);
 void func_0203f864(void *p);
 void func_0203de1c(void *p);
 void func_0203f0b4(void *p);
-void func_ov000_021b700c(void *p);
+void *func_ov000_021b700c(void *p);
 void func_02036838(void *p, s32 a, s32 b, s32 c);
 
-void func_ov000_021b6f94(void *p);
+void *func_ov000_021b6f94(void *p);
 
 Obj021b79f4 *func_ov000_021b79f4(Obj021b79f4 *self) {
     self->unk_08 = 0;

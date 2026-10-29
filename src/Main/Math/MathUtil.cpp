@@ -68,7 +68,7 @@ extern MathMtx43 data_02092844;
 extern MathMtx44 data_02092800;
 
 extern void MTX_Identity43_(MathMtx43 *mtx);
-extern int FX_Atan2(int y, int x);
+extern u16 FX_Atan2(int y, int x);
 extern void MTX_RotY43_(MathMtx43 *mtx, int sin, int cos);
 extern void MTX_MultVec43(const MathVec *v, const MathMtx43 *mtx, MathVec *out);
 extern void MTX_Copy44To43_(const MathMtx44 *src, MathMtx43 *dst);
@@ -265,7 +265,7 @@ void func_02040968(char *dst, int *dstLen, const u8 *src, int *srcLen) {
     }
 }
 
-extern void func_0200779c(void *a, void *b, void *c);
+extern int func_0200779c(void *a, void *b, void *c);
 extern u8 data_0208b3cc[];
 
 void func_02040a98(void *a, void *b) {

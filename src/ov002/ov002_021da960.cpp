@@ -4,7 +4,7 @@ extern "C" {
 
 void MTX_PerspectiveW(s32 s, s32 c, s32 aspect, s32 n, s32 f, s32 scale, void *mtx);
 
-void func_ov000_021903b4(void *a);
+BOOL func_ov000_021903b4(void *a);
 
 void func_ov002_021da960(void *self) {
     u8 *w = FIELD(self, 0x4, u8 *);

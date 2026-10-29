@@ -18,17 +18,17 @@ Ov011PhotoCfg data_ov011_02207be0 = {
     data_ov011_02207500[0], data_ov011_02207500[1], data_ov011_02207500[0], "photo01", "photo00",
 };
 extern void *data_02097cdc;
-void func_ov000_0214b598(void *p);
+void *func_ov000_0214b598(void *p);
 void *func_ov000_0214b570(void *p);
 void func_ov000_0214b5e8(void *p, void *t);
 s32 func_ov000_0214b6d0(void *p);
 BOOL func_ov000_0214b640(void *p);
 void func_ov000_0214b5bc(void *p);
-void func_ov000_0218ea20(void *p);
-void func_ov003_021d0edc(void *self);
+void *func_ov000_0218ea20(void *p);
+void *func_ov003_021d0edc(void *self);
 void func_ov003_021d0fc0(void *self);
 void func_ov003_021d112c(void *self);
-void func_020359d0(const char *arc, s32 b, s32 c);
+void *func_020359d0(const char *arc, s32 b, s32 c);
 BOOL func_02035b90(const char *arc, s32 b);
 void func_02036838(void *mgr, const char *arc, s32 c, s32 d);
 BOOL func_02036328(void);

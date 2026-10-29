@@ -4,7 +4,7 @@ extern "C" {
 
 BOOL func_ov015_0220a028(u8 *self, void *a);
 void func_ov015_021fd00c(u8 *self, s32 mode, const Ov015VecC *v);
-void func_ov015_02209790(u8 *self, s32 a);
+BOOL func_ov015_02209790(u8 *self, s32 a);
 void func_ov015_0221234c(u8 *self);
 void func_ov015_022123c4(u8 *self);
 void *func_ov015_021fffc4(u8 *self);

@@ -24,10 +24,10 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_02fe152c;
 extern Data02fe1534 data_02fe1534;
 BOOL func_ov000_0219bf90(void *p);
-int func_020594bc(void *a, int b, int c, int d);
+u16 func_020594bc(void *a, int b, int c, int d);
 u32 func_0205975c(void *a, int idx);
 void *func_0205976c(void *a, int idx);
-int func_02059544(void *a, void *b, void *c, u16 d, u16 e);
+u16 func_02059544(void *a, void *b, void *c, u16 d, u16 e);
 BOOL func_020624d8(void);
 
 void func_ov000_02188d28(Rgb3 *rgb) {

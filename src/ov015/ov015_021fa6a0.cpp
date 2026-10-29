@@ -20,7 +20,7 @@ extern u8 *data_ov000_021ccd54;
 extern void **data_0214a420;
 void func_02036838(void *a, void *b, int c, int d);
 void GXx_SetMasterBrightness_(u32 reg, s32 v);
-void func_020359d0(void *a, int b, int c);
+void *func_020359d0(void *a, int b, int c);
 s32 func_02035b90(void *a, int b);
 
 

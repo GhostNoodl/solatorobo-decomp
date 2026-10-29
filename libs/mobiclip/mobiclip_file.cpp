@@ -4,7 +4,7 @@
 
 extern "C" {
 
-extern void FS_WaitAsync(void *file);
+extern BOOL FS_WaitAsync(void *file);
 extern BOOL FS_SeekFile(void *file, int offset, int origin);
 extern int FS_ReadFile(void *file, void *buf, u32 size);
 extern int FS_ReadFileAsync(void *file, void *buf, u32 size);

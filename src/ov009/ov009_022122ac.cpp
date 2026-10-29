@@ -22,7 +22,7 @@ struct Ov009AngSrc2 {
     u16 unk_44;
 };
 
-extern s32 func_0204bfa8(Ov009AngSrc2 *p);
+extern u16 func_0204bfa8(Ov009AngSrc2 *p);
 extern void func_ov000_0216912c(void *o, u16 id, s32 a, u16 b, u16 c, const Ov009Vec *pos);
 
 struct Ov009EaBits {

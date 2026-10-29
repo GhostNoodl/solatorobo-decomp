@@ -33,7 +33,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern Data021ccd34 data_ov000_021ccd34;
 
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 BOOL func_ov000_0214c270(void);
 
 void func_ov000_0217437c(void) {

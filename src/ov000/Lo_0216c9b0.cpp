@@ -3,7 +3,7 @@
 struct LoDE { s32 d; s32 *e; };
 extern "C" {
 
-u16 func_0204045c(void);
+u32 func_0204045c(void);
 void func_ov000_0215fe1c(void *self, s32 a, s32 b);
 void func_ov000_021c216c(void *p);
 void func_ov000_0216c954(void *self, u16 a, s32 b);

@@ -7,7 +7,7 @@ extern void *data_ov000_021ccd68;
 extern void *data_ov009_02215d0c[];
 extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern void func_ov000_0218d46c(Ov009Actor *a, u16 id, s32 msg);
-extern void func_ov000_0218fa28(Ov009Sub38 *m, void *a, void *b, void *c, void *anim, s32 d, s32 e);
+extern BOOL func_ov000_0218fa28(Ov009Sub38 *m, void *a, void *b, void *c, void *anim, s32 d, s32 e);
 extern void func_02049564(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 extern void func_ov009_0220189c(Ov009Actor *self);

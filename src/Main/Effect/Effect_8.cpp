@@ -4,7 +4,6 @@ extern "C" {
 
 extern s32 STD_CompareNString(const void *a, const char *b, u32 n);
 extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
-extern s32 _s32_div_f(s32 a, s32 b);
 extern char data_0208c7fe[];
 extern char data_0208c806[];
 extern char data_0208c80e[];
@@ -73,7 +72,7 @@ extern void func_0206b744(EffectEmitter *em);
 extern void func_0206a0cc(EffectPartSet *parts);
 extern void func_0206a138(EffectPartSet *parts);
 extern void func_0206a0d8(EffectPartSet *parts);
-extern void func_0206a0dc(EffectPartSet *parts, u8 *data);
+extern BOOL func_0206a0dc(EffectPartSet *parts, u8 *data);
 extern void func_02069248(EffectEmitterSub *sub);
 extern void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 

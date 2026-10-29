@@ -47,7 +47,7 @@ typedef struct {
 extern char data_ov003_021f852b[];
 extern char data_ov003_021f8516[];
 extern Ov003G54 *data_ov000_021ccd54;
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern void func_ov000_021915a0(void *model);
 extern BOOL func_ov000_02191120(void *model);

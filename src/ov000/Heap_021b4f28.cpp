@@ -42,7 +42,7 @@ Info021b4f28 *func_0206e7d0(u32 id);
 void func_0206dfd4(char *buf, u8 *src);
 void func_02035acc(void *a, void *b, s32 c);
 void func_ov000_021b6994(Obj021b4f28 *self, s32 a);
-void func_ov000_021b7a7c(Node021b4f28 *node);
+void *func_ov000_021b7a7c(Node021b4f28 *node);
 void func_0203f864(void *obj);
 void func_0206e6c0(void);
 

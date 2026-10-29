@@ -60,7 +60,7 @@ void func_02043904(void *p);
 void func_02043b20(void *p);
 void func_020434e0(void *p);
 void func_ov000_021b65ec(Mgr021b53f4 *self);
-void func_ov000_021b7a7c(Node021b53f4 *n);
+void *func_ov000_021b7a7c(Node021b53f4 *n);
 void func_0203de1c(void *p);
 Ent021b53f4 *func_0206e7d0(u8 id);
 void func_0206dfd4(char *buf, u8 *ids);

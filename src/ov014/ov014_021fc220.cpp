@@ -6,8 +6,8 @@ extern u8 data_ov014_0221722c[];
 extern Ov014Vec data_ov014_022164a0[];
 extern void func_ov003_021daab0(void *p);
 extern void func_ov000_0219763c(void *self);
-extern void func_ov000_02194074(void *self);
-extern void func_ov003_021da940(void *p);
+extern void *func_ov000_02194074(void *self);
+extern void *func_ov003_021da940(void *p);
 extern void func_ov000_02194758(void *self);
 extern void func_0203f364(Ov014Sub48 *p);
 
@@ -108,7 +108,7 @@ extern void func_ov003_021dacfc(void *p);
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern u16 FX_Atan2(s32 x, s32 z);
 extern Ov014Actor *func_ov000_0218e6d0(void *mgr, u16 a, u16 b);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 
 #define OV014_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV014_SQRT_RESULT (*(volatile u32 *)0x40002b4)
@@ -285,7 +285,7 @@ extern u8 data_ov014_02217218[];
 extern Ov014Vec data_ov014_022164c4;
 extern Ov014Actor *func_ov000_02199ba0(void *p);
 extern void func_ov014_021fcf00(Ov014Actor *self);
-extern void func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void func_ov003_021daae4(void *p, s32 a, Ov014Vec *v, void *b, s32 c, s32 d, s32 e);
 extern void func_ov000_0218d918(Ov014Actor *self, Ov014Vec *v, s32 a);
 extern void func_ov000_0218dbe0(Ov014Actor *self, s32 a);

@@ -129,7 +129,7 @@ extern void func_02041c20(Ov003TlSpr *s, u16 a, u16 b);
 extern void func_02041d9c(Ov003TlSpr *s, s32 a, u16 b);
 extern void func_ov000_02173648(Ov003Tl *self);
 extern void func_ov003_021cceb4(void);
-extern void func_ov003_021cce20(void);
+extern void *func_ov003_021cce20(void);
 extern void func_ov000_021c8408(void);
 
 static inline void Ov003TlSpr_Init(Ov003TlSpr *s, const char *file, const char *name) {

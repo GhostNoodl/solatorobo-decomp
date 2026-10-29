@@ -9,7 +9,7 @@ BOOL func_ov000_021b4738(void);
 void func_020627fc(u16 a);
 void func_0206280c(u16 a);
 void func_ov000_02182590(void *p);
-extern void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 
 void func_ov000_0216e894(void *self) {

@@ -8,10 +8,10 @@ extern u8 data_ov009_02216bb4[];
 extern u8 data_ov009_02216bba[];
 extern void func_ov003_021d452c(Ov009Actor *self);
 extern s32 func_ov003_021d1e30(s32 a);
-extern void func_ov003_021da940(void *p);
-extern void func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_ov003_021da940(void *p);
+extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
-extern void func_ov000_02191318(Ov009Sub38 *m, s32 a);
+extern void *func_ov000_02191318(Ov009Sub38 *m, s32 a);
 
 struct Ov009Rot {
     s16 x;

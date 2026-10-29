@@ -11,10 +11,10 @@ extern char data_ov000_021ca935[];
 extern char data_ov000_021ca938[];
 extern char data_ov000_021ca93b[];
 char *STD_SearchString(char *str, const char *sub);
-char *func_02061f08(void);
+char *func_02061f08(u16 id);
 
-u32 func_ov000_0214bf2c(void) {
-    char *s = func_02061f08();
+u32 func_ov000_0214bf2c(u16 id) {
+    char *s = func_02061f08(id);
     u32 flags = 0;
     if (s != NULL) {
         if (STD_SearchString(s, data_ov000_021ca923)) flags |= 0x2;

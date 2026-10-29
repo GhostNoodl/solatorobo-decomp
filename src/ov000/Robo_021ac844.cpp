@@ -51,9 +51,9 @@ extern char data_ov000_021cc6d2[];
 extern char data_ov000_021cc6d8[];
 extern char data_ov000_021cc6de[];
 u8 *func_ov000_0218e640(void *mgr, u16 id);
-void func_ov000_02198360(void *p, s32 a, s32 b);
+BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-void func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
+BOOL func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
 void func_ov000_02191008(void *a);
 void func_ov000_02191418(void *a, s32 b, s32 c);
 BOOL func_ov000_02191120(void *a);
@@ -63,12 +63,12 @@ void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void func_ov000_0218d398(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
 void func_02049bb4(void *mgr, s32 id);
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0218996c(u8 a, u8 b);
 u8 *func_ov000_02199f60(void *p);
 void func_ov000_02199f88(void *t, void *self);
 u16 func_ov000_02198da8(void *body, u16 angle);
-s32 func_0206d204(void *p, s32 a);
+u8 func_0206d204(void *p, s32 a);
 void func_ov000_021b1fac(void *self, s32 a, s32 b);
 
 static inline u8 *FindActor_021ac844(u16 id) {

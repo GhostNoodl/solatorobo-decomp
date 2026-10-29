@@ -5,12 +5,12 @@ extern "C" {
 extern u8 data_ov015_02212f64[];
 extern u8 data_ov015_02212f3c[];
 void func_ov002_021e4cd8(void *self);
-void func_ov000_0218e9c4(void *a);
-void func_ov000_0218fe1c(void *a);
+void *func_ov000_0218e9c4(void *a);
+void *func_ov000_0218fe1c(void *a);
 void MTX_Identity33_(void *a);
 void func_ov002_021e4d4c(void *self);
-void func_ov000_0218fee4(void *a);
-void func_ov000_0218ea20(void *a);
+void *func_ov000_0218fee4(void *a);
+void *func_ov000_0218ea20(void *a);
 
 void *func_ov015_0220dde8(u8 *self) {
     s32 i;

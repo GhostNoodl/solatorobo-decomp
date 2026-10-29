@@ -6,7 +6,7 @@ Ov015V *func_ov015_021fa6d0(void);
 void func_ov015_021fa6f8(Ov015Fade *self, u8 a, u8 b, s32 c, u16 d);
 extern u8 *data_02097dc8;
 extern void *data_02097e4c;
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 extern u8 data_ov015_022128ec[];
 extern u8 data_ov015_02213188[];
 void MI_CpuFill8(void *dst, u32 value, u32 size);
@@ -252,7 +252,7 @@ void *func_ov015_0220f540(void *self) {
 
 extern Ov015Globals data_ov015_02213320;
 void func_ov002_021e7b58(void);
-void func_ov002_021e9b28(s32 a);
+void *func_ov002_021e9b28(s32 a);
 s32 func_ov002_021e7ea8(void *p);
 void func_ov015_021fa75c(Ov015Fade *self);
 void func_ov015_0220f878(u8 *self);

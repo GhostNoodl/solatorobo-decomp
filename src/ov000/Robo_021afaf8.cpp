@@ -96,8 +96,8 @@ extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 u8 *func_0206ef10(u16 id);
 u8 *func_02065f88(s32 id, void *pos);
-void func_ov000_0218fee4(void *p);
-void func_ov000_0218ea20(void *p);
+void *func_ov000_0218fee4(void *p);
+void *func_ov000_0218ea20(void *p);
 void *func_ov000_0218e9c4(void *p);
 void STD_CopyString(void *dst, const char *src);
 u8 *func_ov000_0218e640(void *mgr, u16 id);
@@ -109,7 +109,7 @@ void func_ov000_0218edf0(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0218ef10(void *p, s32 a, s32 b, s32 c, s32 d);
 void *NNS_G3dGetMdlSet(void *file);
 void NNS_G3dReleaseMdlSet(void *mdl);
-void func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 static inline BOOL GBusy_021afaf8(u8 *g) {
     return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94) ? TRUE : FALSE;

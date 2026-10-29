@@ -75,8 +75,8 @@ extern s32 data_ov006_021eb8f8[];
 ov006_Eff021e86dc *func_02065f88(s32 id, VecFx32 *pos);
 ov006_Eff021e86dc *func_02066774(const char *a, const char *b, const char *c, VecFx32 *pos);
 ov006_Old021e86dc *func_020657b0(void *a, int b);
-void func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 ov006_SlotSub *func_ov006_021dab98(ov006_Slot *self);
 

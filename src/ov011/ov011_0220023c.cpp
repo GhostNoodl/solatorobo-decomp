@@ -70,12 +70,12 @@ struct Ov011Tbl6 {
 extern const Ov011Tbl6 data_ov011_022072c0;
 extern void *const data_ov011_02207258[];
 extern void *data_02097e4c;
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_02191618(void *a);
 void func_ov000_021915a0(void *a);
-s32 func_ov003_021d9c50(Ov011Vec *a, Ov011Vec *b);
+u16 func_ov003_021d9c50(Ov011Vec *a, Ov011Vec *b);
 Ov011V *func_02065f88(s32 id, Ov011Vec *pos);
-void func_02049f44(void *mgr, s32 id, const Ov011Vec *pos, s32 a);
+void *func_02049f44(void *mgr, s32 id, const Ov011Vec *pos, s32 a);
 s32 VEC_Distance(const Ov011Vec *a, const Ov011Vec *b);
 void func_ov000_0218dbe0(void *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);

@@ -6,7 +6,7 @@ extern void *data_02097e4c;
 extern void func_ov003_021d8a7c(void *p, s32 a);
 extern void func_ov003_021d8afc(void *p);
 extern void func_ov003_021d969c(void *p, s32 a);
-extern void func_02049f44(void *a, s32 b, void *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 extern void func_ov010_0220d9c0(void *p, void *h);
 extern BOOL func_ov010_0220da4c(void *p);
 extern Ov010V *func_02065f88(s32 a, Ov010Vec *b);
@@ -95,7 +95,7 @@ struct Ov010Mtx33e {
 };
 
 extern void *data_ov010_0220f024[];
-extern void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+extern BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
 extern BOOL func_ov010_0220794c(void *self);
 extern u16 FX_Atan2(s32 y, s32 x);

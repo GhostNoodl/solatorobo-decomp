@@ -55,15 +55,15 @@ extern void *data_ov000_021ca030[];
 extern void *data_ov000_021ca040[];
 extern void *const data_ov000_021ca080[];
 extern u8 data_ov000_021cc62a[];
-void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 void func_ov000_021b1dd8(void *self, s32 a, s32 b, s32 c, s32 d, s32 e);
-void func_ov000_02198360(void *st, s32 a, s32 b);
+BOOL func_ov000_02198360(void *st, s32 a, s32 b);
 u8 *func_ov000_0218e640(void *mgr, u16 id);
 u8 *func_02065f88(s32 id, void *pos);
 void func_ov000_02168e18(void *a, s32 b, s32 c, VecFx32 *v);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-void func_02049f44(void *a, s32 b, void *c, s32 d);
+void *func_02049f44(void *a, s32 b, void *c, s32 d);
 u16 FX_Atan2(s32 x, s32 z);
 
 static inline u8 *GetObj021a2670(u16 id) {

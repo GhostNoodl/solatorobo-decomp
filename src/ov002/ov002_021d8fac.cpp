@@ -114,7 +114,7 @@ extern void *data_0208cc88;
 
 void func_ov002_021e0420(void);
 
-void func_ov002_021d8d00(void);
+void *func_ov002_021d8d00(void);
 
 static inline void ov002_strSet(char *dst, void **src, u32 n) {
     MIi_CpuClear32(0, dst, n);

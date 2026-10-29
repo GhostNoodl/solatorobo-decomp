@@ -34,7 +34,7 @@ typedef struct {
 
 extern char data_ov003_021f8537[];
 extern Ov003Global54 *data_ov000_021ccd54;
-extern void func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern BOOL func_ov000_02191120(void *p);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -44,7 +44,7 @@ extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_021946f8(void *self);
 extern BOOL func_ov000_0218f110(s16 *p);
 extern void func_0203de1c(void *p);
-extern void func_ov000_0219429c(void *p);
+extern void *func_ov000_0219429c(void *p);
 
 void func_ov003_021e0c60(Ov003Event *self) {
     Ov003Part *part;

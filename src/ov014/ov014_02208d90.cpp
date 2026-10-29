@@ -12,7 +12,7 @@ extern void *data_0214a420;
 extern void func_ov000_02198c8c(void *p, s32 a);
 extern void func_0203f364(Ov014Sub48 *p);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void func_ov000_0218bed8(void *a, s32 b, void *c);
 extern Ov014V *func_020657b0(void *a, void *b);
 extern void func_ov003_021da9ac(void *p, u8 id, void *obj);

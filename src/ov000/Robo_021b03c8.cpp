@@ -14,9 +14,9 @@ void *func_ov000_0218e640(void *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 ang);
 void *func_ov000_0219be1c(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
 void func_ov000_0218996c(u8 a, u8 b);
-void func_0204a028(void *a, s32 b, void *c, s32 d);
-void func_02049f44(void *a, s32 b, void *c, s32 d);
-void func_ov000_02198360(void *s, s32 a, s32 b);
+void *func_0204a028(void *a, s32 b, void *c, s32 d);
+void *func_02049f44(void *a, s32 b, void *c, s32 d);
+BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void func_ov000_021b2b08(void *self);
 
 static inline void *FindActor021b03c8(u16 id) {

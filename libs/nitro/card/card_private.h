@@ -95,7 +95,7 @@ void OSi_ReferSymbol(void *symbol);
 #define SDK_USING_BACKUP() OSi_ReferSymbol((void *)0x02005050)
 
 void OS_Terminate(void);
-u32 OS_GetBootType(void);
+u16 OS_GetBootType(void);
 BOOL OS_IsRunOnTwl(void);
 void OS_SpinWaitSysCycles(u32 cycles);
 BOOL OS_SetThreadPriority(OSThread *thread, u32 prio);

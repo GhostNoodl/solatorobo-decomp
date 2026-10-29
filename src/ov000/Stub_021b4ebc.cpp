@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0218c928(void *ptr);
+void *func_ov000_0218c928(void *ptr);
 void func_0203de1c(void *ptr);
 void *func_0203dd9c(u32 size);
 void *func_ov000_021b5054(void *p);

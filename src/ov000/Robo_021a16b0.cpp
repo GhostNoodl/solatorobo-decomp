@@ -32,7 +32,7 @@ extern char data_ov000_021cc618[];
 extern char *data_ov000_021ca040[];
 extern void *data_02097e4c;
 extern u8 *data_ov000_021ccd54;
-void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_ov000_02191008(void *a);
 void func_02049bb4(void *a, s32 b);

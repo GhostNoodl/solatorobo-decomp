@@ -3,7 +3,7 @@
 extern "C" {
 
 extern u8 data_ov014_022177a0[];
-extern void func_ov000_02194074(void *self);
+extern void *func_ov000_02194074(void *self);
 extern void func_ov000_02194758(void *self);
 extern void *data_ov000_021ccd64;
 extern void *data_0214a420;
@@ -123,9 +123,9 @@ extern void func_ov003_021da9ac(void *p, u8 id, void *e);
 extern BOOL func_ov003_021daa0c(void *p, u8 id);
 extern s32 FX_Div(s32 a, s32 b);
 extern void MIi_CpuClear32(u32 data, void *dest, u32 size);
-extern void func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_ov000_0219aca8(Ov014Actor *a, Ov014Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern BOOL func_ov000_0219aca8(Ov014Actor *a, Ov014Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern void func_ov014_0220840c(Ov014Actor *self);
 extern u8 *func_ov000_0219bf90(void);
 extern void VEC_Normalize(const Ov014Vec *in, Ov014Vec *out);

@@ -24,7 +24,7 @@ void func_ov002_021d788c(void *self) {
     if (FIELD(self, 0x2c, s32 *) != NULL) {
         *FIELD(self, 0x2c, s32 *) = v;
     }
-    FIELD(self, 0x30, s32) = S32_MOD(FIELD(self, 0x30, s32) + 0x1000, FIELD(self, 0x34, s32));
+    FIELD(self, 0x30, s32) = (FIELD(self, 0x30, s32) + 0x1000) % FIELD(self, 0x34, s32);
 }
 
 void *func_ov002_021d78d4(void *self) {
@@ -53,7 +53,7 @@ void func_ov002_021d792c(void *self) {
     if (FIELD(self, 0x2c, s32 *) != NULL) {
         *FIELD(self, 0x2c, s32 *) = v;
     }
-    FIELD(self, 0x30, s32) = S32_MOD(FIELD(self, 0x30, s32) + 0x1000, FIELD(self, 0x34, s32));
+    FIELD(self, 0x30, s32) = (FIELD(self, 0x30, s32) + 0x1000) % FIELD(self, 0x34, s32);
     FIELD(self, 0x1d8, u32) = (u16)(FIELD(self, 0x1d8, u32) + 1);
 }
 

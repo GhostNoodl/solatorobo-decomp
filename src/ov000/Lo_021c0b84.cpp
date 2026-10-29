@@ -5,7 +5,7 @@
 
 extern "C" {
 extern u8 *data_02097d48;
-u8 func_02043d48(void *p);
+int func_02043d48(void *p);
 
 static inline void SetOfs(Model *m, s32 x, s32 y) {
     Model_SetPos(m, x << 12, (y - 0x58) << 12);

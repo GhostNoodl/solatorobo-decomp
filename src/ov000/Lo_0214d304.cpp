@@ -20,7 +20,7 @@ extern "C" {
 
 extern u8 *data_02097d48;
 extern u8 data_02fe1534[];
-u8 func_02043d48(void *p);
+int func_02043d48(void *p);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);

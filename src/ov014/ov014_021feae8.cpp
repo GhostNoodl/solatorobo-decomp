@@ -5,7 +5,7 @@ extern "C" {
 extern const u8 data_ov014_022173c8[];
 extern void *data_ov014_02216500[];
 void func_ov000_02191690(void *a);
-void func_ov000_02191318(void *a, s32 b);
+void *func_ov000_02191318(void *a, s32 b);
 s32 func_ov000_0219a510(void *self, u16 mask, Ov014Vec *p, s32 r, s32 a, void **out);
 Ov014Actor *func_ov000_021985c0(void *p);
 void *func_ov000_0218d2e0(void *a);
@@ -78,10 +78,10 @@ extern void *data_02097e4c;
 extern void *data_ov000_021ccd68;
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *v);
 extern void func_ov000_021911c8(void *a, s32 b);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
 extern Ov014Actor *func_ov003_021d69a0(Ov014Actor *self, u16 kind, s32 a);
-extern s32 func_ov003_021d9edc(s32 kind);
+extern u16 func_ov003_021d9edc(s32 kind);
 extern void func_01ffc9fc(Ov014Vec *a, Ov014Vec *b, u16 ang);
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *c);
 

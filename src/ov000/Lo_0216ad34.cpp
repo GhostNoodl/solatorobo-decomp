@@ -3,7 +3,7 @@
 extern "C" {
 
 void func_ov000_0215fe1c(void *self, s32 a, s32 b, ...);
-u16 func_0204045c(void);
+u32 func_0204045c(void);
 
 void func_ov000_0216ad34(void *self) {
     LO_FREE_M(self, 0xc);

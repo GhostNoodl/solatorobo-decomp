@@ -40,7 +40,7 @@ struct Ov010Trig2 {
 extern "C" {
 
 extern u8 data_ov010_02210240[];
-extern void func_ov000_02198328(void *p);
+extern void *func_ov000_02198328(void *p);
 extern void func_ov003_021da48c(void *p, s32 a);
 
 u8 func_ov010_0220a2a0(void *self) {
@@ -85,7 +85,7 @@ extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern void *func_ov000_0218e640(void *mgr, u16 id);
 extern void func_ov000_0218d398(void *obj, u16 id, s32 a, s32 b, s32 c, u8 *d);
-extern void func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
 extern Ov010CNode *func_ov010_0220db74(Ov010CNode *head, Ov010CNode *node);
 extern void func_ov003_021d79ac(void *p, Ov010CNode *n);
 

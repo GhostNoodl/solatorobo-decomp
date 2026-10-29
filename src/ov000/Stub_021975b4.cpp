@@ -36,7 +36,7 @@ void func_020627dc(s32 a);
 void func_ov000_02182590(u8 *p);
 s32 func_0205b1fc(void);
 VObj *func_02065f88(s32 kind, s32 *pos);
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 extern void *data_02097e4c;
 
 void func_ov000_021974b0(Obj021975b4 *self) {

@@ -21,7 +21,7 @@ extern char data_ov015_02213100[];
 void *func_0204c0e8(void *a, s32 b);
 void func_ov000_02157c90(void *a, void *b);
 const char *func_0206ffa0(u16 id);
-void STD_CopyLString(char *dst, const char *src, s32 n);
+int STD_CopyLString(char *dst, const char *src, s32 n);
 void func_ov000_021c3af4(void *p);
 void func_ov000_021c54f4(void *p);
 void func_ov000_021c22d8(void *p);

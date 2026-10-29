@@ -58,7 +58,7 @@ extern Ov003Game54 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern const Ov003VecP data_ov003_021f4988;
 extern void *func_ov000_0218e4cc(void *mgr, u16 id);
-extern void func_ov000_0218dfb4(void *obj, u16 id);
+extern u16 func_ov000_0218dfb4(void *obj, u16 id);
 extern BOOL func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(void);
 extern s32 func_02040498(s32 v);
@@ -92,8 +92,8 @@ void func_ov003_021d9e90(Ov003Vec *out, const Ov003Vec *dir, const Ov003Vec *bas
     *out = r;
 }
 
-void func_ov003_021d9edc(u16 id) {
-    func_ov000_0218dfb4(func_ov000_0218e4cc(data_ov000_021ccd68, id), id);
+u16 func_ov003_021d9edc(u16 id) {
+    return func_ov000_0218dfb4(func_ov000_0218e4cc(data_ov000_021ccd68, id), id);
 }
 
 void func_ov003_021d9f04(Ov003Rot *out, const Ov003Vec *v) {

@@ -2,9 +2,9 @@
 
 extern "C" {
 
-void func_ov003_021d0edc(void *self);
+void *func_ov003_021d0edc(void *self);
 
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 func_02040528(s32 max);
 s32 *NNS_G3dGlbGetInvV(void);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
@@ -32,9 +32,9 @@ struct Ov011RotB {
 void VEC_Normalize(const Ov011Vec *a, Ov011Vec *b);
 u16 FX_Atan(s32 x);
 u16 FX_Atan2(s32 y, s32 x);
-void func_ov000_02198360(void *a, s32 b, s32 c);
-void func_0204a028(void *a, s32 b, Ov011Vec *c, s32 d);
-void func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+void *func_0204a028(void *a, s32 b, Ov011Vec *c, s32 d);
+void *func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
 void *func_ov000_0219be1c(s32 kind, Ov011Vec *pos, u16 *rot, u16 a, u16 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 a, s32 b, s32 c);
 extern u8 data_ov011_02207658[];

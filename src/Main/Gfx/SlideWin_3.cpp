@@ -74,7 +74,7 @@ extern void *func_0203a4c0(GfxMgr *mgr);
 extern void func_0203a4dc(GfxMgr *mgr, void *arg);
 extern void func_0203a5a4(GfxMgr *mgr, u16 c);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
-extern void func_0204cc18(TextWin *win, const char **s);
+extern BOOL func_0204cc18(TextWin *win, const char **s);
 extern void func_0204cb28(TextWin *win, u32 arg);
 extern void func_02051f70(SlideWinX *win);
 extern const char *func_0206ffa0(u16 id);

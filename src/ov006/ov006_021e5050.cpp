@@ -12,8 +12,8 @@ extern "C" {
 
 extern ov006_Net021e5050 *data_02097e40;
 extern u8 data_ov006_021eb840[];
-void func_02046070(ov006_Net021e5050 *net, void *data, int a);
-void func_020463c8(ov006_Net021e5050 *net);
+BOOL func_02046070(ov006_Net021e5050 *net, void *data, int a);
+BOOL func_020463c8(ov006_Net021e5050 *net);
 void func_ov006_021e48fc(ov006_Unk021ec888 *self);
 void func_ov006_021e49bc(ov006_Unk021ec888 *self);
 

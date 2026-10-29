@@ -47,7 +47,7 @@ BOOL func_02054f10(void *a, int b);
 void func_0204918c(VecFx32 *out, fx32 t, const VecFx32 *from, const VecFx32 *to);
 void func_ov006_021dd0e4(ov006_Obj14_021de2e0 *p);
 void func_ov000_0215fdfc(void *self, s32 a, const void *b);
-void func_ov000_0216dae4(void *p);
+BOOL func_ov000_0216dae4(void *p);
 
 static inline void ov006_Obj14_SetPos(ov006_Obj14_021de2e0 *o, s32 x, s32 y, s32 z) {
     o->x = x;

@@ -28,7 +28,7 @@ void func_0204ca70(void *p);
 void func_ov000_02184508(void *p);
 BOOL func_02054f10(void *p, s32 a);
 s32 FX_Div(s32 a, s32 b);
-void func_ov000_021bc474(void *self);
+BOOL func_ov000_021bc474(void *self);
 
 static inline s32 Lo_FxMul64(s32 a, s64 b) {
     return (a * b + 0x800) >> 12;

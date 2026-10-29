@@ -92,7 +92,7 @@ extern "C" {
 
 const char *func_02039674(const char *path);
 
-void func_ov000_0218e9c4(ResSet *self) {
+ResSet *func_ov000_0218e9c4(ResSet *self) {
     self->unk_00 = -1;
     *((u8 *)self + 2) = 0;
     *((u8 *)self + 3) = 0;
@@ -103,6 +103,7 @@ void func_ov000_0218e9c4(ResSet *self) {
     ResEntry_Init(&self->entries[2]);
     ResEntry_Init(&self->entries[3]);
     ResEntry_Init(&self->entries[4]);
+    return self;
 }
 
 ResSet *func_ov000_0218ea20(ResSet *self) {
@@ -228,11 +229,11 @@ void func_ov000_0218f074(ResSet *self, const char *name, BOOL a, BOOL b, u8 c, u
 }
 
 extern "C" {
-void func_020359d0(const char *name, s32 b, s32 c);
+void *func_020359d0(const char *name, s32 b, s32 c);
 BOOL func_02035b90(const char *name, s32 b);
 void *func_02035d5c(const char *name);
 ResHandle *func_02034ec0(void *arc, const char *name);
-void func_0203ed04(const char *name, void *data);
+BOOL func_0203ed04(const char *name, void *data);
 void *func_0203ebf8(void);
 ResHandle *func_02034ff8(void *arc, const char *name);
 ResHandle *func_02034c34(void *arc, const char *name, const char *ext);

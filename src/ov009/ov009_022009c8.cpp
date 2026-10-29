@@ -8,7 +8,7 @@ extern u8 data_ov009_02215dc0[];
 extern void *data_ov009_02216d20;
 extern char data_ov009_02216b89[];
 extern char data_ov009_02216b90[];
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);

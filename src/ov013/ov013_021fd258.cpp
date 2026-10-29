@@ -13,7 +13,7 @@ extern void func_ov000_0219864c(void *a, s32 b, s32 c);
 extern void *func_020657b0(void *a, s32 b);
 extern BOOL func_02035b90(void *a, s32 b);
 extern void func_02036838(void *a, void *b, s32 c, s32 d);
-extern void func_020359d0(void *a, s32 b, s32 c);
+extern void *func_020359d0(void *a, s32 b, s32 c);
 extern void func_ov000_0219433c(void *self);
 extern BOOL func_ov000_021946f8(void *self);
 extern void func_ov000_02194758(void *self);

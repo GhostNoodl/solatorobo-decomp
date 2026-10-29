@@ -418,7 +418,7 @@ extern u8 *data_02097ce0;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cadcc[];
 extern u8 data_ov015_02212d3c[];
-void func_0204c030(void *p);
+BOOL func_0204c030(void *p);
 s32 func_0204c08c(void *p, u16 id, void *buf, s32 n);
 void func_02041218(void *p);
 void func_02041440(void *p, void *name, int c);
@@ -431,7 +431,7 @@ void *func_0204c0e8(void *a, s32 b);
 s32 func_0204c4fc(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
 void func_ov015_02208544(u8 *self);
-void func_0204c2f4(void *p, s32 n, void *src);
+s32 func_0204c2f4(void *p, s32 n, void *src);
 void func_ov000_0215bb14(void *a, void *b);
 void func_ov015_0220866c(u8 *self, void *msg);
 

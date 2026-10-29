@@ -62,7 +62,7 @@ extern u16 func_ov000_0218dfb4(Ov013Actor *a, u16 id);
 extern Ov013Vec func_ov003_021dadc0(const Ov013Vec *a, const Ov013Vec *b);
 extern void func_ov000_0218d918(Ov013Actor *self, Ov013Vec *p, s32 a);
 extern void func_ov000_0218ddd4(Ov013Actor *self, Ov013Vec *v, s32 a);
-extern void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+extern void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 extern void func_02049de8(void *p, s32 a);
 extern s32 func_020404e0(void);
 extern u32 func_02040420(void);

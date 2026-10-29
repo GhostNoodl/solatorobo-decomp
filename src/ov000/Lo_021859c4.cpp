@@ -66,7 +66,7 @@ BOOL func_ov000_021708d8(void *p);
 BOOL func_ov000_021705a0(void *p, s32 a);
 BOOL func_ov000_0217060c(void *p);
 void func_02036838(void *a, void *b, int c, int d);
-void func_020359d0(void *a, int b, int c);
+void *func_020359d0(void *a, int b, int c);
 int func_02035b90(void *a, int b);
 void func_0206fa70(void);
 void func_0206ea7c(void);

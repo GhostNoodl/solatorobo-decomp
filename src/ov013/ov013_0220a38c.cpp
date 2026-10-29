@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void *data_ov013_0220bf4c;
-extern void func_ov000_02194074(void *self);
+extern void *func_ov000_02194074(void *self);
 extern void func_ov000_02194758(void *self);
 
 struct Ov013Pair89 {
@@ -114,7 +114,7 @@ extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
 extern Ov013Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov013Actor *a);
 extern Ov013Actor *func_ov000_0219be1c(s32 kind, Ov013Vec *pos, u16 *rot, u16 id, u16 owner);
-extern void func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, Ov013Vec *v, s32 e, s32 f, s32 g, s32 h, s32 i);
 
 #define OV013_SQRTCNT (*(volatile u16 *)0x40002b0)

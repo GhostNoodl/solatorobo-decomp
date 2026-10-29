@@ -103,7 +103,7 @@ extern s16 func_ov003_021d7e58(Ov003Ticker *t);
 extern void VEC_MultAdd(s32 scale, const Ov003Vec *dir, const Ov003Vec *src, Ov003Vec *dst);
 extern void func_0203de1c(void *p);
 extern void *func_0203dd9c(u32 size);
-extern void func_ov000_02198328(void *p);
+extern void *func_ov000_02198328(void *p);
 extern s32 func_02040528(s32 max);
 
 static inline void Ov003Ticker_Reset(Ov003Ticker *t) {

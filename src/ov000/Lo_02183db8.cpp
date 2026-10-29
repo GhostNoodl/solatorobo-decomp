@@ -125,7 +125,7 @@ void func_ov004_021ccf10(void);
 BOOL func_ov004_021ce2ec(u32 addr, s32 arg);
 BOOL func_ov004_021ce374(u32 addr, s32 arg);
 BOOL func_ov004_021ce3fc(u32 addr, s32 arg);
-BOOL func_ov003_021ce484(u32 addr, s32 arg);
+bool func_ov003_021ce484(u32 addr, s32 arg);
 void func_0204aa10(void *p);
 void func_ov000_0216bcbc(void *p);
 void func_ov000_021645a4(s32 a);

@@ -79,17 +79,17 @@ s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 u16 FX_Atan2(s32 x, s32 z);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 void func_ov000_0218d398(void *a, u16 id, s32 b, s32 c, s32 d, void *e);
-void func_02049f44(void *snd, s32 id, void *pos, s32 a);
+void *func_02049f44(void *snd, s32 id, void *pos, s32 a);
 void func_ov000_0218996c(s32 a, s32 b);
 BOOL func_ov000_0219aae8(void *a, void *b, s32 c, s32 d, s32 e, VecFx32 *f, void *g, s32 h, s32 i, s32 j, s32 k);
 void func_ov000_0218dbe0(void *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-s16 func_02049afc(void *snd, s32 se);
+s32 func_02049afc(void *snd, s32 se);
 void func_0204a0d4(void *snd, s32 h, s32 arg);
 void func_02049bb4(void *snd, s32 h);
 Eff_021b209c *func_02065f88(s32 id, void *pos);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
-void func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 static inline u8 *FindActor_021b209c(u16 id) {
     if (data_ov000_021ccd68 == NULL) {

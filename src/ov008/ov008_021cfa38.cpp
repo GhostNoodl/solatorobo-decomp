@@ -41,7 +41,7 @@ extern void *data_ov000_021ccd54;
 extern Ov008Shared data_02fe1534;
 extern void *data_02fe152c;
 void *func_0206e7d0(u8 id);
-BOOL func_020594bc(void *a, int b, int c, int d);
+u16 func_020594bc(void *a, int b, int c, int d);
 void *func_ov000_02154b58(void *a, u32 id);
 BOOL func_ov008_021cf790(void *self, Ov008Sel *sel);
 BOOL func_ov008_021cf844(void *self, Ov008Sel *sel);
@@ -62,12 +62,12 @@ u16 func_02059544(void *res, void *block, Ov008SaveEnt *entries, int packed, u32
 u8 *func_ov000_021824d0(void *p, s32 a);
 void func_ov000_02153f90(Ov008Tag *t);
 void func_ov000_02153fd8(Ov008Tag *t);
-void func_ov000_0214c01c(u8 a);
+u32 func_ov000_0214c01c(u8 a);
 u32 func_ov000_0214bf2c(u16 id);
 const char *func_ov000_0214c064(u16 id);
 void func_0204c6bc(const char *str, s32 maxLines, void *arg, void (*cb)(void *arg, s32 *tag));
 void func_ov000_0214dc20(void *arg, s32 *tag);
-BOOL func_ov008_021cf5c8(void *self, Ov008Sel *sel);
+void func_ov008_021cf5c8(void *self, Ov008Sel *sel);
 static inline void Ov008_AddEntry(Ov008Mgr2 *m, u32 id) {
     void *e = func_0206e7d0(id);
     void *p;

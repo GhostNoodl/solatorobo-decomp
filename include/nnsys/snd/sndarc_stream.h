@@ -166,7 +166,7 @@ extern BOOL FS_SetSeekCache(void *file, u32 top, u32 bottom);
 extern BOOL FS_CloseFile(void *file);
 extern BOOL FS_SeekFile(void *file, int offset, int origin);
 extern int FS_ReadFile(void *file, void *buf, u32 size);
-extern BOOL FS_CancelFile(void *file);
+extern void FS_CancelFile(void *file);
 extern void func_0203244c(StrmCommand *cmd);
 
 void NNS_SndArcStrmInit(u32 prio, NNSSndHeap *heap);

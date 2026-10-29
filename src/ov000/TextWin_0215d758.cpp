@@ -15,7 +15,7 @@ void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
 void func_02041c5c(void *model, void *fn);
 u32 func_0204c0e8(void *a, s32 b);
-void func_ov000_02154128(void);
+void *func_ov000_02154128(void);
 
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)func_0203dd9c(0xb8);

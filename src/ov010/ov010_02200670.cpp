@@ -4,8 +4,8 @@ extern "C" {
 
 extern u8 data_ov010_0220fd70[];
 extern void func_ov003_021da48c(void *p, s32 a);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
-extern void func_ov000_02198328(void *p);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+extern void *func_ov000_02198328(void *p);
 extern void func_ov010_02200ee0(void *p);
 BOOL func_ov010_022006fc(u8 *o, u16 a, u16 b, u8 c, u16 d);
 
@@ -57,7 +57,7 @@ extern void *data_02097e4c;
 extern void func_02065804(void *a, s32 b);
 extern BOOL func_ov010_02200048(u8 *o, u16 a, u16 b, u8 c, u16 d);
 extern BOOL func_ov010_02200c98(u8 *o);
-extern void func_0204a028(void *a, s32 b, void *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, void *c, s32 d);
 extern void func_ov010_022000d8(u8 *o);
 
 static inline BOOL Ov010Beam_IsDone(u8 *s) {

@@ -21,7 +21,7 @@ void func_ov002_021ccda0(void);
 BOOL func_ov004_021ce2ec(u32 addr, s32 arg);
 BOOL func_ov004_021ce374(u32 addr, s32 arg);
 BOOL func_ov004_021ce3fc(u32 addr, s32 arg);
-BOOL func_ov003_021ce484(u32 addr, s32 arg);
+bool func_ov003_021ce484(u32 addr, s32 arg);
 
 // Checksum of the first 0x1c words of a protected function, used to detect tampering.
 static inline u32 ProtHash(const u32 *p) {

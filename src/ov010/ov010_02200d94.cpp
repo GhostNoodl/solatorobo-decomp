@@ -4,7 +4,7 @@ extern "C" {
 
 extern u8 data_ov010_0220fd70[];
 extern void func_ov003_021da48c(void *p, s32 a);
-extern void func_ov000_02198328(void *p);
+extern void *func_ov000_02198328(void *p);
 extern void func_ov010_02200ee0(void *p);
 extern BOOL func_ov010_022006fc(u8 *o, u16 a, u16 b, u8 c, u16 d);
 

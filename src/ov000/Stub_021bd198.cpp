@@ -22,7 +22,7 @@ typedef struct {
 extern "C" {
 
 void MI_CpuFill8(void *dst, s32 val, u32 size);
-void func_ov000_0218ea20(void *p);
+void *func_ov000_0218ea20(void *p);
 
 void func_ov000_021bd198(Obj021bd198 *self) {
     s32 i;

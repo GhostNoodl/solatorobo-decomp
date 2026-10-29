@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void *data_02097e4c;
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 s32 FX_Div(s32 a, s32 b);
 s32 func_02049210(s32 t, s32 a, s32 b);
 
@@ -51,7 +51,7 @@ BOOL func_ov015_022106f8(u8 *self) {
 
 
 extern u8 *data_02097dc8;
-void func_0204c2f4(void *p, s32 n, void *src);
+s32 func_0204c2f4(void *p, s32 n, void *src);
 void func_ov000_0215bb14(void *a, void *b);
 void func_ov015_0220866c(u8 *self, void *msg);
 

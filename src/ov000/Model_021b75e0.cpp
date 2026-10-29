@@ -52,7 +52,7 @@ void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeFlushBuffer(void);
 int G3X_GetBoxTestResult(s32 *in);
 void NNS_G3dDraw(void *obj);
-void func_02043d48(void *p);
+int func_02043d48(void *p);
 
 static inline void G3_Scale021b75e0(s32 x, s32 y, s32 z) {
     s32 v[3];

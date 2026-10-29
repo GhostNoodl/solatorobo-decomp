@@ -7,7 +7,7 @@ extern void *data_02097e4c;
 extern void *func_ov000_0218e640(void *mgr, u16 id);
 extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *out);
 extern BOOL func_ov003_021d7a44(void *self, const Ov010Vec *target, const Ov010Vec *start, s32 speed, s32 maxDist, u8 noSnap);
-extern void func_0204a028(void *mgr, s32 id, const Ov010Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, const Ov010Vec *pos, s32 a);
 extern Ov010V *func_02065f88(s32 id, const Ov010Vec *pos);
 extern void func_ov010_02209074(void);
 
@@ -29,10 +29,10 @@ extern u16 func_ov003_021d9c38(void *p);
 extern void *func_ov000_02199ba0(void *p);
 extern void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void *func_ov003_021d7bd4(void *p);
 extern u8 *func_ov000_02190a30(void *p, s32 a);
-extern void func_02049f44(void *a, s32 b, void *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 
 static inline void Ov010_Puff(u8 *self) {
     Ov010Vec q;

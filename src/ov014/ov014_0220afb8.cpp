@@ -5,10 +5,10 @@ extern "C" {
 extern void *data_02097e4c;
 extern u8 data_ov014_02217a4e[];
 extern u8 data_ov014_02217a72[];
-extern void func_ov000_02191318(void *a, s32 b);
+extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *p);
 extern void func_ov000_021911c8(void *a, s32 b);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
 extern void func_ov014_0220a2d0(Ov014Actor *self, s32 a);
 
@@ -175,10 +175,10 @@ extern void *data_02097e4c;
 extern u8 data_ov014_02217a4e[];
 extern u8 data_ov014_02217a78[];
 extern u8 data_ov014_02217a7e[];
-extern void func_ov000_02191318(void *a, s32 b);
+extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *p);
 extern void func_ov000_021911c8(void *a, s32 b);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern s32 FX_Div(s32 a, s32 b);
 extern void func_ov014_02209fa0(Ov014Actor *self, s32 a, s32 b);
 

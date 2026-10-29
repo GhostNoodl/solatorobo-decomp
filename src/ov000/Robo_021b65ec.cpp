@@ -46,7 +46,7 @@ u8 *func_ov000_0219bf90(void);
 Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
 void func_ov000_021b13cc(u8 *pl, s32 a);
 void func_ov000_021b12c0(u8 *pl, s32 a);
-s32 func_020594bc(void *a, s32 b, s32 c, s32 d);
+u16 func_020594bc(void *a, s32 b, s32 c, s32 d);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline Actor *FindActor021b65ec(u16 id) {

@@ -89,10 +89,10 @@ extern void *data_02097e4c;
 extern char data_ov013_0220be88[];
 extern const Ov013Blk12 data_ov013_0220b3e0;
 extern void *func_ov000_0218e4cc(void *mgr, s32 a);
-extern u32 func_ov000_0218dfb4(void *p, s32 a);
+extern u16 func_ov000_0218dfb4(void *p, s32 a);
 extern Ov013Actor *func_ov003_021d69a0(Ov013Actor *self, s32 a, s32 b);
 extern void func_ov000_0219a210(Ov013Vec *p, Ov013Vec *o, u16 rot);
-extern void func_0204a028(void *a, s32 b, Ov013Vec *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, Ov013Vec *c, s32 d);
 
 void func_ov013_02206edc(Ov013Actor *self) {
     s32 flip;
@@ -172,7 +172,7 @@ void func_ov013_02206edc(Ov013Actor *self) {
 extern char data_ov013_0220be8e[];
 extern const Ov013Blk12 data_ov013_0220b3d4;
 extern const Ov013Blk12 data_ov013_0220b3c8;
-extern void func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
 extern Ov013Actor *func_ov000_0219be1c(s32 kind, Ov013Vec *pos, u16 *rot, u16 id, u16 owner);
 extern void func_ov000_0219bebc(Ov013Actor *a, s32 b);
 extern u8 *func_0206fef8(u16 kind);

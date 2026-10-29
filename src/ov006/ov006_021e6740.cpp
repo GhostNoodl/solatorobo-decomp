@@ -25,7 +25,7 @@ extern "C" {
 void *func_0206fef8(u16 id);
 void *func_0203dd9c(u32 size);
 void *func_ov000_0218fe1c(void *p);
-void func_ov000_0218ffdc(void *p, void *a, int b, int c);
+BOOL func_ov000_0218ffdc(void *p, void *a, int b, int c);
 s32 **func_ov000_02190a30(void *p, int idx);
 void func_ov000_02191920(void *p, int a, s32 b, int c);
 void *func_ov000_021985e8(void *p);

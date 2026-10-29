@@ -98,7 +98,7 @@ static inline void Ov011Ent_RestoreC(Ov011Ent *e, s32 to, s32 frames) {
 extern "C" {
 
 extern const Ov011Mgr2Entry data_ov011_022072d8[];
-void func_ov003_021d79ec(void *p);
+void *func_ov003_021d79ec(void *p);
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
 void func_ov003_021da40c(void *p);
 void func_ov003_021da48c(void *p, u8 a);

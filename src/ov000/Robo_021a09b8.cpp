@@ -17,7 +17,7 @@ extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 void *func_ov000_0218e640(void *mgr, u16 id);
 s32 func_ov000_0219840c(void *s, s32 *list, s32 count, BOOL push);
-void func_ov000_02198360(void *s, s32 a, s32 b);
+BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(u16 a);
 void func_ov000_02182590(void *p);

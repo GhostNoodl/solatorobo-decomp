@@ -8,7 +8,7 @@ extern u8 *func_ov000_0218e640(void *mgr, u16 id);
 extern void VEC_MultAdd(s32 s, const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *out);
 extern BOOL func_ov010_022090b4(s32 type, s32 *a, Ov010Vec *b, Ov010Vec *pos);
 extern u16 func_ov010_02209190(s32 type, s32 *a, Ov010Vec *b, Ov010Vec *pos, u16 rot);
-extern void func_ov000_0219a2f4(Ov010Vec *p, s32 a, s32 b);
+extern s32 func_ov000_0219a2f4(Ov010Vec *p, s32 a, s32 b);
 
 static inline u8 *Ov010_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {

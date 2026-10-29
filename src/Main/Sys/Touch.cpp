@@ -39,7 +39,7 @@ typedef struct Touch {
 
 extern Touch *data_02097dcc;
 extern void TP_Init(void);
-extern void TP_GetUserInfo(void *calib);
+extern BOOL TP_GetUserInfo(void *calib);
 extern void TP_SetCalibrateParam(void *calib);
 extern void *func_0203dec8(u32 size, int align);
 extern void func_02021b9c(void);

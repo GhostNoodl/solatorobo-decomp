@@ -94,14 +94,14 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Ov003Pl *func_ov000_0219bf90(void);
-extern void func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern s32 VEC_Distance(const Ov003Pos *a, const Ov003Pos *b);
-extern void func_02049f44(void *mgr, s32 id, Ov003Pos *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov003Pos *pos, s32 a);
 extern Ov003Eff *func_02065f88(s32 id, const Ov003Pos *pos);
 extern void func_ov003_021d6054(Ov003Act *self);
 extern void func_ov003_021d1e8c(Ov003Act *self);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 typedef struct {
     s16 v[9];
@@ -256,7 +256,7 @@ void func_ov003_021d732c(Ov003Act *self) {
 extern void *data_0214a420;
 extern void func_ov000_021911c8(void *model, s32 v);
 extern void func_0203f364(Ov003Ctl *ctl);
-extern void func_ov000_0219b71c(Ov003Pos *pos, Ov003Pos *v, s32 a, s32 b, s32 c, s32 d);
+extern void *func_ov000_0219b71c(Ov003Pos *pos, Ov003Pos *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
 extern void func_020639d4(Ov003Eff *e, s32 a, s32 b);

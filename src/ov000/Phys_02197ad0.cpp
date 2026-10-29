@@ -52,8 +52,8 @@ extern Ent02197ad0 data_ov000_021c9de8[];
 extern void *data_02097e4c;
 extern u8 data_ov000_021cc46f[];
 u16 func_ov000_02198da8(Body02197ad0 *b, u16 angle);
-void func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
-void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov003_021f0c60(Actor *self, s32 a);
 
 static inline s32 DistXZSq(const VecFx32 *a, const VecFx32 *b) {

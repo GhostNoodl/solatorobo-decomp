@@ -20,7 +20,7 @@ extern void func_ov000_0219433c(void *self);
 extern void func_01ffc9fc(Ov003Vec *src, Ov003Vec *dst, u16 angle);
 extern void VEC_Add(Ov003Vec *a, Ov003Vec *b, Ov003Vec *dst);
 extern void func_0203de1c(void *p);
-extern void func_ov000_0219429c(void *p);
+extern void *func_ov000_0219429c(void *p);
 
 void *func_ov003_021dae14(void *self) {
     func_ov000_0219429c(self);

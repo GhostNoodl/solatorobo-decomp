@@ -121,7 +121,7 @@ extern Ov003Spawned *func_ov000_02199ba0(Ov003Part *p);
 extern Ov003Spawned *func_ov000_0219be1c(s32 id, void *pos, void *rot, u16 a, u16 b);
 extern BOOL func_020621c4(void);
 extern void func_ov000_0219bebc(Ov003Spawned *p, s32 v);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern s32 func_ov003_021f093c(Ov003Part *p);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern s32 func_0205b1fc(void);
@@ -141,7 +141,7 @@ static inline BOOL Ov003Event_SetMode(Ov003Event *self, s16 mode) {
 }
 
 extern Ov003Global54 *data_ov000_021ccd54;
-extern void func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern BOOL func_ov000_02191120(void *p);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -151,7 +151,7 @@ extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_021946f8(void *self);
 extern BOOL func_ov000_0218f110(s16 *p);
 extern void func_0203de1c(void *p);
-extern void func_ov000_0219429c(void *p);
+extern void *func_ov000_0219429c(void *p);
 
 BOOL func_ov003_021e0e8c(Ov003Event *self) {
     BOOL r = func_ov000_021946f8(self);
@@ -499,7 +499,7 @@ extern Ov003Spawned *func_ov000_02199ba0(Ov003Part *p);
 extern Ov003Spawned *func_ov000_0219be1c(s32 id, void *pos, void *rot, u16 a, u16 b);
 extern BOOL func_020621c4(void);
 extern void func_ov000_0219bebc(Ov003Spawned *p, s32 v);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern s32 func_ov003_021f093c(Ov003Part *p);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern s32 func_0205b1fc(void);
@@ -519,7 +519,7 @@ static inline BOOL Ov003Event_SetMode(Ov003Event *self, s16 mode) {
 }
 
 extern Ov003Global54 *data_ov000_021ccd54;
-extern void func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern BOOL func_ov000_02191120(void *p);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -529,7 +529,7 @@ extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_021946f8(void *self);
 extern BOOL func_ov000_0218f110(s16 *p);
 extern void func_0203de1c(void *p);
-extern void func_ov000_0219429c(void *p);
+extern void *func_ov000_0219429c(void *p);
 
 BOOL func_ov003_021e12b0(Ov003Event *self) {
     BOOL r = func_ov000_021946f8(self);
@@ -896,7 +896,7 @@ typedef struct {
 extern Ov003Game *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;
 extern const Ov003SpotDef data_ov003_021f6428[];
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_ov000_0219433c(void *self);
@@ -955,12 +955,12 @@ extern void VEC_Normalize(const Ov003Vec3 *a, Ov003Vec3 *out);
 extern Ov003SpotUnit *func_ov000_0218bf1c(void *mgr, Ov003SpawnInfo *info, Ov003Vec3 *pos, Ov003Rot3 *rot, u16 a);
 extern Ov003SpotUnit *func_ov000_0218e640(void *mgr, u16 id);
 extern BOOL func_01ffc198(Ov003Vec3 *a, Ov003Vec3 *b, s32 r);
-extern void func_02049f44(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_ov000_0218d398(Ov003SpotUnit *u, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 extern void func_ov000_0218d46c(Ov003SpotUnit *u, u16 id, s32 m);
 extern void func_0203f920(void *p);
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 
 static inline BOOL Ov003Spot_IsBusy(Ov003Game *g) {
@@ -1340,7 +1340,7 @@ extern void MTX_RotY43_(Ov003LtMtx *m, s32 s, s32 c);
 extern void MTX_RotZ43_(Ov003LtMtx *m, s32 s, s32 c);
 extern void MTX_Concat43(Ov003LtMtx *a, Ov003LtMtx *b, Ov003LtMtx *out);
 extern void func_0203f9dc(void *obj, Ov003LtMtx *m);
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 
 #define OV003LT_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
@@ -1414,7 +1414,7 @@ extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern s32 func_0205b1fc(void);
 extern Ov003LtPlayer *func_ov000_0219bf90(void);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_0204a028(void *mgr, s32 id, void *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
 extern BOOL func_01ffc198(Ov003LtVec *a, Ov003LtVec *b, s32 r);
 
 void func_ov003_021e2360(Ov003Lt *self) {
@@ -1820,14 +1820,14 @@ extern void func_0203f8d8(void *obj);
 extern void func_0203f990(void *obj, u32 a);
 extern void func_0203f9b8(void *obj, s32 a);
 extern Ov003LtInfo *func_0206fef8(u16 id);
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern s32 func_ov000_0219b808(u16 id, void *pos, Ov003LtHit *entry, u16 *ids, s32 max);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern BOOL func_ov000_02191120(void *model);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_0204a028(void *mgr, s32 id, void *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
 extern BOOL func_01ffc198(Ov003LtVec *a, Ov003LtVec *b, s32 r);
 extern void *data_02097e4c;
 extern Ov003LtField *data_ov000_021ccd6c;
@@ -2235,15 +2235,15 @@ extern void *data_02097e4c;
 extern void func_ov000_02194758(void *self);
 extern void *data_ov000_021ccd64;
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *self);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 v);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern void func_ov000_021975b4(void *self);
-extern void func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
-extern void func_02049f44(void *mgr, s32 id, void *pos, s32 a);
-extern void func_0204a028(void *mgr, s32 id, void *pos, s32 a);
+extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
+extern void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
 
 void func_ov003_021e3890(Ov003Prop *self) {
     s16 a;
@@ -2468,18 +2468,18 @@ extern void *data_02097e4c;
 extern void func_ov000_02194758(void *self);
 extern void *data_ov000_021ccd64;
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *self);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 v);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern void func_ov000_021975b4(void *self);
-extern void func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
-extern void func_02049f44(void *mgr, s32 id, void *pos, s32 a);
-extern void func_0204a028(void *mgr, s32 id, void *pos, s32 a);
+extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
+extern void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
 
 extern void *data_ov000_021ccd68;
-extern void func_ov000_02191318(void *m, s32 a);
+extern void *func_ov000_02191318(void *m, s32 a);
 extern void func_ov000_02191690(void *model);
 extern BOOL func_ov000_02191120(void *model);
 extern void *func_ov000_02190a30(void *m, s32 a);
@@ -2681,7 +2681,7 @@ typedef struct {
 } Ov003Spawned;
 
 extern Ov003Spawned *func_ov000_0218bf1c(void *mgr, Ov003SpawnInfo *info, Ov003Vec3 *pos, void *rot, u16 a);
-extern void func_ov000_0219b71c(Ov003Vec3 *pos, Ov003Vec3 *v, s32 a, s32 b, s32 c, s32 d);
+extern void *func_ov000_0219b71c(Ov003Vec3 *pos, Ov003Vec3 *v, s32 a, s32 b, s32 c, s32 d);
 extern s32 func_02040498(s32 max);
 
 void func_ov003_021e41e8(Ov003Obj *self) {
@@ -2855,13 +2855,13 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern BOOL func_ov000_02191120(void *model);
-extern void func_02049f44(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern void *func_02049f44(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern Ov003Spawned *func_ov000_0218bf1c(void *mgr, Ov003SpawnInfo *info, Ov003Vec3 *pos, void *rot, u16 a);
-extern void func_ov000_0219b71c(Ov003Vec3 *pos, Ov003Vec3 *v, s32 a, s32 b, s32 c, s32 d);
+extern void *func_ov000_0219b71c(Ov003Vec3 *pos, Ov003Vec3 *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern s32 func_02040498(s32 max);
 extern void func_ov000_0219433c(void *self);
@@ -2902,7 +2902,7 @@ BOOL func_ov003_021e4588(Ov003Big *self) {
 extern const s16 FX_SinCosTable_[];
 extern const Ov003BigEnt data_ov003_021f5bf0[];
 extern void func_ov000_02194758(void *self);
-extern void func_ov000_0218ffdc(Ov003BigMdl *m, s16 *res, s32 a, s32 b);
+extern BOOL func_ov000_0218ffdc(Ov003BigMdl *m, s16 *res, s32 a, s32 b);
 extern void func_ov000_02190758(Ov003BigMdl *m, u16 *rot, s32 a);
 extern void NNSi_G3dModifyMatFlag(void *mdl, s32 on, u32 flag);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
@@ -3224,8 +3224,8 @@ extern s32 func_ov000_0219a2f4(Ov003Vec3 *pos, s32 a, s32 b);
 extern void *data_02097e4c;
 extern s32 func_ov000_021993fc(Ov003BigFinder *f, Ov003BigQuery *q, Ov003BigHit **out, s32 max);
 extern Ov003BigTgt *func_ov000_021985c0(Ov003BigHit *h);
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void func_0204a028(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern void *func_0204a028(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
 extern void func_ov000_0218d398(Ov003BigTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
 extern Ov003BigTgt *func_ov000_0218d240(Ov003Big *self);
 extern void VEC_MultAdd(s32 a, Ov003Vec3 *v1, Ov003Vec3 *v2, Ov003Vec3 *dst);
@@ -3681,15 +3681,15 @@ extern char data_ov003_021f8768[];
 extern void func_ov000_02194758(void *self);
 extern s32 func_ov000_0219a2f4(Ov003Vec3 *pos, s32 a, s32 b);
 extern void func_ov000_02197ee0(void *self, s16 *res, s32 a, s32 b, s32 c);
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_0218ddd4(void *self, Ov003Vec3 *v, s32 a);
 extern void func_ov000_021987b8(Ov003Ctl *ctl, s32 a, s32 b, s32 c);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
-extern void func_ov000_0214b598(void *p);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern void *func_ov000_0214b598(void *p);
 extern void func_0203de1c(void *p);
-extern void func_ov000_0218ea20(void *p);
-extern void func_ov000_0219429c(void *self);
+extern void *func_ov000_0218ea20(void *p);
+extern void *func_ov000_0219429c(void *self);
 extern Ov003Game54 *data_ov000_021ccd54;
 extern void *const data_ov003_021f4c64[2];
 extern void func_ov000_0219433c(void *self);
@@ -3711,9 +3711,9 @@ extern void func_ov000_021bd7a0(void *p);
 extern void *data_ov000_021ccd64;
 extern void *NNS_G3dGetTex(void *p);
 extern void *func_ov000_0214b670(void *p);
-extern void func_020394cc(void *a, void *b);
+extern void *func_020394cc(void *a, void *b);
 extern void *NNS_G3dGetMdlSet(void *p);
-extern void NNS_G3dBindMdlSet(void *a, void *b);
+extern BOOL NNS_G3dBindMdlSet(void *a, void *b);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 extern s32 func_02040528(s32 max);
 
@@ -4355,13 +4355,13 @@ extern Ov003Game54 *data_ov000_021ccd54;
 extern Ov003PathPt *const data_ov003_021f85c0[];
 extern Ov003Part *func_ov000_02199ba0(Ov003Part *p);
 extern void func_ov000_02197dec(void *self, s32 a, s16 b);
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_02190e98(void *model, s32 a, s32 b, s32 c);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_02191618(void *model);
-extern void func_ov000_02191318(void *model, s32 a);
+extern void *func_ov000_02191318(void *model, s32 a);
 extern BOOL func_ov000_02191120(void *model);
-extern void func_0204a028(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
 extern void func_ov000_0218d398(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -4369,7 +4369,7 @@ extern void func_020627ec(s32 a);
 extern s32 func_02040498(s32 max);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern void func_ov000_02194758(void *self);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 extern BOOL func_ov000_02194c08(void *self);
 extern void func_ov000_02191008(void *p);
@@ -4612,13 +4612,13 @@ BOOL func_ov003_021e694c(Ov003Obj *self) {
 
 extern Ov003Obj *func_ov000_0219bf90(void);
 extern void func_0203f364(Ov003Ctl *ctl);
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 v);
 extern void VEC_Normalize(Ov003Vec3 *src, Ov003Vec3 *dst);
 extern void VEC_Add(Ov003Vec3 *a, Ov003Vec3 *b, Ov003Vec3 *dst);
 extern BOOL func_01ffc198(Ov003Vec3 *a, Ov003Vec3 *b, s32 r);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_0218d918(Ov003Obj *self, Ov003PathPt *pt, s32 a);
 
 void func_ov003_021e6974(Ov003Obj *self) {
@@ -4722,18 +4722,18 @@ extern "C" {
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern BOOL func_ov000_02191120(void *model);
 extern void func_0203f324(Ov003Ctl *ctl);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern Ov003Fx *func_02065f88(s32 id, const Ov003Vec3 *pos);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern Ov003Part *func_ov000_02199ba0(Ov003Part *p);
-extern void func_02049f44(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
 extern s32 func_02040528(s32 max);
 extern void *func_ov000_0218e640(void *mgr, u16 id);
 extern void func_ov000_0218d988(void *self, void *other, s32 a);

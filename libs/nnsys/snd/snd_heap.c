@@ -3,7 +3,7 @@
 #include "nnsys/fnd/frameheap.h"
 
 u32 SND_GetCurrentCommandTag(void);
-void SND_FlushCommand(int a);
+BOOL SND_FlushCommand(int a);
 void SND_WaitForCommandProc(u32 a);
 
 static void func_02030834(NNSFndList *list);

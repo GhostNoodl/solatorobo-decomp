@@ -240,7 +240,7 @@ s32 func_ov000_0215c720(Obj0215c720 *self) {
 
 extern void *data_02149ef8;
 extern u8 *data_ov000_021ccd54;
-s32 func_02061d54(u16 a);
+u16 func_02061d54(u16 a);
 char *func_0204c0e8(void *p, s32 a);
 char *func_02040ab0(char *str, int c);
 void func_02070874(char *dst, const char *fmt, const char *arg);

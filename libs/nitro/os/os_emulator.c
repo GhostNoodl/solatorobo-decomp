@@ -4,7 +4,7 @@
 
 #define OSi_CONSOLE_NOT_DETECTED 0xffffffff
 
-u32 OS_GetBootType(void);
+u16 OS_GetBootType(void);
 u32 OSi_DetectDebugger(void);
 
 typedef struct {

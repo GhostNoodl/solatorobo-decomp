@@ -111,13 +111,13 @@ extern "C" {
 extern void *data_02097e4c;
 extern const Ov003DtEnt data_ov003_021f4648[];
 extern char data_ov003_021f7a7f[];
-extern void func_ov000_02190cb0(Ov003DtModel *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(Ov003DtModel *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(Ov003DtModel *model);
 extern void func_0203f364(Ov003DtCtl *c);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_02049f44(void *mgr, s32 id, Ov003DtVec *pos, s32 a);
-extern void func_ov000_0219b71c(Ov003DtVec *pos, Ov003DtVec *v, s32 a, s32 b, s32 c, s32 d);
+extern void *func_02049f44(void *mgr, s32 id, Ov003DtVec *pos, s32 a);
+extern void *func_ov000_0219b71c(Ov003DtVec *pos, Ov003DtVec *v, s32 a, s32 b, s32 c, s32 d);
 extern Ov003DtFx *func_02065f88(s32 id, Ov003DtVec *pos);
 extern u8 *func_02070558(u16 id);
 extern void func_ov000_0219b400(u8 *a, u8 *b, s32 c, Ov003DtVec *pos, u16 *rot, s32 d);

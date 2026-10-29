@@ -39,14 +39,14 @@ extern void *data_02097e4c;
 extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc63c[];
 extern char data_ov000_021cc642[];
-void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-void func_ov000_02198360(void *st, s32 state, s32 x);
+BOOL func_ov000_02198360(void *st, s32 state, s32 x);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
 u16 FX_Atan2(s32 y, s32 x);
 u8 *func_02065f88(s32 id, void *pos);
-void func_02049f44(void *mgr, s32 id, void *pos, s32 a);
+void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 
 static inline BOOL GBusy021a2d64(u8 *g) {
     return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94) ? TRUE : FALSE;

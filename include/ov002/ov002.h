@@ -152,8 +152,8 @@ extern Unk0214a424 *data_0214a424;
 extern u8 *data_02097d48;
 extern BitWord *data_ov000_021ccd44;
 
-int func_020594bc(void *a, int b, int c, int d);
-void func_020359d0(void *a, int b, int c);
+u16 func_020594bc(void *a, int b, int c, int d);
+void *func_020359d0(void *a, int b, int c);
 int func_02035b90(void *a, int b);
 void func_ov000_02180660(int a, int b);
 void func_ov000_02180754(void);
@@ -169,7 +169,7 @@ extern char data_ov002_021ef3e4[];
 extern char data_ov002_021ef3ec[];
 extern char data_ov002_021ef3f8[];
 void func_02035acc(void *a, void *b, u16 c);
-int func_020359fc(void *a, void *b, u16 c, u8 d);
+void func_020359fc(void *a, void *b, u16 c, u8 d);
 int func_02035bd4(void *a, void *b, u16 c);
 void func_02041558(void *p);
 void func_02041278(void *p);
@@ -337,7 +337,7 @@ void func_0203c9e8(int a, int b);
 extern s32 data_ov002_021f0f84[];
 extern u8 *data_02097dc8;
 extern void *data_02097e4c;
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 void MIi_CpuClear32(int val, void *dst, u32 size);
 extern VFunc data_ov002_021ef71c[];
 void func_ov002_021e916c(void);
@@ -350,7 +350,7 @@ typedef struct Info0206ee90 {
 
 u32 func_0205975c(void *a, int idx);
 void *func_0205976c(void *a, int idx);
-int func_02059544(void *a, void *b, void *c, u16 d, u16 e);
+u16 func_02059544(void *a, void *b, void *c, u16 d, u16 e);
 
 void func_ov002_021e90dc(void);
 void func_ov002_021e8f04(s32 id);
@@ -468,8 +468,8 @@ void MTX_Identity33_(void *p);
 
 void *NNS_G3dGetMdlSet(void *a);
 void NNS_G3dReleaseMdlSet(void *a);
-void func_ov000_0218fee4(void *p);
-void func_ov000_0218ea20(void *p);
+void *func_ov000_0218fee4(void *p);
+void *func_ov000_0218ea20(void *p);
 
 #define DELETE_WITH(field, dtor)        \
     do {                                \
@@ -488,14 +488,11 @@ void func_0203df0c(void *p);
 void func_0203f0b4(void *p);
 
 void *func_ov002_021d74c0(void *self);
-/* _s32_div_f: returns the quotient in r0 and the remainder in r1. */
-s64 _s32_div_f(s32 a, s32 b);
-#define S32_MOD(a, b) ((s32)(_s32_div_f((a), (b)) >> 32))
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 u8 *func_0206ef50(u32 id);
 void *func_02070dcc(int id);
-void STD_CopyLStringZeroFill(char *dst, const char *src, u32 n);
+int STD_CopyLStringZeroFill(char *dst, const char *src, u32 n);
 int NNS_G3dGetResDictIdxByName(void *dict, const char *name);
 void NNS_G3dMdlSetMdlAlpha(void *res, int idx, int val);
 extern char data_ov002_021efddd[];
@@ -675,7 +672,7 @@ typedef struct Bits021e2f04 {
 
 void func_ov002_021e0280(void *self);
 void func_ov002_021d7988(void *a);
-void func_ov000_0214b724(void *p);
+void *func_ov000_0214b724(void *p);
 
 extern char data_ov002_021effde[];
 extern char data_ov002_021effeb[];
@@ -723,7 +720,7 @@ void func_ov002_021ec2ac(void *self);
 BOOL func_ov002_021d52e0(void *self, void *ev);
 typedef BOOL (*EvCallback)(void *, void *);
 void func_ov000_02152294(void *self, u16 a, int b, EvCallback cb);
-int func_0206e8f0(void *self);
+u8 func_0206e8f0(void *self);
 void func_ov002_021d4540(void *dst, u32 size, void *a, void *b, int mode);
 extern void *data_ov002_021ef5ac[];
 extern u8 data_ov002_021ef650[];
@@ -758,8 +755,8 @@ void func_ov002_021e391c(s32 *m, int rot);
 extern void *data_ov002_021f0fac[];
 void NNS_G3dRenderObjRemoveAnmObj(void *a, void *b);
 void func_ov002_021eea74(void *p);
-void STD_CopyLString(void *dst, void *src, u32 size);
-void STD_TSNPrintf(void *dst, u32 size, const void *fmt, ...);
+int STD_CopyLString(void *dst, void *src, u32 size);
+int STD_TSNPrintf(void *dst, u32 size, const void *fmt, ...);
 extern void *data_ov002_021f0624[];
 extern u8 data_ov002_021f064c[];
 extern u8 data_ov002_021f0647[];

@@ -3,7 +3,7 @@
 extern "C" {
 
 extern u8 data_ov009_022172b5[];
-extern void func_ov000_02191318(Ov009Sub38 *m, s32 a);
+extern void *func_ov000_02191318(Ov009Sub38 *m, s32 a);
 extern void func_ov000_02191618(void *model);
 extern void func_0203f364(Ov009Sub48 *p);
 

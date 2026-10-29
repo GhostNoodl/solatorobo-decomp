@@ -38,7 +38,7 @@ typedef struct ov006_Save0214a424 {
 extern "C" {
 
 extern ov006_Save0214a424 *data_0214a424;
-void func_0206fef8(u16 id);
+void *func_0206fef8(u16 id);
 int func_020706a0(u16 id);
 int func_0207011c(u16 id);
 ov006_Obj021e663c *func_ov000_0218e9c4(void *p);

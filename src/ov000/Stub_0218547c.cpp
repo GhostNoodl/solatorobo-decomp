@@ -23,7 +23,7 @@ extern u8 data_ov000_021cb940[];
 void *func_0203dd9c(u32 size);
 void func_ov000_0216f144(Task021854d4 *self);
 void func_ov000_0216faac(Task021854d4 *self);
-void func_ov000_0216f398(Mgr021854d4 *mgr, Task021854d4 *task, s32 a, Mgr021854d4 *b);
+void *func_ov000_0216f398(Mgr021854d4 *mgr, Task021854d4 *task, s32 a, Mgr021854d4 *b);
 void func_ov000_02172240(void *mgr, s32 a, s32 b);
 
 extern Mgr021854d4 *data_ov000_021ccd30;

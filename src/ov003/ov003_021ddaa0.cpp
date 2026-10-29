@@ -61,9 +61,9 @@ extern "C" {
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
 extern char data_ov003_021f803c[];
-extern void func_02049f44(void *mgr, s32 id, Ov003SwVec *pos, s32 a);
-extern void func_ov000_02198360(Ov003SwWork *w, s32 a, s32 b);
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern void *func_02049f44(void *mgr, s32 id, Ov003SwVec *pos, s32 a);
+extern BOOL func_ov000_02198360(Ov003SwWork *w, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021911c8(void *model, s32 v);
 extern BOOL func_ov000_02191120(void *model);
 extern void func_0203f920(void *p);

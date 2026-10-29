@@ -180,7 +180,7 @@ typedef struct Obj3254Type {
 extern Obj3254Type data_0208bc80[];
 extern s8 data_02149ef4;
 extern void func_ov000_02190758(Obj3254Model *model, u16 *rot, int a);
-extern void func_ov000_021903b4(Obj3254Model *model);
+extern BOOL func_ov000_021903b4(Obj3254Model *model);
 
 static inline void Obj3254Model_SetScale(Obj3254Model *m, s32 x, s32 y, s32 z) {
     m->scaleX = x;

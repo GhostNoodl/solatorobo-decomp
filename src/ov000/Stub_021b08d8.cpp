@@ -27,9 +27,9 @@ extern u8 data_ov000_021ca2a8[];
 extern u8 data_ov000_021ca2e4[];
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 ang);
 void *func_ov000_0219be1c(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
-void func_0204a028(void *a, s32 b, void *c, s32 d);
-void func_02049f44(void *a, s32 b, void *c, s32 d);
-void func_ov000_02198360(void *s, s32 a, s32 b);
+void *func_0204a028(void *a, s32 b, void *c, s32 d);
+void *func_02049f44(void *a, s32 b, void *c, s32 d);
+BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void func_ov000_02168e18(void *self, s32 a, s32 b, VecFx32 *p);
 VObj *func_02065f88(s32 id, VecFx32 *pos);
 

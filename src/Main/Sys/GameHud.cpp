@@ -73,7 +73,7 @@ extern "C" {
 
 extern void func_020435e8(GfxPltt *pltt, void *src, u32 size);
 extern void func_02041c34(Model *model, int idx, void *cb, void *arg);
-extern void func_02050ebc(void);
+extern void *func_02050ebc(void);
 extern BOOL func_ov000_021705a0(FieldActor *actor, int a);
 
 static inline BOOL GameScene_IsPlayerActing(void) {

@@ -17,7 +17,7 @@ extern "C" {
 
 extern u8 data_ov014_02217d7c[];
 extern u8 data_ov014_02217d82[];
-extern void func_ov000_02191318(void *a, s32 b);
+extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *a);
 extern BOOL func_ov000_02191120(void *a);
 
@@ -74,8 +74,8 @@ extern void func_ov000_021911c8(void *a, s32 b);
 extern s32 **func_ov000_02190a30(void *a, s32 b);
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
-extern void func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void func_02065860(void *a, void *b);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_ov003_021d6a3c(Ov014Actor *self, s32 a, s32 b, s32 c);

@@ -139,7 +139,7 @@ extern HeapState *data_02097dd0;
 
 void MTX_Identity33_(void *mtx);
 void func_0203de1c(void *ptr);
-void func_ov000_02191f18(void);
+void *func_ov000_02191f18(void);
 void *func_0203dd9c(u32 size);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 void *NNS_G3dGetTex(void *file);

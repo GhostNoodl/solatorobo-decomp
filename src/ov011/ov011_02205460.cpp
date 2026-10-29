@@ -113,7 +113,7 @@ void func_ov011_02205460(void *self, u16 t, BOOL b) {
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(void *p);
-void func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 void func_ov011_02205460(void *self, u16 t, s32 c);
 
 #pragma force_active on

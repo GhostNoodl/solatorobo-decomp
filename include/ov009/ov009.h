@@ -428,7 +428,7 @@ extern "C" {
 void func_0203de1c(void *p);
 void *func_0203dd9c(u32 size);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
-void func_ov003_021d0edc(void *self);
+void *func_ov003_021d0edc(void *self);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
@@ -450,7 +450,7 @@ void func_ov003_021d3600(Ov009Actor *self);
 void func_ov003_021d112c(Ov009Actor *self);
 void func_ov003_021d1e8c(Ov009Actor *self);
 void func_ov003_021d4b68(Ov009Actor *self);
-BOOL func_ov003_021d16cc(Ov009Actor *self);
+u16 func_ov003_021d16cc(Ov009Actor *self);
 void func_ov003_021d1b88(Ov009Actor *self);
 void func_ov003_021d0c1c(Ov009Actor *self);
 char *func_0207011c(void *res);

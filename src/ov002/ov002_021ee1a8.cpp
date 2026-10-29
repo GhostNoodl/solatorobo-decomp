@@ -45,7 +45,7 @@ extern "C" {
 extern char data_ov002_021f0e06[];
 extern ov002_Disp021ee1a8 *data_ov000_021ccd54;
 
-void func_0200779c(char *dst, const char *fmt, ...);
+int func_0200779c(char *dst, const char *fmt, ...);
 void func_02070874(char *dst, const char *fmt, ...);
 void func_ov002_021ec2d8(VObject *obj);
 BOOL func_ov002_021ee55c(ov002_Staff *self, u16 y, int h);

@@ -8,7 +8,7 @@ extern Ov014Actor *func_ov000_0218e6d0(void *mgr, u16 a, u16 b);
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 extern void func_ov003_021daa6c(void *p, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
 
 void func_ov014_02201a28(Ov014Actor *self) {
@@ -46,21 +46,21 @@ void func_ov014_02201a28(Ov014Actor *self) {
 
 extern u8 data_ov014_02217430[];
 extern void func_ov003_021ceedc(void *p);
-extern void func_ov003_021cef0c(void *p);
-extern void func_ov003_021da940(void *p);
-extern void func_ov003_021d7f0c(void *p);
-extern void func_ov003_021d7fc0(void *p);
-extern void func_ov000_0218e9c4(void *p);
-extern void func_ov000_0218fe1c(void *p);
-extern void func_ov000_0218fee4(void *p);
-extern void func_ov000_0218ea20(void *p);
+extern void *func_ov003_021cef0c(void *p);
+extern void *func_ov003_021da940(void *p);
+extern void *func_ov003_021d7f0c(void *p);
+extern void *func_ov003_021d7fc0(void *p);
+extern void *func_ov000_0218e9c4(void *p);
+extern void *func_ov000_0218fe1c(void *p);
+extern void *func_ov000_0218fee4(void *p);
+extern void *func_ov000_0218ea20(void *p);
 extern BOOL func_ov000_0218cf5c(Ov014Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
 extern BOOL func_ov003_021d8820(void *p);
 extern void func_ov003_021d883c(void *p, Ov014Vec *a, Ov014Vec *b, s32 c);
 extern BOOL func_ov000_021903b4(void *p);
 extern void func_ov003_021d3008(Ov014Actor *self);
-extern void func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
+extern BOOL func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
 
 #pragma force_active on
 Ov014Actor *func_ov014_02201b94(Ov014Actor *self) {

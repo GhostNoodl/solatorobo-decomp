@@ -63,11 +63,11 @@ extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a66[];
 extern char data_ov003_021f7a6c[];
 extern char data_ov003_021f7a72[];
-extern void func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 v);
 extern s32 func_02040528(s32 max);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_0218ddd4(void *self, Ov003V3 *v, s32 a);
 extern void func_ov000_021987b8(Ov003Ct *ctl, s32 a, s32 b, s32 c);
 

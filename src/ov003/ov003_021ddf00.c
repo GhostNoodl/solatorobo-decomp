@@ -85,11 +85,11 @@ extern void func_ov000_0219433c(void *p);
 extern void func_ov000_02194758(void *p);
 extern void func_ov000_02197d80(void *p);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
-extern void func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_0203f920(void *p);
 extern void func_0203f8d8(void *p);
-extern void func_ov000_02191318(Ov003Mdl *m, s32 a);
+extern void *func_ov000_02191318(Ov003Mdl *m, s32 a);
 extern Ov003SubAnim *func_ov000_02190a30(Ov003Mdl *m, s32 a);
 
 void func_ov003_021ddf00(Ov003Prop *self) {
@@ -227,7 +227,7 @@ void func_ov003_021de0a4(Ov003Prop *self) {
 
 extern void *data_02097e4c;
 extern BOOL func_ov000_0218fa28(void *ctrl, void *obj, Ov003MdlRes *res, void *file, const char *name, s16 blend, u8 force);
-extern void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern BOOL func_ov000_02191120(Ov003Mdl *m);
 extern void *func_ov000_02199ba0(Ov003PropDef *def);

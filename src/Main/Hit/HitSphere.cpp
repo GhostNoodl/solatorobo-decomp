@@ -283,7 +283,7 @@ extern int data_02fe0f0c;
 extern void MTX_Identity43_(HitMtx *mtx);
 extern int FX_Inv(int x);
 extern void MI_Copy48B(const HitMtx *src, HitMtx *dst);
-extern void MTX_Inverse43(const HitMtx *src, HitMtx *dst);
+extern int MTX_Inverse43(const HitMtx *src, HitMtx *dst);
 void func_0203fa0c(HitMesh *mesh);
 void func_0203fb08(HitMesh *mesh);
 

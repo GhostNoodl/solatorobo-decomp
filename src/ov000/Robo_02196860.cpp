@@ -25,11 +25,11 @@ typedef struct {
 extern "C" {
 extern char data_ov000_021cc456[];
 extern u8 *data_0214a424;
-void func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_0203f324(void *a);
 void func_0203f364(void *a);
-void func_ov000_02198360(void *s, s32 a, s32 b);
+BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void *func_ov000_0219bf90(void);
 void *func_ov000_02199ba0(void *p);
 void func_ov000_02199b88(void *a, void *b);

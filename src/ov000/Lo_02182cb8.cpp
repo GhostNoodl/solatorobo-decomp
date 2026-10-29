@@ -106,7 +106,7 @@ void *func_0203dd9c(u32 size);
 void func_ov000_0216f144(Task *self);
 void func_ov000_0216faac(Task *self);
 void func_ov000_0216f828(Task *self);
-void func_ov000_0216f398(Mgr021ccd30 *mgr, Task *task, s32 a, Mgr021ccd30 *b);
+void *func_ov000_0216f398(Mgr021ccd30 *mgr, Task *task, s32 a, Mgr021ccd30 *b);
 void func_0206222c(void);
 void func_0206cadc(Obj0214a424 *p);
 void func_0206c4c4(Obj0214a424 *p);
@@ -116,7 +116,7 @@ void func_ov000_02181f54(u8 *p, s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_02049564(void *p, s32 a, s32 b);
 void func_020626d4(Vec3 *v, u16 a);
 BOOL func_0205a9c8(VObj *p);
-void func_0205aa30(VObj *p);
+BOOL func_0205aa30(VObj *p);
 BOOL func_ov000_021820bc(u8 *p, s32 a);
 
 static inline BOOL HasObj(void) {

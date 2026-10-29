@@ -18,7 +18,7 @@ extern void func_ov010_02203bf8(Ov010FxSet *p);
 extern Ov010Vec data_ov010_0220efdc;
 extern void *data_02097e4c;
 extern void func_0203f364(void *p);
-extern void func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
 extern void func_ov003_021d9aec(Ov010Vec *out, const Ov010Vec *in, s32 max);
 extern void func_ov010_02203f08(void *fx);
 

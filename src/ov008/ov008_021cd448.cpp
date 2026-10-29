@@ -33,11 +33,11 @@ struct Ov008Mgr {
 extern "C" {
 
 extern Ov008Mgr *data_ov008_021d0500;
-void func_0204b370(void *p);
+void *func_0204b370(void *p);
 void func_0204b420(void *p);
 void func_ov008_021cd500(Ov008Mgr *m);
 void func_ov008_021cd584(Ov008Mgr *m);
-void func_ov000_0218ea20(void *p);
+void *func_ov000_0218ea20(void *p);
 void func_02036838(void *a, void *b, int c, int d);
 void func_ov000_0214bc10(void);
 void func_ov000_0214c210(void);
@@ -149,7 +149,7 @@ extern char data_ov008_021d04c5[];
 extern char data_ov008_021d04d1[];
 extern char data_ov008_021d04d9[];
 extern char data_ov008_021d04e1[];
-void func_020359d0(void *a, int b, int c);
+void *func_020359d0(void *a, int b, int c);
 BOOL func_02035b90(void *a, int b);
 void *func_ov000_0218e9c4(void *p);
 BOOL func_ov000_0218f110(void *p);

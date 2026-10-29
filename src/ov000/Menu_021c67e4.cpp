@@ -84,7 +84,7 @@ extern "C" {
 
 extern Pad021c67e4 *data_02097dc8;
 extern void *data_02097e4c;
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 
 static inline Node021c67e4 *At021c67e4(Obj021c67e4 *self, s32 i) {
     Node021c67e4 *n;

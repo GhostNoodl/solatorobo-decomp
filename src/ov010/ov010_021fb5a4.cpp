@@ -50,7 +50,7 @@ void func_ov010_021fb5a4(void *self) {
 extern const Ov010StEnt data_ov010_0220ed50[];
 extern const Ov010Vec data_ov010_0220ec50;
 extern void func_ov003_021d3008(void *self);
-extern u8 func_ov003_021cf408(void);
+extern int func_ov003_021cf408(void);
 extern u8 *func_ov000_0219bf90(void);
 extern void func_ov003_021d9a00(Ov010Vec *out, s32 angle, const Ov010Vec *in);
 extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *out);

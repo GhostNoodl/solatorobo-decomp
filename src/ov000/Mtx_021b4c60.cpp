@@ -45,7 +45,7 @@ typedef struct {
 extern "C" {
 
 Cfg021b4c60 *func_0206fef8(u16 id);
-void func_020705fc(u16 id);
+void *func_020705fc(u16 id);
 void *func_0203dd9c(u32 size);
 void *func_ov000_0218fe1c(void *m);
 void func_ov000_0219badc(void *m, Res021b4c60 *res, Cfg021b4c60 *cfg);

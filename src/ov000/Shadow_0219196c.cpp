@@ -67,7 +67,7 @@ extern GxState NNS_G3dGlb;
 ShadowRes *func_02035e34(void *file, void *name);
 void func_0203f0b4(void *file);
 void func_02036838(void *a, void *b, int c, int d);
-void func_020359d0(void *a, int b, int c);
+void *func_020359d0(void *a, int b, int c);
 int func_02035b90(void *a, int b);
 char *func_0203ed04(void *name, void *file);
 void func_0203de1c(void *ptr);
@@ -77,12 +77,11 @@ void NNS_G3dGlbSetBaseTrans(VecFx32 *trans);
 void MTX_Identity33_(Mtx33 *mtx);
 void MI_Copy36B(const void *src, void *dst);
 void NNS_G3dGlbFlushVP(void);
-s32 _s32_div_f(s32 a, s32 b);
 void NNS_G3dMdlSetMdlAlpha(void *mdl, u32 idx, u32 alpha);
 void NNS_G3dMdlSetMdlPolygonID(void *mdl, u32 idx, u32 id);
 void NNS_G3dMdlSetMdlCullMode(void *mdl, u32 idx, u32 mode);
 void NNS_G3dDraw1Mat1Shp(void *mdl, u32 idx, u32 a, u32 b);
-void func_02043d48(void *p);
+int func_02043d48(void *p);
 
 static inline void *ResDict_GetDataByIdx(const ResDict *dict, u32 idx) {
     if (dict != NULL && idx < dict->num_entry) {

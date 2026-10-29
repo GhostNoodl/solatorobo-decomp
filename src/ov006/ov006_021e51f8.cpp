@@ -30,8 +30,8 @@ extern "C" {
 
 extern ov006_Net021e51f8 *data_02097e40;
 
-void func_020463c8(ov006_Net021e51f8 *net);
-void func_020455ac(ov006_Net021e51f8 *net);
+BOOL func_020463c8(ov006_Net021e51f8 *net);
+BOOL func_020455ac(ov006_Net021e51f8 *net);
 int func_02046abc(ov006_Net021e51f8 *net);
 u16 func_0204584c(ov006_Net021e51f8 *net);
 void func_02044a0c(ov006_NetParam021e51f8 *param);
@@ -40,7 +40,7 @@ void func_02045950(ov006_Net021e51f8 *net, void *data, u32 size);
 BOOL func_020459cc(ov006_Net021e51f8 *net, int a, u16 tgid, u16 b);
 BOOL func_02045ea4(ov006_Net021e51f8 *net, BOOL enabled);
 u16 WM_GetNextTgid(void);
-BOOL func_ov006_021e5f24(void);
+void func_ov006_021e5f24(void);
 
 static inline void ov006_Menu_Advance(ov006_Unk021ec888 *self) {
     if (self->unkC < 0xff) {

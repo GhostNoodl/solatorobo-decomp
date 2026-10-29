@@ -22,7 +22,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_0214b6d8(Twl0214b6d8 *self) {
+Twl0214b6d8 *func_ov000_0214b6d8(Twl0214b6d8 *self) {
     self->unk_00 = 0;
     self->unk_01 = 0;
     self->unk_02 = 0;
@@ -40,6 +40,7 @@ void func_ov000_0214b6d8(Twl0214b6d8 *self) {
     self->unk_30 = 0;
     self->unk_34 = 0;
     self->unk_38 = 0;
+    return self;
 }
 
 }

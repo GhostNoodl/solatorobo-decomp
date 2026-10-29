@@ -48,7 +48,7 @@ struct Ov008Pos16 {
 
 extern Ov008Pos16 data_ov008_021d02fc[];
 void func_ov008_021cf040(Ov008Mgr3 *m);
-void func_ov000_021903b4(void *p);
+BOOL func_ov000_021903b4(void *p);
 void func_ov008_021ccf44(void *p);
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
 

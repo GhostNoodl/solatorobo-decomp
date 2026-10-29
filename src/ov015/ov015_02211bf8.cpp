@@ -4,9 +4,9 @@ extern "C" {
 
 extern u8 *data_ov015_0221336c;
 void MI_Copy36B(const void *src, void *dst);
-void func_ov000_021903b4(void *a);
+BOOL func_ov000_021903b4(void *a);
 extern void *data_02097e4c;
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 BOOL func_ov000_02191120(void *p);
 void MTX_Identity33_(void *a);
 void MTX_RotY33_(void *m, s32 s, s32 c);
@@ -18,8 +18,8 @@ extern u8 data_ov015_02213286[];
 extern u8 data_ov015_0221329a[];
 extern u8 data_ov015_022132a6[];
 u8 *func_02066774(void *a, void *b, int c, void *d);
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void func_ov000_02191318(void *a, s32 b);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+void *func_ov000_02191318(void *a, s32 b);
 void func_ov000_021911c8(void *a, s32 b);
 extern u8 data_ov015_02213280[];
 

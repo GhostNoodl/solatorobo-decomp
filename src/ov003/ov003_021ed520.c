@@ -28,13 +28,13 @@ extern char data_ov003_021f9fd0[];
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_02194758(void *self);
-extern void func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
 extern void func_0203de1c(void *p);
-extern void func_ov000_0218ea20(void *p);
-extern void func_ov000_0219429c(void *p);
-extern void func_ov003_021dae44(void *p);
+extern void *func_ov000_0218ea20(void *p);
+extern void *func_ov000_0219429c(void *p);
+extern void *func_ov003_021dae44(void *p);
 
 void *func_ov003_021ed520(void *self) {
     func_ov000_0218ea20((u8 *)self + 0xdc);

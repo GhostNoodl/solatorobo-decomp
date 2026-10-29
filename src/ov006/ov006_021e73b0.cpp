@@ -14,7 +14,7 @@ typedef struct ov006_Obj021e73b0 {
 
 extern "C" {
 
-void func_ov000_02198360(ov006_Unk021e73b0 *a, int b, int c);
+BOOL func_ov000_02198360(ov006_Unk021e73b0 *a, int b, int c);
 void func_ov000_0218d7e8(ov006_Obj021e73b0 *a, u8 b);
 
 void func_ov006_021e73b0(ov006_Obj021e73b0 *self) {

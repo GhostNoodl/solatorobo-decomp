@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_020492e0(SndMgr *mgr) {
+SndMgr *func_020492e0(SndMgr *mgr) {
     s32 i;
     for (i = 0; i < 2; i++) {
         mgr->heaps[i] = NULL;
@@ -16,6 +16,7 @@ void func_020492e0(SndMgr *mgr) {
     }
     mgr->seqArcNext = 0;
     mgr->unk_9c = 0;
+    return mgr;
 }
 
 extern BOOL OS_IsRunOnTwl(void);

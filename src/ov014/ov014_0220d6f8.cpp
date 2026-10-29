@@ -11,9 +11,9 @@ extern "C" {
 extern void *data_0214a420;
 extern u8 data_ov014_02217bdc[];
 extern u8 data_ov014_02217b44[];
-extern void func_ov000_02194074(void *self);
+extern void *func_ov000_02194074(void *self);
 extern void func_ov000_02194758(void *self);
-extern void func_ov000_02194c08(void *self);
+extern BOOL func_ov000_02194c08(void *self);
 extern void func_02065804(void *a, void *b);
 extern Ov014Actor *func_ov000_0218d240(Ov014Actor *self);
 
@@ -21,7 +21,7 @@ extern char data_ov014_02217a4e[];
 extern char data_ov014_02217a9c[];
 extern void func_02065860(void *a, void *b);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
-extern void func_ov000_02191318(void *a, s32 b);
+extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *p);
 extern void func_ov000_021911c8(void *a, s32 b);
 extern u8 *func_ov000_0219bf90(void);
@@ -235,10 +235,10 @@ void func_ov014_0220d808(Ov014Actor *self) {
 extern void *data_02097e4c;
 extern BOOL func_ov000_021b4738(u8 *p);
 extern u8 *func_ov014_0220f7f0(s32 k, Ov014Vec *pos);
-extern void func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
 extern u8 *func_020657b0(void *a, void *b);
 extern void *func_ov000_02199ba0(void *p);
-extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, Ov014Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, Ov014Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 
 static inline void Ov014_d890Fire(Ov014Actor *self) {
     Ov014Vec v;

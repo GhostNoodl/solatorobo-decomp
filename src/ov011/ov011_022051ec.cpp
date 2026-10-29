@@ -62,7 +62,7 @@ extern Ov011BarSnd *func_ov000_0218e4cc(void *mgr, u16 id);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(void *p);
-void func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 static inline BOOL Ov011Bar_FadeIdle(void) {
     if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {

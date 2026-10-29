@@ -79,7 +79,7 @@ void func_ov002_021e6290(void *self) {
     } else if (FIELD(self, 0x78, s32) == 0) {
         FIELD(self, 0x8c, s32) = t - FIELD(self, 0x18, s32);
     } else if (FIELD(self, 0x78, s32) == 1) {
-        FIELD(self, 0x8c, s32) = ((s32)_s32_div_f(t - FIELD(self, 0x18, s32), lim) + 1) * lim;
+        FIELD(self, 0x8c, s32) = ((t - FIELD(self, 0x18, s32)) / lim + 1) * lim;
     }
     {
         FIELD(self, 0x7c, s32) = cur > FIELD(self, 0x18, s32) ? cur - FIELD(self, 0x18, s32) : 0;

@@ -353,7 +353,7 @@ typedef struct G3dTex {
 } G3dTex;
 
 extern G3dTex *NNS_G3dGetTex(void *res);
-extern void func_0203df74(void *ptr, u32 size);
+extern u32 func_0203df74(void *ptr, u32 size);
 extern void *func_0203e458(int arg0, void *arg1, u32 arg2, u32 arg3, int arg4);
 
 void func_02039494(void *res) {

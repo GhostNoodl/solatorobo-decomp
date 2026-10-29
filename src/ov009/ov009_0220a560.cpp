@@ -72,7 +72,7 @@ extern void func_ov000_02191418(void *m, s32 a, s32 b);
 extern BOOL func_ov000_02191508(void *m);
 extern void func_ov000_0218dbe0(Ov009Actor *self, s32 turn);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
-extern void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov009_0220a750(Ov009Actor *self) {
     Ov009Sub40 *st = self->unk_40;
     Ov009Sub38 *m = self->unk_38;
@@ -138,7 +138,7 @@ void func_ov009_0220a750(Ov009Actor *self) {
 }
 
 extern u8 data_ov009_022172d3[];
-extern void func_ov000_02191318(Ov009Sub38 *m, s32 a);
+extern void *func_ov000_02191318(Ov009Sub38 *m, s32 a);
 void func_ov009_0220a984(Ov009Actor *self) {
     s32 prev;
     switch (self->unk_40->state) {

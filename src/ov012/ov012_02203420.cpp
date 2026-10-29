@@ -4,7 +4,7 @@ extern "C" {
 
 extern u16 func_01ffc128(u16 target, u16 cur, s32 a, s32 b, s32 c);
 extern void func_ov003_021daae4(void *p, s32 a, Ov012Vec *v, void *b, void *c, void *d, void *e);
-extern void func_ov000_0219aca8(Ov012Actor *a, Ov012Actor *b, u16 c, u8 d, Ov012Vec *e, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern BOOL func_ov000_0219aca8(Ov012Actor *a, Ov012Actor *b, u16 c, u8 d, Ov012Vec *e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern Ov012Vec data_ov012_0220a748[];
 extern Ov012Vec data_ov012_0220a7a8[];
 extern u8 data_ov012_0220a5d0[];

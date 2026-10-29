@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern char data_ov013_0220be7c[];
-extern void func_0204a028(void *a, s32 b, Ov013Vec *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, Ov013Vec *c, s32 d);
 extern void VEC_MultAdd(s32 s, const Ov013Vec *a, const Ov013Vec *b, Ov013Vec *out);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -166,7 +166,7 @@ void func_ov013_02207d00(Ov013Actor *self) {
 
 extern void *data_ov000_021ccd68;
 extern void *func_ov000_0218e4cc(void *mgr, s32 a);
-extern u32 func_ov000_0218dfb4(void *p, s32 a);
+extern u16 func_ov000_0218dfb4(void *p, s32 a);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 extern void func_ov000_0218dbe0(Ov013Actor *self, s32 a);
 
@@ -348,9 +348,9 @@ extern char data_ov013_0220be82[];
 extern s32 FX_Div(s32 a, s32 b);
 extern BOOL func_01ffc584(const Ov013Vec *a, const Ov013Vec *b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_ov000_02191318(void *a, s32 b);
+extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_0218d918(Ov013Actor *self, Ov013Vec *p, s32 a);
-extern void func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
 
 static inline Ov013Vec Ov013_ApproachPointK(Ov013Actor *self, s32 k) {
     Ov013Vec res;

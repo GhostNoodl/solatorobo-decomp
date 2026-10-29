@@ -616,7 +616,7 @@ extern void *NNS_G3dGetMdlSet(void *res);
 extern u32 NNS_G3dTexGetRequiredSize(ResTexFull *tex);
 extern u32 NNS_G3dTex4x4GetRequiredSize(ResTexFull *tex);
 extern u32 NNS_G3dPlttGetRequiredSize(ResTexFull *tex);
-extern void NNS_G3dBindMdlSet(void *mdl, ResTexFull *tex);
+extern BOOL NNS_G3dBindMdlSet(void *mdl, ResTexFull *tex);
 extern void func_020435e8(GfxPltt *pltt, void *src, u32 size);
 extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, int is4x4, int opt);
 extern u32 (*NNS_GfdDefaultFuncAllocPlttVram)(u32 size, int is4pltt, int opt);

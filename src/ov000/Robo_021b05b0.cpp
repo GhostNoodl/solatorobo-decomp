@@ -3,7 +3,7 @@
 
 extern "C" {
 extern s32 data_ov000_021c9ff8[];
-void func_ov000_02198360(void *s, s32 a, s32 b);
+BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 BOOL func_ov000_0219840c(void *s, s32 *list, s32 count, BOOL push);
 void func_ov000_0218d7e8(void *self, u8 arg);
 

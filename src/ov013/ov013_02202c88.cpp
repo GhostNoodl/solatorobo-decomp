@@ -82,7 +82,7 @@ extern Ov013Actor *func_ov000_0219bf90(void);
 extern Ov013Actor *func_ov003_021da32c(u16 kind);
 extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern void *func_ov000_02190a30(void *a, s32 b);
-extern void func_ov000_0218fa28(void *a, void *b, void *c, void *d, const char *e, s32 f, s32 g);
+extern BOOL func_ov000_0218fa28(void *a, void *b, void *c, void *d, const char *e, s32 f, s32 g);
 extern void func_ov000_0218d988(Ov013Actor *self, Ov013Actor *t, s32 a);
 extern void func_ov003_021d9980(Ov013Vec *out, u16 rot, const Ov013Vec *v);
 extern void VEC_Add(const Ov013Vec *a, const Ov013Vec *b, Ov013Vec *out);
@@ -91,7 +91,7 @@ extern void func_ov013_0220498c(Ov013Actor *self, s32 a);
 extern void func_ov013_02204978(Ov013Actor *self, u16 a);
 extern u32 func_ov013_02204968(Ov013Actor *self);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
-extern void func_0204a028(void *a, s32 b, Ov013Vec *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, Ov013Vec *c, s32 d);
 
 static inline void Ov013_PartFlagB2(void *m, s32 i) {
     if (func_ov000_02190a30(m, i) != NULL) {
@@ -242,7 +242,7 @@ void func_ov013_02202dc8(Ov013Actor *self, u16 a, s32 b, BOOL c, u16 d) {
 extern s32 func_ov000_0218fd84(void *p);
 extern void func_ov013_022065d8(Ov013Actor *o, u16 a);
 extern void func_ov013_022065e0(Ov013Actor *o, s32 a);
-extern void func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
 
 struct Ov013Rot3 {
     u16 x;

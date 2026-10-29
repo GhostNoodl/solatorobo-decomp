@@ -37,7 +37,7 @@ extern void func_02065860(void *a, s32 b);
 extern Ov010V *func_020657b0(void *a, s32 b);
 extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
 extern void func_ov000_0219bdb0(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 BOOL func_ov010_0220e740(Ov010Path *self, void *a, s32 b, s32 c, const Ov010Vec *v, s32 e) {
     self->b0 = 1;

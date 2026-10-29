@@ -67,7 +67,7 @@ extern BOOL func_ov000_02191120(void *model);
 extern char data_ov003_021fa2d2[];
 
 extern void func_ov000_021b4c60(void *self);
-extern void func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 v);
 extern s32 func_02040528(s32 max);
@@ -75,7 +75,7 @@ extern void VEC_MultAdd(s32 scale, const Ov003Vec *dir, const Ov003Vec *base, Ov
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 extern Ov003BlinkInfo *func_0206fef8(u16 id);
 extern BOOL func_ov000_0218cea4(void *self);
-extern void func_ov000_021903b4(void *model);
+extern BOOL func_ov000_021903b4(void *model);
 
 static inline s32 Ov003_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);

@@ -5,17 +5,17 @@ extern "C" {
 extern void *data_02097e4c;
 extern u8 data_ov011_02207bd8[];
 void *func_ov000_0218e4cc(void *mgr, u16 key);
-u32 func_ov000_0218dfb4(void *g, u16 id);
+u16 func_ov000_0218dfb4(void *g, u16 id);
 void func_ov003_021d1e8c(void *p);
 void func_ov000_0218d988(void *self, void *target, s32 c);
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_ov000_021911c8(void *a, s32 b);
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 Ov011V *func_02065f88(s32 id, Ov011Vec *v);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
-void func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 void func_ov003_021d5348(void *p);
 void func_ov003_021d5900(void *p);
 void func_ov003_021d6054(void *p);
@@ -24,7 +24,7 @@ void func_ov003_021d112c(void *p);
 void func_ov000_0218d7e8(void *self, s32 a);
 void func_ov000_0218dbe0(void *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-void func_ov003_021d0edc(void *p);
+void *func_ov003_021d0edc(void *p);
 void func_0203f2b8(void *p);
 
 void func_ov011_022030b4(Ov011Actor *self) {

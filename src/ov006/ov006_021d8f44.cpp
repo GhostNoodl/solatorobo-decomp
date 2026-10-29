@@ -18,7 +18,7 @@ typedef struct ov006_Date {
 extern "C" {
 
 void OS_GetOwnerInfo(ov006_OwnerInfo *info);
-void RTC_GetDate(ov006_Date *date);
+s32 RTC_GetDate(ov006_Date *date);
 void OS_GetMacAddress(u8 *macAddr);
 extern const u8 data_ov006_021eb7f0[][2];
 

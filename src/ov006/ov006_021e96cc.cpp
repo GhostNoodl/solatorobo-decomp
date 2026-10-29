@@ -51,7 +51,7 @@ extern char data_ov006_021ec4ad[];
 extern char data_ov006_021ec4e0[];
 void *func_02065f88(s32 id, VecFx32 *pos);
 void *func_02066774(const char *a, const char *b, const char *c, VecFx32 *pos);
-void func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
+void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 void func_ov000_021987b8(ov006_Col021e96cc *col, s32 a, VecFx32 *b, VecFx32 *c);
 void func_ov000_02198e34(ov006_Col021e96cc *col, ov006_Rot021e96cc *out, VecFx32 *v, s32 a);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);

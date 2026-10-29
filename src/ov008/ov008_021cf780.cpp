@@ -46,12 +46,12 @@ extern void *data_ov000_021ccd54;
 extern Ov008Shared data_02fe1534;
 extern s32 data_02149efc;
 extern void *data_02fe152c;
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 void func_ov000_021865f8(void *p);
 void func_02062524(void);
 void func_ov000_02187b50(void *p);
 void *func_0206e7d0(u8 id);
-BOOL func_020594bc(void *a, int b, int c, int d);
+u16 func_020594bc(void *a, int b, int c, int d);
 void *func_ov000_02154b58(void *a, u32 id);
 
 s32 func_ov008_021cf780(void) {

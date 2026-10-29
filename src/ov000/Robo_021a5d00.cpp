@@ -50,7 +50,7 @@ u8 *func_ov000_0218e640(void *mgr, u16 id);
 u16 FX_Atan2(s32 y, s32 x);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL func_01ffc584(void *a, void *b, s32 c, s32 d);
-void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_ov000_0218dbe0(void *self, s32 turn);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
@@ -62,8 +62,8 @@ void func_ov000_02182590(void *p);
 BOOL func_0205b1fc(void);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
 void func_ov000_02199b88(u8 *info, u8 *self);
-void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-void func_ov000_02198360(St_021a5d00 *st, s32 state, s32 x);
+void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+BOOL func_ov000_02198360(St_021a5d00 *st, s32 state, s32 x);
 
 static inline u8 *FindActor021a5d00(u16 id) {
     if (data_ov000_021ccd68 == NULL) {

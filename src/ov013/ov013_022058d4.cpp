@@ -46,9 +46,9 @@ extern void func_ov003_021f0c60(Ov013Actor *self, s32 a);
 extern Ov013Actor *func_ov000_0218d240(Ov013Actor *self);
 extern void func_ov000_0218dbe0(Ov013Actor *self, s32 a);
 extern void *func_ov000_0218fe1c(void *p);
-extern void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern void func_0203f364(Ov013Sub48 *p);
-extern void func_ov003_021cf330(void *p, const char *name, u8 a);
+extern int func_ov003_021cf330(void *p, const char *name, u8 a);
 extern void func_ov013_02205760(Ov013Actor *self);
 extern void func_ov003_021da40c(void *p);
 extern void func_ov000_0218d7e8(Ov013Actor *self, s32 a);
@@ -120,7 +120,7 @@ void func_ov013_02205914(Ov013Actor *self) {
 
 extern void *data_02097e4c;
 extern void func_ov003_021da108(Ov013Actor *self, s32 a, s32 b, s32 c, s32 d);
-extern void func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
 
 static inline s32 Ov013_Clamp(s32 v, s32 lo, s32 hi) {
     if (v > hi) {

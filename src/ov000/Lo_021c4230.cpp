@@ -13,7 +13,7 @@ void func_ov000_021c4b00(void *self);
 void func_ov000_0215f330(void *p);
 void func_ov000_021c4c10(void *self);
 extern void *data_02097e4c;
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 
 void func_ov000_021c4230(u8 *self) {
     s32 i;
@@ -137,7 +137,7 @@ extern "C" {
 
 extern Pad021c4460 *data_02097dc8;
 extern void *data_02097e4c;
-void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov000_021c47bc(Win021c4460 *self, s32 up, u8 *moved, u8 *scrolled);
 s32 func_ov000_021c4964(Win021c4460 *self, s32 n);
 

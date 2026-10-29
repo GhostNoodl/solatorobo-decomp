@@ -67,7 +67,7 @@ void func_02048be4(void *p);
 void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, const char *b);
 void func_02041c34(ov006_Model *m, int a, void *cb, int b);
-void func_ov006_021dd5dc(void);
+void *func_ov006_021dd5dc(void);
 void func_ov006_021df19c(ov006_Panel021dfce8 *p);
 
 static inline void ov006_Vec_Set021dfce8(ov006_Vec021dfce8 *v, s32 x, s32 y, s32 z) {

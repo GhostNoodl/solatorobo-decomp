@@ -26,7 +26,7 @@ typedef struct SysCard {
 extern SysCard *data_02097e44;
 
 extern void *func_0203dd9c(u32 size);
-extern u16 CARD_Init(void);
+extern void CARD_Init(void);
 extern s32 OS_GetLockID(void);
 extern void CARD_LockBackup(u16 lockId);
 extern void CARD_UnlockBackup(u16 lockId);
@@ -37,7 +37,7 @@ extern u32 CARD_GetCurrentBackupType(void);
 extern s32 CARD_GetResultCode(void);
 extern BOOL CARD_TryWaitRomAsync(void);
 extern BOOL CARD_TryWaitBackupAsync(void);
-extern void CARDi_RequestStreamCommand(u32 src, u32 dst, u32 len, void (*cb)(void *), void *arg, BOOL async, s32 type, s32 retry, s32 mode);
+extern BOOL CARDi_RequestStreamCommand(u32 src, u32 dst, u32 len, void (*cb)(void *), void *arg, BOOL async, s32 type, s32 retry, s32 mode);
 extern BOOL func_02036328(void);
 
 void func_02046d1c(SysCard *card);

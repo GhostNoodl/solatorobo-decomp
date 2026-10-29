@@ -5,7 +5,7 @@ extern "C" {
 extern u8 data_ov015_02212f20[];
 extern u8 data_ov015_02212eb0[];
 extern u8 data_ov015_02212e47[];
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_02191618(void *a);
 
 void *func_ov015_0220b620(void *self) {
@@ -40,7 +40,7 @@ extern u8 data_ov015_02212e55[];
 extern u8 data_ov015_02212e4e[];
 extern u8 data_ov015_02212e61[];
 extern void *data_02097e4c;
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 s32 FX_Div(s32 a, s32 b);
 BOOL func_ov000_02191120(void *p);
 void func_ov000_021915a0(void *a);

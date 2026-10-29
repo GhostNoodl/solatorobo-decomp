@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021e90ac();
+bool func_ov002_021e90ac();
 void func_ov002_021e90dc();
 void func_ov002_021e916c();
 

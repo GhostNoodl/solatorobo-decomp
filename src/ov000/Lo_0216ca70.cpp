@@ -62,7 +62,7 @@ void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
 void func_02041c34(void *a, int b, void *c, void *d);
 BOOL func_02054f10(void *a, s32 b);
-void func_ov000_0216c800(void);
+void *func_ov000_0216c800(void);
 void func_ov000_0216d474(Obj0216ca70 *self);
 s32 FX_Div(s32 a, s32 b);
 Pl0216ca70 *func_ov000_0219bf90(void);

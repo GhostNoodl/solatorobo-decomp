@@ -5,15 +5,15 @@ extern "C" {
 extern u8 data_ov015_022128fc[];
 void func_ov015_02209270(void *p);
 void func_0203f2b8(void *p);
-void func_ov000_02191b04(void *p);
-void func_ov000_0218fee4(void *p);
-void func_ov000_0218ea20(void *p);
+void *func_ov000_02191b04(void *p);
+void *func_ov000_0218fee4(void *p);
+void *func_ov000_0218ea20(void *p);
 void func_ov015_0220900c(void *p);
 s32 FX_Div(s32 a, s32 b);
 BOOL func_ov015_022121b4(u8 *self);
 void func_ov015_022123c4(u8 *self);
-void func_ov000_02191318(void *a, s32 b);
-void func_ov015_02209790(u8 *self, s32 a);
+void *func_ov000_02191318(void *a, s32 b);
+BOOL func_ov015_02209790(u8 *self, s32 a);
 void func_ov015_02209b80(u8 *self, s32 a, s32 b);
 u8 *func_ov015_0220c93c(u8 *self);
 
@@ -23,8 +23,8 @@ extern void *data_ov015_02213368;
 void func_ov015_022120c0(void *p);
 void func_ov015_02212180(void *p);
 int func_ov015_0221219c(void *p);
-void func_ov000_0218e9c4(void *p);
-void func_ov000_0218fe1c(void *p);
+void *func_ov000_0218e9c4(void *p);
+void *func_ov000_0218fe1c(void *p);
 void func_ov015_022119e8(void *p);
 void func_ov015_021ff9e8(u8 *self);
 BOOL func_ov015_021ffb90(u8 *self);
@@ -274,7 +274,7 @@ void func_ov015_02212250(u8 *self, s32 a);
 void func_ov015_02207c30(u8 *p);
 u16 FX_Atan2(s32 y, s32 x);
 Ov015V *func_02065f88(s32 id, void *pos);
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 
 BOOL func_ov015_021ffb90(u8 *self) {
     BOOL r = FALSE;

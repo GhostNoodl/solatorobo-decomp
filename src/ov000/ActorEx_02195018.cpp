@@ -71,8 +71,8 @@ extern const u8 data_ov000_021cc480[];
 extern HeapState *data_02097dd0;
 extern void *data_0214a420;
 
-void func_ov000_0218c2d4(void *self);
-void func_ov000_0218c928(void *self);
+void *func_ov000_0218c2d4(void *self);
+void *func_ov000_0218c928(void *self);
 ResSet *func_ov000_0218ea20(ResSet *self);
 void func_0203de1c(void *ptr);
 void func_02065804(void *mgr, void *handle);

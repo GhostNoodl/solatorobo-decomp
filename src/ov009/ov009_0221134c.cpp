@@ -39,7 +39,7 @@ extern u8 data_ov009_022160b8[];
 extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
 extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void func_ov000_0219a210(Ov009Vec *v, const void *a, u16 b);
 extern Ov009Actor *func_ov003_021d69f0(Ov009Actor *self, u16 kind, const Ov009Vec *pos, const void *rot, Ov009Actor *t);
 extern void func_ov000_0218d46c(Ov009Actor *a, u16 id, s32 msg);

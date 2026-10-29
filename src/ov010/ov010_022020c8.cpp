@@ -67,26 +67,26 @@ extern const Ov010FnTbl2 data_ov010_0220f00c;
 extern u8 data_ov010_0220fe5c[];
 extern const u8 data_ov003_021f4340;
 extern void func_ov000_02194758(void *self);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void func_0203f364(void *p);
-extern void func_ov003_021cf330(void *p, void *d, s32 c);
+extern int func_ov003_021cf330(void *p, void *d, s32 c);
 
 extern u8 data_ov010_0220fe6c[];
 extern u8 data_ov010_0220efc8[];
 extern Ov010Heap022 *data_02097dd0;
 extern void *data_0214a420;
 
-extern void func_ov000_02194074(void *self);
-extern void func_ov000_0219429c(void *self);
-extern void func_ov003_021cf2bc(void *p);
-extern void func_ov003_021cf2d8(void *p);
+extern void *func_ov000_02194074(void *self);
+extern void *func_ov000_0219429c(void *self);
+extern void *func_ov003_021cf2bc(void *p);
+extern void *func_ov003_021cf2d8(void *p);
 extern void func_02065860(void *a, s32 b);
 extern void MTX_RotZ33_(void *m, s32 s, s32 c);
 extern void MTX_RotX33_(void *m, s32 s, s32 c);
 extern void MTX_RotY33_(void *m, s32 s, s32 c);
 extern void MTX_Concat33(void *a, void *b, void *c);
 extern void MI_Copy36B(void *m, void *b);
-extern void func_ov000_0218cea4(void *self);
+extern BOOL func_ov000_0218cea4(void *self);
 
 static inline void Ov010_022020c8_Init(void *self) {
     FLD(Ov010Flags8, self, 0xce).b0 = 0;

@@ -128,7 +128,7 @@ extern const s16 FX_SinCosTable_[];
 extern void VEC_Add(const Ov003LnVec *a, const Ov003LnVec *b, Ov003LnVec *out);
 extern void MTX_RotY33_(Ov003LnMtx *m, s32 s, s32 c);
 extern void MTX_MultVec33(const Ov003LnVec *v, const Ov003LnMtx *m, Ov003LnVec *out);
-extern void func_ov000_021903b4(Ov003LnModel *model);
+extern BOOL func_ov000_021903b4(Ov003LnModel *model);
 extern BOOL func_ov000_02194c08(void *self);
 
 static inline void Ov003Ln_Draw(Ov003Line *self, const Ov003LnVec *p) {
@@ -253,9 +253,9 @@ extern Ov003Game48 *data_02097e48;
 extern char data_ov003_021f851c[];
 extern char data_ov003_021f8525[];
 extern void func_ov000_02194758(void *self);
-extern u8 func_ov000_021909a8(void *model, s32 a, const char *name);
+extern s32 func_ov000_021909a8(void *model, s32 a, const char *name);
 extern void NNS_G3dRenderObjSetInitFunc(void *p, void *fn);
-extern void func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 
 void func_ov003_021e0388(Ov003Lamp *self) {
@@ -344,7 +344,7 @@ void func_ov003_021e0448(Ov003Lamp *self) {
 
 extern void *data_02097e4c;
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_02049f44(void *mgr, s32 id, Ov003LampVec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov003LampVec *pos, s32 a);
 extern Ov003LampPtcl *func_ov000_0219b71c(Ov003LampVec *pos, Ov003LampVec *v, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov003_021e06a8(Ov003Lamp *self) {

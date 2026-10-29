@@ -110,7 +110,7 @@ typedef struct FSROMFATArgOpenFileDirect { u32 top; u32 bottom; u32 index; } FSR
 extern const char data_0208af40[];
 extern FSResult (*const data_02070f2c[])(FSFile *);
 BOOL FSi_IsUnreadableRomOffset(FSArchive *arc, u32 offset);
-void FS_IsArchiveTableLoaded(FSArchive *arc);
+BOOL FS_IsArchiveTableLoaded(FSArchive *arc);
 FSResult FSi_WaitForArchiveCompletion(FSFile *file, FSResult result);
 
 FSResult FSi_ROMFAT_TranslateCommand(FSFile *file, FSCommandType command, BOOL block);

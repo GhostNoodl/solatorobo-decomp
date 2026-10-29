@@ -49,7 +49,7 @@ extern u8 *data_ov000_021ccd6c;
 u8 *func_ov000_0219bf90(void);
 void *func_0203bbfc(void *sys, int which);
 s32 func_ov000_0218c040(void *mgr, s32 max, VecFx32 *out, s32 kind, u16 id);
-void NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
+BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
 
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);

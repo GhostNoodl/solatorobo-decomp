@@ -346,7 +346,7 @@ int STD_CopyLString(char *dst, const char *src, int len);
 int STD_GetStringLength(const char *str);
 void OS_Terminate(void);
 BOOL OS_IsRunOnTwl(void);
-u32 OS_GetBootType(void);
+u16 OS_GetBootType(void);
 
 void FS_InitFile(FSFile *file);
 FSArchive *FS_FindArchive(const char *name, int name_len);

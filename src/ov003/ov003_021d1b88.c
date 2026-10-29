@@ -72,7 +72,7 @@ typedef struct {
 
 extern s32 func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, s32 b);
-extern s32 func_ov003_021d6548(Ov003Disp *self, void *data);
+extern u8 func_ov003_021d6548(Ov003Disp *self, void *data);
 extern void func_ov000_02191418(void *m, s32 a, s32 b);
 extern BOOL func_ov000_0218d494(Ov003Disp *self, Ov003DispEv *ev);
 

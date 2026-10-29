@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void STD_CopyLString(void *dst, const void *src, s32 n);
+int STD_CopyLString(void *dst, const void *src, s32 n);
 
 static inline void LoInitEC44(void *self) {
     LFLD(s32, self, 0x0) = 0;
@@ -40,8 +40,8 @@ extern "C" {
 void func_ov000_0218ec60(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0218edf0(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02161fac(void *p);
-void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021911c8(void *a, s32 b);
 void func_ov000_021915a0(void *a);
 void func_ov000_02191870(void *a, void *b);
@@ -50,10 +50,6 @@ void func_ov000_02191920(void *a, s32 b, s32 c, s32 d);
 BOOL func_02049244(void *out, s32 speed, const void *from, const void *to, s32 minDist);
 void VEC_Normalize(const VecFx32 *src, VecFx32 *dst);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
-u32 _fflt(s32 v);
-u32 _fadd(u32 a, u32 b);
-u32 _fsub(u32 a, u32 b);
-s32 _ffix(u32 v);
 
 typedef struct {
     u16 b0 : 1;
@@ -125,16 +121,16 @@ void func_ov000_02162bd4(u8 *self) {
             ctrl = func_ov000_02190a30(self + 0x55c, 3);
             if (ctrl != NULL) {
                 s32 v;
-                u32 f;
+                float f;
                 s32 frame;
                 func_ov000_02191920(self + 0x55c, 0, 0x1000, 0);
                 v = LFLD(s32, self, 0x6c4);
                 if (v > 0) {
-                    f = _fadd(0x3f000000, _fflt(v << 12));
+                    f = (float)(v << 12) + 0.5f;
                 } else {
-                    f = _fsub(_fflt(v << 12), 0x3f000000);
+                    f = (float)(v << 12) - 0.5f;
                 }
-                frame = _ffix(f);
+                frame = (s32)f;
                 if (LFLD(u8 *, ctrl, 0) != NULL) {
                     if (frame >= 0) {
                         LFLD(s32, LFLD(u8 *, ctrl, 0), 0) = frame;

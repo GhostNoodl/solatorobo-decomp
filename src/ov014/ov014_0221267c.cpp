@@ -5,10 +5,10 @@ extern "C" {
 extern u8 data_ov014_02217dc0[];
 extern char data_ov014_02217d8e[];
 extern char data_ov014_02217d95[];
-extern void func_ov000_0218e9c4(void *p);
-extern void func_ov000_0218fe1c(void *p);
-extern void func_ov000_0218fee4(void *p);
-extern void func_ov000_0218ea20(void *p);
+extern void *func_ov000_0218e9c4(void *p);
+extern void *func_ov000_0218fe1c(void *p);
+extern void *func_ov000_0218fee4(void *p);
+extern void *func_ov000_0218ea20(void *p);
 extern void MIi_CpuClearFast(s32 v, void *p, u32 n);
 extern BOOL func_ov000_0218cf5c(Ov014Actor *self);
 extern BOOL func_ov000_0218f110(void *p);

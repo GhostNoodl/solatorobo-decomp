@@ -20,10 +20,10 @@ extern void func_ov000_02199f48(void *p, Ov009Actor *a);
 extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
 extern void func_ov000_021911c8(void *m, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
-extern void func_ov000_0219b71c(Ov009Vec *pos, Ov009Vec *v, s32 a, s32 b, s32 c, s32 d);
+extern void *func_ov000_0219b71c(Ov009Vec *pos, Ov009Vec *v, s32 a, s32 b, s32 c, s32 d);
 extern s32 func_02040528(s32 range);
 extern s32 func_02040498(s32 max);
 void func_ov009_022117e4(Ov009Actor *self) {

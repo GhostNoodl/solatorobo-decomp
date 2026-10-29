@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void *data_02097e4c;
-extern void func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void func_ov000_0218dbe0(Ov009Actor *self, s32 turn);
 
 void func_ov009_021fc51c(Ov009Actor *self) {

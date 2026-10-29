@@ -32,7 +32,7 @@ typedef struct {
 
 extern "C" {
 
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 void func_ov003_021d8eac(Ov003Timer *self, void *target, s16 duration, bool loop) {
     if (!self->active) {

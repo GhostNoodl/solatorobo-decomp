@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0216f23c(void *p, s32 a);
 
 void func_ov000_0216f844(void *self, s32 a) {

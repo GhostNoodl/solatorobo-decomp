@@ -23,7 +23,7 @@ void func_ov002_021dbd08(void *self, void *a, s32 b);
 void func_ov002_021dfc44(void *self, u16 v);
 void *func_ov002_021dcee0(void *self);
 void func_ov002_021e398c(s32 *m, int rot);
-void func_ov002_021e3874(void *v, u8 a, u8 b);
+void *func_ov002_021e3874(void *v, u8 a, u8 b);
 void func_ov002_021d7424(int se);
 void func_ov002_021d7c54(void *self, u16 rot);
 void func_ov002_021df7b4(void *self, void *ev);

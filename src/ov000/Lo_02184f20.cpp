@@ -72,12 +72,12 @@ extern Obj0214a424 *data_0214a424;
 
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
-s32 func_02061d54(s32 a);
+u16 func_02061d54(s32 a);
 void *func_0204c0e8(void *p, s32 a);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
-s32 func_02062834(void);
+u16 func_02062834(void);
 
 static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;

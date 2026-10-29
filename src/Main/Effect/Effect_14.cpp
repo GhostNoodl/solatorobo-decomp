@@ -207,7 +207,7 @@ BOOL func_0206afd4(EffectEmitter *em) {
 
 
 extern void VEC_MultAdd(s32 scale, const EffectVec *dir, const EffectVec *base, EffectVec *out);
-extern void func_0206924c(EffectEmitterSub *sub, EffectPtcl *p);
+extern BOOL func_0206924c(EffectEmitterSub *sub, EffectPtcl *p);
 
 static inline BOOL EffectPtcl_Move(EffectPtcl *p) {
     if (p->time > p->unk_b8 && p->unk_b8 >= 0) {
@@ -318,7 +318,7 @@ typedef struct EffectMtx33 {
     s32 m[3][3];
 } EffectMtx33;
 
-extern s32 func_0206379c(void);
+extern u8 func_0206379c(void);
 extern void func_02068e68(EffectPtcl *p, s32 type, void *mtx, s32 arg);
 
 static inline s32 Effect_Cross(s32 a, s32 b, s32 c, s32 d) {

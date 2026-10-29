@@ -23,7 +23,7 @@ static inline s32 Ov009_FxMulL(s32 a, s64 b) {
 extern void *data_02097e4c;
 extern void func_0203f324(Ov009Sub48 *p);
 extern void func_0203f364(Ov009Sub48 *p);
-extern void func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern u16 func_ov000_02198da8(Ov009Sub48 *p, u16 a);
 extern void func_ov000_0218dbe0(Ov009Actor *self, s32 a);
 extern void *func_ov000_02199ba0(void *p);

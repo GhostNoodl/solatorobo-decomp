@@ -5,16 +5,16 @@ extern "C" {
 extern void *data_02097e4c;
 extern u8 data_ov010_0220f024[];
 extern const Ov010Vec data_ov010_0220f144;
-extern void func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
+extern BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
-extern void func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
 extern Ov010V *func_02065f88(s32 id, Ov010Vec *pos);
 extern void func_ov003_021d9dbc(Ov010Vec *out, const Ov010Vec *a, const Ov010Vec *b, s32 dist, s32 yoff);
 extern void func_ov003_021d64f0(void *self);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern s32 VEC_Distance(const Ov010Vec *a, const Ov010Vec *b);
 extern void func_ov003_021da2c8(void *self, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 static inline BOOL Ov010_Begin(u16 *st) {
     if (*st == 0) {

@@ -94,7 +94,7 @@ extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *o);
 extern void VEC_Normalize(const Ov010Vec *a, Ov010Vec *o);
 extern s32 func_ov000_0219a510(void *self, u16 mask, Ov010Vec *pos, s32 r, s32 a, void **list);
 extern void func_ov003_021f0c60(void *self, s32 a);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_ov003_021d9e90(Ov010Vec *a, Ov010Vec *b, Ov010Vec *c, s32 d, s32 e);
 extern void func_0203f324(Ov010Sub48b *p);

@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern Ov011Vec data_02092a50;
 void func_ov000_0218996c(s32 a, s32 b);
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 Ov011V *func_02065f88(s32 id, Ov011Vec *v);
 void func_ov003_021d6054(void *p);
 s32 *NNS_G3dGlbGetInvV(void);

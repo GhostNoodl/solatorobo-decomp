@@ -26,7 +26,7 @@ struct Ov009AngSrc {
     u16 unk_44;
 };
 
-extern s32 func_0204bfa8(Ov009AngSrc *p);
+extern u16 func_0204bfa8(Ov009AngSrc *p);
 
 static inline s32 Ov009_GetAng(Ov009AngSrc *p) {
     if (p->unk_40 != 0) {

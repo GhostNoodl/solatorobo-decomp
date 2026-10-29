@@ -5,7 +5,7 @@ extern "C" {
 extern s32 FX_Div(s32 a, s32 b);
 extern void MIi_CpuClear32(u32 data, void *dest, u32 size);
 extern void func_ov003_021daae4(void *p, s32 a, Ov012Vec *v, void *b, void *c, void *d, s32 e);
-extern void func_ov000_0219aca8(Ov012Actor *a, Ov012Actor *b, u16 c, u8 d, Ov012Vec *e, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern BOOL func_ov000_0219aca8(Ov012Actor *a, Ov012Actor *b, u16 c, u8 d, Ov012Vec *e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern Ov012Vec data_ov012_0220a81c;
 extern const Ov012Vec data_ov012_0220a840;
 

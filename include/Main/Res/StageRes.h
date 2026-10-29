@@ -78,7 +78,7 @@ extern char *STD_SearchString(char *str, const char *sub);
 extern void func_0206e900(char *dst, const char *src);
 extern void func_0204bfcc(DataRes *res);
 extern void func_0204bfe4(DataRes *res, const char *arcName, char *name);
-extern void func_0204c030(DataRes *res);
+extern BOOL func_0204c030(DataRes *res);
 extern BOOL func_02059784(PosEvRes *res);
 extern int (*data_0208bde8)(StageResSlot *slot);
 extern int func_0205bef8(StageResSlot *slot);

@@ -42,7 +42,7 @@ typedef struct {
 extern "C" {
 
 extern char data_ov003_021f78c4[];
-extern void func_0206f5e4(u16 id, s32 a);
+extern BOOL func_0206f5e4(u16 id, s32 a);
 extern void *func_0206f6d4(u16 id, u32 *out);
 extern void func_ov000_021c2224(void *p, void *res);
 extern u32 *func_0206eed0(void *res);

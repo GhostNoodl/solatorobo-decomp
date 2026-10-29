@@ -3,7 +3,7 @@
 extern "C" {
 
 void func_ov000_0215fe1c(void *self, s32 a, s32 b, ...);
-u16 func_0204045c(void);
+u32 func_0204045c(void);
 
 void func_ov000_021697dc(void *self, s32 a, s32 b) {
     if (a < (LFLD(s32, self, 0x64) >> 12)) {

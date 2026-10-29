@@ -4,7 +4,7 @@ extern "C" {
 
 s32 func_02049130(s32 t, s32 a, s32 b);
 void func_ov002_021e398c(void *m, u8 dir);
-void func_ov002_021e3874(s32 *pos, u8 type, u8 a);
+void *func_ov002_021e3874(s32 *pos, u8 type, u8 a);
 void *func_02065f88(s32 id, s32 *pos);
 
 typedef struct {

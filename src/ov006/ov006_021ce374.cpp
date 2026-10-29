@@ -540,7 +540,7 @@ void func_ov006_021cfc60(ov006_TaskCE *self);
 void func_ov006_021db65c(void);
 void *func_0205976c(ov006_DataRes *res, u32 idx);
 u32 func_0205975c(ov006_DataRes *res, u32 idx);
-BOOL func_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
+u16 func_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 void func_ov006_021e2f3c(Object *a);
 
@@ -615,7 +615,7 @@ void func_ov006_021cfc60(ov006_TaskCE *self);
 void func_ov006_021db65c(void);
 void *func_0205976c(ov006_DataRes *res, u32 idx);
 u32 func_0205975c(ov006_DataRes *res, u32 idx);
-BOOL func_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
+u16 func_02059544(ov006_DataRes *res, void *block, void *entries, int packed, u32 id);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 void func_ov006_021e2f3c(Object *a);
 
@@ -727,7 +727,7 @@ namespace m_021cf7c8 {
 
 extern "C" {
 
-void func_ov006_021e4c5c(ov006_Unk021ec888 *self);
+BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self);
 void func_ov006_021cf360(ov006_TaskCE *self, u16 id);
 
 void func_ov006_021cf7c8(ov006_TaskCE *self) {
@@ -970,7 +970,7 @@ namespace m_021d0188 {
 
 extern "C" {
 
-void func_ov006_021e4c5c(ov006_Unk021ec888 *self);
+BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self);
 
 void func_ov006_021d0188(void) {
     if (data_ov006_021ec888->unk8 != 1) {
@@ -996,11 +996,11 @@ extern void *data_ov000_021cadcc;
 extern void *data_ov006_021ebf40;
 
 BOOL func_0201fd04(void);
-void func_ov006_021e4c38(ov006_Unk021ec888 *self);
-void func_ov006_021e4c84(ov006_Unk021ec888 *self);
-void func_ov006_021e4c5c(ov006_Unk021ec888 *self);
-void func_ov006_021e4cb4(ov006_Unk021ec888 *self);
-void func_ov006_021e4ce8(ov006_Unk021ec888 *self, ov006_MenuData *data);
+BOOL func_ov006_021e4c38(ov006_Unk021ec888 *self);
+BOOL func_ov006_021e4c84(ov006_Unk021ec888 *self);
+BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self);
+BOOL func_ov006_021e4cb4(ov006_Unk021ec888 *self);
+BOOL func_ov006_021e4ce8(ov006_Unk021ec888 *self, ov006_MenuData *data);
 void func_ov006_021e463c(ov006_Unk021ec888 *self);
 ov006_MenuNode *func_ov006_021e48c0(ov006_Unk021ec888 *self, int id);
 void *func_0204c0e8(void *a, int id);
@@ -1012,7 +1012,7 @@ void func_ov000_02173648(void *self);
 void func_ov000_02153c48(ov006_ListNode *a, int b, int c, int d, int e);
 void MIi_CpuClear32(int value, void *dst, u32 size);
 void func_02040b0c(void *dst, int *dstLen, const void *src, int *srcLen);
-void STD_CopyLString(void *dst, const void *src, u32 size);
+int STD_CopyLString(void *dst, const void *src, u32 size);
 void func_ov006_021d0ab8(ov006_TaskD0 *self);
 
 BOOL func_ov006_021d01ac(ov006_TaskD0 *self) {
@@ -1371,7 +1371,7 @@ void func_ov000_02157d2c(void *a, const void *b);
 void func_ov000_02173648(void *self);
 void func_ov006_021daea0(ov006_SlotManager *a);
 BOOL func_ov006_021db0a8(ov006_SlotManager *a, int b);
-void func_ov006_021e60b4(void *a, int b);
+u32 func_ov006_021e60b4(void *a, int b);
 void func_ov006_021e4a80(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 
 static inline ov006_Window *ov006_NewWindow_cad50(void) {
@@ -1591,8 +1591,8 @@ extern void *data_02149ef8;
 extern u8 data_ov000_021ccd34;
 
 u16 func_ov006_021e60e8(int type, u16 mask);
-void func_ov006_021e4bec(ov006_Unk021ec888 *self, int a);
-void func_ov006_021e4c5c(ov006_Unk021ec888 *self);
+BOOL func_ov006_021e4bec(ov006_Unk021ec888 *self, int a);
+BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self);
 void func_ov006_021e5e00(ov006_Unk021ec888 *self);
 void *func_0204c0e8(void *a, int id);
 void func_ov000_0215c1bc(ov006_Window *w, int a, void *str);

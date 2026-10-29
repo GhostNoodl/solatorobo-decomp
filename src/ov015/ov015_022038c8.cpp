@@ -3,11 +3,11 @@
 extern "C" {
 
 extern void *data_02097e4c;
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 extern u8 *data_02097dc8;
 extern u8 *data_ov000_021ccd44;
 extern u8 data_ov000_021ccd34;
-void func_ov000_0218084c(void *a, s32 b, s32 c);
+void *func_ov000_0218084c(void *a, s32 b, s32 c);
 void *func_ov000_02154b58(void *a, s32 b);
 void func_0203cc58(int a, int b, int c);
 extern void *data_02149ef8;

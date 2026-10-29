@@ -2,8 +2,8 @@
 
 extern "C" {
 
-extern void func_ov000_0218fee4(void *p);
-extern void func_ov000_0218ea20(void *p);
+extern void *func_ov000_0218fee4(void *p);
+extern void *func_ov000_0218ea20(void *p);
 
 void func_ov009_0220d034(Ov009Actor *self) {
     self->v7c();

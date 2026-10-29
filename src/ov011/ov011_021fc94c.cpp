@@ -143,7 +143,7 @@ static inline void Ov011_SendB(u16 id, s32 kind, s16 x, s16 y) {
 }
 
 extern void *data_02097e4c;
-extern void func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
 
 #pragma force_active on
 void func_ov011_021fc94c(Ov011Tut *self) {

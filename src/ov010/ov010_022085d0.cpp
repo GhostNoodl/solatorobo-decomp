@@ -12,7 +12,7 @@ extern u8 data_ov010_0220f024[];
 extern Ov010Vec data_ov010_0220f114;
 extern Ov010Vec data_ov010_0220f120;
 extern Ov010V *func_02065f88(s32 id, Ov010Vec *pos);
-extern void func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
 extern void *func_ov003_021da32c(s32 id);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);

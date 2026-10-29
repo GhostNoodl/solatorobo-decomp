@@ -79,9 +79,9 @@ extern "C" {
 
 extern char data_ov000_021cc5e3[];
 extern Data021ccd30 *data_ov000_021ccd30;
-void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021697dc(Part021b4774 *p, u16 a, u16 b);
-void func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 u16 func_ov000_02198da8(Body021b468c *body, u16 angle);
 
@@ -108,7 +108,7 @@ BOOL func_ov000_021b468c(Robo021b468c *self) {
 }
 
 extern void *data_0214a424;
-s32 func_0206d204(void *p, s32 a);
+u8 func_0206d204(void *p, s32 a);
 
 BOOL func_ov000_021b4738(void *self) {
     BOOL r = FALSE;

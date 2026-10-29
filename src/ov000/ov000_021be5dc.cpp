@@ -40,7 +40,7 @@ extern "C" {
 
 BOOL func_ov000_021bd374(Obj021be5dc *self, s32 len);
 void func_ov000_021bd474(Obj021be5dc *self, VecFx32 *pos);
-void func_ov000_021be564(void);
+void *func_ov000_021be564(void);
 void MTX_MultVec43(const VecFx32 *vec, const void *m, VecFx32 *dst);
 s32 FX_Div(s32 a, s32 b);
 void func_02041c34(void *model, s32 a, void *cb, void *arg);

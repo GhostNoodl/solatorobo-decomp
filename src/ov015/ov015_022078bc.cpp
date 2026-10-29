@@ -6,8 +6,8 @@
 extern "C" {
 
 void func_ov015_02208474(u8 *self);
-void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void NNS_G3dRenderObjSetInitFunc(void *a, void *cb);
 void func_ov000_02190e98(void *a, s32 b, s32 c, s32 d);

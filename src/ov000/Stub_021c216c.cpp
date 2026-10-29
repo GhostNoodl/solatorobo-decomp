@@ -16,8 +16,8 @@ extern "C" {
 
 extern HeapState *data_02097dd0;
 void func_0203de1c(void *p);
-void func_ov000_0218fee4(void *p);
-void func_ov000_0218ea20(void *p);
+void *func_ov000_0218fee4(void *p);
+void *func_ov000_0218ea20(void *p);
 
 void func_ov000_021c216c(Obj021c216c *self) {
     void *saved;

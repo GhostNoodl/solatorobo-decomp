@@ -34,8 +34,8 @@ extern Ov003Part *func_ov000_02199b00(void *p);
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
 extern void func_0203de1c(void *p);
-extern void func_ov000_0218fee4(void *p);
-extern void func_ov000_0219429c(void *p);
+extern void *func_ov000_0218fee4(void *p);
+extern void *func_ov000_0219429c(void *p);
 
 void *func_ov003_021ea858(void *self) {
     func_ov000_0219429c(self);

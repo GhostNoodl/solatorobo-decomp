@@ -25,7 +25,7 @@ extern void *data_02097e4c;
 extern u16 *data_02097dc8;
 extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
@@ -34,7 +34,7 @@ void *func_0204c0e8(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-s32 func_0206d1d4(void *a, u16 b);
+u8 func_0206d1d4(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
@@ -71,11 +71,11 @@ extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL func_0205a9c8(void *p);
 BOOL func_0206f66c(void *p);
 s32 func_0206ec48(void *p);
-s32 func_0206f080(void *p);
+u16 func_0206f080(void *p);
 s32 func_0206f0f4(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
@@ -108,7 +108,7 @@ extern "C" {
 extern u8 data_ov000_021ccd34[];
 extern u8 data_02fe1534[];
 s32 func_0205a9c8(void *p);
-void func_0205aa30(void *p);
+BOOL func_0205aa30(void *p);
 
 BOOL func_ov000_02176538(void) {
     BOOL result = TRUE;
@@ -149,7 +149,7 @@ extern void *data_02097e4c;
 extern u16 *data_02097dc8;
 extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
@@ -158,7 +158,7 @@ void *func_0204c0e8(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-s32 func_0206d1d4(void *a, u16 b);
+u8 func_0206d1d4(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
@@ -195,11 +195,11 @@ extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL func_0205a9c8(void *p);
 BOOL func_0206f66c(void *p);
 s32 func_0206ec48(void *p);
-s32 func_0206f080(void *p);
+u16 func_0206f080(void *p);
 s32 func_0206f0f4(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
@@ -244,7 +244,7 @@ extern u8 data_ov000_021cadcc[];
 extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021cb2a8[];
 void *func_0204c0e8(void *g, u32 id);
-void func_0205aa30(void *p);
+BOOL func_0205aa30(void *p);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 void func_ov000_0215d990(void *self, s32 a);
 void func_ov000_0215bb14(void *o, void *s);
@@ -258,8 +258,8 @@ u16 func_02059544(void *a, void *b, void *c, int d, u16 e);
 void *func_0206ec48(u32 id);
 u16 func_0206f080(u32 id);
 u32 func_0206f0f4(u32 id);
-void func_ov000_021774a4(void);
-void func_ov000_02177698(void);
+BOOL func_ov000_021774a4(void);
+s32 func_ov000_02177698(void);
 
 typedef struct { u16 a; u16 b; } Pair02176714;
 
@@ -519,11 +519,11 @@ extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL func_0205a9c8(void *p);
 BOOL func_0206f66c(void *p);
 s32 func_0206ec48(void *p);
-s32 func_0206f080(void *p);
+u16 func_0206f080(void *p);
 s32 func_0206f0f4(void *p);
 
 typedef s32 (*LoCbFn)(void *self, s32 arg);
@@ -724,11 +724,11 @@ extern void *data_02149ef8;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 void *func_0203dd9c(u32 size);
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 func_0204c0e8(void *msg, s32 id);
 void func_ov000_0215c1bc(void *p, s32 a, s32 b);
 void func_ov000_02152294(void *self, s32 a, s32 b, void *cb);
-void func_ov000_02177bd8(void);
+s32 func_ov000_02177bd8(void);
 
 static inline u8 *List021774a4_Cur(u8 *list) {
     u8 *p = LFLD(u8 *, list, 0x98);
@@ -800,8 +800,8 @@ extern Data02fe1534 data_02fe1534;
 extern u8 *data_0214a424;
 extern void *data_02097e4c;
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-s32 func_0206d1d4(void *a, u16 b);
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+u8 func_0206d1d4(void *a, u16 b);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 static inline u8 *GetNth(u8 *m) {
     u8 *p = LFLD(u8 *, m, 0x98);
@@ -1059,7 +1059,7 @@ extern void *data_02097e4c;
 extern u16 *data_02097dc8;
 extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
@@ -1068,7 +1068,7 @@ void *func_0204c0e8(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-s32 func_0206d1d4(void *a, u16 b);
+u8 func_0206d1d4(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
@@ -1102,7 +1102,7 @@ extern "C" {
 
 extern u8 *data_0214a424;
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 BOOL func_ov000_02177f40(void *self, void *msg) {
     u16 id;
@@ -1150,7 +1150,7 @@ extern void *data_02097e4c;
 extern u16 *data_02097dc8;
 extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
@@ -1159,7 +1159,7 @@ void *func_0204c0e8(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-s32 func_0206d1d4(void *a, u16 b);
+u8 func_0206d1d4(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
@@ -1201,12 +1201,12 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 func_ov000_02154b58(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215bb14(void *a, void *b);
-void func_0206f21c(u16 a, s32 b);
-void func_020359d0(void *a, s32 b, s32 c);
+BOOL func_0206f21c(u16 a, s32 b);
+void *func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
@@ -1280,12 +1280,12 @@ void func_ov000_02157d2c(void *self, void *arg);
 void func_ov000_021546ec(void *a, const void *b, const char *c, u16 d);
 s32 func_ov000_02154b58(void *p, s32 a);
 s32 func_0206ec48(u16 id);
-s32 func_0206f080(u16 id);
+u16 func_0206f080(u16 id);
 u32 func_0206f0f4(u16 id);
 u8 *func_0206ede8(u16 id);
 void func_ov000_02178100(void);
-void func_ov000_02177f40(void);
-void func_ov000_02178010(void);
+BOOL func_ov000_02177f40(void);
+BOOL func_ov000_02178010(void);
 
 static inline u16 ItemIdx021782e0(u16 v) { return v & 0xfff; }
 /* `g` and `m` are unused register parameters reused as locals: as parameters their
@@ -1518,7 +1518,7 @@ extern void *data_02097e4c;
 extern u16 *data_02097dc8;
 extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
@@ -1527,7 +1527,7 @@ void *func_0204c0e8(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-s32 func_0206d1d4(void *a, u16 b);
+u8 func_0206d1d4(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
@@ -1565,7 +1565,7 @@ namespace m_Lo_02178b10 {
 
 extern "C" {
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 id, s32 a, s32 b, s32 c);
+void *func_02049a48(void *p, s32 id, s32 a, s32 b, s32 c);
 
 void func_ov000_02178b10(VObj *self) {
     switch (LFLD(s32, self, 0x8)) {
@@ -1632,7 +1632,7 @@ extern void *data_02097e4c;
 extern u16 *data_02097dc8;
 extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
@@ -1641,11 +1641,11 @@ void *func_0204c0e8(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
-s32 func_0206d1d4(void *a, u16 b);
+u8 func_0206d1d4(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 void func_0206f3f0(u16 id, s32 v);
-void func_0206d02c(void *a);
+u16 func_0206d02c(void *a);
 
 void func_ov000_02178cd0(void *self) {
     s32 scale[3];
@@ -1764,7 +1764,7 @@ void func_0204bfcc(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_02178fd8(void *self) {
     u8 buf[0x20];
@@ -1801,17 +1801,17 @@ extern u8 data_ov000_021ccbe0[];
 extern u8 data_ov000_021cbac8[];
 extern u8 data_ov000_021cca10[];
 void func_ov000_02173648(void *self);
-void func_0204c030(void *p);
+BOOL func_0204c030(void *p);
 void *func_0204c0e8(void *g, s32 id);
 void func_ov000_021c3af4(void *self);
 void func_ov000_021c22d8(void *self);
 void func_ov000_021c2334(void *self);
 void func_ov000_021c2a88(void *self, void *a);
 void func_ov000_021c3fd4(void *list, void *item);
-void func_ov000_02179910(void);
+BOOL func_ov000_02179910(void);
 void *func_0205976c(void *mgr, s32 kind);
 u32 func_0205975c(void *mgr, s32 kind);
-BOOL func_02059544(void *mgr, void *a, void *tbl, s32 b, u16 i);
+u16 func_02059544(void *mgr, void *a, void *tbl, s32 b, u16 i);
 void *func_02062138(u16 id);
 void MI_CpuFill8(void *dst, u8 val, u32 size);
 
@@ -1917,7 +1917,7 @@ void func_0204bfcc(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_0217942c(void *self) {
     LFLD(s32, self, 0x20) = 0x1000;
@@ -1976,7 +1976,7 @@ void func_0204bfcc(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_021795a4(void *self) {
     void *p = LFLD(void *, self, 0x44);
@@ -2118,7 +2118,7 @@ namespace m_Lo_0217987c {
 extern "C" {
 
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0216f23c(void *p, s32 a);
 
 void func_ov000_0217987c(void *self) {
@@ -2204,7 +2204,7 @@ void func_0204bfcc(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_021799e4(void *self) {
     u8 buf[0x20];
@@ -2254,7 +2254,7 @@ extern u8 data_ov000_021cb5a8[];
 extern u8 data_ov000_021cadcc[];
 extern u8 data_ov000_021c9c46[];
 void *func_0203dd9c(u32 size);
-void func_0204c030(void *p);
+BOOL func_0204c030(void *p);
 void *func_0204c0e8(void *g, u32 id);
 void func_ov000_0215bb14(void *o, void *s);
 void func_ov000_02173648(void *self);
@@ -2355,7 +2355,7 @@ void func_0204bfcc(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_02179d78(void *self) {
     LFLD(s32, self, 0x20) = 0x1000;
@@ -2413,7 +2413,7 @@ void func_0204bfcc(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_02179ef4(VObj *self) {
     s32 n;
@@ -2526,7 +2526,7 @@ extern u8 data_ov000_021cb0b8[];
 void *func_0204c0e8(void *a, s32 b);
 void *func_0203dd9c(u32 size);
 void *func_ov000_02154b58(Win0217a034 *w, s32 b);
-void func_ov000_02175e6c(void);
+BOOL func_ov000_02175e6c(void);
 
 BOOL func_ov000_0217a034(Obj0217a034 *self, s32 msg) {
     Sub0217a034 *sub = self->sub;
@@ -2591,7 +2591,7 @@ void func_0204bfcc(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_0217a1d8(void) {
     LoTaskObj()->vfunc_2c();
@@ -2652,7 +2652,7 @@ void func_0204bfcc(void *p);
 void STD_CopyString(void *buf, const void *s);
 void STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_0217a26c(void *self) {
     LFLD(s32, self, 0x20) = 0x1000;
@@ -2752,7 +2752,7 @@ void func_0206c620(void *p);
 void func_0206c670(void *p);
 void func_ov000_0217a328(u8 *self, s32 a, s32 b);
 BOOL func_ov000_0217a034(void *self, s32 msg);
-void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 
 static inline u8 Raw0217a480(u8 *g) {
     return LFLD(W518_0217a480, g, 0x518).b16;
@@ -2953,7 +2953,7 @@ extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb0b8[];
 void *func_0204c0e8(void *a, s32 b);
 void *func_0203dd9c(u32 size);
-void func_ov000_02175e6c(void);
+BOOL func_ov000_02175e6c(void);
 
 BOOL func_ov000_0217a8f4(Obj0217a8f4 *self, s32 msg) {
     Sub0217a8f4 *sub = self->sub;
@@ -3035,12 +3035,12 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 func_ov000_02154b58(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215bb14(void *a, void *b);
-void func_0206f21c(u16 a, s32 b);
-void func_020359d0(void *a, s32 b, s32 c);
+BOOL func_0206f21c(u16 a, s32 b);
+void *func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
@@ -3160,12 +3160,12 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 func_ov000_02154b58(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215bb14(void *a, void *b);
-void func_0206f21c(u16 a, s32 b);
-void func_020359d0(void *a, s32 b, s32 c);
+BOOL func_0206f21c(u16 a, s32 b);
+void *func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
@@ -3222,7 +3222,7 @@ typedef struct {
 } Arr0217adfc;
 
 extern "C" {
-void func_ov000_0214b724(void *p);
+void *func_ov000_0214b724(void *p);
 
 void func_ov000_0217adfc(u8 *self) {
     s32 i;
@@ -3681,7 +3681,7 @@ namespace m_Lo_0217bf34 {
 struct LoDE { s32 d; s32 *e; };
 extern "C" {
 
-u16 func_0204045c(void);
+u32 func_0204045c(void);
 void func_ov000_0215fe1c(void *self, s32 a, s32 b);
 void func_ov000_021c216c(void *p);
 void func_ov000_0216c954(void *self, u16 a, s32 b);
@@ -3733,7 +3733,7 @@ namespace m_Lo_0217c008 {
 
 extern "C" {
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
-void func_ov000_0217a8f4(void);
+BOOL func_ov000_0217a8f4(void);
 typedef void (*LoCb0217c008)(void *self, void *arg);
 BOOL func_ov000_0217bf34(void *self);
 void func_ov000_0217c3b0(u8 *self);
@@ -4121,11 +4121,11 @@ extern "C" {
 extern void *data_ov000_021c9bf4[];
 void *func_0203dd9c(u32 size);
 void func_ov000_0214b810(void *p);
-void func_ov000_0214b724(void *p);
+void *func_ov000_0214b724(void *p);
 void *func_ov000_0214b6d8(void *p);
 void func_ov000_0214b88c(void *p, void *name);
 BOOL func_ov000_0214b8d8(void *p);
-BOOL func_ov000_0214b8f4(void *p);
+u8 func_ov000_0214b8f4(void *p);
 s32 func_ov000_0214b6d0(void *p);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
@@ -4484,7 +4484,7 @@ extern "C" {
 extern void *data_02097e4c;
 BOOL func_0203e688(void);
 void func_020473ac(void *s, s32 state);
-void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov000_0217b324(void *self, s32 a);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
@@ -4792,12 +4792,12 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 func_ov000_02154b58(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215bb14(void *a, void *b);
-void func_0206f21c(u16 a, s32 b);
-void func_020359d0(void *a, s32 b, s32 c);
+BOOL func_0206f21c(u16 a, s32 b);
+void *func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
@@ -4886,7 +4886,7 @@ extern "C" {
 extern u8 *data_02097d48;
 extern u8 data_0208b3d0[];
 extern LoVec0217df5c data_ov000_021c9c10;
-u8 func_02043d48(void *p);
+int func_02043d48(void *p);
 void func_02043d20(void *p, s32 a);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
@@ -5035,7 +5035,7 @@ typedef struct {
 extern "C" {
 
 extern u8 *data_02097d48;
-u8 func_02043d48(void *p);
+int func_02043d48(void *p);
 extern s16 FX_SinCosTable_[];
 s32 FX_Div(s32 a, s32 b);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
@@ -5238,8 +5238,8 @@ extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb0b8[];
 void *func_0204c0e8(void *g, u32 id);
 BOOL func_0206c4a0(void);
-BOOL func_02059454(void *a, s32 b, s32 c, s32 d);
-void func_ov000_02175e6c(void);
+u16 func_02059454(void *a, s32 b, s32 c, s32 d);
+BOOL func_ov000_02175e6c(void);
 
 class Obj0217ea30 {
 public:
@@ -5344,12 +5344,12 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 func_ov000_02154b58(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215bb14(void *a, void *b);
-void func_0206f21c(u16 a, s32 b);
-void func_020359d0(void *a, s32 b, s32 c);
+BOOL func_0206f21c(u16 a, s32 b);
+void *func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
@@ -5418,7 +5418,7 @@ extern u8 *data_ov000_021ccd64;
 extern u8 data_0208b318[];
 extern void *data_02097e4c;
 extern u8 *data_02097dc8;
-BOOL func_02059454(void *p, s32 a, s32 b, s32 c);
+u16 func_02059454(void *p, s32 a, s32 b, s32 c);
 s32 func_ov000_0217ea30(VObj *self, s32 msg, void *b);
 void func_ov000_0216f42c(void *a, void *b);
 void func_020656b4(void *p);
@@ -5761,12 +5761,12 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 func_ov000_02154b58(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215bb14(void *a, void *b);
-void func_0206f21c(u16 a, s32 b);
-void func_020359d0(void *a, s32 b, s32 c);
+BOOL func_0206f21c(u16 a, s32 b);
+void *func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
@@ -5901,12 +5901,12 @@ extern void *data_0208cc9c;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 func_ov000_02154b58(void *p, s32 a);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215bb14(void *a, void *b);
-void func_0206f21c(u16 a, s32 b);
-void func_020359d0(void *a, s32 b, s32 c);
+BOOL func_0206f21c(u16 a, s32 b);
+void *func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
@@ -5950,11 +5950,11 @@ void func_ov000_021547e8(void *a, void *b, void *c, int d);
 void func_ov000_021546ec(void *a, const void *b, const char *c, u16 d);
 s32 func_ov000_02154b58(void *p, s32 a);
 s32 func_0206ec48(u16 id);
-s32 func_0206f080(u16 id);
+u16 func_0206f080(u16 id);
 u8 *func_0206ede8(u16 id);
-void func_ov000_0217f958(void);
-void func_ov000_0217f9e8(void);
-void func_ov000_0217fa34(void);
+BOOL func_ov000_0217f958(void);
+BOOL func_ov000_0217f9e8(void);
+BOOL func_ov000_0217fa34(void);
 
 static inline s32 ItemCat0217fd70(u16 id) {
     return ((u16)(id & 0xf000) >> 12) - 1;

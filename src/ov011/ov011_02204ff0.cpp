@@ -77,8 +77,8 @@ void func_ov011_02204ff0(Ov011Actor *self) {
 
 
 extern u8 *data_02097d48;
-void func_02043d9c(void *p);
-void func_ov003_021d16cc(void *p);
+int func_02043d9c(void *p);
+u16 func_ov003_021d16cc(void *p);
 
 #pragma force_active on
 void func_ov011_022051b8(void *self) {

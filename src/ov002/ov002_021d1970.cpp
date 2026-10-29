@@ -13,8 +13,8 @@ void func_ov000_021c2f10(void *self);
 void func_ov000_021c308c(void *self, u16 id);
 void func_ov000_021c6474(void *list, void *item);
 void func_ov000_021c65e0(void *list, s32 a);
-BOOL func_0206f788(u16 id);
-void func_0206eed0(u16 id);
+u16 func_0206f788(u16 id);
+void *func_0206eed0(u16 id);
 BOOL func_ov002_021d18d4(void *self, void *arg);
 BOOL func_ov002_021d18e8(void *self, void *ev);
 

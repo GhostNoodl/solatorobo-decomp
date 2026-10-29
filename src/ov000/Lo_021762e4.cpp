@@ -6,7 +6,7 @@ extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208ca18[];
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL func_0205a9c8(void *p);
 BOOL func_0206f66c(void *p);
 s32 func_0206ec48(void *p);

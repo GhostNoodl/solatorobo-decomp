@@ -24,7 +24,7 @@ extern void func_0203f324(Ov009Sub48 *p);
 extern BOOL func_ov000_02191120(void *m);
 extern void func_ov000_02191780(Ov009Sub38 *m);
 extern void func_ov000_021917f8(Ov009Sub38 *m);
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 void func_ov009_022093f8(Ov009Actor *self) {

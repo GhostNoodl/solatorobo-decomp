@@ -114,7 +114,7 @@ void func_ov000_02198320(void) {
 void func_ov000_02198324(void) {
 }
 
-void func_ov000_02198328(History *self) {
+History *func_ov000_02198328(History *self) {
     s32 i;
     self->unk_00 = 0;
     self->unk_02 = 0;
@@ -123,6 +123,7 @@ void func_ov000_02198328(History *self) {
         self->history[i] = 0;
     }
     self->current = 1;
+    return self;
 }
 
 static inline BOOL History_Push(History *self, u8 value, BOOL force) {
@@ -181,7 +182,7 @@ s32 func_ov000_0219840c(History *self, s32 *list, s32 count, BOOL push) {
     return result;
 }
 
-void func_ov000_021984c8(Obj021984c8 *self) {
+Obj021984c8 *func_ov000_021984c8(Obj021984c8 *self) {
     self->offset.x = 0;
     self->offset.y = 0;
     self->offset.z = 0;
@@ -189,6 +190,7 @@ void func_ov000_021984c8(Obj021984c8 *self) {
     self->unk_1c = 0;
     self->unk_20 = 0xffff;
     *(u16 *)((u8 *)self + 0x22) = 0;
+    return self;
 }
 
 void func_ov000_021984f4(Obj021984c8 *self, VecFx32 *pos, u16 *rot) {

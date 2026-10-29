@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern void func_ov003_021daab0(void *p);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern BOOL func_ov003_021d8820(void *p);
 extern void func_ov003_021d87d0(void *p, s32 a);
 extern void *data_ov014_02216500[];
@@ -262,7 +262,7 @@ void func_ov014_02202988(Ov014Actor *self) {
 extern void *data_0214a420;
 extern void *data_ov000_021ccd64;
 extern void func_0203f364(Ov014Sub48 *p);
-extern s32 func_ov003_021d85c8(void *p, s32 a, s32 b, s32 c, s32 d);
+extern void func_ov003_021d85c8(void *p, s32 a, s32 b, s32 c, s32 d);
 extern void *func_ov003_021daa3c(void *p, u8 id);
 extern BOOL func_ov003_021daa0c(void *p, u8 id);
 extern Ov014V *func_020657b0(void *a, void *b);

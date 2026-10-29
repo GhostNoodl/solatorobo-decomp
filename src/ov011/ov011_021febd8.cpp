@@ -72,13 +72,13 @@ void func_ov011_021febd8(u8 *self) {
 
 extern u8 data_ov011_022078f0[];
 void func_ov011_0220068c(void *self);
-void func_ov003_021d0edc(void *self);
+void *func_ov003_021d0edc(void *self);
 
 void func_ov003_021d0c1c(void *self);
 u32 func_ov011_02202ecc(void *p);
 void func_ov011_02202260(void *p);
 void func_ov011_0220192c(void *p);
-s32 func_ov003_021d16cc(void *p);
+u16 func_ov003_021d16cc(void *p);
 extern s32 data_ov011_02207258[];
 
 struct Ov011Fed {

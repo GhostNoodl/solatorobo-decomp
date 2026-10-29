@@ -85,7 +85,7 @@ s32 func_ov000_0219a5c8(ov006_Prop021e9c5c *self, u16 mask, const VecFx32 *pos, 
 ov006_Hit021e9c5c *func_ov000_021985c0(void *p);
 void *func_ov000_0219be1c(s32 id, VecFx32 *pos, ov006_Rot021e9c5c *rot, u16 a, u16 b);
 ov006_Eff021e9c5c *func_02065f88(int id, VecFx32 *pos);
-void func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
+void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 void *func_ov000_0218e4cc(void *mgr, u16 kind);
 void func_ov000_0218dfe8(void *obj, u16 a, int b, int c, int d, int e);
 

@@ -66,7 +66,7 @@ extern char data_ov000_021ccc7e[];
 extern u8 data_ov002_021f0f90;
 void *func_0203dd9c(u32 size);
 void func_02043858(void *p);
-void func_020359d0(void *p, s32 a, s32 b);
+void *func_020359d0(void *p, s32 a, s32 b);
 void func_020359fc(void *p, void *q, s32 a, s32 b);
 BOOL func_02035b90(void *p, s32 a);
 BOOL func_02035bd4(void *p, void *q, s32 a);

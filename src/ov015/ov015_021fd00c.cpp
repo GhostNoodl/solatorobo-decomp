@@ -101,7 +101,7 @@ void func_ov015_021fd0f4(u8 *self, Ov015Vec *out) {
 }
 
 
-void func_02049244(Ov015Vec *a, s32 b, Ov015Vec *c, Ov015Vec *d, s32 e);
+BOOL func_02049244(Ov015Vec *a, s32 b, Ov015Vec *c, Ov015Vec *d, s32 e);
 struct Ov015Mtx33 {
     s32 m[3][3];
 };

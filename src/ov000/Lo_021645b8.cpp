@@ -5,7 +5,7 @@ extern u8 data_ov000_021cb8e0[];
 extern u8 *data_ov000_021ccd30;
 extern u8 *data_0214a424;
 void func_0206e900(char *buf, const void *s);
-void func_020359d0(const char *name, s32 a, s32 b);
+void *func_020359d0(const char *name, s32 a, s32 b);
 BOOL func_02035b90(const char *name, s32 a);
 void func_ov000_02164a94(void *self);
 void func_ov000_02167d64(void *self);

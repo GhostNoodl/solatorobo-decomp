@@ -8,7 +8,7 @@ void func_ov015_0220064c(u8 *self, u8 *a, u8 *b);
 void func_ov015_0220a058(u8 *b, Ov015Vec *out);
 void func_ov015_021fd00c(u8 *self, s32 mode, const Ov015Vec *v);
 void func_ov015_02207c30(u8 *p);
-void func_ov015_02209790(u8 *self, s32 a);
+BOOL func_ov015_02209790(u8 *self, s32 a);
 
 struct Ov015Bits8a0 {
     u8 b0 : 2;
@@ -100,7 +100,7 @@ BOOL func_ov015_022003ec(u8 *self, u8 *a, u8 *b, u8 *c) {
 
 extern u8 *data_02097dc8;
 extern void *data_02097e4c;
-void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 Ov015V *func_02065f88(s32 id, void *pos);
 void func_ov015_02200a18(u8 *self, Ov015Stat *g);
 s32 func_ov015_022090bc(u8 *p);

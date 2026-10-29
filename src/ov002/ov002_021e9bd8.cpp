@@ -26,7 +26,7 @@ static inline void func_ov002_021e4cd8_inline2(void *self) {
 
 extern VFunc data_ov002_021f06bc[];
 
-void func_ov002_021ec13c(void *p);
+void *func_ov002_021ec13c(void *p);
 
 void func_ov002_021ec1c4(void *p);
 

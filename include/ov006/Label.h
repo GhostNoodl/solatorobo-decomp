@@ -19,7 +19,7 @@ typedef struct ov006_Label {
 extern "C" {
 #endif
 
-void STD_CopyLString(void *dst, const void *src, u32 size);
+int STD_CopyLString(void *dst, const void *src, u32 size);
 
 #ifdef __cplusplus
 }

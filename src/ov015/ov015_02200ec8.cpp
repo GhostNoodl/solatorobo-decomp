@@ -3,13 +3,13 @@
 extern "C" {
 
 extern void *data_02097e4c;
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 extern u8 data_ov015_022128ec[];
 void func_ov015_0220f4d4(void *p);
-void func_ov015_02207738(void *p);
+void *func_ov015_02207738(void *p);
 extern u8 data_ov015_0221294c[];
-void func_ov000_0218fee4(void *p);
-void func_ov000_0218ea20(void *p);
+void *func_ov000_0218fee4(void *p);
+void *func_ov000_0218ea20(void *p);
 extern u8 data_ov015_0221293c[];
 extern char data_ov015_022128ab[];
 extern void *data_02097cdc;

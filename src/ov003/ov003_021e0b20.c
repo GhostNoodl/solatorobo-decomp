@@ -39,10 +39,10 @@ typedef struct {
 } Ov003G54;
 
 extern Ov003Save *data_02097d48;
-extern void func_02043d9c(void *p);
-extern void func_ov000_02194c08(void *self);
+extern int func_02043d9c(void *p);
+extern BOOL func_ov000_02194c08(void *self);
 extern void func_ov000_02194758(void *self);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_02191008(void *p);
 
 void func_ov003_021e0b20(Ov003Prop *self) {
@@ -61,7 +61,7 @@ void func_ov003_021e0b54(Ov003Prop *self) {
 
 extern Ov003G54 *data_ov000_021ccd54;
 extern char data_ov003_021f8531[];
-extern void func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern BOOL func_ov000_02191120(void *model);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);

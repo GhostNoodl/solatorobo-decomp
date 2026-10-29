@@ -5,11 +5,11 @@
 extern "C" {
 
 extern u8 data_ov000_021cc774[];
-void func_ov000_0218fee4(void *p);
-void func_ov000_0218ea20(void *p);
+void *func_ov000_0218fee4(void *p);
+void *func_ov000_0218ea20(void *p);
 void func_ov000_021bd228(void *p);
 void func_0203f2b8(void *p);
-void func_ov000_0218c928(void *p);
+void *func_ov000_0218c928(void *p);
 
 u8 *func_ov000_0219c24c(u8 *self) {
     LFLD(void *, self, 0) = data_ov000_021cc774;

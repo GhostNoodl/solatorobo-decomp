@@ -69,7 +69,7 @@ extern u32 data_ov003_021f79a8;
 extern Ov003HeapCtx *data_02097dd0;
 extern u32 STD_GetStringLength(const char *s);
 extern void *func_0203dddc(u32 size);
-extern void STD_CopyLString(void *dst, const void *src, u32 size);
+extern int STD_CopyLString(void *dst, const void *src, u32 size);
 extern void func_0203de1c(void *p);
 void func_ov003_021cf5e8(Ov003Group *self);
 

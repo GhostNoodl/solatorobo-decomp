@@ -4,9 +4,9 @@ extern "C" {
 
 void *func_ov000_0218fe1c(void *p);
 
-void func_ov000_0218ffdc(void *a, void *b, int c, int d);
+BOOL func_ov000_0218ffdc(void *a, void *b, int c, int d);
 
-void func_ov000_02190cb0(void *a, void *b, s32 c, int d);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, int d);
 
 void func_ov000_021915a0(void *a);
 
@@ -18,7 +18,7 @@ s32 **func_ov000_02190a30(void *a, int b);
 
 void NNSi_G3dModifyPolygonAttrMask(void *a, int b, s32 c);
 
-void NNS_G3dBindMdlSet(void *a, void *b);
+BOOL NNS_G3dBindMdlSet(void *a, void *b);
 
 void func_ov002_021d7238(void *self);
 

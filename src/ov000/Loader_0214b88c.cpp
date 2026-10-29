@@ -49,7 +49,7 @@ extern const char data_ov000_021ca917[];
 s32 STD_GetStringLength(const char *str);
 void *func_0203dddc(u32 size);
 void *func_0203dd9c(u32 size);
-void STD_CopyLString(char *dst, const char *src, s32 n);
+int STD_CopyLString(char *dst, const char *src, s32 n);
 void STD_CopyString(char *dst, const char *src);
 void STD_ConcatenateString(char *dst, const char *src);
 BOOL OS_IsRunOnTwl(void);

@@ -137,14 +137,14 @@ void func_ov008_021cdebc(Ov008Mgr *m);
 void func_ov008_021cfa38(Ov008Mgr3 *m);
 void func_ov008_021cee4c(Ov008Mgr3 *m);
 void func_ov008_021cce38(void *p);
-void func_ov008_021cf878(void);
+BOOL func_ov008_021cf878(void);
 void func_0203cb78(s32 a, int b, int c);
 void func_0203cc58(int a, int b, int c);
 void *func_0204c08c(void *a, u16 b, s32 *c, int d);
 void func_ov000_0214c6b4(void *a, s32 b, void *c, int d);
-s32 func_02061d54(s32 a);
+u16 func_02061d54(s32 a);
 s32 func_0204c0e8(void *p, s32 id);
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_02041cb4(void *a, int b);
 void func_ov000_02190a80(void *a, s32 b);
 
@@ -168,7 +168,7 @@ extern Ov008Snd *data_02097e48;
 extern u8 *data_02097d48;
 
 void *func_ov000_0218fe1c(void *p);
-void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void *func_ov000_02190a30(void *a, s32 b);
@@ -181,13 +181,13 @@ void func_02041c34(void *a, int b, void *f, int c);
 void func_02041c5c(void *a, void *f);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
-void func_0205aa30(void *p);
-void func_ov000_0214bc94(void);
+BOOL func_0205aa30(void *p);
+s32 func_ov000_0214bc94(void);
 void func_0204c7d0(void *p);
 void func_0204aab0(void *p);
 void func_020626c0(void);
-void func_ov008_021cd26c(void);
-void func_ov008_021cd3dc(void);
+void *func_ov008_021cd26c(void);
+void *func_ov008_021cd3dc(void);
 
 }
 

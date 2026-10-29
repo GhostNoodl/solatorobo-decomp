@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern void func_ov000_0218bed8(void *mgr, s32 a, Ov009Actor *actor);
 extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);

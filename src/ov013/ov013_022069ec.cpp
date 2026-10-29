@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern char data_ov013_0220be7c[];
-extern void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+extern void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);

@@ -40,12 +40,12 @@ void *func_ov000_02199ba0(void *p);
 void func_ov003_021f0c60(void *self, s32 a);
 void func_ov000_0218dbe0(void *self, s32 a);
 void func_ov000_0218bed8(void *a, s32 b, void *c);
-void func_02065f88(s32 a, void *b);
+void *func_02065f88(s32 a, void *b);
 void func_02062764(s32 a, s32 b);
 void func_020627a0(u16 kind, u16 id);
 void func_020627c8(void);
 void func_ov000_02182590(u8 *p);
-s32 func_0206e7ec(u32 a, u32 b);
+u16 func_0206e7ec(u32 a, u32 b);
 
 static inline s32 FxMul02196258(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);

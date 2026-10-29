@@ -12,7 +12,7 @@ extern BOOL func_ov003_021d984c(void *p, void *a);
 extern void func_ov003_021d8fc0(void *p);
 extern void func_ov003_021d95e8(void *p, void *a, s32 b);
 extern void func_ov003_021d97fc(void *p, s32 a);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern BOOL func_ov003_021d9878(void *p);
 struct Ov010B2 {
     u8 a;
@@ -20,7 +20,7 @@ struct Ov010B2 {
 };
 extern Ov010B2 func_ov003_021d9644(void *p);
 extern void func_ov003_021da48c(void *p, s32 a);
-extern void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+extern BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
 
 void func_ov010_021fb95c(void *self) {

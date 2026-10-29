@@ -10,7 +10,7 @@ void func_ov000_021b1d28(void);
 
 void func_0206d390(void *a, u8 b, u8 c);
 
-void func_02049bdc(void *a, int b, int c);
+s32 func_02049bdc(void *a, int b, int c);
 
 void func_ov002_021d5f60(void *self) {
     void *g = FIELD(self, 0x50, void *);

@@ -19,7 +19,7 @@ typedef void (*Cb02161280)(u8 *self, BOOL ok);
 extern "C" {
 extern Pad02161280 *data_02097dc8;
 extern void *data_02097e4c;
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 
 void func_ov000_02161280(u8 *self) {
     u32 rep;

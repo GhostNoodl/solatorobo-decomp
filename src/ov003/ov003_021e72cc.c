@@ -3,13 +3,13 @@
 typedef void (*VFunc)(void *);
 
 extern void __cxa_vec_cleanup(void *arr, int count, int size, void *dtor);
-extern void func_ov000_0218fee4(void *p);
+extern void *func_ov000_0218fee4(void *p);
 void *func_ov003_021e75bc(void *self);
 
 extern void func_0203de1c(void *p);
 extern void func_0203f864(void *p);
-extern void func_ov000_0218ea20(void *p);
-extern void func_ov000_0219429c(void *p);
+extern void *func_ov000_0218ea20(void *p);
+extern void *func_ov000_0219429c(void *p);
 
 void func_ov003_021e72cc(void *self) {
     (*(VFunc *)(*(u32 *)self + 0x60))(self);

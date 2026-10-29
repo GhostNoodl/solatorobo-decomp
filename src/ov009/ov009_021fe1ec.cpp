@@ -41,7 +41,7 @@ void func_ov009_021fe2c8(Ov009Actor *self) {
     }
 }
 
-extern void func_ov000_0218d850(Ov009Actor *self);
+extern BOOL func_ov000_0218d850(Ov009Actor *self);
 extern void VEC_Normalize(const Ov009Vec *a, Ov009Vec *b);
 void func_ov009_021fe3d4(Ov009Actor *self) {
     Ov009Vec d;
@@ -89,8 +89,8 @@ extern Ov009Vec data_ov009_02215ce8;
 extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void VEC_Normalize(const Ov009Vec *in, Ov009Vec *out);
-extern void func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern void func_01ffc9fc(Ov009Vec *dst, Ov009Vec *src, u16 angle);

@@ -409,13 +409,13 @@ extern void NNS_G3dAnmObjInit(EffectAnmObj *anmObj, void *resAnm, void *resMdl, 
 extern void NNS_G3dRenderObjInit(EffectRenderObj *renderObj, void *resMdl);
 extern void NNS_G3dRenderObjAddAnmObj(EffectRenderObj *renderObj, EffectAnmObj *anmObj);
 extern void NNS_G3dRenderObjSetInitFunc(EffectRenderObj *renderObj, void (*func)(void *rs));
-extern void func_020359d0(const char *arc, s32 b, s32 c);
+extern void *func_020359d0(const char *arc, s32 b, s32 c);
 extern BOOL func_02035b90(const char *arc, s32 b);
 extern void *func_02035d5c(const char *arc);
 extern EffectFile *func_02034ec0(void *arc, const char *name);
 extern EffectFile *func_02034ff8(void *arc, const char *name);
 extern void func_02036838(ResMgr *mgr, const char *arc, s32 c, s32 d);
-extern void func_0203ed04(const char *name, void *data);
+extern BOOL func_0203ed04(const char *name, void *data);
 extern void func_0203f0b4(void *data);
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);

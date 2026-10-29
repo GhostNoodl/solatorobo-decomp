@@ -4,7 +4,7 @@ extern "C" {
 
 extern u8 *data_ov000_021ccd54;
 extern s32 data_02097d78[5];
-extern void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd44;
 void *func_ov000_0218084c(void *a, s32 b, s32 c);

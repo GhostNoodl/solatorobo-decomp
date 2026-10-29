@@ -155,10 +155,10 @@ extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02039828(VramBlock *block);
+extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
-extern void func_0205bef8(void *cmd);
+extern int func_0205bef8(void *cmd);
 
 typedef u16 (*TextScanCharFn)(const char **s);
 
@@ -173,7 +173,7 @@ typedef struct TextScanParser {
 
 extern void *func_0203a4c0(GfxMgr *mgr);
 void func_0204c7d0(TextWin *win);
-void func_0204cc18(TextScanParser *p, const char **s);
+BOOL func_0204cc18(TextScanParser *p, const char **s);
 
 // Copies the visible characters of str into out (keeping tag 0x10 verbatim)
 // and returns the width of the last line.
@@ -653,7 +653,7 @@ typedef struct TextScanParser {
 
 void *func_0203a4c0(GfxMgr *mgr);
 void func_0204c7d0(TextWin *win);
-void func_0204cc18(TextScanParser *p, const char **s);
+BOOL func_0204cc18(TextScanParser *p, const char **s);
 
 void func_0204c6bc(const char *str, s32 maxLines, void *arg, void (*cb)(void *arg, s32 *tag)) {
     const char *s;
@@ -714,10 +714,10 @@ extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02039828(VramBlock *block);
+extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
-extern void func_0205bef8(void *cmd);
+extern int func_0205bef8(void *cmd);
 
 TextLayout *func_0204c4d4(TextLayout *layout);
 
@@ -1278,10 +1278,10 @@ extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02039828(VramBlock *block);
+extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
-extern void func_0205bef8(void *cmd);
+extern int func_0205bef8(void *cmd);
 
 TextLayout *func_0204c4d4(TextLayout *layout);
 
@@ -1920,10 +1920,10 @@ extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02039828(VramBlock *block);
+extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
-extern void func_0205bef8(void *cmd);
+extern int func_0205bef8(void *cmd);
 
 TextLayout *func_0204c4d4(TextLayout *layout);
 
@@ -2500,10 +2500,10 @@ extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02039828(VramBlock *block);
+extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
-extern void func_0205bef8(void *cmd);
+extern int func_0205bef8(void *cmd);
 
 TextLayout *func_0204c4d4(TextLayout *layout);
 
@@ -2857,7 +2857,7 @@ extern GfxCell *func_0203a4a4(GfxMgr *mgr);
 extern void *func_0203a4c0(GfxMgr *mgr);
 extern void func_0203a4d4(GfxMgr *mgr, void *arg);
 extern void func_0203a0cc(GfxMgr *mgr, VramBlock *block, GfxCell *cell, u32 size, u32 arg, s32 color);
-extern void func_0204cc18(TextWin *win, const char **s);
+extern BOOL func_0204cc18(TextWin *win, const char **s);
 extern int NNS_G2dCharCanvasDrawChar(const void *canvas, const void *font, int x, int y, int color, u16 c);
 
 void func_0204e358(TextWin *win) {
@@ -3365,10 +3365,10 @@ extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02039828(VramBlock *block);
+extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
-extern void func_0205bef8(void *cmd);
+extern int func_0205bef8(void *cmd);
 
 TextLayout *func_0204c4d4(TextLayout *layout);
 
@@ -3760,10 +3760,10 @@ extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02039828(VramBlock *block);
+extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
-extern void func_0205bef8(void *cmd);
+extern int func_0205bef8(void *cmd);
 
 TextLayout *func_0204c4d4(TextLayout *layout);
 
@@ -4365,10 +4365,10 @@ extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02039828(VramBlock *block);
+extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
-extern void func_0205bef8(void *cmd);
+extern int func_0205bef8(void *cmd);
 
 TextLayout *func_0204c4d4(TextLayout *layout);
 
@@ -5045,10 +5045,10 @@ extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02039828(VramBlock *block);
+extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
-extern void func_0205bef8(void *cmd);
+extern int func_0205bef8(void *cmd);
 
 TextLayout *func_0204c4d4(TextLayout *layout);
 
@@ -5422,10 +5422,10 @@ extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02039828(VramBlock *block);
+extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
-extern void func_0205bef8(void *cmd);
+extern int func_0205bef8(void *cmd);
 
 TextLayout *func_0204c4d4(TextLayout *layout);
 
@@ -5822,7 +5822,7 @@ typedef struct TextScanParser {
 
 void *func_0203a4c0(GfxMgr *mgr);
 void func_0204c7d0(TextWin *win);
-void func_0204cc18(TextScanParser *p, const char **s);
+BOOL func_0204cc18(TextScanParser *p, const char **s);
 
 // Splits the string into the box's lines. The copy is written `*dst = start[i]; dst++;`:
 // `*dst++ = start[i]` makes MWCC give dst a new object below the named locals (round loopt).
@@ -5942,10 +5942,10 @@ extern void func_0203df0c(void *ptr);
 extern void func_0203de1c(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02039828(VramBlock *block);
+extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
-extern void func_0205bef8(void *cmd);
+extern int func_0205bef8(void *cmd);
 
 TextLayout *func_0204c4d4(TextLayout *layout);
 
@@ -6587,10 +6587,10 @@ extern StageResSlot *func_0205b31c(void);
 extern void func_0205b348(void);
 extern void func_0204a284(SndMgr *mgr, s32 fade);
 
-extern void func_ov000_0218fee4(void *p);
-extern void func_ov000_0218ea20(void *p);
+extern void *func_ov000_0218fee4(void *p);
+extern void *func_ov000_0218ea20(void *p);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void func_02039828(VramBlock *block);
+extern void *func_02039828(VramBlock *block);
 extern void func_02050f70(SlideWin *win);
 
 #define SW_DELETE(field, dtor) \
@@ -6762,7 +6762,7 @@ typedef struct SlideFont {
 } SlideFont;
 
 extern void *func_0203a4c0(GfxMgr *mgr);
-extern void func_0204cc18(TextWin *win, const char **s);
+extern BOOL func_0204cc18(TextWin *win, const char **s);
 extern void func_020708fc(u16 id, char *out);
 extern void func_02070b98(u16 id, char *out, u16 a, u16 b);
 extern int func_020359fc(void *a, void *b, int c, int d);
@@ -7162,13 +7162,13 @@ extern BOOL func_0203e688(Obj3DAnimObj *o);
 extern char *STD_CopyString(char *dst, const char *src);
 extern s32 FX_Div(s32 a, s32 b);
 extern Obj3DAnimMdl *func_ov000_0218e9c4(void *p);
-extern void func_ov000_0218ea20(void *p);
+extern void *func_ov000_0218ea20(void *p);
 extern BOOL func_ov000_0218f110(Obj3DAnimMdl *m);
 extern Obj3DAnimObj *func_ov000_0218fe1c(void *p);
-extern void func_ov000_0218fee4(void *p);
-extern void func_ov000_0218ffdc(Obj3DAnimObj *a, Obj3DAnimMdl *b, s32 c, s32 d);
+extern void *func_ov000_0218fee4(void *p);
+extern BOOL func_ov000_0218ffdc(Obj3DAnimObj *a, Obj3DAnimMdl *b, s32 c, s32 d);
 extern void func_ov000_02190a80(Obj3DAnimObj *a, s32 b);
-extern void func_ov000_02190cb0(Obj3DAnimObj *a, const char *b, s32 c, s32 d);
+extern BOOL func_ov000_02190cb0(Obj3DAnimObj *a, const char *b, s32 c, s32 d);
 extern BOOL func_ov000_02191120(Obj3DAnimObj *a);
 extern void func_ov000_021915a0(Obj3DAnimObj *a);
 extern void func_ov000_02191618(Obj3DAnimObj *a);

@@ -212,7 +212,7 @@ void func_ov012_02202d1c(Ov012Actor *self) {
 }
 
 extern "C" {
-extern void func_ov003_021ceff4(void *p);
+extern void *func_ov003_021ceff4(void *p);
 static inline BOOL Ov012_HasFlag(Ov012Sub40 *s, u64 f) {
     return (s->flags & f) != 0;
 }

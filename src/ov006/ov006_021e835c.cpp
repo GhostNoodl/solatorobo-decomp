@@ -18,7 +18,7 @@ typedef struct ov006_Obj021e835c {
 extern "C" {
 
 extern char data_ov006_021ec4a7[];
-void func_ov000_02190cb0(void *a, const void *b, int c, int d);
+BOOL func_ov000_02190cb0(void *a, const void *b, int c, int d);
 void func_ov000_021915a0(void *a);
 void func_ov000_021911c8(void *a, int b);
 u16 func_01ffc128(int a, u16 b, int c, int d, int e);

@@ -49,7 +49,7 @@ typedef struct {
 } Ov003Obj;
 
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
-extern void func_ov000_0218c2d4(Ov003Obj *self);
+extern void *func_ov000_0218c2d4(Ov003Obj *self);
 extern char data_ov003_021f7ab4[];
 
 typedef struct {
@@ -190,11 +190,11 @@ typedef struct {
 
 extern Ov003HeapCtx *data_02097dd0;
 extern void *data_0214a420;
-extern void func_ov000_0218fee4(void *p);
+extern void *func_ov000_0218fee4(void *p);
 extern void func_0203de1c(void *p);
 extern void func_0203df0c(void *p);
 extern void func_02065804(void *mgr, void *p);
-extern void func_ov000_0218c928(Ov003Obj *self);
+extern void *func_ov000_0218c928(Ov003Obj *self);
 
 static inline void Ov003Obj_DtorBody(Ov003Obj *self) {
     s32 i;
@@ -293,7 +293,7 @@ extern void *func_ov000_0218e9c4(void *p);
 extern Ov003InitShadow *func_ov000_021919c8(void *p);
 extern void func_ov000_02191b70(Ov003InitShadow *p);
 extern void *func_ov000_02198328(void *p);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 static inline void Ov003Shadow_Push(Ov003InitShadow *s, u8 v) {
     s->hi = s->lo;

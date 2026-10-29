@@ -35,8 +35,8 @@ extern SceneMgr *data_02149ef0;
 extern SceneEntry data_02082998[];
 
 // NitroSDK FS overlay load/unload
-extern void FS_LoadOverlay(int target, s32 id);
-extern void FS_UnloadOverlay(int target, s32 id);
+extern BOOL FS_LoadOverlay(int target, s32 id);
+extern BOOL FS_UnloadOverlay(int target, s32 id);
 
 #ifdef __cplusplus
 }

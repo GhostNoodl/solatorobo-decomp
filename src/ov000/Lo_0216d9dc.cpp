@@ -87,7 +87,7 @@ extern "C" {
 extern const s16 FX_SinCosTable_[];
 extern int data_02097d78[];
 extern u8 *data_ov000_021ccd54;
-BOOL func_ov000_021735e8(void);
+bool func_ov000_021735e8(void);
 void func_ov000_0216e67c(void *self);
 void func_ov000_0216eaf8(void *self);
 void func_ov000_0216e968(void *self);

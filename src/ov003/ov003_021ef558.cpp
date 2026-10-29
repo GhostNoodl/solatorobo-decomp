@@ -40,7 +40,7 @@ extern void func_ov000_02197d80(void *self);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern void func_ov000_02194758(void *self);
 extern void func_0203de1c(void *p);
-extern void func_ov000_0219429c(void *p);
+extern void *func_ov000_0219429c(void *p);
 
 void func_ov003_021ef558(Ov003Obj *self) {
     BOOL keep;

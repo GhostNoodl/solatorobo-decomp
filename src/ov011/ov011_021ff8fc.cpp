@@ -323,13 +323,13 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern u8 data_ov011_022078e1[];
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 Ov011V *func_02065f88(s32 id, Ov011Vec *v);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
-void func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 s32 func_02040528(s32 max);
 
 void func_ov011_021ff8fc(Ov011Actor *self) {

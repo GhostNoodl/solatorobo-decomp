@@ -73,7 +73,7 @@ extern const char data_ov006_021ec49b[];
 
 s32 func_ov000_02199128(ov006_Finder021e7fe4 *self, ov006_Query021e7fe4 *q, void **out, s32 max);
 ov006_Eff021e7fe4 *func_02066774(const char *a, const char *b, s32 c, VecFx32 *pos);
-void func_02049bdc(void *a, int b, int c);
+s32 func_02049bdc(void *a, int b, int c);
 
 static inline void ov006_FinderQuery_Init(ov006_FinderQuery021e7fe4 *fq) {
     fq->q.mask = 0;

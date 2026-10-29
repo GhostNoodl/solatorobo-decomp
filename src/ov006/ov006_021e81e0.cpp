@@ -34,15 +34,15 @@ extern "C" {
 
 extern char data_ov006_021ec4a7[];
 extern void *data_02097e4c;
-u32 func_ov006_021d8cb8(void);
-void func_ov000_02190cb0(void *a, const void *b, int c, int d);
+u8 func_ov006_021d8cb8(void);
+BOOL func_ov000_02190cb0(void *a, const void *b, int c, int d);
 void func_ov000_021915a0(void *a);
 void func_ov000_021911c8(void *a, s16 b);
 void func_ov006_021e9c5c(ov006_Prop021e81e0 *self);
 void func_ov006_021e86dc(ov006_Prop021e81e0 *self);
 void func_ov006_021e8ef8(ov006_Prop021e81e0 *self);
 void func_ov006_021e96cc(ov006_Prop021e81e0 *self);
-s16 func_02049afc(void *a, s16 b);
+s32 func_02049afc(void *a, s16 b);
 void func_02049bb4(void *a);
 void func_0204a094(void *a, s16 b, int c);
 

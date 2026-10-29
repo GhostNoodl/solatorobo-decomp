@@ -86,7 +86,7 @@ void func_ov000_0218c208(void *a, void *pos, u16 ang);
 void func_ov000_0219a088(void *p);
 void func_ov000_0219a0b0(void *p, u8 *self);
 void func_ov000_0216b508(void *p, s32 a, BOOL b);
-void func_ov000_021bd314(void *p, s32 a);
+BOOL func_ov000_021bd314(void *p, s32 a);
 void func_ov000_021bd624(void *p);
 void func_ov000_021b1110(u8 *self, s32 a);
 void func_ov000_021697dc(void *p, u16 a, u16 b);

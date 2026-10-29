@@ -3,13 +3,13 @@
 extern "C" {
 
 extern void *data_02097e4c;
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 s32 FX_Div(s32 a, s32 b);
 s32 func_02049210(s32 t, s32 a, s32 b);
 extern void *data_0208cca0;
 extern void *data_0208cb74;
 void func_02035acc(void *a, void *b, int c);
-int func_020359fc(void *a, void *b, int c, int d);
+void func_020359fc(void *a, void *b, int c, int d);
 int func_02035bd4(void *a, void *b, int c);
 void *func_ov015_0220fcec(u8 *self);
 extern u8 data_ov015_02213198[];
@@ -273,10 +273,6 @@ void *func_ov015_0221114c(void *self) {
     return self;
 }
 
-extern u32 _fflt(s32 v);
-extern u32 _fadd(u32 a, u32 b);
-extern u32 _fsub(u32 a, u32 b);
-extern s32 _ffix(u32 v);
 extern u8 *func_0206f040(u16 id);
 extern s32 func_02040498(s32 max);
 
@@ -321,13 +317,13 @@ u32 func_ov015_02211160(u8 *self, u16 *out, u32 n) {
             acc = 0;
             for (k = 0; k < m; k++) {
                 u16 w = FLD(u16, e + k * 2, 0xa);
-                u32 f;
+                float f;
                 if (w > 0) {
-                    f = _fadd(0x3f000000, _fflt(w << 12));
+                    f = (float)(w << 12) + 0.5f;
                 } else {
-                    f = _fsub(_fflt(w << 12), 0x3f000000);
+                    f = (float)(w << 12) - 0.5f;
                 }
-                acc += _ffix(f) / 100;
+                acc += (s32)f / 100;
                 if (rnd <= acc) {
                     break;
                 }

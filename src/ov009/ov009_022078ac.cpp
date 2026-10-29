@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_ov000_021ccd64;
 extern char data_ov009_022172af[];
-extern void func_ov000_021903b4(void *p);
+extern BOOL func_ov000_021903b4(void *p);
 extern void func_ov000_02190a80(void *p, s32 a);
 extern void func_ov000_02190e98(void *p, s32 a, s32 b, s32 c);
 extern void func_ov000_0218bed8(void *mgr, s32 a, Ov009Actor *actor);

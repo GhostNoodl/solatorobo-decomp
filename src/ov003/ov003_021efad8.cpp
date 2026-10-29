@@ -128,13 +128,13 @@ extern "C" {
 extern void *data_02097e4c;
 extern char data_ov003_021fa1a4[];
 extern void func_ov000_02196c40(Ov003Bx *self);
-extern void func_02049f44(void *mgr, s32 id, Ov003BxVec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov003BxVec *pos, s32 a);
 extern Ov003BxFx *func_02065f88(s32 id, Ov003BxVec *pos);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_0203f364(Ov003BxCtl *ctl);
 extern void func_ov003_021f0c60(Ov003Bx *self, s32 a);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_0218dbe0(void *self, s32 a);
 extern void func_ov000_021987b8(Ov003BxCtl *ctl, s32 a, s32 b, s32 c);
@@ -145,8 +145,8 @@ extern const Ov003BxDef data_ov003_021f6e60[];
 extern Ov003BxPlayer *func_ov000_0219bf90(void);
 extern void func_02065860(void *mgr, void *p);
 extern s32 VEC_Distance(const Ov003BxVec *a, const Ov003BxVec *b);
-extern void func_0204a028(void *mgr, s32 id, Ov003BxVec *pos, s32 a);
-extern void func_ov000_0219aae8(Ov003Bx *a, Ov003Bx *b, u16 c, u8 d, s32 e, Ov003BxVec *pos, Ov003BxRot *rot, s32 f, s32 g, s32 h, s32 i);
+extern void *func_0204a028(void *mgr, s32 id, Ov003BxVec *pos, s32 a);
+extern BOOL func_ov000_0219aae8(Ov003Bx *a, Ov003Bx *b, u16 c, u8 d, s32 e, Ov003BxVec *pos, Ov003BxRot *rot, s32 f, s32 g, s32 h, s32 i);
 
 static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
     return g->unk_90 != g->unk_94;

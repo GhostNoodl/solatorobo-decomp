@@ -31,11 +31,11 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021911c8(void *a, s16 b);
 void func_ov000_021915a0(void *a);
 void *func_02065f88(s32 id, ov006_Vec021eb2cc *pos);
-void func_02049f44(void *a, s32 b, ov006_Vec021eb2cc *c, s32 d);
+void *func_02049f44(void *a, s32 b, ov006_Vec021eb2cc *c, s32 d);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, ov006_Vec021eb2cc *pos, ov006_Rot021eb2cc *rot,
                          s32 f, s32 g, s32 h, s32 i);
 void func_ov000_0218bed8(void *a, s32 b, void *actor);

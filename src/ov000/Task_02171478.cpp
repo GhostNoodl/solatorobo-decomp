@@ -41,7 +41,7 @@ extern CmdQueue *data_ov000_021ccd54;
 extern Mgr02171478 *data_ov000_021ccd30;
 extern s32 data_02097d78[];
 void *func_0203dd9c(u32 size);
-void func_020359d0(void *a, s32 b, s32 c);
+void *func_020359d0(void *a, s32 b, s32 c);
 void func_ov000_0216f1ac(ListBuffer *buf, BufferList *list);
 void func_ov000_0216faac(void *p);
 VObj *func_ov000_0219bf90(void);

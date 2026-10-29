@@ -37,8 +37,8 @@ void func_02048be4(void *p);
 void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, const char *b);
 void func_02041c34(ov006_Model *m, int a, void *cb, int b);
-void func_ov006_021dd5dc(void);
-void func_ov006_021deea4(void);
+void *func_ov006_021dd5dc(void);
+void *func_ov006_021deea4(void);
 
 static inline void ov006_Unk021def9c_dtor(ov006_Unk021def9c *self) {
     self->vtbl = data_ov006_021ec26c;

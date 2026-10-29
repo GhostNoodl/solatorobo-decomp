@@ -89,7 +89,7 @@ void *func_0203dd9c(u32 size);
 void func_ov000_0216f144(Task *self);
 void func_ov000_0216faac(Task *self);
 void func_ov000_0216f828(Task *self);
-void func_ov000_0216f398(Mgr021ccd30 *mgr, Task *task, s32 a, Mgr021ccd30 *b);
+void *func_ov000_0216f398(Mgr021ccd30 *mgr, Task *task, s32 a, Mgr021ccd30 *b);
 void func_ov000_0218e514(void *p, s32 a);
 void func_0204aa10(void *p);
 void func_ov000_0216bcbc(void *p);

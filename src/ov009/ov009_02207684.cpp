@@ -28,7 +28,7 @@ BOOL func_ov009_02207684(Ov009Actor *self) {
 extern void func_0203f2b8(void *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void NNSi_G3dModifyMatFlag(void *p, s32 a, s32 b);
-extern void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern void func_ov000_02190758(void *a, const void *b, s32 c);
 void func_ov009_022076b8(Ov009Actor *self) {
     u32 saved;

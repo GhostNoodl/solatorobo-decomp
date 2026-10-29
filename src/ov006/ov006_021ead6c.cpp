@@ -42,7 +42,7 @@ extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
 void *func_02065f88(s32 id, VecFx32 *pos);
-void func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
+void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *pos, u16 *rot,
                          s32 f, s32 g, s32 h, s32 i);
 void func_ov000_0218bed8(void *a, s32 b, void *actor);

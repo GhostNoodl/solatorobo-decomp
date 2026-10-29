@@ -142,8 +142,8 @@ BOOL func_ov015_02211b00(u8 *self) {
 }
 
 
-void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_02191618(void *a);
 void NNS_G3dRenderObjSetInitFunc(void *a, void *cb);
 s32 func_ov000_021909a8(void *a, const void *b, const void *c);

@@ -6597,3 +6597,42 @@ No new match, no score changed. `ov000_0219b808` stays at 4 / 0 and `ov011_021fc
   - In every other case the scan gives up, and a new vreg (`0x65b860++`) is loaded at the target and flagged `0x80000`. The source instruction always becomes a copy, and `0x526390` adds 1 to the pressure of every block on the path, once per group.
   - **Reuse versus re-insert never stops a walk.** The candidate test at the group's block visit (`0x526a52`) has the same condition as the reuse test: a virtual register, plus flag `0x80000` or a single def. So a reused single-def zero (an enum or user local) is itself moved from its block when that block is visited. Only pressure above 10 or a target block with no instructions refuses a step.
 - **`021fc0b8` / `021fd638`: the enum-zero tries.** `Ov011PathIdx idx = OV011_PATH_IDX_START` (= 0) was stored as `e->unk_08 = idx` in three places: at the top of `Remove`'s `if`, in the loop body (IR LICM puts it in preheader 94) and before the `if`. In all three the zero just starts the same walk (`94->55 p=8` … `52->47` refused), at 26 / 3. A zero that is a real vreg can't keep the ROM's preheader `mov r6, #0`. The refusal still needs block 55 at 11 (rounds hzR/cvZ), or an empty block between the guard and the preheader. Both functions share the inline, so this applies to `021fd638` unchanged.
+
+### Round ptA
+
+Prototype audit. No new match (8133 before and after); one hack removed from matched code, and many declarations brought into line with their definitions. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` 8133. Scratch is in `scratchpad/ptA/` (`tp.py SRC FUNC MOD 'NAME=RET (PARAMS)' ...` rewrites one file's declarations of NAME and scores, `--nh` also drops pointer-bit blocks; `trydef.py` tries a definition edit and keeps it only at 0 / 0; `objcmp.py`/`cmpall.sh` compare every built object's code, data and relocations against a saved baseline, which is how every prototype change below was checked).
+
+**The tool: `tools/protoaudit.py`.** It reads every declaration and definition of a linker-named function in `src/`, `libs/` and `include/` and groups them by signature. The default listing shows each function whose return class (void, integer width/sign) differs between declarations, with the definition as the reference. `--sites` lists each NONMATCHING draft and hack site (pointer-bit test, local `volatile`, a "fake"/"hack" comment) with every callee whose prototype visible in that TU disagrees with the definition (return class, parameter count or integer parameter class). `--asm` adds a ROM-based guess for callees with no C definition. `--rewrite-returns LOG [--only P,..] [--skip FILE]` rewrites declarations to the definition's return type and logs every edit.
+
+- **Before / after.** 615 functions had declarations that disagree, 452 of them in the return class. After this round 356 and 135. About 1,900 local `extern` declarations in 760 files now carry the definition's return type. Every touched object is byte- and relocation-identical to the one before, so this changes no code.
+- **Wrong prototypes don't explain the drafts.** Every mismatched callee prototype in the 24 NONMATCHING drafts, and at the remaining pointer-bit and `volatile` sites, was set to the real one, one at a time and all together. No score moved (`0218867c` 45 / 32, `021fc0b8` 26 / 17, `0214dd3c` 26 / 0, `0216715c` 3 / 0, `021c4460` 10 / 0, `02053254` 37 / 4, `ov009_02204a10` 295, `021eb818` trick-free 11 / 11, `ov013_02206764` without `volatile` 2 / 0, `02040578` without `volatile` 32 / 28). jkJ's lever needs a statement past the 100-instruction count that ends in the call, and none of these has one. In `ov009_02204a10`, `u16` for `func_01ffc9fc`'s angle (its real type) gives 456: the draft's argument isn't `u16`-typed.
+- **Load-bearing wrong prototypes in matched code.** Setting these to the definition's type changes the object, so they stay as they are:
+  - `func_02049f44` declared `void` in `ov009_02205490.cpp`. The real return is `SndHandle *`, and `void` keeps an automatic split, as in jkJ.
+  - `func_0204a028` declared `void` in `ov012_022096fc.cpp` and `ov012_0220824c.cpp`.
+  - `func_0200779c` declared `void` in `Menu_021763c8.cpp` (qpI).
+  - `func_0206f080` declared `s32` rather than `u16` in `Lo_021762e4.cpp` and `ov015_0220566c.cpp`. The caller then doesn't re-extend the result.
+  - `func_02043d48` declared `u8` rather than `int` (`Lo_021bf518`, `Lo_021c0268`).
+  - `func_ov000_0218cea4` and `021903b4` declared `u16` rather than `BOOL` (`ov003_021d16cc`).
+  - `func_ov000_02198360` declared `void` (`ov003_021da2c8`).
+  - `func_02040528` declared `s16` rather than `int` (`include/ov003/Vec.h`).
+  - `func_ov000_02199f08` declared `u8` rather than `u32` (`ov012_02200200`).
+  - `func_ov003_021d9edc` declared `s32` in `include/ov012/ov012.h`.
+  - `STD_CopyString` and `STD_ConcatenateString` stay `void` everywhere (pmA).
+- **Left alone.** These files have other mismatches that were not unified: the 13 files that pass functions as `__cxa_vec_ctor` / `__cxa_vec_cleanup` / callback arguments, where the pointer type has to fit (`Cam_02162124`, `Factory_02192b24`, `Factory_021b4828`, `Task_02170a58`, `Slot_02161cd4`, `Dtor_0216fb14`, `ov003_021cfab4`, `ov000_021ca70c`, `ov013_0220b444`, `ov010_02204cdc`, `ov012_0220a8d8`, `Misc_0214dcc4`, `fs_romfat_rodata.c`), and raG's `ov011_021fc0a0.cpp` and `Stub_02188670.cpp`.
+- **A `void` definition can be wrong even when it matches.** A function that ends in a call, or an init function that never touches `r0`, compiles the same as one that returns the callee's value or `self`. Where callers use the value, the definition was fixed and still matches:
+  - `func_02034b44`, `02043548`, `020492e0`, `ov000_0214b570`, `0214b6d8`, `0218e9c4`, `02198328`, `021984c8` and `ov015_0220d878` now return `self`.
+  - `func_02063650` returns `func_ov000_02191120(...)`, and `ov000_02180838` returns `vfunc_2c()`.
+  - `ov003_021d9edc` returns `u16` from `func_ov000_0218dfb4`, which is declared `u16` in that file.
+  - `func_0203f80c` and `021bd198` really are `void`: returning `self` costs a `mov` (3 / 3 and 4 / 3).
+- **Missing parameters.** `func_ov000_0214bf2c` was defined `(void)`, but it passes `r0` straight to `func_02061f08(u16)`. It is now `u32 func_ov000_0214bf2c(u16 id)` with `func_02061f08(id)`, which every caller already assumed. `func_ov000_0214be28` is `BOOL (s32 kind)`, passing `kind` to `func_ov000_0214bcc4(s32 kind, s32 idx)`. `protoaudit.py --all` lists about 30 more definitions that take fewer parameters than their callers pass (`func_ov000_0219bf90`, `0215ced8`, `0215f330`, `02184498`, `02184508`, `ov003_021cf330`/`f33c`/`f3fc`/`f400`/`f404`, `0204a360`, `0205a69c`, ...). They were not changed, because each needs the parameter's name and type.
+
+**Hack removed: `ov013_021fdedc`.** Its "fake match" re-read `v.b0 = FLD(u8, p, 0)` after the call. The real cause was a prototype problem of another kind: the soft-float helpers were called by hand through integer prototypes (`_ffixu(_fmul(0x3fa66666, _ffltu(p->h4)))`). Written as plain float source, `v.h4 = p->h4 * 1.3f;`, the compiler emits the same helper calls, and the extra read is not needed: 0 / 0. `021fdc30` uses the same spelling (`* 0.8f`, `* 1.2f`).
+
+**Same cleanup elsewhere (all still match):**
+- The hand-written `_fadd(0x3f000000, _fflt(v << 12))` / `_fsub(...)` / `_ffix` rounding in `ov002_021e8f04`, `021e9e40`, `ov003_021f3dd4`, `ov015_02210a10`, `Lo_02162b40`, `Model_0219badc` and `Robo_0219c8e0` is now `(float)(v << 12) + 0.5f` and `(s32)f`.
+  - The `_fflt` vs `_ffltu` choice follows the operand's signedness. Where `v` is `u32`, write `(float)(s32)(v << 12)`, or the link calls `_ffltu` and the module checksum fails while `match.py` still says 0 (it masks `bl` targets).
+- `S32_MOD(a, b)`, which used the remainder of `_s32_div_f`, is now `%`.
+- The explicit `_s32_div_f(a, b)` calls in `ov002_021e6290`, `Target_02199b00` and `ov010_02208c3c` are now `/`.
+- The unused helper externs were removed.
+
+**`ov003_021cd1e4`** keeps its "fake match" `if (name)`. No prototype (`STD_CopyString` returning `char *`, `func_02041440` taking `u8`) and no inline spelling of the init (`Ov003TlSpr_Init` with the two literals) removes it: 79 / 76 without it.

@@ -5,7 +5,7 @@ extern "C" {
 #define FIELD(p, off, T) (*(T *)((u8 *)(p) + (off)))
 extern void *data_02097ce0;
 extern void *data_ov002_021f0f98[];
-int func_0206e8f0(void);
+u8 func_0206e8f0(void);
 void *func_0203a4c0(void *a);
 void func_0203a4e4(void *mgr, void *arg);
 int NNSi_G2dFontGetTextWidth(const void *pFont, int hSpace, const void *txt);

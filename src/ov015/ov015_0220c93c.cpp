@@ -8,7 +8,7 @@ extern void *data_ov015_02212db8[];
 extern void **data_0214a420;
 Ov015V *func_020657b0(void *a, void *b);
 extern u8 data_ov015_02212e0d[];
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 s32 func_02040528(s32 max);
 void VEC_Normalize(void *src, void *dst);

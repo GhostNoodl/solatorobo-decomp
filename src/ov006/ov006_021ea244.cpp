@@ -28,7 +28,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern const u8 data_ov006_021eb918[][6];
 ov006_Fx021ea244 *func_02065f88(int id, void *pos);
-void func_02049f44(void *a, int b, void *c, int d);
+void *func_02049f44(void *a, int b, void *c, int d);
 
 void func_ov006_021ea244(ov006_Prop021ea244 *self) {
     if (self->unk1AA == 0 && self->unk1AB == 0) {

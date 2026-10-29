@@ -57,11 +57,11 @@ extern s32 data_ov000_021ca00c[];
 extern s32 data_ov000_021ca100[];
 extern s32 data_ov000_021ca168[];
 void func_ov000_021b05b0(u8 *self);
-u16 func_0206d37c(void *save, s32 a);
+u8 func_0206d37c(void *save, s32 a);
 u8 *func_ov000_0218e640(void *mgr, u16 id);
 
 void func_ov000_0218d46c(void *self, u16 id, u8 value);
-void func_ov000_02198360(void *s, s32 a, s32 b);
+BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 s32 func_ov000_021a09b8(u8 *self, s32 *list, s32 count);
 void func_ov000_0218d7e8(void *self, u8 arg);
 

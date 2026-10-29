@@ -12,7 +12,7 @@ void *func_ov000_0218d2e0(void *self);
 void *func_ov000_0218e640(void *mgr, u16 id);
 void *func_ov000_02199d78(void *p);
 void *func_ov000_021b2f08(void *self, void *a, void *b, BOOL c);
-void func_02049a48(void *p, s32 id, s32 a, s32 b, s32 c);
+void *func_02049a48(void *p, s32 id, s32 a, s32 b, s32 c);
 void *func_ov000_021985c0(void *p);
 BOOL func_ov000_02190a30(void *p, s32 a);
 void func_ov000_021b3bd8(void *self);

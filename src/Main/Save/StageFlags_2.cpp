@@ -14,7 +14,7 @@ extern u16 func_0206d02c(StageFlags *f);
 extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern s32 func_020591a4(DataRes *res, u8 *buf, s32 a);
 extern s32 func_02062370(u8 *buf);
-extern void func_ov000_02181c4c(u8 *dst, u8 *buf);
+extern s32 func_ov000_02181c4c(u8 *dst, u8 *buf);
 
 typedef struct StageFlagsInit {
     u32 data[5];
@@ -43,7 +43,7 @@ void func_0206ca44(StageFlags *f) {
 }
 
 extern void func_0206c4c4(StageFlags *f);
-extern void func_02059270(DataRes *res, u8 *buf);
+extern u32 func_02059270(DataRes *res, u8 *buf);
 
 void func_0206cadc(StageFlags *f) {
     StageFlags tmp;

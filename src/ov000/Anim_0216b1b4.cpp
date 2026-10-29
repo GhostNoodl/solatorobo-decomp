@@ -14,7 +14,7 @@ void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);
 void func_02041c34(void *a, int b, void *c, void *d);
-void func_ov000_0216ac14(void);
+void *func_ov000_0216ac14(void);
 
 static inline void *Model_GetPart0216b1b4(void *self, int idx) {
     if (idx >= LFLD(s32, self, 0x80)) {

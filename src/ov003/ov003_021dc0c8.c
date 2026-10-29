@@ -73,7 +73,7 @@ typedef struct {
 extern void *data_0214a420;
 extern void *data_02097e4c;
 extern Ov003EmDefB data_ov003_021f49ec[];
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_0219763c(void *self);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_02194758(void *self);
@@ -81,9 +81,9 @@ extern void func_02065804(void *mgr, void *handle);
 extern Ov003EmFx *func_020657b0(void *mgr, void *handle);
 extern void func_02063a14(Ov003EmFx *fx);
 extern s32 FX_Div(s32 a, s32 b);
-extern void func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void func_ov003_021dc3fc(Ov003EmB *self, s32 a, s32 b);
-extern void func_ov003_021dc840(Ov003EmB *self);
+extern BOOL func_ov003_021dc840(Ov003EmB *self);
 
 void func_ov003_021dc0c8(Ov003EmA *self) {
     self->unk_d8 = 0;

@@ -10,15 +10,15 @@ extern void *data_02097e4c;
 extern BOOL func_ov000_0218cf5c(Ov014Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
 extern BOOL func_02035b90(void *a, s32 b);
-extern void func_ov000_021903b4(void *p);
+extern BOOL func_ov000_021903b4(void *p);
 extern void func_0203f364(Ov014Sub48 *p);
 extern BOOL func_020621c4(void);
 extern void func_ov003_021d6bac(Ov014Actor *self, const void *p);
-extern void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern void func_ov003_021cf1f0(void *a, s32 b, s32 c, const void *d);
 extern Ov014Actor *func_ov000_0219bf90(void);
-extern void func_ov003_021ceff4(void *p);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_ov003_021ceff4(void *p);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void func_ov000_021911c8(void *a, s32 b);
 
 BOOL func_ov014_021fa8f8(Ov014Actor *self) {

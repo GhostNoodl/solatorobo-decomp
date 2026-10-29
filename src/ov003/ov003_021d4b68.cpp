@@ -170,7 +170,7 @@ extern Ov003KbUnit *func_ov000_0219be1c(u16 id, Ov003KbVec *pos, void *rot, u16 
 extern void func_ov000_0218d46c(Ov003KbUnit *u, u16 a, s32 b);
 extern BOOL func_ov000_02191120(void *model);
 extern void func_ov000_021915a0(void *model);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void func_ov000_0218dbe0(void *self, s32 a);
 extern void func_ov000_021987b8(Ov003KbCtl *ctl, s32 a, s32 b, s32 c);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
@@ -424,7 +424,7 @@ extern char data_ov003_021f7aa3[];
 extern void *data_02097e4c;
 extern s32 func_02040528(s32 max);
 extern u16 func_ov000_02198da8(Ov003KbCtl *ctl, u16 a);
-extern void func_02049f44(void *mgr, s32 id, Ov003KbVec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov003KbVec *pos, s32 a);
 
 static inline u16 Ov003Kb_Angle(Ov003Kb *self) {
     u16 ang;

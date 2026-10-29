@@ -47,7 +47,7 @@ typedef struct {
 extern "C" {
 
 void func_0203db10(void *node);
-void func_ov000_02189a74(void *p);
+void *func_ov000_02189a74(void *p);
 
 Obj02188ba0 *func_ov000_02188ba0(Obj02188ba0 *self) {
     s32 i;

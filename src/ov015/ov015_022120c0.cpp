@@ -5,11 +5,11 @@ extern "C" {
 s32 func_02065748(void *a, void *b);
 void func_ov000_021bd228(void *p);
 extern u8 data_ov015_022132ac[];
-void func_020359d0(void *a, int b, int c);
+void *func_020359d0(void *a, int b, int c);
 int func_02035b90(void *a, int b);
 extern u8 data_ov015_022132bb[];
 u8 *func_02066774(void *a, void *b, int c, void *d);
-void *func_ov000_021bd198(void *p);
+void func_ov000_021bd198(void *p);
 void func_ov015_02212430(u8 *self);
 void *NNS_G3dGlbGetInvV(void *p);
 void MTX_MultVec33(void *a, void *b, void *c);
@@ -18,12 +18,12 @@ u16 FX_Atan2(s32 x, s32 z);
 void func_ov000_021bd624(void *p);
 void func_ov000_021bd7a0(void *p);
 extern void *data_02097e4c;
-void func_02049bdc(void *a, s32 b, s32 c);
-void func_ov000_021bd314(void *o, s32 a);
+s32 func_02049bdc(void *a, s32 b, s32 c);
+BOOL func_ov000_021bd314(void *o, s32 a);
 extern u8 *data_02097dc8;
 extern u8 data_ov015_022132e0[];
-void func_ov000_0218fee4(void *a);
-void func_ov000_0218ea20(void *a);
+void *func_ov000_0218fee4(void *a);
+void *func_ov000_0218ea20(void *a);
 
 void func_ov015_022120c0(u8 *self) {
     FLD(s32, self, 0x4) = 0;

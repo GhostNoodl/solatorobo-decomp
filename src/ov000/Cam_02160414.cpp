@@ -12,7 +12,7 @@ typedef struct {
 } Cam02160414;
 
 extern "C" {
-void func_0204061c(s32 *out, VecFx32 *pos);
+int func_0204061c(s32 *out, VecFx32 *pos);
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 

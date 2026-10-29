@@ -142,21 +142,17 @@ extern BOOL func_ov000_0218f110(s16 *p);
 extern Ov003Save *data_0214a424;
 extern char data_ov003_021fa662[];
 extern void func_ov000_021b4c60(void *self);
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_02191870(void *model, Ov003Res *res);
 extern Ov003AnimLayer *func_ov000_02190a30(void *model, s32 n);
 extern void func_ov000_02191920(void *model, s32 a, s32 b, s32 c);
-extern u32 _fflt(s32 v);
-extern u32 _fadd(u32 a, u32 b);
-extern u32 _fsub(u32 a, u32 b);
-extern s32 _ffix(u32 v);
 extern void *func_ov000_02198328(void *p);
 extern u8 *func_0206ef10(u16 id);
 extern void func_ov000_02191008(Ov003Model *model);
 extern void func_ov000_0218ec60(Ov003Res *res, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218edf0(Ov003Res *res, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218ef10(Ov003Res *res, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov000_0218ffdc(Ov003Model *model, Ov003Res *res, s32 a, s32 b);
+extern BOOL func_ov000_0218ffdc(Ov003Model *model, Ov003Res *res, s32 a, s32 b);
 
 static inline Ov003PropDef *Ov003_GetDef(u16 a) {
     Ov003PropDef *def = NULL;
@@ -209,9 +205,9 @@ void func_ov003_021f3e60(Ov003Prop *self) {
             func_ov000_02191920(self->model, 0, 0x1000, 0);
             n = self->count << 12;
             if (self->count != 0) {
-                frame = _ffix(_fadd(0x3f000000, _fflt(n)));
+                frame = (s32)((float)n + 0.5f);
             } else {
-                frame = _ffix(_fsub(_fflt(n), 0x3f000000));
+                frame = (s32)((float)n - 0.5f);
             }
             ctl = layer->ctl;
             if (ctl != NULL) {
@@ -292,9 +288,9 @@ void func_ov003_021f3f5c(Ov003Prop *self) {
                 func_ov000_02191920(self->model, 0, 0x1000, 0);
                 n = self->count << 12;
                 if (self->count != 0) {
-                    frame = _ffix(_fadd(0x3f000000, _fflt(n)));
+                    frame = (s32)((float)n + 0.5f);
                 } else {
-                    frame = _ffix(_fsub(_fflt(n), 0x3f000000));
+                    frame = (s32)((float)n - 0.5f);
                 }
                 ctl = layer->ctl;
                 if (ctl != NULL) {

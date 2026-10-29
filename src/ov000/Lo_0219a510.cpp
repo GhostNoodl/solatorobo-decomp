@@ -29,7 +29,7 @@ typedef struct {
 extern "C" {
 s32 func_ov000_021993fc(Finder *self, Query *q, void **out, s32 max);
 s32 func_ov000_02199128(Finder *self, Query *q, void **out, s32 max);
-void func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 s32 func_ov000_0219a510(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list) {
     FinderQuery fq;

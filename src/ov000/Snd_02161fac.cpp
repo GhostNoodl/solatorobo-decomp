@@ -23,7 +23,7 @@ extern "C" {
 
 void func_ov000_0218ec60(Track02161fac *t, void *a, void *b, s32 c, s32 d);
 void func_ov000_0218edf0(Track02161fac *t, void *a, void *b, s32 c, s32 d);
-void func_ov000_0218f110(Track02161fac *t);
+BOOL func_ov000_0218f110(Track02161fac *t);
 BOOL func_0203e688(void);
 
 void func_ov000_02161fac(Obj02161fac *self) {

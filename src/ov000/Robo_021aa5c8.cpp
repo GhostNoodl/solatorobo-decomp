@@ -41,15 +41,15 @@ extern Rgb021aa5c8 data_ov000_021c9fe8;
 extern void *data_02097e4c;
 u8 *func_ov000_0218e640(void *mgr, u16 id);
 VObj *func_02065f88(s32 id, void *pos);
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_ov003_021cedf4(u16 n);
 s32 func_02040498(s32 max);
-void func_02049bdc(void *a, s32 b, s32 c);
+s32 func_02049bdc(void *a, s32 b, s32 c);
 void func_ov000_021aa978(u8 *self);
 void func_ov000_021aaf80(u8 *self);
 void func_ov000_021ab68c(u8 *self);
 void func_ov000_0218a358(void *s, VecFx32 *pos, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
-void func_ov000_02198360(void *s, s32 a, s32 b);
+BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline u8 *FindActor021aa5c8(u16 id) {

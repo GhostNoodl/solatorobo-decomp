@@ -42,15 +42,15 @@ typedef struct ov006_Prop63c8 {
 extern "C" {
 
 extern u8 data_ov006_021ec4f4[];
-void func_ov000_0218c2d4(void *self);
-void func_ov000_0218fe1c(void *p);
+void *func_ov000_0218c2d4(void *self);
+void *func_ov000_0218fe1c(void *p);
 u8 func_ov006_021d8d9c(void);
 int func_ov006_021d8d4c(void);
 int func_ov006_021d8de0(void);
 extern void *data_02097e4c;
 void func_02049bb4(void *a, s32 b);
-void func_ov000_0218fee4(void *p);
-void func_ov000_0218c928(void *self);
+void *func_ov000_0218fee4(void *p);
+void *func_ov000_0218c928(void *self);
 void func_0203de1c(void *p);
 
 ov006_Prop63c8 *func_ov006_021e63c8(ov006_Prop63c8 *self) {

@@ -26,7 +26,7 @@ extern "C" {
 
 void *NNS_G3dGetMdlSet(void *file);
 void *NNS_G3dGetTex(void *file);
-void NNS_G3dBindMdlSet(void *mdlset, void *tex);
+BOOL NNS_G3dBindMdlSet(void *mdlset, void *tex);
 void *func_02035d5c(void *a);
 void *func_02039674(void *a);
 void **func_02034f5c(void *a, void *b);

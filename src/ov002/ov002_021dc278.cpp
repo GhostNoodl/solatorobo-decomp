@@ -21,7 +21,7 @@ static inline void ov002_Anim_Tick(void *a) {
     if (FIELD(a, 0x2c, s32 *) != NULL) {
         *FIELD(a, 0x2c, s32 *) = v;
     }
-    FIELD(a, 0x30, s32) = S32_MOD(FIELD(a, 0x30, s32) + 0x1000, FIELD(a, 0x34, s32));
+    FIELD(a, 0x30, s32) = (FIELD(a, 0x30, s32) + 0x1000) % FIELD(a, 0x34, s32);
 }
 
 static inline BOOL ov002_Msg_IsDone(void *m) {

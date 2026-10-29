@@ -26,7 +26,7 @@ static inline void ov002_Anim_Update(u8 *self) {
     if (FIELD(self, 0x2c, s32 *) != NULL) {
         *FIELD(self, 0x2c, s32 *) = v;
     }
-    FIELD(self, 0x30, s32) = S32_MOD(FIELD(self, 0x30, s32) + 0x1000, FIELD(self, 0x34, s32));
+    FIELD(self, 0x30, s32) = (FIELD(self, 0x30, s32) + 0x1000) % FIELD(self, 0x34, s32);
 }
 
 static inline void ov002_SetFlag1(void *p) {

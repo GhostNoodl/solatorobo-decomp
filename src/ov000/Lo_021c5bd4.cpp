@@ -17,7 +17,7 @@ void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
 void func_02041c5c(void *model, void *fn);
 void STD_CopyString(void *dst, void *src);
-void func_ov000_021c5a0c(void);
+void *func_ov000_021c5a0c(void);
 
 void func_ov000_021c5bd4(u8 *self) {
     void *res;

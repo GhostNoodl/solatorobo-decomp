@@ -17,12 +17,12 @@ extern const Ov010Blk12 data_ov010_0220f0b4;
 extern const Ov010Blk12 data_ov010_0220f0c0;
 extern const Ov010Blk12 data_ov010_0220f0cc;
 extern u8 *data_ov000_021ccd54;
-extern void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+extern BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
 extern void func_ov000_02191618(void *a);
 extern BOOL func_ov000_02191120(void *p);
 extern void *func_ov000_0219bf90(void);
-extern void func_02049f44(void *a, s32 b, void *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 extern void func_ov003_021d8a7c(void *p, s32 a);
 extern void func_ov003_021d969c(void *p, s32 a);
 extern u16 func_ov003_021d9c38(Ov010Vec *v);
@@ -37,7 +37,7 @@ extern void func_ov000_0218d988(void *self, void *other, s32 a);
 extern Ov010V *func_02066774(void *a, void *b, s32 c, void *d);
 extern Ov010V *func_ov003_021da788(s32 id, void *self, Ov010Vec *ofs);
 extern s32 VEC_Distance(const Ov010Vec *a, const Ov010Vec *b);
-extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern void func_ov000_0218dbe0(void *self, s32 a);
 
 static inline s32 Ov010f_FxMul(s32 a, s64 b) {

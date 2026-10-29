@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern void func_02043548(CamVec *eye);
+extern void *func_02043548(CamVec *eye);
 extern void func_020434e0(s32 *proj);
 extern void func_0203de1c(void *ptr);
 extern void func_0204bcb0(Camera *cam);

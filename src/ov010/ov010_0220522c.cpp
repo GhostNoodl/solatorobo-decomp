@@ -4,11 +4,11 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern void *data_ov010_0220f024[];
-extern void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+extern BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
 extern BOOL func_ov000_02191120(void *p);
 extern void *func_ov000_0219bf90(void);
-extern void func_02049f44(void *a, s32 b, void *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 extern void func_ov010_0220a040(void *self, u16 a, s32 b, s32 c, s32 d, u16 e, u16 f);
 extern void func_ov010_0220d9c0(void *p, void *h);
 extern BOOL func_ov010_0220da4c(void *p);

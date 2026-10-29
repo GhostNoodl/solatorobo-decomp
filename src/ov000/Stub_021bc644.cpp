@@ -9,7 +9,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_021bc474(Obj021bc644 *self);
+BOOL func_ov000_021bc474(Obj021bc644 *self);
 BOOL func_ov000_021bca00(Obj021bc644 *self);
 
 BOOL func_ov000_021bc644(Obj021bc644 *self) {

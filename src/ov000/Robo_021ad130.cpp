@@ -65,14 +65,14 @@ const u8 data_ov000_021c9feb[3] = {0x11, 0, 2};
 const u8 data_ov000_021c9fe8[3] = {0x11, 0, 0};
 const Ids16_021ad130 data_ov000_021c9ff2 = {{0x127, 0x310, 0}};
 extern Ids021ad130 data_ov000_021ca018;
-void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-s32 func_0206d204(void *p, s32 a);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+u8 func_0206d204(void *p, s32 a);
 VObj *func_02065f88(s32 id, void *pos);
 void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
 u8 *func_ov000_0219b71c(Vec021ad130 *pos, Vec021ad130 *v, s32 a, s32 b, s32 c, s32 d);
 s32 func_02040498(s32 max);
-void func_02049f44(void *a, s32 b, void *c, s32 d);
-void func_0204a028(void *a, s32 b, void *c, s32 d);
+void *func_02049f44(void *a, s32 b, void *c, s32 d);
+void *func_0204a028(void *a, s32 b, void *c, s32 d);
 void func_ov000_0218996c(s32 a, s32 b);
 void func_02062410(void);
 void func_ov000_02182590(void *p);
@@ -80,7 +80,7 @@ BOOL func_0205b29c(u16 *ids);
 void func_ov000_02186dbc(void *g);
 void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 BOOL func_ov000_02191120(void *a);
-void func_ov000_02198360(void *st, s32 a, s32 b);
+BOOL func_ov000_02198360(void *st, s32 a, s32 b);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 
 static inline void Fx021ad130(u8 *self) {

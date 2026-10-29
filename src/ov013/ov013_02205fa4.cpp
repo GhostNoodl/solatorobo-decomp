@@ -6,7 +6,7 @@ extern const u8 data_ov003_021f4344;
 extern char data_ov013_0220ba79[];
 extern void func_ov000_02194758(void *self);
 extern void func_0203f364(Ov013Sub48 *p);
-extern void func_ov003_021cf330(void *p, const char *name, u8 a);
+extern int func_ov003_021cf330(void *p, const char *name, u8 a);
 extern BOOL func_ov000_021950e8(Ov013Actor *self, Ov013Msg *msg);
 
 void func_ov013_02205fa4(Ov013Actor *self) {
@@ -66,7 +66,7 @@ extern Ov013Actor *func_ov000_02199ba0(void *p);
 extern void VEC_Normalize(const Ov013Vec *a, Ov013Vec *b);
 extern void func_ov013_02205c74(Ov013Vec *dir, Ov013Vec *target, Ov013Vec *pos, Ov013Vec *n, u16 rate);
 extern void func_ov000_0219bd20(u16 kind, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-extern void func_0204a028(void *a, s32 b, Ov013Vec *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, Ov013Vec *c, s32 d);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, Ov013Vec *v, s32 e, s32 f, s32 g, s32 h, s32 i);
 
 #define OV013_SQRTCNT (*(volatile u16 *)0x40002b0)

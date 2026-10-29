@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e68[];
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 s32 FX_Div(s32 a, s32 b);
 u8 *func_02066774(void *a, void *b, int c, void *d);
 

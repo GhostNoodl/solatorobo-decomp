@@ -11,7 +11,7 @@ struct Ov009Msg {
     Ov009Vec v;
 };
 
-extern void func_ov003_021d1c00(Ov009Actor *self, Ov009Msg *msg);
+extern BOOL func_ov003_021d1c00(Ov009Actor *self, Ov009Msg *msg);
 
 void func_ov009_02204410(Ov009Actor *self, Ov009Msg *msg) {
     if (msg->type == 0xe) {
@@ -38,7 +38,7 @@ struct Ov009AngSrc {
     u16 unk_44;
 };
 
-extern s32 func_0204bfa8(Ov009AngSrc *p);
+extern u16 func_0204bfa8(Ov009AngSrc *p);
 
 static inline s32 Ov009_GetAng(Ov009AngSrc *p) {
     if (p->unk_40 != 0) {

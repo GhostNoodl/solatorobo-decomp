@@ -18,7 +18,7 @@ extern void *data_ov006_021ec414;
 extern ov006_Unk02097e40 *data_02097e40;
 
 BOOL func_ov006_021e46e8(ov006_Unk021ec888 *self, const ov006_MenuData *data);
-int func_02046ab4(ov006_Unk02097e40 *a);
+u16 func_02046ab4(ov006_Unk02097e40 *a);
 BOOL func_020469d4(ov006_Unk02097e40 *a, ov006_MenuEntry *entry);
 int func_02046abc(ov006_Unk02097e40 *a);
 ov006_MenuEntry *func_02046a50(ov006_Unk02097e40 *a, int idx);

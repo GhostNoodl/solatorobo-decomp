@@ -50,7 +50,7 @@ extern Task02173a5c *(*const data_ov000_021c9c6c[])(void);
 extern void *data_02097e4c;
 extern u8 *data_02097d48;
 extern Player02173a5c *data_ov000_021ccd54;
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_0204a160(void *a);
 void func_0204a1c4(void *a);
 void func_02043b20(void *p);

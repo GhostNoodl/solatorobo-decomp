@@ -17,8 +17,8 @@ void STD_CopyString(void *dst, void *src);
 BOOL func_ov000_02152e5c(void *self);
 void func_ov000_0215ec44(void *self);
 void func_ov000_0215e8b0(void *self);
-void func_ov000_021c77bc(void);
-void func_ov000_021c782c(void);
+void *func_ov000_021c77bc(void);
+void *func_ov000_021c782c(void);
 
 void func_ov000_021c3d20(u8 *self) {
     void *p;

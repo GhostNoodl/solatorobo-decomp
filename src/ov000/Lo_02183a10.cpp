@@ -80,7 +80,7 @@ void func_0206c72c(void *p, Id3 *id);
 void func_0203c9e8(s32 a, s32 b);
 void func_0203cc58(s32 a, s32 b, s32 c);
 void func_02062424(Id3 *id);
-void func_ov000_02181d70(u8 *p);
+BOOL func_ov000_02181d70(u8 *p);
 void func_02049564(void *p, s32 a, s32 b);
 
 static inline BOOL IsMode1(void) {

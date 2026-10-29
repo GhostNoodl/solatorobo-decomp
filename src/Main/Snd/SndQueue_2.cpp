@@ -8,7 +8,7 @@ extern "C" {
 
 extern void *func_0203dd9c(u32 size);
 extern void *func_0203dec8(u32 size, int align);
-extern SndMgr *func_020492e0(SndMgr *mgr);
+extern void *func_020492e0(SndMgr *mgr);
 extern void func_02049344(SndMgr *mgr);
 void func_0204a3b8(SndMgr *mgr, struct SndCmd *cmd);
 

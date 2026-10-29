@@ -31,13 +31,13 @@ extern "C" {
 extern const Ov007Lights data_ov007_021cfa3c;
 extern const u16 data_ov007_021cfa98[][0x20];
 extern void *data_02097e4c;
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 void G3X_SetToonTable(const void *p);
 void NNS_G3dGlbLightVector(int light, int x, int y, int z);
-void func_ov000_021903b4(void *a);
+BOOL func_ov000_021903b4(void *a);
 s32 FX_Div(s32 a, s32 b);
-void func_02070dcc(void);
+void *func_02070dcc(void);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);

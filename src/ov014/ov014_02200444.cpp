@@ -4,7 +4,7 @@ extern "C" {
 
 extern const u8 data_ov014_0221668c[][6];
 extern Ov014Actor *func_ov000_0219bf90(void);
-extern void func_ov003_021ceff4(void *p);
+extern void *func_ov003_021ceff4(void *p);
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, void *f);
 extern void func_ov003_021daa6c(void *p, s32 a);
 

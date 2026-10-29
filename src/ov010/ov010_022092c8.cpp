@@ -15,7 +15,7 @@ struct Ov010Trig {
 extern "C" {
 
 extern u8 data_ov010_02210280[];
-extern void func_ov000_02198328(void *p);
+extern void *func_ov000_02198328(void *p);
 extern void func_ov003_021da48c(void *p, s32 a);
 
 Ov010Trig *func_ov010_022092c8(Ov010Trig *self) {

@@ -10,9 +10,9 @@ typedef struct Bits021da184 {
 
 void func_0206d0a8(void *a);
 
-void func_0206d0d4(void *a, u16 id, u8 x, u8 y, u8 rot, int e);
+BOOL func_0206d0d4(void *a, u16 id, u8 x, u8 y, u8 rot, int e);
 
-BOOL func_0206d1d4(void *a, u16 id);
+u8 func_0206d1d4(void *a, u16 id);
 
 void func_0206f3f0(u16 id, u8 v);
 
@@ -20,7 +20,7 @@ void func_0206d3ac(void *a, int b, u8 x, u8 y, s32 *org);
 
 void func_0206d390(void *a, u8 b, u8 c);
 
-void func_0206d02c(void *a);
+u16 func_0206d02c(void *a);
 
 void func_ov002_021d9c04(void *self) {
     u16 id;

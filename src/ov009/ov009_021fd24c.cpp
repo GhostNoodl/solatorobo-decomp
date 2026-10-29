@@ -89,7 +89,7 @@ extern void *data_02097e4c;
 extern s32 func_02040498(s32 max);
 extern Ov009Actor *func_ov000_02199f60(void *p);
 extern u16 FX_Atan2(s32 y, s32 x);
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 static inline u16 Ov009_AngleTo(Ov009Actor *a, Ov009Actor *b) {
     if (a != NULL && a != b) {
         return FX_Atan2(a->pos.x - b->pos.x, a->pos.z - b->pos.z);

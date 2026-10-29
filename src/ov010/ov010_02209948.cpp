@@ -38,7 +38,6 @@ extern const Ov010Blk12 data_ov010_0220f564;
 extern u8 *func_ov000_0218e640(void *mgr, u16 id);
 extern void func_ov010_0220dbc0(Ov010IdList *l);
 extern u16 *func_ov010_0220da74(Ov010IdList *l, Ov010Vec *pos, s32 b, s32 c, s32 d, u16 e, u16 f);
-extern s32 _s32_div_f(s32 a, s32 b);
 extern void func_ov003_021da48c(void *p, s32 a);
 
 static inline u8 *Ov010w_FindActor(u16 id) {

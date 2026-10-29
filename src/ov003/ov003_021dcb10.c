@@ -20,7 +20,7 @@ extern void *data_ov000_021ccd64;
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
 extern void func_0203de1c(void *p);
-extern void func_ov000_0219429c(void *p);
+extern void *func_ov000_0219429c(void *p);
 extern void func_ov000_0219433c(void *p);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 
@@ -165,8 +165,8 @@ extern void func_0203f9dc(void *obj, Ov003GtMtx *m);
 extern void func_0203f9b8(void *obj, s32 a);
 extern void func_0203f920(void *obj);
 extern void func_ov000_02197d80(void *self);
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void func_ov000_02191318(void *model, s32 a);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern void *func_ov000_02191318(void *model, s32 a);
 extern void func_ov000_02191618(void *model);
 extern Ov003GtAnim *func_ov000_02190a30(void *model, s32 n);
 

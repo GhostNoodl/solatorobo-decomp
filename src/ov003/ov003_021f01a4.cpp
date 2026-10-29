@@ -109,15 +109,15 @@ extern Ov003FxObj *func_02065f88(s32 id, Ov003FxVec *pos);
 extern Ov003FxGame *data_ov000_021ccd54;
 extern void *data_02097e4c;
 extern const char data_ov003_021fa1aa[];
-extern void func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern void VEC_Add(const Ov003FxVec *a, const Ov003FxVec *b, Ov003FxVec *out);
 extern void VEC_Normalize(const Ov003FxVec *a, Ov003FxVec *out);
 extern BOOL func_01ffc198(Ov003FxVec *a, Ov003FxVec *b, s32 r);
 extern s32 func_02040498(s32 max);
-extern void func_02049bdc(void *mgr, s32 a, s32 b);
-extern void func_0204a028(void *mgr, s32 id, Ov003FxVec *pos, s32 a);
-extern void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
+extern void *func_0204a028(void *mgr, s32 id, Ov003FxVec *pos, s32 a);
+extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, Ov003FxVec *shape, Ov003FxRot *rot, s32 f, s32 g, s32 h, s32 i);
 
 static inline BOOL Ov003FxGame_IsBusy(Ov003FxGame *g) {

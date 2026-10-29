@@ -2,12 +2,12 @@
 
 extern "C" {
 
-s32 func_ov003_021d7e58(void *p);
+s16 func_ov003_021d7e58(void *p);
 void func_ov000_021984f4(void *p, s32 a, s32 b);
 void func_ov000_0219864c(void *p, s32 a, s32 b);
 s32 func_0206fef8(u32 id);
 void *func_ov000_0218fe1c(void *p);
-void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 void func_ov000_0219badc(void *a, void *b, s32 c);
 
 s32 func_ov011_02200aac(void *p, s32 b) {
@@ -196,8 +196,8 @@ struct Ov011CeBits {
 extern "C" {
 
 extern u8 data_ov011_022079f0[];
-void func_ov000_02194074(void *p);
-void func_ov000_0219429c(void *p);
+void *func_ov000_02194074(void *p);
+void *func_ov000_0219429c(void *p);
 void func_ov003_021d7ca8(void *p);
 void func_ov003_021d7d8c(void *p);
 void func_ov003_021d7ce0(void *p);
@@ -383,17 +383,17 @@ struct Ov011Bits94 {
 extern "C" {
 
 void func_ov000_02194758(void *p);
-void func_ov003_021d7d24(void *p, s32 a, s32 b, s32 c, s32 d);
+BOOL func_ov003_021d7d24(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_021953b4(void *p);
 void func_ov003_021d7dd0(void *p);
 void func_ov000_02195848(void *p);
 void *func_ov000_02199ba0(void *p);
 void *func_ov000_0218d240(void *p);
-void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, Ov011Vec *v, s32 e, s32 f, s32 g, s32 h, s32 i);
+BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, Ov011Vec *v, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_02196c40(void *p);
 void func_ov000_02196060(void *p);
 void func_ov000_0219763c(void *p);
-void func_ov000_02198328(void *p);
+void *func_ov000_02198328(void *p);
 void func_ov011_02201688(Ov011Fx *p);
 
 void func_ov011_0220125c(void *self) {
@@ -496,11 +496,11 @@ extern "C" {
 extern u8 data_ov011_02207418[];
 extern const Ov011Vec data_ov011_02207420;
 void *func_ov000_0218e9c4(void *p);
-void func_ov000_0218ea20(void *p);
-void func_ov000_0218fee4(void *p);
+void *func_ov000_0218ea20(void *p);
+void *func_ov000_0218fee4(void *p);
 void MTX_Identity33_(void *m);
 void func_ov000_02193e5c(void *p, s32 a);
-void func_ov000_0218f110(void *p);
+BOOL func_ov000_0218f110(void *p);
 void MTX_MultVec33(const Ov011Vec *v, const void *m, Ov011Vec *out);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out);
 Ov011V *func_02065f88(s32 id, Ov011Vec *v);
@@ -647,7 +647,7 @@ void func_ov011_02201758(Ov011Fx *self) {
 extern "C" {
 
 extern u8 data_ov011_02207468[];
-void func_ov000_021903b4(void *p);
+BOOL func_ov000_021903b4(void *p);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void MI_Copy36B(const void *src, void *dst);
 

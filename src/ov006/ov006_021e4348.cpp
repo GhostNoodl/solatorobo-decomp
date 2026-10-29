@@ -23,7 +23,7 @@ extern void *data_ov006_021ec414;
 extern ov006_Unk02097e40 *data_02097e40;
 
 void func_ov006_021e3dd4(ov006_ModelHolder *self, int a);
-void func_02044e38(ov006_Unk02097e40 *a, int b);
+BOOL func_02044e38(ov006_Unk02097e40 *a, int b);
 void func_02046a6c(ov006_Unk02097e40 *a, u32 b);
 void func_02046a78(ov006_Unk02097e40 *a, void *b, u32 c);
 void OS_GetOwnerInfo(void *a);

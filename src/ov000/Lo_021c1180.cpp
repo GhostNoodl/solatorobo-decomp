@@ -12,12 +12,12 @@ typedef struct {
 
 extern "C" {
 extern u8 *data_02097d48;
-u8 func_02043d48(void *p);
+int func_02043d48(void *p);
 s32 func_02041b10(Model *model, void *tex);
 s32 func_02041bb0(Model *model, void *tex);
 void func_02041774(Model *model, s32 idx);
 void func_02041c34(Model *model, s32 idx, void *cb, void *arg);
-void func_ov000_021c0d50(void);
+void *func_ov000_021c0d50(void);
 
 static inline void *Lo_GetPartTex(Model *model, s32 idx) {
     ModelRes *res = model->res;

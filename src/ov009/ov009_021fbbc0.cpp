@@ -212,7 +212,7 @@ void func_ov009_021fc228(Ov009Actor *self) {
 }
 
 extern void *data_02097e4c;
-extern void func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
 extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 extern void func_ov000_0218d398(Ov009Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);

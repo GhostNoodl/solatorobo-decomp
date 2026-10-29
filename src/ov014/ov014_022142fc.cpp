@@ -24,9 +24,9 @@ static inline s32 Ov014_Approach(s32 cur, s32 target) {
 extern "C" {
 
 extern u8 data_ov014_02217fb0[];
-extern void func_ov000_02194074(void *self);
+extern void *func_ov000_02194074(void *self);
 extern void func_ov000_02194758(void *self);
-extern void func_ov000_02194c08(void *self);
+extern BOOL func_ov000_02194c08(void *self);
 extern void func_0203f364(Ov014Sub48 *p);
 extern Ov014Actor *func_ov000_02199ba0(void *p);
 extern Ov014Actor *func_ov000_0219bf90(void);
@@ -119,7 +119,7 @@ extern char data_ov014_02218040[];
 extern char data_ov014_0221804f[];
 extern char data_ov014_0221805b[];
 extern void *data_0214a420;
-extern void func_ov000_0218d240(void *self);
+extern void *func_ov000_0218d240(void *self);
 extern void func_ov014_02214f10(Ov014Actor *self);
 extern void MTX_Identity33_(Ov014Mtx33 *m);
 extern void MTX_RotX33_(Ov014Mtx33 *m, s32 s, s32 c);
@@ -127,7 +127,7 @@ extern void MTX_RotY33_(Ov014Mtx33 *m, s32 s, s32 c);
 extern void MTX_RotZ33_(Ov014Mtx33 *m, s32 s, s32 c);
 extern void MTX_Concat33(Ov014Mtx33 *a, Ov014Mtx33 *b, Ov014Mtx33 *out);
 extern void MTX_MultVec33(Ov014Vec *v, Ov014Mtx33 *m, Ov014Vec *out);
-extern void func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
 extern s32 FX_Div(s32 a, s32 b);
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern void VEC_Normalize(const Ov014Vec *in, Ov014Vec *out);
@@ -136,7 +136,7 @@ extern Ov014V *func_02066774(void *a, void *b, s32 c, Ov014Vec *d);
 extern Ov014V *func_02066900(void *a, void *b, Ov014Vec *d);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
 extern Ov014V *func_020657b0(void *a, void *b);
-extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, Ov014Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, Ov014Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern void func_ov000_0218996c(s32 a, s32 b);
 
 void func_ov014_022144f8(Ov014Actor *self) {

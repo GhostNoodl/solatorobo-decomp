@@ -97,7 +97,7 @@ ov006_Eff021e76d8 *func_020657b0(void *a, int b);
 ov006_Eff021e76d8 *func_02065f88(s32 id, VecFx32 *pos);
 void func_02063a14(ov006_Eff021e76d8 *e);
 ov006_Hit021e76d8 *func_ov000_02190a30(void *a, int b);
-void func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
+void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
 

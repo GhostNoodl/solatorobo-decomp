@@ -13,12 +13,12 @@ extern const Ov014Vec data_ov014_02216570;
 extern s32 func_02040528(s32 n);
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *o);
 extern s32 VEC_Distance(const Ov014Vec *a, const Ov014Vec *b);
-extern void func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
 extern void func_ov000_0218dbe0(Ov014Actor *self, s32 a);
 extern BOOL func_ov003_021daa0c(void *p, u8 id);
 extern void func_ov003_021daa6c(void *p, s32 a);
 extern void func_ov003_021daae4(void *p, s32 a, Ov014Vec *v, void *b, s32 c, s32 d, s32 e);
-extern void func_ov000_0219aca8(Ov014Actor *a, Ov014Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern BOOL func_ov000_0219aca8(Ov014Actor *a, Ov014Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern Ov014Actor *func_ov000_0219bf90(void);
 
 struct Ov014bBlk12 {
@@ -52,7 +52,7 @@ static inline void Ov014b_Effect(Ov014Actor *self) {
     }
 }
 
-extern void func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
 extern void func_ov003_021da9ac(void *p, u8 id, void *obj);
 extern void *func_ov003_021daa3c(void *p, u8 id);

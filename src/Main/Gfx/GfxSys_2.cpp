@@ -38,7 +38,7 @@ extern void GX_LoadBGPltt(const void *src, u32 offset, u32 size);
 extern void GXS_LoadBGPltt(const void *src, u32 offset, u32 size);
 extern void NNS_G3dInit(void);
 extern void NNS_G2dInitOamManagerModule(void);
-extern void NNS_G2dGetNewOamManagerInstanceAsFastTransferMode(void *obj, int a, int b, int c);
+extern BOOL NNS_G2dGetNewOamManagerInstanceAsFastTransferMode(void *obj, int a, int b, int c);
 extern void *NNS_GfdGetLnkTexVramManagerWorkSize(int n);
 extern void *NNS_GfdGetLnkPlttVramManagerWorkSize(int n);
 extern void func_0203beac(GfxSys *sys, int state);
@@ -145,10 +145,10 @@ extern void GX_SetBankForBG(int a);
 extern void GX_SetBankForSubBG(int a);
 extern void GX_SetBankForSubOBJ(int a);
 extern void func_02039c54(GfxMgr *mgr, int state);
-extern void func_0203e8e0(void);
-extern void func_0203ea00(void);
-extern void func_0203ea6c(void);
-extern void func_0203eb8c(void);
+extern u32 func_0203e8e0(void);
+extern int func_0203ea00(void);
+extern u32 func_0203ea6c(void);
+extern int func_0203eb8c(void);
 extern void *NNS_GfdDefaultFuncAllocTexVram;
 extern void *NNS_GfdDefaultFuncFreeTexVram;
 extern void *NNS_GfdDefaultFuncAllocPlttVram;
@@ -208,9 +208,9 @@ extern void func_02043904(void *obj);
 
 extern "C" {
 
-extern void GX_ResetBankForSubOBJ(void);
-extern void GX_ResetBankForSubBG(void);
-extern void NNS_G2dEntryOamManagerOam(void *obj, void *src, int count);
+extern s32 GX_ResetBankForSubOBJ(void);
+extern s32 GX_ResetBankForSubBG(void);
+extern BOOL NNS_G2dEntryOamManagerOam(void *obj, void *src, int count);
 extern int FX_Div(int a, int b);
 extern void G2x_SetBlendBrightness_(volatile void *reg, int a, int b);
 

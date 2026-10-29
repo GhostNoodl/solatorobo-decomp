@@ -4,7 +4,7 @@ extern "C" {
 
 void func_ov003_021d112c(void *p);
 void func_0203f2b8(void *p);
-void func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 static inline void Ov011_FreeSub48(Ov011Actor *self) {
     u32 saved = data_02097dd0->cur;

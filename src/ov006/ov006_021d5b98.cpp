@@ -28,7 +28,7 @@ extern char data_0214b105[];
 extern char data_ov006_021ec864[];
 void func_02036838(void *a, const void *b, int c, int d);
 void func_0206e900(char *dst, const char *src);
-void func_ov000_0218ea20(void *p);
+void *func_ov000_0218ea20(void *p);
 void func_ov006_021ccddc(void *self);
 
 static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
@@ -125,7 +125,7 @@ extern "C" {
 extern const u16 data_ov006_021eb7a8[];
 extern ov006_Unk02097e48 *data_02097e48;
 
-void func_020359d0(const char *a, int b, int c);
+void *func_020359d0(const char *a, int b, int c);
 void func_0206e900(char *dst, const char *src);
 void *func_0203dd9c(u32 size);
 void *func_ov000_0218e9c4(void *p);
@@ -506,7 +506,7 @@ void func_ov006_021e279c(ov006_Pos021d6724 *p);
 BOOL func_0203e688(void);
 void func_02039518(void *p);
 void func_ov006_021e4a80(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
-int func_02046ab4(ov006_Unk02097e40 *a);
+u16 func_02046ab4(ov006_Unk02097e40 *a);
 u16 func_ov006_021e60e8(int type, u16 mask);
 void func_ov006_021e4b90(ov006_Unk021ec888 *self);
 

@@ -19,12 +19,12 @@ extern "C" {
 extern char data_ov000_021cc456[];
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd6c;
-void func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_ov000_02199dc0(void *a, void *b);
-void func_02049f44(void *a, s32 b, void *c, s32 d);
+void *func_02049f44(void *a, s32 b, void *c, s32 d);
 void func_0203f324(void *a);
-void func_ov000_02198360(void *s, s32 a, s32 b);
+BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void *func_ov000_021b68b8(void *a, void *pos);
 void func_ov000_0218dbe0(void *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);

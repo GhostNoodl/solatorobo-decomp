@@ -44,8 +44,8 @@ extern void *NNS_G3dGlbGetInvV(void);
 extern void MTX_MultVec33(const Ov009Vec *v, const void *m, Ov009Vec *out);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
-extern void func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
-extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
+extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
 void func_ov009_0220cd40(Ov009Actor *self) {
     Ov009Vec p;

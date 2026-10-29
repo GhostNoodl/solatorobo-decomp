@@ -10,9 +10,9 @@ void func_ov000_0215d980(void *a, u16 b, int c);
 
 void func_ov002_021d9ed8(void *a, void *b, int c);
 
-void func_ov002_021e3874(s32 *v, int a, int b);
+void *func_ov002_021e3874(s32 *v, int a, int b);
 
-void func_02065f88(int a, s32 *v);
+void *func_02065f88(int a, s32 *v);
 
 void func_ov002_021dd7f0(void *self, void *a, void *b, int c);
 
@@ -58,7 +58,7 @@ static inline bool ov002_flag1(void *p) {
 
 void func_ov002_021d9ed8(void *self, void *node, BOOL del);
 
-void func_02049bdc(void *a, int b, int c);
+s32 func_02049bdc(void *a, int b, int c);
 
 void func_ov002_021dd29c(void *self) {
     switch (FIELD(self, 0x18, s32)) {

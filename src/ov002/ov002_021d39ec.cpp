@@ -4,7 +4,7 @@ extern "C" {
 
 void func_ov000_0215d980(void *a, u32 b, int c);
 
-void func_0206f5e4(u16 id, int b);
+BOOL func_0206f5e4(u16 id, int b);
 
 static inline u8 *getSelected(void *list) {
     u8 *p = FIELD(list, 0x98, u8 *);

@@ -22,17 +22,17 @@ typedef struct {
 
 extern u32 data_ov003_021fa648;
 extern void func_ov000_021b4c60(void *self);
-extern void func_0206fef8(u16 kind);
+extern void *func_0206fef8(u16 kind);
 extern void __cxa_vec_cleanup(void *arr, int count, int size, void *dtor);
-extern void func_ov000_0218fee4(void *p);
-extern void func_ov000_0218ea20(void *p);
-extern void func_ov000_0218c928(void *p);
+extern void *func_ov000_0218fee4(void *p);
+extern void *func_ov000_0218ea20(void *p);
+extern void *func_ov000_0218c928(void *p);
 extern void func_ov000_021b4adc(void *self);
 extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_0218cf5c(void *self);
 extern BOOL func_ov000_0218f110(s16 *p);
 extern void func_0203de1c(void *p);
-extern void func_ov000_0219429c(void *p);
+extern void *func_ov000_0219429c(void *p);
 extern void func_ov000_021b4b0c(void *p);
 
 void func_ov003_021f34b0(Ov003Prop *self) {

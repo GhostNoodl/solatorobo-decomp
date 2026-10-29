@@ -2,9 +2,9 @@
 
 extern "C" {
 
-void func_ov006_021ccdc8();
+void *func_ov006_021ccdc8();
 extern void *data_ov007_021cfc60;
-void func_ov007_021cd270(void *p);
+s32 func_ov007_021cd270(void *p);
 void func_ov007_021cf1d8(void *p);
 
 typedef struct {

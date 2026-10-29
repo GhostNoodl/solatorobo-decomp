@@ -26,7 +26,7 @@ extern u8 *func_0206ef50(u16 id);
 extern StageItemShape *func_02070dcc(int kind);
 extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern int func_ov002_021e3dac(StageItemPos *pos, StageItemShape *a, StageItemShape *b, StageItemPos *out);
-extern void func_0206d0d4(StageFlags *f, u16 id, u8 x, u8 y, u8 rot, int used);
+extern BOOL func_0206d0d4(StageFlags *f, u16 id, u8 x, u8 y, u8 rot, int used);
 extern s32 func_0206d2ec(StageFlags *f, u16 id, u32 n);
 u16 func_0206d02c(StageFlags *f);
 

@@ -152,7 +152,7 @@ void func_0203de1c(void *p);
 void func_02041558(void *p);
 void func_02041278(void *p);
 void func_02041218(void *p);
-void func_ov000_0218fee4(void *p);
+void *func_ov000_0218fee4(void *p);
 }
 
 // Frees the object at field with the default heap selected.

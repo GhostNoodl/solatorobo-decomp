@@ -448,8 +448,8 @@ extern "C" {
 void func_0203de1c(void *p);
 void *func_0203dd9c(u32 size);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
-void func_ov003_021d0edc(void *self);
-void func_ov000_02198360(void *a, s32 b, s32 c);
+void *func_ov003_021d0edc(void *self);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 s32 func_02040528(s32 max);
@@ -470,7 +470,7 @@ void func_ov003_021d3600(Ov013Actor *self);
 void func_ov003_021d112c(Ov013Actor *self);
 void func_ov003_021d1e8c(Ov013Actor *self);
 void func_ov003_021d4b68(Ov013Actor *self);
-BOOL func_ov003_021d16cc(Ov013Actor *self);
+u16 func_ov003_021d16cc(Ov013Actor *self);
 void func_ov003_021d1b88(Ov013Actor *self);
 void func_ov003_021d0c1c(Ov013Actor *self);
 char *func_0207011c(void *res);
@@ -481,12 +481,12 @@ void STD_CopyString(char *dst, const char *src);
 extern "C" {
 void func_ov000_021953b4(void *self);
 void func_ov003_021dacfc(void *p);
-void func_ov000_0219429c(void *self);
+void *func_ov000_0219429c(void *self);
 s32 func_0203db40(void *p);
 void func_ov000_02190a80(void *a, s32 b);
 }
 
-extern "C" void func_ov003_021da940(void *p);
+extern "C" void *func_ov003_021da940(void *p);
 
 // Frees the effect handle at self+off with the default heap selected.
 static inline void Ov013_FreeFx(void *self, u32 off) {

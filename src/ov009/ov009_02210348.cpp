@@ -8,7 +8,7 @@ extern u8 data_ov009_022179a8[];
 extern u8 data_ov009_022179b4[];
 extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
-extern void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_0218dbe0(Ov009Actor *self, s32 a);
 extern void func_ov000_021911c8(void *m, s32 a);
 extern BOOL func_ov000_02191120(void *m);

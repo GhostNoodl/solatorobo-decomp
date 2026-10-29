@@ -26,9 +26,9 @@ extern "C" {
 extern u8 data_ov000_021cc69c[];
 extern u8 data_ov000_021cc6a2[];
 extern u8 data_ov000_021cc6a8[];
-void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02191120(void *a);
-void func_ov000_02198360(State021a98bc *st, s32 state, s32 x);
+BOOL func_ov000_02198360(State021a98bc *st, s32 state, s32 x);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 u8 *func_ov000_0218d240(void *self);
 u8 *func_ov000_0218d2e0(void *self);

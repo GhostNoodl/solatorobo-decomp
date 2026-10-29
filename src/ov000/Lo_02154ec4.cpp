@@ -14,12 +14,12 @@ extern void *data_02097e4c;
 void *func_0205976c(void *a, s32 b);
 u32 func_0205975c(void *a, s32 b);
 u32 func_ov000_0214bf2c(u16 a);
-BOOL func_02059544(void *a, void *b, void *c, s32 d, s32 e);
+u16 func_02059544(void *a, void *b, void *c, s32 d, s32 e);
 BOOL func_0205a9c8(void *p);
 void func_0204c7d0(void *p);
 void *func_ov000_02173610(s32 kind);
 void *func_ov000_0219bf90(void *p);
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 typedef struct {
     u8 b0 : 1;

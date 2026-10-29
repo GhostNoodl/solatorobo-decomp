@@ -44,7 +44,7 @@ struct Ov010MoveEntry {
 extern "C" {
 extern Ov010MoveEntry data_ov010_0220ed28[];
 extern void *data_02097e4c;
-extern void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+extern BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
 extern void func_ov003_021d88ec(Ov010Cmd *c);
 extern void func_ov003_021d8b60(void *p, Ov010Cmd *c);
@@ -52,7 +52,7 @@ extern void func_ov003_021d969c(void *p, s32 a);
 extern s32 VEC_Distance(const Ov010Vec *a, const Ov010Vec *b);
 extern void func_ov003_021d9dbc(void *out, Ov010Vec *dir, void *in, s32 speed, s32 e);
 extern BOOL func_ov003_021d98bc(Ov010Vec *a, void *b);
-extern void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+extern void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 static inline void Ov010_Cmd(void *dst, s32 a, s32 b) {
     Ov010Cmd cmd;

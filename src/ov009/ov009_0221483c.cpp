@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 
 void func_ov009_0221483c(Ov009Actor *self) {
     if (FLD(u16, self, 0xce) != 0) {

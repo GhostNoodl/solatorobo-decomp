@@ -67,7 +67,7 @@ typedef struct {
 extern Ov003G54 *data_ov000_021ccd54;
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 void func_ov003_021d64f0(Ov003Ev *self) {
     if (self->unk_b0->unk_0a_5) {

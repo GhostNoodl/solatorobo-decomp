@@ -6,7 +6,7 @@ struct Ov011Rot {
 
 extern "C" {
 
-void func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 s32 func_02040498(s32 max);
 s32 func_02040528(s32 max);
 s32 *NNS_G3dGlbGetInvV(void);

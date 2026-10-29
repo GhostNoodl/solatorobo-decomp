@@ -27,7 +27,7 @@ void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
 BOOL func_02054f10(void *a, s32 b);
 void func_02041d8c(void *model);
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 FX_Div(s32 a, s32 b);
 
 static inline BOOL FadeIdle021b8284(void) {

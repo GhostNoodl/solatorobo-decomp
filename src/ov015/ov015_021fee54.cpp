@@ -4,7 +4,7 @@ extern "C" {
 
 void VEC_MultAdd(s32 scale, const Ov015Vec *dir, const Ov015Vec *base, Ov015Vec *out);
 void VEC_Normalize(void *src, void *dst);
-void func_02049244(Ov015Vec *a, s32 b, Ov015Vec *c, Ov015Vec *d, s32 e);
+BOOL func_02049244(Ov015Vec *a, s32 b, Ov015Vec *c, Ov015Vec *d, s32 e);
 
 void func_ov015_021fee54(u8 *self) {
     Ov015Vec res1;

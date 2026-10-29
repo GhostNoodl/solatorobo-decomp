@@ -6,7 +6,7 @@ extern void *data_ov013_0220beb4;
 extern char data_ov013_0220b3f8[];
 extern char data_ov013_0220b404[];
 extern void func_ov000_0218dbe0(Ov013Actor *self, s32 a);
-extern void func_ov000_02194074(void *self);
+extern void *func_ov000_02194074(void *self);
 extern void func_ov000_02194758(void *self);
 extern Ov013Actor *func_ov000_0219bf90(void);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
@@ -69,7 +69,7 @@ extern Ov013V *func_020657b0(void *a, void *b);
 extern void func_0203f364(void *p);
 extern BOOL func_ov000_021b4738(Ov013Actor *a);
 extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
-extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 
 static inline Ov013Actor *Ov013_FindActorA(u16 id) {
     if (data_ov000_021ccd68 == NULL) {

@@ -46,7 +46,7 @@ extern Ov003Game54 *data_ov000_021ccd54;
 extern Ov003SaveData *data_0214a424;
 extern void *data_ov000_021ccd64;
 
-s32 func_0206e7ec(u32 a, u32 b);
+u16 func_0206e7ec(u32 a, u32 b);
 Ov003Player *func_ov000_0219bf90(void);
 BOOL func_ov000_021b4738(void);
 void func_020627a0(u16 kind, u16 id);

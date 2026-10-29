@@ -70,7 +70,7 @@ extern Ov003Save *data_0214a424;
 extern void *data_02097e4c;
 extern Ov003HeapCtx *data_02097dd0;
 extern u8 data_ov003_021f7974[];
-extern void func_02049bdc(void *mgr, s32 a, s32 b);
+extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
 extern Ov003Area *func_0206ef10(u16 id);
 extern void func_0203de1c(void *p);
 extern s32 func_02040498(s32 max);

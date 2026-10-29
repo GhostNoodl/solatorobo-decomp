@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void func_ov000_021903b4(void *p);
+extern BOOL func_ov000_021903b4(void *p);
 extern void func_ov000_02190a80(void *p, s32 a);
 
 BOOL func_ov009_02209218(Ov009Actor *self) {

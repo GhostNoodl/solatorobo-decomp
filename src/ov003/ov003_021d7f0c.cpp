@@ -36,7 +36,7 @@ extern "C" {
 extern s32 VEC_Distance(Ov003Vec *a, Ov003Vec *b);
 extern void VEC_MultAdd(s32 scale, Ov003Vec *dir, Ov003Vec *src, Ov003Vec *dst);
 extern void VEC_Normalize(Ov003Vec *src, Ov003Vec *dst);
-extern s16 func_02040528(s32 max);
+extern int func_02040528(s32 max);
 extern s32 func_0200b184(s32 a, s32 b);
 extern u32 data_ov003_021f7d10;
 extern void func_0203de1c(void *p);

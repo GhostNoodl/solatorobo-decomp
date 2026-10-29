@@ -38,8 +38,8 @@ extern void func_ov000_0219bebc(Ov014Actor *a, s32 b);
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
-extern void func_ov000_02194074(void *self);
-extern void func_ov003_021da940(void *p);
+extern void *func_ov000_02194074(void *self);
+extern void *func_ov003_021da940(void *p);
 extern void func_ov000_02194758(void *self);
 
 void func_ov014_021fb8dc(Ov014Actor *self) {
@@ -267,8 +267,8 @@ extern void MIi_CpuClear32(u32 data, void *dst, u32 size);
 extern void func_ov003_021da9ac(void *p, s32 id, void *e);
 extern BOOL func_ov003_021daa0c(void *p, s32 id);
 extern void func_ov003_021daa6c(void *p, s32 id);
-extern void func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern s32 FX_Div(s32 a, s32 b);
 extern void func_020639d4(void *e, s32 a, s32 b);
 extern BOOL func_ov000_0219aca8(Ov014Actor *a, Ov014Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);

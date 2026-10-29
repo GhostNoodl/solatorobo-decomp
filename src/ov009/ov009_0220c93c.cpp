@@ -43,14 +43,14 @@ extern void func_020639d4(Ov009V *o, s32 a, s32 b);
 extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
 extern void func_0203f364(Ov009Sub48 *p);
 extern void func_0203f324(Ov009Sub48 *p);
-extern void func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
-extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
 extern void func_ov000_02191690(void *p);
 extern void func_ov000_02191708(void *p);
-extern s32 FX_Atan2(s32 y, s32 x);
+extern u16 FX_Atan2(s32 y, s32 x);
 extern Ov009Actor *func_ov000_0219bf90(void);
-extern void func_ov000_0219aca8(Ov009Actor *a, Ov009Actor *b, u16 c, u8 d, s32 e, Ov009RotC *f, s32 g, s32 h, s32 i, s32 j);
+extern BOOL func_ov000_0219aca8(Ov009Actor *a, Ov009Actor *b, u16 c, u8 d, s32 e, Ov009RotC *f, s32 g, s32 h, s32 i, s32 j);
 extern void func_ov000_0218996c(s32 a, s32 b);
 
 void func_ov009_0220c094(Ov009Actor *self) {

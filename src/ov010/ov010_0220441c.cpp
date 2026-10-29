@@ -21,13 +21,13 @@ extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern void func_ov003_021d85c8(void *p, s32 a, s32 b, s32 c, s32 d);
-extern s32 func_ov003_021d6548(void *self, void *p);
+extern u8 func_ov003_021d6548(void *self, void *p);
 extern void func_ov003_021d68e0(void *self, s32 a, s32 b, s32 c);
 extern void func_ov003_021d982c(void *p, u8 v);
 extern void func_ov000_02191418(void *a, s32 b, s32 c);
 extern BOOL func_ov003_021d1c00(void *self, u8 *msg);
 extern u8 *func_ov000_0218e640(void *mgr, u16 id);
-extern void func_02049f44(void *a, s32 b, void *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 
 static inline u8 Ov010_HitKind(s32 i) {
     if (i >= 0 && (u32)i < 7) {

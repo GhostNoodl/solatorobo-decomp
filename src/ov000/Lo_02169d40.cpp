@@ -4,7 +4,7 @@ extern "C" {
 
 extern const s16 FX_SinCosTable_[];
 s32 FX_Div(s32 a, s32 b);
-u16 func_0204045c(void);
+u32 func_0204045c(void);
 
 void func_ov000_02169d40(void *self) {
     s32 s = LFLD(s32, self, 4);

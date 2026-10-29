@@ -46,9 +46,9 @@ extern void func_ov003_021f0c60(Ov013Actor *self, s32 a);
 extern Ov013Actor *func_ov000_0218d240(Ov013Actor *self);
 extern void func_ov000_0218dbe0(Ov013Actor *self, s32 a);
 extern void *func_ov000_0218fe1c(void *p);
-extern void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern void func_0203f364(Ov013Sub48 *p);
-extern void func_ov003_021cf330(void *p, const char *name, u8 a);
+extern int func_ov003_021cf330(void *p, const char *name, u8 a);
 extern void func_ov013_02205760(Ov013Actor *self);
 extern void func_ov003_021da40c(void *p);
 extern void func_ov000_0218d7e8(Ov013Actor *self, s32 a);
@@ -81,15 +81,15 @@ static inline u16 Ov013_FaceAngle(Ov013Actor *self, Ov013Actor *a) {
 }
 
 extern void func_ov003_021da108(Ov013Actor *self, s32 a, s32 b, s32 c, s32 d);
-extern void func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
 extern void *data_02097e4c;
 extern void *data_ov013_0220ba88[];
 extern const u8 data_ov013_0220b2cc[];
 extern void func_ov003_021d9980(void *out, u16 rot, const void *v);
-extern void func_ov003_021cf2bc(void *p);
-extern void func_ov003_021cf2d8(void *p);
+extern void *func_ov003_021cf2bc(void *p);
+extern void *func_ov003_021cf2d8(void *p);
 extern void func_ov003_021cf33c(void *p, void *q);
-extern void func_ov000_02194074(void *self);
+extern void *func_ov000_02194074(void *self);
 extern BOOL func_ov000_02194c08(void *self);
 
 void *func_ov013_02205ae4(Ov013Actor *self) {

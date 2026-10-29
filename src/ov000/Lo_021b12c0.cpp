@@ -30,7 +30,7 @@ extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc5e9[];
 extern u8 *data_0214a424;
 extern u8 *data_ov000_021ccd54;
-void func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_02190a80(void *a, s32 b);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
 void func_02062764(s32 a, s32 b);

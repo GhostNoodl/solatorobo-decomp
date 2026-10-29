@@ -4,7 +4,7 @@ extern "C" {
 
 extern VFunc data_ov002_021f06bc[];
 
-void func_ov002_021ec164(void *p);
+void *func_ov002_021ec164(void *p);
 
 void *func_ov002_021ea670(void *self) {
     s16 *p;

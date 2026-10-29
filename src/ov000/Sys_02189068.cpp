@@ -7,7 +7,7 @@ extern u8 *data_ov000_021ccd30;
 BOOL func_0204c100(void);
 BOOL func_0206facc(void);
 BOOL func_0206ead8(void);
-void func_0204c120(void);
+BOOL func_0204c120(void);
 void func_0206faec(void);
 void func_0206eaf8(void);
 

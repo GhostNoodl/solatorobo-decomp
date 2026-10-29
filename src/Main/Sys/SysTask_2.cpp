@@ -203,7 +203,7 @@ extern void MI_Copy64B(const void *src, void *dst);
 extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 extern void NNS_G3dGlbPolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 extern void func_ov000_02190a80(void *a, s32 b);
-extern void func_ov000_021903b4(void *a);
+extern BOOL func_ov000_021903b4(void *a);
 extern BOOL func_ov000_02191120(void *a);
 
 static inline void SysTask_SetProjectionMtx(const MtxFx44 *mtx) {
@@ -217,7 +217,7 @@ static inline void SysTaskModel_SetPos(SysTaskModel *m, const VecFx32 *v) {
     m->pos.z = v->z;
 }
 
-void func_02063650(Unk0214a418 *self) {
+BOOL func_02063650(Unk0214a418 *self) {
     MtxFx44 proj;
     MtxFx43 cam;
     MtxFx44 ortho;
@@ -240,7 +240,7 @@ void func_02063650(Unk0214a418 *self) {
     NNS_G3dGeFlushBuffer();
     SysTask_SetProjectionMtx(&proj);
     MI_Copy48B(&cam, gc);
-    func_ov000_02191120(self->unk_0c);
+    return func_ov000_02191120(self->unk_0c);
 }
 
 }

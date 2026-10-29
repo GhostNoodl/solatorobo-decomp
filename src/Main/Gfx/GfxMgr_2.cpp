@@ -264,7 +264,7 @@ typedef struct GfxOamCache {
 extern void NNS_G2dCharCanvasInitForOBJ1D(GfxCell *canvas, void *charBase, int w, int h, int colorMode);
 extern int NNS_G2dArrangeOBJ1D(GfxOam *oam, int w, int h, int x, int y, int color, int charName, int vramMode);
 extern void *func_0203bbfc(GfxSys *sys, int which);
-extern void NNS_G2dEntryOamManagerOam(void *mgr, const GfxOam *oam, u16 num);
+extern BOOL NNS_G2dEntryOamManagerOam(void *mgr, const GfxOam *oam, u16 num);
 
 static inline void GfxOam_SetX(GfxOam *oam, u16 x) { ((GfxOamBits *)oam)->x = x; }
 static inline void GfxOam_SetY(GfxOam *oam, u16 y) { ((GfxOamBits *)oam)->y = y & 0x1ff; }

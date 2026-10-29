@@ -18,18 +18,18 @@ extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
 extern void func_ov003_021f0c60(Ov014Actor *self, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
-extern void func_ov003_021cf278(void *self, s32 a, s32 b);
+extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov003_021ceedc(void *p);
-extern void func_ov003_021cef0c(void *p);
+extern void *func_ov003_021cef0c(void *p);
 extern void MTX_Identity43_(void *p);
 extern Ov014V *func_020657b0(void *a, void *b);
 extern void func_02036838(void *a, void *b, s32 c, s32 d);
-extern void func_020359d0(void *a, s32 b, s32 c);
+extern void *func_020359d0(void *a, s32 b, s32 c);
 extern void func_02049678(void *a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_0218cf5c(Ov014Actor *self);
 extern BOOL func_02035b90(void *a, s32 b);
 extern BOOL func_0204985c(void *a);
-extern void func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
+extern BOOL func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
 extern u8 data_ov014_02216a60[];
 extern u8 data_ov014_02216afc[];
 extern u8 data_ov014_02216b6c[];
@@ -281,7 +281,7 @@ struct Ov014Anim8c {
 
 extern u8 *func_ov000_0219bf90(void);
 extern void func_02065860(void *a, void *b);
-extern void func_ov003_021ceff4(void *p);
+extern void *func_ov003_021ceff4(void *p);
 extern BOOL func_ov000_021983b0(void *p, s32 a, s32 b, s32 c);
 
 static inline BOOL Ov014_TickB6(Ov014Actor *self) {

@@ -7,7 +7,7 @@
 extern "C" {
 extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
-u8 func_02043d48(void *p);
+int func_02043d48(void *p);
 
 static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     ModelRes *res = model->res;

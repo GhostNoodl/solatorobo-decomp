@@ -112,7 +112,7 @@ BOOL func_020624d8(void);
 BOOL func_ov000_02188dfc(void);
 void func_ov000_0216f144(void *p);
 void func_ov000_0216f828(void *p);
-void func_ov000_0216f398(void *a, void *b, s32 c, void *d);
+void *func_ov000_0216f398(void *a, void *b, s32 c, void *d);
 
 typedef struct {
     u32 b0 : 1;

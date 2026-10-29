@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 extern const s16 FX_SinCosTable_[];
 void func_ov000_0216e894(void *self);

@@ -18,7 +18,7 @@ extern u8 data_ov000_021ca94c[];
 extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021caac8[];
 void *func_0204c0e8(void *g, u32 id);
-void func_0205aa30(void *p);
+BOOL func_0205aa30(void *p);
 void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void STD_CopyString(void *dst, void *src);
@@ -35,8 +35,8 @@ u32 func_0205975c(void *a, s32 b);
 u16 func_ov000_0214bcc4(u16 id, u16 index);
 s32 func_02061e7c(u16 a);
 void func_ov000_0214fcfc(void);
-void func_ov000_0214ffac(void);
-void func_ov000_02150104(void);
+BOOL func_ov000_0214ffac(void);
+BOOL func_ov000_02150104(void);
 
 static inline void Setup0214e9e4(VObj *self) {
     VObj *t;

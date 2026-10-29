@@ -2,8 +2,9 @@
 
 extern void func_0203835c(void *data);
 
-void func_02034b44(ResList *list) {
+ResList *func_02034b44(ResList *list) {
     list->head = NULL;
+    return list;
 }
 
 ResList *func_02034b50(ResList *list) {
@@ -97,13 +98,13 @@ extern BOOL func_020395a8(const char *a, const char *b, int len);
 extern void func_02039610(char *dst, const char *src, int len);
 extern const char *func_02039644(const char *path);
 extern void NNS_G2dFontInitAuto(void *out, void *data);
-extern void NNS_G2dGetUnpackedCellBank(void *data, void *out);
-extern void NNS_G2dGetUnpackedAnimBank(void *data, void *out);
-extern void NNS_G2dGetUnpackedCharacterData(void *data, void *out);
-extern void NNS_G2dGetUnpackedBGCharacterData(void *data, void *out);
-extern void NNS_G2dGetUnpackedPaletteData(void *data, void *out);
-extern void NNS_G2dGetUnpackedPaletteCompressInfo(void *data, void *out);
-extern void NNS_G2dGetUnpackedScreenData(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedCellBank(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedAnimBank(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedCharacterData(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedBGCharacterData(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedPaletteData(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedPaletteCompressInfo(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedScreenData(void *data, void *out);
 
 void func_02035094(ResList *list, ResRequest *req) {
     ResFileEntry *entry;

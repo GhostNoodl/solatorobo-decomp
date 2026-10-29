@@ -6,9 +6,9 @@ extern Ov014Actor *func_ov000_0219bf90(void);
 extern void func_ov014_021fe0dc(Ov014Actor *self);
 extern void func_ov014_021fe210(Ov014Actor *self);
 extern s32 func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
-extern void func_ov003_021ceff4(void *p);
+extern void *func_ov003_021ceff4(void *p);
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
-extern BOOL func_ov003_021d9edc(s32 a);
+extern u16 func_ov003_021d9edc(s32 a);
 
 void func_ov014_021fdedc(Ov014Actor *self) {
     if (!Ov014_GameIdle()) {

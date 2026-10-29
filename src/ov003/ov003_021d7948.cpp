@@ -47,7 +47,7 @@ extern "C" {
 
 extern u32 data_ov003_021f7d2c;
 extern void *data_ov000_021ccd68;
-extern void func_ov003_021d0edc(void *p);
+extern void *func_ov003_021d0edc(void *p);
 extern void *func_0203dd9c(u32 size);
 extern void func_0203de1c(void *p);
 extern void func_0203df0c(void *p);

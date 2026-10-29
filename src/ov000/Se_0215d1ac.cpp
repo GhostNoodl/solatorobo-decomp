@@ -12,7 +12,7 @@ typedef struct {
 extern "C" {
 
 extern void *data_02097e4c;
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 static inline void Nop0215d1ac(Obj0215d1ac *self) {
 }

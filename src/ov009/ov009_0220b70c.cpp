@@ -66,7 +66,7 @@ extern Ov009Actor *func_ov000_0219bf90(void);
 extern s32 func_ov000_0219a2f4(Ov009Vec *pos, s32 a, s32 b);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern void func_ov000_0218d9e8(Ov009Actor *self, Ov009Vec *v, s32 a);
-extern void func_02049f44(void *a, s32 b, Ov009Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov009Vec *c, s32 d);
 
 static inline BOOL Ov009Game_IsPausedB(Ov009Game54 *g) {
     return g->unk_d4 != 0;

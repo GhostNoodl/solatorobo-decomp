@@ -28,12 +28,12 @@ extern "C" {
 
 extern ov006_Net021e5604 *data_02097e40;
 
-void func_020463c8(ov006_Net021e5604 *net);
+BOOL func_020463c8(ov006_Net021e5604 *net);
 void func_02044a0c(ov006_NetParam021e5604 *param);
 BOOL func_020464e0(ov006_Net021e5604 *net, int a, ov006_MenuData *data);
 void func_02045094(ov006_Net021e5604 *net);
 int func_02046abc(ov006_Net021e5604 *net);
-BOOL func_ov006_021e5fec(void);
+void func_ov006_021e5fec(void);
 
 static inline void ov006_Menu_Advance(ov006_Unk021ec888 *self) {
     if (self->unkC < 0xff) {

@@ -7,10 +7,10 @@ extern void func_0203f324(void *p);
 extern void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218d398(void *obj, u16 id, s32 a, s32 b, s32 c, u8 *d);
 extern void func_ov000_0218dbe0(void *self, s32 a);
-extern void func_02049f44(void *a, s32 b, void *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 extern Ov010V *func_02065f88(s32 a, void *b);
 extern void func_ov000_0219763c(void *self);
-extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, Ov010Vec *v, s32 e, s32 f, s32 g, s32 h, s32 i);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, Ov010Vec *v, s32 e, s32 f, s32 g, s32 h, s32 i);
 
 void func_ov010_0220c2a4(void *self) {
     void *m;

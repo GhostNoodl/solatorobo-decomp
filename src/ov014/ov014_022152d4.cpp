@@ -3,9 +3,9 @@
 extern "C" {
 
 extern u8 data_ov014_02217f18[];
-extern void func_ov000_02194074(void *self);
+extern void *func_ov000_02194074(void *self);
 extern void func_ov000_02194758(void *self);
-extern void func_ov000_02194c08(void *self);
+extern BOOL func_ov000_02194c08(void *self);
 
 void func_ov014_022152d4(Ov014Actor *self) {
     self->v08();

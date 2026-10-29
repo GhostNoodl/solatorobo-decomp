@@ -135,7 +135,7 @@ extern BOOL func_ov000_021700c4(void *p);
 extern void *func_ov000_02173610(s32 id);
 extern Ov003PdPlr *func_ov000_0219bf90(void);
 extern void func_ov000_021bd624(Ov003PdIcon *p);
-extern void func_ov000_021bd314(Ov003PdIcon *p, s32 id);
+extern BOOL func_ov000_021bd314(Ov003PdIcon *p, s32 id);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *self);
 
 static inline void Ov003Icon_SetPos(Ov003PdIcon *ic, Ov003PdVec *v) {

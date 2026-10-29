@@ -24,7 +24,7 @@ void func_ov000_021bc3ec(void *f, s32 a, s32 b);
 void func_ov000_021bc458(void *f);
 void func_0204bfcc(void *res);
 void func_0204bfe4(void *res, const char *arc, const char *name);
-void func_0204c030(void *res);
+BOOL func_0204c030(void *res);
 s32 func_0204c08c(void *res, u16 id, s32 *out, s32 d);
 void func_0204c7d0(void *p);
 void func_02050f70(void *p);

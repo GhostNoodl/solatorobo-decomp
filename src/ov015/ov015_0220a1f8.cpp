@@ -11,7 +11,7 @@ void func_ov015_0220ac40(u8 *self, u8 *p);
 void func_ov015_0220ad68(u8 *self, u8 *p);
 BOOL func_ov015_0220ae90(u8 *self);
 s32 func_02040498(s32 max);
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 extern void *data_02097e4c;
 extern u8 data_ov015_02212f20[];
 extern u8 data_ov015_02212f04[];

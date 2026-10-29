@@ -48,7 +48,7 @@ extern u8 data_ov009_02216ab0[];
 extern s32 func_02040498(s32 max);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
-extern void func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
+extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_0218999c(s32 a, s32 b);
 extern void func_ov000_0218dbe0(Ov009Actor *self, s32 turn);
 extern BOOL func_ov000_02191120(void *m);

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_02049bdc(void *a, int b, int c);
+s32 func_02049bdc(void *a, int b, int c);
 void *func_ov002_021dd6a4(void *self, s32 a, u16 b);
 void func_ov002_021dd7f0(void *self, Vec2 *a, Vec2 *b, int c);
 

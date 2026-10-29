@@ -45,12 +45,11 @@ typedef struct ActorMgr ActorMgr;
 
 extern u16 data_ov000_021c9fd0[][5];
 
-u16 func_ov003_021cee68(Target *self);
+u8 func_ov003_021cee68(Target *self);
 
 extern ActorMgr *data_ov000_021ccd68;
 
 ActorT *func_ov000_0218e640(ActorMgr *mgr, u16 id);
-s32 _s32_div_f(s32 a, s32 b);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
 
 static inline ActorT *FindActor(u16 id) {

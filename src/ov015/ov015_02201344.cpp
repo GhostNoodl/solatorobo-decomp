@@ -37,13 +37,13 @@ extern char data_ov015_022128c1[];
 void STD_CopyString(char *dst, const char *src);
 u8 *func_ov015_0220765c(void *p);
 void func_ov015_02207858(u8 *p);
-void func_ov000_0218e9c4(void *p);
-void func_ov000_0218fe1c(void *p);
+void *func_ov000_0218e9c4(void *p);
+void *func_ov000_0218fe1c(void *p);
 void func_02041218(void *p);
 void func_02041440(void *p, void *name, int c);
 void *func_ov015_0220f448(void *p);
 void func_ov015_0220f470(void *p);
-void func_020359d0(void *a, int b, int c);
+void *func_020359d0(void *a, int b, int c);
 
 static inline void *Ov015_NewTex(void) {
     u8 *t = (u8 *)func_0203dd9c(0x160);

@@ -18,7 +18,7 @@ extern void *data_0214a420;
 extern Ov010Heap *data_02097dd0;
 extern void func_02065804(void *a, s32 b);
 extern void func_ov003_021da48c(void *p, s32 a);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void func_ov010_02200a00(u8 *o);
 extern u8 *func_ov000_0219bf90(void);
 extern s32 func_ov003_021d9a80(const Ov010Vec *a, const Ov010Vec *b);

@@ -6,8 +6,8 @@ extern void *data_02097e4c;
 extern Ov009Path data_ov009_02215fd0[];
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
-extern void func_ov000_0219aae8(Ov009Actor *self, Ov009Actor *src, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
-extern void func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
+extern BOOL func_ov000_0219aae8(Ov009Actor *self, Ov009Actor *src, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 
 static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {
     return g->unk_d4 != 0;
@@ -90,7 +90,7 @@ extern char data_ov009_022172c7[];
 extern void *data_ov000_021ccd64;
 extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_ov000_021911c8(Ov009Sub38 *m, s32 a);
-extern void func_ov000_02191318(Ov009Sub38 *m, s32 a);
+extern void *func_ov000_02191318(Ov009Sub38 *m, s32 a);
 extern void func_ov000_02191780(Ov009Sub38 *m);
 extern void func_ov000_0218dbe0(Ov009Actor *self, s32 turn);
 extern u16 FX_Atan2(s32 y, s32 x);

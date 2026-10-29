@@ -26,8 +26,8 @@ extern "C" {
 
 struct Ov014V12 { s32 a[3]; };
 extern const Ov014Vec data_ov014_02216818[];
-extern void func_ov003_021ceff4(void *p);
-extern BOOL func_ov003_021d9edc(s32 a);
+extern void *func_ov003_021ceff4(void *p);
+extern u16 func_ov003_021d9edc(s32 a);
 extern void func_ov003_021d87d0(void *p, s32 a);
 extern void func_ov003_021d85c8(void *p, s32 a, s32 b, s32 c, s32 d);
 extern Ov014Actor *func_ov000_02192b24(Ov014SpawnDesc *desc);
@@ -126,8 +126,8 @@ extern void *data_02097e4c;
 extern u8 data_ov014_02216564[];
 extern const Ov014Vec data_ov014_02216600;
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
-extern void func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, void *f);
 extern void func_ov000_02191708(void *a);

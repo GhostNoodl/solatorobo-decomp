@@ -8,7 +8,7 @@ typedef struct ResData {
 } ResData;
 
 extern void FS_InitFile(FSFile *file);
-extern void FS_CloseFile(FSFile *file);
+extern BOOL FS_CloseFile(FSFile *file);
 extern int FS_ReadFileAsync(FSFile *file, void *buf, u32 size);
 extern BOOL FS_OpenFile(FSFile *file, const char *path);
 extern u32 FS_GetLength(FSFile *file);

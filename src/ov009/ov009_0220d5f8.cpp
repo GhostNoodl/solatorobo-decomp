@@ -36,7 +36,7 @@ void func_ov009_0220d5f8(Ov009Actor *self) {
 
 extern void *data_ov000_021ccd68;
 extern Ov009Actor *func_ov000_0218e4cc(void *mgr, u16 id);
-extern BOOL func_ov000_0218dfb4(Ov009Actor *a, u16 id);
+extern u16 func_ov000_0218dfb4(Ov009Actor *a, u16 id);
 extern void VEC_Normalize(const Ov009Vec *in, Ov009Vec *out);
 
 static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {

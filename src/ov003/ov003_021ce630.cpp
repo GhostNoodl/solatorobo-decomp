@@ -155,7 +155,7 @@ static inline void Ov003Log_Add(s32 type, const char *text) {
 
 extern "C" Ov003Save *data_0214a424;
 extern "C" void *data_02097e4c;
-extern "C" void func_02049bdc(void *mgr, s32 a, s32 b);
+extern "C" s32 func_02049bdc(void *mgr, s32 a, s32 b);
 
 static inline void Ov003_AddMeter(u16 add) {
     u16 c;
@@ -194,16 +194,16 @@ extern void *data_02097e4c;
 extern Ov003Player *func_ov000_0219bf90(void);
 extern s16 *func_ov000_02191f18(s16 *p, Ov003Hit *hit);
 extern s32 func_ov003_021ce5b8(u32 color);
-extern void func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
-extern void func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
-extern u16 func_0206d37c(Ov003Save *save, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern u8 func_0206d37c(Ov003Save *save, s32 a);
 extern u16 func_ov003_021ce6fc(u16 v);
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern u8 data_ov000_021c9fe4;
 extern void *data_02149ef8;
 extern BOOL func_020621f8(void);
 extern Ov003Area *func_0206ef10(u16 id);
-extern void func_02049bdc(void *mgr, s32 a, s32 b);
+extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
 extern void func_02040a98(char *buf, u16 v);
 extern u32 *func_ov000_0219bf7c(void);
 extern Ov003Effect *func_02065f88(s32 id, const Ov003Vec *pos);

@@ -8,8 +8,8 @@ extern void *func_ov000_0218e640(void *mgr, u16 id);
 extern Ov010V *func_02065f88(s32 a, Ov010Vec *b);
 extern void func_ov010_02209074(void *p);
 extern void func_ov000_0218d398(void *obj, u16 id, s32 a, s32 b, s32 c, u8 *d);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
-extern void func_ov000_02190cb0(void *p, s32 a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02190cb0(void *p, s32 a, s32 b, s32 c);
 extern void func_ov000_021915a0(void *p);
 extern u8 *func_ov000_02190a30(void *p, s32 a);
 extern void func_ov000_02195d88(void *self);
@@ -34,7 +34,7 @@ extern void *data_0214a420;
 extern void func_02065860(void *a, void *b);
 extern void func_ov003_021da48c(void *p, s32 a);
 extern void *func_ov000_0218e4cc(void *mgr, s32 a);
-extern u16 func_ov000_0219a874(void *a, void *b, s32 c);
+extern s32 func_ov000_0219a874(void *a, void *b, s32 c);
 extern u16 func_ov010_02207a44(s32 i);
 extern void func_ov000_0219bdb0(u16 a, u16 b, s32 c, s32 d, s32 e, Ov010AnMsg *msg);
 extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
@@ -207,7 +207,7 @@ extern void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 extern s32 func_02040498(s32 max);
 extern void *func_ov000_02199ba0(void *p);
 extern Ov010V *func_ov003_021da7e8(s32 id, void *src, const Ov010Vec *ofs);
-extern void func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
 extern s32 func_ov003_021d9a80(const Ov010Vec &a, const Ov010Vec *b);
 
 #define OV010_FXMUL_K(a, k) ((s32)(((s64)(a) * (k) + 0x800) >> 12))

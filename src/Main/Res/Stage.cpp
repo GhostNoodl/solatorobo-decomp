@@ -4073,7 +4073,7 @@ extern "C" {
 extern void func_0205fc88(u32 flags);
 extern void func_ov000_02184594(FieldState *state);
 extern ObjPoolEntry *func_02059b14(ObjPool *pool, u16 id, ObjPoolParam *param);
-extern void func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
+extern void *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
 extern void func_ov000_02187a20(FieldState *state, u16 a);
@@ -4144,7 +4144,7 @@ extern "C" {
 extern void func_0205fc88(u32 flags);
 extern void func_ov000_02184594(FieldState *state);
 extern ObjPoolEntry *func_02059b14(ObjPool *pool, u16 id, ObjPoolParam *param);
-extern void func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
+extern void *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
 extern void func_ov000_02187a20(FieldState *state, u16 a);
@@ -4278,7 +4278,7 @@ extern "C" {
 extern void func_0205fc88(u32 flags);
 extern void func_ov000_02184594(FieldState *state);
 extern ObjPoolEntry *func_02059b14(ObjPool *pool, u16 id, ObjPoolParam *param);
-extern void func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
+extern void *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
 extern void func_ov000_02187a20(FieldState *state, u16 a);
@@ -4462,7 +4462,7 @@ extern "C" {
 extern void func_0205fc88(u32 flags);
 extern void func_ov000_02184594(FieldState *state);
 extern ObjPoolEntry *func_02059b14(ObjPool *pool, u16 id, ObjPoolParam *param);
-extern void func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
+extern void *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int a);
 extern SndQueue *data_02097e48;
 extern SndMgr *data_02097e4c;
 extern void func_ov000_02187a20(FieldState *state, u16 a);
@@ -4668,7 +4668,7 @@ extern void func_ov000_02182ad4(FieldState *state);
 extern void func_ov000_02182b0c(FieldState *state);
 extern void func_ov000_021b1b88(StagePlayer *player, u16 a);
 extern void func_ov000_02188634(FieldState *state, u16 a, u16 b);
-extern u16 func_ov000_0214be8c(void);
+extern BOOL func_ov000_0214be8c(void);
 extern BOOL func_ov000_021b4738(StagePlayer *player);
 extern int STD_CompareString(const char *a, const char *b);
 extern DataRes *data_02fe1530;

@@ -179,7 +179,7 @@ extern void *data_02097e4c;
 extern char data_ov006_021ebbd1[];
 extern char data_ov006_021ebbde[];
 
-void func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
+void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 void func_ov000_02163224(void *self);
 void func_ov000_02163254(void *self);
@@ -206,7 +206,7 @@ extern void *data_ov000_021ccd40;
 extern void *data_ov000_021ccd38;
 extern s32 data_02097d78[];
 
-void func_ov000_0218084c(void *a, int b, int c);
+void *func_ov000_0218084c(void *a, int b, int c);
 void func_0203cc58(int a, int b, int c);
 void func_0203cb78(int a, int b, int c);
 int func_ov000_02154b58(void *a, u16 b);

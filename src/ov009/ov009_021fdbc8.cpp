@@ -13,7 +13,7 @@ struct Ov009AngSrc3 {
     u16 unk_44;
 };
 
-extern s32 func_0204bfa8(Ov009AngSrc3 *p);
+extern u16 func_0204bfa8(Ov009AngSrc3 *p);
 
 static inline s32 Ov009_GetAng3(Ov009AngSrc3 *p) {
     if (p->unk_40 != 0) {

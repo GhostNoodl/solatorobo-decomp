@@ -16,7 +16,7 @@ void func_0206e900(char *dst, const char *src);
 void func_ov000_021bbd94(u8 *self);
 BOOL func_02054f10(void *a, s32 b);
 s32 FX_Div(s32 a, s32 b);
-void func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
+void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_ov000_02165da0(void *p);
 BOOL func_ov000_02165df4(void *p);
 void func_ov000_02165d78(void *p);

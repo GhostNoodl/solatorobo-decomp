@@ -191,7 +191,7 @@ extern Ov010V *func_02065f88(s32 id, Ov010Vec *pos);
 extern Ov010V *func_020657b0(void *mgr, s32 h);
 extern void func_02065804(void *mgr, s32 h);
 extern void func_02065860(void *mgr, s32 h);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void *func_ov000_0218e640(void *mgr, u16 id);
 extern void *func_ov000_021985c0(void *p);
 extern s32 func_ov000_0219a5c8(void *self, u16 mask, Ov010Vec *pos, Ov010FxRot *rot, s32 r, s32 a, Ov010Vec **list);

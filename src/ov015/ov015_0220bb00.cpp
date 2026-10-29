@@ -7,14 +7,14 @@ Ov015V *func_020657b0(void *a, void *b);
 extern void *data_02097e4c;
 extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e68[];
-void func_02049a48(void *a, int b, int c, int d, int e);
+void *func_02049a48(void *a, int b, int c, int d, int e);
 u8 *func_02066774(void *a, void *b, int c, void *d);
 extern u8 data_ov015_02212e55[];
 s32 FX_Div(s32 a, s32 b);
 s32 FX_Sqrt(s32 a);
 extern u8 data_ov015_02212eb0[];
 extern u8 data_ov015_02212e0d[];
-void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 
 BOOL func_ov015_0220bb00(u8 *self) {

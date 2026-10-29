@@ -115,7 +115,7 @@ extern "C" {
 extern u8 data_ov012_0220a810[];
 extern void func_ov012_02206bb0(Ov012Actor *self);
 extern void func_ov012_02206f18(Ov012Actor *self);
-extern void func_ov000_0219aca8(Ov012Actor *a, Ov012Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern BOOL func_ov000_0219aca8(Ov012Actor *a, Ov012Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 
 #define OV012U_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV012U_SQRT_RESULT (*(volatile u32 *)0x40002b4)

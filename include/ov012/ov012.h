@@ -447,7 +447,7 @@ extern "C" {
 void func_0203de1c(void *p);
 void *func_0203dd9c(u32 size);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
-void func_ov003_021d0edc(void *self);
+void *func_ov003_021d0edc(void *self);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
@@ -469,7 +469,7 @@ void func_ov003_021d3600(Ov012Actor *self);
 void func_ov003_021d112c(Ov012Actor *self);
 void func_ov003_021d1e8c(Ov012Actor *self);
 void func_ov003_021d4b68(Ov012Actor *self);
-BOOL func_ov003_021d16cc(Ov012Actor *self);
+u16 func_ov003_021d16cc(Ov012Actor *self);
 void func_ov003_021d1b88(Ov012Actor *self);
 void func_ov003_021d0c1c(Ov012Actor *self);
 char *func_0207011c(void *res);
@@ -480,12 +480,12 @@ void STD_CopyString(char *dst, const char *src);
 extern "C" {
 void func_ov000_021953b4(void *self);
 void func_ov003_021dacfc(void *p);
-void func_ov000_0219429c(void *self);
+void *func_ov000_0219429c(void *self);
 s32 func_0203db40(void *p);
 void func_ov000_02190a80(void *a, s32 b);
 }
 
-extern "C" void func_ov003_021da940(void *p);
+extern "C" void *func_ov003_021da940(void *p);
 
 // Frees the effect handle at self+off with the default heap selected.
 static inline void Ov012_FreeFx(void *self, u32 off) {
@@ -516,15 +516,15 @@ extern void *data_02097cdc;
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
 extern u8 data_ov012_0220aaf9[];
-extern void func_ov000_0218e9c4(void *p);
-extern void func_ov000_0218fe1c(void *p);
-extern void func_ov000_0218fee4(void *p);
-extern void func_ov000_0218ea20(void *p);
+extern void *func_ov000_0218e9c4(void *p);
+extern void *func_ov000_0218fe1c(void *p);
+extern void *func_ov000_0218fee4(void *p);
+extern void *func_ov000_0218ea20(void *p);
 extern BOOL func_02035b90(void *a, s32 b);
 extern void func_02036838(void *a, void *b, s32 c, s32 d);
 extern void func_02049564(void *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
-extern void func_020359d0(void *a, s32 b, s32 c);
+extern void *func_020359d0(void *a, s32 b, s32 c);
 extern BOOL func_ov000_0218cf5c(Ov012Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
 extern BOOL func_ov000_021903b4(void *p);
@@ -533,7 +533,7 @@ extern Ov012Actor *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void VEC_Add(void *a, const void *b, void *c);
 extern BOOL func_020621c4(void);
 extern void func_ov003_021d6bac(Ov012Actor *self, const void *p);
-extern void func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
+extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 }
 
 static inline void Ov012_StopSnd(void) {
@@ -550,7 +550,7 @@ extern Ov012Actor *func_ov000_0219bf90(void);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern void *func_ov000_0218e6d0(void *mgr, u16 a, u16 b);
 extern void func_ov003_021daa6c(void *p, s32 a);
-extern void func_ov003_021cf278(void *self, s32 a, s32 b);
+extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov000_021984f4(void *p, s32 a, s32 b);
 extern void func_ov000_0219864c(void *p, s32 a, s32 b);
 extern void func_ov000_02196860(Ov012Actor *self);
@@ -563,7 +563,7 @@ extern Ov012V *func_02065f88(s32 id, Ov012Vec *pos);
 
 extern "C" {
 extern void func_ov003_021ceedc(void *p);
-extern void func_ov003_021cef0c(void *p);
+extern void *func_ov003_021cef0c(void *p);
 extern void func_02049678(void *a, s32 b, s32 c, s32 d);
 extern BOOL func_0204985c(void *a);
 }
@@ -585,7 +585,7 @@ extern void func_ov000_02194758(void *self);
 extern "C" {
 extern void *data_0214a420;
 extern void *func_020657b0(void *a, void *b);
-extern void func_ov000_02194074(void *self);
+extern void *func_ov000_02194074(void *self);
 }
 
 

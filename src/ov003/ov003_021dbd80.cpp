@@ -92,11 +92,11 @@ extern Ov003HtPart *func_ov000_02199ba0(Ov003HtDef *def);
 extern BOOL func_ov000_0218d2e0(Ov003Hitter *self);
 extern s32 func_ov000_0219a510(Ov003Hitter *self, u16 mask, Ov003HtVec *pos, s32 r, s32 a, void **list);
 extern Ov003HtPlayer *func_ov000_021985c0(void *p);
-extern void func_ov000_0219a8bc(void *a, Ov003Hitter *b, Ov003HtPart *c, u16 d, u8 e, Ov003HtVec *f, s32 g, s32 h, s32 i);
+extern BOOL func_ov000_0219a8bc(void *a, Ov003Hitter *b, Ov003HtPart *c, u16 d, u8 e, Ov003HtVec *f, s32 g, s32 h, s32 i);
 extern void func_02065804(void *mgr, void *p);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_ov003_021f0c60(Ov003Hitter *self, u16 mask);
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 static inline u8 Ov003HtPlayer_Kind(Ov003HtPlayer *pl) {
     if (pl->work != NULL) {

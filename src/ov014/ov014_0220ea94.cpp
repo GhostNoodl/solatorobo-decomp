@@ -18,11 +18,11 @@ extern s32 **func_ov000_02190a30(void *a, s32 b);
 extern s32 func_ov000_02191318(void *a, s32 b);
 extern s32 func_ov000_02191f18(void *a, void *b);
 extern s32 func_ov014_0220ec18(s16 *a, u8 *b);
-extern void func_ov000_02194074(void *self);
+extern void *func_ov000_02194074(void *self);
 extern void func_ov000_02194758(void *self);
-extern void func_ov000_02194c08(void *self);
+extern BOOL func_ov000_02194c08(void *self);
 extern void func_02049de8(void *a, s32 b);
-extern u8 func_02043d48(void *p);
+extern int func_02043d48(void *p);
 extern void func_ov000_02191920(void *a, s32 b, s32 c, s32 d);
 extern void func_ov000_02191618(void *p);
 extern void func_ov000_02191708(void *p);
@@ -31,8 +31,8 @@ extern Ov014Vec *func_ov000_0218d2e0(void *self);
 extern void VEC_Normalize(Ov014Vec *a, Ov014Vec *b);
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern BOOL func_ov014_0220eb14(Ov014Actor *self);
-extern void func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, Ov014Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
-extern void func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, Ov014Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 
 #define OV014Y_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV014Y_SQRT_RESULT (*(volatile u32 *)0x40002b4)

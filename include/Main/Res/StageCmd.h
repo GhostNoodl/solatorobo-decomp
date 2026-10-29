@@ -237,7 +237,7 @@ extern BOOL func_ov000_021705a0(FieldActor *actor, int a);
 extern void func_ov000_021722c4(FieldPlayer *player, int a, s32 b, s32 c, s32 d, s32 e);
 extern void func_ov000_021705dc(FieldActor *actor, s32 a, s32 b);
 extern void func_ov000_02172338(FieldPlayer *player, int a, s32 b, s32 c, s32 d);
-extern BOOL func_ov000_021705ec(FieldActor *actor);
+extern bool func_ov000_021705ec(FieldActor *actor);
 extern void func_ov000_0216da78(FieldActorState *st);
 extern void *func_0204c0e8(void *msg, u16 id);
 extern void func_ov000_02172390(FieldPlayer *player, s32 a, void *str);

@@ -19,7 +19,7 @@ extern void func_ov003_021da9ac(void *p, s32 a, void *e);
 extern void func_ov003_021daae4(void *p, s32 a, Ov014Vec *v, s32 b, s32 c, s32 d, s32 e);
 extern void func_ov003_021daa6c(void *p, s32 a);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *v);
-extern void func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
 void MIi_CpuClear32(u32 data, void *dest, u32 size);
 
 static inline BOOL Ov014_AnyHit(Ov014Actor *self) {
@@ -73,7 +73,7 @@ void func_ov014_0220840c(Ov014Actor *self) {
 
 
 extern u8 data_ov014_02217708[];
-extern void func_ov000_02194074(void *self);
+extern void *func_ov000_02194074(void *self);
 extern void func_ov000_02194758(void *self);
 extern void func_0203f364(Ov014Sub48 *p);
 

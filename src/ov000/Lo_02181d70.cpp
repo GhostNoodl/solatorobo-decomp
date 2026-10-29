@@ -10,7 +10,7 @@ extern char data_ov000_021cc111[];
 extern char data_ov000_021cc119[];
 void func_0205a6a0(void *p);
 BOOL func_0205a9c8(void *p);
-void func_0205aa30(void *p);
+BOOL func_0205aa30(void *p);
 void *func_0206e7d0(u8 id);
 int func_0200779c(char *dst, const char *fmt, ...);
 void STD_CopyString(void *buf, const void *s);

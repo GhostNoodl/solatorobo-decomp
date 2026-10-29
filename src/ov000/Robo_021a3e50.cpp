@@ -16,13 +16,13 @@ extern u8 data_ov000_021cc648[];
 void *func_ov000_0218e640(void *mgr, u16 id);
 void func_ov000_0218d398(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_ov000_0218d988(void *self, void *other, s32 step);
-void func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
+BOOL func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
 void func_ov000_021915a0(void *p);
 void func_020627a0(u16 a, u16 b);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_021700c4(void *p);
 void *func_ov000_02173610(s32 kind);
-void func_ov000_02198360(void *p, s32 a, s32 b);
+BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 static inline void *FindActor021a3e50(u16 id) {
     void *mgr = data_ov000_021ccd68;

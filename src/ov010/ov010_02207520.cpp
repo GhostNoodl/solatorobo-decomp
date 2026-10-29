@@ -224,15 +224,15 @@ extern char data_ov010_0220ffa1[];
 extern char data_ov010_0220ffae[];
 extern void func_ov003_021d0c1c(void *self);
 extern void func_ov003_021d8f24(void *p);
-extern void func_ov010_0220d79c(void *p);
-extern void func_ov003_021d7f0c(void *p);
-extern void func_ov003_021d8b88(void *p);
+extern void *func_ov010_0220d79c(void *p);
+extern void *func_ov003_021d7f0c(void *p);
+extern void *func_ov003_021d8b88(void *p);
 extern void func_ov003_021cf340(const char *p);
 extern void func_ov003_021cf3fc(s32 a);
 extern void func_ov003_021cf39c(s32 a, const char *b);
 extern void func_ov010_02207520(void *self);
 extern void func_ov010_022046ac(void *self);
-extern void func_ov010_0220441c(void *self, void *msg);
+extern BOOL func_ov010_0220441c(void *self, void *msg);
 
 static inline void Ov010_02204204_Body(void *self) {
     func_ov003_021d0c1c(self);
@@ -280,7 +280,7 @@ void func_ov010_02207b90(void *self, void *msg) {
 extern const Ov010StEnt data_ov010_0220f188[];
 extern const Ov010Blk12 data_ov010_0220f0b4;
 extern void func_ov003_021d3008(void *self);
-extern u8 func_ov003_021cf408(void);
+extern int func_ov003_021cf408(void);
 extern u8 *func_ov000_0219bf90(void);
 extern void VEC_MultAdd(s32 a, const Ov010Vec *b, const Ov010Vec *c, Ov010Vec *out);
 extern void func_ov010_0220d858(void *p);
@@ -328,9 +328,9 @@ void func_ov010_02207bb4(Ov010Cls *self) {
 
 extern void *data_02097e4c;
 extern const Ov010Vec data_ov010_0220f0fc;
-extern void func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
+extern BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 extern void func_ov000_021915a0(void *a);
-extern void func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
 extern Ov010V *func_02065f88(s32 id, Ov010Vec *pos);
 extern void func_ov003_021d9dbc(Ov010Vec *out, const Ov010Vec *a, const Ov010Vec *b, s32 dist, s32 yoff);
 extern void func_ov003_021d64f0(void *self);
@@ -414,7 +414,7 @@ void func_ov010_02207d2c(void *self) {
 extern void VEC_Normalize(const Ov010Vec *src, Ov010Vec *dst);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 static inline void Ov010_VecSub(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *o) {
     o->x = a->x - b->x;

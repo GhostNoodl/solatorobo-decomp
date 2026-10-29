@@ -55,7 +55,7 @@ extern void MTX_Copy33To43_(const Ov003Mtx33 *src, Ov003Mtx43 *dst);
 extern void NNSi_G3dModifyPolygonAttrMask(void *res, BOOL on, u32 mask);
 extern void MI_Copy36B(const void *src, void *dst);
 extern void MI_Copy48B(const void *src, void *dst);
-extern void func_ov000_021903b4(Ov003TrailModel *model);
+extern BOOL func_ov000_021903b4(Ov003TrailModel *model);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 
 static inline void VSub(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *o) { o->x = a->x - b->x; o->y = a->y - b->y; o->z = a->z - b->z; }

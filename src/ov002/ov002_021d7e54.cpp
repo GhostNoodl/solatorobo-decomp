@@ -82,7 +82,7 @@ void func_ov002_021d802c(void *self) {
         if (FIELD(self, 0x90, s32 *) != NULL) {
             *FIELD(self, 0x90, s32 *) = FIELD(self, 0x94, s32);
         }
-        FIELD(self, 0x94, s32) = S32_MOD(FIELD(self, 0x94, s32) + 0x1000, FIELD(self, 0x98, s32));
+        FIELD(self, 0x94, s32) = (FIELD(self, 0x94, s32) + 0x1000) % FIELD(self, 0x98, s32);
         break;
     }
 }

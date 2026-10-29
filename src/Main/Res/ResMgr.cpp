@@ -4,7 +4,7 @@
 extern "C" {
 
 extern void FS_CancelFile(FSFile *file);
-extern void FS_CloseFile(FSFile *file);
+extern BOOL FS_CloseFile(FSFile *file);
 extern u32 FS_TryLoadTable(void *buf, u32 size);
 extern void FS_Init(int arg);
 extern void MATHi_CRC16InitTableRev(u16 *table, u32 poly);
@@ -37,13 +37,13 @@ extern const char data_0208b393[]; // ".nsbma"
 extern const char data_0208b39a[]; // ".nsbta"
 extern const char data_0208b3a1[]; // ".nsbtp"
 extern const char data_0208b3a8[]; // ".nsbva"
-extern void NNS_G2dGetUnpackedBGCharacterData(void *data, void *out);
-extern void NNS_G2dGetUnpackedScreenData(void *data, void *out);
-extern void NNS_G2dGetUnpackedCellBank(void *data, void *out);
-extern void NNS_G2dGetUnpackedAnimBank(void *data, void *out);
-extern void NNS_G2dGetUnpackedCharacterData(void *data, void *out);
-extern void NNS_G2dGetUnpackedPaletteData(void *data, void *out);
-extern void NNS_G2dGetUnpackedPaletteCompressInfo(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedBGCharacterData(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedScreenData(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedCellBank(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedAnimBank(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedCharacterData(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedPaletteData(void *data, void *out);
+extern BOOL NNS_G2dGetUnpackedPaletteCompressInfo(void *data, void *out);
 extern void *func_0203dd9c(u32 size);
 extern void *func_0203dec8(u32 size, int align);
 extern void func_0203df40(void *ptr);

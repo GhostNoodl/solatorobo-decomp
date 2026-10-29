@@ -203,10 +203,10 @@ Ov003InObj44 *func_ov000_021984c8(void *p);
 void func_ov000_021984f4(Ov003InObj44 *o, void *a, s32 b);
 Ov003InObj4c *func_ov000_02199b00(void *p);
 Ov003InObj5c *func_ov000_021bd198(void *p);
-void func_ov000_021bd314(Ov003InObj5c *p, s32 a);
+BOOL func_ov000_021bd314(Ov003InObj5c *p, s32 a);
 void STD_CopyString(char *dst, const char *src);
 s32 NNS_G3dGetResDictIdxByName(const void *dict, const void *name);
-void func_ov000_0218ffdc(Ov003InModel *m, void *res, s32 idx, s32 b);
+BOOL func_ov000_0218ffdc(Ov003InModel *m, void *res, s32 idx, s32 b);
 Ov003InAnm *func_ov000_02190a30(Ov003InModel *m, s32 n);
 void func_ov000_02191920(Ov003InModel *m, s32 idx, s32 a, s32 b);
 }

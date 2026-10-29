@@ -21,12 +21,12 @@ extern "C" {
 extern u8 data_ov010_0220ebc0[];
 extern Ov010Vec data_ov010_0220ec38;
 extern void *data_02097e4c;
-extern void func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
+extern BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 extern void func_ov003_021d88ec(Ov010Cmd *c);
 extern void func_ov003_021d8b60(void *p, Ov010Cmd *c);
 extern Ov010V *func_02065f88(s32 a, Ov010Vec *b);
 extern void func_ov003_021d969c(void *p, s32 a);
-extern void func_02049f44(void *a, s32 b, void *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 extern void func_ov003_021d9e90(void *out, Ov010Vec *dir, void *in, s32 speed, s32 e);
 
 static inline void Ov010_SetAnim(void *self, void *model, void *anim, s32 n) {
@@ -130,7 +130,7 @@ static inline void Ov010h_AttachWorld(void *obj, Ov010Vec *out) {
     VEC_Add(&a, &FLD(Ov010Vec, obj, 0x70), &a);
     OV010_BLKCPY(out, &a);
 }
-extern void func_0204a028(void *mgr, s32 id, const Ov010Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, const Ov010Vec *pos, s32 a);
 extern void func_ov003_021d8a7c(void *p, s32 a);
 extern void func_ov003_021da48c(void *p, s32 a);
 extern void func_ov003_021d68e0(void *self, s32 a, s32 b, s32 c);

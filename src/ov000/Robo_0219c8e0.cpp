@@ -172,23 +172,19 @@ extern char data_ov000_021cc5fd[];
 extern char data_ov000_021cc605[];
 extern char data_ov000_021cc60a[];
 extern u8 *data_0214a424;
-void func_ov003_021ce630(void);
+void *func_ov003_021ce630(void);
 void *func_0203dd9c(u32 size);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 BOOL NNS_G3dBindMdlSet(ResMdlSet *set, void *tex);
-u32 _fflt(s32 v);
-u32 _fadd(u32 a, u32 b);
-u32 _fsub(u32 a, u32 b);
-s32 _ffix(u32 v);
 BOOL func_ov000_0218ffdc(Model0218fe1c *self, void *res, u8 mode, s32 e);
 Model0218fe1c *func_ov000_0218fe1c(Model0218fe1c *self);
-void func_ov000_02190cb0(Model0218fe1c *self, const char *name, s32 blend, s32 force);
+BOOL func_ov000_02190cb0(Model0218fe1c *self, const char *name, s32 blend, s32 force);
 void func_ov000_021915a0(Model0218fe1c *self);
 void func_ov000_02191870(Model0218fe1c *self, void *p);
 AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
 void func_ov000_02191920(Model0218fe1c *self, s32 index, s16 blend, u8 force);
 void func_ov000_02190a80(Model0218fe1c *self, s32 a);
-u8 func_ov000_021909a8(Model0218fe1c *self, void *p, const char *name);
+s32 func_ov000_021909a8(Model0218fe1c *self, void *p, const char *name);
 
 void func_ov000_0219c8e0(u8 *self) {
     AnimEventTable *tbl;
@@ -222,16 +218,16 @@ void func_ov000_0219c8e0(u8 *self) {
         ctrl = func_ov000_02190a30(M, 3);
         if (ctrl != NULL) {
             u32 v;
-            u32 f;
+            float f;
             s32 frame;
             func_ov000_02191920(M, 0, 0x1000, 0);
             v = F(u8 *, 0xba0)[0x18];
             if (v > 0) {
-                f = _fadd(0x3f000000, _fflt(v << 12));
+                f = (float)(s32)(v << 12) + 0.5f;
             } else {
-                f = _fsub(_fflt(v << 12), 0x3f000000);
+                f = (float)(s32)(v << 12) - 0.5f;
             }
-            frame = _ffix(f);
+            frame = (s32)f;
             if (ctrl->cur != NULL) {
                 if (frame >= 0) {
                     ctrl->cur->frame = frame;

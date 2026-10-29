@@ -16,8 +16,8 @@ extern void *data_0208cc88;
 extern void *data_0208cc94;
 void func_02041c5c(void *m, void *fn);
 void func_02041c20(void *m, s32 a, void *b);
-void func_ov000_021540b0(void);
-void func_ov000_02154128(void);
+void *func_ov000_021540b0(void);
+void *func_ov000_02154128(void);
 
 class Model0215429c {
 public:

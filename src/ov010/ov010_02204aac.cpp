@@ -21,7 +21,7 @@ extern BOOL func_ov003_021da03c(void *self);
 extern void func_ov003_021d8fc0(void *p);
 extern BOOL func_ov003_021d9878(void *p);
 extern Ov010B2 func_ov003_021d9644(void *p);
-extern void func_ov000_02198360(void *a, s32 b, s32 c);
+extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 void func_ov010_02204aac(void *self) {
     func_ov003_021da40c(FLD(void *, self, 0x40));
@@ -54,7 +54,7 @@ void func_ov010_02204ad4(void *self) {
 extern const Ov010StEnt data_ov010_0220f188[];
 extern const Ov010Blk12 data_ov010_0220f0b4;
 extern void func_ov003_021d3008(void *self);
-extern u8 func_ov003_021cf408(void);
+extern int func_ov003_021cf408(void);
 extern u8 *func_ov000_0219bf90(void);
 extern void VEC_MultAdd(s32 a, const Ov010Vec *b, const Ov010Vec *c, Ov010Vec *out);
 extern void func_ov010_0220d858(void *p);

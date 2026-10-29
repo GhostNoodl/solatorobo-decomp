@@ -22,8 +22,8 @@ typedef struct Link0218c3e0 {
 
 extern "C" {
 extern u8 data_ov000_021cc3b4[];
-void func_ov000_0218fee4(void *p);
-void func_ov000_0218ea20(void *p);
+void *func_ov000_0218fee4(void *p);
+void *func_ov000_0218ea20(void *p);
 void func_0203f2b8(void *p);
 void func_0203f920(void *p);
 void func_0203f864(void *p);
