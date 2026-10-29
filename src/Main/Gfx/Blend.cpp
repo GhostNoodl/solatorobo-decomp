@@ -4,7 +4,7 @@ extern "C" {
 
 extern int FX_Div(int a, int b);
 extern void G2x_SetBlendAlpha_(volatile void *reg, int plane1, int plane2, int ev1, int ev2);
-extern s16 FX_SinCosTable_[];
+extern const s16 FX_SinCosTable_[];
 
 // `volatile` keeps the index a separate value: without it the lerp's registers differ.
 static inline int FX_SinIdx(volatile int idx) {

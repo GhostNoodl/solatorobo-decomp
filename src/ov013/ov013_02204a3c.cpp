@@ -310,6 +310,12 @@ struct Ov013Prm {
     s32 v18;
 };
 
+// Reads the parameter pointer through a const view, so the plain reads in Ov013_Dur that
+// follow load it again, as in the target.
+static inline BOOL Ov013_PrmB0(const Ov013Actor *self) {
+    return (*(const Ov013Prm *const *)((const u8 *)self + 0xd8))->b0;
+}
+
 struct Ov013Blk12 {
     s32 w[3];
 };
@@ -449,7 +455,7 @@ void func_ov013_02205098(Ov013Actor *self) {
         if (self->unk_40->timer % 12 == 0) {
             func_02049f44(data_02097e4c, 100, &self->pos, 0);
         }
-        if (!FLD(Ov013Prm *volatile, self, 0xd8)->b0) {
+        if (!Ov013_PrmB0(self)) {
             s32 lim = Ov013_Dur(self) - 0x6e;
             lim = OV013_CLAMP(lim, 0, Ov013_Dur(self));
             if (lim < self->unk_40->timer && self->unk_40->timer % 8 == 0) {
