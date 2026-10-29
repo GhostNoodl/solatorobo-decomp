@@ -48,13 +48,16 @@ void func_ov000_021b9a84(Obj021b9a84 *self) {
 }
 
 #ifdef NONMATCHING
-// func_ov000_021b9b14: 64 raw / 24 register-masked diffs (was 129 / 52), no fake
+// func_ov000_021b9b14: 33 raw / 2 register-masked diffs (was 64 / 24), no fake
 // parameters or junk locals. The else-state arms are written as two arms with the
 // same product (the compiler cross-jumps them into rsbeq + one multiply, keeping the
 // constant's zero high word in a register); a conditional `t = 0x1000 - t` lets the
-// front end fold the high word instead. What is left: the zero group's move from
-// block 33 to 25 is refused (block 28, the 0x1e arm, is at pressure 11), so one
-// extra `mov r4, #0` shifts every later branch, and section 3/4 colour differently.
+// front end fold the high word instead. Section 3 sets `q = 0x68` at the end of each
+// arm, so the 0x68 is not live across the 0x1e arm's product when the zero group is
+// hoisted (block pressure 10, not 11) and the 0x68 group still ends up in front of
+// the branch. Section 4's y position is its own local `y` (declared after `w`), so
+// it gets r8 as in the ROM. What is left is register colouring in section 4 (x, the
+// product temporaries, the -0x81a and (u8)a values) and one load/and order.
 typedef struct {
     u32 b0 : 2;
     u32 b2 : 5;
@@ -221,6 +224,7 @@ void func_ov000_021b9b14(Obj021b9a84 *self) {
     s32 p;
     s32 q;
     s32 w;
+    s32 y;
     s32 dp;
     Spr_021b9b14 *sa;
     Spr_021b9b14 *sb;
@@ -287,13 +291,14 @@ void func_ov000_021b9b14(Obj021b9a84 *self) {
 
     if (self->unk_0c == 0 || self->unk_0c == 2) {
         t = self->t30;
-        q = 0x68;
         if (self->unk_08 != 0xd) {
             a = 0x1e;
             p = (FXC(t, -0x104000) >> 12) + 0x120;
+            q = 0x68;
         } else {
             a = FXG(0x1000 - t, 0x1e000) >> 12;
             p = 0x1c;
+            q = 0x68;
         }
     } else {
         t = self->t28;
@@ -332,11 +337,11 @@ void func_ov000_021b9b14(Obj021b9a84 *self) {
         if (self->unk_08 != 0xd) {
             a = FXG(t, 0x2e000) >> 12;
             x += FXG(0x1000 - t, 0x20000) >> 12;
-            q = 0x68;
+            y = 0x68;
         } else {
             a = FXG(0x1000 - t, 0x1f000) >> 12;
             x -= FXG(t, 0x20000) >> 12;
-            q = 0x68;
+            y = 0x68;
         }
     } else {
         t = self->t28;
@@ -346,7 +351,7 @@ void func_ov000_021b9b14(Obj021b9a84 *self) {
             t = 0x1000 - t;
             a = FXG(t, 0x1f000) >> 12;
         }
-        q = 0x68;
+        y = 0x68;
     }
     if (a == 0) {
         return;
@@ -358,12 +363,12 @@ void func_ov000_021b9b14(Obj021b9a84 *self) {
     sa->depth = dp;
     self->sprA->attr.b8 = (u8)a;
     self->sprA->attr.b13 = g[0x8b1];
-    self->sprA->vfunc_20(x, q - 9);
+    self->sprA->vfunc_20(x, y - 9);
     self->sprA->vfunc_90();
     self->sprB->depth = dp;
     self->sprB->attr.b8 = (u8)a;
     self->sprB->attr.b13 = func_02043d48(g + 0x8b0);
-    self->sprB->vfunc_20(x + w, q - 0xb);
+    self->sprB->vfunc_20(x + w, y - 0xb);
     self->sprB->vfunc_90();
 }
 }
