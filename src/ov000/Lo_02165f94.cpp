@@ -147,6 +147,10 @@ Node0216607c *func_ov000_0216607c(void *self, Node0216607c *node, u8 *outIdx, BO
 // This file's .text ends at 0x02166180, so the function belongs here once it matches.
 // Round raC (27 / 0): oams/pos from Oams/Poss getters, or the busy loop on o so oams has one
 // definition, leave oams a user variable (node 145), so the jkH temp rule does not apply here.
+// Round bgY: the busy-list header at p->0xcdc is LoAnimC (02165f94's type: frames at 0x88, cnt at 0x108,
+// state at 0x10a), so the draft now uses it instead of a private Hdr6180 (27 / 0, same code). Testing the
+// flag through 02165f94's LoAnimValid inline is 62 (busy = ...; the ROM's moveq/movne/and #0xff needs the
+// if/else on a u8) or 652 (if (!LoAnimValid(..)) busy = FALSE; else ...).
 
 typedef struct {
     u32 y : 8;
@@ -196,12 +200,6 @@ typedef struct {
     u8 d;
 } Ent6180;
 
-typedef struct {
-    u8 pad_00[0x88];
-    u8 *nodes[32];
-    u8 count;
-} Hdr6180;
-
 extern "C" {
 extern u8 *data_0214a424;
 typedef struct { s8 dx; s8 dy; u16 hf : 1; u16 vf : 1; u16 idx : 4; } Dir2_6180;
@@ -218,11 +216,6 @@ static inline void SetXY6180(Oam6180 *o, u16 x, u16 y) {
 #define PUTM(o, X, Y) if ((X) < 8 || (X) > 0xf8 || (Y) < 8 || (Y) > 0xb8) { SetXY6180(o, 0, 0xc0); } else { SetXY6180(o, X, Y); }
 static inline Oam6180 *OamAt6180(Oam6180 *o, u32 j) {
     return &o[j];
-}
-
-static inline BOOL Busy6180(u8 *self) {
-    u8 *h = LFLD(u8 *, LFLD(u8 *, self, 0x30), 0xcdc);
-    return h != NULL && LFLD(u16, h, 0x10a) != 0;
 }
 
 static inline u32 PalIdx6180(u8 *p) {
@@ -255,7 +248,7 @@ void func_ov000_02166180(u8 *self) {
     u8 *e;
     Oam6180 *oams;
     s32 oy;
-    Hdr6180 *h;
+    LoAnimC *h;
     u8 sec;
     Oam6180 *o;
     s32 ox;
@@ -294,7 +287,7 @@ void func_ov000_02166180(u8 *self) {
     kind = LFLD(u8 *, p, 0xcb4)[0x14];
     anim = LFLD(u8 *, p, 0xc88) + kind * 8;
     g = data_ov000_021ccd54;
-    if (LFLD(u8 *, p, 0xcdc) == NULL || LFLD(u16, LFLD(u8 *, p, 0xcdc), 0x10a) == 0) {
+    if (LFLD(LoAnimC *, p, 0xcdc) == NULL || LFLD(LoAnimC *, p, 0xcdc)->state == 0) {
         busy = FALSE;
     } else {
         busy = TRUE;
@@ -355,10 +348,10 @@ void func_ov000_02166180(u8 *self) {
         }
     }
     if (busy) {
-        h = LFLD(Hdr6180 *, LFLD(u8 *, self, 0x30), 0xcdc);
-        for (i = 0; i < h->count; i++) {
-            r = h->nodes[i];
-            off = (i == h->count - 1) ? 0 : 2;
+        h = LFLD(LoAnimC *, LFLD(u8 *, self, 0x30), 0xcdc);
+        for (i = 0; i < h->cnt; i++) {
+            r = h->frames[i];
+            off = (i == h->cnt - 1) ? 0 : 2;
             for (j = 0; j < r[0xa]; j++) {
                 o = LFLD(Oam6180 *, LFLD(u8 *, r, 0x14) + j * 0x14, 4);
                 o->w1.pal = (pal + off)[PalIdx6180(p)];
@@ -368,7 +361,7 @@ void func_ov000_02166180(u8 *self) {
                 oams[j].w1.pal = (pal + off)[PalIdx6180(p)];
             }
         }
-        nd = (u8 *)func_ov000_0216607c(self, (Node0216607c *)h->nodes[0], &j, TRUE);
+        nd = (u8 *)func_ov000_0216607c(self, (Node0216607c *)h->frames[0], &j, TRUE);
         if (nd != NULL) {
             k = p[2]++;
             o = &((Oam6180 *)(p + 0x64c))[k];
