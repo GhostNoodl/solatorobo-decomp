@@ -88,10 +88,15 @@ static inline BOOL Ov008Entry_IsSet(Ov008Entry *e) {
     return Ov008Entry_Flag(e) ? TRUE : FALSE;
 }
 
-// i and ents are locals passed as unused register parameters (the locals-as-parameters lever,
-// then a parameter-order sweep); see docs/MATCHING.md round ovmid7. As locals they get user-variable
-// nodes, which are all above the temps, and the loop's registers rotate (71-89 diffs, round jkE).
-void func_ov008_021cfa38(Ov008Mgr2 *m, u16 i, Ov008SaveEnt *ents) {
+// Whether a save entry counts as already known: hidden entries (flag 0x20) are new, others
+// take the save's 0x301 bit, and the entry under the cursor is always known.
+typedef enum Ov008EntState {
+    OV008_ENT_NEW = 0,
+    OV008_ENT_KNOWN = 1
+} Ov008EntState;
+
+void func_ov008_021cfa38(Ov008Mgr2 *m) {
+    u16 i;
     VObj *p;
     void *res;
     Ov008Entry *it;
@@ -99,8 +104,10 @@ void func_ov008_021cfa38(Ov008Mgr2 *m, u16 i, Ov008SaveEnt *ents) {
     u32 cnt;
     u8 *cur;
     u32 flags;
-    u32 ok;
+    Ov008EntState ok;
     Ov008Tag tag;
+    Ov008Entry *e;
+    Ov008SaveEnt *ents;
     res = data_02149ef8;
     p = (VObj *)func_0203dd9c(0xd4);
     if (p != NULL) {
@@ -165,25 +172,25 @@ void func_ov008_021cfa38(Ov008Mgr2 *m, u16 i, Ov008SaveEnt *ents) {
     for (; i < cnt; i++) {
         flags = func_ov000_0214bf2c(ents[i].id);
         if (flags & 0x20) {
-            ok = 0;
+            ok = OV008_ENT_NEW;
         } else {
-            ok = func_02059544(data_02fe152c, base + 0x30, ents, 0x301, i);
+            ok = (Ov008EntState)func_02059544(data_02fe152c, base + 0x30, ents, 0x301, i);
         }
         if (cur != NULL && FLD(u16, cur, 0xc6) == ents[i].id) {
-            ok = 1;
+            ok = OV008_ENT_KNOWN;
         }
-        if (func_02059544(data_02fe152c, base + 0x30, ents, 1, i) == 1 && ok == 0) {
+        if (func_02059544(data_02fe152c, base + 0x30, ents, 1, i) == 1 && ok == OV008_ENT_NEW) {
             tag.id = 0xffff;
             func_0204c6bc(func_ov000_0214c064(ents[i].id), 1, &tag, func_ov000_0214dc20);
-            ok = 0;
+            ok = OV008_ENT_NEW;
             if (tag.id != 0xffff) {
                 if (flags & 0x80) {
                     if (func_020594bc(data_02fe152c, 5, 1, 0x29)) {
-                        ok = 1;
+                        ok = OV008_ENT_KNOWN;
                     }
                 }
-                if (ok == 0) {
-                    Ov008Entry *e = (Ov008Entry *)func_ov000_02154b58(m->unk_100, tag.id);
+                if (ok == OV008_ENT_NEW) {
+                    e = (Ov008Entry *)func_ov000_02154b58(m->unk_100, tag.id);
                     if (e != NULL) {
                         e->unk_32++;
                         if (!Ov008Entry_IsSet(e)) {
