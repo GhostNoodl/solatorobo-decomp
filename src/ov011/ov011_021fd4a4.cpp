@@ -29,25 +29,20 @@ struct Ov011Fd4d8Bits {
     u8 rest : 5;
 };
 
-extern void func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, u8 value, BOOL force);
 extern BOOL func_ov011_02201578(void *p);
 extern BOOL func_ov011_021fa720(void *e, s32 a, s32 b, s32 c, s32 d);
 
 #define BITS4d8(off) FLD(Ov011Fd4d8Bits, self, off)
 
 BOOL func_ov011_021fd4d8(u8 *self, s32 a) {
-    s32 kq;
     BITS4d8(0).b0 = 1;
-    kq = 0x20;
-    if ((u32)self & 3) {
-        kq = 0x20;
-    }
     BITS4d8(0).b1 = 0;
     BITS4d8(0).b2 = 1;
     FLD(s32, self, 0x4) = 0;
     FLD(s32, self, 0x8) = a;
     FLD(s32, self, 0xc) = 0;
-    func_ov003_021da48c(self + kq, 1);
+    func_ov003_021da48c(self + 0x20, 1);
     BITS4d8(0x10).b0 = 1;
     FLD(u16, self, 0x12) = 0;
     FLD(u16, self, 0x14) = 0x10;
