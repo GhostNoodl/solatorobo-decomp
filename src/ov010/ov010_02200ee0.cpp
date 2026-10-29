@@ -70,13 +70,15 @@ void func_ov010_02200ee0(u8 *o) {
 }
 
 #ifdef NONMATCHING
-// func_ov010_02201064: 78 / 3 (raw / register-masked, round bgP; was 83 / 9 in round bgO). Each beam-list
+// func_ov010_02201064: 47 / 0 (raw / aligned register-masked, round qpJ; 78 / 3 in round bgP, 83 / 9 in round bgO). Each beam-list
 // walk has its own pointer (n1, n2, n): with one reused n the later webs were compiler temps and the second loop
 // was coloured differently. The `last` resets come after the `s` adjustment: the ?: puts a block boundary in
 // front of them, so their zero is not CSE'd with the Ov010k_Mul zeros of the block before (which step 4 hoists);
 // it is shared with the 0x7a store and the func_ov000_02198360 zero arguments and is already r1 at step 4, so it
-// stays a fresh `mov r1, #0`, as in the ROM. Left: register colouring of the GetA/SetA temporaries and the
-// 0xffff constant in the second walk (same instructions as the ROM).
+// stays a fresh `mov r1, #0`, as in the ROM. Round qpJ: the end-of-case-10 compare reads 0x2e through a const
+// lvalue (CFLD), so the `++` in the if-converted else reloads it (`ldrhhs`) and 0x2e is stored before 0x2c, as in
+// the ROM (94 / 4 -> 47 / 0 on qpJ's raw / aligned-masked scorer). Left: register colouring of the GetA/SetA
+// temporaries and the 0xffff constant in the second walk (same instructions as the ROM).
 extern "C" {
 
 extern const Ov010Vec data_ov010_0220ef80;
@@ -267,7 +269,7 @@ void func_ov010_02201064(u8 *self) {
                 Ov010Beam_SetB(b, Ov010Beam_GetB(b) + dd);
             }
         }
-        if (FLD(u16, self, 8) < FLD(u16, self, 0x2e)) {
+        if (FLD(u16, self, 8) < CFLD(u16, self, 0x2e)) {
             FLD(u16, self, 0x2e) = 0;
             FLD(u16, self, 0x2c) = 100;
         } else {
