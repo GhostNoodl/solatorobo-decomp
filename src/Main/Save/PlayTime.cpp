@@ -71,30 +71,37 @@ void func_02048d58(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
 }
 
 #ifdef NONMATCHING
-// 124 raw diffs: the fields are computed into locals and stored together, as in the target,
+// Before round pmC, 124 raw diffs: the fields are computed into locals and stored together, as in the target,
 // but the register allocation and the schedule of the borrows still differ.
 // Round qpE: the ROM's `movlo r7, #1; movhs r7, #0` pair (where ours has `mov #1; movhs #0`) is probably a
 // colouring effect: the ROM puts the borrow in the register of `a->millis`, the compare's own
 // operand, so the final peephole cannot move the `mov #1` above the `cmp`. The colour graph is
 // not register-only (about 45 nodes differ), so ramerge has nothing to offer.
+// Round pmC (honest_search, the raD compare-result flag): 62 raw / 10 register-masked (was 120 / 43).
+// The last borrow is a plain compare result (the first two keep `? 1 : 0`; all three as compares
+// is 134 / 84), the seconds fields are read into locals first, and the minutes and hours are stored
+// before the millis and seconds. What is left is the schedule of the second and third borrows.
 void func_02048e74(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
     int ms, sec, min, h;
     int borrow;
+    u16 aSec, bSec;
     if (PlayTime_ToMillis(a) < PlayTime_ToMillis(b)) {
         PlayTime_Set(dst, 0, 0, 0, 0);
         return;
     }
+    aSec = a->seconds;
+    bSec = b->seconds;
     ms = (a->millis + (1000 - b->millis)) % 1000;
     borrow = a->millis < b->millis ? 1 : 0;
-    sec = (a->seconds + (60 - b->seconds) - borrow) % 60;
-    borrow = a->seconds - borrow < b->seconds ? 1 : 0;
+    sec = (aSec + (60 - bSec) - borrow) % 60;
+    borrow = a->seconds - borrow < bSec ? 1 : 0;
     min = (a->minutes + (60 - b->minutes) - borrow) % 60;
-    borrow = a->minutes - borrow < b->minutes ? 1 : 0;
+    borrow = a->minutes - borrow < b->minutes;
     h = a->hours - b->hours - borrow;
-    dst->millis = ms;
-    dst->seconds = sec;
     dst->minutes = min;
     dst->hours = h;
+    dst->millis = ms;
+    dst->seconds = sec;
     PlayTime_Normalize(dst, FALSE);
 }
 #endif

@@ -19,11 +19,27 @@ combinations instead of single moves. Every move is one of:
   late   move an uninitialised top-level declaration into the innermost block holding all its uses (round frC)
   merge  one variable for two roles: `x = E; ... y = x - 1;` (x used nowhere else) becomes `y = E; ... y -= 1;`
          (rounds mgX, cmA)
+  etype  give an integer local that is only ever assigned literals (at least two assignments) a fresh enum type,
+         its literals becoming that enum's constants; with `tern` this is round jkI's if/else enum local
+  flag   a BOOL flag set from constants becomes a compare result: `if (C) x = 1; else x = 0;`, `x = 0; if (C) x = 1;`,
+         `x = C ? 1 : 0;`, `return C ? TRUE : FALSE;` and `if (C) return TRUE; return FALSE;` become `x = C;` / `return C;` (negated, or `(C) != 0` when C is not
+         already a truth value) (round raD)
+  reuse  rule F: a later local y whose whole live range follows the last use of an earlier local x of the same
+         declared type is replaced by x and its declaration dropped (round pmA)
+  getl   `Set(o, Get(o) + d);` becomes `T cur = Get(o); Set(o, cur + d);`: an inner call of a call statement (the
+         only other call in it) is read into a local first (round raD)
+  cfld   a FLD / LFLD / FIELD read (not an lvalue that is written or address-taken) becomes CFLD, a const-lvalue
+         read (round jkG)
 
 Moves keep the program's meaning by construction: values read earlier (nl/enum/move) may not cross a statement
 that writes one of their variables, and a statement with memory effects (call, store through a pointer) never
 crosses another one that reads or writes memory (use --loose to drop the memory rule). The search is bounded
 by --max-enum / --max-nl / --max-move so the result stays a plausible source.
+
+The new moves (etype .. cfld, round pmC) look at the target body and at the inline bodies it calls. reuse never
+crosses a loop that holds a use of x and y's first assignment, and y's first assignment must be a plain statement
+whose block encloses every other use of y. etype leaves placeholder names (`HsKindK`, `HS_KINDK_V`) that must be
+renamed to meaningful ones (or the result rejected), and getl locals come out as `hs_gK`.
 
 Named locals are written as `__typeof__(e) hs_nK = e;` during the search. The winner is then rewritten with
 concrete types (the compiler's own error message for a deliberately bad pointer conversion names the type), and
@@ -309,7 +325,8 @@ def field_reads(l):
 class State:
     def __init__(self, lines, hist=(), cnt=None):
         self.lines = lines; self.hist = tuple(hist)
-        self.cnt = dict(cnt or {"enum": 0, "nl": 0, "move": 0, "tern": 0, "late": 0, "decl": 0, "merge": 0})
+        self.cnt = dict(cnt or {"enum": 0, "nl": 0, "move": 0, "tern": 0, "late": 0, "decl": 0, "merge": 0,
+                                "etype": 0, "flag": 0, "reuse": 0, "getl": 0, "cfld": 0})
         self.text = "\n".join(lines)
 
 
@@ -409,7 +426,215 @@ class Gen:
                 k += 1
         if st.cnt["merge"] < a.max_merge and "merge" in self.kinds:
             mv += self.merge_moves(L, ob, end)
+        for (h, o, e) in bodies:
+            if st.cnt["etype"] < a.max_etype and "etype" in self.kinds: mv += self.etype_moves(L, o, e)
+            if st.cnt["flag"] < a.max_flag and "flag" in self.kinds: mv += self.flag_moves(L, o, e)
+            if st.cnt["reuse"] < a.max_reuse and "reuse" in self.kinds: mv += self.reuse_moves(L, o, e)
+            if st.cnt["getl"] < a.max_getl and "getl" in self.kinds: mv += self.getl_moves(L, o, e)
+            if st.cnt["cfld"] < a.max_cfld and "cfld" in self.kinds: mv += self.cfld_moves(L, o, e)
         return mv
+
+    # ---- round pmC moves --------------------------------------------------------------------------------------
+    INT_T = {"s32", "u32", "s16", "u16", "s8", "u8", "int", "BOOL", "short", "char", "long", "unsigned", "unsigned int",
+             "unsigned short", "unsigned char", "signed char", "signed int", "bool"}
+
+    @staticmethod
+    def decls(L, o, e):
+        out = []
+        for q in range(o + 1, e):
+            m = is_decl(L[q])
+            if m and "," not in L[q].split("=")[0]: out.append((q, m))
+        return out
+
+    @staticmethod
+    def chains(L, o, e):
+        """For each line q in o..e, the open-brace lines enclosing it (before q's own braces)."""
+        st = []; ch = {}
+        for q in range(o, e + 1):
+            ch[q] = list(st)
+            for c in strip_strings(L[q]):
+                if c == "{": st.append(q)
+                elif c == "}" and st: st.pop()
+        return ch
+
+    @staticmethod
+    def block_end(L, o, e):
+        d = 0
+        for q in range(o, e + 1):
+            d += strip_strings(L[q]).count("{") - strip_strings(L[q]).count("}")
+            if d == 0 and q > o: return q
+        return e
+
+    def etype_moves(self, L, o, e):
+        out = []
+        for q, m in self.decls(L, o, e):
+            t = re.sub(r"\s+", " ", m.group(2).replace("const", "")).strip()
+            if t not in self.INT_T or m.group(4): continue
+            x = m.group(3); rx = re.compile(r"(?<![\w.>])%s\b" % re.escape(x))
+            if m.group(5) and not LIT.fullmatch(m.group(5).split("=", 1)[1].strip()): continue
+            ok = True; ndef = 1 if m.group(5) else 0
+            for r in range(o + 1, e):
+                if r == q: continue
+                s = strip_strings(L[r])
+                if is_decl(L[r]) and is_decl(L[r]).group(3) == x: ok = False; break
+                for mm in rx.finditer(s):
+                    rest = s[mm.end():]; pre = s[:mm.start()]
+                    if re.match(r"\s*=(?!=)", rest):
+                        if not re.match(r"\s*=\s*" + LIT.pattern + r"\s*;", rest): ok = False
+                        else: ndef += 1
+                    elif re.match(r"\s*([-+*/%|&^]|<<|>>)=|\s*(\+\+|--)", rest) or re.search(r"(\+\+|--|&)\s*$", pre) \
+                            and not re.search(r"&&\s*$", pre):
+                        ok = False
+            if ok and ndef >= 2: out.append(("etype", q))
+        return out
+
+    def flag_moves(self, L, o, e):
+        out = []
+        K = r"(TRUE|FALSE|1|0)"
+        for i in range(o + 1, e):
+            l = L[i]
+            m = re.match(r"^(\s*)if \((.*)\) \{\s*$", l)
+            if m and i + 4 < e:
+                a = re.match(r"^\s*([A-Za-z_]\w*) = %s;\s*$" % K, L[i + 1])
+                b = re.match(r"^\s*([A-Za-z_]\w*) = %s;\s*$" % K, L[i + 3])
+                if a and b and re.match(r"^\s*\} else \{\s*$", L[i + 2]) and re.match(r"^\s*\}\s*$", L[i + 4]) \
+                        and a.group(1) == b.group(1) and self.truth(a.group(2)) != self.truth(b.group(2)):
+                    out.append(("flag", i, 5, a.group(1), m.group(2), self.truth(a.group(2))))
+            if m and i + 2 < e and i > o + 1:
+                a = re.match(r"^\s*([A-Za-z_]\w*) = %s;\s*$" % K, L[i + 1])
+                p = re.match(r"^\s*([A-Za-z_]\w*) = %s;\s*$" % K, L[i - 1])
+                if a and p and a.group(1) == p.group(1) and re.match(r"^\s*\}\s*$", L[i + 2]) \
+                        and not (i + 3 < e and re.match(r"^\s*else\b", L[i + 3])) \
+                        and self.truth(a.group(2)) != self.truth(p.group(2)) \
+                        and not re.search(r"\b%s\b" % a.group(1), m.group(2)) and not is_decl(L[i - 1]):
+                    out.append(("flag", i - 1, 4, a.group(1), m.group(2), self.truth(a.group(2))))
+            m = re.match(r"^(\s*)if \((.*)\) ([A-Za-z_]\w*) = %s;\s*$" % K, l)
+            if m and i > o + 1:
+                p = re.match(r"^\s*([A-Za-z_]\w*) = %s;\s*$" % K, L[i - 1])
+                if p and p.group(1) == m.group(3) and self.truth(p.group(2)) != self.truth(m.group(4)) \
+                        and not (i + 1 < e and re.match(r"^\s*else\b", L[i + 1])) and not is_decl(L[i - 1]) \
+                        and not re.search(r"\b%s\b" % m.group(3), m.group(2)):
+                    out.append(("flag", i - 1, 2, m.group(3), m.group(2), self.truth(m.group(4))))
+            m = re.match(r"^(\s*)if \((.*)\) return %s;\s*$" % K, l)
+            if m and i + 1 < e:
+                r2 = re.match(r"^\s*return %s;\s*$" % K, L[i + 1])
+                if r2 and self.truth(m.group(3)) != self.truth(r2.group(1)):
+                    out.append(("flag", i, 2, "return", m.group(2), self.truth(m.group(3))))
+            m = re.match(r"^(\s*)if \((.*)\) \{\s*$", l)
+            if m and i + 3 < e:
+                r1 = re.match(r"^\s*return %s;\s*$" % K, L[i + 1])
+                r2 = re.match(r"^\s*return %s;\s*$" % K, L[i + 3])
+                if r1 and r2 and re.match(r"^\s*\}\s*$", L[i + 2]) and self.truth(r1.group(1)) != self.truth(r2.group(1)):
+                    out.append(("flag", i, 4, "return", m.group(2), self.truth(r1.group(1))))
+            t = self.tern_split(l)
+            if t and self.truth_lit(t[3]) is not None and self.truth_lit(t[4]) is not None \
+                    and self.truth_lit(t[3]) != self.truth_lit(t[4]):
+                out.append(("flag", i, 1, None, t[2], self.truth_lit(t[3])))
+        return out
+
+    @staticmethod
+    def truth(k): return k in ("TRUE", "1")
+
+    @staticmethod
+    def truth_lit(k):
+        k = k.strip().strip("()")
+        return True if k in ("TRUE", "1") else False if k in ("FALSE", "0") else None
+
+    @staticmethod
+    def top_ops(c):
+        d = 0; ops = []; i = 0
+        while i < len(c):
+            ch = c[i]
+            if ch in "([": d += 1
+            elif ch in ")]": d -= 1
+            elif d == 0 and c.startswith("->", i): i += 1
+            elif d == 0:
+                for op in ("&&", "||", "==", "!=", "<=", ">=", "<<", ">>", "<", ">"):
+                    if c.startswith(op, i): ops.append((i, op)); i += len(op) - 1; break
+            i += 1
+        return ops
+
+    def as_bool(self, c, pos):
+        c = c.strip(); ops = [op for _, op in self.top_ops(c)]
+        logic = any(op in ("&&", "||") for op in ops)
+        cmp_ = [op for op in ops if op in ("==", "!=", "<=", ">=", "<", ">")]
+        isbool = logic or cmp_ or (c.startswith("!") and bal(c, 1) == len(c)) or (c.startswith("!") and re.fullmatch(r"![\w.>\-\[\]]+", c))
+        if pos: return c if isbool else "(%s) != 0" % c
+        if not logic and len(cmp_) == 1:
+            i, op = next((i, op) for i, op in self.top_ops(c) if op == cmp_[0])
+            inv = {"==": "!=", "!=": "==", "<": ">=", ">": "<=", "<=": ">", ">=": "<"}[op]
+            return c[:i].rstrip() + " " + inv + " " + c[i + len(op):].lstrip()
+        if isbool: return "!(%s)" % c
+        return "(%s) == 0" % c
+
+    def reuse_moves(self, L, o, e):
+        out = []
+        ds = self.decls(L, o, e)
+        ch = self.chains(L, o, e)
+        body = [strip_strings(x) for x in L]
+        loops = [q for q in range(o + 1, e) if re.match(r"^\s*(for|while|do)\b", L[q]) and body[q].rstrip().endswith("{")]
+        loopend = {q: self.block_end(L, q, e) for q in loops}
+        top = [(q, m) for q, m in ds if ch[q] == [o]]
+        for qy, my in ds:
+            y = my.group(3)
+            if my.group(5) or my.group(4): continue
+            ry = re.compile(r"(?<![\w.>])%s\b" % re.escape(y))
+            occ = [r for r in range(o + 1, e) if r != qy and ry.search(body[r])]
+            if not occ or len([1 for qq, mm in ds if mm.group(3) == y]) != 1: continue
+            d0 = occ[0]
+            if not re.match(r"^\s*%s\s*=(?!=)" % re.escape(y), L[d0]) or len(ry.findall(body[d0])) != 1: continue
+            if any(ch[d0] != ch[r][:len(ch[d0])] for r in occ): continue
+            if re.search(r"&\s*%s\b" % re.escape(y), "\n".join(body[o:e])): continue
+            ty = re.sub(r"\s+", " ", my.group(2)).strip()
+            for qx, mx in top:
+                x = mx.group(3)
+                if x == y or mx.group(4) or re.sub(r"\s+", " ", mx.group(2)).strip() != ty: continue
+                if len([1 for qq, mm in ds if mm.group(3) == x]) != 1: continue
+                rx = re.compile(r"(?<![\w.>])%s\b" % re.escape(x))
+                xo = [r for r in range(o + 1, e) if r != qx and rx.search(body[r])]
+                if not xo or max(xo) >= d0: continue
+                if re.search(r"&\s*%s\b" % re.escape(x), "\n".join(body[o:e])): continue
+                if any(lp < d0 <= loopend[lp] and any(lp <= r <= loopend[lp] for r in xo + [qx]) for lp in loops): continue
+                out.append(("reuse", qy, qx))
+        return out
+
+    def getl_moves(self, L, o, e):
+        out = []
+        for i in range(o + 1, e):
+            l = L[i]; s = strip_strings(l)
+            if s != l.split("//")[0]: continue      # no string literals
+            m = re.match(r"^\s*(?:[A-Za-z_]\w*\s*=(?!=)\s*)?([A-Za-z_][\w:]*)\s*\((.*)\);\s*$", l)
+            if not m or m.group(1) in KW or "hs_g" in l: continue
+            calls = [c for c in CALL.finditer(l) if c.group(1) not in KW and not c.group(1).isupper()]
+            if any(re.search(r"(->|\.)\s*$", l[:c.start()]) for c in calls): continue   # member calls
+            if len(calls) != 2 or calls[0].start() != m.start(1): continue
+            c = calls[1]; en = bal(l, c.end() - 1)
+            if en is None: continue
+            out.append(("getl", i, c.start(), en))
+        return out
+
+    def cfld_moves(self, L, o, e):
+        out = []
+        for i in range(o + 1, e):
+            l = L[i]
+            for mm in re.finditer(r"\b(FLD|LFLD|FIELD)\s*\(", l):
+                en = bal(l, mm.end() - 1)
+                if en is None: continue
+                rest = l[en:]; pre = l[:mm.start()]
+                if re.match(r"\s*([-+*/%|&^]|<<|>>)?=(?!=)|\s*(\+\+|--)|\s*(\.|->|\[)", rest): continue
+                if re.search(r"(\+\+|--|&)\s*$", pre) and not re.search(r"&&\s*$", pre): continue
+                out.append(("cfld", i, mm.start(), en))
+        return out
+
+    @staticmethod
+    def split_args(t):
+        d = 0; st = 0; out = []
+        for k, ch in enumerate(t):
+            if ch in "([": d += 1
+            elif ch in ")]": d -= 1
+            elif ch == "," and d == 0: out.append(t[st:k].strip()); st = k + 1
+        out.append(t[st:].strip())
+        return out
 
     @staticmethod
     def merge_moves(L, ob, end):
@@ -529,6 +754,55 @@ class Gen:
                 if d and d.group(3) == x and not d.group(5):
                     del L[q]; break
             desc = "merge %s into %s ('%s' / '%s')" % (x, y, L[i - 1 if L[i - 1].strip().startswith(y) else i].strip(), mj.group(3))
+        elif kind == "etype":
+            _, q, = m; n = cnt["etype"]; d = is_decl(L[q]); x = d.group(3)
+            T = "HsKind%d" % n; vals = {}
+            rx = re.compile(r"((?<![\w.>])%s\s*=\s*)(%s)(\s*;)" % (re.escape(x), LIT.pattern))
+            def cname(v):
+                k = re.sub(r"[uUlL]+$", "", v); iv = int(k, 0)
+                if iv not in vals: vals[iv] = "HS_KIND%d_%s" % (n, ("M%d" % -iv) if iv < 0 else ("%d" % iv))
+                return vals[iv]
+            # every assignment of x inside the enclosing body (the declaration's own block)
+            hdr, o2, e2 = next(bb for bb in func_bodies(L, self.func) if bb[1] < q < bb[2])
+            for r in range(o2 + 1, e2):
+                L[r] = rx.sub(lambda mm: mm.group(1) + cname(mm.group(2)) + mm.group(3), L[r])
+            if d.group(5):
+                init = d.group(5).split("=", 1)[1].strip()
+                L[q] = "%s%s %s = %s;" % (d.group(1), T, x, cname(init))
+            else:
+                L[q] = "%s%s %s;" % (d.group(1), T, x)
+            L.insert(hdr, "typedef enum { %s } %s;" % (", ".join("%s = %d" % (v, k) for k, v in sorted(vals.items())), T))
+            desc = "etype %s -> enum %s" % (x, T)
+        elif kind == "flag":
+            _, i, nl, x, c, pos = m; ind = re.match(r"\s*", L[i]).group(0)
+            ex = self.as_bool(c, pos)
+            if nl == 1:
+                t = self.tern_split(L[i]); new = "%s%s%s;" % (t[0], t[1], ex)
+            elif x == "return":
+                new = "%sreturn %s;" % (ind, ex)
+            else:
+                new = "%s%s = %s;" % (ind, x, ex)
+            L[i:i + nl] = [new]
+            desc = "flag '%s' at line %d" % (new.strip(), i + 1)
+        elif kind == "reuse":
+            _, qy, qx = m; dy = is_decl(L[qy]); y = dy.group(3); x = is_decl(L[qx]).group(3)
+            b = next((hh, oo, ee) for hh, oo, ee in func_bodies(L, self.func) if oo < qy < ee)
+            for r in range(b[1] + 1, b[2]):
+                if r != qy: L[r] = re.sub(r"(?<![\w.>])%s\b" % re.escape(y), x, L[r])
+            del L[qy]
+            desc = "reuse %s for %s" % (x, y)
+        elif kind == "getl":
+            _, i, s0, e0 = m; n = cnt["getl"]; ex = L[i][s0:e0]; v = "hs_g%d" % n
+            ind = re.match(r"\s*", L[i]).group(0)
+            L[i] = L[i][:s0] + v + L[i][e0:]
+            L.insert(i, ind + "__typeof__(%s) %s = %s;" % (ex, v, ex))
+            desc = "getl %s at line %d" % (ex, i + 1)
+        elif kind == "cfld":
+            _, i, s0, e0 = m; t = L[i][s0:e0]; mac = re.match(r"(\w+)\s*\(", t).group(1)
+            args = self.split_args(t[t.index("(") + 1:-1])
+            if mac == "FIELD": args = [args[2], args[0], args[1]]
+            L[i] = L[i][:s0] + "CFLD(%s)" % ", ".join(args) + L[i][e0:]
+            desc = "cfld %s at line %d" % (t, i + 1)
         elif kind == "late":
             _, k, o = m; x = L.pop(k); ind = re.match(r"\s*", L[o]).group(0) + "    "
             L.insert(o, ind + x.strip())   # o shifted by -1 after pop: insert after the '{' line
@@ -547,7 +821,7 @@ def resolve_types(scorer, text):
     """Replace every `__typeof__(e) v = e;` by the concrete type the compiler reports for e."""
     lines = text.split("\n")
     for i, l in enumerate(lines):
-        m = re.match(r"^(\s*)__typeof__\((.*)\) (hs_n\d+) = (.*);$", l)
+        m = re.match(r"^(\s*)__typeof__\((.*)\) (hs_[ng]\d+) = (.*);$", l)
         if not m: continue
         probe = list(lines)
         probe[i] = m.group(1) + "struct HsProbe { int x; } *hs_probe = &(%s);" % m.group(2)
@@ -581,11 +855,15 @@ def main():
     ap.add_argument("--pair", type=float, default=0.35, help="fraction of neighbours that apply two moves at once")
     ap.add_argument("--patience", type=int, default=6, help="iterations without a new best before a restart")
     ap.add_argument("--kick", type=int, default=3, help="random moves applied on a restart")
-    ap.add_argument("--kinds", default="decl,enum,nl,move,tern,late,merge")
+    ap.add_argument("--kinds", default="decl,enum,nl,move,tern,late,merge,etype,flag,reuse,getl,cfld")
     ap.add_argument("--back", type=int, default=4)
     ap.add_argument("--max-enum", type=int, default=1); ap.add_argument("--max-nl", type=int, default=2)
     ap.add_argument("--max-move", type=int, default=3); ap.add_argument("--max-tern", type=int, default=2)
     ap.add_argument("--max-late", type=int, default=2); ap.add_argument("--max-merge", type=int, default=2)
+    ap.add_argument("--max-etype", type=int, default=1); ap.add_argument("--max-flag", type=int, default=2)
+    ap.add_argument("--max-reuse", type=int, default=2); ap.add_argument("--max-getl", type=int, default=2)
+    ap.add_argument("--max-cfld", type=int, default=2)
+    ap.add_argument("--time", type=float, default=0, help="stop after this many seconds (0: no limit)")
     ap.add_argument("--loose", action="store_true", help="let memory statements cross each other")
     ap.add_argument("--diff", action="store_true", help="print SRC's listing against the ROM, then stop")
     ap.add_argument("--list", action="store_true", help="print the moves available on SRC and their scores, then stop")
@@ -627,6 +905,7 @@ def main():
             if ms2: s2 = gen.apply(s2, rnd.choice(ms2), rnd)
         return s2
     for it in range(a.iters):
+        if a.time and time.time() - t0 > a.time: P("time limit"); break
         cands = []
         for _, st in beam:
             for _ in range(a.sample):

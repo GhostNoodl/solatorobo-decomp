@@ -88,30 +88,33 @@ static inline void Gfx_GetOamShift(const OamShape *sp, u32 *w, u32 *h) {
 // share the shape load's block (x) or follow the x `if` join (y). So the ROM needs a join between
 // the shape read and the x read. Putting the x and y reads (with their `if`s) before the shape
 // read gives the three loads, but the merged block is not rescheduled into the ROM order (229+).
+// Round pmC (honest_search): 105 / 30 (raw / register-masked; was 126 / 62 on its scorer). The x
+// field is read before the size-table reads, `t0` is set by if/else instead of `?:`, and `oy`
+// (dead after `y += oy << 12`) is reused for the bottom texture coordinate (rule F; with a
+// separate `t1` it is 87 / 42). The declaration order is the search's.
 void func_02043100(int x, int y, int z, u32 color, const GfxOamAttr *oam, const GfxOamTex *tex, u32 texBase, u32 plttBase, const void *mtx) {
     int trans[3];
     int scale[3];
     const GfxOamBits *o = (const GfxOamBits *)oam;
-    OamShape shape;
+    u32 pal;
     int ox;
     u16 name;
-    int h;
+    u32 addr;
     int w;
     int oy;
-    u32 addr;
     int fmt;
+    int h;
     int s1;
     int t0;
-    int t1;
     int s0;
-    u32 pal;
+    OamShape shape;
     u32 ws;
     u32 hs;
     shape = oam->attr01 & 0xc000c000;
     name = o->charNo;
+    ox = o->x;
     h = data_02075614[(shape & 0xc000) >> 14][(shape & 0xc0000000) >> 30];
     w = data_0207562c[(shape & 0xc000) >> 14][(shape & 0xc0000000) >> 30];
-    ox = o->x;
     if (ox > 0xff) {
         ox |= ~0xff;
     }
@@ -131,17 +134,21 @@ void func_02043100(int x, int y, int z, u32 color, const GfxOamAttr *oam, const 
     Gfx_GetOamShift(&shape, &ws, &hs);
     G3_Cmd1(0x2a, (tex->fmt << 26) | (addr >> 3) | 0x40000000 | (ws << 20) | (hs << 23) | (tex->unk_10 << 29));
     s0 = 0;
-    t0 = y < 0 ? 0 : 0x800;
+    if (y < 0) {
+        t0 = 0;
+    } else {
+        t0 = 0x800;
+    }
     s1 = w << 12;
     if (o->flipH) {
         s1 = -0x800;
         s0 = (w << 12) - 0x800;
     }
-    t1 = t0 + (h << 12);
+    oy = t0 + (h << 12);
     if (o->flipV) {
         int tmp = t0;
-        t0 = t1 - 0x1000;
-        t1 = tmp - 0x1000;
+        t0 = oy - 0x1000;
+        oy = tmp - 0x1000;
     }
     fmt = data_02082884[o->colorMode];
     if (tex->extPltt != 0) {
@@ -165,9 +172,9 @@ void func_02043100(int x, int y, int z, u32 color, const GfxOamAttr *oam, const 
     }
     G3_Cmd1(0x20, color);
     G3_Cmd1(0x40, 1);
-    G3_TexCoord(s0, t1);
+    G3_TexCoord(s0, oy);
     G3_Vtx(0, 0x1000, 0);
-    G3_TexCoord(s1, t1);
+    G3_TexCoord(s1, oy);
     G3_VtxXY(0x1000, 0x1000);
     G3_TexCoord(s1, t0);
     G3_VtxXY(0x1000, 0);
