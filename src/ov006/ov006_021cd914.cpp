@@ -49,7 +49,6 @@ static inline u32 ov006_RecordIdx(void) {
 }
 
 void func_ov006_021cd914(int type, void *obj, int arg) {
-    s32 noIdx;
     ov006_Slot *slot;
     switch (type) {
     case 1:
@@ -97,12 +96,8 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
         }
         break;
     case 7: {
-        noIdx = 0xffff;
-        if ((u32)type & 3) {
-            noIdx = 0xffff;
-        }
+        u32 idx = 0xffff;
         u16 v = 0x2a30;
-        u32 idx = noIdx;
         switch (data_ov006_021ec860->unk14) {
         case 2:
             idx = 3;

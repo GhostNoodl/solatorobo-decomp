@@ -1013,7 +1013,6 @@ static inline void Bec8_S14(Ov012Actor *self, Ov012Actor *pl) {
 }
 
 static inline void Bec8_S1e(Ov012Actor *self) {
-    s32 kz;
     Ov012Vec d2;
     Ov012Sub40 *s;
     d2.x = FLD(s32, self, 0xf4) - self->pos.x;
@@ -1029,20 +1028,16 @@ static inline void Bec8_S1e(Ov012Actor *self) {
     if (FLD(u32, self, 0x10c) & 0x400000) {
         FLD(u32, self, 0x10c) ^= 0x400000;
     }
-    kz = 0;
-    if ((u32)self & 3) {
-        kz = 0;
-    }
-    FLD(u8, self, 0x110) = kz;
     if (FLD(u32, self, 0x10c) & 0x100000) {
         FLD(u32, self, 0x10c) ^= 0x100000;
     }
-    FLD(u8, self, 0x137) = kz;
     if (FLD(u32, self, 0x10c) & 0x200000) {
         FLD(u32, self, 0x10c) ^= 0x200000;
     }
+    FLD(u8, self, 0x110) = 0;
+    FLD(u8, self, 0x137) = 0;
     FLD(u32, self, 0x10c) |= 1;
-    func_ov000_02198360(self->unk_40, 1, kz);
+    func_ov000_02198360(self->unk_40, 1, 0);
 }
 
 void func_ov012_021fbec8(Ov012Actor *self) {
