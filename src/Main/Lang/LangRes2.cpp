@@ -16,7 +16,7 @@ struct LangRes2 {
     virtual void unk_vf20();
     virtual void Open(char *arcName, char *name);
     virtual void unk_vf28();
-    virtual void Load();
+    virtual BOOL Load();
     virtual void unk_vf30();
     virtual BOOL IsLoaded();
     /* 0x04 */ char arcName[0x20];
@@ -96,8 +96,8 @@ void func_0206fa70(void) {
     data_02097dd0->cur = saved;
 }
 
-void func_0206facc(void) {
-    data_0214b160.res->Load();
+BOOL func_0206facc(void) {
+    return data_0214b160.res->Load();
 }
 
 

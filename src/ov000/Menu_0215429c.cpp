@@ -11,13 +11,13 @@ void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
-void STD_CopyString(void *dst, void *src);
+void *STD_CopyString(void *dst, void *src);
 extern void *data_0208cc88;
 extern void *data_0208cc94;
 void func_02041c5c(void *m, void *fn);
 void func_02041c20(void *m, s32 a, void *b);
-void *func_ov000_021540b0(void);
-void *func_ov000_02154128(void);
+void *func_ov000_021540b0(void *self, u16 *msg, void *g, u16 *count);
+void *func_ov000_02154128(u8 *self, void *req, void *buf, u16 *count);
 
 class Model0215429c {
 public:

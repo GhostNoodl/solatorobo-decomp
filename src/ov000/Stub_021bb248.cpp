@@ -23,7 +23,7 @@ typedef struct {
 extern "C" {
 
 extern u8 *const data_02097d48;
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 
 void func_ov000_021bb248(Obj021bb248 *self) {
     Sub021bb248 *sub = self->unk_b0;

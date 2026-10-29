@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 struct Ov003Vec {
     s32 x;
@@ -137,7 +138,6 @@ extern Ov003Res *func_ov000_0218e9c4(void *p);
 extern Ov003Shadow *func_ov000_021919c8(void *p);
 extern void func_ov000_02191b70(Ov003Shadow *p);
 extern BOOL func_ov000_02191b9c(Ov003Shadow *p);
-extern void STD_CopyString(char *dst, const char *src);
 extern BOOL func_ov000_0218f110(s16 *p);
 extern Ov003Save *data_0214a424;
 extern char data_ov003_021fa662[];

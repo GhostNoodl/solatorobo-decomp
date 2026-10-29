@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "nitro/std.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -16,8 +17,6 @@ void func_02070b98(s32 a, void *out, s32 b, s32 c);
 void func_020359fc(void *a, void *b, s32 c, s32 d);
 void func_0205a6a0(void *res);
 void func_0205a840(void *res, char *name, char *path);
-void STD_CopyString(char *dst, const char *src);
-void STD_ConcatenateString(char *dst, const char *src);
 
 void func_ov000_0214e7f0(u8 *self) {
     u8 b[0x10];

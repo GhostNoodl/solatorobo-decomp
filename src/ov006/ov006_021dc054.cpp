@@ -50,7 +50,7 @@ typedef struct ov006_ModelFlags {
 extern "C" {
 
 extern u8 *data_02097d48;
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 
 BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 void func_ov006_021dbbac(void *p);

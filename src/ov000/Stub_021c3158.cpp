@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -39,7 +40,7 @@ extern "C" {
 
 extern char data_ov000_021cc9d3[];
 extern char data_ov000_021cc9dc[];
-void func_ov000_021c8408(void);
+void func_ov000_021c8408(void *self, int x, int y, int z, u16 color, const void *oam, const void *tex, u32 texBase, u32 plttBase, const void *mtx, u32 arg);
 void func_ov000_021c2f90(Obj021c3158 *self);
 BOOL func_02054f10(void *m, u32 a);
 void func_020359fc(const char *arc, const char *name, s32 a, s32 b);
@@ -49,7 +50,6 @@ void *func_02034d88(void *a, const char *name);
 void *func_0203dd9c(u32 size);
 void func_02041218(void *p);
 void func_02041440(void *m, const char *name, s32 a);
-void STD_CopyString(char *dst, const char *src);
 void func_020417e0(void *m, void *res);
 void func_02041d9c(void *m, s32 a, u16 b);
 s32 FX_Div(s32 n, s32 d);

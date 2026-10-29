@@ -442,7 +442,7 @@ static inline void Ov007_FreePage(Ov007Scene *s) {
 }
 
 extern "C" {
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 void func_ov007_021cdff0(void *task);
 void func_ov007_021cd58c(void *task, Ov007Scene *s);
 }

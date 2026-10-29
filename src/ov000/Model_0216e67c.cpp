@@ -28,7 +28,7 @@ void *func_02034d88(void *a, void *b);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
 void func_02041c34(void *model, s32 a, void *cb, void *arg);
-void *func_ov000_0216d5b0(void);
+void *func_ov000_0216d5b0(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 void func_ov000_0216e67c(u8 *self) {
     void *res;

@@ -73,11 +73,11 @@ void func_ov015_02210b58(u8 *self) {
     }
 }
 
-void func_ov015_02210bd8(u8 *self) {
+int func_ov015_02210bd8(u8 *self) {
     if (FLD(u8, self, 0x9) == 0) {
         func_020359fc(data_0208cca0, data_0208cb74, 2, 0);
     }
-    func_02035bd4(data_0208cca0, data_0208cb74, 2);
+    return func_02035bd4(data_0208cca0, data_0208cb74, 2);
 }
 
 BOOL func_ov015_02210c28(void) {

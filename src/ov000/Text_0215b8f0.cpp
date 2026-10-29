@@ -9,7 +9,7 @@ typedef struct {
 
 extern "C" {
 extern u8 *data_02097d48;
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 void func_ov000_02153c48(void *node, void *a, s32 b, s32 c, s32 d);
 
 void func_ov000_0215b8f0(VObj *self, s32 unused, VecFx32 *pos) {

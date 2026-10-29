@@ -1,4 +1,5 @@
 #include "nitro/fx.h"
+#include "nitro/std.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -37,7 +38,6 @@ BOOL func_ov000_0218ffdc(u8 *m, u8 *o, s32 a, s32 b);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_ov000_02190a80(void *a, s32 b);
-void STD_CopyString(char *dst, const char *src);
 void func_02040578(u16 *out, VecFx32 *dir);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 

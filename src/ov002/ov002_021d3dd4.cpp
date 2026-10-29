@@ -3,7 +3,7 @@
 extern "C" {
 
 void func_ov002_021d3dd4(void *self) {
-    func_ov000_021763c8(self);
+    func_ov000_021763c8();
 }
 
 bool func_ov002_021d3de0(void) {

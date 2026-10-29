@@ -12,16 +12,17 @@ typedef Ov013Vec VecFx32;
 // MWCC does not merge with the first read).
 struct Ov013Rot { u16 x, y, z; };
 struct Ov013Spot { VecFx32 pos; u16 rot; };
-struct Ov013SpotBlock { char name[16]; void (*fn[6])(void); Ov013Spot far[4]; };
+typedef void (*Ov013Fn)(void);
+struct Ov013SpotBlock { char name[16]; Ov013Fn fn[6]; Ov013Spot far[4]; };
 
 extern "C" {
 
 void func_ov013_02204450(void);
-void func_ov013_021fed50(void);
-void func_ov013_02204448(void);
+void *func_ov013_021fed50(void *self);
+BOOL func_ov013_02204448(void);
 void func_ov013_02204444(void);
-void func_ov013_0220428c(void);
-void func_ov013_022043f8(void);
+void func_ov013_0220428c(void *self);
+void func_ov013_022043f8(void *self, u32 *p);
 
 extern const s32 data_ov013_0220aedc;
 extern const s32 data_ov013_0220aef8;
@@ -76,7 +77,7 @@ const VecFx32 data_ov013_0220af40[2] = {{0, 0x2000, -0x2666}, {-0x14d1, 0x4cd, 0
 const char *const data_ov013_0220aefc = data_ov013_0220b8c0;
 char data_ov013_0220b8f0[] = "ef/effect3dhsn";
 const char *const data_ov013_0220aee0 = data_ov013_0220b89c;
-const Ov013SpotBlock data_ov013_0220b930 = {"SHR2", {func_ov013_02204450, func_ov013_021fed50, func_ov013_02204448, func_ov013_02204444, func_ov013_0220428c, func_ov013_022043f8}, {{data_ov013_0220afa0, 0xde4e}, {data_ov013_0220afac, 0x1b00}, {data_ov013_0220afb8, 0xaa65}, {data_ov013_0220afc4, 0x6b00}}};
+const Ov013SpotBlock data_ov013_0220b930 = {"SHR2", {(Ov013Fn)func_ov013_02204450, (Ov013Fn)func_ov013_021fed50, (Ov013Fn)func_ov013_02204448, (Ov013Fn)func_ov013_02204444, (Ov013Fn)func_ov013_0220428c, (Ov013Fn)func_ov013_022043f8}, {{data_ov013_0220afa0, 0xde4e}, {data_ov013_0220afac, 0x1b00}, {data_ov013_0220afb8, 0xaa65}, {data_ov013_0220afc4, 0x6b00}}};
 const char *const data_ov013_0220aef4 = data_ov013_0220b8ae;
 char data_ov013_0220b8b4[] = "att01";
 const char *const data_ov013_0220aee8 = data_ov013_0220b8e4;
@@ -157,16 +158,16 @@ struct Ov013Opt124 {
 
 extern const u8 data_ov003_021f4340;
 extern u8 data_ov013_0220b150[];
-extern void func_ov003_021cf330(void *p, const char *name, u8 a);
+extern int func_ov003_021cf330(void *p, const char *name, u8 a);
 extern void func_0203f324(Ov013Sub48 *p);
-extern void func_ov003_021d8f4c(void *p);
+extern BOOL func_ov003_021d8f4c(void *p);
 extern void func_ov003_021d95e8(void *p, void *tbl, s32 n);
 extern Ov013Actor *func_ov000_0219bf90(void);
-extern void func_ov003_021d8980(void *p);
+extern BOOL func_ov003_021d8980(void *p);
 extern void func_ov003_021d8a30(void *p, s32 a, void *b);
-extern void func_ov013_02204428(void);
+extern void func_ov013_02204428(void *dst, const void *src, void *owner);
 extern void *func_ov000_02190a30(void *a, s32 b);
-extern void func_ov000_0218fa28(void *a, void *b, void *c, void *d, const char *e, s32 f, s32 g);
+extern BOOL func_ov000_0218fa28(void *a, void *b, void *c, void *d, const char *e, s32 f, s32 g);
 extern void func_ov000_021bd228(void *p);
 extern BOOL func_020621c4(void);
 extern void func_ov003_021d6bac(Ov013Actor *self, const void *p);

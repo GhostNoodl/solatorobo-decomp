@@ -1,10 +1,10 @@
 #include "ov010/ov010.h"
+#include "nitro/std.h"
 
 extern "C" {
 
 extern const Ov010Vec data_ov010_0220fa88;
 extern const char *const data_ov010_0220ebc0[];
-extern s32 STD_CompareString(const char *a, const char *b);
 
 Ov010Vec func_ov010_021fa6a0(const char *name) {
     Ov010Vec v = data_ov010_0220fa88;

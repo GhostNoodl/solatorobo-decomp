@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void STD_ConcatenateString(char *dst, const char *src);
+void *STD_ConcatenateString(char *dst, const char *src);
 
 void func_ov002_021d36b8(void *self, s32 n) {
     char num[4];

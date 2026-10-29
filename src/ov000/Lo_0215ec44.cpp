@@ -1,8 +1,8 @@
 #include "ov000/LoCommon.h"
+#include "nitro/std.h"
 
 extern "C" {
 
-int STD_CopyLString(void *dst, const void *src, s32 n);
 
 static inline void LoInitEC44(void *self) {
     LFLD(s32, self, 0x0) = 0;
@@ -75,7 +75,7 @@ extern u16 data_02fe0158[];
 extern u16 data_02fe0164[];
 extern u16 data_02fe0170[];
 extern u16 data_02fe017c[];
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
 static inline void G3_Vec(int cmd, int x, int y, int z) {

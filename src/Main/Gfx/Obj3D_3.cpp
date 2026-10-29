@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern int func_02043d48(void *obj);
+extern u8 func_02043d48(void *obj);
 extern s8 data_02149ef4;
 
 void func_02051f3c(Obj3DLayer *layer, u32 v);
@@ -15,7 +15,7 @@ s32 func_020534c4(s32 x) {
     return x & ~0xfff;
 }
 
-s32 func_020534d4(void) {
+s32 func_020534d4(void *scene) {
     return 0;
 }
 

@@ -138,14 +138,14 @@ Ov003FlagObj *func_ov003_021cf300(Ov003FlagObj *self) {
     return self;
 }
 
-int func_ov003_021cf330() {
+int func_ov003_021cf330(void *self, const char *name, void *arg) {
     return 1;
 }
 
 void func_ov003_021cf338() {
 }
 
-void func_ov003_021cf33c() {
+void func_ov003_021cf33c(void *self, void *arg) {
 }
 
 void func_ov003_021cf340(const char *str) {
@@ -170,14 +170,14 @@ void func_ov003_021cf39c(void *self, const char *str) {
     STD_CopyLString(buf, str, STD_GetStringLength(str) + 1);
 }
 
-void func_ov003_021cf3fc() {
+void func_ov003_021cf3fc(s32 flag) {
 }
 
-void func_ov003_021cf400() {
+void func_ov003_021cf400(s32 flag) {
 }
 
 #pragma force_active on
-void func_ov003_021cf404() {
+void func_ov003_021cf404(s32 flag) {
 }
 #pragma force_active reset
 

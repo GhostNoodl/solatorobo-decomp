@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "nitro/std.h"
 
 extern "C" {
 
@@ -13,7 +14,6 @@ void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 u8 *func_ov000_0219bf90(void);
 void func_ov000_021b4774(void *p);
 char *func_02061f08(u16 id);
-char *STD_SearchString(const char *s, const char *t);
 int func_02060898(u16 a, s32 b, s32 c);
 void func_ov000_021837f8(void *p, u16 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 

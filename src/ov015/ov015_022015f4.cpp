@@ -127,14 +127,14 @@ s32 func_ov000_0218f110(void *a);
 BOOL func_ov015_0220947c(u8 *self);
 void func_0206e900(char *buf, const char *name);
 void *func_020359d0(void *a, int b, int c);
-BOOL func_ov015_02210bd8(u8 *self);
+int func_ov015_02210bd8(u8 *self);
 BOOL func_ov015_02207adc(u8 *self);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 BOOL func_ov015_02209500(u8 *self);
 s32 func_ov015_021fb474(u8 *self);
-BOOL func_ov015_02210c28(u8 *self);
+BOOL func_ov015_02210c28(void);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_02049de8(void *a, s32 b);
 void func_ov000_02190a80(void *a, s32 b);
@@ -302,7 +302,7 @@ BOOL func_ov015_0220182c(u8 *self) {
         }
         func_ov015_021fb474(FLD(u8 *, self, 0x28));
         if (FLD(u8 *, self, 0x90) != NULL) {
-            func_ov015_02210c28(FLD(u8 *, self, 0x90));
+            func_ov015_02210c28();
         }
         FLD(u8, data_0214a420, 0x10) = 1;
         func_ov015_021fa71c((Ov015Fade *)func_ov015_021fa6d0(), 0x1e000, 0);

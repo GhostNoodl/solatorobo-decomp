@@ -15,7 +15,7 @@ typedef struct {
 
 extern void *data_ov000_021ccd54;
 extern u8 *data_02097d48;
-void *func_ov000_0219bf90(void *self);
+void *func_ov000_0219bf90(void);
 void VEC_Add(void *a, void *b, void *c);
 BOOL func_0203dc9c(void *a, s32 b);
 void func_ov000_0216c018(void *self);
@@ -83,7 +83,7 @@ s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
 void func_ov000_0216bae4(void *p, s32 b);
 u8 *func_02066c58(void);
-void func_ov000_0216bf18(void);
+void func_ov000_0216bf18(void *self);
 
 static inline LoText0216c018 *NewText0216c018(void) {
     LoText0216c018 *t = (LoText0216c018 *)func_0203dd9c(0xb8);

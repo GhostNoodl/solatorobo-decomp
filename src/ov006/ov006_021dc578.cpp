@@ -26,7 +26,7 @@ extern "C" {
 
 extern u8 *data_02097d48;
 BOOL func_02054f10(void *a, int b);
-int func_02043d48(void *a);
+u8 func_02043d48(void *a);
 
 static inline void ov006_Model_SetPolyId(ov006_Model *m, int id) {
     ((ov006_ModelFlags *)&m->unk6C)->polyId = id;

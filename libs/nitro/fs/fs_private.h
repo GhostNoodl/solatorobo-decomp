@@ -2,6 +2,7 @@
 #define FS_PRIVATE_H
 
 #include "nitro/os.h"
+#include "nitro/std.h"
 #include "nitro/mi.h"
 
 typedef u32 FSResult;
@@ -341,9 +342,6 @@ static inline int FSi_IncrementSjisPosition(const char *str, int pos) {
     return pos + 1 + STD_IsSjisLeadByte(str[pos]);
 }
 
-int STD_CompareNString(const char *str1, const char *str2, int len);
-int STD_CopyLString(char *dst, const char *src, int len);
-int STD_GetStringLength(const char *str);
 void OS_Terminate(void);
 BOOL OS_IsRunOnTwl(void);
 u16 OS_GetBootType(void);

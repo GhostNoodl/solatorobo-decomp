@@ -1186,7 +1186,7 @@ namespace m_StageRes {
 
 extern "C" {
 
-void func_0205a69c(void) {
+void func_0205a69c(void *p) {
 }
 
 void func_0205a6a0(StageRes *res) {

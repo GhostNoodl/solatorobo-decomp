@@ -41,8 +41,8 @@ char *func_0204c0e8(MsgRes *res, s32 idx) {
     return res->strings + (res->entries[idx] & ~0xff000000);
 }
 
-void func_0204c100(void) {
-    MSG_RES->unk_vf2c();
+BOOL func_0204c100(void) {
+    return MSG_RES->Load();
 }
 
 BOOL func_0204c120(void) {

@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "nitro/std.h"
 
 typedef void (*VFunc02182190)(void);
 
@@ -34,8 +35,6 @@ void *func_0203dd9c(u32 size);
 void func_0205a6a0(Widget02182190 *w);
 void func_0205a840(Widget02182190 *w, char *path, char *name);
 int func_0200779c(char *dst, const char *fmt, ...);
-void STD_CopyString(char *dst, const char *src);
-void STD_ConcatenateString(char *dst, const char *src);
 
 void func_ov000_02182190(Panel02182190 *self, u16 id, u16 order, u16 c, u16 d, u16 e, u16 f) {
     char path[0x20];

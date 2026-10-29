@@ -15,7 +15,7 @@ typedef struct {
 
 extern void *data_ov000_021ccd54;
 extern u8 *data_02097d48;
-void *func_ov000_0219bf90(void *self);
+void *func_ov000_0219bf90(void);
 void VEC_Add(void *a, void *b, void *c);
 BOOL func_0203dc9c(void *a, s32 b);
 void func_ov000_0216c018(void *self);
@@ -26,7 +26,7 @@ void MI_CpuFill8(void *dst, s32 v, s32 size);
 void func_ov000_0216bcbc(void *self);
 
 void func_ov000_02168700(void *self) {
-    void *p = func_ov000_0219bf90(self);
+    void *p = func_ov000_0219bf90();
     if (p == NULL) {
         return;
     }

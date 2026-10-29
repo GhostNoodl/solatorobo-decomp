@@ -86,8 +86,8 @@ struct Ov010Toggle {
 
 extern "C" {
 
-void func_ov010_021fa740(void);
-void func_ov010_021fa6a0(void);
+Ov010Vec func_ov010_021fa740(const char *name);
+Ov010Vec func_ov010_021fa6a0(const char *name);
 
 
 extern const s32 data_ov010_0220ebc0;
@@ -186,7 +186,7 @@ const Ov010Rot data_ov010_0220ebf0 = {0x0, 0xbfff, 0x0};
 const Ov010Rot data_ov010_0220ebf6 = {0xfc0d, 0x53f4, 0x0};
 const Ov010Rot data_ov010_0220ebfc = {0xfb19, 0x8000, 0x0};
 const s16 data_ov010_0220ec02[4] = {0x1800, 0x1800, 0x1800, 0x1800};
-Ov010Fn const data_ov010_0220ec0c[2] = {func_ov010_021fa740, func_ov010_021fa6a0};
+Ov010Fn const data_ov010_0220ec0c[2] = {(Ov010Fn)func_ov010_021fa740, (Ov010Fn)func_ov010_021fa6a0};
 const Ov010Vec data_ov010_0220ec14 = {0x0, -0x1000, 0x0};
 const Ov010Vec data_ov010_0220ec20 = {0x0, 0x0, 0x0};
 const Ov010Vec data_ov010_0220ec2c = {0x0, 0x1000, 0x0};

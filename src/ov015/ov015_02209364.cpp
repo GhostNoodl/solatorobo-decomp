@@ -1,8 +1,8 @@
 #include "ov015/ov015.h"
+#include "nitro/std.h"
 
 extern "C" {
 
-void STD_CopyString(char *dst, const char *src);
 
 struct Ov015Names {
     u16 unk_00;

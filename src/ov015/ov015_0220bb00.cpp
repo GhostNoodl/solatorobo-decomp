@@ -166,7 +166,7 @@ BOOL func_ov015_0220c1b8(u8 *self, u8 *p) {
 }
 
 
-BOOL func_ov015_0220c810(u8 *self, u8 *p);
+BOOL func_ov015_0220c810(u8 *self);
 void func_ov015_0220c6c8(u8 *self, u8 *p);
 s32 func_02040498(s32 n);
 void func_ov000_02191618(void *a);
@@ -180,7 +180,7 @@ BOOL func_ov015_0220c21c(u8 *self, u8 *p) {
     s32 t;
     s32 v;
     FLD(u8 *, self, 0x18) = p;
-    if (FLD(s32, self, 0x4) != 0 && FLD(s32, self, 0x4) != 5 && !func_ov015_0220c810(self, p)) {
+    if (FLD(s32, self, 0x4) != 0 && FLD(s32, self, 0x4) != 5 && !func_ov015_0220c810(self)) {
         FLD(s32, self, 0x4) = 5;
         FLD(s32, self, 0x8) = 0x5a;
         func_ov000_02190cb0(p + 0x244, data_ov015_02212e74, 0x19a, 0);

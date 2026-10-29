@@ -41,7 +41,7 @@ NamePool *data_02097dd8;
 u32 data_02097dd4;
 NamePool *data_02097de4;
 extern u32 OS_DisableInterrupts(void);
-extern void OS_RestoreInterrupts(u32 state);
+extern u32 OS_RestoreInterrupts(u32 state);
 extern void *NNS_FndAllocFromExpHeapEx(void *heap, u32 size, u32 align);
 extern void MI_CpuFill8(void *dst, u32 value, u32 size);
 void func_0203e300(NamePool *pool, int count);

@@ -1,6 +1,8 @@
 // DSProtect (anti-piracy middleware), hand-written assembly: self-checksumming stubs whose
 // trailing words are relocated pointers/keys, so they are emitted as dcd.
 
+#include "types.h"
+
 #pragma force_active on
 
 void func_ov004_021cd6e0(void);
@@ -14,14 +16,14 @@ extern char func_ov004_021cdc6c[];
 extern char func_ov004_021cde0c[];
 extern char func_ov004_021cdfac[];
 extern char func_ov004_021ce14c[];
-void func_ov004_021ce574(void);
-void func_ov004_021ce2ec(void);
-void func_ov004_021ce374(void);
-void func_ov004_021ce3fc(void);
+void func_ov004_021ce574(u32 *t);
+BOOL func_ov004_021ce2ec(u32 addr, s32 arg);
+BOOL func_ov004_021ce374(u32 addr, s32 arg);
+BOOL func_ov004_021ce3fc(u32 addr, s32 arg);
 void func_ov004_021ce484(void);
 void func_ov004_021ce50c(void);
 
-asm void func_ov004_021ce2ec(void) {
+asm BOOL func_ov004_021ce2ec(u32 addr, s32 arg) {
     orr r12, pc, pc
     ands r12, r12, r12
     moveq r12, #0
@@ -59,7 +61,7 @@ asm void func_ov004_021ce2ec(void) {
     dcd func_ov004_021ce7d8+0x68000000
 }
 
-asm void func_ov004_021ce374(void) {
+asm BOOL func_ov004_021ce374(u32 addr, s32 arg) {
     orr r12, pc, pc
     ands r12, r12, r12
     moveq r12, #0
@@ -97,7 +99,7 @@ asm void func_ov004_021ce374(void) {
     dcd func_ov004_021ce7d8+0x68000000
 }
 
-asm void func_ov004_021ce3fc(void) {
+asm BOOL func_ov004_021ce3fc(u32 addr, s32 arg) {
     orr r12, pc, pc
     ands r12, r12, r12
     moveq r12, #0

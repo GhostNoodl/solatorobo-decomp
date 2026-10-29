@@ -79,7 +79,7 @@ void func_ov002_021cceb4(Unk021cceb4 *self) {
     }
 }
 
-void func_ov002_021cd068(void) {
+void func_ov002_021cd068(void *self) {
 }
 
 Task50 *func_ov002_021cd06c(void) {

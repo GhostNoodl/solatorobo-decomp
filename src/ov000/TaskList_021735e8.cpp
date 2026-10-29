@@ -126,7 +126,7 @@ VObj *func_ov000_02173824(void) {
 }
 
 void func_ov000_0217388c(void *a) {
-    func_ov000_0214c1ac(a);
+    func_ov000_0214c1ac();
 }
 
 BOOL func_ov000_02173898(void) {

@@ -30,7 +30,7 @@ extern Mgr021854d4 *data_ov000_021ccd30;
 extern Data021ccd50 data_ov000_021ccd50;
 void func_ov000_02172218(Mgr021854d4 *p);
 
-void func_ov000_0218547c(void) {
+void func_ov000_0218547c(void *state, u16 arg, void *res, u16 id) {
     func_ov000_02172218(data_ov000_021ccd30);
     CmdQueue_Push(data_ov000_021ccd50.unk_04, 0x11, 0);
 }

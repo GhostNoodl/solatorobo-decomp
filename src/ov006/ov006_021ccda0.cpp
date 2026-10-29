@@ -54,7 +54,7 @@ void *func_ov006_021ccdc8(void *self) {
     return self;
 }
 
-void func_ov006_021ccddc(void) {
+void func_ov006_021ccddc(void *self) {
 }
 
 int func_ov006_021ccde0(void) {

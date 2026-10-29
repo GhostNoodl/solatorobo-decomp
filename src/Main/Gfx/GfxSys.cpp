@@ -168,10 +168,10 @@ extern void GX_SetBankForBG(int a);
 extern void GX_SetBankForSubBG(int a);
 extern void GX_SetBankForSubOBJ(int a);
 extern void func_02039c54(GfxMgr *mgr, int state);
-extern u32 func_0203e8e0(void);
-extern int func_0203ea00(void);
-extern u32 func_0203ea6c(void);
-extern int func_0203eb8c(void);
+extern u32 func_0203e8e0(u32 size, int is4x4, int opt);
+extern int func_0203ea00(u32 key);
+extern u32 func_0203ea6c(u32 size, int is4pltt, int opt);
+extern int func_0203eb8c(u32 key);
 extern void *NNS_GfdDefaultFuncAllocTexVram;
 extern void *NNS_GfdDefaultFuncFreeTexVram;
 extern void *NNS_GfdDefaultFuncAllocPlttVram;
@@ -254,7 +254,7 @@ static inline int FX_Mul(int a, int b) {
 extern "C" {
 
 extern void func_0203d040(int v);
-extern int func_02043d48(void *obj);
+extern u8 func_02043d48(void *obj);
 extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void func_02043db4(int a, int b, int c, int d);
 

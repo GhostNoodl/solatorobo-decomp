@@ -32,7 +32,7 @@ typedef struct {
 extern "C" {
 
 extern Data021b1fac *data_0214a424;
-void func_ov000_021b209c(Robo021b1fac *self, BOOL a);
+void func_ov000_021b209c(Robo021b1fac *self);
 void func_ov000_0218dbe0(Robo021b1fac *self, s32 a);
 void func_ov000_021987b8(Sub021b1fac *p, s32 a, s32 b, s32 c);
 
@@ -40,7 +40,7 @@ void func_ov000_021b1fac(Robo021b1fac *self, BOOL a, s32 b) {
     s32 ox;
     s32 oz;
     if (self->unk_b24_12) {
-        func_ov000_021b209c(self, a);
+        func_ov000_021b209c(self);
         return;
     }
     ox = self->unk_70;

@@ -32,54 +32,61 @@ struct Ov000ScpNames {
     const char *photoA;
 };
 
+struct ResHandle;
+struct StageRes;
+struct VObj;
+struct CmdObj;
+struct CmdEx;
+struct Obj02181efc;
+
 extern "C" {
-void func_02038504(void);
-void func_02038520(void);
-void func_02038638(void);
-void func_02038a10(void);
-void func_02038b0c(void);
-void func_02038b48(void);
-void func_02038b88(void);
-void func_02038c14(void);
-void func_02038ca0(void);
-void func_02038dbc(void);
-void func_020396d4(void);
-void func_020396e8(void);
-void func_0205b588(void);
-void func_0205b68c(void);
-void func_0205b8dc(void);
-void func_ov000_02181ab0(void);
-void func_ov000_02181efc(void);
-void func_ov000_02182cb8(void);
-void func_ov000_021833d8(void);
-void func_ov000_021834c4(void);
-void func_ov000_021835f4(void);
-void func_ov000_02183880(void);
-void func_ov000_02183a10(void);
-void func_ov000_02183db8(void);
-void func_ov000_021845cc(void);
-void func_ov000_02184810(void);
-void func_ov000_02184924(void);
-void func_ov000_02184be8(void);
-void func_ov000_02184dc8(void);
-void func_ov000_02184f20(void);
-void func_ov000_021855a4(void);
-void func_ov000_021859c4(void);
-void func_ov000_021862b0(void);
-void func_ov000_021866d0(void);
-void func_ov000_02186a24(void);
-void func_ov000_02186c88(void);
-void func_ov000_02186df4(void);
-void func_ov000_0218722c(void);
-void func_ov000_02187420(void);
-void func_ov000_02187660(void);
-void func_ov000_021878c8(void);
-void func_ov000_02187a58(void);
-void func_ov000_02187b88(void);
-void func_ov000_0218819c(void);
-void func_ov000_02188438(void);
-void func_ov000_0218867c(void);
-void func_ov000_02189a38(void);
+void func_02038504(ResHandle *handle);
+void func_02038520(ResHandle *handle);
+void func_02038638(ResHandle *handle, const char *name);
+void func_02038a10(ResHandle *handle, const char *arcName, const char *name);
+void func_02038b0c(ResHandle *handle, const char *name);
+void func_02038b48(ResHandle *handle, const char *name);
+void func_02038b88(ResHandle *handle, const char *arcName, const char *name);
+void func_02038c14(ResHandle *handle, const char *arcName, const char *name);
+BOOL func_02038ca0(ResHandle *handle);
+void *func_02038dbc(ResHandle *handle);
+BOOL func_020396d4(ResHandle *handle);
+BOOL func_020396e8(ResHandle *handle);
+u16 func_0205b588(StageRes *res, u16 *cmd);
+u16 func_0205b68c(StageRes *res, u16 *cmd, BOOL set, u16 value);
+u16 func_0205b8dc(StageRes *res, u16 *cmd);
+VObj *func_ov000_02181ab0(VObj *self);
+s32 func_ov000_02181efc(Obj02181efc *self, s32 a);
+s32 func_ov000_02182cb8(CmdEx *self);
+s32 func_ov000_021833d8(CmdObj *self);
+s32 func_ov000_021834c4(CmdObj *self);
+s32 func_ov000_021835f4(CmdObj *self);
+s32 func_ov000_02183880(CmdObj *self);
+s32 func_ov000_02183a10(CmdEx *self);
+s32 func_ov000_02183db8(CmdEx *self);
+s32 func_ov000_021845cc(CmdObj *self);
+s32 func_ov000_02184810(CmdObj *self);
+s32 func_ov000_02184924(CmdObj *self);
+s32 func_ov000_02184be8(CmdObj *self);
+s32 func_ov000_02184dc8(CmdObj *self);
+s32 func_ov000_02184f20(CmdEx *self);
+s32 func_ov000_021855a4(CmdObj *self);
+s32 func_ov000_021859c4(CmdObj *self);
+s32 func_ov000_021862b0(CmdObj *self);
+s32 func_ov000_021866d0(CmdObj *self);
+s32 func_ov000_02186a24(CmdObj *self);
+s32 func_ov000_02186c88(CmdObj *self);
+s32 func_ov000_02186df4(CmdObj *self);
+s32 func_ov000_0218722c(CmdObj *self);
+s32 func_ov000_02187420(CmdObj *self);
+s32 func_ov000_02187660(CmdObj *self);
+s32 func_ov000_021878c8(CmdObj *self);
+s32 func_ov000_02187a58(CmdObj *self);
+s32 func_ov000_02187b88(CmdEx *self);
+s32 func_ov000_0218819c(CmdObj *self);
+s32 func_ov000_02188438(CmdObj *self);
+s32 func_ov000_0218867c(CmdObj *self);
+VObj *func_ov000_02189a38(VObj *self);
 extern Ov000ScpNames data_ov000_021cc0d8;
 extern const char *const data_ov000_021c9d44;
 extern const char *const data_ov000_021c9d48;
@@ -100,49 +107,49 @@ char data_ov000_021cc130[] = "misinfo";
 char data_ov000_021cc138[] = "scpqst%d.ccscp";
 char data_ov000_021cc147[] = "qstinfo";
 u32 data_ov000_021cc150[2] = {0, 0};
-Ov000Fn data_ov000_021cc158[18] = { func_ov000_02189a38, func_ov000_02181ab0, func_02038504, func_02038520, func_02038dbc, func_02038638, func_02038a10, func_02038b0c, func_02038b48, func_02038b88, func_02038c14, func_02038ca0, func_020396e8, func_020396d4, func_ov000_02181efc, func_0205b588, func_0205b68c, func_0205b8dc };
+Ov000Fn data_ov000_021cc158[18] = { (Ov000Fn)func_ov000_02189a38, (Ov000Fn)func_ov000_02181ab0, (Ov000Fn)func_02038504, (Ov000Fn)func_02038520, (Ov000Fn)func_02038dbc, (Ov000Fn)func_02038638, (Ov000Fn)func_02038a10, (Ov000Fn)func_02038b0c, (Ov000Fn)func_02038b48, (Ov000Fn)func_02038b88, (Ov000Fn)func_02038c14, (Ov000Fn)func_02038ca0, (Ov000Fn)func_020396e8, (Ov000Fn)func_020396d4, (Ov000Fn)func_ov000_02181efc, (Ov000Fn)func_0205b588, (Ov000Fn)func_0205b68c, (Ov000Fn)func_0205b8dc };
 __declspec(weak) Ov000ScpEnt data_ov000_021cc1a0[42] = {
     { 0, { .pm = 0 } },
     { 0, { .pm = 0 } },
-    { 0, { .raw = { func_ov000_02182cb8, 0 } } },
-    { 0, { .raw = { func_ov000_021833d8, 0 } } },
-    { 0, { .raw = { func_ov000_021834c4, 0 } } },
-    { 0, { .raw = { func_ov000_021835f4, 0 } } },
-    { 0, { .raw = { func_ov000_02183880, 0 } } },
-    { 0, { .raw = { func_ov000_02183880, 0 } } },
-    { 0, { .raw = { func_ov000_02183880, 0 } } },
-    { 0, { .raw = { func_ov000_02183a10, 0 } } },
-    { 0, { .raw = { func_ov000_02183db8, 0 } } },
-    { 0, { .raw = { func_ov000_021845cc, 0 } } },
-    { 0, { .raw = { func_ov000_02184810, 0 } } },
-    { 0, { .raw = { func_ov000_02184924, 0 } } },
-    { 0, { .raw = { func_ov000_02184be8, 0 } } },
-    { 0, { .raw = { func_ov000_02184dc8, 0 } } },
-    { 0, { .raw = { func_ov000_02184f20, 0 } } },
-    { 0, { .raw = { func_ov000_021855a4, 0 } } },
-    { 0, { .raw = { func_ov000_021855a4, 0 } } },
-    { 0, { .raw = { func_ov000_021855a4, 0 } } },
-    { 0, { .raw = { func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { func_ov000_021859c4, 0 } } },
-    { 0, { .raw = { func_ov000_021862b0, 0 } } },
-    { 0, { .raw = { func_ov000_021862b0, 0 } } },
-    { 0, { .raw = { func_ov000_021866d0, 0 } } },
-    { 0, { .raw = { func_ov000_02186a24, 0 } } },
-    { 0, { .raw = { func_ov000_02186c88, 0 } } },
-    { 0, { .raw = { func_ov000_02186df4, 0 } } },
-    { 0, { .raw = { func_ov000_0218722c, 0 } } },
-    { 0, { .raw = { func_ov000_02187420, 0 } } },
-    { 0, { .raw = { func_ov000_02187660, 0 } } },
-    { 0, { .raw = { func_ov000_021878c8, 0 } } },
-    { 0, { .raw = { func_ov000_02187a58, 0 } } },
-    { 0, { .raw = { func_ov000_02187b88, 0 } } },
-    { 0, { .raw = { func_ov000_0218819c, 0 } } },
-    { 0, { .raw = { func_ov000_02188438, 0 } } },
-    { 0, { .raw = { func_ov000_0218867c, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02182cb8, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021833d8, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021834c4, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021835f4, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02183880, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02183880, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02183880, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02183a10, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02183db8, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021845cc, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02184810, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02184924, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02184be8, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02184dc8, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02184f20, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021855a4, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021855a4, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021855a4, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021859c4, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021862b0, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021862b0, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021866d0, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02186a24, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02186c88, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02186df4, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_0218722c, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02187420, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02187660, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_021878c8, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02187a58, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02187b88, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_0218819c, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_02188438, 0 } } },
+    { 0, { .raw = { (Ov000Fn)func_ov000_0218867c, 0 } } },
 };
 }

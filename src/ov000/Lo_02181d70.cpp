@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "nitro/std.h"
 
 extern "C" {
 
@@ -13,8 +14,6 @@ BOOL func_0205a9c8(void *p);
 BOOL func_0205aa30(void *p);
 void *func_0206e7d0(u8 id);
 int func_0200779c(char *dst, const char *fmt, ...);
-void STD_CopyString(void *buf, const void *s);
-void STD_ConcatenateString(void *buf, const void *s);
 void func_0205a840(void *p, void *buf, const void *s);
 
 BOOL func_ov000_02181d70(u8 *self, u16 id) {

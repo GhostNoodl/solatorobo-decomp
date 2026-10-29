@@ -2,6 +2,7 @@
 #define OV006_LABEL_H
 
 #include "ov006/ov006.h"
+#include "nitro/std.h"
 
 typedef struct ov006_Label {
     void *vtbl;
@@ -19,7 +20,6 @@ typedef struct ov006_Label {
 extern "C" {
 #endif
 
-int STD_CopyLString(void *dst, const void *src, u32 size);
 
 #ifdef __cplusplus
 }

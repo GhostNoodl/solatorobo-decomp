@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "nitro/std.h"
 
 typedef struct {
     void *current;
@@ -46,12 +47,8 @@ extern const char data_ov000_021ca8ff[];
 extern const char data_ov000_021ca907[];
 extern const char data_ov000_021ca917[];
 
-s32 STD_GetStringLength(const char *str);
 void *func_0203dddc(u32 size);
 void *func_0203dd9c(u32 size);
-int STD_CopyLString(char *dst, const char *src, s32 n);
-void STD_CopyString(char *dst, const char *src);
-void STD_ConcatenateString(char *dst, const char *src);
 BOOL OS_IsRunOnTwl(void);
 void func_020359fc(void *a, char *name, s32 b, s32 c);
 BOOL func_02035bd4(void *a, char *name, s32 b);

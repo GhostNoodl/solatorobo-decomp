@@ -3,7 +3,7 @@
 extern "C" {
 
 extern const u8 data_ov010_0220f024[];
-extern void func_ov000_02190cb0(void *p, s32 a, s32 b, s32 c);
+extern BOOL func_ov000_02190cb0(void *p, s32 a, s32 b, s32 c);
 extern void func_ov000_021915a0(void *p);
 
 void func_ov010_02204cdc(void *self) {
@@ -24,7 +24,7 @@ struct Ov010Mtx33 {
 };
 
 extern void *data_02097e4c;
-extern void func_ov010_0220d77c(void);
+extern BOOL func_ov010_0220d77c(void *p);
 extern void func_ov010_0220d918(void *p, void (*fn)(void));
 extern s32 func_ov010_0220d9a4(void *p);
 extern void func_ov010_0220d9c0(void *p, void *h);
@@ -41,7 +41,7 @@ extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *o);
 extern void VEC_Normalize(Ov010Vec *a, Ov010Vec *b);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern Ov010V *func_ov010_0220eaf0(void *self, Ov010Vec *pos, Ov010Vec *p);
-extern void func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, Ov010Vec *c, s32 d);
 extern void func_ov010_02207828(void *self);
 extern void func_ov000_0218d918(void *self, void *t, s32 a);
 extern void func_ov003_021d969c(void *p, s32 a);
@@ -79,7 +79,7 @@ void func_ov010_02204d44(void *self) {
     BOOL flag = FALSE;
     switch (FLD(u16, FLD(void *, self, 0x40), 0)) {
     case 0:
-        func_ov010_0220d918((u8 *)self + 0x174, func_ov010_0220d77c);
+        func_ov010_0220d918((u8 *)self + 0x174, (void (*)(void))func_ov010_0220d77c);
         if (func_ov010_0220d9a4((u8 *)self + 0x174) >= 5) {
             FLD(u16, FLD(void *, self, 0x40), 0) = 0x32;
             break;

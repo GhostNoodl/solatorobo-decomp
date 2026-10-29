@@ -245,7 +245,7 @@ static inline bool func_ov002_isCurrent021ccd40(void *p) {
 
 void func_02041218(void *p);
 void func_02041440(void *p, void *name, int c);
-void STD_CopyString(void *p, void *name);
+void *STD_CopyString(void *p, void *name);
 void *func_02035f30(void *a, void *b, u16 c);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *a, void *b);
@@ -398,7 +398,7 @@ extern VFunc data_ov002_021ef99c[];
 void func_ov002_021e4b80(void *p);
 void func_ov002_021d37f8(void *self);
 extern VFunc data_ov002_021ef81c[];
-void func_ov000_021763c8(void *self);
+void func_ov000_021763c8(void);
 u32 func_ov000_02176538(void);
 u32 func_ov000_02180838(void *a);
 void func_ov002_021d3ccc(void *self);
@@ -513,8 +513,8 @@ static inline void func_ov002_021d7c04_inline(void *self) {
 
 BOOL func_0203e63c(void *a);
 void func_ov002_021d83f0(void *self);
-void *func_02043d48(void *a);
-void NNS_G3dMdlSetMdlPolygonIDAll(void *a, void *b);
+u8 func_02043d48(void *a);
+void NNS_G3dMdlSetMdlPolygonIDAll(void *mdl, int polygonID);
 void NNS_G3dGlbSetBaseTrans(void *a);
 void MI_Copy36B(void *a, void *b);
 void NNS_G3dGlbSetBaseScale(void *a);
@@ -720,7 +720,7 @@ void func_ov002_021ec2ac(void *self);
 BOOL func_ov002_021d52e0(void *self, void *ev);
 typedef BOOL (*EvCallback)(void *, void *);
 void func_ov000_02152294(void *self, u16 a, int b, EvCallback cb);
-u8 func_0206e8f0(void *self);
+u8 func_0206e8f0(void);
 void func_ov002_021d4540(void *dst, u32 size, void *a, void *b, int mode);
 extern void *data_ov002_021ef5ac[];
 extern u8 data_ov002_021ef650[];

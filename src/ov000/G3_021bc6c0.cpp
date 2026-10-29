@@ -17,10 +17,10 @@ extern u8 *data_02097d48;
 extern DLRef021bc6c0 data_0208b3d0;
 extern DLRef021bc6c0 data_020828f8;
 void func_02043d20(void *obj, int a);
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
-void func_ov000_021bc86c(Obj021bc6c0 *self);
+void func_ov000_021bc86c(void);
 void func_ov000_021bcd08(Obj021bc6c0 *self);
 
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
@@ -77,7 +77,7 @@ void func_ov000_021bc6c0(Obj021bc6c0 *self) {
         break;
     }
     case 2:
-        func_ov000_021bc86c(self);
+        func_ov000_021bc86c();
         break;
     case 3:
         func_ov000_021bcd08(self);

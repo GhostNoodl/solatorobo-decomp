@@ -21,7 +21,7 @@ void *func_0204c0e8(void *g, u32 id);
 BOOL func_0205aa30(void *p);
 void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
-void STD_CopyString(void *dst, void *src);
+void *STD_CopyString(void *dst, void *src);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
@@ -34,9 +34,9 @@ void *func_ov000_02173610(s32 kind);
 u32 func_0205975c(void *a, s32 b);
 u16 func_ov000_0214bcc4(u16 id, u16 index);
 s32 func_02061e7c(u16 a);
-void func_ov000_0214fcfc(void);
-BOOL func_ov000_0214ffac(void);
-BOOL func_ov000_02150104(void);
+void func_ov000_0214fcfc(void *self, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, const void *mtx);
+BOOL func_ov000_0214ffac(void *self, void *msg);
+BOOL func_ov000_02150104(void *self, void *p);
 
 static inline void Setup0214e9e4(VObj *self) {
     VObj *t;

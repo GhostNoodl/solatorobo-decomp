@@ -75,7 +75,7 @@ extern const Ov015Vec1F878 data_ov015_02212fdc;
 extern char data_ov015_0221311c[];
 u8 *func_ov002_021e91c8(s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_ov002_021e50d8(void *a, s32 b, s32 c);
-void func_ov015_0220f878(void) {
+void func_ov015_0220f878(void *self) {
     u8 *o;
     u16 id;
     void *name;
@@ -422,7 +422,7 @@ BOOL func_0204c030(void *p);
 s32 func_0204c08c(void *p, u16 id, void *buf, s32 n);
 void func_02041218(void *p);
 void func_02041440(void *p, void *name, int c);
-void STD_CopyString(void *p, void *name);
+void *STD_CopyString(void *p, void *name);
 void *func_02035de0(void *a, void *b);
 void func_020417e0(void *a, void *b);
 void func_02041d9c(void *a, int b, int c);

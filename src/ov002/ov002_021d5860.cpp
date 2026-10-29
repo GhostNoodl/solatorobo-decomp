@@ -35,7 +35,7 @@ void func_ov000_021627ac(void *p);
 void func_ov000_021c95fc(void *p);
 BOOL func_ov002_021d5444(void *self, void *ev);
 BOOL func_ov002_021d5350(void *self, void *ev);
-void func_ov002_021d66b0(void);
+void func_ov002_021d66b0(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 
 static inline u8 *ov002_021d58b8_sel(void *g) {
     u8 *p = FIELD(g, 0x98, u8 *);

@@ -27,7 +27,7 @@ static inline s32 PosX021c524c(Pos021c524c *p) {
     return p->x;
 }
 
-void func_ov000_021c524c(u8 *self, s32 unused, Pos021c524c *pos) {
+void func_ov000_021c524c(u8 *self, s32 unused, Pos021c524c *pos, s32 arg) {
     s32 x = (PosX021c524c(pos) >> 12) + ((LFLD(s32, self, 0x24) << 12) - LFLD(s32, self, 0xb8) >> 12) + 6;
     s32 y = pos->y >> 12;
     Model *m;

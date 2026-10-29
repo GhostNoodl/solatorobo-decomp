@@ -1,4 +1,5 @@
 #include "fs_private.h"
+#include "nitro/std.h"
 
 #pragma force_active on
 
@@ -36,7 +37,6 @@ void CARD_UnlockRom(u16 lock_id);
 BOOL CARD_IsPulledOut(void);
 void func_0200d6d4(u32 dma, const void *src, void *dst, u32 len, MIDmaCallback callback, void *arg, BOOL is_async);
 s32 OS_GetLockID(void);
-int STD_CompareString(const char *a, const char *b);
 void FS_InitArchive(FSArchive *arc);
 BOOL FS_RegisterArchiveName(FSArchive *arc, const char *name, u32 name_len);
 void FS_NotifyArchiveAsyncEnd(FSArchive *arc, FSResult ret);

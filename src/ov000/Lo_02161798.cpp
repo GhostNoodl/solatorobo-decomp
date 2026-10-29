@@ -6,7 +6,7 @@
 extern "C" {
 void func_02041c18(Model *m, s32 a);
 
-void func_ov000_02161798(VObj *self, s32 a1, s32 *pos) {
+void func_ov000_02161798(VObj *self, s32 a1, s32 *pos, s32 a3) {
     s32 x;
     s32 y;
     s32 w;

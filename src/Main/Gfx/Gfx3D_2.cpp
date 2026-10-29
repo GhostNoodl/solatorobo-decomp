@@ -265,7 +265,7 @@ void func_02043d20(Gfx3DState *st, BOOL flush) {
     }
 }
 
-int func_02043d48(Gfx3DState *st) {
+u8 func_02043d48(Gfx3DState *st) {
     u8 id = st->polyId;
     if (id < 0x3f) {
         st->polyId = id + 1;

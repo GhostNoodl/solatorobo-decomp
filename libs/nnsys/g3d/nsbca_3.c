@@ -5,7 +5,7 @@
 void NNSi_G3dAnmCalcNsBca (NNSG3dJntAnmResult * pResult, const NNSG3dAnmObj * pAnmObj, u32 dataIdx);
 void getMdlTrans_ (NNSG3dJntAnmResult * pResult);
 void getMdlScale_ (NNSG3dJntAnmResult * pResult);
-void getMdlRot_ (NNSG3dJntAnmResult * pResult);
+void getMdlRot_ (NNSG3dJntAnmResult * pResult, fx32 A, fx32 B, const NNSG3dResNodeData * pNd);
 void getJntSRTAnmResult_(const NNSG3dResJntAnm * pJntAnm, u32 dataIdx, fx32 Frame, NNSG3dJntAnmResult * pResult);
 void getTransData_(fx32 * pVal, fx32 Frame, const u32 * pData, const NNSG3dResJntAnm * pJntAnm);
 void getTransDataEx_(fx32 * pVal, fx32 Frame, const u32 * pData, const NNSG3dResJntAnm * pJntAnm);

@@ -285,7 +285,7 @@ struct LangRes {
     virtual void unk_vf20();
     virtual void Open(char *arcName, char *name);
     virtual void unk_vf28();
-    virtual void Load();
+    virtual BOOL Load();
     virtual void unk_vf30();
     virtual BOOL IsLoaded();
     /* 0x04 */ char arcName[0x20];
@@ -340,8 +340,8 @@ void func_0206ea7c(void) {
     data_02097dd0->cur = saved;
 }
 
-void func_0206ead8(void) {
-    data_0214b128.res->Load();
+BOOL func_0206ead8(void) {
+    return data_0214b128.res->Load();
 }
 
 extern char data_0208cccc[];

@@ -13,7 +13,7 @@ void func_ov000_02157c28(Obj0214dcc4 *self);
 BOOL func_ov000_02152e5c(Obj0214dcc4 *self);
 void func_02041d9c(void *obj, s32 a, s32 b);
 void func_02041c34(void *obj, s32 a, void (*cb)(void), void *arg);
-void func_ov000_0214db04(void);
+void *func_ov000_0214db04(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 void func_ov000_0214dcc4(Obj0214dcc4 *self) {
     func_ov000_02157c28(self);
@@ -23,7 +23,7 @@ void func_ov000_0214dcc4(Obj0214dcc4 *self) {
     }
     if (self->unk_b4 != NULL) {
         func_02041d9c(self->unk_b4, 0, 0x1e);
-        func_02041c34(self->unk_b4, 0x1e, func_ov000_0214db04, self);
+        func_02041c34(self->unk_b4, 0x1e, (void (*)(void))func_ov000_0214db04, self);
     }
 }
 
@@ -58,9 +58,9 @@ extern void *data_02fe152c;
 void func_ov000_02153f90(void *p);
 s32 func_0204c08c(void *res, u16 id, s32 *out, s32 d);
 void func_0204c6bc(s32 a, s32 b, void *c, void *d);
-void func_ov000_0214dc20(void);
+void func_ov000_0214dc20(void *self, s32 *msg);
 u32 func_ov000_0214bf2c(u16 a);
-s32 func_020595c4(void *a, s32 b, s32 c, u16 d);
+u16 func_020595c4(void *a, s32 b, s32 c, u16 d);
 }
 
 struct Node0214dd3c {

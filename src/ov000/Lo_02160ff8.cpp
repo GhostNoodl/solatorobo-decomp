@@ -16,8 +16,8 @@ void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
 void func_02041c20(void *model, s32 a, void *b);
 void func_02041c5c(void *model, void *cb);
-void STD_CopyString(void *dst, void *src);
-void *func_ov000_02160e28(void);
+void *STD_CopyString(void *dst, void *src);
+void *func_ov000_02160e28(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 #define LO_MODEL_NEW(out, NAME, ARC)                 \
     do {                                             \

@@ -165,7 +165,7 @@ extern void *data_0208b3d0;
 extern u32 data_020828f8;
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
-u32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 void *NNS_G2dGetAnimSequenceByIdx(void *p, int idx);
 void *NNS_G2dGetCellDataByIdx(void *p, u16 idx);
 void func_02042628(void *model, void *anim, void *part, int x);

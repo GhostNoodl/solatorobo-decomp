@@ -219,7 +219,7 @@ BOOL func_ov015_0220daac(u8 *self, u8 *p) {
 }
 
 extern u8 *data_02097d48;
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 void MTX_Identity33_(void *a);
 void MTX_Concat33(void *a, void *b, void *out);
 void MI_Copy36B(const void *src, void *dst);

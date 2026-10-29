@@ -20,7 +20,7 @@ void func_ov002_021edcec(void *self, int mode) {
     if (mode == 1) {
         y += 0xc0;
     }
-    FIELD(FIELD(self, 0x34, void *), 0x4, SprAttr021edcec).pal = ((u8 (*)(void *))func_02043d48)(data_02097d48 + 0x8b0);
+    FIELD(FIELD(self, 0x34, void *), 0x4, SprAttr021edcec).pal = func_02043d48(data_02097d48 + 0x8b0);
     FIELD(FIELD(self, 0x34, void *), 0x4, SprAttr021edcec).prio = FIELD(self, 0x54, u8);
     FIELD(self, 0x34, VObject *)->v0x20(x, y);
     FIELD(FIELD(self, 0x34, void *), 0x70, s32) = -0x1000;
@@ -33,7 +33,7 @@ void func_ov002_021edcec(void *self, int mode) {
     if (mode == 1) {
         y += 0xc0;
     }
-    FIELD(FIELD(self, 0x44, void *), 0x4, SprAttr021edcec).pal = ((u8 (*)(void *))func_02043d48)(data_02097d48 + 0x8b0);
+    FIELD(FIELD(self, 0x44, void *), 0x4, SprAttr021edcec).pal = func_02043d48(data_02097d48 + 0x8b0);
     FIELD(FIELD(self, 0x44, void *), 0x4, SprAttr021edcec).prio = FIELD(self, 0x54, u8);
     FIELD(self, 0x44, VObject *)->v0x20(x, y);
     FIELD(FIELD(self, 0x44, void *), 0x70, s32) = -0x1000;

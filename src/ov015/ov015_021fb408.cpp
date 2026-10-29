@@ -13,7 +13,7 @@ void func_02041440(void *p, void *name, int c);
 void func_020417e0(void *a, void *b);
 void func_02041d9c(void *a, int b, int c);
 void func_02041c34(void *a, int b, void *cb, void *arg);
-void STD_CopyString(void *p, void *name);
+void *STD_CopyString(void *p, void *name);
 extern char data_ov015_022128ab[];
 extern char data_ov015_022128b5[];
 extern void *data_0208cc94;

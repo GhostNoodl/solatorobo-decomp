@@ -225,7 +225,7 @@ extern u8 data_ov015_0221299d[];
 extern u8 data_ov015_02213360;
 extern u8 *data_02097d48;
 BOOL func_ov015_02207adc(void *p);
-void func_020434e0(void *p, s32 a);
+void func_020434e0(void *p);
 void *func_ov000_02154b58(void *a, s32 b);
 void func_ov000_02163224(void *p);
 void func_ov000_021632f0(void *p, s32 a, void *b, void *c, s32 d);
@@ -284,7 +284,7 @@ void func_ov015_02203298(u8 *self) {
     FLD(s32, self, 0x5c) = 0;
     FLD(s32, self, 0x60) = 0x1000;
     FLD(s32, self, 0x64) = 0;
-    func_020434e0(self + 0x68, 0x1000);
+    func_020434e0(self + 0x68);
     p = (u8 *)func_0203dd9c(0xe0);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);

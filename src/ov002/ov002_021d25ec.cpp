@@ -24,7 +24,7 @@ void func_ov002_021d25ec(Task50 *self) {
 }
 
 void func_ov002_021d2720(void *self) {
-    func_ov002_021d4540((u8 *)self + 0xf4, 0x20, data_ov002_021ef5ac[3], data_ov002_021ef650, func_0206e8f0(self));
+    func_ov002_021d4540((u8 *)self + 0xf4, 0x20, data_ov002_021ef5ac[3], data_ov002_021ef650, func_0206e8f0());
     func_020359d0((u8 *)self + 0xf4, 7, 0);
 }
 

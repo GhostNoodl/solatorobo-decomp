@@ -21,7 +21,7 @@ void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
-void STD_CopyString(void *dst, const void *src);
+void *STD_CopyString(void *dst, const void *src);
 void *func_ov000_0218e9c4(void *p);
 BOOL func_ov000_0218f110(void *p);
 

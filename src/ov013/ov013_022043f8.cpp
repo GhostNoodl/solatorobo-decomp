@@ -94,7 +94,7 @@ void func_ov013_02204408(Ov013Vec *out, const Ov013Vec *v, Ov013Actor *a) {
     }
 }
 
-void func_ov013_02204428(Ov013Vec *dst, const Ov013Vec *src) {
+void func_ov013_02204428(Ov013Vec *dst, const Ov013Vec *src, Ov013Actor *owner) {
     *dst = *src;
 }
 

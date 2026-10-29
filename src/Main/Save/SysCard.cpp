@@ -169,7 +169,7 @@ BOOL func_020471f0(SysCard *card, s32 err) {
     return FALSE;
 }
 
-BOOL func_020472c4(void) {
+BOOL func_020472c4(SysCard *card) {
     return SysCard_IsBusy() ? TRUE : FALSE;
 }
 

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0215f330(void) {
+void func_ov000_0215f330(void *self) {
 }
 
 }

@@ -81,7 +81,7 @@ void NNS_G3dMdlSetMdlAlpha(void *mdl, u32 idx, u32 alpha);
 void NNS_G3dMdlSetMdlPolygonID(void *mdl, u32 idx, u32 id);
 void NNS_G3dMdlSetMdlCullMode(void *mdl, u32 idx, u32 mode);
 void NNS_G3dDraw1Mat1Shp(void *mdl, u32 idx, u32 a, u32 b);
-int func_02043d48(void *p);
+u8 func_02043d48(void *p);
 
 static inline void *ResDict_GetDataByIdx(const ResDict *dict, u32 idx) {
     if (dict != NULL && idx < dict->num_entry) {

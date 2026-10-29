@@ -19,7 +19,7 @@ void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
 void func_02041c5c(void *model, void *fn);
 void func_02041c18(void *model, void *arg);
-void *func_ov000_021640fc(void);
+void *func_ov000_021640fc(void *self, void *a, void *oam, u16 *cnt);
 
 static inline void *NewModel(char *nm) {
     u8 *m = (u8 *)func_0203dd9c(0x160);

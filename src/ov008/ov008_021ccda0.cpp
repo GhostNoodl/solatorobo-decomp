@@ -31,7 +31,7 @@ void *func_0206e7d0(u8 id);
 void func_02070874(char *dst, const char *fmt, ...);
 void *func_02049a48(void *a, int b, int c, int d, int e);
 void func_02041440(void *p, void *name, int c);
-void STD_CopyString(void *dst, const void *src);
+void *STD_CopyString(void *dst, const void *src);
 void func_020417e0(void *a, void *b);
 void func_02041d9c(void *a, int b, int c);
 s32 FX_Div(s32 a, s32 b);

@@ -118,7 +118,7 @@ extern Ov003SdUnit *func_ov000_0218bd5c(void *mgr, u16 id);
 extern Ov003SdObj *func_ov000_0218e640(void *mgr, u16 id);
 extern s32 FX_Div(s32 a, s32 b);
 extern void NNS_G3dRenderObjSetInitFunc(void *rob, void *func);
-extern void func_ov003_021d0c04(void);
+extern void func_ov003_021d0c04(void *self);
 extern void MI_Copy36B(const void *src, void *dst);
 extern void MI_Copy48B(const void *src, void *dst);
 extern u16 func_ov000_0218cea4(Ov003Sd *self);

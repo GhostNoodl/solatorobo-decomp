@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -31,7 +32,6 @@ typedef struct {
 extern "C" {
 extern char data_ov000_021cc45c[];
 extern u8 *data_0214a424;
-s32 STD_CompareString(const char *a, const char *b);
 void func_ov000_02191008(void *a);
 BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);

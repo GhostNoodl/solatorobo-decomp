@@ -3,7 +3,7 @@
 /* Draws a textured, scaled quad at pos with the given alpha and texture address. */
 
 void func_02043d20(void *obj, int a);
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern u8 *data_02097d48;
 

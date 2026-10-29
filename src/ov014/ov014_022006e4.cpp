@@ -326,7 +326,7 @@ extern const Ov014Vec data_ov014_02216564;
 extern const Ov014Vec data_ov014_022165b8;
 extern void func_ov000_0218d918(Ov014Actor *self, Ov014Vec *v, s32 a);
 extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
-extern u16 func_ov003_021d9edc(s32 kind);
+extern s32 func_ov003_021d9edc(s32 kind);
 
 void func_ov014_022010a4(Ov014Actor *self) {
     Ov014Vec v;

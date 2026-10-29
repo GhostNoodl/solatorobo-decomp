@@ -1,8 +1,8 @@
 #include "ov000/LoCommon.h"
+#include "nitro/std.h"
 
 extern "C" {
 
-int STD_CopyLString(void *dst, const void *src, s32 n);
 
 static inline void LoInitEC44(void *self) {
     LFLD(s32, self, 0x0) = 0;

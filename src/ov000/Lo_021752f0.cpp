@@ -114,7 +114,7 @@ extern const s16 FX_SinCosTable_[];
 extern u8 *data_02097d48;
 BOOL func_02054f10(void *p, s32 id);
 void *func_ov000_0219bf90(void);
-u32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 void func_02041c20(Model *m, s32 a, s32 b);
 void func_02041c18(Model *m, s32 v);
 void func_ov000_021c95fc(void *p);

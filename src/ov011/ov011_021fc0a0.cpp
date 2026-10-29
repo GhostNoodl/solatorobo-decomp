@@ -30,7 +30,7 @@ struct Ov011Mgr3 {
 
 extern "C" {
 
-void func_ov003_021d79d0(void *p);
+void *func_ov003_021d79d0(void *p);
 
 extern void *data_02097e4c;
 extern const Ov011Vec data_ov011_022072b4;
@@ -40,9 +40,9 @@ void func_ov011_0220121c(u8 *o, s32 a);
 void *__cxa_vec_new(u32 count, u32 size, u32 hdr, void *ctor, void *dtor);
 void *func_ov011_021fb66c(void *self);
 void *func_ov011_021fc0a0(void *self);
-void func_ov011_02201f28(void *self, u16 id, const Ov011Vec *off, s16 c, s16 d, s16 e);
+BOOL func_ov011_02201f28(void *self, u16 id, const Ov011Vec *off, s16 c, s16 d, s16 e);
 void func_ov011_02202464(void *self);
-void func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
+void *func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
 
 static inline u8 *Ov011_Find(u16 id) {
     return data_ov000_021ccd68 == NULL ? NULL : (u8 *)func_ov000_0218e640(data_ov000_021ccd68, id);
@@ -200,9 +200,9 @@ void func_ov003_021d7c90(void *p, s32 a);
 void func_ov003_021d7c78(void *p, s32 a);
 void func_ov003_021d7c08(void *p, Ov011Vec *v);
 Ov011Vec *func_ov003_021d7bd4(void *p);
-s32 func_ov003_021d9c74(Ov011Vec *v);
-s32 func_ov003_021d9c38(Ov011Vec *v);
-void func_ov003_021d7a44(void *p, Ov011Vec *a, Ov011Vec *b, s32 c, s32 d, s32 e);
+u16 func_ov003_021d9c74(Ov011Vec *v);
+u16 func_ov003_021d9c38(Ov011Vec *v);
+BOOL func_ov003_021d7a44(void *p, Ov011Vec *a, Ov011Vec *b, s32 c, s32 d, s32 e);
 void func_ov011_022011fc(void *a, s32 b);
 void func_ov011_022011c8(void *a, s32 b);
 void func_ov011_02201214(void *a, void *b);

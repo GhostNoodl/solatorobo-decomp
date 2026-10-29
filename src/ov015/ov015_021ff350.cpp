@@ -5,7 +5,7 @@ extern "C" {
 extern u8 data_ov015_0221292c[];
 void func_ov015_022120fc(void *p);
 extern u8 data_ov015_022132e0[];
-void func_ov015_02211a18(void *p);
+void func_ov015_02211a18(void);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 
@@ -33,7 +33,7 @@ void *func_ov015_021ff440(void *self) {
 
 void *func_ov015_021ff468(u8 *self) {
     SET_VT(self, data_ov015_022132e0);
-    func_ov015_02211a18(self);
+    func_ov015_02211a18();
     func_ov000_0218fee4(self + 0x14c);
     func_ov000_0218ea20(self + 0x14);
     func_0203de1c(self);

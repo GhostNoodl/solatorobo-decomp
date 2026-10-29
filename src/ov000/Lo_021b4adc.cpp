@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 typedef struct {
     u8 pad[0x12];
@@ -54,7 +55,6 @@ Obj021b4adc *func_ov000_0218e9c4(void *p);
 St021b4adc *func_ov000_021919c8(void *p);
 void func_ov000_0218f074(Obj021b4adc *o, void *a, BOOL b, BOOL c, s32 d, BOOL e);
 void func_ov000_02191b70(St021b4adc *s);
-void STD_CopyString(char *dst, const char *src);
 
 static inline void SetState(St021b4adc *s, s32 n) {
     s->prev = s->cur;

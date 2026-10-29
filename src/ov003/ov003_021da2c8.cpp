@@ -117,7 +117,7 @@ void func_ov003_021da48c(Ov003Bits *self, u8 idx) {
 void *func_ov003_021da4a8(const Ov003Vec *base, s32 range, void *mgr) {
     Ov003Vec v;
     Ov003Vec p;
-    s16 y = func_02040528(range);
+    s32 y = func_02040528(range);
     v.x = func_02040528(range);
     v.y = y;
     v.z = 0;

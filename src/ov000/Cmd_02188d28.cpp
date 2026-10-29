@@ -23,7 +23,7 @@ extern Data021ccd50 data_ov000_021ccd50;
 extern Obj02097e48 *data_02097e48;
 extern void *data_02fe152c;
 extern Data02fe1534 data_02fe1534;
-BOOL func_ov000_0219bf90(void *p);
+void *func_ov000_0219bf90(void);
 u16 func_020594bc(void *a, int b, int c, int d);
 u32 func_0205975c(void *a, int idx);
 void *func_0205976c(void *a, int idx);
@@ -31,7 +31,7 @@ u16 func_02059544(void *a, void *b, void *c, u16 d, u16 e);
 BOOL func_020624d8(void);
 
 void func_ov000_02188d28(Rgb3 *rgb) {
-    if (!func_ov000_0219bf90(rgb)) {
+    if (!func_ov000_0219bf90()) {
         CmdQueue_Push(data_ov000_021ccd50.unk_04, 0xb, 0);
     }
     data_02097e48->flags |= 2;

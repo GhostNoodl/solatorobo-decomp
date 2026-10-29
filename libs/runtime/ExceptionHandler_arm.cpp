@@ -36,7 +36,9 @@ extern char __ctype_mapC[];
 // The exception table start and end are both linked at the same address (the table is empty).
 namespace Dup { extern "C" char __ctype_mapC[]; }
 
-extern "C" u32 RestoreSavedRegisters(ThrowContext *ctx) {
+struct ActionIterator;
+
+extern "C" u32 RestoreSavedRegisters(ThrowContext *ctx, ActionIterator *iter) {
     u32 size = ctx->frameSize;
     u32 *p = (u32 *)(ctx->cfa + size - (ctx->savedArgs ? 16 : 0));
     int i;

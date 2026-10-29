@@ -46,7 +46,7 @@ void func_02065ac0(void *p);
 void func_ov015_021ff380(void *p);
 void func_ov015_02200194(void *p);
 void func_02043d20(void *p, s32 a);
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 n);
 void func_02043db4(s32 a, s32 b, s32 c, s32 d);
 s32 FX_Div(s32 a, s32 b);
@@ -128,7 +128,7 @@ s32 func_ov015_021fa6c0(void) {
 void func_ov015_021fa6c8(void) {
 }
 
-void func_ov015_021fa6cc(void) {
+void func_ov015_021fa6cc(void *self) {
 }
 
 Ov015V *func_ov015_021fa6d0(void) {

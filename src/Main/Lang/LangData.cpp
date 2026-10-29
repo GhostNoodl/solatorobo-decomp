@@ -348,7 +348,7 @@ void func_0206e9e8(void);
 
 void func_0206ea7c(void);
 
-void func_0206ead8(void);
+BOOL func_0206ead8(void);
 
 extern char data_0208cccc[];
 extern char data_0208ccd0[];

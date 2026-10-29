@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 typedef struct {
     u16 bit0 : 1;
@@ -47,8 +48,6 @@ char *func_0207011c(s32 id);
 char *func_020701d4(s32 id);
 char *func_0207005c(s32 id, s32 n);
 char *func_02039674(const char *path);
-char *STD_SearchString(const char *s, const char *sub);
-void STD_CopyString(char *dst, const char *src);
 void func_ov000_0218f074(Res02193e5c *p, char *name, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_02193e5c(Res02193e5c *res, s32 id) {

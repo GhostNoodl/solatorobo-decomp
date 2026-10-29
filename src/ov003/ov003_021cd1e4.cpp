@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 class Ov003TlSub {
 public:
@@ -119,7 +120,6 @@ extern void func_ov003_021ce2a8(void *self, char *dst, u32 size, const char *arg
 extern void func_ov000_0215bb14(Ov003TlLabel *l, char *s);
 extern void func_02041218(void *p);
 extern void func_02041440(Ov003TlSpr *s, const char *name, s32 a);
-extern void STD_CopyString(char *dst, const char *src);
 extern void *func_02035f30(const char *a, const char *b, s32 c);
 extern void *func_02034d88(void *a, const char *b);
 extern void func_020417e0(Ov003TlSpr *s, void *res);
@@ -128,9 +128,9 @@ extern void func_02041c18(Ov003TlSpr *s, s32 a);
 extern void func_02041c20(Ov003TlSpr *s, u16 a, u16 b);
 extern void func_02041d9c(Ov003TlSpr *s, s32 a, u16 b);
 extern void func_ov000_02173648(Ov003Tl *self);
-extern void func_ov003_021cceb4(void);
-extern void *func_ov003_021cce20(void);
-extern void func_ov000_021c8408(void);
+extern void func_ov003_021cceb4(u32 a, u32 b, u32 c, u32 d, u32 unused, u32 e, u32 f, u32 g, u32 h, u32 i, u32 j);
+extern void *func_ov003_021cce20(void *owner, u16 *flip, void *oam, u16 *count);
+extern void func_ov000_021c8408(void *self, int x, int y, int z, u16 color, const void *oam, const void *tex, u32 texBase, u32 plttBase, const void *mtx, u32 arg);
 
 static inline void Ov003TlSpr_Init(Ov003TlSpr *s, const char *file, const char *name) {
     func_02041218(s->unk_88);

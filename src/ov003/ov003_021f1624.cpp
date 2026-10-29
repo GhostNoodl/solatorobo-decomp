@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 typedef struct {
     s32 x, y, z;
@@ -135,7 +136,6 @@ extern void func_ov000_021911c8(Ov003InModel *model, s32 v);
 extern s32 func_ov000_0219a2f4(Ov003InVec *pos, s32 a, s32 b);
 extern void func_ov000_02191ec4(Ov003InS3c *p, s32 a, u32 b);
 extern char *func_0207005c(u16 id, s32 n);
-extern int STD_CompareString(const char *a, const char *b);
 extern Ov003InCtl *func_ov000_021985e8(void *p);
 extern void func_ov000_02198c8c(Ov003InCtl *p, u16 id);
 extern void func_0203f324(Ov003InCtl *p);

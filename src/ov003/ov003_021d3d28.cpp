@@ -146,7 +146,7 @@ void func_ov000_021987b8(Ov003HtCtl *ctl, s32 a, s32 b, s32 c);
 u16 func_ov000_02198da8(Ov003HtCtl *ctl, u16 angle);
 Ov003HtActor *func_ov000_02199ba0(Ov003HtTarget *t);
 u16 func_ov000_02199e94(Ov003HtTarget *t);
-u32 func_ov000_02199f08(Ov003HtTarget *t);
+u8 func_ov000_02199f08(Ov003HtTarget *t);
 void func_ov000_02199f48(Ov003HtCounter *t, Ov003HtActor *a);
 s32 func_ov000_0219a874(Ov003HtCounter *a, Ov003HtSlot *b, s32 value);
 BOOL func_ov000_0219aae8(Ov003Ht *a, Ov003HtActor *b, u16 c, u8 d, u16 mask, Ov003HtVec *ofs, void *rot, s32 r, s32 rr, s16 h, s32 i);

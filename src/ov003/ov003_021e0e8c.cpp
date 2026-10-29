@@ -507,8 +507,8 @@ extern Ov003Player *func_ov000_0219bf90(void);
 extern Ov003Table34 data_ov003_021f62f0[];
 extern Ov003Table *data_ov003_021f5fac[];
 extern void func_ov000_0219b808(u16 id, void *pos, Ov003Table34 *entry, s32 a, s32 b);
-extern void func_ov000_02193e5c(s16 *p);
-extern void func_ov003_021d0a2c(s16 *p);
+extern void func_ov000_02193e5c(void *res, s32 id);
+extern void func_ov003_021d0a2c(void *res, u16 id);
 
 static inline BOOL Ov003Event_SetMode(Ov003Event *self, s16 mode) {
     if (self->unk_18 != mode) {
@@ -1190,8 +1190,8 @@ extern void *data_ov000_021ccd64;
 extern void func_ov000_0219433c(void *self);
 extern char *func_0207011c(u16 id);
 extern char *func_02039674(char *p);
-extern void STD_CopyString(char *dst, const char *src);
-extern void STD_ConcatenateString(char *dst, const char *s);
+extern void *STD_CopyString(char *dst, const char *src);
+extern void *STD_ConcatenateString(char *dst, const char *s);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 
 void func_ov003_021e2090(Ov003Prop *self) {
@@ -1649,8 +1649,8 @@ extern void *data_ov000_021ccd64;
 extern void func_ov000_0219433c(void *self);
 extern char *func_0207011c(u16 id);
 extern char *func_02039674(char *p);
-extern void STD_CopyString(char *dst, const char *src);
-extern void STD_ConcatenateString(char *dst, const char *s);
+extern void *STD_CopyString(char *dst, const char *src);
+extern void *STD_ConcatenateString(char *dst, const char *s);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 
 void func_ov003_021e2a44(Ov003Prop *self) {
@@ -2866,7 +2866,7 @@ extern void func_ov000_0218996c(s32 a, s32 b);
 extern s32 func_02040498(s32 max);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
-extern void STD_CopyString(void *dst, const void *src);
+extern void *STD_CopyString(void *dst, const void *src);
 extern BOOL func_ov000_021946f8(void *self);
 extern BOOL func_ov000_0218f110(s16 *res);
 
@@ -3694,8 +3694,8 @@ extern Ov003Game54 *data_ov000_021ccd54;
 extern void *const data_ov003_021f4c64[2];
 extern void func_ov000_0219433c(void *self);
 extern void *func_0207011c(u16 id);
-extern void STD_CopyString(void *dst, const void *src);
-extern void STD_ConcatenateString(void *dst, const char *s);
+extern void *STD_CopyString(void *dst, const void *src);
+extern void *STD_ConcatenateString(void *dst, const char *s);
 extern void *func_02039674(void *p);
 extern BOOL OS_IsRunOnTwl(void);
 extern void *func_0203dd9c(u32 size);

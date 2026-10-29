@@ -13,12 +13,12 @@ void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
 void func_02041c5c(void *m, void *fn);
 void func_02041c20(void *m, s32 a, void *b);
-void STD_CopyString(void *dst, void *src);
+void *STD_CopyString(void *dst, void *src);
 BOOL func_ov000_02152e5c(void *self);
 void func_ov000_0215ec44(void *self);
 void func_ov000_0215e8b0(void *self);
-void *func_ov000_021c77bc(void);
-void *func_ov000_021c782c(void);
+void *func_ov000_021c77bc(u8 *self, u16 *cmd, void *arr, u16 *count);
+void *func_ov000_021c782c(u8 *self, void *req, void *buf, u16 *count);
 
 void func_ov000_021c3d20(u8 *self) {
     void *p;

@@ -12,7 +12,7 @@ u16 func_02059544(void *a, void *b, void *c, s32 d, s32 e);
 BOOL func_0205a9c8(void *p);
 void func_0204c7d0(void *p);
 void *func_ov000_02173610(s32 kind);
-void *func_ov000_0219bf90(void *p);
+void *func_ov000_0219bf90(void);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 typedef struct {
@@ -72,8 +72,8 @@ void *func_0204c0e8(void *g, u32 id);
 BOOL func_0205aa30(void *p);
 void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
-void STD_CopyString(void *dst, void *src);
-void STD_ConcatenateString(void *dst, void *src);
+void *STD_CopyString(void *dst, void *src);
+void *STD_ConcatenateString(void *dst, void *src);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *model, void *a);
@@ -87,8 +87,8 @@ void func_02040a98(char *buf, s32 n);
 void *func_ov000_021824d0(void *a, s32 b);
 void func_ov000_02153f90(void *p);
 void func_ov000_0214dc20(void *self, s32 *msg);
-s32 func_ov000_02151610(void);
-void func_ov000_0215158c(void);
+s32 func_ov000_02151610(VObj *self, s32 a, s32 b, s32 c);
+void func_ov000_0215158c(void *self);
 
 static inline void LoTextInit(u8 *t) {
     LFLD(s32, t, 0x4c) = func_0204c4fc(LFLD(s32, t, 0x28), LFLD(s32, t, 0x38), LFLD(s32, t, 0x24), t + 0x44, t + 0x48, LFLD(s8, t, 0x37) != 0);

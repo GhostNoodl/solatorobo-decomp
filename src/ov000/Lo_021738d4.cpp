@@ -12,8 +12,8 @@ void *func_02034d88(void *a, void *b);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
 void func_02041c20(void *model, s32 a, void *b);
-void STD_CopyString(void *dst, void *src);
-void func_ov000_02173d9c(void);
+void *STD_CopyString(void *dst, void *src);
+void func_ov000_02173d9c(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
 void func_ov000_02173648(VObj *self);
 
 static inline void Init(u8 *m, void *s, void *nm) {

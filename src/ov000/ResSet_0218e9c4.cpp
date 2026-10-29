@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 typedef struct {
     void *unk_00;
@@ -42,9 +43,6 @@ BOOL func_0203e63c(void *a);
 void func_0203e58c(void *a);
 void func_02035acc(const char *name, const char *ext, s32 type);
 void func_02036838(void *a, const char *name, s32 b, s32 c);
-void STD_CopyString(char *dst, const char *src);
-void STD_ConcatenateString(char *dst, const char *src);
-BOOL STD_CompareString(const char *a, const char *b);
 
 }
 

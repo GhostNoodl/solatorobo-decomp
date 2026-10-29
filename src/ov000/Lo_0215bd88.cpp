@@ -13,7 +13,7 @@ void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
-void STD_CopyString(void *dst, void *src);
+void *STD_CopyString(void *dst, void *src);
 VObj *func_ov000_02176208(void);
 
 static inline void ModelInit(u8 *m, void *s, void *nm) {

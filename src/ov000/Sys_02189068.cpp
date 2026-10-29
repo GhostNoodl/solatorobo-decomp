@@ -33,7 +33,7 @@ static inline BOOL IsReady(u8 *c) {
     return ok;
 }
 
-BOOL func_ov000_02189068(void) {
+BOOL func_ov000_02189068(void *self) {
     if (!HasMgr()) {
         return FALSE;
     }

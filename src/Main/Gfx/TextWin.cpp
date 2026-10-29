@@ -67,7 +67,7 @@ u32 func_0204c08c(MsgRes *res, s32 idx, char **out, s32 max);
 
 char *func_0204c0e8(MsgRes *res, s32 idx);
 
-void func_0204c100(void);
+BOOL func_0204c100(void);
 
 BOOL func_0204c120(void);
 
@@ -6765,7 +6765,7 @@ extern void *func_0203a4c0(GfxMgr *mgr);
 extern BOOL func_0204cc18(TextWin *win, const char **s);
 extern void func_020708fc(u16 id, char *out);
 extern void func_02070b98(u16 id, char *out, u16 a, u16 b);
-extern int func_020359fc(void *a, void *b, int c, int d);
+extern void func_020359fc(void *a, void *b, int c, int d);
 extern const char *data_0208cc90;
 extern const char *data_0208b9cc[];
 void func_02051f70(SlideWin *win);
@@ -6929,7 +6929,7 @@ namespace m_Obj3D {
 
 extern "C" {
 
-extern int func_02043d48(void *obj);
+extern u8 func_02043d48(void *obj);
 extern s8 data_02149ef4;
 
 void func_02051f3c(Obj3DLayer *layer, u32 v) {
@@ -6947,7 +6947,7 @@ void func_02052160(Obj3DRender *render);
 
 s32 func_020534c4(s32 x);
 
-s32 func_020534d4(void);
+s32 func_020534d4(void *scene);
 
 }
 
@@ -7037,7 +7037,7 @@ public:
 
 extern "C" {
 
-extern int func_02043d48(void *obj);
+extern u8 func_02043d48(void *obj);
 extern s8 data_02149ef4;
 
 void func_02051f3c(Obj3DLayer *layer, u32 v);
@@ -7158,7 +7158,7 @@ extern const char *data_0208cb80;
 
 extern void *func_0203dd9c(u32 size);
 extern void func_0203de1c(void *ptr);
-extern BOOL func_0203e688(Obj3DAnimObj *o);
+extern BOOL func_0203e688(void);
 extern char *STD_CopyString(char *dst, const char *src);
 extern s32 FX_Div(s32 a, s32 b);
 extern Obj3DAnimMdl *func_ov000_0218e9c4(void *p);
@@ -7378,7 +7378,7 @@ void func_0205221c(Obj3DAnim *anim, int kind, Obj3DAnimSlot *slot) {
         if (slot->mdl->frame < 0) {
             if (slot->obj == NULL) {
                 AnimSlot_Call(anim, slot, slot->next, 6);
-            } else if (func_0203e688(slot->obj)) {
+            } else if (func_0203e688()) {
                 slot->b1 = 1;
             }
         }
@@ -7622,7 +7622,7 @@ s32 Obj3DAnimCls::func_02052bec(s32 state, Obj3DAnimSlot *slot) {
 
 s32 func_020534c4(s32 x);
 
-s32 func_020534d4(void);
+s32 func_020534d4(void *scene);
 
 
 }

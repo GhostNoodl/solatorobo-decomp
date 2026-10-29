@@ -12,7 +12,7 @@ extern u8 *data_02097d48;
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 void func_ov000_0214d304(VObj *self, s32 a, s32 *pos, s32 d);
 void func_ov000_0214d994(VObj *self);
 

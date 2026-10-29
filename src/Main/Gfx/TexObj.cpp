@@ -287,7 +287,7 @@ typedef struct TexObjRes3 {
     /* 0x1c */ TexObjImageInfo *image0;
 } TexObjRes3;
 
-extern u32 func_0203bc20(GfxSys *sys, u32 size, BOOL sub);
+extern u32 func_0203bc20(GfxSys *sys, u32 size, BOOL sub, GfxVramNode *cur, GfxVramNode *node);
 extern u32 func_0203e458(int type, u32 src, u32 dst, u32 size, u32 chunk);
 extern void NNS_G2dSetImageLocation(TexObj *obj, int idx, u32 addr);
 extern void NNS_G2dLoadImage1DMapping(TexObjImageInfo *img, u32 addr, int idx, TexObj *obj);

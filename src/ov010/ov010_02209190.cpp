@@ -13,7 +13,7 @@ extern void MTX_MultVec33(const Ov010Vec *v, const Ov010Mtx33 *m, Ov010Vec *o);
 extern void VEC_Normalize(const Ov010Vec *src, Ov010Vec *dst);
 extern u16 func_ov003_021d9c38(Ov010Vec *v);
 
-void func_ov010_02209190(s32 type, const s32 *rect, const Ov010Vec *c, const Ov010Vec *p, u16 ang) {
+u16 func_ov010_02209190(s32 type, const s32 *rect, const Ov010Vec *c, const Ov010Vec *p, u16 ang) {
     Ov010Vec v;
     Ov010Vec a;
     Ov010Mtx33 m;
@@ -41,7 +41,7 @@ void func_ov010_02209190(s32 type, const s32 *rect, const Ov010Vec *c, const Ov0
     func_ov003_021d9980(&a, ang + 0x7fff, (Ov010Vec *)&data_ov010_0220f54c);
     MTX_RotAxis33(&m, &v, OV010_SIN(0x7ff0), OV010_COS(0x7ff0));
     MTX_MultVec33(&a, &m, &a);
-    func_ov003_021d9c38(&a);
+    return func_ov003_021d9c38(&a);
 }
 
 }

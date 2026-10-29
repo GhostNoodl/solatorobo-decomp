@@ -5,6 +5,8 @@
 // Generated with tools/asm2mw/asm2mw.py main 02075810 020758f4; the conditional calls are
 // written with their symbols (relocs.txt has them, see docs/MATCHING.md, round sinit5).
 
+#include "mobiclip/mobiclip.h"
+
 #define B4(a, b, c, d) ((a) | ((b) << 8) | ((c) << 16) | ((d) << 24))
 
 #pragma force_active on
@@ -13,10 +15,10 @@ void func_02075940(void);
 void func_02075a78(void);
 void func_02075b6c(void);
 void func_02075c74(void);
-void func_02075810(void);
+void func_02075810(MoYuvParams *params);
 void data_020758f4(void);
 
-asm void func_02075810(void) {
+asm void func_02075810(MoYuvParams *params) {
     stmfd sp!, {r4, r5, r6, r7, r8, r9, lr}
     sub sp, sp, #0x18
     mov r4, r0

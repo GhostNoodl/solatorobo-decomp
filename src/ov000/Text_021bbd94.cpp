@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "nitro/std.h"
 
 typedef struct {
     u8 c[3];
@@ -15,7 +16,6 @@ void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
-void STD_CopyString(char *dst, const char *src);
 void func_ov000_02165a20(s32 a, Rgb021bbd94 *c);
 
 static inline s32 Ccd30_Value(void) {

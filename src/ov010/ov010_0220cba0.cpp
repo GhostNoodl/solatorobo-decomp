@@ -9,7 +9,7 @@ extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *out);
 extern BOOL func_ov003_021d7a44(void *self, const Ov010Vec *target, const Ov010Vec *start, s32 speed, s32 maxDist, u8 noSnap);
 extern void *func_0204a028(void *mgr, s32 id, const Ov010Vec *pos, s32 a);
 extern Ov010V *func_02065f88(s32 id, const Ov010Vec *pos);
-extern void func_ov010_02209074(void);
+extern void func_ov010_02209074(void *p);
 
 static inline u8 *Ov010_FindActorD(u16 id) {
     if (data_ov000_021ccd68 == NULL) {

@@ -1,4 +1,5 @@
 #include "ov015/ov015.h"
+#include "nitro/std.h"
 
 struct Ov015Mdl {
     u16 unk_00;
@@ -34,7 +35,6 @@ extern char data_ov015_02212857[];
 extern char data_ov015_02212883[];
 extern char data_ov015_02212878[];
 extern char data_ov015_022128c1[];
-void STD_CopyString(char *dst, const char *src);
 u8 *func_ov015_0220765c(void *p);
 void func_ov015_02207858(u8 *p);
 void *func_ov000_0218e9c4(void *p);

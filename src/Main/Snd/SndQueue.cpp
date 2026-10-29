@@ -71,11 +71,11 @@ void func_0204aab0(SndQueue *queue, u16 value);
 
 u16 func_0204aac4(SndQueue *queue);
 
-void func_0204aad0(void);
+void func_0204aad0(SndQueue *queue);
 
 void func_0204aaec(SndQueue *queue, SndCmd *cmd);
 
-void func_0204ab54(void);
+void func_0204ab54(SndQueue *queue);
 
 }
 

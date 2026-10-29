@@ -32,7 +32,7 @@ typedef struct Obj021c0560 {
 extern "C" {
 
 BOOL func_ov000_021bd374(Obj021c0560 *self, s32 len);
-void *func_ov000_021c04e4(void);
+void *func_ov000_021c04e4(void *self, void *src, void *out, u16 *count);
 void func_02041c34(void *model, s32 a, void *cb, void *arg);
 void MI_CpuFill8(void *dst, s32 val, u32 size);
 

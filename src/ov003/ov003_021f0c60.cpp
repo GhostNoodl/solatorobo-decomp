@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 typedef struct {
     u8 unk_00[0xc];
@@ -85,7 +86,6 @@ Ov003PkOwner *func_ov000_02199ba0(Ov003PkItem *item);
 BOOL func_ov000_0219aae8(Ov003Pickup *self, Ov003PkOwner *owner, u16 a, u8 b, u16 mask, Ov003PkVec *v, s32 c, s32 d, s32 e, s32 f, s32 g);
 void func_ov000_0218d398(Ov003PkOwner *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_02040a98(void *buf, u32 n);
-void STD_CopyString(char *dst, const char *src);
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 s32 func_02049bdc(void *a, s32 b, s32 c);
 void func_ov003_021ce9c4(u16 id);

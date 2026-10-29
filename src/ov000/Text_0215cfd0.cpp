@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 typedef struct {
     u8 pad_00[0x84];
@@ -22,9 +23,6 @@ void func_02040a98(char *buf, u16 id);
 char *func_0204c0e8(void *msg, s32 id);
 void *func_0203de84(u32 size, u32 align);
 void func_0203df0c(void *p);
-s32 STD_GetStringLength(const char *s);
-void STD_CopyString(char *dst, const char *src);
-void STD_ConcatenateString(char *dst, const char *src);
 
 char *func_ov000_0215cfd0(Text0215cfd0 *self) {
     char tmp[0x20];

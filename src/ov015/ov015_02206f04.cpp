@@ -11,7 +11,7 @@ extern u8 data_ov015_02212b88[];
 extern u8 data_ov015_02212b08[];
 extern u8 data_ov015_022129e0[];
 extern u8 data_ov015_0221280c[];
-void func_ov000_02180754(void *p);
+void func_ov000_02180754(void);
 void func_ov015_021fa6cc(void *p);
 extern void *data_ov000_021ccd40;
 extern void *data_ov000_021ccd38;
@@ -141,7 +141,7 @@ void *func_ov015_02207138(void) {
 
 void *func_ov015_022071c4(void *self) {
     SET_VT(self, data_ov015_022129e0);
-    func_ov000_02180754(self);
+    func_ov000_02180754();
     SET_VT(self, data_ov015_0221280c);
     func_ov015_021fa6cc(self);
     func_0203de1c(self);
@@ -150,7 +150,7 @@ void *func_ov015_022071c4(void *self) {
 
 void *func_ov015_02207200(void *self) {
     SET_VT(self, data_ov015_022129e0);
-    func_ov000_02180754(self);
+    func_ov000_02180754();
     SET_VT(self, data_ov015_0221280c);
     func_ov015_021fa6cc(self);
     return self;

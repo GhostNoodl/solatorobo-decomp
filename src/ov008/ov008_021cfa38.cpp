@@ -67,7 +67,7 @@ u32 func_ov000_0214bf2c(u16 id);
 const char *func_ov000_0214c064(u16 id);
 void func_0204c6bc(const char *str, s32 maxLines, void *arg, void (*cb)(void *arg, s32 *tag));
 void func_ov000_0214dc20(void *arg, s32 *tag);
-void func_ov008_021cf5c8(void *self, Ov008Sel *sel);
+void func_ov008_021cf5c8(s32 type, void *list, void *info);
 static inline void Ov008_AddEntry(Ov008Mgr2 *m, u32 id) {
     void *e = func_0206e7d0(id);
     void *p;

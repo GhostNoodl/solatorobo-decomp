@@ -10,7 +10,7 @@ extern void *data_0208cb74;
 extern void *data_0208cca0;
 void func_02041218(void *p);
 void func_02041440(void *p, void *name, int c);
-void STD_CopyString(void *p, void *name);
+void *STD_CopyString(void *p, void *name);
 void *func_02035f30(void *a, void *b, int c);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *a, void *b);
@@ -31,7 +31,7 @@ extern u8 *data_02097d48;
 extern u8 data_0208ba70[];
 void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 const char *func_0206ffa0(u16 id);
 s32 STD_GetStringLength(const void *s);
 s32 func_0201e950(const void *s, const void *t, s32 n);
@@ -525,7 +525,7 @@ void func_ov015_02208f7c(u8 *self) {
     MTX_Concat33(t, m, t);
 }
 
-void func_ov015_0220900c(void) {
+void func_ov015_0220900c(void *self) {
 }
 
 void *func_ov015_02209010(void *self) {

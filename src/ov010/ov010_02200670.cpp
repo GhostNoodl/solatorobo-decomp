@@ -151,7 +151,7 @@ extern void NNS_G3dGlbFlushVP(void);
 extern void NNS_G3dGeBufferOP_N(s32 cmd, const void *data, s32 n);
 extern void MTX_RotX33_(void *m, s32 s, s32 c);
 extern void MTX_RotY33_(void *m, s32 s, s32 c);
-extern u32 func_02043d48(void *p);
+extern u8 func_02043d48(void *p);
 extern void NNS_G3dGeFlushBuffer(void);
 
 static inline void Ov010_G3End(void) {

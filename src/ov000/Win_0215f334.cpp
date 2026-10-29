@@ -36,7 +36,7 @@ BOOL func_02054f10(void *model, u32 id);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);
-void func_ov000_0215f970(void);
+void func_ov000_0215f970(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx0);
 void func_ov000_0215f618(Win0215f334 *self, s32 *pos);
 
 static inline void *LoModelGetPart(void *self, int idx) {

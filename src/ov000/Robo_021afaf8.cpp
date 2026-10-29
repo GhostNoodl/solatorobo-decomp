@@ -99,7 +99,7 @@ u8 *func_02065f88(s32 id, void *pos);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 void *func_ov000_0218e9c4(void *p);
-void STD_CopyString(void *dst, const char *src);
+void *STD_CopyString(void *dst, const char *src);
 u8 *func_ov000_0218e640(void *mgr, u16 id);
 void func_ov000_0218d398(void *a, u16 id, s32 b, s32 c, s32 d, void *e);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);

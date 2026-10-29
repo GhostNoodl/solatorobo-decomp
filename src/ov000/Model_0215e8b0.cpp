@@ -96,7 +96,7 @@ extern void *data_0208cca0;
 void *func_0203dd9c(u32 size);
 void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, void *b);
-void STD_CopyString(void *dst, const void *src);
+void *STD_CopyString(void *dst, const void *src);
 void func_02041c34(Model *m, s32 a, void *cb, void *arg);
 struct Req0215e6f0;
 struct OamEntry0215e6f0;

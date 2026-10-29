@@ -3,9 +3,9 @@
 
 #pragma force_active on
 
-void func_02032f90(void);
+void func_02032f90(void *conv);
 
-asm void func_02032f90(void) {
+asm void func_02032f90(void *conv) {
     stmfd sp!, {r4, r5, r6, r7, r8, r9, r10, r11, r12, lr}
     ldr r8, [r0, #0xc]
     ldr r9, [r0, #0x10]

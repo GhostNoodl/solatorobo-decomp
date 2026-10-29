@@ -3,7 +3,7 @@
 // Heap callbacks of sndarc_loader.c, which release loaded files.
 
 extern u32 OS_DisableInterrupts(void);
-extern void OS_RestoreInterrupts(u32 state);
+extern u32 OS_RestoreInterrupts(u32 state);
 extern void SND_InvalidateSeqData(void *start, void *end);
 extern void SND_InvalidateBankData(void *start, void *end);
 extern void SND_InvalidateWaveData(void *start, void *end);

@@ -1,6 +1,7 @@
 #pragma pool_strings on
 #pragma dont_reuse_strings off
 #include "ov007/ov007.h"
+#include "nitro/std.h"
 
 extern "C" {
 
@@ -526,7 +527,6 @@ extern Ov007Ce0 *data_02097ce0;
 extern void *data_0208ba70;
 
 void func_0206e900(char *dst, const char *src);
-void STD_CopyString(char *dst, const char *src);
 void *func_ov000_0218e9c4(void *p);
 BOOL func_ov000_0218f110(void *p);
 void *func_0204b370(void *p);

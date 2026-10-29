@@ -11,7 +11,7 @@ void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
-void STD_CopyString(void *dst, void *src);
+void *STD_CopyString(void *dst, void *src);
 void func_ov000_02153c48(void *node, void *a, s32 b, s32 c, s32 d);
 
 class Model0215aa78 {

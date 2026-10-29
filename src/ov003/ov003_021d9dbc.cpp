@@ -92,7 +92,7 @@ void func_ov003_021d9e90(Ov003Vec *out, const Ov003Vec *dir, const Ov003Vec *bas
     *out = r;
 }
 
-u16 func_ov003_021d9edc(u16 id) {
+s32 func_ov003_021d9edc(u16 id) {
     return func_ov000_0218dfb4(func_ov000_0218e4cc(data_ov000_021ccd68, id), id);
 }
 
@@ -154,7 +154,7 @@ BOOL func_ov003_021da03c(Ov003FxActor *self) {
 static inline Ov003Effect *Ov003_SpawnScatter(const Ov003Vec *base, s32 range, void *mgr) {
     Ov003Vec v;
     Ov003Vec p;
-    s16 y = func_02040528(range);
+    s32 y = func_02040528(range);
     v.x = func_02040528(range);
     v.y = y;
     v.z = 0;

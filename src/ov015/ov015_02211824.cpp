@@ -12,7 +12,7 @@ extern Ov015Shared *data_ov015_02213368;
 extern const char *data_ov015_02213228[];
 extern const char *data_ov015_02213230[];
 extern const char *data_ov015_02213208[];
-void STD_CopyString(void *dst, const void *src);
+void *STD_CopyString(void *dst, const void *src);
 s32 func_ov000_0218f110(void *a);
 
 void func_ov015_02211824(void) {

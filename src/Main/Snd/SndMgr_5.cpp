@@ -140,7 +140,7 @@ void func_0204a1c4(SndMgr *mgr);
 
 void func_0204a20c(SndMgr *mgr, s32 strmNo);
 
-void func_0204a284(SndMgr *mgr);
+void func_0204a284(SndMgr *mgr, s32 arg);
 
 void func_0204a2a8(SndMgr *mgr, s32 volume, s32 frames);
 
@@ -150,7 +150,7 @@ void func_0204a2e0(SndMgr *mgr, int fadeFrames);
 
 void func_0204a2f0(SndMgr *mgr, s32 id);
 
-void func_0204a360(void);
+void func_0204a360(SndMgr *self, s32 arg);
 
 typedef struct SndCmd {
     /* 0x0 */ s16 unk_0;

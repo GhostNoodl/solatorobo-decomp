@@ -5,19 +5,19 @@ extern "C" {
 extern u8 data_ov000_021cabc8[];
 extern u8 data_ov000_021cabd8[];
 extern u8 data_ov000_021cac02[];
-void func_ov000_0218e9c4(void *p);
-void func_ov000_0218ea20(void *p);
+void *func_ov000_0218e9c4(void *p);
+void *func_ov000_0218ea20(void *p);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void MI_CpuFill8(void *dst, u8 value, u32 size);
-void func_ov000_0218fe1c(void *p);
-void func_02043548(void *p);
+void *func_ov000_0218fe1c(void *p);
+void *func_02043548(void *p);
 void MTX_Identity44_(void *m);
 
 u8 *func_ov000_02162124(u8 *self) {
     LFLD(void *, self, 0) = data_ov000_021cabc8;
     LFLD(void *, self, 4) = data_ov000_021cabd8;
-    __cxa_vec_ctor(self + 0x7c, 2, 0x138, func_ov000_0218e9c4, func_ov000_0218ea20);
-    __cxa_vec_ctor(self + 0x2ec, 2, 0x138, func_ov000_0218e9c4, func_ov000_0218ea20);
+    __cxa_vec_ctor(self + 0x7c, 2, 0x138, (void (*)(void *))func_ov000_0218e9c4, (void (*)(void *))func_ov000_0218ea20);
+    __cxa_vec_ctor(self + 0x2ec, 2, 0x138, (void (*)(void *))func_ov000_0218e9c4, (void (*)(void *))func_ov000_0218ea20);
     LFLD(u8, self, 8) = 0x14;
     LFLD(u8, self, 9) = 0;
     LFLD(u8, self, 0xa) = 0;
@@ -60,7 +60,7 @@ u8 *func_ov000_02162124(u8 *self) {
 void func_ov000_0218ec60(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0218edf0(void *p, s32 a, s32 b, s32 c, s32 d);
 void __cxa_vec_cleanup(void *arr, int n, u32 size, void (*dtor)(void *));
-void func_ov000_0218fee4(void *p);
+void *func_ov000_0218fee4(void *p);
 
 // Same slot helpers as Slot_02161cd4.cpp (the camera's sub-object at +4).
 static inline void StopSlot02162294(u8 *self, u8 i) {
@@ -78,8 +78,8 @@ static inline void SlotDtor02162294(u8 *self) {
     LFLD(void *, self, 0) = data_ov000_021cabd8;
     StopSlot02162294(self, LFLD(u8, self, 5));
     StopSlot02162294(self, (LFLD(u8, self, 5) & 1) ^ 1);
-    __cxa_vec_cleanup(self + 0x2e8, 2, 0x138, func_ov000_0218ea20);
-    __cxa_vec_cleanup(self + 0x78, 2, 0x138, func_ov000_0218ea20);
+    __cxa_vec_cleanup(self + 0x2e8, 2, 0x138, (void (*)(void *))func_ov000_0218ea20);
+    __cxa_vec_cleanup(self + 0x78, 2, 0x138, (void (*)(void *))func_ov000_0218ea20);
 }
 
 static inline void CamDtor02162294(u8 *self) {

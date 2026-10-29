@@ -24,7 +24,7 @@ typedef struct {
 
 extern "C" {
 extern const s16 FX_SinCosTable_[];
-void func_ov000_021c8408(void);
+void func_ov000_021c8408(void *self, int x, int y, int z, u16 color, const void *oam, const void *tex, u32 texBase, u32 plttBase, const void *mtx, u32 arg);
 
 static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     ModelRes *res = model->res;
@@ -42,7 +42,7 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     func_02042628(model, anim, part, flag);
 }
 
-void func_ov000_021c6d64(Obj021c6d64 *self, void *unused, VecFx32 *pos) {
+void func_ov000_021c6d64(Obj021c6d64 *self, void *unused, VecFx32 *pos, s32 arg) {
     s32 z = pos->z + 0x20;
     if (self->count > 1 && (self->unk_c4.b0 || self->cur > 0)) {
         MtxFx22 m;

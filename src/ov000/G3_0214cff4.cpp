@@ -11,7 +11,7 @@ typedef struct {
 
 extern "C" {
 extern u8 *data_02097d48;
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 void func_02043d20(void *p, int a);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 

@@ -119,7 +119,7 @@ extern "C" {
 extern u8 *data_02097d48;
 extern const Ov008Tbl5 data_ov008_021d02e8;
 BOOL func_02054f10(void *a, int b);
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 void *func_ov000_02154b58(void *a, u32 id);
 void func_02041c20(void *a, int b, int c);
 

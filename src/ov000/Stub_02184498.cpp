@@ -19,7 +19,7 @@ static inline BOOL IsIdle(void) {
     return data_02097d78.unk_0c == 0 && data_02097d78.unk_00 == 0;
 }
 
-BOOL func_ov000_02184498(void) {
+BOOL func_ov000_02184498(void *self) {
     if (IsMode(4)) {
         func_0203cb78(0xa000, 0, 0);
     }

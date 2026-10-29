@@ -118,7 +118,7 @@ extern const s16 data_02075210[];
 // Loose prototypes for files that do not include the SDK OS header.
 #ifndef NITRO_OS_H
 extern u32 OS_DisableInterrupts(void);
-extern void OS_RestoreInterrupts(u32 state);
+extern u32 OS_RestoreInterrupts(u32 state);
 extern void OS_InitMutex(void *mutex);
 extern void OS_LockMutex(void *mutex);
 extern void OS_UnlockMutex(void *mutex);

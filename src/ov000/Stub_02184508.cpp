@@ -13,7 +13,7 @@ extern "C" {
 
 Obj0219bf90 *func_ov000_0219bf90(void);
 
-void func_ov000_02184508(void) {
+void func_ov000_02184508(void *self) {
     Obj0219bf90 *p = func_ov000_0219bf90();
     if (p == NULL) {
         return;

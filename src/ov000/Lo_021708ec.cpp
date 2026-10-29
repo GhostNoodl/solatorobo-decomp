@@ -55,7 +55,7 @@ static inline BOOL Lo_TalkBusy(MessageQueue *mq) {
     }
 }
 
-BOOL func_ov000_021708ec(void *self, s32 arg) {
+BOOL func_ov000_021708ec(void *self, s32 arg, s32 arg2) {
     void *p;
     if (LFLD(s32, self, 0x24) != 3) {
         return FALSE;

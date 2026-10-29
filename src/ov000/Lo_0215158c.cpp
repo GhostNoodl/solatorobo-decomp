@@ -12,7 +12,7 @@ u16 func_02059544(void *a, void *b, void *c, s32 d, s32 e);
 BOOL func_0205a9c8(void *p);
 void func_0204c7d0(void *p);
 void *func_ov000_02173610(s32 kind);
-void *func_ov000_0219bf90(void *p);
+void *func_ov000_0219bf90(void);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 typedef struct {
@@ -45,7 +45,7 @@ void func_ov000_0215158c(void *self) {
     if (t == NULL) {
         return;
     }
-    m = func_ov000_0219bf90(t);
+    m = func_ov000_0219bf90();
     s = LFLD(void *, t, 0x50);
     switch (LFLD(s32, self, 4)) {
     case 0:

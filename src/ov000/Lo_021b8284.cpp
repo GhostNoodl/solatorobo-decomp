@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "nitro/std.h"
 
 
 typedef struct {
@@ -14,8 +15,6 @@ extern u8 *data_02097d48;
 extern void *data_02097e4c;
 extern char data_ov000_021cc879[];
 char *func_02061f94(u16 id);
-void STD_CopyString(char *dst, const char *src);
-char *STD_SearchString(const char *s, const char *pat);
 void func_020359fc(void *a, void *b, s32 c, s32 d);
 BOOL func_02035bd4(void *a, void *b, s32 c);
 void *func_02035f30(void *a, void *b, s32 c);

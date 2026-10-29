@@ -11,7 +11,7 @@ extern u8 data_ov015_022128ec[];
 extern u8 data_ov015_02213188[];
 void MI_CpuFill8(void *dst, u32 value, u32 size);
 extern u8 *data_ov002_021f0f9c;
-void func_ov002_021e7c1c(void *p);
+void func_ov002_021e7c1c(void);
 void func_ov015_0220ec40(void *self);
 
 extern Ov015Shared *data_ov015_02213368;
@@ -239,7 +239,7 @@ void func_ov015_0220f4d4(u8 *self) {
     DELETE_V(FLD(void *, self, 0x10));
     HEAP_POP(saved);
     if (data_ov002_021f0f9c != NULL) {
-        func_ov002_021e7c1c(data_ov002_021f0f9c);
+        func_ov002_021e7c1c();
     }
 }
 
@@ -334,7 +334,7 @@ BOOL func_ov015_0220f568(u8 *self) {
             busy = func_ov002_021e7ea8(data_ov002_021f0f9c);
         }
         if (busy == 0) {
-            func_ov002_021e7c1c((void *)busy);
+            func_ov002_021e7c1c();
             func_ov015_021fa75c((Ov015Fade *)func_ov015_021fa6d0());
             r = FALSE;
         }

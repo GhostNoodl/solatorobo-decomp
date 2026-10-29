@@ -6662,3 +6662,38 @@ No new match, no score changed. `ov000_0219b808` stays at 4 / 0, and `ov000_0218
   - Normal mode for the call block (`NM=25 NMF=2`) gives 8 / 4.
   - So putting the message construction inside the call's argument list would not help either.
 - **`0218867c`:** an enum-typed zero for the case-1 loop's `n_0 == 0` test (lfA, meant to supply qpD's extra live value) changes the code. A function-level `want` gives 315, a case-local `want` 281, and an enum `n_0` 288 raw (from 45).
+### Round ptB
+
+Prototype cleanup, continued. No new match and no lost match; every built object (code, data, relocations) is identical to clean HEAD's, checked after every step and again after a clean rebuild. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` 8133. `tools/protoaudit.py` is unchanged. Scratch is in `scratchpad/ptB/`: `fixdecl.py [--generic] FILE NAME...` rewrites a file's declarations to the definition's prototype (`--generic` writes unknown struct pointers as `void *`), `trunc.py`/`tryall.py` drop extra call arguments and keep the change only if the objects stay the same, `sweep.py` does the same for every declaration with the wrong parameter count, `regread.py OBJ FUNC` shows which of `r0`-`r3` a definition reads, `calls.py NAME` lists the direct call sites and argument counts, and `oc.sh OBJ...` rebuilds and compares objects.
+
+- **Before / after** (`protoaudit.py`): 356 functions with disagreeing declarations, 135 of them on the return class. Now 66 and 7. With `--all`: 405 before, 117 now.
+- **Tables of function pointers and `__cxa_vec_*` arguments.** These now use the real prototypes, with a cast where the slot type needs one: `ov000_021ca70c` (`(Ov000Fn)`, plus forward-declared `ResHandle`/`CmdObj`/...), `ov012_0220a8d8`, `ov013_0220b444`, `ov010_0220f5dc`, the seven `__cxa_vec_ctor`/`cleanup` files (`(void (*)(void *))`, as in ov002), `Misc_0214dcc4` and `ov010_02204cdc`. `fs_romfat_rodata.c` includes `fs_private.h` and declares the real `FSResult` prototypes. The DSProtect stubs `ov004_021ce2ec`/`374`/`3fc` and the Mobiclip asm functions `02075d4c`, `0207670c`, `02075810` and `02032f90` declare their real signatures on the `asm` definition. That changes nothing in the asm.
+- **Definitions that returned `void` but whose callers use the value:**
+  - `func_0206facc`, `0206ead8` and `0204c100` return `BOOL` from the resource's vtable slot `0x2c`. That slot is `func_02038ca0` (`BOOL`) in the ResHandle vtable, so `Load()` is now `BOOL` in `LangRes2`, `LangRes` and `MsgRes` (`unk_vf2c` was renamed `Load`).
+  - `ov010_02209190` returns `u16` from `func_ov003_021d9c38`.
+  - `ov015_02210bd8` returns `func_02035bd4`'s `int`.
+- **Load-bearing prototypes that are now honest.** In each case below, the type every caller needed also compiles the definition identically, so all declarations now agree:
+  - `func_02043d48` is `u8` everywhere, including its definition, because the id it returns is a `u8`. This also removed the two `((u8 (*)(void *))func_02043d48)` casts in `ov002_021edcec`, and fixed `NNS_G3dMdlSetMdlPolygonIDAll` in `ov002.h`, which was declared `(void *, void *)`.
+  - `func_0206f080` is `s32` everywhere.
+  - `func_ov000_02199f08` is `u8` everywhere.
+  - `func_ov003_021d9edc` is `s32` everywhere.
+  - `func_02040528` is `int` in `ov003/Vec.h`. The two `Ov003_SpawnScatter` copies held the first result in an `s16 y`. They now hold it in an `s32 y`, which is what the ROM's missing sign-extension says.
+  - The Menu TU no longer needs `void` for `STD_CopyString`, `STD_ConcatenateString` or `func_0200779c` (`int`). With the current Menu source the object is the same either way.
+- **Still load-bearing** (7 return-class conflicts left):
+  - `func_02049f44` `void` in `ov009_02205490` and `func_0204a028` `void` in the two ov012 files. These are jkJ splits; `ov010_02204cdc` no longer needs its `void`.
+  - `func_ov000_0218cea4` and `021903b4` `u16` in `ov003_021d16cc`. A `BOOL` `r` and a `BOOL` return still give 24 diffs.
+  - `func_ov000_02198360` `void` in `ov003_021da2c8`.
+  - `STD_CopyString` `void` in `ov015_022078bc`.
+  - `func_ov000_0219b808`, whose definition is raH's `NONMATCHING` draft, was left alone.
+- **Parameter lists, from the ROM.** Where a definition took fewer parameters than its callers pass, `regread.py` showed whether the callee reads the register:
+  - **The callee ignores the argument and the callers' code changes without it.** The callers really pass it, so the definition takes it, unused: `func_020463c8(WhMgr *)`, `020472c4(SysCard *)`, `0204a284`/`0204a360` (`-1` second argument), `0204aad0`/`0204ab54(SndQueue *)`, `020534d4`, `0205a69c`, `ov000_0215f330`, `021708ec`, `021761f0`, `02176264`, `0218547c` (the 4-argument StageCmd handler), `02189068`, `02184498`, `02184508`, `021b14e8`/`021b1514`, `ov002_021cd068`, `ov003_021cf330`/`f33c`/`f3fc`/`f400`/`f404`, `ov006_021ccddc`, the six ov015 stubs, `021c524c`/`021c6d64` (4th argument), `02161798` (4th, a vtable-shaped method), `021c8408` (11th, the Oam3D callback shape), `ov013_02204428` (the `Ov013OffFn` owner argument) and `RestoreSavedRegisters(ctx, iter)`.
+  - **`func_ov000_0215ced8` was `void (void)` calling `0215c744()`.** It is a tail-call forwarder (`ldr ip; bx ip` with `r0`-`r2` untouched), now `(VObj *self, u32 flags, u16 id)`.
+  - **The caller's code is the same without the argument.** The extra argument was dropped from the caller instead: `0203e688`, `02180754`, `0206e8f0`, `0214c1ac`/`0214c210` (`TaskList.h`), `021763c8` (`ov002.h`), `021bc86c`, `021bd09c`, `ov002_021e7c1c`, `ov003_021cee68`, `ov015_0220c810`, `02210c28`, `02211a18`, `0219bf90` (18 files), `NNS_G3dGlbGetInvV` (ov015), `020434e0`, `021b209c`, and `func_01ffc9fc` in `ov009_021ffff4`. That last one also drops its `(Ov009RotFn)` cast hack. `func_020403e4` is declared `u64` in `Sys.cpp` (`(u32)(...)` argument), and the 12 variadic `func_ov000_0215fe1c(void *, s32, s32, ...)` declarations are now the real 3-parameter ones.
+  - **Left alone:**
+    - `func_ov000_0216912c`'s `LoDE` by-value struct is load-bearing. Splitting it into `s32 d, s32 *e` changes the stack loads.
+    - Callers that pass fewer arguments than a definition that reads them (`021b4738`, `021b4774`, `0219d5a0`, `0203bc20`, `02049bb4`/`0204aab0`, `02160534`, `021b70c0`, ...): fixing these needs an argument expression that keeps the code the same.
+    - `func_ov003_021ce484`'s DSProtect callers.
+    - `0203ebf8`'s `char *` callers.
+    - The documented unused-parameter locals in `ov002_021dedf0` and `021dd9dc`. As locals they still differ.
+- **One declaration per function.** The new `include/nitro/std.h` declares the `STD_*` string functions with their SDK prototypes, and 52 files now include it instead of declaring them locally. The other files pass `u8 *`/`void *` buffers or include a header (`ov002.h`, `ResMgr.h`/`StageRes.h`/`LangData.h`, `ov006` `SlotManager.h`/`Model.h`, `TaskList.h`, `ov013.h`) that still has its own declaration, so they would need casts. Beyond the `STD_*` functions, `sweep.py` set the local declarations in 79 more files to the definition's parameter list (unknown struct pointers become `void *`).
+- **`ov003_021cd1e4`'s `if (name)` stays.** With every combination of the corrected prototypes (`func_02041440` taking `s32` or `u8`; `STD_CopyString` returning `void *`, `char *` or `void`) and three spellings (the explicit block without the test, the two locals in the other order, `Ov003TlSpr_Init` with the literals), the object still differs.

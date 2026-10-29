@@ -1,4 +1,5 @@
 #include "ov003/Vec.h"
+#include "nitro/std.h"
 
 struct Ov003Save {
     u8 unk_00[0x18];
@@ -49,7 +50,6 @@ struct Ov003Hit {
 
 struct Ov003Game30;
 extern "C" Ov003Game30 *data_ov000_021ccd30;
-extern "C" void STD_CopyString(char *dst, const char *src);
 
 struct Ov003Slot3 {
     u8 sub[3][0x30];

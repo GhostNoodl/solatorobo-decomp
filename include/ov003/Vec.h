@@ -41,7 +41,7 @@ extern void VEC_MultAdd(s32 scale, const Ov003Vec *dir, const Ov003Vec *base, Ov
 extern s32 VEC_Distance(const Ov003Vec *a, const Ov003Vec *b);
 extern u16 FX_Atan2(s32 x, s32 z);
 extern u16 FX_AcosIdx(s32 v);
-extern s16 func_02040528(s32 max);
+extern s32 func_02040528(s32 max);
 }
 
 static inline u16 Ov003_Pitch(s32 y) {

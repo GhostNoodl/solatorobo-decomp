@@ -99,7 +99,7 @@ void func_02041558(Model *model);
 void func_02041278(void *a);
 void func_02041218(void *a);
 void func_02041440(Model *model, void *a, s32 b);
-void STD_CopyString(void *a, const char *b);
+void *STD_CopyString(void *a, const char *b);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(Model *model, void *a);

@@ -7,7 +7,7 @@ extern void *data_ov000_021ccd64;
 extern u8 data_ov009_02215dc0[];
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
-extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b, s32 c);
+extern void func_01ffc9fc(Ov009Vec *out, const void *a, u16 ang);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern void func_0203f2b8(void *p);
 
@@ -43,7 +43,7 @@ void func_ov009_02200070(Ov009Actor *self) {
     FLD(Ov009Vec, self, 0xf8) = self->pos;
     self->unk_84 = self->pos;
     FLD(u8, self, 0xf0) = 0;
-    func_01ffc9fc(&t, data_ov009_02215dc0, 0x5554, 0);
+    func_01ffc9fc(&t, data_ov009_02215dc0, 0x5554);
     VEC_Add(&self->unk_84, &t, &self->pos);
     self->unk_b8 = self->pos;
     switch (self->kind) {
@@ -176,7 +176,6 @@ extern u8 data_ov009_02215dcc[];
 extern void func_ov000_0218d918(Ov009Actor *self, const Ov009Vec *v, s32 a);
 extern void func_ov000_0218dbe0(Ov009Actor *self, s32 a);
 extern u16 FX_Atan2(s32 y, s32 x);
-typedef void (*Ov009RotFn)(Ov009Vec *out, const void *a, s32 b);
 
 static inline s32 Ov009_Sqrt64(s64 v) {
     *(volatile u16 *)0x40002b0 = 1;
@@ -252,7 +251,7 @@ void func_ov009_02200534(Ov009Actor *self) {
         s32 dz;
         s32 dx;
         self->unk_84 = self->pos;
-        ((Ov009RotFn)func_01ffc9fc)(&off, data_ov009_02215dcc, 0x5554);
+        func_01ffc9fc(&off, data_ov009_02215dcc, 0x5554);
         VEC_Add(&plpos, &off, &plpos);
         dz = self->pos.z - plpos.z;
         dx = self->pos.x - plpos.x;

@@ -22,7 +22,7 @@ extern void *func_ov000_02194074(void *self);
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02194c08(void *self);
 extern void func_02049de8(void *a, s32 b);
-extern int func_02043d48(void *p);
+extern u8 func_02043d48(void *p);
 extern void func_ov000_02191920(void *a, s32 b, s32 c, s32 d);
 extern void func_ov000_02191618(void *p);
 extern void func_ov000_02191708(void *p);

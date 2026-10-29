@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -41,7 +42,6 @@ void *func_0203dd9c(u32 size);
 void *func_ov000_021919c8(void *p);
 void func_ov000_02191b70(void *s);
 void func_ov000_0218f074(void *o, void *a, BOOL b, BOOL c, s32 d, BOOL e);
-void STD_CopyString(char *dst, const char *src);
 
 static inline void SetNames0219c54c(char *d0, char *d1, const char *a, const char *b) {
     STD_CopyString(d0, a);

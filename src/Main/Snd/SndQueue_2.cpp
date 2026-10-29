@@ -78,7 +78,7 @@ u16 func_0204aac4(SndQueue *queue) {
     return queue->cur->value;
 }
 
-void func_0204aad0(void) {
+void func_0204aad0(SndQueue *queue) {
     SndMgr *mgr = SND_MGR;
     mgr->seqArcNext = 0;
     mgr->unk_9c = 0;
@@ -103,7 +103,7 @@ void func_0204aaec(SndQueue *queue, SndCmd *cmd) {
     func_0204a3b8(SND_MGR, cmd);
 }
 
-void func_0204ab54(void) {
+void func_0204ab54(SndQueue *queue) {
     s32 i;
     SndMgr *mgr = SND_MGR;
     for (i = 0; i < 5; i++) {

@@ -98,12 +98,12 @@ extern u8 *data_ov000_021ccd54;
 void *func_0203dd9c(u32 size);
 Info02192b24 *func_020704b4(u16 id);
 s32 func_0206ffa0(u16 id);
-void func_ov000_0218e9c4(void *p);
-void func_ov000_0218fe1c(void *p);
-void func_ov000_02194074(void *p);
+void *func_ov000_0218e9c4(void *p);
+void *func_ov000_0218fe1c(void *p);
+void *func_ov000_02194074(void *p);
 void *func_ov000_021940e4(void *p);
-void func_ov000_02193e34(void *p);
-void func_ov000_02193e48(void *p);
+void *func_ov000_02193e34(void *p);
+void *func_ov000_02193e48(void *p);
 void func_ov000_0218d1c0(void *p, u16 sub, u16 id, s32 a);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void *func_ov003_021ec31c(void *p);
@@ -309,9 +309,9 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
                     func_ov000_0218e9c4(t + 0xd0);
                     func_ov000_0218e9c4(t + 0x208);
                     func_ov000_0218fe1c(t + 0x340);
-                    __cxa_vec_ctor(t + 0x46c, 4, 0x98, func_ov000_02193e34, func_ov000_02193e48);
-                    __cxa_vec_ctor(t + 0x6cc, 4, 0x98, func_ov000_02193e34, func_ov000_02193e48);
-                    __cxa_vec_ctor(t + 0x92c, 3, 0x98, func_ov000_02193e34, func_ov000_02193e48);
+                    __cxa_vec_ctor(t + 0x46c, 4, 0x98, (void (*)(void *))func_ov000_02193e34, (void (*)(void *))func_ov000_02193e48);
+                    __cxa_vec_ctor(t + 0x6cc, 4, 0x98, (void (*)(void *))func_ov000_02193e34, (void (*)(void *))func_ov000_02193e48);
+                    __cxa_vec_ctor(t + 0x92c, 3, 0x98, (void (*)(void *))func_ov000_02193e34, (void (*)(void *))func_ov000_02193e48);
                 }
                 p = t;
             }

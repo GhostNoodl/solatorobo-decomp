@@ -20,56 +20,56 @@ typedef void (*Ov012Fn)(void);
 
 extern "C" {
 
-void func_ov012_021ffb90(void);
-void func_0205e958(void);
-void func_ov012_021ffb9c(void);
-void func_ov000_0218cfc8(void);
-void func_ov000_0218d17c(void);
-void func_ov000_0218d190(void);
+void func_ov012_021ffb90(void *self);
+void func_0205e958(void *light);
+BOOL func_ov012_021ffb9c(void *self);
+void func_ov000_0218cfc8(void *self);
+BOOL func_ov000_0218d17c(void *self);
+void func_ov000_0218d190(void *self);
 void func_ov012_02201cb8(void);
-void func_ov012_021ffaa8(void);
-void func_ov012_021ffb18(void);
-void func_ov012_021ffba8(void);
-void func_ov012_021ffd34(void);
+void *func_ov012_021ffaa8(void *self);
+void *func_ov012_021ffb18(void *self);
+void func_ov012_021ffba8(void *self);
+void func_ov012_021ffd34(void *self);
 void func_ov012_02201cb4(void);
 void func_ov012_02201cb0(void);
-void func_ov003_021d2e28(void);
-void func_ov003_021d3008(void);
-void func_ov012_02201c90(void);
-void func_ov012_02201c70(void);
-void func_ov012_021ffcd0(void);
-void func_ov012_02200200(void);
-void func_ov003_021d36fc(void);
-void func_ov012_02200cd4(void);
-void func_ov012_02200398(void);
-void func_ov012_022007a0(void);
-void func_ov012_02201d04(void);
-void func_ov012_02201ce4(void);
-void func_ov012_02201cd0(void);
-void func_ov012_022015a0(void);
-void func_ov012_022016a4(void);
-void func_ov003_021d64f0(void);
+void func_ov003_021d2e28(void *self);
+void func_ov003_021d3008(void *self);
+void func_ov012_02201c90(void *self);
+void func_ov012_02201c70(void *self);
+void func_ov012_021ffcd0(void *self, void *msg);
+void func_ov012_02200200(void *self);
+void func_ov003_021d36fc(void *self);
+void func_ov012_02200cd4(void *self);
+void func_ov012_02200398(void *self);
+void func_ov012_022007a0(void *self);
+void func_ov012_02201d04(void *self);
+void func_ov012_02201ce4(void *self);
+void func_ov012_02201cd0(void *self);
+void func_ov012_022015a0(void *self);
+void func_ov012_022016a4(void *self);
+void func_ov003_021d64f0(void *self);
 void func_ov012_02201ccc(void);
 void func_ov012_02201cc8(void);
 void func_ov012_02201cc4(void);
 void func_ov012_02201cc0(void);
 void func_ov012_02201cbc(void);
-void func_ov012_02201d68(void);
-void func_ov012_02201d4c(void);
-void func_ov012_021fee58(void);
-void func_ov012_021fefc8(void);
-void func_ov012_021fef64(void);
-void func_ov012_02201d28(void);
-void func_ov012_021ff20c(void);
-void func_ov012_021ff674(void);
-void func_ov012_021fa91c(void);
-void func_ov012_021fa80c(void);
-void func_ov012_021fa8b8(void);
-void func_ov012_021fa724(void);
-void func_ov012_021fa794(void);
-void func_ov012_021fa9e8(void);
+void *func_ov012_02201d68(void *self);
+void *func_ov012_02201d4c(void *self);
+void func_ov012_021fee58(void *self);
+void func_ov012_021fefc8(void *self);
+void func_ov012_021fef64(void *self, void *msg);
+void func_ov012_02201d28(void *self);
+void func_ov012_021ff20c(void *self);
+void func_ov012_021ff674(void *self);
+BOOL func_ov012_021fa91c(void *self);
+void func_ov012_021fa80c(void *self);
+BOOL func_ov012_021fa8b8(void *self);
+void *func_ov012_021fa724(void *self);
+void *func_ov012_021fa794(void *self);
+void func_ov012_021fa9e8(void *self);
 void func_ov012_021fab7c(Ov012Actor *self);
-void func_ov012_021fa978(void);
+void func_ov012_021fa978(void *self, void *msg);
 void func_ov012_021fbe64(Ov012Actor *self);
 void func_ov012_021fbec8(Ov012Actor *self);
 void func_ov012_021fc688(Ov012Actor *self);
@@ -169,124 +169,124 @@ char data_ov012_0220ab33[] = "att20";
 u32 data_ov012_0220ab3c[2] = {0, 0};
 Ov012Fn data_ov012_0220ab44[41] = {
     (Ov012Fn)func_ov003_021d16cc,
-    func_ov012_021ffb90,
-    func_0205e958,
-    func_ov012_021ffb9c,
-    func_ov000_0218cfc8,
-    func_ov000_0218d17c,
-    func_ov000_0218d190,
-    func_ov012_02201cb8,
-    func_ov012_021ffaa8,
-    func_ov012_021ffb18,
-    func_ov012_021ffba8,
-    func_ov012_021ffd34,
-    func_ov012_02201cb4,
-    func_ov012_02201cb0,
-    func_ov003_021d2e28,
-    func_ov003_021d3008,
+    (Ov012Fn)func_ov012_021ffb90,
+    (Ov012Fn)func_0205e958,
+    (Ov012Fn)func_ov012_021ffb9c,
+    (Ov012Fn)func_ov000_0218cfc8,
+    (Ov012Fn)func_ov000_0218d17c,
+    (Ov012Fn)func_ov000_0218d190,
+    (Ov012Fn)func_ov012_02201cb8,
+    (Ov012Fn)func_ov012_021ffaa8,
+    (Ov012Fn)func_ov012_021ffb18,
+    (Ov012Fn)func_ov012_021ffba8,
+    (Ov012Fn)func_ov012_021ffd34,
+    (Ov012Fn)func_ov012_02201cb4,
+    (Ov012Fn)func_ov012_02201cb0,
+    (Ov012Fn)func_ov003_021d2e28,
+    (Ov012Fn)func_ov003_021d3008,
     (Ov012Fn)func_ov003_021d1b88,
-    func_ov012_02201c90,
-    func_ov012_02201c70,
-    func_ov012_021ffcd0,
-    func_ov012_02200200,
+    (Ov012Fn)func_ov012_02201c90,
+    (Ov012Fn)func_ov012_02201c70,
+    (Ov012Fn)func_ov012_021ffcd0,
+    (Ov012Fn)func_ov012_02200200,
     (Ov012Fn)func_ov003_021d3600,
-    func_ov003_021d36fc,
+    (Ov012Fn)func_ov003_021d36fc,
     (Ov012Fn)func_ov003_021d3a88,
-    func_ov012_02200cd4,
-    func_ov012_02200398,
-    func_ov012_022007a0,
-    func_ov012_02201d04,
+    (Ov012Fn)func_ov012_02200cd4,
+    (Ov012Fn)func_ov012_02200398,
+    (Ov012Fn)func_ov012_022007a0,
+    (Ov012Fn)func_ov012_02201d04,
     (Ov012Fn)func_ov003_021d4b68,
-    func_ov012_02201ce4,
-    func_ov012_02201cd0,
+    (Ov012Fn)func_ov012_02201ce4,
+    (Ov012Fn)func_ov012_02201cd0,
     (Ov012Fn)func_ov003_021d4fd8,
     (Ov012Fn)func_ov003_021d5348,
-    func_ov012_022015a0,
-    func_ov012_022016a4,
-    func_ov003_021d64f0,
-    func_ov012_02201ccc,
-    func_ov012_02201cc8,
-    func_ov012_02201cc4,
-    func_ov012_02201cc0,
-    func_ov012_02201cbc,
+    (Ov012Fn)func_ov012_022015a0,
+    (Ov012Fn)func_ov012_022016a4,
+    (Ov012Fn)func_ov003_021d64f0,
+    (Ov012Fn)func_ov012_02201ccc,
+    (Ov012Fn)func_ov012_02201cc8,
+    (Ov012Fn)func_ov012_02201cc4,
+    (Ov012Fn)func_ov012_02201cc0,
+    (Ov012Fn)func_ov012_02201cbc,
 };
 u32 data_ov012_0220abe8[2] = {0, 0};
 Ov012Fn data_ov012_0220abf0[41] = {
     (Ov012Fn)func_ov003_021d16cc,
     (Ov012Fn)func_ov003_021d0fc0,
-    func_0205e958,
+    (Ov012Fn)func_0205e958,
     (Ov012Fn)func_ov000_0218cf5c,
-    func_ov000_0218cfc8,
-    func_ov000_0218d17c,
-    func_ov000_0218d190,
-    func_ov012_02201cb8,
-    func_ov012_02201d68,
-    func_ov012_02201d4c,
-    func_ov012_021fee58,
-    func_ov012_021fefc8,
-    func_ov012_02201cb4,
-    func_ov012_02201cb0,
-    func_ov003_021d2e28,
-    func_ov003_021d3008,
+    (Ov012Fn)func_ov000_0218cfc8,
+    (Ov012Fn)func_ov000_0218d17c,
+    (Ov012Fn)func_ov000_0218d190,
+    (Ov012Fn)func_ov012_02201cb8,
+    (Ov012Fn)func_ov012_02201d68,
+    (Ov012Fn)func_ov012_02201d4c,
+    (Ov012Fn)func_ov012_021fee58,
+    (Ov012Fn)func_ov012_021fefc8,
+    (Ov012Fn)func_ov012_02201cb4,
+    (Ov012Fn)func_ov012_02201cb0,
+    (Ov012Fn)func_ov003_021d2e28,
+    (Ov012Fn)func_ov003_021d3008,
     (Ov012Fn)func_ov003_021d1b88,
-    func_ov012_02201c90,
-    func_ov012_02201c70,
-    func_ov012_021fef64,
+    (Ov012Fn)func_ov012_02201c90,
+    (Ov012Fn)func_ov012_02201c70,
+    (Ov012Fn)func_ov012_021fef64,
     (Ov012Fn)func_ov003_021d3524,
     (Ov012Fn)func_ov003_021d3600,
-    func_ov003_021d36fc,
+    (Ov012Fn)func_ov003_021d36fc,
     (Ov012Fn)func_ov003_021d3a88,
     (Ov012Fn)func_ov003_021d3d28,
     (Ov012Fn)func_ov003_021d452c,
-    func_ov012_02201d28,
-    func_ov012_02201d04,
-    func_ov012_021ff20c,
-    func_ov012_02201ce4,
-    func_ov012_02201cd0,
+    (Ov012Fn)func_ov012_02201d28,
+    (Ov012Fn)func_ov012_02201d04,
+    (Ov012Fn)func_ov012_021ff20c,
+    (Ov012Fn)func_ov012_02201ce4,
+    (Ov012Fn)func_ov012_02201cd0,
     (Ov012Fn)func_ov003_021d4fd8,
     (Ov012Fn)func_ov003_021d5348,
     (Ov012Fn)func_ov003_021d5900,
-    func_ov012_021ff674,
-    func_ov003_021d64f0,
-    func_ov012_02201ccc,
-    func_ov012_02201cc8,
-    func_ov012_02201cc4,
-    func_ov012_02201cc0,
-    func_ov012_02201cbc,
+    (Ov012Fn)func_ov012_021ff674,
+    (Ov012Fn)func_ov003_021d64f0,
+    (Ov012Fn)func_ov012_02201ccc,
+    (Ov012Fn)func_ov012_02201cc8,
+    (Ov012Fn)func_ov012_02201cc4,
+    (Ov012Fn)func_ov012_02201cc0,
+    (Ov012Fn)func_ov012_02201cbc,
 };
 u32 data_ov012_0220ac94[2] = {0, 0};
 Ov012Fn data_ov012_0220ac9c[41] = {
-    func_ov012_021fa91c,
-    func_ov012_021fa80c,
-    func_0205e958,
-    func_ov012_021fa8b8,
-    func_ov000_0218cfc8,
-    func_ov000_0218d17c,
-    func_ov000_0218d190,
-    func_ov012_02201cb8,
-    func_ov012_021fa724,
-    func_ov012_021fa794,
-    func_ov012_021fa9e8,
+    (Ov012Fn)func_ov012_021fa91c,
+    (Ov012Fn)func_ov012_021fa80c,
+    (Ov012Fn)func_0205e958,
+    (Ov012Fn)func_ov012_021fa8b8,
+    (Ov012Fn)func_ov000_0218cfc8,
+    (Ov012Fn)func_ov000_0218d17c,
+    (Ov012Fn)func_ov000_0218d190,
+    (Ov012Fn)func_ov012_02201cb8,
+    (Ov012Fn)func_ov012_021fa724,
+    (Ov012Fn)func_ov012_021fa794,
+    (Ov012Fn)func_ov012_021fa9e8,
     (Ov012Fn)func_ov012_021fab7c,
-    func_ov012_02201cb4,
-    func_ov012_02201cb0,
-    func_ov003_021d2e28,
-    func_ov003_021d3008,
+    (Ov012Fn)func_ov012_02201cb4,
+    (Ov012Fn)func_ov012_02201cb0,
+    (Ov012Fn)func_ov003_021d2e28,
+    (Ov012Fn)func_ov003_021d3008,
     (Ov012Fn)func_ov003_021d1b88,
-    func_ov012_02201c90,
-    func_ov012_02201c70,
-    func_ov012_021fa978,
+    (Ov012Fn)func_ov012_02201c90,
+    (Ov012Fn)func_ov012_02201c70,
+    (Ov012Fn)func_ov012_021fa978,
     (Ov012Fn)func_ov012_021fbe64,
     (Ov012Fn)func_ov003_021d3600,
-    func_ov003_021d36fc,
+    (Ov012Fn)func_ov003_021d36fc,
     (Ov012Fn)func_ov003_021d3a88,
     (Ov012Fn)func_ov003_021d3d28,
     (Ov012Fn)func_ov012_021fbec8,
     (Ov012Fn)func_ov012_021fc688,
     (Ov012Fn)func_ov012_021fcf1c,
     (Ov012Fn)func_ov012_021fcf48,
-    func_ov012_02201ce4,
-    func_ov012_02201cd0,
+    (Ov012Fn)func_ov012_02201ce4,
+    (Ov012Fn)func_ov012_02201cd0,
     (Ov012Fn)func_ov012_021fd148,
     (Ov012Fn)func_ov003_021d5348,
     (Ov012Fn)func_ov003_021d5900,
@@ -294,9 +294,9 @@ Ov012Fn data_ov012_0220ac9c[41] = {
     (Ov012Fn)func_ov012_021fba44,
     (Ov012Fn)func_ov012_021fbb80,
     (Ov012Fn)func_ov012_021fbce0,
-    func_ov012_02201cc4,
-    func_ov012_02201cc0,
-    func_ov012_02201cbc,
+    (Ov012Fn)func_ov012_02201cc4,
+    (Ov012Fn)func_ov012_02201cc0,
+    (Ov012Fn)func_ov012_02201cbc,
 };
 
 const Ov012Rec data_ov012_0220ad40[6] = {
@@ -1474,7 +1474,7 @@ extern "C" {
 extern void func_02065804(void *a, s32 b);
 extern void func_ov000_02184508(void *g);
 extern void func_ov000_02184548(void *g);
-extern void func_ov000_0219b71c(Ov012Vec *pos, Ov012Vec *v, s32 a, s32 b, s32 c, s32 d);
+extern void *func_ov000_0219b71c(Ov012Vec *pos, Ov012Vec *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov003_021d6a3c(Ov012Actor *self, s32 a, s32 b, s32 c);
 extern void func_ov003_021d6954(Ov012Actor *self, u8 a);
 

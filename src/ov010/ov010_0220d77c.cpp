@@ -154,8 +154,8 @@ void func_ov010_0220d918(Ov010Coll *self, Ov010CollFn fn) {
     }
 }
 
-u8 func_ov010_0220d9a4(Ov010Coll *self) {
-    u8 r = 0;
+s32 func_ov010_0220d9a4(Ov010Coll *self) {
+    s32 r = 0;
     if (self->b0) {
         r = self->count;
     }

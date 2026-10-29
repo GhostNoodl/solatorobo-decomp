@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 extern "C" {
 
@@ -122,7 +123,6 @@ int func_0204061c(int *out, const MathVec *pos) {
 }
 
 
-extern u32 STD_GetStringLength(const char *str);
 
 u32 func_02040778(char *str, int *outLen) {
     char buf[0x10];

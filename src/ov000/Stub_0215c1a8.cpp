@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "nitro/std.h"
 #include "ov000/VObj.h"
 
 typedef void (*VFunc0215c1bc)(void);
@@ -58,9 +59,6 @@ void *func_0203de84(u32 size, u32 align);
 void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, char *c, void *d, void *e, BOOL f);
 void func_0204c6bc(char *s, s32 a, s32 *out, void *cb);
-char *STD_SearchString(const char *s, const char *t);
-s32 STD_GetStringLength(const char *s);
-void STD_CopyString(char *d, const char *s);
 
 static inline BOOL Bit3_0215c1bc(VObj *self) {
     return LBIT(self, 0xc).b3 ? TRUE : FALSE;

@@ -8,7 +8,7 @@ extern char func_ov004_021cd750[];
 extern char func_ov004_021cd7dc[];
 extern char func_ov004_021cd834[];
 extern char func_ov004_021cd97c[];
-void func_ov004_021ce574(void);
+void func_ov004_021ce574(u32 *t);
 s32 func_ov004_021cdb30(const u8 *key, const u8 *src, u8 *dst, u32 len);
 s32 func_ov004_021cdba8(const u8 *key, const u8 *src, u8 *dst, u32 len);
 

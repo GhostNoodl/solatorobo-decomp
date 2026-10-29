@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
@@ -64,9 +65,6 @@ void NNS_G3dAnmObjInit(AnmObj *anm, void *res, void *mdl, void *tex);
 void *NNS_G3dGetAnmByIdx(void *file, s32 index);
 void *NNS_G3dGetAnmByName(void *file, const char *name);
 void *NNS_G3dGetTex(void *tex);
-void STD_CopyString(char *dst, const char *src);
-void STD_ConcatenateString(char *dst, const char *src);
-BOOL STD_CompareString(const char *a, const char *b);
 void func_ov000_0218fc28(AnimCtrl *self, RenderObj *obj, void *res, void *tex, s16 blend);
 
 BOOL func_ov000_0218f874(AnimCtrl *self, RenderObj *obj, s16 speed) {

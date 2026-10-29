@@ -19,7 +19,7 @@ s32 FX_Div(s32 a, s32 b);
 void MTX_Identity22_(void *m);
 void MTX_ScaleApply22(void *src, void *dst, s32 x, s32 y);
 void VEC_Add(const Ov015cVec *a, const Ov015cVec *b, Ov015cVec *o);
-void func_ov000_021c8408(void);
+void func_ov000_021c8408(void *self, int x, int y, int z, u16 color, const void *oam, const void *tex, u32 texBase, u32 plttBase, const void *mtx, u32 arg);
 
 static inline void *Ov015c_GetPart(void *self, int idx) {
     if (idx >= FLD(s32, self, 0x80)) {

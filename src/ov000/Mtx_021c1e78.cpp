@@ -38,7 +38,7 @@ extern "C" {
 extern Data021ccd74 data_ov000_021ccd74;
 void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);
 BOOL func_ov000_021903b4(void *m);
-void func_ov000_021c2078(void);
+void func_ov000_021c2078(void *self);
 
 void func_ov000_021c1e78(Obj021c1e78 *self) {
     MtxFx33 m;

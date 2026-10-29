@@ -8,7 +8,7 @@
 extern "C" {
 extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
-int func_02043d48(void *p);
+u8 func_02043d48(void *p);
 
 void func_ov000_021bcd08(u8 *self) {
     Model *m;

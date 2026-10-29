@@ -153,7 +153,7 @@ extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_0208b318;
 extern void *data_ov000_021cac60;
-void STD_CopyString(void *dst, const void *src);
+void *STD_CopyString(void *dst, const void *src);
 
 extern const Ov008Vec3 data_ov008_021d02d0;
 extern const Ov008Vec3 data_ov008_021d02dc;

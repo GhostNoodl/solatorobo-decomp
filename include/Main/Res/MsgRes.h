@@ -18,7 +18,7 @@ struct MsgRes {
     virtual void unk_vf20();
     virtual void Open(char *arcName, char *name);
     virtual void unk_vf28();
-    virtual void unk_vf2c();
+    virtual BOOL Load();
     virtual void unk_vf30();
     virtual void unk_vf34();
     /* 0x04 */ char arcName[0x20];

@@ -19,7 +19,7 @@ typedef struct {
 extern "C" {
 
 void func_02041c20(Model *model, s32 a, void *b);
-void func_ov000_021c79a0(void);
+void func_ov000_021c79a0(BOOL alt, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
 
 void func_ov000_021c5128(u8 *self, s32 unused, s32 *pos) {
     s16 z = LFLD(s16, self, 0x68) + 0x80;

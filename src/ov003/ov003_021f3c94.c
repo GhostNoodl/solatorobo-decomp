@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 typedef struct {
     const char *name0;
@@ -71,7 +72,6 @@ extern void *func_0203dd9c(u32 size);
 extern Ov003NmLabel *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_021919c8(void *p);
 extern void func_ov000_02191b70(void *p);
-extern void STD_CopyString(char *dst, const char *src);
 
 void func_ov003_021f3c94(Ov003NmObj *self) {
     Ov003NmInfo *info;

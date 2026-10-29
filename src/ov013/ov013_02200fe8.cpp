@@ -831,7 +831,7 @@ struct Ov013Obj1c {
 
 extern void func_ov013_02204428(Ov013Vec *out, Ov013Vec *v, Ov013Actor *a);
 extern void func_ov013_02204408(Ov013Vec *out, Ov013Vec *v, Ov013Actor *a);
-extern u16 func_ov003_021d9edc(u16 kind);
+extern s32 func_ov003_021d9edc(u16 kind);
 extern void func_ov003_021d96e0(void *p);
 extern s32 func_ov013_021fe9f8(Ov013Actor **out, s32 max, u16 kind, Ov013Vec *pos, s32 dist);
 extern Ov013Actor *func_ov000_0219bf90(void);

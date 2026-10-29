@@ -14,7 +14,7 @@ extern void OS_SetIrqFunction(int a, void (*func)(void));
 extern s32 OS_EnableIrqMask(int a);
 extern s32 GX_VBlankIntr(int a);
 extern void OS_GetLowEntropyData(void *dt);
-extern void func_020403e4(int seed, int b);
+extern void func_020403e4(u64 seed);
 extern s32 GX_ResetBankForTex(void);
 extern s32 GX_ResetBankForTexPltt(void);
 extern s32 GX_ResetBankForBG(void);
@@ -98,7 +98,7 @@ void func_0203d6b4(void) {
     }
     GX_VBlankIntr(1);
     OS_GetLowEntropyData(dt);
-    func_020403e4(dt[1] * 3 + dt[3] * 5 + dt[5] * 7 + dt[7] * 11, 0);
+    func_020403e4((u32)(dt[1] * 3 + dt[3] * 5 + dt[5] * 7 + dt[7] * 11));
 }
 
 void func_0203d770(void) {

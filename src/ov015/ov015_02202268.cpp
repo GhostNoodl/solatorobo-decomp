@@ -355,7 +355,7 @@ extern void *data_0208cca0;
 extern void *data_0208ccc0;
 void func_02041218(void *p);
 void func_02041440(void *p, void *name, int c);
-void STD_CopyString(void *p, void *name);
+void *STD_CopyString(void *p, void *name);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *a, void *b);
@@ -363,7 +363,7 @@ void func_02041d9c(void *a, int b, int c);
 void func_02041c20(void *a, int b, void *c);
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_ov000_02173648(void *p);
-void func_ov015_02206bf0(void);
+void func_ov015_02206bf0(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 static inline void Ov015Label_Ctor2(u8 *l, void *name, void *dict) {
     func_02041218(l + 0x88);
     func_02041440(l, dict, 0);

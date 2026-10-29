@@ -11,7 +11,7 @@ extern u8 data_ov015_022132bb[];
 u8 *func_02066774(void *a, void *b, int c, void *d);
 void func_ov000_021bd198(void *p);
 void func_ov015_02212430(u8 *self);
-void *NNS_G3dGlbGetInvV(void *p);
+void *NNS_G3dGlbGetInvV(void);
 void MTX_MultVec33(void *a, void *b, void *c);
 void VEC_Add(void *a, void *b, void *c);
 u16 FX_Atan2(s32 x, s32 z);
@@ -59,11 +59,11 @@ void func_ov015_022120fc(u8 *self) {
     HEAP_POP(saved);
 }
 
-void func_ov015_02212180(void) {
+void func_ov015_02212180(void *self) {
     func_020359d0(data_ov015_022132ac, 7, 0);
 }
 
-int func_ov015_0221219c(void) {
+int func_ov015_0221219c(void *self) {
     return func_02035b90(data_ov015_022132ac, 7);
 }
 
@@ -95,7 +95,7 @@ void func_ov015_02212250(u8 *self, s32 a) {
 void func_ov015_02212264(u8 *self) {
     u8 *o;
     if (FLD(void *, self, 0x4) != NULL) {
-        void *m = NNS_G3dGlbGetInvV(FLD(void *, self, 0x4));
+        void *m = NNS_G3dGlbGetInvV();
         Ov015Vec w;
         Ov015Vec v;
 

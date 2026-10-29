@@ -8,14 +8,16 @@
 // func_0207670c:0207670c:02076710:code data_02076710:02076710:02076990:data; its --labels output
 // is the .D_/.L_ labels in symbols.txt that give the delinked target the same $d/$a layout.
 
+#include "mobiclip/mobiclip.h"
+
 #pragma force_active on
 
 void func_02077118(void);
-void func_02075d4c(void);
-void func_0207670c(void);
+int func_02075d4c(MoAudioDecoder *decoder);
+void func_0207670c(MoAudioDecoder *decoder);
 void data_02076710(void);
 
-asm void func_02075d4c(void) {
+asm int func_02075d4c(MoAudioDecoder *decoder) {
     b @L0207655c
     dcd 0x00000000
     dcd 0x00000000
@@ -668,7 +670,7 @@ asm void func_02075d4c(void) {
     dcd 0xffff8000
 }
 
-asm void func_0207670c(void) {
+asm void func_0207670c(MoAudioDecoder *decoder) {
     b func_02077118
 }
 

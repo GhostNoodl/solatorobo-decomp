@@ -17,7 +17,7 @@ void *func_0203dd9c(u32 size);
 void func_ov000_0216b474(void *p);
 void func_ov000_0216ad04(void *p);
 void func_ov000_0216bf30(void *p);
-void func_ov000_0217006c(void *p);
+void *func_ov000_0217006c(void *p);
 void func_ov000_0217125c(void *p);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void func_ov000_021bce90(void);
@@ -109,7 +109,7 @@ void func_ov000_02170a58(u8 *self) {
         LFLD(u8 *, self, 0x78) = q;
         q = (u8 *)func_0203dd9c(0x3d8);
         if (q != NULL) {
-            __cxa_vec_ctor(q + 0x360, 10, 0xc, func_ov000_0217125c, func_ov000_0217006c);
+            __cxa_vec_ctor(q + 0x360, 10, 0xc, (void (*)(void *))func_ov000_0217125c, (void (*)(void *))func_ov000_0217006c);
             func_ov000_0216bf30(q);
         }
         LFLD(u8 *, self, 0x7c) = q;

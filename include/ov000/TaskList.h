@@ -76,20 +76,20 @@ void *func_0203dd9c(u32 size);
 void func_0203de1c(void *ptr);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
-void func_ov000_0214c1ac(void *a);
+void func_ov000_0214c1ac(void);
 void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, void *b);
 void func_02041218(void *a);
 void func_02041440(Model *model, void *a, s32 b);
-void STD_CopyString(void *a, const char *b);
+void *STD_CopyString(void *a, const char *b);
 void func_020417e0(Model *model, void *a);
 void func_02041d9c(Model *model, s32 a, s32 b);
 void func_02041c20(Model *model, s32 a, void *b);
 void func_02041558(Model *model);
 void func_02041278(void *a);
-void func_ov000_02173d9c(void);
+void func_ov000_02173d9c(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
 void func_ov000_02173648(Task *task);
-void func_ov000_0214c210(Task *task);
+void func_ov000_0214c210(void);
 void MTX_Identity44_(void *a);
 
 }

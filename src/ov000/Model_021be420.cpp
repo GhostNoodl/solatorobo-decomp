@@ -19,7 +19,7 @@ typedef struct {
 extern "C" {
 
 extern u8 *data_02097d48;
-int func_02043d48(void *p);
+u8 func_02043d48(void *p);
 
 void func_ov000_021be420(Obj021be420 *self) {
     s32 x;

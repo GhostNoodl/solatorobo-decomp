@@ -45,7 +45,7 @@ typedef struct ActorMgr ActorMgr;
 
 extern u16 data_ov000_021c9fd0[][5];
 
-u8 func_ov003_021cee68(Target *self);
+u8 func_ov003_021cee68(void);
 
 extern ActorMgr *data_ov000_021ccd68;
 

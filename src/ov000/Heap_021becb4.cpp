@@ -41,7 +41,7 @@ extern "C" {
 
 BOOL func_ov000_021bd374(Obj021becb4 *self, s32 len);
 void func_ov000_021bd474(Obj021becb4 *self, VecFx32 *pos);
-void *func_ov000_021bec38(void);
+void *func_ov000_021bec38(void *self, void *src, void *out, u16 *count);
 void func_02041c34(void *model, s32 a, void *cb, void *arg);
 
 static inline BOOL Obj021becb4_Wait(Obj021becb4 *self) {

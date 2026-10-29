@@ -15,7 +15,7 @@ void func_ov000_021739c4(Task *self) {
 void func_ov000_021739f8(Task *self) {
     void *saved;
     Model *model;
-    func_ov000_0214c210(self);
+    func_ov000_0214c210();
     saved = data_02097dd0->current;
     data_02097dd0->current = data_02097dd0->unk_08;
     model = self->unk_4c;

@@ -20,7 +20,7 @@ extern void func_0203e024(void);
 extern void OS_WaitVBlankIntr(void);
 extern void func_0203e6bc(void);
 extern u32 OS_DisableInterrupts(void);
-extern void OS_RestoreInterrupts(u32 state);
+extern u32 OS_RestoreInterrupts(u32 state);
 extern void *NNS_FndAllocFromExpHeapEx(void *heap, u32 size, u32 align);
 extern void NNS_FndFreeToExpHeap(void *heap, void *ptr);
 extern void *NNS_FndFindContainHeap(void *ptr);

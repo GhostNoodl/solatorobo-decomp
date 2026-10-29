@@ -27,7 +27,7 @@ extern "C" {
 struct Ov014V12 { s32 a[3]; };
 extern const Ov014Vec data_ov014_02216818[];
 extern void *func_ov003_021ceff4(void *p);
-extern u16 func_ov003_021d9edc(s32 a);
+extern s32 func_ov003_021d9edc(s32 a);
 extern void func_ov003_021d87d0(void *p, s32 a);
 extern void func_ov003_021d85c8(void *p, s32 a, s32 b, s32 c, s32 d);
 extern Ov014Actor *func_ov000_02192b24(Ov014SpawnDesc *desc);

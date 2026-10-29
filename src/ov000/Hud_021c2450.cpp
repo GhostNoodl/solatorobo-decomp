@@ -37,7 +37,7 @@ extern u8 *data_02097ce0;
 void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_02041c5c(Model *m, void *fn);
-void *func_ov000_021c7608(void);
+void *func_ov000_021c7608(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 static inline BOOL Txt_IsVis021c2450(Txt021c2450 *t) {
     return t->flags.vis ? TRUE : FALSE;

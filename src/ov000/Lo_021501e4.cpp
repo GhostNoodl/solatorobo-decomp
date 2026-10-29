@@ -10,8 +10,8 @@ extern u8 data_ov000_021ca917[];
 extern s32 data_ov000_021ca8d8;
 extern u8 data_ov000_021ccd24[];
 void func_0205a6a0(void *p);
-void STD_CopyString(void *buf, const void *s);
-void STD_ConcatenateString(void *buf, const void *s);
+void *STD_CopyString(void *buf, const void *s);
+void *STD_ConcatenateString(void *buf, const void *s);
 void func_0205a840(void *p, void *buf, const void *s);
 
 void func_ov000_021501e4(u8 *self) {

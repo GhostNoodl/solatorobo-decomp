@@ -78,7 +78,7 @@ u32 func_0204c08c(MsgRes *res, s32 idx, char **out, s32 max) {
 
 char *func_0204c0e8(MsgRes *res, s32 idx);
 
-void func_0204c100(void);
+BOOL func_0204c100(void);
 
 BOOL func_0204c120(void);
 

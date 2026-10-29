@@ -124,8 +124,8 @@ typedef struct ParamKind {
 
 ParamKind *func_02070dcc(int kind);
 
-u16 func_0206f080(u32 id) {
-    u16 ret = 0xffff;
+s32 func_0206f080(u32 id) {
+    s32 ret = 0xffff;
     switch (Param_Cat(id) - 1) {
     case 0:
     case 11:

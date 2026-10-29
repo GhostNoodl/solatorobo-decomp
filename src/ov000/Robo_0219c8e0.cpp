@@ -172,7 +172,7 @@ extern char data_ov000_021cc5fd[];
 extern char data_ov000_021cc605[];
 extern char data_ov000_021cc60a[];
 extern u8 *data_0214a424;
-void *func_ov003_021ce630(void);
+s16 *func_ov003_021ce630(s16 *p, void *hit);
 void *func_0203dd9c(u32 size);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 BOOL NNS_G3dBindMdlSet(ResMdlSet *set, void *tex);

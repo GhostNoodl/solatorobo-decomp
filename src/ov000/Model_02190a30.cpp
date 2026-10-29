@@ -1,4 +1,5 @@
 #include "ov000/Vec.h"
+#include "nitro/std.h"
 
 typedef struct {
     void *current;
@@ -139,17 +140,14 @@ extern HeapState *data_02097dd0;
 
 void MTX_Identity33_(void *mtx);
 void func_0203de1c(void *ptr);
-void *func_ov000_02191f18(void);
+s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m);
 void *func_0203dd9c(u32 size);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 void *NNS_G3dGetTex(void *file);
 void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 a, u32 mask);
 void NNSi_G3dModifyMatFlag(void *mdl, s32 a, u32 mask);
 void NNS_G3dRenderObjInit(void *obj, void *mdl);
-void STD_CopyString(char *dst, const char *src);
-void STD_ConcatenateString(char *dst, const char *src);
 s32 NNS_G3dGetResDictIdxByName(void *dict, const char *name);
-BOOL STD_CompareString(const char *a, const char *b);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, AnmObj *anm);
 BOOL func_ov000_0218f874(AnimCtrl *self, void *obj, s16 speed);
 BOOL func_ov000_0218fa28(AnimCtrl *self, void *obj, ResSet *res, void *file, const char *name, s16 blend, u8 force);

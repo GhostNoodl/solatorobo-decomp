@@ -14,7 +14,7 @@ typedef struct {
 #ifdef __cplusplus
 extern "C" {
 #endif
-void *func_02070dcc(void);
+void *func_02070dcc(int kind);
 #ifdef __cplusplus
 }
 #endif

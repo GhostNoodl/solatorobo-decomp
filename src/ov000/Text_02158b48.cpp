@@ -1,10 +1,8 @@
 #include "ov000/LoCommon.h"
+#include "nitro/std.h"
 
 extern "C" {
 extern char data_ov000_021cabf4[];
-s32 STD_GetStringLength(const char *s);
-void STD_CopyString(char *dst, const char *src);
-char *STD_SearchString(char *str, const char *sub);
 void *func_0203de84(u32 size, s32 align);
 void func_ov000_0215429c(void *self);
 

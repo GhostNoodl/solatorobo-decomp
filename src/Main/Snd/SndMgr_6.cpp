@@ -200,7 +200,7 @@ void func_0204a20c(SndMgr *mgr, s32 strmNo) {
     }
 }
 
-void func_0204a284(SndMgr *mgr) {
+void func_0204a284(SndMgr *mgr, s32 arg) {
     SndMgr_StopStrm(mgr);
 }
 
@@ -223,7 +223,7 @@ void func_0204a2f0(SndMgr *mgr, s32 id) {
     SndMgr_RequestLoad(data_02097e48.mgr, 5, 0x24, 2);
 }
 
-void func_0204a360(void) {
+void func_0204a360(SndMgr *self, s32 arg) {
     SndMgr *mgr = data_02097e48.mgr;
     if (mgr->heapLevels[1] >= 1) {
         NNS_SndHeapLoadState(mgr->heaps[1], 1);

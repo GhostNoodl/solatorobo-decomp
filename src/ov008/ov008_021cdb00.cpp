@@ -1,4 +1,5 @@
 #include "ov008/ov008.h"
+#include "nitro/std.h"
 
 extern "C" {
 
@@ -19,8 +20,6 @@ extern char data_ov008_021d04d9[];
 extern char data_ov008_021d04e1[];
 void *func_020359d0(const char *name, s32 type, u8 toFront);
 void *func_ov000_0218e9c4(void *p);
-char *STD_CopyString(char *dst, const char *src);
-char *STD_ConcatenateString(char *dst, const char *src);
 void func_0206e900(char *dst, const char *src);
 void func_0205a6a0(void *p);
 void func_0205a840(void *p, const char *arc, const char *name);

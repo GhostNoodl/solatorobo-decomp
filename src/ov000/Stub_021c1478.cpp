@@ -14,7 +14,7 @@ extern "C" {
 
 extern u8 *data_02097d48;
 extern s8 data_ov000_021ccd74;
-s32 func_02043d48(void *p);
+u8 func_02043d48(void *p);
 
 void func_ov000_021c1478(Obj021c1478 *self) {
     u32 flags;

@@ -17,7 +17,7 @@ void func_02035cfc(void *a);
 void func_02039494(u32 a);
 void *NNS_G3dGetResDataByName(void *a, char *name);
 void NNSi_G3dModifyMatFlag(void *mdl, BOOL a, u32 flag);
-void STD_ConcatenateString(char *dst, const char *src);
+void *STD_ConcatenateString(char *dst, const char *src);
 BOOL func_0203ed04(const char *name, u32 res);
 u32 func_0203ebf8(void);
 BOOL NNS_G3dBindMdlTex(void *mdl, void *tex);

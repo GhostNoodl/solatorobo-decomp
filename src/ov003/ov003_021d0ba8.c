@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/std.h"
 
 typedef struct {
     u8 unk_00[0x30];
@@ -87,7 +88,6 @@ extern Ov003ResParam *func_02070558(u16 id);
 extern char *func_0207011c(u16 id);
 extern char *func_020701d4(u16 id);
 extern char *func_0207005c(u16 id, s32 n);
-extern void STD_CopyString(char *dst, const char *src);
 extern void func_ov000_0218f074(Ov003Res *p, char *res, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov003_021d0a2c(Ov003Res *res, u16 id) {

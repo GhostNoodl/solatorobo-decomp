@@ -66,8 +66,8 @@ extern void func_ov003_021d6bac(Ov014Actor *self, const void *a);
 extern Ov014Actor *func_ov003_021d69a0(Ov014Actor *self, u16 kind, s32 a);
 extern void func_01ffc9fc(Ov014Vec *a, const Ov014Vec *b, u16 ang);
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *c);
-extern void func_ov014_021fd37c(void);
-extern void func_ov014_021fd43c(void);
+extern void func_ov014_021fd37c(void *self, Ov014Actor *a);
+extern void func_ov014_021fd43c(void *self, Ov014Actor *a);
 
 void func_ov014_021fdb78(Ov014Actor *self) {
     Ov014Vec w;

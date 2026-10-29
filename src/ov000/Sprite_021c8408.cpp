@@ -76,7 +76,7 @@ static inline void G3_TexCoord(int s, int t) {
     NNS_G3dGeBufferOP_N(0x22, &v, 1);
 }
 
-void func_ov000_021c8408(void *self, int x, int y, int z, u16 color, const Oam021c8408 *oam, const Tex021c8408 *tex, u32 texBase, u32 plttBase, const void *mtx) {
+void func_ov000_021c8408(void *self, int x, int y, int z, u16 color, const Oam021c8408 *oam, const Tex021c8408 *tex, u32 texBase, u32 plttBase, const void *mtx, u32 arg) {
     int shapeBit;
     int sizeBit;
     u32 ws;

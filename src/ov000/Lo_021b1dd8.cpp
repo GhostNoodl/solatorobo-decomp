@@ -20,7 +20,7 @@ void func_ov000_0218dd8c(void *self, u16 base, s32 turn, void *range);
 void func_ov000_0218ddd4(void *self, const VecFx32 *target, s32 turn);
 void func_ov000_0218dbe0(void *self, s32 turn);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-void func_ov000_021b209c(void *self, s32 a);
+void func_ov000_021b209c(void *self);
 
 void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim) {
     BOOL moved = FALSE;
@@ -29,7 +29,7 @@ void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8
     s32 oz = LFLD(s32, self, 0x74);
     if (LFLD(u8, self, 0x15) == 1) {
         if (LFLD(Bits021b1dd8, self, 0xb24).b12) {
-            func_ov000_021b209c(self, moved);
+            func_ov000_021b209c(self);
             return;
         }
         if (LFLD(u16, self, 0xb68) & 0xf0) {

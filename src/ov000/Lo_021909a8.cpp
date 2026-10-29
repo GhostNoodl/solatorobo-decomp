@@ -26,8 +26,8 @@ s32 FX_Div(s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern Data021ccd50 data_ov000_021ccd50;
 extern Obj02097e48 *data_02097e48;
-void STD_CopyString(void *a, const char *b);
-void STD_ConcatenateString(void *a, const char *b);
+void *STD_CopyString(void *a, const char *b);
+void *STD_ConcatenateString(void *a, const char *b);
 s32 NNS_G3dGetResDictIdxByName(void *dict, void *name);
 
 static inline u16 LerpAng(u16 a, u16 b, s32 t) {

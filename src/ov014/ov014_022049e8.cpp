@@ -23,7 +23,7 @@ extern Ov014Vec data_ov014_022165a0;
 extern Ov014Vec data_ov014_02216624;
 extern Ov014Actor *func_ov000_0218d240(Ov014Actor *self);
 extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
-extern u16 func_ov003_021d9edc(s32 a);
+extern s32 func_ov003_021d9edc(s32 a);
 extern void func_01ffc9fc(Ov014Vec *a, Ov014Vec *b, u16 ang);
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern void func_ov000_0218d918(Ov014Actor *self, Ov014Vec *v, s32 a);

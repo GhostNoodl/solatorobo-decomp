@@ -4,7 +4,7 @@
 
 extern "C" {
 extern u8 *data_ov000_021ccd54;
-u16 func_0204bfa8(void);
+u16 func_0204bfa8(void *cam);
 void func_0204b924(void *p, s32 v);
 
 typedef struct {

@@ -76,7 +76,7 @@ void func_ov008_021cdebc(Ov008Mgr3 *m);
 void func_ov008_021cfa38(Ov008Mgr3 *m);
 void func_ov008_021cee4c(Ov008Mgr3 *m);
 void func_ov008_021cce38(void *p);
-BOOL func_ov008_021cf878(void);
+BOOL func_ov008_021cf878(void *self, void *sel);
 void func_0203cb78(s32 a, int b, int c);
 void func_0203cc58(int a, int b, int c);
 void *func_0204c08c(void *a, u16 b, s32 *c, int d);
