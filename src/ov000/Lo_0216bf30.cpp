@@ -205,6 +205,11 @@ void func_ov000_0216c018(void *obj) {
 // counter rule); separate slA/slB locals make both user variables. 400 random orders of the ten locals give no
 // better score. Left: the ROM pops y between next and self (y is still blocked in the sweep that frees the
 // self + 0x360 and data_02071060 temps); ours frees y in that sweep.
+// Round qpG (gdb trace of mwcc): the `movne r0, ip` (ROM `movne r0, #0`) is post-allocation local CSE turning a
+// constant move into a copy of ip, which holds the rematerialised high-word zero of LO_FX_MUL(s, 0x88000). ip gets it
+// because the pre-allocation scheduler runs the multiply block in pressure mode (38 values live in, mostly hoisted
+// cheap constants that local CSE will not merge in a loop preheader) and puts ldr [self, #0x35c] before the umull.
+// Loop forms, multiply spellings and moving m after the IsCurNode test give no gain; see docs/MATCHING.md, qpG.
 // This file's .text ends at 0x0216c310, so the function belongs here once it matches.
 extern "C" {
 

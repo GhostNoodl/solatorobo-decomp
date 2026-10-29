@@ -23,6 +23,11 @@ void func_ov009_022049e4(Ov009Actor *self) {
 //   "mov r0, #0; mov r4, r0" before the loop suggests that value is a hoisted zero.
 // - the 0x666 block after VEC_Normalize(&d, &d): the ROM loads d.z into the register of the
 //   stored d.x (so it is not hoisted after allocation) and stores d.y between them.
+// Round qpG: the three trail-loop zeros (g.y and the two mla high words of x * 0x666) stay separate
+// nodes because the ROM-like merge is refused twice: local CSE will not merge cheap constants in a
+// loop preheader, and move-constant-loads stops reusing at the multi-def `i = 0` zero in block 64.
+// Merging them by hand under gdb puts the zero in fp, not a spill (42 aligned, worse). "mov r0, #0;
+// mov r4, r0" is post-allocation CSE of a constant move. See docs/MATCHING.md, round qpG.
 // See docs/MATCHING.md, round qpD.
 extern "C" {
 

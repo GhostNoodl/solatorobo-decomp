@@ -18,6 +18,9 @@ void func_ov000_02188670(void) {
 // calls from being merged. Left: case 1 keeps data_02fe1534 for after the loop in a fresh scratch
 // register; ours hoists it to the case head (move-constant-loads step 17->12 at pressure 10, the
 // target refuses it, so its loop has one more live value), and the entry order of arg / 0x64.
+// Round qpG: no gain from a Data0218867c pointer local (it also refuses the 0x64 move: 48 aligned), g_1 at the
+// top of case 1 (38), five spellings of the g_1 ternary, or normal-mode scheduling of any one block (70 tried).
+// Forcing only the 17->12 refusal gives 35 aligned, so the missing live value is not the whole story.
 #include "ov000/CmdObj.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
