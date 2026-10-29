@@ -5723,3 +5723,30 @@ One match: `func_ov000_021be5dc` (3 / 0 to 0), now `src/ov000/ov000_021be5dc.cpp
   - `ov000_0219b808`: the `rot`/`unk_14` stores written out, a by-value `rot`, or the inline with the stores in another order (4 / 0 at best, otherwise 9–54).
   - `ov002_021eca14`: a function-level `BOOL ret` with `break` in place of the returns (45 / 20).
 - `tools/twins.py` (main, ov000, ov002, ov009, ov010) finds no matched twin for any other target on the list.
+## A sweep for head- and tail-merge marks finds none left to fix: no new match (round scB)
+
+No new match, and no source or `tools/` change. Scratch files are in `scratchpad/scB/`. scA's `sch/`, `t/`, `t2/` and `re/` tools point at the scB clone, and `sd7.sh`, `t/mcl.sh` and `t2/ph.sh` pass `-DNONMATCHING`. `hm.py MOD FUNC` scans the ROM copy of a function. `sw.py MOD FUNC SRC` compiles a draft with `-DNONMATCHING`, diffs it against the ROM and prints the marks that sit within 3 instructions of a register-masked diff. `drafts.lst` is the list of best drafts that was swept.
+
+### The marks
+
+- **`HMS`/`WAR`.** A cheap instruction (`mov`, `add`, ...) whose register an earlier instruction of its block reads, whose result the block does not use, and with an idle cycle before it in the in-order cycle model. `HMS` means it is one of the last three instructions before a conditional branch: this is scA's head-merge signature. Argument registers in blocks that hold a call are skipped, because they are precoloured before allocation.
+- **`HM2`.** Both successors of a conditional branch start with the same instruction, so that pair was not head-merged.
+- **`LATE`.** An instruction that issues after an idle cycle it could have filled, held back by a WAR on its register.
+- **`MOVE`.** The same masked instruction is deleted on one side and inserted on the other, across a branch.
+
+### Result
+
+The sweep covered the 17 in-tree `NONMATCHING` drafts and the 22 best scratch drafts of the functions no other worker owns. Every ROM head-merge site in them is already reproduced by the draft:
+
+- `020417e0`: `add r0, r6, #0x88; add r1, r6, #0x4c` before `bne`, the arguments of both `0201e520` calls.
+- `0218867c`: `mov r1, #1` after `cmp r1, #0`, from the two `vfunc_38(1)` arms.
+- `021ff24c`: the count zero after `cmp r3, #0`.
+- `02053254`: the bit-field load after `cmp r2, #0x1000`.
+
+`ov000_0218cfc8` stays the only head-merge fix. The other register-masked diffs are list order, pressure refusals or allocation. Three of them were traced further:
+
+- **`ov006_021e7004`: the `smull` before `t->x` is a block-boundary question.** Before allocation, the post-call code is in the same block as the `FX_Atan2` call. By the pick at cycle 15 every node is past its deadline, so `c` decides, and the `t->x` load (`c1`, `h13`) beats the `dz` `smull` (`c0`, `h17`). If a block starts after the `yaw` store, `smull` is urgent at cycle 6 (`dl 3`) and `t->x` is not (`dl 7`). That gives exactly the ROM's `posZ, t->z, posX, sub, smull, t->x`. A test branch there (`if (keys == NULL) return;`) confirms it. No form that emits no code was found to start that block. These stay at 24–30: the `yaw` store in a `static inline`, the sqrt and wait loop in a `Dist(sq)` inline, and a `DistXZ(self, t)` inline (with or without a `d` local).
+- **The other `021e7004` miss.** The `hp` `lsr #16` is the tail-merged truncation of both `HalfAngle` arms (both arms end with it in the pre-final-peephole dump, `t2/ph.sh`). Its final position comes from a scheduler run after if-conversion. These do not move it: all 20 dependence-legal orders of the `dp`/`dy`/`hp`/`hy`/`p`/`y` statements (24 / 13 is still the best), and `HalfAngle` as `?:`, as an inverted `if`, with an `r` local, or with an `s32` return or argument.
+- **`ov000_0218867c`: the entry order of `mov #1` and `mov #0x64` is the order of the move-constant-loads groups.** Groups are handled by instance count (`17, 7, 7, 5, 4, ...`), and the group handled later lands first in the entry block. `1` and `0x64` both have 7 instances, and `1` is handled first. Passing 2 in one `vfunc_38` arm (a test only) drops the `1` group to 6 and gives the ROM's order. So before that pass the ROM had one `1` fewer or one `0x64` more, or it broke the tie the other way. Four spellings of the case-1 `p != NULL` store stay at 28 or get worse.
+
+**Rule:** a head merge leaves a mark that can be read from the ROM alone: a cheap instruction just before the branch, held behind a reader of its register. Run `hm.py` on the ROM before reworking a draft. If the draft's output already has the same instruction in the same place, the miss is somewhere else.
