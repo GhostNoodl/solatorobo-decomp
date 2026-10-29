@@ -233,15 +233,11 @@ void func_ov015_021fb758(u8 *self) {
 }
 }
 
-#ifdef NONMATCHING
-// func_ov015_021fc40c: 5 / 5 (raw / register-masked; 4 are pool relocations, so one instruction is left;
-// round bgR, was 13 / 9). Rounds bgM, bgO, bgR. The case zeros are kept per arm because z has three
-// definitions (refusal (d) of move-constant-loads step 4), and g (the Ov015Stat pointer) is live across the
-// blink test, which keeps the FX_Mul zero in that block (pressure 11). In the alpha block, the old alpha goes
-// to its own local and the model passed to the PlayPart inline is read into m (round bgO). Cases 2 and 3
-// share their b.x / b.y stores (the ROM's case 2 branches into case 3's stores): x is then one web with two
-// definitions, the case-2 negation is done in place (rsb r2, r2, #0) and z gets r0. Left: in case 2 the ROM
-// schedules the zero before the rsb; here the rsb goes first, so the zero is merged into case 3's tail.
+// func_ov015_021fc40c (rounds bgM, bgO, bgR, bgT). Each arm stores the whole b offset (SetV); the ROM's shared
+// b stores are tail merging. The arm zeros stay in the arms because the per-case indices are set before the Bob
+// table walk (pressure 11 on the walk back to the case head), and g (the Ov015Stat pointer) is live across the
+// blink test, which keeps the FX_Mul zero in that block. In the alpha block, the old alpha goes to its own local
+// and the model passed to the PlayPart inline is read into m (round bgO).
 extern "C" {
 
 void func_0204b420(void *p);
@@ -356,54 +352,39 @@ void func_ov015_021fc40c(void *self, s32 mode) {
     s32 cnt;
     BOOL blink;
     s32 mainIdx;
-    s32 x;
-    s32 y;
-    s32 z;
     Ov015Stat *g = &data_ov015_0221332c;
     switch (mode) {
     case 2:
-        Ov015c_SetV(&a, -0x3c000, -0x1c000, 0);
-        cnt = FLD(s32, self, 0x8);
-        n = cnt % 20;
         blinkIdx = 3;
         alphaIdx = 0x18;
         mainIdx = 8;
         flip = TRUE;
-        x = -Ov015c_Bob(n);
-        y = 0;
-        z = 0;
-        goto horiz;
-    case 3:
-        Ov015c_SetV(&a, 0x3c000, -0x1c000, 0);
+        Ov015c_SetV(&a, -0x3c000, -0x1c000, 0);
         cnt = FLD(s32, self, 0x8);
         n = cnt % 20;
+        Ov015c_SetV(&b, -Ov015c_Bob(n), 0, 0);
+        break;
+    case 3:
         blinkIdx = 2;
         alphaIdx = 0x17;
         mainIdx = 8;
-        x = Ov015c_Bob(n);
-        y = 0;
-        z = 0;
-    horiz:
-        b.x = x;
-        b.y = y;
-        break;
-    case 4:
-        Ov015c_SetV(&a, 0, 0x1a000, 0);
+        Ov015c_SetV(&a, 0x3c000, -0x1c000, 0);
         cnt = FLD(s32, self, 0x8);
         n = cnt % 20;
+        Ov015c_SetV(&b, Ov015c_Bob(n), 0, 0);
+        break;
+    case 4:
         blinkIdx = 4;
         alphaIdx = 0x19;
         mainIdx = 9;
-        y = Ov015c_Bob(n);
-        x = 0;
-        z = 0;
-        b.x = x;
-        b.y = y;
+        Ov015c_SetV(&a, 0, 0x1a000, 0);
+        cnt = FLD(s32, self, 0x8);
+        n = cnt % 20;
+        Ov015c_SetV(&b, 0, Ov015c_Bob(n), 0);
         break;
     default:
         return;
     }
-    b.z = z;
     n = FLD(s32, self, 0x1c);
     blink = FALSE;
     if (n < 12) {
@@ -470,4 +451,3 @@ void func_ov015_021fc40c(void *self, s32 mode) {
 }
 
 }
-#endif
