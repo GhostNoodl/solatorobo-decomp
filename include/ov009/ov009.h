@@ -144,6 +144,12 @@ struct Ov009Vec {
     s32 z;
 };
 
+// 12-byte block: assigning one copies with ldm/stm (as Ov010Blk12 / Ov011Blk12)
+struct Ov009Blk12 {
+    s32 w[3];
+};
+#define OV009_BLKCPY(dst, src) (*(Ov009Blk12 *)(dst) = *(const Ov009Blk12 *)(src))
+
 static inline s32 Ov009_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }

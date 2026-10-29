@@ -2,10 +2,6 @@
 
 extern "C" {
 
-struct Ov009Blk12 {
-    s32 w[3];
-};
-
 extern void *const data_ov009_02215ee4[];
 extern const Ov009Vec data_ov009_02215f2c;
 extern const Ov009Vec data_ov009_02215f44;
