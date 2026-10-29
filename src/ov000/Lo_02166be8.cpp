@@ -213,6 +213,12 @@ void func_ov000_02166be8(u8 *self) {
 // Round frD: 112 / 53 (99 / 40 masked, from 113 / 45). The struct-typed `oam` template is
 // declared at its first use (`Oam715c oam = LFLD(Oam715c, p, 0x2c);`, rule 3 of round frC) and
 // `oy` after `r` (tools/declsweep.py --use, greedy).
+// Round bgS: 3 / 0 (3 / 0 with branch targets and pool offsets masked), from 112 / 53. The lerp
+// writes through an out pointer, `Lerp715c(&x0, x0, x1 << 12, s)`: a value stored through a
+// pointer is not forwarded into the oam bit-field stores, so both lerps come before the
+// read-modify-write of oam word 0, as in the ROM (MATCHING.md, round bgS). With fxA's `d`
+// local, `oy` declared before `ox` (ox gets sp+0x14) and the r-field compares written field
+// first, everything but the outer sine's register matches (ours r1, the ROM r6).
 #include "ov000/Vec.h"
 
 typedef struct {
@@ -268,14 +274,14 @@ static inline BOOL Busy715c(u8 *self) {
     return TRUE;
 }
 
-static inline s32 Lerp715c(s32 a, s32 b, s32 s) { return LO_FX_MUL(b - a, s) + a; }
+static inline void Lerp715c(s32 *out, s32 a, s32 b, s32 s) { s32 d = b - a; *out = LO_FX_MUL(d, s) + a; }
 void func_ov000_0216715c(u8 *self, u8 *p) {
     u8 ii;
     s32 s;
     s32 y0;
     u8 *r;
-    s32 ox;
     s32 oy;
+    s32 ox;
     u8 *pt;
     u8 *q;
     s32 x1;
@@ -341,7 +347,7 @@ void func_ov000_0216715c(u8 *self, u8 *p) {
                 f_0 = FALSE;
             }
         } else {
-            if (g[0xcb] == LFLD(RBits715c, r, 0).a && g[0xcc] == LFLD(RBits715c, r, 0).b) {
+            if (LFLD(RBits715c, r, 0).a == g[0xcb] && LFLD(RBits715c, r, 0).b == g[0xcc]) {
                 f_0 = TRUE;
             } else {
                 f_0 = FALSE;
@@ -375,9 +381,9 @@ void func_ov000_0216715c(u8 *self, u8 *p) {
                     y1 = LFLD(s32, e2, 0x10) + LFLD(s32, q, 0xc) - (oy >> 12) + data_ov000_021c9ae4[q[0x10]].y;
                     x0 <<= 12;
                     y0 <<= 12;
-                    x1 = Lerp715c(x0, x1 << 12, s);
-                    y1 = Lerp715c(y0, y1 << 12, s);
-                    SetXY715c_b(&oam, x1 >> 12, y1 >> 12);
+                    Lerp715c(&x0, x0, x1 << 12, s);
+                    Lerp715c(&y0, y0, y1 << 12, s);
+                    SetXY715c_b(&oam, x0 >> 12, y0 >> 12);
                     NNS_G2dEntryOamManagerOam(mgr, &oam, 1);
                 }
                 NNS_G2dEntryOamManagerOam(mgr, LFLD(void *, LFLD(u8 *, r, 0x14) + j * 0x14, 4), 1);
