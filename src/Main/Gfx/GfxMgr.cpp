@@ -51,21 +51,19 @@ VramBlock *func_02039828(VramBlock *block) {
 }
 
 VramBlock *func_02039844(GfxMgr *mgr, VramPool *pool, u32 size) {
-    u32 align;
-    u32 mask;
     int i;
-    u32 shift;
+    u32 mask;
     VramBlock *block;
-    VramBlock *spare;
     int count;
+    VramBlock *spare;
     block = pool->blocks;
     if (size == 0) {
         size = 0x20;
     }
     count = pool->numBlocks;
-    i = 0x20;
-    if ((u32)pool & 3) i = 0x20;
-    align = i << pool->alignShift;
+    // One variable for the alignment and then its mask (round cmA); a separate align local swaps the
+    // registers of i and the alignment.
+    mask = 0x20 << pool->alignShift;
     spare = block;
     for (i = 0; i < count; i++, spare++) {
         if (spare->size == 0) {
@@ -75,7 +73,7 @@ VramBlock *func_02039844(GfxMgr *mgr, VramPool *pool, u32 size) {
     if (i == pool->numBlocks) {
         return NULL;
     }
-    mask = align - 1;
+    mask -= 1;
     do {
         u32 pad = ((block->addr + mask) & ~mask) - block->addr;
         u32 need = size + pad;
