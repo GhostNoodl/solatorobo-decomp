@@ -72,6 +72,9 @@ void func_ov000_0215123c(void *self) {
 // (23; on bx 30), Model_SetPos written in place (77-174). The PlayPart(0xb) model read into a local m
 // makes it a user variable (23, now m/bx swap); ramerge then wants bx numbered before self or the
 // constant between m and bx, neither reachable.
+// Round raE: ramerge on this draft: bx renumbered past the backend constant (node 76) or before self, or
+// the constant between h and bx; bx lives across calls so it stays an object. A Model_PlayPartR with the
+// resource held by the caller (the 021d1f70 fix) gives 26 (PlayPart(0xb)), 31 (PlayPart(0)), 42 (both).
 extern "C" {
 
 extern u8 *data_02097ce0;

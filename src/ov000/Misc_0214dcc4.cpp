@@ -30,7 +30,7 @@ void func_ov000_0214dcc4(Obj0214dcc4 *self) {
 }
 
 #ifdef NONMATCHING
-// func_ov000_0214dd3c (round tmA): 28 / 0 (register-only), honest. The old 28 / 0 draft
+// func_ov000_0214dd3c (round tmA): 28 / 0 (register-only), honest. Now 26 / 0 (round raE, below). The old 28 / 0 draft
 // (ovlo12/d/dd3c/m2.cpp) read the game-state pointer through a one-element array g[1]; reading
 // it through a getter inline (GetG0214dd3c) numbers the two g temps the same way. Without either
 // (plain `u8 *g = data_ov000_021ccd54;`) it is 70 / 0. Left: key / Key(p) / insert-walk p colouring.
@@ -43,6 +43,11 @@ void func_ov000_0214dcc4(Obj0214dcc4 *self) {
 // Round raC: Key(m) written in place into key (28), a separate q for the insert walk (70; p must stay
 // the shared @ web). Only Key(p) written in place in the walk with u8 *g / u16 k locals gives 26 / 0,
 // but that duplicates Key's body, so it is not kept.
+// Round raE: 26 / 0 without the copy. Key is now a wrapper of KeyR(p, u8 *&g), which takes the game-state
+// pointer by reference (round raE's 021d1f70 / SlidePanel 02054bb4 shape), and the insert walk calls
+// KeyR(p, g) with a function-level g, so g is a user variable there. A caller-held k (KeyR(p, u16 &k)) or
+// both give 26 too, at every declaration slot; also passing g to Key(m) gives 28. Left: key / p / g / k
+// are r5 / r8 / r7 / r4 here and r7 / r5 / r4 / r8 in the ROM (the colour model still differs by 13 nodes).
 #include "ov000/LoCommon.h"
 
 extern "C" {
@@ -87,9 +92,9 @@ static inline u8 *GetG0214dd3c(void) {
     return data_ov000_021ccd54;
 }
 
-static inline u16 Key0214dd3c(Node0214dd3c *p) {
+static inline u16 KeyR0214dd3c(Node0214dd3c *p, u8 *&g) {
     u16 k = p->unk_36 & 0xf;
-    u8 *g = GetG0214dd3c();
+    g = GetG0214dd3c();
     if (func_ov000_0214bf2c(p->id) & 0x10) {
         k |= 0x3f0;
     } else {
@@ -102,6 +107,11 @@ static inline u16 Key0214dd3c(Node0214dd3c *p) {
     return k;
 }
 
+static inline u16 Key0214dd3c(Node0214dd3c *p) {
+    u8 *g;
+    return KeyR0214dd3c(p, g);
+}
+
 extern "C" {
 Node0214dd3c *func_ov000_0214dd3c(u8 *self, s32 a, u16 id, u16 c, s32 d) {
     Node0214dd3c *p;
@@ -110,6 +120,7 @@ Node0214dd3c *func_ov000_0214dd3c(u8 *self, s32 a, u16 id, u16 c, s32 d) {
     s16 i;
     u32 fl;
     s32 out;
+    u8 *g;
     for (p = LFLD(Node0214dd3c *, self, 0x98); p != NULL; p = p->next) {
         if (p->id == id) {
             return NULL;
@@ -131,7 +142,7 @@ Node0214dd3c *func_ov000_0214dd3c(u8 *self, s32 a, u16 id, u16 c, s32 d) {
         p = LFLD(Node0214dd3c *, self, 0x98);
         key = Key0214dd3c(m);
         while (p != NULL) {
-            if (key > Key0214dd3c(p)) {
+            if (key > KeyR0214dd3c(p, g)) {
                 break;
             }
             last = p;

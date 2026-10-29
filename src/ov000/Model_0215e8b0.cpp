@@ -14,6 +14,8 @@
 // Round raC (all 11 / 0): SetPos written in place (x first; y first is 43-111), inline getters that turn
 // x, pal, the last entry and the BOOL test into temps, u16/s16 SetPos parameters (14 / 4); a u16 x - 0x80
 // computed once before the branch is 107.
+// Round raE: the shifted x as a caller-held u16 &sx out-parameter of SetPos (any slot) 11 / 0; x as a
+// const s32 & parameter 115, y as one 130. Nodes 62/64 are backend vregs, so no object lever reaches them.
 typedef struct OamEntry0215e6f0 {
     u32 y : 8;
     u32 unk_00_8 : 8;

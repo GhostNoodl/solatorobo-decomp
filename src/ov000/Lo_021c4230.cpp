@@ -85,6 +85,10 @@ void func_ov000_021c4230(u8 *self) {
 // Round raC: the walk as a LineAt(self, idx) inline (idx, n and i become temps) gives idx the ROM's r0
 // but swaps n/i (11 / 0). ramerge on that graph (pairs) needs the unk_e4 load numbered among the
 // temps (16-30); a callback local or a Decide getter is propagated back to a codegen load (11).
+// Round raE: the callback register follows n (it takes the lowest register not r0, which the call
+// argument holds, and not n), so the miss is the n/idx pair. ramerge --pairs needs both numbered after the
+// callback load (backend band), unreachable for objects. LineAt with n or i held by the caller through a
+// reference (nref 10, iref 11-12), a cb local at each slot (10).
 
 typedef struct Line021c4460 {
     u8 pad[0x28];

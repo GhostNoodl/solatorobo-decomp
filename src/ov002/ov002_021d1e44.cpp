@@ -46,25 +46,6 @@ void func_ov002_021d1f20(Task50 *self) {
     }
 }
 
-}
-
-#ifdef NONMATCHING
-// func_ov002_021d1f70: 12 raw / 0 register-masked diffs, real signature (self only), no pragma or one-element arrays.
-// Register colouring only. Round bgN (was 35): a u8 n was folded into an int temp (every use is
-// promoted), so n is s32 and stays a user variable above x; the first PlayPart's model goes through m,
-// declared between n and x. Round raC (was 24): SetPos takes fx32 values (the shifts are at the call
-// sites) and the count drawing, called only here, is written in place, so the shared y (fy) is a user
-// variable instead of an IRO CSE temp of by << 12 (20). The PlayPart(8) model read into num, declared
-// between bx and fy, moves that PlayPart's model and res temps into place (12; reusing m gives 17).
-// Left: fy (ours r7, ROM r8) and the res temp of the PlayPart(6) calls around it (ours r8, ROM r7).
-// ramerge.py: fy numbered between those two res temps, that res numbered between fy and num (both
-// would need an inline local to become a user variable or the reverse), or fy merged with the res
-// of the function's own PlayPart(0x48, 6). A local for any other PlayPart's model (all 212 subsets and
-// orders with fy) stays at 12. Kept as an inline (DrawCount with its own fy local) it is 24 again.
-#include "ov002/ov002.h"
-
-extern "C" {
-
 void func_02041c20(void *a, int b, s32 c);
 
 static inline void *ov002_Model_GetPart(void *self, int idx) {
@@ -74,10 +55,13 @@ static inline void *ov002_Model_GetPart(void *self, int idx) {
     return (u8 *)FIELD(self, 0x78, void *) + idx * 0x28;
 }
 
-static inline void ov002_Model_PlayPart(void *model, int idx) {
-    void *res = FIELD(model, 0x28, void *);
+// Model_PlayPart with the resource pointer held by the caller (the same shape as SlidePanel's
+// Model_GetPartTexR). func_ov002_021d1f70 passes its own res only for the PlayPart(8) of the count
+// drawing; that gives the target's register colouring (rounds raC/raE).
+static inline void ov002_Model_PlayPartR(void *model, int idx, void *&res) {
     void *part;
     void *anim;
+    res = FIELD(model, 0x28, void *);
     if (res == NULL) {
         return;
     }
@@ -88,6 +72,11 @@ static inline void ov002_Model_PlayPart(void *model, int idx) {
         anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
     }
     func_02042628(model, anim, part, 0);
+}
+
+static inline void ov002_Model_PlayPart(void *model, int idx) {
+    void *res;
+    ov002_Model_PlayPartR(model, idx, res);
 }
 
 static inline void ov002_SetPos(void *o, s32 x, s32 y) {
@@ -106,6 +95,7 @@ void func_ov002_021d1f70(void *self) {
     s32 z;
     s32 bx;
     void *num;
+    void *res;
     s32 fy;
     o = FIELD(FIELD(self, 0x3c, u8 *), 0x88, u8 *);
     x = FIELD(self, 0x50, s32) - 0x6c;
@@ -131,7 +121,7 @@ void func_ov002_021d1f70(void *self) {
     ov002_Model_PlayPart(FIELD(self, 0x48, void *), 6);
     ov002_SetPos(FIELD(self, 0x48, void *), (bx + 10) << 12, fy);
     num = FIELD(self, 0x48, void *);
-    ov002_Model_PlayPart(num, 8);
+    ov002_Model_PlayPartR(num, 8, res);
     ov002_SetPos(FIELD(self, 0x48, void *), (bx + 0x14) << 12, fy);
     func_02041c20(FIELD(self, 0x48, void *), 6, n);
     ov002_Model_PlayPart(FIELD(self, 0x48, void *), 6);
@@ -139,4 +129,3 @@ void func_ov002_021d1f70(void *self) {
 }
 
 }
-#endif

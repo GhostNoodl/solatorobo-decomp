@@ -122,6 +122,8 @@ void func_0200d320(void) {
 // This file's .text ends at 0x0200d36c, so the function belongs here once it matches.
 // Round raC: the word loop as an inline (any parameter/return form) shifts word/ctrl/data to r2/r1/r0
 // (8 / 0), one register below the ROM's r3/r2/r1; without the cacheBuffer local it is still 5 / 0.
+// Round raE: the page-read argument in a named local (5), a u32 *dst for ptr (15), word++ in the
+// subscript (8), const data (5).
 #define CARD_ROM_PAGE_SIZE 0x200
 
 typedef struct CARDiRomCache {
