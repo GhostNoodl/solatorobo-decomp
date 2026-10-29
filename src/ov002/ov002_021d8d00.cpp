@@ -11,15 +11,19 @@ typedef struct Oam8d00 {
 
 extern "C" {
 
-// OAM callback that draws a two-digit number. div, x, chr and k are locals passed as unused
-// register/stack parameters (the locals-as-parameters lever); see docs/MATCHING.md round ovmid7.
-Oam8d00 *func_ov002_021d8d00(void *m, u16 *cell, Oam8d00 *oam, u16 *num, u32 div, s32 x, u32 chr, s32 k) {
+// OAM callback that draws a two-digit number. The locals' declaration order sets their colours
+// (reverse-declaration node numbers, round frB); it used to need fake div/x/chr/k parameters.
+Oam8d00 *func_ov002_021d8d00(void *m, u16 *cell, Oam8d00 *oam, u16 *num) {
     u16 n = *num;
     Oam8d00 *last = &oam[n - 1];
     if (*cell == 6) {
+        u32 chr;
         u32 val;
-        s32 y;
         BOOL shown = FALSE;
+        s32 k;
+        s32 x;
+        s32 y;
+        u32 div;
         chr = last->chr;
         val = FIELD(FIELD(cell, 0x8, u8 *), 0xa8, u16);
         div = 1;

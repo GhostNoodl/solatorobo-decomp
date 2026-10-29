@@ -1,6 +1,5 @@
 #include "ov002/ov002.h"
 
-#ifdef NONMATCHING
 typedef struct Oam0488A01 {
     u32 y : 8;
     u32 a0 : 8;
@@ -17,7 +16,6 @@ typedef struct Oam0488 {
     Oam0488A01 a01;
     Oam0488A23 a23;
 } Oam0488;
-#endif
 
 extern "C" {
 
@@ -38,13 +36,13 @@ BOOL func_ov002_021e046c(void *self, void *ev) {
     return FALSE;
 }
 
-#ifdef NONMATCHING
 // Draws a two-digit number per marked object as OAM cells (cell callback).
-// 16 / 2: frame and spill slots now match (round frA). The OAM type is two
-// 4-byte attribute structs: the front end hoists tmpl.a23 out of the object
-// loop into a struct-typed temp, which can't live in a register, so it gets the
-// unused sp+0x18 slot and the store-load pass then removes its accesses. Left:
-// the scheduling of the *cell load at entry and of the x/z subtractions.
+// The OAM type is two 4-byte attribute structs: the front end hoists tmpl.a23
+// out of the object loop into a struct-typed temp, which can't live in a
+// register, so it gets the unused sp+0x18 slot and the store-load pass then
+// removes its accesses (round frA). The template is read through a pointer to
+// the last cell (chr first), and the object's two positions are read into
+// locals before the vector is built (round frB).
 void MTX_Copy43To44_(void *src, void *dst);
 void MTX_Concat44(void *a, void *b, void *ab);
 void func_ov002_021e3b6c(s32 *out, s32 *v, void *m);
@@ -57,8 +55,9 @@ static inline void SetV0488(s32 *v, s32 x, s32 y, s32 z) {
 
 Oam0488 *func_ov002_021e0488(void *ctx, u16 *cell, Oam0488 *oam, u16 *num) {
     u16 n = *num;
-    Oam0488 tmpl = oam[n - 1];
-    u32 chr = tmpl.a23.chr;
+    Oam0488 *last = &oam[n - 1];
+    u32 chr = last->a23.chr;
+    Oam0488 tmpl = *last;
     if (*cell == 6) {
         s32 mtx[16];
         u8 *o;
@@ -75,8 +74,11 @@ Oam0488 *func_ov002_021e0488(void *ctx, u16 *cell, Oam0488 *oam, u16 *num) {
                 s32 x;
                 s32 out[2];
                 u32 div;
-                SetV0488(v, (FIELD(o, 0x54, s32) - FIELD(o, 0x64, s32)) * 0x28f - 0xa3, 0,
-                         (FIELD(o, 0x58, s32) - FIELD(o, 0x68, s32)) * 0x28f - 0xa3);
+                s32 px = FIELD(o, 0x54, s32);
+                s32 pz = FIELD(o, 0x58, s32);
+                s32 ox = FIELD(o, 0x64, s32);
+                s32 oz = FIELD(o, 0x68, s32);
+                SetV0488(v, (px - ox) * 0x28f - 0xa3, 0, (pz - oz) * 0x28f - 0xa3);
                 func_ov002_021e3b6c(out, v, mtx);
                 val = FIELD(o, 0xa8, u16);
                 div = 1;
@@ -112,7 +114,5 @@ Oam0488 *func_ov002_021e0488(void *ctx, u16 *cell, Oam0488 *oam, u16 *num) {
     *num = n;
     return oam;
 }
-
-#endif
 
 }

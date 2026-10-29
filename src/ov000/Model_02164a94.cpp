@@ -256,8 +256,13 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
 // spill-slot order (target: i, tbl, y0, x0, row at sp+0..0x10) and colouring in the parts loop.
 // Round frA: 137 / 37. Oam_52e4 is now two attribute words (a01, and this file's OamW2 type for
 // a23). The front end hoists one half of tmpl into a struct-typed temp, which gets a memory slot,
-// so the frame is the target's 0x44 (was 0x3c). The spill order above is still off: i is first in
-// the target, so its node must be below the tbl temp's.
+// so the frame is the target's 0x44 (was 0x3c).
+// Round frB: 117 / 27, spill slots now the target's (i, tbl, y0, x0, row). The ?: for tbl made
+// a compiler temp (numbered before every user variable) that took the first spill slot; with
+// if/else assignments tbl is a user variable, and declaring row, x0, y0, tbl, i in that order
+// gives the ascending node order (reverse declaration) the ROM shows. Left: colouring and
+// scheduling in the parts loop (all 120 orders of col/h/j/k/rx and the col-loop block locals
+// give 117 / 27).
 
 
 extern "C" {
@@ -353,17 +358,27 @@ typedef struct Out_52e4 {
 #define D_POS_52e4(i) (&((Pos_52e4 *)((u8 *)d + 0x65c))[i])
 
 void func_ov000_021652e4(void *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
-    s32 col; s32 k; s32 j; s32 rx; Hit_52e4 *h;
+    s32 col; Hit_52e4 *h; s32 j; s32 k; s32 rx;
     Oam_52e4 tmpl = *D_OAM_52e4(0);
-    const u8 *tbl;
     s32 row;
+    s32 x0;
+    s32 y0;
+    const u8 *tbl;
     u8 i;
     Part_52e4 *p;
     const PartDef_52e4 *pe;
     if (def->w == 1) {
-        tbl = def->h == 1 ? data_ov000_021c9b60 : data_ov000_021c9b72;
+        if (def->h == 1) {
+            tbl = data_ov000_021c9b60;
+        } else {
+            tbl = data_ov000_021c9b72;
+        }
     } else {
-        tbl = def->h == 1 ? data_ov000_021c9b7b : data_ov000_021c9b69;
+        if (def->h == 1) {
+            tbl = data_ov000_021c9b7b;
+        } else {
+            tbl = data_ov000_021c9b69;
+        }
     }
     o->pos = D_POS_52e4(D_CNT_52e4);
     o->oam = D_OAM_52e4(D_CNT_52e4);
@@ -371,8 +386,8 @@ void func_ov000_021652e4(void *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
     o->unk_04 = 0;
     o->w = def->w;
     o->h = def->h;
-    s32 x0 = -((o->w * 8) >> 1);
-    s32 y0 = -((o->h * 8) >> 1);
+    x0 = -((o->w * 8) >> 1);
+    y0 = -((o->h * 8) >> 1);
     for (row = 0; row < def->h; row++) {
         s32 ry = row == 0 ? 0 : (row == def->h - 1 ? 2 : 1);
         for (col = 0; col < def->w; col++) {

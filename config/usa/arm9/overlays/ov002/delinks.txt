@@ -514,7 +514,7 @@ src/ov002/ov002_021e0280.cpp:
 
 src/ov002/ov002_021e0420.cpp:
     complete
-    .text       start:0x021e0420 end:0x021e0488
+    .text       start:0x021e0420 end:0x021e06c4
 
 src/ov002/ov002_021e06c4.cpp:
     complete
