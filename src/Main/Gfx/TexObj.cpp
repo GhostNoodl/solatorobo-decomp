@@ -303,6 +303,12 @@ extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, int is4x4, int opt);
 // loop's preheader, ours hoists it to the entry with the count loop's zero; (2) in the inlined SetData/Upload the
 // ROM needs `data` numbered below Upload's reloaded `size`, which no order of the header inlines' parameters gives
 // (the front end merges the parameter copies into SetData's `data`, created before Upload's `size`).
+// Round hzS: (1) is exactly the move-constant-loads step 34 -> 5 (preheader -> allocation block): refusing that
+// one step under gdb (hzR's mclf.sh, FORCE=34:5) leaves only the r7/r8 swap of (2). The walk has a single
+// predecessor, so it reads block 5's pressure alone (6, the ROM needs 11) and block 5 is not empty; no loop
+// form, alloc inline or SetData/Upload spelling changes it. (2) the sim says Upload's reloaded size fixes the
+// swap at any node number above `data` (a named local or temp); every object of the Upload expansion (its size
+// parameter, or a SetData local holding res->size) is newer than SetData's `data` parameter, so it is numbered below.
 extern "C" {
 typedef struct TexObjBank {
     u16 numSeq;

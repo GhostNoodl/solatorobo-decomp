@@ -201,6 +201,10 @@ void func_ov000_0216c018(void *obj) {
 // Round mcA: 103 / 8 -> 68 / 8 (pool-masked; 105 / 10 -> 68 / 10 by tools' count). Each released slot goes through
 // a named `sl` local instead of straight into the inline (so it is a user variable, numbered by declaration,
 // not an inline parameter), with the locals declared s, m, r, y, h, sl, prev, n, next. The masked lines are unchanged.
+// Round hzS: 68 / 10 -> 66 / 10. The second slot reused `sl`, so its web was a compiler temp (@411, frC's split-
+// counter rule); separate slA/slB locals make both user variables. 400 random orders of the ten locals give no
+// better score. Left: the ROM pops y between next and self (y is still blocked in the sweep that frees the
+// self + 0x360 and data_02071060 temps); ours frees y in that sweep.
 // This file's .text ends at 0x0216c310, so the function belongs here once it matches.
 extern "C" {
 
@@ -229,7 +233,8 @@ void func_ov000_0216c310(void *self) {
     s32 r;
     s32 y;
     u8 *h;
-    u8 *sl;
+    u8 *slA;
+    u8 *slB;
     u8 *prev;
     u8 *n;
     u8 *next;
@@ -283,10 +288,10 @@ void func_ov000_0216c310(void *self) {
                 } else {
                     LFLD(void *, self, 0x24c) = LFLD(void *, h, 0x28);
                 }
-                sl = (u8 *)self + 0x360 + data_ov000_021c9bb4[LFLD(s32, n, 4)].a * 12;
-                Release0216c310(sl);
-                sl = (u8 *)self + 0x360 + data_ov000_021c9bb4[LFLD(s32, n, 4)].b * 12;
-                Release0216c310(sl);
+                slA = (u8 *)self + 0x360 + data_ov000_021c9bb4[LFLD(s32, n, 4)].a * 12;
+                Release0216c310(slA);
+                slB = (u8 *)self + 0x360 + data_ov000_021c9bb4[LFLD(s32, n, 4)].b * 12;
+                Release0216c310(slB);
                 LFLD(s32, n, 4) = -1;
                 LFLD(u32, n, 0) = 0;
                 LFLD(void *, n, 0x28) = NULL;
