@@ -629,19 +629,6 @@ static inline void Ov007_StopBgm(Ov007SndQ *queue, u16 fade) {
     }
 }
 
-static inline BOOL Ov007_HasMsgP(Ov007MsgQ *q, s32 r, s32 w, s32 id) {
-    s32 i;
-    for (i = r; i != w;) {
-        if (q->buf[i] == id) {
-            return TRUE;
-        }
-        if (++i >= 16) {
-            i = 0;
-        }
-    }
-    return FALSE;
-}
-
 static inline BOOL Ov007_HasMsgN(s32 r, s32 w, s32 id) {
     Ov007MsgQ *q = (Ov007MsgQ *)data_ov000_021ccd54;
     s32 i;

@@ -186,15 +186,12 @@ void func_ov009_02200d00(Ov009Actor *self) {
         if (a != NULL) {
             if (Ov009_Mode(a) == 9) {
                 Ov009Sub44 *s = self->unk_44;
-                u8 *q;
                 if (!(s->unk_22_0 == 1 && s->unk_22_1 == 1)) {
                     s->unk_22_0 = 1;
                     s->unk_22_1 = 1;
                 }
                 func_ov000_02190cb0(self->unk_38, data_ov009_02215d0c[10], 0x1000, zero);
-                q = (u8 *)self->unk_50;
-                FLD(volatile u8, q, 8) = FLD(volatile u8, q, 8);
-                q[9] = 0x31;
+                Ov009Pair_SetB((Ov009Pair *)&self->unk_50[4], 0x31);
                 func_ov000_02198360(self->unk_40, 0x13, zero);
             } else {
                 if (((Ov009EaBits *)&FLD(u16, self, 0xea))->b13) {

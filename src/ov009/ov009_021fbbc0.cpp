@@ -18,16 +18,6 @@ struct Ov009Byte {
     u8 b2 : 6;
 };
 
-struct Ov009Pair {
-    volatile u8 a;
-    u8 b;
-};
-
-static inline void Ov009Pair_Set(Ov009Pair *p, u8 a, u8 b) {
-    p->a = a;
-    p->b = b;
-}
-
 static inline void Ov009_SpawnChild(Ov009Actor *self) {
     Ov009Actor *o = func_ov003_021d69a0(self, 0x4011, 0);
     if (o != NULL) {
@@ -107,7 +97,7 @@ void func_ov009_021fbe3c(Ov009Actor *self) {
         }
         q = (Ov009Pair *)&self->unk_50[4];
         if ((u8)(q->b + 0xf0) <= 1) {
-            Ov009Pair_Set(q, q->a, 0x20);
+            Ov009Pair_SetB(q, 0x20);
         }
     }
     func_ov003_021d5348(self);

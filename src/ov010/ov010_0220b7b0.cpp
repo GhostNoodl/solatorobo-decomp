@@ -39,6 +39,18 @@ extern u16 func_ov010_02207a44(s32 i);
 extern void func_ov000_0219bdb0(u16 a, u16 b, s32 c, s32 d, s32 e, Ov010AnMsg *msg);
 extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
 
+// Reads the effect's flag through a const view, which is not merged with the later plain
+// reads of the same byte.
+static inline u8 Ov010_FxCount(const u8 *fx) {
+    u8 n;
+    if (FLD(const Ov010Flags8, fx, 0).b0) {
+        n = FLD(const u8, fx, 0x6b);
+    } else {
+        n = 0;
+    }
+    return n;
+}
+
 void func_ov010_0220b40c(u8 *self) {
     Ov010Vec p;
     Ov010Blk12 q;
@@ -47,14 +59,8 @@ void func_ov010_0220b40c(u8 *self) {
     switch (FLD(u16, FLD(void *, self, 0x40), 0)) {
     case 0: {
         u8 *fx = FLD(u8 *, self, 0xec);
-        u8 n;
-        if (FLD(Ov010Flags8, fx, 0).b0) {
-            n = FLD(u8, fx, 0x6b);
-        } else {
-            n = 0;
-        }
-        if (n == 1) {
-            if (FLD(volatile Ov010Flags8, fx, 0).b0) {
+        if (Ov010_FxCount(fx) == 1) {
+            if (FLD(Ov010Flags8, fx, 0).b0) {
                 func_02065860(data_0214a420, FLD(void *, fx, 8));
                 FLD(s32, fx, 8) = 0;
                 func_ov000_02198360(fx + 0x58, 1, 0);

@@ -38,14 +38,6 @@ void func_ov000_0214fcfc(void);
 void func_ov000_0214ffac(void);
 void func_ov000_02150104(void);
 
-static inline void Load0214e9e4(u16 a, u16 b) {
-    u8 *d = data_02fe1534;
-    LFLD(u16, d, 0x70) = a;
-    LFLD(vu16, d, 0x7a) = b;
-    LFLD(VObj *volatile, data_ov000_021ccd24, 8)->vfunc_38(1);
-    LFLD(u16, d, 0x7a) = 0;
-}
-
 static inline void Setup0214e9e4(VObj *self) {
     VObj *t;
     void *g;

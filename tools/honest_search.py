@@ -51,7 +51,11 @@ CC_FLAGS = ["-O4,p", "-enum", "int", "-char", "signed", "-str", "noreuse", "-pro
 
 def rom_func(mod, func):
     ex = ROOT / "extract" / "usa"
-    if mod == "main":
+    if mod == "itcm":
+        code = (ex / "arm9" / "itcm.bin").read_bytes()
+        base = yaml.safe_load((ex / "arm9" / "itcm.yaml").read_text())["base_address"]
+        syms = ROOT / "config/usa/arm9/itcm/symbols.txt"
+    elif mod == "main":
         code = (ex / "arm9" / "arm9.bin").read_bytes()
         base = yaml.safe_load((ex / "arm9" / "arm9.yaml").read_text())["base_address"]
         syms = ROOT / "config/usa/arm9/symbols.txt"

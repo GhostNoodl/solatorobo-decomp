@@ -207,6 +207,20 @@ static inline u16 Ov009Sub40_State(const Ov009Sub40 *s) {
     return s->state;
 }
 
+// Two bytes of the unk_50 block (at +8).
+typedef struct Ov009Pair {
+    u8 a;
+    u8 b;
+} Ov009Pair;
+
+// Sets b by copying the pair out and back, so a is reloaded and stored again as well.
+static inline void Ov009Pair_SetB(Ov009Pair *p, u8 b) {
+    Ov009Pair v;
+    v = *p;
+    v.b = b;
+    *p = v;
+}
+
 struct Ov009Sub44 {
     u8 unk_00[0x10];
     s32 unk_10;

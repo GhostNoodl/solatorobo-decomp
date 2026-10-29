@@ -137,11 +137,11 @@ static inline void Ov013_SetAlpha(Ov013Sub38 *m, s32 a) {
 }
 
 void func_ov013_02205928(Ov013Actor *self) {
-    volatile Ov013Sub40 *s = self->unk_40;
+    Ov013Sub40 *s = self->unk_40;
     switch (s->state) {
     case 0:
         FLD(u16, self, 0xd0) = 0;
-        if (s->timer >= 3) {
+        if (Ov013Sub40_Timer(s) >= 3) {
             s->timer = 0;
             self->unk_40->state = 1;
         } else {
@@ -164,7 +164,7 @@ void func_ov013_02205928(Ov013Actor *self) {
             g[0x18f] = 0xf;
         }
         if (self->unk_40->timer < 30) {
-            self->unk_40->timer = ((const Ov013Sub40 *)self->unk_40)->timer + 1;
+            self->unk_40->timer = Ov013Sub40_Timer(self->unk_40) + 1;
         } else {
             self->unk_40->timer = 0;
             self->unk_40->state = 2;

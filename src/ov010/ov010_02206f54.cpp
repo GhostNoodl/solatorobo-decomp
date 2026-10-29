@@ -35,10 +35,16 @@ void func_ov010_02206f64(void *self) {
     func_02049f44(data_02097e4c, FLD(s32, self, 0x144), (u8 *)self + 0x70, 0);
 }
 
+// Reads the state word through a const view (a const getter is not merged with the later
+// plain read of the same field, so the increment reloads it as in the target).
+static inline u16 Ov010_GetState(const u16 *state) {
+    return *state;
+}
+
 void func_ov010_02206fd0(void *self) {
-    volatile u16 *m = FLD(volatile u16 *, self, 0x40);
+    u16 *m = FLD(u16 *, self, 0x40);
     FLD(u8, self, 0xf2) = 1;
-    if (m[0] != 0) {
+    if (Ov010_GetState(m) != 0) {
         return;
     }
     m[0]++;

@@ -242,6 +242,11 @@ struct Ov013Sub40 {
     u8 unk_13;
 };
 
+// A read through a const view, which MWCC does not merge with an earlier plain read of the timer.
+static inline u16 Ov013Sub40_Timer(const Ov013Sub40 *s) {
+    return s->timer;
+}
+
 struct Ov013Sub44 {
     u8 unk_00[0x10];
     s32 unk_10;

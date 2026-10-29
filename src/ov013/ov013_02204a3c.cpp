@@ -475,7 +475,7 @@ void func_ov013_02205098(Ov013Actor *self) {
                 break;
             }
         } else {
-            self->unk_40->timer = ((const Ov013Sub40 *)self->unk_40)->timer + 1;
+            self->unk_40->timer = Ov013Sub40_Timer(self->unk_40) + 1;
             break;
         }
     }

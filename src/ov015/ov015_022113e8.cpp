@@ -29,9 +29,9 @@ static inline s32 Ov015_Pick(const u16 *tbl, s32 max, s32 mod, s32 amt, s32 id) 
     return id;
 }
 
-// `budget` is volatile so it is loaded where it is first used, and the loop index `j` is an extra
-// trailing parameter (callers pass five arguments); both only steer register allocation.
-void func_ov015_022113e8(void *self, Ov015ItemEnt *list, s32 n, u16 a, volatile s32 budget, s32 j) {
+// The loop index `j` is an extra trailing parameter (callers pass five arguments); it only steers
+// register allocation.
+void func_ov015_022113e8(void *self, Ov015ItemEnt *list, s32 n, u16 a, s32 budget, s32 j) {
     s32 cnt;
     s32 rnd;
     s32 i;
