@@ -69,16 +69,10 @@ void func_ov010_02200ee0(u8 *o) {
 
 }
 
-#ifdef NONMATCHING
-// func_ov010_02201064: 47 / 0 (raw / aligned register-masked, round qpJ; 78 / 3 in round bgP, 83 / 9 in round bgO). Each beam-list
-// walk has its own pointer (n1, n2, n): with one reused n the later webs were compiler temps and the second loop
-// was coloured differently. The `last` resets come after the `s` adjustment: the ?: puts a block boundary in
-// front of them, so their zero is not CSE'd with the Ov010k_Mul zeros of the block before (which step 4 hoists);
-// it is shared with the 0x7a store and the func_ov000_02198360 zero arguments and is already r1 at step 4, so it
-// stays a fresh `mov r1, #0`, as in the ROM. Round qpJ: the end-of-case-10 compare reads 0x2e through a const
-// lvalue (CFLD), so the `++` in the if-converted else reloads it (`ldrhhs`) and 0x2e is stored before 0x2c, as in
-// the ROM (94 / 4 -> 47 / 0 on qpJ's raw / aligned-masked scorer). Left: register colouring of the GetA/SetA
-// temporaries and the 0xffff constant in the second walk (same instructions as the ROM).
+// func_ov010_02201064 (round raD). Ov010Beam_Idle sets its flag from the mode compare (`r = b[0x7f] == 5`)
+// rather than clearing it under an && test: the compare's value is a late temporary, numbered below the CSE'd
+// state-byte reads, which is the colouring the ROM has in the beam walks. Each beam register update reads the
+// old value into `cur` first, which puts GetB's value first in the add.
 extern "C" {
 
 extern const Ov010Vec data_ov010_0220ef80;
@@ -99,8 +93,8 @@ static inline s32 Ov010k_Mul(s32 a, s64 b) {
 
 static inline BOOL Ov010Beam_Idle(u8 *b) {
     BOOL r = TRUE;
-    if (FLD(u8, b, 0) != 0 && FLD(u8, b, 0x7f) != 5) {
-        r = FALSE;
+    if (FLD(u8, b, 0) != 0) {
+        r = FLD(u8, b, 0x7f) == 5;
     }
     return r;
 }
@@ -262,11 +256,13 @@ void func_ov010_02201064(u8 *self) {
             }
             {
                 u16 dd = 0xffff - FLD(u16, n2, 2);
-                Ov010Beam_SetA(b, Ov010Beam_GetA(b) + dd);
+                u16 cur = Ov010Beam_GetA(b);
+                Ov010Beam_SetA(b, cur + dd);
             }
             {
                 u16 dd = FLD(u16, n2, 4);
-                Ov010Beam_SetB(b, Ov010Beam_GetB(b) + dd);
+                u16 cur = Ov010Beam_GetB(b);
+                Ov010Beam_SetB(b, cur + dd);
             }
         }
         if (FLD(u16, self, 8) < CFLD(u16, self, 0x2e)) {
@@ -299,4 +295,3 @@ void func_ov010_02201064(u8 *self) {
 
 
 }
-#endif
