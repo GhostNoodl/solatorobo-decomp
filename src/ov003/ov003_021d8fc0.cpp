@@ -29,15 +29,17 @@ extern "C" {
 
 extern s32 func_02040498(s32 n);
 
-#define SEQ_CUR(s) ((void)0, (s)->entries[(s)->index])
-/* The target re-reads index (and, before Seq_Run, entries) instead of reusing the
-   value loaded for the previous copy, so these reads go through separate views: a const one
-   for entries, and a volatile one for index (Seq_Next increments it through VIDX too). */
-#define VIDX(s) (*(volatile u16 *)&(s)->index)
-#define VENT(s) (*(SeqEntry *const *)&(s)->entries)
+/* The target re-reads index (and, before Seq_Run, entries) instead of reusing the value
+   loaded earlier, so those reads go through const lvalues: Seq_Index (a const member read)
+   and CFLD. A plain read in a later block does not reuse a const read, and two const reads
+   are only merged when they are spelled the same way. The comma in the first copy keeps
+   its 6-byte temp in the target's stack slot (round jkE). */
+static inline u16 Seq_Index(const Seq *s) {
+    return s->index;
+}
 
 static inline void Seq_Next(Seq *self) {
-    VIDX(self)++;
+    self->index++;
     if (self->index == self->length) {
         self->index = 0;
     }
@@ -82,7 +84,7 @@ static inline void Seq_Count(Seq *self, SeqEntry e) {
 }
 
 static inline BOOL Seq_CurIsCtl(Seq *self) {
-    u8 op = self->entries[VIDX(self)].op;
+    u8 op = self->entries[Seq_Index(self)].op;
     if (op != 0xff && (op & 0x80)) {
         return TRUE;
     }
@@ -140,7 +142,7 @@ void func_ov003_021d8fc0(Seq *self) {
     if (!self->b6) {
         self->b1 = 0;
         if (self->b2 && self->b3) {
-            SeqEntry e = SEQ_CUR(self);
+            SeqEntry e = ((void)0, self->entries[Seq_Index(self)]);
             switch (e.op) {
             case 3:
                 Seq_Next(self);
@@ -159,8 +161,8 @@ void func_ov003_021d8fc0(Seq *self) {
                 break;
             }
         }
-        while (Seq_IsCtl(SEQ_CUR(self))) {
-            SeqEntry e = SEQ_CUR(self);
+        while (Seq_IsCtl(self->entries[self->index])) {
+            SeqEntry e = self->entries[self->index];
             switch (e.op) {
             case 0x81: {
                 SeqEntry re = e;
@@ -184,8 +186,8 @@ void func_ov003_021d8fc0(Seq *self) {
             }
         }
         if (!self->b2 && !Seq_CurIsCtl(self)) {
-            u16 i = VIDX(self);
-            Seq_Run(self, &VENT(self)[i]);
+            u16 i = CFLD(u16, self, 6);
+            Seq_Run(self, &CFLD(SeqEntry *, self, 0xc)[i]);
         }
     }
     self->b6 = self->b5;

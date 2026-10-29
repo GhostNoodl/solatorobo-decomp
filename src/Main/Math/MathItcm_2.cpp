@@ -31,9 +31,9 @@ BOOL func_01ffc584(VecFx32 *a, VecFx32 *b, fx32 r, fx32 h) {
 }
 
 
-// h is volatile so that it is read once, into a register, where the cylinder test starts (the
-// target loads it after the first compare instead of at its use).
-BOOL func_01ffc624(VecFx32 *p, const VecFx32 *trans, u16 *rot, fx32 r, volatile fx32 h) {
+// h is a const parameter: the read through the const lvalue is not copy-propagated to its
+// use, so h is loaded from the stack where the cylinder test starts, as in the target.
+BOOL func_01ffc624(VecFx32 *p, const VecFx32 *trans, u16 *rot, fx32 r, const fx32 h) {
     MtxFx43 m;
     VecFx32 v;
     MtxFx43 tmp;

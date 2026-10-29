@@ -55,9 +55,10 @@ static inline void G3_Cmd2(u32 cmd, u32 a, u32 b) {
     NNS_G3dGeBufferOP_N(cmd, v, 2);
 }
 
-// ctx is volatile so that it is loaded from the stack where it is first used, as in the target.
+// ctx is read through a const view of the stack parameter: that read is not copy-propagated to
+// c's uses, so ctx is loaded where c is set, as in the target.
 void func_ov000_02173d9c(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const Oam02173d9c *oam,
-                         const ImgAttr02173d9c *img, u32 charBase, u32 plttBase, s32 unused2, const Ctx02173d9c *volatile ctx) {
+                         const ImgAttr02173d9c *img, u32 charBase, u32 plttBase, s32 unused2, const Ctx02173d9c *ctx) {
     const Ctx02173d9c *c;
     s32 px;
     u32 pal;
@@ -68,7 +69,7 @@ void func_ov000_02173d9c(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const Oam02
     u32 fmt;
     u16 charName;
 
-    c = ctx;
+    c = *(const Ctx02173d9c *const *)&ctx;
     charName = (u16)oam->charName;
     shift = ((s32)(img->mappingType & 0x700000) >> 20) + 5;
     func_02043064(oam, &w, &h);

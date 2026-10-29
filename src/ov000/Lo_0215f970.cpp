@@ -68,9 +68,10 @@ static inline void G3Vec(u32 op, s32 x, s32 y, s32 z) {
 #define G3VtxXY(x, y) G3Cmd1(0x25, (u16)(s16)(x) | ((u16)(s16)(y) << 16))
 #define G3Vtx(x, y, z) G3Cmd2(0x23, (u16)(s16)(x) | ((u16)(s16)(y) << 16), (u16)(s16)(z))
 
-// ctx0 is volatile so that it is loaded from the stack after the skip check, as in the target.
+// ctx0 is read through a const view of the stack parameter: that read is not copy-propagated to
+// ctx's uses, so ctx0 is loaded from the stack after the skip check, as in the target.
 void func_ov000_0215f970(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const Oam0215f970 *oam,
-                         const ImgAttr0215f970 *img, u32 charBase, u32 plttBase, s32 unused2, const Ctx0215f970 *volatile ctx0) {
+                         const ImgAttr0215f970 *img, u32 charBase, u32 plttBase, s32 unused2, const Ctx0215f970 *ctx0) {
     const Ctx0215f970 *ctx;
     s32 split;
     Entry0215f970 *e;
@@ -87,7 +88,7 @@ void func_ov000_0215f970(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const Oam02
     if (skip) {
         return;
     }
-    ctx = ctx0;
+    ctx = *(const Ctx0215f970 *const *)&ctx0;
     e = &data_02fe0188[ctx->idx];
     ox = oam->x;
     if (ox > 0xff) {

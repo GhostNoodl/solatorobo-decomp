@@ -5,16 +5,16 @@
 
 extern "C" {
 
-// Model_PlayPart with a volatile index: the volatile qualifier only changes
-// register allocation of the loop counter here, no extra memory accesses.
-static inline void PlayPart021b86a4(Model *model, volatile u32 idx) {
+// Model_PlayPart, with the index read through a const view for Model_GetPart: that read is
+// not merged with the plain one, which only changes the loop counter's register allocation.
+static inline void PlayPart021b86a4(Model *model, u32 idx) {
     ModelRes *res = model->res;
     ModelPart *part;
     void *anim;
     if (res == NULL) {
         return;
     }
-    part = Model_GetPart(model, idx);
+    part = Model_GetPart(model, *(const u32 *)&idx);
     if (part != NULL && part->res != NULL) {
         anim = part->res->tex;
     } else {

@@ -393,12 +393,12 @@ void func_0203e6bc(void) {
     budget = 0x3000;
     for (; t != NULL; t = next) {
         n = t->chunk;
+        next = t->next;
+        type = t->type;
+        off = t->progress;
         if (n > budget) {
             n = budget;
         }
-        next = t->next;
-        type = t->type;
-        off = *(volatile u32 *)&t->progress;
         src = t->src;
         dst = t->dst;
         t->progress += n;
