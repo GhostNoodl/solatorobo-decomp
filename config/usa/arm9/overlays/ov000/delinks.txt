@@ -1572,6 +1572,10 @@ src/ov000/Stub_021be564.cpp:
     complete
     .text       start:0x021be564 end:0x021be5dc
 
+src/ov000/ov000_021be5dc.cpp:
+    complete
+    .text       start:0x021be5dc end:0x021be8ac
+
 src/ov000/Stub_021bc644.cpp:
     complete
     .text       start:0x021bc644 end:0x021bc6c0
