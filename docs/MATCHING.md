@@ -6504,3 +6504,28 @@ By rule F only the seconds def is forwarded, which is exactly the ROM's list ord
   - `0206d43c`: `AlignUp(card, x)` or `AlignUp(x, page)` with a named local gives 29–32.
   - `0203a984` (raC's draft): only backend nodes are wrong. `ramerge.py` asks for the `blocks[i]` load to be created after the `+0x10` word, or for that word to share a vreg with a pre-loop `r5` value.
   - `02069b3c` (raC's draft): a `tex` local is 44–70, a caller-held `param` or `key` through `SetTexImageR`/`K` is 44 / 4, and `Effect_GetTexImageParam` with a `u16 &key` for every caller is 64.
+### Round pmB
+
+**Matched: `func_ov000_0217a1f8`**, and with it the whole **Menu TU lands**: `src/ov000/Menu_021763c8.cpp` is now the one file for `.text 0x021763c8..0x02180350` plus its string pool `.data 0x021cba18..0x021cbac0` (`#pragma pool_strings on` / `dont_reuse_strings off`). `Menu_0217a26c.cpp` and `Menu_0217bd88.cpp` are gone (their bodies are appended, namespaces unchanged). The pool was claimed with `tools/strrefs.py ov000 --claim 0x021cba18 0x021cbac0` (the 21 `data_ov000_021cba18..021cbab1` symbols are now one local `@stringBase0`), and every use was written as a literal by a merge script (scratch `pmB/menu/merge.py`, not `--literalize`). Two source changes were needed, as round menu predicted: `func_ov000_021546ec(void *, const void *, const char *, u16)` in the three namespaces that declare it, and `0217ef3c`'s `NewModel2(nm, arc)` became `NewWorldMapModel(void)` with the two literals inside `if (m)` (with parameters the `if (n)` test survives and the loads move: 262 diffs). Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK. Scratch is in the session scratchpad `pmB/` (`t/` is pmA's tool set pointed at this clone, plus qpK's `ph.sh` pass dumper; `blk.sh`/`sch/` is qpF's scheduler dump).
+
+**Rule G: a constant that the local CSE must not derive can be produced after it by global constant propagation.** The derivation (`0x514140`, local CSE run at `0x474fc4`) only sees `op171` constants. Global constant propagation (`0x523d70`, run right after it at `0x474bf4`, before coalescing and scheduling) folds an instruction whose register operand is a known constant. For `mvn` that turns `mvn v2, vZ` with `vZ = 0` into `mvn v2, #0`, and the `mov vZ, #0` dies. So the `-1` is built in its own argument slot, after the `0x78`, and nothing derives it:
+
+```c
+typedef enum { LO_TEXT_MASK_EMPTY = 0 } LoTextMask;
+...
+mask = LO_TEXT_MASK_EMPTY;
+func_ov000_0217a328(self, 0x78, ~mask);   /* mov r0, r4; mov r1, #0x78; mvn r2, #0 */
+```
+
+- **The zero must be opaque to the IR.** An enum local is not constant-propagated by the front end (round lfA), so `~mask` reaches the backend as an `mvn` of a register. With `u32 m = 0` the IR folds `~m` to `-1`, the CSE derives it (`sub r2, r1, #0x79`). `~LO_TEXT_MASK_EMPTY` and `~(LoTextId)0` written directly are folded too.
+- **Only the unary `~` folds this way.** With an enum `-1` local, `txt + 0`, `* 1`, `& -1`, `>> 0`, `| 0`, `^ 0`, `-(-txt)`, `txt | txt`, `+txt` and `(s32)txt` are all folded by the front end or stay a copy, which is coalesced at the definition and listed first (2 / 2). `txt - 1` and `-one` (enum `0`/`1`) keep `sub r2, r1, #1` / `rsb r2, r1, #0` with the constant in a register (18–19). The enum definition may sit in the call block or before the `vfunc_28` test; both match.
+- **The list-order oracle confirmed it first.** pmA's `RO=1:1 ROP=1,2,0,…` on the enum-`txt` draft (list `mvn v2; mov v0; mov v1, #0x78` rewritten to `mov v0; mov v1, #0x78; mvn v2`) gave 0 / 0. qpK's list of refusals was right; the way out is to have no constant at all when the CSE runs.
+- **Where to use it.** A ROM `mvn rX, #0` (or another `mvn` constant) issued after a `mov` constant it could have been derived from, in the same extended block. A scan of the 43 best drafts in `qpA/remaining.tsv` finds no other unmatched function with that diff.
+
+**The other targets: none is a list-order miss.** The `RO`/`ROP` oracle was run over every dependency-respecting order of the block in question:
+- `ov003_021cd91c` (48 / 23, `bgQ/w/` draft): the `state = timer = 0x14; func_02049bdc(..., 0x26, -2)` block, all 210 orders of its 7 nodes: 3 lines at best (the current order). In our graph at cycle 2 both the stores (`h6 dl1`) and `mov r1, #0x26` (`h5 dl2`) are urgent and the `mov` wins on `c` (it frees the `sub`). The ROM order needs the `sub` to have a second predecessor, for example the `0x14` already in `r2` before scheduling (then the `sub` waits for both stores): with that graph the pick order is exactly the ROM's. No source for it was found.
+- `ov000_021b9b14` (12 / 4): all 80 orders of the 8-node bit-field head after the `a > 0x1e` join give 12 / 4 or worse (`NONMATCHING` note added).
+- `ov009_02206084` (7 / 5, `bgV/6084`): the 10 orders of the bit-field/`id` group times every position of the `&p` address (130 lists): 7 / 5 at best, as bgV's height analysis said.
+- `ov006_021e7004` (22 / 12): rule F reuse of one scratch for `dp`/`hp` and `dy`/`hy` is 22 / 12, one local for both angles is 176–180, `y` before `p` is 28 (`NONMATCHING` note added). The ROM keeps `hp`'s final `lsr #16` inside the join block and cross-jumps `hy`'s, so the two `HalfAngle`s are not compiled alike there.
+- `02053254` (37 / 4): an inline returning `&d->objs[i]` leaves no copy in the pre-allocation list (44 / 4), as qpF found.
+- `ov000_0218a670`, `ov010_02204030`, `02043100`, `ov002_021eca14`: not retried beyond re-scoring (12 / 6, 26 / 12, 126 / 62, 22 / 5); earlier rounds already place their misses in the dependence graph (latency-2 alias edge), pressure mode, the `attr01` reload joins and the `return TRUE` block.

@@ -62,6 +62,9 @@ void func_ov000_021b9a84(Obj021b9a84 *self) {
 // section-4 local gets its ROM register. What is left is the colouring of the two
 // bit-field stores' temporaries (word/shift registers, so the and/ldr and the mask
 // load are scheduled in a different order).
+// Round pmB: not a list-order miss. All 80 dependency-respecting orders of the 8-node bit-field
+// head of that block (RO/ROP oracle) give 12 / 4 or worse, so the ROM's `and` before the word
+// load needs a different dependence graph, not a different statement order.
 typedef struct {
     u32 b0 : 2;
     u32 b2 : 5;

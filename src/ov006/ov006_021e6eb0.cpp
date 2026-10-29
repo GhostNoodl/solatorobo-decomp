@@ -88,6 +88,9 @@ void func_ov006_021e6eb0(ov006_Prop021e6eb0 *self) {
 // before the `t->x` load, and builds `hy + curYaw` before `hp + curPitch` (its `unk19C_8` test
 // is also read earlier). Statement order of the squares, temporaries, a squaring inline and the
 // order of the dp/dy/hp/hy/p/y statements did not reach either.
+// Round pmB: reusing one scratch for dp/hp (and for dy/hy), so that rule F keeps the earlier
+// definitions as statements, gives 22 / 12 at best (reuse inside one angle) and 176-180 / 46 when
+// one local carries both angles; computing y before p gives 28 / 14.
 
 typedef struct ov006_Aim7004Tgt {
     s32 x;
