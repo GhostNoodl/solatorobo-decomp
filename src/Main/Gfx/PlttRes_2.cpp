@@ -42,8 +42,12 @@ extern void func_0203e58c(u32 id);
 extern void func_0203be50(GfxSys *sys, int shift, int count, int idx);
 extern void (*NNS_GfdDefaultFuncFreePlttVram)(u32 key);
 
+// Bytes loaded per palette slot: one 16-colour palette, or a whole 256-colour one.
+// The enum type keeps `size` a user variable through the `if` (round jkK, jkI's
+// rule); as a `u32` it becomes a temp and the function is 1 / 36 off.
+typedef enum { PLTT_SIZE_16 = 0x20, PLTT_SIZE_256 = 0x200 } PlttSize;
+
 u32 func_02041080(PlttRes *res, int idx, u32 mask, int load) {
-    u16 bit;
     u16 tbl[16];
     u32 ret;
     u16 *orig;
@@ -63,7 +67,7 @@ u32 func_02041080(PlttRes *res, int idx, u32 mask, int load) {
     if (load) {
         int type;
         u16 j;
-        u32 size;
+        PlttSize size;
         if (idx == 1) {
             if (res->unk_28 == 1) {
                 type = 4;
@@ -79,25 +83,17 @@ u32 func_02041080(PlttRes *res, int idx, u32 mask, int load) {
         } else {
             type = 1;
         }
-        size = 0x20;
+        size = PLTT_SIZE_16;
         if (res->fmt != 3) {
-            size = 0x200;
+            size = PLTT_SIZE_256;
         }
         if (idx == 0 && mask == 0xffff) {
             ret = func_0203e458(type, (u32)res->buf, addr, size * count, 0);
         } else {
-            j = 0;
-            if (j < count) {
-                // Defined twice so the 1 is set once in the loop preheader.
-                bit = 1;
-                if ((u32)res & 3) {
-                    bit = 1;
+            for (j = 0; j < count; j++) {
+                if (mask & (1 << j)) {
+                    ret = func_0203e458(type, (u32)res->buf + size * j, addr + size * tbl[j], size, 0);
                 }
-                do {
-                    if (mask & (bit << j)) {
-                        ret = func_0203e458(type, (u32)res->buf + size * j, addr + size * tbl[j], size, 0);
-                    }
-                } while (++j < count);
             }
         }
     } else {

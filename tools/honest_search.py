@@ -46,6 +46,17 @@ concrete types (the compiler's own error message for a deliberately bad pointer 
 the enum typedefs get placeholder names `HsEnumK` / `HS_ENUM_K` that you must rename by hand. Review the winner
 by eye before keeping it.
 
+Hack-removal mode (round jkK): `--strip volatile,ptrbit` and/or `--subst FILE` first take the hack out of a matched
+function, then search from that (now non-matching) base for an honest form that matches again:
+  --strip volatile  drop the `volatile` qualifier (and `vu8`/`vu16`/`vu32`/`vs16`/`vs32` -> plain types) inside FUNC's
+                    signature and body only
+  --strip ptrbit    delete every pointer-bit block `if ((u32)X & 3) {...}` (or one-line `if ((u32)X & 3) stmt;`)
+                    inside FUNC's body
+  --subst FILE      a Python file defining SUBST = [(old, new), ...]; each old string must occur in SRC (an
+                    `ALL:` prefix replaces every occurrence, otherwise only the first). Use it for fake parameters,
+                    junk arrays, commas and the like.
+The stripped base is written to OUT/base<ext> and scored first; with --list the single moves are scored from it.
+
 Output (in --out, default build/honest_search/FUNC): best<ext> (concrete types), log.txt, top.txt.
 Score is (masked, raw): masked = register-masked sequence diff, raw = positional diff (the ce.py/ms.py scores).
 """
@@ -845,6 +856,45 @@ def resolve_types(scorer, text):
 
 # ------------------------------------------------------------------------------------------------------ search
 
+def strip_hacks(text, func, kinds, subst):
+    """Hack-removal mode: remove the listed hack kinds from FUNC, then apply the SUBST pairs."""
+    for old, new in subst:
+        if old.startswith("ALL:"):
+            if old[4:] not in text: raise SystemExit("subst: %r not found" % old[4:])
+            text = text.replace(old[4:], new)
+        else:
+            if old not in text: raise SystemExit("subst: %r not found" % old)
+            text = text.replace(old, new, 1)
+    lines = text.split("\n")
+    if kinds:
+        tb = find_body(lines, func)
+        if tb is None: raise SystemExit("strip: %s not found" % func)
+        a, _, b = tb
+        seg = lines[a:b + 1]
+        if "volatile" in kinds:
+            seg = [re.sub(r"\bv([us](?:8|16|32))\b", r"\1", re.sub(r"\s*\bvolatile\b", "", l)
+                          .replace("(volatile ", "(").replace("( ", "(")) for l in seg]
+        if "ptrbit" in kinds:
+            out = []; k = 0
+            pb = re.compile(r"^\s*if\s*\(\(u32\)\s*[A-Za-z_][\w>.-]*\s*&\s*3\)")
+            while k < len(seg):
+                l = seg[k]
+                if pb.match(l):
+                    if "{" in l:
+                        d = 0
+                        while True:
+                            d += seg[k].count("{") - seg[k].count("}")
+                            k += 1
+                            if d <= 0: break
+                        continue
+                    if l.rstrip().endswith(";"):
+                        k += 1; continue
+                out.append(l); k += 1
+            seg = out
+        lines = lines[:a] + seg + lines[b + 1:]
+    return "\n".join(lines)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("src"); ap.add_argument("func")
@@ -868,6 +918,8 @@ def main():
     ap.add_argument("--diff", action="store_true", help="print SRC's listing against the ROM, then stop")
     ap.add_argument("--list", action="store_true", help="print the moves available on SRC and their scores, then stop")
     ap.add_argument("--seed", type=int, default=1); ap.add_argument("-j", type=int, default=2)
+    ap.add_argument("--strip", default="", help="hack-removal: volatile,ptrbit (inside FUNC only)")
+    ap.add_argument("--subst", help="hack-removal: Python file with SUBST = [(old, new), ...] applied to SRC first")
     a = ap.parse_args()
     a.j = min(a.j, 2)
     func = a.func if a.func.startswith("func_") or "_" in a.func else a.func
@@ -876,11 +928,19 @@ def main():
     rnd = random.Random(a.seed)
     sc = Scorer(a.src, func, mod)
     gen = Gen(func, a)
-    base = State(open(a.src, encoding="latin1").read().split("\n"))
-    b0 = sc.score(base.text)
+    text0 = open(a.src, encoding="latin1").read()
     log = open(out / "log.txt", "w")
     def P(*x):
         s = " ".join(str(y) for y in x); print(s, flush=True); log.write(s + "\n"); log.flush()
+    if a.strip or a.subst:
+        subst = []
+        if a.subst:
+            g = {}; exec(open(a.subst).read(), g); subst = g["SUBST"]
+        P("hack-removal: original", sc.score(text0))
+        text0 = strip_hacks(text0, func, [k for k in a.strip.split(",") if k], subst)
+        open(out / ("base" + Path(a.src).suffix), "w", encoding="latin1").write(text0)
+    base = State(text0.split("\n"))
+    b0 = sc.score(base.text)
     P("base", b0, "moves", len(gen.moves(base)))
     if b0 is None: raise SystemExit("base does not compile")
     if a.diff:
