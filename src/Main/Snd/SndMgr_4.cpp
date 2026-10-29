@@ -65,6 +65,76 @@ s32 func_02049bdc(SndMgr *mgr, s32 id, s32 pan) {
 
 s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pan, s32 pitch, s32 useSlot, u32 slot);
 
+#ifdef NONMATCHING
+// The slot check sits before the zero, so the returns build -1 the way the ROM
+// does (fresh for the slot check, zero - 1 after the calls) and -1 is hoisted
+// into r4. The ROM tests useSlot only once, with the slot check inside the
+// useSlot arm (round svA).
+s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pitch, s32 pan, s32 useSlot, u32 slot) {
+    SndHandle *handle;
+    s32 seqArc;
+    s32 index;
+    s32 result;
+    if (id < 0) {
+        return -1;
+    }
+    if (useSlot && slot >= 5) {
+        return -1;
+    }
+    result = 0;
+    if (!useSlot) {
+        handle = func_02049984(mgr, id, &seqArc, &index);
+        if (handle == NULL) {
+            return -1;
+        }
+        if (!NNS_SndArcPlayerStartSeqArc(handle, seqArc, index)) {
+            return -1;
+        }
+    } else {
+        result = func_02049afc(mgr, id);
+        mgr->seqArcSlots[slot] = result;
+        if (result < 0) {
+            return -1;
+        }
+        if (++mgr->seqArcNext >= 5) {
+            mgr->seqArcNext = 0;
+        }
+        handle = mgr->seqArcHandles[result];
+    }
+    if (pitch != -1) {
+        s32 v = pitch - 0x40;
+        if (v < -0x80) {
+            v = -0x80;
+        }
+        if (v > 0x7f) {
+            v = 0x7f;
+        }
+        NNS_SndPlayerSetTrackPitch(handle, 1, v);
+    }
+    if (pan != -1) {
+        s32 v = (pan - 0x40) * 2;
+        if (v < -0x80) {
+            v = -0x80;
+        }
+        if (v > 0x7f) {
+            v = 0x7f;
+        }
+        NNS_SndPlayerSetTrackPan(handle, 1, v);
+    }
+    if (volume != -1) {
+        if (volume < 0) {
+            volume = 0;
+        }
+        if (volume > 0x7f) {
+            volume = 0x7f;
+        }
+        NNS_SndPlayerMoveVolume(handle, volume, 0);
+    }
+    NNS_SndPlayerSetPlayerPriority(handle, 0x40);
+    return result;
+}
+#endif
+
 static inline void SndMgr_StopSe(SndMgr *mgr, s32 id) {
     s32 seqArc;
     s32 index;

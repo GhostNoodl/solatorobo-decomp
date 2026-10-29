@@ -5639,3 +5639,36 @@ No new match, and no source or `tools/` change. Scripts are in `scratchpad/cvZ/`
 - **`021fd638`.** `FORCE=82:9` on the draft still gives 22 / 0 (from 27 / 5). Its guard (block 9) is also at 8: `k`, `head`, `n`, `self`, `a`, the outer `n`, `next` and `sp`. (`lv.py` also prints two vreg numbers that are not in the IR, `v960` and `v973`. These are leftover bits above the function's last vreg.) It needs the same 3 values from the same inline, so a fix for `021fc0b8` should carry over to the draft unchanged.
 
 **Rule:** a pressure refusal that the ROM needs has to come from values that are live in the blocks of the refused step and in no block that a later allowed step reads. Work out that window with `PT=1` before writing source forms. Here the window is blocks 54–55, between two calls and the guard, and only copies that the allocator deletes fit in it.
+### Round svA
+
+No new match. One honest `NONMATCHING` draft added (`func_02049c80` in `src/Main/Snd/SndMgr_4.cpp`). Scratch files are in `scratchpad/svA/` (`t/` is cdZ's `dv2.sh`/`mcl.sh`/`ms.py` set, `re/` is bgG's `ra.sh` colouring dump, both pointed at the svA clone; `toy/tc.py` and `toy/tc2.py`, which takes extra flags from `XF`; one folder per target).
+
+**Least-tried list.** These are the unmatched functions left after taking out the BIOS stubs, data, `__sinit_ov002_021ef1f0`, `ov010_021fbda0` and the functions other workers own. They are ranked by how many lines of this file name them, then by how many scratchpad files do, with the last line that names them as of this round (bytes, best honest score known):
+
+| # | function | bytes | lines here | scratch files | last line | best (raw / masked) |
+|---|---|---|---|---|---|---|
+| 1 | `ov004_021ceff8` | 1356 | 2 | 473 | 4757 | twin of the next one |
+| 2 | `ov004_021ceaac` | 1356 | 2 | 1264 | 4757 | 27 only with the junk `one`/`five`; 345 clean |
+| 3 | `02043100` | 992 | 9 | 1843 | 5508 | 122 / 66 |
+| 4 | `0206d99c` | 300 | 10 | 3617 | 4867 | 36 / 0 |
+| 5 | `ov002_021e0488` | 572 | 11 | 2147 | 5370 | 37 / 28 |
+| 6 | `ov009_02206084` | 748 | 15 | 2401 | 5371 | 5 / 5 |
+| 7 | `0206e858` | 152 | 16 | 2196 | 4871 | 1 |
+| 8 | `02046070` | 96 | 17 | 1041 | 4696 | 6 / 0 |
+| 9 | `0200d36c` | 284 | 18 | 1986 | 4634 | 5 / 0 |
+| 10 | `020459cc` | 232 | 18 | 2587 | 4448 | 9 / 0 |
+| 11 | `0206d43c` | 160 | 19 | 4550 | 5508 | 12 / 0 |
+| 12 | `ov000_0219b808` | 724 | 19 | 2789 | 5489 | |
+| 13 | `ov010_02201064` | 1544 | 19 | 2560 | 5507 | |
+| 14 | `ov002_021eca14` | 380 | 22 | 1352 | 5332 | 7 / 2 |
+| 15 | `ov002_021d1f70` | 860 | 23 | 12864 | 5577 | 35 / 0 |
+| 16 | `02049c80` | 360 | 25 | 1262 | 5546 | 26 / 24 honest (this round) |
+| 17 | `ov000_021be5dc` | 720 | 26 | 1808 | 5370 | 3 / 0 |
+| 18 | `02056e74` | 1156 | 36 | 2916 | 5281 | 4 / 0 |
+| 19 | `ov000_0217a1f8` | 116 | 45 | 1801 | 5478 | 3 |
+
+- **`02049c80`: why `-1` sits in `r4`.** Derivation runs before move-constant-loads (the pass order is in `t/passnames.txt`). `mcl.sh` on the clean draft (`9c80/c0.cpp`, 57 / 26 with `ms.py`) shows a `-1` group of only 4 (the `id < 0` return and the three `!= -1` tests), because every arm return was already derived from the `result = 0` zero. With the threshold at 5, nothing is hoisted, and each test builds its own `mvn`. In the ROM the `slot >= 5` return is a fresh `mvn`, so it is the fifth instance, and the `result < 0` and `!useSlot` returns are `zero - 1`. Putting the slot check in front of the zero gives exactly that: `if (useSlot && slot >= 5) return -1; result = 0; if (!useSlot) ...` (`9c80/v1.cpp`). Every derivation, the hoisted `-1` (`cmp r8, r4`, `sub r0, r4, #0x7f`) and the whole register allocation (`r6` mgr then handle, `r5`/`r7` zero/result, `r8`, `sb`) come out as in the ROM, at 26 / 24 (85 by `match.py`, because it is shifted). It is saved as `NONMATCHING`. What is left: the ROM tests `useSlot` once and has the slot check inside the `useSlot` arm, after the zero. MWCC does not thread the second test (`&&`, nested `if`, `!= 0`, the slot test merged into the `id < 0` test: 85–93). With the check inside the arm (`v2`, `result = 0` in the `!useSlot` arm) the `-1` is hoisted, but the `result < 0` return takes `r4` instead of `zero - 1` (45 / 19). So the ROM needs a zero in the `useSlot` arm between the slot check and the `result < 0` return, or a `slot >= 5` block outside the zero's extended block. A dead `result = 0` is removed before derivation. Re-reading the slot, `return result`, `== -1` and a chained assignment give 74–88 raw.
+- **ov004 twins: two of the three odd constants are ordinary derivations.** In `021ceaac`, `0xf7ff` is `rsb r8, r2, #0xf800` from the `1` in `r2`, and `0x1ff` is `rsb r0, r0, #0x204` from a `5`, both by cdZ's rule. Only `lsl r3, r2, #26` (a `mov` constant) breaks it. Ways to stop `1`/`5` being folded, each on plain single-definition locals: `#pragma opt_propagation off` gives the target's idiom in a toy (`toy/p_opt_propagation.c`), but in the function it adds entry guards to every counted loop and hoists the locals (357). `asm { mov one, #1 }` statements give it in a toy too (`toy/e.c`, and the `mov` is scheduled freely), but in the function they turn off loop rotation (344). A non-inlined helper that takes `one`/`five` as parameters gives exactly the idiom (`toy/g.c` `Rd2`), but the ROM has no call there, and inlining always folds them (`-inline auto`, `-inline deferred`, `-ipa file`, `static inline`). In toys, the other `opt_*` pragmas and `const`, `static const`, global `const`, local array, struct and union forms all fold too, and `optimization_level 1` keeps the locals but drops loop rotation. The junk draft scores 27 under every `dsi/*` compiler, and the 1.2 and 2.0 compilers reject its `__typeof__`. The SCFG address `((((x & 1) + 5) << 18) - 13) << 5` is `0x02000000 + (x + 1) * 8 MB - 0x1a0` (the ROM header copy at the end of main memory, plus `0x60`). No natural spelling folds the base into `+5`. A 32-byte-element index gives `(x + 1) << 18`, then `- 13`, `<< 5`, `+ 0x2000000`.
+- **`0200d36c` (5 / 0).** `re/ra.sh` (colour graph #9): `data`, `word` and `ctrl` are coloured in that order, each to the lowest free register (`r0`, `r1`, `r2`). The ROM's `r1`/`r3`/`r2` mean something coloured `r0` interferes with all three, but nothing in the ROM's loop reads `r0`. These 11 loop spellings all stay at 5 (`d36c/gen.py`): block-level `ctrl`/`data`, `do`/`while`, `int word`, split initialisers, `for (word = 0;;)`, pointer arithmetic, the data load before the bound test. A `u32 *` local is worse (15).
+- **`02046070` (6).** The first `pcode` dump shows the constant numbered before the pointer load at both sites (`v20` = 2, `v21` = the load; `v27` = 8, `v28`). The ROM needs the load first. These all stay at 6: a pointer local (one or two definitions), an `int st` local, a `BOOL ret` local.
+- **`0206d43c`.** 192 local-free combinations of four `Align` bodies, three header-size and two data-size spellings, four `tmpSize` forms (`SaveBase_BackupOffset(s, 1)` and `DataOffset(s, slotCount) + dataSize` included) and two `baseOffset` positions give 27 or worse. The `d`/`total` locals of `vmain/d43c/o.cpp` (12) are needed.
