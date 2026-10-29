@@ -166,4 +166,66 @@ BOOL func_ov002_021ec968(void *self) {
     return FALSE;
 }
 
+#ifdef NONMATCHING
+// func_ov002_021eca14 (round bgX): 6 raw / 2 register-masked. Rebuilt from the ROM: no in-tree draft
+// existed (earlier rounds kept theirs in scratch). It is ec968's sibling: case 0 counts the flagged
+// tasks on data_ov002_021f0fa0[8] against data_ov002_021f0d88's limit and creates the model; case 1
+// waits for it. This file's .text ends at 0x021eca14, so the function belongs here once it matches.
+// The ldrh value read into a local before the 0x49 store gives the ROM's ldrh / strb / str order (the
+// plain form stores 0x49 first). Left: `return TRUE`'s `mov r0, #1` is scheduled into the ldrh stall,
+// so 0x1f cannot take r0 (ROM: p20 r1, 0x1f r0, value r1, mov r0 #1 last). bgV: the ROM needs
+// `return TRUE` in a block of its own (two predecessors at scheduling time); only a dead second
+// `p == NULL` test was found to give that. Tried in bgX, all 6: the stores in an `||` block, an inline
+// with or without the `return TRUE`, an ed0c0-shaped Start inline, an enum 0x1f, a p20 local,
+// honest_search (14 min) found no move.
+static inline BOOL func_ov002_021eca14_flag(void *t) {
+    return FIELD(t, 4, Bits32).b6 == 1 ? TRUE : FALSE;
+}
+
+BOOL func_ov002_021eca14(void *self) {
+    switch (FIELD(self, 0x10, s32)) {
+    case 0:
+        if (FIELD(FIELD(self, 0x20, void *), 0xe, u16) != 1) {
+            void *t;
+            int n = 0;
+            void *m;
+            for (t = data_ov002_021f0fa0[8]; t != NULL; t = FIELD(t, 0x30, void *)) {
+                if (func_ov002_021eca14_flag(t)) {
+                    n++;
+                }
+            }
+            if (n >= FIELD(data_ov002_021f0d88, 0x28, s32)) {
+                return FALSE;
+            }
+            m = func_0203dd9c(0x160);
+            if (m != NULL) {
+                void *r = FIELD(self, 0x34, void *);
+                func_02041218((u8 *)m + 0x88);
+                func_02041440(m, (u8 *)r + 0x24, 0);
+                STD_CopyString((u8 *)m + 0x2c, (u8 *)r + 4);
+            }
+            FIELD(self, 0x38, void *) = m;
+            func_020417e0(FIELD(self, 0x38, void *), (void *)FIELD(self, 0x34, VObject *)->v0x10());
+            FIELD(FIELD(self, 0x38, void *), 0x6c, u32) |= 2;
+            func_02041d9c(FIELD(self, 0x38, void *), 0, 0xffff);
+            FIELD(FIELD(self, 0x38, void *), 0x6c, u32) |= 0x80000;
+            FIELD(self, 0x4, u32) |= 0x40;
+        }
+        FIELD(self, 0x10, s32)++;
+        break;
+    case 1:
+        if (FIELD(self, 0x38, void *) != NULL && func_02054f10(FIELD(self, 0x38, void *), 0xffff) == 0) {
+            break;
+        }
+        {
+            u16 v = FIELD(FIELD(self, 0x20, void *), 0xc, u16);
+            FIELD(self, 0x49, u8) = 0x1f;
+            FIELD(self, 0x24, s32) = v;
+        }
+        return TRUE;
+    }
+    return FALSE;
+}
+#endif
+
 }
