@@ -1,9 +1,10 @@
 #include "ov011/ov011.h"
 
 #ifdef NONMATCHING
-// func_ov011_021ff24c: 56 / 0 (raw / aligned register-masked, round raD; 61 / 4 at the end of ov011_021fef00.cpp
-// in round qpJ, 114 / 4 in round ovreg). The read-only list and ring accessors take const pointers (F24c_Count,
-// F24c_Active, F24c_CountBusy, the ring readers and F24c_GetRing), so their b0 tests are const reads, and the final
+// func_ov011_021ff24c: 26 / 0 (raw / aligned register-masked, round raF; 56 / 0 in round raD; 61 / 4 at the
+// end of ov011_021fef00.cpp in round qpJ, 114 / 4 in round ovreg).
+// The read-only list and ring accessors take const pointers (F24c_Count, F24c_Active,
+// F24c_CountBusy, the ring readers and F24c_GetRing), so their b0 tests are const reads, and the final
 // `F24c_SetState(..., 5)` reloads self->unk_100 instead of reusing `l`. Then SetState's plain b0 read is not CSE'd
 // with Count's const read across the count loop (jkF/jkG), the flag byte is re-read as in the ROM, `l` is not live
 // across the search loop, and the &data_ov000_021ccd68 pool load is hoisted into fp. All three are needed: a
@@ -13,7 +14,13 @@
 // while this function needs a non-const one (the ROM interleaves the three +0x20 loads with their stores; const
 // gives 61 / 4). MWCC decides this per declared object, not per lvalue (a const member, a const-struct cast, CFLD
 // or `*(const char *const *)&...` in 021ff084 all stay at 6), so no single declaration in one TU gives both.
-// Left: register colouring only (the ring loop's r6/r7/r8/sb/fp rotation and the two busy-count walks).
+// Round raF: 26 / 0. The busy-count walk keeps its flag in a CountBusy local set in both arms of an if/else
+// (it was a nested F24c_NodeBusy inline returning TRUE/FALSE). The nested inline's result is numbered after
+// CountBusy's n/nd; the ROM's flag comes before them, as an outer-inline local does (56 -> 29). Declaring
+// RingAt's head first gives k the ROM's sb (28). The same rule for RingSize: its count read is written in place
+// (an outer-inline local) instead of a nested F24c_RingCount call, which gives the count the ROM's r2 (26).
+// Left: register colouring of the ring loop only (head, p and pos share r3 in the ROM; ours r8/fp). The
+// colour model wants the head load numbered after the late u16 narrowing temps, which no @ object can be.
 struct Ov011Bit01 {
     u8 b0 : 1;
     u8 b1 : 1;
@@ -99,14 +106,6 @@ static inline u32 F24c_Count(const F24cList *l) {
     return n;
 }
 
-static inline u32 F24c_RingCount(const F24cRing *r) {
-    u32 n = 0;
-    if (r->f.b0) {
-        n = r->count;
-    }
-    return n;
-}
-
 static inline u16 F24c_RingCap(const F24cRing *r) {
     u16 c = 0;
     BOOL e = !r->f.b0;
@@ -123,11 +122,12 @@ static inline u16 F24c_Idx(F24cRing *r, u16 k) {
     return r->head - k;
 }
 static inline const s32 *F24c_RingAt(const F24cRing *r, u16 i) {
+    u16 head;
     u16 k = i;
     const s32 *p = NULL;
     if (r->f.b0 && r->count > i) {
-        u16 head = r->head;
         u16 pos;
+        head = r->head;
         if (i >= r->cap) {
             k = r->cap - 1;
         }
@@ -159,20 +159,19 @@ static inline BOOL F24c_Valid(void *a) {
     return TRUE;
 }
 
-static inline BOOL F24c_NodeBusy(Ov011Node *nd) {
-    void *a;
-    if (nd != NULL && (a = Ov011_FindActor(nd->id)) != NULL && func_ov011_02201244(a)) {
-        return TRUE;
-    }
-    return FALSE;
-}
-
 static inline u32 F24c_CountBusy(const F24cList *l) {
     u32 n = 0;
     if (l->f.b0) {
         Ov011Node *nd;
         for (nd = l->head; nd != NULL; nd = nd->next) {
-            if (F24c_NodeBusy(nd)) {
+            BOOL busy;
+            void *a;
+            if (nd != NULL && (a = Ov011_FindActor(nd->id)) != NULL && func_ov011_02201244(a)) {
+                busy = TRUE;
+            } else {
+                busy = FALSE;
+            }
+            if (busy) {
                 n++;
             }
         }
@@ -198,7 +197,10 @@ static inline BOOL F24c_Mode1(Ov011Actor *self) {
 
 static inline u32 F24c_RingSize(const F24cRing *r) {
     u32 c = F24c_RingCap(r);
-    u32 n = F24c_RingCount(r);
+    u32 n = 0;
+    if (r->f.b0) {
+        n = r->count;
+    }
     if (n <= c) {
         c = n;
     }
