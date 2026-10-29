@@ -254,6 +254,10 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
 // (the only caller, func_ov000_021652a8, passes four), no fake parameters, comma or one-element
 // array forms (the cxxperm drafts at 91 / 46 needed seven fake parameters). What is left is the
 // spill-slot order (target: i, tbl, y0, x0, row at sp+0..0x10) and colouring in the parts loop.
+// Round frA: 137 / 37. Oam_52e4 is now two attribute words (a01, and this file's OamW2 type for
+// a23). The front end hoists one half of tmpl into a struct-typed temp, which gets a memory slot,
+// so the frame is the target's 0x44 (was 0x3c). The spill order above is still off: i is first in
+// the target, so its node must be below the tbl temp's.
 
 
 extern "C" {
@@ -274,10 +278,11 @@ typedef struct {
     u32 hf : 1;
     u32 vf : 1;
     u32 c : 2;
-    u32 tile : 10;
-    u32 prio : 2;
-    u32 pal : 4;
-    u32 rest : 16;
+} OamA01_52e4;
+
+typedef struct {
+    OamA01_52e4 a01;
+    OamW2_02164c50 a23;
 } Oam_52e4;
 
 typedef struct {
@@ -379,16 +384,16 @@ void func_ov000_021652e4(void *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
             oam[k] = tmpl;
             pos[k].x = x0 + col * 8;
             pos[k].y = y0 + row * 8;
-            oam[k].x = (u16)pos[k].x;
+            oam[k].a01.x = (u16)pos[k].x;
             t = (tbl[ry * 3 + rx]);
-            oam[k].y = (u16)pos[k].y & 0x1ff;
-            oam[k].tile += (t & ~0xc0) - 1;
-            oam[k].pal = LFLD(s8 *, d, 0xc90)[oam[k].pal];
+            oam[k].a01.y = (u16)pos[k].y & 0x1ff;
+            oam[k].a23.tile += (t & ~0xc0) - 1;
+            oam[k].a23.pal = LFLD(s8 *, d, 0xc90)[oam[k].a23.pal];
             if (t & 0x40) {
-                oam[k].hf = 1;
+                oam[k].a01.hf = 1;
             }
             if (tbl[ry * 3 + rx] & 0x80) {
-                oam[k].vf = 1;
+                oam[k].a01.vf = 1;
             }
             o->n++;
         }
@@ -429,15 +434,15 @@ void func_ov000_021652e4(void *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
         t = data_ov000_021c9a9c[pe->c[0]];
         pos->x = sx;
         }
-        oam->x = (u16)pos->x;
-        oam->y = (u16)pos->y & 0x1ff;
-        oam->tile += (t & ~0xc0) - 1;
-        oam->pal = LFLD(s8 *, d, 0xc90)[oam->pal];
+        oam->a01.x = (u16)pos->x;
+        oam->a01.y = (u16)pos->y & 0x1ff;
+        oam->a23.tile += (t & ~0xc0) - 1;
+        oam->a23.pal = LFLD(s8 *, d, 0xc90)[oam->a23.pal];
         if (t & 0x40) {
-            oam->hf = 1;
+            oam->a01.hf = 1;
         }
         if (data_ov000_021c9a9c[pe->c[0]] & 0x80) {
-            oam->vf = 1;
+            oam->a01.vf = 1;
         }
         p++;
         D_CNT_52e4 = D_CNT_52e4 + 1;
