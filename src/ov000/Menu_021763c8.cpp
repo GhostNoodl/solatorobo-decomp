@@ -2653,6 +2653,9 @@ void func_ov000_0217a1d8(void) {
 // the "no text" id (func_ov000_0217a328 tests b != -1). As a literal, MWCC derives the -1 from the
 // 0x78 argument (sub r2, r1, #0x79); as an enum local it is a fresh mvn r2, #0 as in the ROM. Left:
 // the ROM lists mov r1, #0x78 before the mvn, we list it after. See docs/MATCHING.md, round o4C.
+// Round qpK traced every refusal in the deriving pass (0x514140 / 0x510d40). In ARM code it is
+// stopped only by a loop-preheader block, a K built straight into a physical register, or a
+// different opcode or attribute word. None of these can happen in this loop-free call block.
 // ---- Lo_0217a1f8
 namespace m_Lo_0217a1f8 {
 
