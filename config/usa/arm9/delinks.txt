@@ -1367,6 +1367,10 @@ src/Main/Sys/GameScene_3.cpp:
     complete
     .text       start:0x02056c0c end:0x02056e74
 
+src/Main/Sys/GameHud.cpp:
+    complete
+    .text       start:0x02056e74 end:0x020572f8
+
 src/Main/Gfx/SlideWin_3.cpp:
     complete
     .text       start:0x020572f8 end:0x02058b50

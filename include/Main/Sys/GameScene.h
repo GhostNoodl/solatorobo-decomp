@@ -154,6 +154,24 @@ static inline void G3_VtxXY(s16 x, s16 y) {
 }
 #endif
 
+// Points the model at frame 0 of animation `idx`: the part's own texture, or the first cell of
+// the sequence when the part has none.
+static inline void Model_ApplyPart(Model *model, s32 idx) {
+    ModelRes *res = model->res;
+    ModelPart *part;
+    void *tex;
+    if (res == NULL) {
+        return;
+    }
+    part = idx >= model->numParts ? NULL : &model->parts[idx];
+    if (part != NULL && part->res != NULL) {
+        tex = part->res->tex;
+    } else {
+        tex = NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
+    }
+    func_02042628(model, tex, part, 0);
+}
+
 static inline s32 GameScene_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }

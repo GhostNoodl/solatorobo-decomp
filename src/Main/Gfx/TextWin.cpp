@@ -529,22 +529,6 @@ static inline void Model_SetPos(Model *model, s32 x, s32 y) {
     model->y = y;
 }
 
-static inline void Model_ApplyPart(Model *model, s32 idx) {
-    ModelRes *res = model->res;
-    ModelPart *part;
-    void *tex;
-    if (res == NULL) {
-        return;
-    }
-    part = idx >= model->numParts ? NULL : &model->parts[idx];
-    if (part != NULL && part->res != NULL) {
-        tex = part->res->tex;
-    } else {
-        tex = NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
-    }
-    func_02042628(model, tex, part, 0);
-}
-
 void func_0204dff8(TextWin *win);
 
 Model *func_0204e238(Model *model, const char *name, const char *file, int a);

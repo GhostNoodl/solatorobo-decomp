@@ -110,6 +110,9 @@ void func_0205311c(GameScene *scene) {
 // left is `o`: the ROM issues `add o` before the model `cmp` and colours `o` in `r6`; ours
 // issues the `cmp` first (both tie at cycle 12 of the pre-allocation schedule; the `cmp` probably
 // wins because it entered the ready list first), so `o` takes the dead model register `r2`.
+// Round qpF: the tie is the pre-allocation class (`cmp` class 1 beats `add` class 2 at equal
+// c0 h3), not list order. For the ROM order `add o` needs an in-block successor (a copy that
+// survives to scheduling) or the `cmp` must not be ready; no honest spelling gave either.
 typedef struct Obj3254Model {
     /* 0x00 */ u8 unk_00[0x78];
     /* 0x78 */ s32 x;

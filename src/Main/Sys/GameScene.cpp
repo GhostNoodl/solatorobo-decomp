@@ -139,22 +139,6 @@ void func_02055d80(GameScene *scene) {
     func_0203972c(scene->unk_0d0, n);
 }
 
-static inline void Model_ApplyPart(Model *model, s32 idx) {
-    ModelRes *res = model->res;
-    ModelPart *part;
-    void *tex;
-    if (res == NULL) {
-        return;
-    }
-    part = idx >= model->numParts ? NULL : &model->parts[idx];
-    if (part != NULL && part->res != NULL) {
-        tex = part->res->tex;
-    } else {
-        tex = NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
-    }
-    func_02042628(model, tex, part, 0);
-}
-
 void func_02055ee0(GameScene *scene) {
     s32 t;
     s32 sn;
