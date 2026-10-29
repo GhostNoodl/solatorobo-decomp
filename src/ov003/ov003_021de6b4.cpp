@@ -16,14 +16,17 @@ typedef struct Ov003Bomb {
 VObj *func_ov000_0219b71c(Ov003BmVec *pos, Ov003BmVec *sc, s32 a, s32 b, s32 c, s32 d);
 s32 func_02040498(s32 max);
 
+typedef enum { OV003_SPARK_KIND = 0x325 } Ov003SparkKind;
+
 /* Bomb fuse tick: every 128 frames spawn a spark and give it a random spin.
-   The 0x325 argument is a variable with a second, never-taken definition so it
-   is coloured after the scale vector constants (see docs/MATCHING.md, ovhi20). */
+   The spark kind is an enum-typed local: the optimizer does not constant-propagate
+   enum variables, so it stays a named value and is coloured after the scale vector
+   constants (docs/MATCHING.md, round lfA). */
 void func_ov003_021de6b4(Ov003Bomb *self) {
     Ov003BmVec sc;
     VObj *e;
     u16 *w;
-    s32 kind;
+    Ov003SparkKind kind;
     if (self->unk_0e != 0x4032) {
         return;
     }
@@ -32,10 +35,7 @@ void func_ov003_021de6b4(Ov003Bomb *self) {
     if ((w[1] & 0x7f) != 0) {
         return;
     }
-    kind = 0x325;
-    if ((u32)self & 3) {
-        kind = 0x325;
-    }
+    kind = OV003_SPARK_KIND;
     sc.x = 0x5000;
     sc.y = 0x3000;
     sc.z = 0x3800;

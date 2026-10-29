@@ -205,6 +205,10 @@ BOOL func_ov000_02191b9c(Shadow *self) {
     return ret;
 }
 
+/* The shadow is flat: its y scale is always 1.0. As an enum-typed local it is not
+   constant-propagated, so it is coloured after the unk_14 load (round lfA). */
+typedef enum { SHADOW_SCALE_Y = 0x1000 } ShadowScale;
+
 void func_ov000_02191c24(Shadow *self, VecFx32 *pos) {
     VecFx32 scale;
     VecFx32 trans;
@@ -222,11 +226,9 @@ void func_ov000_02191c24(Shadow *self, VecFx32 *pos) {
         return;
     }
     {
-        /* two-definition constant: gives 0x1000 the register after unk_14 */
-        s32 one = 0x1000;
-        if ((u32)self & 3) one = 0x1000;
+        ShadowScale sy = SHADOW_SCALE_Y;
         scale.x = self->unk_14;
-        scale.y = one;
+        scale.y = sy;
         scale.z = self->unk_14;
     }
     NNS_G3dGlbSetBaseScale(&scale);

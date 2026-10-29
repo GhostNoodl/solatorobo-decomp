@@ -338,6 +338,10 @@ static inline void Ov012_Flash(s32 b) {
     g[0x18f] = c;
 }
 
+/* The hit result is an enum: the optimizer does not constant-propagate enum-typed
+   locals, so `j = hit - 1` stays a subtraction from the register (round lfA). */
+typedef enum { OV012_HIT_NONE = 0, OV012_HIT_YES = 1 } Ov012Hit;
+
 void func_ov012_02200cd4(Ov012Actor *self) {
     Ov012Vec t;
     Ov012Vec hv;
@@ -400,7 +404,7 @@ void func_ov012_02200cd4(Ov012Actor *self) {
         self->unk_40->state++;
     }
     case 1: {
-        BOOL hit;
+        Ov012Hit hit;
         u16 x;
         s32 j;
         Ov012Actor *g;
@@ -438,8 +442,7 @@ void func_ov012_02200cd4(Ov012Actor *self) {
             if ((m->unk_50 & 0x60000000) || FLD(u32, m, 0x58) != 0) {
                 Ov012HitArg arg;
                 u8 kind;
-                hit = FALSE;
-                if ((u32)self & 3) { hit = FALSE; }
+                hit = OV012_HIT_NONE;
                 x = func_ov000_02199e94(FLD(void *, self, 0x4c));
                 j = hit - 1;
                 if (!(self->unk_48->unk_50 & 0x20000000)) {
@@ -459,7 +462,7 @@ void func_ov012_02200cd4(Ov012Actor *self) {
                     hv.y = FLD(s32, self, 0x68) >> 1;
                     hv.x = 0;
                     hv.z = 0;
-                    hit = func_ov000_0219aae8(self, g, x, FLD(u16, FLD(void *, self, 0x4c), 0xa), 0x20, &hv, NULL, lim, 0, j, 0x1000);
+                    hit = (Ov012Hit)func_ov000_0219aae8(self, g, x, FLD(u16, FLD(void *, self, 0x4c), 0xa), 0x20, &hv, NULL, lim, 0, j, 0x1000);
                 }
                 kind = 0x40;
                 if (FLD(u8, FLD(void *, self, 0x4c), 0x19)) {

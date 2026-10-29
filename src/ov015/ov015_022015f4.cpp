@@ -204,6 +204,8 @@ static inline void Ov015_ModelsReset(u8 *p) {
     func_ov000_02190a80(p + 0x57c, 0x400);
 }
 
+typedef enum { OV015_SYS_MODE_2 = 2 } Ov015SysMode;
+
 BOOL func_ov015_0220182c(u8 *self) {
     BOOL ret = TRUE;
     bool a = true;
@@ -213,8 +215,7 @@ BOOL func_ov015_0220182c(u8 *self) {
     case 10: {
         u8 *sys = data_02097d48;
         if (FLD(s32, sys, 0) == 1) {
-            s32 v = 2;
-            if ((u32)sys & 3) { v = 2; }
+            Ov015SysMode v = OV015_SYS_MODE_2;
             FLD(s32, sys, 4) = v;
             func_0203cb78(0x1000, 0, v - 3);
         }

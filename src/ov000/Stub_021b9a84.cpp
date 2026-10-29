@@ -48,7 +48,7 @@ void func_ov000_021b9a84(Obj021b9a84 *self) {
 }
 
 #ifdef NONMATCHING
-// func_ov000_021b9b14: 33 raw / 2 register-masked diffs (was 64 / 24), no fake
+// func_ov000_021b9b14: 12 raw / 4 register-masked diffs (was 33 / 2), no fake
 // parameters or junk locals. The else-state arms are written as two arms with the
 // same product (the compiler cross-jumps them into rsbeq + one multiply, keeping the
 // constant's zero high word in a register); a conditional `t = 0x1000 - t` lets the
@@ -56,8 +56,12 @@ void func_ov000_021b9a84(Obj021b9a84 *self) {
 // arm, so the 0x68 is not live across the 0x1e arm's product when the zero group is
 // hoisted (block pressure 10, not 11) and the 0x68 group still ends up in front of
 // the branch. Section 4's y position is its own local `y` (declared after `w`), so
-// it gets r8 as in the ROM. What is left is register colouring in section 4 (x, the
-// product temporaries, the -0x81a and (u8)a values) and one load/and order.
+// it gets r8 as in the ROM. Section 4's sprite depth is an enum-typed local, which
+// the optimizer does not constant-propagate (round lfA); set before the clamp, it
+// stays a named value, and with `al` declared first and `x` after `y` every
+// section-4 local gets its ROM register. What is left is the colouring of the two
+// bit-field stores' temporaries (word/shift registers, so the and/ldr and the mask
+// load are scheduled in a different order).
 typedef struct {
     u32 b0 : 2;
     u32 b2 : 5;
@@ -214,8 +218,11 @@ static inline void PlayPart(Model_021b9b14 *m, int idx) {
     func_02042628(m, anim, part, 0);
 }
 
+typedef enum { SPR_DEPTH_021b9b14 = -0x81a } SprDepth_021b9b14;
+
 void func_ov000_021b9b14(Obj021b9a84 *self) {
-    s32 x;
+    u32 al;
+    SprDepth_021b9b14 dp;
     u8 *g = data_02097d48;
     s32 t;
     s32 h;
@@ -225,7 +232,7 @@ void func_ov000_021b9b14(Obj021b9a84 *self) {
     s32 q;
     s32 w;
     s32 y;
-    s32 dp;
+    s32 x;
     Spr_021b9b14 *sa;
     Spr_021b9b14 *sb;
 
@@ -356,17 +363,18 @@ void func_ov000_021b9b14(Obj021b9a84 *self) {
     if (a == 0) {
         return;
     }
+    dp = SPR_DEPTH_021b9b14;
     if (a > 0x1e) {
         a = 0x1e;
     }
-    dp = -0x81a;
+    al = (u8)a;
     sa->depth = dp;
-    self->sprA->attr.b8 = (u8)a;
+    self->sprA->attr.b8 = al;
     self->sprA->attr.b13 = g[0x8b1];
     self->sprA->vfunc_20(x, y - 9);
     self->sprA->vfunc_90();
     self->sprB->depth = dp;
-    self->sprB->attr.b8 = (u8)a;
+    self->sprB->attr.b8 = al;
     self->sprB->attr.b13 = func_02043d48(g + 0x8b0);
     self->sprB->vfunc_20(x + w, y - 0xb);
     self->sprB->vfunc_90();

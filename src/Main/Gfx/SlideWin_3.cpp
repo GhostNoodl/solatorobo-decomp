@@ -281,6 +281,10 @@ static inline void SlideWin_Put(SlideWinX *win, SlideMsg *msg, u16 c) {
     win->unk_7c = 0;
     msg->ids[msg->count] = c;
 }
+/* OBJ VRAM bases of the two screens. Enum-typed locals are not constant-propagated,
+   so the clear selects between registers as in the ROM (round lfA). */
+typedef enum { SLIDE_VRAM_MAIN = 0x6400000, SLIDE_VRAM_SUB = 0x6600000 } SlideVram;
+
 s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
     s16 count;
     s32 color;
@@ -295,8 +299,8 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
     const char *saved;
     char name[0x20];
     char file[0x20];
-    u32 v4;
-    u32 v6;
+    SlideVram v4;
+    SlideVram v6;
 
     data_02097ce0->unk_004 = win->unk_28;
     panel = NULL;
@@ -328,14 +332,8 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
     color = win->unk_2c;
     saved = win->str;
     if ((c = fn((const void **)&win->str)) != 0) {
-        v4 = 0x6400000;
-        if ((u32)win & 3) {
-            v4 = 0x6400000;
-        }
-        v6 = 0x6600000;
-        if ((u32)win & 3) {
-            v6 = 0x6600000;
-        }
+        v4 = SLIDE_VRAM_MAIN;
+        v6 = SLIDE_VRAM_SUB;
         do {
             if (c == '\n') {
                 win->unk_3c = msg->x;
