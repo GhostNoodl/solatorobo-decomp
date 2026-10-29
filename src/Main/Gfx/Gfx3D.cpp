@@ -83,6 +83,11 @@ static inline void Gfx_GetOamShift(const OamShape *sp, u32 *w, u32 *h) {
 
 // func_02043100 (round frD): 109 / 63, 110 / 62 with branch targets and pool offsets masked
 // (was 122 / 66, 123 / 63): `s0` declared after `h`/`w` (tools/declsweep.py single move).
+// Round qpE: the ROM loads attr01 three times (ldm for shape/charNo, then x, then y). Before
+// allocation the backend's local CSE only spans an extended block, and the x and y reads here
+// share the shape load's block (x) or follow the x `if` join (y). So the ROM needs a join between
+// the shape read and the x read. Putting the x and y reads (with their `if`s) before the shape
+// read gives the three loads, but the merged block is not rescheduled into the ROM order (229+).
 void func_02043100(int x, int y, int z, u32 color, const GfxOamAttr *oam, const GfxOamTex *tex, u32 texBase, u32 plttBase, const void *mtx) {
     int trans[3];
     int scale[3];

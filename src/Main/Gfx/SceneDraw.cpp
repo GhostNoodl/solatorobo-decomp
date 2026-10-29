@@ -100,6 +100,16 @@ void func_0205311c(GameScene *scene) {
 // move-constant-loads hoists the else arm's mask to the entry. The target still does the `x`
 // mask before the predicated `addeq`, and colours `o` in `r6`.
 // Round frD: 65 / 16. `dir` declared after `t` (tools/declsweep.py single move; it was second).
+// Round qpE: 37 / 4. The position goes through a `VecFx32 pos` local (scalarised, no frame
+// change) that is filled with the masked `x`/`y` and `z` first, then `pos.x += 0x8000`, then
+// stored by `Obj3254Model_SetPosV(model, &pos)`. That gives the ROM's mask-before-`addeq` tail
+// without the hoisted mask (the `pos.y` field is not forwarded past the `if`, so the mask
+// group stays at 4 extended blocks). With `if (b == 0) dir = 1; scale = dir << 12;` after the
+// `pos` stores the tail matches; `sz` before `sx` and `x` before `y` in the else arm, plus a
+// declaration order from honest_search (no enum or named-local moves), give the rest. What is
+// left is `o`: the ROM issues `add o` before the model `cmp` and colours `o` in `r6`; ours
+// issues the `cmp` first (both tie at cycle 12 of the pre-allocation schedule; the `cmp` probably
+// wins because it entered the ready list first), so `o` takes the dead model register `r2`.
 typedef struct Obj3254Model {
     /* 0x00 */ u8 unk_00[0x78];
     /* 0x78 */ s32 x;
@@ -169,39 +179,40 @@ extern s8 data_02149ef4;
 extern void func_ov000_02190758(Obj3254Model *model, u16 *rot, int a);
 extern void func_ov000_021903b4(Obj3254Model *model);
 
-static inline void Obj3254Model_SetPos(Obj3254Model *m, s32 x, s32 y, s32 z) {
-    m->x = x;
-    m->y = y;
-    m->z = z;
-}
-
 static inline void Obj3254Model_SetScale(Obj3254Model *m, s32 x, s32 y, s32 z) {
     m->scaleX = x;
     m->scaleY = y;
     m->scaleZ = z;
 }
 
+static inline void Obj3254Model_SetPosV(Obj3254Model *m, const VecFx32 *p) {
+    m->x = p->x;
+    m->y = p->y;
+    m->z = p->z;
+}
+
 void func_02053254(GameScene *scene, int a, void *obj, int b) {
-    Obj3254Part *part = (Obj3254Part *)obj;
     s32 x;
-    Draw3254 *d;
+    s32 dx;
+    s32 dy;
     s32 y;
     s32 tx;
     Obj3254Type *t;
     s32 dir;
-    s32 v;
-    s32 sx;
-    s32 sz;
-    s32 dy;
-    s8 buf[2];
-    s8 *off;
     s32 sy;
+    s8 *off;
+    s32 sz;
+    Draw3254 *d;
+    s8 buf[2];
+    s32 sx;
+    s32 v;
     s32 ty;
     s32 z;
     u16 type;
-    s32 dx;
+    Obj3254Part *part = (Obj3254Part *)obj;
     Obj3254 *o;
     s32 scale;
+    VecFx32 pos;
     d = (Draw3254 *)scene;
     o = &d->objs[part->objIdx];
     if (part->model == NULL) {
@@ -265,8 +276,8 @@ void func_02053254(GameScene *scene, int a, void *obj, int b) {
         z = 0;
     } else {
         sy = d->unk_b3c & ~0xfff;
-        sx = (s32)(((s64)d->unk_b38 * 0x7000 + 0x800) >> 12) & ~0xfff;
         sz = d->unk_b40 & ~0xfff;
+        sx = (s32)(((s64)d->unk_b38 * 0x7000 + 0x800) >> 12) & ~0xfff;
         if (type >= 0xf) {
             if (o->mode == 0x1000) {
                 if (o->flip == 1) {
@@ -278,24 +289,25 @@ void func_02053254(GameScene *scene, int a, void *obj, int b) {
                 }
             }
         }
-        y = (part->y & ~0xfff) + 0xa000 - sx - sz;
         x = sy + (part->x & ~0xfff);
+        y = (part->y & ~0xfff) + 0xa000 - sx - sz;
         if (type < 0xf) {
             z = -0xa2c;
         } else {
             z = -0xa7a;
         }
     }
+    pos.x = x & ~0xfff;
+    pos.y = y & ~0xfff;
+    pos.z = z;
     if (b == 0) {
         dir = 1;
     }
     scale = dir << 12;
     if (scene->unk_b8_0 == 4 && part->objIdx == 1) {
-        x += 0x8000;
+        pos.x += 0x8000;
     }
-    x &= ~0xfff;
-    y &= ~0xfff;
-    Obj3254Model_SetPos(part->model, x, y, z);
+    Obj3254Model_SetPosV(part->model, &pos);
     func_ov000_02190758(part->model, part->rot, 0);
     Obj3254Model_SetScale(part->model, scale, 0x1000, 0x1000);
     data_02149ef4 = part->unk_48;
