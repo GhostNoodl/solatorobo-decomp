@@ -234,13 +234,14 @@ void func_ov015_021fb758(u8 *self) {
 }
 
 #ifdef NONMATCHING
-// func_ov015_021fc40c: 13 / 9 (raw / register-masked; 4 of those are pool relocations, so the
-// code differs only in z's register). Rounds bgM and bgO. The case zeros are kept per arm because z
-// has three definitions (refusal (d) of move-constant-loads step 4), and g (the Ov015Stat pointer) is
-// live across the blink test, which keeps the FX_Mul zero in that block (pressure 11). In the alpha
-// block, the old alpha goes to its own local and the model passed to the PlayPart inline is read into
-// m (round bgO). Left: z gets r3 (ROM r0), because case 2's -Bob value is a codegen value and is
-// coloured before the z object.
+// func_ov015_021fc40c: 5 / 5 (raw / register-masked; 4 are pool relocations, so one instruction is left;
+// round bgR, was 13 / 9). Rounds bgM, bgO, bgR. The case zeros are kept per arm because z has three
+// definitions (refusal (d) of move-constant-loads step 4), and g (the Ov015Stat pointer) is live across the
+// blink test, which keeps the FX_Mul zero in that block (pressure 11). In the alpha block, the old alpha goes
+// to its own local and the model passed to the PlayPart inline is read into m (round bgO). Cases 2 and 3
+// share their b.x / b.y stores (the ROM's case 2 branches into case 3's stores): x is then one web with two
+// definitions, the case-2 negation is done in place (rsb r2, r2, #0) and z gets r0. Left: in case 2 the ROM
+// schedules the zero before the rsb; here the rsb goes first, so the zero is merged into case 3's tail.
 extern "C" {
 
 void func_0204b420(void *p);
@@ -371,9 +372,7 @@ void func_ov015_021fc40c(void *self, s32 mode) {
         x = -Ov015c_Bob(n);
         y = 0;
         z = 0;
-        b.x = x;
-        b.y = y;
-        break;
+        goto horiz;
     case 3:
         Ov015c_SetV(&a, 0x3c000, -0x1c000, 0);
         cnt = FLD(s32, self, 0x8);
@@ -384,6 +383,7 @@ void func_ov015_021fc40c(void *self, s32 mode) {
         x = Ov015c_Bob(n);
         y = 0;
         z = 0;
+    horiz:
         b.x = x;
         b.y = y;
         break;
