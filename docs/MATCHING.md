@@ -6904,4 +6904,47 @@ Which honest pointer shapes make an access "unknown" or a parameter dummy, teste
   - Load–load order (no alias involved): `0203b96c` (2), `020554e4` (5 per site), `ov013_02206764` `t` (2; `tz` local, `dz -=`, `dx` first: 2, negated: 72).
   - Register or stack-reload only: `02042f40` (17), `ov009_0220b8a0` (6), `ov003_021d85c8` (`volatile bool` parameter), `ov007_021ce038`. For that last one, `data_ov000_021ccd54` really is a pointer variable (`void *`), and the volatile forces a reload with no store in between, so it is CSE, not alias.
   - NONMATCHING drafts: dropping `const` from `02043100`'s `oam`/`tex` gives 106 (was 105), `020417e0` 43 (38), `02048e74` 137 (62), `ov000_021652e4` 236 (84). Adding `const` to the drafts' pointer parameters (`constsweep.py`) helps none (`0203b4ac` stays 51, the others are worse or need prototype changes).
+
+### Round dtB
+
+**No new match; 15 TU merges that take view hacks out of matched code.** 101 files were folded into the TU that owns the data they read. The ov002 staff-roll struct also got its real type. No function lost. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` 8134 matched (8134 before). FLD-on-`data_` lines in `src/` went from 533 to 444. Scratch is in the session scratchpad `dtB/`:
+- `tscan.py`/`users.py` list the pool words and their readers.
+- `tus.py` gives each TU's reader span and the asm gaps in it.
+- `mtu.py CONFIG OUT` builds a merged TU, with each moved file in `namespace m_<addr>`. It drops the moved files' externs of TU-defined names, applies the substitutions in `CONFIG` and reports any view left.
+- `apply.py CONFIG LO HI` installs the merged TU, deletes the moved files and rewrites `delinks.txt`.
+- `sa.sh FILE MOD LO HI` scores every function in a range.
+- `c*.py` are the per-TU configs.
+
+- **The NONMATCHING drafts (step 1).** I ran `tscan.py` on all 25 drafts in `src/`/`libs/` (skipping ckA's `02043100`). Only five read data owned by a delinked TU:
+  - `ov002_021eca14` and `ov011_021fc0b8` were already tried in their TU in round tufold3 (7 / 2, 13 / 3).
+  - `ov011_021ff24c`: compiled inside `ov011_022077c0.cpp` with `data_ov011_02207278.x/y/z`, it stays at 26. Its misses are ring-loop colouring.
+  - `02053254`: its owner `Obj3D_2.cpp` holds only data, and its code TU `TextWin.cpp` reads the table as an extern too. A `const` view gives the same 37.
+  - `ov009_02204a10`: register/spill only (295).
+  - The other drafts read only `.bss` globals, or ov000 `.rodata`/`.bss` that no file has delinked. For example, `021652e4`'s `0x021c9a9c..0x021c9b7b` tables could only be defined from ROM bytes, so they are blocked by the data rule.
+  - So the TU lever lands no draft this round.
+- **Merges (step 3).** In every case below, the readers load the TU's first object (or the section base) and add an offset. Each merge covers only a contiguous, fully matched range:
+  - **ov010 `0220f5dc`** takes the six files `021fa6a0..021fbda0`, so its `.text` is now `021fa6a0..021fff80`. The views `FLD(s16, data_ov010_0220fa2c, 0x74..0x82)` became `data_ov010_0220fa94.lim..k66`, and `data_ov010_0220ebc0[4/5/8]` became `ebd0/ebd4/ebe0`. The wrong-typed externs are gone.
+  - **ov010 `0220f828`** takes `021fff80..0220166c` (six files). The `ef68`/`fd70` views became `ef6c/ef70/ef74` and the static sinit copy `0220fd90`. MWCC does not fold the static `const char *const` names.
+  - **ov010 `0220f8e4`** takes `022020c8..02203f08` (seven files, text `022020c8..02203ff4`). `FLD(Ov010Vec, efc8, 0x38)` became `data_ov010_0220f000`. That only matches if `f000` is not weak: a weak object gets its own pool word. I removed `weak` from `f000` in the source and in `symbols.txt`, and the stub still matches.
+  - **ov010 `0220f958`** takes `0220441c..02207520` (nine files). `data_ov010_0220f024[n]` and the FLD offsets became `f028..f058`, and `f024 + 0x50` became `f074.x/y/z`. It stops before `ov010_02207520.cpp`: `02207a44` reads six u16 at base + 0xb4 (`0x0220f0d8`), past the `.rodata` defined here. With the TU's own `f024`, that view folds into one literal (7 lines). The two files after it can't join without it.
+  - **ov010 `0220f9b4`** takes `02209190..0220e740` (17 files). The views became `f538/f53c/f540`, `f594` and the rotation `f544`. That rotation is now an `Ov010Rot3`, not a `VecFx16`.
+  - **ov011 `02207808`** takes `02200aac..022030b4` (four files): `FLD(Ov011Vec, 02207418, 0x20)` became `data_ov011_02207438`.
+  - **ov011 `022077c0`** takes `0220023c..02200aac` (two files): `data_ov011_02207258[0/3/8..10]` became `7258/7264/7278.x/y/z`. The unmatched `021ff24c` cuts this range off from the other readers (`021febd8`, `021fef00`).
+  - **ov013 `0220b444`** takes nine files, so its text grows from `021fee10..021ff1ec` to `021fea8c..02204454`. 43 `FLD(..., data_ov013_0220aedc, n)` became `aee0..af14`/`af28`. The duplicate `Ov013Spot`/`Ov013SpotBlock` definitions and their redeclarations are gone.
+  - **ov009 `022161f8`** takes `021ff730..0220413c` (19 files): `data_ov009_02215d0c[n]` became `02215d0c..02215d48`, and the `(char *)` casts are gone. It stops before `ov009_0220413c.cpp`: that file reads the static zero vector `02215d90` at base + 0x84, and with the TU's const object its y/z reads are CSE'd across the loop (42 lines).
+  - **ov009 `02216240`** takes `0220b70c..0220d034` (eight files): `ee4[n]` became `ee4/ee8/eec`, and the vectors are passed as `&efc`/`&f14`. ckA's `0220acb8` cuts off the readers before it.
+  - **ov014 `02216fa8`** takes `021fc220.cpp` (the views became `a0`/`d0`).
+  - **ov014 `02217050`** takes `022054f8..02206050` (four files): `c0 + 0x14` became `d4`.
+  - **ov014 `02216ff0`** takes `02201dcc..02202f1c`: `500 + 0x130` and `[0x4c..0x4e]` became `data_ov014_02216630.x/y/z`. As with ov010 `f000`, `0x02216630` is no longer weak, and the stub still matches.
+  - **ov012 `0220a9e4`** takes `022032f4..0220574c` (five files): `a57c[n]` became `a57c/a580/a584`. In `ov012.h`, `data_ov012_0220a57c` is now the single pointer it is.
+  - **ov003 `021f7848`** (already a merged TU) takes `021e7780.cpp` and `021e8030.cpp` at its front, so its text is `021e7780..021ea858`. Inside the TU, the namespace-local redeclarations of `data_ov003_021f6a80` as an array, `Ov003RtNames` or `Ov003FlyNames` became the named pointers `6a80..6a8c`. `.rot[i]` became `data_ov003_021f6a90`, now typed `Ov003Rot`: with `VecFx16` the loads are `ldrsh` (3 lines). The angle tables `6a96/6a9e` are `u16`, since every reader uses `ldrh`, and their u16 redeclarations are gone.
+- **Struct cleanup without a merge.** `Ov002StaffCfg` moved into `ov002.h`, replacing `extern void *data_ov002_021f0d88[]`. Its readers (`021ec6a8`, `021ecb90`, `021ecfd8`, `021ee1a8`) now use fields: `w2c`, `dir`, `tagTime/tagFadeOut/tagFadeIn`, `dir2`, `pathFmt` and so on. That replaces `[n]`, `FIELD(..., 0x28)` and the per-file `ov002_TagConfig`/`ov002_StaffConfig` prefix structs. The `eca14` draft still scores 6.
+- **Prototype changes** needed by the real `const` types: in `ov010.h`, `func_ov003_021d9980`/`021d9900` now take `const Ov010Vec *`. In `ov002.h`, `func_ov000_0214b88c` takes `const void *`. In `ov012.h`, `func_ov000_0218d918` takes `const void *`. Inside the merged files, `func_02066774`/`02066900` take `const char *` (their real type), and `func_ov000_02190cb0`/`0218fa28` take `const void *` names.
+- **Remaining candidates:**
+  - **Blocked by undefined TU data:** ov010 `02207520.cpp`..`022089d8.cpp` (`0x0220f0d8`).
+  - **Blocked by const CSE:** ov009 `0220413c.cpp`.
+  - **Cut off by an unmatched function:** ov011 `021febd8`/`021fef00` (by `021ff24c`), and ov009 `022088d8` (by `0220acb8`).
+  - **Not tried:** the out-of-bounds `[2]` views of `ov003_021f4c64`, `ov012_0220a3c4` and `ov009_02216004`, the `Ov002ResNames` `[n]` views of `ov002_021ef5ac`, and the offset-0 `FLD(void *, data_ov015_02212db0, 0)` (an `Ov015ShipCfg`).
+  - Undelinked owners (ov002 `021f0f98`/`021f0fa0`, ov006 `021eb840`, ov015 `02213360`/`02213368`, ov012 `0220a4a4`) are out of reach under the data rule.
+- **Tool note:** `tools/match.py` reports `bl`/`blx` differences on calls to Thumb functions (`MTX_*`, sound). Those come from link-time interworking and show up in the original files too, so they are not misses.
 - **No renames** this round.

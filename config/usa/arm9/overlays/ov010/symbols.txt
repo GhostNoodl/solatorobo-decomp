@@ -345,7 +345,7 @@ data_ov010_0220efd0 kind:data(any) addr:0x0220efd0
 data_ov010_0220efdc kind:data(any) addr:0x0220efdc
 data_ov010_0220efe8 kind:data(any) addr:0x0220efe8 weak
 data_ov010_0220eff4 kind:data(byte[0xc]) addr:0x0220eff4
-data_ov010_0220f000 kind:data(any) addr:0x0220f000 weak
+data_ov010_0220f000 kind:data(any) addr:0x0220f000
 data_ov010_0220f00c kind:data(any) addr:0x0220f00c
 data_ov010_0220f024 kind:data(any) addr:0x0220f024
 data_ov010_0220f028 kind:data(any) addr:0x0220f028

@@ -35,13 +35,6 @@ typedef struct ov002_Tag {
     u8 maxAlpha;
 } ov002_Tag;
 
-typedef struct ov002_TagConfig {
-    u8 unk0[0x30];
-    s32 time;
-    s32 fadeOut;
-    s32 fadeIn;
-} ov002_TagConfig;
-
 extern "C" {
 
 int STD_CompareString(const char *a, const char *b);
@@ -75,13 +68,13 @@ BOOL func_ov002_021ecb90(ov002_Tag *self) {
     switch (self->def->kind) {
     case 0:
         if (self->state == 3) {
-            self->alpha = FX_MUL(self->maxAlpha << 12, 0x1000 - ov002_Tag_Sin(FX_Div(self->timer, ((ov002_TagConfig *)data_ov002_021f0d88)->fadeOut))) >> 12;
+            self->alpha = FX_MUL(self->maxAlpha << 12, 0x1000 - ov002_Tag_Sin(FX_Div(self->timer, data_ov002_021f0d88.tagFadeOut))) >> 12;
             if (self->alpha == 0) {
                 result = FALSE;
                 break;
             }
         } else {
-            self->alpha = FX_MUL(self->maxAlpha << 12, ov002_Tag_Sin(FX_Div(self->timer, ((ov002_TagConfig *)data_ov002_021f0d88)->fadeIn))) >> 12;
+            self->alpha = FX_MUL(self->maxAlpha << 12, ov002_Tag_Sin(FX_Div(self->timer, data_ov002_021f0d88.tagFadeIn))) >> 12;
         }
         result = TRUE;
         break;
@@ -109,7 +102,7 @@ BOOL func_ov002_021ecb90(ov002_Tag *self) {
     case 0: {
         s32 t = self->def->time;
         if (t == 0) {
-            t = ((ov002_TagConfig *)data_ov002_021f0d88)->time;
+            t = data_ov002_021f0d88.tagTime;
         }
         if (ov002_Tag_Crossed(self, t << 12)) {
             self->flags.hit = 1;

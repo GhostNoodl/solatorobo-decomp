@@ -734,10 +734,25 @@ extern VFunc data_ov002_021f075c[];
 void func_ov002_021e5d88(void *self);
 void func_ov002_021e8cc4(void *self);
 void *func_ov000_0214b6d8(void *p);
-void func_ov000_0214b88c(void *p, void *a);
+void func_ov000_0214b88c(void *p, const void *a);
 void func_ov000_0214b810(void *p);
 BOOL func_ov000_0214b8d8(void *p);
-extern void *data_ov002_021f0d88[];
+// The staff-roll configuration (defined in ov002_021ef380.cpp).
+struct Ov002StaffCfg {
+    s32 w0, w4;
+    const char *dir;
+    const char *photo;
+    s32 w10;
+    const char *pathFmt;
+    const char *dir2;
+    s32 w1c, w20, w24, w28, w2c;
+    s32 tagTime, tagFadeOut, tagFadeIn;
+    char photo0[8];
+    char photo1[8];
+    const char *photoB;
+    const char *photoA;
+};
+extern Ov002StaffCfg data_ov002_021f0d88;
 
 extern Vec3 data_ov002_021ef110;
 

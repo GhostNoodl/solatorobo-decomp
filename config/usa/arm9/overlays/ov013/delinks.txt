@@ -49,49 +49,13 @@ src/ov013/ov013_021fe948.cpp:
     complete
     .text       start:0x021fe948 end:0x021fea8c
 
-src/ov013/ov013_021fea8c.cpp:
-    complete
-    .text       start:0x021fea8c end:0x021fee10
-
 src/ov013/ov013_0220b444.cpp:
     complete
-    .text       start:0x021fee10 end:0x021ff1ec
+    .text       start:0x021fea8c end:0x02204454
     .rodata     start:0x0220aedc end:0x0220afd0
     .init       start:0x0220b444 end:0x0220b544
     .ctor       start:0x0220b590 end:0x0220b594
     .data       start:0x0220b89c end:0x0220b998
-
-src/ov013/ov013_021ff1ec.cpp:
-    complete
-    .text       start:0x021ff1ec end:0x021ff924
-
-src/ov013/ov013_021ff924.cpp:
-    complete
-    .text       start:0x021ff924 end:0x021fffd0
-
-src/ov013/ov013_021fffd0.cpp:
-    complete
-    .text       start:0x021fffd0 end:0x022001e4
-
-src/ov013/ov013_02200fe8.cpp:
-    complete
-    .text       start:0x022001e4 end:0x02202c88
-
-src/ov013/ov013_02202c88.cpp:
-    complete
-    .text       start:0x02202c88 end:0x022038a8
-
-src/ov013/ov013_022038a8.cpp:
-    complete
-    .text       start:0x022038a8 end:0x02203ea4
-
-src/ov013/ov013_02203ea4.cpp:
-    complete
-    .text       start:0x02203ea4 end:0x0220428c
-
-src/ov013/ov013_022043f8.cpp:
-    complete
-    .text       start:0x0220428c end:0x02204454
 
 src/ov013/ov013_02204454.cpp:
     complete

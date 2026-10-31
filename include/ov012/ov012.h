@@ -688,7 +688,7 @@ extern "C" {
 extern void func_01ffc9fc(Ov012Vec *a, Ov012Vec *b, u16 ang);
 extern void func_ov000_0219bebc(void *o, s16 a);
 extern BOOL func_ov000_021b4738(void *o);
-extern void func_ov000_0218d918(void *self, void *v, s32 a);
+extern void func_ov000_0218d918(void *self, const void *v, s32 a);
 }
 
 
@@ -717,7 +717,7 @@ struct Ov012Lift {
 
 extern "C" {
 extern const u8 *const data_ov012_0220a3c4[];
-extern const u8 *const data_ov012_0220a57c[];
+extern const char *const data_ov012_0220a57c;
 }
 
 

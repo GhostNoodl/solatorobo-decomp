@@ -25,7 +25,7 @@ BOOL func_ov002_021ed044(void *self) {
             p = func_ov000_0214b6d8(p);
         }
         FIELD(self, 0x4c, void *) = p;
-        func_ov000_0214b88c(p, data_ov002_021f0d88[3]);
+        func_ov000_0214b88c(p, data_ov002_021f0d88.photo);
         FIELD(self, 0x10, s32)++;
         break;
     }
@@ -168,12 +168,12 @@ void func_ov002_021ed270(void *self) {
         FIELD(self, 0x34, Ov002Text2 *)->unk_74 = 0x77df;
         FIELD(self, 0x34, Ov002Text2 *)->unk_76 = 0x67e;
         FIELD(self, 0x34, Ov002Text2 *)->unk_78 = 0x9000;
-        FIELD(self, 0x3c, s32) = (s32)data_ov002_021f0d88[9];
+        FIELD(self, 0x3c, s32) = data_ov002_021f0d88.w24;
         FIELD(self, 0x24, s32) = 0;
         break;
     case 1:
         ov002_021ed270_create(self, FIELD(info, 0x8, char *));
-        FIELD(self, 0x3c, s32) = (s32)data_ov002_021f0d88[9];
+        FIELD(self, 0x3c, s32) = data_ov002_021f0d88.w24;
         FIELD(self, 0x24, s32) = 0;
         break;
     case 2:
@@ -191,7 +191,7 @@ void func_ov002_021ed270(void *self) {
     case 3:
         ov002_021ed270_create(self, FIELD(info, 0x8, char *));
         FIELD(self, 0x34, Ov002Text2 *)->unk_74 = 0x339f;
-        FIELD(self, 0x3c, s32) = (s32)data_ov002_021f0d88[9];
+        FIELD(self, 0x3c, s32) = data_ov002_021f0d88.w24;
         if (FIELD(self, 0x44, void *) != NULL) {
             s32 h;
             FIELD(self, 0x44, Ov002Text2 *)->unk_74 = 0x7fff;
@@ -202,13 +202,13 @@ void func_ov002_021ed270(void *self) {
         break;
     case 4:
         ov002_021ed270_create(self, FIELD(info, 0x8, char *));
-        FIELD(self, 0x3c, s32) = (s32)data_ov002_021f0d88[9];
+        FIELD(self, 0x3c, s32) = data_ov002_021f0d88.w24;
         FIELD(self, 0x24, s32) = 0;
         break;
     }
     if (FIELD(self, 0x34, void *) != NULL) {
         void *m;
-        FIELD(self, 0x38, s32) = (s32)data_ov002_021f0d88[8] - ((FIELD(self, 0x34, Ov002Text2 *)->unk_44 >> 1) << 12);
+        FIELD(self, 0x38, s32) = data_ov002_021f0d88.w20 - ((FIELD(self, 0x34, Ov002Text2 *)->unk_44 >> 1) << 12);
         m = FIELD(data_ov002_021f0fa0[1], 0x28, void *);
         if (m != NULL) {
             FIELD(self, 0x3c, s32) += FIELD(m, 0x3c, s32) & 0xfff;
@@ -217,7 +217,7 @@ void func_ov002_021ed270(void *self) {
     }
     if (FIELD(self, 0x44, void *) != NULL) {
         void *m;
-        FIELD(self, 0x48, s32) = (s32)data_ov002_021f0d88[8] - ((FIELD(self, 0x44, Ov002Text2 *)->unk_44 >> 1) << 12);
+        FIELD(self, 0x48, s32) = data_ov002_021f0d88.w20 - ((FIELD(self, 0x44, Ov002Text2 *)->unk_44 >> 1) << 12);
         m = FIELD(data_ov002_021f0fa0[1], 0x28, void *);
         if (m != NULL) {
             FIELD(self, 0x4c, s32) += FIELD(m, 0x3c, s32) & 0xfff;
@@ -259,17 +259,17 @@ BOOL func_ov002_021edab4(void *self) {
     case 4:
         r = FALSE;
         if (FIELD(self, 0x34, void *) != NULL && FIELD(self, 0x3c, s32) > -0x10000) {
-            FIELD(self, 0x3c, s32) += FX_MUL((s32)data_ov002_021f0d88[4], dt);
+            FIELD(self, 0x3c, s32) += FX_MUL(data_ov002_021f0d88.w10, dt);
             r = TRUE;
         }
         if (FIELD(self, 0x44, void *) != NULL && FIELD(self, 0x4c, s32) > -0x10000) {
-            FIELD(self, 0x4c, s32) += FX_MUL((s32)data_ov002_021f0d88[4], dt);
+            FIELD(self, 0x4c, s32) += FX_MUL(data_ov002_021f0d88.w10, dt);
             r = TRUE;
         }
         break;
     case 2:
         if (FIELD(self, 0x8, s32) == 3) {
-            s32 t = FX_Div(FIELD(self, 0x14, s32), (s32)data_ov002_021f0d88[1]);
+            s32 t = FX_Div(FIELD(self, 0x14, s32), data_ov002_021f0d88.w4);
             if (t >= 0x1000) {
                 t = 0x1000;
             }
@@ -279,7 +279,7 @@ BOOL func_ov002_021edab4(void *self) {
                 break;
             }
         } else {
-            s32 t = FX_Div(FIELD(self, 0x14, s32), (s32)data_ov002_021f0d88[0]);
+            s32 t = FX_Div(FIELD(self, 0x14, s32), data_ov002_021f0d88.w0);
             if (t >= 0x1000) {
                 t = 0x1000;
             }
@@ -294,7 +294,7 @@ BOOL func_ov002_021edab4(void *self) {
     if (FIELD(FIELD(self, 0x20, void *), 0xc, u16) == 2) {
         s32 lim = FIELD(FIELD(self, 0x20, void *), 0xe, u16);
         if (lim == 0) {
-            lim = (s32)data_ov002_021f0d88[7];
+            lim = data_ov002_021f0d88.w1c;
         }
         if (ov002_021edab4_reached(self, lim)) {
             FIELD(self, 0x4, u32) |= 8;

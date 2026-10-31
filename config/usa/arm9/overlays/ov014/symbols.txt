@@ -324,7 +324,7 @@ data_ov014_022165f8 kind:data(any) addr:0x022165f8 ambiguous
 data_ov014_02216600 kind:data(any) addr:0x02216600
 data_ov014_0221660c kind:data(any) addr:0x0221660c
 data_ov014_02216624 kind:data(any) addr:0x02216624
-data_ov014_02216630 kind:data(any) addr:0x02216630 weak
+data_ov014_02216630 kind:data(any) addr:0x02216630
 data_ov014_0221663c kind:data(any) addr:0x0221663c
 data_ov014_0221663d kind:data(any) addr:0x0221663d
 data_ov014_0221663e kind:data(any) addr:0x0221663e

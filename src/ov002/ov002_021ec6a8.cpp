@@ -137,7 +137,7 @@ BOOL func_ov002_021ec8d8(void) {
             n++;
         }
     }
-    if (n >= FIELD(data_ov002_021f0d88, 0x2c, s32)) {
+    if (n >= data_ov002_021f0d88.w2c) {
         return FALSE;
     }
     return TRUE;
@@ -153,7 +153,7 @@ BOOL func_ov002_021ec968(void *self) {
         }
         FIELD(self, 0x34, VObject *) = o;
         FIELD(o, 0x44, s32) = 2;
-        FIELD(self, 0x34, VObject *)->v0x24(data_ov002_021f0d88[2], FIELD(FIELD(self, 0x20, void *), 8, void *));
+        FIELD(self, 0x34, VObject *)->v0x24(data_ov002_021f0d88.dir, FIELD(FIELD(self, 0x20, void *), 8, void *));
         FIELD(self, 0x10, s32)++;
         break;
     }
@@ -194,7 +194,7 @@ BOOL func_ov002_021eca14(void *self) {
                     n++;
                 }
             }
-            if (n >= FIELD(data_ov002_021f0d88, 0x28, s32)) {
+            if (n >= data_ov002_021f0d88.w28) {
                 return FALSE;
             }
             m = func_0203dd9c(0x160);

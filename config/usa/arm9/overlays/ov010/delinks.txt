@@ -5,61 +5,13 @@
     .data       start:0x0220fa20 end:0x02210420 kind:data align:32
     .bss        start:0x02210420 end:0x02210420 kind:bss align:32
 
-src/ov010/ov010_021fa6a0.cpp:
-    complete
-    .text       start:0x021fa6a0 end:0x021fa860
-
-src/ov010/ov010_021fa860.cpp:
-    complete
-    .text       start:0x021fa860 end:0x021fac1c
-
-src/ov010/ov010_021fac1c.cpp:
-    complete
-    .text       start:0x021fac1c end:0x021fb5a4
-
-src/ov010/ov010_021fb5a4.cpp:
-    complete
-    .text       start:0x021fb5a4 end:0x021fb95c
-
-src/ov010/ov010_021fb95c.cpp:
-    complete
-    .text       start:0x021fb95c end:0x021fbb40
-
-src/ov010/ov010_021fbb40.cpp:
-    complete
-    .text       start:0x021fbb40 end:0x021fbda0
-
 src/ov010/ov010_0220f5dc.cpp:
     complete
-    .text       start:0x021fbda0 end:0x021fff80
+    .text       start:0x021fa6a0 end:0x021fff80
     .rodata     start:0x0220ebc0 end:0x0220ed10
     .init       start:0x0220f5dc end:0x0220f828
     .ctor       start:0x0220f9fc end:0x0220fa00
     .data       start:0x0220fa2c end:0x0220fbd0
-
-src/ov010/ov010_021fff80.cpp:
-    complete
-    .text       start:0x021fff80 end:0x02200670
-
-src/ov010/ov010_02200670.cpp:
-    complete
-    .text       start:0x02200670 end:0x02200a00
-
-src/ov010/ov010_02200a00.cpp:
-    complete
-    .text       start:0x02200a00 end:0x02200c98
-
-src/ov010/ov010_02200c98.cpp:
-    complete
-    .text       start:0x02200c98 end:0x02200d94
-
-src/ov010/ov010_02200d94.cpp:
-    complete
-    .text       start:0x02200d94 end:0x02200ee0
-
-src/ov010/ov010_02200ee0.cpp:
-    complete
-    .text       start:0x02200ee0 end:0x0220166c
 
 src/ov010/ov010_0220166c.cpp:
     complete
@@ -81,37 +33,9 @@ src/ov010/ov010_02201cc8.cpp:
     complete
     .text       start:0x02201cc8 end:0x022020c8
 
-src/ov010/ov010_022020c8.cpp:
-    complete
-    .text       start:0x022020c8 end:0x02202838
-
-src/ov010/ov010_02202838.cpp:
-    complete
-    .text       start:0x02202838 end:0x022029a4
-
-src/ov010/ov010_02202c9c.cpp:
-    complete
-    .text       start:0x022029a4 end:0x02202d9c
-
-src/ov010/ov010_02202d9c.cpp:
-    complete
-    .text       start:0x02202d9c end:0x022033d0
-
-src/ov010/ov010_022033d0.cpp:
-    complete
-    .text       start:0x022033d0 end:0x0220366c
-
-src/ov010/ov010_0220366c.cpp:
-    complete
-    .text       start:0x0220366c end:0x02203bf8
-
-src/ov010/ov010_02203ee0.cpp:
-    complete
-    .text       start:0x02203bf8 end:0x02203f08
-
 src/ov010/ov010_0220f8e4.cpp:
     complete
-    .text       start:0x02203f08 end:0x02203ff4
+    .text       start:0x022020c8 end:0x02203ff4
     .rodata     start:0x0220efc8 end:0x0220f024
     .init       start:0x0220f8e4 end:0x0220f958
     .ctor       start:0x0220fa08 end:0x0220fa0c
@@ -124,42 +48,6 @@ src/ov010/ov010_02203ff4.cpp:
 src/ov010/ov010_02204204.cpp:
     complete
     .text       start:0x02204204 end:0x0220441c
-
-src/ov010/ov010_0220441c.cpp:
-    complete
-    .text       start:0x0220441c end:0x022046ac
-
-src/ov010/ov010_022046ac.cpp:
-    complete
-    .text       start:0x022046ac end:0x02204aac
-
-src/ov010/ov010_02204aac.cpp:
-    complete
-    .text       start:0x02204aac end:0x02204cdc
-
-src/ov010/ov010_02204cdc.cpp:
-    complete
-    .text       start:0x02204cdc end:0x0220522c
-
-src/ov010/ov010_0220522c.cpp:
-    complete
-    .text       start:0x0220522c end:0x02205444
-
-src/ov010/ov010_02205444.cpp:
-    complete
-    .text       start:0x02205444 end:0x02205c30
-
-src/ov010/ov010_02205c30.cpp:
-    complete
-    .text       start:0x02205c30 end:0x02206758
-
-src/ov010/ov010_02206758.cpp:
-    complete
-    .text       start:0x02206758 end:0x02206f54
-
-src/ov010/ov010_02206f54.cpp:
-    complete
-    .text       start:0x02206f54 end:0x02207520
 
 src/ov010/ov010_02207520.cpp:
     complete
@@ -181,74 +69,6 @@ src/ov010/ov010_02208c3c.cpp:
     complete
     .text       start:0x02208c3c end:0x02209190
 
-src/ov010/ov010_02209190.cpp:
-    complete
-    .text       start:0x02209190 end:0x022092c8
-
-src/ov010/ov010_022092c8.cpp:
-    complete
-    .text       start:0x022092c8 end:0x02209568
-
-src/ov010/ov010_02209568.cpp:
-    complete
-    .text       start:0x02209568 end:0x0220983c
-
-src/ov010/ov010_0220983c.cpp:
-    complete
-    .text       start:0x0220983c end:0x02209928
-
-src/ov010/ov010_02209928.cpp:
-    complete
-    .text       start:0x02209928 end:0x02209948
-
-src/ov010/ov010_02209948.cpp:
-    complete
-    .text       start:0x02209948 end:0x0220a030
-
-src/ov010/ov010_0220a030.cpp:
-    complete
-    .text       start:0x0220a030 end:0x0220a2a0
-
-src/ov010/ov010_0220a2a0.cpp:
-    complete
-    .text       start:0x0220a2a0 end:0x0220a6a0
-
-src/ov010/ov010_0220a6a0.cpp:
-    complete
-    .text       start:0x0220a6a0 end:0x0220a948
-
-src/ov010/ov010_0220a948.cpp:
-    complete
-    .text       start:0x0220a948 end:0x0220adb8
-
-src/ov010/ov010_0220adb8.cpp:
-    complete
-    .text       start:0x0220adb8 end:0x0220b40c
-
-src/ov010/ov010_0220b7b0.cpp:
-    complete
-    .text       start:0x0220b40c end:0x0220c2a4
-
-src/ov010/ov010_0220c2a4.cpp:
-    complete
-    .text       start:0x0220c2a4 end:0x0220c5a0
-
-src/ov010/ov010_0220c5a0.cpp:
-    complete
-    .text       start:0x0220c5a0 end:0x0220cba0
-
-src/ov010/ov010_0220cba0.cpp:
-    complete
-    .text       start:0x0220cba0 end:0x0220d77c
-
-src/ov010/ov010_0220d77c.cpp:
-    complete
-    .text       start:0x0220d77c end:0x0220dd60
-
-src/ov010/ov010_0220dd60.cpp:
-    complete
-    .text       start:0x0220dd60 end:0x0220e740
-
 src/ov010/ov010_0220e740.cpp:
     complete
     .text       start:0x0220e740 end:0x0220ea84
@@ -263,6 +83,7 @@ src/ov010/ov010_0220ebb0.cpp:
 
 src/ov010/ov010_0220f828.cpp:
     complete
+    .text       start:0x021fff80 end:0x0220166c
     .rodata     start:0x0220ef68 end:0x0220ef98
     .init       start:0x0220f828 end:0x0220f870
     .ctor       start:0x0220fa00 end:0x0220fa04
@@ -277,6 +98,7 @@ src/ov010/ov010_0220f870.cpp:
 
 src/ov010/ov010_0220f958.cpp:
     complete
+    .text       start:0x0220441c end:0x02207520
     .rodata     start:0x0220f024 end:0x0220f0b4
     .init       start:0x0220f958 end:0x0220f9b4
     .ctor       start:0x0220fa0c end:0x0220fa10
@@ -284,6 +106,7 @@ src/ov010/ov010_0220f958.cpp:
 
 src/ov010/ov010_0220f9b4.cpp:
     complete
+    .text       start:0x02209190 end:0x0220e740
     .rodata     start:0x0220f534 end:0x0220f5a0
     .init       start:0x0220f9b4 end:0x0220f9fc
     .ctor       start:0x0220fa10 end:0x0220fa14

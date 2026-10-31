@@ -7,6 +7,17 @@
 // func_ov003_021e83d0 and func_ov003_021ea588 copy data_ov003_021f6ae4 through the .rodata base
 // plus an offset. The files in between were merged in, each in its own namespace so that their
 // local types and inlines keep their names; their functions are extern "C" either way.
+// Round dtB: ov003_021e7780.cpp and ov003_021e8030.cpp (0x021e7780..0x021e83d0) were merged in
+// front, and the merged functions read the name pointers and the zero rotation by their names
+// (data_ov003_021f6a80/6a84/6a88/6a8c, data_ov003_021f6a90, typed as an Ov003Rot) instead of
+// namespace-local redeclarations of data_ov003_021f6a80 as an array or struct. The two angle
+// tables are u16 (every reader loads them with ldrh), so the u16 redeclarations are gone too.
+typedef struct {
+    u16 x;
+    u16 y;
+    u16 z;
+} Ov003Rot;
+
 typedef struct {
     s32 a;
     s32 b;
@@ -14,8 +25,8 @@ typedef struct {
 } Ov003Blk12;
 
 extern const char *const data_ov003_021f6a80;
-extern const s16 data_ov003_021f6a96[4];
-extern const s16 data_ov003_021f6a9e[5];
+extern const u16 data_ov003_021f6a96[4];
+extern const u16 data_ov003_021f6a9e[5];
 extern const Ov003Blk12 data_ov003_021f6aa8;
 extern const Ov003Blk12 data_ov003_021f6ab4;
 extern const Ov003Blk12 data_ov003_021f6ac0;
@@ -25,13 +36,13 @@ extern char data_ov003_021f90e0[];
 extern char data_ov003_021f90e6[];
 extern char data_ov003_021f90ec[];
 extern char data_ov003_021f90f8[];
-const s16 data_ov003_021f6a9e[5] = {0x2d, 0x5b, 0xb6, 0x16c, 0x2d8};
+const u16 data_ov003_021f6a9e[5] = {0x2d, 0x5b, 0xb6, 0x16c, 0x2d8};
 static const char *const data_ov003_021f6a88 = data_ov003_021f90e0;
 static const char *const data_ov003_021f6a8c = data_ov003_021f90ec;
 const VecFx32 data_ov003_021f6ad8 = {0, 0, 0};
 const char *const data_ov003_021f6a80 = data_ov003_021f90f8;
 static const char *const data_ov003_021f6a84 = data_ov003_021f90e6;
-const s16 data_ov003_021f6a96[4] = {0x5b, 0xb6, 0x16c, 0x2d8};
+const u16 data_ov003_021f6a96[4] = {0x5b, 0xb6, 0x16c, 0x2d8};
 const Ov003Blk12 data_ov003_021f6ab4 = {0xe66, 0xe66, 0xe66};
 char data_ov003_021f90f8[] = "act00";
 const VecFx32 data_ov003_021f6acc = {0, FX32_ONE, 0};
@@ -41,10 +52,330 @@ const Ov003Blk12 data_ov003_021f6aa8 = {0x2000, 0x1000, 0x2000};
 const Ov003Blk12 data_ov003_021f6ac0 = {0x8cd, 0x8cd, 0x8cd};
 char data_ov003_021f90e0[] = "nut00";
 static const VecFx32 data_ov003_021f6ae4 = {0, 0, 0};
-static const VecFx16 data_ov003_021f6a90 = {0, 0, 0};
-static const VecFx16 data_ov003_021f90f2 = data_ov003_021f6a90;
+static const Ov003Rot data_ov003_021f6a90 = {0, 0, 0};
+static const Ov003Rot data_ov003_021f90f2 = data_ov003_021f6a90;
 static const VecFx32 data_ov003_021f9100 = data_ov003_021f6ae4;
 
+// ---- merged from ov003_021e7780.cpp
+namespace m_021e7780 {
+struct Ov003Vec {
+    s32 x;
+    s32 y;
+    s32 z;
+};
+
+struct Ov003Work {
+    u16 state;
+    u16 timer;
+};
+
+struct Ov003Game54 {
+    s32 state;
+    u8 unk_04[0x8c];
+    s32 unk_90;
+    s32 unk_94;
+};
+
+struct Ov003SnParam {
+    u8 unk_00[0x8];
+    u16 unk_08;
+    u16 unk_0a;
+};
+
+struct Ov003SnSys {
+    u8 unk_00[0x50];
+    u16 *unk_50;
+};
+
+struct Ov003Sensor {
+    u8 unk_00[0x18];
+    s16 kind;
+    u8 unk_1a[0x1e];
+    void *model;
+    u8 unk_3c[4];
+    Ov003Work *work;
+    u8 unk_44[0x8];
+    Ov003SnParam *param;
+    u8 unk_50[0x14];
+    s32 unk_64;
+    s32 unk_68;
+    u8 unk_6c[4];
+    Ov003Vec pos;
+    u8 unk_7c[0x20];
+    s32 unk_9c;
+    s32 unk_a0;
+    s32 unk_a4;
+    s32 unk_a8;
+    u8 unk_ac[0x22];
+    u16 wait;
+};
+
+struct Ov003SnModel {
+    u8 unk_00[0xc4];
+    s16 unk_c4;
+};
+
+struct Ov003VecA {
+    s32 v[3];
+};
+
+struct Ov003Rot {
+    u16 x, y, z;
+};
+
+struct Ov003Cannon {
+    u8 unk_00[0x38];
+    Ov003SnModel *model;
+    u8 unk_3c[4];
+    Ov003Work *work;
+    u8 unk_44[0x8];
+    Ov003SnParam *param;
+    u8 unk_50[0x20];
+    Ov003Vec pos;
+    Ov003Rot rot;
+    u8 unk_82[0x1a];
+    s32 unk_9c;
+    s32 unk_a0;
+    s32 unk_a4;
+    s32 unk_a8;
+    u8 unk_ac[0x22];
+    s8 idx;
+    u8 unk_cf;
+    s16 dur;
+};
+
+struct Ov003RtModel {
+    u8 unk_00[0xc2];
+    u16 unk_c2_0 : 4;
+    u16 unk_c2_4 : 1;
+    s16 unk_c4;
+};
+
+struct Ov003Rotor {
+    u8 unk_00[0x1a];
+    s16 mode;
+    u8 unk_1c[0x1c];
+    Ov003RtModel *model;
+    u8 unk_3c[4];
+    Ov003Work *work;
+    u8 unk_44[0x2c];
+    Ov003Vec pos;
+    u8 unk_7c[0x20];
+    s32 unk_9c;
+    s32 unk_a0;
+    s32 unk_a4;
+    s32 unk_a8;
+};
+
+extern "C" {
+
+extern Ov003Game54 *data_ov000_021ccd54;
+extern void func_ov000_02194758(void *self);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
+extern void func_ov000_021915a0(void *p);
+extern void func_ov000_021911c8(void *model, s32 a);
+BOOL func_ov003_021e7ee4(Ov003Rotor *self);
+extern s32 func_ov000_0219a510(void *self, s32 a, Ov003Vec *pos, s32 b, s32 c, void **list);
+extern BOOL func_ov000_021985c0(void *p);
+extern Ov003SnSys *func_ov000_0219bf90(void);
+extern const Ov003Vec data_ov003_021f6b44[];
+extern void *data_02097e4c;
+extern void func_01ffc9fc(Ov003Vec *src, Ov003Vec *dst, u16 angle);
+extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
+extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern BOOL func_ov000_02191120(void *p);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
+
+static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
+    return g->unk_90 != g->unk_94;
+}
+
+static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+    if (Ov003Game_IsBusy(g)) {
+        return FALSE;
+    }
+    if (g->state != 3) {
+        return FALSE;
+    }
+    return TRUE;
+}
+
+static inline BOOL Ov003_GameIdle(void) {
+    Ov003Game54 *g = data_ov000_021ccd54;
+    if (g != NULL) {
+        return Ov003Game_IsIdle(g);
+    }
+    return true;
+}
+
+void func_ov003_021e7780(Ov003Sensor *self) {
+    func_ov000_02194758(self);
+    self->wait = self->kind;
+    if (self->kind == 0) {
+        self->wait = 0x64;
+    }
+    func_ov000_02198360(self->work, 1, 0);
+}
+
+void func_ov003_021e77b4(Ov003Sensor *self) {
+    void *list[0x20];
+    s32 n;
+    s32 i;
+    switch (self->work->state) {
+    case 0:
+        func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x1000, 0);
+        func_ov000_021915a0(self->model);
+        self->unk_9c = 0;
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
+        self->work->state++;
+    case 1:
+        if (!Ov003_GameIdle()) {
+            return;
+        }
+        n = func_ov000_0219a510(self, 2, &self->pos, self->unk_64, self->unk_68, list);
+        if (n == 0) {
+            return;
+        }
+        for (i = 0; i < n; i++) {
+            if (list[i] != NULL && func_ov000_021985c0(list[i])) {
+                func_ov000_02198360(self->work, 6, 0);
+                return;
+            }
+        }
+        break;
+    }
+}
+
+void func_ov003_021e7900(Ov003Sensor *self) {
+    Ov003Work *w = self->work;
+    switch (w->state) {
+    case 0:
+        if (!Ov003_GameIdle()) {
+            func_ov000_02198360(w, 1, 0);
+            return;
+        }
+        w->timer++;
+        if (w->timer > (s16)self->wait) {
+            func_ov000_02190cb0(self->model, data_ov003_021f6a8c, 0x1000, 0);
+            self->unk_9c = 0;
+            self->unk_a0 = 0;
+            self->unk_a4 = 0;
+            self->unk_a8 = 0;
+            self->work->timer = 0;
+            self->work->state++;
+        }
+        break;
+    case 1:
+        w->timer++;
+        if (w->timer > 0x40 && *func_ov000_0219bf90()->unk_50 != 0 && Ov003_GameIdle()) {
+            func_ov000_0219aae8(self, self, self->param->unk_08, (u8)self->param->unk_0a, 2, 0, 0, self->unk_64, self->unk_68, 100, 0x1000);
+        }
+        if (func_ov000_02191120(self->model)) {
+            self->work->timer = 0;
+            self->work->state++;
+        }
+        break;
+    case 2:
+        w->timer++;
+        if (w->timer > 0xf) {
+            func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x111, 0);
+            self->work->timer = 0;
+            self->work->state = 0x1e;
+        }
+        break;
+    case 0x1e:
+        w->timer++;
+        if (w->timer > 0x78) {
+            func_ov000_02198360(self->work, 1, 0);
+        }
+        break;
+    }
+}
+
+void func_ov003_021e7bac(Ov003Cannon *self) {
+    switch (self->work->state) {
+    case 0:
+        self->unk_9c = 0;
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
+        func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x1000, 0);
+        func_ov000_021915a0(self->model);
+        self->idx = -1;
+        self->work->state++;
+        break;
+    case 1: {
+        Ov003Vec v;
+        switch (self->model->unk_c4) {
+        case 1:
+            self->idx = 0;
+            self->dur = 0x32;
+            break;
+        case 2:
+            self->idx = 1;
+            self->dur = 0x28;
+            break;
+        }
+        if (self->idx == -1) {
+            return;
+        }
+        *(Ov003VecA *)&v = ((const Ov003VecA *)data_ov003_021f6b44)[self->idx];
+        func_01ffc9fc(&v, &v, self->rot.y);
+        VEC_Add(&v, &self->pos, &v);
+        func_02049f44(data_02097e4c, 0x50, &v, 0);
+        self->work->state++;
+        break;
+    }
+    case 2: {
+        Ov003Work *w;
+        if (*func_ov000_0219bf90()->unk_50 != 0 && Ov003_GameIdle()) {
+            Ov003Rot r;
+            r = self->rot;
+            r.x += 0x4000;
+            func_ov000_0219aae8(self, self, self->param->unk_08, (u8)self->param->unk_0a, 2, &data_ov003_021f6b44[self->idx], &r, 0x14cd, 0x3800, 100, 0x1000);
+        }
+        w = self->work;
+        w->timer++;
+        if (w->timer > self->dur) {
+            self->idx = -1;
+            self->work->timer = 0;
+            self->work->state = 1;
+        }
+        break;
+    }
+    }
+}
+
+void func_ov003_021e7e18(Ov003Rotor *self) {
+    switch (self->work->state) {
+    case 0:
+        self->unk_9c = 0;
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
+        func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x1000, 0);
+        func_ov000_021911c8(self->model, self->mode > 0 ? self->mode : 0x1000);
+        func_ov000_021915a0(self->model);
+        self->model->unk_c2_4 = 0;
+        self->work->state++;
+    case 1: {
+        s32 k = self->model->unk_c4;
+        if (!(k != 1 && k != 2)) {
+            func_02049f44(data_02097e4c, 0x65, &self->pos, 0);
+        }
+        func_ov003_021e7ee4(self);
+        break;
+    }
+    }
+}
+}
+}  // namespace m_021e7780
+
+// ---- merged from ov003_021e8030.cpp
+namespace m_021e8030 {
 typedef struct {
     s32 x;
     s32 y;
@@ -56,6 +387,346 @@ typedef struct {
     u16 y;
     u16 z;
 } Ov003Rot;
+
+struct Ov003VecC {
+    s32 x;
+    s32 y;
+    s32 z;
+    Ov003VecC() {}
+};
+
+typedef struct {
+    u16 *input;
+} Ov003RtInput;
+
+typedef struct {
+    u16 state;
+    u16 timer;
+} Ov003Work;
+
+typedef struct {
+    u8 unk_00[0xa2];
+    u8 active : 1;
+} Ov003Unit;
+
+typedef struct {
+    u8 unk_00[0x50];
+    u16 *input;
+    u8 unk_54[0x1c];
+    Ov003Vec pos;
+} Ov003RtPlayer;
+
+typedef struct {
+    const char *names[4];
+    u8 unk_10[0x54];
+    Ov003VecC offset;
+} Ov003RtNames;
+
+typedef struct {
+    s32 state;
+    u8 unk_04[0x8c];
+    s32 unk_90;
+    s32 unk_94;
+} Ov003Game54;
+
+typedef struct {
+    u8 unk_00[0x50];
+    u32 flags;
+    u8 unk_54[0xc];
+    s32 unk_60;
+} Ov003RtCtl;
+
+typedef struct {
+    u8 unk_00[8];
+    u16 a;
+    u16 b;
+} Ov003RtLink;
+
+typedef struct {
+    u8 unk_00[0xa2];
+    u8 unk_a2_0 : 5;
+    u8 unk_a2_5 : 1;
+    u8 unk_a2_6 : 1;
+} Ov003Unit2;
+
+typedef struct {
+    u8 unk_00[0x13];
+    u8 unk_13;
+} Ov003Work2;
+
+typedef struct {
+    u8 unk_00[0xe];
+    u16 id;
+    u8 unk_10[8];
+    s16 kind;
+    s16 mode;
+    s16 tilt;
+    u8 unk_1e[2];
+    u16 unitId;
+    u8 unk_22[0x1e];
+    Ov003Work2 *work;
+    u8 unk_44[4];
+    Ov003RtCtl *ctl;
+    u8 unk_4c[0x24];
+    Ov003Vec pos;
+    Ov003Rot rot;
+    u8 unk_82[2];
+    Ov003Vec home;
+    u8 unk_90[0x2c];
+    void *fx;
+    u8 unk_c0[0xe];
+    s8 dir;
+    u8 unk_cf;
+    u16 speed;
+    u16 tiltAngle;
+    u16 angle;
+    u16 timer;
+    s32 vals[6];
+} Ov003Swing;
+
+typedef struct {
+    u8 unk_00[0x18];
+    s16 kind;
+    s16 mode;
+    u8 unk_1c[4];
+    u16 unitId;
+    u8 unk_22[0x12];
+    void *res;
+    void *model;
+    u8 unk_3c[4];
+    Ov003Work *work;
+    u8 unk_44[4];
+    Ov003RtCtl *ctl;
+    Ov003RtLink *link;
+    u8 unk_50[0x20];
+    Ov003Vec pos;
+    Ov003Rot rot;
+    u8 unk_82[0x1a];
+    s32 unk_9c;
+    s32 unk_a0;
+    s32 unk_a4;
+    s32 unk_a8;
+    u8 unk_ac[0x20];
+    u16 unk_cc_0 : 2;
+    u16 spin : 1;
+    u8 unk_ce[2];
+    u8 anim[0x78];
+    Ov003Vec animPos;
+    u8 unk_154[0x24];
+    Ov003Vec scale;
+    u8 unk_184[0xe];
+    u16 active : 1;
+    u8 unk_194[0x24];
+    u8 count;
+    u8 unk_1b9;
+    u16 speed;
+    u16 angle;
+    u16 step;
+} Ov003Rotor;
+
+extern "C" {
+
+extern void *data_ov000_021ccd64;
+extern void *data_02097e4c;
+extern const Ov003Vec data_ov003_021f6afc;
+extern void func_ov000_0219433c(void *self);
+extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
+extern void func_ov000_02194758(void *self);
+extern BOOL func_ov000_0218ffdc(void *anim, void *res, s32 a, s32 b);
+extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
+extern BOOL func_ov000_02194c08(void *self);
+extern void func_ov000_02190758(void *anim, Ov003Rot *rot, s32 a);
+extern void func_01ffc9fc(Ov003Vec *dst, const Ov003Vec *src, u16 angle);
+extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
+extern BOOL func_ov000_021903b4(void *anim);
+extern Ov003RtPlayer *func_ov000_0219bf90(void);
+extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
+extern void func_ov000_021915a0(void *p);
+extern s32 VEC_Distance(const Ov003Vec *a, const Ov003Vec *b);
+extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern void func_ov000_0218996c(s32 a, s32 b);
+extern Ov003Game54 *data_ov000_021ccd54;
+extern void *data_0214a420;
+extern void func_ov000_02196c40(void *self);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
+extern void func_ov000_021953b4(void *self);
+extern void func_02065804(void *mgr, void *handle);
+BOOL func_ov003_021e83d0(Ov003Rotor *self);
+
+extern s32 **func_ov000_02190a30(void *model, s32 a);
+
+static inline BOOL Ov003Game54_IsBusy(Ov003Game54 *g) {
+    return g->unk_90 != g->unk_94;
+}
+
+static inline BOOL Ov003Game54_IsIdle(Ov003Game54 *g) {
+    if (Ov003Game54_IsBusy(g)) {
+        return FALSE;
+    }
+    if (g->state != 3) {
+        return FALSE;
+    }
+    return TRUE;
+}
+
+static inline BOOL Ov003_Game54Idle(void) {
+    Ov003Game54 *g = data_ov000_021ccd54;
+    if (g != NULL) {
+        return Ov003Game54_IsIdle(g);
+    }
+    return TRUE;
+}
+
+BOOL func_ov003_021e7ee4(Ov003Rotor *self) {
+    Ov003Rot rot;
+    Ov003Vec v;
+    s32 d;
+    s32 t;
+    s32 *p;
+    if (func_ov000_0219bf90()->input[0] != 0 && Ov003_Game54Idle()) {
+        rot = self->rot;
+        rot.x += 0x4000;
+        d = 0;
+        p = *func_ov000_02190a30(self->model, 0);
+        if (p != NULL) {
+            d = *p;
+        }
+        if (d > 0x32000) {
+            d = 0x64000 - d;
+        }
+        t = d - 0x19000;
+        v.x = (t >> 1) - (t >> 3) + 0x1800;
+        v.y = 0x3333;
+        v.z = -0x667;
+        return func_ov000_0219aae8(self, self, self->link->a, self->link->b, 2, &v, &rot, 0x3333 - 0x1000, 0x4000 - 0x3333, 100, 0x1000);
+    }
+    return FALSE;
+}
+
+void func_ov003_021e8030(Ov003Rotor *self) {
+    Ov003Unit *u;
+    func_ov000_0219433c(self);
+    u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unitId);
+    if (u != NULL) {
+        u->active = 0;
+    }
+}
+
+void func_ov003_021e8064(Ov003Rotor *self) {
+    s16 m;
+    func_ov000_02194758(self);
+    func_ov000_0218ffdc(self->anim, self->res, 1, 0);
+    self->scale.x = 0x1000;
+    self->active = 0;
+    self->count = self->kind;
+    self->scale.y = 0x1000;
+    self->scale.z = 0;
+    if (self->count == 0) {
+        self->count = 1;
+    } else if (self->count > 3) {
+        self->count = 3;
+    }
+    m = self->mode;
+    if (m > 4) {
+        m = 4;
+    }
+    self->speed = data_ov003_021f6a9e[m];
+    self->angle = 0;
+    self->step = 0x10000 / self->count;
+    self->spin = 1;
+    func_ov000_02198360(self->work, 1, 0);
+}
+
+BOOL func_ov003_021e812c(Ov003Rotor *self) {
+    BOOL r = func_ov000_02194c08(self);
+    if (r) {
+        Ov003Rot rot;
+        Ov003Vec v;
+        u8 i;
+        rot.x = self->rot.x;
+        rot.y = self->rot.y;
+        rot.z = self->rot.z;
+        rot.y += self->angle;
+        for (i = 0; i < self->count; i++) {
+            func_ov000_02190758(self->anim, &rot, 0);
+            func_01ffc9fc(&v, &data_ov003_021f6afc, rot.y);
+            VEC_Add(&self->pos, &v, &v);
+            self->animPos.x = v.x;
+            self->animPos.y = v.y;
+            self->animPos.z = v.z;
+            func_ov000_021903b4(self->anim);
+            rot.y += self->step;
+        }
+    }
+    return r;
+}
+
+void func_ov003_021e8210(Ov003Rotor *self) {
+    Ov003RtPlayer *pl = func_ov000_0219bf90();
+    Ov003Work *w = self->work;
+    switch (w->state) {
+    case 0:
+        func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x1000, 0);
+        func_ov000_021915a0(self->model);
+        self->unk_9c = 0;
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
+        self->work->state++;
+    case 1: {
+        Ov003Vec p;
+        p.x = pl->pos.x;
+        p.y = pl->pos.y;
+        p.z = pl->pos.z;
+        p.y = self->pos.y;
+        if (VEC_Distance(&self->pos, &p) >= 0x5800) {
+            return;
+        }
+        func_02049f44(data_02097e4c, 0x71, &self->pos, 0);
+        self->active = 1;
+        self->work->state++;
+        break;
+    }
+    case 2: {
+        s32 s = self->scale.z;
+        if (s >= 0x1000) {
+            return;
+        }
+        s += 0x11f;
+        if (s >= 0x1000) {
+            s = 0x1000;
+            func_ov000_0218996c(4, 4);
+            func_02049f44(data_02097e4c, 0x66, &self->pos, 0);
+            self->work->state++;
+        }
+        self->scale.x = s;
+        self->scale.y = s;
+        self->scale.z = s;
+        break;
+    }
+    case 3:
+        self->angle += self->speed;
+        func_ov003_021e83d0(self);
+        break;
+    }
+}
+
+void func_ov003_021e83a0(Ov003Rotor *self) {
+    func_ov000_02196c40(self);
+    if (!(self->ctl->flags & 0x60000000)) {
+        return;
+    }
+    func_ov000_02198360(self->work, 0x15, 0);
+}
+
+}
+}  // namespace m_021e8030
+
+typedef struct {
+    s32 x;
+    s32 y;
+    s32 z;
+} Ov003Vec;
 
 typedef struct {
     u16 state;
@@ -360,9 +1031,7 @@ extern "C" {
 
 extern void *data_ov000_021ccd64;
 extern void *data_02097e4c;
-extern const u16 data_ov003_021f6a9e[];
 extern const Ov003Vec data_ov003_021f6afc;
-extern const Ov003RtNames data_ov003_021f6a80;
 extern void func_ov000_0219433c(void *self);
 extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_ov000_02194758(void *self);
@@ -380,7 +1049,6 @@ extern s32 VEC_Distance(const Ov003Vec *a, const Ov003Vec *b);
 extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern Ov003Game54 *data_ov000_021ccd54;
-extern const u16 data_ov003_021f6a96[];
 extern void *data_0214a420;
 extern void func_ov000_02196c40(void *self);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
@@ -702,7 +1370,6 @@ void func_ov003_021e8aa0(Ov003Mover *self) {
     func_ov000_02198360(self->work, 1, 0);
 }
 
-extern const char *const data_ov003_021f6a80[];
 extern const Ov003Vec data_ov003_021f6ad8;
 extern Ov003Game54 *data_ov000_021ccd54;
 extern void *data_02097e4c;
@@ -774,7 +1441,7 @@ void func_ov003_021e8b70(Ov003Mover *self) {
     Ov003MvWork *w = self->work;
     switch (w->state) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov003_021f6a80[2], 0x1000, 0);
+        func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x1000, 0);
         if (self->type == 1) {
             func_ov000_021911c8(self->model, self->kind > 0 ? self->kind : 0x1000);
         }
@@ -977,7 +1644,6 @@ void func_ov003_021e8eb0(Ov003Mover2 *self) {
     func_ov000_02198360(self->work, 6, 0);
 }
 
-extern const char *const data_ov003_021f6a80[];
 extern void *data_02097e4c;
 extern Ov003Game54 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
@@ -1051,7 +1717,7 @@ void func_ov003_021e8f24(Ov003Gate *self) {
     Ov003GtPlayer *pl = func_ov000_0219bf90();
     switch (self->work->state) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov003_021f6a80[0], 0x1000, 0);
+        func_ov000_02190cb0(self->model, data_ov003_021f6a80, 0x1000, 0);
         func_ov000_02191690(self->model);
         self->lastId = 0;
         self->flash = 0;
@@ -1125,7 +1791,7 @@ void func_ov003_021e8f24(Ov003Gate *self) {
                     func_ov000_02198360(self->work, 0x15, 0);
                 } else {
                     Ov003Gate_Anim(self, 1);
-                    func_ov000_02190cb0(self->model, data_ov003_021f6a80[0], 0, 1);
+                    func_ov000_02190cb0(self->model, data_ov003_021f6a80, 0, 1);
                     func_ov000_02191318(self->model, -1);
                     {
                         Ov003GtModel *m = self->model;
@@ -1145,7 +1811,7 @@ void func_ov003_021e8f24(Ov003Gate *self) {
         }
         if (self->flash == 1) {
             Ov003Gate_Anim(self, 0);
-            func_ov000_02190cb0(self->model, data_ov003_021f6a80[0], 0, 1);
+            func_ov000_02190cb0(self->model, data_ov003_021f6a80, 0, 1);
             func_ov000_02191318(self->model, -1);
         }
         self->flash--;
@@ -1247,7 +1913,6 @@ extern "C" {
 
 extern void *data_ov000_021ccd64;
 extern Ov003Game54 *data_ov000_021ccd54;
-extern const Ov003FlyNames data_ov003_021f6a80;
 extern u8 data_ov003_021f6b20[];
 extern const Ov003FlyParam data_ov003_021f6b5c[];
 extern const s16 FX_SinCosTable_[];
@@ -1313,7 +1978,7 @@ void func_ov003_021e9448(Ov003Fly *self) {
     Ov003Work *w;
     switch (self->work->state) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov003_021f6a80.names[2], 0x89, 0);
+        func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x89, 0);
         func_ov000_021915a0(self->model);
         self->work->timer = 0;
         self->work->state++;
@@ -1361,7 +2026,7 @@ void func_ov003_021e9628(Ov003Fly *self) {
     s32 top = self->home.y;
     switch (w->state) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov003_021f6a80.names[3], 0x400, 0);
+        func_ov000_02190cb0(self->model, data_ov003_021f6a8c, 0x400, 0);
         func_ov000_021915a0(self->model);
         self->speed = -0x8f;
         self->work->timer = 0;
@@ -1383,7 +2048,7 @@ void func_ov003_021e9628(Ov003Fly *self) {
             self->speed -= self->speed >> 2;
             break;
         }
-        func_ov000_02190cb0(self->model, data_ov003_021f6a80.names[2], 0x89, 0);
+        func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x89, 0);
         func_ov000_021915a0(self->model);
         self->speed = 0x3d;
         self->work->state++;
@@ -1471,9 +2136,9 @@ void func_ov003_021e9858(Ov003Fly *self) {
     self->speed = (s32)(((s64)spd * FX_SinCosTable_[idx * 2 + 1] + 0x800) >> 12);
     }
     self->unk_98 = self->rotY;
-    self->rotX = data_ov003_021f6a80.rot[0];
-    self->rotY = data_ov003_021f6a80.rot[1];
-    self->rotZ = data_ov003_021f6a80.rot[2];
+    self->rotX = data_ov003_021f6a90.x;
+    self->rotY = data_ov003_021f6a90.y;
+    self->rotZ = data_ov003_021f6a90.z;
     self->rotX = func_ov000_0218bd5c(data_ov000_021ccd64, self->unitId)->unk_94;
     func_ov000_02198360(self->work, 6, 0);
 }
@@ -1621,7 +2286,6 @@ extern "C" {
 
 extern Ov003Game54 *data_ov000_021ccd54;
 extern void *data_02097e4c;
-extern const Ov003FlyNames data_ov003_021f6a80;
 extern const Ov003FlyParam data_ov003_021f6b5c[];
 extern const Ov003Vec data_ov003_021f6acc;
 extern const s16 FX_SinCosTable_[];
@@ -1719,7 +2383,7 @@ void func_ov003_021e9b74(Ov003Fly *self) {
     const Ov003FlyParam *prm = &data_ov003_021f6b5c[self->unk_1a];
     switch (self->work->state) {
     case 0:
-        func_ov000_02190cb0(self->model, data_ov003_021f6a80.names[1], 0x1000, 0);
+        func_ov000_02190cb0(self->model, data_ov003_021f6a84, 0x1000, 0);
         func_ov000_021915a0(self->model);
         self->work->timer = 0;
         self->work->state++;
@@ -1731,7 +2395,7 @@ void func_ov003_021e9b74(Ov003Fly *self) {
             self->home = (&self->target)[self->unk_102];
             self->unk_9c = -self->unk_9c;
             self->speed = -self->speed;
-            func_ov000_02190cb0(self->model, data_ov003_021f6a80.names[2], 0x400, 0);
+            func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x400, 0);
             func_ov000_021915a0(self->model);
             self->work->state++;
         }

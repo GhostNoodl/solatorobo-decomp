@@ -224,8 +224,8 @@ extern "C" {
 void func_0203de1c(void *p);
 void *func_0203dd9c(u32 size);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
-void func_ov003_021d9900(Ov010Vec *a, u16 b, Ov010Vec *c);
-void func_ov003_021d9980(Ov010Vec *a, u16 b, Ov010Vec *c);
+void func_ov003_021d9900(Ov010Vec *a, u16 b, const Ov010Vec *c);
+void func_ov003_021d9980(Ov010Vec *a, u16 b, const Ov010Vec *c);
 extern const Ov010Vec data_ov010_0220ec20;
 }
 

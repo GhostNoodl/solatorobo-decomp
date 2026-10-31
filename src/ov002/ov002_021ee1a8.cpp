@@ -22,12 +22,6 @@ typedef struct ov002_Staff {
     u16 scroll;
 } ov002_Staff;
 
-typedef struct ov002_StaffConfig {
-    u8 unk0[0x14];
-    const char *pathFmt;
-    const char *dir;
-} ov002_StaffConfig;
-
 typedef struct ov002_Disp021ee1a8 {
     u8 unk0[0xe];
     u8 unkE_0 : 2;
@@ -104,9 +98,9 @@ void func_ov002_021ee1a8(void) {
             }
             s->loader = o;
             id = s->id;
-            func_0206e900(dir, ((ov002_StaffConfig *)data_ov002_021f0d88)->dir);
+            func_0206e900(dir, data_ov002_021f0d88.dir2);
             func_0200779c(num, data_ov002_021f0e06, id);
-            func_02070874(path, ((ov002_StaffConfig *)data_ov002_021f0d88)->pathFmt, num);
+            func_02070874(path, data_ov002_021f0d88.pathFmt, num);
             o->v0x24(dir, path);
             s->sub = 4;
         }
