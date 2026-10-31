@@ -25,6 +25,8 @@ void func_0206d3f4(GameSave *s) {
 // Round raC: AlignUp written in place for the header or d, and the n sum as an inline: 11 / 2 to 21 / 4.
 // Round raE: AlignUp taking the card (a SysCard *card local, 29-32) or the page size (a local, 30) as a
 // named argument; passing data_02097e44 itself is 12 / 0.
+// Round rgB: tools/vnum.sh: every object (d, n, AlignUp's x/m) is uncoloured (propagated), so every wrong node
+// is a backend temp and no band lever applies.
 static inline u32 GameSave_AlignUp(u32 x) {
     u32 m = data_02097e44->totalSize; m -= 1;
     x += m;

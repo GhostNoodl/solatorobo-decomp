@@ -52,6 +52,9 @@ void func_ov000_0214dcc4(Obj0214dcc4 *self) {
 // a colour, not one variable: with a shared function-level g passed to both KeyR calls, our two g webs still get
 // r5 / r7. A KeyRR(p, u8 *&g, u16 &k) taking both g and k from the caller, for Key(m) (into key) and the walk,
 // gives 26 or 28 in all 120 declaration orders of p / last / key / g / k.
+// Round rgB: tools/vnum.sh: the second and third walks' p are split webs (nodes 28/29, band 3), Key's k/g and the
+// new result are inline temps (33-38), and only fl / i / last / p are user objects. ramerge's model still differs, so it
+// cannot say which band each of key / p / g / k has to move to.
 #include "ov000/LoCommon.h"
 
 extern "C" {

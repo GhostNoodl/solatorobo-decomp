@@ -16,6 +16,8 @@
 // computed once before the branch is 107.
 // Round raE: the shifted x as a caller-held u16 &sx out-parameter of SetPos (any slot) 11 / 0; x as a
 // const s32 & parameter 115, y as one 130. Nodes 62/64 are backend vregs, so no object lever reaches them.
+// Round rgB: tools/vnum.sh: the objects end at node 42 (x 39, pal 40, o 41, n 42), so the two shifted-x nodes would
+// have to come earlier in the codegen list (below about 58), not into another object band.
 typedef struct OamEntry0215e6f0 {
     u32 y : 8;
     u32 unk_00_8 : 8;

@@ -89,6 +89,9 @@ void func_ov000_021c4230(u8 *self) {
 // argument holds, and not n), so the miss is the n/idx pair. ramerge --pairs needs both numbered after the
 // callback load (backend band), unreachable for objects. LineAt with n or i held by the caller through a
 // reference (nref 10, iref 11-12), a cb local at each slot (10).
+// Round rgB: one WinCb021c4460 cb local reused for the unk_e8 and the unk_e4 calls makes the e4 callback a
+// SplitLifetimes web (band 3, node 22), but nothing colours that web: the backend forwards the load copy and
+// codegen loads the callback again (10 / 0), so the callback cannot become a low-numbered object.
 
 typedef struct Line021c4460 {
     u8 pad[0x28];

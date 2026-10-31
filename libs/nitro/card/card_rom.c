@@ -124,6 +124,8 @@ void func_0200d320(void) {
 // (8 / 0), one register below the ROM's r3/r2/r1; without the cacheBuffer local it is still 5 / 0.
 // Round raE: the page-read argument in a named local (5), a u32 *dst for ptr (15), word++ in the
 // subscript (8), const data (5).
+// Round rgB: tools/vnum.sh: word / ctrl are user objects 26 / 25 (r1 / r2) and data is uncoloured (codegen
+// temp 43, r0). ramerge's model does not reproduce this graph (2 nodes differ), so it cannot say which node holds r0.
 #define CARD_ROM_PAGE_SIZE 0x200
 
 typedef struct CARDiRomCache {

@@ -221,6 +221,10 @@ void func_ov000_02166be8(u8 *self) {
 // first, everything but the outer sine's register matches (ours r1, the ROM r6).
 // Round bgU: tools/ramerge.py shows the ROM's sine shares f_0's live range (the only single
 // coalesce that gives r6 with nothing else moving); no honest source for that found yet.
+// Round rgB: tools/vnum.sh: the sine is a codegen temp, not an object. Every named copy of it (in s, x0, f_0 as
+// s32, k reused, a new local, or written through an out-pointer Sin715c(&v, a) inline into any of these) is
+// forwarded back (3 / 0). ramerge has no renumbering for it, only the merges with f_0 or j, so this is a coalesce
+// (a copy into f_0's or j's register), not a band, and no band lever reaches it.
 #include "ov000/Vec.h"
 
 typedef struct {

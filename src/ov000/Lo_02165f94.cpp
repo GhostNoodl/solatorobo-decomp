@@ -151,6 +151,11 @@ Node0216607c *func_ov000_0216607c(void *self, Node0216607c *node, u8 *outIdx, BO
 // state at 0x10a), so the draft now uses it instead of a private Hdr6180 (27 / 0, same code). Testing the
 // flag through 02165f94's LoAnimValid inline is 62 (busy = ...; the ROM's moveq/movne/and #0xff needs the
 // if/else on a u8) or 652 (if (!LoAnimValid(..)) busy = FALSE; else ...).
+// Round rgB: tools/vnum.sh: oams is a user local (node 145, band 7) and the j value is a CSE temp (node 88, band 4;
+// j lives in memory because &j goes to 0216607c). Searching only merges/renumberings that touch these two (single
+// moves, and pair renumberings at every 4th position) finds nothing. Moving oams to a lower band also fails: a
+// split web (o or ob reused in the first loop) is 345-357, and a Parts struct for r's pos/oams pair at 0xc/0x10 (fields
+// or a struct copy, first loop or both loops) is 111-357, because oams then takes r7 and the whole function shifts.
 
 typedef struct {
     u32 y : 8;

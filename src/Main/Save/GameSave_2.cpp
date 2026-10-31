@@ -200,6 +200,8 @@ void func_0206d938(GameSave *s) {
 // Register-only: the ROM gives the first product r1 and the card pointer r2 (ours r2/r1). Passing
 // the page size as an argument (`RoundUp(x, data_02097e44->totalSize)`) fixes that pair (18 / 0) but
 // moves the `m` of the first align off the loaded register; honest_search finds nothing.
+// Round rgB: as in func_0206d43c, tools/vnum.sh shows every object uncoloured (d, n, end, payload and the inline
+// temps are all propagated); the swapped values are backend temps, so no band lever applies.
 // Rounds x up to the card's page size (SysCard::totalSize).
 static inline u32 GameSave_AlignUp(u32 x) {
     u32 m = data_02097e44->totalSize; m -= 1;

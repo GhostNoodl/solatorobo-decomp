@@ -75,6 +75,8 @@ void func_ov000_0215123c(void *self) {
 // Round raE: ramerge on this draft: bx renumbered past the backend constant (node 76) or before self, or
 // the constant between h and bx; bx lives across calls so it stays an object. A Model_PlayPartR with the
 // resource held by the caller (the 021d1f70 fix) gives 26 (PlayPart(0xb)), 31 (PlayPart(0)), 42 (both).
+// Round rgB: to get the depth constant between h and bx, all three go into one local struct ({bx, z, h} with z
+// written after bx): z is still propagated (only bx and h are scalarized), so the result is 30 / 0, the same as an @ bx.
 extern "C" {
 
 extern u8 *data_02097ce0;
