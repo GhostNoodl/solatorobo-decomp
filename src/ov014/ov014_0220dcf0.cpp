@@ -90,7 +90,7 @@ extern void func_ov000_0218996c(s32 a, s32 b);
 extern s32 VEC_Mag(const Ov014Vec *v);
 extern void VEC_Normalize(const Ov014Vec *in, Ov014Vec *out);
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
-extern void func_02040578(u16 *ang, const Ov014Vec *v);
+extern void func_02040578(u16 *ang, Ov014Vec *v);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
 extern void func_02065860(void *a, void *b);
 extern void *func_ov000_02199ba0(void *p);

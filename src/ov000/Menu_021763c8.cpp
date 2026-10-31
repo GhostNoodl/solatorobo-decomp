@@ -230,11 +230,16 @@ BOOL func_ov000_021766c4(void) {
 // ---- Lo_02176714
 namespace m_Lo_02176714 {
 
+typedef struct {
+    u8 unk_00[0x7a];
+    u16 unk_7a;
+} Shared02fe1534;
+
 extern "C" {
 extern void *data_02149ef8;
 extern void *data_02fe152c;
 extern u8 *data_0214a424;
-extern u8 data_02fe1534[];
+extern Shared02fe1534 data_02fe1534;
 extern void *data_0208ccc8;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
@@ -473,12 +478,9 @@ void func_ov000_02176714(VObj *self) {
         func_ov000_021546ec(LFLD(void *, self, 0x4c), data_0208ccc8, "cem3d1icn00", 0xffff);
         break;
     }
-    {
-        u8 *d = data_02fe1534;
-        LFLD(vu16, d, 0x7a) = LFLD(s32, self, 0xc);
-        LFLD(VObj *volatile, data_ov000_021ccd34, 0x14)->vfunc_38(1);
-        LFLD(u16, d, 0x7a) = 0;
-    }
+    data_02fe1534.unk_7a = LFLD(s32, self, 0xc);
+    LFLD(VObj *, data_ov000_021ccd34, 0x14)->vfunc_38(1);
+    data_02fe1534.unk_7a = 0;
     LFLD(void *, LFLD(void *, self, 0x4c), 0x8) = self;
     LFLD(s32, LFLD(void *, self, 0x4c), 0x20) = 4;
     {

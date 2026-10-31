@@ -85,13 +85,13 @@ static inline void MathVec_Copy(const MathVec *src, MathVec *dst) {
     dst->z = src->z;
 }
 
-void func_02040578(u16 *ang, const MathVec *v) {
+// `v` is not const: a `const T *` parameter is never ordered against stores, and the
+// target copies it one word at a time between the stores to `p` (round ckB).
+void func_02040578(u16 *ang, MathVec *v) {
     MathVec p;
     MathMtx43 mtx;
     MTX_Identity43_(&mtx);
-    ((volatile MathVec *)&p)->x = ((volatile MathVec *)v)->x;
-    ((volatile MathVec *)&p)->y = ((volatile MathVec *)v)->y;
-    ((volatile MathVec *)&p)->z = ((volatile MathVec *)v)->z;
+    MathVec_Copy(v, &p);
     ang[1] = -FX_Atan2(p.x, p.z);
     MTX_RotY43_(&mtx, FX_SinCosTable_[(ang[1] >> 4) * 2], FX_SinCosTable_[(ang[1] >> 4) * 2 + 1]);
     MTX_MultVec43(&p, &mtx, &p);

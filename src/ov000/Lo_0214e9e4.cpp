@@ -1,10 +1,19 @@
 #include "ov000/LoCommon.h"
 
+typedef struct {
+    u8 unk_00[0x68];
+    u16 unk_68;
+    u8 unk_6a[0x6];
+    u16 unk_70;
+    u8 unk_72[0x8];
+    u16 unk_7a;
+} Shared02fe1534;
+
 extern "C" {
 extern void *data_02149ef8;
 extern u8 *data_0214a424;
-extern u8 data_02fe1534[];
-extern void *volatile data_02fe152c;
+extern Shared02fe1534 data_02fe1534;
+extern void *data_02fe152c;
 extern u8 data_ov000_021ccd24[];
 extern void *data_ov000_021ca8d8[];
 extern u8 data_0208ba70[];
@@ -56,12 +65,11 @@ static inline void Setup0214e9e4(VObj *self) {
         func_0205aa30(LFLD(void *, data_ov000_021ccd24, 8));
     }
     {
-        u8 *d = data_02fe1534;
         u16 v = LFLD(u8, data_0214a424, 0x639);
-        LFLD(u16, d, 0x70) = 1;
-        LFLD(vu16, d, 0x7a) = v;
-        LFLD(VObj *volatile, data_ov000_021ccd24, 8)->vfunc_38(1);
-        LFLD(u16, d, 0x7a) = 0;
+        data_02fe1534.unk_70 = 1;
+        data_02fe1534.unk_7a = v;
+        LFLD(VObj *, data_ov000_021ccd24, 8)->vfunc_38(1);
+        data_02fe1534.unk_7a = 0;
     }
     m = (u8 *)func_0203dd9c(0x160);
     if (m != NULL) {
@@ -174,13 +182,10 @@ static inline void Setup0214e9e4(VObj *self) {
     LFLD(void *, LFLD(void *, self, 0x50), 0x84) = (void *)func_ov000_0214ffac;
     LFLD(void *, LFLD(void *, self, 0x50), 0x88) = (void *)func_ov000_02150104;
     id = LFLD(s32, self, 0xc);
-    {
-        u8 *d = data_02fe1534;
-        LFLD(u16, d, 0x70) = 0;
-        LFLD(vu16, d, 0x7a) = id;
-        LFLD(VObj *volatile, data_ov000_021ccd24, 8)->vfunc_38(1);
-        LFLD(vu16, d, 0x7a) = 0;
-    }
+    data_02fe1534.unk_70 = 0;
+    data_02fe1534.unk_7a = id;
+    LFLD(VObj *, data_ov000_021ccd24, 8)->vfunc_38(1);
+    data_02fe1534.unk_7a = 0;
     n = func_0205975c(data_02fe152c, 1);
     for (i = 0; i < n; i++) {
         k = func_ov000_0214bcc4(id, i);
@@ -189,7 +194,7 @@ static inline void Setup0214e9e4(VObj *self) {
             t->vfunc_74(func_02061e7c(k), k, 0xffff, 0xffff);
         }
     }
-    LFLD(s16, self, 0x64) = LFLD(u16, data_02fe1534, 0x68);
+    LFLD(s16, self, 0x64) = data_02fe1534.unk_68;
     LFLD(VObj *, self, 0x50)->vfunc_a8(LFLD(s32, LFLD(void *, self, 0x50), 0x98));
     LFLD(VObj *, self, 0x50)->vfunc_08();
     {
