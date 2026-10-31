@@ -82,7 +82,10 @@ static inline void ov002_Board_Add(void *self, void *node) {
     }
 }
 
-void func_ov002_021dd9dc(void *self, u8 *w, u8 *obj) {
+// `w` is an unused register parameter reused as a local: it has to be numbered
+// below every compiler temp, which only a parameter is. Each new piece reuses `a`
+// (the first loop's cursor), so it is a split web of `a` with the target's register.
+void func_ov002_021dd9dc(void *self, u8 *w) {
     Ent021dd9dc *e;
     w = FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *);
     u8 *a;
@@ -102,36 +105,36 @@ void func_ov002_021dd9dc(void *self, u8 *w, u8 *obj) {
         do {
             u16 id = e->id | 0x2000;
             if (func_0206ede8(id)[0] != 0x80) {
-            obj = (u8 *)func_0203dd9c(0xd4);
-            if (obj != NULL) {
-                *(VFunc **)obj = data_ov002_021efeb8;
-                func_ov002_021d7b80(obj);
-                *(VFunc **)obj = data_ov002_021efe9c;
-                func_ov002_021d7e54(obj);
+            a = (u8 *)func_0203dd9c(0xd4);
+            if (a != NULL) {
+                *(VFunc **)a = data_ov002_021efeb8;
+                func_ov002_021d7b80(a);
+                *(VFunc **)a = data_ov002_021efe9c;
+                func_ov002_021d7e54(a);
             }
-            FIELD(obj, 0x48, u16) = id;
-            VC(obj, 0x8)();
-            if (FIELD(obj, 0xac, s32) != 2) {
-                FIELD(obj, 0xac, s32) = 2;
-                FIELD(obj, 0xa4, s32) = 0;
-                FIELD(obj, 0xa8, s32) = 5;
+            FIELD(a, 0x48, u16) = id;
+            VC(a, 0x8)();
+            if (FIELD(a, 0xac, s32) != 2) {
+                FIELD(a, 0xac, s32) = 2;
+                FIELD(a, 0xa4, s32) = 0;
+                FIELD(a, 0xa8, s32) = 5;
             }
             {
                 Nibbles16 *d = &FIELD(FIELD(FIELD(w, 0x4, u8 *), 0x6c, u8 *), 0x6, Nibbles16);
                 s32 n0 = d->n0;
                 s32 n1 = d->n1;
-                FIELD(obj, 0x64, s32) = n0;
-                FIELD(obj, 0x68, s32) = n1;
+                FIELD(a, 0x64, s32) = n0;
+                FIELD(a, 0x68, s32) = n1;
             }
             {
                 s32 x = e->x;
                 s32 y = e->y;
-                FIELD(obj, 0x54, s32) = x;
-                FIELD(obj, 0x58, s32) = y;
+                FIELD(a, 0x54, s32) = x;
+                FIELD(a, 0x58, s32) = y;
             }
-            func_ov002_021e3b0c((s32 *)(obj + 0x4), (s32 *)(obj + 0x54), (s32 *)(obj + 0x64));
-            ov002_Piece_SetRot(obj, (u8)e->rot);
-            ov002_Board_Add(w, obj);
+            func_ov002_021e3b0c((s32 *)(a + 0x4), (s32 *)(a + 0x54), (s32 *)(a + 0x64));
+            ov002_Piece_SetRot(a, (u8)e->rot);
+            ov002_Board_Add(w, a);
             }
         } while ((++e)->id != 0xffff);
     }

@@ -1288,9 +1288,10 @@ BOOL func_ov000_02177f40(void);
 BOOL func_ov000_02178010(void);
 
 static inline u16 ItemIdx021782e0(u16 v) { return v & 0xfff; }
-/* `g` and `m` are unused register parameters reused as locals: as parameters their
- * values get the target's register order (g r4, 1 r6, vtable r8; m r8 in the loop). */
-void func_ov000_021782e0(VObj *self, void *g, VObj *m) {
+/* `g` is an unused register parameter reused as a local: as a parameter its value
+ * gets the target's register order (g r4, 1 r6, vtable r8). The loop's task object
+ * reuses `o`, so it is a split web of `o` (numbered below the other webs). */
+void func_ov000_021782e0(VObj *self, void *g) {
     s32 i;
     s32 a;
     s32 b;
@@ -1485,10 +1486,10 @@ void func_ov000_021782e0(VObj *self, void *g, VObj *m) {
     for (i = 0; i < 0x53; i++) {
         id = i + 0x2000;
         if (*(data_0214a424 + ItemIdx021782e0(id) + 0x2a) != 0) {
-            m = LFLD(VObj *, LoFindTask(10), 0x3c);
+            o = LFLD(VObj *, LoFindTask(10), 0x3c);
             a = func_0206ec48(id);
             b = func_0206f080(id);
-            e = (u8 *)m->vfunc_74(a, id, (u16)b, func_0206f0f4(id) >> 2);
+            e = (u8 *)o->vfunc_74(a, id, (u16)b, func_0206f0f4(id) >> 2);
             LFLD(s32, e, 0x10) = *func_0206ede8(id);
         }
     }
@@ -5257,41 +5258,48 @@ public:
     }
 };
 
-// `b` is declared as an unused third parameter and `a` as a one-element array
-// because that gives the target's register allocation. Each arm ends with its
-// own copy of the `new`/store/`vfunc_10` tail to get the target's branch layout.
-s32 func_ov000_0217ea30(VObj *self, s32 msg, void *b) {
+/* The two message strings fetched in each arm of case 0. Kept in a local struct:
+ * its fields are scalarized into compiler temps, which gives them the target's
+ * register order (plain locals are numbered above the `new` results). */
+struct Text0217ea30 {
+    void *desc;
+    void *title;
+};
+
+// Each arm ends with its own copy of the `new`/store/`vfunc_10` tail to get the
+// target's branch layout.
+s32 func_ov000_0217ea30(VObj *self, s32 msg) {
     u8 *p = LFLD(u8 *, self, 0x2c);
     void *g;
     VObj *o;
-    void *a[1];
+    struct Text0217ea30 text;
     switch (msg) {
     case 0:
         if (func_0206c4a0()) {
             if (func_02059454(data_02fe152c, 5, 1, 4)) {
                 g = data_02149ef8;
-                a[0] = func_0204c0e8(g, 0x1d);
-                b = func_0204c0e8(g, 0x8d);
+                text.desc = func_0204c0e8(g, 0x1d);
+                text.title = func_0204c0e8(g, 0x8d);
                 o = (VObj *)new Obj0217ea30;
                 LFLD(VObj *, self, 0x3c) = o;
-                o->vfunc_10(b);
+                o->vfunc_10(text.title);
             } else {
                 g = data_02149ef8;
-                a[0] = func_0204c0e8(g, 0x1c);
-                b = func_0204c0e8(g, 0x8d);
+                text.desc = func_0204c0e8(g, 0x1c);
+                text.title = func_0204c0e8(g, 0x8d);
                 o = (VObj *)new Obj0217ea30;
                 LFLD(VObj *, self, 0x3c) = o;
-                o->vfunc_10(b);
+                o->vfunc_10(text.title);
             }
         } else {
             g = data_02149ef8;
-            a[0] = func_0204c0e8(g, 0x1e);
-            b = func_0204c0e8(g, 0x8d);
+            text.desc = func_0204c0e8(g, 0x1e);
+            text.title = func_0204c0e8(g, 0x8d);
             o = (VObj *)new Obj0217ea30;
             LFLD(VObj *, self, 0x3c) = o;
-            o->vfunc_10(b);
+            o->vfunc_10(text.title);
         }
-        LFLD(void *, LFLD(void *, self, 0x3c), 0x1dc) = a[0];
+        LFLD(void *, LFLD(void *, self, 0x3c), 0x1dc) = text.desc;
         LFLD(s16, LFLD(void *, self, 0x3c), 0x1e0) = 0;
         LFLD(void *, LFLD(void *, self, 0x3c), 0x8) = self;
         LFLD(void *, LFLD(void *, self, 0x3c), 0x84) = (void *)func_ov000_02175e6c;
@@ -5419,7 +5427,7 @@ extern u8 data_0208b318[];
 extern void *data_02097e4c;
 extern u8 *data_02097dc8;
 u16 func_02059454(void *p, s32 a, s32 b, s32 c);
-s32 func_ov000_0217ea30(VObj *self, s32 msg, void *b);
+s32 func_ov000_0217ea30(VObj *self, s32 msg);
 void func_ov000_0216f42c(void *a, void *b);
 void func_020656b4(void *p);
 void func_ov000_0218e514(void *p, s32 a);
