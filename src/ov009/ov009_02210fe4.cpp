@@ -19,12 +19,12 @@ static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
     return Ov009_Sqrt64(sq);
 }
 
-void func_ov009_02210fe4(Ov009Actor *self) {
+void func_ov009_02210fe4(Ov009ActVt_02217aac *self) {
     Ov009Vec v;
     if (!Ov009_GameIdle()) {
         return;
     }
-    v = *(Ov009Vec *)(FLD(u8 *, self, 0x100) + FLD(u8, self, 0xfc) * 16);
+    v = *(Ov009Vec *)(((u8 *)self->unk_100) + self->unk_fc * 16);
     if (Ov009_DistXZ(&self->pos, &v) > 0x333) {
         self->unk_b8 = v;
         self->unk_40->flags |= 4;

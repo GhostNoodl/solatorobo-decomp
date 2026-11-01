@@ -71,7 +71,7 @@ extern void func_0203f364(Ov013Sub48 *p);
 extern BOOL func_01ffc584(Ov013Vec *a, Ov013Vec *b, s32 r, s32 h);
 extern Ov013Actor *func_ov000_0218bf1c(void *mgr, Ov013SpawnDesc *d, Ov013Vec *pos, u16 *rot, u16 a);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void func_ov000_0218dbe0(Ov013Actor *self, s32 a);
+extern void func_ov000_0218dbe0(Ov013Obj *self, s32 a);
 extern void func_ov000_0218a358(void *a, const Ov013Vec *b, Ov013Rot16 *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 }
 
@@ -151,7 +151,7 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
         self->rot[1] = 0;
         a_0 = func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000);
         n_0 = func_ov000_0218dfb4(a_0, 0x5c17);
-        for (p_0 = FLD(Ov013Actor *, a_0, 0xc); p_0 != NULL && n_0 != 0; p_0 = FLD(Ov013Actor *, p_0, 0x8)) {
+        for (p_0 = FLD(Ov013Actor *, a_0, 0xc); p_0 != NULL && n_0 != 0; p_0 = p_0->unk_08) {
             if (p_0->kind == 0x5c17) {
                 n_0--;
                 FLD(u8, p_0, 0xf0) = 1;
@@ -307,15 +307,15 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
                 Ov013_VecCopy(&p_1, &POLE(self, k)->v);
                 p_1.y = self->pos.y + 0x1800;
                 o = func_ov000_0218bf1c(data_ov000_021ccd64, &sd, &p_1, self->rot, 0xffff);
-                FLD(Ov013Flags8, o, 0x16).b0 = 1;
+                o->unk_16.b0 = 1;
                 o->unk_90 = self->unk_90;
                 if (POLE(self, k)->on) {
                     FLD(u8, o, 0xd4) = 1;
                 } else {
                     FLD(u8, o, 0xd4) = 0;
                 }
-                if (FLD(void *, o, 0x4c) != NULL) {
-                    FLD(u16, FLD(void *, o, 0x4c), 0x1c) = self->id;
+                if (o->unk_4c != NULL) {
+                    FLD(u16, o->unk_4c, 0x1c) = self->id;
                 }
                 FLD(u16, self, 0xde) = o->id;
             }

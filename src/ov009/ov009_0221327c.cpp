@@ -46,7 +46,7 @@ void func_ov009_0221327c(Ov009Actor *self) {
         s32 w = self->unk_64;
         p.x += func_02040498(w >> 1) + (w >> 1);
     }
-    p.y += func_02040528(FLD(s32, self, 0x68));
+    p.y += func_02040528(self->unk_68);
     p.z += func_02040528(0x4000) + 0x3000;
     e = func_02065f88(0x325, &p);
     e->v34(0, (u16)(self->rot[1] + 0x8000), 0);
@@ -70,7 +70,7 @@ static inline Ov009Actor *Ov009_FindActor4(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-void func_ov009_02213460(Ov009Actor *self) {
+void func_ov009_02213460(Ov009ActVt_02217d5c *self) {
     Ov009Vec p;
     Ov009Vec v;
     Ov009Sub40 *st = self->unk_40;
@@ -88,9 +88,9 @@ void func_ov009_02213460(Ov009Actor *self) {
         st->timer++;
         t = st->timer;
         if (t > 0xb4) {
-            Ov009Actor *a = Ov009_FindActor4(FLD(u16, self, 0xf0));
+            Ov009Actor *a = Ov009_FindActor4(self->unk_f0);
             if (a != NULL) {
-                func_ov000_0218d46c(a, FLD(u16, self, 0xf0), 0x15);
+                func_ov000_0218d46c(a, self->unk_f0, 0x15);
             }
             func_ov000_0218996c(0xf, 0x50);
             func_02049a48(data_02097e4c, 0x56, -1, -1, -1);

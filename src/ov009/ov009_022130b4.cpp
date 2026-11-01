@@ -24,7 +24,7 @@ static inline Ov009Actor *Ov009_FindActor(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-void func_ov009_022130b4(Ov009Actor *self) {
+void func_ov009_022130b4(Ov009ActVt_02217d5c *self) {
     if (func_ov000_0218d240(self) == NULL) {
         return;
     }
@@ -52,7 +52,7 @@ void func_ov009_022130b4(Ov009Actor *self) {
         u16 s;
         p = self->pos;
         func_ov000_0219a210(&p, data_ov009_022160ac, self->rot[1]);
-        a = Ov009_FindActor(FLD(u16, self, 0xf0));
+        a = Ov009_FindActor(self->unk_f0);
         r.x = a->rot[0];
         r.y = a->rot[1];
         r.z = a->rot[2];

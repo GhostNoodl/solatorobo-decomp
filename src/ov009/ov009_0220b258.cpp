@@ -9,10 +9,10 @@ extern s32 func_02040498(s32 max);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern void func_ov000_02191418(void *m, s32 a, s32 b);
 extern BOOL func_ov000_02191508(void *m);
-extern void func_ov000_0218dbe0(Ov009Actor *self, s32 turn);
+extern void func_ov000_0218dbe0(Ov009Obj *self, s32 turn);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
-void func_ov009_0220b258(Ov009Actor *self) {
+void func_ov009_0220b258(Ov009ActVt_022172e4 *self) {
     Ov009Sub40 *st = self->unk_40;
     Ov009Sub44 *s44;
     switch (st->state) {
@@ -26,10 +26,10 @@ void func_ov009_0220b258(Ov009Actor *self) {
         break;
     case 1:
         if (FLD(u32, self->unk_38, 0xe4) & 0x80) {
-            self->rot[1] = FLD(u16, self, 0xfc);
+            self->rot[1] = self->unk_fc;
             self->unk_98 = self->rot[1];
         } else {
-            self->rot[1] = func_01ffc128(FLD(u16, self, 0xfc), self->rot[1], 0x400, 1, 0x8000);
+            self->rot[1] = func_01ffc128(self->unk_fc, self->rot[1], 0x400, 1, 0x8000);
         }
         if (FLD(u32, self->unk_38, 0xe4) & 0x8000000) {
             func_ov000_02191418(self->unk_38, 3, 0);
@@ -45,7 +45,7 @@ void func_ov009_0220b258(Ov009Actor *self) {
             self->unk_40->state++;
             self->unk_40->timer = func_02040498(0x14) + 0x28;
             self->unk_a4 = 0xc00;
-            FLD(u16, self, 0xfc) += 0x8000;
+            self->unk_fc += 0x8000;
             func_02065f88(0x2bc, &self->pos);
             func_02065f88(0x2bd, &self->pos);
             func_02049f44(data_02097e4c, 0x3d, &self->pos, 0);
@@ -56,11 +56,11 @@ void func_ov009_0220b258(Ov009Actor *self) {
             st->timer--;
         }
         if (st->timer == 0) {
-            FLD(u16, self, 0xfe)++;
-            if (FLD(u16, self, 0xfe) <= 1) {
+            self->unk_fe++;
+            if (self->unk_fe <= 1) {
                 self->unk_40->state = 0;
             } else {
-                FLD(u16, self, 0xfe) = 0;
+                self->unk_fe = 0;
                 func_ov000_02198360(self->unk_40, 1, 0);
             }
         }

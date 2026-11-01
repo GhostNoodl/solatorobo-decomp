@@ -5,21 +5,21 @@ extern "C" {
 extern void *data_ov013_0220bd2c;
 extern Ov013Actor *func_ov000_0219bf90(void);
 
-Ov013Actor *func_ov013_02207968(Ov013Actor *self) {
+Ov013Act_02207968 *func_ov013_02207968(Ov013Act_02207968 *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = &data_ov013_0220bd2c;
-    FLD(u8, self, 0xf0) = 0;
-    FLD(s32, self, 0xf4) = 0;
-    FLD(u8, self, 0xf1) = 0;
-    FLD(u8, self, 0xf2) = 0;
-    FLD(u8, self, 0x110) = 0;
-    FLD(u8, self, 0x111) = 0;
-    FLD(s32, self, 0xf8) = 0;
-    FLD(s32, self, 0xfc) = 0;
-    FLD(s32, self, 0x100) = 0;
-    FLD(s32, self, 0x104) = 0;
-    FLD(s32, self, 0x108) = 0;
-    FLD(s32, self, 0x10c) = 0;
+    self->unk_f0 = 0;
+    self->unk_f4 = 0;
+    self->unk_f1 = 0;
+    self->unk_f2 = 0;
+    self->unk_110 = 0;
+    self->unk_111 = 0;
+    self->unk_f8.x = 0;
+    self->unk_f8.y = 0;
+    self->unk_f8.z = 0;
+    self->unk_104.x = 0;
+    self->unk_104.y = 0;
+    self->unk_104.z = 0;
     return self;
 }
 

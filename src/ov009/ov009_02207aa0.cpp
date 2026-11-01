@@ -77,7 +77,7 @@ void func_ov009_02207ccc(Ov009Multi *self) {
     for (i = 0; i < 4; i++) {
         s32 f = 1;
         if (i == 0) f = 2;
-        func_ov000_0218ffdc(&self->models[i], FLD(void *, self, 0x34), f, 0);
+        func_ov000_0218ffdc(&self->models[i], ((void *)self->unk_34), f, 0);
         self->models[i].unk_78 = self->pos;
         func_ov000_02190758(&self->models[i], self->rot, 0);
     }

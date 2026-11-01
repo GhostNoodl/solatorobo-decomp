@@ -5,16 +5,16 @@ extern "C" {
 extern Ov014Vec *func_ov000_0218d2e0(void *self);
 extern void VEC_Normalize(Ov014Vec *a, Ov014Vec *b);
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
-extern void func_ov000_0218d918(Ov014Actor *self, Ov014Vec *v, s32 a);
-extern void func_ov000_0218dbe0(Ov014Actor *self, s32 a);
+extern void func_ov000_0218d918(Ov014Obj *self, Ov014Vec *v, s32 a);
+extern void func_ov000_0218dbe0(Ov014Obj *self, s32 a);
 extern u16 FX_Atan2(s32 x, s32 z);
-extern void func_ov014_02208fe4(Ov014Actor *self);
+extern void func_ov014_02208fe4(Ov014ActEx_02208618 *self);
 
 #define OV014_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV014_SQRT_RESULT (*(volatile u32 *)0x40002b4)
 #define OV014_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
-void func_ov014_02208a9c(Ov014Actor *self) {
+void func_ov014_02208a9c(Ov014ActEx_02208618 *self) {
     Ov014Vec d;
     switch (self->unk_40->state) {
     case 0: {
@@ -25,9 +25,9 @@ void func_ov014_02208a9c(Ov014Actor *self) {
             n->unk_22_1 = 1;
         }
         self->unk_9c = 0;
-        FLD(s32, self, 0xa0) = 0;
-        FLD(s32, self, 0xa4) = 0;
-        FLD(s32, self, 0xa8) = 0;
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
         p = func_ov000_0218d2e0(self);
         if (p != NULL) {
             s32 r;
@@ -54,11 +54,11 @@ void func_ov014_02208a9c(Ov014Actor *self) {
             d.z = Ov014_FxMul(r, OV014_COS(self->rot[1]));
             VEC_Normalize(&d, &d);
             self->unk_9c = Ov014_FxMul(d.x, 0x666);
-            FLD(s32, self, 0xa0) = Ov014_FxMul(d.y, 0x666);
-            FLD(s32, self, 0xa4) = Ov014_FxMul(d.z, 0x666);
+            self->unk_a0 = Ov014_FxMul(d.y, 0x666);
+            self->unk_a4 = Ov014_FxMul(d.z, 0x666);
             FX_Atan2(r, self->unk_84.y - self->pos.y);
             self->rot[0] = FX_Atan2(self->pos.y - self->unk_84.y, r);
-            FLD(u32, self, 0xd0) |= 0x200000;
+            self->unk_d0 |= 0x200000;
         } else {
             self->unk_9c = 0x666;
             self->unk_98 = self->rot[1];
@@ -67,22 +67,22 @@ void func_ov014_02208a9c(Ov014Actor *self) {
             Ov014Sub48 *m = self->unk_48;
             m->unk_50 = 0;
             m->unk_54 = 0;
-            FLD(u32, m, 0x58) = 0;
+            m->unk_58 = 0;
         }
-        FLD(u8, self, 0xd4) = 0;
+        self->unk_d4 = 0;
         self->unk_40->state++;
         break;
     }
     case 1:
-        if (FLD(u32, self, 0xd0) & 0x200000) {
+        if (self->unk_d0 & 0x200000) {
             func_ov000_0218d918(self, &self->unk_84, 0x1000);
             VEC_Add(&self->pos, (Ov014Vec *)&self->unk_9c, &self->pos);
         } else {
             func_ov000_0218dbe0(self, 0);
         }
         func_ov014_02208fe4(self);
-        if ((self->unk_48->unk_50 & 0x20000000) || ++FLD(u8, self, 0xd4) >= 200) {
-            FLD(u32, self, 0xd0) |= 0x1000;
+        if ((self->unk_48->unk_50 & 0x20000000) || ++self->unk_d4 >= 200) {
+            self->unk_d0 |= 0x1000;
             func_ov000_02198360(self->unk_40, 0x15, 0);
         }
         break;

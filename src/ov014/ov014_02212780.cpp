@@ -14,9 +14,9 @@ extern BOOL func_ov000_0218cf5c(Ov014Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
 extern s32 func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
 
-BOOL func_ov014_02212780(Ov014Actor *self) {
+BOOL func_ov014_02212780(Ov014Act_0221267c *self) {
     BOOL r = func_ov000_0218cf5c(self);
-    if (FLD(s16, self, 0xf0) >= 0) {
+    if (self->unk_f0 >= 0) {
         r = (r & func_ov000_0218f110((u8 *)self + 0xf0)) ? TRUE : FALSE;
     }
     return r;
@@ -71,7 +71,7 @@ void func_ov014_022127c4(Ov014Actor *self) {
     m->unk_c2_5 = 0;
     self->unk_38->unk_c2_8 = 1;
     self->unk_38->unk_50 = &FLD(u8, self, 0x314);
-    FLD(u8, self->unk_38, 0xbe) = 0;
+    self->unk_38->unk_be = 0;
     FLD(Ov014Flags, self->unk_38, 0xc2).b4 = 0;
 }
 

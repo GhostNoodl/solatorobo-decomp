@@ -74,7 +74,7 @@ struct Ov009Bit84 {
     u16 b1 : 15;
 };
 
-void func_ov009_02212d78(Ov009Actor *self) {
+void func_ov009_02212d78(Ov009ActVt_02217d5c *self) {
     Ov009PosMsg msg;
     Ov009Actor *a;
     if (FLD(Ov009EaBits, self, 0xea).b13) {
@@ -82,30 +82,30 @@ void func_ov009_02212d78(Ov009Actor *self) {
         s32 px = p->x;
         s32 pz = p->z;
         s32 ang = Ov009_GetAng2(p);
-        if ((u16)(FX_Atan2(FLD(s32, self, 0x11c) - px, FLD(s32, self, 0x124) - pz) - ang + 0x4000) <= 0x8000 &&
+        if ((u16)(FX_Atan2(self->unk_11c.x - px, self->unk_11c.z - pz) - ang + 0x4000) <= 0x8000 &&
             self->unk_ea_6 != 1) {
             self->unk_ea_6 = 1;
-            Ov009_Notify(self->id, self->unk_50[0], self->unk_50[1], &FLD(Ov009Vec, self, 0x11c));
+            Ov009_Notify(self->id, self->unk_50[0], self->unk_50[1], &self->unk_11c);
         }
     }
     func_ov003_021d3008(self);
-    if (FLD(void *, self, 0x58) != NULL) {
-        func_0203f9dc(FLD(void *, self, 0x58), &FLD(u8, self, 0xf8));
+    if (self->unk_58 != NULL) {
+        func_0203f9dc(self->unk_58, &self->unk_f8);
         if (self->unk_93_4) {
-            if (FLD(Ov009Bit84, FLD(void *, self, 0x58), 0x84).b0 != 1) {
-                func_0203f8d8(FLD(void *, self, 0x58));
+            if (FLD(Ov009Bit84, self->unk_58, 0x84).b0 != 1) {
+                func_0203f8d8(self->unk_58);
             }
         } else {
-            if (FLD(Ov009Bit84, FLD(void *, self, 0x58), 0x84).b0) {
-                func_0203f920(FLD(void *, self, 0x58));
+            if (FLD(Ov009Bit84, self->unk_58, 0x84).b0) {
+                func_0203f920(self->unk_58);
             }
         }
     }
-    a = Ov009_FindActor(FLD(u16, self, 0xf0));
+    a = Ov009_FindActor(self->unk_f0);
     if (a == NULL) {
         return;
     }
-    msg.pos = FLD(Ov009Vec, self, 0x11c);
+    msg.pos = self->unk_11c;
     {
         u16 x = a->rot[0];
         u16 y = a->rot[1];

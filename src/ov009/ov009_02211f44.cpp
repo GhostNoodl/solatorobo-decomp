@@ -5,13 +5,13 @@ extern "C" {
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 
 void func_ov009_02211f44(Ov009Actor *self) {
-    u8 *p = FLD(u8 *, FLD(void *, self, 0x4), 0x2c);
+    u8 *p = FLD(u8 *, self->unk_04, 0x2c);
     s32 v;
     if (p == NULL) {
         return;
     }
-    if (FLD(u32, self, 0x8) & 0x10) {
-        v = FLD(u8, self, 0xae);
+    if (self->unk_08 & 0x10) {
+        v = self->unk_ae;
     } else {
         v = -1;
     }
@@ -90,17 +90,17 @@ void func_ov009_02211f9c(Ov009Actor *self) {
     }
     data_02097dd0->cur = saved;
     c = func_0206fef8((void *)self->kind);
-    o = FLD(u32 *, FLD(u8 *, self, 0x34), 0x84);
+    o = FLD(u32 *, self->unk_34, 0x84);
     v = o != NULL ? *o : 0;
     if (v != 0) {
         void *q = func_0203dd9c(0x98);
         if (q != NULL) {
             func_0203f80c(q);
         }
-        FLD(void *, self, 0x58) = q;
-        o = FLD(u32 *, FLD(u8 *, self, 0x34), 0x84);
-        func_0203f990(FLD(void *, self, 0x58), o != NULL ? *o : 0);
-        func_0203f9b8(FLD(void *, self, 0x58), FLD(s16, c, 0x10));
+        self->unk_58 = q;
+        o = FLD(u32 *, self->unk_34, 0x84);
+        func_0203f990(self->unk_58, o != NULL ? *o : 0);
+        func_0203f9b8(self->unk_58, FLD(s16, c, 0x10));
         {
             void *obj;
             Ov009Mtx43b t;
@@ -110,7 +110,7 @@ void func_ov009_02211f9c(Ov009Actor *self) {
             u16 rz;
             BOOL set = FALSE;
             rz = self->rot[2];
-            obj = FLD(void *, self, 0x58);
+            obj = self->unk_58;
             ry = self->rot[1];
             rx = self->rot[0];
             MTX_Identity43_(&mt);
@@ -141,7 +141,7 @@ void func_ov009_02211f9c(Ov009Actor *self) {
             mt.t.z = self->pos.z;
             func_0203f9dc(obj, &mt);
         }
-        func_0203f8d8(FLD(void *, self, 0x58));
+        func_0203f8d8(self->unk_58);
     }
     p = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {

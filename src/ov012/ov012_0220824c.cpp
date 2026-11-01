@@ -78,7 +78,7 @@ void func_ov012_02208294(Ov012Actor *self) {
             e->v24(0, 0x1333, 0);
             e->v0c(0xe66);
         }
-        if (FLD(s16, self->unk_38, 0xc4) == 1) {
+        if (self->unk_38->unk_c4 == 1) {
             self->unk_9c = 0;
             self->unk_ea_3 = 1;
             self->unk_a0 = 0;

@@ -20,7 +20,7 @@ static inline Ov009Actor *Ov009_FindActor3(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-void func_ov009_02213d2c(Ov009Actor *self) {
+void func_ov009_02213d2c(Ov009ActVt_02217cb0 *self) {
     Ov009Actor *t = Ov009_FindActor3(self->unk_90);
     Ov009Sub40 *st;
     if (t == NULL) {
@@ -62,10 +62,10 @@ void func_ov009_02213d2c(Ov009Actor *self) {
         }
         break;
     case 0x14:
-        FLD(Ov009Vec, self, 0xf0).x = t->pos.x;
-        FLD(Ov009Vec, self, 0xf0).y = t->pos.y;
-        FLD(Ov009Vec, self, 0xf0).z = t->pos.z;
-        func_ov000_0218ddd4(self, &FLD(Ov009Vec, self, 0xf0), -0xcd);
+        self->unk_f0.x = t->pos.x;
+        self->unk_f0.y = t->pos.y;
+        self->unk_f0.z = t->pos.z;
+        func_ov000_0218ddd4(self, &self->unk_f0, -0xcd);
         self->unk_9c = self->unk_b0->unk_00 << 1;
         if (self->unk_48 != NULL) {
             func_ov000_021987b8(self->unk_48, 1, 0, 0);

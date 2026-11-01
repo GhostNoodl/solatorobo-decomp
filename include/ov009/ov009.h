@@ -251,9 +251,10 @@ struct Ov009Sub48 {
     u8 unk_4c[0x4];
     u32 unk_50;
     u32 unk_54;
-    u8 unk_58[0x8];
+    u32 unk_58;
+    s32 unk_5c;
     s32 unk_60;
-    u8 unk_64[0x4];
+    s32 unk_64;
     Ov009Vec unk_68;
     u8 unk_74[0x26];
     u16 unk_9a_0 : 1;
@@ -275,10 +276,12 @@ struct Ov009Param {
     u16 unk_0a_10 : 6;
 };
 
-// Common actor base (the ov003 actor class); subclass fields start at 0xf0.
-class Ov009Actor : public Ov009V {
+// The object base shared by the ov003 actor (Ov009Actor, built by func_ov003_021d0c1c) and the
+// ov000 actor (Ov009ActorEx, built by func_ov000_02194074): the fields below 0xac.
+class Ov009Obj : public Ov009V {
 public:
-    u8 unk_04[0x8];
+    void *unk_04;
+    u32 unk_08;
     u16 id;
     u16 kind;
     u8 unk_10[0x8];
@@ -289,17 +292,21 @@ public:
     u16 unk_20;
     u8 unk_22[0xe];
     u32 unk_30;
-    u8 unk_34[0x4];
+    u8 *unk_34;
     Ov009Sub38 *unk_38;
     Ov009V *unk_3c;
     Ov009Sub40 *unk_40;
     Ov009Sub44 *unk_44;
     Ov009Sub48 *unk_48;
-    u8 unk_4c[0x4];
+    u8 *unk_4c;
     u16 *unk_50;
-    u8 unk_54[0x10];
+    u8 unk_54[0x4];
+    void *unk_58;
+    u8 unk_5c[0x4];
+    void *unk_60;
     s32 unk_64;
-    u8 unk_68[0x8];
+    s32 unk_68;
+    s32 unk_6c;
     Ov009Vec pos;
     u16 rot[3];
     u8 unk_82[0x2];
@@ -320,15 +327,28 @@ public:
     s32 unk_a0;
     s32 unk_a4;
     s32 unk_a8;
-    u8 unk_ac[0x4];
+};
+
+// Common actor base (the ov003 actor class); subclass fields start at 0xf0.
+class Ov009Actor : public Ov009Obj {
+public:
+    u8 unk_ac[0x2];
+    u8 unk_ae;
+    u8 unk_af;
     Ov009Param *unk_b0;
-    u8 unk_b4[0x2];
+    u16 unk_b4;
     u16 unk_b6;
     Ov009Vec unk_b8;
     s32 unk_c4;
     s32 unk_c8;
     s32 unk_cc;
-    u8 unk_d0[0x1a];
+    u8 unk_d0[0x4];
+    u8 unk_d4;
+    u8 unk_d5[0x3];
+    void *unk_d8;
+    u8 unk_dc[0x2];
+    u16 unk_de;
+    u8 unk_e0[0xa];
     u16 unk_ea_0 : 3;
     u16 unk_ea_3 : 3;
     u16 unk_ea_6 : 2;
@@ -349,6 +369,20 @@ public:
     u16 unk_ee_6 : 1;
     u16 unk_ee_7 : 2;
     u16 unk_ee_9 : 7;
+};
+
+// The ov000 actor base (func_ov000_02194074): 0xd0 bytes, with its own fields from 0xac.
+class Ov009ActorEx : public Ov009Obj {
+public:
+    u8 unk_ac[0x4];
+    Ov009Param *unk_b0;
+    void *unk_b4[2];
+    void *unk_bc;
+    s32 unk_c0;
+    s32 unk_c4;
+    s32 unk_c8;
+    u8 unk_cc[0x2];
+    u16 unk_ce;
 };
 
 struct Ov009Names {
@@ -394,7 +428,11 @@ struct Ov009Game54 {
     u8 unk_04[0x8c];
     s32 unk_90;
     s32 unk_94;
-    u8 unk_98[0x3c];
+    u8 unk_98[0x32];
+    u8 unk_ca;
+    u8 unk_cb;
+    u8 unk_cc;
+    u8 unk_cd[0x7];
     s32 unk_d4;
 };
 
@@ -458,5 +496,313 @@ char *func_0207011c(void *res);
 char *func_020701d4(void *res);
 u8 *func_02070558(void *res);
 }
+
+// Actor class of func_ov009_02200b48 (vtable data_ov009_02216d20).
+class Ov009Act_02200b48 : public Ov009Actor {
+public:
+    u16 unk_f0;
+    u16 unk_f2;
+    u16 unk_f4;
+    u16 unk_f6;
+    u8 unk_f8[0x4];
+    u8 unk_fc;
+    u8 unk_fd[0x23];
+    Ov009Vec unk_120;
+};
+SIZE_ASSERT(Ov009Act_02200b48, 0x12c);
+
+// Actor class of func_ov009_02202788 (vtable data_ov009_02216e78).
+class Ov009Act_02202788 : public Ov009Actor {
+public:
+    u16 unk_f0;
+    u8 unk_f2[0x2];
+    s32 unk_f4;
+    u8 unk_f8[0x4];
+    u8 unk_fc;
+    u8 unk_fd[0x23];
+    Ov009Vec unk_120;
+};
+SIZE_ASSERT(Ov009Act_02202788, 0x12c);
+
+// Actor class with vtable data_ov009_022163f4 (built inline by the ov003 factory).
+class Ov009ActVt_022163f4 : public Ov009Actor {
+public:
+    u8 unk_f0;
+    u8 unk_f1[0x3];
+    s32 unk_f4;
+};
+SIZE_ASSERT(Ov009ActVt_022163f4, 0xf8);
+
+// Actor class with vtable data_ov009_022164a0 (built inline by the ov003 factory).
+class Ov009ActVt_022164a0 : public Ov009Actor {
+public:
+    u16 unk_f0;
+    u8 unk_f2[0x2];
+};
+SIZE_ASSERT(Ov009ActVt_022164a0, 0xf4);
+
+// Actor class with vtable data_ov009_022165f8 (built inline by the ov003 factory).
+class Ov009ActVt_022165f8 : public Ov009Actor {
+public:
+    u8 unk_f0;
+    u8 unk_f1;
+    u16 unk_f2;
+    u16 unk_f4;
+    u8 unk_f6[0x2];
+    s32 unk_f8;
+};
+SIZE_ASSERT(Ov009ActVt_022165f8, 0xfc);
+
+// Actor class with vtable data_ov009_022166a4 (built inline by the ov003 factory).
+class Ov009ActVt_022166a4 : public Ov009Actor {
+public:
+    u16 unk_f0;
+    u8 unk_f2[0x2];
+    Ov009Vec unk_f4;
+    Ov009Vec unk_100;
+};
+SIZE_ASSERT(Ov009ActVt_022166a4, 0x10c);
+
+// Actor class with vtable data_ov009_02216750 (built inline by the ov003 factory).
+class Ov009ActVt_02216750 : public Ov009Actor {
+public:
+    Ov009Vec unk_f0;
+    Ov009Vec unk_fc;
+};
+SIZE_ASSERT(Ov009ActVt_02216750, 0x108);
+
+// Actor class with vtable data_ov009_02216a00 (built inline by the ov003 factory).
+class Ov009ActVt_02216a00 : public Ov009Actor {
+public:
+    u16 unk_f0;
+    u8 unk_f2[0x2];
+};
+SIZE_ASSERT(Ov009ActVt_02216a00, 0xf4);
+
+// Actor class with vtable data_ov009_02216bc8 (built inline by the ov003 factory).
+class Ov009ActVt_02216bc8 : public Ov009Actor {
+public:
+    u8 unk_f0;
+    u8 unk_f1;
+    u8 unk_f2;
+    u8 unk_f3;
+    u16 unk_f4;
+    u16 unk_f6;
+    s32 unk_f8;
+    s32 unk_fc;
+    Ov009Vec unk_100;
+    u8 unk_10c[0x3c];
+};
+SIZE_ASSERT(Ov009ActVt_02216bc8, 0x148);
+
+// Actor class with vtable data_ov009_02216dcc (built inline by the ov003 factory).
+class Ov009ActVt_02216dcc : public Ov009Actor {
+public:
+    u16 unk_f0;
+    u16 unk_f2;
+    u16 unk_f4;
+    u8 unk_f6;
+    u8 unk_f7;
+};
+SIZE_ASSERT(Ov009ActVt_02216dcc, 0xf8);
+
+// Actor class with vtable data_ov009_02217128 (built inline by the ov003 factory).
+class Ov009ActVt_02217128 : public Ov009Actor {
+public:
+    u8 unk_f0;
+    u8 unk_f1[0x3];
+    s32 unk_f4;
+    Ov009Vec unk_f8;
+    Ov009Vec unk_104;
+};
+SIZE_ASSERT(Ov009ActVt_02217128, 0x110);
+
+// Actor class with vtable data_ov009_022171d4 (built inline by the ov003 factory).
+class Ov009ActVt_022171d4 : public Ov009Actor {
+public:
+    u16 unk_f0;
+    u16 unk_f2;
+    u16 unk_f4;
+    u8 unk_f6[0x2];
+    Ov009Vec unk_f8;
+};
+SIZE_ASSERT(Ov009ActVt_022171d4, 0x104);
+
+// Actor class with vtable data_ov009_022172e4 (built inline by the ov003 factory).
+class Ov009ActVt_022172e4 : public Ov009Actor {
+public:
+    Ov009Vec unk_f0;
+    u16 unk_fc;
+    u16 unk_fe;
+};
+SIZE_ASSERT(Ov009ActVt_022172e4, 0x100);
+
+// Actor class with vtable data_ov009_02217390 (built inline by the ov003 factory).
+class Ov009ActVt_02217390 : public Ov009Actor {
+public:
+    u16 unk_f0;
+    u16 unk_f2;
+    u16 unk_f4;
+    u8 unk_f6[0x2];
+    Ov009Vec unk_f8;
+};
+SIZE_ASSERT(Ov009ActVt_02217390, 0x104);
+
+// Actor class with vtable data_ov009_02217640 (built inline by the ov003 factory).
+class Ov009ActVt_02217640 : public Ov009Actor {
+public:
+    u16 unk_f0;
+    u16 unk_f2;
+    u16 unk_f4;
+    u8 unk_f6;
+    u8 unk_f7;
+    s32 unk_f8;
+    Ov009Vec unk_fc;
+    Ov009Vec unk_108;
+};
+SIZE_ASSERT(Ov009ActVt_02217640, 0x114);
+
+// Actor class with vtable data_ov009_022176ec (built inline by the ov003 factory).
+class Ov009ActVt_022176ec : public Ov009Actor {
+public:
+    Ov009Vec unk_f0;
+};
+SIZE_ASSERT(Ov009ActVt_022176ec, 0xfc);
+
+// Actor class with vtable data_ov009_022178f0 (built inline by the ov003 factory).
+class Ov009ActVt_022178f0 : public Ov009Actor {
+public:
+    Ov009Vec unk_f0;
+    Ov009Vec unk_fc;
+    u16 unk_108;
+    u16 unk_10a;
+    s32 unk_10c;
+};
+SIZE_ASSERT(Ov009ActVt_022178f0, 0x110);
+
+// Actor class with vtable data_ov009_02217a00 (built inline by the ov003 factory).
+class Ov009ActVt_02217a00 : public Ov009Actor {
+public:
+    u16 unk_f0;
+    u8 unk_f2[0x6];
+    u8 unk_f8;
+    u8 unk_f9[0x23];
+    Ov009Vec unk_11c;
+    u8 unk_128[0x18];
+};
+SIZE_ASSERT(Ov009ActVt_02217a00, 0x140);
+
+// Actor class with vtable data_ov009_02217aac (built inline by the ov003 factory).
+class Ov009ActVt_02217aac : public Ov009Actor {
+public:
+    Ov009Vec unk_f0;
+    u8 unk_fc;
+    u8 unk_fd;
+    u8 unk_fe;
+    u8 unk_ff;
+    void *unk_100;
+    void *unk_104;
+};
+SIZE_ASSERT(Ov009ActVt_02217aac, 0x108);
+
+// Actor class with vtable data_ov009_02217b58 (built inline by the ov003 factory).
+class Ov009ActVt_02217b58 : public Ov009Actor {
+public:
+    Ov009Vec unk_f0;
+    Ov009Vec unk_fc;
+    u8 unk_108;
+    u8 unk_109[0x3];
+    s32 unk_10c;
+};
+SIZE_ASSERT(Ov009ActVt_02217b58, 0x110);
+
+// Actor class with vtable data_ov009_02217c04 (built inline by the ov003 factory).
+class Ov009ActVt_02217c04 : public Ov009Actor {
+public:
+    Ov009Vec unk_f0;
+};
+SIZE_ASSERT(Ov009ActVt_02217c04, 0xfc);
+
+// Actor class with vtable data_ov009_02217cb0 (built inline by the ov003 factory).
+class Ov009ActVt_02217cb0 : public Ov009Actor {
+public:
+    Ov009Vec unk_f0;
+};
+SIZE_ASSERT(Ov009ActVt_02217cb0, 0xfc);
+
+// Actor class with vtable data_ov009_02217d5c (built inline by the ov003 factory).
+class Ov009ActVt_02217d5c : public Ov009Actor {
+public:
+    u16 unk_f0;
+    u8 unk_f2[0x6];
+    u8 unk_f8;
+    u8 unk_f9[0x23];
+    Ov009Vec unk_11c;
+    u8 unk_128[0x18];
+};
+SIZE_ASSERT(Ov009ActVt_02217d5c, 0x140);
+
+// Actor class with vtable data_ov009_02217e08 (built inline by the ov003 factory).
+class Ov009ActVt_02217e08 : public Ov009Actor {
+public:
+    s32 unk_f0;
+};
+SIZE_ASSERT(Ov009ActVt_02217e08, 0xf4);
+
+// Actor class with vtable data_ov009_02217eb4 (built inline by the ov003 factory).
+class Ov009ActVt_02217eb4 : public Ov009Actor {
+public:
+    Ov009Vec unk_f0;
+    Ov009Vec unk_fc;
+    u8 unk_108;
+    u8 unk_109;
+    u8 unk_10a[0x2];
+};
+SIZE_ASSERT(Ov009ActVt_02217eb4, 0x10c);
+
+// Actor class with vtable data_ov009_02217f60 (built inline by the ov003 factory).
+class Ov009ActVt_02217f60 : public Ov009Actor {
+public:
+    Ov009Vec unk_f0;
+    Ov009Vec unk_fc;
+    u8 unk_108;
+    u8 unk_109[0x3];
+    s32 unk_10c;
+};
+SIZE_ASSERT(Ov009ActVt_02217f60, 0x110);
+
+// Actor class with vtable data_ov009_0221802c (built inline by the ov003 factory).
+class Ov009ActExVt_0221802c : public Ov009ActorEx {
+public:
+    u32 unk_d0;
+    u8 unk_d4;
+    u8 unk_d5[0x3];
+    s32 unk_d8;
+};
+SIZE_ASSERT(Ov009ActExVt_0221802c, 0xdc);
+
+// Actor class with vtable data_ov009_022181f4 (built inline by the ov003 factory).
+class Ov009ActExVt_022181f4 : public Ov009ActorEx {
+public:
+    u16 unk_d0;
+    u16 unk_d2;
+};
+SIZE_ASSERT(Ov009ActExVt_022181f4, 0xd4);
+
+// Actor class with vtable data_ov009_0221828c (built inline by the ov003 factory).
+class Ov009ActExVt_0221828c : public Ov009ActorEx {
+public:
+    u16 unk_d0;
+    u16 unk_d2;
+};
+SIZE_ASSERT(Ov009ActExVt_0221828c, 0xd4);
+
+// Actor class with vtable data_ov009_02216348 (built inline by the ov003 factory).
+class Ov009ActVt_02216348 : public Ov009Actor {
+public:
+    u8 unk_f0;
+    u8 unk_f1[0x3];
+};
+SIZE_ASSERT(Ov009ActVt_02216348, 0xf4);
 
 #endif

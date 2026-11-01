@@ -76,7 +76,7 @@ static inline void *Ov009_FindActorD68(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-void func_ov009_02212978(Ov009Actor *self) {
+void func_ov009_02212978(Ov009ActVt_02217a00 *self) {
     Ov009Vec v;
     Ov009Vec w;
     Ov009Sub40 *st;
@@ -102,9 +102,9 @@ void func_ov009_02212978(Ov009Actor *self) {
             s44->unk_22_1 = 0;
         }
         func_ov000_0218e8ec(data_ov000_021ccd68, 0x483f, 0x15);
-        o = Ov009_FindActorD68(FLD(u16, self, 0xf0));
+        o = Ov009_FindActorD68(self->unk_f0);
         if (o != NULL) {
-            func_ov000_0218d46c(o, FLD(u16, self, 0xf0), 0x15);
+            func_ov000_0218d46c(o, self->unk_f0, 0x15);
         }
         self->unk_40->state++;
         self->unk_40->timer = 0;
@@ -115,7 +115,7 @@ void func_ov009_02212978(Ov009Actor *self) {
         st->timer++;
         t = st->timer;
         if (t > 0xb4) {
-            func_0203f920(FLD(void *, self, 0x58));
+            func_0203f920(self->unk_58);
             if (self->unk_1a == 0) {
                 func_ov000_02184548(data_ov000_021ccd54);
             }

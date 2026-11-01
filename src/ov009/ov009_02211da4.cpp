@@ -49,7 +49,7 @@ void func_ov009_02211e6c(Ov009Actor *self) {
     Ov009Actor *o;
     s32 i;
     s32 k;
-    FLD(void *, self, 0xd8) = (void *)func_ov009_02211da4;
+    self->unk_d8 = (void *)func_ov009_02211da4;
     func_ov003_021d0fc0(self);
     k = 0x4091;
     if (self->kind == 0x5050) {

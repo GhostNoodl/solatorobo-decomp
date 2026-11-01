@@ -6,9 +6,9 @@ extern void func_ov000_0219864c(void *a, s32 b, s32 c);
 extern void func_ov000_021984f4(void *a, Ov014Vec *b, s32 c);
 
 void func_ov014_02209ecc(Ov014Actor *self) {
-    u16 k = FLD(u16, self, 0xb4);
+    u16 k = self->unk_b4;
     if (k != 100 && k != 110) {
-        self->unk_48->unk_60 = FLD(s32, self, 0x6c) >> 1;
+        self->unk_48->unk_60 = self->unk_6c >> 1;
         self->unk_48->unk_38 = self->unk_64;
     } else {
         self->unk_48->unk_60 = 0x1000;
@@ -21,7 +21,7 @@ void func_ov014_02209f24(Ov014Actor *self) {
     Ov014Vec v;
     u16 k;
     Ov014_VecCopy(&v, &self->pos);
-    k = FLD(u16, self, 0xb4);
+    k = self->unk_b4;
     if (k != 100 && k != 110) {
         v.y += 0x5000;
         v.z += 0x2000;
@@ -53,7 +53,7 @@ static inline void Ov014SpawnB_Init(Ov014SpawnDescB *d, u16 k) {
 extern void *data_ov000_021ccd64;
 extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDescB *d, Ov014Vec *pos, u16 *rot, u16 a);
 
-void func_ov014_02209fa0(Ov014Actor *self, s16 a, s32 kind) {
+void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 kind) {
     Ov014SpawnDescB desc;
     Ov014Vec pos;
     u16 rot[3];
@@ -66,7 +66,7 @@ void func_ov014_02209fa0(Ov014Actor *self, s16 a, s32 kind) {
         pos.y = 0;
         pos.z = 0x8000;
         b = 0x24d;
-        switch (FLD(u16, self, 0xf8) % 3) {
+        switch (self->unk_f8 % 3) {
         case 0:
             pos.x -= func_02040528(0x1000) + 0x4000;
             pos.y = 0;
@@ -96,7 +96,7 @@ void func_ov014_02209fa0(Ov014Actor *self, s16 a, s32 kind) {
         pos.y = 0;
         pos.z = 0x8000;
         b = 0x29a;
-        switch (FLD(u16, self, 0xf8) % 3) {
+        switch (self->unk_f8 % 3) {
         case 0:
             pos.x -= func_02040528(0x1000) + 0x4000;
             pos.y = 0;
@@ -126,7 +126,7 @@ void func_ov014_02209fa0(Ov014Actor *self, s16 a, s32 kind) {
         pos.y = 0;
         pos.z = 0x8000;
         b = 0x200;
-        if (FLD(u16, self, 0xf8) % 2) {
+        if (self->unk_f8 % 2) {
             pos.x += func_02040528(0x5000);
             pos.y = 0;
             pos.z -= 0x3000 - func_02040498(0x1800);
@@ -151,8 +151,8 @@ void func_ov014_02209fa0(Ov014Actor *self, s16 a, s32 kind) {
     if (o == NULL) {
         return;
     }
-    if (FLD(void *, o, 0x4c) != NULL) {
-        FLD(u16, FLD(void *, o, 0x4c), 0x1c) = self->id;
+    if (o->unk_4c != NULL) {
+        FLD(u16, o->unk_4c, 0x1c) = self->id;
     }
     o->unk_90 = 0xffff;
     FLD(Ov014Flags8, o, 0x16).b0 = 1;

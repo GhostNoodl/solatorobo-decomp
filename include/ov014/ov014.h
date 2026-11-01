@@ -227,7 +227,16 @@ struct Ov014Sub38 {
     void *unk_50;
     u8 unk_54[0x24];
     Ov014Vec unk_78;
-    u8 unk_84[0x3e];
+    u8 unk_84[0x24];
+    Ov014Vec unk_a8;
+    u8 unk_b4[0x2];
+    u16 unk_b6;
+    u16 unk_b8;
+    u16 unk_ba;
+    u16 unk_bc;
+    u8 unk_be;
+    u8 unk_bf[0x2];
+    u8 unk_c1;
     u16 unk_c2_0 : 1;
     u16 unk_c2_1 : 4;
     u16 unk_c2_5 : 1;
@@ -235,7 +244,10 @@ struct Ov014Sub38 {
     u16 unk_c2_8 : 1;
     u16 unk_c2_9 : 2;
     u16 unk_c2_11 : 5;
-    u8 unk_c4[0x24];
+    s16 unk_c4;
+    u8 unk_c6[0x1a];
+    void *unk_e0;
+    u8 unk_e4[0x4];
 };
 
 struct Ov014Sub40 {
@@ -275,12 +287,13 @@ struct Ov014Sub48 {
     u8 unk_3c[0x8];
     s32 unk_44;
     s32 unk_48;
-    u8 unk_4c[0x4];
+    s32 unk_4c;
     u32 unk_50;
     u32 unk_54;
-    u8 unk_58[0x8];
+    u32 unk_58;
+    s32 unk_5c;
     s32 unk_60;
-    u8 unk_64[0x4];
+    s32 unk_64;
     Ov014Vec unk_68;
     u8 unk_74[0x26];
     u16 unk_9a_0 : 1;
@@ -302,8 +315,9 @@ struct Ov014Param {
     u16 unk_0a_10 : 6;
 };
 
-// Common actor base (the ov003 actor class); subclass fields start at 0xf0.
-class Ov014Actor : public Ov014V {
+// The object base shared by the ov003 actor (Ov014Actor, built by func_ov003_021d0c1c) and the
+// ov000 actor (Ov014ActorEx, built by func_ov000_02194074): the fields below 0xac.
+class Ov014Obj : public Ov014V {
 public:
     u8 unk_04[0x8];
     u16 id;
@@ -314,7 +328,9 @@ public:
     s16 unk_1c;
     s16 unk_1e;
     u16 unk_20;
-    u8 unk_22[0xe];
+    u8 unk_22[0x2];
+    u32 unk_24;
+    u8 unk_28[0x8];
     u32 unk_30;
     u8 unk_34[0x4];
     Ov014Sub38 *unk_38;
@@ -322,11 +338,14 @@ public:
     Ov014Sub40 *unk_40;
     Ov014Sub44 *unk_44;
     Ov014Sub48 *unk_48;
-    u8 unk_4c[0x4];
+    void *unk_4c;
     u16 *unk_50;
-    u8 unk_54[0x10];
+    u8 unk_54[0x8];
+    void *unk_5c;
+    void *unk_60;
     s32 unk_64;
-    u8 unk_68[0x8];
+    s32 unk_68;
+    s32 unk_6c;
     Ov014Vec pos;
     u16 rot[3];
     u8 unk_82[0x2];
@@ -347,15 +366,24 @@ public:
     s32 unk_a0;
     s32 unk_a4;
     s32 unk_a8;
+};
+
+// Common actor base (the ov003 actor class); subclass fields start at 0xf0.
+class Ov014Actor : public Ov014Obj {
+public:
     u8 unk_ac[0x4];
     Ov014Param *unk_b0;
-    u8 unk_b4[0x2];
+    u16 unk_b4;
     u16 unk_b6;
     Ov014Vec unk_b8;
     s32 unk_c4;
     s32 unk_c8;
     s32 unk_cc;
-    u8 unk_d0[0x1a];
+    u32 unk_d0;
+    u8 unk_d4[0xc];
+    s32 unk_e0;
+    u8 unk_e4;
+    u8 unk_e5[0x5];
     u16 unk_ea_0 : 3;
     u16 unk_ea_3 : 3;
     u16 unk_ea_6 : 2;
@@ -376,6 +404,19 @@ public:
     u16 unk_ee_6 : 1;
     u16 unk_ee_7 : 2;
     u16 unk_ee_9 : 7;
+};
+
+// The ov000 actor base (func_ov000_02194074): 0xd0 bytes, with its own fields from 0xac.
+class Ov014ActorEx : public Ov014Obj {
+public:
+    u8 unk_ac[0x4];
+    Ov014Param *unk_b0;
+    void *unk_b4[2];
+    void *unk_bc;
+    s32 unk_c0;
+    s32 unk_c4;
+    s32 unk_c8;
+    u8 unk_cc[0x4];
 };
 
 struct Ov014Names {
@@ -421,7 +462,9 @@ struct Ov014Game54 {
     u8 unk_04[0x8c];
     s32 unk_90;
     s32 unk_94;
-    u8 unk_98[0x3c];
+    u8 unk_98[0x14];
+    u8 unk_ac;
+    u8 unk_ad[0x27];
     s32 unk_d4;
 };
 
@@ -517,5 +560,333 @@ static inline s32 *Ov014_NewFx(void) {
     }
     return p;
 }
+
+// Actor class of func_ov014_021fa6a0 (vtable data_ov014_02217114).
+class Ov014Act_021fa6a0 : public Ov014Actor {
+public:
+    u8 unk_f0;
+    u8 unk_f1[0x3];
+    s32 unk_f4;
+    Ov014Vec unk_f8;
+    Ov014Vec unk_104;
+    Ov014Vec unk_110;
+    s16 unk_11c;
+    u8 unk_11e;
+    u8 unk_11f;
+    u32 unk_120;
+    Ov014Names unk_124;
+    u8 unk_228[0xac];
+    Ov014Vec unk_2d4;
+    u8 unk_2e0[0x24];
+    s32 unk_304;
+    s32 unk_308;
+    s32 unk_30c;
+    u8 unk_310[0x2];
+    u16 unk_312;
+    u16 unk_314;
+    u16 unk_316;
+    u16 unk_318;
+    u8 unk_31a[0x4];
+    Ov014Flags unk_31e;
+    u8 unk_320[0x24];
+    u8 *unk_344;
+    u8 unk_348[0xc];
+    u8 *unk_354;
+    u8 unk_358[0xc];
+    s16 unk_364;
+    u8 unk_366[0x2];
+};
+SIZE_ASSERT(Ov014Act_021fa6a0, 0x368);
+
+// Actor class of func_ov014_021fd4d4 (vtable data_ov014_02217588).
+class Ov014Act_021fd4d4 : public Ov014Actor {
+public:
+    s16 unk_f0;
+    u8 unk_f2[0x2];
+    s32 unk_f4;
+    u8 unk_f8;
+    u8 unk_f9;
+    u8 unk_fa[0x2];
+    void *unk_fc;
+    u8 unk_100[0x2c];
+    Ov014Vec unk_12c;
+    u8 unk_138;
+    u8 unk_139;
+    s16 unk_13a;
+    u8 *unk_13c;
+    u8 unk_140[0xc];
+    u8 *unk_14c;
+    void *unk_150;
+    Ov014Actor *unk_154;
+    u8 unk_158[0x4];
+    u8 *unk_15c;
+    u8 unk_160[0xc];
+    u8 *unk_16c;
+    void *unk_170;
+    Ov014Actor *unk_174;
+    u8 unk_178[0x4];
+};
+SIZE_ASSERT(Ov014Act_021fd4d4, 0x17c);
+
+// Actor class of func_ov014_0220011c (vtable data_ov014_022174dc).
+class Ov014Act_0220011c : public Ov014Actor {
+public:
+    s16 unk_f0;
+    u8 unk_f2[0x2];
+    u32 unk_f4;
+    u8 unk_f8;
+    u8 unk_f9;
+    u16 unk_fa;
+    u16 unk_fc;
+    u8 unk_fe;
+    u8 unk_ff;
+    void *unk_100;
+    u8 *unk_104;
+    u8 unk_108[0xc];
+    u8 *unk_114;
+    u8 unk_118[0xc];
+};
+SIZE_ASSERT(Ov014Act_0220011c, 0x124);
+
+// Actor class of func_ov014_02201b94 (vtable data_ov014_02217430).
+class Ov014Act_02201b94 : public Ov014Actor {
+public:
+    s16 unk_f0;
+    u8 unk_f2[0x2];
+    u32 unk_f4;
+    u8 unk_f8;
+    u8 unk_f9;
+    u8 unk_fa[0x2];
+    void *unk_fc;
+    u8 unk_100[0x2c];
+    s16 unk_12c;
+    u8 unk_12e;
+    u8 unk_12f;
+    s32 unk_130;
+    u8 unk_134[0xc];
+    u8 *unk_140;
+    u8 unk_144[0xc];
+    u16 unk_150;
+    u8 unk_152;
+    u8 unk_153;
+    u8 unk_154[0x1ac];
+    Ov014Vec unk_300;
+    u8 unk_30c[0x24];
+    s32 unk_330;
+    s32 unk_334;
+    s32 unk_338;
+    u8 unk_33c[0xe];
+    Ov014Flags unk_34a;
+    u8 unk_34c[0x24];
+};
+SIZE_ASSERT(Ov014Act_02201b94, 0x370);
+
+// Actor class of func_ov014_0221267c (vtable data_ov014_02217dc0).
+class Ov014Act_0221267c : public Ov014Actor {
+public:
+    s16 unk_f0;
+    u8 unk_f2[0x1f4];
+    u8 unk_2e6;
+    u8 unk_2e7[0x29];
+    u16 unk_310;
+    u16 unk_312;
+    u8 unk_314[0x28];
+    Ov014Vec unk_33c;
+    s32 unk_348;
+    u16 unk_34c;
+    u8 unk_34e[0x2];
+    s32 unk_350;
+    u8 unk_354;
+    u8 unk_355[0x3];
+};
+SIZE_ASSERT(Ov014Act_0221267c, 0x358);
+
+// Actor class of func_ov014_02209280 (vtable data_ov014_02217968).
+class Ov014Act_02209280 : public Ov014Actor {
+public:
+    s32 unk_f0;
+    u32 unk_f4;
+    u16 unk_f8;
+    u8 unk_fa[0x2];
+    u8 unk_fc;
+    u8 unk_fd[0x3];
+    s32 unk_100;
+    s32 unk_104;
+    u8 unk_108[0x24];
+    Ov014Vec unk_12c;
+    s32 unk_138;
+    u8 unk_13c[0x30];
+    s32 unk_16c;
+    u8 unk_170[0x30];
+    u16 unk_1a0;
+    u16 unk_1a2;
+    u8 unk_1a4;
+    u8 unk_1a5;
+    u8 unk_1a6[0x2];
+    s32 unk_1a8;
+    s32 unk_1ac;
+    s32 unk_1b0;
+    Ov014Vec unk_1b4;
+    u8 unk_1c0;
+    u8 unk_1c1[0xb];
+    u8 *unk_1cc;
+    void *unk_1d0;
+    void *unk_1d4;
+    u8 unk_1d8[0x4];
+    void *unk_1dc;
+    void *unk_1e0;
+    s32 unk_1e4;
+    s32 unk_1e8;
+    s32 unk_1ec;
+    s32 unk_1f0;
+    u16 unk_1f4;
+    u16 unk_1f6;
+};
+SIZE_ASSERT(Ov014Act_02209280, 0x1f8);
+
+// Actor class of func_ov014_0220f9d0 (vtable data_ov014_02217e6c).
+class Ov014Act_0220f9d0 : public Ov014Actor {
+public:
+    u8 unk_f0[0x28];
+    Ov014Vec unk_118;
+    u8 unk_124;
+    u8 unk_125[0xb];
+    u8 *unk_130;
+    void *unk_134;
+    void *unk_138;
+    u8 unk_13c[0x4];
+    u8 *unk_140;
+    s32 unk_144;
+    u16 unk_148;
+    u16 unk_14a;
+    u16 unk_14c;
+    u16 unk_14e;
+    u16 unk_150;
+    u8 unk_152[0x2];
+    void *unk_154;
+    void *unk_158;
+    u8 unk_15c[0x2];
+    s16 unk_15e;
+    u8 unk_160[0xc];
+    u8 unk_16c;
+    u8 unk_16d[0x13];
+    u8 unk_180;
+    u8 unk_181[0x3];
+};
+SIZE_ASSERT(Ov014Act_0220f9d0, 0x184);
+
+// Actor class of func_ov014_02208618 (vtable data_ov014_02217708).
+class Ov014ActEx_02208618 : public Ov014ActorEx {
+public:
+    u32 unk_d0;
+    u8 unk_d4;
+    u8 unk_d5[0x3];
+    s32 *unk_d8;
+};
+SIZE_ASSERT(Ov014ActEx_02208618, 0xdc);
+
+// Actor class of func_ov014_0220d70c (vtable data_ov014_02217bdc).
+class Ov014ActEx_0220d70c : public Ov014ActorEx {
+public:
+    void *unk_d0;
+    void *unk_d4;
+    u8 unk_d8[0x8];
+};
+SIZE_ASSERT(Ov014ActEx_0220d70c, 0xe0);
+
+// Actor class of func_ov014_0220dcf4 (vtable data_ov014_02217b44).
+class Ov014ActEx_0220dcf4 : public Ov014ActorEx {
+public:
+    void *unk_d0;
+    u8 unk_d4;
+    u8 unk_d5;
+    s16 unk_d6;
+    s16 unk_d8;
+    s16 unk_da;
+};
+SIZE_ASSERT(Ov014ActEx_0220dcf4, 0xdc);
+
+// Actor class of func_ov014_021fbd64 (vtable data_ov014_022172c4).
+class Ov014ActEx_021fbd64 : public Ov014ActorEx {
+public:
+    void *unk_d0;
+};
+SIZE_ASSERT(Ov014ActEx_021fbd64, 0xd4);
+
+// Actor class of func_ov014_021fc24c (vtable data_ov014_0221722c).
+class Ov014ActEx_021fc24c : public Ov014ActorEx {
+public:
+    Ov014Vec unk_d0;
+    s32 unk_dc;
+    s32 unk_e0;
+    s32 unk_e4;
+    Ov014Vec unk_e8;
+    s32 unk_f4;
+    u32 unk_f8;
+    u8 unk_fc;
+    u8 unk_fd;
+    u8 unk_fe;
+    u8 unk_ff;
+    void *unk_100;
+};
+SIZE_ASSERT(Ov014ActEx_021fc24c, 0x104);
+
+// Actor class of func_ov014_02206c68 (vtable data_ov014_02217670).
+class Ov014ActEx_02206c68 : public Ov014ActorEx {
+public:
+    s32 unk_d0;
+    s32 unk_d4;
+    u16 unk_d8;
+    u8 unk_da[0x2];
+    void *unk_dc;
+};
+SIZE_ASSERT(Ov014ActEx_02206c68, 0xe0);
+
+// Actor class of func_ov014_0220774c (vtable data_ov014_022177a0).
+class Ov014ActEx_0220774c : public Ov014ActorEx {
+public:
+    u32 unk_d0;
+    s32 unk_d4;
+    void *unk_d8;
+};
+SIZE_ASSERT(Ov014ActEx_0220774c, 0xdc);
+
+// Actor class of func_ov014_0220eca0 (vtable data_ov014_02217aac).
+class Ov014ActEx_0220eca0 : public Ov014ActorEx {
+public:
+    s32 unk_d0;
+    s32 unk_d4;
+    Ov014Vec unk_d8;
+    s32 unk_e4;
+    s32 unk_e8;
+    s32 unk_ec;
+    s16 unk_f0;
+    s16 unk_f2;
+    s16 unk_f4;
+    u8 unk_f6[0x2];
+};
+SIZE_ASSERT(Ov014ActEx_0220eca0, 0xf8);
+
+// Actor class of func_ov014_022142fc (vtable data_ov014_02217fb0).
+class Ov014ActEx_022142fc : public Ov014ActorEx {
+public:
+    Ov014Vec unk_d0;
+    s32 unk_dc;
+    s32 unk_e0;
+};
+SIZE_ASSERT(Ov014ActEx_022142fc, 0xe4);
+
+// Actor class of func_ov014_022152e8 (vtable data_ov014_02217f18).
+class Ov014ActEx_022152e8 : public Ov014ActorEx {
+public:
+    Ov014Vec unk_d0;
+    Ov014Vec unk_dc;
+    s32 unk_e8;
+    s32 unk_ec;
+    u16 unk_f0;
+    u8 unk_f2[0x2];
+    s32 unk_f4;
+};
+SIZE_ASSERT(Ov014ActEx_022152e8, 0xf8);
 
 #endif

@@ -23,6 +23,9 @@ typedef int BOOL;
 // const). MWCC does not let a plain read in a later block reuse a const read.
 #define CFLD(type, p, off) (*(type const *)((const u8 *)(p) + (off)))
 
+// Compile-time size check for a struct whose allocation size is known.
+#define SIZE_ASSERT(T, n) typedef char T##_size_assert[(sizeof(T) == (n)) ? 1 : -1]
+
 #ifndef NULL
 #define NULL 0
 #endif

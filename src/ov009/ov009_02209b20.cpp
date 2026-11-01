@@ -99,7 +99,7 @@ void func_ov009_02209bdc(Ov009Actor *self) {
                     p.x -= self->unk_64;
                 }
                 v.x = self->unk_64 * 2;
-                v.y = FLD(s32, self, 0x68);
+                v.y = self->unk_68;
                 v.z = self->unk_64;
                 func_ov000_0219b71c(&p, &v, 0x99a, 0x1333, 0x38b, 0x32);
                 func_02049a48(data_02097e4c, 0x35, -1, -1, -1);
@@ -149,7 +149,7 @@ void func_ov009_02209bdc(Ov009Actor *self) {
                 p2 = self->pos;
                 p2.y += 0x5000;
                 v2.x = self->unk_64;
-                v2.y = FLD(s32, self, 0x68) * 2;
+                v2.y = self->unk_68 * 2;
                 v2.z = self->unk_64;
                 func_ov000_0219b71c(&p2, &v2, 0x99a, 0x1333, 0x38b, 0x32);
                 func_02049a48(data_02097e4c, 0x35, -1, -1, -1);

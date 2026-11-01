@@ -23,8 +23,8 @@ struct Ov009Rot {
     s16 z;
 };
 
-void func_ov009_02205d14(Ov009Actor *self) {
-    if (self->unk_40->state == 0 && FLD(u8, self, 0xf2) == 0) {
+void func_ov009_02205d14(Ov009ActVt_02216bc8 *self) {
+    if (self->unk_40->state == 0 && self->unk_f2 == 0) {
         self->unk_64 >>= 1;
     }
     func_ov003_021d6054(self);
@@ -67,7 +67,7 @@ void func_ov009_02205d94(Ov009Names *self, void *res) {
 
 void func_ov009_02205e54(Ov009Actor *self) {
     if (self->kind == 0x5051) {
-        FLD(void *, self, 0xd8) = (void *)func_ov009_02205d94;
+        self->unk_d8 = (void *)func_ov009_02205d94;
     }
     func_ov003_021d0fc0(self);
     func_02049564(data_02097e4c, 1, 1);
@@ -102,15 +102,15 @@ void func_ov009_02205ff0(Ov009Actor *self) {
     func_ov003_021d6054(self);
 }
 
-void func_ov009_02206014(Ov009Actor *self) {
+void func_ov009_02206014(Ov009ActVt_02216dcc *self) {
     func_ov003_021d0fc0(self);
     func_02049564(data_02097e4c, 1, 1);
     func_ov000_02187a20(data_ov000_021ccd54, 0xd);
     self->unk_b8 = self->pos;
     self->unk_ea_10 = 1;
-    FLD(u16, self, 0xf0) = 0;
-    FLD(u16, self, 0xf2) = 0;
-    FLD(u16, self, 0xf4) = 0;
+    self->unk_f0 = 0;
+    self->unk_f2 = 0;
+    self->unk_f4 = 0;
 }
 
 }

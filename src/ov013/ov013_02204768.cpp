@@ -121,22 +121,22 @@ static inline void Ov013_SetShadow(Ov013Shadow *s, u8 a, u8 b, u8 c, u8 d, u16 s
     s->sub = sub;
 }
 
-BOOL func_ov013_02204768(void *self) {
+BOOL func_ov013_02204768(Ov013ActEx_02204454 *self) {
     BOOL r = func_ov000_021946f8(self);
-    if (*FLD(s16 *, self, 0xdc) >= 0) {
-        r = (r & func_ov000_0218f110(FLD(void *, self, 0xdc))) ? TRUE : FALSE;
+    if (*((s16 *)self->unk_dc) >= 0) {
+        r = (r & func_ov000_0218f110(((void *)self->unk_dc))) ? TRUE : FALSE;
     }
     return r;
 }
 
-BOOL func_ov013_022047a0(Ov013Actor *self) {
+BOOL func_ov013_022047a0(Ov013ActEx_02204454 *self) {
     if (FLD(s8, self, 0xcf) != 2) {
         void *m = self->unk_38;
         FLD(u16, m, 0xb6) = 0x5294;
         FLD(u16, m, 0xb8) = 0x5294;
         FLD(u16, m, 0xba) = 2;
         FLD(u16, m, 0xbc) = 1;
-        m = FLD(void *, self, 0xe0);
+        m = self->unk_e0;
         FLD(u16, m, 0xb6) = 0x5294;
         FLD(u16, m, 0xb8) = 0x5294;
         FLD(u16, m, 0xba) = 2;
@@ -145,9 +145,9 @@ BOOL func_ov013_022047a0(Ov013Actor *self) {
     func_ov003_021cf33c((u8 *)self + 0xec, self->unk_40);
     u16 lk = Ov013_LockId();
     if (lk == self->id) {
-        FLD(Ov013Vec, FLD(void *, self, 0xe0), 0x78) = self->pos;
-        func_ov000_02190758(FLD(void *, self, 0xe0), self->rot, 0);
-        return func_ov000_021903b4(FLD(void *, self, 0xe0));
+        FLD(Ov013Vec, self->unk_e0, 0x78) = self->pos;
+        func_ov000_02190758(self->unk_e0, self->rot, 0);
+        return func_ov000_021903b4(self->unk_e0);
     }
     {
         void *m = self->unk_38;
@@ -177,7 +177,7 @@ void func_ov013_02204910(Ov013Actor *self, u16 a, u16 b, u16 c, u16 d) {
     }
     FLD(Ov013Flags8, self, 0xce).b0 = 0;
     FLD(u16, self, 0xd0) = d;
-    FLD(u16, FLD(void *, self, 0x4c), 0x1c) = a;
+    FLD(u16, self->unk_4c, 0x1c) = a;
     self->unk_90 = b;
     FLD(void *, self, 0xd8) = data_ov013_0220b2ec;
     self->unk_98 = c;
@@ -213,12 +213,12 @@ struct Ov013Anim10 {
 void func_ov013_0220498c(Ov013Actor *self, s16 v) {
     u8 *p;
     Ov013Anim10 t;
-    if (FLD(u8, self, 0x14) != 2) {
+    if (self->unk_14 != 2) {
         return;
     }
     FLD(u16, self, 0xd4) = v;
     p = func_020704b4(self->kind);
-    t = *FLD(Ov013Anim10 *, self, 0x4c);
+    t = *((Ov013Anim10 *)self->unk_4c);
     t.speed = Ov013_FxMul((s32)(FLD(u16, p, 4) << 12), (s32)v) >> 12;
     *FLD(Ov013Anim10 *, self, 0x4c) = t;
 }

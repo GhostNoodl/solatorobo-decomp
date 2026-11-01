@@ -11,19 +11,19 @@ extern void *data_0214a420;
 extern void *data_ov000_021ccd68;
 extern char data_ov013_0220b88d[];
 extern void *func_020657b0(void *a, s32 b);
-extern void func_ov000_0219763c(Ov013Actor *self);
-extern void func_ov000_02195d88(Ov013Actor *self);
+extern void func_ov000_0219763c(Ov013Obj *self);
+extern void func_ov000_02195d88(Ov013Obj *self);
 extern void func_ov000_02196060(Ov013Actor *self);
 extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern Ov013Actor *func_ov000_0218e4cc(void *mgr, u16 id);
 extern BOOL func_ov003_021d98bc(void *a, const Ov013Spot *b);
 
-void func_ov013_021fe884(Ov013Actor *self) {
+void func_ov013_021fe884(Ov013ActEx_021fdb70 *self) {
     if (self->unk_40->state == 0) {
-        void *p = func_020657b0(data_0214a420, FLD(s32, self, 0xd0));
+        void *p = func_020657b0(data_0214a420, self->unk_d0);
         if (p != NULL) {
             FLD(s32, p, 0x1c) = 4;
-            FLD(s32, self, 0xd0) = -1;
+            self->unk_d0 = -1;
         }
     }
     func_ov000_0219763c(self);

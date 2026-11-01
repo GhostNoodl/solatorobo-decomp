@@ -67,7 +67,7 @@ extern u8 data_ov009_022179eb[];
 extern u8 data_ov009_022179b4[];
 extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
-extern void func_ov000_0218dbe0(Ov009Actor *self, s32 a);
+extern void func_ov000_0218dbe0(Ov009Obj *self, s32 a);
 extern BOOL func_ov000_02191120(void *m);
 extern s32 FX_Div(s32 a, s32 b);
 static inline Ov009Actor *Ov009_FindActor4(u16 id) {
@@ -77,7 +77,7 @@ static inline Ov009Actor *Ov009_FindActor4(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-void func_ov009_022139a4(Ov009Actor *self) {
+void func_ov009_022139a4(Ov009ActVt_02217cb0 *self) {
     Ov009Actor *t = Ov009_FindActor4(self->unk_90);
     Ov009Sub40 *st;
     if (t == NULL) {
@@ -101,15 +101,15 @@ void func_ov009_022139a4(Ov009Actor *self) {
             return;
         }
         func_ov000_02190cb0(self->unk_38, data_ov009_022179df, 0x1000, 0);
-        FLD(Ov009Vec, self, 0xf0).x = t->pos.x;
-        FLD(Ov009Vec, self, 0xf0).y = t->pos.y;
-        FLD(Ov009Vec, self, 0xf0).z = t->pos.z;
+        self->unk_f0.x = t->pos.x;
+        self->unk_f0.y = t->pos.y;
+        self->unk_f0.z = t->pos.z;
         self->unk_98 = self->rot[1];
         self->unk_9c = 0;
         self->unk_a0 = 0;
         self->unk_a4 = 0;
         self->unk_a8 = 0;
-        d = FX_Div(Ov009_DistXZ(&self->pos, &FLD(Ov009Vec, self, 0xf0)), 0x18000);
+        d = FX_Div(Ov009_DistXZ(&self->pos, &self->unk_f0), 0x18000);
         max = 0x452;
         if (self->unk_1a == 0) {
             max += 0x148;

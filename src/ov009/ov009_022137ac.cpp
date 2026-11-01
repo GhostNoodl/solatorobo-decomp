@@ -11,7 +11,7 @@ struct Ov009Byte {
     u8 b1 : 7;
 };
 
-void func_ov009_022137ac(Ov009Actor *self) {
+void func_ov009_022137ac(Ov009ActVt_02217cb0 *self) {
     u8 *p;
     Ov009Actor *a;
     func_ov003_021d112c(self);
@@ -24,9 +24,9 @@ void func_ov009_022137ac(Ov009Actor *self) {
     if (a != NULL) {
         self->unk_90 = a->id;
     }
-    FLD(s32, self, 0xf0) = 0;
-    FLD(s32, self, 0xf4) = 0;
-    FLD(s32, self, 0xf8) = 0;
+    self->unk_f0.x = 0;
+    self->unk_f0.y = 0;
+    self->unk_f0.z = 0;
     self->unk_b6 = 0x78;
 }
 

@@ -30,7 +30,7 @@ void func_ov013_021fe948(Ov013Vec *outPos, u16 *outRot, const Ov013Spot *list, u
 
 static inline Ov013Actor *Ov013_ListNext(void *list, Ov013Actor *a) {
     if (a != NULL) {
-        return FLD(Ov013Actor *, a, 8);
+        return a->unk_08;
     }
     return FLD(Ov013Actor *, list, 0xc);
 }

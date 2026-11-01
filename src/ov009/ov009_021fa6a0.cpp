@@ -55,8 +55,8 @@ void func_ov009_021fa6a0(Ov009Actor *self) {
             b.x = self->pos.x;
             b.y = self->pos.y;
             b.z = self->pos.z;
-            a.y += FLD(s32, o, 0x6c);
-            b.y += FLD(s32, self, 0x6c);
+            a.y += o->unk_6c;
+            b.y += self->unk_6c;
             if (func_01ffbd6c(&a, &b, -1, 0, 0, -1) != -0x1000) {
                 return;
             }
@@ -91,7 +91,7 @@ extern Ov009Actor *func_ov003_021d69a0(Ov009Actor *self, u16 kind, s32 a);
 extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern s32 func_02040498(s32 max);
-extern void func_ov000_0218dbe0(Ov009Actor *self, s32 turn);
+extern void func_ov000_0218dbe0(Ov009Obj *self, s32 turn);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 static inline Ov009Actor *Ov009_FindActor5b(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -100,13 +100,13 @@ static inline Ov009Actor *Ov009_FindActor5b(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-void func_ov009_021fa934(Ov009Actor *self) {
+void func_ov009_021fa934(Ov009ActVt_02216a00 *self) {
     Ov009Actor *t = Ov009_FindActor5b(self->unk_90);
     Ov009Sub40 *st = self->unk_40;
     switch (st->state) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov009_02216aa4, 0x400, 0);
-        FLD(u16, self, 0xf0) = 100;
+        self->unk_f0 = 100;
         self->unk_9c = 0;
         self->unk_a0 = 0;
         self->unk_a4 = 0;
@@ -144,7 +144,7 @@ void func_ov009_021fa934(Ov009Actor *self) {
         }
         func_ov000_02190cb0(self->unk_38, data_ov009_02216ab0, 0x800, 0);
         if (t != NULL) {
-            func_ov000_0219aae8(self, self, FLD(u16, self, 0xf0), 0x20, (u16)(1 << (t->id >> 12)), NULL, 0, 0x3400, 0x2800, 0x64, 0x1000);
+            func_ov000_0219aae8(self, self, self->unk_f0, 0x20, (u16)(1 << (t->id >> 12)), NULL, 0, 0x3400, 0x2800, 0x64, 0x1000);
         }
         func_02065f88(0x66, &self->pos)->v0c(0x1c00);
         g = func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000);

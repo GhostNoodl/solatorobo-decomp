@@ -106,7 +106,7 @@ void func_ov012_02209268(Ov012Actor *self) {
         if (m == NULL || func_ov000_0218dfb4(m, 0x4009) <= 2) {
             u8 *t = NULL;
             if (o != NULL) {
-                t = FLD(u8 *, o, 0x4c);
+                t = ((u8 *)o->unk_4c);
             }
             if (t != NULL && FLD(u16, t, 0x1c) != self->id) {
                 t = NULL;
@@ -163,7 +163,7 @@ void func_ov012_02209740(Ov012Actor *self) {
             e->v24(0, 0x1333, 0);
             e->v0c(0xe66);
         }
-        if (FLD(s16, self->unk_38, 0xc4) == 1) {
+        if (self->unk_38->unk_c4 == 1) {
             Ov012V *e = func_02065f88(0x192, &self->pos);
             e->v24(0, 0x1333, 0);
             e->v0c(0x1333);
@@ -175,7 +175,7 @@ void func_ov012_02209740(Ov012Actor *self) {
         self->unk_94_1 = 1;
         break;
     case 2:
-        if (FLD(s16, self->unk_38, 0xc4) == 1 || func_01ffc198(&pl->pos, &self->pos, pl->unk_64 + 0x3000)) {
+        if (self->unk_38->unk_c4 == 1 || func_01ffc198(&pl->pos, &self->pos, pl->unk_64 + 0x3000)) {
             func_ov000_02191418(self->unk_38, 0, 1);
             self->unk_a4 = 0xc00;
             self->unk_40->timer = 0;

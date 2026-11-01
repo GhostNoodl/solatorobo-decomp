@@ -13,7 +13,7 @@ BOOL func_ov012_0220574c(Ov012Actor *self) {
         if (r && self->unk_3c != NULL && self->unk_48 != NULL) {
             Ov012Sub48 *m = self->unk_48;
             u8 v;
-            FLD(s32, self->unk_3c, 0x10) = self->pos.y - FLD(s32, m, 0x6c);
+            FLD(s32, self->unk_3c, 0x10) = self->pos.y - m->unk_68.y;
             v = 1;
             if (m->unk_54 & 0x10000) {
                 v = 3;
@@ -104,7 +104,7 @@ void func_ov012_02205990(Ov012Actor *self) {
     Ov012Actor *g;
     Ov012Actor *pl;
     Ov012Vec pp;
-    g = (Ov012Actor *)func_ov000_02199ba0(FLD(void *, self, 0x4c));
+    g = (Ov012Actor *)func_ov000_02199ba0(self->unk_4c);
     if (g != NULL) {
     {
         Ov012Sub48 *m = g->unk_48;
@@ -126,7 +126,7 @@ void func_ov012_02205990(Ov012Actor *self) {
         Ov012Sub48 *m = self->unk_48;
         m->unk_50 = 0;
         m->unk_54 = 0;
-        FLD(u32, m, 0x58) = 0;
+        m->unk_58 = 0;
         if (FLD(u8, self, 0xd4) == 0) {
             d = Ov012_Dist84(self);
             a = FX_Atan2(d, self->unk_84.y - self->pos.y);

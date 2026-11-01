@@ -96,7 +96,7 @@ void func_ov009_021fd830(Ov009Actor *self) {
         s44 = self->unk_44;
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
-        FLD(u16, FLD(void *, self, 0x4c), 0x1c) = 0xffff;
+        FLD(u16, ((void *)self->unk_4c), 0x1c) = 0xffff;
         if (FLD(u8, data_ov000_021ccd54, 0xca) == 0x11) {
             Ov009_VecSet((Ov009Vec *)&self->unk_9c, 0, 0, 0);
         } else {

@@ -120,8 +120,8 @@ void func_ov012_02208858(Ov012Actor *self) {
             }
             for (i = 0; i < n; i++) {
                 Ov012Actor *a = list[i];
-                if (a != NULL && FLD(void *, a, 0x4c) != NULL && FLD(u16, FLD(void *, a, 0x4c), 0x1c) != 0xffff &&
-                    FLD(u16, FLD(void *, a, 0x4c), 0x1c) != self->id) {
+                if (a != NULL && a->unk_4c != NULL && FLD(u16, a->unk_4c, 0x1c) != 0xffff &&
+                    FLD(u16, a->unk_4c, 0x1c) != self->id) {
                     Ov012Actor *o;
                     a->v08();
                     r.x = 0;
@@ -146,7 +146,7 @@ void func_ov012_02208858(Ov012Actor *self) {
                     }
                     o = func_ov003_021d69f0(self, 0x480e, &v, &r, tgt);
                     if (o != NULL) {
-                        FLD(void *, o, 0x60) = data_ov012_0220a88c;
+                        o->unk_60 = data_ov012_0220a88c;
                         if (func_020621c4()) {
                             func_ov000_0219bebc(o, 0x1800);
                         }
@@ -211,7 +211,7 @@ void func_ov012_02208c0c(Ov012Actor *self) {
         func_ov000_0218d988(self, pl, 0x59a);
         break;
     case 2: {
-        s16 c4 = FLD(s16, self->unk_38, 0xc4);
+        s16 c4 = self->unk_38->unk_c4;
         on = FALSE;
         add = 0;
         if (c4 == 1) {
@@ -244,7 +244,7 @@ void func_ov012_02208c0c(Ov012Actor *self) {
         r = *(Ov012Rot16T *)self->rot;
         r.y += add;
         {
-        s32 y = FLD(s32, self, 0x6c);
+        s32 y = self->unk_6c;
         v.x = 0;
         v.y = y;
         v.z = 0x1000;
@@ -270,7 +270,7 @@ void func_ov012_02208c0c(Ov012Actor *self) {
         {
             Ov012Actor *o = func_ov003_021d69f0(self, 0x480e, &v, &r, pl);
             if (o != NULL) {
-                FLD(void *, o, 0x60) = data_ov012_0220a88c;
+                o->unk_60 = data_ov012_0220a88c;
                 if (func_020621c4()) {
                     func_ov000_0219bebc(o, 0x1800);
                 }
@@ -352,7 +352,7 @@ void func_ov012_022090e4(Ov012Actor *self) {
         e = func_02065f88(0x69, &self->pos);
         if (e != NULL) {
             e->v0c(0x2400);
-            e->v24(0, FLD(s32, self, 0x6c), 0);
+            e->v24(0, self->unk_6c, 0);
         }
     }
     func_ov003_021d6054(self);

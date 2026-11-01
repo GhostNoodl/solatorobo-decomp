@@ -22,7 +22,7 @@ BOOL func_ov009_021fd24c(Ov009Actor *self) {
     return r;
 }
 
-void func_ov009_021fd2b4(Ov009Actor *self) {
+void func_ov009_021fd2b4(Ov009ActVt_02216750 *self) {
     Ov009Vec d;
     Ov009Path *path = &data_ov009_02215cf4[self->unk_1a - 1];
     u8 *anim = data_ov009_02216ab6;
@@ -57,24 +57,24 @@ void func_ov009_021fd2b4(Ov009Actor *self) {
             Ov009Sub44 *s44 = self->unk_44;
             s44->unk_22_0 = 1;
             s44->unk_22_1 = 1;
-            FLD(Ov009Vec, self, 0xf0) = self->pos;
-            FLD(Ov009Vec, self, 0xfc) = self->pos;
+            self->unk_f0 = self->pos;
+            self->unk_fc = self->pos;
             func_ov000_02198360(self->unk_40, 1, 0);
         }
         break;
     }
 }
 
-void func_ov009_021fd430(Ov009Actor *self) {
+void func_ov009_021fd430(Ov009ActVt_02216750 *self) {
     Ov009Vec d;
     Ov009Sub40 *st = self->unk_40;
-    Ov009Vec *t = &FLD(Ov009Vec, self, 0xfc);
+    Ov009Vec *t = &self->unk_fc;
     if (st->timer != 0) {
         st->timer--;
     }
     if (st->timer == 0) {
         self->unk_40->timer = 0x4b;
-        *t = FLD(Ov009Vec, self, 0xf0);
+        *t = self->unk_f0;
         t->y += func_02040528(0xc00);
         t->x += func_02040528(0x59a);
         t->z += func_02040528(0x59a);
@@ -97,27 +97,27 @@ static inline u16 Ov009_AngleTo(Ov009Actor *a, Ov009Actor *b) {
     return b->rot[1];
 }
 
-void func_ov009_021fd510(Ov009Actor *self) {
+void func_ov009_021fd510(Ov009ActVt_02216750 *self) {
     Ov009Vec d;
     Ov009Sub40 *st;
     switch (self->unk_40->state) {
     case 0: {
         Ov009Actor *p;
-        FLD(Ov009Vec, self, 0xfc) = self->pos;
+        self->unk_fc = self->pos;
         if (self->unk_18 == 1) {
-            FLD(s32, self, 0x100) -= func_02040498(0x800) + 0x1000;
+            self->unk_fc.y -= func_02040498(0x800) + 0x1000;
         } else {
-            FLD(s32, self, 0x100) -= func_02040498(0x800) + 0x2800;
+            self->unk_fc.y -= func_02040498(0x800) + 0x2800;
         }
-        if (FLD(s32, self, 0x100) < FLD(s32, self, 0xf4) - 0x1000) {
-            FLD(s32, self, 0x100) = FLD(s32, self, 0xf4) - 0x1000;
+        if (self->unk_fc.y < self->unk_f0.y - 0x1000) {
+            self->unk_fc.y = self->unk_f0.y - 0x1000;
         }
         if (FLD(u8, data_ov000_021ccd54, 0xca) != 0x11) {
             p = func_ov000_02199f60(self->unk_50);
             if (p != NULL) {
                 u16 a = Ov009_AngleTo(self, p);
-                FLD(s32, self, 0xfc) += Ov009_FxMul(OV009_SIN(a), 0x1000);
-                FLD(s32, self, 0x104) += Ov009_FxMul(OV009_COS(a), 0x1000);
+                self->unk_fc.x += Ov009_FxMul(OV009_SIN(a), 0x1000);
+                self->unk_fc.z += Ov009_FxMul(OV009_COS(a), 0x1000);
             }
         }
         if (self->unk_18 == 1) {
@@ -131,9 +131,9 @@ void func_ov009_021fd510(Ov009Actor *self) {
         if (st->timer > 0x2d) {
             func_ov000_02198360(self->unk_40, 1, 0);
         }
-        d.x = FLD(Ov009Vec, self, 0xfc).x - self->pos.x;
-        d.y = FLD(Ov009Vec, self, 0xfc).y - self->pos.y;
-        d.z = FLD(Ov009Vec, self, 0xfc).z - self->pos.z;
+        d.x = self->unk_fc.x - self->pos.x;
+        d.y = self->unk_fc.y - self->pos.y;
+        d.z = self->unk_fc.z - self->pos.z;
         VEC_MultAdd(0x31, &d, &self->pos, &self->pos);
         break;
     }

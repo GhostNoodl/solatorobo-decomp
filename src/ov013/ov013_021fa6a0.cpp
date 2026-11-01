@@ -12,14 +12,14 @@ extern BOOL func_020621c4(void);
 extern void func_ov003_021d6bac(Ov013Actor *self, const void *p);
 extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
 extern BOOL func_ov003_021d1c00(Ov013Actor *self, Ov013Msg *msg);
-extern Ov013Actor *func_ov000_0218d240(Ov013Actor *self);
+extern Ov013Actor *func_ov000_0218d240(Ov013Obj *self);
 extern void func_ov000_0218d988(Ov013Actor *self, Ov013Actor *t, s32 a);
 extern Ov013Actor *func_ov000_0218e4cc(void *mgr, u16 id);
 extern u16 func_ov000_0218dfb4(Ov013Actor *a, u16 id);
 extern Ov013Actor *func_ov000_0218e6d0(void *mgr, u16 a, u16 b);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void func_ov000_0218dbe0(Ov013Actor *self, s32 a);
+extern void func_ov000_0218dbe0(Ov013Obj *self, s32 a);
 s32 func_ov013_021fc400(Ov013Actor *self);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -100,7 +100,7 @@ void func_ov013_021fa8e4(Ov013Actor *self) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov013_0220b5b8, 0x2ab, 0);
         func_ov000_021915a0(self->unk_38);
-        FLD(u8, self->unk_38, 0xbe) = 0;
+        self->unk_38->unk_be = 0;
         self->rot[1] = 0;
         n = self->unk_44;
         n->unk_22_0 = 0;
@@ -109,11 +109,11 @@ void func_ov013_021fa8e4(Ov013Actor *self) {
         self->unk_40->timer = 0;
         break;
     case 0x14: {
-        u8 a = FLD(u8, self->unk_38, 0xbe);
+        u8 a = self->unk_38->unk_be;
         if (a < 0x1f) {
             s->timer++;
             if (s->timer % 6 == 0) {
-                FLD(u8, self->unk_38, 0xbe) = a + 1;
+                self->unk_38->unk_be = a + 1;
             }
         } else {
             s->state = 0x63;
@@ -235,7 +235,7 @@ void func_ov013_021faae8(Ov013Actor *self) {
     case 2: {
         Ov013Actor *t;
         s32 r;
-        if (FLD(s16, self->unk_38, 0xc4) == 0) {
+        if (self->unk_38->unk_c4 == 0) {
             break;
         }
         t = Ov013_FindActor(self->unk_90);

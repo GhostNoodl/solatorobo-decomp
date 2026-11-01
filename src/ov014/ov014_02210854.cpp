@@ -45,7 +45,7 @@ extern void MTX_Concat33(Ov014Mtx33 *a, Ov014Mtx33 *b, Ov014Mtx33 *out);
 extern void MTX_MultVec33(const Ov014Vec *v, const Ov014Mtx33 *m, Ov014Vec *out);
 extern void VEC_MultAdd(s32 a, const Ov014Vec *v1, const Ov014Vec *v2, Ov014Vec *out);
 
-Ov014Actor *func_ov014_02210878(Ov014Actor *self) {
+Ov014Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
     Ov014Vec v;
     Ov014Vec base;
     Ov014SpawnDesc desc;
@@ -62,9 +62,9 @@ Ov014Actor *func_ov014_02210878(Ov014Actor *self) {
     s32 step;
     u16 ang;
     *(Ov014Blk12 *)&base = data_ov014_02216bf4;
-    cnt = FLD(u16, FLD(u8 *, self, 0x140), 4) + 3;
+    cnt = FLD(u16, self->unk_140, 4) + 3;
     step = -0x5554 / cnt;
-    ang = step * (u16)((FLD(s32, self, 0x144) + FLD(u16, self, 0x14c)) % cnt) + 0x2aaa;
+    ang = step * (u16)((self->unk_144 + self->unk_14c) % cnt) + 0x2aaa;
     *(Ov014Blk12 *)&off = data_ov014_02216c00;
     MTX_Identity33_(&m);
     MTX_RotX33_(&m, OV014_SIN(0xe000), OV014_COS(0xe000));
@@ -89,13 +89,13 @@ Ov014Actor *func_ov014_02210878(Ov014Actor *self) {
     }
     desc.parent = -1;
     o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &v, &rot, 0xffff);
-    FLD(void *, o, 0x60) = data_ov014_02216cb8;
-    FLD(s32, o, 0x84) = px;
-    FLD(s32, o, 0x88) = 0;
-    FLD(s32, o, 0x8c) = pz;
+    o->unk_60 = data_ov014_02216cb8;
+    o->unk_84.x = px;
+    o->unk_84.y = 0;
+    o->unk_84.z = pz;
     FLD(Ov014Flags8, o, 0x16).b0 = 1;
-    if (FLD(u8 *, o, 0x4c) != NULL) {
-        FLD(u16, FLD(u8 *, o, 0x4c), 0x1c) = self->id;
+    if (((u8 *)o->unk_4c) != NULL) {
+        FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
     }
     FLD(u16, self, 0xde) = o->id;
     return o;
@@ -104,7 +104,7 @@ Ov014Actor *func_ov014_02210878(Ov014Actor *self) {
 extern const Ov014Vec data_ov014_02216c0c;
 extern void VEC_Normalize(const Ov014Vec *src, Ov014Vec *dst);
 
-Ov014Actor *func_ov014_02210a78(Ov014Actor *self) {
+Ov014Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self) {
     Ov014Vec pos;
     Ov014Vec d;
     Ov014SpawnDesc desc;
@@ -112,14 +112,14 @@ Ov014Actor *func_ov014_02210a78(Ov014Actor *self) {
     Ov014Actor *o;
     s32 k;
     s32 i;
-    pos.x = FLD(s32, self, 0x118);
-    pos.y = FLD(s32, self, 0x11c);
-    pos.z = FLD(s32, self, 0x120) + 0x2000;
-    k = ((FLD(s32, self, 0x144) + FLD(u16, self, 0x14c)) % 4) * 0x7fff;
+    pos.x = self->unk_118.x;
+    pos.y = self->unk_118.y;
+    pos.z = self->unk_118.z + 0x2000;
+    k = ((self->unk_144 + self->unk_14c) % 4) * 0x7fff;
     rot.x = 0xfff;
     rot.y = -0x3fff + (u16)(k / 4);
     rot.z = 0;
-    switch ((u16)((FLD(s32, self, 0x144) + FLD(u16, self, 0x14c)) % 4)) {
+    switch ((u16)((self->unk_144 + self->unk_14c) % 4)) {
     case 0:
         d.x = func_02040498(0x1000);
         d.z = func_02040498(0x1000);
@@ -147,10 +147,10 @@ Ov014Actor *func_ov014_02210a78(Ov014Actor *self) {
     }
     desc.parent = -1;
     o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
-    FLD(Ov014Vec, o, 0x84) = d;
+    o->unk_84 = d;
     FLD(Ov014Flags8, o, 0x16).b0 = 1;
-    if (FLD(u8 *, o, 0x4c) != NULL) {
-        FLD(u16, FLD(u8 *, o, 0x4c), 0x1c) = self->id;
+    if (((u8 *)o->unk_4c) != NULL) {
+        FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
     }
     FLD(u16, self, 0xde) = o->id;
     return o;

@@ -68,7 +68,7 @@ struct Ov009PosMsg {
     u32 unk_14;
 };
 
-void func_ov009_022122ac(Ov009Actor *self) {
+void func_ov009_022122ac(Ov009ActVt_02217a00 *self) {
     Ov009PosMsg msg;
     u8 mtx[0x30];
     Ov009Actor *a;
@@ -77,17 +77,17 @@ void func_ov009_022122ac(Ov009Actor *self) {
         s32 px = p->x;
         s32 pz = p->z;
         s32 ang = Ov009_GetAng2(p);
-        if ((u16)(FX_Atan2(FLD(s32, self, 0x11c) - px, FLD(s32, self, 0x124) - pz) - ang + 0x4000) <= 0x8000 &&
+        if ((u16)(FX_Atan2(self->unk_11c.x - px, self->unk_11c.z - pz) - ang + 0x4000) <= 0x8000 &&
             self->unk_ea_6 != 1) {
             self->unk_ea_6 = 1;
-            Ov009_Notify(self->id, self->unk_50[0], self->unk_50[1], &FLD(Ov009Vec, self, 0x11c));
+            Ov009_Notify(self->id, self->unk_50[0], self->unk_50[1], &self->unk_11c);
         }
     }
     func_ov003_021d3008(self);
-    if (FLD(void *, self, 0x58) != NULL) {
-        func_0203f9dc(FLD(void *, self, 0x58), &FLD(u8, self, 0xf8));
+    if (self->unk_58 != NULL) {
+        func_0203f9dc(self->unk_58, &self->unk_f8);
     }
-    a = Ov009_FindActor(FLD(u16, self, 0xf0));
+    a = Ov009_FindActor(self->unk_f0);
     if (self->unk_40->unk_13 != 0x15 && (a == NULL || Ov009_Mode(a) == 9)) {
         func_ov000_02198360(self->unk_40, 0x15, 0);
         func_ov000_02184508(data_ov000_021ccd54);
@@ -98,13 +98,13 @@ void func_ov009_022122ac(Ov009Actor *self) {
     if (Ov009_Mode(a) != 1 && Ov009_Mode(a) != 4) {
         return;
     }
-    msg.pos = FLD(Ov009Vec, self, 0x11c);
+    msg.pos = self->unk_11c;
     msg.rot[0] = self->rot[0];
     msg.rot[1] = self->rot[1];
     msg.rot[2] = self->rot[2];
     msg.unk_14 = 0;
     func_ov000_0218d398(a, self->id, 7, TRUE, 0x18, &msg);
-    MI_Copy48B(&FLD(u8, self, 0xf8), mtx);
+    MI_Copy48B(&self->unk_f8, mtx);
     func_ov000_0218d398(a, self->id, 8, TRUE, 0x30, mtx);
 }
 

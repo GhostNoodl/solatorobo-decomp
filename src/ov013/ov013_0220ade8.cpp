@@ -16,11 +16,11 @@ static inline Ov013Actor *Ov013_FindActor(u16 id) {
 }
 
 
-void func_ov013_0220aca0(Ov013Actor *self) {
+void func_ov013_0220aca0(Ov013ActEx_0220a9a8 *self) {
     s32 v = 0;
     u8 *p;
     Ov013Actor *t;
-    p = (u8 *)func_020657b0(data_0214a420, FLD(s32, self, 0xbc));
+    p = (u8 *)func_020657b0(data_0214a420, ((s32)self->unk_bc));
     if (p != NULL) {
         u8 *q;
         v = FLD(s32, p, 0x7c);
@@ -46,8 +46,8 @@ void func_ov013_0220aca0(Ov013Actor *self) {
     if (t == NULL) {
         return;
     }
-    func_ov000_0219aae8(self, self, FLD(u16, FLD(void *, self, 0x4c), 0x8), FLD(u16, FLD(void *, self, 0x4c), 0xa), 1 << (t->id >> 12), NULL, 0,
-                        self->unk_48->unk_38, FLD(s32, self, 0xd0), -1, 0x1000);
+    func_ov000_0219aae8(self, self, FLD(u16, self->unk_4c, 0x8), FLD(u16, self->unk_4c, 0xa), 1 << (t->id >> 12), NULL, 0,
+                        self->unk_48->unk_38, self->unk_d0, -1, 0x1000);
 }
 
 Ov013Actor *func_ov013_0220ade8(Ov013Actor *self) {

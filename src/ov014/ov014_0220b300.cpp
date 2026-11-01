@@ -15,7 +15,7 @@ void func_ov014_0220b30c(Ov014Actor *self) {
 
 void func_ov014_0220b318(Ov014Actor *self) {
     if (self->unk_40->state == 0) {
-        FLD(u8, FLD(u8 *, self, 0x4c), 0) = 0xf;
+        FLD(u8, ((u8 *)self->unk_4c), 0) = 0xf;
     }
     func_ov003_021d5900(self);
 }
@@ -34,15 +34,15 @@ extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 extern u8 *func_ov000_02190a30(void *p, s32 a);
 extern void func_ov003_021d6a3c(Ov014Actor *self, s32 a, s32 b, s32 c);
 
-void func_ov014_0220b33c(Ov014Actor *self) {
+void func_ov014_0220b33c(Ov014Act_02209280 *self) {
     switch (self->unk_40->state) {
     case 0:
-        FLD(u8, self, 0xfc) = 0;
-        func_02065860(data_0214a420, FLD(void *, self, 0x1dc));
-        FLD(void *, self, 0x1dc) = NULL;
-        func_02065860(data_0214a420, FLD(void *, self, 0x1e0));
-        FLD(void *, self, 0x1e0) = NULL;
-        func_02065860(data_0214a420, FLD(void *, self, 0x1e4));
+        self->unk_fc = 0;
+        func_02065860(data_0214a420, self->unk_1dc);
+        self->unk_1dc = NULL;
+        func_02065860(data_0214a420, self->unk_1e0);
+        self->unk_1e0 = NULL;
+        func_02065860(data_0214a420, ((void *)self->unk_1e4));
         FLD(void *, self, 0x1e4) = NULL;
         func_ov000_02190cb0(self->unk_38, data_ov014_02217a84, 0xcd, 0);
         func_ov000_021915a0(self->unk_38);
@@ -99,7 +99,7 @@ void func_ov014_0220b33c(Ov014Actor *self) {
             e = func_02065f88(0x322, &p3);
             e->v0c(0x2e66);
             FLD(s32, e, 0xc8) = -1;
-            FLD(s32, self, 0x1f0) = FLD(s32, e, 0x24);
+            self->unk_1f0 = FLD(s32, e, 0x24);
         }
         {
             Ov014Sub40 *s = self->unk_40;
@@ -125,7 +125,7 @@ void func_ov014_0220b33c(Ov014Actor *self) {
         self->unk_40->timer = 0x190;
         break;
     case 3: {
-        Ov014V *e = func_020657b0(data_0214a420, FLD(void *, self, 0x1f0));
+        Ov014V *e = func_020657b0(data_0214a420, ((void *)self->unk_1f0));
         Ov014Vec v;
         if (e == NULL) {
             break;
@@ -148,7 +148,7 @@ static inline s32 Ov014b_Mul64(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-void func_ov014_0220b74c(Ov014Actor *self) {
+void func_ov014_0220b74c(Ov014Act_02209280 *self) {
     switch (Ov014Sub40_State(self->unk_40)) {
     case 0:
         // The target reloads the state it just switched on (the switch reads it through the const view).
@@ -194,7 +194,7 @@ void func_ov014_0220b74c(Ov014Actor *self) {
         if (t == 0xd2) {
             Ov014Vec p;
             Ov014V *e;
-            func_02065860(data_0214a420, FLD(void *, self, 0x1f0));
+            func_02065860(data_0214a420, ((void *)self->unk_1f0));
             p = self->pos;
             p.y += 0x3800;
             e = func_02065f88(0x391, &p);

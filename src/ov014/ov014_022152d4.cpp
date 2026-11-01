@@ -12,19 +12,19 @@ void func_ov014_022152d4(Ov014Actor *self) {
 }
 
 #pragma force_active on
-Ov014Actor *func_ov014_022152e8(Ov014Actor *self) {
+Ov014ActEx_022152e8 *func_ov014_022152e8(Ov014ActEx_022152e8 *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = data_ov014_02217f18;
-    FLD(s32, self, 0xd0) = 0;
-    FLD(s32, self, 0xd4) = 0;
-    FLD(s32, self, 0xd8) = 0;
-    FLD(s32, self, 0xdc) = 0;
-    FLD(s32, self, 0xe0) = 0;
-    FLD(s32, self, 0xe4) = 0;
-    FLD(s16, self, 0xf0) = 0;
-    FLD(s32, self, 0xe8) = 0;
-    FLD(s32, self, 0xec) = 0;
-    FLD(s32, self, 0xf4) = 0;
+    self->unk_d0.x = 0;
+    self->unk_d0.y = 0;
+    self->unk_d0.z = 0;
+    self->unk_dc.x = 0;
+    self->unk_dc.y = 0;
+    self->unk_dc.z = 0;
+    self->unk_f0 = 0;
+    self->unk_e8 = 0;
+    self->unk_ec = 0;
+    self->unk_f4 = 0;
     return self;
 }
 #pragma force_active reset
@@ -53,7 +53,7 @@ void func_ov014_02215370(Ov014Actor *self) {
     n->unk_22_0 = 0;
     n->unk_22_1 = 0;
     self->unk_48->unk_30 = 0x60000000;
-    FLD(s32, self->unk_48, 0x4c) = 0x9000;
+    self->unk_48->unk_4c = 0x9000;
     FLD(Ov014Flags, self->unk_38, 0xc2).b4 = 0;
 }
 

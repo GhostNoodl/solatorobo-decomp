@@ -11,7 +11,7 @@ extern Ov013Actor *func_ov000_0218e6d0(void *mgr, u16 a, u16 b);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern char data_ov013_0220b5ca[];
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void func_ov000_0218dbe0(Ov013Actor *self, s32 a);
+extern void func_ov000_0218dbe0(Ov013Obj *self, s32 a);
 
 static inline s32 Ov013_Sqrt64(s64 v) {
     *(volatile u16 *)0x40002b0 = 1;
@@ -47,7 +47,7 @@ void func_ov013_021fcef8(Ov013Actor *self) {
             n->unk_22_0 = 0;
             n->unk_22_1 = 0;
         }
-        FLD(u8 *, self, 0x4c)[0] = 1;
+        ((u8 *)self->unk_4c)[0] = 1;
         self->unk_94_1 = 1;
         self->unk_40->state = 0x14;
         self->unk_40->timer = 0;
@@ -60,7 +60,7 @@ void func_ov013_021fcef8(Ov013Actor *self) {
         if (self->unk_38 == NULL) {
             return;
         }
-        if (FLD(u8, self->unk_38, 0xbe) != 0) {
+        if (self->unk_38->unk_be != 0) {
             u8 v;
             Ov013Sub40 *st = self->unk_40;
             st->timer++;
@@ -68,7 +68,7 @@ void func_ov013_021fcef8(Ov013Actor *self) {
             if (v > 0x1f) {
                 v = 0;
             }
-            FLD(u8, self->unk_38, 0xbe) = v;
+            self->unk_38->unk_be = v;
         } else {
             func_ov000_02198360(self->unk_40, 0x15, 0);
         }

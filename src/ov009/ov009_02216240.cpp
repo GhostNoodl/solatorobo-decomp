@@ -51,7 +51,7 @@ static inline void Ov009_SetPos(Ov009Actor *self, s32 x, s32 y, s32 z) {
     self->pos.z = z;
 }
 
-void func_ov009_0220b70c(Ov009Actor *self) {
+void func_ov009_0220b70c(Ov009ActVt_02217640 *self) {
     Ov009Sub48 *s48;
     func_ov003_021d112c(self);
     if (self->unk_1a != 0) {
@@ -60,17 +60,17 @@ void func_ov009_0220b70c(Ov009Actor *self) {
     switch (self->kind) {
     case 0x5808:
     case 0x580a:
-        FLD(u8, self, 0xf7) = 0;
+        self->unk_f7 = 0;
         break;
     case 0x5809:
     case 0x580b: {
         Ov009Sub48 *p;
-        FLD(u8, self, 0xf7) = 1;
-        func_01ffc9fc(&FLD(Ov009Vec, self, 0xfc), &data_ov009_02215efc, (u16)(func_02040528(0x3c) * 0xb6));
-        self->pos = FLD(Ov009Vec, self, 0xfc);
-        FLD(u16, self, 0xf2) = self->kind == 0x5809 ? 0x78 : 0xa0;
+        self->unk_f7 = 1;
+        func_01ffc9fc(&self->unk_fc, &data_ov009_02215efc, (u16)(func_02040528(0x3c) * 0xb6));
+        self->pos = self->unk_fc;
+        self->unk_f2 = self->kind == 0x5809 ? 0x78 : 0xa0;
         p = self->unk_48;
-        FLD(s32, self, 0xf8) = p->unk_38 << 1;
+        self->unk_f8 = p->unk_38 << 1;
         p->unk_30 = 0;
         self->unk_93_4 = 1;
         break;
@@ -78,15 +78,15 @@ void func_ov009_0220b70c(Ov009Actor *self) {
     }
     switch (self->kind) {
     case 0x580b:
-        FLD(u8, self, 0xf6) = 0x96;
-        FLD(u16, self, 0xf4) = 0x64;
+        self->unk_f6 = 0x96;
+        self->unk_f4 = 0x64;
         break;
     case 0x5809:
-        FLD(u8, self, 0xf6) = 0xaa;
-        FLD(u16, self, 0xf4) = 0x96;
+        self->unk_f6 = 0xaa;
+        self->unk_f4 = 0x96;
         break;
     }
-    FLD(u16, self, 0xf0) = 0;
+    self->unk_f0 = 0;
     s48 = self->unk_48;
     s48->unk_9a_0 = 0;
     s48->unk_9a_3 = 0;
@@ -101,14 +101,14 @@ extern void *data_02097e4c;
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern s32 func_ov000_0219a2f4(Ov009Vec *pos, s32 a, s32 b);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
-extern void func_ov000_0218d9e8(Ov009Actor *self, Ov009Vec *v, s32 a);
+extern void func_ov000_0218d9e8(Ov009Obj *self, Ov009Vec *v, s32 a);
 extern void *func_02049f44(void *a, s32 b, Ov009Vec *c, s32 d);
 
 static inline BOOL Ov009Game_IsPausedB(Ov009Game54 *g) {
     return g->unk_d4 != 0;
 }
 
-void func_ov009_0220b8a0(Ov009Actor *self) {
+void func_ov009_0220b8a0(Ov009ActVt_02217640 *self) {
     Ov009Actor *pl;
     Ov009Vec d;
     Ov009Vec v;
@@ -121,7 +121,7 @@ void func_ov009_0220b8a0(Ov009Actor *self) {
         }
     }
     k = self->unk_40->unk_13;
-    if (FLD(u8, self, 0xf7) == 0) {
+    if (self->unk_f7 == 0) {
         func_ov003_021d1e8c(self);
         if (k == 1 || k == 0x20 || k == 2 || k == 0xf || (u8)(k + 0xee) <= 1) {
             func_ov000_021987b8(self->unk_48, 1, 0, 0);
@@ -132,7 +132,7 @@ void func_ov009_0220b8a0(Ov009Actor *self) {
             VEC_Distance(&self->pos, &v);
         }
     }
-    if (FLD(u8, self, 0xf7) == 1) {
+    if (self->unk_f7 == 1) {
         if (!Ov009_GameIdle()) {
             return;
         }
@@ -140,13 +140,13 @@ void func_ov009_0220b8a0(Ov009Actor *self) {
             return;
         }
         if (k == 1) {
-            if (FLD(u16, self, 0xf0) == 0) {
-                FLD(u16, self, 0xf0) = 4;
+            if (self->unk_f0 == 0) {
+                self->unk_f0 = 4;
                 self->unk_40->flags |= 0x8000;
-            } else if (FLD(u16, self, 0xf0) & 1) {
+            } else if (self->unk_f0 & 1) {
                 self->unk_b6++;
-                if (self->unk_b6 > FLD(u16, self, 0xf4)) {
-                    FLD(u16, self, 0xf0) = 0;
+                if (self->unk_b6 > self->unk_f4) {
+                    self->unk_f0 = 0;
                     self->unk_b6 = 0;
                 }
             }
@@ -187,7 +187,7 @@ static inline BOOL Ov009Game_IsPaused3(Ov009Game54 *g) {
     return g->unk_d4 != 0;
 }
 
-void func_ov009_0220bb70(Ov009Actor *self) {
+void func_ov009_0220bb70(Ov009ActVt_02217640 *self) {
     Ov009Vec p;
     Ov009Vec v;
     Ov009Sub40 *st;
@@ -223,9 +223,9 @@ void func_ov009_0220bb70(Ov009Actor *self) {
             p.x = self->pos.x;
             p.y = self->pos.y;
             p.z = self->pos.z;
-            p.y -= FLD(s32, self, 0x6c);
+            p.y -= self->unk_6c;
             w = self->unk_64;
-            y = func_02040528(FLD(s32, self, 0x68) << 1);
+            y = func_02040528(self->unk_68 << 1);
             x = func_02040528(w << 1);
             v.x = x;
             v.y = y;
@@ -255,7 +255,7 @@ void func_ov009_0220bb70(Ov009Actor *self) {
         st->timer++;
         if (st->timer >= 0x1e) {
             self->unk_40->timer = 0;
-            if (FLD(u8, self, 0xf7) == 0) {
+            if (self->unk_f7 == 0) {
                 Ov009Sub44 *s44 = self->unk_44;
                 Ov009Sub48 *s48;
                 s44->unk_22_0 = 1;
@@ -282,7 +282,7 @@ extern "C" {
 extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
 extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
 
-void func_ov009_0220be20(Ov009Actor *self) {
+void func_ov009_0220be20(Ov009ActVt_02217640 *self) {
     Ov009Vec d;
     switch (self->unk_40->state) {
     case 0:
@@ -299,30 +299,30 @@ void func_ov009_0220be20(Ov009Actor *self) {
         self->unk_40->timer = 0;
         self->unk_40->state++;
     case 1:
-        if (FLD(u8, self, 0xf7) == 1) {
+        if (self->unk_f7 == 1) {
             Ov009Sub40 *st = self->unk_40;
             if (st->timer != 0) {
                 st->timer--;
             }
             if (st->timer == 0) {
                 self->unk_40->timer = 0x32;
-                FLD(Ov009Vec, self, 0x108) = FLD(Ov009Vec, self, 0xfc);
-                FLD(Ov009Vec, self, 0x108).x += func_02040528(0x800);
-                FLD(Ov009Vec, self, 0x108).y += func_02040528(0x800);
-                FLD(Ov009Vec, self, 0x108).z += func_02040528(0x800);
+                self->unk_108 = self->unk_fc;
+                self->unk_108.x += func_02040528(0x800);
+                self->unk_108.y += func_02040528(0x800);
+                self->unk_108.z += func_02040528(0x800);
             }
-            d.x = FLD(Ov009Vec, self, 0x108).x - self->pos.x;
-            d.y = FLD(Ov009Vec, self, 0x108).y - self->pos.y;
-            d.z = FLD(Ov009Vec, self, 0x108).z - self->pos.z;
+            d.x = self->unk_108.x - self->pos.x;
+            d.y = self->unk_108.y - self->pos.y;
+            d.z = self->unk_108.z - self->pos.z;
             VEC_MultAdd(0xcd, &d, &self->pos, &self->pos);
         }
         break;
     }
-    if (FLD(u8, self, 0xf7) != 1) {
+    if (self->unk_f7 != 1) {
         return;
     }
-    if (VEC_Distance(&self->pos, &FLD(Ov009Vec, self, 0xfc)) > 0x6000) {
-        FLD(u16, self, 0xf0) = 0x10;
+    if (VEC_Distance(&self->pos, &self->unk_fc) > 0x6000) {
+        self->unk_f0 = 0x10;
         func_ov000_02198360(self->unk_40, 0x11, 0);
     }
     func_ov000_0218d988(self, func_ov000_0218d240(self), self->unk_b0->unk_02);
@@ -337,8 +337,8 @@ extern "C" {
 
 extern void func_ov000_0218ddd4(Ov009Actor *self, const Ov009Vec *v, s32 a);
 
-void func_ov009_0220bfcc(Ov009Actor *self) {
-    u8 k = FLD(u8, self, 0xf7);
+void func_ov009_0220bfcc(Ov009ActVt_02217640 *self) {
+    u8 k = self->unk_f7;
     if (k == 0) {
         Ov009Vec v;
         Ov009Param *p;
@@ -371,9 +371,9 @@ extern const Ov009Vec data_ov009_02215f2c;
 extern const Ov009Vec data_ov009_02215f44;
 extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
-extern void func_ov000_0218d9e8(Ov009Actor *self, const Ov009Vec *v, s32 a);
+extern void func_ov000_0218d9e8(Ov009Obj *self, const Ov009Vec *v, s32 a);
 extern void func_ov000_0218d918(Ov009Actor *self, const Ov009Vec *v, s32 a);
-extern void func_ov000_0218dbe0(Ov009Actor *self, s32 a);
+extern void func_ov000_0218dbe0(Ov009Obj *self, s32 a);
 
 struct Ov009RotC {
     u16 x;
@@ -415,14 +415,14 @@ extern Ov009Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_0219aca8(Ov009Actor *a, Ov009Actor *b, u16 c, u8 d, s32 e, Ov009RotC *f, s32 g, s32 h, s32 i, s32 j);
 extern void func_ov000_0218996c(s32 a, s32 b);
 
-void func_ov009_0220c094(Ov009Actor *self) {
+void func_ov009_0220c094(Ov009ActVt_02217640 *self) {
     Ov009Vec a;
     Ov009Vec v;
     Ov009Vec w;
     Ov009RotC r;
     Ov009Actor *t;
     s32 y0 = 0;
-    if (FLD(u8, self, 0xf7) == 0) {
+    if (self->unk_f7 == 0) {
         Ov009V *o;
         func_ov003_021d452c(self);
         if (FLD(s16, self->unk_38, 0xc4) != 2) {
@@ -494,7 +494,7 @@ void func_ov009_0220c094(Ov009Actor *self) {
         if (*func_ov000_0219bf90()->unk_50 != 0) {
             r = *(Ov009RotC *)self->rot;
             r.x += 0x4000;
-            func_ov000_0219aca8(self, self, FLD(u16, self, 0xf2), FLD(u16, FLD(void *, self, 0x4c), 0xa), 0, &r, 0x99a, 0x2000, 100, 0x1000);
+            func_ov000_0219aca8(self, self, self->unk_f2, FLD(u16, ((void *)self->unk_4c), 0xa), 0, &r, 0x99a, 0x2000, 100, 0x1000);
         }
         if (self->unk_48->unk_50 & 0x20000000) {
             func_ov000_0218996c(0xf, 0xf);
@@ -505,7 +505,7 @@ void func_ov009_0220c094(Ov009Actor *self) {
             {
                 Ov009Sub48 *s48;
                 Ov009Sub44 *s44;
-                self->unk_48->unk_38 = FLD(s32, self, 0xf8) >> 1;
+                self->unk_48->unk_38 = self->unk_f8 >> 1;
                 s48 = self->unk_48;
                 s48->unk_9a_0 = 1;
                 s48->unk_9a_3 = 1;
@@ -521,7 +521,7 @@ void func_ov009_0220c094(Ov009Actor *self) {
     case 4: {
         Ov009Sub40 *s = self->unk_40;
         s->timer++;
-        if (s->timer > FLD(u8, self, 0xf6)) {
+        if (s->timer > self->unk_f6) {
             self->unk_40->timer = 0;
             func_ov000_02198360(self->unk_40, 0x11, 0);
         }
@@ -531,7 +531,7 @@ void func_ov009_0220c094(Ov009Actor *self) {
     self->unk_ea_0 = 3;
 }
 
-void func_ov009_0220c594(Ov009Actor *self) {
+void func_ov009_0220c594(Ov009ActVt_02217640 *self) {
     Ov009Vec t1;
     Ov009Vec t2;
     Ov009Vec d;
@@ -544,14 +544,14 @@ void func_ov009_0220c594(Ov009Actor *self) {
         self->unk_a4 = 0;
         self->unk_a8 = 0;
         self->unk_40->timer = 0;
-        self->unk_48->unk_38 = FLD(s32, self, 0xf8);
+        self->unk_48->unk_38 = self->unk_f8;
         self->unk_48->unk_30 = 0;
         s44 = self->unk_44;
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
-        if (FLD(u16, self, 0xf0) & 4) {
+        if (self->unk_f0 & 4) {
             *(Ov009Blk12 *)&t1 = *(const Ov009Blk12 *)&data_ov009_02215f2c;
-            t1.y = FLD(s32, self, 0x100) + 0x1000;
+            t1.y = self->unk_fc.y + 0x1000;
             func_01ffc9fc(&t1, &t1, self->rot[1]);
             VEC_Add(&self->pos, &t1, &t1);
             self->unk_b8 = t1;
@@ -569,7 +569,7 @@ void func_ov009_0220c594(Ov009Actor *self) {
             self->unk_a0 = 0x266;
             break;
         }
-        if (self->pos.y >= 0x2800 && self->pos.y < FLD(s32, self, 0x100)) {
+        if (self->pos.y >= 0x2800 && self->pos.y < self->unk_fc.y) {
             self->unk_a0 = 0x7b;
             break;
         }
@@ -609,14 +609,14 @@ void func_ov009_0220c594(Ov009Actor *self) {
         self->unk_a4 = 0;
         self->unk_a8 = 0;
         self->unk_9c = 0x333;
-        func_01ffc9fc(&FLD(Ov009Vec, self, 0xfc), &data_ov009_02215efc, (u16)(func_02040528(0x3c) * 0xb6));
-        self->unk_b8 = FLD(Ov009Vec, self, 0xfc);
+        func_01ffc9fc(&self->unk_fc, &data_ov009_02215efc, (u16)(func_02040528(0x3c) * 0xb6));
+        self->unk_b8 = self->unk_fc;
         func_ov000_02190cb0(self->unk_38, data_ov009_02215ee8, 0x111, 0);
         func_ov000_021915a0(self->unk_38);
         self->unk_40->state++;
     case 0x15:
-        func_ov000_0218d918(self, &FLD(Ov009Vec, self, 0xfc), 0xcd);
-        FLD(u16, self, 0x98) = self->rot[1];
+        func_ov000_0218d918(self, &self->unk_fc, 0xcd);
+        self->unk_98 = self->rot[1];
         if (VEC_Distance(&self->pos, &self->unk_b8) <= 0x4000) {
             self->unk_a4 = 0xf85;
             self->unk_40->state++;
@@ -624,7 +624,7 @@ void func_ov009_0220c594(Ov009Actor *self) {
         break;
     case 0x16:
         if (self->unk_9c <= 0x52) {
-            FLD(u16, self, 0xf0) = 1;
+            self->unk_f0 = 1;
             func_ov000_02198360(self->unk_40, 1, 0);
         }
         break;
@@ -632,9 +632,9 @@ void func_ov009_0220c594(Ov009Actor *self) {
     func_ov000_0218dbe0(self, 0);
 }
 
-void func_ov009_0220c93c(Ov009Actor *self) {
-    if (self->unk_40->state == 0 && FLD(u8, self, 0xf7) == 1) {
-        self->unk_48->unk_38 = FLD(s32, self, 0xf8);
+void func_ov009_0220c93c(Ov009ActVt_02217640 *self) {
+    if (self->unk_40->state == 0 && self->unk_f7 == 1) {
+        self->unk_48->unk_38 = self->unk_f8;
         self->rot[0] = 0;
     }
     func_ov003_021d5900(self);
@@ -654,7 +654,7 @@ extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
 extern void func_ov003_021d6954(Ov009Actor *self, u8 a);
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void func_ov000_0218d918(Ov009Actor *self, const Ov009Vec *v, s32 a);
-extern void func_ov000_0218dbe0(Ov009Actor *self, s32 a);
+extern void func_ov000_0218dbe0(Ov009Obj *self, s32 a);
 
 void func_ov009_0220c970(Ov009Actor *self) {
     switch (self->unk_40->state) {
@@ -667,7 +667,7 @@ void func_ov009_0220c970(Ov009Actor *self) {
         s44 = self->unk_44;
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
-        FLD(u16, FLD(u8 *, self, 0x4c), 0x1c) = 0xffff;
+        FLD(u16, self->unk_4c, 0x1c) = 0xffff;
         func_020639d4(func_02065f88(0x38a, &self->pos), 0x40, 0);
         self->unk_40->timer = 0;
         self->unk_40->state++;
@@ -733,7 +733,7 @@ extern "C" {
 
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void func_ov000_0218d918(Ov009Actor *self, const Ov009Vec *v, s32 a);
-extern void func_ov000_0218dbe0(Ov009Actor *self, s32 a);
+extern void func_ov000_0218dbe0(Ov009Obj *self, s32 a);
 
 void func_ov009_0220cb64(Ov009Actor *self) {
     Ov009Vec v;
@@ -764,11 +764,11 @@ void func_ov009_0220cb64(Ov009Actor *self) {
 namespace m_0220cc24 {
 extern "C" {
 
-extern s32 func_ov000_0219a510(Ov009Actor *self, s32 a, const Ov009Vec *pos, s32 r, s32 b, void **out);
+extern s32 func_ov000_0219a510(Ov009Obj *self, s32 a, const Ov009Vec *pos, s32 r, s32 b, void **out);
 extern BOOL func_ov000_021985c0(void *p);
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void func_ov000_0218d918(Ov009Actor *self, const Ov009Vec *v, s32 a);
-extern void func_ov000_0218dbe0(Ov009Actor *self, s32 a);
+extern void func_ov000_0218dbe0(Ov009Obj *self, s32 a);
 
 void func_ov009_0220cc24(Ov009Actor *self) {
     Ov009Vec v;
@@ -824,7 +824,7 @@ void func_ov009_0220cd40(Ov009Actor *self) {
         s44 = self->unk_44;
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
-        FLD(u16, FLD(u8 *, self, 0x4c), 0x1c) = 0xffff;
+        FLD(u16, self->unk_4c, 0x1c) = 0xffff;
         self->unk_40->timer = 0;
         self->unk_40->state++;
         break;
@@ -843,7 +843,7 @@ void func_ov009_0220cd40(Ov009Actor *self) {
             p.y = self->pos.y;
             p.z = self->pos.z;
             w = self->unk_64;
-            y = func_02040528(FLD(s32, self, 0x68));
+            y = func_02040528(self->unk_68);
             x = func_02040528(w);
             v.x = x;
             v.y = y;
@@ -871,7 +871,7 @@ void func_ov009_0220cd40(Ov009Actor *self) {
         if (*func_ov000_0219bf90()->unk_50 == 0) {
             return;
         }
-        func_ov000_0219aae8(self, self, 0xc8, FLD(u16, FLD(u8 *, self, 0x4c), 0xa), 2, NULL, 0, 0x2000, 0, 0x64, 0x1000);
+        func_ov000_0219aae8(self, self, 0xc8, FLD(u16, self->unk_4c, 0xa), 2, NULL, 0, 0x2000, 0, 0x64, 0x1000);
         break;
     case 2: {
         u8 b = FLD(u8, self->unk_38, 0xbe);

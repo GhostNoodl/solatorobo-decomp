@@ -30,18 +30,18 @@ extern BOOL func_ov000_02194c08(void *self);
 extern void func_0203f364(Ov014Sub48 *p);
 extern Ov014Actor *func_ov000_02199ba0(void *p);
 extern Ov014Actor *func_ov000_0219bf90(void);
-extern s32 func_ov000_0219a510(Ov014Actor *self, u16 mask, Ov014Vec *pos, s32 r, s32 a, Ov014Actor **list);
+extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s32 a, Ov014Actor **list);
 extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
 
 #pragma force_active on
-Ov014Actor *func_ov014_022142fc(Ov014Actor *self) {
+Ov014ActEx_022142fc *func_ov014_022142fc(Ov014ActEx_022142fc *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = data_ov014_02217fb0;
-    FLD(s32, self, 0xd0) = 0;
-    FLD(s32, self, 0xd4) = 0;
-    FLD(s32, self, 0xd8) = 0;
-    FLD(s32, self, 0xdc) = 0;
-    FLD(s32, self, 0xe0) = 0;
+    self->unk_d0.x = 0;
+    self->unk_d0.y = 0;
+    self->unk_d0.z = 0;
+    self->unk_dc = 0;
+    self->unk_e0 = 0;
     return self;
 }
 #pragma force_active reset
@@ -70,7 +70,7 @@ void func_ov014_02214364(Ov014Actor *self) {
     m->unk_9a_0 = 0;
     m->unk_9a_3 = 0;
     func_0203f364(m);
-    FLD(s32, self->unk_48, 0x4c) = 0x28000;
+    self->unk_48->unk_4c = 0x28000;
     func_ov000_02198360(self->unk_40, 0xb, 0);
 }
 
@@ -78,7 +78,7 @@ void func_ov014_022143e8(Ov014Actor *self) {
     func_ov000_02194c08(self);
 }
 
-BOOL func_ov014_022143f4(Ov014Actor *self) {
+BOOL func_ov014_022143f4(Ov014Obj *self) {
     Ov014Actor *list[0x20];
     BOOL r = FALSE;
     Ov014Actor *o;
@@ -88,7 +88,7 @@ BOOL func_ov014_022143f4(Ov014Actor *self) {
     u16 mask;
     s32 rad;
     s32 n;
-    o = func_ov000_02199ba0(FLD(void *, self, 0x4c));
+    o = func_ov000_02199ba0(self->unk_4c);
     p = func_ov000_0219bf90();
     k = o->id & 0xf000;
     mask = ~(1 << (k >> 12));
@@ -103,7 +103,7 @@ BOOL func_ov014_022143f4(Ov014Actor *self) {
         for (i = 0; i < n; i++) {
             Ov014Actor *q;
             if (list[i] != NULL && (q = func_ov000_021985c0(list[i])) != NULL && q->kind != self->kind) {
-                u8 *s = FLD(u8 *, q, 0x4c);
+                u8 *s = ((u8 *)q->unk_4c);
                 if (s == NULL || k != (u16)(FLD(u16, s, 0x1c) & 0xf000)) {
                     r = TRUE;
                     break;
@@ -120,7 +120,7 @@ extern char data_ov014_0221804f[];
 extern char data_ov014_0221805b[];
 extern void *data_0214a420;
 extern void *func_ov000_0218d240(void *self);
-extern void func_ov014_02214f10(Ov014Actor *self);
+extern void func_ov014_02214f10(Ov014Obj *self);
 extern void MTX_Identity33_(Ov014Mtx33 *m);
 extern void MTX_RotX33_(Ov014Mtx33 *m, s32 s, s32 c);
 extern void MTX_RotY33_(Ov014Mtx33 *m, s32 s, s32 c);
@@ -139,7 +139,7 @@ extern Ov014V *func_020657b0(void *a, void *b);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, Ov014Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern void func_ov000_0218996c(s32 a, s32 b);
 
-void func_ov014_022144f8(Ov014Actor *self) {
+void func_ov014_022144f8(Ov014ActEx_022142fc *self) {
     Ov014Mtx33 m;
     Ov014Vec q;
     Ov014Vec w;
@@ -148,7 +148,7 @@ void func_ov014_022144f8(Ov014Actor *self) {
     Ov014Vec v2;
     Ov014Actor *o;
     Ov014Sub40 *st;
-    o = func_ov000_02199ba0(FLD(void *, self, 0x4c));
+    o = func_ov000_02199ba0(self->unk_4c);
     func_ov000_0218d240(self);
     if (o == NULL) {
         func_ov000_02198360(self->unk_40, 0x15, 0);
@@ -165,10 +165,10 @@ void func_ov014_022144f8(Ov014Actor *self) {
         u16 rz;
         u16 ry;
         u16 rx;
-        Ov014_VecCopy(&FLD(Ov014Vec, self, 0xd0), &self->unk_84);
-        FLD(s32, self, 0xd0) += func_02040528(0x800);
-        FLD(s32, self, 0xd4) += 0x14000;
-        FLD(s32, self, 0xd8) += func_02040528(0x800);
+        Ov014_VecCopy(&self->unk_d0, &self->unk_84);
+        self->unk_d0.x += func_02040528(0x800);
+        self->unk_d0.y += 0x14000;
+        self->unk_d0.z += func_02040528(0x800);
         ry = self->rot[1];
         rz = self->rot[2];
         rx = self->rot[0];
@@ -200,10 +200,10 @@ void func_ov014_022144f8(Ov014Actor *self) {
         self->unk_9c = 0;
         self->unk_a0 = 0;
         MTX_MultVec33((Ov014Vec *)&self->unk_9c, &m, (Ov014Vec *)&self->unk_9c);
-        FLD(s32, self, 0xdc) = 0x333;
-        self->unk_9c = Ov014_FxMul(self->unk_9c, FLD(s32, self, 0xdc));
-        self->unk_a0 = Ov014_FxMul(self->unk_a0, FLD(s32, self, 0xdc));
-        self->unk_a4 = Ov014_FxMul(self->unk_a4, FLD(s32, self, 0xdc));
+        self->unk_dc = 0x333;
+        self->unk_9c = Ov014_FxMul(self->unk_9c, self->unk_dc);
+        self->unk_a0 = Ov014_FxMul(self->unk_a0, self->unk_dc);
+        self->unk_a4 = Ov014_FxMul(self->unk_a4, self->unk_dc);
         func_02049f44(data_02097e4c, 0x2b, &self->pos, 0);
         self->unk_40->state++;
         self->unk_40->timer = 0x14;
@@ -224,20 +224,20 @@ void func_ov014_022144f8(Ov014Actor *self) {
         self->unk_40->timer = 0;
         break;
     case 10:
-        if (self->pos.y < FLD(s32, self, 0xd4)) {
-            s32 s = FLD(s32, self, 0xdc);
+        if (self->pos.y < self->unk_d0.y) {
+            s32 s = self->unk_dc;
             self->unk_a0 += Ov014_FxMul64(s, 0x19a);
-            FLD(s32, self, 0xdc) = Ov014_Approach(s, 0x666);
+            self->unk_dc = Ov014_Approach(s, 0x666);
             VEC_Normalize((Ov014Vec *)&self->unk_9c, (Ov014Vec *)&self->unk_9c);
-            Ov014_VecScale((Ov014Vec *)&self->unk_9c, FLD(s32, self, 0xdc));
+            Ov014_VecScale((Ov014Vec *)&self->unk_9c, self->unk_dc);
             VEC_Add((Ov014Vec *)&self->unk_9c, &self->pos, &self->pos);
             break;
         }
         st->state = 0x14;
     case 0x14: {
-        s32 x = FLD(s32, self, 0xd0);
-        s32 y = FLD(s32, self, 0xd4);
-        s32 z = FLD(s32, self, 0xd8);
+        s32 x = self->unk_d0.x;
+        s32 y = self->unk_d0.y;
+        s32 z = self->unk_d0.z;
         Ov014V *e;
         Ov014Sub44 *q4;
         Ov014Sub48 *q8;
@@ -247,7 +247,7 @@ void func_ov014_022144f8(Ov014Actor *self) {
         self->unk_9c = self->unk_84.x - x;
         self->unk_a0 = self->unk_84.y - y;
         self->unk_a4 = self->unk_84.z - z;
-        FLD(s32, self, 0xdc) = 0;
+        self->unk_dc = 0;
         q4 = self->unk_44;
         q4->unk_22_0 = 1;
         q4->unk_22_1 = 1;
@@ -267,9 +267,9 @@ void func_ov014_022144f8(Ov014Actor *self) {
     }
     case 0x15: {
         s32 oldy;
-        FLD(s32, self, 0xdc) = Ov014_Approach(FLD(s32, self, 0xdc), 0x4cd);
+        self->unk_dc = Ov014_Approach(self->unk_dc, 0x4cd);
         VEC_Normalize((Ov014Vec *)&self->unk_9c, (Ov014Vec *)&self->unk_9c);
-        Ov014_VecScale((Ov014Vec *)&self->unk_9c, FLD(s32, self, 0xdc));
+        Ov014_VecScale((Ov014Vec *)&self->unk_9c, self->unk_dc);
         oldy = self->pos.y;
         VEC_Add((Ov014Vec *)&self->unk_9c, &self->pos, &self->pos);
         if (self->pos.y < 0xa000 && oldy >= 0xa000) {
@@ -277,10 +277,10 @@ void func_ov014_022144f8(Ov014Actor *self) {
             Ov014V *e = func_02065f88(0x4b0, &self->pos);
             e->v14(0x59a, 0x1333, 0x59a);
             e->v34(0x3fff, 0, 0);
-            FLD(s32, self, 0xe0) = FLD(s32, e, 0x24);
+            self->unk_e0 = FLD(s32, e, 0x24);
         }
         {
-            Ov014V *e2 = func_020657b0(data_0214a420, FLD(void *, self, 0xe0));
+            Ov014V *e2 = func_020657b0(data_0214a420, ((void *)self->unk_e0));
             if (e2 != NULL) {
                 e2->v18(&self->pos);
             }
@@ -298,19 +298,19 @@ void func_ov014_022144f8(Ov014Actor *self) {
             s32 r;
             Ov014Actor *a;
             r = self->unk_64 + 0xccd;
-            v.y = FLD(s32, self, 0x6c);
+            v.y = self->unk_6c;
             v.x = 0;
             v.z = 0;
             mask = 0;
-            a = func_ov000_02199ba0(FLD(void *, self, 0x4c));
+            a = func_ov000_02199ba0(self->unk_4c);
             if (a != NULL) {
                 mask = ~(1 << ((u16)(a->id & 0xf000) >> 12));
             }
             mask &= (u16)~(1 << ((u16)(self->id & 0xf000) >> 12));
-            func_ov000_0219aae8(self, a, FLD(u16, FLD(void *, self, 0x4c), 8), FLD(u16, FLD(void *, self, 0x4c), 0xa), mask, &v, 0,
+            func_ov000_0219aae8(self, a, FLD(u16, self->unk_4c, 8), FLD(u16, self->unk_4c, 0xa), mask, &v, 0,
                                 r, 0, 0x64, 0x1000);
         }
-        FLD(u16, FLD(void *, self, 0x4c), 0x1c) = 0xffff;
+        FLD(u16, self->unk_4c, 0x1c) = 0xffff;
         {
             s32 sc = self->unk_64;
             Ov014V *f = func_02066900(data_ov014_02218040, data_ov014_0221805b, &self->pos);
@@ -329,7 +329,7 @@ void func_ov014_022144f8(Ov014Actor *self) {
         w.x = self->pos.x;
         w.y = self->pos.y;
         w.z = self->pos.z;
-        w.y = FLD(s32, self->unk_48, 0x6c);
+        w.y = self->unk_48->unk_68.y;
         e = func_02066774(data_ov014_02218040, data_ov014_0221804f, 0, &w);
         e->v14(0x24cd, 0x299a, 0x24cd);
         func_02049f44(data_02097e4c, 0x56, &w, 0);
@@ -341,16 +341,16 @@ void func_ov014_022144f8(Ov014Actor *self) {
         if (!(self->unk_40->timer & 3)) {
             u16 mask;
             Ov014Actor *a;
-            a = func_ov000_02199ba0(FLD(void *, self, 0x4c));
+            a = func_ov000_02199ba0(self->unk_4c);
             mask = 0xffff;
             if (a != NULL) {
                 mask &= (u16)~(1 << ((u16)(a->id & 0xf000) >> 12));
             }
             mask &= (u16)~(1 << ((u16)(self->id & 0xf000) >> 12));
-            v2.y = FLD(s32, self->unk_48, 0x6c) - self->pos.y;
+            v2.y = self->unk_48->unk_68.y - self->pos.y;
             v2.x = 0;
             v2.z = 0;
-            func_ov000_0219aae8(self, a, FLD(u16, FLD(void *, self, 0x4c), 8), FLD(u16, FLD(void *, self, 0x4c), 0xa), mask, &v2, 0,
+            func_ov000_0219aae8(self, a, FLD(u16, self->unk_4c, 8), FLD(u16, self->unk_4c, 0xa), mask, &v2, 0,
                                 self->unk_64 + 0xccd, 0x3000, 0x64, 0x1000);
         }
         st = self->unk_40;
@@ -375,14 +375,14 @@ static inline s32 Ov014k_FxMul64(s32 a, s64 b) {
     return (a * b + 0x800) >> 12;
 }
 
-void func_ov014_02214f10(Ov014Actor *self) {
+void func_ov014_02214f10(Ov014Obj *self) {
     Ov014Vec d;
     Ov014Vec v;
     switch (self->unk_40->state) {
     case 0: {
         Ov014Vec *p;
         {
-            u8 *q = FLD(u8 *, self, 0x4c);
+            u8 *q = ((u8 *)self->unk_4c);
             FLD(s32, q, 0x50) = 0x1000;
             FLD(s32, q, 0x54) = 0x29;
             FLD(s32, q, 0x58) = 0;
@@ -424,7 +424,7 @@ void func_ov014_02214f10(Ov014Actor *self) {
             Ov014Sub48 *m = self->unk_48;
             m->unk_50 = 0;
             m->unk_54 = 0;
-            FLD(u32, m, 0x58) = 0;
+            m->unk_58 = 0;
         }
         self->unk_40->state++;
         break;
@@ -441,19 +441,19 @@ void func_ov014_02214f10(Ov014Actor *self) {
             s32 r;
             Ov014Actor *a;
             r = self->unk_64 + 0xccd;
-            v.y = FLD(s32, self, 0x6c);
+            v.y = self->unk_6c;
             v.x = 0;
             v.z = 0;
             mask = 0;
-            a = func_ov000_02199ba0(FLD(void *, self, 0x4c));
+            a = func_ov000_02199ba0(self->unk_4c);
             if (a != NULL) {
                 mask = ~(1 << ((u16)(a->id & 0xf000) >> 12));
             }
             mask &= (u16)~(1 << ((u16)(self->id & 0xf000) >> 12));
-            func_ov000_0219aae8(self, a, FLD(u16, FLD(void *, self, 0x4c), 8), FLD(u16, FLD(void *, self, 0x4c), 0xa), mask, &v, 0,
+            func_ov000_0219aae8(self, a, FLD(u16, self->unk_4c, 8), FLD(u16, self->unk_4c, 0xa), mask, &v, 0,
                                 r, 0, 0x64, 0x1000);
         }
-        FLD(u16, FLD(void *, self, 0x4c), 0x1c) = 0xffff;
+        FLD(u16, self->unk_4c, 0x1c) = 0xffff;
         {
             s32 sc = self->unk_64;
             Ov014V *f = func_02066900(data_ov014_02218040, data_ov014_0221805b, &self->pos);

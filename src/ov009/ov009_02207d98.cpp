@@ -61,7 +61,7 @@ void func_ov009_02207dd0(Ov009Actor *self) {
     if (!Ov009_GameIdle()) {
         return;
     }
-    switch (FLD(u16, self, 0xb4)) {
+    switch (self->unk_b4) {
     case 0:
         if (self->unk_40->unk_13 != 1 || FLD(u8, self, 0x490) != 4) {
             return;
@@ -93,17 +93,17 @@ void func_ov009_02207dd0(Ov009Actor *self) {
                     return;
                 }
                 self->unk_40->flags |= 0x8000;
-                FLD(u16, self, 0xb6) = 0;
-                FLD(u16, self, 0xb4)++;
+                self->unk_b6 = 0;
+                self->unk_b4++;
                 return;
             }
         }
         break;
     case 1:
-        FLD(u16, self, 0xb6)++;
-        if (FLD(u16, self, 0xb6) > 200) {
-            FLD(u16, self, 0xb4) = 0;
-            FLD(u16, self, 0xb6) = 0;
+        self->unk_b6++;
+        if (self->unk_b6 > 200) {
+            self->unk_b4 = 0;
+            self->unk_b6 = 0;
         }
         break;
     }

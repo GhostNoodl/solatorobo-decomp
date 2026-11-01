@@ -10,7 +10,7 @@ extern void func_ov000_021911c8(Ov009Sub38 *m, s32 a);
 extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern u16 FX_Atan2(s32 x, s32 z);
 extern void func_ov000_0218db58(Ov009Actor *self, u16 ang, u16 b, s32 c, s32 d);
-extern void func_ov000_0218dbe0(Ov009Actor *self, s32 turn);
+extern void func_ov000_0218dbe0(Ov009Obj *self, s32 turn);
 extern void func_0203f2b8(void *p);
 extern void *data_ov000_021ccd64;
 extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);

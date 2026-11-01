@@ -10,9 +10,9 @@ void func_ov012_02206098(Ov012Actor *self) {
     case 0: {
         Ov012Vec *p;
         self->unk_9c = 0;
-        FLD(s32, self, 0xa0) = 0;
-        FLD(s32, self, 0xa4) = 0;
-        FLD(s32, self, 0xa8) = 0;
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
         p = func_ov000_0218d2e0(self);
         if (p != NULL) {
             s32 r;
@@ -39,8 +39,8 @@ void func_ov012_02206098(Ov012Actor *self) {
             d.z = Ov012_FxMul(r, OV012_COS(self->rot[1]));
             VEC_Normalize(&d, &d);
             self->unk_9c = Ov012_FxMul(d.x, 0x4cd);
-            FLD(s32, self, 0xa0) = Ov012_FxMul(d.y, 0x4cd);
-            FLD(s32, self, 0xa4) = Ov012_FxMul(d.z, 0x4cd);
+            self->unk_a0 = Ov012_FxMul(d.y, 0x4cd);
+            self->unk_a4 = Ov012_FxMul(d.z, 0x4cd);
             FX_Atan2(r, self->unk_84.y - self->pos.y);
             self->rot[0] = FX_Atan2(self->pos.y - self->unk_84.y, r);
             if (!(FLD(u32, self, 0xd0) & 0x100000)) {
@@ -55,7 +55,7 @@ void func_ov012_02206098(Ov012Actor *self) {
             Ov012Sub48 *m = self->unk_48;
             m->unk_50 = 0;
             m->unk_54 = 0;
-            FLD(u32, m, 0x58) = 0;
+            m->unk_58 = 0;
         }
         self->unk_40->state++;
         break;

@@ -224,7 +224,13 @@ struct Ov012Sub38 {
     void *unk_50;
     u8 unk_54[0x24];
     Ov012Vec unk_78;
-    u8 unk_84[0x3e];
+    u8 unk_84[0x32];
+    u16 unk_b6;
+    u16 unk_b8;
+    u16 unk_ba;
+    u16 unk_bc;
+    u8 unk_be;
+    u8 unk_bf[0x3];
     u16 unk_c2_0 : 1;
     u16 unk_c2_1 : 4;
     u16 unk_c2_5 : 1;
@@ -232,7 +238,8 @@ struct Ov012Sub38 {
     u16 unk_c2_8 : 1;
     u16 unk_c2_9 : 2;
     u16 unk_c2_11 : 5;
-    u8 unk_c4[0x24];
+    s16 unk_c4;
+    u8 unk_c6[0x22];
 };
 
 struct Ov012Sub40 {
@@ -270,9 +277,10 @@ struct Ov012Sub48 {
     u8 unk_4c[0x4];
     u32 unk_50;
     u32 unk_54;
-    u8 unk_58[0x8];
+    u32 unk_58;
+    s32 unk_5c;
     s32 unk_60;
-    u8 unk_64[0x4];
+    s32 unk_64;
     Ov012Vec unk_68;
     u8 unk_74[0x26];
     u16 unk_9a_0 : 1;
@@ -294,13 +302,18 @@ struct Ov012Param {
     u16 unk_0a_10 : 6;
 };
 
-// Common actor base (the ov003 actor class); subclass fields start at 0xf0.
-class Ov012Actor : public Ov012V {
+// The object base shared by the ov003 actor (Ov012Actor, built by func_ov003_021d0c1c) and the
+// ov000 actor (Ov012ActorEx, built by func_ov000_02194074): the fields below 0xac.
+class Ov012Obj : public Ov012V {
 public:
     u8 unk_04[0x8];
     u16 id;
     u16 kind;
-    u8 unk_10[0x8];
+    u8 unk_10[0x4];
+    u8 unk_14;
+    u8 unk_15;
+    Ov012Flags8 unk_16;
+    u8 unk_17;
     s16 unk_18;
     s16 unk_1a;
     s16 unk_1c;
@@ -314,11 +327,13 @@ public:
     Ov012Sub40 *unk_40;
     Ov012Sub44 *unk_44;
     Ov012Sub48 *unk_48;
-    u8 unk_4c[0x4];
+    void *unk_4c;
     u16 *unk_50;
-    u8 unk_54[0x10];
+    u8 unk_54[0xc];
+    void *unk_60;
     s32 unk_64;
-    u8 unk_68[0x8];
+    s32 unk_68;
+    s32 unk_6c;
     Ov012Vec pos;
     u16 rot[3];
     u8 unk_82[0x2];
@@ -332,22 +347,32 @@ public:
     u8 unk_94_0 : 1;
     u8 unk_94_1 : 2;
     u8 unk_94_3 : 5;
-    u8 unk_95[0x3];
+    u8 unk_95;
+    u16 unk_96;
     u16 unk_98;
     u8 unk_9a[0x2];
     s32 unk_9c;
     s32 unk_a0;
     s32 unk_a4;
     s32 unk_a8;
+};
+
+// Common actor base (the ov003 actor class); subclass fields start at 0xf0.
+class Ov012Actor : public Ov012Obj {
+public:
     u8 unk_ac[0x4];
     Ov012Param *unk_b0;
-    u8 unk_b4[0x2];
+    u16 unk_b4;
     u16 unk_b6;
     Ov012Vec unk_b8;
     s32 unk_c4;
     s32 unk_c8;
     s32 unk_cc;
-    u8 unk_d0[0x1a];
+    u8 unk_d0[0x12];
+    u8 unk_e2;
+    u8 unk_e3;
+    s32 unk_e4;
+    u16 unk_e8;
     u16 unk_ea_0 : 3;
     u16 unk_ea_3 : 3;
     u16 unk_ea_6 : 2;
@@ -368,6 +393,19 @@ public:
     u16 unk_ee_6 : 1;
     u16 unk_ee_7 : 2;
     u16 unk_ee_9 : 7;
+};
+
+// The ov000 actor base (func_ov000_02194074): 0xd0 bytes, with its own fields from 0xac.
+class Ov012ActorEx : public Ov012Obj {
+public:
+    u8 unk_ac[0x4];
+    Ov012Param *unk_b0;
+    void *unk_b4[2];
+    void *unk_bc;
+    s32 unk_c0;
+    s32 unk_c4;
+    s32 unk_c8;
+    u8 unk_cc[0x4];
 };
 
 struct Ov012Names {
@@ -554,7 +592,7 @@ extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov000_021984f4(void *p, s32 a, s32 b);
 extern void func_ov000_0219864c(void *p, s32 a, s32 b);
 extern void func_ov000_02196860(Ov012Actor *self);
-extern void func_ov000_0219763c(Ov012Actor *self);
+extern void func_ov000_0219763c(Ov012Obj *self);
 extern Ov012V *func_02065f88(s32 id, Ov012Vec *pos);
 }
 
@@ -706,13 +744,53 @@ static inline void *Ov012_FindRes(s32 a, s32 b) {
 }
 
 
-struct Ov012Lift {
-    u8 unk_00[0x394];
+class Ov012Lift : public Ov012Actor {
+public:
+    s16 unk_f0;
+    u8 unk_f2[0x2];
+    Ov012Vec unk_f4;
+    Ov012Vec unk_100;
+    u32 unk_10c;
+    u8 unk_110;
+    u8 unk_111;
+    s16 unk_112;
+    s32 unk_114;
+    u8 unk_118[0xc];
+    Ov012Vec unk_124;
+    s32 unk_130;
+    u8 unk_134;
+    u8 unk_135;
+    u8 unk_136;
+    u8 unk_137;
+    u8 unk_138;
+    u8 unk_139[0x3];
+    s32 unk_13c;
+    s32 unk_140;
+    s32 unk_144;
+    u8 unk_148[0xc];
+    s32 unk_154;
+    s32 unk_158;
+    s32 unk_15c;
+    u8 unk_160[0xc];
+    u16 unk_16c;
+    u8 unk_16e;
+    u8 unk_16f;
+    s16 unk_170;
+    u8 unk_172[0x2];
+    Ov012Names unk_174;
+    u8 unk_278[0xdc];
+    s32 unk_354;
+    s32 unk_358;
+    s32 unk_35c;
+    u8 unk_360[0xe];
+    Ov012Flags unk_36e;
+    u8 unk_370[0x24];
     Ov012Vec arr[2];
     u8 unk_3ac[2];
     u8 unk_3ae;
     u8 unk_3af;
 };
+SIZE_ASSERT(Ov012Lift, 0x3b0);
 
 
 extern "C" {
@@ -786,5 +864,65 @@ static inline s32 Ov012_DistXZ(const Ov012Vec *a, const Ov012Vec *b) {
 extern "C" {
 extern Ov012Vec *func_ov000_0218d2e0(void *self);
 }
+
+// Actor class of func_ov012_021fee1c (vtable data_ov012_0220abf0).
+class Ov012Act_021fee1c : public Ov012Actor {
+public:
+    Ov012Vec unk_f0;
+    u32 unk_fc;
+    s16 unk_100;
+    u8 unk_102;
+    u8 unk_103;
+    s16 unk_104;
+    u8 unk_106[0x2];
+};
+SIZE_ASSERT(Ov012Act_021fee1c, 0x108);
+
+// Actor class of func_ov012_021ffa68 (vtable data_ov012_0220ab44).
+class Ov012Act_021ffa68 : public Ov012Actor {
+public:
+    Ov012Vec unk_f0;
+    s32 unk_fc;
+    u32 unk_100;
+    s16 unk_104;
+    u8 unk_106;
+    u8 unk_107;
+    s32 unk_108;
+};
+SIZE_ASSERT(Ov012Act_021ffa68, 0x10c);
+
+// Actor class of func_ov012_02202b10 (vtable data_ov012_0220afe4).
+class Ov012Act_02202b10 : public Ov012Actor {
+public:
+    u32 unk_f0;
+    u8 unk_f4;
+    u8 unk_f5;
+    u16 unk_f6;
+    u8 unk_f8;
+    u8 unk_f9;
+    u8 unk_fa;
+    u8 unk_fb;
+    u8 unk_fc;
+    u8 unk_fd;
+    u8 unk_fe[0x2];
+    s32 unk_100;
+    u8 *unk_104;
+    u8 unk_108[0xc];
+    u8 *unk_114;
+    void *unk_118;
+    void *unk_11c;
+    u8 unk_120[0x4];
+    s16 unk_124;
+    u8 unk_126[0x2];
+};
+SIZE_ASSERT(Ov012Act_02202b10, 0x128);
+
+// Actor class of func_ov012_02207018 (vtable data_ov012_0220b0b8).
+class Ov012ActEx_02207018 : public Ov012ActorEx {
+public:
+    u32 unk_d0;
+    s32 unk_d4;
+};
+SIZE_ASSERT(Ov012ActEx_02207018, 0xd8);
 
 #endif

@@ -32,28 +32,28 @@ extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDesc *d, Ov014Vec *p
 extern Ov014Actor *func_ov000_0219bf90(void);
 extern Ov014Actor *func_ov000_0218e640(void *mgr, u16 id);
 
-Ov014Actor *func_ov014_02210c5c(Ov014Actor *self) {
+Ov014Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self) {
     Ov014Vec pos;
     Ov014Vec16 rot;
     Ov014SpawnDesc desc;
     Ov014Actor *o;
-    pos.x = FLD(s32, self, 0x118);
-    pos.y = FLD(s32, self, 0x11c);
-    pos.z = FLD(s32, self, 0x120);
-    switch ((FLD(s32, self, 0x144) + FLD(u16, self, 0x14c)) % 4) {
+    pos.x = self->unk_118.x;
+    pos.y = self->unk_118.y;
+    pos.z = self->unk_118.z;
+    switch ((self->unk_144 + self->unk_14c) % 4) {
     case 0:
-        pos.x = FLD(s32, self, 0x118) + 0x6000;
+        pos.x = self->unk_118.x + 0x6000;
         break;
     case 1:
-        pos.x = FLD(s32, self, 0x118) - 0x6000;
+        pos.x = self->unk_118.x - 0x6000;
         break;
     case 2:
-        pos.x = FLD(s32, self, 0x118) + 0x4000;
-        pos.y = FLD(s32, self, 0x11c) + 0x1000;
+        pos.x = self->unk_118.x + 0x4000;
+        pos.y = self->unk_118.y + 0x1000;
         break;
     case 3:
-        pos.x = FLD(s32, self, 0x118) - 0x4000;
-        pos.y = FLD(s32, self, 0x11c) + 0x1000;
+        pos.x = self->unk_118.x - 0x4000;
+        pos.y = self->unk_118.y + 0x1000;
         break;
     }
     rot.x = self->rot[0];
@@ -63,14 +63,14 @@ Ov014Actor *func_ov014_02210c5c(Ov014Actor *self) {
     o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
     o->unk_90 = func_ov000_0219bf90()->id;
     FLD(Ov014Flags8, o, 0x16).b0 = 1;
-    if (FLD(u8 *, o, 0x4c) != NULL) {
-        FLD(u16, FLD(u8 *, o, 0x4c), 0x1c) = self->id;
+    if (((u8 *)o->unk_4c) != NULL) {
+        FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
     }
     FLD(u16, self, 0xde) = o->id;
     return o;
 }
 
-Ov014Actor *func_ov014_02210d9c(Ov014Actor *self) {
+Ov014Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self) {
     Ov014SpawnDesc desc;
     Ov014Vec pos;
     Ov014Vec16 rot;
@@ -85,9 +85,9 @@ Ov014Actor *func_ov014_02210d9c(Ov014Actor *self) {
         return NULL;
     }
     Ov014Spawn_Init(&desc, 0x4806);
-    pos.x = FLD(s32, self, 0x118);
-    pos.y = FLD(s32, self, 0x11c);
-    pos.z = FLD(s32, self, 0x120) + 0x2000;
+    pos.x = self->unk_118.x;
+    pos.y = self->unk_118.y;
+    pos.z = self->unk_118.z + 0x2000;
     pos.y -= 0x1000;
     rot.x = self->rot[0];
     rot.y = self->rot[1];
@@ -99,10 +99,10 @@ Ov014Actor *func_ov014_02210d9c(Ov014Actor *self) {
     }
     o->unk_90 = self->unk_90;
     FLD(Ov014Flags8, o, 0x16).b0 = 1;
-    if (FLD(u8 *, o, 0x4c) != NULL) {
-        FLD(u16, FLD(u8 *, o, 0x4c), 0x1c) = self->id;
+    if (((u8 *)o->unk_4c) != NULL) {
+        FLD(u16, ((u8 *)o->unk_4c), 0x1c) = self->id;
     }
-    FLD(void *, o, 0x60) = data_ov014_02216cf4;
+    o->unk_60 = data_ov014_02216cf4;
     FLD(u16, self, 0xde) = o->id;
     return o;
 }

@@ -6,7 +6,7 @@ extern void *data_0214a420;
 extern void *data_ov013_0220bb20;
 extern char data_ov013_0220b360[];
 extern void *func_ov000_02194074(void *self);
-extern void func_ov003_021db244(Ov013Actor *self);
+extern void func_ov003_021db244(Ov013Obj *self);
 extern void *func_ov003_021dae44(Ov013Actor *self);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern void *func_020657b0(void *a, s32 b);
@@ -14,11 +14,11 @@ extern Ov013Actor *func_ov000_0219bf90(void);
 extern BOOL func_020621c4(void);
 extern void func_ov003_021d6bac(Ov013Actor *self, const void *p);
 
-Ov013Actor *func_ov013_022065ac(Ov013Actor *self) {
+Ov013ActEx_022065ac *func_ov013_022065ac(Ov013ActEx_022065ac *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = &data_ov013_0220bb20;
-    FLD(u8, self, 0xf4) = 0;
-    FLD(u16, self, 0xf6) = 0;
+    self->unk_f4 = 0;
+    self->unk_f6 = 0;
     return self;
 }
 
@@ -30,15 +30,15 @@ void func_ov013_022065e0(Ov013Actor *self, u8 a) {
     FLD(u8, self, 0xf4) = a;
 }
 
-void func_ov013_022065e8(Ov013Actor *self) {
+void func_ov013_022065e8(Ov013ActEx_022065ac *self) {
     func_ov003_021db244(self);
-    if (FLD(u16, self, 0xf6) != 0) {
-        self->rot[1] += FLD(u16, self, 0xf6);
+    if (self->unk_f6 != 0) {
+        self->rot[1] += self->unk_f6;
     } else {
         self->rot[1] = FX_Atan2(self->unk_9c, self->unk_a4);
     }
-    if (FLD(u8, self, 0xf4) != 0 && FLD(s32, self, 0xbc) != 0) {
-        void *p = func_020657b0(data_0214a420, FLD(s32, self, 0xbc));
+    if (self->unk_f4 != 0 && ((s32)self->unk_bc) != 0) {
+        void *p = func_020657b0(data_0214a420, ((s32)self->unk_bc));
         if (p != NULL) {
             FLD(s32, p, 0xc8) = -1;
         }
@@ -89,7 +89,7 @@ extern void *data_ov000_021ccd68;
 extern Ov013Actor *func_ov000_0218e4cc(void *mgr, u16 id);
 extern u16 func_ov000_0218dfb4(Ov013Actor *a, u16 id);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
-extern Ov013Actor *func_ov000_0218d240(Ov013Actor *self);
+extern Ov013Actor *func_ov000_0218d240(Ov013Obj *self);
 
 #define OV013_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV013_SQRT_RESULT (*(volatile u32 *)0x40002b4)

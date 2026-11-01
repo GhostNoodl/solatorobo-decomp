@@ -52,14 +52,14 @@ extern void *data_ov000_021ccd68;
 extern char data_ov013_0220b5b8[];
 extern char data_ov013_0220b5ca[];
 extern Ov013Actor *func_ov000_0219bf90(void);
-extern Ov013Actor *func_ov000_0218d240(Ov013Actor *self);
+extern Ov013Actor *func_ov000_0218d240(Ov013Obj *self);
 extern void func_ov000_0218d988(Ov013Actor *self, Ov013Actor *t, s32 a);
 extern Ov013Actor *func_ov000_0218e4cc(void *mgr, u16 id);
 extern u16 func_ov000_0218dfb4(Ov013Actor *a, u16 id);
 extern Ov013Actor *func_ov000_0218e6d0(void *mgr, u16 a, u16 b);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void func_ov000_0218dbe0(Ov013Actor *self, s32 a);
+extern void func_ov000_0218dbe0(Ov013Obj *self, s32 a);
 
 s32 func_ov013_021fc400(Ov013Actor *self) {
     s32 r = 0x10;

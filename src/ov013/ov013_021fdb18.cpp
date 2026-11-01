@@ -6,8 +6,8 @@ extern void *data_0214a420;
 extern void *data_ov013_0220b738[];
 extern Ov013Vec data_ov013_0220aed0;
 extern void *func_020657b0(void *a, s32 b);
-extern void func_ov000_0219763c(Ov013Actor *self);
-extern void *func_ov000_02194074(Ov013Actor *self);
+extern void func_ov000_0219763c(Ov013Obj *self);
+extern void *func_ov000_02194074(Ov013Obj *self);
 extern void func_ov000_02194758(void *self);
 extern Ov013Actor *func_ov000_0219bf90(void);
 
@@ -24,12 +24,12 @@ void func_ov013_021fdb18(Ov013Actor *self) {
     func_ov000_0219763c(self);
 }
 
-Ov013Actor *func_ov013_021fdb70(Ov013Actor *self) {
+Ov013ActEx_021fdb70 *func_ov013_021fdb70(Ov013ActEx_021fdb70 *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = data_ov013_0220b738;
     FLD(u16, self, 0xce) = 0;
-    FLD(s32, self, 0xd0) = -1;
-    FLD(u8, self, 0xd4) = 0;
+    self->unk_d0 = -1;
+    self->unk_d4 = 0;
     return self;
 }
 

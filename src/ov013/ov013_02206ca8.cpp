@@ -3,7 +3,7 @@
 extern "C" {
 
 extern char data_ov013_0220be7c[];
-extern Ov013Actor *func_ov000_0218d240(Ov013Actor *self);
+extern Ov013Actor *func_ov000_0218d240(Ov013Obj *self);
 extern void func_ov000_0218d988(Ov013Actor *self, Ov013Actor *t, s32 a);
 
 void func_ov013_02206ca8(Ov013Actor *self) {
@@ -51,7 +51,7 @@ void func_ov013_02206d28(Ov013Actor *self) {
         break;
     case 1:
         func_ov000_0218d988(self, t, 0x400);
-        if (FLD(s16, self->unk_38, 0xc4) != 1) {
+        if (self->unk_38->unk_c4 != 1) {
             return;
         }
         self->unk_40->state = 5;
@@ -111,7 +111,7 @@ void func_ov013_02206edc(Ov013Actor *self) {
         self->unk_40->timer = 0;
         break;
     case 5:
-        if (FLD(s16, self->unk_38, 0xc4) == 1) {
+        if (self->unk_38->unk_c4 == 1) {
             mgr = func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000);
             if (mgr != NULL) {
                 flip = func_02040498(1);
@@ -145,7 +145,7 @@ void func_ov013_02206edc(Ov013Actor *self) {
                 }
             }
         }
-        if (FLD(s16, self->unk_38, 0xc4) == 2) {
+        if (self->unk_38->unk_c4 == 2) {
             func_0204a028(data_02097e4c, 0x54, &self->pos, 5);
         }
         if (!func_ov000_02191120(self->unk_38)) {
@@ -207,7 +207,7 @@ void func_ov013_02207180(Ov013Actor *self) {
         break;
     case 1:
         func_ov000_0218d988(self, t, 0x400);
-        if (FLD(s16, self->unk_38, 0xc4) != 1) {
+        if (self->unk_38->unk_c4 != 1) {
             return;
         }
         self->unk_40->state = 5;
@@ -217,7 +217,7 @@ void func_ov013_02207180(Ov013Actor *self) {
         Ov013Vec p;
         Ov013Actor *a;
         u16 id;
-        if (FLD(s16, self->unk_38, 0xc4) != 2) {
+        if (self->unk_38->unk_c4 != 2) {
             return;
         }
         FLD(u16, self, 0xde) = 0xffff;
@@ -246,7 +246,7 @@ void func_ov013_02207180(Ov013Actor *self) {
         if (a != NULL) {
             FLD(s32, a, 0xd0) = 0xd9a;
             FLD(s32, a, 0xd4) = tx;
-            FLD(s32, a, 0xd8) = ty;
+            a->unk_d8 = ty;
             FLD(s32, a, 0xdc) = tz - 0x400;
             FLD(u16, func_0206fef8(a->kind), 0x10) = 0xd9a;
             func_ov000_0219bebc(a, r);

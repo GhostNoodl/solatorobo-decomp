@@ -7,7 +7,7 @@ extern char data_ov013_0220be82[];
 extern void *data_ov000_021ccd68;
 extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern void func_ov000_0218d988(Ov013Actor *self, Ov013Actor *t, s32 a);
-extern void func_ov000_0218dbe0(Ov013Actor *self, s32 a);
+extern void func_ov000_0218dbe0(Ov013Obj *self, s32 a);
 
 static inline Ov013Actor *Ov013_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -29,7 +29,7 @@ extern u16 func_ov000_0218dfb4(void *p, s32 a);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
 
 
-s32 func_ov013_02209b44(Ov013Actor *self) {
+s32 func_ov013_02209b44(Ov013Act_02207968 *self) {
     s32 rnd;
     s32 st;
     u16 pct;
@@ -38,7 +38,7 @@ s32 func_ov013_02209b44(Ov013Actor *self) {
     pct = self->unk_50[0] * 100 / self->unk_50[1];
     n = func_ov000_0218dfb4(func_ov000_0218e4cc(data_ov000_021ccd68, 0x4000), 0x4813);
     st = 0xe;
-    if ((FLD(u8, self, 0xf2) == 2 && rnd % 2 == 0) || FLD(u8, self, 0xf2) == 3) {
+    if ((self->unk_f2 == 2 && rnd % 2 == 0) || self->unk_f2 == 3) {
         st = 0xf;
     }
     if (st == 0xe) {
@@ -47,7 +47,7 @@ s32 func_ov013_02209b44(Ov013Actor *self) {
                 st = 0x10;
                 if (n != 0) {
                     st = 1;
-                    FLD(u8, self, 0xf0) = 1;
+                    self->unk_f0 = 1;
                 }
             }
         } else if (pct <= 0x46) {
@@ -60,7 +60,7 @@ s32 func_ov013_02209b44(Ov013Actor *self) {
         st = 0xf;
     }
     if (!func_ov000_021983b0(self->unk_40, 0xf, 7, 1)) {
-        if (FLD(u8, self, 0xf1) != 0xf) {
+        if (self->unk_f1 != 0xf) {
             st = 0xf;
         }
     }
@@ -68,10 +68,10 @@ s32 func_ov013_02209b44(Ov013Actor *self) {
     case 1:
     case 0xf:
     case 0x10:
-        FLD(u8, self, 0xf2) = 0;
+        self->unk_f2 = 0;
         break;
     case 0xe:
-        FLD(u8, self, 0xf2)++;
+        self->unk_f2++;
         break;
     }
     return st;
@@ -204,7 +204,7 @@ void func_ov013_0220a17c(Ov013Actor *self) {
         break;
     case 1:
         func_ov000_0218d988(self, Ov013_FindActor(self->unk_90), self->unk_b0->unk_02);
-        if (FLD(s16, self->unk_38, 0xc4) == 1) {
+        if (self->unk_38->unk_c4 == 1) {
             self->unk_40->state++;
         }
         break;

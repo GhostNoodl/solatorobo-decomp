@@ -120,21 +120,21 @@ void func_ov014_0220f8fc(void *self, Ov014Actor *a) {
 }
 
 #pragma force_active on
-Ov014Actor *func_ov014_0220f9d0(Ov014Actor *self) {
+Ov014Actor *func_ov014_0220f9d0(Ov014Act_0220f9d0 *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217e6c;
     func_ov003_021ceedc((u8 *)self + 0x124);
     FLD(s16, self, 0x15c) = 0;
-    FLD(s16, self, 0x15e) = 0;
+    self->unk_15e = 0;
     func_ov000_02198328((u8 *)self + 0x16c);
     FLD(u16, self, 0xde) = 0xffff;
     MIi_CpuClear32(0, (u8 *)self + 0xf0, 0x34);
     FLD(s32, self, 0x140) = 0;
-    FLD(s16, self, 0x14c) = 0;
-    FLD(void *, self, 0x154) = NULL;
-    FLD(u8, self, 0x180) = 1;
-    FLD(u16, self, 0x14e) = 0xffff;
-    FLD(u16, self, 0x150) = 0xffff;
+    self->unk_14c = 0;
+    self->unk_154 = NULL;
+    self->unk_180 = 1;
+    self->unk_14e = 0xffff;
+    self->unk_150 = 0xffff;
     return self;
 }
 #pragma force_active reset
@@ -187,22 +187,22 @@ BOOL func_ov014_0220fbd4(Ov014Actor *self) {
     return (r & func_02035b90(data_ov014_02217d1d, 7)) ? TRUE : FALSE;
 }
 
-void func_ov014_0220fc00(Ov014Actor *self, Ov014Msg *msg) {
+void func_ov014_0220fc00(Ov014Act_0220f9d0 *self, Ov014Msg *msg) {
     if (msg->type == 9) {
         Ov014Actor *a;
         u16 id = FLD(u16, msg, 0xc);
-        FLD(u16, self, 0x14e) = id;
+        self->unk_14e = id;
         if (data_ov000_021ccd68 == NULL) {
             a = NULL;
         } else {
             a = func_ov000_0218e640(data_ov000_021ccd68, id);
         }
-        FLD(u16, self, 0x150) = a->kind;
+        self->unk_150 = a->kind;
     }
     func_ov003_021d1c00(self, msg);
 }
 
-void func_ov014_0220fc5c(Ov014Actor *self) {
+void func_ov014_0220fc5c(Ov014Act_0220f9d0 *self) {
     Ov014Sub38 *m;
     u8 *p;
     func_ov003_021d112c(self);
@@ -267,8 +267,8 @@ void func_ov014_0220fc5c(Ov014Actor *self) {
     func_ov003_021cf1f0((u8 *)self + 0x124, 1, 11, data_ov014_02216e50);
     func_ov003_021cf1f0((u8 *)self + 0x124, 2, 11, data_ov014_02216ea8);
     func_ov003_021cf1f0((u8 *)self + 0x124, 3, 12, data_ov014_02216f00);
-    FLD(void *, self, 0x138) = self;
-    FLD(void *, self, 0x134) = (void *)func_ov014_0220f8fc;
+    self->unk_138 = self;
+    self->unk_134 = (void *)func_ov014_0220f8fc;
 }
 
 struct Ov014Vec16b {
@@ -322,16 +322,16 @@ extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDescB *d, Ov014Vec *
 
 static inline BOOL Ov014_WaitB6(Ov014Actor *self) {
     BOOL r = FALSE;
-    if (self->unk_40->state == 0xffff || FLD(u16, self, 0xb6) == 0) {
+    if (self->unk_40->state == 0xffff || self->unk_b6 == 0) {
         r = TRUE;
-    } else if (FLD(u16, self, 0xb6) != 0xffff && FLD(u16, self, 0xb6) != 0) {
-        FLD(u16, self, 0xb6)--;
+    } else if (self->unk_b6 != 0xffff && self->unk_b6 != 0) {
+        self->unk_b6--;
     }
     return r;
 }
 
-static inline void Ov014_SpawnPair(Ov014Actor *self) {
-    Ov014Ctl154 *p = FLD(Ov014Ctl154 *, self, 0x154);
+static inline void Ov014_SpawnPair(Ov014Act_0220f9d0 *self) {
+    Ov014Ctl154 *p = ((Ov014Ctl154 *)self->unk_154);
     u32 i;
     for (i = 0; i < 2; i++) {
         if (p->slots[i] == 0xffff) {
@@ -349,7 +349,7 @@ static inline void Ov014_SpawnPair(Ov014Actor *self) {
     }
 }
 
-void func_ov014_0220fe6c(Ov014Actor *self) {
+void func_ov014_0220fe6c(Ov014Act_0220f9d0 *self) {
     u8 *pl;
     if (!Ov014_GameIdle()) {
         return;
@@ -363,31 +363,31 @@ void func_ov014_0220fe6c(Ov014Actor *self) {
         self->unk_93_4 = 1;
     }
     if (*self->unk_50 == 0 || (self->unk_40->flags & 0x200000)) {
-        if (FLD(u16, self, 0xb4) != 0x50) {
-            FLD(u16, self, 0xb6) = 0xffff;
-            FLD(u16, self, 0xb4) = 0x50;
+        if (self->unk_b4 != 0x50) {
+            self->unk_b6 = 0xffff;
+            self->unk_b4 = 0x50;
             self->unk_40->flags |= 0x200000;
             self->unk_40->state = 0;
         }
     }
     if (self->unk_30 != 0 && (self->unk_30 & 0x200)) {
-        if (*self->unk_50 != 0 && FLD(u8, self, 0x180) != 0) {
-            MIi_CpuCopyFast(&FLD(u16, self, 0xb4), &FLD(u8, self, 0x15c), 0x10);
-            MIi_CpuCopyFast(self->unk_40, &FLD(u8, self, 0x16c), 0x14);
-            FLD(u16, self, 0xb4) = 0x3c;
-            FLD(u16, self, 0xb6) = 0xffff;
+        if (*self->unk_50 != 0 && self->unk_180 != 0) {
+            MIi_CpuCopyFast(&self->unk_b4, &FLD(u8, self, 0x15c), 0x10);
+            MIi_CpuCopyFast(self->unk_40, &self->unk_16c, 0x14);
+            self->unk_b4 = 0x3c;
+            self->unk_b6 = 0xffff;
         }
         if (self->unk_40->flags == 0x15) {
             *self->unk_50 = 0;
         }
     }
-    func_ov014_02213cfc(FLD(void *, self, 0x154));
-    switch (FLD(u16, self, 0xb4)) {
+    func_ov014_02213cfc(self->unk_154);
+    switch (self->unk_b4) {
     case 0:
         self->unk_40->flags |= 0x100000000ULL;
         self->unk_40->timer = 0xffff;
         self->unk_40->state = 0;
-        FLD(u16, self, 0xb4)++;
+        self->unk_b4++;
         break;
     case 1:
         if (self->unk_40->state != 0xffff) {
@@ -397,24 +397,24 @@ void func_ov014_0220fe6c(Ov014Actor *self) {
         self->unk_40->state = 0;
         Ov014_SpawnPair(self);
         {
-            u16 m = FLD(u16, self, 0xb4);
-            FLD(u16, self, 0xb6) = 0xf0;
-            FLD(u16, self, 0xb4) = m + 1;
+            u16 m = self->unk_b4;
+            self->unk_b6 = 0xf0;
+            self->unk_b4 = m + 1;
         }
         break;
     case 2:
-        if (FLD(u16, self, 0xb6) != 0) {
-            FLD(u16, self, 0xb6)--;
+        if (self->unk_b6 != 0) {
+            self->unk_b6--;
         }
-        if (FLD(u16, self, 0xb6) == 0) {
-            FLD(u16, self, 0xb4) = 0xb;
+        if (self->unk_b6 == 0) {
+            self->unk_b4 = 0xb;
         }
         break;
     case 10: {
-        Ov014Ctl154 *p = FLD(Ov014Ctl154 *, self, 0x154);
+        Ov014Ctl154 *p = ((Ov014Ctl154 *)self->unk_154);
         if (p->unk_0c == 0 && p->unk_08 == 0) {
-            FLD(u16, self, 0xb4) = 0x46;
-            FLD(u16, self, 0xb6) = 0xffff;
+            self->unk_b4 = 0x46;
+            self->unk_b6 = 0xffff;
             break;
         }
         if (p->unk_0a == 0) {
@@ -423,31 +423,31 @@ void func_ov014_0220fe6c(Ov014Actor *self) {
         if (!Ov014_WaitB6(self)) {
             break;
         }
-        func_ov003_021ceff4(&FLD(u8, self, 0x124));
-        FLD(u16, self, 0xb4)++;
+        func_ov003_021ceff4(&self->unk_124);
+        self->unk_b4++;
     }
     case 11: {
-        u8 *t = FLD(u8 *, self, 0x130);
+        u8 *t = self->unk_130;
         u16 idx = FLD(u16, t, 8);
         u8 *a = FLD(u8 *, t, 0xc);
-        FLD(u8 *, self, 0x140) = a + idx * 8;
+        self->unk_140 = a + idx * 8;
         switch (*(s16 *)(a + idx * 8)) {
         case 0:
         case 1:
         case 2:
-            FLD(u16, self, 0xb4) = 0x14;
+            self->unk_b4 = 0x14;
             break;
         case 6:
         case 7:
         case 8:
-            FLD(u16, self, 0xb4) = 0x1e;
+            self->unk_b4 = 0x1e;
             break;
         case 3:
-            FLD(u16, self, 0xb4) = 0x28;
+            self->unk_b4 = 0x28;
             break;
         case 4:
         case 5:
-            FLD(u16, self, 0xb4) = 0x32;
+            self->unk_b4 = 0x32;
             break;
         }
         break;
@@ -455,45 +455,45 @@ void func_ov014_0220fe6c(Ov014Actor *self) {
     case 0x14:
         self->unk_40->flags |= 0x4000;
         self->unk_40->state = 0;
-        FLD(u16, self, 0xb6) = 0xffff;
+        self->unk_b6 = 0xffff;
         FLD(u16, self, 0xde) = 0;
-        FLD(u16, self, 0xb4)++;
+        self->unk_b4++;
         break;
     case 0x15:
         if (!Ov014_WaitB6(self)) {
             break;
         }
         self->unk_40->flags |= 2;
-        FLD(u16, self, 0xb4) = 10;
-        FLD(u16, self, 0xb6) = FLD(Ov014Anim8 *, self, 0x140)->unk_06;
+        self->unk_b4 = 10;
+        self->unk_b6 = ((Ov014Anim8 *)self->unk_140)->unk_06;
         break;
     case 0x1e: {
         Ov014Ctl154 *p;
         s32 v;
         self->unk_40->flags |= 2;
         self->unk_40->state = 0;
-        v = FLD(Ov014Anim8 *, self, 0x140)->kind - 6;
-        p = FLD(Ov014Ctl154 *, self, 0x154);
+        v = ((Ov014Anim8 *)self->unk_140)->kind - 6;
+        p = ((Ov014Ctl154 *)self->unk_154);
         if (p->unk_0a != 0) {
             p->unk_14 = v;
             p->unk_10 = 0;
             p->unk_18 = 0;
         }
-        FLD(u16, self, 0xb4)++;
+        self->unk_b4++;
         break;
     }
     case 0x1f:
         self->unk_40->flags |= 2;
-        FLD(u16, self, 0xb4) = 10;
-        FLD(u16, self, 0xb6) = FLD(Ov014Anim8 *, self, 0x140)->unk_06;
+        self->unk_b4 = 10;
+        self->unk_b6 = ((Ov014Anim8 *)self->unk_140)->unk_06;
         break;
     case 0x28:
         FLD(u16, self, 0xde) = 0;
-        FLD(u8, self, 0x180) = 0;
+        self->unk_180 = 0;
         func_ov000_02198360(self->unk_40, 0xf, 0);
         self->unk_40->state = 0;
-        FLD(u16, self, 0xb6) = 0xffff;
-        FLD(u16, self, 0xb4)++;
+        self->unk_b6 = 0xffff;
+        self->unk_b4++;
         break;
     case 0x29:
         if (!Ov014_WaitB6(self)) {
@@ -501,8 +501,8 @@ void func_ov014_0220fe6c(Ov014Actor *self) {
         }
         self->unk_40->flags |= 2;
         self->unk_40->state = 0;
-        FLD(u8, self, 0x180) = 1;
-        FLD(u16, self, 0xb4)++;
+        self->unk_180 = 1;
+        self->unk_b4++;
         break;
     case 0x2a: {
         Ov014Actor *a;
@@ -513,65 +513,65 @@ void func_ov014_0220fe6c(Ov014Actor *self) {
             a = func_ov000_0218e640(data_ov000_021ccd68, id);
         }
         if (a == NULL) {
-            FLD(u16, self, 0xb4) = 10;
-            FLD(u16, self, 0xb6) = FLD(Ov014Anim8 *, self, 0x140)->unk_06;
+            self->unk_b4 = 10;
+            self->unk_b6 = ((Ov014Anim8 *)self->unk_140)->unk_06;
         }
         break;
     }
     case 0x32:
         FLD(u16, self, 0xde) = 0;
-        FLD(u8, self, 0x180) = 0;
-        if (FLD(Ov014Anim8 *, self, 0x140)->kind == 4) {
+        self->unk_180 = 0;
+        if (((Ov014Anim8 *)self->unk_140)->kind == 4) {
             func_ov000_02198360(self->unk_40, 0x10, 0);
         } else {
             func_ov000_02198360(self->unk_40, 0x11, 0);
         }
         self->unk_40->state = 0;
-        FLD(u16, self, 0xb6) = 0xffff;
-        FLD(u16, self, 0xb4)++;
+        self->unk_b6 = 0xffff;
+        self->unk_b4++;
         break;
     case 0x33:
         if (!Ov014_WaitB6(self)) {
             break;
         }
-        FLD(u8, self, 0x180) = 1;
+        self->unk_180 = 1;
         self->unk_40->flags |= 2;
         self->unk_40->state = 0;
-        FLD(u16, self, 0xb4) = 10;
-        FLD(u16, self, 0xb6) = FLD(Ov014Anim8 *, self, 0x140)->unk_06;
+        self->unk_b4 = 10;
+        self->unk_b6 = ((Ov014Anim8 *)self->unk_140)->unk_06;
         break;
     case 0x3c:
         self->unk_40->flags = 0;
         self->unk_40->flags |= 0x40000;
         self->unk_40->state = 0;
-        FLD(u8, self, 0x180) = 0;
-        FLD(u16, self, 0xb6) = 0xffff;
-        FLD(u16, self, 0xb4)++;
+        self->unk_180 = 0;
+        self->unk_b6 = 0xffff;
+        self->unk_b4++;
         break;
     case 0x3d:
         if (!Ov014_WaitB6(self)) {
             break;
         }
-        FLD(u8, self, 0x180) = 1;
+        self->unk_180 = 1;
         self->unk_40->flags |= 2;
         self->unk_40->state = 0;
-        FLD(u16, self, 0xb4) = 10;
-        FLD(u16, self, 0xb6) = 0x1e;
+        self->unk_b4 = 10;
+        self->unk_b6 = 0x1e;
         break;
     case 0x46:
         self->unk_40->flags |= 2;
         self->unk_40->state = 0;
         Ov014_SpawnPair(self);
         {
-            u16 m = FLD(u16, self, 0xb4);
-            FLD(u16, self, 0xb6) = 0x78;
-            FLD(u16, self, 0xb4) = m + 1;
+            u16 m = self->unk_b4;
+            self->unk_b6 = 0x78;
+            self->unk_b4 = m + 1;
         }
         break;
     case 0x47:
         if (Ov014_WaitB6(self)) {
-            FLD(u16, self, 0xb4) = 10;
-            FLD(u16, self, 0xb6) = 0x1e;
+            self->unk_b4 = 10;
+            self->unk_b6 = 0x1e;
         }
         break;
     case 0x50:

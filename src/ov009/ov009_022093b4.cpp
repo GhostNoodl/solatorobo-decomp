@@ -209,7 +209,7 @@ void func_ov009_02209668(Ov009Actor *self) {
         func_020627dc(4);
         FLD(u8, data_ov000_021ccd54, 0xac) = 1;
         FLD(u8, self, 0x312) = 0;
-        FLD(u16, self, 0xb6) = 0xb4;
+        self->unk_b6 = 0xb4;
         break;
     }
 }

@@ -68,7 +68,7 @@ void func_ov013_021fbd20(Ov013Actor *self) {
         func_ov000_0219a210(&pos, &data_ov013_0220ae70, self->rot[1]);
         pos.y = 0;
         o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, &pos, self->rot, 0xffff);
-        FLD(Ov013Flags8, o, 0x16).b0 = 1;
+        o->unk_16.b0 = 1;
         o->unk_90 = self->unk_90;
         if (FLD(u8, self, 0xf0) != 0) {
             o->unk_9c = 0x11f;
@@ -76,8 +76,8 @@ void func_ov013_021fbd20(Ov013Actor *self) {
             o->unk_a4 = 0;
             o->unk_a8 = 0;
         }
-        if (FLD(void *, o, 0x4c) != NULL) {
-            FLD(u16, FLD(void *, o, 0x4c), 0x1c) = self->id;
+        if (o->unk_4c != NULL) {
+            FLD(u16, o->unk_4c, 0x1c) = self->id;
         }
         FLD(u16, self, 0xde) = o->id;
         func_ov000_02190cb0(self->unk_38, data_ov013_0220b5b8, 0x155, 0);
@@ -142,16 +142,16 @@ void func_ov013_021fbf84(Ov013Actor *self) {
         n = self->unk_44;
         n->unk_22_0 = 0;
         n->unk_22_1 = 0;
-        FLD(u16, FLD(void *, self, 0x4c), 0x1c) = 0xffff;
+        FLD(u16, self->unk_4c, 0x1c) = 0xffff;
         o = func_02065f88(0x390, &self->pos);
         if (o != NULL) {
             FLD(s32, self, 0xf8) = FLD(s32, o, 0x24);
-            o->v24(0, FLD(s32, self, 0x68), 0);
+            o->v24(0, self->unk_68, 0);
             o->v0c(0x1800);
         }
         o = func_02065f88(0x69, &self->pos);
         if (o != NULL) {
-            o->v24(0, FLD(s32, self, 0x68), 0);
+            o->v24(0, self->unk_68, 0);
             o->v0c(0x5000);
         }
         func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
@@ -168,7 +168,7 @@ void func_ov013_021fbf84(Ov013Actor *self) {
             if (t % 30 == 0) {
                 Ov013Vec v;
                 v.x = self->unk_64 << 1;
-                v.y = FLD(s32, self, 0x68) >> 1;
+                v.y = self->unk_68 >> 1;
                 v.z = self->unk_64;
                 func_ov000_0219b71c(&self->pos, &v, 0x99a, 0x1333, 0x38b, 0x32);
                 func_ov000_0218996c(8, 8);
@@ -197,7 +197,7 @@ void func_ov013_021fbf84(Ov013Actor *self) {
         p.x = self->pos.x;
         p.y = self->pos.y;
         p.z = self->pos.z;
-        p.y += FLD(s32, self, 0x68);
+        p.y += self->unk_68;
         o = func_02065f88(0x38b, &p);
         if (o != NULL) {
             o->v0c(0x3000);

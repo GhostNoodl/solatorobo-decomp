@@ -22,7 +22,7 @@ static inline s32 Ov009_GetAng3(Ov009AngSrc3 *p) {
     return func_0204bfa8(p);
 }
 
-void func_ov009_021fdbc8(Ov009Actor *self) {
+void func_ov009_021fdbc8(Ov009ActVt_022165f8 *self) {
     func_ov003_021d112c(self);
     switch (self->unk_1a) {
     case 0: {
@@ -57,19 +57,19 @@ void func_ov009_021fdbc8(Ov009Actor *self) {
         break;
     }
     }
-    FLD(u16, self, 0xf4) = self->kind;
+    self->unk_f4 = self->kind;
     switch (self->kind) {
     case 0x5013:
-        FLD(u16, self, 0xf2) = 0x12c;
+        self->unk_f2 = 0x12c;
         break;
     case 0x5045:
-        FLD(u16, self, 0xf2) = 0xc8;
+        self->unk_f2 = 0xc8;
         break;
     }
     if (FLD(u8, data_ov000_021ccd54, 0xca) == 2) {
         self->unk_18 = 1;
     }
-    FLD(s32, self, 0xf8) = 0;
+    self->unk_f8 = 0;
     self->unk_ea_6 = 1;
 }
 
@@ -84,7 +84,7 @@ extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern void func_02065804(void *mgr, s32 h);
 extern u16 FX_Atan2(s32 y, s32 x);
 
-void func_ov009_021fde1c(Ov009Actor *self) {
+void func_ov009_021fde1c(Ov009ActVt_022165f8 *self) {
     Ov009Vec t;
     Ov009Actor *pl;
     self->unk_93_4 = 0;
@@ -96,7 +96,7 @@ void func_ov009_021fde1c(Ov009Actor *self) {
         return;
     }
     self->unk_90 = pl->id;
-    switch (FLD(u16, self, 0xb4)) {
+    switch (self->unk_b4) {
     case 0: {
         BOOL blocked = FALSE;
         BOOL go = FALSE;
@@ -105,9 +105,9 @@ void func_ov009_021fde1c(Ov009Actor *self) {
         u16 d;
         u16 r;
         s32 dist;
-        FLD(u8, self, 0xf0) = 0;
+        self->unk_f0 = 0;
         if (FLD(Ov009PlB22, pl, 0xb22).b0 != 3 && FLD(Ov009PlB22, pl, 0xb22).b0 != 4) {
-            FLD(u8, self, 0xf0) = 1;
+            self->unk_f0 = 1;
             if (pl->unk_48 != NULL && (pl->unk_48->unk_50 & 0x20000000)) {
                 if (Ov009_GameIdle()) {
                     go = TRUE;
@@ -120,13 +120,13 @@ void func_ov009_021fde1c(Ov009Actor *self) {
             }
         }
         if (go) {
-            FLD(u16, self, 0xb6)++;
-            if (FLD(u16, self, 0xb6) > FLD(u16, self, 0xf2)) {
+            self->unk_b6++;
+            if (self->unk_b6 > self->unk_f2) {
                 self->unk_40->flags |= 0x8000;
-                FLD(u16, self, 0xb4)++;
+                self->unk_b4++;
             }
         } else {
-            FLD(u16, self, 0xb6) = 0;
+            self->unk_b6 = 0;
         }
         {
             Ov009AngSrc3 *g = (Ov009AngSrc3 *)((u8 *)data_ov000_021ccd54 + 0xf4);
@@ -156,7 +156,7 @@ void func_ov009_021fde1c(Ov009Actor *self) {
             a = func_01ffc128(r, a, 0x400, 1, 0x8000);
         }
         dist = 0x6800;
-        if (FLD(u8, self, 0xf0) != 0 && !blocked) {
+        if (self->unk_f0 != 0 && !blocked) {
             dist = 0x2800;
         }
         t.x += Ov009_FxMul(dist, OV009_SIN(a));
@@ -171,8 +171,8 @@ void func_ov009_021fde1c(Ov009Actor *self) {
         if (Ov009_GameIdle()) {
             self->unk_93_4 = 1;
             if (self->unk_40->unk_13 != 0xf) {
-                FLD(u16, self, 0xb6) = func_02040498(0x3c);
-                FLD(u16, self, 0xb4) = 0;
+                self->unk_b6 = func_02040498(0x3c);
+                self->unk_b4 = 0;
             }
         }
         break;
@@ -180,9 +180,9 @@ void func_ov009_021fde1c(Ov009Actor *self) {
     if (self->unk_40->unk_13 == 0xf) {
         return;
     }
-    if (FLD(s32, self, 0xf8) != 0) {
-        func_02065804(data_0214a420, FLD(s32, self, 0xf8));
-        FLD(s32, self, 0xf8) = 0;
+    if (self->unk_f8 != 0) {
+        func_02065804(data_0214a420, self->unk_f8);
+        self->unk_f8 = 0;
     }
     if (self->rot[0] == 0) {
         return;

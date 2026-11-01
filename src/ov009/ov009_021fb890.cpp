@@ -38,7 +38,7 @@ extern u8 data_ov009_02216aa4[];
 extern u8 data_ov009_02216ab6[];
 extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
-extern void func_ov000_0218dbe0(Ov009Actor *self, s32 turn);
+extern void func_ov000_0218dbe0(Ov009Obj *self, s32 turn);
 static inline Ov009Actor *Ov009_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;

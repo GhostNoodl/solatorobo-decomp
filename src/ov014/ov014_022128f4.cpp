@@ -4,10 +4,10 @@ extern "C" {
 
 extern s32 func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
 
-s32 func_ov014_022128f4(Ov014Actor *self, Ov014Msg *msg) {
+s32 func_ov014_022128f4(Ov014Act_0221267c *self, Ov014Msg *msg) {
     s32 r = 0;
     if (msg->type == 6) {
-        FLD(u16, self, 0x310) |= msg->idx;
+        self->unk_310 |= msg->idx;
         self->unk_30 |= 1 << msg->type;
         msg->type = 0;
     } else {
@@ -19,7 +19,7 @@ s32 func_ov014_022128f4(Ov014Actor *self, Ov014Msg *msg) {
 
 extern void *data_ov000_021ccd68;
 extern u8 *func_ov000_0219bf90(void);
-extern Ov014Actor *func_ov000_0218d240(Ov014Actor *self);
+extern Ov014Actor *func_ov000_0218d240(Ov014Obj *self);
 extern Ov014Actor *func_ov000_0218e640(void *mgr, u16 id);
 
 static inline Ov014Actor *Ov014_FindById(u16 id) {
@@ -28,15 +28,15 @@ static inline Ov014Actor *Ov014_FindById(u16 id) {
 
 static inline BOOL Ov014_WaitB6(Ov014Actor *self) {
     BOOL r = FALSE;
-    if (self->unk_40->state == 0xffff || FLD(u16, self, 0xb6) == 0) {
+    if (self->unk_40->state == 0xffff || self->unk_b6 == 0) {
         r = TRUE;
-    } else if (FLD(u16, self, 0xb6) != 0xffff && FLD(u16, self, 0xb6) != 0) {
-        FLD(u16, self, 0xb6)--;
+    } else if (self->unk_b6 != 0xffff && self->unk_b6 != 0) {
+        self->unk_b6--;
     }
     return r;
 }
 
-void func_ov014_02212948(Ov014Actor *self) {
+void func_ov014_02212948(Ov014Act_0221267c *self) {
     u8 *pl;
     if (!Ov014_GameIdle()) {
         return;
@@ -50,12 +50,12 @@ void func_ov014_02212948(Ov014Actor *self) {
         return;
     }
     if (*self->unk_50 == 0 || (self->unk_40->flags & 0x200000)) {
-        if (FLD(u16, self, 0xb4) != 0x1e) {
+        if (self->unk_b4 != 0x1e) {
             *self->unk_50 = 0;
             self->unk_40->flags |= 0x200000;
             self->unk_40->state = 0;
-            FLD(u16, self, 0xb4) = 0x1e;
-            FLD(u16, self, 0xb6) = 0xffff;
+            self->unk_b4 = 0x1e;
+            self->unk_b6 = 0xffff;
         }
     }
     if (self->unk_30 != 0) {
@@ -68,17 +68,17 @@ void func_ov014_02212948(Ov014Actor *self) {
             if (a != NULL) {
                 a->unk_1a = 1;
             }
-            FLD(u16, self, 0xb4) = 10;
-            FLD(u16, self, 0xb6) = 0xffff;
+            self->unk_b4 = 10;
+            self->unk_b6 = 0xffff;
             return;
         }
         if (self->unk_30 & 0x40) {
-            if (FLD(u16, self, 0xb4) != 0x1e) {
-                u16 m = FLD(u16, self, 0x310);
+            if (self->unk_b4 != 0x1e) {
+                u16 m = self->unk_310;
                 if (m & 1) {
                     self->unk_40->state = 0xffff;
-                    FLD(u16, self, 0xb4) = 10;
-                    FLD(u16, self, 0xb6) = 0xffff;
+                    self->unk_b4 = 10;
+                    self->unk_b6 = 0xffff;
                 }
                 if (m & 2) {
                     Ov014Actor *a;
@@ -87,31 +87,31 @@ void func_ov014_02212948(Ov014Actor *self) {
                     if (a != NULL) {
                         a->unk_1a = 1;
                     }
-                    FLD(u16, self, 0xb4) = 0x14;
-                    FLD(u16, self, 0xb6) = 0xffff;
+                    self->unk_b4 = 0x14;
+                    self->unk_b6 = 0xffff;
                 }
                 if (m & 4) {
-                    FLD(s32, self, 0x348) = 0;
+                    self->unk_348 = 0;
                 } else if (m & 8) {
-                    FLD(s32, self, 0x348) = 1;
+                    self->unk_348 = 1;
                 } else if (m & 0x10) {
-                    FLD(s32, self, 0x348) = 2;
+                    self->unk_348 = 2;
                 }
                 if (m & 0x20) {
-                    FLD(u8, self, 0x354) = 0;
+                    self->unk_354 = 0;
                 } else if (m & 0x40) {
-                    FLD(u8, self, 0x354) = 1;
+                    self->unk_354 = 1;
                 }
             }
-            FLD(u16, self, 0x310) = 0;
+            self->unk_310 = 0;
         }
     }
-    switch (FLD(u16, self, 0xb4)) {
+    switch (self->unk_b4) {
     case 0:
         self->unk_40->flags |= 0x100000000ULL;
         self->unk_40->state = 0;
-        FLD(u16, self, 0xb6) = 0xffff;
-        FLD(u16, self, 0xb4)++;
+        self->unk_b6 = 0xffff;
+        self->unk_b4++;
         break;
     case 1:
         if (!Ov014_WaitB6(self)) {
@@ -119,8 +119,8 @@ void func_ov014_02212948(Ov014Actor *self) {
         }
         self->unk_40->flags |= 2;
         self->unk_40->state = 0;
-        FLD(u16, self, 0xb4) = 10;
-        FLD(u16, self, 0xb6) = 0xffff;
+        self->unk_b4 = 10;
+        self->unk_b6 = 0xffff;
         break;
     case 10:
         if (!Ov014_WaitB6(self)) {
@@ -128,10 +128,10 @@ void func_ov014_02212948(Ov014Actor *self) {
         }
         func_ov000_02198360(self->unk_40, 1, 0);
         self->unk_40->state = 0;
-        FLD(u16, self, 0xb6) = 0xffff;
+        self->unk_b6 = 0xffff;
         break;
     case 0x14:
-        switch (FLD(s32, self, 0x348)) {
+        switch (self->unk_348) {
         case 0:
             func_ov000_02198360(self->unk_40, 0xf, 0);
             break;
@@ -146,7 +146,7 @@ void func_ov014_02212948(Ov014Actor *self) {
             break;
         }
         self->unk_40->state = 0;
-        FLD(u16, self, 0xb4)++;
+        self->unk_b4++;
         break;
     case 0x15:
         if (!Ov014_WaitB6(self)) {
@@ -154,8 +154,8 @@ void func_ov014_02212948(Ov014Actor *self) {
         }
         self->unk_40->flags |= 2;
         self->unk_40->state = 0;
-        FLD(u16, self, 0xb4) = 10;
-        FLD(u16, self, 0xb6) = 0xffff;
+        self->unk_b4 = 10;
+        self->unk_b6 = 0xffff;
         break;
     case 0x1e: {
         Ov014Sub44 *q = self->unk_44;

@@ -24,7 +24,7 @@ void func_ov009_021fc7c0(Ov009Actor *self) {
         ((Ov009Byte *)(p + 0xa2))->b0 = 0;
     }
     self->unk_40->flags |= 0x100000000ULL;
-    FLD(u8, FLD(u8 *, self, 0x4c), 0x18) |= 2;
+    FLD(u8, self->unk_4c, 0x18) |= 2;
 }
 
 void func_ov009_021fc834(Ov009Actor *self) {
@@ -50,7 +50,7 @@ extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_0218999c(s32 a, s32 b);
-extern void func_ov000_0218dbe0(Ov009Actor *self, s32 turn);
+extern void func_ov000_0218dbe0(Ov009Obj *self, s32 turn);
 extern BOOL func_ov000_02191120(void *m);
 void func_ov009_021fc8f4(Ov009Actor *self) {
     Ov009Sub40 *st = self->unk_40;
@@ -136,14 +136,14 @@ void func_ov009_021fcad0(Ov009Actor *self) {
             s44->unk_22_0 = 0;
             s44->unk_22_1 = 0;
         }
-        FLD(u16, FLD(u8 *, self, 0x4c), 0x1c) = 0xffff;
+        FLD(u16, self->unk_4c, 0x1c) = 0xffff;
         m = self->unk_38;
         m->unk_c2_9 = 2;
         NNSi_G3dModifyPolygonAttrMask(FLD(void *, m, 4), 0, 0xc0);
         self->unk_ea_3 = 0;
         func_ov000_0218996c(8, 0xa);
         p = self->pos;
-        p.y += (FLD(s32, self, 0x68) >> 1) - (FLD(s32, self, 0x68) >> 3);
+        p.y += (self->unk_68 >> 1) - (self->unk_68 >> 3);
         o = func_02065f88(3, &p);
         if (o != NULL) {
             s32 s = self->unk_64 + (self->unk_64 >> 3);

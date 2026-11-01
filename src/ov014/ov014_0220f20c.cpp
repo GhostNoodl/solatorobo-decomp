@@ -19,7 +19,7 @@ extern "C" {
 
 extern Ov014Actor *func_ov000_0219bf90(void);
 extern Ov014Actor *func_ov000_02199ba0(void *p);
-extern BOOL func_ov000_0219a8bc(void *p, Ov014Actor *a, Ov014Actor *b, s32 c, s32 d, const Ov014Vec *pos, s32 e, s32 f, s32 g);
+extern BOOL func_ov000_0219a8bc(void *p, Ov014Obj *a, Ov014Obj *b, s32 c, s32 d, const Ov014Vec *pos, s32 e, s32 f, s32 g);
 struct Ov014Mtx33 {
     s32 m[9];
 };
@@ -27,7 +27,7 @@ extern s32 func_ov014_0220f3f0(const Ov014Vec *a, const Ov014Vec *b, const u16 *
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
 extern void func_020639d4(void *e, s32 a, s32 b);
 
-void func_ov014_0220f20c(Ov014Actor *self, s32 a, s32 b, s32 c) {
+void func_ov014_0220f20c(Ov014Obj *self, s32 a, s32 b, s32 c) {
     Ov014Actor *pl = func_ov000_0219bf90();
     Ov014Vec v;
     s32 rad;
@@ -53,7 +53,7 @@ void func_ov014_0220f20c(Ov014Actor *self, s32 a, s32 b, s32 c) {
     {
         void *p44;
         u8 *s;
-        s = FLD(u8 *, self, 0x4c);
+        s = ((u8 *)self->unk_4c);
         p44 = pl->unk_44;
         if (!func_ov000_0219a8bc(p44, self, func_ov000_02199ba0(s), FLD(u16, s, 8), (u8)FLD(u16, s, 0xa), &v, -1, rad, 0x1000)) {
             return;

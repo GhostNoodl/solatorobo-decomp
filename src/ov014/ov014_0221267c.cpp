@@ -15,18 +15,18 @@ extern BOOL func_ov000_0218f110(void *p);
 extern s32 func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
 
 #pragma force_active on
-Ov014Actor *func_ov014_0221267c(Ov014Actor *self) {
+Ov014Actor *func_ov014_0221267c(Ov014Act_0221267c *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217dc0;
     func_ov000_0218e9c4((u8 *)self + 0xf0);
     func_ov000_0218fe1c((u8 *)self + 0x228);
-    FLD(s16, self, 0x310) = 0;
-    FLD(s16, self, 0x312) = 0;
+    self->unk_310 = 0;
+    self->unk_312 = 0;
     MIi_CpuClearFast(0, (u8 *)self + 0x314, 0x34);
-    FLD(s16, self, 0x34c) = 0;
-    FLD(s32, self, 0x348) = 0;
-    FLD(s32, self, 0x350) = 0;
-    FLD(u8, self, 0x354) = 0;
+    self->unk_34c = 0;
+    self->unk_348 = 0;
+    self->unk_350 = 0;
+    self->unk_354 = 0;
     return self;
 }
 #pragma force_active reset

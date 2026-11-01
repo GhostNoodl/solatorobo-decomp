@@ -33,17 +33,17 @@ static inline void Ov013_Land(Ov013Actor *self) {
     self->unk_40->state = 7;
 }
 
-void func_ov013_02209674(Ov013Actor *self) {
+void func_ov013_02209674(Ov013Act_02207968 *self) {
     Ov013Sub48 *m;
     Ov013Sub44 *n;
     if (self->unk_40->state == 0) {
-        FLD(u8, self, 0x110) = 0;
+        self->unk_110 = 0;
     }
     func_ov003_021d36fc(self);
     if (self->unk_40->unk_13 != 10) {
         return;
     }
-    FLD(u16, FLD(void *, self, 0x4c), 0x1c) = 0xffff;
+    FLD(u16, self->unk_4c, 0x1c) = 0xffff;
     m = self->unk_48;
     m->unk_9a_0 = 1;
     m->unk_9a_3 = 1;
@@ -126,7 +126,7 @@ void func_ov013_02209aac(Ov013Actor *self) {
         fx = func_02065f88(0x69, &self->pos);
         if (fx != NULL) {
             fx->v0c(0x3000);
-            fx->v24(0, FLD(s32, self, 0x6c), 0);
+            fx->v24(0, self->unk_6c, 0);
         }
     }
     func_ov003_021d6054(self);

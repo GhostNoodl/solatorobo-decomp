@@ -35,7 +35,7 @@ void func_ov009_021fad54(Ov009Actor *self) {
 extern void *data_02097e4c;
 extern u8 data_ov009_02216ab0[];
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
-extern void func_ov000_0218dbe0(Ov009Actor *self, s32 turn);
+extern void func_ov000_0218dbe0(Ov009Obj *self, s32 turn);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
@@ -96,7 +96,7 @@ static inline Ov009Actor *Ov009_FindActor5(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-void func_ov009_021faf48(Ov009Actor *self) {
+void func_ov009_021faf48(Ov009ActVt_022164a0 *self) {
     Ov009Actor *t = Ov009_FindActor5(self->unk_90);
     Ov009Sub40 *st;
     switch (self->unk_40->state) {
@@ -114,10 +114,10 @@ void func_ov009_021faf48(Ov009Actor *self) {
         self->unk_a8 = 0;
         switch (self->kind) {
         case 0x5032:
-            FLD(u16, self, 0xf0) = 0xb4;
+            self->unk_f0 = 0xb4;
             break;
         case 0x5402:
-            FLD(u16, self, 0xf0) = 100;
+            self->unk_f0 = 100;
             break;
         }
         self->unk_40->state++;
@@ -146,7 +146,7 @@ void func_ov009_021faf48(Ov009Actor *self) {
         }
         func_ov000_02190cb0(self->unk_38, data_ov009_02216ab0, 0x800, 1);
         if (t != NULL) {
-            func_ov000_0219aae8(self, self, FLD(u16, self, 0xf0), 0x20, (u16)(1 << (t->id >> 12)), NULL, 0, 0x3400, 0x2800, 0x64, 0x1000);
+            func_ov000_0219aae8(self, self, self->unk_f0, 0x20, (u16)(1 << (t->id >> 12)), NULL, 0, 0x3400, 0x2800, 0x64, 0x1000);
         }
         func_02065f88(0x66, &self->pos)->v0c(0x1c00);
         g = func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000);

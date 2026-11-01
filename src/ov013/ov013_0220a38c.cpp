@@ -32,7 +32,7 @@ void func_ov013_0220a38c(Ov013Actor *self) {
     q = self->unk_40;
     if (q->state == 0) {
         Ov013Sub50a *p;
-        FLD(Ov013Vec, self, 0xb8) = self->pos;
+        self->unk_b8 = self->pos;
         p = (Ov013Sub50a *)self->unk_50;
         if ((u8)(p->unk_08.b + 0xf0) <= 1) {
             Ov013_SetPair(&p->unk_08, &p->unk_08, 0x20);
@@ -85,14 +85,14 @@ Ov013Actor *func_ov013_0220a4c4(Ov013Actor *self) {
     return self;
 }
 
-Ov013Actor *func_ov013_0220a4e0(Ov013Actor *self) {
+Ov013ActEx_0220a4e0 *func_ov013_0220a4e0(Ov013ActEx_0220a4e0 *self) {
     func_ov000_02194074(self);
     FLD(void *, self, 0) = &data_ov013_0220bf4c;
     FLD(u16, self, 0xce) = 0;
-    FLD(s32, self, 0xd0) = 0;
-    FLD(s32, self, 0xd4) = 0;
-    FLD(s32, self, 0xd8) = 0;
-    FLD(s32, self, 0xdc) = 0;
+    self->unk_d0 = 0;
+    self->unk_d4.x = 0;
+    self->unk_d4.y = 0;
+    self->unk_d4.z = 0;
     return self;
 }
 
@@ -109,7 +109,7 @@ extern char data_ov013_0220bfdc[];
 extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern void func_0203f324(void *p);
-extern void func_ov000_0218dbe0(Ov013Actor *self, s32 a);
+extern void func_ov000_0218dbe0(Ov013Obj *self, s32 a);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
 extern Ov013Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov013Actor *a);
@@ -144,7 +144,7 @@ static inline Ov013Actor *Ov013_GetActor(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-void func_ov013_0220a554(Ov013Actor *self) {
+void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
     if (Ov013_GetActor(self->unk_90) == NULL) {
         return;
     }
@@ -158,11 +158,11 @@ void func_ov013_0220a554(Ov013Actor *self) {
         self->unk_a0 = 0;
         self->unk_a4 = 0;
         self->unk_a8 = 0;
-        d = Ov013_DistXZ3(&self->pos, &FLD(Ov013Vec, self, 0xd4));
-        ang = FX_Atan2(d, FLD(s32, self, 0xd8) - self->pos.y);
+        d = Ov013_DistXZ3(&self->pos, &self->unk_d4);
+        ang = FX_Atan2(d, self->unk_d4.y - self->pos.y);
         self->unk_9c = Ov013_FxMul(OV013_SIN(ang), 0x214);
         self->unk_a0 = Ov013_FxMul(OV013_COS(ang), 0x214);
-        self->rot[0] = FX_Atan2(self->pos.y - FLD(s32, self, 0xd8), d);
+        self->rot[0] = FX_Atan2(self->pos.y - self->unk_d4.y, d);
         self->unk_98 = self->rot[1];
         FLD(u16, self, 0xce) = 0x12c;
         if (self->unk_48 != NULL) {
@@ -172,8 +172,8 @@ void func_ov013_0220a554(Ov013Actor *self) {
             m->unk_9a_0 = 1;
             m->unk_9a_3 = 1;
             func_0203f324(m);
-            if (FLD(s32, self, 0xd0) != 0) {
-                self->unk_48->unk_38 = Ov013_FxMul(FLD(s32, self, 0xd0), self->unk_64);
+            if (self->unk_d0 != 0) {
+                self->unk_48->unk_38 = Ov013_FxMul(self->unk_d0, self->unk_64);
             }
         }
         if (self->unk_44 != NULL) {
@@ -201,12 +201,12 @@ void func_ov013_0220a554(Ov013Actor *self) {
         if (self->unk_48->unk_50 & 0x20000000) {
             Ov013V *e = func_02065f88(0x130, &self->pos);
             Ov013Actor *pl;
-            e->v0c(FLD(s32, self, 0xd0));
+            e->v0c(self->unk_d0);
             pl = func_ov000_0219bf90();
             if (pl != NULL && !func_ov000_021b4738(pl)) {
-                Ov013Actor *a = func_ov000_0219be1c(0x4813, &self->pos, self->rot, FLD(u16, FLD(void *, self, 0x4c), 0x1c), self->unk_90);
+                Ov013Actor *a = func_ov000_0219be1c(0x4813, &self->pos, self->rot, FLD(u16, self->unk_4c, 0x1c), self->unk_90);
                 if (a != NULL) {
-                    FLD(s32, a, 0xd4) = FLD(s32, self, 0xd0);
+                    FLD(s32, a, 0xd4) = self->unk_d0;
                 }
             }
             func_02049f44(data_02097e4c, 0x35, &self->pos, 0);
@@ -217,7 +217,7 @@ void func_ov013_0220a554(Ov013Actor *self) {
             self->unk_9c = 0;
             return;
         }
-        if (func_ov000_0219aae8(self, self, FLD(u16, FLD(void *, self, 0x4c), 8), FLD(u16, FLD(void *, self, 0x4c), 0xa), 2, NULL, 0, self->unk_64, 0, 0x130, FLD(s32, self, 0xd0) >> 1)) {
+        if (func_ov000_0219aae8(self, self, FLD(u16, self->unk_4c, 8), FLD(u16, self->unk_4c, 0xa), 2, NULL, 0, self->unk_64, 0, 0x130, self->unk_d0 >> 1)) {
             func_ov000_02198360(self->unk_40, 0x15, 0);
         }
         break;

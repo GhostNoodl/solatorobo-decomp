@@ -28,17 +28,17 @@ void func_ov009_021ff074(Ov009Actor *self) {
     func_ov003_021d3a88(self);
 }
 
-void func_ov009_021ff0a0(Ov009Actor *self) {
-    if (self->unk_40->state == 0 && FLD(u16, self, 0xf4) == 0x5045) {
-        func_02065804(data_0214a420, FLD(void *, self, 0xf8));
+void func_ov009_021ff0a0(Ov009ActVt_022165f8 *self) {
+    if (self->unk_40->state == 0 && self->unk_f4 == 0x5045) {
+        func_02065804(data_0214a420, ((void *)self->unk_f8));
         FLD(void *, self, 0xf8) = NULL;
     }
     func_ov003_021d5900(self);
 }
 
-void func_ov009_021ff0f0(Ov009Actor *self) {
-    if (self->unk_40->state == 0 && FLD(u16, self, 0xf4) == 0x5045) {
-        func_02065804(data_0214a420, FLD(void *, self, 0xf8));
+void func_ov009_021ff0f0(Ov009ActVt_022165f8 *self) {
+    if (self->unk_40->state == 0 && self->unk_f4 == 0x5045) {
+        func_02065804(data_0214a420, ((void *)self->unk_f8));
         FLD(void *, self, 0xf8) = NULL;
     }
     func_ov003_021d6054(self);
@@ -295,13 +295,13 @@ Ov009Actor *func_ov009_021ff634(Ov009Actor *self) {
 }
 
 void func_ov009_021ff650(Ov009Actor *self) {
-    u8 *p = FLD(u8 *, FLD(void *, self, 0x4), 0x2c);
+    u8 *p = FLD(u8 *, self->unk_04, 0x2c);
     s32 v;
     if (p == NULL) {
         return;
     }
-    if (FLD(u32, self, 0x8) & 0x10) {
-        v = FLD(u8, self, 0xae);
+    if (self->unk_08 & 0x10) {
+        v = self->unk_ae;
     } else {
         v = -1;
     }
@@ -315,20 +315,20 @@ void func_ov009_021ff690(Ov009Actor *self) {
     self->unk_92 = 3;
 }
 
-void func_ov009_021ff6a8(Ov009Actor *self) {
+void func_ov009_021ff6a8(Ov009ActVt_022171d4 *self) {
     func_ov003_021d112c(self);
-    FLD(u16, self, 0xf0) = 0;
-    FLD(u16, self, 0xf4) = 0;
+    self->unk_f0 = 0;
+    self->unk_f4 = 0;
     switch (self->kind) {
     case 0x5421:
-        FLD(u16, self, 0xf2) = 0x50;
+        self->unk_f2 = 0x50;
         if (self->unk_1a == 0) {
             func_ov000_02198360(self->unk_40, 0x20, 0);
-            FLD(u16, self, 0xf4) = 0xf0;
+            self->unk_f4 = 0xf0;
         }
         break;
     case 0x5031:
-        FLD(u16, self, 0xf2) = 0x64;
+        self->unk_f2 = 0x64;
         break;
     }
     {

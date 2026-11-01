@@ -21,11 +21,11 @@ extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *a);
 extern BOOL func_ov000_02191120(void *a);
 
-void func_ov014_02211f0c(Ov014Actor *self) {
+void func_ov014_02211f0c(Ov014Act_0220f9d0 *self) {
     switch (self->unk_40->state) {
     case 0: {
         Ov014Sub44 *n;
-        if (FLD(u16, self, 0x150) == 0x4806) {
+        if (self->unk_150 == 0x4806) {
             func_ov000_02190cb0(self->unk_38, data_ov014_02217d7c, 0x1000, 0);
         } else {
             func_ov000_02190cb0(self->unk_38, data_ov014_02217d82, 0x1000, 0);
@@ -82,7 +82,7 @@ extern void func_ov003_021d6a3c(Ov014Actor *self, s32 a, s32 b, s32 c);
 
 // *(&data_02097e4c) keeps the global's address in a saved register (r7) across the
 // switch, as in the target; a plain data_02097e4c reloads it from the pool each time.
-void func_ov014_02212050(Ov014Actor *self) {
+void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
     u16 t;
     Ov014Vec v1;
     Ov014Vec v3;
@@ -95,7 +95,7 @@ void func_ov014_02212050(Ov014Actor *self) {
         func_020627a0(self->kind, self->id);
         func_020627dc(5);
         g = data_ov000_021ccd54;
-        FLD(u8, g, 0xac) = 1;
+        g->unk_ac = 1;
         func_ov000_02182590((u8 *)g + 0xac);
         func_ov000_02190cb0(self->unk_38, data_ov014_02217d88, 0x19a, 0);
         func_ov000_021911c8(self->unk_38, 0x400);
@@ -103,7 +103,7 @@ void func_ov014_02212050(Ov014Actor *self) {
         n = self->unk_44;
         n->unk_22_0 = 0;
         n->unk_22_1 = 0;
-        FLD(u16, FLD(u8 *, self, 0x4c), 0x1c) = 0xffff;
+        FLD(u16, ((u8 *)self->unk_4c), 0x1c) = 0xffff;
         b = 0x15;
         func_ov000_0219bd20(0x5c16, self->id, 2, 1, 1, &b);
         func_ov000_0219bd20(0x4806, self->id, 2, 1, 1, &b);
@@ -130,14 +130,14 @@ void func_ov014_02212050(Ov014Actor *self) {
             Ov014Actor *e = func_02065f88(0x390, &self->pos);
             e->v24(0, 0x6000, 0x2000);
             e->v0c(0x3000);
-            FLD(void *, self, 0x158) = FLD(void *, e, 0x24);
+            self->unk_158 = ((void *)e->unk_24);
             func_02049f44(*(&data_02097e4c), 0x44, &self->pos, 0);
         }
         if (t == 0x1fe || t == 0x1e0 || t == 0x1c2 || t == 0x1a4) {
             func_02049f44(*(&data_02097e4c), 0x44, &self->pos, 0);
         }
         if (t == 0x12c) {
-            func_02065860(data_0214a420, FLD(void *, self, 0x158));
+            func_02065860(data_0214a420, self->unk_158);
         }
         if (t == 0x140) {
             Ov014Game54 *g = data_ov000_021ccd54;

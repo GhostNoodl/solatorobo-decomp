@@ -8,7 +8,7 @@ extern Ov009Actor *func_ov000_0219bf90(void);
 extern void VEC_Normalize(const Ov009Vec *in, Ov009Vec *out);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern void func_ov000_0218d918(Ov009Actor *self, const Ov009Vec *v, s32 a);
-extern void func_ov000_0218dbe0(Ov009Actor *self, s32 a);
+extern void func_ov000_0218dbe0(Ov009Obj *self, s32 a);
 extern void func_ov000_021911c8(void *m, s32 a);
 extern void func_ov003_021d6954(Ov009Actor *self, u8 a);
 extern void func_020627a0(u16 kind, u16 id);
