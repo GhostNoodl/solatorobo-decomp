@@ -51,28 +51,28 @@ static inline void Ov011_FreeTwl(void **slot) {
     data_02097dd0->cur = saved;
 }
 
-Ov011Actor *func_ov011_02204b94(Ov011Actor *self) {
+Ov011Actor *func_ov011_02204b94(Ov011Act7da4 *self) {
     *(void **)self = data_ov011_02207da4;
-    Ov011_FreeTwl(&FLD(void *, self, 0x364));
-    Ov011_FreeTwl(&FLD(void *, self, 0x368));
+    Ov011_FreeTwl(&self->unk_364);
+    Ov011_FreeTwl(&self->unk_368);
     func_02036838(data_02097cdc, data_ov011_02207c35, 7, 0);
-    __cxa_vec_cleanup(&FLD(u8, self, 0xf4), 2, 0x138, (void *)func_ov000_0218ea20);
+    __cxa_vec_cleanup(self->unk_f4, 2, 0x138, (void *)func_ov000_0218ea20);
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov011Actor *func_ov011_02204c80(Ov011Actor *self) {
+Ov011Actor *func_ov011_02204c80(Ov011Act7da4 *self) {
     *(void **)self = data_ov011_02207da4;
-    Ov011_FreeTwl(&FLD(void *, self, 0x364));
-    Ov011_FreeTwl(&FLD(void *, self, 0x368));
+    Ov011_FreeTwl(&self->unk_364);
+    Ov011_FreeTwl(&self->unk_368);
     func_02036838(data_02097cdc, data_ov011_02207c35, 7, 0);
-    __cxa_vec_cleanup(&FLD(u8, self, 0xf4), 2, 0x138, (void *)func_ov000_0218ea20);
+    __cxa_vec_cleanup(self->unk_f4, 2, 0x138, (void *)func_ov000_0218ea20);
     func_ov003_021d0edc(self);
     func_0203de1c(self);
     return self;
 }
 
-void func_ov011_02204d74(Ov011Actor *self) {
+void func_ov011_02204d74(Ov011Act7da4 *self) {
     func_ov003_021d0fc0(self);
     func_020359d0(data_ov011_02207c35, 7, 0);
     if (OS_IsRunOnTwl()) {
@@ -80,54 +80,46 @@ void func_ov011_02204d74(Ov011Actor *self) {
         if (p != NULL) {
             p = func_ov000_0214b570(p);
         }
-        FLD(void *, self, 0x364) = p;
+        self->unk_364 = p;
         func_ov000_0214b5e8(p, data_ov011_02207500[1]);
         p = func_0203dd9c(0x1c);
         if (p != NULL) {
             p = func_ov000_0214b570(p);
         }
-        FLD(void *, self, 0x368) = p;
+        self->unk_368 = p;
         func_ov000_0214b5e8(p, data_ov011_02207500[0]);
     }
-    FLD(s32, self, 0x398) = 0;
-    FLD(u8, self, 0x394) = 0;
+    self->unk_398 = NULL;
+    self->unk_394 = 0;
 }
 
-BOOL func_ov011_02204dfc(Ov011Actor *self) {
+BOOL func_ov011_02204dfc(Ov011Act7da4 *self) {
     BOOL r = func_ov000_0218cf5c(self);
     r = (r & func_02035b90(data_ov011_02207c35, 7)) ? TRUE : FALSE;
-    if (FLD(void *, self, 0x364) != NULL && FLD(u8, self, 0x394) == 0) {
-        if (func_ov000_0214b6d0(FLD(void *, self, 0x364)) == 2) {
+    if (self->unk_364 != NULL && self->unk_394 == 0) {
+        if (func_ov000_0214b6d0(self->unk_364) == 2) {
             r = FALSE;
-            FLD(u8, self, 0x394) = 1;
+            self->unk_394 = 1;
         }
-        if (r && !func_ov000_0214b640(FLD(void *, self, 0x364)) && r && func_02036328()) {
-            func_ov000_0214b5bc(FLD(void *, self, 0x364));
+        if (r && !func_ov000_0214b640(self->unk_364) && r && func_02036328()) {
+            func_ov000_0214b5bc(self->unk_364);
             r = FALSE;
         }
     }
-    if (FLD(void *, self, 0x368) != NULL && FLD(u8, self, 0x394) == 0) {
-        if (func_ov000_0214b6d0(FLD(void *, self, 0x368)) == 2) {
+    if (self->unk_368 != NULL && self->unk_394 == 0) {
+        if (func_ov000_0214b6d0(self->unk_368) == 2) {
             r = FALSE;
-            FLD(u8, self, 0x394) = 1;
+            self->unk_394 = 1;
         }
-        if (r && !func_ov000_0214b640(FLD(void *, self, 0x368)) && r && func_02036328()) {
-            func_ov000_0214b5bc(FLD(void *, self, 0x368));
+        if (r && !func_ov000_0214b640(self->unk_368) && r && func_02036328()) {
+            func_ov000_0214b5bc(self->unk_368);
             r = FALSE;
         }
     }
     return r;
 }
 
-struct Ov011EaBits {
-    u16 lo : 6;
-    u16 b6 : 2;
-    u16 b8 : 1;
-    u16 b9 : 1;
-    u16 hi : 6;
-};
-
-void func_ov011_02204ef8(Ov011Actor *self) {
+void func_ov011_02204ef8(Ov011Act7da4 *self) {
     func_ov003_021d112c(self);
     {
         u32 saved = data_02097dd0->cur;
@@ -142,17 +134,17 @@ void func_ov011_02204ef8(Ov011Actor *self) {
         }
         data_02097dd0->cur = saved;
     }
-    Ov011_VecSet(&FLD(Ov011Vec, self->unk_44, 0xc), 0, 0x5000, 0x7800);
+    Ov011_VecSet(&self->unk_44->unk_0c, 0, 0x5000, 0x7800);
     {
         Ov011Sub44 *s = self->unk_44;
         s->unk_22_0 = 0;
         s->unk_22_1 = 0;
     }
     self->unk_38->unk_c2_0 = 0;
-    FLD(Ov011EaBits, self, 0xea).b8 = 1;
-    FLD(Ov011EaBits, self, 0xea).b9 = 1;
+    self->unk_ea_8 = 1;
+    self->unk_ea_9 = 1;
     self->unk_ea_6 = 1;
-    FLD(u16, self, 0x36c) = 0xffff;
+    self->unk_36c = 0xffff;
     func_ov000_0218e8ec(data_ov000_021ccd68, 0x400c, 0x15);
 }
 

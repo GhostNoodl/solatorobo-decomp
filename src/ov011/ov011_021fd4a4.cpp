@@ -2,78 +2,58 @@
 
 extern "C" {
 
-struct Ov011Fd4a4 {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 pad0 : 6;
-    u8 pad1;
-    u16 id;
-    u32 pad4;
-    s32 unk_08;
-    u8 sub[1];
-};
-
 #pragma force_active on
-void func_ov011_021fd4a4(Ov011Fd4a4 *self) {
+void func_ov011_021fd4a4(Ov011Sub1b4 *self) {
     self->b1 = 0;
     self->id = 0xffff;
-    self->unk_08 = 0;
-    func_ov003_021da48c(self->sub, 1);
+    self->ent = NULL;
+    func_ov003_021da48c(&self->seq, 1);
 }
 #pragma force_active reset
-
-struct Ov011Fd4d8Bits {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 rest : 5;
-};
 
 extern BOOL func_ov000_02198360(void *p, u8 value, BOOL force);
 extern BOOL func_ov011_02201578(void *p);
 extern BOOL func_ov011_021fa720(void *e, s32 a, s32 b, s32 c, s32 d);
 
-#define BITS4d8(off) FLD(Ov011Fd4d8Bits, self, off)
-
-BOOL func_ov011_021fd4d8(u8 *self, s32 a) {
-    BITS4d8(0).b0 = 1;
-    BITS4d8(0).b1 = 0;
-    BITS4d8(0).b2 = 1;
-    FLD(s32, self, 0x4) = 0;
-    FLD(s32, self, 0x8) = a;
-    FLD(s32, self, 0xc) = 0;
-    func_ov003_021da48c(self + 0x20, 1);
-    BITS4d8(0x10).b0 = 1;
-    FLD(u16, self, 0x12) = 0;
-    FLD(u16, self, 0x14) = 0x10;
-    FLD(void *, self, 0x18) = func_0203dddc(FLD(u16, self, 0x14) * 4);
-    FLD(s32, self, 0x1c) = 0;
-    func_ov011_02201578(self + 0x34);
-    BITS4d8(0xb4).b0 = 1;
-    BITS4d8(0xb4).b1 = 0;
-    FLD(u16, self, 0xb6) = 0;
-    FLD(s32, self, 0xb8) = -1;
-    FLD(s32, self, 0xbc) = 0;
-    FLD(s32, self, 0xc0) = 0;
-    FLD(s32, self, 0xc4) = 0;
-    func_ov003_021da48c(self + 0xc8, 0);
-    BITS4d8(0x1b4).b0 = 1;
-    BITS4d8(0x1b4).b1 = 0;
-    FLD(u16, self, 0x1b6) = 0;
-    FLD(s32, self, 0x1b8) = 0;
-    FLD(s32, self, 0x1bc) = 0;
-    func_ov000_02198360(self + 0x1c0, 2, 0);
-    FLD(s32, self, 0x1d8) = -1;
-    BITS4d8(0x1d4).b0 = 1;
-    FLD(s32, self, 0x1dc) = 0;
-    FLD(s32, self, 0x1e0) = 0;
-    FLD(u16, self, 0x1d6) = 0;
-    BITS4d8(0x1d4).b1 = 0;
-    FLD(s32, self, 0x1e4) = 0;
-    FLD(s32, self, 0x1e8) = 0;
-    FLD(s32, self, 0x1ec) = 0;
-    func_ov003_021da48c(self + 0x1f0, 0);
-    func_ov011_021fa720(self + 0x204, 1, 0x3333, 0x71c, 0x2000);
+BOOL func_ov011_021fd4d8(Ov011Scene *self, Ov011Obj *owner) {
+    self->b0 = 1;
+    self->b1 = 0;
+    self->b2 = 1;
+    self->unk_04 = 0;
+    self->actor = owner;
+    self->head = NULL;
+    func_ov003_021da48c(&self->seq, 1);
+    self->ring.b0 = 1;
+    self->ring.idx = 0;
+    self->ring.cap = 0x10;
+    self->ring.buf = (s32 *)func_0203dddc(self->ring.cap * 4);
+    self->ring.count = 0;
+    func_ov011_02201578(&self->fx);
+    self->mgr2.b0 = 1;
+    self->mgr2.b1 = 0;
+    self->mgr2.count = 0;
+    self->mgr2.unk_04 = -1;
+    self->mgr2.arr8 = NULL;
+    self->mgr2.list = NULL;
+    self->mgr2.ent = NULL;
+    func_ov003_021da48c(&self->mgr2.state, 0);
+    self->s1b4.b0 = 1;
+    self->s1b4.b1 = 0;
+    self->s1b4.id = 0;
+    self->s1b4.scene = NULL;
+    self->s1b4.ent = NULL;
+    func_ov000_02198360(&self->s1b4.seq, 2, 0);
+    self->mgr.unk_04 = -1;
+    self->mgr.b0 = 1;
+    self->mgr.arr8 = NULL;
+    self->mgr.arrC = NULL;
+    self->mgr.count = 0;
+    self->mgr.b1 = 0;
+    self->mgr.ids = NULL;
+    self->mgr.list = NULL;
+    self->mgr.unk_18 = NULL;
+    func_ov003_021da48c(&self->mgr.state, 0);
+    func_ov011_021fa720(&self->ent, 1, 0x3333, 0x71c, 0x2000);
     return TRUE;
 }
 
@@ -90,16 +70,6 @@ class Ov011Top {
 public:
     u8 b0 : 1;
     u8 b1 : 7;
-};
-
-class Ov011Sub1b4 {
-public:
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 6;
-    u8 unk_01[0xb];
-    u8 timer[0x13];
-    u8 key;
 };
 
 typedef void (Ov011Top::*Ov011TopFn)();
@@ -121,7 +91,7 @@ extern const Ov011TopEntry data_ov011_022073a0[];
 extern const Ov011Sub1b4Entry data_ov011_02207308[];
 extern const Ov011Vec data_ov011_02207284;
 
-void func_ov011_021fdb28(u8 *self);
+void func_ov011_021fdb28(Ov011Scene *self);
 BOOL func_ov003_021d7814(void *p);
 void func_ov003_021d7800(void *p);
 void *func_ov011_02201254(void *self);
@@ -161,14 +131,14 @@ static inline void Ov011Sub1b4_Update(Ov011Sub1b4 *s) {
     if (!s->b1) {
         return;
     }
-    key = s->key;
+    key = s->seq.unk_13;
     for (i = 0; i < 5; i++) {
         if (key == data_ov011_02207308[i].key && *(s32 *)&data_ov011_02207308[i].fn != 0) {
             (s->*data_ov011_02207308[i].fn)();
             break;
         }
     }
-    func_ov003_021da40c(s->timer);
+    func_ov003_021da40c(&s->seq);
 }
 
 static inline void Ov011_MoveTo(Ov011PNode *n, const Ov011Vec *v, s32 t) {
@@ -191,32 +161,32 @@ static inline s32 Ov011Ent_Count(Ov011Ent *e) {
 }
 
 
-#define E FLD(Ov011Ent, self, 0x204)
+#define E (self->ent)
 
-void func_ov011_021fd638(u8 *self) {
+void func_ov011_021fd638(Ov011Scene *self) {
     Ov011Node *next;
     Ov011Node *n;
-    if (!FLD(Ov011Top, self, 0).b0) {
+    if (!self->b0) {
         return;
     }
     func_ov011_021fdb28(self);
-    n = FLD(Ov011Node *, self, 0xc);
+    n = self->head;
     while (n != NULL) {
         next = n->next;
         if (!func_ov003_021d7814(n)) {
-            void *a = Ov011_FindActor(n->id);
+            Ov011Obj *a = Ov011_FindActor(n->id);
             if (a != NULL) {
-                Ov011Ent_Remove(&FLD(Ov011Ent, self, 0x204), func_ov011_02201254(a));
+                Ov011Ent_Remove(&self->ent, func_ov011_02201254(a));
                 func_ov011_02201214(a, NULL);
             }
-            FLD(Ov011Node *, self, 0xc) = func_ov011_021fdadc(FLD(Ov011Node *, self, 0xc), n);
+            self->head = func_ov011_021fdadc(self->head, n);
             func_ov003_021d7800(n);
         }
         n = next;
     }
     {
         u32 i;
-        u8 key = FLD(u8, self, 0x33);
+        u8 key = self->seq.unk_13;
         for (i = 0; i < 10; i++) {
             if (key == data_ov011_022073a0[i].key && *(s32 *)&data_ov011_022073a0[i].fn != 0) {
                 (((Ov011Top *)self)->*data_ov011_022073a0[i].fn)();
@@ -224,10 +194,10 @@ void func_ov011_021fd638(u8 *self) {
             }
         }
     }
-    func_ov011_02201758(self + 0x34);
-    func_ov011_021fb684(self + 0xb4);
-    Ov011Sub1b4_Update((Ov011Sub1b4 *)(self + 0x1b4));
-    func_ov011_021fa8c8(self + 0x1d4);
+    func_ov011_02201758(&self->fx);
+    func_ov011_021fb684(&self->mgr2);
+    Ov011Sub1b4_Update(&self->s1b4);
+    func_ov011_021fa8c8(&self->mgr);
     {
 
     s32 d;
@@ -236,8 +206,8 @@ void func_ov011_021fd638(u8 *self) {
         return;
     }
     if (E.b3) {
-        E.unk_18 += FLD(s32, &E, 0x20);
-        st = FLD(s32, &E, 0x20);
+        E.unk_18 += E.unk_20;
+        st = E.unk_20;
         d = E.unk_1c - E.unk_18;
         if ((d < 0 ? -d : d) <= (st < 0 ? -st : st)) {
             E.unk_18 = E.unk_1c;
@@ -299,7 +269,7 @@ void func_ov011_021fd638(u8 *self) {
             }
         }
     }
-    FLD(u16, self, 0x234) += (u16)FLD(s32, self, 0x21c);
+    self->ent.unk_30 += (u16)self->ent.unk_18;
     }
 }
 

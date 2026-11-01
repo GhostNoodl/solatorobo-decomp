@@ -78,13 +78,13 @@ static inline void Ov011Bar_Init(Ov011Bar *b) {
 }
 
 #pragma force_active on
-void func_ov011_022051ec(Ov011Actor *self) {
-    if (FLD(u8, self, 0x394) != 0) {
+void func_ov011_022051ec(Ov011Act7da4 *self) {
+    if (self->unk_394 != 0) {
         Ov011Bar *b;
         if (!Ov011Bar_FadeIdle()) {
             return;
         }
-        if (FLD(Ov011Bar *, self, 0x398) == NULL) {
+        if (self->unk_398 == NULL) {
             b = (Ov011Bar *)func_0203dd9c(0xe8);
             if (b != NULL) {
                 *(void ***)b = data_ov000_021cac60;
@@ -92,19 +92,19 @@ void func_ov011_022051ec(Ov011Actor *self) {
                 *(void ***)b = data_ov000_021cad50;
                 b->v28();
             }
-            FLD(Ov011Bar *, self, 0x398) = b;
+            self->unk_398 = b;
             b->flags |= 0x10000;
-            Ov011Bar_Init(FLD(Ov011Bar *, self, 0x398));
-            FLD(Ov011Bar *, self, 0x398)->flags |= 0x20000;
-            FLD(Ov011Bar *, self, 0x398)->unk_1c = 4;
-            FLD(Ov011Bar *, self, 0x398)->v08();
-            func_ov000_0215c1bc(FLD(Ov011Bar *, self, 0x398), 0x8000, func_0204c0e8(data_02149ef8, 0x76));
-            FLD(Ov011Bar *, self, 0x398)->unk_68 = -0x299a;
-            FLD(Ov011Bar *, self, 0x398)->v70();
+            Ov011Bar_Init(self->unk_398);
+            self->unk_398->flags |= 0x20000;
+            self->unk_398->unk_1c = 4;
+            self->unk_398->v08();
+            func_ov000_0215c1bc(self->unk_398, 0x8000, func_0204c0e8(data_02149ef8, 0x76));
+            self->unk_398->unk_68 = -0x299a;
+            self->unk_398->v70();
             func_ov000_02188140(data_ov000_021ccd54, 0xffff, 0, 0);
         } else {
-            FLD(Ov011Bar *, self, 0x398)->v1c();
-            FLD(Ov011Bar *, self, 0x398)->v20();
+            self->unk_398->v1c();
+            self->unk_398->v20();
         }
         return;
     }
@@ -122,8 +122,8 @@ void func_ov011_022051ec(Ov011Actor *self) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;
-            FLD(u8, g, 0xac) = 1;
-            func_ov000_02182590((u8 *)g + 0xac);
+            g->unk_ac = 1;
+            func_ov000_02182590(&g->unk_ac);
             self->unk_40->state++;
             self->unk_40->timer = 0;
         }

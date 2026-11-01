@@ -1,24 +1,5 @@
 #include "ov011/ov011.h"
 
-class Ov011Mgr {
-public:
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 6;
-    u8 unk_01;
-    u16 count;
-    s32 unk_04;
-    Ov011E38 *arr8;
-    Ov011E30 *arrC;
-    u16 *ids;
-    Ov011List *list;
-    Ov011Ent *unk_18;
-    u16 state;
-    u16 timer;
-    u64 flags;
-    u8 unk_28[0x7];
-    u8 unk_2f;
-};
 
 typedef void (Ov011Mgr::*Ov011MgrFn)();
 
@@ -241,10 +222,10 @@ static inline void Ov011_Send(u16 id, s32 a, s32 b) {
 void func_ov011_021facc4(Ov011Mgr *self) {
     Ov011Vec v2;
     Ov011Vec v1;
-    void *actor;
+    Ov011Obj *actor;
     BOOL ok;
     u16 i;
-    void *a;
+    Ov011Obj *a;
     actor = self->list->actor;
     switch (self->state) {
     case 0:
@@ -254,7 +235,7 @@ void func_ov011_021facc4(Ov011Mgr *self) {
                 func_ov011_022011fc(a, 1);
             }
         }
-        Ov011_Send(FLD(u16, actor, 0xc), 1, 0);
+        Ov011_Send(actor->id, 1, 0);
         self->state = 1;
         break;
     case 1:
@@ -269,14 +250,14 @@ void func_ov011_021facc4(Ov011Mgr *self) {
                 func_ov011_022011c8(a, 1);
             }
         }
-        Ov011_Send(FLD(u16, actor, 0xc), 1, 1);
+        Ov011_Send(actor->id, 1, 1);
         self->state = 2;
         break;
     case 2:
         for (i = 0; i < self->count; i++) {
             a = Ov011_FindActor(self->ids[i]);
             if (a != NULL) {
-                v1 = FLD(Ov011Vec, a, 0x70);
+                v1 = a->pos;
                 v2.x = v1.x;
                 v2.y = v1.y + 0x4000;
                 v2.z = v1.z;
@@ -290,7 +271,7 @@ void func_ov011_021facc4(Ov011Mgr *self) {
         for (i = 0; i < self->count; i++) {
             a = Ov011_FindActor(self->ids[i]);
             if (a != NULL) {
-                FLD(Ov011Vec, a, 0x70) = *(Ov011Vec *)self->arrC[i].v10();
+                a->pos = *(Ov011Vec *)self->arrC[i].v10();
                 if (!self->arrC[i].v14()) {
                     ok = FALSE;
                 }
@@ -299,7 +280,7 @@ void func_ov011_021facc4(Ov011Mgr *self) {
         if (!ok) {
             return;
         }
-        Ov011_Send(FLD(u16, actor, 0xc), 1, 2);
+        Ov011_Send(actor->id, 1, 2);
         self->flags |= 0x10;
         break;
     }
@@ -326,27 +307,27 @@ void func_ov011_021fb02c(Ov011Mgr *self) {
     Ov011Vec v;
     Ov011Vec p;
     Ov011Vec v2;
-    void *a;
+    Ov011Obj *a;
     u16 i;
     s32 j;
     Ov011Ent *e;
-    void *actor;
+    Ov011Obj *actor;
     BOOL ok;
     actor = self->list->actor;
     if (self->state == 0) {
-        v = FLD(Ov011Vec, actor, 0x70);
+        v = actor->pos;
         v.y += 0x6800;
         for (i = 0; i < self->count; i++) {
             a = Ov011_FindActor(self->ids[i]);
             if (a != NULL) {
-                p = FLD(Ov011Vec, a, 0x70);
+                p = a->pos;
                 func_ov003_021d7a44(&self->arr8[i], &v, &p, 0x52, 0x3000, 0);
             }
         }
         self->state++;
         return;
     }
-    v2 = FLD(Ov011Vec, actor, 0x70);
+    v2 = actor->pos;
     v2.y += 0x6800;
     for (s32 k = 0; k < self->count; k++) {
         func_ov003_021d7c08(&self->arr8[k], &v2);
@@ -355,7 +336,7 @@ void func_ov011_021fb02c(Ov011Mgr *self) {
     for (i = 0; i < self->count; i++) {
         a = Ov011_FindActor(self->ids[i]);
         if (a != NULL) {
-            FLD(Ov011Vec, a, 0x70) = *(Ov011Vec *)self->arr8[i].v10();
+            a->pos = *(Ov011Vec *)self->arr8[i].v10();
             if (!self->arr8[i].v14()) {
                 ok = FALSE;
             }
@@ -369,9 +350,9 @@ void func_ov011_021fb02c(Ov011Mgr *self) {
         if (a != NULL) {
             Ov011Vec delta;
             Ov011PNode *n;
-            delta.x = FLD(s32, a, 0x70) - FLD(s32, actor, 0x70);
-            delta.y = FLD(s32, a, 0x74) - FLD(s32, actor, 0x74);
-            delta.z = FLD(s32, a, 0x78) - FLD(s32, actor, 0x78);
+            delta.x = a->pos.x - actor->pos.x;
+            delta.y = a->pos.y - actor->pos.y;
+            delta.z = a->pos.z - actor->pos.z;
             e = self->unk_18;
             n = NULL;
             if (e->b0) {

@@ -35,8 +35,8 @@ void *func_ov003_021d79d0(void *p);
 extern void *data_02097e4c;
 extern const Ov011Vec data_ov011_022072b4;
 
-BOOL func_ov011_02201244(u8 *o);
-void func_ov011_0220121c(u8 *o, s32 a);
+BOOL func_ov011_02201244(void *o);
+void func_ov011_0220121c(void *o, s32 a);
 void *__cxa_vec_new(u32 count, u32 size, u32 hdr, void *ctor, void *dtor);
 void *func_ov011_021fb66c(void *self);
 void *func_ov011_021fc0a0(void *self);
@@ -44,13 +44,13 @@ BOOL func_ov011_02201f28(void *self, u16 id, const Ov011Vec *off, s16 c, s16 d, 
 void func_ov011_02202464(void *self);
 void *func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
 
-static inline u8 *Ov011_Find(u16 id) {
-    return data_ov000_021ccd68 == NULL ? NULL : (u8 *)func_ov000_0218e640(data_ov000_021ccd68, id);
+static inline Ov011Obj *Ov011_Find(u16 id) {
+    return data_ov000_021ccd68 == NULL ? NULL : (Ov011Obj *)func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
 static inline BOOL Ov011_NodeOk(Ov011Node *p) {
     if (p != NULL) {
-        u8 *o = Ov011_Find(p->id);
+        Ov011Obj *o = Ov011_Find(p->id);
         if (o != NULL && func_ov011_02201244(o)) {
             return TRUE;
         }
@@ -60,14 +60,14 @@ static inline BOOL Ov011_NodeOk(Ov011Node *p) {
 
 void func_ov011_021fbe08(Ov011Mgr3 *self) {
     Ov011Node *head = self->list->head;
-    u8 *actor = (u8 *)self->list->actor;
+    Ov011Obj *actor = self->list->actor;
     switch (self->state) {
     case 0: {
         Ov011Node *p;
         s32 n = 0;
         s16 cnt;
         s32 i;
-        u8 *a;
+        Ov011Obj *a;
         Ov011Vec v;
         Ov011Vec w;
         for (p = head; p != NULL; p = p->next) {
@@ -80,9 +80,9 @@ void func_ov011_021fbe08(Ov011Mgr3 *self) {
         self->arr8 = (Ov011E40b *)__cxa_vec_new(self->count, 0x40, 8, (void *)func_ov011_021fc0a0, (void *)func_ov011_021fb66c);
         i = 0;
         for (p = head; p != NULL; p = p->next) {
-            u8 *o = Ov011_Find(p->id);
+            Ov011Obj *o = Ov011_Find(p->id);
             if (func_ov011_02201244(o)) {
-                u16 id = FLD(u16, o, 0xc);
+                u16 id = o->id;
                 Ov011E40b *e = &self->arr8[i];
                 e->b0 = 0;
                 e->b1 = 0;
@@ -94,12 +94,12 @@ void func_ov011_021fbe08(Ov011Mgr3 *self) {
             }
         }
         *(Ov011Blk12 *)&v = *(const Ov011Blk12 *)&data_ov011_022072b4;
-        a = (u8 *)self->list->actor;
-        func_ov011_02201f28(self->unk_28, FLD(u16, a, 0xc), &v, cnt, 0x1000, 0x2333);
+        a = self->list->actor;
+        func_ov011_02201f28(self->unk_28, a->id, &v, cnt, 0x1000, 0x2333);
         func_ov011_02202464(self->unk_28);
-        w.x = FLD(s32, a, 0x70);
-        w.y = FLD(s32, a, 0x74);
-        w.z = FLD(s32, a, 0x78);
+        w.x = a->pos.x;
+        w.y = a->pos.y;
+        w.z = a->pos.z;
         func_02049f44(data_02097e4c, 0x44, &w, 0);
         self->state = 1;
         break;
@@ -113,15 +113,15 @@ void func_ov011_021fbe08(Ov011Mgr3 *self) {
         if (self->timer >= 0x32) {
             self->flags |= 0x10;
         }
-        x = FLD(s32, actor, 0x70);
-        y = FLD(s32, actor, 0x74);
-        z = FLD(s32, actor, 0x78);
+        x = actor->pos.x;
+        y = actor->pos.y;
+        z = actor->pos.z;
         for (p = head; p != NULL; p = p->next) {
-            u8 *o = Ov011_Find(p->id);
+            Ov011Obj *o = Ov011_Find(p->id);
             if (func_ov011_02201244(o)) {
-                FLD(s32, o, 0x70) = x;
-                FLD(s32, o, 0x74) = y + 0x6800;
-                FLD(s32, o, 0x78) = z;
+                o->pos.x = x;
+                o->pos.y = y + 0x6800;
+                o->pos.z = z;
             }
         }
         break;
@@ -284,7 +284,7 @@ static inline BOOL Ov011_PlBusy(void) {
     return TRUE;
 }
 
-static inline void Ov011_Act(Ov011Ctl *self, u8 *a, BOOL on) {
+static inline void Ov011_Act(Ov011Ctl *self, Ov011Obj *a, BOOL on) {
     func_ov011_0220121c(a, on);
     func_ov011_022011fc(a, on);
     {
@@ -297,14 +297,14 @@ extern "C" {
 
 void func_ov011_021fc0b8(Ov011Ctl *self) {
     s32 i;
-    u8 *a;
+    Ov011Obj *a;
     Ov011Node *n;
     Ov011List *list;
     for (i = 0; i < self->count; i++) {
         if (self->slots[i].b1) {
             continue;
         }
-        a = (u8 *)Ov011_FindActor(self->slots[i].id);
+        a = Ov011_FindActor(self->slots[i].id);
         if (a == NULL) {
                         Ov011Slot *s = &self->slots[i];
             s->b0 = 1;
@@ -315,26 +315,26 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
 
         } else {
             if (!self->slots[i].b0) {
-                void *o = self->list->actor;
-                s32 x = FLD(s32, o, 0x70);
-                s32 y = FLD(s32, o, 0x74);
-                s32 z = FLD(s32, o, 0x78);
+                Ov011Obj *o = self->list->actor;
+                s32 x = o->pos.x;
+                s32 y = o->pos.y;
+                s32 z = o->pos.z;
                 y += 0x6800;
-                FLD(s32, a, 0x70) = x;
-                FLD(s32, a, 0x74) = y;
-                FLD(s32, a, 0x78) = z;
+                a->pos.x = x;
+                a->pos.y = y;
+                a->pos.z = z;
                 continue;
             }
             {
                 Ov011Vec *p = (Ov011Vec *)self->slots[i].obj.v10();
-                FLD(s32, a, 0x70) = p->x;
-                FLD(s32, a, 0x74) = p->y;
-                FLD(s32, a, 0x78) = p->z;
+                a->pos.x = p->x;
+                a->pos.y = p->y;
+                a->pos.z = p->z;
             }
             if (self->slots[i].timer <= 0x50) {
                 Ov011Vec v = data_ov011_02207278;
                 Ov011Vec w;
-                void *m;
+                Ov011Sub48 *m;
                 if (self->slots[i].timer == 0x50) {
                     func_ov003_021d7c90(&self->slots[i].obj, 0x66);
                     func_ov003_021d7c78(&self->slots[i].obj, 0x948);
@@ -343,10 +343,10 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                     v.x = func_02040528(0x1000);
                     v.z = func_02040528(0x1000);
                 }
-                m = FLD(void *, func_ov000_0219bf90(), 0x48);
-                w.x = FLD(s32, m, 0x68);
-                w.y = FLD(s32, m, 0x6c);
-                w.z = FLD(s32, m, 0x70);
+                m = ((Ov011Obj *)func_ov000_0219bf90())->unk_48;
+                w.x = m->unk_68.x;
+                w.y = m->unk_68.y;
+                w.z = m->unk_68.z;
                 VEC_Add(&w, &v, &w);
                 w.y += 0x1000;
                 func_ov003_021d7c08(&self->slots[i].obj, &w);
@@ -359,33 +359,33 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 }
                 continue;
             }
-            func_ov000_021987b8(FLD(void *, a, 0x48), 1, 0, 0);
-            if (!(FLD(u32, FLD(void *, a, 0x48), 0x50) & 0x60000000)) {
+            func_ov000_021987b8(a->unk_48, 1, 0, 0);
+            if (!(a->unk_48->unk_50 & 0x60000000)) {
                 continue;
             }
             {
                 Ov011Vec p;
                 u16 ang;
                 Ov011V *e;
-                u8 *q;
-                p.x = FLD(s32, a, 0x70);
-                p.y = FLD(s32, a, 0x74);
-                p.z = FLD(s32, a, 0x78);
+                Ov011GameF4 *q;
+                p.x = a->pos.x;
+                p.y = a->pos.y;
+                p.z = a->pos.z;
                 func_ov011_022011c8(a, 0);
-                p.y -= FLD(s32, FLD(void *, a, 0x48), 0x38);
+                p.y -= a->unk_48->unk_38;
                 ang = func_ov003_021d9c38(func_ov003_021d7bd4(&self->slots[i].obj)) + 0x7fff;
                 e = func_02065f88(0x67, &p);
                 e->v34(0, ang, 0);
                 e->v14(0x1ccd, 0x1ccd, 0x1ccd);
                 func_02049f44(data_02097e4c, 0x1a, &p, 0);
-                q = (u8 *)data_ov000_021ccd54 + 0xf4;
+                q = &data_ov000_021ccd54->unk_f4;
                 if (q != NULL) {
-                    FLD(Ov011Flags8, q, 0x9c).b2 = 1;
-                    FLD(Ov011Flags8, q, 0x9c).b3 = 1;
-                    FLD(Ov011Flags8, q, 0x9c).b4 = 1;
-                    FLD(u8, q, 0x99) = 10;
-                    FLD(u8, q, 0x9a) = 10;
-                    FLD(u8, q, 0x9b) = 10;
+                    q->unk_9c.b2 = 1;
+                    q->unk_9c.b3 = 1;
+                    q->unk_9c.b4 = 1;
+                    q->unk_99 = 10;
+                    q->unk_9a = 10;
+                    q->unk_9b = 10;
                 }
                             Ov011Slot *s = &self->slots[i];
             s->b0 = 1;
@@ -432,8 +432,8 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
         on = TRUE;
         for (; n != NULL; n = n->next) {
             Ov011Slot *s;
-            a = (u8 *)Ov011_FindActor(n->id);
-            s = Ov011Ctl_Find(self, FLD(u16, a, 0xc));
+            a = Ov011_FindActor(n->id);
+            s = Ov011Ctl_Find(self, a->id);
             if (s != NULL && !s->b0) {
                 found = s;
                 Ov011_Act(self, a, on);
@@ -443,12 +443,12 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
         {
             Ov011Vec c;
             Ov011Vec pp;
-            void *pl;
+            Ov011Obj *pl;
             c = func_ov011_022024d4(self->chr);
-            pl = func_ov000_0219bf90();
-            pp.x = FLD(s32, pl, 0x70);
-            pp.y = FLD(s32, pl, 0x74);
-            pp.z = FLD(s32, pl, 0x78);
+            pl = (Ov011Obj *)func_ov000_0219bf90();
+            pp.x = pl->pos.x;
+            pp.y = pl->pos.y;
+            pp.z = pl->pos.z;
             found->b0 = 1;
             func_ov003_021d7a44(&found->obj, &pp, &c, 0x14, 0x11f, 1);
             self->state = 3;
@@ -486,11 +486,11 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
             return;
         }
         if (self->timer == 0) {
-            void *act = list->actor;
-            Ov011_Send(FLD(u16, act, 0xc), 1, 0);
-            Ov011_Send2(FLD(u16, act, 0xc));
+            Ov011Obj *act = list->actor;
+            Ov011_Send(act->id, 1, 0);
+            Ov011_Send2(act->id);
         } else if (self->timer == 30) {
-            Ov011_Send(FLD(u16, list->actor, 0xc), 1, 1);
+            Ov011_Send(list->actor->id, 1, 1);
         } else if (self->timer > 150) {
             self->flags |= 2;
         } else {

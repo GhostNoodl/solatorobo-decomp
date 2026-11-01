@@ -157,15 +157,15 @@ void func_ov011_021fc94c(Ov011Tut *self) {
         break;
     case 1:
         if (Ov011Fade_AllDone(self->fade) && self->timer > 50) {
-            void *a;
+            Ov011Obj *a;
             self->timer = 0;
             self->flags |= 8;
             a = Ov011_FindActor(self->id);
             if (a != NULL) {
                 Ov011Vec pos;
-                pos.x = FLD(s32, a, 0x70);
-                pos.y = FLD(s32, a, 0x74);
-                pos.z = FLD(s32, a, 0x78);
+                pos.x = a->pos.x;
+                pos.y = a->pos.y;
+                pos.z = a->pos.z;
                 func_02049f44(data_02097e4c, 0x5b, &pos, 0);
             }
         }
@@ -222,9 +222,9 @@ static inline void Ov011_SendC(u16 id, s32 kind, BOOL b0) {
 
 static inline s32 Ov011_HpRatio(u16 id) {
     s32 r = 0;
-    void *a = Ov011_FindActor(id);
+    Ov011Obj *a = Ov011_FindActor(id);
     if (a != NULL) {
-        u16 *hp = FLD(u16 *, a, 0x50);
+        u16 *hp = a->hp;
         r = (hp[0] << 12) / hp[1];
     }
     return r;
@@ -277,7 +277,7 @@ void func_ov011_021fce2c(Ov011Tut *self) {
         }
         break;
     case 6: {
-        void *a;
+        Ov011Obj *a;
         Ov011_SendC(self->id, 2, 1);
         self->state = 7;
         if (Ov011_HpRatio(self->id) < 0x554) {
@@ -286,9 +286,9 @@ void func_ov011_021fce2c(Ov011Tut *self) {
         a = Ov011_FindActor(self->id);
         if (a != NULL) {
             Ov011Vec v;
-            v.x = FLD(s32, a, 0x70);
-            v.y = FLD(s32, a, 0x74);
-            v.z = FLD(s32, a, 0x78);
+            v.x = a->pos.x;
+            v.y = a->pos.y;
+            v.z = a->pos.z;
             func_02065f88(0x12e, &v)->v14(0x1400, 0x600, 0x1400);
         }
         break;

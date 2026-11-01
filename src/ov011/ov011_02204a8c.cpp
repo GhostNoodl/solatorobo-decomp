@@ -21,7 +21,7 @@ static inline void Ov011_MulVec33(const Ov011Vec *v, const s32 *m, Ov011Vec *out
 }
 
 #pragma force_active on
-void func_ov011_02204a8c(Ov011Actor *self) {
+void func_ov011_02204a8c(Ov011Act7c4c *self) {
     Ov011Vec v;
     if (self->unk_40->state == 0) {
         func_ov000_0218996c(0xf, 0x3c);
@@ -29,7 +29,7 @@ void func_ov011_02204a8c(Ov011Actor *self) {
         func_02065f88(4, &self->pos)->v0c(0x3800);
     }
     func_ov003_021d6054(self);
-    Ov011_MulVec33(&FLD(Ov011Vec, self, 0xf0), NNS_G3dGlbGetInvV(), &v);
+    Ov011_MulVec33(&self->unk_f0, NNS_G3dGlbGetInvV(), &v);
     VEC_Add(&v, &data_02092a50, &self->pos);
 }
 #pragma force_active reset

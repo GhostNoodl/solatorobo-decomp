@@ -1,32 +1,6 @@
 #include "ov011/ov011.h"
 
-struct Ov011E40 {
-    u8 b0 : 1;
-    u8 b1 : 7;
-    u8 unk_01[0x3];
-    s16 unk_04;
-    u8 unk_06[0x2];
-    Ov011E38 mover;
-};
 
-class Ov011Mgr2 {
-public:
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 6;
-    u8 unk_01;
-    u16 count;
-    s32 unk_04;
-    Ov011E40 *arr8;
-    Ov011List *list;
-    Ov011Ent *ent;
-    u16 state;
-    u16 timer;
-    u8 unk_18[0xf];
-    u8 unk_27;
-    u8 unk_28[0xb8];
-    u8 unk_e0[0x4];
-};
 
 typedef void (Ov011Mgr2::*Ov011Mgr2Fn)();
 
@@ -105,7 +79,7 @@ void func_ov003_021da48c(void *p, u8 a);
 void func_ov011_0220205c(void *p);
 void func_ov011_02202130(void *p);
 void func_ov011_02202fbc(void *p);
-void func_ov011_02202ff0(void *p);
+void Ov011Mov_Update(void *p);
 
 void *func_ov011_021fb66c(Ov011E40 *self) {
     func_ov003_021d79ec(&self->mover);
@@ -126,7 +100,7 @@ static inline void Ov011Mgr2_Reset(Ov011Mgr2 *self) {
     data_02097dd0->cur = saved;
     func_ov003_021da48c(&self->state, 0);
     func_ov011_0220205c(self->unk_28);
-    func_ov011_02202fbc(self->unk_e0);
+    func_ov011_02202fbc(&self->mov);
 }
 
 void func_ov011_021fb684(Ov011Mgr2 *self) {
@@ -159,7 +133,7 @@ void func_ov011_021fb684(Ov011Mgr2 *self) {
     }
     func_ov003_021da40c(&self->state);
     func_ov011_02202130(self->unk_28);
-    func_ov011_02202ff0(self->unk_e0);
+    Ov011Mov_Update(&self->mov);
     for (j = 0; j < self->count; j++) {
         Ov011E40 *p = &self->arr8[j];
         if (p->b0) {
@@ -266,8 +240,8 @@ void func_ov000_0219bdb0(u16 a, u16 b, u8 c, s32 d, s32 e, void *f);
 u32 func_ov011_02201244(void *self);
 void *func_ov011_02201254(void *self);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
-BOOL func_ov011_02202f38(void *self, const Ov011Vec *pos, const Ov011Vec *vel, s32 scale, s32 accel);
-Ov011Vec *func_ov011_02203028(void *self);
+BOOL Ov011Mov_Start(void *self, const Ov011Vec *pos, const Ov011Vec *vel, s32 scale, s32 accel);
+Ov011Vec *Ov011Mov_GetPos(void *self);
 extern const Ov011Vec data_ov011_0220729c;
 extern const Ov011Vec data_ov011_022072a8;
 
@@ -307,23 +281,23 @@ static inline void Ov011Ent_RestoreB2(Ov011Ent *e, s32 to, s32 frames) {
     }
 }
 
-static inline void Ov011_Attach(Ov011PNode *p, void *owner, void *a) {
+static inline void Ov011_Attach(Ov011PNode *p, Ov011Obj *owner, Ov011Obj *a) {
     Ov011Vec v;
     Ov011Vec o;
     Ov011Vec r;
     v.x = p->v.x;
     v.y = p->v.y;
     v.z = p->v.z;
-    o.x = FLD(s32, owner, 0x70);
-    o.y = FLD(s32, owner, 0x74);
-    o.z = FLD(s32, owner, 0x78);
+    o.x = owner->pos.x;
+    o.y = owner->pos.y;
+    o.z = owner->pos.z;
     VEC_Add(&v, &o, &r);
-    FLD(s32, a, 0x70) = r.x;
-    FLD(s32, a, 0x74) = r.y;
-    FLD(s32, a, 0x78) = r.z;
+    a->pos.x = r.x;
+    a->pos.y = r.y;
+    a->pos.z = r.z;
 }
 
-void func_ov011_021fb9b8(Ov011Mgr2 *self, void *owner) {
+void func_ov011_021fb9b8(Ov011Mgr2 *self, Ov011Obj *owner) {
     BOOL any;
     BOOL ok;
     Ov011Node *head;
@@ -345,26 +319,26 @@ void func_ov011_021fb9b8(Ov011Mgr2 *self, void *owner) {
         {
             Ov011Vec a = data_ov011_0220729c;
             Ov011Vec b = data_ov011_022072a8;
-            func_ov011_02202fbc(self->unk_e0);
-            func_ov011_02202f38(self->unk_e0, &a, &b, 0x500, 0x80);
+            func_ov011_02202fbc(&self->mov);
+            Ov011Mov_Start(&self->mov, &a, &b, 0x500, 0x80);
         }
         if (self->ent->b0) {
             Ov011Ent_Lerp2X(self->ent, 0x2d);
         }
-        Ov011_SendB(FLD(u16, owner, 0xc), 2, 0x1000, 0x1000);
+        Ov011_SendB(owner->id, 2, 0x1000, 0x1000);
         self->state = 1;
     }
     case 1: {
         ok = TRUE;
         for (n = head; n != NULL; n = n->next) {
-            void *a = Ov011_FindActor(n->id);
+            Ov011Obj *a = Ov011_FindActor(n->id);
             if (func_ov011_02201244(a)) {
                 s32 y;
                 Ov011Ent *e;
-                if (func_ov011_02203028(self->unk_e0)->y > 0x6800) {
+                if (Ov011Mov_GetPos(&self->mov)->y > 0x6800) {
                     y = 0x6800;
                 } else {
-                    y = func_ov011_02203028(self->unk_e0)->y;
+                    y = Ov011Mov_GetPos(&self->mov)->y;
                     ok = FALSE;
                 }
                 Ov011Ent_SetY(self->ent, y);
@@ -375,7 +349,7 @@ void func_ov011_021fb9b8(Ov011Mgr2 *self, void *owner) {
             }
         }
         if (ok && Ov011Ent_AllDone(self->ent)) {
-            FLD(u64, self, 0x18) |= 8;
+            self->flags |= 8;
         }
         break;
     }

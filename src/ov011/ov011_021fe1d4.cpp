@@ -92,51 +92,51 @@ void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
 
 
 #pragma force_active on
-void func_ov011_021fe1d4(u8 *self) {
+void func_ov011_021fe1d4(Ov011Scene *self) {
     Ov011Node *n;
-    switch (FLD(u16, self, 0x20)) {
+    switch (self->seq.state) {
     case 0:
-        if (FLD(Ov011Bit01, self, 0x1b4).b0) {
-            void *o = FLD(void *, self, 8);
-            FLD(Ov011Bit01, self, 0x1b4).b1 = 1;
-            FLD(u16, self, 0x1b6) = FLD(u16, o, 0xc);
-            FLD(void *, self, 0x1b8) = self;
-            FLD(void *, self, 0x1bc) = self + 0x204;
-            func_ov000_02198360(self + 0x1c0, 2, 0);
+        if (self->s1b4.b0) {
+            Ov011Obj *o = self->actor;
+            self->s1b4.b1 = 1;
+            self->s1b4.id = o->id;
+            self->s1b4.scene = self;
+            self->s1b4.ent = &self->ent;
+            func_ov000_02198360(&self->s1b4.seq, 2, 0);
         }
-        FLD(u16, self, 0x20) = 1;
+        self->seq.state = 1;
         break;
     case 1: {
         BOOL r = FALSE;
-        if (FLD(Ov011Bit01, self, 0x1b4).b0) {
-            r = !FLD(Ov011Bit01, self, 0x1b4).b1;
+        if (self->s1b4.b0) {
+            r = !self->s1b4.b1;
         }
         if (r) {
-            FLD(u16, self, 0x20) = 2;
-            FLD(Ov011Bit01, self, 0).b2 = 1;
+            self->seq.state = 2;
+            self->b2 = 1;
         }
         break;
     }
     }
-    for (n = FLD(Ov011Node *, self, 0xc); n != NULL; n = n->next) {
-        void *a = Ov011_FindActor(n->id);
+    for (n = self->head; n != NULL; n = n->next) {
+        Ov011Obj *a = Ov011_FindActor(n->id);
         if (func_ov011_02201244(a)) {
-            void *owner = FLD(void *, self, 8);
-            if (Ov011Ent_Find((Ov011Ent *)(self + 0x204), func_ov011_02201254(a)) != NULL) {
-                Ov011PNode *p = Ov011Ent_Find((Ov011Ent *)(self + 0x204), func_ov011_02201254(a));
+            Ov011Obj *owner = self->actor;
+            if (Ov011Ent_Find(&self->ent, func_ov011_02201254(a)) != NULL) {
+                Ov011PNode *p = Ov011Ent_Find(&self->ent, func_ov011_02201254(a));
                 Ov011Vec r;
                 Ov011Vec o;
                 Ov011Vec v;
                 v.x = p->v.x;
                 v.y = p->v.y;
                 v.z = p->v.z;
-                o.x = FLD(s32, owner, 0x70);
-                o.y = FLD(s32, owner, 0x74);
-                o.z = FLD(s32, owner, 0x78);
+                o.x = owner->pos.x;
+                o.y = owner->pos.y;
+                o.z = owner->pos.z;
                 VEC_Add(&v, &o, &r);
-                FLD(s32, a, 0x70) = r.x;
-                FLD(s32, a, 0x74) = r.y;
-                FLD(s32, a, 0x78) = r.z;
+                a->pos.x = r.x;
+                a->pos.y = r.y;
+                a->pos.z = r.z;
             }
         }
     }

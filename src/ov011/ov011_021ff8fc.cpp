@@ -141,19 +141,19 @@ static inline const s32 *F24c_RingAt(const F24cRing *r, u16 i) {
     return p;
 }
 
-static inline BOOL F24c_Valid(void *a) {
-    void *pl;
+static inline BOOL F24c_Valid(Ov011Obj *a) {
+    Ov011Player *pl;
     if (a == NULL) {
         return FALSE;
     }
-    pl = func_ov000_0219bf90();
+    pl = (Ov011Player *)func_ov000_0219bf90();
     if (pl == NULL) {
         return FALSE;
     }
-    if (FLD(u16, pl, 0xb1c) == FLD(u16, a, 0xc)) {
+    if (pl->unk_b1c == a->id) {
         return FALSE;
     }
-    if (!(FLD(u32, FLD(void *, a, 0x48), 0x50) & 0x20000000)) {
+    if (!(a->unk_48->unk_50 & 0x20000000)) {
         return FALSE;
     }
     return TRUE;
@@ -217,32 +217,32 @@ static inline BOOL F24c_IsMove(s32 e) {
     return FALSE;
 }
 
-void func_ov011_021ff24c(Ov011Actor *self) {
+void func_ov011_021ff24c(Ov011SceneActor *self) {
     Ov011Vec v;
     if (!func_ov003_021da03c(self)) {
-        FLD(u16, self, 0xb4) = 0;
+        self->unk_b4 = 0;
         self->unk_b6 = 0;
-        FLD(u16, self, 0xf2) = 0;
+        self->unk_f2 = 0;
     } else {
         self->unk_93_4 = 1;
         self->unk_c4 = 0;
         BOOL ok = F24c_Mode1(self);
         if (ok) {
-            ok = F24c_Active(FLD(F24cList *, self, 0x100));
+            ok = F24c_Active(((F24cList *)self->scene));
         }
         if (ok) {
-            F24cList *l = FLD(F24cList *, self, 0x100);
+            F24cList *l = ((F24cList *)self->scene);
             const F24cRing *r;
             u16 lim;
             r = F24c_GetRing(l);
-            lim = FLD(Ov011Bit01, self, 0xf0).b0 ? 0x78 : 0;
+            lim = self->unk_f0_0 ? 0x78 : 0;
             if (F24c_Count(l) == 0) {
                 self->unk_b6 = 0;
-                FLD(Ov011Bit01, self, 0xf0).b0 = 0;
-                FLD(u16, self, 0xf2) = 0;
-                F24c_SetState(FLD(F24cList *, self, 0x100), 5);
-                FLD(Ov011Bit01, self, 0xf0).b1 = 0;
-            } else if (FLD(u16, self, 0xf2) >= lim) {
+                self->unk_f0_0 = 0;
+                self->unk_f2 = 0;
+                F24c_SetState(((F24cList *)self->scene), 5);
+                self->unk_f0_1 = 0;
+            } else if (self->unk_f2 >= lim) {
                 u16 i;
                 s16 found;
                 s32 cnt = 0;
@@ -256,12 +256,12 @@ void func_ov011_021ff24c(Ov011Actor *self) {
                     }
                 }
                 found = FALSE;
-                FLD(Ov011Bit01, self, 0xf0).b0 = 0;
-                FLD(u16, self, 0xf2) = 0;
-                l = FLD(F24cList *, self, 0x100);
+                self->unk_f0_0 = 0;
+                self->unk_f2 = 0;
+                l = ((F24cList *)self->scene);
                 if (l->f.b0) {
                     for (nd = l->head; nd != NULL; nd = nd->next) {
-                        void *a = Ov011_FindActor(nd->id);
+                        Ov011Obj *a = Ov011_FindActor(nd->id);
                         if (a != NULL && !func_ov011_02201244(a) && F24c_Valid(a)) {
                             found = TRUE;
                             break;
@@ -269,34 +269,34 @@ void func_ov011_021ff24c(Ov011Actor *self) {
                     }
                 }
                 if (found) {
-                    Ov011Small6 *s;
+                    Ov011Sa108 *s;
                     if (cnt == 0 || cnt >= 2) {
-                        F24c_SetState(FLD(F24cList *, self, 0x100), 7);
-                        FLD(Ov011Bit01, self, 0xf0).b1 = 0;
+                        F24c_SetState(((F24cList *)self->scene), 7);
+                        self->unk_f0_1 = 0;
                     } else {
-                        F24c_SetState(FLD(F24cList *, self, 0x100), 6);
-                        FLD(Ov011Bit01, self, 0xf0).b1 = 1;
+                        F24c_SetState(((F24cList *)self->scene), 6);
+                        self->unk_f0_1 = 1;
                     }
-                    s = FLD(Ov011Small6 *, self, 0x108);
-                    s->f.b0 = 0;
-                    s->f.b1 = 1;
-                    s->a = 0x1000;
-                    s->b = 0x1000;
-                } else if (F24c_CountBusy(FLD(F24cList *, self, 0x100)) == 0 ||
-                           (cnt == 0 && F24c_CountBusy(FLD(F24cList *, self, 0x100)) != 5)) {
-                    F24c_SetState(FLD(F24cList *, self, 0x100), 5);
-                    FLD(Ov011Bit01, self, 0xf0).b1 = 0;
+                    s = self->unk_108;
+                    s->b0 = 0;
+                    s->b1 = 1;
+                    s->unk_02 = 0x1000;
+                    s->unk_04 = 0x1000;
+                } else if (F24c_CountBusy(((F24cList *)self->scene)) == 0 ||
+                           (cnt == 0 && F24c_CountBusy(((F24cList *)self->scene)) != 5)) {
+                    F24c_SetState(((F24cList *)self->scene), 5);
+                    self->unk_f0_1 = 0;
                 } else if (cnt < 2) {
                     self->unk_40->flags |= 0x8000;
-                    FLD(Ov011Bit01, self, 0xf0).b0 = 1;
-                } else if (F24c_Count(FLD(F24cList *, self, 0x100)) != 5) {
-                    F24c_SetState(FLD(F24cList *, self, 0x100), 5);
-                    FLD(Ov011Bit01, self, 0xf0).b1 = 0;
+                    self->unk_f0_0 = 1;
+                } else if (F24c_Count(((F24cList *)self->scene)) != 5) {
+                    F24c_SetState(((F24cList *)self->scene), 5);
+                    self->unk_f0_1 = 0;
                 } else {
                     self->unk_40->flags |= 0x10000;
                 }
             }
-            FLD(u16, self, 0xf2)++;
+            self->unk_f2++;
         }
     }
     func_ov011_021fff38(self);
@@ -304,17 +304,17 @@ void func_ov011_021ff24c(Ov011Actor *self) {
     func_ov011_02200310(self);
     func_ov011_02202a38();
     {
-        void *pl = func_ov000_0219bf90();
+        Ov011Player *pl = (Ov011Player *)func_ov000_0219bf90();
         if (pl != NULL) {
-            VEC_Add(&self->pos, &FLD(Ov011Vec, self, 0xf4), &v);
-            FLD(Ov011Vec, pl, 0xb90) = v;
-            FLD(s32, pl, 0xb9c) = 0x4b8;
+            VEC_Add(&self->pos, &self->unk_f4, &v);
+            pl->unk_b90 = v;
+            pl->unk_b9c = 0x4b8;
         }
     }
-    FLD(s32, self, 0xf4) = data_ov011_02207258.pos.x;
-    FLD(s32, self, 0xf8) = data_ov011_02207258.pos.y;
-    FLD(s32, self, 0xfc) = data_ov011_02207258.pos.z;
-    func_ov011_021fd638(FLD(void *, self, 0x100));
+    self->unk_f4.x = data_ov011_02207258.pos.x;
+    self->unk_f4.y = data_ov011_02207258.pos.y;
+    self->unk_f4.z = data_ov011_02207258.pos.z;
+    func_ov011_021fd638(self->scene);
 }
 }
 #endif
@@ -332,7 +332,7 @@ void func_020627dc(s32 a);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 s32 func_02040528(s32 max);
 
-void func_ov011_021ff8fc(Ov011Actor *self) {
+void func_ov011_021ff8fc(Ov011SceneActor *self) {
     Ov011Sub40 *s = self->unk_40;
     switch (s->state) {
     case 0:
@@ -349,7 +349,7 @@ void func_ov011_021ff8fc(Ov011Actor *self) {
             p->v14(0x1666, 0x1666, 0x1666);
             p->v24(0, 0x1000, 0);
             self->unk_38->unk_c2_0 = 1;
-            FLD(u8, self->unk_38, 0xbe) = 0;
+            self->unk_38->alpha = 0;
             self->unk_40->timer = 0;
             self->unk_40->state++;
         } else {
@@ -362,7 +362,7 @@ void func_ov011_021ff8fc(Ov011Actor *self) {
                 p = func_02065f88(0x398 - 15, &self->pos);
                 p->v14(0x1666, 0x1666, 0x1666);
                 x = self->unk_64;
-                z = FLD(s32, self, 0x6c);
+                z = self->unk_6c;
                 a = func_02040528(x);
                 b = func_02040528(z);
                 p->v24(a, z + 0x1000 + b, x);
@@ -374,15 +374,15 @@ void func_ov011_021ff8fc(Ov011Actor *self) {
         if (++s->timer > 60) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
-            FLD(u8, data_ov000_021ccd54, 0xac) = 1;
-            FLD(u8, self->unk_38, 0xbe) = 0x1f;
+            data_ov000_021ccd54->unk_ac = 1;
+            self->unk_38->alpha = 0x1f;
             func_ov000_02198360(self->unk_40, 1, 0);
         } else if (self->unk_40->timer > 30) {
-            u8 v = FLD(u8, self->unk_38, 0xbe) + 1;
+            u8 v = self->unk_38->alpha + 1;
             if (v > 0x1f) {
                 v = 0x1f;
             }
-            FLD(u8, self->unk_38, 0xbe) = v;
+            self->unk_38->alpha = v;
         }
         break;
     }

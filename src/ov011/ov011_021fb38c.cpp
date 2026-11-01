@@ -101,21 +101,21 @@ u32 func_ov011_02201244(void *self);
 void *func_ov011_02201254(void *self);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
 
-void func_ov011_021fb38c(u8 *self) {
+void func_ov011_021fb38c(Ov011Mgr *self) {
     Ov011Node *n;
     Ov011Ent *e;
-    void *owner = FLD(void *, FLD(u8 *, self, 0x14), 8);
-    if (FLD(u16, self, 0x1c) == 0) {
-        Ov011Ent_LerpD(FLD(Ov011Ent *, self, 0x18), 0x2000 + 0x4800, 0x2000, 40);
-        Ov011Ent_LerpB(FLD(Ov011Ent *, self, 0x18), 0x3800 - 0x3333, 0x3333, 40);
-        Ov011Ent_LerpC(FLD(Ov011Ent *, self, 0x18), 0x71c, 0x71c, 40);
-        FLD(u16, self, 0x1c)++;
+    Ov011Obj *owner = self->list->actor;
+    if (self->state == 0) {
+        Ov011Ent_LerpD(self->unk_18, 0x2000 + 0x4800, 0x2000, 40);
+        Ov011Ent_LerpB(self->unk_18, 0x3800 - 0x3333, 0x3333, 40);
+        Ov011Ent_LerpC(self->unk_18, 0x71c, 0x71c, 40);
+        self->state++;
         return;
     }
-    for (n = FLD(Ov011Node *, FLD(u8 *, self, 0x14), 0xc); n != NULL; n = n->next) {
-        void *a = Ov011_FindActor(n->id);
+    for (n = self->list->head; n != NULL; n = n->next) {
+        Ov011Obj *a = Ov011_FindActor(n->id);
         if (func_ov011_02201244(a)) {
-            e = FLD(Ov011Ent *, self, 0x18);
+            e = self->unk_18;
             if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {
                 Ov011PNode *p = Ov011Ent_Find2(e, func_ov011_02201254(a));
                 Ov011Vec r;
@@ -124,18 +124,18 @@ void func_ov011_021fb38c(u8 *self) {
                 v.x = p->v.x;
                 v.y = p->v.y;
                 v.z = p->v.z;
-                o.x = FLD(s32, owner, 0x70);
-                o.y = FLD(s32, owner, 0x74);
-                o.z = FLD(s32, owner, 0x78);
+                o.x = owner->pos.x;
+                o.y = owner->pos.y;
+                o.z = owner->pos.z;
                 VEC_Add(&v, &o, &r);
-                FLD(s32, a, 0x70) = r.x;
-                FLD(s32, a, 0x74) = r.y;
-                FLD(s32, a, 0x78) = r.z;
+                a->pos.x = r.x;
+                a->pos.y = r.y;
+                a->pos.z = r.z;
             }
         }
     }
-    if (Ov011Ent_AllDone(FLD(Ov011Ent *, self, 0x18))) {
-        FLD(u64, self, 0x20) |= 4;
+    if (Ov011Ent_AllDone(self->unk_18)) {
+        self->flags |= 4;
     }
 }
 }

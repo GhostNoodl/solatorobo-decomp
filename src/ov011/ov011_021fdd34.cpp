@@ -96,10 +96,10 @@ u32 func_ov011_02201244(void *self);
 void *func_ov011_02201254(void *self);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
 
-void func_ov011_021fdd3c(u8 *self) {
-    Ov011Ent *e = (Ov011Ent *)(self + 0x204);
+void func_ov011_021fdd3c(Ov011Scene *self) {
+    Ov011Ent *e = &self->ent;
     Ov011Node *n;
-    if (FLD(u16, self, 0x20) == 0) {
+    if (self->seq.state == 0) {
         if (e->b0) {
             Ov011Ent_Lerp4(e, 0x2000, 1);
         }
@@ -109,14 +109,14 @@ void func_ov011_021fdd3c(u8 *self) {
         if (e->b0) {
             Ov011Ent_Lerp2(e, 0x3333, 1);
         }
-        FLD(u16, self, 0x20)++;
+        self->seq.state++;
     } else if (Ov011Ent_AllDone(e)) {
-        FLD(Ov011Bit01, self, 0).b2 = 1;
+        self->b2 = 1;
     }
-    for (n = FLD(Ov011Node *, self, 0xc); n != NULL; n = n->next) {
-        void *a = Ov011_FindActor(n->id);
+    for (n = self->head; n != NULL; n = n->next) {
+        Ov011Obj *a = Ov011_FindActor(n->id);
         if (func_ov011_02201244(a)) {
-            void *owner = FLD(void *, self, 8);
+            Ov011Obj *owner = self->actor;
             if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {
                 Ov011PNode *p = Ov011Ent_Find(e, func_ov011_02201254(a));
                 Ov011Vec r;
@@ -125,13 +125,13 @@ void func_ov011_021fdd3c(u8 *self) {
                 v.x = p->v.x;
                 v.y = p->v.y;
                 v.z = p->v.z;
-                o.x = FLD(s32, owner, 0x70);
-                o.y = FLD(s32, owner, 0x74);
-                o.z = FLD(s32, owner, 0x78);
+                o.x = owner->pos.x;
+                o.y = owner->pos.y;
+                o.z = owner->pos.z;
                 VEC_Add(&v, &o, &r);
-                FLD(s32, a, 0x70) = r.x;
-                FLD(s32, a, 0x74) = r.y;
-                FLD(s32, a, 0x78) = r.z;
+                a->pos.x = r.x;
+                a->pos.y = r.y;
+                a->pos.z = r.z;
             }
         }
     }
