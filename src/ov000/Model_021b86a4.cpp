@@ -23,20 +23,30 @@ static inline void PlayPart021b86a4(Model *model, u32 idx) {
     func_02042628(model, anim, part, 0);
 }
 
-void func_ov000_021b86a4(u8 *self) {
-    s32 st = LFLD(s32, self, 0x44);
+struct Obj021b86a4 {
+    u8 unk_00[0x44];
+    s32 unk_44;
+    u8 unk_48[0x4];
+    Model *unk_4c;
+    u8 unk_50[0x4];
+    s32 unk_54;
+    u16 unk_58;
+};
+
+void func_ov000_021b86a4(Obj021b86a4 *self) {
+    s32 st = self->unk_44;
     u16 i;
     s32 y;
     if (st != 7 && st != 0xb && st != 0xd) {
         return;
     }
-    y = LO_FX_MUL(0x1000 - LFLD(s32, self, 0x54), -0x100000LL);
-    MODEL_FLAGS(LFLD(Model *, self, 0x4c))->unk_19 = 1;
-    LFLD(Model *, self, 0x4c)->unk_150 = -0xccd;
-    MODEL_FLAGS(LFLD(Model *, self, 0x4c))->alpha = 0x1f;
-    Model_SetPos(LFLD(Model *, self, 0x4c), 0, y);
-    for (i = 0; i < LFLD(u16, self, 0x58); i++) {
-        PlayPart021b86a4(LFLD(Model *, self, 0x4c), i);
+    y = LO_FX_MUL(0x1000 - self->unk_54, -0x100000LL);
+    MODEL_FLAGS(self->unk_4c)->unk_19 = 1;
+    self->unk_4c->unk_150 = -0xccd;
+    MODEL_FLAGS(self->unk_4c)->alpha = 0x1f;
+    Model_SetPos(self->unk_4c, 0, y);
+    for (i = 0; i < self->unk_58; i++) {
+        PlayPart021b86a4(self->unk_4c, i);
     }
 }
 

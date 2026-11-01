@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -32,14 +33,14 @@ static inline BOOL LoIsMode4(void) {
     return LFLD(s32, data_02097d78, 4) == 4 ? TRUE : FALSE;
 }
 
-void func_ov000_021614b0(VObj *self, s32 a, s32 b, s32 c) {
+void func_ov000_021614b0(Lo021cacd8 *self, s32 a, s32 b, s32 c) {
     if (a == 0) {
         return;
     }
     self->vfunc_64(a, b, c);
     func_ov000_02161798(self, a, b, c);
     func_ov000_02161994(self, a, b, c);
-    LFLD(u32, self, 0xc) |= 0x200;
+    self->unk_0c |= 0x200;
 }
 
 }

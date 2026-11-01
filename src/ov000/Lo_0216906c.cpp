@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     s32 v[4];
@@ -50,24 +51,24 @@ static inline BOOL LoResReady(void) {
 
 static inline u32 LoIdKind(u32 id) { return (id << 4) >> 16; }
 static inline u32 LoIdKind2(u16 id) { u32 r = (u32)(id << 4) >> 16; return r; }
-void func_ov000_0216906c(void *self) {
-    s32 s = LFLD(s32, self, 4);
+void func_ov000_0216906c(Lo021cb840 *self) {
+    s32 s = self->unk_04;
     if (s == 1 || s == 8 || s == 3 || s == 0xa) {
         if (LBIT(self, 0xc).b1 ? TRUE : FALSE) {
-            LFLD(s32, self, 4) = 2;
+            self->unk_04 = 2;
         }
     }
-    if (LFLD(s32, self, 4) == 0xa) {
-        if (!((LFLD(u32, self, 0xc) & 0x10000) ? TRUE : FALSE)) {
+    if (self->unk_04 == 0xa) {
+        if (!((self->unk_0c & 0x10000) ? TRUE : FALSE)) {
             LBIT(self, 0xc).b1 = 1;
         }
         LBIT(self, 0xc).b16 = 0;
     }
-    if (LFLD(s32, self, 0xa8) >= 3) {
+    if (self->unk_a8 >= 3) {
         return;
     }
-    func_ov000_0215fdfc(self, 1, data_ov000_021c9b28 + LFLD(s32, self, 0xa8) * 6);
-    func_ov000_0215fdfc(self, 2, data_ov000_021c9b28 + (LFLD(s32, self, 0xa8) + 1) * 6);
+    func_ov000_0215fdfc(self, 1, data_ov000_021c9b28 + self->unk_a8 * 6);
+    func_ov000_0215fdfc(self, 2, data_ov000_021c9b28 + (self->unk_a8 + 1) * 6);
 }
 
 }

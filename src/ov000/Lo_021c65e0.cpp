@@ -10,10 +10,19 @@ typedef struct Node021c65e0 {
     struct Node021c65e0 *next;
 } Node021c65e0;
 
-static inline Node021c65e0 *At021c65e0(u8 *self, s32 i) {
+struct Obj021c65e0 {
+    u8 unk_00[0x84];
+    Node021c65e0 *unk_84;
+    Node021c65e0 *unk_88;
+    u8 unk_8c[0x4];
+    s32 unk_90;
+    s32 unk_94;
+};
+
+static inline Node021c65e0 *At021c65e0(Obj021c65e0 *self, s32 i) {
     Node021c65e0 *n;
     s32 k = 0;
-    for (n = LFLD(Node021c65e0 *, self, 0x84); n != NULL; n = n->next) {
+    for (n = self->unk_84; n != NULL; n = n->next) {
         if (k == i) {
             break;
         }
@@ -22,11 +31,11 @@ static inline Node021c65e0 *At021c65e0(u8 *self, s32 i) {
     return n;
 }
 
-static inline s32 IndexOf021c65e0(u8 *self, Node021c65e0 *node) {
+static inline s32 IndexOf021c65e0(Obj021c65e0 *self, Node021c65e0 *node) {
     Node021c65e0 *n;
     s32 k;
     k = 0;
-    for (n = LFLD(Node021c65e0 *, self, 0x84); n != NULL; n = n->next) {
+    for (n = self->unk_84; n != NULL; n = n->next) {
         if (n == node) {
             break;
         }
@@ -38,9 +47,9 @@ static inline s32 IndexOf021c65e0(u8 *self, Node021c65e0 *node) {
     return k;
 }
 
-static inline Node021c65e0 *Find021c65e0(u8 *self, s32 key) {
+static inline Node021c65e0 *Find021c65e0(Obj021c65e0 *self, s32 key) {
     Node021c65e0 *n;
-    for (n = LFLD(Node021c65e0 *, self, 0x84); n != NULL; n = n->next) {
+    for (n = self->unk_84; n != NULL; n = n->next) {
         if (key == n->key) {
             break;
         }
@@ -48,19 +57,19 @@ static inline Node021c65e0 *Find021c65e0(u8 *self, s32 key) {
     return n;
 }
 
-static inline void Select021c65e0(u8 *self, s32 i) {
-    if (i >= LFLD(s32, self, 0x90)) {
-        LFLD(s32, self, 0x94) = 0;
+static inline void Select021c65e0(Obj021c65e0 *self, s32 i) {
+    if (i >= self->unk_90) {
+        self->unk_94 = 0;
         return;
     }
-    LFLD(s32, self, 0x94) = i;
-    LFLD(Node021c65e0 *, self, 0x88) = At021c65e0(self, i);
+    self->unk_94 = i;
+    self->unk_88 = At021c65e0(self, i);
 }
 
-static inline Node021c65e0 *At2_021c65e0(u8 *self, s32 i) {
+static inline Node021c65e0 *At2_021c65e0(Obj021c65e0 *self, s32 i) {
     s32 k = 0;
     Node021c65e0 *n;
-    for (n = LFLD(Node021c65e0 *, self, 0x84); n != NULL; n = n->next) {
+    for (n = self->unk_84; n != NULL; n = n->next) {
         if (k == i) {
             break;
         }
@@ -69,16 +78,16 @@ static inline Node021c65e0 *At2_021c65e0(u8 *self, s32 i) {
     return n;
 }
 
-static inline void Select2_021c65e0(u8 *self, s32 i) {
-    if (i >= LFLD(s32, self, 0x90)) {
-        LFLD(s32, self, 0x94) = 0;
+static inline void Select2_021c65e0(Obj021c65e0 *self, s32 i) {
+    if (i >= self->unk_90) {
+        self->unk_94 = 0;
         return;
     }
-    LFLD(s32, self, 0x94) = i;
-    LFLD(Node021c65e0 *, self, 0x88) = At2_021c65e0(self, i);
+    self->unk_94 = i;
+    self->unk_88 = At2_021c65e0(self, i);
 }
 
-void func_ov000_021c65e0(u8 *self, s32 key) {
+void func_ov000_021c65e0(Obj021c65e0 *self, s32 key) {
     Node021c65e0 *node = Find021c65e0(self, key);
     s32 i;
     if (node != NULL) {

@@ -23,17 +23,24 @@ static inline void LoMsgInit(u8 *p, s32 n, s32 v) {
     func_020508f4(p, n);
 }
 
-BOOL func_ov000_0217032c(void *self, void *res, u32 id) {
+struct Obj0217032c {
+    u8 unk_00[0x24];
+    s32 unk_24;
+    u8 unk_28[0x4];
+    u8 *unk_2c;
+};
+
+BOOL func_ov000_0217032c(Obj0217032c *self, void *res, u32 id) {
     s32 n;
     s32 v;
     u8 *p;
     if ((u32)(LFLD(s32, data_ov000_021ccd54, 0x98) - 0x11) > 2) {
         return FALSE;
     }
-    if (LFLD(s32, self, 0x24) != 3) {
+    if (self->unk_24 != 3) {
         return FALSE;
     }
-    if (LFLD(void *, self, 0x2c)) {
+    if (self->unk_2c) {
         return FALSE;
     }
     if (func_020658cc(data_0214a420, 0x2712) || func_020658cc(data_0214a420, 0x2713) || func_020658cc(data_0214a420, 0x191)) {
@@ -44,14 +51,21 @@ BOOL func_ov000_0217032c(void *self, void *res, u32 id) {
     if (p) {
         func_02050748(p);
     }
-    LFLD(u8 *, self, 0x2c) = p;
+    self->unk_2c = p;
     LoMsgInit(p, n, v);
-    LFLD(u16, LFLD(u8 *, self, 0x2c), 0) |= 2;
-    LFLD(s32, self, 0x24) = 5;
+    LFLD(u16, self->unk_2c, 0) |= 2;
+    self->unk_24 = 5;
     return TRUE;
 }
 
-BOOL func_ov000_02170448(void *self, void *res, u32 id) {
+struct Obj02170448 {
+    u8 unk_00[0x24];
+    s32 unk_24;
+    u8 unk_28[0x8];
+    VObj *unk_30;
+};
+
+BOOL func_ov000_02170448(Obj02170448 *self, void *res, u32 id) {
     u8 *g = data_ov000_021ccd54;
     u32 hi;
     u16 lo;
@@ -59,10 +73,10 @@ BOOL func_ov000_02170448(void *self, void *res, u32 id) {
     if ((u32)(LFLD(s32, g, 0x98) - 0x11) > 2) {
         return FALSE;
     }
-    if (LFLD(s32, self, 0x24) != 3) {
+    if (self->unk_24 != 3) {
         return FALSE;
     }
-    if (LFLD(void *, self, 0x30)) {
+    if (self->unk_30) {
         return FALSE;
     }
     if (!func_ov000_02184498(g)) {
@@ -77,15 +91,15 @@ BOOL func_ov000_02170448(void *self, void *res, u32 id) {
         *(void **)p = data_ov000_021cad50;
         p->vfunc_28();
     }
-    LFLD(VObj *, self, 0x30) = p;
+    self->unk_30 = p;
     p->vfunc_08();
     if ((hi & 0xfc00) == 0x8000) {
-        func_ov000_0215c1bc(LFLD(void *, self, 0x30), hi, func_0204c0e8(res, lo));
+        func_ov000_0215c1bc(self->unk_30, hi, func_0204c0e8(res, lo));
     } else {
-        func_ov000_0215ced8(LFLD(void *, self, 0x30), hi, lo);
+        func_ov000_0215ced8(self->unk_30, hi, lo);
     }
-    LFLD(VObj *, self, 0x30)->vfunc_70();
-    LFLD(s32, self, 0x24) = 6;
+    self->unk_30->vfunc_70();
+    self->unk_24 = 6;
     return TRUE;
 }
 

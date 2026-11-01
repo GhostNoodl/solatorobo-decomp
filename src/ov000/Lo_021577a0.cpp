@@ -36,7 +36,17 @@ static inline void G3_TexCoord(s32 s, s32 t) {
 s32 FX_Div(s32 a, s32 b);
 static inline s32 FxMulS64(s32 a, s64 b) { return (s32)((a * b + 0x800) >> 12); }
 
-void func_ov000_0215724c(void *self, s32 x, s32 y, s32 z) {
+struct Obj0215724c {
+    u8 unk_00[0x20];
+    s32 unk_20;
+    u8 unk_24[0x4];
+    s32 unk_28;
+    u8 unk_2c[0x6c];
+    void *unk_98;
+    s16 unk_9c;
+};
+
+void func_ov000_0215724c(Obj0215724c *self, s32 x, s32 y, s32 z) {
     s32 off;
     s32 k;
     BOOL flag;
@@ -44,27 +54,27 @@ void func_ov000_0215724c(void *self, s32 x, s32 y, s32 z) {
     s32 h;
     s32 r;
     s32 n;
-    h = LFLD(s32, self, 0x28) << 12;
-    n = LFLD(s16, self, 0x9c) << 12;
+    h = self->unk_28 << 12;
+    n = self->unk_9c << 12;
     if (n == 0) {
         n = 1;
     }
-    r = FX_Div(LFLD(s32, self, 0x20) << 12, n);
+    r = FX_Div(self->unk_20 << 12, n);
     if (r >= 0x1000) {
         r = 0x1000;
     }
     len = LO_FX_MUL(h - 0x1c000, r);
     k = FX_Div(0x1000, n);
     n = 0;
-    if (LFLD(void *, self, 0x98) != NULL) {
-        n = LFLD(s16, LFLD(void *, self, 0x98), 4);
+    if (self->unk_98 != NULL) {
+        n = LFLD(s16, self->unk_98, 4);
     }
     off = FxMulS64(LO_FX_MUL(k, n << 12), h - 0x1c000);
     flag = FALSE;
-    if (LFLD(void *, self, 0x98) == NULL) {
+    if (self->unk_98 == NULL) {
         flag = TRUE;
-    } else if (LFLD(s16, LFLD(void *, self, 0x98), 4) == LFLD(s16, self, 0x9c) - LFLD(s32, self, 0x20) ||
-               LFLD(s16, self, 0x9c) < LFLD(s32, self, 0x20)) {
+    } else if (LFLD(s16, self->unk_98, 4) == self->unk_9c - self->unk_20 ||
+               self->unk_9c < self->unk_20) {
         flag = TRUE;
     }
     if (flag) {
@@ -116,8 +126,13 @@ void func_ov000_0215724c(void *self, s32 x, s32 y, s32 z) {
     G3_Cmd1(0x12, 1);
 }
 
-void func_ov000_021577a0(void *self, s32 x, s32 y, s32 z) {
-    s32 h = LFLD(s32, self, 0x28) << 12;
+struct Obj021577a0 {
+    u8 unk_00[0x28];
+    s32 unk_28;
+};
+
+void func_ov000_021577a0(Obj021577a0 *self, s32 x, s32 y, s32 z) {
+    s32 h = self->unk_28 << 12;
     G3_Cmd1(0x20, 0x7fff);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, x, y + 0xe000, z);

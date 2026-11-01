@@ -1,4 +1,5 @@
 #include "ov000/TaskList.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -43,37 +44,37 @@ static inline BOOL Txt_IsVis021c2450(Txt021c2450 *t) {
     return t->flags.vis ? TRUE : FALSE;
 }
 
-static inline void SetText021c2450(u8 *self, char *str0) {
+static inline void SetText021c2450(Hud021cca10 *self, char *str0) {
     u8 *t;
     char *str = str0;
-    if (LFLD(void *, self, 0x38) == NULL) {
+    if (self->unk_38 == NULL) {
         t = (u8 *)func_0203dd9c(0xb8);
         if (t != NULL) {
             *(void ***)t = data_0208ba70;
             func_0204c7d0(t);
         }
-        LFLD(u8 *, self, 0x38) = t;
+        self->unk_38 = t;
     }
-    LFLD(VObj *, self, 0x38)->vfunc_08();
-    LFLD(s32, LFLD(void *, self, 0x38), 0x28) = 8;
-    t = LFLD(u8 *, self, 0x38);
+    ((VObj *)self->unk_38)->vfunc_08();
+    LFLD(s32, self->unk_38, 0x28) = 8;
+    t = (u8 *)self->unk_38;
     LFLD(char *, t, 0x24) = str;
     LFLD(s32, t, 0x4c) = func_0204c4fc(LFLD(s32, t, 0x28), LFLD(s32, t, 0x38), LFLD(s32, t, 0x24), t + 0x44, t + 0x48, LFLD(s8, t, 0x37) != 0);
     LFLD(s32, data_02097ce0, 0x4) = LFLD(s32, t, 0x28);
-    LFLD(Txt021c2450 *, self, 0x38)->flags.pri = 0x1e;
-    LFLD(VObj *, self, 0x38)->vfunc_14();
-    LFLD(u32, LFLD(void *, self, 0x38), 0x4) |= 0x40;
-    LFLD(u32, LFLD(void *, self, 0x38), 0x4) |= 0x1000000;
-    LFLD(u32, LFLD(void *, self, 0x38), 0x4) |= 0x400000;
-    LFLD(u32, LFLD(void *, self, 0x38), 0x4) |= 0x200000;
-    LFLD(u32, LFLD(void *, self, 0x38), 0x4) |= 0x4;
-    LFLD(char *, self, 0x40) = str;
+    ((Txt021c2450 *)self->unk_38)->flags.pri = 0x1e;
+    ((VObj *)self->unk_38)->vfunc_14();
+    LFLD(u32, self->unk_38, 0x4) |= 0x40;
+    LFLD(u32, self->unk_38, 0x4) |= 0x1000000;
+    LFLD(u32, self->unk_38, 0x4) |= 0x400000;
+    LFLD(u32, self->unk_38, 0x4) |= 0x200000;
+    LFLD(u32, self->unk_38, 0x4) |= 0x4;
+    self->unk_40 = str;
 }
 
-void func_ov000_021c2450(u8 *self) {
+void func_ov000_021c2450(Hud021cca10 *self) {
     Model *m;
     Model *m2;
-    if (LFLD(u8, self, 0x44) == 0) {
+    if (self->unk_44 == 0) {
         m = (Model *)func_0203dd9c(sizeof(Model));
         if (m != NULL) {
             char *name = data_0208cc94;
@@ -82,15 +83,15 @@ void func_ov000_021c2450(u8 *self) {
             func_02041440(m, a, 0);
             STD_CopyString(m->name, name);
         }
-        LFLD(Model *, self, 0x30) = m;
-        func_020417e0(LFLD(Model *, self, 0x30), func_02034d88(func_02035d5c(m->name), LFLD(Model *, self, 0x30)->unk_04c));
-        LFLD(Model *, self, 0x30)->flags |= 2;
-        func_02041d9c(LFLD(Model *, self, 0x30), 0, 6);
-        func_02041c20(LFLD(Model *, self, 0x30), 6, LFLD(void *, self, 0x3c));
-        func_02041c5c(LFLD(Model *, self, 0x30), (void *)func_ov000_021c7608);
-        LFLD(Model *, self, 0x30)->flags |= 0x80000;
-        ((MdlFlags021c2450 *)&LFLD(Model *, self, 0x30)->flags)->lay = 0x1e;
-        LFLD(Model *, self, 0x30)->flags |= 0x100000;
+        self->unk_30 = m;
+        func_020417e0(self->unk_30, func_02034d88(func_02035d5c(m->name), self->unk_30->unk_04c));
+        self->unk_30->flags |= 2;
+        func_02041d9c(self->unk_30, 0, 6);
+        func_02041c20(self->unk_30, 6, self->unk_3c);
+        func_02041c5c(self->unk_30, (void *)func_ov000_021c7608);
+        self->unk_30->flags |= 0x80000;
+        ((MdlFlags021c2450 *)&self->unk_30->flags)->lay = 0x1e;
+        self->unk_30->flags |= 0x100000;
 
         m2 = (Model *)func_0203dd9c(sizeof(Model));
         if (m2 != NULL) {
@@ -99,30 +100,30 @@ void func_ov000_021c2450(u8 *self) {
             func_02041440(m2, a, 0);
             STD_CopyString(m2->name, data_0214b105);
         }
-        LFLD(Model *, self, 0x34) = m2;
-        func_020417e0(LFLD(Model *, self, 0x34), func_02034d88(func_02035d5c(m2->name), LFLD(Model *, self, 0x34)->unk_04c));
-        LFLD(Model *, self, 0x34)->flags |= 2;
-        func_02041d9c(LFLD(Model *, self, 0x34), 0, 4);
-        LFLD(Model *, self, 0x34)->flags |= 0x80000;
-        ((MdlFlags021c2450 *)&LFLD(Model *, self, 0x34)->flags)->lay = 0x1e;
-        LFLD(Model *, self, 0x34)->flags |= 0x100000;
-        if (LFLD(void *, self, 0x38) == NULL) {
+        self->unk_34 = m2;
+        func_020417e0(self->unk_34, func_02034d88(func_02035d5c(m2->name), self->unk_34->unk_04c));
+        self->unk_34->flags |= 2;
+        func_02041d9c(self->unk_34, 0, 4);
+        self->unk_34->flags |= 0x80000;
+        ((MdlFlags021c2450 *)&self->unk_34->flags)->lay = 0x1e;
+        self->unk_34->flags |= 0x100000;
+        if (self->unk_38 == NULL) {
             SetText021c2450(self, data_ov000_021cc9bc);
         }
-        LFLD(u8, self, 0x44) = 1;
+        self->unk_44 = 1;
         return;
     }
     if (LFLD(F021c2450, self, 0x20).b0) {
-        if (Txt_IsVis021c2450(LFLD(Txt021c2450 *, self, 0x38))) {
+        if (Txt_IsVis021c2450((Txt021c2450 *)self->unk_38)) {
             return;
         }
-        SetText021c2450(self, LFLD(char *, self, 0x40));
+        SetText021c2450(self, self->unk_40);
     } else {
-        if (!Txt_IsVis021c2450(LFLD(Txt021c2450 *, self, 0x38))) {
+        if (!Txt_IsVis021c2450((Txt021c2450 *)self->unk_38)) {
             return;
         }
-        LFLD(VObj *, self, 0x38)->vfunc_08();
-        LFLD(Txt021c2450 *, self, 0x38)->flags.vis = 0;
+        ((VObj *)self->unk_38)->vfunc_08();
+        ((Txt021c2450 *)self->unk_38)->flags.vis = 0;
     }
 }
 }

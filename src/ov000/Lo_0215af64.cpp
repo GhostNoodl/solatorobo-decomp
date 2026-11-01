@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -10,11 +11,11 @@ void func_ov000_02152294(void *self, s32 a, s32 b, void *cb);
 BOOL func_ov000_02151664(void *p, u8 *msg);
 void func_ov000_0215f334(void *p);
 
-void func_ov000_0215af64(VObj *self, void *a, void *b, s32 d) {
+void func_ov000_0215af64(LoBase021cafc0_021cb0b8 *self, void *a, void *b, s32 d) {
     if (a == NULL) {
         return;
     }
-    if (LFLD(u32, self, 0xc) & 0x80000) {
+    if (self->unk_0c & 0x80000) {
         self->vfunc_d4(d, b, d);
     }
     if (LBIT(self, 0xc).b3 ? TRUE : FALSE) {
@@ -24,9 +25,9 @@ void func_ov000_0215af64(VObj *self, void *a, void *b, s32 d) {
     }
     self->vfunc_e8(a, b, d);
     self->vfunc_d8(a, b, d);
-    if (func_02054f10(LFLD(void *, self, 0x10), 0xffff)) {
+    if (func_02054f10(self->unk_10, 0xffff)) {
         self->vfunc_60(a, b, d);
-        LFLD(u32, self, 0xc) |= 0x200;
+        self->unk_0c |= 0x200;
     }
 }
 

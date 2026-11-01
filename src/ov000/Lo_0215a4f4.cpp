@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 #define GX_PACK_POLYGONATTR_PARAM(light, polyMode, cullMode, polygonID, alpha, misc) \
     ((u32)(((light) << 0) | ((polyMode) << 4) | ((cullMode) << 6) | (misc) | ((polygonID) << 24) | ((alpha) << 16)))
@@ -50,7 +51,7 @@ static inline void G3_Cmd2(int cmd, u32 a, u32 b) {
     NNS_G3dGeBufferOP_N(cmd, v, 2);
 }
 
-void func_ov000_0215a4f4(u8 *self, s32 enable, s32 *pos) {
+void func_ov000_0215a4f4(Lo021cb5a8 *self, s32 enable, s32 *pos) {
     s16 z;
     u8 *g;
     s32 sx;
@@ -60,12 +61,12 @@ void func_ov000_0215a4f4(u8 *self, s32 enable, s32 *pos) {
     if (enable == 0) {
         return;
     }
-    z = LFLD(s16, self, 0x68) - 0x100;
+    z = self->unk_68 - 0x100;
     g = data_02097d48;
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, func_02043d48(g + 0x8b0), 0x1e, 0x800));
-    sx = (LFLD(s32, self, 0x24) - 4) << 12;
-    sy = (LFLD(s32, self, 0x28) - 0xe) << 12;
+    sx = (self->unk_24 - 4) << 12;
+    sy = (self->unk_28 - 0xe) << 12;
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
         G3_Vec(0x1c, pos[0] + 0x4000, pos[1] + 0x7000, z);

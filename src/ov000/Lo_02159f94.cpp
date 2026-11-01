@@ -1,10 +1,11 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
 void func_ov000_0215eab4(void *p);
 
-void func_ov000_02159f94(void *self, s32 b, s32 c) {
+void func_ov000_02159f94(Lo021cb5a8 *self, s32 b, s32 c) {
     u8 *n = (u8 *)func_0203dd9c(0x30);
     u8 *t;
     u8 *nx;
@@ -26,14 +27,14 @@ void func_ov000_02159f94(void *self, s32 b, s32 c) {
         LFLD(s32, n, 0x2c) = 0;
     }
     LFLD(s32, n, 0) = c;
-    id = LFLD(s16, self, 0x9c);
-    LFLD(s16, self, 0x9c) = id + 1;
+    id = self->unk_9c;
+    self->unk_9c = id + 1;
     LFLD(s16, n, 4) = id;
     LFLD(s16, n, 6) = b;
-    t = LFLD(u8 *, self, 0x94);
+    t = self->unk_94;
     if (t == NULL) {
-        LFLD(u8 *, self, 0x94) = n;
-        LFLD(u8 *, self, 0x98) = n;
+        self->unk_94 = n;
+        self->unk_98 = n;
         return;
     }
     for (nx = LFLD(u8 *, t, 0x2c); nx != NULL; nx = LFLD(u8 *, nx, 0x2c)) {

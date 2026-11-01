@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -11,14 +12,14 @@ void func_ov000_0215f0ec(void *p, void *q);
 extern const s16 FX_SinCosTable_[];
 typedef BOOL (*LoMsgFn)(void *, void *);
 
-s32 func_ov000_02152690(void *self, s32 *out, s32 *outS, s32 ang) {
+s32 func_ov000_02152690(LoBase021ca94c_021caac8 *self, s32 *out, s32 *outS, s32 ang) {
     s32 s;
     s32 t;
     if (ang == -1) {
-        ang = LFLD(s32, self, 0x38);
+        ang = self->unk_38;
     }
     s = FX_SinCosTable_[((ang << 14) >> 16) * 2];
-    t = LFLD(s32, self, 0x2c);
+    t = self->unk_2c;
     if (t == 0) {
         if (outS) {
             *outS = s;
@@ -32,8 +33,8 @@ s32 func_ov000_02152690(void *self, s32 *out, s32 *outS, s32 ang) {
             *outS = 0x1000;
         }
         k = 0x1000 - s;
-        out[0] = LO_FX_MUL(k, LFLD(s32, self, 0x58) << 12);
-        out[1] = LO_FX_MUL(k, LFLD(s32, self, 0x5c) << 12);
+        out[0] = LO_FX_MUL(k, self->unk_58 << 12);
+        out[1] = LO_FX_MUL(k, self->unk_5c << 12);
         out[2] = 0;
     }
     return s;

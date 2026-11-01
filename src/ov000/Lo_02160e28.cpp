@@ -12,7 +12,12 @@ typedef struct {
 
 extern "C" {
 
-Glyph02160e28 *func_ov000_02160e28(u8 *self, u16 *cmd, Glyph02160e28 *arr, u16 *count) {
+struct Obj02160e28 {
+    u8 unk_00[0x70];
+    s32 unk_70;
+};
+
+Glyph02160e28 *func_ov000_02160e28(Obj02160e28 *self, u16 *cmd, Glyph02160e28 *arr, u16 *count) {
     u16 n = *count;
     u32 base = arr[n - 1].chr;
     s32 v;
@@ -21,7 +26,7 @@ Glyph02160e28 *func_ov000_02160e28(u8 *self, u16 *cmd, Glyph02160e28 *arr, u16 *
     s32 x;
     switch (*cmd) {
     case 6:
-        v = LFLD(s32, self, 0x70);
+        v = self->unk_70;
         digits = 0;
         t = v;
         for (; t != 0; t /= 10) {

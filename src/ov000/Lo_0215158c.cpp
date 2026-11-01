@@ -38,7 +38,12 @@ static inline BOOL LoIsLoaded24(void) {
     return r;
 }
 
-void func_ov000_0215158c(void *self) {
+struct Obj0215158c {
+    u8 unk_00[0x4];
+    s32 unk_04;
+};
+
+void func_ov000_0215158c(Obj0215158c *self) {
     void *t = func_ov000_02173610(0xe);
     void *m;
     void *s;
@@ -47,7 +52,7 @@ void func_ov000_0215158c(void *self) {
     }
     m = func_ov000_0219bf90();
     s = LFLD(void *, t, 0x50);
-    switch (LFLD(s32, self, 4)) {
+    switch (self->unk_04) {
     case 0:
         LFLD(u32, s, 0xc) |= 0x20;
         break;

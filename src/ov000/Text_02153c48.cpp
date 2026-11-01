@@ -24,58 +24,68 @@ static inline u8 *NewTw02153c48(void) {
     return o;
 }
 
-void func_ov000_02153c48(u8 *self, s32 a, BOOL show, BOOL center, u8 d) {
+struct Obj02153c48 {
+    s32 unk_00;
+    u8 unk_04[0x8];
+    s32 unk_0c;
+    u8 unk_10[0xc];
+    u8 *unk_1c;
+    u8 *unk_20;
+    s32 unk_24;
+};
+
+void func_ov000_02153c48(Obj02153c48 *self, s32 a, BOOL show, BOOL center, u8 d) {
     u8 *w;
     LO_FREE_V(self, 0x1c);
     LO_FREE_V(self, 0x20);
     w = NewTw02153c48();
-    LFLD(u8 *, self, 0x1c) = w;
+    self->unk_1c = w;
     if (d) {
         LFLD(s8, w, 0x37) = 1;
     }
-    LFLD(s32, LFLD(u8 *, self, 0x1c), 0x28) = a;
-    LFLD(s32, LFLD(u8 *, self, 0x1c), 0x2c) = LFLD(s32, self, 0x24);
-    w = LFLD(u8 *, self, 0x1c);
-    LFLD(s32, w, 0x24) = LFLD(s32, self, 0);
+    LFLD(s32, self->unk_1c, 0x28) = a;
+    LFLD(s32, self->unk_1c, 0x2c) = self->unk_24;
+    w = self->unk_1c;
+    LFLD(s32, w, 0x24) = self->unk_00;
     LFLD(s32, w, 0x4c) = func_0204c4fc(LFLD(s32, w, 0x28), LFLD(s32, w, 0x38), LFLD(s32, w, 0x24), w + 0x44, w + 0x48, LFLD(s8, w, 0x37) ? 1 : 0);
     LFLD(s32, data_02097ce0, 4) = LFLD(s32, w, 0x28);
-    LFLD(TwBits02153c48, LFLD(u8 *, self, 0x1c), 4).f8 = 0x1e;
+    LFLD(TwBits02153c48, self->unk_1c, 4).f8 = 0x1e;
     if (center) {
-        LFLD(u8, LFLD(u8 *, self, 0x1c), 0x36) = 1;
+        LFLD(u8, self->unk_1c, 0x36) = 1;
     }
-    LFLD(u32, LFLD(u8 *, self, 0x1c), 4) |= 0x40;
-    LFLD(u32, LFLD(u8 *, self, 0x1c), 4) |= 0x1000000;
-    LFLD(u32, LFLD(u8 *, self, 0x1c), 4) |= 0x400000;
-    LFLD(u32, LFLD(u8 *, self, 0x1c), 4) |= 0x40000000;
-    LFLD(u32, LFLD(u8 *, self, 0x1c), 4) |= 4;
+    LFLD(u32, self->unk_1c, 4) |= 0x40;
+    LFLD(u32, self->unk_1c, 4) |= 0x1000000;
+    LFLD(u32, self->unk_1c, 4) |= 0x400000;
+    LFLD(u32, self->unk_1c, 4) |= 0x40000000;
+    LFLD(u32, self->unk_1c, 4) |= 4;
     if (show) {
-        func_0204ca70(LFLD(u8 *, self, 0x1c));
+        func_0204ca70(self->unk_1c);
     }
-    if (!(LFLD(s32, self, 0xc) == -1 ? TRUE : FALSE)) {
+    if (!(self->unk_0c == -1 ? TRUE : FALSE)) {
         return;
     }
     {
         void *fnt = data_02149ef8;
         w = NewTw02153c48();
-        LFLD(u8 *, self, 0x20) = w;
+        self->unk_20 = w;
         LFLD(s32, w, 0x28) = 4;
-        LFLD(s32, LFLD(u8 *, self, 0x20), 0x2c) = 0xe;
+        LFLD(s32, self->unk_20, 0x2c) = 0xe;
         {
             s32 t = func_0204c0e8(fnt, 0xa0);
-            w = LFLD(u8 *, self, 0x20);
+            w = self->unk_20;
             LFLD(s32, w, 0x24) = t;
         }
     }
     LFLD(s32, w, 0x4c) = func_0204c4fc(LFLD(s32, w, 0x28), LFLD(s32, w, 0x38), LFLD(s32, w, 0x24), w + 0x44, w + 0x48, LFLD(s8, w, 0x37) ? 1 : 0);
     LFLD(s32, data_02097ce0, 4) = LFLD(s32, w, 0x28);
-    LFLD(TwBits02153c48, LFLD(u8 *, self, 0x20), 4).f8 = 0x1e;
-    LFLD(u32, LFLD(u8 *, self, 0x20), 4) |= 0x40;
-    LFLD(u32, LFLD(u8 *, self, 0x20), 4) |= 0x1000000;
-    LFLD(u32, LFLD(u8 *, self, 0x20), 4) |= 0x400000;
-    LFLD(u32, LFLD(u8 *, self, 0x20), 4) |= 0x40000000;
-    LFLD(u32, LFLD(u8 *, self, 0x20), 4) |= 4;
+    LFLD(TwBits02153c48, self->unk_20, 4).f8 = 0x1e;
+    LFLD(u32, self->unk_20, 4) |= 0x40;
+    LFLD(u32, self->unk_20, 4) |= 0x1000000;
+    LFLD(u32, self->unk_20, 4) |= 0x400000;
+    LFLD(u32, self->unk_20, 4) |= 0x40000000;
+    LFLD(u32, self->unk_20, 4) |= 4;
     if (show) {
-        func_0204ca70(LFLD(u8 *, self, 0x20));
+        func_0204ca70(self->unk_20);
     }
 }
 

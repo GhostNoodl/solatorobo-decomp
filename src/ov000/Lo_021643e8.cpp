@@ -32,18 +32,34 @@ static inline BOOL LoIsMode4(void) {
     return LFLD(s32, data_02097d78, 4) == 4 ? TRUE : FALSE;
 }
 
-void func_ov000_021643e8(void *self) {
-    LFLD(s32, self, 0x20) = 0;
-    LFLD(s32, self, 0x24) = 0;
-    LFLD(s32, self, 0x28) = 0;
-    LFLD(s32, self, 0x2c) = 0;
-    LFLD(s32, self, 0x30) = 0;
-    LFLD(s32, self, 0x34) = 4;
-    LFLD(s32, self, 0x40) = 0;
-    LFLD(s32, self, 0x44) = 4;
-    LFLD(s32, self, 0x48) = 0;
-    LFLD(s32, self, 0x4c) = 0;
-    LFLD(s32, self, 0x50) = 0;
+struct Obj021643e8 {
+    u8 unk_00[0x20];
+    s32 unk_20;
+    s32 unk_24;
+    s32 unk_28;
+    s32 unk_2c;
+    s32 unk_30;
+    s32 unk_34;
+    u8 unk_38[0x8];
+    s32 unk_40;
+    s32 unk_44;
+    s32 unk_48;
+    s32 unk_4c;
+    s32 unk_50;
+};
+
+void func_ov000_021643e8(Obj021643e8 *self) {
+    self->unk_20 = 0;
+    self->unk_24 = 0;
+    self->unk_28 = 0;
+    self->unk_2c = 0;
+    self->unk_30 = 0;
+    self->unk_34 = 4;
+    self->unk_40 = 0;
+    self->unk_44 = 4;
+    self->unk_48 = 0;
+    self->unk_4c = 0;
+    self->unk_50 = 0;
 }
 
 }

@@ -44,22 +44,27 @@ void *STD_CopyString(void *dst, void *src);
         out = m_;                                    \
     } while (0)
 
-BOOL func_ov000_02152e5c(void *self) {
-    if (LFLD(void *, self, 0x10)) {
+struct Obj02152e5c {
+    u8 unk_00[0x10];
+    u8 *unk_10;
+};
+
+BOOL func_ov000_02152e5c(Obj02152e5c *self) {
+    if (self->unk_10) {
         return TRUE;
     }
     if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
-        LO_MODEL_NEW(LFLD(u8 *, self, 0x10), data_0208cb84, data_0208cc8c);
+        LO_MODEL_NEW(self->unk_10, data_0208cb84, data_0208cc8c);
     } else {
-        LO_MODEL_NEW(LFLD(u8 *, self, 0x10), data_0208cb74, data_0208cca0);
+        LO_MODEL_NEW(self->unk_10, data_0208cb74, data_0208cca0);
     }
     {
-        void *a = func_02035d5c(LFLD(u8 *, self, 0x10) + 0x2c);
-        void *b = func_02034d88(a, LFLD(u8 *, self, 0x10) + 0x4c);
-        func_020417e0(LFLD(u8 *, self, 0x10), b);
+        void *a = func_02035d5c(self->unk_10 + 0x2c);
+        void *b = func_02034d88(a, self->unk_10 + 0x4c);
+        func_020417e0(self->unk_10, b);
     }
-    LFLD(u32, LFLD(u8 *, self, 0x10), 0x6c) |= 2;
-    func_02041d9c(LFLD(u8 *, self, 0x10), 0, 7);
+    LFLD(u32, self->unk_10, 0x6c) |= 2;
+    func_02041d9c(self->unk_10, 0, 7);
     return TRUE;
 }
 

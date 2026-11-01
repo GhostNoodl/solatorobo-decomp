@@ -51,54 +51,66 @@ static inline void SetPages(TextWinEx *win, u32 text) {
     win->numPages = 1;
 }
 
-void func_ov000_0215bb14(VObj *self, u32 text) {
+struct Obj0215bb14 : public VObj {
+    u8 unk_04[0x8];
+    u32 unk_0c;
+    u8 unk_10[0xc];
+    u32 unk_1c;
+    u8 unk_20[0x44];
+    s16 unk_64;
+    s16 unk_66;
+    u8 unk_68[0x1c];
+    TextWin *unk_84;
+};
+
+void func_ov000_0215bb14(Obj0215bb14 *self, u32 text) {
     BOOL flag;
-    LFLD(u32, self, 0xc) &= ~0x40000;
+    self->unk_0c &= ~0x40000;
     {
         void *saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->unk_08;
-        if (LFLD(VObj *, self, 0x84) != NULL) {
-            VObj *p_ = LFLD(VObj *, self, 0x84);
+        if ((VObj *)self->unk_84 != NULL) {
+            VObj *p_ = (VObj *)self->unk_84;
             if (p_ != NULL) {
                 p_->vfunc_04();
             }
-            LFLD(VObj *, self, 0x84) = NULL;
+            self->unk_84 = NULL;
         }
         data_02097dd0->cur = saved;
     }
-    if (LFLD(u32, self, 0xc) & 0x80000) {
+    if (self->unk_0c & 0x80000) {
         TextWin *win = TextWin_New();
-        LFLD(TextWin *, self, 0x84) = win;
-        win->unk_28 = LFLD(u32, self, 0x1c);
-        LFLD(TextWin *, self, 0x84)->unk_38 = self->vfunc_3c();
-        SetText(LFLD(TextWin *, self, 0x84), text);
-        LFLD(TextWin *, self, 0x84)->noVram = 1;
-        LFLD(TextWin *, self, 0x84)->flag24 = 1;
-        LFLD(TextWin *, self, 0x84)->unk_4_30 = 1;
-        LFLD(TextWin *, self, 0x84)->rendering = 1;
+        self->unk_84 = win;
+        win->unk_28 = self->unk_1c;
+        self->unk_84->unk_38 = self->vfunc_3c();
+        SetText(self->unk_84, text);
+        self->unk_84->noVram = 1;
+        self->unk_84->flag24 = 1;
+        self->unk_84->unk_4_30 = 1;
+        self->unk_84->rendering = 1;
     } else {
         TextWinEx *win = TextWinEx_New();
-        LFLD(TextWinEx *, self, 0x84) = win;
-        win->unk_28 = LFLD(u32, self, 0x1c);
-        LFLD(TextWinEx *, self, 0x84)->unk_38 = self->vfunc_3c();
-        SetPages(LFLD(TextWinEx *, self, 0x84), text);
+        self->unk_84 = (TextWin *)(win);
+        win->unk_28 = self->unk_1c;
+        ((TextWinEx *)self->unk_84)->unk_38 = self->vfunc_3c();
+        SetPages((TextWinEx *)self->unk_84, text);
     }
     {
         s32 dx = self->vfunc_30();
         s32 dy = self->vfunc_34();
-        LFLD(TextWin *, self, 0x84)->unk_vf20(LFLD(s16, self, 0x64) + dx, LFLD(s16, self, 0x66) + dy);
+        self->unk_84->unk_vf20(self->unk_64 + dx, self->unk_66 + dy);
     }
-    LFLD(TextWin *, self, 0x84)->unk_2c = 0;
-    *(u32 *)((u8 *)LFLD(TextWin *, self, 0x84) + 4) |= 0x800000;
+    self->unk_84->unk_2c = 0;
+    *(u32 *)((u8 *)self->unk_84 + 4) |= 0x800000;
     flag = FALSE;
     if (LFLD(Bits0215bb14, self, 0xc).b6) {
         flag = TRUE;
     }
     if (flag) {
-        LFLD(TextWin *, self, 0x84)->flag31 = 1;
+        self->unk_84->flag31 = 1;
     }
-    if (LFLD(u32, self, 0xc) & 0x80000) {
-        func_0204ca70(LFLD(TextWin *, self, 0x84));
+    if (self->unk_0c & 0x80000) {
+        func_0204ca70(self->unk_84);
     }
 }
 

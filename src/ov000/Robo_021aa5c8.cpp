@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u8 c[3];
@@ -72,21 +73,21 @@ static inline s32 FxMulL021aa5c8(s32 a, s64 b) {
     return (a * b + 0x800) >> 12;
 }
 
-void func_ov000_021aa5c8(u8 *self) {
+void func_ov000_021aa5c8(Robo021ca458 *self) {
     u8 *actor;
     u8 *sub;
     u8 *g;
     VecFx32 d;
     VecFx32 out;
-    actor = FindActor021aa5c8(LFLD(u16, self, 0xb1c));
+    actor = FindActor021aa5c8(self->unk_b1c);
     sub = NULL;
     if (actor != NULL) {
         sub = LFLD(u8 *, actor, 0x4c);
     }
     g = data_ov000_021ccd54;
-    if (LFLD(State021aa5c8 *, self, 0x40)->st == 0) {
-        VObj *e = func_02065f88(0x391, self + 0x70);
-        e->vfunc_24(0, LFLD(s32, self, 0x68) - (LFLD(s32, self, 0x68) >> 2), 0);
+    if (((State021aa5c8 *)self->unk_40)->st == 0) {
+        VObj *e = func_02065f88(0x391, (u8 *)self + 0x70);
+        e->vfunc_24(0, self->unk_68 - (self->unk_68 >> 2), 0);
         e->vfunc_14(0x159a, 0x159a, 0x159a);
         LFLD(s32, e, 0x3c) = 0x4000;
         LFLD(Bits8021aa5c8, g, 0x190).b2 = 1;
@@ -102,8 +103,8 @@ void func_ov000_021aa5c8(u8 *self) {
             if (sub != NULL) {
                 n += (u16)(LFLD(u8, sub, 0x1a) * 2);
             }
-            if (LFLD(u8 *, self, 0xba4) != NULL) {
-                n += LFLD(Nib021aa5c8, LFLD(u8 *, self, 0xba4), 5).hi;
+            if (self->unk_ba4 != NULL) {
+                n += LFLD(Nib021aa5c8, self->unk_ba4, 5).hi;
             }
             func_ov003_021cedf4(n);
         }
@@ -112,31 +113,31 @@ void func_ov000_021aa5c8(u8 *self) {
         }
     }
     if (LFLD(Bits021aa5c8, self, 0xb2c).b0) {
-        func_ov000_021aa978(self);
+        func_ov000_021aa978((u8 *)self);
     } else if (LFLD(Bits021aa5c8, self, 0xb2c).b1) {
-        func_ov000_021aaf80(self);
+        func_ov000_021aaf80((u8 *)self);
     } else if (LFLD(Bits021aa5c8, self, 0xb2c).b2) {
-        func_ov000_021ab68c(self);
+        func_ov000_021ab68c((u8 *)self);
     }
-    if (LFLD(State021aa5c8 *, self, 0x40)->st <= 1 && sub != NULL && !(LFLD(Bits8021aa5c8, sub, 0x18).b4 ? TRUE : FALSE)) {
+    if (((State021aa5c8 *)self->unk_40)->st <= 1 && sub != NULL && !(LFLD(Bits8021aa5c8, sub, 0x18).b4 ? TRUE : FALSE)) {
         d = LFLD(VecFx32, actor, 0x70);
-        d.x -= LFLD(s32, self, 0x70);
-        d.y -= LFLD(s32, self, 0x74);
-        d.z -= LFLD(s32, self, 0x78);
+        d.x -= self->unk_70.x;
+        d.y -= self->unk_70.y;
+        d.z -= self->unk_70.z;
         d.x = FxMulL021aa5c8(d.x, 0x733);
         d.y = FxMulL021aa5c8(d.y, 0x733);
         d.z = FxMulL021aa5c8(d.z, 0x733);
-        d.y = LFLD(s32, self, 0x6c);
-        VEC_Add(&d, (VecFx32 *)(self + 0x70), &out);
+        d.y = self->unk_6c;
+        VEC_Add(&d, (VecFx32 *)((u8 *)self + 0x70), &out);
         func_ov000_0218a358(g + 0xf4, &out, 0, LFLD(s32, actor, 0x64) + 0x8c00, 1, 0x2333, 0x1000, 1);
     }
-    if (LFLD(State021aa5c8 *, self, 0x40)->kind != 0x11) {
+    if (((State021aa5c8 *)self->unk_40)->kind != 0x11) {
         return;
     }
     if (LFLD(Bits021aa5c8, self, 0xb2c).b0 || LFLD(Bits021aa5c8, self, 0xb2c).b1 || LFLD(Bits021aa5c8, self, 0xb2c).b2) {
         return;
     }
-    func_ov000_02198360(LFLD(void *, self, 0x40), 1, 0);
+    func_ov000_02198360(self->unk_40, 1, 0);
 }
 
 }

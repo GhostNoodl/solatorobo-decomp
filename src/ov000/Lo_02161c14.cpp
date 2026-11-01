@@ -50,20 +50,25 @@ static inline BOOL LoResReady(void) {
 
 static inline u32 LoIdKind(u32 id) { return (id << 4) >> 16; }
 static inline u32 LoIdKind2(u16 id) { u32 r = (u32)(id << 4) >> 16; return r; }
-void func_ov000_02161c14(void *self, void *msg, s32 c, s32 d, u8 e, u8 f) {
+struct Obj02161c14 {
+    u8 unk_00[0xb8];
+    void *unk_b8;
+};
+
+void func_ov000_02161c14(Obj02161c14 *self, void *msg, s32 c, s32 d, u8 e, u8 f) {
     s32 v;
-    if (LFLD(void *, self, 0xb8) == NULL || LFLD(u16, msg, 8) == 0xffff) {
+    if (self->unk_b8 == NULL || LFLD(u16, msg, 8) == 0xffff) {
         return;
     }
-    func_02041c5c(LFLD(void *, self, 0xb8), (void *)func_ov000_02161bc4);
+    func_02041c5c(self->unk_b8, (void *)func_ov000_02161bc4);
     if (((u32)(LFLD(u16, msg, 6) << 4) >> 16) - 1 == 1) {
-        func_02041c18(LFLD(void *, self, 0xb8), *func_0206ede8(LFLD(u16, msg, 6)));
+        func_02041c18(self->unk_b8, *func_0206ede8(LFLD(u16, msg, 6)));
     } else {
-        func_02041c18(LFLD(void *, self, 0xb8), 0);
+        func_02041c18(self->unk_b8, 0);
     }
     func_ov000_021566c0(self, msg, c, d, e, f);
-    func_02041c5c(LFLD(void *, self, 0xb8), NULL);
-    func_02041c18(LFLD(void *, self, 0xb8), 0);
+    func_02041c5c(self->unk_b8, NULL);
+    func_02041c18(self->unk_b8, 0);
 }
 
 }

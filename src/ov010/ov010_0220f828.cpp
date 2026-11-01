@@ -86,15 +86,27 @@ BOOL func_ov010_021fff80(Ov010Toggle *o) {
     return TRUE;
 }
 
-void func_ov010_021fffa0(void *self) {
-    if (FLD(void *, self, 0x44) != NULL) {
-        func_ov000_021984f4(FLD(void *, self, 0x44), 0, 0);
+struct Obj021fffa0 {
+    u8 unk_00[0x44];
+    void *unk_44;
+};
+
+void func_ov010_021fffa0(Obj021fffa0 *self) {
+    if (self->unk_44 != NULL) {
+        func_ov000_021984f4(self->unk_44, 0, 0);
     }
 }
 
-void func_ov010_021fffc0(void *self) {
-    if (FLD(void *, self, 0x48) != NULL) {
-        func_ov000_0219864c(FLD(void *, self, 0x48), 0, 0);
+struct Obj021fffc0 : public Ov010V {
+    u8 unk_04[0x44];
+    void *unk_48;
+    u8 unk_4c[0xa2];
+    Ov010Flags unk_ee;
+};
+
+void func_ov010_021fffc0(Obj021fffc0 *self) {
+    if (self->unk_48 != NULL) {
+        func_ov000_0219864c(self->unk_48, 0, 0);
     }
 }
 
@@ -119,12 +131,12 @@ void func_ov010_021ffff4(void) {
 void func_ov010_021ffff8(void) {
 }
 
-void func_ov010_021ffffc(Ov010V *self) {
+void func_ov010_021ffffc(Obj021fffc0 *self) {
     self->v54();
 }
 
-void func_ov010_02200010(Ov010V *self) {
-    FLD(Ov010Flags, self, 0xee).b5 = 1;
+void func_ov010_02200010(Obj021fffc0 *self) {
+    self->unk_ee.b5 = 1;
     self->v70();
 }
 
@@ -909,7 +921,21 @@ static inline void Ov010Beam_SetB(u8 *b, u16 v) {
     }
 }
 
-void func_ov010_02201064(u8 *self) {
+struct Obj02201064 {
+    Ov010Flags8 unk_00;
+    u8 unk_01[0x7];
+    u16 unk_08;
+    u16 unk_0a;
+    u16 unk_0c;
+    u8 unk_0e[0x2];
+    u8 *unk_10;
+    Ov010Vec unk_14;
+    Ov010Vec unk_20;
+    u16 unk_2c;
+    u16 unk_2e;
+};
+
+void func_ov010_02201064(Obj02201064 *self) {
     BOOL all;
     u16 ang;
     u8 *n;
@@ -919,42 +945,42 @@ void func_ov010_02201064(u8 *self) {
     Ov010Vec res;
     Ov010Vec d;
     Ov010Vec v;
-    if (!FLD(Ov010Flags8, self, 0).b0) {
+    if (!self->unk_00.b0) {
         return;
     }
-    switch (FLD(u16, self, 0x2c)) {
+    switch (self->unk_2c) {
     case 0:
-        FLD(u16, self, 0xa) = 0;
-        FLD(u16, self, 0xc) = 0;
-        FLD(u16, self, 0x2c) = 10;
+        self->unk_0a = 0;
+        self->unk_0c = 0;
+        self->unk_2c = 10;
         break;
     case 10: {
         u8 *last = NULL;
-        for (n1 = FLD(u8 *, self, 0x10); n1 != NULL; n1 = FLD(u8 *, n1, 8)) {
+        for (n1 = self->unk_10; n1 != NULL; n1 = FLD(u8 *, n1, 8)) {
             if (Ov010Beam_Idle(n1 + 0xc)) {
                 last = n1;
             }
         }
         if (last != NULL) {
-            BOOL flag = FLD(u16, self, 0x2e) % 3 == 0;
+            BOOL flag = self->unk_2e % 3 == 0;
             s32 len;
             u16 ry;
             u16 rx;
             u16 t;
-            if ((s32)FLD(u16, self, 0xa) >= 3) {
+            if ((s32)self->unk_0a >= 3) {
                 u16 r = func_02040498(2);
-                FLD(u16, self, 0xa) = 0;
-                FLD(u16, self, 0xc) = r;
-                FLD(u16, self, 0xa)++;
+                self->unk_0a = 0;
+                self->unk_0c = r;
+                self->unk_0a++;
             } else {
-                FLD(u16, self, 0xc)++;
-                if ((s32)FLD(u16, self, 0xc) >= 3) {
-                    FLD(u16, self, 0xc) = 0;
+                self->unk_0c++;
+                if ((s32)self->unk_0c >= 3) {
+                    self->unk_0c = 0;
                 }
-                FLD(u16, self, 0xa)++;
+                self->unk_0a++;
             }
             {
-                u16 c = FLD(u16, self, 0xc);
+                u16 c = self->unk_0c;
                 ang = c * 0x5555 + func_02040498(0x5555);
             }
             if (flag) {
@@ -973,12 +999,12 @@ void func_ov010_02201064(u8 *self) {
             v.y = Ov010_FxMul(v.y, len);
             v.z = Ov010_FxMul(v.z, len);
             v.y = Ov010k_Mul(v.y, 0x980);
-            func_ov003_021d9980(&v, func_ov003_021d9c50(&FLD(Ov010Vec, self, 0x14), &FLD(Ov010Vec, self, 0x20)), &v);
+            func_ov003_021d9980(&v, func_ov003_021d9c50(&self->unk_14, &self->unk_20), &v);
             OV010_BLKCPY(&tmp, &v);
-            VEC_Add(&FLD(Ov010Vec, self, 0x14), &tmp, &res);
-            d.x = res.x - FLD(s32, self, 0x20);
-            d.y = res.y - FLD(s32, self, 0x24);
-            d.z = res.z - FLD(s32, self, 0x28);
+            VEC_Add(&self->unk_14, &tmp, &res);
+            d.x = res.x - self->unk_20.x;
+            d.y = res.y - self->unk_20.y;
+            d.z = res.z - self->unk_20.z;
             VEC_Normalize(&d, &d);
             ry = func_ov003_021d9c74(&d);
             rx = func_ov003_021d9c38(&d);
@@ -994,9 +1020,9 @@ void func_ov010_02201064(u8 *self) {
             if (FLD(u8, last, 0xc) != 0 && FLD(u8, last, 0x8b) == 5) {
                 FLD(u16, last, 0x7a) = 0;
                 func_ov000_02198360(last + 0x78, 0, 0);
-                FLD(s32, last, 0x28) = FLD(s32, self, 0x20);
-                FLD(s32, last, 0x2c) = FLD(s32, self, 0x24);
-                FLD(s32, last, 0x30) = FLD(s32, self, 0x28);
+                FLD(s32, last, 0x28) = self->unk_20.x;
+                FLD(s32, last, 0x2c) = self->unk_20.y;
+                FLD(s32, last, 0x30) = self->unk_20.z;
                 FLD(u16, last, 0x1c) = ry;
                 FLD(u16, last, 0x1e) = rx;
                 FLD(u16, last, 0x18) = 0xc20;
@@ -1004,7 +1030,7 @@ void func_ov010_02201064(u8 *self) {
                 FLD(u16, last, 0x16) = t;
             }
         }
-        for (n2 = FLD(u8 *, self, 0x10); n2 != NULL; n2 = FLD(u8 *, n2, 8)) {
+        for (n2 = self->unk_10; n2 != NULL; n2 = FLD(u8 *, n2, 8)) {
             u8 *b = n2 + 0xc;
             if (Ov010Beam_Idle(b)) {
                 continue;
@@ -1033,30 +1059,30 @@ void func_ov010_02201064(u8 *self) {
                 Ov010Beam_SetB(b, cur + dd);
             }
         }
-        if (FLD(u16, self, 8) < CFLD(u16, self, 0x2e)) {
-            FLD(u16, self, 0x2e) = 0;
-            FLD(u16, self, 0x2c) = 100;
+        if (self->unk_08 < CFLD(u16, self, 0x2e)) {
+            self->unk_2e = 0;
+            self->unk_2c = 100;
         } else {
-            FLD(u16, self, 0x2e)++;
+            self->unk_2e++;
         }
         break;
     }
     case 100: {
         all = TRUE;
-        for (n = FLD(u8 *, self, 0x10); n != NULL; n = FLD(u8 *, n, 8)) {
+        for (n = self->unk_10; n != NULL; n = FLD(u8 *, n, 8)) {
             if (!Ov010Beam_Idle(n + 0xc)) {
                 all = FALSE;
             }
         }
         if (all) {
-            FLD(u16, self, 0x2c) = 101;
+            self->unk_2c = 101;
         }
         break;
     }
     case 101:
         break;
     }
-    for (n = FLD(u8 *, self, 0x10); n != NULL; n = FLD(u8 *, n, 8)) {
+    for (n = self->unk_10; n != NULL; n = FLD(u8 *, n, 8)) {
         func_ov010_0220078c(n + 0xc);
     }
 }

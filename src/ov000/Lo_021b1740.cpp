@@ -57,23 +57,30 @@ static inline void Set54b(u8 *t, s32 c, u8 n) {
     LFLD(u16, LFLD(u8 *, t, 0x54), 0x8a) = n <= 1 ? 1 : n;
     LFLD(s32, LFLD(u8 *, t, 0x54), 0x8c) = c;
 }
-void func_ov000_021b1740(u8 *self, BOOL flag) {
+struct Obj021b1740 {
+    u8 unk_00[0x40];
+    ActorSub40 *unk_40;
+    u8 unk_44[0xade];
+    Bits21b1d28 unk_b22;
+};
+
+void func_ov000_021b1740(Obj021b1740 *self, BOOL flag) {
     u32 st;
-    if (LFLD(Bits21b1d28, self, 0xb22).b0 == 0) {
+    if (self->unk_b22.b0 == 0) {
         return;
     }
-    if (LFLD(Bits21b1d28, self, 0xb22).b9 != 0) {
+    if (self->unk_b22.b9 != 0) {
         return;
     }
     st = 0;
     if (((Save0214a424 *)data_0214a424)->b1 == 1) {
         st = 2;
     }
-    if (LFLD(Bits21b1d28, self, 0xb22).b9 < 2) {
-        LFLD(Bits21b1d28, self, 0xb22).st = (u16)st;
-        LFLD(Bits21b1d28, self, 0xb22).b9 = 1;
-        LFLD(ActorSub40 *, self, 0x40)->flags |= 0x80000000;
-        func_ov000_02198360(LFLD(void *, self, 0x40), 0x1f, 0);
+    if (self->unk_b22.b9 < 2) {
+        self->unk_b22.st = (u16)st;
+        self->unk_b22.b9 = 1;
+        self->unk_40->flags |= 0x80000000;
+        func_ov000_02198360(self->unk_40, 0x1f, 0);
     }
     func_02062764(0x30, 0x10);
     if (flag) {

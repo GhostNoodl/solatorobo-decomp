@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 extern void *data_0208cb84;
@@ -33,26 +34,26 @@ public:
     }
 };
 
-void func_ov000_0215bd88(VObj *self) {
-    LFLD(s32, self, 0x28) = self->vfunc_44();
-    if (LFLD(s32, self, 0x14) != 0 && LFLD(u8 *, self, 0x10) == NULL) {
+void func_ov000_0215bd88(Lo021cadcc *self) {
+    self->unk_28 = self->vfunc_44();
+    if ((s32)self->unk_14 != 0 && (u8 *)self->unk_10 == NULL) {
         if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
-            LFLD(Model *, self, 0x10) = new Model(data_0208cb84, data_0208cc8c);
+            self->unk_10 = new Model(data_0208cb84, data_0208cc8c);
         } else {
-            LFLD(Model *, self, 0x10) = new Model(data_0208cb74, data_0208cca0);
+            self->unk_10 = new Model(data_0208cb74, data_0208cca0);
         }
         {
-            void *a = func_02035d5c(LFLD(u8 *, self, 0x10) + 0x2c);
-            func_020417e0(LFLD(u8 *, self, 0x10), func_02034d88(a, LFLD(u8 *, self, 0x10) + 0x4c));
+            void *a = func_02035d5c((u8 *)self->unk_10 + 0x2c);
+            func_020417e0((u8 *)self->unk_10, func_02034d88(a, (u8 *)self->unk_10 + 0x4c));
         }
-        LFLD(u32, LFLD(u8 *, self, 0x10), 0x6c) |= 2;
-        func_02041d9c(LFLD(u8 *, self, 0x10), 0, 7);
+        LFLD(u32, self->unk_10, 0x6c) |= 2;
+        func_02041d9c((u8 *)self->unk_10, 0, 7);
     }
-    if (LFLD(u32, self, 0xc) & 0x10000) {
-        LFLD(s16, self, 0x64) = (0x100 - LFLD(s32, self, 0x24)) >> 1;
+    if (self->unk_0c & 0x10000) {
+        self->unk_64 = (0x100 - self->unk_24) >> 1;
     }
-    if (LFLD(u32, self, 0xc) & 0x20000) {
-        LFLD(s16, self, 0x66) = (0xc0 - LFLD(s32, self, 0x28)) >> 1;
+    if (self->unk_0c & 0x20000) {
+        self->unk_66 = (0xc0 - self->unk_28) >> 1;
     }
     LBIT(self, 0xc).b0 = 1;
 }

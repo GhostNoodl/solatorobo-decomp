@@ -51,30 +51,43 @@ static inline void SetGauge021b06dc(u16 a, u16 b) {
     }
 }
 
-void func_ov000_021b06dc(u8 *self) {
+struct Obj021b06dc {
+    u8 unk_00[0x40];
+    u8 *unk_40;
+    u8 unk_44[0x4];
+    u8 *unk_48;
+    u8 unk_4c[0x4];
+    u8 *unk_50;
+    u8 unk_54[0xad5];
+    u8 unk_b29;
+    u8 unk_b2a[0x4];
+    u8 unk_b2e;
+};
+
+void func_ov000_021b06dc(Obj021b06dc *self) {
     s32 k;
     s32 i;
-    LFLD(u8, self, 0xb29) = 0;
-    if (LFLD(u8, self, 0xb2e) != 0) {
-        LFLD(u8, self, 0xb2e)--;
+    self->unk_b29 = 0;
+    if (self->unk_b2e != 0) {
+        self->unk_b2e--;
     }
-    k = LFLD(u8, LFLD(u8 *, self, 0x40), 0x13);
+    k = LFLD(u8, self->unk_40, 0x13);
     for (i = 0; i < 6; i++) {
         if (k == *(s32 *)((u8 *)data_ov000_021ca1b0 + i * 12)) {
             (((Robo021b06dcCls *)self)->*data_ov000_021ca1b0[i].fn)();
             break;
         }
     }
-    if (LFLD(u16, LFLD(u8 *, self, 0x50), 0xa) != 0) {
-        LFLD(u16, LFLD(u8 *, self, 0x50), 0xa)--;
+    if (LFLD(u16, self->unk_50, 0xa) != 0) {
+        LFLD(u16, self->unk_50, 0xa)--;
     }
     {
-        u8 *st = LFLD(u8 *, self, 0x40);
+        u8 *st = self->unk_40;
         LFLD(s64, st, 4) = 0;
     }
-    LFLD(B9a_021b06dc, LFLD(u8 *, self, 0x48), 0x9a).b4 = 0;
+    LFLD(B9a_021b06dc, self->unk_48, 0x9a).b4 = 0;
     if (PlayerIdle021b06dc()) {
-        SetGauge021b06dc(LFLD(u16, LFLD(u8 *, self, 0x50), 0), LFLD(u16, LFLD(u8 *, self, 0x50), 2));
+        SetGauge021b06dc(LFLD(u16, self->unk_50, 0), LFLD(u16, self->unk_50, 2));
     }
     {
         BOOL f = LFLD(B18_021b06dc, data_0214a424, 0x18).b10 ? TRUE : FALSE;

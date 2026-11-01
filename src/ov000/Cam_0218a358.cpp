@@ -21,63 +21,91 @@ static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
-void func_ov000_0218a358(u8 *self, const Vec0218a358 *pos, const Rot0218a358 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8) {
-    LFLD(u8, self, 0xd9) = a8;
+struct Obj0218a358 {
+    u8 unk_00[0x10];
+    Vec0218a358 unk_10;
+    u8 unk_1c[0x26];
+    Rot0218a358 unk_42;
+    s32 unk_48;
+    u8 unk_4c[0x70];
+    Vec0218a358 unk_bc;
+    u8 unk_c8[0x11];
+    u8 unk_d9;
+    u8 unk_da[0xe];
+    s32 unk_e8;
+    s32 unk_ec;
+    s32 unk_f0;
+    s32 unk_f4;
+    Rot0218a358 unk_f8;
+    s16 unk_fe;
+    s16 unk_100;
+    u8 unk_102[0x2];
+    s32 unk_104;
+    s32 unk_108;
+    s32 unk_10c;
+    s32 unk_110;
+    s32 unk_114;
+    s32 unk_118;
+    s32 unk_11c;
+};
+
+void func_ov000_0218a358(Obj0218a358 *self, const Vec0218a358 *pos, const Rot0218a358 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8) {
+    self->unk_d9 = a8;
     if (rot != NULL) {
-        LFLD(Rot0218a358, self, 0xf8) = *rot;
+        self->unk_f8 = *rot;
     } else {
-        LFLD(Rot0218a358, self, 0xf8) = LFLD(Rot0218a358, self, 0x42);
+        self->unk_f8 = self->unk_42;
     }
     if (dist != 0) {
-        LFLD(s32, self, 0xf4) = dist;
+        self->unk_f4 = dist;
     } else {
-        LFLD(s32, self, 0xf4) = LFLD(s32, self, 0x48);
+        self->unk_f4 = self->unk_48;
     }
     if (pos != NULL) {
         LFLD(Vec0218a358, self, 0xe8) = *pos;
     } else {
-        LFLD(Vec0218a358, self, 0xbc) = LFLD(Vec0218a358, self, 0x10);
+        self->unk_bc = self->unk_10;
     }
-    LFLD(s16, self, 0xfe) = a6;
-    LFLD(s16, self, 0x100) = a7;
+    self->unk_fe = a6;
+    self->unk_100 = a7;
     if (!clamp) {
         return;
     }
-    if (LFLD(s32, self, 0xf4) == LFLD(s32, self, 0x11c)) {
-        if (LFLD(s32, self, 0xe8) < LFLD(s32, self, 0x104)) {
-            LFLD(s32, self, 0xe8) = LFLD(s32, self, 0x104);
-        } else if (LFLD(s32, self, 0xe8) > LFLD(s32, self, 0x110)) {
-            LFLD(s32, self, 0xe8) = LFLD(s32, self, 0x110);
+    if (self->unk_f4 == self->unk_11c) {
+        if (self->unk_e8 < self->unk_104) {
+            self->unk_e8 = self->unk_104;
+        } else if (self->unk_e8 > self->unk_110) {
+            self->unk_e8 = self->unk_110;
         }
-        if (LFLD(s32, self, 0xec) < LFLD(s32, self, 0x108)) {
-            LFLD(s32, self, 0xec) = LFLD(s32, self, 0x108);
-        } else if (LFLD(s32, self, 0xec) > LFLD(s32, self, 0x114)) {
-            LFLD(s32, self, 0xec) = LFLD(s32, self, 0x114);
+        if (self->unk_ec < self->unk_108) {
+            self->unk_ec = self->unk_108;
+        } else if (self->unk_ec > self->unk_114) {
+            self->unk_ec = self->unk_114;
         }
-        if (LFLD(s32, self, 0xf0) < LFLD(s32, self, 0x10c)) {
-            LFLD(s32, self, 0xf0) = LFLD(s32, self, 0x10c);
-        } else if (LFLD(s32, self, 0xf0) > LFLD(s32, self, 0x118)) {
-            LFLD(s32, self, 0xf0) = LFLD(s32, self, 0x118);
+        if (self->unk_f0 < self->unk_10c) {
+            self->unk_f0 = self->unk_10c;
+        } else if (self->unk_f0 > self->unk_118) {
+            self->unk_f0 = self->unk_118;
         }
     } else {
-        s32 t = FX_Div(LFLD(s32, self, 0xf4), LFLD(s32, self, 0x11c));
+        s32 t = FX_Div(self->unk_f4, self->unk_11c);
         if (t >= 0x1000) {
             t = 0x1000;
         }
-        if (LFLD(s32, self, 0xe8) < LFLD(s32, self, 0x104)) {
-            LFLD(s32, self, 0xe8) += FX_Mul(LFLD(s32, self, 0x104) - LFLD(s32, self, 0xe8), t);
-        } else if (LFLD(s32, self, 0xe8) > LFLD(s32, self, 0x110)) {
-            LFLD(s32, self, 0xe8) += FX_Mul(LFLD(s32, self, 0x110) - LFLD(s32, self, 0xe8), t);
+        if (self->unk_e8 < self->unk_104) {
+            self->unk_e8 += FX_Mul(self->unk_104 - self->unk_e8, t);
+        } else if (self->unk_e8 > self->unk_110) {
+            self->unk_e8 += FX_Mul(self->unk_110 - self->unk_e8, t);
         }
-        if (LFLD(s32, self, 0xec) < LFLD(s32, self, 0x108)) {
-            LFLD(s32, self, 0xec) += FX_Mul(LFLD(s32, self, 0x108) - LFLD(s32, self, 0xec), t);
-        } else if (LFLD(s32, self, 0xec) > LFLD(s32, self, 0x114)) {
-            LFLD(s32, self, 0xec) += FX_Mul(LFLD(s32, self, 0x114) - LFLD(s32, self, 0xec), t);
+        if (self->unk_ec < self->unk_108) {
+            self->unk_ec += FX_Mul(self->unk_108 - self->unk_ec, t);
+        } else if (self->unk_ec > self->unk_114) {
+            self->unk_ec += FX_Mul(self->unk_114 - self->unk_ec, t);
         }
-        if (LFLD(s32, self, 0xf0) < LFLD(s32, self, 0x10c)) {
-            LFLD(s32, self, 0xf0) += FX_Mul(LFLD(s32, self, 0x10c) - LFLD(s32, self, 0xf0), t);
-        } else if (LFLD(s32, self, 0xf0) > LFLD(s32, self, 0x118)) {
-            LFLD(s32, self, 0xf0) += FX_Mul(LFLD(s32, self, 0x118) - LFLD(s32, self, 0xf0), t);
+        if (self->unk_f0 < self->unk_10c) {
+            self->unk_f0 += FX_Mul(self->unk_10c - self->unk_f0, t);
+        } else if (self->unk_f0 > self->unk_118) {
+            self->unk_f0 += FX_Mul(self->unk_118 - self->unk_f0, t);
         }
     }
 }

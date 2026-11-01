@@ -23,17 +23,28 @@ static inline s32 Norm021bd624(s32 k) {
     return k;
 }
 
-void func_ov000_021bd624(u8 *self) {
-    switch (LFLD(s32, self, 0x40)) {
+struct Obj021bd624 {
+    u8 unk_00[0x40];
+    s32 unk_40;
+    s32 unk_44;
+    s32 unk_48;
+    u8 unk_4c[0x14];
+    StFn021bd624 unk_60;
+    StFn021bd624 unk_64;
+    s32 unk_68;
+};
+
+void func_ov000_021bd624(Obj021bd624 *self) {
+    switch (self->unk_40) {
     case 7:
         if (!func_ov000_021bd8ac(self)) {
             break;
         }
-        LFLD(s32, self, 0x40) = 8;
+        self->unk_40 = 8;
     case 8: {
         s32 i;
         BOOL ok;
-        s32 k = Norm021bd624(LFLD(s32, self, 0x48));
+        s32 k = Norm021bd624(self->unk_48);
         ok = FALSE;
         if (k == 11) {
             if (func_0203e688()) {
@@ -41,7 +52,7 @@ void func_ov000_021bd624(u8 *self) {
             }
         } else {
             for (i = 0; i < 8; i++) {
-                if (((void **)(self + 8))[i] != NULL && !func_02054f10(((void **)(self + 8))[i], 0xffff)) {
+                if (((void **)((u8 *)self + 8))[i] != NULL && !func_02054f10(((void **)((u8 *)self + 8))[i], 0xffff)) {
                     break;
                 }
             }
@@ -52,34 +63,34 @@ void func_ov000_021bd624(u8 *self) {
         if (!ok) {
             break;
         }
-        LFLD(s32, self, 0x40) = 9;
+        self->unk_40 = 9;
     }
     case 9: {
         s32 n;
         s32 k;
-        if (LFLD(s32, self, 0x68) != 4) {
+        if (self->unk_68 != 4) {
             break;
         }
         LBIT(self, 0).b3 = 0;
-        LFLD(s32, self, 0x68) = 5;
-        if (LFLD(StFn021bd624, self, 0x60) != NULL) {
-            LFLD(StFn021bd624, self, 0x60)(self);
+        self->unk_68 = 5;
+        if (self->unk_60 != NULL) {
+            self->unk_60(self);
         }
-        MI_CpuFill8(self + 0x68, 0, 0x24);
-        LFLD(s32, self, 0x68) = 1;
-        n = Norm021bd624(LFLD(s32, self, 0x48));
-        LFLD(s32, self, 0x44) = LFLD(s32, self, 0x48);
-        LFLD(s32, self, 0x48) = -1;
-        LFLD(StFn021bd624, self, 0x60) = data_ov000_021cc934[n].enter;
-        LFLD(StFn021bd624, self, 0x64) = data_ov000_021cc938[n].enter;
-        if (LFLD(StFn021bd624, self, 0x60) != NULL) {
-            LFLD(StFn021bd624, self, 0x60)(self);
+        MI_CpuFill8((u8 *)self + 0x68, 0, 0x24);
+        self->unk_68 = 1;
+        n = Norm021bd624(self->unk_48);
+        self->unk_44 = self->unk_48;
+        self->unk_48 = -1;
+        self->unk_60 = data_ov000_021cc934[n].enter;
+        self->unk_64 = data_ov000_021cc938[n].enter;
+        if (self->unk_60 != NULL) {
+            self->unk_60(self);
         }
-        LFLD(s32, self, 0x40) = 10;
+        self->unk_40 = 10;
     }
     }
-    if (LFLD(StFn021bd624, self, 0x60) != NULL) {
-        LFLD(StFn021bd624, self, 0x60)(self);
+    if (self->unk_60 != NULL) {
+        self->unk_60(self);
     }
 }
 

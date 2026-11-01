@@ -15,8 +15,13 @@ typedef struct {
 } Rec0219bebc;
 
 
-void func_ov000_0219bebc(u8 *self, s32 scale) {
-    Rec0219bebc *o = LFLD(Rec0219bebc *, self, 0x4c);
+struct Obj0219bebc {
+    u8 unk_00[0x4c];
+    Rec0219bebc *unk_4c;
+};
+
+void func_ov000_0219bebc(Obj0219bebc *self, s32 scale) {
+    Rec0219bebc *o = self->unk_4c;
     Rec0219bebc t;
     if (o == NULL) {
         return;

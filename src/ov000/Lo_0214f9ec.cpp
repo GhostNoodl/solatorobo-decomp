@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -38,26 +39,26 @@ static inline BOOL LoIsLoaded24(void) {
     return r;
 }
 
-void func_ov000_0214f9ec(VObj *self) {
+void func_ov000_0214f9ec(Lo021caa44 *self) {
     s32 s;
-    if (LFLD(s32, self, 0x24) == 0 || (s = LFLD(s32, self, 8)) == 0) {
+    if (self->unk_24 == 0 || (s = self->unk_08) == 0) {
         return;
     }
     if (s != 0xc && s != 0xd) {
         return;
     }
-    if (LFLD(VObj *, self, 0x4c) != NULL) {
-        LFLD(VObj *, self, 0x4c)->vfunc_20();
+    if (self->unk_4c != NULL) {
+        self->unk_4c->vfunc_20();
     }
-    if (LFLD(VObj *, self, 0x50) != NULL) {
-        LFLD(VObj *, self, 0x50)->vfunc_20();
+    if ((VObj *)self->unk_50 != NULL) {
+        ((VObj *)self->unk_50)->vfunc_20();
     }
-    if (LFLD(VObj *, self, 0x5c) != NULL) {
-        LFLD(VObj *, self, 0x5c)->vfunc_20();
+    if (self->unk_5c != NULL) {
+        self->unk_5c->vfunc_20();
     }
     self->vfunc_78();
-    if (LFLD(VObj *, self, 0x60) != NULL) {
-        LFLD(VObj *, self, 0x60)->vfunc_20();
+    if (self->unk_60 != NULL) {
+        self->unk_60->vfunc_20();
     }
 }
 

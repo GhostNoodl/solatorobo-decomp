@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u32 b0 : 1;
@@ -54,29 +55,29 @@ static inline BOOL PlayerIdle021a16b0(void) {
     return TRUE;
 }
 
-void func_ov000_021a16b0(u8 *self) {
-    switch (*LFLD(u16 *, self, 0x40)) {
+void func_ov000_021a16b0(Robo021ca458 *self) {
+    switch (*(u16 *)self->unk_40) {
     case 0:
-        LFLD(u16 *, self, 0x40)[1] = 0;
-        (*LFLD(u16 *, self, 0x40))++;
+        ((u16 *)self->unk_40)[1] = 0;
+        (*(u16 *)self->unk_40)++;
         if (LFLD(B22_021a16b0, self, 0xb22).b0 > 1) {
-            if (LFLD(void *, self, 0x998) != NULL) {
-                func_ov000_02191008(LFLD(void *, self, 0x998));
+            if (self->unk_998 != NULL) {
+                func_ov000_02191008(self->unk_998);
             }
-            if (LFLD(s16, self, 0xb64) >= 0) {
-                func_02049bb4(data_02097e4c, LFLD(s16, self, 0xb64));
-                LFLD(s16, self, 0xb64) = -1;
+            if (self->unk_b64 >= 0) {
+                func_02049bb4(data_02097e4c, self->unk_b64);
+                self->unk_b64 = -1;
             }
             if (LFLD(B22_021a16b0, self, 0xb22).b0 > 1) {
                 LFLD(B22_021a16b0, self, 0xb22).b0 = 1;
-                LFLD(u16, self, 0x7c) = 0;
-                LFLD(u16, self, 0x80) = 0;
-                LFLD(u16, self, 0x9a6) = 0;
-                LFLD(u16, self, 0x9a8) = 0;
-                LFLD(u16, self, 0x9aa) = 0;
-                LFLD(u16, self, 0x9a0) = 0;
-                LFLD(u16, self, 0x9a2) = 0;
-                LFLD(u16, self, 0x9a4) = 0;
+                self->unk_7c = 0;
+                self->unk_80 = 0;
+                self->unk_9a6 = 0;
+                self->unk_9a8 = 0;
+                self->unk_9aa = 0;
+                self->unk_9a0 = 0;
+                self->unk_9a2 = 0;
+                self->unk_9a4 = 0;
             }
         }
     case 1: {
@@ -92,7 +93,7 @@ void func_ov000_021a16b0(u8 *self) {
                 }
                 rate = 0xa4;
             }
-        } else if (LFLD(u32, LFLD(u8 *, self, 0x48), 0x50) & 0x400) {
+        } else if (LFLD(u32, self->unk_48, 0x50) & 0x400) {
             name = data_ov000_021cc618;
         }
         if (LFLD(B24_021a16b0, self, 0xb24).b25) {
@@ -100,33 +101,33 @@ void func_ov000_021a16b0(u8 *self) {
             rate = 0x1000;
             d = 1;
         }
-        func_ov000_02190cb0(LFLD(void *, self, 0x38), name, rate, d);
-        func_ov000_021915a0(LFLD(void *, self, 0x38));
+        func_ov000_02190cb0(self->unk_38, name, rate, d);
+        func_ov000_021915a0(self->unk_38);
         if (LFLD(B24_021a16b0, self, 0xb24).b12 != 0) {
-            (*LFLD(u16 *, self, 0x40))++;
-            if (LFLD(u8, self, 0xb2f) == 0) {
-                LFLD(u8, self, 0xb2f) = 1;
+            (*(u16 *)self->unk_40)++;
+            if (self->unk_b2f == 0) {
+                self->unk_b2f = 1;
             }
             return;
         }
-        if (LFLD(u16 *, self, 0x40)[1] >= 0x5a) {
-            if (LFLD(u16, self, 0xb32) == 0) {
-                LFLD(u16, self, 0xb32) = 1;
+        if (((u16 *)self->unk_40)[1] >= 0x5a) {
+            if (self->unk_b32 == 0) {
+                self->unk_b32 = 1;
             }
-        } else if (PlayerIdle021a16b0() && LFLD(u8, self, 0x15) == 1 && !LFLD(B8_021a16b0, self, 0xb29).b1 &&
-                   !LFLD(B8_021a16b0, self, 0xb28).b2 && LFLD(u8, self, 0xb2e) == 0 &&
+        } else if (PlayerIdle021a16b0() && self->unk_15 == 1 && !LFLD(B8_021a16b0, self, 0xb29).b1 &&
+                   !LFLD(B8_021a16b0, self, 0xb28).b2 && self->unk_b2e == 0 &&
                    LFLD(B22_021a16b0, self, 0xb22).b0 == 0) {
-            LFLD(u16 *, self, 0x40)[1]++;
+            ((u16 *)self->unk_40)[1]++;
         } else {
-            LFLD(u16 *, self, 0x40)[1] = 0;
+            ((u16 *)self->unk_40)[1] = 0;
         }
-        LFLD(s32, self, 0x9c) = 0;
-        LFLD(s32, self, 0xa0) = 0;
-        LFLD(s32, self, 0xa4) = 0;
-        LFLD(s32, self, 0xa8) = 0;
-        LFLD(u16, LFLD(u8 *, self, 0x48), 0x9a) |= 0x20;
-        if (LFLD(u32, self, 0x30) & 0x80) {
-            func_ov000_021987b8(LFLD(void *, self, 0x48), 1, 0, 0);
+        self->unk_9c = 0;
+        self->unk_a0 = 0;
+        self->unk_a4 = 0;
+        self->unk_a8 = 0;
+        LFLD(u16, self->unk_48, 0x9a) |= 0x20;
+        if (self->unk_30 & 0x80) {
+            func_ov000_021987b8(self->unk_48, 1, 0, 0);
         }
         return;
     }
@@ -135,9 +136,9 @@ void func_ov000_021a16b0(u8 *self) {
             return;
         }
         if (LFLD(B24_021a16b0, self, 0xb24).b12 != 3) {
-            func_ov000_021b209c(self);
+            func_ov000_021b209c((u8 *)self);
         } else {
-            func_ov000_021b2b08(self);
+            func_ov000_021b2b08((u8 *)self);
         }
         return;
     }

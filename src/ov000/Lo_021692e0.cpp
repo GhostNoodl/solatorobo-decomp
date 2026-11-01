@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -49,7 +50,7 @@ static inline BOOL LoD78Idle(void) {
     return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
 }
 
-void func_ov000_021692e0(void *self) {
+void func_ov000_021692e0(Lo021cb7ec *self) {
     void *res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
     u8 *m = (u8 *)func_0203dd9c(0x160);
     if (m) {
@@ -57,36 +58,36 @@ void func_ov000_021692e0(void *self) {
         func_02041218(m + 0x88);
         func_02041440(m, nm, 0);
     }
-    LFLD(void *, self, 0x9c) = m;
+    self->unk_9c = m;
     func_020417e0(m, res);
-    LFLD(u32, LFLD(void *, self, 0x9c), 0x6c) |= 2;
-    LFLD(u32, LFLD(void *, self, 0x9c), 0x6c) |= 0x200000;
-    LFLD(u32, LFLD(void *, self, 0x9c), 0x6c) |= 0x80000;
-    func_02041d9c(LFLD(void *, self, 0x9c), 0, 1);
-    LFLD(s32, self, 0x30) = 0xc000;
-    LFLD(s32, self, 0x50) = 0x30;
-    LFLD(s32, self, 0x54) = 3;
-    LFLD(s32, self, 0x28) = 0;
-    LFLD(u32, self, 0xc) |= 0x360;
-    LFLD(s32, self, 0x74) = 0;
-    LFLD(s32, self, 0x78) = 0;
-    LFLD(s32, self, 0x7c) = 0xffffe333;
+    LFLD(u32, self->unk_9c, 0x6c) |= 2;
+    LFLD(u32, self->unk_9c, 0x6c) |= 0x200000;
+    LFLD(u32, self->unk_9c, 0x6c) |= 0x80000;
+    func_02041d9c(self->unk_9c, 0, 1);
+    self->unk_30 = 0xc000;
+    self->unk_50 = 0x30;
+    self->unk_54 = 3;
+    self->unk_28 = 0;
+    self->unk_0c |= 0x360;
+    self->unk_74 = 0;
+    self->unk_78 = 0;
+    self->unk_7c = 0xffffe333;
     func_ov000_0215fdfc(self, 2, data_ov000_021c9ab0);
 }
 
-BOOL func_ov000_021693e0(void *self) {
+BOOL func_ov000_021693e0(Lo021cb7ec *self) {
     if (!LoGIdle() || !LoD78Idle()) {
         LBIT(self, 0xc).b1 = 1;
     }
-    switch (LFLD(s32, self, 4)) {
+    switch (self->unk_04) {
     case 6:
         if (!LBIT(self, 0xc).b1 ? TRUE : FALSE) {
-            LFLD(s32, self, 4) = 0;
+            self->unk_04 = 0;
             return TRUE;
         }
         return FALSE;
     case 1:
-        if (!func_02054f10(LFLD(void *, self, 0x9c), 0xffff)) {
+        if (!func_02054f10(self->unk_9c, 0xffff)) {
             return FALSE;
         }
         LBIT(self, 0xc).b3 = 1;

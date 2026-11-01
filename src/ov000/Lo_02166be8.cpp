@@ -67,7 +67,15 @@ static inline BOOL Skip02166be8(void) {
     return skip;
 }
 
-void func_ov000_02166be8(u8 *self) {
+struct Obj02166be8 {
+    u8 unk_00[0x30];
+    u8 *unk_30;
+    s32 unk_34;
+    s32 unk_38;
+    s32 unk_3c;
+};
+
+void func_ov000_02166be8(Obj02166be8 *self) {
     u8 *area;
     u8 *rgb;
     s32 k;
@@ -82,7 +90,7 @@ void func_ov000_02166be8(u8 *self) {
     tgt = LFLD(u8 *, ctx, 0xc);
     Pos02166be8 c = LFLD(Pos02166be8, data_ov000_021c9a9c, 0x28);
     k = 0x1000;
-    switch (LFLD(s32, self, 0x34)) {
+    switch (self->unk_34) {
     case 4:
         func_ov000_021658e8(self);
         if (Skip02166be8()) {
@@ -92,41 +100,41 @@ void func_ov000_02166be8(u8 *self) {
             return;
         }
         func_ov000_02164c50(self, tgt);
-        LFLD(s32, self, 0x34) = 8;
+        self->unk_34 = 8;
         return;
     case 3:
         tgt = NULL;
     case 8:
-        if (tgt == NULL || LFLD(u16, LFLD(u8 *, self, 0x30), 4) != LFLD(u16, tgt, 8)) {
-            LFLD(s32, self, 0x38) -= 0x1000;
+        if (tgt == NULL || LFLD(u16, self->unk_30, 4) != LFLD(u16, tgt, 8)) {
+            self->unk_38 -= 0x1000;
         } else {
-            LFLD(s32, self, 0x38) += 0x1000;
+            self->unk_38 += 0x1000;
         }
-        LFLD(s32, self, 0x3c) = FX_Div(LFLD(s32, self, 0x38), k);
-        if (LFLD(s32, self, 0x3c) < 0) {
-            LFLD(s32, self, 0x38) = 0;
-            LFLD(s32, self, 0x3c) = 0;
-            LFLD(s32, self, 0x34) = 4;
+        self->unk_3c = FX_Div(self->unk_38, k);
+        if (self->unk_3c < 0) {
+            self->unk_38 = 0;
+            self->unk_3c = 0;
+            self->unk_34 = 4;
             return;
         }
-        if (LFLD(s32, self, 0x3c) > 0x1000) {
-            LFLD(s32, self, 0x38) = k;
-            LFLD(s32, self, 0x3c) = k;
-            LFLD(s32, self, 0x34) = 7;
+        if (self->unk_3c > 0x1000) {
+            self->unk_38 = k;
+            self->unk_3c = k;
+            self->unk_34 = 7;
         }
         return;
     case 7: {
         rgb = func_ov000_02165f94(self);
-        w = LFLD(u8 *, self, 0x30);
+        w = self->unk_30;
         k = 0x19a;
         if (LFLD(void *, w, 0xcb8) == NULL || !LFLD(Bits02166be8, LFLD(void *, w, 0xcb8), 0).b3) {
             if (tgt == NULL || LFLD(u16, w, 4) != LFLD(u16, tgt, 8)) {
-                LFLD(s32, self, 0x34) = 3;
+                self->unk_34 = 3;
                 return;
             }
         } else {
-            if (Skip02166be8() || tgt == NULL || LFLD(u16, LFLD(u8 *, self, 0x30), 4) != LFLD(u16, tgt, 8)) {
-                LFLD(s32, self, 0x34) = 4;
+            if (Skip02166be8() || tgt == NULL || LFLD(u16, self->unk_30, 4) != LFLD(u16, tgt, 8)) {
+                self->unk_34 = 4;
                 return;
             }
         }
@@ -150,7 +158,7 @@ void func_ov000_02166be8(u8 *self) {
         }
         if (IsMode0_02166be8() || IsMode1_02166be8()) {
             u8 idx = rgb[2];
-            u8 *w2 = LFLD(u8 *, self, 0x30);
+            u8 *w2 = self->unk_30;
             area = idx >= w2[8] ? NULL : LFLD(u8 *, w2, 0xc84) + idx * 0x1c;
             if (area != LFLD(u8 *, w, 0xcb8)) {
                 LFLD(s32, w, 0xcc4) = 0;

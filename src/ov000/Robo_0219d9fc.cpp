@@ -133,9 +133,16 @@ static inline BOOL PadB9_0219d9fc(void) {
     return PAD18.b9 ? TRUE : FALSE;
 }
 
-static inline BOOL RgbEq_0219d9fc(u8 *g, u8 *self) {
+struct RgbEq_0219d9fcSelf {
+    u8 unk_00[0x772];
+    u8 unk_772;
+    u8 unk_773;
+    u8 unk_774;
+};
+
+static inline BOOL RgbEq_0219d9fc(u8 *g, RgbEq_0219d9fcSelf *self) {
     BOOL e = FALSE;
-    if (g[0xca] == self[0x772] && g[0xcb] == self[0x773] && g[0xcc] == self[0x774]) {
+    if (g[0xca] == self->unk_772 && g[0xcb] == self->unk_773 && g[0xcc] == self->unk_774) {
         e = TRUE;
     }
     return e;
@@ -150,7 +157,77 @@ static inline void Flash_0219d9fc(u8 *m, u16 a, u16 b, s32 n) {
     }
 }
 
-BOOL func_ov000_0219d9fc(u8 *self) {
+struct Obj0219d9fc {
+    u8 unk_00[0xc];
+    u16 unk_0c;
+    u8 unk_0e[0x2a];
+    u8 *unk_38;
+    void *unk_3c;
+    u8 *unk_40;
+    u8 unk_44[0x4];
+    u8 *unk_48;
+    u8 unk_4c[0x4];
+    u8 *unk_50;
+    u8 unk_54[0x8];
+    void *unk_5c;
+    u8 unk_60[0x4];
+    s32 unk_64;
+    u8 unk_68[0x4];
+    s32 unk_6c;
+    s32 unk_70;
+    s32 unk_74;
+    s32 unk_78;
+    u8 unk_7c[0x80];
+    void *unk_fc;
+    u8 unk_100[0x24];
+    s32 unk_124;
+    s32 unk_128;
+    s32 unk_12c;
+    u8 unk_130[0x3d];
+    u8 unk_16d;
+    u16 unk_16e;
+    u8 unk_170[0x1c8];
+    s32 unk_338;
+    u8 unk_33c[0x7c];
+    void *unk_3b8;
+    u8 unk_3bc[0x6a];
+    u8 unk_426;
+    u8 unk_427[0x2];
+    u8 unk_429;
+    u16 unk_42a;
+    u8 unk_42c[0x300];
+    s32 unk_72c;
+    u8 unk_730[0xfe];
+    u16 unk_82e;
+    u16 unk_830;
+    u16 unk_832;
+    u16 unk_834;
+    u8 unk_836;
+    u8 unk_837[0x2];
+    u8 unk_839;
+    u8 unk_83a[0x15e];
+    u8 *unk_998;
+    u8 unk_99c[0xa];
+    u16 unk_9a6;
+    u16 unk_9a8;
+    u16 unk_9aa;
+    u16 unk_9ac;
+    u16 unk_9ae;
+    void *unk_9b0;
+    void *unk_9b4;
+    u8 unk_9b8[0x94];
+    Bit0_0219d9fc unk_a4c;
+    u8 unk_a4d[0x97];
+    u8 unk_ae4;
+    u8 unk_ae5[0x37];
+    u16 unk_b1c;
+    u8 unk_b1e[0x2];
+    u16 unk_b20;
+    u8 unk_b22[0x6];
+    B28_0219d9fc unk_b28;
+};
+
+BOOL func_ov000_0219d9fc(Obj0219d9fc *self) {
     u32 fl;
     u8 *m;
     u8 v;
@@ -161,13 +238,13 @@ BOOL func_ov000_0219d9fc(u8 *self) {
     u16 cb;
     s32 h;
 
-    if (LFLD(B28_0219d9fc, self, 0xb28).b3) {
+    if (self->unk_b28.b3) {
         return FALSE;
     }
-    func_ov000_02191ec4(LFLD(void *, self, 0x3c), 1, LFLD(u32, LFLD(u8 *, self, 0x48), 0x54));
-    m = LFLD(u8 *, self, 0x38);
+    func_ov000_02191ec4(self->unk_3c, 1, LFLD(u32, self->unk_48, 0x54));
+    m = self->unk_38;
     v = LFLD(u8, m, 0xbf);
-    if (LFLD(u32, LFLD(u8 *, self, 0x48), 0x54) & 0x80000) {
+    if (LFLD(u32, self->unk_48, 0x54) & 0x80000) {
         if (B24(self).b20) {
             if (v > 5) {
                 LFLD(u8, m, 0xbf) = v - 3;
@@ -189,10 +266,10 @@ BOOL func_ov000_0219d9fc(u8 *self) {
 
     lvl = 0x1f;
     {
-        u16 w = LFLD(u16, LFLD(u8 *, self, 0x50), 0xa);
+        u16 w = LFLD(u16, self->unk_50, 0xa);
         n = 0;
         if (w != 0) {
-            if (LFLD(u16, LFLD(u8 *, self, 0x38), 0xba) == 0) {
+            if (LFLD(u16, self->unk_38, 0xba) == 0) {
                 u16 k;
                 n = 1;
                 cb = ca = 0x53ff;
@@ -220,7 +297,7 @@ BOOL func_ov000_0219d9fc(u8 *self) {
                 n = 0x40;
             }
         } else if (B2C(self).b6) {
-            if (LFLD(u8, LFLD(u8 *, self, 0x40), 0x13) == 0x16) {
+            if (LFLD(u8, self->unk_40, 0x13) == 0x16) {
                 cb = ca = 0x729c;
                 n = 1;
             }
@@ -230,70 +307,70 @@ BOOL func_ov000_0219d9fc(u8 *self) {
         }
     }
     if (n != 0) {
-        u8 *fm = LFLD(u8 *, self, 0x38);
+        u8 *fm = self->unk_38;
         LFLD(u16, fm, 0xb6) = ca;
         LFLD(u16, fm, 0xb8) = cb;
         LFLD(u16, fm, 0xba) = n + 1;
         LFLD(u16, fm, 0xbc) = n;
     }
-    LFLD(u8, LFLD(u8 *, self, 0x38), 0xbe) = lvl;
+    LFLD(u8, self->unk_38, 0xbe) = lvl;
     if (B24(self).b1) {
-        if (B22(self).b0 && LFLD(u8 *, self, 0x998) != NULL) {
-            Flash_0219d9fc(LFLD(u8 *, self, 0x998), ca, cb, n);
-            LFLD(u8, LFLD(u8 *, self, 0x998), 0xbe) = lvl;
+        if (B22(self).b0 && self->unk_998 != NULL) {
+            Flash_0219d9fc(self->unk_998, ca, cb, n);
+            LFLD(u8, self->unk_998, 0xbe) = lvl;
         }
     } else if (B24(self).b21) {
         if (n != 0) {
-            LFLD(u16, self, 0x82e) = ca;
-            LFLD(u16, self, 0x830) = cb;
-            LFLD(u16, self, 0x832) = n + 1;
-            LFLD(u16, self, 0x834) = n;
+            self->unk_82e = ca;
+            self->unk_830 = cb;
+            self->unk_832 = n + 1;
+            self->unk_834 = n;
         }
-        LFLD(u8, self, 0x836) = lvl;
+        self->unk_836 = lvl;
     }
 
     {
     s32 res = 0;
-    s32 off = LFLD(s32, self, 0x64);
+    s32 off = self->unk_64;
     u8 alpha = Begin_0219d9fc();
     if (B24(self).b2) {
         VEC(self, 0x3e0) = VEC(self, 0x75c);
-        func_ov000_02190758(self + 0x368, self + 0x76c, 1);
-        LFLD(u8, self, 0x426) = 0x1f;
-        LFLD(u8, self, 0x429) = alpha;
-        if (func_ov000_021903b4(self + 0x368)) {
+        func_ov000_02190758((u8 *)self + 0x368, (u8 *)self + 0x76c, 1);
+        self->unk_426 = 0x1f;
+        self->unk_429 = alpha;
+        if (func_ov000_021903b4((u8 *)self + 0x368)) {
             res = 1;
         }
         VEC(self, 0x124) = VEC(self, 0x70);
-        func_ov000_02190758(self + 0xac, self + 0x7c, 1);
-        LFLD(u8, self, 0x16d) = alpha;
-        func_ov000_021903b4(self + 0xac);
-        h = LFLD(s32, self, 0x338);
+        func_ov000_02190758((u8 *)self + 0xac, (u8 *)self + 0x7c, 1);
+        self->unk_16d = alpha;
+        func_ov000_021903b4((u8 *)self + 0xac);
+        h = self->unk_338;
     } else {
     if (B24(self).b1) {
         VecFx32 p;
         if ((u32)(B24(self).b5 - 1) <= 1) {
             s32 f = B24(self).b7;
             if (f == 1) {
-                LFLD(u8, self, 0xae4) |= 2;
+                self->unk_ae4 |= 2;
             } else if (f == 0) {
                 LFLD(Bit0_0219d9fc, self, 0xae4).b0 = 1;
             } else {
-                LFLD(u8, self, 0xae4) |= 2;
+                self->unk_ae4 |= 2;
                 LFLD(Bit0_0219d9fc, self, 0xae4).b0 = 1;
             }
         }
         if (B22(self).b0) {
-            LFLD(u8, self, 0xae4) |= 4;
+            self->unk_ae4 |= 4;
         }
-        if (LFLD(u8, self, 0xae4) != 0) {
-            LFLD(void *, self, 0x3b8) = self + 0xa50;
-            NNS_G3dRenderObjSetInitFunc(self + 0x38c, (void *)func_ov003_021ce9ac);
-            LFLD(u16, self, 0x42a) |= 0x20;
+        if (self->unk_ae4 != 0) {
+            self->unk_3b8 = (u8 *)self + 0xa50;
+            NNS_G3dRenderObjSetInitFunc((u8 *)self + 0x38c, (void *)func_ov003_021ce9ac);
+            self->unk_42a |= 0x20;
         }
         p = VEC(self, 0x75c);
         if (B24(self).b12) {
-            a = FindActor_0219d9fc(LFLD(u16, self, 0xb20));
+            a = FindActor_0219d9fc(self->unk_b20);
             u8 *s;
             if (a != NULL && (s = LFLD(u8 *, a, 0x4c)) != NULL) {
                 s16 *e = (s16 *)(data_ov000_021ca320 + LFLD(u16, s, 6) * 0x18);
@@ -305,12 +382,12 @@ BOOL func_ov000_0219d9fc(u8 *self) {
             }
         }
         VEC(self, 0x3e0) = p;
-        func_ov000_02190758(self + 0x368, self + 0x76c, 1);
-        LFLD(u8, self, 0x429) = alpha;
-        if (func_ov000_021903b4(self + 0x368)) {
+        func_ov000_02190758((u8 *)self + 0x368, (u8 *)self + 0x76c, 1);
+        self->unk_429 = alpha;
+        if (func_ov000_021903b4((u8 *)self + 0x368)) {
             res = 1;
         }
-        h = LFLD(s32, self, 0x72c);
+        h = self->unk_72c;
         if (!B22(self).b3) {
             off = off * 2 - (off >> 2);
         } else {
@@ -320,51 +397,51 @@ BOOL func_ov000_0219d9fc(u8 *self) {
             func_ov000_021b4130(self, res != 0 ? TRUE : FALSE);
         }
     } else {
-        if (!PadB9_0219d9fc() && RgbEq_0219d9fc(data_ov000_021ccd54, self)) {
+        if (!PadB9_0219d9fc() && RgbEq_0219d9fc(data_ov000_021ccd54, (RgbEq_0219d9fcSelf *)self)) {
             VEC(self, 0x3e0) = VEC(self, 0x75c);
-            func_ov000_02190758(self + 0x368, self + 0x76c, 1);
-            LFLD(u8, self, 0x426) = 0x1f;
-            LFLD(u8, self, 0x429) = alpha;
+            func_ov000_02190758((u8 *)self + 0x368, (u8 *)self + 0x76c, 1);
+            self->unk_426 = 0x1f;
+            self->unk_429 = alpha;
             if (B22(self).b0) {
-                LFLD(u8, self, 0xae4) |= 4;
-                LFLD(void *, self, 0x3b8) = self + 0xa50;
-                NNS_G3dRenderObjSetInitFunc(self + 0x38c, (void *)func_ov003_021ce9ac);
-                LFLD(u16, self, 0x42a) |= 0x20;
+                self->unk_ae4 |= 4;
+                self->unk_3b8 = (u8 *)self + 0xa50;
+                NNS_G3dRenderObjSetInitFunc((u8 *)self + 0x38c, (void *)func_ov003_021ce9ac);
+                self->unk_42a |= 0x20;
             }
-            if (func_ov000_021903b4(self + 0x368)) {
+            if (func_ov000_021903b4((u8 *)self + 0x368)) {
                 res = 1;
             }
         } else {
             res = -1;
         }
         if (B24(self).b21) {
-            LFLD(Bit0_0219d9fc, self, 0xa4c).b0 = 1;
-            LFLD(void *, self, 0xfc) = self + 0x9b8;
-            NNS_G3dRenderObjSetInitFunc(self + 0xd0, (void *)func_ov003_021ce9ac);
-            LFLD(u16, self, 0x16e) |= 0x20;
+            self->unk_a4c.b0 = 1;
+            self->unk_fc = (u8 *)self + 0x9b8;
+            NNS_G3dRenderObjSetInitFunc((u8 *)self + 0xd0, (void *)func_ov003_021ce9ac);
+            self->unk_16e |= 0x20;
         }
         if (!B93(self).b0) {
             VEC(self, 0x124) = VEC(self, 0x70);
-            func_ov000_02190758(self + 0xac, self + 0x7c, 1);
+            func_ov000_02190758((u8 *)self + 0xac, (u8 *)self + 0x7c, 1);
         }
-        LFLD(u8, self, 0x16d) = alpha;
-        if (func_ov000_021903b4(self + 0xac) && B24(self).b21) {
+        self->unk_16d = alpha;
+        if (func_ov000_021903b4((u8 *)self + 0xac) && B24(self).b21) {
             VEC(self, 0x7f0) = VEC(self, 0x9dc);
-            MI_Copy36B(self + 0x9b8, self + 0x7fc);
-            LFLD(u8, self, 0x839) = alpha;
-            func_ov000_021903b4(self + 0x778);
+            MI_Copy36B((u8 *)self + 0x9b8, (u8 *)self + 0x7fc);
+            self->unk_839 = alpha;
+            func_ov000_021903b4((u8 *)self + 0x778);
         }
-        h = LFLD(s32, self, 0x338);
+        h = self->unk_338;
         if (B24(self).b5) {
-            u8 *a = FindActor_0219d9fc(LFLD(u16, self, 0xb1c));
+            u8 *a = FindActor_0219d9fc(self->unk_b1c);
             if (a != NULL) {
                 u8 *s = LFLD(u8 *, a, 0x4c);
                 s32 q[3];
-                LFLD(u16, s, 0x1c) = LFLD(u16, self, 0xc);
-                q[0] = LFLD(s32, self, 0x70);
-                q[1] = LFLD(s32, self, 0x74);
-                q[2] = LFLD(s32, self, 0x78);
-                q[1] += LFLD(s32, self, 0x6c);
+                LFLD(u16, s, 0x1c) = self->unk_0c;
+                q[0] = self->unk_70;
+                q[1] = self->unk_74;
+                q[2] = self->unk_78;
+                q[1] += self->unk_6c;
                 VEC(s, 0x44) = *(VecFx32 *)q;
             }
         }
@@ -372,28 +449,28 @@ BOOL func_ov000_0219d9fc(u8 *self) {
     {
         u8 *g = data_ov000_021ccd54;
         if (IsIdle_0219d9fc(g) && !HasD4B_0219d9fc(g)) {
-            func_ov000_021bd7a0(LFLD(void *, self, 0x5c));
-            func_ov000_021bd7a0(LFLD(void *, self, 0x9b0));
-            func_ov000_021bd7a0(LFLD(void *, self, 0x9b4));
+            func_ov000_021bd7a0(self->unk_5c);
+            func_ov000_021bd7a0(self->unk_9b0);
+            func_ov000_021bd7a0(self->unk_9b4);
         }
     }
     }
-    fl = LFLD(u32, LFLD(u8 *, self, 0x48), 0x54);
+    fl = LFLD(u32, self->unk_48, 0x54);
     if ((fl & 0xf0f0f0) != 0xe0e000 && (fl & 0x20000) != 0x20000) {
-        LFLD(s32, LFLD(u8 *, self, 0x3c), 0x14) = off;
-        LFLD(s32, LFLD(u8 *, self, 0x3c), 0x10) = LFLD(s32, self, 0x74) - h;
-        LFLD(u8, LFLD(u8 *, self, 0x3c), 0x1a) = alpha;
+        LFLD(s32, self->unk_3c, 0x14) = off;
+        LFLD(s32, self->unk_3c, 0x10) = self->unk_74 - h;
+        LFLD(u8, self->unk_3c, 0x1a) = alpha;
         if (B93(self).b0 && !B24(self).b1) {
             VecFx32 w;
-            w.x = LFLD(s32, self, 0x124);
-            w.y = LFLD(s32, self, 0x128);
-            w.z = LFLD(s32, self, 0x12c);
-            func_ov000_02191c24(LFLD(void *, self, 0x3c), &w);
+            w.x = self->unk_124;
+            w.y = self->unk_128;
+            w.z = self->unk_12c;
+            func_ov000_02191c24(self->unk_3c, &w);
         } else {
-            func_ov000_02191c24(LFLD(void *, self, 0x3c), self + 0x70);
+            func_ov000_02191c24(self->unk_3c, (u8 *)self + 0x70);
         }
     }
-    if (B22(self).b0 && LFLD(u8 *, self, 0x998) != NULL && res >= 0 && LFLD(H0_0219d9fc, self, 0x42a).b0) {
+    if (B22(self).b0 && self->unk_998 != NULL && res >= 0 && LFLD(H0_0219d9fc, self, 0x42a).b0) {
         if (res != 0) {
             BOOL set;
             u16 rz;
@@ -401,10 +478,10 @@ BOOL func_ov000_0219d9fc(u8 *self) {
             u16 rx;
             Mtx33_0219d9fc mm;
             Mtx33_0219d9fc mt;
-            VEC(LFLD(u8 *, self, 0x998), 0x78) = VEC(self, 0xad4);
-            ry = LFLD(u16, self, 0x9a8);
-            rz = LFLD(u16, self, 0x9aa);
-            rx = LFLD(u16, self, 0x9a6);
+            VEC(self->unk_998, 0x78) = VEC(self, 0xad4);
+            ry = self->unk_9a8;
+            rz = self->unk_9aa;
+            rx = self->unk_9a6;
             set = FALSE;
             MTX_Identity33_(&mm);
             if (ry != 0) {
@@ -428,16 +505,16 @@ BOOL func_ov000_0219d9fc(u8 *self) {
                     MTX_RotZ33_(&mm, SIN_0219d9fc(rz), COS_0219d9fc(rz));
                 }
             }
-            MTX_Concat33(&mm, self + 0xab0, &mm);
-            MI_Copy36B(&mm, LFLD(u8 *, self, 0x998) + 0x84);
-            LFLD(u8, LFLD(u8 *, self, 0x998), 0xc1) = alpha;
-            func_ov000_021903b4(LFLD(u8 *, self, 0x998));
+            MTX_Concat33(&mm, (u8 *)self + 0xab0, &mm);
+            MI_Copy36B(&mm, self->unk_998 + 0x84);
+            LFLD(u8, self->unk_998, 0xc1) = alpha;
+            func_ov000_021903b4(self->unk_998);
         }
-        if (LFLD(u16, self, 0x9ac) < LFLD(u16, self, 0x9ae)) {
+        if (self->unk_9ac < self->unk_9ae) {
             if (B24(self).b1) {
                 u8 *o = LFLD(u8 *, data_ov000_021ccd30, 0x11c);
                 if (o != NULL && LFLD(void *, o, 0x6c) != NULL) {
-                    func_ov000_02167fac(LFLD(void *, o, 0x6c), LFLD(u16, self, 0x9ac), LFLD(u16, self, 0x9ae));
+                    func_ov000_02167fac(LFLD(void *, o, 0x6c), self->unk_9ac, self->unk_9ae);
                 }
             }
         }

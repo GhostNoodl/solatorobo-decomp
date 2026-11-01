@@ -45,12 +45,27 @@ static inline s32 Wave021ba92c(const s16 *tbl, s32 n, s32 d) {
     return tbl[((r << 14) >> 16) * 2];
 }
 
-s32 func_ov000_021ba92c(u8 *self) {
-    switch (LFLD(s32, self, 4)) {
+struct Obj021ba92c {
+    u8 unk_00[0x4];
+    s32 unk_04;
+    u16 unk_08;
+    u8 unk_0a[0x6];
+    Ov000Text *unk_10;
+    u8 unk_14[0x4];
+    s32 unk_18;
+    s32 unk_1c;
+    s32 unk_20;
+    s32 unk_24;
+    s32 unk_28;
+    s32 unk_2c;
+};
+
+s32 func_ov000_021ba92c(Obj021ba92c *self) {
+    switch (self->unk_04) {
     case 1:
-        LFLD(s32, self, 4) = 2;
+        self->unk_04 = 2;
     case 2:
-        LFLD(s32, self, 4) = 4;
+        self->unk_04 = 4;
     case 4: {
         s32 m = LFLD(s32, data_ov000_021ccd54, 0x98);
         void *str;
@@ -58,63 +73,63 @@ s32 func_ov000_021ba92c(u8 *self) {
         if (!IsMode021ba92c(m) && (u32)(m - 0x11) > 2) {
             break;
         }
-        str = func_02061d64(LFLD(u16, self, 8));
+        str = func_02061d64(self->unk_08);
         t = (Ov000Text *)func_0203dd9c(0xb8);
         if (t != NULL) {
             t->vtbl = data_0208ba70;
             func_0204c7d0(t);
         }
-        LFLD(Ov000Text *, self, 0x10) = t;
+        self->unk_10 = t;
         t->unk_28 = 8;
-        LFLD(Ov000Text *, self, 0x10)->unk_2c = 0;
-        t = LFLD(Ov000Text *, self, 0x10);
+        self->unk_10->unk_2c = 0;
+        t = self->unk_10;
         t->unk_24 = (s32)str;
         t->unk_4c = func_0204c4fc(t->unk_28, t->unk_38, t->unk_24, &t->unk_44, &t->unk_48, t->unk_37 != 0);
         LFLD(s32, data_02097ce0, 4) = t->unk_28;
-        LFLD(VObj *, self, 0x10)->vfunc_14();
-        LFLD(Ov000Text *, self, 0x10)->flags |= 0x40;
-        LFLD(Ov000Text *, self, 0x10)->flags |= 0x1000000;
-        LFLD(Ov000Text *, self, 0x10)->flags |= 0x40000000;
-        LFLD(Ov000Text *, self, 0x10)->flags |= 4;
-        LFLD(s32, self, 4) = 10;
+        ((VObj *)self->unk_10)->vfunc_14();
+        self->unk_10->flags |= 0x40;
+        self->unk_10->flags |= 0x1000000;
+        self->unk_10->flags |= 0x40000000;
+        self->unk_10->flags |= 4;
+        self->unk_04 = 10;
         break;
     }
     case 10:
-        LFLD(s32, self, 4) = 11;
+        self->unk_04 = 11;
     case 11:
-        if (++LFLD(s32, self, 0x18) > 0x90) {
-            LFLD(s32, self, 0x18) = 0;
-            LFLD(s32, self, 4) = 12;
+        if (++self->unk_18 > 0x90) {
+            self->unk_18 = 0;
+            self->unk_04 = 12;
             break;
         }
-        LFLD(s32, self, 0x1c) = Wave021ba92c(FX_SinCosTable_, LFLD(s32, self, 0x18), 0x30000);
-        LFLD(s32, self, 0x20) = Wave021ba92c(FX_SinCosTable_, LFLD(s32, self, 0x18), 0x30000);
-        LFLD(s32, self, 0x24) = Wave021ba92c(FX_SinCosTable_, LFLD(s32, self, 0x18) - 0x18, 0x30000);
-        LFLD(s32, self, 0x28) = Wave021ba92c(FX_SinCosTable_, LFLD(s32, self, 0x18) - 0x48, 0x48000);
+        self->unk_1c = Wave021ba92c(FX_SinCosTable_, self->unk_18, 0x30000);
+        self->unk_20 = Wave021ba92c(FX_SinCosTable_, self->unk_18, 0x30000);
+        self->unk_24 = Wave021ba92c(FX_SinCosTable_, self->unk_18 - 0x18, 0x30000);
+        self->unk_28 = Wave021ba92c(FX_SinCosTable_, self->unk_18 - 0x48, 0x48000);
         break;
     case 12:
-        if (++LFLD(s32, self, 0x18) > 0x30) {
-            LFLD(s32, self, 0x18) = 0;
-            LFLD(s32, self, 0x2c) = 0;
-            LFLD(s32, self, 0x28) = 0;
-            LFLD(s32, self, 0x24) = 0;
-            LFLD(s32, self, 0x20) = 0;
-            LFLD(s32, self, 0x1c) = 0;
-            LFLD(s32, self, 4) = 13;
+        if (++self->unk_18 > 0x30) {
+            self->unk_18 = 0;
+            self->unk_2c = 0;
+            self->unk_28 = 0;
+            self->unk_24 = 0;
+            self->unk_20 = 0;
+            self->unk_1c = 0;
+            self->unk_04 = 13;
         }
         break;
     case 13: {
         s32 v;
-        if (++LFLD(s32, self, 0x18) > 0x20) {
-            LFLD(s32, self, 0x18) = 0;
-            LFLD(s32, self, 4) = 17;
+        if (++self->unk_18 > 0x20) {
+            self->unk_18 = 0;
+            self->unk_04 = 17;
             break;
         }
-        v = Wave021ba92c(FX_SinCosTable_, LFLD(s32, self, 0x18), 0x20000);
-        LFLD(s32, self, 0x1c) = v;
-        LFLD(s32, self, 0x20) = v;
-        LFLD(s32, self, 0x24) = v;
-        LFLD(s32, self, 0x28) = v;
+        v = Wave021ba92c(FX_SinCosTable_, self->unk_18, 0x20000);
+        self->unk_1c = v;
+        self->unk_20 = v;
+        self->unk_24 = v;
+        self->unk_28 = v;
         break;
     }
     case 17:

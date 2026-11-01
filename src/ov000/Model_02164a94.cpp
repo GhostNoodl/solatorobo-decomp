@@ -33,7 +33,16 @@ static inline void *NewModel(char *nm) {
     return m;
 }
 
-void func_ov000_02164a94(u8 *self) {
+struct Obj02164a94 {
+    u8 unk_00[0x24];
+    void *unk_24;
+    void *unk_28;
+    void *unk_2c;
+    u8 unk_30[0x20];
+    s32 unk_50;
+};
+
+void func_ov000_02164a94(Obj02164a94 *self) {
     char buf[0x20];
     void *a;
     void *b;
@@ -44,24 +53,24 @@ void func_ov000_02164a94(u8 *self) {
     a = func_02035d5c(data_0208cca0);
     func_0206e900(buf, data_ov000_021cb8e0);
     b = func_02035d5c(buf);
-    LFLD(s32, self, 0x50) = LFLD(s32, data_0214a424, 0x20);
+    self->unk_50 = LFLD(s32, data_0214a424, 0x20);
     pp = &LFLD(s32, data_02097d48, 0x9e4);
     saved = *pp;
     *pp = -1;
     m = (u8 *)NewModel(data_ov000_021cb8f1);
-    LFLD(void *, self, 0x28) = m;
-    func_020417e0(LFLD(void *, self, 0x28), func_02034d88(b, m + 0x4c));
-    func_02041d9c(LFLD(void *, self, 0x28), 2, 0xffff);
+    self->unk_28 = m;
+    func_020417e0(self->unk_28, func_02034d88(b, m + 0x4c));
+    func_02041d9c(self->unk_28, 2, 0xffff);
     m = (u8 *)NewModel(data_ov000_021cb8fd);
-    LFLD(void *, self, 0x2c) = m;
-    func_020417e0(LFLD(void *, self, 0x2c), func_02034d88(b, m + 0x4c));
-    func_02041d9c(LFLD(void *, self, 0x2c), 2, 0xffff);
+    self->unk_2c = m;
+    func_020417e0(self->unk_2c, func_02034d88(b, m + 0x4c));
+    func_02041d9c(self->unk_2c, 2, 0xffff);
     m = (u8 *)NewModel(data_ov000_021cb909);
-    LFLD(void *, self, 0x24) = m;
-    func_020417e0(LFLD(void *, self, 0x24), func_02034d88(a, m + 0x4c));
-    func_02041d9c(LFLD(void *, self, 0x24), 2, 0xffff);
-    func_02041c5c(LFLD(void *, self, 0x24), (void *)func_ov000_021640fc);
-    func_02041c18(LFLD(void *, self, 0x24), self);
+    self->unk_24 = m;
+    func_020417e0(self->unk_24, func_02034d88(a, m + 0x4c));
+    func_02041d9c(self->unk_24, 2, 0xffff);
+    func_02041c5c(self->unk_24, (void *)func_ov000_021640fc);
+    func_02041c18(self->unk_24, self);
     *pp = saved;
 }
 
@@ -98,7 +107,17 @@ void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 struct Out_52e4;
 struct Def_52e4;
-void func_ov000_021652e4(void *self, u8 *p, struct Out_52e4 *rec, const struct Def_52e4 *e);
+struct Obj02164c50 {
+    u8 unk_00[0x24];
+    void *unk_24;
+    u8 unk_28[0x8];
+    u8 *unk_30;
+    u8 unk_34[0x4];
+    s32 unk_38;
+    s32 unk_3c;
+};
+
+void func_ov000_021652e4(Obj02164c50 *self, u8 *p, struct Out_52e4 *rec, const struct Def_52e4 *e);
 
 static inline void *LoModelGetPart(void *self, int idx) {
     if (idx >= LFLD(s32, self, 0x80)) {
@@ -128,17 +147,17 @@ static inline u8 *Next02164c50(u8 *e) {
     return q;
 }
 
-void func_ov000_02164c50(u8 *self, u8 *arg) {
+void func_ov000_02164c50(Obj02164c50 *self, u8 *arg) {
     u8 *p;
     void *m;
     u8 *buf;
     u16 base;
     void *cell;
     OamAttr02164c50 *oa;
-    LFLD(s32, self, 0x38) = 0;
-    LFLD(s32, self, 0x3c) = 0;
+    self->unk_38 = 0;
+    self->unk_3c = 0;
     p = (u8 *)func_0203de84(0xce0, 4);
-    LFLD(u8 *, self, 0x30) = p;
+    self->unk_30 = p;
     MI_CpuFill8(p, 0, 0xce0);
     p[0] = 1;
     LFLD(u16, p, 0x4) = LFLD(u16, arg, 0x8);
@@ -149,7 +168,7 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
         func_02041218(m);
     }
     LFLD(void *, p, 0xc8c) = m;
-    func_02040be0(m, LFLD(void *, self, 0x24));
+    func_02040be0(m, self->unk_24);
     buf = LFLD(u8 *, LFLD(void *, p, 0xc8c), 0x30);
     LFLD(u16, p, 0xc94) = 2;
     LFLD(u16, p, 0xc96) = 4;
@@ -163,33 +182,33 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
     func_02040d94(LFLD(void *, p, 0xc8c), buf + 0x80, 0x20, 0x20);
     func_02040dd8(LFLD(void *, p, 0xc8c), 2, 1);
 
-    cell = LoModelGetCell(LFLD(void *, self, 0x24), 2);
-    base = LFLD(u16, LFLD(void *, self, 0x24), 0xf4);
+    cell = LoModelGetCell(self->unk_24, 2);
+    base = LFLD(u16, self->unk_24, 0xf4);
     oa = LFLD(OamAttr02164c50 *, cell, 0x4);
-    LFLD(s32, p, 0xc90) = LFLD(s32, LFLD(void *, LFLD(void *, self, 0x24), 0xec), 0x58);
+    LFLD(s32, p, 0xc90) = LFLD(s32, LFLD(void *, self->unk_24, 0xec), 0x58);
     *(OamAttr02164c50 *)(p + 0x2c) = *oa;
     LFLD(OamW2_02164c50, p, 0x30).tile += base;
     p[1]++;
 
-    cell = LoModelGetCell(LFLD(void *, self, 0x24), 3);
+    cell = LoModelGetCell(self->unk_24, 3);
     oa = LFLD(OamAttr02164c50 *, cell, 0x4);
     *(OamAttr02164c50 *)(p + 0xc) = *oa;
     LFLD(OamW2_02164c50, p, 0x10).tile += base;
 
-    cell = LoModelGetCell(LFLD(void *, self, 0x24), 0xc);
+    cell = LoModelGetCell(self->unk_24, 0xc);
     oa = LFLD(OamAttr02164c50 *, cell, 0x4);
     *(OamAttr02164c50 *)(p + 0x14) = *oa;
     LFLD(OamW2_02164c50, p, 0x18).tile += base;
     LFLD(OamW2_02164c50, p, 0x18).prio = LFLD(OamW2_02164c50, p, 0x10).prio;
     LFLD(u16, p, 0x24) = base + LFLD(OamW2_02164c50, oa, 0x4).tile;
 
-    cell = LoModelGetCell(LFLD(void *, self, 0x24), 0xd);
+    cell = LoModelGetCell(self->unk_24, 0xd);
     LFLD(u16, p, 0x26) = base + LFLD(OamW2_02164c50, LFLD(void *, cell, 0x4), 0x4).tile;
 
-    cell = LoModelGetCell(LFLD(void *, self, 0x24), 0xe);
+    cell = LoModelGetCell(self->unk_24, 0xe);
     LFLD(u16, p, 0x28) = base + LFLD(OamW2_02164c50, LFLD(void *, cell, 0x4), 0x4).tile;
 
-    cell = LoModelGetCell(LFLD(void *, self, 0x24), 0xb);
+    cell = LoModelGetCell(self->unk_24, 0xb);
     oa = LFLD(OamAttr02164c50 *, cell, 0x4);
     *(OamAttr02164c50 *)(p + 0x1c) = *oa;
     LFLD(OamW2_02164c50, p, 0x20).prio = 2;
@@ -373,7 +392,7 @@ typedef struct Out_52e4 {
 #define D_OAM_52e4(i) (&((Oam_52e4 *)((u8 *)d + 0x2c))[i])
 #define D_POS_52e4(i) (&((Pos_52e4 *)((u8 *)d + 0x65c))[i])
 
-void func_ov000_021652e4(void *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
+void func_ov000_021652e4(Obj02164c50 *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
     const HitDef_52e4 *he;
     s32 col; Hit_52e4 *h; s32 j; s32 k; s32 rx;
     Oam_52e4 tmpl = *D_OAM_52e4(0);

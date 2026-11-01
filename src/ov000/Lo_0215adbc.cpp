@@ -22,14 +22,21 @@ void func_ov000_0215adbc(void *self) {
     LO_FREE_V(self, 0xd4);
 }
 
-void func_ov000_0215ae10(void *self) {
-    switch (LFLD(s32, self, 4)) {
+struct Obj0215ae10 {
+    u8 unk_00[0x4];
+    s32 unk_04;
+    u8 unk_08[0x2c];
+    s32 unk_34;
+};
+
+void func_ov000_0215ae10(Obj0215ae10 *self) {
+    switch (self->unk_04) {
     case 0:
-        LFLD(s32, self, 0x34) = 0x8000;
+        self->unk_34 = 0x8000;
         func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
         break;
     case 1:
-        LFLD(s32, self, 0x34) = 0x8000;
+        self->unk_34 = 0x8000;
         func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
         break;
     }

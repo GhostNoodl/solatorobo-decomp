@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u8 pad[0xfc];
@@ -41,7 +42,7 @@ static inline void SetScale021c17dc(u8 *model, s32 x, s32 y, s32 z) {
     LFLD(s32, model, 0xb0) = z;
 }
 
-void func_ov000_021c17dc(u8 *self) {
+void func_ov000_021c17dc(Lo021cc938 *self) {
     u8 proj[0x40];
     u8 cam[0x30];
     Ofs021c17dc *o;
@@ -49,7 +50,7 @@ void func_ov000_021c17dc(u8 *self) {
     u8 *g;
     MtxFx43 *cm;
 
-    if (LFLD(s32, self, 0x68) != 10) {
+    if (self->unk_68 != 10) {
         return;
     }
     cm = GetCam021c17dc();
@@ -60,14 +61,14 @@ void func_ov000_021c17dc(u8 *self) {
     MTX_Identity43_(cm);
     cm->m[3][2] = 0;
     NNS_G3dGlbPolygonAttr(0, 0, 3, 0, 0, 0);
-    o = &data_ov000_021cc8f0[LFLD(s32, self, 0x44) - 0xc];
-    p.x = LFLD(s32, self, 0x78) + o->x;
-    p.y = LFLD(s32, self, 0x7c) + o->y;
-    p.z = LFLD(s32, self, 0x80);
-    data_ov000_021ccd74 = LO_FX_MUL(LFLD(s32, self, 0x88), 0x1e000) >> 12;
-    LFLD(VecFx32, LFLD(u8 *, self, 0x90), 0x78) = p;
-    SetScale021c17dc(LFLD(u8 *, self, 0x90), 0x1000, -0x1000, 0x1000);
-    func_ov000_021903b4(LFLD(u8 *, self, 0x90));
+    o = &data_ov000_021cc8f0[self->unk_44 - 0xc];
+    p.x = self->unk_78 + o->x;
+    p.y = self->unk_7c + o->y;
+    p.z = self->unk_80;
+    data_ov000_021ccd74 = LO_FX_MUL(self->unk_88, 0x1e000) >> 12;
+    LFLD(VecFx32, self->unk_90, 0x78) = p;
+    SetScale021c17dc((u8 *)self->unk_90, 0x1000, -0x1000, 0x1000);
+    func_ov000_021903b4((u8 *)self->unk_90);
     SetProj021c17dc(proj);
     MI_Copy48B(cam, cm);
 }

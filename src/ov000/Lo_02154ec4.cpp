@@ -44,11 +44,27 @@ static inline BOOL LoIsLoaded24(void) {
     return r;
 }
 
-void func_ov000_02154ec4(void *self) {
+struct Obj02154ec4 : public VObj {
+    s32 unk_04;
+    u8 unk_08[0x4];
+    u32 unk_0c;
+    void *unk_10;
+    u8 unk_14[0x1c];
+    s32 unk_30;
+    s32 unk_34;
+    s32 unk_38;
+    u8 unk_3c[0x8];
+    s32 unk_44;
+    u8 unk_48[0x1c];
+    s16 unk_64;
+    s16 unk_66;
+};
+
+void func_ov000_02154ec4(Obj02154ec4 *self) {
     if (!LBIT(self, 0xc).b4) {
         return;
     }
-    switch (LFLD(s32, self, 4)) {
+    switch (self->unk_04) {
     case 0:
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
         break;
@@ -58,10 +74,10 @@ void func_ov000_02154ec4(void *self) {
     }
 }
 
-void func_ov000_02154f34(VObj *self) {
-    if (LFLD(s32, self, 4) == 2) {
-        LFLD(s32, self, 0x30) = LFLD(s32, self, 0x34);
-        LFLD(s32, self, 0x38) = 0x1000;
+void func_ov000_02154f34(Obj02154ec4 *self) {
+    if (self->unk_04 == 2) {
+        self->unk_30 = self->unk_34;
+        self->unk_38 = 0x1000;
         self->vfunc_c8();
         self->vfunc_c4();
     }
@@ -78,28 +94,28 @@ static inline void VecAdd(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab) {
     ab->z = a->z + b->z;
 }
 
-static inline BOOL NoB5(VObj *self) {
+static inline BOOL NoB5(Obj02154ec4 *self) {
     return !LBIT(self, 0xc).b5 ? TRUE : FALSE;
 }
 
-void func_ov000_02154fb0(VObj *self, s32 a, VecFx32 *pos, s32 d) {
+void func_ov000_02154fb0(Obj02154ec4 *self, s32 a, VecFx32 *pos, s32 d) {
     Arg02154fb0 arg;
     s32 v;
-    if (LFLD(s32, self, 0x44) == 0) {
+    if (self->unk_44 == 0) {
         arg.d = d;
         arg.pos = *pos;
         v = a;
     } else {
-        v = self->vfunc_18(&arg.pos, &arg.d, LO_FX_MUL(a, 0x1000 - LFLD(s32, self, 0x44)));
+        v = self->vfunc_18(&arg.pos, &arg.d, LO_FX_MUL(a, 0x1000 - self->unk_44));
         {
             VecFx32 ofs;
-            ofs.x = LFLD(s16, self, 0x64) << 12;
-            ofs.y = LFLD(s16, self, 0x66) << 12;
+            ofs.x = self->unk_64 << 12;
+            ofs.y = self->unk_66 << 12;
             ofs.z = 0;
             VecAdd(&arg.pos, &ofs, &arg.pos);
         }
     }
-    if (LFLD(u32, self, 0xc) & 0x80000) {
+    if (self->unk_0c & 0x80000) {
         self->vfunc_d4(v, &arg.pos, arg.d);
     }
     self->vfunc_64(v, &arg.pos, arg.d);
@@ -107,14 +123,14 @@ void func_ov000_02154fb0(VObj *self, s32 a, VecFx32 *pos, s32 d) {
         self->vfunc_d8(v, &arg.pos, arg.d);
     }
     self->vfunc_e8(v, &arg.pos, arg.d);
-    if (!func_02054f10(LFLD(void *, self, 0x10), 0xffff)) {
+    if (!func_02054f10(self->unk_10, 0xffff)) {
         return;
     }
-    if (LFLD(u32, self, 0xc) & 0x40000) {
+    if (self->unk_0c & 0x40000) {
         self->vfunc_ec(v, &arg.pos, arg.d);
     }
     self->vfunc_60(a, pos, d);
-    LFLD(u32, self, 0xc) |= 0x200;
+    self->unk_0c |= 0x200;
 }
 
 }

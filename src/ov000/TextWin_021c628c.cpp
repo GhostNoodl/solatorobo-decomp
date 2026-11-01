@@ -49,10 +49,32 @@ static inline void Obj021c628c_SetText(Obj021c628c *self, u32 text) {
     self->unk_a0->rendering = 1;
 }
 
-static inline u8 *Obj021c628c_GetItem(u8 *self, s32 n) {
+struct Obj021c628cS {
+    u8 unk_00[0x10];
+    Model *unk_10;
+    u8 unk_14[0x18];
+    s32 unk_2c;
+    u8 unk_30[0x28];
+    s32 unk_58;
+    s32 unk_5c;
+    s32 unk_60;
+    u8 unk_64[0x4];
+    s16 unk_68;
+    u8 unk_6a[0x1a];
+    u8 *unk_84;
+    u8 *unk_88;
+    u8 unk_8c[0x10];
+    u8 *unk_9c;
+    void *unk_a0;
+    s32 unk_a4;
+    u8 unk_a8[0xc];
+    s32 unk_b4;
+};
+
+static inline u8 *Obj021c628c_GetItem(Obj021c628cS *self, s32 n) {
     u8 *p;
     s32 i;
-    for (p = LFLD(u8 *, self, 0x84), i = 0; p != NULL; p = LFLD(u8 *, p, 0x28), i++) {
+    for (p = self->unk_84, i = 0; p != NULL; p = LFLD(u8 *, p, 0x28), i++) {
         if (i == n) {
             break;
         }
@@ -60,34 +82,34 @@ static inline u8 *Obj021c628c_GetItem(u8 *self, s32 n) {
     return p;
 }
 
-void func_ov000_021c628c(u8 *self) {
+void func_ov000_021c628c(Obj021c628cS *self) {
     u8 *p;
     u8 *o;
 
-    LFLD(s32, self, 0x2c) = 1;
+    self->unk_2c = 1;
     {
-        s32 z = LFLD(s16, self, 0x68);
-        LFLD(s32, self, 0x58) = -0x100;
-        LFLD(s32, self, 0x5c) = 0;
-        LFLD(s32, self, 0x60) = z;
+        s32 z = self->unk_68;
+        self->unk_58 = -0x100;
+        self->unk_5c = 0;
+        self->unk_60 = z;
     }
     p = Obj021c628c_GetItem(self, 0);
-    LFLD(u8 *, self, 0x88) = p;
+    self->unk_88 = p;
     if (p != NULL) {
-        LFLD(s32, self, 0xb4) = LFLD(s32, p, 0x1c);
+        self->unk_b4 = LFLD(s32, p, 0x1c);
     }
     if (func_ov000_02152e5c(self)) {
-        func_02041d9c(LFLD(Model *, self, 0x10), 0, 4);
+        func_02041d9c(self->unk_10, 0, 4);
     }
-    LFLD(u8 *, self, 0x88) = LFLD(u8 *, self, 0x84);
+    self->unk_88 = self->unk_84;
     o = (u8 *)func_0203dd9c(0x2c);
     if (o != NULL) {
         func_ov000_0215ec44(o);
     }
-    LFLD(u8 *, self, 0x9c) = o;
-    LFLD(s32, o, 0x10) = LFLD(s32, self, 0xa4) << 12;
-    func_ov000_0215e8b0(LFLD(void *, self, 0x9c));
-    if (LFLD(void *, self, 0xa0) != NULL) {
+    self->unk_9c = o;
+    LFLD(s32, o, 0x10) = self->unk_a4 << 12;
+    func_ov000_0215e8b0(self->unk_9c);
+    if (self->unk_a0 != NULL) {
         return;
     }
     {

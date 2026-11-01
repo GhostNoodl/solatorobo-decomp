@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -21,20 +22,25 @@ static inline BOOL LoSubReady(void *p) {
     return TRUE;
 }
 
-void func_ov000_02157c28(void *self) {
+void func_ov000_02157c28(LoBase021cb2a8_021cb4a8 *self) {
     s32 v;
-    LFLD(s16, self, 0x64) = (LFLD(u32, self, 0xc) & 0x4000000) ? 0 : 0xc;
-    LFLD(s32, self, 0x24) = 0x100 - LFLD(s16, self, 0x64) * 2;
+    self->unk_64 = (self->unk_0c & 0x4000000) ? 0 : 0xc;
+    self->unk_24 = 0x100 - self->unk_64 * 2;
     func_ov000_0215429c(self);
-    v = LFLD(s32, self, 0x24);
-    LFLD(s32, self, 0x2c) = 1;
-    LFLD(s32, self, 0x58) = v + 0x10;
-    LFLD(s32, self, 0x5c) = 0;
-    LFLD(s32, self, 0x60) = 0;
-    LFLD(s32, LFLD(void *, self, 0xac), 0x10) = (v - 0x10) << 12;
+    v = self->unk_24;
+    self->unk_2c = 1;
+    self->unk_58 = v + 0x10;
+    self->unk_5c = 0;
+    self->unk_60 = 0;
+    LFLD(s32, self->unk_ac, 0x10) = (v - 0x10) << 12;
 }
 
-void func_ov000_02157c90(void *self, s32 a) {
+struct Obj02157c90 {
+    u8 unk_00[0xd4];
+    void *unk_d4;
+};
+
+void func_ov000_02157c90(Obj02157c90 *self, s32 a) {
     void *p = func_0203dd9c(0x2c);
     if (p != NULL) {
         LFLD(s32, p, 0x0) = 0;
@@ -47,12 +53,12 @@ void func_ov000_02157c90(void *self, s32 a) {
         LFLD(s32, p, 0x24) = 0;
         LFLD(s32, p, 0x28) = 0;
     }
-    LFLD(void *, self, 0xd4) = p;
+    self->unk_d4 = p;
     if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
-        LFLD(u32, LFLD(void *, self, 0xd4), 0) |= 0x10;
+        LFLD(u32, self->unk_d4, 0) |= 0x10;
     }
-    func_ov000_0215f0ec(LFLD(void *, self, 0xd4), a);
-    LFLD(s32, LFLD(void *, self, 0xd4), 0x14) = LFLD(s32, LFLD(void *, LFLD(void *, self, 0xd4), 0x24), 0x44) + 0x10;
+    func_ov000_0215f0ec(self->unk_d4, a);
+    LFLD(s32, self->unk_d4, 0x14) = LFLD(s32, LFLD(void *, self->unk_d4, 0x24), 0x44) + 0x10;
 }
 
 }

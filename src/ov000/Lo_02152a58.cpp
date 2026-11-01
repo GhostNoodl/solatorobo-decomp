@@ -21,15 +21,22 @@ static inline BOOL LoResDone(u8 *o) {
     return TRUE;
 }
 
-BOOL func_ov000_02152a58(void *self) {
+struct Obj02152a58 {
+    u8 unk_00[0x10];
+    void *unk_10;
+    u8 *unk_14;
+    u8 *unk_18;
+};
+
+BOOL func_ov000_02152a58(Obj02152a58 *self) {
     BOOL ok = TRUE;
-    if (LFLD(void *, self, 0x10) && !func_02054f10(LFLD(void *, self, 0x10), 0xffff)) {
+    if (self->unk_10 && !func_02054f10(self->unk_10, 0xffff)) {
         ok = FALSE;
     }
-    if (LFLD(u8 *, self, 0x14) && !LoResDone(LFLD(u8 *, self, 0x14))) {
+    if (self->unk_14 && !LoResDone(self->unk_14)) {
         ok = FALSE;
     }
-    if (LFLD(u8 *, self, 0x18) && !LoResDone(LFLD(u8 *, self, 0x18))) {
+    if (self->unk_18 && !LoResDone(self->unk_18)) {
         ok = FALSE;
     }
     return ok;

@@ -44,12 +44,17 @@ void func_02041d9c(void *model, s32 a, s32 b);
         out = m_;                                    \
     } while (0)
 
-LoGlyphEnt *func_ov000_02159998(void *self, u16 *msg, LoGlyphEnt *arr, u16 *cnt) {
+struct Obj02159998 {
+    u8 unk_00[0x70];
+    u32 unk_70;
+};
+
+LoGlyphEnt *func_ov000_02159998(Obj02159998 *self, u16 *msg, LoGlyphEnt *arr, u16 *cnt) {
     u16 n = *cnt;
     LoGlyphEnt *e = &arr[n - 1];
     if (*msg == 2) {
         u32 v = e[0].f;
-        u32 fl = LFLD(u32, self, 0x70);
+        u32 fl = self->unk_70;
         n = 1;
         if (fl & 1) {
             arr[0].f = v;

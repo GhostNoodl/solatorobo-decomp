@@ -52,7 +52,17 @@ static inline void G3_Cmd2(int cmd, u32 a, u32 b) {
     NNS_G3dGeBufferOP_N(cmd, v, 2);
 }
 
-void func_ov000_0215f618(u8 *self, s32 *pos) {
+struct Obj0215f618 {
+    u8 unk_00[0x4];
+    s32 unk_04;
+    u8 unk_08[0xc];
+    s32 unk_14;
+    s32 unk_18;
+    u8 unk_1c[0xc];
+    void *unk_28;
+};
+
+void func_ov000_0215f618(Obj0215f618 *self, s32 *pos) {
     u32 cmd;
     s32 sx;
     s32 sy;
@@ -66,23 +76,23 @@ void func_ov000_0215f618(u8 *self, s32 *pos) {
     Entry0215f618 *e;
     G3_Cmd1(0x2a, 0x20000000);
     useAlpha = TRUE;
-    if (!MF(LFLD(void *, self, 0x28)).b19) {
+    if (!MF(self->unk_28).b19) {
         useAlpha = FALSE;
     }
     if (useAlpha) {
-        alpha = (u8)MF(LFLD(void *, self, 0x28)).f2;
+        alpha = (u8)MF(self->unk_28).f2;
     } else {
         alpha = 0x1e;
     }
-    if (MF(LFLD(void *, self, 0x28)).b20 ? TRUE : FALSE) {
+    if (MF(self->unk_28).b20 ? TRUE : FALSE) {
         misc |= 0x4000;
     }
-    e = &data_02fe0188[LFLD(s32, self, 4)];
-    if (LFLD(s32, self, 4) == 0) {
+    e = &data_02fe0188[self->unk_04];
+    if (self->unk_04 == 0) {
         sx = e->ofsX + (pos[0] << 12);
         sy = e->ofsY + (pos[1] << 12);
-        sw = (LFLD(s32, self, 0x14) << 12) - (e->ofsX << 1);
-        sh = ((LFLD(s32, self, 0x18) - 2) << 12) - (e->ofsY << 1);
+        sw = (self->unk_14 << 12) - (e->ofsX << 1);
+        sh = ((self->unk_18 - 2) << 12) - (e->ofsY << 1);
     }
     cmd = misc | 0xd0 | (func_02043d48(g + 0x8b0) << 24);
     shadow = TRUE;
@@ -93,7 +103,7 @@ void func_ov000_0215f618(u8 *self, s32 *pos) {
     G3_Cmd1(0x20, 0);
     NNS_G3dGeSendDL(LFLD(void *, data_0208b3d0, 4), LFLD(u32, data_020828f8, 4));
     G3_Cmd1(0x12, 1);
-    if (!MF(LFLD(void *, self, 0x28)).b21) {
+    if (!MF(self->unk_28).b21) {
         shadow = FALSE;
     }
     if (shadow) {
@@ -112,7 +122,7 @@ void func_ov000_0215f618(u8 *self, s32 *pos) {
     G3_Cmd1(0x25, 0x10001000);
     NNS_G3dGeBufferOP_N(0x41, NULL, 0);
     G3_Cmd1(0x12, 1);
-    MF(LFLD(void *, self, 0x28)).f7 = func_02043d48(g + 0x8b0);
+    MF(self->unk_28).f7 = func_02043d48(g + 0x8b0);
 }
 
 }

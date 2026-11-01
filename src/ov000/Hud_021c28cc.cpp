@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -89,30 +90,30 @@ static inline void ScreenPos021c28cc(s32 *ox, s32 *oy, s32 x, s32 y, s32 h) {
     *oy = (y >> 12) - 0x60;
 }
 
-void func_ov000_021c28cc(u8 *self) {
+void func_ov000_021c28cc(Hud021cca10 *self) {
     s32 x;
     s32 y;
     void *m;
     s32 z;
     void *n;
-    if (LFLD(u8, self, 0x44) == 0) {
+    if (self->unk_44 == 0) {
         return;
     }
     if (!LFLD(F021c28cc, self, 0x20).b0) {
         return;
     }
-    ScreenPos021c28cc(&x, &y, LFLD(s32, self, 0xc), LFLD(s32, self, 0x10), LFLD(s32, self, 0x18));
-    z = LFLD(s32, self, 0x14);
-    SetPos021c28cc(LFLD(void *, self, 0x34), x << 12, (y + 7) << 12);
-    LFLD(s32, LFLD(void *, self, 0x34), 0x150) = z;
-    m = LFLD(void *, self, 0x34);
+    ScreenPos021c28cc(&x, &y, self->unk_0c, self->unk_10, self->unk_18);
+    z = self->unk_14;
+    SetPos021c28cc(self->unk_34, x << 12, (y + 7) << 12);
+    LFLD(s32, self->unk_34, 0x150) = z;
+    m = self->unk_34;
     Model_PlayPart021c28cc(m, 4);
-    SetPos021c28cc(LFLD(void *, self, 0x30), (x + 0x10) << 12, (y - 2) << 12);
-    LFLD(s32, LFLD(void *, self, 0x30), 0x150) = z;
-    n = LFLD(void *, self, 0x30);
+    SetPos021c28cc(self->unk_30, (x + 0x10) << 12, (y - 2) << 12);
+    LFLD(s32, self->unk_30, 0x150) = z;
+    n = self->unk_30;
     Model_PlayPart021c28cc(n, 6);
-    LFLD(V021c28cc *, self, 0x38)->f20((LFLD(s32, self, 0xc) + 0x40000) >> 12, (LFLD(s32, self, 0x10) + ((LFLD(s32, self, 0x18) - LFLD(s32, LFLD(void *, self, 0x38), 0x48)) << 11)) >> 12);
-    LFLD(s32, LFLD(void *, self, 0x38), 0x70) = z;
-    LFLD(V021c28cc *, self, 0x38)->f90();
+    ((V021c28cc *)self->unk_38)->f20((self->unk_0c + 0x40000) >> 12, (self->unk_10 + ((self->unk_18 - LFLD(s32, self->unk_38, 0x48)) << 11)) >> 12);
+    LFLD(s32, self->unk_38, 0x70) = z;
+    ((V021c28cc *)self->unk_38)->f90();
 }
 }

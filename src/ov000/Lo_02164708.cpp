@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u32 b0 : 3;
@@ -96,7 +97,7 @@ static inline BOOL LoReady2(u8 *p) {
     if (p[1] < 2) return FALSE;
     return TRUE;
 }
-static inline void LoTail(u8 *self, u8 *p) {
+static inline void LoTail(Lo021cb6b0 *self, u8 *p) {
     void *q;
     if (p == NULL || LFLD(void *, p, 0xcb4) == NULL || (q = LFLD(void *, p, 0xcb8)) == NULL) {
         return;
@@ -111,37 +112,37 @@ static inline void LoTail(u8 *self, u8 *p) {
     }
 }
 
-void func_ov000_02164750(u8 *self) {
+void func_ov000_02164750(Lo021cb6b0 *self) {
     void *m;
     VObj *o;
     void *q;
     u8 *p;
-    if (LFLD(s32, self, 0x20) != 7) {
+    if (self->unk_20 != 7) {
         return;
     }
-    LoPlayIf(LFLD(void *, self, 0x28), 0);
-    m = LFLD(void *, self, 0x24);
+    LoPlayIf(self->unk_28, 0);
+    m = self->unk_24;
     if (m != NULL) {
         LFLD(s32, m, 0x10c) = 0;
         LFLD(s32, m, 0x110) = 0;
-        LoModelPlayPart(LFLD(void *, self, 0x24), 0);
-        func_02041c20(LFLD(void *, self, 0x24), 1, 0);
-        LoModelPlayPart(LFLD(void *, self, 0x24), 1);
-        func_02041c20(LFLD(void *, self, 0x24), 1, 1);
-        LoModelPlayPart(LFLD(void *, self, 0x24), 1);
+        LoModelPlayPart(self->unk_24, 0);
+        func_02041c20(self->unk_24, 1, 0);
+        LoModelPlayPart(self->unk_24, 1);
+        func_02041c20(self->unk_24, 1, 1);
+        LoModelPlayPart(self->unk_24, 1);
     }
-    LoPlayIf(LFLD(void *, self, 0x2c), 0);
-    o = LFLD(VObj *, self, 0x40);
-    if (o != NULL && LFLD(s32, self, 0x4c) != 0) {
-        s32 y = LO_FX_MUL(FX_SinCosTable_[(((0x1000 - LFLD(s32, self, 0x4c)) << 14) >> 16) * 2], 0x80000) >> 12;
+    LoPlayIf(self->unk_2c, 0);
+    o = self->unk_40;
+    if (o != NULL && self->unk_4c != 0) {
+        s32 y = LO_FX_MUL(FX_SinCosTable_[(((0x1000 - self->unk_4c) << 14) >> 16) * 2], 0x80000) >> 12;
         o->vfunc_20(y + 0xcc - (LFLD(s32, o, 0x44) >> 1), 1);
-        LFLD(VObj *, self, 0x40)->vfunc_90();
-        LFLD(VObj *, self, 0x40)->vfunc_94();
+        self->unk_40->vfunc_90();
+        self->unk_40->vfunc_94();
     }
-    if (LFLD(s32, self, 0x34) == 10) {
+    if (self->unk_34 == 10) {
         return;
     }
-    LoTail(self, LFLD(u8 *, self, 0x30));
+    LoTail(self, self->unk_30);
 }
 
 }

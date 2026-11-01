@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -16,7 +17,7 @@ void func_ov000_0215fdfc(void *self, s32 a, const void *b);
 extern u8 data_ov000_021c9b04[];
 extern u8 data_ov000_021c9b0a[];
 
-void func_ov000_0216a608(void *self) {
+void func_ov000_0216a608(Lo021cb744 *self) {
     void *res = func_02034d88(func_02035d5c(data_0214b105), data_0208cb7c);
     u8 *m = (u8 *)func_0203dd9c(0x160);
     if (m) {
@@ -24,12 +25,12 @@ void func_ov000_0216a608(void *self) {
         func_02041218(m + 0x88);
         func_02041440(m, nm, 0);
     }
-    LFLD(void *, self, 0x9c) = m;
+    self->unk_9c = m;
     func_020417e0(m, res);
-    LFLD(u32, LFLD(void *, self, 0x9c), 0x6c) |= 2;
-    LFLD(u32, LFLD(void *, self, 0x9c), 0x6c) |= 0x200000;
-    LFLD(u32, LFLD(void *, self, 0x9c), 0x6c) |= 0x80000;
-    func_02041d9c(LFLD(void *, self, 0x9c), 0, 2);
+    LFLD(u32, self->unk_9c, 0x6c) |= 2;
+    LFLD(u32, self->unk_9c, 0x6c) |= 0x200000;
+    LFLD(u32, self->unk_9c, 0x6c) |= 0x80000;
+    func_02041d9c(self->unk_9c, 0, 2);
     {
     u8 *m2;
     void *res2;
@@ -40,25 +41,25 @@ void func_ov000_0216a608(void *self) {
         func_02041218(m2 + 0x88);
         func_02041440(m2, nm, 0);
     }
-    LFLD(void *, self, 0xa0) = m2;
+    self->unk_a0 = m2;
     func_020417e0(m2, res2);
-    LFLD(u32, LFLD(void *, self, 0xa0), 0x6c) |= 2;
-    LFLD(u32, LFLD(void *, self, 0xa0), 0x6c) |= 0x200000;
-    LFLD(u32, LFLD(void *, self, 0xa0), 0x6c) |= 0x80000;
-    func_02041d9c(LFLD(void *, self, 0xa0), 0, 0x21);
+    LFLD(u32, self->unk_a0, 0x6c) |= 2;
+    LFLD(u32, self->unk_a0, 0x6c) |= 0x200000;
+    LFLD(u32, self->unk_a0, 0x6c) |= 0x80000;
+    func_02041d9c(self->unk_a0, 0, 0x21);
     }
-    LFLD(s32, self, 0x28) = 2;
-    LFLD(s32, self, 0x30) = 0xc000;
-    LFLD(u32, self, 0xc) |= 0x1a0;
-    LFLD(s32, self, 0x50) = 0x30;
-    LFLD(s32, self, 0x54) = 6;
-    LFLD(s32, self, 0x58) = 1;
-    LFLD(s32, self, 0x38) = 0;
-    LFLD(s32, self, 0x3c) = 0x20;
-    LFLD(s32, self, 0x40) = 0;
-    LFLD(s32, self, 0x74) = 0x2d;
-    LFLD(s32, self, 0x78) = 0xae;
-    LFLD(s32, self, 0x7c) = 0xffffe666;
+    self->unk_28 = 2;
+    self->unk_30 = 0xc000;
+    self->unk_0c |= 0x1a0;
+    self->unk_50 = 0x30;
+    self->unk_54 = 6;
+    self->unk_58 = 1;
+    self->unk_38 = 0;
+    self->unk_3c = 0x20;
+    self->unk_40 = 0;
+    self->unk_74 = 0x2d;
+    self->unk_78 = 0xae;
+    self->unk_7c = 0xffffe666;
     func_ov000_0215fdfc(self, 1, data_ov000_021c9b04);
     func_ov000_0215fdfc(self, 2, data_ov000_021c9b0a);
 }

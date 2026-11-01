@@ -65,22 +65,33 @@ static inline void SetPos0216b1b4(void *o, s32 x, s32 y) {
     LFLD(s32, o, 0x100) = y;
 }
 
-void func_ov000_0216b1b4(u8 *self) {
+struct Obj0216b1b4 {
+    u8 unk_00[0x4];
+    s32 unk_04;
+    u8 unk_08[0x4];
+    void *unk_0c;
+    u8 unk_10[0x4];
+    u16 unk_14;
+    u8 unk_16[0x6];
+    s32 unk_1c;
+};
+
+void func_ov000_0216b1b4(Obj0216b1b4 *self) {
     s32 base;
     if (GetObj0216b1b4() == NULL) {
         return;
     }
-    if (LFLD(s32, self, 0x4) != 7 && LFLD(s32, self, 0x4) != 8) {
+    if (self->unk_04 != 7 && self->unk_04 != 8) {
         return;
     }
     base = IsFlag0216b1b4(data_ov000_021ccd30) ? 0xae000 : 0xb6000;
-    SetPos0216b1b4(LFLD(void *, self, 0xc), -0x53000, (base + (s32)(((s64)LFLD(s32, self, 0x1c) * 0x40000 + 0x800) >> 12) - 0x61000) & ~0xfff);
-    func_02041c34(LFLD(void *, self, 0xc), 6, (void *)func_ov000_0216ac14, self);
-    LFLD(s32, LFLD(void *, self, 0xc), 0x150) = -0x1f80;
-    Model_PlayPart0216b1b4(LFLD(void *, self, 0xc), 6);
-    Model_PlayPart0216b1b4(LFLD(void *, self, 0xc), 7);
-    Model_PlayPart0216b1b4(LFLD(void *, self, 0xc), LFLD(u16, self, 0x14));
-    LFLD(s32, LFLD(void *, self, 0xc), 0x150) = -0x2000;
-    Model_PlayPart0216b1b4(LFLD(void *, self, 0xc), 0xb);
+    SetPos0216b1b4(self->unk_0c, -0x53000, (base + (s32)(((s64)self->unk_1c * 0x40000 + 0x800) >> 12) - 0x61000) & ~0xfff);
+    func_02041c34(self->unk_0c, 6, (void *)func_ov000_0216ac14, self);
+    LFLD(s32, self->unk_0c, 0x150) = -0x1f80;
+    Model_PlayPart0216b1b4(self->unk_0c, 6);
+    Model_PlayPart0216b1b4(self->unk_0c, 7);
+    Model_PlayPart0216b1b4(self->unk_0c, self->unk_14);
+    LFLD(s32, self->unk_0c, 0x150) = -0x2000;
+    Model_PlayPart0216b1b4(self->unk_0c, 0xb);
 }
 }

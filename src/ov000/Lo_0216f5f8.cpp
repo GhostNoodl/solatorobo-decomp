@@ -14,18 +14,23 @@ typedef struct {
     Pair0216f5f8 cd;
 } Ent0216f5f8;
 
-BOOL func_ov000_0216f5f8(u8 *self, Ent0216f5f8 *out, BOOL pop) {
+struct Obj0216f5f8 {
+    u8 unk_00[0x10c];
+    u32 unk_10c;
+};
+
+BOOL func_ov000_0216f5f8(Obj0216f5f8 *self, Ent0216f5f8 *out, BOOL pop) {
     Ent0216f5f8 *e;
-    if (((Ent0216f5f8 *)(self + 0xc))[LFLD(u32, self, 0x10c)].b == -1) {
+    if (((Ent0216f5f8 *)((u8 *)self + 0xc))[self->unk_10c].b == -1) {
         out->b = -1;
         return FALSE;
     }
-    e = &((Ent0216f5f8 *)(self + 0xc))[LFLD(u32, self, 0x10c)];
+    e = &((Ent0216f5f8 *)((u8 *)self + 0xc))[self->unk_10c];
     *out = *e;
     if (pop) {
-        ((Ent0216f5f8 *)(self + 0xc))[LFLD(u32, self, 0x10c)].b = -1;
-        if (++LFLD(u32, self, 0x10c) >= 0x10) {
-            LFLD(u32, self, 0x10c) = 0;
+        ((Ent0216f5f8 *)((u8 *)self + 0xc))[self->unk_10c].b = -1;
+        if (++self->unk_10c >= 0x10) {
+            self->unk_10c = 0;
         }
     }
     return TRUE;

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -22,32 +23,32 @@ static inline BOOL LoSubReady(void *p) {
     return TRUE;
 }
 
-void func_ov000_02158da8(void *self) {
-    if (LFLD(void *, self, 0xe4) != NULL) {
-        func_0203df0c(LFLD(void *, self, 0xe4));
-        LFLD(void *, self, 0xe4) = NULL;
+void func_ov000_02158da8(Lo021cb3a8 *self) {
+    if ((void *)self->unk_e4 != NULL) {
+        func_0203df0c(self->unk_e4);
+        self->unk_e4 = NULL;
     }
     LO_FREE_V(self, 0xec);
 }
 
-BOOL func_ov000_02158e14(void *self) {
+BOOL func_ov000_02158e14(Lo021cb3a8 *self) {
     BOOL r = func_ov000_021580e8(self);
-    void *p = LFLD(void *, self, 0xec);
+    void *p = self->unk_ec;
     if (p != NULL && !LoSubReady(p)) {
         r = FALSE;
     }
     return r;
 }
 
-void func_ov000_02158e80(VObj *self, s32 n, s32 b) {
-    s8 old = LFLD(s8, self, 0xb1);
-    LFLD(s8, self, 0xb1) = old - (s8)n;
-    LFLD(s8, self, 0xb0) = old;
-    if (LFLD(s8, self, 0xb1) < 0) {
-        LFLD(s8, self, 0xb1) = 0;
+void func_ov000_02158e80(Lo021cb3a8 *self, s32 n, s32 b) {
+    s8 old = self->unk_b1;
+    self->unk_b1 = old - (s8)n;
+    self->unk_b0 = old;
+    if (self->unk_b1 < 0) {
+        self->unk_b1 = 0;
     }
-    self->vfunc_bc(LFLD(s8, self, 0xb1) - LFLD(s8, self, 0xb0), b);
-    LFLD(u16, self, 0xa2) = 4;
+    self->vfunc_bc(self->unk_b1 - self->unk_b0, b);
+    self->unk_a2 = 4;
 }
 
 }

@@ -27,9 +27,16 @@ extern u8 data_ov000_021cb0b8[];
 void *func_0203dd9c(u32 size);
 BOOL func_ov000_02184498(void *p);
 
-BOOL func_ov000_02170620(u8 *self, s32 kind, s32 arg) {
+struct Obj02170620 {
+    u8 unk_00[0x24];
+    s32 unk_24;
+    u8 unk_28[0x20];
+    VObj *unk_48;
+};
+
+BOOL func_ov000_02170620(Obj02170620 *self, s32 kind, s32 arg) {
     VObj *o;
-    if (LFLD(VObj *, self, 0x48) != NULL) {
+    if (self->unk_48 != NULL) {
         return FALSE;
     }
     if (!func_ov000_02184498(data_ov000_021ccd54)) {
@@ -38,34 +45,34 @@ BOOL func_ov000_02170620(u8 *self, s32 kind, s32 arg) {
     switch (kind) {
     case 0:
         NEW_02170620(o);
-        LFLD(VObj *, self, 0x48) = o;
+        self->unk_48 = o;
         LFLD(s32, o, 0x1dc) = arg;
-        LFLD(u32, LFLD(VObj *, self, 0x48), 0xc) &= ~0x4000000;
+        LFLD(u32, self->unk_48, 0xc) &= ~0x4000000;
         break;
     case 1:
         NEW_02170620(o);
-        LFLD(VObj *, self, 0x48) = o;
+        self->unk_48 = o;
         LFLD(s32, o, 0x1dc) = arg;
-        LFLD(u32, LFLD(VObj *, self, 0x48), 0xc) |= 0x4000000;
+        LFLD(u32, self->unk_48, 0xc) |= 0x4000000;
         break;
     case 2:
         NEW_02170620(o);
-        LFLD(VObj *, self, 0x48) = o;
+        self->unk_48 = o;
         LFLD(s32, o, 0x1dc) = arg;
-        LFLD(u32, LFLD(VObj *, self, 0x48), 0xc) &= ~0x4000000;
-        LFLD(s16, LFLD(VObj *, self, 0x48), 0x1d8) = 0x8c;
+        LFLD(u32, self->unk_48, 0xc) &= ~0x4000000;
+        LFLD(s16, self->unk_48, 0x1d8) = 0x8c;
         break;
     case 3:
         NEW_02170620(o);
-        LFLD(VObj *, self, 0x48) = o;
+        self->unk_48 = o;
         LFLD(s32, o, 0x1dc) = arg;
-        LFLD(u32, LFLD(VObj *, self, 0x48), 0xc) |= 0x4000000;
-        LFLD(s16, LFLD(VObj *, self, 0x48), 0x1d8) = 0x8c;
+        LFLD(u32, self->unk_48, 0xc) |= 0x4000000;
+        LFLD(s16, self->unk_48, 0x1d8) = 0x8c;
         break;
     }
-    LFLD(VObj *, self, 0x48)->vfunc_08();
-    if (LFLD(s32, self, 0x24) != 4) {
-        LFLD(s32, self, 0x24) = 0xb;
+    self->unk_48->vfunc_08();
+    if (self->unk_24 != 4) {
+        self->unk_24 = 0xb;
     }
     return TRUE;
 }

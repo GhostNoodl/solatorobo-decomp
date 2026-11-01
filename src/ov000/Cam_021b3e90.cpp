@@ -67,7 +67,18 @@ static inline Actor *FindActor021b3e90(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-static inline u16 AngleTo(Actor *self, Actor *other) {
+struct Obj021b3e90 : public Actor {
+    u8 unk_ac[0xa78];
+    Bits021b3e90 unk_b24;
+    u8 unk_b28[0x8];
+    u8 unk_b30;
+    u8 unk_b31;
+    u8 unk_b32[0x36];
+    u16 unk_b68;
+    u16 unk_b6a;
+};
+
+static inline u16 AngleTo(Obj021b3e90 *self, Actor *other) {
     u16 angle;
     if (other == NULL || other == self) {
         angle = self->rot_y;
@@ -77,7 +88,7 @@ static inline u16 AngleTo(Actor *self, Actor *other) {
     return angle;
 }
 
-BOOL func_ov000_021b3e90(Actor *self) {
+BOOL func_ov000_021b3e90(Obj021b3e90 *self) {
     BOOL ret;
     u16 dp;
     u16 dy;
@@ -97,17 +108,17 @@ BOOL func_ov000_021b3e90(Actor *self) {
     cam->unk_9c.b6 = 1;
     dp = 0;
     dy = 0;
-    switch (LFLD(u8, self, 0xb31)) {
+    switch (self->unk_b31) {
     case 0:
-        if (LFLD(u16, self, 0xb6a) & 0x100) {
-            if (LFLD(u8, self, 0xb30) != 0) {
-                LFLD(u8, self, 0xb31) = 1;
-                LFLD(u8, self, 0xb30) = 0;
+        if (self->unk_b6a & 0x100) {
+            if (self->unk_b30 != 0) {
+                self->unk_b31 = 1;
+                self->unk_b30 = 0;
             } else {
-                LFLD(u8, self, 0xb30) = 20;
+                self->unk_b30 = 20;
             }
-        } else if (LFLD(u16, self, 0xb68) & 0x100) {
-            u16 keys = LFLD(u16, self, 0xb68);
+        } else if (self->unk_b68 & 0x100) {
+            u16 keys = self->unk_b68;
             ret = TRUE;
             if (keys & 0x80) {
                 dp = 0xf800;
@@ -134,7 +145,7 @@ BOOL func_ov000_021b3e90(Actor *self) {
                 cam->unk_f8 = dp;
                 cam->unk_da.b4 = 1;
             }
-            keys = LFLD(u16, self, 0xb68);
+            keys = self->unk_b68;
             if (keys & 0x10) {
                 dy = 0xf400;
             } else if (keys & 0x20) {
@@ -145,10 +156,10 @@ BOOL func_ov000_021b3e90(Actor *self) {
                 cam->unk_da.b5 = 1;
             }
         }
-        if (LFLD(u8, self, 0xb30) != 0) {
-            LFLD(u8, self, 0xb30)--;
+        if (self->unk_b30 != 0) {
+            self->unk_b30--;
         }
-        if (!ret && LFLD(Bits021b3e90, self, 0xb24).b5 != 0 && self->target != 0xffff) {
+        if (!ret && self->unk_b24.b5 != 0 && self->target != 0xffff) {
             Actor *t = FindActor021b3e90(self->target);
             if (t != NULL) {
                 u16 ang;
@@ -165,8 +176,8 @@ BOOL func_ov000_021b3e90(Actor *self) {
     case 1: {
         ret = TRUE;
         if ((u16)(CamYaw(cam) - self->rot_y + 0x600) < 0xc00) {
-            LFLD(u8, self, 0xb30) = 0;
-            LFLD(u8, self, 0xb31) = 0;
+            self->unk_b30 = 0;
+            self->unk_b31 = 0;
         } else {
             cam->unk_fa = self->rot_y;
             cam->unk_da.b5 = 1;

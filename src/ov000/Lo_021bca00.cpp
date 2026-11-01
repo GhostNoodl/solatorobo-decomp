@@ -49,8 +49,21 @@ static inline void Lo_SetText(TextWin *win, u32 text) {
     data_02097ce0->unk_004 = win->unk_28;
 }
 
-BOOL func_ov000_021bca00(u8 *self) {
-    switch (LFLD(s32, self, 0xc)) {
+struct Obj021bca00 {
+    Bits021bca00 unk_00;
+    s32 unk_04;
+    u8 unk_08[0x4];
+    s32 unk_0c;
+    TextWin *unk_10;
+    Model *unk_14;
+    s32 unk_18;
+    s32 unk_1c;
+    u8 unk_20[0x8];
+    s32 unk_28;
+};
+
+BOOL func_ov000_021bca00(Obj021bca00 *self) {
+    switch (self->unk_0c) {
     case 0: {
         void *res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
         u8 *m = (u8 *)func_0203dd9c(0x160);
@@ -63,56 +76,56 @@ BOOL func_ov000_021bca00(u8 *self) {
             func_02041440((Model *)m, (const char *)name, 0);
             STD_CopyString((char *)m + 0x2c, (const char *)arc);
         }
-        LFLD(Model *, self, 0x14) = (Model *)m;
+        self->unk_14 = (Model *)m;
         func_020417e0((Model *)m, res);
-        LFLD(Model *, self, 0x14)->flags |= 2;
-        MODEL_FLAGS(LFLD(Model *, self, 0x14))->unk_19 = 1;
-        MODEL_FLAGS(LFLD(Model *, self, 0x14))->alpha = 0x1e;
-        func_02041d9c(LFLD(Model *, self, 0x14), 0, 0x1d);
-        LFLD(TextWin *, self, 0x10) = Lo_TextWinNew();
-        LFLD(TextWin *, self, 0x10)->unk_28 = 4;
-        Lo_SetText(LFLD(TextWin *, self, 0x10), func_0204c0e8(data_02149ef8, 0x118));
-        LFLD(TextWin *, self, 0x10)->unk_74 = 0x7fff;
-        LFLD(TextWin *, self, 0x10)->unk_76 = 0x67f;
-        LFLD(TextWin *, self, 0x10)->unk_78 = 0x7000;
-        LFLD(TextWin *, self, 0x10)->noVram = 1;
-        LFLD(TextWin *, self, 0x10)->flag24 = 1;
-        LFLD(TextWin *, self, 0x10)->unk_vf14();
-        LFLD(TextWin *, self, 0x10)->unk_4_8 = 0x1e;
-        LFLD(TextWin *, self, 0x10)->unk_4_30 = 1;
-        LFLD(TextWin *, self, 0x10)->rendering = 1;
-        func_0204ca70(LFLD(TextWin *, self, 0x10));
+        self->unk_14->flags |= 2;
+        MODEL_FLAGS(self->unk_14)->unk_19 = 1;
+        MODEL_FLAGS(self->unk_14)->alpha = 0x1e;
+        func_02041d9c(self->unk_14, 0, 0x1d);
+        self->unk_10 = Lo_TextWinNew();
+        self->unk_10->unk_28 = 4;
+        Lo_SetText(self->unk_10, func_0204c0e8(data_02149ef8, 0x118));
+        self->unk_10->unk_74 = 0x7fff;
+        self->unk_10->unk_76 = 0x67f;
+        self->unk_10->unk_78 = 0x7000;
+        self->unk_10->noVram = 1;
+        self->unk_10->flag24 = 1;
+        self->unk_10->unk_vf14();
+        self->unk_10->unk_4_8 = 0x1e;
+        self->unk_10->unk_4_30 = 1;
+        self->unk_10->rendering = 1;
+        func_0204ca70(self->unk_10);
         func_ov000_02184508(data_ov000_021ccd54);
-        LFLD(s32, self, 0xc) = 1;
+        self->unk_0c = 1;
         break;
     }
     case 1:
-        if (!func_02054f10(LFLD(Model *, self, 0x14), 0xffff)) {
+        if (!func_02054f10(self->unk_14, 0xffff)) {
             break;
         }
-        LFLD(s32, self, 0xc) = 2;
+        self->unk_0c = 2;
     case 2: {
         s32 r;
-        if (LFLD(s32, self, 4) == 2) {
-            LFLD(Bits021bca00, self, 0).b0 = 1;
-        } else if (LFLD(Bits021bca00, self, 0).b1) {
-            LFLD(Bits021bca00, self, 0).b0 = 0;
+        if (self->unk_04 == 2) {
+            self->unk_00.b0 = 1;
+        } else if (self->unk_00.b1) {
+            self->unk_00.b0 = 0;
         } else {
-            LFLD(Bits021bca00, self, 0).b0 = 1;
+            self->unk_00.b0 = 1;
         }
-        if (LFLD(s32, self, 0x28) == 0x1000) {
-            LFLD(s32, self, 0x18) += 0x1000;
+        if (self->unk_28 == 0x1000) {
+            self->unk_18 += 0x1000;
         }
-        r = FX_Div(LFLD(s32, self, 0x18), 0x3c000);
+        r = FX_Div(self->unk_18, 0x3c000);
         if (r >= 0x1000) {
-            if (LFLD(s32, self, 0x18) > 0x50000) {
+            if (self->unk_18 > 0x50000) {
                 r = 0;
-                LFLD(s32, self, 0x18) = r;
+                self->unk_18 = r;
             } else {
                 r = 0x1000;
             }
         }
-        LFLD(s32, self, 0x1c) = Lo_FxMul64(FX_SinCosTable_[((r << 14) >> 16) * 2], 0x6000);
+        self->unk_1c = Lo_FxMul64(FX_SinCosTable_[((r << 14) >> 16) * 2], 0x6000);
         func_ov000_021bc474(self);
         break;
     }

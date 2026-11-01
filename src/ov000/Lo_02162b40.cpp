@@ -4,31 +4,58 @@ extern "C" {
 
 int STD_CopyLString(void *dst, const void *src, s32 n);
 
-static inline void LoInitEC44(void *self) {
-    LFLD(s32, self, 0x0) = 0;
-    LFLD(s32, self, 0x4) = 0;
-    LFLD(s32, self, 0x8) = 0;
-    LFLD(s32, self, 0xc) = 0;
-    LFLD(s32, self, 0x1c) = 0;
-    LFLD(s32, self, 0x18) = 0;
-    LFLD(s32, self, 0x10) = 0x80000;
-    LFLD(s32, self, 0x14) = 0xf000;
-    LFLD(s32, self, 0x20) = 0;
-    LFLD(s32, self, 0x24) = 0;
-    LFLD(s32, self, 0x28) = 0;
+struct LoInitEC44Self {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+    s32 unk_0c;
+    s32 unk_10;
+    s32 unk_14;
+    s32 unk_18;
+    s32 unk_1c;
+    s32 unk_20;
+    s32 unk_24;
+    s32 unk_28;
+};
+
+static inline void LoInitEC44(LoInitEC44Self *self) {
+    self->unk_00 = 0;
+    self->unk_04 = 0;
+    self->unk_08 = 0;
+    self->unk_0c = 0;
+    self->unk_1c = 0;
+    self->unk_18 = 0;
+    self->unk_10 = 0x80000;
+    self->unk_14 = 0xf000;
+    self->unk_20 = 0;
+    self->unk_24 = 0;
+    self->unk_28 = 0;
 }
 
-void func_ov000_02162b40(void *self, const void *s0, const void *s1, const void *s2, const void *s3, s32 d, s32 e, s16 f) {
+struct Obj02162b40 {
+    u8 unk_00[0xa];
+    u8 unk_0a;
+    u8 unk_0b[0x70];
+    u8 unk_7b;
+    u8 unk_7c[0x640];
+    u8 unk_6bc;
+    u8 unk_6bd[0x3];
+    s32 unk_6c0;
+    s32 unk_6c4;
+    s16 unk_6c8;
+};
+
+void func_ov000_02162b40(Obj02162b40 *self, const void *s0, const void *s1, const void *s2, const void *s3, s32 d, s32 e, s16 f) {
     STD_CopyLString((u8 *)self + 0xb, s0, 0x20);
     STD_CopyLString((u8 *)self + 0x2b, s1, 0x18);
     STD_CopyLString((u8 *)self + 0x43, s2, 0x20);
     STD_CopyLString((u8 *)self + 0x63, s3, 0x18);
-    LFLD(u8, self, 0x7b) = e != 0 ? TRUE : FALSE;
-    LFLD(u8, self, 0xa) = 1;
-    LFLD(u8, self, 0x6bc) = 1;
-    LFLD(s32, self, 0x6c0) = d;
-    LFLD(s32, self, 0x6c4) = e;
-    LFLD(s16, self, 0x6c8) = f;
+    self->unk_7b = e != 0 ? TRUE : FALSE;
+    self->unk_0a = 1;
+    self->unk_6bc = 1;
+    self->unk_6c0 = d;
+    self->unk_6c4 = e;
+    self->unk_6c8 = f;
 }
 
 }
@@ -87,44 +114,59 @@ static inline void StopSlot(u8 *self, u8 i) {
 #define CF LFLD(CamFlags, self, 0x61e)
 #define V(off) LFLD(VecFx32, self, off)
 
-void func_ov000_02162bd4(u8 *self) {
-    switch (LFLD(s32, self, 0x6b8)) {
+struct Obj02162bd4 {
+    u8 unk_00[0x8];
+    u8 unk_08;
+    u8 unk_09;
+    u8 unk_0a[0x6ae];
+    s32 unk_6b8;
+    u8 unk_6bc;
+    u8 unk_6bd[0x3];
+    void *unk_6c0;
+    s32 unk_6c4;
+    s16 unk_6c8;
+    u8 unk_6ca[0x3a];
+    s32 unk_704;
+};
+
+void func_ov000_02162bd4(Obj02162bd4 *self) {
+    switch (self->unk_6b8) {
     case 0:
-        if (LFLD(u8, self, 0x6bc)) {
-            LFLD(s32, self, 0x6b8) = 10;
-            LFLD(u8, self, 0x6bc) = 0;
+        if (self->unk_6bc) {
+            self->unk_6b8 = 10;
+            self->unk_6bc = 0;
         }
         break;
     case 10:
         CF.b0 = 0;
-        StopSlot(self + 4, LFLD(u8, self + 4, 5));
-        LFLD(s32, self, 0x6b8)++;
+        StopSlot((u8 *)self + 4, LFLD(u8, (u8 *)self + 4, 5));
+        self->unk_6b8++;
         break;
     case 11: {
         u8 *ctrl;
 
-        func_ov000_02161fac(self + 4);
-        if (LFLD(u8, self, 8) != 0x14) {
+        func_ov000_02161fac((u8 *)self + 4);
+        if (self->unk_08 != 0x14) {
             break;
         }
-        LFLD(u8, self, 9) ^= 1;
-        func_ov000_0218ffdc(self + 0x55c, self + 0x7c + LFLD(u8, self, 9) * 0x138, 0, 1);
+        self->unk_09 ^= 1;
+        func_ov000_0218ffdc((u8 *)self + 0x55c, (u8 *)self + 0x7c + self->unk_09 * 0x138, 0, 1);
         CF.b6 = 1;
-        func_ov000_02190cb0(self + 0x55c, LFLD(void *, self, 0x6c0), 0x1000, 0);
-        func_ov000_021911c8(self + 0x55c, LFLD(s16, self, 0x6c8));
-        func_ov000_021915a0(self + 0x55c);
+        func_ov000_02190cb0((u8 *)self + 0x55c, self->unk_6c0, 0x1000, 0);
+        func_ov000_021911c8((u8 *)self + 0x55c, self->unk_6c8);
+        func_ov000_021915a0((u8 *)self + 0x55c);
         CF.b4 = 0;
         CF.b0 = 0;
-        if (LFLD(void *, self + 0x2ec + LFLD(u8, self, 9) * 0x138, 0x48) != NULL &&
-            LFLD(s32, LFLD(void *, self + 0x2ec + LFLD(u8, self, 9) * 0x138, 0x48), 0xc) != 0) {
-            func_ov000_02191870(self + 0x55c, self + 0x2ec + LFLD(u8, self, 9) * 0x138);
-            ctrl = func_ov000_02190a30(self + 0x55c, 3);
+        if (LFLD(void *, (u8 *)self + 0x2ec + self->unk_09 * 0x138, 0x48) != NULL &&
+            LFLD(s32, LFLD(void *, (u8 *)self + 0x2ec + self->unk_09 * 0x138, 0x48), 0xc) != 0) {
+            func_ov000_02191870((u8 *)self + 0x55c, (u8 *)self + 0x2ec + self->unk_09 * 0x138);
+            ctrl = func_ov000_02190a30((u8 *)self + 0x55c, 3);
             if (ctrl != NULL) {
                 s32 v;
                 float f;
                 s32 frame;
-                func_ov000_02191920(self + 0x55c, 0, 0x1000, 0);
-                v = LFLD(s32, self, 0x6c4);
+                func_ov000_02191920((u8 *)self + 0x55c, 0, 0x1000, 0);
+                v = self->unk_6c4;
                 if (v > 0) {
                     f = (float)(v << 12) + 0.5f;
                 } else {
@@ -141,34 +183,34 @@ void func_ov000_02162bd4(u8 *self) {
                 LFLD(u8, ctrl, 0x111) |= 8;
             }
         } else {
-            func_ov000_02191870(self + 0x55c, self + 0x7c + LFLD(u8, self, 9) * 0x138);
+            func_ov000_02191870((u8 *)self + 0x55c, (u8 *)self + 0x7c + self->unk_09 * 0x138);
         }
-        LFLD(s32, self, 0x6b8) = 0x14;
-        LFLD(u8, self, 0x6bc) = 0;
+        self->unk_6b8 = 0x14;
+        self->unk_6bc = 0;
     }
     case 20:
-        LFLD(s32, self, 0x704) = 0xc;
+        self->unk_704 = 0xc;
         V(0x6d8) = V(0x6ec);
-        LFLD(s32, self, 0x6b8)++;
+        self->unk_6b8++;
     case 21:
-        if (LFLD(s32, self, 0x704) != 0) {
-            if (LFLD(u8, self, 0x6bc)) {
-                LFLD(s32, self, 0x6b8) = 10;
-                LFLD(u8, self, 0x6bc) = 0;
+        if (self->unk_704 != 0) {
+            if (self->unk_6bc) {
+                self->unk_6b8 = 10;
+                self->unk_6bc = 0;
             }
-            LFLD(s32, self, 0x704)--;
+            self->unk_704--;
             break;
         }
         CF.b0 = 1;
-        if (func_02049244(self + 0x6d8, 0x266, self + 0x6d8, self + 0x6cc, 0xcd)) {
-            LFLD(s32, self, 0x6b8)++;
+        if (func_02049244((u8 *)self + 0x6d8, 0x266, (u8 *)self + 0x6d8, (u8 *)self + 0x6cc, 0xcd)) {
+            self->unk_6b8++;
         }
         break;
     case 22:
         V(0x6d8) = V(0x6cc);
-        if (LFLD(u8, self, 0x6bc)) {
-            LFLD(s32, self, 0x6b8) = 0x1e;
-            LFLD(u8, self, 0x6bc) = 0;
+        if (self->unk_6bc) {
+            self->unk_6b8 = 0x1e;
+            self->unk_6bc = 0;
         }
         break;
     case 30: {
@@ -178,7 +220,7 @@ void func_ov000_02162bd4(u8 *self) {
         d.z = V(0x6f8).z - V(0x6cc).z;
         VEC_Normalize(&d, &d);
         VEC_MultAdd(0xcd, &d, &V(0x6cc), &V(0x6d8));
-        LFLD(s32, self, 0x6b8)++;
+        self->unk_6b8++;
         break;
     }
     case 31: {
@@ -188,7 +230,7 @@ void func_ov000_02162bd4(u8 *self) {
         d.z = V(0x6d8).z - V(0x6cc).z;
         VEC_MultAdd(0x14cd, &d, &V(0x6cc), &V(0x6d8));
         if ((s32)(((s64)d.x * (V(0x6f8).x - V(0x6d8).x) + (s64)d.y * (V(0x6f8).y - V(0x6d8).y) + (s64)d.z * (V(0x6f8).z - V(0x6d8).z) + 0x800) >> 12) <= 0) {
-            LFLD(s32, self, 0x6b8) = 10;
+            self->unk_6b8 = 10;
         }
         break;
     }
@@ -199,7 +241,7 @@ void func_ov000_02162bd4(u8 *self) {
         d.z = V(0x6f8).z - V(0x6cc).z;
         VEC_Normalize(&d, &d);
         VEC_MultAdd(0xcd, &d, &V(0x6cc), &V(0x6d8));
-        LFLD(s32, self, 0x6b8)++;
+        self->unk_6b8++;
         break;
     }
     case 41: {
@@ -212,7 +254,7 @@ void func_ov000_02162bd4(u8 *self) {
             break;
         }
         CF.b0 = 0;
-        LFLD(s32, self, 0x6b8)++;
+        self->unk_6b8++;
         break;
     }
     case 42: // empty case; moves the compare-tree pivot to 30

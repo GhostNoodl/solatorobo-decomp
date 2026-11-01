@@ -56,7 +56,22 @@ static inline void LoSetPos(void *m, s32 x, s32 y) {
     LFLD(s32, m, 0x100) = y;
 }
 
-static inline void LoPlace(u8 *self, s32 x, s32 y) {
+struct Obj0216df28 {
+    u8 unk_00[0x4];
+    s32 unk_04;
+    u8 unk_08[0x18];
+    s32 unk_20;
+    u8 unk_24[0x4];
+    s32 unk_28;
+    u8 unk_2c[0x4];
+    s32 unk_30;
+    u8 unk_34[0x8];
+    s32 unk_3c;
+    u8 unk_40[0xc];
+    s32 unk_4c;
+};
+
+static inline void LoPlace(Obj0216df28 *self, s32 x, s32 y) {
     MF(M10).b21 = 1;
     LFLD(s32, M10, 0x150) = -0x1f80;
     LoSetPos(M10, x << 12, y << 12);
@@ -67,9 +82,9 @@ static inline void LoPlace2(u8 *self, s32 z, s32 x, s32 y) {
     LoSetPos(M10, x << 12, y << 12);
 }
 
-void func_ov000_0216df28(u8 *self) {
+void func_ov000_0216df28(Obj0216df28 *self) {
     u8 *m;
-    s32 st = LFLD(s32, self, 4);
+    s32 st = self->unk_04;
     s32 s;
     if (st != 7 && st != 8 && st != 9) {
         return;
@@ -77,10 +92,10 @@ void func_ov000_0216df28(u8 *self) {
     {
         s32 y;
         s32 x;
-        x = (LO_FX_MUL(LFLD(s32, self, 0x30), 0x80000) >> 12) - 0x80;
-        y = (LFLD(s32, self, 0x4c) - 0x60000) >> 12;
+        x = (LO_FX_MUL(self->unk_30, 0x80000) >> 12) - 0x80;
+        y = (self->unk_4c - 0x60000) >> 12;
         if (LBIT(self, 0).b10 == 1) {
-            LoPlace(self, x + 0xbd, y + 0x1e + (LFLD(s32, self, 0x3c) >> 12));
+            LoPlace(self, x + 0xbd, y + 0x1e + (self->unk_3c >> 12));
             LoModelPlayPart(M10, 0xf);
             MF(M10).b21 = 0;
         }
@@ -88,12 +103,12 @@ void func_ov000_0216df28(u8 *self) {
         LFLD(s32, M10, 0x150) = -0x2000;
         LoSetPos(M10, (x + 0xff) << 12, (y + 0x18) << 12);
         LoModelPlayPart(M10, 0xc);
-        func_02041c18(M14, LFLD(s32, self, 0x20));
+        func_02041c18(M14, self->unk_20);
         LoSetPos(M14, (x + 0xf7) << 12, (y + 0x24) << 12);
         m = M14;
         LoModelPlayPart(m, 0x1f);
         if (LBIT(self, 0).b8 == 1) {
-            s = LO_FX_MUL(LFLD(s32, self, 0x3c), 0x1000);
+            s = LO_FX_MUL(self->unk_3c, 0x1000);
             MTX_Identity22_((MtxFx22 *)(M14 + 0x114));
             MTX_ScaleApply22((MtxFx22 *)(M14 + 0x114), (MtxFx22 *)(M14 + 0x114), s + 0x1000, s + 0x1000);
             LFLD(u16, M14, 0x154) = 0x1098;
@@ -105,12 +120,12 @@ void func_ov000_0216df28(u8 *self) {
             LoModelPlayPart(M14, 0x1e);
         }
         LFLD(u16, M14, 0x154) = 0x7fff;
-        if (LFLD(s32, self, 0x28) == 0) {
+        if (self->unk_28 == 0) {
             return;
         }
         LoSetPos(M14, (x + 0xc9) << 12, (y + 9) << 12);
         LoModelPlayPart(M14, 0x20);
-        func_02041c18(M14, LFLD(s32, self, 0x28));
+        func_02041c18(M14, self->unk_28);
         LoSetPos(M14, (x + 0xf7) << 12, (y + 0xf) << 12);
         LoModelPlayPart(M14, 0x1f);
         if (LBIT(self, 0).b11 == 1) {

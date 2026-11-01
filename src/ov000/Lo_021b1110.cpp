@@ -41,7 +41,22 @@ static inline Obj021b1110 *GroupNext(Obj021b1110 *head, Obj021b1110 *cur) {
     return cur != NULL ? cur->next : head;
 }
 
-void func_ov000_021b1110(u8 *self, BOOL force) {
+struct Obj021b1110S {
+    u8 unk_00[0x50];
+    u16 *unk_50;
+    u8 unk_54[0x3f];
+    B8 unk_93;
+    u8 unk_94[0xa8e];
+    B16 unk_b22;
+    LoBits unk_b24;
+    B8 unk_b28;
+    u8 unk_b29[0x1];
+    u8 unk_b2a;
+    u8 unk_b2b[0x7];
+    u16 unk_b32;
+};
+
+void func_ov000_021b1110(Obj021b1110S *self, BOOL force) {
     u8 found = FALSE;
     {
         Group021b1110 *g = func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000);
@@ -65,32 +80,32 @@ void func_ov000_021b1110(u8 *self, BOOL force) {
             }
         }
     }
-    if (found && LFLD(u16, self, 0xb32) == 0 && *LFLD(u16 *, self, 0x50) != 0) {
-        LFLD(u16, self, 0xb32)++;
+    if (found && self->unk_b32 == 0 && *self->unk_50 != 0) {
+        self->unk_b32++;
     }
-    if (force || !LFLD(B8, self, 0xb28).b2) {
-        if (LFLD(B8, self, 0x93).b4 == found) {
+    if (force || !self->unk_b28.b2) {
+        if (self->unk_93.b4 == found) {
             return;
         }
         if (found) {
             func_ov000_02172450(data_ov000_021ccd30, 1);
-            LFLD(B8, self, 0x93).b4 = found;
-            LFLD(u8, self, 0xb2a) = 0;
+            self->unk_93.b4 = found;
+            self->unk_b2a = 0;
         } else {
             func_ov000_02172450(data_ov000_021ccd30, 2);
-            LFLD(B8, self, 0x93).b4 = found;
+            self->unk_93.b4 = found;
         }
     } else {
         if (found) {
             return;
         }
-        if (!LFLD(B16, self, 0xb22).b3) {
+        if (!self->unk_b22.b3) {
             return;
         }
-        if (LFLD(B16, self, 0xb22).b4) {
+        if (self->unk_b22.b4) {
             return;
         }
-        if (LFLD(LoBits, self, 0xb24).b0) {
+        if (self->unk_b24.b0) {
             return;
         }
         func_ov000_021b1a54(self, 1);

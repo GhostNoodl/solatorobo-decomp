@@ -81,7 +81,14 @@ static inline BOOL SameCol021b65ec(const Rgb021b65ec *a, const Rgb021b65ec *b) {
     return r;
 }
 
-void func_ov000_021b65ec(u8 *self) {
+struct Obj021b65ec {
+    u8 unk_00[0xb];
+    u8 unk_0b;
+    u8 unk_0c[0xc];
+    Item021b65ec *unk_18;
+};
+
+void func_ov000_021b65ec(Obj021b65ec *self) {
     u8 *g;
     u8 *pl;
     Item021b65ec *item;
@@ -90,7 +97,7 @@ void func_ov000_021b65ec(u8 *self) {
     if (pl == NULL) {
         return;
     }
-    item = &LFLD(Item021b65ec *, self, 0x18)[LFLD(u8, self, 0xb)];
+    item = &self->unk_18[self->unk_0b];
     g = (u8 *)data_ov000_021ccd54;
     if (item->bits.b1 && LFLD(B24_021b65ec, pl, 0xb24).b5) {
         Actor *a = FindActor021b65ec(LFLD(u16, pl, 0xb1c));

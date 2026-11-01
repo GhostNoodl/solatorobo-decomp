@@ -1,55 +1,56 @@
 #include "types.h"
+#include "ov000/ObjLayouts.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
 
-static inline BOOL Cond1_02155c38(u8 *self) {
-    u8 *p = LFLD(u8 *, self, 0x98);
+static inline BOOL Cond1_02155c38(LoBase021caac8_021caec8 *self) {
+    u8 *p = self->unk_98;
     if (p == NULL) {
         return TRUE;
     }
     return LFLD(s16, p, 4) == 0;
 }
 
-static inline BOOL Cond2_02155c38(u8 *self) {
-    u8 *p = LFLD(u8 *, self, 0x98);
+static inline BOOL Cond2_02155c38(LoBase021caac8_021caec8 *self) {
+    u8 *p = self->unk_98;
     if (p == NULL) {
         return TRUE;
     }
-    if (LFLD(s16, p, 4) == LFLD(s16, self, 0x9c) - LFLD(s32, self, 0x20) || LFLD(s16, self, 0x9c) < LFLD(s32, self, 0x20)) {
+    if (LFLD(s16, p, 4) == self->unk_9c - self->unk_20 || self->unk_9c < self->unk_20) {
         return TRUE;
     }
     return FALSE;
 }
 
-void func_ov000_02155c38(u8 *self) {
-    if (++LFLD(s32, self, 0xc4) < 0x18) {
-        LFLD(s32, self, 0xc8) += (s32)(((s64)(0x3000 - LFLD(s32, self, 0xc8)) * (s64)0x148 + 0x800) >> 12);
-    } else if (LFLD(s32, self, 0xc4) < 0x40) {
-        LFLD(s32, self, 0xc8) += (s32)(((s64)(-LFLD(s32, self, 0xc8)) * (s64)0xcd + 0x800) >> 12);
+void func_ov000_02155c38(LoBase021caac8_021caec8 *self) {
+    if (++self->unk_c4 < 0x18) {
+        self->unk_c8 += (s32)(((s64)(0x3000 - self->unk_c8) * (s64)0x148 + 0x800) >> 12);
+    } else if (self->unk_c4 < 0x40) {
+        self->unk_c8 += (s32)(((s64)(-self->unk_c8) * (s64)0xcd + 0x800) >> 12);
     } else {
-        LFLD(s32, self, 0xc4) = 0;
-        LFLD(s32, self, 0xc8) = 0;
+        self->unk_c4 = 0;
+        self->unk_c8 = 0;
     }
     if (Cond1_02155c38(self)) {
-        LFLD(s8, self, 0xc2) -= 4;
+        self->unk_c2 -= 4;
     } else {
-        LFLD(s8, self, 0xc2) += 4;
+        self->unk_c2 += 4;
     }
-    if (LFLD(s8, self, 0xc2) < 0) {
-        LFLD(s8, self, 0xc2) = 0;
-    } else if (LFLD(s8, self, 0xc2) > 30) {
-        LFLD(s8, self, 0xc2) = 30;
+    if (self->unk_c2 < 0) {
+        self->unk_c2 = 0;
+    } else if (self->unk_c2 > 30) {
+        self->unk_c2 = 30;
     }
     if (Cond2_02155c38(self)) {
-        LFLD(s8, self, 0xc3) -= 4;
+        self->unk_c3 -= 4;
     } else {
-        LFLD(s8, self, 0xc3) += 4;
+        self->unk_c3 += 4;
     }
-    if (LFLD(s8, self, 0xc3) < 0) {
-        LFLD(s8, self, 0xc3) = 0;
-    } else if (LFLD(s8, self, 0xc3) > 30) {
-        LFLD(s8, self, 0xc3) = 30;
+    if (self->unk_c3 < 0) {
+        self->unk_c3 = 0;
+    } else if (self->unk_c3 > 30) {
+        self->unk_c3 = 30;
     }
 }
 }

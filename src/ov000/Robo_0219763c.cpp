@@ -78,13 +78,24 @@ static inline int GetNibble0219763c(s32 row, s32 idx) {
     return (v >> ((idx % 8) * 4)) & 0xf;
 }
 
+struct Die0219763cSelf {
+    u8 unk_00[0xc];
+    u16 unk_0c;
+    u16 unk_0e;
+    u8 unk_10[0x7];
+    u8 unk_17;
+    u8 unk_18[0x94];
+    u8 unk_ac;
+    u8 unk_ad;
+};
+
 static inline void Die0219763c(VObj *obj) {
-    u8 *self = (u8 *)obj;
+    Die0219763cSelf *self = (Die0219763cSelf *)obj;
     {
-        u8 idx = LFLD(u8, self, 0x17);
+        u8 idx = self->unk_17;
         s32 row;
         if (idx != 0xff) {
-            row = func_0206e7ec(LFLD(u8, self, 0xac), LFLD(u8, self, 0xad));
+            row = func_0206e7ec(self->unk_ac, self->unk_ad);
             if (row != 0xffff) {
                 u8 val = 0xf;
                 val |= GetNibble0219763c(row, idx) & 8;
@@ -93,7 +104,7 @@ static inline void Die0219763c(VObj *obj) {
         }
     }
     if (func_ov000_0219bf90() != NULL && !func_ov000_021b4738()) {
-        func_020627a0(LFLD(u16, self, 0xe), LFLD(u16, self, 0xc));
+        func_020627a0(self->unk_0e, self->unk_0c);
         func_020627dc(0x63);
         {
             u8 *pl = data_ov000_021ccd54;
@@ -106,25 +117,45 @@ static inline void Die0219763c(VObj *obj) {
     obj->vfunc_08();
 }
 
-static inline void Spawn0219763c(u8 *self, s16 id, const s16 *scale, Vec0219763c *p) {
+struct Obj0219763c {
+    u8 unk_00[0xe];
+    u16 unk_0e;
+    u8 unk_10[0x28];
+    u8 *unk_38;
+    u8 unk_3c[0x4];
+    State0219763c *unk_40;
+    u8 *unk_44;
+    u8 *unk_48;
+    u8 *unk_4c;
+    u8 unk_50[0x8];
+    void *unk_58;
+    u8 unk_5c[0x8];
+    s32 unk_64;
+    u8 unk_68[0x4];
+    s32 unk_6c;
+    u8 unk_70[0x5c];
+    Bits0219763c unk_cc;
+};
+
+static inline void Spawn0219763c(Obj0219763c *self, s16 id, const s16 *scale, Vec0219763c *p) {
     VObj *fx = func_02065f88(id, p);
     s32 s = *scale << 4;
     if (s == 0) {
-        s = LFLD(s32, self, 0x64) + (LFLD(s32, self, 0x64) >> 3);
+        s = self->unk_64 + (self->unk_64 >> 3);
     }
     fx->vfunc_0c(s);
-    if (!LFLD(Bits0219763c, self, 0xcc).b5) {
+    if (!self->unk_cc.b5) {
         MIi_CpuClear32(-1, (u8 *)fx + 0x84, 0x40);
     }
 }
 
 void func_ov000_0219763c(VObj *obj) {
-    u8 *self = (u8 *)obj;
+    Obj0219763c *self = (Obj0219763c *)obj;
     s32 zero = 0;
-    State0219763c *s = LFLD(State0219763c *, self, 0x40);
+    State0219763c *s = self->unk_40;
     switch (s->st) {
     case 0: {
-        u8 *t = LFLD(u8 *, self, 0x4c);
+        u8 *t = self->unk_4c;
         Ent0219763c *e = (Ent0219763c *)zero;
         Vec0219763c p;
         if (t != NULL) {
@@ -140,8 +171,8 @@ void func_ov000_0219763c(VObj *obj) {
                 e = &data_ov000_021c9ecc[id];
             }
         }
-        p = *(Vec0219763c *)(self + 0x70);
-        p.y += LFLD(s32, self, 0x6c) + (LFLD(s32, self, 0x6c) >> 1);
+        p = *(Vec0219763c *)((u8 *)self + 0x70);
+        p.y += self->unk_6c + (self->unk_6c >> 1);
         if (e != NULL) {
             if (e->fx0 != -1) {
                 Spawn0219763c(self, e->fx0, &e->scale0, &p);
@@ -149,37 +180,37 @@ void func_ov000_0219763c(VObj *obj) {
             if (e->fx1 != -1) {
                 Spawn0219763c(self, e->fx1, &e->scale1, &p);
             }
-            if (e->snd >= 0 && LFLD(Bits0219763c, self, 0xcc).b5) {
-                func_02049f44(data_02097e4c, e->snd, self + 0x70, 0);
+            if (e->snd >= 0 && self->unk_cc.b5) {
+                func_02049f44(data_02097e4c, e->snd, (u8 *)self + 0x70, 0);
             }
             if (e->a != 0 && e->b != 0) {
                 func_ov000_0218996c(e->a, e->b);
             }
         }
         {
-            u8 *r = func_020704b4(LFLD(u16, self, 0xe));
-            func_ov000_0219b400((u16 *)(r + 0x20), r + 0x24, 2, &p, self + 0x7c, zero);
+            u8 *r = func_020704b4(self->unk_0e);
+            func_ov000_0219b400((u16 *)(r + 0x20), r + 0x24, 2, &p, (u8 *)self + 0x7c, zero);
         }
-        if (LFLD(u8 *, self, 0x44) != NULL) {
-            u8 *q = LFLD(u8 *, self, 0x44);
+        if (self->unk_44 != NULL) {
+            u8 *q = self->unk_44;
             LFLD(Bits0219763c, q, 0x22).b0 = 0;
             LFLD(Bits0219763c, q, 0x22).b1 = 0;
         }
-        if (LFLD(u8 *, self, 0x48) != NULL) {
+        if (self->unk_48 != NULL) {
             u8 *q;
-            func_ov000_02198c8c(LFLD(u8 *, self, 0x48), 0xffff);
-            q = LFLD(u8 *, self, 0x48);
+            func_ov000_02198c8c(self->unk_48, 0xffff);
+            q = self->unk_48;
             LFLD(Bits0219763c, q, 0x9a).b0 = 0;
             LFLD(Bits0219763c, q, 0x9a).b3 = 0;
             func_0203f364(q);
-            q = LFLD(u8 *, self, 0x48);
+            q = self->unk_48;
             LFLD(Bits0219763c, q, 0x9a).b1 = 0;
             LFLD(Bits0219763c, q, 0x9a).b4 = 0;
         }
-        if (LFLD(void *, self, 0x58) != NULL) {
-            LFLD(Bits0219763c, self, 0xcc).b0 = 0;
+        if (self->unk_58 != NULL) {
+            self->unk_cc.b0 = 0;
         }
-        LFLD(State0219763c *, self, 0x40)->st++;
+        self->unk_40->st++;
         return;
     }
     case 1:
@@ -188,8 +219,8 @@ void func_ov000_0219763c(VObj *obj) {
             Die0219763c(obj);
             return;
         }
-        if (LFLD(u8 *, self, 0x38) != NULL) {
-            LFLD(u8, LFLD(u8 *, self, 0x38), 0xbe) = 0x1f - (LFLD(State0219763c *, self, 0x40)->timer << 2);
+        if (self->unk_38 != NULL) {
+            LFLD(u8, self->unk_38, 0xbe) = 0x1f - (self->unk_40->timer << 2);
         }
         return;
     }

@@ -33,7 +33,17 @@ static inline void Rgb_Set(Rgb021bbd94 *c, u8 r, u8 g, u8 b) {
     c->c[2] = b;
 }
 
-void func_ov000_021bbd94(u8 *self) {
+struct Obj021bbd94 {
+    u8 unk_00[0x58];
+    void *unk_58;
+    VObj *unk_5c;
+    u8 unk_60[0x14];
+    u8 unk_74;
+    u8 unk_75;
+    u8 unk_76;
+};
+
+void func_ov000_021bbd94(Obj021bbd94 *self) {
     void *msg = data_02149ef8;
     VObj *t;
     u8 *m;
@@ -48,38 +58,38 @@ void func_ov000_021bbd94(u8 *self) {
         VOBJ_SET_VTABLE(t, data_ov000_021cb5a8);
         t->vfunc_28();
     }
-    LFLD(VObj *, self, 0x5c) = t;
+    self->unk_5c = t;
     LFLD(u32, t, 0xc) |= 0x4000000;
-    LFLD(s32, LFLD(void *, self, 0x5c), 0x2c) = 1;
+    LFLD(s32, self->unk_5c, 0x2c) = 1;
     {
-        u8 *p = LFLD(u8 *, self, 0x5c);
+        u8 *p = (u8 *)self->unk_5c;
         LFLD(s32, p, 0x58) = 0x100;
         LFLD(s32, p, 0x5c) = 0;
         LFLD(s32, p, 0x60) = 0;
     }
     {
-        u8 *p = LFLD(u8 *, self, 0x5c);
+        u8 *p = (u8 *)self->unk_5c;
         LFLD(s16, p, 0x64) = 0;
         LFLD(s16, p, 0x66) = 0;
         LFLD(s16, p, 0x68) = -0x89a;
     }
-    LFLD(u32, LFLD(void *, self, 0x5c), 0xc) |= 0x20000000;
-    LFLD(u32, LFLD(void *, self, 0x5c), 0xc) |= 0x80000000;
-    LFLD(VObj *, self, 0x5c)->vfunc_f4(2, func_0204c0e8(msg, 0x33));
-    LFLD(VObj *, self, 0x5c)->vfunc_08();
+    LFLD(u32, self->unk_5c, 0xc) |= 0x20000000;
+    LFLD(u32, self->unk_5c, 0xc) |= 0x80000000;
+    self->unk_5c->vfunc_f4(2, func_0204c0e8(msg, 0x33));
+    self->unk_5c->vfunc_08();
     m = (u8 *)func_0203dd9c(0x160);
     if (m != NULL) {
         func_02041218(m + 0x88);
-        func_02041440(m, self + 0x28, 0);
+        func_02041440(m, (u8 *)self + 0x28, 0);
         STD_CopyString((char *)m + 0x2c, (char *)self + 8);
     }
-    LFLD(u8 *, self, 0x58) = m;
-    func_020417e0(LFLD(void *, self, 0x58), (void *)VOBJ_AT(self, 4)->vfunc_10());
-    LFLD(u32, LFLD(void *, self, 0x58), 0x6c) |= 2;
-    func_02041d9c(LFLD(void *, self, 0x58), 0, 0xffff);
+    self->unk_58 = m;
+    func_020417e0(self->unk_58, (void *)VOBJ_AT(self, 4)->vfunc_10());
+    LFLD(u32, self->unk_58, 0x6c) |= 2;
+    func_02041d9c(self->unk_58, 0, 0xffff);
     {
         s32 v = Ccd30_Value();
-        Rgb_Set(&c, LFLD(u8, self, 0x74), LFLD(u8, self, 0x75), LFLD(u8, self, 0x76));
+        Rgb_Set(&c, self->unk_74, self->unk_75, self->unk_76);
         func_ov000_02165a20(v, &c);
     }
 }

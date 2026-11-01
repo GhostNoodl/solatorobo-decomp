@@ -142,7 +142,12 @@ static inline BOOL Bit2_021675ec(u8 *pl) {
     return LFLD(Flags021675ec, pl, 0xb28).b == 1 ? TRUE : FALSE;
 }
 
-void func_ov000_021675ec(u8 *self, u8 *w) {
+struct Obj021675ec {
+    u8 unk_00[0x24];
+    u8 *unk_24;
+};
+
+void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
     u16 k;
     VecFx32 pos;
     u8 *o;
@@ -194,8 +199,8 @@ void func_ov000_021675ec(u8 *self, u8 *w) {
         NNS_G2dEntryOamManagerOam(oam, w + 0x64c, w[2]);
     }
     if (LFLD(Flags021675ec, pl, 0xb28).a == 0 && !Bit2_021675ec(pl) && w[0] == 0) {
-        LFLD(Pos021675ec, LFLD(u8 *, self, 0x24), 0x10c) = LFLD(const Pos021675ec, data_ov000_021c9a9c, 0x74);
-        PlayPart021675ec(LFLD(u8 *, self, 0x24), 3, 0);
+        LFLD(Pos021675ec, self->unk_24, 0x10c) = LFLD(const Pos021675ec, data_ov000_021c9a9c, 0x74);
+        PlayPart021675ec(self->unk_24, 3, 0);
         NNS_G2dEntryOamManagerOam(oam, w + 0x14, 1);
     }
     for (o = LFLD(u8 *, data_ov000_021ccd6c, 0x1c); o != NULL; o = LFLD(u8 *, o, 4)) {
@@ -216,18 +221,18 @@ void func_ov000_021675ec(u8 *self, u8 *w) {
                 if (sy >= 0x1e000) {
                     k += 2;
                 }
-                LFLD(Pos021675ec, LFLD(u8 *, self, 0x24), 0x10c) = m;
-                PlayPart021675ec(LFLD(u8 *, self, 0x24), k, 0);
+                LFLD(Pos021675ec, self->unk_24, 0x10c) = m;
+                PlayPart021675ec(self->unk_24, k, 0);
             }
         }
     }
     for (j = func_ov000_0218c040(data_ov000_021ccd64, 8, pts, 4, 0x406b) - 1; j >= 0; j--) {
         if (ToMap021675ec(&m, pts[j].x, pts[j].z, &c)) {
-            LFLD(Pos021675ec, LFLD(u8 *, self, 0x24), 0x10c) = m;
-            PlayPart021675ec(LFLD(u8 *, self, 0x24), 4, 0);
+            LFLD(Pos021675ec, self->unk_24, 0x10c) = m;
+            PlayPart021675ec(self->unk_24, 4, 0);
         }
     }
-    MTX_Identity22_((MtxFx22 *)(LFLD(u8 *, self, 0x24) + 0x134));
+    MTX_Identity22_((MtxFx22 *)(self->unk_24 + 0x134));
 }
 
 }

@@ -1,4 +1,6 @@
 #include "ov010/ov010.h"
+#include "ov010/ObjLayouts.h"
+#include "ov010/ObjLayouts.h"
 
 extern "C" {
 
@@ -8,14 +10,14 @@ extern u8 data_ov010_0220f1d0[];
 extern BOOL func_ov003_021d984c(void *p, void *a);
 extern void func_ov003_021d95e8(void *p, void *a, s32 b);
 
-static inline void Ov010_PlayAnim(void *self, void *anim, s32 n) {
+static inline void Ov010_PlayAnim(Ov010Obj0220ffe4 *self, void *anim, s32 n) {
     if (!func_ov003_021d984c((u8 *)self + 0x160, anim)) {
         func_ov003_021d95e8((u8 *)self + 0x160, anim, n);
     }
 }
 
-void func_ov010_02208898(void *self) {
-    u16 *hp = FLD(u16 *, self, 0x50);
+void func_ov010_02208898(Ov010Obj0220ffe4 *self) {
+    u16 *hp = self->unk_50;
     s32 r = (hp[0] << 12) / hp[1];
     if (r <= 0x733) {
         Ov010_PlayAnim(self, data_ov010_0220f394, 0x1e);
@@ -29,12 +31,12 @@ void func_ov010_02208898(void *self) {
 
 extern void func_ov010_022046ac(void *self);
 
-BOOL func_ov010_02208968(void *self, s32 *out) {
+BOOL func_ov010_02208968(Ov010Obj0220ffe4 *self, s32 *out) {
     *out = 9;
     return TRUE;
 }
 
-void func_ov010_02208978(void *self, s32 *out) {
+void func_ov010_02208978(Ov010Obj0220ffe4 *self, s32 *out) {
     out[0] = 0x905;
     out[1] = 0x906;
     out[2] = 0x904;
@@ -44,9 +46,9 @@ void func_ov010_02208978(void *self, s32 *out) {
     out[7] = 0x902;
 }
 
-void func_ov010_022089b4(void *self) {
+void func_ov010_022089b4(Ov010Obj0221009c *self) {
     func_ov010_022046ac(self);
-    FLD(u8, self, 0xf3) = FLD(s16, self, 0x18) == 2;
+    self->unk_f3 = self->unk_18 == 2;
 }
 
 }

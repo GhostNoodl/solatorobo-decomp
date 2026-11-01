@@ -34,14 +34,25 @@ static inline void SetOfs(Model *m, s32 x, s32 y, s32 dy) {
 }
 
 
-void func_ov000_021bbf78(u8 *self) {
+struct Obj021bbf78 {
+    u8 unk_00[0x58];
+    Model *unk_58;
+    u8 unk_5c[0x4];
+    s32 unk_60;
+    u8 unk_64[0x4];
+    s32 unk_68;
+    u8 unk_6c[0x4];
+    s32 unk_70;
+};
+
+void func_ov000_021bbf78(Obj021bbf78 *self) {
     u8 *g;
     s32 alpha;
     s32 t;
     u32 k;
     s32 d;
     s32 v;
-    alpha = LO_FX_MUL(LFLD(s32, self, 0x68), 0x14000) >> 12;
+    alpha = LO_FX_MUL(self->unk_68, 0x14000) >> 12;
     g = data_02097d48;
     if (alpha == 0) {
         return;
@@ -54,23 +65,23 @@ void func_ov000_021bbf78(u8 *self) {
     G3_Vec(0x1b, 0x100000, 0xc0000, 0x1000);
     NNS_G3dGeSendDL(data_0208b3d0.unk_04, (u32)data_020828f8.unk_04);
     G3_Cmd1(0x12, 1);
-    MODEL_FLAGS(LFLD(Model *, self, 0x58))->unk_19 = 1;
-    MODEL_FLAGS(LFLD(Model *, self, 0x58))->alpha = (u8)alpha;
-    MODEL_FLAGS(LFLD(Model *, self, 0x58))->polygon_id = func_02043d84(g + 0x8b0);
-    LFLD(Model *, self, 0x58)->unk_150 = -0x89a;
-    Model_SetPos(LFLD(Model *, self, 0x58), 0, 0);
-    Model_PlayPart(LFLD(Model *, self, 0x58), 0);
-    t = LFLD(s32, self, 0x60) % 0x40000;
+    MODEL_FLAGS(self->unk_58)->unk_19 = 1;
+    MODEL_FLAGS(self->unk_58)->alpha = (u8)alpha;
+    MODEL_FLAGS(self->unk_58)->polygon_id = func_02043d84(g + 0x8b0);
+    self->unk_58->unk_150 = -0x89a;
+    Model_SetPos(self->unk_58, 0, 0);
+    Model_PlayPart(self->unk_58, 0);
+    t = self->unk_60 % 0x40000;
     if (t < 0x18000) {
-        LFLD(s32, self, 0x70) += LO_FX_MUL(0x8000 - LFLD(s32, self, 0x70), 0x148LL);
+        self->unk_70 += LO_FX_MUL(0x8000 - self->unk_70, 0x148LL);
     } else if (t < 0x3f000) {
-        LFLD(s32, self, 0x70) += LO_FX_MUL(0 - LFLD(s32, self, 0x70), 0xcdLL);
+        self->unk_70 += LO_FX_MUL(0 - self->unk_70, 0xcdLL);
     } else {
-        LFLD(s32, self, 0x70) = 0;
+        self->unk_70 = 0;
     }
 
-    SetOfs(LFLD(Model *, self, 0x58), 0, -0x10, LFLD(s32, self, 0x70) >> 12);
-    Model_PlayPart(LFLD(Model *, self, 0x58), 1);
+    SetOfs(self->unk_58, 0, -0x10, self->unk_70 >> 12);
+    Model_PlayPart(self->unk_58, 1);
 }
 
 }

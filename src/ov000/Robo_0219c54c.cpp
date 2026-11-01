@@ -48,55 +48,81 @@ static inline void SetNames0219c54c(char *d0, char *d1, const char *a, const cha
     STD_CopyString(d1, b);
 }
 
-void func_ov000_0219c54c(u8 *self) {
+struct Obj0219c54c {
+    u8 unk_00[0xe];
+    u16 unk_0e;
+    u8 unk_10[0x2c];
+    void *unk_3c;
+    u8 unk_40[0x154];
+    u16 unk_194;
+    u8 unk_196[0x2ba];
+    u16 unk_450;
+    u8 unk_452[0x1];
+    AnmFlags0219c54c unk_453;
+    u8 unk_454[0x134];
+    u16 unk_588;
+    u8 unk_58a[0x1];
+    AnmFlags0219c54c unk_58b;
+    u8 unk_58c[0x2d4];
+    u16 unk_860;
+    u8 unk_862[0x1];
+    AnmFlags0219c54c unk_863;
+    u8 unk_864[0x2be];
+    Bits0219c54c unk_b22;
+    u8 unk_b24[0x7c];
+    Entry0219c54c *unk_ba0;
+    u8 *unk_ba4;
+};
+
+void func_ov000_0219c54c(Obj0219c54c *self) {
     void *res;
     void *p;
     Entry0219c54c *e;
     u32 kind;
 
-    res = func_0207011c(LFLD(u16, self, 0xe));
-    func_020701d4(LFLD(u16, self, 0xe));
-    func_ov000_0218f074(self + 0x194, res, TRUE, TRUE, 1, FALSE);
-    LFLD(u16, self, 0x194) = 0;
+    res = func_0207011c(self->unk_0e);
+    func_020701d4(self->unk_0e);
+    func_ov000_0218f074((u8 *)self + 0x194, res, TRUE, TRUE, 1, FALSE);
+    self->unk_194 = 0;
     {
         const char *b = data_ov000_021cc5d2;
         const char *a = data_ov000_021cc5d9;
         if (a != NULL && b != NULL) {
             SetNames0219c54c((char *)self + 0x870, (char *)self + 0x890, a, b);
-            LFLD(AnmFlags0219c54c, self, 0x863).b1 = 1;
+            self->unk_863.b1 = 1;
         }
     }
-    LFLD(u16, self, 0x860) = 0;
+    self->unk_860 = 0;
     p = func_0203dd9c(0x1c);
     if (p != NULL) {
         p = func_ov000_021919c8(p);
     }
-    LFLD(void *, self, 0x3c) = p;
+    self->unk_3c = p;
     func_ov000_02191b70(p);
-    kind = LFLD(Bits0219c54c, self, 0xb22).kind;
+    kind = self->unk_b22.kind;
     e = &data_ov000_021ca398[kind];
     if ((u16)(kind + 0xfffe) <= 1) {
         u8 *x = func_0206ef10(LFLD(Save0219c54c, data_0214a424, 0x18).sub | 0x8000);
         if (x != NULL) {
-            LFLD(u8 *, self, 0xba4) = x;
+            self->unk_ba4 = x;
             e = (Entry0219c54c *)(x + 0xc);
         }
     }
-    LFLD(Entry0219c54c *, self, 0xba0) = e;
+    self->unk_ba0 = e;
     SetNames0219c54c((char *)self + 0x460, (char *)self + 0x480, e->name[0], e->name[1]);
-    LFLD(AnmFlags0219c54c, self, 0x453).b1 = 1;
+    self->unk_453.b1 = 1;
     SetNames0219c54c((char *)self + 0x49c, (char *)self + 0x4bc, e->name[2], e->name[3]);
-    LFLD(AnmFlags0219c54c, self, 0x453).b2 = 1;
+    self->unk_453.b2 = 1;
     if (e->name[4] != NULL && e->name[5] != NULL) {
         SetNames0219c54c((char *)self + 0x514, (char *)self + 0x534, e->name[4], e->name[5]);
-        LFLD(AnmFlags0219c54c, self, 0x453).b4 = 1;
+        self->unk_453.b4 = 1;
     }
-    LFLD(u16, self, 0x450) = 0;
+    self->unk_450 = 0;
     if (e->unk_18 == 0) {
         return;
     }
     SetNames0219c54c((char *)self + 0x5d4, (char *)self + 0x5f4, e->name[0], e->name[1]);
-    LFLD(AnmFlags0219c54c, self, 0x58b).b2 = 1;
-    LFLD(u16, self, 0x588) = 0;
+    self->unk_58b.b2 = 1;
+    self->unk_588 = 0;
 }
 }

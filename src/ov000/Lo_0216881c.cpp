@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -11,23 +12,23 @@ void func_ov000_0215f0ec(void *p, void *q);
 extern const s16 FX_SinCosTable_[];
 typedef BOOL (*LoMsgFn)(void *, void *);
 
-void func_ov000_0216881c(void *self) {
-    s32 s = LFLD(s32, self, 4);
+void func_ov000_0216881c(Lo021cb894 *self) {
+    s32 s = self->unk_04;
     if (s == 1 || s == 8 || s == 3 || s == 0xa) {
         if (LBIT(self, 0xc).b1 ? TRUE : FALSE) {
-            LFLD(s32, self, 4) = 2;
+            self->unk_04 = 2;
         }
     }
-    switch (LFLD(s32, self, 4)) {
+    switch (self->unk_04) {
     case 8:
-        LFLD(s32, self, 0xb8) = -8;
+        self->unk_b8 = -8;
         break;
     case 0xa:
-        if (!((LFLD(u32, self, 0xc) & 0x10000) ? TRUE : FALSE)) {
+        if (!((self->unk_0c & 0x10000) ? TRUE : FALSE)) {
             LBIT(self, 0xc).b1 = 1;
         }
-        if (--LFLD(s32, self, 0xb8) < -8) {
-            LFLD(s32, self, 0xb8) = 4;
+        if (--self->unk_b8 < -8) {
+            self->unk_b8 = 4;
         }
         LBIT(self, 0xc).b16 = 0;
         break;

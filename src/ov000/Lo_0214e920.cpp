@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     s32 v[4];
@@ -50,7 +51,7 @@ static inline BOOL LoResReady(void) {
 
 static inline u32 LoIdKind(u32 id) { return (id << 4) >> 16; }
 static inline u32 LoIdKind2(u16 id) { u32 r = (u32)(id << 4) >> 16; return r; }
-BOOL func_ov000_0214e920(void *self) {
+BOOL func_ov000_0214e920(Lo021caa44 *self) {
     BOOL ok = TRUE;
     if (!LoFadeDone()) {
         ok = FALSE;
@@ -58,7 +59,7 @@ BOOL func_ov000_0214e920(void *self) {
     if (!LoResReady()) {
         ok = FALSE;
     }
-    if (!LFLD(VObj *, self, 0x3c)->vfunc_2c()) {
+    if (!self->unk_3c->vfunc_2c()) {
         ok = FALSE;
     }
     if (!func_ov000_02180838(data_ov000_021ccd44)) {

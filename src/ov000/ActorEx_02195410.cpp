@@ -8,16 +8,25 @@ extern s32 data_ov000_021c9dc4[];
 BOOL func_ov000_0219840c(void *s, s32 *list, s32 count, BOOL push);
 void func_ov000_0218d7e8(void *self, u8 arg);
 
-void func_ov000_02195410(u8 *self) {
-    ActorSub40 *s = LFLD(ActorSub40 *, self, 0x40);
+struct Obj02195410 {
+    u8 unk_00[0x30];
+    u32 unk_30;
+    u8 unk_34[0xc];
+    ActorSub40 *unk_40;
+    u8 unk_44[0x8];
+    void *unk_4c;
+};
+
+void func_ov000_02195410(Obj02195410 *self) {
+    ActorSub40 *s = self->unk_40;
     if (s->flags != 0) {
         if (!func_ov000_0219840c(s, data_ov000_021c9d9c, 5, TRUE)) {
-            if (LFLD(ActorSub40 *, self, 0x40)->flags & 2) {
-                func_ov000_02198360(LFLD(void *, self, 0x40), 1, 1);
+            if (self->unk_40->flags & 2) {
+                func_ov000_02198360(self->unk_40, 1, 1);
             }
         }
     }
-    s = LFLD(ActorSub40 *, self, 0x40);
+    s = self->unk_40;
     switch (s->unk_13) {
     case 9:
         func_ov000_0219840c(s, data_ov000_021c9db0, 5, TRUE);
@@ -47,15 +56,15 @@ void func_ov000_02195410(u8 *self) {
         break;
     case 1:
     case 2:
-        if ((s->flags & 0x400) && (LFLD(u32, self, 0x30) & 0x80)) {
+        if ((s->flags & 0x400) && (self->unk_30 & 0x80)) {
             s->flags &= ~0x400;
-            LFLD(u16, LFLD(void *, self, 0x4c), 0x1c) = 0xffff;
+            LFLD(u16, self->unk_4c, 0x1c) = 0xffff;
         }
-        if (!func_ov000_0219840c(LFLD(void *, self, 0x40), data_ov000_021c9dc4, 9, TRUE)) {
-            func_ov000_02198360(LFLD(void *, self, 0x40), 1, 0);
+        if (!func_ov000_0219840c(self->unk_40, data_ov000_021c9dc4, 9, TRUE)) {
+            func_ov000_02198360(self->unk_40, 1, 0);
         }
         break;
     }
-    func_ov000_0218d7e8(self, LFLD(ActorSub40 *, self, 0x40)->unk_13);
+    func_ov000_0218d7e8(self, self->unk_40->unk_13);
 }
 }

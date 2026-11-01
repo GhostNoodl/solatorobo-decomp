@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -38,24 +39,24 @@ static inline BOOL LoIsLoaded24(void) {
     return r;
 }
 
-void func_ov000_02150c38(void *self) {
-    LFLD(s32, self, 0x20) = 0x1000;
-    LFLD(s32, self, 0x3c) = 0;
-    LFLD(s32, self, 0x44) = 0;
-    LFLD(s32, self, 0x48) = 0;
-    LFLD(s32, self, 0x4c) = 0;
-    LFLD(s32, self, 0x50) = 0;
-    LFLD(s32, self, 0x54) = 0;
-    LFLD(s32, self, 0x58) = 0;
-    LFLD(s32, self, 0x5c) = 0xffff;
+void func_ov000_02150c38(Lo021ca9c4 *self) {
+    self->unk_20 = 0x1000;
+    self->unk_3c = 0;
+    self->unk_44 = 0;
+    self->unk_48 = 0;
+    self->unk_4c = 0;
+    self->unk_50 = 0;
+    self->unk_54 = 0;
+    self->unk_58 = 0;
+    self->unk_5c = 0xffff;
     func_0204c7d0((u8 *)self + 0x60);
     func_0204c7d0((u8 *)self + 0x118);
     func_0204c7d0((u8 *)self + 0x1d0);
     func_0204c7d0((u8 *)self + 0x288);
     func_0204c7d0((u8 *)self + 0x340);
     func_0204c7d0((u8 *)self + 0x3f8);
-    LFLD(u16, self, 0x40) = 0xffff;
-    LFLD(u16, self, 0x42) = 0xffff;
+    self->unk_40 = 0xffff;
+    self->unk_42 = 0xffff;
 }
 
 }

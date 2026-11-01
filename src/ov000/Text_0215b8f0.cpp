@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u32 lo : 13;
@@ -12,7 +13,7 @@ extern u8 *data_02097d48;
 u8 func_02043d48(void *p);
 void func_ov000_02153c48(void *node, void *a, s32 b, s32 c, s32 d);
 
-void func_ov000_0215b8f0(VObj *self, s32 unused, VecFx32 *pos) {
+void func_ov000_0215b8f0(LoBase021cafc0_021cb0b8 *self, s32 unused, VecFx32 *pos) {
     u8 *g;
     u8 *node;
     s32 i;
@@ -21,11 +22,11 @@ void func_ov000_0215b8f0(VObj *self, s32 unused, VecFx32 *pos) {
     s32 y0;
     s32 lh;
     g = data_02097d48;
-    node = LFLD(u8 *, self, 0x94);
+    node = self->unk_94;
     i = 0;
     lh = self->vfunc_40();
     a = func_02043d48(g + 0x8b0);
-    x0 = self->vfunc_30() + (LFLD(s32, self, 0x24) >> 1);
+    x0 = self->vfunc_30() + (self->unk_24 >> 1);
     y0 = self->vfunc_34();
     if (node == NULL) {
         return;
@@ -33,10 +34,10 @@ void func_ov000_0215b8f0(VObj *self, s32 unused, VecFx32 *pos) {
     do {
         VObj *o;
         if (LFLD(VObj *, node, 0x1c) == NULL) {
-            func_ov000_02153c48(node, LFLD(void *, self, 0x1c), 0, 0, 0);
+            func_ov000_02153c48(node, self->unk_1c, 0, 0, 0);
         }
         LFLD(VObj *, node, 0x1c)->vfunc_14();
-        LFLD(s32, LFLD(VObj *, node, 0x1c), 0x70) = LFLD(s16, self, 0x68) - 0x100;
+        LFLD(s32, LFLD(VObj *, node, 0x1c), 0x70) = self->unk_68 - 0x100;
         LFLD(u32, LFLD(VObj *, node, 0x1c), 0x4) |= 0x200000;
         LFLD(Flags0215b8f0, LFLD(VObj *, node, 0x1c), 0x4).alpha = (u8)a;
         o = LFLD(VObj *, node, 0x1c);

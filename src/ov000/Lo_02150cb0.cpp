@@ -5,23 +5,42 @@ extern "C" {
 extern u8 data_ov000_021ccd24[];
 void func_ov000_02153fd8(void *p);
 
-void func_ov000_02150cb0(void *self) {
-    LFLD(VObj, self, 0x60).vfunc_08();
-    LFLD(VObj, self, 0x118).vfunc_08();
-    LFLD(VObj, self, 0x1d0).vfunc_08();
-    LFLD(VObj, self, 0x288).vfunc_08();
-    LFLD(VObj, self, 0x340).vfunc_08();
-    LFLD(VObj, self, 0x3f8).vfunc_08();
+struct Obj02150cb0 {
+    u8 unk_00[0x42];
+    u16 unk_42;
+    u8 unk_44[0x10];
+    void *unk_54;
+    u8 unk_58[0x8];
+    VObj unk_60;
+    u8 unk_64[0xb4];
+    VObj unk_118;
+    u8 unk_11c[0xb4];
+    VObj unk_1d0;
+    u8 unk_1d4[0xb4];
+    VObj unk_288;
+    u8 unk_28c[0xb4];
+    VObj unk_340;
+    u8 unk_344[0xb4];
+    VObj unk_3f8;
+};
+
+void func_ov000_02150cb0(Obj02150cb0 *self) {
+    self->unk_60.vfunc_08();
+    self->unk_118.vfunc_08();
+    self->unk_1d0.vfunc_08();
+    self->unk_288.vfunc_08();
+    self->unk_340.vfunc_08();
+    self->unk_3f8.vfunc_08();
     {
         u32 saved;
         LO_HEAP_PUSH(saved);
-        if (LFLD(void *, self, 0x54) != NULL) {
-            void *p = LFLD(void *, self, 0x54);
+        if (self->unk_54 != NULL) {
+            void *p = self->unk_54;
             if (p != NULL) {
                 func_ov000_02153fd8(p);
                 func_0203de1c(p);
             }
-            LFLD(void *, self, 0x54) = NULL;
+            self->unk_54 = NULL;
         }
         LO_HEAP_POP(saved);
     }
@@ -31,7 +50,7 @@ void func_ov000_02150cb0(void *self) {
     LO_FREE_M(self, 0x48);
     LO_FREE_M(self, 0x44);
     LO_FREE_V(self, 0x3c);
-    if (LFLD(u16, self, 0x42) == 0xffff) {
+    if (self->unk_42 == 0xffff) {
         LO_FREE_V(data_ov000_021ccd24, 8);
     }
 }

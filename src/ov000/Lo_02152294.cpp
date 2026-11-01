@@ -44,7 +44,16 @@ void func_02041d9c(void *model, s32 a, s32 b);
         out = m_;                                    \
     } while (0)
 
-void func_ov000_02152294(void *self, u16 a, s32 b, s32 c) {
+struct Obj02152294 {
+    u8 unk_00[0x8];
+    s32 unk_08;
+    u8 unk_0c[0x5c];
+    s16 unk_68;
+    u8 unk_6a[0xa];
+    VObj *unk_74;
+};
+
+void func_ov000_02152294(Obj02152294 *self, u16 a, s32 b, s32 c) {
     VObj *p;
     void *res = data_02149ef8;
     p = (VObj *)func_0203dd9c(0x1e4);
@@ -58,14 +67,14 @@ void func_ov000_02152294(void *self, u16 a, s32 b, s32 c) {
         *(void **)p = data_ov000_021cb0b8;
         p->vfunc_28();
     }
-    LFLD(VObj *, self, 0x74) = p;
+    self->unk_74 = p;
     LFLD(u16, p, 0x1d8) = a;
-    LFLD(void *, LFLD(VObj *, self, 0x74), 0x1dc) = func_0204c0e8(res, b);
-    LFLD(u16, LFLD(VObj *, self, 0x74), 0x1e0) = 0;
-    LFLD(s32, LFLD(VObj *, self, 0x74), 8) = LFLD(s32, self, 8);
-    LFLD(s32, LFLD(VObj *, self, 0x74), 0x84) = c;
-    LFLD(VObj *, self, 0x74)->vfunc_08();
-    LFLD(s16, LFLD(VObj *, self, 0x74), 0x68) = LFLD(s16, self, 0x68) + 0x200;
+    LFLD(void *, self->unk_74, 0x1dc) = func_0204c0e8(res, b);
+    LFLD(u16, self->unk_74, 0x1e0) = 0;
+    LFLD(s32, self->unk_74, 8) = self->unk_08;
+    LFLD(s32, self->unk_74, 0x84) = c;
+    self->unk_74->vfunc_08();
+    LFLD(s16, self->unk_74, 0x68) = self->unk_68 + 0x200;
     LBIT(self, 0xc).b0 = 1;
 }
 

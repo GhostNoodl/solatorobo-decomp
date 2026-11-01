@@ -32,10 +32,15 @@ static inline BOOL IsIdle021b6be4(u8 *m) {
     return r;
 }
 
-void func_ov000_021b6be4(u8 *self) {
+struct Obj021b6be4 {
+    u8 unk_00[0x1f2];
+    s16 unk_1f2;
+};
+
+void func_ov000_021b6be4(Obj021b6be4 *self) {
     u8 *m;
     u8 *s;
-    if (LFLD(s16, self, 0x1f2) == 0) {
+    if (self->unk_1f2 == 0) {
         return;
     }
     m = data_ov000_021ccd54;

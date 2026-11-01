@@ -31,8 +31,13 @@ static inline BOOL LoAnimValid(LoAnimC *p) {
     return TRUE;
 }
 
-u8 *func_ov000_02165f94(void *self) {
-    LoAnimC *p = LFLD(LoAnimC *, LFLD(u8 *, self, 0x30), 0xcdc);
+struct Obj02165f94 {
+    u8 unk_00[0x30];
+    u8 *unk_30;
+};
+
+u8 *func_ov000_02165f94(Obj02165f94 *self) {
+    LoAnimC *p = LFLD(LoAnimC *, self->unk_30, 0xcdc);
     u8 *g = data_ov000_021ccd54;
     if (!LoAnimValid(p)) {
         return g + 0xca;
@@ -91,8 +96,13 @@ typedef struct {
     Item0216607c *cur;
 } Ctx0216607c;
 
-Node0216607c *func_ov000_0216607c(void *self, Node0216607c *node, u8 *outIdx, BOOL deep) {
-    Ctx0216607c *ctx = LFLD(Ctx0216607c *, self, 0x30);
+struct Obj0216607c {
+    u8 unk_00[0x30];
+    Ctx0216607c *unk_30;
+};
+
+Node0216607c *func_ov000_0216607c(Obj0216607c *self, Node0216607c *node, u8 *outIdx, BOOL deep) {
+    Ctx0216607c *ctx = self->unk_30;
     Item0216607c **lst;
     u8 i;
     u8 k;
@@ -227,8 +237,8 @@ static inline u32 PalIdx6180(u8 *p) {
     return LFLD(Oam6180, p, 0x2c).w1.pal;
 }
 
-static inline u8 *FindNode6180(u8 *self, u8 c, u8 d) {
-    u8 *q = LFLD(u8 *, self, 0x30);
+static inline u8 *FindNode6180(Obj0216607c *self, u8 c, u8 d) {
+    u8 *q = (u8 *)self->unk_30;
     u8 n = q[8];
     u8 *e = LFLD(u8 *, q, 0xc84);
     u32 s;
@@ -240,15 +250,15 @@ static inline u8 *FindNode6180(u8 *self, u8 c, u8 d) {
     return NULL;
 }
 
-static inline u8 *GetNode6180(u8 *self, u8 d) {
-    u8 *q = LFLD(u8 *, self, 0x30);
+static inline u8 *GetNode6180(Obj0216607c *self, u8 d) {
+    u8 *q = (u8 *)self->unk_30;
     if (d >= q[8]) {
         return NULL;
     }
     return LFLD(u8 *, q, 0xc84) + d * 0x1c;
 }
 
-void func_ov000_02166180(u8 *self) {
+void func_ov000_02166180(Obj0216607c *self) {
     s16 y;
     u8 *e;
     Oam6180 *oams;
@@ -287,7 +297,7 @@ void func_ov000_02166180(u8 *self) {
     u8 *it;
 
 
-    p = LFLD(u8 *, self, 0x30);
+    p = (u8 *)self->unk_30;
     tbl2 = (Ent6180 *)(data_0214a424 + 0x60c);
     kind = LFLD(u8 *, p, 0xcb4)[0x14];
     anim = LFLD(u8 *, p, 0xc88) + kind * 8;
@@ -353,7 +363,7 @@ void func_ov000_02166180(u8 *self) {
         }
     }
     if (busy) {
-        h = LFLD(LoAnimC *, LFLD(u8 *, self, 0x30), 0xcdc);
+        h = LFLD(LoAnimC *, self->unk_30, 0xcdc);
         for (i = 0; i < h->cnt; i++) {
             r = h->frames[i];
             off = (i == h->cnt - 1) ? 0 : 2;

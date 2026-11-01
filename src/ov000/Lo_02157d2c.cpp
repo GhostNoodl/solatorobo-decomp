@@ -11,7 +11,12 @@ void func_ov000_0215f0ec(void *p, void *q);
 extern const s16 FX_SinCosTable_[];
 typedef BOOL (*LoMsgFn)(void *, void *);
 
-void func_ov000_02157d2c(void *self, void *arg) {
+struct Obj02157d2c {
+    u8 unk_00[0xd8];
+    void *unk_d8;
+};
+
+void func_ov000_02157d2c(Obj02157d2c *self, void *arg) {
     u32 *p = (u32 *)func_0203dd9c(0x2c);
     if (p) {
         p[0] = 0;
@@ -24,14 +29,14 @@ void func_ov000_02157d2c(void *self, void *arg) {
         p[9] = 0;
         p[10] = 0;
     }
-    LFLD(void *, self, 0xd8) = p;
+    self->unk_d8 = p;
     if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
-        LBIT(LFLD(void *, self, 0xd8), 0).b4 = 1;
+        LBIT(self->unk_d8, 0).b4 = 1;
     }
-    LBIT(LFLD(void *, self, 0xd8), 0).b0 = 1;
-    func_ov000_0215f0ec(LFLD(void *, self, 0xd8), arg);
+    LBIT(self->unk_d8, 0).b0 = 1;
+    func_ov000_0215f0ec(self->unk_d8, arg);
     {
-        u8 *q = LFLD(u8 *, self, 0xd8);
+        u8 *q = (u8 *)self->unk_d8;
         LFLD(s32, q, 0x14) = LFLD(s32, LFLD(void *, q, 0x24), 0x44) + 0x10;
     }
 }

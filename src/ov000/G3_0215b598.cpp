@@ -2,6 +2,7 @@
 // The colour is halved channel by channel, and each channel re-reads the field.
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 extern u8 *data_02097d48;
@@ -50,7 +51,7 @@ static inline void Box_SetMtx(MtxFx43 *m, s32 x, s32 y, s32 z) {
     }
 }
 
-void func_ov000_0215b598(u8 *self, s32 a1, s32 *pos, s32 a3) {
+void func_ov000_0215b598(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 a3) {
     s16 z;
     u8 *g;
     s32 sx;
@@ -58,17 +59,17 @@ void func_ov000_0215b598(u8 *self, s32 a1, s32 *pos, s32 a3) {
     s16 t;
     MtxFx43 m;
     MtxFx43 tr;
-    z = LFLD(s16, self, 0x68) - 0x100;
+    z = self->unk_68 - 0x100;
     g = data_02097d48;
     G3_Cmd1(0x2a, 0x20000000);
     {
-        s32 a = LFLD(s32, self, 0x54);
+        s32 a = self->unk_54;
         G3_Cmd1(0x29, (func_02043d48(g + 0x8b0) << 24) | 0x8d0 | (a << 16));
     }
     {
-        s32 k = LFLD(s32, self, 0xd4) ? 0x10000 : 0;
-        sx = LFLD(s32, self, 0x24) << 12;
-        sy = (LFLD(s32, self, 0x28) << 12) + 0xb000;
+        s32 k = self->unk_d4 ? 0x10000 : 0;
+        sx = self->unk_24 << 12;
+        sy = (self->unk_28 << 12) + 0xb000;
         t = FX_Div(k + 0x10000, sy);
     }
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
@@ -81,16 +82,16 @@ void func_ov000_0215b598(u8 *self, s32 a1, s32 *pos, s32 a3) {
     NNS_G3dGeBufferOP_N(0x19, &m, 12);
     G3_Cmd1(0x40, 3);
     {
-        u16 b = (LFLD(u16, self, 0x48) >> 10) & 0x1f;
-        u16 g = (LFLD(u16, self, 0x48) >> 5) & 0x1f;
-        u16 r = LFLD(u16, self, 0x48) & 0x1f;
+        u16 b = (self->unk_48 >> 10) & 0x1f;
+        u16 g = (self->unk_48 >> 5) & 0x1f;
+        u16 r = self->unk_48 & 0x1f;
         G3_Cmd1(0x20, (u16)(((u8)(g >> 1) << 5) | (u8)(r >> 1) | ((u8)(b >> 1) << 10)));
     }
     G3_Vtx(0x1000, 0, 0);
     G3_VtxXY(0, 0);
     G3_VtxXY(0x1000, t);
     G3_VtxXY(0, t);
-    G3_Cmd1(0x20, LFLD(u16, self, 0x48));
+    G3_Cmd1(0x20, self->unk_48);
     G3_VtxXY(0x1000, t);
     G3_VtxXY(0, t);
     G3_VtxXY(0x1000, 0x1000);

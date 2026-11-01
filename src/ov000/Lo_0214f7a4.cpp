@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     const void *vtbl;
@@ -47,27 +48,27 @@ static inline BOOL HasWin(Obj0214c668 *w) {
     return w->unk_200 != NULL ? TRUE : FALSE;
 }
 
-void func_ov000_0214f7a4(VObj *self) {
-    if (LFLD(s32, self, 0x8) == 0xd) {
+void func_ov000_0214f7a4(Lo021caa44 *self) {
+    if (self->unk_08 == 0xd) {
         s32 n;
-        if (LFLD(VObj *, self, 0x5c) != NULL) {
-            if (LFLD(VObj *, self, 0x5c)->vfunc_1c()) {
-                if (LFLD(u8 *, self, 0x50) != NULL) {
-                    LFLD(u32, LFLD(u8 *, self, 0x50), 0xc) |= 4;
+        if (self->unk_5c != NULL) {
+            if (self->unk_5c->vfunc_1c()) {
+                if ((u8 *)self->unk_50 != NULL) {
+                    LFLD(u32, self->unk_50, 0xc) |= 4;
                 }
             } else {
                 LO_FREE_V(self, 0x5c);
             }
         }
-        if (LFLD(Obj0214c668 *, self, 0x60) != NULL) {
-            if (!HasWin(LFLD(Obj0214c668 *, self, 0x60))) {
-                if (LFLD(u16, self, 0x64) != 0xffff) {
+        if ((Obj0214c668 *)self->unk_60 != NULL) {
+            if (!HasWin((Obj0214c668 *)self->unk_60)) {
+                if (self->unk_64 != 0xffff) {
                     s32 a;
                     Obj0214c668 *w;
                     Obj0214c6b4 *obj;
                     s32 b;
-                    b = func_0204c08c(LFLD(void *, data_ov000_021ccd24.unk_08, 0xbc), LFLD(u16, self, 0x64), &a, 1);
-                    w = LFLD(Obj0214c668 *, self, 0x60);
+                    b = func_0204c08c(LFLD(void *, data_ov000_021ccd24.unk_08, 0xbc), self->unk_64, &a, 1);
+                    w = (Obj0214c668 *)self->unk_60;
                     w->unk_204 = 0x1e;
                     obj = (Obj0214c6b4 *)func_0203dd9c(0xb80);
                     if (obj != NULL) {
@@ -82,29 +83,29 @@ void func_ov000_0214f7a4(VObj *self) {
                     w->unk_200->unk_b8_0 = 4;
                     w->unk_200->unk_04 |= 4;
                     w->unk_0c |= 2;
-                    LFLD(u32, LFLD(u8 *, self, 0x50), 0xc) |= 4;
-                    LFLD(u16, self, 0x64) = 0xffff;
+                    LFLD(u32, self->unk_50, 0xc) |= 4;
+                    self->unk_64 = 0xffff;
                 }
             } else {
-                LFLD(u32, LFLD(u8 *, self, 0x50), 0xc) |= 4;
+                LFLD(u32, self->unk_50, 0xc) |= 4;
             }
         }
         n = 0;
-        if (LFLD(VObj *, self, 0x4c) != NULL && LFLD(VObj *, self, 0x4c)->vfunc_1c()) {
+        if (self->unk_4c != NULL && self->unk_4c->vfunc_1c()) {
             n++;
         }
-        if (LFLD(VObj *, self, 0x50) != NULL && LFLD(VObj *, self, 0x50)->vfunc_1c()) {
+        if ((VObj *)self->unk_50 != NULL && ((VObj *)self->unk_50)->vfunc_1c()) {
             n++;
         }
-        if (LFLD(VObj *, self, 0x60) != NULL && LFLD(VObj *, self, 0x60)->vfunc_1c()) {
+        if (self->unk_60 != NULL && self->unk_60->vfunc_1c()) {
             n++;
         }
         if (n == 0) {
             self->vfunc_0c(0);
         }
     }
-    if (LFLD(u8 *, self, 0x50) != NULL) {
-        LFLD(u32, LFLD(u8 *, self, 0x50), 0xc) |= 4;
+    if ((u8 *)self->unk_50 != NULL) {
+        LFLD(u32, self->unk_50, 0xc) |= 4;
     }
 }
 

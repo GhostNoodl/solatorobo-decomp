@@ -49,9 +49,14 @@ static inline BOOL LoD78Idle(void) {
     return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
 }
 
-void func_ov000_0216c6fc(u8 *self) {
+struct Obj0216c6fc {
+    u8 unk_00[0x24c];
+    u8 *unk_24c;
+};
+
+void func_ov000_0216c6fc(Obj0216c6fc *self) {
     LoIdx2 *tbl = (LoIdx2 *)data_ov000_021c9bb4;
-    u8 *n = LFLD(u8 *, self, 0x24c);
+    u8 *n = self->unk_24c;
     if (n == NULL) {
         return;
     }
@@ -61,9 +66,9 @@ void func_ov000_0216c6fc(u8 *self) {
         s32 y;
         VObj *o1;
         VObj *o2;
-        o1 = LFLD(VObj *, self + tbl[k].a * 0xc, 0x368);
+        o1 = LFLD(VObj *, (u8 *)self + tbl[k].a * 0xc, 0x368);
         y = LFLD(s32, n, 0x18);
-        o2 = LFLD(VObj *, self + tbl[k].b * 0xc, 0x368);
+        o2 = LFLD(VObj *, (u8 *)self + tbl[k].b * 0xc, 0x368);
         if (o1) {
             o1->vfunc_20(x, y);
             o1->vfunc_90();

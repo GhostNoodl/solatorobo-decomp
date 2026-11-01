@@ -1,4 +1,5 @@
 #include "ov010/ov010.h"
+#include "ov010/ObjLayouts.h"
 
 extern "C" {
 
@@ -29,9 +30,13 @@ extern BOOL func_0204985c(void *a);
 extern void func_ov003_021d883c(void *a, Ov010Vec *b, Ov010Vec *c, s32 d);
 extern u16 func_ov003_021d16cc(void *self);
 
-void *func_ov010_02204204(void *self) {
+struct Obj02204204 {
+    void *unk_00;
+};
+
+void *func_ov010_02204204(Obj02204204 *self) {
     func_ov003_021d0c1c(self);
-    FLD(void *, self, 0) = data_ov010_02210154;
+    self->unk_00 = data_ov010_02210154;
     func_ov003_021d8f24((u8 *)self + 0x160);
     func_ov010_0220d79c((u8 *)self + 0x174);
     func_ov003_021d7f0c((u8 *)self + 0x1b0);
@@ -45,8 +50,8 @@ void *func_ov010_02204204(void *self) {
     return self;
 }
 
-static inline void Ov010_02204294_Body(void *self) {
-    FLD(void *, self, 0) = data_ov010_02210154;
+static inline void Ov010_02204294_Body(Obj02204204 *self) {
+    self->unk_00 = data_ov010_02210154;
     func_ov003_021cf3fc(0);
     func_ov010_022075bc(self);
     func_ov003_021d8bb8((u8 *)self + 0x1dc);
@@ -56,23 +61,23 @@ static inline void Ov010_02204294_Body(void *self) {
     func_ov003_021d0edc(self);
 }
 
-void *func_ov010_02204294(void *self) {
+void *func_ov010_02204294(Obj02204204 *self) {
     Ov010_02204294_Body(self);
     return self;
 }
 
-void *func_ov010_022042e8(void *self) {
+void *func_ov010_022042e8(Obj02204204 *self) {
     Ov010_02204294_Body(self);
     func_0203de1c(self);
     return self;
 }
 
-BOOL func_ov010_02204344(void *self) {
+BOOL func_ov010_02204344(Ov010ObjBase0220ffe4_0221009c *self) {
     BOOL r = func_ov000_0218cf5c(self);
-    if (FLD(u8, self, 0xf0) == 0) {
-        FLD(u8, self, 0xf0) = 1;
+    if (self->unk_f0 == 0) {
+        self->unk_f0 = 1;
         if (((Ov010V *)self)->va8((u8 *)self + 0x128)) {
-            func_02049678(data_02097e4c, 4, FLD(s32, self, 0x128), -1);
+            func_02049678(data_02097e4c, 4, self->unk_128, -1);
         }
         r = FALSE;
     } else if (func_0204985c(data_02097e4c) == 0) {
@@ -81,12 +86,12 @@ BOOL func_ov010_02204344(void *self) {
     return r;
 }
 
-BOOL func_ov010_022043c4(void *self) {
-    Ov010Vec saved = FLD(Ov010Vec, self, 0x70);
+BOOL func_ov010_022043c4(Ov010ObjBase0220ffe4_0221009c *self) {
+    Ov010Vec saved = self->unk_70;
     BOOL r;
-    func_ov003_021d883c((u8 *)self + 0x1b0, &FLD(Ov010Vec, self, 0x70), &FLD(Ov010Vec, self, 0x70), 0x480);
+    func_ov003_021d883c((u8 *)self + 0x1b0, &self->unk_70, &self->unk_70, 0x480);
     r = func_ov003_021d16cc(self);
-    FLD(Ov010Vec, self, 0x70) = saved;
+    self->unk_70 = saved;
     return r;
 }
 

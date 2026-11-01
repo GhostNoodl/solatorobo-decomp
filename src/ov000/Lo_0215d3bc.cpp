@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -40,7 +41,7 @@ static inline BOOL LoD78Idle(void) {
     return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
 }
 
-void func_ov000_0215d3bc(VObj *self, void *a, s32 *pos, s32 d) {
+void func_ov000_0215d3bc(Lo021cad50 *self, void *a, s32 *pos, s32 d) {
     s32 i;
     if (a == NULL) {
         return;
@@ -50,7 +51,7 @@ void func_ov000_0215d3bc(VObj *self, void *a, s32 *pos, s32 d) {
     } else {
         self->vfunc_64(a, pos, d);
     }
-    if (LFLD(s32, self, 4) != 2 && d != 0x1000) {
+    if (self->unk_04 != 2 && d != 0x1000) {
         return;
     }
     for (i = 0; i < 12; i++) {
@@ -59,12 +60,12 @@ void func_ov000_0215d3bc(VObj *self, void *a, s32 *pos, s32 d) {
             s32 x0 = LFLD(s32, o, 0x3c);
             s32 y0 = LFLD(s32, o, 0x40);
             o->vfunc_20(x0 + (pos[0] >> 12), y0 + (pos[1] >> 12));
-            LFLD(s32, ((LoArr98 *)self)->o[i], 0x70) = LFLD(s16, self, 0x68) - 0x40;
+            LFLD(s32, ((LoArr98 *)self)->o[i], 0x70) = self->unk_68 - 0x40;
             ((LoArr98 *)self)->o[i]->vfunc_90();
             ((LoArr98 *)self)->o[i]->vfunc_20(x0, y0);
         }
     }
-    LFLD(u32, self, 0xc) |= 0x200;
+    self->unk_0c |= 0x200;
 }
 
 }

@@ -68,7 +68,28 @@ static inline s32 FxMul0218af9c(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
-void func_ov000_0218af9c(u8 *self) {
+struct Obj0218af9c {
+    u8 unk_00[0x8];
+    u16 unk_08;
+    u8 unk_0a[0x1];
+    u8 unk_0b;
+    u16 unk_0c;
+    u16 unk_0e;
+    u8 unk_10[0x8];
+    s16 unk_18;
+    u8 unk_1a;
+    u8 unk_1b;
+    u8 unk_1c;
+    u8 unk_1d[0x7];
+    VecFx32 unk_24;
+    u8 unk_30[0x48];
+    s32 unk_78;
+    u8 unk_7c[0x26];
+    Bits0218af9c unk_a2;
+    u8 unk_a3;
+};
+
+void func_ov000_0218af9c(Obj0218af9c *self) {
     unsigned long on;
     s32 dist;
     BOOL any;
@@ -87,8 +108,8 @@ void func_ov000_0218af9c(u8 *self) {
     any = FALSE;
     pl = func_ov000_0219bf90();
     on = FALSE;
-    fl = &LFLD(Bits0218af9c, self, 0xa2);
-    if (LFLD(Bits0218af9c, self, 0xa2).b0 && data_ov000_021ccd64->flags.b1) {
+    fl = &self->unk_a2;
+    if (self->unk_a2.b0 && data_ov000_021ccd64->flags.b1) {
         on = TRUE;
     }
     if (on && pl != NULL) {
@@ -102,13 +123,13 @@ void func_ov000_0218af9c(u8 *self) {
         if (mode == 3 || mode == 1) {
             continue;
         }
-        if (LFLD(u16, self, 0xe) != 0xffff && (u16)(LFLD(u16, self, 0xe) & 0xfff) != 0) {
+        if (self->unk_0e != 0xffff && (u16)(self->unk_0e & 0xfff) != 0) {
             tgt = best;
             if (best == NULL) {
                 if (data_ov000_021ccd68 == NULL) {
                     tgt = NULL;
                 } else {
-                    tgt = func_ov000_0218e640(data_ov000_021ccd68, LFLD(u16, self, 0xe));
+                    tgt = func_ov000_0218e640(data_ov000_021ccd68, self->unk_0e);
                 }
             }
             if (tgt != NULL) {
@@ -119,12 +140,12 @@ void func_ov000_0218af9c(u8 *self) {
                     continue;
                 }
                 if (pl != NULL) {
-                    if (LFLD(u16, self, 0xe) == LFLD(u16, pl + 0xb00, 0x1c) || LFLD(u16, self, 0xe) == LFLD(u16, pl + 0xb00, 0x20)) {
+                    if (self->unk_0e == LFLD(u16, pl + 0xb00, 0x1c) || self->unk_0e == LFLD(u16, pl + 0xb00, 0x20)) {
                         continue;
                     }
                 }
                 tp = LFLD(VecFx32, tgt, 0x70);
-                if (!func_01ffc2a4(&tp, &t.pos, (VecFx32 *)(self + 0x5c), (VecFx32 *)(self + 0x68))) {
+                if (!func_01ffc2a4(&tp, &t.pos, (VecFx32 *)((u8 *)self + 0x5c), (VecFx32 *)((u8 *)self + 0x68))) {
                     r = TRUE;
                 } else {
 
@@ -139,7 +160,7 @@ void func_ov000_0218af9c(u8 *self) {
                     while (REG_SQRTCNT & 0x8000) {
                     }
                     dist = (s32)(REG_SQRT_RESULT + 1) >> 1;
-                    if (LFLD(s32, self, 0x78) < dist) {
+                    if (self->unk_78 < dist) {
                         r = TRUE;
                     } else if (!fl->b3) {
                         r = FALSE;
@@ -157,7 +178,7 @@ void func_ov000_0218af9c(u8 *self) {
                         }
                         if (k == 0x1000) {
                             r = FALSE;
-                        } else if (dist > FxMul0218af9c(LFLD(s32, self, 0x78), k)) {
+                        } else if (dist > FxMul0218af9c(self->unk_78, k)) {
                             r = TRUE;
                         } else {
                             r = FALSE;
@@ -169,19 +190,19 @@ void func_ov000_0218af9c(u8 *self) {
                     mode = 2;
                 }
             } else {
-                LFLD(u16, self, 0xe) = 0xffff;
-                LFLD(u16, self, 0xc) = 0xffff;
+                self->unk_0e = 0xffff;
+                self->unk_0c = 0xffff;
             }
-        } else if (LFLD(u16, self, 0xc) != 0xffff) {
+        } else if (self->unk_0c != 0xffff) {
             u8 *g = data_ov000_021ccd54;
             BOOL same;
             any = TRUE;
             same = FALSE;
-            if (self[0x1a] == g[0xca] && self[0x1b] == g[0xcb] && self[0x1c] == g[0xcc]) {
+            if (self->unk_1a == g[0xca] && self->unk_1b == g[0xcb] && self->unk_1c == g[0xcc]) {
                 same = TRUE;
             }
             if (same) {
-                tp = LFLD(VecFx32, self, 0x24);
+                tp = self->unk_24;
                 if (func_01ffc89c(self, &tp)) {
                     mode = 3;
                 }
@@ -191,31 +212,31 @@ void func_ov000_0218af9c(u8 *self) {
     if (any) {
         switch (mode) {
         case 2:
-            func_ov000_0218b4b4(self, 1, best);
+            func_ov000_0218b4b4((u8 *)self, 1, best);
             ((VObj *)best)->vfunc_08();
             break;
         case 3: {
-            u16 kind = LFLD(u16, self, 8);
+            u16 kind = self->unk_08;
             s32 j;
             u8 *o;
-            d.unk_00 = LFLD(u16, self, 0xc);
-            d.unk_02 = LFLD(u16, self, 0xe) & 0xf000;
+            d.unk_00 = self->unk_0c;
+            d.unk_02 = self->unk_0e & 0xf000;
             for (j = 0; j < 4; j++) {
-                d.unk_04[j] = LFLD(s16, self + j * 2, 0x10);
+                d.unk_04[j] = LFLD(s16, (u8 *)self + j * 2, 0x10);
             }
-            d.unk_0c = LFLD(s16, self, 0x18);
-            o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, self + 0x24, self + 0x1e, kind);
+            d.unk_0c = self->unk_18;
+            o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, (u8 *)self + 0x24, (u8 *)self + 0x1e, kind);
             if (o != NULL) {
-                LFLD(u16, self, 0xe) = LFLD(u16, o, 0xc);
+                self->unk_0e = LFLD(u16, o, 0xc);
             }
-            if (o != NULL && self[0xa3] != 0xff) {
-                o[0x17] = self[0xa3];
+            if (o != NULL && self->unk_a3 != 0xff) {
+                o[0x17] = self->unk_a3;
             }
             break;
         }
         }
     } else {
-        self[0xb] = 0;
+        self->unk_0b = 0;
     }
 }
 

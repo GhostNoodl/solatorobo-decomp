@@ -12,7 +12,12 @@ typedef struct {
 
 extern "C" {
 
-Glyph0214db04 *func_ov000_0214db04(u8 *self, u16 *cmd, Glyph0214db04 *arr, u16 *count) {
+struct Obj0214db04 {
+    u8 unk_00[0x70];
+    s32 unk_70;
+};
+
+Glyph0214db04 *func_ov000_0214db04(Obj0214db04 *self, u16 *cmd, Glyph0214db04 *arr, u16 *count) {
     u16 n = *count;
     Glyph0214db04 *last = &arr[n - 1];
     u32 base;
@@ -20,7 +25,7 @@ Glyph0214db04 *func_ov000_0214db04(u8 *self, u16 *cmd, Glyph0214db04 *arr, u16 *
     s32 x;
     if (*cmd == 0x1e) {
         base = last->chr;
-        v = LFLD(s32, self, 0x70);
+        v = self->unk_70;
         x = 0;
         n = 0;
         if (v < 10) {

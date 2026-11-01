@@ -16,14 +16,22 @@ void func_ov000_0215eab4(void *p);
 void MTX_FrustumW(s32 t, s32 b, s32 l, s32 r, s32 n, s32 f, s32 scaleW, void *mtx);
 Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
 
-void func_ov000_0216295c(u8 *self, const VecFx32 *v, s32 s) {
+struct Obj0216295c {
+    u8 unk_00[0x6a8];
+    s32 unk_6a8;
+    s32 unk_6ac;
+    s32 unk_6b0;
+    s32 unk_6b4;
+};
+
+void func_ov000_0216295c(Obj0216295c *self, const VecFx32 *v, s32 s) {
     s32 y = v->y;
     s32 x = v->x;
-    LFLD(s32, self, 0x6a8) = x;
-    LFLD(s32, self, 0x6ac) = y;
-    LFLD(s32, self, 0x6b0) = v->z;
-    LFLD(s32, self, 0x6b4) = s;
-    MTX_FrustumW(LO_FX_MUL(y + 0xf5c, s), LO_FX_MUL(y - 0xf5c, s), LO_FX_MUL(x - 0x147b, s), LO_FX_MUL(x + 0x147b, s), 0x1000, 0x1e000, 0x1000, self + 0x668);
+    self->unk_6a8 = x;
+    self->unk_6ac = y;
+    self->unk_6b0 = v->z;
+    self->unk_6b4 = s;
+    MTX_FrustumW(LO_FX_MUL(y + 0xf5c, s), LO_FX_MUL(y - 0xf5c, s), LO_FX_MUL(x - 0x147b, s), LO_FX_MUL(x + 0x147b, s), 0x1000, 0x1e000, 0x1000, (u8 *)self + 0x668);
 }
 
 

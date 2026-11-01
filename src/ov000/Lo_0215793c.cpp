@@ -50,8 +50,13 @@ static inline void Quad(s32 x, s32 y, s32 z, s32 s0, s32 s1) {
     G3_Cmd1(0x12, 1);
 }
 
-void func_ov000_0215793c(void *self, s32 x, s32 y, s32 z) {
-    s32 h = LFLD(s32, self, 0x28);
+struct Obj0215793c {
+    u8 unk_00[0x28];
+    s32 unk_28;
+};
+
+void func_ov000_0215793c(Obj0215793c *self, s32 x, s32 y, s32 z) {
+    s32 h = self->unk_28;
     G3_Cmd1(0x20, 0x7fff);
     Quad(x, y + 0x8000, z, 0, 0x50);
     Quad(x, y + (h << 12) - 0xe000, z, 0x80, 0xd0);

@@ -35,8 +35,13 @@ static inline u8 *Find0218d2e0(u8 *mgr, u16 id) {
     return res;
 }
 
-s32 func_ov000_0218d2e0(u8 *self) {
-    u16 id = LFLD(u16, self, 0x90);
+struct Obj0218d2e0 {
+    u8 unk_00[0x90];
+    u16 unk_90;
+};
+
+s32 func_ov000_0218d2e0(Obj0218d2e0 *self) {
+    u16 id = self->unk_90;
     u8 *mgr = (u8 *)data_ov000_021ccd68;
     s32 r = 0;
     u8 *found;

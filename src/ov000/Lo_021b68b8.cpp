@@ -28,13 +28,19 @@ extern "C" {
 s32 FX_Div(s32 a, s32 b);
 BOOL func_01ffc318(void *a, Item021b68b8 *item, VecFx32 *min, VecFx32 *max, Rot3 *rot);
 
-Item021b68b8 *func_ov000_021b68b8(u8 *self, void *arg) {
+struct Obj021b68b8 {
+    u8 unk_00[0x14];
+    u8 *unk_14;
+    Item021b68b8 *unk_18;
+};
+
+Item021b68b8 *func_ov000_021b68b8(Obj021b68b8 *self, void *arg) {
     Item021b68b8 *ret = NULL;
     Item021b68b8 *item;
     u8 i;
-    if (LFLD(u8 *, self, 0x14) != NULL) {
-        item = LFLD(Item021b68b8 *, self, 0x18);
-        for (i = 0; i < LFLD(u8 *, self, 0x14)[0x14]; i++, item++) {
+    if (self->unk_14 != NULL) {
+        item = self->unk_18;
+        for (i = 0; i < self->unk_14[0x14]; i++, item++) {
             VecFx32 max;
             VecFx32 min;
             Rot3 rot;

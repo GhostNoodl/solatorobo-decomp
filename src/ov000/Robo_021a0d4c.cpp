@@ -99,20 +99,81 @@ static inline u8 *GetObj021a0d4c(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-static inline void Reset021a0d4c(u8 *self) {
-    LFLD(B24_021a0d4c, self, 0xb24).f5 = 0;
-    LFLD(u16, self, 0xb1c) = 0xffff;
-    LFLD(u16, self, 0xb1e) = 0xffff;
-    LFLD(B24_021a0d4c, self, 0xb24).f7 = LFLD(B24_021a0d4c, self, 0xb24).b9;
+struct Obj021a0d4c {
+    u8 unk_00[0xc];
+    u16 unk_0c;
+    u8 unk_0e[0x2a];
+    void *unk_38;
+    u8 unk_3c[0x4];
+    u8 *unk_40;
+    u8 unk_44[0x4];
+    u8 *unk_48;
+    u8 unk_4c[0x4];
+    u8 *unk_50;
+    void *unk_54;
+    u8 unk_58[0x18];
+    s32 unk_70;
+    s32 unk_74;
+    s32 unk_78;
+    u16 unk_7c;
+    u16 unk_7e;
+    u16 unk_80;
+    u8 unk_82[0x11];
+    B8_021a0d4c unk_93;
+    u8 unk_94[0x6c8];
+    s32 unk_75c;
+    s32 unk_760;
+    s32 unk_764;
+    u8 unk_768[0x4];
+    u16 unk_76c;
+    u16 unk_76e;
+    u16 unk_770;
+    u8 unk_772[0x23a];
+    u16 unk_9ac;
+    u16 unk_9ae;
+    u8 unk_9b0[0x4];
+    u8 *unk_9b4;
+    u8 unk_9b8[0x132];
+    u16 unk_aea;
+    u16 unk_aec;
+    u8 unk_aee[0x2];
+    s32 unk_af0;
+    s32 unk_af4;
+    s32 unk_af8;
+    s32 unk_afc;
+    s32 unk_b00;
+    s32 unk_b04;
+    u8 unk_b08[0x14];
+    u16 unk_b1c;
+    u16 unk_b1e;
+    u16 unk_b20;
+    B22_021a0d4c unk_b22;
+    B24_021a0d4c unk_b24;
+    u8 unk_b28;
+    B8_021a0d4c unk_b29;
+    u8 unk_b2a[0x4];
+    u8 unk_b2e;
+    u8 unk_b2f[0x3];
+    u16 unk_b32;
+    u16 unk_b34;
+    u8 unk_b36[0x6e];
+    u8 *unk_ba4;
+};
+
+static inline void Reset021a0d4c(Obj021a0d4c *self) {
+    self->unk_b24.f5 = 0;
+    self->unk_b1c = 0xffff;
+    self->unk_b1e = 0xffff;
+    self->unk_b24.f7 = self->unk_b24.b9;
 }
 
-static inline u8 *Target021a0d4c(u8 *self) {
-    u8 *o = GetObj021a0d4c(LFLD(u16, self, 0xb1c));
+static inline u8 *Target021a0d4c(Obj021a0d4c *self) {
+    u8 *o = GetObj021a0d4c(self->unk_b1c);
     u8 *p = NULL;
     if (o != NULL) {
         p = LFLD(u8 *, o, 0x4c);
     }
-    if (p == NULL || LFLD(u16, p, 0x1c) != LFLD(u16, self, 0xc)) {
+    if (p == NULL || LFLD(u16, p, 0x1c) != self->unk_0c) {
         Reset021a0d4c(self);
         return NULL;
     }
@@ -152,8 +213,8 @@ static inline BOOL RgbEq021a0d4c(u8 *a, u8 *b) {
     return r;
 }
 
-static inline BOOL NotB1_021a0d4c(u8 *self) {
-    return !LFLD(B24_021a0d4c, self, 0xb24).b1 ? TRUE : FALSE;
+static inline BOOL NotB1_021a0d4c(Obj021a0d4c *self) {
+    return !self->unk_b24.b1 ? TRUE : FALSE;
 }
 
 static inline BOOL G9_021a0d4c(void) {
@@ -171,23 +232,23 @@ static inline BOOL IdleG021a0d4c(u8 *g) {
     }
     return TRUE;
 }
-static inline BOOL Ok021a0d4c(u8 *self) {
+static inline BOOL Ok021a0d4c(Obj021a0d4c *self) {
     u8 *g = data_ov000_021ccd54;
     BOOL r = IdleG021a0d4c(g);
     if (r) {
-        r = !LFLD(B8_021a0d4c, self, 0xb29).b1;
+        r = !self->unk_b29.b1;
     }
     if (r) {
-        r = LFLD(u8, self, 0xb28) == 0;
+        r = self->unk_b28 == 0;
     }
     if (r) {
-        r = LFLD(u8, self, 0xb2e) == 0;
+        r = self->unk_b2e == 0;
     }
     if (r) {
-        r = !LFLD(B24_021a0d4c, self, 0xb24).b0;
+        r = !self->unk_b24.b0;
     }
     if (r) {
-        r = !LFLD(B8_021a0d4c, self, 0xb29).b3;
+        r = !self->unk_b29.b3;
     }
     if (r) {
         r = !NotB1_021a0d4c(self);
@@ -195,10 +256,10 @@ static inline BOOL Ok021a0d4c(u8 *self) {
             BOOL t = G9_021a0d4c();
             r = !t;
             if (!t) {
-                r = RgbEq021a0d4c(g + 0xca, self + 0x772);
+                r = RgbEq021a0d4c(g + 0xca, (u8 *)self + 0x772);
             }
             if (r) {
-                r = LFLD(B24_021a0d4c, self, 0xb24).f14 == 0;
+                r = self->unk_b24.f14 == 0;
             }
         }
     }
@@ -220,54 +281,54 @@ static inline void Mark021a0d4c(u16 a, s32 b, BOOL c) {
     }
 }
 
-void func_ov000_021a0d4c(u8 *self) {
+void func_ov000_021a0d4c(Obj021a0d4c *self) {
 
     s32 k;
     s32 i;
 
-    if (LFLD(B22_021a0d4c, self, 0xb22).kind == 5) {
-        func_ov000_021b06dc(self);
+    if (self->unk_b22.kind == 5) {
+        func_ov000_021b06dc((u8 *)self);
         return;
     }
     LFLD(u8, self, 0xb29) = 0;
-    if (LFLD(u8, self, 0xb2e) != 0) {
-        LFLD(u8, self, 0xb2e)--;
+    if (self->unk_b2e != 0) {
+        self->unk_b2e--;
     }
-    k = LFLD(u8, LFLD(u8 *, self, 0x40), 0x13);
+    k = LFLD(u8, self->unk_40, 0x13);
     for (i = 0; i < 0x1d; i++) {
         if (k == *(s32 *)((u8 *)data_ov000_021ca458 + i * 12)) {
             (((Robo021a0d4cCls *)self)->*data_ov000_021ca458[i].fn)();
             break;
         }
     }
-    if (!LFLD(B24_021a0d4c, self, 0xb24).b1) {
-        LFLD(void *, self, 0x38) = self + 0xac;
-        LFLD(void *, self, 0x48) = self + 0x2cc;
+    if (!self->unk_b24.b1) {
+        self->unk_38 = (u8 *)self + 0xac;
+        self->unk_48 = (u8 *)((u8 *)self + 0x2cc);
     } else {
-        LFLD(void *, self, 0x38) = self + 0x368;
-        LFLD(s32, self, 0x75c) = LFLD(s32, self, 0x70);
-        LFLD(s32, self, 0x760) = LFLD(s32, self, 0x74);
-        LFLD(s32, self, 0x764) = LFLD(s32, self, 0x78);
-        LFLD(u16, self, 0x76c) = LFLD(u16, self, 0x7c);
-        LFLD(u16, self, 0x76e) = LFLD(u16, self, 0x7e);
-        LFLD(u16, self, 0x770) = LFLD(u16, self, 0x80);
-        LFLD(void *, self, 0x48) = self + 0x6c0;
+        self->unk_38 = (u8 *)self + 0x368;
+        self->unk_75c = self->unk_70;
+        self->unk_760 = self->unk_74;
+        self->unk_764 = self->unk_78;
+        self->unk_76c = self->unk_7c;
+        self->unk_76e = self->unk_7e;
+        self->unk_770 = self->unk_80;
+        self->unk_48 = (u8 *)((u8 *)self + 0x6c0);
     }
-    if (LFLD(B9a_021a0d4c, LFLD(u8 *, self, 0x48), 0x9a).b8) {
-        u32 f = LFLD(u32, LFLD(u8 *, self, 0x48), 0x50);
+    if (LFLD(B9a_021a0d4c, self->unk_48, 0x9a).b8) {
+        u32 f = LFLD(u32, self->unk_48, 0x50);
         if ((f & 0x20000000) && !(f & 0x40400) && !(f & 0x40000000)) {
-            LFLD(s32, self, 0xaf0) = LFLD(s32, self, 0x70);
-            LFLD(s32, self, 0xaf4) = LFLD(s32, self, 0x74);
-            LFLD(s32, self, 0xaf8) = LFLD(s32, self, 0x78);
+            self->unk_af0 = self->unk_70;
+            self->unk_af4 = self->unk_74;
+            self->unk_af8 = self->unk_78;
         }
-        if (LFLD(u32, LFLD(u8 *, self, 0x48), 0x54) & 0x20000000) {
-            u8 *p = LFLD(u8 *, self, 0x48);
-            LFLD(s32, self, 0xafc) = LFLD(s32, p, 0x68);
-            LFLD(s32, self, 0xb00) = LFLD(s32, p, 0x6c);
-            LFLD(s32, self, 0xb04) = LFLD(s32, p, 0x70);
+        if (LFLD(u32, self->unk_48, 0x54) & 0x20000000) {
+            u8 *p = self->unk_48;
+            self->unk_afc = LFLD(s32, p, 0x68);
+            self->unk_b00 = LFLD(s32, p, 0x6c);
+            self->unk_b04 = LFLD(s32, p, 0x70);
         }
     }
-    if (LFLD(B24_021a0d4c, self, 0xb24).f5 != 0 && !LFLD(B22_021a0d4c, self, 0xb22).b3) {
+    if (self->unk_b24.f5 != 0 && !self->unk_b22.b3) {
         u8 *o = Target021a0d4c(self);
         if (o != NULL) {
             u8 *p = LFLD(u8 *, o, 0x4c);
@@ -277,104 +338,104 @@ void func_ov000_021a0d4c(u8 *self) {
             }
             if (v != 0) {
                 Gauge021a0d4c(v);
-                if (LFLD(u16, self, 0xb32) == 0) {
-                    LFLD(u16, self, 0xb32)++;
+                if (self->unk_b32 == 0) {
+                    self->unk_b32++;
                 }
             }
         }
     }
-    if (LFLD(B24_021a0d4c, self, 0xb24).mode == 3) {
-        u8 *o = GetObj021a0d4c(LFLD(u16, self, 0xb20));
+    if (self->unk_b24.mode == 3) {
+        u8 *o = GetObj021a0d4c(self->unk_b20);
         u8 *p = NULL;
         if (o != NULL) {
             p = LFLD(u8 *, o, 0x4c);
         }
         if (p != NULL) {
             Gauge021a0d4c(LFLD(u16, p, 0x1e));
-            if (LFLD(u16, self, 0xb32) == 0) {
-                LFLD(u16, self, 0xb32)++;
+            if (self->unk_b32 == 0) {
+                self->unk_b32++;
             }
         }
     }
-    func_ov000_021b3d78(self);
-    func_ov000_0218c208(data_ov000_021ccd64, self + 0x70, LFLD(u16, self, 0x7e));
-    if (LFLD(B24_021a0d4c, self, 0xb24).f2 != 1) {
+    func_ov000_021b3d78((u8 *)self);
+    func_ov000_0218c208(data_ov000_021ccd64, (u8 *)self + 0x70, self->unk_7e);
+    if (self->unk_b24.f2 != 1) {
         u8 *c = data_ov000_021ccd6c;
-        LFLD(s32, c, 0x24) = LFLD(s32, self, 0x70);
-        LFLD(s32, c, 0x28) = LFLD(s32, self, 0x74);
-        LFLD(s32, c, 0x2c) = LFLD(s32, self, 0x78);
+        LFLD(s32, c, 0x24) = self->unk_70;
+        LFLD(s32, c, 0x28) = self->unk_74;
+        LFLD(s32, c, 0x2c) = self->unk_78;
     }
     {
         u8 *c = data_02149f0c;
-        LFLD(s32, c, 0) = LFLD(s32, self, 0x70);
-        LFLD(s32, c, 4) = LFLD(s32, self, 0x74);
-        LFLD(s32, c, 8) = LFLD(s32, self, 0x78);
+        LFLD(s32, c, 0) = self->unk_70;
+        LFLD(s32, c, 4) = self->unk_74;
+        LFLD(s32, c, 8) = self->unk_78;
     }
-    if (LFLD(u16, LFLD(u8 *, self, 0x50), 0xa) != 0) {
-        LFLD(u16, LFLD(u8 *, self, 0x50), 0xa)--;
+    if (LFLD(u16, self->unk_50, 0xa) != 0) {
+        LFLD(u16, self->unk_50, 0xa)--;
     }
-    func_ov000_0219a088(LFLD(void *, self, 0x54));
+    func_ov000_0219a088(self->unk_54);
     {
         s32 a = 0;
         s32 b = 0;
-        u8 *q = LFLD(u8 *, self, 0xba4);
-        if (q != NULL && LFLD(B24_021a0d4c, self, 0xb24).b1 && !LFLD(B24_021a0d4c, self, 0xb24).b0) {
+        u8 *q = self->unk_ba4;
+        if (q != NULL && self->unk_b24.b1 && !self->unk_b24.b0) {
             b = LFLD(Bq_021a0d4c, q, 4).hi;
             if (b != 0) {
                 b = b * 10;
                 a = 0x2d0;
             }
         }
-        LFLD(u16, self, 0xaea) = a;
-        LFLD(u16, self, 0xaec) = b;
+        self->unk_aea = a;
+        self->unk_aec = b;
     }
-    func_ov000_0219a0b0(self + 0xae8, self);
-    LFLD(Bd_021a0d4c, LFLD(u8 *, self, 0x9b4), 0).b1 = 0;
-    if (LFLD(B22_021a0d4c, self, 0xb22).lo != 0 && Ok021a0d4c(self)) {
-        if (LFLD(B24_021a0d4c, self, 0xb24).b1) {
+    func_ov000_0219a0b0((u8 *)self + 0xae8, (u8 *)self);
+    LFLD(Bd_021a0d4c, self->unk_9b4, 0).b1 = 0;
+    if (self->unk_b22.lo != 0 && Ok021a0d4c(self)) {
+        if (self->unk_b24.b1) {
             BOOL f = LFLD(G18_021a0d4c, data_0214a424, 0x18).b10 ? TRUE : FALSE;
             u8 *g = LFLD(u8 *, data_ov000_021ccd30, 0x11c);
             if (g != NULL) {
                 func_ov000_0216b508(LFLD(void *, g, 0x68), 1, f);
             }
         }
-        if (LFLD(B22_021a0d4c, self, 0xb22).lo == 3 || LFLD(B22_021a0d4c, self, 0xb22).lo == 4) {
-            func_ov000_021bd314(LFLD(void *, self, 0x9b4), 8);
-            LFLD(Bd_021a0d4c, LFLD(u8 *, self, 0x9b4), 0).b1 = 1;
+        if (self->unk_b22.lo == 3 || self->unk_b22.lo == 4) {
+            func_ov000_021bd314(self->unk_9b4, 8);
+            LFLD(Bd_021a0d4c, self->unk_9b4, 0).b1 = 1;
         } else {
             u8 *q = data_ov000_021ccd54 + 0xf4;
             if (q != NULL && LFLD(u16, q, 0xd6) - 1 == LFLD(u16, q, 0xd4)) {
-                func_ov000_021bd314(LFLD(void *, self, 0x9b4), 9);
-                LFLD(Bd_021a0d4c, LFLD(u8 *, self, 0x9b4), 0).b1 = 1;
+                func_ov000_021bd314(self->unk_9b4, 9);
+                LFLD(Bd_021a0d4c, self->unk_9b4, 0).b1 = 1;
             }
         }
     }
-    func_ov000_021bd624(LFLD(void *, self, 0x9b4));
-    func_ov000_021b1110(self, 0);
-    if (LFLD(u16, self, 0xb32) != 0) {
+    func_ov000_021bd624(self->unk_9b4);
+    func_ov000_021b1110((u8 *)self, 0);
+    if (self->unk_b32 != 0) {
         u16 m;
-        LFLD(u16, self, 0xb32)--;
-        m = LFLD(u16, LFLD(u8 *, self, 0x50), 2);
-        if (LFLD(u16, self, 0xb34) < m) {
-            LFLD(u16, self, 0xb34) += (u16)(m / 32);
-            if (LFLD(u16, self, 0xb34) < m) {
-                m = LFLD(u16, self, 0xb34);
-                if (LFLD(u16, self, 0xb32) == 0) {
-                    LFLD(u16, self, 0xb32)++;
+        self->unk_b32--;
+        m = LFLD(u16, self->unk_50, 2);
+        if (self->unk_b34 < m) {
+            self->unk_b34 += (u16)(m / 32);
+            if (self->unk_b34 < m) {
+                m = self->unk_b34;
+                if (self->unk_b32 == 0) {
+                    self->unk_b32++;
                 }
             } else {
-                LFLD(u16, self, 0xb34) = m;
+                self->unk_b34 = m;
             }
         }
-        if (GIdle021a0d4c() || LFLD(u16, self, 0xb34) < m) {
-            Bar021a0d4c(LFLD(u16, LFLD(u8 *, self, 0x50), 0), m);
-            if (LFLD(G18_021a0d4c, data_0214a424, 0x18).sel == 1 && !LFLD(B22_021a0d4c, self, 0xb22).b4) {
+        if (GIdle021a0d4c() || self->unk_b34 < m) {
+            Bar021a0d4c(LFLD(u16, self->unk_50, 0), m);
+            if (LFLD(G18_021a0d4c, data_0214a424, 0x18).sel == 1 && !self->unk_b22.b4) {
                 BOOL on;
-                if (!LFLD(B22_021a0d4c, self, 0xb22).b3 && LFLD(B22_021a0d4c, self, 0xb22).f9 == 0 &&
-                    LFLD(B24_021a0d4c, self, 0xb24).b1 && LFLD(B8_021a0d4c, self, 0x93).b4 &&
-                    !LFLD(B8_021a0d4c, self, 0xb29).b3 && LFLD(B22_021a0d4c, self, 0xb22).lo == 0 &&
-                    LFLD(B24_021a0d4c, self, 0xb24).mode == 0 && LFLD(u8, LFLD(u8 *, self, 0x40), 0x13) != 0x11 &&
-                    !(LFLD(u8, LFLD(u8 *, self, 0x40), 0x13) == 0xb && LFLD(B24_021a0d4c, self, 0xb24).b26)) {
+                if (!self->unk_b22.b3 && self->unk_b22.f9 == 0 &&
+                    self->unk_b24.b1 && self->unk_93.b4 &&
+                    !self->unk_b29.b3 && self->unk_b22.lo == 0 &&
+                    self->unk_b24.mode == 0 && LFLD(u8, self->unk_40, 0x13) != 0x11 &&
+                    !(LFLD(u8, self->unk_40, 0x13) == 0xb && self->unk_b24.b26)) {
                     on = TRUE;
                 } else {
                     on = FALSE;
@@ -383,12 +444,12 @@ void func_ov000_021a0d4c(u8 *self) {
             }
         }
     }
-    if (LFLD(B22_021a0d4c, self, 0xb22).lo != 0 && (LFLD(u32, LFLD(u8 *, self, 0x48), 0x50) & 0x20000000)) {
-        LFLD(u16, self, 0x9ac) += 0x80;
-        if (LFLD(u16, self, 0x9ac) > LFLD(u16, self, 0x9ae)) {
-            LFLD(u16, self, 0x9ac) = LFLD(u16, self, 0x9ae);
+    if (self->unk_b22.lo != 0 && (LFLD(u32, self->unk_48, 0x50) & 0x20000000)) {
+        self->unk_9ac += 0x80;
+        if (self->unk_9ac > self->unk_9ae) {
+            self->unk_9ac = self->unk_9ae;
         }
     }
-    LFLD(s64, LFLD(u8 *, self, 0x40), 4) = 0;
+    LFLD(s64, self->unk_40, 4) = 0;
 }
 }

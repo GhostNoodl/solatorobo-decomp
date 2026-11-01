@@ -35,8 +35,18 @@ void func_ov000_02172518(VObj *self, s32 a, s32 b, s32 c) {
     self->vfunc_0c(0, 0x15, (u16)a | (c << 16), b);
 }
 
-void func_ov000_02172544(void *self) {
-    LFLD(VObj *, self, 0xc)->vfunc_0c(LFLD(s32, self, 0x20), LFLD(s32, self, 0x24), LFLD(s32, self, 0x28), LFLD(s32, self, 0x2c));
+struct Obj02172544 {
+    u8 unk_00[0xc];
+    VObj *unk_0c;
+    u8 unk_10[0x10];
+    s32 unk_20;
+    s32 unk_24;
+    s32 unk_28;
+    s32 unk_2c;
+};
+
+void func_ov000_02172544(Obj02172544 *self) {
+    self->unk_0c->vfunc_0c(self->unk_20, self->unk_24, self->unk_28, self->unk_2c);
     LBIT(self, 4).b2 = 1;
 }
 

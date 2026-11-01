@@ -16,13 +16,28 @@ typedef struct {
     u8 *res;
 } Anim021b7838;
 
-static inline void Advance021b7838(u8 *self, Anim021b7838 *a, s32 step) {
+struct Obj021b7838 {
+    u8 *unk_00;
+    Anim021b7838 *unk_04;
+    Anim021b7838 *unk_08;
+    Anim021b7838 *unk_0c;
+    Anim021b7838 *unk_10;
+    Anim021b7838 *unk_14;
+    u8 unk_18[0xa0];
+    s16 unk_b8;
+    u8 unk_ba[0x1];
+    u8 unk_bb;
+    u8 unk_bc[0x1];
+    Bits021b7838 unk_bd;
+};
+
+static inline void Advance021b7838(Obj021b7838 *self, Anim021b7838 *a, s32 step) {
     s32 max;
     if (a != NULL) {
         a->frame += step;
         max = (LFLD(u16, a->res, 4) << 12) - 0x1000;
         if (a->frame >= max) {
-            if (LFLD(Bits021b7838, self, 0xbd).loop) {
+            if (self->unk_bd.loop) {
                 max = 0;
             }
             a->frame = max;
@@ -30,28 +45,28 @@ static inline void Advance021b7838(u8 *self, Anim021b7838 *a, s32 step) {
     }
 }
 
-void func_ov000_021b7838(u8 *self, s32 speed) {
+void func_ov000_021b7838(Obj021b7838 *self, s32 speed) {
     s32 step;
-    if (LFLD(Bits021b7838, self, 0xbd).stop) {
+    if (self->unk_bd.stop) {
         return;
     }
-    if (LFLD(s32, LFLD(u8 *, self, 0), 0x1c) == 0) {
+    if (LFLD(s32, self->unk_00, 0x1c) == 0) {
         return;
     }
-    if (self[0xbb] != 0) {
+    if (self->unk_bb != 0) {
         return;
     }
     if (speed == 0x1000) {
-        step = LFLD(s16, self, 0xb8);
-    } else if (LFLD(s16, self, 0xb8) == 0x1000) {
+        step = self->unk_b8;
+    } else if (self->unk_b8 == 0x1000) {
         step = speed;
     } else {
-        step = (s16)(((s64)LFLD(s16, self, 0xb8) * speed + 0x800) >> 12);
+        step = (s16)(((s64)self->unk_b8 * speed + 0x800) >> 12);
     }
-    Advance021b7838(self, LFLD(Anim021b7838 *, self, 0x4), step);
-    Advance021b7838(self, LFLD(Anim021b7838 *, self, 0x8), step);
-    Advance021b7838(self, LFLD(Anim021b7838 *, self, 0xc), step);
-    Advance021b7838(self, LFLD(Anim021b7838 *, self, 0x10), step);
-    Advance021b7838(self, LFLD(Anim021b7838 *, self, 0x14), step);
+    Advance021b7838(self, self->unk_04, step);
+    Advance021b7838(self, self->unk_08, step);
+    Advance021b7838(self, self->unk_0c, step);
+    Advance021b7838(self, self->unk_10, step);
+    Advance021b7838(self, self->unk_14, step);
 }
 }

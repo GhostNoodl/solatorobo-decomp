@@ -49,33 +49,45 @@ static inline BOOL RgbEq0219d5a0(Rgb0219d5a0 *a, Rgb0219d5a0 b) {
     return r;
 }
 
-s32 func_ov000_0219d5a0(u8 *self) {
+struct Obj0219d5a0 {
+    u8 unk_00[0x40];
+    u8 *unk_40;
+    u8 unk_44[0x4];
+    u8 *unk_48;
+    u8 unk_4c[0xad6];
+    B22_0219d5a0 unk_b22;
+    B24_0219d5a0 unk_b24;
+    u8 unk_b28[0x1];
+    B29_0219d5a0 unk_b29;
+};
+
+s32 func_ov000_0219d5a0(Obj0219d5a0 *self) {
     s32 result = 0;
     BOOL busy = FALSE;
-    u8 t = LFLD(u8 *, self, 0x40)[0x13];
+    u8 t = self->unk_40[0x13];
     u32 st;
     if (t != 1 && t != 2) {
         busy = TRUE;
-        if (t == 0x1f && LFLD(B22_0219d5a0, self, 0xb22).d < 2 && (u16)(LFLD(B22_0219d5a0, self, 0xb22).c + 0xfffe) <= 1) {
+        if (t == 0x1f && self->unk_b22.d < 2 && (u16)(self->unk_b22.c + 0xfffe) <= 1) {
             busy = FALSE;
         }
     }
-    st = LFLD(u32, LFLD(u8 *, self, 0x48), 0x50);
+    st = LFLD(u32, self->unk_48, 0x50);
     if (st & 0x400) {
         busy = TRUE;
     }
-    if (!LFLD(B24_0219d5a0, self, 0xb24).e) {
-        if (LFLD(B29_0219d5a0, self, 0xb29).i || busy) {
+    if (!self->unk_b24.e) {
+        if (self->unk_b29.i || busy) {
             result = 2;
         } else if (!RgbEq0219d5a0((Rgb0219d5a0 *)(data_ov000_021ccd54 + 0xca), data_ov000_021c9fe8.rgb)) {
-            if (!(st & 0x20000000) || !LFLD(B24_0219d5a0, self, 0xb24).f) {
+            if (!(st & 0x20000000) || !self->unk_b24.f) {
                 result = 1;
             }
         }
     } else {
-        if (busy || LFLD(B29_0219d5a0, self, 0xb29).i || LFLD(B22_0219d5a0, self, 0xb22).b || LFLD(B24_0219d5a0, self, 0xb24).h ||
-            LFLD(B24_0219d5a0, self, 0xb24).g || LFLD(B22_0219d5a0, self, 0xb22).c == 5 ||
-            (LFLD(B22_0219d5a0, self, 0xb22).a != 0 && LFLD(B22_0219d5a0, self, 0xb22).a != 1)) {
+        if (busy || self->unk_b29.i || self->unk_b22.b || self->unk_b24.h ||
+            self->unk_b24.g || self->unk_b22.c == 5 ||
+            (self->unk_b22.a != 0 && self->unk_b22.a != 1)) {
             result = 2;
         }
     }

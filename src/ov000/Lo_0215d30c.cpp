@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -11,27 +12,27 @@ void func_ov000_0215f0ec(void *p, void *q);
 extern const s16 FX_SinCosTable_[];
 typedef BOOL (*LoMsgFn)(void *, void *);
 
-void func_ov000_0215d30c(void *self) {
+void func_ov000_0215d30c(Lo021cad50 *self) {
     VObj *o;
-    if (LFLD(s32, self, 4) != 2) {
+    if (self->unk_04 != 2) {
         return;
     }
-    LFLD(s32, self, 0x30) = LFLD(s32, self, 0x34);
-    LFLD(s32, self, 0x38) = 0x1000;
-    o = LFLD(VObj *, self, 0x98);
+    self->unk_30 = self->unk_34;
+    self->unk_38 = 0x1000;
+    o = self->unk_98;
     if (o) {
-        if (!(LFLD(u32, self, 0xc) & 0x10000)) {
+        if (!(self->unk_0c & 0x10000)) {
             LFLD(u32, o, 4) |= 0x4000000;
         }
-        LFLD(VObj *, self, 0x98)->vfunc_8c();
+        self->unk_98->vfunc_8c();
         if (!LBIT(self, 0xc).b1) {
-            if (LFLD(VObj *, self, 0x98)->vfunc_10() || (LFLD(u32, self, 0xc) & 0x40000)) {
+            if (self->unk_98->vfunc_10() || (self->unk_0c & 0x40000)) {
                 LBIT(self, 0xc).b1 = 1;
             }
         }
     }
     if (LBIT(self, 0xc).b1 == 1) {
-        LFLD(s32, self, 4) = 1;
+        self->unk_04 = 1;
     }
 }
 

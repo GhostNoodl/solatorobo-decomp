@@ -143,7 +143,36 @@ static inline void TogglePad_0219efc0(void) {
     }
 }
 
-static inline void LockKeys_0219efc0(u8 *self) {
+struct Obj0219efc0 {
+    u8 unk_00[0xc];
+    u16 unk_0c;
+    u8 unk_0e[0x22];
+    u32 unk_30;
+    u8 unk_34[0x14];
+    u8 *unk_48;
+    u8 unk_4c[0x44];
+    u16 unk_90;
+    u8 unk_92[0xa8a];
+    u16 unk_b1c;
+    u16 unk_b1e;
+    u8 unk_b20[0x8];
+    u8 unk_b28;
+    B28_0219efc0 unk_b29;
+    u8 unk_b2a[0x4];
+    u8 unk_b2e;
+    u8 unk_b2f[0x7];
+    u16 unk_b36;
+    u16 unk_b38;
+    u8 unk_b3a[0x2e];
+    u16 unk_b68;
+    u16 unk_b6a;
+    u16 unk_b6c;
+    u16 unk_b6e;
+    u8 unk_b70[0x34];
+    u8 *unk_ba4;
+};
+
+static inline void LockKeys_0219efc0(Obj0219efc0 *self) {
     u32 m = B24(self).b12;
     if (m != 3) {
         if (B2C(self).b4 == 0 || m == 1) {
@@ -165,9 +194,16 @@ static inline void Gauge_0219efc0(s32 a, s32 b, VecFx32 *p) {
     func_ov000_02168e18(LFLD(void *, o, 0x70), a, b, p);
 }
 
-static inline BOOL RgbEq_0219efc0(u8 *g, u8 *self) {
+struct RgbEq_0219efc0Self {
+    u8 unk_00[0x772];
+    u8 unk_772;
+    u8 unk_773;
+    u8 unk_774;
+};
+
+static inline BOOL RgbEq_0219efc0(u8 *g, RgbEq_0219efc0Self *self) {
     BOOL e = FALSE;
-    if (g[0xca] == self[0x772] && g[0xcb] == self[0x773] && g[0xcc] == self[0x774]) e = TRUE;
+    if (g[0xca] == self->unk_772 && g[0xcb] == self->unk_773 && g[0xcc] == self->unk_774) e = TRUE;
     return e;
 }
 
@@ -183,7 +219,7 @@ static inline BOOL IsIdleG_0219efc0(u8 *g) {
     return TRUE;
 }
 
-static inline BOOL NotB1_0219efc0(u8 *self) {
+static inline BOOL NotB1_0219efc0(Obj0219efc0 *self) {
     return !B24(self).b1;
 }
 
@@ -191,23 +227,23 @@ static inline BOOL PadB9_0219efc0(void) {
     return PAD18.b9 ? TRUE : FALSE;
 }
 
-static inline BOOL CanMove_0219efc0(u8 *self) {
+static inline BOOL CanMove_0219efc0(Obj0219efc0 *self) {
     u8 *g = data_ov000_021ccd54;
     BOOL r = IsIdleG_0219efc0(g);
     if (r) {
-        r = !LFLD(B28_0219efc0, self, 0xb29).b1;
+        r = !self->unk_b29.b1;
     }
     if (r) {
-        r = LFLD(u8, self, 0xb28) == 0;
+        r = self->unk_b28 == 0;
     }
     if (r) {
-        r = LFLD(u8, self, 0xb2e) == 0;
+        r = self->unk_b2e == 0;
     }
     if (r) {
         r = !B24(self).b0;
     }
     if (r) {
-        r = !LFLD(B28_0219efc0, self, 0xb29).b3;
+        r = !self->unk_b29.b3;
     }
     if (r) {
         r = !NotB1_0219efc0(self);
@@ -215,7 +251,7 @@ static inline BOOL CanMove_0219efc0(u8 *self) {
             BOOL t = PadB9_0219efc0();
             r = !t;
             if (!t) {
-                r = RgbEq_0219efc0(g, self);
+                r = RgbEq_0219efc0(g, (RgbEq_0219efc0Self *)self);
             }
             if (r) {
                 r = B24(self).b14 == 0;
@@ -225,15 +261,15 @@ static inline BOOL CanMove_0219efc0(u8 *self) {
     return r;
 }
 
-void func_ov000_0219efc0(u8 *self) {
+void func_ov000_0219efc0(Obj0219efc0 *self) {
     u8 *p;
     u8 *t9;
     BOOL x;
 
-    LFLD(u16, self, 0xb68) = 0;
-    LFLD(u16, self, 0xb6a) = 0;
-    LFLD(u16, self, 0xb6c) = 0;
-    LFLD(u16, self, 0xb6e) = 0;
+    self->unk_b68 = 0;
+    self->unk_b6a = 0;
+    self->unk_b6c = 0;
+    self->unk_b6e = 0;
     if (!IsIdle_0219efc0()) {
         return;
     }
@@ -241,47 +277,47 @@ void func_ov000_0219efc0(u8 *self) {
         return;
     }
     if (B24(self).b0 || B24(self).b12 == 2) {
-        LFLD(u16, self, 0x90) = 0xffff;
+        self->unk_90 = 0xffff;
         B24(self).b4 = 0;
         func_ov000_021b3738(self, NULL);
         return;
     }
-    if (!LFLD(B28_0219efc0, self, 0xb29).b1 && !LFLD(B28_0219efc0, self, 0xb28).b2 && LFLD(u8, self, 0xb2e) == 0 &&
-        !LFLD(B28_0219efc0, self, 0xb29).b3) {
-        LFLD(u16, self, 0xb68) = LFLD(u16, data_02097dc8, 0x10);
-        LFLD(u16, self, 0xb6a) = LFLD(u16, data_02097dc8, 0x12);
-        LFLD(u16, self, 0xb6c) = LFLD(u16, data_02097dc8, 0x14);
-        LFLD(u16, self, 0xb6e) = func_0203d434(data_02097dc8, self + 0xb70);
+    if (!self->unk_b29.b1 && !LFLD(B28_0219efc0, self, 0xb28).b2 && self->unk_b2e == 0 &&
+        !self->unk_b29.b3) {
+        self->unk_b68 = LFLD(u16, data_02097dc8, 0x10);
+        self->unk_b6a = LFLD(u16, data_02097dc8, 0x12);
+        self->unk_b6c = LFLD(u16, data_02097dc8, 0x14);
+        self->unk_b6e = func_0203d434(data_02097dc8, (u8 *)self + 0xb70);
     }
-    if ((LFLD(u16, self, 0xb68) & 1) && !B24(self).b18) {
-        LFLD(u16, self, 0xb36)++;
-        if (LFLD(u16, self, 0xb36) > 9999) {
-            LFLD(u16, self, 0xb36) = 9999;
+    if ((self->unk_b68 & 1) && !B24(self).b18) {
+        self->unk_b36++;
+        if (self->unk_b36 > 9999) {
+            self->unk_b36 = 9999;
         }
     } else {
-        LFLD(u16, self, 0xb36) = 0;
+        self->unk_b36 = 0;
     }
     if (B22(self).b6 == 5) {
-        if ((LFLD(u16, self, 0xb6a) & 1) || ((LFLD(u16, self, 0xb68) & 1) && LFLD(u16, self, 0xb36) >= 0xc)) {
+        if ((self->unk_b6a & 1) || ((self->unk_b68 & 1) && self->unk_b36 >= 0xc)) {
             KEYS(self) |= 0x4000;
         }
-        if (LFLD(u16, self, 0xb68) & 0xf0) {
+        if (self->unk_b68 & 0xf0) {
             KEYS(self) |= 4;
         }
-        if (LFLD(u16, self, 0xb6a) & 4) {
+        if (self->unk_b6a & 4) {
             TogglePad_0219efc0();
         }
         return;
     }
     func_ov000_021b2d48(self);
-    p = LFLD(u8 *, self, 0xba4);
+    p = self->unk_ba4;
     if (p != NULL && B24(self).b1 && B24(self).b12 == 0) {
         if (LFLD(Ba4_0219efc0, p, 6).b4) {
-            if (LFLD(u16, self, 0xb1c) == 0xffff && (u8)(ST(self)->kind + 0xff) <= 1) {
-                u16 n = LFLD(u16, self, 0xb36);
+            if (self->unk_b1c == 0xffff && (u8)(ST(self)->kind + 0xff) <= 1) {
+                u16 n = self->unk_b36;
                 if (n == 0) {
                     if (B2C(self).b4 != 0) {
-                        u8 *a = FindActor_0219efc0(LFLD(u16, self, 0x90));
+                        u8 *a = FindActor_0219efc0(self->unk_90);
                         u8 *i = NULL;
                         s32 k;
                         if (a != NULL) {
@@ -329,8 +365,8 @@ void func_ov000_0219efc0(u8 *self) {
         }
         if (B93(self).b5 != 2) {
             B93(self).b5 = 0;
-            p = LFLD(u8 *, self, 0xba4);
-            if (LFLD(Ba4_0219efc0, p, 6).b8 && LFLD(u16, self, 0xb36) >= 8 && LFLD(u16, self, 0xb1c) == 0xffff) {
+            p = self->unk_ba4;
+            if (LFLD(Ba4_0219efc0, p, 6).b8 && self->unk_b36 >= 8 && self->unk_b1c == 0xffff) {
                 B93(self).b5 = 1;
                 if (!LFLD(Ba4_0219efc0, p, 6).b4) {
                     KEYS(self) |= 0x10000000;
@@ -342,29 +378,29 @@ void func_ov000_0219efc0(u8 *self) {
         B2C(self).b6 = 0;
         B93(self).b5 = 0;
     }
-    if (B22(self).b3 && LFLD(u16, self, 0xb36) != 0 && PAD18.b1 == 1 && LFLD(u16, self, 0xb1c) == 0xffff &&
-        LFLD(u16, self, 0x90) == 0xffff && (u8)(ST(self)->kind + 0xff) <= 1) {
+    if (B22(self).b3 && self->unk_b36 != 0 && PAD18.b1 == 1 && self->unk_b1c == 0xffff &&
+        self->unk_90 == 0xffff && (u8)(ST(self)->kind + 0xff) <= 1) {
         KEYS(self) |= 0x80;
     }
-    if (LFLD(u16, self, 0xb6a) & 1) {
+    if (self->unk_b6a & 1) {
         u8 *a;
         u8 *i;
-        t9 = FindActor_0219efc0(LFLD(u16, self, 0x90));
+        t9 = FindActor_0219efc0(self->unk_90);
         if (t9 != NULL) {
             func_02062764(0x3c0, 0x40);
         }
         a = NULL;
         if (B24(self).b5 && B24(self).b1) {
             u8 *i;
-            a = FindActor_0219efc0(LFLD(u16, self, 0xb1c));
+            a = FindActor_0219efc0(self->unk_b1c);
             i = NULL;
             if (a != NULL) {
                 i = LFLD(u8 *, a, 0x4c);
             }
-            if (i == NULL || LFLD(u16, i, 0x1c) != LFLD(u16, self, 0xc)) {
+            if (i == NULL || LFLD(u16, i, 0x1c) != self->unk_0c) {
                 B24(self).b5 = 0;
-                LFLD(u16, self, 0xb1c) = 0xffff;
-                LFLD(u16, self, 0xb1e) = 0xffff;
+                self->unk_b1c = 0xffff;
+                self->unk_b1e = 0xffff;
                 B24(self).b7 = B24(self).b9;
                 a = NULL;
             }
@@ -391,7 +427,7 @@ void func_ov000_0219efc0(u8 *self) {
                     }
                     break;
                 case 6:
-                    if (FindActor_0219efc0(LFLD(u16, self, 0x90)) != NULL) {
+                    if (FindActor_0219efc0(self->unk_90) != NULL) {
                         KEYS(self) |= 0x40;
                     } else {
                         KEYS(self) |= 0x1000;
@@ -404,7 +440,7 @@ void func_ov000_0219efc0(u8 *self) {
                 i = LFLD(u8 *, t9, 0x4c);
             }
             if (i != NULL) {
-                BOOL hold = (LFLD(u32, self, 0x30) & 0x80) ? TRUE : FALSE;
+                BOOL hold = (self->unk_30 & 0x80) ? TRUE : FALSE;
                 switch (i[0]) {
                 case 3:
                     if (!hold) {
@@ -469,41 +505,41 @@ void func_ov000_0219efc0(u8 *self) {
                 }
             } else if (B24(self).b1) {
                 LockKeys_0219efc0(self);
-            } else if (!(LFLD(u32, LFLD(u8 *, self, 0x48), 0x54) & 0x400)) {
+            } else if (!(LFLD(u32, self->unk_48, 0x54) & 0x400)) {
                 if (B93(self).b4 || LFLD(u16, func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000), 0x16) != 0) {
                     KEYS(self) |= 0x10000;
                 }
             }
         }
     }
-    if (LFLD(u16, self, 0xb68) & 2) {
+    if (self->unk_b68 & 2) {
         if (B24(self).b12 != 3) {
-            LFLD(u16, self, 0xb38)++;
-            if (LFLD(u16, self, 0xb38) > 9999) {
-                LFLD(u16, self, 0xb38) = 9999;
+            self->unk_b38++;
+            if (self->unk_b38 > 9999) {
+                self->unk_b38 = 9999;
             }
-            if (LFLD(u16, self, 0xb6a) & 2) {
+            if (self->unk_b6a & 2) {
                 KEYS(self) |= 8;
             }
             if (B24(self).b1) {
                 if (B22(self).b0 != 0 && !B24(self).b18) {
                     KEYS(self) |= 0x2000000;
                 }
-                p = LFLD(u8 *, self, 0xba4);
+                p = self->unk_ba4;
                 if (p != NULL && B24(self).b12 == 0) {
                     if ((LFLD(Ba4_0219efc0, p, 6).b7 && ST(self)->kind == 4 &&
-                         !(LFLD(u32, LFLD(u8 *, self, 0x48), 0x50) & 0x20000000) && LFLD(u16, self, 0xb38) >= 10) ||
-                        (LFLD(Ba4_0219efc0, p, 6).b6 && ST(self)->kind != 3 && LFLD(u16, self, 0xb38) > 6 &&
-                         (LFLD(u32, LFLD(u8 *, self, 0x48), 0x50) & 0x20000000))) {
+                         !(LFLD(u32, self->unk_48, 0x50) & 0x20000000) && self->unk_b38 >= 10) ||
+                        (LFLD(Ba4_0219efc0, p, 6).b6 && ST(self)->kind != 3 && self->unk_b38 > 6 &&
+                         (LFLD(u32, self->unk_48, 0x50) & 0x20000000))) {
                         KEYS(self) |= 8;
                     }
                 }
             }
         }
     } else {
-        LFLD(u16, self, 0xb38) = 0;
+        self->unk_b38 = 0;
     }
-    if (LFLD(u16, self, 0xb6a) & 0x800) {
+    if (self->unk_b6a & 0x800) {
         if (B24(self).b1) {
             if (B24(self).b5 == 0 && B24(self).b12 == 0 && !B22(self).b3 && B22(self).b9 == 0) {
                 KEYS(self) |= 0x8000000;
@@ -512,8 +548,8 @@ void func_ov000_0219efc0(u8 *self) {
             KEYS(self) |= 0x4000000;
         }
     }
-    if ((LFLD(u16, self, 0xb68) & 0x200) && (LFLD(u16, self, 0xb6a) & 0x100) && PAD18.b1 == 1 && !B22(self).b3 &&
-        B22(self).b9 == 0 && B24(self).b1 && B93(self).b4 && !LFLD(B28_0219efc0, self, 0xb29).b3 && B22(self).b0 == 0 &&
+    if ((self->unk_b68 & 0x200) && (self->unk_b6a & 0x100) && PAD18.b1 == 1 && !B22(self).b3 &&
+        B22(self).b9 == 0 && B24(self).b1 && B93(self).b4 && !self->unk_b29.b3 && B22(self).b0 == 0 &&
         B24(self).b12 == 0 && ST(self)->kind != 0x11 && (ST(self)->kind != 0xb || !B24(self).b26) &&
         LFLD(u16, data_0214a424, 0x26) >= 0x2d0) {
         func_02049a48(data_02097e4c, 0x30b, -1, -1, -1);
@@ -521,14 +557,14 @@ void func_ov000_0219efc0(u8 *self) {
     }
     x = FALSE;
     if (B22(self).b0 != 0 && CanMove_0219efc0(self)) {
-        if ((LFLD(u16, self, 0xb6a) & 4) && B24(self).b1) {
+        if ((self->unk_b6a & 4) && B24(self).b1) {
             TogglePad_0219efc0();
         }
         if (B22(self).b0 != 3 && B22(self).b0 != 4) {
             x = func_ov000_021b3e90(self);
         }
     }
-    if (!x && B24(self).b12 == 0 && (LFLD(u16, self, 0xb68) & 0xf0)) {
+    if (!x && B24(self).b12 == 0 && (self->unk_b68 & 0xf0)) {
         KEYS(self) |= 4;
     }
     if (!B22(self).b3) {
@@ -537,7 +573,7 @@ void func_ov000_0219efc0(u8 *self) {
     if (B22(self).b4) {
         return;
     }
-    if (LFLD(B28_0219efc0, self, 0xb29).b3) {
+    if (self->unk_b29.b3) {
         return;
     }
     if (B24(self).b0) {

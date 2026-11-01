@@ -21,16 +21,27 @@ void MIi_CpuCopyFast(const void *a, void *b, u32 c);
 void func_ov000_02190758(void *m, void *p, s32 a);
 BOOL func_ov000_021903b4(void *m);
 
-void func_ov000_02162a58(u8 *self) {
-    NNS_G3dGlb.camPos = LFLD(VecFx32, self, 0x644);
-    NNS_G3dGlb.camUp = LFLD(VecFx32, self, 0x65c);
-    NNS_G3dGlb.camTarget = LFLD(VecFx32, self, 0x650);
-    MTX_LookAt(&LFLD(VecFx32, self, 0x644), &LFLD(VecFx32, self, 0x65c), &LFLD(VecFx32, self, 0x650), data_02092844);
+struct Obj02162a58 {
+    u8 unk_00[0x5d4];
+    VecFx32 unk_5d4;
+    u8 unk_5e0[0x64];
+    VecFx32 unk_644;
+    VecFx32 unk_650;
+    VecFx32 unk_65c;
+    u8 unk_668[0x70];
+    VecFx32 unk_6d8;
+};
+
+void func_ov000_02162a58(Obj02162a58 *self) {
+    NNS_G3dGlb.camPos = self->unk_644;
+    NNS_G3dGlb.camUp = self->unk_65c;
+    NNS_G3dGlb.camTarget = self->unk_650;
+    MTX_LookAt(&self->unk_644, &self->unk_65c, &self->unk_650, data_02092844);
     NNS_G3dGlb.flag &= ~0xe8;
-    MIi_CpuCopyFast(self + 0x668, data_02092800, 0x40);
+    MIi_CpuCopyFast((u8 *)self + 0x668, data_02092800, 0x40);
     NNS_G3dGlb.flag &= ~0x50;
-    LFLD(VecFx32, self, 0x5d4) = LFLD(VecFx32, self, 0x6d8);
-    func_ov000_02190758(self + 0x55c, self + 0x6e4, 0);
-    func_ov000_021903b4(self + 0x55c);
+    self->unk_5d4 = self->unk_6d8;
+    func_ov000_02190758((u8 *)self + 0x55c, (u8 *)self + 0x6e4, 0);
+    func_ov000_021903b4((u8 *)self + 0x55c);
 }
 }

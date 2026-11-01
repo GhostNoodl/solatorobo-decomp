@@ -25,8 +25,13 @@ s32 func_02043d84(void *a);
 void MI_CpuFill8(void *dst, s32 v, s32 size);
 void func_ov000_0216bcbc(void *self);
 
-void func_ov000_02165da0(void *self) {
-    void *o = LFLD(void *, self, 0x30);
+struct Obj02165da0 {
+    u8 unk_00[0x30];
+    void *unk_30;
+};
+
+void func_ov000_02165da0(Obj02165da0 *self) {
+    void *o = self->unk_30;
     void *q;
     if (o == NULL || (q = LFLD(void *, o, 0xcdc)) == NULL) {
         return;
@@ -39,8 +44,13 @@ void func_ov000_02165da0(void *self) {
     LFLD(u16, LFLD(void *, o, 0xcdc), 0x10e) = 0;
 }
 
-BOOL func_ov000_02165df4(void *self) {
-    void *o = LFLD(void *, self, 0x30);
+struct Obj02165df4 {
+    u8 unk_00[0x30];
+    void *unk_30;
+};
+
+BOOL func_ov000_02165df4(Obj02165df4 *self) {
+    void *o = self->unk_30;
     void *q;
     if (o == NULL || (q = LFLD(void *, o, 0xcdc)) == NULL) {
         return TRUE;

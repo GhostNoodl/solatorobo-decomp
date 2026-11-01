@@ -35,8 +35,13 @@ static inline s32 LoApproach(s32 cur, s32 target, s32 rate) {
     return cur + (s32)(((s64)(target - cur) * rate + 0x800) >> 12);
 }
 
-BOOL func_ov000_0214ffac(void *self, void *msg) {
-    VObj *obj = LFLD(VObj *, self, 8);
+struct Obj0214ffac {
+    u8 unk_00[0x8];
+    VObj *unk_08;
+};
+
+BOOL func_ov000_0214ffac(Obj0214ffac *self, void *msg) {
+    VObj *obj = self->unk_08;
     u16 id;
     u8 *p;
     if (msg == NULL) {

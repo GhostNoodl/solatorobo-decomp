@@ -30,10 +30,15 @@ static inline void OamPos021640fc(Oam021640fc *o, u16 x, u16 y) {
     o->y = y & 0x1ff;
 }
 
-Oam021640fc *func_ov000_021640fc(void *self, Arg021640fc *a, Oam021640fc *oam, u16 *cnt) {
+struct Obj021640fc {
+    u8 unk_00[0x70];
+    void *unk_70;
+};
+
+Oam021640fc *func_ov000_021640fc(Obj021640fc *self, Arg021640fc *a, Oam021640fc *oam, u16 *cnt) {
     u16 n = *cnt;
     Oam021640fc *e = &oam[n - 1];
-    void *p = LFLD(void *, self, 0x70);
+    void *p = self->unk_70;
     switch (a->kind) {
     case 0: {
         u32 t = e->tile;

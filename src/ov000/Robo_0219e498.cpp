@@ -87,12 +87,44 @@ static inline BOOL RgbEq0219e498(Rgb0219e498 *a, Rgb0219e498 *b) {
     return r;
 }
 
-void func_ov000_0219e498(u8 *self) {
-    if (LFLD(B24_0219e498, self, 0xb24).b1) {
+struct Obj0219e498 {
+    u8 unk_00[0x64];
+    s32 unk_64;
+    u8 unk_68[0x4];
+    s32 unk_6c;
+    VecFx32 unk_70;
+    u8 unk_7c[0x288];
+    s32 unk_304;
+    u8 unk_308[0x14];
+    u32 unk_31c;
+    s32 unk_320;
+    s32 unk_324;
+    u8 unk_328[0x3e];
+    u16 unk_366;
+    u8 unk_368[0x390];
+    s32 unk_6f8;
+    u8 unk_6fc[0x14];
+    u32 unk_710;
+    u32 unk_714;
+    u8 unk_718[0x8];
+    s32 unk_720;
+    u8 unk_724[0x36];
+    u16 unk_75a;
+    VecFx32 unk_75c;
+    s32 unk_768;
+    u8 unk_76c[0x6];
+    Rgb0219e498 unk_772;
+    u8 unk_775[0x3ad];
+    B22_0219e498 unk_b22;
+    B24_0219e498 unk_b24;
+};
+
+void func_ov000_0219e498(Obj0219e498 *self) {
+    if (self->unk_b24.b1) {
         s32 a = 0;
         s32 b = 0x266;
-        if (LFLD(B22_0219e498, self, 0xb22).b3) {
-            if (LFLD(B24_0219e498, self, 0xb24).b5) {
+        if (self->unk_b22.b3) {
+            if (self->unk_b24.b5) {
                 b += 0x4f6;
                 a += 0x4cd;
             } else {
@@ -100,66 +132,66 @@ void func_ov000_0219e498(u8 *self) {
                 a += 0x400;
                 b += 0x400;
             }
-        } else if (LFLD(B24_0219e498, self, 0xb24).b5) {
-            if (LFLD(B24_0219e498, self, 0xb24).b12 == 0) {
+        } else if (self->unk_b24.b5) {
+            if (self->unk_b24.b12 == 0) {
                 a += 0x333;
                 b += 0x35c;
             }
         }
-        LFLD(s32, self, 0x6f8) = a + LFLD(s32, self, 0x64);
-        LFLD(s32, self, 0x720) = b + LFLD(s32, self, 0x6c);
-        if (!On0219e498(self, 0x6c0)) {
-            Show0219e498(self, 0x6c0);
+        self->unk_6f8 = a + self->unk_64;
+        self->unk_720 = b + self->unk_6c;
+        if (!On0219e498((u8 *)self, 0x6c0)) {
+            Show0219e498((u8 *)self, 0x6c0);
         }
-        if (!On2_0219e498(self, 0x6c0)) {
-            LFLD(u16, self, 0x75a) |= 0x12;
+        if (!On2_0219e498((u8 *)self, 0x6c0)) {
+            self->unk_75a |= 0x12;
         }
-        func_ov000_0219864c(self + 0x6c0, NULL, NULL);
-        LFLD(VecFx32, self, 0x75c) = LFLD(VecFx32, self, 0x70);
-        Hide0219e498(self, 0x2cc);
-        Hide2_0219e498(self, 0x2cc);
-        func_ov000_0219864c(self + 0x2cc, NULL, NULL);
+        func_ov000_0219864c((u8 *)self + 0x6c0, NULL, NULL);
+        self->unk_75c = self->unk_70;
+        Hide0219e498((u8 *)self, 0x2cc);
+        Hide2_0219e498((u8 *)self, 0x2cc);
+        func_ov000_0219864c((u8 *)self + 0x2cc, NULL, NULL);
         return;
     }
-    if (!G9_0219e498() && RgbEq0219e498(&LFLD(Rgb0219e498, data_ov000_021ccd54, 0xca), &LFLD(Rgb0219e498, self, 0x772))) {
-        LFLD(s32, self, 0x6f8) = LFLD(s32, self, 0x64) >> 1;
-        LFLD(s32, self, 0x720) = LFLD(s32, self, 0x6c) >> 1;
-        Show0219e498(self, 0x6c0);
-        LFLD(u16, self, 0x75a) |= 0x12;
-        if ((LFLD(u32, self, 0x710) & 0x20000000) || !(LFLD(u32, self, 0x714) & 0x20000000)) {
-            LFLD(s32, self, 0x768) = 0;
+    if (!G9_0219e498() && RgbEq0219e498(&LFLD(Rgb0219e498, data_ov000_021ccd54, 0xca), &self->unk_772)) {
+        self->unk_6f8 = self->unk_64 >> 1;
+        self->unk_720 = self->unk_6c >> 1;
+        Show0219e498((u8 *)self, 0x6c0);
+        self->unk_75a |= 0x12;
+        if ((self->unk_710 & 0x20000000) || !(self->unk_714 & 0x20000000)) {
+            self->unk_768 = 0;
             BODY(self, 0x6c0).b5 = 1;
         } else {
-            LFLD(s32, self, 0x768) -= 0x52;
-            if (LFLD(s32, self, 0x768) > -0x148) {
-                LFLD(s32, self, 0x768) = -0x148;
+            self->unk_768 -= 0x52;
+            if (self->unk_768 > -0x148) {
+                self->unk_768 = -0x148;
             }
-            LFLD(s32, self, 0x760) += LFLD(s32, self, 0x768);
+            self->unk_75c.y += self->unk_768;
         }
-        if (LFLD(B24_0219e498, self, 0xb24).b24 || LFLD(s32, self, 0x768) != 0) {
-            LFLD(B24_0219e498, self, 0xb24).b24 = 0;
-            func_ov000_021987b8(self + 0x6c0, 0, self + 0x75c, self + 0x76c);
+        if (self->unk_b24.b24 || self->unk_768 != 0) {
+            self->unk_b24.b24 = 0;
+            func_ov000_021987b8((u8 *)self + 0x6c0, 0, (u8 *)self + 0x75c, (u8 *)self + 0x76c);
         }
     } else {
-        Hide0219e498(self, 0x6c0);
-        Hide2_0219e498(self, 0x6c0);
+        Hide0219e498((u8 *)self, 0x6c0);
+        Hide2_0219e498((u8 *)self, 0x6c0);
     }
-    func_ov000_0219864c(self + 0x6c0, self + 0x75c, self + 0x76c);
-    if (LFLD(B24_0219e498, self, 0xb24).b2 != 1) {
-        if (LFLD(u32, self, 0x31c) & 0x400) {
-            LFLD(s32, self, 0x304) = (LFLD(s32, self, 0x64) >> 1) + (LFLD(s32, self, 0x64) >> 2);
+    func_ov000_0219864c((u8 *)self + 0x6c0, (u8 *)self + 0x75c, (u8 *)self + 0x76c);
+    if (self->unk_b24.b2 != 1) {
+        if (self->unk_31c & 0x400) {
+            self->unk_304 = (self->unk_64 >> 1) + (self->unk_64 >> 2);
         } else {
-            LFLD(s32, self, 0x304) = (LFLD(s32, self, 0x64) >> 1) + (LFLD(s32, self, 0x64) >> 3);
+            self->unk_304 = (self->unk_64 >> 1) + (self->unk_64 >> 3);
         }
-        Show0219e498(self, 0x2cc);
-        LFLD(u16, self, 0x366) |= 0x12;
+        Show0219e498((u8 *)self, 0x2cc);
+        self->unk_366 |= 0x12;
     } else {
-        Hide0219e498(self, 0x2cc);
-        LFLD(s32, self, 0x31c) = 0;
-        LFLD(s32, self, 0x320) = 0;
-        LFLD(s32, self, 0x324) = 0;
-        Hide2_0219e498(self, 0x2cc);
+        Hide0219e498((u8 *)self, 0x2cc);
+        self->unk_31c = 0;
+        self->unk_320 = 0;
+        self->unk_324 = 0;
+        Hide2_0219e498((u8 *)self, 0x2cc);
     }
-    func_ov000_0219864c(self + 0x2cc, NULL, NULL);
+    func_ov000_0219864c((u8 *)self + 0x2cc, NULL, NULL);
 }
 }

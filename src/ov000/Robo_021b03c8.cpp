@@ -27,39 +27,54 @@ static inline void *FindActor021b03c8(u16 id) {
     return func_ov000_0218e640(mgr, id);
 }
 
-static inline void Next021b03c8(u8 *self) {
-    LFLD(State021b03c8 *, self, 0x40)->timer = 0xd;
-    LFLD(State021b03c8 *, self, 0x40)->st++;
+struct Obj021b03c8 {
+    u8 unk_00[0xc];
+    u16 unk_0c;
+    u8 unk_0e[0x32];
+    State021b03c8 *unk_40;
+    u8 unk_44[0x3a];
+    u16 unk_7e;
+    u8 unk_80[0xaa0];
+    u16 unk_b20;
+    u8 unk_b22[0xd];
+    u8 unk_b2f;
+    u8 unk_b30[0x6];
+    u16 unk_b36;
+};
+
+static inline void Next021b03c8(Obj021b03c8 *self) {
+    self->unk_40->timer = 0xd;
+    self->unk_40->st++;
 }
 
-void func_ov000_021b03c8(u8 *self) {
-    State021b03c8 *s = LFLD(State021b03c8 *, self, 0x40);
+void func_ov000_021b03c8(Obj021b03c8 *self) {
+    State021b03c8 *s = self->unk_40;
     void *a;
     u8 *sub;
     void *o;
     VecFx32 v;
 
-    if (LFLD(u8, self, 0xb2f) == 0) {
-        LFLD(u8, self, 0xb2f) = 1;
+    if (self->unk_b2f == 0) {
+        self->unk_b2f = 1;
     }
     switch (s->st) {
     case 0:
-        if (LFLD(u16, self, 0xb36) != 0) {
-            LFLD(u16, self, 0xb36) = 1;
+        if (self->unk_b36 != 0) {
+            self->unk_b36 = 1;
         }
-        a = FindActor021b03c8(LFLD(u16, self, 0xb20));
+        a = FindActor021b03c8(self->unk_b20);
         sub = NULL;
         if (a != NULL) {
             sub = LFLD(u8 *, a, 0x4c);
         }
         if (sub == NULL || LFLD(u16, sub, 0x1e) == 0) {
-            func_0204a028(data_02097e4c, 0x48, self + 0x70, -5);
+            func_0204a028(data_02097e4c, 0x48, (u8 *)self + 0x70, -5);
             Next021b03c8(self);
             return;
         }
-        func_01ffc9fc(&v, &data_ov000_021ca000, LFLD(u16, self, 0x7e));
-        VEC_Add(&v, (VecFx32 *)(self + 0x70), &v);
-        o = func_ov000_0219be1c(0x4800, &v, self + 0x7c, LFLD(u16, self, 0xc), 0xffff);
+        func_01ffc9fc(&v, &data_ov000_021ca000, self->unk_7e);
+        VEC_Add(&v, (VecFx32 *)((u8 *)self + 0x70), &v);
+        o = func_ov000_0219be1c(0x4800, &v, (u8 *)self + 0x7c, self->unk_0c, 0xffff);
         if (o == NULL) {
             return;
         }
@@ -69,7 +84,7 @@ void func_ov000_021b03c8(u8 *self) {
         }
         LFLD(u16, sub, 0x1e)--;
         func_ov000_0218996c(3, 6);
-        func_02049f44(data_02097e4c, 0x66, self + 0x70, 0);
+        func_02049f44(data_02097e4c, 0x66, (u8 *)self + 0x70, 0);
         Next021b03c8(self);
         break;
     case 1:
@@ -77,10 +92,10 @@ void func_ov000_021b03c8(u8 *self) {
             s->timer--;
         }
         if (s->timer == 0) {
-            if (LFLD(u16, self, 0xb36) != 0) {
-                LFLD(State021b03c8 *, self, 0x40)->st = 0;
+            if (self->unk_b36 != 0) {
+                self->unk_40->st = 0;
             } else {
-                func_ov000_02198360(LFLD(State021b03c8 *, self, 0x40), 1, 0);
+                func_ov000_02198360(self->unk_40, 1, 0);
             }
         }
         func_ov000_021b2b08(self);

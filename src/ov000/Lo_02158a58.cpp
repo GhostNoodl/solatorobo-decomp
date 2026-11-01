@@ -10,7 +10,17 @@ void func_ov000_02152294(void *self, s32 a, s32 b, void *cb);
 BOOL func_ov000_02151664(void *p, u8 *msg);
 void func_ov000_0215f334(void *p);
 
-void func_ov000_02158a58(VObj *self, s32 unused, s32 *pos) {
+struct Obj02158a58 : public VObj {
+    u8 unk_04[0x8];
+    u32 unk_0c;
+    u8 unk_10[0x58];
+    s16 unk_68;
+    u8 unk_6a[0x6a];
+    void *unk_d4;
+    void *unk_d8;
+};
+
+void func_ov000_02158a58(Obj02158a58 *self, s32 unused, s32 *pos) {
     s32 px;
     s32 a;
     s32 y;
@@ -20,28 +30,28 @@ void func_ov000_02158a58(VObj *self, s32 unused, s32 *pos) {
     a = self->vfunc_8c();
     a += self->vfunc_30() + (px >> 12);
     y = (pos[1] >> 12) - 2;
-    if (LFLD(void *, self, 0xd4)) {
+    if (self->unk_d4) {
         s32 c = self->vfunc_f0();
-        z = LFLD(s16, self, 0x68);
-        q = LFLD(u8 *, self, 0xd4);
+        z = self->unk_68;
+        q = (u8 *)self->unk_d4;
         LFLD(s32, q, 8) = a + c;
         LFLD(s32, q, 0xc) = y;
         LFLD(s32, q, 0x10) = z - 0x40;
-        func_ov000_0215f334(LFLD(void *, self, 0xd4));
+        func_ov000_0215f334(self->unk_d4);
     }
-    if (LFLD(void *, self, 0xd8)) {
+    if (self->unk_d8) {
         px = pos[0];
         a = self->vfunc_88();
         a = self->vfunc_94() + (px >> 12) + (a >> 1);
-        if (LFLD(u32, self, 0xc) & 0x800000) {
+        if (self->unk_0c & 0x800000) {
             a += 10;
         }
-        z = LFLD(s16, self, 0x68) - 0x40;
-        q = LFLD(u8 *, self, 0xd8);
+        z = self->unk_68 - 0x40;
+        q = (u8 *)self->unk_d8;
         LFLD(s32, q, 8) = a;
         LFLD(s32, q, 0xc) = y;
         LFLD(s32, q, 0x10) = z;
-        func_ov000_0215f334(LFLD(void *, self, 0xd8));
+        func_ov000_0215f334(self->unk_d8);
     }
 }
 

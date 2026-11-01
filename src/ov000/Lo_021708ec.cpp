@@ -55,9 +55,16 @@ static inline BOOL Lo_TalkBusy(MessageQueue *mq) {
     }
 }
 
-BOOL func_ov000_021708ec(void *self, s32 arg, s32 arg2) {
+struct Obj021708ec {
+    u8 unk_00[0x24];
+    s32 unk_24;
+    u8 unk_28[0x24];
+    void *unk_4c;
+};
+
+BOOL func_ov000_021708ec(Obj021708ec *self, s32 arg, s32 arg2) {
     void *p;
-    if (LFLD(s32, self, 0x24) != 3) {
+    if (self->unk_24 != 3) {
         return FALSE;
     }
     if (!Lo_SysIdle()) {
@@ -66,19 +73,19 @@ BOOL func_ov000_021708ec(void *self, s32 arg, s32 arg2) {
     if (Lo_TalkBusy(data_ov000_021ccd30)) {
         return FALSE;
     }
-    if (LFLD(void *, self, 0x4c) != NULL) {
+    if (self->unk_4c != NULL) {
         return FALSE;
     }
     {
         u32 saved;
         LO_HEAP_PUSH(saved);
-        if (LFLD(void *, self, 0x4c) != NULL) {
-            void *q = LFLD(void *, self, 0x4c);
+        if (self->unk_4c != NULL) {
+            void *q = self->unk_4c;
             if (q != NULL) {
                 func_ov000_021bb840(q);
                 func_0203de1c(q);
             }
-            LFLD(void *, self, 0x4c) = NULL;
+            self->unk_4c = NULL;
         }
         LO_HEAP_POP(saved);
     }
@@ -86,7 +93,7 @@ BOOL func_ov000_021708ec(void *self, s32 arg, s32 arg2) {
     if (p != NULL) {
         func_ov000_021bb810(p, arg);
     }
-    LFLD(void *, self, 0x4c) = p;
+    self->unk_4c = p;
     return TRUE;
 }
 

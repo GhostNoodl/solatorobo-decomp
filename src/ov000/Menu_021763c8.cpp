@@ -105,17 +105,26 @@ static inline void *GetCur02172f7c(void) {
     return data_ov000_021ccd44;
 }
 
-void func_ov000_02172f7c(void *self, void *arg) {
+struct Lo02172f7c {
+    u8 unk_00[0x4];
+    u32 unk_04;
+    u8 unk_08[0xc];
+    s32 unk_14;
+    u8 unk_18[0x14];
+    void *unk_2c;
+};
+
+void func_ov000_02172f7c(Lo02172f7c *self, void *arg) {
     BOOL fl = FALSE;
     if (LBIT(self, 4).b7 == 1) {
         fl = TRUE;
     }
-    LFLD(u32, self, 4) |= 4;
-    if (LFLD(void *, self, 0x2c) != NULL) {
-        LoSwitchTaskC(LFLD(s32, LFLD(void *, self, 0x2c), 0x14), 0);
-        LFLD(void *, LFLD(void *, self, 0x2c), 0x18) = arg;
+    self->unk_04 |= 4;
+    if (self->unk_2c != NULL) {
+        LoSwitchTaskC(LFLD(s32, self->unk_2c, 0x14), 0);
+        LFLD(void *, self->unk_2c, 0x18) = arg;
     } else if (arg == NULL) {
-        s32 kind = LFLD(s32, self, 0x14);
+        s32 kind = self->unk_14;
         void *cur = GetCur02172f7c();
         data_ov000_021ccd34 = 1;
         arg = LoFindTask(kind);
@@ -132,7 +141,7 @@ void func_ov000_02172f7c(void *self, void *arg) {
         data_ov000_021ccd34 = 1;
         LBIT(data_ov000_021ccd44, 0).b0 = 1;
     }
-    LFLD(void *, self, 0x2c) = NULL;
+    self->unk_2c = NULL;
 }
 
 }
@@ -147,6 +156,10 @@ LoCreateFn data_ov000_021ccd4c;  // shop task factory
 }
 
 // ---- Lo_021731a0
+struct LoTimedBufferDtorSelf : public TimedBuffer {
+    ListBuffer *unk_30;
+};
+
 namespace m_Lo_021731a0 {
 
 extern "C" {
@@ -180,16 +193,16 @@ static inline void LoMQRemove(MessageQueue *self, ListBuffer *buf) {
     }
 }
 
-static inline void LoTimedBufferDtor(TimedBuffer *self) {
+static inline void LoTimedBufferDtor(LoTimedBufferDtorSelf *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb920);
-    if (LFLD(ListBuffer *, self, 0x30) != NULL) {
-        LoMQRemove((MessageQueue *)self->unk_0c, LFLD(ListBuffer *, self, 0x30));
+    if (self->unk_30 != NULL) {
+        LoMQRemove((MessageQueue *)self->unk_0c, self->unk_30);
     }
     self->unk_20 = 0;
     self->unk_24 = 0;
     self->unk_28 = 0;
     self->unk_2c = 0;
-    LFLD(u32, self, 0x30) = 0;
+    self->unk_30 = 0;
     LoListBufferDtor(self);
 }
 
@@ -223,21 +236,39 @@ static inline void LoMessageQueueDtor(MessageQueue *self) {
     self->writeIndex = 0;
 }
 
-void func_ov000_021731a0(void *self) {
-    LFLD(s32, self, 0x4) = 0;
-    LFLD(s32, self, 0x8) = 0;
-    LFLD(s32, self, 0xc) = 0;
-    LFLD(s32, self, 0x10) = 0;
-    LFLD(s32, self, 0x14) = 0;
-    LFLD(s32, self, 0x18) = 0;
-    LFLD(s32, self, 0x1c) = 0;
-    LFLD(s32, self, 0x20) = 0xc000;
-    LFLD(s32, self, 0x24) = 0;
-    LFLD(s32, self, 0x28) = 0;
-    LFLD(s32, self, 0x2c) = 0;
-    LFLD(s32, self, 0x30) = 0;
-    LFLD(s32, self, 0x34) = 0;
-    LFLD(s32, self, 0x38) = 0;
+struct Lo021731a0 {
+    u8 unk_00[0x4];
+    s32 unk_04;
+    s32 unk_08;
+    s32 unk_0c;
+    s32 unk_10;
+    s32 unk_14;
+    s32 unk_18;
+    s32 unk_1c;
+    s32 unk_20;
+    s32 unk_24;
+    s32 unk_28;
+    s32 unk_2c;
+    s32 unk_30;
+    s32 unk_34;
+    s32 unk_38;
+};
+
+void func_ov000_021731a0(Lo021731a0 *self) {
+    self->unk_04 = 0;
+    self->unk_08 = 0;
+    self->unk_0c = 0;
+    self->unk_10 = 0;
+    self->unk_14 = 0;
+    self->unk_18 = 0;
+    self->unk_1c = 0;
+    self->unk_20 = 0xc000;
+    self->unk_24 = 0;
+    self->unk_28 = 0;
+    self->unk_2c = 0;
+    self->unk_30 = 0;
+    self->unk_34 = 0;
+    self->unk_38 = 0;
 }
 
 }
@@ -291,17 +322,17 @@ static inline void LoMQRemove(MessageQueue *self, ListBuffer *buf) {
     }
 }
 
-static inline void LoTimedBufferDtor(TimedBuffer *self) {
+static inline void LoTimedBufferDtor(LoTimedBufferDtorSelf *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb920);
-    if (LFLD(ListBuffer *, self, 0x30) != NULL) {
-        LoMQRemove((MessageQueue *)self->unk_0c, LFLD(ListBuffer *, self, 0x30));
+    if (self->unk_30 != NULL) {
+        LoMQRemove((MessageQueue *)self->unk_0c, self->unk_30);
     }
     self->unk_20 = 0;
     self->unk_24 = 0;
     self->unk_28 = 0;
     self->unk_2c = 0;
-    LFLD(u32, self, 0x30) = 0;
-    LoListBufferDtor(self);
+    self->unk_30 = 0;
+    LoListBufferDtor((ListBuffer *)self);
 }
 
 static inline void LoMessageQueueDtor(MessageQueue *self) {
@@ -687,10 +718,18 @@ static inline void Init(u8 *m, void *s, void *nm) {
     STD_CopyString(m + 0x2c, s);
 }
 
-void func_ov000_021738d4(VObj *self) {
+struct Lo021738d4 : public VObj {
+    u32 unk_04;
+    u8 unk_08[0x34];
+    s32 unk_3c;
+    u8 unk_40[0xc];
+    void *unk_4c;
+};
+
+void func_ov000_021738d4(Lo021738d4 *self) {
     void *res;
     u8 *m;
-    LFLD(u32, self, 4) &= ~2;
+    self->unk_04 &= ~2;
     if (self->vfunc_28() != 0) {
         return;
     }
@@ -699,13 +738,13 @@ void func_ov000_021738d4(VObj *self) {
     if (m) {
         Init(m, data_0208cca0, data_0208ccc0);
     }
-    LFLD(void *, self, 0x4c) = m;
+    self->unk_4c = m;
     func_020417e0(m, res);
-    LFLD(u32, LFLD(void *, self, 0x4c), 0x6c) |= 2;
-    func_02041d9c(LFLD(void *, self, 0x4c), 0, 0);
-    LFLD(void *, LFLD(void *, self, 0x4c), 0x158) = (void *)func_ov000_02173d9c;
-    func_02041c20(LFLD(void *, self, 0x4c), 0, self);
-    LFLD(s32, self, 0x3c) = -0xcd;
+    LFLD(u32, self->unk_4c, 0x6c) |= 2;
+    func_02041d9c(self->unk_4c, 0, 0);
+    LFLD(void *, self->unk_4c, 0x158) = (void *)func_ov000_02173d9c;
+    func_02041c20(self->unk_4c, 0, self);
+    self->unk_3c = -0xcd;
     func_ov000_02173648(self);
 }
 
@@ -1134,7 +1173,12 @@ typedef struct {
 
 extern "C" {
 
-Glyph02174168 *func_ov000_02174168(u8 *self, u16 *cmd, Glyph02174168 *arr, u16 *count) {
+struct Lo02174168 {
+    u8 unk_00[0x70];
+    u32 unk_70;
+};
+
+Glyph02174168 *func_ov000_02174168(Lo02174168 *self, u16 *cmd, Glyph02174168 *arr, u16 *count) {
     u16 n = *count;
     Glyph02174168 *last = &arr[n - 1];
     if (*cmd == 6) {
@@ -1151,7 +1195,7 @@ Glyph02174168 *func_ov000_02174168(u8 *self, u16 *cmd, Glyph02174168 *arr, u16 *
         x = started;
         n = started;
         base = last->chr;
-        v = LFLD(u32, self, 0x70);
+        v = self->unk_70;
         div = 1;
         for (i = started; i < digits - 1; i++) {
             div *= 10;
@@ -1245,6 +1289,30 @@ BOOL func_ov000_021742c8(Obj021742b4 *self, Msg021742c8 *msg) {
 }  // namespace m_Obj_021742b4
 
 // ---- Obj_0217437c
+struct Obj021743bc : public VObj {
+    u32 unk_04;
+    s32 unk_08;
+    u8 unk_0c[0x8];
+    s32 unk_14;
+    u8 unk_18[0x8];
+    s32 unk_20;
+    s32 unk_24;
+    s32 unk_28;
+    void *unk_2c;
+    u8 unk_30[0xc];
+    s32 unk_3c;
+    VObj *unk_40;
+    VObj *unk_44;
+    VObj *unk_48;
+    s32 unk_4c;
+    s32 unk_50;
+    s32 unk_54;
+    void *unk_58;
+    void *unk_5c;
+    u8 unk_60[0x44];
+    s32 unk_a4;
+};
+
 namespace m_Obj_0217437c {
 
 typedef struct {
@@ -1492,7 +1560,7 @@ static inline void InitWin021743bc(u8 *p, void *s) {
     LFLD(s32, p, 0x70) = -0x1cad;
 }
 
-void func_ov000_021743bc(VObj *self) {
+void func_ov000_021743bc(Obj021743bc *self) {
     void *sub;
     BOOL has;
     u16 i;
@@ -1503,7 +1571,7 @@ void func_ov000_021743bc(VObj *self) {
     VObj *o;
     u8 *m;
     void *res;
-    LFLD(u32, self, 0x4) &= ~2;
+    self->unk_04 &= ~2;
     if (self->vfunc_28()) {
         return;
     }
@@ -1518,25 +1586,25 @@ void func_ov000_021743bc(VObj *self) {
         *(void **)o = data_ov000_021cb5a8;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x44) = o;
+    self->unk_44 = o;
     LFLD(u32, o, 0xc) |= 0x4000000;
-    LFLD(s32, LFLD(void *, self, 0x44), 0x2c) = 1;
+    LFLD(s32, self->unk_44, 0x2c) = 1;
     {
-        u8 *s_0 = LFLD(u8 *, self, 0x44);
+        u8 *s_0 = (u8 *)self->unk_44;
         LFLD(s32, s_0, 0x58) = 0x80;
         LFLD(s32, s_0, 0x5c) = 0;
         LFLD(s32, s_0, 0x60) = 0;
     }
     {
-        u8 *s_1 = LFLD(u8 *, self, 0x44);
+        u8 *s_1 = (u8 *)self->unk_44;
         LFLD(s16, s_1, 0x64) = 0;
         LFLD(s16, s_1, 0x66) = 0x10;
         LFLD(s16, s_1, 0x68) = -0x1ccd;
     }
-    LFLD(u32, LFLD(void *, self, 0x44), 0xc) |= 0x20000000;
-    LFLD(MenuBox021743bc *, self, 0x44)->SetText(1, func_0204c0e8(g, 0x32));
-    LFLD(MenuBox021743bc *, self, 0x44)->SetText(2, func_0204c0e8(g, 0x33));
-    LFLD(MenuBox021743bc *, self, 0x44)->Show();
+    LFLD(u32, self->unk_44, 0xc) |= 0x20000000;
+    ((MenuBox021743bc *)self->unk_44)->SetText(1, func_0204c0e8(g, 0x32));
+    ((MenuBox021743bc *)self->unk_44)->SetText(2, func_0204c0e8(g, 0x33));
+    ((MenuBox021743bc *)self->unk_44)->Show();
     o = (VObj *)func_0203dd9c(0xd4);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -1544,33 +1612,33 @@ void func_ov000_021743bc(VObj *self) {
         *(void **)o = data_ov000_021caec8;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x40) = o;
-    LFLD(MenuList021743bc *, self, 0x40)->SetTitleId((s32)func_0204c0e8(g, 0xb8));
-    LFLD(MenuList021743bc *, self, 0x40)->SetTitle((const char *)func_0204c0e8(g, 0xb9));
-    LFLD(s32, LFLD(void *, self, 0x40), 0x34) = 0x6000;
-    LFLD(void *, LFLD(void *, self, 0x40), 0x8) = self;
-    LFLD(s32, LFLD(void *, self, 0x40), 0x24) = 0x6c;
-    LFLD(s32, LFLD(void *, self, 0x40), 0x20) = 5;
+    self->unk_40 = o;
+    ((MenuList021743bc *)self->unk_40)->SetTitleId((s32)func_0204c0e8(g, 0xb8));
+    ((MenuList021743bc *)self->unk_40)->SetTitle((const char *)func_0204c0e8(g, 0xb9));
+    LFLD(s32, self->unk_40, 0x34) = 0x6000;
+    LFLD(void *, self->unk_40, 0x8) = self;
+    LFLD(s32, self->unk_40, 0x24) = 0x6c;
+    LFLD(s32, self->unk_40, 0x20) = 5;
     {
-        u8 *s_2 = LFLD(u8 *, self, 0x40);
+        u8 *s_2 = (u8 *)self->unk_40;
         LFLD(s16, s_2, 0x64) = 0;
         LFLD(s16, s_2, 0x66) = 0x14;
         LFLD(s16, s_2, 0x68) = -0x1ccd;
     }
-    LFLD(u32, LFLD(void *, self, 0x40), 0xc) &= ~0x20000;
-    LFLD(u32, LFLD(void *, self, 0x40), 0xc) &= ~0x40000;
-    LFLD(u32, LFLD(void *, self, 0x40), 0xc) &= ~0x10000;
-    LFLD(void *, LFLD(void *, self, 0x40), 0x78) = (void *)func_ov000_021742b4;
-    LFLD(void *, LFLD(void *, self, 0x40), 0x84) = (void *)func_ov000_021742c8;
-    LFLD(MenuList021743bc *, self, 0x40)->AddItem((const char *)func_0204c0e8(g, 0xba), 0x1a, 0xffff, 0xffff);
-    LFLD(MenuList021743bc *, self, 0x40)->AddItem((const char *)func_0204c0e8(g, 0xc2), 6, 0xffff, 0xffff);
-    LFLD(MenuList021743bc *, self, 0x40)->AddItem((const char *)func_0204c0e8(g, 0x112), 0xf, 0xffff, 0xffff);
-    LFLD(MenuList021743bc *, self, 0x40)->AddItem((const char *)func_0204c0e8(g, 0x118), 5, 0xffff, 0xffff);
+    LFLD(u32, self->unk_40, 0xc) &= ~0x20000;
+    LFLD(u32, self->unk_40, 0xc) &= ~0x40000;
+    LFLD(u32, self->unk_40, 0xc) &= ~0x10000;
+    LFLD(void *, self->unk_40, 0x78) = (void *)func_ov000_021742b4;
+    LFLD(void *, self->unk_40, 0x84) = (void *)func_ov000_021742c8;
+    ((MenuList021743bc *)self->unk_40)->AddItem((const char *)func_0204c0e8(g, 0xba), 0x1a, 0xffff, 0xffff);
+    ((MenuList021743bc *)self->unk_40)->AddItem((const char *)func_0204c0e8(g, 0xc2), 6, 0xffff, 0xffff);
+    ((MenuList021743bc *)self->unk_40)->AddItem((const char *)func_0204c0e8(g, 0x112), 0xf, 0xffff, 0xffff);
+    ((MenuList021743bc *)self->unk_40)->AddItem((const char *)func_0204c0e8(g, 0x118), 5, 0xffff, 0xffff);
     if (func_020594bc(data_02fe152c, 5, 1, 0) == 0) {
-        LFLD(s32, func_ov000_02154b58(LFLD(void *, self, 0x40), 0x1a), 0x24) = 0xe;
+        LFLD(s32, func_ov000_02154b58(self->unk_40, 0x1a), 0x24) = 0xe;
     }
     if (func_ov000_021824d0(data_ov000_021ccd54 + 0xac, 0) == 0) {
-        LFLD(s32, func_ov000_02154b58(LFLD(void *, self, 0x40), 0xf), 0x24) = 0xe;
+        LFLD(s32, func_ov000_02154b58(self->unk_40, 0xf), 0x24) = 0xe;
     }
     sub = LFLD(void *, data_02fe152c, 0x4c);
     a = func_0205976c(data_02fe152c, 3);
@@ -1584,10 +1652,10 @@ void func_ov000_021743bc(VObj *self) {
     has = FALSE;
 found:
     if (!has) {
-        LFLD(s32, func_ov000_02154b58(LFLD(void *, self, 0x40), 5), 0x24) = 0xe;
+        LFLD(s32, func_ov000_02154b58(self->unk_40, 5), 0x24) = 0xe;
     }
     {
-        MenuList021743bc *t = LFLD(MenuList021743bc *, self, 0x40);
+        MenuList021743bc *t = (MenuList021743bc *)self->unk_40;
         if (data_ov000_021ccd38 == 0) {
             MenuItem021743bc id = MENU021743BC_ITEM_TOP;
             t->Select(func_ov000_02154b58(t, id));
@@ -1595,9 +1663,9 @@ found:
             t->Select(func_ov000_02154b58(t, (u16)data_ov000_021ccd38));
         }
     }
-    LFLD(MenuList021743bc *, self, 0x40)->Show();
+    ((MenuList021743bc *)self->unk_40)->Show();
     {
-        u8 *s_3 = LFLD(u8 *, self, 0x40);
+        u8 *s_3 = (u8 *)self->unk_40;
         LFLD(void *, s_3, 0x6c) = data_ov000_021c9c28;
         LFLD(s32, s_3, 0x70) = 5;
     }
@@ -1610,11 +1678,11 @@ found:
         func_02041440(m, nm, 0);
         STD_CopyString(m + 0x2c, file);
     }
-    LFLD(u8 *, self, 0x58) = m;
+    self->unk_58 = m;
     func_020417e0(m, res);
-    LFLD(u32, LFLD(void *, self, 0x58), 0x6c) |= 2;
-    func_02041d9c(LFLD(void *, self, 0x58), 0, 0xffff);
-    LFLD(s32, LFLD(void *, self, 0x58), 0x150) = -0x1cbd;
+    LFLD(u32, self->unk_58, 0x6c) |= 2;
+    func_02041d9c(self->unk_58, 0, 0xffff);
+    LFLD(s32, self->unk_58, 0x150) = -0x1cbd;
     res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
     m2 = (u8 *)func_0203dd9c(0x160);
     if (m2 != NULL) {
@@ -1624,16 +1692,16 @@ found:
         func_02041440(m2, nm, 0);
         STD_CopyString(m2 + 0x2c, file);
     }
-    LFLD(u8 *, self, 0x5c) = m2;
+    self->unk_5c = m2;
     func_020417e0(m2, res);
-    LFLD(u32, LFLD(void *, self, 0x5c), 0x6c) |= 2;
-    func_02041d9c(LFLD(void *, self, 0x5c), 0, 6);
-    func_02041d9c(LFLD(void *, self, 0x5c), 0, 9);
-    func_02041d9c(LFLD(void *, self, 0x5c), 0, 0xa);
-    LFLD(u32, LFLD(void *, self, 0x5c), 0x6c) |= 0x80000;
-    LFLD(u32, LFLD(void *, self, 0x5c), 0x6c) = (LFLD(u32, LFLD(void *, self, 0x5c), 0x6c) & ~0x7c) | 0x78;
-    LFLD(s32, LFLD(void *, self, 0x5c), 0x150) = -0x1c9d;
-    func_02041c5c(LFLD(void *, self, 0x5c), (int)func_ov000_02174168);
+    LFLD(u32, self->unk_5c, 0x6c) |= 2;
+    func_02041d9c(self->unk_5c, 0, 6);
+    func_02041d9c(self->unk_5c, 0, 9);
+    func_02041d9c(self->unk_5c, 0, 0xa);
+    LFLD(u32, self->unk_5c, 0x6c) |= 0x80000;
+    LFLD(u32, self->unk_5c, 0x6c) = (LFLD(u32, self->unk_5c, 0x6c) & ~0x7c) | 0x78;
+    LFLD(s32, self->unk_5c, 0x150) = -0x1c9d;
+    func_02041c5c(self->unk_5c, (int)func_ov000_02174168);
     InitWin021743bc((u8 *)self + 0x60, func_0204c0e8(g, 0xba));
     InitWin021743bc((u8 *)self + 0x118, func_0204c0e8(g, 0x48));
     InitWin021743bc((u8 *)self + 0x1d0, func_0204c0e8(g, 0x49));
@@ -1651,12 +1719,12 @@ found:
         func_0204c7d0((u8 *)o + 0x148);
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x48) = o;
+    self->unk_48 = o;
     o->vfunc_08();
-    LFLD(Bits021743bc, LFLD(void *, self, 0x48), 0xc).b4 = 0;
-    LFLD(s16, LFLD(void *, self, 0x48), 0x68) = -0x1ccd;
+    LFLD(Bits021743bc, self->unk_48, 0xc).b4 = 0;
+    LFLD(s16, self->unk_48, 0x68) = -0x1ccd;
     if (IsMode4_021743bc()) {
-        func_0203cb78(LFLD(s32, self, 0x20), 0, -1);
+        func_0203cb78(self->unk_20, 0, -1);
     }
     func_ov000_02173648(self);
 }
@@ -1681,22 +1749,22 @@ void func_0203cc58(s32 a, s32 b, s32 c);
 s32 FX_Div(s32 a, s32 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
-void func_ov000_0217558c(void *self);
+void func_ov000_0217558c(Obj021743bc *self);
 
-void func_ov000_02174ea0(void *self) {
-    LFLD(s32, self, 0x20) = 0x10000;
-    LFLD(s32, self, 0x3c) = 0;
-    LFLD(s32, self, 0x40) = 0;
-    LFLD(s32, self, 0x44) = 0;
-    LFLD(s32, self, 0x48) = 0;
-    LFLD(s32, self, 0x4c) = -1;
-    LFLD(s32, self, 0x50) = 0;
-    LFLD(s32, self, 0x54) = 0;
-    LFLD(s32, self, 0x58) = 0;
-    LFLD(s32, self, 0x5c) = 0;
+void func_ov000_02174ea0(Obj021743bc *self) {
+    self->unk_20 = 0x10000;
+    self->unk_3c = 0;
+    self->unk_40 = 0;
+    self->unk_44 = 0;
+    self->unk_48 = 0;
+    self->unk_4c = -1;
+    self->unk_50 = 0;
+    self->unk_54 = 0;
+    self->unk_58 = 0;
+    self->unk_5c = 0;
 }
 
-void func_ov000_02174ed8(void *self) {
+void func_ov000_02174ed8(Obj021743bc *self) {
     VOBJ_AT(self, 0x60)->vfunc_08();
     VOBJ_AT(self, 0x118)->vfunc_08();
     VOBJ_AT(self, 0x1d0)->vfunc_08();
@@ -1710,16 +1778,16 @@ void func_ov000_02174ed8(void *self) {
     LO_FREE_V(self, 0x48);
 }
 
-void func_ov000_02175080(VObj *self, s32 kind) {
+void func_ov000_02175080(Obj021743bc *self, s32 kind) {
     switch (kind) {
     case 0x1a: {
         void *t;
         t = LoSwitchTask(0x1a);
         LFLD(s32, t, 0x2c) = 0;
-        LFLD(s32, t, 0x3c) = LFLD(s32, self, 0x14);
+        LFLD(s32, t, 0x3c) = self->unk_14;
         self->vfunc_50();
-        LFLD(u32, self, 4) |= 6;
-        func_0203cc58(LFLD(s32, self, 0x20), 2, -1);
+        self->unk_04 |= 6;
+        func_0203cc58(self->unk_20, 2, -1);
         return;
     }
     case 0xf:
@@ -1742,7 +1810,7 @@ namespace m_Stub_021752cc {
 
 extern "C" {
 
-void func_ov000_021752cc(void *self) {
+void func_ov000_021752cc(Obj021743bc *self) {
     if (*(s32 *)((u8 *)self + 0x4c) == -1) {
         u8 *p = *(u8 **)((u8 *)self + 0x40);
         if (p != NULL) {
@@ -1771,75 +1839,75 @@ void func_0203cc58(s32 a, s32 b, s32 c);
 s32 FX_Div(s32 a, s32 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
-void func_ov000_0217558c(void *self);
+void func_ov000_0217558c(Obj021743bc *self);
 
-void func_ov000_021752f0(VObj *self) {
-    switch (LFLD(s32, self, 8)) {
+void func_ov000_021752f0(Obj021743bc *self) {
+    switch (self->unk_08) {
     case 8:
-        LFLD(void *, self, 0x2c) = LoFindTask(1);
-        if (LFLD(void *, self, 0x40) != NULL) {
-            LBIT(LFLD(void *, self, 0x40), 0xc).b1 = 0;
+        self->unk_2c = LoFindTask(1);
+        if ((void *)self->unk_40 != NULL) {
+            LBIT(self->unk_40, 0xc).b1 = 0;
         }
-        if (LFLD(void *, self, 0x44) != NULL) {
-            LBIT(LFLD(void *, self, 0x44), 0xc).b1 = 0;
+        if ((void *)self->unk_44 != NULL) {
+            LBIT(self->unk_44, 0xc).b1 = 0;
         }
-        if (LFLD(void *, self, 0x48) != NULL) {
-            LBIT(LFLD(void *, self, 0x48), 0xc).b1 = 0;
+        if ((void *)self->unk_48 != NULL) {
+            LBIT(self->unk_48, 0xc).b1 = 0;
         }
         break;
     case 0xa:
         if (self->vfunc_54()) {
-            LFLD(s32, self, 0x4c) = 0;
+            self->unk_4c = 0;
         }
         break;
     }
 }
 
-void func_ov000_021753a0(void *self) {
-    s32 m = LFLD(s32, self, 0x4c);
+void func_ov000_021753a0(Obj021743bc *self) {
+    s32 m = self->unk_4c;
     if (m == 1) {
         s32 v;
-        LFLD(s32, self, 0x50) += 0x1000;
-        v = FX_Div(LFLD(s32, self, 0x50), LFLD(s32, LFLD(void *, self, 0x40), 0x34));
-        LFLD(s32, self, 0x54) = v;
+        self->unk_50 += 0x1000;
+        v = FX_Div(self->unk_50, LFLD(s32, self->unk_40, 0x34));
+        self->unk_54 = v;
         if (v >= 0x1000) {
-            LFLD(s32, self, 0x54) = 0x1000;
-            LFLD(s32, self, 0x4c) = -1;
+            self->unk_54 = 0x1000;
+            self->unk_4c = -1;
         }
     } else if (m == 0) {
         s32 v;
-        LFLD(s32, self, 0x50) -= 0x1000;
-        v = FX_Div(LFLD(s32, self, 0x50), LFLD(s32, LFLD(void *, self, 0x40), 0x34));
-        LFLD(s32, self, 0x54) = v;
+        self->unk_50 -= 0x1000;
+        v = FX_Div(self->unk_50, LFLD(s32, self->unk_40, 0x34));
+        self->unk_54 = v;
         if (v <= 0) {
-            LFLD(s32, self, 0x54) = 0;
-            LFLD(s32, self, 0x4c) = -1;
-            if (LFLD(void *, self, 0x40) != NULL) {
-                LBIT(LFLD(void *, self, 0x40), 0xc).b1 = 1;
+            self->unk_54 = 0;
+            self->unk_4c = -1;
+            if ((void *)self->unk_40 != NULL) {
+                LBIT(self->unk_40, 0xc).b1 = 1;
             }
-            if (LFLD(void *, self, 0x44) != NULL) {
-                LBIT(LFLD(void *, self, 0x44), 0xc).b1 = 1;
+            if ((void *)self->unk_44 != NULL) {
+                LBIT(self->unk_44, 0xc).b1 = 1;
             }
-            if (LFLD(void *, self, 0x48) != NULL) {
-                LBIT(LFLD(void *, self, 0x48), 0xc).b1 = 1;
+            if ((void *)self->unk_48 != NULL) {
+                LBIT(self->unk_48, 0xc).b1 = 1;
             }
         }
     }
-    if (LFLD(VObj *, self, 0x40) != NULL) {
-        LFLD(VObj *, self, 0x40)->vfunc_1c();
-        LBIT(LFLD(void *, self, 0x40), 0xc).b2 = 1;
+    if (self->unk_40 != NULL) {
+        self->unk_40->vfunc_1c();
+        LBIT(self->unk_40, 0xc).b2 = 1;
     }
-    if (LFLD(VObj *, self, 0x44) != NULL) {
-        LFLD(VObj *, self, 0x44)->vfunc_1c();
+    if (self->unk_44 != NULL) {
+        self->unk_44->vfunc_1c();
     }
-    if (LFLD(VObj *, self, 0x48) != NULL) {
-        LFLD(VObj *, self, 0x48)->vfunc_1c();
+    if (self->unk_48 != NULL) {
+        self->unk_48->vfunc_1c();
     }
 }
 
-void func_ov000_021754bc(void *self) {
+void func_ov000_021754bc(Obj021743bc *self) {
     s32 scale[3];
-    if (LFLD(s32, self, 0x24) == 0) {
+    if (self->unk_24 == 0) {
         return;
     }
     func_02043d20(data_02097d48 + 0x8b0, 0);
@@ -1847,16 +1915,16 @@ void func_ov000_021754bc(void *self) {
     scale[1] = 0x1000;
     scale[2] = 0x1000;
     NNS_G3dGeBufferOP_N(0x1b, scale, 3);
-    LFLD(s32, self, 0x28) = FX_SinCosTable_[((LFLD(s32, self, 0x24) << 14) >> 16) * 2];
-    if (LFLD(VObj *, self, 0x40) != NULL) {
-        LFLD(VObj *, self, 0x40)->vfunc_20();
+    self->unk_28 = FX_SinCosTable_[((self->unk_24 << 14) >> 16) * 2];
+    if (self->unk_40 != NULL) {
+        self->unk_40->vfunc_20();
     }
-    if (LFLD(VObj *, self, 0x44) != NULL) {
-        LFLD(VObj *, self, 0x44)->vfunc_20();
+    if (self->unk_44 != NULL) {
+        self->unk_44->vfunc_20();
     }
     func_ov000_0217558c(self);
-    if (LFLD(VObj *, self, 0x48) != NULL) {
-        LFLD(VObj *, self, 0x48)->vfunc_20();
+    if (self->unk_48 != NULL) {
+        self->unk_48->vfunc_20();
     }
 }
 
@@ -1951,30 +2019,30 @@ static inline void Model_PlayPartChk(Model *model, s32 idx) {
     func_02042628(model, anim, part, 0);
 }
 
-void func_ov000_0217558c(void *self) {
+void func_ov000_0217558c(Obj021743bc *self) {
     Model *m;
     s32 x;
     u8 *g;
     s32 xi;
     Counts c;
-    if (LFLD(void *, self, 0x40) == NULL || LFLD(void *, self, 0x58) == NULL) {
+    if ((void *)self->unk_40 == NULL || self->unk_58 == NULL) {
         return;
     }
-    if (!func_02054f10(LFLD(void *, self, 0x58), 0xffff)) {
+    if (!func_02054f10(self->unk_58, 0xffff)) {
         return;
     }
-    if (!func_02054f10(LFLD(void *, self, 0x5c), 0xffff)) {
+    if (!func_02054f10(self->unk_5c, 0xffff)) {
         return;
     }
-    x = (s32)(((s64)(0x1000 - FX_SinCosTable_[((s32)(LFLD(s32, self, 0x54) << 14) >> 16) * 2]) * 0x80000 + 0x800) >> 12);
+    x = (s32)(((s64)(0x1000 - FX_SinCosTable_[((s32)(self->unk_54 << 14) >> 16) * 2]) * 0x80000 + 0x800) >> 12);
     g = data_02097d48 + 0x8b0;
-    Model_SetPos(LFLD(Model *, self, 0x58), x & ~0xfff, 0);
-    m = LFLD(Model *, self, 0x58);
+    Model_SetPos((Model *)self->unk_58, x & ~0xfff, 0);
+    m = (Model *)self->unk_58;
     Model_PlayPart(m, 1);
     func_ov000_0219bf90();
     MODEL_FLAGS(M5C)->polygon_id = func_02043d48(g);
     xi = x >> 12;
-    TEXT(0x60)->unk_vf20(xi + 0xc2 - (LFLD(s32, self, 0xa4) >> 1), 0x30);
+    TEXT(0x60)->unk_vf20(xi + 0xc2 - (self->unk_a4 >> 1), 0x30);
     TEXT(0x60)->Render();
     TEXT(0x118)->unk_vf20(0x92 + xi, 0x3e);
     TEXT(0x118)->Render();
@@ -2049,6 +2117,12 @@ VObj *func_ov000_02175e04(void) {
 }  // namespace m_Dtor_02175e04
 
 // ---- Lo_02175e6c
+struct Lo02175f34 : public VObj {
+    u8 unk_04[0x38];
+    VObj *unk_3c;
+    VObj *unk_40;
+};
+
 namespace m_Lo_02175e6c {
 
 extern "C" {
@@ -2074,11 +2148,17 @@ static inline BOOL LoIsLoaded(void) {
     return r;
 }
 
-BOOL func_ov000_02175e6c(void *self, void *msg) {
-    void *o = LFLD(void *, self, 8);
+struct Lo02175e6c {
+    u8 unk_00[0x8];
+    void *unk_08;
+    u32 unk_0c;
+};
+
+BOOL func_ov000_02175e6c(Lo02175e6c *self, void *msg) {
+    void *o = self->unk_08;
     s32 v;
     if (msg == NULL) {
-        if (LFLD(u32, self, 0xc) & 0x4000000) {
+        if (self->unk_0c & 0x4000000) {
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
             return TRUE;
         }
@@ -2096,7 +2176,7 @@ BOOL func_ov000_02175e6c(void *self, void *msg) {
     return FALSE;
 }
 
-void func_ov000_02175f34(VObj *self) {
+void func_ov000_02175f34(Lo02175f34 *self) {
     LBIT(self, 4).b1 = 0;
     if (self->vfunc_28()) {
         return;
@@ -2114,7 +2194,7 @@ namespace m_Stub_02175f78 {
 
 extern "C" {
 
-void func_ov000_02175f78(void *self) {
+void func_ov000_02175f78(Lo02175f34 *self) {
     *(s32 *)((u8 *)self + 0x20) = 0x1000;
     *(s32 *)((u8 *)self + 0x3c) = 0;
     *(s32 *)((u8 *)self + 0x40) = 0;
@@ -2151,7 +2231,7 @@ static inline BOOL LoIsLoaded(void) {
     return r;
 }
 
-void func_ov000_02175f94(void *self) {
+void func_ov000_02175f94(Lo02175f34 *self) {
     LO_FREE_V(self, 0x3c);
     LO_FREE_V(self, 0x40);
 }
@@ -2201,26 +2281,26 @@ static inline BOOL LoIsLoaded(void) {
     return r;
 }
 
-void func_ov000_02176030(void *self) {
+void func_ov000_02176030(Lo02175f34 *self) {
     BOOL a = FALSE;
     BOOL b = a;
-    if (LFLD(VObj *, self, 0x3c) != NULL) {
-        if (!LFLD(VObj *, self, 0x3c)->vfunc_1c()) {
+    if (self->unk_3c != NULL) {
+        if (!self->unk_3c->vfunc_1c()) {
             LO_FREE_V(self, 0x3c);
         } else {
             a = TRUE;
         }
     }
-    if (LFLD(VObj *, self, 0x40) != NULL) {
-        if (!LFLD(VObj *, self, 0x40)->vfunc_1c()) {
+    if (self->unk_40 != NULL) {
+        if (!self->unk_40->vfunc_1c()) {
             u32 saved;
             LO_HEAP_PUSH(saved);
-            if (LFLD(VObj *, self, 0x40) != NULL) {
-                VObj *p = LFLD(VObj *, self, 0x40);
+            if (self->unk_40 != NULL) {
+                VObj *p = self->unk_40;
                 if (p != NULL) {
                     p->vfunc_04();
                 }
-                LFLD(VObj *, self, 0x40) = NULL;
+                self->unk_40 = NULL;
             }
             b = TRUE;
             LO_HEAP_POP(saved);
@@ -2239,12 +2319,12 @@ void func_ov000_02176030(void *self) {
     }
 }
 
-void func_ov000_02176164(void *self) {
-    if (LFLD(VObj *, self, 0x3c) != NULL) {
-        LFLD(VObj *, self, 0x3c)->vfunc_20();
+void func_ov000_02176164(Lo02175f34 *self) {
+    if (self->unk_3c != NULL) {
+        self->unk_3c->vfunc_20();
     }
-    if (LFLD(VObj *, self, 0x40) != NULL) {
-        LFLD(VObj *, self, 0x40)->vfunc_20();
+    if (self->unk_40 != NULL) {
+        self->unk_40->vfunc_20();
     }
 }
 
@@ -2614,6 +2694,25 @@ BOOL func_ov000_021766c4(void) {
 }  // namespace m_Lo_021766c4
 
 // ---- Lo_02176714
+struct Lo02176714 : public VObj {
+    u32 unk_04;
+    s32 unk_08;
+    s32 unk_0c;
+    u8 unk_10[0x10];
+    s32 unk_20;
+    void *unk_24;
+    u8 unk_28[0x14];
+    VObj *unk_3c;
+    VObj *unk_40;
+    VObj *unk_44;
+    VObj *unk_48;
+    VObj *unk_4c;
+    VObj *unk_50;
+    s32 unk_54;
+    VObj *unk_58;
+    u8 unk_5c;
+};
+
 namespace m_Lo_02176714 {
 
 typedef struct {
@@ -2654,10 +2753,10 @@ s32 func_ov000_02177698(void);
 
 typedef struct { u16 a; u16 b; } Pair02176714;
 
-void func_ov000_02176714(VObj *self) {
+void func_ov000_02176714(Lo02176714 *self) {
     void *g;
     VObj *o;
-    LFLD(u32, self, 0x4) &= ~2;
+    self->unk_04 &= ~2;
     if (self->vfunc_28()) {
         return;
     }
@@ -2675,25 +2774,25 @@ void func_ov000_02176714(VObj *self) {
         *(void **)o = data_ov000_021cb5a8;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x3c) = o;
+    self->unk_3c = o;
     LFLD(u32, o, 0xc) |= 0x4000000;
-    LFLD(s32, LFLD(void *, self, 0x3c), 0x2c) = 1;
+    LFLD(s32, self->unk_3c, 0x2c) = 1;
     {
-        u8 *s = LFLD(u8 *, self, 0x3c);
+        u8 *s = (u8 *)self->unk_3c;
         LFLD(s32, s, 0x58) = 0x100;
         LFLD(s32, s, 0x5c) = 0;
         LFLD(s32, s, 0x60) = 0;
     }
     {
-        u8 *s = LFLD(u8 *, self, 0x3c);
+        u8 *s = (u8 *)self->unk_3c;
         LFLD(s16, s, 0x64) = 0;
         LFLD(s16, s, 0x66) = 0x11;
         LFLD(s16, s, 0x68) = -0x1ccd;
     }
-    LFLD(u32, LFLD(void *, self, 0x3c), 0xc) |= 0x20000000;
-    LFLD(VObj *, self, 0x3c)->vfunc_f4(1, func_0204c0e8(g, 0x32));
-    LFLD(VObj *, self, 0x3c)->vfunc_f4(2, func_0204c0e8(g, 0x33));
-    LFLD(VObj *, self, 0x3c)->vfunc_08();
+    LFLD(u32, self->unk_3c, 0xc) |= 0x20000000;
+    self->unk_3c->vfunc_f4(1, func_0204c0e8(g, 0x32));
+    self->unk_3c->vfunc_f4(2, func_0204c0e8(g, 0x33));
+    self->unk_3c->vfunc_08();
     o = (VObj *)func_0203dd9c(0x98);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -2701,19 +2800,19 @@ void func_ov000_02176714(VObj *self) {
         *(void **)o = data_ov000_021cae48;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x40) = o;
+    self->unk_40 = o;
     LFLD(s16, o, 0x64) = 0x86;
     LFLD(s16, o, 0x66) = 0x78;
     LFLD(s16, o, 0x68) = -0x1ccd;
-    func_ov000_0215d980(LFLD(void *, self, 0x40), LFLD(s32, data_0214a424, 0x20), 0);
-    LFLD(s32, LFLD(void *, self, 0x40), 0x2c) = 1;
+    func_ov000_0215d980(self->unk_40, LFLD(s32, data_0214a424, 0x20), 0);
+    LFLD(s32, self->unk_40, 0x2c) = 1;
     {
-        u8 *s = LFLD(u8 *, self, 0x40);
+        u8 *s = (u8 *)self->unk_40;
         LFLD(s32, s, 0x58) = 0x80;
         LFLD(s32, s, 0x5c) = 0;
         LFLD(s32, s, 0x60) = 0;
     }
-    LFLD(VObj *, self, 0x40)->vfunc_08();
+    self->unk_40->vfunc_08();
     o = (VObj *)func_0203dd9c(0x8c);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -2721,25 +2820,25 @@ void func_ov000_02176714(VObj *self) {
         *(void **)o = data_ov000_021cadcc;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x50) = o;
+    self->unk_50 = o;
     LFLD(s32, o, 0x24) = 0xf8;
-    LFLD(s32, LFLD(void *, self, 0x50), 0x20) = 2;
+    LFLD(s32, self->unk_50, 0x20) = 2;
     {
-        u8 *s = LFLD(u8 *, self, 0x50);
+        u8 *s = (u8 *)self->unk_50;
         LFLD(s16, s, 0x64) = 8;
         LFLD(s16, s, 0x66) = 0x95;
         LFLD(s16, s, 0x68) = -0x1ccd;
     }
-    LFLD(s16, LFLD(void *, self, 0x50), 0x48) = 0xb;
-    LFLD(s32, LFLD(void *, self, 0x50), 0x2c) = 1;
+    LFLD(s16, self->unk_50, 0x48) = 0xb;
+    LFLD(s32, self->unk_50, 0x2c) = 1;
     {
-        u8 *s = LFLD(u8 *, self, 0x50);
+        u8 *s = (u8 *)self->unk_50;
         LFLD(s32, s, 0x58) = 0;
         LFLD(s32, s, 0x5c) = 0x40;
         LFLD(s32, s, 0x60) = 0;
     }
-    LFLD(VObj *, self, 0x50)->vfunc_08();
-    switch (func_ov000_02184a04(LFLD(s32, self, 0xc))) {
+    self->unk_50->vfunc_08();
+    switch (func_ov000_02184a04(self->unk_0c)) {
     case 0:
         o = (VObj *)func_0203dd9c(0x98);
         if (o != NULL) {
@@ -2748,26 +2847,26 @@ void func_ov000_02176714(VObj *self) {
             *(void **)o = data_ov000_021cae48;
             o->vfunc_28();
         }
-        LFLD(VObj *, self, 0x44) = o;
+        self->unk_44 = o;
         LFLD(s32, o, 0x84) = 4;
         {
-            u8 *s = LFLD(u8 *, self, 0x44);
+            u8 *s = (u8 *)self->unk_44;
             LFLD(s16, s, 0x64) = 0x1a;
             LFLD(s16, s, 0x66) = 0x78;
             LFLD(s16, s, 0x68) = -0x1ccd;
         }
-        func_ov000_0215d980(LFLD(void *, self, 0x44), 0, 0);
-        LFLD(s32, LFLD(void *, self, 0x44), 0x2c) = 1;
+        func_ov000_0215d980(self->unk_44, 0, 0);
+        LFLD(s32, self->unk_44, 0x2c) = 1;
         {
-            u8 *s = LFLD(u8 *, self, 0x44);
+            u8 *s = (u8 *)self->unk_44;
             LFLD(s32, s, 0x58) = 0x80;
             LFLD(s32, s, 0x5c) = 0;
             LFLD(s32, s, 0x60) = 0;
         }
-        LFLD(VObj *, self, 0x44)->vfunc_08();
-        func_ov000_0215d990(LFLD(void *, self, 0x44), 0x120);
-        LFLD(s32, LFLD(void *, self, 0x44), 0x24) = 0x66;
-        LFLD(s32, LFLD(void *, self, 0x44), 0x28) = 0x19;
+        self->unk_44->vfunc_08();
+        func_ov000_0215d990(self->unk_44, 0x120);
+        LFLD(s32, self->unk_44, 0x24) = 0x66;
+        LFLD(s32, self->unk_44, 0x28) = 0x19;
         o = (VObj *)func_0203dd9c(0x98);
         if (o != NULL) {
             *(void **)o = data_ov000_021cac60;
@@ -2775,26 +2874,26 @@ void func_ov000_02176714(VObj *self) {
             *(void **)o = data_ov000_021cae48;
             o->vfunc_28();
         }
-        LFLD(VObj *, self, 0x48) = o;
+        self->unk_48 = o;
         LFLD(s32, o, 0x84) = 4;
         {
-            u8 *s = LFLD(u8 *, self, 0x48);
+            u8 *s = (u8 *)self->unk_48;
             LFLD(s16, s, 0x64) = 0x1a;
             LFLD(s16, s, 0x66) = 0x83;
             LFLD(s16, s, 0x68) = -0x1ccd;
         }
-        func_ov000_0215d980(LFLD(void *, self, 0x48), 0, 0);
-        LFLD(s32, LFLD(void *, self, 0x48), 0x2c) = 1;
+        func_ov000_0215d980(self->unk_48, 0, 0);
+        LFLD(s32, self->unk_48, 0x2c) = 1;
         {
-            u8 *s = LFLD(u8 *, self, 0x48);
+            u8 *s = (u8 *)self->unk_48;
             LFLD(s32, s, 0x58) = 0x80;
             LFLD(s32, s, 0x5c) = 0;
             LFLD(s32, s, 0x60) = 0;
         }
-        LFLD(VObj *, self, 0x48)->vfunc_08();
-        func_ov000_0215d990(LFLD(void *, self, 0x48), 0x121);
-        LFLD(s32, LFLD(void *, self, 0x48), 0x24) = 0x66;
-        LFLD(s32, LFLD(void *, self, 0x48), 0x28) = 0;
+        self->unk_48->vfunc_08();
+        func_ov000_0215d990(self->unk_48, 0x121);
+        LFLD(s32, self->unk_48, 0x24) = 0x66;
+        LFLD(s32, self->unk_48, 0x28) = 0;
         o = (VObj *)func_0203dd9c(0xe0);
         if (o != NULL) {
             *(void **)o = data_ov000_021cac60;
@@ -2805,12 +2904,12 @@ void func_ov000_02176714(VObj *self) {
             o->vfunc_28();
             *(void **)o = data_ov000_021cb2a8;
         }
-        LFLD(VObj *, self, 0x4c) = o;
-        LFLD(VObj *, self, 0x4c)->vfunc_10(func_0204c0e8(g, 0x98));
-        LFLD(VObj *, self, 0x4c)->vfunc_14(func_0204c0e8(g, 0x99));
-        func_ov000_02157c90(LFLD(void *, self, 0x4c), func_0204c0e8(g, 0xa1));
-        func_ov000_02157d2c(LFLD(void *, self, 0x4c), func_0204c0e8(g, 0x3e));
-        func_ov000_021546ec(LFLD(void *, self, 0x4c), data_0208ccc8, "cem3d1icn00", 0xffff);
+        self->unk_4c = o;
+        self->unk_4c->vfunc_10(func_0204c0e8(g, 0x98));
+        self->unk_4c->vfunc_14(func_0204c0e8(g, 0x99));
+        func_ov000_02157c90(self->unk_4c, func_0204c0e8(g, 0xa1));
+        func_ov000_02157d2c(self->unk_4c, func_0204c0e8(g, 0x3e));
+        func_ov000_021546ec(self->unk_4c, data_0208ccc8, "cem3d1icn00", 0xffff);
         break;
     case 1:
         o = (VObj *)func_0203dd9c(0xe0);
@@ -2822,11 +2921,11 @@ void func_ov000_02176714(VObj *self) {
             *(void **)o = data_ov000_021cb4a8;
             o->vfunc_28();
         }
-        LFLD(VObj *, self, 0x4c) = o;
-        LFLD(VObj *, self, 0x4c)->vfunc_10(func_0204c0e8(g, 0xa9));
-        LFLD(VObj *, self, 0x4c)->vfunc_14(func_0204c0e8(g, 0x99));
-        func_ov000_02157c90(LFLD(void *, self, 0x4c), func_0204c0e8(g, 0xa3));
-        func_ov000_02157d2c(LFLD(void *, self, 0x4c), func_0204c0e8(g, 0x3e));
+        self->unk_4c = o;
+        self->unk_4c->vfunc_10(func_0204c0e8(g, 0xa9));
+        self->unk_4c->vfunc_14(func_0204c0e8(g, 0x99));
+        func_ov000_02157c90(self->unk_4c, func_0204c0e8(g, 0xa3));
+        func_ov000_02157d2c(self->unk_4c, func_0204c0e8(g, 0x3e));
         {
             u8 *base;
             u16 i;
@@ -2841,7 +2940,7 @@ void func_ov000_02176714(VObj *self) {
                     u16 id = ((Pair02176714 *)o)[i].b;
                     void *x = func_0206ec48(id);
                     s32 y = func_0206f080(id);
-                    LFLD(VObj *, self, 0x4c)->vfunc_74(x, ((Pair02176714 *)o)[i].b, (u16)y, func_0206f0f4(id));
+                    self->unk_4c->vfunc_74(x, ((Pair02176714 *)o)[i].b, (u16)y, func_0206f0f4(id));
                 }
             }
         }
@@ -2856,42 +2955,42 @@ void func_ov000_02176714(VObj *self) {
             *(void **)o = data_ov000_021cb4a8;
             o->vfunc_28();
         }
-        LFLD(VObj *, self, 0x4c) = o;
-        LFLD(VObj *, self, 0x4c)->vfunc_10(func_0204c0e8(g, 0xaa));
-        LFLD(VObj *, self, 0x4c)->vfunc_14(func_0204c0e8(g, 0x99));
-        func_ov000_02157c90(LFLD(void *, self, 0x4c), func_0204c0e8(g, 0xa6));
-        func_ov000_02157d2c(LFLD(void *, self, 0x4c), func_0204c0e8(g, 0x3e));
-        func_ov000_021546ec(LFLD(void *, self, 0x4c), data_0208ccc8, "cem3d1icn00", 0xffff);
+        self->unk_4c = o;
+        self->unk_4c->vfunc_10(func_0204c0e8(g, 0xaa));
+        self->unk_4c->vfunc_14(func_0204c0e8(g, 0x99));
+        func_ov000_02157c90(self->unk_4c, func_0204c0e8(g, 0xa6));
+        func_ov000_02157d2c(self->unk_4c, func_0204c0e8(g, 0x3e));
+        func_ov000_021546ec(self->unk_4c, data_0208ccc8, "cem3d1icn00", 0xffff);
         break;
     }
-    data_02fe1534.unk_7a = LFLD(s32, self, 0xc);
+    data_02fe1534.unk_7a = self->unk_0c;
     data_ov000_021ccd48->vfunc_38(1);
     data_02fe1534.unk_7a = 0;
-    LFLD(void *, LFLD(void *, self, 0x4c), 0x8) = self;
-    LFLD(s32, LFLD(void *, self, 0x4c), 0x20) = 4;
+    LFLD(void *, self->unk_4c, 0x8) = self;
+    LFLD(s32, self->unk_4c, 0x20) = 4;
     {
-        u8 *s = LFLD(u8 *, self, 0x4c);
+        u8 *s = (u8 *)self->unk_4c;
         LFLD(s16, s, 0x64) = 0;
         LFLD(s16, s, 0x66) = 0x2c;
         LFLD(s16, s, 0x68) = -0x1ccd;
     }
-    LFLD(u8, LFLD(void *, self, 0x4c), 0xc0) = 0x78;
-    LFLD(u32, LFLD(void *, self, 0x4c), 0xc) |= 0x400000;
-    LFLD(void *, LFLD(void *, self, 0x4c), 0x84) = (void *)func_ov000_021774a4;
-    LFLD(void *, LFLD(void *, self, 0x4c), 0x88) = (void *)func_ov000_02177698;
+    LFLD(u8, self->unk_4c, 0xc0) = 0x78;
+    LFLD(u32, self->unk_4c, 0xc) |= 0x400000;
+    LFLD(void *, self->unk_4c, 0x84) = (void *)func_ov000_021774a4;
+    LFLD(void *, self->unk_4c, 0x88) = (void *)func_ov000_02177698;
     {
-        VObj *t = LFLD(VObj *, self, 0x4c);
+        VObj *t = self->unk_4c;
         t->vfunc_a8(LFLD(s32, t, 0x98));
     }
-    LFLD(VObj *, self, 0x4c)->vfunc_08();
-    if (LFLD(void *, self, 0x50) == NULL) {
+    self->unk_4c->vfunc_08();
+    if ((void *)self->unk_50 == NULL) {
         return;
     }
-    if (LFLD(s16, LFLD(void *, self, 0x4c), 0x9c) != 0) {
+    if (LFLD(s16, self->unk_4c, 0x9c) != 0) {
         return;
     }
-    func_ov000_0215bb14(LFLD(void *, self, 0x50), func_0204c0e8(g, 0x9d));
-    LFLD(VObj *, self, 0x50)->vfunc_70();
+    func_ov000_0215bb14(self->unk_50, func_0204c0e8(g, 0x9d));
+    self->unk_50->vfunc_70();
 }
 
 }
@@ -2924,17 +3023,17 @@ static inline BOOL LoIsLoaded(void) {
     return r;
 }
 
-void func_ov000_02176ff4(void *self) {
-    LFLD(s32, self, 0x20) = 0x1000;
-    LFLD(s32, self, 0x3c) = 0;
-    LFLD(s32, self, 0x40) = 0;
-    LFLD(s32, self, 0x44) = 0;
-    LFLD(s32, self, 0x48) = 0;
-    LFLD(s32, self, 0x4c) = 0;
-    LFLD(s32, self, 0x50) = 0;
-    LFLD(s32, self, 0x54) = 0;
-    LFLD(s32, self, 0x58) = 0;
-    LFLD(u8, self, 0x5c) = 0;
+void func_ov000_02176ff4(Lo02176714 *self) {
+    self->unk_20 = 0x1000;
+    self->unk_3c = 0;
+    self->unk_40 = 0;
+    self->unk_44 = 0;
+    self->unk_48 = 0;
+    self->unk_4c = 0;
+    self->unk_50 = 0;
+    self->unk_54 = 0;
+    self->unk_58 = 0;
+    self->unk_5c = 0;
 }
 
 }
@@ -2946,7 +3045,7 @@ namespace m_Lo_02177028 {
 
 extern "C" {
 
-void func_ov000_02177028(u8 *self) {
+void func_ov000_02177028(Lo02176714 *self) {
     LO_FREE_V(self, 0x58);
     LO_FREE_V(self, 0x3c);
     LO_FREE_V(self, 0x40);
@@ -2969,7 +3068,7 @@ namespace m_Stub_02177224 {
 
 extern "C" {
 
-void func_ov000_02177224(void *self) {
+void func_ov000_02177224(Lo02176714 *self) {
     u8 *p = *(u8 **)((u8 *)self + 0x4c);
     if (p != NULL) {
         *(u32 *)(p + 0xc) &= ~4;
@@ -2988,8 +3087,8 @@ namespace m_Lo_02177240 {
 
 extern "C" {
 
-static inline void SetFlag02177240(VObj *self) {
-    u8 *p = LFLD(u8 *, self, 0x4c);
+static inline void SetFlag02177240(Lo02176714 *self) {
+    u8 *p = (u8 *)self->unk_4c;
     if (p != NULL) {
         LFLD(u32, p, 0xc) |= 4;
     }
@@ -2999,34 +3098,34 @@ static inline BOOL IsBusy02177240(VObj *o) {
     return o != NULL && o->vfunc_1c();
 }
 
-void func_ov000_02177240(VObj *self) {
+void func_ov000_02177240(Lo02176714 *self) {
     s32 n;
-    if (LFLD(s32, self, 0x8) == 0xd) {
-        VObj *o = LFLD(VObj *, self, 0x58);
+    if (self->unk_08 == 0xd) {
+        VObj *o = self->unk_58;
         if (o != NULL) {
             if (o->vfunc_1c()) {
                 SetFlag02177240(self);
             } else {
-                HEAP_DELETE(VObj *, LFLD(VObj *, self, 0x58), p->vfunc_04());
+                HEAP_DELETE(VObj *, self->unk_58, p->vfunc_04());
             }
         }
         n = 0;
-        if (LFLD(VObj *, self, 0x3c) != NULL && LFLD(VObj *, self, 0x3c)->vfunc_1c()) {
+        if (self->unk_3c != NULL && self->unk_3c->vfunc_1c()) {
             n++;
         }
-        if (LFLD(VObj *, self, 0x40) != NULL && LFLD(VObj *, self, 0x40)->vfunc_1c()) {
+        if (self->unk_40 != NULL && self->unk_40->vfunc_1c()) {
             n++;
         }
-        if (LFLD(VObj *, self, 0x44) != NULL && LFLD(VObj *, self, 0x44)->vfunc_1c()) {
+        if (self->unk_44 != NULL && self->unk_44->vfunc_1c()) {
             n++;
         }
-        if (LFLD(VObj *, self, 0x48) != NULL && LFLD(VObj *, self, 0x48)->vfunc_1c()) {
+        if (self->unk_48 != NULL && self->unk_48->vfunc_1c()) {
             n++;
         }
-        if (LFLD(VObj *, self, 0x4c) != NULL && LFLD(VObj *, self, 0x4c)->vfunc_1c()) {
+        if (self->unk_4c != NULL && self->unk_4c->vfunc_1c()) {
             n++;
         }
-        if (LFLD(VObj *, self, 0x50) != NULL && LFLD(VObj *, self, 0x50)->vfunc_1c()) {
+        if (self->unk_50 != NULL && self->unk_50->vfunc_1c()) {
             n++;
         }
         if (n == 0) {
@@ -3051,34 +3150,34 @@ void func_020627fc(u16 a);
 void func_0206280c(u16 a);
 void func_ov000_02182590(void *p);
 
-void func_ov000_021773cc(void *self) {
+void func_ov000_021773cc(Lo02176714 *self) {
     s32 s;
-    if (LFLD(void *, self, 0x24) == NULL || (s = LFLD(s32, self, 8)) == 0) {
+    if (self->unk_24 == NULL || (s = self->unk_08) == 0) {
         return;
     }
     if (s != 0xc && s != 0xd) {
         return;
     }
-    if (LFLD(VObj *, self, 0x3c)) {
-        LFLD(VObj *, self, 0x3c)->vfunc_20();
+    if (self->unk_3c) {
+        self->unk_3c->vfunc_20();
     }
-    if (LFLD(VObj *, self, 0x40)) {
-        LFLD(VObj *, self, 0x40)->vfunc_20();
+    if (self->unk_40) {
+        self->unk_40->vfunc_20();
     }
-    if (LFLD(VObj *, self, 0x44)) {
-        LFLD(VObj *, self, 0x44)->vfunc_20();
+    if (self->unk_44) {
+        self->unk_44->vfunc_20();
     }
-    if (LFLD(VObj *, self, 0x48)) {
-        LFLD(VObj *, self, 0x48)->vfunc_20();
+    if (self->unk_48) {
+        self->unk_48->vfunc_20();
     }
-    if (LFLD(VObj *, self, 0x4c)) {
-        LFLD(VObj *, self, 0x4c)->vfunc_20();
+    if (self->unk_4c) {
+        self->unk_4c->vfunc_20();
     }
-    if (LFLD(VObj *, self, 0x50)) {
-        LFLD(VObj *, self, 0x50)->vfunc_20();
+    if (self->unk_50) {
+        self->unk_50->vfunc_20();
     }
-    if (LFLD(VObj *, self, 0x58)) {
-        LFLD(VObj *, self, 0x58)->vfunc_20();
+    if (self->unk_58) {
+        self->unk_58->vfunc_20();
     }
 }
 
@@ -3213,8 +3312,13 @@ void *func_0204c0e8(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 
-s32 func_ov000_02177698(u8 *self, u8 *item) {
-    u8 *o = LFLD(u8 *, self, 0x8);
+struct Lo02177698 {
+    u8 unk_00[0x8];
+    u8 *unk_08;
+};
+
+s32 func_ov000_02177698(Lo02177698 *self, u8 *item) {
+    u8 *o = self->unk_08;
     VObj *t = LFLD(VObj *, o, 0x50);
     if (t != NULL) {
         if (item != NULL) {
@@ -3492,14 +3596,19 @@ extern u8 *data_0214a424;
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
-BOOL func_ov000_02177f40(void *self, void *msg) {
+struct Lo02177f40 {
+    u8 unk_00[0x8];
+    void *unk_08;
+};
+
+BOOL func_ov000_02177f40(Lo02177f40 *self, void *msg) {
     u16 id;
     void *o;
     if (msg == NULL) {
         return FALSE;
     }
     id = LFLD(u16, msg, 6);
-    o = LFLD(void *, self, 8);
+    o = self->unk_08;
     if (((u32)(id << 4) >> 16) - 1 == 1) {
         s32 c;
         u32 v;
@@ -3551,8 +3660,13 @@ u8 func_0206d1d4(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
-BOOL func_ov000_02178010(void *self, void *msg) {
-    void *o = LFLD(void *, self, 8);
+struct Lo02178010 {
+    u8 unk_00[0x8];
+    void *unk_08;
+};
+
+BOOL func_ov000_02178010(Lo02178010 *self, void *msg) {
+    void *o = self->unk_08;
     if (msg == NULL || LFLD(u16, msg, 6) == 0xffff) {
         VObj *p = LFLD(VObj *, o, 0x40);
         func_ov000_0215bb14(p, func_0204c0e8(data_02149ef8, 0x9d));
@@ -3598,8 +3712,13 @@ void *func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
-void func_ov000_02178100(void *self, BOOL add) {
-    func_ov000_02178dcc(LFLD(void *, self, 8), add);
+struct Lo02178100 {
+    u8 unk_00[0x8];
+    void *unk_08;
+};
+
+void func_ov000_02178100(Lo02178100 *self, BOOL add) {
+    func_ov000_02178dcc(self->unk_08, add);
 }
 
 }
@@ -3607,18 +3726,34 @@ void func_ov000_02178100(void *self, BOOL add) {
 }  // namespace m_Lo_02178100
 
 // ---- Lo_02178110
+struct Lo02178110 : public VObj {
+    u8 unk_04[0x4];
+    s32 unk_08;
+    u8 unk_0c[0x18];
+    s32 unk_24;
+    s32 unk_28;
+    u8 unk_2c[0x10];
+    VObj *unk_3c;
+    VObj *unk_40;
+    VObj *unk_44;
+    VObj *unk_48;
+    VObj *unk_4c;
+    VObj *unk_50;
+    VObj *unk_54;
+};
+
 namespace m_Lo_02178110 {
 
 extern "C" {
 
-void func_ov000_02178110(u8 *self) {
-    HEAP_DELETE(VObj *, LFLD(VObj *, self, 0x3c), p->vfunc_04());
-    HEAP_DELETE(VObj *, LFLD(VObj *, self, 0x40), p->vfunc_04());
-    HEAP_DELETE(VObj *, LFLD(VObj *, self, 0x44), p->vfunc_04());
-    HEAP_DELETE(VObj *, LFLD(VObj *, self, 0x48), p->vfunc_04());
-    HEAP_DELETE(VObj *, LFLD(VObj *, self, 0x4c), p->vfunc_04());
-    HEAP_DELETE(VObj *, LFLD(VObj *, self, 0x50), p->vfunc_04());
-    HEAP_DELETE(VObj *, LFLD(VObj *, self, 0x54), p->vfunc_04());
+void func_ov000_02178110(Lo02178110 *self) {
+    HEAP_DELETE(VObj *, self->unk_3c, p->vfunc_04());
+    HEAP_DELETE(VObj *, self->unk_40, p->vfunc_04());
+    HEAP_DELETE(VObj *, self->unk_44, p->vfunc_04());
+    HEAP_DELETE(VObj *, self->unk_48, p->vfunc_04());
+    HEAP_DELETE(VObj *, self->unk_4c, p->vfunc_04());
+    HEAP_DELETE(VObj *, self->unk_50, p->vfunc_04());
+    HEAP_DELETE(VObj *, self->unk_54, p->vfunc_04());
 }
 }
 
@@ -3678,7 +3813,7 @@ static inline u16 ItemIdx021782e0(u16 v) { return v & 0xfff; }
 /* `g` is an unused register parameter reused as a local: as a parameter its value
  * gets the target's register order (g r4, 1 r6, vtable r8). The loop's task object
  * reuses `o`, so it is a split web of `o` (numbered below the other webs). */
-void func_ov000_021782e0(VObj *self, void *g) {
+void func_ov000_021782e0(Lo02178110 *self, void *g) {
     s32 i;
     s32 a;
     s32 b;
@@ -3694,26 +3829,26 @@ void func_ov000_021782e0(VObj *self, void *g) {
         *(void **)o = data_ov000_021cadcc;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x40) = o;
+    self->unk_40 = o;
     LFLD(s32, o, 0x24) = 0xf8;
-    LFLD(s32, LFLD(void *, self, 0x40), 0x20) = 2;
+    LFLD(s32, self->unk_40, 0x20) = 2;
     {
-        u8 *s = LFLD(u8 *, self, 0x40);
+        u8 *s = (u8 *)self->unk_40;
         LFLD(s16, s, 0x64) = 4;
         LFLD(s16, s, 0x66) = 0x95;
         LFLD(s16, s, 0x68) = -0x1ccd;
     }
     {
-        u8 *s = LFLD(u8 *, self, 0x40);
+        u8 *s = (u8 *)self->unk_40;
         LFLD(s32, s, 0x58) = 0;
         LFLD(s32, s, 0x5c) = 0x54;
         LFLD(s32, s, 0x60) = -0x1ccd;
     }
-    LFLD(s32, LFLD(void *, self, 0x40), 0x2c) = 1;
-    LFLD(s16, LFLD(void *, self, 0x40), 0x48) = 0xb;
-    LFLD(VObj *, self, 0x40)->vfunc_08();
-    func_ov000_0215bb14(LFLD(void *, self, 0x40), func_0204c0e8(g, 0x9d));
-    LFLD(VObj *, self, 0x40)->vfunc_70();
+    LFLD(s32, self->unk_40, 0x2c) = 1;
+    LFLD(s16, self->unk_40, 0x48) = 0xb;
+    self->unk_40->vfunc_08();
+    func_ov000_0215bb14(self->unk_40, func_0204c0e8(g, 0x9d));
+    self->unk_40->vfunc_70();
     o = (VObj *)func_0203dd9c(0x98);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -3721,19 +3856,19 @@ void func_ov000_021782e0(VObj *self, void *g) {
         *(void **)o = data_ov000_021cae48;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x44) = o;
+    self->unk_44 = o;
     LFLD(s16, o, 0x64) = 0x86;
     LFLD(s16, o, 0x66) = 0x78;
     LFLD(s16, o, 0x68) = -0x199a;
     {
-        u8 *s = LFLD(u8 *, self, 0x44);
+        u8 *s = (u8 *)self->unk_44;
         LFLD(s32, s, 0x58) = 0x100;
         LFLD(s32, s, 0x5c) = 0;
         LFLD(s32, s, 0x60) = -0x199a;
     }
-    LFLD(s32, LFLD(void *, self, 0x44), 0x2c) = 1;
-    func_ov000_0215d980(LFLD(void *, self, 0x44), LFLD(s32, data_0214a424, 0x20), 0);
-    LFLD(VObj *, self, 0x44)->vfunc_08();
+    LFLD(s32, self->unk_44, 0x2c) = 1;
+    func_ov000_0215d980(self->unk_44, LFLD(s32, data_0214a424, 0x20), 0);
+    self->unk_44->vfunc_08();
     o = (VObj *)func_0203dd9c(0x98);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -3741,26 +3876,26 @@ void func_ov000_021782e0(VObj *self, void *g) {
         *(void **)o = data_ov000_021cae48;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x48) = o;
+    self->unk_48 = o;
     LFLD(s32, o, 0x84) = 4;
     {
-        u8 *s = LFLD(u8 *, self, 0x48);
+        u8 *s = (u8 *)self->unk_48;
         LFLD(s16, s, 0x64) = 0x1a;
         LFLD(s16, s, 0x66) = 0x78;
         LFLD(s16, s, 0x68) = -0x1ccd;
     }
-    func_ov000_0215d980(LFLD(void *, self, 0x48), 0, 0);
-    LFLD(s32, LFLD(void *, self, 0x48), 0x2c) = 1;
+    func_ov000_0215d980(self->unk_48, 0, 0);
+    LFLD(s32, self->unk_48, 0x2c) = 1;
     {
-        u8 *s = LFLD(u8 *, self, 0x48);
+        u8 *s = (u8 *)self->unk_48;
         LFLD(s32, s, 0x58) = 0x80;
         LFLD(s32, s, 0x5c) = 0;
         LFLD(s32, s, 0x60) = 0;
     }
-    LFLD(VObj *, self, 0x48)->vfunc_08();
-    func_ov000_0215d990(LFLD(void *, self, 0x48), 0x120);
-    LFLD(s32, LFLD(void *, self, 0x48), 0x24) = 0x66;
-    LFLD(s32, LFLD(void *, self, 0x48), 0x28) = 0x19;
+    self->unk_48->vfunc_08();
+    func_ov000_0215d990(self->unk_48, 0x120);
+    LFLD(s32, self->unk_48, 0x24) = 0x66;
+    LFLD(s32, self->unk_48, 0x28) = 0x19;
     o = (VObj *)func_0203dd9c(0x98);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -3768,26 +3903,26 @@ void func_ov000_021782e0(VObj *self, void *g) {
         *(void **)o = data_ov000_021cae48;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x4c) = o;
+    self->unk_4c = o;
     LFLD(s32, o, 0x84) = 4;
     {
-        u8 *s = LFLD(u8 *, self, 0x4c);
+        u8 *s = (u8 *)self->unk_4c;
         LFLD(s16, s, 0x64) = 0x1a;
         LFLD(s16, s, 0x66) = 0x83;
         LFLD(s16, s, 0x68) = -0x1ccd;
     }
-    func_ov000_0215d980(LFLD(void *, self, 0x4c), 0, 0);
-    LFLD(s32, LFLD(void *, self, 0x4c), 0x2c) = 1;
+    func_ov000_0215d980(self->unk_4c, 0, 0);
+    LFLD(s32, self->unk_4c, 0x2c) = 1;
     {
-        u8 *s = LFLD(u8 *, self, 0x4c);
+        u8 *s = (u8 *)self->unk_4c;
         LFLD(s32, s, 0x58) = 0x80;
         LFLD(s32, s, 0x5c) = 0;
         LFLD(s32, s, 0x60) = 0;
     }
-    LFLD(VObj *, self, 0x4c)->vfunc_08();
-    func_ov000_0215d990(LFLD(void *, self, 0x4c), 0x121);
-    LFLD(s32, LFLD(void *, self, 0x4c), 0x24) = 0x66;
-    LFLD(s32, LFLD(void *, self, 0x4c), 0x28) = 0;
+    self->unk_4c->vfunc_08();
+    func_ov000_0215d990(self->unk_4c, 0x121);
+    LFLD(s32, self->unk_4c, 0x24) = 0x66;
+    LFLD(s32, self->unk_4c, 0x28) = 0;
     o = (VObj *)func_0203dd9c(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -3797,25 +3932,25 @@ void func_ov000_021782e0(VObj *self, void *g) {
         *(void **)o = data_ov000_021cb5a8;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x50) = o;
+    self->unk_50 = o;
     LFLD(u32, o, 0xc) |= 0x4000000;
-    LFLD(s32, LFLD(void *, self, 0x50), 0x2c) = 1;
+    LFLD(s32, self->unk_50, 0x2c) = 1;
     {
-        u8 *s = LFLD(u8 *, self, 0x50);
+        u8 *s = (u8 *)self->unk_50;
         LFLD(s16, s, 0x64) = 0;
         LFLD(s16, s, 0x66) = 0x11;
         LFLD(s16, s, 0x68) = -0x199a;
     }
-    LFLD(u32, LFLD(void *, self, 0x50), 0xc) |= 0x20000000;
+    LFLD(u32, self->unk_50, 0xc) |= 0x20000000;
     {
-        u8 *s = LFLD(u8 *, self, 0x50);
+        u8 *s = (u8 *)self->unk_50;
         LFLD(s32, s, 0x58) = 0x100;
         LFLD(s32, s, 0x5c) = 0;
         LFLD(s32, s, 0x60) = -0x199a;
     }
-    LFLD(VObj *, self, 0x50)->vfunc_f4(1, func_0204c0e8(g, 0x32));
-    LFLD(VObj *, self, 0x50)->vfunc_f4(2, func_0204c0e8(g, 0x33));
-    LFLD(VObj *, self, 0x50)->vfunc_08();
+    self->unk_50->vfunc_f4(1, func_0204c0e8(g, 0x32));
+    self->unk_50->vfunc_f4(2, func_0204c0e8(g, 0x33));
+    self->unk_50->vfunc_08();
     o = (VObj *)func_0203dd9c(0xa0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -3823,15 +3958,15 @@ void func_ov000_021782e0(VObj *self, void *g) {
         *(void **)o = data_ov000_021cacd8;
         func_ov000_02160fc8(o);
     }
-    LFLD(VObj *, self, 0x54) = o;
+    self->unk_54 = o;
     LFLD(s16, o, 0x64) = 0x64;
     LFLD(s16, o, 0x66) = 0x50;
     LFLD(s16, o, 0x68) = -0x1666;
-    LFLD(void *, LFLD(void *, self, 0x54), 0x8) = self;
-    LFLD(void *, LFLD(void *, self, 0x54), 0x90) = (void *)func_ov000_02178100;
-    LFLD(VObj *, self, 0x54)->vfunc_08();
-    LFLD(u32, LFLD(void *, self, 0x54), 0xc) |= 2;
-    LFLD(u32, LFLD(void *, self, 0x54), 0xc) |= 4;
+    LFLD(void *, self->unk_54, 0x8) = self;
+    LFLD(void *, self->unk_54, 0x90) = (void *)func_ov000_02178100;
+    self->unk_54->vfunc_08();
+    LFLD(u32, self->unk_54, 0xc) |= 2;
+    LFLD(u32, self->unk_54, 0xc) |= 4;
     o = (VObj *)func_0203dd9c(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -3842,34 +3977,34 @@ void func_ov000_021782e0(VObj *self, void *g) {
         o->vfunc_28();
         *(void **)o = data_ov000_021cb2a8;
     }
-    LFLD(VObj *, self, 0x3c) = o;
-    LFLD(VObj *, self, 0x3c)->vfunc_10(func_0204c0e8(g, 0x11e));
-    LFLD(VObj *, self, 0x3c)->vfunc_14(func_0204c0e8(g, 0x11f));
-    LFLD(s32, LFLD(void *, self, 0x3c), 0x20) = 4;
-    LFLD(s32, LFLD(void *, self, 0x3c), 0x24) = 0xf8;
+    self->unk_3c = o;
+    self->unk_3c->vfunc_10(func_0204c0e8(g, 0x11e));
+    self->unk_3c->vfunc_14(func_0204c0e8(g, 0x11f));
+    LFLD(s32, self->unk_3c, 0x20) = 4;
+    LFLD(s32, self->unk_3c, 0x24) = 0xf8;
     {
-        u8 *s = LFLD(u8 *, self, 0x3c);
+        u8 *s = (u8 *)self->unk_3c;
         LFLD(s16, s, 0x64) = 0;
         LFLD(s16, s, 0x66) = 0x2c;
         LFLD(s16, s, 0x68) = -0x1ccd;
     }
     {
-        u8 *s = LFLD(u8 *, self, 0x3c);
+        u8 *s = (u8 *)self->unk_3c;
         LFLD(s32, s, 0x58) = 0x100;
         LFLD(s32, s, 0x5c) = 0;
         LFLD(s32, s, 0x60) = -0x1ccd;
     }
-    LFLD(s32, LFLD(void *, self, 0x3c), 0x2c) = 1;
-    LFLD(u32, LFLD(void *, self, 0x3c), 0xc) |= 0x400000;
-    LFLD(u32, LFLD(void *, self, 0x3c), 0xc) &= ~0x800000;
-    LFLD(u8, LFLD(void *, self, 0x3c), 0xc1) = 5;
-    LFLD(u8, LFLD(void *, self, 0x3c), 0xc0) = 0x78;
-    func_ov000_02157c90(LFLD(void *, self, 0x3c), func_0204c0e8(g, 0x9a));
-    func_ov000_02157d2c(LFLD(void *, self, 0x3c), func_0204c0e8(g, 0x3e));
-    LFLD(void *, LFLD(void *, self, 0x3c), 0x84) = (void *)func_ov000_02177f40;
-    LFLD(void *, LFLD(void *, self, 0x3c), 0x88) = (void *)func_ov000_02178010;
-    LFLD(void *, LFLD(void *, self, 0x3c), 0x8) = self;
-    func_ov000_021546ec(LFLD(void *, self, 0x3c), data_0208ccc8, "cem3d1icn00", 0xffff);
+    LFLD(s32, self->unk_3c, 0x2c) = 1;
+    LFLD(u32, self->unk_3c, 0xc) |= 0x400000;
+    LFLD(u32, self->unk_3c, 0xc) &= ~0x800000;
+    LFLD(u8, self->unk_3c, 0xc1) = 5;
+    LFLD(u8, self->unk_3c, 0xc0) = 0x78;
+    func_ov000_02157c90(self->unk_3c, func_0204c0e8(g, 0x9a));
+    func_ov000_02157d2c(self->unk_3c, func_0204c0e8(g, 0x3e));
+    LFLD(void *, self->unk_3c, 0x84) = (void *)func_ov000_02177f40;
+    LFLD(void *, self->unk_3c, 0x88) = (void *)func_ov000_02178010;
+    LFLD(void *, self->unk_3c, 0x8) = self;
+    func_ov000_021546ec(self->unk_3c, data_0208ccc8, "cem3d1icn00", 0xffff);
     for (i = 0; i < 0x53; i++) {
         id = i + 0x2000;
         if (*(data_0214a424 + ItemIdx021782e0(id) + 0x2a) != 0) {
@@ -3881,10 +4016,10 @@ void func_ov000_021782e0(VObj *self, void *g) {
         }
     }
     {
-        VObj *t = LFLD(VObj *, self, 0x3c);
+        VObj *t = self->unk_3c;
         t->vfunc_a8(func_ov000_02154b58(t, 0));
     }
-    LFLD(VObj *, self, 0x3c)->vfunc_08();
+    self->unk_3c->vfunc_08();
 }
 
 }
@@ -3919,29 +4054,29 @@ u8 func_0206d1d4(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
-void func_ov000_02178a5c(void *self) {
+void func_ov000_02178a5c(Lo02178110 *self) {
     u16 v;
-    if (LFLD(s32, LFLD(void *, self, 0x54), 4) != 5) {
+    if (LFLD(s32, self->unk_54, 4) != 5) {
         return;
     }
     v = data_02097dc8[9];
     if (v & 1) {
-        func_ov000_0215d980(LFLD(void *, self, 0x44), LFLD(s32, LFLD(void *, self, 0x44), 0x8c), 1);
+        func_ov000_0215d980(self->unk_44, LFLD(s32, self->unk_44, 0x8c), 1);
         return;
     }
     if (!(v & 2)) {
         return;
     }
-    LBIT(LFLD(void *, self, 0x3c), 0xc).b1 = 1;
-    LBIT(LFLD(void *, self, 0x40), 0xc).b1 = 1;
-    LBIT(LFLD(void *, self, 0x44), 0xc).b1 = 1;
-    if (LFLD(void *, self, 0x48) != NULL) {
-        LBIT(LFLD(void *, self, 0x48), 0xc).b1 = 1;
+    LBIT(self->unk_3c, 0xc).b1 = 1;
+    LBIT(self->unk_40, 0xc).b1 = 1;
+    LBIT(self->unk_44, 0xc).b1 = 1;
+    if ((void *)self->unk_48 != NULL) {
+        LBIT(self->unk_48, 0xc).b1 = 1;
     }
-    if (LFLD(void *, self, 0x4c) != NULL) {
-        LBIT(LFLD(void *, self, 0x4c), 0xc).b1 = 1;
+    if ((void *)self->unk_4c != NULL) {
+        LBIT(self->unk_4c, 0xc).b1 = 1;
     }
-    LBIT(LFLD(void *, self, 0x50), 0xc).b1 = 1;
+    LBIT(self->unk_50, 0xc).b1 = 1;
 }
 
 }
@@ -3955,30 +4090,30 @@ extern "C" {
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 id, s32 a, s32 b, s32 c);
 
-void func_ov000_02178b10(VObj *self) {
-    switch (LFLD(s32, self, 0x8)) {
+void func_ov000_02178b10(Lo02178110 *self) {
+    switch (self->unk_08) {
     case 8:
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
         break;
     case 13: {
         bool done;
-        LFLD(VObj *, self, 0x54)->vfunc_1c();
-        if (LFLD(s32, LFLD(VObj *, self, 0x54), 0x4) == 5) {
-            LFLD(u32, LFLD(VObj *, self, 0x3c), 0xc) &= ~4;
+        self->unk_54->vfunc_1c();
+        if (LFLD(s32, self->unk_54, 0x4) == 5) {
+            LFLD(u32, self->unk_3c, 0xc) &= ~4;
         } else {
-            LFLD(u32, LFLD(VObj *, self, 0x3c), 0xc) |= 4;
+            LFLD(u32, self->unk_3c, 0xc) |= 4;
         }
         done = true;
-        done &= !LFLD(VObj *, self, 0x3c)->vfunc_1c();
-        done &= !LFLD(VObj *, self, 0x40)->vfunc_1c();
-        done &= !LFLD(VObj *, self, 0x44)->vfunc_1c();
-        if (LFLD(VObj *, self, 0x48) != NULL) {
-            done &= !LFLD(VObj *, self, 0x48)->vfunc_1c();
+        done &= !self->unk_3c->vfunc_1c();
+        done &= !self->unk_40->vfunc_1c();
+        done &= !self->unk_44->vfunc_1c();
+        if (self->unk_48 != NULL) {
+            done &= !self->unk_48->vfunc_1c();
         }
-        if (LFLD(VObj *, self, 0x4c) != NULL) {
-            done &= !LFLD(VObj *, self, 0x4c)->vfunc_1c();
+        if (self->unk_4c != NULL) {
+            done &= !self->unk_4c->vfunc_1c();
         }
-        done &= !LFLD(VObj *, self, 0x50)->vfunc_1c();
+        done &= !self->unk_50->vfunc_1c();
         if (done) {
             self->vfunc_0c(0);
         }
@@ -4035,9 +4170,9 @@ void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 void func_0206f3f0(u16 id, s32 v);
 u16 func_0206d02c(void *a);
 
-void func_ov000_02178cd0(void *self) {
+void func_ov000_02178cd0(Lo02178110 *self) {
     s32 scale[3];
-    if (LFLD(s32, self, 0x24) == 0) {
+    if (self->unk_24 == 0) {
         return;
     }
     func_02043d20(data_02097d48 + 0x8b0, 0);
@@ -4045,27 +4180,38 @@ void func_ov000_02178cd0(void *self) {
     scale[1] = 0x1000;
     scale[2] = 0x1000;
     NNS_G3dGeBufferOP_N(0x1b, scale, 3);
-    LFLD(s32, self, 0x28) = FX_SinCosTable_[((LFLD(s32, self, 0x24) << 14) >> 16) * 2];
-    LFLD(VObj *, self, 0x3c)->vfunc_20();
-    LFLD(VObj *, self, 0x40)->vfunc_20();
-    LFLD(VObj *, self, 0x44)->vfunc_20();
-    if (LFLD(VObj *, self, 0x48) != NULL) {
-        LFLD(VObj *, self, 0x48)->vfunc_20();
+    self->unk_28 = FX_SinCosTable_[((self->unk_24 << 14) >> 16) * 2];
+    self->unk_3c->vfunc_20();
+    self->unk_40->vfunc_20();
+    self->unk_44->vfunc_20();
+    if (self->unk_48 != NULL) {
+        self->unk_48->vfunc_20();
     }
-    if (LFLD(VObj *, self, 0x4c) != NULL) {
-        LFLD(VObj *, self, 0x4c)->vfunc_20();
+    if (self->unk_4c != NULL) {
+        self->unk_4c->vfunc_20();
     }
-    LFLD(VObj *, self, 0x50)->vfunc_20();
-    LFLD(VObj *, self, 0x54)->vfunc_20();
+    self->unk_50->vfunc_20();
+    self->unk_54->vfunc_20();
 }
 
 static inline u16 ItemKind(u16 v) { return v >> 12; }
 static inline u16 ItemIdx(u16 v) { return v & 0xfff; }
 
+struct Lo02178dcc {
+    u8 unk_00[0x3c];
+    VObj *unk_3c;
+    u8 unk_40[0x4];
+    void *unk_44;
+    void *unk_48;
+    void *unk_4c;
+    u8 unk_50[0x4];
+    u8 *unk_54;
+};
+
 void func_ov000_02178dcc(void *p, BOOL on) {
-    u8 *self = (u8 *)p;
+    Lo02178dcc *self = (Lo02178dcc *)p;
     u32 n;
-    if (on && (n = LFLD(u32, LFLD(u8 *, self, 0x54), 0x8c) * LFLD(u16, LFLD(u8 *, self, 0x54), 0x88)) != 0) {
+    if (on && (n = LFLD(u32, self->unk_54, 0x8c) * LFLD(u16, self->unk_54, 0x88)) != 0) {
         s32 rest;
         u8 *node;
         u8 *list;
@@ -4076,17 +4222,17 @@ void func_ov000_02178dcc(void *p, BOOL on) {
             }
         }
         node = NULL;
-        func_ov000_0215d980(LFLD(void *, self, 0x44), LFLD(u32, data_0214a424, 0x20), 0);
+        func_ov000_0215d980(self->unk_44, LFLD(u32, data_0214a424, 0x20), 0);
         func_02049a48(data_02097e4c, 0x30, -1, -1, -1);
-        list = LFLD(u8 *, LFLD(u8 *, self, 0x3c), 0x98);
+        list = LFLD(u8 *, self->unk_3c, 0x98);
         if (list != NULL) {
-            s32 i = LFLD(s8, LFLD(u8 *, self, 0x3c), 0xb1);
+            s32 i = LFLD(s8, self->unk_3c, 0xb1);
             while (i-- != 0) {
                 list = LFLD(u8 *, list, 0x2c);
             }
             node = list;
         }
-        rest = LFLD(u16, LFLD(u8 *, self, 0x54), 0x8a) - LFLD(u16, LFLD(u8 *, self, 0x54), 0x88);
+        rest = LFLD(u16, self->unk_54, 0x8a) - LFLD(u16, self->unk_54, 0x88);
         if (ItemKind(LFLD(u16, node, 6)) - 1 == 1) {
             s32 c = rest;
             if (c < 0) {
@@ -4095,19 +4241,19 @@ void func_ov000_02178dcc(void *p, BOOL on) {
             func_0206f3f0(LFLD(u16, node, 6), c);
             func_0206d02c(data_0214a424);
         }
-        if (LFLD(void *, self, 0x48) != NULL) {
-            func_ov000_0215d980(LFLD(void *, self, 0x48), *(data_0214a424 + ItemIdx(LFLD(u16, node, 6)) + 0x2a), 1);
+        if (self->unk_48 != NULL) {
+            func_ov000_0215d980(self->unk_48, *(data_0214a424 + ItemIdx(LFLD(u16, node, 6)) + 0x2a), 1);
         }
-        if (LFLD(void *, self, 0x4c) != NULL) {
-            func_ov000_0215d980(LFLD(void *, self, 0x4c), func_0206d1d4(data_0214a424, LFLD(u16, node, 6)), 1);
+        if (self->unk_4c != NULL) {
+            func_ov000_0215d980(self->unk_4c, func_0206d1d4(data_0214a424, LFLD(u16, node, 6)), 1);
         }
         if (rest <= 0) {
-            LFLD(VObj *, self, 0x3c)->vfunc_70(node);
+            self->unk_3c->vfunc_70(node);
         }
     }
-    LFLD(u32, LFLD(u8 *, self, 0x54), 0xc) |= 4;
-    LFLD(u32, LFLD(u8 *, self, 0x54), 0xc) |= 2;
-    LFLD(u32, LFLD(u8 *, self, 0x3c), 0xc) &= ~4;
+    LFLD(u32, self->unk_54, 0xc) |= 4;
+    LFLD(u32, self->unk_54, 0xc) |= 2;
+    LFLD(u32, self->unk_3c, 0xc) &= ~4;
 }
 
 }
@@ -4140,6 +4286,23 @@ VObj *func_ov000_02178f70(void) {
 }  // namespace m_Dtor_02178f70
 
 // ---- Lo_02178fd8
+struct Lo02178fd8 {
+    u8 unk_00[0x4];
+    u32 unk_04;
+    s32 unk_08;
+    u8 unk_0c[0x14];
+    s32 unk_20;
+    s32 unk_24;
+    u8 unk_28[0x14];
+    VObj *unk_3c;
+    VObj *unk_40;
+    VObj *unk_44;
+    s32 unk_48;
+    u16 unk_4c;
+    u8 unk_4e[0x2];
+    VObj *unk_50;
+};
+
 namespace m_Lo_02178fd8 {
 
 extern "C" {
@@ -4154,7 +4317,7 @@ void *STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
-void func_ov000_02178fd8(void *self) {
+void func_ov000_02178fd8(Lo02178fd8 *self) {
     u8 buf[0x20];
     VObj *obj = (VObj *)func_0203dd9c(0x58);
     if (obj != NULL) {
@@ -4163,15 +4326,15 @@ void func_ov000_02178fd8(void *self) {
         VOBJ_SET_VTABLE(obj, data_0208ba30);
         func_0204bfcc(obj);
     }
-    LFLD(VObj *, self, 0x3c) = obj;
+    self->unk_3c = obj;
     STD_CopyString(buf, "script/");
     STD_ConcatenateString(buf, "other");
-    func_0204bfe4(LFLD(VObj *, self, 0x3c), buf, "help.ccmes");
+    func_0204bfe4(self->unk_3c, buf, "help.ccmes");
 }
 
-BOOL func_ov000_02179064(void *self) {
+BOOL func_ov000_02179064(Lo02178fd8 *self) {
     BOOL r = TRUE;
-    if (!LFLD(VObj *, self, 0x3c)->vfunc_2c()) {
+    if (!self->unk_3c->vfunc_2c()) {
         r = FALSE;
     }
     if (!LoTaskObj()->vfunc_2c()) {
@@ -4203,16 +4366,16 @@ u16 func_02059544(void *mgr, void *a, void *tbl, s32 b, u16 i);
 void *func_02062138(u16 id);
 void MI_CpuFill8(void *dst, u8 val, u32 size);
 
-void func_ov000_021790ac(void *self) {
+void func_ov000_021790ac(Lo02178fd8 *self) {
     VObj *p;
     void *g;
     u8 *s;
-    LFLD(u32, self, 0x4) &= ~2;
+    self->unk_04 &= ~2;
     if (((VObj *)self)->vfunc_28()) {
         return;
     }
     func_ov000_02173648(self);
-    func_0204c030(LFLD(void *, self, 0x3c));
+    func_0204c030(self->unk_3c);
     g = data_02149ef8;
     p = (VObj *)func_0203dd9c(0xe0);
     if (p != NULL) {
@@ -4223,22 +4386,22 @@ void func_ov000_021790ac(void *self) {
         VOBJ_SET_VTABLE(p, data_ov000_021cb5a8);
         p->vfunc_28();
     }
-    LFLD(VObj *, self, 0x40) = p;
+    self->unk_40 = p;
     LFLD(u32, p, 0xc) |= 0x4000000;
-    LFLD(s32, LFLD(void *, self, 0x40), 0x2c) = 1;
-    s = LFLD(u8 *, self, 0x40);
+    LFLD(s32, self->unk_40, 0x2c) = 1;
+    s = (u8 *)self->unk_40;
     LFLD(s32, s, 0x58) = 0x100;
     LFLD(s32, s, 0x5c) = 0;
     LFLD(s32, s, 0x60) = 0;
-    s = LFLD(u8 *, self, 0x40);
+    s = (u8 *)self->unk_40;
     LFLD(s16, s, 0x64) = 0;
     LFLD(s16, s, 0x66) = 0x11;
     LFLD(s16, s, 0x68) = -0x1ccd;
-    LFLD(u32, LFLD(void *, self, 0x40), 0xc) |= 0x20000000;
-    LFLD(u32, LFLD(void *, self, 0x40), 0xc) |= 0x80000000;
-    LFLD(VObj *, self, 0x40)->vfunc_f4(1, func_0204c0e8(g, 0x34));
-    LFLD(VObj *, self, 0x40)->vfunc_f4(2, func_0204c0e8(g, 0x33));
-    LFLD(VObj *, self, 0x40)->vfunc_08();
+    LFLD(u32, self->unk_40, 0xc) |= 0x20000000;
+    LFLD(u32, self->unk_40, 0xc) |= 0x80000000;
+    self->unk_40->vfunc_f4(1, func_0204c0e8(g, 0x34));
+    self->unk_40->vfunc_f4(2, func_0204c0e8(g, 0x33));
+    self->unk_40->vfunc_08();
     p = (VObj *)func_0203dd9c(0xf4);
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_ov000_021cac60);
@@ -4246,17 +4409,17 @@ void func_ov000_021790ac(void *self) {
         VOBJ_SET_VTABLE(p, data_ov000_021ccbe0);
         func_ov000_021c3af4(p);
     }
-    LFLD(VObj *, self, 0x44) = p;
-    LFLD(VObj *, self, 0x44)->vfunc_10(func_0204c0e8(g, 0x118));
-    LFLD(VObj *, self, 0x44)->vfunc_14(func_0204c0e8(g, 0x119));
-    LFLD(void *, LFLD(void *, self, 0x44), 0x8) = self;
-    LFLD(s32, LFLD(void *, self, 0x44), 0x20) = 7;
-    LFLD(s32, LFLD(void *, self, 0x44), 0x24) = 0xf9;
-    s = LFLD(u8 *, self, 0x44);
+    self->unk_44 = p;
+    self->unk_44->vfunc_10(func_0204c0e8(g, 0x118));
+    self->unk_44->vfunc_14(func_0204c0e8(g, 0x119));
+    LFLD(void *, self->unk_44, 0x8) = self;
+    LFLD(s32, self->unk_44, 0x20) = 7;
+    LFLD(s32, self->unk_44, 0x24) = 0xf9;
+    s = (u8 *)self->unk_44;
     LFLD(s16, s, 0x64) = 4;
     LFLD(s16, s, 0x66) = 0x23;
     LFLD(s16, s, 0x68) = -0x1ccd;
-    LFLD(void *, LFLD(void *, self, 0x44), 0xe4) = (void *)func_ov000_02179910;
+    LFLD(void *, self->unk_44, 0xe4) = (void *)func_ov000_02179910;
     {
         u8 *base = LFLD(u8 *, data_02fe152c, 0x4c);
         u16 i;
@@ -4281,11 +4444,11 @@ void func_ov000_021790ac(void *self) {
                 LFLD(s32, it, 0x4) = i;
                 LFLD(s32, it, 0x3c) = i + 1;
                 func_ov000_021c2a88(it, func_02062138(i));
-                func_ov000_021c3fd4(LFLD(void *, self, 0x44), it);
+                func_ov000_021c3fd4(self->unk_44, it);
             }
         }
     }
-    LFLD(VObj *, self, 0x44)->vfunc_08();
+    self->unk_44->vfunc_08();
 }
 
 }
@@ -4307,17 +4470,17 @@ void *STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
-void func_ov000_0217942c(void *self) {
-    LFLD(s32, self, 0x20) = 0x1000;
-    LFLD(s32, self, 0x3c) = 0;
-    LFLD(s32, self, 0x40) = 0;
-    LFLD(s32, self, 0x44) = 0;
-    LFLD(s32, self, 0x50) = 0;
-    LFLD(s32, self, 0x48) = 0;
-    LFLD(u16, self, 0x4c) = 0xffff;
+void func_ov000_0217942c(Lo02178fd8 *self) {
+    self->unk_20 = 0x1000;
+    self->unk_3c = 0;
+    self->unk_40 = 0;
+    self->unk_44 = 0;
+    self->unk_50 = 0;
+    self->unk_48 = 0;
+    self->unk_4c = 0xffff;
 }
 
-void func_ov000_0217945c(void *self) {
+void func_ov000_0217945c(Lo02178fd8 *self) {
     LO_FREE_V(self, 0x50);
     LO_FREE_V(self, 0x40);
     LO_FREE_V(self, 0x44);
@@ -4366,17 +4529,17 @@ void *STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
-void func_ov000_021795a4(void *self) {
-    void *p = LFLD(void *, self, 0x44);
+void func_ov000_021795a4(Lo02178fd8 *self) {
+    void *p = self->unk_44;
     u16 v;
     if (p == NULL) {
         return;
     }
     LBIT(p, 0xc).b2 = 0;
-    if ((LBIT(LFLD(void *, self, 0x44), 0xc).b0 == 0 ? TRUE : FALSE) == FALSE) {
+    if ((LBIT(self->unk_44, 0xc).b0 == 0 ? TRUE : FALSE) == FALSE) {
         return;
     }
-    if (LFLD(u16, self, 0x4c) != 0xffff) {
+    if (self->unk_4c != 0xffff) {
         return;
     }
     v = data_02097dc8[9];
@@ -4387,11 +4550,11 @@ void func_ov000_021795a4(void *self) {
         return;
     }
     func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
-    if (LFLD(void *, self, 0x40) != NULL) {
-        LBIT(LFLD(void *, self, 0x40), 0xc).b1 = 1;
+    if ((void *)self->unk_40 != NULL) {
+        LBIT(self->unk_40, 0xc).b1 = 1;
     }
-    if (LFLD(void *, self, 0x44) != NULL) {
-        LBIT(LFLD(void *, self, 0x44), 0xc).b1 = 1;
+    if ((void *)self->unk_44 != NULL) {
+        LBIT(self->unk_44, 0xc).b1 = 1;
     }
 }
 
@@ -4509,33 +4672,38 @@ extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0216f23c(void *p, s32 a);
 
-void func_ov000_0217987c(void *self) {
+void func_ov000_0217987c(Lo02178fd8 *self) {
     s32 s;
-    if (LFLD(s32, self, 0x24) == 0 || (s = LFLD(s32, self, 8)) == 0) {
+    if (self->unk_24 == 0 || (s = self->unk_08) == 0) {
         return;
     }
     if (s != 0xc && s != 0xd) {
         return;
     }
-    switch (LFLD(s32, self, 0x48)) {
+    switch (self->unk_48) {
     case 0:
-        if (LFLD(VObj *, self, 0x40) != NULL) {
-            LFLD(VObj *, self, 0x40)->vfunc_20();
+        if (self->unk_40 != NULL) {
+            self->unk_40->vfunc_20();
         }
-        if (LFLD(VObj *, self, 0x44) != NULL) {
-            LFLD(VObj *, self, 0x44)->vfunc_20();
+        if (self->unk_44 != NULL) {
+            self->unk_44->vfunc_20();
         }
         break;
     case 1:
-        if (LFLD(VObj *, self, 0x50) != NULL) {
-            LFLD(VObj *, self, 0x50)->vfunc_90();
+        if (self->unk_50 != NULL) {
+            self->unk_50->vfunc_90();
         }
         break;
     }
 }
 
-BOOL func_ov000_02179910(void *self, void *msg) {
-    void *o = LFLD(void *, self, 8);
+struct Lo02179910 {
+    u8 unk_00[0x8];
+    void *unk_08;
+};
+
+BOOL func_ov000_02179910(Lo02179910 *self, void *msg) {
+    void *o = self->unk_08;
     if (msg == NULL) {
         return FALSE;
     }
@@ -4580,6 +4748,18 @@ VObj *func_ov000_0217997c(void) {
 }  // namespace m_Dtor_0217997c
 
 // ---- Lo_021799e4
+struct Lo021799e4 : public VObj {
+    u32 unk_04;
+    s32 unk_08;
+    u8 unk_0c[0x14];
+    s32 unk_20;
+    s32 unk_24;
+    u8 unk_28[0x14];
+    VObj *unk_3c;
+    VObj *unk_40;
+    VObj *unk_44;
+};
+
 namespace m_Lo_021799e4 {
 
 extern "C" {
@@ -4594,7 +4774,7 @@ void *STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
-void func_ov000_021799e4(void *self) {
+void func_ov000_021799e4(Lo021799e4 *self) {
     u8 buf[0x20];
     VObj *obj = (VObj *)func_0203dd9c(0x58);
     if (obj != NULL) {
@@ -4603,15 +4783,15 @@ void func_ov000_021799e4(void *self) {
         VOBJ_SET_VTABLE(obj, data_0208ba30);
         func_0204bfcc(obj);
     }
-    LFLD(VObj *, self, 0x3c) = obj;
+    self->unk_3c = obj;
     STD_CopyString(buf, "script/");
     STD_ConcatenateString(buf, "other");
-    func_0204bfe4(LFLD(VObj *, self, 0x3c), buf, "memory.ccmes");
+    func_0204bfe4(self->unk_3c, buf, "memory.ccmes");
 }
 
-BOOL func_ov000_02179a70(void *self) {
+BOOL func_ov000_02179a70(Lo021799e4 *self) {
     BOOL r = TRUE;
-    if (!LFLD(VObj *, self, 0x3c)->vfunc_2c()) {
+    if (!self->unk_3c->vfunc_2c()) {
         r = FALSE;
     }
     if (!LoTaskObj()->vfunc_2c()) {
@@ -4647,15 +4827,15 @@ void *func_0204c0e8(void *g, u32 id);
 void func_ov000_0215bb14(void *o, void *s);
 void func_ov000_02173648(void *self);
 
-void func_ov000_02179ab8(VObj *self) {
+void func_ov000_02179ab8(Lo021799e4 *self) {
     VObj *o;
     void *g;
     u16 n;
-    LFLD(u32, self, 0x4) &= ~2;
+    self->unk_04 &= ~2;
     if (self->vfunc_28()) {
         return;
     }
-    func_0204c030(LFLD(void *, self, 0x3c));
+    func_0204c030(self->unk_3c);
     g = data_02149ef8;
     o = (VObj *)func_0203dd9c(0xe0);
     if (o != NULL) {
@@ -4666,25 +4846,25 @@ void func_ov000_02179ab8(VObj *self) {
         *(void **)o = data_ov000_021cb5a8;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x44) = o;
+    self->unk_44 = o;
     LFLD(u32, o, 0xc) |= 0x4000000;
-    LFLD(s32, LFLD(void *, self, 0x44), 0x2c) = 1;
+    LFLD(s32, self->unk_44, 0x2c) = 1;
     {
-        u8 *s = LFLD(u8 *, self, 0x44);
+        u8 *s = (u8 *)self->unk_44;
         LFLD(s32, s, 0x58) = 0x100;
         LFLD(s32, s, 0x5c) = 0;
         LFLD(s32, s, 0x60) = 0;
     }
     {
-        u8 *s = LFLD(u8 *, self, 0x44);
+        u8 *s = (u8 *)self->unk_44;
         LFLD(s16, s, 0x64) = 0;
         LFLD(s16, s, 0x66) = 0;
         LFLD(s16, s, 0x68) = -0x1ccd;
     }
-    LFLD(u32, LFLD(void *, self, 0x44), 0xc) |= 0x20000000;
-    LFLD(u32, LFLD(void *, self, 0x44), 0xc) |= 0x80000000;
-    LFLD(VObj *, self, 0x44)->vfunc_f4(2, func_0204c0e8(g, 0x33));
-    LFLD(VObj *, self, 0x44)->vfunc_08();
+    LFLD(u32, self->unk_44, 0xc) |= 0x20000000;
+    LFLD(u32, self->unk_44, 0xc) |= 0x80000000;
+    self->unk_44->vfunc_f4(2, func_0204c0e8(g, 0x33));
+    self->unk_44->vfunc_08();
     o = (VObj *)func_0203dd9c(0x8c);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -4692,35 +4872,35 @@ void func_ov000_02179ab8(VObj *self) {
         *(void **)o = data_ov000_021cadcc;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x40) = o;
+    self->unk_40 = o;
     LFLD(s32, o, 0x88) = 0xe;
-    LFLD(s32, LFLD(void *, self, 0x40), 0x24) = 0xf8;
-    LFLD(s32, LFLD(void *, self, 0x40), 0x20) = 6;
+    LFLD(s32, self->unk_40, 0x24) = 0xf8;
+    LFLD(s32, self->unk_40, 0x20) = 6;
     {
-        u8 *s = LFLD(u8 *, self, 0x40);
+        u8 *s = (u8 *)self->unk_40;
         LFLD(s16, s, 0x64) = 4;
         LFLD(s16, s, 0x66) = 0x2e;
         LFLD(s16, s, 0x68) = -0x1ccd;
     }
-    LFLD(s16, LFLD(void *, self, 0x40), 0x48) = 0;
-    LFLD(u32, LFLD(void *, self, 0x40), 0xc) |= 0x10;
-    LFLD(s32, LFLD(void *, self, 0x40), 0x2c) = 1;
+    LFLD(s16, self->unk_40, 0x48) = 0;
+    LFLD(u32, self->unk_40, 0xc) |= 0x10;
+    LFLD(s32, self->unk_40, 0x2c) = 1;
     {
-        u8 *s = LFLD(u8 *, self, 0x40);
+        u8 *s = (u8 *)self->unk_40;
         LFLD(s32, s, 0x58) = 0x100;
         LFLD(s32, s, 0x5c) = 0;
         LFLD(s32, s, 0x60) = 0;
     }
-    LFLD(VObj *, self, 0x40)->vfunc_10(func_0204c0e8(g, 0xc2));
-    LFLD(VObj *, self, 0x40)->vfunc_14(func_0204c0e8(g, 0xc3));
-    LFLD(VObj *, self, 0x40)->vfunc_08();
-    LFLD(u32, LFLD(void *, self, 0x40), 0xc) |= 0x80000;
+    self->unk_40->vfunc_10(func_0204c0e8(g, 0xc2));
+    self->unk_40->vfunc_14(func_0204c0e8(g, 0xc3));
+    self->unk_40->vfunc_08();
+    LFLD(u32, self->unk_40, 0xc) |= 0x80000;
     n = LFLD(Bits02179ab8, data_0214a424, 0x518).b8;
     if (n != 0) {
-        func_ov000_0215bb14(LFLD(void *, self, 0x40), func_0204c0e8(LFLD(void *, self, 0x3c), (u16)(n - 1)));
+        func_ov000_0215bb14(self->unk_40, func_0204c0e8(self->unk_3c, (u16)(n - 1)));
     }
     {
-        u8 *s = LFLD(u8 *, self, 0x40);
+        u8 *s = (u8 *)self->unk_40;
         LFLD(void *, s, 0x6c) = data_ov000_021c9c46;
         LFLD(s32, s, 0x70) = 6;
     }
@@ -4745,29 +4925,29 @@ void *STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
-void func_ov000_02179d78(void *self) {
-    LFLD(s32, self, 0x20) = 0x1000;
-    LFLD(s32, self, 0x3c) = 0;
-    LFLD(s32, self, 0x40) = 0;
-    LFLD(s32, self, 0x44) = 0;
+void func_ov000_02179d78(Lo021799e4 *self) {
+    self->unk_20 = 0x1000;
+    self->unk_3c = 0;
+    self->unk_40 = 0;
+    self->unk_44 = 0;
 }
 
-void func_ov000_02179d94(void *self) {
+void func_ov000_02179d94(Lo021799e4 *self) {
     LO_FREE_V(self, 0x40);
     LO_FREE_V(self, 0x44);
     LO_FREE_V(self, 0x3c);
 }
 
-void func_ov000_02179e68(void *self) {
+void func_ov000_02179e68(Lo021799e4 *self) {
     if (!(data_02097dc8[9] & 2)) {
         return;
     }
     func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
-    if (LFLD(void *, self, 0x40) != NULL) {
-        LBIT(LFLD(void *, self, 0x40), 0xc).b1 = 1;
+    if ((void *)self->unk_40 != NULL) {
+        LBIT(self->unk_40, 0xc).b1 = 1;
     }
-    if (LFLD(void *, self, 0x44) != NULL) {
-        LBIT(LFLD(void *, self, 0x44), 0xc).b1 = 1;
+    if ((void *)self->unk_44 != NULL) {
+        LBIT(self->unk_44, 0xc).b1 = 1;
     }
     LBIT(self, 4).b0 = 1;
 }
@@ -4803,18 +4983,18 @@ void *STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
-void func_ov000_02179ef4(VObj *self) {
+void func_ov000_02179ef4(Lo021799e4 *self) {
     s32 n;
     VObj *p;
-    if (LFLD(s32, self, 8) != 0xd) {
+    if (self->unk_08 != 0xd) {
         return;
     }
     n = 0;
-    p = LFLD(VObj *, self, 0x40);
+    p = self->unk_40;
     if (p != NULL && p->vfunc_1c()) {
         n++;
     }
-    p = LFLD(VObj *, self, 0x44);
+    p = self->unk_44;
     if (p != NULL && p->vfunc_1c()) {
         n++;
     }
@@ -4824,19 +5004,19 @@ void func_ov000_02179ef4(VObj *self) {
     self->vfunc_0c(0);
 }
 
-void func_ov000_02179f6c(void *self) {
+void func_ov000_02179f6c(Lo021799e4 *self) {
     s32 s;
-    if (LFLD(s32, self, 0x24) == 0 || (s = LFLD(s32, self, 8)) == 0) {
+    if (self->unk_24 == 0 || (s = self->unk_08) == 0) {
         return;
     }
     if (s != 0xc && s != 0xd) {
         return;
     }
-    if (LFLD(VObj *, self, 0x40) != NULL) {
-        LFLD(VObj *, self, 0x40)->vfunc_20();
+    if (self->unk_40 != NULL) {
+        self->unk_40->vfunc_20();
     }
-    if (LFLD(VObj *, self, 0x44) != NULL) {
-        LFLD(VObj *, self, 0x44)->vfunc_20();
+    if (self->unk_44 != NULL) {
+        self->unk_44->vfunc_20();
     }
 }
 
@@ -4990,6 +5170,20 @@ void func_ov000_0217a1d8(void) {
 }  // namespace m_Lo_0217a1d8
 
 // ---- Lo_0217a1f8
+struct Lo0217a1f8 : public VObj {
+    u32 unk_04;
+    u8 unk_08[0x4];
+    s32 unk_0c;
+    u8 unk_10[0x10];
+    s32 unk_20;
+    u8 unk_24[0x18];
+    s32 unk_3c;
+    s32 unk_40;
+    VObj *unk_44;
+    VObj *unk_48;
+    s32 unk_4c;
+};
+
 namespace m_Lo_0217a1f8 {
 
 // The text argument of func_ov000_0217a328 is a string id, -1 (all bits set) for "no text"
@@ -5000,13 +5194,13 @@ typedef enum { LO_TEXT_MASK_EMPTY = 0 } LoTextMask;
 
 extern "C" {
 VObj *func_ov000_02176208(void);
-void func_ov000_0217a328(VObj *self, s32 a, s32 b);
+void func_ov000_0217a328(Lo0217a1f8 *self, s32 a, s32 b);
 void func_ov000_02173648(VObj *self);
 
-void func_ov000_0217a1f8(VObj *self) {
+void func_ov000_0217a1f8(Lo0217a1f8 *self) {
     VObj *o;
     LoTextMask mask;
-    LFLD(u32, self, 4) &= ~2;
+    self->unk_04 &= ~2;
     if (self->vfunc_28() != 0) {
         return;
     }
@@ -5019,7 +5213,7 @@ void func_ov000_0217a1f8(VObj *self) {
         }
         o = (VObj *)fn();
     }
-    LFLD(VObj *, self, 0x44) = o;
+    self->unk_44 = o;
     o->vfunc_08();
     func_ov000_02173648(self);
 }
@@ -5042,16 +5236,16 @@ void *STD_ConcatenateString(void *buf, const void *s);
 void func_0204bfe4(void *p, void *buf, const void *s);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
-void func_ov000_0217a26c(void *self) {
-    LFLD(s32, self, 0x20) = 0x1000;
-    LFLD(s32, self, 0x3c) = 0;
-    LFLD(s32, self, 0x40) = 0;
-    LFLD(s32, self, 0x44) = 0;
-    LFLD(s32, self, 0x48) = 0;
-    LFLD(s32, self, 0x4c) = -1;
+void func_ov000_0217a26c(Lo0217a1f8 *self) {
+    self->unk_20 = 0x1000;
+    self->unk_3c = 0;
+    self->unk_40 = 0;
+    self->unk_44 = 0;
+    self->unk_48 = 0;
+    self->unk_4c = -1;
 }
 
-void func_ov000_0217a294(void *self) {
+void func_ov000_0217a294(Lo0217a1f8 *self) {
     LO_FREE_V(self, 0x48);
     LO_FREE_V(self, 0x44);
 }
@@ -5071,8 +5265,8 @@ void *func_0204c0e8(void *p, u16 a);
 void func_ov000_0215c1bc(void *a, s32 b, void *c);
 void func_ov000_0215ce8c(void *a, s32 b);
 
-void func_ov000_0217a328(u8 *self, s32 a, s32 b) {
-    if (LFLD(VObj *, self, 0x48) == NULL) {
+void func_ov000_0217a328(Lo0217a1f8 *self, s32 a, s32 b) {
+    if (self->unk_48 == NULL) {
         VObj *o = (VObj *)func_0203dd9c(0xe8);
         if (o != NULL) {
             VOBJ_SET_VTABLE(o, data_ov000_021cac60);
@@ -5080,30 +5274,30 @@ void func_ov000_0217a328(u8 *self, s32 a, s32 b) {
             VOBJ_SET_VTABLE(o, data_ov000_021cad50);
             o->vfunc_28();
         }
-        LFLD(VObj *, self, 0x48) = o;
+        self->unk_48 = o;
     }
     if (a == 0x79 || b == 0x77) {
-        LFLD(u32, LFLD(VObj *, self, 0x48), 0xc) |= 0x10000;
+        LFLD(u32, self->unk_48, 0xc) |= 0x10000;
     } else {
-        LFLD(u32, LFLD(VObj *, self, 0x48), 0xc) &= ~0x10000;
+        LFLD(u32, self->unk_48, 0xc) &= ~0x10000;
     }
-    if (LFLD(s32, self, 0xc) != 1) {
-        LFLD(u16, LFLD(VObj *, self, 0x48), 0x48) = 0x2803;
+    if (self->unk_0c != 1) {
+        LFLD(u16, self->unk_48, 0x48) = 0x2803;
     } else {
-        VObj *o = LFLD(VObj *, self, 0x48);
+        VObj *o = self->unk_48;
         LFLD(u32, o, 0xc) |= 8;
         LFLD(u16, o, 0x48) = 0x14a5;
         LFLD(s32, o, 0x54) = 0x1c;
     }
-    LFLD(s32, LFLD(VObj *, self, 0x48), 0x1c) = 4;
-    LFLD(VObj *, self, 0x48)->vfunc_08();
+    LFLD(s32, self->unk_48, 0x1c) = 4;
+    self->unk_48->vfunc_08();
     if (b != -1) {
-        func_ov000_0215c1bc(LFLD(VObj *, self, 0x48), 0x8000, func_0204c0e8(data_02149ef8, b));
+        func_ov000_0215c1bc(self->unk_48, 0x8000, func_0204c0e8(data_02149ef8, b));
     } else {
-        func_ov000_0215ce8c(LFLD(VObj *, self, 0x48), a);
+        func_ov000_0215ce8c(self->unk_48, a);
     }
-    LFLD(s16, LFLD(VObj *, self, 0x48), 0x68) = -0x1ccd;
-    LFLD(VObj *, self, 0x48)->vfunc_70();
+    LFLD(s16, self->unk_48, 0x68) = -0x1ccd;
+    self->unk_48->vfunc_70();
 }
 }
 
@@ -5138,7 +5332,7 @@ extern u8 *data_0214a424;
 extern void *data_02097e4c;
 void func_0206c620(void *p);
 void func_0206c670(void *p);
-void func_ov000_0217a328(u8 *self, s32 a, s32 b);
+void func_ov000_0217a328(Lo0217a1f8 *self, s32 a, s32 b);
 BOOL func_ov000_0217a034(void *self, s32 msg);
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 
@@ -5158,24 +5352,24 @@ static inline BOOL IsB2_0217a480(void *p) {
     return LBIT(p, 0x48).b2 ? TRUE : FALSE;
 }
 
-void func_ov000_0217a480(u8 *self) {
-    if (LFLD(VObj *, self, 0x48) != NULL && !LFLD(VObj *, self, 0x48)->vfunc_1c()) {
+void func_ov000_0217a480(Lo0217a1f8 *self) {
+    if (self->unk_48 != NULL && !self->unk_48->vfunc_1c()) {
         LO_FREE_V(self, 0x48);
     }
-    if (LFLD(VObj *, self, 0x44) != NULL) {
-        LFLD(VObj *, self, 0x44)->vfunc_0c();
+    if (self->unk_44 != NULL) {
+        self->unk_44->vfunc_0c();
     }
-    switch (LFLD(s32, self, 0x3c)) {
+    switch (self->unk_3c) {
     case 0:
-        if (LFLD(s32, self, 0xc) == 0) {
-            if (LFLD(VObj *, self, 0x48) != NULL) {
+        if (self->unk_0c == 0) {
+            if (self->unk_48 != NULL) {
                 return;
             }
             LFLD(void *, LoSwitchTaskC(3, 0), 0x30) = (void *)func_ov000_0217a034;
             ((VObj *)self)->vfunc_48();
-            LFLD(s32, self, 0x3c) = 1;
-        } else if (LFLD(s32, self, 0xc) == 1) {
-            LFLD(s32, self, 0x3c) = 2;
+            self->unk_3c = 1;
+        } else if (self->unk_0c == 1) {
+            self->unk_3c = 2;
         }
         break;
     case 1:
@@ -5185,73 +5379,73 @@ void func_ov000_0217a480(u8 *self) {
         if (!((VObj *)self)->vfunc_54()) {
             return;
         }
-        if (LFLD(s32, self, 0x4c) != -1) {
-            LFLD(s32, self, 0x3c) = 2;
+        if (self->unk_4c != -1) {
+            self->unk_3c = 2;
             return;
         }
         ((VObj *)self)->vfunc_0c(0);
-        LFLD(s32, self, 0x3c) = 6;
+        self->unk_3c = 6;
         break;
     case 2: {
         u8 *g;
         LFLD(u8, data_02097dd0, 0x31) = 1;
-        LFLD(s32, self, 0x40) = 0;
-        if (LFLD(s32, self, 0xc) == 0) {
+        self->unk_40 = 0;
+        if (self->unk_0c == 0) {
             func_0206c620(data_0214a424);
-        } else if (LFLD(s32, self, 0xc) == 1) {
+        } else if (self->unk_0c == 1) {
             func_0206c670(data_0214a424);
         }
-        LBIT(LFLD(void *, self, 0x44), 0x48).b0 = TRUE;
-        LFLD(u32, LFLD(void *, self, 0x44), 0x48) |= 0x20;
+        LBIT(self->unk_44, 0x48).b0 = TRUE;
+        LFLD(u32, self->unk_44, 0x48) |= 0x20;
         g = data_0214a424;
         if (Lvl0217a480(g) > 0x14) {
             u16 n = LFLD(u8, g, 8);
-            u8 *q = LFLD(u8 *, self, 0x44);
+            u8 *q = (u8 *)self->unk_44;
             LFLD(u32, q, 0x48) |= 0x210;
             LFLD(s32, q, 0x40) = n;
         } else {
             u16 n = LFLD(u8, g, 8);
-            u8 *q = LFLD(u8 *, self, 0x44);
+            u8 *q = (u8 *)self->unk_44;
             LFLD(u32, q, 0x48) |= 0x200;
             LFLD(s32, q, 0x40) = n;
         }
         func_ov000_0217a328(self, 0x79, -1);
-        LFLD(s32, self, 0x3c) = 3;
+        self->unk_3c = 3;
         break;
     }
     case 3:
-        LFLD(s32, self, 0x40)++;
-        if (IsB1_0217a480(LFLD(void *, self, 0x44))) {
-            if (LFLD(s32, self, 0x40) <= 0x3c) {
+        self->unk_40++;
+        if (IsB1_0217a480(self->unk_44)) {
+            if (self->unk_40 <= 0x3c) {
                 return;
             }
-            LFLD(u32, LFLD(void *, self, 0x48), 0xc) |= 0x40000;
-            LFLD(s32, self, 0x3c) = 4;
+            LFLD(u32, self->unk_48, 0xc) |= 0x40000;
+            self->unk_3c = 4;
         } else {
-            if (!IsB2_0217a480(LFLD(void *, self, 0x44))) {
+            if (!IsB2_0217a480(self->unk_44)) {
                 return;
             }
             func_ov000_0217a328(self, 0x8000, 0x77);
-            LFLD(s32, self, 0x3c) = 5;
+            self->unk_3c = 5;
         }
         break;
     case 4:
-        if (LFLD(VObj *, self, 0x48) != NULL) {
+        if (self->unk_48 != NULL) {
             return;
         }
-        if (LFLD(s32, self, 0xc) == 0) {
+        if (self->unk_0c == 0) {
             func_02049a48(data_02097e4c, 0x85, -1, -1, -1);
             func_ov000_0217a328(self, 0x7a, -1);
         }
-        LFLD(s32, self, 0x3c) = 5;
+        self->unk_3c = 5;
         break;
     case 5:
         LFLD(u8, data_02097dd0, 0x31) = 0;
-        if (LFLD(VObj *, self, 0x48) != NULL) {
+        if (self->unk_48 != NULL) {
             return;
         }
         ((VObj *)self)->vfunc_0c(0);
-        LFLD(s32, self, 0x3c) = 6;
+        self->unk_3c = 6;
         break;
     }
 }
@@ -5269,7 +5463,7 @@ extern u8 data_ov000_021cbb60[];
 extern u8 data_ov000_021cc060[];
 void *func_0203dd9c(u32 size);
 
-void func_ov000_0217a86c(void *self) {
+void func_ov000_0217a86c(Lo0217a1f8 *self) {
     VObj *obj = *(VObj **)((u8 *)self + 0x48);
     if (obj != NULL) {
         obj->vfunc_20();
@@ -5412,6 +5606,50 @@ BOOL func_ov000_0217a8f4(Obj0217a8f4 *self, s32 msg) {
 }  // namespace m_Win_0217a8f4
 
 // ---- Lo_0217ab30
+struct Lo0217ab30 : public VObj {
+    u32 unk_04;
+    s32 unk_08;
+    s32 unk_0c;
+    u8 unk_10[0x10];
+    s32 unk_20;
+    void *unk_24;
+    u8 unk_28[0x14];
+    VObj *unk_3c;
+    s32 unk_40;
+    s32 unk_44;
+    s32 unk_48;
+    s32 unk_4c;
+    s32 unk_50;
+    s32 unk_54;
+    s32 unk_58;
+    VObj *unk_5c;
+    VObj *unk_60;
+    VObj *unk_64;
+    s32 unk_68;
+    void *unk_6c;
+    u8 unk_70;
+    u8 unk_71;
+    u8 unk_72[0x2];
+    s32 unk_74;
+    s32 unk_78;
+    s32 unk_7c;
+    s32 unk_80;
+    s32 unk_84;
+    s32 unk_88;
+    s32 unk_8c;
+    s32 unk_90;
+    s32 unk_94;
+    s32 unk_98;
+    s32 unk_9c;
+    void *unk_a0;
+    s32 unk_a4;
+    u8 unk_a8[0x10];
+    s16 unk_b8;
+    s16 unk_ba;
+    s32 unk_bc;
+    s32 unk_c0;
+};
+
 namespace m_Lo_0217ab30 {
 
 extern "C" {
@@ -5432,23 +5670,23 @@ void *func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
-void func_ov000_0217ab30(void *self) {
+void func_ov000_0217ab30(Lo0217ab30 *self) {
     VObj *obj = (VObj *)func_0203dd9c(0x4c);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b318);
         obj->vfunc_08();
     }
-    LFLD(VObj *, self, 0x3c) = obj;
+    self->unk_3c = obj;
     LFLD(s32, obj, 0x44) = 7;
-    LFLD(VObj *, self, 0x3c)->vfunc_1c(data_0208cc9c);
+    self->unk_3c->vfunc_1c(data_0208cc9c);
 }
 
-BOOL func_ov000_0217ab8c(void *self) {
+BOOL func_ov000_0217ab8c(Lo0217ab30 *self) {
     BOOL r = TRUE;
     if (!LoTaskObj()->vfunc_2c()) {
         r = FALSE;
     }
-    if (!LFLD(VObj *, self, 0x3c)->vfunc_2c()) {
+    if (!self->unk_3c->vfunc_2c()) {
         r = FALSE;
     }
     return r;
@@ -5494,10 +5732,10 @@ public:
     }
 };
 
-void func_ov000_0217abd8(VObj *self) {
+void func_ov000_0217abd8(Lo0217ab30 *self) {
     u8 *m;
     VObj *o;
-    LFLD(u32, self, 4) &= ~2;
+    self->unk_04 &= ~2;
     if (self->vfunc_28() != 0) {
         return;
     }
@@ -5508,27 +5746,27 @@ void func_ov000_0217abd8(VObj *self) {
         }
         o = (VObj *)fn();
     }
-    LFLD(VObj *, self, 0x5c) = o;
+    self->unk_5c = o;
     o->vfunc_08();
     m = (u8 *)func_0203dd9c(0x160);
     if (m) {
         ModelInit(m, data_0208cc9c, data_0208cb78);
     }
-    LFLD(u8 *, self, 0xa0) = m;
-    func_020417e0(LFLD(u8 *, self, 0xa0), func_02034d88(func_02035d5c(m + 0x2c), LFLD(u8 *, self, 0xa0) + 0x4c));
-    LFLD(u32, LFLD(u8 *, self, 0xa0), 0x6c) |= 2;
-    func_02041d9c(LFLD(u8 *, self, 0xa0), 0, 1);
-    func_02041d9c(LFLD(u8 *, self, 0xa0), 0, 2);
-    func_02041d9c(LFLD(u8 *, self, 0xa0), 0, 3);
-    func_02041d9c(LFLD(u8 *, self, 0xa0), 0, 4);
-    LFLD(u32, LFLD(u8 *, self, 0xa0), 0x6c) |= 0x200000;
-    LFLD(u32, LFLD(u8 *, self, 0xa0), 0x6c) |= 0x80000;
-    LFLD(u32, LFLD(u8 *, self, 0xa0), 0x6c) = (LFLD(u32, LFLD(u8 *, self, 0xa0), 0x6c) & ~0x7c) | 0x78;
+    self->unk_a0 = m;
+    func_020417e0((u8 *)self->unk_a0, func_02034d88(func_02035d5c(m + 0x2c), (u8 *)self->unk_a0 + 0x4c));
+    LFLD(u32, self->unk_a0, 0x6c) |= 2;
+    func_02041d9c((u8 *)self->unk_a0, 0, 1);
+    func_02041d9c((u8 *)self->unk_a0, 0, 2);
+    func_02041d9c((u8 *)self->unk_a0, 0, 3);
+    func_02041d9c((u8 *)self->unk_a0, 0, 4);
+    LFLD(u32, self->unk_a0, 0x6c) |= 0x200000;
+    LFLD(u32, self->unk_a0, 0x6c) |= 0x80000;
+    LFLD(u32, self->unk_a0, 0x6c) = (LFLD(u32, self->unk_a0, 0x6c) & ~0x7c) | 0x78;
     func_ov000_02173648(self);
-    LFLD(u32, self, 4) |= 0x10000;
-    if (LFLD(s32, self, 0x44) != 7) {
-        LFLD(s32, self, 0x44) = 1;
-        LFLD(s32, self, 0x48) = 0;
+    self->unk_04 |= 0x10000;
+    if (self->unk_44 != 7) {
+        self->unk_44 = 1;
+        self->unk_48 = 0;
     }
 }
 
@@ -5557,44 +5795,44 @@ void *func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
-void func_ov000_0217ad54(void *self) {
+void func_ov000_0217ad54(Lo0217ab30 *self) {
     s32 i;
-    LFLD(s32, self, 0x20) = 0x1000;
-    LFLD(s32, self, 0x3c) = 0;
-    LFLD(s32, self, 0x40) = 0;
-    LFLD(s32, self, 0x44) = 0;
-    LFLD(s32, self, 0x48) = 0;
-    LFLD(s32, self, 0x4c) = 0;
-    LFLD(s32, self, 0x50) = 0;
-    LFLD(s32, self, 0x54) = 0;
-    LFLD(s32, self, 0x58) = 0;
-    LFLD(s32, self, 0x5c) = 0;
-    LFLD(s32, self, 0x60) = 0;
-    LFLD(s32, self, 0x64) = 0;
-    LFLD(s32, self, 0x68) = 0;
-    LFLD(s32, self, 0x6c) = 0;
-    LFLD(u8, self, 0x70) = 0;
-    LFLD(u8, self, 0x71) = 0;
-    LFLD(s32, self, 0x74) = 0;
-    LFLD(s32, self, 0x78) = 0;
-    LFLD(s32, self, 0x80) = 0;
-    LFLD(s32, self, 0x7c) = 0;
-    LFLD(s32, self, 0x88) = 0;
-    LFLD(s32, self, 0x84) = 0;
-    LFLD(s32, self, 0x90) = 0;
-    LFLD(s32, self, 0x8c) = 0;
-    LFLD(s32, self, 0x98) = 0;
-    LFLD(s32, self, 0x94) = 0;
-    LFLD(s32, self, 0x9c) = 0;
-    LFLD(s32, self, 0xa0) = 0;
-    LFLD(s32, self, 0xa4) = 0;
+    self->unk_20 = 0x1000;
+    self->unk_3c = 0;
+    self->unk_40 = 0;
+    self->unk_44 = 0;
+    self->unk_48 = 0;
+    self->unk_4c = 0;
+    self->unk_50 = 0;
+    self->unk_54 = 0;
+    self->unk_58 = 0;
+    self->unk_5c = 0;
+    self->unk_60 = 0;
+    self->unk_64 = 0;
+    self->unk_68 = 0;
+    self->unk_6c = 0;
+    self->unk_70 = 0;
+    self->unk_71 = 0;
+    self->unk_74 = 0;
+    self->unk_78 = 0;
+    self->unk_80 = 0;
+    self->unk_7c = 0;
+    self->unk_88 = 0;
+    self->unk_84 = 0;
+    self->unk_90 = 0;
+    self->unk_8c = 0;
+    self->unk_98 = 0;
+    self->unk_94 = 0;
+    self->unk_9c = 0;
+    self->unk_a0 = 0;
+    self->unk_a4 = 0;
     for (i = 0; i < 4; i++) {
         ((s32 *)((u8 *)self + 0xa8))[i] = 0;
     }
-    LFLD(u16, self, 0xb8) = 0;
-    LFLD(u16, self, 0xba) = 0;
-    LFLD(s32, self, 0xbc) = 0;
-    LFLD(s32, self, 0xc0) = 0;
+    self->unk_b8 = 0;
+    self->unk_ba = 0;
+    self->unk_bc = 0;
+    self->unk_c0 = 0;
 }
 
 }
@@ -5612,7 +5850,7 @@ typedef struct {
 extern "C" {
 void *func_ov000_0214b724(void *p);
 
-void func_ov000_0217adfc(u8 *self) {
+void func_ov000_0217adfc(Lo0217ab30 *self) {
     s32 i;
     LO_FREE_V(self, 0x60);
     LO_FREE_V(self, 0x5c);
@@ -5620,13 +5858,13 @@ void func_ov000_0217adfc(u8 *self) {
     {
         u32 saved;
         LO_HEAP_PUSH(saved);
-        if (LFLD(void *, self, 0x6c) != NULL) {
-            void *p = LFLD(void *, self, 0x6c);
+        if (self->unk_6c != NULL) {
+            void *p = self->unk_6c;
             if (p != NULL) {
                 func_ov000_0214b724(p);
                 func_0203de1c(p);
             }
-            LFLD(void *, self, 0x6c) = NULL;
+            self->unk_6c = NULL;
         }
         LO_HEAP_POP(saved);
     }
@@ -5641,7 +5879,7 @@ void func_ov000_0217adfc(u8 *self) {
     LO_FREE_V(self, 0x94);
     LO_FREE_V(self, 0x98);
     LO_FREE_V(self, 0x9c);
-    LFLD(u8, self, 0x71) = 0;
+    self->unk_71 = 0;
     LO_FREE_M(self, 0xa0);
     for (i = 0; i < 4; i++) {
         u32 saved;
@@ -6074,20 +6312,20 @@ void func_ov000_0215fe1c(void *self, s32 a, s32 b);
 void func_ov000_021c216c(void *p);
 void func_ov000_0216c954(void *self, u16 a, s32 b);
 
-BOOL func_ov000_0217bf34(void *self) {
-    VObj *o = LFLD(VObj *, self, 0x64);
+BOOL func_ov000_0217bf34(Lo0217ab30 *self) {
+    VObj *o = self->unk_64;
     if (o == NULL) {
         return FALSE;
     }
     if (!o->vfunc_1c()) {
-        LFLD(s32, self, 0x68) = 0;
+        self->unk_68 = 0;
         LO_FREE_V(self, 0x64);
     } else {
-        if (!LFLD(VObj *, self, 0x64)->vfunc_0c()) {
+        if (!self->unk_64->vfunc_0c()) {
             return TRUE;
         }
-        if (--LFLD(s32, self, 0x68) < 0) {
-            LFLD(s32, self, 0x68) = 0;
+        if (--self->unk_68 < 0) {
+            self->unk_68 = 0;
         }
     }
     return FALSE;
@@ -6102,7 +6340,7 @@ namespace m_Stub_0217c004 {
 
 extern "C" {
 
-BOOL func_ov000_0217bfe4(void *self) {
+BOOL func_ov000_0217bfe4(Lo0217ab30 *self) {
     if (*(void **)((u8 *)self + 0x64) != NULL) {
         return (BOOL)self;
     }
@@ -6123,26 +6361,26 @@ extern "C" {
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 BOOL func_ov000_0217a8f4(void);
 typedef void (*LoCb0217c008)(void *self, void *arg);
-BOOL func_ov000_0217bf34(void *self);
-void func_ov000_0217c3b0(u8 *self);
-void func_ov000_0217c5a8(u8 *self);
-void func_ov000_0217c7b8(u8 *self);
-void func_ov000_0217cddc(u8 *self);
-void func_ov000_0217cf10(u8 *self);
-void func_ov000_0217d0c4(u8 *self);
-void func_ov000_0217d66c(u8 *self);
+BOOL func_ov000_0217bf34(Lo0217ab30 *self);
+void func_ov000_0217c3b0(Lo0217ab30 *self);
+void func_ov000_0217c5a8(Lo0217ab30 *self);
+void func_ov000_0217c7b8(Lo0217ab30 *self);
+void func_ov000_0217cddc(Lo0217ab30 *self);
+void func_ov000_0217cf10(Lo0217ab30 *self);
+void func_ov000_0217d0c4(Lo0217ab30 *self);
+void func_ov000_0217d66c(Lo0217ab30 *self);
 void func_ov000_0217dba4(u8 *self);
-void func_ov000_0217ddd4(u8 *self);
+void func_ov000_0217ddd4(Lo0217ab30 *self);
 extern u8 data_0208b614[];
 extern u8 data_0208ca9c[];
 extern u8 data_0208c994[];
 
-static inline BOOL Lo0217c3b0_Busy(u8 *self) {
-    u8 *p = LFLD(u8 *, self, 0x64);
+static inline BOOL Lo0217c3b0_Busy(Lo0217ab30 *self) {
+    u8 *p = (u8 *)self->unk_64;
     if (p == NULL) {
         return FALSE;
     }
-    if (LFLD(s32, self, 0x68) == 0) {
+    if (self->unk_68 == 0) {
         if (!((LFLD(u32, p, 0xc) & 0x10000) == 0 ? TRUE : FALSE)) {
             LFLD(u32, p, 0xc) |= 0x40000;
         }
@@ -6150,10 +6388,10 @@ static inline BOOL Lo0217c3b0_Busy(u8 *self) {
     return TRUE;
 }
 
-static inline void Lo0217c008_SetMode(u8 *self, s32 m) {
-    if (LFLD(s32, self, 0x44) != 7) {
-        LFLD(s32, self, 0x44) = m;
-        LFLD(s32, self, 0x48) = 0;
+static inline void Lo0217c008_SetMode(Lo0217ab30 *self, s32 m) {
+    if (self->unk_44 != 7) {
+        self->unk_44 = m;
+        self->unk_48 = 0;
     }
 }
 
@@ -6161,30 +6399,30 @@ static inline BOOL Lo0217c008_Flag(VObj *o) {
     return LBIT(o, 0x48).b2 ? TRUE : FALSE;
 }
 
-void func_ov000_0217c008(u8 *self) {
-    if (LFLD(s32, self, 0x8) != 0xd) {
+void func_ov000_0217c008(Lo0217ab30 *self) {
+    if (self->unk_08 != 0xd) {
         return;
     }
-    if (!(LFLD(u32, self, 0x4) & 0x20000)) {
-        LFLD(s32, self, 0x40) += 0x1000;
-        if (LFLD(s32, self, 0x40) >= 0x5a000) {
-            LFLD(s32, self, 0x40) -= 0x5a000;
+    if (!(self->unk_04 & 0x20000)) {
+        self->unk_40 += 0x1000;
+        if (self->unk_40 >= 0x5a000) {
+            self->unk_40 -= 0x5a000;
         }
     }
     if (func_ov000_0217bf34(self)) {
         return;
     }
-    switch (LFLD(s32, self, 0x4c)) {
+    switch (self->unk_4c) {
     case 1:
         func_ov000_0217c3b0(self);
         break;
     case 2:
-        switch (LFLD(s32, self, 0x50)) {
+        switch (self->unk_50) {
         case 0:
-            LFLD(s32, self, 0x54) = 0;
+            self->unk_54 = 0;
             LFLD(void *, LoSwitchTask(3), 0x30) = (void *)func_ov000_0217a8f4;
             ((VObj *)self)->vfunc_48();
-            LFLD(s32, self, 0x50) = 1;
+            self->unk_50 = 1;
             break;
         case 1:
             if (!(LBIT(self, 0x4).b0 == 0 ? TRUE : FALSE)) {
@@ -6196,14 +6434,14 @@ void func_ov000_0217c008(u8 *self) {
             if (!((VObj *)self)->vfunc_54()) {
                 break;
             }
-            if (LFLD(s32, self, 0x54) == 0) {
-                LFLD(u32, self, 0x4) |= 0x800000;
+            if (self->unk_54 == 0) {
+                self->unk_04 |= 0x800000;
                 Lo0217c008_SetMode(self, 5);
             }
-            LFLD(s32, self, 0x4c) = 0;
-            LFLD(s32, self, 0x50) = 0;
-            LFLD(s32, self, 0x58) = -1;
-            LFLD(s32, self, 0x54) = 0;
+            self->unk_4c = 0;
+            self->unk_50 = 0;
+            self->unk_58 = -1;
+            self->unk_54 = 0;
             break;
         }
         break;
@@ -6214,18 +6452,18 @@ void func_ov000_0217c008(u8 *self) {
         func_ov000_0217c7b8(self);
         break;
     }
-    if (LFLD(VObj *, self, 0x5c) != NULL) {
-        LFLD(VObj *, self, 0x5c)->vfunc_0c();
-        if (Lo0217c008_Flag(LFLD(VObj *, self, 0x5c))) {
+    if (self->unk_5c != NULL) {
+        self->unk_5c->vfunc_0c();
+        if (Lo0217c008_Flag(self->unk_5c)) {
             Lo0217c008_SetMode(self, 7);
-        } else if (LFLD(VObj *, self, 0x60) != NULL) {
-            LFLD(VObj *, self, 0x60)->vfunc_0c();
-            if (Lo0217c008_Flag(LFLD(VObj *, self, 0x60))) {
+        } else if (self->unk_60 != NULL) {
+            self->unk_60->vfunc_0c();
+            if (Lo0217c008_Flag(self->unk_60)) {
                 Lo0217c008_SetMode(self, 7);
             }
         }
     }
-    switch (LFLD(s32, self, 0x44)) {
+    switch (self->unk_44) {
     case 1:
         func_ov000_0217cddc(self);
         break;
@@ -6239,17 +6477,17 @@ void func_ov000_0217c008(u8 *self) {
         func_ov000_0217d66c(self);
         break;
     case 5:
-        func_ov000_0217dba4(self);
+        func_ov000_0217dba4((u8 *)self);
         break;
     case 6:
-        if (LFLD(s32, self, 0x48) != 0) {
+        if (self->unk_48 != 0) {
             break;
         }
         if (Lo0217c3b0_Busy(self)) {
             break;
         }
         if (LFLD(LoCb0217c008, self, 0xbc) != NULL) {
-            LFLD(LoCb0217c008, self, 0xbc)(self, LFLD(void *, self, 0xc0));
+            LFLD(LoCb0217c008, self, 0xbc)(self, (void *)self->unk_c0);
         }
         ((VObj *)self)->vfunc_0c(0);
         Lo0217c008_SetMode(self, 8);
@@ -6260,21 +6498,21 @@ void func_ov000_0217c008(u8 *self) {
     }
 }
 
-void func_ov000_0217c3b0(u8 *self) {
-    switch (LFLD(s32, self, 0x50)) {
+void func_ov000_0217c3b0(Lo0217ab30 *self) {
+    switch (self->unk_50) {
     case 0:
         if (func_ov000_0217bd88(self, 0x8000, 0x72)) {
-            LFLD(s32, self, 0x50) = 2;
+            self->unk_50 = 2;
         }
         break;
     case 2:
         if (Lo0217c3b0_Busy(self)) {
             return;
         }
-        LFLD(s32, self, 0x54) = 1;
+        self->unk_54 = 1;
         LFLD(void *, LoSwitchTask(3), 0x30) = (void *)func_ov000_0217a8f4;
         ((VObj *)self)->vfunc_48();
-        LFLD(s32, self, 0x50) = 3;
+        self->unk_50 = 3;
         break;
     case 3:
         if (!(LBIT(self, 0x4).b0 == 0 ? TRUE : FALSE)) {
@@ -6286,41 +6524,41 @@ void func_ov000_0217c3b0(u8 *self) {
         if (!((VObj *)self)->vfunc_54()) {
             return;
         }
-        if (LFLD(s32, self, 0x54) == 0) {
-            LFLD(u32, self, 0x4) |= 0x8000000;
-            if (LFLD(s32, self, 0x44) != 7) {
-                LFLD(s32, self, 0x44) = 5;
-                LFLD(s32, self, 0x48) = 0;
+        if (self->unk_54 == 0) {
+            self->unk_04 |= 0x8000000;
+            if (self->unk_44 != 7) {
+                self->unk_44 = 5;
+                self->unk_48 = 0;
             }
         }
-        LFLD(s32, self, 0x4c) = 0;
-        LFLD(s32, self, 0x50) = 0;
-        LFLD(s32, self, 0x58) = -1;
-        LFLD(s32, self, 0x54) = 0;
+        self->unk_4c = 0;
+        self->unk_50 = 0;
+        self->unk_58 = -1;
+        self->unk_54 = 0;
         break;
     }
 }
 
-void func_ov000_0217c5a8(u8 *self) {
-    switch (LFLD(s32, self, 0x50)) {
+void func_ov000_0217c5a8(Lo0217ab30 *self) {
+    switch (self->unk_50) {
     case 0:
         if (func_ov000_0217bd88(self, 0x8000, 0x7f)) {
-            LFLD(s32, self, 0x50) = 1;
+            self->unk_50 = 1;
         }
         break;
     case 1:
         if (func_ov000_0217bd88(self, 0x8000, 0x80)) {
-            LFLD(s32, self, 0x50) = 2;
+            self->unk_50 = 2;
         }
         break;
     case 2:
         if (Lo0217c3b0_Busy(self)) {
             return;
         }
-        LFLD(s32, self, 0x54) = 1;
+        self->unk_54 = 1;
         LFLD(void *, LoSwitchTask(3), 0x30) = (void *)func_ov000_0217a8f4;
         ((VObj *)self)->vfunc_48();
-        LFLD(s32, self, 0x50) = 3;
+        self->unk_50 = 3;
         break;
     case 3:
         if (!(LBIT(self, 0x4).b0 == 0 ? TRUE : FALSE)) {
@@ -6332,26 +6570,26 @@ void func_ov000_0217c5a8(u8 *self) {
         if (!((VObj *)self)->vfunc_54()) {
             return;
         }
-        if (LFLD(s32, self, 0x54) == 0) {
-            LFLD(u32, self, 0x4) |= 0x400000;
-            if (LFLD(s32, self, 0x44) != 7) {
-                LFLD(s32, self, 0x44) = 5;
-                LFLD(s32, self, 0x48) = 0;
+        if (self->unk_54 == 0) {
+            self->unk_04 |= 0x400000;
+            if (self->unk_44 != 7) {
+                self->unk_44 = 5;
+                self->unk_48 = 0;
             }
         }
-        LFLD(s32, self, 0x4c) = 0;
-        LFLD(s32, self, 0x50) = 0;
-        LFLD(s32, self, 0x58) = -1;
-        LFLD(s32, self, 0x54) = 0;
+        self->unk_4c = 0;
+        self->unk_50 = 0;
+        self->unk_58 = -1;
+        self->unk_54 = 0;
         break;
     }
 }
 
-static inline void Lo0217c7b8_Reset(u8 *self) {
-    LFLD(s32, self, 0x4c) = 0;
-    LFLD(s32, self, 0x50) = 0;
-    LFLD(s32, self, 0x58) = -1;
-    LFLD(s32, self, 0x54) = 0;
+static inline void Lo0217c7b8_Reset(Lo0217ab30 *self) {
+    self->unk_4c = 0;
+    self->unk_50 = 0;
+    self->unk_58 = -1;
+    self->unk_54 = 0;
 }
 
 static inline BOOL Lo0217c7b8_Ready(u8 *self) {
@@ -6367,23 +6605,23 @@ static inline BOOL Lo0217c7b8_Ready(u8 *self) {
     return TRUE;
 }
 
-void func_ov000_0217c7b8(u8 *self) {
-    switch (LFLD(s32, self, 0x50)) {
+void func_ov000_0217c7b8(Lo0217ab30 *self) {
+    switch (self->unk_50) {
     case 0:
-        if (LFLD(s32, self, 0x58) == 1) {
-            LFLD(s32, self, 0x50) = 1;
+        if (self->unk_58 == 1) {
+            self->unk_50 = 1;
         } else {
-            LFLD(s32, self, 0x50) = 5;
+            self->unk_50 = 5;
         }
         break;
     case 1:
         if (Lo0217c3b0_Busy(self)) {
             return;
         }
-        LFLD(s32, self, 0x54) = 1;
+        self->unk_54 = 1;
         LFLD(void *, LoSwitchTask(3), 0x30) = (void *)func_ov000_0217a8f4;
         ((VObj *)self)->vfunc_48();
-        LFLD(s32, self, 0x50) = 2;
+        self->unk_50 = 2;
         break;
     case 2:
         if (!(LBIT(self, 0x4).b0 == 0 ? TRUE : FALSE)) {
@@ -6395,17 +6633,17 @@ void func_ov000_0217c7b8(u8 *self) {
         if (!((VObj *)self)->vfunc_54()) {
             return;
         }
-        if (LFLD(s32, self, 0x54) == 0) {
-            LFLD(s32, self, 0x50) = 3;
+        if (self->unk_54 == 0) {
+            self->unk_50 = 3;
             return;
         }
         Lo0217c7b8_Reset(self);
         break;
     case 3:
-        LFLD(s32, self, 0x54) = 0x10001;
+        self->unk_54 = 0x10001;
         LFLD(void *, LoSwitchTask(3), 0x30) = (void *)func_ov000_0217a8f4;
         ((VObj *)self)->vfunc_48();
-        LFLD(s32, self, 0x50) = 4;
+        self->unk_50 = 4;
         break;
     case 4:
         if (!(LBIT(self, 0x4).b0 == 0 ? TRUE : FALSE)) {
@@ -6417,8 +6655,8 @@ void func_ov000_0217c7b8(u8 *self) {
         if (!((VObj *)self)->vfunc_54()) {
             return;
         }
-        if (LFLD(s32, self, 0x54) == 0) {
-            LFLD(s32, self, 0x50) = 5;
+        if (self->unk_54 == 0) {
+            self->unk_50 = 5;
             return;
         }
         Lo0217c7b8_Reset(self);
@@ -6428,32 +6666,32 @@ void func_ov000_0217c7b8(u8 *self) {
             return;
         }
         LFLD(u8, data_02097dd0, 0x31) = 1;
-        LFLD(u32, self, 0x4) |= 0x10000000;
-        LFLD(s32, self, 0x50) = 6;
+        self->unk_04 |= 0x10000000;
+        self->unk_50 = 6;
     case 6: {
-        u8 *p = LFLD(u8 *, self, 0x5c);
+        u8 *p = (u8 *)self->unk_5c;
         LFLD(u32, p, 0x48) |= 0x4000;
         LFLD(s32, p, 0x40) = 0;
-        LFLD(s32, self, 0x50) = 7;
+        self->unk_50 = 7;
         break;
     }
     case 7:
-        if (!(LBIT(LFLD(u8 *, self, 0x5c), 0x48).b1 ? TRUE : FALSE)) {
+        if (!(LBIT((u8 *)self->unk_5c, 0x48).b1 ? TRUE : FALSE)) {
             return;
         }
-        if (LFLD(s32, self, 0x58) == 1) {
-            LFLD(s32, self, 0x50) = 9;
+        if (self->unk_58 == 1) {
+            self->unk_50 = 9;
             return;
         }
         if (Lo0217c3b0_Busy(self)) {
             return;
         }
         func_ov000_0217bd88(self, 0x8000, 0x83);
-        LFLD(s32, self, 0x50) = 8;
+        self->unk_50 = 8;
         break;
     case 8:
         LFLD(u8, data_02097dd0, 0x31) = 0;
-        if (!((LFLD(u32, self, 0x4) & 0x4000000) ? TRUE : FALSE)) {
+        if (!((self->unk_04 & 0x4000000) ? TRUE : FALSE)) {
             Lo0217c008_SetMode(self, 5);
         }
         Lo0217c7b8_Reset(self);
@@ -6468,24 +6706,24 @@ void func_ov000_0217c7b8(u8 *self) {
             VOBJ_SET_VTABLE(o, data_0208c994);
             o->vfunc_14();
         }
-        LFLD(VObj *, self, 0x60) = o;
+        self->unk_60 = o;
         o->vfunc_08();
-        LFLD(u32, LFLD(u8 *, self, 0x60), 0x48) |= 0x40;
-        LBIT(LFLD(u8 *, self, 0x60), 0x48).b0 = 1;
-        LFLD(s32, self, 0x50) = 10;
+        LFLD(u32, self->unk_60, 0x48) |= 0x40;
+        LBIT((u8 *)self->unk_60, 0x48).b0 = 1;
+        self->unk_50 = 10;
     }
     case 10: {
-        u8 *p = LFLD(u8 *, self, 0x60);
+        u8 *p = (u8 *)self->unk_60;
         if (!(LBIT(p, 0x48).b7 ? TRUE : FALSE)) {
             return;
         }
         LFLD(u32, p, 0x48) |= 0x4000;
         LFLD(s32, p, 0x40) = 0;
-        LFLD(s32, self, 0x50) = 11;
+        self->unk_50 = 11;
         break;
     }
     case 11:
-        if (!(LBIT(LFLD(u8 *, self, 0x60), 0x48).b1 ? TRUE : FALSE)) {
+        if (!(LBIT((u8 *)self->unk_60, 0x48).b1 ? TRUE : FALSE)) {
             return;
         }
         if (Lo0217c3b0_Busy(self)) {
@@ -6493,7 +6731,7 @@ void func_ov000_0217c7b8(u8 *self) {
         }
         LO_FREE_V(self, 0x60);
         func_ov000_0217bd88(self, 0x8000, 0x83);
-        LFLD(s32, self, 0x50) = 8;
+        self->unk_50 = 8;
         break;
     }
 }
@@ -6517,110 +6755,110 @@ u8 func_ov000_0214b8f4(void *p);
 s32 func_ov000_0214b6d0(void *p);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
-static inline BOOL HasFlag0217cddc(u8 *self, u32 bit) {
-    return (LFLD(u32, self, 0x4) & bit) ? TRUE : FALSE;
+static inline BOOL HasFlag0217cddc(Lo0217ab30 *self, u32 bit) {
+    return (self->unk_04 & bit) ? TRUE : FALSE;
 }
 
-static inline BOOL Has2_0217cddc(u8 *self, u32 bit) {
+static inline BOOL Has2_0217cddc(Lo0217ab30 *self, u32 bit) {
     return HasFlag0217cddc(self, bit) ? TRUE : FALSE;
 }
 
-void func_ov000_0217cddc(u8 *self) {
-    switch (LFLD(s32, self, 0x48)) {
+void func_ov000_0217cddc(Lo0217ab30 *self) {
+    switch (self->unk_48) {
     case 0:
-        if (LFLD(s32, self, 0xc) != 3) {
+        if (self->unk_0c != 3) {
             if (!func_ov000_0217bd88(self, 0x8000, 0x6f)) {
                 break;
             }
         }
-        LFLD(u32, self, 0x4) &= 0xc00fffff;
-        LFLD(VObj *, self, 0x5c)->vfunc_74();
-        if (LFLD(s32, self, 0xc) == 1) {
-            LFLD(u32, self, 0x4) |= 0x1000000;
-        } else if (LFLD(s32, self, 0xc) == 2) {
-            LFLD(u32, self, 0x4) |= 0x2000000;
-        } else if (LFLD(s32, self, 0xc) == 3) {
-            LFLD(u32, self, 0x4) |= 0x4000000;
+        self->unk_04 &= 0xc00fffff;
+        self->unk_5c->vfunc_74();
+        if (self->unk_0c == 1) {
+            self->unk_04 |= 0x1000000;
+        } else if (self->unk_0c == 2) {
+            self->unk_04 |= 0x2000000;
+        } else if (self->unk_0c == 3) {
+            self->unk_04 |= 0x4000000;
         }
-        LFLD(s32, self, 0x48) = 1;
+        self->unk_48 = 1;
         break;
     case 1:
         if (Has2_0217cddc(self, 0x1000000) | Has2_0217cddc(self, 0x2000000) | Has2_0217cddc(self, 0x4000000)) {
-            if (LFLD(s32, self, 0x44) != 7) {
-                LFLD(s32, self, 0x44) = 3;
-                LFLD(s32, self, 0x48) = 0;
+            if (self->unk_44 != 7) {
+                self->unk_44 = 3;
+                self->unk_48 = 0;
             }
         } else {
-            if (LFLD(s32, self, 0x44) != 7) {
-                LFLD(s32, self, 0x44) = 2;
-                LFLD(s32, self, 0x48) = 0;
+            if (self->unk_44 != 7) {
+                self->unk_44 = 2;
+                self->unk_48 = 0;
             }
         }
         break;
     }
 }
 
-static inline BOOL IsSet0217cf10(u8 *self) {
-    return LFLD(s32, self, 0x4c) != 0 ? TRUE : FALSE;
+static inline BOOL IsSet0217cf10(Lo0217ab30 *self) {
+    return self->unk_4c != 0 ? TRUE : FALSE;
 }
 
-void func_ov000_0217cf10(u8 *self) {
-    if (LFLD(void *, self, 0x6c) != NULL) {
-        func_ov000_0214b810(LFLD(void *, self, 0x6c));
+void func_ov000_0217cf10(Lo0217ab30 *self) {
+    if (self->unk_6c != NULL) {
+        func_ov000_0214b810(self->unk_6c);
     }
-    switch (LFLD(s32, self, 0x48)) {
+    switch (self->unk_48) {
     case 0: {
         void *p;
-        HEAP_DELETE(void *, LFLD(void *, self, 0x6c), func_ov000_0214b724(p); func_0203de1c(p));
+        HEAP_DELETE(void *, self->unk_6c, func_ov000_0214b724(p); func_0203de1c(p));
         p = func_0203dd9c(0x3c);
         if (p != NULL) {
             p = func_ov000_0214b6d8(p);
         }
-        LFLD(void *, self, 0x6c) = p;
+        self->unk_6c = p;
         func_ov000_0214b88c(p, data_ov000_021c9bf4[1]);
-        LFLD(s32, self, 0x48) = 1;
+        self->unk_48 = 1;
         break;
     }
     case 1:
-        if (!func_ov000_0214b8d8(LFLD(void *, self, 0x6c))) {
+        if (!func_ov000_0214b8d8(self->unk_6c)) {
             break;
         }
-        if (!func_ov000_0214b8f4(LFLD(void *, self, 0x6c))) {
-            if (func_ov000_0214b6d0((u8 *)LFLD(void *, self, 0x6c) + 0x20) == 3) {
-                LFLD(s32, self, 0x48) = 3;
+        if (!func_ov000_0214b8f4(self->unk_6c)) {
+            if (func_ov000_0214b6d0((u8 *)self->unk_6c + 0x20) == 3) {
+                self->unk_48 = 3;
             } else {
-                LFLD(s32, self, 0x48) = 2;
+                self->unk_48 = 2;
             }
             break;
         }
-        if (LFLD(s32, self, 0x44) != 7) {
-            LFLD(s32, self, 0x44) = 3;
-            LFLD(s32, self, 0x48) = 0;
+        if (self->unk_44 != 7) {
+            self->unk_44 = 3;
+            self->unk_48 = 0;
         }
         break;
     case 3:
         if (func_ov000_0217bd88(self, 0x8000, 0x70)) {
-            LFLD(s32, self, 0x48) = 2;
+            self->unk_48 = 2;
         }
         break;
     case 2:
         if (!func_ov000_0217bd88(self, 0x8000, 0x71)) {
             break;
         }
-        LFLD(s32, self, 0x4c) = 1;
-        LFLD(s32, self, 0x50) = 0;
-        LFLD(s32, self, 0x58) = -1;
-        LFLD(s32, self, 0x54) = 0;
-        LFLD(s32, self, 0x48) = 4;
+        self->unk_4c = 1;
+        self->unk_50 = 0;
+        self->unk_58 = -1;
+        self->unk_54 = 0;
+        self->unk_48 = 4;
         break;
     case 4:
         if (IsSet0217cf10(self)) {
             break;
         }
         func_ov000_0217bd88(self, 0x8000, 0x6f);
-        if (LFLD(s32, self, 0x44) != 7) {
-            LFLD(s32, self, 0x44) = 3;
-            LFLD(s32, self, 0x48) = 0;
+        if (self->unk_44 != 7) {
+            self->unk_44 = 3;
+            self->unk_48 = 0;
         }
         break;
     }
@@ -6644,12 +6882,12 @@ static inline BOOL Ready0217d0c4(void *o) {
     return (LFLD(u32, o, 0xc) & 0x10000) ? FALSE : TRUE;
 }
 
-static inline BOOL Busy0217d0c4(u8 *self) {
-    void *o = LFLD(void *, self, 0x64);
+static inline BOOL Busy0217d0c4(Lo0217ab30 *self) {
+    void *o = self->unk_64;
     if (o == NULL) {
         return FALSE;
     }
-    if (LFLD(s32, self, 0x68) == 0) {
+    if (self->unk_68 == 0) {
         if (!Ready0217d0c4(o)) {
             LFLD(u32, o, 0xc) |= 0x40000;
         }
@@ -6661,8 +6899,8 @@ static inline BOOL Flag0217d0c4(u32 flags, u32 bit) {
     return (flags & bit) ? TRUE : FALSE;
 }
 
-static inline BOOL Waiting0217d0c4(u8 *self) {
-    return LFLD(s32, self, 0x4c) != 0 ? TRUE : FALSE;
+static inline BOOL Waiting0217d0c4(Lo0217ab30 *self) {
+    return self->unk_4c != 0 ? TRUE : FALSE;
 }
 
 static inline BOOL B7_0217d0c4(void *o) { return LBIT(o, 0x48).b7 ? TRUE : FALSE; }
@@ -6671,23 +6909,23 @@ static inline BOOL B1_0217d0c4(void *o) { return LBIT(o, 0x48).b1 ? TRUE : FALSE
 static inline BOOL B13_0217d0c4(void *o) { return LBIT(o, 0x48).b13 ? TRUE : FALSE; }
 static inline BOOL B3_0217d0c4(void *o) { return LBIT(o, 0x48).b3 ? TRUE : FALSE; }
 
-static inline void Exit0217d0c4(u8 *self, s32 next) {
-    if (LFLD(s32, self, 0x44) != 7) {
-        LFLD(s32, self, 0x44) = next;
-        LFLD(s32, self, 0x48) = 0;
+static inline void Exit0217d0c4(Lo0217ab30 *self, s32 next) {
+    if (self->unk_44 != 7) {
+        self->unk_44 = next;
+        self->unk_48 = 0;
     }
 }
 
-void func_ov000_0217d0c4(u8 *self) {
-    switch (LFLD(s32, self, 0x48)) {
+void func_ov000_0217d0c4(Lo0217ab30 *self) {
+    switch (self->unk_48) {
     case 0:
-        func_020473ac(LFLD(void *, self, 0x5c), 1);
-        LFLD(u32, LFLD(void *, self, 0x5c), 0x48) |= 0x40;
-        LBIT(LFLD(void *, self, 0x5c), 0x48).b0 = 1;
-        LFLD(s32, self, 0x48) = 1;
+        func_020473ac(self->unk_5c, 1);
+        LFLD(u32, self->unk_5c, 0x48) |= 0x40;
+        LBIT(self->unk_5c, 0x48).b0 = 1;
+        self->unk_48 = 1;
         break;
     case 1: {
-        void *o = LFLD(void *, self, 0x5c);
+        void *o = self->unk_5c;
         void *q;
         u32 flags;
         u8 b;
@@ -6696,38 +6934,38 @@ void func_ov000_0217d0c4(u8 *self) {
         }
         q = LFLD(void *, o, 0x28);
         if (B11_0217d0c4(o)) {
-            LFLD(s32, self, 0x48) = 9;
+            self->unk_48 = 9;
             return;
         }
-        flags = LFLD(u32, self, 0x4);
+        flags = self->unk_04;
         if (Flag0217d0c4(flags, 0x4000000)) {
-            LFLD(s32, self, 0x48) = 0x13;
+            self->unk_48 = 0x13;
             return;
         }
         b = LFLD(u8, q, 0x15);
         if (!(b & 1)) {
             if (Flag0217d0c4(flags, 0x1000000)) {
-                LFLD(s32, self, 0x48) = 0x16;
+                self->unk_48 = 0x16;
                 return;
             }
             if (Flag0217d0c4(flags, 0x2000000)) {
-                LFLD(s32, self, 0x48) = 0x16;
+                self->unk_48 = 0x16;
             } else {
-                LFLD(s32, self, 0x48) = 2;
+                self->unk_48 = 2;
             }
         } else {
             if (b & 4) {
-                LFLD(s32, self, 0x48) = 6;
+                self->unk_48 = 6;
             } else {
-                LFLD(s32, self, 0x48) = 7;
+                self->unk_48 = 7;
             }
         }
         break;
     }
     case 2: {
         BOOL busy = FALSE;
-        void *o = LFLD(void *, self, 0x64);
-        if (LFLD(s32, self, 0x68) != 0) {
+        void *o = self->unk_64;
+        if (self->unk_68 != 0) {
             busy = TRUE;
         }
         if (o != NULL && Ready0217d0c4(o)) {
@@ -6737,62 +6975,62 @@ void func_ov000_0217d0c4(u8 *self) {
             return;
         }
         LFLD(u32, o, 0xc) |= 0x40000;
-        LFLD(u32, self, 0x4) |= 0x100000;
+        self->unk_04 |= 0x100000;
         func_0206c4c4(data_0214a424);
         Exit0217d0c4(self, 5);
         break;
     }
     case 6:
-        LFLD(u32, self, 0x4) |= 0x200000;
+        self->unk_04 |= 0x200000;
         func_0206c4c4(data_0214a424);
         Exit0217d0c4(self, 4);
         break;
     case 7: {
-        void *o = LFLD(void *, self, 0x5c);
+        void *o = self->unk_5c;
         LFLD(u32, o, 0x48) |= 0x400;
         LFLD(s32, o, 0x40) = 0;
-        LFLD(s32, self, 0x48) = 8;
+        self->unk_48 = 8;
         break;
     }
     case 8: {
-        void *o = LFLD(void *, self, 0x5c);
+        void *o = self->unk_5c;
         if (B1_0217d0c4(o)) {
             Exit0217d0c4(self, 4);
             return;
         }
         if (B11_0217d0c4(o)) {
-            LFLD(s32, self, 0x48) = 9;
+            self->unk_48 = 9;
         }
         break;
     }
     case 9:
         if (func_ov000_0217bd88(self, 0x8000, 0x85)) {
-            LFLD(s32, self, 0x48) = 0xa;
+            self->unk_48 = 0xa;
         }
         break;
     case 10:
         if (func_ov000_0217bd88(self, 0x8000, 0x86)) {
-            LFLD(s32, self, 0x48) = 0xb;
+            self->unk_48 = 0xb;
         }
         break;
     case 11:
-        LFLD(u32, LFLD(void *, self, 0x5c), 0x48) |= 0x1000;
-        LFLD(s32, self, 0x48) = 0xc;
+        LFLD(u32, self->unk_5c, 0x48) |= 0x1000;
+        self->unk_48 = 0xc;
         break;
     case 12: {
         void *o;
         if (Busy0217d0c4(self)) {
             return;
         }
-        o = LFLD(void *, self, 0x5c);
+        o = self->unk_5c;
         if (B1_0217d0c4(o)) {
             func_ov000_0217bd88(self, 0x8000, 0x87);
-            LFLD(s32, self, 0x48) = 0xd;
+            self->unk_48 = 0xd;
             return;
         }
         if (B13_0217d0c4(o)) {
             func_ov000_0217bd88(self, 0x8000, 0x88);
-            LFLD(s32, self, 0x48) = 0xe;
+            self->unk_48 = 0xe;
         }
         break;
     }
@@ -6800,16 +7038,16 @@ void func_ov000_0217d0c4(u8 *self) {
         Exit0217d0c4(self, 4);
         break;
     case 14:
-        LFLD(VObj *, self, 0x5c)->vfunc_74();
-        func_020473ac(LFLD(void *, self, 0x5c), 4);
-        LFLD(s32, self, 0x48) = 0xf;
+        self->unk_5c->vfunc_74();
+        func_020473ac(self->unk_5c, 4);
+        self->unk_48 = 0xf;
         break;
     case 15:
-        LFLD(s32, self, 0x4c) = 4;
-        LFLD(s32, self, 0x50) = 0;
-        LFLD(s32, self, 0x58) = 0;
-        LFLD(s32, self, 0x54) = 0;
-        LFLD(s32, self, 0x48) = 0x11;
+        self->unk_4c = 4;
+        self->unk_50 = 0;
+        self->unk_58 = 0;
+        self->unk_54 = 0;
+        self->unk_48 = 0x11;
         break;
     case 17:
         if (Waiting0217d0c4(self)) {
@@ -6818,8 +7056,8 @@ void func_ov000_0217d0c4(u8 *self) {
         Exit0217d0c4(self, 4);
         break;
     case 19:
-        if (!(LFLD(u8, LFLD(void *, self, 0x5c), 0x8) == 0 ? TRUE : FALSE)) {
-            LFLD(s32, self, 0x48) = 0x14;
+        if (!(LFLD(u8, self->unk_5c, 0x8) == 0 ? TRUE : FALSE)) {
+            self->unk_48 = 0x14;
             return;
         }
         Exit0217d0c4(self, 6);
@@ -6828,11 +7066,11 @@ void func_ov000_0217d0c4(u8 *self) {
         if (!func_ov000_0217bd88(self, 0x8000, 0x6d)) {
             return;
         }
-        LFLD(u32, LFLD(void *, self, 0x5c), 0x48) |= 0x8;
-        LFLD(s32, self, 0x48) = 0x15;
+        LFLD(u32, self->unk_5c, 0x48) |= 0x8;
+        self->unk_48 = 0x15;
         break;
     case 21:
-        if (B3_0217d0c4(LFLD(void *, self, 0x5c))) {
+        if (B3_0217d0c4(self->unk_5c)) {
             return;
         }
         if (Busy0217d0c4(self)) {
@@ -6842,11 +7080,11 @@ void func_ov000_0217d0c4(u8 *self) {
         break;
     case 22:
         if (func_ov000_0217bd88(self, 0x8000, 0x174)) {
-            LFLD(s32, self, 0x48) = 0x17;
+            self->unk_48 = 0x17;
         }
         break;
     case 23:
-        if (Flag0217d0c4(LFLD(u32, self, 0x4), 0x1000000)) {
+        if (Flag0217d0c4(self->unk_04, 0x1000000)) {
             if (!func_ov000_0217bd88(self, 0x8000, 0x148)) {
                 break;
             }
@@ -6880,12 +7118,12 @@ static inline BOOL Ready0217d66c(void *o) {
     return (LFLD(u32, o, 0xc) & 0x10000) ? FALSE : TRUE;
 }
 
-static inline BOOL Busy0217d66c(u8 *self) {
-    void *o = LFLD(void *, self, 0x64);
+static inline BOOL Busy0217d66c(Lo0217ab30 *self) {
+    void *o = self->unk_64;
     if (o == NULL) {
         return FALSE;
     }
-    if (LFLD(s32, self, 0x68) == 0) {
+    if (self->unk_68 == 0) {
         if (!Ready0217d66c(o)) {
             LFLD(u32, o, 0xc) |= 0x40000;
         }
@@ -6897,40 +7135,40 @@ static inline BOOL Flag0217d66c(u32 flags, u32 bit) {
     return (flags & bit) ? TRUE : FALSE;
 }
 
-static inline BOOL Waiting0217d66c(u8 *self) {
-    return LFLD(s32, self, 0x4c) != 0 ? TRUE : FALSE;
+static inline BOOL Waiting0217d66c(Lo0217ab30 *self) {
+    return self->unk_4c != 0 ? TRUE : FALSE;
 }
 
 static inline void SePlay0217d66c(s32 id) {
     func_02049a48(data_02097e4c, id, -1, -1, -1);
 }
 
-void func_ov000_0217d66c(u8 *self) {
-    switch (LFLD(s32, self, 0x48)) {
+void func_ov000_0217d66c(Lo0217ab30 *self) {
+    switch (self->unk_48) {
     case 0: {
         u32 flags;
         if (Busy0217d66c(self)) {
             return;
         }
-        flags = LFLD(u32, self, 0x4);
+        flags = self->unk_04;
         if (Flag0217d66c(flags, 0x4000000)) {
-            if (LFLD(s32, self, 0x44) != 7) {
-                LFLD(s32, self, 0x44) = 6;
-                LFLD(s32, self, 0x48) = 0;
+            if (self->unk_44 != 7) {
+                self->unk_44 = 6;
+                self->unk_48 = 0;
             }
             return;
         }
         if (Flag0217d66c(flags, 0x1000000) || Flag0217d66c(flags, 0x2000000)) {
-            if (LFLD(s32, self, 0x44) != 7) {
-                LFLD(s32, self, 0x44) = 5;
-                LFLD(s32, self, 0x48) = 0;
+            if (self->unk_44 != 7) {
+                self->unk_44 = 5;
+                self->unk_48 = 0;
             }
             return;
         }
-        LFLD(VObj *, self, 0x5c)->vfunc_74();
-        func_020473ac(LFLD(void *, self, 0x5c), 4);
+        self->unk_5c->vfunc_74();
+        func_020473ac(self->unk_5c, 4);
         func_ov000_0217b324(self, 0);
-        LFLD(s32, self, 0x48) = 1;
+        self->unk_48 = 1;
         break;
     }
     case 1:
@@ -6938,66 +7176,66 @@ void func_ov000_0217d66c(u8 *self) {
             return;
         }
         SePlay0217d66c(0x27);
-        LFLD(s32, self, 0x48) = 2;
+        self->unk_48 = 2;
         break;
     case 2:
-        LFLD(s32, self, 0xa4) += 0x1000;
-        if (LFLD(s32, self, 0xa4) < 0x18000) {
+        self->unk_a4 += 0x1000;
+        if (self->unk_a4 < 0x18000) {
             return;
         }
-        LFLD(s32, self, 0xa4) = 0x18000;
-        LFLD(u32, self, 0x4) &= ~0x10000;
-        LFLD(s32, self, 0x48) = 3;
+        self->unk_a4 = 0x18000;
+        self->unk_04 &= ~0x10000;
+        self->unk_48 = 3;
         break;
     case 3: {
         Pad *pad;
-        if (Flag0217d66c(LFLD(u32, self, 0x4), 0x10000)) {
+        if (Flag0217d66c(self->unk_04, 0x10000)) {
             return;
         }
         pad = data_02097dc8;
         if ((pad->cur & 0x548) == 0x548) {
-            LFLD(s32, self, 0x48) = 0xc;
+            self->unk_48 = 0xc;
             return;
         }
         if (pad->trig & 1) {
-            switch (LFLD(s8, LFLD(u8 *, self + LFLD(s16, self, 0xba) * 4, 0xa8), 0x98)) {
+            switch (LFLD(s8, LFLD(u8 *, (u8 *)self + self->unk_ba * 4, 0xa8), 0x98)) {
             case '1':
-                LFLD(s32, self, 0x48) = 4;
+                self->unk_48 = 4;
                 return;
             case '2':
-                LFLD(s32, self, 0x48) = 6;
+                self->unk_48 = 6;
                 return;
             case '3':
-                LFLD(s32, self, 0x48) = 8;
+                self->unk_48 = 8;
                 return;
             case '4':
-                LFLD(s32, self, 0x48) = 10;
+                self->unk_48 = 10;
                 return;
             }
             break;
         }
         if (pad->trig & 2) {
             SePlay0217d66c(0x28);
-            LFLD(u32, self, 0x4) |= 0x20000000;
-            if (LFLD(s32, self, 0x44) != 7) {
-                LFLD(s32, self, 0x44) = 5;
-                LFLD(s32, self, 0x48) = 0;
+            self->unk_04 |= 0x20000000;
+            if (self->unk_44 != 7) {
+                self->unk_44 = 5;
+                self->unk_48 = 0;
             }
             return;
         }
         if (pad->repeat & 0x80) {
-            LFLD(s16, self, 0xba)++;
-            if (LFLD(s16, self, 0xba) >= LFLD(s16, self, 0xb8)) {
-                LFLD(s16, self, 0xba) = LFLD(s16, self, 0xb8) - 1;
+            self->unk_ba++;
+            if (self->unk_ba >= self->unk_b8) {
+                self->unk_ba = self->unk_b8 - 1;
                 return;
             }
             SePlay0217d66c(0x1d);
             return;
         }
         if (pad->repeat & 0x40) {
-            LFLD(s16, self, 0xba)--;
-            if (LFLD(s16, self, 0xba) < 0) {
-                LFLD(s16, self, 0xba) = 0;
+            self->unk_ba--;
+            if (self->unk_ba < 0) {
+                self->unk_ba = 0;
                 return;
             }
             SePlay0217d66c(0x1d);
@@ -7005,70 +7243,70 @@ void func_ov000_0217d66c(u8 *self) {
         break;
     }
     case 4:
-        LFLD(s32, self, 0x4c) = 2;
-        LFLD(s32, self, 0x50) = 0;
-        LFLD(s32, self, 0x58) = -1;
-        LFLD(s32, self, 0x54) = 0;
-        LFLD(s32, self, 0x48) = 5;
+        self->unk_4c = 2;
+        self->unk_50 = 0;
+        self->unk_58 = -1;
+        self->unk_54 = 0;
+        self->unk_48 = 5;
         break;
     case 5:
         if (!Waiting0217d66c(self)) {
-            LFLD(s32, self, 0x48) = 3;
+            self->unk_48 = 3;
         }
         break;
     case 6:
-        LFLD(s32, self, 0x4c) = 1;
-        LFLD(s32, self, 0x50) = 0;
-        LFLD(s32, self, 0x58) = -1;
-        LFLD(s32, self, 0x54) = 0;
-        LFLD(s32, self, 0x48) = 7;
+        self->unk_4c = 1;
+        self->unk_50 = 0;
+        self->unk_58 = -1;
+        self->unk_54 = 0;
+        self->unk_48 = 7;
         break;
     case 7:
         if (!Waiting0217d66c(self)) {
-            LFLD(s32, self, 0x48) = 3;
+            self->unk_48 = 3;
         }
         break;
     case 8:
-        LFLD(s32, self, 0x4c) = 3;
-        LFLD(s32, self, 0x50) = 0;
-        LFLD(s32, self, 0x58) = -1;
-        LFLD(s32, self, 0x54) = 0;
-        LFLD(s32, self, 0x48) = 9;
+        self->unk_4c = 3;
+        self->unk_50 = 0;
+        self->unk_58 = -1;
+        self->unk_54 = 0;
+        self->unk_48 = 9;
         break;
     case 9:
         if (!Waiting0217d66c(self)) {
-            LFLD(s32, self, 0x48) = 3;
+            self->unk_48 = 3;
         }
         break;
     case 10:
         if (func_ov000_0217bd88(self, 0x8000, 0x19d)) {
-            LFLD(s32, self, 0x48) = 0xb;
+            self->unk_48 = 0xb;
         }
         break;
     case 11:
-        if (LFLD(VObj *, self, 0x64) != NULL && LFLD(VObj *, self, 0x64)->vfunc_0c() &&
+        if (self->unk_64 != NULL && self->unk_64->vfunc_0c() &&
             (data_02097dc8->cur & 0x548) == 0x548) {
-            LFLD(u32, LFLD(void *, self, 0x64), 0xc) |= 0x40000;
-            LFLD(s32, self, 0x48) = 0xc;
+            LFLD(u32, self->unk_64, 0xc) |= 0x40000;
+            self->unk_48 = 0xc;
             return;
         }
         if (!Busy0217d66c(self)) {
-            LFLD(s32, self, 0x48) = 3;
+            self->unk_48 = 3;
         }
         break;
     case 12:
         if (Busy0217d66c(self)) {
             return;
         }
-        LFLD(s32, self, 0x4c) = 4;
-        LFLD(s32, self, 0x50) = 0;
-        LFLD(s32, self, 0x58) = 1;
-        LFLD(s32, self, 0x54) = 0;
-        LFLD(s32, self, 0x48) = 9;
+        self->unk_4c = 4;
+        self->unk_50 = 0;
+        self->unk_58 = 1;
+        self->unk_54 = 0;
+        self->unk_48 = 9;
         break;
     case 13:
         if (!Waiting0217d66c(self)) {
-            LFLD(s32, self, 0x48) = 3;
+            self->unk_48 = 3;
         }
         break;
     }
@@ -7189,16 +7427,16 @@ void *func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
-void func_ov000_0217ddd4(void *self) {
-    switch (LFLD(s32, self, 0x48)) {
+void func_ov000_0217ddd4(Lo0217ab30 *self) {
+    switch (self->unk_48) {
     case 0: {
         u32 fl;
         s32 k;
-        LFLD(VObj *, self, 0x5c)->vfunc_74();
-        if (LFLD(VObj *, self, 0x60) != NULL) {
-            LFLD(VObj *, self, 0x60)->vfunc_74();
+        self->unk_5c->vfunc_74();
+        if (self->unk_60 != NULL) {
+            self->unk_60->vfunc_74();
         }
-        fl = LFLD(u32, self, 4);
+        fl = self->unk_04;
         if (fl & 0x10000000) {
             k = func_ov000_0217bd88(self, 0x8000, 0x84);
         } else if (fl & 0x100000) {
@@ -7209,7 +7447,7 @@ void func_ov000_0217ddd4(void *self) {
         if (!k) {
             return;
         }
-        LFLD(s32, self, 0x48) = 1;
+        self->unk_48 = 1;
     }
     case 1:
         LFLD(u8, data_02097dd0, 0x31) = 0;
@@ -7220,17 +7458,17 @@ void func_ov000_0217ddd4(void *self) {
 extern s16 FX_SinCosTable_[];
 s32 FX_Div(s32 a, s32 b);
 typedef struct { s32 x, y, z; } V0217de7c;
-void func_ov000_0217df5c(void *self, V0217de7c *v);
-void func_ov000_0217e560(void *self, V0217de7c *v);
+void func_ov000_0217df5c(Lo0217ab30 *self, V0217de7c *v);
+void func_ov000_0217e560(Lo0217ab30 *self, V0217de7c *v);
 
-void func_ov000_0217de7c(void *self) {
+void func_ov000_0217de7c(Lo0217ab30 *self) {
     s32 st;
-    if (LFLD(void *, self, 0x24) == NULL) {
+    if (self->unk_24 == NULL) {
         return;
     }
-    st = LFLD(s32, self, 0x44);
-    if ((st == 4 || st == 5 || st == 7) && LFLD(s32, self, 0xa4) != 0) {
-        s32 t = FX_Div(LFLD(s32, self, 0xa4), 0x18000);
+    st = self->unk_44;
+    if ((st == 4 || st == 5 || st == 7) && self->unk_a4 != 0) {
+        s32 t = FX_Div(self->unk_a4, 0x18000);
         s32 c = 0x1000 - FX_SinCosTable_[((t * 0x4000) >> 16) * 2];
         V0217de7c v;
         v.x = LO_FX_MUL(c, 0x140000);
@@ -7240,8 +7478,8 @@ void func_ov000_0217de7c(void *self) {
         func_ov000_0217df5c(self, &v);
         func_ov000_0217e560(self, &v);
     }
-    if (LFLD(VObj *, self, 0x64) != NULL) {
-        LFLD(VObj *, self, 0x64)->vfunc_20();
+    if (self->unk_64 != NULL) {
+        self->unk_64->vfunc_20();
     }
 }
 
@@ -7330,31 +7568,31 @@ static inline void G3_Cmd1(int cmd, u32 value) {
     NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
-void func_ov000_0217df5c(u8 *self, LoVec0217df5c *pos) {
+void func_ov000_0217df5c(Lo0217ab30 *self, LoVec0217df5c *pos) {
     LoVec0217df5c v;
     u8 *g = data_02097d48;
     u32 size;
     u8 i;
-    MF(LFLD(void *, self, 0xa0)).b19 = 1;
-    MF(LFLD(void *, self, 0xa0)).f7 = func_02043d48(g + 0x8b0);
-    MF(LFLD(void *, self, 0xa0)).f2 = 0x1c;
-    LoSetPosV0217df5c(LFLD(void *, self, 0xa0), pos);
-    LFLD(s32, LFLD(void *, self, 0xa0), 0x150) = -0x1ccd;
-    LoModelPlayPart(LFLD(void *, self, 0xa0), 1);
-    if (LFLD(u8, self, 0x71) != 0) {
+    MF(self->unk_a0).b19 = 1;
+    MF(self->unk_a0).f7 = func_02043d48(g + 0x8b0);
+    MF(self->unk_a0).f2 = 0x1c;
+    LoSetPosV0217df5c(self->unk_a0, pos);
+    LFLD(s32, self->unk_a0, 0x150) = -0x1ccd;
+    LoModelPlayPart(self->unk_a0, 1);
+    if (self->unk_71 != 0) {
         v.x = pos->x - 0x6f000;
         v.y = pos->y - 0x4a000;
         v.z = pos->z;
-        MF(LFLD(void *, self, 0xa0)).b19 = 0;
-        MF(LFLD(void *, self, 0xa0)).f2 = 0x1f;
+        MF(self->unk_a0).b19 = 0;
+        MF(self->unk_a0).f2 = 0x1f;
         for (i = 0; i < 3; i++) {
-            LFLD(s32, LFLD(void *, self, 0xa0), 0x150) = -0x1c8d;
-            LoSetPosV0217df5c(LFLD(void *, self, 0xa0), &v);
-            LoModelPlayPart(LFLD(void *, self, 0xa0), 2);
-            if (i < LFLD(u8, self, 0x71)) {
-                LFLD(s32, LFLD(void *, self, 0xa0), 0x150) = -0x1c4d;
-                LoSetPosV0217df5c(LFLD(void *, self, 0xa0), &v);
-                LoModelPlayPart(LFLD(void *, self, 0xa0), 3);
+            LFLD(s32, self->unk_a0, 0x150) = -0x1c8d;
+            LoSetPosV0217df5c(self->unk_a0, &v);
+            LoModelPlayPart(self->unk_a0, 2);
+            if (i < self->unk_71) {
+                LFLD(s32, self->unk_a0, 0x150) = -0x1c4d;
+                LoSetPosV0217df5c(self->unk_a0, &v);
+                LoModelPlayPart(self->unk_a0, 3);
             }
             v.x += 0xc000;
         }
@@ -7395,7 +7633,7 @@ void func_ov000_0217df5c(u8 *self, LoVec0217df5c *pos) {
     v.x = pos->x + 0xbe000;
     v.y = pos->y + 0x6e000;
     v.z = -0x1c4d;
-    func_ov000_0214b1a0(&v, &c, 0x1f, func_ov000_0214b8ec(LFLD(void *, self, 0x6c)));
+    func_ov000_0214b1a0(&v, &c, 0x1f, func_ov000_0214b8ec(self->unk_6c));
     }
 }
 
@@ -7501,13 +7739,13 @@ struct LoTextWin {
 };
 #define OBJ(off) LFLD(LoTextWin *, self, off)
 
-static inline void Row0217e560(u8 *self, int off, s32 x, s32 y) {
+static inline void Row0217e560(Lo0217ab30 *self, int off, s32 x, s32 y) {
     OBJ(off)->unk_vf20(x + 0x12, y);
     OBJ(off)->Render();
     OBJ(off + 4)->unk_vf20(x + 0x87 - LFLD(s32, OBJ(off + 4), 0x44), y);
     OBJ(off + 4)->Render();
 }
-void func_ov000_0217e560(u8 *self, s32 *pos) {
+void func_ov000_0217e560(Lo0217ab30 *self, s32 *pos) {
     s32 x = pos[0] >> 12;
     u8 *g = data_02097d48;
     s32 step;
@@ -7532,7 +7770,7 @@ void func_ov000_0217e560(u8 *self, s32 *pos) {
     Row0217e560(self, 0x94, x, y + 0x64);
     OBJ(0x9c)->unk_vf20(x + 0xbd - (LFLD(s32, OBJ(0x9c), 0x44) >> 1), y + 0xa0);
     OBJ(0x9c)->Render();
-    t = LFLD(s32, self, 0x40) % 0x5a000;
+    t = self->unk_40 % 0x5a000;
     if (t <= 0x1e000) {
         s32 r = FX_Div(t, 0x1e000);
         if (r > 0x1000) {
@@ -7551,31 +7789,31 @@ void func_ov000_0217e560(u8 *self, s32 *pos) {
     a = (LO_FX_MUL(s, 0x10000) >> 12) + 0xf;
     lx = x + 0x4c;
     step = 0;
-    if (LFLD(s16, self, 0xb8) == 4) {
+    if (self->unk_b8 == 4) {
         y0 = y + 0x75;
         step = 0xe;
-    } else if (LFLD(s16, self, 0xb8) == 3) {
+    } else if (self->unk_b8 == 3) {
         y0 = y + 0x79;
         step = 0x10;
-    } else if (LFLD(s16, self, 0xb8) == 2) {
+    } else if (self->unk_b8 == 2) {
         y0 = y + 0x80;
         step = 0x12;
     } else {
         y0 = y + 0x89;
     }
-    for (i = 0; i < LFLD(s16, self, 0xb8); i++) {
-        ((LoTextWin **)(self + 0xa8))[i]->unk_vf20(lx - (LFLD(s32, ((LoTextWin **)(self + 0xa8))[i], 0x44) >> 1), y0 + i * step);
-        ((LoTextWin **)(self + 0xa8))[i]->Render();
+    for (i = 0; i < self->unk_b8; i++) {
+        ((LoTextWin **)((u8 *)self + 0xa8))[i]->unk_vf20(lx - (LFLD(s32, ((LoTextWin **)((u8 *)self + 0xa8))[i], 0x44) >> 1), y0 + i * step);
+        ((LoTextWin **)((u8 *)self + 0xa8))[i]->Render();
     }
     {
-        s32 py = (LFLD(s16, self, 0xba) * step + y0 - 0x5a) << 12;
-        MF(LFLD(void *, self, 0xa0)).b19 = 1;
-        MF(LFLD(void *, self, 0xa0)).f7 = func_02043d48(g + 0x8b0);
-        MF(LFLD(void *, self, 0xa0)).f2 = (u8)a;
-        LoSetPosFx0217e560(LFLD(void *, self, 0xa0), (lx - 0x80) << 12, py);
+        s32 py = (self->unk_ba * step + y0 - 0x5a) << 12;
+        MF(self->unk_a0).b19 = 1;
+        MF(self->unk_a0).f7 = func_02043d48(g + 0x8b0);
+        MF(self->unk_a0).f2 = (u8)a;
+        LoSetPosFx0217e560(self->unk_a0, (lx - 0x80) << 12, py);
     }
-    LFLD(s32, LFLD(void *, self, 0xa0), 0x150) = -0x1c8d;
-    LoModelPlayPart(LFLD(void *, self, 0xa0), 4);
+    LFLD(s32, self->unk_a0, 0x150) = -0x1c8d;
+    LoModelPlayPart(self->unk_a0, 4);
 }
 
 }
@@ -7655,8 +7893,18 @@ struct Text0217ea30 {
 
 // Each arm ends with its own copy of the `new`/store/`vfunc_10` tail to get the
 // target's branch layout.
-s32 func_ov000_0217ea30(VObj *self, s32 msg) {
-    u8 *p = LFLD(u8 *, self, 0x2c);
+struct Lo0217ea30 : public VObj {
+    Bits0217ea30 unk_04;
+    u8 unk_08[0x24];
+    u8 *unk_2c;
+    u8 unk_30[0xc];
+    VObj *unk_3c;
+    u8 unk_40[0x4];
+    u16 unk_44;
+};
+
+s32 func_ov000_0217ea30(Lo0217ea30 *self, s32 msg) {
+    u8 *p = self->unk_2c;
     void *g;
     VObj *o;
     struct Text0217ea30 text;
@@ -7668,14 +7916,14 @@ s32 func_ov000_0217ea30(VObj *self, s32 msg) {
                 text.desc = func_0204c0e8(g, 0x1d);
                 text.title = func_0204c0e8(g, 0x8d);
                 o = (VObj *)new Obj0217ea30;
-                LFLD(VObj *, self, 0x3c) = o;
+                self->unk_3c = o;
                 o->vfunc_10(text.title);
             } else {
                 g = data_02149ef8;
                 text.desc = func_0204c0e8(g, 0x1c);
                 text.title = func_0204c0e8(g, 0x8d);
                 o = (VObj *)new Obj0217ea30;
-                LFLD(VObj *, self, 0x3c) = o;
+                self->unk_3c = o;
                 o->vfunc_10(text.title);
             }
         } else {
@@ -7683,24 +7931,24 @@ s32 func_ov000_0217ea30(VObj *self, s32 msg) {
             text.desc = func_0204c0e8(g, 0x1e);
             text.title = func_0204c0e8(g, 0x8d);
             o = (VObj *)new Obj0217ea30;
-            LFLD(VObj *, self, 0x3c) = o;
+            self->unk_3c = o;
             o->vfunc_10(text.title);
         }
-        LFLD(void *, LFLD(void *, self, 0x3c), 0x1dc) = text.desc;
-        LFLD(s16, LFLD(void *, self, 0x3c), 0x1e0) = 0;
-        LFLD(void *, LFLD(void *, self, 0x3c), 0x8) = self;
-        LFLD(void *, LFLD(void *, self, 0x3c), 0x84) = (void *)func_ov000_02175e6c;
-        LFLD(VObj *, self, 0x3c)->vfunc_08();
-        LFLD(s16, LFLD(void *, self, 0x3c), 0x68) = -0x1666;
-        LFLD(Bits0217ea30, self, 0x4).b0 = true;
-        LFLD(u32, LFLD(void *, self, 0x3c), 0xc) |= 0x4000000;
+        LFLD(void *, self->unk_3c, 0x1dc) = text.desc;
+        LFLD(s16, self->unk_3c, 0x1e0) = 0;
+        LFLD(void *, self->unk_3c, 0x8) = self;
+        LFLD(void *, self->unk_3c, 0x84) = (void *)func_ov000_02175e6c;
+        self->unk_3c->vfunc_08();
+        LFLD(s16, self->unk_3c, 0x68) = -0x1666;
+        self->unk_04.b0 = true;
+        LFLD(u32, self->unk_3c, 0xc) |= 0x4000000;
         break;
     case 2:
         if (func_0206c4a0()) {
             if (func_02059454(data_02fe152c, 5, 1, 4)) {
-                if (LFLD(u16, self, 0x44) == 0) {
+                if (self->unk_44 == 0) {
                     LFLD(s32, p, 0x44) = 0;
-                } else if (LFLD(u16, self, 0x44) == 1) {
+                } else if (self->unk_44 == 1) {
                     LFLD(s32, p, 0x44) = 1;
                 } else {
                     return 0;
@@ -7708,7 +7956,7 @@ s32 func_ov000_0217ea30(VObj *self, s32 msg) {
                 self->vfunc_0c(0);
                 return 1;
             } else {
-                if (LFLD(u16, self, 0x44) == 0) {
+                if (self->unk_44 == 0) {
                     LFLD(s32, p, 0x44) = 0;
                 } else {
                     return 0;
@@ -7728,6 +7976,19 @@ s32 func_ov000_0217ea30(VObj *self, s32 msg) {
 }  // namespace m_Lo_0217ea30
 
 // ---- Lo_0217ed94
+struct Lo0217edb4 : public VObj {
+    u8 unk_04[0x1c];
+    s32 unk_20;
+    u8 unk_24[0x18];
+    s32 unk_3c;
+    s32 unk_40;
+    s32 unk_44;
+    VObj *unk_48;
+    void *unk_4c;
+    VObj *unk_50;
+    void *unk_54;
+};
+
 namespace m_Lo_0217ed94 {
 
 extern "C" {
@@ -7752,7 +8013,7 @@ void func_ov000_0217ed94(void) {
     LoTaskObj()->vfunc_2c();
 }
 
-void func_ov000_0217edb4(VObj *self) {
+void func_ov000_0217edb4(Lo0217edb4 *self) {
     LBIT(self, 4).b1 = 0;
     if (self->vfunc_28()) {
         return;
@@ -7760,18 +8021,18 @@ void func_ov000_0217edb4(VObj *self) {
     func_ov000_02173648(self);
 }
 
-void func_ov000_0217ede8(void *self) {
-    LFLD(s32, self, 0x20) = 0x8000;
-    LFLD(s32, self, 0x3c) = 0;
-    LFLD(s32, self, 0x40) = 0;
-    LFLD(s32, self, 0x44) = -1;
-    LFLD(s32, self, 0x48) = 0;
-    LFLD(s32, self, 0x4c) = 0;
-    LFLD(s32, self, 0x50) = 0;
-    LFLD(s32, self, 0x54) = 0;
+void func_ov000_0217ede8(Lo0217edb4 *self) {
+    self->unk_20 = 0x8000;
+    self->unk_3c = 0;
+    self->unk_40 = 0;
+    self->unk_44 = -1;
+    self->unk_48 = 0;
+    self->unk_4c = 0;
+    self->unk_50 = 0;
+    self->unk_54 = 0;
 }
 
-void func_ov000_0217ee18(void *self) {
+void func_ov000_0217ee18(Lo0217edb4 *self) {
     LO_FREE_V(self, 0x48);
     LO_FREE_M(self, 0x4c);
     LO_FREE_V(self, 0x50);
@@ -7892,7 +8153,7 @@ static inline void SndStop(void) {
     LFLD(u16, p, 0x70) = 0;
 }
 
-static inline BOOL LoBit1(VObj *self) {
+static inline BOOL LoBit1(Lo0217edb4 *self) {
     return LBIT(self, 4).b1 ? TRUE : FALSE;
 }
 
@@ -7917,7 +8178,7 @@ static inline u8 *NewWorldMapModel(void) {
     return m;
 }
 
-void func_ov000_0217ef3c(VObj *self) {
+void func_ov000_0217ef3c(Lo0217edb4 *self) {
     char buf[0x20];
     switch (STATE) {
     case 0:
@@ -7936,13 +8197,13 @@ void func_ov000_0217ef3c(VObj *self) {
         if (!self->vfunc_54()) {
             return;
         }
-        if (LFLD(s32, self, 0x44) == 2) {
+        if (self->unk_44 == 2) {
             STATE = 2;
-        } else if (LFLD(s32, self, 0x44) == -1) {
+        } else if (self->unk_44 == -1) {
             STATE = 3;
-        } else if (LFLD(s32, self, 0x44) == 0) {
+        } else if (self->unk_44 == 0) {
             STATE = 8;
-        } else if (LFLD(s32, self, 0x44) == 1) {
+        } else if (self->unk_44 == 1) {
             STATE = 10;
         }
         return;
@@ -7958,7 +8219,7 @@ void func_ov000_0217ef3c(VObj *self) {
             STATE = 7;
             return;
         }
-        LFLD(s32, self, 0x40) = 0;
+        self->unk_40 = 0;
     case 4: {
         VObj *o;
         if (!FadeIs4()) {
@@ -7979,41 +8240,41 @@ void func_ov000_0217ef3c(VObj *self) {
         LFLD(LoBits8, data_ov000_021ccd64, 0xc).b0 = 0;
         func_0206e900(buf, "pic/title");
         o = NewLoader();
-        LFLD(VObj *, self, 0x48) = o;
+        self->unk_48 = o;
         LFLD(s32, o, 0x44) = 2;
-        LFLD(VObj *, self, 0x48)->vfunc_24(buf, "celog1gov00");
+        self->unk_48->vfunc_24(buf, "celog1gov00");
         o = NewLoader();
-        LFLD(VObj *, self, 0x50) = o;
+        self->unk_50 = o;
         LFLD(s32, o, 0x44) = 2;
-        LFLD(VObj *, self, 0x50)->vfunc_24(buf, "celog1gov01");
+        self->unk_50->vfunc_24(buf, "celog1gov01");
         STATE = 5;
     }
     case 5: {
         BOOL ok = TRUE;
         u8 *m;
         u8 *p;
-        if (!LFLD(VObj *, self, 0x48)->vfunc_2c()) {
+        if (!self->unk_48->vfunc_2c()) {
             ok = FALSE;
         }
-        if (!LFLD(VObj *, self, 0x50)->vfunc_2c()) {
+        if (!self->unk_50->vfunc_2c()) {
             ok = FALSE;
         }
         if (!ok) {
             return;
         }
-        if (++LFLD(s32, self, 0x40) < 0x1e) {
+        if (++self->unk_40 < 0x1e) {
             return;
         }
-        LFLD(s32, self, 0x40) = 0;
+        self->unk_40 = 0;
         m = NewWorldMapModel();
-        LFLD(u8 *, self, 0x4c) = m;
-        func_020417e0(LFLD(void *, self, 0x4c), (void *)LFLD(VObj *, self, 0x48)->vfunc_10());
-        func_02041d9c(LFLD(void *, self, 0x4c), 2, 0xffff);
+        self->unk_4c = m;
+        func_020417e0(self->unk_4c, (void *)self->unk_48->vfunc_10());
+        func_02041d9c(self->unk_4c, 2, 0xffff);
         m = NewWorldMapModel();
-        LFLD(u8 *, self, 0x54) = m;
-        func_020417e0(LFLD(void *, self, 0x54), (void *)LFLD(VObj *, self, 0x50)->vfunc_10());
-        func_02041d9c(LFLD(void *, self, 0x54), 0, 0xffff);
-        LFLD(s32, LFLD(void *, self, 0x54), 0x150) = -0x1ccd;
+        self->unk_54 = m;
+        func_020417e0(self->unk_54, (void *)self->unk_50->vfunc_10());
+        func_02041d9c(self->unk_54, 0, 0xffff);
+        LFLD(s32, self->unk_54, 0x150) = -0x1ccd;
         func_0204a2e0(data_02097e4c, 0);
         func_0203cb78(0x3c000, 0, -1);
         p = data_02097e48;
@@ -8037,7 +8298,7 @@ void func_ov000_0217ef3c(VObj *self) {
         if (!FadeIdle()) {
             return;
         }
-        if (++LFLD(s32, self, 0x40) <= 600) {
+        if (++self->unk_40 <= 600) {
             if (!(LFLD(u16, data_02097dc8, 0x12) & 3)) {
                 return;
             }
@@ -8049,7 +8310,7 @@ void func_ov000_0217ef3c(VObj *self) {
         if (!FadeIs4()) {
             return;
         }
-        LFLD(s32, self, 0x20) = 0x1000;
+        self->unk_20 = 0x1000;
         self->vfunc_0c(0);
         func_ov000_02187150(data_ov000_021ccd54, 0);
         STATE = 12;
@@ -8062,7 +8323,7 @@ void func_ov000_0217ef3c(VObj *self) {
         if (!FadeIs4()) {
             return;
         }
-        LFLD(s32, self, 0x20) = 0x1000;
+        self->unk_20 = 0x1000;
         self->vfunc_0c(0);
         func_ov000_02182b0c(data_ov000_021ccd54);
         STATE = 12;
@@ -8075,7 +8336,7 @@ void func_ov000_0217ef3c(VObj *self) {
         if (!FadeIs4()) {
             return;
         }
-        LFLD(s32, self, 0x20) = 0x1000;
+        self->unk_20 = 0x1000;
         self->vfunc_0c(0);
         if (func_ov000_0219bf90()) {
             func_ov000_021b4774();
@@ -8187,9 +8448,14 @@ VObj *func_ov000_0217f8d0(void) {
     return obj;
 }
 
-BOOL func_ov000_0217f958(void *self, void *msg) {
+struct Lo0217f958 {
+    u8 unk_00[0x8];
+    void *unk_08;
+};
+
+BOOL func_ov000_0217f958(Lo0217f958 *self, void *msg) {
     if (msg != NULL) {
-        void *o = LFLD(void *, self, 8);
+        void *o = self->unk_08;
         VObj *p;
         LBIT(LFLD(void *, o, 0x3c), 0xc).b2 = 1;
         LBIT(LFLD(void *, o, 0x44), 0xc).b1 = 0;
@@ -8201,9 +8467,14 @@ BOOL func_ov000_0217f958(void *self, void *msg) {
     return TRUE;
 }
 
-BOOL func_ov000_0217f9e8(void *self, void *msg) {
+struct Lo0217f9e8 {
+    u8 unk_00[0x8];
+    void *unk_08;
+};
+
+BOOL func_ov000_0217f9e8(Lo0217f9e8 *self, void *msg) {
     if (msg != NULL) {
-        void *o = LFLD(void *, self, 8);
+        void *o = self->unk_08;
         func_0206ecd4(0x100, (u8 *)o + 0x5f, LFLD(u16, msg, 6));
         if (LFLD(VObj *, o, 0x40) != NULL) {
             func_ov000_0215bb14(LFLD(VObj *, o, 0x40), (u8 *)o + 0x5f);
@@ -8213,8 +8484,13 @@ BOOL func_ov000_0217f9e8(void *self, void *msg) {
     return TRUE;
 }
 
-BOOL func_ov000_0217fa34(void *self, void *msg) {
-    void *o = LFLD(void *, self, 8);
+struct Lo0217fa34 {
+    u8 unk_00[0x8];
+    void *unk_08;
+};
+
+BOOL func_ov000_0217fa34(Lo0217fa34 *self, void *msg) {
+    void *o = self->unk_08;
     if (msg != NULL) {
         if (LFLD(u16, msg, 6) == 0) {
             void *a = LFLD(void *, o, 0x3c);
@@ -8321,6 +8597,23 @@ BOOL func_ov000_0217fd04(void) {
 }  // namespace m_Lo_0217fcc4
 
 // ---- Lo_0217fd70
+struct Lo0217fd70 : public VObj {
+    u8 unk_04[0x4];
+    s32 unk_08;
+    s32 unk_0c;
+    u8 unk_10[0x2c];
+    VObj *unk_3c;
+    VObj *unk_40;
+    VObj *unk_44;
+    VObj *unk_48;
+    u8 unk_4c[0x4];
+    s32 unk_50;
+    s32 unk_54;
+    u8 unk_58[0x4];
+    u16 unk_5c;
+    u8 unk_5e;
+};
+
 namespace m_Lo_0217fd70 {
 
 extern "C" {
@@ -8355,7 +8648,7 @@ static inline s32 ItemCat0217fd70(u16 id) {
     return ((u16)(id & 0xf000) >> 12) - 1;
 }
 
-void func_ov000_0217fd70(VObj *self) {
+void func_ov000_0217fd70(Lo0217fd70 *self) {
     u8 *e;
     s32 i;
     s32 b;
@@ -8380,37 +8673,37 @@ void func_ov000_0217fd70(VObj *self) {
         o->vfunc_28();
         *(void **)o = data_ov000_021cb2a8;
     }
-    LFLD(VObj *, self, 0x3c) = o;
-    LFLD(VObj *, self, 0x3c)->vfunc_10(func_0204c0e8(g, 0x11a));
-    LFLD(VObj *, self, 0x3c)->vfunc_14(func_0204c0e8(g, 0x11b));
-    LFLD(s32, LFLD(void *, self, 0x3c), 0x20) = 5;
+    self->unk_3c = o;
+    self->unk_3c->vfunc_10(func_0204c0e8(g, 0x11a));
+    self->unk_3c->vfunc_14(func_0204c0e8(g, 0x11b));
+    LFLD(s32, self->unk_3c, 0x20) = 5;
     {
-        u8 *s = LFLD(u8 *, self, 0x3c);
+        u8 *s = (u8 *)self->unk_3c;
         LFLD(s16, s, 0x64) = 0;
         LFLD(s16, s, 0x66) = 0x2c;
         LFLD(s16, s, 0x68) = -0xccd;
     }
     {
-        u8 *s = LFLD(u8 *, self, 0x3c);
+        u8 *s = (u8 *)self->unk_3c;
         LFLD(s32, s, 0x58) = -0x100;
         LFLD(s32, s, 0x5c) = 0;
         LFLD(s32, s, 0x60) = -0xccd;
     }
-    LFLD(u32, LFLD(void *, self, 0x3c), 0xc) |= 0x400000;
-    LFLD(u32, LFLD(void *, self, 0x3c), 0xc) |= 0x800000;
-    LFLD(u8, LFLD(void *, self, 0x3c), 0xc0) = 0x80;
-    LFLD(u8, LFLD(void *, self, 0x3c), 0xc1) = 3;
-    func_ov000_021547e8(LFLD(void *, self, 0x3c), data_0214b105, data_0208cb7c, 0xb);
-    func_ov000_021546ec(LFLD(void *, self, 0x3c), "menu/menu3d", "cem3d1icn00", 0xffff);
-    if (LFLD(s32, self, 0xc) != 0) {
-        LFLD(u16, self, 0x5c) = LFLD(s32, self, 0xc);
+    LFLD(u32, self->unk_3c, 0xc) |= 0x400000;
+    LFLD(u32, self->unk_3c, 0xc) |= 0x800000;
+    LFLD(u8, self->unk_3c, 0xc0) = 0x80;
+    LFLD(u8, self->unk_3c, 0xc1) = 3;
+    func_ov000_021547e8(self->unk_3c, data_0214b105, data_0208cb7c, 0xb);
+    func_ov000_021546ec(self->unk_3c, "menu/menu3d", "cem3d1icn00", 0xffff);
+    if (self->unk_0c != 0) {
+        self->unk_5c = self->unk_0c;
     }
-    id = LFLD(u16, self, 0x5c);
+    id = self->unk_5c;
     if (ItemCat0217fd70(id) == 1) {
         a = func_0206ec48(id);
         b = func_0206f080(id);
-        e = (u8 *)LFLD(VObj *, self, 0x3c)->vfunc_74(a, id, (u16)b, 1);
-        LFLD(s32, e, 0x10) = *func_0206ede8(LFLD(u16, self, 0x5c));
+        e = (u8 *)self->unk_3c->vfunc_74(a, id, (u16)b, 1);
+        LFLD(s32, e, 0x10) = *func_0206ede8(self->unk_5c);
         LFLD(s16, e, 0xa) = 0xb;
         LFLD(s32, e, 0x24) = 4;
     }
@@ -8422,20 +8715,20 @@ void func_ov000_0217fd70(VObj *self) {
             if (n > 0) {
                 a = func_0206ec48(iid);
                 b = func_0206f080(iid);
-                e = (u8 *)LFLD(VObj *, self, 0x3c)->vfunc_74(a, iid, (u16)b, n);
-                LFLD(s32, e, 0x10) = *func_0206ede8(LFLD(u16, self, 0x5c));
+                e = (u8 *)self->unk_3c->vfunc_74(a, iid, (u16)b, n);
+                LFLD(s32, e, 0x10) = *func_0206ede8(self->unk_5c);
             }
         }
     }
-    LFLD(void *, LFLD(void *, self, 0x3c), 0x8) = self;
-    LFLD(void *, LFLD(void *, self, 0x3c), 0x84) = (void *)func_ov000_0217f958;
-    LFLD(void *, LFLD(void *, self, 0x3c), 0x88) = (void *)func_ov000_0217f9e8;
+    LFLD(void *, self->unk_3c, 0x8) = self;
+    LFLD(void *, self->unk_3c, 0x84) = (void *)func_ov000_0217f958;
+    LFLD(void *, self->unk_3c, 0x88) = (void *)func_ov000_0217f9e8;
     {
-        VObj *t = LFLD(VObj *, self, 0x3c);
+        VObj *t = self->unk_3c;
         t->vfunc_a8(func_ov000_02154b58(t, 0));
     }
-    LFLD(VObj *, self, 0x3c)->vfunc_08();
-    LFLD(u32, LFLD(void *, self, 0x3c), 0xc) &= ~2;
+    self->unk_3c->vfunc_08();
+    LFLD(u32, self->unk_3c, 0xc) &= ~2;
     o = (VObj *)func_0203dd9c(0x8c);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -8443,25 +8736,25 @@ void func_ov000_0217fd70(VObj *self) {
         *(void **)o = data_ov000_021cadcc;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x40) = o;
+    self->unk_40 = o;
     LFLD(s32, o, 0x20) = 2;
-    LFLD(s32, LFLD(void *, self, 0x40), 0x24) = 0xf8;
+    LFLD(s32, self->unk_40, 0x24) = 0xf8;
     {
-        u8 *s = LFLD(u8 *, self, 0x40);
+        u8 *s = (u8 *)self->unk_40;
         LFLD(s16, s, 0x64) = 4;
         LFLD(s16, s, 0x66) = 0x96;
         LFLD(s16, s, 0x68) = -0xccd;
     }
     {
-        u8 *s = LFLD(u8 *, self, 0x40);
+        u8 *s = (u8 *)self->unk_40;
         LFLD(s32, s, 0x58) = -0x100;
         LFLD(s32, s, 0x5c) = 0;
         LFLD(s32, s, 0x60) = -0xccd;
     }
-    LFLD(s32, LFLD(void *, self, 0x40), 0x2c) = 1;
-    func_ov000_0215bb14(LFLD(void *, self, 0x40), func_0204c0e8(g, 0x11d));
-    LFLD(VObj *, self, 0x40)->vfunc_70();
-    LFLD(VObj *, self, 0x40)->vfunc_08();
+    LFLD(s32, self->unk_40, 0x2c) = 1;
+    func_ov000_0215bb14(self->unk_40, func_0204c0e8(g, 0x11d));
+    self->unk_40->vfunc_70();
+    self->unk_40->vfunc_08();
     o = (VObj *)func_0203dd9c(0x1e4);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -8475,14 +8768,14 @@ void func_ov000_0217fd70(VObj *self) {
         *(void **)o = data_ov000_021cafc0;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x44) = o;
-    LFLD(VObj *, self, 0x44)->vfunc_10(func_0204c0e8(g, 0x11c));
-    LFLD(s16, LFLD(void *, self, 0x44), 0x68) = -0x666;
-    LFLD(VObj *, self, 0x44)->vfunc_08();
-    LFLD(void *, LFLD(void *, self, 0x44), 0x8) = self;
-    LFLD(void *, LFLD(void *, self, 0x44), 0x84) = (void *)func_ov000_0217fa34;
-    LFLD(u32, LFLD(void *, self, 0x44), 0xc) |= 2;
-    LFLD(u32, LFLD(void *, self, 0x44), 0xc) |= 4;
+    self->unk_44 = o;
+    self->unk_44->vfunc_10(func_0204c0e8(g, 0x11c));
+    LFLD(s16, self->unk_44, 0x68) = -0x666;
+    self->unk_44->vfunc_08();
+    LFLD(void *, self->unk_44, 0x8) = self;
+    LFLD(void *, self->unk_44, 0x84) = (void *)func_ov000_0217fa34;
+    LFLD(u32, self->unk_44, 0xc) |= 2;
+    LFLD(u32, self->unk_44, 0xc) |= 4;
     o = (VObj *)func_0203dd9c(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
@@ -8492,24 +8785,24 @@ void func_ov000_0217fd70(VObj *self) {
         *(void **)o = data_ov000_021cb5a8;
         o->vfunc_28();
     }
-    LFLD(VObj *, self, 0x48) = o;
+    self->unk_48 = o;
     LFLD(u32, o, 0xc) |= 0x4000000;
-    LFLD(s32, LFLD(void *, self, 0x48), 0x2c) = 1;
+    LFLD(s32, self->unk_48, 0x2c) = 1;
     {
-        u8 *s = LFLD(u8 *, self, 0x48);
+        u8 *s = (u8 *)self->unk_48;
         LFLD(s16, s, 0x64) = 0xa5;
         LFLD(s16, s, 0x66) = 0x12;
         LFLD(s16, s, 0x68) = -0x99a;
     }
     {
-        u8 *s = LFLD(u8 *, self, 0x48);
+        u8 *s = (u8 *)self->unk_48;
         LFLD(s32, s, 0x58) = 0x100;
         LFLD(s32, s, 0x5c) = 0;
         LFLD(s32, s, 0x60) = -0x99a;
     }
-    LFLD(u32, LFLD(void *, self, 0x48), 0xc) |= 0x20000000;
-    LFLD(VObj *, self, 0x48)->vfunc_f4(1, func_0204c0e8(g, 0x32));
-    LFLD(VObj *, self, 0x48)->vfunc_08();
+    LFLD(u32, self->unk_48, 0xc) |= 0x20000000;
+    self->unk_48->vfunc_f4(1, func_0204c0e8(g, 0x32));
+    self->unk_48->vfunc_08();
     func_ov000_02173648(self);
 }
 
@@ -8581,30 +8874,30 @@ namespace m_Lo_02180400 {
 
 extern "C" {
 
-void func_ov000_02180400(VObj *self) {
-    switch (LFLD(s32, self, 0x8)) {
+void func_ov000_02180400(Lo0217fd70 *self) {
+    switch (self->unk_08) {
     case 8:
-        LFLD(u8, self, 0x5e) = 0;
+        self->unk_5e = 0;
         break;
     case 0xd: {
         bool ok;
-        LFLD(VObj *, self, 0x44)->vfunc_1c();
+        self->unk_44->vfunc_1c();
         ok = true;
-        ok = ok & (LFLD(VObj *, self, 0x3c)->vfunc_1c() == 0);
-        ok = ok & (LFLD(VObj *, self, 0x40)->vfunc_1c() == 0);
-        ok = ok & (LFLD(VObj *, self, 0x48)->vfunc_1c() == 0);
+        ok = ok & (self->unk_3c->vfunc_1c() == 0);
+        ok = ok & (self->unk_40->vfunc_1c() == 0);
+        ok = ok & (self->unk_48->vfunc_1c() == 0);
         if (ok) {
             self->vfunc_0c(0);
         }
         break;
     }
     }
-    LFLD(s32, self, 0x50) += 0x8000;
-    LFLD(s32, self, 0x54) += 0x8000;
-    LFLD(s32, self, 0x50) = LFLD(s32, self, 0x50) < 0 ? 0x1000000 : LFLD(s32, self, 0x50);
-    LFLD(s32, self, 0x54) = LFLD(s32, self, 0x54) < 0 ? 0x1000000 : LFLD(s32, self, 0x54);
-    LFLD(s32, self, 0x50) %= 0x1000000;
-    LFLD(s32, self, 0x54) %= 0x1000000;
+    self->unk_50 += 0x8000;
+    self->unk_54 += 0x8000;
+    self->unk_50 = self->unk_50 < 0 ? 0x1000000 : self->unk_50;
+    self->unk_54 = self->unk_54 < 0 ? 0x1000000 : self->unk_54;
+    self->unk_50 %= 0x1000000;
+    self->unk_54 %= 0x1000000;
 }
 }
 
@@ -8629,13 +8922,13 @@ void func_02065b84(void *p);
 void func_ov000_021bc6c0(void *p);
 void func_0205a69c(void *p);
 
-void func_ov000_02180524(u8 *self) {
+void func_ov000_02180524(Lo0217fd70 *self) {
     s32 ok;
     void *p;
-    if (self[0x5e] == 0) {
+    if (self->unk_5e == 0) {
         return;
     }
-    p = LFLD(void *, self, 0x44);
+    p = self->unk_44;
     ok = 0;
     if (LBIT(p, 0xc).b1 ? 1 : 0) {
         if (LFLD(s32, p, 4) == 5 ? 1 : 0) {
@@ -8645,9 +8938,9 @@ void func_ov000_02180524(u8 *self) {
     if (ok == 0) {
         return;
     }
-    LFLD(u32, LFLD(void *, self, 0x3c), 0xc) |= 2;
-    LFLD(u32, LFLD(void *, self, 0x40), 0xc) |= 2;
-    LFLD(u32, LFLD(void *, self, 0x48), 0xc) |= 2;
+    LFLD(u32, self->unk_3c, 0xc) |= 2;
+    LFLD(u32, self->unk_40, 0xc) |= 2;
+    LFLD(u32, self->unk_48, 0xc) |= 2;
 }
 
 }
@@ -8882,45 +9175,54 @@ static inline Actor *FindActor2(u16 id) {
 
 extern u8 data_0208ccc8[];
 
-static inline BOOL LoTakeMode(void *self) {
+struct Lo02180900 {
+    LoTaskFlags unk_00;
+    s32 unk_04;
+    u8 unk_08[0x44];
+    s32 unk_4c;
+    u8 unk_50[0x4];
+    VObj *unk_54;
+};
+
+static inline BOOL LoTakeMode(Lo02180900 *self) {
     VObj *cur = (VObj *)data_ov000_021ccd40;
-    if (LFLD(LoTaskFlags, self, 0).st != 0) {
+    if (self->unk_00.st != 0) {
         if (cur != NULL) {
             LFLD(u32, cur, 4) |= 2;
         }
-        if (LFLD(LoTaskFlags, self, 0).st == 1) {
-            LFLD(s32, self, 4) = 5;
+        if (self->unk_00.st == 1) {
+            self->unk_04 = 5;
         } else {
-            LFLD(s32, self, 4) = 7;
+            self->unk_04 = 7;
         }
-        LFLD(LoTaskFlags, self, 0).st = 0;
+        self->unk_00.st = 0;
         return TRUE;
     }
     return FALSE;
 }
 
-BOOL func_ov000_02180900(void *self) {
+BOOL func_ov000_02180900(Lo02180900 *self) {
     VObj *t;
     VObj *cur;
     u32 saved;
     VObj *next;
-    if (LFLD(s32, self, 4) == 0) {
+    if (self->unk_04 == 0) {
         return FALSE;
     }
     cur = (VObj *)data_ov000_021ccd40;
-    switch (LFLD(s32, self, 4)) {
+    switch (self->unk_04) {
     case 1:
-        LFLD(s32, self, 4) = 2;
+        self->unk_04 = 2;
     case 2:
-        LFLD(s32, self, 4) = 3;
+        self->unk_04 = 3;
     case 3:
-        LFLD(s32, self, 0x4c) = 7;
+        self->unk_4c = 7;
         ((VObj *)((u8 *)self + 8))->vfunc_1c(LFLD(void *, data_0208ccc8, 0));
-        LFLD(s32, self, 4) = 12;
+        self->unk_04 = 12;
         break;
     case 12:
         if (!LoTakeMode(self)) {
-            if (LFLD(LoTaskFlags, self, 0).b0) {
+            if (self->unk_00.b0) {
                 if (cur != NULL) {
                     cur->vfunc_0c(0);
                 }
@@ -8930,13 +9232,13 @@ BOOL func_ov000_02180900(void *self) {
         }
         break;
     case 5:
-        LFLD(VObj *, self, 0x54)->vfunc_10();
-        LFLD(s32, self, 4) = 6;
+        self->unk_54->vfunc_10();
+        self->unk_04 = 6;
     case 6:
-        if (!LFLD(VObj *, self, 0x54)->vfunc_14()) {
+        if (!self->unk_54->vfunc_14()) {
             break;
         }
-        LFLD(s32, self, 4) = 7;
+        self->unk_04 = 7;
     case 7:
         if (cur != NULL) {
             break;
@@ -8964,16 +9266,16 @@ BOOL func_ov000_02180900(void *self) {
             }
         }
         if (!LoTakeMode(self)) {
-            if (LFLD(VObj *, self, 0x54) != NULL) {
-                LFLD(VObj *, self, 0x54)->vfunc_50();
-                LFLD(VObj *, self, 0x54)->vfunc_18();
-                LFLD(VObj *, self, 0x54) = NULL;
-                LFLD(s32, self, 4) = 12;
+            if (self->unk_54 != NULL) {
+                self->unk_54->vfunc_50();
+                self->unk_54->vfunc_18();
+                self->unk_54 = NULL;
+                self->unk_04 = 12;
                 break;
             }
             data_ov000_021ccd38 = 0;
-            LFLD(s32, self, 4) = 0;
-            LFLD(LoTaskFlags, self, 0).b1 = 1;
+            self->unk_04 = 0;
+            self->unk_00.b1 = 1;
             return FALSE;
         }
         break;
@@ -9053,7 +9355,7 @@ void func_ov000_02180bfc(Obj021810e8 *self) {
     } while (obj != NULL);
 }
 
-VObj *func_ov000_02180c3c(VObj *self) {
+VObj *func_ov000_02180c3c(Lo0217fd70 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbf60);
     func_ov000_0217fb44(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9062,7 +9364,7 @@ VObj *func_ov000_02180c3c(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02180c80(VObj *self) {
+VObj *func_ov000_02180c80(Lo0217fd70 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbf60);
     func_ov000_0217fb44(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9070,7 +9372,7 @@ VObj *func_ov000_02180c80(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02180cbc(VObj *self) {
+VObj *func_ov000_02180cbc(Lo0217edb4 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbae0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9079,7 +9381,7 @@ VObj *func_ov000_02180cbc(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02180d08(VObj *self) {
+VObj *func_ov000_02180d08(Lo0217edb4 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbae0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9087,7 +9389,7 @@ VObj *func_ov000_02180d08(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02180d4c(VObj *self) {
+VObj *func_ov000_02180d4c(Lo0217ab30 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbb60);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9096,7 +9398,7 @@ VObj *func_ov000_02180d4c(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02180d98(VObj *self) {
+VObj *func_ov000_02180d98(Lo0217ab30 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbb60);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9104,7 +9406,7 @@ VObj *func_ov000_02180d98(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02180ddc(VObj *self) {
+VObj *func_ov000_02180ddc(Lo0217a1f8 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbc60);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9113,7 +9415,7 @@ VObj *func_ov000_02180ddc(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02180e28(VObj *self) {
+VObj *func_ov000_02180e28(Lo0217a1f8 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbc60);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9121,7 +9423,7 @@ VObj *func_ov000_02180e28(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02180e6c(VObj *self) {
+VObj *func_ov000_02180e6c(Lo021799e4 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbd60);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9130,7 +9432,7 @@ VObj *func_ov000_02180e6c(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02180eb8(VObj *self) {
+VObj *func_ov000_02180eb8(Lo021799e4 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbd60);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9155,7 +9457,7 @@ VObj *func_ov000_02180f48(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02180f8c(VObj *self) {
+VObj *func_ov000_02180f8c(Lo02178110 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbe60);
     func_ov000_02178110(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9164,7 +9466,7 @@ VObj *func_ov000_02180f8c(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02180fd0(VObj *self) {
+VObj *func_ov000_02180fd0(Lo02178110 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbe60);
     func_ov000_02178110(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9172,7 +9474,7 @@ VObj *func_ov000_02180fd0(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_0218100c(VObj *self) {
+VObj *func_ov000_0218100c(Lo02176714 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbee0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9181,7 +9483,7 @@ VObj *func_ov000_0218100c(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02181058(VObj *self) {
+VObj *func_ov000_02181058(Lo02176714 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbee0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9189,7 +9491,7 @@ VObj *func_ov000_02181058(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_0218109c(VObj *self) {
+VObj *func_ov000_0218109c(Lo02175f34 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbfe0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9213,7 +9515,7 @@ BOOL func_ov000_021810e8(Obj021810e8 *self) {
     return TRUE;
 }
 
-VObj *func_ov000_02181140(VObj *self) {
+VObj *func_ov000_02181140(Lo02175f34 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbfe0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9221,7 +9523,7 @@ VObj *func_ov000_02181140(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02181184(VObj *self) {
+VObj *func_ov000_02181184(Obj021743bc *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbbe0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(VOBJ_AT(self, 0x3f8), data_0208ba70);
@@ -9267,7 +9569,7 @@ BOOL func_ov000_02181250(Obj021810e8 *self) {
     return TRUE;
 }
 
-VObj *func_ov000_02181310(VObj *self) {
+VObj *func_ov000_02181310(Obj021743bc *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbbe0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(VOBJ_AT(self, 0x3f8), data_0208ba70);

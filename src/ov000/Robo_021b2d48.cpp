@@ -26,20 +26,33 @@ static inline void *FindActor021b2d48(u16 id) {
     return func_ov000_0218e640(mgr, id);
 }
 
-void func_ov000_021b2d48(u8 *self) {
+struct Obj021b2d48 {
+    u8 unk_00[0x48];
+    u8 *unk_48;
+    u8 unk_4c[0x44];
+    u16 unk_90;
+    u8 unk_92[0xa8a];
+    u16 unk_b1c;
+    u8 unk_b1e[0x4];
+    B22_021b2d48 unk_b22;
+    u8 unk_b24[0xb];
+    u8 unk_b2f;
+};
+
+void func_ov000_021b2d48(Obj021b2d48 *self) {
     u8 *res = NULL;
     BOOL flag = FALSE;
     u8 *tgt = NULL;
     u8 *sub = NULL;
     BOOL search = FALSE;
 
-    if (LFLD(u8, self, 0xb2f) != 0) {
-        LFLD(u8, self, 0xb2f)--;
+    if (self->unk_b2f != 0) {
+        self->unk_b2f--;
         res = (u8 *)func_ov000_0218d2e0(self);
-    } else if ((LFLD(u32, LFLD(u8 *, self, 0x48), 0x54) & 0x400) || LFLD(B22_021b2d48, self, 0xb22).mode > 1) {
-        LFLD(u8, self, 0xb2f) = 0;
+    } else if ((LFLD(u32, self->unk_48, 0x54) & 0x400) || self->unk_b22.mode > 1) {
+        self->unk_b2f = 0;
     } else {
-        u8 *a = (u8 *)FindActor021b2d48(LFLD(u16, self, 0xb1c));
+        u8 *a = (u8 *)FindActor021b2d48(self->unk_b1c);
         if (a != NULL && (sub = LFLD(u8 *, a, 0x4c)) != NULL) {
             if (sub[1] == 6) {
                 tgt = (u8 *)func_ov000_02199d78(sub);
@@ -55,9 +68,9 @@ void func_ov000_021b2d48(u8 *self) {
         res = (u8 *)func_ov000_021b2f08(self, tgt, sub, flag);
     }
     if (res != NULL) {
-        if (LFLD(u16, self, 0x90) != LFLD(u16, res, 0x20)) {
+        if (self->unk_90 != LFLD(u16, res, 0x20)) {
             func_02049a48(data_02097e4c, 0x22, -1, -1, -1);
-            LFLD(u16, self, 0x90) = LFLD(u16, res, 0x20);
+            self->unk_90 = LFLD(u16, res, 0x20);
         }
         if ((LFLD(u16, res, 0x20) >> 12) == 4) {
             u8 *t = (u8 *)func_ov000_021985c0(res);
@@ -72,7 +85,7 @@ void func_ov000_021b2d48(u8 *self) {
             }
         }
     } else {
-        LFLD(u16, self, 0x90) = 0xffff;
+        self->unk_90 = 0xffff;
     }
     func_ov000_021b3bd8(self);
     func_ov000_021b3738(self, res);

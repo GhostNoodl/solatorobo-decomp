@@ -38,7 +38,29 @@ static inline BOOL Flip021b0db0(void) {
     return LFLD(Bits0214a424_021b0db0, data_0214a424, 0x18).b10 ? TRUE : FALSE;
 }
 
-void func_ov000_021b0db0(VObj *self, s32 spd) {
+struct Obj021b0db0 : public VObj {
+    u8 unk_04[0x34];
+    void *unk_38;
+    u8 unk_3c[0x34];
+    VecFx32 unk_70;
+    u16 unk_7c;
+    u16 unk_7e;
+    u16 unk_80;
+    u8 unk_82[0x6da];
+    VecFx32 unk_75c;
+    u8 unk_768[0x4];
+    u16 unk_76c;
+    u16 unk_76e;
+    u16 unk_770;
+    u8 unk_772[0x37e];
+    s32 unk_af0;
+    s32 unk_af4;
+    s32 unk_af8;
+    u8 unk_afc[0x6c];
+    u16 unk_b68;
+};
+
+void func_ov000_021b0db0(Obj021b0db0 *self, s32 spd) {
     u16 yaw;
     u16 tilt;
     u8 *cam = data_ov000_021ccd54 + 0xf4;
@@ -54,24 +76,24 @@ void func_ov000_021b0db0(VObj *self, s32 spd) {
         s32 z;
         u16 keys;
         u8 *anim;
-        LFLD(s32, self, 0xaf0) += (s32)(((s64)spd * FX_SinCosTable_[idx * 2] + 0x800) >> 12);
-        if (LFLD(s32, self, 0xaf0) > 0x6000) {
-            LFLD(s32, self, 0xaf0) = 0x6000;
-        } else if (LFLD(s32, self, 0xaf0) < -0x6000) {
-            LFLD(s32, self, 0xaf0) = -0x6000;
+        self->unk_af0 += (s32)(((s64)spd * FX_SinCosTable_[idx * 2] + 0x800) >> 12);
+        if (self->unk_af0 > 0x6000) {
+            self->unk_af0 = 0x6000;
+        } else if (self->unk_af0 < -0x6000) {
+            self->unk_af0 = -0x6000;
         }
         z = (s32)(((s64)spd * FX_SinCosTable_[idx * 2 + 1] + 0x800) >> 12);
         if (LFLD(Bits0214a424_021b0db0, data_0214a424, 0x18).b10) {
             z = -z;
         }
-        LFLD(s32, self, 0xaf4) += z;
-        if (LFLD(s32, self, 0xaf4) > 0x1a66) {
-            LFLD(s32, self, 0xaf4) = 0x1a66;
-        } else if (LFLD(s32, self, 0xaf4) < -0x6800) {
-            LFLD(s32, self, 0xaf4) = -0x6800;
+        self->unk_af4 += z;
+        if (self->unk_af4 > 0x1a66) {
+            self->unk_af4 = 0x1a66;
+        } else if (self->unk_af4 < -0x6800) {
+            self->unk_af4 = -0x6800;
         }
-        LFLD(s32, self, 0xaf8) = 0;
-        keys = LFLD(u16, self, 0xb68);
+        self->unk_af8 = 0;
+        keys = self->unk_b68;
         anim = data_ov000_021cc5e3;
         if (keys & 0x20) {
             tilt = 0xf800;
@@ -84,18 +106,18 @@ void func_ov000_021b0db0(VObj *self, s32 spd) {
         } else if (((keys & 0x80) && !Flip021b0db0()) || ((keys & 0x40) && LFLD(Bits0214a424_021b0db0, data_0214a424, 0x18).b10)) {
             anim = data_ov000_021cc763;
         }
-        func_ov000_02190cb0(LFLD(void *, self, 0x38), anim, 0xcd, 0);
+        func_ov000_02190cb0(self->unk_38, anim, 0xcd, 0);
     } else if (spd == 0) {
-        func_ov000_02190cb0(LFLD(void *, self, 0x38), data_ov000_021cc5e3, 0xcd, tilt);
-        func_ov000_021915a0(LFLD(void *, self, 0x38));
+        func_ov000_02190cb0(self->unk_38, data_ov000_021cc5e3, 0xcd, tilt);
+        func_ov000_021915a0(self->unk_38);
     }
     MulVec33_021b0db0((VecFx32 *)((u8 *)self + 0xaf0), NNS_G3dGlbGetInvV(), (VecFx32 *)((u8 *)self + 0x9c));
     VEC_Add((VecFx32 *)((u8 *)self + 0x9c), &data_02092a50, (VecFx32 *)((u8 *)self + 0x70));
-    LFLD(u16, self, 0x7e) = func_01ffc128(yaw, LFLD(u16, self, 0x7e), 0x133, 1, 0x8000);
-    LFLD(u16, self, 0x80) = func_01ffc128(tilt, LFLD(u16, self, 0x80), 0x133, 1, 0x8000);
-    LFLD(VecFx32, self, 0x75c) = LFLD(VecFx32, self, 0x70);
-    LFLD(u16, self, 0x76c) = LFLD(u16, self, 0x7c);
-    LFLD(u16, self, 0x76e) = LFLD(u16, self, 0x7e);
-    LFLD(u16, self, 0x770) = LFLD(u16, self, 0x80);
+    self->unk_7e = func_01ffc128(yaw, self->unk_7e, 0x133, 1, 0x8000);
+    self->unk_80 = func_01ffc128(tilt, self->unk_80, 0x133, 1, 0x8000);
+    self->unk_75c = self->unk_70;
+    self->unk_76c = self->unk_7c;
+    self->unk_76e = self->unk_7e;
+    self->unk_770 = self->unk_80;
 }
 }

@@ -13,48 +13,87 @@ void *func_ov000_0218fe1c(void *p);
 void *func_02043548(void *p);
 void MTX_Identity44_(void *m);
 
-u8 *func_ov000_02162124(u8 *self) {
-    LFLD(void *, self, 0) = data_ov000_021cabc8;
-    LFLD(void *, self, 4) = data_ov000_021cabd8;
-    __cxa_vec_ctor(self + 0x7c, 2, 0x138, (void (*)(void *))func_ov000_0218e9c4, (void (*)(void *))func_ov000_0218ea20);
-    __cxa_vec_ctor(self + 0x2ec, 2, 0x138, (void (*)(void *))func_ov000_0218e9c4, (void (*)(void *))func_ov000_0218ea20);
-    LFLD(u8, self, 8) = 0x14;
-    LFLD(u8, self, 9) = 0;
-    LFLD(u8, self, 0xa) = 0;
-    MI_CpuFill8(self + 0xb, 0, 0x20);
-    MI_CpuFill8(self + 0x2b, 0, 0x18);
-    MI_CpuFill8(self + 0x43, 0, 0x20);
-    MI_CpuFill8(self + 0x63, 0, 0x18);
-    LFLD(u8, self, 0x7b) = 0;
-    func_ov000_0218fe1c(self + 0x55c);
-    func_02043548(self + 0x644);
-    MTX_Identity44_(self + 0x668);
-    LFLD(s32, self, 0x6a8) = 0;
-    LFLD(s32, self, 0x6ac) = 0;
-    LFLD(s32, self, 0x6b0) = 0;
-    LFLD(s32, self, 0x6b4) = 0x1000;
-    LFLD(s32, self, 0x6b8) = 0;
-    LFLD(u8, self, 0x6bc) = 0;
-    LFLD(void *, self, 0x6c0) = data_ov000_021cac02;
-    LFLD(s32, self, 0x6c4) = 0;
-    LFLD(u16, self, 0x6c8) = 0x1000;
-    LFLD(s32, self, 0x6cc) = 0;
-    LFLD(s32, self, 0x6d0) = 0;
-    LFLD(s32, self, 0x6d4) = 0;
-    LFLD(s32, self, 0x6d8) = 0;
-    LFLD(s32, self, 0x6dc) = 0;
-    LFLD(s32, self, 0x6e0) = 0;
-    LFLD(u16, self, 0x6e4) = 0;
-    LFLD(u16, self, 0x6e6) = 0;
-    LFLD(u16, self, 0x6e8) = 0;
-    LFLD(s32, self, 0x6ec) = 0;
-    LFLD(s32, self, 0x6f0) = 0;
-    LFLD(s32, self, 0x6f4) = 0;
-    LFLD(s32, self, 0x6f8) = 0;
-    LFLD(s32, self, 0x6fc) = 0;
-    LFLD(s32, self, 0x700) = 0;
-    LFLD(s32, self, 0x704) = 0;
-    return self;
+struct Obj02162124 {
+    void *unk_00;
+    void *unk_04;
+    u8 unk_08;
+    u8 unk_09;
+    u8 unk_0a;
+    u8 unk_0b[0x70];
+    u8 unk_7b;
+    u8 unk_7c[0x62c];
+    s32 unk_6a8;
+    s32 unk_6ac;
+    s32 unk_6b0;
+    s32 unk_6b4;
+    s32 unk_6b8;
+    u8 unk_6bc;
+    u8 unk_6bd[0x3];
+    void *unk_6c0;
+    s32 unk_6c4;
+    u16 unk_6c8;
+    u8 unk_6ca[0x2];
+    s32 unk_6cc;
+    s32 unk_6d0;
+    s32 unk_6d4;
+    s32 unk_6d8;
+    s32 unk_6dc;
+    s32 unk_6e0;
+    u16 unk_6e4;
+    u16 unk_6e6;
+    u16 unk_6e8;
+    u8 unk_6ea[0x2];
+    s32 unk_6ec;
+    s32 unk_6f0;
+    s32 unk_6f4;
+    s32 unk_6f8;
+    s32 unk_6fc;
+    s32 unk_700;
+    s32 unk_704;
+};
+
+u8 *func_ov000_02162124(Obj02162124 *self) {
+    self->unk_00 = data_ov000_021cabc8;
+    self->unk_04 = data_ov000_021cabd8;
+    __cxa_vec_ctor((u8 *)self + 0x7c, 2, 0x138, (void (*)(void *))func_ov000_0218e9c4, (void (*)(void *))func_ov000_0218ea20);
+    __cxa_vec_ctor((u8 *)self + 0x2ec, 2, 0x138, (void (*)(void *))func_ov000_0218e9c4, (void (*)(void *))func_ov000_0218ea20);
+    self->unk_08 = 0x14;
+    self->unk_09 = 0;
+    self->unk_0a = 0;
+    MI_CpuFill8((u8 *)self + 0xb, 0, 0x20);
+    MI_CpuFill8((u8 *)self + 0x2b, 0, 0x18);
+    MI_CpuFill8((u8 *)self + 0x43, 0, 0x20);
+    MI_CpuFill8((u8 *)self + 0x63, 0, 0x18);
+    self->unk_7b = 0;
+    func_ov000_0218fe1c((u8 *)self + 0x55c);
+    func_02043548((u8 *)self + 0x644);
+    MTX_Identity44_((u8 *)self + 0x668);
+    self->unk_6a8 = 0;
+    self->unk_6ac = 0;
+    self->unk_6b0 = 0;
+    self->unk_6b4 = 0x1000;
+    self->unk_6b8 = 0;
+    self->unk_6bc = 0;
+    self->unk_6c0 = data_ov000_021cac02;
+    self->unk_6c4 = 0;
+    self->unk_6c8 = 0x1000;
+    self->unk_6cc = 0;
+    self->unk_6d0 = 0;
+    self->unk_6d4 = 0;
+    self->unk_6d8 = 0;
+    self->unk_6dc = 0;
+    self->unk_6e0 = 0;
+    self->unk_6e4 = 0;
+    self->unk_6e6 = 0;
+    self->unk_6e8 = 0;
+    self->unk_6ec = 0;
+    self->unk_6f0 = 0;
+    self->unk_6f4 = 0;
+    self->unk_6f8 = 0;
+    self->unk_6fc = 0;
+    self->unk_700 = 0;
+    self->unk_704 = 0;
+    return (u8 *)self;
 }
 
 void func_ov000_0218ec60(void *p, s32 a, s32 b, s32 c, s32 d);
@@ -92,15 +131,15 @@ static inline void CamDtor02162294(u8 *self) {
     SlotDtor02162294(sub);
 }
 
-u8 *func_ov000_02162294(u8 *self) {
-    CamDtor02162294(self);
-    return self;
+u8 *func_ov000_02162294(Obj02162124 *self) {
+    CamDtor02162294((u8 *)self);
+    return (u8 *)self;
 }
 
-u8 *func_ov000_0216251c(u8 *self) {
-    CamDtor02162294(self);
+u8 *func_ov000_0216251c(Obj02162124 *self) {
+    CamDtor02162294((u8 *)self);
     func_0203de1c(self);
-    return self;
+    return (u8 *)self;
 }
 
 }

@@ -39,39 +39,60 @@ static inline void LoModelPlayPart(void *model, int idx) {
     func_02042628(model, anim, part, 0);
 }
 
-void func_ov000_0214cb44(VObj *self, s32 a, s32 *pos, s32 d) {
-    if (LFLD(void *, self, 0x38) != NULL) {
+struct Obj0214cb44 : public VObj {
+    u8 unk_04[0x20];
+    s32 unk_24;
+    s32 unk_28;
+    u8 unk_2c[0xc];
+    void *unk_38;
+    u8 unk_3c[0x2c];
+    s16 unk_68;
+    u8 unk_6a[0x1a];
+    void *unk_84;
+    u8 unk_88[0x4];
+    VObj *unk_8c;
+    VObj unk_90;
+    u8 unk_94[0x40];
+    s32 unk_d4;
+    u8 unk_d8[0x28];
+    s32 unk_100;
+    u8 unk_104[0xfc];
+    VObj *unk_200;
+};
+
+void func_ov000_0214cb44(Obj0214cb44 *self, s32 a, s32 *pos, s32 d) {
+    if (self->unk_38 != NULL) {
         s16 z;
         s32 x;
         s32 y;
         self->vfunc_64(a, pos, d);
         func_ov000_0214d304(self, a, pos, d);
-        z = LFLD(s16, self, 0x68) - 0x110;
-        x = (pos[0] + ((LFLD(s32, self, 0x24) - 0x80) + ((0x100 - LFLD(s32, self, 0x24)) >> 1))) << 12;
-        y = pos[1] + (((LFLD(s32, self, 0x28) >> 1) - 0x60) << 12);
-        LFLD(LoAlpha0214cb44, LFLD(void *, self, 0x84), 0x6c).alpha = func_02043d48(data_02097d48 + 0x8b0);
+        z = self->unk_68 - 0x110;
+        x = (pos[0] + ((self->unk_24 - 0x80) + ((0x100 - self->unk_24) >> 1))) << 12;
+        y = pos[1] + (((self->unk_28 >> 1) - 0x60) << 12);
+        LFLD(LoAlpha0214cb44, self->unk_84, 0x6c).alpha = func_02043d48(data_02097d48 + 0x8b0);
         {
-            u8 *o = LFLD(u8 *, self, 0x84);
+            u8 *o = (u8 *)self->unk_84;
             LFLD(s32, o, 0xfc) = x;
             LFLD(s32, o, 0x100) = y;
         }
-        LFLD(s32, LFLD(void *, self, 0x84), 0x150) = z;
-        LoModelPlayPart(LFLD(void *, self, 0x84), 0);
+        LFLD(s32, self->unk_84, 0x150) = z;
+        LoModelPlayPart(self->unk_84, 0);
         {
             s32 py = pos[1];
             s32 px = pos[0];
-            LFLD(s32, self, 0x100) = LFLD(s16, self, 0x68);
-            LFLD(VObj, self, 0x90).vfunc_20(((LFLD(s32, self, 0x24) - LFLD(s32, self, 0xd4)) >> 1) + (px >> 12),
+            self->unk_100 = self->unk_68;
+            self->unk_90.vfunc_20(((self->unk_24 - self->unk_d4) >> 1) + (px >> 12),
                                             (py >> 12) + 2);
         }
-        LFLD(VObj, self, 0x90).vfunc_90();
+        self->unk_90.vfunc_90();
     }
-    if (LFLD(VObj *, self, 0x200) != NULL) {
+    if (self->unk_200 != NULL) {
         func_ov000_0214d994(self);
-        LFLD(VObj *, self, 0x200)->vfunc_90();
+        self->unk_200->vfunc_90();
     }
-    if (LFLD(VObj *, self, 0x8c) != NULL) {
-        LFLD(VObj *, self, 0x8c)->vfunc_20();
+    if (self->unk_8c != NULL) {
+        self->unk_8c->vfunc_20();
     }
 }
 

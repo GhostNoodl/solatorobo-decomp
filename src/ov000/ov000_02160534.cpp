@@ -28,7 +28,24 @@ static inline void G3_Cmd1(int cmd, u32 value) {
 
 /* pid, y and x are assigned before use: declaring them as parameters (pid in the
  * unused second argument) gives the target's spill slots and registers. */
-void func_ov000_02160534(VObj *self, s32 pid, VecFx32 *pos, s32 c, s32 d, s32 y, s32 x) {
+struct Obj02160534 : public VObj {
+    u8 unk_04[0x8];
+    Bits02160534 unk_0c;
+    u8 unk_10[0x38];
+    s32 unk_48;
+    u8 unk_4c[0x4];
+    s32 unk_50;
+    s32 unk_54;
+    s32 unk_58;
+    s32 unk_5c;
+    s32 unk_60;
+    u8 unk_64[0x4];
+    s32 unk_68;
+    u8 unk_6c[0x2c];
+    u8 unk_98;
+};
+
+void func_ov000_02160534(Obj02160534 *self, s32 pid, VecFx32 *pos, s32 c, s32 d, s32 y, s32 x) {
     u8 *g;
     s32 z;
     s32 v;
@@ -38,7 +55,7 @@ void func_ov000_02160534(VObj *self, s32 pid, VecFx32 *pos, s32 c, s32 d, s32 y,
     s32 i;
     g = data_02097d48;
     {
-        u32 n = LFLD(u8, self, 0x98);
+        u32 n = self->unk_98;
         v = (s32)(n > 0 ? 0.5f + (float)(s32)(n << 12) : (float)(s32)(n << 12) - 0.5f);
     }
     dd = d;
@@ -49,21 +66,21 @@ void func_ov000_02160534(VObj *self, s32 pid, VecFx32 *pos, s32 c, s32 d, s32 y,
     }
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x29, 0x8d0 | ((alpha >= 0x1f ? pid : func_02043d84(g + 0x8b0)) << 24) | (alpha << 16));
-    x = LFLD(s32, self, 0x50) << 12;
-    y = LFLD(s32, self, 0x54) << 12;
+    x = self->unk_50 << 12;
+    y = self->unk_54 << 12;
     z = pos->z;
     self->vfunc_44(pos->x, pos->y, z, x, y, 1);
     self->vfunc_44(pos->x - 0x1000, pos->y - 0x1000, z, x + 0x2000, y + 0x2000, 0);
-    if (LFLD(Bits02160534, self, 0xc).b5) {
+    if (self->unk_0c.b5) {
         self->vfunc_40(pos->x - 0x2000, pos->y, z, y, 0);
         self->vfunc_40(pos->x + x + 0x1000, pos->y, z, y, 0);
     }
-    if (!LFLD(Bits02160534, self, 0xc).b10) {
+    if (!self->unk_0c.b10) {
         return;
     }
-    if (LFLD(Bits02160534, self, 0xc).b8 && LFLD(s32, self, 0x5c) < LFLD(s32, self, 0x68)) {
+    if (self->unk_0c.b8 && self->unk_5c < self->unk_68) {
         G3_Cmd1(0x29, 0x48d0 | (func_02043d84(g + 0x8b0) << 24) | ((LO_FX_MUL(dd, 0x14000) >> 12) << 16));
-        r = FX_Div(LFLD(s32, self, 0x68), LFLD(s32, self, 0x60));
+        r = FX_Div(self->unk_68, self->unk_60);
         if (r >= 0x1000) {
             r = 0x1000;
         } else if (r < 0) {
@@ -71,9 +88,9 @@ void func_ov000_02160534(VObj *self, s32 pid, VecFx32 *pos, s32 c, s32 d, s32 y,
         }
         self->vfunc_44(pos->x, pos->y, z, (LO_FX_MUL(x, r) + 0x800) & 0x7ffff000, y, 3);
     }
-    if (LFLD(s32, self, 0x5c) > 0) {
+    if (self->unk_5c > 0) {
         G3_Cmd1(0x29, 0x48d0 | ((alpha >= 0x1f ? pid : func_02043d84(g + 0x8b0)) << 24) | (alpha << 16));
-        r = FX_Div(LFLD(s32, self, 0x5c), LFLD(s32, self, 0x60));
+        r = FX_Div(self->unk_5c, self->unk_60);
         if (r >= 0x1000) {
             r = 0x1000;
         } else if (r < 0) {
@@ -81,20 +98,20 @@ void func_ov000_02160534(VObj *self, s32 pid, VecFx32 *pos, s32 c, s32 d, s32 y,
         }
         self->vfunc_48(pos->x, pos->y, z, (LO_FX_MUL(x, r) + 0x800) & 0x7ffff000, y, 2);
     }
-    if (LFLD(s32, self, 0x58) > 1) {
+    if (self->unk_58 > 1) {
         if (alpha < 0x1f) {
             pid = func_02043d84(g + 0x8b0);
         }
         G3_Cmd1(0x29, 0x48d0 | (pid << 24) | (alpha << 16));
-        alpha = FX_Div(x, LFLD(s32, self, 0x58) << 12);
-        for (i = 1; i < LFLD(s32, self, 0x58); i++) {
+        alpha = FX_Div(x, self->unk_58 << 12);
+        for (i = 1; i < self->unk_58; i++) {
             self->vfunc_40(pos->x + alpha * i, pos->y, z, y, 0);
         }
     }
-    if (!LFLD(Bits02160534, self, 0xc).b4) {
+    if (!self->unk_0c.b4) {
         return;
     }
-    alpha = LO_FX_MUL(LO_FX_MUL(LFLD(s32, self, 0x48), dd), 0x10000) >> 12;
+    alpha = LO_FX_MUL(LO_FX_MUL(self->unk_48, dd), 0x10000) >> 12;
     if (alpha == 0) {
         return;
     }

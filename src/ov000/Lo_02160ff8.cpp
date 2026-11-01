@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -34,42 +35,42 @@ void *func_ov000_02160e28(u8 *self, u16 *cmd, void *arr, u16 *count);
         out = m_;                                    \
     } while (0)
 
-static inline BOOL EnsureModel(void *self) {
-    if (LFLD(void *, self, 0x10)) {
+static inline BOOL EnsureModel(Lo021cacd8 *self) {
+    if (self->unk_10) {
         return TRUE;
     }
     if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
-        LO_MODEL_NEW(LFLD(u8 *, self, 0x10), data_0208cb84, data_0208cc8c);
+        LO_MODEL_NEW(self->unk_10, data_0208cb84, data_0208cc8c);
     } else {
-        LO_MODEL_NEW(LFLD(u8 *, self, 0x10), data_0208cb74, data_0208cca0);
+        LO_MODEL_NEW(self->unk_10, data_0208cb74, data_0208cca0);
     }
     {
-        void *a = func_02035d5c(LFLD(u8 *, self, 0x10) + 0x2c);
-        void *b = func_02034d88(a, LFLD(u8 *, self, 0x10) + 0x4c);
-        func_020417e0(LFLD(u8 *, self, 0x10), b);
+        void *a = func_02035d5c(self->unk_10 + 0x2c);
+        void *b = func_02034d88(a, self->unk_10 + 0x4c);
+        func_020417e0(self->unk_10, b);
     }
-    LFLD(u32, LFLD(u8 *, self, 0x10), 0x6c) |= 2;
-    func_02041d9c(LFLD(u8 *, self, 0x10), 0, 7);
+    LFLD(u32, self->unk_10, 0x6c) |= 2;
+    func_02041d9c(self->unk_10, 0, 7);
     return TRUE;
 }
 
-void func_ov000_02160ff8(void *self) {
-    LFLD(s32, self, 0x24) = 0x50;
-    LFLD(s32, self, 0x28) = 0x1e;
-    LFLD(u16, self, 0x64) = 0x80;
-    LFLD(u16, self, 0x66) = 0x60;
-    LFLD(s32, self, 0x2c) = 0;
-    LFLD(u16, self, 0x48) = 0x294a;
-    LO_MODEL_NEW(LFLD(u8 *, self, 0x84), data_0208cc88, data_0208cc94);
-    func_020417e0(LFLD(u8 *, self, 0x84), func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88));
-    LFLD(u32, LFLD(u8 *, self, 0x84), 0x6c) |= 2;
-    func_02041d9c(LFLD(u8 *, self, 0x84), 0, 6);
-    func_02041c20(LFLD(u8 *, self, 0x84), 6, self);
-    func_02041d9c(LFLD(u8 *, self, 0x84), 0, 8);
-    func_02041c5c(LFLD(u8 *, self, 0x84), (void *)func_ov000_02160e28);
+void func_ov000_02160ff8(Lo021cacd8 *self) {
+    self->unk_24 = 0x50;
+    self->unk_28 = 0x1e;
+    self->unk_64 = 0x80;
+    self->unk_66 = 0x60;
+    self->unk_2c = 0;
+    self->unk_48 = 0x294a;
+    LO_MODEL_NEW(self->unk_84, data_0208cc88, data_0208cc94);
+    func_020417e0(self->unk_84, func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88));
+    LFLD(u32, self->unk_84, 0x6c) |= 2;
+    func_02041d9c(self->unk_84, 0, 6);
+    func_02041c20(self->unk_84, 6, self);
+    func_02041d9c(self->unk_84, 0, 8);
+    func_02041c5c(self->unk_84, (void *)func_ov000_02160e28);
     if (EnsureModel(self)) {
-        func_02041d9c(LFLD(u8 *, self, 0x10), 0, 10);
-        LFLD(u32, LFLD(u8 *, self, 0x10), 0x6c) |= 0x80000;
+        func_02041d9c(self->unk_10, 0, 10);
+        LFLD(u32, self->unk_10, 0x6c) |= 0x80000;
     }
 }
 

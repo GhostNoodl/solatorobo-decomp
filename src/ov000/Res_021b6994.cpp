@@ -19,18 +19,24 @@ void func_0206dedc(void *buf, u8 *p);
 void func_0206dde4(void *buf, u8 *p);
 void func_02035acc(void *a, void *buf, s32 b);
 
-void func_ov000_021b6994(u8 *self, u8 arg) {
+struct Obj021b6994 {
+    u8 unk_00[0xc];
+    void *unk_0c;
+    void *unk_10;
+};
+
+void func_ov000_021b6994(Obj021b6994 *self, u8 arg) {
     u8 *e;
     s32 i;
     u8 *p;
     u8 *t;
     u8 buf[0x20];
-    if (LFLD(void *, self, 0x10) == NULL) {
+    if (self->unk_10 == NULL) {
         return;
     }
-    e = func_0206e150(LFLD(void *, self, 0x10));
+    e = func_0206e150(self->unk_10);
     if (e != NULL) {
-        for (i = 0; i < LFLD(u8 *, self, 0x10)[0xa]; i++, e += 0x18) {
+        for (i = 0; i < ((u8 *)self->unk_10)[0xa]; i++, e += 0x18) {
             void *m = func_02035d5c(e);
             if (m != NULL) {
                 void *k = func_02039674(e);
@@ -47,9 +53,9 @@ void func_ov000_021b6994(u8 *self, u8 arg) {
             func_02036838(data_02097cdc, e, 7, 0);
         }
     }
-    e = func_0206e180(LFLD(void *, self, 0x10));
+    e = func_0206e180(self->unk_10);
     if (e != NULL) {
-        for (i = 0; i < LFLD(u8 *, self, 0x10)[0xb]; i++, e += 0x18) {
+        for (i = 0; i < ((u8 *)self->unk_10)[0xb]; i++, e += 0x18) {
             func_02036838(data_02097cdc, e, 7, 0);
         }
     }
@@ -62,8 +68,8 @@ void func_ov000_021b6994(u8 *self, u8 arg) {
     func_02035acc(LFLD(void *, t, 8), buf, 0);
     func_0206dde4(buf, p);
     func_02035acc(LFLD(void *, t, 8), buf, 0);
-    LFLD(void *, self, 0x10) = NULL;
-    LFLD(void *, self, 0xc) = NULL;
+    self->unk_10 = NULL;
+    self->unk_0c = NULL;
 }
 
 }

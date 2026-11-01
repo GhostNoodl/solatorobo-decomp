@@ -62,20 +62,32 @@ static inline void PlayPart021ba338(void *model, int idx) {
     func_02042628(model, anim, part, 0);
 }
 
-void func_ov000_021ba338(u8 *self) {
+struct Obj021ba338 {
+    u8 unk_00[0x8];
+    s32 unk_08;
+    u8 unk_0c[0x14];
+    u8 *unk_20;
+    u8 unk_24[0x8];
+    s32 unk_2c;
+    s32 unk_30;
+    s32 unk_34;
+    s32 unk_38;
+};
+
+void func_ov000_021ba338(Obj021ba338 *self) {
     u8 *g = data_02097d48;
-    s32 a = LFLD(s32, self, 0x2c);
+    s32 a = self->unk_2c;
     s32 b;
     s32 h;
     s32 w;
     s32 r;
-    if (LFLD(s32, self, 0x8) != 0xd) {
+    if (self->unk_08 != 0xd) {
         h = (s32)(((s64)a * (s64)0x18000 + 0x800) >> 12) >> 12;
-        b = LFLD(s32, self, 0x30);
+        b = self->unk_30;
     } else {
         a = 0x1000 - a;
         h = (s32)(((s64)a * (s64)0x18000 + 0x800) >> 12) >> 12;
-        b = 0x1000 - LFLD(s32, self, 0x30);
+        b = 0x1000 - self->unk_30;
     }
     if (h != 0) {
         G3Cmd1_021ba338(0x29, 0x1f00d0 | (func_02043d48(g + 0x8b0) << 24));
@@ -89,8 +101,8 @@ void func_ov000_021ba338(u8 *self) {
         G3Cmd1_021ba338(0x12, 1);
     }
     {
-        s32 c = LFLD(s32, self, 0x34);
-        if (LFLD(s32, self, 0x8) != 0xd) {
+        s32 c = self->unk_34;
+        if (self->unk_08 != 0xd) {
             w = (s32)(((s64)(0x1000 - c) * 0x100000 + 0x800) >> 12);
         } else {
             w = (s32)(((s64)c * 0x100000 + 0x800) >> 12);
@@ -112,27 +124,27 @@ void func_ov000_021ba338(u8 *self) {
     NNS_G3dGeSendDL(data_0208b3d0, data_020828f8);
     G3Cmd1_021ba338(0x12, 1);
     {
-        s32 d = LFLD(s32, self, 0x38);
+        s32 d = self->unk_38;
         s32 sq = (s32)(((s64)d * d + 0x800) >> 12);
-        if (LFLD(s32, self, 0x8) != 0xd) {
+        if (self->unk_08 != 0xd) {
             r = (s32)(((s64)(0x1000 - sq) * (s64)0x180000 + 0x800) >> 12) >> 12;
         } else {
             r = -((s32)(((s64)sq * (s64)0x180000 + 0x800) >> 12) >> 12);
         }
     }
     if ((r < 0 ? -r : r) < 0x100) {
-        LFLD(s32, LFLD(u8 *, self, 0x20), 0x150) = -0x71a;
-        LFLD(B6c_021ba338, LFLD(u8 *, self, 0x20), 0x6c).b19 = 1;
-        LFLD(B6c_021ba338, LFLD(u8 *, self, 0x20), 0x6c).b21 = 1;
-        LFLD(B6c_021ba338, LFLD(u8 *, self, 0x20), 0x6c).b2 = 0x1e;
-        LFLD(B6c_021ba338, LFLD(u8 *, self, 0x20), 0x6c).b7 = func_02043d48(g + 0x8b0);
+        LFLD(s32, self->unk_20, 0x150) = -0x71a;
+        LFLD(B6c_021ba338, self->unk_20, 0x6c).b19 = 1;
+        LFLD(B6c_021ba338, self->unk_20, 0x6c).b21 = 1;
+        LFLD(B6c_021ba338, self->unk_20, 0x6c).b2 = 0x1e;
+        LFLD(B6c_021ba338, self->unk_20, 0x6c).b7 = func_02043d48(g + 0x8b0);
         {
-            u8 *o = LFLD(u8 *, self, 0x20);
+            u8 *o = self->unk_20;
             LFLD(s32, o, 0xfc) = r << 12;
             LFLD(s32, o, 0x100) = 0;
         }
-        PlayPart021ba338(LFLD(u8 *, self, 0x20), 0);
-        LFLD(B6c_021ba338, LFLD(u8 *, self, 0x20), 0x6c).b21 = 0;
+        PlayPart021ba338(self->unk_20, 0);
+        LFLD(B6c_021ba338, self->unk_20, 0x6c).b21 = 0;
     }
     func_02043d48(g + 0x8b0);
 }

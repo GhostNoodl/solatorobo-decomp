@@ -17,14 +17,21 @@ void func_0203df0c(void *p);
 
 typedef struct { u32 lo : 4; } LoNib;
 
-BOOL func_ov000_02172bb4(void *self) {
-    if (LFLD(s32, self, 0x20) == 0) {
+struct Obj02172bb4 {
+    u8 unk_00[0x20];
+    s32 unk_20;
+    u8 unk_24[0xc];
+    VObj *unk_30;
+};
+
+BOOL func_ov000_02172bb4(Obj02172bb4 *self) {
+    if (self->unk_20 == 0) {
         return TRUE;
     }
-    if (LFLD(VObj *, self, 0x30) == NULL) {
+    if (self->unk_30 == NULL) {
         return FALSE;
     }
-    return LFLD(VObj *, self, 0x30)->vfunc_08();
+    return self->unk_30->vfunc_08();
 }
 
 }

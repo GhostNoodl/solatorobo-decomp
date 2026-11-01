@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -21,26 +22,26 @@ static inline BOOL LoResDone(u8 *o) {
     return TRUE;
 }
 
-void func_ov000_0215ba4c(VObj *self, s32 unused, s32 *pos) {
+void func_ov000_0215ba4c(LoBase021cafc0_021cb0b8 *self, s32 unused, s32 *pos) {
     s32 h = self->vfunc_40() << 12;
-    s32 hh = h * LFLD(s8, self, 0xb1);
+    s32 hh = h * self->unk_b1;
     s32 z;
     u8 *o;
     if (LBIT(self, 0xc).b3 ? TRUE : FALSE) {
-        z = LFLD(s16, self, 0x68) - 0x100;
+        z = self->unk_68 - 0x100;
         s32 y = hh + (pos[1] + (self->vfunc_34() << 12));
-        o = LFLD(u8 *, self, 0xac);
-        LFLD(s32, o, 4) = pos[0] + ((LFLD(s32, self, 0x24) >> 1) << 12);
+        o = self->unk_ac;
+        LFLD(s32, o, 4) = pos[0] + ((self->unk_24 >> 1) << 12);
         LFLD(s32, o, 8) = y + 0x6000;
     } else {
-        z = LFLD(s16, self, 0x68) - 0x100;
+        z = self->unk_68 - 0x100;
         s32 y = hh + (pos[1] + (self->vfunc_34() << 12));
-        o = LFLD(u8 *, self, 0xac);
-        LFLD(s32, o, 4) = pos[0] + ((LFLD(s32, self, 0x24) >> 1) << 12);
+        o = self->unk_ac;
+        LFLD(s32, o, 4) = pos[0] + ((self->unk_24 >> 1) << 12);
         LFLD(s32, o, 8) = y - 0x2000;
     }
     LFLD(s32, o, 0xc) = z;
-    func_ov000_0215eab4(LFLD(void *, self, 0xac));
+    func_ov000_0215eab4(self->unk_ac);
 }
 
 }

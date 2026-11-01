@@ -46,17 +46,25 @@ static inline u8 *GetB0216b880(u8 *mgr) {
     return LFLD(u8 *, mgr, 0x11c) != NULL ? LFLD(u8 *, LFLD(u8 *, mgr, 0x11c), 0x64) : NULL;
 }
 
-void func_ov000_0216b880(u8 *self) {
+struct Obj0216b880 {
+    Bits0216b880 unk_00;
+    s32 unk_04;
+    Model *unk_08;
+    u8 unk_0c[0xc];
+    s32 unk_18;
+};
+
+void func_ov000_0216b880(Obj0216b880 *self) {
     s32 off;
     u8 *m;
     u8 *a;
     u8 *b;
     s32 y;
     s32 v;
-    if (LFLD(s32, self, 4) != 7 && LFLD(s32, self, 4) != 8) {
+    if (self->unk_04 != 7 && self->unk_04 != 8) {
         return;
     }
-    v = LFLD(s32, self, 0x18);
+    v = self->unk_18;
     y = LO_FX_MUL(v, 0x40000) + 0x55000;
     y -= 0xb000;
     a = GetA0216b880(data_ov000_021ccd30);
@@ -79,12 +87,12 @@ void func_ov000_0216b880(u8 *self) {
     } else if (y > lim.y) {
         y += off;
     }
-    Model_SetPos(LFLD(Model *, self, 8), -0x7d000, y & ~0xfff);
-    LFLD(Model *, self, 8)->unk_150 = -0x2000;
-    if (LFLD(Bits0216b880, self, 0).b3) {
-        Model_PlayPartEx(LFLD(Model *, self, 8), 0x22, 0);
+    Model_SetPos(self->unk_08, -0x7d000, y & ~0xfff);
+    self->unk_08->unk_150 = -0x2000;
+    if (self->unk_00.b3) {
+        Model_PlayPartEx(self->unk_08, 0x22, 0);
     } else {
-        Model_PlayPartEx(LFLD(Model *, self, 8), 0x23, 0);
+        Model_PlayPartEx(self->unk_08, 0x23, 0);
     }
 }
 

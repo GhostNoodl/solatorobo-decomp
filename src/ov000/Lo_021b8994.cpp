@@ -52,8 +52,17 @@ static inline BOOL FadeIdle021b8994(void) {
     return r;
 }
 
-BOOL func_ov000_021b8994(u8 *self) {
-    switch (LFLD(s32, self, 0x28)) {
+struct Obj021b8994 {
+    Cnt021b8994 unk_00;
+    u8 unk_04[0x20];
+    VObj *unk_24;
+    s32 unk_28;
+    u8 unk_2c[0x4];
+    u8 *unk_30;
+};
+
+BOOL func_ov000_021b8994(Obj021b8994 *self) {
+    switch (self->unk_28) {
     case 1: {
         char buf[0x20];
         VObj *p = (VObj *)func_0203dd9c(0x4c);
@@ -61,18 +70,18 @@ BOOL func_ov000_021b8994(u8 *self) {
             *(void **)p = data_0208b318;
             p->vfunc_08();
         }
-        LFLD(VObj *, self, 0x24) = p;
+        self->unk_24 = p;
         func_0206e900(buf, data_ov000_021cc885);
-        LFLD(s32, LFLD(VObj *, self, 0x24), 0x44) = 2;
-        LFLD(VObj *, self, 0x24)->vfunc_24(buf, self + 4);
-        LFLD(s32, self, 0x28) = 2;
+        LFLD(s32, self->unk_24, 0x44) = 2;
+        self->unk_24->vfunc_24(buf, (u8 *)self + 4);
+        self->unk_28 = 2;
         break;
     }
     case 2:
-        if (!LFLD(VObj *, self, 0x24)->vfunc_2c()) {
+        if (!self->unk_24->vfunc_2c()) {
             break;
         }
-        LFLD(s32, self, 0x28) = 4;
+        self->unk_28 = 4;
     case 3:
         if (!func_ov000_02184498(data_ov000_021ccd54)) {
             break;
@@ -80,7 +89,7 @@ BOOL func_ov000_021b8994(u8 *self) {
         func_0203c9e8(0x21, 0);
         func_0203cc58(0x1e000, 1, 2);
         func_0203ca24(0, 8, 2);
-        LFLD(s32, self, 0x28) = 4;
+        self->unk_28 = 4;
         break;
     case 4: {
         u8 *p;
@@ -93,20 +102,20 @@ BOOL func_ov000_021b8994(u8 *self) {
         p = (u8 *)func_0203dd9c(0x160);
         if (p != NULL) {
             func_02041218(p + 0x88);
-            func_02041440(p, self + 4, 0);
+            func_02041440(p, (u8 *)self + 4, 0);
         }
-        LFLD(u8 *, self, 0x30) = p;
-        func_020417e0(LFLD(u8 *, self, 0x30), (void *)LFLD(VObj *, self, 0x24)->vfunc_10());
-        func_02041d9c(LFLD(u8 *, self, 0x30), 1, 0xffff);
+        self->unk_30 = p;
+        func_020417e0(self->unk_30, (void *)self->unk_24->vfunc_10());
+        func_02041d9c(self->unk_30, 1, 0xffff);
         func_0203cb78(0, 1, 0);
         func_0203cc58(0, 1, 2);
-        LFLD(s32, self, 0x28) = 6;
+        self->unk_28 = 6;
         break;
     }
     case 6:
         func_0203cb78(0x3c000, 1, 2);
         func_0203ca24(0x10, 8, 2);
-        LFLD(s32, self, 0x28) = 7;
+        self->unk_28 = 7;
         break;
     case 7:
         if (func_0203ca74(2) <= 0x1e000) {
@@ -114,22 +123,22 @@ BOOL func_ov000_021b8994(u8 *self) {
         }
         func_0203c9e8(0x10, 0);
         func_0203cb78(0x1e000, 1, 0);
-        LFLD(s32, self, 0x28) = 9;
+        self->unk_28 = 9;
         break;
     case 9:
         if (!Fade2_021b8994()) {
             break;
         }
         if (FadeIdle021b8994()) {
-            LFLD(s32, self, 0x28) = 0xc;
+            self->unk_28 = 0xc;
         }
         break;
     case 12:
-        LFLD(Cnt021b8994, self, 0).cnt++;
-        if (LFLD(Cnt021b8994, self, 0).cnt <= 0x78 && !(data_02097dc8[9] & 3)) {
+        self->unk_00.cnt++;
+        if (self->unk_00.cnt <= 0x78 && !(data_02097dc8[9] & 3)) {
             break;
         }
-        LFLD(s32, self, 0x28) = 0xd;
+        self->unk_28 = 0xd;
         break;
     case 13: {
         s32 v = func_0203ca84(2);
@@ -137,8 +146,8 @@ BOOL func_ov000_021b8994(u8 *self) {
         func_0203ca24(v, 0, 2);
         func_02042eac(1, 1);
         func_02042ebc(1, 0x1e, 0x10, 0);
-        LFLD(u32, LFLD(u8 *, self, 0x30), 0x6c) |= 0x80000;
-        LFLD(s32, self, 0x28) = 0xe;
+        LFLD(u32, self->unk_30, 0x6c) |= 0x80000;
+        self->unk_28 = 0xe;
         break;
     }
     case 14: {
@@ -154,7 +163,7 @@ BOOL func_ov000_021b8994(u8 *self) {
             break;
         }
         LO_FREE_M(self, 0x30);
-        LFLD(s32, self, 0x28) = 0x11;
+        self->unk_28 = 0x11;
         break;
     }
     case 17:

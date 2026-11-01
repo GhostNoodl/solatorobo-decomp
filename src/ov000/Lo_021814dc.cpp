@@ -371,31 +371,37 @@ static inline void Put2(u8 *buf, s32 i, u8 *src) {
     d[1] = src[1];
 }
 
-s32 func_ov000_02181af4(u8 *self, u8 *buf, u32 size) {
+struct Ser02181af4 {
+    u8 unk_00[0xc];
+    u8 *unk_0c;
+    u8 *unk_10;
+};
+
+s32 func_ov000_02181af4(Ser02181af4 *self, u8 *buf, u32 size) {
     s32 off = 0;
     u16 n;
     u8 *p;
     MI_CpuFill8(buf, off, size);
-    buf[0] = LFLD(u8 *, self, 0xc) != NULL ? 1 : 0;
+    buf[0] = self->unk_0c != NULL ? 1 : 0;
     n = 0;
-    for (p = LFLD(u8 *, self, 0x10); p != NULL; p = LFLD(u8 *, p, 0xd4)) {
+    for (p = self->unk_10; p != NULL; p = LFLD(u8 *, p, 0xd4)) {
         n++;
     }
     buf[1] = n;
-    if (LFLD(u8 *, self, 0xc) == NULL) {
+    if (self->unk_0c == NULL) {
         off += 10;
     } else {
         off += 10;
-        buf[2] = LFLD(u8, LFLD(u8 *, self, 0xc), 0xc6);
-        buf[3] = LFLD(u8, LFLD(u8 *, self, 0xc), 0xc7);
-        buf[4] = LFLD(u16, LFLD(u8 *, self, 0xc), 0xc8);
-        buf[5] = LFLD(u16, LFLD(u8 *, self, 0xc), 0xca);
-        buf[6] = LFLD(u8, LFLD(u8 *, self, 0xc), 0xcc);
-        buf[7] = LFLD(u8, LFLD(u8 *, self, 0xc), 0xcd);
-        buf[8] = LFLD(u8, LFLD(u8 *, self, 0xc), 0xce);
-        buf[9] = LFLD(u8, LFLD(u8 *, self, 0xc), 0xcf);
+        buf[2] = LFLD(u8, self->unk_0c, 0xc6);
+        buf[3] = LFLD(u8, self->unk_0c, 0xc7);
+        buf[4] = LFLD(u16, self->unk_0c, 0xc8);
+        buf[5] = LFLD(u16, self->unk_0c, 0xca);
+        buf[6] = LFLD(u8, self->unk_0c, 0xcc);
+        buf[7] = LFLD(u8, self->unk_0c, 0xcd);
+        buf[8] = LFLD(u8, self->unk_0c, 0xce);
+        buf[9] = LFLD(u8, self->unk_0c, 0xcf);
     }
-    p = LFLD(u8 *, self, 0x10);
+    p = self->unk_10;
     if (p == NULL) {
         off += 10;
     } else {
@@ -503,23 +509,29 @@ void *func_0206e7d0(u8 id);
 int func_0200779c(char *dst, const char *fmt, ...);
 void func_0205a840(void *p, void *buf, const void *s);
 
-BOOL func_ov000_02181d70(u8 *self, u16 id) {
+struct Lo02181d70 {
+    u8 unk_00[0x4];
+    VObj *unk_04;
+    u16 unk_08;
+};
+
+BOOL func_ov000_02181d70(Lo02181d70 *self, u16 id) {
     char path[0x20];
     char name[0x20];
     VObj *obj;
     if (id == 0xffff) {
-        if (LFLD(VObj *, self, 4) == NULL) {
+        if (self->unk_04 == NULL) {
             return TRUE;
         }
-        if (LFLD(VObj *, self, 4)->vfunc_34()) {
+        if (self->unk_04->vfunc_34()) {
             return TRUE;
         }
-        if (func_0205a9c8(LFLD(VObj *, self, 4))) {
-            func_0205aa30(LFLD(VObj *, self, 4));
+        if (func_0205a9c8(self->unk_04)) {
+            func_0205aa30(self->unk_04);
             return TRUE;
         }
     } else {
-        if (LFLD(u16, self, 8) == id) {
+        if (self->unk_08 == id) {
             return TRUE;
         }
         LO_FREE_V(self, 4);
@@ -530,8 +542,8 @@ BOOL func_ov000_02181d70(u8 *self, u16 id) {
             VOBJ_SET_VTABLE(obj, data_0208bf54);
             func_0205a6a0(obj);
         }
-        LFLD(VObj *, self, 4) = obj;
-        LFLD(u16, self, 8) = id;
+        self->unk_04 = obj;
+        self->unk_08 = id;
         if (id == 0xfe) {
             STD_CopyString(name, data_ov000_021cc0f8);
         } else {
@@ -539,7 +551,7 @@ BOOL func_ov000_02181d70(u8 *self, u16 id) {
         }
         STD_CopyString(path, data_ov000_021cc111);
         STD_ConcatenateString(path, data_ov000_021cc119);
-        func_0205a840(LFLD(VObj *, self, 4), path, name);
+        func_0205a840(self->unk_04, path, name);
     }
     return FALSE;
 }

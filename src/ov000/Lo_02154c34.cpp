@@ -67,8 +67,15 @@ static inline void Sub02154c34_Dtor(Obj02154c34Sub *s) {
     s->model = NULL;
 }
 
-void func_ov000_02154c34(void *self) {
-    Ent02154c34 *e = LFLD(Ent02154c34 *, self, 0x94);
+struct Obj02154c34 {
+    u8 unk_00[0x94];
+    Ent02154c34 *unk_94;
+    u8 unk_98[0x14];
+    Obj02154c34Sub *unk_ac;
+};
+
+void func_ov000_02154c34(Obj02154c34 *self) {
+    Ent02154c34 *e = self->unk_94;
     while (e != NULL) {
         Ent02154c34 *next = e->next;
         u32 saved;
@@ -87,13 +94,13 @@ void func_ov000_02154c34(void *self) {
     {
         u32 saved;
         LO_HEAP_PUSH(saved);
-        if (LFLD(Obj02154c34Sub *, self, 0xac) != NULL) {
-            Obj02154c34Sub *p = LFLD(Obj02154c34Sub *, self, 0xac);
+        if (self->unk_ac != NULL) {
+            Obj02154c34Sub *p = self->unk_ac;
             if (p != NULL) {
                 Sub02154c34_Dtor(p);
                 func_0203de1c(p);
             }
-            LFLD(Obj02154c34Sub *, self, 0xac) = NULL;
+            self->unk_ac = NULL;
         }
         LO_HEAP_POP(saved);
     }

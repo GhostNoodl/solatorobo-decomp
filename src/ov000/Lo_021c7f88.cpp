@@ -33,8 +33,12 @@ static inline void G3_TexCoord(s32 s, s32 t) {
     NNS_G3dGeBufferOP_N(0x22, &v, 1);
 }
 
-void func_ov000_021c7f88(void *self, s32 x, s32 y, s32 z) {
-    s32 h = LFLD(s32, self, 0) - 0xc000;
+struct Obj021c7f88 {
+    s32 unk_00;
+};
+
+void func_ov000_021c7f88(Obj021c7f88 *self, s32 x, s32 y, s32 z) {
+    s32 h = self->unk_00 - 0xc000;
     G3_Cmd1(0x20, 0x7fff);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, x, y + 0x6000, z);

@@ -31,29 +31,39 @@ static inline BOOL LoAnimValid(LoAnimC *p) {
     return TRUE;
 }
 
-void func_ov000_0215c0c4(VObj *self, void *a, s32 *pos, s32 d) {
+struct Obj0215c0c4 : public VObj {
+    s32 unk_04;
+    u8 unk_08[0x4];
+    u32 unk_0c;
+    u8 unk_10[0x4];
+    void *unk_14;
+    u8 unk_18[0x6c];
+    VObj *unk_84;
+};
+
+void func_ov000_0215c0c4(Obj0215c0c4 *self, void *a, s32 *pos, s32 d) {
     if (a == NULL) {
         return;
     }
     self->vfunc_64(a, pos, d);
-    if (LFLD(u32, self, 0xc) & 0x80000) {
-        if (LFLD(VObj *, self, 0x84)) {
+    if (self->unk_0c & 0x80000) {
+        if (self->unk_84) {
             s32 py;
             s32 px;
             px = pos[0];
             py = pos[1];
             s32 x = self->vfunc_30();
             s32 y = self->vfunc_34();
-            LFLD(VObj *, self, 0x84)->vfunc_20(x + (px >> 12), y + (py >> 12));
-            LFLD(VObj *, self, 0x84)->vfunc_90();
+            self->unk_84->vfunc_20(x + (px >> 12), y + (py >> 12));
+            self->unk_84->vfunc_90();
         }
-    } else if (LFLD(s32, self, 4) == 2 && LFLD(VObj *, self, 0x84)) {
-        LFLD(VObj *, self, 0x84)->vfunc_90();
+    } else if (self->unk_04 == 2 && self->unk_84) {
+        self->unk_84->vfunc_90();
     }
-    if (LFLD(void *, self, 0x14)) {
+    if (self->unk_14) {
         self->vfunc_60(a, pos, d);
     }
-    LFLD(u32, self, 0xc) |= 0x200;
+    self->unk_0c |= 0x200;
 }
 
 }

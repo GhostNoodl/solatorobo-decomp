@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -29,12 +30,12 @@ static inline BOOL LoPartReady(u8 *q) {
     return r;
 }
 
-BOOL func_ov000_02157fc0(void *self) {
+BOOL func_ov000_02157fc0(LoBase021caac8_021cb2a8 *self) {
     BOOL ok = func_ov000_021580e8(self);
-    if (LFLD(u8 *, self, 0xd4) && !LoPartReady(LFLD(u8 *, self, 0xd4))) {
+    if (self->unk_d4 && !LoPartReady(self->unk_d4)) {
         ok = FALSE;
     }
-    if (LFLD(u8 *, self, 0xd8) && !LoPartReady(LFLD(u8 *, self, 0xd8))) {
+    if (self->unk_d8 && !LoPartReady(self->unk_d8)) {
         ok = FALSE;
     }
     return ok;

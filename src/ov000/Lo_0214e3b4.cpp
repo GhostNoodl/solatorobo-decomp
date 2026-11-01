@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u32 b0 : 2;
@@ -48,41 +49,41 @@ static inline void LoSetPos0214e3b4(void *m, s32 x, s32 y) {
     LFLD(s32, m, 0x100) = y << 12;
 }
 
-void func_ov000_0214e3b4(VObj *self, void *arg, s32 x, s32 y, u8 depth, u8 flip) {
-    if (LFLD(void *, self, 0xb4) == NULL) {
+void func_ov000_0214e3b4(Lo021caac8 *self, void *arg, s32 x, s32 y, u8 depth, u8 flip) {
+    if ((void *)self->unk_b4 == NULL) {
         return;
     }
     if (flip) {
-        MF(LFLD(void *, self, 0x10)).b19 = 1;
-        LFLD(s32, LFLD(void *, self, 0x10), 0x150) = LFLD(s16, self, 0x68) - 0x110;
-        MF(LFLD(void *, self, 0x10)).b20 = 1;
-        MF(LFLD(void *, self, 0xb4)).b19 = 1;
-        LFLD(s32, LFLD(void *, self, 0xb4), 0x150) = LFLD(s16, self, 0x68) - 0x110;
-        MF(LFLD(void *, self, 0xb4)).b20 = 1;
+        MF(self->unk_10).b19 = 1;
+        LFLD(s32, self->unk_10, 0x150) = self->unk_68 - 0x110;
+        MF(self->unk_10).b20 = 1;
+        MF(self->unk_b4).b19 = 1;
+        LFLD(s32, self->unk_b4, 0x150) = self->unk_68 - 0x110;
+        MF(self->unk_b4).b20 = 1;
     } else {
-        MF(LFLD(void *, self, 0x10)).b19 = 1;
-        LFLD(s32, LFLD(void *, self, 0x10), 0x150) = LFLD(s16, self, 0x68) - 0x80;
-        MF(LFLD(void *, self, 0x10)).b20 = 0;
-        MF(LFLD(void *, self, 0xb4)).b19 = 1;
-        LFLD(s32, LFLD(void *, self, 0xb4), 0x150) = LFLD(s16, self, 0x68) - 0x80;
-        MF(LFLD(void *, self, 0xb4)).b20 = 0;
+        MF(self->unk_10).b19 = 1;
+        LFLD(s32, self->unk_10, 0x150) = self->unk_68 - 0x80;
+        MF(self->unk_10).b20 = 0;
+        MF(self->unk_b4).b19 = 1;
+        LFLD(s32, self->unk_b4, 0x150) = self->unk_68 - 0x80;
+        MF(self->unk_b4).b20 = 0;
     }
     x += self->vfunc_94() - 0x80;
-    LoSetPos0214e3b4(LFLD(void *, self, 0x10), x, y - 0x59);
-    LoModelPlayPart(LFLD(void *, self, 0x10), 13);
-    LoModelPlayPart(LFLD(void *, self, 0x10), 12);
-    MF(LFLD(void *, self, 0x10)).b20 = 0;
-    MF(LFLD(void *, self, 0xb4)).f7 = depth;
-    MF(LFLD(void *, self, 0xb4)).f2 = 30;
-    MF(LFLD(void *, self, 0xb4)).b21 = 1;
-    if (LFLD(u32, self, 0xc) & 0x800000) {
-        LoSetPos0214e3b4(LFLD(void *, self, 0xb4), x - 2, y - 0x5d);
-        LoModelPlayPart(LFLD(void *, self, 0xb4), 7);
+    LoSetPos0214e3b4(self->unk_10, x, y - 0x59);
+    LoModelPlayPart(self->unk_10, 13);
+    LoModelPlayPart(self->unk_10, 12);
+    MF(self->unk_10).b20 = 0;
+    MF(self->unk_b4).f7 = depth;
+    MF(self->unk_b4).f2 = 30;
+    MF(self->unk_b4).b21 = 1;
+    if (self->unk_0c & 0x800000) {
+        LoSetPos0214e3b4(self->unk_b4, x - 2, y - 0x5d);
+        LoModelPlayPart(self->unk_b4, 7);
         x += 10;
     }
-    LoSetPos0214e3b4(LFLD(void *, self, 0xb4), x - 2, y - 0x5e);
-    func_02041c18(LFLD(void *, self, 0xb4), LFLD(void *, arg, 0xc));
-    LoModelPlayPart(LFLD(void *, self, 0xb4), 6);
+    LoSetPos0214e3b4(self->unk_b4, x - 2, y - 0x5e);
+    func_02041c18(self->unk_b4, LFLD(void *, arg, 0xc));
+    LoModelPlayPart(self->unk_b4, 6);
 }
 
 }

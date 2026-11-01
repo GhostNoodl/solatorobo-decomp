@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 extern u8 data_ov000_021cb8e0[];
@@ -11,13 +12,13 @@ void func_ov000_02164a94(void *self);
 void func_ov000_02167d64(void *self);
 void func_ov000_02166be8(void *self);
 
-void func_ov000_021645b8(VObj *self) {
-    switch (LFLD(s32, self, 0x20)) {
+void func_ov000_021645b8(Lo021cb6b0 *self) {
+    switch (self->unk_20) {
     case 0: {
         char buf[0x20];
         func_0206e900(buf, data_ov000_021cb8e0);
         func_020359d0(buf, 7, 0);
-        LFLD(s32, self, 0x20) = 1;
+        self->unk_20 = 1;
     }
     case 1: {
         char buf[0x20];
@@ -28,20 +29,20 @@ void func_ov000_021645b8(VObj *self) {
         if (!func_02035b90(buf, 7)) {
             return;
         }
-        LFLD(s32, self, 0x20) = 2;
+        self->unk_20 = 2;
     }
     case 2:
         self->vfunc_0c();
         func_ov000_02164a94(self);
-        LFLD(s32, self, 0x20) = 7;
+        self->unk_20 = 7;
         return;
     case 7: {
         s32 t = LFLD(s32, data_0214a424, 0x20);
-        s32 d = LO_FX_MUL((t - LFLD(s32, self, 0x50)) << 12, 0xf6);
+        s32 d = LO_FX_MUL((t - self->unk_50) << 12, 0xf6);
         if ((d < 0 ? -d : d) < 0x1000) {
-            LFLD(s32, self, 0x50) = t;
+            self->unk_50 = t;
         } else {
-            LFLD(s32, self, 0x50) += d >> 12;
+            self->unk_50 += d >> 12;
         }
         func_ov000_02167d64(self);
         func_ov000_02166be8(self);

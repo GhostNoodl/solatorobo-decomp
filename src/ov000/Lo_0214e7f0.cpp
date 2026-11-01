@@ -1,5 +1,6 @@
 #include "ov000/VObj.h"
 #include "nitro/std.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -18,7 +19,7 @@ void func_020359fc(void *a, void *b, s32 c, s32 d);
 void func_0205a6a0(void *res);
 void func_0205a840(void *res, char *name, char *path);
 
-void func_ov000_0214e7f0(u8 *self) {
+void func_ov000_0214e7f0(Lo021caa44 *self) {
     u8 b[0x10];
     u8 a[0x10];
     char name[0x20];
@@ -44,8 +45,8 @@ void func_ov000_0214e7f0(u8 *self) {
         VOBJ_SET_VTABLE(o, data_0208b318);
         o->vfunc_08();
     }
-    LFLD(VObj *, self, 0x3c) = o;
+    self->unk_3c = o;
     LFLD(s32, o, 0x44) = 7;
-    LFLD(VObj *, self, 0x3c)->vfunc_1c(data_ov000_021ca8d8);
+    self->unk_3c->vfunc_1c(data_ov000_021ca8d8);
 }
 }

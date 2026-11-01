@@ -13,16 +13,28 @@ static inline s32 DistSq(const VecFx32 *a, const VecFx32 *b) {
     return (s32)((((s64)dx * dx + (s64)dy * dy + (s64)dz * dz) + 0x800) >> 12);
 }
 
-void func_ov000_0216d474(u8 *self) {
+struct Obj0216d474 {
+    u8 unk_00[0x8];
+    s32 unk_08;
+    u8 unk_0c[0x8];
+    s32 unk_14;
+    s32 unk_18;
+    u8 unk_1c[0x8];
+    s32 unk_24;
+    u8 unk_28[0x2];
+    u16 unk_2a;
+};
+
+void func_ov000_0216d474(Obj0216d474 *self) {
     VecFx32 pts[0x20];
     s32 n;
     s32 i;
     s32 maxd;
-    if (LFLD(s32, self, 0x8) == 2) {
-        LFLD(s32, self, 0x14) = 0x7fffffff;
+    if (self->unk_08 == 2) {
+        self->unk_14 = 0x7fffffff;
         return;
     }
-    n = func_ov000_0218c040(data_ov000_021ccd64, 0x20, pts, LFLD(u16, self, 0x2a) >> 12, LFLD(u16, self, 0x2a));
+    n = func_ov000_0218c040(data_ov000_021ccd64, 0x20, pts, self->unk_2a >> 12, self->unk_2a);
     if (n == 0) {
         return;
     }
@@ -39,7 +51,7 @@ void func_ov000_0216d474(u8 *self) {
     if (maxd == 0) {
         return;
     }
-    LFLD(s32, self, 0x14) = LO_FX_MUL(maxd, 0x333);
-    LFLD(s32, self, 0x18) = FX_Div(LO_FX_MUL(maxd, 0x800 - 0x333), LFLD(s32, self, 0x24) << 12);
+    self->unk_14 = LO_FX_MUL(maxd, 0x333);
+    self->unk_18 = FX_Div(LO_FX_MUL(maxd, 0x800 - 0x333), self->unk_24 << 12);
 }
 }

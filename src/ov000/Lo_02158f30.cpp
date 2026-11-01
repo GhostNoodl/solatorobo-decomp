@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -21,32 +22,32 @@ static inline BOOL LoSubReady(void *p) {
     return TRUE;
 }
 
-void func_ov000_02158f30(VObj *self, s32 n, s32 b) {
-    s8 old = LFLD(s8, self, 0xb1);
-    s16 max = LFLD(s16, self, 0x9c);
-    s32 m = LFLD(s32, self, 0x20);
-    LFLD(s8, self, 0xb0) = old;
+void func_ov000_02158f30(Lo021cb3a8 *self, s32 n, s32 b) {
+    s8 old = self->unk_b1;
+    s16 max = self->unk_9c;
+    s32 m = self->unk_20;
+    self->unk_b0 = old;
     if (max > m) {
-        LFLD(s8, self, 0xb1) = old + (s8)n;
-        if (LFLD(s8, self, 0xb1) + m > max) {
-            LFLD(s8, self, 0xb1) = max - m;
+        self->unk_b1 = old + (s8)n;
+        if (self->unk_b1 + m > max) {
+            self->unk_b1 = max - m;
         }
     }
-    self->vfunc_bc(LFLD(s8, self, 0xb1) - LFLD(s8, self, 0xb0), b);
-    LFLD(u16, self, 0xa2) = 4;
+    self->vfunc_bc(self->unk_b1 - self->unk_b0, b);
+    self->unk_a2 = 4;
 }
 
-void func_ov000_02158f98(VObj *self, s32 n, s32 b) {
-    s8 old = LFLD(s8, self, 0xb1);
-    LFLD(s8, self, 0xb0) = old;
-    if (LFLD(u32, self, 0xc) & 0x20000) {
-        LFLD(s8, self, 0xb1) = old + (s8)n;
-        if (LFLD(s8, self, 0xb1) + LFLD(s32, self, 0x20) > LFLD(s16, self, 0x9c)) {
-            LFLD(s8, self, 0xb1) = LFLD(s16, self, 0x9c) - LFLD(s32, self, 0x20);
+void func_ov000_02158f98(Lo021cb3a8 *self, s32 n, s32 b) {
+    s8 old = self->unk_b1;
+    self->unk_b0 = old;
+    if (self->unk_0c & 0x20000) {
+        self->unk_b1 = old + (s8)n;
+        if (self->unk_b1 + self->unk_20 > self->unk_9c) {
+            self->unk_b1 = self->unk_9c - self->unk_20;
         }
     }
-    self->vfunc_bc(LFLD(s8, self, 0xb1) - LFLD(s8, self, 0xb0), b);
-    LFLD(u16, self, 0xa2) = 8;
+    self->vfunc_bc(self->unk_b1 - self->unk_b0, b);
+    self->unk_a2 = 8;
 }
 
 }

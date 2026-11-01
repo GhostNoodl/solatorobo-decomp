@@ -44,24 +44,33 @@ static inline BOOL LoD78Idle(void) {
     return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
 }
 
-void func_ov000_0216b550(u8 *self) {
+struct Obj0216b550 {
+    u8 unk_00[0x4];
+    s32 unk_04;
+    void *unk_08;
+    u8 unk_0c[0x8];
+    s32 unk_14;
+    s32 unk_18;
+};
+
+void func_ov000_0216b550(Obj0216b550 *self) {
     if (!LoGIdle() || !LoD78Idle()) {
         LBIT(self, 0).b1 = 0;
     }
-    switch (LFLD(s32, self, 4)) {
+    switch (self->unk_04) {
     case 2:
-        LFLD(s32, self, 4) = 4;
+        self->unk_04 = 4;
         break;
     case 3:
         LO_FREE_M(self, 8);
-        LFLD(s32, self, 4) = 4;
+        self->unk_04 = 4;
         break;
     case 4:
         if (!LBIT(self, 0).b1) {
             return;
         }
         LBIT(self, 0).b0 = 1;
-        LFLD(s32, self, 4) = 5;
+        self->unk_04 = 5;
         break;
     case 5: {
         void *res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
@@ -71,24 +80,24 @@ void func_ov000_0216b550(u8 *self) {
             func_02041218(m + 0x88);
             func_02041440(m, nm, 0);
         }
-        LFLD(void *, self, 8) = m;
+        self->unk_08 = m;
         func_020417e0(m, res);
-        LFLD(u32, LFLD(void *, self, 8), 0x6c) |= 2;
-        func_02041d9c(LFLD(void *, self, 8), 0, 0x22);
-        func_02041d9c(LFLD(void *, self, 8), 0, 0x23);
-        LFLD(u32, LFLD(void *, self, 8), 0x6c) |= 0x80000;
-        LFLD(u32, LFLD(void *, self, 8), 0x6c) |= 0x200000;
-        LFLD(LoMdlFlags0216b550, LFLD(void *, self, 8), 0x6c).alpha = 0x1e;
-        LFLD(s32, self, 4) = 6;
+        LFLD(u32, self->unk_08, 0x6c) |= 2;
+        func_02041d9c(self->unk_08, 0, 0x22);
+        func_02041d9c(self->unk_08, 0, 0x23);
+        LFLD(u32, self->unk_08, 0x6c) |= 0x80000;
+        LFLD(u32, self->unk_08, 0x6c) |= 0x200000;
+        LFLD(LoMdlFlags0216b550, self->unk_08, 0x6c).alpha = 0x1e;
+        self->unk_04 = 6;
         break;
     }
     case 6:
-        if (!func_02054f10(LFLD(void *, self, 8), 0xffff)) {
+        if (!func_02054f10(self->unk_08, 0xffff)) {
             return;
         }
-        LFLD(s32, self, 0x14) = 0;
-        LFLD(s32, self, 0x18) = 0x1000;
-        LFLD(s32, self, 4) = 8;
+        self->unk_14 = 0;
+        self->unk_18 = 0x1000;
+        self->unk_04 = 8;
         break;
     case 7:
         if (!LBIT(self, 0).b2) {
@@ -98,27 +107,27 @@ void func_ov000_0216b550(u8 *self) {
     case 8:
         if (!LBIT(self, 0).b1) {
             LBIT(self, 0).b0 = 0;
-            LFLD(s32, self, 4) = 8;
+            self->unk_04 = 8;
         }
-        if (LFLD(s32, self, 4) == 7) {
+        if (self->unk_04 == 7) {
             return;
         }
         if (LBIT(self, 0).b0) {
-            LFLD(s32, self, 0x14)++;
-            LFLD(s32, self, 0x18) = FX_Div(LFLD(s32, self, 0x14) << 12, 0xc000);
-            if (LFLD(s32, self, 0x18) >= 0x1000) {
-                LFLD(s32, self, 0x18) = 0x1000;
-                LFLD(s32, self, 4) = 7;
+            self->unk_14++;
+            self->unk_18 = FX_Div(self->unk_14 << 12, 0xc000);
+            if (self->unk_18 >= 0x1000) {
+                self->unk_18 = 0x1000;
+                self->unk_04 = 7;
             }
         } else {
-            LFLD(s32, self, 0x14)--;
-            LFLD(s32, self, 0x18) = FX_Div(LFLD(s32, self, 0x14) << 12, 0xc000);
-            if (LFLD(s32, self, 0x18) <= 0) {
-                LFLD(s32, self, 0x18) = 0;
-                LFLD(s32, self, 4) = 3;
+            self->unk_14--;
+            self->unk_18 = FX_Div(self->unk_14 << 12, 0xc000);
+            if (self->unk_18 <= 0) {
+                self->unk_18 = 0;
+                self->unk_04 = 3;
             }
         }
-        LFLD(s32, self, 0x18) = 0x1000 - FX_SinCosTable_[((LFLD(s32, self, 0x18) << 14) >> 16) * 2];
+        self->unk_18 = 0x1000 - FX_SinCosTable_[((self->unk_18 << 14) >> 16) * 2];
         break;
     }
 }

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u32 b0 : 13;
@@ -35,7 +36,7 @@ void func_ov000_02153c48(void *item, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02153f30(VObj *self, s32 a);
 void func_ov000_02153f60(VObj *self, s32 a);
 
-void func_ov000_02158588(VObj *self, s32 on, s32 *pos) {
+void func_ov000_02158588(LoBase021caac8_021cb2a8 *self, s32 on, s32 *pos) {
     Item02158588 *sel;
     s32 lo;
     s32 k;
@@ -56,78 +57,78 @@ void func_ov000_02158588(VObj *self, s32 on, s32 *pos) {
     Item02158588 *it;
     s32 last;
 
-    if (on == 0 || (it = LFLD(Item02158588 *, self, 0x94)) == NULL) {
+    if (on == 0 || (it = (Item02158588 *)self->unk_94) == NULL) {
         return;
     }
     g = data_02097d48;
     lh = self->vfunc_40();
     col = func_02043d48(g + 0x8b0);
-    s = LFLD(s16, self, 0x9e);
+    s = self->unk_9e;
     if (s != 0) {
-        top = LFLD(Item02158588 *, self, 0x98);
-        last = LFLD(s32, self, 0x20);
+        top = (Item02158588 *)self->unk_98;
+        last = self->unk_20;
         lo = top->idx - 1;
         hi = top->idx + last + 1;
         if (top->next2 == NULL) k = 0; else k = -1;
-    } else if (LFLD(void *, self, 0xa8) != NULL && LFLD(s16, self, 0xa0) != 0) {
-        if (LFLD(u32, self, 0xc) & 0x200000) {
-            top = LFLD(Item02158588 *, self, 0x98);
-            last = LFLD(s32, self, 0x20);
+    } else if (self->unk_a8 != NULL && self->unk_a0 != 0) {
+        if (self->unk_0c & 0x200000) {
+            top = (Item02158588 *)self->unk_98;
+            last = self->unk_20;
             lo = top->idx - 1;
             hi = top->idx + last;
             if (top->next2 == NULL) k = 0; else k = -1;
         } else {
-            top = LFLD(Item02158588 *, self, 0x98);
-            last = LFLD(s32, self, 0x20);
+            top = (Item02158588 *)self->unk_98;
+            last = self->unk_20;
             k = 0;
             lo = top->idx;
             hi = top->idx + last + 1;
         }
     } else {
-        top = LFLD(Item02158588 *, self, 0x98);
-        last = LFLD(s32, self, 0x20);
+        top = (Item02158588 *)self->unk_98;
+        last = self->unk_20;
         k = 0;
         lo = top->idx;
         hi = top->idx + last;
     }
-    if (s > 0 || LFLD(s16, self, 0xa0) > 0) {
+    if (s > 0 || self->unk_a0 > 0) {
         first = 0;
         last -= 2;
-    } else if (s < 0 || LFLD(s16, self, 0xa0) < 0) {
+    } else if (s < 0 || self->unk_a0 < 0) {
         first = 1;
         last -= 1;
     } else {
         first = 0;
     }
     ox = self->vfunc_30();
-    oy = LFLD(s16, self, 0x9e) + self->vfunc_34();
+    oy = self->unk_9e + self->vfunc_34();
     ow = self->vfunc_8c();
     while (it != NULL) {
         if (it->idx >= lo && it->idx < hi) {
             if (it->unk_00 != 0) {
                 if (it->text == NULL) {
-                    func_ov000_02153c48(it, LFLD(s32, self, 0x1c), 0, 0, 0);
+                    func_ov000_02153c48(it, self->unk_1c, 0, 0, 0);
                 }
                 if (k < first || k > last) {
                     dim = 1;
-                    func_ov000_02153f30(it->text, LFLD(s16, self, 0x68));
+                    func_ov000_02153f30(it->text, self->unk_68);
                 } else {
                     dim = 0;
-                    func_ov000_02153f60(it->text, LFLD(s16, self, 0x68));
+                    func_ov000_02153f60(it->text, self->unk_68);
                 }
                 LFLD(TextFlags02158588, it->text, 4).color = (u8)col;
                 d = 0;
-                sel = LFLD(Item02158588 *, self, 0xa8);
+                sel = (Item02158588 *)self->unk_a8;
                 if (sel != NULL) {
-                    s16 a0 = LFLD(s16, self, 0xa0);
+                    s16 a0 = self->unk_a0;
                     if (a0 > 0 && it->idx < sel->idx) {
                         d = a0;
                     } else if (a0 < 0 && it->idx > sel->idx) {
                         d = a0;
                     }
                 }
-                if (LFLD(u32, self, 0xc) & 0x1000000) {
-                    ox = ((0x100 - LFLD(s32, it->text, 0x44)) >> 1) - LFLD(s16, self, 0x64);
+                if (self->unk_0c & 0x1000000) {
+                    ox = ((0x100 - LFLD(s32, it->text, 0x44)) >> 1) - self->unk_64;
                 }
                 px = ox + (pos[0] >> 12);
                 py = d + (lh * k + (oy + (pos[1] >> 12)));
@@ -136,12 +137,12 @@ void func_ov000_02158588(VObj *self, s32 on, s32 *pos) {
                 self->vfunc_dc(it, px, py, col, dim);
                 self->vfunc_e0(it, px + ow, py, col, 0);
                 self->vfunc_e4(it, pos[0] >> 12, py, col, dim);
-                if (LFLD(void *, self, 0x80) != NULL) {
+                if (self->unk_80 != NULL) {
                     Msg02158588 m;
                     m.item = it;
                     m.x = px;
                     m.y = py;
-                    m.z = LFLD(s16, self, 0x68);
+                    m.z = self->unk_68;
                     m.col = col;
                     m.dim = dim;
                     m.ofs = -0x110;

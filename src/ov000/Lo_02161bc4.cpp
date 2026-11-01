@@ -32,11 +32,16 @@ static inline BOOL LoIsMode4(void) {
     return LFLD(s32, data_02097d78, 4) == 4 ? TRUE : FALSE;
 }
 
-LoGlyph *func_ov000_02161bc4(void *self, s32 unused, LoGlyph *g, u16 *count) {
+struct Obj02161bc4 {
+    u8 unk_00[0x70];
+    s32 unk_70;
+};
+
+LoGlyph *func_ov000_02161bc4(Obj02161bc4 *self, s32 unused, LoGlyph *g, u16 *count) {
     s32 i;
     s32 n = *count;
     for (i = 0; i < n; i++) {
-        g[i].w.pal = g[i].w.pal + LFLD(s32, self, 0x70);
+        g[i].w.pal = g[i].w.pal + self->unk_70;
     }
     *count = n;
     return g;

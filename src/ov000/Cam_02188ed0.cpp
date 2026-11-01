@@ -58,35 +58,47 @@ static inline BOOL IsBusy(void) {
     return func_ov000_021700c4(LFLD(void *, c, 0x11c));
 }
 
-void func_ov000_02188ed0(u8 *self) {
+struct Obj02188ed0 {
+    u8 unk_00[0xd3];
+    u8 unk_d3;
+    s32 unk_d4;
+    VecFx32 unk_d8;
+    u16 unk_e4;
+    u16 unk_e6;
+    u8 unk_e8[0x4];
+    s32 unk_ec;
+    s16 unk_f0;
+};
+
+void func_ov000_02188ed0(Obj02188ed0 *self) {
     Cam02188ed0 *s = (Cam02188ed0 *)(data_ov000_021ccd50.unk_04 + 0xf4);
-    if (LFLD(u8, self, 0xd3)) {
-        s->pos = LFLD(VecFx32, self, 0xd8);
+    if (self->unk_d3) {
+        s->pos = self->unk_d8;
         s->fda.b1 = 1;
-        s->unk_f8 = LFLD(u16, self, 0xe4);
+        s->unk_f8 = self->unk_e4;
         s->fda.b4 = 1;
-        s->unk_fa = LFLD(u16, self, 0xe6);
+        s->unk_fa = self->unk_e6;
         s->fda.b5 = 1;
-        s->unk_f4 = LFLD(s32, self, 0xec);
+        s->unk_f4 = self->unk_ec;
         s->fda.b2 = 1;
         s->f9c.b0 = 0;
         s->f9c.b6 = 0;
         return;
     }
     s->f9c.b0 = 1;
-    if (LFLD(s32, self, 0xd4) > 0) {
+    if (self->unk_d4 > 0) {
         Player02188ed0 *p = func_ov000_0219bf90();
         if (p != NULL && p->lo == 0 && p->unk_b2e < 2) {
             p->unk_b2e = 2;
         }
-        if (LFLD(s32, self, 0xd4) != 0xffff && --LFLD(s32, self, 0xd4) == 0) {
+        if (self->unk_d4 != 0xffff && --self->unk_d4 == 0) {
             if (IsBusy()) {
-                LFLD(s32, self, 0xd4) = 1;
+                self->unk_d4 = 1;
             }
         }
-        func_ov000_0218a358(s, self + 0xd8, self + 0xe4, LFLD(s32, self, 0xec), 0, LFLD(s16, self, 0xf0), LFLD(s16, self, 0xf0), 4);
+        func_ov000_0218a358(s, (u8 *)self + 0xd8, (u8 *)self + 0xe4, self->unk_ec, 0, self->unk_f0, self->unk_f0, 4);
     } else {
-        LFLD(s32, self, 0xd4) = 0;
+        self->unk_d4 = 0;
     }
 }
 }

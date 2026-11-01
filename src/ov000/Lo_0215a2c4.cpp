@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -18,17 +19,17 @@ typedef struct {
     VObj *arr[12];
 } LoArr98;
 
-void func_ov000_0215a2c4(VObj *self, s32 a, s32 b, s32 c) {
+void func_ov000_0215a2c4(Lo021cb5a8 *self, s32 a, s32 b, s32 c) {
     if (a == 0) {
         return;
     }
-    if (!func_02054f10(LFLD(void *, self, 0x10), 0xffff)) {
+    if (!func_02054f10(self->unk_10, 0xffff)) {
         return;
     }
     self->vfunc_f8(a, b, c);
     self->vfunc_64(a, b, c);
     self->vfunc_fc(a, b, c);
-    LFLD(u32, self, 0xc) |= 0x200;
+    self->unk_0c |= 0x200;
 }
 
 }

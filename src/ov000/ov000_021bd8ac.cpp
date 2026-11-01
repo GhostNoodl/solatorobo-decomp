@@ -48,14 +48,25 @@ static inline void SetB_021bd8ac(u8 *p, const char *dir, const char *name) {
     LFLD(u8, p, 3) |= 4;
 }
 
-BOOL func_ov000_021bd8ac(u8 *self) {
+struct Obj021bd8ac {
+    u8 unk_00[0x4];
+    u8 *unk_04;
+    u8 unk_08[0x10];
+    u8 *unk_18;
+    u8 *unk_1c;
+    u8 *unk_20;
+    u8 unk_24[0x24];
+    s32 unk_48;
+};
+
+BOOL func_ov000_021bd8ac(Obj021bd8ac *self) {
     void *res;
     s32 n;
 
     if (!func_02035d5c(data_0214b105) || !func_02035d5c(data_0208cca0) || !func_02035d5c(data_0208cc94)) {
         return FALSE;
     }
-    n = LFLD(s32, self, 0x48);
+    n = self->unk_48;
     if (n >= 0xc && n < 0x10) {
         n = 0xb;
     }
@@ -173,26 +184,26 @@ BOOL func_ov000_021bd8ac(u8 *self) {
         func_02041d9c(mdl[0], 0, 1);
         break;
     case 11:
-        if (LFLD(void *, self, 4) == NULL) {
-            Ent_021bd8ac *e = &data_ov000_021cc8f0[LFLD(s32, self, 0x48) - 0xc];
+        if ((void *)self->unk_04 == NULL) {
+            Ent_021bd8ac *e = &data_ov000_021cc8f0[self->unk_48 - 0xc];
             u8 *p = (u8 *)func_0203dd9c(0x138);
             if (p != NULL) {
                 p = (u8 *)func_ov000_0218e9c4(p);
             }
-            LFLD(u8 *, self, 4) = p;
+            self->unk_04 = p;
             SetA_021bd8ac(p, data_ov000_021cc920, e->name);
-            SetB_021bd8ac(LFLD(u8 *, self, 4), data_ov000_021cc920, e->name);
-            LFLD(u16, LFLD(u8 *, self, 4), 0) = 0;
+            SetB_021bd8ac(self->unk_04, data_ov000_021cc920, e->name);
+            LFLD(u16, self->unk_04, 0) = 0;
         }
-        if (LFLD(void *, self, 4) != NULL) {
-            func_ov000_0218f110(LFLD(void *, self, 4));
-            return LFLD(s16, LFLD(u8 *, self, 4), 0) < 0 ? TRUE : FALSE;
+        if ((void *)self->unk_04 != NULL) {
+            func_ov000_0218f110(self->unk_04);
+            return LFLD(s16, self->unk_04, 0) < 0 ? TRUE : FALSE;
         }
         break;
     }
-    LFLD(u8 *, self, 0x18) = mdl[0];
-    LFLD(u8 *, self, 0x1c) = mdl[1];
-    LFLD(u8 *, self, 0x20) = mdl[2];
+    self->unk_18 = mdl[0];
+    self->unk_1c = mdl[1];
+    self->unk_20 = mdl[2];
     return TRUE;
 }
 }

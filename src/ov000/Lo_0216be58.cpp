@@ -40,8 +40,13 @@ void func_ov000_0216be94(void *self) {
     func_ov000_0216c6fc(self);
 }
 
-void func_ov000_0216bec8(void *self) {
-    void *p = LFLD(void *, self, 0xb0);
+struct Obj0216bec8 {
+    u8 unk_00[0xb0];
+    void *unk_b0;
+};
+
+void func_ov000_0216bec8(Obj0216bec8 *self) {
+    void *p = self->unk_b0;
     u8 *g = data_02097d48;
     u32 w = LFLD(u32, p, 0xc);
     u32 lv = (w & 0x1f0000) >> 16;

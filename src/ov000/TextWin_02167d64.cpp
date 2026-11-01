@@ -25,64 +25,72 @@ static inline void SetText(TextWin *win, u32 text) {
     data_02097ce0->unk_004 = win->unk_28;
 }
 
-void func_ov000_02167d64(u8 *self) {
+struct Obj02167d64 {
+    u8 unk_00[0x40];
+    TextWin *unk_40;
+    s32 unk_44;
+    s32 unk_48;
+    s32 unk_4c;
+};
+
+void func_ov000_02167d64(Obj02167d64 *self) {
     char *str = func_0206e200(LFLD(u32, data_ov000_021ccd6c, 0x14));
     TextWin *win;
-    switch (LFLD(s32, self, 0x44)) {
+    switch (self->unk_44) {
     case 4:
         {
             void *saved = data_02097dd0->cur;
             data_02097dd0->cur = data_02097dd0->unk_08;
-            if (LFLD(VObj *, self, 0x40) != NULL) {
-                VObj *p_ = LFLD(VObj *, self, 0x40);
+            if ((VObj *)self->unk_40 != NULL) {
+                VObj *p_ = (VObj *)self->unk_40;
                 if (p_ != NULL) {
                     p_->vfunc_04();
                 }
-                LFLD(VObj *, self, 0x40) = NULL;
+                self->unk_40 = NULL;
             }
             data_02097dd0->cur = saved;
         }
-        LFLD(s32, self, 0x48) = 0;
-        LFLD(s32, self, 0x4c) = 0;
+        self->unk_48 = 0;
+        self->unk_4c = 0;
         if (str == NULL || str[0] == 0) {
             return;
         }
         win = TextWin_New();
-        LFLD(TextWin *, self, 0x40) = win;
+        self->unk_40 = win;
         win->unk_28 = 7;
-        LFLD(TextWin *, self, 0x40)->unk_2c = 0;
-        LFLD(TextWin *, self, 0x40)->unk_34 = 0;
-        SetText(LFLD(TextWin *, self, 0x40), (u32)str);
-        func_0204ca14(LFLD(TextWin *, self, 0x40), 8);
-        LFLD(TextWin *, self, 0x40)->rendering = 1;
-        LFLD(s32, self, 0x44) = 8;
+        self->unk_40->unk_2c = 0;
+        self->unk_40->unk_34 = 0;
+        SetText(self->unk_40, (u32)str);
+        func_0204ca14(self->unk_40, 8);
+        self->unk_40->rendering = 1;
+        self->unk_44 = 8;
         return;
     case 3:
         str = NULL;
     case 8:
-        if (str == NULL || str[0] == 0 || STD_CompareString((const char *)LFLD(TextWin *, self, 0x40)->unk_24, str) != 0) {
-            LFLD(s32, self, 0x48) -= 0x1000;
+        if (str == NULL || str[0] == 0 || STD_CompareString((const char *)self->unk_40->unk_24, str) != 0) {
+            self->unk_48 -= 0x1000;
         } else {
-            LFLD(s32, self, 0x48) += 0x1000;
+            self->unk_48 += 0x1000;
         }
-        LFLD(s32, self, 0x4c) = FX_Div(LFLD(s32, self, 0x48), 0xc000);
-        if (LFLD(s32, self, 0x4c) < 0) {
-            LFLD(s32, self, 0x48) = 0;
-            LFLD(s32, self, 0x4c) = 0;
-            LFLD(s32, self, 0x44) = 4;
+        self->unk_4c = FX_Div(self->unk_48, 0xc000);
+        if (self->unk_4c < 0) {
+            self->unk_48 = 0;
+            self->unk_4c = 0;
+            self->unk_44 = 4;
             return;
         }
-        if (LFLD(s32, self, 0x4c) > 0x1000) {
-            LFLD(s32, self, 0x48) = 0xc000;
-            LFLD(s32, self, 0x4c) = 0x1000;
-            LFLD(s32, self, 0x44) = 7;
+        if (self->unk_4c > 0x1000) {
+            self->unk_48 = 0xc000;
+            self->unk_4c = 0x1000;
+            self->unk_44 = 7;
         }
         return;
     case 7:
-        if (str != NULL && str[0] != 0 && STD_CompareString((const char *)LFLD(TextWin *, self, 0x40)->unk_24, str) == 0) {
+        if (str != NULL && str[0] != 0 && STD_CompareString((const char *)self->unk_40->unk_24, str) == 0) {
             return;
         }
-        LFLD(s32, self, 0x44) = 3;
+        self->unk_44 = 3;
         break;
     }
 }

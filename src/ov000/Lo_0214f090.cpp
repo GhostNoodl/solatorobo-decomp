@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -40,20 +41,20 @@ static inline BOOL LoD78Idle(void) {
     return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
 }
 
-void func_ov000_0214f090(void *self, void *arg) {
+void func_ov000_0214f090(Lo021caa44 *self, void *arg) {
     BOOL ok = TRUE;
     void *q;
-    if (LFLD(void *, self, 0x50) && !LoIsState5(LFLD(void *, self, 0x50))) {
+    if (self->unk_50 && !LoIsState5(self->unk_50)) {
         ok = FALSE;
     }
-    q = LFLD(void *, self, 0x4c);
+    q = self->unk_4c;
     if (q && !LoIsState5(q)) {
         ok = FALSE;
     }
-    if (LFLD(void *, self, 0x5c) && !LoIsState5(LFLD(void *, self, 0x5c))) {
+    if ((void *)self->unk_5c && !LoIsState5(self->unk_5c)) {
         ok = FALSE;
     }
-    if (LFLD(void *, self, 0x60) && !LoIsState5(LFLD(void *, self, 0x60))) {
+    if ((void *)self->unk_60 && !LoIsState5(self->unk_60)) {
         ok = FALSE;
     }
     if (ok) {
@@ -63,14 +64,14 @@ void func_ov000_0214f090(void *self, void *arg) {
     if (q) {
         LBIT(q, 0xc).b1 = 1;
     }
-    if (LFLD(void *, self, 0x50)) {
-        LBIT(LFLD(void *, self, 0x50), 0xc).b1 = 1;
+    if (self->unk_50) {
+        LBIT(self->unk_50, 0xc).b1 = 1;
     }
-    if (LFLD(void *, self, 0x5c)) {
-        LBIT(LFLD(void *, self, 0x5c), 0xc).b1 = 1;
+    if (self->unk_5c) {
+        LBIT(self->unk_5c, 0xc).b1 = 1;
     }
-    if (LFLD(void *, self, 0x60)) {
-        LBIT(LFLD(void *, self, 0x60), 0xc).b1 = 1;
+    if (self->unk_60) {
+        LBIT(self->unk_60, 0xc).b1 = 1;
     }
 }
 

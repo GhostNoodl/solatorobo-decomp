@@ -57,12 +57,20 @@ static inline void Set54b(u8 *t, s32 c, u8 n) {
     LFLD(u16, LFLD(u8 *, t, 0x54), 0x8a) = n <= 1 ? 1 : n;
     LFLD(s32, LFLD(u8 *, t, 0x54), 0x8c) = c;
 }
-void func_ov000_02199dc0(u8 *self, u8 *out) {
-    s32 d = LFLD(s32, self, 0x50);
+struct Obj02199dc0 {
+    u8 unk_00;
+    u8 unk_01[0x4f];
+    s32 unk_50;
+    s32 unk_54;
+    s32 unk_58;
+};
+
+void func_ov000_02199dc0(Obj02199dc0 *self, u8 *out) {
+    s32 d = self->unk_50;
     s32 x, y, w;
     w = 0x52;
     if (d == 0) {
-        if (self[0] == 0xf || self[0] == 0x13) {
+        if (self->unk_00 == 0xf || self->unk_00 == 0x13) {
             x = 0x31f;
             y = 0x31f - 0x52;
         } else {
@@ -70,13 +78,13 @@ void func_ov000_02199dc0(u8 *self, u8 *out) {
             y = 0x348 - 0x7b;
         }
     } else {
-        s32 e = LFLD(s32, self, 0x54);
+        s32 e = self->unk_54;
         s64 q = 0x6cd000LL / (d + ABS(e));
         x = (s32)((q * (d + 0x52) + 0x800) >> 12);
         y = (s32)((q * e + 0x800) >> 12);
         w = 0x14;
     }
-    x += LFLD(s32, self, 0x58);
+    x += self->unk_58;
     if (out != NULL) {
         LFLD(s32, out, 0x9c) = x;
         LFLD(s32, out, 0xa0) = y;
@@ -85,15 +93,20 @@ void func_ov000_02199dc0(u8 *self, u8 *out) {
     }
 }
 
-static inline void SetSt21b(u8 *self, u16 st) {
-    u8 *sub = self + 0x22;
+struct SetSt21bSelf {
+    u8 unk_00[0x40];
+    ActorSub40 *unk_40;
+};
+
+static inline void SetSt21b(SetSt21bSelf *self, u16 st) {
+    u8 *sub = (u8 *)self + 0x22;
     Bits21b1d28 *b = &LFLD(Bits21b1d28, sub, 0xb00);
     ActorSub40 *p;
     b->st = st;
     b->b9 = 1;
-    p = LFLD(ActorSub40 *, self, 0x40);
+    p = self->unk_40;
     p->flags |= 0x80000000;
-    func_ov000_02198360(LFLD(void *, self, 0x40), 0x1f, 0);
+    func_ov000_02198360(self->unk_40, 0x1f, 0);
 }
 
 }

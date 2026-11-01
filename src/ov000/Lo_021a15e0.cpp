@@ -36,19 +36,27 @@ static inline Actor *FindA(u16 id) {
     return func_ov000_0218e640(mgr, id);
 }
 
-void func_ov000_021a15e0(Actor *self) {
+struct Obj021a15e0 : public Actor {
+    u8 unk_ac[0xa70];
+    u16 unk_b1c;
+    u16 unk_b1e;
+    u8 unk_b20[0x4];
+    Bits021a15e0 unk_b24;
+};
+
+void func_ov000_021a15e0(Obj021a15e0 *self) {
     ActorSub40 *s = (ActorSub40 *)self->unk_40;
     Actor *a;
     ActorSub4c *p;
     if (s != NULL) {
         s->flags |= 2;
     }
-    LFLD(Bits021a15e0, self, 0xb24).b25 = 1;
-    LFLD(Bits021a15e0, self, 0xb24).b21 = 0;
-    if (LFLD(Bits021a15e0, self, 0xb24).b5 == 0) {
+    self->unk_b24.b25 = 1;
+    self->unk_b24.b21 = 0;
+    if (self->unk_b24.b5 == 0) {
         return;
     }
-    a = FindA(LFLD(u16, self, 0xb1c));
+    a = FindA(self->unk_b1c);
     p = NULL;
     if (a != NULL) {
         p = a->unk_4c;
@@ -59,10 +67,10 @@ void func_ov000_021a15e0(Actor *self) {
     if (p != NULL) {
         p->unk_1c = 0xffff;
     }
-    LFLD(u16, self, 0xb1c) = 0xffff;
-    LFLD(u16, self, 0xb1e) = 0xffff;
-    LFLD(Bits021a15e0, self, 0xb24).b5 = 0;
-    LFLD(Bits021a15e0, self, 0xb24).b7 = LFLD(Bits021a15e0, self, 0xb24).b9;
+    self->unk_b1c = 0xffff;
+    self->unk_b1e = 0xffff;
+    self->unk_b24.b5 = 0;
+    self->unk_b24.b7 = self->unk_b24.b9;
 }
 
 }

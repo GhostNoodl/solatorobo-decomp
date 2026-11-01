@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -21,42 +22,47 @@ static inline BOOL LoSubReady(void *p) {
     return TRUE;
 }
 
-BOOL func_ov000_021580e8(void *self) {
+struct Obj021580e8 {
+    u8 unk_00[0xb4];
+    void *unk_b4;
+};
+
+BOOL func_ov000_021580e8(Obj021580e8 *self) {
     BOOL r = func_ov000_02152a58(self);
-    if (LFLD(void *, self, 0xb4) != NULL && !func_02054f10(LFLD(void *, self, 0xb4), 0xffff)) {
+    if (self->unk_b4 != NULL && !func_02054f10(self->unk_b4, 0xffff)) {
         r = FALSE;
     }
     return r;
 }
 
-void func_ov000_02158120(VObj *self, s32 delta, s32 arg) {
-    s8 sel = LFLD(s8, self, 0xb1);
+void func_ov000_02158120(LoBase021caac8_021cb2a8 *self, s32 delta, s32 arg) {
+    s8 sel = self->unk_b1;
     s32 off = 0;
-    LFLD(s8, self, 0xb0) = sel;
-    LFLD(s8, self, 0xb1) = LFLD(s8, self, 0xb1) - (s8)delta;
-    if (LFLD(s16, self, 0x9c) <= LFLD(s32, self, 0x20)) {
-        if (LFLD(s8, self, 0xb1) <= 0) {
-            LFLD(s8, self, 0xb1) = 0;
+    self->unk_b0 = sel;
+    self->unk_b1 = self->unk_b1 - (s8)delta;
+    if (self->unk_9c <= self->unk_20) {
+        if (self->unk_b1 <= 0) {
+            self->unk_b1 = 0;
         }
-    } else if (LFLD(s16, LFLD(void *, self, 0x98), 4) == 0) {
-        if (LFLD(s8, self, 0xb1) <= 0) {
-            LFLD(s8, self, 0xb1) = 0;
+    } else if (LFLD(s16, self->unk_98, 4) == 0) {
+        if (self->unk_b1 <= 0) {
+            self->unk_b1 = 0;
         }
     } else {
-        off = LFLD(s8, self, 0xb1) - 1;
+        off = self->unk_b1 - 1;
         if (off < 0) {
-            if (off + LFLD(s16, LFLD(void *, self, 0x98), 4) >= 0) {
-                LFLD(s8, self, 0xb1) = 1;
+            if (off + LFLD(s16, self->unk_98, 4) >= 0) {
+                self->unk_b1 = 1;
             } else {
-                LFLD(s8, self, 0xb1) = 0;
-                off = -LFLD(s16, LFLD(void *, self, 0x98), 4);
+                self->unk_b1 = 0;
+                off = -LFLD(s16, self->unk_98, 4);
             }
         } else {
             off = 0;
         }
     }
     self->vfunc_bc(off, arg);
-    LFLD(s16, self, 0xa2) = 4;
+    self->unk_a2 = 4;
 }
 
 }

@@ -32,11 +32,16 @@ static inline s32 Ov010_Clamp(s32 v, s32 lo, s32 hi) {
     return v;
 }
 
-void func_ov010_02203ff4(void *self) {
-    if (FLD(void *, self, 0x38) == NULL) {
+struct Obj02203ff4 {
+    u8 unk_00[0x38];
+    void *unk_38;
+};
+
+void func_ov010_02203ff4(Obj02203ff4 *self) {
+    if (self->unk_38 == NULL) {
         return;
     }
-    func_ov000_02190a80(FLD(void *, self, 0x38), func_0203db40((u8 *)self + 0x24));
+    func_ov000_02190a80(self->unk_38, func_0203db40((u8 *)self + 0x24));
 }
 
 void func_ov010_02204020(void) {

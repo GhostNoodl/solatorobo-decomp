@@ -36,21 +36,37 @@ static inline s32 Lo_GetHeight(Model *model, s32 idx) {
     return func_02041bb0(model, Lo_GetPartTex(model, idx));
 }
 
-void func_ov000_021c1180(u8 *self) {
+struct Obj021c1180 {
+    u8 unk_00[0x68];
+    s32 unk_68;
+    u8 unk_6c[0xc];
+    s32 unk_78;
+    s32 unk_7c;
+    s32 unk_80;
+    u8 unk_84[0x4];
+    s32 unk_88;
+    Model *unk_8c;
+    VObj *unk_90;
+    u8 unk_94[0x2];
+    u16 unk_96;
+    s32 unk_98;
+};
+
+void func_ov000_021c1180(Obj021c1180 *self) {
     s32 h;
     u8 *g;
     u8 a;
     s32 hw;
     ModelPos p;
-    if (LFLD(s32, self, 0x68) != 10) {
+    if (self->unk_68 != 10) {
         return;
     }
-    p.x = LFLD(s32, self, 0x78) >> 12;
+    p.x = self->unk_78 >> 12;
     g = data_02097d48;
-    p.y = LFLD(s32, self, 0x7c) >> 12;
-    a = LO_FX_MUL(LFLD(s32, self, 0x88), 0x1e000) >> 12;
-    hw = (Lo_GetWidth(LFLD(Model *, self, 0x8c), LFLD(u16, self, 0x96)) >> 1) - 10;
-    h = Lo_GetHeight(LFLD(Model *, self, 0x8c), LFLD(u16, self, 0x96));
+    p.y = self->unk_7c >> 12;
+    a = LO_FX_MUL(self->unk_88, 0x1e000) >> 12;
+    hw = (Lo_GetWidth(self->unk_8c, self->unk_96) >> 1) - 10;
+    h = Lo_GetHeight(self->unk_8c, self->unk_96);
     if (p.x + hw > 0x100) {
         p.x -= p.x + hw - 0x100;
     } else if (p.x - hw < 0) {
@@ -61,26 +77,26 @@ void func_ov000_021c1180(u8 *self) {
     } else if (p.y - 0x17 - (h >> 1) < 0) {
         p.y -= p.y - 0x17 - (h >> 1);
     }
-    if (LFLD(VObj *, self, 0x90) != NULL) {
-        s32 w = LFLD(s32, self, 0x98);
-        LFLD(s32, LFLD(VObj *, self, 0x90), 0x70) = LFLD(s32, self, 0x80) + 0x20;
-        LFLD(VObj *, self, 0x90)->vfunc_20(p.x - (w >> 1), p.y - 0x1c);
-        LFLD(Obj021c1180Bits, LFLD(VObj *, self, 0x90), 4).id = func_02043d48(data_02097d48 + 0x8b0);
-        LFLD(VObj *, self, 0x90)->vfunc_90();
+    if (self->unk_90 != NULL) {
+        s32 w = self->unk_98;
+        LFLD(s32, self->unk_90, 0x70) = self->unk_80 + 0x20;
+        self->unk_90->vfunc_20(p.x - (w >> 1), p.y - 0x1c);
+        LFLD(Obj021c1180Bits, self->unk_90, 4).id = func_02043d48(data_02097d48 + 0x8b0);
+        self->unk_90->vfunc_90();
     }
-    Model_SetPos(LFLD(Model *, self, 0x8c), (p.x - 0x80) << 12, (p.y - 0x60) << 12);
-    LFLD(Model *, self, 0x8c)->unk_150 = LFLD(s32, self, 0x80);
-    func_02041c34(LFLD(Model *, self, 0x8c), LFLD(u16, self, 0x96), (void *)func_ov000_021c0d50, self + 0x68);
+    Model_SetPos(self->unk_8c, (p.x - 0x80) << 12, (p.y - 0x60) << 12);
+    self->unk_8c->unk_150 = self->unk_80;
+    func_02041c34(self->unk_8c, self->unk_96, (void *)func_ov000_021c0d50, (u8 *)self + 0x68);
     if (a < 0x1e) {
-        MODEL_FLAGS(LFLD(Model *, self, 0x8c))->unk_21 = 0;
+        MODEL_FLAGS(self->unk_8c)->unk_21 = 0;
     } else {
-        MODEL_FLAGS(LFLD(Model *, self, 0x8c))->unk_21 = 1;
+        MODEL_FLAGS(self->unk_8c)->unk_21 = 1;
     }
-    MODEL_FLAGS(LFLD(Model *, self, 0x8c))->unk_19 = 1;
-    MODEL_FLAGS(LFLD(Model *, self, 0x8c))->polygon_id = func_02043d48(g + 0x8b0);
-    MODEL_FLAGS(LFLD(Model *, self, 0x8c))->alpha = a;
-    Model_PlayPart(LFLD(Model *, self, 0x8c), LFLD(u16, self, 0x96));
-    func_02041774(LFLD(Model *, self, 0x8c), LFLD(u16, self, 0x96));
+    MODEL_FLAGS(self->unk_8c)->unk_19 = 1;
+    MODEL_FLAGS(self->unk_8c)->polygon_id = func_02043d48(g + 0x8b0);
+    MODEL_FLAGS(self->unk_8c)->alpha = a;
+    Model_PlayPart(self->unk_8c, self->unk_96);
+    func_02041774(self->unk_8c, self->unk_96);
 }
 
 }

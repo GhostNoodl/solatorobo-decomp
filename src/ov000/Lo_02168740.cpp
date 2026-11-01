@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -35,14 +36,14 @@ static inline s32 LoApproach(s32 cur, s32 target, s32 rate) {
     return cur + (s32)(((s64)(target - cur) * rate + 0x800) >> 12);
 }
 
-BOOL func_ov000_02168740(void *self) {
+BOOL func_ov000_02168740(Lo021cb894 *self) {
     if (!LoGIdle() || !LoD78Idle()) {
         LBIT(self, 0xc).b1 = 1;
     }
-    switch (LFLD(s32, self, 4)) {
+    switch (self->unk_04) {
     case 6:
         if (!LBIT(self, 0xc).b1 ? TRUE : FALSE) {
-            LFLD(s32, self, 4) = 0;
+            self->unk_04 = 0;
             return TRUE;
         }
         return FALSE;

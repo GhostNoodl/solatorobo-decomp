@@ -29,7 +29,12 @@ static inline BOOL IsB1021950e8(Actor *p) {
     return LFLD(Bits021950e8, p, 0xb24).b1 ? TRUE : FALSE;
 }
 
-BOOL func_ov000_021950e8(Actor *self, ActorMsg *msg) {
+struct Obj021950e8 : public Actor {
+    u8 unk_ac[0x20];
+    Flags021950e8 unk_cc;
+};
+
+BOOL func_ov000_021950e8(Obj021950e8 *self, ActorMsg *msg) {
     BOOL handled = FALSE;
     BOOL callBase = TRUE;
     switch (msg->type) {
@@ -49,7 +54,7 @@ BOOL func_ov000_021950e8(Actor *self, ActorMsg *msg) {
             } else if (k == 0xb) {
                 ((ActorSub40 *)self->unk_40)->flags |= 0x40000;
             } else if (k2 == 1 && ((k != 0x11 && k != 0x12 && k != 0x13 && k != 0x14) || LFLD(u16, msg->data, 0) != 0)) {
-                if (!LFLD(Flags021950e8, self, 0xcc).b2) {
+                if (!self->unk_cc.b2) {
                     Actor *p = func_ov000_0219bf90();
                     if (p != NULL && msg->id == p->id) {
                         u8 *g = data_0214a424;
@@ -75,7 +80,7 @@ BOOL func_ov000_021950e8(Actor *self, ActorMsg *msg) {
                     if (func_01ffbd6c(&a, &b, -1, 0, 0, -1) == -0x1000) {
                         ((ActorSub40 *)self->unk_40)->flags |= 0x400;
                         LFLD(u16, self->unk_4c, 0x1c) = msg->id;
-                        LFLD(Flags021950e8, self, 0xcc).b8 = 1;
+                        self->unk_cc.b8 = 1;
                     }
                 }
             }
@@ -85,7 +90,7 @@ BOOL func_ov000_021950e8(Actor *self, ActorMsg *msg) {
     }
     case 2:
         if (msg->data[0] == 0x15) {
-            LFLD(Flags021950e8, self, 0xcc).b5 = 0;
+            self->unk_cc.b5 = 0;
         }
         break;
     }

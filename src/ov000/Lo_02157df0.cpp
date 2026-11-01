@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -17,28 +18,28 @@ static inline void Free02157df0(u8 *p) {
     func_0203de1c(p);
 }
 
-void func_ov000_02157df0(u8 *self) {
+void func_ov000_02157df0(LoBase021cb2a8_021cb4a8 *self) {
     {
         u32 saved;
         LO_HEAP_PUSH(saved);
-        if (LFLD(u8 *, self, 0xd4) != NULL) {
-            u8 *p = LFLD(u8 *, self, 0xd4);
+        if (self->unk_d4 != NULL) {
+            u8 *p = self->unk_d4;
             if (p != NULL) {
                 Free02157df0(p);
             }
-            LFLD(u8 *, self, 0xd4) = NULL;
+            self->unk_d4 = NULL;
         }
         LO_HEAP_POP(saved);
     }
     {
         u32 saved;
         LO_HEAP_PUSH(saved);
-        if (LFLD(u8 *, self, 0xd8) != NULL) {
-            u8 *p = LFLD(u8 *, self, 0xd8);
+        if (self->unk_d8 != NULL) {
+            u8 *p = self->unk_d8;
             if (p != NULL) {
                 Free02157df0(p);
             }
-            LFLD(u8 *, self, 0xd8) = NULL;
+            self->unk_d8 = NULL;
         }
         LO_HEAP_POP(saved);
     }

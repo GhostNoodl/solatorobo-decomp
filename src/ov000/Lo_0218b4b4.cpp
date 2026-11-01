@@ -40,14 +40,21 @@ typedef struct {
     u16 unk_7c, unk_7e, unk_80;
 } Src0218b4b4;
 
-void func_ov000_0218b4b4(u8 *self, s32 mode, Src0218b4b4 *src) {
+struct Obj0218b4b4 {
+    u8 unk_00[0xb];
+    u8 unk_0b;
+    u8 unk_0c[0x96];
+    Bits0218b4b4 unk_a2;
+};
+
+void func_ov000_0218b4b4(Obj0218b4b4 *self, s32 mode, Src0218b4b4 *src) {
     Slot0218b4b4 *slot = NULL;
-    Slot0218b4b4 *e = (Slot0218b4b4 *)(self + 0xc);
-    BOOL flag = LFLD(Bits0218b4b4, self, 0xa2).b5;
+    Slot0218b4b4 *e = (Slot0218b4b4 *)((u8 *)self + 0xc);
+    BOOL flag = self->unk_a2.b5;
     s32 i;
 
     u8 *m;
-    for (i = 0; i < self[0xb]; i++, e = (Slot0218b4b4 *)((u8 *)e + 0x24)) {
+    for (i = 0; i < self->unk_0b; i++, e = (Slot0218b4b4 *)((u8 *)e + 0x24)) {
         if (e->unk_02 == src->id) {
             slot = e;
             break;
@@ -62,7 +69,7 @@ void func_ov000_0218b4b4(u8 *self, s32 mode, Src0218b4b4 *src) {
         slot->unk_00 = 0xffff;
         return;
     case 2:
-        if (!LFLD(Bits0218b4b4, self, 0xa2).b6) {
+        if (!self->unk_a2.b6) {
             flag = TRUE;
         }
     case 1:

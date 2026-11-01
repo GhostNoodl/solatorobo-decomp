@@ -15,11 +15,29 @@ void func_ov000_021c4c10(void *self);
 extern void *data_02097e4c;
 void *func_02049a48(void *a, int b, int c, int d, int e);
 
-void func_ov000_021c4230(u8 *self) {
+struct Obj021c4230 {
+    u8 unk_00[0x4];
+    s32 unk_04;
+    u8 unk_08[0x18];
+    s32 unk_20;
+    u8 unk_24[0x70];
+    u8 *unk_94;
+    u8 unk_98[0x4];
+    s32 unk_9c;
+    u8 *unk_a0;
+    u8 unk_a4[0x30];
+    s8 unk_d4;
+    u8 unk_d5[0x3];
+    s32 unk_d8;
+    u8 unk_dc[0x3];
+    u8 unk_df;
+};
+
+void func_ov000_021c4230(Obj021c4230 *self) {
     s32 i;
     u8 *n;
 
-    switch (LFLD(s32, self, 0x4)) {
+    switch (self->unk_04) {
     case 0:
         if (LBIT(self, 0xc).b4) {
             func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
@@ -27,18 +45,18 @@ void func_ov000_021c4230(u8 *self) {
         break;
     case 2:
         if (LBIT(self, 0xc).b1) {
-            LFLD(s32, self, 0x4) = 1;
+            self->unk_04 = 1;
         }
         func_ov000_021c4460((struct Win021c4460 *)self);
         func_ov000_021c4b00(self);
-        LFLD(s8, self, 0xd4)++;
-        if (LFLD(s8, self, 0xd4) < 20) {
-            LFLD(s32, self, 0xd8) += LO_FX_MUL(0x6000 - LFLD(s32, self, 0xd8), 0x19a);
-        } else if (LFLD(s8, self, 0xd4) < 50) {
-            LFLD(s32, self, 0xd8) += LO_FX_MUL(0 - LFLD(s32, self, 0xd8), 0xcd);
+        self->unk_d4++;
+        if (self->unk_d4 < 20) {
+            self->unk_d8 += LO_FX_MUL(0x6000 - self->unk_d8, 0x19a);
+        } else if (self->unk_d4 < 50) {
+            self->unk_d8 += LO_FX_MUL(0 - self->unk_d8, 0xcd);
         } else {
-            LFLD(s8, self, 0xd4) = 0;
-            LFLD(s32, self, 0xd8) = 0;
+            self->unk_d4 = 0;
+            self->unk_d8 = 0;
         }
         break;
     case 1:
@@ -48,17 +66,17 @@ void func_ov000_021c4230(u8 *self) {
         break;
     }
     i = 0;
-    for (n = LFLD(u8 *, self, 0x94); n != NULL; n = LFLD(u8 *, n, 0x28)) {
+    for (n = self->unk_94; n != NULL; n = LFLD(u8 *, n, 0x28)) {
         BOOL on = FALSE;
-        switch (LFLD(u8, self, 0xdf)) {
+        switch (self->unk_df) {
         case 0:
-            on = i >= LFLD(s32, self, 0x9c) && i <= LFLD(s32, self, 0x9c) + (LFLD(s32, self, 0x20) - 1);
+            on = i >= self->unk_9c && i <= self->unk_9c + (self->unk_20 - 1);
             break;
         case 1:
-            on = i >= LFLD(s32, self, 0x9c) && i <= LFLD(s32, self, 0x9c) + LFLD(s32, self, 0x20);
+            on = i >= self->unk_9c && i <= self->unk_9c + self->unk_20;
             break;
         case 2:
-            on = i >= LFLD(s32, self, 0x9c) - 1 && i <= LFLD(s32, self, 0x9c) + LFLD(s32, self, 0x20) - 1;
+            on = i >= self->unk_9c - 1 && i <= self->unk_9c + self->unk_20 - 1;
             break;
         }
         if (on) LFLD(NodeBits, n, 0x20).b0 = 1; else LFLD(NodeBits, n, 0x20).b0 = 0;
@@ -66,8 +84,8 @@ void func_ov000_021c4230(u8 *self) {
         ((VObj *)n)->vfunc_08();
         i++;
     }
-    if (LFLD(u8 *, self, 0xa0) != NULL) {
-        LFLD(NodeBits, LFLD(u8 *, self, 0xa0), 0x20).b1 = 1;
+    if (self->unk_a0 != NULL) {
+        LFLD(NodeBits, self->unk_a0, 0x20).b1 = 1;
     }
     func_ov000_021c4c10(self);
 }

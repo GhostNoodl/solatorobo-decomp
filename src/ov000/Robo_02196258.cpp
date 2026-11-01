@@ -65,12 +65,25 @@ static inline int GetNibble02196258(s32 row, s32 idx) {
     return (v >> ((idx % 8) * 4)) & 0xf;
 }
 
+struct Die02196258Self {
+    u8 unk_00[0xc];
+    u16 unk_0c;
+    u16 unk_0e;
+    u8 unk_10[0x7];
+    u8 unk_17;
+    u8 unk_18[0x34];
+    u8 *unk_4c;
+    u8 unk_50[0x5c];
+    u8 unk_ac;
+    u8 unk_ad;
+};
+
 static inline void Die02196258(VObj *obj) {
-    u8 *self = (u8 *)obj;
-    u8 k = LFLD(u8, LFLD(u8 *, self, 0x4c), 3);
+    Die02196258Self *self = (Die02196258Self *)obj;
+    u8 k = LFLD(u8, self->unk_4c, 3);
     if (k != 0xa && k != 0xb) {
         func_02062764(0x3c0, 0x100);
-        func_020627a0(LFLD(u16, self, 0xe), LFLD(u16, self, 0xc));
+        func_020627a0(self->unk_0e, self->unk_0c);
         {
             u8 *pl = data_ov000_021ccd54;
             pl[0xac] = 1;
@@ -78,10 +91,10 @@ static inline void Die02196258(VObj *obj) {
         }
     }
     {
-        u8 idx = LFLD(u8, self, 0x17);
+        u8 idx = self->unk_17;
         s32 row;
         if (idx != 0xff) {
-            row = func_0206e7ec(LFLD(u8, self, 0xac), LFLD(u8, self, 0xad));
+            row = func_0206e7ec(self->unk_ac, self->unk_ad);
             if (row != 0xffff) {
                 u8 val = 0xf;
                 val |= GetNibble02196258(row, idx) & 8;
@@ -94,64 +107,91 @@ static inline void Die02196258(VObj *obj) {
     obj->vfunc_08();
 }
 
+struct Obj02196258 {
+    u8 unk_00[0x38];
+    u8 *unk_38;
+    u8 unk_3c[0x4];
+    State02196258 *unk_40;
+    u8 *unk_44;
+    u8 *unk_48;
+    u8 *unk_4c;
+    u8 unk_50[0x8];
+    void *unk_58;
+    u8 unk_5c[0x14];
+    s32 unk_70;
+    s32 unk_74;
+    s32 unk_78;
+    u8 unk_7c[0x2];
+    u16 unk_7e;
+    u8 unk_80[0x18];
+    u16 unk_98;
+    u8 unk_9a[0x2];
+    s32 unk_9c;
+    s32 unk_a0;
+    s32 unk_a4;
+    s32 unk_a8;
+    u8 unk_ac[0x20];
+    Bits02196258 unk_cc;
+};
+
 void func_ov000_02196258(VObj *obj) {
-    u8 *self = (u8 *)obj;
+    Obj02196258 *self = (Obj02196258 *)obj;
     s32 zero = 0;
-    u8 *t = (u8 *)func_ov000_02199ba0(LFLD(u8 *, self, 0x4c));
-    State02196258 *s = LFLD(State02196258 *, self, 0x40);
+    u8 *t = (u8 *)func_ov000_02199ba0(self->unk_4c);
+    State02196258 *s = self->unk_40;
     switch (s->st) {
     case 0:
-        if (LFLD(u8 *, self, 0x44) != NULL) {
-            u8 *q = LFLD(u8 *, self, 0x44);
+        if (self->unk_44 != NULL) {
+            u8 *q = self->unk_44;
             LFLD(Bits02196258, q, 0x22).b0 = 0;
             LFLD(Bits02196258, q, 0x22).b1 = 0;
         }
-        if (LFLD(u8 *, self, 0x48) != NULL) {
-            u8 *q = LFLD(u8 *, self, 0x48);
+        if (self->unk_48 != NULL) {
+            u8 *q = self->unk_48;
             LFLD(Bits02196258, q, 0x9a).b0 = 0;
             LFLD(Bits02196258, q, 0x9a).b3 = 0;
             func_0203f364(q);
-            q = LFLD(u8 *, self, 0x48);
+            q = self->unk_48;
             LFLD(Bits02196258, q, 0x9a).b1 = 0;
             LFLD(Bits02196258, q, 0x9a).b4 = 0;
         }
-        if (LFLD(void *, self, 0x58) != NULL) {
-            LFLD(Bits02196258, self, 0xcc).b0 = 0;
+        if (self->unk_58 != NULL) {
+            self->unk_cc.b0 = 0;
         }
-        if (LFLD(u8, LFLD(u8 *, self, 0x4c), 0) == 2) {
-            LFLD(State02196258 *, self, 0x40)->st = 0x14;
+        if (LFLD(u8, self->unk_4c, 0) == 2) {
+            self->unk_40->st = 0x14;
             return;
         }
-        LFLD(Bits02196258, self, 0xcc).b7 = 1;
-        LFLD(State02196258 *, self, 0x40)->st++;
+        self->unk_cc.b7 = 1;
+        self->unk_40->st++;
         return;
     case 1: {
-        u8 *m = LFLD(u8 *, self, 0x4c);
-        LFLD(s32, self, 0x70) = LFLD(s32, m, 0x44);
-        LFLD(s32, self, 0x74) = LFLD(s32, m, 0x48);
-        LFLD(s32, self, 0x78) = LFLD(s32, m, 0x4c);
-        LFLD(s32, self, 0xa4) = zero;
-        LFLD(s32, self, 0xa0) = 0x185;
+        u8 *m = self->unk_4c;
+        self->unk_70 = LFLD(s32, m, 0x44);
+        self->unk_74 = LFLD(s32, m, 0x48);
+        self->unk_78 = LFLD(s32, m, 0x4c);
+        self->unk_a4 = zero;
+        self->unk_a0 = 0x185;
         if (t != NULL && LFLD(u8, m, 1) == 4) {
-            LFLD(s32, self, 0x9c) = 0x19a;
-            LFLD(s32, self, 0xa8) = 0x57;
-            LFLD(u16, self, 0x98) = LFLD(u16, self, 0x7e) + 0x8000;
+            self->unk_9c = 0x19a;
+            self->unk_a8 = 0x57;
+            self->unk_98 = self->unk_7e + 0x8000;
         } else {
-            LFLD(s32, self, 0x9c) = zero;
-            LFLD(s32, self, 0xa8) = 5;
+            self->unk_9c = zero;
+            self->unk_a8 = 5;
         }
-        LFLD(State02196258 *, self, 0x40)->st++;
+        self->unk_40->st++;
     }
     case 2: {
-        State02196258 *s2 = LFLD(State02196258 *, self, 0x40);
+        State02196258 *s2 = self->unk_40;
         s2->timer++;
         if (s2->timer > 0xb) {
-            if (t != NULL && LFLD(u8, LFLD(u8 *, self, 0x4c), 1) == 4) {
-                LFLD(State02196258 *, self, 0x40)->timer = 0xc;
+            if (t != NULL && LFLD(u8, self->unk_4c, 1) == 4) {
+                self->unk_40->timer = 0xc;
             } else {
-                LFLD(State02196258 *, self, 0x40)->timer = 0x1e;
+                self->unk_40->timer = 0x1e;
             }
-            LFLD(State02196258 *, self, 0x40)->st++;
+            self->unk_40->st++;
         }
         func_ov000_0218dbe0(self, 0);
         return;
@@ -165,25 +205,25 @@ void func_ov000_02196258(VObj *obj) {
             Die02196258(obj);
             return;
         }
-        if (t != NULL && LFLD(u8, LFLD(u8 *, self, 0x4c), 1) == 4) {
+        if (t != NULL && LFLD(u8, self->unk_4c, 1) == 4) {
             VecFx32 v;
-            s32 k = (0xc - LFLD(State02196258 *, self, 0x40)->timer) * 0xcd;
+            s32 k = (0xc - self->unk_40->timer) * 0xcd;
             s32 r = 0x1000 - k;
             u8 *mdl;
             v = *(VecFx32 *)(t + 0x70);
             v.y += LFLD(s32, t, 0x6c);
-            v.x -= LFLD(s32, self, 0x70);
-            v.y -= LFLD(s32, self, 0x74);
-            v.z -= LFLD(s32, self, 0x78);
+            v.x -= self->unk_70;
+            v.y -= self->unk_74;
+            v.z -= self->unk_78;
             v.x = FxMul02196258(v.x, k);
             v.y = FxMul02196258(v.y, k);
             v.z = FxMul02196258(v.z, k);
-            LFLD(s32, self, 0x9c) = FxMul02196258(r, LFLD(s32, self, 0x9c));
-            LFLD(s32, self, 0xa0) = FxMul02196258(r, LFLD(s32, self, 0xa0));
-            v.z += LFLD(s32, self, 0x9c);
-            v.y += LFLD(s32, self, 0xa0);
-            VEC_Add((VecFx32 *)(self + 0x70), &v, (VecFx32 *)(self + 0x70));
-            mdl = LFLD(u8 *, self, 0x38);
+            self->unk_9c = FxMul02196258(r, self->unk_9c);
+            self->unk_a0 = FxMul02196258(r, self->unk_a0);
+            v.z += self->unk_9c;
+            v.y += self->unk_a0;
+            VEC_Add((VecFx32 *)((u8 *)self + 0x70), &v, (VecFx32 *)((u8 *)self + 0x70));
+            mdl = self->unk_38;
             {
                 VecFx32 *sc = (VecFx32 *)(mdl + 0xa8);
                 s32 x, y, z;
@@ -197,16 +237,16 @@ void func_ov000_02196258(VObj *obj) {
             return;
         }
         {
-            u32 a = (u8)(0x29 - (0x1e - LFLD(State02196258 *, self, 0x40)->timer));
+            u32 a = (u8)(0x29 - (0x1e - self->unk_40->timer));
             if (a > 0x1f) {
                 a = 0x1f;
             }
-            LFLD(u8, LFLD(u8 *, self, 0x38), 0xbe) = a;
+            LFLD(u8, self->unk_38, 0xbe) = a;
         }
         return;
     case 0x14:
         func_ov003_021f0c60(self, 0);
-        func_02065f88(0xc8, self + 0x70);
+        func_02065f88(0xc8, (u8 *)self + 0x70);
         Die02196258(obj);
         return;
     }

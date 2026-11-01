@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -14,10 +15,10 @@ void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void func_0205a840(void *p, void *buf, const void *s);
 
-void func_ov000_021501e4(u8 *self) {
+void func_ov000_021501e4(Lo021ca9c4 *self) {
     u8 buf[0x20];
     VObj *obj;
-    if (LFLD(u16, self, 0x42) == 0xffff) {
+    if (self->unk_42 == 0xffff) {
         obj = (VObj *)func_0203dd9c(0xc4);
         if (obj != NULL) {
             VOBJ_SET_VTABLE(obj, data_0208b318);
@@ -35,8 +36,8 @@ void func_ov000_021501e4(u8 *self) {
         VOBJ_SET_VTABLE(obj, data_0208b318);
         obj->vfunc_08();
     }
-    LFLD(VObj *, self, 0x3c) = obj;
+    self->unk_3c = obj;
     LFLD(s32, obj, 0x44) = 7;
-    LFLD(VObj *, self, 0x3c)->vfunc_1c(data_ov000_021ca8d8);
+    self->unk_3c->vfunc_1c(data_ov000_021ca8d8);
 }
 }

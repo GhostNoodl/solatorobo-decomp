@@ -1,4 +1,5 @@
 #include "ov010/ov010.h"
+#include "ov010/ObjLayouts.h"
 
 struct Ov010Sw {
     void *vtbl;
@@ -34,14 +35,14 @@ extern void func_ov003_021d8f34(void *p);
 extern void *func_ov003_021d0edc(void *p);
 extern void func_02065804(void *a, s32 b);
 
-static inline void Ov010_PlayIfIdle(void *self, void *anim, s32 n) {
+static inline void Ov010_PlayIfIdle(Ov010Obj0221009c *self, void *anim, s32 n) {
     if (!func_ov003_021d984c((u8 *)self + 0x160, anim)) {
         func_ov003_021d95e8((u8 *)self + 0x160, anim, n);
     }
 }
 
-void func_ov010_02208c3c(void *self) {
-    u16 *p = FLD(u16 *, self, 0x50);
+void func_ov010_02208c3c(Ov010Obj0221009c *self) {
+    u16 *p = self->unk_50;
     s32 r = (p[0] << 12) / p[1];
     if (r <= 0x554) {
         Ov010_PlayIfIdle(self, data_ov010_0220f220, 0x14);
@@ -52,12 +53,12 @@ void func_ov010_02208c3c(void *self) {
     }
 }
 
-BOOL func_ov010_02208d10(void *self, s32 *out) {
+BOOL func_ov010_02208d10(Ov010Obj0221009c *self, s32 *out) {
     *out = 10;
     return TRUE;
 }
 
-void func_ov010_02208d20(void *self, s32 *out) {
+void func_ov010_02208d20(Ov010Obj0221009c *self, s32 *out) {
     out[0] = 0xa05;
     out[1] = 0xa06;
     out[2] = 0xa04;
@@ -68,14 +69,18 @@ void func_ov010_02208d20(void *self, s32 *out) {
     out[8] = 0xa01;
 }
 
-void *func_ov010_02208d60(void *self) {
-    FLD(void *, self, 0) = data_ov010_0220ffc4;
+struct Obj02208d60 {
+    void *unk_00;
+};
+
+void *func_ov010_02208d60(Obj02208d60 *self) {
+    self->unk_00 = data_ov010_0220ffc4;
     ((Ov010V *)self)->v0c();
     return self;
 }
 
-void *func_ov010_02208d88(void *self) {
-    FLD(void *, self, 0) = data_ov010_0220ffc4;
+void *func_ov010_02208d88(Obj02208d60 *self) {
+    self->unk_00 = data_ov010_0220ffc4;
     ((Ov010V *)self)->v0c();
     func_0203de1c(self);
     return self;
@@ -147,12 +152,12 @@ void *func_ov010_02208f68(void *self) {
     return self;
 }
 
-void *func_ov010_02208fc4(void *self) {
+void *func_ov010_02208fc4(Ov010Obj0221009c *self) {
     Ov010_02208f14_Body(self);
     return self;
 }
 
-void *func_ov010_02209018(void *self) {
+void *func_ov010_02209018(Ov010Obj0221009c *self) {
     Ov010_02208f14_Body(self);
     func_0203de1c(self);
     return self;

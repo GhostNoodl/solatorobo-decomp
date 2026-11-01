@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u16 state;
@@ -73,16 +74,16 @@ static inline u8 *GetObj021a2670(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-static inline BOOL Jump021a2670(u8 *self) {
+static inline BOOL Jump021a2670(Robo021ca458 *self) {
     BOOL go = FALSE;
-    if (LFLD(B24_021a2670, self, 0xb24).b1 && (LFLD(u32, LFLD(u8 *, self, 0x48), 0x54) & 0x400)) {
-        LFLD(u16, self, 0x98) = FX_Atan2(LFLD(s32, self, 0xaf0) - LFLD(s32, self, 0x70), LFLD(s32, self, 0xaf8) - LFLD(s32, self, 0x78));
-        LFLD(s32, self, 0x9c) = 0x66;
-        LFLD(s32, self, 0xa4) = 0;
-        if (!LFLD(B24_021a2670, self, 0xb24).b17 || (LFLD(u32, LFLD(u8 *, self, 0x48), 0x50) & 0x40000000)) {
-            LFLD(s32, self, 0xa0) = 0x200;
+    if (LFLD(B24_021a2670, self, 0xb24).b1 && (LFLD(u32, self->unk_48, 0x54) & 0x400)) {
+        self->unk_98 = FX_Atan2(self->unk_af0 - self->unk_70.x, self->unk_af8 - self->unk_70.z);
+        self->unk_9c = 0x66;
+        self->unk_a4 = 0;
+        if (!LFLD(B24_021a2670, self, 0xb24).b17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {
+            self->unk_a0 = 0x200;
         }
-        LFLD(s32, self, 0xa8) = 0x52;
+        self->unk_a8 = 0x52;
         LFLD(B24_021a2670, self, 0xb24).b17 = 1;
         go = TRUE;
     }
@@ -95,30 +96,30 @@ static inline void PlaySe021a2670(s32 id, void *pos) {
     }
 }
 
-void func_ov000_021a2670(u8 *self) {
+void func_ov000_021a2670(Robo021ca458 *self) {
     u16 thr = 0;
     s32 kind;
     void *anm;
-    switch (LFLD(St021a2670 *, self, 0x40)->state) {
+    switch (((St021a2670 *)self->unk_40)->state) {
     case 0: {
         LFLD(B24_021a2670, self, 0xb24).b16 = 0;
         LFLD(B24_021a2670, self, 0xb24).b17 = 0;
         LFLD(B2c_021a2670, self, 0xb2c).b6 = 0;
-        LFLD(s32, self, 0xa4) = 0xc00;
-        if (LFLD(s32, self, 0x9c) > 0x252) {
-            LFLD(s32, self, 0x9c) = 0x252;
+        self->unk_a4 = 0xc00;
+        if (self->unk_9c > 0x252) {
+            self->unk_9c = 0x252;
         }
-        LFLD(u16, self, 0xb36) = 0;
+        self->unk_b36 = 0;
         func_ov000_021b1fac(self, TRUE, 1);
         if (Jump021a2670(self)) {
-            func_ov000_02198360(LFLD(void *, self, 0x40), 4, 0);
+            func_ov000_02198360(self->unk_40, 4, 0);
             return;
         }
         if (LFLD(B24_021a2670, self, 0xb24).b1) {
             thr = 6;
         }
         {
-            St021a2670 *st = LFLD(St021a2670 *, self, 0x40);
+            St021a2670 *st = (St021a2670 *)self->unk_40;
             st->timer++;
             if (st->timer <= thr) {
                 return;
@@ -127,8 +128,8 @@ void func_ov000_021a2670(u8 *self) {
         if (0) {
             return;
         }
-        if ((LFLD(u16, self, 0xb1c) >> 12) == 5) {
-            u8 *o = GetObj021a2670(LFLD(u16, self, 0xb1c));
+        if ((self->unk_b1c >> 12) == 5) {
+            u8 *o = GetObj021a2670(self->unk_b1c);
             u8 *p = NULL;
             if (o != NULL) {
                 p = LFLD(u8 *, o, 0x4c);
@@ -140,47 +141,47 @@ void func_ov000_021a2670(u8 *self) {
                 }
             }
         }
-        LFLD(St021a2670 *, self, 0x40)->timer = 0;
+        ((St021a2670 *)self->unk_40)->timer = 0;
         if (LFLD(B24_021a2670, self, 0xb24).b1 && LFLD(B24_021a2670, self, 0xb24).mode == 0 &&
-            LFLD(u8 *, self, 0xba4) != NULL && LFLD(Ba4_021a2670, LFLD(u8 *, self, 0xba4), 6).b6 &&
-            LFLD(u16, self, 0xb38) >= thr) {
-            func_ov000_02190cb0(LFLD(void *, self, 0x38), data_ov000_021ca030[LFLD(B24_021a2670, self, 0xb24).lock], 0x19a, 1);
-            LFLD(s32, self, 0x9c) = 0;
-            LFLD(s32, self, 0xa4) = 0;
-            LFLD(St021a2670 *, self, 0x40)->state++;
-            LFLD(u16, self, 0xb38) = 1;
+            self->unk_ba4 != NULL && LFLD(Ba4_021a2670, self->unk_ba4, 6).b6 &&
+            self->unk_b38 >= thr) {
+            func_ov000_02190cb0(self->unk_38, data_ov000_021ca030[LFLD(B24_021a2670, self, 0xb24).lock], 0x19a, 1);
+            self->unk_9c = 0;
+            self->unk_a4 = 0;
+            ((St021a2670 *)self->unk_40)->state++;
+            self->unk_b38 = 1;
             return;
         }
-        LFLD(St021a2670 *, self, 0x40)->state = 10;
+        ((St021a2670 *)self->unk_40)->state = 10;
         return;
     }
     case 1: {
-        St021a2670 *st = LFLD(St021a2670 *, self, 0x40);
+        St021a2670 *st = (St021a2670 *)self->unk_40;
         u16 t;
         st->timer++;
         t = st->timer;
-        if (LFLD(u16, self, 0xb38) < t) {
+        if (self->unk_b38 < t) {
             if (t < 0x1e) {
-                LFLD(St021a2670 *, self, 0x40)->state = 10;
+                ((St021a2670 *)self->unk_40)->state = 10;
                 return;
             }
-            func_ov000_02190cb0(LFLD(void *, self, 0x38), data_ov000_021ca040[LFLD(B24_021a2670, self, 0xb24).lock], 0x800, 0);
+            func_ov000_02190cb0(self->unk_38, data_ov000_021ca040[LFLD(B24_021a2670, self, 0xb24).lock], 0x800, 0);
             LFLD(B2c_021a2670, self, 0xb2c).b6 = 1;
-            func_ov000_02198360(LFLD(void *, self, 0x40), 0x16, 0);
-            LFLD(s32, self, 0xb48) = 0;
+            func_ov000_02198360(self->unk_40, 0x16, 0);
+            self->unk_b48 = 0;
             return;
         }
         if (t >= 10) {
             if ((t & 0x1f) == 10) {
-                u8 *e = func_02065f88(0x646, self + 0x70);
-                LFLD(s32, self, 0xb48) = LFLD(s32, e, 0x24);
-                LFLD(u16, self, 0xb5e) = 0;
-                LFLD(s32, self, 0xb4c) = 0;
-                LFLD(s32, self, 0xb54) = 0;
-                LFLD(s32, self, 0xb50) = LFLD(s32, self, 0x6c);
-                LFLD(u16, self, 0xb58) = 0;
-                LFLD(u16, self, 0xb5a) = 0;
-                LFLD(u16, self, 0xb5c) = 0;
+                u8 *e = func_02065f88(0x646, (u8 *)self + 0x70);
+                self->unk_b48 = LFLD(s32, e, 0x24);
+                self->unk_b5e = 0;
+                self->unk_b4c = 0;
+                self->unk_b54 = 0;
+                self->unk_b50 = self->unk_6c;
+                self->unk_b58 = 0;
+                self->unk_b5a = 0;
+                self->unk_b5c = 0;
             }
             {
                 u8 *g = data_ov000_021ccd30;
@@ -197,12 +198,12 @@ void func_ov000_021a2670(u8 *self) {
                 }
             }
         }
-        LFLD(u16, LFLD(u8 *, self, 0x48), 0x9a) |= 0x20;
-        func_ov000_021987b8(LFLD(void *, self, 0x48), 1, 0, 0);
-        if (LFLD(u32, LFLD(u8 *, self, 0x48), 0x50) & 0x20000000) {
+        LFLD(u16, self->unk_48, 0x9a) |= 0x20;
+        func_ov000_021987b8(self->unk_48, 1, 0, 0);
+        if (LFLD(u32, self->unk_48, 0x50) & 0x20000000) {
             return;
         }
-        func_ov000_02198360(LFLD(void *, self, 0x40), 4, 0);
+        func_ov000_02198360(self->unk_40, 4, 0);
         return;
     }
     case 10: {
@@ -213,66 +214,66 @@ void func_ov000_021a2670(u8 *self) {
         if (LFLD(B24_021a2670, self, 0xb24).b1) {
             lock = LFLD(B24_021a2670, self, 0xb24).lock;
             anm = data_ov000_021ca080[lock];
-            LFLD(s32, self, 0xa8) = 0x52;
-            LFLD(s32, self, 0xa0) = 0x53f;
-            kind = LFLD(u16, self, 0xb1c) >> 12;
+            self->unk_a8 = 0x52;
+            self->unk_a0 = 0x53f;
+            kind = self->unk_b1c >> 12;
             if (kind != 5) {
                 switch (lock) {
                 case 1:
-                    LFLD(s32, self, 0xa0) = 0x4cd;
+                    self->unk_a0 = 0x4cd;
                     break;
                 case 2:
-                    LFLD(s32, self, 0xa0) = 0x200;
+                    self->unk_a0 = 0x200;
                     break;
                 }
             }
-            LFLD(St021a2670 *, self, 0x40)->timer = 9;
+            ((St021a2670 *)self->unk_40)->timer = 9;
             snd = 7;
         } else {
-            if (LFLD(u32, LFLD(u8 *, self, 0x48), 0x50) & 0x400) {
-                LFLD(s32, self, 0xa0) = 0x31f;
+            if (LFLD(u32, self->unk_48, 0x50) & 0x400) {
+                self->unk_a0 = 0x31f;
                 snd = 0x3c;
             } else {
-                LFLD(s32, self, 0xa0) = 0x53f;
+                self->unk_a0 = 0x53f;
                 snd = 9;
             }
-            LFLD(s32, self, 0xa8) = 0x50;
-            LFLD(St021a2670 *, self, 0x40)->timer = 0xf;
+            self->unk_a8 = 0x50;
+            ((St021a2670 *)self->unk_40)->timer = 0xf;
         }
-        func_ov000_02190cb0(LFLD(void *, self, 0x38), anm, 0x800, 0);
-        PlaySe021a2670(snd, self + 0x70);
+        func_ov000_02190cb0(self->unk_38, anm, 0x800, 0);
+        PlaySe021a2670(snd, (u8 *)self + 0x70);
         if (!LFLD(B93_021a2670, self, 0x93).b4) {
             s32 se = 0x300;
             if (LFLD(u16, data_ov000_021ccd68, 0xa) & 1) {
                 se = 0x304;
             }
-            PlaySe021a2670(se, self + 0x70);
+            PlaySe021a2670(se, (u8 *)self + 0x70);
         }
-        LFLD(St021a2670 *, self, 0x40)->state++;
+        ((St021a2670 *)self->unk_40)->state++;
     }
     case 11:
         if (!LFLD(B24_021a2670, self, 0xb24).b16 && !LFLD(B24_021a2670, self, 0xb24).b17) {
-            func_ov000_021b1dd8(self, LFLD(s32, self, 0xb08) + (LFLD(s32, self, 0xb08) >> 1), 0x200, 0xf00, 0x466, 1);
+            func_ov000_021b1dd8(self, self->unk_b08 + (self->unk_b08 >> 1), 0x200, 0xf00, 0x466, 1);
         } else {
             func_ov000_021b1fac(self, FALSE, 0);
         }
         if (Jump021a2670(self)) {
-            func_ov000_02198360(LFLD(void *, self, 0x40), 4, 0);
+            func_ov000_02198360(self->unk_40, 4, 0);
             return;
         }
         if (LFLD(B24_021a2670, self, 0xb24).mode == 0) {
-            if ((LFLD(u32, LFLD(u8 *, self, 0x48), 0x50) & 0x40000000) || LFLD(s32, LFLD(u8 *, self, 0x48), 0x58) != 0) {
-                LFLD(s32, self, 0x9c) = 0;
+            if ((LFLD(u32, self->unk_48, 0x50) & 0x40000000) || LFLD(s32, self->unk_48, 0x58) != 0) {
+                self->unk_9c = 0;
                 LFLD(B24_021a2670, self, 0xb24).b16 = 1;
             }
         }
         {
-            St021a2670 *st = LFLD(St021a2670 *, self, 0x40);
+            St021a2670 *st = (St021a2670 *)self->unk_40;
             if (st->timer != 0) {
                 st->timer--;
             }
             if (st->timer == 0) {
-                func_ov000_02198360(LFLD(void *, self, 0x40), 4, 0);
+                func_ov000_02198360(self->unk_40, 4, 0);
             }
         }
         break;

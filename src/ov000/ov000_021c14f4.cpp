@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u32 b0 : 1;
@@ -62,10 +63,10 @@ static inline s32 CalcSub_021c14f4(CamSub_021c14f4 *s, s32 q) {
     return FX_Div(r - s->b, s->a);
 }
 
-void func_ov000_021c14f4(u8 *self) {
+void func_ov000_021c14f4(Lo021cc938 *self) {
     BOOL ok = FALSE;
 
-    switch (LFLD(s32, self, 0x68)) {
+    switch (self->unk_68) {
     case 0:
     case 2:
     case 3:
@@ -77,55 +78,55 @@ void func_ov000_021c14f4(u8 *self) {
     case 5: {
         u32 saved;
         LO_HEAP_PUSH(saved);
-        if (LFLD(void *, self, 0x8c) != NULL) {
-            void *p = LFLD(void *, self, 0x8c);
+        if ((void *)self->unk_8c != NULL) {
+            void *p = self->unk_8c;
             if (p != NULL) {
                 func_ov000_0218ea20(p);
                 func_0203de1c(p);
             }
-            LFLD(void *, self, 0x8c) = NULL;
+            self->unk_8c = NULL;
         }
         LO_HEAP_POP(saved);
         LO_HEAP_PUSH(saved);
-        if (LFLD(void *, self, 0x90) != NULL) {
-            void *p = LFLD(void *, self, 0x90);
+        if ((void *)self->unk_90 != NULL) {
+            void *p = self->unk_90;
             if (p != NULL) {
                 func_ov000_0218fee4(p);
                 func_0203de1c(p);
             }
-            LFLD(void *, self, 0x90) = NULL;
+            self->unk_90 = NULL;
         }
         LO_HEAP_POP(saved);
         break;
     }
     case 1: {
-        void *res = LFLD(void *, self, 4);
+        void *res = self->unk_04;
         void *m;
         u8 *model;
-        LFLD(void *, self, 4) = NULL;
-        LFLD(void *, self, 0x8c) = res;
+        self->unk_04 = NULL;
+        self->unk_8c = (Model *)(res);
         m = func_0203dd9c(0xe8);
         if (m != NULL) {
             m = func_ov000_0218fe1c(m);
         }
-        LFLD(void *, self, 0x90) = m;
-        func_ov000_0218ffdc(m, LFLD(void *, self, 0x8c), 0, 1);
-        func_ov000_02190cb0(LFLD(void *, self, 0x90), data_ov000_021cc929, 0, 1);
-        LFLD(u16, LFLD(u8 *, self, 0x90), 0xb4) = 0;
-        model = LFLD(u8 *, self, 0x90);
+        self->unk_90 = (Model *)(m);
+        func_ov000_0218ffdc(m, self->unk_8c, 0, 1);
+        func_ov000_02190cb0(self->unk_90, data_ov000_021cc929, 0, 1);
+        LFLD(u16, self->unk_90, 0xb4) = 0;
+        model = (u8 *)self->unk_90;
         NNS_G3dRenderObjSetInitFunc(model + 0x24, (void *)func_ov000_021c14dc);
         LFLD(B16_021c14f4, model, 0xc2).b5 = 0;
-        func_ov000_021915a0(LFLD(void *, self, 0x90));
-        LFLD(s32, self, 0x68) = 4;
+        func_ov000_021915a0(self->unk_90);
+        self->unk_68 = 4;
     }
     case 4:
-        LFLD(s32, self, 0x84) = 0;
-        LFLD(s32, self, 0x88) = 0;
+        self->unk_84 = 0;
+        self->unk_88 = 0;
         if (!(LFLD(F_021c14f4, self, 0).b1 == 1 ? TRUE : ok)) {
             return;
         }
         if (!(LFLD(F_021c14f4, self, 0).b3 == 1 ? TRUE : FALSE)) {
-            LFLD(s32, self, 0x68) = 10;
+            self->unk_68 = 10;
         }
         break;
     case 10: {
@@ -136,21 +137,21 @@ void func_ov000_021c14f4(u8 *self) {
         s32 b;
         s32 q;
         Cam_021c14f4 *g;
-        if (func_ov000_021bd374(self, 0x6000)) {
+        if (func_ov000_021bd374((u8 *)self, 0x6000)) {
             return;
         }
-        v.x = LFLD(s32, self, 0x50);
-        v.y = LFLD(s32, self, 0x54);
-        v.z = LFLD(s32, self, 0x58);
-        func_ov000_021bd474(self, &v);
+        v.x = self->unk_50;
+        v.y = self->unk_54;
+        v.z = self->unk_58;
+        func_ov000_021bd474((u8 *)self, &v);
         proj = (u8 *)&NNS_G3dGlb.projMtx;
         MTX_MultVec43(&v, &NNS_G3dGlb.cameraMtx, &out);
         out.z += 0x3000;
         a = Mul_021c14f4(out.z, -0x1000);
         b = LO_FX_MUL(LFLD(s32, proj, 0x28), out.z) + LFLD(s32, proj, 0x38);
         q = FX_Div(b + a, a << 1);
-        LFLD(s32, self, 0x80) = CalcSub_021c14f4(&data_02097d48->cam.sub, Mul_021c14f4(q, 0x2000));
-        func_ov000_02190a80(LFLD(void *, self, 0x90), 0x1000);
+        self->unk_80 = CalcSub_021c14f4(&data_02097d48->cam.sub, Mul_021c14f4(q, 0x2000));
+        func_ov000_02190a80(self->unk_90, 0x1000);
         break;
     }
     }

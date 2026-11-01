@@ -1,40 +1,41 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
-void func_ov000_021581d4(VObj *self, s32 delta, s32 arg) {
+void func_ov000_021581d4(LoBase021caac8_021cb2a8 *self, s32 delta, s32 arg) {
     s8 old;
     s32 total;
     s32 vis;
     s32 scroll;
     s32 zero;
     u8 *node;
-    old = LFLD(s8, self, 0xb1);
-    vis = LFLD(s32, self, 0x20);
-    total = LFLD(s16, self, 0x9c);
-    LFLD(s8, self, 0xb0) = old;
-    LFLD(s8, self, 0xb1) = old + (s8)delta;
+    old = self->unk_b1;
+    vis = self->unk_20;
+    total = self->unk_9c;
+    self->unk_b0 = old;
+    self->unk_b1 = old + (s8)delta;
     zero = 0;
     scroll = zero;
     if (total <= vis) {
-        if (LFLD(s8, self, 0xb1) >= total) {
-            LFLD(s8, self, 0xb1) = total - 1;
-        } else if (LFLD(s8, self, 0xb1) >= vis) {
-            LFLD(s8, self, 0xb1) = vis - 1;
+        if (self->unk_b1 >= total) {
+            self->unk_b1 = total - 1;
+        } else if (self->unk_b1 >= vis) {
+            self->unk_b1 = vis - 1;
         }
     } else {
-        node = LFLD(u8 *, self, 0x98);
+        node = (u8 *)self->unk_98;
         if (LFLD(s16, node, 4) + vis >= total) {
-            if (LFLD(s8, self, 0xb1) >= vis) {
-                LFLD(s8, self, 0xb1) = vis - 1;
+            if (self->unk_b1 >= vis) {
+                self->unk_b1 = vis - 1;
             }
         } else {
-            scroll = LFLD(s8, self, 0xb1) - (vis - 2);
+            scroll = self->unk_b1 - (vis - 2);
             if (scroll > 0) {
                 if (scroll + LFLD(s16, node, 4) + vis <= total) {
-                    LFLD(s8, self, 0xb1) = vis - 2;
+                    self->unk_b1 = vis - 2;
                 } else {
-                    LFLD(s8, self, 0xb1) = vis - 1;
+                    self->unk_b1 = vis - 1;
                     scroll = total - (LFLD(s16, node, 4) + vis);
                 }
             } else {
@@ -43,6 +44,6 @@ void func_ov000_021581d4(VObj *self, s32 delta, s32 arg) {
         }
     }
     self->vfunc_bc(scroll, arg);
-    LFLD(s16, self, 0xa2) = 4;
+    self->unk_a2 = 4;
 }
 }

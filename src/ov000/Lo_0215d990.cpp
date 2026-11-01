@@ -18,14 +18,19 @@ typedef struct {
     VObj *arr[12];
 } LoArr98;
 
-void func_ov000_0215d990(void *self, s32 a) {
+struct Obj0215d990 {
+    u8 unk_00[0x94];
+    void *unk_94;
+};
+
+void func_ov000_0215d990(Obj0215d990 *self, s32 a) {
     void *p;
-    if (LFLD(void *, self, 0x94) == NULL) {
+    if (self->unk_94 == NULL) {
         return;
     }
     {
         s32 v = func_0204c0e8(data_02149ef8, a);
-        p = LFLD(void *, self, 0x94);
+        p = self->unk_94;
         LFLD(s32, p, 0x24) = v;
     }
     LFLD(s32, p, 0x4c) = func_0204c4fc(LFLD(s32, p, 0x28), LFLD(s32, p, 0x38), LFLD(s32, p, 0x24), (u8 *)p + 0x44, (u8 *)p + 0x48, LFLD(s8, p, 0x37) != 0 ? 1 : 0);

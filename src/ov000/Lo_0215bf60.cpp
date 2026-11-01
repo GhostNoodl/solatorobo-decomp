@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -40,8 +41,8 @@ static inline BOOL LoD78Idle(void) {
     return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
 }
 
-void func_ov000_0215bf60(void *self) {
-    switch (LFLD(s32, self, 4)) {
+void func_ov000_0215bf60(Lo021cadcc *self) {
+    switch (self->unk_04) {
     case 5:
         if (LBIT(self, 0xc).b1 == 1) {
             LO_FREE_V(self, 0x84);

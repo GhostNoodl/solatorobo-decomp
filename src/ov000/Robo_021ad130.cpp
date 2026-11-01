@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/CmdQueue.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u16 state;
@@ -83,10 +84,10 @@ BOOL func_ov000_02191120(void *a);
 BOOL func_ov000_02198360(void *st, s32 a, s32 b);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 
-static inline void Fx021ad130(u8 *self) {
+static inline void Fx021ad130(Robo021ca458 *self) {
     Vec021ad130 v;
-    v = *(Vec021ad130 *)(self + 0x70);
-    v.y += LFLD(s32, self, 0x68);
+    v = *(Vec021ad130 *)((u8 *)self + 0x70);
+    v.y += self->unk_68;
     func_ov000_021899d8(&v, 0, 0x8ccd, 1, 0x1000, 0x1000);
 }
 
@@ -107,52 +108,57 @@ static inline BOOL QHas021ad130(const s32 *w) {
     return FALSE;
 }
 
-static inline void Spawn021ad130(u8 *self, s32 id, s32 scale) {
-    VObj *e = func_02065f88(id, self + 0x70);
+struct Spawn021ad130Self {
+    u8 unk_00[0xb22];
+    B22_021ad130 unk_b22;
+};
+
+static inline void Spawn021ad130(Spawn021ad130Self *self, s32 id, s32 scale) {
+    VObj *e = func_02065f88(id, (u8 *)self + 0x70);
     if (e != NULL) {
         e->vfunc_0c(scale);
         LFLD(s32, e, 0x3c) = 0xb33;
-        if (LFLD(B22_021ad130, self, 0xb22).kind == 5) {
+        if (self->unk_b22.kind == 5) {
             e->vfunc_24(0, 0x1800, 0);
             e->vfunc_0c(0x3000);
         }
     }
 }
 
-void func_ov000_021ad130(u8 *self) {
-    switch (LFLD(St021ad130 *, self, 0x40)->state) {
+void func_ov000_021ad130(Robo021ca458 *self) {
+    switch (((St021ad130 *)self->unk_40)->state) {
     case 0: {
         s32 r;
-        func_ov000_02190cb0(LFLD(void *, self, 0x38), data_ov000_021cc6de, 0x400, 0);
+        func_ov000_02190cb0(self->unk_38, data_ov000_021cc6de, 0x400, 0);
         r = func_0206d204(data_0214a424, 1);
         if (r != 0) {
             u8 *p;
-            LFLD(St021ad130 *, self, 0x40)->state = 10;
-            p = LFLD(u8 *, self, 0x50);
+            ((St021ad130 *)self->unk_40)->state = 10;
+            p = self->unk_50;
             LFLD(u16, p, 0) = (s32)(r * LFLD(u16, p, 2)) / 100;
-            func_02065f88(0xcb, self + 0x70)->vfunc_14(0x99a, 0x1800, 0x99a);
+            func_02065f88(0xcb, (u8 *)self + 0x70)->vfunc_14(0x99a, 0x1800, 0x99a);
             break;
         }
         if (LFLD(B24_021ad130, self, 0xb24).b1) {
-            LFLD(St021ad130 *, self, 0x40)->timer = 0;
+            ((St021ad130 *)self->unk_40)->timer = 0;
         } else {
-            LFLD(St021ad130 *, self, 0x40)->timer = 0xd2;
+            ((St021ad130 *)self->unk_40)->timer = 0xd2;
         }
-        if (LFLD(u16, self, 0xb32) < 0xa0) {
-            LFLD(u16, self, 0xb32) = 0xa0;
+        if (self->unk_b32 < 0xa0) {
+            self->unk_b32 = 0xa0;
         }
         {
-            u8 *m = LFLD(u8 *, self, 0x38);
+            u8 *m = (u8 *)self->unk_38;
             LFLD(Bc2_021ad130, m, 0xc2).b9 = 2;
             NNSi_G3dModifyPolygonAttrMask(LFLD(void *, m, 4), 0, 0xc0);
         }
     next:
-        LFLD(St021ad130 *, self, 0x40)->state++;
+        ((St021ad130 *)self->unk_40)->state++;
         break;
     }
     case 1: {
         if (LFLD(B24_021ad130, self, 0xb24).b1) {
-            u16 t = LFLD(St021ad130 *, self, 0x40)->timer;
+            u16 t = ((St021ad130 *)self->unk_40)->timer;
             if (t <= 0xfa) {
                 if (t % 25 == 0) {
                     s32 a = -1;
@@ -170,25 +176,25 @@ void func_ov000_021ad130(u8 *self) {
                         b = 0x4b;
                         break;
                     }
-                    pos = *(Vec021ad130 *)(self + 0x70);
-                    pos.y += LFLD(s32, self, 0x6c);
-                    ext.x = LFLD(s32, self, 0x64);
-                    ext.y = LFLD(s32, self, 0x68) >> 2;
-                    ext.z = LFLD(s32, self, 0x64);
+                    pos = *(Vec021ad130 *)((u8 *)self + 0x70);
+                    pos.y += self->unk_6c;
+                    ext.x = self->unk_64;
+                    ext.y = self->unk_68 >> 2;
+                    ext.z = self->unk_64;
                     hit = func_ov000_0219b71c(&pos, &ext, 0x400, 0x666, a, b);
                     if (hit != NULL) {
                         s32 k = LFLD(s32, hit, 0x20);
                         if (k != 4) {
                             if (k == 0x322) {
-                                func_02049f44(data_02097e4c, func_02040498(2) + 0x78, self + 0x70, 0);
+                                func_02049f44(data_02097e4c, func_02040498(2) + 0x78, (u8 *)self + 0x70, 0);
                             }
                         } else {
-                            func_0204a028(data_02097e4c, 0x35, self + 0x70, 8);
+                            func_0204a028(data_02097e4c, 0x35, (u8 *)self + 0x70, 8);
                         }
                     }
                 }
             } else if (t == 0x118) {
-                VObj *e = func_02065f88(5, self + 0x70);
+                VObj *e = func_02065f88(5, (u8 *)self + 0x70);
                 if (e != NULL) {
                     e->vfunc_0c(0x2800);
                     LFLD(s32, e, 0x3c) = 0x800;
@@ -197,7 +203,7 @@ void func_ov000_021ad130(u8 *self) {
                         e->vfunc_0c(0x3000);
                     }
                 }
-                e = func_02065f88(0x66, self + 0x70);
+                e = func_02065f88(0x66, (u8 *)self + 0x70);
                 if (e != NULL) {
                     e->vfunc_0c(0x28cd);
                     LFLD(s32, e, 0x3c) = 0xb33;
@@ -206,13 +212,13 @@ void func_ov000_021ad130(u8 *self) {
                         e->vfunc_0c(0x3000);
                     }
                 }
-                func_0204a028(data_02097e4c, 0x56, self + 0x70, -5);
+                func_0204a028(data_02097e4c, 0x56, (u8 *)self + 0x70, -5);
                 func_ov000_0218996c(0x14, 0x3c);
-                LFLD(Bc2_021ad130, LFLD(u8 *, self, 0x38), 0xc2).b0 = 0;
-                LFLD(u8, LFLD(u8 *, self, 0x3c), 0x19) = 0;
+                LFLD(Bc2_021ad130, self->unk_38, 0xc2).b0 = 0;
+                LFLD(u8, self->unk_3c, 0x19) = 0;
             }
         }
-        if (LFLD(St021ad130 *, self, 0x40)->timer == 300) {
+        if (((St021ad130 *)self->unk_40)->timer == 300) {
             func_02062410();
             {
                 u8 *g = data_ov000_021ccd54;
@@ -226,59 +232,59 @@ void func_ov000_021ad130(u8 *self) {
                     func_ov000_02186dbc(data_ov000_021ccd54);
                 }
             }
-            LFLD(St021ad130 *, self, 0x40)->state++;
+            ((St021ad130 *)self->unk_40)->state++;
         }
-        if (LFLD(St021ad130 *, self, 0x40)->timer <= 0x11d) {
+        if (((St021ad130 *)self->unk_40)->timer <= 0x11d) {
             Fx021ad130(self);
         }
-        LFLD(St021ad130 *, self, 0x40)->timer++;
+        ((St021ad130 *)self->unk_40)->timer++;
         break;
     }
     case 10:
-        if (func_ov000_02191120(LFLD(void *, self, 0x38))) {
-            St021ad130 *st = LFLD(St021ad130 *, self, 0x40);
+        if (func_ov000_02191120(self->unk_38)) {
+            St021ad130 *st = (St021ad130 *)self->unk_40;
             st->timer++;
             if (st->timer > 0x3c) {
-                VObj *e = func_02065f88(0xc9, self + 0x70);
+                VObj *e = func_02065f88(0xc9, (u8 *)self + 0x70);
                 s32 sc = 0x4800;
-                LFLD(s32, self, 0xb44) = LFLD(s32, e, 0x24);
+                self->unk_b44 = LFLD(s32, e, 0x24);
                 if (LFLD(B22_021ad130, self, 0xb22).kind == 5) {
                     sc = 0x8000;
                 }
                 e->vfunc_0c(sc);
-                LFLD(B44_021ad130, LFLD(u8 *, self, 0x44), 0x22).b1 = 0;
-                LFLD(St021ad130 *, self, 0x40)->timer = 0;
+                LFLD(B44_021ad130, self->unk_44, 0x22).b1 = 0;
+                ((St021ad130 *)self->unk_40)->timer = 0;
                 goto next;
             }
         }
         break;
     case 11: {
-        St021ad130 *st = LFLD(St021ad130 *, self, 0x40);
+        St021ad130 *st = (St021ad130 *)self->unk_40;
         st->timer++;
         if (st->timer > 0x14) {
             u8 *anm;
-            func_02065f88(0x190, self + 0x70);
+            func_02065f88(0x190, (u8 *)self + 0x70);
             anm = data_ov000_021cc5e3;
-            if (!LFLD(B24_021ad130, self, 0xb24).b1 && (LFLD(u32, LFLD(u8 *, self, 0x48), 0x50) & 0x400)) {
+            if (!LFLD(B24_021ad130, self, 0xb24).b1 && (LFLD(u32, self->unk_48, 0x50) & 0x400)) {
                 anm = data_ov000_021cc618;
             }
-            func_ov000_02190cb0(LFLD(void *, self, 0x38), anm, 0x400, 0);
-            LFLD(u16, LFLD(u8 *, self, 0x50), 0xa) = 0xf0;
+            func_ov000_02190cb0(self->unk_38, anm, 0x400, 0);
+            LFLD(u16, self->unk_50, 0xa) = 0xf0;
             LFLD(B24_021ad130, self, 0xb24).b0 = 0;
-            LFLD(St021ad130 *, self, 0x40)->timer = 0;
-            LFLD(St021ad130 *, self, 0x40)->state++;
+            ((St021ad130 *)self->unk_40)->timer = 0;
+            ((St021ad130 *)self->unk_40)->state++;
         }
         Fx021ad130(self);
-        LFLD(B44_021ad130, LFLD(u8 *, self, 0x44), 0x22).b1 = 0;
+        LFLD(B44_021ad130, self->unk_44, 0x22).b1 = 0;
         break;
     }
     case 12: {
-        St021ad130 *st = LFLD(St021ad130 *, self, 0x40);
+        St021ad130 *st = (St021ad130 *)self->unk_40;
         st->timer++;
         if (st->timer > 0x2d) {
-            func_ov000_02198360(LFLD(void *, self, 0x40), 1, 0);
+            func_ov000_02198360(self->unk_40, 1, 0);
         }
-        if (LFLD(St021ad130 *, self, 0x40)->timer < 10) {
+        if (((St021ad130 *)self->unk_40)->timer < 10) {
             Fx021ad130(self);
         }
         break;
@@ -287,10 +293,10 @@ void func_ov000_021ad130(u8 *self) {
     if (LFLD(B22_021ad130, self, 0xb22).kind == 5) {
         return;
     }
-    LFLD(u16, LFLD(u8 *, self, 0x48), 0x9a) |= 0x20;
-    if (!(LFLD(u32, self, 0x30) & 0x80) && LFLD(u16, LFLD(u8 *, self, 0x50), 0) == 0) {
+    LFLD(u16, self->unk_48, 0x9a) |= 0x20;
+    if (!(self->unk_30 & 0x80) && LFLD(u16, self->unk_50, 0) == 0) {
         return;
     }
-    func_ov000_021987b8(LFLD(void *, self, 0x48), 0, 0, 0);
+    func_ov000_021987b8(self->unk_48, 0, 0, 0);
 }
 }

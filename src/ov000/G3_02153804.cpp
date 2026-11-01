@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     s16 x;
@@ -37,7 +38,7 @@ static inline void G3_VtxXY(s16 x, s16 y) {
     NNS_G3dGeBufferOP_N(0x25, &v, 1);
 }
 
-void func_ov000_02153804(u8 *self, s32 on, s32 *pos, s32 scale) {
+void func_ov000_02153804(LoBase021ca94c_021caac8 *self, s32 on, s32 *pos, s32 scale) {
     s16 z;
     u16 c;
     s32 sx;
@@ -49,10 +50,10 @@ void func_ov000_02153804(u8 *self, s32 on, s32 *pos, s32 scale) {
     if (on == 0) {
         return;
     }
-    sy = LFLD(s16, self, 0x68) - 0x100;
+    sy = self->unk_68 - 0x100;
     z = sy;
-    sx = LFLD(s32, self, 0x24) << 12;
-    sy = LFLD(s32, self, 0x28) << 12;
+    sx = self->unk_24 << 12;
+    sy = self->unk_28 << 12;
     t = FX_Div(0x5000, sy);
     q = t / 5 / 2;
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
@@ -60,16 +61,16 @@ void func_ov000_02153804(u8 *self, s32 on, s32 *pos, s32 scale) {
     G3_Vec(0x1b, scale, scale, 0x1000);
     G3_Vec(0x1b, sx, sy, 0x1000);
     G3_Cmd1(0x40, 1);
-    c = LFLD(u16, self, 0x48);
+    c = self->unk_48;
     {
         u8 r = (c & 0x1f) >> 1;
         u8 g = ((c >> 5) & 0x1f) >> 1;
         u8 b = ((c >> 10) & 0x1f) >> 1;
         G3_Cmd1(0x20, (u16)(r | (g << 5) | (b << 10)));
     }
-    v = LFLD(V6_02153804 *, self, 0x6c);
+    v = (V6_02153804 *)self->unk_6c;
     if (v != NULL) {
-        n = LFLD(s32, self, 0x70) - 1;
+        n = self->unk_70 - 1;
         G3_Vtx(VERTS[0].x, VERTS[0].y, 0);
         G3_VtxXY(VERTS[2].x, VERTS[2].y);
         G3_VtxXY(VERTS[2].x, -t);
