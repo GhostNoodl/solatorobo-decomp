@@ -85,7 +85,7 @@ void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 u16 FX_Atan2(s32 y, s32 x);
 s32 FX_Sqrt(s32 x);
-BOOL func_ov000_0218a670(Cam9b44 *self, PathNode9b44 *node, void *data, PathInfo9b44 *info);
+BOOL func_ov000_0218a670(Cam9b44 *self, const PathNode9b44 *node, const void *data, PathInfo9b44 *info);
 
 static inline u16 Atan2r9b44(s32 x, s32 y) { return FX_Atan2(y, x); }
 static inline s32 Scale9b44(s32 s, s32 v) {
