@@ -7259,3 +7259,47 @@ The thirteen closest drafts, rewritten with real struct types (svA/svB/svC/svD's
 - **Facts found on the way:** `02166180`'s and `0216715c`'s `p` is one object (`Ctx0216607c`): `0xc84` nodes (0x1c each), `0xc88` per-kind slots, `0xc8c` palette, `0xc90` palette map, `0xcb4` current item, `0xcb8` selected node, `0xcbc`/`0xcc0` origin, `0xcdc` the busy list (`LoAnimC`). The node's bit word is `f0..f4, a:8, b:8` (the `QBits` views' `b3`/`b4` are `f3`/`f4`). The direction table `data_ov000_021c9b40` uses tile indices 0 to 2 only, so the tiles at `p + 0x24` are a `u16[3]`. `021512b4`'s windows are real `TextWin`s, but `TextWin.h` cannot be included in `Lo_0215123c.cpp` (`data_02097dd0`/`data_02097ce0` are declared with other types there), and `TextWin::vramSize` is `u32` while this function reads it signed (`asr`).
 - **Also tried, no gain:** `0203a984` `b` in the loop or const, `u32`/`s16` `ox`/`oy` (10), `u8` (32), `u16 nm` (43), an OAM pointer local (19). `021b9b14` a `SetAlpha(Spr *, u8)` inline (82-83), `int`/`u8` `al` (82). `0216715c` a declaration sweep of the typed draft (3). `021ff24c` `F24cRing::count` as `s32` (311: `Ov011Ring::count`'s `s32` is wrong for this reader). `021fc0b8` the removed key typed `Ov011PNode *` or `const void *` (26), the list call on `k` (211). `ov002_021eca14` a `done` result variable (90), a busy/done inline for the case-1 test (20-22). `0220acb8` all 120 orders of the case-0 locals (15), a direct call or the radius as the first `Ov009_Blast` argument (15). `0206d43c`, `0200d36c`, `0215e6f0`, `ov006_021e7004`: their drafts are already typed (Main, ov006) and the blockers are as earlier rounds describe.
 - No new data. No renames.
+
+### Round cvA
+
+Compiler-version and flag sweep over every unmatched draft. **No new match, nothing landed, no source change.** Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` 8138 matched (8138 at start). Scratch is in the session scratchpad `cvA/`: `sweep.py SRC FUNC MOD OUT.tsv [CFG...]` compiles one draft with `NONMATCHING` defined under a list of `compiler|flag edits` configs (`old=>new` replaces base flags, `+...` adds them, `+-pragma X` passes a pragma) and writes the raw and register-masked diff counts. `configs.txt` (61 configs) and `configs2.txt` (25) are the sets, `jobs.txt` the drafts, `res/`/`res2/` the results, `summ.py` and `table.md` the summary.
+
+- **Scope.** The 30 unmatched code functions in `ninja report` (the BIOS stubs, `__sinit_ov002_021ef1f0` and data gaps left out). For each: the in-tree `NONMATCHING` draft, the `gsize/drafts.txt` best draft, and for the four with no in-tree draft the latest scratch draft (`raC/a9`, `bgV/6084`, `mtA/6084/t1`, `qpA/4030/p10`). The configs: 17 compilers with the base flags (one or two per output class from `1.2/b56` to `dsi/1.6sp1`); on `dsi/1.3`, `-O4,s`/`-O4`/`-O3`/`-O3,p`/`-O2`/`-O2,p`/`-O1,p`, `-inline auto`/`off`/`deferred`/`all`/`level=1`/`on,nobottomup`, `-ipa file`/`program`, `-proc v5te`/`arm9tdmi`/`v4t`/`arm7tdmi`, `-char unsigned`, `-enum min`, `-fp vfpv2`, `-str reuse`/`reuse,pool`/`noreuse,pool`, `-nointerworking`, `-Cpp_exceptions on`, and the `scheduling`, `peephole`, `opt_propagation`, `opt_lifetimes`, `opt_common_subs`, `opt_loop_invariants`, `opt_strength_reduction`, `opt_dead_assignments`, `opt_dead_code`, `opt_unroll_loops`, `optimize_for_size` pragmas; and the main levers again on `dsi/1.1`, `2.0/sp2p2`, `1.2/sp3` and `1.2/b56`.
+- **Result: no draft gets a lower raw score from any compiler or flag.** Only three configs beat the default on some draft, and each is worse register-masked or only reaches what another draft already gets under the default: `02069b3c` 44 / 4 → 21 / 20 with `-inline off` (structurally different), `0215e6f0` in-tree 11 → 9 with `opt_common_subs off` (the gsize draft is 9 under the default), and `02204a10` in-tree 295 → 289 under `dsi/1.6sp1` (the gsize draft is 67). `-ipa file` brings the gsize `020417e0` draft to the in-tree draft's 38. `scheduling off` and `peephole off` change no draft.
+- **No library-level pin.** `0200d36c` (`libs/nitro/card/card_rom.c`) scores 5 / 0 under every `dsi/*` build up to `1.3p1` and every `2.0/*` build, 9 under `dsi/1.6sp1` and 67 under `1.2/*`. So no NitroSDK compiler choice changes it, and nothing was added to `tools/mwcc_versions.py`. The other 29 drafts are game code (`src/`). Every one ties from `dsi/1.1p1` (or `dsi/1.1`) to `dsi/1.3p1` and is worse elsewhere. That agrees with ccver: the drafts' blockers are source shape, not compiler version.
+- **Table** (raw / register-masked, `match.py` counting; default = `dsi/1.3` with the project flags, best of the drafts tried; `tree` is the in-tree draft, `gs` the `gsize/drafts.txt` one, others the scratch folder named above):
+
+| Draft | Default (draft) | Best | Setting |
+|---|---|---|---|
+| `0200d36c` | 5 / 0 (gs) | 5 / 0 | — |
+| `0203a984` | 10 / 0 (gs) | 10 / 0 | — |
+| `0203b4ac` | 51 / 12 (tree) | 51 / 12 | — |
+| `020417e0` | 38 / 31 (tree) | 38 / 31 | — |
+| `02043100` | 105 / 62 (tree) | 105 / 62 | — |
+| `02048e74` | 60 / 20 (tree) | 60 / 20 | — |
+| `02049c80` | 60 / 42 (tree) | 60 / 42 | — |
+| `02053254` | 36 / 10 (gs) | 36 / 10 | — |
+| `02069b3c` | 44 / 4 (gs) | 21 / 20 | `-inline off` (masked 20, worse) |
+| `0206d43c` | 12 / 0 (gs) | 12 / 0 | — |
+| `0206d99c` | 19 / 0 (tree) | 19 / 0 | — |
+| `ov000_0214dd3c` | 26 / 0 (tree) | 26 / 0 | — |
+| `ov000_021512b4` | 11 / 0 (gs) | 11 / 0 | — |
+| `ov000_0215e6f0` | 9 / 0 (gs) | 9 / 0 | — |
+| `ov000_021652e4` | 81 / 36 (tree) | 81 / 36 | — |
+| `ov000_02166180` | 27 / 0 (tree) | 27 / 0 | — |
+| `ov000_0216715c` | 3 / 0 (tree) | 3 / 0 | — |
+| `ov000_0216c310` | 65 / 10 (gs) | 65 / 10 | — |
+| `ov000_0218867c` | 45 / 32 (gs) | 45 / 32 | — |
+| `ov000_021b9b14` | 12 / 4 (tree) | 12 / 4 | — |
+| `ov002_021eca14` | 6 / 3 (tree) | 6 / 3 | — |
+| `ov003_021cd91c` | 44 / 35 (tree) | 44 / 35 | — |
+| `ov006_021e7004` | 20 / 11 (gs) | 20 / 11 | — |
+| `ov009_02204a10` | 67 / 54 (gs) | 67 / 54 | — |
+| `ov009_02206084` | 7 / 7 (bgV) | 7 / 7 | — |
+| `ov009_0220acb8` | 15 / 13 (tree) | 15 / 13 | — |
+| `ov010_02204030` | 26 / 23 (qpA) | 26 / 23 | — |
+| `ov011_021fc0b8` | 26 / 17 (tree) | 26 / 17 | — |
+| `ov011_021fd638` | 56 / 34 (tree) | 56 / 34 | — |
+| `ov011_021ff24c` | 26 / 0 (tree) | 26 / 0 | — |
+
+- No new data. No renames.
