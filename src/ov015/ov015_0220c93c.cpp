@@ -86,25 +86,25 @@ void *func_ov015_0220ca38(u8 *self) {
 }
 
 static inline void Ov015_SetXZ(s32 *v, s32 x, s32 z) { v[0] = x; v[2] = z; }
-BOOL func_ov015_0220caec(u8 *self, u8 *p) {
+BOOL func_ov015_0220caec(u8 *self, Ov015Fish *p) {
     s32 a;
     s32 x, z;
-    func_ov000_02190cb0(p + 0x244, data_ov015_02212e0d, 0x19a, 0);
-    FLD(u16, p, 0x104) = 0x59a;
-    func_ov000_021915a0(p + 0x244);
-    FLD(s32, p, 0x108) = 1;
-    FLD(s32, self, 0xc) = Ov015_FxMul(FLD(s16, p, 0xca) << 4, 0x19a) + 0x23d;
+    func_ov000_02190cb0(&p->unk_244, data_ov015_02212e0d, 0x19a, 0);
+    p->unk_104 = 0x59a;
+    func_ov000_021915a0(&p->unk_244);
+    p->unk_108 = 1;
+    FLD(s32, self, 0xc) = Ov015_FxMul(p->unk_c0.unk_0a << 4, 0x19a) + 0x23d;
     a = func_02040528(0x1000);
     FLD(s32, self, 0x1c) = func_02040528(0x1000);
     FLD(s32, self, 0x24) = a;
     FLD(s32, self, 0x20) = 0;
     VEC_Normalize(self + 0x1c, self + 0x1c);
-    VEC_Normalize(self + 0x1c, p + 0x9c);
-    FLD(s32, p, 0x44) = -0x32000;
-    Ov015_SetXZ((s32 *)(p + 0x40), FLD(s32, p, 0x40), FLD(s32, p, 0x48));
-    func_0203f324(p + 0x568);
-    FLD(s32, self, 0x14) = FLD(u16, p, 0xcc);
-    FLD(s32, self, 0x18) = FLD(u16, p, 0xce);
+    VEC_Normalize(self + 0x1c, &p->unk_9c);
+    p->unk_40.y = -0x32000;
+    Ov015_SetXZ((s32 *)&p->unk_40, p->unk_40.x, p->unk_40.z);
+    func_0203f324(&p->unk_568);
+    FLD(s32, self, 0x14) = p->unk_c0.unk_0c;
+    FLD(s32, self, 0x18) = p->unk_c0.unk_0e;
     FLD(s32, self, 0x4) = 0;
     FLD(s32, self, 0x10) = FLD(s32, self, 0x18);
     return TRUE;
@@ -115,8 +115,8 @@ void VEC_MultAdd(s32 scale, const Ov015Vec *dir, const Ov015Vec *base, Ov015Vec 
 void VEC_Add(const void *a, const void *b, void *out);
 u16 FX_Atan2(s32 x, s32 z);
 BOOL func_ov015_0220d7d0(u8 *self, Ov015Vec *out, Ov015Vec *pos);
-void func_ov015_0220d328(u8 *self, u8 *o);
-void func_ov015_0220d578(u8 *self, u8 *o);
+void func_ov015_0220d328(u8 *self, Ov015Fish *o);
+void func_ov015_0220d578(u8 *self, Ov015Fish *o);
 u8 *func_02066774(void *a, void *b, int c, void *d);
 extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e34[];
@@ -142,7 +142,7 @@ typedef struct {
     Ov015Sub568 sub;
 } Ov015Owner568;
 
-BOOL func_ov015_0220cbe8(u8 *self, u8 *p) {
+BOOL func_ov015_0220cbe8(u8 *self, Ov015Fish *p) {
     Ov015Vec v0;
     Ov015Vec b;
     Ov015Vec a;
@@ -155,7 +155,7 @@ BOOL func_ov015_0220cbe8(u8 *self, u8 *p) {
     Ov015Vec v2;
     Ov015Vec pos;
     s32 i;
-    FLD(u8 *, self, 0x3c) = p;
+    FLD(Ov015Fish *, self, 0x3c) = p;
     if (FLD(s32, self, 0x34) > 0) {
         s32 t = FX_Div(FLD(s32, self, 0x34) << 12, 0x3c000);
         s32 s = FLD(s32, self, 0x38);
@@ -171,11 +171,11 @@ BOOL func_ov015_0220cbe8(u8 *self, u8 *p) {
         FLD(s32, self, 0x34)--;
     } else {
         FLD(s32, self, 0x34) = 0;
-        if (FLD(s32, p, 0x5ac) != 0) {
+        if (p->unk_568.unk_44 != 0) {
             Ov015Sub568 *sub = &((Ov015Owner568 *)p)->sub;
-            v0 = FLD(Ov015Vec, p, 0x40);
+            v0 = p->unk_40;
             VEC_MultAdd(FLD(s32, self, 0xc), &FLD(Ov015Vec, self, 0x1c), &v0, &v0);
-            FLD(Ov015Vec, p, 0x40) = v0;
+            p->unk_40 = v0;
             FLD(s32, self, 0x28) = FLD(s32, self, 0x1c);
             FLD(s32, self, 0x30) = FLD(s32, self, 0x24);
             FLD(s32, self, 0x2c) = 0;
@@ -188,12 +188,12 @@ BOOL func_ov015_0220cbe8(u8 *self, u8 *p) {
             Ov015_Turn(self, &b);
         } else {
             s32 dot;
-            VEC_MultAdd(FLD(s32, self, 0xc), &FLD(Ov015Vec, self, 0x1c), &FLD(Ov015Vec, p, 0x40), &q);
+            VEC_MultAdd(FLD(s32, self, 0xc), &FLD(Ov015Vec, self, 0x1c), &p->unk_40, &q);
             if (func_ov015_0220d7d0(self, &n, &q)) goto clamp;
             FLD(s32, self, 0x28) = FLD(s32, self, 0x1c);
             FLD(s32, self, 0x2c) = FLD(s32, self, 0x20);
             FLD(s32, self, 0x30) = FLD(s32, self, 0x24);
-            w = FLD(Ov015Vec, p, 0x9c);
+            w = p->unk_9c;
             w.y = 0;
             VEC_Normalize(&w, &w);
             dot = (s32)(((s64)n.x * w.x + (s64)n.y * w.y + (s64)n.z * w.z + 0x800) >> 12);
@@ -204,31 +204,31 @@ BOOL func_ov015_0220cbe8(u8 *self, u8 *p) {
         }
     }
 clamp:
-    pos = FLD(Ov015Vec, p, 0x40);
-    if (pos.x > FLD(s32, p, 0xb0)) {
+    pos = p->unk_40;
+    if (pos.x > p->unk_b0) {
         pos.x = 0x32000;
-    } else if (pos.x < FLD(s32, p, 0xac)) {
+    } else if (pos.x < p->unk_ac) {
         pos.x = -0x32000;
     }
-    if (pos.z > FLD(s32, p, 0xb4)) {
+    if (pos.z > p->unk_b4) {
         pos.z = -0x4b000;
-    } else if (pos.z < FLD(s32, p, 0xb8)) {
+    } else if (pos.z < p->unk_b8) {
         pos.z = -0x8c000;
     }
-    FLD(Ov015Vec, p, 0x40) = pos;
+    p->unk_40 = pos;
     switch (FLD(s32, self, 0x4)) {
     case 0: {
         BOOL found;
-        FLD(s32, p, 0xa8) = FLD(s32, self, 0xc);
+        p->unk_a8 = FLD(s32, self, 0xc);
         v1 = pos;
         VEC_MultAdd(FLD(s32, self, 0xc), &FLD(Ov015Vec, self, 0x1c), &v1, &v1);
-        VEC_Normalize(self + 0x1c, p + 0x9c);
+        VEC_Normalize(self + 0x1c, &p->unk_9c);
         if (v1.y > -0x32000) {
             v1.y -= 0x80;
         } else {
             v1.y = -0x32000;
         }
-        FLD(Ov015Vec, p, 0x40) = v1;
+        p->unk_40 = v1;
         if (FLD(s32, self, 0x10) == 0) {
             found = FALSE;
             for (i = 0; i < 1; i++) {
@@ -241,7 +241,7 @@ clamp:
             if (found) {
                 FLD(s32, self, 0x4) = 1;
                 FLD(s32, self, 0x10) = 0x5a;
-                FLD(s32, p, 0x108) = 2;
+                p->unk_108 = 2;
             } else {
                 FLD(s32, self, 0x18) >>= 1;
                 FLD(s32, self, 0x10) = FLD(s32, self, 0x18);
@@ -258,7 +258,7 @@ clamp:
         break;
     case 2: {
         Ov015V *e;
-        FLD(s32, p, 0xa8) = FLD(s32, self, 0xc);
+        p->unk_a8 = FLD(s32, self, 0xc);
         v2 = pos;
         VEC_MultAdd(FLD(s32, self, 0xc), &FLD(Ov015Vec, self, 0x1c), &v2, &v2);
         if (v2.y < 0) {
@@ -266,23 +266,23 @@ clamp:
         } else {
             v2.y = 0;
         }
-        FLD(Ov015Vec, p, 0x40) = v2;
-        VEC_Normalize(self + 0x1c, p + 0x9c);
+        p->unk_40 = v2;
+        VEC_Normalize(self + 0x1c, &p->unk_9c);
         e = func_020657b0(data_0214a420, FLD(void *, self, 0x8));
         if (e == NULL) {
-            e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, p + 0x40);
+            e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &p->unk_40);
             FLD(s32, e, 0xd4) = 3;
             FLD(u8, e, 0x28) = 0;
             FLD(s32, e, 0xc8) = -1;
             FLD(s32, e, 0x50) = -0xc8000;
             FLD(void *, self, 0x8) = FLD(void *, e, 0x24);
         }
-        v3.x = FLD(s32, p, 0x40);
-        v3.y = FLD(s32, p, 0x44) > 0 ? 0 : FLD(s32, p, 0x44);
-        v3.z = FLD(s32, p, 0x48);
+        v3.x = p->unk_40.x;
+        v3.y = p->unk_40.y > 0 ? 0 : p->unk_40.y;
+        v3.z = p->unk_40.z;
         e->v18(&v3);
-        e->v10(p + 0x70);
-        e->v34(0, FX_Atan2(FLD(s32, p, 0x9c), FLD(s32, p, 0xa4)), 0);
+        e->v10(&p->unk_70);
+        e->v34(0, FX_Atan2(p->unk_9c.x, p->unk_9c.z), 0);
         if (FLD(s32, self, 0x10) == 0) {
             FLD(s32, self, 0x4) = 3;
             FLD(s32, self, 0x10) = 0x5a;
@@ -293,8 +293,8 @@ clamp:
         func_ov015_0220d578(self, p);
         if (FLD(s32, self, 0x10) == 0) {
             FLD(s32, self, 0x4) = 0;
-            FLD(s32, self, 0x10) = FLD(s32, self, 0x18) = FLD(u16, p, 0xce);
-            FLD(s32, p, 0x108) = 1;
+            FLD(s32, self, 0x10) = FLD(s32, self, 0x18) = p->unk_c0.unk_0e;
+            p->unk_108 = 1;
             Ov015_DeleteFound(data_0214a420, FLD(void *, self, 0x8));
             for (i = 0; i < 1; i++) {
                 if (data_ov015_02212db8[i] == self) {

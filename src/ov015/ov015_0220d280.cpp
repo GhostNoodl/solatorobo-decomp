@@ -25,10 +25,10 @@ BOOL func_ov000_02191120(void *p);
 void *func_ov015_0220a0c8(u8 *self);
 void func_ov000_021915a0(void *a);
 
-BOOL func_ov015_0220d280(u8 *self, u8 *p) {
+BOOL func_ov015_0220d280(u8 *self, Ov015Fish *p) {
     s32 i;
-    FLD(s32, p, 0x108) = 0;
-    func_0203f364(p + 0x568);
+    p->unk_108 = 0;
+    func_0203f364(&p->unk_568);
     Ov015_DeleteFound(data_0214a420, FLD(void *, self, 0x8));
     for (i = 0; i < 1; i++) {
         if (data_ov015_02212db8[i] == self) {
@@ -39,7 +39,7 @@ BOOL func_ov015_0220d280(u8 *self, u8 *p) {
     return TRUE;
 }
 
-void func_ov015_0220d328(u8 *self, u8 *o) {
+void func_ov015_0220d328(u8 *self, Ov015Fish *o) {
     Ov015Vec d;
     Ov015Vec p;
     Ov015Vec q;
@@ -48,35 +48,35 @@ void func_ov015_0220d328(u8 *self, u8 *o) {
     d = FLD(Ov015Vec, self, 0x1c);
     d.y = Ov015_FxMul(FX_SinCosTable_[((Ov015_FxMul(t, 0x7fff000) >> 12) >> 4) * 2], 0x800);
     VEC_Normalize(&d, &d);
-    VEC_Normalize(&d, o + 0x9c);
-    p = FLD(Ov015Vec, o, 0x40);
+    VEC_Normalize(&d, &o->unk_9c);
+    p = o->unk_40;
     VEC_MultAdd(FLD(s32, self, 0xc), (Ov015Vec *)(self + 0x1c), &p, &p);
     p.y = func_02049130(t, -0x32000, 0x1ccd);
     if (p.y > 0) p.y = 0;
-    FLD(Ov015Vec, o, 0x40) = p;
-    FLD(s32, o, 0x108) = 2;
+    o->unk_40 = p;
+    o->unk_108 = 2;
     e = func_020657b0(data_0214a420, FLD(void *, self, 0x8));
     if (e == NULL) {
-        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, o + 0x40);
+        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &o->unk_40);
         FLD(s32, e, 0xd4) = 3;
         FLD(u8, e, 0x28) = 0;
         FLD(s32, e, 0xc8) = -1;
         FLD(s32, e, 0x50) = -0xc8000;
         FLD(void *, self, 0x8) = FLD(void *, e, 0x24);
     }
-    q.x = FLD(s32, o, 0x40);
-    q.y = FLD(s32, o, 0x44) > 0 ? 0 : FLD(s32, o, 0x44);
-    q.z = FLD(s32, o, 0x48);
+    q.x = o->unk_40.x;
+    q.y = o->unk_40.y > 0 ? 0 : o->unk_40.y;
+    q.z = o->unk_40.z;
     e->v18(&q);
-    e->v10(o + 0x70);
-    e->v34(0, FX_Atan2(FLD(s32, o, 0x9c), FLD(s32, o, 0xa4)), 0);
+    e->v10(&o->unk_70);
+    e->v34(0, FX_Atan2(o->unk_9c.x, o->unk_9c.z), 0);
     if (FLD(s32, self, 0x10) == 0x3c) {
         func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         func_02049a48(data_02097e4c, 0x55, -1, -1, -1);
     }
 }
 
-void func_ov015_0220d578(u8 *self, u8 *o) {
+void func_ov015_0220d578(u8 *self, Ov015Fish *o) {
     Ov015Vec d;
     Ov015Vec p;
     Ov015Vec q;
@@ -85,48 +85,48 @@ void func_ov015_0220d578(u8 *self, u8 *o) {
     d = FLD(Ov015Vec, self, 0x1c);
     d.y = Ov015_FxMul(FX_SinCosTable_[(((Ov015_FxMul(t, 0x7fff000) >> 12) + 0x7fff) >> 4) * 2], 0x800);
     VEC_Normalize(&d, &d);
-    VEC_Normalize(&d, o + 0x9c);
-    p = FLD(Ov015Vec, o, 0x40);
+    VEC_Normalize(&d, &o->unk_9c);
+    p = o->unk_40;
     VEC_MultAdd(FLD(s32, self, 0xc), (Ov015Vec *)(self + 0x1c), &p, &p);
     p.y = func_02049130(t, 0x1ccd, -0x32000);
     if (p.y < -0x32000) p.y = -0x32000;
-    FLD(Ov015Vec, o, 0x40) = p;
-    FLD(s32, o, 0x108) = 2;
+    o->unk_40 = p;
+    o->unk_108 = 2;
     if (FLD(s32, self, 0x10) == 0x3c) {
         func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         func_02049a48(data_02097e4c, 0x55, -1, -1, -1);
     }
     e = func_020657b0(data_0214a420, FLD(void *, self, 0x8));
     if (e == NULL) {
-        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, o + 0x40);
+        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e34, 0, &o->unk_40);
         FLD(s32, e, 0xd4) = 3;
         FLD(u8, e, 0x28) = 0;
         FLD(s32, e, 0xc8) = -1;
         FLD(s32, e, 0x50) = -0xc8000;
         FLD(void *, self, 0x8) = FLD(void *, e, 0x24);
     }
-    q.x = FLD(s32, o, 0x40);
-    q.y = FLD(s32, o, 0x44) > 0 ? 0 : FLD(s32, o, 0x44);
-    q.z = FLD(s32, o, 0x48);
+    q.x = o->unk_40.x;
+    q.y = o->unk_40.y > 0 ? 0 : o->unk_40.y;
+    q.z = o->unk_40.z;
     e->v18(&q);
-    e->v10(o + 0x70);
-    e->v34(0, FX_Atan2(FLD(s32, o, 0x9c), FLD(s32, o, 0xa4)), 0);
+    e->v10(&o->unk_70);
+    e->v34(0, FX_Atan2(o->unk_9c.x, o->unk_9c.z), 0);
 }
 
 static inline void Ov015_VecSet(Ov015Vec *v, s32 x, s32 y, s32 z) { v->x = x; v->y = y; v->z = z; }
 BOOL func_ov015_0220d7d0(u8 *self, Ov015Vec *out, Ov015Vec *pos) {
-    u8 *a = FLD(u8 *, self, 0x3c);
+    Ov015Fish *a = FLD(Ov015Fish *, self, 0x3c);
     BOOL r = TRUE;
-    if (pos->x > FLD(s32, a, 0xb0)) {
+    if (pos->x > a->unk_b0) {
         Ov015_VecSet(out, -0x1000, 0, 0);
         r = FALSE;
-    } else if (pos->x < FLD(s32, a, 0xac)) {
+    } else if (pos->x < a->unk_ac) {
         r = FALSE;
         Ov015_VecSet(out, 0x1000, 0, 0);
-    } else if (pos->z > FLD(s32, a, 0xb4)) {
+    } else if (pos->z > a->unk_b4) {
         r = FALSE;
         Ov015_VecSet(out, 0, 0, -0x1000);
-    } else if (pos->z < FLD(s32, a, 0xb8)) {
+    } else if (pos->z < a->unk_b8) {
         r = FALSE;
         Ov015_VecSet(out, 0, 0, 0x1000);
     } else {
@@ -152,36 +152,36 @@ void *func_ov015_0220d8a0(void *self) {
     return self;
 }
 
-BOOL func_ov015_0220d8c0(u8 *self, u8 *p) {
+BOOL func_ov015_0220d8c0(u8 *self, Ov015Fish *p) {
     Ov015VecC v;
-    func_ov000_02190cb0(p + 0x244, data_ov015_02212e47, 0x19a, 0);
-    func_ov000_02191318(p + 0x244, 0x7000);
-    FLD(u16, p, 0x104) = 0x800;
-    v = *(Ov015VecC *)(p + 0x9c);
+    func_ov000_02190cb0(&p->unk_244, data_ov015_02212e47, 0x19a, 0);
+    func_ov000_02191318(&p->unk_244, 0x7000);
+    p->unk_104 = 0x800;
+    v = *(Ov015VecC *)&p->unk_9c;
     v.y = 0;
-    VEC_Normalize(&v, p + 0x9c);
+    VEC_Normalize(&v, &p->unk_9c);
     FLD(s32, self, 0x4) = 1;
     return TRUE;
 }
 
-BOOL func_ov015_0220d940(u8 *self, u8 *p) {
+BOOL func_ov015_0220d940(u8 *self, Ov015Fish *p) {
     switch (FLD(s32, self, 0x4)) {
     case 1: {
-        s32 z = FLD(s32, p, 0x48);
-        s32 x = FLD(s32, p, 0x40);
-        FLD(s32, p, 0x108) = 0;
-        FLD(s32, p, 0x40) = x;
-        FLD(s32, p, 0x44) = 0;
-        FLD(s32, p, 0x48) = z;
-        if (FLD(s16, p, 0x308) == 1) {
+        s32 z = p->unk_40.z;
+        s32 x = p->unk_40.x;
+        p->unk_108 = 0;
+        p->unk_40.x = x;
+        p->unk_40.y = 0;
+        p->unk_40.z = z;
+        if (p->unk_244.unk_c4 == 1) {
             u8 *o;
             Ov015Vec v;
-            FLD(s16, p, 0x308) = 0;
+            p->unk_244.unk_c4 = 0;
             v.x = x;
             v.z = z;
             v.y = 0;
             o = func_02066774(data_ov015_02212e20, data_ov015_02212e68, 0, &v);
-            VCALL(o)->v10(p + 0x70);
+            VCALL(o)->v10(&p->unk_70);
             FLD(s32, o, 0xd4) = 3;
             FLD(u8, o, 0x28) = 0;
             FLD(s32, o, 0x50) = -0xc8000;
@@ -189,32 +189,32 @@ BOOL func_ov015_0220d940(u8 *self, u8 *p) {
             func_02049a48(data_02097e4c, 0x1b, -1, -1, -1);
             func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         }
-        if (func_ov000_02191120(p + 0x244)) {
-            func_ov000_02190cb0(p + 0x244, data_ov015_02212e0d, 0x19a, 0);
-            FLD(u16, p, 0x104) = 0x800;
+        if (func_ov000_02191120(&p->unk_244)) {
+            func_ov000_02190cb0(&p->unk_244, data_ov015_02212e0d, 0x19a, 0);
+            p->unk_104 = 0x800;
             FLD(s32, self, 0x4) = 2;
         }
         break;
     }
     case 2:
-        if (func_ov000_02191120(p + 0x244)) {
+        if (func_ov000_02191120(&p->unk_244)) {
             void *q = func_0203dd9c(0x2c);
             if (q != NULL) {
                 q = func_ov015_0220a0c8((u8 *)q);
             }
-            FLD(void *, p, 0xf0) = q;
-            FLD(s32, p, 0xec) = 2;
+            p->unk_f0 = (Ov015V *)q;
+            p->unk_ec = 2;
         }
         break;
     }
     return TRUE;
 }
 
-BOOL func_ov015_0220daac(u8 *self, u8 *p) {
-    func_ov000_02190cb0(p + 0x244, data_ov015_02212e0d, 0x19a, 0);
-    FLD(u16, p, 0x104) = 0x800;
-    func_ov000_021915a0(p + 0x244);
-    FLD(s32, p, 0x108) = 0;
+BOOL func_ov015_0220daac(u8 *self, Ov015Fish *p) {
+    func_ov000_02190cb0(&p->unk_244, data_ov015_02212e0d, 0x19a, 0);
+    p->unk_104 = 0x800;
+    func_ov000_021915a0(&p->unk_244);
+    p->unk_108 = 0;
     return TRUE;
 }
 

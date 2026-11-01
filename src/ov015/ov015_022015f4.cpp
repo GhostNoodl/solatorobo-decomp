@@ -17,45 +17,45 @@ u8 *func_02070744(u16 id);
 void func_ov015_021fce94(Ov015CamPair *self);
 void func_ov015_02210b3c(u8 *self);
 s32 func_ov015_02211160(u8 *self, u16 *out, u32 n);
-void func_ov015_02211890(u8 *self, u16 id, s32 mode);
-void func_ov015_02209024(u8 *self, u16 a, const void *src);
-void *func_ov015_02209114(u8 *self);
-void func_ov015_02209364(u8 *self);
+void func_ov015_02211890(Ov015Info38 *self, u16 id, s32 mode);
+void func_ov015_02209024(Ov015FishInfo *self, u16 a, const void *src);
+void *func_ov015_02209114(Ov015Fish *self);
+void func_ov015_02209364(Ov015Fish *self);
 
 BOOL func_ov015_022015f4(void) {
     return func_02035b90(data_ov015_022128c1, 7) != 0 ? TRUE : FALSE;
 }
 
-BOOL func_ov015_02201618(u8 *self) {
+BOOL func_ov015_02201618(Ov015Game *self) {
     u16 ids[4];
-    u8 *o;
+    Ov015CamPair *o;
     Ov015List *l;
     u32 n;
     u32 i;
-    o = (u8 *)func_0203dd9c(0x1a0);
+    o = (Ov015CamPair *)func_0203dd9c(0x1a0);
     if (o != NULL) {
         SET_VT(o, data_ov015_0221291c);
-        func_0204b370(o + 0x4);
-        func_0204b370(o + 0xc0);
-        FLD(s32, o, 0x17c) = 1;
-        FLD(s32, o, 0x180) = 0;
-        FLD(s32, o, 0x184) = 0;
-        FLD(s32, o, 0x188) = 0;
-        FLD(s32, o, 0x18c) = 0;
-        FLD(s32, o, 0x190) = 0;
-        FLD(s32, o, 0x194) = 0;
-        FLD(s32, o, 0x198) = 0;
-        FLD(s32, o, 0x19c) = 0;
+        func_0204b370(&o->cam0);
+        func_0204b370(&o->cam1);
+        o->unk_17c = 1;
+        o->unk_180.x = 0;
+        o->unk_180.y = 0;
+        o->unk_180.z = 0;
+        o->unk_18c.x = 0;
+        o->unk_18c.y = 0;
+        o->unk_18c.z = 0;
+        o->unk_198 = 0;
+        o->unk_19c = 0;
     }
-    FLD(u8 *, self, 0x24) = o;
-    func_ov015_021fce94((Ov015CamPair *)o);
+    self->unk_24 = o;
+    func_ov015_021fce94(o);
     if ((u32)(FLD(s32, data_ov015_02213320.unk_00, 0x4) - 1) <= 1) {
         u8 *p = (u8 *)func_0203dd9c(0x14);
         if (p != NULL) {
             SET_VT(p, data_ov015_02213198);
             func_ov015_02210b3c(p);
         }
-        FLD(u8 *, self, 0x90) = p;
+        self->unk_90 = p;
     }
     l = (Ov015List *)func_0203dd9c(0x10);
     if (l != NULL) {
@@ -64,22 +64,22 @@ BOOL func_ov015_02201618(u8 *self) {
         l->tail = NULL;
         l->count = 0;
     }
-    FLD(Ov015List *, self, 0x1c) = l;
+    self->unk_1c = l;
     n = func_ov015_02211160((u8 *)data_ov015_02213368, ids, 3);
-    func_ov015_02211890(self + 0x94, FLD(u16, data_ov015_02213368, 0x8), FLD(u16, FLD(u8 *, self, 0x18), 0xd48));
+    func_ov015_02211890(&self->unk_94, FLD(u16, data_ov015_02213368, 0x8), self->unk_18->unk_d48);
     for (i = 0; i < n; i++) {
         u16 id = ids[i];
         u8 *def = func_02070744(id);
-        u8 *e = (u8 *)func_0203dd9c(0x5b0);
+        Ov015Fish *e = (Ov015Fish *)func_0203dd9c(0x5b0);
         Ov015List *L;
         Ov015Node *nd;
-        if (e != NULL) e = (u8 *)func_ov015_02209114(e);
-        FLD(u16, e, 0x4) = id;
-        func_ov015_02209024(e + 0xc0, FLD(u16, e, 0x4), def);
-        FLD(s32, e, 0xe0) = FLD(s32, self, 0xb4);
-        FLD(s32, e, 0xe4) = FLD(s32, self, 0xb8);
+        if (e != NULL) e = (Ov015Fish *)func_ov015_02209114(e);
+        e->unk_04 = id;
+        func_ov015_02209024(&e->unk_c0, e->unk_04, def);
+        e->unk_c0.unk_20 = self->unk_94.unk_20;
+        e->unk_c0.unk_24 = self->unk_94.unk_24;
         func_ov015_02209364(e);
-        L = FLD(Ov015List *, self, 0x1c);
+        L = self->unk_1c;
         nd = (Ov015Node *)func_0203dd9c(0x10);
         if (nd != NULL) {
             SET_VT(nd, data_ov015_0221295c);
@@ -97,7 +97,7 @@ BOOL func_ov015_02201618(u8 *self) {
         }
         L->count++;
     }
-    FLD(s32, self, 0xc) = 10;
+    self->unk_0c = 10;
     {
         Ov015Pad *pad = data_02097e48;
         if (pad->b3) {
@@ -122,27 +122,27 @@ void func_0203cb78(s32 a, s32 b, s32 c);
 Ov015V *func_ov015_021fa6d0(void);
 void func_ov015_021fa71c(Ov015Fade *self, s32 c, u16 d);
 void func_ov015_021fa73c(Ov015Fade *self, s32 c, u16 d);
-BOOL func_ov015_022078bc(void *p);
+BOOL func_ov015_022078bc(Ov015Ship *p);
 s32 func_ov000_0218f110(void *a);
-BOOL func_ov015_0220947c(u8 *self);
+BOOL func_ov015_0220947c(Ov015Fish *self);
 void func_0206e900(char *buf, const char *name);
 void *func_020359d0(void *a, int b, int c);
 int func_ov015_02210bd8(u8 *self);
-BOOL func_ov015_02207adc(u8 *self);
+BOOL func_ov015_02207adc(Ov015Ship *self);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-BOOL func_ov015_02209500(u8 *self);
+BOOL func_ov015_02209500(Ov015Fish *self);
 s32 func_ov015_021fb474(u8 *self);
 BOOL func_ov015_02210c28(void);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_02049de8(void *a, s32 b);
 void func_ov000_02190a80(void *a, s32 b);
 s32 func_ov015_02210c30(u8 *self, Ov015Stat *a, s32 b);
-BOOL func_ov015_021ff4a0(u8 *self, u8 *a, u8 *b, Ov015List *c, u8 *d);
-BOOL func_ov015_02200204(u8 *self, u8 *a, u8 *b, u8 *c, u8 *d);
+BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a, Ov015CamPair *b, Ov015List *c, Ov015Info38 *d);
+BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamPair *c, Ov015Info38 *d);
 BOOL func_ov015_021fb5d4(u8 *self);
-void func_ov015_0220101c(u8 *self);
+void func_ov015_0220101c(Ov015Game *self);
 void func_020656b4(void *p);
 BOOL func_ov015_0220f568(u8 *self);
 
@@ -156,16 +156,16 @@ static inline void Ov015_CamFovy(Ov015Cam *c) {
     idx = (u16)(c->fovy >> 1);
     c->fovySin = FX_SinCosTable_[(idx >> 4) * 2];
     c->fovyCos = FX_SinCosTable_[(idx >> 4) * 2 + 1];
-    c->unk_3e = 1;
+    c->dirty = 1;
 }
 
-static inline void Ov015_CamUpdate(u8 *self) {
+static inline void Ov015_CamUpdate(Ov015Game *self) {
     if (Ov015_SysB4()) {
-        Ov015CamPair *cp = FLD(Ov015CamPair *, self, 0x24);
+        Ov015CamPair *cp = self->unk_24;
         Ov015_CamFovy(&cp->cam0);
         VCALL(&cp->cam0)->v00();
     } else {
-        Ov015CamPair *cp = FLD(Ov015CamPair *, self, 0x24);
+        Ov015CamPair *cp = self->unk_24;
         Ov015_CamFovy(&cp->cam1);
         VCALL(&cp->cam1)->v00();
     }
@@ -206,12 +206,12 @@ static inline void Ov015_ModelsReset(u8 *p) {
 
 typedef enum { OV015_SYS_MODE_2 = 2 } Ov015SysMode;
 
-BOOL func_ov015_0220182c(u8 *self) {
+BOOL func_ov015_0220182c(Ov015Game *self) {
     BOOL ret = TRUE;
     bool a = true;
-    switch (FLD(s32, self, 0xc)) {
+    switch (self->unk_0c) {
     case 0:
-        FLD(s32, self, 0xc) = 10;
+        self->unk_0c = 10;
     case 10: {
         u8 *sys = data_02097d48;
         if (FLD(s32, sys, 0) == 1) {
@@ -220,7 +220,7 @@ BOOL func_ov015_0220182c(u8 *self) {
             func_0203cb78(0x1000, 0, v - 3);
         }
         func_ov015_021fa73c((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0);
-        FLD(s32, self, 0xc) = 0x14;
+        self->unk_0c = 0x14;
         break;
     }
     case 0x14: {
@@ -232,12 +232,12 @@ BOOL func_ov015_0220182c(u8 *self) {
         bool c;
         bool b;
         char buf[0x20];
-        if (!(func_ov015_022078bc(FLD(void *, self, 0x18)) & 1)) {
+        if (!(func_ov015_022078bc(self->unk_18) & 1)) {
             a = false;
         } else {
             a = true;
         }
-        p = FLD(u8 *, self, 0x20);
+        p = self->unk_20;
         b = true;
         if (FLD(s16, p, 0x4) >= 0 && !func_ov000_0218f110(p + 0x4)) {
             b = false;
@@ -250,11 +250,11 @@ BOOL func_ov015_0220182c(u8 *self) {
         }
         b = a & b;
         c = true;
-        for (n = FLD(Ov015List *, self, 0x1c)->head; n != NULL; n = n->next) {
-            c &= func_ov015_0220947c((u8 *)n->key);
+        for (n = self->unk_1c->head; n != NULL; n = n->next) {
+            c &= func_ov015_0220947c((Ov015Fish *)n->key);
         }
         c = b & c;
-        q = FLD(u8 *, self, 0x28);
+        q = self->unk_28;
         d = false;
         func_0206e900(buf, data_ov015_022128ab);
         switch (FLD(s32, q, 4)) {
@@ -272,19 +272,19 @@ BOOL func_ov015_0220182c(u8 *self) {
             break;
         }
         d = c & d;
-        if (FLD(u8 *, self, 0x90) != NULL) {
-            d &= func_ov015_02210bd8(FLD(u8 *, self, 0x90));
+        if (self->unk_90 != NULL) {
+            d &= func_ov015_02210bd8(self->unk_90);
         }
         if (d) {
-            FLD(s32, self, 0xc) = 0x1e;
+            self->unk_0c = 0x1e;
         }
         break;
     }
     case 0x1e: {
         u8 *p;
         Ov015Node *n;
-        func_ov015_02207adc(FLD(u8 *, self, 0x18));
-        p = FLD(u8 *, self, 0x20);
+        func_ov015_02207adc(self->unk_18);
+        p = self->unk_20;
         func_ov000_0218ffdc(p + 0x13c, p + 0x4, 0, 1);
         func_ov000_02190cb0(p + 0x13c, data_ov015_02212899, 0x1000, 0);
         func_ov000_021915a0(p + 0x13c);
@@ -297,42 +297,42 @@ BOOL func_ov015_0220182c(u8 *self) {
         func_ov000_02190cb0(p + 0x57c, data_ov015_022128a5, 0x1000, 0);
         func_ov000_021915a0(p + 0x57c);
         ((Ov015AnimFlags *)(p + 0x63e))->b0 = 1;
-        for (n = FLD(Ov015List *, self, 0x1c)->head; n != NULL; n = n->next) {
-            func_ov015_02209500((u8 *)n->key);
+        for (n = self->unk_1c->head; n != NULL; n = n->next) {
+            func_ov015_02209500((Ov015Fish *)n->key);
         }
-        func_ov015_021fb474(FLD(u8 *, self, 0x28));
-        if (FLD(u8 *, self, 0x90) != NULL) {
+        func_ov015_021fb474(self->unk_28);
+        if (self->unk_90 != NULL) {
             func_ov015_02210c28();
         }
         FLD(u8, data_0214a420, 0x10) = 1;
         func_ov015_021fa71c((Ov015Fade *)func_ov015_021fa6d0(), 0x1e000, 0);
-        FLD(s32, self, 0xc) = 0x28;
+        self->unk_0c = 0x28;
         func_02049a48(data_02097e4c, 0x4f, -1, -1, -1);
         Ov015_BgmFadeTo(0x23);
         break;
     }
     case 0x28:
-        Ov015_ModelsReset(FLD(u8 *, self, 0x20));
+        Ov015_ModelsReset(self->unk_20);
         if (data_ov015_02213328 == 0) {
             func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         }
         {
-        u8 *m = FLD(u8 *, self, 0x90);
+        u8 *m = self->unk_90;
         data_ov015_02213328 = (data_ov015_02213328 + 1) & 0xff;
         if (m != NULL) {
             if (func_ov015_02210c30(m, &data_ov015_0221332c, 0x28)) {
-                FLD(u8, self, 0x3c) = 1;
+                self->unk_30.unk_0c = 1;
             } else {
-                FLD(u8, self, 0x3c) = 0;
+                self->unk_30.unk_0c = 0;
             }
         }
         }
-        if (!func_ov015_021ff4a0(self + 0x30, FLD(u8 *, self, 0x18), FLD(u8 *, self, 0x24), FLD(Ov015List *, self, 0x1c), self + 0x94)) {
-            FLD(s32, self, 0xc) = 0x32;
+        if (!func_ov015_021ff4a0(&self->unk_30, self->unk_18, self->unk_24, self->unk_1c, &self->unk_94)) {
+            self->unk_0c = 0x32;
             func_02049de8(data_02097e4c, 0x4f);
         }
         {
-        Ov015CamPair *cp = FLD(Ov015CamPair *, self, 0x24);
+        Ov015CamPair *cp = self->unk_24;
         if (Ov015_SysB4()) {
             Ov015_CamFovy(&cp->cam0);
             VCALL(&cp->cam0)->v00();
@@ -343,18 +343,18 @@ BOOL func_ov015_0220182c(u8 *self) {
         }
         break;
     case 0x32:
-        Ov015_ModelsReset(FLD(u8 *, self, 0x20));
-        if (FLD(u8 *, self, 0x90) == NULL || FLD(s32, self, 0x64) < 2 ||
-            !func_ov015_02210c30(FLD(u8 *, self, 0x90), &data_ov015_0221332c, 0x32)) {
-            func_ov015_021fb5d4(FLD(u8 *, self, 0x28));
-            if (!func_ov015_02200204(self + 0x5c, FLD(u8 *, self, 0x18), (u8 *)FLD(Ov015List *, self, 0x1c)->head->key,
-                                     FLD(u8 *, self, 0x24), self + 0x94)) {
-                FLD(s32, self, 0xc) = 0x3c;
+        Ov015_ModelsReset(self->unk_20);
+        if (self->unk_90 == NULL || self->unk_5c.unk_08 < 2 ||
+            !func_ov015_02210c30(self->unk_90, &data_ov015_0221332c, 0x32)) {
+            func_ov015_021fb5d4(self->unk_28);
+            if (!func_ov015_02200204((Ov015Obj34 *)&self->unk_5c, self->unk_18, (Ov015Fish *)self->unk_1c->head->key,
+                                     self->unk_24, &self->unk_94)) {
+                self->unk_0c = 0x3c;
                 func_ov015_021fa73c((Ov015Fade *)func_ov015_021fa6d0(), 0x1e000, 0x7fff);
                 FLD(s32, data_ov015_02213320.unk_00, 8) = Dup::data_ov015_0221332c.unk_30;
                 if (Dup::data_ov015_0221332c.unk_30 == 2) {
                     func_ov015_021fa71c((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0x7fff);
-                    FLD(s32, self, 0xc) = 0x50;
+                    self->unk_0c = 0x50;
                 }
             }
         }
@@ -367,7 +367,7 @@ BOOL func_ov015_0220182c(u8 *self) {
         if (f->unk_14 < f->unk_0c) {
             break;
         }
-        FLD(s32, self, 0xc) = 0x46;
+        self->unk_0c = 0x46;
         {
             Ov015Pad *pad = data_02097e48;
             if (pad->b3) {
@@ -389,12 +389,12 @@ BOOL func_ov015_0220182c(u8 *self) {
         break;
     }
     case 0x46:
-        if (!func_ov015_0220f568(FLD(u8 *, self, 0x2c))) {
-            FLD(s32, self, 0xc) = 0x50;
+        if (!func_ov015_0220f568(self->unk_2c)) {
+            self->unk_0c = 0x50;
         }
         break;
     case 0x50:
-        FLD(s32, self, 0xc) = -1;
+        self->unk_0c = -1;
         ret = FALSE;
         break;
     default:

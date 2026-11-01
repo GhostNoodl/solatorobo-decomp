@@ -40,8 +40,8 @@ void func_ov015_0221102c(void);
 void func_ov015_02206aa0(void *p);
 void func_ov015_021ff350(void *p);
 void func_ov015_0220015c(void *p);
-void func_ov015_02211828(void *p);
-void func_ov015_02200f74(void *p);
+void func_ov015_02211828(Ov015Info38 *p);
+void func_ov015_02200f74(Ov015Game *p);
 void func_02065ac0(void *p);
 void func_ov015_021ff380(void *p);
 void func_ov015_02200194(void *p);
@@ -67,18 +67,18 @@ static inline Ov015V *Ov015_NewChild(Ov015Main *self, s32 kind) {
         break;
     }
     case 2: {
-        Ov015Child *p;
+        Ov015Game *p;
         data_ov015_02213368->unk_04 = self->unk_04;
-        p = (Ov015Child *)func_0203dd9c(0xcc);
+        p = (Ov015Game *)func_0203dd9c(0xcc);
         if (p != NULL) {
             p->state = 0;
             p->unk_08 = 0;
             SET_VT(p, data_ov015_0221296c);
-            SET_VT((u8 *)p + 0x30, data_ov015_022127ec);
-            func_ov015_021ff350((u8 *)p + 0x30);
-            SET_VT((u8 *)p + 0x5c, data_ov015_022127dc);
-            func_ov015_0220015c((u8 *)p + 0x5c);
-            func_ov015_02211828((u8 *)p + 0x94);
+            SET_VT(&p->unk_30, data_ov015_022127ec);
+            func_ov015_021ff350(&p->unk_30);
+            SET_VT(&p->unk_5c, data_ov015_022127dc);
+            func_ov015_0220015c(&p->unk_5c);
+            func_ov015_02211828(&p->unk_94);
             func_ov015_02200f74(p);
         }
         c = (Ov015V *)p;

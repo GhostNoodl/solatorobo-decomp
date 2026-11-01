@@ -11,7 +11,7 @@ Ov004V *data_ov004_021cf864;
 void *func_ov004_021ccda0(s32 a, s32 b) {
     Ov004V *o = data_ov004_021cf864;
     u8 *x = (u8 *)func_ov000_0219bf90();
-    u32 v = (FLD(u8, o, 0x16) |= 4);
+    u32 v = (o->unk_16 |= 4);
     if (x != NULL) {
         v |= x[0x16];
     }
@@ -20,9 +20,9 @@ void *func_ov004_021ccda0(s32 a, s32 b) {
         x[0x16] = v;
     }
     if (a != b) {
-        FLD(u8, o, 0x16) = v;
+        o->unk_16 = v;
     }
-    FLD(u16, o, 0x22) = v;
+    o->unk_22 = v;
     func_ov000_02176264(o);
     return o;
 }
@@ -30,7 +30,7 @@ void *func_ov004_021ccda0(s32 a, s32 b) {
 void *func_ov004_021ccdfc(s32 a, s32 b) {
     Ov004V *o = data_ov004_021cf864;
     u8 *x = (u8 *)func_ov000_0219bf90();
-    u32 v = (FLD(u8, o, 0x16) = FLD(u8, o, 0x16) & ~4);
+    u32 v = (o->unk_16 = o->unk_16 & ~4);
     if (x != NULL) {
         v &= x[0x16];
     }
@@ -39,9 +39,9 @@ void *func_ov004_021ccdfc(s32 a, s32 b) {
         x[0x16] = v;
     }
     if (a != b) {
-        FLD(u8, o, 0x16) = v;
+        o->unk_16 = v;
     }
-    FLD(u16, o, 0x22) = v;
+    o->unk_22 = v;
     func_ov000_021761f0(o);
     return NULL;
 }
@@ -49,10 +49,10 @@ void *func_ov004_021ccdfc(s32 a, s32 b) {
 void *func_ov004_021cce5c(void *a, s32 b) {
     Ov004V *o = data_ov004_021cf864;
     if (a == o) {
-        FLD(u16, o, 0x22) = 1;
+        o->unk_22 = 1;
     }
     if ((Ov004V *)b == o) {
-        FLD(u16, o, 0x22) = 2;
+        o->unk_22 = 2;
     }
     return o;
 }
@@ -99,21 +99,21 @@ void *func_ov004_021ccf94(void *p) {
     return p;
 }
 
-void func_ov004_021ccfb0(void *p) {
-    if (FLD(void *, p, 0x44) != NULL) {
-        func_ov000_021984f4(FLD(void *, p, 0x44), 0, 0);
+void func_ov004_021ccfb0(Ov004V *p) {
+    if (p->unk_44 != NULL) {
+        func_ov000_021984f4(p->unk_44, 0, 0);
     }
 }
 
-void func_ov004_021ccfd0(void *p) {
-    if (FLD(void *, p, 0x48) != NULL) {
-        func_ov000_0219864c(FLD(void *, p, 0x48), 0, 0);
+void func_ov004_021ccfd0(Ov004V *p) {
+    if (p->unk_48 != NULL) {
+        func_ov000_0219864c(p->unk_48, 0, 0);
     }
 }
 
-void func_ov004_021ccff0(void *p) {
-    if (FLD(void *, p, 0x38) != NULL) {
-        func_ov000_02190a80(FLD(void *, p, 0x38), func_0203db40((u8 *)p + 0x24));
+void func_ov004_021ccff0(Ov004V *p) {
+    if (p->unk_38 != NULL) {
+        func_ov000_02190a80(p->unk_38, func_0203db40(p->unk_24));
     }
 }
 

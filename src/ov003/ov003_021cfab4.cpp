@@ -2,7 +2,29 @@
 
 /* Gimmick factory: picks the class from the gimmick id. */
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
+// What the factory writes into a new gimmick: the vtable pointer, plus two class-specific
+// fields the inline constructors below clear.
+typedef struct {
+    void *vtbl;
+} GmHead021cfab4;
+
+typedef struct {
+    void *vtbl;
+    u8 unk_04[0x100];
+    s32 unk_104;
+    u8 unk_108[0x4];
+} Gm10c021cfab4;
+typedef char Gm10c021cfab4_size_check[(sizeof(Gm10c021cfab4) == 0x10c) ? 1 : -1];
+
+typedef struct {
+    void *vtbl;
+    u8 unk_04[0xf0];
+    u8 unk_f4[2][0x138]; // built with func_ov000_0218e9c4
+    s32 unk_364;
+    s32 unk_368;
+    u8 unk_36c[0x30];
+} Gm39c021cfab4;
+typedef char Gm39c021cfab4_size_check[(sizeof(Gm39c021cfab4) == 0x39c) ? 1 : -1];
 
 typedef struct {
     u16 id;
@@ -116,7 +138,7 @@ void *func_ov014_0221267c(void *p);
         u8 *t = (u8 *)func_0203dd9c(size);     \
         if (t != NULL) {                       \
             Base(t);                           \
-            LFLD(void *, t, 0) = (vt);         \
+            ((GmHead021cfab4 *)t)->vtbl = (vt);     \
         }                                      \
         p = t;                                 \
     }
@@ -126,7 +148,7 @@ void *func_ov014_0221267c(void *p);
         u8 *t = (u8 *)func_0203dd9c(size);     \
         if (t != NULL) {                       \
             base(t);                           \
-            LFLD(void *, t, 0) = (vt);         \
+            ((GmHead021cfab4 *)t)->vtbl = (vt);     \
         }                                      \
         p = t;                                 \
     }
@@ -144,13 +166,13 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
     case 0x5048:
     case 0x5054:
         {
-            u8 *t = (u8 *)func_0203dd9c(0x10c);
+            Gm10c021cfab4 *t = (Gm10c021cfab4 *)func_0203dd9c(0x10c);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov009_0221707c;
-                LFLD(s32, t, 0x104) = 0;
+                t->vtbl = data_ov009_0221707c;
+                t->unk_104 = 0;
             }
-            p = t;
+            p = (u8 *)t;
         }
         break;
     case 0x5049:
@@ -221,7 +243,7 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
             u8 *t = (u8 *)func_0203dd9c(0x310);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov009_02217844;
+                ((GmHead021cfab4 *)t)->vtbl = data_ov009_02217844;
                 func_ov000_0218e9c4(t + 0xf0);
                 func_ov000_0218fe1c(t + 0x228);
             }
@@ -244,7 +266,7 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
             u8 *t = (u8 *)func_0203dd9c(0x4ac);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov009_0221743c;
+                ((GmHead021cfab4 *)t)->vtbl = data_ov009_0221743c;
                 __cxa_vec_ctor(t + 0xf0, 4, 0xe8, (void (*)(void *))func_ov000_0218fe1c, (void (*)(void *))func_ov000_0218fee4);
             }
             p = t;
@@ -340,7 +362,7 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
             u8 *t = (u8 *)func_0203dd9c(0x22c);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov012_0220b280;
+                ((GmHead021cfab4 *)t)->vtbl = data_ov012_0220b280;
                 func_ov000_0218e9c4(t + 0xf0);
             }
             p = t;
@@ -384,15 +406,15 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
         break;
     case 0x5c11:
         {
-            u8 *t = (u8 *)func_0203dd9c(0x39c);
+            Gm39c021cfab4 *t = (Gm39c021cfab4 *)func_0203dd9c(0x39c);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov011_02207da4;
-                __cxa_vec_ctor(t + 0xf4, 2, 0x138, (void (*)(void *))func_ov000_0218e9c4, (void (*)(void *))func_ov000_0218ea20);
-                LFLD(s32, t, 0x364) = 0;
-                LFLD(s32, t, 0x368) = 0;
+                t->vtbl = data_ov011_02207da4;
+                __cxa_vec_ctor(t->unk_f4, 2, 0x138, (void (*)(void *))func_ov000_0218e9c4, (void (*)(void *))func_ov000_0218ea20);
+                t->unk_364 = 0;
+                t->unk_368 = 0;
             }
-            p = t;
+            p = (u8 *)t;
         }
         break;
     case 0x5010:
@@ -449,7 +471,7 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
             u8 *t = (u8 *)func_0203dd9c(0x31c);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov009_02217594;
+                ((GmHead021cfab4 *)t)->vtbl = data_ov009_02217594;
                 func_ov000_0218e9c4(t + 0xf0);
                 func_ov000_0218fe1c(t + 0x228);
             }

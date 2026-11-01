@@ -16,9 +16,20 @@ public:
     virtual s32 v1c(...);
     virtual s32 v20(...);
     virtual s32 v24(...);
-};
 
-#define FLD(type, p, off) (*(type *)((u8 *)(p) + (off)))
+    // The 0xac ov000 object built by func_ov000_0218c2d4 (allocated in func_ov004_021cce88).
+    u8 unk_04[0x12];
+    u8 unk_16;
+    u8 unk_17[0xb];
+    u16 unk_22;
+    u8 unk_24[0x14];
+    void *unk_38;
+    u8 unk_3c[0x8];
+    void *unk_44;
+    void *unk_48;
+    u8 unk_4c[0x60];
+};
+typedef char Ov004V_size_check[(sizeof(Ov004V) == 0xac) ? 1 : -1];
 
 struct Ov004Heap {
     u32 cur;

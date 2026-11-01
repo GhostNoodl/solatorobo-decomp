@@ -35,8 +35,8 @@ extern char data_ov015_02212857[];
 extern char data_ov015_02212883[];
 extern char data_ov015_02212878[];
 extern char data_ov015_022128c1[];
-u8 *func_ov015_0220765c(void *p);
-void func_ov015_02207858(u8 *p);
+u8 *func_ov015_0220765c(Ov015Ship *p);
+void func_ov015_02207858(Ov015Ship *p);
 void *func_ov000_0218e9c4(void *p);
 void *func_ov000_0218fe1c(void *p);
 void func_02041218(void *p);
@@ -54,16 +54,17 @@ static inline void *Ov015_NewTex(void) {
     return t;
 }
 
-BOOL func_ov015_02201344(u8 *self) {
+BOOL func_ov015_02201344(Ov015Game *self) {
+    Ov015Ship *s;
     u8 *o;
     u8 *q;
-    o = (u8 *)func_0203dd9c(0xd58);
-    if (o != NULL) {
-        o = func_ov015_0220765c(o);
+    s = (Ov015Ship *)func_0203dd9c(0xd58);
+    if (s != NULL) {
+        s = (Ov015Ship *)func_ov015_0220765c(s);
     }
-    FLD(u8 *, self, 0x18) = o;
-    func_ov015_02207858(o);
-    FLD(u16, FLD(u8 *, self, 0x18), 0xd48) = data_ov015_02213368->unk_2c;
+    self->unk_18 = s;
+    func_ov015_02207858(s);
+    self->unk_18->unk_d48 = data_ov015_02213368->unk_2c;
     o = (u8 *)func_0203dd9c(0x664);
     if (o != NULL) {
         SET_VT(o, data_ov015_0221294c);
@@ -74,7 +75,7 @@ BOOL func_ov015_02201344(u8 *self) {
         func_ov000_0218e9c4(o + 0x444);
         func_ov000_0218fe1c(o + 0x57c);
     }
-    FLD(u8 *, self, 0x20) = o;
+    self->unk_20 = o;
     {
         Ov015MdlSet *s = (Ov015MdlSet *)o;
         {
@@ -146,7 +147,7 @@ BOOL func_ov015_02201344(u8 *self) {
         FLD(s32, q, 0x28) = 0;
         FLD(s32, q, 0x2c) = 0;
     }
-    FLD(u8 *, self, 0x28) = q;
+    self->unk_28 = q;
     FLD(void *, q, 0x24) = Ov015_NewTex();
     FLD(void *, q, 0x28) = Ov015_NewTex();
     {
@@ -154,7 +155,7 @@ BOOL func_ov015_02201344(u8 *self) {
         if (f != NULL) {
             f = func_ov015_0220f448(f);
         }
-        FLD(void *, self, 0x2c) = f;
+        self->unk_2c = (u8 *)f;
         func_ov015_0220f470(f);
     }
     func_020359d0(data_ov015_022128c1, 7, 0);

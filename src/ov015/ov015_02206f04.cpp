@@ -333,69 +333,69 @@ void *func_ov015_0220763c(void *self) {
     return self;
 }
 
-void *func_ov015_0220765c(u8 *self) {
+void *func_ov015_0220765c(Ov015Ship *self) {
     func_ov000_0218e9c4(self);
-    func_ov000_0218fe1c(self + 0x138);
-    func_ov000_0218e9c4(self + 0x220);
-    __cxa_vec_ctor(self + 0x358, 8, 0xe8, (void *)func_ov000_0218fe1c, (void *)func_ov000_0218fee4);
-    func_ov000_0218e9c4(self + 0xa98);
-    func_ov000_0218fe1c(self + 0xbd0);
-    func_ov000_021919c8(self + 0xcb8);
-    FLD(s32, self, 0xd14) = 0;
-    FLD(s32, self, 0xd1c) = 0;
-    FLD(s32, self, 0xd08) = 0;
-    FLD(s32, self, 0xd0c) = 0;
-    FLD(s32, self, 0xd10) = 0;
-    FLD(s32, self, 0xd28) = 0;
-    FLD(s32, self, 0xd2c) = 0;
-    FLD(s32, self, 0xd30) = 0;
-    FLD(s32, self, 0xd34) = 0;
-    FLD(u8, self, 0xd42) = 0;
-    FLD(s32, self, 0xd18) = 0x1000;
-    FLD(s32, self, 0xd44) = 0x1000;
-    FLD(u16, self, 0xd20) = 0;
-    FLD(u16, self, 0xd24) = 0;
-    FLD(u16, self, 0xd38) = 0;
-    FLD(u16, self, 0xd3a) = 0;
-    FLD(u16, self, 0xd3e) = 0;
-    FLD(u16, self, 0xd48) = 0;
-    FLD(u16, self, 0xd22) = 0x8000;
-    FLD(u16, self, 0xd3c) = 1;
-    FLD(u8, self, 0xd40) = 1;
-    FLD(u8, self, 0xd41) = 1;
+    func_ov000_0218fe1c(&self->unk_138);
+    func_ov000_0218e9c4(&self->unk_220);
+    __cxa_vec_ctor(self->unk_358, 8, 0xe8, (void *)func_ov000_0218fe1c, (void *)func_ov000_0218fee4);
+    func_ov000_0218e9c4(&self->unk_a98);
+    func_ov000_0218fe1c(&self->unk_bd0);
+    func_ov000_021919c8(&self->unk_cb8);
+    self->unk_d14.x = 0;
+    self->unk_d14.z = 0;
+    self->unk_d08.x = 0;
+    self->unk_d08.y = 0;
+    self->unk_d08.z = 0;
+    self->unk_d28 = 0;
+    self->unk_d2c = 0;
+    self->unk_d30 = 0;
+    self->unk_d34 = 0;
+    self->unk_d42 = 0;
+    self->unk_d14.y = 0x1000;
+    self->unk_d44 = 0x1000;
+    self->unk_d20 = 0;
+    self->unk_d24 = 0;
+    self->unk_d38 = 0;
+    self->unk_d3a = 0;
+    self->unk_d3e = 0;
+    self->unk_d48 = 0;
+    self->unk_d22 = 0x8000;
+    self->unk_d3c = 1;
+    self->unk_d40 = 1;
+    self->unk_d41 = 1;
     return self;
 }
 
-void *func_ov015_02207738(u8 *self) {
+void *func_ov015_02207738(Ov015Ship *self) {
     u32 saved;
-    if (func_02065748(data_0214a420, FLD(void *, self, 0xd28)) != 0) {
+    if (func_02065748(data_0214a420, self->unk_d28) != 0) {
         HEAP_PUSH(saved);
-        DELETE_V(FLD(Ov015V *, self, 0xd28));
+        DELETE_V(self->unk_d28);
         HEAP_POP(saved);
     }
-    if (func_02065748(data_0214a420, FLD(void *, self, 0xd30)) != 0) {
+    if (func_02065748(data_0214a420, self->unk_d30) != 0) {
         HEAP_PUSH(saved);
-        DELETE_V(FLD(Ov015V *, self, 0xd30));
+        DELETE_V(self->unk_d30);
         HEAP_POP(saved);
     }
-    func_ov000_02191a24(self + 0xcb8);
-    func_ov000_0218fee4(self + 0xbd0);
-    func_ov000_0218ea20(self + 0xa98);
-    __cxa_vec_cleanup(self + 0x358, 8, 0xe8, (void *)func_ov000_0218fee4);
-    func_ov000_0218ea20(self + 0x220);
-    func_ov000_0218fee4(self + 0x138);
+    func_ov000_02191a24(&self->unk_cb8);
+    func_ov000_0218fee4(&self->unk_bd0);
+    func_ov000_0218ea20(&self->unk_a98);
+    __cxa_vec_cleanup(self->unk_358, 8, 0xe8, (void *)func_ov000_0218fee4);
+    func_ov000_0218ea20(&self->unk_220);
+    func_ov000_0218fee4(&self->unk_138);
     func_ov000_0218ea20(self);
     return self;
 }
 
-void func_ov015_02207858(u8 *self) {
+void func_ov015_02207858(Ov015Ship *self) {
     Ov015V3 v;
     v.z = 0xa000;
     v.x = 0;
     v.y = 0;
-    func_01ffc9fc(&v, &v, FLD(u16, self, 0xd22));
-    VEC_Add(self + 0xd14, &v, self + 0xd4c);
-    FLD(u16, self, 0xd38) = 10;
+    func_01ffc9fc(&v, &v, self->unk_d22);
+    VEC_Add(&self->unk_d14, &v, &self->unk_d4c);
+    self->unk_d38 = 10;
 }
 
 }

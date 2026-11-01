@@ -39,49 +39,49 @@ BOOL func_ov015_0220ab84(u8 *self, s32 a) {
     return TRUE;
 }
 
-void func_ov015_0220ac40(u8 *self, u8 *p) {
-    Ov015VecC pos(*(Ov015VecC *)(p + 0x40));
-    Ov015VecC dir(*(Ov015VecC *)(p + 0x9c));
+void func_ov015_0220ac40(u8 *self, Ov015Fish *p) {
+    Ov015VecC pos(*(Ov015VecC *)&p->unk_40);
+    Ov015VecC dir(*(Ov015VecC *)&p->unk_9c);
     s32 m[9];
     s32 t = FX_Div(FLD(s16, self, 0x6) << 12, 0x14000);
-    s32 b = Ov015_FxMul(FLD(s16, FLD(u8 *, self, 0x20), 0xca) << 4, 0x19a) + 0x800;
+    s32 b = Ov015_FxMul((FLD(Ov015Fish *, self, 0x20))->unk_c0.unk_0a << 4, 0x19a) + 0x800;
     s32 d = Ov015_FxMul(func_02049130(Ov015_FxMul(FLD(s32, self, 0x18), FLD(s32, self, 0x18)), b / 5, b), t);
-    FLD(s32, p, 0xa8) = d;
-    FLD(s32, p, 0x40) = pos.x + d;
-    FLD(s32, p, 0x44) = pos.y;
-    FLD(s32, p, 0x48) = pos.z;
+    p->unk_a8 = d;
+    p->unk_40.x = pos.x + d;
+    p->unk_40.y = pos.y;
+    p->unk_40.z = pos.z;
     MTX_RotY33_(m, FX_SinCosTable_[0xfbb * 2], FX_SinCosTable_[0xfbb * 2 + 1]);
     MTX_MultVec33(&dir, m, &dir);
-    VEC_Normalize(&dir, p + 0x9c);
+    VEC_Normalize(&dir, &p->unk_9c);
     func_ov015_0220afcc(self);
     func_ov015_0220b1b8(self);
 }
 
-void func_ov015_0220ad68(u8 *self, u8 *p) {
-    Ov015VecC pos(*(Ov015VecC *)(p + 0x40));
-    Ov015VecC dir(*(Ov015VecC *)(p + 0x9c));
+void func_ov015_0220ad68(u8 *self, Ov015Fish *p) {
+    Ov015VecC pos(*(Ov015VecC *)&p->unk_40);
+    Ov015VecC dir(*(Ov015VecC *)&p->unk_9c);
     s32 m[9];
     s32 t = FX_Div(FLD(s16, self, 0x6) << 12, 0x14000);
-    s32 b = Ov015_FxMul(FLD(s16, FLD(u8 *, self, 0x20), 0xca) << 4, 0x19a) + 0x800;
+    s32 b = Ov015_FxMul((FLD(Ov015Fish *, self, 0x20))->unk_c0.unk_0a << 4, 0x19a) + 0x800;
     s32 d = Ov015_FxMul(func_02049130(Ov015_FxMul(FLD(s32, self, 0x18), FLD(s32, self, 0x18)), b / 5, b), t);
-    FLD(s32, p, 0xa8) = d;
-    FLD(s32, p, 0x40) = pos.x - d;
-    FLD(s32, p, 0x44) = pos.y;
-    FLD(s32, p, 0x48) = pos.z;
+    p->unk_a8 = d;
+    p->unk_40.x = pos.x - d;
+    p->unk_40.y = pos.y;
+    p->unk_40.z = pos.z;
     MTX_RotY33_(m, FX_SinCosTable_[0x44 * 2], FX_SinCosTable_[0x44 * 2 + 1]);
     MTX_MultVec33(&dir, m, &dir);
-    VEC_Normalize(&dir, p + 0x9c);
+    VEC_Normalize(&dir, &p->unk_9c);
     func_ov015_0220afcc(self);
     func_ov015_0220b1b8(self);
 }
 
 BOOL func_ov015_0220ae90(u8 *self) {
-    u8 *p = FLD(u8 *, self, 0x20);
-    s32 acc = FLD(s16, p, 0xd2);
-    s32 dec = FLD(s32, p, 0xe0);
+    Ov015Fish *p = FLD(Ov015Fish *, self, 0x20);
+    s32 acc = p->unk_c0.unk_12;
+    s32 dec = p->unk_c0.unk_20;
     Ov015Stat *st = &data_ov015_0221332c;
     if ((u32)self & 3) {
-        dec = FLD(s32, p, 0xe0);
+        dec = p->unk_c0.unk_20;
     }
     s32 lim;
     s32 sp;
@@ -102,8 +102,8 @@ BOOL func_ov015_0220ae90(u8 *self) {
             FLD(s16, self, 0x1c) = 0;
         }
     }
-    v = FLD(u16, p, 0xd0) << 12;
-    sp = FLD(s32, p, 0xe8);
+    v = p->unk_c0.unk_10 << 12;
+    sp = p->unk_c0.unk_28;
     if (sp < 0xe10000) {
         lim = Ov015_FxMul(v, 0x1000);
     } else if (sp < 0x1c20000) {
@@ -114,7 +114,7 @@ BOOL func_ov015_0220ae90(u8 *self) {
     if (FLD(s32, self, 0xc) > lim) {
         FLD(s32, self, 0xc) = lim;
     }
-    FLD(s32, p, 0xdc) = FLD(s32, self, 0xc);
+    p->unk_c0.unk_1c = FLD(s32, self, 0xc);
     return FLD(s32, self, 0xc) <= 0;
 }
 

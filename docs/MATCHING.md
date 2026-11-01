@@ -7231,3 +7231,22 @@ Struct-field cleanup of `src/ov009`, `ov012`, `ov013` and `ov014` (ov002/ov006 h
 - **Signedness:** a store of the same size goes straight to the field; a read with different signedness than the field keeps its type with `((T)self->f)`. A `u8 *`/`void *` `self` used with pointer arithmetic was not retyped (ov012 `021feacc`/`021fec58`).
 - **Remaining `FLD`s** are offsets with conflicting types or overlapping widths in one class (the converter leaves those alone rather than invent unions), accesses on non-`self` pointers of unknown type, and classes with an unknown base ctor (ov009 `0221707c`, ov013 `0220b7d0`) or a compile issue (ov009 `02216c74`).
 - No new data.
+
+### Round svD
+
+Struct-field cleanup of ov003, ov004, ov007, ov008 and ov015. No new match and no rename. Every object is byte-identical to the start of the round, and the matched count is still 8138. Scratch tools are in `scratchpad/svD/`. `conv.py OV SPEC.json` rewrites `FLD(T, base, off)`, `*(T *)(base + off)` and `base + off` for a base expression into field paths. It keeps a struct database (`db_OV.json`), writes the generated structs into the overlay header between the `struct types (svD)` markers and fixes the prototypes of retyped functions. `cmp.sh` and `fdiff.py` compare each object and each function against a baseline dump.
+
+- **FLD accesses, before / after:** ov003 14 / 0, ov004 16 / 0, ov007 164 / 0, ov008 299 / 0, ov015 about 3809 / about 2639. The `FLD` macro is gone from the ov003, ov004, ov007 and ov008 headers.
+- **ov015 types:**
+  - `Ov015Fish` (0x5b0, vtable `022128fc`). It embeds `Ov015FishInfo` (0x2c), two `Ov015Anim` and two `Ov015Model` (0xe8, with an `Ov015RenderObj` at 0x24), an `Ov015Shadow` (the ov000 Shadow layout) and an `Ov015Obj48`.
+  - `Ov015Ship` (0xd58): an `Ov015Model[8]` array, and `Ov015ShipMtx` (the node matrix plus the node id that the render callback `02208424` compares).
+  - `Ov015Game` (0xcc, vtable `0221296c`). It embeds the phase objects `Ov015Obj30` and `Ov015Obj34` and `Ov015Info38`, and its pointer fields are typed to Ship, List and CamPair.
+  - `Ov015CamPair` / `Ov015Cam`.
+  - The fish state methods take `Ov015Fish *p`.
+- **What is left in ov015:**
+  - The fish-state classes (eight subclasses of vtable `02212eb0`, each with its own layout) still reach their fish through `FLD(Ov015Fish *, self, off)`.
+  - The scene classes (`02202dac`, `022038c8`, `022048a0`, `0220566c`, `02206564`), the menu and sprite code, and the shared main-binary sprite type are not converted yet.
+- **Kept as byte offsets, each with a comment:**
+  - Ship `m[3]` row addresses in `021ffb90`, `022003ec` and `02200a18`. Written as a field path, `(ship + 0xcd4) + 0x24` folds into one constant.
+  - The model loop in `02208070`. Written as `unk_358[i]`, the address math is hoisted and the register allocation changes.
+- **Pitfall:** once a base is typed, any `ptr + 0x..` that remains still compiles, but it now scales by the struct size. The object compare catches it. `arith.py` lists such sites.

@@ -93,7 +93,8 @@ void func_ov007_021ccf9c(Ov007Scene *s) {
 }
 
 s32 func_ov007_021cd270(Ov007Scene *s) {
-    Ov007V *p;
+    Ov007Pic *pic;
+    Ov007Player *pl;
     s->timer += 0x1000;
     if (s->unk_68 != NULL) {
         if (s->unk_68->v1c() == 0) {
@@ -105,7 +106,7 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
     switch (s->state) {
     case 1: {
         s32 m1 = -1;
-        FLD(s32, data_02097d48, 0x9e4) = m1;
+        data_02097d48->unk_9e4 = m1;
         func_0203c9e8(0x3f, m1);
         func_0203cc58(0, 1, m1);
         s->state = 2;
@@ -115,13 +116,13 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
     case 2:
         switch (s->sub) {
         case 0:
-            p = (Ov007V *)func_0203dd9c(0x4c);
-            if (p != NULL) {
-                FLD(void *, p, 0) = &data_0208b318;
-                p->v08();
+            pic = (Ov007Pic *)func_0203dd9c(0x4c);
+            if (pic != NULL) {
+                OV007_SET_VT(pic, &data_0208b318);
+                pic->v08();
             }
-            s->unk_14 = p;
-            FLD(s32, p, 0x44) = 7;
+            s->unk_14 = pic;
+            pic->unk_44 = 7;
             s->unk_14->v20("pic/license_en");
             s->sub = 1;
             break;
@@ -146,29 +147,29 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
     case 7:
         if (s->sub == 0 && func_ov000_02189068(data_ov000_021ccd54)) {
             if (s->unk_68 != NULL) {
-                FLD(u32, s->unk_68, 0xc) |= 0x40000;
+                s->unk_68->unk_0c |= 0x40000;
                 break;
             }
             func_0203cb78(1, 0, 0);
             if (s->unk_68 == NULL) {
-                p = (Ov007V *)func_0203dd9c(0xe8);
-                if (p != NULL) {
-                    FLD(void *, p, 0) = &data_ov000_021cac60;
-                    p->v28();
-                    FLD(void *, p, 0) = &data_ov000_021cad50;
-                    p->v28();
+                pl = (Ov007Player *)func_0203dd9c(0xe8);
+                if (pl != NULL) {
+                    OV007_SET_VT(pl, &data_ov000_021cac60);
+                    pl->v28();
+                    OV007_SET_VT(pl, &data_ov000_021cad50);
+                    pl->v28();
                 }
-                s->unk_68 = p;
-                FLD(u32, s->unk_68, 0xc) |= 0x10000;
-                p = s->unk_68;
-                FLD(u32, p, 0xc) |= 0x8;
-                FLD(u16, p, 0x48) = 0x14a5;
-                FLD(s32, p, 0x54) = 0x1c;
-                FLD(u32, s->unk_68, 0xc) |= 0x20000;
-                FLD(s32, s->unk_68, 0x1c) = 4;
+                s->unk_68 = pl;
+                s->unk_68->unk_0c |= 0x10000;
+                pl = s->unk_68;
+                pl->unk_0c |= 0x8;
+                pl->unk_48 = 0x14a5;
+                pl->unk_54 = 0x1c;
+                s->unk_68->unk_0c |= 0x20000;
+                s->unk_68->unk_1c = 4;
                 s->unk_68->v08();
                 func_ov000_0215c1bc(s->unk_68, 0x8000, func_0204c0e8(data_02149ef8, 0x76));
-                FLD(s16, s->unk_68, 0x68) = -0x299a;
+                s->unk_68->unk_68 = -0x299a;
                 s->unk_68->v70();
             }
             s->sub = 1;
@@ -180,8 +181,8 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
     return 1;
 }
 
-void func_ov007_021cd58c(void *task, Ov007Scene *s) {
-    u32 b = FLD(Ov007Rank, FLD(void *, FLD(void *, task, 0x5c), 0x28), 0x24).rank;
+void func_ov007_021cd58c(Ov007RankA *task, Ov007Scene *s) {
+    u32 b = task->unk_5c->unk_28->unk_24.rank;
     u8 lvl = b & ~0xc0;
     u8 fl = b & 0xc0;
     u8 a;
@@ -214,7 +215,9 @@ extern "C" {
 void func_ov007_021cd628(Ov007Scene *s) {
     u32 saved;
     Ov007V *p;
-    void *m;
+    Ov007Sprite *m;
+    Ov007Menu8 *t;
+    Ov007Menu *mn;
     s32 res;
     if (s->unk_48 != NULL) {
         s->unk_48->v0c();
@@ -270,26 +273,26 @@ void func_ov007_021cd628(Ov007Scene *s) {
             s->idx = 0;
             return;
         }
-        m = func_0203dd9c(0x160);
+        m = (Ov007Sprite *)func_0203dd9c(0x160);
         if (m != NULL) {
             res = data_ov007_021cfa50[s->idx].v;
-            func_02041218((u8 *)m + 0x88);
+            func_02041218(m->unk_88);
             func_02041440(m, res, 0);
         }
         s->unk_28 = m;
-        func_020417e0(s->unk_28, func_02034d88(p, (u8 *)m + 0x4c));
-        FLD(u32, s->unk_28, 0x6c) |= 2;
+        func_020417e0(s->unk_28, func_02034d88(p, m->unk_4c));
+        s->unk_28->flags |= 2;
         func_02041d9c(s->unk_28, 2, 0xffff);
         if (data_ov007_021cfa54[s->idx].v != 0) {
-            m = func_0203dd9c(0x160);
+            m = (Ov007Sprite *)func_0203dd9c(0x160);
             if (m != NULL) {
                 res = data_ov007_021cfa54[s->idx].v;
-                func_02041218((u8 *)m + 0x88);
+                func_02041218(m->unk_88);
                 func_02041440(m, res, 0);
             }
             s->unk_2c = m;
-            func_020417e0(s->unk_2c, func_02034d88(p, (u8 *)m + 0x4c));
-            FLD(u32, s->unk_2c, 0x6c) |= 2;
+            func_020417e0(s->unk_2c, func_02034d88(p, m->unk_4c));
+            s->unk_2c->flags |= 2;
             func_02041d9c(s->unk_2c, 0, 0xffff);
         }
         s->sub = 3;
@@ -385,73 +388,73 @@ void func_ov007_021cd628(Ov007Scene *s) {
         s->sub = 9;
         return;
     case 9:
-        p = (Ov007V *)func_ov000_02173610(8);
-        if (p != NULL) {
-            FLD(void *, p, 0xbc) = (void *)func_ov007_021cd58c;
-            FLD(void *, p, 0xc0) = s;
+        t = func_ov000_02173610(8);
+        if (t != NULL) {
+            t->unk_bc = (void *)func_ov007_021cd58c;
+            t->unk_c0 = s;
             s->sub = 10;
-            FLD(u8, data_02097dd0, 0x31) = 1;
+            data_02097dd0->unk_31 = 1;
         }
     case 10:
-        FLD(u8, data_02097dd0, 0x1f) = 1;
+        data_02097dd0->unk_1f = 1;
         if (!Ov007_MenuDone()) {
             return;
         }
         func_ov000_02180754();
         s->sub = 1;
-        FLD(u8, data_02097dd0, 0x31) = 0;
+        data_02097dd0->unk_31 = 0;
         return;
     case 11:
         s->timer = 0;
-        p = (Ov007V *)func_0203dd9c(0x58);
-        if (p != NULL) {
-            FLD(void *, p, 0) = &data_0208b614;
-            p->v14();
-            FLD(void *, p, 0) = &data_0208ca9c;
-            p->v14();
-            FLD(void *, p, 0) = &data_0208c994;
-            p->v14();
+        mn = (Ov007Menu *)func_0203dd9c(0x58);
+        if (mn != NULL) {
+            OV007_SET_VT(mn, &data_0208b614);
+            mn->v14();
+            OV007_SET_VT(mn, &data_0208ca9c);
+            mn->v14();
+            OV007_SET_VT(mn, &data_0208c994);
+            mn->v14();
         }
-        s->unk_48 = p;
-        p->v08();
-        FLD(Ov007Flags44, s->unk_48, 0x48).b0 = 1;
+        s->unk_48 = mn;
+        mn->v08();
+        s->unk_48->unk_48.b0 = 1;
         s->sub = 12;
     case 12:
-        p = s->unk_48;
-        if (!Ov007_Flag7(p)) {
+        mn = s->unk_48;
+        if (!Ov007_Flag7(mn)) {
             return;
         }
-        if (!Ov007_Closed(p)) {
-            FLD(Ov007Flags44, p, 0x48).b3 = 1;
+        if (!Ov007_Closed(mn)) {
+            mn->unk_48.b3 = 1;
             if (s->unk_68 == NULL) {
                 Ov007_NewPlayer(s, 0x6e);
             }
             func_0203cb78(1, 0, 0);
             s->sub = 0xf;
-            FLD(u8, data_02097dd0, 0x31) = 1;
-            FLD(u8, data_02097dd0, 0x1f) = 1;
+            data_02097dd0->unk_31 = 1;
+            data_02097dd0->unk_1f = 1;
         } else {
             s->sub = 1;
         }
         return;
     case 15:
-        FLD(u8, data_02097dd0, 0x1f) = 1;
+        data_02097dd0->unk_1f = 1;
         if (Ov007_Flag3(s->unk_48)) {
             return;
         }
     case 16:
         if (s->unk_68 != NULL) {
-            FLD(u8, data_02097dd0, 0x1f) = 1;
+            data_02097dd0->unk_1f = 1;
             if (Ov007_Busy(s->unk_68)) {
                 return;
             }
             if (s->timer >= 0x78000) {
-                FLD(u32, s->unk_68, 0xc) |= 0x40000;
+                s->unk_68->unk_0c |= 0x40000;
             }
             return;
         }
         s->sub = 1;
-        FLD(u8, data_02097dd0, 0x31) = 0;
+        data_02097dd0->unk_31 = 0;
         return;
     }
 }
@@ -461,17 +464,17 @@ void func_ov007_021cd628(Ov007Scene *s) {
 
 extern "C" {
 
-void func_ov007_021cdff0(void *task) {
+void func_ov007_021cdff0(Ov007Rs *rs) {
     u32 v;
-    void *q;
-    q = FLD(void *, task, 0xb0);
-    v = FLD(u32, q, 0xc);
-    FLD(u32, q, 0xc) = (v & ~0x3f000000) | (func_02043d48(data_02097d48 + 0x8b0) << 24);
+    Ov007RsMat *q;
+    q = rs->unk_b0;
+    v = q->unk_0c;
+    q->unk_0c = (v & ~0x3f000000) | (func_02043d48(&data_02097d48->unk_8b0) << 24);
 }
 
-void func_ov007_021ce020(void *task) {
-    FLD(void *, task, 0x1c) = (void *)func_ov007_021cdff0;
-    FLD(u8, task, 0x90) = 2;
+void func_ov007_021ce020(Ov007Rs *rs) {
+    rs->unk_1c = (void *)func_ov007_021cdff0;
+    rs->unk_90 = 2;
 }
 
 }
@@ -545,59 +548,59 @@ void func_0204ca70(void *p);
 void func_0204aab0(Ov007SndQ *queue, u16 value);
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_0204b924(void *p, s32 v);
-void *func_ov000_02190a30(void *a, s32 b);
+Ov007MdlAnm *func_ov000_02190a30(void *a, s32 b);
 void func_ov000_02190a80(void *a, s32 b);
 BOOL func_ov000_02191120(void *model);
 
 }
 
-static inline void Ov007_SetMdl(void *m, const char *dir, const char *name) {
-    STD_CopyString((char *)m + 0x10, dir);
-    STD_CopyString((char *)m + 0x30, name);
-    FLD(u8, m, 0x3) |= 2;
+static inline void Ov007_SetMdl(Ov007Anim *m, const char *dir, const char *name) {
+    STD_CopyString(m->unk_10, dir);
+    STD_CopyString(m->unk_30, name);
+    m->unk_03 |= 2;
 }
 
-static inline void Ov007_SetAnm(void *m, const char *dir, const char *name) {
-    STD_CopyString((char *)m + 0x4c, dir);
-    STD_CopyString((char *)m + 0x6c, name);
-    FLD(u8, m, 0x3) |= 4;
+static inline void Ov007_SetAnm(Ov007Anim *m, const char *dir, const char *name) {
+    STD_CopyString(m->unk_4c, dir);
+    STD_CopyString(m->unk_6c, name);
+    m->unk_03 |= 4;
 }
 
-static inline void *Ov007_NewRes(void) {
-    void *m = func_0203dd9c(0x138);
+static inline Ov007Anim *Ov007_NewRes(void) {
+    Ov007Anim *m = (Ov007Anim *)func_0203dd9c(0x138);
     if (m != NULL) {
-        m = func_ov000_0218e9c4(m);
+        m = (Ov007Anim *)func_ov000_0218e9c4(m);
     }
     return m;
 }
 
-static inline void *Ov007_NewMdl(void) {
-    void *m = func_0203dd9c(0xe8);
+static inline Ov007Model *Ov007_NewMdl(void) {
+    Ov007Model *m = (Ov007Model *)func_0203dd9c(0xe8);
     if (m != NULL) {
-        m = func_ov000_0218fe1c(m);
+        m = (Ov007Model *)func_ov000_0218fe1c(m);
     }
     return m;
 }
 
-static inline void *Ov007_NewWin(void) {
-    void *win = func_0203dd9c(0xb8);
+static inline Ov007Win *Ov007_NewWin(void) {
+    Ov007Win *win = (Ov007Win *)func_0203dd9c(0xb8);
     if (win != NULL) {
-        FLD(void *, win, 0) = &data_0208ba70;
+        OV007_SET_VT(win, &data_0208ba70);
         func_0204c7d0(win);
     }
     return win;
 }
 
-static inline void *Ov007_MakeWin(s32 text) {
-    void *win = Ov007_NewWin();
-    FLD(s32, win, 0x28) = 8;
-    FLD(s32, win, 0x24) = text;
-    FLD(s32, win, 0x4c) = func_0204c4fc(FLD(s32, win, 0x28), FLD(s32, win, 0x38), FLD(s32, win, 0x24), (u8 *)win + 0x44, (u8 *)win + 0x48, FLD(s8, win, 0x37) != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = FLD(s32, win, 0x28);
-    FLD(s32, win, 0x70) = -0x299a;
-    FLD(u32, win, 0x4) |= 0x40;
-    FLD(u32, win, 0x4) |= 0x1000000;
-    FLD(u32, win, 0x4) |= 0x4;
+static inline Ov007Win *Ov007_MakeWin(s32 text) {
+    Ov007Win *win = Ov007_NewWin();
+    win->unk_28 = 8;
+    win->unk_24 = text;
+    win->unk_4c = func_0204c4fc(win->unk_28, win->unk_38, win->unk_24, &win->unk_44, &win->unk_48, win->unk_37 != 0 ? TRUE : FALSE);
+    data_02097ce0->unk_004 = win->unk_28;
+    win->unk_70 = -0x299a;
+    win->flags |= 0x40;
+    win->flags |= 0x1000000;
+    win->flags |= 0x4;
     func_0204ca70(win);
     return win;
 }
@@ -665,38 +668,38 @@ static inline void Ov007_Go(Ov007Scene *s, s32 idx, s32 kind) {
     s->sub = 100;
 }
 
-static inline void Ov007Cam_SetA(void *o) {
-    FLD(u16, o, 0x36) = 0xaaa;
-    FLD(s32, o, 0x38) = 0xeff1;
-    FLD(s16, o, 0x30) = FX_SinCosTable_[(0x555 >> 4) * 2];
-    FLD(s16, o, 0x32) = FX_SinCosTable_[(0x555 >> 4) * 2 + 1];
-    FLD(u8, o, 0x3e) = 1;
+static inline void Ov007Cam_SetA(Ov007Cam *o) {
+    o->unk_36 = 0xaaa;
+    o->unk_38 = 0xeff1;
+    o->unk_30 = FX_SinCosTable_[(0x555 >> 4) * 2];
+    o->unk_32 = FX_SinCosTable_[(0x555 >> 4) * 2 + 1];
+    o->unk_3e = 1;
 }
 
-static inline void Ov007Cam_SetB(void *o, u8 a, u8 b, u16 c) {
-    FLD(u8, o, 0x3c) = a;
-    FLD(u8, o, 0x3d) = b;
-    FLD(u16, o, 0x34) = c;
-    FLD(u8, o, 0x3e) = 1;
+static inline void Ov007Cam_SetB(Ov007Cam *o, u8 a, u8 b, u16 c) {
+    o->unk_3c = a;
+    o->unk_3d = b;
+    o->unk_34 = c;
+    o->unk_3e = 1;
 }
 
-static inline void Ov007Cam_SetC(void *o, s32 v) {
-    FLD(s32, o, 0x28) = v;
-    FLD(u8, o, 0x3e) = 1;
+static inline void Ov007Cam_SetC(Ov007Cam *o, s32 v) {
+    o->unk_28 = v;
+    o->unk_3e = 1;
 }
 
-static inline void Ov007Cam_SetD(void *o, s32 v) {
-    FLD(s32, o, 0x2c) = v;
-    FLD(u8, o, 0x3e) = 1;
+static inline void Ov007Cam_SetD(Ov007Cam *o, s32 v) {
+    o->unk_2c = v;
+    o->unk_3e = 1;
 }
 
-static inline void Ov007Cam_SetE(void *o, s32 v) {
-    FLD(s32, o, 0x48) = v;
+static inline void Ov007Cam_SetE(Ov007Cam *o, s32 v) {
+    o->unk_48 = v;
 }
 
-static inline void Ov007Mdl_SetCb(void *m, void *cb) {
-    NNS_G3dRenderObjSetInitFunc((u8 *)m + 0x24, cb);
-    FLD(u16, m, 0xc2) = FLD(u16, m, 0xc2) & ~0x20;
+static inline void Ov007Mdl_SetCb(Ov007Model *m, void *cb) {
+    NNS_G3dRenderObjSetInitFunc(m->unk_24, cb);
+    m->unk_c2 = m->unk_c2 & ~0x20;
 }
 
 extern "C" {
@@ -706,16 +709,16 @@ void func_ov007_021ce038(Ov007Scene *s) {
     switch (s->sub) {
     case 0: {
         void *m;
-        Ov007V *p;
+        Ov007Pic *p;
         OV007_FREE_V(s->unk_14, v04);
         func_0206e900(buf, "pic/title");
-        p = (Ov007V *)func_0203dd9c(0x4c);
+        p = (Ov007Pic *)func_0203dd9c(0x4c);
         if (p != NULL) {
-            FLD(void *, p, 0) = &data_0208b318;
+            OV007_SET_VT(p, &data_0208b318);
             p->v08();
         }
         s->unk_14 = p;
-        FLD(s32, p, 0x44) = 7;
+        p->unk_44 = 7;
         s->unk_14->v1c(buf);
         s->unk_18 = Ov007_NewRes();
         if (s->unk_4c == 1) {
@@ -727,62 +730,62 @@ void func_ov007_021ce038(Ov007Scene *s) {
             Ov007_SetMdl(s->unk_18, "pic/titlemdl", "title1sky02");
         }
         Ov007_SetAnm(s->unk_18, "pic/titlemdl", "title1sky");
-        FLD(s16, s->unk_18, 0) = 0;
+        s->unk_18->unk_00 = 0;
         s->unk_1c = Ov007_NewRes();
         Ov007_SetMdl(s->unk_1c, "pic/titlemdl", "title1asm");
         Ov007_SetAnm(s->unk_1c, "pic/titlemdl", "title1asm");
-        FLD(s16, s->unk_1c, 0) = 0;
+        s->unk_1c->unk_00 = 0;
         s->unk_20 = Ov007_NewRes();
         Ov007_SetMdl(s->unk_20, "pic/titlemdl", "title1brd");
         Ov007_SetAnm(s->unk_20, "pic/titlemdl", "title1brd");
-        FLD(s16, s->unk_20, 0) = 0;
+        s->unk_20->unk_00 = 0;
         s->unk_24 = Ov007_NewRes();
         Ov007_SetAnm(s->unk_24, "pic/titlemdl", "title1cam");
-        FLD(s16, s->unk_24, 0) = 0;
+        s->unk_24->unk_00 = 0;
         s->sub = 1;
         break;
     }
     case 1: {
         Ov007Tbl3 tbl;
         Ov007V *p;
-        void *m;
+        Ov007Sprite *m;
         const char *res;
         if (!s->unk_14->v2c()) {
             break;
         }
-        if (FLD(s16, s->unk_18, 0) >= 0 && !func_ov000_0218f110(s->unk_18)) {
+        if (s->unk_18->unk_00 >= 0 && !func_ov000_0218f110(s->unk_18)) {
             break;
         }
-        if (FLD(s16, s->unk_1c, 0) >= 0 && !func_ov000_0218f110(s->unk_1c)) {
+        if (s->unk_1c->unk_00 >= 0 && !func_ov000_0218f110(s->unk_1c)) {
             break;
         }
-        if (FLD(s16, s->unk_20, 0) >= 0 && !func_ov000_0218f110(s->unk_20)) {
+        if (s->unk_20->unk_00 >= 0 && !func_ov000_0218f110(s->unk_20)) {
             break;
         }
-        if (FLD(s16, s->unk_24, 0) >= 0 && !func_ov000_0218f110(s->unk_24)) {
+        if (s->unk_24->unk_00 >= 0 && !func_ov000_0218f110(s->unk_24)) {
             break;
         }
         tbl = data_ov007_021cfbb4;
         p = (Ov007V *)s->unk_14->v10();
-        m = func_0203dd9c(0x160);
+        m = (Ov007Sprite *)func_0203dd9c(0x160);
         if (m != NULL) {
             res = tbl.s[s->unk_4c - 1];
-            func_02041218((u8 *)m + 0x88);
+            func_02041218(m->unk_88);
             func_02041440(m, (s32)res, 0);
         }
         s->unk_28 = m;
-        func_020417e0(s->unk_28, func_02034d88(p, (u8 *)m + 0x4c));
-        FLD(u32, s->unk_28, 0x6c) |= 2;
+        func_020417e0(s->unk_28, func_02034d88(p, m->unk_4c));
+        s->unk_28->flags |= 2;
         func_02041d9c(s->unk_28, 2, 0xffff);
-        m = func_0203dd9c(0x160);
+        m = (Ov007Sprite *)func_0203dd9c(0x160);
         if (m != NULL) {
             res = "cepct1cmn00";
-            func_02041218((u8 *)m + 0x88);
+            func_02041218(m->unk_88);
             func_02041440(m, (s32)res, 0);
         }
         s->unk_2c = m;
-        func_020417e0(s->unk_2c, func_02034d88(p, (u8 *)m + 0x4c));
-        FLD(u32, s->unk_2c, 0x6c) |= 2;
+        func_020417e0(s->unk_2c, func_02034d88(p, m->unk_4c));
+        s->unk_2c->flags |= 2;
         func_02041d9c(s->unk_2c, 0, 0xffff);
         s->sub = 2;
         break;
@@ -797,12 +800,12 @@ void func_ov007_021ce038(Ov007Scene *s) {
         if (!func_02054f10(s->unk_2c, 0xffff)) {
             break;
         }
-        res = FLD(void *, s->unk_24, 0x48);
+        res = s->unk_24->unk_48;
         o = func_0203dd9c(0xbc);
         if (o != NULL) {
             o = func_0204b370(o);
         }
-        s->unk_3c = (Ov007V *)o;
+        s->unk_3c = (Ov007Cam *)o;
         func_0204b8e8(s->unk_3c, NNS_G3dGetAnmByIdx(*(void **)res, 0));
         Ov007Cam_SetA(s->unk_3c);
         Ov007Cam_SetB(s->unk_3c, 4, 3, 0x1555);
@@ -816,31 +819,31 @@ void func_ov007_021ce038(Ov007Scene *s) {
         } else {
             func_ov000_02190cb0(s->unk_30, "00", 0, 1);
         }
-        FLD(u16, s->unk_30, 0xb4) = 0;
+        s->unk_30->unk_b4 = 0;
         func_ov000_021915a0(s->unk_30);
         Ov007Mdl_SetCb(s->unk_30, (void *)func_ov007_021ce020);
-        NNSi_G3dModifyPolygonAttrMask(FLD(void *, s->unk_30, 0x4), 1, 0x3f000000);
-        NNSi_G3dModifyPolygonAttrMask(FLD(void *, s->unk_30, 0x4), 1, 0x1f0000);
-        FLD(s16, s, 0x40) = 0x1000;
+        NNSi_G3dModifyPolygonAttrMask(s->unk_30->unk_04, 1, 0x3f000000);
+        NNSi_G3dModifyPolygonAttrMask(s->unk_30->unk_04, 1, 0x1f0000);
+        s->unk_40 = 0x1000;
         s->unk_34 = Ov007_NewMdl();
         func_ov000_0218ffdc(s->unk_34, s->unk_1c, 0, 1);
         func_ov000_02190cb0(s->unk_34, "00", 0, 1);
-        FLD(u16, s->unk_34, 0xb4) = 0;
+        s->unk_34->unk_b4 = 0;
         func_ov000_021915a0(s->unk_34);
-        NNSi_G3dModifyPolygonAttrMask(FLD(void *, s->unk_34, 0x4), 1, 0x3f000000);
-        NNSi_G3dModifyPolygonAttrMask(FLD(void *, s->unk_34, 0x4), 1, 0x1f0000);
+        NNSi_G3dModifyPolygonAttrMask(s->unk_34->unk_04, 1, 0x3f000000);
+        NNSi_G3dModifyPolygonAttrMask(s->unk_34->unk_04, 1, 0x1f0000);
         if (s->unk_4c != 3) {
             s->unk_38 = Ov007_NewMdl();
             func_ov000_0218ffdc(s->unk_38, s->unk_20, 0, 1);
-            FLD(u16, s->unk_38, 0xb4) = 0;
-            NNSi_G3dModifyPolygonAttrMask(FLD(void *, s->unk_38, 0x4), 1, 0x3f000000);
-            NNSi_G3dModifyPolygonAttrMask(FLD(void *, s->unk_38, 0x4), 1, 0x1f0000);
-            FLD(s32, s, 0x44) = func_02040498(0x78) + 0x3c;
+            s->unk_38->unk_b4 = 0;
+            NNSi_G3dModifyPolygonAttrMask(s->unk_38->unk_04, 1, 0x3f000000);
+            NNSi_G3dModifyPolygonAttrMask(s->unk_38->unk_04, 1, 0x1f0000);
+            s->unk_44 = func_02040498(0x78) + 0x3c;
         }
         {
             void *mgr = data_02149ef8;
-            s->unk_5c[0] = (Ov007V *)Ov007_MakeWin(func_0204c0e8(mgr, 0x51));
-            s->unk_5c[1] = (Ov007V *)Ov007_MakeWin(func_0204c0e8(mgr, 0x52));
+            s->unk_5c[0] = Ov007_MakeWin(func_0204c0e8(mgr, 0x51));
+            s->unk_5c[1] = Ov007_MakeWin(func_0204c0e8(mgr, 0x52));
         }
         func_0203cb78(0x3c000, 0, -1);
         Ov007_RequestBgm(data_02097e48, 3);
@@ -881,14 +884,14 @@ void func_ov007_021ce038(Ov007Scene *s) {
             break;
         }
         moved = FALSE;
-        if (FLD(u16, data_02097dc8, 0x16) & 0x80) {
+        if (data_02097dc8->unk_16 & 0x80) {
             s->unk_64++;
             if (s->unk_64 >= 2) {
                 s->unk_64 = 1;
             } else {
                 moved = TRUE;
             }
-        } else if (FLD(u16, data_02097dc8, 0x16) & 0x40) {
+        } else if (data_02097dc8->unk_16 & 0x40) {
             s->unk_64--;
             if (s->unk_64 < 0) {
                 s->unk_64 = 0;
@@ -967,19 +970,19 @@ void func_ov007_021ce038(Ov007Scene *s) {
     if (s->unk_30 != NULL) {
         if (s->unk_4c != 3 && !(s->timer & 0x3ffff)) {
             if (func_02040498(100) < 50) {
-                FLD(s16, s, 0x40) -= 0xcd;
-                if (FLD(s16, s, 0x40) < 0xb33) {
-                    FLD(s16, s, 0x40) += 0x19a;
+                s->unk_40 -= 0xcd;
+                if (s->unk_40 < 0xb33) {
+                    s->unk_40 += 0x19a;
                 }
             } else {
-                FLD(s16, s, 0x40) += 0xcd;
-                if (FLD(s16, s, 0x40) > 0x1000) {
-                    FLD(s16, s, 0x40) -= 0x19a;
+                s->unk_40 += 0xcd;
+                if (s->unk_40 > 0x1000) {
+                    s->unk_40 -= 0x19a;
                 }
             }
             {
-                s16 v = FLD(s16, s, 0x40);
-                FLD(s16, func_ov000_02190a30(s->unk_30, 0), 0x112) = v;
+                s16 v = s->unk_40;
+                func_ov000_02190a30(s->unk_30, 0)->unk_112 = v;
             }
         }
         func_ov000_02190a80(s->unk_30, 0x1000);
@@ -991,7 +994,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
         return;
     }
     if (func_ov000_02191120(s->unk_38)) {
-        if (--FLD(s32, s, 0x44) < 0) {
+        if (--s->unk_44 < 0) {
             s32 r = func_02040498(0x1e);
             if (r <= 10) {
                 func_ov000_02190cb0(s->unk_38, "00", 0, 1);
@@ -1000,7 +1003,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
             } else {
                 func_ov000_02190cb0(s->unk_38, "02", 0, 1);
             }
-            FLD(s32, s, 0x44) = func_02040498(300) + 0xb4;
+            s->unk_44 = func_02040498(300) + 0xb4;
         }
     }
     func_ov000_02190a80(s->unk_38, 0x1000);
@@ -1011,12 +1014,12 @@ void func_ov007_021ce038(Ov007Scene *s) {
 
 extern "C" {
 
-extern void *data_02097e3c;
+extern Ov007Game *data_02097e3c;
 BOOL func_02036328(void);
 void func_020444b0(void *a, s32 b, int c, int d);
 void func_02044524(void *a);
 void func_0206e900(char *dst, const char *src);
-void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
+Ov007SprSeq *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);
 void func_02043d20(void *a, int b);
@@ -1039,37 +1042,37 @@ static inline s32 Ov007_Choice(Ov007Scene *s) {
     return r;
 }
 
-static inline void Ov007_DrawModel(void *m) {
-    void *anim;
-    void *res = FLD(void *, m, 0x28);
+static inline void Ov007_DrawModel(Ov007Sprite *m) {
+    Ov007SprAnim *anim;
+    Ov007SprRes *res = m->unk_28;
     void *arg;
-    void *t;
+    Ov007SprFrame *t;
     if (res == NULL) {
         return;
     }
     anim = NULL;
-    if (FLD(s32, m, 0x80) > 0) {
-        anim = FLD(void *, m, 0x78);
+    if (m->unk_80 > 0) {
+        anim = m->unk_78;
     }
-    if (anim != NULL && (t = FLD(void *, anim, 0x4)) != NULL) {
-        arg = FLD(void *, t, 0x30);
+    if (anim != NULL && (t = anim->unk_04) != NULL) {
+        arg = t->unk_30;
     } else {
-        void *e = NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), 0);
-        arg = NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **(u16 **)FLD(void *, e, 0xc));
+        Ov007SprSeq *e = NNS_G2dGetAnimSequenceByIdx(res->unk_0c, 0);
+        arg = NNS_G2dGetCellDataByIdx(res->unk_04, **e->unk_0c);
     }
     func_02042628(m, arg, anim, 0);
 }
 
-static inline void *Ov007_GetTex(void *m, void *res, void *anim) {
-    if (anim != NULL && FLD(void *, anim, 0x4) != NULL) {
-        return FLD(void *, FLD(void *, anim, 0x4), 0x30);
+static inline void *Ov007_GetTex(Ov007Sprite *m, Ov007SprRes *res, Ov007SprAnim *anim) {
+    if (anim != NULL && anim->unk_04 != NULL) {
+        return anim->unk_04->unk_30;
     }
-    return NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **(u16 **)FLD(void *, NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), 0), 0xc));
+    return NNS_G2dGetCellDataByIdx(res->unk_04, **NNS_G2dGetAnimSequenceByIdx(res->unk_0c, 0)->unk_0c);
 }
-static inline void Ov007_DrawModel2(void *m) {
-    void *res = FLD(void *, m, 0x28);
+static inline void Ov007_DrawModel2(Ov007Sprite *m) {
+    Ov007SprRes *res = m->unk_28;
     if (res != NULL) {
-        void *anim = 0 >= FLD(s32, m, 0x80) ? NULL : FLD(void *, m, 0x78);
+        Ov007SprAnim *anim = 0 >= m->unk_80 ? NULL : m->unk_78;
         func_02042628(m, Ov007_GetTex(m, res, anim), anim, 0);
     }
 }
@@ -1084,7 +1087,7 @@ static inline void Ov007_SetupView(void) {
     u32 a;
     u32 b;
     Ov007Vec v;
-    func_02043d20(data_02097d48 + 0x8b0, 0);
+    func_02043d20(&data_02097d48->unk_8b0, 0);
     a = 0x20000000;
     NNS_G3dGeBufferOP_N(0x2a, &a, 1);
     b = 0x141f00d0;
@@ -1100,7 +1103,7 @@ static inline void Ov007_SetupView1(void) {
     u32 b;
     u32 a;
     Ov007Vec v;
-    func_02043d20(data_02097d48 + 0x8b0, 0);
+    func_02043d20(&data_02097d48->unk_8b0, 0);
     a = 0x20000000;
     NNS_G3dGeBufferOP_N(0x2a, &a, 1);
     b = 0x141f00d0;
@@ -1112,17 +1115,11 @@ static inline void Ov007_SetupView1(void) {
     func_02043db4(1, 0x100000, 0xc0000, 0x7fff);
 }
 
-struct Ov007Mdl6c {
-    u32 b0 : 2;
-    u32 b2 : 5;
-    u32 rest : 25;
-};
-
 extern "C" {
 
 void func_ov007_021cef80(Ov007Scene *s) {
     char buf[0x20];
-    Ov007V *p;
+    Ov007Pic *p;
     switch (s->sub) {
     case 0:
         if (Ov007_Choice(s) < 0) {
@@ -1144,15 +1141,15 @@ void func_ov007_021cef80(Ov007Scene *s) {
         if (!Ov007_FadeIdle()) {
             return;
         }
-        if (FLD(u8, data_02097e3c, 0x149) == 0) {
+        if (data_02097e3c->unk_149 == 0) {
             func_0206e900(buf, "pic/title");
-            p = (Ov007V *)func_0203dd9c(0x4c);
+            p = (Ov007Pic *)func_0203dd9c(0x4c);
             if (p != NULL) {
-                FLD(void *, p, 0) = &data_0208b318;
+                OV007_SET_VT(p, &data_0208b318);
                 p->v08();
             }
             s->unk_14 = p;
-            FLD(s32, p, 0x44) = 7;
+            p->unk_44 = 7;
             s->unk_14->v20(buf);
             func_0203cc58(0x3c000, 1, -1);
             s->sub = 3;
@@ -1183,13 +1180,13 @@ void func_ov007_021cf1d8(Ov007Scene *s) {
             break;
         }
         if (s->unk_28 != NULL) {
-            FLD(s32, s->unk_28, 0x150) = -0x3000;
+            s->unk_28->unk_150 = -0x3000;
             Ov007_DrawModel(s->unk_28);
         }
         if (s->unk_2c != NULL) {
-            FLD(s32, s->unk_2c, 0x150) = -0x3000;
-            FLD(u32, s->unk_2c, 0x6c) &= ~0x80000;
-            FLD(Ov007Mdl6c, s->unk_2c, 0x6c).b2 = 0x1f;
+            s->unk_2c->unk_150 = -0x3000;
+            s->unk_2c->flags &= ~0x80000;
+            s->unk_2c->attr.alpha = 0x1f;
             Ov007_DrawModel2(s->unk_2c);
             break;
         }

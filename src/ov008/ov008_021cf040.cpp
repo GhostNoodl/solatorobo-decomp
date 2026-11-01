@@ -1,93 +1,37 @@
 #include "ov008/ov008.h"
 
-struct Ov008Mgr3Flags {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 1;
-    u32 b3 : 1;
-    u32 b4 : 1;
-    u32 cnt : 8;
-    u32 rest : 19;
-};
-
-struct Ov008Mgr3 {
-    Ov008Mgr3Flags flags;
-    s32 state;
-    Ov008V sub;
-    u8 unk_0c[0xbc];
-    void *unk_c8;
-    void *unk_cc;
-    void *unk_d0;
-    void *unk_d4;
-    void *unk_d8;
-    void *unk_dc;
-    void *unk_e0;
-    void *unk_e4;
-    void *unk_e8;
-    void *unk_ec;
-    void *unk_f0;
-    void *unk_f4;
-    void *unk_f8;
-    void *unk_fc;
-    Ov008V *unk_100;
-    Ov008V *unk_104;
-    void *unk_108;
-    Ov008V *unk_10c;
-    u16 unk_110;
-    u16 unk_112;
-    s32 unk_114;
-    s32 unk_118;
-    s32 unk_11c;
-};
-
-
-struct Ov008ObjFlags {
-    u32 b0 : 2;
-    u32 prio : 5;
-    u32 pal : 6;
-    u32 b13 : 6;
-    u32 b19 : 1;
-    u32 b20 : 1;
-    u32 b21 : 1;
-    u32 rest : 10;
-};
 
 struct Ov008DrawBits {
     u8 b0 : 1;
     u8 rest : 7;
 };
 
-struct Ov008ItemFlags {
-    u16 b0 : 1;
-    u16 rest : 15;
-};
-
 struct Ov008ListInfo {
-    void *item;
+    Ov008Item *item;
     s32 x;
     s32 y;
     s32 z;
-    u32 pal;
+    u32 pid;
 };
 
-static inline void *Ov008_GetTexIdx(void *res, void *anim, int idx) {
-    if (anim != NULL && FLD(void *, anim, 0x4) != NULL) {
-        return FLD(void *, FLD(void *, anim, 0x4), 0x30);
+static inline void *Ov008_GetTexIdx(Ov008SprRes *res, Ov008SprAnim *anim, int idx) {
+    if (anim != NULL && anim->unk_04 != NULL) {
+        return anim->unk_04->unk_30;
     }
-    return NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **(u16 **)FLD(void *, NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), idx), 0xc));
+    return NNS_G2dGetCellDataByIdx(res->unk_04, **NNS_G2dGetAnimSequenceByIdx(res->unk_0c, idx)->unk_0c);
 }
 
-static inline void Ov008_DrawModelIdx(void *m, int idx) {
-    void *res = FLD(void *, m, 0x28);
+static inline void Ov008_DrawModelIdx(Ov008Sprite *m, int idx) {
+    Ov008SprRes *res = m->unk_28;
     if (res != NULL) {
-        void *anim = idx >= FLD(s32, m, 0x80) ? NULL : (u8 *)FLD(void *, m, 0x78) + idx * 0x28;
+        Ov008SprAnim *anim = idx >= m->unk_80 ? NULL : &m->unk_78[idx];
         func_02042628(m, Ov008_GetTexIdx(res, anim, idx), anim, 0);
     }
 }
 
-static inline BOOL Ov008_ListVisible(Ov008V *list, s32 y) {
+static inline BOOL Ov008_ListVisible(Ov008Menu *list, s32 y) {
     BOOL r;
-    if (y < list->v34() + FLD(s16, list, 0x66) || y > FLD(s16, list, 0x66) + FLD(s32, list, 0x28) - list->v38() - 0xc) {
+    if (y < list->v34() + list->unk_66 || y > list->unk_66 + list->unk_28 - list->v38() - 0xc) {
         r = FALSE;
     } else {
         r = TRUE;
@@ -95,60 +39,56 @@ static inline BOOL Ov008_ListVisible(Ov008V *list, s32 y) {
     return r;
 }
 
-static inline BOOL Ov008_ItemOn(void *item) {
-    return FLD(Ov008ItemFlags, item, 0x30).b0 ? TRUE : FALSE;
+static inline BOOL Ov008_ItemOn(Ov008Item *item) {
+    return item->flags.b0 ? TRUE : FALSE;
 }
 
 struct Ov008Tbl5 {
     s32 v[5];
 };
 
-struct Ov008Vec3 {
-    s32 x;
-    s32 y;
-    s32 z;
-};
-
-static inline void Ov008_SetXY(void *o, s32 x, s32 y) {
-    FLD(s32, o, 0xfc) = x;
-    FLD(s32, o, 0x100) = y;
+static inline void Ov008_SetXY(Ov008Sprite *o, s32 x, s32 y) {
+    o->unk_fc = x;
+    o->unk_100 = y;
 }
 
 extern "C" {
 
-extern u8 *data_02097d48;
+extern Ov008Sys *data_02097d48;
 extern const Ov008Tbl5 data_ov008_021d02e8;
 BOOL func_02054f10(void *a, int b);
 u8 func_02043d48(void *p);
-void *func_ov000_02154b58(void *a, u32 id);
+Ov008Item *func_ov000_02154b58(void *a, u32 id);
 void func_02041c20(void *a, int b, int c);
 
-void func_ov008_021cf040(Ov008Mgr3 *m) {
+// One local holds first the sprite unk_e0 and then the panel unk_f8. Two typed locals
+// (or a typed alias) change the register allocation, so it stays void * with casts.
+void func_ov008_021cf040(Ov008Mgr *m) {
     void *p;
-    void *item;
+    Ov008Item *item;
     Ov008Vec3 v;
     s32 x;
     s32 y;
     s32 i;
     p = m->unk_e0;
     if (p != NULL) {
-        Ov008_DrawModelIdx(p, 0);
+        Ov008_DrawModelIdx((Ov008Sprite *)p, 0);
     }
     p = m->unk_f8;
     if (p != NULL) {
-        switch (FLD(s32, p, 0)) {
+        switch (((Ov008Panel *)p)->state) {
         case 8:
         case 9:
         case 16:
         case 18:
-            if (func_02054f10(FLD(void *, p, 0x50), 0xffff)) {
-                s32 a = (u8)FLD(s32, p, 0x60);
-                s32 px = (FLD(s32, p, 0x5c) + (FLD(s32, p, 0x54) + 0x3d000)) & ~0xfff;
+            if (func_02054f10(((Ov008Panel *)p)->unk_50, 0xffff)) {
+                s32 a = (u8)((Ov008Panel *)p)->unk_60;
+                s32 px = (((Ov008Panel *)p)->unk_5c + (((Ov008Panel *)p)->unk_54 + 0x3d000)) & ~0xfff;
                 if (a > 0) {
-                    FLD(Ov008ObjFlags, FLD(void *, p, 0x50), 0x6c).pal = func_02043d48(data_02097d48 + 0x8b0);
-                    FLD(Ov008ObjFlags, FLD(void *, p, 0x50), 0x6c).prio = (u8)a;
-                    Ov008_SetXY(FLD(void *, p, 0x50), px, -0x1a000);
-                    Ov008_DrawModelIdx(FLD(void *, p, 0x50), 0);
+                    ((Ov008Panel *)p)->unk_50->attr.pid = func_02043d48(&data_02097d48->unk_8b0);
+                    ((Ov008Panel *)p)->unk_50->attr.alpha = (u8)a;
+                    Ov008_SetXY(((Ov008Panel *)p)->unk_50, px, -0x1a000);
+                    Ov008_DrawModelIdx(((Ov008Panel *)p)->unk_50, 0);
                 }
             }
             break;
@@ -169,21 +109,21 @@ void func_ov008_021cf040(Ov008Mgr3 *m) {
         x = v.x;
         y = v.y;
         if (item != NULL) {
-            func_02041c20(m->unk_e8, 2, FLD(u16, item, 0x32));
+            func_02041c20(m->unk_e8, 2, item->unk_32);
         } else {
             func_02041c20(m->unk_e8, 2, 0);
         }
         Ov008_SetXY(m->unk_e8, x, y);
     }
-    FLD(u8, m->unk_e8, 0x85) = (u8)(FLD(u8, m->unk_e8, 0x85) & 0xfe) | 1;
-    FLD(u32, m->unk_e8, 0x6c) &= ~0x80000;
-    FLD(u32, m->unk_e8, 0x6c) &= ~0x200000;
-    FLD(u32, m->unk_e8, 0x6c) &= ~0x100000;
-    FLD(s32, m->unk_e8, 0x150) = -0x2000;
+    m->unk_e8->unk_85 = (u8)(m->unk_e8->unk_85 & 0xfe) | 1;
+    m->unk_e8->flags &= ~0x80000;
+    m->unk_e8->flags &= ~0x200000;
+    m->unk_e8->flags &= ~0x100000;
+    m->unk_e8->unk_150 = -0x2000;
     Ov008_DrawModelIdx(m->unk_e8, 1);
-    FLD(s32, m->unk_e8, 0x150) = -0x1fc0;
+    m->unk_e8->unk_150 = -0x1fc0;
     Ov008_DrawModelIdx(m->unk_e8, 2);
-    FLD(u8, m->unk_e8, 0x85) &= 0xfe;
+    m->unk_e8->unk_85 &= 0xfe;
     if (item == NULL || m->unk_f0 == NULL || m->unk_ec == NULL) {
         return;
     }
@@ -191,11 +131,11 @@ void func_ov008_021cf040(Ov008Mgr3 *m) {
         Ov008Tbl5 t = data_ov008_021d02e8;
         x = v.x;
         y = v.y;
-        FLD(s32, m->unk_ec, 0x150) = -0x1fc0;
-        FLD(s32, m->unk_f0, 0x150) = -0x1fc0;
+        m->unk_ec->unk_150 = -0x1fc0;
+        m->unk_f0->unk_150 = -0x1fc0;
         for (i = 0; i < 5; i++) {
-            if ((FLD(u16, item, 0x30) & (u16)(2 << i)) ? TRUE : FALSE) {
-                void *e = m->unk_ec;
+            if ((item->unk_30 & (u16)(2 << i)) ? TRUE : FALSE) {
+                Ov008Sprite *e = m->unk_ec;
                 Ov008_SetXY(e, (t.v[i] + (x >> 12) - 3) << 12, ((y >> 12) + 0x2f) << 12);
                 Ov008_DrawModelIdx(m->unk_ec, 0xd);
                 Ov008_SetXY(m->unk_f0, (t.v[i] + (x >> 12)) << 12, ((y >> 12) + 0x28) << 12);
@@ -207,16 +147,16 @@ void func_ov008_021cf040(Ov008Mgr3 *m) {
 }
 
 
-void func_ov008_021cf5c8(s32 type, Ov008V *list, Ov008ListInfo *info) {
+void func_ov008_021cf5c8(s32 type, Ov008Menu *list, Ov008ListInfo *info) {
     s32 yy;
     s32 sx;
-    void *mgr;
+    Ov008Mgr *mgr;
     s32 sy;
-    void *item;
-    void *m;
-    void *pos;
+    Ov008Item *item;
+    Ov008Sprite *m;
+    Ov008Win *pos;
     s32 scroll;
-    mgr = FLD(void *, list, 0x8);
+    mgr = list->unk_08;
     switch (type) {
     case 0:
     case 1:
@@ -224,8 +164,8 @@ void func_ov008_021cf5c8(s32 type, Ov008V *list, Ov008ListInfo *info) {
         break;
     case 3:
         item = info->item;
-        m = FLD(void *, mgr, 0xe8);
-        pos = FLD(void *, item, 0x1c);
+        m = mgr->unk_e8;
+        pos = item->unk_1c;
         if (!Ov008_ItemOn(item)) {
             break;
         }
@@ -233,20 +173,20 @@ void func_ov008_021cf5c8(s32 type, Ov008V *list, Ov008ListInfo *info) {
         if (!Ov008_ListVisible(list, yy)) {
             break;
         }
-        FLD(Ov008ObjFlags, m, 0x6c).b19 = 1;
-        FLD(Ov008ObjFlags, m, 0x6c).b20 = 0;
-        scroll = FLD(s32, list, 0xd0) >> 12;
-        FLD(s32, m, 0x150) = info->z - 0xa0;
-        sx = info->x + FLD(s32, pos, 0x44) - 0x78 - scroll;
-        sy = info->y + (FLD(s32, pos, 0x48) >> 1) - 0x60;
-        FLD(s32, m, 0xfc) = sx << 12;
-        FLD(s32, m, 0x100) = sy << 12;
-        FLD(Ov008ObjFlags, m, 0x6c).pal = (u8)info->pal;
-        FLD(Ov008ObjFlags, m, 0x6c).prio = 0x1e;
-        FLD(Ov008ObjFlags, m, 0x6c).b21 = 1;
-        FLD(u8, m, 0x85) = (u8)(FLD(u8, m, 0x85) & 0xfe) | 1;
+        m->attr.b19 = 1;
+        m->attr.b20 = 0;
+        scroll = list->unk_d0 >> 12;
+        m->unk_150 = info->z - 0xa0;
+        sx = info->x + pos->unk_44 - 0x78 - scroll;
+        sy = info->y + (pos->unk_48 >> 1) - 0x60;
+        m->unk_fc = sx << 12;
+        m->unk_100 = sy << 12;
+        m->attr.pid = (u8)info->pid;
+        m->attr.alpha = 0x1e;
+        m->attr.b21 = 1;
+        m->unk_85 = (u8)(m->unk_85 & 0xfe) | 1;
         Ov008_DrawModelIdx(m, 3);
-        FLD(u8, m, 0x85) &= 0xfe;
+        m->unk_85 &= 0xfe;
         break;
     }
 }

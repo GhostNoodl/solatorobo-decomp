@@ -5,8 +5,8 @@ extern "C" {
 extern Ov015Globals data_ov015_02213320;
 extern u8 *data_02097d48;
 void NNS_G3dGeFlushBuffer(void);
-void func_ov015_02208070(void *p);
-void func_ov015_02209b8c(u8 *self);
+void func_ov015_02208070(Ov015Ship *p);
+void func_ov015_02209b8c(Ov015Fish *self);
 void func_ov015_0220f7a8(u8 *self);
 void func_ov015_02210d04(u8 *self);
 void func_ov015_02212264(u8 *self);
@@ -18,7 +18,7 @@ s32 func_02065748(void *a, void *b);
 void func_ov015_021fa6cc(void *p);
 void func_02036838(void *a, void *b, int c, int d);
 void func_020656b4(void *p);
-void func_ov015_0220101c(u8 *self);
+void func_ov015_0220101c(Ov015Game *self);
 void func_ov015_02211878(void *p);
 extern u8 data_ov015_0221296c[];
 extern u8 data_ov015_0221280c[];
@@ -36,7 +36,7 @@ void *func_ov000_0218ea20(void *a);
 extern u8 data_ov015_022128ec[];
 void func_ov015_0220f4d4(void *p);
 extern u8 data_ov015_022128fc[];
-void func_ov015_02209270(void *p);
+void func_ov015_02209270(Ov015Fish *p);
 void func_0203f2b8(void *p);
 void *func_ov000_02191b04(void *p);
 void *func_ov000_0218fee4(void *p);
@@ -61,125 +61,125 @@ s32 func_ov015_02202268(void) {
     }
 }
 
-static inline void Ov015_022022ac_Draw(u8 *self) {
+static inline void Ov015_022022ac_Draw(Ov015Game *self) {
     u8 *p;
     u8 *n;
-    func_ov015_02208070(FLD(void *, self, 0x18));
-    p = FLD(u8 *, self, 0x20);
+    func_ov015_02208070(self->unk_18);
+    p = self->unk_20;
     func_ov000_021903b4(p + 0x13c);
     func_ov000_021903b4(p + 0x35c);
     func_ov000_021903b4(p + 0x57c);
     NNS_G3dGeFlushBuffer();
-    for (n = FLD(u8 *, FLD(u8 *, self, 0x1c), 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
-        func_ov015_02209b8c(FLD(u8 *, n, 0x4));
+    for (n = FLD(u8 *, self->unk_1c, 0x4); n != NULL; n = FLD(u8 *, n, 0xc)) {
+        func_ov015_02209b8c(FLD(Ov015Fish *, n, 0x4));
     }
 }
-void func_ov015_022022ac(u8 *self) {
-    switch (FLD(s32, self, 0xc)) {
+void func_ov015_022022ac(Ov015Game *self) {
+    switch (self->unk_0c) {
     case 0:
         break;
 
     case 0x28:
-        if (FLD(s32, self, 0x34) > 2 && FLD(Ov015D48Bits2, data_02097d48, 0xa30).b4) {
-            if (FLD(u8 *, self, 0x40) != NULL) func_ov015_02212264(FLD(u8 *, self, 0x40));
-            if (FLD(void *, self, 0x44) != NULL) VCALL(FLD(void *, self, 0x44))->v1c();
+        if (self->unk_30.unk_04 > 2 && FLD(Ov015D48Bits2, data_02097d48, 0xa30).b4) {
+            if (self->unk_30.unk_10 != NULL) func_ov015_02212264(self->unk_30.unk_10);
+            if (self->unk_30.unk_14 != NULL) VCALL(self->unk_30.unk_14)->v1c();
         }
-        if (FLD(s32, self, 0x34) >= 3) {
+        if (self->unk_30.unk_04 >= 3) {
             Ov015_022022ac_Draw(self);
         }
-        if (FLD(u8 *, self, 0x90) != NULL) func_ov015_02210d04(FLD(u8 *, self, 0x90));
+        if (self->unk_90 != NULL) func_ov015_02210d04(self->unk_90);
         break;
     case 0x32:
     case 0x3c:
         if (FLD(Ov015D48Bits2, data_02097d48, 0xa30).b4) {
-            func_ov015_021fb758(FLD(u8 *, self, 0x28));
+            func_ov015_021fb758(self->unk_28);
         }
         Ov015_022022ac_Draw(self);
-        if (FLD(u8 *, self, 0x90) != NULL) func_ov015_02210d04(FLD(u8 *, self, 0x90));
+        if (self->unk_90 != NULL) func_ov015_02210d04(self->unk_90);
         NNS_G3dGeFlushBuffer();
         break;
     case 0x46:
-        func_ov015_0220f7a8(FLD(u8 *, self, 0x2c));
+        func_ov015_0220f7a8(self->unk_2c);
         break;
     }
 }
 
-void *func_ov015_02202448(u8 *self) {
+void *func_ov015_02202448(Ov015Game *self) {
     u32 saved;
     SET_VT(self, data_ov015_0221296c);
     func_ov015_0220101c(self);
     func_02036838(data_02097cdc, data_ov015_022128c1, 7, 0);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x2c));
+    DELETE_V(self->unk_2c);
     HEAP_POP(saved);
     func_020656b4(data_0214a420);
     FLD(u8, data_0214a420, 0x10) = 0;
     FLD(s32, data_02097d48, 0x4) = 1;
-    func_ov015_02211878(self + 0x94);
-    SET_VT(self + 0x5c, data_ov015_022127dc);
-    if (func_02065748(data_0214a420, FLD(void *, self, 0x60))) {
+    func_ov015_02211878(&self->unk_94);
+    SET_VT(&self->unk_5c, data_ov015_022127dc);
+    if (func_02065748(data_0214a420, self->unk_5c.unk_04)) {
         HEAP_PUSH(saved);
-        DELETE_V(FLD(void *, self, 0x60));
+        DELETE_V(self->unk_5c.unk_04);
         HEAP_POP(saved);
     }
-    SET_VT(self + 0x30, data_ov015_022127ec);
+    SET_VT(&self->unk_30, data_ov015_022127ec);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x40));
+    DELETE_V(self->unk_30.unk_10);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x44));
+    DELETE_V(self->unk_30.unk_14);
     HEAP_POP(saved);
-    FLD(s32, self, 0x34) = 0;
-    FLD(s32, self, 0x38) = 0;
-    FLD(u8, self, 0x3c) = 0;
-    FLD(s32, self, 0x40) = 0;
-    FLD(s32, self, 0x44) = 0;
-    FLD(s32, self, 0x48) = 0;
-    FLD(s32, self, 0x4c) = 0;
-    FLD(s32, self, 0x50) = 0;
-    FLD(s32, self, 0x54) = 0;
-    FLD(s32, self, 0x58) = 0;
+    self->unk_30.unk_04 = 0;
+    self->unk_30.unk_08 = 0;
+    self->unk_30.unk_0c = 0;
+    self->unk_30.unk_10 = 0;
+    self->unk_30.unk_14 = 0;
+    self->unk_30.unk_18 = 0;
+    self->unk_30.unk_1c = 0;
+    self->unk_30.unk_20 = 0;
+    self->unk_30.unk_24 = 0;
+    self->unk_30.unk_28 = 0;
     SET_VT(self, data_ov015_0221280c);
     func_ov015_021fa6cc(self);
     func_0203de1c(self);
     return self;
 }
 
-void *func_ov015_0220261c(u8 *self) {
+void *func_ov015_0220261c(Ov015Game *self) {
     u32 saved;
     SET_VT(self, data_ov015_0221296c);
     func_ov015_0220101c(self);
     func_02036838(data_02097cdc, data_ov015_022128c1, 7, 0);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x2c));
+    DELETE_V(self->unk_2c);
     HEAP_POP(saved);
     func_020656b4(data_0214a420);
     FLD(u8, data_0214a420, 0x10) = 0;
     FLD(s32, data_02097d48, 0x4) = 1;
-    func_ov015_02211878(self + 0x94);
-    SET_VT(self + 0x5c, data_ov015_022127dc);
-    if (func_02065748(data_0214a420, FLD(void *, self, 0x60))) {
+    func_ov015_02211878(&self->unk_94);
+    SET_VT(&self->unk_5c, data_ov015_022127dc);
+    if (func_02065748(data_0214a420, self->unk_5c.unk_04)) {
         HEAP_PUSH(saved);
-        DELETE_V(FLD(void *, self, 0x60));
+        DELETE_V(self->unk_5c.unk_04);
         HEAP_POP(saved);
     }
-    SET_VT(self + 0x30, data_ov015_022127ec);
+    SET_VT(&self->unk_30, data_ov015_022127ec);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x40));
+    DELETE_V(self->unk_30.unk_10);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x44));
+    DELETE_V(self->unk_30.unk_14);
     HEAP_POP(saved);
-    FLD(s32, self, 0x34) = 0;
-    FLD(s32, self, 0x38) = 0;
-    FLD(u8, self, 0x3c) = 0;
-    FLD(s32, self, 0x40) = 0;
-    FLD(s32, self, 0x44) = 0;
-    FLD(s32, self, 0x48) = 0;
-    FLD(s32, self, 0x4c) = 0;
-    FLD(s32, self, 0x50) = 0;
-    FLD(s32, self, 0x54) = 0;
-    FLD(s32, self, 0x58) = 0;
+    self->unk_30.unk_04 = 0;
+    self->unk_30.unk_08 = 0;
+    self->unk_30.unk_0c = 0;
+    self->unk_30.unk_10 = 0;
+    self->unk_30.unk_14 = 0;
+    self->unk_30.unk_18 = 0;
+    self->unk_30.unk_1c = 0;
+    self->unk_30.unk_20 = 0;
+    self->unk_30.unk_24 = 0;
+    self->unk_30.unk_28 = 0;
     SET_VT(self, data_ov015_0221280c);
     func_ov015_021fa6cc(self);
     return self;
@@ -243,16 +243,16 @@ void *func_ov015_02202930(void *self) {
     return self;
 }
 
-void *func_ov015_02202950(u8 *self) {
+void *func_ov015_02202950(Ov015Fish *self) {
     SET_VT(self, data_ov015_022128fc);
     func_ov015_02209270(self);
-    func_0203f2b8(self + 0x568);
-    func_ov000_02191b04(self + 0x54c);
-    func_ov000_0218fee4(self + 0x464);
-    func_ov000_0218ea20(self + 0x32c);
-    func_ov000_0218fee4(self + 0x244);
-    func_ov000_0218ea20(self + 0x10c);
-    func_ov015_0220900c(self + 0xc0);
+    func_0203f2b8(&self->unk_568);
+    func_ov000_02191b04(&self->unk_54c);
+    func_ov000_0218fee4(&self->unk_464);
+    func_ov000_0218ea20(&self->unk_32c);
+    func_ov000_0218fee4(&self->unk_244);
+    func_ov000_0218ea20(&self->unk_10c);
+    func_ov015_0220900c(&self->unk_c0);
     return self;
 }
 

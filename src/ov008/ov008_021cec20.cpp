@@ -1,44 +1,5 @@
 #include "ov008/ov008.h"
 
-struct Ov008Mgr3Flags {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 1;
-    u32 b3 : 1;
-    u32 b4 : 1;
-    u32 cnt : 8;
-    u32 rest : 19;
-};
-
-struct Ov008Mgr3 {
-    Ov008Mgr3Flags flags;
-    s32 state;
-    Ov008V sub;
-    u8 unk_0c[0xbc];
-    void *unk_c8;
-    void *unk_cc;
-    void *unk_d0;
-    void *unk_d4;
-    void *unk_d8;
-    void *unk_dc;
-    void *unk_e0;
-    void *unk_e4;
-    void *unk_e8;
-    void *unk_ec;
-    void *unk_f0;
-    void *unk_f4;
-    void *unk_f8;
-    void *unk_fc;
-    Ov008V *unk_100;
-    Ov008V *unk_104;
-    void *unk_108;
-    Ov008V *unk_10c;
-    u16 unk_110;
-    u16 unk_112;
-    u8 unk_114[0x8];
-    s32 unk_11c;
-};
-
 extern "C" {
 
 struct Ov008Pos16 {
@@ -47,31 +8,31 @@ struct Ov008Pos16 {
 };
 
 extern Ov008Pos16 data_ov008_021d02fc[];
-void func_ov008_021cf040(Ov008Mgr3 *m);
+void func_ov008_021cf040(Ov008Mgr *m);
 BOOL func_ov000_021903b4(void *p);
-void func_ov008_021ccf44(void *p);
+void func_ov008_021ccf44(Ov008Panel *p);
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
 
-static inline void Ov008_SetPos(void *e, Ov008Pos16 *p) {
+static inline void Ov008_SetPos(Ov008Sprite *e, Ov008Pos16 *p) {
     s32 x = p->x - 0x80;
     s32 y = p->y - 0x60;
-    FLD(s32, e, 0x10c) = x << 12;
-    FLD(s32, e, 0x110) = y << 12;
+    e->unk_10c = x << 12;
+    e->unk_110 = y << 12;
 }
 
-void func_ov008_021cec20(Ov008Mgr3 *m) {
+void func_ov008_021cec20(Ov008Mgr *m) {
     if (m->unk_d8 != NULL) {
         Ov008_DrawModel2(m->unk_d8);
     }
     if (m->unk_e8 != NULL) {
         Ov008_SetPos(m->unk_e8, &data_ov008_021d02fc[m->unk_112]);
-        FLD(u8, m->unk_e8, 0x85) = (u8)(FLD(u8, m->unk_e8, 0x85) & 0xfb) | 4;
+        m->unk_e8->unk_85 = (u8)(m->unk_e8->unk_85 & 0xfb) | 4;
         Ov008_DrawModel2(m->unk_e8);
-        FLD(u8, m->unk_e8, 0x85) &= 0xfb;
+        m->unk_e8->unk_85 &= 0xfb;
     }
     func_ov008_021cf040(m);
     if (m->state >= 5 && m->unk_c8 != NULL && m->unk_d0 != NULL) {
-        m->sub.v00();
+        m->cam.v00();
         func_ov000_021903b4(m->unk_c8);
         func_ov000_021903b4(m->unk_d0);
     }
@@ -98,29 +59,29 @@ void func_ov008_021cec20(Ov008Mgr3 *m) {
     }
 }
 
-void func_ov008_021cee4c(Ov008Mgr3 *m) {
+void func_ov008_021cee4c(Ov008Mgr *m) {
     if (m->unk_f8 == NULL || m->unk_f4 == NULL || m->unk_100 == NULL) {
         return;
     }
-    if (VOBJ(m->unk_f4, 4)->v34()) {
-        void *a = m->unk_f8;
-        void *b = m->unk_f4;
-        if (VOBJ(a, 4)->v34()) {
-            VOBJ(a, 4)->v0c();
+    if (m->unk_f4->pic.v34()) {
+        Ov008Panel *a = m->unk_f8;
+        Ov008Caption *b = m->unk_f4;
+        if (a->pic.v34()) {
+            a->pic.v0c();
         }
-        MI_CpuCopy8((u8 *)b + 4, (u8 *)a + 4, 0x4c);
-        if (FLD(s32, a, 0) == 0) {
-            FLD(s32, a, 0) = 0xf;
-        } else if (FLD(s32, a, 0) == 0x10) {
-            FLD(s32, a, 0) = 0x11;
-            if (FLD(s32, a, 0x54) <= 0) {
-                FLD(s32, a, 0x5c) = 0;
+        MI_CpuCopy8(&b->pic, &a->pic, 0x4c);
+        if (a->state == 0) {
+            a->state = 0xf;
+        } else if (a->state == 0x10) {
+            a->state = 0x11;
+            if (a->unk_54 <= 0) {
+                a->unk_5c = 0;
             } else {
-                FLD(s32, a, 0x5c) = FLD(s32, a, 0x54);
+                a->unk_5c = a->unk_54;
             }
-            FLD(s32, a, 0x54) = -0x1000;
+            a->unk_54 = -0x1000;
         }
-        VOBJ(m->unk_f4, 4)->v08();
+        m->unk_f4->pic.v08();
         if (!m->flags.b3) {
             m->flags.b4 = 0;
             m->flags.b3 = 1;

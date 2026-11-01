@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern u8 *data_ov015_02213364;
+extern Ov015Ship *data_ov015_02213364;
 void NNS_G3dGetCurrentMtx(void *p, s32 a);
 void func_ov015_02208424(u8 *self);
 void MIi_CpuClearFast(u32 val, void *dst, u32 size);
@@ -75,28 +75,28 @@ static inline s32 Ov015_FxMul64(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-void func_ov015_02208070(u8 *self) {
+void func_ov015_02208070(Ov015Ship *self) {
     Ov015Vec p;
     Ov015Vec d;
     Ov015Vec out;
     Ov015Vec diff;
     u16 rot[3];
-    if (FLD(u16, self, 0xd38) != 0x32) {
+    if (self->unk_d38 != 0x32) {
         return;
     }
     data_ov015_02213364 = self;
-    if (FLD(u8, self, 0xd41) != 0) {
-        func_ov000_02191c24(self + 0xcb8, self + 0xd14);
+    if (self->unk_d41 != 0) {
+        func_ov000_02191c24(&self->unk_cb8, &self->unk_d14);
     }
-    FLD(Ov015Vec, self, 0x1b0) = FLD(Ov015Vec, self, 0xd14);
-    func_ov000_02190758(self + 0x138, self + 0xd20, 0);
-    func_ov000_021903b4(self + 0x138);
+    *(Ov015Vec *)&self->unk_138.unk_78 = self->unk_d14;
+    func_ov000_02190758(&self->unk_138, &self->unk_d20, 0);
+    func_ov000_021903b4(&self->unk_138);
     {
         s32 h;
-        p = FLD(Ov015Vec, self, 0xcf8);
-        d.x = FLD(s32, self, 0xd4c) - p.x;
-        d.y = FLD(s32, self, 0xd50) - p.y;
-        d.z = FLD(s32, self, 0xd54) - p.z;
+        p = self->unk_cd4.m[3];
+        d.x = self->unk_d4c.x - p.x;
+        d.y = self->unk_d4c.y - p.y;
+        d.z = self->unk_d4c.z - p.z;
         {
             s64 sq = (s64)d.x * d.x;
             sq += (s64)d.z * d.z;
@@ -115,54 +115,56 @@ void func_ov015_02208070(u8 *self) {
         d.x = Ov015_FxMul(d.x, 0x1c00);
         d.y = Ov015_FxMul(d.y, 0x1c00);
         d.z = Ov015_FxMul(d.z, 0x1c00);
-        switch (FLD(u16, self, 0xd3c)) {
+        switch (self->unk_d3c) {
         case 1: {
             s32 i;
             for (i = 0; i < 8; i++) {
-                func_ov000_02190758(self + 0x358 + i * 0xe8, rot, 0);
-                FLD(Ov015Vec, self + i * 0xe8, 0x3d0) = p;
-                func_ov000_021903b4(self + 0x358 + i * 0xe8);
+                // Byte offsets kept: indexing unk_358[i] makes the compiler hoist and reorder
+                // the address math, which changes the register allocation.
+                func_ov000_02190758((u8 *)self + 0x358 + i * 0xe8, rot, 0);
+                FLD(Ov015Vec, (u8 *)self + i * 0xe8, 0x3d0) = p;
+                func_ov000_021903b4((u8 *)self + 0x358 + i * 0xe8);
                 VEC_Add(&d, &p, &p);
             }
-            FLD(Ov015Vec, self, 0xd08) = p;
+            self->unk_d08 = p;
             break;
         }
         case 2:
-            MI_Copy36B(self + 0xcd4, self + 0xc54);
-            FLD(Ov015Vec, self, 0xc48) = p;
-            func_ov000_021903b4(self + 0xbd0);
+            MI_Copy36B(self->unk_cd4.m, self->unk_bd0.unk_84);
+            *(Ov015Vec *)&self->unk_bd0.unk_78 = p;
+            func_ov000_021903b4(&self->unk_bd0);
             break;
         }
     }
     NNS_G3dGeFlushBuffer();
     data_ov015_02213364 = NULL;
-    if (FLD(u8, self, 0xd42) == 0) {
+    if (self->unk_d42 == 0) {
         return;
     }
-    if (FLD(Ov015V *, self, 0xd28) != NULL) {
-        s32 t = FX_Div(FLD(s32, self, 0xd2c) << 12, 0x5a000);
-        diff.x = FLD(s32, self, 0xcf8) - FLD(s32, self, 0xd08);
-        diff.y = FLD(s32, self, 0xcfc) - FLD(s32, self, 0xd0c);
-        diff.z = FLD(s32, self, 0xd00) - FLD(s32, self, 0xd10);
-        VEC_MultAdd(t, &diff, &FLD(Ov015Vec, self, 0xd08), &out);
-        FLD(Ov015V *, self, 0xd28)->v18(&out);
+    if (self->unk_d28 != NULL) {
+        s32 t = FX_Div(self->unk_d2c << 12, 0x5a000);
+        diff.x = self->unk_cd4.m[3].x - self->unk_d08.x;
+        diff.y = self->unk_cd4.m[3].y - self->unk_d08.y;
+        diff.z = self->unk_cd4.m[3].z - self->unk_d08.z;
+        VEC_MultAdd(t, &diff, &self->unk_d08, &out);
+        self->unk_d28->v18(&out);
     }
-    if (FLD(Ov015V *, self, 0xd30) != NULL) {
-        s32 t = FX_Div(FLD(s32, self, 0xd34) << 12, 0xa000);
+    if (self->unk_d30 != NULL) {
+        s32 t = FX_Div(self->unk_d34 << 12, 0xa000);
         s32 sc = Ov015_FxMul64(t, 0x6000) + 0xc000;
-        s32 v = Ov015_FxMul64(FLD(s32, self, 0xd44), sc);
-        FLD(Ov015V *, self, 0xd30)->v14(v, v, v);
-        FLD(Ov015V *, self, 0xd30)->v18(self + 0xd4c);
+        s32 v = Ov015_FxMul64(self->unk_d44, sc);
+        self->unk_d30->v14(v, v, v);
+        self->unk_d30->v18(&self->unk_d4c);
     }
 }
 
 void func_ov015_02208424(u8 *self) {
-    u8 *t = data_ov015_02213364 + 0xcd4;
+    Ov015ShipMtx *t = &data_ov015_02213364->unk_cd4;
     s32 id = (FLD(u32, self, 0x8) & 0x10) ? FLD(u8, self, 0xae) : -1;
-    if (id != t[0x30]) {
+    if (id != t->id) {
         return;
     }
-    NNS_G3dGetCurrentMtx(t, 0);
+    NNS_G3dGetCurrentMtx(t->m, 0);
     FLD(void *, self, 0x24) = NULL;
     FLD(u8, self, 0x92) = 0;
 }
@@ -535,29 +537,29 @@ void *func_ov015_02209010(void *self) {
 
 #define OV015_MUL64(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
-void func_ov015_02209024(u8 *self, u16 a, const void *src) {
+void func_ov015_02209024(Ov015FishInfo *self, u16 a, const void *src) {
     s32 v;
-    FLD(u16, self, 0x4) = a;
-    MI_CpuCopy8(src, self + 0x6, 0x14);
-    v = FLD(u16, self, 0x10) << 12;
+    self->unk_04 = a;
+    MI_CpuCopy8(src, &self->unk_06, 0x14);
+    v = self->unk_10 << 12;
     s32 lim;
-    if (FLD(s32, self, 0x28) < 0xe10000) {
+    if (self->unk_28 < 0xe10000) {
         lim = Ov015_FxMul(v, 0x1000);
-    } else if (FLD(s32, self, 0x28) < 0x1c20000) {
+    } else if (self->unk_28 < 0x1c20000) {
         lim = Ov015_FxMul(v, 0xccd);
     } else {
         lim = Ov015_FxMul(v, 0xb33);
     }
-    FLD(s32, self, 0x1c) = lim;
+    self->unk_1c = lim;
 
 }
 
-s32 func_ov015_022090bc(u8 *self) {
-    return (s32)(((s64)(FLD(s16, self, 0xa) << 4) * 0x2000 + 0x800) >> 12) + 0x19a;
+s32 func_ov015_022090bc(Ov015FishInfo *self) {
+    return (s32)(((s64)(self->unk_0a << 4) * 0x2000 + 0x800) >> 12) + 0x19a;
 }
 
-s32 func_ov015_022090f0(u8 *self) {
-    return FLD(s16, self, 0x16) << 4;
+s32 func_ov015_022090f0(Ov015FishInfo *self) {
+    return self->unk_16 << 4;
 }
 
 void func_ov015_022090fc(u8 *self) {
@@ -565,70 +567,70 @@ void func_ov015_022090fc(u8 *self) {
     FLD(u8, self, 0x92) = 3;
 }
 
-void *func_ov015_02209114(u8 *self) {
+void *func_ov015_02209114(Ov015Fish *self) {
     SET_VT(self, data_ov015_022128fc);
-    SET_VT(self + 0xc0, data_ov015_02212e84);
-    FLD(u16, self, 0xc4) = 0xffff;
-    MIi_CpuClearFast(0, self + 0xc6, 0x14);
-    FLD(s32, self, 0xdc) = 0;
-    FLD(s32, self, 0xe0) = 0;
-    FLD(s32, self, 0xe4) = 0;
-    FLD(s32, self, 0xe8) = 0;
-    func_ov000_0218e9c4(self + 0x10c);
-    func_ov000_0218fe1c(self + 0x244);
-    func_ov000_0218e9c4(self + 0x32c);
-    func_ov000_0218fe1c(self + 0x464);
-    func_ov000_0219196c(self + 0x54c);
-    SET_VT(self + 0x54c, data_ov015_022129d0);
-    func_0203f260(self + 0x568);
-    FLD(u16, self, 0x4) = 0xffff;
-    FLD(s32, self, 0x8) = 0;
-    MIi_CpuClearFast(0, self + 0xc, 0x34);
-    FLD(s32, self, 0x40) = 0;
-    FLD(s32, self, 0x44) = 0;
-    FLD(s32, self, 0x48) = 0;
-    MTX_Identity33_(self + 0x4c);
-    FLD(s32, self, 0x80) = 0;
-    FLD(s32, self, 0x84) = 0;
-    FLD(s32, self, 0x88) = 0;
-    FLD(u8, self, 0x90) = 0;
-    FLD(s32, self, 0x94) = 0;
-    FLD(s32, self, 0x98) = 0;
-    FLD(s32, self, 0xa0) = 0;
-    FLD(s32, self, 0xa4) = 0;
-    FLD(s32, self, 0xa8) = 0;
-    FLD(s32, self, 0xbc) = 0;
-    FLD(s32, self, 0xf0) = 0;
-    FLD(s32, self, 0xf8) = 0;
-    FLD(s32, self, 0x100) = 0;
-    FLD(s32, self, 0x108) = 0;
-    FLD(s32, self, 0x70) = 0x1000;
-    FLD(s32, self, 0x74) = 0x1000;
-    FLD(s32, self, 0x78) = 0x1000;
-    FLD(s32, self, 0x7c) = 0x1000;
-    FLD(s32, self, 0x8c) = 0x1000;
-    FLD(s32, self, 0x9c) = 0x1000;
-    FLD(s32, self, 0xac) = -0x32000;
-    FLD(s32, self, 0xb0) = 0x32000;
-    FLD(s32, self, 0xb4) = -0x37000;
-    FLD(s32, self, 0xb8) = -0xaa000;
-    FLD(s32, self, 0xec) = 1;
-    FLD(s32, self, 0xf4) = 1;
-    FLD(s32, self, 0xfc) = 1;
-    FLD(u16, self, 0x104) = 0x800;
+    SET_VT(&self->unk_c0, data_ov015_02212e84);
+    self->unk_c0.unk_04 = 0xffff;
+    MIi_CpuClearFast(0, &self->unk_c0.unk_06, 0x14);
+    self->unk_c0.unk_1c = 0;
+    self->unk_c0.unk_20 = 0;
+    self->unk_c0.unk_24 = 0;
+    self->unk_c0.unk_28 = 0;
+    func_ov000_0218e9c4(&self->unk_10c);
+    func_ov000_0218fe1c(&self->unk_244);
+    func_ov000_0218e9c4(&self->unk_32c);
+    func_ov000_0218fe1c(&self->unk_464);
+    func_ov000_0219196c(&self->unk_54c);
+    SET_VT(&self->unk_54c, data_ov015_022129d0);
+    func_0203f260(&self->unk_568);
+    self->unk_04 = 0xffff;
+    self->unk_08 = 0;
+    MIi_CpuClearFast(0, &self->unk_0c[0].x, 0x34);
+    self->unk_40.x = 0;
+    self->unk_40.y = 0;
+    self->unk_40.z = 0;
+    MTX_Identity33_(&self->unk_4c[0].x);
+    self->unk_80 = 0;
+    self->unk_84 = 0;
+    self->unk_88 = 0;
+    self->unk_90 = 0;
+    self->unk_94 = 0;
+    self->unk_98 = 0;
+    self->unk_9c.y = 0;
+    self->unk_9c.z = 0;
+    self->unk_a8 = 0;
+    self->unk_bc = 0;
+    self->unk_f0 = 0;
+    self->unk_f8 = 0;
+    self->unk_100 = 0;
+    self->unk_108 = 0;
+    self->unk_70 = 0x1000;
+    self->unk_74 = 0x1000;
+    self->unk_78 = 0x1000;
+    self->unk_7c = 0x1000;
+    self->unk_8c = 0x1000;
+    self->unk_9c.x = 0x1000;
+    self->unk_ac = -0x32000;
+    self->unk_b0 = 0x32000;
+    self->unk_b4 = -0x37000;
+    self->unk_b8 = -0xaa000;
+    self->unk_ec = 1;
+    self->unk_f4 = 1;
+    self->unk_fc = 1;
+    self->unk_104 = 0x800;
     return self;
 }
 
-void func_ov015_02209270(u8 *self) {
+void func_ov015_02209270(Ov015Fish *self) {
     u32 saved;
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0xf0));
+    DELETE_V(self->unk_f0);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x100));
+    DELETE_V(self->unk_100);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0xf8));
+    DELETE_V(self->unk_f8);
     HEAP_POP(saved);
 }
 

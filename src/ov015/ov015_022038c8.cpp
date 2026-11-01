@@ -14,7 +14,7 @@ extern void *data_02149ef8;
 void *func_0204c0e8(void *a, int id);
 void func_ov000_0215bb14(void *a, void *b);
 void func_ov015_02203ee0(u8 *self);
-void func_ov015_02207c30(u8 *p);
+void func_ov015_02207c30(Ov015Ship *p);
 void VEC_Normalize(void *src, void *dst);
 void VEC_MultAdd(s32 scale, const Ov015Vec *dir, const Ov015Vec *base, Ov015Vec *out);
 BOOL func_ov000_021633ac(void *p);
@@ -27,7 +27,7 @@ extern u8 data_02092844[];
 extern u8 data_02092800[];
 void MTX_LookAt(void *a, void *b, void *c, void *d);
 void MTX_PerspectiveW(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, void *g);
-void func_ov015_02208070(void *p);
+void func_ov015_02208070(Ov015Ship *p);
 void *func_0206ec8c(u16 id);
 extern u8 *data_0214a424;
 
@@ -167,7 +167,7 @@ void func_ov015_02203ab8(u8 *self) {
             VCALL(FLD(void *, t, 0x84))->v70();
         }
     }
-    func_ov015_02207c30(FLD(u8 *, self, 0x3c));
+    func_ov015_02207c30(FLD(Ov015Ship *, self, 0x3c));
     FLD(Ov015V *, self, 0x80)->v1c();
     FLD(Ov015V *, self, 0x84)->v1c();
     FLD(Ov015V *, self, 0x88)->v1c();
@@ -194,7 +194,7 @@ void func_ov015_02203d64(u8 *self) {
     if (FLD(void *, self, 0x24) == NULL) return;
     func_ov000_0217357c(self);
     Ov015_02203d64_Cam(self);
-    func_ov015_02208070(FLD(void *, self, 0x3c));
+    func_ov015_02208070(FLD(Ov015Ship *, self, 0x3c));
     o = FLD(u8 *, self, 0x3c);
     {
         Ov015Vec v = FLD(Ov015Vec, o, 0xd14);

@@ -18,21 +18,21 @@ s32 func_ov000_0218f110(void *a);
 void func_ov015_02211824(void) {
 }
 
-void func_ov015_02211828(u8 *self) {
+void func_ov015_02211828(Ov015Info38 *self) {
     SET_VT(self, data_ov015_022132d0);
-    FLD(u16, self, 0x4) = 0xffff;
-    FLD(s32, self, 0x8) = 0;
-    FLD(s32, self, 0xc) = 0;
-    FLD(s32, self, 0x10) = 0;
-    FLD(s32, self, 0x14) = 0;
-    FLD(s32, self, 0x18) = 0;
-    FLD(s32, self, 0x1c) = 0;
-    FLD(s32, self, 0x20) = 0;
-    FLD(s32, self, 0x24) = 0;
-    FLD(s32, self, 0x28) = 0;
-    FLD(s32, self, 0x2c) = 0;
-    FLD(s32, self, 0x30) = 0;
-    FLD(s32, self, 0x34) = 0;
+    self->unk_04 = 0xffff;
+    self->unk_08 = 0;
+    self->unk_0c = 0;
+    self->unk_10 = 0;
+    self->unk_14 = 0;
+    self->unk_18 = 0;
+    self->unk_1c = 0;
+    self->unk_20 = 0;
+    self->unk_24 = 0;
+    self->unk_28 = 0;
+    self->unk_2c = 0;
+    self->unk_30 = 0;
+    self->unk_34 = 0;
 }
 
 void func_ov015_02211878(void *self) {
@@ -43,26 +43,26 @@ void *func_ov015_0221187c(void *self) {
     return self;
 }
 
-void func_ov015_02211890(u8 *self, u16 id, s32 mode) {
+void func_ov015_02211890(Ov015Info38 *self, u16 id, s32 mode) {
     u8 *info;
     s32 t;
-    FLD(u16, self, 0x4) = id;
+    self->unk_04 = id;
     info = func_0206ef88(id);
-    FLD(s32, self, 0x8) = info[2] * 0x333 + 0x4cd;
-    FLD(s32, self, 0xc) = info[2] * 0x4cd + 0xccd;
-    FLD(s32, self, 0x10) = 0xa000;
-    FLD(s32, self, 0x14) = 0;
+    self->unk_08 = info[2] * 0x333 + 0x4cd;
+    self->unk_0c = info[2] * 0x4cd + 0xccd;
+    self->unk_10 = 0xa000;
+    self->unk_14 = 0;
     t = info[3] * -0x99a - 0x1800;
-    FLD(s32, self, 0x18) = t;
-    FLD(s32, self, 0x1c) = t >> 1;
-    FLD(s32, self, 0x20) = FLD(s16, info, 0x4) << 4;
+    self->unk_18 = t;
+    self->unk_1c = t >> 1;
+    self->unk_20 = FLD(s16, info, 0x4) << 4;
     if (mode == 1) {
-        FLD(s32, self, 0x20) += 0x1000;
+        self->unk_20 += 0x1000;
     }
-    FLD(s32, self, 0x24) = FLD(s16, info, 0x4) << 4;
-    FLD(s32, self, 0x28) = -0x1800;
-    FLD(s32, self, 0x2c) = -0xc0;
-    FLD(s32, self, 0x30) = FLD(s16, info, 0x6) << 4;
+    self->unk_24 = FLD(s16, info, 0x4) << 4;
+    self->unk_28 = -0x1800;
+    self->unk_2c = -0xc0;
+    self->unk_30 = FLD(s16, info, 0x6) << 4;
 }
 
 struct Ov015Info30 {

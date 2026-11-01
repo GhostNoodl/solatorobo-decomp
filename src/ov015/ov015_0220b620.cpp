@@ -23,14 +23,14 @@ void *func_ov015_0220b658(void *self) {
     return self;
 }
 
-BOOL func_ov015_0220b698(u8 *self, u8 *p) {
+BOOL func_ov015_0220b698(u8 *self, Ov015Fish *p) {
     FLD(s32, self, 0x8) = 0;
     FLD(s32, self, 0xc) = 0x50;
-    FLD(s32, self, 0x10) = FLD(u16, p, 0xd4);
-    func_ov000_02190cb0(p + 0x244, data_ov015_02212e47, 0x19a, 0);
-    func_ov000_02191618(p + 0x244);
-    FLD(u16, p, 0x104) = 0x800;
-    FLD(s32, p, 0xbc) = 1;
+    FLD(s32, self, 0x10) = p->unk_c0.unk_14;
+    func_ov000_02190cb0(&p->unk_244, data_ov015_02212e47, 0x19a, 0);
+    func_ov000_02191618(&p->unk_244);
+    p->unk_104 = 0x800;
+    p->unk_bc = 1;
     return TRUE;
 }
 
@@ -44,12 +44,12 @@ void *func_02049a48(void *a, int b, int c, int d, int e);
 s32 FX_Div(s32 a, s32 b);
 BOOL func_ov000_02191120(void *p);
 void func_ov000_021915a0(void *a);
-void func_ov015_0220bb68(u8 *self, u8 *p);
-void func_ov015_0220be38(u8 *self, u8 *p);
-static inline void Ov015_SpeedB6f0(u8 *p) {
+void func_ov015_0220bb68(u8 *self, Ov015Fish *p);
+void func_ov015_0220be38(u8 *self, Ov015Fish *p);
+static inline void Ov015_SpeedB6f0(Ov015Fish *p) {
     s32 r;
-    s32 sp = FLD(s32, p, 0xe8);
-    s32 s = FLD(u16, p, 0xd0) << 12;
+    s32 sp = p->unk_c0.unk_28;
+    s32 s = p->unk_c0.unk_10 << 12;
     if (sp < 0xe10000) {
         r = Ov015_FxMul(s, 0x1000);
     } else if (sp < 0x1c20000) {
@@ -57,19 +57,19 @@ static inline void Ov015_SpeedB6f0(u8 *p) {
     } else {
         r = Ov015_FxMul(s, 0xb33);
     }
-    FLD(s32, p, 0xdc) = r;
+    p->unk_c0.unk_1c = r;
 }
-BOOL func_ov015_0220b6f0(u8 *self, u8 *p) {
+BOOL func_ov015_0220b6f0(u8 *self, Ov015Fish *p) {
     Ov015Vec b;
     Ov015Vec a;
-    FLD(u8 *, self, 0x4) = p;
+    FLD(Ov015Fish *, self, 0x4) = p;
     switch (FLD(s32, self, 0x8)) {
     case 0:
         func_ov015_0220bb68(self, p);
-        if (func_ov000_02191120(p + 0x244)) {
-            func_ov000_02190cb0(p + 0x244, data_ov015_02212e4e, 0x19a, 0);
-            func_ov000_021915a0(p + 0x244);
-            FLD(u16, p, 0x104) = 0x1000;
+        if (func_ov000_02191120(&p->unk_244)) {
+            func_ov000_02190cb0(&p->unk_244, data_ov015_02212e4e, 0x19a, 0);
+            func_ov000_021915a0(&p->unk_244);
+            p->unk_104 = 0x1000;
             FLD(s32, self, 0x8) = 1;
             FLD(s32, self, 0xc) = FLD(s32, self, 0x10);
         }
@@ -80,13 +80,13 @@ BOOL func_ov015_0220b6f0(u8 *self, u8 *p) {
         {
             s32 c = FLD(s32, self, 0xc);
             s32 t = FLD(s32, self, 0x10);
-            Ov015VecC v(FLD(Ov015VecC, p, 0x40));
+            Ov015VecC v(*(Ov015VecC *)&p->unk_40);
             if (t - c >= 0x3c) {
                 s32 r = FX_Div(c << 12, t >> 12);
                 u16 idx = Ov015_FxMul(0x1000 - r, 0x2ffff) >> 12;
                 v.y = Ov015_FxMul(FX_SinCosTable_[(idx >> 4) * 2], 0xccd) + 0x4000;
             }
-            FLD(Ov015VecC, p, 0x40) = v;
+            *(Ov015VecC *)&p->unk_40 = v;
         }
         q = FLD(u8 *, self, 0x4);
         a.x = FLD(s32, q, 0x40);
@@ -116,12 +116,12 @@ BOOL func_ov015_0220b6f0(u8 *self, u8 *p) {
             func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         }
         if (FLD(s32, self, 0xc) <= 0) {
-            FLD(u16, p, 0x104) = 0x800;
+            p->unk_104 = 0x800;
             FLD(s32, self, 0x8) = 2;
             FLD(s32, self, 0xc) = 0x50;
-            func_ov000_02190cb0(p + 0x244, data_ov015_02212e61, 0x19a, 0);
-            func_ov000_02191618(p + 0x244);
-            FLD(u16, p, 0x104) = 0x800;
+            func_ov000_02190cb0(&p->unk_244, data_ov015_02212e61, 0x19a, 0);
+            func_ov000_02191618(&p->unk_244);
+            p->unk_104 = 0x800;
             e = func_020657b0(data_0214a420, FLD(void *, self, 0x14));
             if (e != NULL) {
                 u32 saved;
@@ -138,7 +138,7 @@ BOOL func_ov015_0220b6f0(u8 *self, u8 *p) {
     }
     case 2:
         func_ov015_0220be38(self, p);
-        if (func_ov000_02191120(p + 0x244)) {
+        if (func_ov000_02191120(&p->unk_244)) {
             Ov015_SpeedB6f0(p);
             return FALSE;
         }
@@ -148,7 +148,7 @@ BOOL func_ov015_0220b6f0(u8 *self, u8 *p) {
     if (FLD(s32, self, 0xc) <= 0) {
         FLD(s32, self, 0xc) = 0;
     }
-    FLD(s32, p, 0xbc) = 1;
+    p->unk_bc = 1;
     return TRUE;
 }
 

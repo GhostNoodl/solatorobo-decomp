@@ -14,17 +14,17 @@ void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 extern void *data_02149ef8;
 void *func_0204c0e8(void *a, s32 b);
 void func_ov000_0215bb14(void *a, void *b);
-void *func_ov015_02207738(void *p);
+void *func_ov015_02207738(Ov015Ship *p);
 extern u8 data_ov015_022129c0[];
 void func_ov000_02163254(void *p);
 void *func_ov000_02191b04(void *p);
 extern u8 data_ov015_022129d0[];
-void *func_ov015_0220765c(void *p);
-void func_ov015_02207858(void *p);
+void *func_ov015_0220765c(Ov015Ship *p);
+void func_ov015_02207858(Ov015Ship *p);
 void *func_ov000_0219196c(void *p);
 void func_ov000_02191b70(void *p);
 extern Ov015Shared *data_ov015_02213368;
-BOOL func_ov015_022078bc(void *p);
+BOOL func_ov015_022078bc(Ov015Ship *p);
 BOOL func_ov000_02191b9c(void *p);
 
 static inline bool Ov015Task_Flag4(Ov015Task *t) {
@@ -144,7 +144,7 @@ void func_ov015_02203020(u8 *self) {
     u32 saved;
     HEAP_PUSH(saved);
     {
-    u8 *o = FLD(u8 *, self, 0x3c);
+    Ov015Ship *o = FLD(Ov015Ship *, self, 0x3c);
     if (o != NULL) {
         if (o != NULL) {
             func_ov015_02207738(o);
@@ -185,15 +185,15 @@ void *func_ov015_022031b4(void *self) {
 }
 
 void func_ov015_022031d0(u8 *self) {
-    void *p;
+    Ov015Ship *p;
     void *q;
-    p = func_0203dd9c(0xd58);
+    p = (Ov015Ship *)func_0203dd9c(0xd58);
     if (p != NULL) {
-        p = func_ov015_0220765c(p);
+        p = (Ov015Ship *)func_ov015_0220765c(p);
     }
     FLD(void *, self, 0x3c) = p;
     func_ov015_02207858(p);
-    FLD(u16, FLD(u8 *, self, 0x3c), 0xd48) = data_ov015_02213368->unk_2c;
+    FLD(Ov015Ship *, self, 0x3c)->unk_d48 = data_ov015_02213368->unk_2c;
     q = func_0203dd9c(0x1c);
     if (q != NULL) {
         func_ov000_0219196c(q);
@@ -204,7 +204,7 @@ void func_ov015_022031d0(u8 *self) {
 }
 
 BOOL func_ov015_02203244(u8 *self) {
-    BOOL r = func_ov015_022078bc(FLD(void *, self, 0x3c)) & 1 ? TRUE : FALSE;
+    BOOL r = func_ov015_022078bc(FLD(Ov015Ship *, self, 0x3c)) & 1 ? TRUE : FALSE;
     u8 st = FLD(u8, FLD(u8 *, self, 0x40), 0x1b);
     BOOL idle = TRUE;
     if (st != 3 && st != 0) {
@@ -224,7 +224,7 @@ extern u8 data_ov015_02212990[];
 extern u8 data_ov015_0221299d[];
 extern u8 data_ov015_02213360;
 extern u8 *data_02097d48;
-BOOL func_ov015_02207adc(void *p);
+BOOL func_ov015_02207adc(Ov015Ship *p);
 void func_020434e0(void *p);
 void *func_ov000_02154b58(void *a, s32 b);
 void func_ov000_02163224(void *p);
@@ -258,7 +258,7 @@ void func_ov015_02203298(u8 *self) {
     }
     res = data_02149ef8;
     FLD(s16, FLD(u8 *, self, 0x3c), 0xd3c) = 2;
-    func_ov015_02207adc(FLD(u8 *, self, 0x3c));
+    func_ov015_02207adc(FLD(Ov015Ship *, self, 0x3c));
     {
         u8 *o = FLD(u8 *, self, 0x3c);
         FLD(s16, o, 0xd20) = 0;

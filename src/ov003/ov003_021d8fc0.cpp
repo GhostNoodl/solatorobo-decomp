@@ -30,9 +30,10 @@ extern "C" {
 extern s32 func_02040498(s32 n);
 
 /* The target re-reads index (and, before Seq_Run, entries) instead of reusing the value
-   loaded earlier, so those reads go through const lvalues: Seq_Index (a const member read)
-   and CFLD. A plain read in a later block does not reuse a const read, and two const reads
-   are only merged when they are spelled the same way. The comma in the first copy keeps
+   loaded earlier, so those reads go through const lvalues: Seq_Index (a const member read),
+   `*(const u16 *)&self->index` and `((const Seq *)self)->entries`. A plain read in a later
+   block does not reuse a const read, and two const reads are only merged when they are
+   spelled the same way (`((const Seq *)self)->index` merges with Seq_Index and loses a load). The comma in the first copy keeps
    its 6-byte temp in the target's stack slot (round jkE). */
 static inline u16 Seq_Index(const Seq *s) {
     return s->index;
@@ -186,8 +187,8 @@ void func_ov003_021d8fc0(Seq *self) {
             }
         }
         if (!self->b2 && !Seq_CurIsCtl(self)) {
-            u16 i = CFLD(u16, self, 6);
-            Seq_Run(self, &CFLD(SeqEntry *, self, 0xc)[i]);
+            u16 i = *(const u16 *)&self->index;
+            Seq_Run(self, &((const Seq *)self)->entries[i]);
         }
     }
     self->b6 = self->b5;
