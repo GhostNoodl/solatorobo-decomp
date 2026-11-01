@@ -22,8 +22,8 @@ extern void func_ov000_02194758(void *self);
 extern Ov014V *func_020657b0(void *a, void *b);
 extern u8 data_ov014_02217640[];
 extern u8 data_ov014_0221764f[];
-extern u8 data_ov014_022169d4[];
-extern u8 data_ov014_022169c8[];
+extern const Ov014Vec data_ov014_022169d4;
+extern const Ov014Vec data_ov014_022169c8;
 extern Ov014V *func_02066774(const void *a, const void *b, s32 c, Ov014Vec *pos);
 extern void func_ov003_021da9ac(void *p, u8 id, void *obj);
 extern BOOL func_ov003_021daa0c(void *p, u8 id);
@@ -165,8 +165,8 @@ void func_ov014_02206dd4(Ov014Actor *self) {
         a->v0c(0x1800);
         func_ov003_021da9ac(FLD(void *, self, 0xdc), 0xfd, a);
         e = func_02066774(data_ov014_02217640, data_ov014_0221764f, 0, &self->pos);
-        e->v10(data_ov014_022169d4);
-        e->v20(data_ov014_022169c8);
+        e->v10(&data_ov014_022169d4);
+        e->v20(&data_ov014_022169c8);
         FLD(u8, e, 0x28) = 0;
         FLD(s32, e, 0xc8) = -1;
         func_ov003_021da9ac(FLD(void *, self, 0xdc), 0xff, e);
@@ -216,7 +216,7 @@ struct Ov014PlFlags {
 #define OV014_FXMUL_K(a, k) ((s32)(((s64)(a) * (k) + 0x800) >> 12))
 
 extern void func_ov000_0218d398(Ov014Actor *t, u16 id, s32 a, s32 b, s32 c, Ov014HitArg *arg);
-extern void func_ov003_021daae4(void *p, s32 a, Ov014Vec *v, void *b, void *c, void *d, s32 e);
+extern void func_ov003_021daae4(void *p, s32 a, Ov014Vec *v, void *b, void *c, const void *d, s32 e);
 extern void func_ov003_021daa6c(void *p, s32 a);
 extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void MIi_CpuClear32(u32 data, void *dest, u32 size);
@@ -313,7 +313,7 @@ void func_ov014_02206f40(Ov014Actor *self) {
     sc.x = FLD(s32, self, 0xd4);
     sc.y = FLD(s32, self, 0xd4);
     sc.z = FLD(s32, self, 0xd4);
-    func_ov003_021daae4(FLD(void *, self, 0xdc), 0xff, &self->pos, self->rot, &sc, data_ov014_022169c8, 0);
+    func_ov003_021daae4(FLD(void *, self, 0xdc), 0xff, &self->pos, self->rot, &sc, &data_ov014_022169c8, 0);
     if (t->unk_50[0] != 0) {
         p = t->pos;
         box.unk_1e = 2;

@@ -2,6 +2,8 @@
 
 extern "C" {
 
+extern Ov002ResNames data_ov002_021ef5ac;
+
 extern void *data_ov002_021ef634[];
 extern VFunc data_ov000_021cc9f8[];
 extern VFunc data_ov000_021cadcc[];
@@ -52,7 +54,7 @@ void func_ov002_021d278c(void *self) {
     }
     g = data_02149ef8;
     for (i = 0; i < 7; i++) {
-        func_ov002_021d4540(buf, 0x18, data_ov002_021ef634[i], data_ov002_021ef5ac[0], ((int (*)(void))func_0206e8f0)());
+        func_ov002_021d4540(buf, 0x18, data_ov002_021ef634[i], data_ov002_021ef5ac.hdExt, ((int (*)(void))func_0206e8f0)());
         func_ov002_021e4814((u8 *)self + 0x4c + i * 0x18, *(u8 **)func_02035d8c((u8 *)self + 0xf4, buf));
     }
     {

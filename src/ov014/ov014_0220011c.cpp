@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_ov000_021ccd64;
 extern u8 data_ov014_022174dc[];
-extern u8 data_ov014_0221651c[];
+extern const s32 data_ov014_0221651c[2];
 extern u8 data_ov014_0221664c[];
 extern u8 data_ov014_0221665c[];
 extern u8 data_ov014_0221666c[];

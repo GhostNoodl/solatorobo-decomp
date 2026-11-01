@@ -6,6 +6,12 @@
 typedef volatile u16 vu16;
 typedef volatile u32 vu32;
 
+// The ship model config at 0x02212db0 (defined in ov015_0221272c.cpp).
+struct Ov015ShipCfg {
+    const char *name;
+    s32 scale;
+};
+
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
 class Ov015V {
 public:

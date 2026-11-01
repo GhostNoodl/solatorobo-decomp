@@ -210,7 +210,7 @@ from:0x021fcecc kind:load to:0x02097e4c module:main
 from:0x021fced4 kind:load to:0x0220ae88 module:overlay(13)
 from:0x021fced8 kind:load to:0x0214a420 module:main
 from:0x021fcee8 kind:load to:0x0220b5a0 module:overlay(13)
-from:0x021fcef0 kind:load to:0x0220b5a4 module:overlay(13)
+from:0x021fcef0 kind:load to:0x0220b5a0 add:0x4 module:overlay(13)
 from:0x021fcf38 kind:arm_call to:0x02190cb0 module:overlay(0)
 from:0x021fcf40 kind:arm_call to:0x021915a0 module:overlay(0)
 from:0x021fcf74 kind:arm_call to:0x01ffc128 module:itcm

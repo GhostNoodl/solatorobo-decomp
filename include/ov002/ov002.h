@@ -245,7 +245,7 @@ static inline bool func_ov002_isCurrent021ccd40(void *p) {
 
 void func_02041218(void *p);
 void func_02041440(void *p, void *name, int c);
-void *STD_CopyString(void *p, void *name);
+void *STD_CopyString(void *p, const void *name);
 void *func_02035f30(void *a, void *b, u16 c);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *a, void *b);
@@ -721,8 +721,17 @@ BOOL func_ov002_021d52e0(void *self, void *ev);
 typedef BOOL (*EvCallback)(void *, void *);
 void func_ov000_02152294(void *self, u16 a, int b, EvCallback cb);
 u8 func_0206e8f0(void);
-void func_ov002_021d4540(void *dst, u32 size, void *a, void *b, int mode);
-extern void *data_ov002_021ef5ac[];
+void func_ov002_021d4540(void *dst, u32 size, const void *a, const void *b, int mode);
+// The resource-name table data_ov002_021ef5ac (defined in ov002_021ef150.cpp). Not const:
+// func_ov002_021d278c reloads it after every call in its loop.
+typedef struct Ov002ResNames {
+    const char *hdExt;
+    const char *bmExt;
+    const char *pic;
+    const char *param;
+    s32 scale;
+    const char *cepct;
+} Ov002ResNames;
 extern u8 data_ov002_021ef650[];
 
 u32 STD_GetStringLength(const void *s);

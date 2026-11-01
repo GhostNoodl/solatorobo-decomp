@@ -36,7 +36,7 @@ void func_ov002_021d44e4(Task50 *self) {
     }
 }
 
-void func_ov002_021d4540(void *dst, u32 size, void *a, void *b, int mode) {
+void func_ov002_021d4540(void *dst, u32 size, const void *a, const void *b, int mode) {
     const u8 *s;
     MI_CpuFill8(dst, 0, size);
     switch (mode) {

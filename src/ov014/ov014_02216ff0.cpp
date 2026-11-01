@@ -15,7 +15,6 @@ struct VecFx16 { fx16 x, y, z; };
 // reads data_ov014_02216630 through the .rodata base (it was an FLD view at data_ov014_02216500 +
 // 0x130), so that source is not weak; the stub still matches with it non-weak.
 struct Ov014Rot { u16 x, y, z; };
-struct Ov014Res { const char *name; s32 n; };
 
 extern "C" {
 

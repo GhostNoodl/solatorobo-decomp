@@ -140,6 +140,9 @@ public:
 #define FLD(type, p, off) (*(type *)((u8 *)(p) + (off)))
 
 // Generic bitfield views
+// A resource name and its frame count (data_ov014_022173e0, defined in ov014_02216ff0.cpp).
+struct Ov014Res { const char *name; u16 n; };
+
 struct Ov014Flags {
     u16 b0 : 1;
     u16 b1 : 1;

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void *data_ov014_022164a0[];
+extern const char *const data_ov014_022164a0;
 extern Ov014Vec *func_ov000_0218d2e0(void *self);
 extern Ov014Actor *func_ov000_02199ba0(void *p);
 extern void VEC_Normalize(Ov014Vec *a, Ov014Vec *b);
@@ -26,7 +26,7 @@ void func_ov014_021fcf00(Ov014Actor *self) {
         s32 r;
         s32 dx;
         s32 dz;
-        func_ov000_02190cb0(self->unk_38, data_ov014_022164a0[0], 0x1000, 0);
+        func_ov000_02190cb0(self->unk_38, data_ov014_022164a0, 0x1000, 0);
         func_ov000_021915a0(self->unk_38);
         self->unk_9c = 0;
         FLD(s32, self, 0xa0) = 0;

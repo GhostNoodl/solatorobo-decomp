@@ -3,9 +3,9 @@
 extern "C" {
 
 extern u8 data_ov014_022170d8[];
-extern const u8 data_ov014_0221643a[];
+extern const s16 data_ov014_0221643a[4];
 extern const u8 data_ov014_02216480[];
-extern const char *const data_ov014_02216430[];
+extern const char *const data_ov014_02216430;
 extern void *data_02097e4c;
 extern BOOL func_ov000_0218cf5c(Ov014Actor *self);
 extern BOOL func_ov000_0218f110(void *p);

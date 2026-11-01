@@ -2,6 +2,8 @@
 
 extern "C" {
 
+extern Ov002ResNames data_ov002_021ef5ac;
+
 u32 func_ov002_021e4c30(int which);
 
 u32 func_ov002_021e4960(void *self, s32 val);
@@ -36,9 +38,9 @@ BOOL func_ov002_021d2410(void *self, void *ev) {
             u8 *w = (u8 *)func_ov000_0218084c(data_ov000_021ccd44, 0x19, 0);
             if (idx < 7) {
                 int mode = func_0206e8f0();
-                func_ov002_021d4540(w + 0x44, 0x20, data_ov002_021ef5ac[3], data_ov002_021ef650, mode);
-                func_ov002_021d4540(w + 0x64, 0x18, data_ov002_021ef634[idx], data_ov002_021ef5ac[1], mode);
-                func_ov002_021d4540(w + 0x7c, 0x18, data_ov002_021ef634[idx], data_ov002_021ef5ac[0], mode);
+                func_ov002_021d4540(w + 0x44, 0x20, data_ov002_021ef5ac.param, data_ov002_021ef650, mode);
+                func_ov002_021d4540(w + 0x64, 0x18, data_ov002_021ef634[idx], data_ov002_021ef5ac.bmExt, mode);
+                func_ov002_021d4540(w + 0x7c, 0x18, data_ov002_021ef634[idx], data_ov002_021ef5ac.hdExt, mode);
                 FIELD(w, 0xbc, s32) = idx;
                 FIELD(w, 0xc0, s32) = (u16)n;
                 func_ov002_021d36b8(w, (u16)(idx * 3));

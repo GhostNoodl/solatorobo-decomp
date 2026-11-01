@@ -35,7 +35,7 @@ void func_ov014_02202f1c(Ov014Actor *self) {
 
 
 extern void *data_02097e4c;
-extern void *data_ov014_02216500[];
+extern const char *const data_ov014_02216500[];
 extern const Ov014Vec data_ov014_0221657c;
 extern Ov014Actor *func_ov000_0218d240(Ov014Actor *self);
 extern void func_01ffc9fc(Ov014Vec *out, const void *a, s32 b);

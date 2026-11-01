@@ -112,7 +112,7 @@ void func_ov012_022066d8(Ov012Actor *self) {
 }
 
 extern "C" {
-extern u8 data_ov012_0220a810[];
+extern const Ov012Vec data_ov012_0220a810;
 extern void func_ov012_02206bb0(Ov012Actor *self);
 extern void func_ov012_02206f18(Ov012Actor *self);
 extern BOOL func_ov000_0219aca8(Ov012Actor *a, Ov012Actor *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
@@ -153,7 +153,7 @@ void func_ov012_02206718(Ov012Actor *self) {
         s32 r;
         u16 a;
         func_ov000_0218d240(self);
-        func_01ffc9fc(&v, (Ov012Vec *)data_ov012_0220a810, self->rot[1]);
+        func_01ffc9fc(&v, &data_ov012_0220a810, self->rot[1]);
         VEC_Add(&self->pos, &v, &self->unk_84);
         self->unk_84.y = 0;
         {

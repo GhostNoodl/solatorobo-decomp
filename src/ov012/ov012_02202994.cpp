@@ -178,7 +178,7 @@ s32 func_ov012_02202cd4(Ov012Actor *self, Ov012Msg *msg) {
 }
 
 extern "C" {
-extern const u8 data_ov012_0220a59a[];
+extern const s16 data_ov012_0220a59a[4];
 extern const u8 data_ov012_0220a63c[];
 extern const u8 data_ov012_0220a6c8[];
 extern const u8 data_ov012_0220a708[];

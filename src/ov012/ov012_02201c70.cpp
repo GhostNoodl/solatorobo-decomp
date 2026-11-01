@@ -166,7 +166,7 @@ void func_ov012_02201ecc(Ov012Actor *self) {
 }
 
 extern "C" {
-extern void *data_ov012_0220a510;
+extern const char *const data_ov012_0220a510;
 extern Ov012Vec data_ov012_0220a51c;
 extern Ov012Vec data_ov012_0220a528;
 extern const Ov012Vec data_ov012_0220a540;

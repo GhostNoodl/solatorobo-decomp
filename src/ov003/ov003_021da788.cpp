@@ -79,7 +79,7 @@ extern void *data_0214a420;
 extern const Ov003VecP data_ov003_021f4988;
 extern Ov003FxObj *func_020657b0(void *mgr, void *handle);
 extern void func_01ffc9fc(Ov003Vec *out, const Ov003Vec *in, u16 ang);
-extern u8 data_ov003_021f7cc4[];
+extern const Ov003VecP data_ov003_021f7cc4;
 extern void *func_02065f88(void *mgr, const void *arg);
 extern void func_02065804(void *mgr, void *handle);
 extern void *func_0203dd9c(u32 size);
@@ -90,7 +90,7 @@ extern void func_ov003_021da620(Ov003Follow *self);
 static inline Ov003Follow *Ov003_SpawnFollow(void *mgr, Ov003Src *src, const Ov003Vec *offset) {
     Ov003Follow *p = NULL;
     if (src != NULL && offset != NULL) {
-        p = (Ov003Follow *)func_02065f88(mgr, data_ov003_021f7cc4);
+        p = (Ov003Follow *)func_02065f88(mgr, &data_ov003_021f7cc4);
         if (p != NULL) {
             p->id = src->id;
             p->offset = *offset;

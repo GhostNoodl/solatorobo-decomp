@@ -111,7 +111,7 @@ extern Ov014Swing data_ov014_02216a40[];
 extern u8 data_ov014_0221764f[];
 extern u8 data_ov014_0221765b[];
 extern u8 data_ov014_02217640[];
-extern u8 data_ov014_022169d4[];
+extern const Ov014Vec data_ov014_022169d4;
 extern u8 data_ov014_02216a1c[];
 extern Ov014Vec data_ov014_022169e0;
 extern Ov014Vec data_ov014_02216a10;
@@ -165,7 +165,7 @@ void func_ov014_022078b4(Ov014Actor *self) {
         u8 *g;
         self->pos.y += 0x266;
         e = func_02066774(data_ov014_02217640, data_ov014_0221764f, 0, &self->pos);
-        e->v10(data_ov014_022169d4);
+        e->v10(&data_ov014_022169d4);
         FLD(u8, e, 0x28) = 0;
         e->v24(0, 0x19a, 0);
         FLD(s32, e, 0xc8) = -1;
@@ -222,7 +222,7 @@ void func_ov014_022078b4(Ov014Actor *self) {
             FLD(u8, g, 0x18f) = 0;
             e = func_02065f88(0x391, &self->pos);
             e->v20(data_ov014_02216a1c);
-            e->v10(data_ov014_022169d4);
+            e->v10(&data_ov014_022169d4);
             FLD(s32, e, 0x7c) = FX_Div(0x1d000, 0x1f000);
             func_ov003_021da9ac(FLD(void *, self, 0xd8), 0xf9, e);
             self->unk_40->state++;
@@ -255,13 +255,13 @@ void func_ov014_022078b4(Ov014Actor *self) {
             func_ov003_021daa6c(FLD(void *, self, 0xd8), 0xf9);
             i = 0;
             e = func_02066774(data_ov014_02217640, data_ov014_0221765b, i, &self->pos);
-            e->v10(data_ov014_022169d4);
+            e->v10(&data_ov014_022169d4);
             FLD(u8, e, 0x28) = i;
             func_ov003_021da9ac(FLD(void *, self, 0xd8), 0xfc, e);
             for (; i < 2; i++) {
                 e = func_02065f88(0x68, &self->pos);
                 e->v20(&tbl[i]);
-                e->v10(data_ov014_022169d4);
+                e->v10(&data_ov014_022169d4);
                 func_ov003_021da9ac(FLD(void *, self, 0xd8), 0xfb - i, e);
             }
             func_02065f88(0x322, &self->pos)->v0c(0x8000);

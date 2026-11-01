@@ -5,7 +5,7 @@
 struct Ov014Arr3 { s32 a[3]; };
 extern "C" {
 
-extern void *data_ov014_02216500[];
+extern const char *const data_ov014_02216500[];
 extern void *data_02097e4c;
 extern void func_ov000_02191690(void *a);
 extern void func_ov000_02191708(void *a);
@@ -40,7 +40,7 @@ void func_ov014_022006e4(Ov014Actor *self) {
         break;
     case 3:
         if (func_ov000_02191120(self->unk_38)) {
-            void *a = data_ov014_02216500[3];
+            const char *a = data_ov014_02216500[3];
             func_ov000_02190cb0(self->unk_38, a, 0x89, 0);
             func_ov000_021915a0(self->unk_38);
             if (FLD(s16, self, 0xf0) == 4) {
@@ -61,7 +61,7 @@ void func_ov014_022006e4(Ov014Actor *self) {
     }
 }
 
-extern void *data_ov014_02216500[];
+extern const char *const data_ov014_02216500[];
 extern void func_ov000_02191780(void *a);
 extern u8 *func_ov000_02190a30(void *a, s32 b);
 extern void func_ov000_02191920(void *a, s32 b, s32 c, s32 d);
@@ -134,7 +134,7 @@ static inline void Ov014SpawnA_Init(Ov014SpawnDescA *d, u16 k) {
     d->parent = -1;
 }
 
-extern u8 data_ov014_022173e0[];
+extern Ov014Res data_ov014_022173e0;
 extern const u8 data_ov014_0221663c[];
 extern const u8 data_ov014_0221663d[];
 extern const u8 data_ov014_0221663e[];
@@ -157,7 +157,7 @@ static inline Ov014Actor *Ov014_FindById(u16 id) {
 
 void func_ov014_02200a88(Ov014Actor *self) {
     Ov014Actor *t = func_ov000_0218d240(self);
-    u8 *tbl = data_ov014_022173e0;
+    Ov014Res *tbl = &data_ov014_022173e0;
     Ov014Sub40 *s = self->unk_40;
     switch (s->state) {
     case 0: {
@@ -262,7 +262,7 @@ void func_ov014_02200a88(Ov014Actor *self) {
         }
         {
             Ov014Sub40 *q = self->unk_40;
-            u16 lim = FLD(u16, tbl, 4);
+            u16 lim = tbl->n;
             q->timer++;
             if (lim != q->timer) {
                 return;

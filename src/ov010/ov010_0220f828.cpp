@@ -61,7 +61,6 @@ struct Ov010G54 {
 
 extern "C" {
 
-extern u8 data_ov010_0220ebc0[];
 extern const Ov010Vec data_ov010_0220ec80;
 extern const Ov010Vec data_ov010_0220ec74;
 extern Ov010G54 *data_ov000_021ccd54;

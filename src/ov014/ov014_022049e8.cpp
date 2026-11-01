@@ -15,7 +15,7 @@ struct Ov014eRot {
 
 extern "C" {
 
-extern void *data_ov014_02216500[];
+extern const char *const data_ov014_02216500[];
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
 extern void *data_0214a420;

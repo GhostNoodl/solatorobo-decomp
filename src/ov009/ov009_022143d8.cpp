@@ -2,13 +2,13 @@
 
 extern "C" {
 
-extern void *data_ov009_022161c8[];
+extern const char *const data_ov009_022161c8;
 extern void func_0203f364(Ov009Sub48 *p);
 
 void func_ov009_022143d8(Ov009Actor *self) {
     if (self->unk_40->state == 0) {
         Ov009Sub48 *s48;
-        func_ov000_02190cb0(self->unk_38, data_ov009_022161c8[0], 0x1000, 0);
+        func_ov000_02190cb0(self->unk_38, data_ov009_022161c8, 0x1000, 0);
         func_ov000_021915a0(self->unk_38);
         self->unk_9c = 0;
         self->unk_a0 = 0;

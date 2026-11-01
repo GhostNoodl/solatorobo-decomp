@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void *data_ov014_02216500[];
+extern const char *const data_ov014_02216500[];
 extern void *func_ov000_0218d240(Ov014Actor *self);
 extern void func_ov000_0218d9e8(Ov014Actor *self, Ov014Vec *v, s32 a);
 

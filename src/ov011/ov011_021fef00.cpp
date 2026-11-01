@@ -22,7 +22,7 @@ struct Ov011Small4 {
 
 extern "C" {
 
-extern u8 data_ov011_0220726e[];
+extern const s16 data_ov011_0220726e[4];
 void func_ov003_021d112c(void *self);
 void *func_ov000_02198328(void *p);
 void *func_ov011_02201510(void *p);
@@ -31,7 +31,7 @@ void func_ov011_02202edc(void *p);
 void *func_ov011_02202c54(void *p);
 BOOL func_ov011_021fd4d8(void *p, void *owner);
 BOOL func_020621c4(void);
-void func_ov003_021d6bac(void *p, void *data);
+void func_ov003_021d6bac(void *p, const void *data);
 
 void func_ov011_021fef00(Ov011Actor *self) {
     u8 *p;
@@ -91,7 +91,7 @@ void func_ov011_021fef00(Ov011Actor *self) {
 }
 
 extern void *data_02097e4c;
-extern const char *const data_ov011_02207258[];
+extern const char *const data_ov011_02207258;
 extern void *func_0204a028(void *a, s32 b, Ov011Vec *c, s32 d);
 extern void *func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
@@ -146,7 +146,7 @@ BOOL func_ov011_021ff084(Ov011Actor *self, u8 *msg) {
                 s->f.b1 = 0;
                 s->f.b2 = 0;
                 s->a = 0;
-                func_ov000_02190cb0(self->unk_38, data_ov011_02207258[0], 0x1000, 0);
+                func_ov000_02190cb0(self->unk_38, data_ov011_02207258, 0x1000, 0);
                 func_ov000_021915a0(self->unk_38);
             }
             break;

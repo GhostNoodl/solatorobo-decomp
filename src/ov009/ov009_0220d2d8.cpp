@@ -8,7 +8,7 @@ struct Ov009Ver {
     u8 c;
 };
 
-extern Ov009Ver data_ov009_02216004[];
+extern const Ov009Ver data_ov009_02216004[2];
 extern void *data_ov000_021ccd64;
 extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
 extern void func_ov000_0218b700(u8 *p, s32 a, s32 b);

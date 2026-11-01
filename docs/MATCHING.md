@@ -6996,3 +6996,40 @@ Sweep of the `NONMATCHING` drafts for load/store-order and reload misses. **One 
   - `ov009_0220acb8`: without the `(u16)` cast the `ldrh f0` comes before the adds where the ROM puts it after them (15). It is above the argument stores in both. Pressure scheduling, as before.
   - `ov009_02206084`, `ov006_021e7004`, `02053254`, `02043100`: load–load or arithmetic order, or (`02043100`) the `attr01` reloads. As earlier rounds found, no alias lever applies.
 - **No renames** this round.
+### Round dtC
+
+**No new match. Two TU merges (11 files folded) and about 45 view/wrong-extern fixes, with every function still matching.** Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` 8134 matched (8134 before). FLD-on-`data_` lines: 451 → 449. Externs whose type disagrees with the defining TU (scratch `ext.py`): 107 → 78. Scratch is in the session scratchpad `dtC/`: `views.py` lists FLD views with their owner TU, `idx.py` lists `[n]`/`(u8 *)+n` uses of TU-defined objects, `ext.py` lists wrong-typed externs, `c02/c09/c11/c12/c13.py` are `mtu.py` configs, and `v.py` scores text variants.
+
+- **Merges:**
+  - **ov013 `0220b544`** takes `02204a3c..022065ac` (five files). Its readers reach the rotation `0220b292`, the angle offsets `0220b29e` and the zero vector `0220b2c0` through the base `0220b290` plus an offset. The views `Ov013RotTbl`, `*(Ov013Offs5 *)(data_ov013_0220b290 + 0xe)`, `*(Ov013Vec *)((u8 *)data_ov013_0220b290 + 0x30)` and `const char *p = data_ov013_0220b290` became `data_ov013_0220b292`, `data_ov013_0220b29e` (now an `Ov013Offs5`, written as the same `(u16)-0x1556..` values), `data_ov013_0220b2c0` and `&data_ov013_0220b290`. The TU now includes `ov013.h`.
+  - **ov012 `0220a8d8`** takes `021fa6a0..021fab7c` and `021fe8b4..02200200` (six files), so its text is now `021fa6a0..02200200`. The `u8[]` externs of the handler tables `ac9c`/`abf0`/`ab44` and of the angle tables are gone. **It has to stop at `02200200`:** inside the TU, `func_ov012_02200200` hoists its `data_ov012_0220a3c4[n]` loads above the stores before them (13 lines). Outside the TU, the same function matches only with the **unsized** extern `const char *const data_ov012_0220a3c4[]`. With `[2]` it also gets 13.
+  - jkL's merge of `ov011_021ffb58.cpp` came in on main. I had made the same merge independently (10/10 matching, `D58` view and volatile gone) and dropped mine in favour of theirs.
+- **New observation: an incomplete extern array schedules differently from a complete object.** Seen three times:
+  - The ov012 case above.
+  - `ov002_021d36b8`: with `extern void *data_ov002_021ef5ac[]` its `cepct` load sits above the `num[]` byte stores, like the ROM. With the struct `Ov002ResNames` (const or not, extern or merged into its TU) it sits below them (24 lines). Even `((void **)&struct)[5]` gives 24.
+  - So when a reader matches only with `T x[]`, swapping in the sized or real type can break it even with no alias involved.
+- **dtB's items (step 1):**
+  - `ov015_02212db0`: `Ov015ShipCfg` moved to `ov015.h`. `ov015_0220e024`/`0220947c` read `data_ov015_02212db0.name` instead of `FLD(void *, ..., 0)`. The `[3]` readers (`0220df48`, `02209364`) reach into the name pool at `0x02212dbc` and stay as they are.
+  - `ov003_021f4c64`: `ov003_021e0e8c` declares it as `const char *const [2]` (was `void *const`). `t` and `func_ov000_0214b5e8`'s parameter are now `const char *`.
+  - `ov012_0220a3c4`: `const char *const` in the header and in the TU (it was `const u8 *const` with casts). It stays unsized in the header (see above).
+  - `ov009_02216004`: `ov009_0220d2d8` declares it as `const Ov009Ver [2]`.
+  - `ov002_021ef5ac`: `Ov002ResNames` moved to `ov002.h`. `021d2410`, `021d25ec` and `021d278c` use `.hdExt/.bmExt/.param`.
+    - **The object is not const:** `func_ov002_021d278c` reloads `hdExt` after every call in its loop (with const it is hoisted: 270 lines). The definition in `ov002_021ef150.cpp` dropped `const` (it sits in `.data` and is filled by `__sinit`).
+    - `021d36b8` keeps `extern void *data_ov002_021ef5ac[]` with `[5]`/`[2]`, for the scheduling reason above. A merge into `021ef150` (text `021d2410..021d37f8`) gives the same 24.
+    - `func_ov002_021d4540`'s name parameters and `STD_CopyString`'s source are now `const void *`.
+- **Other view and extern fixes (all still matching):**
+  - `ov013_0220b5a0` is one `const VecFx32 [2]`, no longer the split `fx32` + `fx32[5]`. The reader indexes the pair, so its second pool word is `&[0].y`: `symbols.txt` drops `data_ov013_0220b5a4`, and `relocs.txt` records `0x021fcef0` as `to:0x0220b5a0 add:0x4`.
+  - `Cmd_02189194`: `((CmdEntry *)(data_ov000_021cc1a0 + 4))` became the table itself. `CmdEntry` is now `{key, fn}` (= `Ov000ScpEnt`), and MWCC folds the `+4` into the literal as the ROM does.
+  - ov014: `data_ov014_02216430[0]` became the scalar (`021fad9c`, `021fb8dc`), and so did `022164a0[0]` (`021fcf00`). `0221643a`, `02216450`, `02216524/2c/4c/5c`, `0221651c`, `02216564`, `022169c8/d4`, `022173c8` and `02216500` (`void *[]` → `const char *const []`, 9 files) got their real types. `Ov014Res` (`{name, u16 n}`) moved to `ov014.h`, and `022006e4` reads `tbl->n` instead of `FLD(u16, tbl, 4)`.
+  - ov012: `0220a3f0/f8/400/59a` are `s16[4]`, `0220a810` is an `Ov012Vec` (`func_01ffc9fc`'s source is const), and `0220a510` is `const char *const`.
+  - ov011: in `021fef00`, `data_ov011_02207258[0]` became the scalar and `0220726e` became `s16[4]`.
+  - ov009: `022143d8` reads the scalar `022161c8`. `02215ef0` is a `u16[3]` (`{0x1a0a, 0x0d05, 0}`, the same bytes) because its only reader uses `ldrh`.
+  - ov010: `0220efb0` is an `Ov010Vec`. The unused wrong externs of `0220fe30` and `0220ebc0` are gone.
+  - ov003: `021f7cc4` is an `Ov003VecP`. The unused `Ov003Defaults` view of `021f4980` is gone from three files.
+- **Blocked or left:**
+  - **`ov009_0220413c`:** with the TU's object, const or not and wherever it is defined, the y/z reloads are CSE'd (42 lines, 51 when it is defined after the function). That also blocks `022046cc`/`0220487c`.
+  - **ov010 `02207520..`:** blocked by `0x0220f0d8`. Those are real u16 constants, so they cannot be defined.
+  - **`Menu_021763c8` `data_ov000_021c9bf4[1]`:** the read goes through the base, but that TU's `.data` and Menu's are not contiguous (the `ov000_021743bc` string `0x021cba0c` sits between them).
+  - **`ov007` `FLD(u8, data_02097e3c, 0x149)`:** `Movie.h` clashes with `ov007.h`.
+  - **`ov011_021ff87c`/`021ff8fc`:** these files sit just before the merged range, but the only `Ov011ResTbl` view in them is in the `021ff24c` NONMATCHING draft. The merge would gain nothing, and the draft stays where it is.
+- No new data. No renames.

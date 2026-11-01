@@ -95,11 +95,6 @@ public:
     virtual void SetScale(s32 x, s32 y, s32 z);
 };
 
-typedef struct {
-    u8 unk_00[8];
-    Ov003Vec v;
-} Ov003Defaults;
-
 static inline Ov003StateNode *Ov003StateMachine_Find(Ov003StateMachine *self, u8 id) {
     Ov003StateNode *n;
     for (n = self->list; n != NULL; n = n->next) {
@@ -112,7 +107,6 @@ static inline Ov003StateNode *Ov003StateMachine_Find(Ov003StateMachine *self, u8
 
 extern "C" {
 
-extern const Ov003Defaults data_ov003_021f4980;
 extern u32 data_ov003_021f7cf4;
 extern u32 data_ov003_021f7cd8;
 extern s16 func_ov003_021d7e58(Ov003Ticker *t);

@@ -151,7 +151,7 @@ extern void *data_0214a420;
 extern void *data_02097e4c;
 extern const Ov013Vec data_ov013_0220ae64;
 extern u8 data_ov013_0220ae88[];
-extern const Ov013Vec data_ov013_0220b5a0[];
+extern const Ov013Vec data_ov013_0220b5a0[2];
 extern void func_02065804(void *a, s32 b);
 extern Ov013V *func_020657b0(void *a, s32 b);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);

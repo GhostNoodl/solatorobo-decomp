@@ -112,9 +112,10 @@ typedef struct {
     u16 unk_12;
 } Obj02097dc8;
 
+// One entry of the command table data_ov000_021cc1a0 (Ov000ScpEnt in ov000_021ca70c.cpp).
 typedef struct {
+    s32 key;
     CmdPmf fn;
-    s32 unk_08;
 } CmdEntry;
 
 extern "C" {
@@ -122,7 +123,7 @@ extern State021ccd50 data_ov000_021ccd50;
 extern Mgr021ccd30 *data_ov000_021ccd30;
 extern s32 data_02097d78[];
 extern Obj021ccd70 *data_ov000_021ccd70;
-extern u8 data_ov000_021cc1a0[];
+extern CmdEntry data_ov000_021cc1a0[];
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 extern Obj02097dc8 *data_02097dc8;
@@ -211,7 +212,7 @@ static inline BOOL TaskHasVal(Task118 *t) {
 
 // The handler table (ov000_021ca70c.cpp) is {key, handler} entries; this file reads it from the
 // handler of entry 0, four bytes in.
-#define CMD_ENTRIES ((CmdEntry *)(data_ov000_021cc1a0 + 4))
+#define CMD_ENTRIES data_ov000_021cc1a0
 
 #define PMF_PTR(f) (*(void **)&(f))
 

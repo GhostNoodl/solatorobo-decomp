@@ -4,7 +4,7 @@ extern "C" {
 
 s32 func_ov000_0218f110(void *a);
 s32 func_ov000_02191b9c(void *a);
-extern u8 data_ov015_02212db0[];
+extern const Ov015ShipCfg data_ov015_02212db0;
 extern u8 data_ov015_02212e0d[];
 extern char data_ov015_02212e14[];
 extern char data_ov015_02212e15[];
@@ -84,7 +84,7 @@ BOOL func_ov015_02209500(u8 *self) {
     func_ov000_0218ffdc(self + 0x464, self + 0x32c, 0, 1);
     n = FLD(Ov015Bits09500, func_0206fef8(FLD(u16, self, 0x4)), 0x12).b5;
     if (n != 0) {
-        func_ov000_02190cb0(self + 0x464, FLD(void *, data_ov015_02212db0, 0), 0x1000, 0);
+        func_ov000_02190cb0(self + 0x464, data_ov015_02212db0.name, 0x1000, 0);
         func_ov000_02191618(self + 0x464);
         func_ov000_02191690(self + 0x464);
         func_ov000_02191318(self + 0x464, n << 12);

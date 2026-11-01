@@ -24,7 +24,7 @@ static inline void Ov014Spawn_Set(Ov014SpawnDesc *d, u16 k) {
 
 extern "C" {
 
-extern const char *const data_ov014_02216430[];
+extern const char *const data_ov014_02216430;
 extern const Ov014Vec data_ov014_02216444;
 extern const s32 data_ov014_022164e8[];
 extern u8 data_ov014_022172c4[];
@@ -65,7 +65,7 @@ void func_ov014_021fb948(Ov014Actor *self) {
     FLD(Ov014Flags, self, 0xea).b9 = 1;
     switch (self->unk_40->state) {
     case 0:
-        anim = data_ov014_02216430[0];
+        anim = data_ov014_02216430;
         func_ov000_02190cb0(self->unk_38, anim, 0x111, 0);
         func_ov000_021911c8(self->unk_38, 0x1ec);
         func_ov000_021915a0(self->unk_38);

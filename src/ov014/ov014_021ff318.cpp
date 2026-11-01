@@ -221,7 +221,7 @@ static inline BOOL Ov014_PlBusy(Ov014Actor *pl) {
 
 extern const Ov014Vec data_ov014_02216600;
 extern const Ov014Vec data_ov014_022165f4;
-extern void *data_ov014_02216500[];
+extern const char *const data_ov014_02216500[];
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *o);
 extern void VEC_MultAdd(s32 a, const Ov014Vec *v1, const Ov014Vec *v2, Ov014Vec *out);
 extern s32 VEC_Distance(const Ov014Vec *a, const Ov014Vec *b);

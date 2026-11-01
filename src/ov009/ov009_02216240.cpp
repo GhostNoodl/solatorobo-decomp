@@ -13,7 +13,7 @@ struct VecFx16 { fx16 x, y, z; };
 // view; the vectors they pass are taken by address (&data_ov009_02215efc, &...f14) instead of u8[]
 // externs. The readers before 0x0220acb8 (022088d8.cpp) are cut off by the unmatched 0220acb8.
 extern const char *const data_ov009_02215ee4;
-extern const u8 data_ov009_02215ef0[6];
+extern const u16 data_ov009_02215ef0[3];
 extern const VecFx32 data_ov009_02215efc;
 extern const VecFx32 data_ov009_02215f08;
 extern const VecFx32 data_ov009_02215f14;
@@ -33,7 +33,7 @@ const VecFx32 data_ov009_02215f08 = {0, 0, 0x3000};
 static const VecFx32 data_ov009_02215f20 = {0, 0, 0};
 const VecFx32 data_ov009_02215efc = {0, 0x4000, -0x8000};
 static const VecFx32 data_ov009_02217290 = data_ov009_02215f20;
-const u8 data_ov009_02215ef0[6] = {0x0a, 0x1a, 0x05, 0x0d, 0, 0};
+const u16 data_ov009_02215ef0[3] = {0x1a0a, 0x0d05, 0};
 
 // ---- merged from ov009_0220b70c.cpp
 namespace m_0220b70c {

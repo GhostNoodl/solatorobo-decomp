@@ -2,6 +2,10 @@
 
 extern "C" {
 
+// Ov002ResNames (ov002.h); hdExt/pic/cepct read as [n] here: as a struct the cepct load is
+// scheduled after the num stores (24 lines), as an incomplete array before them, like the ROM.
+extern void *data_ov002_021ef5ac[];
+
 void *STD_ConcatenateString(char *dst, const char *src);
 
 void func_ov002_021d36b8(void *self, s32 n) {

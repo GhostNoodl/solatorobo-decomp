@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void *data_02097e4c;
-extern void *data_ov014_02216500[];
+extern const char *const data_ov014_02216500[];
 extern const Ov014Vec data_ov014_022165dc;
 extern BOOL func_ov003_021d8820(void *p);
 extern void func_ov003_021d87d0(void *p, s32 a);

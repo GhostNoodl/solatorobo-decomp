@@ -2,8 +2,8 @@
 
 extern "C" {
 
-extern const u8 data_ov014_022173c8[];
-extern void *data_ov014_02216500[];
+extern char data_ov014_022173c8[];
+extern const char *const data_ov014_02216500[];
 void func_ov000_02191690(void *a);
 void *func_ov000_02191318(void *a, s32 b);
 s32 func_ov000_0219a510(void *self, u16 mask, Ov014Vec *p, s32 r, s32 a, void **out);

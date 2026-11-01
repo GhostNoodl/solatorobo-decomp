@@ -17,7 +17,6 @@ public:
 
 extern "C" {
 
-extern u8 data_ov010_0220fe30[];
 extern Ov010Fx *func_02065f88(s32 a, void *b);
 extern s32 func_0203db40(void *p);
 extern void func_ov000_02190a80(void *p, s32 a);

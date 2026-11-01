@@ -3691,7 +3691,7 @@ extern void func_0203de1c(void *p);
 extern void *func_ov000_0218ea20(void *p);
 extern void *func_ov000_0219429c(void *self);
 extern Ov003Game54 *data_ov000_021ccd54;
-extern void *const data_ov003_021f4c64[2];
+extern const char *const data_ov003_021f4c64[2];
 extern void func_ov000_0219433c(void *self);
 extern void *func_0207011c(u16 id);
 extern void *STD_CopyString(void *dst, const void *src);
@@ -3700,7 +3700,7 @@ extern void *func_02039674(void *p);
 extern BOOL OS_IsRunOnTwl(void);
 extern void *func_0203dd9c(u32 size);
 extern void *func_ov000_0214b570(void *p);
-extern void func_ov000_0214b5e8(void *p, void *t);
+extern void func_ov000_0214b5e8(void *p, const char *t);
 extern BOOL func_ov000_021946f8(void *self);
 extern BOOL func_ov000_0218f110(s16 *res);
 extern s32 func_ov000_0214b6d0(void *p);
@@ -3832,7 +3832,7 @@ void func_ov003_021e5a18(Ov003Obj *self) {
     if (self->kind != 0) {
         u16 id = self->unk_0e;
         void *r;
-        void *t;
+        const char *t;
         if (self->kind == 3) {
             id = 0x4053;
         }
