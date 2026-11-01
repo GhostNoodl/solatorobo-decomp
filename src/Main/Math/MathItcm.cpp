@@ -58,7 +58,7 @@ BOOL func_01ffc2a4(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max) {
 }
 
 
-BOOL func_01ffc318(VecFx32 *p, const VecFx32 *trans, VecFx32 *min, VecFx32 *max, u16 *rot) {
+BOOL func_01ffc318(VecFx32 *p, const VecFx32 *trans, const VecFx32 *min, const VecFx32 *max, const u16 *rot) {
     MtxFx43 m;
     VecFx32 v;
     MtxFx43 tmp;
