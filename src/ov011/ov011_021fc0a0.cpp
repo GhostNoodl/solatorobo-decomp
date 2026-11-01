@@ -146,6 +146,8 @@ void *func_ov011_021fc0a0(void *self) {
 // it never refuses a step (0x5264f0 fails only when the target block has no instructions at all). A reused
 // single-def zero is itself a move candidate when its block is visited, so an enum zero local (declared at the
 // top of Remove, in the loop body, or before the if) just starts the same walk (26 / 3).
+// Round hzA: refusal (d), a zero whose vreg has two definitions, is never moved (checked: an enum local with a
+// second def stays exactly where its first def is), but no honest source puts such a def between the guard and the loop.
 
 struct Ov011Slot {
     u8 b0 : 1;
