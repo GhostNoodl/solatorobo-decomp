@@ -45,11 +45,14 @@ typedef s64 fx64c;
 #define FX16_MIN            ((fx16)0x8000)
 #define FX64C_SHIFT 32
 
+#ifndef VECFX32_DEFINED
+#define VECFX32_DEFINED
 typedef struct VecFx32 {
     fx32 x;
     fx32 y;
     fx32 z;
 } VecFx32;
+#endif
 
 typedef struct VecFx16 {
     fx16 x;

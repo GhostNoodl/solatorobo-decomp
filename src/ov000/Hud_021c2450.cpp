@@ -78,34 +78,34 @@ void func_ov000_021c2450(u8 *self) {
         if (m != NULL) {
             char *name = data_0208cc94;
             char *a = data_0208cc88;
-            func_02041218(m->unk_88);
+            func_02041218(m->pltt);
             func_02041440(m, a, 0);
-            STD_CopyString(m->unk_2c, name);
+            STD_CopyString(m->name, name);
         }
         LFLD(Model *, self, 0x30) = m;
-        func_020417e0(LFLD(Model *, self, 0x30), func_02034d88(func_02035d5c((char *)m->unk_2c), LFLD(Model *, self, 0x30)->unk_2c + 0x20));
-        LFLD(Model *, self, 0x30)->unk_6c |= 2;
+        func_020417e0(LFLD(Model *, self, 0x30), func_02034d88(func_02035d5c(m->name), LFLD(Model *, self, 0x30)->unk_04c));
+        LFLD(Model *, self, 0x30)->flags |= 2;
         func_02041d9c(LFLD(Model *, self, 0x30), 0, 6);
         func_02041c20(LFLD(Model *, self, 0x30), 6, LFLD(void *, self, 0x3c));
         func_02041c5c(LFLD(Model *, self, 0x30), (void *)func_ov000_021c7608);
-        LFLD(Model *, self, 0x30)->unk_6c |= 0x80000;
-        ((MdlFlags021c2450 *)&LFLD(Model *, self, 0x30)->unk_6c)->lay = 0x1e;
-        LFLD(Model *, self, 0x30)->unk_6c |= 0x100000;
+        LFLD(Model *, self, 0x30)->flags |= 0x80000;
+        ((MdlFlags021c2450 *)&LFLD(Model *, self, 0x30)->flags)->lay = 0x1e;
+        LFLD(Model *, self, 0x30)->flags |= 0x100000;
 
         m2 = (Model *)func_0203dd9c(sizeof(Model));
         if (m2 != NULL) {
             char *a = data_0208cb7c;
-            func_02041218(m2->unk_88);
+            func_02041218(m2->pltt);
             func_02041440(m2, a, 0);
-            STD_CopyString(m2->unk_2c, data_0214b105);
+            STD_CopyString(m2->name, data_0214b105);
         }
         LFLD(Model *, self, 0x34) = m2;
-        func_020417e0(LFLD(Model *, self, 0x34), func_02034d88(func_02035d5c((char *)m2->unk_2c), LFLD(Model *, self, 0x34)->unk_2c + 0x20));
-        LFLD(Model *, self, 0x34)->unk_6c |= 2;
+        func_020417e0(LFLD(Model *, self, 0x34), func_02034d88(func_02035d5c(m2->name), LFLD(Model *, self, 0x34)->unk_04c));
+        LFLD(Model *, self, 0x34)->flags |= 2;
         func_02041d9c(LFLD(Model *, self, 0x34), 0, 4);
-        LFLD(Model *, self, 0x34)->unk_6c |= 0x80000;
-        ((MdlFlags021c2450 *)&LFLD(Model *, self, 0x34)->unk_6c)->lay = 0x1e;
-        LFLD(Model *, self, 0x34)->unk_6c |= 0x100000;
+        LFLD(Model *, self, 0x34)->flags |= 0x80000;
+        ((MdlFlags021c2450 *)&LFLD(Model *, self, 0x34)->flags)->lay = 0x1e;
+        LFLD(Model *, self, 0x34)->flags |= 0x100000;
         if (LFLD(void *, self, 0x38) == NULL) {
             SetText021c2450(self, data_ov000_021cc9bc);
         }

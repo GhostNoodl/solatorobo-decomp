@@ -1925,6 +1925,7 @@ data_ov000_021ccd20 kind:bss addr:0x021ccd20
 data_ov000_021ccd24 kind:bss addr:0x021ccd24
 data_ov000_021ccd30 kind:bss addr:0x021ccd30
 data_ov000_021ccd34 kind:bss addr:0x021ccd34
+data_ov000_021ccd35 kind:bss addr:0x021ccd35
 data_ov000_021ccd38 kind:bss addr:0x021ccd38
 data_ov000_021ccd40 kind:bss addr:0x021ccd40
 data_ov000_021ccd44 kind:bss addr:0x021ccd44

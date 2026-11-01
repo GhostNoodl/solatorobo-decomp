@@ -227,7 +227,7 @@ extern "C" const s16 FX_SinCosTable_[];
 #define FX_SINCOS(i) (FX_SinCosTable_[(i)])
 
 extern void *data_ov000_021ccd40;
-extern void *data_ov000_021ccd38;
+extern s32 data_ov000_021ccd38;
 int func_02054f10(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
@@ -258,9 +258,9 @@ void func_ov002_021ce7b8(Task50 *self);
 
 static inline void func_ov002_setCurrent021ccd40(void *p) {
     if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = FIELD(data_ov000_021ccd40, 0x14, void *);
+        data_ov000_021ccd38 = FIELD(data_ov000_021ccd40, 0x14, s32);
     } else {
-        data_ov000_021ccd38 = NULL;
+        data_ov000_021ccd38 = 0;
     }
     data_ov000_021ccd40 = p;
 }

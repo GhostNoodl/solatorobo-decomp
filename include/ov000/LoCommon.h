@@ -50,7 +50,6 @@ typedef void *(*LoCreateFn)(void);
 extern "C" {
 #endif
 
-extern u8 data_ov000_021ccd34[];
 extern LoCreateFn data_ov000_021c9c6c[];
 void *func_0203dd9c(u32 size);
 void func_ov000_02173648(void *self);
@@ -103,55 +102,5 @@ typedef struct {
     u32 b1 : 1;
     u32 st : 2;
 } LoTaskFlags;
-
-static inline void *LoFindTask(s32 kind) {
-    void *t;
-    for (t = LFLD(void *, data_ov000_021ccd34, 8); t != NULL; t = LFLD(void *, t, 0x38)) {
-        if (LFLD(s32, t, 0x14) == kind) {
-            return t;
-        }
-    }
-    return NULL;
-}
-
-static inline void *LoSwitchTaskC(s32 kind, s32 c) {
-    void *cur = LFLD(void *, data_ov000_021ccd34, 0x10);
-    s32 st;
-    LFLD(u8, data_ov000_021ccd34, 0) = 1;
-    LFLD(void *, cur, 0x54) = LoFindTask(kind);
-    if (LFLD(void *, cur, 0x54) == NULL) {
-        LoCreateFn fn = data_ov000_021c9c6c[kind];
-        LFLD(void *, cur, 0x54) = fn != NULL ? fn() : NULL;
-        LFLD(s32, LFLD(void *, cur, 0x54), 0xc) = c;
-        LFLD(s32, LFLD(void *, cur, 0x54), 0x2c) = LFLD(s32, data_ov000_021ccd34, 0xc);
-        st = 1;
-    } else {
-        st = 2;
-    }
-    if (LFLD(void *, cur, 0x54) != NULL) {
-        LFLD(LoTaskFlags, cur, 0).st = st;
-    }
-    return LFLD(void *, cur, 0x54);
-}
-
-static inline void LoResumeTask(s32 kind) {
-    void *cur = LFLD(void *, data_ov000_021ccd34, 0x10);
-    VObj *t;
-    LFLD(u8, data_ov000_021ccd34, 0) = 1;
-    t = (VObj *)LoFindTask(kind);
-    if (t != NULL) {
-        t->vfunc_50();
-        LFLD(u32, t, 4) |= 6;
-        LFLD(LoTaskFlags, cur, 0).st = 2;
-    }
-}
-
-static inline void *LoSwitchTask(s32 kind) {
-    return LoSwitchTaskC(kind, 0);
-}
-
-static inline VObj *LoTaskObj(void) {
-    return (VObj *)(*(u8 **)(data_ov000_021ccd34 + 0x10) + 8);
-}
 
 #endif

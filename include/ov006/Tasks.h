@@ -203,7 +203,7 @@ extern ov006_Unk0214a424 *data_0214a424;
 
 extern void *data_ov000_021ccd44;
 extern void *data_ov000_021ccd40;
-extern void *data_ov000_021ccd38;
+extern s32 data_ov000_021ccd38;
 extern s32 data_02097d78[];
 
 void *func_ov000_0218084c(void *a, int b, int c);
@@ -249,9 +249,9 @@ static inline BOOL ov006_IsMode4(void) {
 
 static inline void ov006_SetCurrent021ccd40(void *p) {
     if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = *(void **)((u8 *)data_ov000_021ccd40 + 0x14);
+        data_ov000_021ccd38 = *(s32 *)((u8 *)data_ov000_021ccd40 + 0x14);
     } else {
-        data_ov000_021ccd38 = NULL;
+        data_ov000_021ccd38 = 0;
     }
     data_ov000_021ccd40 = p;
 }

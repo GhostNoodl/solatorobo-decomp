@@ -3,6 +3,7 @@
 
 #include "ov000/VObj.h"
 #include "ov000/Vec.h"
+#include "Main/Sys/Pad.h"
 
 typedef struct ActorMsg {
     struct ActorMsg *next;
@@ -258,11 +259,6 @@ typedef struct {
 } MsgData8;
 
 typedef struct {
-    u8 unk_00[0x10];
-    u16 unk_10;
-} Rng02097dc8;
-
-typedef struct {
     u8 unk_00[0x4];
     VecFx32 pos;
 } Player021ccd54Sub;
@@ -286,7 +282,6 @@ extern u8 data_ov000_021cc404[];
 BOOL func_01ffc4ec(VecFx32 *v, s32 speed, s32 b);
 u16 func_0203d434(void *rng, s32 range);
 void func_ov000_0218dbe0(Actor *self, s32 turn);
-extern Rng02097dc8 *data_02097dc8;
 void func_ov000_0218bed8(void *a, s32 b, Actor *actor);
 extern Player021ccd54 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;
