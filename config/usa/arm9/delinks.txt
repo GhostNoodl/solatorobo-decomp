@@ -1111,6 +1111,7 @@ src/Main/Gfx/GfxSys_5.cpp:
 src/Main/Gfx/GfxSys_6.cpp:
     complete
     .text       start:0x0203cd10 end:0x0203ced8
+    .bss        start:0x02097d44 end:0x02097dc8
 
 src/Main/Gfx/GfxSys_7.cpp:
     complete

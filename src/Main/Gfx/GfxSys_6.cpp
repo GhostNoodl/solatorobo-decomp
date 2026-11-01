@@ -2,20 +2,20 @@
 
 extern "C" {
 
-// Brightness fade channels, indexed by screen.
-typedef struct GfxSysHolder {
-    /* 0x00 */ u32 unk_0;
-    /* 0x04 */ GfxSys *sys;
-    /* 0x08 */ u32 unk_8;
-    /* 0x0c */ int fadeEnd[5];
-    /* 0x20 */ int fadeTimer[5];
-    /* 0x34 */ int fadeState[5];
-    /* 0x48 */ int fadeDuration[5];
-    /* 0x5c */ int fadeStart[5];
-    /* 0x70 */ int fadeBase[5];
-} GfxSysHolder;
+typedef struct GfxFadeCtx {
+    /* 0x00 */ u32 unk_00;
+    /* 0x04 */ int state;
+    /* 0x08 */ int timer;
+    /* 0x0c */ int duration;
+    /* 0x10 */ int start;
+    /* 0x14 */ int end;
+} GfxFadeCtx;
 
-extern GfxSysHolder data_02097d44;
+typedef int (*GfxFadeFunc)(GfxFadeCtx *ctx);
+
+extern u32 data_02097d44;
+extern GfxSys *data_02097d48;
+extern GfxFadeFunc data_02097d4c;
 extern int data_02097d50[5];
 extern int data_02097d64[5];
 extern int data_02097d78[5];
@@ -185,16 +185,6 @@ extern u8 func_02043d48(void *obj);
 extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void func_02043db4(int a, int b, int c, int d);
 
-typedef struct GfxFadeCtx {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ int state;
-    /* 0x08 */ int timer;
-    /* 0x0c */ int duration;
-    /* 0x10 */ int start;
-    /* 0x14 */ int end;
-} GfxFadeCtx;
-
-typedef int (*GfxFadeFunc)(GfxFadeCtx *ctx);
 
 void func_0203cd10(void) {
     int i;
@@ -212,31 +202,46 @@ void func_0203cd10(void) {
     }
 }
 
+// The fade channels (indexed by screen) are this TU's own .bss objects, addressed through one
+// pool literal. They are defined after the first function so that they keep definition order
+// (a size-sorted run otherwise puts the arrays first). As TU objects in one pool their accesses
+// stay in source order against the context copy in func_0203ce3c, which is why that function
+// needs no volatile.
+u32 data_02097d44;
+GfxSys *data_02097d48;
+GfxFadeFunc data_02097d4c;
+int data_02097d50[5];
+int data_02097d64[5];
+int data_02097d78[5];
+int data_02097d8c[5];
+int data_02097da0[5];
+int data_02097db4[5];
+
 void func_0203cd84(void) {
     int t;
     int v;
-    if (data_02097d44.fadeState[2] == 2 || data_02097d44.fadeState[2] == 4) {
-        func_0203d040(data_02097d44.fadeEnd[2]);
+    if (data_02097d78[2] == 2 || data_02097d78[2] == 4) {
+        func_0203d040(data_02097d50[2]);
         return;
     }
-    if (data_02097d44.fadeDuration[2] == 0) {
+    if (data_02097d8c[2] == 0) {
         t = 0x1000;
     } else {
-        t = FX_Div(data_02097d44.fadeTimer[2], data_02097d44.fadeDuration[2]);
+        t = FX_Div(data_02097d64[2], data_02097d8c[2]);
         if (t >= 0x1000) {
             t = 0x1000;
         }
     }
-    v = data_02097d44.fadeStart[2] + (FX_Mul((data_02097d44.fadeEnd[2] - data_02097d44.fadeStart[2]) << 12, t) >> 12);
+    v = data_02097da0[2] + (FX_Mul((data_02097d50[2] - data_02097da0[2]) << 12, t) >> 12);
     if (v == 0) {
-        if (data_02097d44.fadeState[2] == 1) {
-            data_02097d44.fadeState[2] = 0;
+        if (data_02097d78[2] == 1) {
+            data_02097d78[2] = 0;
         }
-    } else if (v == data_02097d44.fadeEnd[2]) {
-        if (data_02097d44.fadeState[2] == 1) {
-            data_02097d44.fadeState[2] = 2;
+    } else if (v == data_02097d50[2]) {
+        if (data_02097d78[2] == 1) {
+            data_02097d78[2] = 2;
         } else {
-            data_02097d44.fadeState[2] = 4;
+            data_02097d78[2] = 4;
         }
     }
     func_0203d040(v);
@@ -246,28 +251,27 @@ static inline u32 G3_PackPolygonAttr(int light, int polyMode, int cullMode, int 
     return (u32)(light | (polyMode << 4) | (cullMode << 6) | misc | (polygonID << 24) | (alpha << 16));
 }
 
-// The context is copied out and back one word at a time, so both sides are volatile.
+// The context is copied out and back one word at a time.
 void func_0203ce3c(void) {
-    volatile GfxFadeCtx ctx;
-    volatile GfxSysHolder *h = &data_02097d44;
-    GfxFadeFunc func = (GfxFadeFunc)h->unk_8;
+    GfxFadeCtx ctx;
+    GfxFadeFunc func = data_02097d4c;
     if (func == NULL) {
-        h->fadeState[3] = 0;
+        data_02097d78[3] = 0;
         return;
     }
-    ctx.unk_00 = h->unk_0;
-    ctx.state = h->fadeState[3];
-    ctx.timer = h->fadeTimer[3];
-    ctx.duration = h->fadeDuration[3];
-    ctx.start = h->fadeStart[3];
-    ctx.end = h->fadeEnd[3];
-    h->fadeState[3] = func((GfxFadeCtx *)&ctx);
-    h->unk_0 = ctx.unk_00;
-    h->fadeState[3] = ctx.state;
-    h->fadeTimer[3] = ctx.timer;
-    h->fadeDuration[3] = ctx.duration;
-    h->fadeStart[3] = ctx.start;
-    h->fadeEnd[3] = ctx.end;
+    ctx.unk_00 = data_02097d44;
+    ctx.state = data_02097d78[3];
+    ctx.timer = data_02097d64[3];
+    ctx.duration = data_02097d8c[3];
+    ctx.start = data_02097da0[3];
+    ctx.end = data_02097d50[3];
+    data_02097d78[3] = func(&ctx);
+    data_02097d44 = ctx.unk_00;
+    data_02097d78[3] = ctx.state;
+    data_02097d64[3] = ctx.timer;
+    data_02097d8c[3] = ctx.duration;
+    data_02097da0[3] = ctx.start;
+    data_02097d50[3] = ctx.end;
 }
 
 }

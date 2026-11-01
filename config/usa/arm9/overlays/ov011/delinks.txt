@@ -93,10 +93,6 @@ src/ov011/ov011_021ff87c.cpp:
     complete
     .text       start:0x021ff87c end:0x021ff8fc
 
-src/ov011/ov011_021ffb58.cpp:
-    complete
-    .text       start:0x021ffb58 end:0x0220023c
-
 src/ov011/ov011_02204a8c.cpp:
     complete
     .text       start:0x02204a8c end:0x02204b94
@@ -139,7 +135,7 @@ src/ov011/ov011_02207808.cpp:
 
 src/ov011/ov011_022077c0.cpp:
     complete
-    .text       start:0x0220023c end:0x02200aac
+    .text       start:0x021ffb58 end:0x02200aac
     .rodata     start:0x02207258 end:0x02207284
     .init       start:0x022077c0 end:0x02207808
     .ctor       start:0x02207874 end:0x02207878
