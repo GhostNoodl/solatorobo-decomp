@@ -2702,7 +2702,7 @@ src/ov000/Cmd_02189194.cpp:
 
 src/ov000/Lo_021c4230.cpp:
     complete
-    .text       start:0x021c4230 end:0x021c4460
+    .text       start:0x021c4230 end:0x021c4738
 
 src/ov000/Lo_021c56c0.cpp:
     complete

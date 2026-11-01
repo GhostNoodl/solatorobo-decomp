@@ -73,26 +73,9 @@ void func_ov000_021c4230(u8 *self) {
 }
 }
 
-#ifdef NONMATCHING
-// func_ov000_021c4460 (0x2d8 bytes, the window cursor/scroll input handler): 10 / 0 (raw / register-masked).
-// The only misses are in the select-line walk: ROM n r1, idx r0, unk_e4 callback r2; ours n r0, idx r1,
-// callback r1. ramerge (round qpH) has no single merge or renumbering for {idx:r0, n:r1, unk_e4 load:r2};
-// round ovsmall2's two-move families need either the unk_e4 load temp numbered below the named locals or n
-// and idx both numbered as temps above it. Tried with no change (all 10 / 0): Next/Sel/Head/Cur address and
-// value accessors in every combination (raA/raB), a Decide inline for the callback (local, parameter or
-// plain), i/idx in s32/u32/int, idx == i, for/while walk shapes, idx read before the head. u8/u16/s16
-// counters give 77-78. Earlier drafts: cmA/o/r3/c4460/best.cpp (with an unused kq local, dropped here).
-// Round raC: the walk as a LineAt(self, idx) inline (idx, n and i become temps) gives idx the ROM's r0
-// but swaps n/i (11 / 0). ramerge on that graph (pairs) needs the unk_e4 load numbered among the
-// temps (16-30); a callback local or a Decide getter is propagated back to a codegen load (11).
-// Round raE: the callback register follows n (it takes the lowest register not r0, which the call
-// argument holds, and not n), so the miss is the n/idx pair. ramerge --pairs needs both numbered after the
-// callback load (backend band), unreachable for objects. LineAt with n or i held by the caller through a
-// reference (nref 10, iref 11-12), a cb local at each slot (10).
-// Round rgB: one WinCb021c4460 cb local reused for the unk_e8 and the unk_e4 calls makes the e4 callback a
-// SplitLifetimes web (band 3, node 22), but nothing colours that web: the backend forwards the load copy and
-// codegen loads the callback again (10 / 0), so the callback cannot become a low-numbered object.
-
+// func_ov000_021c4460 (round bgR2): the e4 callback takes the selected line as its second argument, like
+// e8. With `self->unk_e4(self, n)` n is coalesced into the r1 argument, which gives the ROM's idx r0 / n r1 /
+// callback r2 (every earlier draft called it with self only and stopped at 10 / 0).
 typedef struct Line021c4460 {
     u8 pad[0x28];
     struct Line021c4460 *next;
@@ -126,7 +109,7 @@ typedef struct Win021c4460 {
     u8 unk_de;
     u8 unk_df;
     u8 pade0[4];
-    void (*unk_e4)(struct Win021c4460 *self);
+    void (*unk_e4)(struct Win021c4460 *self, Line021c4460 *line);
     void (*unk_e8)(struct Win021c4460 *self, Line021c4460 *line);
 } Win021c4460;
 
@@ -218,7 +201,7 @@ void func_ov000_021c4460(Win021c4460 *self) {
         }
         self->unk_a4 = n;
         if (self->unk_e4 != NULL) {
-            self->unk_e4(self);
+            self->unk_e4(self, n);
         } else if (self->b4) {
             func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
         }
@@ -250,4 +233,3 @@ void func_ov000_021c4460(Win021c4460 *self) {
 }
 
 }
-#endif
