@@ -275,6 +275,8 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
 // right after `k = o->n`) instead of block-local copies of o->oam / o->pos indexed by k; the ROM's
 // &oam[k] / &pos[k] are computed once, after the tmpl word store. Swapping the e/q declarations (88 / 34),
 // q->x before the tmpl copy (88 / 35), or reading t after the a01.y store (106 / 36) is worse.
+// Round bgQ2: `d` as a typed struct pointer instead of `u8 *` changes nothing (84): a pointer parameter
+// gets the same dummy pointee whatever its declared type, so the u8 views of `d` add no alias edges.
 
 extern "C" {
 

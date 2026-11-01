@@ -119,6 +119,10 @@ void func_ov003_021cd744(Ov003Menu2 *self) {
 // Round bgY: the window in case 0x28 written as an inline, or as `new` of a C++ class whose base and
 // derived constructors each call the virtual at 0x28 (indirect, as in the ROM), gives 51: the result
 // and the res pointer swap registers (ROM res r8 / w r6). Written in place it is 44.
+// Round bgQ2: the case-10 miss is not an alias edge. The ROM reads unk44 after both alpha stores (the
+// plain `func_02041c5c(self->unk44, ...)` form), but that form is 48: the unk48 load and the pool load of
+// the callback land in a different place. A `u8 a` cast, an fx32 temporary, a SetAlpha inline (per
+// sprite or for both) and an unk48 local all give 48; `int a` or a chained store give 420+.
 #include "nitro/fx.h"
 #include "ov000/VObj.h"
 

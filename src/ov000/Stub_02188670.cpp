@@ -21,6 +21,8 @@ void func_ov000_02188670(void) {
 // Round qpG: no gain from a Data0218867c pointer local (it also refuses the 0x64 move: 48 aligned), g_1 at the
 // top of case 1 (38), five spellings of the g_1 ternary, or normal-mode scheduling of any one block (70 tried).
 // Forcing only the 17->12 refusal gives 35 aligned, so the missing live value is not the whole story.
+// Round bgQ2: data_02fe1534 as its struct type (Shared02fe1534, .unk_80) with direct stores and no g_n
+// locals is 281: the address is then CSEd across the whole switch.
 #include "ov000/CmdObj.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))

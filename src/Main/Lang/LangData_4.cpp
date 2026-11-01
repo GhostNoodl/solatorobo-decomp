@@ -215,10 +215,49 @@ typedef struct OSOwnerInfo {
 } OSOwnerInfo;
 
 void OS_GetOwnerInfo(OSOwnerInfo *info);
-extern const char *data_0208cb88;
 extern char data_0214b105[];
+extern char data_0208cc36[];
+void func_0206e900(char *dst, const char *src);
 
-void func_0206e858(void);
+// The path of the language's base file. It is this TU's .data (only func_0206e858 reads it), and
+// that matters for the schedule: a load from an object the TU defines is not disambiguated from the
+// store to the extern data_0214b104, so each arm stores the language before it reads the path
+// (round bgQ2). As an extern the load is hoisted above the store.
+const char *data_0208cb88 = data_0208cc36;
+
+// Sets the game language from the owner info (1-5, anything else 1) and builds the language's file
+// name into data_0214b105 from the base path (twice, as the ROM does).
+void func_0206e858(void) {
+    OSOwnerInfo info;
+    OS_GetOwnerInfo(&info);
+    switch (info.language) {
+    case 1:
+        data_0214b104.lang = 1;
+        func_0206e900(data_0214b105, data_0208cb88);
+        break;
+    case 2:
+        data_0214b104.lang = 2;
+        func_0206e900(data_0214b105, data_0208cb88);
+        break;
+    case 3:
+        data_0214b104.lang = 3;
+        func_0206e900(data_0214b105, data_0208cb88);
+        break;
+    case 4:
+        data_0214b104.lang = 4;
+        func_0206e900(data_0214b105, data_0208cb88);
+        break;
+    case 5:
+        data_0214b104.lang = 5;
+        func_0206e900(data_0214b105, data_0208cb88);
+        break;
+    default:
+        data_0214b104.lang = 1;
+        func_0206e900(data_0214b105, data_0208cb88);
+        break;
+    }
+    func_0206e900(data_0214b105, data_0208cb88);
+}
 
 u8 func_0206e8f0(void) {
     return data_0214b104.lang;

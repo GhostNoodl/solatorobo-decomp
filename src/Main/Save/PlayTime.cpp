@@ -81,6 +81,9 @@ void func_02048d58(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
 // The last borrow is a plain compare result (the first two keep `? 1 : 0`; all three as compares
 // is 134 / 84), the seconds fields are read into locals first, and the minutes and hours are stored
 // before the millis and seconds. What is left is the schedule of the second and third borrows.
+// Round bgQ2: 60 raw. The stores to one dummy object never alias each other, so their order is only a
+// scheduling input; of all 24 orders (and PlayTime_Set) millis, minutes, hours, seconds is best (60;
+// the old minutes, hours, millis, seconds is 62). The borrow schedule is unchanged.
 void func_02048e74(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
     int ms, sec, min, h;
     int borrow;
@@ -98,9 +101,9 @@ void func_02048e74(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
     min = (a->minutes + (60 - b->minutes) - borrow) % 60;
     borrow = a->minutes - borrow < b->minutes;
     h = a->hours - b->hours - borrow;
+    dst->millis = ms;
     dst->minutes = min;
     dst->hours = h;
-    dst->millis = ms;
     dst->seconds = sec;
     PlayTime_Normalize(dst, FALSE);
 }
