@@ -17,10 +17,6 @@ src/ov013/ov013_021fbd20.cpp:
     complete
     .text       start:0x021fbd20 end:0x021fc400
 
-src/ov013/ov013_021fc400.cpp:
-    complete
-    .text       start:0x021fc400 end:0x021fcef8
-
 src/ov013/ov013_021fcef8.cpp:
     complete
     .text       start:0x021fcef8 end:0x021fd258
@@ -115,6 +111,7 @@ src/ov013/ov013_0220ade8.cpp:
 
 src/ov013/ov013_0220b410.cpp:
     complete
+    .text       start:0x021fc400 end:0x021fcef8
     .init       start:0x0220b410 end:0x0220b444
     .ctor       start:0x0220b58c end:0x0220b590
     .data       start:0x0220b5a0 end:0x0220b5b8

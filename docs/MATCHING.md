@@ -7070,3 +7070,28 @@ Sweep of the `NONMATCHING` drafts for data-ownership and extern-type levers (bgQ
 - **`const` on the other read-only pointer parameters is wrong.** For `021512b4`'s `pos` it is 54 (from 23), because the ROM keeps the `pos` loads behind the stores. In `0219b808` and `0215e6f0` the parameters go to non-const callees.
 - **`ov010_02204030`:** writing `v.z` before the two zeros, or the rotation before `VEC_Set`, gives 26–96. That is no gain.
 - No new data. No renames.
+
+### Round dtD
+
+**No new match; dtC's ov009 block is solved and 13 data-TU merges fold 94 files into the TU that owns their data.** No function lost. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` 8136 matched (8135 at start, 8136 on main after swA). FLD-on-`data_` lines: 449 → 444. Wrong-typed externs (`ext.py`): 78 → 25. Scratch is in the session scratchpad `dtD/`: dtC's `mtu.py`/`apply.py`/`views.py`/`ext.py` with this clone's paths, `own.py MOD LO HI` (which TU owns the data each file loads), `cand.py MOD` (each data TU's outside readers and whether the files between them are clean), `ft.sh SRC` (score every function of a file), and `c*.py` (merge configs).
+
+- **`ov009_0220413c` (dtC's block): the zero vector is copied as a struct.** `func_ov009_02204230` reads `data_ov009_02215d90` twice. It fills the five trail entries and later the model's position. Written as `trail[i] = data_ov009_02215d90;` and `*dst = data_ov009_02215d90;` it matches inside `ov009_022161f8.cpp`. With x/y/z field reads, the const object's y/z loads are CSE'd (42). Field reads in the loop plus field reads for `dst` also match, but the struct form is the plain one. The merge now covers `0x0220413c..0x02204a10` (five files, with `022046cc`/`0220487c`; `data_ov009_02215d0c[9]` → `data_ov009_02215d30`). The `02204a10` draft scores 295 inside the TU too, the same as outside.
+- **`ov012_02200200` (dtC's other stop): two pointers, not an array.** `data_ov012_0220a3c4` is two separate `const char *const` (`a3c4`, `a3c8`), not one `[2]`. As an array inside the TU, the name loads are hoisted above the stores (13). As scalars, all 50 functions of `0x021fa6a0..0x02201c70` match. The header declares both, `symbols.txt` gains `data_ov012_0220a3c8`, and `0220a8d8.cpp` takes `02200200.cpp` and `022015a0.cpp`.
+- **Same lever, blocked by layout: `ov002_021d36b8`.** Written as six separate globals, `Ov002ResNames` gives the ROM's schedule for `cepct`. But the `FX_Div`-initialised scale then goes to `.bss`, so the `.data` layout cannot be kept. `ov002_021ef150.cpp` takes `021d2410..021d36b8` (12 files) and stops before `36b8`.
+- **Other merges (every function still matches):**
+  - **ov014 `02216ff0`** takes `021fd2bc..02201dcc` and `02202f1c..022054f8` (16 files), so its text is `021fd2bc..022054f8`. The four `s32[6]` objects are two vectors each (`02216588/94`, `5a0/5ac`, `5c4/5d0`, `60c/618`). The new halves are C++ `const`, so they are `local` in `symbols.txt`. `022165f4` is one vector: the `s32[1]` + `s32[2]` at `022165f8` were really one object, and the `f8` symbol is gone. `02216510` is `u16`, because its reader uses `ldrh`. The `Ov014Arr3`/`Blk12F`/`bBlk12` block-copy views stay. As plain `Ov014Vec` assignments the copy is done field by field (61–176).
+  - **ov014:** `02216fa8` takes `021fcf00.cpp`, `02217050` takes `02206050..022083a4` (four files), and `02216f60` takes `021fa8f8..021fc220` (three files; it now includes `ov014.h`).
+  - **ov012:** `0220a99c` takes `02201c70.cpp`, `0220a9e4` takes `02202994.cpp` at its front, and `0220aa2c` takes `02206374..02207a38` (four files).
+  - **ov009:** `02216288` takes `0220d2d8..02210e88` (25 files; the local `Ov009Ver` copy is gone), and `022162d0` takes `022143d8..02215714` (nine files).
+  - **ov013 `0220b410`** takes `021fc400.cpp`, and **ov010 `0220f870`** takes `02201cc8.cpp`.
+- **Extern types:** `ov006` `021eb6fe` is `[4]` (two files), and `ov014` `022173b9` is `char[]`. These ov012/ov009 externs gained `const` (folded in above): `0220a81c`, `0220a51c`, `0220a528`, `02216028`, `02216010`.
+- **Not done or blocked:**
+  - **ov002 `021ef380` + bsA's `021ecb90.cpp`:** with the staff-roll `.data` first, the `.bss` lists are laid out differently (seven functions off by offsets), so the two TUs stay apart.
+  - **ov006 `021d3498`:** it pools strings (`#pragma pool_strings`), so a merge would move the readers' strings into its pool.
+  - **ov003 `021f77d8`:** the files between it and its readers include `.c` files.
+  - **ov015 `0221272c`:** its readers' `[3]` views reach into the name pool.
+  - **ov000** data TUs (`021ca678/70c/80c`): the readers need prototype changes (`const char *` names into `void *` loaders) or vtable casts.
+  - **ov010 `0220f0d8`:** still the u16 timing table `{0, 30, 90, 150, 230, 320}`, real constants.
+  - **Drafts:** the sweep finds no draft whose miss is a data-ownership question. `0216715c` (3), `0219b808` (4), `0200d36c` (5) and `eca14` (6, also 6 compiled inside `021ef380.cpp`) are register colouring.
+- **New rule:** when a TU-owned const object is read twice and the ROM reloads it, try a struct copy (`a = obj;`) before field reads. When an array of pointers is hoisted above stores, try separate scalars. Either can be the original shape, so neither needs a non-const or extern view.
+- No new data. No renames.

@@ -716,7 +716,8 @@ struct Ov012Lift {
 
 
 extern "C" {
-extern const char *const data_ov012_0220a3c4[];
+extern const char *const data_ov012_0220a3c4;
+extern const char *const data_ov012_0220a3c8;
 extern const char *const data_ov012_0220a57c;
 }
 

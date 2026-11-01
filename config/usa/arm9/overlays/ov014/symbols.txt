@@ -314,15 +314,18 @@ data_ov014_02216564 kind:data(any) addr:0x02216564 weak
 data_ov014_02216570 kind:data(any) addr:0x02216570
 data_ov014_0221657c kind:data(any) addr:0x0221657c
 data_ov014_02216588 kind:data(any) addr:0x02216588
+data_ov014_02216594 kind:data(any) addr:0x02216594 local
 data_ov014_022165a0 kind:data(any) addr:0x022165a0
+data_ov014_022165ac kind:data(any) addr:0x022165ac local
 data_ov014_022165b8 kind:data(any) addr:0x022165b8
 data_ov014_022165c4 kind:data(any) addr:0x022165c4
+data_ov014_022165d0 kind:data(any) addr:0x022165d0 local
 data_ov014_022165dc kind:data(any) addr:0x022165dc
 data_ov014_022165e8 kind:data(any) addr:0x022165e8
 data_ov014_022165f4 kind:data(any) addr:0x022165f4
-data_ov014_022165f8 kind:data(any) addr:0x022165f8 ambiguous
 data_ov014_02216600 kind:data(any) addr:0x02216600
 data_ov014_0221660c kind:data(any) addr:0x0221660c
+data_ov014_02216618 kind:data(any) addr:0x02216618 local
 data_ov014_02216624 kind:data(any) addr:0x02216624
 data_ov014_02216630 kind:data(any) addr:0x02216630
 data_ov014_0221663c kind:data(any) addr:0x0221663c

@@ -4,6 +4,8 @@ extern "C" {
 
 // Ov002ResNames (ov002.h); hdExt/pic/cepct read as [n] here: as a struct the cepct load is
 // scheduled after the num stores (24 lines), as an incomplete array before them, like the ROM.
+// Round dtD: as six separate globals merged into ov002_021ef150.cpp the schedule is the ROM's,
+// but the FX_Div-initialised scale then goes to .bss, so the .data layout cannot be kept.
 extern void *data_ov002_021ef5ac[];
 
 void *STD_ConcatenateString(char *dst, const char *src);

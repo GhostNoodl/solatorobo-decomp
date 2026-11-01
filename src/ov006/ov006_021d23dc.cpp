@@ -20,7 +20,7 @@ extern void *data_ov000_021cadcc;
 extern void *data_ov000_021cb1b0;
 extern void *data_ov000_021cb0b8;
 extern void *data_ov000_021cad50;
-extern const u8 data_ov006_021eb6fe[];
+extern const u8 data_ov006_021eb6fe[4];
 extern const u16 data_ov006_021eb78c[];
 extern const u8 data_ov006_021eb71c[];
 extern const u8 data_ov006_021eb728[];

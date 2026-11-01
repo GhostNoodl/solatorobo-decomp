@@ -29,10 +29,6 @@ src/ov010/ov010_02201c34.cpp:
     complete
     .text       start:0x02201c34 end:0x02201cc8
 
-src/ov010/ov010_02201cc8.cpp:
-    complete
-    .text       start:0x02201cc8 end:0x022020c8
-
 src/ov010/ov010_0220f8e4.cpp:
     complete
     .text       start:0x022020c8 end:0x02203ff4
@@ -91,6 +87,7 @@ src/ov010/ov010_0220f828.cpp:
 
 src/ov010/ov010_0220f870.cpp:
     complete
+    .text       start:0x02201cc8 end:0x022020c8
     .rodata     start:0x0220ef98 end:0x0220efc8
     .init       start:0x0220f870 end:0x0220f8e4
     .ctor       start:0x0220fa04 end:0x0220fa08

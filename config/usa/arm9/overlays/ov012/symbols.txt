@@ -161,6 +161,7 @@ func_ov012_0220a2ec kind:function(arm,size=0xa8) addr:0x0220a2ec
 func_ov012_0220a394 kind:function(arm,size=0x14) addr:0x0220a394
 func_ov012_0220a3a8 kind:function(arm,size=0x1c) addr:0x0220a3a8
 data_ov012_0220a3c4 kind:data(any) addr:0x0220a3c4
+data_ov012_0220a3c8 kind:data(any) addr:0x0220a3c8
 data_ov012_0220a3cc kind:data(any) addr:0x0220a3cc
 data_ov012_0220a3d2 kind:data(any) addr:0x0220a3d2
 data_ov012_0220a3d8 kind:data(any) addr:0x0220a3d8

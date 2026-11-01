@@ -1734,7 +1734,7 @@ extern "C" {
 
 extern void *data_02149ef8;
 extern const int data_ov006_021eb77c[];
-extern const u8 data_ov006_021eb6fe[];
+extern const u8 data_ov006_021eb6fe[4];
 extern const u8 data_ov006_021eb710[][3];
 extern const u16 data_ov006_021eb78c[];
 extern void *data_ov006_021ebec0;
