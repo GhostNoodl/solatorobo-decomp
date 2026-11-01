@@ -277,6 +277,9 @@ void func_ov000_02164c50(u8 *self, u8 *arg) {
 // q->x before the tmpl copy (88 / 35), or reading t after the a01.y store (106 / 36) is worse.
 // Round bgQ2: `d` as a typed struct pointer instead of `u8 *` changes nothing (84): a pointer parameter
 // gets the same dummy pointee whatever its declared type, so the u8 views of `d` add no alias edges.
+// Round mlA: 81. The hit loop copies the fields in order (owner, a, b, c) and reads `he->c` where it is
+// used (the `u8 c` local is gone); `he` is const, so the two `he->c` reads are one load, and the hit loop
+// now matches the ROM. With the local kept, the a, b, c store order is 91 (c and slot swap registers).
 
 extern "C" {
 
@@ -483,12 +486,11 @@ void func_ov000_021652e4(void *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
     o->hits = h;
     he = def->hits;
     for (j = 0; j < o->nHit; j++) {
-        u8 c = he->c;
-        LFLD(Hit_52e4 **, LFLD(u8 *, d, 0xc88) + c * 8, 4)[o->slot] = h;
+        LFLD(Hit_52e4 **, LFLD(u8 *, d, 0xc88) + he->c * 8, 4)[o->slot] = h;
         h->owner = o;
         h->a = he->a;
-        h->c = c;
         h->b = he->b;
+        h->c = he->c;
         {
             s32 hy;
             s32 hx = FX_Div(he->x, 0x1000);
