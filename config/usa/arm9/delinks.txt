@@ -1086,36 +1086,8 @@ src/Main/Gfx/GfxMgrText_2.cpp:
 
 src/Main/Gfx/GfxSys.cpp:
     complete
-    .text       start:0x0203b6a0 end:0x0203b924
-
-src/Main/Gfx/GfxSys_2.cpp:
-    complete
-    .text       start:0x0203b924 end:0x0203ba7c
-
-src/Main/Gfx/GfxSys_3.cpp:
-    complete
-    .text       start:0x0203ba7c end:0x0203bc20
-
-src/Main/Gfx/GfxVramAlloc.cpp:
-    complete
-    .text       start:0x0203bc20 end:0x0203bd40
-
-src/Main/Gfx/GfxSys_4.cpp:
-    complete
-    .text       start:0x0203bd40 end:0x0203c638
-
-src/Main/Gfx/GfxSys_5.cpp:
-    complete
-    .text       start:0x0203c638 end:0x0203cd10
-
-src/Main/Gfx/GfxSys_6.cpp:
-    complete
-    .text       start:0x0203cd10 end:0x0203ced8
+    .text       start:0x0203b6a0 end:0x0203d1b4
     .bss        start:0x02097d44 end:0x02097dc8
-
-src/Main/Gfx/GfxSys_7.cpp:
-    complete
-    .text       start:0x0203ced8 end:0x0203d1b4
 
 src/Main/Sys/Pad.cpp:
     complete
@@ -1271,22 +1243,10 @@ src/Main/Snd/SndMgr_4.cpp:
     complete
     .text       start:0x02049bdc end:0x02049c80
 
-src/Main/Snd/SndMgr_5.cpp:
-    complete
-    .text       start:0x02049de8 end:0x02049f44
-
-src/Main/Snd/SndMgr_6.cpp:
-    complete
-    .text       start:0x02049f44 end:0x0204a87c
-
 src/Main/Snd/SndQueue.cpp:
     complete
-    .text       start:0x0204a87c end:0x0204a924
+    .text       start:0x02049de8 end:0x0204ae14
     .bss        start:0x02097e48 end:0x02097e50
-
-src/Main/Snd/SndQueue_2.cpp:
-    complete
-    .text       start:0x0204a924 end:0x0204ae14
 
 src/Main/Sys/Scene.cpp:
     complete
@@ -1400,15 +1360,8 @@ src/Main/Sys/SysTask_2.cpp:
 
 src/Main/Effect/Effect.cpp:
     complete
-    .text       start:0x0206379c end:0x02064b40
-
-src/Main/Effect/Effect_2.cpp:
-    complete
-    .text       start:0x02064b40 end:0x02064d3c
-
-src/Main/Effect/Effect_3.cpp:
-    complete
-    .text       start:0x02064d3c end:0x02065eec
+    .text       start:0x0206379c end:0x02065eec
+    .bss        start:0x0214a41c end:0x0214a424
 
 src/Main/Effect/Effect_4.cpp:
     complete

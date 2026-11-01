@@ -356,7 +356,7 @@ void func_ov002_021e90dc(void);
 void func_ov002_021e8f04(s32 id);
 void *func_ov002_021e9b28(void *arg);
 bool func_ov002_021e90ac(void);
-extern u8 *data_ov002_021f0f9c;
+extern void *data_ov002_021f0f9c;
 extern VFunc data_ov002_021ef69c[];
 void func_ov000_021c64b4(void *a, void *b);
 void func_ov000_021c7000(void *a);
@@ -567,7 +567,7 @@ extern VFunc data_ov002_021eff50[];
 extern VFunc data_ov002_021efe4c[];
 extern VFunc data_ov002_021f0684[];
 extern VFunc data_ov002_021f00ec[];
-extern void *data_ov002_021f0f98[];
+extern void *data_ov002_021f0f98;
 void func_ov002_021ddd80(void *self);
 void func_ov002_021da430(void *self);
 void func_ov002_021dddd0(void *self);
@@ -598,7 +598,6 @@ typedef struct Bits32 {
 extern VFunc data_ov002_021f00fc[];
 extern VFunc data_ov002_021f0cf8[];
 extern VFunc data_ov002_021f0ef4[];
-extern void *data_ov002_021f0fa0[];
 void *func_ov000_02154b58(void *a, void *b);
 void func_ov000_02153c48(void *a, s32 b, int c, int d, u8 e);
 
@@ -776,7 +775,7 @@ void func_02065ac0(void *p);
 
 void func_ov002_021e391c(s32 *m, int rot);
 
-extern void *data_ov002_021f0fac[];
+extern void *data_ov002_021f0fac[9];
 void NNS_G3dRenderObjRemoveAnmObj(void *a, void *b);
 void func_ov002_021eea74(void *p);
 int STD_CopyLString(void *dst, void *src, u32 size);

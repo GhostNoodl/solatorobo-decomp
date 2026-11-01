@@ -2,6 +2,13 @@
 
 extern "C" {
 
+// The staff roll's .bss (0x021f0fa0..0x021f0fd0) is defined in ov002_021ecb90.cpp as separate
+// objects. The ROM reaches all of them from this file's functions through the 0x021f0fa0 pool
+// literal too, but this file is cut off from that TU by the unmatched func_ov002_021eca14, so
+// it still reads them through this array view: [0] head, [1] staff, [2] tail, [8] the kind-5
+// task list (data_ov002_021f0fac[5]).
+extern void *data_ov002_021f0fa0[];
+
 BOOL func_ov002_021ec6a8(void) {
     return TRUE;
 }

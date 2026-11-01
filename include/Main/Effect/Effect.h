@@ -330,13 +330,10 @@ typedef struct EffectMgr {
     /* 0x5c */ u8 proj[0x40];
 } EffectMgr; // size 0x9c
 
-typedef struct EffectGlobal {
-    /* 0x0 */ u8 polyIdBase;
-    /* 0x1 */ u8 polyIdCounter;
-    /* 0x4 */ EffectMgr *mgr;
-} EffectGlobal;
-
-extern EffectGlobal data_0214a41c;
+// The effect TU's .bss objects (Effect.cpp): the polygon ID base and counter and the manager.
+extern u8 data_0214a41c;
+extern u8 data_0214a41d;
+extern EffectMgr *data_0214a420;
 extern SndMgr *data_02097e4c;
 
 extern s32 FX_Div(s32 a, s32 b);
@@ -351,8 +348,8 @@ static inline s32 Effect_FxMul(s32 a, s32 b) {
 }
 
 static inline u8 Effect_NextPolyId(void) {
-    u8 n = data_0214a41c.polyIdCounter++;
-    return data_0214a41c.polyIdBase + (u8)((s32)n % 16);
+    u8 n = data_0214a41d++;
+    return data_0214a41c + (u8)((s32)n % 16);
 }
 
 void func_02063cac(struct EffectObj *obj);

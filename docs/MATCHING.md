@@ -7033,3 +7033,30 @@ Sweep of the `NONMATCHING` drafts for load/store-order and reload misses. **One 
   - **`ov007` `FLD(u8, data_02097e3c, 0x149)`:** `Movie.h` clashes with `ov007.h`.
   - **`ov011_021ff87c`/`021ff8fc`:** these files sit just before the merged range, but the only `Ov011ResTbl` view in them is in the `021ff24c` NONMATCHING draft. The merge would gain nothing, and the draft stays where it is.
 - No new data. No renames.
+
+### Round bsA
+
+The `.bss` ownership lever from round jkL, swept across the codebase. **No new match. Five TU merges give the `.bss` objects their real definitions and remove the holder and out-of-bounds views over them.** 74 files are folded into 5. No function lost. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` 8135 matched (the same as HEAD after bgQ2/dtC). Scratch is in the session scratchpad `bsA/`:
+- `scan.py MOD` lists every `.bss` pool literal whose accesses (literal + offset) land in another symbol, with the users and owning files.
+- `lit.py MOD LO HI` gives the offsets each function uses from each literal.
+- `drefs.py LIST` gives the non-call relocations of a list of functions.
+- `mm.py CONFIG OUT` merges files into one TU. It puts each file in `namespace m_<addr>`, hoists the includes and `#undef`s each file's own macros.
+- `sa.sh FILE MOD LO HI` scores a range of functions.
+- `syms.py`/`rel.py` print an object's `.bss` layout and its ABS32 relocations.
+
+- **Merges (every function in each range still matches):**
+  - **`GfxSys.cpp`** now holds `GfxSys.cpp`, `_2`..`_7` and `GfxVramAlloc.cpp`: `.text 0x0203b6a0..0x0203d1b4`, `.bss 0x02097d44..0x02097dc8`. `GfxSysHolder` is gone: `.sys`/`.unk_0`/`.unk_8`/`.fade*[i]` became `data_02097d48`/`d44`/`d4c`/`d50`..`db4`. `func_0203b6a0` (the first function) already reads `d48` as `d44 + 4`, so `d44`/`d48` are defined before it and the rest after it (see layout below).
+  - **`SndQueue.cpp`** now holds `SndMgr_5.cpp`, `SndMgr_6.cpp` and `SndQueue_2.cpp`: `.text 0x02049de8..0x0204ae14`, owning `.bss 0x02097e48..0x02097e50`. `data_02097e48.mgr` and `SND_MGR data_02097e48.mgr` became `data_02097e4c`. The duplicate `SndCmd` and the bogus one-argument `VEC_Distance` prototype are gone. `SndMgr.cpp`..`SndMgr_4.cpp` (`020492e0..02049c80`) still read through `SndGlobal`: they are cut off by the `02049c80` draft (60 raw, no `.bss` in it).
+  - **`Effect.cpp`** now holds `Effect_2.cpp` and `Effect_3.cpp`: `.text 0x0206379c..0x02065eec`, `.bss 0x0214a41c..0x0214a424`. `EffectGlobal` is gone. `data_0214a41c` is the `u8` polygon ID base, the new symbol `data_0214a41d` is the `u8` counter, and `data_0214a420` is the `EffectMgr *`.
+  - **ov002 `ov002_021e4b80.cpp`** now holds the 39 files `021e4b80..021e9f54` and owns `.bss 0x021f0f98..0x021f0fa0`. The out-of-bounds `data_ov002_021f0f98[1]` views (about 40 sites) and `Glob021f0f98` became `data_ov002_021f0f9c`. In `ov002.h`, `f98`/`f9c` are now plain `void *`.
+  - **ov002 `ov002_021ecb90.cpp`** (staff roll) now holds the 13 files `021ecb90..021eea74`, `.bss 0x021f0fa0..0x021f0fe0`. The objects are `fa0` (list head), `fa4` (staff object), `fa8` (list tail; new symbol) and `fac[9]` (per-kind task lists). The old `data_ov002_021f0fa0[8]` view was `fac[5]`, which the ROM reads as base + 0x20. `ov002_021ec6a8.cpp` is cut off from this TU by the unmatched `021eca14` (still 6), so its local `void *data_ov002_021f0fa0[]` view stays, with a comment.
+- **Layout rule.** Objects defined before a TU's first function are not always laid out in definition order. Same-size runs come out in an order of MWCC's own, often reversed (`fa8 fa4 fa0`, `u8 41d 41c`); in other cases they keep definition order (`d44 d48`, `e48 e4c`). Check each one with `syms.py` and order the definitions to fit. **dsd** also requires the file's `.bss` range to extend to the next symbol or to the section end (`fac` → `0x021f0fe0`).
+- **C files do not pool.** Compiled as C (dsi/1.3), TU-defined `.bss` gets one literal per object, so the ROM's base + offset reads cannot be reproduced. In C++, the same file is addressed as `.bss` + offset. So the NitroSDK holder views (`gx.c` `GXiBssBlock`, `os_thread.c` `OSiThreadStatics`, `fs_overlay` `FSiRomStatics`, `pm` `PMiWork`, `card_common`) are blocked. I tried `gx.c` with a real `vu16 GXi_VRamLockId`: 3 lines.
+- **Priority list, all blocked for this lever:**
+  - `02043100`, `02049c80` and `02048e74` read no `.bss`.
+  - `02053254` reads `02149ef4 + 0` (extern, `MsgRes_2` owns it).
+  - `ov000_021652e4`'s tables are `.rodata` (data rule).
+  - `ov000_0218867c` reads the `ccd50` pool, but defining `ccd50..ccd60` in its file leaves it at 45, the same as before: its misses are register choice.
+  - In matched code, `0203b96c` is a parameter-field load order. In the merged GfxSys TU it is still 2, so its volatile stays. `020554e4`, `ov007_021ce038`, `ov013_02206764` and `ov009_0220b8a0` read other modules' `.bss`. `02042f40`'s `.bss` is already owned by `Blend.cpp`, and `ov003_021d85c8` reads no `.bss`.
+- **Remaining candidates:** the ov000 `ccd34` pool (`ccd38`/`ccd40`/`ccd44` reached as `ccd34 + n`, users `02172f7c..021764c4`) and the `ccd50` pool (`ccd54..ccd60`, users `021814dc..021899d8`). Both need large ov000 merges, and both ranges have to be checked for unmatched functions first.
+- **No renames** this round.

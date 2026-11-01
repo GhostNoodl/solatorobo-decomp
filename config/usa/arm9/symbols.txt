@@ -3845,6 +3845,7 @@ data_02149f14 kind:bss addr:0x02149f14
 data_02149f18 kind:bss addr:0x02149f18
 data_0214a418 kind:bss addr:0x0214a418
 data_0214a41c kind:bss addr:0x0214a41c
+data_0214a41d kind:bss addr:0x0214a41d
 data_0214a420 kind:bss addr:0x0214a420
 data_0214a424 kind:bss addr:0x0214a424
 data_0214a428 kind:bss addr:0x0214a428

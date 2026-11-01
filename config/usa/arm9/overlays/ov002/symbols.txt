@@ -933,4 +933,5 @@ data_ov002_021f0f98 kind:bss addr:0x021f0f98
 data_ov002_021f0f9c kind:bss addr:0x021f0f9c
 data_ov002_021f0fa0 kind:bss addr:0x021f0fa0
 data_ov002_021f0fa4 kind:bss addr:0x021f0fa4
+data_ov002_021f0fa8 kind:bss addr:0x021f0fa8
 data_ov002_021f0fac kind:bss addr:0x021f0fac
