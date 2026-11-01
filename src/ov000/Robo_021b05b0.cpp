@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Actor.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 extern s32 data_ov000_021c9ff8[];
@@ -7,21 +8,10 @@ BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 BOOL func_ov000_0219840c(void *s, s32 *list, s32 count, BOOL push);
 void func_ov000_0218d7e8(void *self, u8 arg);
 
-struct Obj021b05b0 {
-    u8 unk_00[0x38];
-    void *unk_38;
-    u8 unk_3c[0x4];
-    ActorSub40 *unk_40;
-    u8 unk_44[0x4];
-    void *unk_48;
-    u8 unk_4c[0xabc];
-    s32 unk_b08;
-};
-
-void func_ov000_021b05b0(Obj021b05b0 *self) {
+void func_ov000_021b05b0(Robo021ca458 *self) {
     ActorSub40 *s;
     self->unk_38 = (u8 *)self + 0x368;
-    self->unk_48 = (u8 *)self + 0x6c0;
+    self->unk_48 = (ActorSub48 *)((u8 *)self + 0x6c0);
     self->unk_b08 = 0x2cd;
     s = self->unk_40;
     if (s->flags != 0) {
@@ -37,7 +27,7 @@ void func_ov000_021b05b0(Obj021b05b0 *self) {
         }
     }
     s = self->unk_40;
-    switch (s->unk_13) {
+    switch (s->current) {
     case 1:
         if (s->flags & 2) {
             break;
@@ -48,6 +38,6 @@ void func_ov000_021b05b0(Obj021b05b0 *self) {
         }
         break;
     }
-    func_ov000_0218d7e8(self, self->unk_40->unk_13);
+    func_ov000_0218d7e8(self, self->unk_40->current);
 }
 }

@@ -101,8 +101,8 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
     g = (u8 *)data_ov000_021ccd54;
     if (item->bits.b1 && LFLD(B24_021b65ec, pl, 0xb24).b5) {
         Actor *a = FindActor021b65ec(LFLD(u16, pl, 0xb1c));
-        if (a != NULL && LFLD(u8 *, a, 0x4c) != NULL) {
-            LFLD(u16, LFLD(u8 *, a, 0x4c), 0x1c) = 0xffff;
+        if (a != NULL && ((u8 *)a->unk_4c) != NULL) {
+            LFLD(u16, ((u8 *)a->unk_4c), 0x1c) = 0xffff;
         }
         LFLD(u16, pl, 0xb1c) = 0xffff;
         LFLD(u16, pl, 0xb1e) = 0xffff;

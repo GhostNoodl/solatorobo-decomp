@@ -45,6 +45,7 @@ typedef struct {
     u8 unk_1a;
     u8 state;
 } Shadow;
+SIZE_ASSERT(Shadow, 0x1c);
 
 typedef struct {
     s32 m[9];

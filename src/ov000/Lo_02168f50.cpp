@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -25,14 +26,7 @@ s32 func_02043d84(void *a);
 void MI_CpuFill8(void *dst, s32 v, s32 size);
 void func_ov000_0216bcbc(void *self);
 
-struct Obj02168f50 {
-    u8 unk_00[0x80];
-    s32 unk_80;
-    s32 unk_84;
-    s32 unk_88;
-};
-
-void func_ov000_02168f50(Obj02168f50 *self) {
+void func_ov000_02168f50(Lo021cb840 *self) {
     void *p = func_ov000_0219bf90();
     if (p == NULL) {
         return;

@@ -1,12 +1,8 @@
 #include "nitro/fx.h"
 #include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u16 st;
-    u16 timer;
-} State021971c4;
 
 typedef struct {
     u8 unk_00[0x158];
@@ -56,54 +52,31 @@ static inline int GetNibble021971c4(s32 row, s32 idx) {
     return (v >> ((idx % 8) * 4)) & 0xf;
 }
 
-struct Obj021971c4 {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u16 unk_0e;
-    u8 unk_10[0x7];
-    u8 unk_17;
-    u8 unk_18[0x20];
-    void *unk_38;
-    u8 unk_3c[0x4];
-    State021971c4 *unk_40;
-    u8 unk_44[0x8];
-    u8 *unk_4c;
-    u8 unk_50[0x2c];
-    u16 unk_7c;
-    u16 unk_7e;
-    u16 unk_80;
-    u8 unk_82[0xe];
-    u16 unk_90;
-    u8 unk_92[0x1a];
-    u8 unk_ac;
-    u8 unk_ad;
-};
-
 void func_ov000_021971c4(VObj *obj) {
-    Obj021971c4 *self = (Obj021971c4 *)obj;
+    ActorEx *self = (ActorEx *)obj;
     u32 none = 0xffff;
     s32 zero = 0;
-    u8 *tgt = (u8 *)func_ov000_02199ba0(self->unk_4c);
+    u8 *tgt = (u8 *)func_ov000_02199ba0(((u8 *)self->unk_4c));
     switch (self->unk_40->st) {
     case 0:
         if (self->unk_38 != NULL) {
             func_ov000_02190cb0(self->unk_38, data_ov000_021cc469, 0x1000, zero);
         }
         if (tgt != NULL) {
-            if (self->unk_90 != none) {
+            if (self->target != none) {
                 u8 *a;
                 obj->vfunc_88();
-                a = (u8 *)FindActor021971c4(self->unk_90);
+                a = (u8 *)FindActor021971c4(self->target);
                 if (a != NULL) {
-                    func_ov000_0218d46c(a, self->unk_0c, 6);
+                    func_ov000_0218d46c(a, self->id, 6);
                     LFLD(u16, a, 0x90) = none;
                     if (LFLD(void *, a, 0x4c) != NULL) {
                         func_ov000_02199b88(LFLD(void *, a, 0x4c), self);
                     }
                 }
-            } else if (func_ov000_02199cd8(self->unk_4c, LFLD(u16, tgt, 0xe))) {
+            } else if (func_ov000_02199cd8(((u8 *)self->unk_4c), LFLD(u16, tgt, 0xe))) {
                 obj->vfunc_8c();
-                LFLD(u16, self->unk_4c, 0x1c) = none;
+                self->unk_4c->unk_1c = none;
             }
         }
         self->unk_40->st++;
@@ -113,25 +86,25 @@ void func_ov000_021971c4(VObj *obj) {
             break;
         }
         if (tgt != NULL) {
-            func_ov000_0218d398(tgt, self->unk_0c, 3, 1, zero, (const void *)zero);
+            func_ov000_0218d398(tgt, self->id, 3, 1, zero, (const void *)zero);
         }
-        if (LFLD(u8, self->unk_4c, 1) == 8) {
-            u8 *d = func_020704b4(self->unk_0e);
+        if (LFLD(u8, ((u8 *)self->unk_4c), 1) == 8) {
+            u8 *d = func_020704b4(self->kind);
             func_ov000_0219b400((u16 *)(d + 0x20), d + 0x24, 2, (u8 *)self + 0x70, (u8 *)self + 0x7c, zero);
         }
-        if (self->unk_90 != none) {
-            u8 *m = self->unk_4c;
+        if (self->target != none) {
+            u8 *m = ((u8 *)self->unk_4c);
             if (LFLD(u8, m, 2) != 0 && LFLD(u8, m, 2) != 7) {
                 LFLD(u16, m, 0x1c) = none;
             } else {
                 func_ov000_02198360(self->unk_40, 9, 0);
             }
-            self->unk_90 = none;
+            self->target = none;
         } else {
-            LFLD(u16, self->unk_4c, 0x1c) = none;
+            self->unk_4c->unk_1c = none;
             func_ov000_02198360(self->unk_40, 1, 0);
         }
-        if (LFLD(u8, self->unk_4c, 2) == 5) {
+        if (LFLD(u8, ((u8 *)self->unk_4c), 2) == 5) {
             u8 idx = self->unk_17;
             s32 row;
             if (idx != 0xff) {
@@ -148,11 +121,11 @@ void func_ov000_021971c4(VObj *obj) {
         }
         break;
     }
-    if (tgt != NULL && self->unk_90 != none) {
-        func_ov000_02199bc8(self->unk_4c, (u8 *)self + 0x70, 0, 0);
-        self->unk_7c = LFLD(u16, tgt, 0x7c);
-        self->unk_7e = LFLD(u16, tgt, 0x7e);
-        self->unk_80 = LFLD(u16, tgt, 0x80);
+    if (tgt != NULL && self->target != none) {
+        func_ov000_02199bc8(((u8 *)self->unk_4c), (u8 *)self + 0x70, 0, 0);
+        self->rot_x = LFLD(u16, tgt, 0x7c);
+        self->rot_y = LFLD(u16, tgt, 0x7e);
+        self->rot_z = LFLD(u16, tgt, 0x80);
     }
 }
 

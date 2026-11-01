@@ -26,6 +26,7 @@ typedef struct {
     s32 unk_34;
     s32 unk_38;
 } Obj021b8e80;
+SIZE_ASSERT(Obj021b8e80, 0x3c);
 
 extern "C" {
 

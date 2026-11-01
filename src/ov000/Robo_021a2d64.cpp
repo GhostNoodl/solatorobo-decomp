@@ -82,9 +82,9 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
         B24(self).b17 = 0;
         self->unk_a8 = 0x29;
         self->unk_b36 = 0;
-        if (!(self->unk_30 & 0x80)) {
-            u8 *s48 = self->unk_48;
-            s32 d = self->unk_70.y - LFLD(s32, s48, 0x6c);
+        if (!(self->msg_flags & 0x80)) {
+            u8 *s48 = (u8 *)self->unk_48;
+            s32 d = self->pos.y - LFLD(s32, s48, 0x6c);
             if (d <= 0 && !(LFLD(u32, s48, 0x54) & 0x20000000)) {
                 flag = TRUE;
             } else if (d > 0x28cd) {
@@ -118,9 +118,9 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
                 }
             }
             func_ov000_021b1dd8((u8 *)self, self->unk_b08 >> 2, 0x200, 0xf00, 0, 1);
-            prev = self->unk_7e;
-            self->unk_7e = prev + 0xe00;
-            if (prev > 0x8000 && self->unk_7e < 0x8000) {
+            prev = self->rot_y;
+            self->rot_y = prev + 0xe00;
+            if (prev > 0x8000 && self->rot_y < 0x8000) {
                 func_02049f44(data_02097e4c, 0x35, (u8 *)self + 0x70, 0);
             }
             ((St_021a2d64 *)self->unk_40)->sub = 2;
@@ -152,7 +152,7 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
             if (B22(self).b0 != 0 || B24(self).b12 != 0 || B24(self).b19) {
                 lim = -0x2d000;
             }
-            if (self->unk_70.y - self->unk_b00 < lim) {
+            if (self->pos.y - self->unk_b00 < lim) {
                 fall = TRUE;
             }
         }
@@ -183,8 +183,8 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
     }
     turned = FALSE;
     if (B24(self).b1 && (LFLD(u32, self->unk_48, 0x54) & 0x400)) {
-        self->unk_98 = FX_Atan2(self->unk_af0 - self->unk_70.x,
-                                         self->unk_af8 - self->unk_70.z);
+        self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x,
+                                         self->unk_af8 - self->pos.z);
         self->unk_9c = 0x66;
         self->unk_a4 = 0;
         if (!B24(self).b17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {

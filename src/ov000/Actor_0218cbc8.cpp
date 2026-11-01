@@ -59,7 +59,7 @@ void func_ov000_0218cbc8(Actor *self) {
             s->unk_22_1 = s->unk_22_0;
         }
         func_ov000_0218d77c(self);
-        self->unk_94[0] = 0;
+        self->unk_94 = 0;
         switch (self->unk_15) {
         case 1:
             self->vfunc_34();

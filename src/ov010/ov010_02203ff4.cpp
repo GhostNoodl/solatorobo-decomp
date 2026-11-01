@@ -32,9 +32,8 @@ static inline s32 Ov010_Clamp(s32 v, s32 lo, s32 hi) {
     return v;
 }
 
-struct Obj02203ff4 {
-    u8 unk_00[0x38];
-    void *unk_38;
+struct Obj02203ff4 : public Ov010Obj {
+
 };
 
 void func_ov010_02203ff4(Obj02203ff4 *self) {

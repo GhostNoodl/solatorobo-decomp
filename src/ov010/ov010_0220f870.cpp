@@ -60,6 +60,7 @@ struct Ov010Task {
     Ov010Vec v0c;
     Ov010Vec v18;
 };
+SIZE_ASSERT(Ov010Task, 0x24);
 
 extern "C" {
 

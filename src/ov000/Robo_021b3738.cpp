@@ -1,18 +1,9 @@
 #include "nitro/fx.h"
 #include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define SC(r) FX_SinCosTable_[((r) >> 4) * 2], FX_SinCosTable_[((r) >> 4) * 2 + 1]
-
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 2;
-    u32 b4 : 1;
-    u32 b5 : 7;
-    u32 b12 : 2;
-    u32 rest : 18;
-} Bits24_021b3738;
 
 typedef struct {
     u16 b0 : 4;
@@ -87,32 +78,12 @@ static inline BOOL IsLocked_021b3738(void *p) {
     return IsB1_021b3738(p) ? TRUE : FALSE;
 }
 
-struct Obj021b3738 : public VObj {
-    u8 unk_04[0x3c];
-    u8 *unk_40;
-    u8 unk_44[0x18];
-    void *unk_5c;
-    u8 unk_60[0x8];
-    s32 unk_68;
-    s32 unk_6c;
-    VecFx32 unk_70;
-    u8 unk_7c[0x6e0];
-    VecFx32 unk_75c;
-    u8 unk_768[0x248];
-    void *unk_9b0;
-    u8 unk_9b4[0x16a];
-    u16 unk_b1e;
-    u16 unk_b20;
-    u8 unk_b22[0x2];
-    Bits24_021b3738 unk_b24;
-};
-
-void func_ov000_021b3738(Obj021b3738 *self, u8 *hit) {
+void func_ov000_021b3738(Robo021ca458 *self, u8 *hit) {
     VecFx32 pos;
     VecFx32 ofs;
     MtxFx33 m;
     s32 r;
-    if (hit != NULL && (LFLD(u8, self->unk_40, 0x13) != 0x18 || self->unk_b1e == 0xffff)) {
+    if (hit != NULL && (self->unk_40->current != 0x18 || self->unk_b1e == 0xffff)) {
         VObj *a = func_ov000_021985c0(hit);
         BOOL flag;
         u8 *e;
@@ -137,7 +108,7 @@ void func_ov000_021b3738(Obj021b3738 *self, u8 *hit) {
             u8 k = e[0];
             if ((u8)(k + 0xfa) <= 5) {
                 flag = FALSE;
-            } else if (!self->unk_b24.b1) {
+            } else if (!self->unk_b24_1) {
                 if (k == 2 || k == 3 || k == 4 || k == 5 || ((u8)(k + 0xf2) <= 1 && e[2] == 1) || func_ov000_0219b3b4(e) || (u16)(LFLD(u16, a, 0xe) & 0xf000) == 0x5000) {
                     flag = FALSE;
                 }
@@ -150,7 +121,7 @@ void func_ov000_021b3738(Obj021b3738 *self, u8 *hit) {
             LFLD(s32, self->unk_5c, 0x28) = flag;
         }
         LFLD(u32, self->unk_5c, 0) |= 2;
-    } else if (self->unk_b24.b12 == 3) {
+    } else if (self->unk_b24_12 == 3) {
         u16 id = self->unk_b20;
         u8 *o = data_ov000_021ccd68 == NULL ? NULL : (u8 *)func_ov000_0218e640(data_ov000_021ccd68, id);
         if (o == NULL) {
@@ -158,7 +129,7 @@ void func_ov000_021b3738(Obj021b3738 *self, u8 *hit) {
         }
         if (LFLD(u16, LFLD(u8 *, o, 0x4c), 0x1e) == 0) {
             func_ov000_021bd314(self->unk_5c, 5);
-            pos = self->unk_70;
+            pos = self->pos;
             r = self->unk_68;
         } else {
             s32 h = LFLD(s16, o, 0x1e);
@@ -177,7 +148,7 @@ void func_ov000_021b3738(Obj021b3738 *self, u8 *hit) {
         }
         LFLD(u32, self->unk_5c, 0) |= 2;
     } else {
-        pos = self->unk_70;
+        pos = self->pos;
         r = self->unk_6c;
         LFLD(u32, self->unk_5c, 0) &= ~2;
         func_ov000_021bd438(self->unk_5c, (VecFx32 *)((u8 *)self + 0x70), 0);
@@ -186,7 +157,7 @@ end:
     LFLD(s32, self->unk_5c, 0x5c) = r;
     LFLD(VecFx32, self->unk_5c, 0x50) = pos;
     func_ov000_021bd624(self->unk_5c);
-    if (self->unk_b24.b4 && !IsLocked_021b3738(self->unk_5c) && (LFLD(u16, data_ov000_021ccd68, 0xa) & 0x3f) < 0x2c) {
+    if (self->unk_b24_4 && !IsLocked_021b3738(self->unk_5c) && (LFLD(u16, data_ov000_021ccd68, 0xa) & 0x3f) < 0x2c) {
         LFLD(u32, self->unk_9b0, 0) |= 2;
     } else {
         LFLD(u32, self->unk_9b0, 0) &= ~2;

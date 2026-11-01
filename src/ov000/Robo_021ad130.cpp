@@ -8,18 +8,6 @@ typedef struct {
 } St021ad130;
 
 typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 rest : 30;
-} B24_021ad130;
-
-typedef struct {
-    u16 b0 : 6;
-    u16 kind : 3;
-    u16 rest : 7;
-} B22_021ad130;
-
-typedef struct {
     u16 b0 : 1;
     u16 b1 : 1;
     u16 rest : 14;
@@ -108,17 +96,12 @@ static inline BOOL QHas021ad130(const s32 *w) {
     return FALSE;
 }
 
-struct Spawn021ad130Self {
-    u8 unk_00[0xb22];
-    B22_021ad130 unk_b22;
-};
-
-static inline void Spawn021ad130(Spawn021ad130Self *self, s32 id, s32 scale) {
+static inline void Spawn021ad130(Robo021ca458 *self, s32 id, s32 scale) {
     VObj *e = func_02065f88(id, (u8 *)self + 0x70);
     if (e != NULL) {
         e->vfunc_0c(scale);
         LFLD(s32, e, 0x3c) = 0xb33;
-        if (self->unk_b22.kind == 5) {
+        if (self->unk_b22_6 == 5) {
             e->vfunc_24(0, 0x1800, 0);
             e->vfunc_0c(0x3000);
         }
@@ -134,12 +117,12 @@ void func_ov000_021ad130(Robo021ca458 *self) {
         if (r != 0) {
             u8 *p;
             ((St021ad130 *)self->unk_40)->state = 10;
-            p = self->unk_50;
+            p = ((u8 *)self->hp);
             LFLD(u16, p, 0) = (s32)(r * LFLD(u16, p, 2)) / 100;
             func_02065f88(0xcb, (u8 *)self + 0x70)->vfunc_14(0x99a, 0x1800, 0x99a);
             break;
         }
-        if (LFLD(B24_021ad130, self, 0xb24).b1) {
+        if (self->unk_b24_1) {
             ((St021ad130 *)self->unk_40)->timer = 0;
         } else {
             ((St021ad130 *)self->unk_40)->timer = 0xd2;
@@ -157,7 +140,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
         break;
     }
     case 1: {
-        if (LFLD(B24_021ad130, self, 0xb24).b1) {
+        if (self->unk_b24_1) {
             u16 t = ((St021ad130 *)self->unk_40)->timer;
             if (t <= 0xfa) {
                 if (t % 25 == 0) {
@@ -198,7 +181,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
                 if (e != NULL) {
                     e->vfunc_0c(0x2800);
                     LFLD(s32, e, 0x3c) = 0x800;
-                    if (LFLD(B22_021ad130, self, 0xb22).kind == 5) {
+                    if (self->unk_b22_6 == 5) {
                         e->vfunc_24(0, 0x1800, 0);
                         e->vfunc_0c(0x3000);
                     }
@@ -207,7 +190,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
                 if (e != NULL) {
                     e->vfunc_0c(0x28cd);
                     LFLD(s32, e, 0x3c) = 0xb33;
-                    if (LFLD(B22_021ad130, self, 0xb22).kind == 5) {
+                    if (self->unk_b22_6 == 5) {
                         e->vfunc_24(0, 0x1800, 0);
                         e->vfunc_0c(0x3000);
                     }
@@ -248,7 +231,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
                 VObj *e = func_02065f88(0xc9, (u8 *)self + 0x70);
                 s32 sc = 0x4800;
                 self->unk_b44 = LFLD(s32, e, 0x24);
-                if (LFLD(B22_021ad130, self, 0xb22).kind == 5) {
+                if (self->unk_b22_6 == 5) {
                     sc = 0x8000;
                 }
                 e->vfunc_0c(sc);
@@ -265,12 +248,12 @@ void func_ov000_021ad130(Robo021ca458 *self) {
             u8 *anm;
             func_02065f88(0x190, (u8 *)self + 0x70);
             anm = data_ov000_021cc5e3;
-            if (!LFLD(B24_021ad130, self, 0xb24).b1 && (LFLD(u32, self->unk_48, 0x50) & 0x400)) {
+            if (!self->unk_b24_1 && (LFLD(u32, self->unk_48, 0x50) & 0x400)) {
                 anm = data_ov000_021cc618;
             }
             func_ov000_02190cb0(self->unk_38, anm, 0x400, 0);
-            LFLD(u16, self->unk_50, 0xa) = 0xf0;
-            LFLD(B24_021ad130, self, 0xb24).b0 = 0;
+            LFLD(u16, ((u8 *)self->hp), 0xa) = 0xf0;
+            self->unk_b24_0 = 0;
             ((St021ad130 *)self->unk_40)->timer = 0;
             ((St021ad130 *)self->unk_40)->state++;
         }
@@ -290,11 +273,11 @@ void func_ov000_021ad130(Robo021ca458 *self) {
         break;
     }
     }
-    if (LFLD(B22_021ad130, self, 0xb22).kind == 5) {
+    if (self->unk_b22_6 == 5) {
         return;
     }
     LFLD(u16, self->unk_48, 0x9a) |= 0x20;
-    if (!(self->unk_30 & 0x80) && LFLD(u16, self->unk_50, 0) == 0) {
+    if (!(self->msg_flags & 0x80) && LFLD(u16, ((u8 *)self->hp), 0) == 0) {
         return;
     }
     func_ov000_021987b8(self->unk_48, 0, 0, 0);

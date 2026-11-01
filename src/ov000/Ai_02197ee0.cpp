@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
+#include "ov000/ActorBase.h"
 
 
 #define REG_SQRTCNT (*(volatile u16 *)0x40002b0)
@@ -69,21 +70,7 @@ static inline void Polar02197ee0(VecFx32 *p, s32 r, s16 sn, s16 cs) {
     p->z += FX_Mul02197ee0(r, cs);
 }
 
-struct Obj02197ee0 {
-    u8 unk_00[0x40];
-    Hist02197ee0 *unk_40;
-    u8 unk_44[0x4];
-    u8 *unk_48;
-    u8 unk_4c[0x20];
-    s32 unk_6c;
-    s32 unk_70;
-    s32 unk_74;
-    s32 unk_78;
-    u8 unk_7c[0x14];
-    u16 unk_90;
-};
-
-void func_ov000_02197ee0(Obj02197ee0 *self, AiState02197ee0 *st, s32 near, s32 arg, s32 radius) {
+void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s32 radius) {
     Hist02197ee0 *h;
     u8 cur;
     u8 *obj;
@@ -91,7 +78,7 @@ void func_ov000_02197ee0(Obj02197ee0 *self, AiState02197ee0 *st, s32 near, s32 a
     if (!GIdle02197ee0()) {
         return;
     }
-    h = self->unk_40;
+    h = ((Hist02197ee0 *)self->unk_40);
     cur = h->current;
     if (cur == 0 || (h->mask & 1) != 0) {
         st->st = 0;
@@ -100,14 +87,14 @@ void func_ov000_02197ee0(Obj02197ee0 *self, AiState02197ee0 *st, s32 near, s32 a
     obj = NULL;
     dist = 0x7fffffff;
     if ((u8)(cur + 0xff) <= 1) {
-        self->unk_90 = 0xffff;
+        self->target = 0xffff;
         obj = func_ov000_0219bf90();
         if (obj != NULL) {
-            self->unk_90 = LFLD(u16, obj, 0xc);
+            self->target = LFLD(u16, obj, 0xc);
         }
         {
-            s32 dx = self->unk_70 - LFLD(s32, obj, 0x70);
-            s32 dz = self->unk_78 - LFLD(s32, obj, 0x78);
+            s32 dx = self->pos.x - LFLD(s32, obj, 0x70);
+            s32 dz = self->pos.z - LFLD(s32, obj, 0x78);
             s64 sq = (s64)dx * dx;
             sq += (s64)dz * dz;
             REG_SQRTCNT = 1;
@@ -124,7 +111,7 @@ void func_ov000_02197ee0(Obj02197ee0 *self, AiState02197ee0 *st, s32 near, s32 a
     }
     switch (st->st) {
     case 0:
-        if (self->unk_40->current != 1) {
+        if (((Hist02197ee0 *)self->unk_40)->current != 1) {
             return;
         }
         st->st++;
@@ -145,11 +132,11 @@ void func_ov000_02197ee0(Obj02197ee0 *self, AiState02197ee0 *st, s32 near, s32 a
             ang = LFLD(u16, o, 0x1a);
         } else {
             p.y += self->unk_6c;
-            ang = FX_Atan2(p.x - self->unk_70, p.z - self->unk_78);
+            ang = FX_Atan2(p.x - self->pos.x, p.z - self->pos.z);
             ang = func_ov000_0219a36c(&p, radius, (u16)(ang + (u16)(func_02040498(0x2000) + 0x7000)), 5, 0, 0xc0000000);
         }
         Polar02197ee0(&p, radius, FX_SinCosTable_[(ang >> 4) * 2], FX_SinCosTable_[(ang >> 4) * 2 + 1]);
-        p.y = self->unk_74;
+        p.y = self->pos.y;
         st->pos = p;
         st->st++;
         st->timer = 0;
@@ -157,13 +144,13 @@ void func_ov000_02197ee0(Obj02197ee0 *self, AiState02197ee0 *st, s32 near, s32 a
     case 2:
         st->timer++;
         if (LFLD(s32, self->unk_48, 0x58) != 0 || st->timer >= 0x78 ||
-            near + (near >> 2) > Dist02197ee0(self->unk_70 - st->pos.x, self->unk_78 - st->pos.z)) {
+            near + (near >> 2) > Dist02197ee0(self->pos.x - st->pos.x, self->pos.z - st->pos.z)) {
             st->st = 0;
         }
         if ((LFLD(u32, self->unk_48, 0x50) & 0x40000000) && st->timer >= 0x14) {
             st->st = 0;
         }
-        self->unk_40->mask |= 4;
+        ((Hist02197ee0 *)self->unk_40)->mask |= 4;
         return;
     case 10:
         st->timer++;

@@ -41,7 +41,7 @@ s32 func_02040528(s32 max);
 s32 func_02040498(s32 max);
 
 void func_ov000_021b0c50(Actor *self) {
-    switch (*(u16 *)self->unk_40) {
+    switch (self->unk_40->st) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov000_021cc6c6, 0x800, 0);
         func_ov000_0218996c(8, 0xc);
@@ -49,7 +49,7 @@ void func_ov000_021b0c50(Actor *self) {
         self->unk_a0 = 0;
         self->unk_a4 = 0;
         self->unk_a8 = 0;
-        (*(u16 *)self->unk_40)++;
+        self->unk_40->st++;
     case 1:
         if (func_ov000_02191120(self->unk_38)) {
             switch (ROBO_FLAGS(self)->bit0) {
@@ -68,7 +68,7 @@ void func_ov000_021b0c50(Actor *self) {
 
 void func_ov000_021b0d04(Actor *self) {
     func_ov000_021ad130(self);
-    if (**(u16 **)self->unk_50 == 0 && !(((u16 *)self->unk_40)[1] & 0x1f)) {
+    if (*self->hp == 0 && !(self->unk_40->timer & 0x1f)) {
         Effect021b0d04 *e = func_02065f88(0x38f, &self->pos);
         s32 a;
         s32 b;

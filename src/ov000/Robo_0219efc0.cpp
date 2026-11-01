@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u32 b0 : 1;
@@ -42,14 +43,6 @@ typedef struct {
     u8 b5 : 2;
     u8 rest : 1;
 } B93_0219efc0;
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    u8 rest : 4;
-} B28_0219efc0;
 
 typedef struct {
     u16 b0 : 4;
@@ -143,36 +136,7 @@ static inline void TogglePad_0219efc0(void) {
     }
 }
 
-struct Obj0219efc0 {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u8 unk_0e[0x22];
-    u32 unk_30;
-    u8 unk_34[0x14];
-    u8 *unk_48;
-    u8 unk_4c[0x44];
-    u16 unk_90;
-    u8 unk_92[0xa8a];
-    u16 unk_b1c;
-    u16 unk_b1e;
-    u8 unk_b20[0x8];
-    u8 unk_b28;
-    B28_0219efc0 unk_b29;
-    u8 unk_b2a[0x4];
-    u8 unk_b2e;
-    u8 unk_b2f[0x7];
-    u16 unk_b36;
-    u16 unk_b38;
-    u8 unk_b3a[0x2e];
-    u16 unk_b68;
-    u16 unk_b6a;
-    u16 unk_b6c;
-    u16 unk_b6e;
-    u8 unk_b70[0x34];
-    u8 *unk_ba4;
-};
-
-static inline void LockKeys_0219efc0(Obj0219efc0 *self) {
+static inline void LockKeys_0219efc0(Robo021ca458 *self) {
     u32 m = B24(self).b12;
     if (m != 3) {
         if (B2C(self).b4 == 0 || m == 1) {
@@ -219,7 +183,7 @@ static inline BOOL IsIdleG_0219efc0(u8 *g) {
     return TRUE;
 }
 
-static inline BOOL NotB1_0219efc0(Obj0219efc0 *self) {
+static inline BOOL NotB1_0219efc0(Robo021ca458 *self) {
     return !B24(self).b1;
 }
 
@@ -227,11 +191,11 @@ static inline BOOL PadB9_0219efc0(void) {
     return PAD18.b9 ? TRUE : FALSE;
 }
 
-static inline BOOL CanMove_0219efc0(Obj0219efc0 *self) {
+static inline BOOL CanMove_0219efc0(Robo021ca458 *self) {
     u8 *g = data_ov000_021ccd54;
     BOOL r = IsIdleG_0219efc0(g);
     if (r) {
-        r = !self->unk_b29.b1;
+        r = !self->unk_b29_1;
     }
     if (r) {
         r = self->unk_b28 == 0;
@@ -243,7 +207,7 @@ static inline BOOL CanMove_0219efc0(Obj0219efc0 *self) {
         r = !B24(self).b0;
     }
     if (r) {
-        r = !self->unk_b29.b3;
+        r = !self->unk_b29_3;
     }
     if (r) {
         r = !NotB1_0219efc0(self);
@@ -261,7 +225,7 @@ static inline BOOL CanMove_0219efc0(Obj0219efc0 *self) {
     return r;
 }
 
-void func_ov000_0219efc0(Obj0219efc0 *self) {
+void func_ov000_0219efc0(Robo021ca458 *self) {
     u8 *p;
     u8 *t9;
     BOOL x;
@@ -277,13 +241,13 @@ void func_ov000_0219efc0(Obj0219efc0 *self) {
         return;
     }
     if (B24(self).b0 || B24(self).b12 == 2) {
-        self->unk_90 = 0xffff;
+        self->target = 0xffff;
         B24(self).b4 = 0;
         func_ov000_021b3738(self, NULL);
         return;
     }
-    if (!self->unk_b29.b1 && !LFLD(B28_0219efc0, self, 0xb28).b2 && self->unk_b2e == 0 &&
-        !self->unk_b29.b3) {
+    if (!self->unk_b29_1 && !self->unk_b28_2 && self->unk_b2e == 0 &&
+        !self->unk_b29_3) {
         self->unk_b68 = LFLD(u16, data_02097dc8, 0x10);
         self->unk_b6a = LFLD(u16, data_02097dc8, 0x12);
         self->unk_b6c = LFLD(u16, data_02097dc8, 0x14);
@@ -317,7 +281,7 @@ void func_ov000_0219efc0(Obj0219efc0 *self) {
                 u16 n = self->unk_b36;
                 if (n == 0) {
                     if (B2C(self).b4 != 0) {
-                        u8 *a = FindActor_0219efc0(self->unk_90);
+                        u8 *a = FindActor_0219efc0(self->target);
                         u8 *i = NULL;
                         s32 k;
                         if (a != NULL) {
@@ -379,13 +343,13 @@ void func_ov000_0219efc0(Obj0219efc0 *self) {
         B93(self).b5 = 0;
     }
     if (B22(self).b3 && self->unk_b36 != 0 && PAD18.b1 == 1 && self->unk_b1c == 0xffff &&
-        self->unk_90 == 0xffff && (u8)(ST(self)->kind + 0xff) <= 1) {
+        self->target == 0xffff && (u8)(ST(self)->kind + 0xff) <= 1) {
         KEYS(self) |= 0x80;
     }
     if (self->unk_b6a & 1) {
         u8 *a;
         u8 *i;
-        t9 = FindActor_0219efc0(self->unk_90);
+        t9 = FindActor_0219efc0(self->target);
         if (t9 != NULL) {
             func_02062764(0x3c0, 0x40);
         }
@@ -397,7 +361,7 @@ void func_ov000_0219efc0(Obj0219efc0 *self) {
             if (a != NULL) {
                 i = LFLD(u8 *, a, 0x4c);
             }
-            if (i == NULL || LFLD(u16, i, 0x1c) != self->unk_0c) {
+            if (i == NULL || LFLD(u16, i, 0x1c) != self->id) {
                 B24(self).b5 = 0;
                 self->unk_b1c = 0xffff;
                 self->unk_b1e = 0xffff;
@@ -427,7 +391,7 @@ void func_ov000_0219efc0(Obj0219efc0 *self) {
                     }
                     break;
                 case 6:
-                    if (FindActor_0219efc0(self->unk_90) != NULL) {
+                    if (FindActor_0219efc0(self->target) != NULL) {
                         KEYS(self) |= 0x40;
                     } else {
                         KEYS(self) |= 0x1000;
@@ -440,7 +404,7 @@ void func_ov000_0219efc0(Obj0219efc0 *self) {
                 i = LFLD(u8 *, t9, 0x4c);
             }
             if (i != NULL) {
-                BOOL hold = (self->unk_30 & 0x80) ? TRUE : FALSE;
+                BOOL hold = (self->msg_flags & 0x80) ? TRUE : FALSE;
                 switch (i[0]) {
                 case 3:
                     if (!hold) {
@@ -549,7 +513,7 @@ void func_ov000_0219efc0(Obj0219efc0 *self) {
         }
     }
     if ((self->unk_b68 & 0x200) && (self->unk_b6a & 0x100) && PAD18.b1 == 1 && !B22(self).b3 &&
-        B22(self).b9 == 0 && B24(self).b1 && B93(self).b4 && !self->unk_b29.b3 && B22(self).b0 == 0 &&
+        B22(self).b9 == 0 && B24(self).b1 && B93(self).b4 && !self->unk_b29_3 && B22(self).b0 == 0 &&
         B24(self).b12 == 0 && ST(self)->kind != 0x11 && (ST(self)->kind != 0xb || !B24(self).b26) &&
         LFLD(u16, data_0214a424, 0x26) >= 0x2d0) {
         func_02049a48(data_02097e4c, 0x30b, -1, -1, -1);
@@ -573,7 +537,7 @@ void func_ov000_0219efc0(Obj0219efc0 *self) {
     if (B22(self).b4) {
         return;
     }
-    if (self->unk_b29.b3) {
+    if (self->unk_b29_3) {
         return;
     }
     if (B24(self).b0) {

@@ -1,12 +1,8 @@
 #include "nitro/fx.h"
 #include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u16 st;
-    u16 timer;
-} State0219763c;
 
 typedef struct {
     u16 b0 : 1;
@@ -117,45 +113,25 @@ static inline void Die0219763c(VObj *obj) {
     obj->vfunc_08();
 }
 
-struct Obj0219763c {
-    u8 unk_00[0xe];
-    u16 unk_0e;
-    u8 unk_10[0x28];
-    u8 *unk_38;
-    u8 unk_3c[0x4];
-    State0219763c *unk_40;
-    u8 *unk_44;
-    u8 *unk_48;
-    u8 *unk_4c;
-    u8 unk_50[0x8];
-    void *unk_58;
-    u8 unk_5c[0x8];
-    s32 unk_64;
-    u8 unk_68[0x4];
-    s32 unk_6c;
-    u8 unk_70[0x5c];
-    Bits0219763c unk_cc;
-};
-
-static inline void Spawn0219763c(Obj0219763c *self, s16 id, const s16 *scale, Vec0219763c *p) {
+static inline void Spawn0219763c(ActorEx *self, s16 id, const s16 *scale, Vec0219763c *p) {
     VObj *fx = func_02065f88(id, p);
     s32 s = *scale << 4;
     if (s == 0) {
         s = self->unk_64 + (self->unk_64 >> 3);
     }
     fx->vfunc_0c(s);
-    if (!self->unk_cc.b5) {
+    if (!self->unk_cc_5) {
         MIi_CpuClear32(-1, (u8 *)fx + 0x84, 0x40);
     }
 }
 
 void func_ov000_0219763c(VObj *obj) {
-    Obj0219763c *self = (Obj0219763c *)obj;
+    ActorEx *self = (ActorEx *)obj;
     s32 zero = 0;
-    State0219763c *s = self->unk_40;
+    ActorSub40 *s = self->unk_40;
     switch (s->st) {
     case 0: {
-        u8 *t = self->unk_4c;
+        u8 *t = ((u8 *)self->unk_4c);
         Ent0219763c *e = (Ent0219763c *)zero;
         Vec0219763c p;
         if (t != NULL) {
@@ -180,7 +156,7 @@ void func_ov000_0219763c(VObj *obj) {
             if (e->fx1 != -1) {
                 Spawn0219763c(self, e->fx1, &e->scale1, &p);
             }
-            if (e->snd >= 0 && self->unk_cc.b5) {
+            if (e->snd >= 0 && self->unk_cc_5) {
                 func_02049f44(data_02097e4c, e->snd, (u8 *)self + 0x70, 0);
             }
             if (e->a != 0 && e->b != 0) {
@@ -188,7 +164,7 @@ void func_ov000_0219763c(VObj *obj) {
             }
         }
         {
-            u8 *r = func_020704b4(self->unk_0e);
+            u8 *r = func_020704b4(self->kind);
             func_ov000_0219b400((u16 *)(r + 0x20), r + 0x24, 2, &p, (u8 *)self + 0x7c, zero);
         }
         if (self->unk_44 != NULL) {
@@ -197,7 +173,7 @@ void func_ov000_0219763c(VObj *obj) {
             LFLD(Bits0219763c, q, 0x22).b1 = 0;
         }
         if (self->unk_48 != NULL) {
-            u8 *q;
+            ActorSub48 *q;
             func_ov000_02198c8c(self->unk_48, 0xffff);
             q = self->unk_48;
             LFLD(Bits0219763c, q, 0x9a).b0 = 0;
@@ -208,7 +184,7 @@ void func_ov000_0219763c(VObj *obj) {
             LFLD(Bits0219763c, q, 0x9a).b4 = 0;
         }
         if (self->unk_58 != NULL) {
-            self->unk_cc.b0 = 0;
+            self->unk_cc_0 = 0;
         }
         self->unk_40->st++;
         return;
@@ -219,8 +195,8 @@ void func_ov000_0219763c(VObj *obj) {
             Die0219763c(obj);
             return;
         }
-        if (self->unk_38 != NULL) {
-            LFLD(u8, self->unk_38, 0xbe) = 0x1f - (self->unk_40->timer << 2);
+        if (((u8 *)self->unk_38) != NULL) {
+            LFLD(u8, ((u8 *)self->unk_38), 0xbe) = 0x1f - (self->unk_40->timer << 2);
         }
         return;
     }

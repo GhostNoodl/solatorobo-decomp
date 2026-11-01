@@ -1,12 +1,8 @@
 #include "types.h"
 #include "nitro/std.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u16 st;
-    u16 timer;
-} State02195d88;
 
 typedef struct {
     u16 b0 : 1;
@@ -42,40 +38,13 @@ u16 func_ov000_02199bc8(void *a, void *pos, u16 t, s32 n);
 u8 *func_ov000_0219bf90(void);
 void func_ov003_021f0c60(void *self, s32 a);
 
-struct Obj02195d88 {
-    u8 unk_00[0x38];
-    void *unk_38;
-    u8 unk_3c[0x4];
-    State02195d88 *unk_40;
-    u8 *unk_44;
-    u8 *unk_48;
-    u8 *unk_4c;
-    u8 unk_50[0x8];
-    void *unk_58;
-    u8 unk_5c[0x20];
-    Rot02195d88 unk_7c;
-    u8 unk_82[0xe];
-    u16 unk_90;
-    u8 unk_92[0x1];
-    Bits8_02195d88 unk_93;
-    u8 unk_94[0x8];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
-    u8 unk_ac[0x4];
-    u8 *unk_b0;
-    u8 unk_b4[0x18];
-    Bits02195d88 unk_cc;
-};
-
-void func_ov000_02195d88(Obj02195d88 *self) {
-    State02195d88 *s = self->unk_40;
+void func_ov000_02195d88(ActorEx *self) {
+    ActorSub40 *s = self->unk_40;
     switch (s->st) {
     case 0:
-        self->unk_93.b1 = 1;
+        self->unk_93_1 = 1;
         if (self->unk_38 != NULL) {
-            char *name = LFLD(char *, self->unk_4c, 0xc);
+            char *name = LFLD(char *, ((u8 *)self->unk_4c), 0xc);
             if (name != NULL) {
                 if (STD_CompareString(name, data_ov000_021cc45c) == 0) {
                     func_ov000_02191008(self->unk_38);
@@ -92,24 +61,24 @@ void func_ov000_02195d88(Obj02195d88 *self) {
             LFLD(Bits02195d88, q, 0x22).b1 = 0;
         }
         if (self->unk_48 != NULL) {
-            u8 *p = self->unk_48;
+            u8 *p = (u8 *)self->unk_48;
             LFLD(s32, p, 0x50) = 0;
             LFLD(s32, p, 0x54) = 0;
             LFLD(s32, p, 0x58) = 0;
-            p = self->unk_48;
+            p = (u8 *)self->unk_48;
             LFLD(Bits02195d88, p, 0x9a).b0 = 0;
             LFLD(Bits02195d88, p, 0x9a).b3 = 0;
             func_0203f364(p);
-            p = self->unk_48;
+            p = (u8 *)self->unk_48;
             LFLD(Bits02195d88, p, 0x9a).b1 = 0;
             LFLD(Bits02195d88, p, 0x9a).b4 = 0;
         }
-        self->unk_90 = 0xffff;
+        self->target = 0xffff;
         if (self->unk_58 != NULL) {
-            self->unk_cc.b0 = 0;
+            self->unk_cc_0 = 0;
         }
         if (LFLD(Bits02195d88, self->unk_b0, 2).b8) {
-            LFLD(Bits8_02195d88, self->unk_4c, 0x18).b0 = 1;
+            LFLD(Bits8_02195d88, ((u8 *)self->unk_4c), 0x18).b0 = 1;
         }
         self->unk_9c = 0;
         self->unk_a0 = 0;
@@ -119,21 +88,21 @@ void func_ov000_02195d88(Obj02195d88 *self) {
         self->unk_40->st++;
         break;
     case 1: {
-        u8 *t = func_ov000_02199ba0(self->unk_4c);
+        u8 *t = func_ov000_02199ba0(((u8 *)self->unk_4c));
         u16 r;
         u8 *pl;
         if (t != NULL) {
-            r = func_ov000_02199bc8(self->unk_4c, (u8 *)self + 0x70, self->unk_40->timer, 10);
-            self->unk_7c = LFLD(Rot02195d88, t, 0x7c);
+            r = func_ov000_02199bc8(((u8 *)self->unk_4c), (u8 *)self + 0x70, self->unk_40->timer, 10);
+            LFLD(Rot02195d88, self, 0x7c) = LFLD(Rot02195d88, t, 0x7c);
             self->unk_40->timer = r;
-            if (LFLD(u8, self->unk_4c, 1) != 3) {
+            if (LFLD(u8, ((u8 *)self->unk_4c), 1) != 3) {
                 break;
             }
             if (r < 10) {
                 break;
             }
             pl = func_ov000_0219bf90();
-            if (LFLD(u16, pl, 0xc) == LFLD(u16, self->unk_4c, 0x1c)) {
+            if (LFLD(u16, pl, 0xc) == self->unk_4c->unk_1c) {
                 u32 n = LFLD(u16, data_0214a424, 0x16) + 1;
                 if (n >= 0xffff) {
                     n = 0xffff;
@@ -145,7 +114,7 @@ void func_ov000_02195d88(Obj02195d88 *self) {
                     LFLD(Bits02195d88, q, 0x22).b1 = 0;
                 }
                 if (self->unk_48 != NULL) {
-                    u8 *p = self->unk_48;
+                    ActorSub48 *p = self->unk_48;
                     LFLD(Bits02195d88, p, 0x9a).b0 = 0;
                     LFLD(Bits02195d88, p, 0x9a).b3 = 0;
                     func_0203f364(p);
@@ -153,8 +122,8 @@ void func_ov000_02195d88(Obj02195d88 *self) {
                     LFLD(Bits02195d88, p, 0x9a).b1 = 0;
                     LFLD(Bits02195d88, p, 0x9a).b4 = 0;
                 }
-                if (LFLD(u8, self->unk_4c, 3) != 0) {
-                    LFLD(u16, self->unk_4c, 0x1c) = 0xffff;
+                if (LFLD(u8, ((u8 *)self->unk_4c), 3) != 0) {
+                    self->unk_4c->unk_1c = 0xffff;
                     func_ov003_021f0c60(self, 0);
                 }
             }

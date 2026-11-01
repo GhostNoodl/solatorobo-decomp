@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -31,17 +32,7 @@ static inline BOOL LoAnimValid(LoAnimC *p) {
     return TRUE;
 }
 
-struct Obj0215c0c4 : public VObj {
-    s32 unk_04;
-    u8 unk_08[0x4];
-    u32 unk_0c;
-    u8 unk_10[0x4];
-    void *unk_14;
-    u8 unk_18[0x6c];
-    VObj *unk_84;
-};
-
-void func_ov000_0215c0c4(Obj0215c0c4 *self, void *a, s32 *pos, s32 d) {
+void func_ov000_0215c0c4(Lo021cadcc *self, void *a, s32 *pos, s32 d) {
     if (a == NULL) {
         return;
     }

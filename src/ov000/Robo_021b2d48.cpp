@@ -1,9 +1,5 @@
 #include "ov000/LoCommon.h"
-
-typedef struct {
-    u16 mode : 3;
-    u16 rest : 13;
-} B22_021b2d48;
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 extern void *data_ov000_021ccd68;
@@ -26,20 +22,7 @@ static inline void *FindActor021b2d48(u16 id) {
     return func_ov000_0218e640(mgr, id);
 }
 
-struct Obj021b2d48 {
-    u8 unk_00[0x48];
-    u8 *unk_48;
-    u8 unk_4c[0x44];
-    u16 unk_90;
-    u8 unk_92[0xa8a];
-    u16 unk_b1c;
-    u8 unk_b1e[0x4];
-    B22_021b2d48 unk_b22;
-    u8 unk_b24[0xb];
-    u8 unk_b2f;
-};
-
-void func_ov000_021b2d48(Obj021b2d48 *self) {
+void func_ov000_021b2d48(Robo021ca458 *self) {
     u8 *res = NULL;
     BOOL flag = FALSE;
     u8 *tgt = NULL;
@@ -49,7 +32,7 @@ void func_ov000_021b2d48(Obj021b2d48 *self) {
     if (self->unk_b2f != 0) {
         self->unk_b2f--;
         res = (u8 *)func_ov000_0218d2e0(self);
-    } else if ((LFLD(u32, self->unk_48, 0x54) & 0x400) || self->unk_b22.mode > 1) {
+    } else if ((LFLD(u32, self->unk_48, 0x54) & 0x400) || self->unk_b22_0 > 1) {
         self->unk_b2f = 0;
     } else {
         u8 *a = (u8 *)FindActor021b2d48(self->unk_b1c);
@@ -68,9 +51,9 @@ void func_ov000_021b2d48(Obj021b2d48 *self) {
         res = (u8 *)func_ov000_021b2f08(self, tgt, sub, flag);
     }
     if (res != NULL) {
-        if (self->unk_90 != LFLD(u16, res, 0x20)) {
+        if (self->target != LFLD(u16, res, 0x20)) {
             func_02049a48(data_02097e4c, 0x22, -1, -1, -1);
-            self->unk_90 = LFLD(u16, res, 0x20);
+            self->target = LFLD(u16, res, 0x20);
         }
         if ((LFLD(u16, res, 0x20) >> 12) == 4) {
             u8 *t = (u8 *)func_ov000_021985c0(res);
@@ -85,7 +68,7 @@ void func_ov000_021b2d48(Obj021b2d48 *self) {
             }
         }
     } else {
-        self->unk_90 = 0xffff;
+        self->target = 0xffff;
     }
     func_ov000_021b3bd8(self);
     func_ov000_021b3738(self, res);

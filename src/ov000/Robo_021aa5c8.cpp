@@ -13,14 +13,6 @@ typedef struct {
 } State021aa5c8;
 
 typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 rest : 12;
-} Bits021aa5c8;
-
-typedef struct {
     u8 b0 : 1;
     u8 b1 : 1;
     u8 b2 : 1;
@@ -98,7 +90,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
         LFLD(u8, g, 0x18f) = 6;
         func_02049a48(data_02097e4c, 0x44, -1, -1, -1);
         func_02049a48(data_02097e4c, 0x30c, -1, -1, -1);
-        if (!LFLD(Bits021aa5c8, self, 0xb22).b3) {
+        if (!self->unk_b22_3) {
             u16 n = 0x14;
             if (sub != NULL) {
                 n += (u16)(LFLD(u8, sub, 0x1a) * 2);
@@ -112,18 +104,18 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
             func_02049bdc(data_02097e4c, 0x5e, func_02040498(3));
         }
     }
-    if (LFLD(Bits021aa5c8, self, 0xb2c).b0) {
+    if (self->unk_b2c_0) {
         func_ov000_021aa978((u8 *)self);
-    } else if (LFLD(Bits021aa5c8, self, 0xb2c).b1) {
+    } else if (self->unk_b2c_1) {
         func_ov000_021aaf80((u8 *)self);
-    } else if (LFLD(Bits021aa5c8, self, 0xb2c).b2) {
+    } else if (self->unk_b2c_2) {
         func_ov000_021ab68c((u8 *)self);
     }
     if (((State021aa5c8 *)self->unk_40)->st <= 1 && sub != NULL && !(LFLD(Bits8021aa5c8, sub, 0x18).b4 ? TRUE : FALSE)) {
         d = LFLD(VecFx32, actor, 0x70);
-        d.x -= self->unk_70.x;
-        d.y -= self->unk_70.y;
-        d.z -= self->unk_70.z;
+        d.x -= self->pos.x;
+        d.y -= self->pos.y;
+        d.z -= self->pos.z;
         d.x = FxMulL021aa5c8(d.x, 0x733);
         d.y = FxMulL021aa5c8(d.y, 0x733);
         d.z = FxMulL021aa5c8(d.z, 0x733);
@@ -134,7 +126,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
     if (((State021aa5c8 *)self->unk_40)->kind != 0x11) {
         return;
     }
-    if (LFLD(Bits021aa5c8, self, 0xb2c).b0 || LFLD(Bits021aa5c8, self, 0xb2c).b1 || LFLD(Bits021aa5c8, self, 0xb2c).b2) {
+    if (self->unk_b2c_0 || self->unk_b2c_1 || self->unk_b2c_2) {
         return;
     }
     func_ov000_02198360(self->unk_40, 1, 0);

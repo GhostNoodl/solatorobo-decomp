@@ -1,15 +1,10 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u16 state;
     u16 timer;
 } St_021aef50;
-
-typedef struct {
-    u32 b0 : 12;
-    u32 kind : 2;
-    u32 b14 : 18;
-} B24_021aef50;
 
 typedef struct {
     s32 x, y, z;
@@ -67,47 +62,14 @@ static inline s32 Dist021aef50(s32 dx, s32 dz) {
     return (s32)(REG_SQRT_RESULT_021aef50 + 1) >> 1;
 }
 
-struct Obj021aef50 {
-    u8 unk_00[0x38];
-    void *unk_38;
-    u8 unk_3c[0x4];
-    St_021aef50 *unk_40;
-    u8 unk_44[0x24];
-    s32 unk_68;
-    u8 unk_6c[0x4];
-    s32 unk_70;
-    s32 unk_74;
-    s32 unk_78;
-    u16 unk_7c;
-    u16 unk_7e;
-    u16 unk_80;
-    u8 unk_82[0xe];
-    u16 unk_90;
-    u8 unk_92[0x6];
-    u16 unk_98;
-    u8 unk_9a[0x2];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
-    u8 unk_ac[0xa74];
-    u16 unk_b20;
-    u8 unk_b22[0x2];
-    B24_021aef50 unk_b24;
-    u8 unk_b28[0x1];
-    u8 unk_b29;
-    u8 unk_b2a[0x5];
-    u8 unk_b2f;
-};
-
-void func_ov000_021aef50(Obj021aef50 *self) {
+void func_ov000_021aef50(Robo021ca458 *self) {
     u16 id;
     u8 *a;
     u8 *info;
     Vec_021aef50 pos;
     id = self->unk_b20;
     if (id == 0xffff) {
-        id = self->unk_90;
+        id = self->target;
     }
     a = FindActor021aef50(id);
     info = NULL;
@@ -118,63 +80,63 @@ void func_ov000_021aef50(Obj021aef50 *self) {
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
     }
-    switch (self->unk_40->state) {
+    switch (((St_021aef50 *)self->unk_40)->state) {
     case 0:
         if (info != NULL) {
             u8 k = info[2];
             if (k == 9) {
-                self->unk_b24.kind = 1;
+                self->unk_b24_12 = 1;
                 LFLD(u8, data_ov000_021ccd54, 0x190) |= 0x20;
             } else if (k == 10) {
-                self->unk_b24.kind = 2;
+                self->unk_b24_12 = 2;
             } else if (k == 11) {
-                self->unk_b24.kind = 3;
+                self->unk_b24_12 = 3;
             }
         } else {
-            self->unk_b24.kind = 0;
-            func_ov000_02198360(self->unk_40, 1, 0);
+            self->unk_b24_12 = 0;
+            func_ov000_02198360(((St_021aef50 *)self->unk_40), 1, 0);
             return;
         }
-        self->unk_b20 = self->unk_90;
-        self->unk_90 = 0xffff;
+        self->unk_b20 = self->target;
+        self->target = 0xffff;
         func_ov000_02190cb0(self->unk_38, data_ov000_021cc62a, 0x800, 0);
         {
-            s32 d = Dist021aef50(pos.x - self->unk_70, pos.z - self->unk_78);
+            s32 d = Dist021aef50(pos.x - self->pos.x, pos.z - self->pos.z);
             self->unk_9c = d >> 4;
             self->unk_a0 = 0x53f;
             self->unk_a4 = 0;
             self->unk_a8 = 0x52;
         }
         func_02049f44(data_02097e4c, 7, (u8 *)self + 0x70, 0);
-        self->unk_40->state++;
+        ((St_021aef50 *)self->unk_40)->state++;
         break;
     case 1:
         if (a == NULL) {
-            self->unk_b24.kind = 0;
-            func_ov000_02198360(self->unk_40, 4, 0);
+            self->unk_b24_12 = 0;
+            func_ov000_02198360(((St_021aef50 *)self->unk_40), 4, 0);
         }
         func_ov000_0218d918(self, &pos, 0x59a);
         func_ov000_0218ddd4(self, &pos, 0);
         {
-            St_021aef50 *st = self->unk_40;
+            St_021aef50 *st = ((St_021aef50 *)self->unk_40);
             st->timer++;
             if (st->timer < 0x10) {
                 break;
             }
         }
         func_ov000_02190cb0(self->unk_38, data_ov000_021cc630, 0x400, 0);
-        self->unk_40->timer = 0;
-        self->unk_40->state++;
-        if (self->unk_b24.kind == 1) {
+        ((St_021aef50 *)self->unk_40)->timer = 0;
+        ((St_021aef50 *)self->unk_40)->state++;
+        if (self->unk_b24_12 == 1) {
             VObj *e = func_02065f88(0x6d, &pos);
             e->vfunc_0c(0xb33);
             e->vfunc_34(0xf000, 0, 0);
-        } else if (self->unk_b24.kind == 3) {
+        } else if (self->unk_b24_12 == 3) {
             func_0204a028(data_02097e4c, 0xe, (u8 *)self + 0x70, -5);
         }
         break;
     case 2: {
-        St_021aef50 *st = self->unk_40;
+        St_021aef50 *st = ((St_021aef50 *)self->unk_40);
         st->timer++;
         if (st->timer >= 10) {
             if (a != NULL) {
@@ -183,33 +145,33 @@ void func_ov000_021aef50(Obj021aef50 *self) {
                     u16 ry = LFLD(u16, a, 0x7e);
                     u16 rz = LFLD(u16, a, 0x80);
                     u16 rx = LFLD(u16, a, 0x7c);
-                    self->unk_7c = rx;
-                    self->unk_7e = ry;
-                    self->unk_80 = rz;
+                    self->rot_x = rx;
+                    self->rot_y = ry;
+                    self->rot_z = rz;
                     self->unk_98 = ry;
                 }
             }
-            func_ov000_02198360(self->unk_40, 1, 0);
+            func_ov000_02198360(((St_021aef50 *)self->unk_40), 1, 0);
         } else {
             Vec_021aef50 d;
-            self->unk_7e = func_01ffc128(LFLD(u16, a, 0x7e), self->unk_7e, 0x800, 1, 0x8000);
+            self->rot_y = func_01ffc128(LFLD(u16, a, 0x7e), self->rot_y, 0x800, 1, 0x8000);
             self->unk_9c = 0;
             self->unk_a0 = 0;
             self->unk_a4 = 0;
             self->unk_a8 = 0;
-            d.x = pos.x - self->unk_70;
-            d.y = pos.y - self->unk_74;
-            d.z = pos.z - self->unk_78;
+            d.x = pos.x - self->pos.x;
+            d.y = pos.y - self->pos.y;
+            d.z = pos.z - self->pos.z;
             VEC_MultAdd(0x800, &d, (u8 *)self + 0x70, (u8 *)self + 0x70);
         }
         break;
     }
     case 100:
         self->unk_b20 = 0xffff;
-        self->unk_b24.kind = 0;
-        self->unk_7c = 0;
+        self->unk_b24_12 = 0;
+        self->rot_x = 0;
         func_02049f44(data_02097e4c, 7, (u8 *)self + 0x70, 0);
-        self->unk_40->state++;
+        ((St_021aef50 *)self->unk_40)->state++;
     case 101:
         self->unk_b29 |= 2;
         func_ov000_0218dbe0(self, 0);
@@ -220,7 +182,7 @@ void func_ov000_021aef50(Obj021aef50 *self) {
             break;
         }
         LFLD(B190_021aef50, data_ov000_021ccd54, 0x190).b5 = 0;
-        func_ov000_02198360(self->unk_40, 4, 0);
+        func_ov000_02198360(((St_021aef50 *)self->unk_40), 4, 0);
         break;
     }
 }

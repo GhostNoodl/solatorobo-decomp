@@ -6,22 +6,6 @@ typedef struct {
     u16 timer;
 } State021a98bc;
 
-typedef struct {
-    u32 b0 : 12;
-    u32 b12 : 2;
-    u32 b14 : 4;
-    u32 b18 : 1;
-    u32 b19 : 1;
-    u32 b20 : 1;
-    u32 b21 : 1;
-    u32 rest : 10;
-} B24_021a98bc;
-
-typedef struct {
-    u16 b0 : 3;
-    u16 rest : 13;
-} B22_021a98bc;
-
 extern "C" {
 
 extern u8 data_ov000_021cc69c[];
@@ -55,7 +39,7 @@ void func_ov000_021a98bc(Robo021ca458 *self) {
         if (t != NULL) {
             self->unk_98 = func_ov000_0218d8f4(self, t);
         } else {
-            self->unk_98 = self->unk_7e;
+            self->unk_98 = self->rot_y;
         }
         ((State021a98bc *)self->unk_40)->state++;
     case 1:
@@ -63,7 +47,7 @@ void func_ov000_021a98bc(Robo021ca458 *self) {
             self->unk_a8 = 0x14;
         }
         if (LFLD(s16, self->unk_38, 0xc4) == 1) {
-            LFLD(B24_021a98bc, self, 0xb24).b21 = 1;
+            self->unk_b24_21 = 1;
             self->unk_a8 = 0x29;
             ((State021a98bc *)self->unk_40)->state++;
         }
@@ -90,15 +74,15 @@ void func_ov000_021a98bc(Robo021ca458 *self) {
                     BOOL hit = FALSE;
                     if (!(LFLD(u32, self->unk_48, 0x54) & 0x20000000)) {
                         lim = -0xf000;
-                        if (LFLD(B22_021a98bc, self, 0xb22).b0 != 0 || LFLD(B24_021a98bc, self, 0xb24).b12 != 0 || LFLD(B24_021a98bc, self, 0xb24).b19) {
+                        if (self->unk_b22_0 != 0 || self->unk_b24_12 != 0 || self->unk_b24_19) {
                             lim = -0x2d000;
                         }
-                        if (self->unk_70.y - self->unk_b00 < lim) {
+                        if (self->pos.y - self->unk_b00 < lim) {
                             hit = TRUE;
                         }
                     }
                     if (hit) {
-                        LFLD(B24_021a98bc, self, 0xb24).b18 = 1;
+                        self->unk_b24_18 = 1;
                         ((State021a98bc *)self->unk_40)->state = 20;
                     } else {
                         func_ov000_02190cb0(self->unk_38, data_ov000_021cc6a2, 0x333, 1);
@@ -120,15 +104,15 @@ void func_ov000_021a98bc(Robo021ca458 *self) {
         break;
     case 21:
         if (LFLD(s16, self->unk_38, 0xc4) == 1) {
-            LFLD(B24_021a98bc, self, 0xb24).b21 = 0;
+            self->unk_b24_21 = 0;
         }
         if (func_ov000_02191120(self->unk_38)) {
-            LFLD(B24_021a98bc, self, 0xb24).b21 = 0;
+            self->unk_b24_21 = 0;
             func_ov000_02198360((State021a98bc *)self->unk_40, 1, 0);
         }
         break;
     }
-    self->unk_7e = func_01ffc128(self->unk_98, self->unk_7e, 0x400, 1, 0x8000);
+    self->rot_y = func_01ffc128(self->unk_98, self->rot_y, 0x400, 1, 0x8000);
     func_ov000_021b1fac(self, FALSE, 1);
 }
 

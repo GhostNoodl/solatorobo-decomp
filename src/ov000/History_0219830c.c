@@ -1,15 +1,7 @@
 #include "types.h"
 #include "ov000/Vec.h"
+#include "ov000/ActorParts.h"
 
-#define HISTORY_LEN 7
-
-typedef struct {
-    u16 unk_00;
-    u16 unk_02;
-    u64 mask;
-    u8 history[HISTORY_LEN];
-    u8 current;
-} History;
 
 typedef struct {
     VecFx32 pos;
@@ -22,38 +14,8 @@ typedef struct {
     u16 unk_22_1 : 1;
     u16 unk_22_2 : 14;
 } Obj021984c8;
+SIZE_ASSERT(Obj021984c8, 0x24);
 
-typedef struct {
-    VecFx32 pos;
-    VecFx32 prev;
-    VecFx32 unk_18;
-    u8 unk_24;
-    u8 unk_25;
-    u8 unk_26[0xa];
-    u32 unk_30;
-    u32 unk_34;
-    s32 unk_38;
-    u8 unk_3c[0x8];
-    s32 unk_44;
-    s32 unk_48;
-    s32 unk_4c;
-    u32 unk_50;
-    u32 unk_54;
-    u32 unk_58;
-    VecFx32 offset;
-    VecFx32 check;
-    u8 unk_74[0x24];
-    u16 unk_98;
-    u16 unk_9a_0 : 3;
-    u16 unk_9a_3 : 1;
-    u16 unk_9a_4 : 1;
-    u16 unk_9a_5 : 1;
-    u16 unk_9a_6 : 1;
-    u16 unk_9a_7 : 1;
-    u16 unk_9a_8 : 1;
-    u16 unk_9a_9 : 1;
-    u16 unk_9a_10 : 6;
-} Obj021985e8;
 
 typedef struct {
     VecFx32 unk_00;
@@ -80,10 +42,10 @@ extern ActorMgr *data_ov000_021ccd68;
 ActorC *func_ov000_0218e640(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
-void func_0203f260(Obj021985e8 *self);
-void func_0203f324(Obj021985e8 *self);
-void func_0203f364(Obj021985e8 *self);
-void func_ov000_02198ad8(Obj021985e8 *self, VecFx32 *pos, VecFx32 *offset);
+void func_0203f260(ActorSub48 *self);
+void func_0203f324(ActorSub48 *self);
+void func_0203f364(ActorSub48 *self);
+void func_ov000_02198ad8(ActorSub48 *self, VecFx32 *pos, VecFx32 *offset);
 
 static inline ActorC *FindActor(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
@@ -114,11 +76,11 @@ void func_ov000_02198320(void) {
 void func_ov000_02198324(void) {
 }
 
-History *func_ov000_02198328(History *self) {
+ActorSub40 *func_ov000_02198328(ActorSub40 *self) {
     s32 i;
-    self->unk_00 = 0;
-    self->unk_02 = 0;
-    self->mask = 0;
+    self->st = 0;
+    self->timer = 0;
+    self->flags = 0;
     for (i = 0; i < HISTORY_LEN; i++) {
         self->history[i] = 0;
     }
@@ -126,7 +88,7 @@ History *func_ov000_02198328(History *self) {
     return self;
 }
 
-static inline BOOL History_Push(History *self, u8 value, BOOL force) {
+static inline BOOL History_Push(ActorSub40 *self, u8 value, BOOL force) {
     s32 i;
     if (self->current == value && !force) {
         return FALSE;
@@ -135,17 +97,17 @@ static inline BOOL History_Push(History *self, u8 value, BOOL force) {
         self->history[i] = self->history[i - 1];
     }
     self->history[0] = self->current;
-    self->unk_00 = 0;
+    self->st = 0;
     self->current = value;
-    self->unk_02 = 0;
+    self->timer = 0;
     return TRUE;
 }
 
-BOOL func_ov000_02198360(History *self, u8 value, BOOL force) {
+BOOL func_ov000_02198360(ActorSub40 *self, u8 value, BOOL force) {
     return History_Push(self, value, force);
 }
 
-BOOL func_ov000_021983b0(History *self, u8 value, s32 count, BOOL checkCurrent) {
+BOOL func_ov000_021983b0(ActorSub40 *self, u8 value, s32 count, BOOL checkCurrent) {
     BOOL found = FALSE;
     s32 i;
     if (checkCurrent && self->current == value) {
@@ -164,13 +126,13 @@ BOOL func_ov000_021983b0(History *self, u8 value, s32 count, BOOL checkCurrent) 
     return found;
 }
 
-s32 func_ov000_0219840c(History *self, s32 *list, s32 count, BOOL push) {
+s32 func_ov000_0219840c(ActorSub40 *self, s32 *list, s32 count, BOOL push) {
     s32 result = 0;
     s32 i;
-    if (self->mask != 0) {
+    if (self->flags != 0) {
         for (i = 0; i < count; i++) {
             s32 bit = list[i];
-            if (self->mask & ((u64)1 << bit)) {
+            if (self->flags & ((u64)1 << bit)) {
                 if (push) {
                     History_Push(self, bit, FALSE);
                 }
@@ -224,7 +186,7 @@ ActorC *func_ov000_021985c0(Obj021984c8 *self) {
     return FindActor(self->unk_20);
 }
 
-Obj021985e8 *func_ov000_021985e8(Obj021985e8 *self) {
+ActorSub48 *func_ov000_021985e8(ActorSub48 *self) {
     func_0203f260(self);
     self->unk_98 = 0xffff;
     self->unk_44 = 0;
@@ -243,7 +205,7 @@ Obj021985e8 *func_ov000_021985e8(Obj021985e8 *self) {
     return self;
 }
 
-void func_ov000_0219864c(Obj021985e8 *self, VecFx32 *pos, u16 *rot) {
+void func_ov000_0219864c(ActorSub48 *self, VecFx32 *pos, u16 *rot) {
     VecFx32 base;
     VecFx32 ofs;
     ActorC *actor = FindActor(self->unk_98);

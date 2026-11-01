@@ -86,9 +86,8 @@ BOOL func_ov010_021fff80(Ov010Toggle *o) {
     return TRUE;
 }
 
-struct Obj021fffa0 {
-    u8 unk_00[0x44];
-    void *unk_44;
+struct Obj021fffa0 : public Ov010Obj {
+
 };
 
 void func_ov010_021fffa0(Obj021fffa0 *self) {
@@ -97,10 +96,8 @@ void func_ov010_021fffa0(Obj021fffa0 *self) {
     }
 }
 
-struct Obj021fffc0 : public Ov010V {
-    u8 unk_04[0x44];
-    void *unk_48;
-    u8 unk_4c[0xa2];
+struct Obj021fffc0 : public Ov010Obj {
+    u8 unk_ac[0x42];
     Ov010Flags unk_ee;
 };
 

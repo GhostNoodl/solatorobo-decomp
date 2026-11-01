@@ -73,23 +73,23 @@ void func_ov000_02197ad0(Actor *self, BOOL b) {
         }
         e = &data_ov000_021c9de8[k];
     }
-    if ((LFLD(Body02197ad0 *, self, 0x48)->flags & 0x40000000) || LFLD(Body02197ad0 *, self, 0x48)->unk_58 != 0) {
-        self->unk_98 = func_ov000_02198da8(LFLD(Body02197ad0 *, self, 0x48), self->unk_98);
-        if ((LFLD(Body02197ad0 *, self, 0x48)->flags & 0x40000000) && e->se >= 0 && LFLD(Body02197ad0 *, self, 0x48)->unk_58 == 0) {
+    if ((((Body02197ad0 *)self->unk_48)->flags & 0x40000000) || ((Body02197ad0 *)self->unk_48)->unk_58 != 0) {
+        self->unk_98 = func_ov000_02198da8(((Body02197ad0 *)self->unk_48), self->unk_98);
+        if ((((Body02197ad0 *)self->unk_48)->flags & 0x40000000) && e->se >= 0 && ((Body02197ad0 *)self->unk_48)->unk_58 == 0) {
             func_02049f44(data_02097e4c, e->se, &self->pos, 0);
         }
         self->unk_9c = FX_MUL(self->unk_9c, e->m8);
         if (self->unk_9c < 0x8f) {
             self->unk_9c = 0x8f;
         }
-        if (LFLD(Body02197ad0 *, self, 0x48)->unk_84 > 0x100 || LFLD(Body02197ad0 *, self, 0x48)->unk_58 != 0) {
+        if (((Body02197ad0 *)self->unk_48)->unk_84 > 0x100 || ((Body02197ad0 *)self->unk_48)->unk_58 != 0) {
             if (self->unk_a0 < -0xcd) {
                 self->unk_a0 = -0xcd;
             }
         }
         self->unk_a8 = 0x52;
     }
-    if (LFLD(Body02197ad0 *, self, 0x48)->flags & 0x20000000) {
+    if (((Body02197ad0 *)self->unk_48)->flags & 0x20000000) {
         func_ov000_02190cb0(self->unk_38, data_ov000_021cc46f, 0x1000, 0);
         if (self->unk_92 == 0 && e->se2 >= 0 && self->unk_a0 <= -0xcd) {
             Cam02197ad0 *cam = (Cam02197ad0 *)((u8 *)data_ov000_021ccd54 + 0xf4);

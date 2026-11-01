@@ -1,5 +1,6 @@
 #include "types.h"
 #include "nitro/std.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -17,12 +18,6 @@ typedef struct {
     u8 unk_18;
     u8 pad_19[7];
 } Entry0219c54c;
-
-typedef struct {
-    u16 b0 : 6;
-    u16 kind : 3;
-    u16 b9 : 7;
-} Bits0219c54c;
 
 typedef struct {
     u16 b0 : 3;
@@ -48,40 +43,14 @@ static inline void SetNames0219c54c(char *d0, char *d1, const char *a, const cha
     STD_CopyString(d1, b);
 }
 
-struct Obj0219c54c {
-    u8 unk_00[0xe];
-    u16 unk_0e;
-    u8 unk_10[0x2c];
-    void *unk_3c;
-    u8 unk_40[0x154];
-    u16 unk_194;
-    u8 unk_196[0x2ba];
-    u16 unk_450;
-    u8 unk_452[0x1];
-    AnmFlags0219c54c unk_453;
-    u8 unk_454[0x134];
-    u16 unk_588;
-    u8 unk_58a[0x1];
-    AnmFlags0219c54c unk_58b;
-    u8 unk_58c[0x2d4];
-    u16 unk_860;
-    u8 unk_862[0x1];
-    AnmFlags0219c54c unk_863;
-    u8 unk_864[0x2be];
-    Bits0219c54c unk_b22;
-    u8 unk_b24[0x7c];
-    Entry0219c54c *unk_ba0;
-    u8 *unk_ba4;
-};
-
-void func_ov000_0219c54c(Obj0219c54c *self) {
+void func_ov000_0219c54c(Robo021ca458 *self) {
     void *res;
     void *p;
     Entry0219c54c *e;
     u32 kind;
 
-    res = func_0207011c(self->unk_0e);
-    func_020701d4(self->unk_0e);
+    res = func_0207011c(self->kind);
+    func_020701d4(self->kind);
     func_ov000_0218f074((u8 *)self + 0x194, res, TRUE, TRUE, 1, FALSE);
     self->unk_194 = 0;
     {
@@ -89,7 +58,7 @@ void func_ov000_0219c54c(Obj0219c54c *self) {
         const char *a = data_ov000_021cc5d9;
         if (a != NULL && b != NULL) {
             SetNames0219c54c((char *)self + 0x870, (char *)self + 0x890, a, b);
-            self->unk_863.b1 = 1;
+            self->unk_863_1 = 1;
         }
     }
     self->unk_860 = 0;
@@ -97,9 +66,9 @@ void func_ov000_0219c54c(Obj0219c54c *self) {
     if (p != NULL) {
         p = func_ov000_021919c8(p);
     }
-    self->unk_3c = p;
+    self->unk_3c = (u8 *) p;
     func_ov000_02191b70(p);
-    kind = self->unk_b22.kind;
+    kind = self->unk_b22_6;
     e = &data_ov000_021ca398[kind];
     if ((u16)(kind + 0xfffe) <= 1) {
         u8 *x = func_0206ef10(LFLD(Save0219c54c, data_0214a424, 0x18).sub | 0x8000);
@@ -108,21 +77,21 @@ void func_ov000_0219c54c(Obj0219c54c *self) {
             e = (Entry0219c54c *)(x + 0xc);
         }
     }
-    self->unk_ba0 = e;
+    self->unk_ba0 = (u8 *) e;
     SetNames0219c54c((char *)self + 0x460, (char *)self + 0x480, e->name[0], e->name[1]);
-    self->unk_453.b1 = 1;
+    self->unk_453_1 = 1;
     SetNames0219c54c((char *)self + 0x49c, (char *)self + 0x4bc, e->name[2], e->name[3]);
-    self->unk_453.b2 = 1;
+    self->unk_453_2 = 1;
     if (e->name[4] != NULL && e->name[5] != NULL) {
         SetNames0219c54c((char *)self + 0x514, (char *)self + 0x534, e->name[4], e->name[5]);
-        self->unk_453.b4 = 1;
+        self->unk_453_4 = 1;
     }
     self->unk_450 = 0;
     if (e->unk_18 == 0) {
         return;
     }
     SetNames0219c54c((char *)self + 0x5d4, (char *)self + 0x5f4, e->name[0], e->name[1]);
-    self->unk_58b.b2 = 1;
+    self->unk_58b_2 = 1;
     self->unk_588 = 0;
 }
 }

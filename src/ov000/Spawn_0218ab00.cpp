@@ -38,6 +38,7 @@ typedef struct {
     Bits0218a9d8 unk_a2;
     u8 unk_a3;
 } Obj0218a9d8;
+SIZE_ASSERT(Obj0218a9d8, 0xa4);
 
 typedef struct {
     VecFx32 from;

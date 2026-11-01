@@ -1,6 +1,9 @@
 #include "ov000/VObj.h"
 #include "ov000/LoCommon.h"
 #include "ov000/Actor.h"
+#include "ov000/ObjLayouts.h"
+
+#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     u8 b0, b1, b2, b3;
@@ -16,18 +19,6 @@ void func_ov000_0215eab4(void *p);
 void MTX_FrustumW(s32 t, s32 b, s32 l, s32 r, s32 n, s32 f, s32 scaleW, void *mtx);
 Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
 
-typedef struct {
-    u32 b0 : 5;
-    u32 b5 : 2;
-    u32 b7 : 2;
-    u32 b9 : 1;
-    u32 b10 : 11;
-    u32 b21 : 1;
-    u32 b22 : 3;
-    u32 b25 : 1;
-    u32 b26 : 6;
-} Bits021a15e0;
-
 static inline Actor *FindA(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
@@ -36,24 +27,16 @@ static inline Actor *FindA(u16 id) {
     return func_ov000_0218e640(mgr, id);
 }
 
-struct Obj021a15e0 : public Actor {
-    u8 unk_ac[0xa70];
-    u16 unk_b1c;
-    u16 unk_b1e;
-    u8 unk_b20[0x4];
-    Bits021a15e0 unk_b24;
-};
-
-void func_ov000_021a15e0(Obj021a15e0 *self) {
+void func_ov000_021a15e0(Robo021ca458 *self) {
     ActorSub40 *s = (ActorSub40 *)self->unk_40;
     Actor *a;
     ActorSub4c *p;
     if (s != NULL) {
         s->flags |= 2;
     }
-    self->unk_b24.b25 = 1;
-    self->unk_b24.b21 = 0;
-    if (self->unk_b24.b5 == 0) {
+    self->unk_b24_25 = 1;
+    self->unk_b24_21 = 0;
+    if (self->unk_b24_5 == 0) {
         return;
     }
     a = FindA(self->unk_b1c);
@@ -69,8 +52,8 @@ void func_ov000_021a15e0(Obj021a15e0 *self) {
     }
     self->unk_b1c = 0xffff;
     self->unk_b1e = 0xffff;
-    self->unk_b24.b5 = 0;
-    self->unk_b24.b7 = self->unk_b24.b9;
+    self->unk_b24_5 = 0;
+    self->unk_b24_7 = self->unk_b24_9;
 }
 
 }

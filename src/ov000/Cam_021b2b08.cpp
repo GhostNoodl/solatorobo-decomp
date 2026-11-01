@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     VecFx32 pos;
@@ -25,34 +26,7 @@ static inline void *FindActor021b2b08(u16 id) {
     return func_ov000_0218e640(mgr, id);
 }
 
-struct Obj021b2b08 {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u8 unk_0e[0x32];
-    void *unk_40;
-    u8 unk_44[0x38];
-    u16 unk_7c;
-    u16 unk_7e;
-    u16 unk_80;
-    u8 unk_82[0x16];
-    u16 unk_98;
-    u8 unk_9a[0x2];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
-    u8 unk_ac[0xa74];
-    u16 unk_b20;
-    u8 unk_b22[0x7];
-    u8 unk_b29;
-    u8 unk_b2a[0x5];
-    u8 unk_b2f;
-    u8 unk_b30[0x38];
-    u16 unk_b68;
-    u16 unk_b6a;
-};
-
-void func_ov000_021b2b08(Obj021b2b08 *self) {
+void func_ov000_021b2b08(Robo021ca458 *self) {
     u8 *a = (u8 *)FindActor021b2b08(self->unk_b20);
     void *sub = NULL;
     u8 *cam;
@@ -66,15 +40,15 @@ void func_ov000_021b2b08(Obj021b2b08 *self) {
         self->unk_b2f = 1;
     }
     if (sub == NULL || (self->unk_b6a & 2)) {
-        self->unk_98 = self->unk_7e - 0x8000;
+        self->unk_98 = self->rot_y - 0x8000;
         self->unk_9c = 0x114;
         self->unk_a4 = 0;
         self->unk_a0 = 0x53f;
         self->unk_a8 = 0x52;
-        self->unk_7c = 0;
+        self->rot_x = 0;
         self->unk_b29 |= 2;
-        func_ov000_02198360(self->unk_40, 0x1d, 0);
-        LFLD(u16, self->unk_40, 0) = 0x64;
+        func_ov000_02198360(((void *)self->unk_40), 0x1d, 0);
+        self->unk_40->st = 0x64;
         return;
     }
     cam = data_ov000_021ccd54 + 0xf4;
@@ -83,7 +57,7 @@ void func_ov000_021b2b08(Obj021b2b08 *self) {
     } else {
         ang = func_0204bfa8(cam);
     }
-    ry = self->unk_7e;
+    ry = self->rot_y;
     if (self->unk_b68 & 0x20) {
         ry += 0x280;
     } else if (self->unk_b68 & 0x10) {
@@ -93,7 +67,7 @@ void func_ov000_021b2b08(Obj021b2b08 *self) {
     {
         u16 f = self->unk_b68;
         u16 base = LFLD(u16, cam, 0x42);
-        rx = self->unk_7c;
+        rx = self->rot_x;
         if (f & 0x40) {
             u16 d;
             rx -= 0x80;
@@ -110,15 +84,15 @@ void func_ov000_021b2b08(Obj021b2b08 *self) {
             }
         }
     }
-    self->unk_7c = rx;
+    self->rot_x = rx;
     if (self->unk_b20 != 0xffff) {
         Msg021b2b08 msg;
         msg.pos = LFLD(VecFx32, a, 0x70);
-        msg.rot[0] = self->unk_7c;
-        msg.rot[1] = self->unk_7e;
-        msg.rot[2] = self->unk_80;
+        msg.rot[0] = self->rot_x;
+        msg.rot[1] = self->rot_y;
+        msg.rot[2] = self->rot_z;
         msg.unk_10 = 0;
-        func_ov000_0218d398(a, self->unk_0c, 7, 1, 0x18, &msg);
+        func_ov000_0218d398(a, self->id, 7, 1, 0x18, &msg);
     }
 }
 }

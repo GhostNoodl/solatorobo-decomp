@@ -14,6 +14,7 @@ public:
     ListBuffer *prev;
     ListBuffer *next;
 };
+SIZE_ASSERT(ListBuffer, 0x20);
 
 typedef struct {
     ListBuffer *head;
@@ -25,6 +26,13 @@ public:
     u32 unk_24;
     u32 unk_28;
     u32 unk_2c;
+};
+
+// Vtable data_ov000_021cb920 (methods func_ov000_02172ac4, 02172bb4, 02172be8): a timed buffer
+// that owns another buffer.
+class TimedBuffer021cb920 : public TimedBuffer {
+public:
+    ListBuffer *unk_30;
 };
 
 typedef struct {

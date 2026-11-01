@@ -32,11 +32,7 @@ static inline void LoMQRemove(MessageQueue *self, ListBuffer *buf) {
     }
 }
 
-struct Obj02172be8 : public TimedBuffer {
-    ListBuffer *unk_30;
-};
-
-static inline void LoTimedBufferDtor(Obj02172be8 *self) {
+static inline void LoTimedBufferDtor(TimedBuffer021cb920 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb920);
     if (self->unk_30 != NULL) {
         LoMQRemove((MessageQueue *)self->unk_0c, self->unk_30);
@@ -79,7 +75,7 @@ static inline void LoMessageQueueDtor(MessageQueue *self) {
     self->writeIndex = 0;
 }
 
-TimedBuffer *func_ov000_02172be8(Obj02172be8 *self) {
+TimedBuffer *func_ov000_02172be8(TimedBuffer021cb920 *self) {
     LoTimedBufferDtor(self);
     return self;
 }

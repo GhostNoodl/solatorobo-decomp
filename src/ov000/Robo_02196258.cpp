@@ -1,12 +1,8 @@
 #include "nitro/fx.h"
 #include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u16 st;
-    u16 timer;
-} State02196258;
 
 typedef struct {
     u16 b0 : 1;
@@ -107,38 +103,11 @@ static inline void Die02196258(VObj *obj) {
     obj->vfunc_08();
 }
 
-struct Obj02196258 {
-    u8 unk_00[0x38];
-    u8 *unk_38;
-    u8 unk_3c[0x4];
-    State02196258 *unk_40;
-    u8 *unk_44;
-    u8 *unk_48;
-    u8 *unk_4c;
-    u8 unk_50[0x8];
-    void *unk_58;
-    u8 unk_5c[0x14];
-    s32 unk_70;
-    s32 unk_74;
-    s32 unk_78;
-    u8 unk_7c[0x2];
-    u16 unk_7e;
-    u8 unk_80[0x18];
-    u16 unk_98;
-    u8 unk_9a[0x2];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
-    u8 unk_ac[0x20];
-    Bits02196258 unk_cc;
-};
-
 void func_ov000_02196258(VObj *obj) {
-    Obj02196258 *self = (Obj02196258 *)obj;
+    ActorEx *self = (ActorEx *)obj;
     s32 zero = 0;
-    u8 *t = (u8 *)func_ov000_02199ba0(self->unk_4c);
-    State02196258 *s = self->unk_40;
+    u8 *t = (u8 *)func_ov000_02199ba0(((u8 *)self->unk_4c));
+    ActorSub40 *s = self->unk_40;
     switch (s->st) {
     case 0:
         if (self->unk_44 != NULL) {
@@ -147,35 +116,35 @@ void func_ov000_02196258(VObj *obj) {
             LFLD(Bits02196258, q, 0x22).b1 = 0;
         }
         if (self->unk_48 != NULL) {
-            u8 *q = self->unk_48;
+            u8 *q = (u8 *)self->unk_48;
             LFLD(Bits02196258, q, 0x9a).b0 = 0;
             LFLD(Bits02196258, q, 0x9a).b3 = 0;
             func_0203f364(q);
-            q = self->unk_48;
+            q = (u8 *)self->unk_48;
             LFLD(Bits02196258, q, 0x9a).b1 = 0;
             LFLD(Bits02196258, q, 0x9a).b4 = 0;
         }
         if (self->unk_58 != NULL) {
-            self->unk_cc.b0 = 0;
+            self->unk_cc_0 = 0;
         }
-        if (LFLD(u8, self->unk_4c, 0) == 2) {
+        if (LFLD(u8, ((u8 *)self->unk_4c), 0) == 2) {
             self->unk_40->st = 0x14;
             return;
         }
-        self->unk_cc.b7 = 1;
+        self->unk_cc_7 = 1;
         self->unk_40->st++;
         return;
     case 1: {
-        u8 *m = self->unk_4c;
-        self->unk_70 = LFLD(s32, m, 0x44);
-        self->unk_74 = LFLD(s32, m, 0x48);
-        self->unk_78 = LFLD(s32, m, 0x4c);
+        u8 *m = ((u8 *)self->unk_4c);
+        self->pos.x = LFLD(s32, m, 0x44);
+        self->pos.y = LFLD(s32, m, 0x48);
+        self->pos.z = LFLD(s32, m, 0x4c);
         self->unk_a4 = zero;
         self->unk_a0 = 0x185;
         if (t != NULL && LFLD(u8, m, 1) == 4) {
             self->unk_9c = 0x19a;
             self->unk_a8 = 0x57;
-            self->unk_98 = self->unk_7e + 0x8000;
+            self->unk_98 = self->rot_y + 0x8000;
         } else {
             self->unk_9c = zero;
             self->unk_a8 = 5;
@@ -183,10 +152,10 @@ void func_ov000_02196258(VObj *obj) {
         self->unk_40->st++;
     }
     case 2: {
-        State02196258 *s2 = self->unk_40;
+        ActorSub40 *s2 = self->unk_40;
         s2->timer++;
         if (s2->timer > 0xb) {
-            if (t != NULL && LFLD(u8, self->unk_4c, 1) == 4) {
+            if (t != NULL && LFLD(u8, ((u8 *)self->unk_4c), 1) == 4) {
                 self->unk_40->timer = 0xc;
             } else {
                 self->unk_40->timer = 0x1e;
@@ -205,16 +174,16 @@ void func_ov000_02196258(VObj *obj) {
             Die02196258(obj);
             return;
         }
-        if (t != NULL && LFLD(u8, self->unk_4c, 1) == 4) {
+        if (t != NULL && LFLD(u8, ((u8 *)self->unk_4c), 1) == 4) {
             VecFx32 v;
             s32 k = (0xc - self->unk_40->timer) * 0xcd;
             s32 r = 0x1000 - k;
             u8 *mdl;
             v = *(VecFx32 *)(t + 0x70);
             v.y += LFLD(s32, t, 0x6c);
-            v.x -= self->unk_70;
-            v.y -= self->unk_74;
-            v.z -= self->unk_78;
+            v.x -= self->pos.x;
+            v.y -= self->pos.y;
+            v.z -= self->pos.z;
             v.x = FxMul02196258(v.x, k);
             v.y = FxMul02196258(v.y, k);
             v.z = FxMul02196258(v.z, k);
@@ -223,7 +192,7 @@ void func_ov000_02196258(VObj *obj) {
             v.z += self->unk_9c;
             v.y += self->unk_a0;
             VEC_Add((VecFx32 *)((u8 *)self + 0x70), &v, (VecFx32 *)((u8 *)self + 0x70));
-            mdl = self->unk_38;
+            mdl = ((u8 *)self->unk_38);
             {
                 VecFx32 *sc = (VecFx32 *)(mdl + 0xa8);
                 s32 x, y, z;
@@ -241,7 +210,7 @@ void func_ov000_02196258(VObj *obj) {
             if (a > 0x1f) {
                 a = 0x1f;
             }
-            LFLD(u8, self->unk_38, 0xbe) = a;
+            LFLD(u8, ((u8 *)self->unk_38), 0xbe) = a;
         }
         return;
     case 0x14:

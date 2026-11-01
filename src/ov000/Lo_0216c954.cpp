@@ -29,6 +29,7 @@ struct Obj0216c954 {
     s32 unk_34;
     s32 unk_38;
 };
+SIZE_ASSERT(Obj0216c954, 0x3c);
 
 void func_ov000_0216c954(Obj0216c954 *self, u16 a, s32 b) {
     self->unk_00 = 0;

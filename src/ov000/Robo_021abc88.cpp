@@ -7,13 +7,6 @@
 #define REG_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
 typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 2;
-    u32 rest : 28;
-} Bits021abc88;
-
-typedef struct {
     u16 b0 : 8;
     u16 b8 : 1;
     u16 rest : 7;
@@ -55,14 +48,14 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         self->unk_b2f++;
     }
     LFLD(Bits16_021abc88, self->unk_44, 0x22).b1 = 0;
-    switch (LFLD(u16, self->unk_40, 0)) {
+    switch (self->unk_40->st) {
     case 0: {
         s32 dx;
         s32 dz;
-        LFLD(Bits021abc88, self, 0xb24).b2 = 1;
+        self->unk_b24_2 = 1;
         func_ov000_02190cb0((u8 *)self + 0xac, data_ov000_021cc62a, 0x800, 0);
-        dx = self->unk_75c.x - self->unk_70.x;
-        dz = self->unk_75c.z - self->unk_70.z;
+        dx = self->unk_75c.x - self->pos.x;
+        dz = self->unk_75c.z - self->pos.z;
         self->unk_178 = -1;
         {
             s64 sq = (s64)dx * dx;
@@ -75,11 +68,11 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         self->unk_9c = (s32)(REG_SQRT_RESULT + 1) >> 5;
         self->unk_a0 = 0x53f;
         self->unk_a8 = 0x52;
-        self->unk_90 = 0xffff;
+        self->target = 0xffff;
         self->unk_a4 = 0;
         func_02049f44(data_02097e4c, 7, (u8 *)self + 0x70, 0);
-        LFLD(u16, self->unk_40, 0)++;
-        LFLD(u16, self->unk_40, 2) = 0;
+        self->unk_40->st++;
+        self->unk_40->timer = 0;
         LFLD(G18_021abc88, data_0214a424, 0x18).b8 = 0;
         func_02062764(3, 1);
         LFLD(u8, data_ov000_021ccd54, 0xac) = 1;
@@ -90,37 +83,37 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         u16 *s;
         func_ov000_0218d918(self, (u8 *)self + 0x75c, 0x59a);
         func_ov000_0218ddd4(self, (VecFx32 *)((u8 *)self + 0x75c), 0);
-        d = self->unk_70.y - self->unk_75c.y;
+        d = self->pos.y - self->unk_75c.y;
         if (d < 0x1800) {
-            self->unk_70.y += (self->unk_75c.y + 0x1800 - self->unk_70.y) >> 2;
+            self->pos.y += (self->unk_75c.y + 0x1800 - self->pos.y) >> 2;
         } else if (d > 0x1ccd) {
-            self->unk_70.y += (self->unk_75c.y + 0x1ccd - self->unk_70.y) >> 2;
+            self->pos.y += (self->unk_75c.y + 0x1ccd - self->pos.y) >> 2;
         }
         s = (u16 *)self->unk_40;
         s[1]++;
         if (s[1] < 0x10) {
             return;
         }
-        self->unk_7e = func_01ffc128(self->unk_76e, self->unk_7e, 0x800, 1, 0x8000);
+        self->rot_y = func_01ffc128(self->unk_76e, self->rot_y, 0x800, 1, 0x8000);
         self->unk_9c = 0;
         self->unk_a0 = 0;
         self->unk_a4 = 0;
         self->unk_a8 = 0;
         func_ov000_02190cb0((u8 *)self + 0xac, data_ov000_021cc6c0, 0x400, 0);
-        LFLD(u16, self->unk_40, 0)++;
+        self->unk_40->st++;
         break;
     }
     case 2:
         if (func_ov000_02191120((u8 *)self + 0xac)) {
             u8 *p;
-            self->unk_70 = self->unk_75c;
-            self->unk_7c = self->unk_76c;
-            self->unk_7e = self->unk_76e;
-            self->unk_80 = self->unk_770;
-            func_ov000_02198d28((u8 *)self + 0x2cc, (VecFx32 *)((u8 *)self + 0x70), self->unk_7e);
+            self->pos = self->unk_75c;
+            self->rot_x = self->unk_76c;
+            self->rot_y = self->unk_76e;
+            self->rot_z = self->unk_770;
+            func_ov000_02198d28((u8 *)self + 0x2cc, (VecFx32 *)((u8 *)self + 0x70), self->rot_y);
             func_ov000_02198d28((u8 *)self + 0x6c0, (VecFx32 *)((u8 *)self + 0x75c), self->unk_76e);
-            LFLD(Bits021abc88, self, 0xb24).b2 = 0;
-            LFLD(Bits021abc88, self, 0xb24).b1 = 1;
+            self->unk_b24_2 = 0;
+            self->unk_b24_1 = 1;
             self->unk_b36 = 0;
             func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e3, 0x155, 0);
             p = self->unk_384;
@@ -136,14 +129,14 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         } else {
             VecFx32 d;
             s32 ty;
-            self->unk_7e = func_01ffc128(self->unk_76e, self->unk_7e, 0x59a, 1, 0x8000);
+            self->rot_y = func_01ffc128(self->unk_76e, self->rot_y, 0x59a, 1, 0x8000);
             ty = self->unk_75c.y + 0x119a;
             {
                 s32 tx = self->unk_75c.x;
                 s32 tz = self->unk_75c.z;
-                d.x = tx - self->unk_70.x;
-                d.y = ty - self->unk_70.y;
-                d.z = tz - self->unk_70.z;
+                d.x = tx - self->pos.x;
+                d.y = ty - self->pos.y;
+                d.z = tz - self->pos.z;
             }
             VEC_MultAdd(0x400, &d, (VecFx32 *)((u8 *)self + 0x70), (VecFx32 *)((u8 *)self + 0x70));
         }

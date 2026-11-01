@@ -7303,3 +7303,14 @@ Compiler-version and flag sweep over every unmatched draft. **No new match, noth
 | `ov011_021ff24c` | 26 / 0 (tree) | 26 / 0 | — |
 
 - No new data. No renames.
+
+### Round svE
+
+Follow-ups to svA in `src/ov000` and `src/ov010` (`src/Main` had nothing to convert). **`FLD`/`LFLD` accesses: 5695 -> 5439 (on `self`: 595 -> 472); file-local struct/typedef definitions 2190 -> 2000.** Every function is byte-identical to before (per-function hash of code plus relocations), and no `NONMATCHING` draft changed beyond renames. Scratch is in the session scratchpad `svE/` (`rebase.py`, `bitunify.py`, `fld2mem.py`, `fixconv.py`, `mksig.py`).
+
+- **`Actor` moved to `include/ov000/ActorBase.h`** with its padding split into fields (`pos`, `rot_*`, `target`, `hp`, `msgs`, `msg_flags`, ...); `Actor.h` includes it. Sub-objects now have types: `ActorSub40` (state/timer/flag history, ctor `func_ov000_02198328`) and `ActorSub48` (0x9c movement/collision body, ctor `func_ov000_021985e8`) in `include/ov000/ActorParts.h`, which is C-compatible so `History_0219830c.c` uses the same structs.
+- **Shared actor layouts:** the robot actor (`Robo021ca458`, 0xbb0) and `ActorEx` (0xd0) in `ov000/ObjLayouts.h` derive from `Actor`, and the per-file copies were dropped. ov010 got `Ov010Obj : Ov010V` (0xac, same names as `Actor`), and the ov010 layouts derive from it.
+- **Bit-field views:** per-file `LFLD(View, p, off).bN` views that agree on the bits they touch were merged into one bit-field split of the shared struct (`unk_<off>_<bit>`; filler bits end in `_f`). Where other code reads the whole word, the split sits in an anonymous union with the word, which compiles the same.
+- **What did not convert:** a polymorphic base cannot take a vptr store through a member, so those stay `*(void **)self = ...`. A `VecFx32` member does not fold the same way as three separate `s32` loads in a few functions, which stay `LFLD`. `Lo_02154c34`, `Lo_0214cb44`, `Lo_021c1180` and `Lo_02161280` would need more `LFLD`; `Lo_02150cb0` and `Lo_02152740` embed sub-objects; `Robo_02195d88`, `Robo_021a9be8` and `Robo_021ad8ac` change code when their `unk_48` accesses become members. Those were all left as they were.
+- `SIZE_ASSERT` was added for every converted struct whose allocation size is known (about 20).
+- No new data.

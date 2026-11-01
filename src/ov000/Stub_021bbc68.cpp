@@ -29,6 +29,7 @@ typedef struct {
     u8 unk_75;
     u8 unk_76;
 } Obj021bbc68;
+SIZE_ASSERT(Obj021bbc68, 0x78);
 
 extern "C" {
 

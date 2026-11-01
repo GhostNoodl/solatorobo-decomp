@@ -30,7 +30,7 @@ void func_ov010_022085d0(Ov010Obj0220ffe4 *self) {
         func_02065f88(0x322, &data_ov010_0220f114)->v0c(0x1800);
         func_02065f88(0x389, &data_ov010_0220f120)->v0c(0x2000);
         func_02065f88(0x322, &data_ov010_0220f114)->v0c(0x1800);
-        func_02049f44(data_02097e4c, 0x79, &self->unk_70, 0);
+        func_02049f44(data_02097e4c, 0x79, &self->pos, 0);
         self->unk_40[0] = 0x1f;
         self->unk_40[1] = 0x28;
         break;
@@ -54,12 +54,12 @@ void func_ov010_022085d0(Ov010Obj0220ffe4 *self) {
         FLD(u16, o, 0x7c) = r.v[0]; FLD(u16, o, 0x7e) = r.v[1]; FLD(u16, o, 0x80) = r.v[2];
         func_02065f88(0x579, &data_ov010_0220f114)->v0c(0x2000);
         func_02065f88(0x579, &data_ov010_0220f120)->v0c(0x2000);
-        func_02049f44(data_02097e4c, 0x5c, &self->unk_70, 0);
+        func_02049f44(data_02097e4c, 0x5c, &self->pos, 0);
         self->unk_40[0] = 100;
         break;
     }
     case 100:
-        func_020627a0(self->unk_0e, self->unk_0c);
+        func_020627a0(self->kind, self->id);
         func_020627dc(4);
         FLD(u8, data_ov000_021ccd54, 0xac) = 1;
         self->unk_40[0] = 0x65;

@@ -2,6 +2,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Actor.h"
 #include "ov000/CmdQueue.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u8 unk_00[0x4];
@@ -22,16 +23,6 @@ typedef struct {
     u8 unk_08[4];
     s32 unk_0c;
 } Item02177f40;
-
-typedef struct {
-    u16 b0 : 3;
-    u16 b3 : 3;
-    u16 st : 3;
-    u16 b9 : 2;
-    u16 b11 : 2;
-    u16 b13 : 1;
-    u16 b14 : 2;
-} Bits21b1d28;
 
 typedef struct {
     u8 unk_00[0x18];
@@ -57,28 +48,22 @@ static inline void Set54b(u8 *t, s32 c, u8 n) {
     LFLD(u16, LFLD(u8 *, t, 0x54), 0x8a) = n <= 1 ? 1 : n;
     LFLD(s32, LFLD(u8 *, t, 0x54), 0x8c) = c;
 }
-struct Obj021b1740 {
-    u8 unk_00[0x40];
-    ActorSub40 *unk_40;
-    u8 unk_44[0xade];
-    Bits21b1d28 unk_b22;
-};
 
-void func_ov000_021b1740(Obj021b1740 *self, BOOL flag) {
+void func_ov000_021b1740(Robo021ca458 *self, BOOL flag) {
     u32 st;
-    if (self->unk_b22.b0 == 0) {
+    if (self->unk_b22_0 == 0) {
         return;
     }
-    if (self->unk_b22.b9 != 0) {
+    if (self->unk_b22_9 != 0) {
         return;
     }
     st = 0;
     if (((Save0214a424 *)data_0214a424)->b1 == 1) {
         st = 2;
     }
-    if (self->unk_b22.b9 < 2) {
-        self->unk_b22.st = (u16)st;
-        self->unk_b22.b9 = 1;
+    if (self->unk_b22_9 < 2) {
+        self->unk_b22_6 = (u16)st;
+        self->unk_b22_9 = 1;
         self->unk_40->flags |= 0x80000000;
         func_ov000_02198360(self->unk_40, 0x1f, 0);
     }

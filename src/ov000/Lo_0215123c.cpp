@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
@@ -38,19 +39,7 @@ static inline BOOL LoIsLoaded24(void) {
     return r;
 }
 
-struct Obj0215123c {
-    u8 unk_00[0x8];
-    s32 unk_08;
-    u8 unk_0c[0x18];
-    s32 unk_24;
-    u8 unk_28[0x24];
-    VObj *unk_4c;
-    VObj *unk_50;
-    u8 unk_54[0x4];
-    VObj *unk_58;
-};
-
-void func_ov000_0215123c(Obj0215123c *self) {
+void func_ov000_0215123c(Lo021ca9c4 *self) {
     s32 s;
     if (self->unk_24 == 0 || (s = self->unk_08) == 0) {
         return;

@@ -72,7 +72,7 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         break;
     case 3:
         sub40 = (ActorSub40 *)self->unk_40;
-        if (sub40 == NULL || sub40->unk_13 == 1) {
+        if (sub40 == NULL || sub40->current == 1) {
             handled = TRUE;
         } else {
             sub40->flags |= 2;

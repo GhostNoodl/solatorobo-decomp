@@ -1,10 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
-
-typedef struct {
-    u16 st;
-    u16 timer;
-} State021b03c8;
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 extern void *data_ov000_021ccd68;
@@ -27,28 +23,13 @@ static inline void *FindActor021b03c8(u16 id) {
     return func_ov000_0218e640(mgr, id);
 }
 
-struct Obj021b03c8 {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u8 unk_0e[0x32];
-    State021b03c8 *unk_40;
-    u8 unk_44[0x3a];
-    u16 unk_7e;
-    u8 unk_80[0xaa0];
-    u16 unk_b20;
-    u8 unk_b22[0xd];
-    u8 unk_b2f;
-    u8 unk_b30[0x6];
-    u16 unk_b36;
-};
-
-static inline void Next021b03c8(Obj021b03c8 *self) {
+static inline void Next021b03c8(Robo021ca458 *self) {
     self->unk_40->timer = 0xd;
     self->unk_40->st++;
 }
 
-void func_ov000_021b03c8(Obj021b03c8 *self) {
-    State021b03c8 *s = self->unk_40;
+void func_ov000_021b03c8(Robo021ca458 *self) {
+    ActorSub40 *s = self->unk_40;
     void *a;
     u8 *sub;
     void *o;
@@ -72,9 +53,9 @@ void func_ov000_021b03c8(Obj021b03c8 *self) {
             Next021b03c8(self);
             return;
         }
-        func_01ffc9fc(&v, &data_ov000_021ca000, self->unk_7e);
+        func_01ffc9fc(&v, &data_ov000_021ca000, self->rot_y);
         VEC_Add(&v, (VecFx32 *)((u8 *)self + 0x70), &v);
-        o = func_ov000_0219be1c(0x4800, &v, (u8 *)self + 0x7c, self->unk_0c, 0xffff);
+        o = func_ov000_0219be1c(0x4800, &v, (u8 *)self + 0x7c, self->id, 0xffff);
         if (o == NULL) {
             return;
         }

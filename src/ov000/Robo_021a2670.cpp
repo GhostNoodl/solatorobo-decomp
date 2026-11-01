@@ -8,41 +8,6 @@ typedef struct {
 } St021a2670;
 
 typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 3;
-    u32 lock : 2;
-    u32 f7 : 2;
-    u32 b9 : 1;
-    u32 b10 : 2;
-    u32 mode : 2;
-    u32 b14 : 2;
-    u32 b16 : 1;
-    u32 b17 : 1;
-    u32 b18 : 4;
-    u32 b22 : 2;
-    u32 rest : 8;
-} B24_021a2670;
-
-typedef struct {
-    u16 b0 : 6;
-    u16 b6 : 1;
-    u16 rest : 9;
-} B2c_021a2670;
-
-typedef struct {
-    u8 b0 : 3;
-    u8 b3 : 1;
-    u8 rest : 4;
-} B2a_021a2670;
-
-typedef struct {
-    u8 b0 : 4;
-    u8 b4 : 1;
-    u8 rest : 3;
-} B93_021a2670;
-
-typedef struct {
     u16 b0 : 6;
     u16 b6 : 1;
     u16 rest : 9;
@@ -76,15 +41,15 @@ static inline u8 *GetObj021a2670(u16 id) {
 
 static inline BOOL Jump021a2670(Robo021ca458 *self) {
     BOOL go = FALSE;
-    if (LFLD(B24_021a2670, self, 0xb24).b1 && (LFLD(u32, self->unk_48, 0x54) & 0x400)) {
-        self->unk_98 = FX_Atan2(self->unk_af0 - self->unk_70.x, self->unk_af8 - self->unk_70.z);
+    if (self->unk_b24_1 && (LFLD(u32, self->unk_48, 0x54) & 0x400)) {
+        self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
         self->unk_9c = 0x66;
         self->unk_a4 = 0;
-        if (!LFLD(B24_021a2670, self, 0xb24).b17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {
+        if (!self->unk_b24_17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {
             self->unk_a0 = 0x200;
         }
         self->unk_a8 = 0x52;
-        LFLD(B24_021a2670, self, 0xb24).b17 = 1;
+        self->unk_b24_17 = 1;
         go = TRUE;
     }
     return go;
@@ -102,9 +67,9 @@ void func_ov000_021a2670(Robo021ca458 *self) {
     void *anm;
     switch (((St021a2670 *)self->unk_40)->state) {
     case 0: {
-        LFLD(B24_021a2670, self, 0xb24).b16 = 0;
-        LFLD(B24_021a2670, self, 0xb24).b17 = 0;
-        LFLD(B2c_021a2670, self, 0xb2c).b6 = 0;
+        self->unk_b24_16 = 0;
+        self->unk_b24_17 = 0;
+        self->unk_b2c_6 = 0;
         self->unk_a4 = 0xc00;
         if (self->unk_9c > 0x252) {
             self->unk_9c = 0x252;
@@ -115,7 +80,7 @@ void func_ov000_021a2670(Robo021ca458 *self) {
             func_ov000_02198360(self->unk_40, 4, 0);
             return;
         }
-        if (LFLD(B24_021a2670, self, 0xb24).b1) {
+        if (self->unk_b24_1) {
             thr = 6;
         }
         {
@@ -137,15 +102,15 @@ void func_ov000_021a2670(Robo021ca458 *self) {
             if (p != NULL) {
                 u8 k = p[0];
                 if (k == 0xf || k == 0x11) {
-                    LFLD(B24_021a2670, self, 0xb24).b22 = 1;
+                    self->unk_b24_22 = 1;
                 }
             }
         }
         ((St021a2670 *)self->unk_40)->timer = 0;
-        if (LFLD(B24_021a2670, self, 0xb24).b1 && LFLD(B24_021a2670, self, 0xb24).mode == 0 &&
+        if (self->unk_b24_1 && self->unk_b24_12 == 0 &&
             self->unk_ba4 != NULL && LFLD(Ba4_021a2670, self->unk_ba4, 6).b6 &&
             self->unk_b38 >= thr) {
-            func_ov000_02190cb0(self->unk_38, data_ov000_021ca030[LFLD(B24_021a2670, self, 0xb24).lock], 0x19a, 1);
+            func_ov000_02190cb0(self->unk_38, data_ov000_021ca030[self->unk_b24_5], 0x19a, 1);
             self->unk_9c = 0;
             self->unk_a4 = 0;
             ((St021a2670 *)self->unk_40)->state++;
@@ -165,8 +130,8 @@ void func_ov000_021a2670(Robo021ca458 *self) {
                 ((St021a2670 *)self->unk_40)->state = 10;
                 return;
             }
-            func_ov000_02190cb0(self->unk_38, data_ov000_021ca040[LFLD(B24_021a2670, self, 0xb24).lock], 0x800, 0);
-            LFLD(B2c_021a2670, self, 0xb2c).b6 = 1;
+            func_ov000_02190cb0(self->unk_38, data_ov000_021ca040[self->unk_b24_5], 0x800, 0);
+            self->unk_b2c_6 = 1;
             func_ov000_02198360(self->unk_40, 0x16, 0);
             self->unk_b48 = 0;
             return;
@@ -210,9 +175,9 @@ void func_ov000_021a2670(Robo021ca458 *self) {
         s32 snd;
         s32 lock;
         anm = data_ov000_021cc62a;
-        LFLD(B2a_021a2670, self, 0xb2a).b3 = 1;
-        if (LFLD(B24_021a2670, self, 0xb24).b1) {
-            lock = LFLD(B24_021a2670, self, 0xb24).lock;
+        self->unk_b2a_3 = 1;
+        if (self->unk_b24_1) {
+            lock = self->unk_b24_5;
             anm = data_ov000_021ca080[lock];
             self->unk_a8 = 0x52;
             self->unk_a0 = 0x53f;
@@ -242,7 +207,7 @@ void func_ov000_021a2670(Robo021ca458 *self) {
         }
         func_ov000_02190cb0(self->unk_38, anm, 0x800, 0);
         PlaySe021a2670(snd, (u8 *)self + 0x70);
-        if (!LFLD(B93_021a2670, self, 0x93).b4) {
+        if (!self->unk_93_4) {
             s32 se = 0x300;
             if (LFLD(u16, data_ov000_021ccd68, 0xa) & 1) {
                 se = 0x304;
@@ -252,7 +217,7 @@ void func_ov000_021a2670(Robo021ca458 *self) {
         ((St021a2670 *)self->unk_40)->state++;
     }
     case 11:
-        if (!LFLD(B24_021a2670, self, 0xb24).b16 && !LFLD(B24_021a2670, self, 0xb24).b17) {
+        if (!self->unk_b24_16 && !self->unk_b24_17) {
             func_ov000_021b1dd8(self, self->unk_b08 + (self->unk_b08 >> 1), 0x200, 0xf00, 0x466, 1);
         } else {
             func_ov000_021b1fac(self, FALSE, 0);
@@ -261,10 +226,10 @@ void func_ov000_021a2670(Robo021ca458 *self) {
             func_ov000_02198360(self->unk_40, 4, 0);
             return;
         }
-        if (LFLD(B24_021a2670, self, 0xb24).mode == 0) {
+        if (self->unk_b24_12 == 0) {
             if ((LFLD(u32, self->unk_48, 0x50) & 0x40000000) || LFLD(s32, self->unk_48, 0x58) != 0) {
                 self->unk_9c = 0;
-                LFLD(B24_021a2670, self, 0xb24).b16 = 1;
+                self->unk_b24_16 = 1;
             }
         }
         {

@@ -1,10 +1,5 @@
 #include "ov000/LoCommon.h"
-
-typedef struct {
-    u16 b0 : 4;
-    u16 b4 : 2;
-    u16 rest : 10;
-} Bits021a09b8_2c;
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u8 b0 : 1;
@@ -38,16 +33,7 @@ static inline void Ping021a09b8(void) {
     func_ov000_02182590(g + 0xac);
 }
 
-struct Obj021a09b8 {
-    u8 unk_00[0x40];
-    void *unk_40;
-    u8 unk_44[0x4c];
-    u16 unk_90;
-    u8 unk_92[0xa9a];
-    Bits021a09b8_2c unk_b2c;
-};
-
-s32 func_ov000_021a09b8(Obj021a09b8 *self, s32 *list, s32 count) {
+s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
     u8 *a;
     u8 kind;
     s32 r;
@@ -55,11 +41,11 @@ s32 func_ov000_021a09b8(Obj021a09b8 *self, s32 *list, s32 count) {
     BOOL done;
 
     a = NULL;
-    r = func_ov000_0219840c(self->unk_40, list, count, FALSE);
+    r = func_ov000_0219840c(((void *)self->unk_40), list, count, FALSE);
     if (r == 0) {
         return r;
     }
-    a = (u8 *)FindActor021a09b8(self->unk_90);
+    a = (u8 *)FindActor021a09b8(self->target);
     sub = NULL;
     if (a != NULL) {
         sub = LFLD(u8 *, a, 0x4c);
@@ -123,7 +109,7 @@ s32 func_ov000_021a09b8(Obj021a09b8 *self, s32 *list, s32 count) {
         }
         if (done) {
             r = 0;
-            self->unk_b2c.b4 = 0;
+            self->unk_b2c_4 = 0;
         } else if (!LBIT(self, 0xb24).b1) {
             r = 0;
             func_0205c234(0x65, 0);
@@ -183,7 +169,7 @@ s32 func_ov000_021a09b8(Obj021a09b8 *self, s32 *list, s32 count) {
         break;
     }
     if (r != 0) {
-        func_ov000_02198360(self->unk_40, (u8)r, 0);
+        func_ov000_02198360(((void *)self->unk_40), (u8)r, 0);
     }
     return r;
 }

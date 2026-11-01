@@ -1,24 +1,9 @@
 #ifndef OV000_ACTOR_H
 #define OV000_ACTOR_H
 
-#include "ov000/VObj.h"
+#include "ov000/ActorBase.h"
 #include "ov000/Vec.h"
 #include "Main/Sys/Pad.h"
-
-typedef struct ActorMsg {
-    struct ActorMsg *next;
-    u8 unk_04;
-    u8 type;
-    u16 id;
-    u8 data[0x30];
-} ActorMsg;
-
-class Actor;
-
-typedef struct PauseNode {
-    struct PauseNode *parent;
-    u32 unk_04;
-} PauseNode;
 
 typedef struct ActorGroup {
     struct ActorGroup *prev;
@@ -40,57 +25,6 @@ typedef struct {
     ActorMsg msgs[0x80];
     PauseNode pause;
 } ActorMgr;
-
-typedef struct {
-    u8 unk_00[0x1c];
-    u16 unk_1c;
-} ActorSub4c;
-
-class Actor : public VObj {
-public:
-    Actor *prev;
-    Actor *next;
-    u16 id;
-    u16 kind;
-    s32 unk_10;
-    u8 state;
-    u8 unk_15;
-    u8 flags_0 : 1;
-    u8 flags_1 : 1;
-    u8 flags_2 : 6;
-    u8 unk_17[0x9];
-    u16 unk_20;
-    u8 unk_22[0x2];
-    PauseNode pause;
-    ActorMsg *msgs;
-    u32 msg_flags;
-    u8 unk_34[0x4];
-    void *unk_38;
-    u8 unk_3c[0x4];
-    void *unk_40;
-    void *unk_44;
-    u8 unk_48[0x4];
-    ActorSub4c *unk_4c;
-    u8 unk_50[0x14];
-    s32 unk_64;
-    u8 unk_68[0x8];
-    VecFx32 pos;
-    u16 rot_x;
-    u16 rot_y;
-    u16 rot_z;
-    u8 unk_82[0xe];
-    u16 target;
-    u8 unk_92;
-    u8 unk_93_0 : 1;
-    u8 unk_93_1 : 7;
-    u8 unk_94[0x4];
-    u16 unk_98;
-    u8 unk_9a[0x2];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
-};
 
 extern "C" {
 extern ActorMgr *data_ov000_021ccd68;
@@ -210,13 +144,6 @@ static inline void ActorGroup_Remove(ActorGroup *group, Actor *actor) {
     }
     group->count--;
 }
-
-typedef struct {
-    u8 unk_00[0x4];
-    u64 flags;
-    u8 unk_0c[0x7];
-    u8 unk_13;
-} ActorSub40;
 
 typedef struct {
     u8 unk_00[0x78];

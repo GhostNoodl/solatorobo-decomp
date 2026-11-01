@@ -130,15 +130,15 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
             continue;
         }
         do {
-            if (id != a->id && (sub = LFLD(u8 *, a, 0x48)) != NULL &&
+            if (id != a->id && (sub = (u8 *)a->unk_48) != NULL &&
                 q->flags == (q->flags & LFLD(u32, sub, 0x50))) {
-                p2.x = LFLD(VecFx32, a, 0x70).x;
-                p2.y = LFLD(VecFx32, a, 0x70).y;
-                p2.z = LFLD(VecFx32, a, 0x70).z;
+                p2.x = a->pos.x;
+                p2.y = a->pos.y;
+                p2.z = a->pos.z;
                 if (func_01ffc318(&p2, a1, &q->min, &q->max, &q->rot) && a->vfunc_14()) {
-                    m.pos.x = LFLD(VecFx32, a, 0x70).x;
-                    m.pos.y = LFLD(VecFx32, a, 0x70).y;
-                    m.pos.z = LFLD(VecFx32, a, 0x70).z;
+                    m.pos.x = a->pos.x;
+                    m.pos.y = a->pos.y;
+                    m.pos.z = a->pos.z;
                     VEC_Add(&m.pos, &q->ofs, &m.pos);
                     m.rot.x = LFLD(Rot0219b808, a, 0x7c).x;
                     m.rot.y = LFLD(Rot0219b808, a, 0x7c).y;

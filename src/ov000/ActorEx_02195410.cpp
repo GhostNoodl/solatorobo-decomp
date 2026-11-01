@@ -1,5 +1,6 @@
 #include "ov000/Actor.h"
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 extern s32 data_ov000_021c9d9c[];
@@ -8,16 +9,7 @@ extern s32 data_ov000_021c9dc4[];
 BOOL func_ov000_0219840c(void *s, s32 *list, s32 count, BOOL push);
 void func_ov000_0218d7e8(void *self, u8 arg);
 
-struct Obj02195410 {
-    u8 unk_00[0x30];
-    u32 unk_30;
-    u8 unk_34[0xc];
-    ActorSub40 *unk_40;
-    u8 unk_44[0x8];
-    void *unk_4c;
-};
-
-void func_ov000_02195410(Obj02195410 *self) {
+void func_ov000_02195410(ActorEx *self) {
     ActorSub40 *s = self->unk_40;
     if (s->flags != 0) {
         if (!func_ov000_0219840c(s, data_ov000_021c9d9c, 5, TRUE)) {
@@ -27,7 +19,7 @@ void func_ov000_02195410(Obj02195410 *self) {
         }
     }
     s = self->unk_40;
-    switch (s->unk_13) {
+    switch (s->current) {
     case 9:
         func_ov000_0219840c(s, data_ov000_021c9db0, 5, TRUE);
         break;
@@ -56,15 +48,15 @@ void func_ov000_02195410(Obj02195410 *self) {
         break;
     case 1:
     case 2:
-        if ((s->flags & 0x400) && (self->unk_30 & 0x80)) {
+        if ((s->flags & 0x400) && (self->msg_flags & 0x80)) {
             s->flags &= ~0x400;
-            LFLD(u16, self->unk_4c, 0x1c) = 0xffff;
+            self->unk_4c->unk_1c = 0xffff;
         }
         if (!func_ov000_0219840c(self->unk_40, data_ov000_021c9dc4, 9, TRUE)) {
             func_ov000_02198360(self->unk_40, 1, 0);
         }
         break;
     }
-    func_ov000_0218d7e8(self, self->unk_40->unk_13);
+    func_ov000_0218d7e8(self, self->unk_40->current);
 }
 }

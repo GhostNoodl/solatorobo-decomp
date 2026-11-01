@@ -10,6 +10,7 @@ typedef struct {
     s32 unk_54;
     u16 unk_58;
 } Obj021b87d8;
+SIZE_ASSERT(Obj021b87d8, 0x5c);
 
 typedef struct {
     void *current;

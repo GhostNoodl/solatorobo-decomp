@@ -21,21 +21,21 @@ void func_ov000_021b4560(Actor *self, Actor *t) {
     if (t == NULL) {
         return;
     }
-    if (LFLD(VecFx32 *, t, 0x48) != NULL) {
-        p = *LFLD(VecFx32 *, t, 0x48);
+    if (((VecFx32 *)t->unk_48) != NULL) {
+        p = *((VecFx32 *)t->unk_48);
     } else {
-        p = LFLD(VecFx32, t, 0x70);
+        p = t->pos;
     }
-    if (func_01ffbd6c(&LFLD(VecFx32, self, 0x70), &p, -1, 0, 0, -1) == -0x1000) {
+    if (func_01ffbd6c(&self->pos, &p, -1, 0, 0, -1) == -0x1000) {
         return;
     }
-    VEC_Subtract(&p, &LFLD(VecFx32, self, 0x70), &p);
-    VEC_MultAdd(0xc00, &p, &LFLD(VecFx32, self, 0x70), &p);
+    VEC_Subtract(&p, &self->pos, &p);
+    VEC_MultAdd(0xc00, &p, &self->pos, &p);
     msg.pos = p;
-    msg.rot[0] = LFLD(u16, t, 0x7c);
-    msg.rot[1] = LFLD(u16, t, 0x7e);
-    msg.rot[2] = LFLD(u16, t, 0x80);
+    msg.rot[0] = t->rot_x;
+    msg.rot[1] = t->rot_y;
+    msg.rot[2] = t->rot_z;
     msg.unk_1c = 0;
-    func_ov000_0218d398(t, LFLD(u16, self, 0xc), 7, TRUE, 0x18, &msg);
+    func_ov000_0218d398(t, self->id, 7, TRUE, 0x18, &msg);
 }
 }

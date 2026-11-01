@@ -5,63 +5,167 @@
 // Field names are offsets; only fields that some method reads or writes are declared.
 
 #include "types.h"
-#include "nitro/fx.h"
+#include "ov000/Vec.h"
 #include "ov000/VObj.h"
+#include "ov000/ActorBase.h"
 
 struct Model;
 struct TextWin;
 
-// Vtable data_ov000_021ca458; methods in 24 files, Robo_021a16b0.cpp .. Robo_021af464.cpp.
-struct Robo021ca458 {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u8 unk_0e[0x7];
-    u8 unk_15;
-    u8 unk_16[0x1a];
-    u32 unk_30;
-    u8 unk_34[0x4];
-    void *unk_38;
-    u8 *unk_3c;
-    u8 *unk_40;
-    u8 *unk_44;
-    u8 *unk_48;
-    u8 unk_4c[0x4];
-    u8 *unk_50;
-    u8 unk_54[0x8];
-    void *unk_5c;
-    u8 unk_60[0x4];
-    s32 unk_64;
-    s32 unk_68;
-    s32 unk_6c;
-    VecFx32 unk_70;
-    u16 unk_7c;
-    u16 unk_7e;
-    u16 unk_80;
-    u8 unk_82[0xe];
-    u16 unk_90;
-    u8 unk_92;
-    u8 unk_93;  // bit fields, read through per-file views
-    u8 unk_94[0x2];
-    u16 unk_96;
-    u16 unk_98;
-    u8 unk_9a[0x2];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
-    u8 unk_ac[0xcc];
+// The ov000 actor with resources (ctor func_ov000_02194074, vtable data_ov000_021cc480, 0xd0
+// bytes); the ov003/ov009/ov012-ov014 actor classes in that vtable family derive from it.
+struct ActorEx : public Actor {
+    u8 unk_ac;
+    u8 unk_ad;
+    u8 unk_ae;
+    u8 unk_af;
+    u8 *unk_b0;
+    void *unk_b4[2];
+    void *unk_bc;
+    s32 unk_c0;
+    s32 unk_c4;
+    s32 unk_c8;
+    union {
+        u16 unk_cc;
+        struct {
+            u16 unk_cc_0 : 1;
+            u16 unk_cc_1 : 1;
+            u16 unk_cc_2 : 1;
+            u16 unk_cc_3_f : 1;
+            u16 unk_cc_4 : 1;
+            u16 unk_cc_5 : 1;
+            u16 unk_cc_6 : 1;
+            u16 unk_cc_7 : 1;
+            u16 unk_cc_8 : 1;
+            u16 unk_cc_9_f : 7;
+        };
+    };
+};
+SIZE_ASSERT(ActorEx, 0xd0);
+
+// The robot actor (ctor func_ov000_0219bfbc, vtable data_ov000_021cc774, 0xbb0 bytes; its state
+// handlers are the pointer-to-member table data_ov000_021ca458). Methods in Robo_*.cpp and others.
+// The bit fields at 0xae4 and 0xb22..0xb2c are the union of the members the methods use.
+struct Robo021ca458 : public Actor {
+    u8 *unk_ac;
+    u8 unk_b0[0x4c];
+    void *unk_fc;
+    u8 unk_100[0x24];
+    s32 unk_124;
+    s32 unk_128;
+    s32 unk_12c;
+    u8 unk_130[0x30];
+    u16 unk_160;
+    u8 unk_162[0xb];
+    u8 unk_16d;
+    u16 unk_16e_0 : 1;
+    u16 unk_16e_1 : 15;
+    u8 unk_170[0x8];
     s16 unk_178;
-    u8 unk_17a[0x20a];
+    u8 unk_17a[0x2];
+    u8 *unk_17c;
+    u8 *unk_180;
+    u8 unk_184[0x8];
+    void *unk_18c;
+    u8 unk_190[0x4];
+    s16 unk_194;
+    u8 unk_196[0xbe];
+    u32 *unk_254;
+    u8 unk_258[0x9c];
+    s32 unk_2f4;
+    u8 unk_2f8[0xc];
+    s32 unk_304;
+    u8 unk_308[0x14];
+    u32 unk_31c;
+    s32 unk_320;
+    s32 unk_324;
+    u8 unk_328[0x4];
+    s32 unk_32c;
+    u8 unk_330[0x8];
+    s32 unk_338;
+    u8 unk_33c[0x2a];
+    u16 unk_366_0 : 1;
+    u16 unk_366_1 : 1;
+    u16 unk_366_2 : 1;
+    u16 unk_366_3 : 1;
+    u16 unk_366_4 : 12;
+    u8 unk_368[0x1c];
     u8 *unk_384;
-    u8 unk_388[0x3d4];
+    u8 unk_388[0x30];
+    void *unk_3b8;
+    u8 unk_3bc[0x6a];
+    u8 unk_426;
+    u8 unk_427[0x2];
+    u8 unk_429;
+    u16 unk_42a_0 : 1;
+    u16 unk_42a_1 : 15;
+    u8 unk_42c[0x24];
+    s16 unk_450;
+    u8 unk_452[0x1];
+    u8 unk_453_0 : 1;
+    u8 unk_453_1 : 1;
+    u8 unk_453_2 : 1;
+    u8 unk_453_3 : 1;
+    u8 unk_453_4 : 1;
+    u8 unk_453_5 : 3;
+    u8 unk_454[0x134];
+    s16 unk_588;
+    u8 unk_58a[0x1];
+    u8 unk_58b_0 : 1;
+    u8 unk_58b_1 : 1;
+    u8 unk_58b_2 : 1;
+    u8 unk_58b_3 : 1;
+    u8 unk_58b_4 : 1;
+    u8 unk_58b_5 : 3;
+    u8 unk_58c[0x15c];
+    s32 unk_6e8;
+    u8 unk_6ec[0xc];
+    s32 unk_6f8;
+    u8 unk_6fc[0xc];
+    s32 unk_708;
+    s32 unk_70c;
+    u32 unk_710;
+    u32 unk_714;
+    s32 unk_718;
+    u8 unk_71c[0x4];
+    s32 unk_720;
+    u8 unk_724[0x8];
+    s32 unk_72c;
+    u8 unk_730[0x2a];
+    u16 unk_75a_0 : 1;
+    u16 unk_75a_1 : 1;
+    u16 unk_75a_2 : 1;
+    u16 unk_75a_3 : 1;
+    u16 unk_75a_4 : 12;
     VecFx32 unk_75c;
-    u8 unk_768[0x4];
+    s32 unk_768;
     u16 unk_76c;
     u16 unk_76e;
     u16 unk_770;
-    u8 unk_772[0x226];
+    u8 unk_772;
+    u8 unk_773;
+    u8 unk_774;
+    u8 unk_775[0xb7];
+    u16 unk_82c;
+    u16 unk_82e;
+    u16 unk_830;
+    u16 unk_832;
+    u16 unk_834;
+    u8 unk_836;
+    u8 unk_837[0x2];
+    u8 unk_839;
+    u8 unk_83a[0x26];
+    s16 unk_860;
+    u8 unk_862[0x1];
+    u8 unk_863_0 : 1;
+    u8 unk_863_1 : 1;
+    u8 unk_863_2 : 1;
+    u8 unk_863_3 : 1;
+    u8 unk_863_4 : 1;
+    u8 unk_863_5 : 3;
+    u8 unk_864[0x134];
     void *unk_998;
-    u8 unk_99c[0x4];
+    void *unk_99c;
     u16 unk_9a0;
     u16 unk_9a2;
     u16 unk_9a4;
@@ -69,36 +173,135 @@ struct Robo021ca458 {
     u16 unk_9a8;
     u16 unk_9aa;
     u16 unk_9ac;
-    u8 unk_9ae[0xc6];
+    u16 unk_9ae;
+    void *unk_9b0;
+    void *unk_9b4;
+    u8 unk_9b8[0x90];
+    u8 unk_a48;
+    u8 unk_a49[0x2];
+    u8 unk_a4b;
+    u8 unk_a4c;
+    u8 unk_a4d[0x27];
     s32 unk_a74;
     s32 unk_a78;
     s32 unk_a7c;
     u8 unk_a80[0x64];
-    u8 unk_ae4;  // bit fields, read through per-file views
-    u8 unk_ae5[0xb];
+    union {
+        u8 unk_ae4;
+        struct {
+            u8 unk_ae4_0 : 1;
+            u8 unk_ae4_1_f : 7;
+        };
+    };
+    u8 unk_ae5[0x5];
+    u16 unk_aea;
+    u16 unk_aec;
+    u8 unk_aee[0x2];
     s32 unk_af0;
     s32 unk_af4;
     s32 unk_af8;
-    u8 unk_afc[0x4];
+    s32 unk_afc;
     s32 unk_b00;
-    u8 unk_b04[0x4];
+    s32 unk_b04;
     s32 unk_b08;
-    u8 unk_b0c[0x10];
+    s32 unk_b0c;
+    s32 unk_b10;
+    u8 unk_b14[0x4];
+    s32 unk_b18;
     u16 unk_b1c;
     u16 unk_b1e;
     u16 unk_b20;
-    u16 unk_b22;  // bit fields, read through per-file views
-    u32 unk_b24;
-    u8 unk_b28;  // bit fields, read through per-file views
-    u8 unk_b29;
-    u8 unk_b2a;
+    union {
+        u16 unk_b22;
+        struct {
+            u16 unk_b22_0 : 3;
+            u16 unk_b22_3 : 1;
+            u16 unk_b22_4 : 1;
+            u16 unk_b22_5 : 1;
+            u16 unk_b22_6 : 3;
+            u16 unk_b22_9 : 2;
+            u16 unk_b22_11 : 1;
+            u16 unk_b22_12 : 1;
+            u16 unk_b22_13 : 1;
+            u16 unk_b22_14_f : 2;
+        };
+    };
+    union {
+        u32 unk_b24;
+        struct {
+            u32 unk_b24_0 : 1;
+            u32 unk_b24_1 : 1;
+            u32 unk_b24_2 : 2;
+            u32 unk_b24_4 : 1;
+            u32 unk_b24_5 : 2;
+            u32 unk_b24_7 : 2;
+            u32 unk_b24_9 : 1;
+            u32 unk_b24_10_f : 2;
+            u32 unk_b24_12 : 2;
+            u32 unk_b24_14 : 2;
+            u32 unk_b24_16 : 1;
+            u32 unk_b24_17 : 1;
+            u32 unk_b24_18 : 1;
+            u32 unk_b24_19 : 1;
+            u32 unk_b24_20_f : 1;
+            u32 unk_b24_21 : 1;
+            u32 unk_b24_22 : 2;
+            u32 unk_b24_24 : 1;
+            u32 unk_b24_25 : 1;
+            u32 unk_b24_26 : 1;
+            u32 unk_b24_27 : 1;
+            u32 unk_b24_28_f : 4;
+        };
+    };
+    union {
+        u8 unk_b28;
+        struct {
+            u8 unk_b28_0 : 2;
+            u8 unk_b28_2 : 1;
+            u8 unk_b28_3 : 1;
+            u8 unk_b28_4_f : 4;
+        };
+    };
+    union {
+        u8 unk_b29;
+        struct {
+            u8 unk_b29_0 : 1;
+            u8 unk_b29_1 : 1;
+            u8 unk_b29_2 : 1;
+            u8 unk_b29_3 : 1;
+            u8 unk_b29_4 : 1;
+            u8 unk_b29_5_f : 3;
+        };
+    };
+    union {
+        u8 unk_b2a;
+        struct {
+            u8 unk_b2a_0 : 1;
+            u8 unk_b2a_1_f : 2;
+            u8 unk_b2a_3 : 1;
+            u8 unk_b2a_4_f : 4;
+        };
+    };
     u8 unk_b2b;
-    u16 unk_b2c;  // bit fields, read through per-file views
+    union {
+        u16 unk_b2c;
+        struct {
+            u16 unk_b2c_0 : 1;
+            u16 unk_b2c_1 : 1;
+            u16 unk_b2c_2 : 1;
+            u16 unk_b2c_3_f : 1;
+            u16 unk_b2c_4 : 2;
+            u16 unk_b2c_6 : 1;
+            u16 unk_b2c_7 : 3;
+            u16 unk_b2c_10_f : 6;
+        };
+    };
     u8 unk_b2e;
     u8 unk_b2f;
-    u8 unk_b30[0x2];
+    u8 unk_b30;
+    u8 unk_b31;
     u16 unk_b32;
-    u8 unk_b34[0x2];
+    u16 unk_b34;
     u16 unk_b36;
     u16 unk_b38;
     u16 unk_b3a;
@@ -116,16 +319,18 @@ struct Robo021ca458 {
     u16 unk_b5e;
     s32 unk_b60;
     s16 unk_b64;
-    u8 unk_b66[0x2];
+    s16 unk_b66;
     u16 unk_b68;
     u16 unk_b6a;
-    u8 unk_b6c[0x2];
+    u16 unk_b6c;
     u16 unk_b6e;
-    u8 unk_b70[0x34];
+    u8 unk_b70[0x30];
+    u8 *unk_ba0;
     u8 *unk_ba4;
-    u8 unk_ba8[0x4];
+    s32 unk_ba8;
     u16 unk_bac;
 };
+SIZE_ASSERT(Robo021ca458, 0xbb0);
 
 // Vtable data_ov000_021ca94c; methods in G3_0214cff4.cpp, Lo_0214cb44.cpp, Menu_0214c2d0.cpp.
 struct Menu021ca94c : public VObj {

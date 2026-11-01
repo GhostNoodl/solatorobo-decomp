@@ -1,29 +1,7 @@
 #include "ov000/Actor.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u16 st;
-    u16 timer;
-} State021ab68c;
-
-typedef struct {
-    u16 b0 : 2;
-    u16 b2 : 1;
-    u16 b3 : 4;
-    u16 lvl : 3;
-    u16 rest : 6;
-} B2c021ab68c;
-
-typedef struct {
-    u32 b0 : 5;
-    u32 f5 : 2;
-    u32 f7 : 2;
-    u32 f9 : 1;
-    u32 b10 : 12;
-    u32 f22 : 2;
-    u32 rest : 8;
-} B24_021ab68c;
 
 typedef struct {
     u8 b0 : 1;
@@ -79,30 +57,7 @@ static inline u16 AngleTo021ab68c(Actor *self, Actor *other) {
     return FX_Atan2(other->pos.x - self->pos.x, other->pos.z - self->pos.z);
 }
 
-struct Obj021ab68c {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u8 unk_0e[0x2a];
-    void *unk_38;
-    u8 unk_3c[0x4];
-    State021ab68c *unk_40;
-    u8 unk_44[0x2c];
-    s32 unk_70;
-    s32 unk_74;
-    s32 unk_78;
-    u8 unk_7c[0xaa0];
-    u16 unk_b1c;
-    u16 unk_b1e;
-    u8 unk_b20[0x4];
-    B24_021ab68c unk_b24;
-    u8 unk_b28[0x3];
-    u8 unk_b2b;
-    B2c021ab68c unk_b2c;
-    u8 unk_b2e[0x3c];
-    u16 unk_b6a;
-};
-
-static inline void Charge021ab68c(Obj021ab68c *self) {
+static inline void Charge021ab68c(Robo021ca458 *self) {
     if (self->unk_b6a & 1) {
         self->unk_b2b++;
     }
@@ -114,10 +69,10 @@ static inline void Charge021ab68c(Obj021ab68c *self) {
     }
 }
 
-void func_ov000_021ab68c(Obj021ab68c *self) {
+void func_ov000_021ab68c(Robo021ca458 *self) {
     Actor *a = FindActor021ab68c(self->unk_b1c);
     u8 *sub = NULL;
-    State021ab68c *st;
+    ActorSub40 *st;
     BOOL hit;
     u8 lvl2;
     if (a != NULL) {
@@ -159,8 +114,8 @@ void func_ov000_021ab68c(Obj021ab68c *self) {
             return;
         }
         hit = TRUE;
-        self->unk_b2c.lvl++;
-        lvl = self->unk_b2c.lvl;
+        self->unk_b2c_7++;
+        lvl = self->unk_b2c_7;
         if (lvl < 2) {
             hit = FALSE;
         } else if (lvl < 5 && self->unk_b2b >= 4) {
@@ -176,37 +131,37 @@ void func_ov000_021ab68c(Obj021ab68c *self) {
             VecFx32 p;
             VObj *o;
             p = LFLD(VecFx32, sub, 0x44);
-            p.y = self->unk_74;
+            p.y = self->pos.y;
             o = func_02065f88(0x67, &p);
             o->vfunc_0c(0x1800);
             o->vfunc_34(0, AngleTo021ab68c(a, (Actor *)self), 0);
         }
-        lvl2 = self->unk_b2c.lvl * 2;
+        lvl2 = self->unk_b2c_7 * 2;
         func_ov000_0219aae8(a, self, lvl2 * 3, 0x31, 0x30, NULL, 0, a->unk_64 + 0x2333, 0, 0x64, 0x1000);
         if (!hit) {
             Hit021ab68c msg;
             msg.val = lvl2;
             msg.d = 1;
             msg.id = 0xffff;
-            func_ov000_0218d398(a, self->unk_0c, 9, 1, 6, &msg);
+            func_ov000_0218d398(a, self->id, 9, 1, 6, &msg);
         }
-        if (!hit && LFLD(u16, LFLD(u8 *, a, 0x50), 0) != 0) {
+        if (!hit && LFLD(u16, ((u8 *)a->hp), 0) != 0) {
             goto again;
         }
         if (hit) {
-            func_ov000_0218d46c(a, self->unk_0c, 0xb);
+            func_ov000_0218d46c(a, self->id, 0xb);
             a->rot_y = AngleTo021ab68c((Actor *)self, a);
             LFLD(s32, sub, 0x50) = 0x19a;
             LFLD(s32, sub, 0x54) = -0x1000;
             LFLD(s32, sub, 0x58) = 0;
-            LFLD(u8, sub, 0x19) = self->unk_b24.f22;
+            LFLD(u8, sub, 0x19) = self->unk_b24_22;
             LFLD(u8, sub, 0x1b) = lvl2;
         }
         LFLD(B18_021ab68c, sub, 0x18).b0 = 0;
         if (a != NULL) {
             Msg021ab68c m;
             VecFx32 t;
-            VecFx32 *q = LFLD(VecFx32 *, a, 0x48);
+            VecFx32 *q = ((VecFx32 *)a->unk_48);
             if (q != NULL) {
                 t.x = q->x;
                 t.y = q->y;
@@ -217,20 +172,20 @@ void func_ov000_021ab68c(Obj021ab68c *self) {
                 t.z = a->pos.z;
             }
             if (func_01ffbd6c((VecFx32 *)((u8 *)self + 0x70), &t, -1, 0, 0, -1) != -0x1000) {
-                t.x -= self->unk_70;
-                t.y -= self->unk_74;
-                t.z -= self->unk_78;
+                t.x -= self->pos.x;
+                t.y -= self->pos.y;
+                t.z -= self->pos.z;
                 VEC_MultAdd(0xc00, &t, (VecFx32 *)((u8 *)self + 0x70), &t);
                 m.pos = t;
                 m.rot = *(Rot021ab68c *)&a->rot_x;
                 m.unk_14 = 0;
-                func_ov000_0218d398(a, self->unk_0c, 7, 1, sizeof(Msg021ab68c), &m);
+                func_ov000_0218d398(a, self->id, 7, 1, sizeof(Msg021ab68c), &m);
             }
         }
         self->unk_b1c = 0xffff;
         self->unk_b1e = 0xffff;
-        self->unk_b24.f5 = 0;
-        self->unk_b24.f7 = self->unk_b24.f9;
+        self->unk_b24_5 = 0;
+        self->unk_b24_7 = self->unk_b24_9;
         self->unk_40->st = 0x14;
         return;
     again:
@@ -250,7 +205,7 @@ void func_ov000_021ab68c(Obj021ab68c *self) {
         if (st->timer <= 0xf) {
             return;
         }
-        self->unk_b2c.b2 = 0;
+        self->unk_b2c_2 = 0;
         func_ov000_02198360(self->unk_40, 1, 0);
         return;
     }

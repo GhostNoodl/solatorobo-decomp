@@ -183,6 +183,60 @@ struct Ov010Vec {
     s32 z;
 };
 
+// The ov000 actor base (ov000 Actor, ctor func_ov000_0218c2d4, 0xac bytes) as ov010 uses it.
+class Ov010Obj : public Ov010V {
+public:
+    Ov010Obj *prev;
+    Ov010Obj *next;
+    u16 id;
+    u16 kind;
+    s32 unk_10;
+    u8 state;
+    u8 unk_15;
+    u8 unk_16;
+    u8 unk_17;
+    s16 unk_18[4];
+    u16 unk_20;
+    s16 unk_22;
+    u8 unk_24[0x8];
+    void *msgs;
+    u32 msg_flags;
+    s32 unk_34;
+    void *unk_38;
+    void *unk_3c;
+    u16 *unk_40;
+    void *unk_44;
+    void *unk_48;
+    u8 *unk_4c;
+    u16 *hp; // hp gauge (ov000 Actor::hp)
+    void *unk_54;
+    void *unk_58;
+    void *unk_5c;
+    void *unk_60;
+    s32 unk_64;
+    s32 unk_68;
+    s32 unk_6c;
+    Ov010Vec pos;
+    u16 rot_x;
+    u16 rot_y;
+    u16 rot_z;
+    u8 unk_82[0x2];
+    Ov010Vec unk_84;
+    u16 target;
+    u8 unk_92;
+    Ov010Flags8 unk_93;
+    u8 unk_94;
+    u8 unk_95;
+    u16 unk_96;
+    u16 unk_98;
+    u16 unk_9a;
+    s32 unk_9c;
+    s32 unk_a0;
+    s32 unk_a4;
+    s32 unk_a8;
+};
+SIZE_ASSERT(Ov010Obj, 0xac);
+
 // 12-byte block: assigning one copies with ldm/stm (a plain Vec copies word by word)
 struct Ov010Blk12 {
     s32 w[3];

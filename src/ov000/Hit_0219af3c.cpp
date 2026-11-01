@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
+#include "ov000/ActorBase.h"
 
 typedef struct {
     u8 type;
@@ -41,21 +42,8 @@ BOOL func_ov000_02199cd8(Tgt0219af3c *self, u16 id);
 BOOL func_01ffc198(VecFx32 *a, VecFx32 *b, s32 r);
 BOOL func_ov000_021bd314(void *p, s32 x);
 
-struct Obj0219af3c {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u16 unk_0e;
-    u8 unk_10[0x30];
-    u8 *unk_40;
-    u8 *unk_44;
-    u8 unk_48[0x4];
-    Tgt0219af3c *unk_4c;
-    u8 unk_50[0x20];
-    VecFx32 unk_70;
-};
-
-static inline s32 Cur0219af3c(Obj0219af3c *self) {
-    u8 *h = self->unk_40;
+static inline s32 Cur0219af3c(Actor *self) {
+    u8 *h = ((u8 *)self->unk_40);
     return h != NULL ? h[0x13] : 0;
 }
 
@@ -92,7 +80,7 @@ static inline BOOL Special0219af3c(Tgt0219af3c *t) {
     return r;
 }
 
-void func_ov000_0219af3c(Obj0219af3c *self, u8 *p) {
+void func_ov000_0219af3c(Actor *self, u8 *p) {
     u8 *pl;
     Tgt0219af3c *tgt;
     u8 type;
@@ -113,14 +101,14 @@ void func_ov000_0219af3c(Obj0219af3c *self, u8 *p) {
     if (Cur0219af3c(self) == 6 || self->unk_44 == NULL) {
         return;
     }
-    if (!Both0219af3c(self->unk_44) || self->unk_0c == LFLD(u16, pl, 0xb20) ||
-        (tgt = self->unk_4c) == NULL || tgt->target == LFLD(u16, pl, 0xc)) {
+    if (!Both0219af3c(self->unk_44) || self->id == LFLD(u16, pl, 0xb20) ||
+        (tgt = ((Tgt0219af3c *)self->unk_4c)) == NULL || tgt->target == LFLD(u16, pl, 0xc)) {
         return;
     }
     type = tgt->type;
-    if (LFLD(u16, pl, 0x90) != self->unk_0c) {
+    if (LFLD(u16, pl, 0x90) != self->id) {
         if (Cur0219af3c(self) == 0xb || type == 0 || type == 2 || type == 9 || type == 0xa || type == 0xb ||
-            type == 0x11 || Kind0219af3c(self->unk_0c) == 0x5000) {
+            type == 0x11 || Kind0219af3c(self->id) == 0x5000) {
             return;
         }
         if (tgt->b5) {
@@ -148,9 +136,9 @@ void func_ov000_0219af3c(Obj0219af3c *self, u8 *p) {
         }
         {
             VecFx32 v;
-            v.x = self->unk_70.x;
-            v.y = self->unk_70.y;
-            v.z = self->unk_70.z;
+            v.x = self->pos.x;
+            v.y = self->pos.y;
+            v.z = self->pos.z;
             if (!func_01ffc198(&LFLD(VecFx32, pl, 0x70), &v, LFLD(s32, pl, 0x64) + 0x6000)) {
                 return;
             }
@@ -192,7 +180,7 @@ void func_ov000_0219af3c(Obj0219af3c *self, u8 *p) {
             act = 4;
         } else if (type == 8) {
             act = 6;
-        } else if (((u8)(type + 0xf2) <= 1 && tgt->unk_02 == 1) || Special0219af3c(tgt) || Kind0219af3c(self->unk_0e) == 0x5000) {
+        } else if (((u8)(type + 0xf2) <= 1 && tgt->unk_02 == 1) || Special0219af3c(tgt) || Kind0219af3c(self->kind) == 0x5000) {
             act = 4;
         } else if (type != 2) {
             act = 7;

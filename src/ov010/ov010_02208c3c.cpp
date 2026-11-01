@@ -42,7 +42,7 @@ static inline void Ov010_PlayIfIdle(Ov010Obj0221009c *self, void *anim, s32 n) {
 }
 
 void func_ov010_02208c3c(Ov010Obj0221009c *self) {
-    u16 *p = self->unk_50;
+    u16 *p = self->hp;
     s32 r = (p[0] << 12) / p[1];
     if (r <= 0x554) {
         Ov010_PlayIfIdle(self, data_ov010_0220f220, 0x14);

@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u16 b0 : 10;
@@ -38,29 +39,7 @@ static inline BOOL Flip021b0db0(void) {
     return LFLD(Bits0214a424_021b0db0, data_0214a424, 0x18).b10 ? TRUE : FALSE;
 }
 
-struct Obj021b0db0 : public VObj {
-    u8 unk_04[0x34];
-    void *unk_38;
-    u8 unk_3c[0x34];
-    VecFx32 unk_70;
-    u16 unk_7c;
-    u16 unk_7e;
-    u16 unk_80;
-    u8 unk_82[0x6da];
-    VecFx32 unk_75c;
-    u8 unk_768[0x4];
-    u16 unk_76c;
-    u16 unk_76e;
-    u16 unk_770;
-    u8 unk_772[0x37e];
-    s32 unk_af0;
-    s32 unk_af4;
-    s32 unk_af8;
-    u8 unk_afc[0x6c];
-    u16 unk_b68;
-};
-
-void func_ov000_021b0db0(Obj021b0db0 *self, s32 spd) {
+void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
     u16 yaw;
     u16 tilt;
     u8 *cam = data_ov000_021ccd54 + 0xf4;
@@ -113,11 +92,11 @@ void func_ov000_021b0db0(Obj021b0db0 *self, s32 spd) {
     }
     MulVec33_021b0db0((VecFx32 *)((u8 *)self + 0xaf0), NNS_G3dGlbGetInvV(), (VecFx32 *)((u8 *)self + 0x9c));
     VEC_Add((VecFx32 *)((u8 *)self + 0x9c), &data_02092a50, (VecFx32 *)((u8 *)self + 0x70));
-    self->unk_7e = func_01ffc128(yaw, self->unk_7e, 0x133, 1, 0x8000);
-    self->unk_80 = func_01ffc128(tilt, self->unk_80, 0x133, 1, 0x8000);
-    self->unk_75c = self->unk_70;
-    self->unk_76c = self->unk_7c;
-    self->unk_76e = self->unk_7e;
-    self->unk_770 = self->unk_80;
+    self->rot_y = func_01ffc128(yaw, self->rot_y, 0x133, 1, 0x8000);
+    self->rot_z = func_01ffc128(tilt, self->rot_z, 0x133, 1, 0x8000);
+    self->unk_75c = self->pos;
+    self->unk_76c = self->rot_x;
+    self->unk_76e = self->rot_y;
+    self->unk_770 = self->rot_z;
 }
 }

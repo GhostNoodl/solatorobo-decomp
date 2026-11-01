@@ -1,4 +1,5 @@
 #include "ov000/Actor.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -16,12 +17,6 @@ typedef struct {
     u8 b6 : 1;
     u8 b7 : 1;
 } CamFlags9c021b3e90;
-
-typedef struct {
-    u32 b0 : 5;
-    u32 b5 : 2;
-    u32 rest : 25;
-} Bits021b3e90;
 
 typedef struct {
     u8 pad_00[0x40];
@@ -67,18 +62,7 @@ static inline Actor *FindActor021b3e90(u16 id) {
     return func_ov000_0218e640(data_ov000_021ccd68, id);
 }
 
-struct Obj021b3e90 : public Actor {
-    u8 unk_ac[0xa78];
-    Bits021b3e90 unk_b24;
-    u8 unk_b28[0x8];
-    u8 unk_b30;
-    u8 unk_b31;
-    u8 unk_b32[0x36];
-    u16 unk_b68;
-    u16 unk_b6a;
-};
-
-static inline u16 AngleTo(Obj021b3e90 *self, Actor *other) {
+static inline u16 AngleTo(Robo021ca458 *self, Actor *other) {
     u16 angle;
     if (other == NULL || other == self) {
         angle = self->rot_y;
@@ -88,7 +72,7 @@ static inline u16 AngleTo(Obj021b3e90 *self, Actor *other) {
     return angle;
 }
 
-BOOL func_ov000_021b3e90(Obj021b3e90 *self) {
+BOOL func_ov000_021b3e90(Robo021ca458 *self) {
     BOOL ret;
     u16 dp;
     u16 dy;
@@ -159,7 +143,7 @@ BOOL func_ov000_021b3e90(Obj021b3e90 *self) {
         if (self->unk_b30 != 0) {
             self->unk_b30--;
         }
-        if (!ret && self->unk_b24.b5 != 0 && self->target != 0xffff) {
+        if (!ret && self->unk_b24_5 != 0 && self->target != 0xffff) {
             Actor *t = FindActor021b3e90(self->target);
             if (t != NULL) {
                 u16 ang;

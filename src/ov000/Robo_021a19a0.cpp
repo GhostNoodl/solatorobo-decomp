@@ -2,25 +2,6 @@
 #include "ov000/ObjLayouts.h"
 
 typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 3;
-    u32 b5 : 2;
-    u32 b7 : 25;
-} B24_021a19a0;
-
-typedef struct {
-    u16 b0 : 3;
-    u16 b3 : 1;
-    u16 b4 : 12;
-} B22_021a19a0;
-
-typedef struct {
-    u8 b0 : 2;
-    u8 b2 : 6;
-} B28_021a19a0;
-
-typedef struct {
     s32 x, y, z;
 } Vec_021a19a0;
 
@@ -52,10 +33,10 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
     name = data_ov000_021cc61e;
     speed = 0x1000;
     if (LBIT(self, 0xb24).b1) {
-        if (!LFLD(B22_021a19a0, self, 0xb22).b3) {
-            name = data_ov000_021ca050[LFLD(B24_021a19a0, self, 0xb24).b5];
+        if (!self->unk_b22_3) {
+            name = data_ov000_021ca050[self->unk_b24_5];
         } else {
-            if (LFLD(B24_021a19a0, self, 0xb24).b5 != 0) {
+            if (self->unk_b24_5 != 0) {
                 name = data_ov000_021cc624;
             }
             rate = 0x111;
@@ -72,13 +53,13 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
         }
     }
     func_ov000_02190cb0(self->unk_38, name, rate, 0);
-    if (!LFLD(B22_021a19a0, self, 0xb22).b3) {
+    if (!self->unk_b22_3) {
         func_ov000_021915a0(self->unk_38);
     }
     LFLD(u16, self->unk_48, 0x9a) |= 0x20;
     func_ov000_021b1dd8((u8 *)self, target, frame, speed, 0x466, 1);
     spd = 0x1000;
-    if (!LFLD(B22_021a19a0, self, 0xb22).b3) {
+    if (!self->unk_b22_3) {
         // The repeated (s16)(v * 2) terms keep MWCC from folding the else branch into one multiply.
         s16 v = self->unk_9c;
         if (LBIT(self, 0xb24).b1) {
@@ -88,14 +69,14 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
         }
     }
     func_ov000_021911c8(self->unk_38, spd);
-    if (LFLD(B28_021a19a0, self, 0xb28).b0 == 3) {
-        LFLD(B28_021a19a0, self, 0xb28).b0 = 2;
+    if (self->unk_b28_0 == 3) {
+        self->unk_b28_0 = 2;
         LFLD(Vec_021a19a0, self, 0xb10) = LFLD(Vec_021a19a0, self, 0x70);
     }
     turned = FALSE;
     if (LBIT(self, 0xb24).b1 && (LFLD(u32, self->unk_48, 0x54) & 0x400)) {
-        self->unk_98 = FX_Atan2(self->unk_af0 - self->unk_70.x,
-                                         self->unk_af8 - self->unk_70.z);
+        self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x,
+                                         self->unk_af8 - self->pos.z);
         self->unk_9c = 0x66;
         self->unk_a4 = 0;
         if (!LBIT(self, 0xb24).b17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {

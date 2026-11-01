@@ -1,10 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
-
-typedef struct {
-    u16 st;
-    u16 timer;
-} State021b08ec;
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u16 x;
@@ -16,35 +12,7 @@ extern "C" {
 
 void func_ov000_021b0db0(void *self, s32 id);
 
-struct Obj021b08d8 {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u8 unk_0e[0x2a];
-    u8 *unk_38;
-    u8 unk_3c[0x4];
-    State021b08ec *unk_40;
-    u8 unk_44[0x3a];
-    u16 unk_7e;
-    u8 unk_80[0xa74];
-    s32 unk_af4;
-    u8 unk_af8[0x10];
-    s32 unk_b08;
-    u8 unk_b0c[0x2a];
-    u16 unk_b36;
-    u8 unk_b38[0x10];
-    s32 unk_b48;
-    s32 unk_b4c;
-    s32 unk_b50;
-    s32 unk_b54;
-    u16 unk_b58;
-    u16 unk_b5a;
-    u16 unk_b5c;
-    u16 unk_b5e;
-    u8 unk_b60[0x8];
-    u16 unk_b68;
-};
-
-void func_ov000_021b08d8(Obj021b08d8 *self) {
+void func_ov000_021b08d8(Robo021ca458 *self) {
     func_ov000_021b0db0(self, 0x2cd);
 }
 
@@ -68,8 +36,8 @@ static inline void SetPal(u8 *sub) {
     LFLD(u16, sub, 0xbc) = 0x14;
 }
 
-void func_ov000_021b08ec(Obj021b08d8 *self) {
-    State021b08ec *s;
+void func_ov000_021b08ec(Robo021ca458 *self) {
+    ActorSub40 *s;
     s32 id;
     switch (self->unk_40->st) {
     case 0:
@@ -93,10 +61,10 @@ void func_ov000_021b08ec(Obj021b08d8 *self) {
             } else if (t == 0x23) {
                 func_0204a028(data_02097e4c, 0x44, (u8 *)self + 0x70, 2);
                 func_02049f44(data_02097e4c, 0x78, (u8 *)self + 0x70, 0);
-                SetPal(self->unk_38);
+                SetPal(((u8 *)self->unk_38));
             } else if (t >= 0x41) {
                 func_02049f44(data_02097e4c, 0x36, (u8 *)self + 0x70, 0);
-                SetPal(self->unk_38);
+                SetPal(((u8 *)self->unk_38));
                 self->unk_40->timer = 0x23;
             }
             ofs.x = 0;
@@ -133,12 +101,12 @@ void func_ov000_021b08ec(Obj021b08d8 *self) {
                 }
                 s->timer = nt;
             }
-            func_01ffc9fc(&pos, &data_ov000_021ca024, self->unk_7e);
+            func_01ffc9fc(&pos, &data_ov000_021ca024, self->rot_y);
             VEC_Add(&pos, (VecFx32 *)((u8 *)self + 0xaf0), &pos);
             rot.x = ((-0x6800 - self->unk_af4) >> 5) + 0xfa00;
             rot.y = 0x8000;
             rot.z = 0;
-            o = (VObj *)func_ov000_0219be1c(kind, &pos, &rot, self->unk_0c, 0xffff);
+            o = (VObj *)func_ov000_0219be1c(kind, &pos, &rot, self->id, 0xffff);
             if (o != NULL) {
                 VObj *e;
                 LFLD(u8 *, o, 0x60) = tbl;

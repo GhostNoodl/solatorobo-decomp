@@ -63,6 +63,7 @@ typedef struct {
     s32 unk_ec;
     u8 unk_f0;
 } Obj021c3af4;
+SIZE_ASSERT(Obj021c3af4, 0xf4);
 
 extern "C" {
 

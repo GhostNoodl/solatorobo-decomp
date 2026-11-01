@@ -19,6 +19,7 @@ typedef struct {
     s32 unk_34;
     s32 unk_38;
 } Twl0214b6d8;
+SIZE_ASSERT(Twl0214b6d8, 0x3c);
 
 extern "C" {
 

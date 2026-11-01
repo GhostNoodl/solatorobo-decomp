@@ -55,8 +55,8 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
     }
-    t = (u8 *)FindActor021a3e50(self->unk_90);
-    sub = self->unk_40;
+    t = (u8 *)FindActor021a3e50(self->target);
+    sub = (u8 *)self->unk_40;
     switch (LFLD(u16, sub, 0)) {
     case 0:
         if (t != NULL) {
@@ -64,18 +64,18 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
             m.a = 1;
             m.b = 0x19a;
             m.c = 1;
-            func_ov000_0218d398(t, self->unk_0c, 5, TRUE, 6, &m);
+            func_ov000_0218d398(t, self->id, 5, TRUE, 6, &m);
             if (LFLD(u16, t, 0xe) == 0x2003) {
                 u16 v;
-                LFLD(u16, self->unk_40, 0)++;
-                v = LFLD(u16, self->unk_50, 2);
-                func_ov000_0218d398(self, self->unk_0c, 10, TRUE, 2, &v);
+                self->unk_40->st++;
+                v = LFLD(u16, ((u8 *)self->hp), 2);
+                func_ov000_0218d398(self, self->id, 10, TRUE, 2, &v);
             } else {
-                LFLD(u16, self->unk_40, 0) = 10;
-                if (self->unk_bac != self->unk_90) {
+                self->unk_40->st = 10;
+                if (self->unk_bac != self->target) {
                     u8 *g;
                     u32 n;
-                    self->unk_bac = self->unk_90;
+                    self->unk_bac = self->target;
                     g = data_0214a424;
                     n = LFLD(u16, g, 0x14) + 1;
                     if (n >= 0xffff) {
@@ -93,7 +93,7 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
             func_ov000_02190cb0(self->unk_38, anim, 0x400, 0);
         }
         func_ov000_021915a0(self->unk_38);
-        LFLD(u16, self->unk_40, 2) = 0;
+        self->unk_40->timer = 0;
         self->unk_9c = 0;
         self->unk_a0 = 0;
         self->unk_a4 = 0;
@@ -102,8 +102,8 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
     case 1:
         LFLD(u16, sub, 2)++;
         if (LFLD(u16, sub, 2) > 0x1e) {
-            LFLD(u16, self->unk_40, 0) = 10;
-            LFLD(u16, self->unk_40, 2) = 0;
+            self->unk_40->st = 10;
+            self->unk_40->timer = 0;
         }
         break;
     case 10:
@@ -111,13 +111,13 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
             func_020627a0(LFLD(u16, t, 0xe), LFLD(u16, t, 0xc));
             LFLD(u8, data_ov000_021ccd54, 0xac) = 1;
         }
-        LFLD(u16, self->unk_40, 0)++;
+        self->unk_40->st++;
         break;
     case 11:
         LFLD(u16, sub, 2)++;
         if (LFLD(u16, sub, 2) > 0x14) {
-            LFLD(u16, self->unk_40, 0)++;
-            LFLD(u16, self->unk_40, 2) = 0;
+            self->unk_40->st++;
+            self->unk_40->timer = 0;
         }
         break;
     case 12:
@@ -132,10 +132,10 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
             m.a = 0;
             m.b = 0x19a;
             m.c = 1;
-            func_ov000_0218d398(t, self->unk_0c, 5, TRUE, 6, &m);
+            func_ov000_0218d398(t, self->id, 5, TRUE, 6, &m);
         }
         self->unk_b2f = 0x2d;
-        self->unk_90 = 0xffff;
+        self->target = 0xffff;
         func_ov000_02198360(self->unk_40, 1, 0);
         break;
     }

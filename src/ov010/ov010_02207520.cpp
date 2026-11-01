@@ -179,29 +179,7 @@ static inline s32 Ov010_Clamp(s32 v, s32 lo, s32 hi) {
     return v;
 }
 
-struct Obj02207828 {
-    void *unk_00;
-    u8 unk_04[0x8];
-    u16 unk_0c;
-    u16 unk_0e;
-    u8 unk_10[0x8];
-    s16 unk_18;
-    u8 unk_1a[0x1e];
-    void *unk_38;
-    u8 unk_3c[0x4];
-    u16 *unk_40;
-    u8 unk_44[0x2c];
-    Ov010Vec unk_70;
-    u16 unk_7c;
-    u16 unk_7e;
-    u16 unk_80;
-    u8 unk_82[0x16];
-    u16 unk_98;
-    u8 unk_9a[0x2];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
+struct Obj02207828 : public Ov010Obj {
     u8 unk_ac[0xc];
     Ov010Vec unk_b8;
     u8 unk_c4[0x2f];
@@ -215,7 +193,7 @@ struct Obj02207828 {
 };
 
 static inline void Ov010_Move(Obj02207828 *self) {
-    func_ov003_021d9e90(&self->unk_70, &self->unk_150, &self->unk_70, self->unk_9c, self->unk_a0);
+    func_ov003_021d9e90(&self->pos, &self->unk_150, &self->pos, self->unk_9c, self->unk_a0);
     func_ov003_021da2c8(self, self->unk_9c, self->unk_a0, self->unk_a4, self->unk_a8);
 }
 
@@ -224,7 +202,7 @@ void func_ov010_02207828(Obj02207828 *self) {
     t.x = self->unk_b8.x;
     t.y = self->unk_b8.y;
     t.z = self->unk_b8.z;
-    if (VEC_Distance(&t, &self->unk_70) >= 0x3000) {
+    if (VEC_Distance(&t, &self->pos) >= 0x3000) {
         self->unk_9c += 0x180;
         self->unk_9c = Ov010_Clamp(self->unk_9c, 0, 0xd00);
         Ov010_Move(self);
@@ -234,7 +212,7 @@ void func_ov010_02207828(Obj02207828 *self) {
         if (self->unk_9c >= 0x40) {
             slow = FALSE;
         }
-        if (func_ov003_021d98bc(&self->unk_70, &t) || slow) {
+        if (func_ov003_021d98bc(&self->pos, &t) || slow) {
             self->unk_9c = 0;
             return;
         }
@@ -343,13 +321,13 @@ void *func_ov010_02207ac4(Obj02207828 *self) {
     Ov010_02204204_Body((Ov010_02204204_BodySelf *)self);
     self->unk_1fc = 0;
     self->unk_200 = 0;
-    self->unk_00 = data_ov010_0220ffe4;
+    *(void * *)self = data_ov010_0220ffe4;
     return self;
 }
 
 void func_ov010_02207b6c(Obj02207828 *self) {
     func_ov010_022046ac(self);
-    self->unk_f3 = self->unk_18 == 3;
+    self->unk_f3 = self->unk_18[0] == 3;
 }
 
 void func_ov010_02207b90(Obj02207828 *self, void *msg) {
@@ -420,39 +398,39 @@ extern u16 FX_Atan2(s32 y, s32 x);
 
 void func_ov010_02207d2c(Obj02207828 *self) {
     FLD(Ov010Flags, self->unk_38, 0xc2).b0 = 1;
-    switch (self->unk_18) {
+    switch (self->unk_18[0]) {
     case 0: {
         u16 *st = self->unk_40;
         switch (st[0]) {
         case 0:
             func_ov000_02190cb0(self->unk_38, FLD(const char *, data_ov010_0220f024, 0x2c), 0x1000, 0);
             func_ov000_021915a0(self->unk_38);
-            Ov010_VecSet(&self->unk_70, 0x19a, 0x1b3b, -0x3a77);
-            self->unk_7c = FLD(u16, data_ov010_0220f024, 0x50);
-            self->unk_7e = FLD(u16, data_ov010_0220f024, 0x52);
-            self->unk_80 = FLD(u16, data_ov010_0220f024, 0x54);
-            self->unk_70.y += 0x5000;
+            Ov010_VecSet(&self->pos, 0x19a, 0x1b3b, -0x3a77);
+            self->rot_x = FLD(u16, data_ov010_0220f024, 0x50);
+            self->rot_y = FLD(u16, data_ov010_0220f024, 0x52);
+            self->rot_z = FLD(u16, data_ov010_0220f024, 0x54);
+            self->pos.y += 0x5000;
             self->unk_9c = 0xcd;
             self->unk_a0 = 0;
             self->unk_a4 = 0;
             self->unk_a8 = 0;
-            func_02049f44(data_02097e4c, 0x51, &self->unk_70, 0);
+            func_02049f44(data_02097e4c, 0x51, &self->pos, 0);
             self->unk_40[0] = 1;
             return;
         case 1:
             if (self->unk_9c >= 0x20) {
                 const Ov010Vec *t = &data_ov010_0220f0fc;
                 if (self->unk_a4 == 0) {
-                    if (VEC_Distance(t, &self->unk_70) < 0x333) {
+                    if (VEC_Distance(t, &self->pos) < 0x333) {
                         self->unk_a4 = 0xe66;
                     }
                 }
-                func_ov003_021d9dbc(&self->unk_70, t, &self->unk_70, self->unk_9c, self->unk_a0);
+                func_ov003_021d9dbc(&self->pos, t, &self->pos, self->unk_9c, self->unk_a0);
                 func_ov003_021da2c8(self, self->unk_9c, self->unk_a0, self->unk_a4, self->unk_a8);
-                self->unk_98 = FX_Atan2(t->x - self->unk_70.x, t->z - self->unk_70.z);
+                self->unk_98 = FX_Atan2(t->x - self->pos.x, t->z - self->pos.z);
                 return;
             }
-            func_02065f88(0x12f, &self->unk_70)->v0c(0xe66);
+            func_02065f88(0x12f, &self->pos)->v0c(0xe66);
             self->unk_40[0] = 2;
             return;
         case 2:
@@ -470,24 +448,24 @@ void func_ov010_02207d2c(Obj02207828 *self) {
         return;
     }
     case 1:
-        Ov010_VecSet(&self->unk_70, 0x19a, 0x1b3b, -0x3a77);
-        self->unk_7c = FLD(u16, data_ov010_0220f024, 0x50);
-        self->unk_7e = FLD(u16, data_ov010_0220f024, 0x52);
-        self->unk_80 = FLD(u16, data_ov010_0220f024, 0x54);
+        Ov010_VecSet(&self->pos, 0x19a, 0x1b3b, -0x3a77);
+        self->rot_x = FLD(u16, data_ov010_0220f024, 0x50);
+        self->rot_y = FLD(u16, data_ov010_0220f024, 0x52);
+        self->rot_z = FLD(u16, data_ov010_0220f024, 0x54);
         func_ov003_021d64f0(self);
         return;
     case 2:
-        Ov010_VecSet(&self->unk_70, 0x1da2, -0xb42d, 0x266f);
-        self->unk_7c = 0;
-        self->unk_7e = 0x7fff;
-        self->unk_80 = 0;
+        Ov010_VecSet(&self->pos, 0x1da2, -0xb42d, 0x266f);
+        self->rot_x = 0;
+        self->rot_y = 0x7fff;
+        self->rot_z = 0;
         func_ov003_021d64f0(self);
         return;
     case 3:
-        Ov010_VecSet(&self->unk_70, 0x1da2, -0xb42d, 0x266f);
-        self->unk_7c = 0;
-        self->unk_7e = 0x7fff;
-        self->unk_80 = 0;
+        Ov010_VecSet(&self->pos, 0x1da2, -0xb42d, 0x266f);
+        self->rot_x = 0;
+        self->rot_y = 0x7fff;
+        self->rot_z = 0;
         func_ov003_021d64f0(self);
         return;
     }
@@ -506,26 +484,26 @@ static inline void Ov010_VecSub(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *
 
 void func_ov010_02208018(Obj02207828 *self) {
     if (self->unk_40[0] == 0) {
-        Ov010_VecSet(&self->unk_70, 0x1da2, -0xb42d, 0x266f);
-        self->unk_7c = 0;
-        self->unk_7e = 0x7fff;
-        self->unk_80 = 0;
-        self->unk_70.y += 0x8000;
+        Ov010_VecSet(&self->pos, 0x1da2, -0xb42d, 0x266f);
+        self->rot_x = 0;
+        self->rot_y = 0x7fff;
+        self->rot_z = 0;
+        self->pos.y += 0x8000;
         Ov010_VecSet(&self->unk_b8, 0x1da2, -0xb42d, 0x266f);
-        Ov010_VecSub(&self->unk_b8, &self->unk_70, &self->unk_150);
+        Ov010_VecSub(&self->unk_b8, &self->pos, &self->unk_150);
         VEC_Normalize(&self->unk_150, &self->unk_150);
         self->unk_98 = FX_Atan2(self->unk_150.x, self->unk_150.z);
         self->unk_9c = 0;
         self->unk_a0 = 0;
         self->unk_a4 = 0;
         self->unk_a8 = 0;
-        func_02049f44(data_02097e4c, 0x29, &self->unk_70, 0);
+        func_02049f44(data_02097e4c, 0x29, &self->pos, 0);
         self->unk_40[0]++;
         return;
     }
     func_ov010_02207828(self);
     if (self->unk_9c == 0) {
-        func_020627a0(self->unk_0e, self->unk_0c);
+        func_020627a0(self->kind, self->id);
         func_020627dc(4);
         FLD(u8, data_ov000_021ccd54, 0xac) = 1;
         func_ov000_02198360(self->unk_40, 1, 0);
@@ -564,7 +542,7 @@ void func_ov010_0220813c(Obj02207828 *self) {
         func_ov000_02190cb0(self->unk_38, FLD(const char *, data_ov010_0220f024, 0xc), 0x266, 0);
         func_ov000_021911c8(self->unk_38, 0x1000);
         func_ov000_021915a0(self->unk_38);
-        self->unk_98 = self->unk_7e;
+        self->unk_98 = self->rot_y;
         self->unk_9c = 0;
         self->unk_a0 = 0;
         self->unk_a4 = 0;
@@ -575,11 +553,11 @@ void func_ov010_0220813c(Obj02207828 *self) {
         FLD(u8, g, 0x18e) = 0x28;
         FLD(u8, g, 0x18f) = 0x28;
         func_ov010_0220ea84(self, 0, self->unk_98)->v0c(0x2000);
-        func_02049f44(data_02097e4c, 0x32, &self->unk_70, 0);
+        func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
         self->unk_40[0] = 0x15;
     }
     case 0x15:
-        if (VEC_Distance(&self->unk_70, &data_ov010_0220f108) <= 0x14000) {
+        if (VEC_Distance(&self->pos, &data_ov010_0220f108) <= 0x14000) {
             self->unk_9c += 0x333;
             self->unk_9c = Ov010_Clamp(self->unk_9c, 0, 0x1000);
             func_ov000_0218dbe0(self, 0x1000);
@@ -590,14 +568,14 @@ void func_ov010_0220813c(Obj02207828 *self) {
         }
         self->unk_40[1] = 0;
         self->unk_40[0] = 0x1e;
-        Ov010_VecSet(&self->unk_70, 0x19a, 0x1b3b, -0x3a77);
+        Ov010_VecSet(&self->pos, 0x19a, 0x1b3b, -0x3a77);
         return;
     case 0x1e:
         func_02065f88(0x389, &data_ov010_0220f114)->v0c(0x2000);
         func_02065f88(0x322, &data_ov010_0220f114)->v0c(0x1800);
         func_02065f88(0x389, &data_ov010_0220f120)->v0c(0x2000);
         func_02065f88(0x322, &data_ov010_0220f114)->v0c(0x1800);
-        func_02049f44(data_02097e4c, 0x79, &self->unk_70, 0);
+        func_02049f44(data_02097e4c, 0x79, &self->pos, 0);
         self->unk_40[0] = 0x1f;
         self->unk_40[1] = 0x28;
         return;
@@ -627,12 +605,12 @@ void func_ov010_0220813c(Obj02207828 *self) {
         FLD(u16, o, 0x80) = r.v[2];
         func_02065f88(0x579, &data_ov010_0220f114)->v0c(0x2000);
         func_02065f88(0x579, &data_ov010_0220f120)->v0c(0x2000);
-        func_02049f44(data_02097e4c, 0x5c, &self->unk_70, 0);
+        func_02049f44(data_02097e4c, 0x5c, &self->pos, 0);
         self->unk_40[0] = 0x64;
         return;
     }
     case 0x64:
-        func_020627a0(self->unk_0e, self->unk_0c);
+        func_020627a0(self->kind, self->id);
         func_020627dc(4);
         FLD(u8, data_ov000_021ccd54, 0xac) = 1;
         self->unk_40[0] = 0x65;

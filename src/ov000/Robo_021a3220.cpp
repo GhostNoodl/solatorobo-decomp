@@ -17,28 +17,10 @@ typedef struct {
 } B24_021a3220;
 
 typedef struct {
-    u16 b0 : 3;
-    u16 b3 : 1;
-    u16 rest : 12;
-} B22_021a3220;
-
-typedef struct {
     u16 b0 : 6;
     u16 b6 : 1;
     u16 rest : 9;
 } B2C_021a3220;
-
-typedef struct {
-    u8 b0 : 3;
-    u8 b3 : 1;
-    u8 rest : 4;
-} B2A_021a3220;
-
-typedef struct {
-    u8 b0 : 4;
-    u8 b4 : 1;
-    u8 rest : 3;
-} B93_021a3220;
 
 typedef struct {
     u16 b0 : 5;
@@ -112,9 +94,9 @@ static inline u8 *FindActor_021a3220(u16 id) {
 
 static inline u16 AngTo_021a3220(Robo021ca458 *self, u8 *t) {
     if (t == NULL || t == (u8 *)self) {
-        return self->unk_7e;
+        return self->rot_y;
     }
-    return FX_Atan2(LFLD(s32, t, 0x70) - self->unk_70.x, LFLD(s32, t, 0x78) - self->unk_70.z);
+    return FX_Atan2(LFLD(s32, t, 0x70) - self->pos.x, LFLD(s32, t, 0x78) - self->pos.z);
 }
 
 static inline BOOL IsBusy_021a3220(u8 *g) {
@@ -156,7 +138,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             if (!B2C(self).b6) {
                 func_02049f44(data_02097e4c, 7, (u8 *)self + 0x70, 0);
             }
-            if (!LFLD(B93_021a3220, self, 0x93).b4) {
+            if (!self->unk_93_4) {
                 s32 se = 0x300;
                 if (LFLD(u16, data_ov000_021ccd68, 0xa) & 1) {
                     se = 0x304;
@@ -164,7 +146,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
                 func_02049f44(data_02097e4c, se, (u8 *)self + 0x70, 0);
             }
         }
-        self->unk_98 = self->unk_7e;
+        self->unk_98 = self->rot_y;
         self->unk_9c >>= 3;
         self->unk_a0 >>= 3;
         if ((self->unk_b1c >> 12) == 5) {
@@ -177,7 +159,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
                 B24(self).b22 = 1;
             }
         }
-        LFLD(B2A_021a3220, self, 0xb2a).b3 = 0;
+        self->unk_b2a_3 = 0;
     }
     case 1: {
         State_021a3220 *st = ST(self);
@@ -185,7 +167,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
         if (st->timer > 5) {
             VObj *e;
             if (self->unk_b1c == 0xffff && tgt != NULL && (u16)(LFLD(u16, tgt, 0xc) & 0xf000) == 0x5000) {
-                self->unk_a0 = (LFLD(s32, tgt, 0x74) - self->unk_70.y) >> 4;
+                self->unk_a0 = (LFLD(s32, tgt, 0x74) - self->pos.y) >> 4;
                 self->unk_98 = AngTo_021a3220(self, tgt);
                 self->unk_a8 = 0x52;
             } else {
@@ -213,7 +195,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             self->unk_b40 = LFLD(s32, e, 0x24);
             e->vfunc_34(0, self->unk_98, 0);
             LFLD(s32, e, 0x3c) = 0x800;
-            if (LFLD(B22_021a3220, self, 0xb22).b3) {
+            if (self->unk_b22_3) {
                 e->vfunc_14(0x1266, 0x1266, 0x1000);
             }
             if (Ba4Bit_021a3220(self)) {
@@ -230,7 +212,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
                 LFLD(s32, e2, 0x3c) = 0x1ccd;
             }
         }
-        self->unk_7e = func_01ffc128(self->unk_98, self->unk_7e, 0x400, 1, 0x8000);
+        self->rot_y = func_01ffc128(self->unk_98, self->rot_y, 0x400, 1, 0x8000);
         func_ov000_021b1fac(self, FALSE, 1);
         break;
     }
@@ -252,7 +234,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             }
         } else {
             s32 f = 1;
-            self->unk_7e = func_01ffc128(self->unk_98, self->unk_7e, 0x400, 1, 0x8000);
+            self->rot_y = func_01ffc128(self->unk_98, self->rot_y, 0x400, 1, 0x8000);
             if (B2C(self).b6) {
                 f = 0;
             }
@@ -305,16 +287,16 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             a = FindActor_021a3220(self->unk_b1c);
             if (a != NULL) {
                 Msg_021a3220 m;
-                m.pos.x = self->unk_70.x;
-                m.pos.y = self->unk_70.y;
-                m.pos.z = self->unk_70.z;
+                m.pos.x = self->pos.x;
+                m.pos.y = self->pos.y;
+                m.pos.z = self->pos.z;
                 m.pos.y += self->unk_6c;
                 m.rot[0] = LFLD(u16, a, 0x7c);
                 m.rot[1] = LFLD(u16, a, 0x7e);
                 m.rot[2] = LFLD(u16, a, 0x80);
                 m.x = 0;
-                func_ov000_0218d398(a, self->unk_0c, 7, TRUE, 0x18, &m);
-                func_ov000_0218d46c(a, self->unk_0c, 10);
+                func_ov000_0218d398(a, self->id, 7, TRUE, 0x18, &m);
+                func_ov000_0218d46c(a, self->id, 10);
                 if (LFLD(u8 *, a, 0x4c) != NULL) {
                     LFLD(B19_021a3220, LFLD(u8 *, a, 0x4c), 0x18).b0 = 0;
                 }
@@ -386,7 +368,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
     }
     turned = FALSE;
     if (B24(self).b1 && (LFLD(u32, self->unk_48, 0x54) & 0x400)) {
-        self->unk_98 = FX_Atan2(self->unk_af0 - self->unk_70.x, self->unk_af8 - self->unk_70.z);
+        self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
         self->unk_9c = 0x66;
         self->unk_a4 = 0;
         if (!B24(self).b17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {

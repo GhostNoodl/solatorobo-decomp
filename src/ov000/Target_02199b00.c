@@ -32,6 +32,7 @@ typedef struct {
     u32 unk_54;
     u32 unk_58;
 } Target;
+SIZE_ASSERT(Target, 0x5c);
 
 typedef struct {
     u8 unk_00[0x9c];

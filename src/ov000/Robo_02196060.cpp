@@ -1,11 +1,7 @@
 #include "types.h"
+#include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u16 st;
-    u16 timer;
-} State02196060;
 
 typedef struct {
     u16 b0 : 1;
@@ -33,39 +29,20 @@ static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
-struct Obj02196060 {
-    u8 unk_00[0x38];
-    void *unk_38;
-    u8 unk_3c[0x4];
-    State02196060 *unk_40;
-    u8 *unk_44;
-    u8 *unk_48;
-    u8 *unk_4c;
-    u8 unk_50[0x2e];
-    u16 unk_7e;
-    u8 unk_80[0x18];
-    u16 unk_98;
-    u8 unk_9a[0x2];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
-};
-
-static inline void SetVel02196060(Obj02196060 *self, s32 x, s32 y, s32 z) {
+static inline void SetVel02196060(ActorEx *self, s32 x, s32 y, s32 z) {
     self->unk_9c = x;
     self->unk_a0 = y;
     self->unk_a4 = z;
 }
 
-void func_ov000_02196060(Obj02196060 *self) {
-    State02196060 *s = self->unk_40;
+void func_ov000_02196060(ActorEx *self) {
+    ActorSub40 *s = self->unk_40;
     switch (s->st) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov000_021cc456, 0x1000, 0);
         func_ov000_021915a0(self->unk_38);
-        if (LFLD(u8, self->unk_4c, 1) == 1) {
-            func_ov000_02199dc0(self->unk_4c, self);
+        if (LFLD(u8, ((u8 *)self->unk_4c), 1) == 1) {
+            func_ov000_02199dc0(((u8 *)self->unk_4c), self);
             func_02049f44(data_02097e4c, 0xb, (u8 *)self + 0x70, 0);
             self->unk_40->st++;
         } else {
@@ -73,14 +50,14 @@ void func_ov000_02196060(Obj02196060 *self) {
             self->unk_a8 = 0x52;
             self->unk_40->st++;
         }
-        self->unk_98 = self->unk_7e;
+        self->unk_98 = self->rot_y;
         {
             u8 *q = self->unk_44;
             LFLD(Bits02196060, self->unk_44, 0x22).b0 = 1;
             LFLD(Bits02196060, q, 0x22).b1 = 1;
         }
         if (self->unk_48 != NULL) {
-            u8 *p = self->unk_48;
+            u8 *p = (u8 *)self->unk_48;
             LFLD(Bits02196060, p, 0x9a).b0 = 1;
             LFLD(Bits02196060, p, 0x9a).b3 = 1;
             func_0203f324(p);
@@ -92,7 +69,7 @@ void func_ov000_02196060(Obj02196060 *self) {
         if (s->timer > 2) {
             func_ov000_02198360(self->unk_40, 4, 0);
         }
-        if (self->unk_a0 > 0 && (LFLD(u32, self->unk_48, 0x50) & 0x80000000)) {
+        if (self->unk_a0 > 0 && (self->unk_48->unk_50 & 0x80000000)) {
             self->unk_a0 = -0xcd;
         }
         {

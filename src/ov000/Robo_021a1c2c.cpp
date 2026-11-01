@@ -119,7 +119,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
         }
         turned = FALSE;
         if (B24(self).b1 && (LFLD(u32, self->unk_48, 0x54) & 0x400)) {
-            self->unk_98 = FX_Atan2(self->unk_af0 - self->unk_70.x, self->unk_af8 - self->unk_70.z);
+            self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
             self->unk_9c = 0x66;
             self->unk_a4 = 0;
             if (!B24(self).b17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {
@@ -170,7 +170,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
             if (se >= 0) {
                 func_02049f44(data_02097e4c, se, (u8 *)self + 0x70, -5);
                 if ((LFLD(u32, self->unk_48, 0x50) & 0xf0f0f0) == 0xe0e000) {
-                    p = self->unk_70;
+                    p = self->pos;
                     p.y += 0xccd;
                     func_02065f88(0x2bc, &p);
                     func_02065f88(0x2bd, &p)->vfunc_0c(0x1800);
@@ -196,8 +196,8 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                 u16 ang = yaw + func_0203d434(data_02097dc8, (u8 *)self + 0xb70);
                 s32 h;
                 s32 r;
-                a = self->unk_70;
-                b = self->unk_70;
+                a = self->pos;
+                b = self->pos;
                 b.y += self->unk_68 + 0x10;
                 r = func_01ffbd6c(&a, &b, 0xc0000000, 0, 0, -1);
                 if (r == -0x1000) {
@@ -205,9 +205,9 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                 } else {
                     h = r - 0x10;
                 }
-                a = self->unk_70;
+                a = self->pos;
                 a.y += h;
-                b = self->unk_70;
+                b = self->pos;
                 b.y += h;
                 b.x += (s32)(((s64)(self->unk_64 * 2) * FX_SinCosTable_[(ang >> 4) * 2] + 0x800) >> 12);
                 b.z += (s32)(((s64)(self->unk_64 * 2) * FX_SinCosTable_[(ang >> 4) * 2 + 1] + 0x800) >> 12);
@@ -237,7 +237,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                 if (B22(self).b0 || B24(self).b12 || B24(self).b19) {
                     lim = -0x2d000;
                 }
-                if (self->unk_70.y - self->unk_b00 < lim) {
+                if (self->pos.y - self->unk_b00 < lim) {
                     fall = TRUE;
                 }
             }
@@ -245,7 +245,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                 return;
             }
         }
-        LFLD(u16, self->unk_50, 0xa) = 0xf0;
+        LFLD(u16, ((u8 *)self->hp), 0xa) = 0xf0;
         func_02049f44(data_02097e4c, 0x34, (u8 *)self + 0x70, 0);
         if (B22(self).b0) {
             if (!B24(self).b1) {
@@ -253,10 +253,10 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
                 B24(self).b1 = 1;
                 B24(self).b2 = 0;
                 ((VObj *)self)->vfunc_18();
-                self->unk_75c = self->unk_70;
-                self->unk_76c = self->unk_7c;
-                self->unk_76e = self->unk_7e;
-                self->unk_770 = self->unk_80;
+                self->unk_75c = self->pos;
+                self->unk_76c = self->rot_x;
+                self->unk_76e = self->rot_y;
+                self->unk_770 = self->rot_z;
                 func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e3, 0x1000, 1);
                 q = self->unk_384;
                 if (q != NULL) {
@@ -279,11 +279,11 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
         {
             s32 y = self->unk_af4;
             s32 z = self->unk_af8;
-            self->unk_70.x = self->unk_af0;
-            self->unk_70.y = y + 0x159a;
-            self->unk_70.z = z;
+            self->pos.x = self->unk_af0;
+            self->pos.y = y + 0x159a;
+            self->pos.z = z;
         }
-        func_ov000_02198d28(self->unk_48, (VecFx32 *)((u8 *)self + 0x70), self->unk_7e);
+        func_ov000_02198d28(self->unk_48, (VecFx32 *)((u8 *)self + 0x70), self->rot_y);
         self->unk_9c = 0;
         self->unk_a0 = 0x333;
         self->unk_a4 = 0;
@@ -295,7 +295,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
         { s32 f = 1; if (B24(self).b17) f = 0; func_ov000_021b1fac(self, TRUE, f); }
         turned = FALSE;
         if (B24(self).b1 && (LFLD(u32, self->unk_48, 0x54) & 0x400)) {
-            self->unk_98 = FX_Atan2(self->unk_af0 - self->unk_70.x, self->unk_af8 - self->unk_70.z);
+            self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
             self->unk_9c = 0x66;
             self->unk_a4 = 0;
             if (!B24(self).b17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {

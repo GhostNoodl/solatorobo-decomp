@@ -17,7 +17,7 @@ static inline void Ov010_PlayAnim(Ov010Obj0220ffe4 *self, void *anim, s32 n) {
 }
 
 void func_ov010_02208898(Ov010Obj0220ffe4 *self) {
-    u16 *hp = self->unk_50;
+    u16 *hp = self->hp;
     s32 r = (hp[0] << 12) / hp[1];
     if (r <= 0x733) {
         Ov010_PlayAnim(self, data_ov010_0220f394, 0x1e);
@@ -48,7 +48,7 @@ void func_ov010_02208978(Ov010Obj0220ffe4 *self, s32 *out) {
 
 void func_ov010_022089b4(Ov010Obj0221009c *self) {
     func_ov010_022046ac(self);
-    self->unk_f3 = self->unk_18 == 2;
+    self->unk_f3 = self->unk_18[0] == 2;
 }
 
 }

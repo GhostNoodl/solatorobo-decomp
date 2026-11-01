@@ -2,12 +2,6 @@
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
-    u8 b0 : 5;
-    u8 b5 : 2;
-    u8 b7 : 1;
-} Bits93_0219a8bc;
-
-typedef struct {
     u16 val;
     u8 d;
     u8 pad;
@@ -31,10 +25,10 @@ BOOL func_ov000_0219a8bc(void *hit, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *po
     u8 *s50;
     t = func_ov000_021985c0(hit);
     if (t != NULL && t != b && t->vfunc_14()) {
-        s50 = LFLD(u8 *, t, 0x50);
+        s50 = ((u8 *)t->hp);
         if (s50 == NULL || !IsLocked(s50)) {
-            if (LFLD(u8 *, b, 0x50) != NULL && LFLD(Fn0219a8bc, LFLD(u8 *, b, 0x50), 0x10) != NULL) {
-                c = LFLD(Fn0219a8bc, LFLD(u8 *, b, 0x50), 0x10)(c);
+            if (((u8 *)b->hp) != NULL && LFLD(Fn0219a8bc, ((u8 *)b->hp), 0x10) != NULL) {
+                c = LFLD(Fn0219a8bc, ((u8 *)b->hp), 0x10)(c);
             }
             if (s50 != NULL && LFLD(Fn0219a8bc, s50, 0x18) != NULL) {
                 c = LFLD(Fn0219a8bc, s50, 0x18)(c);
@@ -51,7 +45,7 @@ BOOL func_ov000_0219a8bc(void *hit, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *po
                 func_ov000_0218d398(t, b->id, 9, 0, 6, &msg);
             }
             if (h != -1) {
-                if (LFLD(Bits93_0219a8bc, t, 0x93).b5 != 0) {
+                if (t->unk_93_5 != 0) {
                     h = 0x327;
                     i = t->unk_64 << 1;
                 }

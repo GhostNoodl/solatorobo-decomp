@@ -6,12 +6,6 @@ typedef struct {
     u16 timer;
 } State021a5b50;
 
-typedef struct {
-    u8 lo : 5;
-    u8 mode : 2;
-    u8 hi : 1;
-} B93_021a5b50;
-
 extern "C" {
 
 extern u8 data_ov000_021cc678[];
@@ -27,14 +21,14 @@ void func_ov000_021a5b50(Robo021ca458 *self) {
         func_ov000_02190cb0(self->unk_38, data_ov000_021cc678, 0x200, 0);
         func_ov000_021915a0(self->unk_38);
         self->unk_a4 = 0x800;
-        LFLD(B93_021a5b50, self, 0x93).mode = 1;
+        self->unk_93_5 = 1;
         if (self->unk_a8 == 0) {
             self->unk_a8 = 0x52;
         }
         ((State021a5b50 *)self->unk_40)->state++;
     case 1:
         if (self->unk_b36 == 0) {
-            LFLD(B93_021a5b50, self, 0x93).mode = 0;
+            self->unk_93_5 = 0;
             func_ov000_02198360((State021a5b50 *)self->unk_40, 1, 0);
             return;
         }
@@ -46,7 +40,7 @@ void func_ov000_021a5b50(Robo021ca458 *self) {
             State021a5b50 *st = (State021a5b50 *)self->unk_40;
             st->timer++;
             if (st->timer > 0x3c) {
-                LFLD(B93_021a5b50, self, 0x93).mode = 0;
+                self->unk_93_5 = 0;
                 self->unk_b36 = 0;
                 func_ov000_02198360((State021a5b50 *)self->unk_40, 4, 0);
             }
@@ -58,8 +52,8 @@ void func_ov000_021a5b50(Robo021ca458 *self) {
         if (!(LFLD(u32, self->unk_48, 0x54) & 0x400)) {
             return;
         }
-        self->unk_98 = FX_Atan2(self->unk_af0 - self->unk_70.x,
-                                         self->unk_af8 - self->unk_70.z);
+        self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x,
+                                         self->unk_af8 - self->pos.z);
         self->unk_9c = 0x66;
         self->unk_a4 = 0;
         if (!LBIT(self, 0xb24).b17 || (LFLD(u32, self->unk_48, 0x50) & 0x40000000)) {
