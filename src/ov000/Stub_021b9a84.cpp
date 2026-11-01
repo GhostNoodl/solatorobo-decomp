@@ -48,6 +48,10 @@ void func_ov000_021b9a84(Obj021b9a84 *self) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov000_021b9b14 is 12 / 4 (raw / register-masked, dsi/1.3 with the project flags); this is
+// the best clean draft. Blocker: colouring of the two bit-field stores' temporaries in section 4 (the ROM's and
+// before the word load needs another dependence graph). History: docs/MATCHING.md rounds lfA, pmB, bgY, mlA, mtA,
+// cvA (search for the address); the full list is docs/UNMATCHED.md.
 // func_ov000_021b9b14: 12 raw / 4 register-masked diffs (was 33 / 2), no fake
 // parameters or junk locals. The else-state arms are written as two arms with the
 // same product (the compiler cross-jumps them into rsbeq + one multiply, keeping the

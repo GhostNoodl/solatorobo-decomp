@@ -60,6 +60,10 @@ BOOL func_ov011_021fd4d8(Ov011Scene *self, Ov011Obj *owner) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov011_021fd638 is 56 / 34 (raw / register-masked, dsi/1.3 with the project flags); this
+// is the best clean draft. Blocker: the Ov011Ent_Remove zero is hoisted to the entry (move-constant-loads 82 -> 9),
+// plus the ring loop's Ov011_FxMul temps and ang colouring. History: docs/MATCHING.md rounds bigM, hzR, cvZ, raF,
+// hzA, svC, cvA (search for the address); the full list is docs/UNMATCHED.md.
 // func_ov011_021fd638: 56 raw diffs (round raF's draft, landed by round hzA). Two problems, as in
 // func_ov011_021fc0b8 (src/ov011/ov011_021fc0a0.cpp), which shares Ov011Ent_Remove:
 // (1) the Remove zero (e->unk_08 = 0) is hoisted to the function entry, where the ROM builds it in the

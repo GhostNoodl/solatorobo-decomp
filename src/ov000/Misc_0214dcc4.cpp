@@ -30,6 +30,10 @@ void func_ov000_0214dcc4(Obj0214dcc4 *self) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov000_0214dd3c is 26 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is
+// the best clean draft. Blocker: register-only: the first walk's p and the new node lose r6; no declaration order or
+// Insert inline moves it. History: docs/MATCHING.md rounds tmA, raE, rgB, nmA, mtA, cvA (search for the address);
+// the full list is docs/UNMATCHED.md.
 // func_ov000_0214dd3c (round tmA): 28 / 0 (register-only), honest. Now 26 / 0 (round raE, below). The old 28 / 0 draft
 // (ovlo12/d/dd3c/m2.cpp) read the game-state pointer through a one-element array g[1]; reading
 // it through a getter inline (GetG0214dd3c) numbers the two g temps the same way. Without either
@@ -119,8 +123,15 @@ static inline u16 Key0214dd3c(Node0214dd3c *p) {
     return KeyR0214dd3c(p, g);
 }
 
+struct List0214dd3c {
+    u8 unk_00[0x94];
+    Node0214dd3c *tail;
+    Node0214dd3c *head;
+    s16 count;
+};
+
 extern "C" {
-Node0214dd3c *func_ov000_0214dd3c(u8 *self, s32 a, u16 id, u16 c, s32 d) {
+Node0214dd3c *func_ov000_0214dd3c(List0214dd3c *self, s32 a, u16 id, u16 c, s32 d) {
     Node0214dd3c *p;
     Node0214dd3c *last;
     u16 key;
@@ -128,25 +139,25 @@ Node0214dd3c *func_ov000_0214dd3c(u8 *self, s32 a, u16 id, u16 c, s32 d) {
     u32 fl;
     s32 out;
     u8 *g;
-    for (p = LFLD(Node0214dd3c *, self, 0x98); p != NULL; p = p->next) {
+    for (p = self->head; p != NULL; p = p->next) {
         if (p->id == id) {
             return NULL;
         }
     }
     Node0214dd3c *m = new Node0214dd3c;
     last = NULL;
-    LFLD(s16, self, 0x9c)++;
+    self->count++;
     m->unk_00 = a;
     m->idx = 0;
     m->id = id;
     m->unk_08 = c;
     m->unk_0c = d;
     func_0204c6bc(out, func_0204c08c(LFLD(void *, LFLD(u8 *, data_ov000_021ccd24, 8), 0xbc), id, &out, 1), m, (void *)func_ov000_0214dc20);
-    if (LFLD(Node0214dd3c *, self, 0x94) == NULL) {
-        LFLD(Node0214dd3c *, self, 0x94) = m;
-        LFLD(Node0214dd3c *, self, 0x98) = m;
+    if (self->tail == NULL) {
+        self->tail = m;
+        self->head = m;
     } else {
-        p = LFLD(Node0214dd3c *, self, 0x98);
+        p = self->head;
         key = Key0214dd3c(m);
         while (p != NULL) {
             if (key > KeyR0214dd3c(p, g)) {
@@ -166,12 +177,12 @@ Node0214dd3c *func_ov000_0214dd3c(u8 *self, s32 a, u16 id, u16 c, s32 d) {
             if (m->prev != NULL) {
                 m->prev->next = m;
             } else {
-                LFLD(Node0214dd3c *, self, 0x94) = m;
-                LFLD(Node0214dd3c *, self, 0x98) = m;
+                self->tail = m;
+                self->head = m;
             }
         }
         i = 0;
-        for (p = LFLD(Node0214dd3c *, self, 0x98); p != NULL; p = p->next) {
+        for (p = self->head; p != NULL; p = p->next) {
             p->idx = i;
             i++;
         }

@@ -107,6 +107,10 @@ void func_ov003_021cd744(Ov003Menu2 *self) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov003_021cd91c is 44 / 35 (raw / register-masked, dsi/1.3 with the project flags); this
+// is the best clean draft. Blocker: case 10's alpha register and state/timer stores, and pressure-mode picks in
+// Ov003Cd_Color's 64-bit products (7 lines are Thumb bl/blx, link-time only). History: docs/MATCHING.md rounds pmB,
+// bgW, bgY, bgQ2, mlA, cvA (search for the address); the full list is docs/UNMATCHED.md.
 // func_ov003_021cd91c (0x98c bytes, the result-card task's per-frame update): 44 raw (bgQ/pmC draft,
 // first time in the tree, round bgY). This file's .text ends at 0x021cd91c, so the function belongs
 // here once it matches. Ov003CdTask is the same object as Ov003Menu2 above (unk_3c..unk_69 agree).

@@ -127,6 +127,10 @@ void func_0203b12c(GfxMgr *mgr, const char *str) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_0203b4ac is 51 / 12 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// best clean draft. Blocker: prologue colouring (canvas/w/x/h/end/nx) and the stack slots of srcStride and j;
+// ramerge does not reproduce the graph. History: docs/MATCHING.md rounds rtG, qpA, pmC, mlA, cvA (search for the
+// address); the full list is docs/UNMATCHED.md.
 // func_0203b4ac: 11 register-masked / 51 raw (round qpA, honest_search scorer). The `base = canvas->charBase`
 // read sits before the `nx < 0` return (the ROM loads it there), `rowStride` comes after `glyphBytes`, and
 // `s` is set first in the loop body. Left: the prologue colouring (ROM: canvas r6, w r4, x r8, h ip,

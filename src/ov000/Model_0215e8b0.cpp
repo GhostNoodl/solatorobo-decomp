@@ -1,6 +1,10 @@
 #include "ov000/ModelPart.h"
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov000_0215e6f0 is 11 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is
+// the best clean draft. Blocker: register-only: the 0xfe00ffff x mask and the shifted x (backend vregs) swap sl/lr;
+// the 9 / 0 drafts need a no-op cast. History: docs/MATCHING.md rounds qpH, raC, raE, rgB, cvA (search for the
+// address); the full list is docs/UNMATCHED.md.
 // func_ov000_0215e6f0 (0x1c0 bytes, the OAM callback that func_ov000_0215e8b0 registers with type 5):
 // 11 / 0 (raw / register-masked). This file starts at 0x0215e8b0; the function fills the gap after
 // Obj_0215e5f8.c, so it goes at the top of this file once it matches. It is C++ (as C the BOOL test is

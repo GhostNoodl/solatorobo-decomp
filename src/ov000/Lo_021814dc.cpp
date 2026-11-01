@@ -6286,6 +6286,10 @@ void func_ov000_02188670(void) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov000_0218867c is 45 / 32 (raw / register-masked, dsi/1.3 with the project flags); this
+// is the best clean draft. Blocker: case 1 hoists data_02fe1534 to the case head (move-constant-loads 17 -> 12,
+// refused in the ROM) and the entry order of arg / 0x64. History: docs/MATCHING.md rounds rtF, qpG, raF, raH, mlA,
+// cvA (search for the address); the full list is docs/UNMATCHED.md.
 // func_ov000_0218867c: 28 raw / 12 register-masked, 22 / 6 with pool offsets masked (round rtF).
 // Real one-argument signature (called through the CmdObj step table with only self). The
 // break-at-zero check in the case-1 loop and the identical vfunc_38(1) arms are in the target

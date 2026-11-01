@@ -93,6 +93,9 @@ void func_0205311c(GameScene *scene) {
 
 
 #ifdef NONMATCHING
+// Status (round drA): func_02053254 is 37 / 4 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// best clean draft. Blocker: a cmp/add class tie in the tail and o's colour (r6 in the ROM). History:
+// docs/MATCHING.md rounds qpE, qpF, bgQ2, nmA, cvA (search for the address); the full list is docs/UNMATCHED.md.
 // func_02053254: 75 raw / 16 register-masked (round rtG), honest base (no two-definition
 // masks, no locals as parameters). `x += 0x8000` comes before the two `~0xfff` masks, so the
 // tail has one extended block with the mask constant: with the masks first, `y & ~0xfff` is

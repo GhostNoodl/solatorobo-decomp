@@ -138,6 +138,10 @@ void *func_ov011_021fc0a0(void *self) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov011_021fc0b8 is 26 / 17 (raw / register-masked, dsi/1.3 with the project flags); this
+// is the best clean draft. Blocker: one move-constant-loads step: the list-removal zero is hoisted past the n !=
+// NULL guard (refusing it under gdb gives 0 / 0). History: docs/MATCHING.md rounds hzR, hzZ, raG, hzA, svC, cvA
+// (search for the address); the full list is docs/UNMATCHED.md.
 // func_ov011_021fc0b8: 13 raw / 3 register-masked diffs, real signature (self only).
 // In case 2 the ROM keeps the 1 passed as on in sl and sets the list-removal zero in the inner preheader; this draft hoists the zero further.
 // Rounds hzZ/hzR: the whole difference is one refused step of the move-constant-loads pass (the removal zero, inner

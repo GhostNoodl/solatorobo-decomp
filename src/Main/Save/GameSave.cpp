@@ -16,6 +16,10 @@ void func_0206d3f4(GameSave *s) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_0206d43c is 12 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// best clean draft. Blocker: register-only: the card pointer and the first sum swap registers; every wrong node is a
+// backend temp. History: docs/MATCHING.md rounds qpB, raC, raE, rgB, nmA, cvA (search for the address); the full
+// list is docs/UNMATCHED.md.
 // func_0206d43c: 12 raw / 0 register-masked (round qpB). Register-only: the ROM keeps the card
 // pointer in r4 and the first sum in lr (ours: r3/r4), and puts the dataSize*slotCount+headerSize
 // mla in r1. ramerge.py (single and multi-target, with --pairs) finds no merge or renumbering that

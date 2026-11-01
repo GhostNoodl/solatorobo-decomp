@@ -193,4 +193,53 @@ void func_0203a5a4(GfxMgr *mgr, u16 c) {
     mgr->unk_00c = NNS_G2dFontGetCharWidthsFromIndex(font, idx)->charWidth + block->unk_10_6;
 }
 
+#ifdef NONMATCHING
+// func_0203a984 (0x12c bytes, draws the OBJs of glyph blocks drawn earlier by func_0203a5a4; reached through the
+// GfxMgr.cpp tail-call wrapper): 10 / 0 (raw / register-masked). This file's .text ends at 0x0203a984, so it goes
+// here once it matches. Blocker: colouring of codegen temps only (the blocks[i] load and the (addr >> 5) >> shift
+// temp). History: docs/MATCHING.md rounds raC, mainbig5, nmA, mtA (search "0203a984"); docs/UNMATCHED.md.
+void func_0203a984(GfxMgr *mgr, VramBlock **blocks, u16 n) {
+    int shift;
+    int which;
+    u16 i;
+    GfxOamTmp buf[128];
+    int mode;
+    int pal;
+    u8 type;
+    VramBlock *b;
+    mode = data_020827f8[mgr->unk_004].mode;
+    if (mode == 1 || mode == 2) {
+        return;
+    }
+    type = mgr->fontHeights[mgr->unk_004];
+    pal = 0;
+    if (type == 1) {
+        pal = (int)mgr->unk_008 >> 4;
+    } else if (type == 2) {
+        pal = (int)mgr->unk_008 / 5 + 1;
+    }
+    if (mode == 4) {
+        pal += mgr->plttSlots[2];
+        shift = mgr->pools[0].alignShift;
+        which = 0;
+    } else {
+        pal += mgr->plttSlots[3];
+        shift = mgr->pools[1].alignShift;
+        which = 1;
+    }
+    for (i = 0; i < n; i++) {
+        int ox;
+        int nm;
+        int oy;
+        b = blocks[i];
+        ox = b->unk_10_6;
+        nm = (b->addr >> 5) >> shift;
+        oy = b->unk_10_14;
+        buf[i].attr01 = b->unk_14 | (oy & 0xff) | ((u32)(ox << 23) >> 7);
+        buf[i].attr2 = nm | (pal << 12);
+    }
+    NNS_G2dEntryOamManagerOam(func_0203bbfc(data_02097d48, which), buf, n);
+}
+#endif
+
 }

@@ -19,7 +19,8 @@ void *func_ov000_0219bf90(void);
 void VEC_Add(void *a, void *b, void *c);
 BOOL func_0203dc9c(void *a, s32 b);
 void func_ov000_0216c018(void *self);
-void func_ov000_0216c310(void *self);
+struct LoHost0216c310;
+void func_ov000_0216c310(struct LoHost0216c310 *self);
 void func_ov000_0216c6fc(void *self);
 s32 func_02043d84(void *a);
 void MI_CpuFill8(void *dst, s32 v, s32 size);
@@ -203,6 +204,10 @@ void func_ov000_0216c018(void *obj) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov000_0216c310 is 65 / 22 (raw / register-masked, dsi/1.3 with the project flags); this
+// is the best clean draft. Blocker: colouring order (the ROM pops y between next and self) plus the post-allocation
+// CSE movne r0, ip; the 65 / 10 drafts need fake parameters. History: docs/MATCHING.md rounds mcA, hzS, qpG, pmA,
+// nmA, mtA, cvA (search for the address); the full list is docs/UNMATCHED.md.
 // func_ov000_0216c310: 121 / 27 (raw / register-masked), 103 / 8 with branch targets and pool offsets masked.
 // Round bgG's clean redraft (no permuter temporaries; the earlier best had __typeof__ noise and was 124 / 27).
 // The 8 masked lines are scheduling around the IsCurNode test and m - 0x80000 that follow from the colouring:
@@ -239,93 +244,120 @@ extern const s16 FX_SinCosTable_[];
 s32 FX_Div(s32 a, s32 b);
 BOOL func_02065748(void *p, VObj *obj);
 
-static inline BOOL IsCur0216c310(u8 *self) {
-    return LFLD(void *, self, 0x35c) != NULL ? TRUE : FALSE;
+typedef struct LoSlot0216c310 LoSlot0216c310;
+struct LoSlot0216c310 {
+    u32 flags;
+    s32 kind;
+    VObj *obj;
+    s32 t;
+    s32 drop;
+    s32 x;
+    s32 y;
+    s32 base;
+    s32 timer;
+    VObj *eff;
+    LoSlot0216c310 *next;
+};
+
+struct LoHost0216c310 {
+    s32 speed;
+    u8 unk_04[0x240];
+    s32 unk_244;
+    s32 unk_248;
+    LoSlot0216c310 *head;
+    LoSlot0216c310 *tail;
+    LoSlot0216c310 slots[6];
+    LoSlot0216c310 *cur;
+    LoTimedObj res[10];
+};
+
+static inline BOOL IsCur0216c310(LoHost0216c310 *self) {
+    return self->cur != NULL ? TRUE : FALSE;
 }
 
-static inline void Release0216c310(u8 *slot) {
-    if (LFLD(VObj *, slot, 8) != NULL && --LFLD(s32, slot, 0) == 0) {
-        LO_FREE_V(slot, 8);
+static inline void Release0216c310(LoTimedObj *slot) {
+    if (slot->obj != NULL && --slot->timer == 0) {
+        HEAP_DELETE_VOBJ(slot->obj);
     }
 }
 
-static inline BOOL IsCurNode0216c310(u8 *self, u8 *n) {
-    return LFLD(u8 *, self, 0x35c) == n ? TRUE : FALSE;
+static inline BOOL IsCurNode0216c310(LoHost0216c310 *self, LoSlot0216c310 *n) {
+    return self->cur == n ? TRUE : FALSE;
 }
 
-void func_ov000_0216c310(void *self) {
+void func_ov000_0216c310(LoHost0216c310 *self) {
     s32 s;
     s32 m;
     s32 r;
     s32 y;
-    u8 *h;
-    u8 *slA;
-    u8 *slB;
-    u8 *prev;
-    u8 *n;
-    u8 *next;
+    LoSlot0216c310 *h;
+    LoTimedObj *slA;
+    LoTimedObj *slB;
+    LoSlot0216c310 *prev;
+    LoSlot0216c310 *n;
+    LoSlot0216c310 *next;
     prev = NULL;
-    for (n = LFLD(u8 *, self, 0x24c); n != NULL; n = next) {
-        next = LFLD(u8 *, n, 0x28);
-        if (LFLD(u32, n, 0) & 4) {
-            if (IsCur0216c310((u8 *)self)) {
-                LFLD(s32, n, 0x10) += LO_FX_MUL(LFLD(s32, self, 0), 0x400);
-            } else if (++LFLD(s32, n, 0x20) > 0x3c) {
-                LFLD(s32, n, 0x10) += LO_FX_MUL(LFLD(s32, self, 0), 0x800);
+    for (n = self->head; n != NULL; n = next) {
+        next = n->next;
+        if (n->flags & 4) {
+            if (IsCur0216c310(self)) {
+                n->drop += LO_FX_MUL(self->speed, 0x400);
+            } else if (++n->timer > 0x3c) {
+                n->drop += LO_FX_MUL(self->speed, 0x800);
             }
-            y = LFLD(s32, n, 0x10);
+            y = n->drop;
         } else {
             y = 0;
         }
         if (n != NULL) {
-            if (LFLD(u32, n, 0) & 2) {
-                LFLD(s32, n, 0xc) += LFLD(s32, self, 0);
-                r = FX_Div(LFLD(s32, n, 0xc), 0x10000);
+            if (n->flags & 2) {
+                n->t += self->speed;
+                r = FX_Div(n->t, 0x10000);
                 if (r >= 0x1000) {
-                    LFLD(u32, n, 0) &= ~2;
-                    LFLD(u32, n, 0) |= 4;
-                    LFLD(s32, n, 0xc) = 0x10000;
-                    LFLD(s32, n, 0x1c) = prev != NULL ? LFLD(s32, prev, 0x10) & 0x7ffff000 : 0;
+                    n->flags &= ~2;
+                    n->flags |= 4;
+                    n->t = 0x10000;
+                    n->base = prev != NULL ? prev->drop & 0x7ffff000 : 0;
                     r = 0x1000;
                 }
                 s = FX_SinCosTable_[(r << 14 >> 16) * 2];
             } else {
                 s = 0x1000;
             }
-            if (IsCurNode0216c310((u8 *)self, n) && y > 0x8000) {
-                LFLD(void *, self, 0x35c) = NULL;
+            if (IsCurNode0216c310(self, n) && y > 0x8000) {
+                self->cur = NULL;
             }
             m = LO_FX_MUL(s, 0x88000) - 0x80000;
-            LFLD(s32, n, 0x14) = m >> 12;
-            LFLD(s32, n, 0x18) = (0x24000 - y) >> 12;
-            if (LFLD(s32, n, 4) == 7 && LFLD(VObj *, n, 0x24) != NULL) {
-                if (func_02065748(data_0214a420, LFLD(VObj *, n, 0x24))) {
-                    LFLD(VObj *, n, 0x24)->vfunc_14(0x1000, 0x1000, 0x1000);
-                    LFLD(VObj *, n, 0x24)->vfunc_1c((LFLD(s32, n, 0x14) << 12) - 0x51000, -((LFLD(s32, n, 0x18) << 12) - 0x5b000), -0x400);
+            n->x = m >> 12;
+            n->y = (0x24000 - y) >> 12;
+            if (n->kind == 7 && n->eff != NULL) {
+                if (func_02065748(data_0214a420, n->eff)) {
+                    n->eff->vfunc_14(0x1000, 0x1000, 0x1000);
+                    n->eff->vfunc_1c((n->x << 12) - 0x51000, -((n->y << 12) - 0x5b000), -0x400);
                 } else {
-                    LFLD(VObj *, n, 0x24) = NULL;
+                    n->eff = NULL;
                 }
             }
-            if (LFLD(s32, n, 0x18) < -0x10) {
-                h = LFLD(u8 *, self, 0x24c);
-                if (h == LFLD(u8 *, self, 0x250)) {
-                    LFLD(void *, self, 0x250) = NULL;
-                    LFLD(void *, self, 0x24c) = NULL;
+            if (n->y < -0x10) {
+                h = self->head;
+                if (h == self->tail) {
+                    self->tail = NULL;
+                    self->head = NULL;
                 } else {
-                    LFLD(void *, self, 0x24c) = LFLD(void *, h, 0x28);
+                    self->head = h->next;
                 }
-                slA = (u8 *)self + 0x360 + data_ov000_021c9bb4[LFLD(s32, n, 4)].a * 12;
+                slA = &self->res[data_ov000_021c9bb4[n->kind].a];
                 Release0216c310(slA);
-                slB = (u8 *)self + 0x360 + data_ov000_021c9bb4[LFLD(s32, n, 4)].b * 12;
+                slB = &self->res[data_ov000_021c9bb4[n->kind].b];
                 Release0216c310(slB);
-                LFLD(s32, n, 4) = -1;
-                LFLD(u32, n, 0) = 0;
-                LFLD(void *, n, 0x28) = NULL;
-                LO_FREE_V(n, 8);
-                if (LFLD(VObj *, n, 0x24) != NULL && func_02065748(data_0214a420, LFLD(VObj *, n, 0x24))) {
-                    LFLD(s32, LFLD(VObj *, n, 0x24), 0x1c) = 4;
+                n->kind = -1;
+                n->flags = 0;
+                n->next = NULL;
+                HEAP_DELETE_VOBJ(n->obj);
+                if (n->eff != NULL && func_02065748(data_0214a420, n->eff)) {
+                    LFLD(s32, n->eff, 0x1c) = 4;
                 }
-                LFLD(VObj *, n, 0x24) = NULL;
+                n->eff = NULL;
                 n = NULL;
             }
         }

@@ -55,4 +55,71 @@ void func_ov010_02204028(void) {
 void func_ov010_0220402c(void) {
 }
 
+#ifdef NONMATCHING
+// func_ov010_02204030 (0x1d4 bytes, picks the point of a ring around c nearest to tgt): 26 / 23 (raw / masked).
+// This file's .text ends at 0x02204030, so it goes here once it matches. Blocker: pressure-mode register
+// allocation of the loop's LICM'd preheader values; two of the misses are bl against the ROM's blx to the Thumb
+// MTX_RotY33_ (only the link resolves that). History: docs/MATCHING.md rounds qpA, pmA, nmA, mtA; docs/UNMATCHED.md.
+typedef struct Ov010Ring4030 {
+    Ov010Vec pos;
+    s32 unk_0c;
+    s32 r;
+} Ov010Ring4030;
+
+typedef struct Ov010Mtx33_4030 {
+    s32 m[9];
+} Ov010Mtx33_4030;
+
+extern void MTX_RotY33_(Ov010Mtx33_4030 *m, s32 s, s32 c);
+extern void MTX_MultVec33(const Ov010Vec *v, const Ov010Mtx33_4030 *m, Ov010Vec *o);
+extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
+extern s32 func_ov003_021d9a80(const Ov010Vec *a, const Ov010Vec *b);
+
+static inline s16 Ov010_SinIdx(int idx) {
+    return FX_SinCosTable_[idx * 2];
+}
+
+static inline s16 Ov010_CosIdx(int idx) {
+    return FX_SinCosTable_[idx * 2 + 1];
+}
+
+static inline void Ov010_RotY33(Ov010Mtx33_4030 *m, s32 s, s32 c) {
+    MTX_RotY33_(m, s, c);
+}
+
+void func_ov010_02204030(Ov010Vec *out, const Ov010Ring4030 *c, const Ov010Vec *tgt, s32 n, u16 ang) {
+    Ov010Vec v;
+    Ov010Vec t;
+    Ov010Mtx33_4030 m;
+    Ov010Mtx33_4030 m2;
+    u16 cur = ang;
+    u16 step = 0xffff / n;
+    s32 best;
+    s32 i;
+    s32 y;
+    s32 d;
+    Ov010_VecSet(&v, 0, 0, Ov010_FxMul(c->r, 0x1000));
+    y = c->pos.y;
+    Ov010_RotY33(&m, Ov010_SinIdx(ang >> 4), Ov010_CosIdx(ang >> 4));
+    MTX_MultVec33(&v, &m, &v);
+    VEC_Add(&v, &c->pos, &v);
+    v.y = y;
+    best = func_ov003_021d9a80(&v, tgt);
+    for (i = 1; i < n; i++) {
+        cur += step;
+        Ov010_VecSet(&t, 0, 0, Ov010_FxMul(c->r, 0x1000));
+        Ov010_RotY33(&m2, Ov010_SinIdx(cur >> 4), Ov010_CosIdx(cur >> 4));
+        MTX_MultVec33(&t, &m2, &t);
+        VEC_Add(&t, &c->pos, &t);
+        t.y = y;
+        d = func_ov003_021d9a80(&t, tgt);
+        if (best > d) {
+            best = d;
+            v = t;
+        }
+    }
+    *out = v;
+}
+#endif
+
 }

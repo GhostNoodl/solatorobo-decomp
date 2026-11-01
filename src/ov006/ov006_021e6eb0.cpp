@@ -83,6 +83,10 @@ void func_ov006_021e6eb0(ov006_Prop021e6eb0 *self) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov006_021e7004 is 22 / 13 (raw / register-masked, dsi/1.3 with the project flags); this
+// is the best clean draft. Blocker: the ROM issues the dz smull before the t->x load and builds hy + curYaw before
+// hp + curPitch (the 20-21 drafts start with a junk store). History: docs/MATCHING.md rounds rtG, pmB, qpL, nmA, cvA
+// (search for the address); the full list is docs/UNMATCHED.md.
 // func_ov006_021e7004: 23 raw / 12 register-masked (round rtG; the older 21 / 10 drafts start with
 // a junk `kq = 1; if ((u32)self & 3) kq = 1;` store). Left: the target issues the dz `smull`
 // before the `t->x` load, and builds `hy + curYaw` before `hp + curPitch` (its `unk19C_8` test

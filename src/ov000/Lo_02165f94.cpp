@@ -139,6 +139,10 @@ Node0216607c *func_ov000_0216607c(Obj0216607c *self, Node0216607c *node, u8 *out
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov000_02166180 is 27 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is
+// the best clean draft. Blocker: register-only: oams and the j value swap (the j value is an IRO temp, numbered
+// below every user variable). History: docs/MATCHING.md rounds dgB, bgL, bgN, raB, raF, mtA, cvA (search for the
+// address); the full list is docs/UNMATCHED.md.
 // func_ov000_02166180: 27 / 0 (raw / register-masked), real signature, register colouring only.
 // Rounds g6180, g6180b and vphase3 draft; round dgB reuses pos for the part's position pointer
 // (was a separate ps), which gives pos the ROM's sl. Round bgL reuses r for the busy block's node

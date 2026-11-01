@@ -114,6 +114,10 @@ void func_0200d320(void) {
 
 
 #ifdef NONMATCHING
+// Status (round drA): func_0200d36c is 5 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// best clean draft. Blocker: CARDi_ReadRomWithCPU (SDK, -O2 + opt_propagation off): the read loop's word/data/ctrl
+// get r1/r0/r2, the ROM r3/r1/r2; data is a codegen temp, so no object lever reaches it. History: docs/MATCHING.md
+// rounds raB, raC, raE, rgB, cvA (search for the address); the full list is docs/UNMATCHED.md.
 // func_0200d36c (CARDi_ReadRomWithCPU, round raB): 5 / 0 (raw / register-masked), honest.
 // The SDK read loop at -O2 with opt_propagation off (only that pair gives the target's loop shape and
 // the `mov r0, r7; cmp r8, r0` page-size compare). Left: the read loop's word/data/ctrl are coloured

@@ -71,6 +71,10 @@ void func_02048d58(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_02048e74 is 60 / 20 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// best clean draft. Blocker: the schedule of the second and third borrows (ROM movlo/movhs pair in the register of
+// a->millis). History: docs/MATCHING.md rounds qpE, pmC, bgQ2, mlA, cvA (search for the address); the full list is
+// docs/UNMATCHED.md.
 // Before round pmC, 124 raw diffs: the fields are computed into locals and stored together, as in the target,
 // but the register allocation and the schedule of the borrows still differ.
 // Round qpE: the ROM's `movlo r7, #1; movhs r7, #0` pair (where ours has `mov #1; movhs #0`) is probably a

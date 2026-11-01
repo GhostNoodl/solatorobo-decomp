@@ -297,6 +297,10 @@ extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, int is4x4, int opt);
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_020417e0 is 38 / 31 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// best clean draft. Blocker: the NULL arm's zero is hoisted to the entry (move-constant-loads step 34 -> 5, block 5
+// pressure 6 vs 11) and SetData's data is numbered above Upload's size. History: docs/MATCHING.md rounds mcA, hzS,
+// hzT, qpE, nmA, cvA (search for the address); the full list is docs/UNMATCHED.md.
 // func_020417e0: 11 raw / 4 register-masked (was 26 / 4). Round mcA: InitAnim's `anim` is declared before
 // `data`, which numbers it below `data` (inline locals are numbered in their own declaration order) and gives
 // the ROM's sb/r8 in the entry loop. Left: (1) the ROM sets the NULL arm's zero (`mov fp, sl`) in the second

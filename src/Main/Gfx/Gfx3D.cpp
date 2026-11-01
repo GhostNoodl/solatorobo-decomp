@@ -34,6 +34,10 @@ void func_020430b8(int w, int h, int *ws, int *hs) {
 
 
 #ifdef NONMATCHING
+// Status (round drA): func_02043100 is 105 / 62 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// best clean draft. Blocker: the ROM loads attr01 three times (needs a join between the shape read and the x read);
+// colouring of the rest. History: docs/MATCHING.md rounds frD, qpE, pmC, bgQ2, mlA, cvA (search for the address);
+// the full list is docs/UNMATCHED.md.
 typedef struct GfxOamBits {
     u32 y : 8;
     u32 rsMode : 2;

@@ -330,4 +330,83 @@ BOOL func_02069a2c(EffectEmitterSub *sub, EffectPtcl *p, EffectPtclCmd *cmd) {
     return TRUE;
 }
 
+#ifdef NONMATCHING
+// func_02069b3c (0x2c8 bytes, the texture-index particle command): 44 / 4 (raw / register-masked). This file's
+// .text ends at 0x02069b3c, so it goes here once it matches. Blocker: the param + key sum of the inlined
+// Effect_GetTexImageParam (a codegen temp) is coloured and scheduled differently. The inlines are the matched
+// Effect_16.cpp ones. History: docs/MATCHING.md rounds mainfresh1-4, fresh6, mainJ, rgB, cvA; docs/UNMATCHED.md.
+static inline void *Effect_ResDataByIdx(EffectResDict *dict, u32 idx) {
+    if (dict != NULL && idx < dict->numEntry) {
+        u16 *e = (u16 *)((u8 *)dict + dict->ofsEntry);
+        return (u8 *)e + 4 + e[0] * idx;
+    }
+    return NULL;
+}
+
+static inline u16 *Effect_GetPlttData(EffectResTex *tex, u32 idx) {
+    if (tex != NULL && tex->plttOfsDict != 0) {
+        return (u16 *)Effect_ResDataByIdx((EffectResDict *)((u8 *)tex + tex->plttOfsDict), idx);
+    }
+    return NULL;
+}
+
+static inline u32 *Effect_GetTexData(EffectResTex *tex, u32 idx) {
+    if (tex != NULL) {
+        return (u32 *)Effect_ResDataByIdx(&tex->dict, idx);
+    }
+    return NULL;
+}
+
+#define EFFECT_TEXCOORD(s, t) ((u16)(s16)((s) >> 8) | ((u16)(s16)((t) >> 8) << 16))
+
+static inline u32 Effect_GetTexImageParam(EffectResTex *tex, u32 idx) {
+    u32 *data = Effect_GetTexData(tex, idx);
+    u32 param = data[0];
+    u16 key;
+    if ((param & 0x1c000000) != 0x14000000) {
+        key = tex->texVramKey;
+    } else {
+        key = tex->tex4x4VramKey;
+    }
+    return param + key;
+}
+
+static inline void EffectPtcl_SetPltt(EffectPtcl *p, s32 idx, u32 param) {
+    u16 *pltt = Effect_GetPlttData(p->tex, idx);
+    s32 w = 0x1000 << (((param & 0x700000) >> 20) + 3);
+    s32 h = 0x1000 << (((param & 0x3800000) >> 23) + 3);
+    p->texAddr = ((u16)p->tex->plttVramKey + pltt[0]) << 3;
+    p->texIdx = idx;
+    p->dl[3] = EFFECT_TEXCOORD(w, 0);
+    p->dl[6] = EFFECT_TEXCOORD(0, 0);
+    p->dl[9] = EFFECT_TEXCOORD(0, h);
+    p->dl[11] = EFFECT_TEXCOORD(w, h);
+}
+
+static inline void EffectPtcl_SetTexImage(EffectPtcl *p, s32 idx) {
+    if (p->tex != NULL) {
+        u32 param = Effect_GetTexImageParam(p->tex, idx);
+        p->polyAttr = param;
+        EffectPtcl_SetPltt(p, p->texIdx, param);
+    }
+}
+
+BOOL func_02069b3c(EffectEmitterSub *sub, EffectPtcl *p, EffectPtclCmd *cmd) {
+    s32 idx;
+    if (cmd->mode == 2) {
+        s32 to = cmd->b.x;
+        s32 from = cmd->a.x;
+        s32 t = FX_Div(p->time - cmd->start, cmd->len);
+        idx = from + (FX_Mul((to - from) << 12, t) >> 12);
+        EffectPtcl_SetTexImage(p, idx);
+        p->unk_50 = idx;
+    } else {
+        s32 i = *(s8 *)&cmd->a.x;
+        EffectPtcl_SetTexImage(p, i);
+        p->unk_50 = i;
+    }
+    return TRUE;
+}
+#endif
+
 }

@@ -18,6 +18,10 @@ void func_ov009_0220ac74(Ov009Actor *self) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov009_0220acb8 is 15 / 13 (raw / register-masked, dsi/1.3 with the project flags); this
+// is the best clean draft. Blocker: the ROM computes y + 0x1333 before the unk_f0 load and colours the stack-
+// argument constants 0x64/0x1000 ip/r3 (ours r3/r1). History: docs/MATCHING.md rounds qpC, nmA, mtA, cvA (search for
+// the address); the full list is docs/UNMATCHED.md.
 // func_ov009_0220acb8 (state handler of the vtable data_ov009_02217390 actor): 15 raw (round mtA; qpC's
 // scratch draft was 47 with a (u16) cast on the 0xf0 angle term, nmA found 15 without it). This file's .text
 // ends at 0x0220acb8, so the function belongs here once it matches. Left: the ROM computes y + 0x1333 before

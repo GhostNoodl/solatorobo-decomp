@@ -266,6 +266,10 @@ void func_ov000_02164c50(Obj02164c50 *self, u8 *arg) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov000_021652e4 is 81 / 36 (raw / register-masked, dsi/1.3 with the project flags); this
+// is the best clean draft. Blocker: the col loop's tbl[ry * 3 + rx] reload placement and the sx/sy block's schedule
+// (the cxxperm 91 / 46 drafts need seven fake parameters). History: docs/MATCHING.md rounds frC, bgN, bgZ, bgQ2,
+// mlA, cvA (search for the address); the full list is docs/UNMATCHED.md.
 // func_ov000_021652e4: 156 raw / 56 register-masked (round rtF), real four-argument signature
 // (the only caller, func_ov000_021652a8, passes four), no fake parameters, comma or one-element
 // array forms (the cxxperm drafts at 91 / 46 needed seven fake parameters). What is left is the

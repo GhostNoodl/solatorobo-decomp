@@ -193,6 +193,10 @@ void func_0206d938(GameSave *s) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_0206d99c is 19 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// best clean draft. Blocker: register-only: the first product and the card pointer swap registers; every wrong node
+// is a backend temp. History: docs/MATCHING.md rounds qpB, raC, rgB, cvA (search for the address); the full list is
+// docs/UNMATCHED.md.
 // func_0206d99c: 19 raw / 0 register-masked (round qpB; was 36 / 0 with a split `sm_t24` sum).
 // The first half is func_0206d43c's layout; the second places a 0xc-byte-slot save after it and
 // gives it the rest of the card, rounded down to a page. The align-down written out as

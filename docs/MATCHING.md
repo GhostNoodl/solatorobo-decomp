@@ -7314,3 +7314,17 @@ Follow-ups to svA in `src/ov000` and `src/ov010` (`src/Main` had nothing to conv
 - **What did not convert:** a polymorphic base cannot take a vptr store through a member, so those stay `*(void **)self = ...`. A `VecFx32` member does not fold the same way as three separate `s32` loads in a few functions, which stay `LFLD`. `Lo_02154c34`, `Lo_0214cb44`, `Lo_021c1180` and `Lo_02161280` would need more `LFLD`; `Lo_02150cb0` and `Lo_02152740` embed sub-objects; `Robo_02195d88`, `Robo_021a9be8` and `Robo_021ad8ac` change code when their `unk_48` accesses become members. Those were all left as they were.
 - `SIZE_ASSERT` was added for every converted struct whose allocation size is known (about 20).
 - No new data.
+
+### Round drA
+
+Handoff round: every unmatched code function now has its best clean draft in the tree, and **`docs/UNMATCHED.md` lists them all** (address, size, file, score, blocker, main rounds). No new match. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` 8138 matched (8138 at start). Each draft's score below was checked with `NONMATCHING` defined (`tools/match.py` on a `#define NONMATCHING` copy next to the file, and cvA's masked count). The scratch is in the session scratchpad `drA/`: `sc.sh` (raw / masked through cvA's `sweep.py`), `tp.py` (moves a scratch file's `NONMATCHING` block into the tree file when the rest of the file is the same), `data.py` and `hdr.py` (the status comments).
+
+- **Four drafts that existed only in scratch are now in the tree.** Each is at the end of the file whose `.text` ends at the function's address:
+  - `0203a984` 10 / 0 in `GfxMgr_3.cpp` (raC's three-parameter base).
+  - `02069b3c` 44 / 4 in `Effect_10.cpp` (fresh6's draft, with the matched `Effect_16.cpp` inlines; the draft's own `x = param + x` spelling of `Effect_GetTexImageParam` gives the same score).
+  - `ov009_02206084` 7 / 7 in `ov009_02205d14.cpp` (mtA's `t1`).
+  - `ov010_02204030` 26 / 23 in `ov010_02203ff4.cpp` (qpA's `p10`). The `FLD(s32, c, 0x10)` read past an `Ov010Vec` is now a draft-local `const Ov010Ring4030 *c` (`pos`, `unk_0c`, `r`), which gives the same 26 / 23. The header's `Ov010_FxMul`/`Ov010_VecSet` replace the draft's copies.
+- **mtA's typed drafts replace the in-tree view drafts, at the same scores:** `0216715c` (3 / 0), `021512b4` (23 / 0), `0216c310` (65 / 22; the file's prototype now takes `struct LoHost0216c310 *`), `ov002_021eca14` (6 / 3), and `0214dd3c` (26 / 0, `List0214dd3c` `tail`/`head`/`count` from mtA's variant). `02166180`'s typed version (mtA `6180/s1.cpp`) also widens `Ctx0216607c` and the other shared structs outside the block, so it was left for the ov000 struct cleanup.
+- **Lower scratch scores that were rejected as not clean:** `02204a10` 57-67 (a `volatile` trail base; without it 297-300, the tree's clean draft is 295), `021512b4` 11, `0216c310` 65 / 10, `02053254` 36 and `021652e4` 91 (permuter output with fake parameters), `0215e6f0` 9 (a no-op cast), `021e7004` 20-21 (a junk store). `docs/UNMATCHED.md` lists them too.
+- Every block now starts with a `Status (round drA)` comment of three or four lines: the current score, the blocker in one sentence, and the rounds that hold the history. The older notes stay below it. Several of them quote scores from earlier scorers.
+- No new data. No renames.

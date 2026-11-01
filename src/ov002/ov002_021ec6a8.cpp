@@ -174,6 +174,10 @@ BOOL func_ov002_021ec968(void *self) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov002_021eca14 is 6 / 3 (raw / register-masked, dsi/1.3 with the project flags); this is
+// the best clean draft. Blocker: return TRUE's mov r0, #1 is scheduled into the ldrh stall; the ROM has return TRUE
+// in a block of its own. History: docs/MATCHING.md rounds bgV, bgX, rgB, mtA, cvA (search for the address); the full
+// list is docs/UNMATCHED.md.
 // func_ov002_021eca14 (round bgX): 6 raw / 2 register-masked. Rebuilt from the ROM: no in-tree draft
 // existed (earlier rounds kept theirs in scratch). It is ec968's sibling: case 0 counts the flagged
 // tasks on data_ov002_021f0fa0[8] against data_ov002_021f0d88's limit and creates the model; case 1
@@ -185,18 +189,45 @@ BOOL func_ov002_021ec968(void *self) {
 // `p == NULL` test was found to give that. Tried in bgX, all 6: the stores in an `||` block, an inline
 // with or without the `return TRUE`, an ed0c0-shaped Start inline, an enum 0x1f, a p20 local,
 // honest_search (14 min) found no move.
-static inline BOOL func_ov002_021eca14_flag(void *t) {
-    return FIELD(t, 4, Bits32).b6 == 1 ? TRUE : FALSE;
+typedef struct {
+    u8 unk_00[0x8];
+    void *unk_08;
+    u16 unk_0c;
+    u16 unk_0e;
+} StaffParam_eca14;
+
+typedef struct {
+    u8 unk_00[0x6c];
+    u32 flags;
+} StaffModel_eca14;
+
+struct StaffTask_eca14 : public VObject {
+    Bits32 flags;
+    u8 unk_08[0x8];
+    s32 state;
+    u8 unk_14[0xc];
+    StaffParam_eca14 *param;
+    s32 unk_24;
+    u8 unk_28[0x8];
+    StaffTask_eca14 *next;
+    VObject *res;
+    StaffModel_eca14 *model;
+    u8 unk_3c[0xd];
+    u8 unk_49;
+};
+
+static inline BOOL func_ov002_021eca14_flag(StaffTask_eca14 *t) {
+    return t->flags.b6 == 1 ? TRUE : FALSE;
 }
 
-BOOL func_ov002_021eca14(void *self) {
-    switch (FIELD(self, 0x10, s32)) {
+BOOL func_ov002_021eca14(StaffTask_eca14 *self) {
+    switch (self->state) {
     case 0:
-        if (FIELD(FIELD(self, 0x20, void *), 0xe, u16) != 1) {
-            void *t;
+        if (self->param->unk_0e != 1) {
+            StaffTask_eca14 *t;
             int n = 0;
-            void *m;
-            for (t = data_ov002_021f0fa0[8]; t != NULL; t = FIELD(t, 0x30, void *)) {
+            StaffModel_eca14 *m;
+            for (t = (StaffTask_eca14 *)data_ov002_021f0fa0[8]; t != NULL; t = t->next) {
                 if (func_ov002_021eca14_flag(t)) {
                     n++;
                 }
@@ -204,30 +235,30 @@ BOOL func_ov002_021eca14(void *self) {
             if (n >= data_ov002_021f0d88.w28) {
                 return FALSE;
             }
-            m = func_0203dd9c(0x160);
+            m = (StaffModel_eca14 *)func_0203dd9c(0x160);
             if (m != NULL) {
-                void *r = FIELD(self, 0x34, void *);
+                void *r = self->res;
                 func_02041218((u8 *)m + 0x88);
                 func_02041440(m, (u8 *)r + 0x24, 0);
                 STD_CopyString((u8 *)m + 0x2c, (u8 *)r + 4);
             }
-            FIELD(self, 0x38, void *) = m;
-            func_020417e0(FIELD(self, 0x38, void *), (void *)FIELD(self, 0x34, VObject *)->v0x10());
-            FIELD(FIELD(self, 0x38, void *), 0x6c, u32) |= 2;
-            func_02041d9c(FIELD(self, 0x38, void *), 0, 0xffff);
-            FIELD(FIELD(self, 0x38, void *), 0x6c, u32) |= 0x80000;
-            FIELD(self, 0x4, u32) |= 0x40;
+            self->model = m;
+            func_020417e0(self->model, (void *)self->res->v0x10());
+            self->model->flags |= 2;
+            func_02041d9c(self->model, 0, 0xffff);
+            self->model->flags |= 0x80000;
+            self->flags.b6 = 1;
         }
-        FIELD(self, 0x10, s32)++;
+        self->state++;
         break;
     case 1:
-        if (FIELD(self, 0x38, void *) != NULL && func_02054f10(FIELD(self, 0x38, void *), 0xffff) == 0) {
+        if (self->model != NULL && func_02054f10(self->model, 0xffff) == 0) {
             break;
         }
         {
-            u16 v = FIELD(FIELD(self, 0x20, void *), 0xc, u16);
-            FIELD(self, 0x49, u8) = 0x1f;
-            FIELD(self, 0x24, s32) = v;
+            u16 v = self->param->unk_0c;
+            self->unk_49 = 0x1f;
+            self->unk_24 = v;
         }
         return TRUE;
     }

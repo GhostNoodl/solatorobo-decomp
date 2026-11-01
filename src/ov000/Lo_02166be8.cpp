@@ -211,6 +211,10 @@ void func_ov000_02166be8(Obj02166be8 *self) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov000_0216715c is 3 / 0 (raw / register-masked, dsi/1.3 with the project flags); this is
+// the best clean draft. Blocker: register-only: the outer sine (a codegen temp) is r1, the ROM r6 (a coalesce with
+// f_0 or j, not a numbering). History: docs/MATCHING.md rounds bgS, bgU, raF, rgB, mtA, cvA (search for the
+// address); the full list is docs/UNMATCHED.md.
 // func_ov000_0216715c (round bgJ): 124 / 58 (113 / 45 with branch targets and pool offsets masked).
 // Real signature (self, p), as LoTail in Lo_02164708.cpp calls it. The old draft's third
 // parameter k stood in for a block-scope local plus f_0 set by if/else (see MATCHING.md, round bgJ).
@@ -234,6 +238,7 @@ void func_ov000_02166be8(Obj02166be8 *self) {
 // forwarded back (3 / 0). ramerge has no renumbering for it, only the merges with f_0 or j, so this is a coalesce
 // (a copy into f_0's or j's register), not a band, and no band lever reaches it.
 #include "ov000/Vec.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u32 y : 8;
@@ -269,6 +274,86 @@ typedef struct {
     u32 b : 8;
 } RBits715c;
 
+
+typedef struct {
+    s32 x;
+    s32 y;
+} Pos715c;
+
+typedef struct {
+    Pos715c *pos;
+    Oam715c *oam;
+    s32 x;
+    s32 y;
+    u8 ofs;
+    u8 kind;
+    u8 idx;
+    u8 tgt;
+} Link715c;
+
+typedef struct {
+    RBits715c bits;
+    u8 unk_04[0x5];
+    u8 count;
+    u8 nlinks;
+    u8 unk_0b[0x5];
+    Oam715c *oams;
+    Link715c *links;
+} Part715c;
+
+typedef struct {
+    Part715c *part;
+    u8 unk_04[0x8];
+    s32 x;
+    s32 y;
+} Ent715c;
+
+typedef struct {
+    u8 unk_00[0x4];
+    Ent715c **ents;
+} Anim715c;
+
+typedef struct {
+    u8 unk_00[0x30];
+    u16 *data;
+} Pal715c;
+
+typedef struct {
+    u8 unk_00[0x10a];
+    u16 state;
+} Fade715c;
+
+typedef struct {
+    u8 unk_00;
+    u8 unk_01;
+    u8 count2;
+    u8 unk_03[0x5];
+    u8 count;
+    u8 unk_09[0x3];
+    Oam715c oamPl;
+    Oam715c oamSel;
+    u8 unk_1c[0x10];
+    Oam715c oam;
+    u8 unk_34[0x618];
+    Oam715c oams[0x80];
+    u8 unk_a4c[0x23c];
+    Anim715c *anim;
+    Pal715c *pal;
+    s8 *palMap;
+    u8 unk_c94[0x20];
+    u8 *cur;
+    Part715c *sel;
+    s32 ox;
+    s32 oy;
+    s32 unk_cc4;
+    s32 unk_cc8;
+    s32 unk_ccc;
+    s32 unk_cd0;
+    s32 unk_cd4;
+    s32 unk_cd8;
+    Fade715c *fade;
+} Work715c;
+
 extern "C" {
 extern void *data_02097d48;
 typedef struct { s8 x; s8 y; } Ofs715c;
@@ -282,117 +367,117 @@ static inline void SetXY715c_b(Oam715c *o, u16 x, u16 y) {
     o->w0.x = x;
     o->w0.y = y & 0x1ff;
 }
-static inline BOOL Busy715c(u8 *self) {
-    u8 *h = LFLD(u8 *, LFLD(u8 *, self, 0x30), 0xcdc);
-    if (h == NULL || LFLD(u16, h, 0x10a) == 0) return FALSE;
+static inline BOOL Busy715c(Lo021cb6b0 *self) {
+    Fade715c *h = ((Work715c *)self->unk_30)->fade;
+    if (h == NULL || h->state == 0) return FALSE;
     return TRUE;
 }
 
 static inline void Lerp715c(s32 *out, s32 a, s32 b, s32 s) { s32 d = b - a; *out = LO_FX_MUL(d, s) + a; }
-void func_ov000_0216715c(u8 *self, u8 *p) {
+void func_ov000_0216715c(Lo021cb6b0 *self, Work715c *p) {
     u8 ii;
     s32 s;
     s32 y0;
-    u8 *r;
+    Part715c *r;
     s32 oy;
     s32 ox;
-    u8 *pt;
-    u8 *q;
+    Link715c *pt;
+    Link715c *q;
     s32 x1;
     u8 j;
-    u8 *e;
+    Ent715c *e;
     void *mgr;
-    u8 *pal;
+    Pal715c *pal;
     u16 *d;
     u8 *pl;
     u8 *g;
     u8 c;
     u8 kind;
-    u8 *e2;
+    Ent715c *e2;
     s32 x0;
-    u8 *anim;
+    Anim715c *anim;
     s32 y1;
     BOOL f_0;
     u8 i;
     BOOL f_1;
-    kind = LFLD(u8 *, p, 0xcb4)[0x14];
-    anim = LFLD(u8 *, p, 0xc88) + kind * 8;
-    Oam715c oam = LFLD(Oam715c, p, 0x2c);
+    kind = p->cur[0x14];
+    anim = p->anim + kind;
+    Oam715c oam = p->oam;
     g = (u8 *)data_ov000_021ccd54;
     mgr = func_0203bbfc(data_02097d48, 1);
-    ox = LFLD(s32, p, 0xcbc);
-    oy = LFLD(s32, p, 0xcc0);
-    oam.w1.pal = LFLD(s8 *, p, 0xc90)[oam.w1.pal];
-    if (p[2] != 0 && LFLD(s32, p, 0xcd8) > 0x800) {
-        NNS_G2dEntryOamManagerOam(mgr, p + 0x64c, p[2]);
+    ox = p->ox;
+    oy = p->oy;
+    oam.w1.pal = p->palMap[oam.w1.pal];
+    if (p->count2 != 0 && p->unk_cd8 > 0x800) {
+        NNS_G2dEntryOamManagerOam(mgr, p->oams, p->count2);
     }
     pl = (u8 *)func_ov000_0219bf90();
     if (pl != NULL) {
-        NNS_G2dEntryOamManagerOam(mgr, p + 0xc, 1);
+        NNS_G2dEntryOamManagerOam(mgr, &p->oamPl, 1);
         if (LFLD(PlBits715c, pl, 0xb28).b0 == 0) {
             f_1 = TRUE;
             if (LFLD(PlBits715c, pl, 0xb28).b2 != 1) {
                 f_1 = FALSE;
             }
-            if (!f_1 && p[0] == 0 && LFLD(u8 *, p, 0xcb8) != NULL && !LFLD(QBits715c, LFLD(u8 *, p, 0xcb8), 0).b4) {
-                NNS_G2dEntryOamManagerOam(mgr, p + 0x14, 1);
+            if (!f_1 && p->unk_00 == 0 && p->sel != NULL && !LFLD(QBits715c, p->sel, 0).b4) {
+                NNS_G2dEntryOamManagerOam(mgr, &p->oamSel, 1);
             }
         }
     }
-    for (i = 0; i < p[8]; i++) {
-        e = LFLD(u8 **, anim, 4)[i];
+    for (i = 0; i < p->count; i++) {
+        e = anim->ents[i];
         if (e == NULL) {
             continue;
         }
-        r = LFLD(u8 *, e, 0);
-        s32 k = (LO_FX_MUL(FX_SinCosTable_[((LFLD(s32, p, 0xcd0) << 15) >> 16) * 2], 0xd000) >> 12) + 3;
+        r = e->part;
+        s32 k = (LO_FX_MUL(FX_SinCosTable_[((p->unk_cd0 << 15) >> 16) * 2], 0xd000) >> 12) + 3;
         if (k >= 0xf) {
             k = 0xf;
         }
-        pal = LFLD(u8 *, p, 0xc8c);
+        pal = p->pal;
         if (Busy715c(self)) {
-            d = LFLD(u16 *, pal, 0x30) + 0x10;
+            d = pal->data + 0x10;
             d[2] = d[k];
             DC_FlushRange(d, 0x20);
-            func_02041080(LFLD(void *, p, 0xc8c), 2, 2, 1);
-            if (r == LFLD(u8 *, p, 0xcb8)) {
+            func_02041080(p->pal, 2, 2, 1);
+            if (r == p->sel) {
                 f_0 = TRUE;
             } else {
                 f_0 = FALSE;
             }
         } else {
-            if (LFLD(RBits715c, r, 0).a == g[0xcb] && LFLD(RBits715c, r, 0).b == g[0xcc]) {
+            if (r->bits.a == g[0xcb] && r->bits.b == g[0xcc]) {
                 f_0 = TRUE;
             } else {
                 f_0 = FALSE;
             }
         }
         if (f_0) {
-            d = LFLD(u16 *, pal, 0x30);
+            d = pal->data;
             d[2] = d[k];
             DC_FlushRange(d, 0x20);
-            func_02041080(LFLD(void *, p, 0xc8c), 2, 1, 1);
-            pt = LFLD(u8 *, r, 0x14);
-            for (j = 0; j < r[0xa]; j++, pt += 0x14) {
-                c = pt[0x13];
+            func_02041080(p->pal, 2, 1, 1);
+            pt = r->links;
+            for (j = 0; j < r->nlinks; j++, pt++) {
+                c = pt->tgt;
                 if (c != 0xff) {
-                    if (kind != pt[0x11]) {
+                    if (kind != pt->kind) {
                         continue;
                     }
-                    ii = pt[0x12];
-                    if (ii >= p[8]) {
+                    ii = pt->idx;
+                    if (ii >= p->count) {
                         continue;
                     }
-                    e2 = LFLD(u8 **, anim, 4)[ii];
+                    e2 = anim->ents[ii];
                     if (e2 == NULL) {
                         continue;
                     }
-                    q = LFLD(u8 *, LFLD(u8 *, e2, 0), 0x14) + c * 0x14;
-                    x0 = LFLD(s32, e, 0xc) + LFLD(s32, pt, 8) - (ox >> 12) + data_ov000_021c9ae4[pt[0x10]].x;
-                    y0 = LFLD(s32, e, 0x10) + LFLD(s32, pt, 0xc) - (oy >> 12) + data_ov000_021c9ae4[pt[0x10]].y;
-                    s = FX_SinCosTable_[((LFLD(s32, p, 0xcc8) << 14) >> 16) * 2];
-                    x1 = LFLD(s32, e2, 0xc) + LFLD(s32, q, 8) - (ox >> 12) + data_ov000_021c9ae4[q[0x10]].x;
-                    y1 = LFLD(s32, e2, 0x10) + LFLD(s32, q, 0xc) - (oy >> 12) + data_ov000_021c9ae4[q[0x10]].y;
+                    q = e2->part->links + c;
+                    x0 = e->x + pt->x - (ox >> 12) + data_ov000_021c9ae4[pt->ofs].x;
+                    y0 = e->y + pt->y - (oy >> 12) + data_ov000_021c9ae4[pt->ofs].y;
+                    s = FX_SinCosTable_[((p->unk_cc8 << 14) >> 16) * 2];
+                    x1 = e2->x + q->x - (ox >> 12) + data_ov000_021c9ae4[q->ofs].x;
+                    y1 = e2->y + q->y - (oy >> 12) + data_ov000_021c9ae4[q->ofs].y;
                     x0 <<= 12;
                     y0 <<= 12;
                     Lerp715c(&x0, x0, x1 << 12, s);
@@ -400,10 +485,10 @@ void func_ov000_0216715c(u8 *self, u8 *p) {
                     SetXY715c_b(&oam, x0 >> 12, y0 >> 12);
                     NNS_G2dEntryOamManagerOam(mgr, &oam, 1);
                 }
-                NNS_G2dEntryOamManagerOam(mgr, LFLD(void *, LFLD(u8 *, r, 0x14) + j * 0x14, 4), 1);
+                NNS_G2dEntryOamManagerOam(mgr, r->links[j].oam, 1);
             }
         }
-        NNS_G2dEntryOamManagerOam(mgr, LFLD(void *, r, 0x10), r[9]);
+        NNS_G2dEntryOamManagerOam(mgr, r->oams, r->count);
     }
 }
 

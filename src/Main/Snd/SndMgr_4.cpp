@@ -61,6 +61,10 @@ s32 func_02049bdc(SndMgr *mgr, s32 id, s32 pan) {
 s32 func_02049c80(SndMgr *mgr, s32 id, s32 volume, s32 pan, s32 pitch, s32 useSlot, u32 slot);
 
 #ifdef NONMATCHING
+// Status (round drA): func_02049c80 is 60 / 42 (raw / register-masked, dsi/1.3 with the project flags); this is the
+// best clean draft. Blocker: extended-block shape of the -1 returns: the slot-fail block must lie outside the zero's
+// extended block, and no if/inline form gives both returns. History: docs/MATCHING.md rounds bgW, svA, swA, cvA
+// (search for the address); the full list is docs/UNMATCHED.md.
 // 60 raw / 12 aligned-masked (round bgW; was 85 / 24). The ROM tests useSlot once, with the slot check
 // inside the useSlot arm after the zero (round svA). Written that way with a plain `if (slot >= 5)
 // return -1;` the slot return is derived from the zero (`sub r0, r5, #1`), the -1 group is only four

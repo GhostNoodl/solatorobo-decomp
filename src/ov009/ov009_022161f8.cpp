@@ -2941,6 +2941,10 @@ void func_ov009_022049e4(Ov009ActVt_02216bc8 *self) {
 }
 
 #ifdef NONMATCHING
+// Status (round drA): func_ov009_02204a10 is 295 / 283 (raw / register-masked, dsi/1.3 with the project flags); this
+// is the best clean draft. Blocker: the hoisted self + 0x10c base is kept in fp, the ROM spills it (every stack
+// offset from 0x10 up is 4 low); the 57-67 drafts need a volatile base pointer. History: docs/MATCHING.md rounds
+// qpD, qpG, qpL, svB, cvA (search for the address); the full list is docs/UNMATCHED.md.
 // func_ov009_02204a10: 153 / 279 (register-masked / raw, honest_search scorer; was 151 / 379),
 // no fake parameters, volatile or junk locals. Round qpD: the trail loop reads self->trail[i]
 // directly, which gives the ROM's code shape there (one i * 12 shared by the VEC_Distance
