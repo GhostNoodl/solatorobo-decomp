@@ -1,10 +1,5 @@
 #include "ov000/VObj.h"
-
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState02155160;
+#include "Main/Sys/SysState.h"
 
 typedef struct Node02155160 {
     u32 unk_00;
@@ -25,7 +20,6 @@ typedef struct Node02155160 {
 
 extern "C" {
 extern void *data_02097e4c;
-extern HeapState02155160 *data_02097dd0;
 void Heap_Free(void *ptr);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 }

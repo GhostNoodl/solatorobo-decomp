@@ -41,9 +41,4 @@ static inline void Model_PlayPart(Model *model, s32 idx) {
     func_02042628(model, anim, part, 0);
 }
 
-static inline void Model_SetPos(Model *model, s32 x, s32 y) {
-    model->x = x;
-    model->y = y;
-}
-
 #endif

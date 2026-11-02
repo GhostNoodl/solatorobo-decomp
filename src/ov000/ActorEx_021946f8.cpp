@@ -1,10 +1,5 @@
 #include "types.h"
-
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
+#include "Main/Sys/SysState.h"
 
 typedef struct ResSet ResSet;
 
@@ -68,7 +63,6 @@ typedef struct {
 extern "C" {
 
 extern const u8 data_ov000_021cc480[];
-extern HeapState *data_02097dd0;
 extern void *data_0214a420;
 
 void *Actor_Ctor(void *self);
@@ -119,13 +113,13 @@ static inline void ActorEx_Destroy(ActorEx *self) {
 
     self->vtbl = data_ov000_021cc480;
     for (i = 0; i < 2; i++) {
-        void *saved = data_02097dd0->current;
-        data_02097dd0->current = data_02097dd0->unk_08;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->res[i] != NULL) {
             ResSet_Delete(self->res[i]);
             self->res[i] = NULL;
         }
-        data_02097dd0->current = saved;
+        data_02097dd0->cur = saved;
     }
     if (self->unk_bc != NULL) {
         func_02065804(data_0214a420, self->unk_bc);

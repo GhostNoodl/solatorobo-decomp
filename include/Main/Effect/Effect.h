@@ -4,15 +4,10 @@
 #include "types.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Res/ResMgr.h"
+#include "nnsys/g3d.h"
 
 // Effect system ("ef/effect3d"): timeline-driven 3D effects with sound cues.
 // The vtables stay in asm.
-
-typedef struct EffectVec {
-    s32 x;
-    s32 y;
-    s32 z;
-} EffectVec;
 
 typedef struct EffectRot {
     u16 x;
@@ -34,11 +29,11 @@ struct EffectObj {
     virtual void Delete();
     virtual void SetParam(s32 param);
     virtual void vf0c();
-    virtual void SetScale(const EffectVec *scale);
+    virtual void SetScale(const VecFx32 *scale);
     virtual void SetScaleXYZ(s32 x, s32 y, s32 z);
-    virtual void SetPos(const EffectVec *pos);
+    virtual void SetPos(const VecFx32 *pos);
     virtual void SetPosXYZ(s32 x, s32 y, s32 z);
-    virtual void AddPos(const EffectVec *delta);
+    virtual void AddPos(const VecFx32 *delta);
     virtual void AddPosXYZ(s32 x, s32 y, s32 z);
     virtual void vf28();
     virtual void vf2c();
@@ -65,14 +60,14 @@ struct EffectObj {
     /* 0x34 */ u8 unk_34;
     /* 0x38 */ s32 prevTime;
     /* 0x3c */ s32 speed;
-    /* 0x40 */ EffectVec scale;
+    /* 0x40 */ VecFx32 scale;
     /* 0x4c */ s32 unk_4c;
     /* 0x50 */ s32 unk_50;
     /* 0x54 */ s32 unk_54;
-    /* 0x58 */ EffectVec pos;
+    /* 0x58 */ VecFx32 pos;
     /* 0x64 */ EffectRot rot;
-    /* 0x6c */ EffectVec *posPtr;
-    /* 0x70 */ EffectVec offset;
+    /* 0x6c */ VecFx32 *posPtr;
+    /* 0x70 */ VecFx32 offset;
     /* 0x7c */ s32 unk_7c;
     /* 0x80 */ s32 unk_80;
     /* 0x84 */ EffectSndCue cues[8];
@@ -100,26 +95,8 @@ typedef struct EffectResDict {
     /* 0x6 */ u16 ofsEntry;
 } EffectResDict;
 
-typedef struct EffectResAnm {
-    /* 0x0 */ u32 sig;
-    /* 0x4 */ u16 numFrame;
-} EffectResAnm;
-
-typedef struct EffectAnmObj {
-    /* 0x00 */ s32 frame;
-    /* 0x04 */ u32 unk_04;
-    /* 0x08 */ EffectResAnm *resAnm;
-    /* 0x0c */ u8 unk_0c[0x74];
-} EffectAnmObj; // size 0x80
-
-typedef struct EffectRenderObj {
-    /* 0x00 */ u8 unk_00[0x2c];
-    /* 0x2c */ void *ptrUser;
-    /* 0x30 */ u8 unk_30[0x24];
-} EffectRenderObj; // size 0x54
-
 typedef struct EffectFile {
-    void *data;
+    NNSG3dResFileHeader *data;
 } EffectFile;
 
 // NNSG3dResTex.
@@ -147,11 +124,11 @@ struct Effect3D : public EffectObj {
     /* 0x130 */ char anmName[0x18];
     /* 0x148 */ EffectFile *mdlFile;
     /* 0x14c */ EffectFile *anmFiles;
-    /* 0x150 */ void *resMdl;
-    /* 0x154 */ void *resTex;
-    /* 0x158 */ EffectAnmObj *anmObjs[EFFECT_ANM_MAX];
-    /* 0x16c */ EffectRenderObj renderObj;
-    /* 0x1c0 */ void (*initCallback)(void *rs);
+    /* 0x150 */ NNSG3dResMdl *resMdl;
+    /* 0x154 */ NNSG3dResTex *resTex;
+    /* 0x158 */ NNSG3dAnmObj *anmObjs[EFFECT_ANM_MAX]; // 0x80 bytes each
+    /* 0x16c */ NNSG3dRenderObj renderObj;
+    /* 0x1c0 */ NNSG3dSbcCallBackFunc initCallback;
 };
 
 struct EffectSetup;
@@ -169,7 +146,7 @@ struct EffectSetup {
     virtual void Dtor();
     virtual void Delete();
     /* 0x04 */ u8 *data;
-    /* 0x08 */ EffectVec pos;
+    /* 0x08 */ VecFx32 pos;
     /* 0x14 */ u8 *objChunk;
     /* 0x18 */ u8 *chunk18;
     /* 0x1c */ u8 *chunk1c;
@@ -202,21 +179,21 @@ typedef struct EffectPtclCmd {
     /* 0x04 */ s32 start;
     /* 0x08 */ s32 len;
     /* 0x0c */ s32 mode;
-    /* 0x10 */ EffectVec a;
-    /* 0x1c */ EffectVec b;
+    /* 0x10 */ VecFx32 a;
+    /* 0x1c */ VecFx32 b;
 } EffectPtclCmd; // size 0x28
 
 typedef struct EffectPtcl {
     virtual void Dtor();
     virtual void Delete();
-    /* 0x04 */ EffectVec dir;
+    /* 0x04 */ VecFx32 dir;
     /* 0x10 */ s32 speed;
     /* 0x14 */ s16 unk_14;
     /* 0x16 */ s16 unk_16;
     /* 0x18 */ s16 unk_18;
-    /* 0x1c */ EffectVec origin;
-    /* 0x28 */ EffectVec pos;
-    /* 0x34 */ EffectVec scale;
+    /* 0x1c */ VecFx32 origin;
+    /* 0x28 */ VecFx32 pos;
+    /* 0x34 */ VecFx32 scale;
     /* 0x40 */ EffectRot rot;
     /* 0x48 */ s32 alpha;
     /* 0x4c */ u16 color;
@@ -254,8 +231,8 @@ typedef struct EffectPartSlot {
     /* 0x0c */ s32 len;
     /* 0x10 */ u32 unk_10;
     /* 0x14 */ s32 rate;
-    /* 0x18 */ EffectVec vec;
-    /* 0x24 */ EffectVec vec2;
+    /* 0x18 */ VecFx32 vec;
+    /* 0x24 */ VecFx32 vec2;
     /* 0x30 */ u8 used;
 } EffectPartSlot; // size 0x34
 
@@ -269,7 +246,7 @@ struct EffectPartSet {
     virtual BOOL Step();
     /* 0x004 */ EffectPtcl *ptcls;
     /* 0x008 */ s32 time;
-    /* 0x00c */ EffectVec pos;
+    /* 0x00c */ VecFx32 pos;
     /* 0x018 */ EffectPartHandler funcs[7];
     /* 0x050 */ EffectPartSlot slots[4];
     /* 0x120 */ s32 localTime;
@@ -299,7 +276,7 @@ struct EffectEmitter : public EffectObj {
     /* 0x15c */ EffectPartSet *parts;
     /* 0x160 */ EffectEmitParams params;
     /* 0x1b0 */ s32 emitTime;
-    /* 0x1b4 */ s32 mtx[9];
+    /* 0x1b4 */ MtxFx33 mtx;
 }; // size 0x1d8
 
 #ifdef __cplusplus
@@ -307,9 +284,9 @@ extern "C" {
 #endif
 
 typedef struct EffectCamera {
-    /* 0x00 */ EffectVec pos;
-    /* 0x0c */ EffectVec target;
-    /* 0x18 */ EffectVec up;
+    /* 0x00 */ VecFx32 pos;
+    /* 0x0c */ VecFx32 target;
+    /* 0x18 */ VecFx32 up;
 } EffectCamera;
 
 typedef struct EffectMgr {
@@ -327,7 +304,7 @@ typedef struct EffectMgr {
     /* 0x30 */ struct EffectObj *drawHead;
     /* 0x34 */ u8 useCamera;
     /* 0x38 */ EffectCamera camera;
-    /* 0x5c */ u8 proj[0x40];
+    /* 0x5c */ MtxFx44 proj;
 } EffectMgr; // size 0x9c
 
 // The effect TU's .bss objects (Effect.cpp): the polygon ID base and counter and the manager.
@@ -399,13 +376,6 @@ static inline struct EffectObj *Effect_Find(EffectMgr *mgr, u32 id) {
     return NULL;
 }
 
-extern void *NNS_G3dGetMdlSet(void *file);
-extern void *NNS_G3dGetTex(void *file);
-extern void *NNS_G3dGetAnmByName(void *set, void *name);
-extern void NNS_G3dAnmObjInit(EffectAnmObj *anmObj, void *resAnm, void *resMdl, void *resTex);
-extern void NNS_G3dRenderObjInit(EffectRenderObj *renderObj, void *resMdl);
-extern void NNS_G3dRenderObjAddAnmObj(EffectRenderObj *renderObj, EffectAnmObj *anmObj);
-extern void NNS_G3dRenderObjSetInitFunc(EffectRenderObj *renderObj, void (*func)(void *rs));
 extern void *func_020359d0(const char *arc, s32 b, s32 c);
 extern BOOL func_02035b90(const char *arc, s32 b);
 extern void *func_02035d5c(const char *arc);
@@ -418,34 +388,15 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void *Heap_Alloc(u32 size);
-extern void VEC_Add(const EffectVec *a, const EffectVec *b, EffectVec *out);
-extern void VEC_MultAdd(s32 a, const EffectVec *v1, const EffectVec *v2, EffectVec *out);
 extern char data_0208c330[];
 
-typedef struct EffectGlb {
-    /* 0x000 */ u8 unk_00[0xfc];
-    /* 0x0fc */ u32 flags;
-    /* 0x100 */ u8 unk_100[0x140];
-    /* 0x240 */ EffectVec camPos;
-    /* 0x24c */ EffectVec camUp;
-    /* 0x258 */ EffectVec camTarget;
-} EffectGlb; // NNSG3dGlb
-
-extern EffectGlb NNS_G3dGlb;
+// NNS_G3dGlb.projMtx, .cameraMtx, .prmBaseRot, .prmBaseTrans and .prmBaseScale, reached through their own
+// symbols. They stay byte arrays: declaring them MtxFx44 / MtxFx43 / ... changes func_02064410's code.
 extern u8 data_02092800[];
 extern u8 data_02092844[];
 extern u8 data_020928b4[];
-extern void MI_Copy64B(const void *src, void *dst);
-extern void MI_Copy48B(const void *src, void *dst);
-extern void MI_Copy36B(const void *src, void *dst);
-extern void MTX_OrthoW(int t, int b, int l, int r, int n, int f, int scaleW, void *mtx);
-extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
-extern void MTX_Identity43_(void *mtx);
-extern void MTX_Identity33_(void *mtx);
-extern void NNS_G3dGlbSetBaseTrans(const EffectVec *trans);
-extern void NNS_G3dGlbSetBaseScale(const EffectVec *scale);
-extern void NNS_G3dGlbFlushP(void);
-extern void NNS_G3dDraw(EffectRenderObj *renderObj);
+extern u8 data_020928d8[];
+extern u8 data_020928e4[];
 extern char data_0208c33c[];
 
 #ifdef __cplusplus

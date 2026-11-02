@@ -2,8 +2,6 @@
 
 extern "C" {
 
-extern void MI_CpuFill8(void *dst, u32 value, u32 size);
-extern void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 extern EffectPartHandler data_0208c948;
 extern EffectPartHandler data_0208c950;
 extern EffectPartHandler data_0208c958;
@@ -12,17 +10,14 @@ extern EffectPartHandler data_0208c968;
 extern EffectPartHandler data_0208c970;
 extern EffectPartHandler data_0208c978;
 
-extern void VEC_MultAdd(s32 scale, const EffectVec *dir, const EffectVec *base, EffectVec *out);
-extern s32 VEC_Mag(const EffectVec *v);
-extern void VEC_Normalize(const EffectVec *v, EffectVec *out);
 
-static inline void Effect_VecSub(const EffectVec *a, const EffectVec *b, EffectVec *out) {
+static inline void Effect_VecSub(const VecFx32 *a, const VecFx32 *b, VecFx32 *out) {
     out->x = a->x - b->x;
     out->y = a->y - b->y;
     out->z = a->z - b->z;
 }
 
-static inline void Effect_VecSet(EffectVec *v, s32 x, s32 y, s32 z) {
+static inline void Effect_VecSet(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
     v->y = y;
     v->z = z;
@@ -47,8 +42,8 @@ BOOL func_02069f3c(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
         color = Effect_Rgb(cmd->a.x, cmd->a.y, cmd->a.z);
         break;
     case 2: {
-        EffectVec out;
-        EffectVec diff;
+        VecFx32 out;
+        VecFx32 diff;
         s32 t = FX_Div(p->time - cmd->start, cmd->len);
         Effect_VecSub(&cmd->b, &cmd->a, &diff);
         VEC_MultAdd(t, &diff, &cmd->a, &out);
@@ -127,14 +122,14 @@ BOOL func_0206a218(EffectPartSet *s) {
     return ret;
 }
 
-static inline void Effect_VecScale(const EffectVec *v, s32 s, EffectVec *out) {
+static inline void Effect_VecScale(const VecFx32 *v, s32 s, VecFx32 *out) {
     out->x = Effect_FxMul(v->x, s);
     out->y = Effect_FxMul(v->y, s);
     out->z = Effect_FxMul(v->z, s);
 }
 
-static inline void EffectPtcl_Accel(EffectPtcl *p, s32 rate, const EffectVec *acc) {
-    EffectVec v;
+static inline void EffectPtcl_Accel(EffectPtcl *p, s32 rate, const VecFx32 *acc) {
+    VecFx32 v;
     Effect_VecScale(&p->dir, p->speed, &v);
     VEC_MultAdd(rate, acc, &v, &v);
     p->speed = VEC_Mag(&v);
@@ -149,12 +144,11 @@ BOOL func_0206a2ec(EffectPartSet *s, EffectPartSlot *slot) {
     return TRUE;
 }
 
-extern void VEC_Add(const EffectVec *a, const EffectVec *b, EffectVec *out);
 
 BOOL func_0206a3a4(EffectPartSet *s, const EffectPartSlot *slot) {
-    EffectVec center;
-    EffectVec pos;
-    EffectVec rel;
+    VecFx32 center;
+    VecFx32 pos;
+    VecFx32 rel;
     EffectPtcl *p;
     s32 mag;
     s32 spd;
@@ -181,11 +175,11 @@ BOOL func_0206a3a4(EffectPartSet *s, const EffectPartSlot *slot) {
 }
 
 BOOL func_0206a530(EffectPartSet *s, const EffectPartSlot *slot) {
-    EffectVec center;
-    EffectVec axis;
-    EffectVec pos;
-    EffectVec rel;
-    EffectVec v;
+    VecFx32 center;
+    VecFx32 axis;
+    VecFx32 pos;
+    VecFx32 rel;
+    VecFx32 v;
     EffectPtcl *p;
     s32 d;
     s32 mag;
@@ -217,10 +211,10 @@ BOOL func_0206a530(EffectPartSet *s, const EffectPartSlot *slot) {
 }
 
 BOOL func_0206a71c(EffectPartSet *s, const EffectPartSlot *slot) {
-    EffectVec center;
-    EffectVec rel;
-    EffectVec pos;
-    EffectVec w;
+    VecFx32 center;
+    VecFx32 rel;
+    VecFx32 pos;
+    VecFx32 w;
     s32 rate;
     EffectPtcl *p;
     s32 mag;
@@ -250,12 +244,12 @@ BOOL func_0206a71c(EffectPartSet *s, const EffectPartSlot *slot) {
 }
 
 BOOL func_0206a8d4(EffectPartSet *s, const EffectPartSlot *slot) {
-    EffectVec axis;
-    EffectVec center;
-    EffectVec pos;
-    EffectVec rel;
-    EffectVec v;
-    EffectVec w;
+    VecFx32 axis;
+    VecFx32 center;
+    VecFx32 pos;
+    VecFx32 rel;
+    VecFx32 v;
+    VecFx32 w;
     s32 rate;
     EffectPtcl *p;
     s32 mag;

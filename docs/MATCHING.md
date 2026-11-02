@@ -7443,3 +7443,38 @@ Function-naming pass over `src/ov000` and `src/Main` (game code only, nothing in
 - **Main helpers (from bodies/SDK calls):** `Heap_Alloc`/`AllocArray`/`Free`/`FreeArray` (`0203dd9c`/`dddc`/`de1c`/`de50`, the interrupt-guarded alloc and free on the current expanded heap; the `Array` pair is the one called for buffers), `Heap_Resize`, `Heap_GetCurrent`/`SetCurrent`, `Sys_WaitVBlank`, `PauseNode_Init`/`IsUpdatePaused`/`IsDrawPaused`, `ResList_Init`, `ResLoader_Init`, `ResMgr_Create`, `Str_CopyStem`, `GfxSys_SetBackdrop`/`SetBackdropSub`, `Pad_GetCur`/`GetTrig`/`GetRelease`/`LookupDir`, `Hit_FxMul`, `Hit_ResetLists`, `HitSphere_Link`, `HitMesh_Link`/`SetRes`/`SetScale`/`SetMtx`/`GetRes`, `Rand_Seed`/`Get`/`UpTo`/`Fx`/`PlusMinus`, `Gfx3DState_Reset`/`NextPolyId`/`TakePolyIds`, `GfxGe_*` (one geometry command each: `PushMtx` 0x11, `PopMtx` 0x12, `StoreMtx` 0x13, `Identity` 0x15, `Scale` 0x1b, `Translate` 0x1c, `Color` 0x20, `PolygonAttr` 0x29, `TexImageParam` 0x2a), `Movie_Pause`/`Resume`, `Wh_SetGgid`/`SetGameInfo`/`GetError`/`GetSharedData`, `PlayTime_Clear`/`Add`/`Clamp`/`FromFrames`, `Interp_SinLerp`/`SinLerpVec`/`QuadLerp`, `SndMgr_GetHeap`/`IsLoadDone`/`LoadBgm`/`MoveBgmVolume`/`StopSeqNo`/`StopSeqArc`/`StopAll`/`ResumeAll`, `SndQueue_Pop`/`Peek`, `MsgRes_GetString`, `LangData_GetLang`, `Camera_Apply` (slot 0: builds eye/at/up from the angles and loads the G3 camera and projection), `Camera_DtorDelete` (slot 8), `Camera_GetYaw`.
 - **File names:** `src/Main/*` is already split by module (`Effect`, `Gfx`, `Hit`, `Lang`, `Math`, `Movie`, `Net`, `Res`, `Save`, `Snd`, `Sys`), and the new prefixes follow those modules. No files were renamed.
 - **Not named:** functions that several vtables share (other than the task flags), helpers that only touch `unk_*` fields or globals, wrappers whose obvious name an inline already uses (`SndQueue_Push`, `ActorMgr_Delete`, `HitSphere_Unlink`, ...), the spawn-node internals (`Spawn_*`), and the Stage command handlers.
+### Round hdA
+
+Header consistency for `include/Main`, `include/ov000` and the SDK headers they use. **All 52 Main and ov000 headers now compile together in one TU, with MWCC and with clang.** Every function is byte-identical: a per-function hash of code plus relocations was compared against a baseline after each step and again after the pull. The touched `NONMATCHING` drafts (9 files) were compiled with `NONMATCHING` defined at HEAD and after the change, and all 9 are the same. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, and `ninja report` 8138 matched.
+
+- **New tool `tools/declaudit.py`.** It parses each TU and each header with clang (as a parser only) and lists every extern, C-linkage prototype, typedef and record tag that is declared with more than one canonical type. `--scope hh` keeps the conflicts between two headers, `--dups` adds word-for-word duplicate struct definitions, and `--cache` makes reruns fast.
+  - Conflicting names, tree-wide: 1974 -> 1929.
+  - Header-involved: 666 -> 630.
+  - Header-vs-header: 160 -> 122. The header-vs-header conflicts left all involve the ov002/ov006/ov007/ov008/ov015 headers, or the g2d entries below.
+  - `protoaudit.py`: 10 return-class conflicts, as before (all from earlier rounds). One parameter-only entry (`VEC_Distance`) is gone.
+- **Types settled (from the definition, or the SDK function the symbol is):**
+  - **`data_02097dd0`** (`UnkSys`, 0x3c) moved to the new `Main/Sys/SysState.h`. It replaces `HeapState` in `ov000/HeapScope.h` and 24 local copies. `->current` is now `->cur`, and `unk_14` is now `frameCount`.
+  - **`Model::pltt`** is a `PlttRes`, and `extPltt` is a `PlttRes *`. `func_02041218`/`func_02041278` take `PlttRes *` everywhere, including `HeapScope.h`, `LoCommon.h` and `SysTask.h`. Raw `m + 0x88` callers cast.
+  - **`SlidePanel`:** `func_0203e63c` takes `u32`, and the pltt fields are `PlttRes *`.
+  - **`SndHandle`** is `NNSSndHandle`. The local `NNS_SndPlayer*` prototypes are gone.
+  - **`ResLoader::thread`** is an `OSThread`. `func_0203de84`/`dec8` take `u32 align`.
+  - **SDK prototypes added:**
+    - `nitro/os.h` gained `OS_DestroyThread`, `OS_IsThreadTerminated`, `OS_SleepThreadDirect`, `OS_SetThreadStackWarningOffset`, `OS_IsRunOnTwl` and `DC_WaitWriteBufferEmpty`, each taken from its libs definition.
+    - `nnsys/snd/stream.h` gained the `NNSSndStrmFormat` enum.
+    - `sndarc_stream.h` now uses `NNSSndStrm`, `OSThread`, `OSMutex` and `NNSFndList`.
+  - **`Effect.h`, `Gfx3D.h`, `GameScene.h`, `TaskList.h`, `Interp.h`, `Wh.h` and `ResLoader.h`** include the SDK headers and use their types (`NNSG3dRenderObj`, `NNSG3dAnmObj`, `MtxFx33`/`43`/`44`, `VecFx16`/`VecFx32`) instead of local copies.
+  - **`Model_SetPos`** lives in `Model.h` only.
+- **Duplicates moved into shared headers:**
+  - `ov000/Model0218fe1c.h` (new) holds `Model0218fe1c`, `AnimCtrl`, `AnmObj`, `ResSet`, `ResHandle`, `AnimList`, `AnimEvent*`, `ResDict*` and `AnimEventFunc`. These were 5 identical copies (`AnimEvent_02191f18`, `Model_0218fe1c`, `Model_02190a30`, `Model_0219badc`, `Robo_0219c8e0`). `unk_84` is an `MtxFx33`.
+  - `ov000/Vec.h` now just includes `nitro/fx.h`.
+  - 33 local `{x, y, z}` typedefs in ov000/Main became `VecFx32`/`VecFx16`. Examples: `CamVec`, `HitVec`, `StVec`, `SndVec` and `Vec_021af464`.
+  - 6 local `m[R][C]` matrix typedefs and 2 local `m[9]` matrix typedefs became `MtxFx43`/`44`/`33`.
+  - 6 local copies of `FX_Mul`/`VEC_Set` and of the `REG_SQRT*` macros were dropped.
+- **Kept as views, with a comment or a cast:**
+  - **`data_02092800`/`02092844`/`020928b4`/`020928d8`/`020928e4`** are the NNS_G3dGlb `projMtx`/`cameraMtx`/`prmBaseRot`/`prmBaseTrans`/`prmBaseScale` fields. They stay `u8[]` in `Effect.h`, because typing `02092844` as `MtxFx43` changes `func_02064410`. Users cast, for example `(MtxFx43 *)data_02092844`.
+  - **`Menu_021763c8.cpp`** keeps its local `void *STD_CopyString` and the `TaskList` `NNS_G3dGeBufferOP_N(s32, void *, s32)`, because the void return is load-bearing (round pmA). `Model_0215e8b0` now uses the SDK one with a `(const char *)` cast.
+- **Left:**
+  - **`NNS_G2dGetAnimSequenceByIdx`/`NNS_G2dGetCellDataByIdx`** in `Model.h` take an `int` index. The SDK takes `u16`, and declaring it `u16` adds a truncation to nine functions (`SlidePanel`, `TextWin` and seven ov000 TUs). So `Model.h` cannot be included with `nnsys/g2d/g2d_Load.h`/`g2d_Image.h`. `PlttRes.h`'s `PlttSub` view of `NNSG2dImagePaletteProxy` stays for the same reason.
+  - **`Lo_0215123c`'s `LoTextWin`** is a different view of `TextWin` (s32 vs u32 fields), not a conflict.
+  - **Three `ActorEx_*` files** keep a local `VecFx32` copy. They do not include `fx.h`.
+- **Pitfall:** a one-line drop of SDK prototypes must be limited to the names the newly visible header actually declares (`sdkdrop --only=`). A blanket drop removed `NNS_G3d*` prototypes that nothing else declares, and it removed Menu's load-bearing `STD_CopyString`.

@@ -51,7 +51,7 @@ void func_ov000_021658e8(Obj021658e8 *self) {
         func_0203df0c(self->unk_30->unk_c7c);
         self->unk_30->unk_c7c = NULL;
     }
-    HEAP_DELETE(void *, self->unk_30->unk_c8c, func_02041278(p); Heap_Free(p));
+    HEAP_DELETE(void *, self->unk_30->unk_c8c, func_02041278((struct PlttRes *)p); Heap_Free(p));
     if (self->unk_30 != NULL) {
         func_0203df0c(self->unk_30);
         self->unk_30 = NULL;

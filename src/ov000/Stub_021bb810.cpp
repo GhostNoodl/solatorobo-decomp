@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Sys/SysState.h"
 
 typedef struct {
     s32 unk_00;
@@ -12,15 +13,8 @@ typedef struct {
 } Obj021bb810;
 SIZE_ASSERT(Obj021bb810, 0x20);
 
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
-
 extern "C" {
 
-extern HeapState *data_02097dd0;
 extern void *data_0214a420;
 BOOL func_02065748(void *p, VObj *obj);
 
@@ -48,15 +42,15 @@ void func_ov000_021bb810(Obj021bb810 *self, s32 a) {
 
 void func_ov000_021bb840(Obj021bb810 *self) {
     if (func_02065748(data_0214a420, self->unk_10)) {
-        void *saved = data_02097dd0->current;
-        data_02097dd0->current = data_02097dd0->unk_08;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->unk_10 != NULL) {
             if (self->unk_10 != NULL) {
                 self->unk_10->vfunc_04();
             }
             self->unk_10 = NULL;
         }
-        data_02097dd0->current = saved;
+        data_02097dd0->cur = saved;
     }
     Obj021bb810_Init(self, 0);
 }

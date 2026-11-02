@@ -1,8 +1,5 @@
 #include "types.h"
-
-typedef struct {
-    s32 m[4][3];
-} Mtx43_02194758;
+#include "nitro/fx.h"
 
 typedef struct {
     u8 kind;
@@ -85,12 +82,6 @@ typedef struct {
 } Res02194758;
 
 typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Vec02194758;
-
-typedef struct {
     u8 pad00[0xc];
     u16 unk_0c;
     u16 id;
@@ -109,7 +100,7 @@ typedef struct {
     s32 unk_64;
     s32 unk_68;
     s32 unk_6c;
-    Vec02194758 pos;
+    VecFx32 pos;
     u16 rx;
     u16 ry;
     u16 rz;
@@ -123,7 +114,6 @@ typedef struct {
 } Actor02194758;
 
 extern "C" {
-extern const s16 FX_SinCosTable_[];
 void *Heap_Alloc(u32 size);
 Info02194758 *func_0206fef8(u16 id);
 void *func_020704b4(u16 id);
@@ -140,14 +130,9 @@ void func_ov000_021984f4(Obj44_02194758 *o, void *a, s32 b);
 void func_0203f80c(void *p);
 void HitMesh_SetRes(void *mesh, void *res);
 void HitMesh_SetScale(void *mesh, s32 scale);
-void HitMesh_SetMtx(void *mesh, const Mtx43_02194758 *mtx);
+void HitMesh_SetMtx(void *mesh, const MtxFx43 *mtx);
 void func_ov000_021bd198(void *p);
 BOOL func_ov000_021bd314(Obj5c_02194758 *p, s32 a);
-void MTX_Identity43_(Mtx43_02194758 *m);
-void MTX_RotX43_(Mtx43_02194758 *m, s32 s, s32 c);
-void MTX_RotY43_(Mtx43_02194758 *m, s32 s, s32 c);
-void MTX_RotZ43_(Mtx43_02194758 *m, s32 s, s32 c);
-void MTX_Concat43(Mtx43_02194758 *a, Mtx43_02194758 *b, Mtx43_02194758 *out);
 
 #define SIN02194758(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define COS02194758(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
@@ -261,8 +246,8 @@ void func_ov000_02194758(Actor02194758 *self) {
         }
     }
     if (self->unk_b0->b3 && GetRes02194758(self->unk_34) != NULL) {
-        Mtx43_02194758 t;
-        Mtx43_02194758 m;
+        MtxFx43 t;
+        MtxFx43 m;
         void *mesh;
         u16 rx;
         u16 ry;

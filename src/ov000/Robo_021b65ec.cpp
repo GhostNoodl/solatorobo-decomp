@@ -35,10 +35,6 @@ typedef struct {
     u32 b10 : 22;
 } B24_021b65ec;
 
-typedef struct {
-    s16 x, y, z;
-} Rot021b65ec;
-
 extern "C" {
 
 extern ActorMgr *data_ov000_021ccd68;

@@ -84,7 +84,6 @@ void *func_02061e7c(u16 id);
 void *MsgRes_GetString(void *g, void *id);
 void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void func_02041218(void *a);
 void func_02041440(void *m, void *a, s32 b);
 void *func_02034d88(s32 a, void *b);
 void func_020417e0(void *m, void *a);
@@ -207,7 +206,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         m = (u8 *)Heap_Alloc(0x160);
         if (m != NULL) {
             char *nm = data_ov000_021cc858[1];
-            func_02041218(m + 0x88);
+            func_02041218((struct PlttRes *)(m + 0x88));
             func_02041440(m, nm, 0);
         }
         self->unk_20 = m;

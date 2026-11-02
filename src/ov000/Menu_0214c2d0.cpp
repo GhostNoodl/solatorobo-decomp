@@ -11,7 +11,6 @@ extern void *data_0208cc88;
 extern void *data_0208cc94;
 extern void *data_02149ef8;
 extern u8 *data_02097ce0;
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
@@ -61,7 +60,7 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
         void *name;
         name = data_0208cc88;
         arc = data_0208cc94;
-        func_02041218(m + 0x88);
+        func_02041218((struct PlttRes *)(m + 0x88));
         func_02041440(m, name, 0);
         STD_CopyString(m + 0x2c, arc);
     }
@@ -81,7 +80,7 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
     res = func_02034d88(func_02035f30(&a, &b, 2), &b);
     m = (u8 *)Heap_Alloc(0x160);
     if (m) {
-        func_02041218(m + 0x88);
+        func_02041218((struct PlttRes *)(m + 0x88));
         func_02041440(m, &b, 0);
         STD_CopyString(m + 0x2c, &a);
     }

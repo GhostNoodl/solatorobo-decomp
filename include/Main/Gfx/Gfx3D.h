@@ -2,6 +2,7 @@
 #define MAIN_GFX_GFX3D_H
 
 #include "Main/Gfx/GfxMgr.h"
+#include "nnsys/g3d.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -11,14 +12,6 @@ extern "C" {
 #define REG_ALPHA_TEST_REF (*(volatile u16 *)0x4000340)
 #define REG_FOG_COLOR (*(volatile u32 *)0x4000358)
 
-extern void NNS_G3dGeFlushBuffer(void);
-extern void NNS_G3dGeSendDL(const void *list, u32 size);
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
-extern void NNS_G3dGlbLightVector(int light, s16 x, s16 y, s16 z);
-extern void NNS_G3dGlbLightColor(int light, u16 color);
-extern void NNS_G3dGlbMaterialColorDiffAmb(u16 diffuse, u16 ambient, BOOL setVtxColor);
-extern void NNS_G3dGlbMaterialColorSpecEmi(u16 specular, u16 emission, BOOL shininess);
-extern void DC_FlushRange(const void *addr, u32 size);
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 
@@ -27,13 +20,6 @@ extern const int data_020828c8[][4];
 extern u32 data_02fe00e8[];
 extern const void *data_0208b3d0[];
 extern const u32 data_020828f8[];
-extern void G3X_SetFog(BOOL enable, int mode, int slope, int offset);
-extern void G3X_SetEdgeColorTable(const u16 *table);
-extern void G3X_SetFogTable(const u8 *table);
-extern void G3X_SetToonTable(const u16 *table);
-extern void G3X_SetClearColor(u16 color, int alpha, int depth, int polygonId, BOOL fog);
-extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
-extern void MTX_OrthoW(int t, int b, int l, int r, int n, int f, int scaleW, void *mtx);
 extern const u16 data_02082958[];
 extern const u16 data_02082900[];
 extern const u16 data_02075614[][4];
@@ -42,14 +28,8 @@ extern const int data_02082884[];
 
 typedef int OamShape;
 
-typedef struct GfxLightVec {
-    s16 x;
-    s16 y;
-    s16 z;
-} GfxLightVec;
-
 typedef struct GfxLight {
-    /* 0x00 */ GfxLightVec dirs[4];
+    /* 0x00 */ VecFx16 dirs[4];
     /* 0x18 */ u16 colors[4];
     /* 0x20 */ u16 diffuse;
     /* 0x22 */ u16 ambient;
@@ -85,7 +65,7 @@ typedef struct Gfx3DState {
     /* 0x0b4 */ u8 unk_0b4[0x80];
     /* 0x134 */ int unk_134;
     /* 0x138 */ int unk_138;
-    /* 0x13c */ u8 unk_13c[0x40];
+    /* 0x13c */ MtxFx44 unk_13c;
     /* 0x17c */ int unk_17c;
 } Gfx3DState;
 

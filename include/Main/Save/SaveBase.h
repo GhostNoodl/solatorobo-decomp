@@ -3,6 +3,7 @@
 
 #include "Main/Save/SysCard.h"
 #include "Main/Res/ResMgr.h"
+#include "nitro/mi.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -96,8 +97,6 @@ extern const char data_0208b5fd[];
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void Heap_Free(void *ptr);
-extern void MI_CpuFill8(void *dst, u32 val, u32 size);
-extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 
 BOOL func_02047694(SaveBase *s);
 BOOL func_02047724(SaveBase *s);

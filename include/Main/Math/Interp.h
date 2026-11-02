@@ -2,21 +2,12 @@
 #define MAIN_MATH_INTERP_H
 
 #include "types.h"
+#include "nitro/fx.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct InterpVec {
-    s32 x;
-    s32 y;
-    s32 z;
-} InterpVec;
-
-extern s16 FX_SinCosTable_[];
-
-extern s32 VEC_Mag(const InterpVec *v);
-extern void VEC_MultAdd(s32 scale, const InterpVec *dir, const InterpVec *base, InterpVec *out);
 
 static inline s32 Interp_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
@@ -31,7 +22,7 @@ static inline s32 Interp_EaseSin(s32 t) {
     return Interp_SinIdx(Interp_FxMul(t, 0x3fff000) >> 16);
 }
 
-static inline void Interp_VecSub(const InterpVec *a, const InterpVec *b, InterpVec *out) {
+static inline void Interp_VecSub(const VecFx32 *a, const VecFx32 *b, VecFx32 *out) {
     out->x = a->x - b->x;
     out->y = a->y - b->y;
     out->z = a->z - b->z;

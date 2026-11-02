@@ -3,30 +3,24 @@
 
 extern "C" {
 
-extern void *func_02043548(CamVec *eye);
+extern void *func_02043548(VecFx32 *eye);
 extern void func_020434e0(s32 *proj);
 extern void Heap_Free(void *ptr);
 extern void func_0204bcb0(Camera *cam);
 extern 
 void func_0204bac8(Camera *cam);
-extern s32 func_01ffbd6c(CamVec *a, CamVec *b, u32 mask, s32 c, s32 d, s32 e);
-extern u16 FX_Atan2(s32 y, s32 x);
-extern void MTX_LookAt(CamVec *eye, CamVec *up, CamVec *at, void *out);
-extern void MTX_PerspectiveW(s32 fovy, s32 aspect, s32 n, s32 fovSin, s32 fovCos, s32 scale, void *out);
-extern const s16 FX_SinCosTable_[];
+extern s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 extern void *NNS_G3dFuncAnmJntNsBcaDefault[];
 extern s32 Rand_UpTo(s32 max);
 extern void *NNS_G3dRS;
 extern u32 NNS_G3dGetJointScale_FuncArray;
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
-extern void MTX_Identity33_(void *mtx);
-extern void MTX_MultVec33(const CamVec *v, const void *mtx, CamVec *out);
 
 typedef struct CamAnimResult {
     /* 0x00 */ u32 flags;
     /* 0x04 */ u8 unk_04[0x24];
     /* 0x28 */ s32 rot[9];
-    /* 0x4c */ CamVec trans;
+    /* 0x4c */ VecFx32 trans;
 } CamAnimResult;
 
 typedef struct CamAnimWork {
@@ -37,24 +31,21 @@ typedef struct CamAnimWork {
 
 typedef void (*CamAnimFunc)(CamAnimResult *out, s32 *frame, s32 arg);
 extern s32 Rand_PlusMinus(s32 amp);
-extern void VEC_MultAdd(s32 scale, const CamVec *dir, const CamVec *base, CamVec *out);
-extern s32 VEC_Distance(const CamVec *a, const CamVec *b);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void VEC_Add(const CamVec *a, const CamVec *b, CamVec *out);
 typedef struct CamState {
     /* 0x000 */ u8 unk_000[0xfc];
     /* 0x0fc */ u32 dirty;
     /* 0x100 */ u8 unk_100[0x140];
-    /* 0x240 */ CamVec eye;
-    /* 0x24c */ CamVec up;
-    /* 0x258 */ CamVec at;
+    /* 0x240 */ VecFx32 eye;
+    /* 0x24c */ VecFx32 up;
+    /* 0x258 */ VecFx32 at;
 } CamState;
 
 extern CamState NNS_G3dGlb;
 extern u8 data_02092800[];
 extern u8 data_02092844[];
 
-static inline void Cam_VecSet(CamVec *v, s32 x, s32 y, s32 z) {
+static inline void Cam_VecSet(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
     v->y = y;
     v->z = z;
@@ -120,10 +111,6 @@ Camera *Camera_DtorDelete(Camera *cam) {
 void func_0204b438(Camera *cam) {
 }
 
-#define REG_SQRTCNT (*(volatile u16 *)0x40002b0)
-#define REG_SQRT_RESULT (*(volatile u32 *)0x40002b4)
-#define REG_SQRT_PARAM (*(volatile u64 *)0x40002b8)
-
 // Starts a 64-bit square root on the divider unit and waits for it.
 static inline void Cam_SqrtStart(s64 v) {
     REG_SQRTCNT = 1;
@@ -180,8 +167,8 @@ void Camera_Apply(Camera *cam) {
         func_0204bac8(cam);
     } else {
         if (cam->flag6) {
-            CamVec at;
-            CamVec eye;
+            VecFx32 at;
+            VecFx32 eye;
             s32 r;
             at = cam->at;
             eye = cam->eye;
@@ -194,8 +181,8 @@ void Camera_Apply(Camera *cam) {
                 }
             }
         } else if (cam->flag5) {
-            CamVec a;
-            CamVec b;
+            VecFx32 a;
+            VecFx32 b;
             s32 r;
             a = cam->eye;
             b = a;
@@ -246,11 +233,11 @@ void Camera_Apply(Camera *cam) {
         NNS_G3dGlb.at.x = cam->at.x;
         NNS_G3dGlb.at.y = cam->at.y;
         NNS_G3dGlb.at.z = cam->at.z;
-        MTX_LookAt(&cam->eye, &cam->up, &cam->at, data_02092844);
+        MTX_LookAt(&cam->eye, &cam->up, &cam->at, (MtxFx43 *)data_02092844);
         NNS_G3dGlb.dirty &= ~0xe8;
     }
     if (cam->projDirty == 1) {
-        MTX_PerspectiveW(cam->aspect, cam->nearClip, cam->farClip, cam->fovSin, cam->fovCos, 0x1000, data_02092800);
+        MTX_PerspectiveW(cam->aspect, cam->nearClip, cam->farClip, cam->fovSin, cam->fovCos, 0x1000, (MtxFx44 *)data_02092800);
         NNS_G3dGlb.dirty &= ~0x50;
         cam->projDirty = 0;
     }

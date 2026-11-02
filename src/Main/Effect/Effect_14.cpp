@@ -206,7 +206,6 @@ BOOL func_0206afd4(EffectEmitter *em) {
 }
 
 
-extern void VEC_MultAdd(s32 scale, const EffectVec *dir, const EffectVec *base, EffectVec *out);
 extern BOOL func_0206924c(EffectEmitterSub *sub, EffectPtcl *p);
 
 static inline BOOL EffectPtcl_Move(EffectPtcl *p) {
@@ -306,17 +305,9 @@ EffectPtcl *func_0206b340(EffectEmitter *em) {
     return em->ptcls;
 }
 
-typedef struct EffectMtx43 {
-    s32 m[4][3];
-} EffectMtx43;
-
 typedef struct EffectMtx43V {
-    EffectVec r[4];
+    VecFx32 r[4];
 } EffectMtx43V;
-
-typedef struct EffectMtx33 {
-    s32 m[3][3];
-} EffectMtx33;
 
 extern u8 func_0206379c(void);
 extern void func_02068e68(EffectPtcl *p, s32 type, void *mtx, s32 arg);
@@ -325,7 +316,7 @@ static inline s32 Effect_Cross(s32 a, s32 b, s32 c, s32 d) {
     return (s32)(((s64)a * b - (s64)c * d + 0x800) >> 12);
 }
 
-static inline void Effect_Billboard(EffectMtx43V *m, const EffectVec *dir) {
+static inline void Effect_Billboard(EffectMtx43V *m, const VecFx32 *dir) {
     s32 cz = ((s32 *)data_02092844)[8];
     s32 cy = ((s32 *)data_02092844)[5];
     s32 cx = ((s32 *)data_02092844)[2];
@@ -344,15 +335,15 @@ static inline void Effect_Billboard(EffectMtx43V *m, const EffectVec *dir) {
 }
 
 void func_0206b484(EffectEmitter *em) {
-    EffectMtx33 rot;
-    EffectVec scale;
-    EffectMtx43 bb;
+    MtxFx33 rot;
+    VecFx32 scale;
+    MtxFx43 bb;
     EffectMtx43V m;
     EffectPtcl *p;
     NNS_G3dGlbSetBaseTrans(&em->pos);
     MTX_Identity33_(&rot);
     MI_Copy36B(&rot, data_020928b4);
-    NNS_G3dGlb.flags &= ~0xa4;
+    NNS_G3dGlb.flag &= ~0xa4;
     {
         s32 k = em->unk_4c;
         scale.x = Effect_FxMul(em->scale.x, k);

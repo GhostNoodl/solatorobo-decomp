@@ -1,14 +1,8 @@
 #include "ov000/VObj.h"
-
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
+#include "Main/Sys/SysState.h"
 
 extern "C" {
 
-extern HeapState *data_02097dd0;
 void func_02041558(void *obj);
 void func_02041278(void *obj);
 void Heap_Free(void *ptr);
@@ -26,13 +20,13 @@ void func_ov000_0214e008(void *self) {
 }
 
 void func_ov000_0214e014(void *self) {
-    void *saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (*(u8 **)((u8 *)self + 0xe0) != NULL) {
         Obj0214e014_Delete(*(u8 **)((u8 *)self + 0xe0));
         *(u8 **)((u8 *)self + 0xe0) = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
 }
 
 }

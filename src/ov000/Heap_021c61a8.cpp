@@ -25,15 +25,15 @@ void func_ov000_021c61a8(Obj021c61a8 *self) {
     node = self->unk_84;
     while (node != NULL) {
         Node021c61a8 *next = node->unk_28;
-        void *saved = data_02097dd0->current;
-        data_02097dd0->current = data_02097dd0->unk_08;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (node != NULL) {
             if (node != NULL) {
                 node->vfunc_04();
             }
             node = NULL;
         }
-        data_02097dd0->current = saved;
+        data_02097dd0->cur = saved;
         node = next;
     }
 }

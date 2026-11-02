@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Sys/SysState.h"
 
 typedef struct Obj021c22d8 {
     u8 unk_00[4];
@@ -30,22 +31,15 @@ typedef struct {
 extern "C" {
 
 extern u8 data_ov000_021cc9bc[];
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
-
-extern HeapState *data_02097dd0;
 void Heap_Free(void *p);
 void func_02041558(void *m);
 void func_02041278(void *p);
 
 #define HEAP_DELETE_MODEL(field)                          \
     {                                                     \
-        void *saved = data_02097dd0->current;             \
+        void *saved = data_02097dd0->cur;             \
         void *p;                                          \
-        data_02097dd0->current = data_02097dd0->unk_08;   \
+        data_02097dd0->cur = data_02097dd0->unk_08;   \
         p = (void *)(field);                              \
         if (p != NULL) {                                  \
             if (p != NULL) {                              \
@@ -55,7 +49,7 @@ void func_02041278(void *p);
             }                                             \
             (field) = 0;                                  \
         }                                                 \
-        data_02097dd0->current = saved;                   \
+        data_02097dd0->cur = saved;                   \
     }
 
 void func_ov000_021c22d8(Obj021c22d8 *self) {
@@ -94,9 +88,9 @@ void func_ov000_021c2364(Obj021c2334 *self) {
     HEAP_DELETE_MODEL(self->unk_30);
     HEAP_DELETE_MODEL(self->unk_34);
     {
-        void *saved = data_02097dd0->current;
+        void *saved = data_02097dd0->cur;
         VObj *p;
-        data_02097dd0->current = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         p = (VObj *)self->unk_38;
         if (p != NULL) {
             if (p != NULL) {
@@ -104,7 +98,7 @@ void func_ov000_021c2364(Obj021c2334 *self) {
             }
             self->unk_38 = 0;
         }
-        data_02097dd0->current = saved;
+        data_02097dd0->cur = saved;
     }
 }
 

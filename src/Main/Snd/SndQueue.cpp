@@ -1,6 +1,7 @@
 #define SND_DEFINE_GLOBALS
 #include "Main/Snd/SndMgr.h"
 #include "Main/Res/ResMgr.h"
+#include "nitro/fx.h"
 
 extern "C" {
 
@@ -24,12 +25,6 @@ void func_0204a3b8(SndMgr *mgr, SndCmd *cmd);
 namespace m_02049de8 {
 extern "C" {
 
-typedef struct SndVec {
-    s32 x;
-    s32 y;
-    s32 z;
-} SndVec;
-
 typedef struct SndAreaEntry {
     /* 0x0 */ u8 a;
     /* 0x1 */ u8 b;
@@ -43,7 +38,7 @@ typedef struct SndListener {
     /* 0xcb */ u8 b;
     /* 0xcc */ u8 c;
     /* 0xcd */ u8 unk_cd[0xf8 - 0xcd];
-    /* 0xf8 */ SndVec pos;
+    /* 0xf8 */ VecFx32 pos;
 } SndListener;
 
 extern s32 data_0208b700;
@@ -52,8 +47,7 @@ extern SndAreaEntry data_0208b7c8[];
 extern s32 data_0208b704;
 extern s32 data_0208b744[];
 
-extern s32 VEC_Distance(const SndVec *a, const SndVec *b);
-extern int func_0204061c(s32 *out, const SndVec *pos);
+extern int func_0204061c(s32 *out, const VecFx32 *pos);
 extern void NNS_SndPlayerPause(SndHandle *handle, int pause);
 extern s32 OS_GetThreadPriority(void *thread);
 extern BOOL OS_SetThreadPriority(void *thread, s32 prio);
@@ -94,11 +88,11 @@ static inline BOOL SndMgr_IsAreaAt(const u8 *p, u8 a, u8 b, u8 c) {
     return r;
 }
 
-s32 func_02049e20(SndMgr *mgr, const SndVec *pos) {
+s32 func_02049e20(SndMgr *mgr, const VecFx32 *pos) {
     SndListener *listener = data_ov000_021ccd54;
     s32 *range = NULL;
     s32 i;
-    SndVec vec;
+    VecFx32 vec;
     s32 dist;
     s32 vol;
     for (i = 0; i < data_0208b700; i++) {
@@ -126,9 +120,9 @@ s32 func_02049e20(SndMgr *mgr, const SndVec *pos) {
     return vol;
 }
 
-SndHandle *func_02049f44(SndMgr *mgr, s32 id, const SndVec *pos, s32 pitch);
+SndHandle *func_02049f44(SndMgr *mgr, s32 id, const VecFx32 *pos, s32 pitch);
 
-SndHandle *func_0204a028(SndMgr *mgr, s32 id, const SndVec *pos, s32 pitch);
+SndHandle *func_0204a028(SndMgr *mgr, s32 id, const VecFx32 *pos, s32 pitch);
 
 static inline SndHandle *SndMgr_GetSlotHandle(SndMgr *mgr, u32 slot) {
     return slot >= 5 ? NULL : mgr->seqArcHandles[slot];
@@ -184,11 +178,11 @@ void func_0204a360(SndMgr *self, s32 arg);
 namespace m_02049f44 {
 extern "C" {
 
-typedef struct SndVec {
+typedef struct VecFx32 {
     s32 x;
     s32 y;
     s32 z;
-} SndVec;
+} VecFx32;
 
 typedef struct SndAreaEntry {
     /* 0x0 */ u8 a;
@@ -203,7 +197,7 @@ typedef struct SndListener {
     /* 0xcb */ u8 b;
     /* 0xcc */ u8 c;
     /* 0xcd */ u8 unk_cd[0xf8 - 0xcd];
-    /* 0xf8 */ SndVec pos;
+    /* 0xf8 */ VecFx32 pos;
 } SndListener;
 
 extern s32 data_0208b700;
@@ -212,7 +206,7 @@ extern SndAreaEntry data_0208b7c8[];
 extern s32 data_0208b704;
 extern s32 data_0208b744[];
 
-extern int func_0204061c(s32 *out, const SndVec *pos);
+extern int func_0204061c(s32 *out, const VecFx32 *pos);
 extern void NNS_SndPlayerPause(SndHandle *handle, int pause);
 extern s32 OS_GetThreadPriority(void *thread);
 extern BOOL OS_SetThreadPriority(void *thread, s32 prio);
@@ -236,9 +230,9 @@ static inline BOOL SndMgr_IsArea(SndListener *listener, u8 a, u8 b, u8 c) {
     return (listener->a == a && listener->b == b && listener->c == c) ? TRUE : FALSE;
 }
 
-s32 func_02049e20(SndMgr *mgr, const SndVec *pos);
+s32 func_02049e20(SndMgr *mgr, const VecFx32 *pos);
 
-SndHandle *func_02049f44(SndMgr *mgr, s32 id, const SndVec *vec, s32 pitch) {
+SndHandle *func_02049f44(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch) {
     s32 seqArc;
     s32 index;
     s32 vol;
@@ -273,7 +267,7 @@ SndHandle *func_02049f44(SndMgr *mgr, s32 id, const SndVec *vec, s32 pitch) {
     return handle;
 }
 
-SndHandle *func_0204a028(SndMgr *mgr, s32 id, const SndVec *vec, s32 pitch) {
+SndHandle *func_0204a028(SndMgr *mgr, s32 id, const VecFx32 *vec, s32 pitch) {
     if (pitch < -0x200 || pitch > 0x1ff) {
         return NULL;
     }

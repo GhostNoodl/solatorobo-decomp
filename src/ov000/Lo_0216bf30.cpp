@@ -17,7 +17,6 @@ typedef struct {
 extern void *data_ov000_021ccd54;
 extern u8 *data_02097d48;
 Robo021ca458 *func_ov000_0219bf90(void);
-void VEC_Add(void *a, void *b, void *c);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 void func_ov000_0216c018(void *self);
 struct LoHost0216c310;
@@ -241,8 +240,6 @@ void func_ov000_0216c018(void *obj) {
 extern "C" {
 
 extern void *data_0214a420;
-extern const s16 FX_SinCosTable_[];
-s32 FX_Div(s32 a, s32 b);
 BOOL func_02065748(void *p, VObj *obj);
 
 typedef struct LoSlot0216c310 LoSlot0216c310;

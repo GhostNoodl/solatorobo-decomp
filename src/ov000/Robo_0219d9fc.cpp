@@ -47,10 +47,6 @@ typedef struct {
     u16 rest : 6;
 } Pad18_0219d9fc;
 
-typedef struct {
-    s32 m[9];
-} Mtx33_0219d9fc;
-
 #define B24(self) LFLD(B24_0219d9fc, self, 0xb24)
 #define B22(self) LFLD(B22_0219d9fc, self, 0xb22)
 #define B2C(self) LFLD(B2C_0219d9fc, self, 0xb2c)
@@ -74,16 +70,9 @@ void func_ov000_02190758(void *model, void *rot, s32 a);
 BOOL func_ov000_021903b4(void *model);
 void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);
 void func_ov003_021ce9ac(void *p);
-void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 void func_ov000_021b4130(void *self, BOOL a);
-void MI_Copy36B(const void *src, void *dst);
 void func_ov000_021bd7a0(void *p);
 void func_ov000_02191c24(void *shadow, void *pos);
-void MTX_Identity33_(Mtx33_0219d9fc *m);
-void MTX_RotX33_(Mtx33_0219d9fc *m, s32 s, s32 c);
-void MTX_RotY33_(Mtx33_0219d9fc *m, s32 s, s32 c);
-void MTX_RotZ33_(Mtx33_0219d9fc *m, s32 s, s32 c);
-void MTX_Concat33(void *a, void *b, void *c);
 void func_ov000_02167fac(void *p, s32 a, s32 b);
 
 static inline Actor *FindActor_0219d9fc(u16 id) {
@@ -401,8 +390,8 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             u16 rz;
             u16 ry;
             u16 rx;
-            Mtx33_0219d9fc mm;
-            Mtx33_0219d9fc mt;
+            MtxFx33 mm;
+            MtxFx33 mt;
             VEC(((u8 *)self->unk_998), 0x78) = VEC(self, 0xad4);
             ry = self->unk_9a8;
             rz = self->unk_9aa;
@@ -430,7 +419,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
                     MTX_RotZ33_(&mm, SIN_0219d9fc(rz), COS_0219d9fc(rz));
                 }
             }
-            MTX_Concat33(&mm, (u8 *)self + 0xab0, &mm);
+            MTX_Concat33(&mm, (const MtxFx33 *)((u8 *)self + 0xab0), &mm);
             MI_Copy36B(&mm, ((u8 *)self->unk_998) + 0x84);
             LFLD(u8, ((u8 *)self->unk_998), 0xc1) = alpha;
             func_ov000_021903b4(((u8 *)self->unk_998));

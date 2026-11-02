@@ -17,12 +17,6 @@ typedef struct {
 } Bits0219763c;
 
 typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Vec0219763c;
-
-typedef struct {
     u8 unk_00[0x158];
     u32 flags[1][4];
 } Save0219763c;
@@ -113,7 +107,7 @@ static inline void Die0219763c(VObj *obj) {
     obj->vfunc_08();
 }
 
-static inline void Spawn0219763c(ActorEx *self, s16 id, const s16 *scale, Vec0219763c *p) {
+static inline void Spawn0219763c(ActorEx *self, s16 id, const s16 *scale, VecFx32 *p) {
     VObj *fx = func_02065f88(id, p);
     s32 s = *scale << 4;
     if (s == 0) {
@@ -133,7 +127,7 @@ void func_ov000_0219763c(VObj *obj) {
     case 0: {
         u8 *t = ((u8 *)self->unk_4c);
         Ent0219763c *e = (Ent0219763c *)zero;
-        Vec0219763c p;
+        VecFx32 p;
         if (t != NULL) {
             if (t[2] != 1 && t[2] != 2) {
                 Die0219763c(obj);
@@ -147,7 +141,7 @@ void func_ov000_0219763c(VObj *obj) {
                 e = &data_ov000_021c9ecc[id];
             }
         }
-        p = *(Vec0219763c *)((u8 *)self + 0x70);
+        p = *(VecFx32 *)((u8 *)self + 0x70);
         p.y += self->unk_6c + (self->unk_6c >> 1);
         if (e != NULL) {
             if (e->fx0 != -1) {

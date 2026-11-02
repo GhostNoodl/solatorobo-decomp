@@ -102,7 +102,6 @@ extern void *data_0208cca0;
 void *Heap_Alloc(u32 size);
 void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, void *b);
-void *STD_CopyString(void *dst, const void *src);
 void func_02041c34(Model *m, s32 a, void *cb, void *arg);
 struct Req0215e6f0;
 struct OamEntry0215e6f0;
@@ -116,9 +115,9 @@ struct OamEntry0215e6f0 *func_ov000_0215e6f0(void *self, struct Req0215e6f0 *req
             void *name_;                             \
             name_ = NAME;                            \
             arc_ = ARC;                              \
-            func_02041218(m_->pltt);                 \
+            func_02041218(&m_->pltt);                 \
             func_02041440(m_, (const char *)name_, 0); \
-            STD_CopyString(m_->name, arc_);          \
+            STD_CopyString(m_->name, (const char *)arc_); \
         }                                            \
         out = m_;                                    \
     } while (0)

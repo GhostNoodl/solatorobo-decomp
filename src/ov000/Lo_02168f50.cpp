@@ -17,7 +17,6 @@ typedef struct {
 extern void *data_ov000_021ccd54;
 extern u8 *data_02097d48;
 Robo021ca458 *func_ov000_0219bf90(void);
-void VEC_Add(void *a, void *b, void *c);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 void func_ov000_0216c018(void *self);
 void func_ov000_0216c310(void *self);
@@ -34,7 +33,7 @@ void func_ov000_02168f50(Lo021cb840 *self) {
     self->unk_80 = p->pos.x;
     self->unk_84 = p->pos.y;
     self->unk_88 = p->pos.z;
-    VEC_Add((u8 *)self + 0x80, (u8 *)self + 0x9c, (u8 *)self + 0x80);
+    VEC_Add((VecFx32 *)((u8 *)self + 0x80), (VecFx32 *)((u8 *)self + 0x9c), (VecFx32 *)((u8 *)self + 0x80));
 }
 
 }

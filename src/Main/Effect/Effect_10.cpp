@@ -50,12 +50,7 @@ BOOL func_0206924c(EffectEmitterSub *sub, EffectPtcl *p) {
     return (ok && !done) ? TRUE : FALSE;
 }
 
-extern int FX_Div(int a, int b);
 extern int Rand_PlusMinus(int range);
-
-static inline int FX_Mul(int a, int b) {
-    return (int)(((s64)a * b + 0x800) >> 12);
-}
 
 BOOL func_02069300(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cmd) {
     switch (cmd->mode) {
@@ -66,8 +61,8 @@ BOOL func_02069300(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
         VEC_Add(&cmd->a, &p->pos, &p->pos);
         break;
     case 2: {
-        EffectVec out;
-        EffectVec diff;
+        VecFx32 out;
+        VecFx32 diff;
         s32 t = FX_Div(p->time - cmd->start, cmd->len);
         diff.x = cmd->b.x - cmd->a.x;
         diff.y = cmd->b.y - cmd->a.y;
@@ -126,9 +121,9 @@ BOOL func_020694a4(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
         break;
     }
     case 2: {
-        EffectVec from;
-        EffectVec out;
-        EffectVec diff;
+        VecFx32 from;
+        VecFx32 out;
+        VecFx32 diff;
         s32 t;
         s32 bx;
         s32 by;
@@ -156,7 +151,7 @@ BOOL func_020694a4(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
         break;
     }
     case 3: {
-        EffectVec f;
+        VecFx32 f;
         s32 s;
         s32 rz;
         s32 ry;
@@ -177,7 +172,7 @@ BOOL func_020694a4(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
         break;
     }
     case 4: {
-        EffectVec f;
+        VecFx32 f;
         s32 s;
         s32 r;
         x = cmd->a.x;
@@ -195,7 +190,7 @@ BOOL func_020694a4(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
     }
     case 5:
         if (cmd->start == p->time) {
-            EffectVec f;
+            VecFx32 f;
             s32 s;
             s32 rz;
             s32 ry;
@@ -228,8 +223,8 @@ BOOL func_02069824(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
         VEC_Add(&cmd->a, &p->scale, &p->scale);
         break;
     case 2: {
-        EffectVec out;
-        EffectVec diff;
+        VecFx32 out;
+        VecFx32 diff;
         s32 t = FX_Div(p->time - cmd->start, cmd->len);
         diff.x = cmd->b.x - cmd->a.x;
         diff.y = cmd->b.y - cmd->a.y;

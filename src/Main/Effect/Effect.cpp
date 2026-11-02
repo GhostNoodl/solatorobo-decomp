@@ -316,12 +316,8 @@ void func_02063e0c(EffectPart *part) {
     part->unk_90 = 2;
 }
 
-typedef struct EffectResName {
-    u32 val[4];
-} EffectResName;
-
 void func_02063e24(Effect3D *e) {
-    EffectResName name;
+    NNSG3dResName name;
     u32 i;
     for (i = 0; i < 4; i++) {
         name.val[i] = 0;
@@ -461,40 +457,40 @@ BOOL func_020641b8(Effect3D *e) {
     } else {
         mdl = NULL;
     }
-    e->resMdl = mdl;
+    e->resMdl = (NNSG3dResMdl *)mdl;
     e->resTex = NNS_G3dGetTex(e->mdlFile->data);
     NNS_G3dRenderObjInit(&e->renderObj, e->resMdl);
     if (e->initCallback != NULL) {
         NNS_G3dRenderObjSetInitFunc(&e->renderObj, e->initCallback);
     } else {
-        NNS_G3dRenderObjSetInitFunc(&e->renderObj, (void (*)(void *))func_02063e0c);
+        NNS_G3dRenderObjSetInitFunc(&e->renderObj, (NNSG3dSbcCallBackFunc)func_02063e0c);
     }
     e->renderObj.ptrUser = e;
     if (e->anmFiles != NULL) {
         if (e->anmFiles[0].data != NULL) {
-            e->anmObjs[0] = (EffectAnmObj *)func_0203de84(0x80, 4);
+            e->anmObjs[0] = (NNSG3dAnmObj *)func_0203de84(0x80, 4);
         }
         if (e->anmFiles[1].data != NULL) {
-            e->anmObjs[1] = (EffectAnmObj *)func_0203de84(0x80, 4);
+            e->anmObjs[1] = (NNSG3dAnmObj *)func_0203de84(0x80, 4);
         }
         if (e->anmFiles[2].data != NULL) {
-            e->anmObjs[2] = (EffectAnmObj *)func_0203de84(0x80, 4);
+            e->anmObjs[2] = (NNSG3dAnmObj *)func_0203de84(0x80, 4);
         }
         if (e->anmFiles[3].data != NULL) {
-            e->anmObjs[3] = (EffectAnmObj *)func_0203de84(0x80, 4);
+            e->anmObjs[3] = (NNSG3dAnmObj *)func_0203de84(0x80, 4);
         }
         if (e->anmFiles[4].data != NULL) {
-            e->anmObjs[4] = (EffectAnmObj *)func_0203de84(0x80, 4);
+            e->anmObjs[4] = (NNSG3dAnmObj *)func_0203de84(0x80, 4);
         }
     }
     func_02063e24(e);
     return TRUE;
 }
 
-static inline void Effect_SetAnmFrame(EffectAnmObj *a, s32 frame, BOOL *ret) {
+static inline void Effect_SetAnmFrame(NNSG3dAnmObj *a, s32 frame, BOOL *ret) {
     s32 max;
     if (a != NULL) {
-        max = (a->resAnm->numFrame << 12) - 0x1000;
+        max = (((NNSG3dResAnmCommon *)a->resAnm)->numFrame << 12) - 0x1000;
         if (frame >= max) {
             a->frame = max;
         } else {
@@ -523,24 +519,16 @@ BOOL func_02064400(Effect3D *e) {
 }
 
 
-typedef struct EfMtx33 {
-    EffectVec r[3];
+// MtxFx33 with its rows as vectors: func_02064410 builds the billboard matrix row by row.
+typedef union EfMtx33 {
+    MtxFx33 mtx;
+    VecFx32 r[3];
 } EfMtx33;
-
-
-extern const s16 FX_SinCosTable_[];
-extern void VEC_Normalize(const EffectVec *in, EffectVec *out);
-extern const EfMtx33 *NNS_G3dGlbGetInvV(void);
-extern void MTX_RotX33_(EfMtx33 *m, s32 s, s32 c);
-extern void MTX_RotY33_(EfMtx33 *m, s32 s, s32 c);
-extern void MTX_RotZ33_(EfMtx33 *m, s32 s, s32 c);
-extern void MTX_Concat33(const EfMtx33 *a, const EfMtx33 *b, EfMtx33 *out);
-extern void MTX_MultVec33(const EffectVec *v, const EfMtx33 *m, EffectVec *out);
 
 #define EF_SIN(a) FX_SinCosTable_[((a) >> 4) * 2]
 #define EF_COS(a) FX_SinCosTable_[((a) >> 4) * 2 + 1]
 
-static inline void Ef_VecSet(EffectVec *v, s32 x, s32 y, s32 z) {
+static inline void Ef_VecSet(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
     v->y = y;
     v->z = z;
@@ -550,7 +538,7 @@ static inline s32 Ef_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
-static inline void Ef_Cross(const EffectVec *a, const EffectVec *b, EffectVec *out) {
+static inline void Ef_Cross(const VecFx32 *a, const VecFx32 *b, VecFx32 *out) {
     s32 x = (s32)(((s64)a->y * b->z - (s64)a->z * b->y + 0x800) >> 12);
     s32 y = (s32)(((s64)a->z * b->x - (s64)a->x * b->z + 0x800) >> 12);
     s32 z = (s32)(((s64)a->x * b->y - (s64)a->y * b->x + 0x800) >> 12);
@@ -559,15 +547,15 @@ static inline void Ef_Cross(const EffectVec *a, const EffectVec *b, EffectVec *o
     out->z = z;
 }
 
-static inline s32 Ef_Dot(const EffectVec *a, const EffectVec *b) {
+static inline s32 Ef_Dot(const VecFx32 *a, const VecFx32 *b) {
     return (s32)(((s64)a->x * b->x + (s64)a->y * b->y + (s64)a->z * b->z + 0x800) >> 12);
 }
 
-static inline void Ef_RotYXZ(EfMtx33 *m, const EffectRot *rot) {
+static inline void Ef_RotYXZ(MtxFx33 *m, const EffectRot *rot) {
     u16 rx;
     u16 ry;
     u16 rz;
-    EfMtx33 t;
+    MtxFx33 t;
     BOOL set;
     ry = rot->y;
     rz = rot->z;
@@ -598,11 +586,11 @@ static inline void Ef_RotYXZ(EfMtx33 *m, const EffectRot *rot) {
     }
 }
 
-static inline void Ef_RotZYX(EfMtx33 *m, const EffectRot *rot) {
+static inline void Ef_RotZYX(MtxFx33 *m, const EffectRot *rot) {
     u16 rx;
     u16 ry;
     u16 rz;
-    EfMtx33 t;
+    MtxFx33 t;
     BOOL set;
     ry = rot->y;
     rx = rot->x;
@@ -634,15 +622,15 @@ static inline void Ef_RotZYX(EfMtx33 *m, const EffectRot *rot) {
 }
 
 void func_02064410(Effect3D *e) {
-    EffectVec trans;
+    VecFx32 trans;
     EfMtx33 rot;
-    EffectVec dir;
-    EffectVec side;
-    EfMtx33 r;
-    EffectVec zv;
-    EffectVec up;
-    EffectVec xv;
-    EffectVec scale;
+    VecFx32 dir;
+    VecFx32 side;
+    MtxFx33 r;
+    VecFx32 zv;
+    VecFx32 up;
+    VecFx32 xv;
+    VecFx32 scale;
     trans.x = Ef_FxMul(e->offset.x, e->scale.x);
     trans.y = Ef_FxMul(e->offset.y, e->scale.y);
     trans.z = Ef_FxMul(e->offset.z, e->scale.z);
@@ -655,7 +643,7 @@ void func_02064410(Effect3D *e) {
     if (e->unk_28 == 1) {
         MI_Copy36B(NNS_G3dGlbGetInvV(), &rot);
     } else if (e->unk_28 == 2) {
-        EffectVec up2;
+        VecFx32 up2;
         up2.x = 0;
         up2.y = 0x1000;
         up2.z = 0;
@@ -670,9 +658,9 @@ void func_02064410(Effect3D *e) {
         rot.r[1] = up2;
         rot.r[2] = dir;
     } else if (e->unk_28 == 3) {
-        const EfMtx33 *inv = NNS_G3dGlbGetInvV();
-        Ef_VecSet(&zv, inv->r[2].x, inv->r[2].y, inv->r[2].z);
-        Ef_VecSet(&xv, inv->r[0].x, inv->r[0].y, inv->r[0].z);
+        const MtxFx43 *inv = NNS_G3dGlbGetInvV();
+        Ef_VecSet(&zv, inv->m[2][0], inv->m[2][1], inv->m[2][2]);
+        Ef_VecSet(&xv, inv->m[0][0], inv->m[0][1], inv->m[0][2]);
         Ef_VecSet(&up, 0, 0x1000, 0);
         Ef_RotYXZ(&r, &e->rot);
         MTX_MultVec33(&up, &r, &up);
@@ -684,12 +672,12 @@ void func_02064410(Effect3D *e) {
         rot.r[1] = up;
         rot.r[2] = zv;
     } else if (e->unk_29) {
-        Ef_RotYXZ(&rot, &e->rot);
+        Ef_RotYXZ(&rot.mtx, &e->rot);
     } else {
-        Ef_RotZYX(&rot, &e->rot);
+        Ef_RotZYX(&rot.mtx, &e->rot);
     }
     MI_Copy36B(&rot, data_020928b4);
-    NNS_G3dGlb.flags &= ~0xa4;
+    NNS_G3dGlb.flag &= ~0xa4;
     {
         s32 k = e->unk_4c;
         scale.x = Ef_FxMul(e->scale.x, k);
@@ -712,34 +700,34 @@ void func_02064b40(Effect3D *e) {
     e->unk_c4 = 0;
 }
 
-static inline void Effect_SetProjection(const void *mtx) {
+static inline void Effect_SetProjection(const MtxFx44 *mtx) {
     MIi_CpuCopyFast(mtx, data_02092800, 0x40);
-    NNS_G3dGlb.flags &= ~0x50;
+    NNS_G3dGlb.flag &= ~0x50;
 }
 
 
 // Scales all three components; the caller then overwrites z, which keeps
 // the target's store order for y and z.
-static inline void Effect_VecScale(EffectVec *d, const EffectVec *s, s32 k) {
+static inline void Effect_VecScale(VecFx32 *d, const VecFx32 *s, s32 k) {
     d->x = Effect_FxMul(s->x, k);
     d->y = Effect_FxMul(s->y, k);
     d->z = Effect_FxMul(s->z, k);
 }
 void func_02064b54(Effect3D *e) {
-    u8 proj[0x40];
-    u8 cam[0x30];
-    EffectVec trans;
-    EffectVec scale;
-    u8 ortho[0x40];
-    u8 rot[0x24];
-    u8 *glbProj = data_02092800;
-    u8 *glbCam = data_02092844;
-    MI_Copy64B(glbProj, proj);
-    MI_Copy48B(glbCam, cam);
-    MTX_OrthoW(0x60000, -0x60000, -0x80000, 0x80000, 0, 0x20000, 0x400000, ortho);
-    Effect_SetProjection(ortho);
+    MtxFx44 proj;
+    MtxFx43 cam;
+    VecFx32 trans;
+    VecFx32 scale;
+    MtxFx44 ortho;
+    MtxFx33 rot;
+    MtxFx44 *glbProj = (MtxFx44 *)data_02092800;
+    MtxFx43 *glbCam = (MtxFx43 *)data_02092844;
+    MI_Copy64B(glbProj, &proj);
+    MI_Copy48B(glbCam, &cam);
+    MTX_OrthoW(0x60000, -0x60000, -0x80000, 0x80000, 0, 0x20000, 0x400000, &ortho);
+    Effect_SetProjection(&ortho);
     MTX_Identity43_(glbCam);
-    *(s32 *)(glbCam + 0x2c) = 0x200;
+    glbCam->_32 = 0x200;
     trans.x = Effect_FxMul(e->offset.x, e->scale.x);
     trans.y = Effect_FxMul(e->offset.y, e->scale.y);
     trans.z = Effect_FxMul(e->offset.z, e->scale.z);
@@ -749,16 +737,16 @@ void func_02064b54(Effect3D *e) {
         VEC_Add(&trans, &e->pos, &trans);
     }
     NNS_G3dGlbSetBaseTrans(&trans);
-    MTX_Identity33_(rot);
-    MI_Copy36B(rot, data_020928b4);
-    NNS_G3dGlb.flags &= ~0xa4;
+    MTX_Identity33_(&rot);
+    MI_Copy36B(&rot, data_020928b4);
+    NNS_G3dGlb.flag &= ~0xa4;
     Effect_VecScale(&scale, &e->scale, 0x64000);
     scale.z = 0x1000;
     NNS_G3dGlbSetBaseScale(&scale);
     NNS_G3dGlbFlushP();
     NNS_G3dDraw(&e->renderObj);
-    Effect_SetProjection(proj);
-    MI_Copy48B(cam, glbCam);
+    Effect_SetProjection(&proj);
+    MI_Copy48B(&cam, glbCam);
 }
 
 }
@@ -769,7 +757,7 @@ namespace m_02064d3c {
 extern "C" {
 
 extern EffectFile *func_02034b98(void *arc, const char *name);
-extern void func_02068508(struct EffectSetup *setup, void *data, EffectVec *pos);
+extern void func_02068508(struct EffectSetup *setup, void *data, VecFx32 *pos);
 extern EffectObj *func_02068544(struct EffectSetup *setup);
 extern void func_02068540(struct EffectSetup *setup);
 extern u32 data_0208c1d8[];
@@ -895,7 +883,7 @@ BOOL func_02064e98(EffectGroup *g) {
     return TRUE;
 }
 
-void func_0206500c(EffectObj *obj, const EffectVec *pos) {
+void func_0206500c(EffectObj *obj, const VecFx32 *pos) {
     obj->pos = *pos;
 }
 
@@ -903,7 +891,7 @@ void func_02065028(EffectObj *obj, const EffectRot *rot) {
     obj->rot = *rot;
 }
 
-void func_02065044(EffectObj *obj, const EffectVec *scale) {
+void func_02065044(EffectObj *obj, const VecFx32 *scale) {
     obj->scale = *scale;
 }
 
@@ -931,8 +919,8 @@ BOOL func_020650a4(EffectGroup *g) {
     return TRUE;
 }
 
-void func_020650e0(EffectGroup *g, const EffectVec *pos) {
-    EffectVec d;
+void func_020650e0(EffectGroup *g, const VecFx32 *pos) {
+    VecFx32 d;
     EffectObj *c;
     d.x = pos->x - g->pos.x;
     d.y = pos->y - g->pos.y;
@@ -943,19 +931,19 @@ void func_020650e0(EffectGroup *g, const EffectVec *pos) {
     g->pos = *pos;
 }
 
-void func_0206516c(EffectObj *obj, const EffectVec *delta) {
+void func_0206516c(EffectObj *obj, const VecFx32 *delta) {
     VEC_Add(&obj->pos, delta, &obj->pos);
 }
 
 void func_02065184(EffectObj *obj, s32 x, s32 y, s32 z) {
-    EffectVec v;
+    VecFx32 v;
     v.x = x;
     v.y = y;
     v.z = z;
     obj->SetPos(&v);
 }
 
-void func_020651b0(EffectGroup *g, const EffectVec *delta) {
+void func_020651b0(EffectGroup *g, const VecFx32 *delta) {
     EffectObj *c;
     for (c = g->child; c != NULL; c = c->child) {
         c->AddPos(delta);
@@ -964,7 +952,7 @@ void func_020651b0(EffectGroup *g, const EffectVec *delta) {
 }
 
 void func_020651fc(EffectObj *obj, s32 x, s32 y, s32 z) {
-    EffectVec v;
+    VecFx32 v;
     v.x = x;
     v.y = y;
     v.z = z;
@@ -995,12 +983,12 @@ void func_020652e4(EffectObj *obj, u16 x, u16 y, u16 z) {
     obj->SetRot(&r);
 }
 
-void func_02065310(EffectGroup *g, const EffectVec *scale) {
+void func_02065310(EffectGroup *g, const VecFx32 *scale) {
     s32 fx = FX_Div(scale->x, g->scale.x);
     s32 fy = FX_Div(scale->y, g->scale.y);
     s32 fz = FX_Div(scale->z, g->scale.z);
     EffectObj *c;
-    EffectVec v;
+    VecFx32 v;
     for (c = g->child; c != NULL; c = c->child) {
         v = c->scale;
         v.x = Effect_FxMul(fx, v.x);
@@ -1012,7 +1000,7 @@ void func_02065310(EffectGroup *g, const EffectVec *scale) {
 }
 
 void func_02065454(EffectObj *obj, s32 x, s32 y, s32 z) {
-    EffectVec v;
+    VecFx32 v;
     v.x = x;
     v.y = y;
     v.z = z;
@@ -1028,7 +1016,6 @@ void func_02065480(EffectGroup *g, s32 param) {
 
 extern void PauseNode_Init(void *task);
 extern void *func_02043548(EffectCamera *camera);
-extern void MTX_Identity44_(void *mtx);
 
 static inline void EffectMgr_Reset(EffectMgr *m) {
     m->state = 0;
@@ -1043,7 +1030,7 @@ static inline void EffectMgr_Reset(EffectMgr *m) {
     m->count2 = 0;
     m->drawHead = NULL;
     m->useCamera = 0;
-    MTX_Identity44_(m->proj);
+    MTX_Identity44_(&m->proj);
 }
 
 void func_020654b8(void) {
@@ -1280,41 +1267,34 @@ typedef struct EffectBlk12 {
     s32 w[3];
 } EffectBlk12;
 
-typedef struct EffectMtx33 {
-    s32 m[9];
-} EffectMtx33;
-
 extern BOOL PauseNode_IsDrawPaused(void *node, BOOL recurse);
-extern u8 data_020928d8[];
-extern u8 data_020928e4[];
-extern void MTX_LookAt(const EffectVec *camPos, const EffectVec *camUp, const EffectVec *target, void *mtx);
 extern int Gfx3DState_TakePolyIds(void *st, int n);
 
-static inline void Effect_GlbLookAt(const EffectVec *camPos, const EffectVec *camUp, const EffectVec *target) {
+static inline void Effect_GlbLookAt(const VecFx32 *camPos, const VecFx32 *camUp, const VecFx32 *target) {
     NNS_G3dGlb.camPos = *camPos;
     NNS_G3dGlb.camUp = *camUp;
     NNS_G3dGlb.camTarget = *target;
-    MTX_LookAt(camPos, camUp, target, data_02092844);
-    NNS_G3dGlb.flags &= ~0xe8;
+    MTX_LookAt(camPos, camUp, target, (MtxFx43 *)data_02092844);
+    NNS_G3dGlb.flag &= ~0xe8;
 }
 
-static inline void Effect_GlbSetProj(const void *proj) {
+static inline void Effect_GlbSetProj(const MtxFx44 *proj) {
     MIi_CpuCopyFast(proj, data_02092800, 0x40);
-    NNS_G3dGlb.flags &= ~0x50;
+    NNS_G3dGlb.flag &= ~0x50;
 }
 
-static inline void Effect_GlbSetBaseRot(const EffectMtx33 *rot) {
+static inline void Effect_GlbSetBaseRot(const MtxFx33 *rot) {
     MI_Copy36B(rot, data_020928b4);
-    NNS_G3dGlb.flags &= ~0xa4;
+    NNS_G3dGlb.flag &= ~0xa4;
 }
 
 void func_02065b84(EffectMgr *m) {
-    EffectMtx33 rot;
-    EffectVec trans;
-    EffectVec scale;
-    EffectVec camPos;
-    EffectVec camTarget;
-    EffectVec camUp;
+    MtxFx33 rot;
+    VecFx32 trans;
+    VecFx32 scale;
+    VecFx32 camPos;
+    VecFx32 camTarget;
+    VecFx32 camUp;
     u8 proj[0x40];
     EffectObj *o;
     EffectObj *next;
@@ -1327,15 +1307,15 @@ void func_02065b84(EffectMgr *m) {
     } else {
         return;
     }
-    rot = *(EffectMtx33 *)data_020928b4;
+    rot = *(MtxFx33 *)data_020928b4;
     *(EffectBlk12 *)&trans = *(EffectBlk12 *)data_020928d8;
     *(EffectBlk12 *)&scale = *(EffectBlk12 *)data_020928e4;
     camPos = NNS_G3dGlb.camPos;
     camTarget = NNS_G3dGlb.camTarget;
     camUp = NNS_G3dGlb.camUp;
-    MI_Copy64B(data_02092800, proj);
+    MI_Copy64B(data_02092800, &proj);
     if (m->useCamera) {
-        Effect_GlbSetProj(m->proj);
+        Effect_GlbSetProj(&m->proj);
         Effect_GlbLookAt(&m->camera.pos, &m->camera.up, &m->camera.target);
     }
     o = m->head;
@@ -1369,7 +1349,7 @@ void func_02065b84(EffectMgr *m) {
     NNS_G3dGlbSetBaseScale(&scale);
     if (m->useCamera) {
         Effect_GlbLookAt(&camPos, &camTarget, &camUp);
-        Effect_GlbSetProj(m->proj);
+        Effect_GlbSetProj(&m->proj);
     }
     n = data_0214a41d;
     if (n >= 0x10) {

@@ -2,8 +2,6 @@
 
 extern "C" {
 
-extern s32 STD_CompareNString(const void *a, const char *b, u32 n);
-extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern char data_0208c7fe[];
 extern char data_0208c806[];
 extern char data_0208c80e[];
@@ -19,38 +17,38 @@ void func_02068600(EffectSetup *setup) {
     u32 entrySize2;
     u8 *p = setup->data + 0xc;
     for (;;) {
-        if (STD_CompareNString(p, data_0208c7fe, 8) == 0) {
+        if (STD_CompareNString((const char *)p, data_0208c7fe, 8) == 0) {
             setup->chunk20 = p;
             p += 8;
-            while (STD_CompareNString(p, data_0208c806, 8) != 0) {
+            while (STD_CompareNString((const char *)p, data_0208c806, 8) != 0) {
                 MI_CpuCopy8(p + 0x14, &entrySize, 4);
                 p += entrySize + 0x18;
             }
             p += 8;
-        } else if (STD_CompareNString(p, data_0208c80e, 8) == 0) {
+        } else if (STD_CompareNString((const char *)p, data_0208c80e, 8) == 0) {
             u32 size;
             setup->chunk24 = p;
             MI_CpuCopy8(p + 0xc, &size, 4);
             p = p + 0x18 + size;
-        } else if (STD_CompareNString(p, data_0208c816, 8) == 0) {
+        } else if (STD_CompareNString((const char *)p, data_0208c816, 8) == 0) {
             u32 size;
             setup->chunk1c = p;
             MI_CpuCopy8(p + 0xc, &size, 4);
             p = p + 0x18 + size;
-        } else if (STD_CompareNString(p, data_0208c81e, 8) == 0) {
+        } else if (STD_CompareNString((const char *)p, data_0208c81e, 8) == 0) {
             setup->chunk18 = p;
             p += 8;
-            while (STD_CompareNString(p, data_0208c806, 8) != 0) {
+            while (STD_CompareNString((const char *)p, data_0208c806, 8) != 0) {
                 MI_CpuCopy8(p + 0x8, &entrySize2, 4);
                 p += entrySize2 + 0xc;
             }
             p += 8;
-        } else if (STD_CompareNString(p, data_0208c826, 8) == 0) {
+        } else if (STD_CompareNString((const char *)p, data_0208c826, 8) == 0) {
             u32 size;
             setup->objChunk = p;
             MI_CpuCopy8(p + 0xc, &size, 4);
             p = p + 0x18 + size;
-        } else if (STD_CompareNString(p, data_0208c82e, 8) == 0) {
+        } else if (STD_CompareNString((const char *)p, data_0208c82e, 8) == 0) {
             return;
         }
     }
@@ -74,7 +72,6 @@ extern void func_0206a138(EffectPartSet *parts);
 extern void func_0206a0d8(EffectPartSet *parts);
 extern BOOL func_0206a0dc(EffectPartSet *parts, u8 *data);
 extern void func_02069248(EffectEmitterSub *sub);
-extern void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 
 void func_02068c40(EffectSetup *setup, EffectObj *obj, s32 id);
 void func_020689ec(EffectSetup *setup, EffectEmitter *em, const char *name);
@@ -165,8 +162,8 @@ void func_020689ec(EffectSetup *setup, EffectEmitter *em, const char *name) {
         return;
     }
     p = setup->chunk20 + 8;
-    while (STD_CompareNString(p, data_0208c806, 8) != 0) {
-        if (STD_CompareNString(p, name, 0x10) == 0) {
+    while (STD_CompareNString((const char *)p, data_0208c806, 8) != 0) {
+        if (STD_CompareNString((const char *)p, name, 0x10) == 0) {
             break;
         }
         MI_CpuCopy8(p + 0x14, &size, 4);
@@ -236,7 +233,7 @@ void func_02068c40(EffectSetup *setup, EffectObj *obj, s32 id) {
         return;
     }
     p = setup->chunk18 + 8;
-    while (STD_CompareNString(p, data_0208c806, 8) != 0) {
+    while (STD_CompareNString((const char *)p, data_0208c806, 8) != 0) {
         MI_CpuCopy8(p, &v, 4);
         if (v == id) {
             break;

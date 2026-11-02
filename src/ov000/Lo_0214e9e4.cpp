@@ -29,7 +29,6 @@ extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021caac8[];
 void *MsgRes_GetString(void *g, u32 id);
 BOOL func_0205aa30(void *p);
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *STD_CopyString(void *dst, void *src);
 void *func_02034d88(void *a, void *b);
@@ -76,7 +75,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     if (m != NULL) {
         name = data_ov000_021ca8d8[1];
         arc = data_ov000_021ca8d8[0];
-        func_02041218(m + 0x88);
+        func_02041218((struct PlttRes *)(m + 0x88));
         func_02041440(m, name, 0);
         STD_CopyString(m + 0x2c, arc);
     }

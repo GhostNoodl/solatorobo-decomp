@@ -44,7 +44,7 @@ void func_ov000_0215d758(Lo021cae48 *self) {
         void *name_;
         name_ = data_0208cc88;
         arc_ = data_0208cc94;
-        func_02041218(m + 0x88);
+        func_02041218((struct PlttRes *)(m + 0x88));
         func_02041440((Model *)m, (const char *)name_, 0);
         STD_CopyString((char *)m + 0x2c, (const char *)arc_);
     }

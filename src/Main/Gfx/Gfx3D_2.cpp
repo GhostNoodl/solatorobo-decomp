@@ -1,4 +1,5 @@
 #include "Main/Gfx/Gfx3D.h"
+#include "nitro/os.h"
 
 extern "C" {
 
@@ -46,7 +47,7 @@ GfxCamPos *func_02043548(GfxCamPos *p) {
 }
 
 
-static inline void GfxLightVec_Set(GfxLightVec *v, s16 x, s16 y, s16 z) {
+static inline void GfxLightVec_Set(VecFx16 *v, s16 x, s16 y, s16 z) {
     v->x = x;
     v->y = y;
     v->z = z;
@@ -56,8 +57,8 @@ static inline void GfxLightVec_Set(GfxLightVec *v, s16 x, s16 y, s16 z) {
 static inline void GfxLight_Apply(GfxLight *light) {
     int i;
     for (i = 0; i < 4; i++) {
-        NNS_G3dGlbLightVector(i, light->dirs[i].x, light->dirs[i].y, light->dirs[i].z);
-        NNS_G3dGlbLightColor(i, light->colors[i]);
+        NNS_G3dGlbLightVector((GXLightId)i, light->dirs[i].x, light->dirs[i].y, light->dirs[i].z);
+        NNS_G3dGlbLightColor((GXLightId)i, light->colors[i]);
     }
     NNS_G3dGlbMaterialColorDiffAmb(light->diffuse, light->ambient, TRUE);
     NNS_G3dGlbMaterialColorSpecEmi(light->specular, light->emission, TRUE);
@@ -112,7 +113,7 @@ void func_020436f8(GfxPltt *pltt, u16 *buf, u32 size) {
 static inline void GfxLight_Init(GfxLight *light) {
     int i;
     for (i = 0; i < 4; i++) {
-        GfxLightVec *v = &light->dirs[i];
+        VecFx16 *v = &light->dirs[i];
         v->x = 0xfd7;
         v->y = -0xfd7;
         v->z = -0xfd7;
@@ -141,47 +142,6 @@ void Gfx3DState_Reset(Gfx3DState *st) {
     st->unk_003 = 2;
 }
 
-static inline void G3X_AlphaTest(BOOL enable, int ref) {
-    if (enable) {
-        REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3000) | 4;
-        REG_ALPHA_TEST_REF = ref;
-    } else {
-        REG_DISP3DCNT &= 0xcffb;
-    }
-}
-
-static inline void G3X_AlphaBlend(BOOL enable) {
-    if (enable) {
-        REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3000) | 8;
-    } else {
-        REG_DISP3DCNT &= 0xcff7;
-    }
-}
-
-static inline void G3X_AntiAlias(BOOL enable) {
-    if (enable) {
-        REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3000) | 0x10;
-    } else {
-        REG_DISP3DCNT &= 0xcfef;
-    }
-}
-
-static inline void G3X_EdgeMarking(BOOL enable) {
-    if (enable) {
-        REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3000) | 0x20;
-    } else {
-        REG_DISP3DCNT &= 0xcfdf;
-    }
-}
-
-static inline void G3X_SetShading(int mode) {
-    REG_DISP3DCNT = (REG_DISP3DCNT & ~0x3002) | (mode << 1);
-}
-
-static inline void G3X_SetFogColor(u16 color, u16 alpha) {
-    REG_FOG_COLOR = color | (alpha << 16);
-}
-
 void func_02043904(Gfx3DState *st) {
     int i;
     REG_DISP3DCNT &= 0xcffb;
@@ -193,7 +153,7 @@ void func_02043904(Gfx3DState *st) {
     st->fogOffset = 0x7d80;
     st->fogMode = 0;
     st->fogSlope = 5;
-    G3X_SetFog(FALSE, 0, 5, st->fogOffset);
+    G3X_SetFog(FALSE, GX_FOGBLEND_COLOR_ALPHA, GX_FOGSLOPE_0x0400, st->fogOffset);
     st->fogColor = 0;
     st->fog = FALSE;
     st->fogAlpha = 0x1f;
@@ -201,9 +161,9 @@ void func_02043904(Gfx3DState *st) {
     for (i = 0; i < 0x20; i++) {
         st->fogTable[i] = i * 0x7f / 0x1f;
     }
-    G3X_SetFogTable(st->fogTable);
+    G3X_SetFogTable((const u32 *)st->fogTable);
     st->shading = 0;
-    G3X_SetShading(0);
+    G3X_SetShading(GX_SHADING_TOON);
     MIi_CpuCopyFast(data_02082958, st->toonTable, sizeof(st->toonTable));
     G3X_SetToonTable(data_02082958);
     st->edgeMarking = FALSE;
@@ -224,7 +184,7 @@ void func_02043904(Gfx3DState *st) {
     st->light.ambient = 0;
     st->light.specular = 0;
     st->light.emission = 0;
-    MTX_OrthoW(0, 0xc0000, 0, 0x100000, 0, 0x20000, 0x400000, st->unk_13c);
+    MTX_OrthoW(0, 0xc0000, 0, 0x100000, 0, 0x20000, 0x400000, &st->unk_13c);
 }
 
 void func_02043b20(Gfx3DState *st) {
@@ -237,15 +197,15 @@ void func_02043b20(Gfx3DState *st) {
     G3X_AntiAlias(st->antiAlias);
     if (st->fog) {
         G3X_SetFogColor(st->fogColor, st->fogAlpha);
-        G3X_SetFogTable(st->fogTable);
-        G3X_SetFog(TRUE, st->fogMode, st->fogSlope, st->fogOffset);
+        G3X_SetFogTable((const u32 *)st->fogTable);
+        G3X_SetFog(TRUE, (GXFogBlend)st->fogMode, (GXFogSlope)st->fogSlope, st->fogOffset);
     } else {
-        G3X_SetFog(FALSE, st->fogMode, st->fogSlope, st->fogOffset);
+        G3X_SetFog(FALSE, (GXFogBlend)st->fogMode, (GXFogSlope)st->fogSlope, st->fogOffset);
     }
     if (st->shading == 0) {
-        G3X_SetShading(0);
+        G3X_SetShading(GX_SHADING_TOON);
     } else {
-        G3X_SetShading(1);
+        G3X_SetShading(GX_SHADING_HIGHLIGHT);
     }
     G3X_SetToonTable(st->toonTable);
     if (st->edgeMarking) {
@@ -304,7 +264,7 @@ void func_02043db4(int idx, int x, int y, u32 color) {
     scale[0] = x;
     scale[1] = y;
     scale[2] = 0x1000;
-    NNS_G3dGeBufferOP_N(0x1b, scale, 3);
+    NNS_G3dGeBufferOP_N(0x1b, (u32 *)scale, 3);
     c = color;
     NNS_G3dGeBufferOP_N(0x20, &c, 1);
     NNS_G3dGeSendDL(data_0208b3d0[idx], data_020828f8[idx]);

@@ -45,7 +45,6 @@ extern BOOL NNS_G2dGetUnpackedCharacterData(void *data, void *out);
 extern BOOL NNS_G2dGetUnpackedPaletteData(void *data, void *out);
 extern BOOL NNS_G2dGetUnpackedPaletteCompressInfo(void *data, void *out);
 extern void *Heap_Alloc(u32 size);
-extern void *func_0203dec8(u32 size, int align);
 extern void func_0203df40(void *ptr);
 extern BOOL func_02046e28(void *arg);
 extern void *data_02097e44;

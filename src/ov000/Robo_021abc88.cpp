@@ -2,10 +2,6 @@
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 
-#define REG_SQRTCNT (*(volatile u16 *)0x40002b0)
-#define REG_SQRT_RESULT (*(volatile u32 *)0x40002b4)
-#define REG_SQRT_PARAM (*(volatile u64 *)0x40002b8)
-
 typedef struct {
     u16 b0 : 8;
     u16 b8 : 1;

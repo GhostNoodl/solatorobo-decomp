@@ -74,8 +74,6 @@ void Heap_Free(void *ptr);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 void NNS_G3dGlbSetBaseScale(VecFx32 *scale);
 void NNS_G3dGlbSetBaseTrans(VecFx32 *trans);
-void MTX_Identity33_(Mtx33 *mtx);
-void MI_Copy36B(const void *src, void *dst);
 void NNS_G3dGlbFlushVP(void);
 void NNS_G3dMdlSetMdlAlpha(void *mdl, u32 idx, u32 alpha);
 void NNS_G3dMdlSetMdlPolygonID(void *mdl, u32 idx, u32 id);
@@ -104,12 +102,6 @@ static inline void SetScaleXZ(VecFx32 *v, s32 s) {
     v->x = s;
     v->y = 0x1000;
     v->z = s;
-}
-
-static inline void VEC_Set(VecFx32 *v, s32 x, s32 y, s32 z) {
-    v->x = x;
-    v->y = y;
-    v->z = z;
 }
 
 static inline void *Res_GetMdl(void *file, u32 idx) {

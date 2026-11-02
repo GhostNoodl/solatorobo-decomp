@@ -17,12 +17,6 @@ typedef struct {
 } Bits02196258;
 
 typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Vec02196258;
-
-typedef struct {
     u8 unk_00[0x158];
     u32 flags[1][4];
 } Save02196258;

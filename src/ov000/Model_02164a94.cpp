@@ -12,7 +12,6 @@ extern u8 *data_0214a424;
 extern u8 *data_02097d48;
 void *func_02035d5c(const char *a);
 void func_0206e900(char *dst, const char *src);
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02034d88(void *a, void *b);
 void func_020417e0(void *model, void *a);
@@ -26,7 +25,7 @@ static inline void *NewModel(char *nm) {
     if (m) {
         char *n = nm;
         if (n) {
-            func_02041218(m + 0x88);
+            func_02041218((struct PlttRes *)(m + 0x88));
             func_02041440(m, n, 0);
         }
     }
@@ -98,7 +97,6 @@ extern "C" {
 void *func_0203de84(u32 size, u32 align);
 void *Heap_Alloc(u32 size);
 void MI_CpuFill8(void *dst, u32 value, u32 size);
-void func_02041218(void *res);
 void func_02040be0(void *res, void *src);
 void func_02040d14(void *res, s32 a, s32 b);
 void func_02040d94(void *res, void *a, s32 b, s32 c);
@@ -165,7 +163,7 @@ void func_ov000_02164c50(Obj02164c50 *self, u8 *arg) {
     p[2] = 0;
     m = Heap_Alloc(0x64);
     if (m != NULL) {
-        func_02041218(m);
+        func_02041218((struct PlttRes *)m);
     }
     LFLD(void *, p, 0xc8c) = m;
     func_02040be0(m, self->unk_24);

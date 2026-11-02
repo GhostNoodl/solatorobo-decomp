@@ -5,13 +5,13 @@
 
 #define HEAP_FREE(field)                                  \
     {                                                     \
-        void *saved = data_02097dd0->current;             \
-        data_02097dd0->current = data_02097dd0->unk_08;   \
+        void *saved = data_02097dd0->cur;             \
+        data_02097dd0->cur = data_02097dd0->unk_08;   \
         if ((field) != NULL) {                            \
             Heap_Free(field);                         \
             (field) = 0;                                  \
         }                                                 \
-        data_02097dd0->current = saved;                   \
+        data_02097dd0->cur = saved;                   \
     }
 
 typedef struct Link0218c3e0 {

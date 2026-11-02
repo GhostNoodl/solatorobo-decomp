@@ -7,7 +7,7 @@ void func_02054254(SlidePanel *panel);
 
 
 BOOL func_02054f10(Model *model, u32 idx) {
-    if (!Transfer_Check(&model->plttTransfer) || !Transfer_Check(&model->extPltt->transfer)) {
+    if (!Transfer_Check(&model->pltt.transfer) || !Transfer_Check(&model->extPltt->transfer)) {
         return FALSE;
     }
     if (idx != 0xffff) {
@@ -75,7 +75,7 @@ void func_020554e4(SlidePanel *panel) {
         void *saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->unk_08;
         {
-            void *p = panel->pltt;
+            PlttRes *p = panel->pltt;
             if (p != NULL) {
                 if (p != NULL) {
                     func_02041278(p);
@@ -101,7 +101,7 @@ void func_020554e4(SlidePanel *panel) {
                 if (p != NULL) {
                     if (p != NULL) {
                         func_02041558(p);
-                        func_02041278(p->pltt);
+                        func_02041278(&p->pltt);
                         Heap_Free(p);
                     }
                     panel->model = NULL;
@@ -125,7 +125,7 @@ void func_020554e4(SlidePanel *panel) {
                 if (p != NULL) {
                     if (p != NULL) {
                         func_02041558(p);
-                        func_02041278(p->pltt);
+                        func_02041278(&p->pltt);
                         Heap_Free(p);
                     }
                     panel->model2 = NULL;

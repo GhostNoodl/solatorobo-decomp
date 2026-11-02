@@ -71,7 +71,6 @@ extern u8 *data_ov000_021ccd54;
 extern char data_ov000_021ca93e[];
 void *MsgRes_GetString(void *g, u32 id);
 BOOL func_0205aa30(void *p);
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *STD_CopyString(void *dst, void *src);
 void *STD_ConcatenateString(void *dst, void *src);
@@ -119,7 +118,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     if (m != NULL) {
         arc = data_ov000_021ca8d8[0];
         name = data_ov000_021ca8d8[1];
-        func_02041218(m + 0x88);
+        func_02041218((struct PlttRes *)(m + 0x88));
         func_02041440(m, name, 0);
         STD_CopyString(m + 0x2c, arc);
     }
@@ -131,7 +130,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     if (m != NULL) {
         arc = data_0208cca0;
         name = data_0208cb74;
-        func_02041218(m + 0x88);
+        func_02041218((struct PlttRes *)(m + 0x88));
         func_02041440(m, name, 0);
         STD_CopyString(m + 0x2c, arc);
     }

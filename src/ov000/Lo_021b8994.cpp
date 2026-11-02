@@ -22,7 +22,6 @@ s32 func_0203ca84(s32 ch);
 void func_02042eac(s32 ch, s32 planes);
 void func_02042ebc(s32 ch, s32 duration, s32 start, s32 end);
 BOOL func_02042ef8(s32 ch);
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
@@ -101,7 +100,7 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         }
         p = (u8 *)Heap_Alloc(0x160);
         if (p != NULL) {
-            func_02041218(p + 0x88);
+            func_02041218((struct PlttRes *)(p + 0x88));
             func_02041440(p, (u8 *)self + 4, 0);
         }
         self->unk_30 = p;

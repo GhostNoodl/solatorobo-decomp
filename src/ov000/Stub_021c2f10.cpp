@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Sys/SysState.h"
 
 typedef struct {
     u8 unk_00[0x18];
@@ -36,22 +37,15 @@ extern u8 data_ov000_021cc9bc[];
 extern u8 data_ov000_021cc9d3[];
 extern u8 data_ov000_021cc9dc[];
 void func_02035acc(void *a, void *b, s32 c);
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
-
-extern HeapState *data_02097dd0;
 void Heap_Free(void *p);
 void func_02041558(void *m);
 void func_02041278(void *p);
 
 #define HEAP_DELETE_MODEL(field)                          \
     {                                                     \
-        void *saved = data_02097dd0->current;             \
+        void *saved = data_02097dd0->cur;             \
         void *p;                                          \
-        data_02097dd0->current = data_02097dd0->unk_08;   \
+        data_02097dd0->cur = data_02097dd0->unk_08;   \
         p = (void *)(field);                              \
         if (p != NULL) {                                  \
             if (p != NULL) {                              \
@@ -61,7 +55,7 @@ void func_02041278(void *p);
             }                                             \
             (field) = 0;                                  \
         }                                                 \
-        data_02097dd0->current = saved;                   \
+        data_02097dd0->cur = saved;                   \
     }
 
 void func_ov000_021c2f10(Obj021c2f10 *self) {

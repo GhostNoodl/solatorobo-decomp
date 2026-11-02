@@ -23,7 +23,6 @@ typedef struct Node0215e344 {
 extern "C" {
 
 extern const char data_ov000_021cabf4[];
-char *STD_SearchString(char *str, const char *sub);
 extern void *data_02149ef8;
 char *MsgRes_GetString(void *p, s32 id);
 void func_ov000_0215aa78(VObj *self);

@@ -88,8 +88,8 @@ static inline void Obj021b4f28_Delete(Obj021b4f28 *o) {
 void func_ov000_021b4f28(void) {
     Obj021b4f28 *p;
     void *saved;
-    saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     p = data_ov000_021ccd6c;
     if (p != NULL) {
         if (p != NULL) {
@@ -97,7 +97,7 @@ void func_ov000_021b4f28(void) {
         }
         data_ov000_021ccd6c = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
     func_0206e6c0();
 }
 

@@ -6,8 +6,8 @@ s32 Interp_SinLerp(s32 t, s32 from, s32 to) {
     return from + Interp_FxMul(to - from, Interp_EaseSin(t));
 }
 
-void Interp_SinLerpVec(InterpVec *out, s32 t, const InterpVec *from, const InterpVec *to) {
-    InterpVec d;
+void Interp_SinLerpVec(VecFx32 *out, s32 t, const VecFx32 *from, const VecFx32 *to) {
+    VecFx32 d;
     s32 s = Interp_EaseSin(t);
     Interp_VecSub(to, from, &d);
     VEC_MultAdd(s, &d, from, out);
@@ -17,8 +17,8 @@ s32 Interp_QuadLerp(s32 t, s32 from, s32 to) {
     return from + Interp_FxMul(to - from, Interp_FxMul(t, t));
 }
 
-BOOL func_02049244(InterpVec *out, s32 speed, const InterpVec *from, const InterpVec *to, s32 minDist) {
-    InterpVec d;
+BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist) {
+    VecFx32 d;
     BOOL done = FALSE;
     Interp_VecSub(to, from, &d);
     if (VEC_Mag(&d) > minDist) {

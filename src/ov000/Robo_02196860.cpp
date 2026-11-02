@@ -12,12 +12,6 @@ typedef struct {
     u16 rest : 11;
 } Bits02196860;
 
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Vec02196860;
-
 extern "C" {
 extern char data_ov000_021cc456[];
 extern u8 *data_0214a424;
@@ -32,9 +26,7 @@ void Target_Set(void *a, void *b);
 void func_ov003_021f0c60(void *self, s32 a);
 void *func_ov003_021f0868(void *pos, s32 a, s32 b);
 s32 Rand_UpTo(s32 n);
-u16 FX_Atan2(s32 a, s32 b);
-s32 func_01ffbd6c(Vec02196860 *a, Vec02196860 *b, s32 c, s32 d, s32 e, s32 f);
-void VEC_MultAdd(s32 fx, const Vec02196860 *a, const Vec02196860 *b, Vec02196860 *dst);
+s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 
 void func_ov000_02196860(ActorEx *self) {
     switch (self->unk_40->st) {
@@ -92,12 +84,12 @@ void func_ov000_02196860(ActorEx *self) {
             } else {
                 u8 *t = (u8 *)Target_Get(((u8 *)self->unk_4c));
                 if (t != NULL) {
-                    Vec02196860 a;
-                    Vec02196860 b;
+                    VecFx32 a;
+                    VecFx32 b;
                     s32 y;
                     self->unk_98 = FX_Atan2(self->pos.x - LFLD(s32, t, 0x70), self->pos.z - LFLD(s32, t, 0x78));
-                    a = *(Vec02196860 *)(t + 0x70);
-                    b = *(Vec02196860 *)((u8 *)self + 0x70);
+                    a = *(VecFx32 *)(t + 0x70);
+                    b = *(VecFx32 *)((u8 *)self + 0x70);
                     a.y += LFLD(s32, t, 0x6c);
                     y = b.y + self->unk_6c;
                     b.y = y;
@@ -109,7 +101,7 @@ void func_ov000_02196860(ActorEx *self) {
                         if (b.y < y) {
                             b.y = y;
                         }
-                        *(Vec02196860 *)((u8 *)self + 0x70) = b;
+                        *(VecFx32 *)((u8 *)self + 0x70) = b;
                     }
                 }
             }

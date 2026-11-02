@@ -2,8 +2,6 @@
 
 extern "C" {
 
-extern s32 STD_CompareNString(const void *a, const char *b, u32 n);
-extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern void func_02068600(EffectSetup *setup);
 extern EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def);
 extern char data_0208c7fe[];
@@ -14,7 +12,7 @@ extern char data_0208c81e[];
 extern char data_0208c826[];
 extern char data_0208c82e[];
 
-void func_02068508(EffectSetup *setup, u8 *data, const EffectVec *pos) {
+void func_02068508(EffectSetup *setup, u8 *data, const VecFx32 *pos) {
     setup->data = data;
     setup->pos = *pos;
     setup->objChunk = NULL;

@@ -25,10 +25,6 @@ void *func_ov000_021b68b8(void *a, void *pos);
 void Actor_Move(void *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 
-static inline s32 FX_Mul(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
-
 static inline void SetVel02196060(ActorEx *self, s32 x, s32 y, s32 z) {
     self->unk_9c = x;
     self->unk_a0 = y;

@@ -243,7 +243,8 @@ extern void *MsgRes_GetString(void *msg, u16 id);
 extern void func_ov000_02172390(FieldPlayer *player, s32 a, void *str);
 extern void func_ov000_02186158(FieldState *state, s32 a);
 extern void func_ov000_02186204(FieldState *state, s32 a);
-extern void *data_ov000_021ccd68;
+struct ActorMgr; // ov000/Actor.h
+extern struct ActorMgr *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern void *ActorMgr_FindKind(void *mgr, u16 kind, u16 id);
 extern void *func_ov000_0218bd9c(void *mgr, u16 id, u8 a);

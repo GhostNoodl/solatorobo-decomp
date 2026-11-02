@@ -1,10 +1,5 @@
 #include "ov000/VObj.h"
-
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
+#include "Main/Sys/SysState.h"
 
 class Task021cbac8 : public VObj {
 public:
@@ -17,7 +12,6 @@ public:
 
 extern "C" {
 
-extern HeapState *data_02097dd0;
 extern u8 data_ov000_021cbac8[];
 extern u8 data_ov000_021cca28[];
 extern u8 data_ov000_021cca40[];
@@ -44,25 +38,25 @@ static inline void Obj02041558_Delete(u8 *obj) {
 }
 
 static inline void DeleteModel(u8 **p) {
-    void *saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (*p != NULL) {
         Obj02041558_Delete(*p);
         *p = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
 }
 
 static inline void DeleteMember(VObj **p) {
-    void *saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (*p != NULL) {
         if (*p != NULL) {
             (*p)->vfunc_04();
         }
         *p = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
 }
 
 Task021cbac8 *Ov000Vt_021cca28_DtorDelete(Task021cbac8 *self) {

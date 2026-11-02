@@ -66,7 +66,7 @@ static inline Effect3D *EffectHud3D_New(void) {
     return e;
 }
 
-Effect3D *func_02066774(const char *arc, const char *mdl, const char *anm, const EffectVec *pos) {
+Effect3D *func_02066774(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos) {
     Effect3D *e = Effect3D_New();
     Effect_SetStr(e->arcName, arc);
     Effect_SetStr(e->mdlName, mdl);
@@ -75,7 +75,7 @@ Effect3D *func_02066774(const char *arc, const char *mdl, const char *anm, const
     return e;
 }
 
-Effect3D *func_0206682c(const char *arc, const char *mdl, const char *anm, const EffectVec *pos) {
+Effect3D *func_0206682c(const char *arc, const char *mdl, const char *anm, const VecFx32 *pos) {
     Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
         *(u32 **)e = data_0208c2e4;
@@ -93,7 +93,7 @@ Effect3D *func_0206682c(const char *arc, const char *mdl, const char *anm, const
     return e;
 }
 
-EffectGroup *EffectGroup_Create(const char *arc, const char *name, const EffectVec *pos) {
+EffectGroup *EffectGroup_Create(const char *arc, const char *name, const VecFx32 *pos) {
     EffectGroup *g = (EffectGroup *)Heap_Alloc(sizeof(EffectGroup));
     if (g != NULL) {
         *(u32 **)g = data_0208c2e4;
@@ -117,7 +117,7 @@ struct EffectSetup *func_020669ac(struct EffectSetup *setup) {
     return setup;
 }
 
-void func_020669cc(EffectObj *obj, const EffectVec *offset) {
+void func_020669cc(EffectObj *obj, const VecFx32 *offset) {
     obj->offset = *offset;
 }
 
@@ -237,7 +237,7 @@ Effect3D *func_02066c58(void) {
     return e;
 }
 
-Effect3D *func_02066d10(const EffectVec *pos) {
+Effect3D *func_02066d10(const VecFx32 *pos) {
     const char *arc;
     const char *mdl;
     Effect3D *e;

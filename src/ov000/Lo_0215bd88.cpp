@@ -8,7 +8,6 @@ extern void *data_0208cb74;
 extern void *data_0208cca0;
 extern void *data_0208cb78;
 extern void *data_0208cc9c;
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
@@ -18,7 +17,7 @@ void *STD_CopyString(void *dst, void *src);
 VObj *func_ov000_02176208(void);
 
 static inline void ModelInit(u8 *m, void *s, void *nm) {
-    func_02041218(m + 0x88);
+    func_02041218((struct PlttRes *)(m + 0x88));
     func_02041440(m, nm, 0);
     STD_CopyString(m + 0x2c, s);
 }
@@ -28,7 +27,7 @@ public:
     u8 data[0x160];
     static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     Model(void *nm, void *s) {
-        func_02041218(data + 0x88);
+        func_02041218((struct PlttRes *)(data + 0x88));
         func_02041440(data, nm, 0);
         STD_CopyString(data + 0x2c, s);
     }

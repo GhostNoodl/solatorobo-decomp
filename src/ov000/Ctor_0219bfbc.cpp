@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/fx.h"
 
 #define F(type, off) (*(type *)((u8 *)self + (off)))
 #define G(type, off) (*(type *)((u8 *)data_0214a424 + (off)))
@@ -14,10 +15,6 @@ typedef struct {
     u32 b12 : 2;
     u32 b14 : 18;
 } B24_0219bfbc;
-
-typedef struct {
-    s32 x, y, z;
-} Vec_0219bfbc;
 
 typedef struct {
     u16 b0 : 6;
@@ -89,7 +86,7 @@ u8 *Robo021ca458_Ctor(u8 *self) {
         F(B24_0219bfbc, 0xb24).b1 = 1;
     }
     if (!F(B24_0219bfbc, 0xb24).b1) {
-        F(Vec_0219bfbc, 0x75c) = G(Vec_0219bfbc, 0x148);
+        F(VecFx32, 0x75c) = G(VecFx32, 0x148);
         u16 v = G(u16, 0x156);
         F(u16, 0x76c) = 0;
         F(u16, 0x76e) = v;

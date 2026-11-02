@@ -94,15 +94,15 @@ BOOL func_02031b84(StrmHandle *handle, const NNSSndArcStrmInfo *info, int player
         func_02031b58(player);
         return FALSE;
     }
-    if (!NNS_SndStrmSetup(player, format, player->buffer, player->bufSize * chNum / player->chNum, player->header.timer, 4, func_020321d4, player)) {
+    if (!NNS_SndStrmSetup(&player->strm, format, player->buffer, player->bufSize * chNum / player->chNum, player->header.timer, 4, func_020321d4, player)) {
         func_02031f80(player);
         player->closeFn(player);
         func_02031b58(player);
         return FALSE;
     }
     if (chNum == 2) {
-        NNS_SndStrmSetChannelPan(player, 0, 0);
-        NNS_SndStrmSetChannelPan(player, 1, 0x7f);
+        NNS_SndStrmSetChannelPan(&player->strm, 0, 0);
+        NNS_SndStrmSetChannelPan(&player->strm, 1, 0x7f);
     }
     return TRUE;
 }

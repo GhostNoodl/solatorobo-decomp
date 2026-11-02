@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern void *data_02097dd0;
+#include "Main/Sys/SysState.h"
 extern void *data_02097d48;
 extern void *data_02097ce0;
 extern void *data_02097dc8;

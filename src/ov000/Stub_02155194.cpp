@@ -1,10 +1,5 @@
 #include "ov000/VObj.h"
-
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState02155160;
+#include "Main/Sys/SysState.h"
 
 typedef struct Node02155160 {
     u32 unk_00;
@@ -25,7 +20,6 @@ typedef struct Node02155160 {
 
 extern "C" {
 extern void *data_02097e4c;
-extern HeapState02155160 *data_02097dd0;
 void Heap_Free(void *ptr);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 }
@@ -218,15 +212,15 @@ void func_ov000_021553c8(Obj02155160 *self, s32 n, s32 commit) {
 
 
 static inline void Node02155160_DeleteObj(VObj **pp) {
-    void *saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (*pp != NULL) {
         if (*pp != NULL) {
             (*pp)->vfunc_04();
         }
         *pp = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
 }
 
 static inline void Node02155160_Delete(Node02155160 *node) {
@@ -313,12 +307,12 @@ void func_ov000_021554f0(Obj02155160 *self) {
     if (self->vfunc_9c(q) == 0) {
         self->unk_0c |= 2;
     }
-    saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (node != NULL) {
         Node02155160_Delete(node);
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
     self->unk_0c &= ~0x300000;
     self->unk_a8 = NULL;
     self->unk_a0 = 0;

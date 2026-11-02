@@ -9,6 +9,7 @@
 #include "ov000/MessageQueue.h"
 #include "ov000/VObj.h"
 #include "ov000/TaskList.h"
+#include "Main/Gfx/GfxMgr.h"
 #include "types.h"
 #include "ov000/ModelPart.h"
 #include "nitro/fx.h"
@@ -499,6 +500,8 @@ namespace m_TaskList_02173528 {
 
 extern "C" {
 
+void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
+
 void func_ov000_02173528(void) {
 }
 
@@ -522,7 +525,7 @@ void func_ov000_02173578(void) {
 
 void func_ov000_0217357c(Task *self) {
     VecFx32 scale;
-    func_02043d20(data_02097d48 + 0x8b0, 0);
+    func_02043d20(data_02097d48->unk_8b0, 0);
     scale.x = 0x1000;
     scale.y = 0x1000;
     scale.z = 0x1000;
@@ -606,14 +609,14 @@ void func_ov000_021736dc(void) {
     if (task != NULL) {
         do {
             next = task->next;
-            saved = data_02097dd0->current;
-            data_02097dd0->current = data_02097dd0->unk_08;
+            saved = data_02097dd0->cur;
+            data_02097dd0->cur = data_02097dd0->unk_08;
             if (task != NULL) {
                 if (task != NULL) {
                     task->vfunc_04();
                 }
             }
-            data_02097dd0->current = saved;
+            data_02097dd0->cur = saved;
             task = next;
         } while (task != NULL);
     }
@@ -650,14 +653,14 @@ void func_ov000_02173784(void) {
             }
             task->prev = NULL;
             task->next = NULL;
-            saved = data_02097dd0->current;
-            data_02097dd0->current = data_02097dd0->unk_08;
+            saved = data_02097dd0->cur;
+            data_02097dd0->cur = data_02097dd0->unk_08;
             if (task != NULL) {
                 if (task != NULL) {
                     task->vfunc_04();
                 }
             }
-            data_02097dd0->current = saved;
+            data_02097dd0->cur = saved;
         }
         task = next;
     } while (task != NULL);
@@ -702,7 +705,6 @@ extern "C" {
 extern void *data_0208cca0;
 extern void *data_0208ccc0;
 void *Heap_Alloc(u32 size);
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
@@ -714,7 +716,7 @@ void func_ov000_02173d9c(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void 
 void func_ov000_02173648(VObj *self);
 
 static inline void Init(u8 *m, void *s, void *nm) {
-    func_02041218(m + 0x88);
+    func_02041218((struct PlttRes *)(m + 0x88));
     func_02041440(m, nm, 0);
     STD_CopyString(m + 0x2c, s);
 }
@@ -774,18 +776,18 @@ void func_ov000_021739f8(Task *self) {
     void *saved;
     Model *model;
     func_ov000_0214c210();
-    saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     model = self->unk_4c;
     if (model != NULL) {
         if (model != NULL) {
             func_02041558(model);
-            func_02041278(model->pltt);
+            func_02041278(&model->pltt);
             Heap_Free(model);
         }
         self->unk_4c = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
 }
 
 }
@@ -834,7 +836,6 @@ extern "C" {
 
 extern Task02173a5c *(*const data_ov000_021c9c6c[])(void);
 extern void *data_02097e4c;
-extern u8 *data_02097d48;
 extern Player02173a5c *data_ov000_021ccd54;
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_0204a160(void *a);
@@ -880,7 +881,7 @@ void func_ov000_02173a5c(Obj02173a5c *self) {
         self->unk_3c = -0xcd;
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
         SndMgr_ResumeAll(data_02097e4c);
-        func_02043b20(data_02097d48 + 0x8b0);
+        func_02043b20(data_02097d48->unk_8b0);
         data_ov000_021ccd54->b2 = 0;
         break;
     case 12:
@@ -951,7 +952,6 @@ typedef struct {
 } Obj02173c30;
 
 extern "C" {
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void func_02043d20(void *obj, int a);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
@@ -981,7 +981,7 @@ void func_ov000_02173c30(Obj02173c30 *self) {
     if (FindTask(0x1a) != NULL) {
         return;
     }
-    func_02043d20(data_02097d48 + 0x8b0, 0);
+    func_02043d20(data_02097d48->unk_8b0, 0);
     G3_Vec(0x1b, 0x1000, 0x1000, 0x1000);
     self->unk_28 = FX_SinCosTable_[((s32)(self->unk_24 << 14) >> 16) * 2];
     {
@@ -1121,7 +1121,6 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbbe0[];
 extern u8 data_0208ba70[];
 extern u8 *data_0214a424;
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void func_0204c7d0(void *p);
 void func_0203cc58(s32 a, s32 b, s32 c);
@@ -1521,7 +1520,6 @@ u32 func_0205975c(void *a, u32 b);
 u16 func_02059544(void *a, void *b, void *c, s32 d, u16 e);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, u8 c);
 char *STD_CopyString(void *dst, void *src);
 void func_020417e0(void *model, void *a);
@@ -1675,7 +1673,7 @@ found:
     if (m != NULL) {
         void *file = data_0208ccc8;
         void *nm = data_ov000_021cba0c;
-        func_02041218(m + 0x88);
+        func_02041218((struct PlttRes *)(m + 0x88));
         func_02041440(m, nm, 0);
         STD_CopyString(m + 0x2c, file);
     }
@@ -1689,7 +1687,7 @@ found:
     if (m2 != NULL) {
         void *file = data_0208cc94;
         void *nm = data_0208cc88;
-        func_02041218(m2 + 0x88);
+        func_02041218((struct PlttRes *)(m2 + 0x88));
         func_02041440(m2, nm, 0);
         STD_CopyString(m2 + 0x2c, file);
     }
@@ -1743,7 +1741,6 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbbe0[];
 extern u8 data_0208ba70[];
 extern u8 *data_0214a424;
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void func_0204c7d0(void *p);
 void func_0203cc58(s32 a, s32 b, s32 c);
@@ -1833,7 +1830,6 @@ extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbbe0[];
 extern u8 data_0208ba70[];
 extern u8 *data_0214a424;
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void func_0204c7d0(void *p);
 void func_0203cc58(s32 a, s32 b, s32 c);
@@ -1911,7 +1907,7 @@ void func_ov000_021754bc(Obj021743bc *self) {
     if (self->unk_24 == 0) {
         return;
     }
-    func_02043d20(data_02097d48 + 0x8b0, 0);
+    func_02043d20(data_02097d48->unk_8b0, 0);
     scale[0] = 0x1000;
     scale[1] = 0x1000;
     scale[2] = 0x1000;
@@ -1936,7 +1932,6 @@ void func_ov000_021754bc(Obj021743bc *self) {
 
 extern "C" {
 extern const s16 FX_SinCosTable_[];
-extern u8 *data_02097d48;
 BOOL func_02054f10(void *p, s32 id);
 Robo021ca458 *func_ov000_0219bf90(void);
 u8 Gfx3DState_NextPolyId(void *p);
@@ -2036,7 +2031,7 @@ void func_ov000_0217558c(Obj021743bc *self) {
         return;
     }
     x = (s32)(((s64)(0x1000 - FX_SinCosTable_[((s32)(self->unk_54 << 14) >> 16) * 2]) * 0x80000 + 0x800) >> 12);
-    g = data_02097d48 + 0x8b0;
+    g = data_02097d48->unk_8b0;
     Model_SetPos((Model *)self->unk_58, x & ~0xfff, 0);
     m = (Model *)self->unk_58;
     Model_PlayPart(m, 1);
@@ -2491,7 +2486,6 @@ extern u8 *data_0214a424;
 extern void *data_02149ef8;
 extern void *data_02097e4c;
 extern u16 *data_02097dc8;
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
@@ -2614,7 +2608,6 @@ extern u8 *data_0214a424;
 extern void *data_02149ef8;
 extern void *data_02097e4c;
 extern u16 *data_02097dc8;
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
@@ -3550,7 +3543,6 @@ extern u8 *data_0214a424;
 extern void *data_02149ef8;
 extern void *data_02097e4c;
 extern u16 *data_02097dc8;
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
@@ -3646,7 +3638,6 @@ extern u8 *data_0214a424;
 extern void *data_02149ef8;
 extern void *data_02097e4c;
 extern u16 *data_02097dc8;
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
@@ -4040,7 +4031,6 @@ extern u8 *data_0214a424;
 extern void *data_02149ef8;
 extern void *data_02097e4c;
 extern u16 *data_02097dc8;
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
@@ -4154,7 +4144,6 @@ extern u8 *data_0214a424;
 extern void *data_02149ef8;
 extern void *data_02097e4c;
 extern u16 *data_02097dc8;
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_0205a6a0(void *p);
@@ -4176,7 +4165,7 @@ void func_ov000_02178cd0(Lo02178110 *self) {
     if (self->unk_24 == 0) {
         return;
     }
-    func_02043d20(data_02097d48 + 0x8b0, 0);
+    func_02043d20(data_02097d48->unk_8b0, 0);
     scale[0] = 0x1000;
     scale[1] = 0x1000;
     scale[2] = 0x1000;
@@ -5707,7 +5696,6 @@ extern void *data_0208cb74;
 extern void *data_0208cca0;
 extern void *data_0208cb78;
 extern void *data_0208cc9c;
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
@@ -5717,7 +5705,7 @@ void *STD_CopyString(void *dst, void *src);
 VObj *func_ov000_02176208(void);
 
 static inline void ModelInit(u8 *m, void *s, void *nm) {
-    func_02041218(m + 0x88);
+    func_02041218((struct PlttRes *)(m + 0x88));
     func_02041440(m, nm, 0);
     STD_CopyString(m + 0x2c, s);
 }
@@ -5727,7 +5715,7 @@ public:
     u8 data[0x160];
     static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     Model(void *nm, void *s) {
-        func_02041218(data + 0x88);
+        func_02041218((struct PlttRes *)(data + 0x88));
         func_02041440(data, nm, 0);
         STD_CopyString(data + 0x2c, s);
     }
@@ -7458,9 +7446,8 @@ void func_ov000_0217ddd4(Lo0217ab30 *self) {
 
 extern s16 FX_SinCosTable_[];
 s32 FX_Div(s32 a, s32 b);
-typedef struct { s32 x, y, z; } V0217de7c;
-void func_ov000_0217df5c(Lo0217ab30 *self, V0217de7c *v);
-void func_ov000_0217e560(Lo0217ab30 *self, V0217de7c *v);
+void func_ov000_0217df5c(Lo0217ab30 *self, VecFx32 *v);
+void func_ov000_0217e560(Lo0217ab30 *self, VecFx32 *v);
 
 void func_ov000_0217de7c(Lo0217ab30 *self) {
     s32 st;
@@ -7471,7 +7458,7 @@ void func_ov000_0217de7c(Lo0217ab30 *self) {
     if ((st == 4 || st == 5 || st == 7) && self->unk_a4 != 0) {
         s32 t = FX_Div(self->unk_a4, 0x18000);
         s32 c = 0x1000 - FX_SinCosTable_[((t * 0x4000) >> 16) * 2];
-        V0217de7c v;
+        VecFx32 v;
         v.x = LO_FX_MUL(c, 0x140000);
         v.y = 0;
         v.x &= ~0xfff;
@@ -7504,15 +7491,10 @@ typedef struct {
 
 #define MF(m) LFLD(LoMdlFlags0217df5c, m, 0x6c)
 
-typedef struct {
-    s32 x, y, z;
-} LoVec0217df5c;
-
 extern "C" {
 
-extern u8 *data_02097d48;
 extern u8 data_0208b3d0[];
-extern LoVec0217df5c data_ov000_021c9c10;
+extern VecFx32 data_ov000_021c9c10;
 u8 Gfx3DState_NextPolyId(void *p);
 void func_02043d20(void *p, s32 a);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
@@ -7521,7 +7503,7 @@ void func_02042628(void *a, void *b, void *c, int d);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
 s32 func_ov000_0214b8ec(void *p);
-void func_ov000_0214b1a0(LoVec0217df5c *pos, LoVec0217df5c *col, s32 a, s32 b);
+void func_ov000_0214b1a0(VecFx32 *pos, VecFx32 *col, s32 a, s32 b);
 
 static inline void *LoModelGetPart(void *self, int idx) {
     if (idx >= LFLD(s32, self, 0x80)) {
@@ -7551,7 +7533,7 @@ static inline void LoSetPosFx0217df5c(void *m, s32 x, s32 y) {
     LFLD(s32, m, 0x100) = y;
 }
 
-static inline void LoSetPosV0217df5c(void *m, LoVec0217df5c *p) {
+static inline void LoSetPosV0217df5c(void *m, VecFx32 *p) {
     LFLD(s32, m, 0xfc) = p->x;
     LFLD(s32, m, 0x100) = p->y;
 }
@@ -7569,9 +7551,9 @@ static inline void G3_Cmd1(int cmd, u32 value) {
     NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
-void func_ov000_0217df5c(Lo0217ab30 *self, LoVec0217df5c *pos) {
-    LoVec0217df5c v;
-    u8 *g = data_02097d48;
+void func_ov000_0217df5c(Lo0217ab30 *self, VecFx32 *pos) {
+    VecFx32 v;
+    u8 *g = (u8 *)data_02097d48;
     u32 size;
     u8 i;
     MF(self->unk_a0).b19 = 1;
@@ -7630,7 +7612,7 @@ void func_ov000_0217df5c(Lo0217ab30 *self, LoVec0217df5c *pos) {
     NNS_G3dGeSendDL(LFLD(void *, data_0208b3d0, 0), size);
     G3_Cmd1(0x12, 1);
     {
-    LoVec0217df5c c = data_ov000_021c9c10;
+    VecFx32 c = data_ov000_021c9c10;
     v.x = pos->x + 0xbe000;
     v.y = pos->y + 0x6e000;
     v.z = -0x1c4d;
@@ -7661,7 +7643,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_02097d48;
 u8 Gfx3DState_NextPolyId(void *p);
 extern s16 FX_SinCosTable_[];
 s32 FX_Div(s32 a, s32 b);
@@ -7748,7 +7729,7 @@ static inline void Row0217e560(Lo0217ab30 *self, int off, s32 x, s32 y) {
 }
 void func_ov000_0217e560(Lo0217ab30 *self, s32 *pos) {
     s32 x = pos[0] >> 12;
-    u8 *g = data_02097d48;
+    u8 *g = (u8 *)data_02097d48;
     s32 step;
     s32 a;
     s32 s;
@@ -8081,7 +8062,6 @@ void func_ov000_0216f42c(void *a, void *b);
 void func_020656b4(void *p);
 void ActorMgr_ClearGroup(void *p, s32 a);
 void func_0206e900(char *dst, const char *src);
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *STD_CopyString(void *dst, void *src);
 void func_020417e0(void *model, void *a);
@@ -8172,7 +8152,7 @@ static inline u8 *NewWorldMapModel(void) {
     if (m) {
         char *n = "cewor1map00";
         char *a = "menu/worldmap";
-        func_02041218(m + 0x88);
+        func_02041218((struct PlttRes *)(m + 0x88));
         func_02041440(m, n, 0);
         STD_CopyString(m + 0x2c, a);
     }
@@ -8369,7 +8349,6 @@ typedef struct {
 } Obj0217f778;
 
 extern "C" {
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void func_02043d20(void *obj, int a);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
@@ -8387,7 +8366,7 @@ void func_ov000_0217f778(Obj0217f778 *self) {
     if (self->unk_24 == 0) {
         return;
     }
-    func_02043d20(data_02097d48 + 0x8b0, 0);
+    func_02043d20(data_02097d48->unk_8b0, 0);
     G3_Vec(0x1b, 0x1000, 0x1000, 0x1000);
     self->unk_28 = FX_SinCosTable_[((s32)(self->unk_24 << 14) >> 16) * 2];
     m = self->unk_4c;
@@ -9051,8 +9030,8 @@ void func_ov000_02180754(void) {
     void *saved;
     void *saved2;
     Holder02180754 *p;
-    saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     p = (Holder02180754 *)data_ov000_021ccd44;
     if (p != NULL) {
         if (p != NULL) {
@@ -9060,15 +9039,15 @@ void func_ov000_02180754(void) {
             task = (Task02180754 *)data_ov000_021ccd3c;
             while (task != NULL) {
                 next = task->next;
-                saved2 = data_02097dd0->current;
-                data_02097dd0->current = data_02097dd0->unk_08;
+                saved2 = data_02097dd0->cur;
+                data_02097dd0->cur = data_02097dd0->unk_08;
                 if (task != NULL) {
                     if (task != NULL) {
                         task->vfunc_04();
                     }
                     task = NULL;
                 }
-                data_02097dd0->current = saved2;
+                data_02097dd0->cur = saved2;
                 task = next;
             }
             data_ov000_021ccd34 = 0;
@@ -9080,7 +9059,7 @@ void func_ov000_02180754(void) {
         }
         data_ov000_021ccd44 = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
 }
 
 }

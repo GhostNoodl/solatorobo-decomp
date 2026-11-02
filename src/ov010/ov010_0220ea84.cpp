@@ -3,7 +3,6 @@
 extern "C" {
 
 extern Ov010V *func_02065f88(s32 a, Ov010Vec *b);
-extern void VEC_Normalize(Ov010Vec *a, Ov010Vec *b);
 extern u16 Ov003Vec_Pitch(Ov010Vec *a);
 extern u16 Ov003Vec_Yaw(Ov010Vec *a);
 

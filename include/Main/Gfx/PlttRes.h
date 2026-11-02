@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "Main/Res/ResMgr.h"
+#include "nitro/mi.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,9 +57,6 @@ typedef struct PlttRes {
     /* 0x60 */ u32 transfer;
 } PlttRes; // size 0x64
 
-#ifndef NITRO_MI_H
-extern void MI_CpuFill8(void *dst, u32 value, u32 size);
-#endif
 extern void NNS_G2dInitImagePaletteProxy(PlttSub *sub);
 
 static inline void PlttRes_Init(PlttRes *res) {
@@ -77,7 +75,6 @@ static inline void PlttRes_Init(PlttRes *res) {
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 extern void DC_FlushRange(const void *addr, u32 size);
 
 static inline void PlttRes_SetSrc(PlttRes *res, PlttResSrc *src) {

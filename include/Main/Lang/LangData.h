@@ -2,16 +2,13 @@
 #define MAIN_LANG_LANGDATA_H
 
 #include "types.h"
+#include "nitro/std.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 // Strings
-extern char *STD_CopyString(char *dst, const char *src);
-extern char *STD_SearchString(char *str, const char *sub);
-extern u32 STD_GetStringLength(const char *str);
-extern char *STD_ConcatenateString(char *dst, const char *src);
 
 // Which sections a data block holds; the sections follow each other in this order.
 typedef struct LangSecFlags {

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "nitro/fx.h"
 
 // Hit mesh block traversal, placed in ITCM
 
@@ -13,15 +14,9 @@ typedef struct HitMeshItcmRes {
     /* 0x34 */ u8 blocks[1];
 } HitMeshItcmRes;
 
-typedef struct HitMeshItcmVec {
-    s32 x;
-    s32 y;
-    s32 z;
-} HitMeshItcmVec;
-
 typedef struct HitMeshItcmMtx {
     /* 0x00 */ s32 m[3][3];
-    /* 0x24 */ HitMeshItcmVec trans;
+    /* 0x24 */ VecFx32 trans;
 } HitMeshItcmMtx;
 
 typedef struct HitMeshItcmBlock {
@@ -42,8 +37,8 @@ typedef struct HitMeshQuery {
     /* 0x88 */ s32 unk_88;
     /* 0x8c */ s32 unk_8c;
     /* 0x90 */ s32 unk_90;
-    /* 0x94 */ HitMeshItcmVec local;
-    /* 0xa0 */ HitMeshItcmVec world;
+    /* 0x94 */ VecFx32 local;
+    /* 0xa0 */ VecFx32 world;
 } HitMeshQuery;
 
 typedef struct HitMeshItcmOwner {
@@ -66,23 +61,20 @@ typedef struct HitMeshRay {
     /* 0x1c */ s32 min[3];
     /* 0x28 */ s32 max[3];
     /* 0x34 */ u8 unk_34[0x18];
-    /* 0x4c */ HitMeshItcmVec from;
-    /* 0x58 */ HitMeshItcmVec to;
-    /* 0x64 */ HitMeshItcmVec dir;
+    /* 0x4c */ VecFx32 from;
+    /* 0x58 */ VecFx32 to;
+    /* 0x64 */ VecFx32 dir;
 } HitMeshRay;
 
 extern void func_01ff8330(HitMeshRay *ray);
 extern void func_01ff8464(s32 *box, HitMeshItcmBlock *block);
 extern void func_01ff868c(HitMeshRay *ray, void *table);
-extern void VEC_Normalize(const HitMeshItcmVec *src, HitMeshItcmVec *dst);
 extern HitMeshItcmRes *HitMesh_GetRes(void *mesh);
 extern BOOL func_0203fc60(void *mesh);
 extern s32 Hit_FxMul(s32 a, s32 b);
 extern void func_01ff8520(HitMeshQuery *q);
 extern void func_01ff85ec(s32 *box, HitMeshItcmBlock *block);
 extern void func_01ff9f9c(HitMeshQuery *q, HitMeshItcmBlock *block, void *tri);
-extern void MTX_MultVec43(const HitMeshItcmVec *v, const HitMeshItcmMtx *m, HitMeshItcmVec *out);
-extern void VEC_MultAdd(s32 a, const HitMeshItcmVec *v1, const HitMeshItcmVec *v2, HitMeshItcmVec *out);
 extern void func_01ff9060(HitMeshQuery *q, void *table);
 
 static inline s32 HitMeshItcm_FxMul(s32 a, s32 b) {
@@ -191,7 +183,7 @@ void func_01ffbb14(HitMeshQuery *q) {
     s32 r;
     table = owner->tables;
     res = owner->res;
-    MTX_MultVec43(&q->world, &owner->invMtx, &q->local);
+    MTX_MultVec43(&q->world, (const MtxFx43 *)&owner->invMtx, &q->local);
     {
         s32 sc = owner->invScale;
         q->local.x = HitMeshItcm_FxMul(q->local.x, sc);
@@ -232,7 +224,7 @@ void func_01ffbb14(HitMeshQuery *q) {
         if (block->flags & 2) {
             VEC_MultAdd(block->mtx.m[0][0], &q->local, &block->mtx.trans, &q->world);
         } else {
-            MTX_MultVec43(&q->local, &block->mtx, &q->world);
+            MTX_MultVec43(&q->local, (const MtxFx43 *)&block->mtx, &q->world);
         }
         r = HitMeshItcm_FxMul(q->unk_88, block->mtx.m[0][0]);
         q->unk_8c = r;

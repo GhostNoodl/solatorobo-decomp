@@ -26,11 +26,11 @@ void func_02035450(ResLoader *loader) {
         if (ring != NULL) {
             switch (entry->attr2 & 0xf0) {
             case 0x10:
-                MI_InitUncompContextLZ(lzCtx, req->data, &entry->attr2);
+                MI_InitUncompContextLZ((MIUncompContextLZ *)lzCtx, (u8 *)req->data, (const MICompressionHeader *)&entry->attr2);
                 ResRing_FillLZ(ring, lzCtx);
                 break;
             case 0x30:
-                MI_InitUncompContextRL(huffCtx, req->data, &entry->attr2);
+                MI_InitUncompContextRL((MIUncompContextRL *)huffCtx, (u8 *)req->data, (const MICompressionHeader *)&entry->attr2);
                 ResRing_FillHuff(ring, huffCtx);
                 break;
             }
@@ -53,13 +53,13 @@ void func_02035670(ResLoader *loader) {
     u32 blockSize;
     u16 numBlocks;
     void *buf;
-    OS_CreateThread(loader, (void (*)(void *))func_02035450, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
-    OS_SetThreadStackWarningOffset(loader, 0x4c);
+    OS_CreateThread(&loader->thread, (void (*)(void *))func_02035450, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
+    OS_SetThreadStackWarningOffset(&loader->thread, 0x4c);
     blockSize = 0x2000;
     numBlocks = 3;
     if (!OS_IsRunOnTwl()) {
         blockSize = 0x1540;
-        buf = OS_AllocFromHeap(0, data_02097dd0->unk_0c, 0x3fc0);
+        buf = OS_AllocFromHeap(OS_ARENA_MAIN, (OSHeapHandle)data_02097dd0->unk_0c, 0x3fc0);
     } else {
         buf = func_0203dec8(0x6000, 4);
     }
@@ -78,11 +78,11 @@ BOOL func_02035740(ResLoader *loader, ResRequest *req) {
         loader->req.name = req->name;
         loader->req.unk_28 = req->unk_28;
         loader->req.index = req->index;
-        if (OS_IsThreadTerminated(loader)) {
-            OS_CreateThread(loader, (void (*)(void *))func_02035450, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
-            OS_SetThreadStackWarningOffset(loader, 0x4c);
+        if (OS_IsThreadTerminated(&loader->thread)) {
+            OS_CreateThread(&loader->thread, (void (*)(void *))func_02035450, loader, loader->stack + sizeof(loader->stack), sizeof(loader->stack), 0x12);
+            OS_SetThreadStackWarningOffset(&loader->thread, 0x4c);
         }
-        OS_WakeupThreadDirect(loader);
+        OS_WakeupThreadDirect(&loader->thread);
         result = TRUE;
     }
     return result;
@@ -91,5 +91,5 @@ BOOL func_02035740(ResLoader *loader, ResRequest *req) {
 void func_0203581c(ResLoader *loader) {
     loader->state = 0;
     ResRequest_Init(&loader->req);
-    OS_SleepThreadDirect(loader, NULL);
+    OS_SleepThreadDirect(&loader->thread, NULL);
 }

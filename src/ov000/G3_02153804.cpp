@@ -1,13 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 
-typedef struct {
-    s16 x;
-    s16 y;
-    s16 z;
-} V6_02153804;
-
-#define VERTS LFLD(V6_02153804 *, self, 0x6c)
+#define VERTS LFLD(VecFx16 *, self, 0x6c)
 
 extern "C" {
 s32 FX_Div(s32 numer, s32 denom);
@@ -45,7 +39,7 @@ void func_ov000_02153804(LoBase021ca94c_021caac8 *self, s32 on, s32 *pos, s32 sc
     s32 sy;
     s16 t;
     s16 q;
-    V6_02153804 *v;
+    VecFx16 *v;
     s32 n;
     if (on == 0) {
         return;
@@ -68,7 +62,7 @@ void func_ov000_02153804(LoBase021ca94c_021caac8 *self, s32 on, s32 *pos, s32 sc
         u8 b = ((c >> 10) & 0x1f) >> 1;
         G3_Cmd1(0x20, (u16)(r | (g << 5) | (b << 10)));
     }
-    v = (V6_02153804 *)self->unk_6c;
+    v = (VecFx16 *)self->unk_6c;
     if (v != NULL) {
         n = self->unk_70 - 1;
         G3_Vtx(VERTS[0].x, VERTS[0].y, 0);

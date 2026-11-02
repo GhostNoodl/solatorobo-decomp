@@ -5,6 +5,7 @@
 #include "ov000/Vec.h"
 #include "ov000/HeapScope.h"
 #include "Main/Gfx/Model.h"
+#include "nitro/std.h"
 
 class Task : public VObj {
 public:
@@ -33,7 +34,7 @@ public:
 extern "C" {
 
 extern void *data_ov000_021ccd3c;
-extern u8 *data_02097d48;
+extern struct GfxSys *data_02097d48; // Main/Gfx/GfxMgr.h
 extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021cbce0[];
 extern const char *data_0208cca0;
@@ -42,11 +43,9 @@ extern void *data_0208ccc0;
 void *Heap_Alloc(u32 size);
 void Heap_Free(void *ptr);
 void func_02043d20(void *a, s32 b);
-void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 void func_ov000_0214c1ac(void);
 void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, void *b);
-void *STD_CopyString(void *a, const char *b);
 void func_02041c20(Model *model, s32 a, void *b);
 void func_ov000_02173d9c(BOOL skip, s32 x, s32 y, s32 z, s32 unused, const void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const void *ctx);
 void func_ov000_0214c210(void);

@@ -20,13 +20,9 @@ typedef struct {
     u8 unk_14[0x10];
 } Item021b68b8;
 
-typedef struct {
-    s16 x, y, z;
-} Rot3;
-
 extern "C" {
 s32 FX_Div(s32 a, s32 b);
-BOOL func_01ffc318(void *a, Item021b68b8 *item, VecFx32 *min, VecFx32 *max, Rot3 *rot);
+BOOL func_01ffc318(void *a, Item021b68b8 *item, VecFx32 *min, VecFx32 *max, VecFx16 *rot);
 
 struct Obj021b68b8 {
     u8 unk_00[0x14];
@@ -43,7 +39,7 @@ Item021b68b8 *func_ov000_021b68b8(Obj021b68b8 *self, void *arg) {
         for (i = 0; i < self->unk_14[0x14]; i++, item++) {
             VecFx32 max;
             VecFx32 min;
-            Rot3 rot;
+            VecFx16 rot;
             max.x = item->hx << 4;
             max.y = item->hy << 4;
             max.z = item->hz << 4;

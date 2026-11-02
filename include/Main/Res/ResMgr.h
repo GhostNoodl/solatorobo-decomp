@@ -2,6 +2,8 @@
 #define MAIN_RES_RESMGR_H
 
 #include "types.h"
+#include "Main/Sys/SysState.h"
+#include "nitro/std.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,35 +60,6 @@ typedef struct ResList {
     /* 0x0 */ ResNode *head;
 } ResList;
 
-// Heap selection of the game. cur is the heap that new allocations come from.
-typedef struct UnkSysNode {
-    /* 0x0 */ struct UnkSysNode *next;
-    /* 0x4 */ s16 value;
-    /* 0x6 */ u8 unk_6_0 : 2;
-    /* 0x6 */ u8 unk_6_2 : 2;
-    /* 0x6 */ u8 unk_6_4 : 2;
-    /* 0x6 */ u8 unk_6_6 : 2;
-} UnkSysNode;
-
-typedef struct UnkSys {
-    /* 0x00 */ void *cur;
-    /* 0x04 */ void *unk_04;
-    /* 0x08 */ void *unk_08;
-    /* 0x0c */ void *unk_0c;
-    /* 0x10 */ u32 align;
-    /* 0x14 */ u32 frameCount;
-    /* 0x18 */ void (*vblankFunc)(void);
-    /* 0x1c */ u8 frameWait;
-    /* 0x1d */ volatile u8 vcount;
-    /* 0x1e */ u8 unk_1e;
-    /* 0x1f */ u8 unk_1f;
-    /* 0x20 */ u32 unk_20[4];
-    /* 0x30 */ u8 unk_30;
-    /* 0x31 */ u8 unk_31;
-    /* 0x34 */ UnkSysNode node;
-} UnkSys; // size 0x3c
-
-extern UnkSys *data_02097dd0;
 
 // NitroSDK FSFile
 typedef struct FSFile {
@@ -120,10 +93,6 @@ extern ResNode *func_0203662c(ResMgr *mgr);
 extern void func_020366d0(ResMgr *mgr, ResNode *node);
 
 // Strings
-extern char *STD_CopyString(char *dst, const char *src);
-extern u32 STD_GetStringLength(const char *str);
-extern char *STD_ConcatenateString(char *dst, const char *src);
-extern int STD_CompareString(const char *a, const char *b);
 extern u16 MATH_CalcCRC16(u16 *table, const char *str, u32 len);
 
 static inline u16 ResMgr_Hash(ResMgr *mgr, const char *str) {

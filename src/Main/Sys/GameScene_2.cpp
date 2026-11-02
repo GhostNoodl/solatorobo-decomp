@@ -32,11 +32,11 @@ void func_02056044(GameScene *scene, s32 x, s32 y, u32 color, u16 color2) {
     G3_Vec(0x1b, x << 12, y << 12, 0x1000);
     G3_Cmd1(0x40, 1);
     G3_Cmd1(0x20, color);
-    G3_Vtx(0x800, -0x800, 0);
-    G3_VtxXY(-0x800, -0x800);
+    NNS_G3dGeVtx(0x800, -0x800, 0);
+    NNS_G3dGeVtxXY(-0x800, -0x800);
     G3_Cmd1(0x20, color2);
-    G3_VtxXY(-0x800, 0x800);
-    G3_VtxXY(0x800, 0x800);
+    NNS_G3dGeVtxXY(-0x800, 0x800);
+    NNS_G3dGeVtxXY(0x800, 0x800);
     NNS_G3dGeBufferOP_N(0x41, NULL, 0);
 }
 

@@ -59,7 +59,7 @@ struct SlideWinX : TextWin {
 
 struct SlideModel : Model {
     SlideModel(const char *name, const char *file, int a) {
-        func_02041218(pltt);
+        func_02041218(&pltt);
         func_02041440(this, file, a);
         STD_CopyString(this->name, name);
     }

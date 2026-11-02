@@ -17,14 +17,14 @@ void NNS_SndArcStrmInit(u32 prio, NNSSndHeap *heap) {
     for (i = 0; i < 8; i++) {
         NNS_FndAppendListObject(&data_02096238, &data_0209625c[i]);
     }
-    OS_InitMutex(data_02096244);
+    OS_InitMutex(&data_02096244);
     data_0209622c.unk_8 = data_020963e0;
 
     for (j = 0; j < 4; j++) {
         StrmPlayer *player = &data_020965e0[j];
         player->active = FALSE;
         FS_InitFile(player->file);
-        NNS_SndStrmInit(player->strm);
+        NNS_SndStrmInit(&player->strm);
         player->playerNo = j;
         player->chNum = 0;
         player->buffer = NULL;
@@ -139,7 +139,7 @@ void NNSi_SndArcStrmMain(void) {
         }
 
         if (player->startReq && player->unk_120 != 0) {
-            NNS_SndStrmStart(player->strm);
+            NNS_SndStrmStart(&player->strm);
             player->playing = TRUE;
             player->startReq = FALSE;
         }
@@ -158,7 +158,7 @@ void NNSi_SndArcStrmMain(void) {
             volume = SNDi_DecibelTable[user] + (SNDi_DecibelTable[fader] - -volume);
 
             if (volume != player->curVolume) {
-                NNS_SndStrmSetVolume(player->strm, volume);
+                NNS_SndStrmSetVolume(&player->strm, volume);
                 player->curVolume = volume;
             }
         }

@@ -5,7 +5,6 @@ extern "C" {
 
 extern void *data_0208cc94;
 extern void *data_0208cc88;
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
@@ -28,7 +27,7 @@ void func_ov000_021685f4(Lo021cb894 *self) {
     m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         void *nm = data_0208cc88;
-        func_02041218(m + 0x88);
+        func_02041218((struct PlttRes *)(m + 0x88));
         func_02041440(m, nm, 0);
     }
     self->unk_9c = (Model *)(m);

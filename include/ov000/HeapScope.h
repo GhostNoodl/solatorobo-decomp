@@ -2,23 +2,19 @@
 #define OV000_HEAPSCOPE_H
 
 #include "types.h"
+#include "Main/Sys/SysState.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct HeapState {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
-
 struct Model;
+struct PlttRes; // Main/Gfx/PlttRes.h
 
-extern HeapState *data_02097dd0;
 void Heap_Free(void *p);
 void func_02041558(struct Model *model);
-void func_02041278(void *p);
+void func_02041218(struct PlttRes *res);
+void func_02041278(struct PlttRes *res);
 
 #ifdef __cplusplus
 }
@@ -28,9 +24,9 @@ void func_02041278(void *p);
 // `dtor` (a statement using `p`), clears it, then restores the heap.
 #define HEAP_DELETE(T, field, dtor)                       \
     {                                                     \
-        void *saved = data_02097dd0->current;             \
+        void *saved = data_02097dd0->cur;             \
         T p;                                              \
-        data_02097dd0->current = data_02097dd0->unk_08;   \
+        data_02097dd0->cur = data_02097dd0->unk_08;   \
         p = (T)(field);                                   \
         if (p != NULL) {                                  \
             if (p != NULL) {                              \
@@ -38,12 +34,12 @@ void func_02041278(void *p);
             }                                             \
             (field) = 0;                                  \
         }                                                 \
-        data_02097dd0->current = saved;                   \
+        data_02097dd0->cur = saved;                   \
     }
 
 #define MODEL_DELETE(p)                \
     func_02041558((struct Model *)(p)); \
-    func_02041278((u8 *)(p) + 0x88);   \
+    func_02041278((struct PlttRes *)((u8 *)(p) + 0x88)); \
     Heap_Free(p)
 
 #define HEAP_DELETE_MODEL(field) HEAP_DELETE(void *, field, MODEL_DELETE(p))

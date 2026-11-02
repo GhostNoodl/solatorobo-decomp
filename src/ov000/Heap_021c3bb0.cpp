@@ -29,14 +29,14 @@ void func_ov000_021c3bb0(Obj021c3bb0 *self) {
     n = self->head;
     while (n != NULL) {
         Node021c3bb0 *next = n->next;
-        void *saved = data_02097dd0->current;
-        data_02097dd0->current = data_02097dd0->unk_08;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (n != NULL) {
             if (n != NULL) {
                 n->vfunc_04();
             }
         }
-        data_02097dd0->current = saved;
+        data_02097dd0->cur = saved;
         n = next;
     }
     self->head = NULL;

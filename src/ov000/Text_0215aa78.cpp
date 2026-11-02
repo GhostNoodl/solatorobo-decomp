@@ -5,7 +5,6 @@ extern void *data_0208cb84;
 extern void *data_0208cc8c;
 extern void *data_0208cb74;
 extern void *data_0208cca0;
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
@@ -19,7 +18,7 @@ public:
     u8 data[0x160];
     static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     Model0215aa78(void *nm, void *s) {
-        func_02041218(data + 0x88);
+        func_02041218((struct PlttRes *)(data + 0x88));
         func_02041440(data, nm, 0);
         STD_CopyString(data + 0x2c, s);
     }

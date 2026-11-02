@@ -1,14 +1,13 @@
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
+#include "nitro/fx.h"
 
 extern "C" {
 
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
-void *NNS_G3dGlbGetInvV(void);
-void MTX_MultVec33(const VecFx32 *v, const void *m, VecFx32 *out);
-void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
+const MtxFx43 *NNS_G3dGlbGetInvV(void);
 VObj *func_02065f88(s32 kind, VecFx32 *pos);
 
 VObj *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 kind, u8 chance) {
@@ -21,7 +20,7 @@ VObj *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 k
     v.x = Rand_PlusMinus(range->x);
     v.y = y;
     v.z = z;
-    MTX_MultVec33(&v, NNS_G3dGlbGetInvV(), &v);
+    MTX_MultVec33(&v, (const MtxFx33 *)NNS_G3dGlbGetInvV(), &v);
     VEC_Add(&v, base, &v);
     scale = min + Rand_UpTo(max - min);
     big = FALSE;

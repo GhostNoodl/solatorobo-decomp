@@ -10,7 +10,6 @@ extern void *data_0208cc94;
 void func_0204c7d0(void *p);
 void *MsgRes_GetString(void *a, s32 b);
 s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
@@ -56,7 +55,7 @@ void func_ov000_021c5bd4(Lo021cca40 *self) {
         void *name;
         name = data_0208cc88;
         arc = data_0208cc94;
-        func_02041218(m + 0x88);
+        func_02041218((struct PlttRes *)(m + 0x88));
         func_02041440(m, name, 0);
         STD_CopyString(m + 0x2c, arc);
     }

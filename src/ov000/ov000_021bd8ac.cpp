@@ -17,7 +17,6 @@ extern Ent_021bd8ac data_ov000_021cc8f0[];
 extern char data_ov000_021cc920[];
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
@@ -30,7 +29,7 @@ static inline u8 *NewModel_021bd8ac(char **name) {
     u8 *m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
         nm = *name;
-        func_02041218(m + 0x88);
+        func_02041218((struct PlttRes *)(m + 0x88));
         func_02041440(m, nm, 0);
     }
     return m;

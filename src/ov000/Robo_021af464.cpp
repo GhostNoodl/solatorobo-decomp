@@ -7,10 +7,6 @@ typedef struct {
 } St_021af464;
 
 typedef struct {
-    s32 x, y, z;
-} Vec_021af464;
-
-typedef struct {
     u16 b0 : 3;
     u16 b3 : 1;
     u16 b4 : 1;
@@ -35,7 +31,6 @@ typedef struct {
 
 extern "C" {
 
-extern const s16 FX_SinCosTable_[];
 extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd6c;
@@ -59,7 +54,6 @@ void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_0203f364(void *obj);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-void VEC_MultAdd(s32 a, const void *v1, const void *v2, void *out);
 
 static inline Actor *FindActor021af464(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -115,14 +109,14 @@ static inline BOOL Ev19_021af464(void) {
 void func_ov000_021af464(Robo021ca458 *self) {
     Actor *a;
     u8 *info;
-    Vec_021af464 pos;
+    VecFx32 pos;
     u16 ang;
-    Vec_021af464 v;
+    VecFx32 v;
     a = FindActor021af464(self->target);
     info = NULL;
     if (a != NULL) {
         info = ((u8 *)a->unk_4c);
-        pos = LFLD(Vec_021af464, a, 0x70);
+        pos = LFLD(VecFx32, a, 0x70);
         ang = a->rot_y;
         {
             u16 r = ang + 0x8000;
@@ -186,14 +180,14 @@ void func_ov000_021af464(Robo021ca458 *self) {
         St_021af464 *st = ((St_021af464 *)self->unk_40);
         st->timer++;
         if (st->timer >= 10) {
-            LFLD(Vec_021af464, self, 0x70) = pos;
+            LFLD(VecFx32, self, 0x70) = pos;
             self->rot_y = ang;
             self->unk_98 = ang;
             self->target = 0xffff;
             func_02049f44(data_02097e4c, 1, &self->pos, 0);
             ((St_021af464 *)self->unk_40)->state++;
         } else {
-            Vec_021af464 d;
+            VecFx32 d;
             self->rot_y = func_01ffc128(ang, self->rot_y, 0x8cd, 1, 0x8000);
             self->unk_9c = 0;
             self->unk_a0 = 0;
@@ -259,7 +253,7 @@ void func_ov000_021af464(Robo021ca458 *self) {
         self->unk_b24_27 = 1;
     }
     {
-        v = *(Vec_021af464 *)((u8 *)self + 0x70);
+        v = *(VecFx32 *)((u8 *)self + 0x70);
         v.y += self->unk_6c;
         func_ov000_021899d8(&v, 0, 0x6ccd, 1, 0x1000, 0x1000);
     }

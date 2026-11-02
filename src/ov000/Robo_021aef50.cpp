@@ -7,10 +7,6 @@ typedef struct {
 } St_021aef50;
 
 typedef struct {
-    s32 x, y, z;
-} Vec_021aef50;
-
-typedef struct {
     u8 b0 : 5;
     u8 b5 : 1;
     u8 b6 : 2;
@@ -43,7 +39,6 @@ VObj *func_02065f88(s32 id, void *pos);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 void *func_0204a028(void *a, s32 b, void *c, s32 d);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-void VEC_MultAdd(s32 a, const void *v1, const void *v2, void *out);
 
 static inline Actor *FindActor021aef50(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -66,7 +61,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
     u16 id;
     Actor *a;
     u8 *info;
-    Vec_021aef50 pos;
+    VecFx32 pos;
     id = self->unk_b20;
     if (id == 0xffff) {
         id = self->target;
@@ -75,7 +70,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
     info = NULL;
     if (a != NULL) {
         info = ((u8 *)a->unk_4c);
-        pos = LFLD(Vec_021aef50, a, 0x70);
+        pos = LFLD(VecFx32, a, 0x70);
     }
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
@@ -140,7 +135,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
         st->timer++;
         if (st->timer >= 10) {
             if (a != NULL) {
-                LFLD(Vec_021aef50, self, 0x70) = pos;
+                LFLD(VecFx32, self, 0x70) = pos;
                 {
                     u16 ry = a->rot_y;
                     u16 rz = a->rot_z;
@@ -153,7 +148,7 @@ void func_ov000_021aef50(Robo021ca458 *self) {
             }
             func_ov000_02198360(((St_021aef50 *)self->unk_40), 1, 0);
         } else {
-            Vec_021aef50 d;
+            VecFx32 d;
             self->rot_y = func_01ffc128(a->rot_y, self->rot_y, 0x800, 1, 0x8000);
             self->unk_9c = 0;
             self->unk_a0 = 0;

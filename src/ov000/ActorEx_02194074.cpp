@@ -1,10 +1,6 @@
 #include "types.h"
-
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
+#include "Main/Sys/SysState.h"
+#include "nitro/fx.h"
 
 typedef struct ResSet ResSet;
 
@@ -25,12 +21,6 @@ typedef struct {
     u16 unk_9a_4 : 1;
     u16 unk_9a_5 : 11;
 } Obj48;
-
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} VecFx32;
 
 typedef struct {
     const void *vtbl;
@@ -68,7 +58,6 @@ typedef struct {
 extern "C" {
 
 extern const u8 data_ov000_021cc480[];
-extern HeapState *data_02097dd0;
 extern void *data_0214a420;
 
 void *Actor_Ctor(void *self);
@@ -119,13 +108,13 @@ static inline void ActorEx_Destroy(ActorEx *self) {
 
     self->vtbl = data_ov000_021cc480;
     for (i = 0; i < 2; i++) {
-        void *saved = data_02097dd0->current;
-        data_02097dd0->current = data_02097dd0->unk_08;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->res[i] != NULL) {
             ResSet_Delete(self->res[i]);
             self->res[i] = NULL;
         }
-        data_02097dd0->current = saved;
+        data_02097dd0->cur = saved;
     }
     if (self->unk_bc != NULL) {
         func_02065804(data_0214a420, self->unk_bc);
@@ -160,10 +149,6 @@ ActorEx *func_ov000_0219429c(ActorEx *self) {
 }
 
 }
-
-typedef struct {
-    s32 m[4][3];
-} Mtx43_0219433c;
 
 typedef struct {
     u16 a;
@@ -206,7 +191,7 @@ typedef struct {
     u8 f1 : 1;
     u8 frest : 6;
     u8 pad19[7];
-    Mtx43_0219433c mtx;
+    MtxFx43 mtx;
 } Sub0219433c;
 
 typedef struct {
@@ -225,12 +210,6 @@ typedef struct {
 } Info0219433c;
 
 typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Vec0219433c;
-
-typedef struct {
     u8 pad00[0xe];
     u16 id;
     u8 pad10[0x10];
@@ -243,7 +222,7 @@ typedef struct {
     u8 pad44[8];
     Sub0219433c *unk_4c;
     u8 pad50[0x20];
-    Vec0219433c pos;
+    VecFx32 pos;
     u16 rx;
     u16 ry;
     u16 rz;
@@ -263,7 +242,6 @@ typedef struct {
 } Actor0219433c;
 
 extern "C" {
-extern const s16 FX_SinCosTable_[];
 void *Heap_Alloc(u32 size);
 Info0219433c *func_0206fef8(u16 id);
 Data0219433c *func_020704b4(u16 id);
@@ -274,12 +252,6 @@ void func_ov000_02191b70(void *p);
 void *func_ov000_02198328(void *p);
 void *func_ov000_02199b00(void *p);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
-void MTX_Identity43_(Mtx43_0219433c *m);
-void MTX_RotX43_(Mtx43_0219433c *m, s32 s, s32 c);
-void MTX_RotY43_(Mtx43_0219433c *m, s32 s, s32 c);
-void MTX_RotZ43_(Mtx43_0219433c *m, s32 s, s32 c);
-void MTX_Concat43(Mtx43_0219433c *a, Mtx43_0219433c *b, Mtx43_0219433c *out);
-void MI_Copy48B(const void *src, void *dst);
 
 #define SIN0219433c(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define COS0219433c(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
@@ -332,8 +304,8 @@ static inline void CopyIds0219433c(Ids0219433c *d, const Ids0219433c *s) {
 }
 
 static inline void SetMtx0219433c(Actor0219433c *self, Sub0219433c *sub) {
-    Mtx43_0219433c t;
-    Mtx43_0219433c m;
+    MtxFx43 t;
+    MtxFx43 m;
     u16 rx;
     u16 ry;
     u16 rz;

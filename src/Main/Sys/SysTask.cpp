@@ -1,4 +1,5 @@
 #include "Main/Sys/SysTask.h"
+#include "nitro/fx.h"
 
 #define ST_FLD(type, p, off) (*(type *)((u8 *)(p) + (off)))
 
@@ -64,12 +65,6 @@ typedef struct SysTaskArg {
     s32 timer;
     s32 limit;
 } SysTaskArg;
-
-typedef struct StVec {
-    s32 x;
-    s32 y;
-    s32 z;
-} StVec;
 
 struct SysTaskRes {
     virtual void vf00(void);
@@ -139,10 +134,10 @@ static inline void ST_DrawBg(int idx, int x, int y, u32 color) {
 }
 
 static inline void ST_Draw(Unk0214a418 *p, u32 size) {
-    StVec s;
+    VecFx32 s;
     u32 tex;
     u32 poly;
-    StVec t;
+    VecFx32 t;
     int scale[3];
     u32 c;
     u32 one;

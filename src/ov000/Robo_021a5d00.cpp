@@ -7,10 +7,6 @@ typedef struct {
 } St_021a5d00;
 
 typedef struct {
-    s32 x, y, z;
-} Vec_021a5d00;
-
-typedef struct {
     u8 b0 : 1;
     u8 b1 : 1;
     u8 b2 : 2;
@@ -82,8 +78,8 @@ static inline BOOL Ev19_021a5d00(void) {
 
 static inline void Fx021a5d00(Robo021ca458 *self, u8 *info) {
     if (!Ev19_021a5d00() && !(info != NULL && (LFLD(B18_021a5d00, info, 0x18).b4 ? TRUE : FALSE))) {
-        Vec_021a5d00 v;
-        v = *(Vec_021a5d00 *)((u8 *)self + 0x70);
+        VecFx32 v;
+        v = *(VecFx32 *)((u8 *)self + 0x70);
         v.y += self->unk_68;
         func_ov000_021899d8(&v, 0, 0x8000, 1, 0x1000, 0x1000);
     }
@@ -114,8 +110,8 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
     case 0: {
         char *lbl = data_ov000_021cc67e;
         if (a != NULL) {
-            Vec_021a5d00 pos;
-            pos = *(Vec_021a5d00 *)((u8 *)self + 0x70);
+            VecFx32 pos;
+            pos = *(VecFx32 *)((u8 *)self + 0x70);
             pos.y -= 0x1000;
             self->unk_98 = AngleTo021a5d00(self, a);
             self->rot_y = func_01ffc128(self->unk_98, self->rot_y, 0x400, 1, 0x8000);

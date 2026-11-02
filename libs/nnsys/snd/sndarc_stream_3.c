@@ -15,20 +15,20 @@ void func_02031df0(StrmPlayer *player, int frames) {
 }
 
 void func_02031e48(StrmPlayer *player) {
-    OS_LockMutex(data_02097c98);
+    OS_LockMutex(&data_02097c98);
     if (data_0209622c.altThread != NULL) {
-        OS_LockMutex(data_0209622c.altThread->mutex);
+        OS_LockMutex(&data_0209622c.altThread->mutex);
     }
     if (player->playing) {
-        NNS_SndStrmStop(player);
+        NNS_SndStrmStop(&player->strm);
     }
     if (player->active) {
         player->stopFn(player);
     }
     func_02031ee0(player);
-    OS_UnlockMutex(data_02097c98);
+    OS_UnlockMutex(&data_02097c98);
     if (data_0209622c.altThread != NULL) {
-        OS_UnlockMutex(data_0209622c.altThread->mutex);
+        OS_UnlockMutex(&data_0209622c.altThread->mutex);
     }
 }
 
@@ -47,7 +47,7 @@ void func_02031ee0(StrmPlayer *player) {
 
 BOOL func_02031f48(StrmPlayer *player, int chNum, u8 *chList) {
     if (player->chRefCount == 0) {
-        if (!NNS_SndStrmAllocChannel(player, chNum, chList)) {
+        if (!NNS_SndStrmAllocChannel(&player->strm, chNum, chList)) {
             return FALSE;
         }
     }
@@ -60,16 +60,16 @@ void func_02031f80(StrmPlayer *player) {
         return;
     }
     if (--player->chRefCount == 0) {
-        NNS_SndStrmFreeChannel(player);
+        NNS_SndStrmFreeChannel(&player->strm);
     }
 }
 
 void func_02031fa4(StrmThread *thread, u32 prio) {
-    OS_CreateThread(thread, func_02032e58, thread, thread->stack + sizeof(thread->stack), sizeof(thread->stack), prio);
+    OS_CreateThread(&thread->thread, func_02032e58, thread, thread->stack + sizeof(thread->stack), sizeof(thread->stack), prio);
     NNS_FndInitList(&thread->cmdList, 0);
-    OS_InitMutex(thread->mutex);
-    thread->queueHead = thread->queueTail = NULL;
-    OS_WakeupThreadDirect(thread);
+    OS_InitMutex(&thread->mutex);
+    thread->queue.head = thread->queue.tail = NULL;
+    OS_WakeupThreadDirect(&thread->thread);
 }
 
 void func_0203200c(NNSFndList *list, StrmPlayer *player) {
@@ -119,21 +119,21 @@ void func_0203213c(void *data, u32 size, u32 arg0, u32 arg1) {
     if (data != player->buffer) {
         return;
     }
-    OS_LockMutex(data_02097c98);
+    OS_LockMutex(&data_02097c98);
     if (data_0209622c.altThread != NULL) {
-        OS_LockMutex(data_0209622c.altThread->mutex);
+        OS_LockMutex(&data_0209622c.altThread->mutex);
     }
     func_02031e48(player);
     player->buffer = NULL;
     player->bufSize = 0;
     player->chNum = 0;
     if (player->chRefCount > 0) {
-        NNS_SndStrmFreeChannel(player);
+        NNS_SndStrmFreeChannel(&player->strm);
         player->chRefCount = 0;
     }
-    OS_UnlockMutex(data_02097c98);
+    OS_UnlockMutex(&data_02097c98);
     if (data_0209622c.altThread != NULL) {
-        OS_UnlockMutex(data_0209622c.altThread->mutex);
+        OS_UnlockMutex(&data_0209622c.altThread->mutex);
     }
 }
 
@@ -169,7 +169,7 @@ void func_020321d4(int status, int numBuffers, void **buffers, u32 size, int for
     }
     player->cmdCount++;
     NNS_FndAppendListObject(&thread->cmdList, cmd);
-    OS_WakeupThread(&thread->queueHead);
+    OS_WakeupThread(&thread->queue);
 }
 
 void func_02032310(StrmPlayer *player) {
@@ -219,7 +219,6 @@ extern void DC_FlushRange(const void *addr, u32 size);
 extern const s8 data_0207574c[16];
 extern const s16 data_0207575c[89];
 
-typedef enum { NNS_SND_STRM_FORMAT_PCM8, NNS_SND_STRM_FORMAT_PCM16 } NNSSndStrmFormat;
 typedef void (*StrmDataCallback)(int status, int numBuffers, void **buffers, u32 size, NNSSndStrmFormat format, u32 arg);
 
 static inline s16 StrmDecodeAdpcm(StrmAdpcmState *st, u32 data) {
@@ -356,7 +355,7 @@ void func_0203244c(StrmCommand *cmd) {
             dst = (s16 *)src;
             if (ch < player->header.channels) {
                 if (player->header.format == 2) {
-                    OS_LockMutex(data_02096244);
+                    OS_LockMutex(&data_02096244);
                     src = (u8 *)data_0209622c.unk_8;
                 }
                 readLen = player->readFn(player, src, readSize, filePos + ch * blockSize);
@@ -366,7 +365,7 @@ void func_0203244c(StrmCommand *cmd) {
                     samples = 0;
                     loop = FALSE;
                     if (player->header.format == 2) {
-                        OS_UnlockMutex(data_02096244);
+                        OS_UnlockMutex(&data_02096244);
                     }
                     break;
                 }
@@ -396,7 +395,7 @@ void func_0203244c(StrmCommand *cmd) {
                     if (k < end) {
                         *dst = StrmDecodeAdpcm(st, *in & 0xf);
                     }
-                    OS_UnlockMutex(data_02096244);
+                    OS_UnlockMutex(&data_02096244);
                 }
             } else if (player->mono) {
                 MI_CpuFill8(src, 0, outSize);

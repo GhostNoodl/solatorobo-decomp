@@ -4,6 +4,8 @@
 #include "ov000/ActorBase.h"
 #include "ov000/Vec.h"
 #include "Main/Sys/Pad.h"
+#include "Main/Sys/Field.h"
+#include "nitro/fx.h" // REG_SQRTCNT, REG_SQRT_PARAM, REG_SQRT_RESULT
 
 typedef struct ActorGroup {
     struct ActorGroup *prev;
@@ -17,7 +19,7 @@ typedef struct ActorGroup {
     PauseNode pause;
 } ActorGroup;
 
-typedef struct {
+typedef struct ActorMgr {
     ActorGroup *head;
     ActorGroup *tail;
     u16 count;
@@ -85,10 +87,6 @@ static inline Actor *ActorMgr_FindActor(u16 id) {
 }
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
-
-#define REG_SQRTCNT (*(volatile u16 *)0x40002b0)
-#define REG_SQRT_RESULT (*(volatile u32 *)0x40002b4)
-#define REG_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
 static inline void CP_SetSqrtImm64_NS_(u64 param) {
     REG_SQRT_PARAM = param;
@@ -185,15 +183,6 @@ typedef struct {
     VecFx32 unk_2c;
 } MsgData8;
 
-typedef struct {
-    u8 unk_00[0x4];
-    VecFx32 pos;
-} Player021ccd54Sub;
-
-typedef struct {
-    u8 unk_00[0xf4];
-    Player021ccd54Sub unk_f4;
-} Player021ccd54;
 
 extern "C" {
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
@@ -210,7 +199,6 @@ BOOL func_01ffc4ec(VecFx32 *v, s32 speed, s32 b);
 u16 Pad_LookupDir(void *rng, s32 range);
 void Actor_Move(Actor *self, s32 turn);
 void func_ov000_0218bed8(void *a, s32 b, Actor *actor);
-extern Player021ccd54 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;
 BOOL func_01ffc198(void *pos, void *target, s32 dist);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, u16 b);

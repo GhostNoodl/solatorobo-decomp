@@ -1,11 +1,6 @@
 #include "types.h"
+#include "nitro/fx.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Vec0218a358;
 
 typedef struct {
     u16 x;
@@ -15,20 +10,15 @@ typedef struct {
 
 extern "C" {
 
-s32 FX_Div(s32 a, s32 b);
-
-static inline s32 FX_Mul(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
 
 struct Obj0218a358 {
     u8 unk_00[0x10];
-    Vec0218a358 unk_10;
+    VecFx32 unk_10;
     u8 unk_1c[0x26];
     Rot0218a358 unk_42;
     s32 unk_48;
     u8 unk_4c[0x70];
-    Vec0218a358 unk_bc;
+    VecFx32 unk_bc;
     u8 unk_c8[0x11];
     u8 unk_d9;
     u8 unk_da[0xe];
@@ -49,7 +39,7 @@ struct Obj0218a358 {
     s32 unk_11c;
 };
 
-void func_ov000_0218a358(Obj0218a358 *self, const Vec0218a358 *pos, const Rot0218a358 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8) {
+void func_ov000_0218a358(Obj0218a358 *self, const VecFx32 *pos, const Rot0218a358 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8) {
     self->unk_d9 = a8;
     if (rot != NULL) {
         self->unk_f8 = *rot;
@@ -62,7 +52,7 @@ void func_ov000_0218a358(Obj0218a358 *self, const Vec0218a358 *pos, const Rot021
         self->unk_f4 = self->unk_48;
     }
     if (pos != NULL) {
-        LFLD(Vec0218a358, self, 0xe8) = *pos;
+        LFLD(VecFx32, self, 0xe8) = *pos;
     } else {
         self->unk_bc = self->unk_10;
     }

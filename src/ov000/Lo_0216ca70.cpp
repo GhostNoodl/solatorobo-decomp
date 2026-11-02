@@ -55,7 +55,6 @@ BOOL PauseNode_IsDrawPaused(void *node, BOOL recurse);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_021705a0(void *p, s32 a);
 void func_ov000_021c2114(void *p);
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
@@ -192,7 +191,7 @@ BOOL func_ov000_0216ca70(Obj0216ca70 *self) {
                 m = Heap_Alloc(0x160);
                 if (m) {
                     void *name = data_0208cc88;
-                    func_02041218((u8 *)m + 0x88);
+                    func_02041218((struct PlttRes *)((u8 *)m + 0x88));
                     func_02041440(m, name, 0);
                 }
                 self->model = m;

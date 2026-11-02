@@ -48,10 +48,6 @@ typedef struct {
 SIZE_ASSERT(Shadow, 0x1c);
 
 typedef struct {
-    s32 m[9];
-} Mtx33;
-
-typedef struct {
     u8 unk_00[0xfc];
     u32 unk_fc;
 } GxState;
@@ -62,7 +58,7 @@ extern const u8 data_ov000_021cc438[];
 extern ShadowArc data_ov000_021c9d80;
 extern void *data_02097cdc;
 extern u8 *data_02097d48;
-extern Mtx33 data_020928b4;
+extern MtxFx33 data_020928b4;
 extern GxState NNS_G3dGlb;
 
 ShadowRes *func_02035e34(void *file, void *name);
@@ -75,8 +71,6 @@ void Heap_Free(void *ptr);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 void NNS_G3dGlbSetBaseScale(VecFx32 *scale);
 void NNS_G3dGlbSetBaseTrans(VecFx32 *trans);
-void MTX_Identity33_(Mtx33 *mtx);
-void MI_Copy36B(const void *src, void *dst);
 void NNS_G3dGlbFlushVP(void);
 void NNS_G3dMdlSetMdlAlpha(void *mdl, u32 idx, u32 alpha);
 void NNS_G3dMdlSetMdlPolygonID(void *mdl, u32 idx, u32 id);
@@ -105,12 +99,6 @@ static inline void SetScaleXZ(VecFx32 *v, s32 s) {
     v->x = s;
     v->y = 0x1000;
     v->z = s;
-}
-
-static inline void VEC_Set(VecFx32 *v, s32 x, s32 y, s32 z) {
-    v->x = x;
-    v->y = y;
-    v->z = z;
 }
 
 static inline void *Res_GetMdl(void *file, u32 idx) {
@@ -212,7 +200,7 @@ typedef enum { SHADOW_SCALE_Y = 0x1000 } ShadowScale;
 void func_ov000_02191c24(Shadow *self, VecFx32 *pos) {
     VecFx32 scale;
     VecFx32 trans;
-    Mtx33 mtx;
+    MtxFx33 mtx;
     u8 alpha;
     if (self->mdl == NULL || self->type != self->prev) {
         if (self->res != NULL) {

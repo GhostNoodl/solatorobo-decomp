@@ -19,25 +19,25 @@ void func_02065f0c(EffectMgr *m) {
 
 extern u32 data_0208c2e4[];
 extern void func_02063a34(EffectObj *obj);
-extern struct EffectGroup *func_0206723c(s32 id, const EffectVec *pos);
-extern struct Effect3D *func_020674dc(s32 id, const EffectVec *pos);
-extern struct EffectGroup *func_02067984(const EffectVec *pos);
-extern struct EffectGroup *func_02067b08(s32 id, const EffectVec *pos);
-extern EffectObj *func_02067e9c(s32 id, const EffectVec *pos);
-extern struct Effect3D *func_02067fd4(s32 id, const EffectVec *pos);
-extern struct EffectGroup *func_0206811c(s32 id, const EffectVec *pos);
-extern struct EffectGroup *func_02068228(s32 id, const EffectVec *pos);
-extern struct EffectGroup *func_02068354(s32 id, const EffectVec *pos);
+extern struct EffectGroup *func_0206723c(s32 id, const VecFx32 *pos);
+extern struct Effect3D *func_020674dc(s32 id, const VecFx32 *pos);
+extern struct EffectGroup *func_02067984(const VecFx32 *pos);
+extern struct EffectGroup *func_02067b08(s32 id, const VecFx32 *pos);
+extern EffectObj *func_02067e9c(s32 id, const VecFx32 *pos);
+extern struct Effect3D *func_02067fd4(s32 id, const VecFx32 *pos);
+extern struct EffectGroup *func_0206811c(s32 id, const VecFx32 *pos);
+extern struct EffectGroup *func_02068228(s32 id, const VecFx32 *pos);
+extern struct EffectGroup *func_02068354(s32 id, const VecFx32 *pos);
 extern struct Effect3D *func_02066c58(void);
 extern struct Effect3D *func_02066df0(void);
 extern struct Effect3D *func_02066ec8(void);
 extern struct Effect3D *func_02066f90(void);
-extern struct Effect3D *func_02066d10(const EffectVec *pos);
+extern struct Effect3D *func_02066d10(const VecFx32 *pos);
 extern struct Effect3D *func_02067058(void);
 extern struct Effect3D *func_02067120(void);
-extern struct EffectGroup *func_020671e8(const EffectVec *pos);
+extern struct EffectGroup *func_020671e8(const VecFx32 *pos);
 
-EffectObj *func_02065f88(s32 id, const EffectVec *pos) {
+EffectObj *func_02065f88(s32 id, const VecFx32 *pos) {
     EffectObj *obj;
     switch (id) {
     case 0x0:

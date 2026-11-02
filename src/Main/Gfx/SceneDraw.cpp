@@ -19,19 +19,9 @@ typedef struct SceneDrawData {
     /* 0x500 */ SceneObj objs[5];
 } SceneDrawData;
 
-typedef struct SceneG3dGlb {
-    /* 0x00 */ u8 unk_00[0xfc];
-    /* 0xfc */ u32 flag;
-} SceneG3dGlb;
-
-extern SceneG3dGlb NNS_G3dGlb;
 extern MtxFx44 data_02092800;
 extern MtxFx43 data_02092844;
 
-extern void NNS_G3dGeFlushBuffer(void);
-extern void MI_Copy64B(const void *src, void *dst);
-extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
-extern void NNS_G3dGlbPolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 extern void func_02053254(GameScene *scene, int a, void *obj, int b);
 
 static inline void Scene_SetProjectionMtx(const MtxFx44 *mtx) {
@@ -54,7 +44,7 @@ void func_02052fcc(GameScene *scene) {
     glbCam = &data_02092844;
     MTX_Identity43_(glbCam);
     data_02092844.m[3][2] = 0;
-    NNS_G3dGlbPolygonAttr(0, 0, 3, 0, 0, 0);
+    NNS_G3dGlbPolygonAttr(0, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, 0, 0, 0);
     func_02053254(scene, 1, &((SceneDrawData *)scene)->mainParts[1], 1);
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 5; i++) {
@@ -80,7 +70,7 @@ void func_0205311c(GameScene *scene) {
     Scene_SetProjectionMtx(&ortho);
     MTX_Identity43_(glbCam);
     glbCam->m[3][2] = 0;
-    NNS_G3dGlbPolygonAttr(0, 0, 3, 0, 0, 0);
+    NNS_G3dGlbPolygonAttr(0, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, 0, 0, 0);
     func_02053254(scene, 2, &((SceneDrawData *)scene)->mainParts[2], 0);
     for (i = 0; i < 5; i++) {
         SceneObj *o = &((SceneDrawData *)scene)->objs[i];

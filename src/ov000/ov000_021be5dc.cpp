@@ -41,8 +41,6 @@ extern "C" {
 BOOL func_ov000_021bd374(Obj021be5dc *self, s32 len);
 void func_ov000_021bd474(Obj021be5dc *self, VecFx32 *pos);
 void *func_ov000_021be564(void *self, void *src, void *out, u16 *count);
-void MTX_MultVec43(const VecFx32 *vec, const void *m, VecFx32 *dst);
-s32 FX_Div(s32 a, s32 b);
 void func_02041c34(void *model, s32 a, void *cb, void *arg);
 extern u8 data_02092800[]; // NNS_G3dGlb.projMtx
 extern u8 data_02092844[];  // NNS_G3dGlb.cameraMtx
@@ -71,7 +69,7 @@ static inline s32 CalcDepth(VecFx32 *pos) {
     s32 w;
     s32 q;
     s32 *m = (s32 *)data_02092800;
-    MTX_MultVec43(pos, data_02092844, &v);
+    MTX_MultVec43(pos, (const MtxFx43 *)data_02092844, &v);
     v.z += 0x3000;
     w = FxMulL(v.z, -0x1000);
     q = m[14] + FX_MUL(m[10], v.z);

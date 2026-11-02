@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Sys/SysState.h"
 
 typedef struct ListEntry {
     const char *name;
@@ -37,12 +38,6 @@ typedef struct {
     u8 unk_70[0x18];
     u8 unk_88[0xd8];
 } Model;
-
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
 
 class ListOwner : public VObj {
 public:
@@ -90,7 +85,6 @@ public:
 
 extern "C" {
 
-extern HeapState *data_02097dd0;
 
 BOOL STD_CompareString(const char *a, const char *b);
 void Heap_Free(void *ptr);
@@ -150,9 +144,9 @@ s32 func_ov000_02154638(ListOwner *self) {
 }
 
 void func_ov000_021546ec(ListOwner *self, const char *name, void *a, u32 b) {
-    void *saved = data_02097dd0->current;
+    void *saved = data_02097dd0->cur;
     Model *model;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     model = self->unk_b8_model;
     if (model != NULL) {
         if (model != NULL) {
@@ -162,7 +156,7 @@ void func_ov000_021546ec(ListOwner *self, const char *name, void *a, u32 b) {
         }
         self->unk_b8_model = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         func_02041218(model->unk_88);
@@ -180,9 +174,9 @@ void func_ov000_021546ec(ListOwner *self, const char *name, void *a, u32 b) {
 }
 
 void func_ov000_021547e8(ListOwner *self, const char *name, void *a, void *b) {
-    void *saved = data_02097dd0->current;
+    void *saved = data_02097dd0->cur;
     Model *model;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     model = self->unk_bc;
     if (model != NULL) {
         if (model != NULL) {
@@ -192,7 +186,7 @@ void func_ov000_021547e8(ListOwner *self, const char *name, void *a, void *b) {
         }
         self->unk_bc = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         func_02041218(model->unk_88);
@@ -221,15 +215,15 @@ void func_ov000_021548ec(ListOwner *self, ListArg *arg) {
     self->unk_a8 = arg;
     self->unk_a0 = 0;
     arg->unk_00 = 0;
-    saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (arg->unk_1c != NULL) {
         if (arg->unk_1c != NULL) {
             arg->unk_1c->vfunc_04();
         }
         arg->unk_1c = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
     if (self->count > self->unk_20 && index + self->unk_20 >= self->count) {
         self->unk_0c_21 = 1;
     } else {

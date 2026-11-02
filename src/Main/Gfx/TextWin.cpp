@@ -154,7 +154,6 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
@@ -487,15 +486,13 @@ BOOL func_0204e218(TextWin *win);
 extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
-extern s32 FX_Div(s32 a, s32 b);
-extern const s16 FX_SinCosTable_[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 
 static inline Model *Model_Init(Model *model, const char *name, const char *file, int a) {
-    func_02041218(model->pltt);
+    func_02041218(&model->pltt);
     func_02041440(model, file, a);
     STD_CopyString(model->name, name);
     return model;
@@ -505,7 +502,7 @@ static inline Model *Model_Init(Model *model, const char *name, const char *file
 
 struct TextModel : Model {
     TextModel(const char *name, const char *file, int a) {
-        func_02041218(pltt);
+        func_02041218(&pltt);
         func_02041440(this, file, a);
         STD_CopyString(this->name, name);
     }
@@ -549,7 +546,6 @@ void func_0204e2dc(Model *model, s32 v);
 
 void func_0204e2e4(Model *model, s32 idx);
 
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 data_02097d78[];
@@ -713,7 +709,6 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
@@ -791,7 +786,7 @@ void func_0204c8a8(TextWin *win) {
         if (p != NULL) {
             if (p != NULL) {
                 func_02041558(p);
-                func_02041278(p->pltt);
+                func_02041278(&p->pltt);
                 Heap_Free(p);
             }
             win->model = NULL;
@@ -819,7 +814,7 @@ void func_0204c8a8(TextWin *win) {
 
 Model *func_0204c9f8(Model *model) {
     func_02041558(model);
-    func_02041278(model->pltt);
+    func_02041278(&model->pltt);
     return model;
 }
 
@@ -1030,15 +1025,13 @@ BOOL func_0204e218(TextWin *win);
 extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
-extern s32 FX_Div(s32 a, s32 b);
-extern const s16 FX_SinCosTable_[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 
 static inline Model *Model_Init(Model *model, const char *name, const char *file, int a) {
-    func_02041218(model->pltt);
+    func_02041218(&model->pltt);
     func_02041440(model, file, a);
     STD_CopyString(model->name, name);
     return model;
@@ -1048,7 +1041,7 @@ static inline Model *Model_Init(Model *model, const char *name, const char *file
 
 struct TextModel : Model {
     TextModel(const char *name, const char *file, int a) {
-        func_02041218(pltt);
+        func_02041218(&pltt);
         func_02041440(this, file, a);
         STD_CopyString(this->name, name);
     }
@@ -1108,7 +1101,6 @@ void func_0204e2dc(Model *model, s32 v);
 
 void func_0204e2e4(Model *model, s32 idx);
 
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 data_02097d78[];
@@ -1277,7 +1269,6 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
@@ -1744,15 +1735,13 @@ BOOL func_0204e218(TextWin *win);
 extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
-extern s32 FX_Div(s32 a, s32 b);
-extern const s16 FX_SinCosTable_[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 
 static inline Model *Model_Init(Model *model, const char *name, const char *file, int a) {
-    func_02041218(model->pltt);
+    func_02041218(&model->pltt);
     func_02041440(model, file, a);
     STD_CopyString(model->name, name);
     return model;
@@ -1762,7 +1751,7 @@ static inline Model *Model_Init(Model *model, const char *name, const char *file
 
 struct TextModel : Model {
     TextModel(const char *name, const char *file, int a) {
-        func_02041218(pltt);
+        func_02041218(&pltt);
         func_02041440(this, file, a);
         STD_CopyString(this->name, name);
     }
@@ -1822,7 +1811,6 @@ void func_0204e2dc(Model *model, s32 v);
 
 void func_0204e2e4(Model *model, s32 idx);
 
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 data_02097d78[];
@@ -1919,7 +1907,6 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
@@ -2284,15 +2271,13 @@ BOOL func_0204e218(TextWin *win);
 extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
-extern s32 FX_Div(s32 a, s32 b);
-extern const s16 FX_SinCosTable_[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 
 static inline Model *Model_Init(Model *model, const char *name, const char *file, int a) {
-    func_02041218(model->pltt);
+    func_02041218(&model->pltt);
     func_02041440(model, file, a);
     STD_CopyString(model->name, name);
     return model;
@@ -2302,7 +2287,7 @@ static inline Model *Model_Init(Model *model, const char *name, const char *file
 
 struct TextModel : Model {
     TextModel(const char *name, const char *file, int a) {
-        func_02041218(pltt);
+        func_02041218(&pltt);
         func_02041440(this, file, a);
         STD_CopyString(this->name, name);
     }
@@ -2362,7 +2347,6 @@ void func_0204e2dc(Model *model, s32 v);
 
 void func_0204e2e4(Model *model, s32 idx);
 
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 data_02097d78[];
@@ -2499,7 +2483,6 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
@@ -2673,15 +2656,13 @@ BOOL func_0204e218(TextWin *win) {
 extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
-extern s32 FX_Div(s32 a, s32 b);
-extern const s16 FX_SinCosTable_[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 
 static inline Model *Model_Init(Model *model, const char *name, const char *file, int a) {
-    func_02041218(model->pltt);
+    func_02041218(&model->pltt);
     func_02041440(model, file, a);
     STD_CopyString(model->name, name);
     return model;
@@ -2691,7 +2672,7 @@ static inline Model *Model_Init(Model *model, const char *name, const char *file
 
 struct TextModel : Model {
     TextModel(const char *name, const char *file, int a) {
-        func_02041218(pltt);
+        func_02041218(&pltt);
         func_02041440(this, file, a);
         STD_CopyString(this->name, name);
     }
@@ -2734,14 +2715,14 @@ static inline void Model_ApplyPart(Model *model, s32 idx) {
 void func_0204dff8(TextWin *win);
 
 Model *func_0204e238(Model *model, const char *name, const char *file, int a) {
-    func_02041218(model->pltt);
+    func_02041218(&model->pltt);
     func_02041440(model, file, a);
     STD_CopyString(model->name, name);
     return model;
 }
 
 void *func_0204e278(void *pltt) {
-    func_02041218(pltt);
+    func_02041218((PlttRes *)pltt);
     return pltt;
 }
 
@@ -2773,7 +2754,6 @@ void func_0204e2e4(Model *model, s32 idx) {
     Model_ApplyPart(model, idx);
 }
 
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 data_02097d78[];
@@ -2927,7 +2907,6 @@ void func_0204e358(TextWin *win) {
 }
 
 extern void func_020430b8(int w, int h, u32 *ws, u32 *hs);
-extern void DC_FlushRange(const void *start, u32 size);
 extern u32 (*NNS_GfdDefaultFuncAllocTexVram)(u32 size, BOOL is4x4, u32 opt);
 extern u32 (*NNS_GfdDefaultFuncAllocPlttVram)(u32 size, BOOL is4pltt, u32 opt);
 extern void *func_0203e458(int type, void *src, u32 dst, u32 size, u32 chunk);
@@ -3079,10 +3058,7 @@ extern "C" {
 
 extern "C" {
 
-extern s32 FX_Div(s32 a, s32 b);
 extern void *func_0203de84(u32 size, u32 align);
-extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
-extern void DC_FlushRange(const void *start, u32 size);
 
 // Builds the display list that draws the window's glyph texture as a (gradient) quad.
 void func_0204eb3c(TextWin *win) {
@@ -3151,8 +3127,6 @@ extern void func_0203df0c(void *ptr);
 extern BOOL func_0203e63c(void *task);
 extern void func_02043d20(void *p, int a);
 
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
-extern void NNS_G3dGeSendDL(const void *dl, u32 size);
 extern void func_0204e5d4(TextWin *win);
 
 static inline void TW_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc) {
@@ -3183,7 +3157,7 @@ static inline void TW_Translate(s32 x, s32 y, s32 z) {
     data[0] = x;
     data[1] = y;
     data[2] = z;
-    NNS_G3dGeBufferOP_N(0x1c, data, 3);
+    NNS_G3dGeBufferOP_N(0x1c, (u32 *)data, 3);
 }
 
 static inline void TW_Scale(s32 x, s32 y, s32 z) {
@@ -3191,7 +3165,7 @@ static inline void TW_Scale(s32 x, s32 y, s32 z) {
     data[0] = x;
     data[1] = y;
     data[2] = z;
-    NNS_G3dGeBufferOP_N(0x1b, data, 3);
+    NNS_G3dGeBufferOP_N(0x1b, (u32 *)data, 3);
 }
 
 static inline void TW_Begin(u32 prim) {
@@ -3226,7 +3200,7 @@ static inline void TW_VtxXY(s16 x, s16 y) {
 }
 
 static inline void TW_PopMtx(s32 num) {
-    NNS_G3dGeBufferOP_N(0x12, &num, 1);
+    NNS_G3dGeBufferOP_N(0x12, (u32 *)&num, 1);
 }
 
 static inline BOOL TextWin_IsReady(TextWin *win) {
@@ -3364,7 +3338,6 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
@@ -3536,15 +3509,13 @@ BOOL func_0204e218(TextWin *win);
 extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
-extern s32 FX_Div(s32 a, s32 b);
-extern const s16 FX_SinCosTable_[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 
 static inline Model *Model_Init(Model *model, const char *name, const char *file, int a) {
-    func_02041218(model->pltt);
+    func_02041218(&model->pltt);
     func_02041440(model, file, a);
     STD_CopyString(model->name, name);
     return model;
@@ -3554,7 +3525,7 @@ static inline Model *Model_Init(Model *model, const char *name, const char *file
 
 struct TextModel : Model {
     TextModel(const char *name, const char *file, int a) {
-        func_02041218(pltt);
+        func_02041218(&pltt);
         func_02041440(this, file, a);
         STD_CopyString(this->name, name);
     }
@@ -3614,7 +3585,6 @@ void func_0204e2dc(Model *model, s32 v);
 
 void func_0204e2e4(Model *model, s32 idx);
 
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 data_02097d78[];
@@ -3642,7 +3612,7 @@ void GfxGe_Translate(s32 x, s32 y, s32 z) {
     data[0] = x;
     data[1] = y;
     data[2] = z;
-    NNS_G3dGeBufferOP_N(0x1c, data, 3);
+    NNS_G3dGeBufferOP_N(0x1c, (u32 *)data, 3);
 }
 
 void GfxGe_Scale(s32 x, s32 y, s32 z) {
@@ -3650,7 +3620,7 @@ void GfxGe_Scale(s32 x, s32 y, s32 z) {
     data[0] = x;
     data[1] = y;
     data[2] = z;
-    NNS_G3dGeBufferOP_N(0x1b, data, 3);
+    NNS_G3dGeBufferOP_N(0x1b, (u32 *)data, 3);
 }
 
 void GfxGe_Color(u32 color) {
@@ -3659,7 +3629,7 @@ void GfxGe_Color(u32 color) {
 }
 
 void GfxGe_PopMtx(s32 num, ...) {
-    NNS_G3dGeBufferOP_N(0x12, &num, 1);
+    NNS_G3dGeBufferOP_N(0x12, (u32 *)&num, 1);
 }
 
 void func_0204f49c(TextWinEx *win) {
@@ -3759,7 +3729,6 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
@@ -3931,15 +3900,13 @@ BOOL func_0204e218(TextWin *win);
 extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
-extern s32 FX_Div(s32 a, s32 b);
-extern const s16 FX_SinCosTable_[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 
 static inline Model *Model_Init(Model *model, const char *name, const char *file, int a) {
-    func_02041218(model->pltt);
+    func_02041218(&model->pltt);
     func_02041440(model, file, a);
     STD_CopyString(model->name, name);
     return model;
@@ -3949,7 +3916,7 @@ static inline Model *Model_Init(Model *model, const char *name, const char *file
 
 struct TextModel : Model {
     TextModel(const char *name, const char *file, int a) {
-        func_02041218(pltt);
+        func_02041218(&pltt);
         func_02041440(this, file, a);
         STD_CopyString(this->name, name);
     }
@@ -4009,7 +3976,6 @@ void func_0204e2dc(Model *model, s32 v);
 
 void func_0204e2e4(Model *model, s32 idx);
 
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 data_02097d78[];
@@ -4364,7 +4330,6 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
@@ -4536,15 +4501,13 @@ BOOL func_0204e218(TextWin *win);
 extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
-extern s32 FX_Div(s32 a, s32 b);
-extern const s16 FX_SinCosTable_[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 
 static inline Model *Model_Init(Model *model, const char *name, const char *file, int a) {
-    func_02041218(model->pltt);
+    func_02041218(&model->pltt);
     func_02041440(model, file, a);
     STD_CopyString(model->name, name);
     return model;
@@ -4554,7 +4517,7 @@ static inline Model *Model_Init(Model *model, const char *name, const char *file
 
 struct TextModel : Model {
     TextModel(const char *name, const char *file, int a) {
-        func_02041218(pltt);
+        func_02041218(&pltt);
         func_02041440(this, file, a);
         STD_CopyString(this->name, name);
     }
@@ -4614,7 +4577,6 @@ void func_0204e2dc(Model *model, s32 v);
 
 void func_0204e2e4(Model *model, s32 idx);
 
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 data_02097d78[];
@@ -5044,7 +5006,6 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
@@ -5216,15 +5177,13 @@ BOOL func_0204e218(TextWin *win);
 extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
-extern s32 FX_Div(s32 a, s32 b);
-extern const s16 FX_SinCosTable_[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 
 static inline Model *Model_Init(Model *model, const char *name, const char *file, int a) {
-    func_02041218(model->pltt);
+    func_02041218(&model->pltt);
     func_02041440(model, file, a);
     STD_CopyString(model->name, name);
     return model;
@@ -5234,7 +5193,7 @@ static inline Model *Model_Init(Model *model, const char *name, const char *file
 
 struct TextModel : Model {
     TextModel(const char *name, const char *file, int a) {
-        func_02041218(pltt);
+        func_02041218(&pltt);
         func_02041440(this, file, a);
         STD_CopyString(this->name, name);
     }
@@ -5294,7 +5253,6 @@ void func_0204e2dc(Model *model, s32 v);
 
 void func_0204e2e4(Model *model, s32 idx);
 
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 data_02097d78[];
@@ -5421,7 +5379,6 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
@@ -5593,15 +5550,13 @@ BOOL func_0204e218(TextWin *win);
 extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
-extern s32 FX_Div(s32 a, s32 b);
-extern const s16 FX_SinCosTable_[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 
 static inline Model *Model_Init(Model *model, const char *name, const char *file, int a) {
-    func_02041218(model->pltt);
+    func_02041218(&model->pltt);
     func_02041440(model, file, a);
     STD_CopyString(model->name, name);
     return model;
@@ -5611,7 +5566,7 @@ static inline Model *Model_Init(Model *model, const char *name, const char *file
 
 struct TextModel : Model {
     TextModel(const char *name, const char *file, int a) {
-        func_02041218(pltt);
+        func_02041218(&pltt);
         func_02041440(this, file, a);
         STD_CopyString(this->name, name);
     }
@@ -5671,7 +5626,6 @@ void func_0204e2dc(Model *model, s32 v);
 
 void func_0204e2e4(Model *model, s32 idx);
 
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 data_02097d78[];
@@ -5746,7 +5700,7 @@ void func_020507d8(TextBox *box) {
         if (p != NULL) {
             if (p != NULL) {
                 func_02041558(p);
-                func_02041278(p->pltt);
+                func_02041278(&p->pltt);
                 Heap_Free(p);
             }
             box->model = NULL;
@@ -5941,7 +5895,6 @@ extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
 extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
@@ -6113,15 +6066,13 @@ BOOL func_0204e218(TextWin *win);
 extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
-extern s32 FX_Div(s32 a, s32 b);
-extern const s16 FX_SinCosTable_[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
 extern const char *data_0208cca0;
 
 static inline Model *Model_Init(Model *model, const char *name, const char *file, int a) {
-    func_02041218(model->pltt);
+    func_02041218(&model->pltt);
     func_02041440(model, file, a);
     STD_CopyString(model->name, name);
     return model;
@@ -6131,7 +6082,7 @@ static inline Model *Model_Init(Model *model, const char *name, const char *file
 
 struct TextModel : Model {
     TextModel(const char *name, const char *file, int a) {
-        func_02041218(pltt);
+        func_02041218(&pltt);
         func_02041440(this, file, a);
         STD_CopyString(this->name, name);
     }
@@ -6191,7 +6142,6 @@ void func_0204e2dc(Model *model, s32 v);
 
 void func_0204e2e4(Model *model, s32 idx);
 
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void *func_0203972c(void *blocks, u32 count);
 extern s32 func_0204f804(TextWinEx *win);
 extern s32 data_02097d78[];
@@ -6365,7 +6315,6 @@ typedef struct NameOamInfo {
 } NameOamInfo;
 
 const char *func_0206ffa0(s32 id);
-int STD_CompareString(const char *a, const char *b);
 
 // Recolours the last 4 OAM entries of a name label when the owner is not
 // the default character (0x1000).
@@ -6589,16 +6538,16 @@ extern void func_0204a284(SndMgr *mgr, s32 fade);
 
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218ea20(void *p);
-extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
 extern void func_02050f70(SlideWin *win);
 
-#define SW_DELETE(field, dtor) \
+#define SW_DELETE(field, dtor) SW_DELETE_T(void *, field, dtor)
+#define SW_DELETE_T(T, field, dtor) \
     { \
         void *saved = data_02097dd0->cur; \
         data_02097dd0->cur = data_02097dd0->unk_08; \
         { \
-            void *p = (field); \
+            T p = (field); \
             if (p != NULL) { \
                 if (p != NULL) { \
                     dtor(p); \
@@ -6619,7 +6568,7 @@ extern void func_02050f70(SlideWin *win);
             if (p != NULL) { \
                 if (p != NULL) { \
                     func_02041558(p); \
-                    func_02041278(p->pltt); \
+                    func_02041278(&p->pltt); \
                     Heap_Free(p); \
                 } \
                 (field) = NULL; \
@@ -6696,8 +6645,8 @@ void func_02051210(SlideWin *win) {
         for (j = 0; j < 3; j++) {
             SW_ITEM_RELEASE(win->panels[i].items[j])
         }
-        SW_DELETE(win->panels[i].pltt, func_02041278)
-        SW_DELETE(win->panels[i].nextPltt, func_02041278)
+        SW_DELETE_T(PlttRes *, win->panels[i].pltt, func_02041278)
+        SW_DELETE_T(PlttRes *, win->panels[i].nextPltt, func_02041278)
         SW_DELETE_MODEL(win->panels[i].model)
         SW_DELETE_MODEL(win->panels[i].nextModel)
         SW_DELETE_MODEL(win->panels[i].model2)
@@ -6771,7 +6720,7 @@ extern const char *data_0208b9cc[];
 void func_02051f70(SlideWin *win);
 
 static inline Model *SlideModel_Init(Model *model, const char *name, const char *file, int a) {
-    func_02041218(model->pltt);
+    func_02041218(&model->pltt);
     func_02041440(model, file, a);
     STD_CopyString(model->name, name);
     return model;
@@ -7159,8 +7108,6 @@ extern const char *data_0208cb80;
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
 extern BOOL func_0203e688(void);
-extern char *STD_CopyString(char *dst, const char *src);
-extern s32 FX_Div(s32 a, s32 b);
 extern Obj3DAnimMdl *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_0218ea20(void *p);
 extern BOOL func_ov000_0218f110(Obj3DAnimMdl *m);
@@ -7172,7 +7119,6 @@ extern BOOL func_ov000_02190cb0(Obj3DAnimObj *a, const char *b, s32 c, s32 d);
 extern BOOL func_ov000_02191120(Obj3DAnimObj *a);
 extern void func_ov000_021915a0(Obj3DAnimObj *a);
 extern void func_ov000_02191618(Obj3DAnimObj *a);
-extern void NNS_G3dRenderObjSetInitFunc(void *ro, void (*fn)(Obj3DRender *));
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, u32 mat, u32 mask);
 extern void NNSi_G3dModifyMatFlag(void *mdl, u32 mat, u32 flag);
 
@@ -7274,7 +7220,7 @@ static inline void AnimSlot_SetupObj(Obj3DAnimSlot *slot) {
     func_ov000_0218ffdc(slot->obj, slot->mdl, 0, 1);
     slot->obj->unk_b4 = 0;
     o = slot->obj;
-    NNS_G3dRenderObjSetInitFunc(o->renderObj, func_02052160);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)o->renderObj, (NNSG3dSbcCallBackFunc)func_02052160);
     o->unk_c2_5 = 0;
     func_ov000_02191618(slot->obj);
     mdl = slot->obj->mdl;
@@ -7297,7 +7243,7 @@ static inline void AnimSlot_SetupObjS00(Obj3DAnimSlot *slot) {
     func_ov000_02190cb0(slot->obj, "s00", 0, 1);
     slot->obj->unk_b4 = 0;
     o = slot->obj;
-    NNS_G3dRenderObjSetInitFunc(o->renderObj, func_02052160);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)o->renderObj, (NNSG3dSbcCallBackFunc)func_02052160);
     o->unk_c2_5 = 0;
     func_ov000_02191618(slot->obj);
     mdl = slot->obj->mdl;
@@ -7571,7 +7517,7 @@ s32 Obj3DAnimCls::func_02052bec(s32 state, Obj3DAnimSlot *slot) {
         func_ov000_02190cb0(slot->obj, "s01", 0, 1);
         slot->obj->unk_b4 = 0;
         o = slot->obj;
-        NNS_G3dRenderObjSetInitFunc(o->renderObj, func_02052160);
+        NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)o->renderObj, (NNSG3dSbcCallBackFunc)func_02052160);
         o->unk_c2_5 = 0;
         func_ov000_021915a0(slot->obj);
         mdl = slot->obj->mdl;

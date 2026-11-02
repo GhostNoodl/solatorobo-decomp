@@ -14,11 +14,7 @@ typedef struct {
 } C18_021a0268;
 
 typedef struct {
-    s32 x, y, z;
-} Vec021a0268;
-
-typedef struct {
-    Vec021a0268 pos;
+    VecFx32 pos;
     u16 rot[3];
     s32 z;
 } Msg021a0268;
@@ -118,7 +114,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
             Actor *o = GetObj021a0268(self->unk_b1c);
             if (o != NULL) {
                 Msg021a0268 m;
-                m.pos = LFLD(Vec021a0268, self, 0x70);
+                m.pos = LFLD(VecFx32, self, 0x70);
                 m.pos.y += self->unk_6c;
                 m.rot[0] = o->rot_x;
                 m.rot[1] = o->rot_y;

@@ -7,7 +7,6 @@ extern void *data_0208cb84;
 extern void *data_0208cc8c;
 extern void *data_0208cb74;
 extern void *data_0208cca0;
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
@@ -31,7 +30,7 @@ typedef s32 (*VFn9aac)(void *);
             void *name_;                             \
             name_ = NAME;                            \
             arc_ = ARC;                              \
-            func_02041218(m_ + 0x88);                \
+            func_02041218((struct PlttRes *)(m_ + 0x88));                \
             func_02041440(m_, name_, 0);             \
             STD_CopyString(m_ + 0x2c, arc_);          \
         }                                            \

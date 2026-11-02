@@ -134,8 +134,17 @@ static inline void OS_InitThreadQueue(OSThreadQueue *queue) {
     queue->head = queue->tail = NULL;
 }
 
+void OS_CreateThread(OSThread *thread, void (*func)(void *), void *arg, void *stack, u32 stackSize, u32 prio);
 void OS_SleepThread(OSThreadQueue *queue);
 void OS_WakeupThread(OSThreadQueue *queue);
+void OS_WakeupThreadDirect(OSThread *thread);
+void OS_DestroyThread(OSThread *thread);
+BOOL OS_IsThreadTerminated(const OSThread *thread);
+void OS_SleepThreadDirect(OSThread *thread, OSThreadQueue *queue);
+void OS_SetThreadStackWarningOffset(OSThread *thread, u32 offset);
+BOOL OS_IsRunOnTwl(void);
+BOOL OS_SetThreadPriority(OSThread *thread, u32 prio);
+u32 OS_GetThreadPriority(const OSThread *thread);
 
 void OS_InitMessageQueue(OSMessageQueue *mq, OSMessage *msgArray, s32 msgCount);
 BOOL OS_SendMessage(OSMessageQueue *mq, OSMessage msg, s32 flags);
@@ -220,6 +229,7 @@ void OS_UnlockMutex(OSMutex *mutex);
 void DC_InvalidateRange(void *startAddr, u32 nBytes);
 void DC_StoreRange(const void *startAddr, u32 nBytes);
 void DC_FlushRange(const void *startAddr, u32 nBytes);
+void DC_WaitWriteBufferEmpty(void);
 
 // VRAM exclusive control (os/ARM9/vramExclusive.h)
 #define OS_VRAM_BANK_ID_A       0x0001

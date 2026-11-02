@@ -254,7 +254,7 @@ BOOL func_020534dc(SlideScene *scene) {
                 if (pltt != NULL) {
                     pltt = func_0204e278(pltt);
                 }
-                panel->nextPltt = pltt;
+                panel->nextPltt = (PlttRes *)pltt;
                 func_02040c40(pltt, panel->nextModel);
                 buf = func_02054b90(panel->nextPltt);
                 func_02054b98((void *)buf[3], buf[2]);

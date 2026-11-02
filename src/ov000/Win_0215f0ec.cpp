@@ -45,7 +45,7 @@ void func_02041c20(void *model, s32 a, void *b);
             void *name_;                             \
             name_ = NAME;                            \
             arc_ = ARC;                              \
-            func_02041218(m_ + 0x88);                \
+            func_02041218((struct PlttRes *)(m_ + 0x88));                \
             func_02041440((Model *)m_, (const char *)name_, 0); \
             STD_CopyString((char *)m_ + 0x2c, (const char *)arc_); \
         }                                            \

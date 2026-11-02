@@ -2,19 +2,14 @@
 #define MAIN_HIT_HITSPHERE_H
 
 #include "types.h"
+#include "nitro/fx.h"
 
 extern "C" {
 
-typedef struct HitVec {
-    int x;
-    int y;
-    int z;
-} HitVec;
-
 typedef struct HitSphere {
-    /* 0x00 */ HitVec pos;
-    /* 0x0c */ HitVec unk_0c;
-    /* 0x18 */ HitVec push;
+    /* 0x00 */ VecFx32 pos;
+    /* 0x0c */ VecFx32 unk_0c;
+    /* 0x18 */ VecFx32 push;
     /* 0x24 */ u8 active;
     /* 0x25 */ u8 unk_25;
     /* 0x28 */ u32 group;

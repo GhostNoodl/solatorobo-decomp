@@ -16,7 +16,6 @@ extern "C" {
 extern Glb02162a58 NNS_G3dGlb;
 extern u8 data_02092844[];
 extern u8 data_02092800[];
-void MTX_LookAt(const VecFx32 *a, const VecFx32 *b, const VecFx32 *c, void *d);
 void MIi_CpuCopyFast(const void *a, void *b, u32 c);
 void func_ov000_02190758(void *m, void *p, s32 a);
 BOOL func_ov000_021903b4(void *m);
@@ -36,7 +35,7 @@ void func_ov000_02162a58(Obj02162a58 *self) {
     NNS_G3dGlb.camPos = self->unk_644;
     NNS_G3dGlb.camUp = self->unk_65c;
     NNS_G3dGlb.camTarget = self->unk_650;
-    MTX_LookAt(&self->unk_644, &self->unk_65c, &self->unk_650, data_02092844);
+    MTX_LookAt(&self->unk_644, &self->unk_65c, &self->unk_650, (MtxFx43 *)data_02092844);
     NNS_G3dGlb.flag &= ~0xe8;
     MIi_CpuCopyFast((u8 *)self + 0x668, data_02092800, 0x40);
     NNS_G3dGlb.flag &= ~0x50;

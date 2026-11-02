@@ -1,5 +1,6 @@
 #include "types.h"
 #include "nitro/std.h"
+#include "nitro/fx.h"
 
 extern "C" {
 
@@ -50,36 +51,15 @@ int Rand_PlusMinus(int range) {
 }
 
 
-typedef struct MathVec {
-    int x;
-    int y;
-    int z;
-} MathVec;
+extern MtxFx43 data_02092844;
+extern MtxFx44 data_02092800;
 
-typedef struct MathMtx43 {
-    int m[4][3];
-} MathMtx43;
-
-typedef struct MathMtx44 {
-    int m[4][4];
-} MathMtx44;
-
-extern s16 FX_SinCosTable_[];
-extern MathMtx43 data_02092844;
-extern MathMtx44 data_02092800;
-
-extern void MTX_Identity43_(MathMtx43 *mtx);
-extern u16 FX_Atan2(int y, int x);
-extern void MTX_RotY43_(MathMtx43 *mtx, int sin, int cos);
-extern void MTX_MultVec43(const MathVec *v, const MathMtx43 *mtx, MathVec *out);
-extern void MTX_Copy44To43_(const MathMtx44 *src, MathMtx43 *dst);
-extern int FX_Div(int numer, int denom);
 
 static inline int Math_Mul(int a, int b) {
     return (int)(((s64)a * b + 0x800) >> 12);
 }
 
-static inline void MathVec_Copy(const MathVec *src, MathVec *dst) {
+static inline void MathVec_Copy(const VecFx32 *src, VecFx32 *dst) {
     dst->x = src->x;
     dst->y = src->y;
     dst->z = src->z;
@@ -87,9 +67,9 @@ static inline void MathVec_Copy(const MathVec *src, MathVec *dst) {
 
 // `v` is not const: a `const T *` parameter is never ordered against stores, and the
 // target copies it one word at a time between the stores to `p` (round ckB).
-void func_02040578(u16 *ang, MathVec *v) {
-    MathVec p;
-    MathMtx43 mtx;
+void func_02040578(u16 *ang, VecFx32 *v) {
+    VecFx32 p;
+    MtxFx43 mtx;
     MTX_Identity43_(&mtx);
     MathVec_Copy(v, &p);
     ang[1] = -FX_Atan2(p.x, p.z);
@@ -99,9 +79,9 @@ void func_02040578(u16 *ang, MathVec *v) {
     ang[2] = 0;
 }
 
-int func_0204061c(int *out, const MathVec *pos) {
-    MathVec p;
-    MathMtx43 mtx;
+int func_0204061c(int *out, const VecFx32 *pos) {
+    VecFx32 p;
+    MtxFx43 mtx;
     int z;
     int w;
     int inv;

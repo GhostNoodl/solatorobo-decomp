@@ -1,9 +1,7 @@
 #include "ov010/ov010.h"
 #include "ov000/ObjLayouts.h"
 
-typedef s16 fx16;
-struct VecFx16 { fx16 x, y, z; };
-#define FX32_ONE 0x1000
+#include "nitro/fx.h"
 
 // A header's zero rotation and vector, plus copies made at startup, next to this TU's effect
 // names and the pointers to them. Other functions read the first pointer, an offset, the zero
@@ -519,14 +517,10 @@ void func_ov010_0220078c(Ov010Beam *o) {
 extern u8 data_020928b4[];
 extern u8 NNS_G3dGlb[];
 extern u8 *data_02097d48;
-extern void MTX_Identity33_(void *m);
-extern void MI_Copy36B(void *m, void *b);
 extern void NNS_G3dGlbSetBaseTrans(Ov010Vec *v);
 extern void NNS_G3dGlbSetBaseScale(Ov010Vec *v);
 extern void NNS_G3dGlbFlushVP(void);
 extern void NNS_G3dGeBufferOP_N(s32 cmd, const void *data, s32 n);
-extern void MTX_RotX33_(void *m, s32 s, s32 c);
-extern void MTX_RotY33_(void *m, s32 s, s32 c);
 extern u8 Gfx3DState_NextPolyId(void *p);
 extern void NNS_G3dGeFlushBuffer(void);
 
@@ -821,8 +815,6 @@ extern void func_ov003_021d9a00(Ov010Vec *out, s32 angle, const Ov010Vec *in);
 extern u16 func_ov003_021d9c50(Ov010Vec *a, Ov010Vec *b);
 extern u16 Ov003Vec_Pitch(Ov010Vec *v);
 extern u16 Ov003Vec_Yaw(Ov010Vec *v);
-extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
-extern void VEC_Normalize(const Ov010Vec *a, Ov010Vec *b);
 extern void func_ov010_0220078c(Ov010Beam *p);
 
 static inline s32 Ov010k_Mul(s32 a, s64 b) {

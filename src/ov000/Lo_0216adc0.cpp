@@ -58,7 +58,6 @@ extern char *data_0208cc88;
 extern s16 FX_SinCosTable_[];
 void *func_02035d5c(const char *name);
 void *func_02034d88(void *a, const char *name);
-void func_02041218(void *p);
 void func_02041440(void *m, const char *name, s32 c);
 void func_020417e0(void *m, void *res);
 void func_02041d9c(void *m, s32 a, s32 b);
@@ -156,7 +155,7 @@ void func_ov000_0216adf8(Obj0216adf8 *self) {
         m = Heap_Alloc(0x160);
         if (m != NULL) {
             const char *nm = data_0208cc88;
-            func_02041218((u8 *)m + 0x88);
+            func_02041218((struct PlttRes *)((u8 *)m + 0x88));
             func_02041440(m, nm, 0);
         }
         self->unk_0c = m;

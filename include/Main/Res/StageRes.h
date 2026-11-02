@@ -4,6 +4,8 @@
 #include "types.h"
 #include "Main/Res/DataRes.h"
 #include "Main/Gfx/ObjPool.h"
+#include "nitro/mi.h"
+#include "nitro/std.h"
 
 // Resource handle (ResHandle base) bundling a sub resource and a TPOS/TEVP data resource.
 struct StageRes {
@@ -73,8 +75,6 @@ extern const u32 data_0208ba30[];
 extern const u32 data_0208bed4[];
 extern void func_02038520(StageRes *res);
 extern void func_02038b88(StageRes *res, char *arcName, char *name);
-extern char *STD_CopyString(char *dst, const char *src);
-extern char *STD_SearchString(char *str, const char *sub);
 extern void func_0206e900(char *dst, const char *src);
 extern void func_0204bfcc(DataRes *res);
 extern void func_0204bfe4(DataRes *res, const char *arcName, char *name);
@@ -84,9 +84,6 @@ extern int (*data_0208bde8)(StageResSlot *slot);
 extern int func_0205bef8(StageResSlot *slot);
 extern DataRes *data_02fe152c;
 
-#ifndef NITRO_MI_H
-extern void MI_CpuFill8(void *dst, u32 value, u32 size);
-#endif
 
 static inline void Slot_Init(StageResSlot *slot) {
     s8 j;

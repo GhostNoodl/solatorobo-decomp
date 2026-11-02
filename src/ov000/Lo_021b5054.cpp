@@ -1,13 +1,8 @@
 #include "types.h"
+#include "nitro/fx.h"
 
 class Mgr021b5054Cls;
 typedef void (Mgr021b5054Cls::*Mgr021b5054Pmf)();
-
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Slot021b5054;
 
 typedef struct {
     void *unk_00;
@@ -24,7 +19,7 @@ typedef struct {
     s32 unk_20;
     u8 pad_24[0xc];
     u16 unk_30[0x20];
-    Slot021b5054 unk_70[0x20];
+    VecFx32 unk_70[0x20];
     u16 unk_1f0;
     u16 unk_1f2;
     u8 unk_1f4[0x98];

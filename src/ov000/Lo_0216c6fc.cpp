@@ -7,7 +7,6 @@ extern s32 data_02097d78[5];
 BOOL func_02054f10(void *a, s32 b);
 extern void *data_0208cc94;
 extern void *data_0208cc88;
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);

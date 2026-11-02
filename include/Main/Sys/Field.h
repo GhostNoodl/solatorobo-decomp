@@ -2,12 +2,18 @@
 #define MAIN_SYS_FIELD_H
 
 #include "types.h"
+#include "nitro/fx.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 // Field (overlay 0) globals that main code reaches into.
+typedef struct Player021ccd54Sub {
+    /* 0x0 */ u8 unk_00[0x4];
+    /* 0x4 */ VecFx32 pos;
+} Player021ccd54Sub;
+
 typedef struct FieldState {
     /* 0x00 */ u8 unk_00[4];
     /* 0x04 */ void *unk_04;
@@ -23,7 +29,9 @@ typedef struct FieldState {
     /* 0x0c9 */ u8 unk_0c9[0xa];
     /* 0x0d3 */ u8 unk_0d3;
     /* 0x0d4 */ u32 unk_d4;
-    /* 0x0d8 */ u8 unk_0d8[0xb4];
+    /* 0x0d8 */ u8 unk_0d8[0x1c];
+    /* 0x0f4 */ Player021ccd54Sub unk_f4;
+    /* 0x104 */ u8 unk_104[0x88];
     /* 0x18c */ u8 unk_18c;
     /* 0x18d */ u8 unk_18d;
     /* 0x18e */ u8 unk_18e;

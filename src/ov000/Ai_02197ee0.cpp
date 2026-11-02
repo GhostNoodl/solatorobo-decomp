@@ -4,10 +4,6 @@
 #include "ov000/ActorBase.h"
 
 
-#define REG_SQRTCNT (*(volatile u16 *)0x40002b0)
-#define REG_SQRT_RESULT (*(volatile u32 *)0x40002b4)
-#define REG_SQRT_PARAM (*(volatile u64 *)0x40002b8)
-
 typedef struct {
     u16 unk_00;
     u16 unk_02;

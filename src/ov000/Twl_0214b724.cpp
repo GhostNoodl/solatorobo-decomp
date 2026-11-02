@@ -84,13 +84,13 @@ TwlLoader *func_ov000_0214b724(TwlLoader *self) {
         self->unk_08 = 0;
     }
     {
-        void *saved = data_02097dd0->current;
-        data_02097dd0->current = data_02097dd0->unk_08;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->unk_1c != NULL) {
             Heap_FreeArray(self->unk_1c);
             self->unk_1c = NULL;
         }
-        data_02097dd0->current = saved;
+        data_02097dd0->cur = saved;
     }
     Twl0214b570_dtor(&self->unk_20);
     return self;

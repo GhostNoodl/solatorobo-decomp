@@ -2,11 +2,6 @@
 
 extern "C" {
 
-extern int FX_Div(int a, int b);
-
-static inline int FX_Mul(int a, int b) {
-    return (int)(((s64)a * b + 0x800) >> 12);
-}
 
 static inline void *Effect_ResDataByIdx(EffectResDict *dict, u32 idx) {
     if (dict != NULL && idx < dict->numEntry) {

@@ -17,7 +17,7 @@ extern SndMgr *data_02097e4c;
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
 extern s32 func_02041b10(Model *model, void *tex);
-extern BOOL func_0203e63c(void *id);
+extern BOOL func_0203e63c(u32 id);
 extern BOOL func_02042958(Model *model, u32 slot, ModelPart *part);
 extern SndHandle *func_02049a48(SndMgr *mgr, s32 id, s32 volume, s32 targetVolume, s32 frames);
 
@@ -92,8 +92,8 @@ typedef struct SlidePanel {
     /* 0x018 */ s32 frame;
     /* 0x01c */ s32 frames;
     /* 0x020 */ s32 unk_20;
-    /* 0x024 */ void *pltt;
-    /* 0x028 */ void *nextPltt;
+    /* 0x024 */ PlttRes *pltt;
+    /* 0x028 */ PlttRes *nextPltt;
     /* 0x02c */ Model *model;
     /* 0x030 */ Model *nextModel;
     /* 0x034 */ Model *model2;
@@ -112,11 +112,6 @@ static inline void *Model_GetPartTex(Model *model, s32 idx) {
         return part->res->tex;
     }
     return NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
-}
-
-static inline void Model_SetPos(Model *model, s32 x, s32 y) {
-    model->x = x;
-    model->y = y;
 }
 
 static inline s32 Model_GetWidth(Model *model, s32 idx) {
@@ -140,7 +135,7 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
         void *saved = data_02097dd0->cur; \
         data_02097dd0->cur = data_02097dd0->unk_08; \
         { \
-            void *p = panel->pltt; \
+            PlttRes *p = panel->pltt; \
             if (p != NULL) { \
                 if (p != NULL) { \
                     func_02041278(p); \
@@ -159,7 +154,7 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
             if (p != NULL) { \
                 if (p != NULL) { \
                     func_02041558(p); \
-                    func_02041278(p->pltt); \
+                    func_02041278(&p->pltt); \
                     Heap_Free(p); \
                 } \
                 panel->model = NULL; \
@@ -175,7 +170,7 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
             if (p != NULL) { \
                 if (p != NULL) { \
                     func_02041558(p); \
-                    func_02041278(p->pltt); \
+                    func_02041278(&p->pltt); \
                     Heap_Free(p); \
                 } \
                 panel->model2 = NULL; \
@@ -290,12 +285,12 @@ static inline s32 SlidePanel_Abs(s32 x) {
     } \
     SLIDEPANEL_UNLOAD(panel)
 
-static inline BOOL Transfer_Check(void **p) {
-    if (*p == NULL) {
+static inline BOOL Transfer_Check(u32 *p) {
+    if (*p == 0) {
         return TRUE;
     }
     if (func_0203e63c(*p)) {
-        *p = NULL;
+        *p = 0;
     } else {
         return FALSE;
     }

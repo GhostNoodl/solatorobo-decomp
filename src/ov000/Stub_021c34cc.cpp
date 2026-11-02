@@ -3,12 +3,6 @@
 #include "nitro/fx.h"
 
 typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} P3;
-
-typedef struct {
     u8 unk_00[0xc];
     s32 x;
     s32 y;
@@ -62,7 +56,7 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
     func_02042628(model, anim, part, flag);
 }
 
-static inline void Put(Obj021c34fc *self, Model **pm, P3 *p, s32 i) {
+static inline void Put(Obj021c34fc *self, Model **pm, VecFx32 *p, s32 i) {
     MODEL_FLAGS(*pm)->alpha = self->alpha;
     (*pm)->unk_150 = p->z;
     MTX_Identity22((MtxFx22 *)((u8 *)*pm + 0x114));
@@ -87,7 +81,7 @@ void func_ov000_021c34fc(Obj021c34fc *self) {
     n = self->n;
     mask = self->mask;
     for (i = 0; i < n; i++) {
-        P3 p = {self->ox + self->x, self->oy + self->y, self->z};
+        VecFx32 p = {self->ox + self->x, self->oy + self->y, self->z};
         if (!on) {
             switch (i) {
             case 0:

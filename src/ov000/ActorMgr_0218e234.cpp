@@ -1,14 +1,8 @@
 #include "ov000/Actor.h"
-
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
+#include "Main/Sys/SysState.h"
 
 extern "C" {
 
-extern HeapState *data_02097dd0;
 
 void *Heap_Alloc(u32 size);
 void Heap_Free(void *ptr);

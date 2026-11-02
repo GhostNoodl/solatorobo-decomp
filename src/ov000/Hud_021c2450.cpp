@@ -79,7 +79,7 @@ void func_ov000_021c2450(Hud021cca10 *self) {
         if (m != NULL) {
             char *name = data_0208cc94;
             char *a = data_0208cc88;
-            func_02041218(m->pltt);
+            func_02041218(&m->pltt);
             func_02041440(m, a, 0);
             STD_CopyString(m->name, name);
         }
@@ -96,7 +96,7 @@ void func_ov000_021c2450(Hud021cca10 *self) {
         m2 = (Model *)Heap_Alloc(sizeof(Model));
         if (m2 != NULL) {
             char *a = data_0208cb7c;
-            func_02041218(m2->pltt);
+            func_02041218(&m2->pltt);
             func_02041440(m2, a, 0);
             STD_CopyString(m2->name, data_0214b105);
         }

@@ -33,7 +33,6 @@ Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 u16 Camera_GetYaw(Cam021a783c *cam);
-u16 FX_Atan2(s32 y, s32 x);
 
 static inline u16 CamYaw(Cam021a783c *cam) {
     if (cam->unk_40 != 0) {
@@ -72,19 +71,14 @@ void *func_ov000_02191318(void *a, s32 frame);
 void func_ov000_02191780(void *a);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 func_01ffbd6c(void *a, void *b, s32 c, s32 d, s32 e, s32 f);
-void VEC_MultAdd(s32 a, const void *v1, const void *v2, void *out);
 void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-
-typedef struct {
-    s32 x, y, z;
-} Vec021a70b0;
 
 typedef struct {
     u16 x, y, z;
 } Rot021a70b0;
 
 typedef struct {
-    Vec021a70b0 pos;
+    VecFx32 pos;
     Rot021a70b0 rot;
     u8 pad[2];
     s32 unk_14;
@@ -135,11 +129,11 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
                 func_ov000_0218d46c(a, self->id, 0xb);
                 if (a != NULL) {
                     Msg021a70b0 m;
-                    Vec021a70b0 v;
-                    if (((Vec021a70b0 *)a->unk_48) != NULL) {
-                        v = *((Vec021a70b0 *)a->unk_48);
+                    VecFx32 v;
+                    if (((VecFx32 *)a->unk_48) != NULL) {
+                        v = *((VecFx32 *)a->unk_48);
                     } else {
-                        v = LFLD(Vec021a70b0, a, 0x70);
+                        v = LFLD(VecFx32, a, 0x70);
                     }
                     if (func_01ffbd6c(&self->pos, &v, -1, 0, 0, -1) != -0x1000) {
                         v.x -= self->pos.x;

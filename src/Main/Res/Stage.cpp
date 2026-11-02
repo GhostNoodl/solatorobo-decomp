@@ -281,8 +281,6 @@ BOOL func_020590b0(DataRes *res) {
 }
 
 
-extern void MI_CpuFill8(void *dst, u32 value, u32 size);
-extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
 
 u32 func_020590e8(DataRes *res, u8 *buf, u32 size) {
     SaveLayout *layout;
@@ -735,19 +733,13 @@ ObjPoolEntry *func_02059b14(ObjPool *pool, u16 id, ObjPoolParam *param) {
     return e;
 }
 
-typedef struct BoxVec16 {
-    s16 x;
-    s16 y;
-    s16 z;
-} BoxVec16;
-
 typedef struct BoxTri {
     u8 data[0x4c];
 } BoxTri;
 
 typedef struct BoxBounds {
-    BoxVec16 min;
-    BoxVec16 max;
+    VecFx16 min;
+    VecFx16 max;
 } BoxBounds;
 
 typedef struct BoxMeshRes {
@@ -790,20 +782,16 @@ typedef struct BoxFaceIdx {
     u32 v[6][2][3];
 } BoxFaceIdx;
 
-typedef struct BoxMtx {
-    s32 m[4][3];
-} BoxMtx;
-
 extern const BoxFaceAttr data_02082a10;
 extern const BoxFaceIdx data_02082a78;
 extern const BoxFaceIdx data_02082b08;
 
 extern void *func_0203de84(u32 size, u32 align);
-extern void func_0203ff94(BoxBounds *bounds, BoxTri *tri, u32 value, const BoxVec16 *verts, const u32 (*indices)[3]);
+extern void func_0203ff94(BoxBounds *bounds, BoxTri *tri, u32 value, const VecFx16 *verts, const u32 (*indices)[3]);
 extern void func_0203f80c(void *mesh);
 extern void HitMesh_SetRes(BoxMesh *mesh, BoxMeshRes *res);
 extern void HitMesh_Link(BoxMesh *mesh);
-extern void HitMesh_SetMtx(BoxMesh *mesh, const BoxMtx *mtx);
+extern void HitMesh_SetMtx(BoxMesh *mesh, const MtxFx43 *mtx);
 
 static inline void Box_SetBit3(BoxMesh *m, u32 v) {
     m->unk_84_3 = v;
@@ -815,7 +803,7 @@ static inline void Box_SetBit1(BoxMesh *m, u32 v) {
 
 // Translation plus 3x3 identity. The asm block also keeps the rest of func_02059c98 at the
 // target's optimisation level (unrotated loops, bic/orr bit-field writes).
-static inline void Box_SetMtx(BoxMtx *m, s32 x, s32 y, s32 z) {
+static inline void Box_SetMtx(MtxFx43 *m, s32 x, s32 y, s32 z) {
     asm {
         str x, [m, #0x24]
         mov r1, #0x1000
@@ -832,9 +820,9 @@ static inline void Box_SetMtx(BoxMtx *m, s32 x, s32 y, s32 z) {
 }
 
 ObjPoolEntry *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int flip) {
-    BoxVec16 verts[8];
+    VecFx16 verts[8];
     BoxFaceAttr attr;
-    BoxMtx m;
+    MtxFx43 m;
     ObjPoolEntry *e;
     int i;
     u32 *tail;
@@ -962,16 +950,10 @@ extern "C" {
 extern ObjPoolPlayer *func_ov000_0219bf90(void);
 extern void func_ov000_02182590(u8 *p);
 
-typedef struct ObjPoolVec {
-    s32 x;
-    s32 y;
-    s32 z;
-} ObjPoolVec;
-
 extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern void *ActorMgr_FindKindNear(void *mgr, u16 kind, u16 id, s32 *pos, s32 r);
-extern s32 func_ov000_0218c040(void *mgr, s32 max, ObjPoolVec *out, int kind, u16 id);
+extern s32 func_ov000_0218c040(void *mgr, s32 max, VecFx32 *out, int kind, u16 id);
 
 static inline void *ObjPool_FindObj(u16 kind, u16 id, s32 *pos, s32 r) {
     if (data_ov000_021ccd68 == NULL) {
@@ -999,7 +981,7 @@ static inline void ObjPool_Trigger(ObjPool *pool, ObjPoolEntry *entry) {
 
 BOOL func_0205a028(ObjPool *pool, ObjPoolEntry *entry) {
     if (entry->unk_04 == 0) {
-        ObjPoolVec *pos = (ObjPoolVec *)pool;
+        VecFx32 *pos = (VecFx32 *)pool;
         s32 dy = entry->y - pos->y;
         s32 dx = entry->x - pos->x;
         s32 dz = entry->z - pos->z;
@@ -1008,7 +990,7 @@ BOOL func_0205a028(ObjPool *pool, ObjPoolEntry *entry) {
             return TRUE;
         }
     } else {
-        ObjPoolVec buf[16];
+        VecFx32 buf[16];
         BOOL found = FALSE;
         if (ObjPool_FindObj(entry->unk_04 << 12, entry->unk_06, &entry->x, entry->unk_18) != NULL) {
             found = TRUE;
@@ -1098,7 +1080,7 @@ static inline BOOL ObjPool_InBoxW(ObjPoolEntry *e, s32 dx, s32 dy, s32 dz, s32 w
 
 static inline BOOL ObjPool_CheckBox(ObjPool *pool, ObjPoolEntry *entry) {
     if (entry->unk_04 == 0) {
-        ObjPoolVec *pos = (ObjPoolVec *)pool;
+        VecFx32 *pos = (VecFx32 *)pool;
         s32 dx = entry->x - pos->x;
         s32 dy = entry->y - pos->y;
         s32 dz = entry->z - pos->z;
@@ -1107,7 +1089,7 @@ static inline BOOL ObjPool_CheckBox(ObjPool *pool, ObjPoolEntry *entry) {
             return TRUE;
         }
     } else {
-        ObjPoolVec buf[16];
+        VecFx32 buf[16];
         s32 n = func_ov000_0218c040(data_ov000_021ccd64, 0x10, buf, entry->unk_06 >> 12, entry->unk_06);
         s32 w;
         s32 z;
@@ -2384,18 +2366,18 @@ int func_0205c664(StageResSlot *slot) {
     return 1;
 }
 
-typedef struct StagePos {
+typedef struct VecFx32 {
     /* 0x0 */ s16 x;
     /* 0x2 */ s16 y;
     /* 0x4 */ s16 z;
-} StagePos;
+} VecFx32;
 
 int func_0205c7cc(StageResSlot *slot) {
     u16 a = slot->args[0];
     StageRes *res = slot->res;
     if (a & 0x8000) {
         u16 idx = a & 0x7fff;
-        StagePos *pos = &((StagePos *)res->posEv->pos)[idx];
+        VecFx32 *pos = &((VecFx32 *)res->posEv->pos)[idx];
         data_02fe1534.posFlags |= 1;
         data_02fe1534.posX = pos->x;
         data_02fe1534.posY = pos->y;
@@ -2432,7 +2414,7 @@ int func_0205c83c(StageResSlot *slot) {
     s32 z;
     if (a & 0x8000) {
         u16 idx = a & 0x7fff;
-        StagePos *pos = &((StagePos *)res->posEv->pos)[idx];
+        VecFx32 *pos = &((VecFx32 *)res->posEv->pos)[idx];
         w = 0;
         x = pos->x;
         y = pos->y;
@@ -2546,7 +2528,7 @@ int func_0205c968(StageResSlot *slot) {
         info.pos.y = pp->y;
         info.pos.z = pp->z;
     } else if (a & 0x8000) {
-        StagePos *p = &((StagePos *)res->posEv->pos)[(u16)(a & 0x7fff)];
+        VecFx32 *p = &((VecFx32 *)res->posEv->pos)[(u16)(a & 0x7fff)];
         info.pos.x = p->x << 4;
         info.pos.y = p->y << 4;
         info.pos.z = p->z << 4;
@@ -2567,7 +2549,7 @@ int func_0205c968(StageResSlot *slot) {
     }
     a = slot->args[1];
     if (a & 0x8000) {
-        StagePos *p = &((StagePos *)res->posEv->pos)[(u16)(a & 0x7fff)];
+        VecFx32 *p = &((VecFx32 *)res->posEv->pos)[(u16)(a & 0x7fff)];
         info.rot.v[0] = p->x;
         info.rot.v[1] = p->y;
         info.rot.v[2] = 0;
@@ -3257,12 +3239,6 @@ int func_0205e19c(StageResSlot *slot) {
     return 1;
 }
 
-typedef struct StagePos {
-    s32 x;
-    s32 y;
-    s32 z;
-} StagePos;
-
 static inline s32 StageShape_Mul(s32 a, s32 b) {
     return ((s64)a * b + 0x800) >> 12;
 }
@@ -3284,7 +3260,7 @@ static inline StageArea *Stage_GetArea(StageRes *res, u16 idx) {
 
 int func_0205e29c(StageResSlot *slot) {
     StageShape shape;
-    StagePos pos;
+    VecFx32 pos;
     StageArea *area;
     if (Field_HasEvent(0xa)) {
         return -0x63;
@@ -4670,10 +4646,8 @@ extern void func_ov000_021b1b88(StagePlayer *player, u16 a);
 extern void func_ov000_02188634(FieldState *state, u16 a, u16 b);
 extern BOOL func_ov000_0214be8c(void);
 extern BOOL func_ov000_021b4738(StagePlayer *player);
-extern int STD_CompareString(const char *a, const char *b);
 extern DataRes *data_02fe1530;
 extern u16 func_020594bc(DataRes *res, u32 idx, int packed, int sub);
-extern void MIi_CpuClear16(u32 value, void *dst, u32 size);
 
 typedef struct StageTblChunk {
     /* 0x00 */ char name[0x10];

@@ -7,7 +7,6 @@ extern u8 data_0208b318[];
 extern u8 data_0208bf54[];
 void func_0205a6e8(void *ptr);
 void *func_0204b2c0(void *self);
-void VEC_Add(const void *a, const void *b, void *out);
 extern u8 data_ov000_021cc3a0[];
 extern u8 data_ov000_021c9d4c[];
 
@@ -45,7 +44,7 @@ Obj02189a74 *Ov000Vt_021cc3a0_Ctor(Obj02189a74 *self) {
     func_0204b2c0(self);
     self->vtable = data_ov000_021cc3a0;
     v = self->unk_10;
-    VEC_Add(&v, data_ov000_021c9d4c, &v);
+    VEC_Add(&v, (const VecFx32 *)data_ov000_021c9d4c, &v);
     self->unk_10 = v;
     self->unk_bc = 0;
     self->unk_c0 = 0;

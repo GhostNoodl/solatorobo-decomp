@@ -13,8 +13,8 @@ void func_02063374(Unk0214a418 *self) {
     p = self->unk_14;
     if (p != NULL) {
         if (p != NULL) {
-            func_02041558(p);
-            func_02041278((u8 *)p + 0x88);
+            func_02041558((struct Model *)p);
+            func_02041278((struct PlttRes *)((u8 *)p + 0x88));
             Heap_Free(p);
         }
         self->unk_14 = NULL;

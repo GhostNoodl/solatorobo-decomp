@@ -1,6 +1,4 @@
-#include "ov010/ov010.h"
-
-#define FX32_ONE 0x1000
+#include "ov010/ov010.h" // FX32_ONE: nitro/fx.h via ov000/Vec.h
 
 // The zero rotation.
 struct Ov010Rot3 { u16 x, y, z; };

@@ -4,13 +4,7 @@ extern "C" {
 #include "nitro/gx_g3b.h"
 
 typedef struct {
-    s16 x;
-    s16 y;
-    s16 z;
-} Vtx0215a088;
-
-typedef struct {
-    Vtx0215a088 v[4];
+    VecFx16 v[4];
 } Vtxs0215a088;
 
 typedef struct {

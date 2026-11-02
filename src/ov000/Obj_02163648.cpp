@@ -1,10 +1,5 @@
 #include "ov000/VObj.h"
-
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
+#include "Main/Sys/SysState.h"
 
 typedef struct {
     u32 unk_00;
@@ -65,7 +60,6 @@ extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb3a8[];
 extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021cb5a8[];
-extern HeapState *data_02097dd0;
 extern u8 data_ov000_021cacd8[];
 extern u8 data_ov000_021cac60[];
 
@@ -79,8 +73,8 @@ Obj02163648 *Lo021cacd8_Dtor(Obj02163648 *self) {
     void *saved;
     Model *model;
     VOBJ_SET_VTABLE(self, data_ov000_021cacd8);
-    saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     model = self->unk_84;
     if (model != NULL) {
         if (model != NULL) {
@@ -90,7 +84,7 @@ Obj02163648 *Lo021cacd8_Dtor(Obj02163648 *self) {
         }
         self->unk_84 = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
     VOBJ_SET_VTABLE(self, data_ov000_021cac60);
     self->vfunc_2c();
     return self;

@@ -191,8 +191,8 @@ void func_ov000_02181624(void) {
     func_020598a8();
     func_02058fe4();
     func_02058e18();
-    saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     v = data_ov000_021ccd30;
     if (v != NULL) {
         if (v != NULL) {
@@ -200,7 +200,7 @@ void func_ov000_02181624(void) {
         }
         data_ov000_021ccd30 = (VObj *)zero;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
     func_ov000_02180754();
     func_ov000_0214bc10();
     func_0204c214();
@@ -219,8 +219,8 @@ void func_ov000_02181624(void) {
             func_0204b270(*scene, m, 0);
         }
     }
-    saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     obj = (u8 *)data_ov000_021ccd64;
     if (obj != NULL) {
         if (obj != NULL) {
@@ -229,11 +229,11 @@ void func_ov000_02181624(void) {
         }
         data_ov000_021ccd64 = (void *)zero;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
     ActorMgr_Destroy();
     func_02065534();
-    saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     obj = (u8 *)data_ov000_021ccd54;
     if (obj != NULL) {
         if (obj != NULL) {
@@ -243,7 +243,7 @@ void func_ov000_02181624(void) {
         }
         data_ov000_021ccd54 = (u8 *)zero;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
     func_02062a24();
     data_ov000_021ccd50 = zero;
 }
@@ -310,15 +310,15 @@ void func_ov000_021819a4(Obj021819a4 *self) {
     node = self->unk_10;
     while (node != NULL) {
         next = node->next;
-        saved = data_02097dd0->current;
-        data_02097dd0->current = data_02097dd0->unk_08;
+        saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (node != NULL) {
             if (node != NULL) {
                 node->vfunc_04();
             }
             node = NULL;
         }
-        data_02097dd0->current = saved;
+        data_02097dd0->cur = saved;
         node = next;
     }
     HEAP_DELETE_VOBJ(self->unk_0c);
@@ -884,15 +884,15 @@ void func_ov000_02182374(Obj02182374 *self, u32 id, BOOL force) {
         node->next->prev = node->prev;
     }
     {
-        void *saved = data_02097dd0->current;
-        data_02097dd0->current = data_02097dd0->unk_08;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (node != NULL) {
             if (node != NULL) {
                 node->vfunc_04();
             }
             node = NULL;
         }
-        data_02097dd0->current = saved;
+        data_02097dd0->cur = saved;
     }
     {
         Ctrl02182374 *c = (Ctrl02182374 *)data_ov000_021ccd54;
@@ -1377,10 +1377,6 @@ typedef struct {
 } Mgr021ccd30;
 
 typedef struct {
-    s32 x, y, z;
-} Vec3;
-
-typedef struct {
     u8 pad_00[4];
     s32 unk_04;
     u8 unk_08;
@@ -1393,15 +1389,10 @@ typedef struct {
     u8 pad_134[4];
     u16 unk_138;
     u8 pad_13a[2];
-    Vec3 unk_13c;
+    VecFx32 unk_13c;
     u8 pad_148[0xc];
     u16 unk_154;
 } Obj0214a424;
-
-typedef struct {
-    u8 pad_00[0x14];
-    s32 unk_14;
-} Obj02097dd0;
 
 typedef struct {
     u16 unk_00;
@@ -1422,7 +1413,6 @@ extern u8 data_ov000_021cb6d0[];
 extern u8 data_ov000_021cb940[];
 extern u8 data_ov000_021cb920[];
 extern Obj02097e48 *data_02097e48;
-extern Obj02097dd0 *data_02097dd0;
 extern Dtcm02fe1534 data_02fe1534;
 extern void *data_02097e4c;
 extern Obj021ccd6c *data_ov000_021ccd6c;
@@ -1441,7 +1431,7 @@ void func_0206ca44(Obj0214a424 *p);
 void func_0206c994(Obj0214a424 *p);
 void func_ov000_02181f54(u8 *p, s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_02049564(void *p, s32 a, s32 b);
-void func_020626d4(Vec3 *v, u16 a);
+void func_020626d4(VecFx32 *v, u16 a);
 BOOL func_0205a9c8(VObj *p);
 BOOL func_0205aa30(VObj *p);
 BOOL func_ov000_021820bc(u8 *p, s32 a);
@@ -1529,11 +1519,11 @@ s32 func_ov000_02182cb8(CmdEx *self) {
             if (mode == 2) {
                 func_0206222c();
                 func_0206cadc(data_0214a424);
-                data_02097dd0->unk_14 = data_0214a424->unk_04;
+                data_02097dd0->frameCount = data_0214a424->unk_04;
             } else {
                 func_0206c4c4(data_0214a424);
                 data_0214a424->unk_08 = self->unk_a6;
-                data_02097dd0->unk_14 = 0;
+                data_02097dd0->frameCount = 0;
             }
             data_02fe1534.unk_02 = 0;
             data_02fe1534.unk_04 = 0;
@@ -1552,7 +1542,7 @@ s32 func_ov000_02182cb8(CmdEx *self) {
                 func_0206ca44(data_0214a424);
             } else {
                 func_0206c994(data_0214a424);
-                data_02097dd0->unk_14 = data_0214a424->unk_04;
+                data_02097dd0->frameCount = data_0214a424->unk_04;
                 kind = data_0214a424->unk_09;
             }
             if (kind == 1) {
@@ -1584,7 +1574,7 @@ s32 func_ov000_02182cb8(CmdEx *self) {
                     data_ov000_021ccd6c->unk_0a = room;
                 } else if (NotFlag(data_0214a424)) {
                     Obj0214a424 *p = data_0214a424;
-                    Vec3 v;
+                    VecFx32 v;
                     v.x = p->unk_13c.x;
                     v.y = p->unk_13c.y;
                     v.z = p->unk_13c.z;
@@ -1857,12 +1847,6 @@ void func_ov000_021836d0(CmdQueue *self, s32 a, s32 b, s32 c, u16 d, u16 e) {
 namespace m_Stub_0218372c {
 
 typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
-
-typedef struct {
     u8 unk_00[0xac];
     u8 unk_ac;
 } Ctrl0218372c;
@@ -1874,7 +1858,6 @@ typedef struct {
 
 extern "C" {
 
-extern HeapState *data_02097dd0;
 extern void *data_02fe152c;
 void func_020592c4(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02182590(u8 *p);
@@ -1882,15 +1865,15 @@ void func_ov000_02182590(u8 *p);
 void func_ov000_0218372c(Obj0218372c *self, s32 a) {
     void *saved;
     func_020592c4(data_02fe152c, 2, 0x101, a, 1);
-    saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->unk_b8 != NULL) {
         if (self->unk_b8 != NULL) {
             self->unk_b8->vfunc_04();
         }
         self->unk_b8 = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
     {
         Ctrl0218372c *c = (Ctrl0218372c *)data_ov000_021ccd54;
         c->unk_ac = 1;

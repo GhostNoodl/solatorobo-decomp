@@ -1,18 +1,13 @@
 #include "types.h"
+#include "nitro/fx.h"
 
 // Ray cast against the registered hit meshes, placed in ITCM
 
 extern "C" {
 
-typedef struct HitRayVec {
-    s32 x;
-    s32 y;
-    s32 z;
-} HitRayVec;
-
 typedef struct HitRayInfo {
-    /* 0x00 */ HitRayVec pos;
-    /* 0x0c */ HitRayVec normal;
+    /* 0x00 */ VecFx32 pos;
+    /* 0x0c */ VecFx32 normal;
     /* 0x18 */ s32 distSq;
     /* 0x1c */ s32 unk_1c;
     /* 0x20 */ s32 unk_20;
@@ -21,8 +16,8 @@ typedef struct HitRayInfo {
 
 typedef struct HitRayMesh {
     /* 0x00 */ u8 unk_00[0x6c];
-    /* 0x6c */ HitRayVec min;
-    /* 0x78 */ HitRayVec max;
+    /* 0x6c */ VecFx32 min;
+    /* 0x78 */ VecFx32 max;
     /* 0x84 */ u16 unk_84_0 : 1;
     /* 0x84 */ u16 unk_84_1 : 1;
     /* 0x84 */ u16 unk_84_2 : 1;
@@ -32,15 +27,15 @@ typedef struct HitRayMesh {
 } HitRayMesh;
 
 typedef struct HitRayQuery {
-    /* 0x000 */ HitRayVec boxMin;
-    /* 0x00c */ HitRayVec boxMax;
+    /* 0x000 */ VecFx32 boxMin;
+    /* 0x00c */ VecFx32 boxMax;
     /* 0x018 */ u8 unk_18[0x18];
-    /* 0x030 */ HitRayVec from;
-    /* 0x03c */ HitRayVec to;
+    /* 0x030 */ VecFx32 from;
+    /* 0x03c */ VecFx32 to;
     /* 0x048 */ u8 unk_48[0xc];
     /* 0x054 */ HitRayMesh *mesh;
-    /* 0x058 */ HitRayVec from2;
-    /* 0x064 */ HitRayVec to2;
+    /* 0x058 */ VecFx32 from2;
+    /* 0x064 */ VecFx32 to2;
     /* 0x070 */ u8 unk_70[0x90];
     /* 0x100 */ s32 arg3;
     /* 0x104 */ s32 arg5;
@@ -50,17 +45,17 @@ typedef struct HitRayQuery {
 } HitRayQuery; // size 0x114
 
 typedef struct HitSphereQuery {
-    /* 0x000 */ HitRayVec boxMin;
-    /* 0x00c */ HitRayVec boxMax;
+    /* 0x000 */ VecFx32 boxMin;
+    /* 0x00c */ VecFx32 boxMax;
     /* 0x018 */ u8 unk_18[4];
     /* 0x01c */ s32 radius;
     /* 0x020 */ u8 unk_20[0x10];
-    /* 0x030 */ HitRayVec center;
+    /* 0x030 */ VecFx32 center;
     /* 0x03c */ HitRayMesh *mesh;
     /* 0x040 */ u8 unk_40[0x88];
     /* 0x0c8 */ s32 radius2;
     /* 0x0cc */ u8 unk_cc[0x10];
-    /* 0x0dc */ HitRayVec center2;
+    /* 0x0dc */ VecFx32 center2;
     /* 0x0e8 */ s32 arg3;
     /* 0x0ec */ s32 arg5;
     /* 0x0f0 */ u32 mask;
@@ -73,14 +68,13 @@ extern HitRayInfo *data_02fe0ef8;
 extern HitRayMesh *data_02fe0f08;
 extern HitRayInfo data_02fe0f14;
 extern void func_01ff82d8(HitRayQuery *q);
-extern BOOL func_01ffc828(HitRayVec *aMin, HitRayVec *aMax, HitRayVec *bMin, HitRayVec *bMax);
+extern BOOL func_01ffc828(VecFx32 *aMin, VecFx32 *aMax, VecFx32 *bMin, VecFx32 *bMax);
 extern void func_01ffb83c(HitRayMesh **ray);
 extern void func_01ffae08(HitRayMesh **ray);
-extern s32 FX_Sqrt(s32 x);
 extern void func_01ffbb14(HitRayMesh **q);
 extern void func_01ffb9b0(HitRayMesh **q);
 
-s32 func_01ffbd6c(HitRayVec *from, HitRayVec *to, u32 mask, s32 a, s32 b, s32 c) {
+s32 func_01ffbd6c(VecFx32 *from, VecFx32 *to, u32 mask, s32 a, s32 b, s32 c) {
     HitRayQuery q;
     HitRayMesh *mesh;
     HitRayInfo *hit;
@@ -119,7 +113,7 @@ s32 func_01ffbd6c(HitRayVec *from, HitRayVec *to, u32 mask, s32 a, s32 b, s32 c)
     return FX_Sqrt(data_02fe0f14.distSq);
 }
 
-s32 func_01ffbf40(HitRayVec *pos, s32 radius, u32 mask, s32 a, s32 b, s32 c) {
+s32 func_01ffbf40(VecFx32 *pos, s32 radius, u32 mask, s32 a, s32 b, s32 c) {
     HitSphereQuery q;
     HitRayMesh *mesh;
     HitRayInfo *hit;

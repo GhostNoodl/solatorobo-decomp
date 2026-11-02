@@ -1,11 +1,6 @@
 #include "ov000/VObj.h"
 #include "nitro/std.h"
-
-typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
+#include "Main/Sys/SysState.h"
 
 typedef struct {
     u32 unk_00;
@@ -37,7 +32,6 @@ typedef struct {
 
 extern "C" {
 
-extern HeapState *data_02097dd0;
 extern Data021ccd24 data_ov000_021ccd24;
 extern void *data_ov000_021c9838;
 extern u8 data_0208b318[];
@@ -144,15 +138,15 @@ void func_ov000_0214ba18(void) {
 }
 
 void func_ov000_0214baa8(void) {
-    void *saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (data_ov000_021ccd24.unk_04 != NULL) {
         if (data_ov000_021ccd24.unk_04 != NULL) {
             data_ov000_021ccd24.unk_04->vfunc_04();
         }
         data_ov000_021ccd24.unk_04 = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
 }
 
 BOOL func_ov000_0214bb04(void) {
@@ -184,15 +178,15 @@ void func_ov000_0214bb80(void) {
 }
 
 void func_ov000_0214bc10(void) {
-    void *saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (data_ov000_021ccd24.unk_08 != NULL) {
         if (data_ov000_021ccd24.unk_08 != NULL) {
             data_ov000_021ccd24.unk_08->vfunc_04();
         }
         data_ov000_021ccd24.unk_08 = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
 }
 
 BOOL func_ov000_0214bc6c(void) {

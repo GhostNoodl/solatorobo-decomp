@@ -81,7 +81,7 @@ static inline EffectGroup *EffectGroup_New(void) {
     return g;
 }
 
-EffectGroup *func_02067984(const EffectVec *pos) {
+EffectGroup *func_02067984(const VecFx32 *pos) {
     EffectGroup *g = EffectGroup_New();
     s32 i;
     for (i = 0; i < 3; i++) {
@@ -106,7 +106,7 @@ EffectGroup *func_02067984(const EffectVec *pos) {
     return g;
 }
 
-EffectGroup *func_02067b08(s32 id, const EffectVec *pos) {
+EffectGroup *func_02067b08(s32 id, const VecFx32 *pos) {
     EffectGroup *g = EffectGroup_New();
     const char *name = NULL;
     switch (id) {

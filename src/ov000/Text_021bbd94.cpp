@@ -12,7 +12,6 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb5a8[];
 char *MsgRes_GetString(void *msg, s32 id);
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void func_020417e0(void *model, void *a);
 void func_02041d9c(void *model, s32 a, s32 b);
@@ -79,7 +78,7 @@ void func_ov000_021bbd94(Obj021bbd94 *self) {
     self->unk_5c->vfunc_08();
     m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
-        func_02041218(m + 0x88);
+        func_02041218((struct PlttRes *)(m + 0x88));
         func_02041440(m, (u8 *)self + 0x28, 0);
         STD_CopyString((char *)m + 0x2c, (char *)self + 8);
     }

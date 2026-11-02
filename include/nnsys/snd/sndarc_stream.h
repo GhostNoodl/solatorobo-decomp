@@ -3,6 +3,9 @@
 
 #include "nnsys/fnd/list.h"
 #include "nnsys/snd/sndarc.h"
+#include "nitro/os.h"
+#include "nitro/mi.h"
+#include "nnsys/snd/stream.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -36,7 +39,7 @@ typedef struct StrmAdpcmState {
 struct StrmHandle;
 
 typedef struct StrmPlayer {
-    /* 0x000 */ u8 strm[0x64];
+    /* 0x000 */ NNSSndStrm strm;
     /* 0x064 */ u8 file[0x48];
     /* 0x0ac */ u32 fileOffset;
     /* 0x0b0 */ StrmHeader header;
@@ -90,11 +93,10 @@ typedef struct StrmCommand {
 } StrmCommand; // size 0x30
 
 typedef struct StrmThread {
-    /* 0x0000 */ u8 thread[0xc0];
+    /* 0x0000 */ OSThread thread;
     /* 0x00c0 */ u8 stack[0x1000];
-    /* 0x10c0 */ void *queueHead;
-    /* 0x10c4 */ void *queueTail;
-    /* 0x10c8 */ u8 mutex[0x18];
+    /* 0x10c0 */ OSThreadQueue queue;
+    /* 0x10c8 */ OSMutex mutex;
     /* 0x10e0 */ NNSFndList cmdList;
 } StrmThread; // size 0x10ec
 
@@ -106,40 +108,16 @@ typedef struct StrmGlobals {
 
 extern StrmGlobals data_0209622c;
 extern NNSFndList data_02096238;
-extern u8 data_02096244[0x18];
+extern OSMutex data_02096244;
 extern StrmCommand data_0209625c[8];
 extern u8 data_020963e0[];
 extern StrmPlayer data_020965e0[4];
 extern StrmThread data_02096bd0;
-extern u8 data_02097c98[0x18];
+extern OSMutex data_02097c98;
 extern NNSFndList data_02097cb0;
 extern const s16 data_02075210[];
 
-// Loose prototypes for files that do not include the SDK OS header.
-#ifndef NITRO_OS_H
-extern u32 OS_DisableInterrupts(void);
-extern u32 OS_RestoreInterrupts(u32 state);
-extern void OS_InitMutex(void *mutex);
-extern void OS_LockMutex(void *mutex);
-extern void OS_UnlockMutex(void *mutex);
-extern void OS_CreateThread(void *thread, void (*func)(void *), void *arg, void *stack, u32 stackSize, u32 prio);
-extern void OS_WakeupThreadDirect(void *thread);
-extern void OS_WakeupThread(void *queue);
-extern void OS_SleepThread(void *queue);
-#endif
-extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
-#ifndef NITRO_MI_H
-extern void MI_CpuFill8(void *dst, u32 value, u32 size);
-#endif
 extern void FS_InitFile(void *file);
-extern void NNS_SndStrmInit(void *strm);
-extern BOOL NNS_SndStrmAllocChannel(void *strm, int chNum, u8 *chList);
-extern void NNS_SndStrmFreeChannel(void *strm);
-extern BOOL NNS_SndStrmSetup(void *strm, int format, void *buffer, u32 bufSize, u32 timer, int interval, void *callback, void *arg);
-extern void NNS_SndStrmStart(void *strm);
-extern void NNS_SndStrmStop(void *strm);
-extern void NNS_SndStrmSetVolume(void *strm, int volume);
-extern void NNS_SndStrmSetChannelPan(void *strm, int ch, int pan);
 
 typedef struct StrmCbInfo {
     /* 0x0 */ int playerNo;

@@ -61,23 +61,6 @@ static inline void G3_Cmd1(int cmd, u32 value) {
     NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
-static inline void G3_TexCoord(int s, int t) {
-    u32 v = (u16)(s16)(s >> 8) | ((u16)(s16)(t >> 8) << 16);
-    NNS_G3dGeBufferOP_N(0x22, &v, 1);
-}
-
-static inline void G3_Vtx(s16 x, s16 y, s16 z) {
-    u32 v[2];
-    v[0] = (u16)x | ((u16)y << 16);
-    v[1] = (u16)z;
-    NNS_G3dGeBufferOP_N(0x23, v, 2);
-}
-
-static inline void G3_VtxXY(s16 x, s16 y) {
-    u32 v = (u16)x | ((u16)y << 16);
-    NNS_G3dGeBufferOP_N(0x25, &v, 1);
-}
-
 static inline void Gfx_GetOamShift(const OamShape *sp, u32 *w, u32 *h) {
     u16 shapeBit = (u16)((u32)(*sp & 0xc000) >> 14);
     u16 sizeBit = (u16)((u32)(*sp & 0xc0000000) >> 30);
@@ -166,24 +149,24 @@ void func_02043100(int x, int y, int z, u32 color, const GfxOamAttr *oam, const 
     trans[0] = x;
     trans[1] = y;
     trans[2] = z;
-    NNS_G3dGeBufferOP_N(0x1c, trans, 3);
+    NNS_G3dGeBufferOP_N(0x1c, (const u32 *)trans, 3);
     scale[0] = w << 12;
     scale[1] = h << 12;
     scale[2] = 0x1000;
-    NNS_G3dGeBufferOP_N(0x1b, scale, 3);
+    NNS_G3dGeBufferOP_N(0x1b, (const u32 *)scale, 3);
     if (mtx != NULL) {
-        NNS_G3dGeBufferOP_N(0x19, mtx, 12);
+        NNS_G3dGeBufferOP_N(0x19, (const u32 *)mtx, 12);
     }
     G3_Cmd1(0x20, color);
     G3_Cmd1(0x40, 1);
-    G3_TexCoord(s0, oy);
-    G3_Vtx(0, 0x1000, 0);
-    G3_TexCoord(s1, oy);
-    G3_VtxXY(0x1000, 0x1000);
-    G3_TexCoord(s1, t0);
-    G3_VtxXY(0x1000, 0);
-    G3_TexCoord(s0, t0);
-    G3_VtxXY(0, 0);
+    NNS_G3dGeTexCoord(s0, oy);
+    NNS_G3dGeVtx(0, 0x1000, 0);
+    NNS_G3dGeTexCoord(s1, oy);
+    NNS_G3dGeVtxXY(0x1000, 0x1000);
+    NNS_G3dGeTexCoord(s1, t0);
+    NNS_G3dGeVtxXY(0x1000, 0);
+    NNS_G3dGeTexCoord(s0, t0);
+    NNS_G3dGeVtxXY(0, 0);
     NNS_G3dGeBufferOP_N(0x41, NULL, 0);
 }
 #endif

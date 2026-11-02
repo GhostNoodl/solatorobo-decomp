@@ -21,10 +21,6 @@ typedef struct {
 } Bc2_021ad130;
 
 typedef struct {
-    s32 x, y, z;
-} Vec021ad130;
-
-typedef struct {
     s32 w[3];
 } Ids021ad130;
 
@@ -58,7 +54,7 @@ BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 u8 func_0206d204(void *p, s32 a);
 VObj *func_02065f88(s32 id, void *pos);
 void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
-u8 *func_ov000_0219b71c(Vec021ad130 *pos, Vec021ad130 *v, s32 a, s32 b, s32 c, s32 d);
+u8 *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 s32 Rand_UpTo(s32 max);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 void *func_0204a028(void *a, s32 b, void *c, s32 d);
@@ -73,8 +69,8 @@ BOOL func_ov000_02198360(void *st, s32 a, s32 b);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 
 static inline void Fx021ad130(Robo021ca458 *self) {
-    Vec021ad130 v;
-    v = *(Vec021ad130 *)((u8 *)self + 0x70);
+    VecFx32 v;
+    v = *(VecFx32 *)((u8 *)self + 0x70);
     v.y += self->unk_68;
     func_ov000_021899d8(&v, 0, 0x8ccd, 1, 0x1000, 0x1000);
 }
@@ -146,8 +142,8 @@ void func_ov000_021ad130(Robo021ca458 *self) {
                 if (t % 25 == 0) {
                     s32 a = -1;
                     s32 b = 0;
-                    Vec021ad130 pos;
-                    Vec021ad130 ext;
+                    VecFx32 pos;
+                    VecFx32 ext;
                     u8 *hit;
                     switch (t % 100) {
                     case 0:
@@ -159,7 +155,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
                         b = 0x4b;
                         break;
                     }
-                    pos = *(Vec021ad130 *)((u8 *)self + 0x70);
+                    pos = *(VecFx32 *)((u8 *)self + 0x70);
                     pos.y += self->unk_6c;
                     ext.x = self->unk_64;
                     ext.y = self->unk_68 >> 2;

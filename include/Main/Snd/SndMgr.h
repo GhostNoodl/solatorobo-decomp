@@ -5,6 +5,7 @@
 #include "nnsys/snd/heap.h"
 #include "nnsys/snd/sndarc.h"
 #include "nnsys/snd/sndarc_stream.h"
+#include "nnsys/snd/player.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -12,9 +13,7 @@ extern "C" {
 
 // Game sound manager: BGM / SE / voice playback on top of the NitroSystem sound archive player.
 
-typedef struct SndHandle {
-    void *player;
-} SndHandle;
+typedef NNSSndHandle SndHandle;
 
 typedef struct SndMgr {
     /* 0x00 */ s32 unk_00;
@@ -88,17 +87,6 @@ extern SndGlobal data_02097e48;
 #endif
 extern const s8 data_0208b778[];
 extern const s32 data_0208b688[];
-
-extern void NNS_SndPlayerStopSeq(SndHandle *handle, int fadeFrames);
-extern void NNS_SndPlayerStopSeqBySeqNo(int playerNo, int fadeFrames);
-extern void NNS_SndPlayerStopSeqBySeqArcIdx(int a, int b, int fadeFrames);
-extern void NNS_SndPlayerStopSeqAll(int fadeFrames);
-extern void NNS_SndHandleInit(SndHandle *handle);
-extern void NNS_SndPlayerSetVolume(SndHandle *handle, int value);
-extern void NNS_SndPlayerMoveVolume(SndHandle *handle, int volume, int frames);
-extern void NNS_SndPlayerSetPlayerPriority(SndHandle *handle, int volume);
-extern void NNS_SndPlayerSetTrackPitch(SndHandle *handle, u16 trackMask, int value);
-extern void NNS_SndPlayerSetTrackPan(SndHandle *handle, u16 trackMask, int value);
 
 void func_02049690(SndMgr *mgr);
 SndHandle *func_02049984(SndMgr *mgr, s32 id, s32 *outSeqArc, s32 *outIndex);

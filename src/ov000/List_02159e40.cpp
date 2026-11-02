@@ -62,16 +62,16 @@ void func_ov000_02159e40(Owner02159e40 *self, Node02159e40 *node) {
     }
     self->count--;
     {
-        void *saved = data_02097dd0->current;
+        void *saved = data_02097dd0->cur;
         Node02159e40 *p;
-        data_02097dd0->current = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         p = node;
         if (p != NULL) {
             if (p != NULL) {
                 Node02159e40_Delete(p);
             }
         }
-        data_02097dd0->current = saved;
+        data_02097dd0->cur = saved;
     }
 }
 

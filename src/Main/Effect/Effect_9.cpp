@@ -48,43 +48,6 @@ void func_02068da8(EffectPtcl *p) {
     p->prev = NULL;
 }
 
-// Local copies of the NitroSDK/NitroSystem inlines used below (nnsys/g3d.h and nitro/fx.h
-// clash with Effect.h). Writing the G3 commands through these, rather than raw
-// NNS_G3dGeBufferOP_N calls, gives the target's registers and stack slots.
-typedef struct MtxFx33 { s32 m[3][3]; } MtxFx33;
-typedef struct VecFx32 { s32 x, y, z; } VecFx32;
-extern const s16 FX_SinCosTable_[];
-void NNS_G3dGeBufferOP_N(u32 op, const u32 *args, u32 num);
-void NNS_G3dGeSendDL(const void *src, u32 szByte);
-void MTX_RotX33_(MtxFx33 *m, s32 s, s32 c);
-void MTX_RotY33_(MtxFx33 *m, s32 s, s32 c);
-void MTX_RotZ33_(MtxFx33 *m, s32 s, s32 c);
-void MTX_Concat33(const MtxFx33 *a, const MtxFx33 *b, MtxFx33 *ab);
-static inline s16 FX_SinIdx(int idx) { return FX_SinCosTable_[idx * 2]; }
-static inline s16 FX_CosIdx(int idx) { return FX_SinCosTable_[idx * 2 + 1]; }
-static inline void MTX_Identity33(MtxFx33 *pDst) { MTX_Identity33_(pDst); }
-static inline void MTX_RotX33(MtxFx33 *pDst, s32 s, s32 c) { MTX_RotX33_(pDst, s, c); }
-static inline void MTX_RotY33(MtxFx33 *pDst, s32 s, s32 c) { MTX_RotY33_(pDst, s, c); }
-static inline void MTX_RotZ33(MtxFx33 *pDst, s32 s, s32 c) { MTX_RotZ33_(pDst, s, c); }
-static inline void NNS_G3dGeMtxMode(int mode) { NNS_G3dGeBufferOP_N(0x10, (u32 *)&mode, 1); }
-static inline void NNS_G3dGePushMtx(void) { NNS_G3dGeBufferOP_N(0x11, NULL, 0); }
-static inline void NNS_G3dGePopMtx(int num) { NNS_G3dGeBufferOP_N(0x12, (u32 *)&num, 1); }
-static inline void NNS_G3dGeMultMtx33(const MtxFx33 *m) { NNS_G3dGeBufferOP_N(0x1a, (const u32 *)&m->m[0][0], 9); }
-static inline void NNS_G3dGeTranslateVec(const VecFx32 *vec) { NNS_G3dGeBufferOP_N(0x1c, (u32 *)vec, 3); }
-static inline void NNS_G3dGeScaleVec(const VecFx32 *vec) { NNS_G3dGeBufferOP_N(0x1b, (u32 *)vec, 3); }
-static inline void VEC_Set(VecFx32 *a, s32 x, s32 y, s32 z) { a->x = x; a->y = y; a->z = z; }
-static inline void NNS_G3dGeColor(u16 rgb) { u32 tmp; tmp = (u32)rgb; NNS_G3dGeBufferOP_N(0x20, (u32 *)&tmp, 1); }
-static inline void NNS_G3dGePolygonAttr(int light, int polyMode, int cullMode, int polygonID, int alpha, int misc) {
-    u32 tmp;
-    tmp = (u32)((light) | ((polyMode) << 4) | ((cullMode) << 6) | (misc) | ((polygonID) << 24) | ((alpha) << 16));
-    NNS_G3dGeBufferOP_N(0x29, &tmp, 1);
-}
-static inline void NNS_G3dGeTexPlttBase(u32 addr, int texfmt) {
-    u32 param = (u32)((addr) >> (4 - ((texfmt) == 2)));
-    NNS_G3dGeBufferOP_N(0x2b, &param, 1);
-}
-
-
 void func_02068e68(EffectPtcl *p, s32 type, MtxFx33 *mtx, s32 alphaScale) {
     MtxFx33 rz;
     MtxFx33 rot;
@@ -98,21 +61,21 @@ void func_02068e68(EffectPtcl *p, s32 type, MtxFx33 *mtx, s32 alphaScale) {
     }
     if (p->tex != NULL) {
         NNS_G3dGeBufferOP_N(0x2a, (u32 *)&p->polyAttr, 1);
-        NNS_G3dGeTexPlttBase((u32)p->texAddr, (int)((p->polyAttr & 0x1c000000) >> 26));
+        NNS_G3dGeTexPlttBase((u32)p->texAddr, (GXTexFmt)((p->polyAttr & 0x1c000000) >> 26));
     } else {
         // A plain local, not NNS_G3dGeTexImageParam: its stack slot sits above the inlines' temporaries.
         u32 texParam = 0x21200000;
         NNS_G3dGeBufferOP_N(0x2a, &texParam, 1);
     }
-    NNS_G3dGePolygonAttr(0, 0, 3, p->unk_a0, alpha, 0);
-    NNS_G3dGeMtxMode(2);
+    NNS_G3dGePolygonAttr(0, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, p->unk_a0, alpha, 0);
+    NNS_G3dGeMtxMode(GX_MTXMODE_POSITION_VECTOR);
     rotated = FALSE;
     NNS_G3dGePushMtx();
     VEC_Set(&trans, p->pos.x, p->pos.y, p->pos.z);
     NNS_G3dGeTranslateVec(&trans);
     if (type == 1) {
         u16 a = p->rot.z;
-        MTX_RotZ33(&rz, FX_SinIdx(a >> 4), FX_CosIdx(a >> 4));
+        MTX_RotZ33(&rz, FX_SinIdx(a), FX_CosIdx(a));
         MTX_Concat33(&rz, mtx, &rz);
         NNS_G3dGeMultMtx33(&rz);
     } else if (type == 4) {
@@ -123,24 +86,24 @@ void func_02068e68(EffectPtcl *p, s32 type, MtxFx33 *mtx, s32 alphaScale) {
         u16 rx = p->rot.x;
         MTX_Identity33(&rot);
         if (rx != 0) {
-            MTX_RotX33(&rot, FX_SinIdx(rx >> 4), FX_CosIdx(rx >> 4));
+            MTX_RotX33(&rot, FX_SinIdx(rx), FX_CosIdx(rx));
             rotated = TRUE;
         }
         if (ry != 0) {
             if (rotated) {
-                MTX_RotY33(&tmp, FX_SinIdx(ry >> 4), FX_CosIdx(ry >> 4));
+                MTX_RotY33(&tmp, FX_SinIdx(ry), FX_CosIdx(ry));
                 MTX_Concat33(&tmp, &rot, &rot);
             } else {
-                MTX_RotY33(&rot, FX_SinIdx(ry >> 4), FX_CosIdx(ry >> 4));
+                MTX_RotY33(&rot, FX_SinIdx(ry), FX_CosIdx(ry));
                 rotated = TRUE;
             }
         }
         if (rzz != 0) {
             if (rotated) {
-                MTX_RotZ33(&tmp, FX_SinIdx(rzz >> 4), FX_CosIdx(rzz >> 4));
+                MTX_RotZ33(&tmp, FX_SinIdx(rzz), FX_CosIdx(rzz));
                 MTX_Concat33(&tmp, &rot, &rot);
             } else {
-                MTX_RotZ33(&rot, FX_SinIdx(rzz >> 4), FX_CosIdx(rzz >> 4));
+                MTX_RotZ33(&rot, FX_SinIdx(rzz), FX_CosIdx(rzz));
             }
         }
         NNS_G3dGeMultMtx33(&rot);

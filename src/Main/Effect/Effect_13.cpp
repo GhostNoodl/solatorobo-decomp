@@ -32,7 +32,7 @@ extern const u16 data_02082bdc[];
 
 void func_0206ab0c(EffectPartSet *s) {
     EffectPartSlot *slot;
-    EffectVec v;
+    VecFx32 v;
     s16 x0;
     s16 y0;
     s16 z0;

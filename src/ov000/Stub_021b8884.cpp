@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Sys/SysState.h"
 
 typedef struct {
     u8 unk_00[0x4];
@@ -16,12 +17,6 @@ typedef struct {
 SIZE_ASSERT(Obj021b8884, 0x34);
 
 typedef struct {
-    void *current;
-    void *unk_04;
-    void *unk_08;
-} HeapState;
-
-typedef struct {
     u8 unk_00[0x24];
     VObj *unk_24;
     u8 unk_28[0x8];
@@ -30,7 +25,6 @@ typedef struct {
 
 extern "C" {
 
-extern HeapState *data_02097dd0;
 void func_0203caf8(s32 a);
 void func_0203c9e8(s32 a, s32 b);
 void func_02041558(void *p);
@@ -59,8 +53,8 @@ void func_ov000_021b88d8(Obj021b88d8 *self) {
     func_0203caf8(0);
     func_0203caf8(2);
 
-    saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     p = self->unk_30;
     if (p != NULL) {
         if (p != NULL) {
@@ -70,17 +64,17 @@ void func_ov000_021b88d8(Obj021b88d8 *self) {
         }
         self->unk_30 = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
 
-    saved = data_02097dd0->current;
-    data_02097dd0->current = data_02097dd0->unk_08;
+    saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->unk_24 != NULL) {
         if (self->unk_24 != NULL) {
             self->unk_24->vfunc_04();
         }
         self->unk_24 = NULL;
     }
-    data_02097dd0->current = saved;
+    data_02097dd0->cur = saved;
 
     func_0203c9e8(0x3f, 0);
 }

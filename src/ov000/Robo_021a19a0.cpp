@@ -1,10 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 
-typedef struct {
-    s32 x, y, z;
-} Vec_021a19a0;
-
 extern "C" {
 
 extern char data_ov000_021cc61e[];
@@ -71,7 +67,7 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
     func_ov000_021911c8(self->unk_38, spd);
     if (self->unk_b28_0 == 3) {
         self->unk_b28_0 = 2;
-        LFLD(Vec_021a19a0, self, 0xb10) = LFLD(Vec_021a19a0, self, 0x70);
+        LFLD(VecFx32, self, 0xb10) = LFLD(VecFx32, self, 0x70);
     }
     turned = FALSE;
     if (LBIT(self, 0xb24).b1 && (LFLD(u32, self->unk_48, 0x54) & 0x400)) {

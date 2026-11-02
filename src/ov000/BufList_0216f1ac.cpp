@@ -1,8 +1,8 @@
 #include "ov000/MessageQueue.h"
+#include "Main/Sys/SysState.h"
 
 extern "C" {
 
-extern HeapState *data_02097dd0;
 extern u8 data_ov000_021cb6d0[];
 extern u8 data_ov000_021cb960[];
 
@@ -103,14 +103,14 @@ void func_ov000_0216f23c(BufferList *list, BOOL mode) {
         if (buf->flags & 4) {
             next = BufferList_Remove(list, buf);
             if (buf->flags & 0x10) {
-                void *saved = data_02097dd0->current;
-                data_02097dd0->current = data_02097dd0->unk_08;
+                void *saved = data_02097dd0->cur;
+                data_02097dd0->cur = data_02097dd0->unk_08;
                 if (buf != NULL) {
                     if (buf != NULL) {
                         buf->vfunc_04();
                     }
                 }
-                data_02097dd0->current = saved;
+                data_02097dd0->cur = saved;
             }
         } else {
             next = buf->next;

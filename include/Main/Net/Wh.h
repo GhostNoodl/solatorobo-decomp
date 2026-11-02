@@ -3,6 +3,8 @@
 
 #include "types.h"
 #include "Main/Res/ResMgr.h"
+#include "nitro/mi.h"
+#include "nitro/os.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -107,7 +109,6 @@ extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *ptr);
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void MI_CpuFill8(void *dst, u32 value, u32 size);
 extern int WM_SetIndCallback(void (*cb)(void *arg));
 extern u16 WM_GetAllowedChannel(void);
 extern u16 WM_GetDispersionBeaconPeriod(void);
@@ -189,10 +190,6 @@ void func_02045ef8(WhCbArg *arg);
 void func_020461e4(WhCbArg *arg);
 void func_020468d0(WhCbArg *arg);
 
-extern void DC_InvalidateRange(const void *addr, u32 size);
-extern void MI_CpuCopy8(const void *src, void *dst, u32 size);
-extern void DC_FlushRange(const void *addr, u32 size);
-extern void DC_WaitWriteBufferEmpty(void);
 extern int WM_EndScan(void (*cb)(void *arg));
 extern int WM_StartConnectEx(void (*cb)(void *arg), void *bssDesc, void *ssl, BOOL powerSave, int authMode);
 extern int WM_StepDataSharing(void *dsInfo, const void *data, void *recv);

@@ -2,6 +2,7 @@
 #define MAIN_GFX_MODEL_H
 
 #include "types.h"
+#include "Main/Gfx/PlttRes.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,11 +31,6 @@ typedef struct ModelPos {
     s32 y;
 } ModelPos;
 
-typedef struct ModelExtPltt {
-    /* 0x00 */ u8 unk_00[0x60];
-    /* 0x60 */ void *transfer;
-} ModelExtPltt;
-
 // 3D model instance (built by func_02041440, torn down by func_02041558).
 typedef struct Model {
     /* 0x000 */ u8 unk_000[0x28];
@@ -47,9 +43,8 @@ typedef struct Model {
     /* 0x07c */ s32 unk_07c;
     /* 0x080 */ s32 numParts;
     /* 0x084 */ u8 unk_084[4];
-    /* 0x088 */ u8 pltt[0x60];
-    /* 0x0e8 */ void *plttTransfer;
-    /* 0x0ec */ struct ModelExtPltt *extPltt;
+    /* 0x088 */ PlttRes pltt;
+    /* 0x0ec */ PlttRes *extPltt;
     /* 0x0f0 */ u8 unk_0f0[0xc];
     /* 0x0fc */ union {
         struct {
@@ -64,15 +59,21 @@ typedef struct Model {
     /* 0x156 */ u8 unk_156[0xa];
 } Model; // size 0x160
 
-extern void func_02041218(void *pltt);
-extern void func_02041278(void *pltt);
 extern void func_02041440(Model *model, const char *name, int a);
 extern void func_02041558(Model *model);
 extern void func_020417e0(Model *model, void *res);
 extern void func_02041d9c(Model *model, int a, int b);
 extern void func_02042628(Model *model, void *tex, ModelPart *part, u8 a);
+// Game-side views of two nnsys/g2d/g2d_Load.h functions. The SDK takes a u16 index and typed banks;
+// these callers pass the index at full width, and declaring it u16 adds a truncation to nine functions
+// (SlidePanel, TextWin, seven ov000 TUs). So this header and g2d_Load.h cannot be included together.
 extern void *NNS_G2dGetAnimSequenceByIdx(void *res, int idx);
 extern void *NNS_G2dGetCellDataByIdx(void *res, u16 idx);
+
+static inline void Model_SetPos(Model *model, s32 x, s32 y) {
+    model->x = x;
+    model->y = y;
+}
 
 #ifdef __cplusplus
 }

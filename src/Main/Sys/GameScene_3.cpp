@@ -76,12 +76,12 @@ void func_02056d50(Model *model) {
 void func_02056d60(GameScene *scene, s32 x, s32 y) {
     G3_Vec(0x1b, x << 12, y << 12, 0x1000);
     G3_Cmd1(0x40, 2);
-    G3_Vtx(0, 0x375, -0x9ba);
-    G3_VtxXY(0x84, 0x1000);
-    G3_VtxXY(0xf8, 0);
-    G3_VtxXY(0xf9c, 0x1000);
-    G3_VtxXY(0xf17, 0);
-    G3_VtxXY(0x1000, 0xbac);
+    NNS_G3dGeVtx(0, 0x375, -0x9ba);
+    NNS_G3dGeVtxXY(0x84, 0x1000);
+    NNS_G3dGeVtxXY(0xf8, 0);
+    NNS_G3dGeVtxXY(0xf9c, 0x1000);
+    NNS_G3dGeVtxXY(0xf17, 0);
+    NNS_G3dGeVtxXY(0x1000, 0xbac);
     NNS_G3dGeBufferOP_N(0x41, NULL, 0);
 }
 

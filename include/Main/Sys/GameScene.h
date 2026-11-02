@@ -4,6 +4,7 @@
 #include "types.h"
 #include "Main/Gfx/Model.h"
 #include "Main/Gfx/GfxMgr.h"
+#include "nnsys/g3d.h"
 
 // Game scene with HUD state (the class of func_020534dc). The vtable stays in asm.
 struct GameScene {
@@ -113,25 +114,22 @@ typedef struct ShakeTable {
 
 extern const ShakeTable data_020829d0;
 extern s32 data_02097d78[5];
-extern const s16 FX_SinCosTable_[];
 
 extern void func_0203c9e8(int a, int b);
 extern void func_0203cc58(int a, int b, int c);
-extern s32 FX_Div(s32 a, s32 b);
 extern s32 Rand_UpTo(s32 max);
 extern void func_02043d20(void *obj, int a);
 extern s32 func_02043d84(void *obj);
 extern void func_02052fcc(GameScene *scene);
 extern s32 func_020572f8(GameScene *scene, void *p);
 extern void *func_0203972c(void *blocks, u32 count);
-extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
 static inline void G3_Vec(int cmd, int x, int y, int z) {
     int v[3];
     v[0] = x;
     v[1] = y;
     v[2] = z;
-    NNS_G3dGeBufferOP_N(cmd, v, 3);
+    NNS_G3dGeBufferOP_N(cmd, (u32 *)v, 3);
 }
 
 static inline void G3_Cmd1(int cmd, u32 value) {
@@ -139,20 +137,6 @@ static inline void G3_Cmd1(int cmd, u32 value) {
     NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
-// Buffered vertex commands, for files that do not include the SDK G3 header.
-#ifndef NITRO_GX_H
-static inline void G3_Vtx(s16 x, s16 y, s16 z) {
-    u32 v[2];
-    v[0] = (u16)x | ((u16)y << 16);
-    v[1] = (u16)z;
-    NNS_G3dGeBufferOP_N(0x23, v, 2);
-}
-
-static inline void G3_VtxXY(s16 x, s16 y) {
-    u32 v = (u16)x | ((u16)y << 16);
-    NNS_G3dGeBufferOP_N(0x25, &v, 1);
-}
-#endif
 
 // Points the model at frame 0 of animation `idx`: the part's own texture, or the first cell of
 // the sequence when the part has none.

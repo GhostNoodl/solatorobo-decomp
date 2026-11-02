@@ -7,7 +7,6 @@ extern u8 data_0214b105[];
 extern void *data_0208cb7c;
 extern void *data_0208cc94;
 extern void *data_0208cc88;
-void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
@@ -22,7 +21,7 @@ void func_ov000_0216a608(Lo021cb744 *self) {
     u8 *m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         void *nm = data_0208cb7c;
-        func_02041218(m + 0x88);
+        func_02041218((struct PlttRes *)(m + 0x88));
         func_02041440(m, nm, 0);
     }
     self->unk_9c = m;
@@ -38,7 +37,7 @@ void func_ov000_0216a608(Lo021cb744 *self) {
     m2 = (u8 *)Heap_Alloc(0x160);
     if (m2) {
         void *nm = data_0208cc88;
-        func_02041218(m2 + 0x88);
+        func_02041218((struct PlttRes *)(m2 + 0x88));
         func_02041440(m2, nm, 0);
     }
     self->unk_a0 = m2;

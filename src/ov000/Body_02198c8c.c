@@ -57,13 +57,7 @@ extern ActorMgr *data_ov000_021ccd68;
 
 ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
-void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *offset, u32 angle);
-u16 FX_Atan2(s32 x, s32 z);
-s32 FX_Div(s32 num, s32 den);
-void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
-void VEC_Normalize(const VecFx32 *src, VecFx32 *dst);
-u16 FX_AsinIdx(s32 x);
 
 static inline ActorC *FindActor(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
@@ -71,12 +65,6 @@ static inline ActorC *FindActor(u16 id) {
         return NULL;
     }
     return ActorMgr_GetActor(mgr, id);
-}
-
-static inline void VEC_Set(VecFx32 *v, s32 x, s32 y, s32 z) {
-    v->x = x;
-    v->y = y;
-    v->z = z;
 }
 
 static inline s32 Dot(const VecFx32 *a, const VecFx32 *b) {

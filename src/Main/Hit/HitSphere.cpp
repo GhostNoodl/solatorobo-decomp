@@ -69,8 +69,8 @@ void func_0203f364(HitSphere *hit) {
 
 
 typedef struct HitInfo {
-    /* 0x00 */ HitVec a;
-    /* 0x0c */ HitVec b;
+    /* 0x00 */ VecFx32 a;
+    /* 0x0c */ VecFx32 b;
     /* 0x18 */ int c0;
     /* 0x1c */ int c1;
     /* 0x20 */ int c2;
@@ -83,15 +83,8 @@ extern HitInfo data_02fe0f14;
 extern int data_02fe0efc;
 extern HitInfo data_02fe0f50[];
 
-extern void VEC_Add(const HitVec *a, const HitVec *b, HitVec *out);
-extern void VEC_Normalize(const HitVec *src, HitVec *dst);
-extern int FX_Sqrt(int x);
-int func_0203fc78(HitVec *out, HitVec *pos, HitVec *prev, int radius, int a, int b);
-int func_0203fde8(HitVec *out, HitVec *pos, int radius, int a, int b);
-
-static inline int FX_Mul(int a, int b) {
-    return (int)(((s64)a * b + 0x800) >> 12);
-}
+int func_0203fc78(VecFx32 *out, VecFx32 *pos, VecFx32 *prev, int radius, int a, int b);
+int func_0203fde8(VecFx32 *out, VecFx32 *pos, int radius, int a, int b);
 
 int func_0203f3d0(HitSphere *self) {
     int result = 0;
@@ -101,11 +94,11 @@ int func_0203f3d0(HitSphere *self) {
     int r;
     int lenSq;
     u8 flag;
-    HitVec d;
-    HitVec min;
-    HitVec max;
+    VecFx32 d;
+    VecFx32 min;
+    VecFx32 max;
     HitInfo info;
-    HitVec v;
+    VecFx32 v;
 
     self->push.x = 0;
     self->push.y = 0;
@@ -222,10 +215,6 @@ int func_0203f3d0(HitSphere *self) {
 }
 
 
-typedef struct HitMtx {
-    int m[4][3];
-} HitMtx;
-
 typedef struct HitMeshRes {
     /* 0x00 */ u32 unk_00;
     /* 0x04 */ u32 unk_04;
@@ -256,11 +245,11 @@ typedef struct HitMeshHeader {
 typedef struct HitMesh {
     /* 0x00 */ int scale;
     /* 0x04 */ int invScale;
-    /* 0x08 */ HitMtx mtx;
-    /* 0x38 */ HitMtx invMtx;
+    /* 0x08 */ MtxFx43 mtx;
+    /* 0x38 */ MtxFx43 invMtx;
     /* 0x68 */ int extent;
-    /* 0x6c */ HitVec min;
-    /* 0x78 */ HitVec max;
+    /* 0x6c */ VecFx32 min;
+    /* 0x78 */ VecFx32 max;
     union {
         u16 flags;
         struct {
@@ -280,10 +269,6 @@ typedef struct HitMesh {
 extern HitMesh *data_02fe0f08;
 extern int data_02fe0f0c;
 
-extern void MTX_Identity43_(HitMtx *mtx);
-extern int FX_Inv(int x);
-extern void MI_Copy48B(const HitMtx *src, HitMtx *dst);
-extern int MTX_Inverse43(const HitMtx *src, HitMtx *dst);
 void func_0203fa0c(HitMesh *mesh);
 void func_0203fb08(HitMesh *mesh);
 
@@ -355,7 +340,7 @@ void HitMesh_SetScale(HitMesh *mesh, int scale) {
     func_0203fa0c(mesh);
 }
 
-void HitMesh_SetMtx(HitMesh *mesh, const HitMtx *mtx) {
+void HitMesh_SetMtx(HitMesh *mesh, const MtxFx43 *mtx) {
     MI_Copy48B(mtx, &mesh->mtx);
     MTX_Inverse43(mtx, &mesh->invMtx);
     func_0203fa0c(mesh);
@@ -364,7 +349,7 @@ void HitMesh_SetMtx(HitMesh *mesh, const HitMtx *mtx) {
 #define HIT_ABS(x) ((x) < 0 ? -(x) : (x))
 
 void func_0203fa0c(HitMesh *mesh) {
-    HitVec v;
+    VecFx32 v;
     int s;
     if (mesh->extent == 0) {
         HitMeshRes *res = mesh->res;
@@ -398,7 +383,7 @@ void func_0203fa0c(HitMesh *mesh) {
     mesh->min.x = mesh->mtx.m[3][0] - v.x;
     mesh->min.y = mesh->mtx.m[3][1] - v.y;
     mesh->min.z = mesh->mtx.m[3][2] - v.z;
-    VEC_Add((HitVec *)mesh->mtx.m[3], &v, &mesh->max);
+    VEC_Add((VecFx32 *)mesh->mtx.m[3], &v, &mesh->max);
 }
 
 void func_0203fb08(HitMesh *mesh) {
@@ -460,23 +445,22 @@ BOOL func_0203fc60(HitMesh *mesh) {
     return mesh->unk_84_1 ? TRUE : FALSE;
 }
 
-extern void VEC_MultAdd(int fx, const HitVec *a, const HitVec *b, HitVec *out);
-extern int func_01ffbd6c(HitVec *from, HitVec *to, int a, int b, int c, int d);
-extern int func_01ffbf40(HitVec *pos, int radius, int a, int b, int c, int d);
+extern int func_01ffbd6c(VecFx32 *from, VecFx32 *to, int a, int b, int c, int d);
+extern int func_01ffbf40(VecFx32 *pos, int radius, int a, int b, int c, int d);
 
-static inline BOOL HitVec_Equal(const HitVec *a, const HitVec *b) {
+static inline BOOL HitVec_Equal(const VecFx32 *a, const VecFx32 *b) {
     return (a->x == b->x && a->y == b->y && a->z == b->z) ? TRUE : FALSE;
 }
 
-static inline void HitVec_Sub(const HitVec *a, const HitVec *b, HitVec *out) {
+static inline void HitVec_Sub(const VecFx32 *a, const VecFx32 *b, VecFx32 *out) {
     out->x = a->x - b->x;
     out->y = a->y - b->y;
     out->z = a->z - b->z;
 }
 
-int func_0203fc78(HitVec *out, HitVec *pos, HitVec *prev, int radius, int a, int b) {
-    HitVec dir;
-    HitVec p;
+int func_0203fc78(VecFx32 *out, VecFx32 *pos, VecFx32 *prev, int radius, int a, int b) {
+    VecFx32 dir;
+    VecFx32 p;
     int r;
     if (pos->x == prev->x && pos->y == prev->y && pos->z == prev->z) {
         return -0x1000;
@@ -497,11 +481,11 @@ int func_0203fc78(HitVec *out, HitVec *pos, HitVec *prev, int radius, int a, int
     return r;
 }
 
-int func_0203fde8(HitVec *out, HitVec *pos, int radius, int a, int b) {
-    HitVec p;
-    HitVec d;
-    HitVec min;
-    HitVec max;
+int func_0203fde8(VecFx32 *out, VecFx32 *pos, int radius, int a, int b) {
+    VecFx32 p;
+    VecFx32 d;
+    VecFx32 min;
+    VecFx32 max;
     int r;
     int n;
     int i;
@@ -554,34 +538,26 @@ int func_0203fde8(HitVec *out, HitVec *pos, int radius, int a, int b) {
 }
 
 
-typedef struct HitVec16 {
-    s16 x;
-    s16 y;
-    s16 z;
-} HitVec16;
-
 typedef struct HitTri {
-    /* 0x00 */ HitVec16 min;
-    /* 0x06 */ HitVec16 max;
+    /* 0x00 */ VecFx16 min;
+    /* 0x06 */ VecFx16 max;
     /* 0x0c */ int unk_0c;
     /* 0x10 */ int d;
-    /* 0x14 */ HitVec16 v[3];
-    /* 0x26 */ HitVec16 normal;
-    /* 0x2c */ HitVec16 edge[3];
+    /* 0x14 */ VecFx16 v[3];
+    /* 0x26 */ VecFx16 normal;
+    /* 0x2c */ VecFx16 edge[3];
     /* 0x3e */ u16 pad;
     /* 0x40 */ int len[3];
 } HitTri; // size 0x4c
 
 typedef struct HitBounds {
-    HitVec16 min;
-    HitVec16 max;
+    VecFx16 min;
+    VecFx16 max;
 } HitBounds;
 
-extern int VEC_Mag(const HitVec *v);
-extern int VEC_Fx16DotProduct(const HitVec16 *a, const HitVec16 *b);
 
-static inline void HitTri_SetEdge(HitTri *tri, int n, const HitVec16 *a, const HitVec16 *b, HitVec *e) {
-    HitVec dir;
+static inline void HitTri_SetEdge(HitTri *tri, int n, const VecFx16 *a, const VecFx16 *b, VecFx32 *e) {
+    VecFx32 dir;
     e->x = b->x - a->x;
     e->y = b->y - a->y;
     e->z = b->z - a->z;
@@ -592,8 +568,8 @@ static inline void HitTri_SetEdge(HitTri *tri, int n, const HitVec16 *a, const H
     tri->edge[n].z = dir.z;
 }
 
-static inline void HitTri_SetNormal(HitTri *tri, HitVec *e) {
-    HitVec n;
+static inline void HitTri_SetNormal(HitTri *tri, VecFx32 *e) {
+    VecFx32 n;
     int ax = tri->v[1].x - tri->v[0].x;
     int ay = tri->v[1].y - tri->v[0].y;
     int az = tri->v[1].z - tri->v[0].z;
@@ -609,10 +585,10 @@ static inline void HitTri_SetNormal(HitTri *tri, HitVec *e) {
     tri->normal.z = n.z;
 }
 
-void func_0203ff94(HitBounds *bounds, HitTri *tri, int value, const HitVec16 *verts, const u32 (*indices)[3]) {
+void func_0203ff94(HitBounds *bounds, HitTri *tri, int value, const VecFx16 *verts, const u32 (*indices)[3]) {
     int i;
     for (i = 0; i < 2; i++, tri++) {
-        HitVec e;
+        VecFx32 e;
         tri->unk_0c = value;
         tri->v[0] = verts[indices[i][0]];
         tri->v[1] = verts[indices[i][1]];

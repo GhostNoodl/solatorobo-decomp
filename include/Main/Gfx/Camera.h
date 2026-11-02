@@ -2,23 +2,18 @@
 #define MAIN_GFX_CAMERA_H
 
 #include "types.h"
+#include "nitro/fx.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct CamVec {
-    s32 x;
-    s32 y;
-    s32 z;
-} CamVec;
-
 // Camera with an orbit (pitch/yaw/roll/distance) mode, shakes and animated paths.
 typedef struct Camera {
     /* 0x00 */ const void *vtable; // data_0208b8c0
-    /* 0x04 */ CamVec eye;
-    /* 0x10 */ CamVec at;
-    /* 0x1c */ CamVec up;
+    /* 0x04 */ VecFx32 eye;
+    /* 0x10 */ VecFx32 at;
+    /* 0x1c */ VecFx32 up;
     /* 0x28 */ s32 fovSin;
     /* 0x2c */ s32 fovCos;
     /* 0x30 */ s16 aspect;
@@ -39,11 +34,11 @@ typedef struct Camera {
     /* 0x5c */ s32 pitchRate;
     /* 0x60 */ s32 yawRate;
     /* 0x64 */ s32 rollRate;
-    /* 0x68 */ CamVec eyeTarget;
+    /* 0x68 */ VecFx32 eyeTarget;
     /* 0x74 */ s32 eyeRate;
-    /* 0x78 */ CamVec atTarget;
+    /* 0x78 */ VecFx32 atTarget;
     /* 0x84 */ s32 atRate;
-    /* 0x88 */ CamVec upTarget;
+    /* 0x88 */ VecFx32 upTarget;
     /* 0x94 */ s32 upRate;
     /* 0x98 */ u8 shakeRandom;
     /* 0x99 */ u8 shakeTime;

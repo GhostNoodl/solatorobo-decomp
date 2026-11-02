@@ -17,7 +17,6 @@ extern const u32 data_0208ba70[];
 extern void *data_02149ef8;
 extern void *data_ov000_021ccd54;
 void *Heap_Alloc(u32 size);
-void func_02041218(void *a);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
 char *STD_CopyString(char *dst, const char *src);
@@ -72,7 +71,7 @@ BOOL func_ov000_021bca00(Obj021bca00 *self) {
             void *name;
             name = data_0208cc88;
             arc = data_0208cc94;
-            func_02041218(m + 0x88);
+            func_02041218((struct PlttRes *)(m + 0x88));
             func_02041440((Model *)m, (const char *)name, 0);
             STD_CopyString((char *)m + 0x2c, (const char *)arc);
         }

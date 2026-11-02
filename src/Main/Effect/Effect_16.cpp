@@ -11,19 +11,10 @@ BOOL func_0206b804(EffectEmitter *em) {
     return TRUE;
 }
 
-typedef struct EffectMtx33 {
-    s32 m[3][3];
-} EffectMtx33;
-
-extern const s16 FX_SinCosTable_[];
 extern u32 data_0208c840[];
 extern s32 Rand_PlusMinus(s32 range);
 extern void func_02068da8(EffectPtcl *p);
 extern void func_0206bab8(EffectEmitter *em, EffectPtcl *p);
-extern void MTX_RotX33_(EffectMtx33 *m, s32 s, s32 c);
-extern void MTX_RotY33_(EffectMtx33 *m, s32 s, s32 c);
-extern void MTX_RotZ33_(EffectMtx33 *m, s32 s, s32 c);
-extern void MTX_Concat33(const EffectMtx33 *a, const EffectMtx33 *b, EffectMtx33 *ab);
 
 #define EFFECT_PARAM(em, off) (*(s32 *)((u8 *)&(em)->params + (off)))
 
@@ -38,7 +29,7 @@ static inline BOOL Effect_EmitDue(EffectEmitter *em, s32 t) {
 }
 
 EffectPtcl *func_0206b81c(EffectEmitter *em) {
-    EffectMtx33 tmp;
+    MtxFx33 tmp;
     s32 n;
     u16 rx;
     u16 ry;
@@ -74,26 +65,26 @@ EffectPtcl *func_0206b81c(EffectEmitter *em) {
     ry = em->rot.y;
     rz = em->rot.z;
     rx = em->rot.x;
-    MTX_Identity33_(em->mtx);
+    MTX_Identity33_(&em->mtx);
     if (ry != 0) {
-        MTX_RotY33_((EffectMtx33 *)em->mtx, FX_SinCosTable_[(ry >> 4) * 2], FX_SinCosTable_[(ry >> 4) * 2 + 1]);
+        MTX_RotY33_(&em->mtx, FX_SinCosTable_[(ry >> 4) * 2], FX_SinCosTable_[(ry >> 4) * 2 + 1]);
         rotated = TRUE;
     }
     if (rx != 0) {
         if (rotated) {
             MTX_RotX33_(&tmp, FX_SinCosTable_[(rx >> 4) * 2], FX_SinCosTable_[(rx >> 4) * 2 + 1]);
-            MTX_Concat33(&tmp, (EffectMtx33 *)em->mtx, (EffectMtx33 *)em->mtx);
+            MTX_Concat33(&tmp, &em->mtx, &em->mtx);
         } else {
-            MTX_RotX33_((EffectMtx33 *)em->mtx, FX_SinCosTable_[(rx >> 4) * 2], FX_SinCosTable_[(rx >> 4) * 2 + 1]);
+            MTX_RotX33_(&em->mtx, FX_SinCosTable_[(rx >> 4) * 2], FX_SinCosTable_[(rx >> 4) * 2 + 1]);
             rotated = TRUE;
         }
     }
     if (rz != 0) {
         if (rotated) {
             MTX_RotZ33_(&tmp, FX_SinCosTable_[(rz >> 4) * 2], FX_SinCosTable_[(rz >> 4) * 2 + 1]);
-            MTX_Concat33(&tmp, (EffectMtx33 *)em->mtx, (EffectMtx33 *)em->mtx);
+            MTX_Concat33(&tmp, &em->mtx, &em->mtx);
         } else {
-            MTX_RotZ33_((EffectMtx33 *)em->mtx, FX_SinCosTable_[(rz >> 4) * 2], FX_SinCosTable_[(rz >> 4) * 2 + 1]);
+            MTX_RotZ33_(&em->mtx, FX_SinCosTable_[(rz >> 4) * 2], FX_SinCosTable_[(rz >> 4) * 2 + 1]);
         }
     }
     head = NULL;
@@ -174,17 +165,6 @@ static inline void EffectPtcl_SetTex(EffectPtcl *p, EffectResTex *tex) {
 }
 
 
-typedef struct EffectMtx43 {
-    s32 m[4][3];
-} EffectMtx43;
-
-extern void MTX_RotX43_(EffectMtx43 *m, s32 s, s32 c);
-extern void MTX_RotY43_(EffectMtx43 *m, s32 s, s32 c);
-extern void MTX_RotZ43_(EffectMtx43 *m, s32 s, s32 c);
-extern void MTX_Concat43(const EffectMtx43 *a, const EffectMtx43 *b, EffectMtx43 *ab);
-extern void MTX_MultVec43(const EffectVec *v, const EffectMtx43 *m, EffectVec *out);
-extern void MTX_MultVec33(const EffectVec *v, const EffectMtx33 *m, EffectVec *out);
-extern void VEC_Normalize(const EffectVec *in, EffectVec *out);
 
 #define EFFECT_DEG_TO_IDX(deg) ((u16)(((s64)(deg) * 0x28be60db9391LL + 0x80000000000LL) >> 44))
 
@@ -207,14 +187,14 @@ static inline void EffectPtcl_SetCmds2(EffectPtcl *p, EffectPtclCmd *cmds, s32 n
     p->cmds = cmds;
 }
 
-static inline void Effect_VecSet(EffectVec *v, s32 x, s32 y, s32 z) {
+static inline void Effect_VecSet(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
     v->y = y;
     v->z = z;
 }
 
-static inline void Effect_MtxRotXZ(EffectMtx43 *m, s32 ax, s32 az) {
-    EffectMtx43 tmp;
+static inline void Effect_MtxRotXZ(MtxFx43 *m, s32 ax, s32 az) {
+    MtxFx43 tmp;
     BOOL rotated = FALSE;
     MTX_Identity43_(m);
     if (ax != 0) {
@@ -234,8 +214,8 @@ static inline void Effect_MtxRotXZ(EffectMtx43 *m, s32 ax, s32 az) {
     }
 }
 
-static inline void Effect_MtxRotYXZ(EffectMtx43 *m, s32 range) {
-    EffectMtx43 tmp;
+static inline void Effect_MtxRotYXZ(MtxFx43 *m, s32 range) {
+    MtxFx43 tmp;
     u16 ry;
     u16 rx;
     u16 rz;
@@ -279,12 +259,12 @@ void func_0206bab8(EffectEmitter *em, EffectPtcl *p) {
     p->unk_50 = 0;
     EffectPtcl_SetCmds(p, em->emitData, em->emitCount);
     p->origin = em->pos;
-    EffectVec c = {0, 0, 0};
-    EffectVec out = {0, 0, 0};
+    VecFx32 c = {0, 0, 0};
+    VecFx32 out = {0, 0, 0};
     switch (EFFECT_PARAM(em, 0x8)) {
     case 0: {
-        EffectVec v;
-        EffectMtx43 m;
+        VecFx32 v;
+        MtxFx43 m;
         s32 a = Rand_UpTo(0xffff);
         v.x = Effect_FxMul(EFFECT_PARAM(em, 0x30), FX_SinCosTable_[(a >> 4) * 2 + 1]);
         v.y = 0;
@@ -309,8 +289,8 @@ void func_0206bab8(EffectEmitter *em, EffectPtcl *p) {
         break;
     }
     p->pos = out;
-    EffectVec dir = {0, 0, 0};
-    EffectMtx43 m2;
+    VecFx32 dir = {0, 0, 0};
+    MtxFx43 m2;
     switch (EFFECT_PARAM(em, 0x4)) {
     case 0:
         dir.x = c.x - out.x;
@@ -335,7 +315,7 @@ void func_0206bab8(EffectEmitter *em, EffectPtcl *p) {
         VEC_Normalize(&dir, &dir);
         break;
     case 2:
-        VEC_Normalize((EffectVec *)&EFFECT_PARAM(em, 0x20), &dir);
+        VEC_Normalize((VecFx32 *)&EFFECT_PARAM(em, 0x20), &dir);
         break;
     case 3:
         dir.x = Rand_PlusMinus(0x1000);
@@ -352,7 +332,7 @@ void func_0206bab8(EffectEmitter *em, EffectPtcl *p) {
     range = Effect_FxMul(EFFECT_PARAM(em, 0x38), 0x3fff000);
     Effect_MtxRotYXZ(&m2, range);
     MTX_MultVec43(&dir, &m2, &dir);
-    MTX_MultVec33(&dir, (EffectMtx33 *)em->mtx, &dir);
+    MTX_MultVec33(&dir, &em->mtx, &dir);
     VEC_Normalize(&dir, &p->dir);
     p->speed = Effect_RandScale(EFFECT_PARAM(em, 0x2c), EFFECT_PARAM(em, 0x3c));
     if (EFFECT_PARAM(em, 0x34) < 0) {
