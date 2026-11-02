@@ -151,11 +151,11 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
             Ov014Actor *e;
             s32 r;
             v1 = self->pos;
-            v1.x += func_02040528(0x4000);
-            v1.y = func_02040528(0x3000) + 0x5000;
-            v1.z += func_02040528(0x1000) + 0x5000;
+            v1.x += Rand_PlusMinus(0x4000);
+            v1.y = Rand_PlusMinus(0x3000) + 0x5000;
+            v1.z += Rand_PlusMinus(0x1000) + 0x5000;
             e = func_02065f88(0x38f, &v1);
-            r = func_02040498(0x1000);
+            r = Rand_UpTo(0x1000);
             e->v14(r + 0x2800, r + 0x2800, r + 0x2800);
             func_02049f44(*(&data_02097e4c), 0x35, &v1, 0);
             func_02049f44(*(&data_02097e4c), 0x56, &v1, 0);
@@ -205,11 +205,11 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
             break;
         }
         v3 = self->pos;
-        v3.x += func_02040528(0xa000);
-        v3.y = func_02040528(0x3000) + 0x5000;
-        v3.z += func_02040528(0x1000) + 0x5000;
+        v3.x += Rand_PlusMinus(0xa000);
+        v3.y = Rand_PlusMinus(0x3000) + 0x5000;
+        v3.z += Rand_PlusMinus(0x1000) + 0x5000;
         func_02065f88(0x38f, &v3)->v14(0x2ccd, 0x2ccd, 0x2ccd);
-        func_0204a028(*(&data_02097e4c), 0x35, &v3, -(func_02040498(5) + 2));
+        func_0204a028(*(&data_02097e4c), 0x35, &v3, -(Rand_UpTo(5) + 2));
         func_02049f44(*(&data_02097e4c), 0x56, &v3, 0);
         func_ov000_0218996c(10, 0x1e);
         break;

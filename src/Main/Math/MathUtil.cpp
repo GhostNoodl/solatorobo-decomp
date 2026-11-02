@@ -25,11 +25,11 @@ static inline u32 Rand_Next(RandContext *ctx, u32 max) {
     return (u32)(((ctx->x >> 32) * max) >> 32);
 }
 
-void func_020403e4(u64 seed) {
+void Rand_Seed(u64 seed) {
     Rand_Init(&data_02097de8, seed);
 }
 
-u32 func_02040420(void) {
+u32 Rand_Get(void) {
     return Rand_Next(&data_02097de8, 0);
 }
 
@@ -37,15 +37,15 @@ u32 func_0204045c(void) {
     return Rand_Next(&data_02097de8, 0);
 }
 
-u32 func_02040498(u32 max) {
+u32 Rand_UpTo(u32 max) {
     return Rand_Next(&data_02097de8, max + 1);
 }
 
-u32 func_020404e0(void) {
+u32 Rand_Fx(void) {
     return Rand_Next(&data_02097de8, 0x1001);
 }
 
-int func_02040528(int range) {
+int Rand_PlusMinus(int range) {
     return (int)Rand_Next(&data_02097de8, range * 2 + 1) - range;
 }
 

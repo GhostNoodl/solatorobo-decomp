@@ -24,7 +24,7 @@ void func_ov002_021e2754(void *self, u16 id) {
         s32 i;
         u8 *p;
         void *q;
-        p = (u8 *)func_0203dd9c(0x2c);
+        p = (u8 *)Heap_Alloc(0x2c);
         if (p != NULL) {
             *(VFunc **)p = data_ov002_021f000c;
             FIELD(p, 0x4, s32) = 0;
@@ -39,14 +39,14 @@ void func_ov002_021e2754(void *self, u16 id) {
         }
         FIELD(self, 0x28, u8 *) = p;
         for (i = 0; i < 4; i++) {
-            q = func_0203dd9c(0xb8);
+            q = Heap_Alloc(0xb8);
             if (q != NULL) {
                 *(VFunc **)q = data_0208ba70;
                 func_0204c7d0(q);
             }
             ((void **)(p + 0x8))[i] = q;
         }
-        q = func_0203dd9c(0xb8);
+        q = Heap_Alloc(0xb8);
         if (q != NULL) {
             *(VFunc **)q = data_0208ba70;
             func_0204c7d0(q);

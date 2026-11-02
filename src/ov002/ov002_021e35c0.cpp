@@ -54,7 +54,7 @@ void *Ov002Vt_021f002c_DtorDelete(void *self) {
             if (p != NULL) {
                 func_02041558(p);
                 func_02041278((u8 *)p + 0x88);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             FIELD(self, 0x30, void *) = NULL;
         }
@@ -65,7 +65,7 @@ void *Ov002Vt_021f002c_DtorDelete(void *self) {
     HEAP_POP(saved);
     *(VFunc **)self = data_ov002_021ef684;
     func_ov000_021c2310(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -79,7 +79,7 @@ void *Ov002Vt_021f002c_Dtor(void *self) {
             if (p != NULL) {
                 func_02041558(p);
                 func_02041278((u8 *)p + 0x88);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             FIELD(self, 0x30, void *) = NULL;
         }

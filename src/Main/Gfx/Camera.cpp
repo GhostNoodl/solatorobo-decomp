@@ -5,7 +5,7 @@ extern "C" {
 
 extern void *func_02043548(CamVec *eye);
 extern void func_020434e0(s32 *proj);
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 extern void func_0204bcb0(Camera *cam);
 extern 
 void func_0204bac8(Camera *cam);
@@ -15,7 +15,7 @@ extern void MTX_LookAt(CamVec *eye, CamVec *up, CamVec *at, void *out);
 extern void MTX_PerspectiveW(s32 fovy, s32 aspect, s32 n, s32 fovSin, s32 fovCos, s32 scale, void *out);
 extern const s16 FX_SinCosTable_[];
 extern void *NNS_G3dFuncAnmJntNsBcaDefault[];
-extern s32 func_02040498(s32 max);
+extern s32 Rand_UpTo(s32 max);
 extern void *NNS_G3dRS;
 extern u32 NNS_G3dGetJointScale_FuncArray;
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
@@ -36,7 +36,7 @@ typedef struct CamAnimWork {
 } CamAnimWork;
 
 typedef void (*CamAnimFunc)(CamAnimResult *out, s32 *frame, s32 arg);
-extern s32 func_02040528(s32 amp);
+extern s32 Rand_PlusMinus(s32 amp);
 extern void VEC_MultAdd(s32 scale, const CamVec *dir, const CamVec *base, CamVec *out);
 extern s32 VEC_Distance(const CamVec *a, const CamVec *b);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
@@ -112,8 +112,8 @@ Camera *func_0204b370(Camera *cam) {
 void func_0204b420(Camera *cam) {
 }
 
-Camera *func_0204b424(Camera *cam) {
-    func_0203de1c(cam);
+Camera *Camera_DtorDelete(Camera *cam) {
+    Heap_Free(cam);
     return cam;
 }
 
@@ -132,7 +132,7 @@ static inline void Cam_SqrtStart(s64 v) {
     }
 }
 
-void func_0204b43c(Camera *cam) {
+void Camera_Apply(Camera *cam) {
     *(s32 **)((u8 *)data_02097d48 + 0xa2c) = &cam->fovSin;
     if (cam->flag0 && !cam->flag1) {
         func_0204bcb0(cam);
@@ -265,6 +265,6 @@ void func_0204bac8(Camera *cam);
 
 void func_0204bcb0(Camera *cam);
 
-u16 func_0204bfa8(Camera *cam);
+u16 Camera_GetYaw(Camera *cam);
 
 }

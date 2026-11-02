@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void *func_0203dddc(u32 size);
+void *Heap_AllocArray(u32 size);
 
 void func_ov002_021e4814(void *self, u8 *src) {
     u8 *p;
@@ -14,12 +14,12 @@ void func_ov002_021e4814(void *self, u8 *src) {
         u32 saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0xc, void *) != NULL) {
-            func_0203de50(FIELD(self, 0xc, void *));
+            Heap_FreeArray(FIELD(self, 0xc, void *));
             FIELD(self, 0xc, void *) = NULL;
         }
         HEAP_POP(saved);
     }
-    FIELD(self, 0xc, void *) = func_0203dddc(FIELD(self, 0x8, s32) << 2);
+    FIELD(self, 0xc, void *) = Heap_AllocArray(FIELD(self, 0x8, s32) << 2);
     MI_CpuCopy8(p, FIELD(self, 0xc, void *), FIELD(self, 0x8, s32) << 2);
     p += FIELD(self, 0x8, s32) * 4;
     FIELD(self, 0x10, u8 *) = p;

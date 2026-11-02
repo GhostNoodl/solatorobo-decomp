@@ -50,7 +50,7 @@ u8 func_ov003_021cee68(void);
 
 extern ActorMgr *data_ov000_021ccd68;
 
-ActorT *func_ov000_0218e640(ActorMgr *mgr, u16 id);
+ActorT *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
 
 static inline ActorT *FindActor(u16 id) {
@@ -58,7 +58,7 @@ static inline ActorT *FindActor(u16 id) {
     if (mgr == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(mgr, id);
+    return ActorMgr_GetActor(mgr, id);
 }
 
 Target *func_ov000_02199b00(Target *self) {
@@ -90,11 +90,11 @@ Target *func_ov000_02199b00(Target *self) {
     return self;
 }
 
-void func_ov000_02199b88(Target *self, ActorT *actor) {
+void Target_Set(Target *self, ActorT *actor) {
     self->target = actor != NULL ? actor->id : 0xffff;
 }
 
-ActorT *func_ov000_02199ba0(Target *self) {
+ActorT *Target_Get(Target *self) {
     return FindActor(self->target);
 }
 

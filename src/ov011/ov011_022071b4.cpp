@@ -5,7 +5,7 @@ extern "C" {
 void *func_ov003_021d0edc(void *self);
 
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
-s32 func_02040528(s32 max);
+s32 Rand_PlusMinus(s32 max);
 s32 *NNS_G3dGlbGetInvV(void);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
 extern const Ov011Vec data_02092a50;
@@ -45,7 +45,7 @@ struct Ov011Tbl63 {
 
 extern const Ov011Tbl63 data_ov011_0220752c;
 extern u8 data_ov011_02207610[];
-s32 func_02040498(s32 max);
+s32 Rand_UpTo(s32 max);
 
 void func_ov011_022063b0(Ov011Act7da4 *self) {
     Ov011Vec v;
@@ -59,7 +59,7 @@ void func_ov011_022063b0(Ov011Act7da4 *self) {
     case 0:
         self->unk_de = 0xffff;
         self->unk_36e = 0;
-        self->unk_36f = func_02040498(5);
+        self->unk_36f = Rand_UpTo(5);
         self->unk_40->state++;
     case 1: {
         Ov011Eff *e;
@@ -76,7 +76,7 @@ void func_ov011_022063b0(Ov011Act7da4 *self) {
             Ov011Vec *p;
             s32 y;
             c = tbl.b[self->unk_36f][self->unk_36e];
-            Ov011_VecSet(&self->unk_370[self->unk_36e], (c << 14) - 0x4000, func_02040528(0x1800) + 0x3000, -0xf000);
+            Ov011_VecSet(&self->unk_370[self->unk_36e], (c << 14) - 0x4000, Rand_PlusMinus(0x1800) + 0x3000, -0xf000);
             p = &self->unk_370[self->unk_36e];
             Ov011_MulVec33b(p, NNS_G3dGlbGetInvV(), &v);
         }
@@ -278,7 +278,7 @@ void func_ov011_02206e18(Ov011Act7da4 *self) {
         p->unk_22_0 = 0;
         p->unk_22_1 = 0;
         self->unk_4c->unk_1c = 0xffff;
-        Ov011_VecSet((Ov011Vec *)&self->unk_9c, func_02040528(0x29), -0x71, func_02040528(0x29));
+        Ov011_VecSet((Ov011Vec *)&self->unk_9c, Rand_PlusMinus(0x29), -0x71, Rand_PlusMinus(0x29));
         func_ov000_0218e8ec(data_ov000_021ccd68, 0x4804, 0x15);
         func_ov000_0218e8ec(data_ov000_021ccd68, 0x4805, 0x15);
         o = Ov011_FindActor(self->unk_de);
@@ -363,7 +363,7 @@ void *Ov011Act7cf8_Dtor(void *self) {
 
 void *Ov011Act7cf8_DtorDelete(void *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -374,7 +374,7 @@ void *Ov011Act7e50_Dtor(void *self) {
 
 void *Ov011Act7e50_DtorDelete(void *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -385,7 +385,7 @@ void *Ov011Act7c4c_Dtor(void *self) {
 
 void *Ov011Act7c4c_DtorDelete(void *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 #pragma force_active reset

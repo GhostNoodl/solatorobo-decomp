@@ -15,7 +15,7 @@ typedef struct {
 extern "C" {
 
 extern HeapState *data_02097dd0;
-void func_0203de1c(void *p);
+void Heap_Free(void *p);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 
@@ -29,7 +29,7 @@ void func_ov000_021c216c(Obj021c216c *self) {
     if (p != NULL) {
         if (p != NULL) {
             func_ov000_0218fee4(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_0c = NULL;
     }
@@ -41,7 +41,7 @@ void func_ov000_021c216c(Obj021c216c *self) {
     if (p != NULL) {
         if (p != NULL) {
             func_ov000_0218ea20(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_08 = NULL;
     }

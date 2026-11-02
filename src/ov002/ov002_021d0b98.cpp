@@ -21,7 +21,7 @@ void func_ov002_021d0b98(Task50 *self) {
     void *g = data_02149ef8;
     VObject *p;
     {
-        p = (VObject *)func_0203dd9c(0xf4);
+        p = (VObject *)Heap_Alloc(0xf4);
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
             p->v0x28();
@@ -38,8 +38,8 @@ void func_ov002_021d0b98(Task50 *self) {
         FIELD(s, 0x66, s16) = 0x23;
         FIELD(s, 0x68, s16) = -0x199a;
     }
-    FIELD(self, 0x3c, VObject *)->v0x10(func_0204c0e8(g, 0xeb));
-    FIELD(self, 0x3c, VObject *)->v0x14(func_0204c0e8(g, 0xed));
+    FIELD(self, 0x3c, VObject *)->v0x10(MsgRes_GetString(g, 0xeb));
+    FIELD(self, 0x3c, VObject *)->v0x14(MsgRes_GetString(g, 0xed));
     FIELD(FIELD(self, 0x3c, void *), 0xe4, void *) = (void *)func_ov002_021d0a80;
     {
         u16 i;
@@ -53,7 +53,7 @@ void func_ov002_021d0b98(Task50 *self) {
         count = func_0205975c(data_02fe152c, 9);
         for (i = 0; i < count; i++) {
             if (func_02059544(data_02fe152c, base, tbl, 0x101, i)) {
-                q = (u8 *)func_0203dd9c(0x48);
+                q = (u8 *)Heap_Alloc(0x48);
                 if (q != NULL) {
                     *(VFunc **)q = data_ov002_021ef684;
                     func_ov000_021c22d8(q);
@@ -74,7 +74,7 @@ void func_ov002_021d0b98(Task50 *self) {
     func_ov000_021c403c(FIELD(self, 0x3c, void *), data_ov002_021f0f84[1]);
     FIELD(FIELD(self, 0x3c, void *), 0xc, u32) &= ~2;
     {
-        p = (VObject *)func_0203dd9c(0xe0);
+        p = (VObject *)Heap_Alloc(0xe0);
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
             p->v0x28();
@@ -95,8 +95,8 @@ void func_ov002_021d0b98(Task50 *self) {
     }
     FIELD(FIELD(self, 0x40, void *), 0xc, u32) |= 0x20000000;
     FIELD(FIELD(self, 0x40, void *), 0xc, u32) |= 0x80000000;
-    FIELD(self, 0x40, VObject *)->v0xf4(1, func_0204c0e8(g, 0x39));
-    FIELD(self, 0x40, VObject *)->v0xf4(2, func_0204c0e8(g, 0x33));
+    FIELD(self, 0x40, VObject *)->v0xf4(1, MsgRes_GetString(g, 0x39));
+    FIELD(self, 0x40, VObject *)->v0xf4(2, MsgRes_GetString(g, 0x33));
     FIELD(self, 0x40, VObject *)->v0x8();
     FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~2;
 }

@@ -197,8 +197,8 @@ typedef struct {
 
 extern "C" {
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
-void func_ov000_0218de6c(ActorGroup *group, Actor *actor);
-void func_ov000_0218d398(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void ActorGroup_Add(ActorGroup *group, Actor *actor);
+void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 u16 FX_Atan2(s32 x, s32 z);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 void func_ov000_02190e98(void *a, u32 b, s16 c, u8 d);
@@ -207,8 +207,8 @@ void func_ov000_021915a0(void *a);
 void MI_Copy36B(const void *src, void *dst);
 extern u8 data_ov000_021cc404[];
 BOOL func_01ffc4ec(VecFx32 *v, s32 speed, s32 b);
-u16 func_0203d434(void *rng, s32 range);
-void func_ov000_0218dbe0(Actor *self, s32 turn);
+u16 Pad_LookupDir(void *rng, s32 range);
+void Actor_Move(Actor *self, s32 turn);
 void func_ov000_0218bed8(void *a, s32 b, Actor *actor);
 extern Player021ccd54 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;

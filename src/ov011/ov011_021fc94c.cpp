@@ -99,13 +99,13 @@ static inline BOOL Ov011Fade_AllDone(Ov011Fade *f) {
 
 extern "C" {
 
-void func_ov000_0219bdb0(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
+void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
 
 static inline void Ov011_Msg(u16 id, s32 a, s32 b) {
     Ov011Arg2 arg;
     arg.a = a;
     arg.b = b;
-    func_ov000_0219bdb0(id, 0xffff, 0xe, 1, 0xc, &arg);
+    ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &arg);
 }
 
 struct Ov011ArgA {
@@ -129,7 +129,7 @@ static inline void Ov011_SendA(u16 id, s32 kind, u8 v) {
     Ov011ArgA a;
     a.kind = kind;
     a.b = v;
-    func_ov000_0219bdb0(id, 0xffff, 0xe, 1, 0xc, &a);
+    ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &a);
 }
 
 static inline void Ov011_SendB(u16 id, s32 kind, s16 x, s16 y) {
@@ -139,7 +139,7 @@ static inline void Ov011_SendB(u16 id, s32 kind, s16 x, s16 y) {
     b.b1 = 0;
     b.x = x;
     b.y = y;
-    func_ov000_0219bdb0(id, 0xffff, 0xe, 1, 0xc, &b);
+    ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &b);
 }
 
 extern void *data_02097e4c;
@@ -217,7 +217,7 @@ static inline void Ov011_SendC(u16 id, s32 kind, BOOL b0) {
     b.b1 = 0;
     b.x = 0;
     b.y = 0x1000;
-    func_ov000_0219bdb0(id, 0xffff, 0xe, 1, 0xc, &b);
+    ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &b);
 }
 
 static inline s32 Ov011_HpRatio(u16 id) {

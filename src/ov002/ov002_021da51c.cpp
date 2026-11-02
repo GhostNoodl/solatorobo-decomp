@@ -11,11 +11,11 @@ void *Ov002Vt_021efe6c_DtorDelete(void *self) {
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     if (FIELD(self, 0x8c, void *) != NULL) {
-        func_0203de1c(FIELD(self, 0x8c, void *));
+        Heap_Free(FIELD(self, 0x8c, void *));
         FIELD(self, 0x8c, void *) = NULL;
     }
     HEAP_POP(saved);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

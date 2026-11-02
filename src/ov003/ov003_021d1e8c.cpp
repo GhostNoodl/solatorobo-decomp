@@ -162,14 +162,14 @@ extern const Ov003AgFlag data_ov003_021f4466[];
 extern const s16 FX_SinCosTable_[];
 extern Ov003AgPl *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov003AgPl *pl);
-extern Ov003Ag *func_ov000_0218e640(void *mgr, u16 id);
-extern Ov003AgUnit *func_ov000_0218bd5c(void *mgr, u16 id);
+extern Ov003Ag *ActorMgr_GetActor(void *mgr, u16 id);
+extern Ov003AgUnit *Group_FindNode(void *mgr, u16 id);
 extern u8 *func_02070558(u16 id);
 extern BOOL func_ov000_021983b0(Ov003AgWork *w, u8 a, s32 b, s32 c);
-extern s32 func_02040498(s32 max);
+extern s32 Rand_UpTo(s32 max);
 extern u16 FX_Atan2(s32 x, s32 z);
 extern u16 func_ov000_0219a36c(Ov003AgVec *pos, s32 r, u16 ang, s32 a, s32 b, s32 c);
-extern void func_ov000_0218d988(void *self, void *target, s32 a);
+extern void Actor_TurnToActor(void *self, void *target, s32 a);
 
 }
 
@@ -212,7 +212,7 @@ static inline Ov003Ag *Ov003Ag_FindObj(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline s32 Ov003Ag_Dist(s64 sq) {
@@ -347,7 +347,7 @@ extern "C" void func_ov003_021d1e8c(Ov003Ag *self) {
     }
     for (i = 0; i < 3; i++) {
         if (p->ids[i] == 0x1003) {
-            Ov003AgUnit *u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+            Ov003AgUnit *u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
             s32 ez;
             s32 ex;
             s64 sq;
@@ -454,7 +454,7 @@ extern "C" void func_ov003_021d1e8c(Ov003Ag *self) {
                 break;
             }
             case 3:
-                k = (u16)func_02040498(2);
+                k = (u16)Rand_UpTo(2);
                 self->unk_c4 = Ov003Ag_Lookup(p->ids[k]);
                 break;
             }
@@ -468,14 +468,14 @@ extern "C" void func_ov003_021d1e8c(Ov003Ag *self) {
         pos.y += self->unk_6c;
         r = ((e->unk_06 + e->unk_08) << 4) >> 1;
         ang = FX_Atan2(pos.x - self->pos.x, pos.z - self->pos.z);
-        ang = (u16)(ang + (u16)(func_02040498(0x2000) + 0x7000));
+        ang = (u16)(ang + (u16)(Rand_UpTo(0x2000) + 0x7000));
         if (self->unk_c4->type == 3) {
             ang = func_ov000_0219a36c(&pos, r, ang, 5, 0, -1);
         }
         pos.x += (s32)(((s64)r * FX_SinCosTable_[(ang >> 4) * 2] + 0x800) >> 12);
         pos.z += (s32)(((s64)r * FX_SinCosTable_[(ang >> 4) * 2 + 1] + 0x800) >> 12);
         if (self->unk_c4->type == 6) {
-            Ov003AgUnit *u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+            Ov003AgUnit *u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
             if (u != NULL) {
                 pos = u->pos;
             }
@@ -553,7 +553,7 @@ extern "C" void func_ov003_021d1e8c(Ov003Ag *self) {
         if (self->unk_c4->b1_3 != 1) {
             return;
         }
-        func_ov000_0218d988(self, tgt, self->unk_b0->unk_02);
+        Actor_TurnToActor(self, tgt, self->unk_b0->unk_02);
         return;
     case 20:
         TICK(self);
@@ -561,7 +561,7 @@ extern "C" void func_ov003_021d1e8c(Ov003Ag *self) {
             if (!self->unk_c4->b1_2) {
                 return;
             }
-            func_ov000_0218d988(self, tgt, self->unk_b0->unk_02);
+            Actor_TurnToActor(self, tgt, self->unk_b0->unk_02);
             return;
         } else {
             u32 idx = self->unk_c4->idx;
@@ -604,7 +604,7 @@ extern "C" void func_ov003_021d1e8c(Ov003Ag *self) {
         if (self->work->kind != 1) {
             return;
         }
-        self->unk_b6 = self->unk_c4->unk_05 * 10 + func_02040498(8);
+        self->unk_b6 = self->unk_c4->unk_05 * 10 + Rand_UpTo(8);
         self->unk_b4++;
         self->unk_ea_0 = self->unk_b0->unk_0a_7;
         return;

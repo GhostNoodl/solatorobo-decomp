@@ -51,13 +51,13 @@ void func_ov002_021db2a4(void *self) {
         void *g = data_02149ef8;
         switch (id) {
         case 0:
-            str = func_0204c0e8(g, 0xbd);
+            str = MsgRes_GetString(g, 0xbd);
             break;
         case 1:
-            str = func_0204c0e8(g, 0xbf);
+            str = MsgRes_GetString(g, 0xbf);
             break;
         case 2:
-            str = func_0204c0e8(g, 0xfb);
+            str = MsgRes_GetString(g, 0xfb);
             break;
         default:
             str = data_ov002_021efe30;
@@ -87,9 +87,9 @@ void func_ov002_021db2a4(void *self) {
                 g = data_02149ef8;
                 str = NULL;
                 if (FIELD(self, 0x20, u8) == 1) {
-                    str = func_0204c0e8(g, 0xc0);
+                    str = MsgRes_GetString(g, 0xc0);
                 } else if (FIELD(self, 0x20, u8) == 2) {
-                    str = func_0204c0e8(g, 0xc1);
+                    str = MsgRes_GetString(g, 0xc1);
                 }
                 if (str != NULL) {
                     func_ov000_0215bb14(FIELD(self, 0x10, void *), str);

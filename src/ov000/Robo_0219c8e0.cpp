@@ -173,7 +173,7 @@ extern char data_ov000_021cc605[];
 extern char data_ov000_021cc60a[];
 extern u8 *data_0214a424;
 s16 *func_ov003_021ce630(s16 *p, void *hit);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 BOOL NNS_G3dBindMdlSet(ResMdlSet *set, void *tex);
 BOOL func_ov000_0218ffdc(Model0218fe1c *self, void *res, u8 mode, s32 e);
@@ -266,7 +266,7 @@ void func_ov000_0219c8e0(u8 *self) {
         F(C2_0219c8e0, 0x42a).b8 = 1;
     }
     if (F(B22_0219c8e0, 0xb22).b0 != 0 && F(void *, 0x99c) != NULL) {
-        Model0218fe1c *p = (Model0218fe1c *)func_0203dd9c(0xe8);
+        Model0218fe1c *p = (Model0218fe1c *)Heap_Alloc(0xe8);
         if (p != NULL) {
             p = func_ov000_0218fe1c(p);
         }

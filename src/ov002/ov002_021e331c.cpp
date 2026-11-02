@@ -16,7 +16,7 @@ void func_ov002_021e331c(void *self) {
         DELETE_VOBJ(FIELD(self, 0x34, VObject *));
         HEAP_POP(saved);
     }
-    p = (u8 *)func_0203dd9c(0xb8);
+    p = (u8 *)Heap_Alloc(0xb8);
     if (p != NULL) {
         *(VFunc **)p = data_0208ba70;
         func_0204c7d0(p);

@@ -82,9 +82,9 @@ extern Ov003Save *data_0214a424;
 extern void *data_02097e4c;
 extern Ov003DataRes *data_02fe152c;
 extern void *data_02149ef8;
-Ov003PkOwner *func_ov000_02199ba0(Ov003PkItem *item);
+Ov003PkOwner *Target_Get(Ov003PkItem *item);
 BOOL func_ov000_0219aae8(Ov003Pickup *self, Ov003PkOwner *owner, u16 a, u8 b, u16 mask, Ov003PkVec *v, s32 c, s32 d, s32 e, s32 f, s32 g);
-void func_ov000_0218d398(Ov003PkOwner *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_SendMsg(Ov003PkOwner *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_02040a98(void *buf, u32 n);
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 s32 func_02049bdc(void *a, s32 b, s32 c);
@@ -98,7 +98,7 @@ BOOL func_0206f21c(u16 id, int n);
 const char *func_0206ec48(u16 id);
 void func_ov000_02184ee0(void *g, u16 id);
 void func_ov000_02184ea4(void *g, u16 id);
-const char *func_0204c0e8(void *a, s32 id);
+const char *MsgRes_GetString(void *a, s32 id);
 }
 
 static inline void Ov003Log_Push(s32 type, const char *s) {
@@ -144,7 +144,7 @@ static inline u16 Ov003Pk_Mask(Ov003PkOwner *o, u16 mask) {
 
 extern "C" void func_ov003_021f0c60(Ov003Pickup *self, u16 mask) {
     Ov003PkItem *item = self->item;
-    Ov003PkOwner *owner = func_ov000_02199ba0(item);
+    Ov003PkOwner *owner = Target_Get(item);
     switch (item->type) {
     case 1: {
         s32 y = self->unk_64 + 0xccd;
@@ -155,7 +155,7 @@ extern "C" void func_ov003_021f0c60(Ov003Pickup *self, u16 mask) {
             y = 0x199a;
         }
         Ov003Pk_VecSet(&v, 0, self->unk_6c, 0);
-        o = func_ov000_02199ba0(item);
+        o = Target_Get(item);
         mask = Ov003Pk_Mask(o, mask);
         f = 100;
         if (item->neg) {
@@ -166,7 +166,7 @@ extern "C" void func_ov003_021f0c60(Ov003Pickup *self, u16 mask) {
         break;
     }
     case 2: {
-        Ov003PkOwner *o = func_ov000_02199ba0(item);
+        Ov003PkOwner *o = Target_Get(item);
         mask = Ov003Pk_Mask(o, mask);
         s32 f = 100;
         if (item->neg) {
@@ -179,7 +179,7 @@ extern "C" void func_ov003_021f0c60(Ov003Pickup *self, u16 mask) {
     case 3: {
         u16 amt = item->amount;
         char buf[0x20];
-        func_ov000_0218d398(owner, self->unk_0c, 10, TRUE, 2, &amt);
+        Actor_SendMsg(owner, self->unk_0c, 10, TRUE, 2, &amt);
         func_02040a98(buf, item->amount);
         Ov003Log_PushEmpty(6);
         break;
@@ -286,11 +286,11 @@ extern "C" void func_ov003_021f0c60(Ov003Pickup *self, u16 mask) {
         break;
     }
     case 10:
-        Ov003Log_Push(0, func_0204c0e8(data_02149ef8, 0x63));
+        Ov003Log_Push(0, MsgRes_GetString(data_02149ef8, 0x63));
         func_02049bdc(data_02097e4c, 0x1e, -5);
         break;
     case 11:
-        Ov003Log_Push(0, func_0204c0e8(data_02149ef8, 0x63));
+        Ov003Log_Push(0, MsgRes_GetString(data_02149ef8, 0x63));
         func_02049bdc(data_02097e4c, 0x1e, -5);
         break;
     }

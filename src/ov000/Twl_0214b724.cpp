@@ -36,7 +36,7 @@ void *func_02035f30(void *a, char *name, s32 b);
 Data02034f5c *func_02034f5c(void *a, char *name);
 void func_0203f0b4(void *p);
 void func_02035acc(void *a, char *name, s32 b);
-void func_0203de50(void *p);
+void Heap_FreeArray(void *p);
 void func_ov000_0214b910(TwlLoader *self);
 
 extern void *data_ov000_021c9838;
@@ -87,7 +87,7 @@ TwlLoader *func_ov000_0214b724(TwlLoader *self) {
         void *saved = data_02097dd0->current;
         data_02097dd0->current = data_02097dd0->unk_08;
         if (self->unk_1c != NULL) {
-            func_0203de50(self->unk_1c);
+            Heap_FreeArray(self->unk_1c);
             self->unk_1c = NULL;
         }
         data_02097dd0->current = saved;

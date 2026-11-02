@@ -48,19 +48,19 @@ extern void *data_ov000_021ccd6c;
 BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 BOOL func_ov000_02191120(void *a);
-void func_0203f324(void *a);
+void HitSphere_Link(void *a);
 void func_0203f364(void *a);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 Robo021ca458 *func_ov000_0219bf90(void);
-void *func_ov000_02199ba0(void *p);
-void func_ov000_02199b88(void *a, void *b);
+void *Target_Get(void *p);
+void Target_Set(void *a, void *b);
 void func_ov003_021f0c60(void *self, s32 a);
 void *func_ov003_021f0868(void *pos, s32 a, s32 b);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 VObj02196c40 *func_02065f88(s32 id, void *pos);
 u8 *func_ov000_021b68b8(void *mgr, void *pos);
 void func_ov000_02197ad0(void *self, BOOL b);
-void func_ov000_0218dbe0(void *self, s32 a);
+void Actor_Move(void *self, s32 a);
 void func_ov000_021987b8(void *a, BOOL b, s32 c, s32 d);
 
 static inline s32 FxMul02196c40(s32 a, s64 b) {
@@ -205,7 +205,7 @@ void func_ov000_02196c40(ActorEx *self) {
         break;
     }
     }
-    func_ov000_0218dbe0(self, 0);
+    Actor_Move(self, 0);
     if (self->unk_48 != NULL) {
         u8 *other;
         BOOL saved;
@@ -214,7 +214,7 @@ void func_ov000_02196c40(ActorEx *self) {
             ActorSub48 *q = self->unk_48;
             LFLD(Bits02196c40, q, 0x9a).b0 = 1;
             q->unk_9a_3 = 1;
-            func_0203f324(q);
+            HitSphere_Link(q);
         }
         m = ((u8 *)self->unk_4c);
         other = NULL;
@@ -226,7 +226,7 @@ void func_ov000_02196c40(ActorEx *self) {
                 h = 0xccd;
             }
             self->unk_48->unk_44 = h;
-            t = (u8 *)func_ov000_02199ba0(((u8 *)self->unk_4c));
+            t = (u8 *)Target_Get(((u8 *)self->unk_4c));
             if (t != NULL && (other = LFLD(u8 *, t, 0x48)) != NULL && LFLD(Bits02196c40, other, 0x9a).b3) {
                 LFLD(Bits02196c40, other, 0x9a).b3 = 0;
                 func_0203f364(other);
@@ -236,13 +236,13 @@ void func_ov000_02196c40(ActorEx *self) {
         func_ov000_021987b8(self->unk_48, flag, 0, 0);
         if (saved) {
             LFLD(Bits02196c40, other, 0x9a).b3 = 1;
-            func_0203f324(other);
+            HitSphere_Link(other);
         }
     }
     if (((u8 *)self->unk_4c) != NULL && self->unk_4c->unk_00 == 2) {
         void *r = func_ov003_021f0868(&self->pos, self->unk_64, self->unk_68);
         if (r != NULL) {
-            func_ov000_02199b88(((u8 *)self->unk_4c), r);
+            Target_Set(((u8 *)self->unk_4c), r);
             func_ov000_02198360(((State02196c40 *)self->unk_40), 0xd, 0);
         }
     }

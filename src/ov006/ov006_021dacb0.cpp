@@ -33,7 +33,7 @@ extern "C" {
 void func_ov006_021dacb0(void) {
     ov006_SlotManager *p;
     OV006_DELETE_OBJECT(data_ov006_021ec884);
-    p = (ov006_SlotManager *)func_0203dd9c(0x150);
+    p = (ov006_SlotManager *)Heap_Alloc(0x150);
     if (p != NULL) {
         u16 j;
         int i;

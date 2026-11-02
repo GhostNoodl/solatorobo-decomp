@@ -36,7 +36,7 @@ void *Ov002Vt_021efe3c_Dtor(void *self) {
         u32 saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0x18, void *) != NULL) {
-            func_0203de1c(FIELD(self, 0x18, void *));
+            Heap_Free(FIELD(self, 0x18, void *));
             FIELD(self, 0x18, void *) = NULL;
         }
         HEAP_POP(saved);
@@ -63,7 +63,7 @@ void *Ov002Vt_021efe3c_DtorDelete(void *self) {
         u32 saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0x18, void *) != NULL) {
-            func_0203de1c(FIELD(self, 0x18, void *));
+            Heap_Free(FIELD(self, 0x18, void *));
             FIELD(self, 0x18, void *) = NULL;
         }
         HEAP_POP(saved);
@@ -81,7 +81,7 @@ void *Ov002Vt_021efe3c_DtorDelete(void *self) {
         FIELD(self, 0x28, void *) = NULL;
     }
     func_0203f0b4(*FIELD(self, 0x10, void **));
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

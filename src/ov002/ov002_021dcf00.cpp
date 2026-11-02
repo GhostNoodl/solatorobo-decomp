@@ -27,7 +27,7 @@ static inline void ov002_CamMove(u8 *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, 
 }
 
 static inline void *ov002_NewDcee0(void) {
-    void *p = func_0203dd9c(0x138);
+    void *p = Heap_Alloc(0x138);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021efef0;
         func_ov002_021ddd80(p);
@@ -58,7 +58,7 @@ void func_ov002_021dcf00(void *self) {
     msg = data_02149ef8;
     if (trig & 1) {
         if (sumItems(w) == 0) {
-            ov002_ShowMsg(self, func_0204c0e8(msg, 0x107));
+            ov002_ShowMsg(self, MsgRes_GetString(msg, 0x107));
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
             return;
         }

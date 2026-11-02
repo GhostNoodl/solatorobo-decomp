@@ -35,10 +35,10 @@ void func_ov006_021e2430(void *p);
 void func_ov006_021e2878(void *p);
 void func_ov000_021b5110(void *p);
 void func_ov000_0218be54(void *p);
-void func_ov000_0218e338(void *p);
+void ActorMgr_Update(void *p);
 void func_02065ac0(void *p);
 int func_ov006_021d6ff0(ov006_Scene021d6bc8 *self);
-void *func_ov000_0218e4cc(void *mgr, u16 kind);
+void *ActorMgr_GetGroup(void *mgr, u16 kind);
 void func_ov000_0218e0bc(void *p);
 void func_ov006_021d8914(void);
 void func_ov006_021db1b8(u16 a);
@@ -80,13 +80,13 @@ int func_ov006_021d6bc8(ov006_Scene021d6bc8 *self) {
             func_ov000_0218be54(data_ov000_021ccd64);
         }
         if (data_ov000_021ccd68 != NULL) {
-            func_ov000_0218e338(data_ov000_021ccd68);
+            ActorMgr_Update(data_ov000_021ccd68);
         }
         func_02065ac0(data_0214a420);
     }
     r = func_ov006_021d6ff0(self);
     if (state == 0 && data_ov006_021ec888->unk8 != 9) {
-        void *obj = func_ov000_0218e4cc(data_ov000_021ccd68, 0x7000);
+        void *obj = ActorMgr_GetGroup(data_ov000_021ccd68, 0x7000);
         if (obj != NULL) {
             func_ov000_0218e0bc(obj);
         }

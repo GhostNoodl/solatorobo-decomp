@@ -26,7 +26,7 @@ ov006_Unk021dbacc *Ov006Vt_021ec25c_DtorDelete(ov006_Unk021dbacc *self) {
     VCALL(&self->sub, 08);
     self->sub.vtbl = data_0208b318;
     VCALL(&self->sub, 0C);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

@@ -86,7 +86,7 @@ extern const ov006_Price021da208 data_ov006_021eb7b4[];
 extern const ov006_Price021da208 data_ov006_021eb7c4[];
 extern const ov006_Price021da208 data_ov006_021eb7e4;
 
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_ov000_02157c90(void *a, const void *b);
 void func_ov000_02157d2c(void *a, const void *b);
 int func_ov000_02154b58(void *a, u16 b);
@@ -129,7 +129,7 @@ static inline void *ov006_GetRes(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cb4a8(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0xe0);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xe0);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -142,7 +142,7 @@ static inline ov006_Window *ov006_NewWindow_cb4a8(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cb5a8(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0xe0);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xe0);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -155,7 +155,7 @@ static inline ov006_Window *ov006_NewWindow_cb5a8(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cae48(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0x98);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0x98);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -166,7 +166,7 @@ static inline ov006_Window *ov006_NewWindow_cae48(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cad50(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0xe8);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xe8);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -177,7 +177,7 @@ static inline ov006_Window *ov006_NewWindow_cad50(void) {
 }
 
 static inline ov006_Menu021da208 *ov006_NewMenu(void) {
-    ov006_Menu021da208 *w = (ov006_Menu021da208 *)func_0203dd9c(0x1e4);
+    ov006_Menu021da208 *w = (ov006_Menu021da208 *)Heap_Alloc(0x1e4);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -192,7 +192,7 @@ static inline ov006_Menu021da208 *ov006_NewMenu(void) {
 }
 
 static inline ov006_List021da208 *ov006_NewList(void) {
-    ov006_List021da208 *w = (ov006_List021da208 *)func_0203dd9c(0x100);
+    ov006_List021da208 *w = (ov006_List021da208 *)Heap_Alloc(0x100);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -205,7 +205,7 @@ static inline ov006_List021da208 *ov006_NewList(void) {
 }
 
 static inline ov006_Entry021da208 *ov006_NewEntry(void) {
-    ov006_Entry021da208 *e = (ov006_Entry021da208 *)func_0203dd9c(0x48);
+    ov006_Entry021da208 *e = (ov006_Entry021da208 *)Heap_Alloc(0x48);
     if (e != NULL) {
         e->vtbl = &data_ov006_021ebc80;
         func_ov000_021c22d8(e);
@@ -231,7 +231,7 @@ static inline void ov006_SetPos(void *p, int x, int y, int z) {
 
 static inline void ov006_Entry_Set(ov006_Entry021da208 *e, void *res, const ov006_Price021da208 *p, int cnt) {
     u16 price = p->unk2;
-    e->unk38 = func_0204c0e8(res, p->unk0);
+    e->unk38 = MsgRes_GetString(res, p->unk0);
     e->unk3C = cnt;
     e->unk40 = price * cnt;
 }
@@ -248,11 +248,11 @@ void func_ov006_021da208(ov006_Task021da208 *self) {
     }
     base = &data_ov006_021eb7b4[(u8)(n - 1)];
     self->unk10 = ov006_NewWindow_cb4a8();
-    VCALL(self->unk10, 10, func_0204c0e8(res, 0x18e));
-    VCALL(self->unk10, 14, func_0204c0e8(res, 0x18f));
+    VCALL(self->unk10, 10, MsgRes_GetString(res, 0x18e));
+    VCALL(self->unk10, 14, MsgRes_GetString(res, 0x18f));
     self->unk10->unk4A = 0x2c00;
-    func_ov000_02157c90(self->unk10, func_0204c0e8(res, 0x190));
-    func_ov000_02157d2c(self->unk10, func_0204c0e8(res, 0x3e));
+    func_ov000_02157c90(self->unk10, MsgRes_GetString(res, 0x190));
+    func_ov000_02157d2c(self->unk10, MsgRes_GetString(res, 0x3e));
     self->unk10->unk24 = 0xf8;
     self->unk10->unk20 = 1;
     ov006_SetRot(self->unk10, 0, 0x19, -0x199a);
@@ -261,7 +261,7 @@ void func_ov006_021da208(ov006_Task021da208 *self) {
     self->unk10->flags &= ~0x800000;
     self->unk10->unkC0 = 0x8c;
     self->unk10->unkC1 = 4;
-    VCALL(self->unk10, 74, func_0204c0e8(res, base->unk0), 0, 0xffff, base->unk2);
+    VCALL(self->unk10, 74, MsgRes_GetString(res, base->unk0), 0, 0xffff, base->unk2);
     self->unk10->flags &= ~0x40000;
     self->unk10->flags &= ~0x20000;
     self->unk10->flags &= ~0x10000;
@@ -275,9 +275,9 @@ void func_ov006_021da208(ov006_Task021da208 *self) {
     self->unk10->flags &= ~2;
 
     self->unk14 = ov006_NewList();
-    func_ov000_021c55e8(self->unk14, func_0204c0e8(res, 0x191));
-    func_ov000_021c5630(self->unk14, func_0204c0e8(res, 0x192));
-    func_ov000_021c5678(self->unk14, func_0204c0e8(res, 0x3e));
+    func_ov000_021c55e8(self->unk14, MsgRes_GetString(res, 0x191));
+    func_ov000_021c5630(self->unk14, MsgRes_GetString(res, 0x192));
+    func_ov000_021c5678(self->unk14, MsgRes_GetString(res, 0x3e));
     self->unk14->unk24 = 0xf8;
     self->unk14->unk20 = 4;
     ov006_SetRot(self->unk14, 2, 0x3b, -0x199a);
@@ -329,19 +329,19 @@ void func_ov006_021da208(ov006_Task021da208 *self) {
     self->unk20->flags |= 0x20000000;
     self->unk20->flags |= 0x80000000;
     ov006_SetPos(self->unk20, 0x100, 0, -0xcd);
-    VCALL(self->unk20, F4, 1, func_0204c0e8(res, 0x36));
+    VCALL(self->unk20, F4, 1, MsgRes_GetString(res, 0x36));
     VCALL(self->unk20, 08);
     self->unk20->flags |= 2;
 
     self->unk24 = ov006_NewWindow_cad50();
-    func_ov000_0215c1bc(self->unk24, 0x74, func_0204c0e8(res, 0x197));
+    func_ov000_0215c1bc(self->unk24, 0x74, MsgRes_GetString(res, 0x197));
     self->unk24->flags |= 0x10000;
     self->unk24->flags &= ~0x20000;
     self->unk24->flags |= 2;
 
     self->unk28 = ov006_NewMenu();
     self->unk28->unk1D8 = 0x8d;
-    self->unk28->unk1DC = func_0204c0e8(ov006_GetRes(), 0x26);
+    self->unk28->unk1DC = MsgRes_GetString(ov006_GetRes(), 0x26);
     self->unk28->unk1E0 = 0;
     self->unk28->unk84 = (void *)func_ov006_021da19c;
     self->unk28->owner = self->unk2C;

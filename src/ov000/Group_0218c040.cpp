@@ -5,14 +5,14 @@
 extern "C" {
 extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 static inline Actor *FindActor0218c040(u16 id) {
     void *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(mgr, id);
+    return ActorMgr_GetActor(mgr, id);
 }
 
 static inline BOOL IsHere0218c040(u8 *e) {

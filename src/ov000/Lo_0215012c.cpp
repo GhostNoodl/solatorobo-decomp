@@ -4,13 +4,13 @@ extern "C" {
 extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021ca9c4[];
 extern u8 data_0208ba70[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_0204c7d0(void *p);
 
 #define SUB(o, off) VOBJ_SET_VTABLE((u8 *)(o) + (off), data_0208ba70); func_0204c7d0((u8 *)(o) + (off))
 
-VObj *func_ov000_0215012c(void) {
-    VObj *o = (VObj *)func_0203dd9c(0x4b0);
+VObj *Lo021ca9c4_New(void) {
+    VObj *o = (VObj *)Heap_Alloc(0x4b0);
     if (o != NULL) {
         VOBJ_SET_VTABLE(o, data_ov000_021cc060);
         o->vfunc_58();

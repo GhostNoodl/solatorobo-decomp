@@ -89,7 +89,7 @@ struct Node0214dd3c {
     u16 unk_32;
     u16 unk_34;
     u16 unk_36;
-    static void *operator new(unsigned long size) { return func_0203dd9c(size); }
+    static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     Node0214dd3c() {
         func_ov000_02153f90(this);
         unk_30 = 0;

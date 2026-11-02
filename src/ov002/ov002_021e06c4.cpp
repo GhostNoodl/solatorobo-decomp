@@ -11,7 +11,7 @@ void *Ov002Vt_021efe7c_Dtor(void *self) {
 void *Ov002Vt_021eff30_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021eff30;
     func_ov002_021df1c4(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -24,7 +24,7 @@ void *Ov002Vt_021eff30_Dtor(void *self) {
 void *Ov002Vt_021efef0_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021efef0;
     func_ov002_021dddd0(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -37,7 +37,7 @@ void *Ov002Vt_021efef0_Dtor(void *self) {
 void *Ov002Vt_021eff10_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021eff10;
     func_ov002_021dbdb8(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -50,7 +50,7 @@ void *Ov002Vt_021eff10_Dtor(void *self) {
 void *Ov002Vt_021eff50_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021eff50;
     func_ov002_021db64c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -76,7 +76,7 @@ void *Ov002Vt_021eff74_DtorDelete(void *self) {
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(self, 0x10, VObject *));
     HEAP_POP(saved);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -105,7 +105,7 @@ void *Ov002Vt_021efe6c_Dtor(void *self) {
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     if (FIELD(self, 0x8c, void *) != NULL) {
-        func_0203de1c(FIELD(self, 0x8c, void *));
+        Heap_Free(FIELD(self, 0x8c, void *));
         FIELD(self, 0x8c, void *) = NULL;
     }
     HEAP_POP(saved);
@@ -116,7 +116,7 @@ void *Ov002Vt_021efed4_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021efed4;
     func_ov002_021d8e90(self);
     func_ov002_021e0b08_inline(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -170,7 +170,7 @@ void *Ov002Vt_021f001c_DtorDelete(void *self) {
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(self, 0x4, VObject *));
     HEAP_POP(saved);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

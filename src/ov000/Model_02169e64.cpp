@@ -44,7 +44,7 @@ extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 extern Tbl9e64 data_ov000_021c9b84;
 s32 func_02043d84(void *a);
-s32 func_02040498(s32 max);
+s32 Rand_UpTo(s32 max);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void func_ov000_02160534(Obj02169e64 *self, s32 a, VecFx32 *pos, s32 c, s32 d);
 
@@ -100,7 +100,7 @@ void func_ov000_02169e64(Obj02169e64 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
         tbl = data_ov000_021c9b84;
         t = ac << 12;
         if (self->unk_b4 == -1) {
-            self->unk_b4 = func_02040498(5);
+            self->unk_b4 = Rand_UpTo(5);
         }
         k = 0x3000;
         idx = (self->unk_b4 + (FX_Div(t, k) >> 12)) % 6;

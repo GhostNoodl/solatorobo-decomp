@@ -26,9 +26,9 @@ extern "C" {
 extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd6c;
 Robo021ca458 *func_ov000_0219bf90(void);
-void func_ov000_0218d988(void *self, void *other, s32 a);
+void Actor_TurnToActor(void *self, void *other, s32 a);
 u8 *func_ov000_021b68b8(void *a, void *pos);
-s32 func_02040498(s32 max);
+s32 Rand_UpTo(s32 max);
 u16 FX_Atan2(s32 x, s32 z);
 u16 func_ov000_0219a36c(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask);
 
@@ -124,7 +124,7 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
         if (dist >= radius - 0x1000 && dist <= radius + 0x2800) {
             st->st = 10;
             st->timer = 0;
-            func_ov000_0218d988(self, obj, arg);
+            Actor_TurnToActor(self, obj, arg);
             return;
         }
         p = obj->pos;
@@ -134,7 +134,7 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
         } else {
             p.y += self->unk_6c;
             ang = FX_Atan2(p.x - self->pos.x, p.z - self->pos.z);
-            ang = func_ov000_0219a36c(&p, radius, (u16)(ang + (u16)(func_02040498(0x2000) + 0x7000)), 5, 0, 0xc0000000);
+            ang = func_ov000_0219a36c(&p, radius, (u16)(ang + (u16)(Rand_UpTo(0x2000) + 0x7000)), 5, 0, 0xc0000000);
         }
         Polar02197ee0(&p, radius, FX_SinCosTable_[(ang >> 4) * 2], FX_SinCosTable_[(ang >> 4) * 2 + 1]);
         p.y = self->pos.y;
@@ -158,7 +158,7 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
         if (st->timer >= 0x14) {
             st->st = 0;
         }
-        func_ov000_0218d988(self, obj, arg);
+        Actor_TurnToActor(self, obj, arg);
         return;
     }
 }

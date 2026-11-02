@@ -52,7 +52,7 @@ extern char data_ov003_021fa662[];
 extern char data_ov003_021fa668[];
 extern BOOL func_ov000_0218cf5c(void *self);
 extern BOOL func_ov000_0218f110(s16 *p);
-extern void func_ov000_021b4c60(void *self);
+extern void Ov000ActVt_021cc7cc_Start(void *self);
 extern BOOL func_ov000_0218ffdc(Ov003Anim *anim, s16 *res, s32 a, s32 b);
 extern BOOL func_ov000_02190cb0(void *anim, const char *name, s32 a, s32 b);
 extern void func_ov000_02190758(Ov003Anim *anim, void *p, s32 a);
@@ -81,7 +81,7 @@ void Ov003ActVt_021fa5a0_Start(Ov003Prop *self) {
     s32 *res;
     s32 a;
     Ov003Vec v;
-    func_ov000_021b4c60(self);
+    Ov000ActVt_021cc7cc_Start(self);
     func_ov000_02190cb0(self->model, data_ov003_021fa662, 0x1000, 0);
     func_ov000_0218ffdc(&self->anim, &self->unk_b0, 0, 1);
     a = self->model->unk_08; NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(self->anim.data->unk_0c != NULL ? *self->anim.data->unk_0c : 0), a);

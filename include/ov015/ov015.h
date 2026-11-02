@@ -312,7 +312,7 @@ struct Ov015Anim {
     u8 unk_104[0x34];
 };
 
-// ov000 Shadow (0x1c bytes, func_ov000_0219196c / func_ov000_021919c8 / func_ov000_02191a24).
+// ov000 Shadow (0x1c bytes, func_ov000_0219196c / func_ov000_021919c8 / Ov000Vt_021cc438_Dtor).
 struct Ov015Shadow {
     const void *vtbl;
     void *res;
@@ -466,8 +466,8 @@ struct Ov015VecC {
 };
 
 
-void *func_0203dd9c(u32 size);
-void func_0203de1c(void *p);
+void *Heap_Alloc(u32 size);
+void Heap_Free(void *p);
 u64 _u32_div_f(u32 a, u32 b);
 
 // Heap selector: [0] = current, [1], [2] = alternate

@@ -85,7 +85,7 @@ extern char data_ov000_021cc61e[];
 extern char data_ov000_021cc64e[];
 extern char data_ov000_021cc636[];
 extern char data_ov000_021cc630[];
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 BOOL func_ov000_02191120(void *a);
 s32 func_ov000_02190cb0(void *model, const char *name, s16 blend, u8 force);
 void *func_ov000_02191318(void *model, s32 frame);
@@ -99,20 +99,20 @@ VObj *func_02065f88(s32 id, void *pos);
 void *func_02049a48(void *mgr, s32 id, s32 volume, s32 targetVolume, s32 frame);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 void func_ov000_021915a0(void *p);
-void func_ov000_0218d988(void *self, void *other, s32 a);
+void Actor_TurnToActor(void *self, void *other, s32 a);
 void func_ov000_0218996c(u8 a, u8 b);
 s32 func_02049bdc(void *mgr, s32 id, s32 pan);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(u16 a);
 void func_ov000_02182590(void *p);
 void func_ov000_02191418(void *model, u16 delay, BOOL force);
-s32 func_02040528(s32 max);
-u32 func_02040498(u32 max);
+s32 Rand_PlusMinus(s32 max);
+u32 Rand_UpTo(u32 max);
 u8 func_0206d37c(void *flags, u32 i);
 void func_ov000_0218d46c(void *actor, u16 id, u8 value);
-void func_ov000_02199b88(void *a, void *b);
-u8 *func_ov000_02199ba0(void *p);
-u16 func_ov000_0218d8f4(void *self, void *target);
+void Target_Set(void *a, void *b);
+u8 *Target_Get(void *p);
+u16 Actor_YawToPos(void *self, void *target);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 pan);
 void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s16 d, s16 e);
 void func_ov000_02168490(void *self, s32 a, s32 b, VecFx32 *p, VecFx32 *q);
@@ -122,7 +122,7 @@ static inline Actor *FindActor_021a7af0(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline u16 AngleTo_021a7af0(Robo021ca458 *self, u8 *other) {
@@ -480,7 +480,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
                 Bump_021a7af0(self);
             }
         }
-        func_ov000_0218d988(self, t, 0x400);
+        Actor_TurnToActor(self, t, 0x400);
         if (func_ov000_02191120(self->unk_38)) {
             ST(self)->st = 0x1e;
             return;
@@ -651,9 +651,9 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
             func_02049a48(data_02097e4c, 0x2a, -1, -1, -1);
             if (!B22(self).b3) {
                 VObj *o = func_02065f88(0x44d, &self->pos);
-                s32 a = func_02040528(0x4cd);
-                s32 b = func_02040498(0x800);
-                s32 c = func_02040528(0x4cd);
+                s32 a = Rand_PlusMinus(0x4cd);
+                s32 b = Rand_UpTo(0x800);
+                s32 c = Rand_PlusMinus(0x4cd);
                 o->vfunc_24(a, b, c);
                 o->vfunc_0c((LFLD(u16, data_ov000_021ccd68, 0xa) & 0xff) + 0xf00);
             }
@@ -692,7 +692,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
                     self->unk_b1c = self->target;
                     self->target = 0xffff;
                     func_ov000_0218d46c(t, self->id, 9);
-                    func_ov000_02199b88(info, self);
+                    Target_Set(info, self);
                     func_02049a48(data_02097e4c, 0x302, -1, -1, -1);
                     func_ov000_021911c8(self->unk_38, 0x1000);
                 } else if (kind == 0x12) {
@@ -703,14 +703,14 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
                     VObj *o;
                     self->target = 0xffff;
                     func_ov000_0218d46c(t, self->id, 0xb);
-                    p = func_ov000_02199ba0(info);
+                    p = Target_Get(info);
                     if (p == NULL) {
                         LFLD(u16, t, 0x7e) = self->rot_y;
                     } else {
-                        LFLD(u16, t, 0x7e) = func_ov000_0218d8f4(t, LFLD(void *, p, 0x44));
+                        LFLD(u16, t, 0x7e) = Actor_YawToPos(t, LFLD(void *, p, 0x44));
                         LFLD(u16, t, 0x90) = LFLD(u16, p, 0xc);
                     }
-                    func_ov000_02199b88(info, self);
+                    Target_Set(info, self);
                     func_02049a48(data_02097e4c, 0x302, -1, -1, -1);
                     func_02049f44(data_02097e4c, 0x2c, &self->pos, 0);
                     func_ov000_0218996c(8, 0xc);
@@ -722,7 +722,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
                 }
             }
         }
-        func_ov000_0218d988(self, t, 0x400);
+        Actor_TurnToActor(self, t, 0x400);
         {
             u8 *g = data_ov000_021ccd6c;
             VecFx32 w;

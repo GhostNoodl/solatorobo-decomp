@@ -90,14 +90,14 @@ extern char *data_0208cc8c;
 extern char *data_0208cb84;
 extern char *data_0208cb74;
 
-extern u16 func_0205422c(void);
-extern u16 func_02054240(void);
+extern u16 Pad_GetCur(void);
+extern u16 Pad_GetRelease(void);
 extern void func_02051a34(SlideScene *scene);
 extern void *func_02035d5c(const char *name);
-extern void *func_0204c270(void);
+extern void *Heap_GetCurrent(void);
 extern void func_0204c284(void);
 extern Model *func_0204c9f8(Model *model);
-extern void func_0204c2e0(void *heap);
+extern void Heap_SetCurrent(void *heap);
 extern BOOL func_0204e218(SlideScene *scene);
 extern Model *func_0204e238(void *model, const char *name, const char *file, int a);
 extern char *func_0204e28c(Model *model);
@@ -137,7 +137,7 @@ extern BOOL func_020557f8(SlideScene *scene);
 extern BOOL func_02055aa4(SlideScene *scene);
 extern BOOL func_02055844(void);
 extern void func_02055870(void);
-extern u16 func_0204dd84(void);
+extern u16 Pad_GetTrig(void);
 extern BOOL func_02055898(void);
 extern void func_0205592c(SlideHud *hud);
 extern BOOL func_020559c8(SlideHud *hud);
@@ -161,9 +161,9 @@ BOOL func_020534dc(SlideScene *scene) {
     void *res;
     u16 pad2;
     BOOL hit;
-    pad = func_0205422c();
+    pad = Pad_GetCur();
     if (scene->cancel) {
-        if ((pad & 0x100) || (func_02054240() & 0x81)) {
+        if ((pad & 0x100) || (Pad_GetRelease() & 0x81)) {
             scene->cancel = 0;
         }
     } else if (pad & 0x81) {
@@ -183,25 +183,25 @@ BOOL func_020534dc(SlideScene *scene) {
     scene->flag6 = 1;
     if (!scene->loaded && func_02035d5c(data_0208cca0) != NULL) {
         scene->loaded = 1;
-        heap = func_0204c270();
+        heap = Heap_GetCurrent();
         func_0204c284();
         model = scene->model;
         if (model != NULL) {
             if (model != NULL) {
                 func_0204c9f8(model);
-                func_0203de1c(model);
+                Heap_Free(model);
             }
             scene->model = NULL;
         }
-        func_0204c2e0(heap);
+        Heap_SetCurrent(heap);
         if (func_0204e218(scene)) {
-            model = (Model *)func_0203dd9c(0x160);
+            model = (Model *)Heap_Alloc(0x160);
             if (model != NULL) {
                 model = func_0204e238(model, data_0208cc8c, data_0208cb84, 0);
             }
             scene->model = model;
         } else {
-            model = (Model *)func_0203dd9c(0x160);
+            model = (Model *)Heap_Alloc(0x160);
             if (model != NULL) {
                 model = func_0204e238(model, data_0208cca0, data_0208cb74, 0);
             }
@@ -250,7 +250,7 @@ BOOL func_020534dc(SlideScene *scene) {
             func_02041d9c(panel->nextModel, 0, 0);
             if (panel->flag26) {
                 u32 *buf;
-                void *pltt = func_0203dd9c(0x64);
+                void *pltt = Heap_Alloc(0x64);
                 if (pltt != NULL) {
                     pltt = func_0204e278(pltt);
                 }
@@ -423,7 +423,7 @@ BOOL func_020534dc(SlideScene *scene) {
         return FALSE;
     }
     if (!scene->busy && scene->waitInput) {
-        pad2 = func_0204dd84();
+        pad2 = Pad_GetTrig();
         scene->frame++;
         if (!func_02055898()) {
             hit = FALSE;
@@ -488,7 +488,7 @@ BOOL func_020534dc(SlideScene *scene) {
             func_02055a90(func_02055a9c(func_0204f354()));
         }
         if (scene->unk_b8_0 == 0 || scene->flag7 == 1) {
-            if (func_0204dd84() & 2) {
+            if (Pad_GetTrig() & 2) {
                 scene->End();
             }
         }

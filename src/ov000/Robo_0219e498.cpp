@@ -25,7 +25,7 @@ typedef struct {
 extern "C" {
 extern u8 *data_0214a424;
 extern u8 *data_ov000_021ccd54;
-void func_0203f324(void *a);
+void HitSphere_Link(void *a);
 void func_0203f364(void *a);
 void func_ov000_0219864c(void *a, void *b, void *c);
 void func_ov000_021987b8(void *a, s32 b, void *c, void *d);
@@ -43,7 +43,7 @@ static inline BOOL On2_0219e498(u8 *s, u32 off) {
 static inline void Show0219e498(u8 *s, u32 off) {
     BODY(s, off).b0 = 1;
     BODY(s, off).b3 = 1;
-    func_0203f324(s + off);
+    HitSphere_Link(s + off);
 }
 
 static inline void Hide0219e498(u8 *s, u32 off) {

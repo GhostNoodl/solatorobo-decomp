@@ -83,13 +83,13 @@ BOOL func_ov000_021708ec(Obj021708ec *self, s32 arg, s32 arg2) {
             void *q = self->unk_4c;
             if (q != NULL) {
                 func_ov000_021bb840(q);
-                func_0203de1c(q);
+                Heap_Free(q);
             }
             self->unk_4c = NULL;
         }
         LO_HEAP_POP(saved);
     }
-    p = func_0203dd9c(0x20);
+    p = Heap_Alloc(0x20);
     if (p != NULL) {
         func_ov000_021bb810(p, arg);
     }

@@ -13,7 +13,7 @@ extern u8 data_ov000_021cb6f0[];
 extern u8 data_ov000_021cb840[];
 extern u8 data_ov000_021cb894[];
 extern u8 *data_ov000_021ccd54;
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_ov000_0216b474(void *p);
 void func_ov000_0216ad04(void *p);
 void func_ov000_0216bf30(void *p);
@@ -53,7 +53,7 @@ typedef struct {
 #define STATE LFLD(s32, self, 0x24)
 
 static inline VObj *NewObj2(u32 size, void *vt) {
-    VObj *p = (VObj *)func_0203dd9c(size);
+    VObj *p = (VObj *)Heap_Alloc(size);
     if (p != NULL) {
         *(void **)p = data_ov000_021cac0c;
         p->vfunc_14();
@@ -104,7 +104,7 @@ void func_ov000_02170a58(Obj02170a58 *self) {
         if (LFLD(Bit0, c, 0x114).b0) {
             break;
         }
-        p = (VObj *)func_0203dd9c(0xb8);
+        p = (VObj *)Heap_Alloc(0xb8);
         if (p != NULL) {
             *(void **)p = data_ov000_021cac0c;
             p->vfunc_14();
@@ -113,7 +113,7 @@ void func_ov000_02170a58(Obj02170a58 *self) {
             LFLD(s32, p, 0x9c) = 0;
         }
         self->unk_58 = p;
-        p = (VObj *)func_0203dd9c(0xb8);
+        p = (VObj *)Heap_Alloc(0xb8);
         if (p != NULL) {
             *(void **)p = data_ov000_021cac0c;
             p->vfunc_14();
@@ -123,7 +123,7 @@ void func_ov000_02170a58(Obj02170a58 *self) {
         }
         self->unk_5c = p;
         self->unk_60 = NewObj2(0xb0, data_ov000_021cb7ec);
-        q = (u8 *)func_0203dd9c(0x1c);
+        q = (u8 *)Heap_Alloc(0x1c);
         if (q != NULL) {
             func_ov000_0216b474(q);
         }
@@ -132,12 +132,12 @@ void func_ov000_02170a58(Obj02170a58 *self) {
         self->unk_6c = NewObj2(0xa0, data_ov000_021cb6f0);
         self->unk_70 = NewObj2(0xac, data_ov000_021cb840);
         self->unk_74 = NewObj2(0xbc, data_ov000_021cb894);
-        q = (u8 *)func_0203dd9c(0x20);
+        q = (u8 *)Heap_Alloc(0x20);
         if (q != NULL) {
             func_ov000_0216ad04(q);
         }
         self->unk_78 = q;
-        q = (u8 *)func_0203dd9c(0x3d8);
+        q = (u8 *)Heap_Alloc(0x3d8);
         if (q != NULL) {
             __cxa_vec_ctor(q + 0x360, 10, 0xc, (void (*)(void *))func_ov000_0217125c, (void (*)(void *))func_ov000_0217006c);
             func_ov000_0216bf30(q);
@@ -186,7 +186,7 @@ void func_ov000_02170a58(Obj02170a58 *self) {
         break;
     case 9:
         if (self->unk_44 != NULL && !func_ov000_021bb8dc(self->unk_44)) {
-            HEAP_DELETE(u8 *, (u8 *)self->unk_44, func_ov000_021bbcac(p); *(void **)(p + 4) = data_0208b318; ((VObj *)(p + 4))->vfunc_0c(); func_0203de1c(p));
+            HEAP_DELETE(u8 *, (u8 *)self->unk_44, func_ov000_021bbcac(p); *(void **)(p + 4) = data_0208b318; ((VObj *)(p + 4))->vfunc_0c(); Heap_Free(p));
             STATE = 3;
         }
         break;

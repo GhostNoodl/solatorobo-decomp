@@ -21,7 +21,7 @@ extern "C" {
 void func_ov000_021bd300(void *p);
 void func_ov000_021b1a54(u8 *self, BOOL flag);
 void func_0203f364(void *p);
-Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
 static inline s32 Dist0219ff8c(Robo021ca458 *self) {
     s32 dx = self->pos.x - self->unk_b10;
@@ -91,7 +91,7 @@ void func_ov000_0219ff8c(Robo021ca458 *self) {
         return;
     }
     if (self->unk_b1e != 0xffff) {
-        Actor *a = data_ov000_021ccd68 == NULL ? NULL : func_ov000_0218e640(data_ov000_021ccd68, self->unk_b1e);
+        Actor *a = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, self->unk_b1e);
         if (a == NULL) {
             self->unk_b1e = 0xffff;
         }

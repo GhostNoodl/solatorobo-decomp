@@ -41,7 +41,7 @@ ov006_MarkerSet *Ov006Vt_021ec2cc_Dtor(ov006_MarkerSet *self) {
 
 ov006_MarkerSet *Ov006Vt_021ec2cc_DtorDelete(ov006_MarkerSet *self) {
     ov006_MarkerSet_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -55,7 +55,7 @@ void func_ov006_021e22e4(ov006_MarkerSet *self) {
         self->markers[i].unkC = 0;
         self->markers[i].unk4 = 1;
     }
-    model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec1a9;
         if (name) {

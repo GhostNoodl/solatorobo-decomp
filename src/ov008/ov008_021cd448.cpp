@@ -22,7 +22,7 @@ void func_ov008_021cd448(void) {
     if (data_ov008_021d0500 != NULL) {
         return;
     }
-    p = (Ov008Mgr *)func_0203dd9c(0x120);
+    p = (Ov008Mgr *)Heap_Alloc(0x120);
     if (p != NULL) {
         func_0204b370(&p->cam);
         func_ov008_021cd500(p);
@@ -34,7 +34,7 @@ void func_ov008_021cd48c(void) {
     if (data_ov008_021d0500 == NULL) {
         return;
     }
-    OV008_FREE(data_ov008_021d0500, Ov008Mgr *, (func_ov008_021cd584(p_), func_0204b420(&p_->cam), func_0203de1c(p_)));
+    OV008_FREE(data_ov008_021d0500, Ov008Mgr *, (func_ov008_021cd584(p_), func_0204b420(&p_->cam), Heap_Free(p_)));
 }
 
 void func_ov008_021cd500(Ov008Mgr *m) {
@@ -84,7 +84,7 @@ void func_ov008_021cd584(Ov008Mgr *m) {
                 OV008_FREE_M(p->unk_50);
                 OV008_SET_VT(&p->pic, &data_0208b318);
                 p->pic.v0c();
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             m->unk_f8 = NULL;
         }
@@ -95,7 +95,7 @@ void func_ov008_021cd584(Ov008Mgr *m) {
     OV008_FREE_V(m->unk_d4, v04);
     OV008_FREE_V(m->unk_dc, v04);
     OV008_FREE_V(m->unk_e4, v04);
-    OV008_FREE(m->unk_f4, Ov008Caption *, (p_->pic.v0c(), OV008_SET_VT(&p_->pic, &data_0208b318), p_->pic.v0c(), func_0203de1c(p_)));
+    OV008_FREE(m->unk_f4, Ov008Caption *, (p_->pic.v0c(), OV008_SET_VT(&p_->pic, &data_0208b318), p_->pic.v0c(), Heap_Free(p_)));
     OV008_FREE_V(m->unk_fc, v04);
     OV008_FREE_V(m->unk_100, v04);
     OV008_FREE_V(m->unk_104, v04);
@@ -140,7 +140,7 @@ Ov008V *Ov008Menu_DtorDelete(Ov008V *self) {
     self->v2c();
     OV008_SET_VT(self, &data_ov000_021cac60);
     self->v2c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -159,7 +159,7 @@ static inline void Ov008_SetNameB(Ov008Anim *p, const char *a, const char *b) {
 }
 
 static inline Ov008Anim *Ov008_NewMsg(void) {
-    Ov008Anim *p = (Ov008Anim *)func_0203dd9c(0x138);
+    Ov008Anim *p = (Ov008Anim *)Heap_Alloc(0x138);
     if (p != NULL) {
         p = (Ov008Anim *)func_ov000_0218e9c4(p);
     }
@@ -167,7 +167,7 @@ static inline Ov008Anim *Ov008_NewMsg(void) {
 }
 
 static inline Ov008Pic *Ov008_NewText(void) {
-    Ov008Pic *p = (Ov008Pic *)func_0203dd9c(0x4c);
+    Ov008Pic *p = (Ov008Pic *)Heap_Alloc(0x4c);
     if (p != NULL) {
         OV008_SET_VT(p, &data_0208b318);
         p->v08();

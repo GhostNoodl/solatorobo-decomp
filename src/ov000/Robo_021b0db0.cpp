@@ -18,8 +18,8 @@ extern u8 data_ov000_021cc751[];
 extern u8 data_ov000_021cc757[];
 extern u8 data_ov000_021cc75d[];
 extern u8 data_ov000_021cc763[];
-u16 func_0204bfa8(void *cam);
-u16 func_0203d434(void *rng, s32 range);
+u16 Camera_GetYaw(void *cam);
+u16 Pad_LookupDir(void *rng, s32 range);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 s32 *NNS_G3dGlbGetInvV(void);
@@ -46,11 +46,11 @@ void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
     if (LFLD(u16, cam, 0x40) != 0) {
         yaw = LFLD(u16, cam, 0x44);
     } else {
-        yaw = func_0204bfa8(cam);
+        yaw = Camera_GetYaw(cam);
     }
     tilt = 0;
     if (spd > 0) {
-        u16 ang = func_0203d434(data_02097dc8, 0) + 0x8000;
+        u16 ang = Pad_LookupDir(data_02097dc8, 0) + 0x8000;
         s32 idx = ang >> 4;
         s32 z;
         u16 keys;

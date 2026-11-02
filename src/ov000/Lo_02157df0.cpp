@@ -15,7 +15,7 @@ static inline void Free02157df0(u8 *p) {
     LFLD(s32, p, 0x18) = 6;
     LFLD(s32, p, 0x24) = 0;
     LFLD(s32, p, 0x28) = 0;
-    func_0203de1c(p);
+    Heap_Free(p);
 }
 
 void func_ov000_02157df0(LoBase021cb2a8_021cb4a8 *self) {

@@ -12,7 +12,7 @@ extern char data_ov002_021efdb3[];
 extern char data_ov002_021efdca[];
 
 static inline void *ov002_NewAnim(void) {
-    void *a = func_0203dd9c(0x138);
+    void *a = Heap_Alloc(0x138);
     if (a != NULL) {
         a = func_ov000_0218e9c4(a);
     }
@@ -41,7 +41,7 @@ void func_ov002_021da5c0(void *self) {
     void *p;
     void *q;
     func_020359d0(data_ov002_021efdf6, 7, 0);
-    p = func_0203dd9c(0xc8);
+    p = Heap_Alloc(0xc8);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021efe6c;
         func_ov002_021d9444(p);
@@ -58,13 +58,13 @@ void func_ov002_021da5c0(void *self) {
         u32 saved;
         HEAP_PUSH(saved);
         if (FIELD(p, 0x8c, void *) != NULL) {
-            func_0203de1c(FIELD(p, 0x8c, void *));
+            Heap_Free(FIELD(p, 0x8c, void *));
             FIELD(p, 0x8c, void *) = NULL;
         }
         HEAP_POP(saved);
     }
     func_ov002_021d9444(p);
-    q = func_0203dd9c(0x70);
+    q = Heap_Alloc(0x70);
     if (q != NULL) {
         *(VFunc **)q = data_ov002_021efe4c;
         func_ov002_021d6e48(q);

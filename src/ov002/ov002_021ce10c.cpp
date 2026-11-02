@@ -8,7 +8,7 @@ void func_ov002_021ce10c(VObject *self) {
     if (self->v0x28()) {
         return;
     }
-    m = func_0203dd9c(0x160);
+    m = Heap_Alloc(0x160);
     if (m != NULL) {
         char *nm = data_ov002_021ef3f9;
         char *file = data_ov002_021ef3e4;

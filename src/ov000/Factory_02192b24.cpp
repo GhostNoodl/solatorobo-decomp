@@ -95,16 +95,16 @@ extern u8 data_ov012_0220b150[];
 extern u8 data_ov012_0220b1e8[];
 extern u8 data_ov013_0220b7d0[];
 extern u8 *data_ov000_021ccd54;
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 Info02192b24 *func_020704b4(u16 id);
 s32 func_0206ffa0(u16 id);
 void *func_ov000_0218e9c4(void *p);
 void *func_ov000_0218fe1c(void *p);
-void *func_ov000_02194074(void *p);
+void *ActorEx_Ctor(void *p);
 void *func_ov000_021940e4(void *p);
 void *func_ov000_02193e34(void *p);
 void *func_ov000_02193e48(void *p);
-void func_ov000_0218d1c0(void *p, u16 sub, u16 id, s32 a);
+void Actor_JoinGroup(void *p, u16 sub, u16 id, s32 a);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void *Ov003ActVt_021f99e8_Ctor(void *p);
 void *Ov010ActVt_0220fe6c_Ctor(void *p);
@@ -129,12 +129,12 @@ void *Ov014ActEx_0220eca0_Ctor(void *p);
 void *Ov014ActEx_022142fc_Ctor(void *p);
 void *Ov014ActEx_022152e8_Ctor(void *p);
 
-#define Base(p) func_ov000_02194074(p)
+#define Base(p) ActorEx_Ctor(p)
 
 /* Allocates an object built by an out-of-line constructor that returns it. */
 #define NEW_CTOR(size, ctor)                   \
     {                                          \
-        u8 *t = (u8 *)func_0203dd9c(size);     \
+        u8 *t = (u8 *)Heap_Alloc(size);     \
         if (t != NULL) {                       \
             t = (u8 *)ctor(t);                 \
         }                                      \
@@ -144,7 +144,7 @@ void *Ov014ActEx_022152e8_Ctor(void *p);
 /* Allocates an object with the shared base constructor and its own vtable. */
 #define NEW_BASIC(size, vt)                    \
     {                                          \
-        u8 *t = (u8 *)func_0203dd9c(size);     \
+        u8 *t = (u8 *)Heap_Alloc(size);     \
         if (t != NULL) {                       \
             Base(t);                           \
             LFLD(void *, t, 0) = (vt);         \
@@ -164,7 +164,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
         case 0x4009:
         case 0x4058:
             {
-                u8 *t = (u8 *)func_0203dd9c(0x20c);
+                u8 *t = (u8 *)Heap_Alloc(0x20c);
                 if (t != NULL) {
                     Base(t);
                     LFLD(void *, t, 0) = data_ov003_021f8a60;
@@ -237,7 +237,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             break;
         case 0x4824:
             {
-                u8 *t = (u8 *)func_0203dd9c(0x2fc);
+                u8 *t = (u8 *)Heap_Alloc(0x2fc);
                 if (t != NULL) {
                     Base(t);
                     LFLD(void *, t, 0) = data_ov012_0220b1e8;
@@ -302,7 +302,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             break;
         case 0x4628:
             {
-                u8 *t = (u8 *)func_0203dd9c(0xb1c);
+                u8 *t = (u8 *)Heap_Alloc(0xb1c);
                 if (t != NULL) {
                     Base(t);
                     LFLD(void *, t, 0) = data_ov003_021f8af8;
@@ -338,7 +338,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             break;
         case 0x4072:
             {
-                u8 *t = (u8 *)func_0203dd9c(0x1c0);
+                u8 *t = (u8 *)Heap_Alloc(0x1c0);
                 if (t != NULL) {
                     Base(t);
                     LFLD(void *, t, 0) = data_ov003_021f953c;
@@ -447,7 +447,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
         break;
     case 2:
         {
-            u8 *t = (u8 *)func_0203dd9c(0x304);
+            u8 *t = (u8 *)Heap_Alloc(0x304);
             if (t != NULL) {
                 Base(t);
                 LFLD(void *, t, 0) = data_ov003_021f9834;
@@ -459,7 +459,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
         break;
     case 3:
         {
-            u8 *t = (u8 *)func_0203dd9c(0x314);
+            u8 *t = (u8 *)Heap_Alloc(0x314);
             if (t != NULL) {
                 Base(t);
                 LFLD(void *, t, 0) = data_ov003_021f9704;
@@ -473,7 +473,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
         break;
     case 4:
         {
-            u8 *t = (u8 *)func_0203dd9c(0x304);
+            u8 *t = (u8 *)Heap_Alloc(0x304);
             if (t != NULL) {
                 Base(t);
                 LFLD(void *, t, 0) = data_ov003_021f979c;
@@ -512,7 +512,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
         break;
     case 14:
         {
-            u8 *t = (u8 *)func_0203dd9c(0x218);
+            u8 *t = (u8 *)Heap_Alloc(0x218);
             if (t != NULL) {
                 Base(t);
                 LFLD(void *, t, 0) = data_ov003_021f8638;
@@ -526,7 +526,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
         break;
     case 16:
         {
-            u8 *t = (u8 *)func_0203dd9c(0x208);
+            u8 *t = (u8 *)Heap_Alloc(0x208);
             if (t != NULL) {
                 Base(t);
                 LFLD(void *, t, 0) = data_ov003_021f8c28;
@@ -537,7 +537,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
         break;
     case 17:
         {
-            u8 *t = (u8 *)func_0203dd9c(0x208);
+            u8 *t = (u8 *)Heap_Alloc(0x208);
             if (t != NULL) {
                 Base(t);
                 LFLD(void *, t, 0) = data_ov003_021f89c8;
@@ -560,7 +560,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
         break;
     case 22:
         {
-            u8 *t = (u8 *)func_0203dd9c(0xe0);
+            u8 *t = (u8 *)Heap_Alloc(0xe0);
             if (t != NULL) {
                 Base(t);
                 LFLD(void *, t, 0) = data_ov003_021f8898;
@@ -572,7 +572,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
         break;
     case 23:
         {
-            u8 *t = (u8 *)func_0203dd9c(0x214);
+            u8 *t = (u8 *)Heap_Alloc(0x214);
             if (t != NULL) {
                 Base(t);
                 LFLD(void *, t, 0) = data_ov003_021f8768;
@@ -587,7 +587,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
         break;
     }
     if (p != NULL) {
-        func_ov000_0218d1c0(p, s->sub, s->id, func_0206ffa0(s->id));
+        Actor_JoinGroup(p, s->sub, s->id, func_0206ffa0(s->id));
         *(Rgb02192b24 *)(p + 0xac) = *(Rgb02192b24 *)(data_ov000_021ccd54 + 0xca);
     }
     return p;

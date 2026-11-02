@@ -50,12 +50,12 @@ void Ov009ActVt_02217cb0_Update(Ov009ActVt_02217cb0 *self) {
         }
         if (dist >= 0x7000) {
             func_ov000_02198360(self->unk_40, 0x10, 0);
-        } else if (func_02040498(6) != 0) {
+        } else if (Rand_UpTo(6) != 0) {
             func_ov000_02198360(self->unk_40, 0xf, 0);
         } else {
             func_ov000_02198360(self->unk_40, 0x10, 0);
         }
-        self->unk_b6 = func_02040498(0x14) + 0x64;
+        self->unk_b6 = Rand_UpTo(0x14) + 0x64;
     }
 }
 
@@ -65,16 +65,16 @@ extern u8 data_ov009_022179df[];
 extern u8 data_ov009_022179e5[];
 extern u8 data_ov009_022179eb[];
 extern u8 data_ov009_022179b4[];
-extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
-extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
-extern void func_ov000_0218dbe0(Ov009Obj *self, s32 a);
+extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
+extern void Actor_Move(Ov009Obj *self, s32 a);
 extern BOOL func_ov000_02191120(void *m);
 extern s32 FX_Div(s32 a, s32 b);
 static inline Ov009Actor *Ov009_FindActor4(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 void func_ov009_022139a4(Ov009ActVt_02217cb0 *self) {
@@ -92,7 +92,7 @@ void func_ov009_022139a4(Ov009ActVt_02217cb0 *self) {
     case 10: {
         s32 d;
         s32 max;
-        func_ov000_0218d988(self, t, self->unk_b0->unk_02);
+        Actor_TurnToActor(self, t, self->unk_b0->unk_02);
         st = self->unk_40;
         if (st->timer != 0) {
             st->timer--;
@@ -131,7 +131,7 @@ void func_ov009_022139a4(Ov009ActVt_02217cb0 *self) {
         if ((self->unk_48->unk_50 & 0x20000000) && self->unk_a0 < 0) {
             self->unk_9c = 0;
         }
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         if (self->unk_48 != NULL) {
             func_ov000_021987b8(self->unk_48, 1, 0, 0);
         }
@@ -141,9 +141,9 @@ void func_ov009_022139a4(Ov009ActVt_02217cb0 *self) {
         func_ov000_02190cb0(self->unk_38, data_ov009_022179e5, 0x1000, 0);
         func_ov000_021915a0(self->unk_38);
         if (self->unk_1a == 0) {
-            self->unk_40->timer = func_02040498(0xf) + 300;
+            self->unk_40->timer = Rand_UpTo(0xf) + 300;
         } else {
-            self->unk_40->timer = func_02040498(0xf) + 200;
+            self->unk_40->timer = Rand_UpTo(0xf) + 200;
         }
         self->unk_40->state = 0x1e;
         break;
@@ -166,7 +166,7 @@ void func_ov009_022139a4(Ov009ActVt_02217cb0 *self) {
         func_ov000_02190cb0(self->unk_38, data_ov009_022179b4, 0x1000, 0);
         func_ov000_021915a0(self->unk_38);
         self->unk_40->state = 0x20;
-        self->unk_40->timer = func_02040498(10) + 0x32;
+        self->unk_40->timer = Rand_UpTo(10) + 0x32;
         break;
     case 0x20:
         st = self->unk_40;

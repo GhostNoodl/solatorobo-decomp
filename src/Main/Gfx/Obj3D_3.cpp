@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern u8 func_02043d48(void *obj);
+extern u8 Gfx3DState_NextPolyId(void *obj);
 extern s8 data_02149ef4;
 
 void func_02051f3c(Obj3DLayer *layer, u32 v);

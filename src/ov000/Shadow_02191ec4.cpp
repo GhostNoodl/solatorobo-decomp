@@ -70,7 +70,7 @@ void func_02036838(void *a, void *b, int c, int d);
 void *func_020359d0(void *a, int b, int c);
 int func_02035b90(void *a, int b);
 char *func_0203ed04(void *name, void *file);
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 void NNS_G3dGlbSetBaseScale(VecFx32 *scale);
 void NNS_G3dGlbSetBaseTrans(VecFx32 *trans);
@@ -81,7 +81,7 @@ void NNS_G3dMdlSetMdlAlpha(void *mdl, u32 idx, u32 alpha);
 void NNS_G3dMdlSetMdlPolygonID(void *mdl, u32 idx, u32 id);
 void NNS_G3dMdlSetMdlCullMode(void *mdl, u32 idx, u32 mode);
 void NNS_G3dDraw1Mat1Shp(void *mdl, u32 idx, u32 a, u32 b);
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 
 static inline void *ResDict_GetDataByIdx(const ResDict *dict, u32 idx) {
     if (dict != NULL && idx < dict->num_entry) {

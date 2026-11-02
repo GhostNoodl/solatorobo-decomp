@@ -5,7 +5,7 @@
 
 extern "C" {
 extern u8 *data_ov000_021ccd54;
-BOOL func_0203dc9c(void *p, s32 a);
+BOOL PauseNode_IsDrawPaused(void *p, s32 a);
 void func_ov000_021c1e78(void *p);
 
 struct Obj0216d14c {
@@ -25,7 +25,7 @@ struct Obj0216d14c {
 void func_ov000_0216d14c(Obj0216d14c *self) {
     Model *m;
     s32 x;
-    if (func_0203dc9c(data_ov000_021ccd54 + 8, 1)) {
+    if (PauseNode_IsDrawPaused(data_ov000_021ccd54 + 8, 1)) {
         return;
     }
     switch (self->unk_04) {

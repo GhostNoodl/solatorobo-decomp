@@ -17,7 +17,7 @@ public:
     virtual s32 v20(...);
     virtual s32 v24(...);
 
-    // The 0xac ov000 object built by func_ov000_0218c2d4 (allocated in func_ov004_021cce88).
+    // The 0xac ov000 object built by Actor_Ctor (allocated in func_ov004_021cce88).
     u8 unk_04[0x12];
     u8 unk_16;
     u8 unk_17[0xb];
@@ -46,13 +46,13 @@ extern Ov004V *data_ov004_021cf864;
 extern s32 data_ov004_021cf868;
 extern void *data_ov004_021cf86c[2];
 extern u8 data_ov004_021cf808[];
-void *func_0203dd9c(u32 size);
-void func_0203de1c(void *p);
+void *Heap_Alloc(u32 size);
+void Heap_Free(void *p);
 s32 func_0203db40(void *p);
 void *func_ov000_0219bf90(void);
 void func_ov000_02176264(void *p);
 void func_ov000_021761f0(void *p);
-void *func_ov000_0218c2d4(void *p);
+void *Actor_Ctor(void *p);
 void *func_ov000_0218c928(void *p);
 void func_ov000_021984f4(void *p, s32 a, s32 b);
 void func_ov000_0219864c(void *p, s32 a, s32 b);

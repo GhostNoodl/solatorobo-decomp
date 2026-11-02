@@ -17,8 +17,8 @@ extern void *data_ov008_021d0368;
 extern char *data_0208cb7c;
 extern char data_0214b105[];
 extern u8 *data_0214a424;
-void *func_0203dd9c(u32 size);
-s32 func_0204c0e8(void *p, s32 id);
+void *Heap_Alloc(u32 size);
+s32 MsgRes_GetString(void *p, s32 id);
 BOOL func_020624d8(void);
 void func_ov000_021547e8(void *a, void *b, void *c, int d);
 Ov008SaveEnt *func_0205976c(void *res, u32 idx);
@@ -74,7 +74,7 @@ void func_ov008_021cfa38(Ov008Mgr *m) {
     Ov008Item *e;
     Ov008SaveEnt *ents;
     res = data_02149ef8;
-    p = (Ov008Menu *)func_0203dd9c(0xd4);
+    p = (Ov008Menu *)Heap_Alloc(0xd4);
     if (p != NULL) {
         OV008_SET_VT(p, &data_ov000_021cac60);
         p->v28();
@@ -83,8 +83,8 @@ void func_ov008_021cfa38(Ov008Mgr *m) {
         OV008_SET_VT(p, &data_ov008_021d0368);
     }
     m->unk_100 = p;
-    m->unk_100->v10(func_0204c0e8(res, 0x96));
-    m->unk_100->v14(func_0204c0e8(res, 0x97));
+    m->unk_100->v10(MsgRes_GetString(res, 0x96));
+    m->unk_100->v14(MsgRes_GetString(res, 0x97));
     m->unk_100->unk_08 = m;
     m->unk_100->unk_24 = 0x7a;
     m->unk_100->unk_20 = 5;

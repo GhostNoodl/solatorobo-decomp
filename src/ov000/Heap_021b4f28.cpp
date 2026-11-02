@@ -68,7 +68,7 @@ static inline void Obj021b4f28_Delete(Obj021b4f28 *o) {
         Node021b4f28 *next = node->next;
         if (node != NULL) {
             func_ov000_021b7a7c(node);
-            func_0203de1c(node);
+            Heap_Free(node);
         }
         if (prev != NULL) {
             prev->next = next;
@@ -82,7 +82,7 @@ static inline void Obj021b4f28_Delete(Obj021b4f28 *o) {
         }
     }
     func_0203f864(o->unk_1f4);
-    func_0203de1c(o);
+    Heap_Free(o);
 }
 
 void func_ov000_021b4f28(void) {

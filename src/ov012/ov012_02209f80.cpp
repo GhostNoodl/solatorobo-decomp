@@ -17,7 +17,7 @@ static inline u16 Ov012_AngTo(Ov012Actor *self, Ov012Actor *t) {
 
 void func_ov012_02209bd4(Ov012Actor *self) {
     Ov012Actor *o = Ov012_FindActor(self->unk_d0->target_id);
-    Ov012Actor *pl = func_ov000_0218d240(self);
+    Ov012Actor *pl = Actor_GetTarget(self);
     Ov012Sub40 *s = self->unk_40;
     switch (s->state) {
     case 0:
@@ -43,7 +43,7 @@ void func_ov012_02209bd4(Ov012Actor *self) {
             }
             self->unk_40->state++;
         }
-        func_ov000_0218d988(self, pl, 0x400);
+        Actor_TurnToActor(self, pl, 0x400);
         break;
     case 2:
         if (o != NULL && o->unk_14 != 2) {
@@ -101,7 +101,7 @@ void func_ov012_02209bd4(Ov012Actor *self) {
         if (s->timer > 0x3c) {
             func_ov000_02198360(self->unk_40, 1, 0);
         }
-        func_ov000_0218d988(self, pl, 0x400);
+        Actor_TurnToActor(self, pl, 0x400);
         break;
     }
 }
@@ -130,7 +130,7 @@ void func_ov012_02209f80(Ov012Actor *self) {
             v.x = self->unk_b8.x;
             v.y = self->unk_b8.y;
             v.z = self->unk_b8.z;
-            func_ov000_0218ddd4(self, &v, 0);
+            Actor_MoveToPos(self, &v, 0);
         }
         break;
     case 2:
@@ -138,10 +138,10 @@ void func_ov012_02209f80(Ov012Actor *self) {
         if (s->timer > 0x3c) {
             func_ov000_02198360(self->unk_40, 1, 0);
         }
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         break;
     }
-    func_ov000_0218d988(self, func_ov000_0218d240(self), 0x400);
+    Actor_TurnToActor(self, Actor_GetTarget(self), 0x400);
     func_ov000_021987b8(self->unk_48, 1, 0, 0);
 }
 }
@@ -231,7 +231,7 @@ void *func_ov012_0220a394(void *self) {
 extern "C" {
 void *func_ov012_0220a3a8(void *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 }

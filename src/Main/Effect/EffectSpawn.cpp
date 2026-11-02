@@ -75,7 +75,7 @@ static inline void Effect_SetStr(char *dst, const char *src) {
 }
 
 static inline Effect3D *Effect3D_New(void) {
-    Effect3D *e = (Effect3D *)func_0203dd9c(sizeof(Effect3D));
+    Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
         *(u32 **)e = data_0208c2e4;
         func_02063a34(e);
@@ -86,7 +86,7 @@ static inline Effect3D *Effect3D_New(void) {
 }
 
 static inline EffectGroup *EffectGroup_New(void) {
-    EffectGroup *g = (EffectGroup *)func_0203dd9c(sizeof(EffectGroup));
+    EffectGroup *g = (EffectGroup *)Heap_Alloc(sizeof(EffectGroup));
     if (g != NULL) {
         *(u32 **)g = data_0208c2e4;
         func_02063a34(g);

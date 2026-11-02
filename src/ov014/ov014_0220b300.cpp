@@ -74,22 +74,22 @@ void func_ov014_0220b33c(Ov014Act_02209280 *self) {
         }
         if (t % 90 == 0) {
             Ov014V *e;
-            pos.x = self->pos.x + func_02040528(0x7000);
-            pos.y = self->pos.y + func_02040498(0x5000) + 0x2000;
+            pos.x = self->pos.x + Rand_PlusMinus(0x7000);
+            pos.y = self->pos.y + Rand_UpTo(0x5000) + 0x2000;
             pos.z = self->pos.z + 0x3000;
             e = func_02065f88(0x38a, &pos);
             {
-                s32 r = func_02040498(0xccd) + 0xccd;
+                s32 r = Rand_UpTo(0xccd) + 0xccd;
                 e->v0c(r);
             }
         }
         if (t % 55 == 0) {
             Ov014V *e;
-            pos2.x = self->pos.x + func_02040528(0x7000);
-            pos2.y = self->pos.y + func_02040498(0x5000) + 0x2000;
+            pos2.x = self->pos.x + Rand_PlusMinus(0x7000);
+            pos2.y = self->pos.y + Rand_UpTo(0x5000) + 0x2000;
             pos2.z = self->pos.z + 0x3000;
             e = func_02065f88(4, &pos2);
-            e->v0c(func_02040498(0xccd) + 0xccd);
+            e->v0c(Rand_UpTo(0xccd) + 0xccd);
             func_020639d4(e, 0x56, 2);
         }
         if (t == 0x78) {
@@ -141,7 +141,7 @@ void func_ov014_0220b33c(Ov014Act_02209280 *self) {
 
 extern Ov014V *func_020658cc(void *mgr, s32 id);
 extern void func_02063a14(void *e);
-extern s32 func_02049210(s32 t, s32 from, s32 to);
+extern s32 Interp_QuadLerp(s32 t, s32 from, s32 to);
 extern s32 FX_Div(s32 a, s32 b);
 
 static inline s32 Ov014b_Mul64(s32 a, s64 b) {
@@ -204,13 +204,13 @@ void func_ov014_0220b74c(Ov014Act_02209280 *self) {
             Ov014V *e = func_020658cc(data_0214a420, 0x391);
             if (e != NULL) {
                 s32 r = FX_Div((0xd2 - self->unk_40->timer) << 12, 0x1e000);
-                e->v0c(func_02049210(r, 0x1000, 0x3000));
+                e->v0c(Interp_QuadLerp(r, 0x1000, 0x3000));
             }
         } else if (t > 0x6e) {
             Ov014V *e = func_020658cc(data_0214a420, 0x391);
             if (e != NULL) {
                 s32 r = FX_Div((0xb4 - self->unk_40->timer) << 12, 0x46000);
-                e->v0c(func_02049210(r, 0x3000, 0x1e000));
+                e->v0c(Interp_QuadLerp(r, 0x3000, 0x1e000));
             }
         } else if (t > 0x5a) {
             Ov014V *e = func_020658cc(data_0214a420, 0x391);
@@ -237,12 +237,12 @@ void func_ov014_0220b74c(Ov014Act_02209280 *self) {
             if (t % 30 == 0) {
                 Ov014Vec p;
                 Ov014V *e;
-                p.x = self->pos.x + func_02040528(0x7000);
-                p.y = self->pos.y + func_02040498(0x5000) + 0x2000;
+                p.x = self->pos.x + Rand_PlusMinus(0x7000);
+                p.y = self->pos.y + Rand_UpTo(0x5000) + 0x2000;
                 p.z = self->pos.z + 0x3000;
                 e = func_02065f88(4, &p);
                 {
-                    s32 r = func_02040498(0xccd) + 0xccd;
+                    s32 r = Rand_UpTo(0xccd) + 0xccd;
                     e->v0c(r);
                 }
             }
@@ -265,20 +265,20 @@ void func_ov014_0220b74c(Ov014Act_02209280 *self) {
         s32 m = self->unk_40->timer % 120;
         if (m == 0) {
             Ov014V *e;
-            p.x = self->pos.x + func_02040528(0x7000);
-            p.y = self->pos.y + func_02040498(0x5000) + 0x2000;
+            p.x = self->pos.x + Rand_PlusMinus(0x7000);
+            p.y = self->pos.y + Rand_UpTo(0x5000) + 0x2000;
             p.z = self->pos.z + 0x3000;
             e = func_02065f88(4, &p);
             {
-                s32 r = func_02040498(0xccd) + 0xccd;
+                s32 r = Rand_UpTo(0xccd) + 0xccd;
                 e->v0c(r);
             }
         }
         if (m == 0x32) {
             Ov014V *e;
-            s32 r = func_02040498(0xccd) + 0xccd;
-            p.x = self->pos.x + func_02040528(0x7000);
-            p.y = self->pos.y + func_02040498(0x5000) + 0x2000;
+            s32 r = Rand_UpTo(0xccd) + 0xccd;
+            p.x = self->pos.x + Rand_PlusMinus(0x7000);
+            p.y = self->pos.y + Rand_UpTo(0x5000) + 0x2000;
             p.z = self->pos.z + 0x3000;
             func_02065f88(4, &p)->v0c(r);
             e = func_02065f88(0x6d, &p);
@@ -287,9 +287,9 @@ void func_ov014_0220b74c(Ov014Act_02209280 *self) {
         }
         if (m == 0x1e) {
             Ov014V *e;
-            s32 r = func_02040498(0xccd) + 0xccd;
-            p.x = self->pos.x + func_02040528(0x7000);
-            p.y = self->pos.y + func_02040498(0x5000) + 0x2000;
+            s32 r = Rand_UpTo(0xccd) + 0xccd;
+            p.x = self->pos.x + Rand_PlusMinus(0x7000);
+            p.y = self->pos.y + Rand_UpTo(0x5000) + 0x2000;
             p.z = self->pos.z + 0x3000;
             func_02065f88(0x322, &p)->v0c(r);
             e = func_02065f88(0x320, &p);

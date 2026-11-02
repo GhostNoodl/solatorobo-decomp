@@ -99,7 +99,7 @@ extern void *data_0208cb84;
 extern void *data_0208cc8c;
 extern void *data_0208cb74;
 extern void *data_0208cca0;
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, void *b);
 void *STD_CopyString(void *dst, const void *src);
@@ -110,7 +110,7 @@ struct OamEntry0215e6f0 *func_ov000_0215e6f0(void *self, struct Req0215e6f0 *req
 
 #define MODEL_NEW(out, NAME, ARC)                    \
     do {                                             \
-        Model *m_ = (Model *)func_0203dd9c(0x160);   \
+        Model *m_ = (Model *)Heap_Alloc(0x160);   \
         if (m_) {                                    \
             void *arc_;                              \
             void *name_;                             \

@@ -257,7 +257,7 @@ static inline void ov006_SetCurrent021ccd40(void *p) {
 }
 
 static inline ov006_MsgBox *ov006_MsgBox_New(void) {
-    ov006_MsgBox *p = (ov006_MsgBox *)func_0203dd9c(sizeof(ov006_MsgBox));
+    ov006_MsgBox *p = (ov006_MsgBox *)Heap_Alloc(sizeof(ov006_MsgBox));
     if (p != NULL) {
         p->vtbl = &data_ov006_021ebc70;
         func_ov000_02163224(p);

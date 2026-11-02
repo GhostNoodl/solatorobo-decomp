@@ -6,7 +6,7 @@
 
 extern "C" {
 extern u8 *data_02097d48;
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
 static inline void G3_Vec(int cmd, int x, int y, int z) {
@@ -64,7 +64,7 @@ void func_ov000_0215b598(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 a3
     G3_Cmd1(0x2a, 0x20000000);
     {
         s32 a = self->unk_54;
-        G3_Cmd1(0x29, (func_02043d48(g + 0x8b0) << 24) | 0x8d0 | (a << 16));
+        G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | 0x8d0 | (a << 16));
     }
     {
         s32 k = self->unk_d4 ? 0x10000 : 0;

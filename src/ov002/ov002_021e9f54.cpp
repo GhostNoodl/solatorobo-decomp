@@ -13,7 +13,7 @@ void *Ov002Vt_021f0674_Dtor(void *self) {
 void *Ov002Vt_021f0694_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -26,7 +26,7 @@ void *Ov002Vt_021f0694_Dtor(void *self) {
 void *Ov002Vt_021f06e4_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -39,7 +39,7 @@ void *Ov002Vt_021f06e4_Dtor(void *self) {
 void *Ov002Vt_021f07fc_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -52,7 +52,7 @@ void *Ov002Vt_021f07fc_Dtor(void *self) {
 void *Ov002Vt_021f0828_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -65,7 +65,7 @@ void *Ov002Vt_021f0828_Dtor(void *self) {
 void *Ov002Vt_021f0854_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -78,7 +78,7 @@ void *Ov002Vt_021f0854_Dtor(void *self) {
 void *Ov002Vt_021f0784_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -97,7 +97,7 @@ void *Ov002Vt_021f07ac_DtorDelete(void *self) {
     Ov002Vt_021f0ce8_Dtor((u8 *)self + 0x8c);
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

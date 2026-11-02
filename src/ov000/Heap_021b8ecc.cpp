@@ -62,7 +62,7 @@ typedef struct {
 } Buf021b9010;
 
 extern "C" {
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 extern char *data_ov000_021cc858[];
 extern u8 *data_ov000_021ccd54;
 extern void *data_02149ef8;
@@ -81,7 +81,7 @@ s32 func_ov000_0214bc94(void);
 void *func_02061d54(s32 id);
 void *func_02061df0(u16 id);
 void *func_02061e7c(u16 id);
-void *func_0204c0e8(void *g, void *id);
+void *MsgRes_GetString(void *g, void *id);
 void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_02041218(void *a);
@@ -102,7 +102,7 @@ void func_ov000_0214c668(VObj *o, u16 a);
 BOOL func_ov000_0214c6a0(void *o);
 
 static inline VObj *NewTextWin_021b9010(void) {
-    u8 *p = (u8 *)func_0203dd9c(0xb8);
+    u8 *p = (u8 *)Heap_Alloc(0xb8);
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);
@@ -142,7 +142,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
 
     switch (self->state) {
     case 1: {
-        VObj *p = (VObj *)func_0203dd9c(0x4c);
+        VObj *p = (VObj *)Heap_Alloc(0x4c);
         if (p != NULL) {
             VOBJ_SET_VTABLE(p, data_0208b318);
             p->vfunc_08();
@@ -182,7 +182,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         } else {
             text = func_02061d54(0x8b);
         }
-        text1 = func_0204c0e8(data_02149ef8, text);
+        text1 = MsgRes_GetString(data_02149ef8, text);
         self->unk_18 = NewTextWin_021b9010();
         LFLD(s32, self->unk_18, 0x28) = 4;
         LFLD(s32, self->unk_18, 0x2c) = 0;
@@ -204,7 +204,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         LFLD(u32, self->unk_1c, 4) |= 0x40;
         LFLD(u32, self->unk_1c, 4) |= 0x40000000;
         LFLD(u32, self->unk_1c, 4) |= 4;
-        m = (u8 *)func_0203dd9c(0x160);
+        m = (u8 *)Heap_Alloc(0x160);
         if (m != NULL) {
             char *nm = data_ov000_021cc858[1];
             func_02041218(m + 0x88);
@@ -222,7 +222,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
             }
         }
         func_ov000_0214bc94();
-        o = (VObj *)func_0203dd9c(0x21c);
+        o = (VObj *)Heap_Alloc(0x21c);
         if (o != NULL) {
             VOBJ_SET_VTABLE(o, data_ov000_021cac60);
             o->vfunc_28();

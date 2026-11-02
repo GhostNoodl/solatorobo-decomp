@@ -71,31 +71,31 @@ extern const u8 data_ov000_021cc480[];
 extern HeapState *data_02097dd0;
 extern void *data_0214a420;
 
-void *func_ov000_0218c2d4(void *self);
+void *Actor_Ctor(void *self);
 void *func_ov000_0218c928(void *self);
 ResSet *func_ov000_0218ea20(ResSet *self);
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 void func_02065804(void *mgr, void *handle);
 BOOL func_ov000_0218cf5c(void *self);
 BOOL func_ov000_0218f110(AnimRes *res);
-BOOL func_ov000_0218d850(void *self);
-void *func_ov000_02199ba0(void *p);
+BOOL Actor_DespawnIfFar(void *self);
+void *Target_Get(void *p);
 void *func_ov000_0219bf90(void);
 void func_0203f364(Obj48 *obj);
-void func_0203f8d8(void *obj);
+void HitMesh_Link(void *obj);
 void func_ov000_0219864c(Obj48 *obj, VecFx32 *pos, s32 c);
 
 static inline void ResSet_Delete(ResSet *res) {
     if (res != NULL) {
         func_ov000_0218ea20(res);
-        func_0203de1c(res);
+        Heap_Free(res);
     }
 }
 
 static inline void ActorEx_Init(ActorEx *self) {
     s32 i;
 
-    func_ov000_0218c2d4(self);
+    Actor_Ctor(self);
     self->vtbl = data_ov000_021cc480;
     self->unk_ac = 0xff;
     self->unk_ad = 0xff;

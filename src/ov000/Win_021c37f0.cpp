@@ -27,7 +27,7 @@ extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021cb3a8[];
 extern u8 data_ov000_021cc9e8[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_ov000_02158c60(VObj *w, void *a);
 s32 func_ov000_02154b58(VObj *w, u16 a);
 
@@ -45,7 +45,7 @@ void func_ov000_021c37f0(Obj021c37f0 *self) {
         }
         self->state = 10;
     case 10: {
-        VObj *p = (VObj *)func_0203dd9c(0xf0);
+        VObj *p = (VObj *)Heap_Alloc(0xf0);
         if (p != NULL) {
             VOBJ_SET_VTABLE(p, data_ov000_021cac60);
             p->vfunc_28();

@@ -46,15 +46,15 @@ void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *pos, u16 *rot,
                          s32 f, s32 g, s32 h, s32 i);
 void func_ov000_0218bed8(void *a, s32 b, void *actor);
-ov006_Tgt021ead6c *func_ov000_0218e640(void *mgr, u16 id);
+ov006_Tgt021ead6c *ActorMgr_GetActor(void *mgr, u16 id);
 BOOL func_01ffc198(VecFx32 *a, VecFx32 *b, s32 r);
-void func_ov000_0218d398(ov006_Tgt021ead6c *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_SendMsg(ov006_Tgt021ead6c *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 
 static inline ov006_Tgt021ead6c *GetTgt(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline void RotYXZ(MtxFx33 *m, const u16 *rot) {
@@ -119,7 +119,7 @@ void func_ov006_021ead6c(ov006_Obj021ead6c *self) {
                     msg.b = 0x11;
                     msg.a = 1;
                     msg.c = self->unkC;
-                    func_ov000_0218d398(tgt, self->unkC, 9, 0, 6, &msg);
+                    Actor_SendMsg(tgt, self->unkC, 9, 0, 6, &msg);
                     self->unk40->phase++;
                 }
                 d.x -= self->unk70.x;

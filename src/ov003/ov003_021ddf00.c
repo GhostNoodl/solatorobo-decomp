@@ -84,18 +84,18 @@ extern char data_ov003_021f8046[];
 extern void func_ov000_0219433c(void *p);
 extern void func_ov000_02194758(void *p);
 extern void func_ov000_02197d80(void *p);
-extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
+extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_0203f920(void *p);
-extern void func_0203f8d8(void *p);
+extern void HitMesh_Link(void *p);
 extern void *func_ov000_02191318(Ov003Mdl *m, s32 a);
 extern Ov003SubAnim *func_ov000_02190a30(Ov003Mdl *m, s32 a);
 
 void Ov003ActVt_021f7f14_Init(Ov003Prop *self) {
     Ov003Unit *u;
     func_ov000_0219433c(self);
-    u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_0 = 0;
     }
@@ -128,7 +128,7 @@ void Ov003ActVt_021f7f14_Start(Ov003Prop *self) {
         }
         self->unk_cc_0 = 1;
         if (self->unk_58 != NULL) {
-            func_0203f8d8(self->unk_58);
+            HitMesh_Link(self->unk_58);
         }
         break;
     }
@@ -230,8 +230,8 @@ extern BOOL func_ov000_0218fa28(void *ctrl, void *obj, Ov003MdlRes *res, void *f
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern BOOL func_ov000_02191120(Ov003Mdl *m);
-extern void *func_ov000_02199ba0(Ov003PropDef *def);
-extern void func_ov000_0218d398(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
+extern void *Target_Get(Ov003PropDef *def);
+extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
 
 static inline void Ov003Mdl_PlayAnim0(Ov003Mdl *m, const char *name, s16 blend, u8 force) {
     const char *n = name;
@@ -253,7 +253,7 @@ void func_ov003_021de26c(Ov003Prop *self) {
         }
         self->unk_cc_0 = 1;
         if (self->unk_58 != NULL) {
-            func_0203f8d8(self->unk_58);
+            HitMesh_Link(self->unk_58);
         }
         func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         func_ov000_0218996c(2, 0x3c);
@@ -314,9 +314,9 @@ void func_ov003_021de26c(Ov003Prop *self) {
         self->work->timer = 0;
         break;
     case 0x32: {
-        void *p = func_ov000_02199ba0(self->unk_4c);
+        void *p = Target_Get(self->unk_4c);
         if (p != NULL) {
-            func_ov000_0218d398(p, self->unk_0c, 3, 1, 0, 0);
+            Actor_SendMsg(p, self->unk_0c, 3, 1, 0, 0);
             self->work->state = 0;
         }
         self->unk_4c->unk_1c = 0xffff;

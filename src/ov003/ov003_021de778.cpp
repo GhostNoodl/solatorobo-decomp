@@ -68,7 +68,7 @@ extern Ov003BmGlobal *data_ov000_021ccd54;
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
-extern u16 func_0204bfa8(Ov003BmCam *cam);
+extern u16 Camera_GetYaw(Ov003BmCam *cam);
 extern void func_01ffc9fc(Ov003BmVec *src, Ov003BmVec *dst, u16 angle);
 extern void VEC_Add(const Ov003BmVec *a, const Ov003BmVec *b, Ov003BmVec *out);
 extern Ov003BmFx *func_02065f88(s32 id, const Ov003BmVec *pos);
@@ -83,7 +83,7 @@ extern void *func_ov000_0219b71c(Ov003BmVec *pos, Ov003BmVec *sc, s32 a, s32 b, 
 extern void func_ov000_0218996c(s32 a, s32 b);
 
 static inline u16 Ov003BmCam_GetAngle(Ov003BmCam *cam) {
-    return cam->unk_40 != 0 ? cam->unk_44 : func_0204bfa8(cam);
+    return cam->unk_40 != 0 ? cam->unk_44 : Camera_GetYaw(cam);
 }
 
 void func_ov003_021de778(Ov003Bomb *self) {

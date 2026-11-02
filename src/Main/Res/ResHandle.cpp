@@ -27,7 +27,7 @@ extern ResNode *func_0203657c(ResMgr *mgr, const char *name, int type);
 extern void func_02036720(ResMgr *mgr, ResNode *node, BOOL force);
 extern ResNode *func_02036860(ResMgr *mgr, const char *name, const char *arcName, int type, u8 toFront);
 extern void func_02036b30(ResMgr *mgr, ResNode *node);
-extern void func_0203daa4(UnkSys *sys);
+extern void Sys_WaitVBlank(UnkSys *sys);
 extern void *func_02034b98(ResList *list, const char *name);
 extern void *func_02034cec(ResList *list, const char *name);
 extern void *func_02034d88(ResList *list, const char *name);
@@ -95,7 +95,7 @@ void func_02038520(ResHandle *handle) {
             if (node->state == 5) {                                         \
                 return;                                                     \
             }                                                               \
-            func_0203daa4(data_02097dd0);                                   \
+            Sys_WaitVBlank(data_02097dd0);                                   \
         }                                                                   \
     }
 
@@ -139,7 +139,7 @@ void func_02038638(ResHandle *handle, const char *name) {
             if (node->state == 5) {
                 return;
             }
-            func_0203daa4(data_02097dd0);
+            Sys_WaitVBlank(data_02097dd0);
         }
     }
     }
@@ -184,7 +184,7 @@ void func_02038a10(ResHandle *handle, const char *arcName, const char *name) {
         if (node->state == 5) {
             return;
         }
-        func_0203daa4(data_02097dd0);
+        Sys_WaitVBlank(data_02097dd0);
     }
 }
 
@@ -353,7 +353,7 @@ typedef struct G3dTex {
 } G3dTex;
 
 extern G3dTex *NNS_G3dGetTex(void *res);
-extern u32 func_0203df74(void *ptr, u32 size);
+extern u32 Heap_Resize(void *ptr, u32 size);
 extern void *func_0203e458(int arg0, void *arg1, u32 arg2, u32 arg3, int arg4);
 
 void func_02039494(void *res) {
@@ -361,7 +361,7 @@ void func_02039494(void *res) {
     if (tex != NULL && tex->unk_14 != 0) {
         u32 size = (u8 *)tex + tex->unk_14 - (u8 *)res;
         tex->unk_14 = 0;
-        func_0203df74(res, size);
+        Heap_Resize(res, size);
     }
 }
 
@@ -396,12 +396,12 @@ void func_02039518(UnkModel *model) {
         return;
     }
     if (model->mem1 != NULL && model->block1 != NULL && model->block1->end != NULL && model->block1->start != NULL) {
-        func_0203df74(model->mem1, model->block1->end - model->mem1);
+        Heap_Resize(model->mem1, model->block1->end - model->mem1);
         model->block1->end = NULL;
         model->block1->start = NULL;
     }
     if (model->mem2 != NULL && model->block2 != NULL && model->block2->end != NULL && model->block2->start != NULL) {
-        func_0203df74(model->mem2, model->block2->end - model->mem2);
+        Heap_Resize(model->mem2, model->block2->end - model->mem2);
         model->block2->end = NULL;
         model->block2->start = NULL;
     }
@@ -426,7 +426,7 @@ BOOL func_020395a8(const char *a, const char *b, int len) {
 }
 
 // Copies a file name without its extension.
-void func_02039610(char *dst, const char *src, int len) {
+void Str_CopyStem(char *dst, const char *src, int len) {
     int i = 0;
     while (src[i] != '.' && src[i] != '\0' && i < len) {
         dst[i] = src[i];
@@ -464,13 +464,13 @@ const char *func_02039674(const char *path) {
 }
 
 extern const void *data_0208b318[];
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 
 // ResHandle::~ResHandle (deleting).
 ResHandle *_ZN9ResHandleD0Ev(ResHandle *handle) {
     *(const void ***)handle = data_0208b318;
     handle->Unload();
-    func_0203de1c(handle);
+    Heap_Free(handle);
     return handle;
 }
 

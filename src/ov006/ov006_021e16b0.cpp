@@ -87,7 +87,7 @@ void func_0204ca14(void *p, int a);
 void MI_CpuFill8(void *dst, u8 value, u32 size);
 
 static inline ov006_Model *ov006_NewModel021e16b0(void) {
-    ov006_Model *model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    ov006_Model *model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec1a9;
         if (name) {
@@ -127,7 +127,7 @@ static inline void ov006_Sub021e16b0_Init(ov006_Sub021e16b0 *s) {
         s->model->unk6C |= 0x400000;
         func_02041d9c(s->model, 2, data_ov006_021eb824[s->type].unk0);
     }
-    t = (ov006_Txt021e16b0 *)func_0203dd9c(0xb8);
+    t = (ov006_Txt021e16b0 *)Heap_Alloc(0xb8);
     if (t != NULL) {
         t->vtbl = data_0208ba70;
         func_0204c7d0(t);
@@ -149,7 +149,7 @@ void func_ov006_021e16b0(ov006_Unk021e16b0 *self) {
     ov006_Sub021e16b0 *s;
     ov006_Lbl021e16b0 *l;
     ov006_Model *model;
-    s = (ov006_Sub021e16b0 *)func_0203dd9c(0x2c);
+    s = (ov006_Sub021e16b0 *)Heap_Alloc(0x2c);
     if (s != NULL) {
         s->vtbl = data_ov006_021ec22c;
         s->unk4 = zero;
@@ -167,7 +167,7 @@ void func_ov006_021e16b0(ov006_Unk021e16b0 *self) {
     s->type = zero;
     ov006_Sub021e16b0_Init(self->unk24);
     ov006_Sub021e16b0_Reset(self->unk24, data_ov006_021ec1b5);
-    l = (ov006_Lbl021e16b0 *)func_0203dd9c(0xec);
+    l = (ov006_Lbl021e16b0 *)Heap_Alloc(0xec);
     if (l != NULL) {
         l->vtbl = data_ov006_021ec2fc;
         l->unkC = data_ov006_021ec25c;

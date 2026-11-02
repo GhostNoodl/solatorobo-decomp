@@ -17,7 +17,7 @@ struct Obj02157d2c {
 };
 
 void func_ov000_02157d2c(Obj02157d2c *self, void *arg) {
-    u32 *p = (u32 *)func_0203dd9c(0x2c);
+    u32 *p = (u32 *)Heap_Alloc(0x2c);
     if (p) {
         p[0] = 0;
         p[1] = 0;

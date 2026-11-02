@@ -14,8 +14,8 @@ extern void *func_020657b0(void *a, s32 b);
 extern void func_ov000_0219763c(Ov013Obj *self);
 extern void func_ov000_02195d88(Ov013Obj *self);
 extern void func_ov000_02196060(Ov013Actor *self);
-extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
-extern Ov013Actor *func_ov000_0218e4cc(void *mgr, u16 id);
+extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern Ov013Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern BOOL Ov003Vec_Equal(void *a, const Ov013Spot *b);
 
 void func_ov013_021fe884(Ov013ActEx_021fdb70 *self) {
@@ -55,7 +55,7 @@ void func_ov013_021fe910(void) {
 
 Ov013Actor *Ov013ActEx_021fdb70_DtorDelete(Ov013Actor *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

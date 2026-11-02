@@ -20,13 +20,13 @@ void func_ov000_02191690(void *a);
 void *func_ov000_02191318(void *a, s32 b);
 s32 FX_Div(s32 a, s32 b);
 void func_0203f364(void *a);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void *Ov015FishState2c_Ctor(Ov015FishState2c *self);
 void func_ov000_02190a80(void *a, s32 b);
 void func_ov015_02209a50(Ov015Fish *self);
 int func_0203f3d0(void *a);
 extern u32 data_02fe0f04;
-s32 func_02049130(s32 t, s32 a, s32 b);
+s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 void func_ov015_02209c90(Ov015Fish *self);
 u16 FX_Atan2(s32 x, s32 z);
 void func_ov015_0220daf4(Ov015Shadow *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
@@ -99,7 +99,7 @@ BOOL func_ov015_02209500(Ov015Fish *self) {
     self->unk_568.unk_2c = 0x100;
     self->unk_94 = FLD(s16, func_0206fef8(self->unk_c0.unk_04), 0x16) << 4;
     self->unk_98 = FLD(s16, func_0206fef8(self->unk_c0.unk_04), 0x14) << 4;
-    m = (Ov015V *)func_0203dd9c(0x2c);
+    m = (Ov015V *)Heap_Alloc(0x2c);
     if (m != NULL) m = (Ov015V *)Ov015FishState2c_Ctor((Ov015FishState2c *)m);
     self->unk_f8 = m;
     self->unk_f4 = 2;
@@ -171,8 +171,8 @@ void func_ov015_02209a50(Ov015Fish *self) {
     } else if (self->unk_40.y > -0x32000) {
         s32 t = FX_Div(self->unk_40.y + 0x32000, 0x28000);
         s32 k;
-        self->unk_8c = func_02049130(t, 0x666, 0x1000);
-        k = (func_02049130(t, 0xa000, 0x16000) >> 12) & 0xff;
+        self->unk_8c = Interp_SinLerp(t, 0x666, 0x1000);
+        k = (Interp_SinLerp(t, 0xa000, 0x16000) >> 12) & 0xff;
         if (self->unk_90 > k) {
             self->unk_90--;
         } else if (self->unk_90 < k) {
@@ -325,7 +325,7 @@ void *Ov015FishState2c_DtorDelete(void *self) {
     SET_VT(self, data_ov015_02212e94);
     VCALL(self)->v10(0);
     SET_VT(self, data_ov015_02212eb0);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

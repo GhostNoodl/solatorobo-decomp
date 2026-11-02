@@ -50,7 +50,7 @@ static inline void *ov002_cursor637c(void *g) {
 }
 
 static inline void *ov002_new637c(void) {
-    void *o = func_0203dd9c(0x2c);
+    void *o = Heap_Alloc(0x2c);
     if (o != NULL) {
         *(VFunc **)o = data_ov002_021efb04;
         func_ov000_02163224(o);

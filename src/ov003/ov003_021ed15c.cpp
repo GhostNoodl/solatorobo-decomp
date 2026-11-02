@@ -99,15 +99,15 @@ extern "C" {
 extern const s16 FX_SinCosTable_[];
 extern const Ov003HmVec data_ov003_021f6bd8;
 extern void *data_ov000_021ccd68;
-extern Ov003HmPart *func_ov000_02199ba0(void *def);
-extern Ov003HmTarget *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov003HmPart *Target_Get(void *def);
+extern Ov003HmTarget *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov003_021db244(Ov003Hm *self);
 extern void func_ov003_021dc0c8(Ov003Hm *self);
 extern BOOL func_ov003_021dbd80(Ov003Hm *self);
-extern void func_ov000_0218d918(Ov003Hm *self, Ov003HmVec *v, s32 a);
+extern void Actor_TurnToPos(Ov003Hm *self, Ov003HmVec *v, s32 a);
 extern Ov003HmFx *func_02065f88(s32 id, Ov003HmVec *pos);
 extern void func_01ffc9fc(Ov003HmVec *dst, const Ov003HmVec *src, u16 ry);
-extern void func_0203f324(Ov003HmAnim *a);
+extern void HitSphere_Link(Ov003HmAnim *a);
 extern void func_ov000_021987b8(Ov003HmAnim *a, s32 b, s32 c, s32 d);
 extern void VEC_Normalize(Ov003HmVec *a, Ov003HmVec *b);
 extern void VEC_Add(Ov003HmVec *a, Ov003HmVec *b, Ov003HmVec *dst);
@@ -120,20 +120,20 @@ static inline Ov003HmTarget *Ov003Hm_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline void Ov003Hm_Show(Ov003HmAnim *a) {
     a->b0 = 1;
     a->b3 = 1;
-    func_0203f324(a);
+    HitSphere_Link(a);
 }
 
 void func_ov003_021ed15c(Ov003Hm *self) {
     Ov003HmVec ofs = data_ov003_021f6bd8;
     Ov003HmTarget *t;
     s32 speed;
-    if (func_ov000_02199ba0(self->unk_4c)->unk_0e == 0x1000) {
+    if (Target_Get(self->unk_4c)->unk_0e == 0x1000) {
         if (self->work->state == 0) {
             self->anim->unk_30 = self->cfg->unk_30;
         }
@@ -195,7 +195,7 @@ void func_ov003_021ed15c(Ov003Hm *self) {
             self->vel.y += HM_MUL(d.y - self->vel.y, 0x9a);
             turn = 0xe1;
         }
-        func_ov000_0218d918(self, &p, turn);
+        Actor_TurnToPos(self, &p, turn);
         self->dir = self->rot.y;
         if (timer > 0x64) {
             if (self->unk_1a == 0) {

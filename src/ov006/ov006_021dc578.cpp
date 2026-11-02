@@ -26,7 +26,7 @@ extern "C" {
 
 extern u8 *data_02097d48;
 BOOL func_02054f10(void *a, int b);
-u8 func_02043d48(void *a);
+u8 Gfx3DState_NextPolyId(void *a);
 
 static inline void ov006_Model_SetPolyId(ov006_Model *m, int id) {
     ((ov006_ModelFlags *)&m->unk6C)->polyId = id;
@@ -52,7 +52,7 @@ void func_ov006_021dc578(ov006_Lbl021dc578 *self) {
     if (alpha <= 0) {
         return;
     }
-    ov006_Model_SetPolyId(self->unkA8, func_02043d48(data_02097d48 + 0x8b0));
+    ov006_Model_SetPolyId(self->unkA8, Gfx3DState_NextPolyId(data_02097d48 + 0x8b0));
     ov006_Model_SetAlpha(self->unkA8, alpha);
     { int i = self->unkE0; ov006_Model *m = self->unkA8; m->unkFC[i].x = x; m->unkFC[i].y = y; }
     self->unkA8->unk150 = self->unkB8;

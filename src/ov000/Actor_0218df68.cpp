@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0218de6c(ActorGroup *group, Actor *actor) {
+void ActorGroup_Add(ActorGroup *group, Actor *actor) {
     Actor *tail = group->tail;
     if (tail != NULL) {
         tail->next = actor;
@@ -65,7 +65,7 @@ void func_ov000_0218df68(ActorGroup *group, Actor *actor) {
     group->count--;
 }
 
-u16 func_ov000_0218dfb4(ActorGroup *group, u16 kind) {
+u16 ActorGroup_CountKind(ActorGroup *group, u16 kind) {
     Actor *actor = group->head;
     u16 n = 0;
     if (actor == NULL) {
@@ -80,13 +80,13 @@ u16 func_ov000_0218dfb4(ActorGroup *group, u16 kind) {
     return n;
 }
 
-void func_ov000_0218dfe8(ActorGroup *group, u16 id, u8 type, BOOL notify, u32 size, const void *data) {
+void ActorGroup_SendMsg(ActorGroup *group, u16 id, u8 type, BOOL notify, u32 size, const void *data) {
     Actor *actor = group->head;
     if (actor == NULL) {
         return;
     }
     do {
-        func_ov000_0218d398(actor, id, type, notify, size, data);
+        Actor_SendMsg(actor, id, type, notify, size, data);
         actor = actor->next;
     } while (actor != NULL);
 }
@@ -100,7 +100,7 @@ void func_ov000_0218e044(ActorGroup *group, u16 kind, s32 value) {
     do {
         if (kind == 0xffff || kind == actor->kind) {
             buf = value;
-            func_ov000_0218d398(actor, 0xffff, 2, 1, 1, &buf);
+            Actor_SendMsg(actor, 0xffff, 2, 1, 1, &buf);
         }
         actor = actor->next;
     } while (actor != NULL);

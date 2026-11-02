@@ -158,7 +158,7 @@ extern ov006_E40021d6ff0 *data_02097e40;
 extern ov006_Speed021d6ff0 data_ov006_021eb85c[];
 
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
-void *func_ov000_0218e640(void *a, u16 id);
+void *ActorMgr_GetActor(void *a, u16 id);
 BOOL func_ov006_021ea3e8(void *prop);
 void func_ov006_021ea410(void *prop);
 typedef struct ov006_RaceInfo021d6ff0 {
@@ -174,11 +174,11 @@ void func_0203cc58(s32 a, int b, int c);
 void *func_ov006_021e37d0(int a, VecFx32 *v);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_020498ac(void *p, s32 a);
-void func_02049960(void *p, int a, int b);
-void *func_ov000_0218e4cc(void *mgr, u16 id);
+void SndMgr_StopSeqNo(void *p, int a, int b);
+void *ActorMgr_GetGroup(void *mgr, u16 id);
 void func_ov000_0218e044(void *p, u16 a, int b);
 void func_ov000_0216da78(ov006_GObj021d6ff0 *p);
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_ov006_021d86a0(ov006_Task021d6ff0 *self, u16 a, int b);
 ov006_Result021d6ff0 *Ov006Vt_021ec23c_Ctor(ov006_Result021d6ff0 *p);
 void func_ov006_021dfce8(ov006_Result021d6ff0 *p);
@@ -190,7 +190,7 @@ BOOL func_ov006_021e616c(int a, u16 b);
 
 static inline ov006_Racer021d6ff0 *ov006_GetRacer(u8 i) {
     u16 id = func_ov006_021db060(data_ov006_021ec884, i)->unkE;
-    return data_ov000_021ccd68 != NULL ? (ov006_Racer021d6ff0 *)func_ov000_0218e640(data_ov000_021ccd68, id) : NULL;
+    return data_ov000_021ccd68 != NULL ? (ov006_Racer021d6ff0 *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
 }
 
 static inline u8 ov006_CountRemaining(void) {
@@ -204,7 +204,7 @@ static inline u8 ov006_CountRemaining(void) {
     count = 0;
     for (i = 0; i < num; i++) {
         u16 id = func_ov006_021db060(data_ov006_021ec884, i)->unkE;
-        void *prop = data_ov000_021ccd68 != NULL ? func_ov000_0218e640(data_ov000_021ccd68, id) : NULL;
+        void *prop = data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
         if (prop != NULL && func_ov006_021ea3e8(prop)) {
             count++;
         }
@@ -225,7 +225,7 @@ static inline u8 ov006_CountRemainingB(void) {
     count = 0;
     for (i = 0; i < num; i++) {
         u16 id = func_ov006_021db060(data_ov006_021ec884, i)->unkE;
-        void *prop = data_ov000_021ccd68 != NULL ? func_ov000_0218e640(data_ov000_021ccd68, id) : NULL;
+        void *prop = data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
         if (prop != NULL && func_ov006_021ea3e8(prop)) {
             count++;
         }
@@ -411,7 +411,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
     u8 j;
     {
         u16 id = func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkE;
-        me = data_ov000_021ccd68 != NULL ? (ov006_Racer021d6ff0 *)func_ov000_0218e640(data_ov000_021ccd68, id) : NULL;
+        me = data_ov000_021ccd68 != NULL ? (ov006_Racer021d6ff0 *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
     }
     info = (ov006_Info021d6ff0 *)data_ov006_021ec884->unk8;
     switch (self->state) {
@@ -475,7 +475,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 if (self->gauge->obj != NULL) {
                     self->gauge->obj->flags |= 0x80;
                 }
-                o = func_ov000_0218e4cc(data_ov000_021ccd68, 0x7000);
+                o = ActorMgr_GetGroup(data_ov000_021ccd68, 0x7000);
                 if (o != NULL) {
                     func_ov000_0218e044(o, 0xffff, 2);
                 }
@@ -495,7 +495,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             if (self->gauge->obj != NULL) {
                 self->gauge->obj->flags &= ~0x80;
             }
-            o = func_ov000_0218e4cc(data_ov000_021ccd68, 0x7000);
+            o = ActorMgr_GetGroup(data_ov000_021ccd68, 0x7000);
             if (o != NULL) {
                 func_ov000_0218e044(o, 0xffff, 1);
             }
@@ -507,7 +507,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
         if (data_ov006_021ec860->unk1C == 0) {
             if (self->win == NULL) {
                 if (func_ov006_021dab98(func_ov006_021db060(data_ov006_021ec884, 0))->unk0 & 8) {
-                    func_ov006_021d86a0(self, 0x8d, (int)func_0204c0e8(data_02149ef8, 0x28));
+                    func_ov006_021d86a0(self, 0x8d, (int)MsgRes_GetString(data_02149ef8, 0x28));
                     break;
                 }
             } else {
@@ -537,7 +537,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 data_ov006_021ec884->unk140 = ov006_Gauge_Time(self->gauge);
                 data_ov006_021ec884->unk13D = 2;
                 ov006_Gauge_Finish(self->gauge, FALSE);
-                func_02049960(data_02097e4c, info->unk8, 0);
+                SndMgr_StopSeqNo(data_02097e4c, info->unk8, 0);
                 func_020498ac(data_02097e4c, 0x24);
                 ov006_UpdateRanks(self);
                 ov006_UpdateMap(self);
@@ -555,7 +555,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             data_ov006_021ec884->unk140 = ov006_Gauge_Time(self->gauge);
             data_ov006_021ec884->unk13D = 1;
             ov006_Gauge_Finish(self->gauge, TRUE);
-            func_02049960(data_02097e4c, info->unk8, 0);
+            SndMgr_StopSeqNo(data_02097e4c, info->unk8, 0);
             func_020498ac(data_02097e4c, 0x26);
             self->state = 3;
             self->sub = 0;
@@ -601,7 +601,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             }
             self->timer = 0;
             self->sub++;
-            res = (ov006_Result021d6ff0 *)func_0203dd9c(0x24);
+            res = (ov006_Result021d6ff0 *)Heap_Alloc(0x24);
             if (res != NULL) {
                 res = Ov006Vt_021ec23c_Ctor(res);
             }
@@ -628,21 +628,21 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             } else {
                 best = data_ov006_021ec884->unk144;
             }
-            func_02049088(&total, time);
+            PlayTime_FromFrames(&total, time);
             total.millis = total.millis / 10 * 10;
             func_02048bfc(&total, TRUE);
-            func_02048cf0(&total, 0, 99, 59, 990);
+            PlayTime_Clamp(&total, 0, 99, 59, 990);
             MI_CpuFill8(split, 0, sizeof(split));
             for (i = 0; i < n; i++) {
                 t = &split[i];
-                func_02049088(t, self->splits[i]);
+                PlayTime_FromFrames(t, self->splits[i]);
                 split[i].millis = (split[i].millis + 5) / 10 * 10;
                 func_02048bfc(t, TRUE);
-                func_02048cf0(t, 0, 99, 59, 990);
+                PlayTime_Clamp(t, 0, 99, 59, 990);
             }
-            func_02048be4(&sum);
+            PlayTime_Clear(&sum);
             for (k = 0; k < n; k++) {
-                func_02048d58(&sum, &sum, &split[k]);
+                PlayTime_Add(&sum, &sum, &split[k]);
             }
             func_02048e74(&diff, &sum, &total);
             diff.millis = diff.millis / 10 * 10;

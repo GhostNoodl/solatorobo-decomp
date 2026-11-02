@@ -7,7 +7,7 @@ VObject *Ov002Vt_021f0f2c_DtorDelete(VObject *self) {
     self->v0xc();
     *(VFunc **)self = data_0208b318;
     self->v0xc();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -16,7 +16,7 @@ VObject *Ov002Vt_021f0e14_DtorDelete(VObject *self) {
     self->v0x14();
     *(VFunc **)self = data_ov002_021f0ef4;
     self->v0x14();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -33,7 +33,7 @@ VObject *Ov002Vt_021f0e84_DtorDelete(VObject *self) {
     self->v0x14();
     *(VFunc **)self = data_ov002_021f0ef4;
     self->v0x14();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -52,7 +52,7 @@ VObject *Ov002Vt_021f0ebc_DtorDelete(VObject *self) {
     self->v0x14();
     *(VFunc **)self = data_ov002_021f0ef4;
     self->v0x14();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -71,7 +71,7 @@ VObject *Ov002Vt_021f0e4c_DtorDelete(VObject *self) {
     self->v0x14();
     *(VFunc **)self = data_ov002_021f0ef4;
     self->v0x14();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

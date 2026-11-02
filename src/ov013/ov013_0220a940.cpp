@@ -5,8 +5,8 @@ extern "C" {
 extern void *data_ov013_0220beb4;
 extern char data_ov013_0220b3f8[];
 extern char data_ov013_0220b404[];
-extern void func_ov000_0218dbe0(Ov013Obj *self, s32 a);
-extern void *func_ov000_02194074(void *self);
+extern void Actor_Move(Ov013Obj *self, s32 a);
+extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
 extern Ov013Actor *func_ov000_0219bf90(void);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
@@ -15,7 +15,7 @@ void func_ov013_0220a940(Ov013Actor *self) {
     Ov013Sub38 *s;
     Ov013Sub40 *q;
     u8 v;
-    func_ov000_0218dbe0(self, 0);
+    Actor_Move(self, 0);
     s = self->unk_38;
     v = s->unk_be;
     if (v > 1) {
@@ -33,7 +33,7 @@ void func_ov013_0220a940(Ov013Actor *self) {
 
 #pragma force_active on
 Ov013ActEx_0220a9a8 *Ov013ActEx_0220a9a8_Ctor(Ov013ActEx_0220a9a8 *self) {
-    func_ov000_02194074(self);
+    ActorEx_Ctor(self);
     FLD(void *, self, 0) = &data_ov013_0220beb4;
     self->unk_ce = 0;
     self->unk_d0 = 0;
@@ -68,14 +68,14 @@ extern void *data_ov000_021ccd68;
 extern Ov013V *func_020657b0(void *a, void *b);
 extern void func_0203f364(void *p);
 extern BOOL func_ov000_021b4738(Ov013Actor *a);
-extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 
 static inline Ov013Actor *Ov013_FindActorA(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 void func_ov013_0220aa7c(Ov013ActEx_0220a9a8 *self) {

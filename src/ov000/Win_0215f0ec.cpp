@@ -39,7 +39,7 @@ void func_02041c20(void *model, s32 a, void *b);
 
 #define LO_MODEL_NEW(out, NAME, ARC)                 \
     do {                                             \
-        u8 *m_ = (u8 *)func_0203dd9c(0x160);         \
+        u8 *m_ = (u8 *)Heap_Alloc(0x160);         \
         if (m_) {                                    \
             void *arc_;                              \
             void *name_;                             \
@@ -53,7 +53,7 @@ void func_02041c20(void *model, s32 a, void *b);
     } while (0)
 
 static inline TextWin *TextWin_New(void) {
-    TextWin *win = (TextWin *)func_0203dd9c(0xb8);
+    TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
         func_0204c7d0(win);

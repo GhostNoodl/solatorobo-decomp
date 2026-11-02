@@ -3,7 +3,7 @@
 extern "C" {
 
 void func_0204b438(void *ptr);
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 
 void *func_ov000_02189b14(void *self) {
     func_0204b438(self);
@@ -12,7 +12,7 @@ void *func_ov000_02189b14(void *self) {
 
 void *func_ov000_02189b28(void *self) {
     func_0204b438(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

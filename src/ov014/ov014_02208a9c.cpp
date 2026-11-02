@@ -5,8 +5,8 @@ extern "C" {
 extern Ov014Vec *func_ov000_0218d2e0(void *self);
 extern void VEC_Normalize(Ov014Vec *a, Ov014Vec *b);
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
-extern void func_ov000_0218d918(Ov014Obj *self, Ov014Vec *v, s32 a);
-extern void func_ov000_0218dbe0(Ov014Obj *self, s32 a);
+extern void Actor_TurnToPos(Ov014Obj *self, Ov014Vec *v, s32 a);
+extern void Actor_Move(Ov014Obj *self, s32 a);
 extern u16 FX_Atan2(s32 x, s32 z);
 extern void func_ov014_02208fe4(Ov014ActEx_02208618 *self);
 
@@ -75,10 +75,10 @@ void func_ov014_02208a9c(Ov014ActEx_02208618 *self) {
     }
     case 1:
         if (self->unk_d0 & 0x200000) {
-            func_ov000_0218d918(self, &self->unk_84, 0x1000);
+            Actor_TurnToPos(self, &self->unk_84, 0x1000);
             VEC_Add(&self->pos, (Ov014Vec *)&self->unk_9c, &self->pos);
         } else {
-            func_ov000_0218dbe0(self, 0);
+            Actor_Move(self, 0);
         }
         func_ov014_02208fe4(self);
         if ((self->unk_48->unk_50 & 0x20000000) || ++self->unk_d4 >= 200) {

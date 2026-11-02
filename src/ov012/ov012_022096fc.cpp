@@ -1,8 +1,8 @@
 #include "ov012/ov012.h"
 
 extern "C" {
-extern void *func_ov000_0218e4cc(void *mgr, s32 kind);
-extern u16 func_ov000_0218dfb4(void *p, s32 kind);
+extern void *ActorMgr_GetGroup(void *mgr, s32 kind);
+extern u16 ActorGroup_CountKind(void *p, s32 kind);
 
 static inline u16 Ov012_HpPct(Ov012Actor *self) {
     return self->unk_50[0] * 100 / self->unk_50[1];
@@ -102,8 +102,8 @@ void func_ov012_02209268(Ov012Actor *self) {
             self->unk_b6 = 0x78;
         }
     } else if (dist < 0xc000) {
-        void *m = func_ov000_0218e4cc(data_ov000_021ccd68, 0x4000);
-        if (m == NULL || func_ov000_0218dfb4(m, 0x4009) <= 2) {
+        void *m = ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000);
+        if (m == NULL || ActorGroup_CountKind(m, 0x4009) <= 2) {
             Ov012Target *t = NULL;
             if (o != NULL) {
                 t = o->unk_4c;
@@ -156,7 +156,7 @@ void func_ov012_02209740(Ov012Actor *self) {
         func_02049f44(data_02097e4c, 0x702, &self->pos, 0);
         break;
     case 1:
-        func_ov000_0218d988(self, pl, 0x400);
+        Actor_TurnToActor(self, pl, 0x400);
         self->unk_40->timer++;
         if (self->unk_40->timer == 1 || self->unk_40->timer == 0x1e) {
             Ov012V *e = func_02065f88(0x384, &self->pos);
@@ -228,7 +228,7 @@ void func_ov012_02209740(Ov012Actor *self) {
         }
         break;
     }
-    func_ov000_0218dbe0(self, 0);
+    Actor_Move(self, 0);
     self->unk_48->unk_9a_5 = 1;
     func_ov000_021987b8(self->unk_48, 0, 0, 0);
     if (self->unk_48->unk_50 & 0x20000000) {

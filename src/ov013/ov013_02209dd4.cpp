@@ -5,27 +5,27 @@ extern "C" {
 extern char data_ov013_0220be7c[];
 extern char data_ov013_0220be82[];
 extern void *data_ov000_021ccd68;
-extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
-extern void func_ov000_0218d988(Ov013Actor *self, Ov013Actor *t, s32 a);
-extern void func_ov000_0218dbe0(Ov013Obj *self, s32 a);
+extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern void Actor_TurnToActor(Ov013Actor *self, Ov013Actor *t, s32 a);
+extern void Actor_Move(Ov013Obj *self, s32 a);
 
 static inline Ov013Actor *Ov013_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 extern char data_ov013_0220bea0[];
 extern char data_ov013_0220bea6[];
 extern void VEC_Add(const Ov013Vec *a, const Ov013Vec *b, Ov013Vec *out);
-extern void func_ov000_0218ddd4(Ov013Actor *self, Ov013Vec *v, s32 a);
+extern void Actor_MoveToPos(Ov013Actor *self, Ov013Vec *v, s32 a);
 
 extern void func_ov003_021d112c(Ov013Actor *self);
-extern s32 func_02040528(s32 a);
-extern s32 func_02040498(s32 a);
+extern s32 Rand_PlusMinus(s32 a);
+extern s32 Rand_UpTo(s32 a);
 
-extern void *func_ov000_0218e4cc(void *mgr, s32 a);
-extern u16 func_ov000_0218dfb4(void *p, s32 a);
+extern void *ActorMgr_GetGroup(void *mgr, s32 a);
+extern u16 ActorGroup_CountKind(void *p, s32 a);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
 
 
@@ -34,9 +34,9 @@ s32 func_ov013_02209b44(Ov013Act_02207968 *self) {
     s32 st;
     u16 pct;
     u32 n;
-    rnd = func_02040498(0x63);
+    rnd = Rand_UpTo(0x63);
     pct = self->unk_50[0] * 100 / self->unk_50[1];
-    n = func_ov000_0218dfb4(func_ov000_0218e4cc(data_ov000_021ccd68, 0x4000), 0x4813);
+    n = ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000), 0x4813);
     st = 0xe;
     if ((self->unk_f2 == 2 && rnd % 2 == 0) || self->unk_f2 == 3) {
         st = 0xf;
@@ -81,10 +81,10 @@ void Ov013ActVt_0220bc80_Start(Ov013ActVt_0220bc80 *self) {
     s32 r;
     Ov013Vec *v;
     func_ov003_021d112c(self);
-    self->unk_f0 = self->rot[1] + func_02040528(0x3400);
+    self->unk_f0 = self->rot[1] + Rand_PlusMinus(0x3400);
     v = &self->unk_f4;
     Ov013_VecCopy(v, &self->pos);
-    r = func_02040498(0x800) + 0x3800;
+    r = Rand_UpTo(0x800) + 0x3800;
     v->x += Ov013_FxMul(r, OV013_SIN(self->rot[1]));
     v->z += Ov013_FxMul(r, OV013_COS(self->rot[1]));
     self->unk_100.y = v->y;
@@ -147,9 +147,9 @@ void func_ov013_02209ed8(Ov013ActVt_0220bc80 *self) {
         if (q->timer == 0) {
             self->unk_40->timer = 0x3c;
             self->unk_100 = self->unk_b8;
-            self->unk_100.x += func_02040528(0x8cd);
-            self->unk_100.z += func_02040528(0x8cd);
-            self->unk_100.y = self->unk_100.y + func_02040528(0x8cd) + 0x1800;
+            self->unk_100.x += Rand_PlusMinus(0x8cd);
+            self->unk_100.z += Rand_PlusMinus(0x8cd);
+            self->unk_100.y = self->unk_100.y + Rand_PlusMinus(0x8cd) + 0x1800;
         }
         break;
     }
@@ -181,7 +181,7 @@ void func_ov013_0220a080(Ov013Actor *self) {
     }
     self->unk_9c = self->unk_b0->unk_00;
     v = self->unk_b8;
-    func_ov000_0218ddd4(self, &v, self->unk_b0->unk_02);
+    Actor_MoveToPos(self, &v, self->unk_b0->unk_02);
     self->pos.y += Ov013_FxMul(v.y + 0x1800 - self->pos.y, 0xcd);
     func_ov000_021987b8(self->unk_48, 1, 0, 0);
 }
@@ -203,7 +203,7 @@ void func_ov013_0220a17c(Ov013Actor *self) {
         self->unk_a8 = 0;
         break;
     case 1:
-        func_ov000_0218d988(self, Ov013_FindActor(self->unk_90), self->unk_b0->unk_02);
+        Actor_TurnToActor(self, Ov013_FindActor(self->unk_90), self->unk_b0->unk_02);
         if (self->unk_38->unk_c4 == 1) {
             self->unk_40->state++;
         }
@@ -238,7 +238,7 @@ void func_ov013_0220a17c(Ov013Actor *self) {
         break;
     }
     }
-    func_ov000_0218dbe0(self, 0);
+    Actor_Move(self, 0);
     func_ov000_021987b8(self->unk_48, 0, 0, 0);
 }
 

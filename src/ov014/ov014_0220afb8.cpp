@@ -41,7 +41,7 @@ void func_ov014_0220abf8(Ov014Act_02209280 *self) {
         case 2: {
             u8 n = p->unk_04 - 1;
             if (n <= 31) {
-                mask |= 1 << (u8)func_02040498(n);
+                mask |= 1 << (u8)Rand_UpTo(n);
             }
             self->unk_f4 = mask;
             break;
@@ -51,7 +51,7 @@ void func_ov014_0220abf8(Ov014Act_02209280 *self) {
             if (n <= 31) {
                 u8 k;
                 for (k = 2; k != 0; k--) {
-                    u8 r = func_02040498(n);
+                    u8 r = Rand_UpTo(n);
                     while (mask & (1 << r)) {
                         r++;
                         r %= n + 1;
@@ -67,7 +67,7 @@ void func_ov014_0220abf8(Ov014Act_02209280 *self) {
             if (n <= 31) {
                 u8 k;
                 for (k = 3; k != 0; k--) {
-                    u8 r = func_02040498(n);
+                    u8 r = Rand_UpTo(n);
                     while (mask & (1 << r)) {
                         r++;
                         r %= n + 1;

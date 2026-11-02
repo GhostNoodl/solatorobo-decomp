@@ -16,7 +16,7 @@ void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);
 void func_02043d20(void *p, s32 a);
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 n);
 s32 FX_Div(s32 a, s32 b);
 void func_ov015_021fcb1c(void *self);
@@ -184,7 +184,7 @@ void func_ov015_021fb758(u8 *self) {
     NNS_G3dGeBufferOP_N(0x15, NULL, 0);
     texParam = 0x20000000;
     NNS_G3dGeBufferOP_N(0x2a, &texParam, 1);
-    polyAttr = 0x1f00c0 | (func_02043d48(data_02097d48 + 0x8b0) << 24);
+    polyAttr = 0x1f00c0 | (Gfx3DState_NextPolyId(data_02097d48 + 0x8b0) << 24);
     NNS_G3dGeBufferOP_N(0x29, &polyAttr, 1);
     trans[0] = 0;
     trans[1] = 0x97000;

@@ -227,12 +227,12 @@ extern "C" {
 extern Ov011Game54 *data_ov000_021ccd54;
 extern Ov011Heap *data_02097dd0;
 extern void *data_ov000_021ccd68;
-void func_0203de1c(void *p);
-void *func_0203dd9c(u32 size);
-void func_0203de50(void *p);
-void *func_0203dddc(u32 size);
+void Heap_Free(void *p);
+void *Heap_Alloc(u32 size);
+void Heap_FreeArray(void *p);
+void *Heap_AllocArray(u32 size);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
-void *func_ov000_0218e640(void *mgr, u16 id);
+void *ActorMgr_GetActor(void *mgr, u16 id);
 void *func_ov000_0219bf90(void);
 void func_ov003_021da40c(void *p);
 void func_ov003_021da48c(void *p, u8 a);
@@ -817,7 +817,7 @@ public:
     Ov011Bar *unk_398;
 };
 
-// An effect from the main-module effect manager (func_02065f88 / func_02066900 create one,
+// An effect from the main-module effect manager (func_02065f88 / EffectGroup_Create create one,
 // func_020657b0 looks one up by its handle unk_24).
 class Ov011Eff : public Ov011V {
 public:
@@ -864,7 +864,7 @@ static inline Ov011Obj *Ov011_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return (Ov011Obj *)func_ov000_0218e640(data_ov000_021ccd68, id);
+    return (Ov011Obj *)ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline BOOL Ov011_ActorValid(u16 id) {

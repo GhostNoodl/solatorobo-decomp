@@ -28,7 +28,7 @@ void func_ov002_021cd80c(Task50 *self) {
         if (p != NULL) {
             func_02041558(p);
             func_02041278((u8 *)p + 0x88);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_3c = NULL;
     }
@@ -68,22 +68,22 @@ void func_ov002_021cd92c(Task50 *self, int kind) {
     void *str = data_ov002_021ef3f8;
     switch (kind) {
     case 0:
-        str = func_0204c0e8(msg, 0xdf);
+        str = MsgRes_GetString(msg, 0xdf);
         break;
     case 1:
-        str = func_0204c0e8(msg, 0xe0);
+        str = MsgRes_GetString(msg, 0xe0);
         break;
     case 2:
-        str = func_0204c0e8(msg, 0xc3);
+        str = MsgRes_GetString(msg, 0xc3);
         break;
     case 3:
-        str = func_0204c0e8(msg, 0xe2);
+        str = MsgRes_GetString(msg, 0xe2);
         break;
     case 4:
-        str = func_0204c0e8(msg, 0xe1);
+        str = MsgRes_GetString(msg, 0xe1);
         break;
     case 5:
-        str = func_0204c0e8(msg, 0xde);
+        str = MsgRes_GetString(msg, 0xde);
         break;
     }
     func_ov000_0215bb14(self->unk_44, str);

@@ -153,7 +153,7 @@ void func_ov010_022075bc(Obj022075bc *self) {
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->unk_124 != NULL) {
-        func_0203de1c(self->unk_124);
+        Heap_Free(self->unk_124);
         self->unk_124 = NULL;
     }
     data_02097dd0->cur = saved;
@@ -520,7 +520,7 @@ extern Ov010V *func_ov010_0220ea84(void *self, u16 a, u16 b);
 extern const Ov010Vec data_ov010_0220f108;
 extern Ov010Vec data_ov010_0220f114;
 extern Ov010Vec data_ov010_0220f120;
-extern void func_ov000_0218dbe0(void *self, s32 a);
+extern void Actor_Move(void *self, s32 a);
 extern void *func_ov003_021da32c(u16 kind);
 
 struct Ov010Rot3 {
@@ -564,7 +564,7 @@ void func_ov010_0220813c(Obj02207828 *self) {
         if (VEC_Distance(&self->pos, &data_ov010_0220f108) <= 0x14000) {
             self->unk_9c += 0x333;
             self->unk_9c = Ov010_Clamp(self->unk_9c, 0, 0x1000);
-            func_ov000_0218dbe0(self, 0x1000);
+            Actor_Move(self, 0x1000);
         }
         self->unk_40->timer++;
         if (self->unk_40->timer <= 0x5a) {

@@ -11,9 +11,9 @@ struct Ov009Rot {
 extern void *data_ov000_021ccd68;
 extern u8 data_ov009_022160ac[];
 extern u8 data_ov009_022160c4[];
-extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
+extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
-extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_0219a210(Ov009Vec *v, const void *a, u16 b);
 extern Ov009Actor *func_ov000_0219be1c(u16 kind, const Ov009Vec *pos, const void *rot, u16 id, u16 parent);
 
@@ -21,11 +21,11 @@ static inline Ov009Actor *Ov009_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 void func_ov009_022130b4(Ov009ActVt_02217d5c *self) {
-    if (func_ov000_0218d240(self) == NULL) {
+    if (Actor_GetTarget(self) == NULL) {
         return;
     }
     switch (self->unk_40->state) {
@@ -56,10 +56,10 @@ void func_ov009_022130b4(Ov009ActVt_02217d5c *self) {
         r.x = a->rot[0];
         r.y = a->rot[1];
         r.z = a->rot[2];
-        r.x += (u16)func_02040498(0x200);
+        r.x += (u16)Rand_UpTo(0x200);
         s = self->unk_40->state;
         {
-            s32 t = func_02040498(0x400);
+            s32 t = Rand_UpTo(0x400);
             r.y += (u16)(t + (s * 0x600 + 0xee00));
         }
         func_ov000_0219a210(&p, data_ov009_022160c4, r.y);

@@ -32,11 +32,11 @@ extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd54;
 extern Rgb021aa5c8 data_ov000_021c9fe8;
 extern void *data_02097e4c;
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 VObj *func_02065f88(s32 id, void *pos);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_ov003_021cedf4(u16 n);
-s32 func_02040498(s32 max);
+s32 Rand_UpTo(s32 max);
 s32 func_02049bdc(void *a, s32 b, s32 c);
 void func_ov000_021aa978(u8 *self);
 void func_ov000_021aaf80(u8 *self);
@@ -50,7 +50,7 @@ static inline Actor *FindActor021aa5c8(u16 id) {
     if (mgr == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(mgr, id);
+    return ActorMgr_GetActor(mgr, id);
 }
 
 static inline BOOL RgbEq021aa5c8(Rgb021aa5c8 *a, Rgb021aa5c8 b) {
@@ -101,7 +101,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
             func_ov003_021cedf4(n);
         }
         if (RgbEq021aa5c8((Rgb021aa5c8 *)(data_ov000_021ccd54 + 0xca), data_ov000_021c9fe8)) {
-            func_02049bdc(data_02097e4c, 0x5e, func_02040498(3));
+            func_02049bdc(data_02097e4c, 0x5e, Rand_UpTo(3));
         }
     }
     if (self->unk_b2c_0) {

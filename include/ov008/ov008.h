@@ -520,8 +520,8 @@ OV008_SIZE(Ov008Mgr, 0x120);
 
 extern "C" {
 extern Ov008Heap *data_02097dd0;
-void *func_0203dd9c(u32 size);
-void func_0203de1c(void *p);
+void *Heap_Alloc(u32 size);
+void Heap_Free(void *p);
 void func_02041558(void *p);
 void func_02041278(void *p);
 void func_02041218(void *p);
@@ -544,9 +544,9 @@ void *func_ov000_0218fee4(void *p);
     }
 
 #define OV008_FREE_V(field, slot) OV008_FREE(field, Ov008V *, p_->slot())
-#define OV008_FREE_D(field, dtor) OV008_FREE(field, void *, (dtor(p_), func_0203de1c(p_)))
+#define OV008_FREE_D(field, dtor) OV008_FREE(field, void *, (dtor(p_), Heap_Free(p_)))
 #define OV008_FREE_M(field) \
-    OV008_FREE(field, Ov008Sprite *, (func_02041558(p_), func_02041278(p_->unk_88), func_0203de1c(p_)))
+    OV008_FREE(field, Ov008Sprite *, (func_02041558(p_), func_02041278(p_->unk_88), Heap_Free(p_)))
 
 extern "C" {
 Ov008SprSeq *NNS_G2dGetAnimSequenceByIdx(void *a, int b);

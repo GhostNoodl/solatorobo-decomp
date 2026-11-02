@@ -24,13 +24,13 @@ extern "C" {
 extern HeapState *data_02097dd0;
 void func_02041558(void *obj);
 void func_02041278(void *obj);
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 
 static inline void Obj021b87d8_DeleteMember(u8 *obj) {
     if (obj != NULL) {
         func_02041558(obj);
         func_02041278(obj + 0x88);
-        func_0203de1c(obj);
+        Heap_Free(obj);
     }
 }
 

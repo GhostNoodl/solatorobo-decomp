@@ -26,7 +26,7 @@ void *func_ov000_0214c084(u8 *self, u16 *cmd, void *arr, u16 *count);
 void func_020708fc(s32 a, LoName16 *out);
 void func_02070b98(s32 a, LoName16 *out, s32 b, s32 c);
 s32 func_0206ffa0(s32 a);
-s32 func_0204c0e8(void *p, s32 a);
+s32 MsgRes_GetString(void *p, s32 a);
 s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 void func_0204ca70(void *win);
 
@@ -55,7 +55,7 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
         func_02041d9c(self->unk_10, 0, 0xd);
         func_02041d9c(self->unk_10, 0, 0xe);
     }
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         void *arc;
         void *name;
@@ -79,7 +79,7 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
     func_020708fc(0x1000, &a);
     func_02070b98(0x1000, &b, 1, 2);
     res = func_02034d88(func_02035f30(&a, &b, 2), &b);
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         func_02041218(m + 0x88);
         func_02041440(m, &b, 0);
@@ -113,7 +113,7 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
     func_0204ca70((u8 *)self + 0x90);
 
     self->unk_170 = 4;
-    self->unk_16c = func_0204c0e8(fnt, 0x117);
+    self->unk_16c = MsgRes_GetString(fnt, 0x117);
     self->unk_194 = func_0204c4fc(self->unk_170, self->unk_180, self->unk_16c, (u8 *)self + 0x18c, (u8 *)self + 0x190, self->unk_17f != 0);
     LFLD(s32, data_02097ce0, 4) = self->unk_170;
     self->unk_14c |= 0x40;

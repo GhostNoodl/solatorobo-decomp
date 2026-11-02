@@ -24,7 +24,7 @@ Task50 *Ov002TaskVt_021efc24_DtorDelete(Task50 *self) {
     DELETE_VOBJ(TASK_VOBJ(self, 0x5c));
     HEAP_POP(saved);
     TaskBase_dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

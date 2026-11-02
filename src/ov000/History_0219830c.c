@@ -39,11 +39,11 @@ typedef struct ActorMgr ActorMgr;
 
 extern ActorMgr *data_ov000_021ccd68;
 
-ActorC *func_ov000_0218e640(ActorMgr *mgr, u16 id);
+ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 void func_0203f260(ActorSub48 *self);
-void func_0203f324(ActorSub48 *self);
+void HitSphere_Link(ActorSub48 *self);
 void func_0203f364(ActorSub48 *self);
 void func_ov000_02198ad8(ActorSub48 *self, VecFx32 *pos, VecFx32 *offset);
 
@@ -52,7 +52,7 @@ static inline ActorC *FindActor(u16 id) {
     if (mgr == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(mgr, id);
+    return ActorMgr_GetActor(mgr, id);
 }
 
 void func_ov000_0219830c(void) {
@@ -198,7 +198,7 @@ ActorSub48 *func_ov000_021985e8(ActorSub48 *self) {
     *(u16 *)((u8 *)self + 0x9a) = 0;
     self->unk_30 = 0xc0000000;
     self->unk_34 = 0;
-    func_0203f324(self);
+    HitSphere_Link(self);
     self->unk_50 = 0;
     self->unk_54 = 0;
     self->unk_58 = 0;
@@ -219,7 +219,7 @@ void func_ov000_0219864c(ActorSub48 *self, VecFx32 *pos, u16 *rot) {
         if (!self->unk_9a_3) {
             func_0203f364(self);
         } else {
-            func_0203f324(self);
+            HitSphere_Link(self);
         }
         if (!self->unk_9a_8) {
             if (self->unk_9a_4) {

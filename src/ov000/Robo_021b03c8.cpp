@@ -6,7 +6,7 @@ extern "C" {
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern VecFx32 data_ov000_021ca000;
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 ang);
 void *func_ov000_0219be1c(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
 void func_ov000_0218996c(u8 a, u8 b);
@@ -20,7 +20,7 @@ static inline Actor *FindActor021b03c8(u16 id) {
     if (mgr == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(mgr, id);
+    return ActorMgr_GetActor(mgr, id);
 }
 
 static inline void Next021b03c8(Robo021ca458 *self) {

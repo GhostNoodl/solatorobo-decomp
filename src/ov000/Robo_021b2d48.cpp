@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 void *func_ov000_0218d2e0(void *self);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void *func_ov000_02199d78(void *p);
 void *func_ov000_021b2f08(void *self, void *a, void *b, BOOL c);
 void *func_02049a48(void *p, s32 id, s32 a, s32 b, s32 c);
@@ -19,7 +19,7 @@ static inline Actor *FindActor021b2d48(u16 id) {
     if (mgr == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(mgr, id);
+    return ActorMgr_GetActor(mgr, id);
 }
 
 void func_ov000_021b2d48(Robo021ca458 *self) {

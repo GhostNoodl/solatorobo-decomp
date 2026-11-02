@@ -14,14 +14,14 @@ extern char data_ov000_021cc469[];
 extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern Save021971c4 *data_0214a424;
-void *func_ov000_02199ba0(void *p);
+void *Target_Get(void *p);
 BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
-void func_ov000_02199b88(void *a, void *b);
+void Target_Set(void *a, void *b);
 BOOL func_ov000_02199cd8(void *a, u16 id);
 BOOL func_ov000_02191120(void *a);
-void func_ov000_0218d398(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 u8 *func_020704b4(u16 id);
 void func_ov000_0219b400(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 check);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
@@ -35,7 +35,7 @@ static inline Actor *FindActor021971c4(u16 id) {
     if (mgr == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(mgr, id);
+    return ActorMgr_GetActor(mgr, id);
 }
 
 static inline void SetNibble021971c4(s32 row, s32 idx, u32 value) {
@@ -56,7 +56,7 @@ void func_ov000_021971c4(VObj *obj) {
     ActorEx *self = (ActorEx *)obj;
     u32 none = 0xffff;
     s32 zero = 0;
-    u8 *tgt = (u8 *)func_ov000_02199ba0(((u8 *)self->unk_4c));
+    u8 *tgt = (u8 *)Target_Get(((u8 *)self->unk_4c));
     switch (self->unk_40->st) {
     case 0:
         if (self->unk_38 != NULL) {
@@ -71,7 +71,7 @@ void func_ov000_021971c4(VObj *obj) {
                     func_ov000_0218d46c(a, self->id, 6);
                     a->target = none;
                     if (((void *)a->unk_4c) != NULL) {
-                        func_ov000_02199b88(((void *)a->unk_4c), self);
+                        Target_Set(((void *)a->unk_4c), self);
                     }
                 }
             } else if (func_ov000_02199cd8(((u8 *)self->unk_4c), LFLD(u16, tgt, 0xe))) {
@@ -86,7 +86,7 @@ void func_ov000_021971c4(VObj *obj) {
             break;
         }
         if (tgt != NULL) {
-            func_ov000_0218d398(tgt, self->id, 3, 1, zero, (const void *)zero);
+            Actor_SendMsg(tgt, self->id, 3, 1, zero, (const void *)zero);
         }
         if (self->unk_4c->unk_01 == 8) {
             u8 *d = func_020704b4(self->kind);

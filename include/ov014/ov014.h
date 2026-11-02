@@ -328,7 +328,7 @@ struct Ov014Param {
     u16 unk_0a_10 : 6;
 };
 
-// The ov000 Target object at Ov014Obj::unk_4c (Target_02199b00.c; func_ov000_02199ba0 looks up
+// The ov000 Target object at Ov014Obj::unk_4c (Target_02199b00.c; Target_Get looks up
 // the actor whose id is in target).
 struct Ov014Target {
     u8 type;
@@ -365,7 +365,7 @@ struct Ov014Step {
 };
 
 // The object base shared by the ov003 actor (Ov014Actor, built by func_ov003_021d0c1c) and the
-// ov000 actor (Ov014ActorEx, built by func_ov000_02194074): the fields below 0xac.
+// ov000 actor (Ov014ActorEx, built by ActorEx_Ctor): the fields below 0xac.
 class Ov014Obj : public Ov014V {
 public:
     u8 unk_04[0x8];
@@ -468,7 +468,7 @@ public:
     u16 unk_ee_9 : 7;
 };
 
-// The ov000 actor base (func_ov000_02194074): 0xd0 bytes, with its own fields from 0xac.
+// The ov000 actor base (ActorEx_Ctor): 0xd0 bytes, with its own fields from 0xac.
 class Ov014ActorEx : public Ov014Obj {
 public:
     u8 unk_ac[0x4];
@@ -573,15 +573,15 @@ static inline BOOL Ov014_GameIdle(void) {
 }
 
 extern "C" {
-void func_0203de1c(void *p);
-void *func_0203dd9c(u32 size);
+void Heap_Free(void *p);
+void *Heap_Alloc(u32 size);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 void *func_ov003_021d0edc(void *self);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-s32 func_02040528(s32 max);
-s32 func_02040498(s32 max);
+s32 Rand_PlusMinus(s32 max);
+s32 Rand_UpTo(s32 max);
 void VEC_MultAdd(s32 scale, const Ov014Vec *dir, const Ov014Vec *base, Ov014Vec *out);
 s32 VEC_Distance(const Ov014Vec *a, const Ov014Vec *b);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
@@ -623,7 +623,7 @@ static inline void Ov014_FreeFx(void *self, u32 off) {
         void *p = FLD(void *, self, off);
         if (p != NULL) {
             func_ov003_021da940(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         FLD(void *, self, off) = NULL;
     }
@@ -631,7 +631,7 @@ static inline void Ov014_FreeFx(void *self, u32 off) {
 }
 
 static inline s32 *Ov014_NewFx(void) {
-    s32 *p = (s32 *)func_0203dd9c(4);
+    s32 *p = (s32 *)Heap_Alloc(4);
     if (p != NULL) {
         *p = 0;
     }

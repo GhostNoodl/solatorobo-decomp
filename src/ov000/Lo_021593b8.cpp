@@ -31,7 +31,7 @@ typedef struct {
 extern "C" {
 
 extern u8 *data_02097d48;
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void func_ov000_02153c48(void *item, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02153f30(VObj *self, s32 a);
 void func_ov000_02153f60(VObj *self, s32 a);
@@ -61,7 +61,7 @@ void func_ov000_021593b8(Lo021cb3a8 *self, s32 on, s32 *pos) {
     g = data_02097d48;
     k = 0;
     lh = self->vfunc_40();
-    col = func_02043d48(g + 0x8b0);
+    col = Gfx3DState_NextPolyId(g + 0x8b0);
     if (!(self->unk_0c & 0x20000)) {
         lo = ((Item021593b8 *)self->unk_98)->idx;
         hi = lo + self->unk_20;

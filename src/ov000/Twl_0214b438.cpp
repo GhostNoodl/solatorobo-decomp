@@ -4,7 +4,7 @@ extern "C" {
 
 BOOL OS_IsRunOnTwl(void);
 void OS_Terminate(void);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 
 /* TWL-only code (absolute symbols, config/usa/arm9/abs_symbols.txt). */
 void *func_0222ebc4(void *self);
@@ -30,7 +30,7 @@ void func_ov000_0214b438(void) {
     if (!OS_IsRunOnTwl()) {
         OS_Terminate();
     }
-    p = func_0203dd9c(0x14);
+    p = Heap_Alloc(0x14);
     if (p != NULL) {
         p = func_0222ebc4(p);
     }

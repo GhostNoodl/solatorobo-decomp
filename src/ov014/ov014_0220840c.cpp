@@ -10,10 +10,10 @@ struct Ov014HitArg {
 extern "C" {
 
 extern void *data_02097e4c;
-extern Ov014Actor *func_ov000_0218d240(Ov014Obj *self);
+extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
 extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s32 a, Ov014Actor **list);
 extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
-extern void func_ov000_0218d398(Ov014Actor *t, u16 id, s32 a, s32 b, s32 c, Ov014HitArg *arg);
+extern void Actor_SendMsg(Ov014Actor *t, u16 id, s32 a, s32 b, s32 c, Ov014HitArg *arg);
 extern BOOL func_ov003_021daa0c(void *p, s32 a);
 extern void func_ov003_021da9ac(void *p, s32 a, void *e);
 extern void func_ov003_021daae4(void *p, s32 a, Ov014Vec *v, s32 b, s32 c, s32 d, s32 e);
@@ -40,7 +40,7 @@ static inline BOOL Ov014_AnyHit(Ov014ActEx_0220774c *self) {
 }
 
 void func_ov014_0220840c(Ov014ActEx_0220774c *self) {
-    Ov014Actor *t = func_ov000_0218d240(self);
+    Ov014Actor *t = Actor_GetTarget(self);
     Ov014Vec p;
     p.x = t->pos.x;
     p.y = t->pos.y;
@@ -51,7 +51,7 @@ void func_ov014_0220840c(Ov014ActEx_0220774c *self) {
             arg.b = 0x666;
             arg.a = 1;
             arg.c = 1;
-            func_ov000_0218d398(t, self->id, 0xb, 1, 6, &arg);
+            Actor_SendMsg(t, self->id, 0xb, 1, 6, &arg);
             p.y += 0x1800;
             if (!func_ov003_021daa0c(self->unk_d8, 0xfe)) {
                 Ov014V *e = func_02065f88(0xcb, &p);
@@ -73,13 +73,13 @@ void func_ov014_0220840c(Ov014ActEx_0220774c *self) {
 
 
 extern u8 data_ov014_02217708[];
-extern void *func_ov000_02194074(void *self);
+extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
 extern void func_0203f364(Ov014Sub48 *p);
 
 #pragma force_active on
 Ov014ActEx_02208618 *Ov014ActEx_02208618_Ctor(Ov014ActEx_02208618 *self) {
-    func_ov000_02194074(self);
+    ActorEx_Ctor(self);
     FLD(void *, self, 0) = data_ov014_02217708;
     self->unk_d0 = 0;
     self->unk_d8 = NULL;
@@ -99,7 +99,7 @@ Ov014ActEx_02208618 *Ov014ActEx_02208618_DtorDelete(Ov014ActEx_02208618 *self) {
     FLD(void *, self, 0) = data_ov014_02217708;
     Ov014_FreeFx(self, 0xd8);
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

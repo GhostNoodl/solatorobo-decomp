@@ -110,8 +110,8 @@ extern void *data_02097e4c;
 extern const char *data_ov003_021f7a48[][2];
 extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a66[];
-extern Ov003KbUnit *func_ov000_0218e640(void *mgr, u16 id);
-extern void func_ov000_0218d988(void *self, Ov003KbUnit *target, s32 a);
+extern Ov003KbUnit *ActorMgr_GetActor(void *mgr, u16 id);
+extern void Actor_TurnToActor(void *self, Ov003KbUnit *target, s32 a);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern BOOL func_ov000_02191120(void *model);
@@ -122,8 +122,8 @@ extern u16 func_ov000_02198da8(Ov003KbCtl *ctl, u16 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_02049f44(void *mgr, s32 id, Ov003KbVec *pos, s32 a);
 extern void *func_02065f88(s32 id, Ov003KbVec *pos);
-extern void func_ov000_0218dbe0(void *self, s32 a);
-extern void func_ov000_0218ddd4(void *self, Ov003KbVec *v, s32 a);
+extern void Actor_Move(void *self, s32 a);
+extern void Actor_MoveToPos(void *self, Ov003KbVec *v, s32 a);
 extern void func_ov000_021987b8(Ov003KbCtl *ctl, s32 a, s32 b, s32 c);
 
 static inline BOOL Ov003Kb_GameBusy(Ov003KbGame *g) {
@@ -152,7 +152,7 @@ static inline Ov003KbUnit *Ov003Kb_FindUnit(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 void func_ov003_021d452c(Ov003Kb *self) {
@@ -179,7 +179,7 @@ void func_ov003_021d452c(Ov003Kb *self) {
         self->work->state++;
         break;
     case 1:
-        func_ov000_0218d988(self, pl, self->unk_b0->unk_02);
+        Actor_TurnToActor(self, pl, self->unk_b0->unk_02);
         if (self->model->unk_c4 == 1) {
             self->work->state = 10;
         }
@@ -294,11 +294,11 @@ void func_ov003_021d452c(Ov003Kb *self) {
             v.x = pl->pos.x;
             v.y = pl->pos.y;
             v.z = pl->pos.z;
-            func_ov000_0218ddd4(self, &v, 0);
+            Actor_MoveToPos(self, &v, 0);
         }
         f = FALSE;
     } else {
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         if (self->unk_c4 != NULL && self->unk_c4->unk_00_4 == 1) {
             f = FALSE;
         }

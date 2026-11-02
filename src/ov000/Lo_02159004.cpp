@@ -26,7 +26,7 @@ typedef struct Node02155160 {
 extern "C" {
 extern void *data_02097e4c;
 extern HeapState02155160 *data_02097dd0;
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 }
 

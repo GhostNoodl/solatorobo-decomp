@@ -68,16 +68,16 @@ extern "C" {
 extern u32 data_ov003_021f79a8;
 extern Ov003HeapCtx *data_02097dd0;
 extern u32 STD_GetStringLength(const char *s);
-extern void *func_0203dddc(u32 size);
+extern void *Heap_AllocArray(u32 size);
 extern int STD_CopyLString(void *dst, const void *src, u32 size);
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 void func_ov003_021cf5e8(Ov003Group *self);
 
 extern u8 data_ov003_021f7984[];
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 
 void func_ov003_021cf1f0(Ov003EntryList *self, u16 id, u16 max, u32 c) {
-    Ov003Entry *e = (Ov003Entry *)func_0203dd9c(sizeof(Ov003Entry));
+    Ov003Entry *e = (Ov003Entry *)Heap_Alloc(sizeof(Ov003Entry));
     Ov003Entry *p;
     if (e != NULL) {
         e->vtbl = data_ov003_021f7984;
@@ -134,7 +134,7 @@ Ov003FlagObj *Ov003Vt_021f79a8_Dtor(Ov003FlagObj *self) {
 Ov003FlagObj *Ov003Vt_021f79a8_DtorDelete(Ov003FlagObj *self) {
     *(void **)self = &data_ov003_021f79a8;
     self->Release();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -155,7 +155,7 @@ void func_ov003_021cf340(const char *str) {
     data_02097dd0->cur = data_02097dd0->alt;
     data_02097dd0->cur = old;
     n = STD_GetStringLength(str) + 1;
-    buf = func_0203dddc(n * 2 - n);
+    buf = Heap_AllocArray(n * 2 - n);
     STD_CopyLString(buf, str, STD_GetStringLength(str) + 1);
 }
 
@@ -166,7 +166,7 @@ void func_ov003_021cf39c(void *self, const char *str) {
     data_02097dd0->cur = data_02097dd0->alt;
     data_02097dd0->cur = old;
     n = STD_GetStringLength(str) + 1;
-    buf = func_0203dddc(n * 2 - n);
+    buf = Heap_AllocArray(n * 2 - n);
     STD_CopyLString(buf, str, STD_GetStringLength(str) + 1);
 }
 
@@ -249,9 +249,9 @@ void *func_ov003_021cf52c(Ov003Group *self, void *obj, u16 key4, u16 key8) {
         Ov003Link *a;
         Ov003Link *b;
         ret = obj;
-        item = (Ov003Item *)func_0203dd9c(sizeof(Ov003Item));
-        a = (Ov003Link *)func_0203dd9c(sizeof(Ov003Link));
-        b = (Ov003Link *)func_0203dd9c(sizeof(Ov003Link));
+        item = (Ov003Item *)Heap_Alloc(sizeof(Ov003Item));
+        a = (Ov003Link *)Heap_Alloc(sizeof(Ov003Link));
+        b = (Ov003Link *)Heap_Alloc(sizeof(Ov003Link));
         item->flag = 0;
         item->unk_02 = self->unk_02;
         item->obj = (Ov003VObj *)obj;
@@ -292,16 +292,16 @@ void func_ov003_021cf5e8(Ov003Group *self) {
         old = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->alt;
         if (l->item != NULL) {
-            func_0203de1c(l->item);
+            Heap_Free(l->item);
             l->item = NULL;
         }
         data_02097dd0->cur = old;
-        func_0203de1c(l);
+        Heap_Free(l);
     }
     self->list4 = NULL;
     for (l = self->list8; l != NULL; l = next) {
         next = l->next;
-        func_0203de1c(l);
+        Heap_Free(l);
     }
     self->list8 = NULL;
     self->unk_02 = 0;

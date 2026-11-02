@@ -21,14 +21,14 @@ extern "C" {
 
 extern u8 data_ov014_02217d3a[];
 extern Ov014Actor *func_ov000_0219bf90(void);
-extern void func_ov000_0218d988(Ov014Obj *self, Ov014Obj *target, s32 a);
+extern void Actor_TurnToActor(Ov014Obj *self, Ov014Obj *target, s32 a);
 extern void *data_ov000_021ccd64;
 extern u8 data_ov014_02217d4c[];
 extern u8 data_ov014_02216dc0[];
-extern Ov014Actor *func_ov000_0218d240(Ov014Obj *self);
+extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
 extern void func_ov000_02191618(void *a);
-extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDesc *d, void *pos, void *rot, u16 a);
+extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, void *pos, void *rot, u16 a);
 
 static inline void Ov014_TimerTick(Ov014Sub40 *s) {
     if (s->timer != 0) {
@@ -46,7 +46,7 @@ void func_ov014_02212f8c(Ov014Act_0221267c *self) {
         self->unk_40->timer = 60;
         break;
     case 1:
-        func_ov000_0218d988(self, func_ov000_0219bf90(), 0x400);
+        Actor_TurnToActor(self, func_ov000_0219bf90(), 0x400);
         s = self->unk_40;
         if (Ov014Sub40_Timer(s) == 0) {
             s->state++;
@@ -76,7 +76,7 @@ void func_ov014_0221308c(Ov014Act_0221267c *self) {
         self->unk_40->timer = 20;
         break;
     case 10:
-        func_ov000_0218d988(self, func_ov000_0218d240(self), 0x400);
+        Actor_TurnToActor(self, Actor_GetTarget(self), 0x400);
         s = self->unk_40;
         if (Ov014Sub40_Timer(s) == 0) {
             func_02065f88(0x5e2, (Ov014Vec *)((u8 *)self + 0x33c))->v14(0x2000, 0x2000, 0x2000);
@@ -100,7 +100,7 @@ void func_ov014_0221308c(Ov014Act_0221267c *self) {
             Ov014SpawnDesc desc;
             Ov014Actor *o;
             Ov014Spawn_Init(&desc, 0x483a);
-            o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, (u8 *)self + 0x33c, self->rot, 0xffff);
+            o = Group_SpawnActor(data_ov000_021ccd64, &desc, (u8 *)self + 0x33c, self->rot, 0xffff);
             o->unk_60 = data_ov014_02216dc0;
             o->unk_90 = self->unk_90;
             if (o->unk_4c != NULL) {
@@ -129,7 +129,7 @@ void func_ov014_0221308c(Ov014Act_0221267c *self) {
 extern u16 FX_Atan2(s32 x, s32 z);
 extern u16 func_01ffc128(u16 a, u16 b, s32 c, s32 d, s32 e);
 extern void *data_ov000_021ccd68;
-extern Ov014Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 void func_ov014_02213318(Ov014Act_0221267c *self) {
     Ov014Sub40 *s = self->unk_40;
@@ -172,7 +172,7 @@ void func_ov014_02213318(Ov014Act_0221267c *self) {
             Ov014SpawnDesc desc;
             Ov014Actor *o;
             Ov014Spawn_Init(&desc, 0x483a);
-            o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, (u8 *)self + 0x33c, self->rot, 0xffff);
+            o = Group_SpawnActor(data_ov000_021ccd64, &desc, (u8 *)self + 0x33c, self->rot, 0xffff);
             o->unk_60 = data_ov014_02216dc0;
             o->unk_90 = self->unk_90;
             if (o->unk_4c != NULL) {
@@ -197,7 +197,7 @@ void func_ov014_02213318(Ov014Act_0221267c *self) {
             if (data_ov000_021ccd68 == NULL) {
                 a = NULL;
             } else {
-                a = func_ov000_0218e640(data_ov000_021ccd68, id);
+                a = ActorMgr_GetActor(data_ov000_021ccd68, id);
             }
             if (a != NULL) {
                 a->pos = self->unk_33c;

@@ -5,10 +5,10 @@
 extern "C" {
 extern u8 *data_ov000_021ccd54;
 extern u8 *data_0214a424;
-u16 func_0204bfa8(void *cam);
+u16 Camera_GetYaw(void *cam);
 void func_ov000_0218dd8c(void *self, u16 base, s32 turn, void *range);
-void func_ov000_0218ddd4(void *self, const VecFx32 *target, s32 turn);
-void func_ov000_0218dbe0(void *self, s32 turn);
+void Actor_MoveToPos(void *self, const VecFx32 *target, s32 turn);
+void Actor_Move(void *self, s32 turn);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void func_ov000_021b209c(void *self);
 
@@ -28,7 +28,7 @@ void func_ov000_021b1dd8(Robo021ca458 *self, s32 target, s32 rate, s32 speed, s3
             if (LFLD(u16, cam, 0x40) != 0) {
                 ang = LFLD(u16, cam, 0x44);
             } else {
-                ang = func_0204bfa8(cam);
+                ang = Camera_GetYaw(cam);
             }
             self->unk_9c += LO_FX_MUL(rate, target - self->unk_9c);
             if (self->unk_9c >= target) {
@@ -42,13 +42,13 @@ void func_ov000_021b1dd8(Robo021ca458 *self, s32 target, s32 rate, s32 speed, s3
     } else if (self->unk_b28_0) {
         self->unk_9c = self->unk_b08;
         self->unk_a4 = 0x1000;
-        func_ov000_0218ddd4(self, (VecFx32 *)((u8 *)self + 0xb10), turn);
+        Actor_MoveToPos(self, (VecFx32 *)((u8 *)self + 0xb10), turn);
         moved = doAnim;
         doAnim = FALSE;
     }
     if (!moved) {
         self->unk_a4 = speed;
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
     }
     if (ox != self->pos.x || oz != self->pos.y) {
         self->unk_ba8 += self->unk_9c;

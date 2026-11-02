@@ -59,7 +59,7 @@ void func_ov002_021d37f8(void *self) {
     }
     func_0203cc58(0, 0, 1);
     func_0203cb78(0xc000, 0, 1);
-    m = func_0203dd9c(0x160);
+    m = Heap_Alloc(0x160);
     if (m != NULL) {
         func_02041218((u8 *)m + 0x88);
         func_02041440(m, NULL, 0);

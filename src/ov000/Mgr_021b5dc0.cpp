@@ -84,7 +84,7 @@ void func_ov000_0218b7c0(void *o, u16 kind, s32 mode);
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_0218c040(void *mgr, s32 a, VecFx32 *out, s32 b, s32 c);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_ov000_02198d28(u8 *a, VecFx32 *v, u16 b);
 void **func_02035edc(const char *a, const char *b);
 void *NNS_G3dGetAnmByIdx(void *p, s32 idx);
@@ -188,7 +188,7 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
                     pl->unk_75c = out;
                     LFLD(Rgb021b5dc0, pl, 0x772) = LFLD(Rgb021b5dc0, data_ov000_021ccd54, 0xca);
                 } else {
-                    a = data_ov000_021ccd68 == NULL ? NULL : (u8 *)func_ov000_0218e640(data_ov000_021ccd68, id);
+                    a = data_ov000_021ccd68 == NULL ? NULL : (u8 *)ActorMgr_GetActor(data_ov000_021ccd68, id);
                     if (a != NULL) {
                         VEC_Add(&base, &self->unk_70[i], &out);
                         LFLD(VecFx32, a, 0x70) = out;

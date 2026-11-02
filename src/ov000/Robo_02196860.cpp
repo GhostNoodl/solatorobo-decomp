@@ -23,15 +23,15 @@ extern char data_ov000_021cc456[];
 extern u8 *data_0214a424;
 BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-void func_0203f324(void *a);
+void HitSphere_Link(void *a);
 void func_0203f364(void *a);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 Robo021ca458 *func_ov000_0219bf90(void);
-void *func_ov000_02199ba0(void *p);
-void func_ov000_02199b88(void *a, void *b);
+void *Target_Get(void *p);
+void Target_Set(void *a, void *b);
 void func_ov003_021f0c60(void *self, s32 a);
 void *func_ov003_021f0868(void *pos, s32 a, s32 b);
-s32 func_02040498(s32 n);
+s32 Rand_UpTo(s32 n);
 u16 FX_Atan2(s32 a, s32 b);
 s32 func_01ffbd6c(Vec02196860 *a, Vec02196860 *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 fx, const Vec02196860 *a, const Vec02196860 *b, Vec02196860 *dst);
@@ -83,14 +83,14 @@ void func_ov000_02196860(ActorEx *self) {
             LFLD(Bits02196860, q, 0x22).b1 = 1;
         }
         if (self->unk_48 != NULL) {
-            self->unk_9c = 0xf6 - func_02040498(0x7b);
-            self->unk_a0 = 0x2e1 - func_02040498(0x5c);
+            self->unk_9c = 0xf6 - Rand_UpTo(0x7b);
+            self->unk_a0 = 0x2e1 - Rand_UpTo(0x5c);
             self->unk_a4 = 0;
             self->unk_a8 = 0x52;
             if (self->unk_4c->unk_1c == 0xffff) {
                 self->unk_98 = self->rot_y;
             } else {
-                u8 *t = (u8 *)func_ov000_02199ba0(((u8 *)self->unk_4c));
+                u8 *t = (u8 *)Target_Get(((u8 *)self->unk_4c));
                 if (t != NULL) {
                     Vec02196860 a;
                     Vec02196860 b;
@@ -117,7 +117,7 @@ void func_ov000_02196860(ActorEx *self) {
                 ActorSub48 *q = self->unk_48;
                 LFLD(Bits02196860, q, 0x9a).b0 = 1;
                 q->unk_9a_3 = 1;
-                func_0203f324(q);
+                HitSphere_Link(q);
                 LFLD(u16, self->unk_48, 0x9a) |= 0x12;
                 self->unk_48->unk_9a_4 = 0;
             }
@@ -138,7 +138,7 @@ void func_ov000_02196860(ActorEx *self) {
     if (((u8 *)self->unk_4c) != NULL && self->unk_4c->unk_00 == 2) {
         void *r = func_ov003_021f0868(&self->pos, self->unk_64, self->unk_68);
         if (r != NULL) {
-            func_ov000_02199b88(((u8 *)self->unk_4c), r);
+            Target_Set(((u8 *)self->unk_4c), r);
             func_ov000_02198360(self->unk_40, 0xd, 0);
         }
     }

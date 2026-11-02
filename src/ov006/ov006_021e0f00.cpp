@@ -38,7 +38,7 @@ void func_ov006_021e0f00(ov006_Unk021e0f00 *self) {
         func_0204ca14(self->unk20, 8);
         self->unk20->unk4 |= 4;
     }
-    model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec1a9;
         if (name) {

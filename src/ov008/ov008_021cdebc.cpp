@@ -47,7 +47,7 @@ void func_0203cc58(int a, int b, int c);
 void *func_0204c08c(void *a, u16 b, s32 *c, int d);
 void func_ov000_0214c6b4(void *a, s32 b, void *c, int d);
 u16 func_02061d54(s32 a);
-s32 func_0204c0e8(void *p, s32 id);
+s32 MsgRes_GetString(void *p, s32 id);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_02041cb4(void *a, int b);
 void func_ov000_02190a80(void *a, s32 b);
@@ -96,7 +96,7 @@ void *func_ov008_021cd3dc(void);
 }
 
 static inline Ov008Model *Ov008_NewMdl(void) {
-    Ov008Model *a = (Ov008Model *)func_0203dd9c(0xe8);
+    Ov008Model *a = (Ov008Model *)Heap_Alloc(0xe8);
     if (a != NULL) {
         a = (Ov008Model *)func_ov000_0218fe1c(a);
     }
@@ -136,7 +136,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     func_ov000_021915a0(m->unk_d0);
     func_ov000_02190a30(m->unk_d0, 0)->unk_112 = 0x400;
 
-    p = (Ov008Sprite *)func_0203dd9c(0x160);
+    p = (Ov008Sprite *)Heap_Alloc(0x160);
     if (p != NULL) {
         const char *name = data_ov008_021d04a7;
         if (name) {
@@ -148,7 +148,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     func_020417e0(m->unk_d8, (void *)m->unk_d4->v10());
     func_02041d9c(m->unk_d8, 2, 0xffff);
 
-    p = (Ov008Sprite *)func_0203dd9c(0x160);
+    p = (Ov008Sprite *)Heap_Alloc(0x160);
     if (p != NULL) {
         const char *name = data_ov008_021d04a7;
         if (name) {
@@ -161,7 +161,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     func_02041d9c(m->unk_e0, 0, 0xffff);
     m->unk_e0->unk_150 = -0x1fe66;
 
-    p = (Ov008Sprite *)func_0203dd9c(0x160);
+    p = (Ov008Sprite *)Heap_Alloc(0x160);
     if (p != NULL) {
         const char *name = data_ov008_021d04c5;
         if (name) {
@@ -182,7 +182,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     {
     Ov008Sprite *q;
     res = func_02034d88(func_02035d5c(data_0208cca0), data_0208cb74);
-    q = (Ov008Sprite *)func_0203dd9c(0x160);
+    q = (Ov008Sprite *)Heap_Alloc(0x160);
     if (q != NULL) {
         void *file = data_0208cca0;
         void *nm = data_0208cb74;
@@ -199,7 +199,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     {
     Ov008Sprite *q;
     res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-    q = (Ov008Sprite *)func_0203dd9c(0x160);
+    q = (Ov008Sprite *)Heap_Alloc(0x160);
     if (q != NULL) {
         void *file = data_0208cc94;
         void *nm = data_0208cc88;
@@ -216,7 +216,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     m->unk_f0->attr.alpha = 0x1e;
     func_02041c5c(m->unk_f0, (void *)func_ov008_021cd3dc);
 
-    c = (Ov008Caption *)func_0203dd9c(0x54);
+    c = (Ov008Caption *)Heap_Alloc(0x54);
     if (c != NULL) {
         OV008_SET_VT(&c->pic, &data_0208b318);
         c->pic.v08();
@@ -227,7 +227,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     }
     m->unk_f4 = c;
 
-    pn = (Ov008Panel *)func_0203dd9c(0x6c);
+    pn = (Ov008Panel *)Heap_Alloc(0x6c);
     if (pn != NULL) {
         OV008_SET_VT(&pn->pic, &data_0208b318);
         pn->pic.v08();
@@ -246,7 +246,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     func_0205aa30(m->unk_fc);
     func_ov000_0214bc94();
 
-    t = (Ov008Talk *)func_0203dd9c(0x21c);
+    t = (Ov008Talk *)Heap_Alloc(0x21c);
     if (t != NULL) {
         OV008_SET_VT(t, &data_ov000_021cac60);
         t->v28();

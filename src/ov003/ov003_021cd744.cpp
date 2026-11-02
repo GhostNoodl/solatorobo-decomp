@@ -204,15 +204,15 @@ extern void *data_02149ef8;
 extern Ov003CdHeap *data_02097dd0;
 extern void *data_ov000_021cac60;
 extern void *data_ov000_021cad50;
-s32 func_02049130(s32 t, s32 a, s32 b);
+s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 s32 func_02049bdc(void *a, s32 b, s32 c);
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_02041c18(void *m, u16 c);
 void func_02041c20(void *m, u16 a, u16 b);
 void func_02041c5c(void *m, void *fn);
-void *func_0203dd9c(u32 size);
-void *func_0204c0e8(void *a, int id);
+void *Heap_Alloc(u32 size);
+void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215c1bc(void *a, int b, const void *c);
 void func_ov003_021cce20(void);
 
@@ -242,7 +242,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
     VecFx32 zero;
     VecFx32 v2;
     u16 trig = data_02097dc8->trig;
-    self->pos.x = func_02049130(self->unk3C->unk38, 0xff000, 0);
+    self->pos.x = Interp_SinLerp(self->unk3C->unk38, 0xff000, 0);
     self->pos.y = -0xe000;
     self->pos.z = 0;
     switch (self->state) {
@@ -269,7 +269,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
     case 10: {
         fx32 t = FX_Div(self->timer << 12, 0x14000);
         fx32 s;
-        u8 a = func_02049130(t, 0x1f000, 0) >> 12;
+        u8 a = Interp_SinLerp(t, 0x1f000, 0) >> 12;
         Ov003CdSprite *spr = self->unk44;
         self->unk48->alpha = a;
         self->unk4C->alpha = a;
@@ -287,7 +287,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
                 func_02049bdc(data_02097e4c, 0x26, -2);
             }
         }
-        s = func_02049130(t, 0x99a, 0x1000);
+        s = Interp_SinLerp(t, 0x99a, 0x1000);
         VEC_Add(&self->ofs, &self->pos, &v2);
         Ov003Cd_SetSprite(self->unk44, &v2, s, 0);
         if (--self->timer < 0) {
@@ -297,8 +297,8 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
     }
     case 0x14: {
         fx32 t = FX_Div(self->timer << 12, 0x14000);
-        u8 a = func_02049130(t, 0, 0xa000) >> 12;
-        u8 b = func_02049130(t, 0, 0xa000) >> 12;
+        u8 a = Interp_SinLerp(t, 0, 0xa000) >> 12;
+        u8 b = Interp_SinLerp(t, 0, 0xa000) >> 12;
         u16 c = b | (a << 8);
         func_02041c18(self->unk44, c);
         func_02041c18(self->unk48, c);
@@ -339,7 +339,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
     case 0x28: {
         Ov003CdWin *w;
         void *res = data_02149ef8;
-        w = (Ov003CdWin *)func_0203dd9c(0xe8);
+        w = (Ov003CdWin *)Heap_Alloc(0xe8);
         if (w != NULL) {
             w->vtbl = &data_ov000_021cac60;
             OV003_VCALL(w, 28);
@@ -347,7 +347,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
             OV003_VCALL(w, 28);
         }
         self->unk40 = w;
-        func_ov000_0215c1bc(self->unk40, 0x11, func_0204c0e8(res, 0x5d));
+        func_ov000_0215c1bc(self->unk40, 0x11, MsgRes_GetString(res, 0x5d));
         self->unk40->flags &= ~0x10000;
         OV003_VCALL(self->unk40, 08);
         OV003_VCALL(self->unk40, 70);

@@ -9,7 +9,7 @@ extern u32 FS_TryLoadTable(void *buf, u32 size);
 extern void FS_Init(int arg);
 extern void MATHi_CRC16InitTableRev(u16 *table, u32 poly);
 extern void MI_CpuFill8(void *dst, u8 value, u32 size);
-extern ResLoader *func_0203562c(ResLoader *loader);
+extern ResLoader *ResLoader_Init(ResLoader *loader);
 extern void func_02035670(ResLoader *loader);
 extern void func_0203584c(ResLoader *loader);
 extern void func_020363d8(ResMgr *mgr);
@@ -44,7 +44,7 @@ extern BOOL NNS_G2dGetUnpackedAnimBank(void *data, void *out);
 extern BOOL NNS_G2dGetUnpackedCharacterData(void *data, void *out);
 extern BOOL NNS_G2dGetUnpackedPaletteData(void *data, void *out);
 extern BOOL NNS_G2dGetUnpackedPaletteCompressInfo(void *data, void *out);
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_0203dec8(u32 size, int align);
 extern void func_0203df40(void *ptr);
 extern BOOL func_02046e28(void *arg);
@@ -55,7 +55,7 @@ extern ResNode *func_0203657c(ResMgr *mgr, const char *name, int type);
 extern void func_02036720(ResMgr *mgr, ResNode *node, int arg);
 extern ResNode *func_02036860(ResMgr *mgr, const char *name, const char *arcName, int type, u8 toFront);
 extern void func_02036b30(ResMgr *mgr, ResNode *node);
-extern void func_0203daa4(UnkSys *sys);
+extern void Sys_WaitVBlank(UnkSys *sys);
 
 extern void *func_02034b98(ResList *list, const char *name);
 extern void *func_02034d88(ResList *list, const char *name);
@@ -76,7 +76,7 @@ ResList *func_02035934(const char *name) {
                 if (node->state == 5) {
                     break;
                 }
-                func_0203daa4(data_02097dd0);
+                Sys_WaitVBlank(data_02097dd0);
             }
         }
         if (node->state != 7) {
@@ -256,7 +256,7 @@ BOOL func_02036328(void) {
     return result;
 }
 
-void func_020363a8(void) {
+void ResMgr_Create(void) {
     if (data_02097cdc != NULL) {
         return;
     }
@@ -274,9 +274,9 @@ void func_020363d8(ResMgr *mgr) {
     mgr->unk_7bb4 = func_0203dec8(size, 4);
     FS_TryLoadTable(mgr->unk_7bb4, size);
     data_02097dd0->cur = data_02097dd0->unk_04;
-    loader = (ResLoader *)func_0203dd9c(0x40c);
+    loader = (ResLoader *)Heap_Alloc(0x40c);
     if (loader != NULL) {
-        loader = func_0203562c(loader);
+        loader = ResLoader_Init(loader);
     }
     mgr->loader = loader;
     data_02097dd0->cur = data_02097dd0->unk_08;
@@ -821,7 +821,7 @@ typedef struct ResArcHeader {
 } ResArcHeader;
 
 extern const char data_0208b3af[];
-extern ResList *func_02034b44(ResList *list);
+extern ResList *ResList_Init(ResList *list);
 extern void func_02035094(ResList *list, ResRequest *req);
 extern BOOL func_02035740(ResLoader *loader, ResRequest *req);
 extern void func_0203581c(ResLoader *loader);
@@ -889,9 +889,9 @@ BOOL func_02037bb8(ResMgr *mgr, ResNode *node) {
         if (!ResMgr_IsReadDone(mgr)) {
             break;
         }
-        list = (ResList *)func_0203dd9c(4);
+        list = (ResList *)Heap_Alloc(4);
         if (list != NULL) {
-            list = func_02034b44(list);
+            list = ResList_Init(list);
         }
         req->unk_00 = (u32)list;
         mgr->loadStep = 4;

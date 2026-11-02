@@ -63,7 +63,7 @@ void *func_ov015_0220defc(u8 *self) {
     func_ov000_0218ea20(self + 0x4c);
     SET_VT(self, data_ov015_02212f64);
     func_ov002_021e4d4c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

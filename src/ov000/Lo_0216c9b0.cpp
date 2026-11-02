@@ -21,7 +21,7 @@ void func_ov000_0216c9b0(Obj0216c9b0 *self) {
     if (p) {
         if (p) {
             func_ov000_021c216c(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_10 = NULL;
     }

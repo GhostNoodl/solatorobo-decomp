@@ -70,7 +70,7 @@ void func_ov000_021c3d20(UnitBase021ccb54_021ccbe0 *self) {
         func_02041c20(self->unk_10, 2, self);
     }
     if (self->unk_0c & 0x400000) {
-        m = (u8 *)func_0203dd9c(0x160);
+        m = (u8 *)Heap_Alloc(0x160);
         if (m) {
             void *arc;
             void *name;
@@ -91,7 +91,7 @@ void func_ov000_021c3d20(UnitBase021ccb54_021ccbe0 *self) {
         func_02041c5c(self->unk_84, (void *)func_ov000_021c782c);
     }
     if ((void *)self->unk_90 == NULL) {
-        o = (u8 *)func_0203dd9c(0x2c);
+        o = (u8 *)Heap_Alloc(0x2c);
         if (o != NULL) {
             func_ov000_0215ec44(o);
         }

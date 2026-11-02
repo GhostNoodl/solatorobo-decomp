@@ -21,9 +21,9 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021cb5a8[];
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 
-VObj *func_ov000_0214f608(VObj *self) {
+VObj *Menu021ca94c_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021ca94c);
     self->vfunc_2c();
     VOBJ_SET_VTABLE(VOBJ_AT(self, 0x148), data_0208ba70);
@@ -32,22 +32,22 @@ VObj *func_ov000_0214f608(VObj *self) {
     VOBJ_AT(self, 0x90)->vfunc_08();
     VOBJ_SET_VTABLE(self, data_ov000_021cac60);
     self->vfunc_2c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-VObj *func_ov000_0214f684(VObj *self) {
+VObj *Lo021cb5a8_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb5a8);
     self->vfunc_2c();
     VOBJ_SET_VTABLE(self, data_ov000_021caec8);
     self->vfunc_2c();
     VOBJ_SET_VTABLE(self, data_ov000_021cac60);
     self->vfunc_2c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-VObj *func_ov000_0214f6ec(VObj *self) {
+VObj *Lo021caac8_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021caac8);
     self->vfunc_2c();
     VOBJ_SET_VTABLE(self, data_ov000_021cb4a8);
@@ -56,7 +56,7 @@ VObj *func_ov000_0214f6ec(VObj *self) {
     self->vfunc_2c();
     VOBJ_SET_VTABLE(self, data_ov000_021cac60);
     self->vfunc_2c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

@@ -31,7 +31,7 @@ extern u8 *data_02097d48;
 extern u8 data_0208ba70[];
 void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 const char *func_0206ffa0(u16 id);
 s32 STD_GetStringLength(const void *s);
 s32 func_0201e950(const void *s, const void *t, s32 n);
@@ -207,7 +207,7 @@ static inline void Ov015Label_Ctor(u8 *l, void *name, void *dict) {
 }
 
 void func_ov015_02208584(Ov015UiText *self) {
-    u8 *l = (u8 *)func_0203dd9c(0x160);
+    u8 *l = (u8 *)Heap_Alloc(0x160);
     void *r;
     if (l != NULL) {
         Ov015Label_Ctor(l, data_0208cca0, data_0208cb74);
@@ -352,7 +352,7 @@ void func_ov015_02208a28(u8 *self, void *name) {
     HEAP_PUSH(saved);
     DELETE_V(FLD(void *, self, 0x84));
     HEAP_POP(saved);
-    o = (u8 *)func_0203dd9c(0xb8);
+    o = (u8 *)Heap_Alloc(0xb8);
     if (o != NULL) {
         SET_VT(o, data_0208ba70);
         func_0204c7d0(o);
@@ -365,7 +365,7 @@ void func_ov015_02208a28(u8 *self, void *name) {
     FLD(s32, p, 0x4c) = func_0204c4fc(FLD(s32, p, 0x28), FLD(s32, p, 0x38), FLD(void *, p, 0x24), p + 0x44, p + 0x48,
                                       FLD(s8, p, 0x37) != 0);
     FLD(s32, data_02097ce0, 0x4) = FLD(s32, p, 0x28);
-    FLD(Ov015Bits08a28, FLD(u8 *, self, 0x84), 0x4).f13 = func_02043d48(data_02097d48 + 0x8b0);
+    FLD(Ov015Bits08a28, FLD(u8 *, self, 0x84), 0x4).f13 = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
     FLD(Ov015Bits08a28, FLD(u8 *, self, 0x84), 0x4).b24 = 1;
     FLD(Ov015Bits08a28, FLD(u8 *, self, 0x84), 0x4).b6 = 1;
     FLD(Ov015Bits08a28, FLD(u8 *, self, 0x84), 0x4).b2 = 1;
@@ -500,7 +500,7 @@ void *func_ov015_02208e74(Ov015UiText *self) {
     HEAP_POP(saved);
     SET_VT(self, data_ov000_021cac60);
     VCALL(self)->v2c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -531,7 +531,7 @@ void func_ov015_0220900c(void *self) {
 }
 
 void *func_ov015_02209010(void *self) {
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -636,7 +636,7 @@ void func_ov015_02209270(Ov015Fish *self) {
 
 void *Ov015FishState_DtorDelete(void *self) {
     SET_VT(self, data_ov015_02212eb0);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

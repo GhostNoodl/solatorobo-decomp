@@ -18,7 +18,7 @@ char *func_02061f94(u16 id);
 void func_020359fc(void *a, void *b, s32 c, s32 d);
 BOOL func_02035bd4(void *a, void *b, s32 c);
 void *func_02035f30(void *a, void *b, s32 c);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02034d88(void *a, void *b);
@@ -87,7 +87,7 @@ BOOL func_ov000_021b8284(Obj021b8284 *self) {
         if (!FadeIdle021b8284() && !Fade4_021b8284()) {
             break;
         }
-        p = (u8 *)func_0203dd9c(0x160);
+        p = (u8 *)Heap_Alloc(0x160);
         if (p != NULL) {
             func_02041218(p + 0x88);
             func_02041440(p, (u8 *)self + 0x24, 1);

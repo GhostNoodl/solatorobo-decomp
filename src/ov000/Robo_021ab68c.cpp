@@ -29,7 +29,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern char data_ov000_021cc6ba[];
 extern char data_ov000_021cc5e3[];
-Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL func_ov000_02191508(void *a);
 void *func_ov000_02191318(void *a, s32 b);
 void func_ov000_0218999c(s32 a, s32 b);
@@ -47,7 +47,7 @@ static inline Actor *FindActor021ab68c(u16 id) {
     if (mgr == NULL) {
         return NULL;
     }
-    return (Actor *)func_ov000_0218e640(mgr, id);
+    return (Actor *)ActorMgr_GetActor(mgr, id);
 }
 
 static inline u16 AngleTo021ab68c(Actor *self, Actor *other) {
@@ -143,7 +143,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
             msg.val = lvl2;
             msg.d = 1;
             msg.id = 0xffff;
-            func_ov000_0218d398(a, self->id, 9, 1, 6, &msg);
+            Actor_SendMsg(a, self->id, 9, 1, 6, &msg);
         }
         if (!hit && LFLD(u16, ((u8 *)a->hp), 0) != 0) {
             goto again;
@@ -179,7 +179,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
                 m.pos = t;
                 m.rot = *(Rot021ab68c *)&a->rot_x;
                 m.unk_14 = 0;
-                func_ov000_0218d398(a, self->id, 7, 1, sizeof(Msg021ab68c), &m);
+                Actor_SendMsg(a, self->id, 7, 1, sizeof(Msg021ab68c), &m);
             }
         }
         self->unk_b1c = 0xffff;

@@ -26,7 +26,7 @@ BOOL func_ov011_021fd4d8(Ov011Scene *self, Ov011Obj *owner) {
     self->ring.b0 = 1;
     self->ring.idx = 0;
     self->ring.cap = 0x10;
-    self->ring.buf = (s32 *)func_0203dddc(self->ring.cap * 4);
+    self->ring.buf = (s32 *)Heap_AllocArray(self->ring.cap * 4);
     self->ring.count = 0;
     func_ov011_02201578(&self->fx);
     self->mgr2.b0 = 1;
@@ -101,7 +101,7 @@ void func_ov003_021d7800(void *p);
 void *func_ov011_02201254(void *self);
 void func_ov011_02201214(void *self, void *a);
 Ov011PNode *func_ov011_021fa790(Ov011PNode *head, Ov011PNode *item);
-void func_0203de1c(void *p);
+void Heap_Free(void *p);
 Ov011Node *func_ov011_021fdadc(Ov011Node *head, Ov011Node *n);
 void func_ov011_02201758(void *p);
 void func_ov011_021fb684(void *p);
@@ -116,7 +116,7 @@ static inline void Ov011Ent_Remove(Ov011Ent *e, void *k) {
             if (k == n) {
                 e->unk_04 = func_ov011_021fa790(e->unk_04, n);
                 if (n != NULL) {
-                    func_0203de1c(n);
+                    Heap_Free(n);
                 }
                 e->b1 = 0;
                 e->unk_08 = 0;

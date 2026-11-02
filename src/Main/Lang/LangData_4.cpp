@@ -32,7 +32,7 @@ typedef struct LangBlockB {
     /* 0x1c */ u8 data[1];
 } LangBlockB;
 
-u8 func_0206e8f0(void);
+u8 LangData_GetLang(void);
 
 typedef struct LangId {
     u8 group;
@@ -259,7 +259,7 @@ void func_0206e858(void) {
     func_0206e900(data_0214b105, data_0208cb88);
 }
 
-u8 func_0206e8f0(void) {
+u8 LangData_GetLang(void) {
     return data_0214b104.lang;
 }
 
@@ -344,11 +344,11 @@ extern LangMsgTbl data_0214b128;
 extern const u32 data_0208b318[];
 extern const char *data_0208ccb0;
 extern const char *data_0208cca8;
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 void *func_0206f964(void *data, const char *name);
 
 static inline LangRes *LangRes_New(void) {
-    LangRes *res = (LangRes *)func_0203dd9c(sizeof(LangRes));
+    LangRes *res = (LangRes *)Heap_Alloc(sizeof(LangRes));
     if (res != NULL) {
         *(const u32 **)res = data_0208b318;
         res->Clear();

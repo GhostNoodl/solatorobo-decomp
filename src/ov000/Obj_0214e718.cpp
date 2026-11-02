@@ -13,7 +13,7 @@ extern "C" {
 extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021caa44[];
 
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 Obj0214e718 *func_ov000_02173610(s32 id);
 s32 func_02061e7c(s32 a);
 
@@ -26,8 +26,8 @@ s32 func_ov000_0214e73c(void) {
     return 0xc;
 }
 
-VObj *func_ov000_0214e744(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x68);
+VObj *Lo021caa44_New(void) {
+    VObj *obj = (VObj *)Heap_Alloc(0x68);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();

@@ -27,7 +27,7 @@ void func_ov000_0214bb80(void);
 void func_ov000_0214c1ac(void);
 
 static inline Ov008Anim *Ov008_NewAnim(void) {
-    Ov008Anim *p = (Ov008Anim *)func_0203dd9c(0x138);
+    Ov008Anim *p = (Ov008Anim *)Heap_Alloc(0x138);
     if (p != NULL) {
         p = (Ov008Anim *)func_ov000_0218e9c4(p);
     }
@@ -47,7 +47,7 @@ static inline void Ov008_AnimSetB(Ov008Anim *p, const char *a, const char *b) {
 }
 
 static inline Ov008Pic *Ov008_NewLoader(void) {
-    Ov008Pic *p = (Ov008Pic *)func_0203dd9c(0x4c);
+    Ov008Pic *p = (Ov008Pic *)Heap_Alloc(0x4c);
     if (p != NULL) {
         OV008_SET_VT(p, &data_0208b318);
         p->v08();
@@ -107,7 +107,7 @@ void func_ov008_021cdb00(Ov008Mgr *self) {
     p->unk_44 = 2;
     self->unk_e4->v24(name, data_ov008_021d04c5);
 
-    q = (Ov008PicC4 *)func_0203dd9c(0xc4);
+    q = (Ov008PicC4 *)Heap_Alloc(0xc4);
     if (q != NULL) {
         OV008_SET_VT(q, &data_0208b318);
         q->v08();

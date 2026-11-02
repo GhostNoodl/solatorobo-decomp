@@ -75,30 +75,30 @@ static inline void LoMessageQueueDtor(MessageQueue *self) {
     self->writeIndex = 0;
 }
 
-TimedBuffer *func_ov000_02172be8(TimedBuffer021cb920 *self) {
+TimedBuffer *TimedBuffer021cb920_Dtor(TimedBuffer021cb920 *self) {
     LoTimedBufferDtor(self);
     return self;
 }
 
-MessageQueue *func_ov000_02172cd0(MessageQueue *self) {
+MessageQueue *Ov000Vt_021cb9b0_DtorDelete(MessageQueue *self) {
     LoMessageQueueDtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-MessageQueue *func_ov000_02172dcc(MessageQueue *self) {
+MessageQueue *Ov000Vt_021cb9b0_Dtor(MessageQueue *self) {
     LoMessageQueueDtor(self);
     return self;
 }
 
-ListBuffer *func_ov000_02172ec0(ListBuffer *self) {
+ListBuffer *Ov000Vt_021cb960_Dtor(ListBuffer *self) {
     LoListBufferDtor(self);
     return self;
 }
 
-ListBuffer *func_ov000_02172f14(ListBuffer *self) {
+ListBuffer *Ov000Vt_021cb960_DtorDelete(ListBuffer *self) {
     LoListBufferDtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

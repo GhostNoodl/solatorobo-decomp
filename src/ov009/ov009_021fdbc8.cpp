@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern s32 func_02040528(s32 range);
+extern s32 Rand_PlusMinus(s32 range);
 extern Ov009Actor *func_ov000_0219bf90(void);
 struct Ov009AngSrc3 {
     u8 unk_00[0x10];
@@ -13,13 +13,13 @@ struct Ov009AngSrc3 {
     u16 unk_44;
 };
 
-extern u16 func_0204bfa8(Ov009AngSrc3 *p);
+extern u16 Camera_GetYaw(Ov009AngSrc3 *p);
 
 static inline s32 Ov009_GetAng3(Ov009AngSrc3 *p) {
     if (p->unk_40 != 0) {
         return p->unk_44;
     }
-    return func_0204bfa8(p);
+    return Camera_GetYaw(p);
 }
 
 void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
@@ -27,8 +27,8 @@ void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
     switch (self->unk_1a) {
     case 0: {
         Ov009AngSrc3 *g = (Ov009AngSrc3 *)((u8 *)data_ov000_021ccd54 + 0xf4);
-        u16 a = Ov009_GetAng3(g) + func_02040528(0x1000);
-        s32 r = func_02040528(0x1800) + 0x3800;
+        u16 a = Ov009_GetAng3(g) + Rand_PlusMinus(0x1000);
+        s32 r = Rand_PlusMinus(0x1800) + 0x3800;
         self->pos = g->pos;
         self->pos.x += Ov009_FxMul(r, OV009_SIN(a));
         self->pos.z += Ov009_FxMul(r, OV009_COS(a));
@@ -43,7 +43,7 @@ void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
         Ov009Actor *t = func_ov000_0219bf90();
         if (t != NULL) {
             u16 r = t->rot[1];
-            u16 a = r + func_02040528(0x1000);
+            u16 a = r + Rand_PlusMinus(0x1000);
             s64 k = 0x333;
             self->pos.x = t->pos.x;
             self->pos.y = t->pos.y;
@@ -171,7 +171,7 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
         if (Ov009_GameIdle()) {
             self->unk_93_4 = 1;
             if (self->unk_40->unk_13 != 0xf) {
-                self->unk_b6 = func_02040498(0x3c);
+                self->unk_b6 = Rand_UpTo(0x3c);
                 self->unk_b4 = 0;
             }
         }

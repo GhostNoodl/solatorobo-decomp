@@ -20,7 +20,7 @@ extern Vec0214ccf8 data_ov000_021c9850;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 extern const s16 FX_SinCosTable_[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void *func_02065f88(s32 id, Vec0214ccf8 *v);
 s32 func_020658cc(s32 a, s32 id);
@@ -67,7 +67,7 @@ void func_ov000_0214ccf8(Obj0214ccf8 *self) {
             if (!func_020658cc(data_0214a420, 0x2714)) {
                 VObj *o;
                 self->unk_0c &= ~0x20000;
-                o = (VObj *)func_0203dd9c(0xe8);
+                o = (VObj *)Heap_Alloc(0xe8);
                 if (o != NULL) {
                     VOBJ_SET_VTABLE(o, data_ov000_021cac60);
                     o->vfunc_28();

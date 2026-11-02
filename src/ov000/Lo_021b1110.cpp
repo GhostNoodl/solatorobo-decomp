@@ -27,7 +27,7 @@ typedef struct {
 extern "C" {
 extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd30;
-Group021b1110 *func_ov000_0218e4cc(void *mgr, u16 id);
+Group021b1110 *ActorMgr_GetGroup(void *mgr, u16 id);
 void func_ov000_02172450(void *p, s32 a);
 void func_ov000_021b1a54(void *self, s32 a);
 
@@ -38,7 +38,7 @@ static inline Obj021b1110 *GroupNext(Obj021b1110 *head, Obj021b1110 *cur) {
 void func_ov000_021b1110(Robo021ca458 *self, BOOL force) {
     u8 found = FALSE;
     {
-        Group021b1110 *g = func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000);
+        Group021b1110 *g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
         Obj021b1110 *head = g->head;
         Obj021b1110 *cur;
         for (cur = head; cur != NULL; cur = GroupNext(head, cur)) {
@@ -49,7 +49,7 @@ void func_ov000_021b1110(Robo021ca458 *self, BOOL force) {
         }
     }
     if (!found) {
-        Group021b1110 *g = func_ov000_0218e4cc(data_ov000_021ccd68, 0x4000);
+        Group021b1110 *g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000);
         Obj021b1110 *head = g->head;
         Obj021b1110 *cur;
         for (cur = head; cur != NULL; cur = GroupNext(head, cur)) {

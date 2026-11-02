@@ -11,7 +11,7 @@ BOOL STD_CompareString(const char *a, const char *b);
 s32 FX_Div(s32 a, s32 b);
 
 static inline TextWin *TextWin_New(void) {
-    TextWin *win = (TextWin *)func_0203dd9c(0xb8);
+    TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
         func_0204c7d0(win);

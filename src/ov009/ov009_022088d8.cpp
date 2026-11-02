@@ -88,11 +88,11 @@ static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
 extern const Ov009Path data_ov009_02215fbc[];
 extern char data_ov009_022172c7[];
 extern void *data_ov000_021ccd64;
-extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
+extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_ov000_021911c8(Ov009Sub38 *m, s32 a);
 extern void *func_ov000_02191318(Ov009Sub38 *m, s32 a);
 extern void func_ov000_02191780(Ov009Sub38 *m);
-extern void func_ov000_0218dbe0(Ov009Obj *self, s32 turn);
+extern void Actor_Move(Ov009Obj *self, s32 turn);
 extern u16 FX_Atan2(s32 y, s32 x);
 
 void func_ov009_02208b24(Ov009Actor *self) {
@@ -152,7 +152,7 @@ void func_ov009_02208b24(Ov009Actor *self) {
         break;
     case 5:
         if (self->unk_18 == 2) {
-            u8 *o = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+            u8 *o = Group_FindNode(data_ov000_021ccd64, self->unk_20);
             if (o != NULL) {
                 s32 off;
                 self->rot[1] = FLD(u16, o, 0x96);
@@ -198,7 +198,7 @@ void func_ov009_02208b24(Ov009Actor *self) {
     }
     }
     if (state < 6) {
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
     }
 }
 

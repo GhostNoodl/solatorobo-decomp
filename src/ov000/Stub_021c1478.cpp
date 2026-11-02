@@ -14,7 +14,7 @@ extern "C" {
 
 extern u8 *data_02097d48;
 extern s8 data_ov000_021ccd74;
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 
 void func_ov000_021c1478(Obj021c1478 *self) {
     u32 flags;
@@ -30,7 +30,7 @@ void func_ov000_021c1478(Obj021c1478 *self) {
     if (v >= 0x1e) {
         v = 0x1f;
     }
-    sub->unk_0c = (flags & 0xc0e0ffbf) | 0xc0 | (v << 16) | (func_02043d48(p + 0x8b0) << 24);
+    sub->unk_0c = (flags & 0xc0e0ffbf) | 0xc0 | (v << 16) | (Gfx3DState_NextPolyId(p + 0x8b0) << 24);
 }
 
 }

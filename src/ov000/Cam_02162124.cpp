@@ -138,7 +138,7 @@ u8 *func_ov000_02162294(Obj02162124 *self) {
 
 u8 *func_ov000_0216251c(Obj02162124 *self) {
     CamDtor02162294((u8 *)self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return (u8 *)self;
 }
 

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-s32 func_02049130(s32 t, s32 a, s32 b);
+s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 void func_ov002_021e398c(void *m, u8 dir);
 void *func_ov002_021e3874(s32 *pos, u8 type, u8 a);
 void *func_02065f88(s32 id, s32 *pos);
@@ -57,7 +57,7 @@ void func_ov002_021d8860(void *self) {
     } else if (t >= 0xb4) {
         FIELD(self, 0x9c, s32) = 0;
     } else {
-        FIELD(self, 0x9c, s32) = func_02049130(FX_Div((t - 0x78) << 12, 0x3c000), 0xf85, 0);
+        FIELD(self, 0x9c, s32) = Interp_SinLerp(FX_Div((t - 0x78) << 12, 0x3c000), 0xf85, 0);
     }
 }
 

@@ -27,7 +27,7 @@ BOOL func_ov000_0218f110(void *p);
 
 static inline u8 *NewModel_021bd8ac(char **name) {
     char *nm;
-    u8 *m = (u8 *)func_0203dd9c(0x160);
+    u8 *m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
         nm = *name;
         func_02041218(m + 0x88);
@@ -186,7 +186,7 @@ BOOL func_ov000_021bd8ac(Obj021bd8ac *self) {
     case 11:
         if ((void *)self->unk_04 == NULL) {
             Ent_021bd8ac *e = &data_ov000_021cc8f0[self->unk_48 - 0xc];
-            u8 *p = (u8 *)func_0203dd9c(0x138);
+            u8 *p = (u8 *)Heap_Alloc(0x138);
             if (p != NULL) {
                 p = (u8 *)func_ov000_0218e9c4(p);
             }

@@ -19,11 +19,11 @@ s32 func_ov014_022128f4(Ov014Act_0221267c *self, Ov014Msg *msg) {
 
 extern void *data_ov000_021ccd68;
 extern u8 *func_ov000_0219bf90(void);
-extern Ov014Actor *func_ov000_0218d240(Ov014Obj *self);
-extern Ov014Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
+extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 static inline Ov014Actor *Ov014_FindById(u16 id) {
-    return data_ov000_021ccd68 != NULL ? func_ov000_0218e640(data_ov000_021ccd68, id) : NULL;
+    return data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
 }
 
 static inline BOOL Ov014_WaitB6(Ov014Actor *self) {
@@ -46,7 +46,7 @@ void Ov014Act_0221267c_Update(Ov014Act_0221267c *self) {
     if (pl != NULL) {
         self->unk_90 = FLD(u16, pl, 0xc);
     }
-    if (func_ov000_0218d240(self) == NULL) {
+    if (Actor_GetTarget(self) == NULL) {
         return;
     }
     if (*self->unk_50 == 0 || (self->unk_40->flags & 0x200000)) {

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern Ov009Obj *func_ov000_02199ba0(void *p);
+extern Ov009Obj *Target_Get(void *p);
 extern s32 func_ov000_0219a510(Ov009Obj *self, u16 mask, const Ov009Vec *pos, s32 r, s32 a, void **list);
 extern Ov009Actor *func_ov000_021985c0(void *p);
 extern void func_ov003_021f0c60(Ov009Obj *self, s32 a);
@@ -21,7 +21,7 @@ void func_ov009_02215a6c(Ov009ActExVt_0221802c *self) {
     s32 n;
     s32 i;
     self->unk_48->unk_44 = r;
-    grp = func_ov000_02199ba0(self->unk_4c)->id & 0xf000;
+    grp = Target_Get(self->unk_4c)->id & 0xf000;
     n = func_ov000_0219a510(self, ~(1 << (grp >> 12)), &self->pos, r, 0, list);
     if (n == 0) {
         return;
@@ -68,7 +68,7 @@ void func_ov009_02215ba0(void) {
 
 void *Ov009ActExVt_0221802c_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -79,7 +79,7 @@ void *Ov009ActExVt_0221802c_Dtor(void *self) {
 
 void *func_ov009_02215bd4(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -90,7 +90,7 @@ void *func_ov009_02215bf0(void *self) {
 
 void *Ov009ActExVt_0221828c_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -101,7 +101,7 @@ void *Ov009ActExVt_0221828c_Dtor(void *self) {
 
 void *func_ov009_02215c34(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -117,7 +117,7 @@ void *Ov009ActExVt_022181f4_Dtor(void *self) {
 
 void *Ov009ActExVt_022181f4_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -128,7 +128,7 @@ void *func_ov009_02215c94(void *self) {
 
 void *func_ov009_02215ca8(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

@@ -114,7 +114,7 @@ extern void *data_ov000_021cac60[];
 extern void *data_ov000_021cadcc[];
 extern char data_ov003_021f78c4[];
 extern char data_ov003_021f78cd[];
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern const char *func_0206ec48(u16 id);
 extern void func_ov003_021ce2a8(void *self, char *dst, u32 size, const char *arg);
 extern void func_ov000_0215bb14(Ov003TlLabel *l, char *s);
@@ -148,7 +148,7 @@ void func_ov003_021cd1e4(Ov003Tl *self) {
     if (self->v28()) {
         return;
     }
-    l = (Ov003TlLabel *)func_0203dd9c(0x8c);
+    l = (Ov003TlLabel *)Heap_Alloc(0x8c);
     if (l != NULL) {
         *(void ***)l = data_ov000_021cac60;
         l->v28();
@@ -189,7 +189,7 @@ void func_ov003_021cd1e4(Ov003Tl *self) {
     self->unk_3c->flags &= ~2;
 
     {
-        Ov003TlSpr *s = (Ov003TlSpr *)func_0203dd9c(0x160);
+        Ov003TlSpr *s = (Ov003TlSpr *)Heap_Alloc(0x160);
         if (s != NULL) {
             Ov003TlSpr_Init(s, self->unk_50, self->unk_54);
         }
@@ -207,7 +207,7 @@ void func_ov003_021cd1e4(Ov003Tl *self) {
     func_02041d9c(self->unk_44, 0, self->unk_5c);
 
     {
-        Ov003TlSpr *s = (Ov003TlSpr *)func_0203dd9c(0x160);
+        Ov003TlSpr *s = (Ov003TlSpr *)Heap_Alloc(0x160);
         if (s != NULL) {
             Ov003TlSpr_Init(s, self->unk_50, self->unk_54);
         }
@@ -223,7 +223,7 @@ void func_ov003_021cd1e4(Ov003Tl *self) {
     self->unk_48->unk_158 = (void *)func_ov000_021c8408;
 
     {
-        Ov003TlSpr *s = (Ov003TlSpr *)func_0203dd9c(0x160);
+        Ov003TlSpr *s = (Ov003TlSpr *)Heap_Alloc(0x160);
         if (s != NULL) {
             const char *name = data_ov003_021f78cd;
             const char *file = data_ov003_021f78c4;

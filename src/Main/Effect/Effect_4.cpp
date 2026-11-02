@@ -195,7 +195,7 @@ EffectObj *func_02065f88(s32 id, const EffectVec *pos) {
         obj = (EffectObj *)func_020671e8(pos);
         break;
     default:
-        obj = (EffectObj *)func_0203dd9c(0xf8);
+        obj = (EffectObj *)Heap_Alloc(0xf8);
         if (obj != NULL) {
             *(u32 **)obj = data_0208c2e4;
             func_02063a34(obj);

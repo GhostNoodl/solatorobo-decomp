@@ -18,14 +18,14 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb0b8[];
 extern u8 data_ov000_021cb1b0[];
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 extern u8 *data_02097d48;
 void func_02043d20(void *p, s32 a);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
 typedef BOOL (*Filter02152bb0)(VObj *self, s32 id, VecFx32 *pos, s32 extra);
 
-VObj *func_ov000_02152b2c(VObj *self) {
+VObj *Ov000Vt_021cb0b8_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb0b8);
     self->vfunc_2c();
     VOBJ_SET_VTABLE(self, data_ov000_021cb1b0);
@@ -34,7 +34,7 @@ VObj *func_ov000_02152b2c(VObj *self) {
     self->vfunc_2c();
     VOBJ_SET_VTABLE(self, data_ov000_021cac60);
     self->vfunc_2c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

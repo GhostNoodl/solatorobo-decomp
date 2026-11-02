@@ -56,7 +56,7 @@ extern BOOL func_ov000_021b4738(void *p);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_ov000_02182590(u8 *p);
-extern s32 func_02040498(s32 max);
+extern s32 Rand_UpTo(s32 max);
 
 #define OV003_FX32_CONST(x) ((s32)(((x) > 0) ? ((x) * 4096.0f + 0.5f) : ((x) * 4096.0f - 0.5f)))
 
@@ -122,7 +122,7 @@ void func_ov003_021e0848(Ov003Prop *self) {
         break;
     }
     case 3: {
-        u8 n = (u8)func_02040498(0xf) + 10;
+        u8 n = (u8)Rand_UpTo(0xf) + 10;
         u8 v = self->unk_38->unk_be;
         if (n > v) {
             v++;

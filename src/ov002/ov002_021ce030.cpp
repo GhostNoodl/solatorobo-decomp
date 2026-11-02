@@ -3,7 +3,7 @@
 extern "C" {
 
 Task50 *func_ov002_021ce030(void) {
-    Task50 *p = (Task50 *)func_0203dd9c(0x50);
+    Task50 *p = (Task50 *)Heap_Alloc(0x50);
     if (p != NULL) {
         TaskBase_ctor(p);
         *(VFunc **)p = data_ov002_021ef430;

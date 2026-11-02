@@ -236,7 +236,7 @@ struct Ov011ArgB {
     u8 pad2[2];
 };
 
-void func_ov000_0219bdb0(u16 a, u16 b, u8 c, s32 d, s32 e, void *f);
+void ActorMgr_SendMsg(u16 a, u16 b, u8 c, s32 d, s32 e, void *f);
 u32 func_ov011_02201244(void *self);
 void *func_ov011_02201254(void *self);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
@@ -252,7 +252,7 @@ static inline void Ov011_SendB(u16 id, s32 kind, s16 x, s16 y) {
     b.b1 = 0;
     b.x = x;
     b.y = y;
-    func_ov000_0219bdb0(id, 0xffff, 0xe, 1, 0xc, &b);
+    ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &b);
 }
 
 static inline void Ov011Ent_Lerp2(Ov011Ent *e, s32 to, s32 frames) {

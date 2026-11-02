@@ -165,9 +165,9 @@ extern void *func_0206fef8(u16 id);
 extern void func_ov000_0219badc(void *model, void *p, void *info);
 extern Ov003GmEffect *func_02065f88(s32 id, const Ov003Vec *pos);
 extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
-extern void func_0203f324(Ov003GmCtl *ctl);
+extern void HitSphere_Link(Ov003GmCtl *ctl);
 extern void func_ov000_02197ad0(void *self, s32 a);
-extern void func_ov000_0218dbe0(void *self, s32 a);
+extern void Actor_Move(void *self, s32 a);
 extern void func_ov000_021987b8(Ov003GmCtl *ctl, s32 a, s32 b, s32 c);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_0218996c(s32 a, s32 b);
@@ -275,7 +275,7 @@ void func_ov003_021ecc68(Ov003Gimmick *self) {
             Ov003GmCtl *c = self->ctl;
             c->unk_9a_0 = 1;
             c->unk_9a_3 = 1;
-            func_0203f324(c);
+            HitSphere_Link(c);
             self->ctl->unk_9a |= 0x12;
         }
         self->unk_a0 = 0x2cd;
@@ -283,7 +283,7 @@ void func_ov003_021ecc68(Ov003Gimmick *self) {
         self->work->state++;
     case 1:
         func_ov000_02197ad0(self, 0);
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         func_ov000_021987b8(self->ctl, 1, 0, 0);
         if (self->ctl->flags & 0x20000000) {
             Ov003GmSub *s = self->sub;

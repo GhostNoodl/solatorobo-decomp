@@ -146,7 +146,7 @@ void *Ov015FishState1c_Dtor(void *self) {
 
 void *Ov015FishState1c_DtorDelete(void *self) {
     SET_VT(self, data_ov015_02212eb0);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -168,7 +168,7 @@ BOOL Ov015FishState1c_Enter(Ov015FishState1c *self, Ov015Fish *p) {
 
 BOOL func_ov015_0220c810(Ov015FishState1c *self);
 void func_ov015_0220c6c8(Ov015FishState1c *self, Ov015Fish *p);
-s32 func_02040498(s32 n);
+s32 Rand_UpTo(s32 n);
 void func_ov000_02191618(void *a);
 void VEC_Normalize(void *src, void *dst);
 extern u8 data_ov015_02212e74[];
@@ -194,7 +194,7 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
         t.y -= FX_Div(0x28000, 0x1e000);
         *(Ov015VecC *)&p->unk_40 = t;
         if (self->unk_08 == 0) {
-            s32 s = func_02040498(1) ? 3 : 4;
+            s32 s = Rand_UpTo(1) ? 3 : 4;
             self->unk_04 = s;
             self->unk_14 = s == 3 ? p->unk_b0 : -p->unk_ac;
             self->unk_08 = 0x1e;
@@ -249,7 +249,7 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
             self->unk_04 = 1;
             w = p->unk_ac;
             if (w < 0) w = -w;
-            self->unk_14 = -func_02040498(w);
+            self->unk_14 = -Rand_UpTo(w);
         }
         break;
     }
@@ -276,7 +276,7 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
         }
         if (self->unk_08 <= 0) {
             self->unk_04 = 2;
-            self->unk_14 = func_02040498(p->unk_b0);
+            self->unk_14 = Rand_UpTo(p->unk_b0);
         }
         break;
     }

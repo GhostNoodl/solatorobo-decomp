@@ -57,10 +57,10 @@ extern void func_02063f90(Effect3D *e);
 extern char data_0208c427[];
 extern char data_0208c436[];
 extern void func_020639d4(EffectObj *obj, s32 id, s32 frame);
-extern EffectGroup *func_02066900(const char *arc, const char *name, const EffectVec *pos);
+extern EffectGroup *EffectGroup_Create(const char *arc, const char *name, const EffectVec *pos);
 
 EffectGroup *func_020671e8(const EffectVec *pos) {
-    EffectGroup *g = func_02066900(data_0208c427, data_0208c436, pos);
+    EffectGroup *g = EffectGroup_Create(data_0208c427, data_0208c436, pos);
     g->unk_20 = 0x2717;
     func_020639d4(g, 0x5e, 2);
     func_020639d4(g, 0x5e, 0x14);
@@ -68,7 +68,7 @@ EffectGroup *func_020671e8(const EffectVec *pos) {
 }
 
 static inline EffectGroup *Effect6_GroupNew(void) {
-    EffectGroup *g = (EffectGroup *)func_0203dd9c(sizeof(EffectGroup));
+    EffectGroup *g = (EffectGroup *)Heap_Alloc(sizeof(EffectGroup));
     if (g != NULL) {
         *(u32 **)g = data_0208c2e4;
         func_02063a34(g);
@@ -178,7 +178,7 @@ EffectGroup *func_0206723c(s32 id, const EffectVec *pos) {
 }
 
 static inline Effect3D *Effect6_3DNew(void) {
-    Effect3D *e = (Effect3D *)func_0203dd9c(sizeof(Effect3D));
+    Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
         *(u32 **)e = data_0208c2e4;
         func_02063a34(e);

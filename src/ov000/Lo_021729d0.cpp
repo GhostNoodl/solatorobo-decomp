@@ -17,7 +17,7 @@ void func_0203df0c(void *p);
 
 typedef struct { u32 lo : 4; } LoNib;
 
-void *func_ov000_021729d0(ListBuffer *self) {
+void *Ov000Vt_021cb940_DtorDelete(ListBuffer *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb940);
     func_ov000_0216fb14(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);
@@ -31,7 +31,7 @@ void *func_ov000_021729d0(ListBuffer *self) {
     self->unk_14 = 0;
     self->prev = NULL;
     self->next = NULL;
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

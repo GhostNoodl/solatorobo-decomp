@@ -94,11 +94,11 @@ extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021911c8(void *model, s32 v);
 extern BOOL func_ov000_02191120(void *model);
 extern Ov003SwAnim *func_ov000_02190a30(void *model, s32 n);
-extern void func_0203f8d8(void *p);
+extern void HitMesh_Link(void *p);
 extern void func_0203f920(void *p);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern Ov003SwPart *func_ov000_02199ba0(Ov003SwPart *p);
-extern void func_ov000_0218d398(Ov003SwPart *p, u16 id, s32 a, s32 b, s32 c, s32 d);
+extern Ov003SwPart *Target_Get(Ov003SwPart *p);
+extern void Actor_SendMsg(Ov003SwPart *p, u16 id, s32 a, s32 b, s32 c, s32 d);
 extern s32 func_ov003_021f093c(Ov003SwPart *p);
 extern BOOL func_ov000_02198360(Ov003SwWork *w, s32 a, s32 b);
 extern BOOL func_ov003_021f0abc(Ov003SwPart *p, s32 a);
@@ -152,7 +152,7 @@ static inline void Ov003Sw_Play(Ov003Switch *self, const char *name, s32 slow) {
 static inline void Ov003Sw_On(Ov003Switch *self) {
     self->unk_cc_0 = 1;
     if (self->unk_58 != NULL) {
-        func_0203f8d8(self->unk_58);
+        HitMesh_Link(self->unk_58);
     }
 }
 
@@ -503,9 +503,9 @@ void func_ov003_021dd478(Ov003Switch *self) {
         break;
     case 50:
         if (self->unk_4c->unk_02 != 6) {
-            Ov003SwPart *p = func_ov000_02199ba0(self->unk_4c);
+            Ov003SwPart *p = Target_Get(self->unk_4c);
             if (p != NULL) {
-                func_ov000_0218d398(p, self->unk_0c, 3, 1, 0, 0);
+                Actor_SendMsg(p, self->unk_0c, 3, 1, 0, 0);
             }
             self->unk_4c->unk_1c = 0xffff;
         }

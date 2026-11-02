@@ -10,7 +10,7 @@ extern "C" {
 
 extern LoPad02155770 *data_02097dc8;
 extern void *data_02149ef8;
-void *func_0204c0e8(void *a, s32 b);
+void *MsgRes_GetString(void *a, s32 b);
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb1b0[];
@@ -45,7 +45,7 @@ struct Obj02155770 : public VObj {
 static inline void Lo_OpenSub02155770(Obj02155770 *self, u16 a, s32 b, s32 c) {
     void *res = data_02149ef8;
     VObj *p;
-    p = (VObj *)func_0203dd9c(0x1e4);
+    p = (VObj *)Heap_Alloc(0x1e4);
     if (p) {
         *(void **)p = data_ov000_021cac60;
         p->vfunc_28();
@@ -58,7 +58,7 @@ static inline void Lo_OpenSub02155770(Obj02155770 *self, u16 a, s32 b, s32 c) {
     }
     self->unk_74 = p;
     LFLD(u16, p, 0x1d8) = a;
-    LFLD(void *, self->unk_74, 0x1dc) = func_0204c0e8(res, b);
+    LFLD(void *, self->unk_74, 0x1dc) = MsgRes_GetString(res, b);
     LFLD(u16, self->unk_74, 0x1e0) = 0;
     LFLD(s32, self->unk_74, 8) = self->unk_08;
     LFLD(s32, self->unk_74, 0x84) = c;

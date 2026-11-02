@@ -16,7 +16,7 @@ extern u8 data_ov000_021c9af2[];
 
 void func_ov000_021680b4(Lo021cb6f0 *self) {
     void *res = func_02034d88(func_02035d5c(data_0214b105), data_0208cb7c);
-    u8 *m = (u8 *)func_0203dd9c(0x160);
+    u8 *m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         void *nm = data_0208cb7c;
         func_02041218(m + 0x88);

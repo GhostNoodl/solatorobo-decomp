@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd30;
-extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
+extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_02049564(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const Ov009Vec *pos);
@@ -26,7 +26,7 @@ void Ov009ActVt_02216750_Init(Ov009ActVt_02216750 *self) {
     }
     func_ov000_02187a20(data_ov000_021ccd54, 0xd);
     self->unk_18 = 1;
-    p = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+    p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
         ((Ov009Byte *)(p + 0xa2))->b5 = 1;
     }
@@ -86,11 +86,11 @@ static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {
 
 extern void *data_ov000_021ccd68;
 extern Ov009Actor *func_ov000_0219bf90(void);
-extern Ov009Actor *func_ov000_0218e4cc(void *mgr, u16 id);
+extern Ov009Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern Ov009Actor *func_ov003_021d69a0(Ov009Actor *self, s32 id, s32 a);
 extern void func_01ffc9fc(Ov009Vec *dst, Ov009Vec *src, u16 angle);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
-extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
+extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
 
 void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
     Ov009Actor *pl;
@@ -153,7 +153,7 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
             }
         }
         {
-            Ov009Actor *o = func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000);
+            Ov009Actor *o = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
             if (o != NULL && FLD(u16, o, 0x16) < max) {
                 Ov009Vec ofs;
                 Ov009Actor *e;
@@ -206,7 +206,7 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
         if (self->unk_b6 >= 0x28) {
             return;
         }
-        func_ov000_0218d988(self, pl, self->unk_b0->unk_02);
+        Actor_TurnToActor(self, pl, self->unk_b0->unk_02);
         break;
     }
 }

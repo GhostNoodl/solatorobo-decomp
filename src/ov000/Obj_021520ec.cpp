@@ -24,7 +24,7 @@ extern Dtcm02fe1534 data_02fe1534;
 void func_0206281c(void);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 
-VObj *func_ov000_021520ec(VObj *self) {
+VObj *Lo021caac8_Dtor(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021caac8);
     self->vfunc_2c();
     VOBJ_SET_VTABLE(self, data_ov000_021cb4a8);
@@ -44,7 +44,7 @@ BOOL func_ov000_02152170(void) {
     return FALSE;
 }
 
-VObj *func_ov000_02152178(VObj *self) {
+VObj *Menu021ca94c_Dtor(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021ca94c);
     self->vfunc_2c();
     VOBJ_SET_VTABLE(VOBJ_AT(self, 0x148), data_0208ba70);

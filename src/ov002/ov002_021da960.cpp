@@ -55,7 +55,7 @@ void func_ov002_021dab58(void *self, s32 mode) {
     }
     switch (mode) {
     case 0:
-        p = (VObject *)func_0203dd9c(0x24);
+        p = (VObject *)Heap_Alloc(0x24);
         if (p != NULL) {
             FIELD(p, 0x4, s32) = 0;
             *(VFunc **)p = data_ov002_021eff74;
@@ -72,7 +72,7 @@ void func_ov002_021dab58(void *self, s32 mode) {
         FIELD(self, 0x8, VObject *)->v0x8();
         break;
     case 1:
-        p = (VObject *)func_0203dd9c(0x38);
+        p = (VObject *)Heap_Alloc(0x38);
         if (p != NULL) {
             FIELD(p, 0x4, s32) = 0;
             *(VFunc **)p = data_ov002_021eff50;

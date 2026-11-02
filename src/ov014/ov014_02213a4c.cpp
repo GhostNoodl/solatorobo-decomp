@@ -12,7 +12,7 @@ extern void func_ov000_021911c8(void *a, s32 b);
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
 extern s32 FX_Div(s32 a, s32 b);
-extern s32 func_02049130(s32 a, s32 b, s32 c);
+extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
 extern void func_ov000_0218bed8(void *a, s32 b, void *c);
 
 struct Ov014SpawnDesc {
@@ -41,7 +41,7 @@ extern u8 data_ov014_02217d4c[];
 extern u8 data_ov014_02216e08[];
 extern u16 FX_Atan2(s32 x, s32 z);
 extern u16 func_01ffc128(u16 a, u16 b, s32 c, s32 d, s32 e);
-extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, u16 *rot, u16 a);
+extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, u16 *rot, u16 a);
 
 static inline void Ov014_TimerDec(Ov014Sub40 *s) {
     if (s->timer != 0) {
@@ -92,7 +92,7 @@ void func_ov014_022136b4(Ov014Act_0221267c *self) {
             break;
         }
         Ov014Spawn_Init(&d, 0x483b);
-        o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, &self->unk_33c, self->rot, 0xffff);
+        o = Group_SpawnActor(data_ov000_021ccd64, &d, &self->unk_33c, self->rot, 0xffff);
         o->unk_60 = data_ov014_02216e08;
         o->unk_90 = self->unk_90;
         if (o->unk_4c != NULL) {
@@ -175,7 +175,7 @@ void func_ov014_02213afc(Ov014Act_0221267c *self) {
         if (self->unk_40->timer % 30 == 0) {
             func_02065f88(0x38a, &self->pos);
         }
-        b = func_02049130(FX_Div(self->unk_40->timer << 12, 0x78000), 0, 0x1f000) >> 12;
+        b = Interp_SinLerp(FX_Div(self->unk_40->timer << 12, 0x78000), 0, 0x1f000) >> 12;
         self->unk_38->unk_be = b;
         self->unk_2e6 = b;
         if (self->unk_40->timer == 0) {

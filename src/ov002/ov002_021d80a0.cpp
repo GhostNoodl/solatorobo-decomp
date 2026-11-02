@@ -11,7 +11,7 @@ void func_ov002_021d80a0(void *self) {
     }
     func_ov002_021d83f0(self);
     if (FIELD(self, 0x9c, s32) != 0x1000) {
-        NNS_G3dMdlSetMdlPolygonIDAll(FIELD(self, 0x7c, void *), func_02043d48(data_02097d48 + 0x8b0));
+        NNS_G3dMdlSetMdlPolygonIDAll(FIELD(self, 0x7c, void *), Gfx3DState_NextPolyId(data_02097d48 + 0x8b0));
     }
     NNS_G3dGlbSetBaseTrans((u8 *)self + 0x4);
     MI_Copy36B((u8 *)self + 0x18, data_020928b4);
@@ -75,7 +75,7 @@ void func_ov002_021d8148(void *self) {
         name = func_0203ed04(name, *FIELD(self, 0x78, u32 *));
     }
     FIELD(self, 0x84, void *) = func_0203ebf8(name);
-    FIELD(self, 0x80, void *) = func_0203dd9c(0x54);
+    FIELD(self, 0x80, void *) = Heap_Alloc(0x54);
     NNS_G3dRenderObjInit(FIELD(self, 0x80, void *), FIELD(self, 0x7c, void *));
     NNS_G3dMdlSetMdlCullModeAll(FIELD(self, 0x7c, void *), 2);
     NNS_G3dMdlSetMdlXLDepthUpdateAll(FIELD(self, 0x7c, void *), 0);

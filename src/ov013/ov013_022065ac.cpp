@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_0214a420;
 extern void *data_ov013_0220bb20;
 extern char data_ov013_0220b360[];
-extern void *func_ov000_02194074(void *self);
+extern void *ActorEx_Ctor(void *self);
 extern void func_ov003_021db244(Ov013Obj *self);
 extern void *func_ov003_021dae44(Ov013Actor *self);
 extern u16 FX_Atan2(s32 y, s32 x);
@@ -15,7 +15,7 @@ extern BOOL func_020621c4(void);
 extern void func_ov003_021d6bac(Ov013Actor *self, const void *p);
 
 Ov013ActEx_022065ac *Ov013ActEx_022065ac_Ctor(Ov013ActEx_022065ac *self) {
-    func_ov000_02194074(self);
+    ActorEx_Ctor(self);
     FLD(void *, self, 0) = &data_ov013_0220bb20;
     self->unk_f4 = 0;
     self->unk_f6 = 0;
@@ -52,7 +52,7 @@ Ov013Actor *Ov013ActEx_022065ac_Dtor(Ov013Actor *self) {
 
 Ov013Actor *Ov013ActEx_022065ac_DtorDelete(Ov013Actor *self) {
     func_ov003_021dae44(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -86,10 +86,10 @@ void Ov013ActVt_0220bdd8_Start(Ov013ActVt_0220bdd8 *self) {
 }
 
 extern void *data_ov000_021ccd68;
-extern Ov013Actor *func_ov000_0218e4cc(void *mgr, u16 id);
-extern u16 func_ov000_0218dfb4(Ov013Actor *a, u16 id);
+extern Ov013Actor *ActorMgr_GetGroup(void *mgr, u16 id);
+extern u16 ActorGroup_CountKind(Ov013Actor *a, u16 id);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
-extern Ov013Actor *func_ov000_0218d240(Ov013Obj *self);
+extern Ov013Actor *Actor_GetTarget(Ov013Obj *self);
 
 #define OV013_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV013_SQRT_RESULT (*(volatile u32 *)0x40002b4)
@@ -123,16 +123,16 @@ void Ov013ActVt_0220bdd8_Update(Ov013Actor *self, Ov013Actor *b) {
     if (self->unk_b6 != 0) {
         return;
     }
-    a = func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000);
-    b = func_ov000_0218e4cc(data_ov000_021ccd68, 0x4000);
+    a = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+    b = ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000);
     ok = TRUE;
     if (a != NULL) {
-        n = func_02040498(9);
+        n = Rand_UpTo(9);
         m = 4;
         if (self->unk_50[0] < (self->unk_50[1] >> 1)) {
             m = 5;
         }
-        if (func_ov000_0218dfb4(a, 0x540c) >= 2 || func_ov000_021983b0(self->unk_40, 0x10, m, 1) || n == 0) {
+        if (ActorGroup_CountKind(a, 0x540c) >= 2 || func_ov000_021983b0(self->unk_40, 0x10, m, 1) || n == 0) {
             ok = FALSE;
         }
     }
@@ -142,7 +142,7 @@ void Ov013ActVt_0220bdd8_Update(Ov013Actor *self, Ov013Actor *b) {
         ok = TRUE;
         n = (u16)(self->unk_50[0] * 100 / self->unk_50[1]);
         m = 0;
-        t = func_ov000_0218d240(self);
+        t = Actor_GetTarget(self);
         if (t != NULL) {
             s32 dz = self->pos.z - t->pos.z;
             s32 dx = self->pos.x - t->pos.x;
@@ -162,8 +162,8 @@ void Ov013ActVt_0220bdd8_Update(Ov013Actor *self, Ov013Actor *b) {
                 th -= 0xf;
             }
             m = th;
-            n = func_02040498(n);
-            if (func_ov000_0218dfb4(b, 0x4813) >= 2 || n > m || func_ov000_021983b0(self->unk_40, 0xe, 2, 1)) {
+            n = Rand_UpTo(n);
+            if (ActorGroup_CountKind(b, 0x4813) >= 2 || n > m || func_ov000_021983b0(self->unk_40, 0xe, 2, 1)) {
                 ok = FALSE;
             }
         }

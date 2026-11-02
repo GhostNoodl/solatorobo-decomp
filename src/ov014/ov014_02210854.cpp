@@ -30,7 +30,7 @@ extern void *data_ov000_021ccd64;
 extern const Ov014Blk12 data_ov014_02216bf4;
 extern const Ov014Blk12 data_ov014_02216c00;
 extern u8 data_ov014_02216cb8[];
-extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, Ov014Rot16 *rot, u16 a);
+extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, Ov014Rot16 *rot, u16 a);
 extern Ov014Actor *func_ov000_0219bf90(void);
 extern void MTX_Identity33_(Ov014Mtx33 *m);
 extern void MTX_RotX33_(Ov014Mtx33 *m, s32 s, s32 c);
@@ -74,15 +74,15 @@ Ov014Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
     pl = func_ov000_0219bf90();
     px = pl->pos.x;
     pz = pl->pos.z;
-    px += func_02040528(0x6000);
-    pz -= func_02040498(0x1000);
+    px += Rand_PlusMinus(0x6000);
+    pz -= Rand_UpTo(0x1000);
     desc.kind = 0x4816;
     desc.flags = 0x4816 & 0xf000;
     for (i = 0; i < 4; i++) {
         desc.unk_04[i] = 0;
     }
     desc.parent = -1;
-    o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &v, &rot, 0xffff);
+    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &v, &rot, 0xffff);
     o->unk_60 = data_ov014_02216cb8;
     o->unk_84.x = px;
     o->unk_84.y = 0;
@@ -115,32 +115,32 @@ Ov014Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self) {
     rot.z = 0;
     switch ((u16)((self->unk_144 + self->unk_14c) % 4)) {
     case 0:
-        d.x = func_02040498(0x1000);
-        d.z = func_02040498(0x1000);
+        d.x = Rand_UpTo(0x1000);
+        d.z = Rand_UpTo(0x1000);
         break;
     case 1:
-        d.x = -func_02040498(0x1000);
-        d.z = func_02040498(0x1000);
+        d.x = -Rand_UpTo(0x1000);
+        d.z = Rand_UpTo(0x1000);
         break;
     case 2:
-        d.x = -func_02040498(0x1000);
-        d.z = -func_02040498(0x1000);
+        d.x = -Rand_UpTo(0x1000);
+        d.z = -Rand_UpTo(0x1000);
         break;
     case 3:
-        d.x = func_02040498(0x1000);
-        d.z = -func_02040498(0x1000);
+        d.x = Rand_UpTo(0x1000);
+        d.z = -Rand_UpTo(0x1000);
         break;
     }
     d.y = 0;
     VEC_Normalize(&d, &d);
-    VEC_MultAdd(func_02040498(0x4000) + 0x4000, &d, &data_ov014_02216c0c, &d);
+    VEC_MultAdd(Rand_UpTo(0x4000) + 0x4000, &d, &data_ov014_02216c0c, &d);
     desc.kind = 0x4815;
     desc.flags = 0x4815 & 0xf000;
     for (i = 0; i < 4; i++) {
         desc.unk_04[i] = 0;
     }
     desc.parent = -1;
-    o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
+    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
     o->unk_84 = d;
     o->flags_0 = 1;
     if (o->unk_4c != NULL) {

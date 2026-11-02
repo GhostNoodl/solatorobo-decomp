@@ -29,17 +29,17 @@ typedef struct {
 
 extern void func_ov000_02194758(void *self);
 extern Ov003Player *func_ov000_0219bf90(void);
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern Ov003Part *func_ov000_02199b00(void *p);
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0219429c(void *p);
 
 void *Ov003ActVt_021f92dc_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -50,7 +50,7 @@ void *Ov003ActVt_021f92dc_Dtor(void *self) {
 
 void *Ov003ActVt_021f940c_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -61,7 +61,7 @@ void *Ov003ActVt_021f940c_Dtor(void *self) {
 
 void *Ov003ActVt_021f94a4_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -72,7 +72,7 @@ void *Ov003ActVt_021f94a4_Dtor(void *self) {
 
 void *Ov003ActVt_021f9114_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -83,7 +83,7 @@ void *Ov003ActVt_021f9114_Dtor(void *self) {
 
 void *Ov003ActVt_021f91ac_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -95,7 +95,7 @@ void *Ov003ActVt_021f91ac_Dtor(void *self) {
 void *Ov003ActVt_021f953c_DtorDelete(void *self) {
     func_ov000_0218fee4((u8 *)self + 0xd0);
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -107,7 +107,7 @@ void *Ov003ActVt_021f953c_Dtor(void *self) {
 
 void *Ov003ActVt_021f9244_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -118,7 +118,7 @@ void *Ov003ActVt_021f9244_Dtor(void *self) {
 
 void *Ov003ActVt_021f95d4_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -129,7 +129,7 @@ void *Ov003ActVt_021f95d4_Dtor(void *self) {
 
 void *Ov003ActVt_021f966c_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -145,7 +145,7 @@ void *Ov003ActVt_021f9374_Dtor(void *self) {
 
 void *Ov003ActVt_021f9374_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -161,7 +161,7 @@ void Ov003ActVt_021f98cc_Start(Ov003Obj *self) {
         return;
     }
     if (self->unk_4c == NULL) {
-        Ov003Part *part = func_0203dd9c(0x5c);
+        Ov003Part *part = Heap_Alloc(0x5c);
         if (part != NULL) {
             part = func_ov000_02199b00(part);
         }

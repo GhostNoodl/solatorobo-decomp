@@ -110,7 +110,7 @@ void func_ov012_02201d28(Ov012Actor *self) {
 extern "C" {
 void *Ov012Act_021fee1c_DtorDelete(void *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 }
@@ -135,14 +135,14 @@ void Ov012ActExVt_0220af10_Start(Ov012ActExVt_0220af10 *self) {
     self->unk_de = 0;
     self->unk_e3 = 1;
     self->unk_dc = 10;
-    self->unk_1a = func_02040498(0x32) + 0x82;
+    self->unk_1a = Rand_UpTo(0x32) + 0x82;
     self->unk_1c = 0xb4;
     t = 0;
     if (self->unk_e2) {
-        t = self->unk_e2 - func_02040498(1);
+        t = self->unk_e2 - Rand_UpTo(1);
     }
     self->unk_1e = t;
-    p = func_ov000_02199ba0(self->unk_4c);
+    p = Target_Get(self->unk_4c);
     if (p != NULL) {
         self->unk_e0 = FLD(u16, p, 0xc);
     }
@@ -191,9 +191,9 @@ void Ov012ActExVt_0220af10_Update(Ov012ActExVt_0220af10 *self) {
 
 extern "C" {
 extern const Ov012Vec data_ov012_0220a540;
-s32 func_020404e0(void);
+s32 Rand_Fx(void);
 void func_ov000_02196060(Ov012ActorEx *self);
-void func_ov000_0218d9e8(void *self, Ov012Vec *v, s32 a);
+void Actor_PitchToPos(void *self, Ov012Vec *v, s32 a);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 
 #define OV012_FXMUL_K(a, k) ((s32)(((s64)(a) * (k) + 0x800) >> 12))
@@ -222,7 +222,7 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
     Ov012Vec tp;
     s32 dist;
     Ov012Sub40 *s;
-    o = (Ov012Actor *)func_ov000_02199ba0(self->unk_4c);
+    o = (Ov012Actor *)Target_Get(self->unk_4c);
     if (o == NULL) {
         return;
     }
@@ -235,7 +235,7 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
         func_ov000_02196060(self);
         return;
     }
-    tp = func_ov000_0218d240(self)->pos;
+    tp = Actor_GetTarget(self)->pos;
     dist = VEC_Distance(&self->pos, &tp);
     s = self->unk_40;
     switch (s->state) {
@@ -278,9 +278,9 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
         if (s->timer == 0) {
             self->unk_40->timer = 0x1e;
             self->unk_d0 = self->unk_84;
-            self->unk_d0.x += func_020404e0();
-            self->unk_d0.y += func_020404e0();
-            self->unk_d0.z += func_020404e0();
+            self->unk_d0.x += Rand_Fx();
+            self->unk_d0.y += Rand_Fx();
+            self->unk_d0.z += Rand_Fx();
         }
         Ov012_MoveTo(self, &(self->unk_d0), 0xa4);
         if (self->unk_e3 & 2) {
@@ -298,7 +298,7 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
                 Ov012Vec v2 = data_ov012_0220a51c;
                 func_01ffc9fc(&v2, &v2, self->rot[1]);
                 VEC_Add(&self->pos, &v2, &v2);
-                func_ov000_0218d9e8(self, &v2, 0x11f);
+                Actor_PitchToPos(self, &v2, 0x11f);
             }
         }
         if (self->unk_e3 & 2) {
@@ -319,7 +319,7 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
             self->unk_84.x = self->unk_84.x - b->x;
             self->unk_84.y = self->unk_84.y - b->y;
             self->unk_84.z = self->unk_84.z - b->z;
-            Ov012Vec r2 = {func_02040528(0x4000), func_02040528(0x800), func_02040528(0x4000)};
+            Ov012Vec r2 = {Rand_PlusMinus(0x4000), Rand_PlusMinus(0x800), Rand_PlusMinus(0x4000)};
             VEC_Add(&r2, &data_ov012_0220a540, &r2);
             VEC_Add(&self->unk_84, &r2, &self->unk_84);
         }
@@ -345,12 +345,12 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
         }
         w.y = w.y + k;
         VEC_Add(&self->pos, &w, &self->pos);
-        func_ov000_0218d918(self, &self->unk_84, 0x11f);
+        Actor_TurnToPos(self, &self->unk_84, 0x11f);
         if (VEC_Distance(&self->pos, &self->unk_84) < 0x800) {
             Ov012Sub48 *m = self->unk_48;
             m->unk_9a_0 = 1;
             m->unk_9a_3 = 1;
-            func_0203f324(m);
+            HitSphere_Link(m);
             self->unk_dc = 0x28;
             self->unk_40->timer = 0;
             self->unk_40->state = 2;
@@ -359,7 +359,7 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
             Ov012Vec v3 = data_ov012_0220a528;
             func_01ffc9fc(&v3, &v3, self->rot[1]);
             VEC_Add(&self->pos, &v3, &v3);
-            func_ov000_0218d9e8(self, &v3, 0x11f);
+            Actor_PitchToPos(self, &v3, 0x11f);
         }
         break;
     }

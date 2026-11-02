@@ -71,7 +71,7 @@ typedef struct {
             if (res != NULL) {                         \
                 func_02041558(res);                    \
                 func_02041278(res->unk_88);            \
-                func_0203de1c(res);                    \
+                Heap_Free(res);                    \
             }                                          \
             (p) = NULL;                                \
         }                                              \
@@ -88,7 +88,7 @@ extern void MIi_CpuClear32(u32 v, void *dst, u32 size);
 extern Ov003HeapCtx *data_02097dd0;
 extern void func_02041558(void *p);
 extern void func_02041278(void *p);
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 extern void func_02035acc(const void *a, const void *b, s32 c);
 extern u32 func_02035bd4(const void *a, const void *b, s32 c);
 

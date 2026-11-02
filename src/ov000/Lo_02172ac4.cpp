@@ -75,9 +75,9 @@ static inline void LoMessageQueueDtor(MessageQueue *self) {
     self->writeIndex = 0;
 }
 
-TimedBuffer *func_ov000_02172ac4(TimedBuffer021cb920 *self) {
+TimedBuffer *TimedBuffer021cb920_DtorDelete(TimedBuffer021cb920 *self) {
     LoTimedBufferDtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

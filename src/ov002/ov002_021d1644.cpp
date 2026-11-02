@@ -69,7 +69,7 @@ BOOL func_ov002_021d178c(void *self) {
 }
 
 Task50 *func_ov002_021d184c(void) {
-    Task50 *p = (Task50 *)func_0203dd9c(0x68);
+    Task50 *p = (Task50 *)Heap_Alloc(0x68);
     if (p != NULL) {
         TaskBase_ctor(p);
         *(VFunc **)p = data_ov002_021ef69c;

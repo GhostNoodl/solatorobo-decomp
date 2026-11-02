@@ -154,7 +154,7 @@ void func_ov002_021de544(void *self, u8 *a) {
                 break;
             }
         }
-        p = func_0203dd9c(0x30);
+        p = Heap_Alloc(0x30);
         if (p != NULL) {
             *(VFunc **)p = data_ov002_021eff30;
             FIELD(p, 0x4, s32) = 0;
@@ -187,7 +187,7 @@ void func_ov002_021de544(void *self, u8 *a) {
         if (!st) {
             break;
         }
-        p = func_0203dd9c(0x134);
+        p = Heap_Alloc(0x134);
         if (p != NULL) {
             *(VFunc **)p = data_ov002_021eff10;
             FIELD(p, 0x4, s32) = 0;

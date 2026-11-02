@@ -12,7 +12,7 @@ void func_ov000_021bd228(void *p);
 void func_0203f2b8(void *p);
 void *func_ov000_0218c928(void *p);
 
-u8 *func_ov000_0219c24c(Robo021ca458 *self) {
+u8 *Robo021ca458_Dtor(Robo021ca458 *self) {
     LFLD(void *, self, 0x00) = data_ov000_021cc774;
     HEAP_DELETE_FN(self->unk_998, func_ov000_0218fee4);
     HEAP_DELETE_FN(self->unk_99c, func_ov000_0218ea20);
@@ -34,7 +34,7 @@ u8 *func_ov000_0219c24c(Robo021ca458 *self) {
     return (u8 *)self;
 }
 
-u8 *func_ov000_0219c3c8(Robo021ca458 *self) {
+u8 *Robo021ca458_DtorDelete(Robo021ca458 *self) {
     LFLD(void *, self, 0x00) = data_ov000_021cc774;
     HEAP_DELETE_FN(self->unk_998, func_ov000_0218fee4);
     HEAP_DELETE_FN(self->unk_99c, func_ov000_0218ea20);
@@ -53,7 +53,7 @@ u8 *func_ov000_0219c3c8(Robo021ca458 *self) {
     func_ov000_0218ea20((u8 *)self + 0x194);
     func_ov000_0218fee4((u8 *)self + 0xac);
     func_ov000_0218c928(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return (u8 *)self;
 }
 

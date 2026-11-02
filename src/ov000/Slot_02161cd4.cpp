@@ -29,14 +29,14 @@ static inline void Dtor02161cd4(u8 *self) {
     __cxa_vec_cleanup(self + 0x78, 2, 0x138, (void (*)(void *))func_ov000_0218ea20);
 }
 
-u8 *func_ov000_02161cd4(u8 *self) {
+u8 *Ov000Vt_021cabd8_Dtor(u8 *self) {
     Dtor02161cd4(self);
     return self;
 }
 
-u8 *func_ov000_02161e3c(u8 *self) {
+u8 *Ov000Vt_021cabd8_DtorDelete(u8 *self) {
     Dtor02161cd4(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

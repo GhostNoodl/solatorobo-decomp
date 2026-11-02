@@ -7,7 +7,7 @@ extern "C" {
 
 #pragma force_active on
 void func_ov007_021ccda0(void) {
-    Ov007Scene *p = (Ov007Scene *)func_0203dd9c(0x6c);
+    Ov007Scene *p = (Ov007Scene *)Heap_Alloc(0x6c);
     if (p != NULL) {
         func_ov007_021cce28(p);
     }
@@ -21,7 +21,7 @@ void func_ov007_021ccdc8(void) {
         Ov007Scene *p = data_ov007_021cfc60;
         if (p != NULL) {
             func_ov007_021ccec0(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         data_ov007_021cfc60 = NULL;
     }
@@ -116,7 +116,7 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
     case 2:
         switch (s->sub) {
         case 0:
-            pic = (Ov007Pic *)func_0203dd9c(0x4c);
+            pic = (Ov007Pic *)Heap_Alloc(0x4c);
             if (pic != NULL) {
                 OV007_SET_VT(pic, &data_0208b318);
                 pic->v08();
@@ -152,7 +152,7 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
             }
             func_0203cb78(1, 0, 0);
             if (s->unk_68 == NULL) {
-                pl = (Ov007Player *)func_0203dd9c(0xe8);
+                pl = (Ov007Player *)Heap_Alloc(0xe8);
                 if (pl != NULL) {
                     OV007_SET_VT(pl, &data_ov000_021cac60);
                     pl->v28();
@@ -168,7 +168,7 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
                 s->unk_68->unk_0c |= 0x20000;
                 s->unk_68->unk_1c = 4;
                 s->unk_68->v08();
-                func_ov000_0215c1bc(s->unk_68, 0x8000, func_0204c0e8(data_02149ef8, 0x76));
+                func_ov000_0215c1bc(s->unk_68, 0x8000, MsgRes_GetString(data_02149ef8, 0x76));
                 s->unk_68->unk_68 = -0x299a;
                 s->unk_68->v70();
             }
@@ -273,7 +273,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
             s->idx = 0;
             return;
         }
-        m = (Ov007Sprite *)func_0203dd9c(0x160);
+        m = (Ov007Sprite *)Heap_Alloc(0x160);
         if (m != NULL) {
             res = data_ov007_021cfa50[s->idx].v;
             func_02041218(m->unk_88);
@@ -284,7 +284,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
         s->unk_28->flags |= 2;
         func_02041d9c(s->unk_28, 2, 0xffff);
         if (data_ov007_021cfa54[s->idx].v != 0) {
-            m = (Ov007Sprite *)func_0203dd9c(0x160);
+            m = (Ov007Sprite *)Heap_Alloc(0x160);
             if (m != NULL) {
                 res = data_ov007_021cfa54[s->idx].v;
                 func_02041218(m->unk_88);
@@ -406,7 +406,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
         return;
     case 11:
         s->timer = 0;
-        mn = (Ov007Menu *)func_0203dd9c(0x58);
+        mn = (Ov007Menu *)Heap_Alloc(0x58);
         if (mn != NULL) {
             OV007_SET_VT(mn, &data_0208b614);
             mn->v14();
@@ -469,7 +469,7 @@ void func_ov007_021cdff0(Ov007Rs *rs) {
     Ov007RsMat *q;
     q = rs->unk_b0;
     v = q->unk_0c;
-    q->unk_0c = (v & ~0x3f000000) | (func_02043d48(&data_02097d48->unk_8b0) << 24);
+    q->unk_0c = (v & ~0x3f000000) | (Gfx3DState_NextPolyId(&data_02097d48->unk_8b0) << 24);
 }
 
 void func_ov007_021ce020(Ov007Rs *rs) {
@@ -541,7 +541,7 @@ BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 void func_ov000_021915a0(void *p);
 void NNS_G3dRenderObjSetInitFunc(void *p, void *cb);
 void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
-s32 func_02040498(s32 max);
+s32 Rand_UpTo(s32 max);
 void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
@@ -567,7 +567,7 @@ static inline void Ov007_SetAnm(Ov007Anim *m, const char *dir, const char *name)
 }
 
 static inline Ov007Anim *Ov007_NewRes(void) {
-    Ov007Anim *m = (Ov007Anim *)func_0203dd9c(0x138);
+    Ov007Anim *m = (Ov007Anim *)Heap_Alloc(0x138);
     if (m != NULL) {
         m = (Ov007Anim *)func_ov000_0218e9c4(m);
     }
@@ -575,7 +575,7 @@ static inline Ov007Anim *Ov007_NewRes(void) {
 }
 
 static inline Ov007Model *Ov007_NewMdl(void) {
-    Ov007Model *m = (Ov007Model *)func_0203dd9c(0xe8);
+    Ov007Model *m = (Ov007Model *)Heap_Alloc(0xe8);
     if (m != NULL) {
         m = (Ov007Model *)func_ov000_0218fe1c(m);
     }
@@ -583,7 +583,7 @@ static inline Ov007Model *Ov007_NewMdl(void) {
 }
 
 static inline Ov007Win *Ov007_NewWin(void) {
-    Ov007Win *win = (Ov007Win *)func_0203dd9c(0xb8);
+    Ov007Win *win = (Ov007Win *)Heap_Alloc(0xb8);
     if (win != NULL) {
         OV007_SET_VT(win, &data_0208ba70);
         func_0204c7d0(win);
@@ -712,7 +712,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
         Ov007Pic *p;
         OV007_FREE_V(s->unk_14, v04);
         func_0206e900(buf, "pic/title");
-        p = (Ov007Pic *)func_0203dd9c(0x4c);
+        p = (Ov007Pic *)Heap_Alloc(0x4c);
         if (p != NULL) {
             OV007_SET_VT(p, &data_0208b318);
             p->v08();
@@ -767,7 +767,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
         }
         tbl = data_ov007_021cfbb4;
         p = (Ov007V *)s->unk_14->v10();
-        m = (Ov007Sprite *)func_0203dd9c(0x160);
+        m = (Ov007Sprite *)Heap_Alloc(0x160);
         if (m != NULL) {
             res = tbl.s[s->unk_4c - 1];
             func_02041218(m->unk_88);
@@ -777,7 +777,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
         func_020417e0(s->unk_28, func_02034d88(p, m->unk_4c));
         s->unk_28->flags |= 2;
         func_02041d9c(s->unk_28, 2, 0xffff);
-        m = (Ov007Sprite *)func_0203dd9c(0x160);
+        m = (Ov007Sprite *)Heap_Alloc(0x160);
         if (m != NULL) {
             res = "cepct1cmn00";
             func_02041218(m->unk_88);
@@ -801,7 +801,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
             break;
         }
         res = s->unk_24->unk_48;
-        o = func_0203dd9c(0xbc);
+        o = Heap_Alloc(0xbc);
         if (o != NULL) {
             o = func_0204b370(o);
         }
@@ -838,12 +838,12 @@ void func_ov007_021ce038(Ov007Scene *s) {
             s->unk_38->unk_b4 = 0;
             NNSi_G3dModifyPolygonAttrMask(s->unk_38->unk_04, 1, 0x3f000000);
             NNSi_G3dModifyPolygonAttrMask(s->unk_38->unk_04, 1, 0x1f0000);
-            s->unk_44 = func_02040498(0x78) + 0x3c;
+            s->unk_44 = Rand_UpTo(0x78) + 0x3c;
         }
         {
             void *mgr = data_02149ef8;
-            s->unk_5c[0] = Ov007_MakeWin(func_0204c0e8(mgr, 0x51));
-            s->unk_5c[1] = Ov007_MakeWin(func_0204c0e8(mgr, 0x52));
+            s->unk_5c[0] = Ov007_MakeWin(MsgRes_GetString(mgr, 0x51));
+            s->unk_5c[1] = Ov007_MakeWin(MsgRes_GetString(mgr, 0x52));
         }
         func_0203cb78(0x3c000, 0, -1);
         Ov007_RequestBgm(data_02097e48, 3);
@@ -969,7 +969,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
     }
     if (s->unk_30 != NULL) {
         if (s->unk_4c != 3 && !(s->timer & 0x3ffff)) {
-            if (func_02040498(100) < 50) {
+            if (Rand_UpTo(100) < 50) {
                 s->unk_40 -= 0xcd;
                 if (s->unk_40 < 0xb33) {
                     s->unk_40 += 0x19a;
@@ -995,7 +995,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
     }
     if (func_ov000_02191120(s->unk_38)) {
         if (--s->unk_44 < 0) {
-            s32 r = func_02040498(0x1e);
+            s32 r = Rand_UpTo(0x1e);
             if (r <= 10) {
                 func_ov000_02190cb0(s->unk_38, "00", 0, 1);
             } else if (r <= 20) {
@@ -1003,7 +1003,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
             } else {
                 func_ov000_02190cb0(s->unk_38, "02", 0, 1);
             }
-            s->unk_44 = func_02040498(300) + 0xb4;
+            s->unk_44 = Rand_UpTo(300) + 0xb4;
         }
     }
     func_ov000_02190a80(s->unk_38, 0x1000);
@@ -1143,7 +1143,7 @@ void func_ov007_021cef80(Ov007Scene *s) {
         }
         if (data_02097e3c->unk_149 == 0) {
             func_0206e900(buf, "pic/title");
-            p = (Ov007Pic *)func_0203dd9c(0x4c);
+            p = (Ov007Pic *)Heap_Alloc(0x4c);
             if (p != NULL) {
                 OV007_SET_VT(p, &data_0208b318);
                 p->v08();

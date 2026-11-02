@@ -135,7 +135,7 @@ void func_02043858(Gfx3DState *st) {
     st->unk_003 = 2;
 }
 
-void func_020438e8(Gfx3DState *st) {
+void Gfx3DState_Reset(Gfx3DState *st) {
     st->polyId = 30;
     st->unk_002 = 6;
     st->unk_003 = 2;
@@ -265,7 +265,7 @@ void func_02043d20(Gfx3DState *st, BOOL flush) {
     }
 }
 
-u8 func_02043d48(Gfx3DState *st) {
+u8 Gfx3DState_NextPolyId(Gfx3DState *st) {
     u8 id = st->polyId;
     if (id < 0x3f) {
         st->polyId = id + 1;
@@ -273,7 +273,7 @@ u8 func_02043d48(Gfx3DState *st) {
     return id;
 }
 
-int func_02043d60(Gfx3DState *st, int n) {
+int Gfx3DState_TakePolyIds(Gfx3DState *st, int n) {
     u8 id = st->polyId;
     st->polyId = id + n;
     if (st->polyId > 0x3f) {

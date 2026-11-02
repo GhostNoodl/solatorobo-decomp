@@ -46,9 +46,9 @@ typedef struct {
 } Ov003Spawned;
 
 extern void *data_ov000_021ccd64;
-extern Ov003Spawned *func_ov000_0218bf1c(void *mgr, Ov003SpawnInfo *info, Ov003Vec3 *pos, Ov003Rot3 *rot, u16 a);
+extern Ov003Spawned *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, Ov003Vec3 *pos, Ov003Rot3 *rot, u16 a);
 extern void func_ov000_0218d46c(Ov003Spawned *o, u16 a, s32 b);
-extern s32 func_02040498(s32 n);
+extern s32 Rand_UpTo(s32 n);
 extern void func_ov000_0219763c(void *self);
 
 void func_ov003_021ed058(Ov003Obj *self) {
@@ -62,11 +62,11 @@ void func_ov003_021ed058(Ov003Obj *self) {
             info.unk_04[i] = 0;
         }
         info.unk_0c = -1;
-        o = func_ov000_0218bf1c(data_ov000_021ccd64, &info, &self->pos, &self->rot, 0xffff);
+        o = Group_SpawnActor(data_ov000_021ccd64, &info, &self->pos, &self->rot, 0xffff);
         if (o != NULL) {
             o->unk_16_0 = 1;
             func_ov000_0218d46c(o, self->unk_0c, 4);
-            o->unk_9c = func_02040498(0x80) + 0x19a;
+            o->unk_9c = Rand_UpTo(0x80) + 0x19a;
             o->unk_a0 = 0x333;
             o->unk_a4 = 0;
             o->unk_a8 = 0x52;

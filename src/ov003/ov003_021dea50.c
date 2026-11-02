@@ -42,10 +42,10 @@ extern void *data_02097e4c;
 extern char data_ov003_021f83e8[];
 extern const char data_ov003_021f8510[];
 extern const char data_ov003_021f8516[];
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 extern void *func_ov000_0219429c(void *p);
 extern void func_ov000_02194758(void *p);
-extern void func_02049bb4(void *mgr, s32 id);
+extern void SndMgr_StopSeqArc(void *mgr, s32 id);
 extern s32 func_02049afc(void *mgr, s32 v);
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void *func_ov000_02191318(void *p, s32 v);
@@ -54,7 +54,7 @@ extern void func_ov000_021915a0(void *p);
 Ov003Prop *Ov003ActVt_021f83e8_Dtor(Ov003Prop *self) {
     self->vtbl = data_ov003_021f83e8;
     if (self->unk_d0 >= 0) {
-        func_02049bb4(data_02097e4c, self->unk_d0);
+        SndMgr_StopSeqArc(data_02097e4c, self->unk_d0);
     }
     func_ov000_0219429c(self);
     return self;
@@ -63,10 +63,10 @@ Ov003Prop *Ov003ActVt_021f83e8_Dtor(Ov003Prop *self) {
 Ov003Prop *Ov003ActVt_021f83e8_DtorDelete(Ov003Prop *self) {
     self->vtbl = data_ov003_021f83e8;
     if (self->unk_d0 >= 0) {
-        func_02049bb4(data_02097e4c, self->unk_d0);
+        SndMgr_StopSeqArc(data_02097e4c, self->unk_d0);
     }
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

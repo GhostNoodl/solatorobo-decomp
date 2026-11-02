@@ -11,7 +11,7 @@ struct Ov009Rot {
 extern void *data_02097e4c;
 extern Ov009Actor *func_ov000_0219be1c(u16 kind, const Ov009Vec *pos, const void *rot, u16 id, u16 parent);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
-extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
+extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 
 void func_ov009_021fd71c(Ov009ActVt_02216750 *self) {
@@ -29,7 +29,7 @@ void func_ov009_021fd71c(Ov009ActVt_02216750 *self) {
     o = func_ov000_0219be1c(kind, &p, self->rot, self->id, self->unk_90);
     if (self->unk_18 == 1) {
         func_02049f44(data_02097e4c, 0xd02, &self->pos, 0);
-        t = func_ov000_0218d240(self);
+        t = Actor_GetTarget(self);
         if (t != NULL) {
             Ov009Vec tp;
             tp = t->pos;
@@ -100,7 +100,7 @@ void func_ov009_021fd830(Ov009ActVt_02216750 *self) {
         if (data_ov000_021ccd54->unk_ca == 0x11) {
             Ov009_VecSet((Ov009Vec *)&self->unk_9c, 0, 0, 0);
         } else {
-            Ov009_VecSet((Ov009Vec *)&self->unk_9c, func_02040528(0x29), -0x71, func_02040528(0x29));
+            Ov009_VecSet((Ov009Vec *)&self->unk_9c, Rand_PlusMinus(0x29), -0x71, Rand_PlusMinus(0x29));
         }
         Ov009_ReleaseFx(self);
         m = self->unk_38;

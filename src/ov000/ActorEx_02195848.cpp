@@ -28,13 +28,13 @@ extern u8 data_ov000_021cc456[];
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void *func_ov003_021f0868(void *a, s32 r, s32 h);
-void func_ov000_02199b88(void *body, void *p);
+void Target_Set(void *body, void *p);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 void func_ov000_0218bed8(void *a, s32 b, void *c);
-void func_0203f324(void *p);
+void HitSphere_Link(void *p);
 void func_0203f364(void *p);
 void func_ov000_021987b8(void *p, s32 a, s32 b, s32 c);
-void func_0203f9dc(void *p, MtxFx43 *m);
+void HitMesh_SetMtx(void *p, MtxFx43 *m);
 
 static inline BOOL PlayerIdle02195848(void) {
     u8 *pl = data_ov000_021ccd54;
@@ -103,7 +103,7 @@ void func_ov000_02195848(VObj *obj) {
         if (((u8 *)self->unk_4c) != NULL && LFLD(u8, ((u8 *)self->unk_4c), 0) == 2) {
             void *r = func_ov003_021f0868((u8 *)self + 0x70, self->unk_64, self->unk_68);
             if (r != NULL) {
-                func_ov000_02199b88(((u8 *)self->unk_4c), r);
+                Target_Set(((u8 *)self->unk_4c), r);
                 func_ov000_02198360(((u8 *)self->unk_40), 0xd, 0);
                 break;
             }
@@ -133,7 +133,7 @@ void func_ov000_02195848(VObj *obj) {
         if ((self->msg_flags & 0x80) && (h = self->unk_48) != NULL) {
             LFLD(B16_02195848, h, 0x9a).b0 = 1;
             LFLD(u16, h, 0x9a) |= 8;
-            func_0203f324(h);
+            HitSphere_Link(h);
             func_ov000_021987b8(self->unk_48, 0, 0, 0);
         }
         break;
@@ -152,7 +152,7 @@ void func_ov000_02195848(VObj *obj) {
         m._30 = self->pos.x;
         m._31 = self->pos.y;
         m._32 = self->pos.z;
-        func_0203f9dc(p, &m);
+        HitMesh_SetMtx(p, &m);
     }
     h = self->unk_48;
     if (h == NULL) {

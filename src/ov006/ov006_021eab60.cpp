@@ -22,7 +22,7 @@ typedef struct ov006_Obj021eab60 {
 
 extern "C" {
 
-void func_0203f9dc(void *obj, MtxFx43 *m);
+void HitMesh_SetMtx(void *obj, MtxFx43 *m);
 void MTX_Concat43(const MtxFx43 *a, const MtxFx43 *b, MtxFx43 *ab);
 
 #define OV006_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
@@ -74,7 +74,7 @@ void func_ov006_021eab60(ov006_Obj021eab60 *self) {
     m.m[3][0] = self->pos.x;
     m.m[3][1] = self->pos.y;
     m.m[3][2] = self->pos.z;
-    func_0203f9dc(self->unk58, &m);
+    HitMesh_SetMtx(self->unk58, &m);
 }
 
 }

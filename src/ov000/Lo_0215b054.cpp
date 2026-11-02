@@ -48,7 +48,7 @@ extern u8 *data_02097d48;
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 
 static inline void *LoModelGetPart(void *self, int idx) {
     if (idx >= LFLD(s32, self, 0x80)) {
@@ -89,7 +89,7 @@ void func_ov000_0215b054(Obj0215b054 *self, s32 fade, s32 *pos) {
     a = LO_FX_MUL(fade, 0x1e000) >> 12;
     if (!IsHidden0215b054(self)) {
         LFLD(u32, self->model, 0x6c) |= 0x80000;
-        LFLD(LoAttr0215b054, self->model, 0x6c).alpha = func_02043d48(g + 0x8b0);
+        LFLD(LoAttr0215b054, self->model, 0x6c).alpha = Gfx3DState_NextPolyId(g + 0x8b0);
         LFLD(u32, self->model, 0x6c) |= 0x200000;
         LFLD(LoAttr0215b054, self->model, 0x6c).scale = a;
         {
@@ -104,7 +104,7 @@ void func_ov000_0215b054(Obj0215b054 *self, s32 fade, s32 *pos) {
         Win0215b054 *w = self->win;
         s32 wh = w->width;
         w->vfunc_14();
-        self->win->attr.bright = func_02043d48(g + 0x8b0);
+        self->win->attr.bright = Gfx3DState_NextPolyId(g + 0x8b0);
         a5 = a & 0x1f;
         self->win->attr.alpha = a5;
         self->win->unk_70 = self->z - 0xc0;
@@ -118,7 +118,7 @@ void func_ov000_0215b054(Obj0215b054 *self, s32 fade, s32 *pos) {
         Win0215b054 *w = self->win2;
         s32 wh = w->width;
         w->vfunc_14();
-        self->win2->attr.bright = func_02043d48(g + 0x8b0);
+        self->win2->attr.bright = Gfx3DState_NextPolyId(g + 0x8b0);
         self->win2->attr.alpha = a5;
         self->win2->unk_70 = self->z - 0xc0;
         self->win2->vfunc_20(x - (wh >> 1), y + 4);

@@ -42,7 +42,7 @@ void func_ov000_021699f0(Lo021cb798 *self) {
         break;
     }
     res = func_02034d88(func_02035d5c(data_0214b105), data_0208cb7c);
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         void *nm = data_0208cb7c;
         func_02041218(m + 0x88);
@@ -58,7 +58,7 @@ void func_ov000_021699f0(Lo021cb798 *self) {
         u8 *m2;
         void *res2;
         res2 = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-        m2 = (u8 *)func_0203dd9c(0x160);
+        m2 = (u8 *)Heap_Alloc(0x160);
         if (m2) {
             void *nm = data_0208cc88;
             func_02041218(m2 + 0x88);

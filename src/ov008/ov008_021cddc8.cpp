@@ -61,7 +61,7 @@ static inline void Ov008_SetNameB(Ov008Anim *p, const char *a, const char *b) {
 }
 
 static inline Ov008Anim *Ov008_NewMsg(void) {
-    Ov008Anim *p = (Ov008Anim *)func_0203dd9c(0x138);
+    Ov008Anim *p = (Ov008Anim *)Heap_Alloc(0x138);
     if (p != NULL) {
         p = (Ov008Anim *)func_ov000_0218e9c4(p);
     }
@@ -69,7 +69,7 @@ static inline Ov008Anim *Ov008_NewMsg(void) {
 }
 
 static inline Ov008Pic *Ov008_NewText(void) {
-    Ov008Pic *p = (Ov008Pic *)func_0203dd9c(0x4c);
+    Ov008Pic *p = (Ov008Pic *)Heap_Alloc(0x4c);
     if (p != NULL) {
         OV008_SET_VT(p, &data_0208b318);
         p->v08();

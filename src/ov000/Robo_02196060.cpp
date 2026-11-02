@@ -19,10 +19,10 @@ BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_ov000_02199dc0(void *a, void *b);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
-void func_0203f324(void *a);
+void HitSphere_Link(void *a);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void *func_ov000_021b68b8(void *a, void *pos);
-void func_ov000_0218dbe0(void *self, s32 a);
+void Actor_Move(void *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 
 static inline s32 FX_Mul(s32 a, s32 b) {
@@ -60,7 +60,7 @@ void func_ov000_02196060(ActorEx *self) {
             u8 *p = (u8 *)self->unk_48;
             LFLD(Bits02196060, p, 0x9a).b0 = 1;
             LFLD(Bits02196060, p, 0x9a).b3 = 1;
-            func_0203f324(p);
+            HitSphere_Link(p);
             LFLD(u16, self->unk_48, 0x9a) |= 0x12;
         }
         break;
@@ -84,7 +84,7 @@ void func_ov000_02196060(ActorEx *self) {
                 self->unk_a8 = 0x52;
             }
         }
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         if (self->unk_48 != NULL) {
             func_ov000_021987b8(self->unk_48, 0, 0, 0);
         }

@@ -26,10 +26,10 @@ void func_ov002_021cffe8(void *self) {
         void *s;
         switch (id) {
         case 0xb:
-            s = func_0204c0e8(data_02149ef8, 0xf3);
+            s = MsgRes_GetString(data_02149ef8, 0xf3);
             break;
         case 0x14:
-            s = func_0204c0e8(data_02149ef8, 0xf4);
+            s = MsgRes_GetString(data_02149ef8, 0xf4);
             break;
         }
         func_ov000_0215bb14(FIELD(self, 0x40, void *), s);

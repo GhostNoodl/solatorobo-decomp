@@ -30,16 +30,16 @@ BOOL func_02058b7c(TextWin *win) {
     return TextWin_IsFlag29(win) ? TRUE : FALSE;
 }
 
-TextWin *func_02058ba4(TextWin *win) {
+TextWin *MainVt_0208bbc8_DtorDelete(TextWin *win) {
     *(const u32 **)win = data_0208bbc8;
     win->unk_vf08();
     *(const u32 **)win = data_0208ba70;
     win->unk_vf08();
-    func_0203de1c(win);
+    Heap_Free(win);
     return win;
 }
 
-TextWin *func_02058bf0(TextWin *win) {
+TextWin *MainVt_0208bbc8_Dtor(TextWin *win) {
     *(const u32 **)win = data_0208bbc8;
     win->unk_vf08();
     *(const u32 **)win = data_0208ba70;
@@ -47,12 +47,12 @@ TextWin *func_02058bf0(TextWin *win) {
     return win;
 }
 
-TextWin *func_02058c34(TextWin *win) {
+TextWin *TextWinEx_DtorDelete(TextWin *win) {
     *(const u32 **)win = data_0208bb1c;
     win->unk_vf08();
     *(const u32 **)win = data_0208ba70;
     win->unk_vf08();
-    func_0203de1c(win);
+    Heap_Free(win);
     return win;
 }
 
@@ -61,7 +61,7 @@ void func_02058c80(TextWinEx *win, s16 x, s16 y) {
     win->originY = y;
 }
 
-TextWin *func_02058c90(TextWin *win) {
+TextWin *TextWinEx_Dtor(TextWin *win) {
     *(const u32 **)win = data_0208bb1c;
     win->unk_vf08();
     *(const u32 **)win = data_0208ba70;
@@ -76,7 +76,7 @@ static inline void DataRes_Reset(DataRes *res) {
     res->unk_54 = 0;
 }
 
-DataRes *func_02058cd4(DataRes *res) {
+DataRes *MainVt_0208ba30_Dtor(DataRes *res) {
     DataRes_Reset(res);
     *(const u32 **)res = data_0208b318;
     res->Unload();
@@ -84,7 +84,7 @@ DataRes *func_02058cd4(DataRes *res) {
 }
 
 static inline DataRes *DataRes_New(u32 size, const u32 *vtbl) {
-    DataRes *res = (DataRes *)func_0203dd9c(size);
+    DataRes *res = (DataRes *)Heap_Alloc(size);
     if (res != NULL) {
         *(const u32 **)res = data_0208b318;
         res->Clear();

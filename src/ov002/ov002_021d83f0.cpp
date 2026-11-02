@@ -2,8 +2,8 @@
 
 extern "C" {
 
-void func_0204918c(void *out, s32 t, void *a, void *b);
-s32 func_02049130(s32 t, s32 a, s32 b);
+void Interp_SinLerpVec(void *out, s32 t, void *a, void *b);
+s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_ov002_021d8860(void *self);
 
@@ -42,7 +42,7 @@ void func_ov002_021d83f0(void *self) {
         break;
     case 4: {
         s32 t = ov002_GetT(self);
-        func_0204918c((u8 *)self + 0x4, t, (u8 *)self + 0xb0, (u8 *)self + 0xbc);
+        Interp_SinLerpVec((u8 *)self + 0x4, t, (u8 *)self + 0xb0, (u8 *)self + 0xbc);
         if (FIELD(self, 0xa4, s32) == 0) {
             ov002_SetState(self, 1);
         }
@@ -71,11 +71,11 @@ void func_ov002_021d83f0(void *self) {
     case 6: {
         s32 t = ov002_GetT(self);
         s32 v;
-        FIELD(self, 0x8, s32) = func_02049130(t, 0x29, 0x400);
-        v = func_02049130(t, 0x1000, 0x119a);
+        FIELD(self, 0x8, s32) = Interp_SinLerp(t, 0x29, 0x400);
+        v = Interp_SinLerp(t, 0x1000, 0x119a);
         FIELD(self, 0x3c, s32) = v;
         FIELD(self, 0x44, s32) = v;
-        FIELD(self, 0x9c, s32) = FX_Div((u8)(func_02049130(t, 0x1f000, 0xd000) >> 12) << 12, 0x1f000);
+        FIELD(self, 0x9c, s32) = FX_Div((u8)(Interp_SinLerp(t, 0x1f000, 0xd000) >> 12) << 12, 0x1f000);
         if (FIELD(self, 0xa4, s32) == 0) {
             ov002_SetState(self, 2);
         }
@@ -84,11 +84,11 @@ void func_ov002_021d83f0(void *self) {
     case 7: {
         s32 t = ov002_GetT(self);
         s32 v;
-        FIELD(self, 0x8, s32) = func_02049130(t, 0x400, 0x29);
-        v = func_02049130(t, 0x119a, 0x1000);
+        FIELD(self, 0x8, s32) = Interp_SinLerp(t, 0x400, 0x29);
+        v = Interp_SinLerp(t, 0x119a, 0x1000);
         FIELD(self, 0x3c, s32) = v;
         FIELD(self, 0x44, s32) = v;
-        FIELD(self, 0x9c, s32) = FX_Div((u8)(func_02049130(t, 0xd000, 0x1f000) >> 12) << 12, 0x1f000);
+        FIELD(self, 0x9c, s32) = FX_Div((u8)(Interp_SinLerp(t, 0xd000, 0x1f000) >> 12) << 12, 0x1f000);
         if (FIELD(self, 0xa4, s32) == 0) {
             ov002_SetState(self, 1);
         }
@@ -97,12 +97,12 @@ void func_ov002_021d83f0(void *self) {
     case 8: {
         s32 t = ov002_GetT(self);
         s32 v;
-        func_0204918c((u8 *)self + 0x4, t, (u8 *)self + 0xb0, (u8 *)self + 0xbc);
+        Interp_SinLerpVec((u8 *)self + 0x4, t, (u8 *)self + 0xb0, (u8 *)self + 0xbc);
         FIELD(self, 0x8, s32) = 0x400;
-        v = func_02049130(t, 0, 0x119a);
+        v = Interp_SinLerp(t, 0, 0x119a);
         FIELD(self, 0x3c, s32) = v;
         FIELD(self, 0x44, s32) = v;
-        FIELD(self, 0x9c, s32) = FX_Div((u8)(func_02049130(t, 0x1f000, 0xd000) >> 12) << 12, 0x1f000);
+        FIELD(self, 0x9c, s32) = FX_Div((u8)(Interp_SinLerp(t, 0x1f000, 0xd000) >> 12) << 12, 0x1f000);
         if (FIELD(self, 0xa4, s32) == 0) {
             ov002_SetState(self, 0);
         }
@@ -111,12 +111,12 @@ void func_ov002_021d83f0(void *self) {
     case 9: {
         s32 t = ov002_GetT(self);
         s32 v;
-        func_0204918c((u8 *)self + 0x4, t, (u8 *)self + 0xb0, (u8 *)self + 0xbc);
+        Interp_SinLerpVec((u8 *)self + 0x4, t, (u8 *)self + 0xb0, (u8 *)self + 0xbc);
         FIELD(self, 0x8, s32) = 0x400;
-        v = func_02049130(t, 0x119a, 0);
+        v = Interp_SinLerp(t, 0x119a, 0);
         FIELD(self, 0x3c, s32) = v;
         FIELD(self, 0x44, s32) = v;
-        FIELD(self, 0x9c, s32) = FX_Div((u8)(func_02049130(t, 0xd000, 0x1f000) >> 12) << 12, 0x1f000);
+        FIELD(self, 0x9c, s32) = FX_Div((u8)(Interp_SinLerp(t, 0xd000, 0x1f000) >> 12) << 12, 0x1f000);
         if (FIELD(self, 0xa4, s32) == 0) {
             ov002_SetState(self, 1);
         }

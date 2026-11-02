@@ -33,7 +33,7 @@ extern u8 data_0208ba70[];
 extern u8 data_ov000_021ca9c4[];
 extern u8 data_ov000_021caa44[];
 extern u8 data_ov000_021cc060[];
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 
 static inline BOOL IsState5(StateObj *obj) {
     return obj->state == 5 ? TRUE : FALSE;
@@ -60,7 +60,7 @@ static inline bool FlagObj_TestBit5(FlagObj *self) {
     return self->unk_04_5;
 }
 
-void func_ov000_021519fc(FlagObj *self) {
+void Task_SetFlag7(FlagObj *self) {
     self->unk_04_7 = 1;
 }
 
@@ -73,35 +73,35 @@ void func_ov000_02151a0c(void *obj) {
     data_ov000_021ccd40 = obj;
 }
 
-bool func_ov000_02151a40(FlagObj *self, u32 mask) {
+bool Task_TestFlags(FlagObj *self, u32 mask) {
     return FlagObj_TestMask(self, mask);
 }
 
-void func_ov000_02151a60(FlagObj *self) {
+void Task_ClearFlag7(FlagObj *self) {
     self->unk_04_7 = 0;
 }
 
-bool func_ov000_02151a70(FlagObj *self) {
+bool Task_GetFlag6(FlagObj *self) {
     return FlagObj_TestBit6(self) != 0;
 }
 
-void func_ov000_02151a94(FlagObj *self) {
+void Task_SetFlag6(FlagObj *self) {
     self->unk_04_6 = 1;
 }
 
-bool func_ov000_02151aa4(FlagObj *self) {
+bool Task_GetFlag5(FlagObj *self) {
     return FlagObj_TestBit5(self) != 0;
 }
 
-void func_ov000_02151ac8(FlagObj *self) {
+void Task_SetFlag5(FlagObj *self) {
     self->unk_04_5 = 1;
 }
 
-void func_ov000_02151ad8(FlagObj *self) {
+void Task_ClearFlag4(FlagObj *self) {
     self->unk_04_4 = 0;
 }
 
-void func_ov000_02151ae8(FlagObj *self) {
+void Task_SetFlag4(FlagObj *self) {
     self->unk_04_4 = 1;
 }
 
@@ -109,7 +109,7 @@ BOOL func_ov000_02151af8(void) {
     return TRUE;
 }
 
-VObj *func_ov000_02151b00(VObj *self) {
+VObj *Lo021ca9c4_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021ca9c4);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(VOBJ_AT(self, 0x3f8), data_0208ba70);
@@ -126,7 +126,7 @@ VObj *func_ov000_02151b00(VObj *self) {
     VOBJ_AT(self, 0x60)->vfunc_08();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -150,7 +150,7 @@ BOOL func_ov000_02151bcc(StateOwner *self) {
     return TRUE;
 }
 
-VObj *func_ov000_02151c9c(VObj *self) {
+VObj *Lo021ca9c4_Dtor(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021ca9c4);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(VOBJ_AT(self, 0x3f8), data_0208ba70);
@@ -170,12 +170,12 @@ VObj *func_ov000_02151c9c(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02151d60(VObj *self) {
+VObj *Lo021caa44_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021caa44);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

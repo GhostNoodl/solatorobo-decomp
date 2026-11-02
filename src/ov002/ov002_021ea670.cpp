@@ -23,7 +23,7 @@ void *Ov002Vt_021f06bc_DtorDelete(void *self) {
     Ov002Vt_021f0cf8_Dtor((u8 *)self + 0x94);
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

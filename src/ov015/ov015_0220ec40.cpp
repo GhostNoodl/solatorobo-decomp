@@ -19,7 +19,7 @@ extern u8 data_ov000_021cca40[];
 extern u8 data_ov000_021cb5a8[];
 extern u8 data_ov000_021cae48[];
 extern char data_ov015_02213100[];
-void *func_0204c0e8(void *a, s32 b);
+void *MsgRes_GetString(void *a, s32 b);
 void func_ov000_02157c90(void *a, void *b);
 const char *func_0206ffa0(u16 id);
 void func_ov000_021c3af4(void *p);
@@ -64,7 +64,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     res = GetRes0220e634();
     sh = data_ov015_02213368;
     self->unk_60 = mode;
-    p = (u8 *)func_0203dd9c(0xf0);
+    p = (u8 *)Heap_Alloc(0xf0);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -83,15 +83,15 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     Ov015_SetXYZ32(((u8 *)self->unk_04), -0x100, 0, -0xccd);
     self->unk_04->unk_0c &= ~0x40000;
     self->unk_04->unk_0c &= ~0x20000;
-    VCALL(self->unk_04)->v10(func_0204c0e8(res, 0xcc));
-    VCALL(self->unk_04)->v14(func_0204c0e8(res, 0xcd));
+    VCALL(self->unk_04)->v10(MsgRes_GetString(res, 0xcc));
+    VCALL(self->unk_04)->v14(MsgRes_GetString(res, 0xcd));
     self->unk_04->unk_2c = 1;
     switch (mode) {
     case 0:
-        STD_CopyLString(self->unk_20, (const char *)func_0204c0e8(res, 0xcf), 0x40);
+        STD_CopyLString(self->unk_20, (const char *)MsgRes_GetString(res, 0xcf), 0x40);
         break;
     case 1:
-        func_ov000_02157c90(self->unk_04, func_0204c0e8(res, 0xce));
+        func_ov000_02157c90(self->unk_04, MsgRes_GetString(res, 0xce));
         STD_CopyLString(self->unk_20, func_0206ffa0(FLD(u16, sh, 0xc)), 0x40);
         break;
     default:
@@ -101,7 +101,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     FLD(u8 *, self->unk_04, 0xe0) = (u8 *)self->unk_20;
     VCALL(self->unk_04)->v08();
     items = (Ov015ItemEnt *)(sh + 0x10);
-    p = (u8 *)func_0203dd9c(0x100);
+    p = (u8 *)Heap_Alloc(0x100);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -128,7 +128,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
             if (items[i].cnt == 0) {
                 break;
             }
-            e = (u8 *)func_0203dd9c(0x48);
+            e = (u8 *)Heap_Alloc(0x48);
             if (e != NULL) {
                 SET_VT(e, data_ov015_022131ac);
                 func_ov000_021c22d8(e);
@@ -148,12 +148,12 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
             func_ov000_021c3fd4(self->unk_08, e);
         }
     }
-    func_ov000_021c55e8(self->unk_08, func_0204c0e8(res, 0x9a));
-    func_ov000_021c5630(self->unk_08, func_0204c0e8(res, 0xd3));
-    func_ov000_021c5678(self->unk_08, func_0204c0e8(res, 0x3f));
+    func_ov000_021c55e8(self->unk_08, MsgRes_GetString(res, 0x9a));
+    func_ov000_021c5630(self->unk_08, MsgRes_GetString(res, 0xd3));
+    func_ov000_021c5678(self->unk_08, MsgRes_GetString(res, 0x3f));
     VCALL(self->unk_08)->v08();
     FLD(u32, self->unk_08, 0xc) |= 4;
-    p = (u8 *)func_0203dd9c(0xe0);
+    p = (u8 *)Heap_Alloc(0xe0);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -168,10 +168,10 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     self->unk_14->unk_0c |= 0x20000000;
     self->unk_14->unk_0c |= 0x80000000;
     Ov015_SetXYZ32(((u8 *)self->unk_14), 0x100, 0, -0xcd);
-    VCALL(self->unk_14)->vf4(1, func_0204c0e8(res, 0x36));
+    VCALL(self->unk_14)->vf4(1, MsgRes_GetString(res, 0x36));
     VCALL(self->unk_14)->v08();
     self->unk_14->unk_0c |= 2;
-    p = (u8 *)func_0203dd9c(0x98);
+    p = (u8 *)Heap_Alloc(0x98);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -189,7 +189,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
     } else {
         func_ov000_0215d980(self->unk_0c, 0, 0);
     }
-    p = (u8 *)func_0203dd9c(0x98);
+    p = (u8 *)Heap_Alloc(0x98);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();

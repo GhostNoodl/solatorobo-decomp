@@ -23,7 +23,7 @@ typedef struct {
 extern "C" {
 
 extern u8 *const data_02097d48;
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 
 void func_ov000_021bb248(Obj021bb248 *self) {
     Sub021bb248 *sub = self->unk_b0;
@@ -33,7 +33,7 @@ void func_ov000_021bb248(Obj021bb248 *self) {
     if (v > 0x1e) {
         v = 0x1e;
     }
-    sub->unk_0c = (flags & 0xc0e0f7ff) | (v << 16) | (func_02043d48(p + 0x8b0) << 24) | 0x800;
+    sub->unk_0c = (flags & 0xc0e0f7ff) | (v << 16) | (Gfx3DState_NextPolyId(p + 0x8b0) << 24) | 0x800;
 }
 
 }

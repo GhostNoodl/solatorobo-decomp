@@ -121,7 +121,7 @@ ov006_Task0 *Ov006Vt_021ebc98_Dtor(ov006_Task0 *self) {
 
 ov006_Task0 *Ov006Vt_021ebc98_DtorDelete(ov006_Task0 *self) {
     ov006_Task0_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -264,7 +264,7 @@ void func_ov006_021d58c8(void) {
                 ov006_Unk021d58cc_Member *m_ = (obj);            \
                 func_02041558(m_);                               \
                 func_02041278(m_->unk88);                        \
-                func_0203de1c(m_);                               \
+                Heap_Free(m_);                               \
             }                                                    \
             (obj) = NULL;                                        \
         }                                                        \
@@ -282,7 +282,7 @@ static inline void ov006_Unk021d58cc_Dtor(ov006_Unk021d58cc *self) {
 
 ov006_Unk021d58cc *Ov006TaskVt_021ebe40_DtorDelete(ov006_Unk021d58cc *self) {
     ov006_Unk021d58cc_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -294,7 +294,7 @@ ov006_Unk021d58cc *Ov006TaskVt_021ebe40_Dtor(ov006_Unk021d58cc *self) {
 void *Ov006Vt_021ebc80_DtorDelete(void **self) {
     *self = &data_ov006_021ebc80;
     func_ov000_021c2310(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

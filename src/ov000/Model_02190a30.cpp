@@ -139,9 +139,9 @@ extern "C" {
 extern HeapState *data_02097dd0;
 
 void MTX_Identity33_(void *mtx);
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
 void *NNS_G3dGetTex(void *file);
 void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 a, u32 mask);
@@ -177,7 +177,7 @@ static inline void *ResMdlSet_GetMdlByIdx(ResMdlSet *set, u32 idx) {
 }
 
 static inline AnimCtrl *AnimCtrl_New(void) {
-    AnimCtrl *ctrl = (AnimCtrl *)func_0203dd9c(sizeof(AnimCtrl));
+    AnimCtrl *ctrl = (AnimCtrl *)Heap_Alloc(sizeof(AnimCtrl));
     if (ctrl != NULL) {
         ctrl->cur = &ctrl->obj_a;
         ctrl->prev = NULL;
@@ -211,7 +211,7 @@ static inline void FreeOnHeap(AnimCtrl **ptr) {
     void *saved = data_02097dd0->current;
     data_02097dd0->current = data_02097dd0->unk_08;
     if (*ptr != NULL) {
-        func_0203de1c(*ptr);
+        Heap_Free(*ptr);
         *ptr = NULL;
     }
     data_02097dd0->current = saved;

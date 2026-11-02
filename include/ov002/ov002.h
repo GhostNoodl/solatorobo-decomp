@@ -100,9 +100,9 @@ extern u32 *data_02097dd0;
     } while (0)
 #define HEAP_POP(saved) (data_02097dd0[0] = (saved))
 
-void *func_0203dd9c(u32 size);
-void func_0203de50(void *p);
-void func_0203de1c(void *p);
+void *Heap_Alloc(u32 size);
+void Heap_FreeArray(void *p);
+void Heap_Free(void *p);
 
 /* ---- */
 typedef struct Unk021f0f80 {
@@ -174,7 +174,7 @@ int func_02035bd4(void *a, void *b, u16 c);
 void func_02041558(void *p);
 void func_02041278(void *p);
 void *func_ov000_0218084c(void *a, int b, int c);
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215bb14(void *a, void *b);
 extern void *data_02149ef8;
 
@@ -311,7 +311,7 @@ static inline void Task_deleteModel(Task50 *self) {
         if (p != NULL) {
             func_02041558(p);
             func_02041278((u8 *)p + 0x88);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_3c = NULL;
     }
@@ -377,7 +377,7 @@ static inline void func_ov002_021e4904_inline(void *self) {
         u32 saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0xc, void *) != NULL) {
-            func_0203de50(FIELD(self, 0xc, void *));
+            Heap_FreeArray(FIELD(self, 0xc, void *));
             FIELD(self, 0xc, void *) = NULL;
         }
         HEAP_POP(saved);
@@ -477,7 +477,7 @@ void *func_ov000_0218ea20(void *p);
         if (p_ != NULL) {               \
             if (p_ != NULL) {           \
                 dtor(p_);               \
-                func_0203de1c(p_);      \
+                Heap_Free(p_);      \
             }                           \
             (field) = NULL;             \
         }                               \
@@ -513,7 +513,7 @@ static inline void func_ov002_021d7c04_inline(void *self) {
 
 BOOL func_0203e63c(void *a);
 void func_ov002_021d83f0(void *self);
-u8 func_02043d48(void *a);
+u8 Gfx3DState_NextPolyId(void *a);
 void NNS_G3dMdlSetMdlPolygonIDAll(void *mdl, int polygonID);
 void NNS_G3dGlbSetBaseTrans(void *a);
 void MI_Copy36B(void *a, void *b);
@@ -719,7 +719,7 @@ void func_ov002_021ec2ac(void *self);
 BOOL func_ov002_021d52e0(void *self, void *ev);
 typedef BOOL (*EvCallback)(void *, void *);
 void func_ov000_02152294(void *self, u16 a, int b, EvCallback cb);
-u8 func_0206e8f0(void);
+u8 LangData_GetLang(void);
 void func_ov002_021d4540(void *dst, u32 size, const void *a, const void *b, int mode);
 // The resource-name table data_ov002_021ef5ac (defined in ov002_021ef150.cpp). Not const:
 // func_ov002_021d278c reloads it after every call in its loop.

@@ -183,7 +183,7 @@ typedef struct { s8 dx; s8 dy; u16 hf : 1; u16 vf : 1; u16 idx : 4; } Dir2_6180;
 extern const Dir2_6180 data_ov000_021c9b40[];
 extern const s8 data_ov000_021c9b41[];
 Robo021ca458 *func_ov000_0219bf90(void);
-u16 func_0204bfa8(void *cam);
+u16 Camera_GetYaw(void *cam);
 
 static inline void SetXY6180(Oam6180 *o, u16 x, u16 y) {
     o->w0.x = x;
@@ -397,7 +397,7 @@ void func_ov000_02166180(Obj0216607c *self) {
             if (LFLD(u16, cam, 0x40) != 0) {
                 ca = LFLD(u16, cam, 0x44);
             } else {
-                ca = func_0204bfa8(cam);
+                ca = Camera_GetYaw(cam);
             }
             a = ca - pa;
         } else {

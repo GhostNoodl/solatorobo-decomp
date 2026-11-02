@@ -33,7 +33,7 @@ extern Ov014Actor *func_ov000_0219bf90(void);
 extern u16 FX_Atan2(s32 x, s32 z);
 extern u8 data_ov014_02217d4c[];
 extern void *func_ov000_02191318(void *a, s32 b);
-extern s32 func_02040498(s32 max);
+extern s32 Rand_UpTo(s32 max);
 extern void *func_ov014_02210878(Ov014Act_0220f9d0 *self);
 extern void *data_02097e4c;
 extern u8 data_ov014_02217d1d[];
@@ -118,7 +118,7 @@ void func_ov014_022110bc(Ov014Act_0220f9d0 *self) {
         func_ov000_02191318(self->unk_38, 0);
         self->unk_40->state = 20;
         self->unk_14c = p->count;
-        self->unk_144 = func_02040498(0xffff);
+        self->unk_144 = Rand_UpTo(0xffff);
         break;
     case 20:
         if (self->unk_38->unk_c4 != 1) {
@@ -243,7 +243,7 @@ extern u8 data_ov014_02216d30[];
 extern void *data_ov000_021ccd64;
 extern void MTX_MultVec43(const Ov014Vec *in, const void *m, Ov014Vec *out);
 extern s32 VEC_Mag(const Ov014Vec *v);
-extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDescB *d, Ov014Vec *pos, Ov014Rot16 *rot, u16 a);
+extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, Ov014Vec *pos, Ov014Rot16 *rot, u16 a);
 
 void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
     switch (Ov014Sub40_State(self->unk_40)) {
@@ -318,7 +318,7 @@ void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
         rot.y = FX_Atan2(w.x, w.z);
         rot.z = 0;
         Ov014SpawnB_Init(&desc, 0x4838);
-        o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &p, &rot, 0xffff);
+        o = Group_SpawnActor(data_ov000_021ccd64, &desc, &p, &rot, 0xffff);
         o->unk_60 = data_ov014_02216d30;
         o->unk_90 = self->unk_90;
         if (o->unk_4c != NULL) {
@@ -361,7 +361,7 @@ extern void *data_ov000_021ccd68;
 extern s32 FX_Div(s32 a, s32 b);
 extern void func_ov000_02191780(void *a);
 extern void func_ov000_021917f8(void *a);
-extern Ov014Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 struct Ov014WaveB {
     s16 kind;
@@ -429,7 +429,7 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
             self->unk_14a = 0x46;
             self->unk_148 = ((Ov014WaveB *)self->unk_140)->count * self->unk_14a + 0x2d;
             func_ov000_021911c8(self->unk_38, (s16)FX_Div(t, self->unk_148 << 12));
-            if (func_02040498(1)) {
+            if (Rand_UpTo(1)) {
                 func_ov000_02191780(self->unk_38);
                 func_ov000_02191318(self->unk_38, t);
             } else {
@@ -471,7 +471,7 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
                 desc.unk_04[i] = 0;
             }
             desc.parent = -1;
-            o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &p, &rot, 0xffff);
+            o = Group_SpawnActor(data_ov000_021ccd64, &desc, &p, &rot, 0xffff);
             o->unk_60 = data_ov014_02216d78;
             o->unk_90 = self->unk_90;
             if (o->unk_4c != NULL) {
@@ -502,7 +502,7 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
                     if (data_ov000_021ccd68 == NULL) {
                         a = NULL;
                     } else {
-                        a = func_ov000_0218e640(data_ov000_021ccd68, id);
+                        a = ActorMgr_GetActor(data_ov000_021ccd68, id);
                     }
                 }
                 if (a == NULL) {

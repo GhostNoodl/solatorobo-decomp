@@ -52,7 +52,7 @@ extern char data_ov003_021fa662[];
 extern char data_ov003_021fa668[];
 extern BOOL func_ov000_0218cf5c(void *self);
 extern BOOL func_ov000_0218f110(s16 *p);
-extern void func_ov000_021b4c60(void *self);
+extern void Ov000ActVt_021cc7cc_Start(void *self);
 extern BOOL func_ov000_0218ffdc(Ov003Anim *anim, s16 *res, s32 a, s32 b);
 extern BOOL func_ov000_02190cb0(void *anim, const char *name, s32 a, s32 b);
 extern void func_ov000_02190758(Ov003Anim *anim, void *p, s32 a);

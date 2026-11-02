@@ -191,7 +191,7 @@ typedef Ov010Vec VecFx32;
 #endif
 #include "ov000/ActorParts.h"
 
-// The ov000 actor base (ov000 Actor, ctor func_ov000_0218c2d4, 0xac bytes) as ov010 uses it.
+// The ov000 actor base (ov000 Actor, ctor Actor_Ctor, 0xac bytes) as ov010 uses it.
 class Ov010Obj : public Ov010V {
 public:
     Ov010Obj *prev;
@@ -360,8 +360,8 @@ extern "C" const s16 FX_SinCosTable_[];
 #define OV010_COS(a) (OV010_SINCOS[((a) >> 4) * 2 + 1])
 
 extern "C" {
-void func_0203de1c(void *p);
-void *func_0203dd9c(u32 size);
+void Heap_Free(void *p);
+void *Heap_Alloc(u32 size);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 void func_ov003_021d9900(Ov010Vec *a, u16 b, const Ov010Vec *c);
 void func_ov003_021d9980(Ov010Vec *a, u16 b, const Ov010Vec *c);

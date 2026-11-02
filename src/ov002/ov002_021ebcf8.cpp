@@ -30,7 +30,7 @@ static inline void ov002_addPair(u8 *list, u8 *a, u8 *b, s32 kind) {
         }
     }
     if (n == NULL) {
-        n = (u8 *)func_0203dd9c(0x50);
+        n = (u8 *)Heap_Alloc(0x50);
         MI_CpuFill8(n, 0, 0x20);
         MI_CpuFill8(n + 0x20, 0, 0x20);
         FIELD(n, 0x44, u8) = 0;

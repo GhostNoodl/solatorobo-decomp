@@ -30,7 +30,7 @@ BOOL func_ov000_0219b3b4(void *p);
 BOOL func_ov000_021bd314(void *p, s32 x);
 void func_ov000_021bd438(void *p, VecFx32 *v, s32 dy);
 void func_ov000_021bd624(void *p);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 static inline void RotYXZ_021b3738(MtxFx33 *m, const u16 *rot) {
     MtxFx33 t;
@@ -123,7 +123,7 @@ void func_ov000_021b3738(Robo021ca458 *self, u8 *hit) {
         LFLD(u32, self->unk_5c, 0) |= 2;
     } else if (self->unk_b24_12 == 3) {
         u16 id = self->unk_b20;
-        u8 *o = data_ov000_021ccd68 == NULL ? NULL : (u8 *)func_ov000_0218e640(data_ov000_021ccd68, id);
+        u8 *o = data_ov000_021ccd68 == NULL ? NULL : (u8 *)ActorMgr_GetActor(data_ov000_021ccd68, id);
         if (o == NULL) {
             goto end;
         }

@@ -43,7 +43,7 @@ static inline void Effect_SetStr(char *dst, const char *src) {
 }
 
 static inline Effect3D *Effect3D_New(void) {
-    Effect3D *e = (Effect3D *)func_0203dd9c(sizeof(Effect3D));
+    Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
         *(u32 **)e = data_0208c2e4;
         func_02063a34(e);
@@ -54,7 +54,7 @@ static inline Effect3D *Effect3D_New(void) {
 }
 
 static inline Effect3D *EffectHud3D_New(void) {
-    Effect3D *e = (Effect3D *)func_0203dd9c(sizeof(Effect3D));
+    Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
         *(u32 **)e = data_0208c2e4;
         func_02063a34(e);
@@ -76,7 +76,7 @@ Effect3D *func_02066774(const char *arc, const char *mdl, const char *anm, const
 }
 
 Effect3D *func_0206682c(const char *arc, const char *mdl, const char *anm, const EffectVec *pos) {
-    Effect3D *e = (Effect3D *)func_0203dd9c(sizeof(Effect3D));
+    Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
         *(u32 **)e = data_0208c2e4;
         func_02063a34(e);
@@ -93,8 +93,8 @@ Effect3D *func_0206682c(const char *arc, const char *mdl, const char *anm, const
     return e;
 }
 
-EffectGroup *func_02066900(const char *arc, const char *name, const EffectVec *pos) {
-    EffectGroup *g = (EffectGroup *)func_0203dd9c(sizeof(EffectGroup));
+EffectGroup *EffectGroup_Create(const char *arc, const char *name, const EffectVec *pos) {
+    EffectGroup *g = (EffectGroup *)Heap_Alloc(sizeof(EffectGroup));
     if (g != NULL) {
         *(u32 **)g = data_0208c2e4;
         func_02063a34(g);
@@ -152,9 +152,9 @@ static inline void EffectGroup_Dtor(EffectGroup *g) {
     func_02063bd0(g);
 }
 
-EffectGroup *func_02066a24(EffectGroup *g) {
+EffectGroup *EffectGroup_DtorDelete(EffectGroup *g) {
     EffectGroup_Dtor(g);
-    func_0203de1c(g);
+    Heap_Free(g);
     return g;
 }
 
@@ -188,29 +188,29 @@ static inline void Effect3D_Dtor(Effect3D *e) {
     func_02063bd0(e);
 }
 
-Effect3D *func_02066b58(Effect3D *e) {
+Effect3D *MainVt_0208c1e8_DtorDelete(Effect3D *e) {
     Effect3D_Dtor(e);
-    func_0203de1c(e);
+    Heap_Free(e);
     return e;
 }
 
-Effect3D *func_02066b94(Effect3D *e) {
-    Effect3D_Dtor(e);
-    return e;
-}
-
-Effect3D *func_02066bc8(Effect3D *e) {
-    Effect3D_Dtor(e);
-    func_0203de1c(e);
-    return e;
-}
-
-Effect3D *func_02066c04(Effect3D *e) {
+Effect3D *MainVt_0208c1e8_Dtor(Effect3D *e) {
     Effect3D_Dtor(e);
     return e;
 }
 
-EffectObj *func_02066c38(EffectObj *obj) {
+Effect3D *MainVt_0208c290_DtorDelete(Effect3D *e) {
+    Effect3D_Dtor(e);
+    Heap_Free(e);
+    return e;
+}
+
+Effect3D *MainVt_0208c290_Dtor(Effect3D *e) {
+    Effect3D_Dtor(e);
+    return e;
+}
+
+EffectObj *EffectObj_Dtor(EffectObj *obj) {
     *(u32 **)obj = data_0208c2e4;
     func_02063bd0(obj);
     return obj;

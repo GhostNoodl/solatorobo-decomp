@@ -83,7 +83,7 @@ void *Ov010Vt_0220ffc4_Dtor(Obj02208d60 *self) {
 void *Ov010Vt_0220ffc4_DtorDelete(Obj02208d60 *self) {
     self->unk_00 = data_ov010_0220ffc4;
     ((Ov010V *)self)->v0c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -149,7 +149,7 @@ void *Ov010ActVt_0220ffe4_Dtor(void *self) {
 
 void *Ov010ActVt_0220ffe4_DtorDelete(void *self) {
     Ov010_02208f14_Body(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -160,7 +160,7 @@ void *Ov010ActVt_0221009c_Dtor(Ov010Obj0221009c *self) {
 
 void *Ov010ActVt_0221009c_DtorDelete(Ov010Obj0221009c *self) {
     Ov010_02208f14_Body(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

@@ -22,7 +22,7 @@ extern ov006_Unk021ccd6c *data_ov000_021ccd6c;
 extern ov006_PriceEntry data_ov006_021eb7c4[];
 
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
-void *func_ov000_0218e640(void *a, u16 id);
+void *ActorMgr_GetActor(void *a, u16 id);
 BOOL func_ov006_021ea3e8(void *prop);
 int func_0206e264(ov006_Party *party);
 
@@ -37,7 +37,7 @@ u8 func_ov006_021d8cb8(void) {
     count = 0;
     for (i = 0; i < num; i++) {
         u16 id = func_ov006_021db060(data_ov006_021ec884, i)->unkE;
-        void *prop = data_ov000_021ccd68 != NULL ? func_ov000_0218e640(data_ov000_021ccd68, id) : NULL;
+        void *prop = data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
         if (prop != NULL && func_ov006_021ea3e8(prop)) {
             count++;
         }

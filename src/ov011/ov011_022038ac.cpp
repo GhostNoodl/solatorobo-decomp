@@ -18,7 +18,7 @@ struct Ov011PathEnt {
 
 extern "C" {
 
-s32 func_02040528(s32 max);
+s32 Rand_PlusMinus(s32 max);
 s32 *NNS_G3dGlbGetInvV(void);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
 void VEC_Normalize(const Ov011Vec *a, Ov011Vec *b);
@@ -44,7 +44,7 @@ static inline void Ov011_MulVec33(const Ov011Vec *v, const s32 *m, Ov011Vec *out
 }
 
 
-s32 func_02040498(s32 max);
+s32 Rand_UpTo(s32 max);
 
 void func_ov011_022038ac(Ov011Act7cf8 *self) {
     Ov011Vec d;
@@ -55,15 +55,15 @@ void func_ov011_022038ac(Ov011Act7cf8 *self) {
     case 0: {
         switch ((u8)self->unk_1a) {
         default:
-            self->unk_98 = func_02040498(0xffff);
+            self->unk_98 = Rand_UpTo(0xffff);
             d.x = 0;
             break;
         case 1:
-            self->unk_98 = func_02040498(0x7fff) + 0x4000;
+            self->unk_98 = Rand_UpTo(0x7fff) + 0x4000;
             d.x = -0x4000;
             break;
         case 2:
-            self->unk_98 = func_02040498(0x7fff) + 0xc000;
+            self->unk_98 = Rand_UpTo(0x7fff) + 0xc000;
             d.x = 0x4000;
             break;
         }
@@ -78,7 +78,7 @@ void func_ov011_022038ac(Ov011Act7cf8 *self) {
         }
         self->unk_84.x += d.x;
         self->unk_f0.x += d.x;
-        self->unk_84.z = func_02040528(0x2000) - 0x12000;
+        self->unk_84.z = Rand_PlusMinus(0x2000) - 0x12000;
         self->unk_f0.z = self->unk_84.z;
         self->unk_40->state++;
         break;
@@ -119,7 +119,7 @@ void func_ov011_022038ac(Ov011Act7cf8 *self) {
             }
         }
         if (self->unk_40->timer > 0x41) {
-            self->unk_98 += (u16)(func_02040528(0x1000) + 0x8000);
+            self->unk_98 += (u16)(Rand_PlusMinus(0x1000) + 0x8000);
             self->unk_84.x = Ov011_FxMul(OV011_COS(self->unk_98), 0x16000);
             self->unk_84.y = Ov011_FxMul(OV011_SIN(self->unk_98), 0x16000);
             self->unk_84.z = -0x12000;

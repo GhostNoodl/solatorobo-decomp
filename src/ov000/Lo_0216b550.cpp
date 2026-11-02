@@ -74,7 +74,7 @@ void func_ov000_0216b550(Obj0216b550 *self) {
         break;
     case 5: {
         void *res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-        u8 *m = (u8 *)func_0203dd9c(0x160);
+        u8 *m = (u8 *)Heap_Alloc(0x160);
         if (m) {
             void *nm = data_0208cc88;
             func_02041218(m + 0x88);

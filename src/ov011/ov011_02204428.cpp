@@ -15,7 +15,7 @@ u16 FX_Atan(s32 x);
 u16 FX_Atan2(s32 y, s32 x);
 Ov011Eff *func_02065f88(s32 id, Ov011Vec *v);
 Ov011Eff *func_020657b0(void *mgr, s32 h);
-s32 func_02040528(s32 max);
+s32 Rand_PlusMinus(s32 max);
 Ov011Obj *func_ov000_0219be1c(s32 id, Ov011Vec *pos, u16 *rot, u16 a, u16 b);
 void func_ov000_0218bed8(void *mgr, s32 a, void *self);
 
@@ -160,7 +160,7 @@ void func_ov011_02204428(Ov011Act7c4c *self) {
     Ov011_VecSet(&v, 0, 0, 0);
     if (self->unk_fc != 0) {
         self->unk_fc--;
-        Ov011_VecSet(&v, func_02040528(0x800), func_02040528(0x800), func_02040528(0x800));
+        Ov011_VecSet(&v, Rand_PlusMinus(0x800), Rand_PlusMinus(0x800), Rand_PlusMinus(0x800));
     }
     VEC_Add(&v, &self->unk_f0, &v);
     Ov011_MulVec33(&v, NNS_G3dGlbGetInvV(), &v);

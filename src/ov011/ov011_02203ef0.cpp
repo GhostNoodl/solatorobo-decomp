@@ -18,7 +18,7 @@ struct Ov011PathEnt {
 
 extern "C" {
 
-s32 func_02040528(s32 max);
+s32 Rand_PlusMinus(s32 max);
 s32 *NNS_G3dGlbGetInvV(void);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
 void VEC_Normalize(const Ov011Vec *a, Ov011Vec *b);
@@ -125,7 +125,7 @@ void func_ov011_02203ef0(Ov011Act7e50 *self) {
     d.z = 0;
     if (self->unk_fc != 0) {
         self->unk_fc--;
-        Ov011_VecSet(&d, func_02040528(0x800), func_02040528(0x800), func_02040528(0x800));
+        Ov011_VecSet(&d, Rand_PlusMinus(0x800), Rand_PlusMinus(0x800), Rand_PlusMinus(0x800));
     }
     VEC_Add(&d, &self->unk_f0, &d);
     Ov011_MulVec33(&d, NNS_G3dGlbGetInvV(), &d);

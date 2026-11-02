@@ -334,7 +334,7 @@ Ov011V *func_02065f88(s32 id, Ov011Vec *v);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-s32 func_02040528(s32 max);
+s32 Rand_PlusMinus(s32 max);
 
 void func_ov011_021ff8fc(Ov011SceneActor *self) {
     Ov011Sub40 *s = self->unk_40;
@@ -367,8 +367,8 @@ void func_ov011_021ff8fc(Ov011SceneActor *self) {
                 p->v14(0x1666, 0x1666, 0x1666);
                 x = self->unk_64;
                 z = self->unk_6c;
-                a = func_02040528(x);
-                b = func_02040528(z);
+                a = Rand_PlusMinus(x);
+                b = Rand_PlusMinus(z);
                 p->v24(a, z + 0x1000 + b, x);
             }
         }

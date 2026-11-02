@@ -23,14 +23,14 @@ typedef struct {
 extern "C" {
 
 void *func_0206fef8(u16 id);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void *func_ov000_0218fe1c(void *p);
 BOOL func_ov000_0218ffdc(void *p, void *a, int b, int c);
 s32 **func_ov000_02190a30(void *p, int idx);
 void func_ov000_02191920(void *p, int a, s32 b, int c);
 void *func_ov000_021985e8(void *p);
 void func_ov000_02198c8c(void *p, u16 id);
-void func_0203f324(void *p);
+void HitSphere_Link(void *p);
 void *func_ov000_021984c8(void *p);
 void *func_ov000_02198328(void *p);
 void *Ov006Vt_021ec28c_Ctor(void *p);
@@ -49,7 +49,7 @@ void Ov006ActVt_021ec4f4_Start(u8 *self) {
     FIELD(self, 0x64, s32) = FIELD(info, 0x14, s16) << 4;
     FIELD(self, 0x68, s32) = FIELD(info, 0x16, s16) << 4;
     FIELD(self, 0x6c, s32) = FIELD(self, 0x68, s32) >> 1;
-    p = func_0203dd9c(0xe8);
+    p = Heap_Alloc(0xe8);
     if (p != NULL) {
         p = func_ov000_0218fe1c(p);
     }
@@ -70,7 +70,7 @@ void Ov006ActVt_021ec4f4_Start(u8 *self) {
     func_ov000_0218ffdc(self + 0xb0, FIELD(self, 0x34, void *), 1, 0);
     FIELD(self, 0x164, u16) = FIELD(self, 0xc, u16);
     v = FIELD(self, 0x64, s32);
-    p = func_0203dd9c(0x9c);
+    p = Heap_Alloc(0x9c);
     if (p != NULL) {
         p = func_ov000_021985e8(p);
     }
@@ -81,12 +81,12 @@ void Ov006ActVt_021ec4f4_Start(u8 *self) {
         u8 *q = FIELD(self, 0x48, u8 *);
         FIELD(q, 0x9a, Bits16_6740).b0 = 1;
         FIELD(q, 0x9a, u16) |= 8;
-        func_0203f324(q);
+        HitSphere_Link(q);
     }
     FIELD(FIELD(self, 0x48, u8 *), 0x30, u32) = 0xe0000000;
     FIELD(FIELD(self, 0x48, u8 *), 0x28, s32) = 0x80;
     FIELD(FIELD(self, 0x48, u8 *), 0x9a, u16) |= 0x200;
-    p = func_0203dd9c(0x24);
+    p = Heap_Alloc(0x24);
     if (p != NULL) {
         p = func_ov000_021984c8(p);
     }
@@ -98,13 +98,13 @@ void Ov006ActVt_021ec4f4_Start(u8 *self) {
         FIELD(q, 0x22, Bits16_6740).b0 = 1;
         FIELD(q, 0x22, u16) |= 2;
     }
-    p = func_0203dd9c(0x14);
+    p = Heap_Alloc(0x14);
     if (p != NULL) {
         p = func_ov000_02198328(p);
     }
     FIELD(self, 0x40, void *) = p;
     self[0x15] = 1;
-    p = func_0203dd9c(0x34);
+    p = Heap_Alloc(0x34);
     if (p != NULL) {
         p = Ov006Vt_021ec28c_Ctor(p);
     }

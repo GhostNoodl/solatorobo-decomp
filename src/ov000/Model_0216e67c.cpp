@@ -20,7 +20,7 @@ extern char data_0214b105[];
 extern void *data_0208cb7c;
 extern void *data_0208cc94;
 extern void *data_0208cc88;
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
@@ -46,7 +46,7 @@ void func_ov000_0216e67c(Obj0216e67c *self) {
         return;
     }
     res = func_02034d88(func_02035d5c(data_0214b105), data_0208cb7c);
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         void *n = data_0208cb7c;
         func_02041218(m + 0x88);
@@ -61,7 +61,7 @@ void func_ov000_0216e67c(Obj0216e67c *self) {
     LFLD(u32, self->unk_10, 0x6c) |= 0x80000;
     LFLD(Bits6c0216e67c, self->unk_10, 0x6c).pri = 0x1e;
     res2 = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-    m2 = (u8 *)func_0203dd9c(0x160);
+    m2 = (u8 *)Heap_Alloc(0x160);
     if (m2) {
         void *n = data_0208cc88;
         func_02041218(m2 + 0x88);

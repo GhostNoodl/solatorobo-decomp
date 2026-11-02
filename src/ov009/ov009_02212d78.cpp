@@ -4,9 +4,9 @@ extern "C" {
 
 extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd30;
-extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
-extern void func_ov000_0218d398(Ov009Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-extern void func_0203f9dc(void *mesh, const void *mtx);
+extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern void Actor_SendMsg(Ov009Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+extern void HitMesh_SetMtx(void *mesh, const void *mtx);
 extern void func_ov003_021d3008(Ov009Actor *self);
 extern u16 FX_Atan2(s32 y, s32 x);
 struct Ov009AngSrc2 {
@@ -20,7 +20,7 @@ struct Ov009AngSrc2 {
     u16 unk_44;
 };
 
-extern u16 func_0204bfa8(Ov009AngSrc2 *p);
+extern u16 Camera_GetYaw(Ov009AngSrc2 *p);
 extern void func_ov000_0216912c(void *o, u16 id, s32 a, u16 b, u16 c, const Ov009Vec *pos);
 
 struct Ov009EaBits {
@@ -38,7 +38,7 @@ static inline s32 Ov009_GetAng2(Ov009AngSrc2 *p) {
     if (p->unk_40 != 0) {
         return p->unk_44;
     }
-    return func_0204bfa8(p);
+    return Camera_GetYaw(p);
 }
 
 static inline void Ov009_Notify(u16 id, u16 b, u16 c, const Ov009Vec *pos) {
@@ -53,7 +53,7 @@ static inline Ov009Actor *Ov009_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline s32 Ov009_Mode(Ov009Actor *a) {
@@ -66,7 +66,7 @@ struct Ov009PosMsg {
     u32 unk_14;
 };
 
-extern void func_0203f8d8(void *mesh);
+extern void HitMesh_Link(void *mesh);
 extern void func_0203f920(void *mesh);
 
 struct Ov009Bit84 {
@@ -90,10 +90,10 @@ void func_ov009_02212d78(Ov009ActVt_02217d5c *self) {
     }
     func_ov003_021d3008(self);
     if (self->unk_58 != NULL) {
-        func_0203f9dc(self->unk_58, &self->unk_f8);
+        HitMesh_SetMtx(self->unk_58, &self->unk_f8);
         if (self->unk_93_4) {
             if (FLD(Ov009Bit84, self->unk_58, 0x84).b0 != 1) {
-                func_0203f8d8(self->unk_58);
+                HitMesh_Link(self->unk_58);
             }
         } else {
             if (FLD(Ov009Bit84, self->unk_58, 0x84).b0) {
@@ -114,7 +114,7 @@ void func_ov009_02212d78(Ov009ActVt_02217d5c *self) {
         msg.rot[1] = y;
         msg.rot[2] = z;
     }
-    func_ov000_0218d398(a, self->id, 7, TRUE, 0x18, &msg);
+    Actor_SendMsg(a, self->id, 7, TRUE, 0x18, &msg);
 }
 
 }

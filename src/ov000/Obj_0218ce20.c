@@ -54,7 +54,7 @@ BOOL func_ov000_02191b9c(Sub0218ce3c *a);
 void func_ov000_0219864c(void *a, s32 b, s32 c);
 void func_ov000_021984f4(void *a, s32 b, s32 c);
 
-void func_ov000_0218ce20(void) {
+void Actor_Start(void) {
 }
 
 void func_ov000_0218ce24(void) {

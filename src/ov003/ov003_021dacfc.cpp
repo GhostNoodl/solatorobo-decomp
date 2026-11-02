@@ -27,13 +27,13 @@ extern "C" {
 extern Ov003HeapCtx *data_02097dd0;
 extern void *data_0214a420;
 extern void *func_020657b0(void *mgr, void *handle);
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 
 static inline void Ov003_HeapDelete(void *p) {
     void *old = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->alt;
     if (p != NULL) {
-        func_0203de1c(p);
+        Heap_Free(p);
     }
     data_02097dd0->cur = old;
 }

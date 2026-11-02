@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_02097e4c;
 void *func_02049a48(void *a, int b, int c, int d, int e);
 s32 FX_Div(s32 a, s32 b);
-s32 func_02049210(s32 t, s32 a, s32 b);
+s32 Interp_QuadLerp(s32 t, s32 a, s32 b);
 
 BOOL func_ov015_022106f8(Ov015Msg *self) {
     BOOL r = FALSE;
@@ -23,7 +23,7 @@ BOOL func_ov015_022106f8(Ov015Msg *self) {
     case 2: {
         s32 t = FX_Div(self->unk_140 << 12, 0x28000);
         self->unk_1c = 0x50000;
-        self->unk_20 = func_02049210(t, -0x46000, -0x66000);
+        self->unk_20 = Interp_QuadLerp(t, -0x46000, -0x66000);
         self->unk_24 = -0x333;
         if (--self->unk_140 >= 0) {
             break;

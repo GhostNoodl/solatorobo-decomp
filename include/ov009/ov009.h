@@ -290,7 +290,7 @@ struct Ov009Param {
     u16 unk_0a_10 : 6;
 };
 
-// The ov000 Target object at Ov009Obj::unk_4c (Target_02199b00.c; func_ov000_02199ba0 looks up
+// The ov000 Target object at Ov009Obj::unk_4c (Target_02199b00.c; Target_Get looks up
 // the actor whose id is in target).
 struct Ov009Target {
     u8 type;
@@ -319,7 +319,7 @@ struct Ov009Target {
 SIZE_ASSERT(Ov009Target, 0x5c);
 
 // The object base shared by the ov003 actor (Ov009Actor, built by func_ov003_021d0c1c) and the
-// ov000 actor (Ov009ActorEx, built by func_ov000_02194074): the fields below 0xac.
+// ov000 actor (Ov009ActorEx, built by ActorEx_Ctor): the fields below 0xac.
 class Ov009Obj : public Ov009V {
 public:
     void *unk_04;
@@ -420,7 +420,7 @@ public:
     u16 unk_ee_9 : 7;
 };
 
-// The ov000 actor base (func_ov000_02194074): 0xd0 bytes, with its own fields from 0xac.
+// The ov000 actor base (ActorEx_Ctor): 0xd0 bytes, with its own fields from 0xac.
 class Ov009ActorEx : public Ov009Obj {
 public:
     u8 unk_ac[0x4];
@@ -532,15 +532,15 @@ static inline BOOL Ov009_GameIdle(void) {
 }
 
 extern "C" {
-void func_0203de1c(void *p);
-void *func_0203dd9c(u32 size);
+void Heap_Free(void *p);
+void *Heap_Alloc(u32 size);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 void *func_ov003_021d0edc(void *self);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-s32 func_02040528(s32 max);
-s32 func_02040498(s32 max);
+s32 Rand_PlusMinus(s32 max);
+s32 Rand_UpTo(s32 max);
 void VEC_MultAdd(s32 scale, const Ov009Vec *dir, const Ov009Vec *base, Ov009Vec *out);
 s32 VEC_Distance(const Ov009Vec *a, const Ov009Vec *b);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);

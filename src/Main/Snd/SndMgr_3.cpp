@@ -2,11 +2,11 @@
 
 extern "C" {
 
-BOOL func_0204985c(SndMgr *mgr) {
+BOOL SndMgr_IsLoadDone(SndMgr *mgr) {
     return mgr->loadType == 0 ? TRUE : FALSE;
 }
 
-void func_02049870(SndMgr *mgr, s32 seq) {
+void SndMgr_LoadBgm(SndMgr *mgr, s32 seq) {
     mgr->curBgm = -1;
     if (mgr->noAutoPlay) {
         mgr->playAfterLoad = FALSE;
@@ -30,15 +30,15 @@ void func_020498ac(SndMgr *mgr, s32 seq) {
     NNS_SndPlayerSetPlayerPriority(&mgr->bgm, 0x7f);
 }
 
-void func_02049950(SndMgr *mgr, int volume, int frames) {
+void SndMgr_MoveBgmVolume(SndMgr *mgr, int volume, int frames) {
     NNS_SndPlayerMoveVolume(&mgr->bgm, volume, frames);
 }
 
-void func_02049960(SndMgr *mgr, int playerNo, int fadeFrames) {
+void SndMgr_StopSeqNo(SndMgr *mgr, int playerNo, int fadeFrames) {
     NNS_SndPlayerStopSeqBySeqNo(playerNo, fadeFrames);
 }
 
-void func_02049974(SndMgr *mgr, int fadeFrames) {
+void SndMgr_StopAll(SndMgr *mgr, int fadeFrames) {
     NNS_SndPlayerStopSeqAll(fadeFrames);
 }
 
@@ -146,7 +146,7 @@ s32 func_02049afc(SndMgr *mgr, s32 id) {
     return i;
 }
 
-void func_02049bb4(SndMgr *mgr, s32 idx) {
+void SndMgr_StopSeqArc(SndMgr *mgr, s32 idx) {
     if (idx < 0 || idx >= 5) {
         return;
     }

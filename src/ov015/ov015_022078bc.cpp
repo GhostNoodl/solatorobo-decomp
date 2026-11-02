@@ -117,8 +117,8 @@ void func_ov000_02190a80(void *a, s32 b);
 void func_ov000_02191780(void *a);
 void func_ov000_021917f8(void *a);
 u16 func_01ffc128(u16 a, u16 b, s32 c, s32 d, s32 e);
-s32 func_02040528(s32 max);
-s32 func_02040498(s32 max);
+s32 Rand_PlusMinus(s32 max);
+s32 Rand_UpTo(s32 max);
 Ov015V *func_02065f88(s32 id, void *pos);
 s32 func_02065748(void *a, void *b);
 
@@ -134,7 +134,7 @@ void func_ov015_02207c30(Ov015Ship *self) {
     case 3:
         func_ov000_02190cb0(&self->unk_138, data_ov015_02212634[self->unk_d3a], 0x2ab, 0);
         func_ov000_02191618(&self->unk_138);
-        ang = data_ov015_0221262c[self->unk_d3a] + func_02040528(0x800);
+        ang = data_ov015_0221262c[self->unk_d3a] + Rand_PlusMinus(0x800);
         break;
     }
     func_ov000_02190a80(&self->unk_138, 0x1000);
@@ -165,20 +165,20 @@ void func_ov015_02207c30(Ov015Ship *self) {
             Ov015V *e = func_02065f88(0x322, &p);
             self->unk_d28 = e;
             e->v14(0x1333, 0x1333, 0x1333);
-            self->unk_d28->v34(0, 0, (u16)func_02040498(0x3fff));
+            self->unk_d28->v34(0, 0, (u16)Rand_UpTo(0x3fff));
             FLD(s32, self->unk_d28, 0xc8) = -1;
             self->unk_d28->v08(3);
             FLD(s32, self->unk_d28, 0x3c) = 0x2000;
             self->unk_d2c = 0x5a;
         } else {
-            if (func_02040498(100) < 5) {
+            if (Rand_UpTo(100) < 5) {
                 Ov015VecC p = FLD(Ov015VecC, self->unk_d28, 0x58);
                 Ov015V *e = func_02065f88(0x320, &p);
                 e->v14(0x800, 0x800, 0x800);
                 e->v08(3);
             }
             if (--self->unk_d2c < 0) {
-                self->unk_d28->v34(0, 0, (u16)func_02040498(0x3fff));
+                self->unk_d28->v34(0, 0, (u16)Rand_UpTo(0x3fff));
                 self->unk_d2c = 0x5a;
             }
         }

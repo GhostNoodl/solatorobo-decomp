@@ -52,7 +52,7 @@ void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeFlushBuffer(void);
 int G3X_GetBoxTestResult(s32 *in);
 void NNS_G3dDraw(void *obj);
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 
 static inline void G3_Scale021b75e0(s32 x, s32 y, s32 z) {
     s32 v[3];
@@ -94,7 +94,7 @@ BOOL func_ov000_021b75e0(Model021b75e0 *self) {
         NNSi_G3dModifyPolygonAttrMask(mdl, FALSE, 0xc0);
         NNSi_G3dModifyPolygonAttrMask(mdl, FALSE, 0x3f000000);
         id = data_02097d48[0x8b1];
-        func_02043d48(data_02097d48 + 0x8b0);
+        Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
         NNS_G3dGlbPolygonAttr(0, 0, 2, id, self->alpha, 0x1000);
     } else {
         NNS_G3dGlbPolygonAttr(0, 0, 3, 0x14, 0x1f, 0x1000);

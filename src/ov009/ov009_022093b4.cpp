@@ -20,7 +20,7 @@ extern void *data_02097e4c;
 extern u8 data_ov009_022172b5[];
 extern void func_ov000_02190e98(void *p, s32 a, s32 b, s32 c);
 extern void func_0203f364(Ov009Sub48 *p);
-extern void func_0203f324(Ov009Sub48 *p);
+extern void HitSphere_Link(Ov009Sub48 *p);
 extern BOOL func_ov000_02191120(void *m);
 extern void func_ov000_02191780(Ov009Sub38 *m);
 extern void func_ov000_021917f8(Ov009Sub38 *m);
@@ -47,7 +47,7 @@ void func_ov009_022093f8(Ov009ActVt_02217594 *self) {
             s48 = self->unk_48;
             s48->unk_9a_0 = 1;
             s48->unk_9a_3 = 1;
-            func_0203f324(s48);
+            HitSphere_Link(s48);
         }
         st = self->unk_40;
         if (st->timer != 0) {
@@ -106,14 +106,14 @@ extern u8 data_ov009_022172af[];
 extern void *data_0214a420;
 extern void func_ov000_021911c8(void *model, s32 a);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
-extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
+extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 extern void *func_020657b0(void *mgr, s32 id);
 
 void func_ov009_02209668(Ov009ActVt_02217594 *self) {
     Ov009Vec3x3 tbl = data_ov009_02215f50;
     Ov009Vec v1;
-    Ov009Actor *pl = func_ov000_0218d240(self);
+    Ov009Actor *pl = Actor_GetTarget(self);
     if (pl == NULL) {
         return;
     }
@@ -174,7 +174,7 @@ void func_ov009_02209668(Ov009ActVt_02217594 *self) {
             s48 = self->unk_48;
             s48->unk_9a_0 = 1;
             s48->unk_9a_3 = 1;
-            func_0203f324(s48);
+            HitSphere_Link(s48);
             func_ov000_021911c8(self->unk_38, 0x99a);
         }
         if (self->unk_38->anim_state == 2) {

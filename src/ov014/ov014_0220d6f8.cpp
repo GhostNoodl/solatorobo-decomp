@@ -5,11 +5,11 @@ extern "C" {
 extern void *data_0214a420;
 extern u8 data_ov014_02217bdc[];
 extern u8 data_ov014_02217b44[];
-extern void *func_ov000_02194074(void *self);
+extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02194c08(void *self);
 extern void func_02065804(void *a, void *b);
-extern Ov014Actor *func_ov000_0218d240(Ov014Obj *self);
+extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
 
 extern char data_ov014_02217a4e[];
 extern char data_ov014_02217a9c[];
@@ -115,12 +115,12 @@ void func_ov014_0220d274(Ov014Act_02209280 *self) {
             v.z = FLD(s32, pl, 0x78);
             v.y = 0;
         } else {
-            s32 x = func_02040498(0x4000) + 0x3000;
+            s32 x = Rand_UpTo(0x4000) + 0x3000;
             if (self->unk_f8 & 1) {
                 x = -x;
             }
             s32 z;
-            z = func_02040528(0x4000) + 0xb000;
+            z = Rand_PlusMinus(0x4000) + 0xb000;
             v.x = x;
             v.y = 0;
             v.z = z;
@@ -170,7 +170,7 @@ void func_ov014_0220d6f8(Ov014Act_02209280 *self) {
 
 #pragma force_active on
 Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_Ctor(Ov014ActEx_0220d70c *self) {
-    func_ov000_02194074(self);
+    ActorEx_Ctor(self);
     FLD(void *, self, 0) = data_ov014_02217bdc;
     self->unk_d0 = NULL;
     self->unk_d4 = NULL;
@@ -202,7 +202,7 @@ Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_DtorDelete(Ov014ActEx_0220d70c *self) {
         func_02065804(data_0214a420, self->unk_d4);
     }
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -219,7 +219,7 @@ void Ov014ActEx_0220d70c_Start(Ov014ActEx_0220d70c *self) {
         func_ov000_02198360(self->unk_40, 0xb, 0);
     }
     if (self->unk_90 != 0xffff) {
-        Ov014Actor *a = func_ov000_0218d240(self);
+        Ov014Actor *a = Actor_GetTarget(self);
         if (a != NULL) {
             self->unk_84 = a->pos;
         }
@@ -231,12 +231,12 @@ extern BOOL func_ov000_021b4738(u8 *p);
 extern u8 *func_ov014_0220f7f0(s32 k, Ov014Vec *pos);
 extern void *func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
 extern u8 *func_020657b0(void *a, void *b);
-extern void *func_ov000_02199ba0(void *p);
+extern void *Target_Get(void *p);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, Ov014Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 
 static inline void Ov014_d890Fire(Ov014ActEx_0220d70c *self) {
     Ov014Vec v;
-    void *a = func_ov000_02199ba0(self->unk_4c);
+    void *a = Target_Get(self->unk_4c);
     {
         s32 y = -self->pos.y;
         v.x = 0;

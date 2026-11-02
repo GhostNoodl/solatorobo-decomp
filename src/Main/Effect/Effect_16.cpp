@@ -17,7 +17,7 @@ typedef struct EffectMtx33 {
 
 extern const s16 FX_SinCosTable_[];
 extern u32 data_0208c840[];
-extern s32 func_02040528(s32 range);
+extern s32 Rand_PlusMinus(s32 range);
 extern void func_02068da8(EffectPtcl *p);
 extern void func_0206bab8(EffectEmitter *em, EffectPtcl *p);
 extern void MTX_RotX33_(EffectMtx33 *m, s32 s, s32 c);
@@ -70,7 +70,7 @@ EffectPtcl *func_0206b81c(EffectEmitter *em) {
         break;
     }
     rotated = FALSE;
-    n += (func_02040528(Effect_FxMul(n << 12, EFFECT_PARAM(em, 0x18))) + 0x800) >> 12;
+    n += (Rand_PlusMinus(Effect_FxMul(n << 12, EFFECT_PARAM(em, 0x18))) + 0x800) >> 12;
     ry = em->rot.y;
     rz = em->rot.z;
     rx = em->rot.x;
@@ -98,7 +98,7 @@ EffectPtcl *func_0206b81c(EffectEmitter *em) {
     }
     head = NULL;
     for (i = 0; i < n; i++) {
-        p = (EffectPtcl *)func_0203dd9c(0xc4);
+        p = (EffectPtcl *)Heap_Alloc(0xc4);
         if (p != NULL) {
             *(u32 **)p = data_0208c840;
             func_02068da8(p);
@@ -114,7 +114,7 @@ EffectPtcl *func_0206b81c(EffectEmitter *em) {
     return head;
 }
 
-extern s32 func_02040498(s32 max);
+extern s32 Rand_UpTo(s32 max);
 
 static inline void *Effect_ResDataByIdx(EffectResDict *dict, u32 idx) {
     if (dict != NULL && idx < dict->numEntry) {
@@ -193,7 +193,7 @@ static inline s32 Effect_Abs(s32 x) {
 }
 
 static inline s32 Effect_RandScale(const s32 &base, s32 range) {
-    s32 r = Effect_Abs(func_02040528(range));
+    s32 r = Effect_Abs(Rand_PlusMinus(range));
     return base - Effect_FxMul(base, r);
 }
 
@@ -241,9 +241,9 @@ static inline void Effect_MtxRotYXZ(EffectMtx43 *m, s32 range) {
     u16 rz;
     BOOL rotated;
     rotated = FALSE;
-    rx = func_02040528(range) >> 12;
-    ry = func_02040528(range) >> 12;
-    rz = func_02040528(range) >> 12;
+    rx = Rand_PlusMinus(range) >> 12;
+    ry = Rand_PlusMinus(range) >> 12;
+    rz = Rand_PlusMinus(range) >> 12;
     MTX_Identity43_(m);
     if (ry != 0) {
         MTX_RotY43_(m, FX_SinCosTable_[(ry >> 4) * 2], FX_SinCosTable_[(ry >> 4) * 2 + 1]);
@@ -285,7 +285,7 @@ void func_0206bab8(EffectEmitter *em, EffectPtcl *p) {
     case 0: {
         EffectVec v;
         EffectMtx43 m;
-        s32 a = func_02040498(0xffff);
+        s32 a = Rand_UpTo(0xffff);
         v.x = Effect_FxMul(EFFECT_PARAM(em, 0x30), FX_SinCosTable_[(a >> 4) * 2 + 1]);
         v.y = 0;
         v.z = Effect_FxMul(EFFECT_PARAM(em, 0x30), FX_SinCosTable_[(a >> 4) * 2]);
@@ -298,9 +298,9 @@ void func_0206bab8(EffectEmitter *em, EffectPtcl *p) {
         break;
     }
     case 1:
-        out.x = c.x + func_02040528(0x1000);
-        out.y = c.y + func_02040528(0x1000);
-        out.z = c.z + func_02040528(0x1000);
+        out.x = c.x + Rand_PlusMinus(0x1000);
+        out.y = c.y + Rand_PlusMinus(0x1000);
+        out.z = c.z + Rand_PlusMinus(0x1000);
         VEC_Normalize(&out, &out);
         f = Effect_RandScale(EFFECT_PARAM(em, 0x30), EFFECT_PARAM(em, 0x40) + 1);
         out.x = Effect_FxMul(out.x, f);
@@ -317,9 +317,9 @@ void func_0206bab8(EffectEmitter *em, EffectPtcl *p) {
         dir.y = c.y - out.y;
         dir.z = c.z - out.z;
         if (dir.x == 0 && dir.y == 0 && dir.z == 0) {
-            dir.x = func_02040528(0x1000);
-            dir.y = func_02040528(0x1000);
-            dir.z = func_02040528(0x1000);
+            dir.x = Rand_PlusMinus(0x1000);
+            dir.y = Rand_PlusMinus(0x1000);
+            dir.z = Rand_PlusMinus(0x1000);
         }
         VEC_Normalize(&dir, &dir);
         break;
@@ -328,9 +328,9 @@ void func_0206bab8(EffectEmitter *em, EffectPtcl *p) {
         dir.y = out.y - c.y;
         dir.z = out.z - c.z;
         if (dir.x == 0 && dir.y == 0 && dir.z == 0) {
-            dir.x = func_02040528(0x1000);
-            dir.y = func_02040528(0x1000);
-            dir.z = func_02040528(0x1000);
+            dir.x = Rand_PlusMinus(0x1000);
+            dir.y = Rand_PlusMinus(0x1000);
+            dir.z = Rand_PlusMinus(0x1000);
         }
         VEC_Normalize(&dir, &dir);
         break;
@@ -338,9 +338,9 @@ void func_0206bab8(EffectEmitter *em, EffectPtcl *p) {
         VEC_Normalize((EffectVec *)&EFFECT_PARAM(em, 0x20), &dir);
         break;
     case 3:
-        dir.x = func_02040528(0x1000);
-        dir.y = func_02040528(0x1000);
-        dir.z = func_02040528(0x1000);
+        dir.x = Rand_PlusMinus(0x1000);
+        dir.y = Rand_PlusMinus(0x1000);
+        dir.z = Rand_PlusMinus(0x1000);
         VEC_Normalize(&dir, &dir);
         break;
     case 4:

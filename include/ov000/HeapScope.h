@@ -16,7 +16,7 @@ typedef struct HeapState {
 struct Model;
 
 extern HeapState *data_02097dd0;
-void func_0203de1c(void *p);
+void Heap_Free(void *p);
 void func_02041558(struct Model *model);
 void func_02041278(void *p);
 
@@ -44,10 +44,10 @@ void func_02041278(void *p);
 #define MODEL_DELETE(p)                \
     func_02041558((struct Model *)(p)); \
     func_02041278((u8 *)(p) + 0x88);   \
-    func_0203de1c(p)
+    Heap_Free(p)
 
 #define HEAP_DELETE_MODEL(field) HEAP_DELETE(void *, field, MODEL_DELETE(p))
 #define HEAP_DELETE_VOBJ(field) HEAP_DELETE(VObj *, field, p->vfunc_04())
-#define HEAP_DELETE_FN(field, fn) HEAP_DELETE(void *, field, fn(p); func_0203de1c(p))
+#define HEAP_DELETE_FN(field, fn) HEAP_DELETE(void *, field, fn(p); Heap_Free(p))
 
 #endif

@@ -36,15 +36,15 @@ extern void NNS_G3dRenderObjSetInitFunc(void *p, void *cb);
 extern void func_0203f2b8(void *p);
 extern u8 *func_0206fef8(void *res);
 extern void func_0203f80c(void *p);
-extern void func_0203f990(void *p, s32 v);
-extern void func_0203f9b8(void *p, s32 v);
+extern void HitMesh_SetRes(void *p, s32 v);
+extern void HitMesh_SetScale(void *p, s32 v);
 extern void MTX_RotX43_(void *m, s32 s, s32 c);
 extern void MTX_RotY43_(void *m, s32 s, s32 c);
 extern void MTX_RotZ43_(void *m, s32 s, s32 c);
 extern void MTX_Concat43(void *a, void *b, void *out);
-extern void func_0203f9dc(void *mesh, const void *mtx);
-extern void func_0203f8d8(void *p);
-extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
+extern void HitMesh_SetMtx(void *mesh, const void *mtx);
+extern void HitMesh_Link(void *p);
+extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_ov000_0218b700(u8 *p, s32 a, s32 b);
 struct Ov009Mtx43b {
     s32 m[9];
@@ -84,7 +84,7 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
         Ov009Sub48 *d = self->unk_48;
         if (d != NULL) {
             func_0203f2b8(d);
-            func_0203de1c(d);
+            Heap_Free(d);
         }
         self->unk_48 = NULL;
     }
@@ -93,14 +93,14 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
     o = FLD(u32 *, self->unk_34, 0x84);
     v = o != NULL ? *o : 0;
     if (v != 0) {
-        void *q = func_0203dd9c(0x98);
+        void *q = Heap_Alloc(0x98);
         if (q != NULL) {
             func_0203f80c(q);
         }
         self->unk_58 = q;
         o = FLD(u32 *, self->unk_34, 0x84);
-        func_0203f990(self->unk_58, o != NULL ? *o : 0);
-        func_0203f9b8(self->unk_58, FLD(s16, c, 0x10));
+        HitMesh_SetRes(self->unk_58, o != NULL ? *o : 0);
+        HitMesh_SetScale(self->unk_58, FLD(s16, c, 0x10));
         {
             void *obj;
             Ov009Mtx43b t;
@@ -139,11 +139,11 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
             mt.t.x = self->pos.x;
             mt.t.y = self->pos.y;
             mt.t.z = self->pos.z;
-            func_0203f9dc(obj, &mt);
+            HitMesh_SetMtx(obj, &mt);
         }
-        func_0203f8d8(self->unk_58);
+        HitMesh_Link(self->unk_58);
     }
-    p = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+    p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
         ((Ov009Bit8 *)(p + 0xa2))->b0 = 0;
         func_ov000_0218b700(p, 0x3000, 0);

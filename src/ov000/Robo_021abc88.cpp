@@ -36,8 +36,8 @@ void func_02062764(s32 a, s32 b);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
-void func_ov000_0218d918(void *self, void *v, s32 a);
-void func_ov000_0218ddd4(void *self, const VecFx32 *target, s32 turn);
+void Actor_TurnToPos(void *self, void *v, s32 a);
+void Actor_MoveToPos(void *self, const VecFx32 *target, s32 turn);
 BOOL func_ov000_02191120(void *a);
 void func_ov000_02198d28(void *body, VecFx32 *pos, u32 angle);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
@@ -81,8 +81,8 @@ void func_ov000_021abc88(Robo021ca458 *self) {
     case 1: {
         s32 d;
         u16 *s;
-        func_ov000_0218d918(self, (u8 *)self + 0x75c, 0x59a);
-        func_ov000_0218ddd4(self, (VecFx32 *)((u8 *)self + 0x75c), 0);
+        Actor_TurnToPos(self, (u8 *)self + 0x75c, 0x59a);
+        Actor_MoveToPos(self, (VecFx32 *)((u8 *)self + 0x75c), 0);
         d = self->pos.y - self->unk_75c.y;
         if (d < 0x1800) {
             self->pos.y += (self->unk_75c.y + 0x1800 - self->pos.y) >> 2;

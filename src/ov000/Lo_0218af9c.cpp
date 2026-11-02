@@ -40,12 +40,12 @@ extern Mgr0218af9c *data_ov000_021ccd64;
 extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 Robo021ca458 *func_ov000_0219bf90(void);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 BOOL func_01ffc2a4(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max);
 BOOL func_01ffc89c(void *vol, VecFx32 *seg);
 u16 FX_Atan2(s32 x, s32 z);
 void func_ov000_0218b4b4(u8 *self, s32 mode, u8 *src);
-u8 *func_ov000_0218bf1c(void *mgr, Desc0218af9c *d, void *pos, void *rot, u16 a);
+u8 *Group_SpawnActor(void *mgr, Desc0218af9c *d, void *pos, void *rot, u16 a);
 
 static inline BOOL GBusy0218af9c(u8 *g) {
     return LFLD(s32, g, 0x90) != LFLD(s32, g, 0x94) ? TRUE : FALSE;
@@ -130,7 +130,7 @@ void func_ov000_0218af9c(Obj0218af9c *self) {
                 if (data_ov000_021ccd68 == NULL) {
                     tgt = NULL;
                 } else {
-                    tgt = (u8 *)func_ov000_0218e640(data_ov000_021ccd68, self->unk_0e);
+                    tgt = (u8 *)ActorMgr_GetActor(data_ov000_021ccd68, self->unk_0e);
                 }
             }
             if (tgt != NULL) {
@@ -226,7 +226,7 @@ void func_ov000_0218af9c(Obj0218af9c *self) {
                 d.unk_04[j] = LFLD(s16, (u8 *)self + j * 2, 0x10);
             }
             d.unk_0c = self->unk_18;
-            o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, &self->unk_24, (u8 *)self + 0x1e, kind);
+            o = Group_SpawnActor(data_ov000_021ccd64, &d, &self->unk_24, (u8 *)self + 0x1e, kind);
             if (o != NULL) {
                 self->unk_0e = LFLD(u16, o, 0xc);
             }

@@ -58,7 +58,7 @@ void func_ov000_0216fb14(Obj0216fb14 *self) {
     HEAP_DELETE(VObj *, self->unk_48, p->vfunc_04());
     HEAP_DELETE_FN(self->unk_3c, func_ov000_021b8ecc);
     HEAP_DELETE_FN(self->unk_40, func_ov000_021bacf4);
-    HEAP_DELETE(u8 *, self->unk_44, func_ov000_021bbcac(p); *(void **)(p + 4) = data_0208b318; ((VObj *)(p + 4))->vfunc_0c(); func_0203de1c(p));
+    HEAP_DELETE(u8 *, self->unk_44, func_ov000_021bbcac(p); *(void **)(p + 4) = data_0208b318; ((VObj *)(p + 4))->vfunc_0c(); Heap_Free(p));
     HEAP_DELETE_FN(self->unk_4c, func_ov000_021bb840);
     HEAP_DELETE_FN(self->unk_50, func_ov000_0216c9b0);
     HEAP_DELETE_FN(self->unk_54, func_ov000_0216e5d0);
@@ -71,7 +71,7 @@ void func_ov000_0216fb14(Obj0216fb14 *self) {
     HEAP_DELETE(VObj *, self->unk_70, p->vfunc_04());
     HEAP_DELETE(VObj *, self->unk_74, p->vfunc_04());
     HEAP_DELETE_FN(self->unk_78, func_ov000_0216ad34);
-    HEAP_DELETE(u8 *, self->unk_7c, func_ov000_0216bf90(p); __cxa_vec_cleanup(p + 0x360, 0xa, 0xc, (void (*)(void *))func_ov000_0217006c); func_0203de1c(p));
+    HEAP_DELETE(u8 *, self->unk_7c, func_ov000_0216bf90(p); __cxa_vec_cleanup(p + 0x360, 0xa, 0xc, (void (*)(void *))func_ov000_0217006c); Heap_Free(p));
     func_ov000_0216faac(self);
 }
 

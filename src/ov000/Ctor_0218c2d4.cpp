@@ -4,12 +4,12 @@
 
 extern "C" {
 extern u8 data_ov000_021cc3b4[];
-void func_0203db10(void *p);
+void PauseNode_Init(void *p);
 
-u8 *func_ov000_0218c2d4(u8 *self) {
+u8 *Actor_Ctor(u8 *self) {
     s32 i;
     F(void *, 0) = data_ov000_021cc3b4;
-    func_0203db10(self + 0x24);
+    PauseNode_Init(self + 0x24);
     F(s32, 0x4) = 0;
     F(s32, 0x8) = 0;
     F(u16, 0xc) = 0xffff;

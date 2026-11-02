@@ -40,14 +40,14 @@ void func_ov002_021dd7f0(void *self, Vec2 *a, Vec2 *b, int c) {
         if (nxt[2] != cur[2] || c != 0 || FIELD(self, 0x20, u8) != 0) {
             FIELD(w, 0x74, u8) = 2;
             FIELD(w, 0x75, u8) = 1;
-            ov002_ShowMsg(self, func_0204c0e8(msg, 0x109));
+            ov002_ShowMsg(self, MsgRes_GetString(msg, 0x109));
         }
         break;
     case 2:
         if (nxt[2] != cur[2] || c != 0 || FIELD(self, 0x20, u8) != 0) {
             FIELD(w, 0x74, u8) = 3;
             FIELD(w, 0x75, u8) = 1;
-            ov002_ShowMsg(self, func_0204c0e8(msg, 0x108));
+            ov002_ShowMsg(self, MsgRes_GetString(msg, 0x108));
         }
         break;
     }

@@ -20,7 +20,7 @@ static inline void Ov014Spawn_Init(Ov014SpawnDesc *d, u16 k) {
 extern "C" {
 
 extern void *data_ov000_021ccd64;
-extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, Ov014Vec16 *rot, u16 a);
+extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, Ov014Vec16 *rot, u16 a);
 
 void func_ov014_0220a2d0(Ov014Act_02209280 *self, u16 a) {
     Ov014Vec v;
@@ -34,25 +34,25 @@ void func_ov014_0220a2d0(Ov014Act_02209280 *self, u16 a) {
     pos.x = 0;
     pos.y = 0x5000;
     pos.z = 0x2000;
-    pos.x = func_02040528(0x6000);
+    pos.x = Rand_PlusMinus(0x6000);
     pos.x += pos.x > 0 ? 0x3000 : -0x3000;
-    pos.z += func_02040498(0x1000);
+    pos.z += Rand_UpTo(0x1000);
     rot.x = 0;
     rot.y = 0;
     rot.z = 0;
     base = pos.x > 0 ? 0xc000 : 0x4000;
     if (self->unk_f8 % 2 != 0) {
-        ang = base + (u16)func_02040498(0x4000);
+        ang = base + (u16)Rand_UpTo(0x4000);
     } else {
-        ang = base - (u16)func_02040498(0x4000);
+        ang = base - (u16)Rand_UpTo(0x4000);
     }
-    spd = func_02040498(0x3800) + 0x3800;
+    spd = Rand_UpTo(0x3800) + 0x3800;
     v.x = Ov014_FxMul(spd, OV014_SIN(ang));
     v.z = Ov014_FxMul(spd, OV014_COS(ang)) + 0x8000;
     Ov014Spawn_Init(&desc, 0x481d);
     desc.unk_04[0] = a;
     self->target_id = 0xffff;
-    o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
+    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
     if (o == NULL) {
         return;
     }
@@ -83,7 +83,7 @@ void func_ov014_0220a490(Ov014Act_02209280 *self, Ov014Vec *vel, u16 a, u16 b, u
     rot.y = 0;
     rot.z = 0;
     self->target_id = 0xffff;
-    o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
+    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
     if (o == NULL) {
         return;
     }
@@ -149,11 +149,11 @@ extern void func_ov000_02191618(void *p);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
 extern void VEC_Normalize(const Ov014Vec *a, Ov014Vec *b);
 extern BOOL func_02049244(Ov014Vec *out, s32 speed, const Ov014Vec *from, const Ov014Vec *to, s32 minDist);
-extern Ov014Actor *func_ov000_0218e640(void *mgr, u16 id);
-extern void func_ov000_0218d988(Ov014Obj *self, Ov014Obj *t, s32 a);
+extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern void Actor_TurnToActor(Ov014Obj *self, Ov014Obj *t, s32 a);
 
 static inline Ov014Actor *Ov014h_FindById(u16 id) {
-    return data_ov000_021ccd68 != NULL ? func_ov000_0218e640(data_ov000_021ccd68, id) : NULL;
+    return data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
 }
 
 void func_ov014_0220a67c(Ov014Act_02209280 *self) {
@@ -170,7 +170,7 @@ void func_ov014_0220a67c(Ov014Act_02209280 *self) {
         if (p->kind == 0xb) {
             self->unk_b8 = data_ov014_02216aa8[p->unk_04];
         } else {
-            s32 i = func_02040498(6);
+            s32 i = Rand_UpTo(6);
             self->unk_b8 = data_ov014_02216aa8[i];
         }
         self->unk_9c = self->unk_b0->unk_00;
@@ -269,7 +269,7 @@ void func_ov014_0220a67c(Ov014Act_02209280 *self) {
         self->pos = r;
         o = Ov014h_FindById(self->unk_90);
         if (o != NULL) {
-            func_ov000_0218d988(self, o, self->unk_b0->unk_02);
+            Actor_TurnToActor(self, o, self->unk_b0->unk_02);
         }
         m = self->unk_40;
         if (m->timer != 0) {

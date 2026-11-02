@@ -58,7 +58,7 @@ void *Ov002Vt_021f000c_DtorDelete(void *self) {
         DELETE_VOBJ(FIELD(self, 4, VObject *));
         HEAP_POP(saved);
     }
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

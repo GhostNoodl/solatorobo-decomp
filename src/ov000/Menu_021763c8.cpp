@@ -622,10 +622,10 @@ void func_ov000_021736dc(void) {
     data_ov000_021ccd40 = NULL;
 }
 
-VObj *func_ov000_02173754(VObj *self) {
+VObj *Ov000TaskVt_021cc060_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -664,8 +664,8 @@ void func_ov000_02173784(void) {
 }
 #pragma force_active reset
 
-VObj *func_ov000_02173824(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x90);
+VObj *Ov000TaskVt_021cbce0_New(void) {
+    VObj *obj = (VObj *)Heap_Alloc(0x90);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();
@@ -701,7 +701,7 @@ namespace m_Lo_021738d4 {
 extern "C" {
 extern void *data_0208cca0;
 extern void *data_0208ccc0;
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
@@ -735,7 +735,7 @@ void func_ov000_021738d4(Lo021738d4 *self) {
         return;
     }
     res = func_02034d88(func_02035d5c(data_0208cca0), data_0208ccc0);
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         Init(m, data_0208cca0, data_0208ccc0);
     }
@@ -781,7 +781,7 @@ void func_ov000_021739f8(Task *self) {
         if (model != NULL) {
             func_02041558(model);
             func_02041278(model->pltt);
-            func_0203de1c(model);
+            Heap_Free(model);
         }
         self->unk_4c = NULL;
     }
@@ -838,7 +838,7 @@ extern u8 *data_02097d48;
 extern Player02173a5c *data_ov000_021ccd54;
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_0204a160(void *a);
-void func_0204a1c4(void *a);
+void SndMgr_ResumeAll(void *a);
 void func_02043b20(void *p);
 
 static inline Task02173a5c *TaskList_Find(s32 id) {
@@ -879,7 +879,7 @@ void func_ov000_02173a5c(Obj02173a5c *self) {
     case 10:
         self->unk_3c = -0xcd;
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
-        func_0204a1c4(data_02097e4c);
+        SndMgr_ResumeAll(data_02097e4c);
         func_02043b20(data_02097d48 + 0x8b0);
         data_ov000_021ccd54->b2 = 0;
         break;
@@ -1130,8 +1130,8 @@ void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 void func_ov000_0217558c(void *self);
 
-VObj *func_ov000_021740b0(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x4b0);
+VObj *Ov000TaskVt_021cbbe0_New(void) {
+    VObj *obj = (VObj *)Heap_Alloc(0x4b0);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();
@@ -1495,7 +1495,7 @@ public:
 };
 
 extern "C" {
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_ov000_02173648(void *self);
 extern void *data_02149ef8;
 extern void *data_02fe152c;
@@ -1512,7 +1512,7 @@ extern u8 data_ov000_021cba0c[];
 extern void *data_0208cc94;
 extern void *data_0208cc88;
 extern s32 data_02097d78[];
-void *func_0204c0e8(void *g, s32 id);
+void *MsgRes_GetString(void *g, s32 id);
 void *func_ov000_02154b58(void *p, u16 a);
 u16 func_020594bc(void *a, u32 b, s32 c, s32 d);
 void *func_ov000_021824d0(void *a, u16 b);
@@ -1578,7 +1578,7 @@ void func_ov000_021743bc(Obj021743bc *self) {
     }
     self->vfunc_3c();
     g = data_02149ef8;
-    o = (VObj *)func_0203dd9c(0xe0);
+    o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -1603,10 +1603,10 @@ void func_ov000_021743bc(Obj021743bc *self) {
         s_1->unk_68 = -0x1ccd;
     }
     self->unk_44->unk_0c |= 0x20000000;
-    ((MenuBox021743bc *)self->unk_44)->SetText(1, func_0204c0e8(g, 0x32));
-    ((MenuBox021743bc *)self->unk_44)->SetText(2, func_0204c0e8(g, 0x33));
+    ((MenuBox021743bc *)self->unk_44)->SetText(1, MsgRes_GetString(g, 0x32));
+    ((MenuBox021743bc *)self->unk_44)->SetText(2, MsgRes_GetString(g, 0x33));
     ((MenuBox021743bc *)self->unk_44)->Show();
-    o = (VObj *)func_0203dd9c(0xd4);
+    o = (VObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -1614,8 +1614,8 @@ void func_ov000_021743bc(Obj021743bc *self) {
         o->vfunc_28();
     }
     self->unk_40 = (LoBase021caac8_021caec8 *)o;
-    ((MenuList021743bc *)self->unk_40)->SetTitleId((s32)func_0204c0e8(g, 0xb8));
-    ((MenuList021743bc *)self->unk_40)->SetTitle((const char *)func_0204c0e8(g, 0xb9));
+    ((MenuList021743bc *)self->unk_40)->SetTitleId((s32)MsgRes_GetString(g, 0xb8));
+    ((MenuList021743bc *)self->unk_40)->SetTitle((const char *)MsgRes_GetString(g, 0xb9));
     self->unk_40->unk_34 = 0x6000;
     self->unk_40->unk_08 = self;
     self->unk_40->unk_24 = 0x6c;
@@ -1631,10 +1631,10 @@ void func_ov000_021743bc(Obj021743bc *self) {
     self->unk_40->unk_0c &= ~0x10000;
     self->unk_40->unk_78 = (void *)func_ov000_021742b4;
     self->unk_40->unk_84 = (void *)func_ov000_021742c8;
-    ((MenuList021743bc *)self->unk_40)->AddItem((const char *)func_0204c0e8(g, 0xba), 0x1a, 0xffff, 0xffff);
-    ((MenuList021743bc *)self->unk_40)->AddItem((const char *)func_0204c0e8(g, 0xc2), 6, 0xffff, 0xffff);
-    ((MenuList021743bc *)self->unk_40)->AddItem((const char *)func_0204c0e8(g, 0x112), 0xf, 0xffff, 0xffff);
-    ((MenuList021743bc *)self->unk_40)->AddItem((const char *)func_0204c0e8(g, 0x118), 5, 0xffff, 0xffff);
+    ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0xba), 0x1a, 0xffff, 0xffff);
+    ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0xc2), 6, 0xffff, 0xffff);
+    ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0x112), 0xf, 0xffff, 0xffff);
+    ((MenuList021743bc *)self->unk_40)->AddItem((const char *)MsgRes_GetString(g, 0x118), 5, 0xffff, 0xffff);
     if (func_020594bc(data_02fe152c, 5, 1, 0) == 0) {
         LFLD(s32, func_ov000_02154b58(self->unk_40, 0x1a), 0x24) = 0xe;
     }
@@ -1671,7 +1671,7 @@ found:
         s_3->unk_70 = 5;
     }
     res = func_02034d88(func_02035d5c(data_0208ccc8), data_ov000_021cba0c);
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
         void *file = data_0208ccc8;
         void *nm = data_ov000_021cba0c;
@@ -1685,7 +1685,7 @@ found:
     func_02041d9c(self->unk_58, 0, 0xffff);
     LFLD(s32, self->unk_58, 0x150) = -0x1cbd;
     res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-    m2 = (u8 *)func_0203dd9c(0x160);
+    m2 = (u8 *)Heap_Alloc(0x160);
     if (m2 != NULL) {
         void *file = data_0208cc94;
         void *nm = data_0208cc88;
@@ -1703,13 +1703,13 @@ found:
     LFLD(u32, self->unk_5c, 0x6c) = (LFLD(u32, self->unk_5c, 0x6c) & ~0x7c) | 0x78;
     LFLD(s32, self->unk_5c, 0x150) = -0x1c9d;
     func_02041c5c(self->unk_5c, (int)func_ov000_02174168);
-    InitWin021743bc((u8 *)self + 0x60, func_0204c0e8(g, 0xba));
-    InitWin021743bc((u8 *)self + 0x118, func_0204c0e8(g, 0x48));
-    InitWin021743bc((u8 *)self + 0x1d0, func_0204c0e8(g, 0x49));
-    InitWin021743bc((u8 *)self + 0x288, func_0204c0e8(g, 0x4a));
-    InitWin021743bc((u8 *)self + 0x340, func_0204c0e8(g, 0x4b));
-    InitWin021743bc((u8 *)self + 0x3f8, func_0204c0e8(g, 0x4c));
-    o = (VObj *)func_0203dd9c(0x21c);
+    InitWin021743bc((u8 *)self + 0x60, MsgRes_GetString(g, 0xba));
+    InitWin021743bc((u8 *)self + 0x118, MsgRes_GetString(g, 0x48));
+    InitWin021743bc((u8 *)self + 0x1d0, MsgRes_GetString(g, 0x49));
+    InitWin021743bc((u8 *)self + 0x288, MsgRes_GetString(g, 0x4a));
+    InitWin021743bc((u8 *)self + 0x340, MsgRes_GetString(g, 0x4b));
+    InitWin021743bc((u8 *)self + 0x3f8, MsgRes_GetString(g, 0x4c));
+    o = (VObj *)Heap_Alloc(0x21c);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -1939,7 +1939,7 @@ extern const s16 FX_SinCosTable_[];
 extern u8 *data_02097d48;
 BOOL func_02054f10(void *p, s32 id);
 Robo021ca458 *func_ov000_0219bf90(void);
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void func_02041c20(Model *m, s32 a, s32 b);
 void func_02041c18(Model *m, s32 v);
 void func_ov000_021c95fc(void *p);
@@ -2041,7 +2041,7 @@ void func_ov000_0217558c(Obj021743bc *self) {
     m = (Model *)self->unk_58;
     Model_PlayPart(m, 1);
     func_ov000_0219bf90();
-    MODEL_FLAGS(M5C)->polygon_id = func_02043d48(g);
+    MODEL_FLAGS(M5C)->polygon_id = Gfx3DState_NextPolyId(g);
     xi = x >> 12;
     TEXT(0x60)->unk_vf20(xi + 0xc2 - (self->unk_a4 >> 1), 0x30);
     TEXT(0x60)->Render();
@@ -2099,10 +2099,10 @@ extern "C" {
 
 extern u8 data_ov000_021cbfe0[];
 extern u8 data_ov000_021cc060[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 
-VObj *func_ov000_02175e04(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x48);
+VObj *Ov000TaskVt_021cbfe0_New(void) {
+    VObj *obj = (VObj *)Heap_Alloc(0x48);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();
@@ -2330,7 +2330,7 @@ void func_ov000_02176164(Lo02175f34 *self) {
 }
 
 VObj *func_ov000_021761a0(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x4c);
+    VObj *obj = (VObj *)Heap_Alloc(0x4c);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b614);
         obj->vfunc_14();
@@ -2386,7 +2386,7 @@ static inline BOOL LoIsLoaded(void) {
 }
 
 VObj *func_ov000_02176208(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x4c);
+    VObj *obj = (VObj *)Heap_Alloc(0x4c);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b614);
         obj->vfunc_14();
@@ -2409,14 +2409,14 @@ extern "C" {
 extern u8 data_ov000_021cbee0[];
 extern u8 data_ov000_021cc060[];
 void *func_ov000_02176208(void);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 
 void func_ov000_02176264(void *self) {
     data_ov000_021ccd4c = (LoCreateFn)func_ov000_02176208;
 }
 
-VObj *func_ov000_0217627c(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x15c);
+VObj *Ov000TaskVt_021cbee0_New(void) {
+    VObj *obj = (VObj *)Heap_Alloc(0x15c);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();
@@ -2498,7 +2498,7 @@ void func_0205a6a0(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void func_0205a840(void *p, void *buf, const void *s);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
@@ -2511,7 +2511,7 @@ void func_ov000_021763c8(void) {
     if (data_ov000_021ccd35 == 0) {
         VObj *obj;
         LO_FREE_VAR(data_ov000_021ccd48);
-        obj = (VObj *)func_0203dd9c(0xc4);
+        obj = (VObj *)Heap_Alloc(0xc4);
         if (obj != NULL) {
             VOBJ_SET_VTABLE(obj, data_0208b318);
             obj->vfunc_08();
@@ -2621,7 +2621,7 @@ void func_0205a6a0(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void func_0205a840(void *p, void *buf, const void *s);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
@@ -2634,7 +2634,7 @@ void func_ov000_021765c8(void) {
     if (data_ov000_021ccd35 == 0) {
         VObj *obj;
         LO_FREE_VAR(data_ov000_021ccd48);
-        obj = (VObj *)func_0203dd9c(0xc4);
+        obj = (VObj *)Heap_Alloc(0xc4);
         if (obj != NULL) {
             VOBJ_SET_VTABLE(obj, data_0208b318);
             obj->vfunc_08();
@@ -2734,7 +2734,7 @@ extern u8 data_ov000_021cae48[];
 extern u8 data_ov000_021cadcc[];
 extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021cb2a8[];
-void *func_0204c0e8(void *g, u32 id);
+void *MsgRes_GetString(void *g, u32 id);
 BOOL func_0205aa30(void *p);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 void func_ov000_0215d990(void *self, s32 a);
@@ -2766,7 +2766,7 @@ void func_ov000_02176714(Lo02176714 *self) {
         func_0205aa30(data_ov000_021ccd48);
     }
     g = data_02149ef8;
-    o = (VObj *)func_0203dd9c(0xe0);
+    o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -2791,10 +2791,10 @@ void func_ov000_02176714(Lo02176714 *self) {
         s->unk_68 = -0x1ccd;
     }
     self->unk_3c->unk_0c |= 0x20000000;
-    self->unk_3c->vfunc_f4(1, func_0204c0e8(g, 0x32));
-    self->unk_3c->vfunc_f4(2, func_0204c0e8(g, 0x33));
+    self->unk_3c->vfunc_f4(1, MsgRes_GetString(g, 0x32));
+    self->unk_3c->vfunc_f4(2, MsgRes_GetString(g, 0x33));
     self->unk_3c->vfunc_08();
-    o = (VObj *)func_0203dd9c(0x98);
+    o = (VObj *)Heap_Alloc(0x98);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -2814,7 +2814,7 @@ void func_ov000_02176714(Lo02176714 *self) {
         s->unk_60 = 0;
     }
     self->unk_40->vfunc_08();
-    o = (VObj *)func_0203dd9c(0x8c);
+    o = (VObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -2841,7 +2841,7 @@ void func_ov000_02176714(Lo02176714 *self) {
     self->unk_50->vfunc_08();
     switch (func_ov000_02184a04(self->unk_0c)) {
     case 0:
-        o = (VObj *)func_0203dd9c(0x98);
+        o = (VObj *)Heap_Alloc(0x98);
         if (o != NULL) {
             *(void **)o = data_ov000_021cac60;
             o->vfunc_28();
@@ -2868,7 +2868,7 @@ void func_ov000_02176714(Lo02176714 *self) {
         func_ov000_0215d990(self->unk_44, 0x120);
         self->unk_44->unk_24 = 0x66;
         self->unk_44->unk_28 = 0x19;
-        o = (VObj *)func_0203dd9c(0x98);
+        o = (VObj *)Heap_Alloc(0x98);
         if (o != NULL) {
             *(void **)o = data_ov000_021cac60;
             o->vfunc_28();
@@ -2895,7 +2895,7 @@ void func_ov000_02176714(Lo02176714 *self) {
         func_ov000_0215d990(self->unk_48, 0x121);
         self->unk_48->unk_24 = 0x66;
         self->unk_48->unk_28 = 0;
-        o = (VObj *)func_0203dd9c(0xe0);
+        o = (VObj *)Heap_Alloc(0xe0);
         if (o != NULL) {
             *(void **)o = data_ov000_021cac60;
             o->vfunc_28();
@@ -2906,14 +2906,14 @@ void func_ov000_02176714(Lo02176714 *self) {
             *(void **)o = data_ov000_021cb2a8;
         }
         self->unk_4c = (LoBase021caac8_021cb2a8 *)o;
-        self->unk_4c->vfunc_10(func_0204c0e8(g, 0x98));
-        self->unk_4c->vfunc_14(func_0204c0e8(g, 0x99));
-        func_ov000_02157c90(self->unk_4c, func_0204c0e8(g, 0xa1));
-        func_ov000_02157d2c(self->unk_4c, func_0204c0e8(g, 0x3e));
+        self->unk_4c->vfunc_10(MsgRes_GetString(g, 0x98));
+        self->unk_4c->vfunc_14(MsgRes_GetString(g, 0x99));
+        func_ov000_02157c90(self->unk_4c, MsgRes_GetString(g, 0xa1));
+        func_ov000_02157d2c(self->unk_4c, MsgRes_GetString(g, 0x3e));
         func_ov000_021546ec(self->unk_4c, data_0208ccc8, "cem3d1icn00", 0xffff);
         break;
     case 1:
-        o = (VObj *)func_0203dd9c(0xe0);
+        o = (VObj *)Heap_Alloc(0xe0);
         if (o != NULL) {
             *(void **)o = data_ov000_021cac60;
             o->vfunc_28();
@@ -2923,10 +2923,10 @@ void func_ov000_02176714(Lo02176714 *self) {
             o->vfunc_28();
         }
         self->unk_4c = (LoBase021caac8_021cb2a8 *)o;
-        self->unk_4c->vfunc_10(func_0204c0e8(g, 0xa9));
-        self->unk_4c->vfunc_14(func_0204c0e8(g, 0x99));
-        func_ov000_02157c90(self->unk_4c, func_0204c0e8(g, 0xa3));
-        func_ov000_02157d2c(self->unk_4c, func_0204c0e8(g, 0x3e));
+        self->unk_4c->vfunc_10(MsgRes_GetString(g, 0xa9));
+        self->unk_4c->vfunc_14(MsgRes_GetString(g, 0x99));
+        func_ov000_02157c90(self->unk_4c, MsgRes_GetString(g, 0xa3));
+        func_ov000_02157d2c(self->unk_4c, MsgRes_GetString(g, 0x3e));
         {
             u8 *base;
             u16 i;
@@ -2947,7 +2947,7 @@ void func_ov000_02176714(Lo02176714 *self) {
         }
         break;
     case 3:
-        o = (VObj *)func_0203dd9c(0xe0);
+        o = (VObj *)Heap_Alloc(0xe0);
         if (o != NULL) {
             *(void **)o = data_ov000_021cac60;
             o->vfunc_28();
@@ -2957,10 +2957,10 @@ void func_ov000_02176714(Lo02176714 *self) {
             o->vfunc_28();
         }
         self->unk_4c = (LoBase021caac8_021cb2a8 *)o;
-        self->unk_4c->vfunc_10(func_0204c0e8(g, 0xaa));
-        self->unk_4c->vfunc_14(func_0204c0e8(g, 0x99));
-        func_ov000_02157c90(self->unk_4c, func_0204c0e8(g, 0xa6));
-        func_ov000_02157d2c(self->unk_4c, func_0204c0e8(g, 0x3e));
+        self->unk_4c->vfunc_10(MsgRes_GetString(g, 0xaa));
+        self->unk_4c->vfunc_14(MsgRes_GetString(g, 0x99));
+        func_ov000_02157c90(self->unk_4c, MsgRes_GetString(g, 0xa6));
+        func_ov000_02157d2c(self->unk_4c, MsgRes_GetString(g, 0x3e));
         func_ov000_021546ec(self->unk_4c, data_0208ccc8, "cem3d1icn00", 0xffff);
         break;
     }
@@ -2990,7 +2990,7 @@ void func_ov000_02176714(Lo02176714 *self) {
     if (self->unk_4c->unk_9c != 0) {
         return;
     }
-    func_ov000_0215bb14(self->unk_50, func_0204c0e8(g, 0x9d));
+    func_ov000_0215bb14(self->unk_50, MsgRes_GetString(g, 0x9d));
     self->unk_50->vfunc_70();
 }
 
@@ -3211,9 +3211,9 @@ extern void *data_02097e4c;
 extern void *data_02149ef8;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
-s32 func_0204c0e8(void *msg, s32 id);
+s32 MsgRes_GetString(void *msg, s32 id);
 void func_ov000_0215c1bc(void *p, s32 a, s32 b);
 void func_ov000_02152294(void *self, s32 a, s32 b, void *cb);
 s32 func_ov000_02177bd8(void);
@@ -3250,7 +3250,7 @@ BOOL func_ov000_021774a4(Self021774a4 *self, BOOL ok) {
     }
     if (LFLD(s32, item, 0xc) == -1 ? TRUE : FALSE) {
         if (m->unk_58 == NULL) {
-            VObj *o = (VObj *)func_0203dd9c(0xe8);
+            VObj *o = (VObj *)Heap_Alloc(0xe8);
             if (o != NULL) {
                 VOBJ_SET_VTABLE(o, data_ov000_021cac60);
                 o->vfunc_28();
@@ -3262,7 +3262,7 @@ BOOL func_ov000_021774a4(Self021774a4 *self, BOOL ok) {
         LFLD(s32, m->unk_58, 0x1c) = 4;
         m->unk_58->vfunc_08();
         LFLD(u32, m->unk_58, 0xc) |= 0x20000;
-        func_ov000_0215c1bc(m->unk_58, 0x8000, func_0204c0e8(data_02149ef8, 0x9f));
+        func_ov000_0215c1bc(m->unk_58, 0x8000, MsgRes_GetString(data_02149ef8, 0x9f));
         LFLD(s16, m->unk_58, 0x68) = -0x199a;
         m->unk_58->vfunc_70();
     } else {
@@ -3309,7 +3309,7 @@ static inline u8 *GetNth(u8 *m) {
 
 extern "C" {
 extern void *data_02149ef8;
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 
@@ -3350,7 +3350,7 @@ s32 func_ov000_02177698(Lo02177698 *self, u8 *item) {
                 }
             }
         } else {
-            func_ov000_0215bb14(t, func_0204c0e8(data_02149ef8, 0x9d));
+            func_ov000_0215bb14(t, MsgRes_GetString(data_02149ef8, 0x9d));
             t->vfunc_70();
         }
     }
@@ -3390,7 +3390,7 @@ void func_ov000_02153c48(u8 *self, s32 a, BOOL show, BOOL center, u8 d);
 
 static inline void ShowMsg021778f0(u8 *self, s32 msg) {
     if (LFLD(VObj *, self, 0x58) == NULL) {
-        VObj *o = (VObj *)func_0203dd9c(0xe8);
+        VObj *o = (VObj *)Heap_Alloc(0xe8);
         if (o != NULL) {
             VOBJ_SET_VTABLE(o, data_ov000_021cac60);
             o->vfunc_28();
@@ -3402,7 +3402,7 @@ static inline void ShowMsg021778f0(u8 *self, s32 msg) {
     LFLD(s32, LFLD(VObj *, self, 0x58), 0x1c) = 4;
     LFLD(VObj *, self, 0x58)->vfunc_08();
     LFLD(u32, LFLD(VObj *, self, 0x58), 0xc) |= 0x20000;
-    func_ov000_0215c1bc(LFLD(VObj *, self, 0x58), 0x8000, func_0204c0e8(data_02149ef8, msg));
+    func_ov000_0215c1bc(LFLD(VObj *, self, 0x58), 0x8000, MsgRes_GetString(data_02149ef8, msg));
     LFLD(s16, LFLD(VObj *, self, 0x58), 0x68) = -0x199a;
     LFLD(VObj *, self, 0x58)->vfunc_70();
 }
@@ -3557,7 +3557,7 @@ void func_0205a6a0(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void func_0205a840(void *p, void *buf, const void *s);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
@@ -3565,8 +3565,8 @@ u8 func_0206d1d4(void *a, u16 b);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 
-VObj *func_ov000_02177ec4(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x158);
+VObj *Ov000TaskVt_021cbe60_New(void) {
+    VObj *obj = (VObj *)Heap_Alloc(0x158);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();
@@ -3653,7 +3653,7 @@ void func_0205a6a0(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void func_0205a840(void *p, void *buf, const void *s);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
@@ -3670,7 +3670,7 @@ BOOL func_ov000_02178010(Lo02178010 *self, void *msg) {
     void *o = self->unk_08;
     if (msg == NULL || LFLD(u16, msg, 6) == 0xffff) {
         VObj *p = LFLD(VObj *, o, 0x40);
-        func_ov000_0215bb14(p, func_0204c0e8(data_02149ef8, 0x9d));
+        func_ov000_0215bb14(p, MsgRes_GetString(data_02149ef8, 0x9d));
         p->vfunc_70();
     } else {
         VObj *p = LFLD(VObj *, o, 0x40);
@@ -3793,7 +3793,7 @@ extern u8 data_ov000_021cb5a8[];
 extern u8 data_ov000_021cacd8[];
 extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021cb2a8[];
-void *func_0204c0e8(void *g, u32 id);
+void *MsgRes_GetString(void *g, u32 id);
 void func_ov000_0215bb14(void *o, void *s);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
 void func_ov000_0215d990(void *self, s32 a);
@@ -3823,7 +3823,7 @@ void func_ov000_021782e0(Lo02178110 *self, void *g) {
     VObj *o;
     g = data_02149ef8;
     func_ov000_02173648(self);
-    o = (VObj *)func_0203dd9c(0x8c);
+    o = (VObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -3848,9 +3848,9 @@ void func_ov000_021782e0(Lo02178110 *self, void *g) {
     self->unk_40->unk_2c = 1;
     self->unk_40->unk_48 = 0xb;
     self->unk_40->vfunc_08();
-    func_ov000_0215bb14(self->unk_40, func_0204c0e8(g, 0x9d));
+    func_ov000_0215bb14(self->unk_40, MsgRes_GetString(g, 0x9d));
     self->unk_40->vfunc_70();
-    o = (VObj *)func_0203dd9c(0x98);
+    o = (VObj *)Heap_Alloc(0x98);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -3870,7 +3870,7 @@ void func_ov000_021782e0(Lo02178110 *self, void *g) {
     self->unk_44->unk_2c = 1;
     func_ov000_0215d980(self->unk_44, LFLD(s32, data_0214a424, 0x20), 0);
     self->unk_44->vfunc_08();
-    o = (VObj *)func_0203dd9c(0x98);
+    o = (VObj *)Heap_Alloc(0x98);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -3897,7 +3897,7 @@ void func_ov000_021782e0(Lo02178110 *self, void *g) {
     func_ov000_0215d990(self->unk_48, 0x120);
     self->unk_48->unk_24 = 0x66;
     self->unk_48->unk_28 = 0x19;
-    o = (VObj *)func_0203dd9c(0x98);
+    o = (VObj *)Heap_Alloc(0x98);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -3924,7 +3924,7 @@ void func_ov000_021782e0(Lo02178110 *self, void *g) {
     func_ov000_0215d990(self->unk_4c, 0x121);
     self->unk_4c->unk_24 = 0x66;
     self->unk_4c->unk_28 = 0;
-    o = (VObj *)func_0203dd9c(0xe0);
+    o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -3949,10 +3949,10 @@ void func_ov000_021782e0(Lo02178110 *self, void *g) {
         s->unk_5c = 0;
         s->unk_60 = -0x199a;
     }
-    self->unk_50->vfunc_f4(1, func_0204c0e8(g, 0x32));
-    self->unk_50->vfunc_f4(2, func_0204c0e8(g, 0x33));
+    self->unk_50->vfunc_f4(1, MsgRes_GetString(g, 0x32));
+    self->unk_50->vfunc_f4(2, MsgRes_GetString(g, 0x33));
     self->unk_50->vfunc_08();
-    o = (VObj *)func_0203dd9c(0xa0);
+    o = (VObj *)Heap_Alloc(0xa0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -3968,7 +3968,7 @@ void func_ov000_021782e0(Lo02178110 *self, void *g) {
     self->unk_54->vfunc_08();
     self->unk_54->unk_0c |= 2;
     self->unk_54->unk_0c |= 4;
-    o = (VObj *)func_0203dd9c(0xe0);
+    o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -3979,8 +3979,8 @@ void func_ov000_021782e0(Lo02178110 *self, void *g) {
         *(void **)o = data_ov000_021cb2a8;
     }
     self->unk_3c = (LoBase021caac8_021cb2a8 *)o;
-    self->unk_3c->vfunc_10(func_0204c0e8(g, 0x11e));
-    self->unk_3c->vfunc_14(func_0204c0e8(g, 0x11f));
+    self->unk_3c->vfunc_10(MsgRes_GetString(g, 0x11e));
+    self->unk_3c->vfunc_14(MsgRes_GetString(g, 0x11f));
     self->unk_3c->unk_20 = 4;
     self->unk_3c->unk_24 = 0xf8;
     {
@@ -4000,8 +4000,8 @@ void func_ov000_021782e0(Lo02178110 *self, void *g) {
     self->unk_3c->unk_0c &= ~0x800000;
     self->unk_3c->unk_c1 = 5;
     self->unk_3c->unk_c0 = 0x78;
-    func_ov000_02157c90(self->unk_3c, func_0204c0e8(g, 0x9a));
-    func_ov000_02157d2c(self->unk_3c, func_0204c0e8(g, 0x3e));
+    func_ov000_02157c90(self->unk_3c, MsgRes_GetString(g, 0x9a));
+    func_ov000_02157d2c(self->unk_3c, MsgRes_GetString(g, 0x3e));
     self->unk_3c->unk_84 = (void *)func_ov000_02177f40;
     self->unk_3c->unk_88 = (void *)func_ov000_02178010;
     self->unk_3c->unk_08 = self;
@@ -4047,7 +4047,7 @@ void func_0205a6a0(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void func_0205a840(void *p, void *buf, const void *s);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
@@ -4161,7 +4161,7 @@ void func_0205a6a0(void *p);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void func_0205a840(void *p, void *buf, const void *s);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_0215bb14(void *a, void *b);
 void func_0206ecd4(s32 a, void *b, u16 c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
@@ -4268,10 +4268,10 @@ extern "C" {
 
 extern u8 data_ov000_021cbde0[];
 extern u8 data_ov000_021cc060[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 
-VObj *func_ov000_02178f70(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x54);
+VObj *Ov000TaskVt_021cbde0_New(void) {
+    VObj *obj = (VObj *)Heap_Alloc(0x54);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();
@@ -4320,7 +4320,7 @@ void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_02178fd8(Lo02178fd8 *self) {
     u8 buf[0x20];
-    VObj *obj = (VObj *)func_0203dd9c(0x58);
+    VObj *obj = (VObj *)Heap_Alloc(0x58);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b318);
         obj->vfunc_08();
@@ -4354,7 +4354,7 @@ extern u8 data_ov000_021cbac8[];
 extern u8 data_ov000_021cca10[];
 void func_ov000_02173648(void *self);
 BOOL func_0204c030(void *p);
-void *func_0204c0e8(void *g, s32 id);
+void *MsgRes_GetString(void *g, s32 id);
 void func_ov000_021c3af4(void *self);
 void func_ov000_021c22d8(void *self);
 void func_ov000_021c2334(void *self);
@@ -4378,7 +4378,7 @@ void func_ov000_021790ac(Lo02178fd8 *self) {
     func_ov000_02173648(self);
     func_0204c030(self->unk_3c);
     g = data_02149ef8;
-    p = (VObj *)func_0203dd9c(0xe0);
+    p = (VObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_ov000_021cac60);
         p->vfunc_28();
@@ -4400,10 +4400,10 @@ void func_ov000_021790ac(Lo02178fd8 *self) {
     LFLD(s16, s, 0x68) = -0x1ccd;
     LFLD(u32, self->unk_40, 0xc) |= 0x20000000;
     LFLD(u32, self->unk_40, 0xc) |= 0x80000000;
-    self->unk_40->vfunc_f4(1, func_0204c0e8(g, 0x34));
-    self->unk_40->vfunc_f4(2, func_0204c0e8(g, 0x33));
+    self->unk_40->vfunc_f4(1, MsgRes_GetString(g, 0x34));
+    self->unk_40->vfunc_f4(2, MsgRes_GetString(g, 0x33));
     self->unk_40->vfunc_08();
-    p = (VObj *)func_0203dd9c(0xf4);
+    p = (VObj *)Heap_Alloc(0xf4);
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_ov000_021cac60);
         p->vfunc_28();
@@ -4411,8 +4411,8 @@ void func_ov000_021790ac(Lo02178fd8 *self) {
         func_ov000_021c3af4(p);
     }
     self->unk_44 = p;
-    self->unk_44->vfunc_10(func_0204c0e8(g, 0x118));
-    self->unk_44->vfunc_14(func_0204c0e8(g, 0x119));
+    self->unk_44->vfunc_10(MsgRes_GetString(g, 0x118));
+    self->unk_44->vfunc_14(MsgRes_GetString(g, 0x119));
     LFLD(void *, self->unk_44, 0x8) = self;
     LFLD(s32, self->unk_44, 0x20) = 7;
     LFLD(s32, self->unk_44, 0x24) = 0xf9;
@@ -4435,7 +4435,7 @@ void func_ov000_021790ac(Lo02178fd8 *self) {
         }
         for (i = 0; i < 0x40; i++) {
             if (used[i] != 0) {
-                u8 *it = (u8 *)func_0203dd9c(0x48);
+                u8 *it = (u8 *)Heap_Alloc(0x48);
                 if (it != NULL) {
                     VOBJ_SET_VTABLE(it, data_ov000_021cbac8);
                     func_ov000_021c22d8(it);
@@ -4499,15 +4499,15 @@ extern "C" {
 
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021ccbe0[];
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 void func_ov000_021c3bb0(void *ptr);
 
-VObj *func_ov000_02179560(VObj *self) {
+VObj *Ov000Vt_021ccbe0_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021ccbe0);
     func_ov000_021c3bb0(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cac60);
     self->vfunc_2c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -4595,7 +4595,7 @@ typedef struct {
 extern "C" {
 extern u8 data_0208ba70[];
 extern u8 data_0208bbc8[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 s32 func_0204c08c(void *res, u16 id, s32 *out, s32 d);
 void func_0204c7d0(void *p);
 void func_02050f70(void *p);
@@ -4617,7 +4617,7 @@ void func_ov000_02179684(Win02179684 *self) {
             if (self->unk_4c != 0xffff) {
                 s32 ofs;
                 s32 n = func_0204c08c(self->unk_3c, self->unk_4c, &ofs, 1);
-                VObj *o = (VObj *)func_0203dd9c(0xb80);
+                VObj *o = (VObj *)Heap_Alloc(0xb80);
                 if (o != NULL) {
                     VOBJ_SET_VTABLE(o, data_0208ba70);
                     func_0204c7d0(o);
@@ -4730,10 +4730,10 @@ extern "C" {
 
 extern u8 data_ov000_021cbd60[];
 extern u8 data_ov000_021cc060[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 
-VObj *func_ov000_0217997c(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x48);
+VObj *Ov000TaskVt_021cbd60_New(void) {
+    VObj *obj = (VObj *)Heap_Alloc(0x48);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();
@@ -4777,7 +4777,7 @@ void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov000_021799e4(Lo021799e4 *self) {
     u8 buf[0x20];
-    VObj *obj = (VObj *)func_0203dd9c(0x58);
+    VObj *obj = (VObj *)Heap_Alloc(0x58);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b318);
         obj->vfunc_08();
@@ -4822,9 +4822,9 @@ extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb5a8[];
 extern u8 data_ov000_021cadcc[];
 extern u8 data_ov000_021c9c46[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 BOOL func_0204c030(void *p);
-void *func_0204c0e8(void *g, u32 id);
+void *MsgRes_GetString(void *g, u32 id);
 void func_ov000_0215bb14(void *o, void *s);
 void func_ov000_02173648(void *self);
 
@@ -4838,7 +4838,7 @@ void func_ov000_02179ab8(Lo021799e4 *self) {
     }
     func_0204c030(self->unk_3c);
     g = data_02149ef8;
-    o = (VObj *)func_0203dd9c(0xe0);
+    o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -4864,9 +4864,9 @@ void func_ov000_02179ab8(Lo021799e4 *self) {
     }
     self->unk_44->unk_0c |= 0x20000000;
     self->unk_44->unk_0c |= 0x80000000;
-    self->unk_44->vfunc_f4(2, func_0204c0e8(g, 0x33));
+    self->unk_44->vfunc_f4(2, MsgRes_GetString(g, 0x33));
     self->unk_44->vfunc_08();
-    o = (VObj *)func_0203dd9c(0x8c);
+    o = (VObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -4892,13 +4892,13 @@ void func_ov000_02179ab8(Lo021799e4 *self) {
         s->unk_5c = 0;
         s->unk_60 = 0;
     }
-    self->unk_40->vfunc_10(func_0204c0e8(g, 0xc2));
-    self->unk_40->vfunc_14(func_0204c0e8(g, 0xc3));
+    self->unk_40->vfunc_10(MsgRes_GetString(g, 0xc2));
+    self->unk_40->vfunc_14(MsgRes_GetString(g, 0xc3));
     self->unk_40->vfunc_08();
     self->unk_40->unk_0c |= 0x80000;
     n = LFLD(Bits02179ab8, data_0214a424, 0x518).b8;
     if (n != 0) {
-        func_ov000_0215bb14(self->unk_40, func_0204c0e8(self->unk_3c, (u16)(n - 1)));
+        func_ov000_0215bb14(self->unk_40, MsgRes_GetString(self->unk_3c, (u16)(n - 1)));
     }
     {
         Lo021cadcc *s = self->unk_40;
@@ -5032,10 +5032,10 @@ extern "C" {
 
 extern u8 data_ov000_021cbc60[];
 extern u8 data_ov000_021cc060[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 
-VObj *func_ov000_02179fcc(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x50);
+VObj *Ov000TaskVt_021cbc60_New(void) {
+    VObj *obj = (VObj *)Heap_Alloc(0x50);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();
@@ -5092,8 +5092,8 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb0b8[];
-void *func_0204c0e8(void *a, s32 b);
-void *func_0203dd9c(u32 size);
+void *MsgRes_GetString(void *a, s32 b);
+void *Heap_Alloc(u32 size);
 void *func_ov000_02154b58(Win0217a034 *w, s32 b);
 BOOL func_ov000_02175e6c(void);
 
@@ -5105,9 +5105,9 @@ BOOL func_ov000_0217a034(Obj0217a034 *self, s32 msg) {
     switch (msg) {
     case 0: {
         void *res = data_02149ef8;
-        a = func_0204c0e8(res, 0x1b);
-        b = func_0204c0e8(res, 0x8d);
-        w = (Win0217a034 *)func_0203dd9c(0x1e4);
+        a = MsgRes_GetString(res, 0x1b);
+        b = MsgRes_GetString(res, 0x8d);
+        w = (Win0217a034 *)Heap_Alloc(0x1e4);
         if (w != NULL) {
             VOBJ_SET_VTABLE(w, data_ov000_021cac60);
             w->vfunc_28();
@@ -5262,13 +5262,13 @@ extern "C" {
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 extern void *data_02149ef8;
-void *func_0204c0e8(void *p, u16 a);
+void *MsgRes_GetString(void *p, u16 a);
 void func_ov000_0215c1bc(void *a, s32 b, void *c);
 void func_ov000_0215ce8c(void *a, s32 b);
 
 void func_ov000_0217a328(Lo0217a1f8 *self, s32 a, s32 b) {
     if (self->unk_48 == NULL) {
-        VObj *o = (VObj *)func_0203dd9c(0xe8);
+        VObj *o = (VObj *)Heap_Alloc(0xe8);
         if (o != NULL) {
             VOBJ_SET_VTABLE(o, data_ov000_021cac60);
             o->vfunc_28();
@@ -5293,7 +5293,7 @@ void func_ov000_0217a328(Lo0217a1f8 *self, s32 a, s32 b) {
     LFLD(s32, self->unk_48, 0x1c) = 4;
     self->unk_48->vfunc_08();
     if (b != -1) {
-        func_ov000_0215c1bc(self->unk_48, 0x8000, func_0204c0e8(data_02149ef8, b));
+        func_ov000_0215c1bc(self->unk_48, 0x8000, MsgRes_GetString(data_02149ef8, b));
     } else {
         func_ov000_0215ce8c(self->unk_48, a);
     }
@@ -5462,7 +5462,7 @@ extern "C" {
 
 extern u8 data_ov000_021cbb60[];
 extern u8 data_ov000_021cc060[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 
 void func_ov000_0217a86c(Lo0217a1f8 *self) {
     VObj *obj = *(VObj **)((u8 *)self + 0x48);
@@ -5471,8 +5471,8 @@ void func_ov000_0217a86c(Lo0217a1f8 *self) {
     }
 }
 
-VObj *func_ov000_0217a88c(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0xc4);
+VObj *Ov000TaskVt_021cbb60_New(void) {
+    VObj *obj = (VObj *)Heap_Alloc(0xc4);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();
@@ -5534,8 +5534,8 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb0b8[];
-void *func_0204c0e8(void *a, s32 b);
-void *func_0203dd9c(u32 size);
+void *MsgRes_GetString(void *a, s32 b);
+void *Heap_Alloc(u32 size);
 BOOL func_ov000_02175e6c(void);
 
 BOOL func_ov000_0217a8f4(Obj0217a8f4 *self, s32 msg) {
@@ -5557,9 +5557,9 @@ BOOL func_ov000_0217a8f4(Obj0217a8f4 *self, s32 msg) {
         default: id = 0x8d; break;
         }
         void *res = data_02149ef8;
-        a = func_0204c0e8(res, 0x18);
-        b = func_0204c0e8(res, id);
-        w = (Win0217a8f4 *)func_0203dd9c(0x1e4);
+        a = MsgRes_GetString(res, 0x18);
+        b = MsgRes_GetString(res, id);
+        w = (Win0217a8f4 *)Heap_Alloc(0x1e4);
         if (w != NULL) {
             VOBJ_SET_VTABLE(w, data_ov000_021cac60);
             w->vfunc_28();
@@ -5672,7 +5672,7 @@ s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
 void func_ov000_0217ab30(Lo0217ab30 *self) {
-    VObj *obj = (VObj *)func_0203dd9c(0x4c);
+    VObj *obj = (VObj *)Heap_Alloc(0x4c);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b318);
         obj->vfunc_08();
@@ -5725,7 +5725,7 @@ static inline void ModelInit(u8 *m, void *s, void *nm) {
 class Model {
 public:
     u8 data[0x160];
-    static void *operator new(unsigned long size) { return func_0203dd9c(size); }
+    static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     Model(void *nm, void *s) {
         func_02041218(data + 0x88);
         func_02041440(data, nm, 0);
@@ -5749,7 +5749,7 @@ void func_ov000_0217abd8(Lo0217ab30 *self) {
     }
     self->unk_5c = o;
     o->vfunc_08();
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         ModelInit(m, data_0208cc9c, data_0208cb78);
     }
@@ -5863,7 +5863,7 @@ void func_ov000_0217adfc(Lo0217ab30 *self) {
             void *p = self->unk_6c;
             if (p != NULL) {
                 func_ov000_0214b724(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->unk_6c = NULL;
         }
@@ -5942,13 +5942,13 @@ typedef struct {
 extern "C" {
 extern u8 data_0208ba70[];
 extern Data02097ce0 *data_02097ce0;
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 void func_0204ca70(void *p);
 
 Obj0217b230 *func_ov000_0217b230(void *unused, s32 a1, s32 a2) {
-    Obj0217b230 *o = (Obj0217b230 *)func_0203dd9c(0xb8);
+    Obj0217b230 *o = (Obj0217b230 *)Heap_Alloc(0xb8);
     if (o != NULL) {
         VOBJ_SET_VTABLE(o, data_0208ba70);
         func_0204c7d0(o);
@@ -6049,7 +6049,7 @@ typedef struct {
 
 extern "C" {
 extern void *data_02149ef8;
-char *func_0204c0e8(void *msg, s32 id);
+char *MsgRes_GetString(void *msg, s32 id);
 void *STD_CopyString(void *buf, const void *s);
 void *STD_ConcatenateString(void *buf, const void *s);
 void func_02040a98(char *dst, s32 n);
@@ -6077,7 +6077,7 @@ Item *func_ov000_0217b230(Self *self, const char *str, s32 a2);
     } while (0)
 
 #define ADD_ITEM(id, str)                                                                  \
-    self->items[self->count] = func_ov000_0217b230(self, func_0204c0e8(msg, id), 4);       \
+    self->items[self->count] = func_ov000_0217b230(self, MsgRes_GetString(msg, id), 4);       \
     STD_CopyString(self->items[self->count]->name, str);                                   \
     self->items[self->count]->unk_74 = 0x7fff;                                             \
     self->items[self->count]->unk_76 = 0x7fff;                                             \
@@ -6125,12 +6125,12 @@ void func_ov000_0217b324(Self *self, s32 idx) {
     } else if (lv <= 10) {
         buf[0] = 0;
     } else {
-        STD_CopyString(buf, func_0204c0e8(msg, 0xb3));
+        STD_CopyString(buf, MsgRes_GetString(msg, 0xb3));
         func_02040a98(num, 2);
         func_02070874(buf, buf, num);
         STD_ConcatenateString(buf, " ");
     }
-    STD_CopyString(tmp, func_0204c0e8(msg, 0xb4));
+    STD_CopyString(tmp, MsgRes_GetString(msg, 0xb4));
     if (lv > 21) {
         n = -1;
     } else if (lv > 20) {
@@ -6143,12 +6143,12 @@ void func_ov000_0217b324(Self *self, s32 idx) {
     }
     if (n != -1) {
         if (flag) {
-            STD_CopyString(tmp, func_0204c0e8(msg, 0xb7));
+            STD_CopyString(tmp, MsgRes_GetString(msg, 0xb7));
         } else if (n != 0) {
             func_02040a98(num, n);
             func_02070874(tmp, tmp, num);
         } else {
-            STD_CopyString(tmp, func_0204c0e8(msg, 0xb5));
+            STD_CopyString(tmp, MsgRes_GetString(msg, 0xb5));
         }
         STD_ConcatenateString(buf, tmp);
         self->slots[idx].p74 = (VObj *)func_ov000_0217b230(self, buf, 4);
@@ -6157,10 +6157,10 @@ void func_ov000_0217b324(Self *self, s32 idx) {
     }
     func_0200779c(buf, "%d", rec->lo);
     self->slots[idx].p80 = (VObj *)func_ov000_0217b230(self, buf, 4);
-    self->slots[idx].p7c = (VObj *)func_ov000_0217b230(self, func_0204c0e8(msg, 0xae), 4);
+    self->slots[idx].p7c = (VObj *)func_ov000_0217b230(self, MsgRes_GetString(msg, 0xae), 4);
     func_0200779c(buf, "%d", rec->unk_0c);
     self->slots[idx].p88 = (VObj *)func_ov000_0217b230(self, buf, 4);
-    self->slots[idx].p84 = (VObj *)func_ov000_0217b230(self, func_0204c0e8(msg, 0xaf), 4);
+    self->slots[idx].p84 = (VObj *)func_ov000_0217b230(self, MsgRes_GetString(msg, 0xaf), 4);
     {
         u8 b = rec->b16;
         if (b == 0xff) {
@@ -6169,8 +6169,8 @@ void func_ov000_0217b324(Self *self, s32 idx) {
             self->slots[idx].p90 = (VObj *)func_ov000_0217b230(self, func_020620ac(b), 4);
         }
     }
-    self->slots[idx].p8c = (VObj *)func_ov000_0217b230(self, func_0204c0e8(msg, 0xb0), 4);
-    STD_CopyString(buf, func_0204c0e8(msg, 0xb2));
+    self->slots[idx].p8c = (VObj *)func_ov000_0217b230(self, MsgRes_GetString(msg, 0xb0), 4);
+    STD_CopyString(buf, MsgRes_GetString(msg, 0xb2));
     n = rec->time / 216000;
     func_0200779c(num, "%.2d", n);
     func_02070874(buf, buf, num);
@@ -6181,7 +6181,7 @@ void func_ov000_0217b324(Self *self, s32 idx) {
     func_0200779c(num, "%.2d", n);
     func_02070874(buf, buf, num);
     self->slots[idx].p98 = (VObj *)func_ov000_0217b230(self, buf, 4);
-    self->slots[idx].p94 = (VObj *)func_ov000_0217b230(self, func_0204c0e8(msg, 0xb1), 4);
+    self->slots[idx].p94 = (VObj *)func_ov000_0217b230(self, MsgRes_GetString(msg, 0xb1), 4);
     OS_GetOwnerInfo(&info);
     max = 0x80;
     len = info.nickNameLength;
@@ -6243,8 +6243,8 @@ extern "C" {
 extern void *data_02149ef8;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
-void *func_0204c0e8(void *a, u16 b);
-void *func_0203dd9c(u32 size);
+void *MsgRes_GetString(void *a, u16 b);
+void *Heap_Alloc(u32 size);
 void func_ov000_0215c1bc(Win0217bd88 *w, s32 a, void *b);
 void func_ov000_0215ce8c(Win0217bd88 *w, s32 a);
 
@@ -6268,7 +6268,7 @@ BOOL func_ov000_0217bd88(Obj0217bd88 *self, s32 a, s32 id) {
         return FALSE;
     }
     self->timer = 0x3c;
-    w = (Win0217bd88 *)func_0203dd9c(0xe8);
+    w = (Win0217bd88 *)Heap_Alloc(0xe8);
     if (w != NULL) {
         VOBJ_SET_VTABLE(w, data_ov000_021cac60);
         w->vfunc_28();
@@ -6289,7 +6289,7 @@ BOOL func_ov000_0217bd88(Obj0217bd88 *self, s32 a, s32 id) {
     self->win->unk_1c = 4;
     self->win->vfunc_08();
     if (id != -1) {
-        func_ov000_0215c1bc(self->win, 0x8000, func_0204c0e8(data_02149ef8, id));
+        func_ov000_0215c1bc(self->win, 0x8000, MsgRes_GetString(data_02149ef8, id));
     } else {
         func_ov000_0215ce8c(self->win, a);
     }
@@ -6698,7 +6698,7 @@ void func_ov000_0217c7b8(Lo0217ab30 *self) {
         Lo0217c7b8_Reset(self);
         break;
     case 9: {
-        VObj *o = (VObj *)func_0203dd9c(0x58);
+        VObj *o = (VObj *)Heap_Alloc(0x58);
         if (o != NULL) {
             VOBJ_SET_VTABLE(o, data_0208b614);
             o->vfunc_14();
@@ -6746,7 +6746,7 @@ namespace m_Lo_0217cddc {
 extern "C" {
 
 extern void *data_ov000_021c9bf4[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_ov000_0214b810(void *p);
 void *func_ov000_0214b724(void *p);
 void *func_ov000_0214b6d8(void *p);
@@ -6810,8 +6810,8 @@ void func_ov000_0217cf10(Lo0217ab30 *self) {
     switch (self->unk_48) {
     case 0: {
         void *p;
-        HEAP_DELETE(void *, self->unk_6c, func_ov000_0214b724(p); func_0203de1c(p));
-        p = func_0203dd9c(0x3c);
+        HEAP_DELETE(void *, self->unk_6c, func_ov000_0214b724(p); Heap_Free(p));
+        p = Heap_Alloc(0x3c);
         if (p != NULL) {
             p = func_ov000_0214b6d8(p);
         }
@@ -7513,7 +7513,7 @@ extern "C" {
 extern u8 *data_02097d48;
 extern u8 data_0208b3d0[];
 extern LoVec0217df5c data_ov000_021c9c10;
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void func_02043d20(void *p, s32 a);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
@@ -7575,7 +7575,7 @@ void func_ov000_0217df5c(Lo0217ab30 *self, LoVec0217df5c *pos) {
     u32 size;
     u8 i;
     MF(self->unk_a0).b19 = 1;
-    MF(self->unk_a0).f7 = func_02043d48(g + 0x8b0);
+    MF(self->unk_a0).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
     MF(self->unk_a0).f2 = 0x1c;
     LoSetPosV0217df5c(self->unk_a0, pos);
     LFLD(s32, self->unk_a0, 0x150) = -0x1ccd;
@@ -7662,7 +7662,7 @@ typedef struct {
 extern "C" {
 
 extern u8 *data_02097d48;
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 extern s16 FX_SinCosTable_[];
 s32 FX_Div(s32 a, s32 b);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
@@ -7809,7 +7809,7 @@ void func_ov000_0217e560(Lo0217ab30 *self, s32 *pos) {
     {
         s32 py = (self->unk_ba * step + y0 - 0x5a) << 12;
         MF(self->unk_a0).b19 = 1;
-        MF(self->unk_a0).f7 = func_02043d48(g + 0x8b0);
+        MF(self->unk_a0).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
         MF(self->unk_a0).f2 = (u8)a;
         LoSetPosFx0217e560(self->unk_a0, (lx - 0x80) << 12, py);
     }
@@ -7830,10 +7830,10 @@ extern "C" {
 
 extern u8 data_ov000_021cbae0[];
 extern u8 data_ov000_021cc060[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 
-VObj *func_ov000_0217e9c8(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x58);
+VObj *Ov000TaskVt_021cbae0_New(void) {
+    VObj *obj = (VObj *)Heap_Alloc(0x58);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();
@@ -7863,7 +7863,7 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb0b8[];
-void *func_0204c0e8(void *g, u32 id);
+void *MsgRes_GetString(void *g, u32 id);
 BOOL func_0206c4a0(void);
 u16 func_02059454(void *a, s32 b, s32 c, s32 d);
 BOOL func_ov000_02175e6c(void);
@@ -7871,7 +7871,7 @@ BOOL func_ov000_02175e6c(void);
 class Obj0217ea30 {
 public:
     u8 data[0x1e4];
-    static void *operator new(unsigned long size) { return func_0203dd9c(size); }
+    static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     Obj0217ea30() {
         *(void **)this = data_ov000_021cac60;
         ((VObj *)this)->vfunc_28();
@@ -7914,23 +7914,23 @@ s32 func_ov000_0217ea30(Lo0217ea30 *self, s32 msg) {
         if (func_0206c4a0()) {
             if (func_02059454(data_02fe152c, 5, 1, 4)) {
                 g = data_02149ef8;
-                text.desc = func_0204c0e8(g, 0x1d);
-                text.title = func_0204c0e8(g, 0x8d);
+                text.desc = MsgRes_GetString(g, 0x1d);
+                text.title = MsgRes_GetString(g, 0x8d);
                 o = (VObj *)new Obj0217ea30;
                 self->unk_3c = o;
                 o->vfunc_10(text.title);
             } else {
                 g = data_02149ef8;
-                text.desc = func_0204c0e8(g, 0x1c);
-                text.title = func_0204c0e8(g, 0x8d);
+                text.desc = MsgRes_GetString(g, 0x1c);
+                text.title = MsgRes_GetString(g, 0x8d);
                 o = (VObj *)new Obj0217ea30;
                 self->unk_3c = o;
                 o->vfunc_10(text.title);
             }
         } else {
             g = data_02149ef8;
-            text.desc = func_0204c0e8(g, 0x1e);
-            text.title = func_0204c0e8(g, 0x8d);
+            text.desc = MsgRes_GetString(g, 0x1e);
+            text.title = MsgRes_GetString(g, 0x8d);
             o = (VObj *)new Obj0217ea30;
             self->unk_3c = o;
             o->vfunc_10(text.title);
@@ -8079,7 +8079,7 @@ u16 func_02059454(void *p, s32 a, s32 b, s32 c);
 s32 func_ov000_0217ea30(VObj *self, s32 msg);
 void func_ov000_0216f42c(void *a, void *b);
 void func_020656b4(void *p);
-void func_ov000_0218e514(void *p, s32 a);
+void ActorMgr_ClearGroup(void *p, s32 a);
 void func_0206e900(char *dst, const char *src);
 void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
@@ -8159,7 +8159,7 @@ static inline BOOL LoBit1(Lo0217edb4 *self) {
 }
 
 static inline VObj *NewLoader(void) {
-    VObj *o = (VObj *)func_0203dd9c(0x4c);
+    VObj *o = (VObj *)Heap_Alloc(0x4c);
     if (o != NULL) {
         *(void **)o = data_0208b318;
         o->vfunc_08();
@@ -8168,7 +8168,7 @@ static inline VObj *NewLoader(void) {
 }
 
 static inline u8 *NewWorldMapModel(void) {
-    u8 *m = (u8 *)func_0203dd9c(0x160);
+    u8 *m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         char *n = "cewor1map00";
         char *a = "menu/worldmap";
@@ -8237,7 +8237,7 @@ void func_ov000_0217ef3c(Lo0217edb4 *self) {
         }
         LFLD(Bits0e, data_ov000_021ccd54, 0xe).b2 = 2;
         func_020656b4(data_0214a420);
-        func_ov000_0218e514(data_ov000_021ccd68, 0xf000);
+        ActorMgr_ClearGroup(data_ov000_021ccd68, 0xf000);
         LFLD(LoBits8, data_ov000_021ccd64, 0xc).b0 = 0;
         func_0206e900(buf, "pic/title");
         o = NewLoader();
@@ -8427,8 +8427,8 @@ void *func_020359d0(void *a, s32 b, s32 c);
 s32 func_02035b90(void *a, s32 b);
 BOOL func_ov000_0217bd88(void *self, s32 a, s32 b);
 
-VObj *func_ov000_0217f8d0(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x160);
+VObj *Ov000TaskVt_021cbf60_New(void) {
+    VObj *obj = (VObj *)Heap_Alloc(0x160);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();
@@ -8631,8 +8631,8 @@ extern u8 data_ov000_021cadcc[];
 extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb0b8[];
 extern u8 data_ov000_021cafc0[];
-void *func_0203dd9c(u32 size);
-void *func_0204c0e8(void *g, u32 id);
+void *Heap_Alloc(u32 size);
+void *MsgRes_GetString(void *g, u32 id);
 void func_ov000_0215bb14(void *o, void *s);
 void func_ov000_02173648(void *self);
 void func_ov000_021547e8(void *a, void *b, void *c, int d);
@@ -8664,7 +8664,7 @@ void func_ov000_0217fd70(Lo0217fd70 *self) {
         return;
     }
     g = data_02149ef8;
-    o = (VObj *)func_0203dd9c(0xe0);
+    o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -8675,8 +8675,8 @@ void func_ov000_0217fd70(Lo0217fd70 *self) {
         *(void **)o = data_ov000_021cb2a8;
     }
     self->unk_3c = (LoBase021caac8_021cb2a8 *)o;
-    self->unk_3c->vfunc_10(func_0204c0e8(g, 0x11a));
-    self->unk_3c->vfunc_14(func_0204c0e8(g, 0x11b));
+    self->unk_3c->vfunc_10(MsgRes_GetString(g, 0x11a));
+    self->unk_3c->vfunc_14(MsgRes_GetString(g, 0x11b));
     self->unk_3c->unk_20 = 5;
     {
         LoBase021caac8_021cb2a8 *s = self->unk_3c;
@@ -8730,7 +8730,7 @@ void func_ov000_0217fd70(Lo0217fd70 *self) {
     }
     self->unk_3c->vfunc_08();
     self->unk_3c->unk_0c &= ~2;
-    o = (VObj *)func_0203dd9c(0x8c);
+    o = (VObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -8753,10 +8753,10 @@ void func_ov000_0217fd70(Lo0217fd70 *self) {
         s->unk_60 = -0xccd;
     }
     self->unk_40->unk_2c = 1;
-    func_ov000_0215bb14(self->unk_40, func_0204c0e8(g, 0x11d));
+    func_ov000_0215bb14(self->unk_40, MsgRes_GetString(g, 0x11d));
     self->unk_40->vfunc_70();
     self->unk_40->vfunc_08();
-    o = (VObj *)func_0203dd9c(0x1e4);
+    o = (VObj *)Heap_Alloc(0x1e4);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -8770,14 +8770,14 @@ void func_ov000_0217fd70(Lo0217fd70 *self) {
         o->vfunc_28();
     }
     self->unk_44 = (LoBase021cafc0_021cb0b8 *)o;
-    self->unk_44->vfunc_10(func_0204c0e8(g, 0x11c));
+    self->unk_44->vfunc_10(MsgRes_GetString(g, 0x11c));
     self->unk_44->unk_68 = -0x666;
     self->unk_44->vfunc_08();
     self->unk_44->unk_08 = self;
     self->unk_44->unk_84 = (void *)func_ov000_0217fa34;
     self->unk_44->unk_0c |= 2;
     self->unk_44->unk_0c |= 4;
-    o = (VObj *)func_0203dd9c(0xe0);
+    o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -8802,7 +8802,7 @@ void func_ov000_0217fd70(Lo0217fd70 *self) {
         s->unk_60 = -0x99a;
     }
     self->unk_48->unk_0c |= 0x20000000;
-    self->unk_48->vfunc_f4(1, func_0204c0e8(g, 0x32));
+    self->unk_48->vfunc_f4(1, MsgRes_GetString(g, 0x32));
     self->unk_48->vfunc_08();
     func_ov000_02173648(self);
 }
@@ -8918,7 +8918,7 @@ extern void *data_02149f0c;
 extern u8 data_ov000_021ccd50[];
 extern VObj *data_ov000_021ccd30;
 void func_ov000_021b53a8(void *p);
-void func_ov000_0218e3d4(void *p);
+void ActorMgr_Draw(void *p);
 void func_02065b84(void *p);
 void func_ov000_021bc6c0(void *p);
 void func_0205a69c(void *p);
@@ -9006,7 +9006,7 @@ extern "C" {
 
 extern const u32 data_0208b318[];
 extern Task02180754 *(*const data_ov000_021c9c6c[])(void);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 
 static inline Task02180754 *TaskList_Find02180754(s32 id) {
     Task02180754 *task;
@@ -9019,7 +9019,7 @@ static inline Task02180754 *TaskList_Find02180754(s32 id) {
 }
 
 void func_ov000_02180660(s32 id, s32 arg) {
-    Holder02180754 *h = (Holder02180754 *)func_0203dd9c(sizeof(Holder02180754));
+    Holder02180754 *h = (Holder02180754 *)Heap_Alloc(sizeof(Holder02180754));
     s32 mode;
     if (h != NULL) {
         *(const u32 **)&h->res = data_0208b318;
@@ -9076,7 +9076,7 @@ void func_ov000_02180754(void) {
             data_ov000_021ccd40 = NULL;
             *(const u32 **)((u8 *)p + 0x8) = data_0208b318;
             VOBJ_AT(p, 0x8)->vfunc_0c();
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         data_ov000_021ccd44 = NULL;
     }
@@ -9329,7 +9329,7 @@ extern u8 data_ov000_021cbbe0[];
 extern u8 data_ov000_021cbce0[];
 void func_ov000_021c2310(void *ptr);
 
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 void func_ov000_0217fb44(VObj *self);
 void func_ov000_02178110(VObj *self);
 
@@ -9356,16 +9356,16 @@ void func_ov000_02180bfc(Obj021810e8 *self) {
     } while (obj != NULL);
 }
 
-VObj *func_ov000_02180c3c(Lo0217fd70 *self) {
+VObj *Ov000TaskVt_021cbf60_DtorDelete(Lo0217fd70 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbf60);
     func_ov000_0217fb44(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-VObj *func_ov000_02180c80(Lo0217fd70 *self) {
+VObj *Ov000TaskVt_021cbf60_Dtor(Lo0217fd70 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbf60);
     func_ov000_0217fb44(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9373,16 +9373,16 @@ VObj *func_ov000_02180c80(Lo0217fd70 *self) {
     return self;
 }
 
-VObj *func_ov000_02180cbc(Lo0217edb4 *self) {
+VObj *Ov000TaskVt_021cbae0_DtorDelete(Lo0217edb4 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbae0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-VObj *func_ov000_02180d08(Lo0217edb4 *self) {
+VObj *Ov000TaskVt_021cbae0_Dtor(Lo0217edb4 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbae0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9390,16 +9390,16 @@ VObj *func_ov000_02180d08(Lo0217edb4 *self) {
     return self;
 }
 
-VObj *func_ov000_02180d4c(Lo0217ab30 *self) {
+VObj *Ov000TaskVt_021cbb60_DtorDelete(Lo0217ab30 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbb60);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-VObj *func_ov000_02180d98(Lo0217ab30 *self) {
+VObj *Ov000TaskVt_021cbb60_Dtor(Lo0217ab30 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbb60);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9407,16 +9407,16 @@ VObj *func_ov000_02180d98(Lo0217ab30 *self) {
     return self;
 }
 
-VObj *func_ov000_02180ddc(Lo0217a1f8 *self) {
+VObj *Ov000TaskVt_021cbc60_DtorDelete(Lo0217a1f8 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbc60);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-VObj *func_ov000_02180e28(Lo0217a1f8 *self) {
+VObj *Ov000TaskVt_021cbc60_Dtor(Lo0217a1f8 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbc60);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9424,16 +9424,16 @@ VObj *func_ov000_02180e28(Lo0217a1f8 *self) {
     return self;
 }
 
-VObj *func_ov000_02180e6c(Lo021799e4 *self) {
+VObj *Ov000TaskVt_021cbd60_DtorDelete(Lo021799e4 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbd60);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-VObj *func_ov000_02180eb8(Lo021799e4 *self) {
+VObj *Ov000TaskVt_021cbd60_Dtor(Lo021799e4 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbd60);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9441,16 +9441,16 @@ VObj *func_ov000_02180eb8(Lo021799e4 *self) {
     return self;
 }
 
-VObj *func_ov000_02180efc(VObj *self) {
+VObj *Ov000TaskVt_021cbde0_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbde0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-VObj *func_ov000_02180f48(VObj *self) {
+VObj *Ov000TaskVt_021cbde0_Dtor(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbde0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9458,16 +9458,16 @@ VObj *func_ov000_02180f48(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02180f8c(Lo02178110 *self) {
+VObj *Ov000TaskVt_021cbe60_DtorDelete(Lo02178110 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbe60);
     func_ov000_02178110(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-VObj *func_ov000_02180fd0(Lo02178110 *self) {
+VObj *Ov000TaskVt_021cbe60_Dtor(Lo02178110 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbe60);
     func_ov000_02178110(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9475,16 +9475,16 @@ VObj *func_ov000_02180fd0(Lo02178110 *self) {
     return self;
 }
 
-VObj *func_ov000_0218100c(Lo02176714 *self) {
+VObj *Ov000TaskVt_021cbee0_DtorDelete(Lo02176714 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbee0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-VObj *func_ov000_02181058(Lo02176714 *self) {
+VObj *Ov000TaskVt_021cbee0_Dtor(Lo02176714 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbee0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9492,12 +9492,12 @@ VObj *func_ov000_02181058(Lo02176714 *self) {
     return self;
 }
 
-VObj *func_ov000_0218109c(Lo02175f34 *self) {
+VObj *Ov000TaskVt_021cbfe0_DtorDelete(Lo02175f34 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbfe0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -9516,7 +9516,7 @@ BOOL func_ov000_021810e8(Obj021810e8 *self) {
     return TRUE;
 }
 
-VObj *func_ov000_02181140(Lo02175f34 *self) {
+VObj *Ov000TaskVt_021cbfe0_Dtor(Lo02175f34 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbfe0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9524,7 +9524,7 @@ VObj *func_ov000_02181140(Lo02175f34 *self) {
     return self;
 }
 
-VObj *func_ov000_02181184(Obj021743bc *self) {
+VObj *Ov000TaskVt_021cbbe0_DtorDelete(Obj021743bc *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbbe0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(VOBJ_AT(self, 0x3f8), data_0208ba70);
@@ -9541,7 +9541,7 @@ VObj *func_ov000_02181184(Obj021743bc *self) {
     VOBJ_AT(self, 0x60)->vfunc_08();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -9570,7 +9570,7 @@ BOOL func_ov000_02181250(Obj021810e8 *self) {
     return TRUE;
 }
 
-VObj *func_ov000_02181310(Obj021743bc *self) {
+VObj *Ov000TaskVt_021cbbe0_Dtor(Obj021743bc *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbbe0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(VOBJ_AT(self, 0x3f8), data_0208ba70);
@@ -9590,16 +9590,16 @@ VObj *func_ov000_02181310(Obj021743bc *self) {
     return self;
 }
 
-VObj *func_ov000_021813d4(VObj *self) {
+VObj *Ov000TaskVt_021cbce0_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbce0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-VObj *func_ov000_02181420(VObj *self) {
+VObj *Ov000TaskVt_021cbce0_Dtor(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbce0);
     self->vfunc_5c();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
@@ -9607,10 +9607,10 @@ VObj *func_ov000_02181420(VObj *self) {
     return self;
 }
 
-VObj *func_ov000_02181464(VObj *self) {
+VObj *Ov000Vt_021cbac8_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbac8);
     func_ov000_021c2310(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -9620,13 +9620,13 @@ void func_ov000_0218148c(void) {
 void func_ov000_02181490(void) {
 }
 
-VObj *func_ov000_02181494(VObj *self) {
+VObj *Ov000Vt_021cbac8_Dtor(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cbac8);
     func_ov000_021c2310(self);
     return self;
 }
 
-VObj *func_ov000_021814b4(VObj *self) {
+VObj *Ov000TaskVt_021cc060_Dtor(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
     return self;

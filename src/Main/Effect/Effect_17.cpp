@@ -19,9 +19,9 @@ static inline void EffectEmitter_Dtor(EffectEmitter *em) {
     func_02063bd0(em);
 }
 
-EffectEmitter *func_0206c2dc(EffectEmitter *em) {
+EffectEmitter *MainVt_0208c8bc_DtorDelete(EffectEmitter *em) {
     EffectEmitter_Dtor(em);
-    func_0203de1c(em);
+    Heap_Free(em);
     return em;
 }
 
@@ -29,25 +29,25 @@ void func_0206c324(EffectEmitter *em) {
     em->Loop();
 }
 
-EffectEmitter *func_0206c338(EffectEmitter *em) {
+EffectEmitter *MainVt_0208c8bc_Dtor(EffectEmitter *em) {
     EffectEmitter_Dtor(em);
     return em;
 }
 
-EffectEmitter *func_0206c378(EffectEmitter *em) {
+EffectEmitter *MainVt_0208c868_DtorDelete(EffectEmitter *em) {
     EffectEmitter_Dtor(em);
-    func_0203de1c(em);
+    Heap_Free(em);
     return em;
 }
 
-EffectEmitter *func_0206c3c0(EffectEmitter *em) {
+EffectEmitter *MainVt_0208c868_Dtor(EffectEmitter *em) {
     EffectEmitter_Dtor(em);
     return em;
 }
 
-EffectPartSet *func_0206c400(EffectPartSet *s) {
+EffectPartSet *MainVt_0208c850_DtorDelete(EffectPartSet *s) {
     *(u32 **)s = data_0208c364;
-    func_0203de1c(s);
+    Heap_Free(s);
     return s;
 }
 
@@ -55,12 +55,12 @@ void func_0206c420(EffectPartSet *s) {
     func_0206ab0c(s);
 }
 
-EffectPartSet *func_0206c42c(EffectPartSet *s) {
+EffectPartSet *MainVt_0208c850_Dtor(EffectPartSet *s) {
     *(u32 **)s = data_0208c364;
     return s;
 }
 
-EffectPtcl *func_0206c43c(EffectPtcl *p) {
+EffectPtcl *MainVt_0208c840_Dtor(EffectPtcl *p) {
     *(u32 **)p = data_0208c840;
     return p;
 }

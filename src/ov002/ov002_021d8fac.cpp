@@ -146,7 +146,7 @@ void func_ov002_021d91d8(void *self) {
         name = func_0203ed04(buf, *FIELD(self, 0x78, u32 *));
     }
     FIELD(self, 0x84, void *) = func_0203ebf8(name);
-    FIELD(self, 0x80, void *) = func_0203dd9c(0x54);
+    FIELD(self, 0x80, void *) = Heap_Alloc(0x54);
     NNS_G3dRenderObjInit(FIELD(self, 0x80, void *), FIELD(self, 0x7c, void *));
     NNS_G3dRenderObjSetCallBack(FIELD(self, 0x80, void *), (void *)func_ov002_021e0420, 0, 4, 2);
     FIELD(FIELD(self, 0x80, void *), 0x2c, void *) = (u8 *)self + 0xa4;
@@ -158,7 +158,7 @@ void func_ov002_021d91d8(void *self) {
     NNS_G3dRenderObjAddAnmObj(FIELD(self, 0x80, void *), FIELD(self, 0x88, void *));
     FIELD(FIELD(self, 0x88, void *), 0, s32) = FIELD(self, 0xac, s32) << 12;
     if (FIELD(self, 0x94, u8)) {
-        void *m = func_0203dd9c(0x160);
+        void *m = Heap_Alloc(0x160);
         if (m != NULL) {
             void *file = data_0208cc94;
             void *nm = data_0208cc88;

@@ -25,8 +25,8 @@ typedef struct {
 extern "C" {
 extern void *data_ov000_021ccd64;
 BOOL func_020621f8(void);
-s32 func_02040498(s32 max);
-Actor0219b400 *func_ov000_0218bf1c(void *mgr, SpawnDesc0219b400 *d, void *pos, void *rot, u16 a);
+s32 Rand_UpTo(s32 max);
+Actor0219b400 *Group_SpawnActor(void *mgr, SpawnDesc0219b400 *d, void *pos, void *rot, u16 a);
 void func_ov000_0218d46c(Actor0219b400 *o, u16 id, s32 m);
 
 static inline void Spawn0219b400_Init(SpawnDesc0219b400 *d, u16 k) {
@@ -75,7 +75,7 @@ void func_ov000_0219b400(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 ch
     if (total < 100) {
         total = 100;
     }
-    r = func_02040498(total - 1);
+    r = Rand_UpTo(total - 1);
     acc = 0;
     for (j = 0; j < n; j++) {
         if (w[j] != 0) {
@@ -83,13 +83,13 @@ void func_ov000_0219b400(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 ch
             acc += w[j];
             if (r >= lo && r < acc) {
                 Spawn0219b400_Init(&desc, ids[j]);
-                o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, pos, rot, 0xffff);
+                o = Group_SpawnActor(data_ov000_021ccd64, &desc, pos, rot, 0xffff);
                 if (o != NULL) {
                     o->unk_16.b0 = 1;
                     if (desc.flags != 0x5000) {
                         return;
                     }
-                    Actor0219b400_SetPos(o, func_02040498(0x7b) + 0xf6, func_02040498(0xb8) + 0x2e1, 0);
+                    Actor0219b400_SetPos(o, Rand_UpTo(0x7b) + 0xf6, Rand_UpTo(0xb8) + 0x2e1, 0);
                     o->unk_a8 = 0x52;
                     func_ov000_0218d46c(o, 0xffff, 4);
                     return;

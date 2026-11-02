@@ -88,8 +88,8 @@ extern u32 data_ov003_021f7cf4;
 extern u32 data_ov003_021f7cd8;
 extern s16 func_ov003_021d7e58(Ov003Ticker *t);
 extern void VEC_MultAdd(s32 scale, Ov003Vec *dir, Ov003Vec *src, Ov003Vec *dst);
-extern void func_0203de1c(void *p);
-extern void *func_0203dd9c(u32 size);
+extern void Heap_Free(void *p);
+extern void *Heap_Alloc(u32 size);
 extern void *func_ov000_02198328(void *p);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
@@ -118,7 +118,7 @@ Ov003StateMachine *Ov003Vt_021f7cf4_Dtor(Ov003StateMachine *self) {
 Ov003StateMachine *Ov003Vt_021f7cf4_DtorDelete(Ov003StateMachine *self) {
     *(void **)self = &data_ov003_021f7cf4;
     self->Release();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -140,7 +140,7 @@ void func_ov003_021d899c(Ov003StateMachine *self) {
             next = n->next;
             n->state->Leave();
             if (n != NULL) {
-                func_0203de1c(n);
+                Heap_Free(n);
             }
         }
         self->cur = NULL;
@@ -161,7 +161,7 @@ void func_ov003_021d8a30(Ov003StateMachine *self, u8 id, Ov003State *state) {
     if (!self->active) {
         return;
     }
-    n = (Ov003StateNode *)func_0203dd9c(sizeof(Ov003StateNode));
+    n = (Ov003StateNode *)Heap_Alloc(sizeof(Ov003StateNode));
     n->id = id;
     n->state = state;
     n->next = NULL;
@@ -229,7 +229,7 @@ Ov003Timer *Ov003Vt_021f7cd8_Dtor(Ov003Timer *self) {
 Ov003Timer *Ov003Vt_021f7cd8_DtorDelete(Ov003Timer *self) {
     *(void **)self = &data_ov003_021f7cd8;
     self->Release();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

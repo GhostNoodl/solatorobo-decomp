@@ -11,7 +11,7 @@ extern char data_ov000_021ccc72[];
 extern char data_ov000_021ccc7e[];
 void func_02036838(void *a, void *b, s32 c, s32 d);
 void func_02035acc(void *a, void *b, s32 c);
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 
 static inline void Obj021ccc94_Dtor(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021ccc94);
@@ -22,13 +22,13 @@ static inline void Obj021ccc94_Dtor(VObj *self) {
     self->vfunc_5c();
 }
 
-VObj *func_ov000_021c96ec(VObj *self) {
+VObj *Ov000TaskVt_021ccc94_DtorDelete(VObj *self) {
     Obj021ccc94_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-VObj *func_ov000_021c9788(VObj *self) {
+VObj *Ov000TaskVt_021ccc94_Dtor(VObj *self) {
     Obj021ccc94_Dtor(self);
     return self;
 }

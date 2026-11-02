@@ -50,7 +50,7 @@ void func_ov006_021ccdc4(void) {
 }
 
 void *func_ov006_021ccdc8(void *self) {
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -98,14 +98,14 @@ ov006_Manager *Ov006Vt_021ebb48_Dtor(ov006_Manager *self) {
 
 ov006_Manager *Ov006Vt_021ebb48_DtorDelete(ov006_Manager *self) {
     ov006_Manager_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
 void func_ov006_021ccf8c(void) {
     ov006_Manager *obj;
     OV006_DELETE_OBJECT(data_ov006_021ec860);
-    obj = (ov006_Manager *)func_0203dd9c(sizeof(ov006_Manager));
+    obj = (ov006_Manager *)Heap_Alloc(sizeof(ov006_Manager));
     if (obj != NULL) {
         obj->vtbl = &data_ov006_021ebb48;
         func_0201bbfc(0);
@@ -250,19 +250,19 @@ BOOL func_ov006_021cd2c8(ov006_Manager *self) {
         type = self->taskType;
         switch (type) {
         case 0:
-            task = (ov006_Task *)func_0203dd9c(0x14);
+            task = (ov006_Task *)Heap_Alloc(0x14);
             if (task != NULL) {
                 task = func_ov006_021d54b0(task);
             }
             break;
         case 1:
-            task = (ov006_Task *)func_0203dd9c(0x88);
+            task = (ov006_Task *)Heap_Alloc(0x88);
             if (task != NULL) {
                 task = func_ov006_021d5b04(task);
             }
             break;
         case 2:
-            task = (ov006_Task *)func_0203dd9c(0x44);
+            task = (ov006_Task *)Heap_Alloc(0x44);
             if (task != NULL) {
                 task = Ov006Vt_021ec040_Ctor(task);
             }

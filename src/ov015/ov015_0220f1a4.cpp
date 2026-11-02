@@ -217,7 +217,7 @@ Ov015Result *Ov015Result_Ctor(Ov015Result *self) {
 }
 
 void func_ov015_0220f470(Ov015Result *self) {
-    Ov015ResultPanel *p = (Ov015ResultPanel *)func_0203dd9c(0x64);
+    Ov015ResultPanel *p = (Ov015ResultPanel *)Heap_Alloc(0x64);
     if (p != NULL) {
         SET_VT(p, data_ov015_02213188);
         FLD(s32, p, 0x4) = 0;
@@ -246,7 +246,7 @@ void func_ov015_0220f4d4(Ov015Result *self) {
 void *Ov015ResultPanel_DtorDelete(Ov015ResultPanel *self) {
     SET_VT(self, data_ov015_02213188);
     func_ov015_0220ec40(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

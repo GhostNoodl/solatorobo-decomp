@@ -29,14 +29,14 @@ void *func_ov000_021919c8(void *p);
 void __cxa_vec_ctor(void *p, s32 n, s32 size, void *ctor, void *dtor);
 extern void **data_0214a420;
 s32 func_02065748(void *a, void *b);
-void *func_ov000_02191a24(void *p);
+void *Ov000Vt_021cc438_Dtor(void *p);
 void *func_ov000_0218ea20(void *p);
 void __cxa_vec_cleanup(void *p, s32 n, s32 size, void *dtor);
 void func_01ffc9fc(Ov015V3 *in, Ov015V3 *out, u16 ang);
 void VEC_Add(const void *a, const void *b, void *out);
 
 void *func_ov015_02206f04(void) {
-    Ov015Scene2a88 *p = (Ov015Scene2a88 *)func_0203dd9c(0x58);
+    Ov015Scene2a88 *p = (Ov015Scene2a88 *)Heap_Alloc(0x58);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212a88);
@@ -53,7 +53,7 @@ void *func_ov015_02206f04(void) {
 }
 
 void *func_ov015_02206f7c(void) {
-    Ov015Scene2a08 *p = (Ov015Scene2a08 *)func_0203dd9c(0xb0);
+    Ov015Scene2a08 *p = (Ov015Scene2a08 *)Heap_Alloc(0xb0);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212a08);
@@ -79,7 +79,7 @@ void *func_ov015_02206f7c(void) {
 }
 
 void *func_ov015_02207020(void) {
-    Ov015Scene2c08 *p = (Ov015Scene2c08 *)func_0203dd9c(0x6c);
+    Ov015Scene2c08 *p = (Ov015Scene2c08 *)Heap_Alloc(0x6c);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212c08);
@@ -102,7 +102,7 @@ void *func_ov015_02207020(void) {
 }
 
 void *func_ov015_022070b8(void) {
-    Ov015Scene2b88 *p = (Ov015Scene2b88 *)func_0203dd9c(0x58);
+    Ov015Scene2b88 *p = (Ov015Scene2b88 *)Heap_Alloc(0x58);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212b88);
@@ -119,7 +119,7 @@ void *func_ov015_022070b8(void) {
 }
 
 void *func_ov015_02207138(void) {
-    Ov015Scene2b08 *p = (Ov015Scene2b08 *)func_0203dd9c(0x164);
+    Ov015Scene2b08 *p = (Ov015Scene2b08 *)Heap_Alloc(0x164);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212b08);
@@ -144,7 +144,7 @@ void *func_ov015_022071c4(void *self) {
     func_ov000_02180754();
     SET_VT(self, data_ov015_0221280c);
     func_ov015_021fa6cc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -236,7 +236,7 @@ void *Ov015Scene2b08_DtorDelete(Ov015Scene2b08 *self) {
     SET_VT(self, data_ov015_02212b08);
     func_ov015_02205c7c(self);
     Ov015TaskBase_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -252,7 +252,7 @@ void *Ov015Scene2c08_DtorDelete(Ov015Scene2c08 *self) {
     SET_VT(self, data_ov015_02212c08);
     func_ov015_02204110(self);
     Ov015TaskBase_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -268,7 +268,7 @@ void *Ov015Scene2a08_DtorDelete(Ov015Scene2a08 *self) {
     SET_VT(self, data_ov015_02212a08);
     func_ov015_02203020(self);
     Ov015TaskBase_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -293,7 +293,7 @@ void *Ov015Scene2a88_DtorDelete(Ov015Scene2a88 *self) {
             if (p != NULL) {
                 func_02041558(p);
                 func_02041278(p + 0x88);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->unk_3c = NULL;
         }
@@ -301,7 +301,7 @@ void *Ov015Scene2a88_DtorDelete(Ov015Scene2a88 *self) {
     HEAP_POP(saved);
     self->unk_40 = 0;
     Ov015TaskBase_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -315,7 +315,7 @@ void *Ov015Scene2a88_Dtor(Ov015Scene2a88 *self) {
             if (p != NULL) {
                 func_02041558(p);
                 func_02041278(p + 0x88);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->unk_3c = NULL;
         }
@@ -378,7 +378,7 @@ void *func_ov015_02207738(Ov015Ship *self) {
         DELETE_V(self->unk_d30);
         HEAP_POP(saved);
     }
-    func_ov000_02191a24(&self->unk_cb8);
+    Ov000Vt_021cc438_Dtor(&self->unk_cb8);
     func_ov000_0218fee4(&self->unk_bd0);
     func_ov000_0218ea20(&self->unk_a98);
     __cxa_vec_cleanup(self->unk_358, 8, 0xe8, (void *)func_ov000_0218fee4);

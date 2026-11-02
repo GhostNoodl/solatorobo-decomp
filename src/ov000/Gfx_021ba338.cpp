@@ -20,7 +20,7 @@ extern void *data_0208b3d0;
 extern const u32 data_020828f8;
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void *NNS_G2dGetAnimSequenceByIdx(void *p, int idx);
 void *NNS_G2dGetCellDataByIdx(void *p, u16 idx);
 void func_02042628(void *model, void *anim, void *part, int x);
@@ -90,7 +90,7 @@ void func_ov000_021ba338(Obj021ba338 *self) {
         b = 0x1000 - self->unk_30;
     }
     if (h != 0) {
-        G3Cmd1_021ba338(0x29, 0x1f00d0 | (func_02043d48(g + 0x8b0) << 24));
+        G3Cmd1_021ba338(0x29, 0x1f00d0 | (Gfx3DState_NextPolyId(g + 0x8b0) << 24));
         NNS_G3dGeBufferOP_N(0x11, NULL, 0);
         G3Vec021ba338(0x1c, 0x80000, 0x60000, -0x79a);
         G3Vec021ba338(0x1b, a, b, 0x1000);
@@ -137,7 +137,7 @@ void func_ov000_021ba338(Obj021ba338 *self) {
         LFLD(B6c_021ba338, self->unk_20, 0x6c).b19 = 1;
         LFLD(B6c_021ba338, self->unk_20, 0x6c).b21 = 1;
         LFLD(B6c_021ba338, self->unk_20, 0x6c).b2 = 0x1e;
-        LFLD(B6c_021ba338, self->unk_20, 0x6c).b7 = func_02043d48(g + 0x8b0);
+        LFLD(B6c_021ba338, self->unk_20, 0x6c).b7 = Gfx3DState_NextPolyId(g + 0x8b0);
         {
             u8 *o = self->unk_20;
             LFLD(s32, o, 0xfc) = r << 12;
@@ -146,7 +146,7 @@ void func_ov000_021ba338(Obj021ba338 *self) {
         PlayPart021ba338(self->unk_20, 0);
         LFLD(B6c_021ba338, self->unk_20, 0x6c).b21 = 0;
     }
-    func_02043d48(g + 0x8b0);
+    Gfx3DState_NextPolyId(g + 0x8b0);
 }
 
 }

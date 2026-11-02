@@ -109,7 +109,7 @@ extern BOOL func_ov000_0218ffdc(void *anim, Ov003LiftRes *res, s32 a, s32 b);
 extern void func_ov000_02190e98(void *anim, s32 a, s32 b, s32 c);
 extern void func_ov000_021915a0(void *anim);
 extern void func_0203f2b8(void *p);
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 extern void func_01ffc9fc(Ov003Vec *src, Ov003Vec *dst, u16 angle);
 extern void func_02065804(void *mgr, void *handle);
 extern void *func_0203db40(void *p);
@@ -166,7 +166,7 @@ void Ov003ActVt_021f979c_Start(Ov003Lift *self) {
         if (p != NULL) {
             if (p != NULL) {
                 func_0203f2b8(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->obj = NULL;
         }

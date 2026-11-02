@@ -41,7 +41,7 @@ extern u8 data_ov000_021cb940[];
 extern CmdQueue *data_ov000_021ccd54;
 extern Mgr02171478 *data_ov000_021ccd30;
 extern s32 data_02097d78[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void *func_020359d0(void *a, s32 b, s32 c);
 void func_ov000_0216f1ac(ListBuffer *buf, BufferList *list);
 void func_ov000_0216faac(void *p);
@@ -82,7 +82,7 @@ static inline ListBuffer *AddBuffer02171478(MessageQueue *self, ListBuffer *buf,
     BOOL allocated = FALSE;
     if (b == NULL) {
         allocated = TRUE;
-        b = (ListBuffer *)func_0203dd9c(0x20);
+        b = (ListBuffer *)Heap_Alloc(0x20);
         if (b != NULL) {
             ListBuffer_Init02171478(b);
         }
@@ -164,7 +164,7 @@ static inline BOOL Task_Start34(Task02171478 *t, u32 b) {
     if (t->unk_34 != NULL) {
         return FALSE;
     }
-    p = func_0203dd9c(0x5c);
+    p = Heap_Alloc(0x5c);
     if (p != NULL) {
         func_ov000_021b87d8(p, b);
     }
@@ -193,7 +193,7 @@ static inline BOOL Task_Start50(Task02171478 *t, u32 b, u32 c) {
     bl = (u16)b;
     cl = (u16)c;
     ch = (u16)(c >> 16);
-    p = func_0203dd9c(0x3c);
+    p = Heap_Alloc(0x3c);
     if (p != NULL) {
         func_ov000_0216c954(p, bh, bl);
     }
@@ -211,7 +211,7 @@ static inline BOOL Task_Start54(Task02171478 *t, u32 b, s32 c) {
     }
     lo = b;
     hi = (b >> 8) & 0xffffff;
-    p = func_0203dd9c(0x54);
+    p = Heap_Alloc(0x54);
     if (p != NULL) {
         func_ov000_0216e574(p);
     }
@@ -238,7 +238,7 @@ static inline BOOL Task_Start38(Task02171478 *t, u32 b) {
     if (t->unk_38 != NULL) {
         return FALSE;
     }
-    p = func_0203dd9c(0x34);
+    p = Heap_Alloc(0x34);
     if (p != NULL) {
         func_ov000_021b8884(p, b);
     }
@@ -252,7 +252,7 @@ static inline BOOL Task_Start40(Task02171478 *t, u32 b) {
     if (t->unk_40 != NULL) {
         return FALSE;
     }
-    p = func_0203dd9c(0x30);
+    p = Heap_Alloc(0x30);
     if (p != NULL) {
         func_ov000_021bacb8(p, b);
     }
@@ -272,7 +272,7 @@ static inline BOOL Task_Start44(Task02171478 *t, u32 b) {
     x1 = b >> 8;
     x2 = b >> 16;
     x0 = b;
-    p = func_0203dd9c(0x78);
+    p = Heap_Alloc(0x78);
     if (p != NULL) {
         LFLD(void *, p, 4) = data_0208b318;
         ((VObj *)((u8 *)p + 4))->vfunc_08();
@@ -288,7 +288,7 @@ static inline BOOL Task_Start3c(Task02171478 *t, s32 b, u32 c) {
     if (t->unk_3c != NULL) {
         return FALSE;
     }
-    p = func_0203dd9c(0x3c);
+    p = Heap_Alloc(0x3c);
     if (p != NULL) {
         func_ov000_021b8e80(p, b, c);
     }
@@ -317,7 +317,7 @@ static inline BOOL Task_Start4c(Task02171478 *t, u32 b, s32 c) {
     }
     lo = b;
     f = (b >> 16) & 1 ? TRUE : FALSE;
-    p = func_0203dd9c(0x20);
+    p = Heap_Alloc(0x20);
     if (p != NULL) {
         func_ov000_021bb810(p, 4);
     }
@@ -336,7 +336,7 @@ void func_ov000_02171478(Mgr02171478 *self, s32 a, s32 kind, s32 b, s32 c) {
         func_020359d0(data_0208cca0, 7, 0);
         func_020359d0(data_0208cc94, 7, 0);
         if (self->unk_118 == NULL) {
-            TimedBuffer *t = (TimedBuffer *)func_0203dd9c(0x34);
+            TimedBuffer *t = (TimedBuffer *)Heap_Alloc(0x34);
             if (t != NULL) {
                 ListBuffer_Init02171478(t);
                 VOBJ_SET_VTABLE(t, data_ov000_021cb920);
@@ -351,7 +351,7 @@ void func_ov000_02171478(Mgr02171478 *self, s32 a, s32 kind, s32 b, s32 c) {
             self->unk_118->flags |= 0x10;
         }
         if (self->unk_11c == NULL) {
-            Task02171478 *t = (Task02171478 *)func_0203dd9c(0x80);
+            Task02171478 *t = (Task02171478 *)Heap_Alloc(0x80);
             if (t != NULL) {
                 ListBuffer_Init02171478((ListBuffer *)t);
                 VOBJ_SET_VTABLE(t, data_ov000_021cb940);

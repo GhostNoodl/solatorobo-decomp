@@ -119,7 +119,7 @@ void func_ov012_02202a44(void) {
 extern "C" {
 void *Ov012ActExVt_0220af10_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 }
@@ -193,7 +193,7 @@ void *Ov012Act_02202b10_DtorDelete(void *self) {
     Ov012_FreeFx(self, 0x100);
     Ov003Vt_021f7974_Dtor((u8 *)self + 0x108);
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 }
@@ -209,7 +209,7 @@ void Ov012Act_02202b10_Init(Ov012Actor *self) {
 extern "C" {
 BOOL Ov012Act_02202b10_IsReady(Ov012Actor *self) {
     BOOL r = func_ov000_0218cf5c(self);
-    if (r && !func_0204985c(data_02097e4c)) {
+    if (r && !SndMgr_IsLoadDone(data_02097e4c)) {
         r = FALSE;
     }
     return r;
@@ -446,12 +446,12 @@ void func_ov012_022032f4(Ov012Act_02202b10 *self) {
         self->unk_40->state++;
     }
     if (self->unk_93_4) {
-        Ov012Actor *t = func_ov000_0218d240(self);
+        Ov012Actor *t = Actor_GetTarget(self);
         Ov012Vec v;
         v.x = t->pos.x;
         v.y = t->pos.y;
         v.z = t->pos.z;
-        func_ov000_0218d918(self, &v, 0xcd);
+        Actor_TurnToPos(self, &v, 0xcd);
     }
     func_ov003_021d3524(self);
 }
@@ -489,7 +489,7 @@ void func_ov012_02203420(Ov012Act_02202b10 *self) {
         self->unk_f6 = func_01ffc128(FX_Atan2(tgt.x - self->pos.x, tgt.z - self->pos.z), self->unk_f6, 0x1000, 1, 0x8000);
     }
     FLD(Ov012bEA, self, 0xea).b0 = 4;
-    p = func_ov000_0218d240(self)->pos;
+    p = Actor_GetTarget(self)->pos;
     s = self->unk_40;
     switch (s->state) {
     case 0:
@@ -506,7 +506,7 @@ void func_ov012_02203420(Ov012Act_02202b10 *self) {
     case 1: {
         Ov012V *e;
         u8 i;
-        func_ov000_0218d918(self, &p, 0x19a);
+        Actor_TurnToPos(self, &p, 0x19a);
         if (self->unk_38->unk_c4 != 1) {
             return;
         }
@@ -548,9 +548,9 @@ void func_ov012_02203420(Ov012Act_02202b10 *self) {
             func_020639d4(e, 0x29, 0);
             func_ov003_021da9ac(((void *)self->unk_100), 0, e);
         }
-        func_ov000_0218d918(self, &p, 0x19a);
+        Actor_TurnToPos(self, &p, 0x19a);
         q = self->unk_b8;
-        func_ov000_0218ddd4(self, &q, 0);
+        Actor_MoveToPos(self, &q, 0);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         self->unk_48->unk_9a_5 = 1;
         func_ov003_021daae4(((void *)self->unk_100), 0, &self->pos, 0, 0, 0, 0);
@@ -590,7 +590,7 @@ void func_ov012_02203420(Ov012Act_02202b10 *self) {
         break;
     }
     case 10:
-        func_ov000_0218d918(self, &p, 0xcd);
+        Actor_TurnToPos(self, &p, 0xcd);
         s = self->unk_40;
         s->timer++;
         if (s->timer >= FLD(u16, self->unk_104, 2)) {
@@ -607,7 +607,7 @@ void func_ov012_02203420(Ov012Act_02202b10 *self) {
         m = self->unk_48;
         m->unk_9a_0 = 1;
         m->unk_9a_3 = 1;
-        func_0203f324(m);
+        HitSphere_Link(m);
         self->unk_40->timer = 0;
         FLD(Ov012bEA, self, 0xea).b0 = self->unk_b0->unk_0a_7;
         func_ov000_02198360(self->unk_40, 1, 0);
@@ -641,7 +641,7 @@ struct Ov012bEA2 {
 
 void func_ov012_02203b2c(Ov012Act_02202b10 *self) {
     Ov012Vec p;
-    p = func_ov000_0218d240(self)->pos;
+    p = Actor_GetTarget(self)->pos;
     switch (self->unk_40->state) {
     case 0:
         func_02049f44(data_02097e4c, 0x401, &self->pos, 0);
@@ -660,7 +660,7 @@ void func_ov012_02203b2c(Ov012Act_02202b10 *self) {
         break;
     case 1:
         if (!(self->unk_f0 & 0x100000)) {
-            func_ov000_0218d918(self, &p, 0x19a);
+            Actor_TurnToPos(self, &p, 0x19a);
         }
         if (self->unk_38->unk_c4 == 3) {
             func_0204a028(data_02097e4c, 0x12, &self->pos, 0xf);
@@ -674,7 +674,7 @@ void func_ov012_02203b2c(Ov012Act_02202b10 *self) {
             v = data_ov012_0220a624[self->unk_f9];
             func_01ffc9fc(&v, &v, self->rot[1]);
             VEC_Add(&self->pos, &v, &v);
-            o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, &v, self->rot, 0xffff);
+            o = Group_SpawnActor(data_ov000_021ccd64, &d, &v, self->rot, 0xffff);
             if (o != NULL) {
                 o->unk_60 = data_ov012_0220a68c;
                 func_ov000_0219bebc(o, self->unk_124);
@@ -708,7 +708,7 @@ void func_ov012_02203b2c(Ov012Act_02202b10 *self) {
         break;
     case 10: {
         Ov012Sub40 *w;
-        func_ov000_0218d918(self, &p, 0xcd);
+        Actor_TurnToPos(self, &p, 0xcd);
         w = self->unk_40;
         w->timer++;
         if (w->timer >= FLD(u16, ((void *)self->unk_104), 2)) {
@@ -801,10 +801,10 @@ void func_ov012_02203ed4(Ov012Act_02202b10 *self) {
     }
     switch (data_ov000_021ccd54->unk_ca) {
     case 8:
-        func_ov000_0218d918(self, &data_ov012_0220a618, 0x400);
+        Actor_TurnToPos(self, &data_ov012_0220a618, 0x400);
         break;
     case 3:
-        func_ov000_0218d918(self, data_ov012_0220a5ac, 0x400);
+        Actor_TurnToPos(self, data_ov012_0220a5ac, 0x400);
         break;
     }
 
@@ -900,7 +900,7 @@ void func_ov012_0220422c(Ov012Act_02202b10 *self) {
         v.z = 0x2000;
         func_01ffc9fc(&v, &v, self->rot[1]);
         VEC_Add(pos, &v, &v);
-        o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, &v, self->rot, 0xffff);
+        o = Group_SpawnActor(data_ov000_021ccd64, &d, &v, self->rot, 0xffff);
         if (o != NULL) {
             o->unk_16.b0 = 1;
             o->rot[1] = self->rot[1];
@@ -980,7 +980,7 @@ void func_ov012_0220422c(Ov012Act_02202b10 *self) {
     }
     case 0x15: {
         t = self->unk_b8;
-        func_ov000_0218ddd4(self, &t, 0);
+        Actor_MoveToPos(self, &t, 0);
         if (VEC_Distance(pos, &self->unk_b8) > 0x19a) {
             break;
         }
@@ -1026,7 +1026,7 @@ void func_ov012_02204904(Ov012Act_02202b10 *self) {
     Ov012Vec p;
     Ov012Sub40 *s;
     Ov012V *e;
-    p = func_ov000_0218d240(self)->pos;
+    p = Actor_GetTarget(self)->pos;
     FLD(Ov012bEA4, self, 0xea).b0 = 4;
     s = self->unk_40;
     switch (s->state) {
@@ -1038,7 +1038,7 @@ void func_ov012_02204904(Ov012Act_02202b10 *self) {
         self->unk_94_1 = 1;
         s->timer++;
         if (s->timer <= 0x82) {
-            func_ov000_0218d918(self, &p, 0x400);
+            Actor_TurnToPos(self, &p, 0x400);
         }
         if (self->unk_38->unk_c4 == 2) {
             func_0204a028(data_02097e4c, 0x66, &self->pos, -10);
@@ -1154,7 +1154,7 @@ void func_ov012_02204dbc(Ov012Act_02202b10 *self) {
         self->unk_f0 |= 0x200000;
     }
     if (self->unk_f0 & 8) {
-    t = func_ov000_0218d240(self);
+    t = Actor_GetTarget(self);
     s = self->unk_40;
     switch (Ov012Sub40_State(s)) {
     case 0:
@@ -1171,7 +1171,7 @@ void func_ov012_02204dbc(Ov012Act_02202b10 *self) {
         }
         self->unk_40->state++;
     case 1:
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         self->unk_48->unk_9a_5 = 1;
         if (!(self->unk_48->unk_50 & 0x20000000)) {
@@ -1181,7 +1181,7 @@ void func_ov012_02204dbc(Ov012Act_02202b10 *self) {
         m = self->unk_48;
         m->unk_9a_0 = 1;
         m->unk_9a_3 = 1;
-        func_0203f324(m);
+        HitSphere_Link(m);
         self->unk_40->timer = 0;
         self->unk_40->state++;
         break;
@@ -1294,7 +1294,7 @@ void func_ov012_02205254(Ov012Act_02202b10 *self) {
     v.z = 0x4000;
     func_01ffc9fc(&v, &v, self->rot[1]);
     VEC_Add(&self->pos, &v, &v);
-    o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, &v, self->rot, 0xffff);
+    o = Group_SpawnActor(data_ov000_021ccd64, &d, &v, self->rot, 0xffff);
     if (o == NULL) {
         return;
     }
@@ -1329,12 +1329,12 @@ void func_ov012_022053a4(Ov012Act_02202b10 *self) {
     v.x = 0;
     func_01ffc9fc(&v, &v, self->rot[1]);
     VEC_Add(&self->pos, &v, &v);
-    o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, &v, self->rot, 0xffff);
+    o = Group_SpawnActor(data_ov000_021ccd64, &d, &v, self->rot, 0xffff);
     if (o == NULL) {
         return;
     }
     o->unk_16.b0 = 1;
-    t = func_ov000_0218d240(self);
+    t = Actor_GetTarget(self);
     Ov012_VecSet(&o->unk_84, t->pos.x, 0x800, t->pos.z);
     o->rot[1] = self->rot[1];
     o->unk_90 = self->unk_90;
@@ -1408,7 +1408,7 @@ void func_ov012_022054cc(Ov012Act_02202b10 *self) {
         m = self->unk_48;
         m->unk_9a_0 = 1;
         m->unk_9a_3 = 1;
-        func_0203f324(m);
+        HitSphere_Link(m);
         n = self->unk_44;
         n->unk_22_0 = 1;
         n->unk_22_1 = 1;

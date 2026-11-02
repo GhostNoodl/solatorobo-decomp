@@ -30,7 +30,7 @@ extern "C" {
 
 extern char *data_ov000_021cc8a0[2];
 extern char data_ov000_021cc92d[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 u8 *func_ov000_0218e9c4(void *p);
 u8 *func_ov000_0218fe1c(void *p);
 BOOL func_ov000_0218f110(u8 *o);
@@ -93,7 +93,7 @@ void func_ov000_021c194c(Self021c194c *self, BOOL flag, u8 *p) {
     case 9:
         break;
     case 1: {
-        p = (u8 *)func_0203dd9c(0x138);
+        p = (u8 *)Heap_Alloc(0x138);
         if (p != NULL) {
             p = func_ov000_0218e9c4(p);
         }
@@ -108,7 +108,7 @@ void func_ov000_021c194c(Self021c194c *self, BOOL flag, u8 *p) {
         if (!Ready021c194c(self->obj)) {
             return;
         }
-        m_1 = (u8 *)func_0203dd9c(0xe8);
+        m_1 = (u8 *)Heap_Alloc(0xe8);
         if (m_1 != NULL) {
             m_1 = func_ov000_0218fe1c(m_1);
         }

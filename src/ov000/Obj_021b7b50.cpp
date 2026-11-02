@@ -34,7 +34,7 @@ typedef struct {
 extern "C" {
 
 BOOL func_ov000_021b7f0c(Obj021b7b50 *self);
-void func_0203f8d8(void *p);
+void HitMesh_Link(void *p);
 void func_0203f920(void *p);
 BOOL func_01ffc23c(VecFx32 *v, VecFx32 *min, VecFx32 *max);
 s32 VEC_Mag(const VecFx32 *v);
@@ -69,7 +69,7 @@ s32 func_ov000_021b7b50(Obj021b7b50 *self) {
         self->unk_e9.b0 = 1;
         if (!self->unk_f6.b0 && !self->unk_f6.b1) {
             if (self->unk_ec != NULL) {
-                func_0203f8d8(self->unk_ec);
+                HitMesh_Link(self->unk_ec);
             }
             self->unk_f5 = 10;
             break;
@@ -77,7 +77,7 @@ s32 func_ov000_021b7b50(Obj021b7b50 *self) {
         self->unk_f5++;
     case 1:
         if (self->unk_f6.b3 && self->unk_ec != NULL) {
-            func_0203f8d8(self->unk_ec);
+            HitMesh_Link(self->unk_ec);
         }
         {
             VecFx32 *g = &data_ov000_021ccd54->unk_f4.pos;
@@ -117,7 +117,7 @@ s32 func_ov000_021b7b50(Obj021b7b50 *self) {
             }
             if (self->unk_ec != NULL && !self->unk_f6.b3) {
                 if (mag < 0x3c000) {
-                    func_0203f8d8(self->unk_ec);
+                    HitMesh_Link(self->unk_ec);
                 } else {
                     func_0203f920(self->unk_ec);
                 }

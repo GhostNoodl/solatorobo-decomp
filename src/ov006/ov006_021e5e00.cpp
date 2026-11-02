@@ -20,8 +20,8 @@ extern ov006_Unk02097e40 *data_02097e40;
 BOOL func_ov006_021e46e8(ov006_Unk021ec888 *self, const ov006_MenuData *data);
 u16 func_02046ab4(ov006_Unk02097e40 *a);
 BOOL func_020469d4(ov006_Unk02097e40 *a, ov006_MenuEntry *entry);
-int func_02046abc(ov006_Unk02097e40 *a);
-ov006_MenuEntry *func_02046a50(ov006_Unk02097e40 *a, int idx);
+int Wh_GetError(ov006_Unk02097e40 *a);
+ov006_MenuEntry *Wh_GetSharedData(ov006_Unk02097e40 *a, int idx);
 void OS_GetOwnerInfo(void *a);
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
 
@@ -45,7 +45,7 @@ ov006_ObjectHolder *func_ov006_021e5e20(ov006_ObjectHolder *self) {
 
 ov006_ObjectHolder *ov006_ObjectHolder_DtorDelete(ov006_ObjectHolder *self) {
     ov006_ObjectHolder_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -69,7 +69,7 @@ static inline void ov006_Menu_UpdateConnection(void) {
     if (func_020469d4(data_02097e40, ov006_Menu_GetEntry(menu, func_02046ab4(data_02097e40)))) {
         status = 0;
     } else {
-        status = func_02046abc(data_02097e40);
+        status = Wh_GetError(data_02097e40);
     }
     if (status == 0) {
         data_ov006_021ec888->unk15F = data_ov006_021ec888->unk15E;
@@ -105,7 +105,7 @@ static inline u16 ov006_Menu_GetEntryMask(int type, u16 mask) {
         for (i = 0; i < 4; i++) {
             u16 bit = 1 << i;
             if (mask & bit) {
-                ov006_MenuEntry *entry = func_02046a50(data_02097e40, i);
+                ov006_MenuEntry *entry = Wh_GetSharedData(data_02097e40, i);
                 if (entry != NULL && type == entry->unk0_0) {
                     result |= bit;
                 }
@@ -122,7 +122,7 @@ u16 func_ov006_021e60e8(int type, u16 mask) {
         for (i = 0; i < 4; i++) {
             u16 bit = 1 << i;
             if (mask & bit) {
-                ov006_MenuEntry *entry = func_02046a50(data_02097e40, i);
+                ov006_MenuEntry *entry = Wh_GetSharedData(data_02097e40, i);
                 if (entry != NULL && type == entry->unk0_0) {
                     result |= bit;
                 }
@@ -140,7 +140,7 @@ void func_ov006_021e61f8(void) {
 }
 
 void *func_ov006_021e61fc(void *self) {
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

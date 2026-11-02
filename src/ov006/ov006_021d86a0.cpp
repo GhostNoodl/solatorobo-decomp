@@ -30,7 +30,7 @@ int func_ov006_021d88f8(void *a, void *b);
 void func_ov006_021d86a0(ov006_Task021d86a0 *self, u16 a, int b) {
     ov006_Win021d86a0 *w;
     OV006_DELETE_OBJECT(self->unk34);
-    w = (ov006_Win021d86a0 *)func_0203dd9c(0x1e8);
+    w = (ov006_Win021d86a0 *)Heap_Alloc(0x1e8);
     if (w != NULL) {
         w = ov006_Window_Ctor(w);
     }

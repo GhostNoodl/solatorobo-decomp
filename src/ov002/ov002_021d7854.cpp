@@ -9,7 +9,7 @@ void *Ov002Vt_021efe8c_Dtor(void *self) {
 
 void *Ov002Vt_021efe8c_DtorDelete(void *self) {
     Ov002Vt_021efe3c_Dtor((u8 *)self + 0x4);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -38,7 +38,7 @@ void *Ov002Vt_021efe5c_DtorDelete(void *self) {
     func_02041558((u8 *)self + 0x74);
     func_02041278((u8 *)self + 0xfc);
     Ov002Vt_021efe3c_Dtor((u8 *)self + 0x4);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

@@ -190,7 +190,7 @@ typedef struct {
 
 extern "C" {
 extern Ov003InGame *data_ov000_021ccd54;
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void *func_0203de84(u32 size, s32 align);
 Ov003InInfo *func_0206fef8(u16 id);
 Ov003InParam *func_02070558(u16 id);
@@ -198,7 +198,7 @@ Ov003InModel *func_ov000_0218fe1c(void *p);
 void func_ov000_0219badc(Ov003InModel *m, void *res, Ov003InInfo *info);
 Ov003InObj48 *func_ov000_021985e8(void *p);
 void func_ov000_02198c8c(Ov003InObj48 *o, u16 id);
-void func_0203f324(Ov003InObj48 *o);
+void HitSphere_Link(Ov003InObj48 *o);
 void func_ov000_0219864c(Ov003InObj48 *o, void *a, s32 b);
 Ov003InObj44 *func_ov000_021984c8(void *p);
 void func_ov000_021984f4(Ov003InObj44 *o, void *a, s32 b);
@@ -212,7 +212,7 @@ void func_ov000_02191920(Ov003InModel *m, s32 idx, s32 a, s32 b);
 }
 
 static inline Ov003InModel *Ov003In_NewModel(void) {
-    void *p = func_0203dd9c(0xe8);
+    void *p = Heap_Alloc(0xe8);
     if (p != NULL) {
         p = func_ov000_0218fe1c(p);
     }
@@ -220,7 +220,7 @@ static inline Ov003InModel *Ov003In_NewModel(void) {
 }
 
 static inline Ov003InObj48 *Ov003In_NewObj48(void) {
-    void *p = func_0203dd9c(0x9c);
+    void *p = Heap_Alloc(0x9c);
     if (p != NULL) {
         p = func_ov000_021985e8(p);
     }
@@ -228,7 +228,7 @@ static inline Ov003InObj48 *Ov003In_NewObj48(void) {
 }
 
 static inline Ov003InObj44 *Ov003In_NewObj44(void) {
-    void *p = func_0203dd9c(0x24);
+    void *p = Heap_Alloc(0x24);
     if (p != NULL) {
         p = func_ov000_021984c8(p);
     }
@@ -236,7 +236,7 @@ static inline Ov003InObj44 *Ov003In_NewObj44(void) {
 }
 
 static inline Ov003InObj4c *Ov003In_NewObj4c(void) {
-    void *p = func_0203dd9c(0x5c);
+    void *p = Heap_Alloc(0x5c);
     if (p != NULL) {
         p = func_ov000_02199b00(p);
     }
@@ -244,7 +244,7 @@ static inline Ov003InObj4c *Ov003In_NewObj4c(void) {
 }
 
 static inline Ov003InObj5c *Ov003In_NewObj5c(void) {
-    void *p = func_0203dd9c(0xa8);
+    void *p = Heap_Alloc(0xa8);
     if (p != NULL) {
         func_ov000_021bd198(p);
     }
@@ -252,7 +252,7 @@ static inline Ov003InObj5c *Ov003In_NewObj5c(void) {
 }
 
 static inline Ov003InObj50 *Ov003In_NewObj50(void) {
-    Ov003InObj50 *p = (Ov003InObj50 *)func_0203dd9c(0x1c);
+    Ov003InObj50 *p = (Ov003InObj50 *)Heap_Alloc(0x1c);
     if (p != NULL) {
         p->unk_00 = 100;
         p->unk_02 = 100;
@@ -268,7 +268,7 @@ static inline Ov003InObj50 *Ov003In_NewObj50(void) {
 }
 
 static inline Ov003InObj54 *Ov003In_NewObj54(void) {
-    Ov003InObj54 *p = (Ov003InObj54 *)func_0203dd9c(6);
+    Ov003InObj54 *p = (Ov003InObj54 *)Heap_Alloc(6);
     if (p != NULL) {
         p->unk_00 = 0;
         p->unk_02 = 0;
@@ -303,7 +303,7 @@ extern "C" void func_ov003_021d112c(Ov003In *self) {
         o = self->unk_48;
         o->b0 = 1;
         o->b3 = 1;
-        func_0203f324(o);
+        HitSphere_Link(o);
         *(u16 *)((u8 *)self->unk_48 + 0x9a) |= 0x12;
         self->unk_48->b5 = 1;
         if (self->unk_64 >> 1 < 0x4cd) {
@@ -356,7 +356,7 @@ extern "C" void func_ov003_021d112c(Ov003In *self) {
                 if (n == 0) {
                     continue;
                 }
-                m = (Ov003InModel *)func_0203dd9c(0xe8);
+                m = (Ov003InModel *)Heap_Alloc(0xe8);
                 if (m != NULL) {
                     m = func_ov000_0218fe1c(m);
                 }

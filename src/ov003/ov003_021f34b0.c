@@ -21,7 +21,7 @@ typedef struct {
 } Ov003Prop;
 
 extern u32 data_ov003_021fa648;
-extern void func_ov000_021b4c60(void *self);
+extern void Ov000ActVt_021cc7cc_Start(void *self);
 extern void *func_0206fef8(u16 kind);
 extern void __cxa_vec_cleanup(void *arr, int count, int size, void *dtor);
 extern void *func_ov000_0218fee4(void *p);
@@ -31,7 +31,7 @@ extern void func_ov000_021b4adc(void *self);
 extern void func_ov000_0218f074(s16 *p, void *res, s32 a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_0218cf5c(void *self);
 extern BOOL func_ov000_0218f110(s16 *p);
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 extern void *func_ov000_0219429c(void *p);
 extern void func_ov000_021b4b0c(void *p);
 
@@ -40,7 +40,7 @@ void Ov003ActVt_021fa2e0_Start(Ov003Prop *self) {
     s32 y;
     s32 z;
     Ov003Model *model;
-    func_ov000_021b4c60(self);
+    Ov000ActVt_021cc7cc_Start(self);
     func_0206fef8(self->kind);
     model = self->model;
     x = model->scaleX;
@@ -71,7 +71,7 @@ void *Ov003ActVt_021fa4f0_Dtor(void *self) {
 
 void *Ov003ActVt_021fa4f0_DtorDelete(void *self) {
     func_ov000_0218c928(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -82,7 +82,7 @@ void *Ov003ActVt_021fa498_Dtor(void *self) {
 
 void *Ov003ActVt_021fa498_DtorDelete(void *self) {
     func_ov000_0218c928(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -97,7 +97,7 @@ void *Ov003ActVt_021fa390_DtorDelete(void *self) {
     __cxa_vec_cleanup((u8 *)self + 0xa70, 6, 0xe8, func_ov000_0218fee4);
     __cxa_vec_cleanup((u8 *)self + 0xb0, 8, 0x138, func_ov000_0218ea20);
     func_ov000_0218c928(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -108,7 +108,7 @@ void *Ov003ActVt_021fa440_Dtor(void *self) {
 
 void *Ov003ActVt_021fa440_DtorDelete(void *self) {
     func_ov000_0218c928(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -119,7 +119,7 @@ void *Ov003ActVt_021fa3e8_Dtor(void *self) {
 
 void *Ov003ActVt_021fa3e8_DtorDelete(void *self) {
     func_ov000_0218c928(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -130,7 +130,7 @@ void *Ov003ActVt_021fa338_Dtor(void *self) {
 
 void *Ov003ActVt_021fa338_DtorDelete(void *self) {
     func_ov000_0218c928(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -141,7 +141,7 @@ void *Ov003ActVt_021fa2e0_Dtor(void *self) {
 
 void *Ov003ActVt_021fa2e0_DtorDelete(void *self) {
     func_ov000_0218c928(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

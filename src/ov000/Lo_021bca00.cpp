@@ -16,13 +16,13 @@ extern void *data_0208cc88;
 extern const u32 data_0208ba70[];
 extern void *data_02149ef8;
 extern void *data_ov000_021ccd54;
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_02041218(void *a);
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
 char *STD_CopyString(char *dst, const char *src);
 void func_0204c7d0(void *p);
-u32 func_0204c0e8(void *p, s32 a);
+u32 MsgRes_GetString(void *p, s32 a);
 u32 func_0204c4fc(u32 a, u32 b, u32 c, u32 *d, u32 *e, BOOL f);
 void func_0204ca70(void *p);
 void func_ov000_02184508(void *p);
@@ -35,7 +35,7 @@ static inline s32 Lo_FxMul64(s32 a, s64 b) {
 }
 
 static inline TextWin *Lo_TextWinNew(void) {
-    TextWin *win = (TextWin *)func_0203dd9c(0xb8);
+    TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
         func_0204c7d0(win);
@@ -66,7 +66,7 @@ BOOL func_ov000_021bca00(Obj021bca00 *self) {
     switch (self->unk_0c) {
     case 0: {
         void *res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-        u8 *m = (u8 *)func_0203dd9c(0x160);
+        u8 *m = (u8 *)Heap_Alloc(0x160);
         if (m != NULL) {
             void *arc;
             void *name;
@@ -84,7 +84,7 @@ BOOL func_ov000_021bca00(Obj021bca00 *self) {
         func_02041d9c(self->unk_14, 0, 0x1d);
         self->unk_10 = Lo_TextWinNew();
         self->unk_10->unk_28 = 4;
-        Lo_SetText(self->unk_10, func_0204c0e8(data_02149ef8, 0x118));
+        Lo_SetText(self->unk_10, MsgRes_GetString(data_02149ef8, 0x118));
         self->unk_10->unk_74 = 0x7fff;
         self->unk_10->unk_76 = 0x67f;
         self->unk_10->unk_78 = 0x7000;

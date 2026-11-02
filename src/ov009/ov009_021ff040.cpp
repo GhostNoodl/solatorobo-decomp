@@ -9,7 +9,7 @@ extern u8 data_ov009_02216ace[];
 extern void func_02065804(void *mgr, void *p);
 extern void func_02049564(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
-extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
+extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
@@ -72,7 +72,7 @@ void func_ov009_021ff188(Ov009Actor *self) {
         if (self->unk_1a == 0) {
             go = TRUE;
         } else {
-            target = func_ov000_0218d240(self);
+            target = Actor_GetTarget(self);
             if (target != NULL && func_01ffc198(&target->pos, &self->pos, target->unk_64 + 0x8000)) {
                 go = TRUE;
             }
@@ -171,7 +171,7 @@ void func_ov009_021ff418(Ov009ActVt_02216750 *self) {
 
 Ov009ActVt_022163f4 *Ov009ActVt_022163f4_DtorDelete(Ov009ActVt_022163f4 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -191,7 +191,7 @@ Ov009ActVt_02216a00 *Ov009ActVt_02216a00_Dtor(Ov009ActVt_02216a00 *self) {
 
 Ov009ActVt_02216a00 *Ov009ActVt_02216a00_DtorDelete(Ov009ActVt_02216a00 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -202,7 +202,7 @@ Ov009Actor *func_ov009_021ff4a0(Ov009Actor *self) {
 
 Ov009Actor *func_ov009_021ff4b4(Ov009Actor *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -213,7 +213,7 @@ Ov009ActVt_022164a0 *Ov009ActVt_022164a0_Dtor(Ov009ActVt_022164a0 *self) {
 
 Ov009ActVt_022164a0 *Ov009ActVt_022164a0_DtorDelete(Ov009ActVt_022164a0 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -224,7 +224,7 @@ Ov009Actor *func_ov009_021ff500(Ov009Actor *self) {
 
 Ov009Actor *func_ov009_021ff514(Ov009Actor *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -235,7 +235,7 @@ Ov009ActVt_022166a4 *Ov009ActVt_022166a4_Dtor(Ov009ActVt_022166a4 *self) {
 
 Ov009ActVt_022166a4 *Ov009ActVt_022166a4_DtorDelete(Ov009ActVt_022166a4 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -246,7 +246,7 @@ Ov009ActVt_02216348 *Ov009ActVt_02216348_Dtor(Ov009ActVt_02216348 *self) {
 
 Ov009ActVt_02216348 *Ov009ActVt_02216348_DtorDelete(Ov009ActVt_02216348 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -257,7 +257,7 @@ Ov009Actor *func_ov009_021ff590(Ov009Actor *self) {
 
 Ov009Actor *func_ov009_021ff5a4(Ov009Actor *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -268,7 +268,7 @@ Ov009ActVt_02216750 *Ov009ActVt_02216750_Dtor(Ov009ActVt_02216750 *self) {
 
 Ov009ActVt_02216750 *Ov009ActVt_02216750_DtorDelete(Ov009ActVt_02216750 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -279,7 +279,7 @@ Ov009ActVt_022165f8 *Ov009ActVt_022165f8_Dtor(Ov009ActVt_022165f8 *self) {
 
 Ov009ActVt_022165f8 *Ov009ActVt_022165f8_DtorDelete(Ov009ActVt_022165f8 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -290,7 +290,7 @@ Ov009Actor *func_ov009_021ff620(Ov009Actor *self) {
 
 Ov009Actor *func_ov009_021ff634(Ov009Actor *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

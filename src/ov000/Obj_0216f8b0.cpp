@@ -15,7 +15,7 @@ extern "C" {
 extern s32 data_02097d78[];
 extern u8 data_ov000_021cb6b0[];
 extern u8 data_ov000_021cb6d0[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_ov000_0216f1ac(ListBuffer *buf, BufferList *list);
 void func_0203c9e8(s32 a, s32 b);
 void func_0203cc58(s32 a, s32 b, s32 c);
@@ -45,7 +45,7 @@ static inline ListBuffer *MessageQueue_AddBuffer(MessageQueue *self, ListBuffer 
     BOOL allocated = FALSE;
     if (b == NULL) {
         allocated = TRUE;
-        b = (ListBuffer *)func_0203dd9c(0x20);
+        b = (ListBuffer *)Heap_Alloc(0x20);
         if (b != NULL) {
             VOBJ_SET_VTABLE(b, data_ov000_021cb6d0);
             b->flags = 0;
@@ -96,7 +96,7 @@ void func_ov000_0216f8b0(Obj0216f8b0 *self) {
         case 3:
             self->unk_24 = 0;
             if (self->unk_2c == 1) {
-                ListBuffer *o = (ListBuffer *)func_0203dd9c(0x54);
+                ListBuffer *o = (ListBuffer *)Heap_Alloc(0x54);
                 if (o != NULL) {
                     VOBJ_SET_VTABLE(o, data_ov000_021cb6d0);
                     o->flags = 0;

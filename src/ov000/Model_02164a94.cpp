@@ -22,7 +22,7 @@ void func_02041c18(void *model, void *arg);
 void *func_ov000_021640fc(void *self, void *a, void *oam, u16 *cnt);
 
 static inline void *NewModel(char *nm) {
-    u8 *m = (u8 *)func_0203dd9c(0x160);
+    u8 *m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         char *n = nm;
         if (n) {
@@ -96,7 +96,7 @@ typedef struct {
 extern "C" {
 
 void *func_0203de84(u32 size, u32 align);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void MI_CpuFill8(void *dst, u32 value, u32 size);
 void func_02041218(void *res);
 void func_02040be0(void *res, void *src);
@@ -163,7 +163,7 @@ void func_ov000_02164c50(Obj02164c50 *self, u8 *arg) {
     LFLD(u16, p, 0x4) = LFLD(u16, arg, 0x8);
     p[8] = arg[0xa];
     p[2] = 0;
-    m = func_0203dd9c(0x64);
+    m = Heap_Alloc(0x64);
     if (m != NULL) {
         func_02041218(m);
     }

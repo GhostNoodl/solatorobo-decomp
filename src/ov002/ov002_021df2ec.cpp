@@ -87,7 +87,7 @@ void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
         func_0206ede8(id);
         x = FIELD(own, 0x28, s32);
         y = FIELD(own, 0x2c, s32);
-        o = (u8 *)func_0203dd9c(0xd4);
+        o = (u8 *)Heap_Alloc(0xd4);
         if (o != NULL) {
             *(VFunc **)o = data_ov002_021efeb8;
             func_ov002_021d7b80(o);
@@ -134,7 +134,7 @@ void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
         FIELD(self, 0x2c, u8) = 0;
     }
     {
-        c = (u8 *)func_0203dd9c(0x8c);
+        c = (u8 *)Heap_Alloc(0x8c);
         if (c != NULL) {
             *(VFunc **)c = data_ov002_021efe8c;
             Ov002Vt_021efe3c_Ctor(c + 4);
@@ -157,7 +157,7 @@ void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
     }
     FIELD(self, 0x14, u8 *)[0x88] = 1;
     ov002_Cursor_SetMode(FIELD(self, 0x14, u8 *));
-    m = (u8 *)func_0203dd9c(0x1e8);
+    m = (u8 *)Heap_Alloc(0x1e8);
     if (m != NULL) {
         *(VFunc **)m = data_ov002_021efe5c;
         Ov002Vt_021efe3c_Ctor(m + 4);

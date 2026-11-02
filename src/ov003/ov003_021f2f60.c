@@ -66,11 +66,11 @@ extern Ov003BlinkTarget *func_ov000_0219bf90(void);
 extern BOOL func_ov000_02191120(void *model);
 extern char data_ov003_021fa2d2[];
 
-extern void func_ov000_021b4c60(void *self);
+extern void Ov000ActVt_021cc7cc_Start(void *self);
 extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 v);
-extern s32 func_02040528(s32 max);
+extern s32 Rand_PlusMinus(s32 max);
 extern void VEC_MultAdd(s32 scale, const Ov003Vec *dir, const Ov003Vec *base, Ov003Vec *out);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 extern Ov003BlinkInfo *func_0206fef8(u16 id);
@@ -116,7 +116,7 @@ static inline s32 Ov003_DistXZ(const Ov003Vec *a, const Ov003Vec *b) {
 void func_ov003_021f3198(Ov003Blink *self);
 
 void Ov003ActVt_021fa440_Start(Ov003Blink *self) {
-    func_ov000_021b4c60(self);
+    Ov000ActVt_021cc7cc_Start(self);
     self->u.blink.phase = 0;
     if (!((s16)self->pattern & 0xff00)) {
         self->u.blink.phase = 2;

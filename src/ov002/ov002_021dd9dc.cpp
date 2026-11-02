@@ -105,7 +105,7 @@ void func_ov002_021dd9dc(void *self, u8 *w) {
         do {
             u16 id = e->id | 0x2000;
             if (func_0206ede8(id)[0] != 0x80) {
-            a = (u8 *)func_0203dd9c(0xd4);
+            a = (u8 *)Heap_Alloc(0xd4);
             if (a != NULL) {
                 *(VFunc **)a = data_ov002_021efeb8;
                 func_ov002_021d7b80(a);

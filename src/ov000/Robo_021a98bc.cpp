@@ -15,15 +15,15 @@ BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02191120(void *a);
 BOOL func_ov000_02198360(State021a98bc *st, s32 state, s32 x);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
-u8 *func_ov000_0218d240(void *self);
+u8 *Actor_GetTarget(void *self);
 u8 *func_ov000_0218d2e0(void *self);
-u16 func_ov000_0218d8f4(void *self, void *target);
+u16 Actor_YawToPos(void *self, void *target);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 
 void func_ov000_021a98bc(Robo021ca458 *self) {
     u8 *t;
     State021a98bc *s;
-    func_ov000_0218d240(self);
+    Actor_GetTarget(self);
     t = func_ov000_0218d2e0(self);
     s = (State021a98bc *)self->unk_40;
     switch (s->state) {
@@ -37,7 +37,7 @@ void func_ov000_021a98bc(Robo021ca458 *self) {
             self->unk_a0 -= self->unk_a0 >> 2;
         }
         if (t != NULL) {
-            self->unk_98 = func_ov000_0218d8f4(self, t);
+            self->unk_98 = Actor_YawToPos(self, t);
         } else {
             self->unk_98 = self->rot_y;
         }

@@ -96,7 +96,7 @@ BOOL func_ov011_02200b88(Ov011Model2 *self, void *a, void *b) {
     self->unk_02 = 0;
     self->unk_04 = 0;
     r = func_0206fef8((u32)b);
-    p = func_0203dd9c(0xe8);
+    p = Heap_Alloc(0xe8);
     if (p != NULL) {
         p = func_ov000_0218fe1c(p);
     }
@@ -191,14 +191,14 @@ void func_ov011_02200c30(Ov011Model2 *self) {
 extern "C" {
 
 extern u8 data_ov011_022079f0[];
-void *func_ov000_02194074(void *p);
+void *ActorEx_Ctor(void *p);
 void *func_ov000_0219429c(void *p);
 void func_ov003_021d7ca8(void *p);
 void func_ov003_021d7d8c(void *p);
 void func_ov003_021d7ce0(void *p);
 
 void *Ov011Npc_Ctor(Ov011Npc *self) {
-    func_ov000_02194074(self);
+    ActorEx_Ctor(self);
     *(void **)self = data_ov011_022079f0;
     func_ov003_021d7ca8(self->unk_d8);
     func_ov003_021d7ca8(self->unk_e4);
@@ -239,7 +239,7 @@ void *Ov011Npc_DtorDelete(Ov011Npc *self) {
     func_ov003_021d7ce0(self->unk_e4);
     func_ov003_021d7ce0(self->unk_d8);
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -363,8 +363,8 @@ BOOL func_ov003_021d7d24(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_021953b4(void *p);
 void func_ov003_021d7dd0(void *p);
 void func_ov000_02195848(void *p);
-void *func_ov000_02199ba0(void *p);
-Ov011Obj *func_ov000_0218d240(void *p);
+void *Target_Get(void *p);
+Ov011Obj *Actor_GetTarget(void *p);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, Ov011Vec *v, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_02196c40(void *p);
 void func_ov000_02196060(void *p);
@@ -408,13 +408,13 @@ void func_ov011_022013a8(Ov011Npc *self) {
         func_ov000_02195848(self);
     }
     mask = 0;
-    a = func_ov000_02199ba0(self->unk_4c);
+    a = Target_Get(self->unk_4c);
     if (a != NULL) {
-        Ov011Obj *b = func_ov000_0218d240(a);
+        Ov011Obj *b = Actor_GetTarget(a);
         if (b != NULL) {
             mask |= (u16)(1 << (b->id >> 12));
         }
-        b = func_ov000_0218d240(self);
+        b = Actor_GetTarget(self);
         if (b != NULL) {
             mask |= (u16)(1 << (b->id >> 12));
         }
@@ -485,12 +485,12 @@ BOOL func_ov011_02201578(Ov011Fx *self) {
     self->b1 = 0;
     self->b2 = 0;
     self->unk_02 = 0;
-    p = func_0203dd9c(0x138);
+    p = Heap_Alloc(0x138);
     if (p != NULL) {
         p = func_ov000_0218e9c4(p);
     }
     self->anim = (Ov011Anim *)p;
-    p = func_0203dd9c(0xe8);
+    p = Heap_Alloc(0xe8);
     if (p != NULL) {
         p = func_ov000_0218fe1c(p);
     }
@@ -526,7 +526,7 @@ static inline void Ov011_FreeAnim(Ov011Fx *self) {
         Ov011Anim *p = self->anim;
         if (p != NULL) {
             func_ov000_0218ea20(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->anim = NULL;
     }
@@ -540,7 +540,7 @@ static inline void Ov011_FreeModel(Ov011Fx *self) {
         Ov011Sub38 *p = self->model;
         if (p != NULL) {
             func_ov000_0218fee4(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->model = NULL;
     }
@@ -795,7 +795,7 @@ static inline void Ov011_FreeModelP(Ov011Sub38 **pp) {
         Ov011Sub38 *p = *pp;
         if (p != NULL) {
             func_ov000_0218fee4(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         *pp = NULL;
     }
@@ -809,7 +809,7 @@ static inline void Ov011_FreeAnimP(Ov011Anim **pp) {
         Ov011Anim *p = *pp;
         if (p != NULL) {
             func_ov000_0218ea20(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         *pp = NULL;
     }
@@ -819,7 +819,7 @@ static inline void Ov011_FreeAnimP(Ov011Anim **pp) {
 static inline Ov011Obj *Ov011_FindActorN(u16 id) {
     Ov011Obj *a = NULL;
     if (data_ov000_021ccd68 != NULL) {
-        a = (Ov011Obj *)func_ov000_0218e640(data_ov000_021ccd68, id);
+        a = (Ov011Obj *)ActorMgr_GetActor(data_ov000_021ccd68, id);
     }
     return a;
 }
@@ -887,12 +887,12 @@ Ov011Chr *func_ov011_02201c18(Ov011Chr *self) {
     __cxa_vec_ctor(self->s94, 3, 0xc, func_ov003_021d7ca8, func_ov003_021d7ce0);
     self->b0 = 0;
     self->b1 = 0;
-    p = func_0203dd9c(0x138);
+    p = Heap_Alloc(0x138);
     if (p != NULL) {
         p = func_ov000_0218e9c4(p);
     }
     self->anim = (Ov011Anim *)p;
-    p = func_0203dd9c(0xe8);
+    p = Heap_Alloc(0xe8);
     if (p != NULL) {
         p = func_ov000_0218fe1c(p);
     }
@@ -1316,7 +1316,7 @@ Ov011TwA *Ov011Vt_022079d0_Dtor(Ov011TwA *self) {
 Ov011TwA *Ov011Vt_022079d0_DtorDelete(Ov011TwA *self) {
     self->vt = (Ov011V *)data_ov011_022079d0;
     ((Ov011V *)self)->v08();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -1405,7 +1405,7 @@ Ov011TwB *Ov011Vt_022079b0_Dtor(Ov011TwB *self) {
 Ov011TwB *Ov011Vt_022079b0_DtorDelete(Ov011TwB *self) {
     self->vt = (Ov011V *)data_ov011_022079b0;
     ((Ov011V *)self)->v08();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

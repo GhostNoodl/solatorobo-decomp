@@ -58,7 +58,7 @@ void func_ov002_021dbec8(void *self, void *owner) {
     u8 *m;
     u8 r[0x10];
     FIELD(self, 0x4, void *) = owner;
-    m = (u8 *)func_0203dd9c(0x1e8);
+    m = (u8 *)Heap_Alloc(0x1e8);
     if (m != NULL) {
         *(VFunc **)m = data_ov002_021efe5c;
         Ov002Vt_021efe3c_Ctor(m + 4);
@@ -94,7 +94,7 @@ void func_ov002_021dbec8(void *self, void *owner) {
         FIELD(q, 0x1e4, s32) = 0;
     }
     {
-        void *mdl = func_0203dd9c(0x160);
+        void *mdl = Heap_Alloc(0x160);
         if (mdl != NULL) {
             void *file = data_0208cc94;
             void *nm = data_0208cc88;
@@ -110,7 +110,7 @@ void func_ov002_021dbec8(void *self, void *owner) {
     func_02041c34(FIELD(self, 0x10, void *), 6, (void *)func_ov002_021e0488, 0);
     func_02041d9c(FIELD(self, 0x10, void *), 0, 6);
     {
-        u8 *c = (u8 *)func_0203dd9c(0x8c);
+        u8 *c = (u8 *)Heap_Alloc(0x8c);
         if (c != NULL) {
             *(VFunc **)c = data_ov002_021efe8c;
             Ov002Vt_021efe3c_Ctor(c + 4);

@@ -33,7 +33,7 @@ static inline void Obj021bc2d8_Delete(Obj021bc2d8 *o) {
     o->unk_20 = 0;
     o->unk_24 = 0;
     o->unk_28 = 0;
-    func_0203de1c(o);
+    Heap_Free(o);
 }
 
 void func_ov000_021bc2d8(void) {

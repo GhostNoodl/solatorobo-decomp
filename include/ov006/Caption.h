@@ -42,7 +42,7 @@ void func_0204c7d0(ov006_Anim *anim);
 #endif
 
 static inline ov006_Anim *ov006_Anim_New(void) {
-    ov006_Anim *anim = (ov006_Anim *)func_0203dd9c(0xb8);
+    ov006_Anim *anim = (ov006_Anim *)Heap_Alloc(0xb8);
     if (anim != NULL) {
         *(const u32 **)anim = data_0208ba70;
         func_0204c7d0(anim);
@@ -51,7 +51,7 @@ static inline ov006_Anim *ov006_Anim_New(void) {
 }
 
 static inline ov006_Caption *ov006_Caption_New(void) {
-    ov006_Caption *c = (ov006_Caption *)func_0203dd9c(sizeof(ov006_Caption));
+    ov006_Caption *c = (ov006_Caption *)Heap_Alloc(sizeof(ov006_Caption));
     if (c != NULL) {
         c->vtbl = data_ov006_021ec22c;
         c->unk4 = 0;
@@ -73,7 +73,7 @@ static inline void ov006_Caption_Init(ov006_Caption *self) {
     const char *text;
 
     if (self->unk20 != 2) {
-        model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+        model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
         if (model != NULL) {
             const char *name = data_ov006_021ec1a9;
             if (name) {

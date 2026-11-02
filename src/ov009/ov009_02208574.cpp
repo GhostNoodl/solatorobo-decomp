@@ -7,13 +7,13 @@ extern char data_ov009_022172c1[];
 extern char data_ov009_022172af[];
 extern Ov009Path data_ov009_02215fbc[];
 extern void func_ov000_021911c8(Ov009Sub38 *m, s32 a);
-extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern u16 FX_Atan2(s32 x, s32 z);
 extern void func_ov000_0218db58(Ov009Actor *self, u16 ang, u16 b, s32 c, s32 d);
-extern void func_ov000_0218dbe0(Ov009Obj *self, s32 turn);
+extern void Actor_Move(Ov009Obj *self, s32 turn);
 extern void func_0203f2b8(void *p);
 extern void *data_ov000_021ccd64;
-extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
+extern u8 *Group_FindNode(void *mgr, u16 id);
 
 struct Ov009Byte {
     u8 b0 : 1;
@@ -26,12 +26,12 @@ static inline Ov009Actor *Ov009_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 extern char data_ov009_022172bb[];
-extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
-extern s32 func_02040528(s32 n);
+extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
+extern s32 Rand_PlusMinus(s32 n);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern void VEC_MultAdd(s32 k, const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
@@ -67,7 +67,7 @@ void func_ov009_02208204(Ov009Multi *self) {
     case 1: {
         Ov009Actor *a;
         u16 a2 = self->unk_492;
-        a = func_ov000_0218d240(self);
+        a = Actor_GetTarget(self);
         if (a != NULL) {
             a2 = Ov009_AngTo(self, a);
         }
@@ -82,9 +82,9 @@ void func_ov009_02208204(Ov009Multi *self) {
                 s32 y;
                 s32 z;
                 self->unk_40->timer = 0x2d;
-                z = func_02040528(0x59a);
-                y = func_02040528(0x59a);
-                x = func_02040528(0x4cd);
+                z = Rand_PlusMinus(0x59a);
+                y = Rand_PlusMinus(0x59a);
+                x = Rand_PlusMinus(0x4cd);
                 off.x = x;
                 off.y = y;
                 off.z = z;
@@ -197,7 +197,7 @@ void func_ov009_0220862c(Ov009Multi *self) {
         }
         break;
     }
-    func_ov000_0218dbe0(self, 0);
+    Actor_Move(self, 0);
 }
 
 BOOL func_ov009_02208764(Ov009Actor *self) {
@@ -211,7 +211,7 @@ BOOL func_ov009_02208764(Ov009Actor *self) {
 void func_ov009_02208788(Ov009Actor *self) {
     u8 *p;
     func_ov003_021d0fc0(self);
-    p = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+    p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
         Ov009Byte *b = (Ov009Byte *)(p + 0xa2);
         b->b0 = 0;
@@ -242,7 +242,7 @@ void func_ov009_022087c4(Ov009Actor *self) {
         Ov009Sub48 *p = self->unk_48;
         if (p != NULL) {
             func_0203f2b8(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_48 = NULL;
     }
@@ -250,7 +250,7 @@ void func_ov009_022087c4(Ov009Actor *self) {
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->unk_44 != NULL) {
-        func_0203de1c(self->unk_44);
+        Heap_Free(self->unk_44);
         self->unk_44 = NULL;
     }
     data_02097dd0->cur = saved;

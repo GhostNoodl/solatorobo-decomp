@@ -59,7 +59,7 @@ struct Obj02158c60 : public VObj {
 void func_ov000_02158c60(Obj02158c60 *self, s32 arg) {
     u8 *p;
     LO_FREE_V(self, 0xec);
-    p = (u8 *)func_0203dd9c(0xb8);
+    p = (u8 *)Heap_Alloc(0xb8);
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);

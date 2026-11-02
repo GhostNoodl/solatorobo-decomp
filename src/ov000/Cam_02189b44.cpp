@@ -78,7 +78,7 @@ extern "C" {
 extern u8 data_ov000_021c9d4c[];
 extern u8 data_ov000_021c9d58[];
 extern u8 data_ov000_021c9d64[];
-void func_0204b43c(void *self);
+void Camera_Apply(void *self);
 void VEC_Subtract(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
@@ -164,7 +164,7 @@ static inline void DistTo9b44(Cam9b44 *self, s32 dist, s32 rate) {
 
 void func_ov000_02189b44(Cam9b44 *self) {
     if (self->unk_d8.b0 || self->unk_9c.b1) {
-        func_0204b43c(self);
+        Camera_Apply(self);
         return;
     }
     if (self->timer != 0) {
@@ -308,7 +308,7 @@ void func_ov000_02189b44(Cam9b44 *self) {
     }
     *(u8 *)&self->unk_da = 0;
     self->unk_40 = 1;
-    func_0204b43c(self);
+    Camera_Apply(self);
 }
 
 }

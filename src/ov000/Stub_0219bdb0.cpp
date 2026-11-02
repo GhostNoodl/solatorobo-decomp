@@ -2,7 +2,7 @@
 
 extern "C" {
 
-Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
 typedef struct {
     u16 kind;
@@ -26,14 +26,14 @@ typedef struct {
     u16 unk_90;
 } Spawned0219be1c;
 
-Spawned0219be1c *func_ov000_0218bf1c(void *mgr, const SpawnDesc0219be1c *desc, const void *pos, const void *rot, u16 id);
+Spawned0219be1c *Group_SpawnActor(void *mgr, const SpawnDesc0219be1c *desc, const void *pos, const void *rot, u16 id);
 
-void func_ov000_0219bdb0(u16 target, u16 id, u8 type, BOOL notify, u32 size, const void *data) {
-    Actor *actor = data_ov000_021ccd68 == NULL ? NULL : func_ov000_0218e640(data_ov000_021ccd68, target);
+void ActorMgr_SendMsg(u16 target, u16 id, u8 type, BOOL notify, u32 size, const void *data) {
+    Actor *actor = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, target);
     if (actor == NULL) {
         return;
     }
-    func_ov000_0218d398(actor, id, type, notify, size, data);
+    Actor_SendMsg(actor, id, type, notify, size, data);
 }
 
 Spawned0219be1c *func_ov000_0219be1c(u16 kind, const void *pos, const void *rot, u16 a, u16 b) {
@@ -47,7 +47,7 @@ Spawned0219be1c *func_ov000_0219be1c(u16 kind, const void *pos, const void *rot,
         desc.unk_04[i] = 0;
     }
     desc.unk_0c = -1;
-    o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, pos, rot, 0xffff);
+    o = Group_SpawnActor(data_ov000_021ccd64, &desc, pos, rot, 0xffff);
     if (o != NULL) {
         o->unk_16_0 = 1;
         o->unk_90 = b;

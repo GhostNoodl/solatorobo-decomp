@@ -17,14 +17,14 @@ typedef struct {
 extern "C" {
 
 extern Obj021ccd70 *data_ov000_021ccd70;
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 
 void func_ov000_021bc274(void) {
     Obj021ccd70 *p;
     if (data_ov000_021ccd70 != NULL) {
         return;
     }
-    p = (Obj021ccd70 *)func_0203dd9c(sizeof(Obj021ccd70));
+    p = (Obj021ccd70 *)Heap_Alloc(sizeof(Obj021ccd70));
     if (p != NULL) {
         p->unk_00 = 0;
         p->unk_04 = 0;

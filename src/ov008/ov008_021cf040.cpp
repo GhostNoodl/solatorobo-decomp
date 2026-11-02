@@ -57,7 +57,7 @@ extern "C" {
 extern Ov008Sys *data_02097d48;
 extern const Ov008Tbl5 data_ov008_021d02e8;
 BOOL func_02054f10(void *a, int b);
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 Ov008Item *func_ov000_02154b58(void *a, u32 id);
 void func_02041c20(void *a, int b, int c);
 
@@ -85,7 +85,7 @@ void func_ov008_021cf040(Ov008Mgr *m) {
                 s32 a = (u8)((Ov008Panel *)p)->unk_60;
                 s32 px = (((Ov008Panel *)p)->unk_5c + (((Ov008Panel *)p)->unk_54 + 0x3d000)) & ~0xfff;
                 if (a > 0) {
-                    ((Ov008Panel *)p)->unk_50->attr.pid = func_02043d48(&data_02097d48->unk_8b0);
+                    ((Ov008Panel *)p)->unk_50->attr.pid = Gfx3DState_NextPolyId(&data_02097d48->unk_8b0);
                     ((Ov008Panel *)p)->unk_50->attr.alpha = (u8)a;
                     Ov008_SetXY(((Ov008Panel *)p)->unk_50, px, -0x1a000);
                     Ov008_DrawModelIdx(((Ov008Panel *)p)->unk_50, 0);

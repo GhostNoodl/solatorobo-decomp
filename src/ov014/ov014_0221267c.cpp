@@ -42,7 +42,7 @@ Ov014Act_0221267c *Ov014Act_0221267c_DtorDelete(Ov014Act_0221267c *self) {
     func_ov000_0218fee4((u8 *)self + 0x228);
     func_ov000_0218ea20((u8 *)self + 0xf0);
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

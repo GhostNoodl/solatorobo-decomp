@@ -8,7 +8,7 @@ extern "C" {
 
 // Deletes the actor manager on the secondary heap: every group, with every
 // actor in it, is unlinked and freed, then the manager itself.
-void func_ov000_0218e12c(void) {
+void ActorMgr_Destroy(void) {
     Actor *aprev;
     Actor *anext;
     ActorGroup *gnext;
@@ -46,7 +46,7 @@ void func_ov000_0218e12c(void) {
                         group->count--;
                     }
                     group->serial = 1;
-                    func_0203de1c(group);
+                    Heap_Free(group);
                 }
                 if (gprev != NULL) {
                     gprev->next = gnext;
@@ -60,7 +60,7 @@ void func_ov000_0218e12c(void) {
                 }
                 mgr->count--;
             }
-            func_0203de1c(mgr);
+            Heap_Free(mgr);
         }
         data_ov000_021ccd68 = NULL;
     }

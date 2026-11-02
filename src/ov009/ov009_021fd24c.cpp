@@ -75,9 +75,9 @@ void func_ov009_021fd430(Ov009ActVt_02216750 *self) {
     if (st->timer == 0) {
         self->unk_40->timer = 0x4b;
         *t = self->unk_f0;
-        t->y += func_02040528(0xc00);
-        t->x += func_02040528(0x59a);
-        t->z += func_02040528(0x59a);
+        t->y += Rand_PlusMinus(0xc00);
+        t->x += Rand_PlusMinus(0x59a);
+        t->z += Rand_PlusMinus(0x59a);
     }
     d.x = t->x - self->pos.x;
     d.y = t->y - self->pos.y;
@@ -86,7 +86,7 @@ void func_ov009_021fd430(Ov009ActVt_02216750 *self) {
 }
 
 extern void *data_02097e4c;
-extern s32 func_02040498(s32 max);
+extern s32 Rand_UpTo(s32 max);
 extern Ov009Actor *func_ov000_02199f60(void *p);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
@@ -105,9 +105,9 @@ void func_ov009_021fd510(Ov009ActVt_02216750 *self) {
         Ov009Actor *p;
         self->unk_fc = self->pos;
         if (self->unk_18 == 1) {
-            self->unk_fc.y -= func_02040498(0x800) + 0x1000;
+            self->unk_fc.y -= Rand_UpTo(0x800) + 0x1000;
         } else {
-            self->unk_fc.y -= func_02040498(0x800) + 0x2800;
+            self->unk_fc.y -= Rand_UpTo(0x800) + 0x2800;
         }
         if (self->unk_fc.y < self->unk_f0.y - 0x1000) {
             self->unk_fc.y = self->unk_f0.y - 0x1000;

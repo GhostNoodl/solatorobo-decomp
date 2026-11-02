@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_02048be4(PlayTime *t) {
+void PlayTime_Clear(PlayTime *t) {
     t->hours = 0;
     t->minutes = 0;
     t->seconds = 0;
@@ -50,7 +50,7 @@ static inline u32 PlayTime_ToMillis(const PlayTime *t) {
 }
 
 // Caps the play time at the given value.
-void func_02048cf0(PlayTime *t, u16 hours, u16 minutes, u16 seconds, u16 millis) {
+void PlayTime_Clamp(PlayTime *t, u16 hours, u16 minutes, u16 seconds, u16 millis) {
     PlayTime cap;
     PlayTime_Set(&cap, hours, minutes, seconds, millis);
     if (PlayTime_ToMillis(t) > PlayTime_ToMillis(&cap)) {
@@ -60,7 +60,7 @@ void func_02048cf0(PlayTime *t, u16 hours, u16 minutes, u16 seconds, u16 millis)
 
 // The millis and seconds sums go through int locals; written straight into the stores, the
 // reciprocal of 1000 and the millis remainder swap registers.
-void func_02048d58(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
+void PlayTime_Add(PlayTime *dst, const PlayTime *a, const PlayTime *b) {
     int ms = a->millis + b->millis;
     int sec = a->seconds + b->seconds;
     dst->millis = ms;

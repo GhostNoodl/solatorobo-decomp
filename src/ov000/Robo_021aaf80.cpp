@@ -28,7 +28,7 @@ typedef struct {
 extern "C" {
 extern void *data_02097e4c;
 extern char data_ov000_021cc6b4[];
-Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL func_ov000_02191508(void *a);
 void *func_ov000_02191318(void *a, s32 b);
 void func_ov000_0218999c(u8 a, u8 b);
@@ -44,14 +44,14 @@ BOOL func_ov000_02191120(void *a);
 void func_ov000_02191418(void *a, u16 b, s32 c);
 void func_ov000_021b1fac(void *self, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, u16 b);
-u16 func_0204bfa8(void *cam);
+u16 Camera_GetYaw(void *cam);
 
 static inline Actor *FindActor021aaf80(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
     }
-    return (Actor *)func_ov000_0218e640(mgr, id);
+    return (Actor *)ActorMgr_GetActor(mgr, id);
 }
 
 static inline u16 AngleTo021aaf80(Actor *self, Actor *other) {
@@ -77,7 +77,7 @@ static inline u16 CamYaw021aaf80(u8 *cam) {
     if (LFLD(u16, cam, 0x40) != 0) {
         return LFLD(u16, cam, 0x44);
     }
-    return func_0204bfa8(cam);
+    return Camera_GetYaw(cam);
 }
 
 static inline void Release021aaf80(Robo021ca458 *self, s32 next) {
@@ -90,7 +90,7 @@ static inline void Release021aaf80(Robo021ca458 *self, s32 next) {
         m.pos.y += self->unk_6c;
         m.rot = *(Rot021aaf80 *)&a->rot_x;
         m.unk_14 = 0;
-        func_ov000_0218d398(a, self->id, 7, 1, sizeof(Msg021aaf80), &m);
+        Actor_SendMsg(a, self->id, 7, 1, sizeof(Msg021aaf80), &m);
         func_ov000_0218d46c(a, self->id, 0xa);
         if (a->unk_4c != NULL) {
             LFLD(B18_021aaf80, a->unk_4c, 0x18).b0 = 0;
@@ -181,7 +181,7 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
                     m.pos = t;
                     m.rot = *(Rot021aaf80 *)&a->rot_x;
                     m.unk_14 = 0;
-                    func_ov000_0218d398(a, self->id, 7, 1, sizeof(Msg021aaf80), &m);
+                    Actor_SendMsg(a, self->id, 7, 1, sizeof(Msg021aaf80), &m);
                 }
             }
             func_ov000_0219aae8(a, self, v * 2, 0x30, 0x30, NULL, 0, sc + 0x34cd, 0x1800, -1, 0x1000);

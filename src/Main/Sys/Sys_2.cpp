@@ -72,7 +72,7 @@ void func_0203d9e8(UnkSys *sys) {
     func_0203e024();
 }
 
-void func_0203daa4(UnkSys *sys) {
+void Sys_WaitVBlank(UnkSys *sys) {
     do {
         OS_WaitVBlankIntr();
     } while (sys->frameWait > sys->vcount);
@@ -92,7 +92,7 @@ void func_0203dacc(UnkSys *sys) {
     } while (sys->frameWait - 1 > sys->vcount);
 }
 
-void func_0203db10(UnkSysNode *node) {
+void PauseNode_Init(UnkSysNode *node) {
     node->next = NULL;
     node->value = 0x1000;
     node->unk_6_0 = 0;
@@ -115,7 +115,7 @@ int func_0203db40(UnkSysNode *node) {
 }
 
 #pragma inline_depth(2)
-BOOL func_0203dbb0(UnkSysNode *node, BOOL recurse) {
+BOOL PauseNode_IsUpdatePaused(UnkSysNode *node, BOOL recurse) {
     BOOL ret = FALSE;
     if (!recurse || node->next == NULL) {
         if (node->unk_6_0 == 2 || node->unk_6_0 == 3) {
@@ -124,47 +124,47 @@ BOOL func_0203dbb0(UnkSysNode *node, BOOL recurse) {
         if (node->value == 0) {
             ret = TRUE;
         }
-    } else if (func_0203dbb0(node->next, TRUE)) {
+    } else if (PauseNode_IsUpdatePaused(node->next, TRUE)) {
         ret = TRUE;
     }
     return ret;
 }
 
 #pragma inline_depth(3)
-BOOL func_0203dc9c(UnkSysNode *node, BOOL recurse) {
+BOOL PauseNode_IsDrawPaused(UnkSysNode *node, BOOL recurse) {
     BOOL ret = FALSE;
     if (!recurse || node->next == NULL) {
         if (node->unk_6_2 == 2 || node->unk_6_2 == 3) {
             ret = TRUE;
         }
-    } else if (func_0203dc9c(node->next, TRUE)) {
+    } else if (PauseNode_IsDrawPaused(node->next, TRUE)) {
         ret = TRUE;
     }
     return ret;
 }
 
 #pragma pop
-void *func_0203dd9c(u32 size) {
+void *Heap_Alloc(u32 size) {
     u32 irq = OS_DisableInterrupts();
     void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->cur, size, data_02097dd0->align);
     OS_RestoreInterrupts(irq);
     return p;
 }
 
-void *func_0203dddc(u32 size) {
+void *Heap_AllocArray(u32 size) {
     u32 irq = OS_DisableInterrupts();
     void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->cur, size, data_02097dd0->align);
     OS_RestoreInterrupts(irq);
     return p;
 }
 
-void func_0203de1c(void *ptr) {
+void Heap_Free(void *ptr) {
     u32 irq = OS_DisableInterrupts();
     NNS_FndFreeToExpHeap(data_02097dd0->cur, ptr);
     OS_RestoreInterrupts(irq);
 }
 
-void func_0203de50(void *ptr) {
+void Heap_FreeArray(void *ptr) {
     u32 irq = OS_DisableInterrupts();
     NNS_FndFreeToExpHeap(data_02097dd0->cur, ptr);
     OS_RestoreInterrupts(irq);
@@ -196,7 +196,7 @@ void func_0203df40(void *ptr) {
     OS_RestoreInterrupts(irq);
 }
 
-u32 func_0203df74(void *ptr, u32 size) {
+u32 Heap_Resize(void *ptr, u32 size) {
     u32 irq = OS_DisableInterrupts();
     u32 ret = NNS_FndResizeForMBlockExpHeap(NNS_FndFindContainHeap(ptr), ptr, size);
     OS_RestoreInterrupts(irq);

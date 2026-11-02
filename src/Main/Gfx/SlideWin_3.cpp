@@ -64,7 +64,7 @@ struct SlideModel : Model {
         STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
-        return func_0203dd9c(size);
+        return Heap_Alloc(size);
     }
 };
 
@@ -125,7 +125,7 @@ static inline void SlideMsg_SetName(SlideMsg *msg, const char *name, u16 id) {
 }
 
 static inline TextWin *SlideMsg_NewWin(void) {
-    TextWin *win = (TextWin *)func_0203dd9c(0xb8);
+    TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
         func_0204c7d0(win);

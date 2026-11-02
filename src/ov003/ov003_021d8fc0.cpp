@@ -27,7 +27,7 @@ typedef struct {
 
 extern "C" {
 
-extern s32 func_02040498(s32 n);
+extern s32 Rand_UpTo(s32 n);
 
 /* The target re-reads index (and, before Seq_Run, entries) instead of reusing the value
    loaded earlier, so those reads go through const lvalues: Seq_Index (a const member read),
@@ -167,7 +167,7 @@ void func_ov003_021d8fc0(Seq *self) {
             switch (e.op) {
             case 0x81: {
                 SeqEntry re = e;
-                if (func_02040498(0xff) < re.arg) {
+                if (Rand_UpTo(0xff) < re.arg) {
                     Seq_Next(self);
                 } else {
                     SeqEntry t = self->entries[self->index];

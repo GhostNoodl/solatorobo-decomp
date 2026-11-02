@@ -40,7 +40,7 @@ void func_ov009_021fb5ac(Ov009ActVt_022166a4 *self) {
     func_ov000_021987b8(self->unk_48, 0, 0, 0);
 }
 
-extern s32 func_02040528(s32 range);
+extern s32 Rand_PlusMinus(s32 range);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 void func_ov009_021fb6b0(Ov009ActVt_022166a4 *self) {
     Ov009Vec d;
@@ -58,9 +58,9 @@ void func_ov009_021fb6b0(Ov009ActVt_022166a4 *self) {
         if (st->timer == 0) {
             self->unk_40->timer = 0x3c;
             self->unk_100 = self->unk_b8;
-            self->unk_100.x += func_02040528(0x8cd);
-            self->unk_100.z += func_02040528(0x8cd);
-            self->unk_100.y += func_02040528(0x8cd);
+            self->unk_100.x += Rand_PlusMinus(0x8cd);
+            self->unk_100.z += Rand_PlusMinus(0x8cd);
+            self->unk_100.y += Rand_PlusMinus(0x8cd);
             if (self->unk_1a != 0) {
                 self->unk_100.y += 0x1c00;
             } else {

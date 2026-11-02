@@ -54,7 +54,7 @@ void func_ov015_0220afcc(Ov015FishState2c *self) {
 s32 FX_Div(s32 a, s32 b);
 Ov015V *func_02065f88(s32 id, void *pos);
 void func_02065860(void *a, void *b);
-s32 func_02040528(s32 n);
+s32 Rand_PlusMinus(s32 n);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 extern u8 data_ov015_02212e40[];
@@ -67,7 +67,7 @@ static inline void Ov015_Spark(Ov015Vec *a, Ov015Vec *s) {
     FLD(s32, e, 0x50) = -0xa000;
     FLD(s32, e, 0xd4) = 1;
     FLD(u8, e, 0x28) = 3;
-    rr = func_02040528(0xfff);
+    rr = Rand_PlusMinus(0xfff);
     e->v34(0, 0, rr);
 }
 

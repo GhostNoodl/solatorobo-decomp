@@ -48,7 +48,7 @@ static inline void SetText021c2450(Hud021cca10 *self, char *str0) {
     u8 *t;
     char *str = str0;
     if (self->unk_38 == NULL) {
-        t = (u8 *)func_0203dd9c(0xb8);
+        t = (u8 *)Heap_Alloc(0xb8);
         if (t != NULL) {
             *(void ***)t = data_0208ba70;
             func_0204c7d0(t);
@@ -75,7 +75,7 @@ void func_ov000_021c2450(Hud021cca10 *self) {
     Model *m;
     Model *m2;
     if (self->unk_44 == 0) {
-        m = (Model *)func_0203dd9c(sizeof(Model));
+        m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
             char *name = data_0208cc94;
             char *a = data_0208cc88;
@@ -93,7 +93,7 @@ void func_ov000_021c2450(Hud021cca10 *self) {
         ((MdlFlags021c2450 *)&self->unk_30->flags)->lay = 0x1e;
         self->unk_30->flags |= 0x100000;
 
-        m2 = (Model *)func_0203dd9c(sizeof(Model));
+        m2 = (Model *)Heap_Alloc(sizeof(Model));
         if (m2 != NULL) {
             char *a = data_0208cb7c;
             func_02041218(m2->pltt);

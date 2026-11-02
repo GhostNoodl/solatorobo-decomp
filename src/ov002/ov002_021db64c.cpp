@@ -41,7 +41,7 @@ void func_ov002_021db750(void *self) {
     u8 *s;
     s16 *e;
     u8 *p;
-    o = (VObject *)func_0203dd9c(0x8c);
+    o = (VObject *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
         o->v0x28();
@@ -60,13 +60,13 @@ void func_ov002_021db750(void *self) {
     FIELD(s, 0x5c, s32) = 0;
     FIELD(s, 0x60, s32) = -0x666;
     FIELD(FIELD(self, 0x20, void *), 0x2c, s32) = 1;
-    FIELD(self, 0x20, VObject *)->v0x10(func_0204c0e8(g, 0xbc));
-    FIELD(self, 0x20, VObject *)->v0x14(func_0204c0e8(g, 0x10a));
+    FIELD(self, 0x20, VObject *)->v0x10(MsgRes_GetString(g, 0xbc));
+    FIELD(self, 0x20, VObject *)->v0x14(MsgRes_GetString(g, 0x10a));
     func_ov000_0215bb14(FIELD(self, 0x20, void *), data_ov002_021efe30);
     FIELD(self, 0x20, VObject *)->v0x8();
     FIELD(self, 0x20, VObject *)->v0x70();
     FIELD(FIELD(self, 0x20, void *), 0xc, u32) &= ~2;
-    o2 = (VObject *)func_0203dd9c(0x98);
+    o2 = (VObject *)Heap_Alloc(0x98);
     if (o2 != NULL) {
         *(VFunc **)o2 = data_ov000_021cac60;
         o2->v0x28();

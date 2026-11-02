@@ -13,7 +13,7 @@ static inline void Ov011_FreeSub48(Ov011Actor *self) {
         void *p = self->unk_48;
         if (p != NULL) {
             func_0203f2b8(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_48 = NULL;
     }

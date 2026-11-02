@@ -117,8 +117,8 @@ void func_ov003_021da48c(Ov003Bits *self, u8 idx) {
 void *func_ov003_021da4a8(const Ov003Vec *base, s32 range, void *mgr) {
     Ov003Vec v;
     Ov003Vec p;
-    s32 y = func_02040528(range);
-    v.x = func_02040528(range);
+    s32 y = Rand_PlusMinus(range);
+    v.x = Rand_PlusMinus(range);
     v.y = y;
     v.z = 0;
     MTX_MultVec33(&v, NNS_G3dGlbGetInvV(), &v);
@@ -160,13 +160,13 @@ struct Ov003FollowTgt {
 };
 
 extern void *data_ov000_021ccd68;
-extern Ov003FollowTgt *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov003FollowTgt *ActorMgr_GetActor(void *mgr, u16 id);
 
 static inline Ov003FollowTgt *Ov003_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline void Ov003_RotY(Ov003Vec *out, s32 angle, const Ov003Vec *in) {

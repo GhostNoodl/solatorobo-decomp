@@ -39,7 +39,7 @@ void func_ov002_021d95e0(void *self) {
     }
     FIELD(FIELD(self, 0x4, void *), 0x68, u16) = FIELD(data_0214a424, 0x12a, u16);
     func_ov002_021d7058(FIELD(self, 0x4, void *));
-    cam = func_0203dd9c(0x24);
+    cam = Heap_Alloc(0x24);
     if (cam != NULL) {
         cam = func_02043548(cam);
     }

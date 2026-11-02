@@ -88,7 +88,7 @@ typedef struct {
 } Ov003Obj;
 
 extern void *data_ov000_021ccd68;
-extern Ov003Spot *func_ov000_0218e6d0(void *mgr, s32 a, s32 b);
+extern Ov003Spot *ActorMgr_FindKind(void *mgr, s32 a, s32 b);
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void MI_Copy48B(void *a, void *b);
 
@@ -185,7 +185,7 @@ void func_ov003_021e02e8(Ov003Obj *self) {
     if (data_ov000_021ccd68 == NULL) {
         p = NULL;
     } else {
-        p = func_ov000_0218e6d0(data_ov000_021ccd68, 0x4000, 0x404f);
+        p = ActorMgr_FindKind(data_ov000_021ccd68, 0x4000, 0x404f);
     }
     if (p == NULL || (b = p->unk_100) == 0xff) {
         return;
@@ -277,9 +277,9 @@ void Ov003ActVt_021f80f0_Start(Ov003Lamp *self) {
 }
 
 extern Ov003LampFx *func_02065f88(s32 id, const Ov003LampVec *pos);
-extern s32 func_02040528(s32 max);
-extern void func_0203f9dc(void *p, Ov003LampMtx *m);
-extern void func_ov000_0218d398(void *p, u16 a, s32 b, s32 c, s32 d, void *e);
+extern s32 Rand_PlusMinus(s32 max);
+extern void HitMesh_SetMtx(void *p, Ov003LampMtx *m);
+extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, void *e);
 
 void func_ov003_021e0448(Ov003Lamp *self) {
     Ov003Spot *p;
@@ -291,7 +291,7 @@ void func_ov003_021e0448(Ov003Lamp *self) {
     if (data_ov000_021ccd68 == NULL) {
         p = NULL;
     } else {
-        p = func_ov000_0218e6d0(data_ov000_021ccd68, 0x4000, 0x404e);
+        p = ActorMgr_FindKind(data_ov000_021ccd68, 0x4000, 0x404e);
     }
     w = self->work;
     switch (w->state) {
@@ -304,21 +304,21 @@ void func_ov003_021e0448(Ov003Lamp *self) {
         w->timer++;
         if ((w->timer & 0x3f) == 0) {
             Ov003LampFx *fx = func_02065f88(0x325, &self->unk_f4);
-            fx->SetRot(func_02040528(0x1800), func_02040528(0x800) - 0x800, func_02040528(0x1800));
+            fx->SetRot(Rand_PlusMinus(0x1800), Rand_PlusMinus(0x800) - 0x800, Rand_PlusMinus(0x1800));
             fx->v34(0, 0x4000, 0);
         }
         break;
     case 1:
         if ((w->timer & 0x3f) == 0) {
             Ov003LampFx *fx = func_02065f88(0x322, &self->unk_f4);
-            fx->SetRot(func_02040528(0x1800), func_02040528(0x800) - 0x800, func_02040528(0x1800));
+            fx->SetRot(Rand_PlusMinus(0x1800), Rand_PlusMinus(0x800) - 0x800, Rand_PlusMinus(0x1800));
         }
         self->work->timer++;
         break;
     }
     MI_Copy48B(self->unk_d0, &m);
     m.m[10] -= 0x800;
-    func_0203f9dc(self->unk_58, &m);
+    HitMesh_SetMtx(self->unk_58, &m);
     if (p == NULL) {
         return;
     }
@@ -337,9 +337,9 @@ void func_ov003_021e0448(Ov003Lamp *self) {
     msg.ry = self->unk_7e;
     msg.rz = self->unk_80;
     msg.unk_14 = 0;
-    func_ov000_0218d398(p, self->unk_0c, 7, 1, sizeof(msg), &msg);
+    Actor_SendMsg(p, self->unk_0c, 7, 1, sizeof(msg), &msg);
     MI_Copy48B(self->unk_d0, &m2);
-    func_ov000_0218d398(p, self->unk_0c, 8, 1, sizeof(m2), &m2);
+    Actor_SendMsg(p, self->unk_0c, 8, 1, sizeof(m2), &m2);
 }
 
 extern void *data_02097e4c;

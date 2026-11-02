@@ -11,12 +11,12 @@ extern u8 data_0208ba70[];
 extern u8 *data_02097ce0;
 extern void *data_02149ef8;
 void func_0204c7d0(void *p);
-s32 func_0204c0e8(void *p, s32 a);
+s32 MsgRes_GetString(void *p, s32 a);
 s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 void func_0204ca70(void *p);
 
 static inline u8 *NewTw02153c48(void) {
-    u8 *o = (u8 *)func_0203dd9c(0xb8);
+    u8 *o = (u8 *)Heap_Alloc(0xb8);
     if (o != NULL) {
         VOBJ_SET_VTABLE(o, data_0208ba70);
         func_0204c7d0(o);
@@ -71,7 +71,7 @@ void func_ov000_02153c48(Obj02153c48 *self, s32 a, BOOL show, BOOL center, u8 d)
         LFLD(s32, w, 0x28) = 4;
         LFLD(s32, self->unk_20, 0x2c) = 0xe;
         {
-            s32 t = func_0204c0e8(fnt, 0xa0);
+            s32 t = MsgRes_GetString(fnt, 0xa0);
             w = self->unk_20;
             LFLD(s32, w, 0x24) = t;
         }

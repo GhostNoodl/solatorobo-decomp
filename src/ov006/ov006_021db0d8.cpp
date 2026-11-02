@@ -8,7 +8,7 @@ typedef struct ov006_Save02046a50 {
 extern "C" {
 
 extern void *data_02097e40;
-ov006_Save02046a50 *func_02046a50(void *a, int idx);
+ov006_Save02046a50 *Wh_GetSharedData(void *a, int idx);
 
 static inline ov006_Slot *ov006_SlotManager_GetSlot(ov006_SlotManager *self, u32 idx) {
     if (idx >= 4) {
@@ -37,7 +37,7 @@ void func_ov006_021db0d8(void) {
         ov006_Slot *slot = ov006_SlotManager_GetSlot(data_ov006_021ec884, i);
         if (slot != NULL && slot->active) {
             if (slot->unk12 != 0xff) {
-                ov006_Save02046a50 *p = func_02046a50(data_02097e40, slot->unk12);
+                ov006_Save02046a50 *p = Wh_GetSharedData(data_02097e40, slot->unk12);
                 if (p != NULL) {
                     ov006_SlotSub_Copy(&slot->sub2C, (ov006_SlotSub *)p->unk2);
                 }

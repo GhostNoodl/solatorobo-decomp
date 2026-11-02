@@ -44,7 +44,7 @@ extern "C" {
 extern const char data_ov006_021ec094[];
 extern const char data_ov006_021ec0a0[];
 BOOL func_02054f10(void *a, int b);
-void func_0204918c(VecFx32 *out, fx32 t, const VecFx32 *from, const VecFx32 *to);
+void Interp_SinLerpVec(VecFx32 *out, fx32 t, const VecFx32 *from, const VecFx32 *to);
 void func_ov006_021dd0e4(ov006_Obj14_021de2e0 *p);
 void func_ov000_0215fdfc(void *self, s32 a, const void *b);
 BOOL func_ov000_0216dae4(void *p);
@@ -137,7 +137,7 @@ void func_ov006_021de2e0(ov006_Unk021de2e0 *self) {
         to.x = 0;
         to.y = 0;
         to.z = 0;
-        func_0204918c(&out, t, &from, &to);
+        Interp_SinLerpVec(&out, t, &from, &to);
         ov006_Obj14_SetPos(self->unk14, out.x & ~0xfff, (u32)FX_Whole(out.y) << 12, self->unk14->z);
     }
     func_ov006_021dd0e4(self->unk14);
@@ -151,7 +151,7 @@ void func_ov006_021de2e0(ov006_Unk021de2e0 *self) {
         to.x = 0;
         to.y = 0;
         to.z = 0;
-        func_0204918c(&out, t, &from, &to);
+        Interp_SinLerpVec(&out, t, &from, &to);
         ov006_Obj18_SetPos(self->unk18, out.x & ~0xfff, (u32)FX_Whole(out.y) << 12, self->unk18->z);
     }
     ov006_Obj18_Update(self->unk18);
@@ -166,7 +166,7 @@ void func_ov006_021de2e0(ov006_Unk021de2e0 *self) {
         to.x = 0;
         to.y = 0;
         to.z = 0;
-        func_0204918c(&out, t, &from, &to);
+        Interp_SinLerpVec(&out, t, &from, &to);
         ov006_Model_SetPos(self->unk20, 0, out.x & ~0xfff, (u32)FX_Whole(out.y) << 12);
     }
     {
@@ -179,7 +179,7 @@ void func_ov006_021de2e0(ov006_Unk021de2e0 *self) {
         to.x = 0;
         to.y = 0;
         to.z = 0;
-        func_0204918c(&out, t, &from, &to);
+        Interp_SinLerpVec(&out, t, &from, &to);
         ov006_Model_SetPos(self->unk24, 0, out.x & ~0xfff, (u32)FX_Whole(out.y) << 12);
     }
     {
@@ -191,7 +191,7 @@ void func_ov006_021de2e0(ov006_Unk021de2e0 *self) {
         to.x = 0x44000;
         to.y = 0x57000;
         to.z = 0;
-        func_0204918c(&self->unk28, t, &from, &to);
+        Interp_SinLerpVec(&self->unk28, t, &from, &to);
     }
 }
 

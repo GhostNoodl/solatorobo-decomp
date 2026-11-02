@@ -33,7 +33,7 @@ void func_02046c6c(void) {
     if (data_02097e44 != NULL) {
         return;
     }
-    card = (SysCard *)func_0203dd9c(sizeof(SysCard));
+    card = (SysCard *)Heap_Alloc(sizeof(SysCard));
     if (card != NULL) {
         card->lockId = 0;
         card->totalSize = 0;

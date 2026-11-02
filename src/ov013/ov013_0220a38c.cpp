@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void *data_ov013_0220bf4c;
-extern void *func_ov000_02194074(void *self);
+extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
 
 struct Ov013Pair89 {
@@ -50,7 +50,7 @@ void func_ov013_0220a428(Ov013Actor *self) {
 
 Ov013Actor *Ov013Act_02207968_DtorDelete(Ov013Actor *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -70,7 +70,7 @@ Ov013Actor *Ov013ActVt_0220bdd8_Dtor(Ov013Actor *self) {
 
 Ov013Actor *Ov013ActVt_0220bdd8_DtorDelete(Ov013Actor *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -81,12 +81,12 @@ Ov013Actor *Ov013ActVt_0220bc80_Dtor(Ov013Actor *self) {
 
 Ov013Actor *Ov013ActVt_0220bc80_DtorDelete(Ov013Actor *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
 Ov013ActEx_0220a4e0 *Ov013ActEx_0220a4e0_Ctor(Ov013ActEx_0220a4e0 *self) {
-    func_ov000_02194074(self);
+    ActorEx_Ctor(self);
     FLD(void *, self, 0) = &data_ov013_0220bf4c;
     self->unk_ce = 0;
     self->unk_d0 = 0;
@@ -106,10 +106,10 @@ void Ov013ActEx_0220a4e0_Start(Ov013Actor *self) {
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern char data_ov013_0220bfdc[];
-extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern u16 FX_Atan2(s32 y, s32 x);
-extern void func_0203f324(void *p);
-extern void func_ov000_0218dbe0(Ov013Obj *self, s32 a);
+extern void HitSphere_Link(void *p);
+extern void Actor_Move(Ov013Obj *self, s32 a);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
 extern Ov013Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov013Actor *a);
@@ -141,7 +141,7 @@ static inline Ov013Actor *Ov013_GetActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
@@ -171,7 +171,7 @@ void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
             m = self->unk_48;
             m->unk_9a_0 = 1;
             m->unk_9a_3 = 1;
-            func_0203f324(m);
+            HitSphere_Link(m);
             if (self->unk_d0 != 0) {
                 self->unk_48->unk_38 = Ov013_FxMul(self->unk_d0, self->unk_64);
             }
@@ -185,7 +185,7 @@ void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
     }
     case 1: {
         Ov013Sub48 *m;
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         if (self->unk_ce-- == 0) {
             func_ov000_02198360(self->unk_40, 10, 0);
             return;
@@ -196,7 +196,7 @@ void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
         }
         m->unk_9a_0 = 1;
         m->unk_9a_3 = 1;
-        func_0203f324(m);
+        HitSphere_Link(m);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         if (self->unk_48->unk_50 & 0x20000000) {
             Ov013V *e = func_02065f88(0x130, &self->pos);

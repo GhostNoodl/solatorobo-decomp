@@ -10,7 +10,7 @@ extern void func_02063a34(EffectObj *obj);
 extern void func_02063f90(Effect3D *e);
 extern void func_02064d3c(EffectObj *obj, EffectObj *child);
 extern void func_02064dd8(EffectGroup *g);
-extern s32 func_02040528(s32 range);
+extern s32 Rand_PlusMinus(s32 range);
 extern char data_0208c5e5[];
 extern char data_0208c5eb[];
 extern char data_0208c5f1[];
@@ -60,7 +60,7 @@ static inline void Effect_SetStr(char *dst, const char *src) {
 }
 
 static inline Effect3D *Effect3D_New(void) {
-    Effect3D *e = (Effect3D *)func_0203dd9c(sizeof(Effect3D));
+    Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
     if (e != NULL) {
         *(u32 **)e = data_0208c2e4;
         func_02063a34(e);
@@ -71,7 +71,7 @@ static inline Effect3D *Effect3D_New(void) {
 }
 
 static inline EffectGroup *EffectGroup_New(void) {
-    EffectGroup *g = (EffectGroup *)func_0203dd9c(sizeof(EffectGroup));
+    EffectGroup *g = (EffectGroup *)Heap_Alloc(sizeof(EffectGroup));
     if (g != NULL) {
         *(u32 **)g = data_0208c2e4;
         func_02063a34(g);
@@ -90,13 +90,13 @@ EffectGroup *func_02067984(const EffectVec *pos) {
         e->unk_28 = 0;
         switch (i) {
         case 0:
-            e->SetRotXYZ(func_02040528(0xffff), func_02040528(0xffff), func_02040528(0xffff));
+            e->SetRotXYZ(Rand_PlusMinus(0xffff), Rand_PlusMinus(0xffff), Rand_PlusMinus(0xffff));
             break;
         case 1:
-            e->SetRotXYZ(0, func_02040528(0x1000), 0x2000);
+            e->SetRotXYZ(0, Rand_PlusMinus(0x1000), 0x2000);
             break;
         case 2:
-            e->SetRotXYZ(0, func_02040528(0x1000), 0xe000);
+            e->SetRotXYZ(0, Rand_PlusMinus(0x1000), 0xe000);
             break;
         }
         func_02064d3c(g, e);

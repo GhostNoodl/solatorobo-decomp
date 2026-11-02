@@ -69,7 +69,7 @@ extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021caac8[];
 extern u8 *data_ov000_021ccd54;
 extern char data_ov000_021ca93e[];
-void *func_0204c0e8(void *g, u32 id);
+void *MsgRes_GetString(void *g, u32 id);
 BOOL func_0205aa30(void *p);
 void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
@@ -115,7 +115,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
             func_0205aa30(LFLD(void *, data_ov000_021ccd24, 8));
         }
     }
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
         arc = data_ov000_021ca8d8[0];
         name = data_ov000_021ca8d8[1];
@@ -127,7 +127,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     func_020417e0(self->unk_44, func_02034d88((void *)self->unk_3c->vfunc_10(), (u8 *)self->unk_44 + 0x4c));
     LFLD(u32, self->unk_44, 0x6c) |= 2;
     func_02041d9c(self->unk_44, 0, 0);
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
         arc = data_0208cca0;
         name = data_0208cb74;
@@ -141,7 +141,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     func_02041d9c(self->unk_48, 0, 0xb);
     g = data_02149ef8;
     if (self->unk_42 == 0xffff) {
-        o = (VObj *)func_0203dd9c(0xe0);
+        o = (VObj *)Heap_Alloc(0xe0);
         if (o != NULL) {
             *(void **)o = data_ov000_021cac60;
             o->vfunc_28();
@@ -168,10 +168,10 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
         }
         LFLD(u32, self->unk_4c, 0xc) |= 0x20000000;
         LFLD(u32, self->unk_4c, 0xc) |= 0x80000000;
-        self->unk_4c->vfunc_f4(2, func_0204c0e8(g, 0x33));
+        self->unk_4c->vfunc_f4(2, MsgRes_GetString(g, 0x33));
         self->unk_4c->vfunc_08();
     }
-    o = (VObj *)func_0203dd9c(0xe4);
+    o = (VObj *)Heap_Alloc(0xe4);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -184,8 +184,8 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     }
     self->unk_50 = o;
     if (self->unk_42 == 0xffff) {
-        self->unk_50->vfunc_10(func_0204c0e8(g, 0x112));
-        self->unk_50->vfunc_14(func_0204c0e8(g, 0x113));
+        self->unk_50->vfunc_10(MsgRes_GetString(g, 0x112));
+        self->unk_50->vfunc_14(MsgRes_GetString(g, 0x113));
     }
     LFLD(void *, self->unk_50, 0x8) = self;
     LFLD(s32, self->unk_50, 0x20) = 3;
@@ -207,7 +207,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
         LFLD(s16, t, 0x66) = 0;
         LFLD(s16, t, 0x68) = -0x199a;
     }
-    p = (u8 *)func_0203dd9c(0x38);
+    p = (u8 *)Heap_Alloc(0x38);
     if (p != NULL) {
         func_ov000_02153f90(p);
         LFLD(u16, p, 0x30) = 0;
@@ -239,7 +239,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
 
     self->unk_150 = 3;
     self->unk_140 = 8;
-    self->unk_13c = func_0204c0e8(LFLD(void *, LFLD(void *, data_ov000_021ccd24, 8), 0xbc), LFLD(u16, self->unk_54, 6));
+    self->unk_13c = MsgRes_GetString(LFLD(void *, LFLD(void *, data_ov000_021ccd24, 8), 0xbc), LFLD(u16, self->unk_54, 6));
     LoTextInit((u8 *)self + 0x118);
     self->unk_11c |= 0x40;
     self->unk_11c |= 0x1000000;
@@ -247,7 +247,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     func_0204ca70((u8 *)self + 0x118);
 
     self->unk_1f8 = 8;
-    self->unk_1f4 = func_0204c0e8(g, 0x115);
+    self->unk_1f4 = MsgRes_GetString(g, 0x115);
     LoTextInit((u8 *)self + 0x1d0);
     self->unk_244 = 0x7fff;
     self->unk_246 = 0x67f;
@@ -260,7 +260,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     if (LFLD(u16, self->unk_54, 0x32) != 0) {
         func_02040a98(buf, LFLD(u16, self->unk_54, 0x32));
         STD_ConcatenateString(buf, data_ov000_021ca93e);
-        STD_ConcatenateString(buf, func_0204c0e8(g, 0x3e));
+        STD_ConcatenateString(buf, MsgRes_GetString(g, 0x3e));
     } else {
         STD_CopyString(buf, out[1]);
     }
@@ -273,7 +273,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     func_0204ca70((u8 *)self + 0x288);
 
     self->unk_368 = 8;
-    self->unk_364 = func_0204c0e8(g, 0x116);
+    self->unk_364 = MsgRes_GetString(g, 0x116);
     LoTextInit((u8 *)self + 0x340);
     self->unk_3b4 = 0x7fff;
     self->unk_3b6 = 0x67f;

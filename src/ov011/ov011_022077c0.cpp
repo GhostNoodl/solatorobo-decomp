@@ -171,7 +171,7 @@ void func_ov011_021ffe50(Ov011SceneActor *self) {
     func_ov003_021d6054(self);
 }
 
-Ov011Eff *func_02066900(const char *arc, const char *name, const Ov011Vec *pos);
+Ov011Eff *EffectGroup_Create(const char *arc, const char *name, const Ov011Vec *pos);
 Ov011Eff *func_020657b0(void *m, void *id);
 void func_02065860(void *m, void *id);
 BOOL func_ov011_02202d04(void *self, const Ov011Vec *to, const Ov011Vec *from, s16 speed);
@@ -226,7 +226,7 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
             func_ov011_02202d04(&self->unk_104->tw, &t, home, 0x19a);
             self->unk_104->seq.state++;
             spawnPos = self->unk_48->unk_68;
-            g = func_02066900(data_ov011_02207260, data_ov011_0220725c, &spawnPos);
+            g = EffectGroup_Create(data_ov011_02207260, data_ov011_0220725c, &spawnPos);
             self->unk_104->unk_38 = (void *)g->unk_24;
             g->unk_c8 = -1;
         }
@@ -280,7 +280,7 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
 namespace m_0220023c {
 extern "C" {
 
-void func_ov000_0218d988(void *self, void *target, s32 c);
+void Actor_TurnToActor(void *self, void *target, s32 c);
 void func_ov000_02191690(void *a);
 void func_ov000_02191708(void *a);
 void func_ov000_021911c8(void *a, s32 b);
@@ -296,7 +296,7 @@ void func_ov011_0220023c(Ov011SceneActor *self) {
     pl = func_ov000_0219bf90();
     q = self->unk_b0;
     if (q != NULL && pl != NULL && (s = self->unk_108->unk_02) != 0) {
-        func_ov000_0218d988(self, pl, Ov011_FxMul(q->unk_02, s));
+        Actor_TurnToActor(self, pl, Ov011_FxMul(q->unk_02, s));
     }
     if (self->unk_108->b1) {
         self->unk_ea_0 = 2;
@@ -325,7 +325,7 @@ u16 func_ov003_021d9c50(Ov011Vec *a, Ov011Vec *b);
 Ov011Eff *func_02065f88(s32 id, Ov011Vec *pos);
 void *func_02049f44(void *mgr, s32 id, const Ov011Vec *pos, s32 a);
 s32 VEC_Distance(const Ov011Vec *a, const Ov011Vec *b);
-void func_ov000_0218dbe0(void *self, s32 a);
+void Actor_Move(void *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 u16 FX_Atan2(s32 y, s32 x);
 
@@ -401,7 +401,7 @@ void func_ov011_02200310(Ov011SceneActor *self) {
                 self->unk_9c += Ov011_FxMul(self->unk_b0->unk_00, 0xcd);
                 self->unk_9c = self->unk_9c > self->unk_b0->unk_00 ? self->unk_b0->unk_00 : (self->unk_9c < 0 ? 0 : self->unk_9c);
             }
-            func_ov000_0218dbe0(self, 0);
+            Actor_Move(self, 0);
             func_ov000_021987b8(self->unk_48, 1, 0, 0);
             if (self->unk_48->unk_50 & 0x40000000) {
                 self->unk_9c = 0;
@@ -458,7 +458,7 @@ static inline void Ov011B_FreeBuf(Ov011Scene *b) {
         u32 saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->def;
         if (b->ring.buf != NULL) {
-            func_0203de50(b->ring.buf);
+            Heap_FreeArray(b->ring.buf);
             b->ring.buf = NULL;
         }
         data_02097dd0->cur = saved;
@@ -490,7 +490,7 @@ static inline void Ov011B_FreeList(Ov011Scene *b) {
             while (p != NULL) {
                 Ov011PNode *next = p->next;
                 if (p != NULL) {
-                    func_0203de1c(p);
+                    Heap_Free(p);
                 }
                 p = next;
             }
@@ -558,7 +558,7 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
             Ov011Scene *b = self->scene;
             if (b != NULL) {
                 Ov011B_Dtor(b);
-                func_0203de1c(b);
+                Heap_Free(b);
             }
             self->scene = NULL;
         }
@@ -571,7 +571,7 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
             Ov011Sa104 *b = self->unk_104;
             if (b != NULL) {
                 Ov011Vt_022079b0_Dtor(&b->tw);
-                func_0203de1c(b);
+                Heap_Free(b);
             }
             self->unk_104 = NULL;
         }
@@ -581,7 +581,7 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
         u32 saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->def;
         if (self->unk_108 != NULL) {
-            func_0203de1c(self->unk_108);
+            Heap_Free(self->unk_108);
             self->unk_108 = NULL;
         }
         data_02097dd0->cur = saved;
@@ -590,7 +590,7 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
         u32 saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->def;
         if (self->unk_10c != NULL) {
-            func_0203de1c(self->unk_10c);
+            Heap_Free(self->unk_10c);
             self->unk_10c = NULL;
         }
         data_02097dd0->cur = saved;

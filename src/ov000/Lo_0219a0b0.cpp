@@ -55,7 +55,7 @@ extern "C" {
 
 extern Glob0219a0b0 *data_ov000_021ccd54;
 extern Mgr0219a0b0 *data_ov000_021ccd30;
-void func_ov000_0218d398(Actor0219a0b0 *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_SendMsg(Actor0219a0b0 *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_02040a98(char *dst, int num);
 
 static inline BOOL GBusy0219a0b0(Glob0219a0b0 *g) {
@@ -99,7 +99,7 @@ void func_ov000_0219a0b0(Obj0219a0b0 *self, Actor0219a0b0 *actor) {
     }
     self->timer = 0;
     msg.value = self->value;
-    func_ov000_0218d398(actor, 0xffff, 10, 1, 2, &msg);
+    Actor_SendMsg(actor, 0xffff, 10, 1, 2, &msg);
     func_02040a98(msg.str, self->value);
     sub = data_ov000_021ccd30->unk_11c;
     if (sub == NULL || (log = sub->unk_7c) == NULL) {

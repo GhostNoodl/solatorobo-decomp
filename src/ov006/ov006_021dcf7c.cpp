@@ -21,7 +21,7 @@ void func_ov006_021dcf7c(ov006_Unk021dcf7c *self) {
     ov006_Model *model;
 
     func_0206e900(file, data_ov006_021ec178);
-    model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec191;
         const char *path = file;
@@ -37,7 +37,7 @@ void func_ov006_021dcf7c(ov006_Unk021dcf7c *self) {
     self->unkC->unk6C |= 0x80000;
     func_02041d9c(self->unkC, 0, 0);
     func_02041d9c(self->unkC, 0, 1);
-    model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec19d;
         const char *path = file;

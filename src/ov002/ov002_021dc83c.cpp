@@ -54,7 +54,7 @@ void func_ov002_021dc83c(void *self) {
             void *p;
             FIELD(self, 0x30, void *) = FIELD(cell, 8, void *);
             func_02049bdc(data_02097e4c, 0x47, -5);
-            p = func_0203dd9c(0x30);
+            p = Heap_Alloc(0x30);
             if (p != NULL) {
                 *(VFunc **)p = data_ov002_021eff30;
                 FIELD(p, 0x4, s32) = 0;
@@ -80,11 +80,11 @@ void func_ov002_021dc83c(void *self) {
             u8 *o = FIELD(cell, 8, u8 *);
             if (FIELD(w, 0x8a, u16) >= FIELD(o, 0xa8, u16)) {
                 FIELD(self, 0x2c, void *) = o;
-                func_ov002_021dd6a4(self, (s32)func_0204c0e8(data_02149ef8, 0x1f), 0x8d);
+                func_ov002_021dd6a4(self, (s32)MsgRes_GetString(data_02149ef8, 0x1f), 0x8d);
                 FIELD(self, 0x18, s32) = 0x1e;
                 return;
             }
-            ov002_ShowMsg(self, func_0204c0e8(msg, 0x106));
+            ov002_ShowMsg(self, MsgRes_GetString(msg, 0x106));
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
             FIELD(self, 0x20, u8) = 1;
             return;
@@ -97,12 +97,12 @@ void func_ov002_021dc83c(void *self) {
                 sum += w[8 + i];
             }
             if (sum == 0) {
-                ov002_ShowMsg(self, func_0204c0e8(msg, 0x107));
+                ov002_ShowMsg(self, MsgRes_GetString(msg, 0x107));
                 func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
                 FIELD(self, 0x20, u8) = 1;
                 return;
             }
-            p = func_0203dd9c(0x138);
+            p = Heap_Alloc(0x138);
             if (p != NULL) {
                 *(VFunc **)p = data_ov002_021efef0;
                 func_ov002_021ddd80(p);
@@ -119,7 +119,7 @@ void func_ov002_021dc83c(void *self) {
         return;
     }
     if (trig & 0x400) {
-        func_ov002_021dd6a4(self, (s32)func_0204c0e8(msg, 0x20), 0x8d);
+        func_ov002_021dd6a4(self, (s32)MsgRes_GetString(msg, 0x20), 0x8d);
         FIELD(self, 0x18, s32) = 0x32;
         return;
     }
@@ -129,7 +129,7 @@ void func_ov002_021dc83c(void *self) {
             return;
         }
         FIELD(self, 0x30, void *) = FIELD(cell, 8, void *);
-        func_ov002_021dd6a4(self, (s32)func_0204c0e8(data_02149ef8, 0x21), 0x8d);
+        func_ov002_021dd6a4(self, (s32)MsgRes_GetString(data_02149ef8, 0x21), 0x8d);
         FIELD(self, 0x18, s32) = 0x28;
         return;
     }
@@ -190,7 +190,7 @@ void func_ov002_021dc83c(void *self) {
         }
         FIELD(w, 0x74, u8) = 4;
         FIELD(w, 0x75, u8) = 1;
-        ov002_ShowMsg(self, func_0204c0e8(msg, 0x10b));
+        ov002_ShowMsg(self, MsgRes_GetString(msg, 0x10b));
         cell = ov002_GetCell(w, (Vec2 *)((u8 *)self + 0x24));
         if (cell[2] == 1) {
             u8 *t = FIELD(cell, 8, u8 *);

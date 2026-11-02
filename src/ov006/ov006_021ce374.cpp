@@ -62,7 +62,7 @@ void func_ov006_021ce3f0(ov006_Emblem *self) {
     ov006_Model *model;
     ov006_Model *model2;
 
-    model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         const char *name = "cefly1pic00";
         func_02041218(model->unk88);
@@ -74,7 +74,7 @@ void func_ov006_021ce3f0(ov006_Emblem *self) {
     self->unk3C->unk6C |= 2;
     self->unk3C->unk6C |= 0x80000;
     func_02041d9c(self->unk3C, 2, 0xffff);
-    model2 = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    model2 = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model2 != NULL) {
         const char *file = data_0208cca0;
         const char *name = data_0208ccc0;
@@ -169,7 +169,7 @@ static inline void ov006_TaskCE_Init(ov006_TaskCE *self) {
 }
 
 ov006_TaskCE *func_ov006_021ce6bc(void) {
-    ov006_TaskCE *self = (ov006_TaskCE *)func_0203dd9c(sizeof(ov006_TaskCE));
+    ov006_TaskCE *self = (ov006_TaskCE *)Heap_Alloc(sizeof(ov006_TaskCE));
     if (self != NULL) {
         ov006_TaskCE_Init(self);
     }
@@ -246,13 +246,13 @@ ov006_TaskCE *func_ov006_021ce974(ov006_TaskCE *self) {
 ov006_MsgBox *ov006_MsgBox_DtorDelete(ov006_MsgBox *self) {
     self->vtbl = &data_ov006_021ebc70;
     func_ov000_02163254(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
 ov006_TaskCE *ov006_TaskCE_DtorDelete(ov006_TaskCE *self) {
     ov006_TaskCE_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -305,7 +305,7 @@ extern void *data_ov000_021ccb54;
 extern void *data_ov000_021cca28;
 extern void *data_ov006_021ebc80;
 
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_02043904(void *p);
 void func_02043b20(void *p);
 void func_ov000_02173648(void *self);
@@ -333,7 +333,7 @@ BOOL func_ov006_021ce954(ov006_TaskOwner *owner, ov006_ListNode *arg);
 extern "C" {
 
 static inline ov006_Window *ov006_NewWindow_caec8(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0xd4);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xd4);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -344,7 +344,7 @@ static inline ov006_Window *ov006_NewWindow_caec8(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cadcc(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0x8c);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0x8c);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -355,7 +355,7 @@ static inline ov006_Window *ov006_NewWindow_cadcc(void) {
 }
 
 static inline void *ov006_NewList_ccb54(void) {
-    void *w = func_0203dd9c(0x100);
+    void *w = Heap_Alloc(0x100);
     if (w != NULL) {
         *(void **)w = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -400,8 +400,8 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
     VCALL(self, 3C);
     void *res = data_02149ef8;
     self->unk44 = ov006_NewWindow_caec8();
-    VCALL(self->unk44, 10, func_0204c0e8(res, 0x122));
-    VCALL(self->unk44, 14, func_0204c0e8(res, 0x123));
+    VCALL(self->unk44, 10, MsgRes_GetString(res, 0x122));
+    VCALL(self->unk44, 14, MsgRes_GetString(res, 0x123));
     self->unk44->unk4A = 0x2c00;
     self->unk44->unk24 = 0xac;
     self->unk44->unk20 = 4;
@@ -415,12 +415,12 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
     self->unk44->flags &= ~0x40000;
     self->unk44->flags &= ~0x10000;
     func_ov000_021546ec(self->unk44, (char *)"menu/net", (char *)"wireless_on", 0xffff);
-    VCALL(self->unk44, 74, func_0204c0e8(res, 0x124), 0, 0xffff, 0xffff);
-    VCALL(self->unk44, 74, func_0204c0e8(res, 0x126), 1, 0, 0xffff);
-    VCALL(self->unk44, 74, func_0204c0e8(res, 0x140), 2, 0xffff, 0xffff);
-    VCALL(self->unk44, 74, func_0204c0e8(res, 0x142), 3, 0xffff, 0xffff);
-    VCALL(self->unk44, 74, func_0204c0e8(res, 0x144), 4, 0xffff, 0xffff);
-    VCALL(self->unk44, 74, func_0204c0e8(res, 0x146), 5, 0xffff, 0xffff);
+    VCALL(self->unk44, 74, MsgRes_GetString(res, 0x124), 0, 0xffff, 0xffff);
+    VCALL(self->unk44, 74, MsgRes_GetString(res, 0x126), 1, 0, 0xffff);
+    VCALL(self->unk44, 74, MsgRes_GetString(res, 0x140), 2, 0xffff, 0xffff);
+    VCALL(self->unk44, 74, MsgRes_GetString(res, 0x142), 3, 0xffff, 0xffff);
+    VCALL(self->unk44, 74, MsgRes_GetString(res, 0x144), 4, 0xffff, 0xffff);
+    VCALL(self->unk44, 74, MsgRes_GetString(res, 0x146), 5, 0xffff, 0xffff);
     {
         ov006_Window *w = self->unk44;
         VCALL(w, A8, func_ov000_02154b58(w, 0));
@@ -443,21 +443,21 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
     if (n != 0) {
         if (data_ov006_021ec884->unk149 == 0) {
             self->unk50 = (ov006_Window *)ov006_NewList_ccb54();
-            func_ov000_021c55e8(self->unk50, func_0204c0e8(res, 0x183));
+            func_ov000_021c55e8(self->unk50, MsgRes_GetString(res, 0x183));
             self->unk50->unk20 = (n == 1) ? 2 : n;
             self->unk50->unk24 = 0xc0;
             ov006_Window_SetRot(self->unk50, 0x20, 0x3c, -0x1ccd);
             for (i = 0; i < 3; i++) {
                 e = ov006_GetPriceEntry(ov006_SlotManager_Get14A(data_ov006_021ec884, i));
                 if (e != NULL) {
-                    item = func_0203dd9c(0x34);
+                    item = Heap_Alloc(0x34);
                     if (item != NULL) {
                         *(void **)item = &data_ov006_021ebc80;
                         func_ov000_021c22d8(item);
                         *(void **)item = &data_ov000_021cca28;
                         func_ov000_021c5fc4(item);
                     }
-                    func_ov000_021c5fd0(item, func_0204c0e8(res, e->name));
+                    func_ov000_021c5fd0(item, MsgRes_GetString(res, e->name));
                     func_ov000_021c3fd4(self->unk50, item);
                 }
             }
@@ -468,20 +468,20 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
             self->unk50->flags |= 2;
         }
         {
-            void *p = func_0203dd9c(0x24);
+            void *p = Heap_Alloc(0x24);
             if (p != NULL) {
                 p = Ov006Vt_021ec29c_Ctor(p);
             }
             self->unk54 = (Object *)p;
         }
         func_ov006_021e2c14(self->unk54);
-        func_ov006_021e341c(self->unk54, func_0204c0e8(res, 0x183));
+        func_ov006_021e341c(self->unk54, MsgRes_GetString(res, 0x183));
         {
             k = 0;
             for (i = 0; i < 3; i++) {
                 e = ov006_GetPriceEntry(ov006_SlotManager_Get14A(data_ov006_021ec884, i));
                 if (e != NULL) {
-                    func_ov006_021e34d8(self->unk54, func_0204c0e8(res, e->name), k);
+                    func_ov006_021e34d8(self->unk54, MsgRes_GetString(res, e->name), k);
                     k++;
                 }
             }
@@ -531,7 +531,7 @@ extern "C" {
 extern void *data_02149ef8;
 extern ov006_DataRes *data_02fe152c;
 
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215bb14(void *a, const void *b);
 void func_ov006_021cf7c8(ov006_TaskCE *self);
 void func_ov006_021cf89c(ov006_TaskCE *self);
@@ -549,22 +549,22 @@ void func_ov006_021cf360(ov006_TaskCE *self, u16 id) {
     void *res = data_02149ef8;
     switch (id) {
     case 0:
-        str = func_0204c0e8(res, 0x125);
+        str = MsgRes_GetString(res, 0x125);
         break;
     case 1:
-        str = func_0204c0e8(res, 0x127);
+        str = MsgRes_GetString(res, 0x127);
         break;
     case 2:
-        str = func_0204c0e8(res, 0x141);
+        str = MsgRes_GetString(res, 0x141);
         break;
     case 3:
-        str = func_0204c0e8(res, 0x143);
+        str = MsgRes_GetString(res, 0x143);
         break;
     case 4:
-        str = func_0204c0e8(res, 0x145);
+        str = MsgRes_GetString(res, 0x145);
         break;
     case 5:
-        str = func_0204c0e8(res, 0x147);
+        str = MsgRes_GetString(res, 0x147);
         break;
     default:
         str = "";
@@ -935,7 +935,7 @@ static inline void ov006_TaskD0_Init(ov006_TaskD0 *self) {
 }
 
 ov006_TaskD0 *func_ov006_021cfefc(void) {
-    ov006_TaskD0 *self = (ov006_TaskD0 *)func_0203dd9c(sizeof(ov006_TaskD0));
+    ov006_TaskD0 *self = (ov006_TaskD0 *)Heap_Alloc(sizeof(ov006_TaskD0));
     if (self != NULL) {
         ov006_TaskD0_Init(self);
     }
@@ -958,7 +958,7 @@ ov006_TaskD0 *func_ov006_021cff80(ov006_TaskD0 *self) {
 
 ov006_TaskD0 *ov006_TaskD0_DtorDelete(ov006_TaskD0 *self) {
     ov006_TaskD0_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -1003,7 +1003,7 @@ BOOL func_ov006_021e4cb4(ov006_Unk021ec888 *self);
 BOOL func_ov006_021e4ce8(ov006_Unk021ec888 *self, ov006_MenuData *data);
 void func_ov006_021e463c(ov006_Unk021ec888 *self);
 ov006_MenuNode *func_ov006_021e48c0(ov006_Unk021ec888 *self, int id);
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215c1bc(void *a, int b, const void *c);
 void func_ov000_0215bb14(void *a, const void *b);
 void func_ov000_02157c90(void *a, const void *b);
@@ -1042,7 +1042,7 @@ BOOL func_ov006_021d01ac(ov006_TaskD0 *self) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cad50(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0xe8);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xe8);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -1053,7 +1053,7 @@ static inline ov006_Window *ov006_NewWindow_cad50(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cb4a8(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0xe0);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xe0);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -1066,7 +1066,7 @@ static inline ov006_Window *ov006_NewWindow_cb4a8(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cadcc(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0x8c);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0x8c);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -1087,17 +1087,17 @@ void func_ov006_021d023c(ov006_TaskD0 *self) {
     if (self->unk110) {
         self->unk10C = ov006_NewWindow_cad50();
         VCALL(self->unk10C, 08);
-        func_ov000_0215c1bc(self->unk10C, 0x8000, func_0204c0e8(res, 0x19e));
+        func_ov000_0215c1bc(self->unk10C, 0x8000, MsgRes_GetString(res, 0x19e));
         VCALL(self->unk10C, 70);
         self->base.flags &= ~2;
         func_ov000_02173648(self);
         return;
     }
     self->unk104 = ov006_NewWindow_cb4a8();
-    VCALL(self->unk104, 10, func_0204c0e8(res, 0x12d));
-    VCALL(self->unk104, 14, func_0204c0e8(res, 0x12e));
-    func_ov000_02157c90(self->unk104, func_0204c0e8(res, 0x12f));
-    func_ov000_02157d2c(self->unk104, func_0204c0e8(res, 0x130));
+    VCALL(self->unk104, 10, MsgRes_GetString(res, 0x12d));
+    VCALL(self->unk104, 14, MsgRes_GetString(res, 0x12e));
+    func_ov000_02157c90(self->unk104, MsgRes_GetString(res, 0x12f));
+    func_ov000_02157d2c(self->unk104, MsgRes_GetString(res, 0x130));
     self->unk104->unk4A = 0x2c00;
     self->unk104->unk20 = 5;
     ov006_Window_SetRot(self->unk104, 0, 0x2c, -0x1ccd);
@@ -1113,7 +1113,7 @@ void func_ov006_021d023c(ov006_TaskD0 *self) {
         item = (ov006_ListNode *)VCALL(self->unk104, 74, " ", i, 0xffff, 0);
         item->unk10 = 0;
     }
-    item = (ov006_ListNode *)VCALL(self->unk104, 74, func_0204c0e8(res, 0x131), i, 0xffff, 0xffff);
+    item = (ov006_ListNode *)VCALL(self->unk104, 74, MsgRes_GetString(res, 0x131), i, 0xffff, 0xffff);
     item->unk24 = 4;
     item->unk10 = 0;
     {
@@ -1129,7 +1129,7 @@ void func_ov006_021d023c(ov006_TaskD0 *self) {
     ov006_Window_SetPos(self->unk108, -0x100, 0, -0x199a);
     self->unk108->unk2C = 1;
     VCALL(self->unk108, 08);
-    func_ov000_0215bb14(self->unk108, func_0204c0e8(res, 0x132));
+    func_ov000_0215bb14(self->unk108, MsgRes_GetString(res, 0x132));
     VCALL(self->unk108, 70);
     self->base.unk20 = self->unk104->unk34;
     self->base.flags &= ~2;
@@ -1313,7 +1313,7 @@ static inline void ov006_TaskD0C_Init(ov006_TaskD0C *self) {
 }
 
 ov006_TaskD0C *func_ov006_021d0c64(void) {
-    ov006_TaskD0C *self = (ov006_TaskD0C *)func_0203dd9c(sizeof(ov006_TaskD0C));
+    ov006_TaskD0C *self = (ov006_TaskD0C *)Heap_Alloc(sizeof(ov006_TaskD0C));
     if (self != NULL) {
         ov006_TaskD0C_Init(self);
     }
@@ -1336,7 +1336,7 @@ ov006_TaskD0C *func_ov006_021d0d3c(ov006_TaskD0C *self) {
 
 ov006_TaskD0C *ov006_TaskD0C_DtorDelete(ov006_TaskD0C *self) {
     ov006_TaskD0C_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -1363,7 +1363,7 @@ extern void *data_ov000_021cb4a8;
 extern void *data_ov000_021cadcc;
 extern u8 *data_02097e40;
 
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215c1bc(void *a, int b, const void *c);
 void func_ov000_0215bb14(void *a, const void *b);
 void func_ov000_02157c90(void *a, const void *b);
@@ -1375,7 +1375,7 @@ u32 ov006_CopyOwnerInfo(void *a, int b);
 void func_ov006_021e4a80(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 
 static inline ov006_Window *ov006_NewWindow_cad50(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0xe8);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xe8);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -1386,7 +1386,7 @@ static inline ov006_Window *ov006_NewWindow_cad50(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cb4a8(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0xe0);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xe0);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -1399,7 +1399,7 @@ static inline ov006_Window *ov006_NewWindow_cb4a8(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cadcc(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0x8c);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0x8c);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -1430,10 +1430,10 @@ void func_ov006_021d0f50(ov006_TaskD0C *self) {
     }
     res = ov006_GetRes();
     self->unk11C = ov006_NewWindow_cb4a8();
-    VCALL(self->unk11C, 10, func_0204c0e8(res, 0x133));
-    VCALL(self->unk11C, 14, func_0204c0e8(res, 0x134));
-    func_ov000_02157c90(self->unk11C, func_0204c0e8(res, 0x135));
-    func_ov000_02157d2c(self->unk11C, func_0204c0e8(res, 0x136));
+    VCALL(self->unk11C, 10, MsgRes_GetString(res, 0x133));
+    VCALL(self->unk11C, 14, MsgRes_GetString(res, 0x134));
+    func_ov000_02157c90(self->unk11C, MsgRes_GetString(res, 0x135));
+    func_ov000_02157d2c(self->unk11C, MsgRes_GetString(res, 0x136));
     self->unk11C->unk4A = 0x2c00;
     self->unk11C->unk20 = 4;
     ov006_Window_SetRot(self->unk11C, 0, 0x2c, -0x1ccd);
@@ -1460,13 +1460,13 @@ void func_ov006_021d0f50(ov006_TaskD0C *self) {
     ov006_Window_SetPos(self->unk120, -0x100, 0, -0x199a);
     self->unk120->unk2C = 1;
     VCALL(self->unk120, 08);
-    func_ov000_0215bb14(self->unk120, func_0204c0e8(res, 0x138));
+    func_ov000_0215bb14(self->unk120, MsgRes_GetString(res, 0x138));
     VCALL(self->unk120, 70);
     self->unk124 = ov006_NewWindow_cad50();
     self->unk124->flags |= 0x10000;
     self->unk124->flags |= 0x20000;
     self->unk124->flags |= 2;
-    func_ov000_0215c1bc(self->unk124, 0x8000, func_0204c0e8(res, 0x198));
+    func_ov000_0215c1bc(self->unk124, 0x8000, MsgRes_GetString(res, 0x198));
     func_ov006_021daea0(data_ov006_021ec884);
     data_ov006_021ec860->unk1C = 1;
     MI_CpuFill8(data_02097e40 + 0x18e0, 0, 0x200);
@@ -1506,7 +1506,7 @@ u16 func_ov006_021e60e8(int type, u16 mask);
 void func_ov006_021e4a80(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 void func_ov006_021db258(void);
 void func_ov006_021d1b8c(ov006_TaskD0C *self);
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215bb14(void *a, const void *b);
 
 void func_ov006_021d1490(ov006_TaskD0C *self) {
@@ -1549,10 +1549,10 @@ void func_ov006_021d1570(ov006_TaskD0C *self) {
                 if (self->unkC == 1) {
                     void *res = data_02149ef8;
                     if (self->unk40 <= 1 && n >= 2) {
-                        func_ov000_0215bb14(self->unk120, func_0204c0e8(res, 0x137));
+                        func_ov000_0215bb14(self->unk120, MsgRes_GetString(res, 0x137));
                         VCALL(self->unk120, 70);
                     } else if (self->unk40 >= 2 && n <= 1) {
-                        func_ov000_0215bb14(self->unk120, func_0204c0e8(res, 0x138));
+                        func_ov000_0215bb14(self->unk120, MsgRes_GetString(res, 0x138));
                         VCALL(self->unk120, 70);
                     }
                 }
@@ -1594,7 +1594,7 @@ u16 func_ov006_021e60e8(int type, u16 mask);
 BOOL func_ov006_021e4bec(ov006_Unk021ec888 *self, int a);
 BOOL func_ov006_021e4c5c(ov006_Unk021ec888 *self);
 void func_ov006_021e5e00(ov006_Unk021ec888 *self);
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215c1bc(ov006_Window *w, int a, void *str);
 
 static inline void ov006_TaskD0C_ShowAll(ov006_TaskD0C *self) {
@@ -1659,7 +1659,7 @@ void func_ov006_021d16a0(ov006_TaskD0C *self) {
             data_ov006_021ec884->unk14A[0] = 9;
         } else if (mn == 2) {
             data_ov006_021ec884->unk14A[0] = 10;
-            func_ov000_0215c1bc(self->unk124, 0x8000, func_0204c0e8(data_02149ef8, 0x199));
+            func_ov000_0215c1bc(self->unk124, 0x8000, MsgRes_GetString(data_02149ef8, 0x199));
         }
         VCALL(self->unk124, 70);
         self->unk124->flags &= ~2;
@@ -1743,7 +1743,7 @@ void func_ov006_021e463c(ov006_Unk021ec888 *self);
 void func_02040b0c(void *dst, int *dstLen, const void *src, int *srcLen);
 void func_ov000_02153c48(ov006_ListNode *a, int b, int c, int d, int e);
 void func_ov000_021548cc(void *a, int b);
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215bb14(void *a, const void *b);
 void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);
 ov006_Unk020706a0 *func_020706a0(u16 id);
@@ -1807,7 +1807,7 @@ void func_ov006_021d1b8c(ov006_TaskD0C *self) {
 }
 
 ov006_TaskD1F *func_ov006_021d1dbc(void) {
-    ov006_TaskD1F *obj = (ov006_TaskD1F *)func_0203dd9c(sizeof(ov006_TaskD1F));
+    ov006_TaskD1F *obj = (ov006_TaskD1F *)Heap_Alloc(sizeof(ov006_TaskD1F));
     if (obj != NULL) {
         obj = func_ov006_021d1f68(obj);
     }
@@ -1826,7 +1826,7 @@ BOOL func_ov006_021d1df8(ov006_Window *window, ov006_ListNode *node) {
         t = (ov006_TaskD1F *)window->owner;
         old = t->unk4A;
         t->unk4A = id;
-        str = func_0204c0e8(data_02149ef8, data_ov006_021eb78c[(u16)(id & 0xfff)]);
+        str = MsgRes_GetString(data_02149ef8, data_ov006_021eb78c[(u16)(id & 0xfff)]);
         if (t->unk5C != NULL && str != NULL) {
             func_ov000_0215bb14(t->unk5C, str);
             VCALL(t->unk5C, 70);
@@ -1899,7 +1899,7 @@ ov006_TaskD1F *func_ov006_021d2000(ov006_TaskD1F *self) {
 
 ov006_TaskD1F *ov006_TaskD1F_DtorDelete(ov006_TaskD1F *self) {
     ov006_TaskD1F_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

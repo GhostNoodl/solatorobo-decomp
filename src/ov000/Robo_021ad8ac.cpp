@@ -43,13 +43,13 @@ void func_ov000_021911c8(void *a, s32 b);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 s32 func_02049afc(void *mgr, s32 id);
-void func_02049bb4(void *mgr, s32 id);
+void SndMgr_StopSeqArc(void *mgr, s32 id);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
 VObj *func_02065f88(s32 id, void *pos);
 void func_02062790(u16 a);
-u16 func_0204bfa8(void *cam);
-void func_ov000_0218dbe0(void *self, s32 a);
+u16 Camera_GetYaw(void *cam);
+void Actor_Move(void *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 void func_ov000_021b1fac(void *self, s32 a, s32 b);
@@ -77,7 +77,7 @@ static inline u16 CamAng_021ad8ac(u8 *cam) {
     if (LFLD(u16, cam, 0x40) != 0) {
         return LFLD(u16, cam, 0x44);
     }
-    return func_0204bfa8(cam);
+    return Camera_GetYaw(cam);
 }
 
 struct Dust_021ad8acSelf {
@@ -103,7 +103,7 @@ static inline void Kill_021ad8ac(Robo021ca458 *self) {
         func_ov000_02191008(self->unk_998);
     }
     if (self->unk_b64 >= 0) {
-        func_02049bb4(data_02097e4c, self->unk_b64);
+        SndMgr_StopSeqArc(data_02097e4c, self->unk_b64);
         self->unk_b64 = -1;
     }
     if (self->unk_b22_0 > 1) {
@@ -121,7 +121,7 @@ static inline void Kill_021ad8ac(Robo021ca458 *self) {
 
 static inline void StopSnd_021ad8ac(Robo021ca458 *self) {
     if (self->unk_b64 >= 0) {
-        func_02049bb4(data_02097e4c, self->unk_b64);
+        SndMgr_StopSeqArc(data_02097e4c, self->unk_b64);
         self->unk_b64 = -1;
     }
 }
@@ -304,7 +304,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
                 }
             }
         }
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         if (self->unk_92 != 0) {
             self->unk_92--;
@@ -553,7 +553,7 @@ void func_ov000_021ad8ac(Robo021ca458 *self) {
             func_ov000_02190cb0(self->unk_998, data_ov000_021cc6ed, 0x1000, 0);
             func_ov000_021915a0(self->unk_998);
         }
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         if (self->unk_92 != 0) {
             self->unk_92--;

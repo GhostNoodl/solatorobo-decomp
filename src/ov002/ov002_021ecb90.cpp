@@ -193,7 +193,7 @@ void func_ov002_021eceb8(void *self) {
             z = -0x1ccd;
         }
     }
-    FIELD(FIELD(self, 0x38, void *), 0x6c, Bits021eceb8).c = (u32)func_02043d48(data_02097d48 + 0x8b0);
+    FIELD(FIELD(self, 0x38, void *), 0x6c, Bits021eceb8).c = (u32)Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
     FIELD(FIELD(self, 0x38, void *), 0x6c, Bits021eceb8).b = FIELD(self, 0x48, u8);
     {
         u8 *m = FIELD(self, 0x38, u8 *);
@@ -243,7 +243,7 @@ BOOL func_ov002_021ed03c(void) {
 BOOL func_ov002_021ed044(void *self) {
     switch (FIELD(self, 0x10, s32)) {
     case 0: {
-        void *p = func_0203dd9c(0x3c);
+        void *p = Heap_Alloc(0x3c);
         if (p != NULL) {
             p = func_ov000_0214b6d8(p);
         }
@@ -350,7 +350,7 @@ typedef struct Ov002Text2 {
 } Ov002Text2;
 
 static inline Ov002Text2 *ov002_021ed270_newText(char *str) {
-    Ov002Text2 *t = (Ov002Text2 *)func_0203dd9c(0xb8);
+    Ov002Text2 *t = (Ov002Text2 *)Heap_Alloc(0xb8);
     if (t != NULL) {
         t->vtbl = data_0208ba70;
         func_0204c7d0(t);
@@ -554,7 +554,7 @@ void func_ov002_021edcec(void *self, int mode) {
     if (mode == 1) {
         y += 0xc0;
     }
-    FIELD(FIELD(self, 0x34, void *), 0x4, SprAttr021edcec).pal = func_02043d48(data_02097d48 + 0x8b0);
+    FIELD(FIELD(self, 0x34, void *), 0x4, SprAttr021edcec).pal = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
     FIELD(FIELD(self, 0x34, void *), 0x4, SprAttr021edcec).prio = FIELD(self, 0x54, u8);
     FIELD(self, 0x34, VObject *)->v0x20(x, y);
     FIELD(FIELD(self, 0x34, void *), 0x70, s32) = -0x1000;
@@ -567,7 +567,7 @@ void func_ov002_021edcec(void *self, int mode) {
     if (mode == 1) {
         y += 0xc0;
     }
-    FIELD(FIELD(self, 0x44, void *), 0x4, SprAttr021edcec).pal = func_02043d48(data_02097d48 + 0x8b0);
+    FIELD(FIELD(self, 0x44, void *), 0x4, SprAttr021edcec).pal = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
     FIELD(FIELD(self, 0x44, void *), 0x4, SprAttr021edcec).prio = FIELD(self, 0x54, u8);
     FIELD(self, 0x44, VObject *)->v0x20(x, y);
     FIELD(FIELD(self, 0x44, void *), 0x70, s32) = -0x1000;
@@ -594,13 +594,13 @@ void func_ov002_021ede58(void) {
 namespace m_021ede5c {
 extern "C" {
 
-void func_02049870(void *a, void *b);
+void SndMgr_LoadBgm(void *a, void *b);
 
 s32 func_0204a2c8(void *a, void *b);
 
-void func_02049950(void *a, s32 b, int c);
+void SndMgr_MoveBgmVolume(void *a, s32 b, int c);
 
-void func_02049960(void *a, void *b, u16 c);
+void SndMgr_StopSeqNo(void *a, void *b, u16 c);
 
 void func_0204a2a8(void *a, int b, u16 c);
 
@@ -610,7 +610,7 @@ BOOL func_ov002_021ede5c(void *self) {
     switch (FIELD(d, 0xc, u16)) {
     case 0:
         if (FIELD(self, 0x10, s32) == 0) {
-            func_02049870(data_02097e4c, FIELD(d, 0x8, void *));
+            SndMgr_LoadBgm(data_02097e4c, FIELD(d, 0x8, void *));
             FIELD(self, 0x10, s32)++;
         }
         if (FIELD(FIELD(self, 0x20, u8 *), 0xe, u16) != 0) {
@@ -622,14 +622,14 @@ BOOL func_ov002_021ede5c(void *self) {
             }
             tot = func_0204a2c8(data_02097e4c, FIELD(FIELD(self, 0x20, u8 *), 0x8, void *));
             cur = FX_MUL(tot << 12, FX_SINCOS_TABLE[((t << 14) >> 16) * 2]) >> 12;
-            func_02049950(data_02097e4c, cur, 0);
+            SndMgr_MoveBgmVolume(data_02097e4c, cur, 0);
             if (cur != tot) {
                 busy = TRUE;
             }
         }
         break;
     case 1:
-        func_02049960(data_02097e4c, FIELD(d, 0x8, void *), FIELD(d, 0xe, u16));
+        SndMgr_StopSeqNo(data_02097e4c, FIELD(d, 0x8, void *), FIELD(d, 0xe, u16));
         break;
     case 2:
         func_0204a2a8(data_02097e4c, 100, FIELD(d, 0xe, u16));
@@ -658,7 +658,7 @@ static inline void func_ov002_021edf98_setC(void *p, s32 v) {
     }
 }
 void func_ov002_021edf98(void *arg) {
-    void *p = func_0203dd9c(0x30);
+    void *p = Heap_Alloc(0x30);
     int i;
     if (p != NULL) {
         FIELD(p, 0x4, s32) = 0;
@@ -748,7 +748,7 @@ void func_ov002_021ee024(void) {
                 DELETE_VOBJ(FIELD(x, 0x24, VObject *));
                 HEAP_POP(s3);
             }
-            func_0203de1c(x);
+            Heap_Free(x);
         }
         data_ov002_021f0fa4 = NULL;
     }
@@ -849,7 +849,7 @@ void func_ov002_021ee1a8(void) {
             char num[8];
             char dir[0x20];
             s32 id;
-            o = (VObject *)func_0203dd9c(0x50);
+            o = (VObject *)Heap_Alloc(0x50);
             if (o != NULL) {
                 *(VFunc **)o = data_0208b318;
                 o->v0x8();
@@ -954,7 +954,7 @@ struct N3_55c {
     VFunc *vt;
     s32 f4, f8, fc, f10, f14, f18, f1c;
     void *e;
-    static void *operator new(unsigned long size) { return func_0203dd9c(size); }
+    static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     N3_55c() {
         vt = data_ov002_021f0ef4;
         f4 = 0; f8 = 0; fc = 0; f10 = 0; f14 = 0; f18 = 0; f1c = 0x1000;
@@ -1033,7 +1033,7 @@ extern "C" {
 VObject *Ov002Vt_021f0ef4_DtorDelete(VObject *self) {
     *(VFunc **)self = data_ov002_021f0ef4;
     self->v0x14();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

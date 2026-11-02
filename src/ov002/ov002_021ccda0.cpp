@@ -7,7 +7,7 @@ void func_ov002_021ccda0(void) {
     if (data_ov002_021f0f80 != NULL) {
         return;
     }
-    p = (Unk021f0f80 *)func_0203dd9c(sizeof(Unk021f0f80));
+    p = (Unk021f0f80 *)Heap_Alloc(sizeof(Unk021f0f80));
     if (p != NULL) {
         p->unk_00 = 0;
         p->unk_04 = 0;
@@ -32,7 +32,7 @@ void func_ov002_021ccde4(void) {
                 func_02036838(data_02097cdc, data_0208cc94, 7, 0);
                 func_02036838(data_02097cdc, data_0214b105, 7, 0);
             }
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         data_ov002_021f0f80 = NULL;
     }
@@ -83,7 +83,7 @@ void func_ov002_021cd068(void *self) {
 }
 
 Task50 *func_ov002_021cd06c(void) {
-    Task50 *p = (Task50 *)func_0203dd9c(sizeof(Task50));
+    Task50 *p = (Task50 *)Heap_Alloc(sizeof(Task50));
     if (p != NULL) {
         Task_021cd06c_ctor(p);
     }
@@ -149,7 +149,7 @@ void func_ov002_021cd124(Task50 *self) {
     }
     g = data_02149ef8;
     res = func_02034d88(func_02035f30(data_ov002_021ef3e4, data_ov002_021ef3ec, 2), data_ov002_021ef3ec);
-    m = func_0203dd9c(0x160);
+    m = Heap_Alloc(0x160);
     if (m != NULL) {
         func_02041218((u8 *)m + 0x88);
         func_02041440(m, NULL, 0);
@@ -158,7 +158,7 @@ void func_ov002_021cd124(Task50 *self) {
     func_020417e0(m, res);
     FIELD(FIELD(self, 0x3c, void *), 0x6c, u32) |= 2;
     func_02041d9c(FIELD(self, 0x3c, void *), 0, 0);
-    o = (VObject *)func_0203dd9c(0xd4);
+    o = (VObject *)Heap_Alloc(0xd4);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
         o->v0x28();
@@ -166,8 +166,8 @@ void func_ov002_021cd124(Task50 *self) {
         o->v0x28();
     }
     FIELD(self, 0x40, VObject *) = o;
-    FIELD(self, 0x40, VObject *)->v0x10(func_0204c0e8(g, 0xd7));
-    FIELD(self, 0x40, VObject *)->v0x14(func_0204c0e8(g, 0xd8));
+    FIELD(self, 0x40, VObject *)->v0x10(MsgRes_GetString(g, 0xd7));
+    FIELD(self, 0x40, VObject *)->v0x14(MsgRes_GetString(g, 0xd8));
     FIELD(FIELD(self, 0x40, void *), 0x24, s32) = 0x92;
     FIELD(FIELD(self, 0x40, void *), 0x20, s32) = 6;
     {
@@ -189,12 +189,12 @@ void func_ov002_021cd124(Task50 *self) {
     FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~0x80000;
     FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~0x40000;
     FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~0x10000;
-    FIELD(self, 0x40, VObject *)->v0x74(func_0204c0e8(g, 0x96), 0, 0xffff, 0xffff);
-    FIELD(self, 0x40, VObject *)->v0x74(func_0204c0e8(g, 0xba), 1, 0xffff, 0xffff);
-    FIELD(self, 0x40, VObject *)->v0x74(func_0204c0e8(g, 0xc2), 2, 0xffff, 0xffff);
-    FIELD(self, 0x40, VObject *)->v0x74(func_0204c0e8(g, 0x4f), 3, 0xffff, 0xffff);
-    FIELD(self, 0x40, VObject *)->v0x74(func_0204c0e8(g, 0xd9), 4, 0xffff, 0xffff);
-    FIELD(self, 0x40, VObject *)->v0x74(func_0204c0e8(g, 0xdd), 5, 0xffff, 0xffff);
+    FIELD(self, 0x40, VObject *)->v0x74(MsgRes_GetString(g, 0x96), 0, 0xffff, 0xffff);
+    FIELD(self, 0x40, VObject *)->v0x74(MsgRes_GetString(g, 0xba), 1, 0xffff, 0xffff);
+    FIELD(self, 0x40, VObject *)->v0x74(MsgRes_GetString(g, 0xc2), 2, 0xffff, 0xffff);
+    FIELD(self, 0x40, VObject *)->v0x74(MsgRes_GetString(g, 0x4f), 3, 0xffff, 0xffff);
+    FIELD(self, 0x40, VObject *)->v0x74(MsgRes_GetString(g, 0xd9), 4, 0xffff, 0xffff);
+    FIELD(self, 0x40, VObject *)->v0x74(MsgRes_GetString(g, 0xdd), 5, 0xffff, 0xffff);
     self->unk_4c = data_ov002_021f0f80->unk_08;
     data_ov002_021f0f80->unk_08 = -1;
     if (self->unk_4c == -1) {
@@ -207,7 +207,7 @@ void func_ov002_021cd124(Task50 *self) {
     func_ov000_021547e8(FIELD(self, 0x40, void *), data_0214b105, data_0208cb7c, 0xb);
     FIELD(self, 0x40, VObject *)->v0x8();
     FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~0x10;
-    o = (VObject *)func_0203dd9c(0x8c);
+    o = (VObject *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
         o->v0x28();
@@ -250,7 +250,7 @@ void func_ov002_021cd124(Task50 *self) {
         void *t = data_ov000_021ccd30;
         if (t != NULL) {
             if (FIELD(t, 0x118, void *) == NULL) {
-                void *task = func_0203dd9c(0x34);
+                void *task = Heap_Alloc(0x34);
                 if (task != NULL) {
                     *(VFunc **)task = data_ov002_021ef410;
                     func_ov000_0216f144(task);

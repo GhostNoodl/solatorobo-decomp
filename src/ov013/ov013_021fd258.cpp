@@ -92,7 +92,7 @@ Ov013Actor *Ov013Boss_Dtor(Ov013Actor *self) {
 
 Ov013Actor *Ov013Boss_DtorDelete(Ov013Actor *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -103,7 +103,7 @@ Ov013Actor *Ov013ActVt_0220b5e0_Dtor(Ov013Actor *self) {
 
 Ov013Actor *Ov013ActVt_0220b5e0_DtorDelete(Ov013Actor *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -131,7 +131,7 @@ Ov013ActExVt_0220b7d0 *Ov013ActExVt_0220b7d0_DtorDelete(Ov013ActExVt_0220b7d0 *s
     FLD(void *, self, 0) = data_ov013_0220b7d0;
     Ov013_StopHtr(self);
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -170,17 +170,17 @@ void Ov013ActExVt_0220b7d0_Start(Ov013ActExVt_0220b7d0 *self) {
 
 
 extern void *data_ov000_021ccd68;
-extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern const Ov013Vec data_ov013_0220aeb8;
 extern char data_ov013_0220b86f[];
 extern char data_ov013_0220b87b[];
 extern void func_ov000_0219a210(Ov013Vec *v, const Ov013Vec *off, u16 rot);
 extern Ov013V *func_02066774(const void *a, const void *b, s32 c, Ov013Vec *pos);
-extern Ov013V *func_02066900(const void *a, const void *b, Ov013Vec *pos);
+extern Ov013V *EffectGroup_Create(const void *a, const void *b, Ov013Vec *pos);
 extern void func_020639d4(Ov013V *o, s32 a, s32 b);
 extern BOOL func_ov000_021b4738(Ov013Actor *p);
-extern void func_ov000_0218d918(Ov013Obj *self, Ov013Vec *p, s32 a);
-extern void func_ov000_0218dbe0(Ov013Obj *self, s32 a);
+extern void Actor_TurnToPos(Ov013Obj *self, Ov013Vec *p, s32 a);
+extern void Actor_Move(Ov013Obj *self, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
 extern void VEC_Normalize(const Ov013Vec *in, Ov013Vec *out);
 extern void func_ov000_0219b808(u16 id, Ov013Vec *pos, void *box, s32 a, s32 b);
@@ -199,7 +199,7 @@ static inline Ov013Actor *Ov013_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline void Ov013_SetAlpha(void *o, s32 v) {
@@ -233,7 +233,7 @@ void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
         o->v0c(self->unk_d8);
         func_020639d4(o, 0x3e, 6);
         self->unk_d0 = FLD(s32, o, 0x24);
-        o = func_02066900(f, data_ov013_0220b87b, &pos);
+        o = EffectGroup_Create(f, data_ov013_0220b87b, &pos);
         FLD(s32, o, 0xc8) = -1;
         o->v0c(self->unk_d8 >> 1);
         self->unk_d4 = FLD(s32, o, 0x24);
@@ -285,10 +285,10 @@ void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
         pp.x = pl->pos.x;
         pp.y = pl->pos.y;
         pp.z = pl->pos.z;
-        func_ov000_0218d918(self, &pp, 0xcd);
+        Actor_TurnToPos(self, &pp, 0xcd);
         self->unk_98 = self->rot[1];
     }
-    func_ov000_0218dbe0(self, 0);
+    Actor_Move(self, 0);
     for (i = 0; i < 2; i++) {
         Ov013V *o = (Ov013V *)func_020657b0(data_0214a420, FLD(s32, (u8 *)self + i * 4, 0xd0));
         if (o != NULL) {

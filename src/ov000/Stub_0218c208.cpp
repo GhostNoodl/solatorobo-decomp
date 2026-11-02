@@ -21,13 +21,13 @@ void func_ov000_0218c208(Obj0218c208 *self, const VecFx32 *v, u16 id) {
 }
 
 extern u8 *data_ov000_021ccd54;
-u16 func_0204bfa8(void *cam);
+u16 Camera_GetYaw(void *cam);
 
 static inline u16 CamYaw0218c25c(u8 *cam) {
     if (*(u16 *)(cam + 0x40) != 0) {
         return *(u16 *)(cam + 0x44);
     }
-    return func_0204bfa8(cam);
+    return Camera_GetYaw(cam);
 }
 
 void func_ov000_0218c25c(Obj0218c208 *self) {

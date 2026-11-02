@@ -19,15 +19,15 @@ extern void *func_0203dec8(u32 size, int align);
 extern void G2x_SetBlendBrightness_(volatile void *reg, int a, int b);
 extern void func_0206c44c(void);
 extern void func_0206e858(void);
-extern BOOL func_0203dbb0(UnkSysNode *node, BOOL recurse);
-extern BOOL func_0203dc9c(UnkSysNode *node, BOOL recurse);
+extern BOOL PauseNode_IsUpdatePaused(UnkSysNode *node, BOOL recurse);
+extern BOOL PauseNode_IsDrawPaused(UnkSysNode *node, BOOL recurse);
 extern void func_0201bbfc(int a);
 extern void func_0203caf8(int a);
 extern void func_0206c4c4(void *obj);
 extern void func_0204a904(void);
 extern void func_02039e0c(GfxMgr *mgr);
-extern void func_0203b924(GfxSys *sys, u16 color);
-extern void func_0203b948(GfxSys *sys, u16 color);
+extern void GfxSys_SetBackdrop(GfxSys *sys, u16 color);
+extern void GfxSys_SetBackdropSub(GfxSys *sys, u16 color);
 extern void func_02043904(void *obj);
 extern BOOL func_02046ac4(void);
 extern void func_0204a2e0(SndMgr *mgr, int fadeFrames);
@@ -96,7 +96,7 @@ void func_0204af00(SceneMgr *mgr) {
     SceneEntry *entry;
     switch (mgr->state) {
         case 0:
-            if (mgr->cur.update != NULL && !func_0203dbb0(&data_02097dd0->node, TRUE)) {
+            if (mgr->cur.update != NULL && !PauseNode_IsUpdatePaused(&data_02097dd0->node, TRUE)) {
                 mgr->cur.update();
                 if (!mgr->noReset && mgr->changing != TRUE && (data_02097dc8->cur & 0x30c) == 0x30c) {
                     func_0201bbfc(1);
@@ -115,13 +115,13 @@ void func_0204af00(SceneMgr *mgr) {
                     func_02039e0c(data_02097ce0);
                 }
             }
-            if (mgr->state == 0 && mgr->cur.draw != NULL && !func_0203dc9c(&data_02097dd0->node, TRUE)) {
+            if (mgr->state == 0 && mgr->cur.draw != NULL && !PauseNode_IsDrawPaused(&data_02097dd0->node, TRUE)) {
                 mgr->cur.draw();
             }
             break;
         case 1:
-            func_0203b924(data_02097d48, 0);
-            func_0203b948(data_02097d48, 0);
+            GfxSys_SetBackdrop(data_02097d48, 0);
+            GfxSys_SetBackdropSub(data_02097d48, 0);
             func_02043904(data_02097d48->unk_8b0);
             if (mgr->cur.onExit != NULL) {
                 mgr->cur.onExit();

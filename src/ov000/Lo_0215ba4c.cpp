@@ -4,7 +4,7 @@
 extern "C" {
 
 extern void *data_02149ef8;
-void *func_0204c0e8(void *a, s32 b);
+void *MsgRes_GetString(void *a, s32 b);
 void func_ov000_0216bae4(void *dst, void *src);
 BOOL func_02054f10(void *a, s32 b);
 BOOL func_0203e63c(void *p);

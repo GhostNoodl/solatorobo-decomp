@@ -103,8 +103,8 @@ typedef struct WhMgr {
 extern WhMgr *data_02097e40;
 
 
-extern void *func_0203dd9c(u32 size);
-extern void func_0203de1c(void *ptr);
+extern void *Heap_Alloc(u32 size);
+extern void Heap_Free(void *ptr);
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
 extern void MI_CpuFill8(void *dst, u32 value, u32 size);
@@ -249,7 +249,7 @@ static inline BOOL WH_Destroy(WhMgr *wh) {
                 func_0203df0c(wh->sendBufRaw);
                 wh->sendBufRaw = NULL;
             }
-            func_0203de1c(wh);
+            Heap_Free(wh);
         }
         data_02097e40 = NULL;
     }

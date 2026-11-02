@@ -10,7 +10,7 @@ void func_0206298c(void) {
         return;
     }
     data_02097dd0->cur = data_02097dd0->unk_04;
-    p = (Unk0214a418 *)func_0203dd9c(sizeof(Unk0214a418));
+    p = (Unk0214a418 *)Heap_Alloc(sizeof(Unk0214a418));
     if (p != NULL) {
         p->unk_00 = 0;
         p->unk_04 = 0;
@@ -43,7 +43,7 @@ void func_02062a24(void) {
     if (p != NULL) {
         if (p != NULL) {
             Unk0214a418_Dtor(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         data_0214a418 = NULL;
     }
@@ -189,14 +189,14 @@ static inline void ST_ModelCtor(void *m, void *res, BOOL f) {
     func_02041440(m, (u8 *)res + 4, f);
 }
 static inline void *ST_NewModel(void *res, BOOL f) {
-    void *m = func_0203dd9c(0x160);
+    void *m = Heap_Alloc(0x160);
     if (m != NULL) {
         ST_ModelCtor(m, res, f);
     }
     return m;
 }
 static inline void *ST_NewModel2(Unk0214a418 *p) {
-    void *m = func_0203dd9c(0x160);
+    void *m = Heap_Alloc(0x160);
     if (m != NULL) {
         ST_ModelCtor(m, p->unk_10, p->unk_14 != NULL);
     }
@@ -209,7 +209,7 @@ s32 func_02062ac8(Unk0214a418 *p, s32 argv) {
     if (!ST_IsReady(p)) {
         if (func_02063484(p)) {
             if (p->unk_0c == NULL) {
-                void *o = func_0203dd9c(0xe8);
+                void *o = Heap_Alloc(0xe8);
                 if (o != NULL) {
                     o = func_ov000_0218fe1c(o);
                 }
@@ -219,7 +219,7 @@ s32 func_02062ac8(Unk0214a418 *p, s32 argv) {
             }
             if (p->unk_14 == NULL) {
                 void *res;
-                void *m = func_0203dd9c(0x160);
+                void *m = Heap_Alloc(0x160);
                 if (m != NULL) {
                     BOOL f;
                     res = p->unk_10;

@@ -12,7 +12,7 @@ extern void *data_02097e4c;
 extern void *data_0214a420;
 extern u8 data_ov014_02217968[];
 extern u8 data_ov014_02217a0c[];
-extern Ov014Actor *func_ov000_02199ba0(void *p);
+extern Ov014Actor *Target_Get(void *p);
 extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s32 a, Ov014Actor **list);
 extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
 extern void func_ov003_021f0c60(Ov014Obj *self, s32 a);
@@ -28,7 +28,7 @@ extern void *func_020359d0(void *a, s32 b, s32 c);
 extern void func_02049678(void *a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_0218cf5c(Ov014Actor *self);
 extern BOOL func_02035b90(void *a, s32 b);
-extern BOOL func_0204985c(void *a);
+extern BOOL SndMgr_IsLoadDone(void *a);
 extern BOOL func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
 extern u8 data_ov014_02216a60[];
 extern u8 data_ov014_02216afc[];
@@ -53,7 +53,7 @@ void func_ov014_02208fe4(Ov014ActEx_02208618 *self) {
         r = 0xccd;
     }
     self->unk_48->unk_44 = r;
-    k = func_ov000_02199ba0(self->unk_4c)->id & 0xf000;
+    k = Target_Get(self->unk_4c)->id & 0xf000;
     n = func_ov000_0219a510(self, ~(1 << (k >> 12)), &self->pos, r, 0, list);
     if (n == 0) {
         return;
@@ -75,7 +75,7 @@ void func_ov014_02208fe4(Ov014ActEx_02208618 *self) {
 
 void *Ov014ActExVt_02217838_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -86,7 +86,7 @@ void *Ov014ActExVt_02217838_Dtor(void *self) {
 
 void *Ov014ActExGrow_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -205,7 +205,7 @@ Ov014Act_02209280 *Ov014Act_02209280_DtorDelete(Ov014Act_02209280 *self) {
     func_02036838(data_02097cdc, data_ov014_02217a0c, 7, 0);
     Ov003Vt_021f7974_Dtor((u8 *)self + 0x1c0);
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -219,7 +219,7 @@ BOOL Ov014Act_02209280_IsReady(Ov014Act_02209280 *self) {
     BOOL r = TRUE;
     r = (r & func_ov000_0218cf5c(self)) ? TRUE : FALSE;
     r = (r & func_02035b90(data_ov014_02217a0c, 7)) ? TRUE : FALSE;
-    return (r & func_0204985c(data_02097e4c)) ? TRUE : FALSE;
+    return (r & SndMgr_IsLoadDone(data_02097e4c)) ? TRUE : FALSE;
 }
 
 void func_ov014_02209520(Ov014Act_02209280 *self, Ov014Msg *msg) {

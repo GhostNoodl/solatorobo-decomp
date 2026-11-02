@@ -30,15 +30,15 @@ extern "C" {
 extern void *data_ov000_021ccd64;
 extern u8 *data_ov000_021ccd54;
 Obj0218b9ec *func_ov000_0218a9d8(void *p);
-void func_ov000_0218bbb0(void *mgr, Obj0218b9ec *obj);
+void Group_Add(void *mgr, Obj0218b9ec *obj);
 
 Obj0218b9ec *func_ov000_0218b9ec(Spawn0218b9ec *desc, const Rgb0218b9ec *c0, const Rgb0218b9ec *c1, VecFx32 *pos, Rot0218b9ec *rot) {
-    Obj0218b9ec *obj = (Obj0218b9ec *)func_0203dd9c(0xa4);
+    Obj0218b9ec *obj = (Obj0218b9ec *)Heap_Alloc(0xa4);
     if (obj != NULL) {
         obj = func_ov000_0218a9d8(obj);
     }
     if (obj != NULL) {
-        func_ov000_0218bbb0(data_ov000_021ccd64, obj);
+        Group_Add(data_ov000_021ccd64, obj);
         if (desc != NULL) {
             obj->desc = *desc;
         }

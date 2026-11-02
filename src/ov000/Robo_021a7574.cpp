@@ -28,25 +28,25 @@ BOOL func_ov000_02191120(void *a);
 BOOL func_ov000_02198360(State021a783c *st, s32 state, s32 x);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 void func_ov000_021b03c8(void *self);
-u8 *func_ov000_0218d240(void *self);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+u8 *Actor_GetTarget(void *self);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-u16 func_0204bfa8(Cam021a783c *cam);
+u16 Camera_GetYaw(Cam021a783c *cam);
 u16 FX_Atan2(s32 y, s32 x);
 
 static inline u16 CamYaw(Cam021a783c *cam) {
     if (cam->unk_40 != 0) {
         return cam->yaw;
     }
-    return func_0204bfa8(cam);
+    return Camera_GetYaw(cam);
 }
 
 static inline Actor *FindActor021a783c(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline u16 AngleTo(Robo021ca458 *self, u8 *other) {
@@ -73,7 +73,7 @@ void func_ov000_02191780(void *a);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 func_01ffbd6c(void *a, void *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 a, const void *v1, const void *v2, void *out);
-void func_ov000_0218d398(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 
 typedef struct {
     s32 x, y, z;
@@ -116,7 +116,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
         break;
     case 1: {
         u16 ang;
-        u8 *t = func_ov000_0218d240(self);
+        u8 *t = Actor_GetTarget(self);
         if (t != NULL) {
             ang = AngleTo(self, t);
         } else {
@@ -149,7 +149,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
                         m.pos = v;
                         m.rot = LFLD(Rot021a70b0, a, 0x7c);
                         m.unk_14 = 0;
-                        func_ov000_0218d398(a, self->id, 7, TRUE, sizeof(Msg021a70b0), &m);
+                        Actor_SendMsg(a, self->id, 7, TRUE, sizeof(Msg021a70b0), &m);
                     }
                 }
             }
@@ -289,7 +289,7 @@ void func_ov000_021a783c(Robo021ca458 *self) {
         break;
     case 1: {
         u16 ang;
-        u8 *t = func_ov000_0218d240(self);
+        u8 *t = Actor_GetTarget(self);
         if (t != NULL) {
             ang = AngleTo(self, t);
         } else {

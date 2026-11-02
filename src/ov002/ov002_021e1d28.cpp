@@ -54,7 +54,7 @@ void func_ov002_021e1d28(void *self) {
         if (p != NULL) {
             func_02041558(p);
             func_02041278((u8 *)p + 0x88);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         FIELD(self, 0x4, void *) = NULL;
     }
@@ -65,7 +65,7 @@ void func_ov002_021e1d28(void *self) {
         if (p != NULL) {
             func_02041558(p);
             func_02041278((u8 *)p + 0x88);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         FIELD(self, 0x8, void *) = NULL;
     }
@@ -76,7 +76,7 @@ void func_ov002_021e1d28(void *self) {
         if (p != NULL) {
             func_02041558(p);
             func_02041278((u8 *)p + 0x88);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         FIELD(self, 0xc, void *) = NULL;
     }
@@ -87,7 +87,7 @@ void func_ov002_021e1d28(void *self) {
         if (p != NULL) {
             func_02041558(p);
             func_02041278((u8 *)p + 0x88);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         FIELD(self, 0x10, void *) = NULL;
     }
@@ -121,7 +121,7 @@ void func_02041c5c(void *a, void *fn);
 void *func_ov002_021e1988(void *a, void *b, void *c, u16 *d);
 
 static inline ov002_Anim021e0c28 *ov002_Anim_New(void) {
-    ov002_Anim021e0c28 *anim = (ov002_Anim021e0c28 *)func_0203dd9c(0xb8);
+    ov002_Anim021e0c28 *anim = (ov002_Anim021e0c28 *)Heap_Alloc(0xb8);
     if (anim != NULL) {
         *(VFunc **)anim = data_0208ba70;
         func_0204c7d0(anim);
@@ -136,7 +136,7 @@ static inline void ov002_Anim_Start(ov002_Anim021e0c28 *s, s32 a) {
 }
 
 static inline void *ov002_Model_New(void *name, void *file) {
-    u8 *m = (u8 *)func_0203dd9c(0x160);
+    u8 *m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
         func_02041218(m + 0x88);
         func_02041440(m, name, 0);
@@ -146,7 +146,7 @@ static inline void *ov002_Model_New(void *name, void *file) {
 }
 
 static inline ov002_Caption021e0c28 *ov002_Caption_New(void) {
-    ov002_Caption021e0c28 *c = (ov002_Caption021e0c28 *)func_0203dd9c(0x38);
+    ov002_Caption021e0c28 *c = (ov002_Caption021e0c28 *)Heap_Alloc(0x38);
     if (c != NULL) {
         c->vtbl = data_ov002_021f001c;
         c->anim = NULL;
@@ -224,7 +224,7 @@ void func_ov002_021e1ed8(void *self) {
         s32 text;
         s32 y;
         ((ov002_Caption021e0c28 **)((u8 *)self + 0x14))[i] = ov002_Caption_New();
-        text = (s32)func_0204c0e8(res, data_ov002_021ef058[0][i]);
+        text = (s32)MsgRes_GetString(res, data_ov002_021ef058[0][i]);
         c = ((ov002_Caption021e0c28 **)((u8 *)self + 0x14))[i];
         if (text != 0) {
             if (c->anim == NULL) {

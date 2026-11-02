@@ -19,10 +19,10 @@ typedef struct {
 extern void *data_ov000_021ccd64;
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 extern void *func_ov000_0219429c(void *p);
 extern void func_ov000_0219433c(void *p);
-extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
+extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 
 void func_ov003_021dcb10(Ov003Obj24 *self) {
     if (self->unk_38 != NULL) {
@@ -60,7 +60,7 @@ void func_ov003_021dcb54(void) {
 
 void *Ov003ActVt_021f7d4c_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -72,7 +72,7 @@ void *Ov003ActVt_021f7d4c_Dtor(void *self) {
 void Ov003ActVt_021f7fac_Init(Ov003Obj24 *self) {
     Ov003Unit *unit;
     func_ov000_0219433c(self);
-    unit = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+    unit = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (unit != NULL) {
         unit->unk_a2_0 = 0;
     }
@@ -161,8 +161,8 @@ extern void MTX_RotX43_(Ov003GtMtx *m, s32 s, s32 c);
 extern void MTX_RotY43_(Ov003GtMtx *m, s32 s, s32 c);
 extern void MTX_RotZ43_(Ov003GtMtx *m, s32 s, s32 c);
 extern void MTX_Concat43(Ov003GtMtx *a, Ov003GtMtx *b, Ov003GtMtx *out);
-extern void func_0203f9dc(void *obj, Ov003GtMtx *m);
-extern void func_0203f9b8(void *obj, s32 a);
+extern void HitMesh_SetMtx(void *obj, Ov003GtMtx *m);
+extern void HitMesh_SetScale(void *obj, s32 a);
 extern void func_0203f920(void *obj);
 extern void func_ov000_02197d80(void *self);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
@@ -220,9 +220,9 @@ void Ov003ActVt_021f7fac_Start(Ov003Gate *self) {
         m.tx = self->posX;
         m.ty = self->posY;
         m.tz = self->posZ;
-        func_0203f9dc(obj, &m);
+        HitMesh_SetMtx(obj, &m);
         if (data_ov000_021ccd54->unk_ca == 9) {
-            func_0203f9b8(self->unk_58, 0x1b33);
+            HitMesh_SetScale(self->unk_58, 0x1b33);
         }
     }
     func_ov000_02197d80(self);

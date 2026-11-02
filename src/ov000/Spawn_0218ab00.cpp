@@ -194,15 +194,15 @@ extern Glob0218ac98 *data_ov000_021ccd54;
 extern Mgr0218ac98 *data_ov000_021ccd64;
 BOOL func_01ffc89c(Obj0218ac98 *vol, Seg0218ac98 *seg);
 s32 func_ov000_0219a2f4(VecFx32 *pos, s32 up, s32 down);
-Spawn0218ac98 *func_ov000_0218bf1c(Mgr0218ac98 *mgr, void *a, VecFx32 *pos, void *b, u16 c);
+Spawn0218ac98 *Group_SpawnActor(Mgr0218ac98 *mgr, void *a, VecFx32 *pos, void *b, u16 c);
 
 void func_ov000_0218adf0(Obj0218ac98 *self);
 void func_ov000_0218af9c(Obj0218ac98 *self);
-void func_ov000_0218bc9c(void *mgr, Obj0218ac98 *self, s32 a);
+void Group_RemoveNode(void *mgr, Obj0218ac98 *self, s32 a);
 extern void *data_ov000_021ccd68;
 Ctx0218ab00 *func_ov000_0219bf90(void);
-Actor0218ab00 *func_ov000_0218e640(void *mgr, u16 id);
-void *func_ov000_0218e4cc(void *mgr, u16 key);
+Actor0218ab00 *ActorMgr_GetActor(void *mgr, u16 id);
+void *ActorMgr_GetGroup(void *mgr, u16 key);
 void func_ov000_0218df68(void *group, Actor0218ab00 *actor);
 void func_ov000_0218b4b4(Obj0218ac98 *self, s32 mode, Actor0218ab00 *actor);
 
@@ -211,7 +211,7 @@ static inline Actor0218ab00 *GetActor0218ab00(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         a = NULL;
     } else {
-        a = func_ov000_0218e640(data_ov000_021ccd68, id);
+        a = ActorMgr_GetActor(data_ov000_021ccd68, id);
     }
     return a;
 }
@@ -263,10 +263,10 @@ void func_ov000_0218ab00(Obj0218ac98 *self) {
             continue;
         }
         func_ov000_0218b4b4(self, 2, a);
-        func_ov000_0218df68(func_ov000_0218e4cc(data_ov000_021ccd68, a->unk_0c & 0xf000), a);
+        func_ov000_0218df68(ActorMgr_GetGroup(data_ov000_021ccd68, a->unk_0c & 0xf000), a);
     }
     if (changed) {
-        func_ov000_0218bc9c(data_ov000_021ccd64, self, 0);
+        Group_RemoveNode(data_ov000_021ccd64, self, 0);
     }
 }
 

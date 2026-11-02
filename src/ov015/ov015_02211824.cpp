@@ -39,7 +39,7 @@ void func_ov015_02211878(void *self) {
 }
 
 void *func_ov015_0221187c(void *self) {
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

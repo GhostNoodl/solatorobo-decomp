@@ -58,30 +58,30 @@ extern void *data_02097e4c;
 extern u8 *data_ov000_021ccd54;
 extern u8 *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd6c;
-u8 *func_ov000_0218d240(u8 *self);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+u8 *Actor_GetTarget(u8 *self);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 BOOL func_ov000_02198360(void *st, s32 state, s32 x);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 VObj *func_02065f88(s32 id, void *pos);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
-u16 func_0204bfa8(void *cam);
+u16 Camera_GetYaw(void *cam);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
-s32 func_02040498(s32 max);
+s32 Rand_UpTo(s32 max);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *ofs, void *rot, s32 r, s32 rr, s16 h, s32 i);
 u16 func_ov000_02198da8(void *body, u16 angle);
 void func_ov000_0218996c(s32 a, s32 b);
 void *func_ov000_021b68b8(void *a, void *pos);
-void func_ov000_0218d398(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
 
 static inline u16 CamYaw_021a3220(u8 *cam) {
     if (LFLD(u16, cam, 0x40) != 0) {
         return LFLD(u16, cam, 0x44);
     }
-    return func_0204bfa8(cam);
+    return Camera_GetYaw(cam);
 }
 
 static inline Actor *FindActor_021a3220(u16 id) {
@@ -89,7 +89,7 @@ static inline Actor *FindActor_021a3220(u16 id) {
     if (mgr == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(mgr, id);
+    return ActorMgr_GetActor(mgr, id);
 }
 
 static inline u16 AngTo_021a3220(Robo021ca458 *self, u8 *t) {
@@ -124,7 +124,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
     BOOL hit;
     BOOL turned;
 
-    tgt = func_ov000_0218d240((u8 *)self);
+    tgt = Actor_GetTarget((u8 *)self);
     switch (ST(self)->st) {
     case 0: {
         B24(self).b17 = 0;
@@ -245,7 +245,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             if (!(t & 3) && t < 0x14) {
                 VObj *e = func_02065f88(0x322, &self->pos);
                 e->vfunc_24(0, self->unk_68 >> 2, 0);
-                e->vfunc_34(0, (u16)func_02040498(0xffff), 0);
+                e->vfunc_34(0, (u16)Rand_UpTo(0xffff), 0);
                 e->vfunc_0c(((t & 0xfffe) << 7) + 0x800);
                 LFLD(s32, e, 0x3c) = 0x4800;
             }
@@ -295,7 +295,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
                 m.rot[1] = a->rot_y;
                 m.rot[2] = a->rot_z;
                 m.x = 0;
-                func_ov000_0218d398(a, self->id, 7, TRUE, 0x18, &m);
+                Actor_SendMsg(a, self->id, 7, TRUE, 0x18, &m);
                 func_ov000_0218d46c(a, self->id, 10);
                 if (((u8 *)a->unk_4c) != NULL) {
                     LFLD(B19_021a3220, ((u8 *)a->unk_4c), 0x18).b0 = 0;

@@ -32,7 +32,7 @@ void *func_ov002_021def98(void *self, u32 kind) {
     VObject *q;
     s32 i;
     u8 *counts;
-    p = (VObject *)func_0203dd9c(0xf4);
+    p = (VObject *)Heap_Alloc(0xf4);
     if (p != NULL) {
         *(VFunc **)p = data_ov000_021cac60;
         p->v0x28();
@@ -52,7 +52,7 @@ void *func_ov002_021def98(void *self, u32 kind) {
         if (t == kind) {
             n = counts[i];
             for (j = 0; j < n; j++) {
-                q = (VObject *)func_0203dd9c(0x4c);
+                q = (VObject *)Heap_Alloc(0x4c);
                 if (q != NULL) {
                     *(VFunc **)q = data_ov002_021ef684;
                     func_ov000_021c22d8(q);
@@ -80,7 +80,7 @@ void *func_ov002_021def98(void *self, u32 kind) {
         void *r;
         u8 *w;
         func_ov002_021e34fc(p, data_ov002_021eef8c[k].fn);
-        r = func_0204c0e8(data_02149ef8, data_ov002_021eef90[k].id);
+        r = MsgRes_GetString(data_02149ef8, data_ov002_021eef90[k].id);
         w = FIELD(self, 0x4, u8 *);
         func_ov000_0215bb14(FIELD(w, 0x20, void *), r);
         FIELD(w, 0x20, VObject *)->v0x70();

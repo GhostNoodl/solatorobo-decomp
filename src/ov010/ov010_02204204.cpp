@@ -26,7 +26,7 @@ extern void func_ov010_02207520(void *self);
 extern void func_ov010_022075bc(void *self);
 extern BOOL func_ov000_0218cf5c(void *self);
 extern void func_02049678(void *a, s32 b, s32 c, s32 d);
-extern BOOL func_0204985c(void *a);
+extern BOOL SndMgr_IsLoadDone(void *a);
 extern void func_ov003_021d883c(void *a, Ov010Vec *b, Ov010Vec *c, s32 d);
 extern u16 func_ov003_021d16cc(void *self);
 
@@ -64,7 +64,7 @@ void *Ov010ActVt_02210154_Dtor(Ov010ObjBase0220ffe4_0221009c *self) {
 
 void *Ov010ActVt_02210154_DtorDelete(Ov010ObjBase0220ffe4_0221009c *self) {
     Ov010_02204294_Body(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -76,7 +76,7 @@ BOOL func_ov010_02204344(Ov010ObjBase0220ffe4_0221009c *self) {
             func_02049678(data_02097e4c, 4, self->unk_128, -1);
         }
         r = FALSE;
-    } else if (func_0204985c(data_02097e4c) == 0) {
+    } else if (SndMgr_IsLoadDone(data_02097e4c) == 0) {
         r = FALSE;
     }
     return r;

@@ -37,7 +37,7 @@ typedef struct {
 } HeapState;
 
 extern HeapState *data_02097dd0;
-void func_0203de1c(void *p);
+void Heap_Free(void *p);
 void func_02041558(void *m);
 void func_02041278(void *p);
 
@@ -51,7 +51,7 @@ void func_02041278(void *p);
             if (p != NULL) {                              \
                 func_02041558(p);                         \
                 func_02041278((u8 *)p + 0x88);            \
-                func_0203de1c(p);                         \
+                Heap_Free(p);                         \
             }                                             \
             (field) = 0;                                  \
         }                                                 \

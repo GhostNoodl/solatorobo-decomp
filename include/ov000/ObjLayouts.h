@@ -12,7 +12,7 @@
 struct Model;
 struct TextWin;
 
-// The ov000 actor with resources (ctor func_ov000_02194074, vtable data_ov000_021cc480, 0xd0
+// The ov000 actor with resources (ctor ActorEx_Ctor, vtable data_ov000_021cc480, 0xd0
 // bytes); the ov003/ov009/ov012-ov014 actor classes in that vtable family derive from it.
 struct ActorEx : public Actor {
     u8 unk_ac;
@@ -43,7 +43,7 @@ struct ActorEx : public Actor {
 };
 SIZE_ASSERT(ActorEx, 0xd0);
 
-// The robot actor (ctor func_ov000_0219bfbc, vtable data_ov000_021cc774, 0xbb0 bytes; its state
+// The robot actor (ctor Robo021ca458_Ctor, vtable data_ov000_021cc774, 0xbb0 bytes; its state
 // handlers are the pointer-to-member table data_ov000_021ca458). Methods in Robo_*.cpp and others.
 // The bit fields at 0xae4 and 0xb22..0xb2c are the union of the members the methods use.
 struct Robo021ca458 : public Actor {

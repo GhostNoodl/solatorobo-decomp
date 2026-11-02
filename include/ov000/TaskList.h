@@ -39,8 +39,8 @@ extern u8 data_ov000_021cbce0[];
 extern const char *data_0208cca0;
 extern void *data_0208ccc0;
 
-void *func_0203dd9c(u32 size);
-void func_0203de1c(void *ptr);
+void *Heap_Alloc(u32 size);
+void Heap_Free(void *ptr);
 void func_02043d20(void *a, s32 b);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 count);
 void func_ov000_0214c1ac(void);

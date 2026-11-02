@@ -7,11 +7,11 @@ extern void *data_ov000_021ccd68;
 extern void func_02065804(void *a, s32 b);
 extern void func_ov003_021d36fc(Ov013Actor *self);
 extern void func_ov003_021d3d28(Ov013Actor *self);
-extern Ov013Actor *func_ov000_0218e6d0(void *mgr, u16 a, u16 b);
+extern Ov013Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern char data_ov013_0220b5ca[];
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void func_ov000_0218dbe0(Ov013Obj *self, s32 a);
+extern void Actor_Move(Ov013Obj *self, s32 a);
 
 static inline s32 Ov013_Sqrt64(s64 v) {
     *(volatile u16 *)0x40002b0 = 1;
@@ -53,7 +53,7 @@ void func_ov013_021fcef8(Ov013Actor *self) {
         self->unk_40->timer = 0;
         break;
     case 0x14:
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         if (self->pos.y > 0x3000) {
             self->pos.y = 0x3000;
         }
@@ -98,7 +98,7 @@ void func_ov013_021fd0c8(Ov013Actor *self) {
             if (data_ov000_021ccd68 == NULL) {
                 a = NULL;
             } else {
-                a = func_ov000_0218e6d0(data_ov000_021ccd68, 0x5000, 0x5c0a);
+                a = ActorMgr_FindKind(data_ov000_021ccd68, 0x5000, 0x5c0a);
             }
             if (a != NULL && a->unk_44->unk_22_0 == 1 && a->unk_44->unk_22_1 == 1) {
                 s32 ty = a->pos.y;

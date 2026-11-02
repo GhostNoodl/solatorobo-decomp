@@ -10,7 +10,7 @@ extern void func_0203f364(Ov009Sub48 *p);
 extern u8 data_ov009_02216ac2[];
 extern u8 data_ov009_02216aaa[];
 extern u8 data_ov009_02216abc[];
-extern void func_ov000_0218ddd4(Ov009Actor *self, Ov009Vec *v, s32 a);
+extern void Actor_MoveToPos(Ov009Actor *self, Ov009Vec *v, s32 a);
 
 struct Ov009Byte {
     u8 b0 : 1;
@@ -204,7 +204,7 @@ void Ov009ActVt_02216348_Start(Ov009ActVt_02216348 *self) {
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->unk_44 != NULL) {
-        func_0203de1c(self->unk_44);
+        Heap_Free(self->unk_44);
         self->unk_44 = NULL;
     }
     data_02097dd0->cur = saved;
@@ -213,9 +213,9 @@ void Ov009ActVt_02216348_Start(Ov009ActVt_02216348 *self) {
 
 extern void *data_02097e4c;
 extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
-extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
+extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
-extern void func_ov000_0218d398(Ov009Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+extern void Actor_SendMsg(Ov009Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 struct Ov009HitMsg {
     u8 a;
     u16 b;
@@ -230,7 +230,7 @@ void Ov009ActVt_02216348_Update(Ov009ActVt_02216348 *self) {
     if (self->unk_f0 == 0) {
         func_ov003_021d1e8c(self);
     }
-    p = func_ov000_0218d240(self);
+    p = Actor_GetTarget(self);
     if (p != NULL && *p->unk_50 != 0 && self->unk_40->unk_13 != 0x13) {
         Ov009Vec a;
         a.x = self->pos.x;
@@ -249,7 +249,7 @@ void Ov009ActVt_02216348_Update(Ov009ActVt_02216348 *self) {
                 msg.a = 1;
                 msg.b = 0x333;
                 msg.c = 0xf;
-                func_ov000_0218d398(p, self->id, 0xb, TRUE, 6, &msg);
+                Actor_SendMsg(p, self->id, 0xb, TRUE, 6, &msg);
                 {
                     s32 x = p->pos.x;
                     s32 y = p->pos.y;

@@ -44,10 +44,10 @@ void func_ov009_0221327c(Ov009ActVt_02217d5c *self) {
     p.z = self->pos.z;
     {
         s32 w = self->unk_64;
-        p.x += func_02040498(w >> 1) + (w >> 1);
+        p.x += Rand_UpTo(w >> 1) + (w >> 1);
     }
-    p.y += func_02040528(self->unk_68);
-    p.z += func_02040528(0x4000) + 0x3000;
+    p.y += Rand_PlusMinus(self->unk_68);
+    p.z += Rand_PlusMinus(0x4000) + 0x3000;
     e = func_02065f88(0x325, &p);
     e->v34(0, (u16)(self->rot[1] + 0x8000), 0);
     e->v14(0x1ccd, 0x1ccd, 0x1ccd);
@@ -55,7 +55,7 @@ void func_ov009_0221327c(Ov009ActVt_02217d5c *self) {
 }
 
 extern void *data_ov000_021ccd64;
-extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_0218d46c(Ov009Actor *a, u16 id, s32 msg);
 extern void *func_ov000_0219b71c(Ov009Vec *pos, Ov009Vec *v, s32 a, s32 b, s32 c, s32 d);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
@@ -67,7 +67,7 @@ static inline Ov009Actor *Ov009_FindActor4(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 void func_ov009_02213460(Ov009ActVt_02217d5c *self) {

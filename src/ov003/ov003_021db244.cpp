@@ -167,12 +167,12 @@ extern const s16 FX_SinCosTable_[];
 extern Ov003PjStep data_ov003_021f49ba[];
 extern Ov003PjVec data_02092a50;
 extern Ov003PjPlayer *func_ov000_0219bf90(void);
-extern Ov003PjPart *func_ov000_02199ba0(void *def);
+extern Ov003PjPart *Target_Get(void *def);
 extern Ov003PjVec *func_ov000_0218d2e0(Ov003Pj *self);
 extern BOOL func_ov003_021dbd80(Ov003Pj *self);
 extern Ov003PjFx *func_02065f88(s32 id, Ov003PjVec *pos);
 extern void func_01ffc9fc(Ov003PjVec *dst, Ov003PjVec *src, u16 ry);
-extern void func_0203f324(Ov003PjAnim *a);
+extern void HitSphere_Link(Ov003PjAnim *a);
 extern void func_ov000_021987b8(Ov003PjAnim *a, s32 b, s32 c, s32 d);
 extern void VEC_Normalize(Ov003PjVec *a, Ov003PjVec *b);
 extern void VEC_Add(Ov003PjVec *a, Ov003PjVec *b, Ov003PjVec *dst);
@@ -214,7 +214,7 @@ static inline s32 Ov003Pj_Sqrt(s64 v) {
 static inline void Ov003Pj_Show(Ov003PjAnim *a) {
     a->f9a.b.b0 = 1;
     a->f9a.flags |= 8;
-    func_0203f324(a);
+    HitSphere_Link(a);
 }
 
 static inline void Ov003Pj_SetMtx(Ov003PjModel *o, Ov003PjMtx43 *m) {
@@ -240,7 +240,7 @@ void func_ov003_021db244(Ov003Pj *self) {
     u16 mode;
     Ov003PjVec *tgt;
     pl = func_ov000_0219bf90();
-    part = func_ov000_02199ba0(self->unk_4c);
+    part = Target_Get(self->unk_4c);
     switch (self->work->state) {
     case 0: {
         cfg = self->cfg;

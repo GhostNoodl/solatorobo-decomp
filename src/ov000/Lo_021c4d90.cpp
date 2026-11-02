@@ -12,7 +12,7 @@ typedef struct {
 
 extern "C" {
 extern u8 *data_02097d48;
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
 static inline void G3_Vec(int cmd, int x, int y, int z) {
@@ -60,7 +60,7 @@ void func_ov000_021c4d90(LoBase021ccb54_021ccbe0 *self, s32 a1, s32 *pos) {
     z = self->unk_68 - 0x110;
     g = data_02097d48;
     G3_Cmd1(0x2a, 0x20000000);
-    G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, func_02043d48(g + 0x8b0), 0x14, 0x800));
+    G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, Gfx3DState_NextPolyId(g + 0x8b0), 0x14, 0x800));
     sx = self->unk_24 << 12;
     sy = self->unk_28 << 12;
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);

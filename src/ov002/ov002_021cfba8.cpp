@@ -18,7 +18,7 @@ void func_ov002_021cfba8(void *self) {
         return;
     }
     g = data_02149ef8;
-    o = (VObject *)func_0203dd9c(0xd4);
+    o = (VObject *)Heap_Alloc(0xd4);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
         o->v0x28();
@@ -32,17 +32,17 @@ void func_ov002_021cfba8(void *self) {
     FIELD(s, 0x64, s16) = 0;
     FIELD(s, 0x66, s16) = 0x23;
     FIELD(s, 0x68, s16) = -0x199a;
-    FIELD(self, 0x3c, VObject *)->v0x10(func_0204c0e8(g, 0xe8));
-    FIELD(self, 0x3c, VObject *)->v0x14(func_0204c0e8(g, 0xea));
+    FIELD(self, 0x3c, VObject *)->v0x10(MsgRes_GetString(g, 0xe8));
+    FIELD(self, 0x3c, VObject *)->v0x14(MsgRes_GetString(g, 0xea));
     FIELD(FIELD(self, 0x3c, void *), 0xc, u32) &= ~0x10000;
     FIELD(FIELD(self, 0x3c, void *), 0xc, u32) &= ~0x40000;
     FIELD(FIELD(self, 0x3c, void *), 0xc, u32) &= ~0x20000;
-    FIELD(self, 0x3c, VObject *)->v0x74(func_0204c0e8(g, 0xf1), 0xb, 0xffff, 0xffff);
-    FIELD(self, 0x3c, VObject *)->v0x74(func_0204c0e8(g, 0xf2), 0x14, 0xffff, 0xffff);
+    FIELD(self, 0x3c, VObject *)->v0x74(MsgRes_GetString(g, 0xf1), 0xb, 0xffff, 0xffff);
+    FIELD(self, 0x3c, VObject *)->v0x74(MsgRes_GetString(g, 0xf2), 0x14, 0xffff, 0xffff);
     FIELD(self, 0x3c, VObject *)->v0x8();
     m = FIELD(self, 0x3c, VObject *);
     m->v0xa8(func_ov000_02154b58(m, (void *)0xb));
-    o2 = (VObject *)func_0203dd9c(0x8c);
+    o2 = (VObject *)Heap_Alloc(0x8c);
     if (o2 != NULL) {
         *(VFunc **)o2 = data_ov000_021cac60;
         o2->v0x28();
@@ -82,7 +82,7 @@ void func_ov002_021cfe48(void *self) {
             DELETE_VOBJ(FIELD(e, 0x1c, VObject *));
             HEAP_POP(s1);
         }
-        FIELD(e, 0x0, void *) = func_0204c0e8(mgr, 0xf1);
+        FIELD(e, 0x0, void *) = MsgRes_GetString(mgr, 0xf1);
         if (func_ov002_021cf314(8, 1)) {
             FIELD(e, 0x24, s32) = 0xe;
             FIELD(e, 0x10, s32) = -1;
@@ -98,7 +98,7 @@ void func_ov002_021cfe48(void *self) {
             DELETE_VOBJ(FIELD(e2, 0x1c, VObject *));
             HEAP_POP(s2);
         }
-        FIELD(e2, 0x0, void *) = func_0204c0e8(mgr, 0xf2);
+        FIELD(e2, 0x0, void *) = MsgRes_GetString(mgr, 0xf2);
         if (func_ov002_021cf314(8, 0x101)) {
             FIELD(e2, 0x24, s32) = 0xe;
             FIELD(e2, 0x10, s32) = -1;

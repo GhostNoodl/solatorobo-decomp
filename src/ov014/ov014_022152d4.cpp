@@ -3,7 +3,7 @@
 extern "C" {
 
 extern u8 data_ov014_02217f18[];
-extern void *func_ov000_02194074(void *self);
+extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02194c08(void *self);
 
@@ -13,7 +13,7 @@ void func_ov014_022152d4(Ov014ActEx_022142fc *self) {
 
 #pragma force_active on
 Ov014ActEx_022152e8 *Ov014ActEx_022152e8_Ctor(Ov014ActEx_022152e8 *self) {
-    func_ov000_02194074(self);
+    ActorEx_Ctor(self);
     FLD(void *, self, 0) = data_ov014_02217f18;
     self->unk_d0.x = 0;
     self->unk_d0.y = 0;
@@ -36,7 +36,7 @@ void *Ov014ActEx_022152e8_Dtor(void *self) {
 
 void *Ov014ActEx_022152e8_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

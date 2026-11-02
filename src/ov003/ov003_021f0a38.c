@@ -90,7 +90,7 @@ typedef struct {
 extern void *data_ov000_021ccd68;
 extern Ov003SwObjList *data_ov000_021ccd64;
 extern Ov003SwGame *data_ov000_021ccd54;
-extern Ov003SwGroup *func_ov000_0218e4cc(void *mgr, u16 key);
+extern Ov003SwGroup *ActorMgr_GetGroup(void *mgr, u16 key);
 extern Ov003SwPlayer *func_ov000_0219bf90(void);
 
 BOOL func_ov003_021f0abc(Ov003Switch *self, BOOL deep) {
@@ -104,7 +104,7 @@ BOOL func_ov003_021f0abc(Ov003Switch *self, BOOL deep) {
             if ((u16)(id & 0xf000) == 0) {
                 id = (u16)(id << 12) | 0xfff;
             }
-            g = func_ov000_0218e4cc(data_ov000_021ccd68, id);
+            g = ActorMgr_GetGroup(data_ov000_021ccd68, id);
             if (g != NULL) {
                 if ((id & 0xfff) != 0xfff) {
                     Ov003SwNode *head = g->head;

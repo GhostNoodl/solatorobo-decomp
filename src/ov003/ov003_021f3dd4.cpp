@@ -128,12 +128,12 @@ struct Ov003Prop {
 
 extern "C" {
 extern Ov003Effect *func_02065f88(s32 id, const Ov003Vec *pos);
-extern s32 func_02040528(s32 max);
-extern s32 func_02040498(s32 max);
+extern s32 Rand_PlusMinus(s32 max);
+extern s32 Rand_UpTo(s32 max);
 extern Ov003FxPlayer *func_ov000_0219bf90(void);
 extern Ov003Info *func_0206fef8(u16 id);
 extern s32 func_020705fc(u16 id);
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern Ov003Res *func_ov000_0218e9c4(void *p);
 extern Ov003Shadow *func_ov000_021919c8(void *p);
 extern void func_ov000_02191b70(Ov003Shadow *p);
@@ -141,7 +141,7 @@ extern BOOL func_ov000_02191b9c(Ov003Shadow *p);
 extern BOOL func_ov000_0218f110(s16 *p);
 extern Ov003Save *data_0214a424;
 extern char data_ov003_021fa662[];
-extern void func_ov000_021b4c60(void *self);
+extern void Ov000ActVt_021cc7cc_Start(void *self);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_02191870(void *model, Ov003Res *res);
 extern Ov003AnimLayer *func_ov000_02190a30(void *model, s32 n);
@@ -193,7 +193,7 @@ BOOL Ov003ActVt_021fa548_IsReady(Ov003Prop *self) {
 
 void Ov003ActVt_021fa548_Start(Ov003Prop *self) {
     Ov003AnimLayer *layer;
-    func_ov000_021b4c60(self);
+    Ov000ActVt_021cc7cc_Start(self);
     func_ov000_02190cb0(self->model, data_ov003_021fa662, 0x1000, 1);
     if (self->count != 0) {
         func_ov000_02191870(self->model, &self->altRes);
@@ -221,7 +221,7 @@ void Ov003ActVt_021fa548_Start(Ov003Prop *self) {
         }
         self->model->unk_c2_6 = 1;
     }
-    void *task = func_0203dd9c(0x14);
+    void *task = Heap_Alloc(0x14);
     if (task != NULL) {
         task = func_ov000_02198328(task);
     }

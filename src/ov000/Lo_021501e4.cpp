@@ -19,7 +19,7 @@ void func_ov000_021501e4(Lo021ca9c4 *self) {
     u8 buf[0x20];
     VObj *obj;
     if (self->unk_42 == 0xffff) {
-        obj = (VObj *)func_0203dd9c(0xc4);
+        obj = (VObj *)Heap_Alloc(0xc4);
         if (obj != NULL) {
             VOBJ_SET_VTABLE(obj, data_0208b318);
             obj->vfunc_08();
@@ -31,7 +31,7 @@ void func_ov000_021501e4(Lo021ca9c4 *self) {
         STD_ConcatenateString(buf, data_ov000_021ca8ff);
         func_0205a840(LFLD(VObj *, data_ov000_021ccd24, 8), buf, data_ov000_021ca917);
     }
-    obj = (VObj *)func_0203dd9c(0x4c);
+    obj = (VObj *)Heap_Alloc(0x4c);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b318);
         obj->vfunc_08();

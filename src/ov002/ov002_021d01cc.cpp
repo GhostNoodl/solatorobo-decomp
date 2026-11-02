@@ -11,7 +11,7 @@ void func_ov002_021d01cc(Task50 *self) {
 }
 
 Task50 *func_ov002_021d020c(void) {
-    Task50 *p = (Task50 *)func_0203dd9c(0x44);
+    Task50 *p = (Task50 *)Heap_Alloc(0x44);
     if (p != NULL) {
         TaskBase_ctor(p);
         *(VFunc **)p = data_ov002_021efa1c;

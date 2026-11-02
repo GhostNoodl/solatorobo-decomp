@@ -12,7 +12,7 @@ void func_02042628(void *a, void *b, void *c, int d);
 extern void *data_02097e4c;
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 extern void *data_02149ef8;
-void *func_0204c0e8(void *a, s32 b);
+void *MsgRes_GetString(void *a, s32 b);
 void func_ov000_0215bb14(void *a, void *b);
 void *func_ov015_02207738(Ov015Ship *p);
 extern u8 data_ov015_022129c0[];
@@ -124,13 +124,13 @@ BOOL func_ov015_02202fa8(Ov015Menu *self, Ov015MenuItem *ev) {
     void *m;
     switch (ev->unk_06) {
     case 0:
-        m = func_0204c0e8(d, 0xc7);
+        m = MsgRes_GetString(d, 0xc7);
         break;
     case 1:
-        m = func_0204c0e8(d, 0xcb);
+        m = MsgRes_GetString(d, 0xcb);
         break;
     case 2:
-        m = func_0204c0e8(d, 0xd5);
+        m = MsgRes_GetString(d, 0xd5);
         break;
     }
     if (o->unk_84 != NULL) {
@@ -148,7 +148,7 @@ void func_ov015_02203020(Ov015Scene2a08 *self) {
     if (o != NULL) {
         if (o != NULL) {
             func_ov015_02207738(o);
-            func_0203de1c(o);
+            Heap_Free(o);
         }
         self->unk_3c = NULL;
     }
@@ -174,27 +174,27 @@ void func_ov015_02203020(Ov015Scene2a08 *self) {
 void *func_ov015_0220318c(void *self) {
     SET_VT(self, data_ov015_022129c0);
     func_ov000_02163254(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
 void *func_ov015_022031b4(void *self) {
     func_ov000_02191b04(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
 void func_ov015_022031d0(Ov015Scene2a08 *self) {
     Ov015Ship *p;
     void *q;
-    p = (Ov015Ship *)func_0203dd9c(0xd58);
+    p = (Ov015Ship *)Heap_Alloc(0xd58);
     if (p != NULL) {
         p = (Ov015Ship *)func_ov015_0220765c(p);
     }
     self->unk_3c = p;
     func_ov015_02207858(p);
     ((Ov015Ship *)self->unk_3c)->unk_d48 = data_ov015_02213368->unk_2c;
-    q = func_0203dd9c(0x1c);
+    q = Heap_Alloc(0x1c);
     if (q != NULL) {
         func_ov000_0219196c(q);
         SET_VT(q, data_ov015_022129d0);
@@ -285,7 +285,7 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     self->unk_44.up.y = 0x1000;
     self->unk_44.up.z = 0;
     func_020434e0(&self->unk_44.fovSin);
-    p = (u8 *)func_0203dd9c(0xe0);
+    p = (u8 *)Heap_Alloc(0xe0);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -300,9 +300,9 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     Ov015_SetXYZ16(self->unk_88, 0x91, 0x12, -0x333);
     Ov015_SetXYZ32(self->unk_88, 0x100, 0, -0x333);
     self->unk_88->unk_0c |= 0x20000000;
-    VCALL(self->unk_88)->vf4(1, func_0204c0e8(res, 0x32));
+    VCALL(self->unk_88)->vf4(1, MsgRes_GetString(res, 0x32));
     VCALL(self->unk_88)->v08();
-    p = (u8 *)func_0203dd9c(0xd4);
+    p = (u8 *)Heap_Alloc(0xd4);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -310,8 +310,8 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
         VCALL(p)->v28();
     }
     self->unk_80 = (Ov015Menu *)p;
-    VCALL(self->unk_80)->v10(func_0204c0e8(res, 0xc4));
-    VCALL(self->unk_80)->v14(func_0204c0e8(res, 0xc5));
+    VCALL(self->unk_80)->v10(MsgRes_GetString(res, 0xc4));
+    VCALL(self->unk_80)->v14(MsgRes_GetString(res, 0xc5));
     self->unk_80->unk_24 = 0x88;
     self->unk_80->unk_20 = 4;
     Ov015_SetXYZ16(self->unk_80, 0, 0x1e, -0xccd);
@@ -323,9 +323,9 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     self->unk_80->unk_0c &= ~0x80000;
     self->unk_80->unk_0c &= ~0x40000;
     self->unk_80->unk_0c &= ~0x10000;
-    VCALL(self->unk_80)->v74(func_0204c0e8(res, 0xc6), 0, 0xffff, 0xffff);
-    VCALL(self->unk_80)->v74(func_0204c0e8(res, 0xca), 1, 0xffff, 0xffff);
-    VCALL(self->unk_80)->v74(func_0204c0e8(res, 0xd4), 2, 0xffff, 0xffff);
+    VCALL(self->unk_80)->v74(MsgRes_GetString(res, 0xc6), 0, 0xffff, 0xffff);
+    VCALL(self->unk_80)->v74(MsgRes_GetString(res, 0xca), 1, 0xffff, 0xffff);
+    VCALL(self->unk_80)->v74(MsgRes_GetString(res, 0xd4), 2, 0xffff, 0xffff);
     {
         Ov015Menu *o = self->unk_80;
         VCALL(o)->va8(func_ov000_02154b58(o, 0));
@@ -334,7 +334,7 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     self->unk_80->unk_88 = (void *)func_ov015_02202fa8;
     self->unk_80->unk_08 = (u8 *)self;
     VCALL(self->unk_80)->v08();
-    p = (u8 *)func_0203dd9c(0x8c);
+    p = (u8 *)Heap_Alloc(0x8c);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -347,13 +347,13 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     Ov015_SetXYZ16(self->unk_84, 4, 0x95, -0xccd);
     Ov015_SetXYZ32(self->unk_84, -0x100, 0, -0xccd);
     self->unk_84->unk_2c = 1;
-    func_ov000_0215bb14(self->unk_84, func_0204c0e8(res, 0xc7));
+    func_ov000_0215bb14(self->unk_84, MsgRes_GetString(res, 0xc7));
     VCALL(self->unk_84)->v70();
     VCALL(self->unk_84)->v08();
     switch (self->unk_0c) {
     case 1:
         if (data_ov015_02213360 == 0) {
-            p = (u8 *)func_0203dd9c(0x2c);
+            p = (u8 *)Heap_Alloc(0x2c);
             if (p != NULL) {
                 SET_VT(p, data_ov015_022129c0);
                 func_ov000_02163224(p);

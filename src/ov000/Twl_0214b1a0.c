@@ -3,7 +3,7 @@
 /* Draws a textured, scaled quad at pos with the given alpha and texture address. */
 
 void func_02043d20(void *obj, int a);
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern u8 *data_02097d48;
 
@@ -32,7 +32,7 @@ void func_ov000_0214b1a0(const s32 *pos, const s32 *scale, s32 alpha, u32 tex) {
     G3_Cmd1(0x30, 0xffff);
     G3_Cmd1(0x31, 0);
     G3_Cmd1(0x2a, 0x5e400000 | (tex >> 3));
-    G3_Cmd1(0x29, (u32)((1 << 4) | (3 << 6) | (func_02043d48(data_02097d48 + 0x8b0) << 24) | (alpha << 16)));
+    G3_Cmd1(0x29, (u32)((1 << 4) | (3 << 6) | (Gfx3DState_NextPolyId(data_02097d48 + 0x8b0) << 24) | (alpha << 16)));
     NNS_G3dGeBufferOP_N(0x11, 0, 0);
     G3_Cmd1(0x10, 3);
     NNS_G3dGeBufferOP_N(0x15, 0, 0);

@@ -173,7 +173,7 @@ ov006_ModelHolder *func_ov006_021e3cec(ov006_ModelHolder *self) {
 
 ov006_ModelHolder *ov006_ModelHolder_DtorDelete(ov006_ModelHolder *self) {
     ov006_ModelHolder_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -182,7 +182,7 @@ void func_ov006_021e3dd4(ov006_ModelHolder *self, int a) {
     const char *name = "wireless_slv";
     ov006_Model *model;
     OV006_DELETE_MODEL(self->model);
-    model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         func_02041218(model->unk88);
         func_02041440(model, name, 0);

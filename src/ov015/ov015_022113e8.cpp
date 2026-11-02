@@ -4,8 +4,8 @@ extern "C" {
 
 void MI_CpuFill8(void *dst, u32 value, u32 size);
 u8 *func_0206ee20(u16 id);
-s32 func_02040498(s32 max);
-s32 func_02040528(s32 max);
+s32 Rand_UpTo(s32 max);
+s32 Rand_PlusMinus(s32 max);
 extern const u16 data_ov015_0221265c[];
 extern const u16 data_ov015_02212660[];
 extern const u16 data_ov015_0221267a[];
@@ -18,7 +18,7 @@ struct Ov015ItemEnt {
 };
 
 static inline s32 Ov015_Pick(const u16 *tbl, s32 max, s32 mod, s32 amt, s32 id) {
-    s32 start = func_02040498(max);
+    s32 start = Rand_UpTo(max);
     s32 i;
     for (i = (start + 1) % mod; i != start; i = (i + 1) % mod) {
         id = tbl[i];
@@ -67,7 +67,7 @@ void func_ov015_022113e8(void *self, Ov015ItemEnt *list, s32 n, u16 a, s32 budge
     cnt = 0;
     MI_CpuFill8(list, 0, n * 8);
     // rest first holds the random scale (fx32, 1.0 and up), then the amount it scales
-    rest = func_02040528(budget) + 0x1000;
+    rest = Rand_PlusMinus(budget) + 0x1000;
     rest = (s32)(((s64)(a << 12) * rest + 0x800) >> 12) >> 12;
     while (rest > 0 && cnt < n) {
         id = 0xffff;
@@ -93,7 +93,7 @@ void func_ov015_022113e8(void *self, Ov015ItemEnt *list, s32 n, u16 a, s32 budge
                 sub = price * num;
             } else {
                 if (Ov015_InTable(data_ov015_0221267a, 9, id)) {
-                    num = func_02040498(5) + 15;
+                    num = Rand_UpTo(5) + 15;
                     if (num > rest / price) {
                         num = rest / price;
                     }

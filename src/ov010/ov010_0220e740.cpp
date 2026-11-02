@@ -36,7 +36,7 @@ extern Ov010V *func_ov003_021da8e4(s32 a, Ov010Vec *pos, s32 b);
 extern void func_02065860(void *a, s32 b);
 extern Ov010V *func_020657b0(void *a, s32 b);
 extern void VEC_Add(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *c);
-extern void func_ov000_0219bdb0(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
+extern void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 BOOL func_ov010_0220e740(Ov010Path *self, void *a, s32 b, s32 c, const Ov010Vec *v, s32 e) {
@@ -136,7 +136,7 @@ void func_ov010_0220e7c8(Ov010Path *self) {
         if (self->unk_02 < self->unk_04) {
             return;
         }
-        func_ov000_0219bdb0(FLD(u16, self->unk_18, 0xc), 0xffff, 0xe, 1, 0x30, self->unk_28);
+        ActorMgr_SendMsg(FLD(u16, self->unk_18, 0xc), 0xffff, 0xe, 1, 0x30, self->unk_28);
         func_ov000_02198360(&self->sm, 1, 0);
         break;
     }

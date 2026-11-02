@@ -7,8 +7,8 @@ struct Ov011Rot {
 extern "C" {
 
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-s32 func_02040498(s32 max);
-s32 func_02040528(s32 max);
+s32 Rand_UpTo(s32 max);
+s32 Rand_PlusMinus(s32 max);
 s32 *NNS_G3dGlbGetInvV(void);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
 void VEC_Normalize(const Ov011Vec *a, Ov011Vec *b);
@@ -49,7 +49,7 @@ void func_ov011_02205eb4(Ov011Act7da4 *self) {
         }
         if (self->unk_40->timer == 18) {
             Ov011Eff *e;
-            Ov011_VecSet(&self->unk_84, func_02040528(0x4000), -func_02040498(0x3000), -0xf000);
+            Ov011_VecSet(&self->unk_84, Rand_PlusMinus(0x4000), -Rand_UpTo(0x3000), -0xf000);
             Ov011_MulVec33(&self->unk_84, NNS_G3dGlbGetInvV(), &v);
             VEC_Add(&v, &data_02092a50, &v);
             e = func_02065f88(0x389, &v);
@@ -103,7 +103,7 @@ void func_ov011_02206120(Ov011Act7da4 *self) {
         }
         if (self->unk_40->timer == 18) {
             Ov011Eff *e;
-            Ov011_VecSet(&self->unk_84, 0x4000, func_02040528(0x3000), -0xf000);
+            Ov011_VecSet(&self->unk_84, 0x4000, Rand_PlusMinus(0x3000), -0xf000);
             if (!(self->unk_f0 & 1)) {
                 self->unk_84.x = -self->unk_84.x;
             }

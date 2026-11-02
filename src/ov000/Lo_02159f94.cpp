@@ -6,7 +6,7 @@ extern "C" {
 void func_ov000_0215eab4(void *p);
 
 void func_ov000_02159f94(Lo021cb5a8 *self, s32 b, s32 c) {
-    u8 *n = (u8 *)func_0203dd9c(0x30);
+    u8 *n = (u8 *)Heap_Alloc(0x30);
     u8 *t;
     u8 *nx;
     s16 id;

@@ -18,7 +18,7 @@ void func_ov009_0220923c(Ov009ActVt_02217594 *self) {
     func_ov000_02190a80(&self->model, 0x1000);
 }
 
-extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
+extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 
 void Ov009ActVt_02217594_Update(Ov009ActVt_02217594 *self) {
@@ -26,7 +26,7 @@ void Ov009ActVt_02217594_Update(Ov009ActVt_02217594 *self) {
     if (!Ov009_GameIdle()) {
         return;
     }
-    t = func_ov000_0218d240(self);
+    t = Actor_GetTarget(self);
     if (t == NULL) {
         return;
     }

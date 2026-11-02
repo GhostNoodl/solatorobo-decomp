@@ -31,7 +31,7 @@ ov006_MenuNode *func_ov006_021e48c0(ov006_Unk021ec888 *self, int id) {
 }
 
 ov006_MenuNode *func_ov006_021e48e8(ov006_MenuNode *self) {
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

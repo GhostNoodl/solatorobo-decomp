@@ -2,10 +2,10 @@
 
 extern "C" {
 
-extern Ov014Actor *func_ov000_02199ba0(void *p);
+extern Ov014Actor *Target_Get(void *p);
 extern void func_0203f364(Ov014Sub48 *p);
-extern void func_ov000_0218d918(Ov014Obj *self, Ov014Vec *v, s32 a);
-extern void func_ov000_0218dbe0(Ov014Obj *self, s32 a);
+extern void Actor_TurnToPos(Ov014Obj *self, Ov014Vec *v, s32 a);
+extern void Actor_Move(Ov014Obj *self, s32 a);
 extern u16 FX_Atan2(s32 x, s32 z);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
 extern void func_ov014_02208a9c(Ov014ActEx_02208618 *self);
@@ -16,7 +16,7 @@ extern void func_ov014_02208fe4(Ov014ActEx_02208618 *self);
 #define OV014_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
 void func_ov014_022087a8(Ov014ActEx_02208618 *self) {
-    Ov014Actor *o = func_ov000_02199ba0(self->unk_4c);
+    Ov014Actor *o = Target_Get(self->unk_4c);
     if (o != NULL) {
         {
             Ov014Sub48 *m = o->unk_48;
@@ -56,7 +56,7 @@ void func_ov014_022087a8(Ov014ActEx_02208618 *self) {
             self->unk_9c = Ov014_FxMul(OV014_SIN(a), 0x666);
             self->unk_a0 = Ov014_FxMul(OV014_COS(a), 0x666);
             self->rot[0] = FX_Atan2(self->pos.y - self->unk_84.y, r);
-            func_ov000_0218d918(self, &self->unk_84, 0x1000);
+            Actor_TurnToPos(self, &self->unk_84, 0x1000);
             self->unk_98 = self->rot[1];
             {
                 Ov014Sub48 *m = self->unk_48;
@@ -69,7 +69,7 @@ void func_ov014_022087a8(Ov014ActEx_02208618 *self) {
             break;
         }
         case 1:
-            func_ov000_0218dbe0(self, 0);
+            Actor_Move(self, 0);
             func_ov014_02208fe4(self);
             if ((self->unk_48->unk_50 & 0x20000000) || ++self->unk_d4 >= 200) {
                 self->unk_d0 |= 0x1000;

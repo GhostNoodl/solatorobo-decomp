@@ -81,7 +81,7 @@ void func_ov002_021e1148(void *self, u16 id) {
     info = (ov002_Info021e1148 *)func_0206ef10(id);
     mgr = data_02149ef8;
     if (id == 0x8008) {
-        s32 text = (s32)func_0204c0e8(data_02149ef8, 0x15f);
+        s32 text = (s32)MsgRes_GetString(data_02149ef8, 0x15f);
         ov002_Anim021e1148 *a = SLOT1148(0);
         if (a != NULL) {
             ov002_Anim1148_Show(a, text, 3, 0);
@@ -89,31 +89,31 @@ void func_ov002_021e1148(void *self, u16 id) {
     } else {
         s32 n = 0;
         if (info->b0) {
-            ov002_Slot1148(self, &n, (s32)func_0204c0e8(data_02149ef8, 0x156));
+            ov002_Slot1148(self, &n, (s32)MsgRes_GetString(data_02149ef8, 0x156));
         }
         if (info->b1) {
-            ov002_Slot1148(self, &n, (s32)func_0204c0e8(mgr, 0x157));
+            ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x157));
         }
         if (info->b2) {
-            ov002_Slot1148(self, &n, (s32)func_0204c0e8(mgr, 0x158));
+            ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x158));
         }
         if (info->b3) {
-            ov002_Slot1148(self, &n, (s32)func_0204c0e8(mgr, 0x159));
+            ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x159));
         }
         if (info->b4) {
-            ov002_Slot1148(self, &n, (s32)func_0204c0e8(mgr, 0x15a));
+            ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x15a));
         }
         if (info->b5) {
-            ov002_Slot1148(self, &n, (s32)func_0204c0e8(mgr, 0x15b));
+            ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x15b));
         }
         if (info->b6) {
-            ov002_Slot1148(self, &n, (s32)func_0204c0e8(mgr, 0x15c));
+            ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x15c));
         }
         if (info->b7) {
-            ov002_Slot1148(self, &n, (s32)func_0204c0e8(mgr, 0x15d));
+            ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x15d));
         }
         if (info->b8) {
-            ov002_Slot1148(self, &n, (s32)func_0204c0e8(mgr, 0x15e));
+            ov002_Slot1148(self, &n, (s32)MsgRes_GetString(mgr, 0x15e));
         }
     }
     {

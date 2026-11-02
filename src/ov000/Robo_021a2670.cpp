@@ -25,7 +25,7 @@ BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 void func_ov000_021b1dd8(void *self, s32 a, s32 b, s32 c, s32 d, s32 e);
 BOOL func_ov000_02198360(void *st, s32 a, s32 b);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 u8 *func_02065f88(s32 id, void *pos);
 void func_ov000_02168e18(void *a, s32 b, s32 c, VecFx32 *v);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
@@ -36,7 +36,7 @@ static inline Actor *GetObj021a2670(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline BOOL Jump021a2670(Robo021ca458 *self) {

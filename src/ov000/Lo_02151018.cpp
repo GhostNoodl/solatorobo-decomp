@@ -21,7 +21,7 @@ void func_ov000_02151018(Lo021ca9c4 *self) {
                 id = self->unk_5c;
                 if (id != 0xffff) {
                     if (self->unk_58 == NULL) {
-                        VObj *p = (VObj *)func_0203dd9c(0xe8);
+                        VObj *p = (VObj *)Heap_Alloc(0xe8);
                         if (p) {
                             VOBJ_SET_VTABLE(p, data_ov000_021cac60);
                             p->vfunc_28();

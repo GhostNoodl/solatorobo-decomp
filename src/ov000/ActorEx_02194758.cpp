@@ -124,23 +124,23 @@ typedef struct {
 
 extern "C" {
 extern const s16 FX_SinCosTable_[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 Info02194758 *func_0206fef8(u16 id);
 void *func_020704b4(u16 id);
 Model02194758 *func_ov000_0218fe1c(void *p);
 void func_ov000_0219badc(Model02194758 *m, Res02194758 *res, Info02194758 *info);
 Obj48_02194758 *func_ov000_021985e8(void *p);
 void func_ov000_02198c8c(Obj48_02194758 *o, u16 id);
-void func_0203f324(Obj48_02194758 *o);
+void HitSphere_Link(Obj48_02194758 *o);
 void func_0203f364(Obj48_02194758 *o);
 void func_ov000_0219864c(Obj48_02194758 *o, void *a, s32 b);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 Obj44_02194758 *func_ov000_021984c8(void *p);
 void func_ov000_021984f4(Obj44_02194758 *o, void *a, s32 b);
 void func_0203f80c(void *p);
-void func_0203f990(void *mesh, void *res);
-void func_0203f9b8(void *mesh, s32 scale);
-void func_0203f9dc(void *mesh, const Mtx43_02194758 *mtx);
+void HitMesh_SetRes(void *mesh, void *res);
+void HitMesh_SetScale(void *mesh, s32 scale);
+void HitMesh_SetMtx(void *mesh, const Mtx43_02194758 *mtx);
 void func_ov000_021bd198(void *p);
 BOOL func_ov000_021bd314(Obj5c_02194758 *p, s32 a);
 void MTX_Identity43_(Mtx43_02194758 *m);
@@ -153,7 +153,7 @@ void MTX_Concat43(Mtx43_02194758 *a, Mtx43_02194758 *b, Mtx43_02194758 *out);
 #define COS02194758(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
 static inline Model02194758 *NewModel02194758(void) {
-    void *p = func_0203dd9c(0xe8);
+    void *p = Heap_Alloc(0xe8);
     if (p != NULL) {
         p = func_ov000_0218fe1c(p);
     }
@@ -161,7 +161,7 @@ static inline Model02194758 *NewModel02194758(void) {
 }
 
 static inline Obj48_02194758 *NewObj48_02194758(void) {
-    void *p = func_0203dd9c(0x9c);
+    void *p = Heap_Alloc(0x9c);
     if (p != NULL) {
         p = func_ov000_021985e8(p);
     }
@@ -169,7 +169,7 @@ static inline Obj48_02194758 *NewObj48_02194758(void) {
 }
 
 static inline Obj44_02194758 *NewObj44_02194758(void) {
-    void *p = func_0203dd9c(0x24);
+    void *p = Heap_Alloc(0x24);
     if (p != NULL) {
         p = func_ov000_021984c8(p);
     }
@@ -177,7 +177,7 @@ static inline Obj44_02194758 *NewObj44_02194758(void) {
 }
 
 static inline void *NewMesh02194758(void) {
-    void *p = func_0203dd9c(0x98);
+    void *p = Heap_Alloc(0x98);
     if (p != NULL) {
         func_0203f80c(p);
     }
@@ -185,7 +185,7 @@ static inline void *NewMesh02194758(void) {
 }
 
 static inline Obj5c_02194758 *NewObj5c_02194758(void) {
-    void *p = func_0203dd9c(0xa8);
+    void *p = Heap_Alloc(0xa8);
     if (p != NULL) {
         func_ov000_021bd198(p);
     }
@@ -221,7 +221,7 @@ void func_ov000_02194758(Actor02194758 *self) {
         o = self->unk_48;
         o->b0 = 1;
         o->b3 = 1;
-        func_0203f324(o);
+        HitSphere_Link(o);
         *(u16 *)((u8 *)self->unk_48 + 0x9a) |= 0x12;
         if (self->unk_b0->type == 2) {
             o = self->unk_48;
@@ -269,8 +269,8 @@ void func_ov000_02194758(Actor02194758 *self) {
         u16 rz;
         BOOL set;
         self->unk_58 = NewMesh02194758();
-        func_0203f990(self->unk_58, GetRes02194758(self->unk_34));
-        func_0203f9b8(self->unk_58, info->unk_10);
+        HitMesh_SetRes(self->unk_58, GetRes02194758(self->unk_34));
+        HitMesh_SetScale(self->unk_58, info->unk_10);
         mesh = self->unk_58;
         rz = self->rz;
         ry = self->ry;
@@ -301,7 +301,7 @@ void func_ov000_02194758(Actor02194758 *self) {
         m.m[3][0] = self->pos.x;
         m.m[3][1] = self->pos.y;
         m.m[3][2] = self->pos.z;
-        func_0203f9dc(mesh, &m);
+        HitMesh_SetMtx(mesh, &m);
         self->cc_0 = 1;
     }
     if (self->unk_b0->b7) {

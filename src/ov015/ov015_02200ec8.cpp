@@ -82,7 +82,7 @@ void func_ov015_02200f74(Ov015Game *self) {
 void *Ov015Result_DtorDelete(void *self) {
     SET_VT(self, data_ov015_022128ec);
     func_ov015_0220f4d4(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -94,7 +94,7 @@ void func_ov015_0220101c(Ov015Game *self) {
     if (o != NULL) {
         if (o != NULL) {
             func_ov015_02207738(o);
-            func_0203de1c(o);
+            Heap_Free(o);
         }
         self->unk_18 = NULL;
     }
@@ -131,7 +131,7 @@ void *func_ov015_022011c4(u8 *self) {
     func_ov000_0218ea20(self + 0x224);
     func_ov000_0218fee4(self + 0x13c);
     func_ov000_0218ea20(self + 0x4);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -147,7 +147,7 @@ void *func_ov015_02201220(u8 *self) {
                 if (o != NULL) {
                     func_02041558(o);
                     func_02041278(o + 0x88);
-                    func_0203de1c(o);
+                    Heap_Free(o);
                 }
                 FLD(void *, self, 0x24) = NULL;
             }
@@ -163,7 +163,7 @@ void *func_ov015_02201220(u8 *self) {
                 if (o != NULL) {
                     func_02041558(o);
                     func_02041278(o + 0x88);
-                    func_0203de1c(o);
+                    Heap_Free(o);
                 }
                 FLD(void *, self, 0x28) = NULL;
             }
@@ -172,14 +172,14 @@ void *func_ov015_02201220(u8 *self) {
     }
     func_0206e900(buf, data_ov015_022128ab);
     func_02036838(data_02097cdc, buf, 7, 0);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
 void *Ov015MsgMgr_DtorDelete(void *self) {
     SET_VT(self, data_ov015_02213198);
     func_ov015_02210b58(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

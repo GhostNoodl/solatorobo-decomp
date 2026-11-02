@@ -11,7 +11,7 @@ typedef struct {
 
 extern "C" {
 extern u8 *data_ov000_021ccd68;
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 angle);
 
 static inline void VecSet_021b4130(VecFx32 *v, s32 x, s32 y, s32 z) {
@@ -24,7 +24,7 @@ static inline Actor *FindActor_021b4130(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {

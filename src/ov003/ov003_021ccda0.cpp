@@ -54,12 +54,12 @@ extern "C" {
 extern u8 data_ov000_021cc060[];
 extern u8 data_ov003_021f78f4[];
 extern u8 data_ov003_021f78e4[];
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void func_ov000_021c2208(void *p);
 
 #pragma force_active on
 Ov003Scene *func_ov003_021ccda0(void) {
-    Ov003Scene *p = (Ov003Scene *)func_0203dd9c(0xcc);
+    Ov003Scene *p = (Ov003Scene *)Heap_Alloc(0xcc);
     if (p != NULL) {
         *(void **)p = data_ov000_021cc060;
         p->Reset();

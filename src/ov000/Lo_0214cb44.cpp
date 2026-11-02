@@ -12,7 +12,7 @@ extern u8 *data_02097d48;
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void func_ov000_0214d304(VObj *self, s32 a, s32 *pos, s32 d);
 void func_ov000_0214d994(VObj *self);
 
@@ -70,7 +70,7 @@ void func_ov000_0214cb44(Obj0214cb44 *self, s32 a, s32 *pos, s32 d) {
         z = self->unk_68 - 0x110;
         x = (pos[0] + ((self->unk_24 - 0x80) + ((0x100 - self->unk_24) >> 1))) << 12;
         y = pos[1] + (((self->unk_28 >> 1) - 0x60) << 12);
-        LFLD(LoAlpha0214cb44, self->unk_84, 0x6c).alpha = func_02043d48(data_02097d48 + 0x8b0);
+        LFLD(LoAlpha0214cb44, self->unk_84, 0x6c).alpha = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
         {
             u8 *o = (u8 *)self->unk_84;
             LFLD(s32, o, 0xfc) = x;

@@ -22,7 +22,7 @@ extern int data_02097d78[5];
 extern int data_02097d8c[5];
 extern int data_02097da0[5];
 extern int data_02097db4[5];
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void func_02043858(void *obj);
 void func_0203b70c(GfxSys *sys);
 
@@ -57,7 +57,7 @@ extern void func_0203c880(GfxSys *sys);
 extern void GX_SetGraphicsMode(int a, int b, int c);
 extern void NNS_G2dApplyAndResetOamManagerBuffer(void *obj);
 extern void G3X_Reset(void);
-extern void func_020438e8(void *obj);
+extern void Gfx3DState_Reset(void *obj);
 extern void func_02043d20(void *obj, int a);
 extern void NNS_G3dGeSendDL(void *a, int b);
 extern void NNS_G3dGeFlushBuffer(void);
@@ -218,7 +218,7 @@ static inline int FX_Mul(int a, int b) {
 extern "C" {
 
 extern void func_0203d040(int v);
-extern u8 func_02043d48(void *obj);
+extern u8 Gfx3DState_NextPolyId(void *obj);
 extern void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 extern void func_02043db4(int a, int b, int c, int d);
 
@@ -246,7 +246,7 @@ void func_0203b6a0(void) {
         return;
     }
     data_02097dd0->cur = data_02097dd0->unk_04;
-    sys = (GfxSys *)func_0203dd9c(sizeof(GfxSys));
+    sys = (GfxSys *)Heap_Alloc(sizeof(GfxSys));
     if (sys != NULL) {
         func_02043858(sys->unk_8b0);
         func_0203b70c(sys);
@@ -322,13 +322,13 @@ void func_0203b70c(GfxSys *sys) {
     }
 }
 
-void func_0203b924(GfxSys *sys, u16 color) {
+void GfxSys_SetBackdrop(GfxSys *sys, u16 color) {
     sys->unk_008 = color;
     DC_FlushAll();
     GX_LoadBGPltt(&sys->unk_008, 0, 2);
 }
 
-void func_0203b948(GfxSys *sys, u16 color) {
+void GfxSys_SetBackdropSub(GfxSys *sys, u16 color) {
     sys->unk_00a = color;
     DC_FlushAll();
     GXS_LoadBGPltt(&sys->unk_00a, 0, 2);
@@ -358,7 +358,7 @@ void func_0203b96c(GfxSys *sys) {
     NNS_G2dApplyAndResetOamManagerBuffer(sys->unk_02c);
     NNS_G2dApplyAndResetOamManagerBuffer(sys->unk_048);
     G3X_Reset();
-    func_020438e8(sys->unk_8b0);
+    Gfx3DState_Reset(sys->unk_8b0);
     g = data_02097d48;
     if (g->unk_8b0_5) {
         REG32(0x4000000) = (REG32(0x4000000) & ~0xe000) | 0x2000;
@@ -987,7 +987,7 @@ void func_0203d040(int v) {
     sys = data_02097d48;
     t = FX_Div((v < 0 ? -v : v) << 12, 16 << 12);
     func_02043d20(data_02097d48->unk_8b0, 0);
-    polyAttr = G3_PackPolygonAttr(0, 1, 3, func_02043d48(sys->unk_8b0), FX_Mul(t, 0x1f000) >> 12, 0);
+    polyAttr = G3_PackPolygonAttr(0, 1, 3, Gfx3DState_NextPolyId(sys->unk_8b0), FX_Mul(t, 0x1f000) >> 12, 0);
     NNS_G3dGeBufferOP_N(0x29, &polyAttr, 1);
     texParam = 0x20000000;
     NNS_G3dGeBufferOP_N(0x2a, &texParam, 1);

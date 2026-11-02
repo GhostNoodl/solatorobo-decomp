@@ -64,7 +64,7 @@ extern char data_ov000_021ccc68[];
 extern char data_ov000_021ccc72[];
 extern char data_ov000_021ccc7e[];
 extern u8 data_ov002_021f0f90;
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_02043858(void *p);
 void *func_020359d0(void *p, s32 a, s32 b);
 void func_020359fc(void *p, void *q, s32 a, s32 b);
@@ -86,8 +86,8 @@ extern u8 data_ov000_021ccd34;
 extern Cam021c930c *data_ov000_021ccd54;
 Obj0218084c *func_ov000_0218084c(void *a, s32 b, s32 c);
 
-VObj *func_ov000_021c9020(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0x1c4);
+VObj *Ov000TaskVt_021ccc94_New(void) {
+    VObj *obj = (VObj *)Heap_Alloc(0x1c4);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_ov000_021cc060);
         obj->vfunc_58();

@@ -3,8 +3,8 @@
 extern "C" {
 
 extern char data_ov013_0220be7c[];
-extern Ov013Actor *func_ov000_0218d240(Ov013Obj *self);
-extern void func_ov000_0218d988(Ov013Actor *self, Ov013Actor *t, s32 a);
+extern Ov013Actor *Actor_GetTarget(Ov013Obj *self);
+extern void Actor_TurnToActor(Ov013Actor *self, Ov013Actor *t, s32 a);
 
 void func_ov013_02206ca8(Ov013Actor *self) {
     Ov013Actor *t;
@@ -17,22 +17,22 @@ void func_ov013_02206ca8(Ov013Actor *self) {
         self->unk_a8 = 0;
         self->unk_40->state++;
     }
-    t = func_ov000_0218d240(self);
+    t = Actor_GetTarget(self);
     if (t != NULL) {
-        func_ov000_0218d988(self, t, 0xcd);
+        Actor_TurnToActor(self, t, 0xcd);
     }
 }
 
 extern void *data_ov000_021ccd68;
 extern char data_ov013_0220be82[];
-extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_021911c8(void *p, s32 a);
 
 static inline Ov013Actor *Ov013_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 void func_ov013_02206d28(Ov013ActVt_0220bdd8 *self) {
@@ -50,7 +50,7 @@ void func_ov013_02206d28(Ov013ActVt_0220bdd8 *self) {
         self->unk_ea_0 = 3;
         break;
     case 1:
-        func_ov000_0218d988(self, t, 0x400);
+        Actor_TurnToActor(self, t, 0x400);
         if (self->unk_38->unk_c4 != 1) {
             return;
         }
@@ -88,8 +88,8 @@ struct Ov013Blk12 {
 extern void *data_02097e4c;
 extern char data_ov013_0220be88[];
 extern const Ov013Blk12 data_ov013_0220b3e0;
-extern void *func_ov000_0218e4cc(void *mgr, s32 a);
-extern u16 func_ov000_0218dfb4(void *p, s32 a);
+extern void *ActorMgr_GetGroup(void *mgr, s32 a);
+extern u16 ActorGroup_CountKind(void *p, s32 a);
 extern Ov013Actor *func_ov003_021d69a0(Ov013Actor *self, s32 a, s32 b);
 extern void func_ov000_0219a210(Ov013Vec *p, Ov013Vec *o, u16 rot);
 extern void *func_0204a028(void *a, s32 b, Ov013Vec *c, s32 d);
@@ -112,10 +112,10 @@ void func_ov013_02206edc(Ov013ActVt_0220bdd8 *self) {
         break;
     case 5:
         if (self->unk_38->unk_c4 == 1) {
-            mgr = func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000);
+            mgr = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
             if (mgr != NULL) {
-                flip = func_02040498(1);
-                if (func_ov000_0218dfb4(mgr, 0x540c) < 2) {
+                flip = Rand_UpTo(1);
+                if (ActorGroup_CountKind(mgr, 0x540c) < 2) {
                     Ov013Vec p;
                     Ov013Vec o;
                     Ov013Blk12 base = data_ov013_0220b3e0;
@@ -124,8 +124,8 @@ void func_ov013_02206edc(Ov013ActVt_0220bdd8 *self) {
                         if (a != NULL) {
                             *(Ov013Blk12 *)&p = *(Ov013Blk12 *)&self->pos;
                             *(Ov013Blk12 *)&o = base;
-                            o.x = func_02040498(0x1800) + 0x1000;
-                            o.y = func_02040528(0x666) + -0x333;
+                            o.x = Rand_UpTo(0x1800) + 0x1000;
+                            o.y = Rand_PlusMinus(0x666) + -0x333;
                             if (!flip) {
                                 flip = 1;
                             } else {
@@ -141,7 +141,7 @@ void func_ov013_02206edc(Ov013ActVt_0220bdd8 *self) {
                             }
                             Ov013_VecCopy(&a->pos, &p);
                         }
-                    } while (func_ov000_0218dfb4(mgr, 0x540c) < 2);
+                    } while (ActorGroup_CountKind(mgr, 0x540c) < 2);
                 }
             }
         }
@@ -206,7 +206,7 @@ void func_ov013_02207180(Ov013ActVt_0220bdd8 *self) {
         self->unk_40->state = 1;
         break;
     case 1:
-        func_ov000_0218d988(self, t, 0x400);
+        Actor_TurnToActor(self, t, 0x400);
         if (self->unk_38->unk_c4 != 1) {
             return;
         }

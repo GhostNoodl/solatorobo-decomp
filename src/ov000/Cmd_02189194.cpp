@@ -149,7 +149,7 @@ void func_ov000_021645a4(s32 a);
 void func_020656b4(void *p);
 void func_ov000_021b53f4(void *p);
 void func_ov000_0218be9c(void *p);
-void func_ov000_0218e894(void *p);
+void ActorMgr_DestroyAll(void *p);
 
 static inline BOOL IsMode(s32 m) {
     BOOL r;
@@ -406,7 +406,7 @@ s32 func_ov000_02189194(CmdEx *self) {
         func_020656b4(data_0214a420);
         func_ov000_021b53f4(data_ov000_021ccd6c);
         func_ov000_0218be9c(data_ov000_021ccd64);
-        func_ov000_0218e894(data_ov000_021ccd68);
+        ActorMgr_DestroyAll(data_ov000_021ccd68);
         {
             self->unk_ac = 1;
             self->unk_ca.c[0] = 0xff;

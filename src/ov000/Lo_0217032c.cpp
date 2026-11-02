@@ -11,7 +11,7 @@ BOOL func_020658cc(void *a, s32 b);
 s32 func_0204c08c(void *res, u16 id, s32 *out, s32 d);
 void func_02050748(void *p);
 void func_020508f4(void *p, s32 n);
-void *func_0204c0e8(void *a, s32 b);
+void *MsgRes_GetString(void *a, s32 b);
 void func_ov000_0215c1bc(void *p, s32 a, void *b);
 void func_ov000_0215ced8(void *p, s32 a, s32 b);
 
@@ -47,7 +47,7 @@ BOOL func_ov000_0217032c(Obj0217032c *self, void *res, u32 id) {
         return FALSE;
     }
     v = func_0204c08c(res, (u16)id, &n, 1);
-    p = (u8 *)func_0203dd9c(0x210);
+    p = (u8 *)Heap_Alloc(0x210);
     if (p) {
         func_02050748(p);
     }
@@ -84,7 +84,7 @@ BOOL func_ov000_02170448(Obj02170448 *self, void *res, u32 id) {
     }
     hi = id >> 16;
     lo = id;
-    p = (VObj *)func_0203dd9c(0xe8);
+    p = (VObj *)Heap_Alloc(0xe8);
     if (p) {
         *(void **)p = data_ov000_021cac60;
         p->vfunc_28();
@@ -94,7 +94,7 @@ BOOL func_ov000_02170448(Obj02170448 *self, void *res, u32 id) {
     self->unk_30 = p;
     p->vfunc_08();
     if ((hi & 0xfc00) == 0x8000) {
-        func_ov000_0215c1bc(self->unk_30, hi, func_0204c0e8(res, lo));
+        func_ov000_0215c1bc(self->unk_30, hi, MsgRes_GetString(res, lo));
     } else {
         func_ov000_0215ced8(self->unk_30, hi, lo);
     }

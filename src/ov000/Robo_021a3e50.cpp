@@ -14,9 +14,9 @@ extern u8 *data_ov000_021ccd54;
 extern u8 *data_0214a424;
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc648[];
-Actor *func_ov000_0218e640(void *mgr, u16 id);
-void func_ov000_0218d398(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-void func_ov000_0218d988(void *self, void *other, s32 step);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
+void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_TurnToActor(void *self, void *other, s32 step);
 BOOL func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
 void func_ov000_021915a0(void *p);
 void func_020627a0(u16 a, u16 b);
@@ -30,7 +30,7 @@ static inline Actor *FindActor021a3e50(u16 id) {
     if (mgr == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(mgr, id);
+    return ActorMgr_GetActor(mgr, id);
 }
 
 static inline BOOL IsBusy021a3e50(void) {
@@ -64,12 +64,12 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
             m.a = 1;
             m.b = 0x19a;
             m.c = 1;
-            func_ov000_0218d398(t, self->id, 5, TRUE, 6, &m);
+            Actor_SendMsg(t, self->id, 5, TRUE, 6, &m);
             if (t->kind == 0x2003) {
                 u16 v;
                 self->unk_40->st++;
                 v = LFLD(u16, ((u8 *)self->hp), 2);
-                func_ov000_0218d398(self, self->id, 10, TRUE, 2, &v);
+                Actor_SendMsg(self, self->id, 10, TRUE, 2, &v);
             } else {
                 self->unk_40->st = 10;
                 if (self->unk_bac != self->target) {
@@ -132,14 +132,14 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
             m.a = 0;
             m.b = 0x19a;
             m.c = 1;
-            func_ov000_0218d398(t, self->id, 5, TRUE, 6, &m);
+            Actor_SendMsg(t, self->id, 5, TRUE, 6, &m);
         }
         self->unk_b2f = 0x2d;
         self->target = 0xffff;
         func_ov000_02198360(self->unk_40, 1, 0);
         break;
     }
-    func_ov000_0218d988(self, t, 0x400);
+    Actor_TurnToActor(self, t, 0x400);
 }
 
 }

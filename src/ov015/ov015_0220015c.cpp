@@ -51,7 +51,7 @@ BOOL func_ov015_02200204(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
         u8 *m;
         a->unk_d3c = 1;
         a->unk_d4c = b->unk_40;
-        m = (u8 *)func_0203dd9c(0x2c);
+        m = (u8 *)Heap_Alloc(0x2c);
         if (m != NULL) m = (u8 *)Ov015FishState2c_Ctor((Ov015FishState2c *)m);
         func_ov015_02209b80(b, (s32)m, 2);
         b->unk_ac = -0x32000;

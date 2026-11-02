@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void *data_ov000_021ccd64;
-extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
+extern u8 *Group_FindNode(void *mgr, u16 id);
 
 struct Ov009Byte {
     u8 b0 : 1;
@@ -19,7 +19,7 @@ void func_ov009_021fc7c0(Ov009Actor *self) {
         return;
     }
     self->pos.y += 0x4000;
-    p = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+    p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
         ((Ov009Byte *)(p + 0xa2))->b0 = 0;
     }
@@ -45,19 +45,19 @@ void func_ov009_021fc834(Ov009Actor *self) {
 extern void *data_02097e4c;
 extern u8 data_ov009_02216ac8[];
 extern u8 data_ov009_02216ab0[];
-extern s32 func_02040498(s32 max);
+extern s32 Rand_UpTo(s32 max);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_0218999c(s32 a, s32 b);
-extern void func_ov000_0218dbe0(Ov009Obj *self, s32 turn);
+extern void Actor_Move(Ov009Obj *self, s32 turn);
 extern BOOL func_ov000_02191120(void *m);
 void func_ov009_021fc8f4(Ov009Actor *self) {
     Ov009Sub40 *st = self->unk_40;
     Ov009Sub38 *m;
     switch (st->state) {
     case 0:
-        self->unk_40->timer = func_02040498(0x4b);
+        self->unk_40->timer = Rand_UpTo(0x4b);
         self->unk_40->state++;
         break;
     case 1:
@@ -88,7 +88,7 @@ void func_ov009_021fc8f4(Ov009Actor *self) {
             self->unk_a8 = 0;
             self->unk_40->state++;
         } else {
-            func_ov000_0218dbe0(self, 0);
+            Actor_Move(self, 0);
             func_ov000_021987b8(self->unk_48, 1, 0, 0);
         }
         break;

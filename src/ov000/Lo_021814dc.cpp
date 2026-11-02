@@ -63,12 +63,12 @@ extern u8 *data_02149ef0;
 extern VObj *data_ov000_021ccd30;
 extern u8 data_ov000_021cb9b0[];
 extern u8 data_ov000_021cb980[];
-void *func_0203dd9c(u32 size);
-void func_0203fc1c(void);
+void *Heap_Alloc(u32 size);
+void Hit_ResetLists(void);
 void func_0206298c(void);
 void *func_ov000_02188ba0(void *p);
 void func_ov000_021b4eec(void);
-void func_ov000_0218e0f0(void);
+void ActorMgr_Create(void);
 void *func_ov000_0218bb34(void *p);
 void func_020654b8(void);
 void func_ov000_021bc274(void);
@@ -95,14 +95,14 @@ void func_0206fa70(void);
 void func_0206ea7c(void);
 void func_ov000_021bc2d8(void);
 void func_ov000_021b4f28(void);
-u16 func_ov000_0218e808(void *p, s32 a);
+u16 ActorMgr_CountActors(void *p, s32 a);
 void func_0204b270(void *p, s32 a, s32 b);
-void *func_ov000_0218bb58(void *p);
-void func_ov000_0218e12c(void);
+void *Group_Clear(void *p);
+void ActorMgr_Destroy(void);
 void func_02065534(void);
 void *func_ov000_02189b14(void *p);
 void func_02062a24(void);
-s32 func_0203dbb0(void *p, s32 a);
+s32 PauseNode_IsUpdatePaused(void *p, s32 a);
 void func_0205a358(void *p);
 void func_ov000_02182590(void *p);
 BOOL func_0205b4ac(void);
@@ -111,11 +111,11 @@ s32 func_ov000_02189194(void *p);
 void func_ov000_021b5110(void *p);
 void func_ov000_0218c25c(void *p);
 void func_ov000_0218be54(void *p);
-void func_ov000_0218e338(void *p);
+void ActorMgr_Update(void *p);
 void func_02065ac0(void *p);
 void func_0203cd10(void);
 void func_ov000_021b53a8(void *p);
-void func_ov000_0218e3d4(void *p);
+void ActorMgr_Draw(void *p);
 void func_02065b84(void *p);
 void func_ov000_021bc6c0(void *p);
 void func_0205a69c(void *p);
@@ -129,19 +129,19 @@ void func_ov000_021814dc(void) {
     data_ov000_021ccd5c = NULL;
     data_ov000_021ccd58 = NULL;
     data_ov000_021ccd60 = NULL;
-    func_0203fc1c();
+    Hit_ResetLists();
     func_0206298c();
     if (data_ov000_021ccd54 == NULL) {
-        void *p = func_0203dd9c(0x214);
+        void *p = Heap_Alloc(0x214);
         if (p != NULL) {
             p = func_ov000_02188ba0(p);
         }
         data_ov000_021ccd54 = (u8 *)p;
     }
     func_ov000_021b4eec();
-    func_ov000_0218e0f0();
+    ActorMgr_Create();
     if (data_ov000_021ccd64 == NULL) {
-        void *p = func_0203dd9c(0x48);
+        void *p = Heap_Alloc(0x48);
         if (p != NULL) {
             p = func_ov000_0218bb34(p);
         }
@@ -151,7 +151,7 @@ void func_ov000_021814dc(void) {
     *(void **)data_0214a420 = ((u8 *)data_ov000_021ccd54) + 8;
     func_ov000_021bc274();
     if (data_ov000_021ccd30 == NULL) {
-        VObj *obj = (VObj *)func_0203dd9c(0x120);
+        VObj *obj = (VObj *)Heap_Alloc(0x120);
         if (obj != NULL) {
             VOBJ_SET_VTABLE(obj, data_ov000_021cb9b0);
             func_ov000_0216f360(obj);
@@ -215,7 +215,7 @@ void func_ov000_02181624(void) {
         u8 **scene = &data_02149ef0;
         // Overlay id: a link-time symbol in the original, so it comes from the literal pool.
         asm { ldr m, =3 }
-        if (m != LFLD(s32, *scene, 0x2c) && func_ov000_0218e808(data_ov000_021ccd68, 0xf000) != 0) {
+        if (m != LFLD(s32, *scene, 0x2c) && ActorMgr_CountActors(data_ov000_021ccd68, 0xf000) != 0) {
             func_0204b270(*scene, m, 0);
         }
     }
@@ -224,13 +224,13 @@ void func_ov000_02181624(void) {
     obj = (u8 *)data_ov000_021ccd64;
     if (obj != NULL) {
         if (obj != NULL) {
-            func_ov000_0218bb58(obj);
-            func_0203de1c(obj);
+            Group_Clear(obj);
+            Heap_Free(obj);
         }
         data_ov000_021ccd64 = (void *)zero;
     }
     data_02097dd0->current = saved;
-    func_ov000_0218e12c();
+    ActorMgr_Destroy();
     func_02065534();
     saved = data_02097dd0->current;
     data_02097dd0->current = data_02097dd0->unk_08;
@@ -239,7 +239,7 @@ void func_ov000_02181624(void) {
         if (obj != NULL) {
             func_ov000_02189b14(obj + 0xf4);
             func_ov000_021819a4((Obj021819a4 *)(obj + 0xac));
-            func_0203de1c(obj);
+            Heap_Free(obj);
         }
         data_ov000_021ccd54 = (u8 *)zero;
     }
@@ -251,7 +251,7 @@ void func_ov000_02181624(void) {
 void func_ov000_021817d4(void) {
     
     s32 r;
-    if (func_0203dbb0(((u8 *)data_ov000_021ccd54) + 8, 1) != 0) {
+    if (PauseNode_IsUpdatePaused(((u8 *)data_ov000_021ccd54) + 8, 1) != 0) {
         return;
     }
     func_0205a358(data_02149f0c);
@@ -274,7 +274,7 @@ void func_ov000_021817d4(void) {
             func_ov000_0218be54(data_ov000_021ccd64);
         }
         if (data_ov000_021ccd68 != NULL) {
-            func_ov000_0218e338(data_ov000_021ccd68);
+            ActorMgr_Update(data_ov000_021ccd68);
         }
         func_02065ac0(data_0214a420);
     } else {
@@ -292,7 +292,7 @@ void func_ov000_0218190c(void) {
         func_ov000_021b53a8(data_ov000_021ccd6c);
     }
     if (data_ov000_021ccd68 != NULL) {
-        func_ov000_0218e3d4(data_ov000_021ccd68);
+        ActorMgr_Draw(data_ov000_021ccd68);
     }
     func_02065b84(data_0214a420);
     func_ov000_021bc6c0(data_ov000_021ccd70);
@@ -344,15 +344,15 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208bf54[];
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 void func_0205a6e8(void *ptr);
 
-VObj *func_ov000_02181ab0(VObj *self) {
+VObj *Ov000Vt_021cc158_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_0208bf54);
     func_0205a6e8(self);
     VOBJ_SET_VTABLE(self, data_0208b318);
     self->vfunc_0c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -536,7 +536,7 @@ BOOL func_ov000_02181d70(Lo02181d70 *self, u16 id) {
             return TRUE;
         }
         LO_FREE_V(self, 4);
-        obj = (VObj *)func_0203dd9c(0xc4);
+        obj = (VObj *)Heap_Alloc(0xc4);
         if (obj != NULL) {
             VOBJ_SET_VTABLE(obj, data_0208b318);
             obj->vfunc_08();
@@ -632,7 +632,7 @@ void func_ov000_02181f54(u8 *self, u16 id, u16 a, u16 b, u16 c, u16 d) {
         }
         LO_FREE_V(self, 0xc);
     }
-    obj = (VObj *)func_0203dd9c(0xd8);
+    obj = (VObj *)Heap_Alloc(0xd8);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b318);
         obj->vfunc_08();
@@ -752,7 +752,7 @@ extern char data_ov000_021cc138[];
 extern char data_ov000_021cc111[];
 extern char data_ov000_021cc147[];
 void func_020592c4(void *res, s32 a, s32 b, s32 id, s32 e);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_0205a6a0(Widget02182190 *w);
 void func_0205a840(Widget02182190 *w, char *path, char *name);
 int func_0200779c(char *dst, const char *fmt, ...);
@@ -779,7 +779,7 @@ void func_ov000_02182190(Panel02182190 *self, u16 id, u16 order, u16 c, u16 d, u
     if (count >= 1) {
         return;
     }
-    w = (Widget02182190 *)func_0203dd9c(0xd8);
+    w = (Widget02182190 *)Heap_Alloc(0xd8);
     if (w != NULL) {
         *(VFunc02182190 **)w = data_0208b318;
         w->vfunc_08();
@@ -1429,7 +1429,7 @@ extern Obj021ccd6c *data_ov000_021ccd6c;
 
 void func_02058fe4(void);
 void func_02058f2c(void);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_ov000_0216f144(Task *self);
 void func_ov000_0216faac(Task *self);
 void func_ov000_0216f828(Task *self);
@@ -1480,7 +1480,7 @@ s32 func_ov000_02182cb8(CmdEx *self) {
         data_02fe152c->vfunc_30();
         mgr = data_ov000_021ccd30;
         if (mgr->unk_11c == NULL) {
-            Task *task = (Task *)func_0203dd9c(0x80);
+            Task *task = (Task *)Heap_Alloc(0x80);
             if (task != NULL) {
                 task->vtable = data_ov000_021cb6d0;
                 func_ov000_0216f144(task);
@@ -1493,7 +1493,7 @@ s32 func_ov000_02182cb8(CmdEx *self) {
         }
         mgr = data_ov000_021ccd30;
         if (mgr->unk_118 == NULL) {
-            Task *task = (Task *)func_0203dd9c(0x34);
+            Task *task = (Task *)Heap_Alloc(0x34);
             if (task != NULL) {
                 task->vtable = data_ov000_021cb6d0;
                 func_ov000_0216f144(task);
@@ -1663,7 +1663,7 @@ void func_ov000_0214baa8(void);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
 s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
@@ -1676,12 +1676,12 @@ extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
-BOOL func_ov000_0218e470(void *p);
+BOOL ActorMgr_IsReady(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
 BOOL func_02046e28(void *p);
 void func_02049678(void *p, s32 a, s32 b, s32 c);
-BOOL func_0204985c(void *p);
+BOOL SndMgr_IsLoadDone(void *p);
 void func_ov000_02187564(void);
 void func_ov000_02187570(void);
 void func_ov000_0218757c(void);
@@ -1766,7 +1766,7 @@ void func_ov000_0214baa8(void);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
 s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
@@ -1779,12 +1779,12 @@ extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
-BOOL func_ov000_0218e470(void *p);
+BOOL ActorMgr_IsReady(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
 BOOL func_02046e28(void *p);
 void func_02049678(void *p, s32 a, s32 b, s32 c);
-BOOL func_0204985c(void *p);
+BOOL SndMgr_IsLoadDone(void *p);
 void func_ov000_02187564(void);
 void func_ov000_02187570(void);
 void func_ov000_0218757c(void);
@@ -1980,7 +1980,7 @@ void func_ov000_0214baa8(void);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
 s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
@@ -1993,12 +1993,12 @@ extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
-BOOL func_ov000_0218e470(void *p);
+BOOL ActorMgr_IsReady(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
 BOOL func_02046e28(void *p);
 void func_02049678(void *p, s32 a, s32 b, s32 c);
-BOOL func_0204985c(void *p);
+BOOL SndMgr_IsLoadDone(void *p);
 void func_ov000_02187564(void);
 void func_ov000_02187570(void);
 void func_ov000_0218757c(void);
@@ -2139,7 +2139,7 @@ extern void *data_0214a424;
 extern void *data_02097e4c;
 extern Mgr021ccd30 *data_ov000_021ccd30;
 Obj0219bf90 *func_ov000_0219bf90(void);
-Actor0218e640 *func_ov000_0218e640(void *mgr, u16 id);
+Actor0218e640 *ActorMgr_GetActor(void *mgr, u16 id);
 void func_02062478(Id3 *id);
 void func_ov000_02182590(u8 *p);
 void func_020624b8(void);
@@ -2196,7 +2196,7 @@ s32 func_ov000_02183a10(CmdEx *self) {
             Actor0218e640 *actor = NULL;
             u16 id = obj->unk_b1c;
             if (data_ov000_021ccd68 != NULL) {
-                actor = func_ov000_0218e640(data_ov000_021ccd68, id);
+                actor = ActorMgr_GetActor(data_ov000_021ccd68, id);
             }
             if (actor != NULL) {
                 data_02fe1534.unk_24 = actor->unk_0e;
@@ -2392,7 +2392,7 @@ void func_ov000_021645a4(s32 a);
 void func_020656b4(void *p);
 void func_ov000_021b53f4(void *p);
 void func_ov000_0218be9c(void *p);
-void func_ov000_0218e894(void *p);
+void ActorMgr_DestroyAll(void *p);
 void func_ov000_0216f6d0(Mgr021ccd30 *p, s32 a, s32 b, s32 c);
 BOOL func_ov000_021b5578(void *p);
 void func_ov000_021b5dc0(void *p);
@@ -2400,7 +2400,7 @@ void func_ov000_021b628c(void *p);
 void func_ov003_021cfa30(void);
 void func_ov000_0218c25c(void *p);
 void func_ov000_0218be54(void *p);
-BOOL func_ov000_0218e470(void *p);
+BOOL ActorMgr_IsReady(void *p);
 void func_ov000_0216f844(Task118 *p, s32 a);
 
 static inline u32 ProtHash(const u32 *p) {
@@ -2522,7 +2522,7 @@ s32 func_ov000_02183db8(CmdEx *self) {
                 func_020656b4(data_0214a420);
                 func_ov000_021b53f4(data_ov000_021ccd6c);
                 func_ov000_0218be9c(data_ov000_021ccd64);
-                func_ov000_0218e894(data_ov000_021ccd68);
+                ActorMgr_DestroyAll(data_ov000_021ccd68);
             } else {
                 self->unk_d0 = self->unk_ca;
                 self->unk_ca = self->unk_cd;
@@ -2581,7 +2581,7 @@ s32 func_ov000_02183db8(CmdEx *self) {
             }
             break;
         case 2:
-            if (func_ov000_0218e470(data_ov000_021ccd68)) {
+            if (ActorMgr_IsReady(data_ov000_021ccd68)) {
                 if (data_ov000_021ccd30->unk_118 != NULL) {
                     func_ov000_0216f844(data_ov000_021ccd30->unk_118, 1);
                 }
@@ -2723,10 +2723,10 @@ typedef struct {
 extern "C" {
 extern s32 data_02097d78[];
 Obj0219bf90 *func_ov000_0219bf90(void);
-VObj *func_ov000_0219bfbc(void *p);
-void *func_0203dd9c(u32 size);
+VObj *Robo021ca458_Ctor(void *p);
+void *Heap_Alloc(u32 size);
 s32 func_0206ffa0(s32 a);
-void func_ov000_0218d1c0(void *self, u16 id, u16 kind, s32 arg);
+void Actor_JoinGroup(void *self, u16 id, u16 kind, s32 arg);
 BOOL func_ov000_0219c86c(Obj0219bf90 *self);
 
 static inline BOOL IsMode3(void) {
@@ -2763,11 +2763,11 @@ s32 func_ov000_021845cc(CmdObj *self) {
             break;
         }
         if (cur == NULL) {
-            VObj *obj = (VObj *)func_0203dd9c(0xbb0);
+            VObj *obj = (VObj *)Heap_Alloc(0xbb0);
             if (obj != NULL) {
-                obj = func_ov000_0219bfbc(obj);
+                obj = Robo021ca458_Ctor(obj);
             }
-            func_ov000_0218d1c0(obj, 0x1000, 0x1000, func_0206ffa0(0x1000));
+            Actor_JoinGroup(obj, 0x1000, 0x1000, func_0206ffa0(0x1000));
             obj->vfunc_04();
             Wake0219bf90();
         } else {
@@ -2850,7 +2850,7 @@ void func_ov000_0214baa8(void);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
 s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
@@ -2863,12 +2863,12 @@ extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
-BOOL func_ov000_0218e470(void *p);
+BOOL ActorMgr_IsReady(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
 BOOL func_02046e28(void *p);
 void func_02049678(void *p, s32 a, s32 b, s32 c);
-BOOL func_0204985c(void *p);
+BOOL SndMgr_IsLoadDone(void *p);
 void func_ov000_02187564(void);
 void func_ov000_02187570(void);
 void func_ov000_0218757c(void);
@@ -2886,7 +2886,7 @@ s32 func_ov000_02184810(CmdObj *self) {
         self->step++;
         return 0;
     case 6:
-        if (func_ov000_0218e470(data_ov000_021ccd68)) {
+        if (ActorMgr_IsReady(data_ov000_021ccd68)) {
             CmdObj_Done(self);
         }
         break;
@@ -2972,7 +2972,7 @@ void func_ov000_0214baa8(void);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
 s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
@@ -2985,12 +2985,12 @@ extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
-BOOL func_ov000_0218e470(void *p);
+BOOL ActorMgr_IsReady(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
 BOOL func_02046e28(void *p);
 void func_02049678(void *p, s32 a, s32 b, s32 c);
-BOOL func_0204985c(void *p);
+BOOL SndMgr_IsLoadDone(void *p);
 void func_ov000_02187564(void);
 void func_ov000_02187570(void);
 void func_ov000_0218757c(void);
@@ -3073,7 +3073,7 @@ void func_ov000_0214baa8(void);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
 s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
@@ -3086,12 +3086,12 @@ extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
-BOOL func_ov000_0218e470(void *p);
+BOOL ActorMgr_IsReady(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
 BOOL func_02046e28(void *p);
 void func_02049678(void *p, s32 a, s32 b, s32 c);
-BOOL func_0204985c(void *p);
+BOOL SndMgr_IsLoadDone(void *p);
 void func_ov000_02187564(void);
 void func_ov000_02187570(void);
 void func_ov000_0218757c(void);
@@ -3119,7 +3119,7 @@ static inline BOOL MgrBusy(void) {
 s32 func_ov000_02184a1c(CmdObj *self, s32 arg) {
     switch (self->step) {
     case 0:
-        func_ov000_02172390(data_ov000_021ccd30, 0, func_0204c0e8(data_02149ef8, func_02061d54(0x25)));
+        func_ov000_02172390(data_ov000_021ccd30, 0, MsgRes_GetString(data_02149ef8, func_02061d54(0x25)));
         self->step++;
     case 1:
         if (MgrBusy()) {
@@ -3211,7 +3211,7 @@ void func_ov000_0214baa8(void);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
 s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
@@ -3224,12 +3224,12 @@ extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
-BOOL func_ov000_0218e470(void *p);
+BOOL ActorMgr_IsReady(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
 BOOL func_02046e28(void *p);
 void func_02049678(void *p, s32 a, s32 b, s32 c);
-BOOL func_0204985c(void *p);
+BOOL SndMgr_IsLoadDone(void *p);
 void func_ov000_02187564(void);
 void func_ov000_02187570(void);
 void func_ov000_0218757c(void);
@@ -3356,7 +3356,7 @@ void func_ov000_0214baa8(void);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
 s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
@@ -3369,12 +3369,12 @@ extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
-BOOL func_ov000_0218e470(void *p);
+BOOL ActorMgr_IsReady(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
 BOOL func_02046e28(void *p);
 void func_02049678(void *p, s32 a, s32 b, s32 c);
-BOOL func_0204985c(void *p);
+BOOL SndMgr_IsLoadDone(void *p);
 void func_ov000_02187564(void);
 void func_ov000_02187570(void);
 void func_ov000_0218757c(void);
@@ -3508,7 +3508,7 @@ extern Obj0214a424 *data_0214a424;
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
 u16 func_02061d54(s32 a);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
@@ -3576,7 +3576,7 @@ s32 func_ov000_02184f20(CmdEx *self) {
     case 2:
         switch (self->step) {
         case 0:
-            func_ov000_02172390(data_ov000_021ccd30, 0, func_0204c0e8(data_02149ef8, func_02061d54(0x28)));
+            func_ov000_02172390(data_ov000_021ccd30, 0, MsgRes_GetString(data_02149ef8, func_02061d54(0x28)));
             self->step++;
             return 0;
         case 1:
@@ -3669,7 +3669,7 @@ extern "C" {
 
 extern u8 data_ov000_021cb6d0[];
 extern u8 data_ov000_021cb940[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_ov000_0216f144(Task021854d4 *self);
 void func_ov000_0216faac(Task021854d4 *self);
 void *func_ov000_0216f398(Mgr021854d4 *mgr, Task021854d4 *task, s32 a, Mgr021854d4 *b);
@@ -3686,7 +3686,7 @@ void func_ov000_0218547c(void *state, u16 arg, void *res, u16 id) {
 void func_ov000_021854d4(CmdQueue *self, s32 a, s32 b) {
     Mgr021854d4 *mgr = data_ov000_021ccd30;
     if (mgr->unk_11c == NULL) {
-        Task021854d4 *task = (Task021854d4 *)func_0203dd9c(0x80);
+        Task021854d4 *task = (Task021854d4 *)Heap_Alloc(0x80);
         if (task != NULL) {
             task->vtable = data_ov000_021cb6d0;
             func_ov000_0216f144(task);
@@ -4638,7 +4638,7 @@ extern Obj021ccd6c *data_ov000_021ccd6c;
 void func_020623e0(void);
 void func_ov000_02182590(u8 *p);
 u16 func_02061d54(s32 a);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
 BOOL func_ov000_0216f674(Mgr021ccd30 *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
@@ -4680,7 +4680,7 @@ s32 func_ov000_021866d0(CmdObj *self) {
             CmdObj_Done(self);
             return 1;
         }
-        func_ov000_02172390(data_ov000_021ccd30, 0, func_0204c0e8(data_02149ef8, func_02061d54(0x19)));
+        func_ov000_02172390(data_ov000_021ccd30, 0, MsgRes_GetString(data_02149ef8, func_02061d54(0x19)));
         self->step++;
         break;
     case 2:
@@ -5015,7 +5015,7 @@ void func_ov000_0214baa8(void);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
 s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
@@ -5028,12 +5028,12 @@ extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
-BOOL func_ov000_0218e470(void *p);
+BOOL ActorMgr_IsReady(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
 BOOL func_02046e28(void *p);
 void func_02049678(void *p, s32 a, s32 b, s32 c);
-BOOL func_0204985c(void *p);
+BOOL SndMgr_IsLoadDone(void *p);
 void func_ov000_02187564(void);
 void func_ov000_02187570(void);
 void func_ov000_0218757c(void);
@@ -5481,7 +5481,7 @@ void func_ov000_0214baa8(void);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
 s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
@@ -5494,12 +5494,12 @@ extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
-BOOL func_ov000_0218e470(void *p);
+BOOL ActorMgr_IsReady(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
 BOOL func_02046e28(void *p);
 void func_02049678(void *p, s32 a, s32 b, s32 c);
-BOOL func_0204985c(void *p);
+BOOL SndMgr_IsLoadDone(void *p);
 void func_ov000_02187564(void);
 void func_ov000_02187570(void);
 void func_ov000_0218757c(void);
@@ -5696,7 +5696,7 @@ void func_ov000_0214baa8(void);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
-void *func_0204c0e8(void *p, s32 a);
+void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
 s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
@@ -5709,12 +5709,12 @@ extern Flags021ccd44 *data_ov000_021ccd44;
 void func_02049564(void *p, s32 a, s32 b);
 void func_0206c72c(void *p, s32 a);
 Robo021ca458 *func_ov000_0219bf90(void);
-BOOL func_ov000_0218e470(void *p);
+BOOL ActorMgr_IsReady(void *p);
 void func_ov000_02180660(s32 a, s32 b);
 void func_ov000_02180754(void);
 BOOL func_02046e28(void *p);
 void func_02049678(void *p, s32 a, s32 b, s32 c);
-BOOL func_0204985c(void *p);
+BOOL SndMgr_IsLoadDone(void *p);
 void func_ov000_02187564(void);
 void func_ov000_02187570(void);
 void func_ov000_0218757c(void);
@@ -5737,7 +5737,7 @@ s32 func_ov000_02187a58(CmdObj *self) {
         }
         break;
     case 2:
-        if (func_0204985c(data_02097e4c)) {
+        if (SndMgr_IsLoadDone(data_02097e4c)) {
             CmdObj_Done(self);
         }
         break;
@@ -5853,19 +5853,19 @@ extern void *data_02149ef0;
 
 void func_0203c9e8(s32 a, s32 b);
 void func_0203cc58(s32 a, s32 b, s32 c);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_ov000_0216f144(Task *self);
 void func_ov000_0216faac(Task *self);
 void func_ov000_0216f828(Task *self);
 void *func_ov000_0216f398(Mgr021ccd30 *mgr, Task *task, s32 a, Mgr021ccd30 *b);
-void func_ov000_0218e514(void *p, s32 a);
+void ActorMgr_ClearGroup(void *p, s32 a);
 void func_0204aa10(void *p);
 void func_ov000_0216bcbc(void *p);
 void func_ov000_021645a4(s32 a);
 void func_020656b4(void *p);
 void func_ov000_021b53f4(void *p);
 void func_ov000_0218be9c(void *p);
-void func_ov000_0218e894(void *p);
+void ActorMgr_DestroyAll(void *p);
 void func_ov000_0216f42c(Mgr021ccd30 *mgr, void *task);
 void func_0206222c(void);
 void func_ov000_021819a4(u8 *p);
@@ -5914,7 +5914,7 @@ s32 func_ov000_02187b88(CmdEx *self) {
             if (IsMode4(0)) {
                 Mgr021ccd30 *mgr = data_ov000_021ccd30;
                 if (mgr->unk_11c == NULL) {
-                    Task *task = (Task *)func_0203dd9c(0x80);
+                    Task *task = (Task *)Heap_Alloc(0x80);
                     if (task != NULL) {
                         task->vtable = data_ov000_021cb6d0;
                         func_ov000_0216f144(task);
@@ -5927,7 +5927,7 @@ s32 func_ov000_02187b88(CmdEx *self) {
                 }
                 mgr = data_ov000_021ccd30;
                 if (mgr->unk_118 == NULL) {
-                    Task *task = (Task *)func_0203dd9c(0x34);
+                    Task *task = (Task *)Heap_Alloc(0x34);
                     if (task != NULL) {
                         task->vtable = data_ov000_021cb6d0;
                         func_ov000_0216f144(task);
@@ -5975,7 +5975,7 @@ s32 func_ov000_02187b88(CmdEx *self) {
             id.c[1] = 0xff;
             id.c[2] = 0xff;
             self->unk_cd = id;
-            func_ov000_0218e514(data_ov000_021ccd68, 0xf000);
+            ActorMgr_ClearGroup(data_ov000_021ccd68, 0xf000);
             data_02fe1534.unk_46 = 0xffff;
             data_02fe1534.unk_48 = 0xffff;
             data_02fe1534.unk_4a = 0xffff;
@@ -6008,7 +6008,7 @@ s32 func_ov000_02187b88(CmdEx *self) {
             func_020656b4(data_0214a420);
             func_ov000_021b53f4(data_ov000_021ccd6c);
             func_ov000_0218be9c(data_ov000_021ccd64);
-            func_ov000_0218e894(data_ov000_021ccd68);
+            ActorMgr_DestroyAll(data_ov000_021ccd68);
             {
                 Mgr021ccd30 *mgr = data_ov000_021ccd30;
                 func_ov000_0216f42c(mgr, mgr->unk_11c);
@@ -6322,7 +6322,7 @@ BOOL func_0206f954(void);
 void *func_0205976c(void *res, u32 idx);
 u32 func_0205975c(void *res, u32 idx);
 u16 func_02059544(void *res, void *block, void *entries, int packed, u32 id);
-VObj *func_ov000_0218e640(void *mgr, u16 id);
+VObj *ActorMgr_GetActor(void *mgr, u16 id);
 void func_0206228c(void);
 Robo021ca458 *func_ov000_0219bf90(void);
 s32 FX_Div(s32 a, s32 b);
@@ -6343,7 +6343,7 @@ typedef struct {
 } Plyr0218867c;
 
 static inline VObj *Find0218867c(u16 id) {
-    return data_ov000_021ccd68 == NULL ? NULL : func_ov000_0218e640(data_ov000_021ccd68, id);
+    return data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 s32 func_ov000_0218867c(CmdObj *self) {

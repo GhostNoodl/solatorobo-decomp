@@ -86,8 +86,8 @@ ov006_Hit021e9c5c *func_ov000_021985c0(void *p);
 void *func_ov000_0219be1c(s32 id, VecFx32 *pos, ov006_Rot021e9c5c *rot, u16 a, u16 b);
 ov006_Eff021e9c5c *func_02065f88(int id, VecFx32 *pos);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-void *func_ov000_0218e4cc(void *mgr, u16 kind);
-void func_ov000_0218dfe8(void *obj, u16 a, int b, int c, int d, int e);
+void *ActorMgr_GetGroup(void *mgr, u16 kind);
+void ActorGroup_SendMsg(void *obj, u16 a, int b, int c, int d, int e);
 
 void func_ov006_021e9c5c(ov006_Prop021e9c5c *self) {
     u8 a;
@@ -171,10 +171,10 @@ void func_ov006_021e9c5c(ov006_Prop021e9c5c *self) {
         }
         break;
     case 3: {
-        void *obj = func_ov000_0218e4cc(data_ov000_021ccd68, self->unkC & 0xf000);
+        void *obj = ActorMgr_GetGroup(data_ov000_021ccd68, self->unkC & 0xf000);
         ov006_Eff021e9c5c *e;
         if (obj != NULL) {
-            func_ov000_0218dfe8(obj, self->unkC, 0xb, 1, 0, 0);
+            ActorGroup_SendMsg(obj, self->unkC, 0xb, 1, 0, 0);
         }
         e = func_02065f88(0x389, &self->pos);
         if (e != NULL) {

@@ -7,7 +7,7 @@ VObject *Ov002Vt_021f0044_DtorDelete(VObject *self) {
     func_ov000_021c3bb0(self);
     *(VFunc **)self = data_ov000_021cac60;
     self->v0x2c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

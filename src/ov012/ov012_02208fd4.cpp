@@ -191,7 +191,7 @@ void func_ov012_02208c0c(Ov012Actor *self) {
     BOOL on;
     u16 add;
     Ov012Sub40 *s;
-    pl = func_ov000_0218d240(self);
+    pl = Actor_GetTarget(self);
     s = self->unk_40;
     switch (s->state) {
     case 0:
@@ -208,7 +208,7 @@ void func_ov012_02208c0c(Ov012Actor *self) {
             self->unk_40->timer = 0;
             self->unk_40->state++;
         }
-        func_ov000_0218d988(self, pl, 0x59a);
+        Actor_TurnToActor(self, pl, 0x59a);
         break;
     case 2: {
         s16 c4 = self->unk_38->unk_c4;
@@ -299,7 +299,7 @@ void func_ov012_02208c0c(Ov012Actor *self) {
         }
         break;
     }
-    func_ov000_0218dbe0(self, 0);
+    Actor_Move(self, 0);
     func_ov000_021987b8(self->unk_48, 0, 0, 0);
     if (self->unk_48->unk_50 & 0x20000000) {
         self->unk_a0 = 0;
@@ -371,7 +371,7 @@ extern "C" {
 void *func_ov012_02209184(void *self) {
     func_ov000_0218ea20((u8 *)self + 0xf0);
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 }
@@ -387,7 +387,7 @@ void func_ov012_022091ac(Ov012Actor *self) {
 extern "C" {
 BOOL func_ov012_022091e4(Ov012Actor *self) {
     BOOL r = func_ov000_0218cf5c(self);
-    if (r && !func_0204985c(data_02097e4c)) {
+    if (r && !SndMgr_IsLoadDone(data_02097e4c)) {
         r = FALSE;
     }
     return r;

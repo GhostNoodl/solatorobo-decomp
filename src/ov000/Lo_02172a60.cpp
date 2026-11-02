@@ -17,7 +17,7 @@ void func_0203df0c(void *p);
 
 typedef struct { u32 lo : 4; } LoNib;
 
-void *func_ov000_02172a60(ListBuffer *self) {
+void *Ov000Vt_021cb940_Dtor(ListBuffer *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb940);
     func_ov000_0216fb14(self);
     VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);

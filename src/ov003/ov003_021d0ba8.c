@@ -50,7 +50,7 @@ typedef struct {
 } Ov003Obj;
 
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
-extern void *func_ov000_0218c2d4(Ov003Obj *self);
+extern void *Actor_Ctor(Ov003Obj *self);
 extern char data_ov003_021f7ab4[];
 
 typedef struct {
@@ -150,7 +150,7 @@ void func_ov003_021d0c04(Ov003Obj *self) {
 
 #define OV003_OBJ_CTOR(name)                 \
 Ov003Obj *name(Ov003Obj *self) {             \
-    func_ov000_0218c2d4(self);               \
+    Actor_Ctor(self);               \
     self->vtbl = data_ov003_021f7ab4;        \
     self->unk_b4 = 0;                        \
     self->unk_b6 = 0;                        \
@@ -191,7 +191,7 @@ typedef struct {
 extern Ov003HeapCtx *data_02097dd0;
 extern void *data_0214a420;
 extern void *func_ov000_0218fee4(void *p);
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 extern void func_0203df0c(void *p);
 extern void func_02065804(void *mgr, void *p);
 extern void *func_ov000_0218c928(Ov003Obj *self);
@@ -208,7 +208,7 @@ static inline void Ov003Obj_DtorBody(Ov003Obj *self) {
             if (m != NULL) {
                 if (m != NULL) {
                     func_ov000_0218fee4(m);
-                    func_0203de1c(m);
+                    Heap_Free(m);
                 }
                 ((Ov003SubD0 *)self->unk_d0)->unk_68[i] = NULL;
             }
@@ -234,7 +234,7 @@ Ov003Obj *Ov003ActVt_021f7ab4_Dtor(Ov003Obj *self) {
 
 Ov003Obj *Ov003ActVt_021f7ab4_DtorDelete(Ov003Obj *self) {
     Ov003Obj_DtorBody(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -288,7 +288,7 @@ typedef struct {
     u16 unk_ea_10 : 1;
 } Ov003ObjInit;
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_ov000_0218e9c4(void *p);
 extern Ov003InitShadow *func_ov000_021919c8(void *p);
 extern void func_ov000_02191b70(Ov003InitShadow *p);
@@ -304,7 +304,7 @@ void func_ov003_021d0fc0(Ov003ObjInit *self) {
     Ov003InitInfo *info = (Ov003InitInfo *)func_0206fef8(self->unk_0e);
     void *p;
     self->unk_b0 = (Ov003InitParam *)((u8 *)func_02070558(self->unk_0e) + 0x10);
-    p = func_0203dd9c(0x138);
+    p = Heap_Alloc(0x138);
     if (p != NULL) {
         p = func_ov000_0218e9c4(p);
     }
@@ -315,7 +315,7 @@ void func_ov003_021d0fc0(Ov003ObjInit *self) {
         func_ov003_021d0a2c((Ov003Res *)p, self->unk_0e);
     }
     if (info->unk_12_12 != 0) {
-        Ov003InitShadow *s = (Ov003InitShadow *)func_0203dd9c(0x1c);
+        Ov003InitShadow *s = (Ov003InitShadow *)Heap_Alloc(0x1c);
         if (s != NULL) {
             s = func_ov000_021919c8(s);
         }
@@ -327,7 +327,7 @@ void func_ov003_021d0fc0(Ov003ObjInit *self) {
         }
         func_ov000_02191b70(self->unk_3c);
     }
-    p = func_0203dd9c(0x14);
+    p = Heap_Alloc(0x14);
     if (p != NULL) {
         p = func_ov000_02198328(p);
     }

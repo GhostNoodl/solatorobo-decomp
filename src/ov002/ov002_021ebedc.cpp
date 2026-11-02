@@ -80,7 +80,7 @@ void *Ov002Vt_021f0ce8_DtorDelete(void *self) {
     FIELD(self, 0x1c, u8) = 0;
     FIELD(self, 0x20, s32) = 0;
     FIELD(self, 0x24, s32) = 0;
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

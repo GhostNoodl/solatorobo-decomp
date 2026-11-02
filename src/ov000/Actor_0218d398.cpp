@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0218d398(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data) {
+void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data) {
     ActorMsg *it;
     ActorMsg *msg = NULL;
     s32 i;
@@ -39,7 +39,7 @@ void func_ov000_0218d398(Actor *self, u16 id, u8 type, BOOL notify, u32 size, co
 
 void func_ov000_0218d46c(Actor *self, u16 id, u8 value) {
     u8 buf = value;
-    func_ov000_0218d398(self, id, 2, 1, 1, &buf);
+    Actor_SendMsg(self, id, 2, 1, 1, &buf);
 }
 
 BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
@@ -161,7 +161,7 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
     return handled;
 }
 
-void func_ov000_0218d77c(Actor *self) {
+void Actor_ProcessMsgs(Actor *self) {
     ActorMsg *prev = NULL;
     ActorMsg *msg = self->msgs;
     ActorMsg *next;
@@ -210,7 +210,7 @@ void func_ov000_0218d7e8(Actor *self, u8 arg) {
     } while (next != NULL);
 }
 
-BOOL func_ov000_0218d850(Actor *self) {
+BOOL Actor_DespawnIfFar(Actor *self) {
     BOOL ret = FALSE;
     Player021ccd54Sub *player = &data_ov000_021ccd54->unk_f4;
     if (player != NULL) {
@@ -229,18 +229,18 @@ BOOL func_ov000_0218d850(Actor *self) {
     return ret;
 }
 
-u16 func_ov000_0218d8f4(Actor *self, VecFx32 *target) {
+u16 Actor_YawToPos(Actor *self, VecFx32 *target) {
     return FX_Atan2(target->x - self->pos.x, target->z - self->pos.z);
 }
 
-void func_ov000_0218d918(Actor *self, VecFx32 *target, s32 step) {
+void Actor_TurnToPos(Actor *self, VecFx32 *target, s32 step) {
     if (func_01ffc198(&self->pos, target, self->unk_64 + 0x400)) {
         return;
     }
     self->rot_y = func_01ffc128(FX_Atan2(target->x - self->pos.x, target->z - self->pos.z), self->rot_y, step, 1, 0x8000);
 }
 
-void func_ov000_0218d988(Actor *self, Actor *other, s32 step) {
+void Actor_TurnToActor(Actor *self, Actor *other, s32 step) {
     u16 angle;
     if (other == self) {
         return;
@@ -253,7 +253,7 @@ void func_ov000_0218d988(Actor *self, Actor *other, s32 step) {
     self->rot_y = func_01ffc128(angle, self->rot_y, step, 1, 0x8000);
 }
 
-void func_ov000_0218d9e8(Actor *self, VecFx32 *target, s32 step) {
+void Actor_PitchToPos(Actor *self, VecFx32 *target, s32 step) {
     s32 dz;
     s32 dx;
     if (func_01ffc198(&self->pos, target, self->unk_64 + 0x400)) {

@@ -67,7 +67,7 @@ extern u8 *data_ov000_021ccd30;
 extern u8 *data_0214a424;
 extern u8 *data_02097d48;
 extern u8 data_ov000_021ca320[];
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_ov000_02191ec4(void *a, s32 b, u32 c);
 int func_02043d9c(void *p);
 void func_ov000_02190758(void *model, void *rot, s32 a);
@@ -90,7 +90,7 @@ static inline Actor *FindActor_0219d9fc(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline BOOL IsBusy_0219d9fc(u8 *g) {
@@ -152,7 +152,7 @@ static inline void Flash_0219d9fc(u8 *m, u16 a, u16 b, s32 n) {
     }
 }
 
-BOOL func_ov000_0219d9fc(Robo021ca458 *self) {
+BOOL Robo021ca458_Draw(Robo021ca458 *self) {
     u32 fl;
     u8 *m;
     u8 v;

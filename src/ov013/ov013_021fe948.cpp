@@ -8,7 +8,7 @@ struct Ov013Spot {
 extern "C" {
 
 extern void *data_ov000_021ccd68;
-extern Ov013Actor *func_ov000_0218e4cc(void *mgr, u16 id);
+extern Ov013Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern BOOL Ov003Vec_Equal(void *a, const Ov013Spot *b);
 
 void func_ov013_021fe948(Ov013Vec *outPos, u16 *outRot, const Ov013Spot *list, u32 count, void *exclude) {
@@ -23,7 +23,7 @@ void func_ov013_021fe948(Ov013Vec *outPos, u16 *outRot, const Ov013Spot *list, u
         tmp[n] = list[i];
         n++;
     }
-    r = func_02040498(n - 1);
+    r = Rand_UpTo(n - 1);
     *outPos = tmp[r].pos;
     *outRot = tmp[r].rot;
 }
@@ -37,7 +37,7 @@ static inline Ov013Actor *Ov013_ListNext(void *list, Ov013Actor *a) {
 
 u32 func_ov013_021fe9f8(Ov013Actor **out, u32 max, u16 kind, const Ov013Vec *pos, s32 dist) {
     u32 n = 0;
-    void *list = func_ov000_0218e4cc(data_ov000_021ccd68, kind);
+    void *list = ActorMgr_GetGroup(data_ov000_021ccd68, kind);
     Ov013Actor *a = FLD(Ov013Actor *, list, 0xc);
     for (; a != NULL; a = Ov013_ListNext(list, a)) {
         if (kind == a->kind && func_01ffc198(&a->pos, pos, dist + a->unk_64)) {

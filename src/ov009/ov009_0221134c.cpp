@@ -3,7 +3,7 @@
 extern "C" {
 
 extern u8 data_ov009_022179b4[];
-extern void func_ov000_0218ddd4(Ov009Actor *self, const Ov009Vec *v, s32 a);
+extern void Actor_MoveToPos(Ov009Actor *self, const Ov009Vec *v, s32 a);
 
 void func_ov009_0221134c(Ov009ActVt_02217aac *self) {
     Ov009Vec v;
@@ -28,7 +28,7 @@ void func_ov009_0221134c(Ov009ActVt_02217aac *self) {
     } else {
         self->unk_a0 = 0;
     }
-    func_ov000_0218ddd4(self, &v, self->unk_b0->unk_02);
+    Actor_MoveToPos(self, &v, self->unk_b0->unk_02);
     if ((self->unk_a0 > 0 && self->pos.y > v.y) || (self->unk_a0 < 0 && self->pos.y < v.y)) {
         self->pos.y = v.y;
     }
@@ -36,8 +36,8 @@ void func_ov009_0221134c(Ov009ActVt_02217aac *self) {
 
 extern void *data_02097e4c;
 extern u8 data_ov009_022160b8[];
-extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
-extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
+extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
+extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void func_ov000_0219a210(Ov009Vec *v, const void *a, u16 b);
@@ -47,7 +47,7 @@ extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 typedef u16 Ov009Row3[3];
 
 void func_ov009_02211470(Ov009ActVt_02217aac *self) {
-    Ov009Actor *t = func_ov000_0218d240(self);
+    Ov009Actor *t = Actor_GetTarget(self);
     Ov009Sub40 *st;
     if (t == NULL) {
         return;
@@ -73,7 +73,7 @@ void func_ov009_02211470(Ov009ActVt_02217aac *self) {
         return;
     }
     case 1:
-        func_ov000_0218d988(self, t, self->unk_b0->unk_02);
+        Actor_TurnToActor(self, t, self->unk_b0->unk_02);
         st = self->unk_40;
         st->timer++;
         if (st->timer > 0x1e) {

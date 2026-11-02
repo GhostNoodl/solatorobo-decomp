@@ -8,7 +8,7 @@ extern u8 data_ov009_02216148[];
 extern u8 data_ov009_02216058[];
 extern u8 data_ov009_02216188[];
 extern u8 data_ov009_02216070[];
-extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
+extern u8 *Group_FindNode(void *mgr, u16 id);
 extern Ov009Actor *func_ov000_0219bf90(void);
 
 struct Ov009Byte {
@@ -21,7 +21,7 @@ void Ov009ActVt_02217aac_Start(Ov009ActVt_02217aac *self) {
     Ov009Actor *a;
     Ov009Game54 *g;
     func_ov003_021d112c(self);
-    p = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+    p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
         ((Ov009Byte *)(p + 0xa2))->b0 = 0;
     }

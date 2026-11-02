@@ -128,17 +128,17 @@ extern Ov003InRes *func_0206fef8(u16 id);
 extern Ov003InB0 *func_020702c8(u16 id);
 extern Ov003InB0 *func_02070410(u16 id);
 extern Ov003InB0 *func_0207036c(u16 id);
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern Ov003InModel *func_ov000_0218fe1c(void *p);
 extern void func_ov000_0219badc(Ov003InModel *model, void *p, Ov003InRes *res);
-extern s32 func_02040528(s32 max);
+extern s32 Rand_PlusMinus(s32 max);
 extern void func_ov000_021911c8(Ov003InModel *model, s32 v);
 extern s32 func_ov000_0219a2f4(Ov003InVec *pos, s32 a, s32 b);
 extern void func_ov000_02191ec4(Ov003InS3c *p, s32 a, u32 b);
 extern char *func_0207005c(u16 id, s32 n);
 extern Ov003InCtl *func_ov000_021985e8(void *p);
 extern void func_ov000_02198c8c(Ov003InCtl *p, u16 id);
-extern void func_0203f324(Ov003InCtl *p);
+extern void HitSphere_Link(Ov003InCtl *p);
 extern void func_ov000_0219864c(Ov003InCtl *p, s32 a, s32 b);
 extern Ov003InS44 *func_ov000_021984c8(void *p);
 extern Ov003InS4c *func_ov000_02199b00(void *p);
@@ -186,7 +186,7 @@ skip:
     self->unk_68 = res->unk_16 << 4;
     self->unk_6c = self->unk_68 >> 1;
     if (self->unk_34 != NULL) {
-        Ov003InModel *m = (Ov003InModel *)func_0203dd9c(0xe8);
+        Ov003InModel *m = (Ov003InModel *)Heap_Alloc(0xe8);
         s16 v;
         if (m != NULL) {
             m = func_ov000_0218fe1c(m);
@@ -199,7 +199,7 @@ skip:
         }
         if (self->unk_b0 == NULL || (v = self->unk_b0->unk_00) == 0) {
             v = 0x1c3;
-            v += (s16)func_02040528(0xa4);
+            v += (s16)Rand_PlusMinus(0xa4);
         }
         func_ov000_021911c8(self->model, v);
         if (self->unk_3c != NULL) {
@@ -215,7 +215,7 @@ skip:
     name = func_0207005c(self->unk_0e, 0);
     if (name == NULL || STD_CompareString(name, data_ov003_021fa208) != 0) {
         if (res->unk_12_12) {
-            Ov003InCtl *c = (Ov003InCtl *)func_0203dd9c(0x9c);
+            Ov003InCtl *c = (Ov003InCtl *)Heap_Alloc(0x9c);
             if (c != NULL) {
                 c = func_ov000_021985e8(c);
             }
@@ -227,14 +227,14 @@ skip:
             c = self->ctl;
             c->enable = 1;
             c->visible = 1;
-            func_0203f324(c);
+            HitSphere_Link(c);
             c = self->ctl;
             c->unk_9a_1 = 0;
             c->unk_9a_4 = 0;
             func_ov000_0219864c(self->ctl, 0, 0);
         }
         if (!Ov003In_SameCol(&data_ov000_021ccd54->unk_ca, data_ov003_021f7388)) {
-            Ov003InS44 *s = (Ov003InS44 *)func_0203dd9c(0x24);
+            Ov003InS44 *s = (Ov003InS44 *)Heap_Alloc(0x24);
             if (s != NULL) {
                 s = func_ov000_021984c8(s);
             }
@@ -250,7 +250,7 @@ skip:
             }
         }
         {
-            Ov003InS4c *d = (Ov003InS4c *)func_0203dd9c(0x5c);
+            Ov003InS4c *d = (Ov003InS4c *)Heap_Alloc(0x5c);
             if (d != NULL) {
                 d = func_ov000_02199b00(d);
             }
@@ -258,7 +258,7 @@ skip:
             d->unk_00 = 3;
             self->unk_4c->unk_18 |= 2;
         }
-        icon = (Ov003InIcon *)func_0203dd9c(0xa8);
+        icon = (Ov003InIcon *)Heap_Alloc(0xa8);
         if (icon != NULL) {
             func_ov000_021bd198(icon);
         }
@@ -267,7 +267,7 @@ skip:
         Ov003In_Icon(self->unk_5c, self->unk_0e);
         self->unk_5c->unk_5c = self->unk_68;
     }
-    icon = (Ov003InIcon *)func_0203dd9c(0xa8);
+    icon = (Ov003InIcon *)Heap_Alloc(0xa8);
     if (icon != NULL) {
         func_ov000_021bd198(icon);
     }

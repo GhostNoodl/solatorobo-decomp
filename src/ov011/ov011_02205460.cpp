@@ -25,8 +25,8 @@ extern "C" {
 
 extern void *data_ov000_021ccd64;
 extern const u16 data_ov011_0220751c[];
-s32 func_02040498(s32 max);
-void *func_ov000_0218bf1c(void *mgr, Ov011SpawnDesc *d, Ov011Vec *pos, Ov011Rot *rot, u16 a);
+s32 Rand_UpTo(s32 max);
+void *Group_SpawnActor(void *mgr, Ov011SpawnDesc *d, Ov011Vec *pos, Ov011Rot *rot, u16 a);
 void *func_ov000_0214b670(void *p);
 
 #pragma force_active on
@@ -49,7 +49,7 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
         rot.x = 0;
         rot.y = 0;
         rot.z = 0;
-        r = func_02040498(7);
+        r = Rand_UpTo(7);
         k = data_ov011_0220751c[r];
         if (b && (k == 0x409b || k == 0x409c)) {
             k = 0x409d;
@@ -59,7 +59,7 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
             d.unk_04[2] = 3;
         }
         d.unk_04[3] = 1;
-        o = (Ov011Obj *)func_ov000_0218bf1c(data_ov000_021ccd64, &d, &pos, &rot, 0xffff);
+        o = (Ov011Obj *)Group_SpawnActor(data_ov000_021ccd64, &d, &pos, &rot, 0xffff);
         if (o != NULL) {
             void *x;
             o->unk_16_0 = 1;
@@ -95,7 +95,7 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
         rot.z = 0;
         Ov011Spawn_Init(&d, 0x409e);
         d.unk_04[3] = 2;
-        o = (Ov011Obj *)func_ov000_0218bf1c(data_ov000_021ccd64, &d, &pos, &rot, 0xffff);
+        o = (Ov011Obj *)Group_SpawnActor(data_ov000_021ccd64, &d, &pos, &rot, 0xffff);
         if (o != NULL) {
             o->unk_16_0 = 1;
         }
@@ -168,7 +168,7 @@ void func_ov011_0220576c(Ov011Act7da4 *self) {
         rot.z = 0;
         Ov011Spawn_Init(&d, 0x406a);
         d.unk_04[1] = 2;
-        o = (Ov011Obj *)func_ov000_0218bf1c(data_ov000_021ccd64, &d, &v, &rot, 0xffff);
+        o = (Ov011Obj *)Group_SpawnActor(data_ov000_021ccd64, &d, &v, &rot, 0xffff);
         if (o != NULL) {
             self->unk_36c = o->id;
             o->unk_16_0 = 1;

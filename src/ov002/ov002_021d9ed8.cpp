@@ -68,7 +68,7 @@ void func_ov002_021d9ed8(void *self, void *obj, bool del) {
     }
 }
 
-void *func_0203dddc(u32 size);
+void *Heap_AllocArray(u32 size);
 
 void func_ov002_021da054(void *self) {
     s32 j;
@@ -83,12 +83,12 @@ void func_ov002_021da054(void *self) {
         u32 saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0x70, void *) != NULL) {
-            func_0203de1c(FIELD(self, 0x70, void *));
+            Heap_Free(FIELD(self, 0x70, void *));
             FIELD(self, 0x70, void *) = NULL;
         }
         HEAP_POP(saved);
     }
-    FIELD(self, 0x70, void *) = func_0203dddc(FIELD(FIELD(FIELD(self, 0x4, u8 *), 0x6c, u8 *), 0x4, Nibbles16).n3 * FIELD(FIELD(FIELD(self, 0x4, u8 *), 0x6c, u8 *), 0x4, Nibbles16).n2 * 12);
+    FIELD(self, 0x70, void *) = Heap_AllocArray(FIELD(FIELD(FIELD(self, 0x4, u8 *), 0x6c, u8 *), 0x4, Nibbles16).n3 * FIELD(FIELD(FIELD(self, 0x4, u8 *), 0x6c, u8 *), 0x4, Nibbles16).n2 * 12);
     cols = FIELD(FIELD(FIELD(self, 0x4, u8 *), 0x6c, u8 *), 0x4, Nibbles16).n2;
     rows = FIELD(FIELD(FIELD(self, 0x4, u8 *), 0x6c, u8 *), 0x4, Nibbles16).n3;
     for (i = 0; i < rows; i++) {

@@ -66,7 +66,7 @@ extern "C" {
 
 extern void *data_ov000_021ccd68;
 extern u8 data_ov010_0220fdf4[];
-extern Actor *func_ov000_0218e640(void *a, u16 b);
+extern Actor *ActorMgr_GetActor(void *a, u16 b);
 extern u8 *func_ov003_021da32c(s32 kind);
 extern void MTX_RotX33_(Ov010Mtx33 *m, s32 s, s32 c);
 extern void MTX_RotY33_(Ov010Mtx33 *m, s32 s, s32 c);
@@ -81,7 +81,7 @@ extern BOOL func_ov010_022018c4(u16 id, const Ov010Vec *a, const Ov010Vec *b);
 
 static inline Actor *Ov010_FindObjById(u16 id) {
     if (data_ov000_021ccd68 != NULL) {
-        return func_ov000_0218e640(data_ov000_021ccd68, id);
+        return ActorMgr_GetActor(data_ov000_021ccd68, id);
     }
     return NULL;
 }
@@ -141,12 +141,12 @@ void func_ov010_02201f00(void) {
 }
 
 void *func_ov010_02201f04(void *o) {
-    func_0203de1c(o);
+    Heap_Free(o);
     return o;
 }
 
 void *func_ov010_02201f18(void) {
-    u8 *p = (u8 *)func_0203dd9c(0x24);
+    u8 *p = (u8 *)Heap_Alloc(0x24);
     if (p != NULL) {
         FLD(void *, p, 0) = data_ov010_0220fdf4;
         FLD(Ov010Flags8, p, 4).b0 = 0;

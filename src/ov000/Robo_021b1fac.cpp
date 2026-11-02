@@ -33,7 +33,7 @@ extern "C" {
 
 extern Data021b1fac *data_0214a424;
 void func_ov000_021b209c(Robo021b1fac *self);
-void func_ov000_0218dbe0(Robo021b1fac *self, s32 a);
+void Actor_Move(Robo021b1fac *self, s32 a);
 void func_ov000_021987b8(Sub021b1fac *p, s32 a, s32 b, s32 c);
 
 void func_ov000_021b1fac(Robo021b1fac *self, BOOL a, s32 b) {
@@ -48,7 +48,7 @@ void func_ov000_021b1fac(Robo021b1fac *self, BOOL a, s32 b) {
     if (a) {
         self->unk_48->unk_9a |= 0x20;
     }
-    func_ov000_0218dbe0(self, 0);
+    Actor_Move(self, 0);
     if (ox != self->unk_70 || oz != self->unk_74) {
         s32 t = self->unk_ba8 + self->unk_9c;
         self->unk_ba8 = t;

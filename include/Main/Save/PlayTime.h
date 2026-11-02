@@ -15,12 +15,12 @@ typedef struct PlayTime {
     /* 0x06 */ u16 millis;
 } PlayTime;
 
-void func_02048be4(PlayTime *t);
+void PlayTime_Clear(PlayTime *t);
 void func_02048bfc(PlayTime *t, BOOL toMinutes);
-void func_02048cf0(PlayTime *t, u16 hours, u16 minutes, u16 seconds, u16 millis);
-void func_02048d58(PlayTime *dst, const PlayTime *a, const PlayTime *b);
+void PlayTime_Clamp(PlayTime *t, u16 hours, u16 minutes, u16 seconds, u16 millis);
+void PlayTime_Add(PlayTime *dst, const PlayTime *a, const PlayTime *b);
 void func_02048e74(PlayTime *dst, const PlayTime *a, const PlayTime *b);
-void func_02049088(PlayTime *t, u32 frames);
+void PlayTime_FromFrames(PlayTime *t, u32 frames);
 
 #ifdef __cplusplus
 }

@@ -197,13 +197,13 @@ extern "C" {
 extern void *data_ov000_021ccd68;
 extern void *data_0214a420;
 extern Ov010V *func_02066774(const char *a, const char *b, s32 c, Ov010Vec *pos);
-extern Ov010V *func_02066900(const char *a, const char *b, Ov010Vec *pos);
+extern Ov010V *EffectGroup_Create(const char *a, const char *b, Ov010Vec *pos);
 extern Ov010V *func_02065f88(s32 id, Ov010Vec *pos);
 extern Ov010V *func_020657b0(void *mgr, s32 h);
 extern void func_02065804(void *mgr, s32 h);
 extern void func_02065860(void *mgr, s32 h);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
-extern Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void *func_ov000_021985c0(void *p);
 extern s32 func_ov000_0219a5c8(void *self, u16 mask, Ov010Vec *pos, Ov010FxRot *rot, s32 r, s32 a, Ov010Vec **list);
 extern BOOL func_ov000_0219a8bc(void *hit, void *a, void *b, s32 c, u8 d, const Ov010Vec *pos, s16 h, s32 i, s32 scale);
@@ -216,7 +216,7 @@ static inline Actor *Ov010g_Find(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline BOOL Ov010g_Idle(const Ov010FxObj *o) {
@@ -300,7 +300,7 @@ void func_ov010_022000d8(Ov010FxObj *o) {
                             Ov010V *e = func_02065f88(0x327, &p);
                             e->v0c(FLD(s32, b, 0x64) << 1);
                         } else {
-                            Ov010V *e = func_02066900(m0, m3, &p);
+                            Ov010V *e = EffectGroup_Create(m0, m3, &p);
                             e->v14(o->unk_06, o->unk_06, o->unk_06);
                         }
                     } while (++j < n);
@@ -527,7 +527,7 @@ extern void NNS_G3dGlbFlushVP(void);
 extern void NNS_G3dGeBufferOP_N(s32 cmd, const void *data, s32 n);
 extern void MTX_RotX33_(void *m, s32 s, s32 c);
 extern void MTX_RotY33_(void *m, s32 s, s32 c);
-extern u8 func_02043d48(void *p);
+extern u8 Gfx3DState_NextPolyId(void *p);
 extern void NNS_G3dGeFlushBuffer(void);
 
 static inline void Ov010_G3End(void) {
@@ -544,7 +544,7 @@ namespace m_02200a00 {
 extern "C" {
 
 extern u8 *data_02097d48;
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 
 void func_ov010_02200a00(Ov010Beam *self) {
     MtxFx33 m;
@@ -577,7 +577,7 @@ void func_ov010_02200a00(Ov010Beam *self) {
     NNS_G3dGeMultMtx33(&rx);
     VEC_Set(&s, FX32_ONE, FX32_ONE, FX_Mul(self->len, 0xf000));
     NNS_G3dGeScaleVec(&s);
-    NNS_G3dGePolygonAttr(0, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, func_02043d48(data_02097d48 + 0x8b0), alpha, 0);
+    NNS_G3dGePolygonAttr(0, GX_POLYGONMODE_MODULATE, GX_CULL_NONE, Gfx3DState_NextPolyId(data_02097d48 + 0x8b0), alpha, 0);
     NNS_G3dGeTexImageParam(GX_TEXFMT_NONE, GX_TEXGEN_NONE, GX_TEXSIZE_S8, GX_TEXSIZE_T8, GX_TEXREPEAT_NONE, GX_TEXFLIP_NONE, GX_TEXPLTTCOLOR0_TRNS, 0);
     NNS_G3dGeBegin(GX_BEGIN_TRIANGLES);
     NNS_G3dGeColor(GX_RGB(31, 0, 0));
@@ -689,7 +689,7 @@ Ov010BeamSet *func_ov010_02200db8(Ov010BeamSet *o) {
 }
 
 static inline Ov010BeamNode *Ov010Beam_New(void) {
-    Ov010BeamNode *n = (Ov010BeamNode *)func_0203dd9c(0x8c);
+    Ov010BeamNode *n = (Ov010BeamNode *)Heap_Alloc(0x8c);
     if (n != NULL) {
         n->beam.on = 0;
         n->beam.fx.b0 = 0;
@@ -797,7 +797,7 @@ void func_ov010_02200ee0(Ov010BeamSet *o) {
             if (n != NULL) {
                 Ov010Beam_Reset(&n->beam);
                 Ov010Fx_Free(&n->beam.fx);
-                func_0203de1c(n);
+                Heap_Free(n);
             }
         }
         data_02097dd0->cur = saved;
@@ -814,9 +814,9 @@ void func_ov010_02200ee0(Ov010BeamSet *o) {
 // old value into `cur` first, which puts GetB's value first in the add.
 extern "C" {
 
-extern s32 func_02040498(s32 max);
-extern s32 func_02040528(s32 n);
-extern s32 func_020404e0(void);
+extern s32 Rand_UpTo(s32 max);
+extern s32 Rand_PlusMinus(s32 n);
+extern s32 Rand_Fx(void);
 extern void func_ov003_021d9a00(Ov010Vec *out, s32 angle, const Ov010Vec *in);
 extern u16 func_ov003_021d9c50(Ov010Vec *a, Ov010Vec *b);
 extern u16 Ov003Vec_Pitch(Ov010Vec *v);
@@ -914,7 +914,7 @@ void func_ov010_02201064(Ov010BeamSet *self) {
             u16 rx;
             u16 t;
             if ((s32)self->unk_0a >= 3) {
-                u16 r = func_02040498(2);
+                u16 r = Rand_UpTo(2);
                 self->unk_0a = 0;
                 self->unk_0c = r;
                 self->unk_0a++;
@@ -927,12 +927,12 @@ void func_ov010_02201064(Ov010BeamSet *self) {
             }
             {
                 u16 c = self->unk_0c;
-                ang = c * 0x5555 + func_02040498(0x5555);
+                ang = c * 0x5555 + Rand_UpTo(0x5555);
             }
             if (flag) {
-                len = Ov010k_Mul(func_020404e0(), 0x2cd);
+                len = Ov010k_Mul(Rand_Fx(), 0x2cd);
             } else {
-                len = Ov010k_Mul(func_020404e0(), 0xb33) + 0x4cd;
+                len = Ov010k_Mul(Rand_Fx(), 0xb33) + 0x4cd;
             }
             if (len > 0x1000) {
                 len = 0x1000;
@@ -954,9 +954,9 @@ void func_ov010_02201064(Ov010BeamSet *self) {
             VEC_Normalize(&d, &d);
             ry = Ov003Vec_Pitch(&d);
             rx = Ov003Vec_Yaw(&d);
-            t = func_02040498(10) + 10;
+            t = Rand_UpTo(10) + 10;
             {
-                s32 s = func_02040528(2);
+                s32 s = Rand_PlusMinus(2);
                 s = s > 0 ? s + 0x16 : s - 0x16;
                 last->unk_00 = 0;
                 last->unk_02 = 0;

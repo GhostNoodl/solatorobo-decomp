@@ -38,8 +38,8 @@ extern struct {
 } data_02149ef4;
 #define MSG_RES data_02149ef4.res
 
-extern void *func_0203dd9c(u32 size);
-extern void func_0203de1c(void *ptr);
+extern void *Heap_Alloc(u32 size);
+extern void Heap_Free(void *ptr);
 extern void func_0206e900(char *dst, const char *src);
 
 static inline void MsgRes_Reset(MsgRes *res) {
@@ -65,7 +65,7 @@ BOOL func_0204c030(MsgRes *res);
 
 u32 func_0204c08c(MsgRes *res, s32 idx, char **out, s32 max);
 
-char *func_0204c0e8(MsgRes *res, s32 idx);
+char *MsgRes_GetString(MsgRes *res, s32 idx);
 
 BOOL func_0204c100(void);
 
@@ -86,7 +86,7 @@ void func_0204c158(void) {
     if (MSG_RES != NULL) {
         return;
     }
-    res = (MsgRes *)func_0203dd9c(sizeof(MsgRes));
+    res = (MsgRes *)Heap_Alloc(sizeof(MsgRes));
     if (res != NULL) {
         *(const u32 **)res = data_0208b318;
         res->Clear();
@@ -109,7 +109,7 @@ void func_0204c214(void) {
     data_02097dd0->cur = heap;
 }
 
-void *func_0204c270(void) {
+void *Heap_GetCurrent(void) {
     return data_02097dd0->cur;
 }
 
@@ -117,15 +117,15 @@ void func_0204c284(void) {
     data_02097dd0->cur = data_02097dd0->unk_08;
 }
 
-MsgRes *func_0204c29c(MsgRes *res) {
+MsgRes *MainVt_0208ba30_DtorDelete(MsgRes *res) {
     MsgRes_Reset(res);
     *(const u32 **)res = data_0208b318;
     res->Unload();
-    func_0203de1c(res);
+    Heap_Free(res);
     return res;
 }
 
-void func_0204c2e0(void *heap) {
+void Heap_SetCurrent(void *heap) {
     data_02097dd0->cur = heap;
 }
 
@@ -152,7 +152,7 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
@@ -253,7 +253,7 @@ s32 func_0204c2f4(char *out, s32 outSize, const char *str) {
 }
 
 
-TextLayout *func_0204c4d4(TextLayout *layout) {
+TextLayout *TextWin_Dtor(TextLayout *layout) {
     *(const u32 **)layout = data_0208ba70;
     layout->Clear();
     return layout;
@@ -449,7 +449,7 @@ extern PadState *data_02097dc8;
 
 BOOL func_0204dccc(TextWin *win);
 
-u16 func_0204dd84(void);
+u16 Pad_GetTrig(void);
 
 void func_0204dd98(TextWin *win);
 
@@ -484,7 +484,7 @@ static inline BOOL TextWin_IsFlag31(TextWin *win) {
 
 BOOL func_0204e218(TextWin *win);
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
 extern s32 FX_Div(s32 a, s32 b);
@@ -510,7 +510,7 @@ struct TextModel : Model {
         STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
-        return func_0203dd9c(size);
+        return Heap_Alloc(size);
     }
 };
 
@@ -556,19 +556,19 @@ extern s32 data_02097d78[];
 
 u8 *func_0204f354(void);
 
-void func_0204f368(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
+void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
-void func_0204f3a0(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
+void GfxGe_TexImageParam(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
 
-void func_0204f3ec(void);
+void GfxGe_PushMtx(void);
 
-void func_0204f404(s32 x, s32 y, s32 z);
+void GfxGe_Translate(s32 x, s32 y, s32 z);
 
-void func_0204f430(s32 x, s32 y, s32 z);
+void GfxGe_Scale(s32 x, s32 y, s32 z);
 
-void func_0204f45c(u32 color);
+void GfxGe_Color(u32 color);
 
-void func_0204f478(s32 num, ...);
+void GfxGe_PopMtx(s32 num, ...);
 
 void func_0204f49c(TextWinEx *win);
 
@@ -597,7 +597,7 @@ void func_0204f784(TextWinEx *win);
 
 BOOL func_0204ffb0(int idx);
 
-TextLayout *func_0205070c(TextLayout *layout);
+TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
 void func_0205073c(TextWin *win, s32 x, s32 y);
 
@@ -711,7 +711,7 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
@@ -719,7 +719,7 @@ extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
 extern int func_0205bef8(void *cmd);
 
-TextLayout *func_0204c4d4(TextLayout *layout);
+TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void func_0204c7d0(TextWin *win) {
     *(u32 *)((u8 *)win + 4) = 0;
@@ -792,7 +792,7 @@ void func_0204c8a8(TextWin *win) {
             if (p != NULL) {
                 func_02041558(p);
                 func_02041278(p->pltt);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             win->model = NULL;
         }
@@ -992,7 +992,7 @@ extern PadState *data_02097dc8;
 
 BOOL func_0204dccc(TextWin *win);
 
-u16 func_0204dd84(void);
+u16 Pad_GetTrig(void);
 
 void func_0204dd98(TextWin *win);
 
@@ -1027,7 +1027,7 @@ static inline BOOL TextWin_IsFlag31(TextWin *win) {
 
 BOOL func_0204e218(TextWin *win);
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
 extern s32 FX_Div(s32 a, s32 b);
@@ -1053,7 +1053,7 @@ struct TextModel : Model {
         STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
-        return func_0203dd9c(size);
+        return Heap_Alloc(size);
     }
 };
 
@@ -1115,19 +1115,19 @@ extern s32 data_02097d78[];
 
 u8 *func_0204f354(void);
 
-void func_0204f368(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
+void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
-void func_0204f3a0(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
+void GfxGe_TexImageParam(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
 
-void func_0204f3ec(void);
+void GfxGe_PushMtx(void);
 
-void func_0204f404(s32 x, s32 y, s32 z);
+void GfxGe_Translate(s32 x, s32 y, s32 z);
 
-void func_0204f430(s32 x, s32 y, s32 z);
+void GfxGe_Scale(s32 x, s32 y, s32 z);
 
-void func_0204f45c(u32 color);
+void GfxGe_Color(u32 color);
 
-void func_0204f478(s32 num, ...);
+void GfxGe_PopMtx(s32 num, ...);
 
 void func_0204f49c(TextWinEx *win);
 
@@ -1156,7 +1156,7 @@ void func_0204f784(TextWinEx *win);
 
 BOOL func_0204ffb0(int idx);
 
-TextLayout *func_0205070c(TextLayout *layout);
+TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
 void func_0205073c(TextWin *win, s32 x, s32 y);
 
@@ -1275,7 +1275,7 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
@@ -1283,7 +1283,7 @@ extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
 extern int func_0205bef8(void *cmd);
 
-TextLayout *func_0204c4d4(TextLayout *layout);
+TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void func_0204c7d0(TextWin *win);
 
@@ -1706,7 +1706,7 @@ extern PadState *data_02097dc8;
 
 BOOL func_0204dccc(TextWin *win);
 
-u16 func_0204dd84(void);
+u16 Pad_GetTrig(void);
 
 void func_0204dd98(TextWin *win);
 
@@ -1741,7 +1741,7 @@ static inline BOOL TextWin_IsFlag31(TextWin *win) {
 
 BOOL func_0204e218(TextWin *win);
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
 extern s32 FX_Div(s32 a, s32 b);
@@ -1767,7 +1767,7 @@ struct TextModel : Model {
         STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
-        return func_0203dd9c(size);
+        return Heap_Alloc(size);
     }
 };
 
@@ -1829,19 +1829,19 @@ extern s32 data_02097d78[];
 
 u8 *func_0204f354(void);
 
-void func_0204f368(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
+void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
-void func_0204f3a0(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
+void GfxGe_TexImageParam(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
 
-void func_0204f3ec(void);
+void GfxGe_PushMtx(void);
 
-void func_0204f404(s32 x, s32 y, s32 z);
+void GfxGe_Translate(s32 x, s32 y, s32 z);
 
-void func_0204f430(s32 x, s32 y, s32 z);
+void GfxGe_Scale(s32 x, s32 y, s32 z);
 
-void func_0204f45c(u32 color);
+void GfxGe_Color(u32 color);
 
-void func_0204f478(s32 num, ...);
+void GfxGe_PopMtx(s32 num, ...);
 
 void func_0204f49c(TextWinEx *win);
 
@@ -1870,7 +1870,7 @@ void func_0204f784(TextWinEx *win);
 
 BOOL func_0204ffb0(int idx);
 
-TextLayout *func_0205070c(TextLayout *layout);
+TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
 void func_0205073c(TextWin *win, s32 x, s32 y);
 
@@ -1917,7 +1917,7 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
@@ -1925,7 +1925,7 @@ extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
 extern int func_0205bef8(void *cmd);
 
-TextLayout *func_0204c4d4(TextLayout *layout);
+TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void func_0204c7d0(TextWin *win);
 
@@ -2203,7 +2203,7 @@ BOOL func_0204dccc(TextWin *win) {
     return TRUE;
 }
 
-u16 func_0204dd84(void) {
+u16 Pad_GetTrig(void) {
     return data_02097dc8->trig;
 }
 
@@ -2281,7 +2281,7 @@ static inline BOOL TextWin_IsFlag31(TextWin *win) {
 
 BOOL func_0204e218(TextWin *win);
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
 extern s32 FX_Div(s32 a, s32 b);
@@ -2307,7 +2307,7 @@ struct TextModel : Model {
         STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
-        return func_0203dd9c(size);
+        return Heap_Alloc(size);
     }
 };
 
@@ -2369,19 +2369,19 @@ extern s32 data_02097d78[];
 
 u8 *func_0204f354(void);
 
-void func_0204f368(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
+void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
-void func_0204f3a0(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
+void GfxGe_TexImageParam(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
 
-void func_0204f3ec(void);
+void GfxGe_PushMtx(void);
 
-void func_0204f404(s32 x, s32 y, s32 z);
+void GfxGe_Translate(s32 x, s32 y, s32 z);
 
-void func_0204f430(s32 x, s32 y, s32 z);
+void GfxGe_Scale(s32 x, s32 y, s32 z);
 
-void func_0204f45c(u32 color);
+void GfxGe_Color(u32 color);
 
-void func_0204f478(s32 num, ...);
+void GfxGe_PopMtx(s32 num, ...);
 
 void func_0204f49c(TextWinEx *win);
 
@@ -2410,7 +2410,7 @@ void func_0204f784(TextWinEx *win);
 
 BOOL func_0204ffb0(int idx);
 
-TextLayout *func_0205070c(TextLayout *layout);
+TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
 void func_0205073c(TextWin *win, s32 x, s32 y);
 
@@ -2445,13 +2445,13 @@ void func_0204dff8(TextWin *win) {
     s16 s;
     if (win->model == NULL) {
         if (win->flag31 ? TRUE : FALSE) {
-            Model *m = (Model *)func_0203dd9c(0x160);
+            Model *m = (Model *)Heap_Alloc(0x160);
             if (m != NULL) {
                 Model_Init(m, data_0208cc8c, data_0208cb84, 0);
             }
             win->model = m;
         } else {
-            Model *m = (Model *)func_0203dd9c(0x160);
+            Model *m = (Model *)Heap_Alloc(0x160);
             if (m != NULL) {
                 Model_Init(m, data_0208cca0, data_0208cb74, 0);
             }
@@ -2497,7 +2497,7 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
@@ -2505,7 +2505,7 @@ extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
 extern int func_0205bef8(void *cmd);
 
-TextLayout *func_0204c4d4(TextLayout *layout);
+TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void func_0204c7d0(TextWin *win);
 
@@ -2633,7 +2633,7 @@ extern PadState *data_02097dc8;
 
 BOOL func_0204dccc(TextWin *win);
 
-u16 func_0204dd84(void);
+u16 Pad_GetTrig(void);
 
 void func_0204dd98(TextWin *win);
 
@@ -2670,7 +2670,7 @@ BOOL func_0204e218(TextWin *win) {
     return TextWin_IsFlag31(win) ? TRUE : FALSE;
 }
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
 extern s32 FX_Div(s32 a, s32 b);
@@ -2696,7 +2696,7 @@ struct TextModel : Model {
         STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
-        return func_0203dd9c(size);
+        return Heap_Alloc(size);
     }
 };
 
@@ -2780,19 +2780,19 @@ extern s32 data_02097d78[];
 
 u8 *func_0204f354(void);
 
-void func_0204f368(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
+void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
-void func_0204f3a0(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
+void GfxGe_TexImageParam(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
 
-void func_0204f3ec(void);
+void GfxGe_PushMtx(void);
 
-void func_0204f404(s32 x, s32 y, s32 z);
+void GfxGe_Translate(s32 x, s32 y, s32 z);
 
-void func_0204f430(s32 x, s32 y, s32 z);
+void GfxGe_Scale(s32 x, s32 y, s32 z);
 
-void func_0204f45c(u32 color);
+void GfxGe_Color(u32 color);
 
-void func_0204f478(s32 num, ...);
+void GfxGe_PopMtx(s32 num, ...);
 
 void func_0204f49c(TextWinEx *win);
 
@@ -2821,7 +2821,7 @@ void func_0204f784(TextWinEx *win);
 
 BOOL func_0204ffb0(int idx);
 
-TextLayout *func_0205070c(TextLayout *layout);
+TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
 void func_0205073c(TextWin *win, s32 x, s32 y);
 
@@ -3362,7 +3362,7 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
@@ -3370,7 +3370,7 @@ extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
 extern int func_0205bef8(void *cmd);
 
-TextLayout *func_0204c4d4(TextLayout *layout);
+TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void func_0204c7d0(TextWin *win);
 
@@ -3498,7 +3498,7 @@ extern PadState *data_02097dc8;
 
 BOOL func_0204dccc(TextWin *win);
 
-u16 func_0204dd84(void);
+u16 Pad_GetTrig(void);
 
 void func_0204dd98(TextWin *win);
 
@@ -3533,7 +3533,7 @@ static inline BOOL TextWin_IsFlag31(TextWin *win) {
 
 BOOL func_0204e218(TextWin *win);
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
 extern s32 FX_Div(s32 a, s32 b);
@@ -3559,7 +3559,7 @@ struct TextModel : Model {
         STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
-        return func_0203dd9c(size);
+        return Heap_Alloc(size);
     }
 };
 
@@ -3623,21 +3623,21 @@ u8 *func_0204f354(void) {
     return data_02097d48->unk_8b0;
 }
 
-void func_0204f368(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc) {
+void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc) {
     u32 data = light | (polyMode << 4) | (cullMode << 6) | misc | (polygonId << 24) | (alpha << 16);
     NNS_G3dGeBufferOP_N(0x29, &data, 1);
 }
 
-void func_0204f3a0(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr) {
+void GfxGe_TexImageParam(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr) {
     u32 data = (addr >> 3) | (texFmt << 26) | (texGen << 30) | (s << 20) | (t << 23) | (repeat << 16) | (flip << 18) | (pltt0 << 29);
     NNS_G3dGeBufferOP_N(0x2a, &data, 1);
 }
 
-void func_0204f3ec(void) {
+void GfxGe_PushMtx(void) {
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
 }
 
-void func_0204f404(s32 x, s32 y, s32 z) {
+void GfxGe_Translate(s32 x, s32 y, s32 z) {
     s32 data[3];
     data[0] = x;
     data[1] = y;
@@ -3645,7 +3645,7 @@ void func_0204f404(s32 x, s32 y, s32 z) {
     NNS_G3dGeBufferOP_N(0x1c, data, 3);
 }
 
-void func_0204f430(s32 x, s32 y, s32 z) {
+void GfxGe_Scale(s32 x, s32 y, s32 z) {
     s32 data[3];
     data[0] = x;
     data[1] = y;
@@ -3653,12 +3653,12 @@ void func_0204f430(s32 x, s32 y, s32 z) {
     NNS_G3dGeBufferOP_N(0x1b, data, 3);
 }
 
-void func_0204f45c(u32 color) {
+void GfxGe_Color(u32 color) {
     u32 data = color;
     NNS_G3dGeBufferOP_N(0x20, &data, 1);
 }
 
-void func_0204f478(s32 num, ...) {
+void GfxGe_PopMtx(s32 num, ...) {
     NNS_G3dGeBufferOP_N(0x12, &num, 1);
 }
 
@@ -3710,7 +3710,7 @@ void func_0204f784(TextWinEx *win);
 
 BOOL func_0204ffb0(int idx);
 
-TextLayout *func_0205070c(TextLayout *layout);
+TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
 void func_0205073c(TextWin *win, s32 x, s32 y);
 
@@ -3757,7 +3757,7 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
@@ -3765,7 +3765,7 @@ extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
 extern int func_0205bef8(void *cmd);
 
-TextLayout *func_0204c4d4(TextLayout *layout);
+TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void func_0204c7d0(TextWin *win);
 
@@ -3893,7 +3893,7 @@ extern PadState *data_02097dc8;
 
 BOOL func_0204dccc(TextWin *win);
 
-u16 func_0204dd84(void);
+u16 Pad_GetTrig(void);
 
 void func_0204dd98(TextWin *win);
 
@@ -3928,7 +3928,7 @@ static inline BOOL TextWin_IsFlag31(TextWin *win) {
 
 BOOL func_0204e218(TextWin *win);
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
 extern s32 FX_Div(s32 a, s32 b);
@@ -3954,7 +3954,7 @@ struct TextModel : Model {
         STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
-        return func_0203dd9c(size);
+        return Heap_Alloc(size);
     }
 };
 
@@ -4016,19 +4016,19 @@ extern s32 data_02097d78[];
 
 u8 *func_0204f354(void);
 
-void func_0204f368(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
+void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
-void func_0204f3a0(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
+void GfxGe_TexImageParam(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
 
-void func_0204f3ec(void);
+void GfxGe_PushMtx(void);
 
-void func_0204f404(s32 x, s32 y, s32 z);
+void GfxGe_Translate(s32 x, s32 y, s32 z);
 
-void func_0204f430(s32 x, s32 y, s32 z);
+void GfxGe_Scale(s32 x, s32 y, s32 z);
 
-void func_0204f45c(u32 color);
+void GfxGe_Color(u32 color);
 
-void func_0204f478(s32 num, ...);
+void GfxGe_PopMtx(s32 num, ...);
 
 void func_0204f49c(TextWinEx *win);
 
@@ -4265,7 +4265,7 @@ s32 func_0204f804(TextWinEx *win) {
 
 BOOL func_0204ffb0(int idx);
 
-TextLayout *func_0205070c(TextLayout *layout);
+TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
 void func_0205073c(TextWin *win, s32 x, s32 y);
 
@@ -4362,7 +4362,7 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
@@ -4370,7 +4370,7 @@ extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
 extern int func_0205bef8(void *cmd);
 
-TextLayout *func_0204c4d4(TextLayout *layout);
+TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void func_0204c7d0(TextWin *win);
 
@@ -4498,7 +4498,7 @@ extern PadState *data_02097dc8;
 
 BOOL func_0204dccc(TextWin *win);
 
-u16 func_0204dd84(void);
+u16 Pad_GetTrig(void);
 
 void func_0204dd98(TextWin *win);
 
@@ -4533,7 +4533,7 @@ static inline BOOL TextWin_IsFlag31(TextWin *win) {
 
 BOOL func_0204e218(TextWin *win);
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
 extern s32 FX_Div(s32 a, s32 b);
@@ -4559,7 +4559,7 @@ struct TextModel : Model {
         STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
-        return func_0203dd9c(size);
+        return Heap_Alloc(size);
     }
 };
 
@@ -4621,19 +4621,19 @@ extern s32 data_02097d78[];
 
 u8 *func_0204f354(void);
 
-void func_0204f368(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
+void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
-void func_0204f3a0(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
+void GfxGe_TexImageParam(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
 
-void func_0204f3ec(void);
+void GfxGe_PushMtx(void);
 
-void func_0204f404(s32 x, s32 y, s32 z);
+void GfxGe_Translate(s32 x, s32 y, s32 z);
 
-void func_0204f430(s32 x, s32 y, s32 z);
+void GfxGe_Scale(s32 x, s32 y, s32 z);
 
-void func_0204f45c(u32 color);
+void GfxGe_Color(u32 color);
 
-void func_0204f478(s32 num, ...);
+void GfxGe_PopMtx(s32 num, ...);
 
 void func_0204f49c(TextWinEx *win);
 
@@ -4694,8 +4694,8 @@ extern void func_0203c9e8(int value, int ch);
 extern void func_0203cb78(int duration, int mode, int ch);
 extern void func_0203cc58(int duration, int mode, int ch);
 extern s32 func_0204a2c8(SndMgr *mgr, s32 seq);
-extern void func_02049870(SndMgr *mgr, s32 seq);
-extern void func_02049950(SndMgr *mgr, int volume, int frames);
+extern void SndMgr_LoadBgm(SndMgr *mgr, s32 seq);
+extern void SndMgr_MoveBgmVolume(SndMgr *mgr, int volume, int frames);
 
 static inline BOOL TextWin_IsState4(int idx) {
     if (data_02097d78[3] == 4) {
@@ -4751,9 +4751,9 @@ BOOL func_0204fd60(TextWinTitle *t) {
                 func_0203cc58(0x78000, 2, 0);
                 if (t->seq != -1) {
                     s32 vol = func_0204a2c8(data_02097e4c, t->seq);
-                    func_02049870(data_02097e4c, t->seq);
-                    func_02049950(data_02097e4c, 0, 0);
-                    func_02049950(data_02097e4c, vol, 0xf0);
+                    SndMgr_LoadBgm(data_02097e4c, t->seq);
+                    SndMgr_MoveBgmVolume(data_02097e4c, 0, 0);
+                    SndMgr_MoveBgmVolume(data_02097e4c, vol, 0xf0);
                 }
             }
         }
@@ -4769,7 +4769,7 @@ BOOL func_0204ffb0(int idx) {
     return TextWin_IsState4(idx);
 }
 
-TextLayout *func_0205070c(TextLayout *layout);
+TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
 void func_0205073c(TextWin *win, s32 x, s32 y);
 
@@ -4817,7 +4817,7 @@ void func_02050b50(TextBox *box);
     }
 
 static inline TextWin *TextBox_NewWin(void) {
-    TextWin *win = (TextWin *)func_0203dd9c(0xb8);
+    TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
         func_0204c7d0(win);
@@ -4911,9 +4911,9 @@ void func_0204ffdc(TextBox *box) {
                 func_0203cc58(0x78000, 2, 0);
                 if (box->unk_018 != -1) {
                     s32 vol = func_0204a2c8(data_02097e4c, box->unk_018);
-                    func_02049870(data_02097e4c, box->unk_018);
-                    func_02049950(data_02097e4c, 0, 0);
-                    func_02049950(data_02097e4c, vol, 0xf0);
+                    SndMgr_LoadBgm(data_02097e4c, box->unk_018);
+                    SndMgr_MoveBgmVolume(data_02097e4c, 0, 0);
+                    SndMgr_MoveBgmVolume(data_02097e4c, vol, 0xf0);
                 }
             }
         }
@@ -5042,7 +5042,7 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
@@ -5050,7 +5050,7 @@ extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
 extern int func_0205bef8(void *cmd);
 
-TextLayout *func_0204c4d4(TextLayout *layout);
+TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void func_0204c7d0(TextWin *win);
 
@@ -5178,7 +5178,7 @@ extern PadState *data_02097dc8;
 
 BOOL func_0204dccc(TextWin *win);
 
-u16 func_0204dd84(void);
+u16 Pad_GetTrig(void);
 
 void func_0204dd98(TextWin *win);
 
@@ -5213,7 +5213,7 @@ static inline BOOL TextWin_IsFlag31(TextWin *win) {
 
 BOOL func_0204e218(TextWin *win);
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
 extern s32 FX_Div(s32 a, s32 b);
@@ -5239,7 +5239,7 @@ struct TextModel : Model {
         STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
-        return func_0203dd9c(size);
+        return Heap_Alloc(size);
     }
 };
 
@@ -5301,19 +5301,19 @@ extern s32 data_02097d78[];
 
 u8 *func_0204f354(void);
 
-void func_0204f368(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
+void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
-void func_0204f3a0(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
+void GfxGe_TexImageParam(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
 
-void func_0204f3ec(void);
+void GfxGe_PushMtx(void);
 
-void func_0204f404(s32 x, s32 y, s32 z);
+void GfxGe_Translate(s32 x, s32 y, s32 z);
 
-void func_0204f430(s32 x, s32 y, s32 z);
+void GfxGe_Scale(s32 x, s32 y, s32 z);
 
-void func_0204f45c(u32 color);
+void GfxGe_Color(u32 color);
 
-void func_0204f478(s32 num, ...);
+void GfxGe_PopMtx(s32 num, ...);
 
 void func_0204f49c(TextWinEx *win);
 
@@ -5342,10 +5342,10 @@ void func_0204f784(TextWinEx *win);
 
 BOOL func_0204ffb0(int idx);
 
-TextLayout *func_0205070c(TextLayout *layout) {
+TextLayout *TextWin_DtorDelete(TextLayout *layout) {
     *(const u32 **)layout = data_0208ba70;
     layout->Clear();
-    func_0203de1c(layout);
+    Heap_Free(layout);
     return layout;
 }
 
@@ -5419,7 +5419,7 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
@@ -5427,7 +5427,7 @@ extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
 extern int func_0205bef8(void *cmd);
 
-TextLayout *func_0204c4d4(TextLayout *layout);
+TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void func_0204c7d0(TextWin *win);
 
@@ -5555,7 +5555,7 @@ extern PadState *data_02097dc8;
 
 BOOL func_0204dccc(TextWin *win);
 
-u16 func_0204dd84(void);
+u16 Pad_GetTrig(void);
 
 void func_0204dd98(TextWin *win);
 
@@ -5590,7 +5590,7 @@ static inline BOOL TextWin_IsFlag31(TextWin *win) {
 
 BOOL func_0204e218(TextWin *win);
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
 extern s32 FX_Div(s32 a, s32 b);
@@ -5616,7 +5616,7 @@ struct TextModel : Model {
         STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
-        return func_0203dd9c(size);
+        return Heap_Alloc(size);
     }
 };
 
@@ -5678,19 +5678,19 @@ extern s32 data_02097d78[];
 
 u8 *func_0204f354(void);
 
-void func_0204f368(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
+void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
-void func_0204f3a0(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
+void GfxGe_TexImageParam(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
 
-void func_0204f3ec(void);
+void GfxGe_PushMtx(void);
 
-void func_0204f404(s32 x, s32 y, s32 z);
+void GfxGe_Translate(s32 x, s32 y, s32 z);
 
-void func_0204f430(s32 x, s32 y, s32 z);
+void GfxGe_Scale(s32 x, s32 y, s32 z);
 
-void func_0204f45c(u32 color);
+void GfxGe_Color(u32 color);
 
-void func_0204f478(s32 num, ...);
+void GfxGe_PopMtx(s32 num, ...);
 
 void func_0204f49c(TextWinEx *win);
 
@@ -5719,7 +5719,7 @@ void func_0204f784(TextWinEx *win);
 
 BOOL func_0204ffb0(int idx);
 
-TextLayout *func_0205070c(TextLayout *layout);
+TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
 void func_0205073c(TextWin *win, s32 x, s32 y);
 
@@ -5747,7 +5747,7 @@ void func_020507d8(TextBox *box) {
             if (p != NULL) {
                 func_02041558(p);
                 func_02041278(p->pltt);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             box->model = NULL;
         }
@@ -5939,7 +5939,7 @@ extern void (*NNS_GfdDefaultFuncFreePlttVram)(void *p);
 
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203df0c(void *ptr);
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 extern void func_0203e58c(void *ptr);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void *func_02039828(VramBlock *block);
@@ -5947,7 +5947,7 @@ extern VramBlock *func_020397fc(u32 size, u32 arg, u32 c);
 extern s32 func_02040778(const char *s, int *len);
 extern int func_0205bef8(void *cmd);
 
-TextLayout *func_0204c4d4(TextLayout *layout);
+TextLayout *TextWin_Dtor(TextLayout *layout);
 
 void func_0204c7d0(TextWin *win);
 
@@ -6075,7 +6075,7 @@ extern PadState *data_02097dc8;
 
 BOOL func_0204dccc(TextWin *win);
 
-u16 func_0204dd84(void);
+u16 Pad_GetTrig(void);
 
 void func_0204dd98(TextWin *win);
 
@@ -6110,7 +6110,7 @@ static inline BOOL TextWin_IsFlag31(TextWin *win) {
 
 BOOL func_0204e218(TextWin *win);
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_02035d5c(char *name);
 extern void *func_02034d88(void *a, void *b);
 extern s32 FX_Div(s32 a, s32 b);
@@ -6136,7 +6136,7 @@ struct TextModel : Model {
         STD_CopyString(this->name, name);
     }
     static void *operator new(unsigned long size) {
-        return func_0203dd9c(size);
+        return Heap_Alloc(size);
     }
 };
 
@@ -6198,19 +6198,19 @@ extern s32 data_02097d78[];
 
 u8 *func_0204f354(void);
 
-void func_0204f368(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
+void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
 
-void func_0204f3a0(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
+void GfxGe_TexImageParam(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
 
-void func_0204f3ec(void);
+void GfxGe_PushMtx(void);
 
-void func_0204f404(s32 x, s32 y, s32 z);
+void GfxGe_Translate(s32 x, s32 y, s32 z);
 
-void func_0204f430(s32 x, s32 y, s32 z);
+void GfxGe_Scale(s32 x, s32 y, s32 z);
 
-void func_0204f45c(u32 color);
+void GfxGe_Color(u32 color);
 
-void func_0204f478(s32 num, ...);
+void GfxGe_PopMtx(s32 num, ...);
 
 void func_0204f49c(TextWinEx *win);
 
@@ -6239,7 +6239,7 @@ void func_0204f784(TextWinEx *win);
 
 BOOL func_0204ffb0(int idx);
 
-TextLayout *func_0205070c(TextLayout *layout);
+TextLayout *TextWin_DtorDelete(TextLayout *layout);
 
 void func_0205073c(TextWin *win, s32 x, s32 y);
 
@@ -6274,7 +6274,7 @@ void func_02050b50(TextBox *box) {
     int i;
     u8 alpha;
     if (box->model == NULL) {
-        Model *m = (Model *)func_0203dd9c(0x160);
+        Model *m = (Model *)Heap_Alloc(0x160);
         if (m != NULL) {
             Model_Init(m, data_0208cca0, data_0208cb74, 0);
         }
@@ -6602,7 +6602,7 @@ extern void func_02050f70(SlideWin *win);
             if (p != NULL) { \
                 if (p != NULL) { \
                     dtor(p); \
-                    func_0203de1c(p); \
+                    Heap_Free(p); \
                 } \
                 (field) = NULL; \
             } \
@@ -6620,7 +6620,7 @@ extern void func_02050f70(SlideWin *win);
                 if (p != NULL) { \
                     func_02041558(p); \
                     func_02041278(p->pltt); \
-                    func_0203de1c(p); \
+                    Heap_Free(p); \
                 } \
                 (field) = NULL; \
             } \
@@ -6883,14 +6883,14 @@ void func_02051a34(SlideWin *win, SlideCharFn fn) {
                                 panel->flag27 = 0;
                                 panel->flag20 = 1;
                                 panel->textPos = (u16)pos;
-                                m = (Model *)func_0203dd9c(0x160);
+                                m = (Model *)Heap_Alloc(0x160);
                                 if (m != NULL) {
                                     SlideModel_Init(m, name, file, 1);
                                 }
                                 panel->nextModel = m;
                                 func_020359fc(m->name, m->unk_04c, 2, 0);
                                 if (panel->kind > 2) {
-                                    m = (Model *)func_0203dd9c(0x160);
+                                    m = (Model *)Heap_Alloc(0x160);
                                     if (m != NULL) {
                                         SlideModel_Init(m, data_0208cc90, data_0208b9cc[panel->unk_0_10], 1);
                                     }
@@ -6929,7 +6929,7 @@ namespace m_Obj3D {
 
 extern "C" {
 
-extern u8 func_02043d48(void *obj);
+extern u8 Gfx3DState_NextPolyId(void *obj);
 extern s8 data_02149ef4;
 
 void func_02051f3c(Obj3DLayer *layer, u32 v) {
@@ -7037,7 +7037,7 @@ public:
 
 extern "C" {
 
-extern u8 func_02043d48(void *obj);
+extern u8 Gfx3DState_NextPolyId(void *obj);
 extern s8 data_02149ef4;
 
 void func_02051f3c(Obj3DLayer *layer, u32 v);
@@ -7059,7 +7059,7 @@ void func_020520fc(Obj3DRender *render) {
     if (alpha > 30) {
         alpha = 30;
     }
-    mtl->polyAttr = (attr & 0xc0e0ffbf) | 0xc0 | (alpha << 16) | (func_02043d48(sys->unk_8b0) << 24);
+    mtl->polyAttr = (attr & 0xc0e0ffbf) | 0xc0 | (alpha << 16) | (Gfx3DState_NextPolyId(sys->unk_8b0) << 24);
 }
 
 void func_02052160(Obj3DRender *render) {
@@ -7156,8 +7156,8 @@ typedef struct Obj3DAnimEnt {
 extern const Obj3DAnimEnt data_0208bc80[];
 extern const char *data_0208cb80;
 
-extern void *func_0203dd9c(u32 size);
-extern void func_0203de1c(void *ptr);
+extern void *Heap_Alloc(u32 size);
+extern void Heap_Free(void *ptr);
 extern BOOL func_0203e688(void);
 extern char *STD_CopyString(char *dst, const char *src);
 extern s32 FX_Div(s32 a, s32 b);
@@ -7200,7 +7200,7 @@ void func_02052178(Obj3DAnim *anim) {
 }
 
 static inline Obj3DAnimMdl *AnimMdl_New(void) {
-    void *p = func_0203dd9c(0x138);
+    void *p = Heap_Alloc(0x138);
     if (p != NULL) {
         p = func_ov000_0218e9c4(p);
     }
@@ -7208,7 +7208,7 @@ static inline Obj3DAnimMdl *AnimMdl_New(void) {
 }
 
 static inline Obj3DAnimObj *AnimObj_New(void) {
-    void *p = func_0203dd9c(0xe8);
+    void *p = Heap_Alloc(0xe8);
     if (p != NULL) {
         p = func_ov000_0218fe1c(p);
     }
@@ -7242,7 +7242,7 @@ static inline void AnimSlot_DeleteObj(Obj3DAnimSlot *slot) {
         if (p != NULL) {
             if (p != NULL) {
                 func_ov000_0218fee4(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             slot->obj = NULL;
         }
@@ -7259,7 +7259,7 @@ static inline void AnimSlot_DeleteMdl(Obj3DAnimSlot *slot) {
         if (p != NULL) {
             if (p != NULL) {
                 func_ov000_0218ea20(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             slot->mdl = NULL;
         }
@@ -7324,7 +7324,7 @@ static inline void AnimSlot_DeleteOldObj(Obj3DAnimSlot *slot) {
         if (p != NULL) {
             if (p != NULL) {
                 func_ov000_0218fee4(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             slot->oldObj = NULL;
         }
@@ -7341,7 +7341,7 @@ static inline void AnimSlot_DeleteOldMdl(Obj3DAnimSlot *slot) {
         if (p != NULL) {
             if (p != NULL) {
                 func_ov000_0218ea20(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             slot->oldMdl = NULL;
         }

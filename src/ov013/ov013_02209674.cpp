@@ -8,12 +8,12 @@ extern char data_ov013_0220be82[];
 extern void func_ov003_021d36fc(Ov013Actor *self);
 extern void func_ov003_021d3d28(Ov013Actor *self);
 extern void func_ov003_021d4fd8(Ov013Actor *self);
-extern void func_0203f324(Ov013Sub48 *p);
+extern void HitSphere_Link(Ov013Sub48 *p);
 extern void *func_ov000_02191318(void *a, s32 b);
 extern void *func_0204a028(void *a, s32 b, Ov013Vec *c, s32 d);
 extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
-extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
-extern void func_ov000_0218d988(Ov013Actor *self, Ov013Actor *t, s32 a);
+extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern void Actor_TurnToActor(Ov013Actor *self, Ov013Actor *t, s32 a);
 extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 a);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
 
@@ -21,7 +21,7 @@ static inline Ov013Actor *Ov013_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline void Ov013_Land(Ov013Actor *self) {
@@ -47,7 +47,7 @@ void func_ov013_02209674(Ov013Act_02207968 *self) {
     m = self->unk_48;
     m->unk_9a_0 = 1;
     m->unk_9a_3 = 1;
-    func_0203f324(m);
+    HitSphere_Link(m);
     n = self->unk_44;
     n->unk_22_0 = 1;
     n->unk_22_1 = 1;
@@ -64,7 +64,7 @@ void func_ov013_0220976c(Ov013Actor *self) {
     if (t == NULL) {
         return;
     }
-    func_ov000_0218d988(self, t, 0x1000);
+    Actor_TurnToActor(self, t, 0x1000);
     Ov013_Land(self);
 }
 

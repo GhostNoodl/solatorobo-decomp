@@ -5,11 +5,11 @@ extern "C" {
 extern Ov009Vec *func_ov000_0218d2e0(void *self);
 extern void VEC_Normalize(Ov009Vec *a, Ov009Vec *b);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
-extern void func_ov000_0218d918(Ov009Obj *self, Ov009Vec *v, s32 a);
-extern void func_ov000_0218dbe0(Ov009Obj *self, s32 a);
+extern void Actor_TurnToPos(Ov009Obj *self, Ov009Vec *v, s32 a);
+extern void Actor_Move(Ov009Obj *self, s32 a);
 extern void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 extern u16 FX_Atan2(s32 x, s32 z);
-extern void func_0203f324(Ov009Sub48 *p);
+extern void HitSphere_Link(Ov009Sub48 *p);
 extern void func_ov009_02215a6c(Ov009ActExVt_0221802c *self);
 
 #define OV009_SQRTCNT (*(volatile u16 *)0x40002b0)
@@ -30,7 +30,7 @@ void func_ov009_02215714(Ov009ActExVt_0221802c *self) {
             Ov009Sub48 *m = self->unk_48;
             m->unk_9a_0 = 1;
             m->unk_9a_3 = 1;
-            func_0203f324(m);
+            HitSphere_Link(m);
         }
         self->unk_48->unk_30 = 0x40000000;
         self->unk_9c = 0;
@@ -85,10 +85,10 @@ void func_ov009_02215714(Ov009ActExVt_0221802c *self) {
     }
     case 1:
         if (self->unk_d0 & 0x200000) {
-            func_ov000_0218d918(self, &self->unk_84, 0x1000);
+            Actor_TurnToPos(self, &self->unk_84, 0x1000);
             VEC_Add(&self->pos, (Ov009Vec *)&self->unk_9c, &self->pos);
         } else {
-            func_ov000_0218dbe0(self, 0);
+            Actor_Move(self, 0);
         }
         func_ov009_02215a6c(self);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);

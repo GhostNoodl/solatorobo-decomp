@@ -61,7 +61,7 @@ static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
             if (self->unk70[i] != NULL) {
                 void *p = self->unk70[i];
                 func_ov000_0218ea20(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->unk70[i] = NULL;
         }
@@ -77,7 +77,7 @@ ov006_Unk021d5b98 *Ov006Vt_021ebfc0_Dtor(ov006_Unk021d5b98 *self) {
 
 ov006_Unk021d5b98 *Ov006Vt_021ebfc0_DtorDelete(ov006_Unk021d5b98 *self) {
     ov006_Unk021d5b98_dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -127,7 +127,7 @@ extern ov006_Unk02097e48 *data_02097e48;
 
 void *func_020359d0(const char *a, int b, int c);
 void func_0206e900(char *dst, const char *src);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void *func_ov000_0218e9c4(void *p);
 void func_ov000_02193e5c(void *p, u16 id);
 void func_0203cc58(s32 a, int b, int c);
@@ -154,7 +154,7 @@ BOOL func_ov006_021d6140(ov006_Task021d6140 *self) {
     func_020359d0("ef/effect3darc", 7, 0);
     func_020359d0("ef/effect3dtri", 7, 0);
     for (i = 0; i < 6; i++) {
-        void *p = func_0203dd9c(0x138);
+        void *p = Heap_Alloc(0x138);
         if (p != NULL) {
             p = func_ov000_0218e9c4(p);
         }
@@ -258,7 +258,7 @@ extern void *data_02097e4c;
 
 void func_020656b4(void *p);
 void func_ov000_0218be9c(void *p);
-void func_ov000_0218e894(void *p);
+void ActorMgr_DestroyAll(void *p);
 void func_ov000_021b53f4(void *p);
 BOOL func_02035b90(const char *name, int a);
 void func_0206e900(char *dst, const char *src);
@@ -271,9 +271,9 @@ ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 ov006_Prop *func_ov006_021ea430(u32 id, u8 a, const ov006_Pos *pos, const ov006_Rot *rot);
 void func_ov000_0218c208(void *a, const ov006_Pos *pos, u16 rot);
 void func_ov000_0218be54(void *p);
-BOOL func_ov000_0218e470(void *p);
+BOOL ActorMgr_IsReady(void *p);
 void func_0204a2f0(void *a, u16 b);
-BOOL func_0204985c(void *a);
+BOOL SndMgr_IsLoadDone(void *a);
 
 static inline int ov006_GetPartyValue(ov006_Unk021ccd6c *self) {
     if (self->party == NULL || self->party->count == 0) {
@@ -294,7 +294,7 @@ BOOL func_ov006_021d630c(ov006_Task021d630c *self) {
         func_020656b4(data_0214a420);
         ((ov006_Bits0c *)(data_ov000_021ccd64 + 0xc))->b0 = 1;
         func_ov000_0218be9c(data_ov000_021ccd64);
-        func_ov000_0218e894(data_ov000_021ccd68);
+        ActorMgr_DestroyAll(data_ov000_021ccd68);
         func_ov000_021b53f4(data_ov000_021ccd6c);
         self->subState++;
         break;
@@ -402,14 +402,14 @@ BOOL func_ov006_021d630c(ov006_Task021d630c *self) {
         break;
     }
     case 6:
-        if (!func_ov000_0218e470(data_ov000_021ccd68)) {
+        if (!ActorMgr_IsReady(data_ov000_021ccd68)) {
             break;
         }
         func_0204a2f0(data_02097e4c, ((ov006_Info021d630c *)data_ov006_021ec884->unk8)->unk8);
         self->subState++;
         break;
     case 7:
-        if (func_0204985c(data_02097e4c)) {
+        if (SndMgr_IsLoadDone(data_02097e4c)) {
             self->subState = i - 1;
             result = TRUE;
         }
@@ -539,7 +539,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         ov006_Pos021d6724 *p;
         u8 n;
         func_ov006_021cd580(7, ov006_GetSlotManager(), result);
-        g = (ov006_Gauge021d6724 *)func_0203dd9c(0x38);
+        g = (ov006_Gauge021d6724 *)Heap_Alloc(0x38);
         if (g != NULL) {
             g = Ov006Vt_021ec2bc_Ctor(g);
         }
@@ -547,7 +547,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         func_ov006_021de008(g);
         ov006_Gauge_Init(self->unk1C, data_ov006_021ec884->unk13C ? 2 : 1, data_ov006_021ec884->unk140, data_ov006_021ec884->unk144);
         ov006_Gauge_Set(data_ov006_021ec884->unk8->unkB, self->unk1C);
-        model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+        model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
         if (model != NULL) {
             const char *name = "cefly1pic00";
             func_02041218(model->unk88);
@@ -560,7 +560,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         self->unk24->unk6C |= 0x400000;
         func_02041d9c(self->unk24, 2, 0xffff);
         info = (ov006_Info021d6724 *)data_ov006_021ec884->unk8;
-        p = (ov006_Pos021d6724 *)func_0203dd9c(0x30);
+        p = (ov006_Pos021d6724 *)Heap_Alloc(0x30);
         if (p != NULL) {
             p = Ov006Vt_021ec1fc_Ctor(p);
         }
@@ -569,14 +569,14 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         func_ov006_021e1e6c(self->unk28, func_0206ec48(data_ov006_021ec884->unk6));
         func_ov006_021e1ddc(self->unk28, "menu/skyrace_map", info->unk4, zero);
         ov006_Pos_SetXY(self->unk28, -0x2c, 0xc);
-        p = (ov006_Pos021d6724 *)func_0203dd9c(0xa4);
+        p = (ov006_Pos021d6724 *)Heap_Alloc(0xa4);
         if (p != NULL) {
             p = Ov006Vt_021ec2cc_Ctor(p);
         }
         self->unk2C = p;
         func_ov006_021e22e4(p);
         ov006_Pos_SetXY(self->unk2C, 0x24, -0x2c);
-        p = (ov006_Pos021d6724 *)func_0203dd9c(0x64);
+        p = (ov006_Pos021d6724 *)Heap_Alloc(0x64);
         if (p != NULL) {
             p = Ov006Vt_021ec2ac_Ctor(p);
         }

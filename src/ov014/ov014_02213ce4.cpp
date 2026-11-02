@@ -6,7 +6,7 @@ void func_ov014_02213ce4(void) {
 }
 
 void *func_ov014_02213ce8(void *self) {
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

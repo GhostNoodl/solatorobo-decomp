@@ -6,7 +6,7 @@
 
 extern "C" {
 extern u8 *data_02097d48;
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 
 static inline void SetOfs(Model *m, s32 x, s32 y) {
     Model_SetPos(m, x << 12, (y - 0x58) << 12);
@@ -25,7 +25,7 @@ void func_ov000_021c078c(Lo021cc938 *self) {
     SetOfs(self->unk_90, x, 0);
     self->unk_8c->unk_150 = self->unk_80;
     SetOfs(self->unk_8c, x, 0);
-    id = func_02043d48(g + 0x8b0) & 0x3f;
+    id = Gfx3DState_NextPolyId(g + 0x8b0) & 0x3f;
 
     MODEL_FLAGS(self->unk_90)->polygon_id = id;
     MODEL_FLAGS(self->unk_90)->alpha = 0x1e;

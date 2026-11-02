@@ -2,18 +2,18 @@
 
 extern "C" {
 
-s32 func_02049130(s32 t, s32 from, s32 to) {
+s32 Interp_SinLerp(s32 t, s32 from, s32 to) {
     return from + Interp_FxMul(to - from, Interp_EaseSin(t));
 }
 
-void func_0204918c(InterpVec *out, s32 t, const InterpVec *from, const InterpVec *to) {
+void Interp_SinLerpVec(InterpVec *out, s32 t, const InterpVec *from, const InterpVec *to) {
     InterpVec d;
     s32 s = Interp_EaseSin(t);
     Interp_VecSub(to, from, &d);
     VEC_MultAdd(s, &d, from, out);
 }
 
-s32 func_02049210(s32 t, s32 from, s32 to) {
+s32 Interp_QuadLerp(s32 t, s32 from, s32 to) {
     return from + Interp_FxMul(to - from, Interp_FxMul(t, t));
 }
 

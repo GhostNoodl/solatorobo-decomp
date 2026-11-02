@@ -50,7 +50,7 @@ typedef struct ov006_ModelFlags {
 extern "C" {
 
 extern u8 *data_02097d48;
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 
 BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 void func_ov006_021dbbac(void *p);
@@ -71,7 +71,7 @@ void func_ov006_021dc054(ov006_Unk021dc054 *self) {
         id = self->unkA4;
         self->unkAC = id;
         {
-            ov006_Model *model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+            ov006_Model *model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
             if (model != NULL) {
                 func_02041218(model->unk88);
                 func_02041440(model, self->unk38, 1);

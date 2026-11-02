@@ -44,7 +44,7 @@ static inline void Ov011_FreeTwl(void **slot) {
         void *p = *slot;
         if (p != NULL) {
             func_ov000_0214b598(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         *slot = NULL;
     }
@@ -68,7 +68,7 @@ Ov011Actor *Ov011Act7da4_DtorDelete(Ov011Act7da4 *self) {
     func_02036838(data_02097cdc, data_ov011_02207c35, 7, 0);
     __cxa_vec_cleanup(self->unk_f4, 2, 0x138, (void *)func_ov000_0218ea20);
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -76,13 +76,13 @@ void Ov011Act7da4_Init(Ov011Act7da4 *self) {
     func_ov003_021d0fc0(self);
     func_020359d0(data_ov011_02207c35, 7, 0);
     if (OS_IsRunOnTwl()) {
-        void *p = func_0203dd9c(0x1c);
+        void *p = Heap_Alloc(0x1c);
         if (p != NULL) {
             p = func_ov000_0214b570(p);
         }
         self->unk_364 = p;
         func_ov000_0214b5e8(p, data_ov011_02207500[1]);
-        p = func_0203dd9c(0x1c);
+        p = Heap_Alloc(0x1c);
         if (p != NULL) {
             p = func_ov000_0214b570(p);
         }
@@ -128,7 +128,7 @@ void Ov011Act7da4_Start(Ov011Act7da4 *self) {
             void *p = self->unk_48;
             if (p != NULL) {
                 func_0203f2b8(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->unk_48 = NULL;
         }

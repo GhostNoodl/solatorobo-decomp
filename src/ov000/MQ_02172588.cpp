@@ -75,13 +75,13 @@ static inline void LoMessageQueueDtor(MessageQueue *self) {
         LoMessageQueueDtor(self); \
     } while (0)
 
-MQ021727b0 *func_ov000_02172588(MQ021727b0 *self) {
+MQ021727b0 *Ov000Vt_021cb980_DtorDelete(MQ021727b0 *self) {
     DTOR_021727B0(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-MQ021727b0 *func_ov000_021727b0(MQ021727b0 *self) {
+MQ021727b0 *Ov000Vt_021cb980_Dtor(MQ021727b0 *self) {
     DTOR_021727B0(self);
     return self;
 }

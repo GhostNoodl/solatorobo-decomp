@@ -11,7 +11,7 @@ void *func_ov000_0218084c(void *a, s32 b, s32 c);
 void *func_ov000_02154b58(void *a, s32 b);
 void func_0203cc58(int a, int b, int c);
 extern void *data_02149ef8;
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215bb14(void *a, void *b);
 void func_ov015_02203ee0(Ov015Scene2a08 *self);
 void func_ov015_02207c30(Ov015Ship *p);
@@ -159,7 +159,7 @@ void func_ov015_02203ab8(Ov015Scene2a08 *self) {
             default:
                 goto skip;
             }
-            s = func_0204c0e8(d, id);
+            s = MsgRes_GetString(d, id);
         }
     skip:
         if (t->unk_84 != NULL) {
@@ -262,7 +262,7 @@ BOOL func_ov015_02204030(Ov015Menu *self, Ov015MenuItem *item) {
         if (item->unk_10 == -1) {
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
         } else if (item->unk_0c > FLD(u32, data_0214a424, 0x20)) {
-            void *s = func_0204c0e8(data_02149ef8, 0x9b);
+            void *s = MsgRes_GetString(data_02149ef8, 0x9b);
             if (o->unk_40 != NULL) {
                 func_ov000_0215bb14(o->unk_40, s);
                 VCALL(o->unk_40)->v70();
@@ -348,7 +348,7 @@ void func_ov015_02204284(Ov015Scene2c08 *self) {
         return;
     }
     res = data_02149ef8;
-    p = (u8 *)func_0203dd9c(0xe0);
+    p = (u8 *)Heap_Alloc(0xe0);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -358,8 +358,8 @@ void func_ov015_02204284(Ov015Scene2c08 *self) {
         VCALL(p)->v28();
     }
     self->unk_3c = (Ov015Menu *)p;
-    VCALL(self->unk_3c)->v10(func_0204c0e8(res, 0xc6));
-    VCALL(self->unk_3c)->v14(func_0204c0e8(res, 0xc7));
+    VCALL(self->unk_3c)->v10(MsgRes_GetString(res, 0xc6));
+    VCALL(self->unk_3c)->v14(MsgRes_GetString(res, 0xc7));
     self->unk_3c->unk_20 = 5;
     self->unk_3c->unk_24 = 0xf8;
     Ov015_SetXYZ16(self->unk_3c, 0, 0x2c, -0xccd);
@@ -392,8 +392,8 @@ void func_ov015_02204284(Ov015Scene2c08 *self) {
         }
         break;
     }
-    func_ov000_02157c90(self->unk_3c, func_0204c0e8(res, 0xa4));
-    func_ov000_02157d2c(self->unk_3c, func_0204c0e8(res, 0x3e));
+    func_ov000_02157c90(self->unk_3c, MsgRes_GetString(res, 0xa4));
+    func_ov000_02157d2c(self->unk_3c, MsgRes_GetString(res, 0x3e));
     {
         Ov015Menu *o = self->unk_3c;
         VCALL(o)->va8(func_ov000_02154b58(o, 0));
@@ -402,7 +402,7 @@ void func_ov015_02204284(Ov015Scene2c08 *self) {
     self->unk_3c->unk_88 = (void *)func_ov015_02203fec;
     self->unk_3c->unk_08 = (u8 *)self;
     VCALL(self->unk_3c)->v08();
-    p = (u8 *)func_0203dd9c(0x8c);
+    p = (u8 *)Heap_Alloc(0x8c);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -423,7 +423,7 @@ void func_ov015_02204284(Ov015Scene2c08 *self) {
         }
     }
     VCALL(self->unk_40)->v08();
-    p = (u8 *)func_0203dd9c(0xe0);
+    p = (u8 *)Heap_Alloc(0xe0);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -438,10 +438,10 @@ void func_ov015_02204284(Ov015Scene2c08 *self) {
     Ov015_SetXYZ16(self->unk_44, 0x91, 0x12, -0x333);
     Ov015_SetXYZ32(self->unk_44, 0x100, 0, -0x333);
     self->unk_44->unk_0c |= 0x20000000;
-    VCALL(self->unk_44)->vf4(1, func_0204c0e8(res, 0x32));
-    VCALL(self->unk_44)->vf4(2, func_0204c0e8(res, 0x33));
+    VCALL(self->unk_44)->vf4(1, MsgRes_GetString(res, 0x32));
+    VCALL(self->unk_44)->vf4(2, MsgRes_GetString(res, 0x33));
     VCALL(self->unk_44)->v08();
-    p = (u8 *)func_0203dd9c(0x98);
+    p = (u8 *)Heap_Alloc(0x98);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -455,7 +455,7 @@ void func_ov015_02204284(Ov015Scene2c08 *self) {
     func_ov000_0215d980(self->unk_48, FLD(void *, data_0214a424, 0x20), 0);
     VCALL(self->unk_48)->v08();
     if (self->unk_0c == 1 && data_ov015_02213360[1] == 0) {
-        p = (u8 *)func_0203dd9c(0x2c);
+        p = (u8 *)Heap_Alloc(0x2c);
         if (p != NULL) {
             SET_VT(p, data_ov015_022129c0);
             func_ov000_02163224(p);

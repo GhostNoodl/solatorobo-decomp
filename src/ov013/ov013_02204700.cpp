@@ -11,7 +11,7 @@ void *STD_CopyString(char *dst, const char *src);
 void Ov013ActEx_02204454_Init(Ov013ActEx_02204454 *self) {
     Ov013Names *n;
     func_ov000_0219433c(self);
-    n = (Ov013Names *)func_0203dd9c(0x138);
+    n = (Ov013Names *)Heap_Alloc(0x138);
     if (n != NULL) {
         n = (Ov013Names *)func_ov000_0218e9c4(n);
     }

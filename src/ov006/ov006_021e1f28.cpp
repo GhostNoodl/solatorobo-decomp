@@ -38,7 +38,7 @@ void func_ov006_021e1f68(ov006_Marker *self) {
 }
 
 ov006_Marker *func_ov006_021e1f6c(ov006_Marker *self) {
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

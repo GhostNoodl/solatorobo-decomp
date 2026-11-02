@@ -57,11 +57,11 @@ extern "C" {
 extern Ov003Game54 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern const Ov003VecP data_ov003_021f4988;
-extern void *func_ov000_0218e4cc(void *mgr, u16 id);
-extern u16 func_ov000_0218dfb4(void *obj, u16 id);
+extern void *ActorMgr_GetGroup(void *mgr, u16 id);
+extern u16 ActorGroup_CountKind(void *obj, u16 id);
 extern BOOL func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(void);
-extern s32 func_02040498(s32 v);
+extern s32 Rand_UpTo(s32 v);
 extern Ov003Mtx33 *NNS_G3dGlbGetInvV(void);
 extern Ov003Effect *func_02065f88(void *mgr, const Ov003Vec *pos);
 
@@ -93,7 +93,7 @@ void func_ov003_021d9e90(Ov003Vec *out, const Ov003Vec *dir, const Ov003Vec *bas
 }
 
 s32 func_ov003_021d9edc(u16 id) {
-    return func_ov000_0218dfb4(func_ov000_0218e4cc(data_ov000_021ccd68, id), id);
+    return ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, id), id);
 }
 
 void Ov003Vec_ToRot(Ov003Rot *out, const Ov003Vec *v) {
@@ -154,8 +154,8 @@ BOOL func_ov003_021da03c(Ov003FxActor *self) {
 static inline Ov003Effect *Ov003_SpawnScatter(const Ov003Vec *base, s32 range, void *mgr) {
     Ov003Vec v;
     Ov003Vec p;
-    s32 y = func_02040528(range);
-    v.x = func_02040528(range);
+    s32 y = Rand_PlusMinus(range);
+    v.x = Rand_PlusMinus(range);
     v.y = y;
     v.z = 0;
     MTX_MultVec33(&v, NNS_G3dGlbGetInvV(), &v);
@@ -175,7 +175,7 @@ void func_ov003_021da108(Ov003FxActor *self, s32 range, void *mgr, s32 base, s32
         off.z = self->unk_44->pos.z;
     }
     VEC_Add(&pos, (Ov003Vec *)&off, &pos);
-    r = func_02040498(top - base);
+    r = Rand_UpTo(top - base);
     e = Ov003_SpawnScatter(&pos, range, mgr);
     if (e != NULL) {
         e->SetTime(base + r);

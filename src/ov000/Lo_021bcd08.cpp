@@ -8,7 +8,7 @@
 extern "C" {
 extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 
 struct Obj021bcd08 {
     u8 unk_00[0xc];
@@ -31,7 +31,7 @@ void func_ov000_021bcd08(Obj021bcd08 *self) {
         return;
     }
     y = (self->unk_1c + LO_FX_MUL(0x1000 - FX_SinCosTable_[((self->unk_28 << 14) >> 16) * 2], -0x40000)) >> 12;
-    MODEL_FLAGS(self->unk_14)->polygon_id = func_02043d48(data_02097d48 + 0x8b0);
+    MODEL_FLAGS(self->unk_14)->polygon_id = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
     self->unk_14->unk_150 = -0x99a;
     Model_SetPos(self->unk_14, 0x54000, (y - 0x4e) << 12);
     m = self->unk_14;

@@ -38,7 +38,7 @@ typedef struct ov006_Unk021df5a0 {
 
 extern "C" {
 
-void func_0204918c(VecFx32 *out, fx32 t, const VecFx32 *from, const VecFx32 *to);
+void Interp_SinLerpVec(VecFx32 *out, fx32 t, const VecFx32 *from, const VecFx32 *to);
 void func_02041c18(ov006_Model *m, const void *name);
 
 static inline void ov006_Loader021df5a0_SetPos(ov006_Loader021df5a0 *l, s32 x, s32 y, s32 z) {
@@ -97,13 +97,13 @@ void func_ov006_021df5a0(ov006_Unk021df5a0 *self) {
     self->off.z = self->pos.z;
     VEC_Add(&self->pos, &self->off, &from);
     base = (self->count + 1) * -9;
-    func_0204918c(&out, ov006_Clamp021df5a0(FX_Div(self->alpha << 12, 0xa000)), &from, &self->pos);
+    Interp_SinLerpVec(&out, ov006_Clamp021df5a0(FX_Div(self->alpha << 12, 0xa000)), &from, &self->pos);
     ov006_Model_SetPos(self->unk8C, 0, ((out.x >> 12) + 0x3e) << 12, (base + (out.y >> 12)) << 12);
     self->unk8C->unk150 = out.z;
     ov006_Model_PlayPart(self->unk8C, 0xe);
     n = self->count;
     for (i = 0; i < n; i++) {
-        func_0204918c(&out, ov006_Clamp021df5a0(FX_Div((self->alpha - i * 2) << 12, 0xa000)), &from, &self->pos);
+        Interp_SinLerpVec(&out, ov006_Clamp021df5a0(FX_Div((self->alpha - i * 2) << 12, 0xa000)), &from, &self->pos);
         x = out.x;
         y = out.y;
         x >>= 12;

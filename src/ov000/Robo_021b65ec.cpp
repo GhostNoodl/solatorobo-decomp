@@ -44,7 +44,7 @@ extern "C" {
 extern ActorMgr *data_ov000_021ccd68;
 extern void *data_02fe152c;
 Robo021ca458 *func_ov000_0219bf90(void);
-Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_021b13cc(u8 *pl, s32 a);
 void func_ov000_021b12c0(u8 *pl, s32 a);
 u16 func_020594bc(void *a, s32 b, s32 c, s32 d);
@@ -54,7 +54,7 @@ static inline Actor *FindActor021b65ec(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline void PlSetPos021b65ec(Robo021ca458 *pl, const VecFx32 *pos, s16 rx, s16 ry, s16 rz) {

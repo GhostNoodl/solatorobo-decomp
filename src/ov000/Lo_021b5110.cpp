@@ -67,7 +67,7 @@ extern "C" {
 extern void *data_02149efc;
 extern Game021b5110 *data_ov000_021ccd54;
 extern void *data_02097e4c;
-BOOL func_0203dbb0(void *node, s32 a);
+BOOL PauseNode_IsUpdatePaused(void *node, s32 a);
 s32 func_ov000_021b7b50(Node021b5110 *n);
 Player021b5110 *func_ov000_0219bf90(void);
 BOOL func_ov000_021b4738(Player021b5110 *pl);
@@ -102,7 +102,7 @@ void func_ov000_021b5110(Mgr021b5110 *self) {
     Item021b5110 *item;
     u8 i;
     u8 hit;
-    if (func_0203dbb0(self, 1)) {
+    if (PauseNode_IsUpdatePaused(self, 1)) {
         return;
     }
     for (n = self->head; n != NULL; n = n->next) {

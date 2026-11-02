@@ -119,13 +119,13 @@ Ov009ActVt_0221707c *Ov009ActVt_0221707c_DtorDelete(Ov009ActVt_0221707c *self) {
         void *p = self->unk_104;
         if (p != NULL) {
             func_ov003_021da940(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_104 = NULL;
     }
     data_02097dd0->cur = saved;
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -138,7 +138,7 @@ Ov009ActVt_0221707c *Ov009ActVt_0221707c_Dtor(Ov009ActVt_0221707c *self) {
         void *p = self->unk_104;
         if (p != NULL) {
             func_ov003_021da940(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_104 = NULL;
     }
@@ -154,7 +154,7 @@ Ov009ActVt_022171d4 *Ov009ActVt_022171d4_Dtor(Ov009ActVt_022171d4 *self) {
 
 Ov009ActVt_022171d4 *Ov009ActVt_022171d4_DtorDelete(Ov009ActVt_022171d4 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -165,7 +165,7 @@ Ov009ActVt_02217128 *Ov009ActVt_02217128_Dtor(Ov009ActVt_02217128 *self) {
 
 Ov009ActVt_02217128 *Ov009ActVt_02217128_DtorDelete(Ov009ActVt_02217128 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -176,7 +176,7 @@ Ov009Act_02200b48 *Ov009Act_02200b48_Dtor(Ov009Act_02200b48 *self) {
 
 Ov009Act_02200b48 *Ov009Act_02200b48_DtorDelete(Ov009Act_02200b48 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -187,7 +187,7 @@ Ov009ActVt_02216c74 *Ov009ActVt_02216c74_Dtor(Ov009ActVt_02216c74 *self) {
 
 Ov009ActVt_02216c74 *Ov009ActVt_02216c74_DtorDelete(Ov009ActVt_02216c74 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -198,7 +198,7 @@ Ov009ActVt_02216bc8 *Ov009ActVt_02216bc8_Dtor(Ov009ActVt_02216bc8 *self) {
 
 Ov009ActVt_02216bc8 *Ov009ActVt_02216bc8_DtorDelete(Ov009ActVt_02216bc8 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -209,7 +209,7 @@ Ov009Actor *func_ov009_02206968(Ov009Actor *self) {
 
 Ov009Actor *func_ov009_0220697c(Ov009Actor *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -220,7 +220,7 @@ Ov009Actor *func_ov009_02206998(Ov009Actor *self) {
 
 Ov009Actor *func_ov009_022069ac(Ov009Actor *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -231,11 +231,11 @@ Ov009ActVt_02216dcc *Ov009ActVt_02216dcc_Dtor(Ov009ActVt_02216dcc *self) {
 
 Ov009ActVt_02216dcc *Ov009ActVt_02216dcc_DtorDelete(Ov009ActVt_02216dcc *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 extern void *data_ov000_021ccd64;
-extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
+extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_0203f2b8(void *p);
 
 struct Ov009ByteA2 {
@@ -263,7 +263,7 @@ void Ov009ActVt_022178f0_Start(Ov009ActVt_022178f0 *self) {
             void *q = self->unk_48;
             if (q != NULL) {
                 func_0203f2b8(q);
-                func_0203de1c(q);
+                Heap_Free(q);
             }
             self->unk_48 = NULL;
         }
@@ -272,7 +272,7 @@ void Ov009ActVt_022178f0_Start(Ov009ActVt_022178f0 *self) {
     self->unk_108 = 0;
     self->unk_10a = 0;
     Ov009_VecSet3(&FLD(Ov009Vec, self->unk_44, 0xc), 0x3800, self->unk_6c, 0);
-    p = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+    p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
         ((Ov009ByteA2 *)(p + 0xa2))->b0 = 0;
     }

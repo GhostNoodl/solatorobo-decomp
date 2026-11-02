@@ -47,13 +47,13 @@ void func_020359fc(const char *arc, const char *name, s32 a, s32 b);
 BOOL func_02035bd4(const char *arc, const char *name, s32 a);
 void *func_02035f30(const char *arc, const char *name, s32 a);
 void *func_02034d88(void *a, const char *name);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_02041218(void *p);
 void func_02041440(void *m, const char *name, s32 a);
 void func_020417e0(void *m, void *res);
 void func_02041d9c(void *m, s32 a, u16 b);
 s32 FX_Div(s32 n, s32 d);
-s32 func_02049130(s32 t, s32 a, s32 b);
+s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 
 static inline char *ObjName021c3158(Obj021c3158 *o) {
     return o->unk_34;
@@ -64,7 +64,7 @@ static inline void *LoadObjRes021c3158(Obj021c3158 *o) {
 }
 
 static inline u8 *NewModel021c3158(char *arc, char *name) {
-    u8 *m = (u8 *)func_0203dd9c(0x160);
+    u8 *m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
         func_02041218(m + 0x88);
         func_02041440(m, name, 0);
@@ -76,7 +76,7 @@ static inline u8 *NewModel021c3158(char *arc, char *name) {
 static inline u8 *NewModelObj021c3158(Obj021c3158 *self) {
     char *arc;
     u8 *m;
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
         char *name = ObjName021c3158(self);
         arc = self->unk_30;
@@ -178,7 +178,7 @@ void func_ov000_021c3158(Obj021c3158 *self) {
         {
             t = FX_Div(self->unk_58 - 0x99a, 0x1000 - 0x99a);
             self->unk_5c = 0;
-            self->unk_60 = func_02049130(t, 0xa000, 0);
+            self->unk_60 = Interp_SinLerp(t, 0xa000, 0);
         }
         if (self->unk_58 >= 0x1000) {
             self->unk_64 = 0x334 - 0x99a;

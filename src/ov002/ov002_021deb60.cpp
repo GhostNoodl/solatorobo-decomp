@@ -104,7 +104,7 @@ void func_ov002_021dec74(void *self) {
         void *r;
         u8 *w;
         func_ov002_021e34fc(FIELD(self, 0xc, void *), data_ov002_021eef8c[k].fn);
-        r = func_0204c0e8(data_02149ef8, data_ov002_021eef90[k].id);
+        r = MsgRes_GetString(data_02149ef8, data_ov002_021eef90[k].id);
         w = FIELD(self, 0x4, u8 *);
         func_ov000_0215bb14(FIELD(w, 0x20, void *), r);
         FIELD(w, 0x20, VObject *)->v0x70();

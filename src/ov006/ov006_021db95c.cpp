@@ -29,7 +29,7 @@ ov006_Unk021db95c *ov006_Window_Dtor(ov006_Unk021db95c *self) {
 
 ov006_Unk021db95c *ov006_Window_DtorDelete(ov006_Unk021db95c *self) {
     ov006_Unk021db95c_dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

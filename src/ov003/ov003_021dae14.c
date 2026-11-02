@@ -19,7 +19,7 @@ extern void VEC_Normalize(Ov003Vec *src, Ov003Vec *dst);
 extern void func_ov000_0219433c(void *self);
 extern void func_01ffc9fc(Ov003Vec *src, Ov003Vec *dst, u16 angle);
 extern void VEC_Add(Ov003Vec *a, Ov003Vec *b, Ov003Vec *dst);
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 extern void *func_ov000_0219429c(void *p);
 
 void *Ov003ActVt_021f7de4_Dtor(void *self) {
@@ -29,7 +29,7 @@ void *Ov003ActVt_021f7de4_Dtor(void *self) {
 
 void *Ov003ActVt_021f7de4_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

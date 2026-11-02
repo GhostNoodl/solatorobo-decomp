@@ -11,7 +11,7 @@ extern u8 *data_ov000_021ccd30;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb5a8[];
-char *func_0204c0e8(void *msg, s32 id);
+char *MsgRes_GetString(void *msg, s32 id);
 void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void func_020417e0(void *model, void *a);
@@ -49,7 +49,7 @@ void func_ov000_021bbd94(Obj021bbd94 *self) {
     u8 *m;
     Rgb021bbd94 c;
 
-    t = (VObj *)func_0203dd9c(0xe0);
+    t = (VObj *)Heap_Alloc(0xe0);
     if (t != NULL) {
         VOBJ_SET_VTABLE(t, data_ov000_021cac60);
         t->vfunc_28();
@@ -75,9 +75,9 @@ void func_ov000_021bbd94(Obj021bbd94 *self) {
     }
     LFLD(u32, self->unk_5c, 0xc) |= 0x20000000;
     LFLD(u32, self->unk_5c, 0xc) |= 0x80000000;
-    self->unk_5c->vfunc_f4(2, func_0204c0e8(msg, 0x33));
+    self->unk_5c->vfunc_f4(2, MsgRes_GetString(msg, 0x33));
     self->unk_5c->vfunc_08();
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
         func_02041218(m + 0x88);
         func_02041440(m, (u8 *)self + 0x28, 0);

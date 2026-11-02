@@ -62,10 +62,10 @@ void func_ov012_02206098(Ov012Actor *self) {
     }
     case 1:
         if (FLD(u32, self, 0xd0) & 0x400000) {
-            func_ov000_0218d918(self, &self->unk_84, 0x1000);
+            Actor_TurnToPos(self, &self->unk_84, 0x1000);
             VEC_Add(&self->pos, (Ov012Vec *)&self->unk_9c, &self->pos);
         } else {
-            func_ov000_0218dbe0(self, 0);
+            Actor_Move(self, 0);
         }
         func_ov012_022065d8(self);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);

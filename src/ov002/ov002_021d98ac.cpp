@@ -107,7 +107,7 @@ void func_ov002_021d98ac(void *self) {
             break;
         }
         if (func_0206ede8(id)[0] == 0x80) {
-            n = (u8 *)func_0203dd9c(0xb4);
+            n = (u8 *)Heap_Alloc(0xb4);
             if (n != NULL) {
                 *(VFunc **)n = data_ov002_021efeb8;
                 func_ov002_021d7b80(n);
@@ -118,7 +118,7 @@ void func_ov002_021d98ac(void *self) {
             ((VObject *)n)->v0x8();
             FIELD(n, 0xac, s32) = FIELD(n, 0xa8, u16) <= FIELD(data_0214a424, 0x24, u16) ? 2 : 1;
         } else {
-            n = (u8 *)func_0203dd9c(0xd4);
+            n = (u8 *)Heap_Alloc(0xd4);
             if (n != NULL) {
                 *(VFunc **)n = data_ov002_021efeb8;
                 func_ov002_021d7b80(n);

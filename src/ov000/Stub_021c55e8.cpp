@@ -22,12 +22,12 @@ typedef struct {
 
 extern "C" {
 
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_ov000_0215f514(Obj0215f514 *p);
 void func_ov000_0215f0ec(Obj0215f514 *p, s32 a);
 
 static inline Obj0215f514 *New0215f514(void) {
-    Obj0215f514 *p = (Obj0215f514 *)func_0203dd9c(sizeof(Obj0215f514));
+    Obj0215f514 *p = (Obj0215f514 *)Heap_Alloc(sizeof(Obj0215f514));
     if (p != NULL) {
         func_ov000_0215f514(p);
     }

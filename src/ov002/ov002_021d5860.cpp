@@ -7,7 +7,7 @@ VObject *Ov002Vt_021efca4_DtorDelete(VObject *self) {
     self->v0x2c();
     *(VFunc **)self = data_ov000_021cac60;
     self->v0x2c();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -84,7 +84,7 @@ void func_ov002_021d58b8(Task50 *self) {
     u8 *e;
     FIELD(self, 0x74, u16) = FIELD(data_0214a424, 0x18, Bits021d9e38).id + 0x8000;
     res = func_02035de0(data_ov002_021efaf1, data_0208ccc0);
-    m = func_0203dd9c(0x160);
+    m = Heap_Alloc(0x160);
     if (m != NULL) {
         func_02041218((u8 *)m + 0x88);
         func_02041440(m, NULL, 0);
@@ -96,7 +96,7 @@ void func_ov002_021d58b8(Task50 *self) {
     FIELD(FIELD(self, 0x3c, void *), 0x150, s32) = -0x1fe66;
     FIELD(FIELD(self, 0x3c, void *), 0x158, void *) = (void *)func_ov002_021d66b0;
     func_02041c20(FIELD(self, 0x3c, void *), 0, (u8 *)self + 0x40);
-    o = (VObject *)func_0203dd9c(0x8c);
+    o = (VObject *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
         o->v0x28();
@@ -129,7 +129,7 @@ void func_ov002_021d58b8(Task50 *self) {
     FIELD(self, 0x4c, VObject *)->v0x8();
     func_ov000_0215bb14(FIELD(self, 0x4c, void *), func_0206ec48(FIELD(self, 0x74, u16)));
     FIELD(self, 0x4c, VObject *)->v0x70();
-    o = (VObject *)func_0203dd9c(0xd4);
+    o = (VObject *)Heap_Alloc(0xd4);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
         o->v0x28();
@@ -138,8 +138,8 @@ void func_ov002_021d58b8(Task50 *self) {
         *(VFunc **)o = data_ov002_021efca4;
     }
     FIELD(self, 0x50, VObject *) = o;
-    FIELD(self, 0x50, VObject *)->v0x10(func_0204c0e8(g, 0xbe));
-    FIELD(self, 0x50, VObject *)->v0x14(func_0204c0e8(g, 0xbf));
+    FIELD(self, 0x50, VObject *)->v0x10(MsgRes_GetString(g, 0xbe));
+    FIELD(self, 0x50, VObject *)->v0x14(MsgRes_GetString(g, 0xbf));
     FIELD(FIELD(self, 0x50, void *), 0x20, s32) = 2;
     FIELD(FIELD(self, 0x50, void *), 0x24, s32) = 0x74;
     {
@@ -181,7 +181,7 @@ void func_ov002_021d58b8(Task50 *self) {
         VObject *mm = FIELD(self, 0x50, VObject *);
         mm->v0xa8(func_ov000_02154b58(mm, (void *)(u32)FIELD(self, 0x74, u16)));
     }
-    o = (VObject *)func_0203dd9c(0x8c);
+    o = (VObject *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
         o->v0x28();
@@ -220,7 +220,7 @@ void func_ov002_021d58b8(Task50 *self) {
         }
     }
     {
-        void *q = func_0203dd9c(0x708);
+        void *q = Heap_Alloc(0x708);
         if (q != NULL) {
             q = func_ov000_02162124(q);
         }

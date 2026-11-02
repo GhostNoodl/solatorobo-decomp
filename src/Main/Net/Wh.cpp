@@ -30,7 +30,7 @@ void func_02044ac4(void) {
         return;
     }
     data_02097dd0->align = 0x20;
-    wh = (WhMgr *)func_0203dd9c(sizeof(WhMgr));
+    wh = (WhMgr *)Heap_Alloc(sizeof(WhMgr));
     if (wh != NULL) {
         func_02044cb8(wh);
     }
@@ -364,7 +364,7 @@ s16 func_0204587c(WhMgr *wh, u16 bitmap) {
 void func_0204593c(void *arg) {
 }
 
-void func_02045940(WhMgr *wh, void *info, u16 length) {
+void Wh_SetGameInfo(WhMgr *wh, void *info, u16 length) {
     wh->parentParam.userGameInfo = info;
     wh->parentParam.userGameInfoLength = length;
 }

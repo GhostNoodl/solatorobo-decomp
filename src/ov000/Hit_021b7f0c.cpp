@@ -15,10 +15,10 @@ typedef struct {
 extern "C" {
 void MI_Copy36B(const void *src, void *dst);
 void func_0203f80c(void *mesh);
-void func_0203f8d8(void *mesh);
-void func_0203f990(void *mesh, void *res);
-void func_0203f9b8(void *mesh, int scale);
-void func_0203f9dc(void *mesh, const void *mtx);
+void HitMesh_Link(void *mesh);
+void HitMesh_SetRes(void *mesh, void *res);
+void HitMesh_SetScale(void *mesh, int scale);
+void HitMesh_SetMtx(void *mesh, const void *mtx);
 BOOL func_ov000_021b6d28(void *p);
 void func_ov000_021b70c0(void *a, void *b, s32 c, u8 d, s32 e, s32 f);
 
@@ -64,15 +64,15 @@ BOOL func_ov000_021b7f0c(Obj021b7f0c *self) {
                 MI_Copy36B((u8 *)self + 0xb4, mtx.m);
                 { s32 x = self->unk_a8; s32 y = self->unk_ac; s32 z = self->unk_b0; mtx.t.x = x; mtx.t.y = y; mtx.t.z = z; }
                 scale = self->unk_d8;
-                mesh = func_0203dd9c(0x98);
+                mesh = Heap_Alloc(0x98);
                 if (mesh != NULL) {
                     func_0203f80c(mesh);
                 }
                 self->unk_ec = mesh;
-                func_0203f990(mesh, *self->unk_28);
-                func_0203f9dc(self->unk_ec, &mtx);
-                func_0203f9b8(self->unk_ec, scale);
-                func_0203f8d8(self->unk_ec);
+                HitMesh_SetRes(mesh, *self->unk_28);
+                HitMesh_SetMtx(self->unk_ec, &mtx);
+                HitMesh_SetScale(self->unk_ec, scale);
+                HitMesh_Link(self->unk_ec);
             }
         }
     }

@@ -9,7 +9,7 @@ extern void *data_0208cc88;
 extern void *data_0208cb7c;
 extern char data_0214b105[];
 extern u8 data_ov000_021ccd74[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
 void *func_02035d5c(void *a);
@@ -20,7 +20,7 @@ void *STD_CopyString(void *dst, void *src);
 
 #define LO_MODEL_NEW(out, NAME, ARC)                 \
     do {                                             \
-        u8 *m_ = (u8 *)func_0203dd9c(0x160);         \
+        u8 *m_ = (u8 *)Heap_Alloc(0x160);         \
         if (m_) {                                    \
             void *arc_;                              \
             void *name_;                             \

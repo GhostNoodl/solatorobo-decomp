@@ -59,7 +59,7 @@ extern void func_ov000_02184508(void *g);
 extern void func_ov000_02184548(void *g);
 extern void func_ov000_0218d46c(void *a, u16 id, s32 msg);
 extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
-extern void *func_ov000_0218e640(void *mgr, u16 id);
+extern void *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_02199f48(void *p, Ov009Actor *a);
 extern void *func_ov000_0219b71c(Ov009Vec *pos, Ov009Vec *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov003_021d6954(Ov009Actor *self, u8 a);
@@ -73,7 +73,7 @@ static inline void *Ov009_FindActorD68(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 void func_ov009_02212978(Ov009ActVt_02217a00 *self) {
@@ -150,8 +150,8 @@ void func_ov009_02212978(Ov009ActVt_02217a00 *self) {
             s32 a;
             e->v34(0, (u16)(self->rot[1] + 0x8000), 0);
             e->v14(0x1ccd, 0x1ccd, 0x1ccd);
-            a = func_02040498(0x4000);
-            e->v24(-0x3800, a - 0x1000, func_02040498(0x3000));
+            a = Rand_UpTo(0x4000);
+            e->v24(-0x3800, a - 0x1000, Rand_UpTo(0x3000));
         }
         break;
     case 2:

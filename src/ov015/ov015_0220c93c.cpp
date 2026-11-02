@@ -10,9 +10,9 @@ Ov015V *func_020657b0(void *a, void *b);
 extern u8 data_ov015_02212e0d[];
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-s32 func_02040528(s32 max);
+s32 Rand_PlusMinus(s32 max);
 void VEC_Normalize(void *src, void *dst);
-void func_0203f324(void *a);
+void HitSphere_Link(void *a);
 
 Ov015FishState40 *Ov015FishState40_Ctor(Ov015FishState40 *self) {
     SET_VT(self, data_ov015_02212ee8);
@@ -81,7 +81,7 @@ void *Ov015FishState40_DtorDelete(Ov015FishState40 *self) {
         HEAP_POP(saved);
     }
     SET_VT(self, data_ov015_02212eb0);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -94,15 +94,15 @@ BOOL Ov015FishState40_Enter(Ov015FishState40 *self, Ov015Fish *p) {
     func_ov000_021915a0(&p->unk_244);
     p->unk_108 = 1;
     self->unk_0c = Ov015_FxMul(p->unk_c0.unk_0a << 4, 0x19a) + 0x23d;
-    a = func_02040528(0x1000);
-    self->unk_1c.x = func_02040528(0x1000);
+    a = Rand_PlusMinus(0x1000);
+    self->unk_1c.x = Rand_PlusMinus(0x1000);
     self->unk_1c.z = a;
     self->unk_1c.y = 0;
     VEC_Normalize(&self->unk_1c, &self->unk_1c);
     VEC_Normalize(&self->unk_1c, &p->unk_9c);
     p->unk_40.y = -0x32000;
     Ov015_SetXZ((s32 *)&p->unk_40, p->unk_40.x, p->unk_40.z);
-    func_0203f324(&p->unk_568);
+    HitSphere_Link(&p->unk_568);
     self->unk_14 = p->unk_c0.unk_0c;
     self->unk_18 = p->unk_c0.unk_0e;
     self->unk_04 = 0;

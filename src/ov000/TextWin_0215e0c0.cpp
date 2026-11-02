@@ -25,11 +25,11 @@ extern "C" {
 extern const char data_ov000_021cabf4[];
 char *STD_SearchString(char *str, const char *sub);
 extern void *data_02149ef8;
-char *func_0204c0e8(void *p, s32 id);
+char *MsgRes_GetString(void *p, s32 id);
 void func_ov000_0215aa78(VObj *self);
 
 static inline TextWin *TextWin_New(void) {
-    TextWin *win = (TextWin *)func_0203dd9c(0xb8);
+    TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
         func_0204c7d0(win);
@@ -113,9 +113,9 @@ void func_ov000_0215e344(Obj0215e0c0 *self) {
         *(u16 *)((u8 *)self + 0x66) = 0;
         *(u16 *)((u8 *)self + 0x68) = 0;
         if (self->msgId != 0xffff) {
-            t = func_0204c0e8(d, self->msgId);
+            t = MsgRes_GetString(d, self->msgId);
         } else {
-            t = func_0204c0e8(d, 0x8d);
+            t = MsgRes_GetString(d, 0x8d);
         }
         ((VObj *)self)->vfunc_10(t);
     }

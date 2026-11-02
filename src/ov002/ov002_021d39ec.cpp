@@ -66,7 +66,7 @@ BOOL func_ov002_021d3b10(void *self, void *ev) {
             func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
         } else {
             VObject *b = FIELD(o, 0x40, VObject *);
-            func_ov000_0215bb14(b, func_0204c0e8(data_02149ef8, 0x9c));
+            func_ov000_0215bb14(b, MsgRes_GetString(data_02149ef8, 0x9c));
             b->v0x70();
             FIELD(o, 0x4c, u8) = 0;
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);

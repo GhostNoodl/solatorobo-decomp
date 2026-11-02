@@ -41,7 +41,7 @@ void func_ov011_021febd8(Ov011Scene *self) {
         while (p != NULL) {
             Ov011PNode *next = p->next;
             if (p != NULL) {
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             p = next;
         }
@@ -97,7 +97,7 @@ void *Ov011SceneActor_DtorDelete(void *self) {
     *(void **)self = data_ov011_022078f0;
     func_ov011_0220068c(self);
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

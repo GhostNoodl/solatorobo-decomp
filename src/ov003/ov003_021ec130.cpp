@@ -159,9 +159,9 @@ extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void *func_ov000_0219b71c(Ov003Vec *pos, Ov003Vec *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern void *func_ov000_02199ba0(Ov003GmPart *p);
-extern void func_ov000_0218d398(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
-extern void *func_ov000_02194074(void *self);
+extern void *Target_Get(Ov003GmPart *p);
+extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
+extern void *ActorEx_Ctor(void *self);
 extern void *func_ov000_0218e9c4(Ov003GmRes *res);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(Ov003GmRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
@@ -171,7 +171,7 @@ extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern BOOL func_ov000_021950e8(void *self, Ov003GmMsg *msg);
-extern s32 func_02040498(s32 max);
+extern s32 Rand_UpTo(s32 max);
 extern Ov003GmEffect *func_02065f88(s32 id, const Ov003Vec *pos);
 extern void func_ov003_021ec668(Ov003Gimmick *self);
 extern void *data_0214a420;
@@ -227,9 +227,9 @@ void func_ov003_021ec270(Ov003Gimmick *self) {
         return;
     }
     func_020627b4();
-    p = func_ov000_02199ba0(self->part);
+    p = Target_Get(self->part);
     if (p != NULL) {
-        func_ov000_0218d398(p, self->unk_0c, 3, 1, 0, 0);
+        Actor_SendMsg(p, self->unk_0c, 3, 1, 0, 0);
     }
     self->part->unk_1c = 0xffff;
     self->work->state++;
@@ -237,7 +237,7 @@ void func_ov003_021ec270(Ov003Gimmick *self) {
 }
 
 Ov003Gimmick *Ov003ActVt_021f99e8_Ctor(Ov003Gimmick *self) {
-    func_ov000_02194074(self);
+    ActorEx_Ctor(self);
     self->vtbl = data_ov003_021f99e8;
     func_ov000_0218e9c4(&self->res);
     self->count = 1;
@@ -335,7 +335,7 @@ void func_ov003_021ec580(Ov003Gimmick *self) {
         w->timer++;
         if (w->timer >= 0x96) {
             Ov003GmEffect *e;
-            self->work->timer = func_02040498(0xf);
+            self->work->timer = Rand_UpTo(0xf);
             e = func_02065f88(0x322, &self->pos);
             e->SetRot(0, self->rotY, 0);
             e->SetScale(self->scale, self->scale, self->scale);

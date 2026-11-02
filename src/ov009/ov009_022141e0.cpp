@@ -2,8 +2,8 @@
 
 extern "C" {
 
-extern Ov009Obj *func_ov000_02199ba0(void *p);
-extern void func_ov000_0218dbe0(Ov009Obj *self, s32 a);
+extern Ov009Obj *Target_Get(void *p);
+extern void Actor_Move(Ov009Obj *self, s32 a);
 extern s32 func_ov000_0219a510(Ov009Obj *self, u16 mask, const Ov009Vec *pos, s32 r, s32 b, void **out);
 extern Ov009Actor *func_ov000_021985c0(void *p);
 extern void func_ov003_021f0c60(Ov009Obj *self, s32 a);
@@ -15,11 +15,11 @@ void func_ov009_022141e0(Ov009ActorEx *self) {
     s32 r;
     u16 grp;
     s32 i;
-    if (func_ov000_02199ba0(self->unk_4c) == NULL) {
+    if (Target_Get(self->unk_4c) == NULL) {
         return;
     }
     if (self->unk_40->state == 1) {
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         if (self->unk_48 != NULL) {
             func_ov000_021987b8(self->unk_48, 0, 0, 0);
             if (self->unk_48->unk_50 & 0x20000000) {
@@ -31,7 +31,7 @@ void func_ov009_022141e0(Ov009ActorEx *self) {
             r = 0xccd;
         }
         self->unk_48->unk_44 = r;
-        grp = func_ov000_02199ba0(self->unk_4c)->id & 0xf000;
+        grp = Target_Get(self->unk_4c)->id & 0xf000;
         n = func_ov000_0219a510(self, ~(1 << (grp >> 12)), &self->pos, r, 0, list);
         if (n != 0) {
             for (i = 0; i < n; i++) {

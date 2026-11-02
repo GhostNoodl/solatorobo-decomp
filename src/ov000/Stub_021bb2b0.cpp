@@ -35,8 +35,8 @@ extern void *data_0214a420;
 void func_ov000_021bb298(void *self);
 u16 func_020594bc(void *res, u32 idx, int packed, int sub);
 void func_0204aab0(SndQueue *queue, u16 value);
-u16 func_0204aac4(SndQueue *queue);
-void func_0204aa90(SndQueue *queue);
+u16 SndQueue_Peek(SndQueue *queue);
+void SndQueue_Pop(SndQueue *queue);
 Fx021bb33c *func_02066df0(void);
 Fx021bb33c *func_02066ec8(void);
 Fx021bb33c *func_02066f90(void);
@@ -90,7 +90,7 @@ static inline void Bgm021bb33c_Play(u16 id) {
 static inline void Bgm021bb33c_Resume(void) {
     SndQueue *q = data_02097e48.queue;
     if (q->flag0) {
-        u16 cur = func_0204aac4(q);
+        u16 cur = SndQueue_Peek(q);
         if (!(q->unk_06 == 0xffff && q->unk_04 == cur)) {
             if (cur == 0xffff) {
                 if (q->flag2 == 1 && q->flag3) {
@@ -103,7 +103,7 @@ static inline void Bgm021bb33c_Resume(void) {
                 q->unk_08 = 10;
                 q->unk_02 = 0;
             }
-            func_0204aa90(q);
+            SndQueue_Pop(q);
         }
     }
 }

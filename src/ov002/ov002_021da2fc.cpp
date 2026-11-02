@@ -10,7 +10,7 @@ void func_ov002_021da2fc(void) {
         DELETE_VOBJ(*(VObject **)&data_ov002_021f0f90[1]);
         HEAP_POP(saved);
     }
-    p = func_0203dd9c(0x14);
+    p = Heap_Alloc(0x14);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021efe7c;
         FIELD(p, 4, s32) = 0;
@@ -31,7 +31,7 @@ void func_ov002_021da39c(void) {
 void *Ov002Vt_021efe7c_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021efe7c;
     func_ov002_021da430(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

@@ -136,7 +136,7 @@ extern void func_ov003_021f0c60(Ov003Bx *self, s32 a);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
-extern void func_ov000_0218dbe0(void *self, s32 a);
+extern void Actor_Move(void *self, s32 a);
 extern void func_ov000_021987b8(Ov003BxCtl *ctl, s32 a, s32 b, s32 c);
 
 extern void *data_0214a420;
@@ -213,12 +213,12 @@ typedef struct {
 } Ov003BxSpawned;
 
 extern void *data_ov000_021ccd64;
-extern s32 func_02040528(s32 n);
-extern s32 func_02040498(s32 n);
+extern s32 Rand_PlusMinus(s32 n);
+extern s32 Rand_UpTo(s32 n);
 extern BOOL func_01ffc584(Ov003BxVec *a, Ov003BxVec *b, s32 r, s32 h);
-extern void func_0203f324(Ov003BxCtl *ctl);
+extern void HitSphere_Link(Ov003BxCtl *ctl);
 extern void *func_0206fef8(u16 id);
-extern Ov003BxSpawned *func_ov000_0218bf1c(void *mgr, Ov003BxSpawnInfo *info, void *pos, Ov003BxRot *rot, u16 a);
+extern Ov003BxSpawned *Group_SpawnActor(void *mgr, Ov003BxSpawnInfo *info, void *pos, Ov003BxRot *rot, u16 a);
 
 static inline void Ov003Bx_SetScale(void *m, s32 s) {
     BXF(s32, m, 0xa8) = s;
@@ -249,17 +249,17 @@ void func_ov003_021ef70c(Ov003Bx *self) {
         BXF(s32, BXF(void *, self, 0x3c), 0xc) = 0x14000;
         if (self->unk_1a >= 1) {
             s32 r = self->unk_1c << 4;
-            self->pos.x += func_02040528(r);
-            self->pos.z += func_02040528(r);
+            self->pos.x += Rand_PlusMinus(r);
+            self->pos.z += Rand_PlusMinus(r);
         }
         if (self->unk_b0->unk_01 == 0) {
-            self->rot.y = func_02040498(0xffff);
+            self->rot.y = Rand_UpTo(0xffff);
         }
         self->work->state++;
     }
     case 1:
         if (BXF(s16, self, 0x1e) != 0) {
-            self->work->timer = func_02040498(0x15);
+            self->work->timer = Rand_UpTo(0x15);
             ok = TRUE;
         } else {
             pl = func_ov000_0219bf90();
@@ -307,7 +307,7 @@ void func_ov003_021ef70c(Ov003Bx *self) {
         ctl = self->ctl;
         ctl->unk_9a_0 = true;
         ctl->unk_9a_3 = 1;
-        func_0203f324(ctl);
+        HitSphere_Link(ctl);
         {
             u8 *info = (u8 *)func_0206fef8(BXF(u16, self, 0xe));
             void *m = self->model;
@@ -330,7 +330,7 @@ void func_ov003_021ef70c(Ov003Bx *self) {
             info.unk_04[1] = self->unk_1a - 1;
             info.unk_04[2] = self->unk_1c;
             info.unk_04[3] = 1;
-            o = func_ov000_0218bf1c(data_ov000_021ccd64, &info, (u8 *)self + 0x84, &self->rot, 0xffff);
+            o = Group_SpawnActor(data_ov000_021ccd64, &info, (u8 *)self + 0x84, &self->rot, 0xffff);
             if (o != NULL) {
                 o->unk_16_0 = true;
             }
@@ -423,7 +423,7 @@ void func_ov003_021efad8(Ov003Bx *self) {
         }
         break;
     }
-    func_ov000_0218dbe0(self, 0);
+    Actor_Move(self, 0);
     func_ov000_021987b8(self->ctl, 1, 0, 0);
 }
 

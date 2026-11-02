@@ -51,7 +51,7 @@ extern "C" {
 
 extern VFunc data_0208ba70[];
 extern u8 *data_02097ce0;
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void *func_0206ffa0(s32 id);
@@ -95,7 +95,7 @@ void func_ov000_021c0e30(Obj021c0e30 *self) {
             Ov000Text021c0e30 *t;
             void *str;
             self->unk_94 = self->unk_28;
-            t = (Ov000Text021c0e30 *)func_0203dd9c(0xb8);
+            t = (Ov000Text021c0e30 *)Heap_Alloc(0xb8);
             if (t != NULL) {
                 t->vtbl = data_0208ba70;
                 func_0204c7d0(t);

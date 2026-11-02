@@ -41,9 +41,9 @@ extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd6c;
 extern void *data_0214a420;
 extern ov006_Fade021d6d3c data_02097d78;
-void func_02049974(void *a, int b);
+void SndMgr_StopAll(void *a, int b);
 void func_ov000_0218be9c(void *p);
-void func_ov000_0218e894(void *p);
+void ActorMgr_DestroyAll(void *p);
 void func_ov000_021b53f4(void *p);
 void func_020656b4(void *p);
 void func_0203cc58(s32 a, int b, int c);
@@ -78,10 +78,10 @@ BOOL func_ov006_021d6d3c(ov006_Scene021d6d3c *self) {
 
     switch (self->unkC) {
     case 0:
-        func_02049974(data_02097e4c, 0x1e);
+        SndMgr_StopAll(data_02097e4c, 0x1e);
         ov006_Game_SetColor(0xff, 0xff, 0xff);
         func_ov000_0218be9c(data_ov000_021ccd64);
-        func_ov000_0218e894(data_ov000_021ccd68);
+        ActorMgr_DestroyAll(data_ov000_021ccd68);
         func_ov000_021b53f4(data_ov000_021ccd6c);
         func_020656b4(data_0214a420);
         {

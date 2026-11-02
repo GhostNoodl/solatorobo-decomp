@@ -39,21 +39,21 @@ extern char data_ov013_0220b5ca[];
 extern const Ov013Rot16 data_ov013_0220ae48;
 extern const Ov013Vec data_ov013_0220ae7c;
 extern Ov013Actor *func_ov000_0219bf90(void);
-extern Ov013Actor *func_ov000_0218e4cc(void *mgr, u16 id);
-extern u16 func_ov000_0218dfb4(Ov013Actor *a, u16 id);
+extern Ov013Actor *ActorMgr_GetGroup(void *mgr, u16 id);
+extern u16 ActorGroup_CountKind(Ov013Actor *a, u16 id);
 extern Ov013Vec func_ov003_021dadc0(const Ov013Vec *a, const Ov013Vec *b);
-extern void func_ov000_0218d918(Ov013Actor *self, Ov013Vec *p, s32 a);
-extern void func_ov000_0218ddd4(Ov013Actor *self, Ov013Vec *v, s32 a);
+extern void Actor_TurnToPos(Ov013Actor *self, Ov013Vec *p, s32 a);
+extern void Actor_MoveToPos(Ov013Actor *self, Ov013Vec *v, s32 a);
 extern void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 extern void func_02049de8(void *p, s32 a);
-extern s32 func_020404e0(void);
-extern u32 func_02040420(void);
-extern void func_0203f324(Ov013Sub48 *p);
+extern s32 Rand_Fx(void);
+extern u32 Rand_Get(void);
+extern void HitSphere_Link(Ov013Sub48 *p);
 extern void func_0203f364(Ov013Sub48 *p);
 extern BOOL func_01ffc584(Ov013Vec *a, Ov013Vec *b, s32 r, s32 h);
-extern Ov013Actor *func_ov000_0218bf1c(void *mgr, Ov013SpawnDesc *d, Ov013Vec *pos, u16 *rot, u16 a);
+extern Ov013Actor *Group_SpawnActor(void *mgr, Ov013SpawnDesc *d, Ov013Vec *pos, u16 *rot, u16 a);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void func_ov000_0218dbe0(Ov013Obj *self, s32 a);
+extern void Actor_Move(Ov013Obj *self, s32 a);
 extern void func_ov000_0218a358(void *a, const Ov013Vec *b, Ov013Rot16 *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 }
 
@@ -99,7 +99,7 @@ static inline void Ov013_Show(Ov013Actor *self) {
         m = self->unk_48;
         m->unk_9a_0 = 1;
         m->unk_9a_3 = 1;
-        func_0203f324(m);
+        HitSphere_Link(m);
     }
 }
 
@@ -131,8 +131,8 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
         self->unk_b8.y = 0x3000;
         self->unk_b8.z = self->pos.z - 0x2000;
         self->rot[1] = 0;
-        a_0 = func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000);
-        n_0 = func_ov000_0218dfb4(a_0, 0x5c17);
+        a_0 = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+        n_0 = ActorGroup_CountKind(a_0, 0x5c17);
         for (p_0 = FLD(Ov013Actor *, a_0, 0xc); p_0 != NULL && n_0 != 0; p_0 = p_0->unk_08) {
             if (p_0->kind == 0x5c17) {
                 n_0--;
@@ -145,19 +145,19 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
     }
     case 1:
         Ov013_VecCopy(&v_1, &self->unk_b8);
-        func_ov000_0218ddd4(self, &v_1, 0);
+        Actor_MoveToPos(self, &v_1, 0);
         if (VEC_Distance(&self->pos, &v_1) == 0) {
             func_ov000_02190cb0(self->unk_38, data_ov013_0220b5ca, 0x89, 0);
             func_ov000_021915a0(self->unk_38);
             func_02049a48(data_02097e4c, 0x4f, -1, -1, -1);
             range = 0xf000 - (self->unk_64 << 3);
-            z_0 = Ov013_FxMul(func_02040528(0x1000), range) - 0x7800;
+            z_0 = Ov013_FxMul(Rand_PlusMinus(0x1000), range) - 0x7800;
             for (cnt_1 = 0, i = 0; i < 4; i++) {
-                POLE(self, i)->v.x = Ov013_FxMul(func_020404e0(), 0x3800) + i * 0x3800 - 0x7000;
+                POLE(self, i)->v.x = Ov013_FxMul(Rand_Fx(), 0x3800) + i * 0x3800 - 0x7000;
                 on = 0;
                 POLE(self, i)->v.y = 0;
-                POLE(self, i)->v.z = z_0 + Ov013_FxMul(func_02040528(0x1000), self->unk_64);
-                if (cnt_1 < 2 && (!(func_02040420() & 1) || i > 1)) {
+                POLE(self, i)->v.z = z_0 + Ov013_FxMul(Rand_PlusMinus(0x1000), self->unk_64);
+                if (cnt_1 < 2 && (!(Rand_Get() & 1) || i > 1)) {
                     cnt_1++;
                     on = 1;
                 }
@@ -171,7 +171,7 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
                     }
                 }
             }
-            if (func_02040498(0x63) % 2 == 0) {
+            if (Rand_UpTo(0x63) % 2 == 0) {
                 self->side = 1;
                 Ov013_VecSet(&v_1, -0xc000, 0x8800, z_0);
             } else {
@@ -203,8 +203,8 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
         break;
     case 0x13:
         Ov013_VecCopy(&v_1, &self->unk_b8);
-        func_ov000_0218ddd4(self, &v_1, 0);
-        func_ov000_0218d918(self, &v_1, 0x400);
+        Actor_MoveToPos(self, &v_1, 0);
+        Actor_TurnToPos(self, &v_1, 0x400);
         if (self->pos.y > 0x3000) {
             Ov013Sub44 *n_1 = self->unk_44;
             Ov013Sub48 *m;
@@ -230,7 +230,7 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
                 }
             }
             Ov013_VecCopy(&self->unk_b8, &v_1);
-            func_ov000_0218d918(self, &v_1, 0x400);
+            Actor_TurnToPos(self, &v_1, 0x400);
             self->unk_40->state = 0x14;
             self->unk_40->timer = 0;
             break;
@@ -246,8 +246,8 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
         s32 d;
         s32 k;
         Ov013_VecCopy(&v_1, &self->unk_b8);
-        func_ov000_0218ddd4(self, &v_1, 0);
-        func_ov000_0218d918(self, &v_1, 0x400);
+        Actor_MoveToPos(self, &v_1, 0);
+        Actor_TurnToPos(self, &v_1, 0x400);
         shake = TRUE;
         if (self->side != 0) {
             d = self->pos.x + 0xc000;
@@ -264,7 +264,7 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
         if (Ov013_DistXZ(pos, &v_1) == 0) {
             Ov013_VecSet(&v_1, 0, 0, -0x14000);
             Ov013_VecCopy(&self->unk_b8, &v_1);
-            func_ov000_0218d918(self, &v_1, 0x1000);
+            Actor_TurnToPos(self, &v_1, 0x1000);
             self->unk_98 = self->rot[1];
             self->unk_a4 = 0;
             self->unk_a8 = 0;
@@ -273,7 +273,7 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
             self->unk_40->state = 0x63;
             self->unk_40->timer = 0;
         }
-        k = func_ov000_0218dfb4(func_ov000_0218e4cc(data_ov000_021ccd68, 0x4000), 0x4823);
+        k = ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000), 0x4823);
         if (k < 4) {
             s32 dx;
             if (self->pos.x >= POLE(self, k)->v.x) {
@@ -288,7 +288,7 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
                 Ov013Spawn_Init(&sd, 0x4823);
                 Ov013_VecCopy(&p_1, &POLE(self, k)->v);
                 p_1.y = self->pos.y + 0x1800;
-                o = func_ov000_0218bf1c(data_ov000_021ccd64, &sd, &p_1, self->rot, 0xffff);
+                o = Group_SpawnActor(data_ov000_021ccd64, &sd, &p_1, self->rot, 0xffff);
                 o->unk_16.b0 = 1;
                 o->unk_90 = self->unk_90;
                 if (POLE(self, k)->on) {
@@ -306,7 +306,7 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
     }
     case 0x63:
         Ov013_VecCopy(&v_1, &self->unk_b8);
-        func_ov000_0218d918(self, &v_1, 0x400);
+        Actor_TurnToPos(self, &v_1, 0x400);
         Ov013_Show(self);
         if (self->pos.y > 0x3000) {
             shake = TRUE;
@@ -323,13 +323,13 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
             self->unk_40->state = 0x64;
             self->unk_40->timer = 0;
         } else {
-            func_ov000_0218dbe0(self, 0);
+            Actor_Move(self, 0);
         }
         break;
     case 0x64:
         if (self->pos.y > 0) {
             self->rot[1] = func_01ffc128(0, self->rot[1], self->unk_b0->unk_02, 1, 0x8000);
-            func_ov000_0218dbe0(self, 0);
+            Actor_Move(self, 0);
             Ov013_Show(self);
         } else {
             func_ov000_02190cb0(self->unk_38, data_ov013_0220b5b8, 0x155, 0);

@@ -45,9 +45,9 @@ void func_0206adbc(EffectEmitter *em) {
     }
 }
 
-EffectPtcl *func_0206aea0(EffectPtcl *p) {
+EffectPtcl *MainVt_0208c840_DtorDelete(EffectPtcl *p) {
     *(u32 **)p = data_0208c840;
-    func_0203de1c(p);
+    Heap_Free(p);
     return p;
 }
 
@@ -190,7 +190,7 @@ static inline void EffectEmitter_AddPtcl(EffectEmitter *em, EffectPtcl *p) {
 }
 
 BOOL func_0206afd4(EffectEmitter *em) {
-    EffectPtcl *p = (EffectPtcl *)func_0203dd9c(0xc4);
+    EffectPtcl *p = (EffectPtcl *)Heap_Alloc(0xc4);
     if (p != NULL) {
         *(u32 **)p = data_0208c840;
         func_02068da8(p);

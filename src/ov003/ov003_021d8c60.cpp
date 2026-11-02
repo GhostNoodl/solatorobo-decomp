@@ -111,8 +111,8 @@ extern u32 data_ov003_021f7cf4;
 extern u32 data_ov003_021f7cd8;
 extern s16 func_ov003_021d7e58(Ov003Ticker *t);
 extern void VEC_MultAdd(s32 scale, Ov003Vec *dir, Ov003Vec *src, Ov003Vec *dst);
-extern void func_0203de1c(void *p);
-extern void *func_0203dd9c(u32 size);
+extern void Heap_Free(void *p);
+extern void *Heap_Alloc(u32 size);
 extern void *func_ov000_02198328(void *p);
 
 void func_ov003_021d8c60(Ov003Timer *self) {
@@ -127,7 +127,7 @@ extern Ov003TmFx *func_02065f88(s32 id, const Ov003Vec *pos);
 extern void *func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern s32 func_02040498(s32 max);
+extern s32 Rand_UpTo(s32 max);
 extern void func_ov003_021da108(Ov003TmTarget *t, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov003_021d8c78(Ov003Timer *self) {
@@ -198,7 +198,7 @@ void func_ov003_021d8c78(Ov003Timer *self) {
     }
     {
         Ov003Vec p;
-        func_ov003_021da108(self->target, self->unk_06, func_02040498(1) != 0 ? 4 : 3, 0x733, 0xe66);
+        func_ov003_021da108(self->target, self->unk_06, Rand_UpTo(1) != 0 ? 4 : 3, 0x733, 0xe66);
         p.x = self->target->pos.x;
         p.y = self->target->pos.y;
         p.z = self->target->pos.z;

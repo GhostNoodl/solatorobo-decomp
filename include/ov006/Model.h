@@ -116,7 +116,7 @@ static inline void ov006_Model_PlayPart(ov006_Model *model, int idx) {
                 ov006_Model *m_ = (obj);                         \
                 func_02041558(m_);                               \
                 func_02041278(m_->unk88);                        \
-                func_0203de1c(m_);                               \
+                Heap_Free(m_);                               \
             }                                                    \
             (obj) = NULL;                                        \
         }                                                        \

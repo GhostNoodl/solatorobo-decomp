@@ -13,7 +13,7 @@ extern void *data_02097e48;
 extern void func_0203d6b4(void);
 extern void func_0203d1b4(void);
 extern void func_0203d560(void);
-extern void func_020363a8(void);
+extern void ResMgr_Create(void);
 extern void func_0203b6a0(void);
 extern void func_02039750(void);
 extern void func_0204a87c(void);
@@ -21,7 +21,7 @@ extern void func_02043e9c(void);
 extern void func_02046c6c(void);
 extern void func_0203e3e8(void);
 extern void func_0204ae14(void);
-extern void func_0203daa4(void *sys);
+extern void Sys_WaitVBlank(void *sys);
 extern void func_0203e6bc(void);
 extern void func_0203b96c(void *sys);
 extern void func_0203ced8(int mode);
@@ -41,7 +41,7 @@ int main(void) {
     func_0203d6b4();
     func_0203d1b4();
     func_0203d560();
-    func_020363a8();
+    ResMgr_Create();
     func_0203b6a0();
     func_02039750();
     func_0204a87c();
@@ -50,7 +50,7 @@ int main(void) {
     func_0203e3e8();
     func_0204ae14();
     while (TRUE) {
-        func_0203daa4(data_02097dd0);
+        Sys_WaitVBlank(data_02097dd0);
         func_0203e6bc();
         func_0203b96c(data_02097d48);
         func_0203ced8(-1);

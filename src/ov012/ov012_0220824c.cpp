@@ -67,11 +67,11 @@ void func_ov012_02208294(Ov012Actor *self) {
             self->unk_40->state++;
         }
         t = self->unk_b8;
-        func_ov000_0218ddd4(self, &t, 0);
+        Actor_MoveToPos(self, &t, 0);
         self->rot[1] = func_01ffc128(self->unk_98, self->rot[1], 0x400, 1, 0x8000);
         break;
     case 3:
-        func_ov000_0218d988(self, pl, 0x400);
+        Actor_TurnToActor(self, pl, 0x400);
         self->unk_40->timer++;
         if (self->unk_40->timer == 5 || self->unk_40->timer == 0x23) {
             Ov012V *e = func_02065f88(0x384, &self->pos);
@@ -88,7 +88,7 @@ void func_ov012_02208294(Ov012Actor *self) {
             self->unk_40->state++;
         }
         self->unk_94_1 = 1;
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         break;
     case 4:
         if (func_ov000_02191120(self->unk_38)) {

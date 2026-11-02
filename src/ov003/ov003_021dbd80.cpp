@@ -88,7 +88,7 @@ extern "C" {
 
 extern void *data_0214a420;
 extern Ov003HtPlayer *func_ov000_0219bf90(void);
-extern Ov003HtPart *func_ov000_02199ba0(Ov003HtDef *def);
+extern Ov003HtPart *Target_Get(Ov003HtDef *def);
 extern BOOL func_ov000_0218d2e0(Ov003Hitter *self);
 extern s32 func_ov000_0219a510(Ov003Hitter *self, u16 mask, Ov003HtVec *pos, s32 r, s32 a, void **list);
 extern Ov003HtPlayer *func_ov000_021985c0(void *p);
@@ -108,7 +108,7 @@ static inline u8 Ov003HtPlayer_Kind(Ov003HtPlayer *pl) {
 BOOL func_ov003_021dbd80(Ov003Hitter *self) {
     void *list[32];
     Ov003HtPlayer *pl = func_ov000_0219bf90();
-    Ov003HtPart *part = func_ov000_02199ba0(self->def);
+    Ov003HtPart *part = Target_Get(self->def);
     s32 hit = 0;
     u16 mask = self->atk->mask;
     u16 team;

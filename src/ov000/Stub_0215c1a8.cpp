@@ -54,7 +54,7 @@ void func_ov000_0215c1a8(void *self, s32 *msg) {
 extern VFunc0215c1bc data_0208ba70[];
 extern char data_ov000_021cabf4[];
 extern u8 *data_02097ce0;
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void *func_0203de84(u32 size, u32 align);
 void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, char *c, void *d, void *e, BOOL f);
@@ -166,7 +166,7 @@ void func_ov000_0215c1bc(Obj0215c1bc *self, u32 flags, char *str) {
     font = 0;
     func_0204c6bc(str, 1, &font, (void *)func_ov000_0215c1a8);
     f = font;
-    tt = (Text0215c1bc *)func_0203dd9c(0xb8);
+    tt = (Text0215c1bc *)Heap_Alloc(0xb8);
     if (tt != NULL) {
         tt->vtbl = data_0208ba70;
         func_0204c7d0(tt);
@@ -188,7 +188,7 @@ void func_ov000_0215c1bc(Obj0215c1bc *self, u32 flags, char *str) {
         if (lines[i] != NULL) {
             lines[i]++;
             f = font;
-            tt = (Text0215c1bc *)func_0203dd9c(0xb8);
+            tt = (Text0215c1bc *)Heap_Alloc(0xb8);
             if (tt != NULL) {
                 tt->vtbl = data_0208ba70;
                 func_0204c7d0(tt);
@@ -262,7 +262,7 @@ s32 func_ov000_0215c720(Obj0215c720 *self) {
 extern void *data_02149ef8;
 extern u8 *data_ov000_021ccd54;
 u16 func_02061d54(u16 a);
-char *func_0204c0e8(void *p, s32 a);
+char *MsgRes_GetString(void *p, s32 a);
 char *func_02040ab0(char *str, int c);
 void func_02070874(char *dst, const char *fmt, const char *arg);
 void func_020707e8(char *dst, const char *fmt, const char *arg, int c);
@@ -314,7 +314,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
     self->unk_88 = id;
     self->unk_94 = 1;
     self->unk_84 = flags;
-    { void *msg = data_02149ef8; str = func_0204c0e8(msg, func_02061d54(flags & 0x3ff)); }
+    { void *msg = data_02149ef8; str = MsgRes_GetString(msg, func_02061d54(flags & 0x3ff)); }
     center = FALSE;
     star = FALSE;
     for (i = 0; i < 13; i++) {
@@ -381,7 +381,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
     self->unk_20 = n;
     self->unk_28 = self->vfunc_44();
     if (lines[0] != NULL) {
-        tt = (Text0215c1bc *)func_0203dd9c(0xb8);
+        tt = (Text0215c1bc *)Heap_Alloc(0xb8);
         if (tt != NULL) {
             tt->vtbl = data_0208ba70;
             func_0204c7d0(tt);
@@ -403,7 +403,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
     for (i = 1; i < 12; i++) {
         if (lines[i] != NULL) {
             lines[i]++;
-            tt = (Text0215c1bc *)func_0203dd9c(0xb8);
+            tt = (Text0215c1bc *)Heap_Alloc(0xb8);
             if (tt != NULL) {
                 tt->vtbl = data_0208ba70;
                 func_0204c7d0(tt);

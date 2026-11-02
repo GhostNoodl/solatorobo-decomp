@@ -13,7 +13,7 @@ typedef struct {
 extern "C" {
 
 extern void *data_02149ef8;
-void *func_0204c0e8(void *a, s32 b);
+void *MsgRes_GetString(void *a, s32 b);
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb1b0[];
@@ -31,7 +31,7 @@ void func_02041d9c(void *model, s32 a, s32 b);
 
 #define LO_MODEL_NEW(out, NAME, ARC)                 \
     do {                                             \
-        u8 *m_ = (u8 *)func_0203dd9c(0x160);         \
+        u8 *m_ = (u8 *)Heap_Alloc(0x160);         \
         if (m_) {                                    \
             void *arc_;                              \
             void *name_;                             \

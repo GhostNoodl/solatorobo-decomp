@@ -3,7 +3,7 @@
 extern "C" {
 
 extern u8 data_ov000_021cac0c[];
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 
 void func_ov000_021c2bb0(void *self) {
     *(s32 *)((u8 *)self + 0x18) = 0xf;
@@ -14,10 +14,10 @@ void func_ov000_021c2bb0(void *self) {
     *(u8 *)((u8 *)self + 0x40) = 0;
 }
 
-VObj *func_ov000_021c2bdc(VObj *self) {
+VObj *Ov000Vt_021cca88_DtorDelete(VObj *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cac0c);
     self->vfunc_18();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

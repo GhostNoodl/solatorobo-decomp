@@ -44,10 +44,10 @@ extern "C" {
 
 extern Ov003HeapCtx *data_02097dd0;
 extern u8 data_ov003_021fa1b8[];
-extern void *func_0203dd9c(u32 size);
-extern void func_0203de1c(void *p);
-extern void *func_ov000_0218c2d4(void *p);
-extern void func_ov000_0218d1c0(void *p, u16 a, u16 b, s32 c);
+extern void *Heap_Alloc(u32 size);
+extern void Heap_Free(void *p);
+extern void *Actor_Ctor(void *p);
+extern void Actor_JoinGroup(void *p, u16 a, u16 b, s32 c);
 extern s32 func_0206ffa0(u16 id);
 extern void func_ov000_021bd228(void *p);
 extern void *func_ov000_0218c928(void *p);
@@ -59,14 +59,14 @@ extern void func_ov000_02191b70(Ov003PropShadow *p);
 extern void func_ov000_0218f074(Ov003PropRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
 
 Ov003Prop *func_ov003_021f1420(Ov003PropDef *def) {
-    Ov003Prop *p = (Ov003Prop *)func_0203dd9c(0xb4);
+    Ov003Prop *p = (Ov003Prop *)Heap_Alloc(0xb4);
     if (p != NULL) {
-        func_ov000_0218c2d4(p);
+        Actor_Ctor(p);
         p->vtbl = data_ov003_021fa1b8;
         p->unk_ac = NULL;
         p->unk_b0 = 0;
     }
-    func_ov000_0218d1c0(p, def->arg, def->id, func_0206ffa0(def->id));
+    Actor_JoinGroup(p, def->arg, def->id, func_0206ffa0(def->id));
     return p;
 }
 
@@ -80,7 +80,7 @@ static inline void Ov003Prop_Dtor(Ov003Prop *self) {
     if (p != NULL) {
         if (p != NULL) {
             func_ov000_021bd228(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_ac = NULL;
     }
@@ -95,7 +95,7 @@ Ov003Prop *Ov003ActVt_021fa1b8_Dtor(Ov003Prop *self) {
 
 Ov003Prop *Ov003ActVt_021fa1b8_DtorDelete(Ov003Prop *self) {
     Ov003Prop_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -107,7 +107,7 @@ void Ov003ActVt_021fa1b8_Init(Ov003Prop *self) {
     if (data == NULL) {
         return;
     }
-    res = (Ov003PropRes *)func_0203dd9c(0x138);
+    res = (Ov003PropRes *)Heap_Alloc(0x138);
     if (res != NULL) {
         res = func_ov000_0218e9c4(res);
     }
@@ -121,7 +121,7 @@ void Ov003ActVt_021fa1b8_Init(Ov003Prop *self) {
     if (!info->shadow) {
         return;
     }
-    sh = (Ov003PropShadow *)func_0203dd9c(0x1c);
+    sh = (Ov003PropShadow *)Heap_Alloc(0x1c);
     if (sh != NULL) {
         sh = func_ov000_021919c8(sh);
     }

@@ -11,7 +11,7 @@ extern u8 *data_ov000_021ccd54;
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_ov000_02191008(void *a);
-void func_02049bb4(void *a, s32 b);
+void SndMgr_StopSeqArc(void *a, s32 b);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void func_ov000_021b209c(u8 *self);
 void func_ov000_021b2b08(u8 *self);
@@ -40,7 +40,7 @@ void func_ov000_021a16b0(Robo021ca458 *self) {
                 func_ov000_02191008(self->unk_998);
             }
             if (self->unk_b64 >= 0) {
-                func_02049bb4(data_02097e4c, self->unk_b64);
+                SndMgr_StopSeqArc(data_02097e4c, self->unk_b64);
                 self->unk_b64 = -1;
             }
             if (self->unk_b22_0 > 1) {

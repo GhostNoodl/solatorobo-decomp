@@ -27,7 +27,7 @@ extern u8 data_ov000_021cb5a8[];
 extern u8 data_ov000_021ca94c[];
 extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021caac8[];
-void *func_0204c0e8(void *g, u32 id);
+void *MsgRes_GetString(void *g, u32 id);
 BOOL func_0205aa30(void *p);
 void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
@@ -72,7 +72,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
         LFLD(VObj *, data_ov000_021ccd24, 8)->vfunc_38(1);
         data_02fe1534.unk_7a = 0;
     }
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
         name = data_ov000_021ca8d8[1];
         arc = data_ov000_021ca8d8[0];
@@ -89,8 +89,8 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     LFLD(u32, self->unk_40, 0x6c) |= 0x80000;
     LFLD(u32, self->unk_40, 0x6c) |= 0x200000;
     LFLD(s32, self->unk_40, 0x150) = -0x1ccd;
-    s = func_0204c0e8(g, 0x114);
-    p = (u8 *)func_0203dd9c(0xb8);
+    s = MsgRes_GetString(g, 0x114);
+    p = (u8 *)Heap_Alloc(0xb8);
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);
@@ -109,7 +109,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     LFLD(s32, p, 0x70) = -0x1ccd;
     LFLD(u32, p, 0x4) |= 0x40000004;
     self->unk_44 = p;
-    o = (VObj *)func_0203dd9c(0xe0);
+    o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -135,10 +135,10 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
         LFLD(s16, t, 0x68) = -0x1ccd;
     }
     LFLD(u32, self->unk_4c, 0xc) |= 0x20000000;
-    self->unk_4c->vfunc_f4(1, func_0204c0e8(g, 0x37));
-    self->unk_4c->vfunc_f4(2, func_0204c0e8(g, 0x33));
+    self->unk_4c->vfunc_f4(1, MsgRes_GetString(g, 0x37));
+    self->unk_4c->vfunc_f4(2, MsgRes_GetString(g, 0x33));
     self->unk_4c->vfunc_08();
-    o = (VObj *)func_0203dd9c(0x21c);
+    o = (VObj *)Heap_Alloc(0x21c);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -152,7 +152,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     self->unk_60 = o;
     o->vfunc_08();
     LFLD(s16, self->unk_60, 0x68) = -0x1bcd;
-    o = (VObj *)func_0203dd9c(0xe4);
+    o = (VObj *)Heap_Alloc(0xe4);
     if (o != NULL) {
         *(void **)o = data_ov000_021cac60;
         o->vfunc_28();
@@ -164,9 +164,9 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
         o->vfunc_28();
     }
     self->unk_50 = o;
-    ((VObj *)self->unk_50)->vfunc_10(func_0204c0e8(g, 0x10f));
-    ((VObj *)self->unk_50)->vfunc_14(func_0204c0e8(g, 0x110));
-    func_ov000_02157c90(self->unk_50, func_0204c0e8(g, 0x111));
+    ((VObj *)self->unk_50)->vfunc_10(MsgRes_GetString(g, 0x10f));
+    ((VObj *)self->unk_50)->vfunc_14(MsgRes_GetString(g, 0x110));
+    func_ov000_02157c90(self->unk_50, MsgRes_GetString(g, 0x111));
     func_ov000_021546ec(self->unk_50, data_0208cca0, data_0208cb74, 0xb);
     LFLD(void *, self->unk_50, 0x8) = self;
     LFLD(s32, self->unk_50, 0x20) = 4;

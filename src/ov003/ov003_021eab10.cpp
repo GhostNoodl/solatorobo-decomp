@@ -139,13 +139,13 @@ extern BOOL func_ov000_0218f110(s16 *res);
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_0218ffdc(Ov003Anim *anim, s16 *res, s32 a, s32 b);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern Ov003Part *func_ov000_02199b00(void *p);
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
 extern void func_ov000_02190758(Ov003Anim *anim, Ov003Rot3 *rot, s32 a);
 extern BOOL func_ov000_021903b4(Ov003Anim *anim);
-extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
+extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 
 static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
     return g->unk_90 != g->unk_94;
@@ -272,7 +272,7 @@ void Ov003ActVt_021f9834_Start(Ov003Obj *self) {
         return;
     }
     if (self->unk_4c == NULL) {
-        void *mem = func_0203dd9c(0x5c);
+        void *mem = Heap_Alloc(0x5c);
         if (mem != NULL) {
             mem = func_ov000_02199b00(mem);
         }

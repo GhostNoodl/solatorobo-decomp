@@ -14,7 +14,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_0218d77c(Actor *self);
+void Actor_ProcessMsgs(Actor *self);
 
 static inline void Group_Remove(ActorGroup *group, Actor *actor) {
     Actor *prev = actor->prev;
@@ -35,7 +35,7 @@ static inline void Group_Remove(ActorGroup *group, Actor *actor) {
     group->count--;
 }
 
-void func_ov000_0218cbc8(Actor *self) {
+void Actor_Tick(Actor *self) {
     switch (self->state) {
     case 1:
         if (!self->vfunc_0c()) {
@@ -58,7 +58,7 @@ void func_ov000_0218cbc8(Actor *self) {
             ActorSub44 *s = (ActorSub44 *)self->unk_44;
             s->unk_22_1 = s->unk_22_0;
         }
-        func_ov000_0218d77c(self);
+        Actor_ProcessMsgs(self);
         self->unk_94 = 0;
         switch (self->unk_15) {
         case 1:

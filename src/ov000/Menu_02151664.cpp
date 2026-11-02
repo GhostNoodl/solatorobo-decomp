@@ -24,7 +24,7 @@ static inline void Beep02151664(void) {
 
 static inline void Show02151664(VObj *self, s32 id) {
     if (LFLD(VObj *, self, 0x58) == NULL) {
-        VObj *p = (VObj *)func_0203dd9c(0xe8);
+        VObj *p = (VObj *)Heap_Alloc(0xe8);
         if (p) {
             VOBJ_SET_VTABLE(p, data_ov000_021cac60);
             p->vfunc_28();

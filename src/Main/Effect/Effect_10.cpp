@@ -51,7 +51,7 @@ BOOL func_0206924c(EffectEmitterSub *sub, EffectPtcl *p) {
 }
 
 extern int FX_Div(int a, int b);
-extern int func_02040528(int range);
+extern int Rand_PlusMinus(int range);
 
 static inline int FX_Mul(int a, int b) {
     return (int)(((s64)a * b + 0x800) >> 12);
@@ -78,16 +78,16 @@ BOOL func_02069300(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
     }
     case 3: {
         s32 s = cmd->b.x;
-        s32 z = func_02040528(FX_Mul(cmd->a.z, s));
-        s32 y = func_02040528(FX_Mul(cmd->a.y, s));
-        s32 x = func_02040528(FX_Mul(cmd->a.x, s));
+        s32 z = Rand_PlusMinus(FX_Mul(cmd->a.z, s));
+        s32 y = Rand_PlusMinus(FX_Mul(cmd->a.y, s));
+        s32 x = Rand_PlusMinus(FX_Mul(cmd->a.x, s));
         p->pos.x = x;
         p->pos.y = y;
         p->pos.z = z;
         break;
     }
     case 4: {
-        s32 r = func_02040528(cmd->b.x);
+        s32 r = Rand_PlusMinus(cmd->b.x);
         s32 y = FX_Mul(cmd->a.y, r);
         s32 z = FX_Mul(cmd->a.z, r);
         s32 x = FX_Mul(cmd->a.x, r);
@@ -100,7 +100,7 @@ BOOL func_02069300(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
     return TRUE;
 }
 
-extern s32 func_020404e0(void);
+extern s32 Rand_Fx(void);
 
 BOOL func_020694a4(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cmd) {
     s32 x;
@@ -168,9 +168,9 @@ BOOL func_020694a4(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
         f.y = y << 12;
         f.z = z << 12;
         s = cmd->b.x;
-        rz = func_020404e0();
-        ry = func_020404e0();
-        rx = func_020404e0();
+        rz = Rand_Fx();
+        ry = Rand_Fx();
+        rx = Rand_Fx();
         p->rot.x = ((x << 12) - FX_Mul(f.x, FX_Mul(rx, s))) >> 12;
         p->rot.y = ((y << 12) - FX_Mul(f.y, FX_Mul(ry, s))) >> 12;
         p->rot.z = ((z << 12) - FX_Mul(f.z, FX_Mul(rz, s))) >> 12;
@@ -187,7 +187,7 @@ BOOL func_020694a4(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
         f.y = y << 12;
         f.z = z << 12;
         s = cmd->b.x;
-        r = FX_Mul(func_020404e0(), s);
+        r = FX_Mul(Rand_Fx(), s);
         p->rot.x = ((x << 12) - FX_Mul(f.x, r)) >> 12;
         p->rot.y = ((y << 12) - FX_Mul(f.y, r)) >> 12;
         p->rot.z = ((z << 12) - FX_Mul(f.z, r)) >> 12;
@@ -207,9 +207,9 @@ BOOL func_020694a4(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
             f.y = y << 12;
             f.z = z << 12;
             s = cmd->b.x;
-            rz = func_020404e0();
-            ry = func_020404e0();
-            rx = func_020404e0();
+            rz = Rand_Fx();
+            ry = Rand_Fx();
+            rx = Rand_Fx();
             p->unk_14 = ((x << 12) - FX_Mul(f.x, FX_Mul(rx, s))) >> 12;
             p->unk_16 = ((y << 12) - FX_Mul(f.y, FX_Mul(ry, s))) >> 12;
             p->unk_18 = ((z << 12) - FX_Mul(f.z, FX_Mul(rz, s))) >> 12;
@@ -240,11 +240,11 @@ BOOL func_02069824(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
     }
     case 3: {
         s32 s = cmd->b.x;
-        s32 rz = func_020404e0();
+        s32 rz = Rand_Fx();
         s32 az = cmd->a.z;
-        s32 ry = func_020404e0();
+        s32 ry = Rand_Fx();
         s32 ay = cmd->a.y;
-        s32 rx = func_020404e0();
+        s32 rx = Rand_Fx();
         s32 ax = cmd->a.x;
         p->scale.x = ax - FX_Mul(ax, FX_Mul(rx, s));
         p->scale.y = ay - FX_Mul(ay, FX_Mul(ry, s));
@@ -258,7 +258,7 @@ BOOL func_02069824(EffectEmitterSub *sub, EffectPtcl *p, const EffectPtclCmd *cm
         s32 x;
         s32 s;
         s = cmd->b.x;
-        r = FX_Mul(func_020404e0(), s);
+        r = FX_Mul(Rand_Fx(), s);
         z = cmd->a.z - FX_Mul(cmd->a.z, r);
         y = cmd->a.y - FX_Mul(cmd->a.y, r);
         x = cmd->a.x - FX_Mul(cmd->a.x, r);
@@ -315,7 +315,7 @@ BOOL func_02069a2c(EffectEmitterSub *sub, EffectPtcl *p, EffectPtclCmd *cmd) {
     case 4: {
         s32 b = cmd->b.x;
         s32 a = cmd->a.x;
-        v = ((a << 12) - FX_Mul(a << 12, FX_Mul(func_020404e0(), b))) >> 12;
+        v = ((a << 12) - FX_Mul(a << 12, FX_Mul(Rand_Fx(), b))) >> 12;
         if (v <= 0) {
             v = 0;
         }

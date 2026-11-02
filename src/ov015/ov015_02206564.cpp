@@ -11,7 +11,7 @@ extern u8 data_ov000_021ccd34;
 void func_ov000_0217357c(void *self);
 extern u8 *data_0214a424;
 extern void *data_02149ef8;
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 u8 *func_0206f000(u16 id);
 BOOL func_0206f21c(u16 id, s32 n);
 BOOL func_0206f5e4(u16 id, s32 n);
@@ -123,7 +123,7 @@ static inline Ov015MenuItem *Ov015_ListNth3(Ov015Menu *o) {
     return p;
 }
 static inline void Ov015_ShopMsg(Ov015Scene2b08 *self, s32 id) {
-    func_ov000_0215c1bc(self->unk_50, 0x8000, func_0204c0e8(data_02149ef8, id));
+    func_ov000_0215c1bc(self->unk_50, 0x8000, MsgRes_GetString(data_02149ef8, id));
     self->unk_50->unk_0c &= ~2;
     VCALL(self->unk_50)->v70();
 }

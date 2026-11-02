@@ -12,7 +12,7 @@ typedef struct {
 
 extern "C" {
 extern u8 *data_02097d48;
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void func_02043d20(void *p, int a);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
@@ -62,7 +62,7 @@ void func_ov000_0214cff4(Menu021ca94c *self, s32 a1, s32 *pos) {
     func_02043d20(g, 0);
     G3_Cmd1(0x2a, 0x20000000);
     sy = self->unk_28 << 12;
-    G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, func_02043d48(g), 0x1e, 0x800));
+    G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, Gfx3DState_NextPolyId(g), 0x1e, 0x800));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, pos[0], pos[1], self->unk_68);
     G3_Vec(0x1b, 0x100000, 0x1000, 0x1000);
@@ -73,7 +73,7 @@ void func_ov000_0214cff4(Menu021ca94c *self, s32 a1, s32 *pos) {
     G3_Cmd1(0x25, 0x1000);
     NNS_G3dGeBufferOP_N(0x41, NULL, 0);
     G3_Cmd1(0x12, 1);
-    G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, func_02043d48(g), 0x12, 0x800));
+    G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, Gfx3DState_NextPolyId(g), 0x12, 0x800));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, pos[0], pos[1], z);
     G3_Vec(0x1b, 0x100000, sy, 0x1000);

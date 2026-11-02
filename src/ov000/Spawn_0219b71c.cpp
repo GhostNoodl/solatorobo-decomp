@@ -4,8 +4,8 @@
 
 extern "C" {
 
-s32 func_02040528(s32 max);
-s32 func_02040498(s32 max);
+s32 Rand_PlusMinus(s32 max);
+s32 Rand_UpTo(s32 max);
 void *NNS_G3dGlbGetInvV(void);
 void MTX_MultVec33(const VecFx32 *v, const void *m, VecFx32 *out);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
@@ -17,18 +17,18 @@ VObj *func_ov000_0219b71c(VecFx32 *base, VecFx32 *range, s32 min, s32 max, s32 k
     BOOL big;
     VObj *obj;
     s32 z = range->z;
-    s32 y = func_02040528(range->y);
-    v.x = func_02040528(range->x);
+    s32 y = Rand_PlusMinus(range->y);
+    v.x = Rand_PlusMinus(range->x);
     v.y = y;
     v.z = z;
     MTX_MultVec33(&v, NNS_G3dGlbGetInvV(), &v);
     VEC_Add(&v, base, &v);
-    scale = min + func_02040498(max - min);
+    scale = min + Rand_UpTo(max - min);
     big = FALSE;
     if (kind == -1 || chance == 0) {
         big = TRUE;
     }
-    if (chance < 100 && chance < func_02040498(100)) {
+    if (chance < 100 && chance < Rand_UpTo(100)) {
         big = TRUE;
     }
     if (big) {
@@ -77,7 +77,7 @@ typedef struct {
 extern "C" {
 
 Robo021ca458 *func_ov000_0219bf90(void);
-ActorGroup *func_ov000_0218e4cc(ActorMgr *mgr, u16 kind);
+ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 kind);
 BOOL func_01ffc318(VecFx32 *pos, void *a, const VecFx32 *min, const VecFx32 *max, const Rot0219b808 *rot);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
@@ -126,7 +126,7 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
         if (!(q->mask & (1 << i))) {
             continue;
         }
-        grp = func_ov000_0218e4cc(data_ov000_021ccd68, i << 12);
+        grp = ActorMgr_GetGroup(data_ov000_021ccd68, i << 12);
         if (grp == NULL || grp->count == 0 || (a = grp->head) == NULL) {
             continue;
         }
@@ -145,7 +145,7 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
                     m.rot.y = LFLD(Rot0219b808, a, 0x7c).y;
                     m.rot.z = LFLD(Rot0219b808, a, 0x7c).z;
                     m.unk_14 = q->unk_30;
-                    func_ov000_0218d398(a, id, 7, TRUE, sizeof(Msg0219b808), &m);
+                    Actor_SendMsg(a, id, 7, TRUE, sizeof(Msg0219b808), &m);
                     if (out != NULL && n < max) {
                         out[n] = a->id;
                     }

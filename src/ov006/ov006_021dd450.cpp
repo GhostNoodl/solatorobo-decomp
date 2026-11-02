@@ -45,7 +45,7 @@ void func_ov006_021dd450(ov006_Unk021dd450 *self) {
     ov006_Text021dd450 *text;
     ov006_Model *model;
 
-    text = (ov006_Text021dd450 *)func_0203dd9c(sizeof(ov006_Text021dd450));
+    text = (ov006_Text021dd450 *)Heap_Alloc(sizeof(ov006_Text021dd450));
     if (text != NULL) {
         text->vtbl = data_ov000_021cac0c;
         VCALL(text, 14);
@@ -61,7 +61,7 @@ void func_ov006_021dd450(ov006_Unk021dd450 *self) {
     func_ov000_0215fdfc(self->unk18, 1, data_ov006_021ec09a);
     func_ov000_0215fdfc(self->unk18, 2, data_ov006_021ec0a0);
     self->unk18->unk58 = 0;
-    model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         func_02041218(model->unk88);
         func_02041440(model, NULL, 0);

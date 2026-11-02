@@ -57,7 +57,7 @@ extern void func_ov000_021911c8(Ov003LpModel *model, s32 v);
 extern void func_ov000_021915a0(Ov003LpModel *model);
 extern BOOL func_ov000_0218ffdc(Ov003LpModel *model, void *res, s32 a, s32 b);
 extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
-extern void func_02049bb4(void *mgr, s32 id);
+extern void SndMgr_StopSeqArc(void *mgr, s32 id);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_02049f44(void *mgr, s32 id, Ov003LpVec *pos, s32 a);
 extern Ov003LpFx *func_02065f88(s32 id, const Ov003LpVec *pos);
@@ -85,7 +85,7 @@ void func_ov003_021dec88(Ov003Lamp2 *self) {
             func_ov000_0218e8ec(data_ov000_021ccd68, 0x4801, 0x15);
             func_ov000_0218e8ec(data_ov000_021ccd68, 0x5013, 0x15);
             func_ov000_0218e8ec(data_ov000_021ccd68, 0x400c, 0x15);
-            func_02049bb4(data_02097e4c, self->unk_d0);
+            SndMgr_StopSeqArc(data_02097e4c, self->unk_d0);
             func_ov000_0218996c(0x19, 0x3c);
             func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
             func_02049f44(data_02097e4c, 0x44, &self->pos, 0);

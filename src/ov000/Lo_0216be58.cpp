@@ -18,7 +18,7 @@ extern void *data_ov000_021ccd54;
 extern u8 *data_02097d48;
 Robo021ca458 *func_ov000_0219bf90(void);
 void VEC_Add(void *a, void *b, void *c);
-BOOL func_0203dc9c(void *a, s32 b);
+BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 void func_ov000_0216c018(void *self);
 void func_ov000_0216c310(void *self);
 void func_ov000_0216c6fc(void *self);
@@ -27,7 +27,7 @@ void MI_CpuFill8(void *dst, s32 v, s32 size);
 void func_ov000_0216bcbc(void *self);
 
 void func_ov000_0216be58(void *self) {
-    if (func_0203dc9c((u8 *)data_ov000_021ccd54 + 8, 1)) {
+    if (PauseNode_IsDrawPaused((u8 *)data_ov000_021ccd54 + 8, 1)) {
         return;
     }
     func_ov000_0216c018(self);
@@ -35,7 +35,7 @@ void func_ov000_0216be58(void *self) {
 }
 
 void func_ov000_0216be94(void *self) {
-    if (func_0203dc9c((u8 *)data_ov000_021ccd54 + 8, 1)) {
+    if (PauseNode_IsDrawPaused((u8 *)data_ov000_021ccd54 + 8, 1)) {
         return;
     }
     func_ov000_0216c6fc(self);

@@ -60,7 +60,7 @@ void func_02055bbc(GameScene *scene) {
         return;
     }
     if (scene->shakePhase == -1) {
-        scene->shakePhase = func_02040498(7);
+        scene->shakePhase = Rand_UpTo(7);
     }
     scene->shakeX = 0;
     scene->shakeY = GameScene_FxMul(table.entries[(t + scene->shakePhase) % 8].value, scene->shakeAmp);

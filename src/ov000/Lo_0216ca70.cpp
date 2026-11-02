@@ -51,7 +51,7 @@ extern VecFx32 data_ov000_021c9af8;
 extern void *data_0208cc94;
 extern void *data_0208cc88;
 extern void *data_ov000_021ccd64;
-BOOL func_0203dc9c(void *node, BOOL recurse);
+BOOL PauseNode_IsDrawPaused(void *node, BOOL recurse);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_021705a0(void *p, s32 a);
 void func_ov000_021c2114(void *p);
@@ -126,7 +126,7 @@ BOOL func_ov000_0216ca70(Obj0216ca70 *self) {
     s32 z;
     u16 id;
 
-    if (func_0203dc9c(data_ov000_021ccd54 + 8, TRUE)) {
+    if (PauseNode_IsDrawPaused(data_ov000_021ccd54 + 8, TRUE)) {
         self->b2 = 0;
         self->cnt = 0;
         self->state = 4;
@@ -179,7 +179,7 @@ BOOL func_ov000_0216ca70(Obj0216ca70 *self) {
             }
             if (self->unk_08 != 0) {
                 VecFx32 ofs = data_ov000_021c9af8;
-                e = (Eff0216ca70 *)func_0203dd9c(0x54);
+                e = (Eff0216ca70 *)Heap_Alloc(0x54);
                 if (e) {
                     func_ov000_021c2114(e);
                 }
@@ -189,7 +189,7 @@ BOOL func_ov000_0216ca70(Obj0216ca70 *self) {
             }
             if (self->unk_28 != 0xffff) {
                 res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-                m = func_0203dd9c(0x160);
+                m = Heap_Alloc(0x160);
                 if (m) {
                     void *name = data_0208cc88;
                     func_02041218((u8 *)m + 0x88);

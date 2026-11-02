@@ -75,9 +75,9 @@ extern void func_01ff8330(HitMeshRay *ray);
 extern void func_01ff8464(s32 *box, HitMeshItcmBlock *block);
 extern void func_01ff868c(HitMeshRay *ray, void *table);
 extern void VEC_Normalize(const HitMeshItcmVec *src, HitMeshItcmVec *dst);
-extern HitMeshItcmRes *func_0203fc58(void *mesh);
+extern HitMeshItcmRes *HitMesh_GetRes(void *mesh);
 extern BOOL func_0203fc60(void *mesh);
-extern s32 func_0203f248(s32 a, s32 b);
+extern s32 Hit_FxMul(s32 a, s32 b);
 extern void func_01ff8520(HitMeshQuery *q);
 extern void func_01ff85ec(s32 *box, HitMeshItcmBlock *block);
 extern void func_01ff9f9c(HitMeshQuery *q, HitMeshItcmBlock *block, void *tri);
@@ -136,7 +136,7 @@ void func_01ffb83c(HitMeshRay *ray) {
 }
 
 void func_01ffb9b0(HitMeshQuery *q) {
-    HitMeshItcmRes *res = func_0203fc58(q->mesh);
+    HitMeshItcmRes *res = HitMesh_GetRes(q->mesh);
     HitMeshItcmBlock *block;
     u32 n;
     func_01ff8520(q);
@@ -168,7 +168,7 @@ void func_01ffb9b0(HitMeshQuery *q) {
             q->max[1] >= block->min[1] && q->min[2] <= block->max[2] && q->max[2] >= block->min[2]) {
             u8 *tri;
             u32 cnt;
-            q->unk_90 = func_0203f248(q->unk_8c, q->unk_8c);
+            q->unk_90 = Hit_FxMul(q->unk_8c, q->unk_8c);
             cnt = block->triCount;
             tri = block->tris;
             while (cnt != 0) {

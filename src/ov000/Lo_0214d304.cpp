@@ -20,7 +20,7 @@ extern "C" {
 
 extern u8 *data_02097d48;
 extern u8 data_02fe1534[];
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void *NNS_G2dGetCellDataByIdx(void *a, int b);
 void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 void func_02042628(void *a, void *b, void *c, int d);
@@ -94,7 +94,7 @@ void func_ov000_0214d304(Obj0214d304 *self, s32 a, s32 *pos, s32 d) {
     MF(M10).f2 = 0x1e;
     MF(M10).b20 = 1;
     MF(M10).b21 = 1;
-    MF(M10).f7 = func_02043d48(g + 0x8b0);
+    MF(M10).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
     LoSetPos(M10, x << 12, y << 12);
     LFLD(s32, M10, 0x150) = z;
     LoModelPlayPart(M10, 0xe);
@@ -138,7 +138,7 @@ void func_ov000_0214d304(Obj0214d304 *self, s32 a, s32 *pos, s32 d) {
                 if (al != 0) {
                     MF(M10).b19 = 1;
                     MF(M10).f2 = al;
-                    MF(M10).f7 = func_02043d48(g + 0x8b0);
+                    MF(M10).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
                     LFLD(s32, M10, 0x150) = self->unk_68;
                     LoModelPlayPart(M10, 0xd);
                     func_02041774(M10, 0xffff);

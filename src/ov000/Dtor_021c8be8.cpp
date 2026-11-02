@@ -23,7 +23,7 @@ extern u8 data_ov000_021cca58[];
 extern u8 data_ov000_021cca70[];
 extern u8 data_ov000_021cc9f8[];
 extern u8 data_ov000_021cca10[];
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 void func_ov000_021c2f90(Task021cbac8 *self);
 void func_ov000_021c2364(Task021cbac8 *self);
 
@@ -49,46 +49,46 @@ static inline void DeleteMember(VObj **p) {
     data_02097dd0->current = saved;
 }
 
-Task021cbac8 *func_ov000_021c8be8(Task021cbac8 *self) {
+Task021cbac8 *Ov000Vt_021cca58_DtorDelete(Task021cbac8 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca58);
     DeleteMember(&self->unk_30);
     Task021cbac8_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-Task021cbac8 *func_ov000_021c8c80(Task021cbac8 *self) {
+Task021cbac8 *Ov000Vt_021cca58_Dtor(Task021cbac8 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca58);
     DeleteMember(&self->unk_30);
     Task021cbac8_Dtor(self);
     return self;
 }
 
-Task021cbac8 *func_ov000_021c8d10(Task021cbac8 *self) {
+Task021cbac8 *Ov000Vt_021cca70_DtorDelete(Task021cbac8 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca70);
     func_ov000_021c2f90(self);
     Task021cbac8_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-Task021cbac8 *func_ov000_021c8d64(Task021cbac8 *self) {
+Task021cbac8 *Ov000Vt_021cca70_Dtor(Task021cbac8 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca70);
     func_ov000_021c2f90(self);
     Task021cbac8_Dtor(self);
     return self;
 }
 
-Task021cbac8 *func_ov000_021c8db0(Task021cbac8 *self) {
+Task021cbac8 *Ov000Vt_021cc9f8_DtorDelete(Task021cbac8 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cc9f8);
     DeleteMember(&self->unk_30);
     DeleteMember(&self->unk_34);
     Task021cbac8_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-Task021cbac8 *func_ov000_021c8e88(Task021cbac8 *self) {
+Task021cbac8 *Ov000Vt_021cc9f8_Dtor(Task021cbac8 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cc9f8);
     DeleteMember(&self->unk_30);
     DeleteMember(&self->unk_34);
@@ -96,15 +96,15 @@ Task021cbac8 *func_ov000_021c8e88(Task021cbac8 *self) {
     return self;
 }
 
-Task021cbac8 *func_ov000_021c8f58(Task021cbac8 *self) {
+Task021cbac8 *Hud021cca10_DtorDelete(Task021cbac8 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca10);
     func_ov000_021c2364(self);
     Task021cbac8_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
-Task021cbac8 *func_ov000_021c8fac(Task021cbac8 *self) {
+Task021cbac8 *Hud021cca10_Dtor(Task021cbac8 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cca10);
     func_ov000_021c2364(self);
     Task021cbac8_Dtor(self);

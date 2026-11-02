@@ -117,10 +117,10 @@ extern "C" {
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern u8 *data_ov000_021ccd54;
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-s32 func_02040498(s32 n);
+s32 Rand_UpTo(s32 n);
 s16 *func_ov000_0219122c(Model0218fe1c *self, s32 frame);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 mask, VecFx32 *ofs, void *rot, s32 r, s32 rr, s32 h, s32 i);
 BOOL func_ov000_0219aca8(void *a, void *b, u16 c, u8 d, VecFx32 *ofs, u16 *box, s32 r, s32 hgt, s32 h, s32 i);
@@ -129,13 +129,13 @@ VObj *func_02065f88(s32 id, VecFx32 *pos);
 void func_ov000_0218996c(s32 a, s32 b);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
-u16 func_0204bfa8(void *cam);
+u16 Camera_GetYaw(void *cam);
 
 static inline Actor *FindActor_02191f18(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline void SetOfs_02191f18(Actor *a, s32 w, s32 x, s32 y, s32 z) {
@@ -149,7 +149,7 @@ static inline u16 CamYaw_02191f18(u8 *cam) {
     if (LFLD(u16, cam, 0x40) != 0) {
         return LFLD(u16, cam, 0x44);
     }
-    return func_0204bfa8(cam);
+    return Camera_GetYaw(cam);
 }
 
 static inline s32 AnimFrame_02191f18(AnimCtrl *a) {
@@ -187,7 +187,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
         u16 n = p[1];
         u16 id = p[0];
         if (n != 0) {
-            id += (u16)func_02040498(n - 1);
+            id += (u16)Rand_UpTo(n - 1);
         }
         if (actor != NULL) {
             VecFx32 v;

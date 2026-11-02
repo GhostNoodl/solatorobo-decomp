@@ -119,7 +119,7 @@ extern "C" {
 void *func_ov006_021d3874(void *self);
 
 void *func_ov006_021d3794(void) {
-    void *obj = func_0203dd9c(0x140);
+    void *obj = Heap_Alloc(0x140);
     if (obj != NULL) {
         obj = func_ov006_021d3874(obj);
     }
@@ -217,7 +217,7 @@ ov006_TaskD37 *func_ov006_021d3874(ov006_TaskD37 *self) {
             if ((obj) != NULL) {                                 \
                 void *p_ = (obj);                                \
                 dtor(p_);                                        \
-                func_0203de1c(p_);                               \
+                Heap_Free(p_);                               \
             }                                                    \
             (obj) = NULL;                                        \
         }                                                        \
@@ -253,7 +253,7 @@ ov006_TaskD37 *func_ov006_021d3914(ov006_TaskD37 *self) {
 
 ov006_TaskD37 *ov006_TaskD37_DtorDelete(ov006_TaskD37 *self) {
     ov006_TaskD37_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -273,7 +273,7 @@ const char *func_0207011c(u16 id);
 const char *func_020701d4(u16 id);
 
 static inline ov006_Model60 *ov006_NewModel60(void) {
-    void *p = func_0203dd9c(0x138);
+    void *p = Heap_Alloc(0x138);
     if (p != NULL) {
         p = func_ov000_0218e9c4(p);
     }
@@ -407,7 +407,7 @@ const u16 data_ov006_021eb6fc = 0x1000;
 const u8 data_ov006_021eb6fe[4] = {0, 1, 3, 2};
 const ov006_Rot021d4118 data_ov006_021eb702 = {0xfa80, 0x8200, 0};
 
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_ov006_021cd580(int a, void *b, int c);
 void func_ov000_021548cc(void *a, int b);
 void *func_ov000_02154b80(void *a, int b);
@@ -438,7 +438,7 @@ void func_ov006_021e4b90(ov006_Unk021ec888 *self);
 void func_ov000_02173648(void *self);
 
 static inline ov006_Window *ov006_NewWindow_caec8(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0xd4);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xd4);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -449,7 +449,7 @@ static inline ov006_Window *ov006_NewWindow_caec8(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cadcc(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0x8c);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0x8c);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -460,7 +460,7 @@ static inline ov006_Window *ov006_NewWindow_cadcc(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cb0b8(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0x1e4);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0x1e4);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -475,7 +475,7 @@ static inline ov006_Window *ov006_NewWindow_cb0b8(void) {
 }
 
 static inline ov006_Model64 *ov006_NewModel64(void) {
-    void *p = func_0203dd9c(0xe8);
+    void *p = Heap_Alloc(0xe8);
     if (p != NULL) {
         p = func_ov000_0218fe1c(p);
     }
@@ -542,9 +542,9 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     }
     res = data_02149ef8;
     self->unk50 = ov006_NewWindow_caec8();
-    VCALL(self->unk50, 10, func_0204c0e8(res, 0x12a));
+    VCALL(self->unk50, 10, MsgRes_GetString(res, 0x12a));
     body = OV006_MSG_D4118_BODY;
-    VCALL(self->unk50, 14, func_0204c0e8(res, body));
+    VCALL(self->unk50, 14, MsgRes_GetString(res, body));
     self->unk50->unk4A = 0x2c00;
     self->unk50->unk20 = 5;
     self->unk50->unk24 = 0x9c;
@@ -579,11 +579,11 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     self->unk54->unk2C = 1;
     VCALL(self->unk54, 08);
     if (self->head.unkC == 2) {
-        func_ov000_0215bb14(self->unk54, func_0204c0e8(res, 0x13f));
+        func_ov000_0215bb14(self->unk54, MsgRes_GetString(res, 0x13f));
         VCALL(self->unk54, 70);
     }
     {
-        void *p = func_0203dd9c(0xec);
+        void *p = Heap_Alloc(0xec);
         if (p != NULL) {
             p = Ov006Vt_021ec2fc_Ctor(p);
         }
@@ -611,7 +611,7 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
         ov006_SetCam(self, &at, &up, &rot, 0x4400);
     }
     {
-        void *p = func_0203dd9c(0x2c);
+        void *p = Heap_Alloc(0x2c);
         if (p != NULL) {
             p = ov006_Caption_Ctor(p);
         }
@@ -621,10 +621,10 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     func_ov006_021e0954(self->unk138);
     ov006_SetPair(self->unk138, 0x8, -0xa0, -0x61);
     ov006_SetPair2(self->unk138, 0x11, 0);
-    func_ov006_021e0ca8(self->unk138, func_0204c0e8(res, 0x12a), 4);
+    func_ov006_021e0ca8(self->unk138, MsgRes_GetString(res, 0x12a), 4);
     F(self->unk138, 0x1c, int) = -0x1e;
     {
-        void *p = func_0203dd9c(0x30);
+        void *p = Heap_Alloc(0x30);
         if (p != NULL) {
             p = Ov006Vt_021ec1fc_Ctor(p);
         }
@@ -634,7 +634,7 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     func_ov006_021e16b0(self->unk13C);
     self->unk5C = ov006_NewWindow_cb0b8();
     F(self->unk5C, 0x1d8, u16) = 0x12c;
-    F(self->unk5C, 0x1dc, void *) = func_0204c0e8(res, 0x18);
+    F(self->unk5C, 0x1dc, void *) = MsgRes_GetString(res, 0x18);
     F(self->unk5C, 0x1e0, u16) = 1;
     self->unk5C->unk84 = func_ov006_021d1f00;
     self->unk5C->owner = (u8 *)self + 0x40;
@@ -923,7 +923,7 @@ void func_ov000_0215bb14(void *a, const void *b);
 void func_ov006_021dbfb8(ov006_Obj58 *a, const char *b, int c, int d);
 void func_ov006_021e1ddc(ov006_Obj13C *a, const char *b, int c, int d);
 void func_ov006_021e1e6c(ov006_Obj13C *a, const void *b);
-ov006_Unk02046a50 *func_02046a50(void *a, int idx);
+ov006_Unk02046a50 *Wh_GetSharedData(void *a, int idx);
 void func_ov006_021dc054(ov006_Obj58 *a);
 void func_ov006_021dc578(ov006_Obj58 *a);
 void func_ov006_021e0af4(ov006_Unk68 *self);
@@ -965,7 +965,7 @@ void func_ov006_021d4f64(ov006_TaskD37 *self) {
     if (self->head.unk8 == 0xd && self->head.unkC != 0 && data_ov006_021ec888->unk8 != 9) {
         ov006_Unk02046a50 *p;
         done = TRUE;
-        p = func_02046a50(data_02097e40, 0);
+        p = Wh_GetSharedData(data_02097e40, 0);
         if (self->head.unkC == 2 && self->unk3C == 0x28) {
             self->unk4C = p->unk4;
             if (self->unk4A != self->unk4C) {

@@ -3,8 +3,8 @@
 extern "C" {
 
 extern u8 data_ov009_022179b4[];
-extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
-extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
+extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
+extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
 
 static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {
     return g->unk_d4 != 0;
@@ -23,11 +23,11 @@ void func_ov009_02211270(Ov009ActVt_02217aac *self) {
         func_ov000_021915a0(self->unk_38);
         self->unk_40->state++;
     }
-    t = func_ov000_0218d240(self);
+    t = Actor_GetTarget(self);
     if (t == NULL) {
         return;
     }
-    func_ov000_0218d988(self, t, self->unk_b0->unk_02);
+    Actor_TurnToActor(self, t, self->unk_b0->unk_02);
 }
 
 }

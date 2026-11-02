@@ -6,7 +6,7 @@ Task50 *Ov002TaskVt_021efb24_DtorDelete(Task50 *self) {
     *(VFunc **)self = data_ov002_021efb24;
     func_ov002_021da39c();
     TaskBase_dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

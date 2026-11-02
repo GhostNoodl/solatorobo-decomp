@@ -2,14 +2,14 @@
 
 extern "C" {
 
-void *func_02048b8c(SaveBase *s) {
+void *SaveBase_DtorDelete(SaveBase *s) {
     *(u32 **)s = data_0208b614;
     s->Finalize();
-    func_0203de1c(s);
+    Heap_Free(s);
     return s;
 }
 
-void *func_02048bbc(SaveBase *s) {
+void *SaveBase_Dtor(SaveBase *s) {
     *(u32 **)s = data_0208b614;
     s->Finalize();
     return s;

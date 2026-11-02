@@ -94,7 +94,7 @@ void func_ov011_021fa7dc(Ov011Mgr *self) {
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->ids != NULL) {
-        func_0203de50(self->ids);
+        Heap_FreeArray(self->ids);
         self->ids = NULL;
     }
     data_02097dd0->cur = saved;
@@ -149,7 +149,7 @@ void func_ov011_021fa9d8(Ov011Mgr *self) {
         self->count = cnt;
         self->arr8 = (Ov011E38 *)__cxa_vec_new(self->count, 0x38, 8, Ov003Vt_021f7d2c_Ctor, Ov003Vt_021f7d2c_Dtor);
         self->arrC = (Ov011E30 *)__cxa_vec_new(self->count, 0x30, 8, Ov011Vt_022079d0_Ctor, Ov011Vt_022079d0_Dtor);
-        self->ids = (u16 *)func_0203dddc(self->count * 2);
+        self->ids = (u16 *)Heap_AllocArray(self->count * 2);
         j = 0;
         for (n = head; n != NULL; n = n->next) {
             if (Ov011_NodeValid(n)) {
@@ -191,7 +191,7 @@ void func_ov011_021fab74(Ov011Mgr *self) {
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->ids != NULL) {
-        func_0203de50(self->ids);
+        Heap_FreeArray(self->ids);
         self->ids = NULL;
     }
     data_02097dd0->cur = saved;
@@ -208,7 +208,7 @@ struct Ov011Msg {
     s32 c;
 };
 
-void func_ov000_0219bdb0(u16 a, u16 b, u8 c, s32 d, s32 e, void *f);
+void ActorMgr_SendMsg(u16 a, u16 b, u8 c, s32 d, s32 e, void *f);
 void func_ov011_022011c8(void *a, s32 b);
 BOOL func_ov011_02202ac8(void *p, Ov011Vec *a, Ov011Vec *b, s32 c, u8 d);
 
@@ -216,7 +216,7 @@ static inline void Ov011_Send(u16 id, s32 a, s32 b) {
     Ov011Msg m;
     m.a = a;
     m.b = b;
-    func_ov000_0219bdb0(id, 0xffff, 0xe, 1, 0xc, &m);
+    ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &m);
 }
 
 void func_ov011_021facc4(Ov011Mgr *self) {
@@ -295,7 +295,7 @@ void func_ov003_021d7c08(void *self, const Ov011Vec *target);
 void func_ov011_02201214(void *self, void *p);
 
 static inline Ov011PNode *Ov011_NewPNode(const Ov011Vec *v) {
-    Ov011PNode *n = (Ov011PNode *)func_0203dd9c(0x10);
+    Ov011PNode *n = (Ov011PNode *)Heap_Alloc(0x10);
     n->v.x = v->x;
     n->v.y = v->y;
     n->v.z = v->z;

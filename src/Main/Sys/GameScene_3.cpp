@@ -7,11 +7,11 @@ extern "C" {
 
 extern BOOL func_ov000_021700c4(void *p);
 
-void func_02056c0c(u32 mode, ...) {
+void GfxGe_StoreMtx(u32 mode, ...) {
     NNS_G3dGeBufferOP_N(0x13, &mode, 1);
 }
 
-void func_02056c30(void) {
+void GfxGe_Identity(void) {
     NNS_G3dGeBufferOP_N(0x15, NULL, 0);
 }
 

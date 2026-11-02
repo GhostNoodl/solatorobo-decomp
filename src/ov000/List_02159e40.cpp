@@ -44,7 +44,7 @@ static inline void Node02159e40_Delete(Node02159e40 *o) {
     o->unk_24 = 0;
     o->prev = 0;
     o->next = 0;
-    func_0203de1c(o);
+    Heap_Free(o);
 }
 
 void func_ov000_02159e40(Owner02159e40 *self, Node02159e40 *node) {

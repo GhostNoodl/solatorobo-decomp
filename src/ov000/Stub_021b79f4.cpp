@@ -55,7 +55,7 @@ extern HeapState *data_02097dd0;
 extern void *data_02097cdc;
 void func_0203f920(void *p);
 void func_0203f864(void *p);
-void func_0203de1c(void *p);
+void Heap_Free(void *p);
 void func_0203f0b4(void *p);
 void *func_ov000_021b700c(void *p);
 void func_02036838(void *p, s32 a, s32 b, s32 c);
@@ -100,7 +100,7 @@ Obj021b7a7c *func_ov000_021b7a7c(Obj021b7a7c *self) {
         if (p != NULL) {
             if (p != NULL) {
                 func_0203f864(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->unk_ec = NULL;
         }

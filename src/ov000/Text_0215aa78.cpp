@@ -17,7 +17,7 @@ void func_ov000_02153c48(void *node, void *a, s32 b, s32 c, s32 d);
 class Model0215aa78 {
 public:
     u8 data[0x160];
-    static void *operator new(unsigned long size) { return func_0203dd9c(size); }
+    static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     Model0215aa78(void *nm, void *s) {
         func_02041218(data + 0x88);
         func_02041440(data, nm, 0);
@@ -51,7 +51,7 @@ public:
     s32 unk_20;
     s32 unk_24;
     u8 *model;
-    static void *operator new(unsigned long size) { return func_0203dd9c(size); }
+    static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     void SetOfs(s32 x, s32 y) {
         unk_18 = x;
         unk_1c = y;

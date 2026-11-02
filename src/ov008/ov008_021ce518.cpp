@@ -42,7 +42,7 @@ void func_0203cc58(int a, int b, int c);
 void *func_0204c08c(void *a, u16 b, s32 *c, int d);
 void func_ov000_0214c6b4(void *a, s32 b, void *c, int d);
 u16 func_02061d54(s32 a);
-s32 func_0204c0e8(void *p, s32 id);
+s32 MsgRes_GetString(void *p, s32 id);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_02041cb4(void *a, int b);
 void func_ov000_02190a80(void *a, s32 b);
@@ -157,7 +157,7 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
         } else {
             res = data_02149ef8;
             id = func_02061d54(0x1a);
-            w = (Ov008Dialog *)func_0203dd9c(0x1e4);
+            w = (Ov008Dialog *)Heap_Alloc(0x1e4);
             if (w != NULL) {
                 OV008_SET_VT(w, &data_ov000_021cac60);
                 w->v28();
@@ -169,7 +169,7 @@ s32 func_ov008_021ce518(Ov008Mgr *m) {
                 w->v28();
             }
             m->unk_104 = w;
-            m->unk_104->unk_1dc = func_0204c0e8(res, id);
+            m->unk_104->unk_1dc = MsgRes_GetString(res, id);
             m->unk_104->unk_08 = m;
             Ov008_SetRot(m->unk_104, 0, 0, 0);
             m->unk_104->unk_0c |= 0x80000;

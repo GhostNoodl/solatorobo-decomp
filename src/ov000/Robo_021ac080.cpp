@@ -143,10 +143,10 @@ extern char data_ov000_021cc6c6[];
 extern char data_ov000_021cc6cc[];
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_02191008(void *p);
-void func_02049bb4(void *mgr, s32 id);
+void SndMgr_StopSeqArc(void *mgr, s32 id);
 void func_ov000_0218996c(s32 a, s32 b);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
-void func_ov000_0218d398(void *p, u16 a, s32 b, s32 c, s32 d, void *e);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
+void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, void *e);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
 u8 *func_ov000_02199f60(void *p);
 void func_ov000_02199f88(void *t, void *self);
@@ -162,7 +162,7 @@ static inline Actor *GetObj021ac3ec(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline void Reset021ac3ec(Robo021ca458 *self) {
@@ -187,7 +187,7 @@ void func_ov000_021ac3ec(Robo021ca458 *self) {
                 func_ov000_02191008(self->unk_998);
             }
             if (self->unk_b64 >= 0) {
-                func_02049bb4(data_02097e4c, self->unk_b64);
+                SndMgr_StopSeqArc(data_02097e4c, self->unk_b64);
                 self->unk_b64 = -1;
             }
             if (self->unk_b22_0 > 1) {
@@ -213,7 +213,7 @@ void func_ov000_021ac3ec(Robo021ca458 *self) {
             m.rot[1] = o->rot_y;
             m.rot[2] = o->rot_z;
             m.z = 0;
-            func_ov000_0218d398(o, self->id, 7, 1, 0x18, &m);
+            Actor_SendMsg(o, self->id, 7, 1, 0x18, &m);
             func_ov000_0218d46c(o, self->id, 10);
             if (((u8 *)o->unk_4c) != NULL) {
                 LFLD(C1_021ac3ec, ((u8 *)o->unk_4c), 0x18).b0 = 0;

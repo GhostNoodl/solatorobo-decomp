@@ -13,7 +13,7 @@ extern Ov013Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov013Actor *a);
 extern void func_ov000_02182590(void *p);
 extern void func_ov003_021ce9c4(u16 a);
-extern Ov013Actor *func_ov000_0218d240(Ov013Obj *self);
+extern Ov013Actor *Actor_GetTarget(Ov013Obj *self);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
 extern s32 func_ov013_02209b44(Ov013Act_02207968 *self);
 
@@ -96,7 +96,7 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
     }
     dist = 0;
     {
-        Ov013Actor *t = func_ov000_0218d240(self);
+        Ov013Actor *t = Actor_GetTarget(self);
         if (t != NULL) {
             s32 dz = self->pos.z - t->pos.z;
             s32 dx = self->pos.x - t->pos.x;
@@ -165,10 +165,10 @@ void func_ov013_02207d00(Ov013Actor *self) {
 }
 
 extern void *data_ov000_021ccd68;
-extern void *func_ov000_0218e4cc(void *mgr, s32 a);
-extern u16 func_ov000_0218dfb4(void *p, s32 a);
+extern void *ActorMgr_GetGroup(void *mgr, s32 a);
+extern u16 ActorGroup_CountKind(void *p, s32 a);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void func_ov000_0218dbe0(Ov013Obj *self, s32 a);
+extern void Actor_Move(Ov013Obj *self, s32 a);
 
 void func_ov013_02207eac(Ov013Act_02207968 *self) {
     if (self->unk_40->state == 0) {
@@ -180,7 +180,7 @@ void func_ov013_02207eac(Ov013Act_02207968 *self) {
     }
     switch (self->unk_f0) {
     case 1:
-        if (func_ov000_0218dfb4(func_ov000_0218e4cc(data_ov000_021ccd68, 0x4000), 0x4813) != 0) {
+        if (ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000), 0x4813) != 0) {
             return;
         }
         self->unk_40->flags |= 0x10000;
@@ -202,7 +202,7 @@ void func_ov013_02207eac(Ov013Act_02207968 *self) {
     case 3: {
         s32 y = self->unk_b8.y;
         if (self->pos.y < y) {
-            func_ov000_0218dbe0(self, 0);
+            Actor_Move(self, 0);
             if (self->pos.y > y) {
                 self->pos.y = y;
             }
@@ -221,7 +221,7 @@ void func_ov013_02207eac(Ov013Act_02207968 *self) {
         return;
     }
     case 4:
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         self->rot[0] = func_01ffc128(0, self->rot[0], 0xcd, 1, 0x8000);
         if (self->pos.y >= 0x9000) {
             self->pos.y = 0x9000;
@@ -232,17 +232,17 @@ void func_ov013_02207eac(Ov013Act_02207968 *self) {
     }
 }
 
-extern Ov013Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov013Vec func_ov003_021dadc0(const Ov013Vec *a, const Ov013Vec *b);
-extern void func_ov000_0218d988(Ov013Actor *self, Ov013Actor *target, s32 a);
-extern void func_ov000_0218ddd4(Ov013Actor *self, Ov013Vec *v, s32 a);
+extern void Actor_TurnToActor(Ov013Actor *self, Ov013Actor *target, s32 a);
+extern void Actor_MoveToPos(Ov013Actor *self, Ov013Vec *v, s32 a);
 extern Ov013Vec data_ov013_0220b3b0;
 
 static inline Ov013Actor *Ov013_GetActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline void Ov013_VecCopyR(Ov013Vec *d, const Ov013Vec &s) {
@@ -313,8 +313,8 @@ void func_ov013_022080bc(Ov013Act_02207968 *self) {
         func_0204a028(data_02097e4c, 0x39, &self->pos, 2);
     }
     v = self->unk_b8;
-    func_ov000_0218d988(self, t, self->unk_b0->unk_02);
-    func_ov000_0218ddd4(self, &v, 0);
+    Actor_TurnToActor(self, t, self->unk_b0->unk_02);
+    Actor_MoveToPos(self, &v, 0);
     func_ov000_021987b8(self->unk_48, 1, 0, 0);
     if (Ov013_DistXZ3(&tpos, &self->pos) < 0x7800) {
         Ov013Vec dir = func_ov003_021dadc0(&tpos, &self->pos);
@@ -349,7 +349,7 @@ extern s32 FX_Div(s32 a, s32 b);
 extern BOOL func_01ffc584(const Ov013Vec *a, const Ov013Vec *b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_ov000_02191318(void *a, s32 b);
-extern void func_ov000_0218d918(Ov013Actor *self, Ov013Vec *p, s32 a);
+extern void Actor_TurnToPos(Ov013Actor *self, Ov013Vec *p, s32 a);
 extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
 
 static inline Ov013Vec Ov013_ApproachPointK(Ov013Actor *self, s32 k) {
@@ -403,8 +403,8 @@ void func_ov013_02208500(Ov013Act_02207968 *self) {
         break;
     }
     case 2: {
-        func_ov000_0218d988(self, t, self->unk_b0->unk_02);
-        func_ov000_0218ddd4(self, &v, 0);
+        Actor_TurnToActor(self, t, self->unk_b0->unk_02);
+        Actor_MoveToPos(self, &v, 0);
         if (self->pos.y < 0x5800) {
             self->pos.y = 0x5800;
         }
@@ -440,14 +440,14 @@ void func_ov013_02208500(Ov013Act_02207968 *self) {
     case 3: {
         Ov013Vec p;
         Ov013Vec d;
-        func_ov000_0218ddd4(self, &v, 0);
+        Actor_MoveToPos(self, &v, 0);
         if (self->pos.y < 0x5800) {
             self->pos.y = 0x5800;
             self->unk_a0 = 0;
         }
         Ov013_VecCopyR(&d, func_ov003_021dadc0(&data_ov013_0220b3b0, &v));
         VEC_MultAdd(0xf000, &d, &data_ov013_0220b3b0, &p);
-        func_ov000_0218d918(self, &p, 0x400);
+        Actor_TurnToPos(self, &p, 0x400);
         if (self->unk_38->unk_c4 == 3) {
             func_0204a028(data_02097e4c, 0x39, &self->pos, 2);
         }
@@ -470,7 +470,7 @@ void func_ov013_02208500(Ov013Act_02207968 *self) {
         self->rot[0] = func_01ffc128(0x271c, self->rot[0], 0xcd, 1, 0x8000);
         Ov013_VecCopyR(&d, func_ov003_021dadc0(&data_ov013_0220b3b0, &self->pos));
         VEC_MultAdd(0x5000, &d, &self->pos, &p);
-        func_ov000_0218d918(self, &p, 0x400);
+        Actor_TurnToPos(self, &p, 0x400);
         if (self->pos.y <= 0x1b33) {
             self->pos.y = 0x1b33;
         } else {
@@ -561,9 +561,9 @@ void func_ov013_02208bfc(Ov013Act_02207968 *self) {
     }
     case 2: {
         Ov013Vec v;
-        func_ov000_0218d918(self, &self->unk_f8, 0x400);
+        Actor_TurnToPos(self, &self->unk_f8, 0x400);
         v = self->unk_b8;
-        func_ov000_0218ddd4(self, &v, 0);
+        Actor_MoveToPos(self, &v, 0);
         if (self->unk_38->unk_c4 != 1) {
             return;
         }
@@ -682,9 +682,9 @@ void func_ov013_022090ac(Ov013Act_02207968 *self) {
     }
     case 2: {
         Ov013Vec v;
-        func_ov000_0218d918(self, &self->unk_f8, 0x400);
+        Actor_TurnToPos(self, &self->unk_f8, 0x400);
         v = self->unk_b8;
-        func_ov000_0218ddd4(self, &v, 0);
+        Actor_MoveToPos(self, &v, 0);
         if (self->unk_38->unk_c4 != 1) {
             return;
         }

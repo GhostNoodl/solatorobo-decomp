@@ -79,7 +79,7 @@ void func_020554e4(SlidePanel *panel) {
             if (p != NULL) {
                 if (p != NULL) {
                     func_02041278(p);
-                    func_0203de1c(p);
+                    Heap_Free(p);
                 }
                 panel->pltt = NULL;
             }
@@ -102,7 +102,7 @@ void func_020554e4(SlidePanel *panel) {
                     if (p != NULL) {
                         func_02041558(p);
                         func_02041278(p->pltt);
-                        func_0203de1c(p);
+                        Heap_Free(p);
                     }
                     panel->model = NULL;
                 }
@@ -126,7 +126,7 @@ void func_020554e4(SlidePanel *panel) {
                     if (p != NULL) {
                         func_02041558(p);
                         func_02041278(p->pltt);
-                        func_0203de1c(p);
+                        Heap_Free(p);
                     }
                     panel->model2 = NULL;
                 }

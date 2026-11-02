@@ -32,7 +32,7 @@ extern char data_ov000_021cc654[];
 extern char data_ov000_021cc65a[];
 extern char data_ov000_021cc660[];
 extern char data_ov000_021cc61e[];
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL func_01ffc584(void *a, void *b, s32 c, s32 d);
@@ -41,11 +41,11 @@ void func_ov000_021915a0(void *p);
 void *func_ov000_02191318(void *a, s32 b);
 void func_ov000_02191780(void *a);
 BOOL func_ov000_02191120(void *a);
-void func_ov000_0218dbe0(void *self, s32 a);
+void Actor_Move(void *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-void func_ov000_0218d398(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
-void func_ov000_02199b88(void *a, void *b);
+void Target_Set(void *a, void *b);
 void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
 void func_ov000_021bd300(void *p);
 void func_ov000_021bd438(void *p, VecFx32 *v, s32 dy);
@@ -54,7 +54,7 @@ static inline Actor *FindActor_021a4194(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 void func_ov000_021a4194(Robo021ca458 *self) {
@@ -106,7 +106,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                     func_ov000_02190cb0(self->unk_38, data_ov000_021ca050[self->unk_b24_5], 0x400, 0);
                     func_ov000_021915a0(self->unk_38);
                     self->unk_9c = 0x15c;
-                    func_ov000_0218dbe0(self, 0);
+                    Actor_Move(self, 0);
                     func_ov000_021987b8(self->unk_48, 0, 0, 0);
                     if (self->unk_b24_1 && (self->unk_48->unk_54 & 0x400)) {
                         self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
@@ -132,7 +132,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                             pose.ry = a->rot_y;
                             pose.rz = a->rot_z;
                             pose.unk = 0;
-                            func_ov000_0218d398(a, self->id, 7, 1, 0x18, &pose);
+                            Actor_SendMsg(a, self->id, 7, 1, 0x18, &pose);
                             func_ov000_0218d46c(a, self->id, 0xa);
                             if (((u8 *)a->unk_4c) != NULL) {
                                 LFLD(B8_021a4194, ((u8 *)a->unk_4c), 0x18).b0 = 0;
@@ -232,7 +232,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
         } else {
             func_ov000_0218d46c(t, self->id, 6);
             LFLD(u16, t, 0x90) = 0xffff;
-            func_ov000_02199b88(info, self);
+            Target_Set(info, self);
             if (LFLD(u8, info, 2) == 6) {
                 self->unk_b29_0 = 1;
             }
@@ -284,7 +284,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
         return;
     case 0x14:
         self->rot_y = func_01ffc128(self->unk_98, self->rot_y, 0x400, 1, 0x8000);
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         self->unk_b29_0 = 1;
         self->unk_b29_3 = 1;
         return;
@@ -294,7 +294,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
             return;
         }
         self->unk_a8 = 0x52;
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         func_ov000_021987b8(self->unk_48, 0, 0, 0);
         break;
     }

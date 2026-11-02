@@ -210,7 +210,7 @@ void *Ov015FishState_Dtor(void *self) {
 void *func_ov015_0220e5c8(void *self) {
     SET_VT(self, data_ov015_02212f64);
     func_ov002_021e4d4c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

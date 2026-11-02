@@ -166,8 +166,8 @@ extern void VEC_MultAdd(s32 scale, const Ov003MVec *dir, const Ov003MVec *base, 
 extern void MTX_MultVec43(const Ov003MVec *v, const Ov003MultiMtx *m, Ov003MVec *out);
 extern u16 FX_Atan2(s32 y, s32 x);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern Ov003MActor *func_ov000_0218e4cc(void *mgr, u16 id);
-extern void *func_ov000_0218e6d0(void *mgr, u16 a, u16 b);
+extern Ov003MActor *ActorMgr_GetGroup(void *mgr, u16 id);
+extern void *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern void func_0203cc58(s32 a, s32 b, s32 c);
 extern void func_ov000_02188140(void *g, s32 a, s32 b, s32 c);
 extern void func_ov000_02188ca0(Ov003MCol *c, s32 a);
@@ -288,12 +288,12 @@ void func_ov003_021f27ec(Ov003Multi *self) {
         }
     }
 
-    a = func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000);
+    a = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
     if (a != NULL && a->unk_16 != 0) {
         return;
     }
     mgr = data_ov000_021ccd68;
-    if ((mgr == NULL ? NULL : func_ov000_0218e6d0(mgr, 0x4000, 0x400c)) != NULL) {
+    if ((mgr == NULL ? NULL : ActorMgr_FindKind(mgr, 0x4000, 0x400c)) != NULL) {
         return;
     }
     ctx = data_ov000_021ccd6c;

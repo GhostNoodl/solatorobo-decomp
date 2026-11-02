@@ -44,7 +44,7 @@ s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_0204ca14(ov002_Anim021e0c28 *a, int b);
 
 static inline ov002_Anim021e0c28 *ov002_Anim_New(void) {
-    ov002_Anim021e0c28 *anim = (ov002_Anim021e0c28 *)func_0203dd9c(0xb8);
+    ov002_Anim021e0c28 *anim = (ov002_Anim021e0c28 *)Heap_Alloc(0xb8);
     if (anim != NULL) {
         *(VFunc **)anim = data_0208ba70;
         func_0204c7d0(anim);

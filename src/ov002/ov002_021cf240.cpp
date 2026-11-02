@@ -23,19 +23,19 @@ void func_ov002_021cf280(Task50 *self, int kind) {
     str = data_ov002_021ef3f8;
     switch (kind) {
     case 0:
-        str = func_0204c0e8(msg, 0xea);
+        str = MsgRes_GetString(msg, 0xea);
         break;
     case 1:
-        str = func_0204c0e8(msg, 0xed);
+        str = MsgRes_GetString(msg, 0xed);
         break;
     case 2:
-        str = func_0204c0e8(msg, 0xf0);
+        str = MsgRes_GetString(msg, 0xf0);
         break;
     case 3:
-        str = func_0204c0e8(msg, 0xe7);
+        str = MsgRes_GetString(msg, 0xe7);
         break;
     case 4:
-        str = func_0204c0e8(msg, 0xe4);
+        str = MsgRes_GetString(msg, 0xe4);
         break;
     }
     func_ov000_0215bb14(self->unk_40, str);

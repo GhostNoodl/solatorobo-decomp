@@ -45,7 +45,7 @@ void func_ov011_02202464(void *self);
 void *func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
 
 static inline Ov011Obj *Ov011_Find(u16 id) {
-    return data_ov000_021ccd68 == NULL ? NULL : (Ov011Obj *)func_ov000_0218e640(data_ov000_021ccd68, id);
+    return data_ov000_021ccd68 == NULL ? NULL : (Ov011Obj *)ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline BOOL Ov011_NodeOk(Ov011Node *p) {
@@ -213,7 +213,7 @@ void func_ov011_022011fc(void *a, s32 b);
 void func_ov011_022011c8(void *a, s32 b);
 void func_ov011_02201214(void *a, void *b);
 void *func_ov011_02201254(void *self);
-s32 func_02040528(s32 max);
+s32 Rand_PlusMinus(s32 max);
 Ov011V *func_02065f88(s32 id, Ov011Vec *pos);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
@@ -221,7 +221,7 @@ void func_ov011_02202488(void *self, s16 v);
 void func_ov011_022024ac(void *self, s16 v);
 Ov011Vec func_ov011_022024d4(const void *self);
 Ov011LNode *func_ov011_021fa790(Ov011LNode *head, Ov011LNode *item);
-void func_ov000_0219bdb0(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
+void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
 BOOL func_ov000_021b4738(void *pl);
 }
 
@@ -245,7 +245,7 @@ static inline void Ov011Ent_Remove(Ov011Ent *e, void *k) {
             if (k == n) {
                 e->unk_04 = (Ov011PNode *)func_ov011_021fa790((Ov011LNode *)e->unk_04, (Ov011LNode *)n);
                 if (n != NULL) {
-                    func_0203de1c(n);
+                    Heap_Free(n);
                 }
                 e->b1 = 0;
                 e->unk_08 = 0;
@@ -259,7 +259,7 @@ static inline void Ov011_Send(u16 id, s32 a, s32 b) {
     Ov011Msg m;
     m.a = a;
     m.b = b;
-    func_ov000_0219bdb0(id, 0xffff, 0xe, 1, 0xc, &m);
+    ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &m);
 }
 
 static inline void Ov011_Send2(u16 id) {
@@ -269,7 +269,7 @@ static inline void Ov011_Send2(u16 id) {
     m.b1 = 1;
     m.x = 0x1000;
     m.y = 0x1000;
-    func_ov000_0219bdb0(id, 0xffff, 0xe, 1, 0xc, &m);
+    ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &m);
 }
 
 static inline void Ov011Slot_Kill(Ov011Slot *s) {
@@ -344,8 +344,8 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                     Ov003Mover_SetMaxDist(&self->slots[i].obj, 0x948);
                     func_ov011_022011fc(a, 0);
                     func_02049f44(data_02097e4c, 0x2f, (Ov011Vec *)self->slots[i].obj.v10(), 0);
-                    v.x = func_02040528(0x1000);
-                    v.z = func_02040528(0x1000);
+                    v.x = Rand_PlusMinus(0x1000);
+                    v.z = Rand_PlusMinus(0x1000);
                 }
                 m = ((Ov011Obj *)func_ov000_0219bf90())->unk_48;
                 w.x = m->unk_68.x;

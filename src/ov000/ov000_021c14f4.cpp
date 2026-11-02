@@ -82,7 +82,7 @@ void func_ov000_021c14f4(Lo021cc938 *self) {
             void *p = self->unk_8c;
             if (p != NULL) {
                 func_ov000_0218ea20(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->unk_8c = NULL;
         }
@@ -92,7 +92,7 @@ void func_ov000_021c14f4(Lo021cc938 *self) {
             void *p = self->unk_90;
             if (p != NULL) {
                 func_ov000_0218fee4(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->unk_90 = NULL;
         }
@@ -105,7 +105,7 @@ void func_ov000_021c14f4(Lo021cc938 *self) {
         u8 *model;
         self->unk_04 = NULL;
         self->unk_8c = (Model *)(res);
-        m = func_0203dd9c(0xe8);
+        m = Heap_Alloc(0xe8);
         if (m != NULL) {
             m = func_ov000_0218fe1c(m);
         }

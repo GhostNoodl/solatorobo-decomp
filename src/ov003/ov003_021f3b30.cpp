@@ -117,12 +117,12 @@ struct Ov003Prop {
 
 extern "C" {
 extern Ov003Effect *func_02065f88(s32 id, const Ov003Vec *pos);
-extern s32 func_02040528(s32 max);
-extern s32 func_02040498(s32 max);
+extern s32 Rand_PlusMinus(s32 max);
+extern s32 Rand_UpTo(s32 max);
 extern Ov003FxPlayer *func_ov000_0219bf90(void);
 extern Ov003Info *func_0206fef8(u16 id);
 extern s32 func_020705fc(u16 id);
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_ov000_0218e9c4(void *p);
 extern Ov003Shadow *func_ov000_021919c8(void *p);
 extern void func_ov000_02191b70(Ov003Shadow *p);
@@ -130,7 +130,7 @@ extern BOOL func_ov000_02191b9c(Ov003Shadow *p);
 extern BOOL func_ov000_0218f110(s16 *p);
 extern Ov003Save *data_0214a424;
 extern char data_ov003_021fa662[];
-extern void func_ov000_021b4c60(void *self);
+extern void Ov000ActVt_021cc7cc_Start(void *self);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_02191870(void *model, Ov003Res *res);
 extern Ov003AnimLayer *func_ov000_02190a30(void *model, s32 n);
@@ -149,8 +149,8 @@ void func_ov003_021f3b30(Ov003Prop *self) {
         if (e != NULL) {
             e->SetColor(0xc000, 0, 0);
             e->SetScale(0x666, 0x733, 0x666);
-            a = func_02040528(0x8cd);
-            b = func_02040528(0x8cd);
+            a = Rand_PlusMinus(0x8cd);
+            b = Rand_PlusMinus(0x8cd);
             e->SetRot(a, 0x59a, b);
         }
     }
@@ -158,18 +158,18 @@ void func_ov003_021f3b30(Ov003Prop *self) {
         return;
     }
     id = 0x322;
-    if (func_02040498(3) == 0) {
+    if (Rand_UpTo(3) == 0) {
         id = 4;
     }
     e = func_02065f88(id, &self->pos);
     if (e == NULL) {
         return;
     }
-    s = func_02040528(0x19a) + 0x666;
+    s = Rand_PlusMinus(0x19a) + 0x666;
     e->SetScale(s, s, s);
-    a = func_02040528(0xb33);
-    b = func_02040498(0x1000 - 0xb33);
-    e->SetRot(a, b + 0x800, func_02040528(0xb33));
+    a = Rand_PlusMinus(0xb33);
+    b = Rand_UpTo(0x1000 - 0xb33);
+    e->SetRot(a, b + 0x800, Rand_PlusMinus(0xb33));
 }
 
 }

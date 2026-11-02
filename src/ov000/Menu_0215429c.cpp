@@ -23,7 +23,7 @@ void *func_ov000_02154128(u8 *self, void *req, void *buf, u16 *count);
 class Model0215429c {
 public:
     u8 data[0x160];
-    static void *operator new(unsigned long size) { return func_0203dd9c(size); }
+    static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     Model0215429c(void *nm, void *s) {
         func_02041218(data + 0x88);
         func_02041440(data, nm, 0);
@@ -52,7 +52,7 @@ public:
     s32 unk_20;
     s32 unk_24;
     u8 *model;
-    static void *operator new(unsigned long size) { return func_0203dd9c(size); }
+    static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     Panel0215429c() {
         *(u32 *)&flags = 0;
         unk_04 = 0;
@@ -104,7 +104,7 @@ void func_ov000_0215429c(LoBase021caec8_021efca4 *self) {
         func_02041c20(self->unk_10, 6, self);
     }
     if (self->unk_0c & 0x400000) {
-        Model0215429c *m = (Model0215429c *)func_0203dd9c(0x160);
+        Model0215429c *m = (Model0215429c *)Heap_Alloc(0x160);
         if (m) {
             void *arc;
             void *name;

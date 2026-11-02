@@ -22,7 +22,7 @@ void func_ov002_021d36b8(void *self, s32 n) {
                 if (p != NULL) {
                     func_02041558(p);
                     func_02041278((u8 *)p + 0x88);
-                    func_0203de1c(p);
+                    Heap_Free(p);
                 }
                 FIELD(self, 0xc4, void *) = NULL;
             }
@@ -30,7 +30,7 @@ void func_ov002_021d36b8(void *self, s32 n) {
         HEAP_POP(saved);
     }
     if (FIELD(self, 0xc8, VObject *) == NULL) {
-        VObject *p = (VObject *)func_0203dd9c(0x4c);
+        VObject *p = (VObject *)Heap_Alloc(0x4c);
         if (p != NULL) {
             *(VFunc **)p = data_0208b318;
             p->v0x8();

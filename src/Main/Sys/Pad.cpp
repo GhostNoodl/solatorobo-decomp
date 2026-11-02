@@ -19,7 +19,7 @@ typedef struct Pad {
 
 extern Pad *data_02097dc8;
 extern const u16 data_02082864[16];
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 
 static inline u16 PAD_Read(void) {
     return (u16)(((*(volatile u16 *)0x4000130 | *(volatile u16 *)0x2ffffa8) ^ PAD_KEY_MASK) & PAD_KEY_MASK);
@@ -41,7 +41,7 @@ void func_0203d1b4(void) {
         return;
     }
     data_02097dd0->cur = data_02097dd0->unk_04;
-    pad = (Pad *)func_0203dd9c(sizeof(Pad));
+    pad = (Pad *)Heap_Alloc(sizeof(Pad));
     if (pad != NULL) {
         pad->repeatDelay = 12;
         pad->repeatRate = 6;

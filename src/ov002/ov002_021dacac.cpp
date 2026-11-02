@@ -35,7 +35,7 @@ void func_ov002_021dacac(void *self) {
     u8 *s;
     u8 *w;
     void *t;
-    o = (VObject *)func_0203dd9c(0xd4);
+    o = (VObject *)Heap_Alloc(0xd4);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
         o->v0x28();
@@ -43,8 +43,8 @@ void func_ov002_021dacac(void *self) {
         o->v0x28();
     }
     FIELD(self, 0xc, VObject *) = o;
-    FIELD(self, 0xc, VObject *)->v0x10(func_0204c0e8(g, 0xba));
-    FIELD(self, 0xc, VObject *)->v0x14(func_0204c0e8(g, 0xbb));
+    FIELD(self, 0xc, VObject *)->v0x10(MsgRes_GetString(g, 0xba));
+    FIELD(self, 0xc, VObject *)->v0x14(MsgRes_GetString(g, 0xbb));
     FIELD(FIELD(self, 0xc, void *), 0x20, s32) = 2;
     FIELD(FIELD(self, 0xc, void *), 0x24, s32) = 0x78;
     s = FIELD(self, 0xc, u8 *);
@@ -62,23 +62,23 @@ void func_ov002_021dacac(void *self) {
     FIELD(FIELD(self, 0xc, void *), 0xc, u32) |= 0x800000;
     FIELD(FIELD(self, 0xc, void *), 0x8, void *) = self;
     FIELD(FIELD(self, 0xc, void *), 0x84, void *) = (void *)func_ov002_021dac8c;
-    FIELD(self, 0xc, VObject *)->v0x74(func_0204c0e8(g, 0xbc), 0, 0xffff, 0xffff);
+    FIELD(self, 0xc, VObject *)->v0x74(MsgRes_GetString(g, 0xbc), 0, 0xffff, 0xffff);
     if (func_020594bc(data_02fe152c, 5, 1, 1)) {
-        u8 *e = (u8 *)FIELD(self, 0xc, VObject *)->v0x74(func_0204c0e8(g, 0xbe), 1, 0xffff, 0xffff);
+        u8 *e = (u8 *)FIELD(self, 0xc, VObject *)->v0x74(MsgRes_GetString(g, 0xbe), 1, 0xffff, 0xffff);
         if (func_ov000_0219bf90()) {
             if ((FIELD(self, 0x20, u8) = func_ov000_0219d5a0()) != 0) {
                 FIELD(e, 0x24, s32) = 0xe;
             }
         }
     }
-    FIELD(self, 0xc, VObject *)->v0x74(func_0204c0e8(g, 0xfa), 2, 0xffff, 0xffff);
+    FIELD(self, 0xc, VObject *)->v0x74(MsgRes_GetString(g, 0xfa), 2, 0xffff, 0xffff);
     m = FIELD(self, 0xc, VObject *);
     m->v0xa8(func_ov000_02154b80(m, *(u8 *)data_ov002_021f0f90));
     FIELD(FIELD(self, 0xc, void *), 0xc, u32) &= ~0x20000;
     FIELD(FIELD(self, 0xc, void *), 0xc, u32) &= ~0x40000;
     FIELD(FIELD(self, 0xc, void *), 0xc, u32) &= ~0x10000;
     FIELD(self, 0xc, VObject *)->v0x8();
-    o = (VObject *)func_0203dd9c(0x8c);
+    o = (VObject *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
         o->v0x28();
@@ -105,13 +105,13 @@ void func_ov002_021dacac(void *self) {
             void *g2 = data_02149ef8;
             switch (kind) {
             case 0:
-                str = func_0204c0e8(g2, 0xbd);
+                str = MsgRes_GetString(g2, 0xbd);
                 break;
             case 1:
-                str = func_0204c0e8(g2, 0xbf);
+                str = MsgRes_GetString(g2, 0xbf);
                 break;
             case 2:
-                str = func_0204c0e8(g2, 0xfb);
+                str = MsgRes_GetString(g2, 0xfb);
                 break;
             default:
                 str = data_ov002_021efe30;

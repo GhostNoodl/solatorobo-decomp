@@ -12,7 +12,7 @@ extern u8 data_ov015_02212e34[];
 s32 FX_Div(s32 a, s32 b);
 void VEC_Normalize(void *src, void *dst);
 void VEC_MultAdd(s32 scale, const Ov015Vec *dir, const Ov015Vec *base, Ov015Vec *out);
-s32 func_02049130(s32 t, s32 a, s32 b);
+s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 u16 FX_Atan2(s32 x, s32 z);
 extern u8 data_ov015_02212ecc[];
 extern u8 data_ov015_02212eb0[];
@@ -51,7 +51,7 @@ void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o) {
     VEC_Normalize(&d, &o->unk_9c);
     p = o->unk_40;
     VEC_MultAdd(self->unk_0c, &self->unk_1c, &p, &p);
-    p.y = func_02049130(t, -0x32000, 0x1ccd);
+    p.y = Interp_SinLerp(t, -0x32000, 0x1ccd);
     if (p.y > 0) p.y = 0;
     o->unk_40 = p;
     o->unk_108 = 2;
@@ -88,7 +88,7 @@ void func_ov015_0220d578(Ov015FishState40 *self, Ov015Fish *o) {
     VEC_Normalize(&d, &o->unk_9c);
     p = o->unk_40;
     VEC_MultAdd(self->unk_0c, &self->unk_1c, &p, &p);
-    p.y = func_02049130(t, 0x1ccd, -0x32000);
+    p.y = Interp_SinLerp(t, 0x1ccd, -0x32000);
     if (p.y < -0x32000) p.y = -0x32000;
     o->unk_40 = p;
     o->unk_108 = 2;
@@ -148,7 +148,7 @@ void *Ov015FishState08_Dtor(void *self) {
 
 void *Ov015FishState08_DtorDelete(void *self) {
     SET_VT(self, data_ov015_02212eb0);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -198,7 +198,7 @@ BOOL Ov015FishState08_Update(Ov015FishState08 *self, Ov015Fish *p) {
     }
     case 2:
         if (func_ov000_02191120(&p->unk_244)) {
-            void *q = func_0203dd9c(0x2c);
+            void *q = Heap_Alloc(0x2c);
             if (q != NULL) {
                 q = Ov015FishState2c_Ctor((Ov015FishState2c *)q);
             }
@@ -219,7 +219,7 @@ BOOL Ov015FishState08_Exit(u8 *self, Ov015Fish *p) {
 }
 
 extern u8 *data_02097d48;
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void MTX_Identity33_(void *a);
 void MTX_Concat33(void *a, void *b, void *out);
 void MI_Copy36B(const void *src, void *dst);
@@ -335,7 +335,7 @@ void func_ov015_0220daf4(Ov015Shadow *self, const Ov015Vec *pos, s32 sx, s32 sz,
         NNS_G3dMdlSetMdlCullMode(self->mdl, 0, 3);
         NNS_G3dDraw1Mat1Shp(self->mdl, 0, 0, 1);
     } else {
-        NNS_G3dMdlSetMdlPolygonID(self->mdl, 0, func_02043d48(data_02097d48 + 0x8b0));
+        NNS_G3dMdlSetMdlPolygonID(self->mdl, 0, Gfx3DState_NextPolyId(data_02097d48 + 0x8b0));
         NNS_G3dDraw1Mat1Shp(self->mdl, 0, 0, 1);
     }
 }

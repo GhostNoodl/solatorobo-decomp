@@ -212,7 +212,7 @@ void *Ov015Scene2b88_DtorDelete(Ov015Scene2b88 *self) {
     DELETE_V(self->unk_4c);
     HEAP_POP(saved);
     Ov015TaskBase_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -224,7 +224,7 @@ s32 func_ov015_0220502c(void) {
 }
 
 extern void *data_02149ef8;
-void *func_0204c0e8(void *a, s32 b);
+void *MsgRes_GetString(void *a, s32 b);
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb4a8[];
@@ -264,7 +264,7 @@ void func_ov015_02205034(Ov015Scene2b88 *self) {
         return;
     }
     res = data_02149ef8;
-    p = (u8 *)func_0203dd9c(0xe0);
+    p = (u8 *)Heap_Alloc(0xe0);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -274,8 +274,8 @@ void func_ov015_02205034(Ov015Scene2b88 *self) {
         VCALL(p)->v28();
     }
     self->unk_3c = (Ov015Menu *)p;
-    VCALL(self->unk_3c)->v10(func_0204c0e8(res, 0xc8));
-    VCALL(self->unk_3c)->v14(func_0204c0e8(res, 0xc9));
+    VCALL(self->unk_3c)->v10(MsgRes_GetString(res, 0xc8));
+    VCALL(self->unk_3c)->v14(MsgRes_GetString(res, 0xc9));
     self->unk_3c->unk_20 = 4;
     self->unk_3c->unk_24 = 0xf8;
     Ov015_SetXYZ16(self->unk_3c, 0, 0x2c, -0xccd);
@@ -295,7 +295,7 @@ void func_ov015_02205034(Ov015Scene2b88 *self) {
             FLD(s32, o, 0x10) = -1;
         }
     }
-    func_ov000_02157c90(self->unk_3c, func_0204c0e8(res, 0xa5));
+    func_ov000_02157c90(self->unk_3c, MsgRes_GetString(res, 0xa5));
     {
         Ov015Menu *o = self->unk_3c;
         VCALL(o)->va8(func_ov000_02154b58(o, 0));
@@ -304,7 +304,7 @@ void func_ov015_02205034(Ov015Scene2b88 *self) {
     self->unk_3c->unk_88 = (void *)func_ov015_02204d00;
     self->unk_3c->unk_08 = (u8 *)self;
     VCALL(self->unk_3c)->v08();
-    p = (u8 *)func_0203dd9c(0x8c);
+    p = (u8 *)Heap_Alloc(0x8c);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -325,7 +325,7 @@ void func_ov015_02205034(Ov015Scene2b88 *self) {
             VCALL(self->unk_40)->v70();
         }
     }
-    p = (u8 *)func_0203dd9c(0xe0);
+    p = (u8 *)Heap_Alloc(0xe0);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -340,10 +340,10 @@ void func_ov015_02205034(Ov015Scene2b88 *self) {
     Ov015_SetXYZ16(self->unk_44, 0x91, 0x12, -0x666);
     Ov015_SetXYZ32(self->unk_44, 0x100, 0, -0x666);
     self->unk_44->unk_0c |= 0x20000000;
-    VCALL(self->unk_44)->vf4(1, func_0204c0e8(res, 0x32));
-    VCALL(self->unk_44)->vf4(2, func_0204c0e8(res, 0x33));
+    VCALL(self->unk_44)->vf4(1, MsgRes_GetString(res, 0x32));
+    VCALL(self->unk_44)->vf4(2, MsgRes_GetString(res, 0x33));
     VCALL(self->unk_44)->v08();
-    p = (u8 *)func_0203dd9c(0x1e4);
+    p = (u8 *)Heap_Alloc(0x1e4);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -356,7 +356,7 @@ void func_ov015_02205034(Ov015Scene2b88 *self) {
     }
     self->unk_48 = (Ov015Dialog *)p;
     FLD(u16, p, 0x1d8) = 0x8d;
-    self->unk_48->unk_1dc = func_0204c0e8(res, 0x24);
+    self->unk_48->unk_1dc = MsgRes_GetString(res, 0x24);
     self->unk_48->unk_1e0 = 1;
     self->unk_48->unk_84 = (void *)func_ov015_02204d48;
     self->unk_48->unk_08 = (u8 *)self;
@@ -364,7 +364,7 @@ void func_ov015_02205034(Ov015Scene2b88 *self) {
     self->unk_48->unk_68 = -0x333;
     self->unk_48->unk_0c |= 2;
     if (self->unk_0c == 1 && data_ov015_02213360[2] == 0) {
-        p = (u8 *)func_0203dd9c(0x2c);
+        p = (u8 *)Heap_Alloc(0x2c);
         if (p != NULL) {
             SET_VT(p, data_ov015_022129c0);
             func_ov000_02163224(p);

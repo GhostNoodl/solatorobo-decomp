@@ -14,8 +14,8 @@ extern "C" {
 extern s32 data_02097d78[5];
 extern SndMgr *data_02097e4c;
 
-extern void *func_0203dd9c(u32 size);
-extern void func_0203de1c(void *ptr);
+extern void *Heap_Alloc(u32 size);
+extern void Heap_Free(void *ptr);
 extern s32 func_02041b10(Model *model, void *tex);
 extern BOOL func_0203e63c(void *id);
 extern BOOL func_02042958(Model *model, u32 slot, ModelPart *part);
@@ -144,7 +144,7 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
             if (p != NULL) { \
                 if (p != NULL) { \
                     func_02041278(p); \
-                    func_0203de1c(p); \
+                    Heap_Free(p); \
                 } \
                 panel->pltt = NULL; \
             } \
@@ -160,7 +160,7 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
                 if (p != NULL) { \
                     func_02041558(p); \
                     func_02041278(p->pltt); \
-                    func_0203de1c(p); \
+                    Heap_Free(p); \
                 } \
                 panel->model = NULL; \
             } \
@@ -176,7 +176,7 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
                 if (p != NULL) { \
                     func_02041558(p); \
                     func_02041278(p->pltt); \
-                    func_0203de1c(p); \
+                    Heap_Free(p); \
                 } \
                 panel->model2 = NULL; \
             } \

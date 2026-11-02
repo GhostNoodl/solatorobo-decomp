@@ -43,7 +43,7 @@ void func_ov006_021e86dc(ov006_Prop021e81e0 *self);
 void func_ov006_021e8ef8(ov006_Prop021e81e0 *self);
 void func_ov006_021e96cc(ov006_Prop021e81e0 *self);
 s32 func_02049afc(void *a, s16 b);
-void func_02049bb4(void *a);
+void SndMgr_StopSeqArc(void *a);
 void func_0204a094(void *a, s16 b, int c);
 
 static inline BOOL ov006_Prop_IsOver(ov006_Prop021e81e0 *self) {
@@ -74,7 +74,7 @@ void func_ov006_021e81e0(ov006_Prop021e81e0 *self) {
         return;
     }
     if (self->unk1A6 & 3) {
-        func_02049bb4(data_02097e4c);
+        SndMgr_StopSeqArc(data_02097e4c);
         self->unk1FE = func_02049afc(data_02097e4c, self->unkAC[1]);
     }
     func_0204a094(data_02097e4c, self->unk1FE, (self->unk1A0 - 0xe66) >> 3);

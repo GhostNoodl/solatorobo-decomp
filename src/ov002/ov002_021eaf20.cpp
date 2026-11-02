@@ -75,17 +75,17 @@ void func_ov002_021eaf20(void *self) {
     }
     func_ov002_021eb7c0(self);
     func_ov002_021eb870(self);
-    func_ov002_021e9cec(bufA, 0x20, data_ov002_021f0d00, 1, ((u8 (*)(void))func_0206e8f0)());
-    func_ov002_021e9d7c(bufB, 0x20, FIELD(self, 0x4, void *), 1, ((u8 (*)(void))func_0206e8f0)());
+    func_ov002_021e9cec(bufA, 0x20, data_ov002_021f0d00, 1, ((u8 (*)(void))LangData_GetLang)());
+    func_ov002_021e9d7c(bufB, 0x20, FIELD(self, 0x4, void *), 1, ((u8 (*)(void))LangData_GetLang)());
     func_ov002_021e9bd8(bufA, bufB);
-    func_ov002_021e9cec(bufC, 0x20, data_ov002_021f0d0f, 2, ((u8 (*)(void))func_0206e8f0)());
-    func_ov002_021e9d7c(bufD, 0x20, FIELD(self, 0x4, void *), 2, ((u8 (*)(void))func_0206e8f0)());
+    func_ov002_021e9cec(bufC, 0x20, data_ov002_021f0d0f, 2, ((u8 (*)(void))LangData_GetLang)());
+    func_ov002_021e9d7c(bufD, 0x20, FIELD(self, 0x4, void *), 2, ((u8 (*)(void))LangData_GetLang)());
     func_ov002_021e9a50(bufC, bufD);
     MI_CpuCopy8(FIELD(self, 0x8, u8 *) + 0xc, &x, 4);
     func_ov002_021e9b28(x);
 }
 
-void *func_0203dddc(u32 size);
+void *Heap_AllocArray(u32 size);
 
 void *func_ov002_021e97e8(u8 *a, u8 *b);
 
@@ -124,7 +124,7 @@ void func_ov002_021eb0f8(void *self) {
     n = hdr.count;
     stride = hdr.stride;
     src = d + 0x10;
-    tbl = (Ent021eb0f8 *)func_0203dddc(n * 8);
+    tbl = (Ent021eb0f8 *)Heap_AllocArray(n * 8);
     for (i = 0; i < n; i++) {
         u8 *obj;
         s32 k;
@@ -170,7 +170,7 @@ void func_ov002_021eb0f8(void *self) {
             func_ov002_021e4dac(po, o);
         }
     }
-    func_0203de1c(tbl);
+    Heap_Free(tbl);
 }
 
 s32 func_0201e950(const void *a, const void *b, u32 n);
@@ -201,7 +201,7 @@ static inline void ov002_addPair(u8 *list, u8 *a, u8 *b, s32 kind) {
         }
     }
     if (n == NULL) {
-        n = (u8 *)func_0203dd9c(0x50);
+        n = (u8 *)Heap_Alloc(0x50);
         MI_CpuFill8(n, 0, 0x20);
         MI_CpuFill8(n + 0x20, 0, 0x20);
         FIELD(n, 0x44, u8) = 0;

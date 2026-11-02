@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
-extern u8 *func_ov000_0218bd5c(void *mgr, u16 id);
+extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_0203f2b8(void *p);
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern s32 func_02049afc(void *mgr, s32 id);
@@ -20,10 +20,10 @@ extern void func_0204a058(void *mgr, s32 a, s32 b, s32 c);
 
 extern void *data_ov000_021ccd64;
 extern void func_ov000_0218bed8(void *mgr, s32 a, Ov009Actor *actor);
-extern void func_02049bb4(void *mgr, s32 id);
+extern void SndMgr_StopSeqArc(void *mgr, s32 id);
 extern BOOL func_ov000_021b4738(Ov009Actor *a);
 
-extern Ov009Actor *func_ov000_0218d240(Ov009Actor *self);
+extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 
 struct Ov009Rot {
     s16 x;
@@ -137,7 +137,7 @@ void func_ov009_02206e30(Ov009ActVt_022178f0 *self) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             data_ov000_021ccd54->unk_ac = 1;
-            func_02049bb4(data_02097e4c, self->unk_10c);
+            SndMgr_StopSeqArc(data_02097e4c, self->unk_10c);
             self->unk_40->timer = 0;
             self->unk_40->state++;
         }
@@ -162,8 +162,8 @@ void func_ov009_02206e30(Ov009ActVt_022178f0 *self) {
         e = func_02065f88(0x325, &self->pos);
         e->v34(0, (u16)(self->rot[1] + 0x8000), 0);
         e->v14(0x1ccd, 0x1ccd, 0x1ccd);
-        a = func_02040498(0x4000);
-        b = func_02040498(0x4000);
+        a = Rand_UpTo(0x4000);
+        b = Rand_UpTo(0x4000);
         e->v24(-0x3800, a + 0x2800, -0x3000 - b);
     }
 }
@@ -179,9 +179,9 @@ void func_ov009_0220703c(Ov009ActVt_022178f0 *self) {
     if (st->timer == 0) {
         self->unk_40->timer = 0x4b;
         *t = self->unk_f0;
-        t->x += func_02040528(0x8cd);
-        t->y += func_02040528(0x8cd);
-        t->z += func_02040528(0x8cd);
+        t->x += Rand_PlusMinus(0x8cd);
+        t->y += Rand_PlusMinus(0x8cd);
+        t->z += Rand_PlusMinus(0x8cd);
     }
     d.x = t->x - self->pos.x;
     d.y = t->y - self->pos.y;
@@ -194,7 +194,7 @@ void func_ov009_0220703c(Ov009ActVt_022178f0 *self) {
     if (a != NULL && !func_ov000_021b4738(a)) {
         return;
     }
-    func_02049bb4(data_02097e4c, self->unk_10c);
+    SndMgr_StopSeqArc(data_02097e4c, self->unk_10c);
     self->unk_10c = -1;
 }
 
@@ -205,7 +205,7 @@ void func_ov009_02207164(Ov009ActVt_022178f0 *self) {
     Ov009Actor *o;
     Ov009V *e;
     u16 ang;
-    t = func_ov000_0218d240(self);
+    t = Actor_GetTarget(self);
     if (t == NULL) {
         return;
     }
@@ -216,13 +216,13 @@ void func_ov009_02207164(Ov009ActVt_022178f0 *self) {
     }
     if (p.z > self->pos.z) {
         self->unk_108 = 0;
-        ang = func_02040498(0xc00) - 0x200;
+        ang = Rand_UpTo(0xc00) - 0x200;
     } else {
         self->unk_108++;
         if (self->unk_108 >= 3) {
             self->unk_108 = 1;
         }
-        ang = -func_02040498(0xc00);
+        ang = -Rand_UpTo(0xc00);
     }
     VEC_Add(&self->pos, &data_ov009_02215f98[self->unk_108], &p);
     r.y = ang + (FX_Atan2(p.x - t->pos.x, p.z - t->pos.z) + 0x8000);
@@ -254,8 +254,8 @@ void func_ov009_02207314(Ov009ActVt_022178f0 *self) {
         self->unk_fc.y = y;
         self->unk_fc.x = x;
         self->unk_fc.z = z;
-        self->unk_fc.y -= func_02040498(0x2800) + 0x800;
-        self->unk_fc.z += func_02040498(0x1c00) + 0x800;
+        self->unk_fc.y -= Rand_UpTo(0x2800) + 0x800;
+        self->unk_fc.z += Rand_UpTo(0x1c00) + 0x800;
         if (self->unk_10a > 2) {
             self->unk_10a = 2;
         }
@@ -307,8 +307,8 @@ void func_ov009_02207314(Ov009ActVt_022178f0 *self) {
             s32 b;
             e->v34(0, (u16)(self->rot[1] + 0x8000), 0);
             e->v14(0x1ccd, 0x1ccd, 0x1ccd);
-            a = func_02040498(0x4000);
-            b = func_02040498(0x4000);
+            a = Rand_UpTo(0x4000);
+            b = Rand_UpTo(0x4000);
             e->v24(-0x3000, a + 0x1800, -0x1800 - b);
         }
         break;

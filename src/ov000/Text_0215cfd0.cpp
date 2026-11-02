@@ -20,7 +20,7 @@ char *func_0206ffa0(u16 id);
 char *func_0206ec48(u16 id);
 char *func_02062020(u16 id);
 void func_02040a98(char *buf, u16 id);
-char *func_0204c0e8(void *msg, s32 id);
+char *MsgRes_GetString(void *msg, s32 id);
 void *func_0203de84(u32 size, u32 align);
 void func_0203df0c(void *p);
 
@@ -55,15 +55,15 @@ char *func_ov000_0215cfd0(Text0215cfd0 *self) {
     case 0x2000:
         func_02040a98(buf, self->unk_88);
         STD_ConcatenateString(buf, data_ov000_021cac00);
-        STD_ConcatenateString(buf, func_0204c0e8(data_02149ef8, 0x3e));
+        STD_ConcatenateString(buf, MsgRes_GetString(data_02149ef8, 0x3e));
         break;
     case 0x4000:
-        STD_CopyString(buf, func_0204c0e8(data_02149ef8, 0x45));
+        STD_CopyString(buf, MsgRes_GetString(data_02149ef8, 0x45));
         func_02040a98(tmp, self->unk_88);
         STD_ConcatenateString(buf, data_ov000_021cac00);
         STD_ConcatenateString(buf, tmp);
         STD_ConcatenateString(buf, data_ov000_021cac00);
-        STD_ConcatenateString(buf, func_0204c0e8(data_02149ef8, 0x40));
+        STD_ConcatenateString(buf, MsgRes_GetString(data_02149ef8, 0x40));
         break;
     default:
         return NULL;

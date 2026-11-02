@@ -38,7 +38,7 @@ void func_ov000_02150cb0(Obj02150cb0 *self) {
             void *p = self->unk_54;
             if (p != NULL) {
                 func_ov000_02153fd8(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->unk_54 = NULL;
         }

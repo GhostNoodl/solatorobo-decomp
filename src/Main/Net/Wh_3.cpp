@@ -183,11 +183,11 @@ BOOL func_020469d4(WhMgr *wh, const void *data) {
     return TRUE;
 }
 
-void *func_02046a50(WhMgr *wh, u16 aid) {
+void *Wh_GetSharedData(WhMgr *wh, u16 aid) {
     return WM_GetSharedDataAddress(wh->dsInfo, wh->unk_18e0, aid);
 }
 
-void func_02046a6c(WhMgr *wh, u32 ggid) {
+void Wh_SetGgid(WhMgr *wh, u32 ggid) {
     wh->parentParam.ggid = ggid;
 }
 
@@ -203,7 +203,7 @@ u16 func_02046ab4(WhMgr *wh) {
     return wh->unk_30;
 }
 
-int func_02046abc(WhMgr *wh) {
+int Wh_GetError(WhMgr *wh) {
     return wh->errCode;
 }
 

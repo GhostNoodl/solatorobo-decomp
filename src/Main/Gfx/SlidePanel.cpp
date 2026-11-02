@@ -2,11 +2,11 @@
 
 extern "C" {
 
-u16 func_0205422c(void) {
+u16 Pad_GetCur(void) {
     return data_02097dc8->cur;
 }
 
-u16 func_02054240(void) {
+u16 Pad_GetRelease(void) {
     return data_02097dc8->release;
 }
 

@@ -43,23 +43,23 @@ typedef struct {
 extern "C" {
 
 extern ActorMgr *data_ov000_021ccd68;
-u16 func_0204bfa8(Cam021b3e90 *cam);
-Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
-u16 func_ov000_0218d8f4(Actor *self, void *target);
+u16 Camera_GetYaw(Cam021b3e90 *cam);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
+u16 Actor_YawToPos(Actor *self, void *target);
 u16 FX_Atan2(s32 y, s32 x);
 
 static inline u16 CamYaw(Cam021b3e90 *cam) {
     if (cam->unk_40 != 0) {
         return cam->yaw;
     }
-    return func_0204bfa8(cam);
+    return Camera_GetYaw(cam);
 }
 
 static inline Actor *FindActor021b3e90(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline u16 AngleTo(Robo021ca458 *self, Actor *other) {
@@ -148,7 +148,7 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
             if (t != NULL) {
                 u16 ang;
                 if (t->unk_44 != NULL) {
-                    ang = func_ov000_0218d8f4(self, t->unk_44);
+                    ang = Actor_YawToPos(self, t->unk_44);
                 } else {
                     ang = AngleTo(self, t);
                 }

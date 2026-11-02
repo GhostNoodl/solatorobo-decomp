@@ -134,7 +134,7 @@ void func_ov002_021e2690(void *self, u8 a, int b) {
         if (b == 0 && id == data_ov002_021ef058[FIELD(self, 0x40, u8)][i]) {
             continue;
         }
-        s = (s32)func_0204c0e8(res, id);
+        s = (s32)MsgRes_GetString(res, id);
         c = ((ov002_Caption021e2690 **)((u8 *)self + 0x14))[i];
         if (s != 0) {
             c->text = s;

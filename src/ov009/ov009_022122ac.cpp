@@ -4,9 +4,9 @@ extern "C" {
 
 extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd30;
-extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
-extern void func_ov000_0218d398(Ov009Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-extern void func_0203f9dc(void *mesh, const void *mtx);
+extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern void Actor_SendMsg(Ov009Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+extern void HitMesh_SetMtx(void *mesh, const void *mtx);
 extern void MI_Copy48B(const void *src, void *dst);
 extern void func_ov003_021d3008(Ov009Actor *self);
 extern u16 FX_Atan2(s32 y, s32 x);
@@ -22,7 +22,7 @@ struct Ov009AngSrc2 {
     u16 unk_44;
 };
 
-extern u16 func_0204bfa8(Ov009AngSrc2 *p);
+extern u16 Camera_GetYaw(Ov009AngSrc2 *p);
 extern void func_ov000_0216912c(void *o, u16 id, s32 a, u16 b, u16 c, const Ov009Vec *pos);
 
 struct Ov009EaBits {
@@ -40,7 +40,7 @@ static inline s32 Ov009_GetAng2(Ov009AngSrc2 *p) {
     if (p->unk_40 != 0) {
         return p->unk_44;
     }
-    return func_0204bfa8(p);
+    return Camera_GetYaw(p);
 }
 
 static inline void Ov009_Notify(u16 id, u16 b, u16 c, const Ov009Vec *pos) {
@@ -55,7 +55,7 @@ static inline Ov009Actor *Ov009_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline s32 Ov009_Mode(Ov009Actor *a) {
@@ -85,7 +85,7 @@ void func_ov009_022122ac(Ov009ActVt_02217a00 *self) {
     }
     func_ov003_021d3008(self);
     if (self->unk_58 != NULL) {
-        func_0203f9dc(self->unk_58, &self->unk_f8);
+        HitMesh_SetMtx(self->unk_58, &self->unk_f8);
     }
     a = Ov009_FindActor(self->unk_f0);
     if (self->unk_40->unk_13 != 0x15 && (a == NULL || Ov009_Mode(a) == 9)) {
@@ -103,9 +103,9 @@ void func_ov009_022122ac(Ov009ActVt_02217a00 *self) {
     msg.rot[1] = self->rot[1];
     msg.rot[2] = self->rot[2];
     msg.unk_14 = 0;
-    func_ov000_0218d398(a, self->id, 7, TRUE, 0x18, &msg);
+    Actor_SendMsg(a, self->id, 7, TRUE, 0x18, &msg);
     MI_Copy48B(&self->unk_f8, mtx);
-    func_ov000_0218d398(a, self->id, 8, TRUE, 0x30, mtx);
+    Actor_SendMsg(a, self->id, 8, TRUE, 0x30, mtx);
 }
 
 }

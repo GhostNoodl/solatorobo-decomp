@@ -48,7 +48,7 @@ extern LangTbl2 data_0214b160;
 extern const u32 data_0208b318[];
 extern const char *data_0208ccb0;
 extern const char *data_0208cca4;
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void func_0206e900(char *dst, const char *src);
 
 static inline void *LangTbl_Find(void **data, const char *name) {
@@ -65,7 +65,7 @@ static inline void *LangTbl_Find(void **data, const char *name) {
 }
 
 static inline LangRes2 *LangRes2_New(void) {
-    LangRes2 *res = (LangRes2 *)func_0203dd9c(sizeof(LangRes2));
+    LangRes2 *res = (LangRes2 *)Heap_Alloc(sizeof(LangRes2));
     if (res != NULL) {
         *(const u32 **)res = data_0208b318;
         res->Clear();

@@ -850,7 +850,7 @@ BOOL func_02064e98(EffectGroup *g) {
 
     if (g->name[0] != 0) {
         file = func_02034b98(g->arc, g->name);
-        setup = (EffectSetup *)func_0203dd9c(0x28);
+        setup = (EffectSetup *)Heap_Alloc(0x28);
         if (setup != NULL) {
             *(u32 **)setup = data_0208c1d8;
         }
@@ -911,10 +911,10 @@ void func_02065060(EffectObj *obj, s32 param) {
     obj->unk_d4 = param;
 }
 
-EffectSetup *func_02065068(EffectSetup *setup) {
+EffectSetup *EffectSetup_DtorDelete(EffectSetup *setup) {
     *(u32 **)setup = data_0208c1d8;
     func_02068540(setup);
-    func_0203de1c(setup);
+    Heap_Free(setup);
     return setup;
 }
 
@@ -1026,7 +1026,7 @@ void func_02065480(EffectGroup *g, s32 param) {
     }
 }
 
-extern void func_0203db10(void *task);
+extern void PauseNode_Init(void *task);
 extern void *func_02043548(EffectCamera *camera);
 extern void MTX_Identity44_(void *mtx);
 
@@ -1051,9 +1051,9 @@ void func_020654b8(void) {
     if (data_0214a420 != NULL) {
         return;
     }
-    m = (EffectMgr *)func_0203dd9c(sizeof(EffectMgr));
+    m = (EffectMgr *)Heap_Alloc(sizeof(EffectMgr));
     if (m != NULL) {
-        func_0203db10(m);
+        PauseNode_Init(m);
         func_02043548(&m->camera);
         EffectMgr_Reset(m);
     }
@@ -1086,7 +1086,7 @@ void func_02065534(void) {
         EffectMgr *m = data_0214a420;
         if (m != NULL) {
             EffectMgr_Dtor(m);
-            func_0203de1c(m);
+            Heap_Free(m);
         }
         data_0214a420 = NULL;
     }
@@ -1106,10 +1106,10 @@ void func_020656b4(EffectMgr *m) {
 
 void func_02063bd0(EffectObj *obj);
 
-EffectObj *func_02065720(EffectObj *obj) {
+EffectObj *EffectObj_DtorDelete(EffectObj *obj) {
     *(u32 **)obj = data_0208c2e4;
     func_02063bd0(obj);
-    func_0203de1c(obj);
+    Heap_Free(obj);
     return obj;
 }
 
@@ -1245,7 +1245,7 @@ BOOL func_020659c4(EffectMgr *m) {
     return ret;
 }
 
-extern BOOL func_0203dbb0(void *task, s32 arg);
+extern BOOL PauseNode_IsUpdatePaused(void *task, s32 arg);
 
 void func_02065ac0(EffectMgr *m) {
     EffectObj *o;
@@ -1259,7 +1259,7 @@ void func_02065ac0(EffectMgr *m) {
     case 1:
         m->state = 3;
     case 3:
-        if (func_0203dbb0(m, 1)) {
+        if (PauseNode_IsUpdatePaused(m, 1)) {
             return;
         }
         for (o = m->head; o != NULL; o = next) {
@@ -1284,11 +1284,11 @@ typedef struct EffectMtx33 {
     s32 m[9];
 } EffectMtx33;
 
-extern BOOL func_0203dc9c(void *node, BOOL recurse);
+extern BOOL PauseNode_IsDrawPaused(void *node, BOOL recurse);
 extern u8 data_020928d8[];
 extern u8 data_020928e4[];
 extern void MTX_LookAt(const EffectVec *camPos, const EffectVec *camUp, const EffectVec *target, void *mtx);
-extern int func_02043d60(void *st, int n);
+extern int Gfx3DState_TakePolyIds(void *st, int n);
 
 static inline void Effect_GlbLookAt(const EffectVec *camPos, const EffectVec *camUp, const EffectVec *target) {
     NNS_G3dGlb.camPos = *camPos;
@@ -1321,7 +1321,7 @@ void func_02065b84(EffectMgr *m) {
     u8 mask;
     s32 *cam;
     u32 n;
-    if (!func_0203dc9c(m, TRUE) && m->state == 3) {
+    if (!PauseNode_IsDrawPaused(m, TRUE) && m->state == 3) {
         data_0214a41c = data_02097d48->unk_8b0[1];
         data_0214a41d = 0;
     } else {
@@ -1376,7 +1376,7 @@ void func_02065b84(EffectMgr *m) {
         n = 0x10;
         data_0214a41d = n;
     }
-    func_02043d60(data_02097d48->unk_8b0, (u8)n);
+    Gfx3DState_TakePolyIds(data_02097d48->unk_8b0, (u8)n);
 }
 
 }

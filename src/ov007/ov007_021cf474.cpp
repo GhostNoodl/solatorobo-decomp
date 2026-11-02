@@ -149,7 +149,7 @@ void func_ov007_021cf474(Ov007Scene *s) {
         if (alpha != 0) {
             if (i == s->unk_64) {
                 s->unk_2c->flags |= 0x80000;
-                s->unk_2c->attr.pid = func_02043d48(st);
+                s->unk_2c->attr.pid = Gfx3DState_NextPolyId(st);
                 s->unk_2c->attr.alpha = alpha;
                 Ov007_SetOfs(s->unk_2c, off, y);
                 s->unk_2c->unk_150 = -0x2ccd;
@@ -158,7 +158,7 @@ void func_ov007_021cf474(Ov007Scene *s) {
             {
                 s32 w = s->unk_5c[i]->unk_44;
                 s->unk_5c[i]->v14();
-                s->unk_5c[i]->attr.pid = func_02043d48(st);
+                s->unk_5c[i]->attr.pid = Gfx3DState_NextPolyId(st);
                 s->unk_5c[i]->attr.alpha = alpha;
                 s->unk_5c[i]->v20(0x80 - (w >> 1) + (off >> 12), x);
                 s->unk_5c[i]->v90();

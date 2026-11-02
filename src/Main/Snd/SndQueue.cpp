@@ -158,7 +158,7 @@ BOOL func_0204a118(SndMgr *mgr, s32 id);
 
 void func_0204a160(SndMgr *mgr);
 
-void func_0204a1c4(SndMgr *mgr);
+void SndMgr_ResumeAll(SndMgr *mgr);
 
 void func_0204a20c(SndMgr *mgr, s32 strmNo);
 
@@ -352,7 +352,7 @@ void func_0204a160(SndMgr *mgr) {
     }
 }
 
-void func_0204a1c4(SndMgr *mgr) {
+void SndMgr_ResumeAll(SndMgr *mgr) {
     s32 i;
     for (i = 0; i < 5; i++) {
         if (mgr->unk_70[i] != 0) {
@@ -583,7 +583,7 @@ extern "C" {
 #define SND_QUEUE data_02097e48
 #define SND_MGR data_02097e4c
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_0203dec8(u32 size, int align);
 extern SndMgr *func_020492e0(SndMgr *mgr);
 extern void func_02049344(SndMgr *mgr);
@@ -594,7 +594,7 @@ void func_0204a87c(void) {
     if (SND_MGR == NULL) {
         SndMgr *mgr;
         data_02097dd0->cur = data_02097dd0->unk_04;
-        mgr = (SndMgr *)func_0203dd9c(sizeof(SndMgr));
+        mgr = (SndMgr *)Heap_Alloc(sizeof(SndMgr));
         if (mgr != NULL) {
             mgr = func_020492e0(mgr);
         }
@@ -633,11 +633,11 @@ void func_0204a924(SndQueue *queue);
 
 void func_0204aa10(SndQueue *queue);
 
-void func_0204aa90(SndQueue *queue);
+void SndQueue_Pop(SndQueue *queue);
 
 void func_0204aab0(SndQueue *queue, u16 value);
 
-u16 func_0204aac4(SndQueue *queue);
+u16 SndQueue_Peek(SndQueue *queue);
 
 void func_0204aad0(SndQueue *queue);
 
@@ -665,7 +665,7 @@ namespace m_0204a924 {
 extern "C" {
 
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void *func_0203dec8(u32 size, int align);
 extern void *func_020492e0(SndMgr *mgr);
 extern void func_02049344(SndMgr *mgr);
@@ -717,7 +717,7 @@ void func_0204aa10(SndQueue *queue) {
     SndQueue_ResetNodes(queue);
 }
 
-void func_0204aa90(SndQueue *queue) {
+void SndQueue_Pop(SndQueue *queue) {
     queue->cur->value = 0xffff;
     queue->cur = queue->cur->next;
 }
@@ -727,7 +727,7 @@ void func_0204aab0(SndQueue *queue, u16 value) {
     queue->cur->value = value;
 }
 
-u16 func_0204aac4(SndQueue *queue) {
+u16 SndQueue_Peek(SndQueue *queue) {
     return queue->cur->value;
 }
 

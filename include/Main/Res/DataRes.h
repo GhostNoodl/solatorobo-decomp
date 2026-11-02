@@ -85,8 +85,8 @@ typedef struct SaveRef {
 extern "C" {
 
 extern const u32 data_0208b318[];
-extern void *func_0203dd9c(u32 size);
-extern void func_0203de1c(void *ptr);
+extern void *Heap_Alloc(u32 size);
+extern void Heap_Free(void *ptr);
 extern void func_0206e900(char *dst, const char *src);
 
 static inline SaveBlock *DataRes_Block(DataRes *res, u32 idx) {

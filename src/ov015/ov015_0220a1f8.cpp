@@ -3,14 +3,14 @@
 extern "C" {
 
 s32 FX_Div(s32 a, s32 b);
-s32 func_02049130(s32 t, s32 a, s32 b);
+s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 void VEC_Normalize(void *src, void *dst);
 void func_ov015_0220afcc(Ov015FishState2c *self);
 void func_ov015_0220b1b8(Ov015FishState2c *self);
 void func_ov015_0220ac40(Ov015FishState2c *self, Ov015Fish *p);
 void func_ov015_0220ad68(Ov015FishState2c *self, Ov015Fish *p);
 BOOL func_ov015_0220ae90(Ov015FishState2c *self);
-s32 func_02040498(s32 max);
+s32 Rand_UpTo(s32 max);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 extern void *data_02097e4c;
 extern u8 data_ov015_02212f20[];
@@ -21,7 +21,7 @@ static inline s32 Ov015_FxMul64(s32 a, s64 b) {
 }
 
 static inline Ov015V *Ov015_NewTask18(void) {
-    Ov015FishState18 *t = (Ov015FishState18 *)func_0203dd9c(0x18);
+    Ov015FishState18 *t = (Ov015FishState18 *)Heap_Alloc(0x18);
     if (t != NULL) {
         SET_VT(t, data_ov015_02212f20);
         t->unk_04 = 0;
@@ -34,7 +34,7 @@ static inline Ov015V *Ov015_NewTask18(void) {
 }
 
 static inline Ov015V *Ov015_NewTask1c(void) {
-    Ov015FishState1c *t = (Ov015FishState1c *)func_0203dd9c(0x1c);
+    Ov015FishState1c *t = (Ov015FishState1c *)Heap_Alloc(0x1c);
     if (t != NULL) {
         SET_VT(t, data_ov015_02212f04);
         t->unk_04 = 0;
@@ -53,7 +53,7 @@ static inline void Ov015_Sounds(void) {
 
 static inline s32 Ov015_Speed(Ov015FishState2c *self) {
     s32 b = Ov015_FxMul64((self->unk_20)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
-    return func_02049130(Ov015_FxMul(self->unk_18, self->unk_18), b / 5, b);
+    return Interp_SinLerp(Ov015_FxMul(self->unk_18, self->unk_18), b / 5, b);
 }
 
 static inline s32 Ov015_Wait(Ov015FishState2c *self) {
@@ -73,7 +73,7 @@ static inline s32 Ov015_Wait(Ov015FishState2c *self) {
     if (b < 0) {
         b = 0;
     }
-    n = (s16)((b + func_02040498(a - b)) >> 12);
+    n = (s16)((b + Rand_UpTo(a - b)) >> 12);
     q = self->unk_20;
     in = FALSE;
     inZ = FALSE;
@@ -125,7 +125,7 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
     switch (self->unk_04) {
     case 0:
         if (self->unk_06 <= 0) {
-            self->unk_04 = func_02040498(1) != 0 ? 5 : 6;
+            self->unk_04 = Rand_UpTo(1) != 0 ? 5 : 6;
             self->unk_06 = 0x1e;
         }
         break;
@@ -212,7 +212,7 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
             }
         } else {
             Ov015Fish *q = self->unk_20;
-            if (q->unk_c0.unk_18 != 0 && func_02040498(0x1000) < q->unk_c0.unk_18 << 4) {
+            if (q->unk_c0.unk_18 != 0 && Rand_UpTo(0x1000) < q->unk_c0.unk_18 << 4) {
                 spawn = TRUE;
             }
         }
@@ -251,7 +251,7 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
             }
         } else {
             Ov015Fish *q = self->unk_20;
-            if (q->unk_c0.unk_18 != 0 && func_02040498(0x1000) < q->unk_c0.unk_18 << 4) {
+            if (q->unk_c0.unk_18 != 0 && Rand_UpTo(0x1000) < q->unk_c0.unk_18 << 4) {
                 spawn = TRUE;
             }
         }

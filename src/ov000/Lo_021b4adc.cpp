@@ -50,7 +50,7 @@ Info021b4adc *func_0206fef8(u16 id);
 Flags021b4adc *func_020705fc(u16 id);
 void *func_0207011c(u16 id);
 char *func_0207005c(u16 id, s32 idx);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 Obj021b4adc *func_ov000_0218e9c4(void *p);
 St021b4adc *func_ov000_021919c8(void *p);
 void func_ov000_0218f074(Obj021b4adc *o, void *a, BOOL b, BOOL c, s32 d, BOOL e);
@@ -71,7 +71,7 @@ void func_ov000_021b4adc(Self021b4adc *self) {
     info = func_0206fef8(self->id);
     self->flags = func_020705fc(self->id);
     res = func_0207011c(self->id);
-    p = func_0203dd9c(0x138);
+    p = Heap_Alloc(0x138);
     if (p != NULL) {
         p = func_ov000_0218e9c4(p);
     }
@@ -94,7 +94,7 @@ void func_ov000_021b4adc(Self021b4adc *self) {
     if (info->b12 == 0) {
         return;
     }
-    p = func_0203dd9c(0x1c);
+    p = Heap_Alloc(0x1c);
     if (p != NULL) {
         p = func_ov000_021919c8(p);
     }

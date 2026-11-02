@@ -7,8 +7,8 @@
 typedef void (*ConstructorDestructor)(void *);
 
 extern "C" {
-void *func_0203dddc(u32 size); // operator new[]
-void func_0203de50(void *p);   // operator delete[]
+void *Heap_AllocArray(u32 size); // operator new[]
+void Heap_FreeArray(void *p);   // operator delete[]
 void _ZSt9terminatev(void);
 
 static void __destroy_partial_array(char *start, char *end, u32 size, ConstructorDestructor dtor) {
@@ -23,7 +23,7 @@ static void __destroy_partial_array(char *start, char *end, u32 size, Constructo
 }
 
 void *__cxa_vec_new(u32 count, u32 size, u32 padding, ConstructorDestructor ctor, ConstructorDestructor dtor) {
-    char *mem = (char *)func_0203dddc(count * size + padding);
+    char *mem = (char *)Heap_AllocArray(count * size + padding);
     char *p;
     if (mem == NULL) {
         return NULL;
@@ -46,7 +46,7 @@ void *__cxa_vec_new(u32 count, u32 size, u32 padding, ConstructorDestructor ctor
             if (dtor != NULL) {
                 __destroy_partial_array(mem + padding, p, size, dtor);
             }
-            func_0203de50(mem);
+            Heap_FreeArray(mem);
             throw;
         }
     }
@@ -124,6 +124,6 @@ void __cxa_vec_delete(void *array, u32 size, u32 padding, ConstructorDestructor 
     if (dtor != NULL) {
         __cxa_vec_dtor(array, ((u32 *)array)[-1], size, dtor);
     }
-    func_0203de50((char *)array - padding);
+    Heap_FreeArray((char *)array - padding);
 }
 }

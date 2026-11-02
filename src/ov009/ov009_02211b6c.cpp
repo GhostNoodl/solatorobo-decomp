@@ -7,8 +7,8 @@ extern u8 data_ov009_022179b4[];
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void VEC_Normalize(const Ov009Vec *in, Ov009Vec *out);
 extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
-extern void func_ov000_0218d918(Ov009Actor *self, const Ov009Vec *v, s32 a);
-extern void func_ov000_0218dbe0(Ov009Obj *self, s32 a);
+extern void Actor_TurnToPos(Ov009Actor *self, const Ov009Vec *v, s32 a);
+extern void Actor_Move(Ov009Obj *self, s32 a);
 extern void func_ov000_021911c8(void *m, s32 a);
 extern void func_ov003_021d6954(Ov009Actor *self, u8 a);
 extern void func_020627a0(u16 kind, u16 id);
@@ -38,7 +38,7 @@ void func_ov009_02211b6c(Ov009ActVt_02217aac *self) {
         d.z = self->pos.z - tz;
         VEC_Normalize(&d, &d);
         VEC_Add(&d, &self->pos, &d);
-        func_ov000_0218d918(self, &d, 0x400);
+        Actor_TurnToPos(self, &d, 0x400);
         st = self->unk_40;
         st->timer++;
         if (st->timer > 10) {
@@ -53,7 +53,7 @@ void func_ov009_02211b6c(Ov009ActVt_02217aac *self) {
         break;
     }
     case 2:
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         st = self->unk_40;
         st->timer++;
         if (st->timer > 0x3c) {
@@ -63,7 +63,7 @@ void func_ov009_02211b6c(Ov009ActVt_02217aac *self) {
     case 3: {
         u8 h;
         u8 a;
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         h = self->unk_40->timer >> 1;
         if (h > 0x1d) {
             a = 2;

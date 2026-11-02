@@ -22,7 +22,7 @@ void func_ov012_02207a38(Ov012ActEx_02207018 *self) {
 extern "C" {
 void *Ov012ActExVt_0220b150_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 }
@@ -39,7 +39,7 @@ void *func_ov012_02207b24(void *self) {
     func_ov000_0218fee4((u8 *)self + 0x210);
     func_ov000_0218ea20((u8 *)self + 0xd8);
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 }

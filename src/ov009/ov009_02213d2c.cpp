@@ -6,18 +6,18 @@ extern void *data_02097e4c;
 extern void *data_ov000_021ccd68;
 extern u8 data_ov009_022179f1[];
 extern u8 data_ov009_022179b4[];
-extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern void *func_ov000_02191318(Ov009Sub38 *m, s32 a);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
-extern void func_ov000_0218ddd4(Ov009Actor *self, Ov009Vec *v, s32 a);
-extern s32 func_02040498(s32 max);
+extern void Actor_MoveToPos(Ov009Actor *self, Ov009Vec *v, s32 a);
+extern s32 Rand_UpTo(s32 max);
 
 static inline Ov009Actor *Ov009_FindActor3(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 void func_ov009_02213d2c(Ov009ActVt_02217cb0 *self) {
@@ -65,7 +65,7 @@ void func_ov009_02213d2c(Ov009ActVt_02217cb0 *self) {
         self->unk_f0.x = t->pos.x;
         self->unk_f0.y = t->pos.y;
         self->unk_f0.z = t->pos.z;
-        func_ov000_0218ddd4(self, &self->unk_f0, -0xcd);
+        Actor_MoveToPos(self, &self->unk_f0, -0xcd);
         self->unk_9c = self->unk_b0->unk_00 << 1;
         if (self->unk_48 != NULL) {
             func_ov000_021987b8(self->unk_48, 1, 0, 0);
@@ -78,7 +78,7 @@ void func_ov009_02213d2c(Ov009ActVt_02217cb0 *self) {
             func_ov000_02190cb0(self->unk_38, data_ov009_022179b4, 0x1000, 0);
             func_ov000_021915a0(self->unk_38);
             self->unk_40->state = 0x15;
-            self->unk_40->timer = func_02040498(0xf) + 0x32;
+            self->unk_40->timer = Rand_UpTo(0xf) + 0x32;
         }
         break;
     case 0x15:

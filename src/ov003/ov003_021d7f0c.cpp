@@ -36,10 +36,10 @@ extern "C" {
 extern s32 VEC_Distance(Ov003Vec *a, Ov003Vec *b);
 extern void VEC_MultAdd(s32 scale, Ov003Vec *dir, Ov003Vec *src, Ov003Vec *dst);
 extern void VEC_Normalize(Ov003Vec *src, Ov003Vec *dst);
-extern int func_02040528(s32 max);
+extern int Rand_PlusMinus(s32 max);
 extern s32 func_0200b184(s32 a, s32 b);
 extern u32 data_ov003_021f7d10;
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 
 class Ov003TickerSet {
 public:
@@ -103,7 +103,7 @@ Ov003TickerSet *Ov003Vt_021f7d10_DtorDelete(Ov003TickerSet *self) {
     Ov003Ticker_Release(&self->tickers[2]);
     Ov003Ticker_Release(&self->tickers[1]);
     Ov003Ticker_Release(&self->tickers[0]);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -148,7 +148,7 @@ static inline void Ov003Ticker_Update(Ov003Ticker *t) {
             if (due) {
                 t->timer = 0;
                 t->cur = t->next;
-                t->next = func_02040528(0x1000);
+                t->next = Rand_PlusMinus(0x1000);
             } else {
                 t->timer++;
             }
@@ -182,7 +182,7 @@ void func_ov003_021d82b0(Ov003TickerSet *self) {
                 if (t->interval <= t->timer) {
                     t->timer = 0;
                     t->cur = t->next;
-                    t->next = func_02040528(0x1000);
+                    t->next = Rand_PlusMinus(0x1000);
                 } else {
                     t->timer++;
                 }

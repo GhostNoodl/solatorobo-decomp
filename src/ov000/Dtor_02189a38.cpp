@@ -32,7 +32,7 @@ typedef struct {
     u8 unk_da;
 } Obj02189a74;
 
-VObj *func_ov000_02189a38(VObj *self) {
+VObj *Ov000Vt_021cc158_Dtor(VObj *self) {
     VOBJ_SET_VTABLE(self, data_0208bf54);
     func_0205a6e8(self);
     VOBJ_SET_VTABLE(self, data_0208b318);
@@ -40,7 +40,7 @@ VObj *func_ov000_02189a38(VObj *self) {
     return self;
 }
 
-Obj02189a74 *func_ov000_02189a74(Obj02189a74 *self) {
+Obj02189a74 *Ov000Vt_021cc3a0_Ctor(Obj02189a74 *self) {
     VecFx32 v;
     func_0204b2c0(self);
     self->vtable = data_ov000_021cc3a0;

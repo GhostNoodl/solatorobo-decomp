@@ -95,10 +95,10 @@ extern u32 data_ov003_021f7cf4;
 extern u32 data_ov003_021f7cd8;
 extern s16 func_ov003_021d7e58(Ov003Ticker *t);
 extern void VEC_MultAdd(s32 scale, const Ov003Vec *dir, const Ov003Vec *src, Ov003Vec *dst);
-extern void func_0203de1c(void *p);
-extern void *func_0203dd9c(u32 size);
+extern void Heap_Free(void *p);
+extern void *Heap_Alloc(u32 size);
 extern void *func_ov000_02198328(void *p);
-extern s32 func_02040528(s32 max);
+extern s32 Rand_PlusMinus(s32 max);
 
 static inline void Ov003Ticker_Reset(Ov003Ticker *t) {
     if (t->active) {
@@ -120,7 +120,7 @@ static inline void Ov003Ticker_Start(Ov003Ticker *t, s16 count, s16 interval, bo
     t->b2 = b2;
     t->count = count;
     t->interval = interval;
-    t->cur = func_02040528(0x1000);
+    t->cur = Rand_PlusMinus(0x1000);
     t->next = t->cur;
 }
 

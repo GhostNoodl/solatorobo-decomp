@@ -33,25 +33,25 @@ void func_ov002_021d7ed8(void *self) {
     u32 saved;
     HEAP_PUSH(saved);
     if (FIELD(self, 0x80, void *) != NULL) {
-        func_0203de1c(FIELD(self, 0x80, void *));
+        Heap_Free(FIELD(self, 0x80, void *));
         FIELD(self, 0x80, void *) = NULL;
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     if (FIELD(self, 0x88, void *) != NULL) {
-        func_0203de1c(FIELD(self, 0x88, void *));
+        Heap_Free(FIELD(self, 0x88, void *));
         FIELD(self, 0x88, void *) = NULL;
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     if (FIELD(self, 0x8c, void *) != NULL) {
-        func_0203de1c(FIELD(self, 0x8c, void *));
+        Heap_Free(FIELD(self, 0x8c, void *));
         FIELD(self, 0x8c, void *) = NULL;
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     if (FIELD(self, 0x90, void *) != NULL) {
-        func_0203de1c(FIELD(self, 0x90, void *));
+        Heap_Free(FIELD(self, 0x90, void *));
         FIELD(self, 0x90, void *) = NULL;
     }
     HEAP_POP(saved);

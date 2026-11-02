@@ -399,8 +399,8 @@ struct Ov007RankA {
 
 extern "C" {
 extern Ov007Heap *data_02097dd0;
-void *func_0203dd9c(u32 size);
-void func_0203de1c(void *p);
+void *Heap_Alloc(u32 size);
+void Heap_Free(void *p);
 }
 
 #define OV007_FREE_V(field, slot)                       \
@@ -425,7 +425,7 @@ void func_0203de1c(void *p);
             void *p_ = (field);                         \
             if (p_ != NULL) {                           \
                 dtor(p_);                               \
-                func_0203de1c(p_);                      \
+                Heap_Free(p_);                      \
             }                                           \
             (field) = NULL;                             \
         }                                               \
@@ -441,7 +441,7 @@ void func_0203de1c(void *p);
             if (p_ != NULL) {                           \
                 func_02041558(p_);                      \
                 func_02041278(p_->unk_88);         \
-                func_0203de1c(p_);                      \
+                Heap_Free(p_);                      \
             }                                           \
             (field) = NULL;                             \
         }                                               \
@@ -508,7 +508,7 @@ void func_0203c9e8(int a, int b);
 void func_0203cc58(int a, int b, int c);
 void func_0203cb78(s32 a, int b, int c);
 BOOL func_ov000_02189068(void *p);
-s32 func_0204c0e8(void *p, s32 id);
+s32 MsgRes_GetString(void *p, s32 id);
 void func_ov000_0215c1bc(void *p, s32 a, s32 b);
 }
 
@@ -525,7 +525,7 @@ void func_ov000_0215c1bc(void *p, s32 a, s32 b);
         void *p_ = (field);                             \
         if (p_ != NULL) {                               \
             dtor(p_);                                   \
-            func_0203de1c(p_);                          \
+            Heap_Free(p_);                          \
         }                                               \
         (field) = NULL;                                 \
     }
@@ -535,7 +535,7 @@ void func_ov000_0215c1bc(void *p, s32 a, s32 b);
         if (p_ != NULL) {                               \
             func_02041558(p_);                          \
             func_02041278(p_->unk_88);             \
-            func_0203de1c(p_);                          \
+            Heap_Free(p_);                          \
         }                                               \
         (field) = NULL;                                 \
     }
@@ -657,7 +657,7 @@ static inline BOOL Ov007_Busy(Ov007Player *p) {
 }
 
 static inline Ov007Player *Ov007_NewPlayer(Ov007Scene *s, s32 id) {
-    Ov007Player *p = (Ov007Player *)func_0203dd9c(0xe8);
+    Ov007Player *p = (Ov007Player *)Heap_Alloc(0xe8);
     if (p != NULL) {
         OV007_SET_VT(p, &data_ov000_021cac60);
         p->v28();
@@ -673,7 +673,7 @@ static inline Ov007Player *Ov007_NewPlayer(Ov007Scene *s, s32 id) {
     s->unk_68->unk_0c |= 0x20000;
     s->unk_68->unk_1c = 4;
     s->unk_68->v08();
-    func_ov000_0215c1bc(s->unk_68, 0x8000, func_0204c0e8(data_02149ef8, id));
+    func_ov000_0215c1bc(s->unk_68, 0x8000, MsgRes_GetString(data_02149ef8, id));
     s->unk_68->unk_68 = -0x299a;
     s->unk_68->v70();
     return p;
@@ -686,7 +686,7 @@ static inline void Ov007_FreePage(Ov007Scene *s) {
 }
 
 extern "C" {
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void func_ov007_021cdff0(Ov007Rs *rs);
 void func_ov007_021cd58c(Ov007RankA *task, Ov007Scene *s);
 }

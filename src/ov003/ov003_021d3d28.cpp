@@ -131,20 +131,20 @@ extern "C" {
 extern void *data_02097e4c;
 extern const char data_ov003_021f7a85[];
 extern const char data_ov003_021f7a8b[];
-void func_0203f324(Ov003HtCtl *ctl);
+void HitSphere_Link(Ov003HtCtl *ctl);
 void func_0203f364(Ov003HtCtl *ctl);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 Ov003HtFx *func_02065f88(s32 id, void *pos);
 void func_ov000_0218996c(u8 a, u8 b);
-void func_ov000_0218d398(Ov003Ht *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-void func_ov000_0218dbe0(Ov003Ht *self, s32 a);
+void Actor_SendMsg(Ov003Ht *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_Move(Ov003Ht *self, s32 a);
 BOOL func_ov000_02190cb0(void *model, const char *name, s16 blend, u8 force);
 BOOL func_ov000_02191120(void *model);
 void func_ov000_021915a0(void *model);
 BOOL func_ov000_02198360(Ov003HtWork *w, s32 a, s32 b);
 void func_ov000_021987b8(Ov003HtCtl *ctl, s32 a, s32 b, s32 c);
 u16 func_ov000_02198da8(Ov003HtCtl *ctl, u16 angle);
-Ov003HtActor *func_ov000_02199ba0(Ov003HtTarget *t);
+Ov003HtActor *Target_Get(Ov003HtTarget *t);
 u16 func_ov000_02199e94(Ov003HtTarget *t);
 u8 func_ov000_02199f08(Ov003HtTarget *t);
 void func_ov000_02199f48(Ov003HtCounter *t, Ov003HtActor *a);
@@ -164,7 +164,7 @@ void func_ov003_021d3d28(Ov003Ht *self) {
         Ov003HtS44 *s;
         ctl->unk_9a_0 = 1;
         ctl->unk_9a_3 = 1;
-        func_0203f324(ctl);
+        HitSphere_Link(ctl);
         s = self->unk_44;
         if (s != NULL) {
             s->unk_22_0 = 1;
@@ -182,7 +182,7 @@ void func_ov003_021d3d28(Ov003Ht *self) {
         if (self->unk_4c == NULL) {
             break;
         }
-        tgt = func_ov000_02199ba0(self->unk_4c);
+        tgt = Target_Get(self->unk_4c);
         if (tgt != NULL && self->unk_4c->unk_01 == 1) {
             Ov003HtCtl *ctl = self->ctl;
             if ((ctl->flags & 0x60000000) || ctl->unk_58 != 0) {
@@ -274,7 +274,7 @@ void func_ov003_021d3d28(Ov003Ht *self) {
                     if (hit && kind == 0x41) {
                         tgt = (Ov003HtActor *)self;
                     }
-                    func_ov000_0218d398(self, tgt->id, 9, 0, sizeof(msg), &msg);
+                    Actor_SendMsg(self, tgt->id, 9, 0, sizeof(msg), &msg);
                 } else {
                     Ov003HtS44 *s;
                     func_ov000_02199f48(self->unk_50, tgt);
@@ -365,7 +365,7 @@ void func_ov003_021d3d28(Ov003Ht *self) {
         Ov003HtCtl *other = NULL;
         BOOL restore;
         Ov003HtTarget *t;
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         if (self->ctl == NULL) {
             return;
         }
@@ -378,7 +378,7 @@ void func_ov003_021d3d28(Ov003Ht *self) {
                 r = 0xccd;
             }
             self->ctl->unk_44 = r;
-            a = func_ov000_02199ba0(self->unk_4c);
+            a = Target_Get(self->unk_4c);
             if (a != NULL && (other = a->ctl) != NULL && other->unk_9a_3) {
                 other->unk_9a_3 = 0;
                 func_0203f364(other);
@@ -388,7 +388,7 @@ void func_ov003_021d3d28(Ov003Ht *self) {
         func_ov000_021987b8(self->ctl, 1, 0, 0);
         if (restore) {
             other->unk_9a_3 = 1;
-            func_0203f324(other);
+            HitSphere_Link(other);
         }
     }
 }

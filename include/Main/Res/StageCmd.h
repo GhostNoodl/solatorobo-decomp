@@ -239,13 +239,13 @@ extern void func_ov000_021705dc(FieldActor *actor, s32 a, s32 b);
 extern void func_ov000_02172338(FieldPlayer *player, int a, s32 b, s32 c, s32 d);
 extern bool func_ov000_021705ec(FieldActor *actor);
 extern void func_ov000_0216da78(FieldActorState *st);
-extern void *func_0204c0e8(void *msg, u16 id);
+extern void *MsgRes_GetString(void *msg, u16 id);
 extern void func_ov000_02172390(FieldPlayer *player, s32 a, void *str);
 extern void func_ov000_02186158(FieldState *state, s32 a);
 extern void func_ov000_02186204(FieldState *state, s32 a);
 extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
-extern void *func_ov000_0218e6d0(void *mgr, u16 kind, u16 id);
+extern void *ActorMgr_FindKind(void *mgr, u16 kind, u16 id);
 extern void *func_ov000_0218bd9c(void *mgr, u16 id, u8 a);
 
 static inline BOOL Field_IsPlayerActing(void) {
@@ -289,7 +289,7 @@ static inline void *Stage_FindObj3D(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e6d0(data_ov000_021ccd68, kind, id);
+    return ActorMgr_FindKind(data_ov000_021ccd68, kind, id);
 }
 
 static inline void Stage_FindObj(u16 id, u16 b) {
@@ -334,15 +334,15 @@ typedef struct StageLight {
     /* 0x14 */ u8 state;
 } StageLight;
 
-extern void func_ov000_0218bc9c(void *mgr, void *obj, int a);
+extern void Group_RemoveNode(void *mgr, void *obj, int a);
 extern void *func_ov000_0218bddc(void *mgr, u16 id, u8 a);
-extern StageObj3D *func_ov000_0218e750(void *mgr, u16 kind, u16 id, StageVec *pos, s32 r);
+extern StageObj3D *ActorMgr_FindKindNear(void *mgr, u16 kind, u16 id, StageVec *pos, s32 r);
 extern void func_ov000_0218b60c(void *obj, u8 *color, StageVec *pos, s16 *rot);
 extern s32 FX_Div(s32 a, s32 b);
-extern StageObj3D *func_ov000_0218e640(void *mgr, u16 idx);
-extern StageLightObj *func_ov000_0218bd5c(void *mgr, u16 idx);
+extern StageObj3D *ActorMgr_GetActor(void *mgr, u16 idx);
+extern StageLightObj *Group_FindNode(void *mgr, u16 idx);
 extern void func_ov000_02198d28(void *p, StageVec *pos, u32 rot);
-extern void *func_ov000_0218e4cc(void *mgr, u16 kind);
+extern void *ActorMgr_GetGroup(void *mgr, u16 kind);
 extern void func_ov000_0218e044(void *p, u16 id, s32 m);
 extern void func_ov000_0218d46c(StageObj3D *o, u16 id, s32 m);
 
@@ -350,7 +350,7 @@ static inline StageObj3D *Stage_FindObj3DByIdx(u16 idx) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, idx);
+    return ActorMgr_GetActor(data_ov000_021ccd68, idx);
 }
 
 static inline StageObj3D *Stage_FindObj3DPtr(u16 id) {
@@ -358,7 +358,7 @@ static inline StageObj3D *Stage_FindObj3DPtr(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return (StageObj3D *)func_ov000_0218e6d0(data_ov000_021ccd68, kind, id);
+    return (StageObj3D *)ActorMgr_FindKind(data_ov000_021ccd68, kind, id);
 }
 
 static inline void *Stage_FindLight1(u16 id, u16 b) {

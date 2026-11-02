@@ -49,14 +49,14 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
     switch (self->unk_04) {
     case 0: {
         // One local for both allocations, as in the original.
-        u8 *o = (u8 *)func_0203dd9c(0x34);
+        u8 *o = (u8 *)Heap_Alloc(0x34);
         if (o != NULL) {
             SET_VT(o, data_ov015_0221292c);
             func_ov015_022120c0((Ov015Obj292c *)o);
         }
         self->unk_10 = (Ov015Obj292c *)o;
         func_ov015_02212180((Ov015Obj292c *)o);
-        o = (u8 *)func_0203dd9c(0x290);
+        o = (u8 *)Heap_Alloc(0x290);
         if (o != NULL) {
             SET_VT(o, data_ov015_022132e0);
             func_ov000_0218e9c4(&((Ov015Obj290 *)o)->unk_14);
@@ -92,7 +92,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
             Ov015Fish *obj;
             u8 *n;
             u32 saved;
-            m = (u8 *)func_0203dd9c(8);
+            m = (u8 *)Heap_Alloc(8);
             if (m != NULL) {
                 m = (u8 *)Ov015FishState08_Ctor((Ov015FishState08 *)m);
             }
@@ -212,7 +212,7 @@ void *Ov015Fish_DtorDelete(Ov015Fish *self) {
     func_ov000_0218fee4(&self->unk_244);
     func_ov000_0218ea20(&self->unk_10c);
     func_ov015_0220900c(&self->unk_c0);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -249,7 +249,7 @@ void func_ov015_021ff9e8(Ov015Obj30 *self) {
     cnt = FLD(s32, self->unk_24, 0xc);
     for (; n != NULL; n = FLD(u8 *, n, 0xc), i++) {
         Ov015Fish *obj = FLD(Ov015Fish *, n, 0x4);
-        u8 *m = (u8 *)func_0203dd9c(0x40);
+        u8 *m = (u8 *)Heap_Alloc(0x40);
         s32 q;
         if (m != NULL) m = (u8 *)Ov015FishState40_Ctor((Ov015FishState40 *)m);
         func_ov015_02209b80(obj, (s32)m, 5);

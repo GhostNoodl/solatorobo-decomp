@@ -73,8 +73,8 @@ typedef struct ActorMgr ActorMgr;
 extern "C" {
 
 extern ActorMgr *data_ov000_021ccd68;
-GroupActor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
-void func_0203de1c(void *p);
+GroupActor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
+void Heap_Free(void *p);
 void func_ov000_0218ab00(GroupNode *node);
 void func_ov000_0218ac98(GroupNode *node);
 void func_ov000_0218b4b4(GroupNode *node, s32 a, GroupActor *actor);
@@ -82,7 +82,7 @@ GroupActor *func_ov003_021f1420(const GroupActorDesc *desc);
 GroupActor *func_ov000_02192b24(const GroupActorDesc *desc);
 GroupActor *func_ov003_021cfab4(const GroupActorDesc *desc);
 GroupActor *func_ov000_021b4828(const GroupActorDesc *desc);
-void func_ov000_0218bc9c(Group *g, GroupNode *node, BOOL notify);
+void Group_RemoveNode(Group *g, GroupNode *node, BOOL notify);
 
 static inline Group *Group_Init(Group *g) {
     g->head = NULL;
@@ -98,14 +98,14 @@ Group *func_ov000_0218bb34(Group *g) {
     return Group_Init(g);
 }
 
-Group *func_ov000_0218bb58(Group *g) {
+Group *Group_Clear(Group *g) {
     while (g->head != NULL) {
-        func_ov000_0218bc9c(g, g->head, FALSE);
+        Group_RemoveNode(g, g->head, FALSE);
     }
     return Group_Init(g);
 }
 
-void func_ov000_0218bbb0(Group *g, GroupNode *node) {
+void Group_Add(Group *g, GroupNode *node) {
     GroupNode *tail = g->tail;
     BOOL done;
     if (tail != NULL) {
@@ -148,7 +148,7 @@ void func_ov000_0218bbb0(Group *g, GroupNode *node) {
     } while (!done);
 }
 
-void func_ov000_0218bc9c(Group *g, GroupNode *node, BOOL notify) {
+void Group_RemoveNode(Group *g, GroupNode *node, BOOL notify) {
     GroupNode *prev;
     GroupNode *next;
     s32 i;
@@ -156,7 +156,7 @@ void func_ov000_0218bc9c(Group *g, GroupNode *node, BOOL notify) {
         for (i = 0; i < node->count; i++) {
                 GroupEntry *e = node->entries;
                 if (e[i].actor != 0xffff) {
-                    GroupActor *actor = data_ov000_021ccd68 == NULL ? NULL : func_ov000_0218e640(data_ov000_021ccd68, e[i].actor);
+                    GroupActor *actor = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, e[i].actor);
                     if (actor != NULL) actor->vfunc_08();
                 }
         }
@@ -174,10 +174,10 @@ void func_ov000_0218bc9c(Group *g, GroupNode *node, BOOL notify) {
         g->tail = prev;
     }
     g->count--;
-    func_0203de1c(node);
+    Heap_Free(node);
 }
 
-GroupNode *func_ov000_0218bd5c(Group *g, u16 id) {
+GroupNode *Group_FindNode(Group *g, u16 id) {
     GroupNode *ret = NULL;
     GroupNode *n;
     if (id != 0xffff) {
@@ -258,7 +258,7 @@ void func_ov000_0218bed8(Group *g, s32 a, GroupActor *actor) {
     }
 }
 
-GroupActor *func_ov000_0218bf1c(Group *g, const GroupActorDesc *desc, const GroupVec *pos, const Rot3 *rot, u16 id) {
+GroupActor *Group_SpawnActor(Group *g, const GroupActorDesc *desc, const GroupVec *pos, const Rot3 *rot, u16 id) {
     GroupActor *actor = NULL;
     s32 i;
     switch ((u16)(desc->kind & 0xf000)) {

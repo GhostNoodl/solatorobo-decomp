@@ -23,7 +23,7 @@ BOOL func_ov012_02207cf0(Ov012Actor *self) {
     if (FLD(s16, self, 0xf0) >= 0 && !func_ov000_0218f110((u8 *)self + 0xf0)) {
         r = FALSE;
     }
-    if (r && !func_0204985c(data_02097e4c)) {
+    if (r && !SndMgr_IsLoadDone(data_02097e4c)) {
         r = FALSE;
     }
     return r;
@@ -194,7 +194,7 @@ void func_ov012_02207dac(Ov012Actor *self) {
         self->unk_40->flags |= 0x10000;
         FLD(u16, self, 0x228) = 0;
     } else if (dist < 0x5800) {
-        if (hp < 0x28 && !func_02040498(1)) {
+        if (hp < 0x28 && !Rand_UpTo(1)) {
             self->unk_40->flags |= 0x10000;
             FLD(u16, self, 0x228) = 0;
         } else {

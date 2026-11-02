@@ -22,7 +22,7 @@ void *func_ov000_02160e28(u8 *self, u16 *cmd, void *arr, u16 *count);
 
 #define LO_MODEL_NEW(out, NAME, ARC)                 \
     do {                                             \
-        u8 *m_ = (u8 *)func_0203dd9c(0x160);         \
+        u8 *m_ = (u8 *)Heap_Alloc(0x160);         \
         if (m_) {                                    \
             void *arc_;                              \
             void *name_;                             \

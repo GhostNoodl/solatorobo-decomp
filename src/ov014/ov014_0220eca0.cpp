@@ -10,7 +10,7 @@ extern u8 data_ov014_02217c6c[];
 extern void func_02065860(void *a, void *b);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_0219763c(void *self);
-extern Ov014Actor *func_ov000_02199ba0(void *p);
+extern Ov014Actor *Target_Get(void *p);
 extern Ov014Actor *func_ov000_0219bf90(void);
 extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s32 a, Ov014Actor **list);
 extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
@@ -18,18 +18,18 @@ extern s32 **func_ov000_02190a30(void *a, s32 b);
 extern s32 func_ov000_02191318(void *a, s32 b);
 extern s32 func_ov000_02191f18(void *a, void *b);
 extern s32 func_ov014_0220ec18(s16 *a, u8 *b);
-extern void *func_ov000_02194074(void *self);
+extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02194c08(void *self);
 extern void func_02049de8(void *a, s32 b);
-extern u8 func_02043d48(void *p);
+extern u8 Gfx3DState_NextPolyId(void *p);
 extern void func_ov000_02191920(void *a, s32 b, s32 c, s32 d);
 extern void func_ov000_02191618(void *p);
 extern void func_ov000_02191708(void *p);
 
 #pragma force_active on
 Ov014ActEx_0220eca0 *Ov014ActEx_0220eca0_Ctor(Ov014ActEx_0220eca0 *self) {
-    func_ov000_02194074(self);
+    ActorEx_Ctor(self);
     FLD(void *, self, 0) = data_ov014_02217aac;
     FLD(s16, self, 0xce) = 0;
     self->unk_d0 = 0x1000;
@@ -58,12 +58,12 @@ Ov014ActEx_0220eca0 *Ov014ActEx_0220eca0_DtorDelete(Ov014ActEx_0220eca0 *self) {
     FLD(void *, self, 0) = data_ov014_02217aac;
     func_02049de8(data_02097e4c, 0x38);
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
 void Ov014ActEx_0220eca0_Draw(Ov014ActEx_0220eca0 *self) {
-    self->unk_38->unk_c1 = func_02043d48(data_02097d48 + 0x8b0);
+    self->unk_38->unk_c1 = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
     func_ov000_02194c08(self);
 }
 

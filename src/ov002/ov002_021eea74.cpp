@@ -34,7 +34,7 @@ void func_ov002_021eea74(void *self) {
     func_02043d20(data_02097d48 + 0x8b0, 0);
     ov002_G3Vec(0x1b, 0x1000, 0x1000, 0x1000);
     ov002_G3Cmd1(0x2a, 0x20000000);
-    ov002_G3Cmd1(0x29, ((u32)func_02043d48(data_02097d48 + 0x8b0) << 24) | 0xd0 | (alpha << 16));
+    ov002_G3Cmd1(0x29, ((u32)Gfx3DState_NextPolyId(data_02097d48 + 0x8b0) << 24) | 0xd0 | (alpha << 16));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     NNS_G3dGeBufferOP_N(0x15, NULL, 0);
     ov002_G3Vec(0x1c, 0, 0, -0x333);

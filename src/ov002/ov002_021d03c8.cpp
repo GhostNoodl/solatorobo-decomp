@@ -27,7 +27,7 @@ void func_ov002_021d03c8(void *self) {
     }
     g = data_02149ef8;
     {
-        p = (VObject *)func_0203dd9c(0xf4);
+        p = (VObject *)Heap_Alloc(0xf4);
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
             p->v0x28();
@@ -44,8 +44,8 @@ void func_ov002_021d03c8(void *self) {
         FIELD(s, 0x66, s16) = 0x23;
         FIELD(s, 0x68, s16) = -0x199a;
     }
-    FIELD(self, 0x3c, VObject *)->v0x10(func_0204c0e8(g, 0xf2));
-    FIELD(self, 0x3c, VObject *)->v0x14(func_0204c0e8(g, 0xf4));
+    FIELD(self, 0x3c, VObject *)->v0x10(MsgRes_GetString(g, 0xf2));
+    FIELD(self, 0x3c, VObject *)->v0x14(MsgRes_GetString(g, 0xf4));
     FIELD(FIELD(self, 0x3c, void *), 0xe4, void *) = (void *)func_ov002_021d0270;
     {
         u16 i;
@@ -59,7 +59,7 @@ void func_ov002_021d03c8(void *self) {
         count = func_0205975c(data_02fe152c, 8);
         for (i = 0; i < count; i++) {
             if (func_02059544(data_02fe152c, base, tbl, 0x101, i)) {
-                q = (u8 *)func_0203dd9c(0x48);
+                q = (u8 *)Heap_Alloc(0x48);
                 if (q != NULL) {
                     *(VFunc **)q = data_ov002_021ef684;
                     func_ov000_021c22d8(q);
@@ -78,7 +78,7 @@ void func_ov002_021d03c8(void *self) {
     FIELD(self, 0x3c, VObject *)->v0x8();
     func_ov000_021c41a4(FIELD(self, 0x3c, void *), data_ov002_021f0f84[0]);
     {
-        p = (VObject *)func_0203dd9c(0xe0);
+        p = (VObject *)Heap_Alloc(0xe0);
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
             p->v0x28();
@@ -99,9 +99,9 @@ void func_ov002_021d03c8(void *self) {
     }
     FIELD(FIELD(self, 0x40, void *), 0xc, u32) |= 0x20000000;
     FIELD(FIELD(self, 0x40, void *), 0xc, u32) |= 0x80000000;
-    FIELD(self, 0x40, VObject *)->v0xf4(1, func_0204c0e8(g, 0x39));
-    FIELD(self, 0x40, VObject *)->v0xf4(0x800, func_0204c0e8(g, 0x3a));
-    FIELD(self, 0x40, VObject *)->v0xf4(2, func_0204c0e8(g, 0x33));
+    FIELD(self, 0x40, VObject *)->v0xf4(1, MsgRes_GetString(g, 0x39));
+    FIELD(self, 0x40, VObject *)->v0xf4(0x800, MsgRes_GetString(g, 0x3a));
+    FIELD(self, 0x40, VObject *)->v0xf4(2, MsgRes_GetString(g, 0x33));
     FIELD(self, 0x40, VObject *)->v0x8();
     FIELD(self, 0x20, s32) = FIELD(FIELD(self, 0x3c, void *), 0x34, s32) + 0x5000;
     func_ov000_02173648(self);

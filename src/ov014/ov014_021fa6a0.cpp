@@ -78,7 +78,7 @@ void *Ov014Act_021fa6a0_DtorDelete(void *self) {
     func_ov000_0218fee4((u8 *)self + 0x25c);
     func_ov000_0218ea20((u8 *)self + 0x124);
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

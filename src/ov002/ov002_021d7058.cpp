@@ -35,7 +35,7 @@ typedef struct Key021d7058 {
 extern Key021d7058 data_ov002_021eeffc[];
 
 static inline void *ov002_newAnim(void) {
-    void *m = func_0203dd9c(0xe8);
+    void *m = Heap_Alloc(0xe8);
     if (m != NULL) {
         m = func_ov000_0218fe1c(m);
     }

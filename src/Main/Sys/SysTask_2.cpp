@@ -15,7 +15,7 @@ void func_02063374(Unk0214a418 *self) {
         if (p != NULL) {
             func_02041558(p);
             func_02041278((u8 *)p + 0x88);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_14 = NULL;
     }
@@ -38,7 +38,7 @@ void func_02063374(Unk0214a418 *self) {
     if (p != NULL) {
         if (p != NULL) {
             func_ov000_0218fee4(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_0c = NULL;
     }
@@ -50,7 +50,7 @@ void func_02063374(Unk0214a418 *self) {
     if (p != NULL) {
         if (p != NULL) {
             func_ov000_0218ea20(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_08 = NULL;
     }
@@ -117,7 +117,7 @@ BOOL func_02063484(Unk0214a418 *self) {
             break;
         case 1:
             if (self->unk_08 == NULL) {
-                res = (SysTaskRes *)func_0203dd9c(0x138);
+                res = (SysTaskRes *)Heap_Alloc(0x138);
                 if (res != NULL) {
                     res = (SysTaskRes *)func_ov000_0218e9c4(res);
                 }
@@ -147,7 +147,7 @@ BOOL func_02063484(Unk0214a418 *self) {
             break;
         case 3:
             if (self->unk_10 == NULL) {
-                ld = (SysTaskLoader *)func_0203dd9c(0x4c);
+                ld = (SysTaskLoader *)Heap_Alloc(0x4c);
                 if (ld != NULL) {
                     *(u32 **)ld = data_0208b318;
                     ld->Init();

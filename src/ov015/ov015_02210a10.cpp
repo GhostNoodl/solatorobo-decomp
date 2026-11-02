@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_02097e4c;
 void *func_02049a48(void *a, int b, int c, int d, int e);
 s32 FX_Div(s32 a, s32 b);
-s32 func_02049210(s32 t, s32 a, s32 b);
+s32 Interp_QuadLerp(s32 t, s32 a, s32 b);
 extern void *data_0208cca0;
 extern void *data_0208cb74;
 void func_02035acc(void *a, void *b, int c);
@@ -36,7 +36,7 @@ BOOL func_ov015_02210a58(Ov015Msg *self) {
     case 0: {
         s32 t = FX_Div(self->unk_140 << 12, 0x28000);
         self->unk_1c = 0x50000;
-        self->unk_20 = func_02049210(t, -0x46000, -0x66000);
+        self->unk_20 = Interp_QuadLerp(t, -0x46000, -0x66000);
         self->unk_24 = -0x333;
         if (++self->unk_140 > 0x28) {
             self->unk_140 = 0x28;
@@ -128,7 +128,7 @@ struct Ov015Bits10d24 {
     u8 rest : 3;
 };
 static inline Ov015Msg *Ov015_NewMsg(void) {
-    Ov015Msg *o = (Ov015Msg *)func_0203dd9c(0x144);
+    Ov015Msg *o = (Ov015Msg *)Heap_Alloc(0x144);
     if (o != NULL) o = (Ov015Msg *)Ov015Msg_Ctor(o);
     return o;
 }
@@ -222,7 +222,7 @@ void *Ov015ResultPanel_Dtor(Ov015ResultPanel *self) {
 void *func_ov015_02210fdc(void *self) {
     SET_VT(self, data_ov015_022131ac);
     func_ov000_021c2310(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -247,7 +247,7 @@ void func_ov015_0221102c(void) {
         DELETE_V(data_ov015_02213368);
         HEAP_POP(saved);
     }
-    p = (u8 *)func_0203dd9c(0x30);
+    p = (u8 *)Heap_Alloc(0x30);
     if (p != NULL) {
         SET_VT(p, data_ov015_02213200);
         FLD(s32, p, 0x4) = 0;
@@ -269,12 +269,12 @@ void func_ov015_022110f0(void) {
 }
 
 void *func_ov015_0221114c(void *self) {
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
 extern u8 *func_0206f040(u16 id);
-extern s32 func_02040498(s32 max);
+extern s32 Rand_UpTo(s32 max);
 
 u32 func_ov015_02211160(u8 *self, u16 *out, u32 n) {
     u32 cnt = 0;
@@ -313,7 +313,7 @@ u32 func_ov015_02211160(u8 *self, u16 *out, u32 n) {
             u8 *e;
             e = func_0206f040(FLD(u16, self, 0xa));
             m = e[1];
-            rnd = func_02040498(0x1000);
+            rnd = Rand_UpTo(0x1000);
             acc = 0;
             for (k = 0; k < m; k++) {
                 u16 w = FLD(u16, e + k * 2, 0xa);

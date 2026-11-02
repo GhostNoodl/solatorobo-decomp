@@ -70,7 +70,7 @@ static inline void DataRes_Reset(DataRes *res) {
 }
 
 static inline DataRes *DataRes_New(u32 size, const u32 *vtbl) {
-    DataRes *res = (DataRes *)func_0203dd9c(size);
+    DataRes *res = (DataRes *)Heap_Alloc(size);
     if (res != NULL) {
         *(const u32 **)res = data_0208b318;
         res->Clear();
@@ -128,12 +128,12 @@ void func_02058e18(void) {
     data_02097dd0->cur = heap;
 }
 
-DataRes *func_02058e74(DataRes *res) {
+DataRes *MainVt_0208bf14_DtorDelete(DataRes *res) {
     *(const u32 **)res = data_0208bf14;
     res->Unload();
     *(const u32 **)res = data_0208b318;
     res->Unload();
-    func_0203de1c(res);
+    Heap_Free(res);
     return res;
 }
 
@@ -207,7 +207,7 @@ static inline void DataRes_Reset(DataRes *res) {
 }
 
 static inline DataRes *DataRes_New(u32 size, const u32 *vtbl) {
-    DataRes *res = (DataRes *)func_0203dd9c(size);
+    DataRes *res = (DataRes *)Heap_Alloc(size);
     if (res != NULL) {
         *(const u32 **)res = data_0208b318;
         res->Clear();
@@ -253,12 +253,12 @@ void func_02058fe4(void) {
     data_02097dd0->cur = heap;
 }
 
-DataRes *func_02059040(DataRes *res) {
+DataRes *MainVt_0208be94_DtorDelete(DataRes *res) {
     *(const u32 **)res = data_0208be94;
     res->Unload();
     *(const u32 **)res = data_0208b318;
     res->Unload();
-    func_0203de1c(res);
+    Heap_Free(res);
     return res;
 }
 
@@ -607,7 +607,7 @@ void func_0205983c(void) {
     if (data_02149f0c != NULL) {
         return;
     }
-    pool = (ObjPool *)func_0203dd9c(sizeof(ObjPool));
+    pool = (ObjPool *)Heap_Alloc(sizeof(ObjPool));
     if (pool != NULL) {
         ObjPool_Init(pool);
     }
@@ -622,7 +622,7 @@ void func_020598a8(void) {
         if (p != NULL) {
             if (p != NULL) {
                 ObjPool_Reset(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             data_02149f0c = NULL;
         }
@@ -644,7 +644,7 @@ void func_020599f4(ObjPool *pool, ObjPoolEntry *entry) {
             if (p != NULL) {
                 if (p != NULL) {
                     func_0203f2b8(p);
-                    func_0203de1c(p);
+                    Heap_Free(p);
                 }
                 entry->obj = NULL;
             }
@@ -664,7 +664,7 @@ void func_020599f4(ObjPool *pool, ObjPoolEntry *entry) {
             if (p != NULL) {
                 if (p != NULL) {
                     func_0203f864(p);
-                    func_0203de1c(p);
+                    Heap_Free(p);
                 }
                 entry->obj = NULL;
             }
@@ -801,9 +801,9 @@ extern const BoxFaceIdx data_02082b08;
 extern void *func_0203de84(u32 size, u32 align);
 extern void func_0203ff94(BoxBounds *bounds, BoxTri *tri, u32 value, const BoxVec16 *verts, const u32 (*indices)[3]);
 extern void func_0203f80c(void *mesh);
-extern void func_0203f990(BoxMesh *mesh, BoxMeshRes *res);
-extern void func_0203f8d8(BoxMesh *mesh);
-extern void func_0203f9dc(BoxMesh *mesh, const BoxMtx *mtx);
+extern void HitMesh_SetRes(BoxMesh *mesh, BoxMeshRes *res);
+extern void HitMesh_Link(BoxMesh *mesh);
+extern void HitMesh_SetMtx(BoxMesh *mesh, const BoxMtx *mtx);
 
 static inline void Box_SetBit3(BoxMesh *m, u32 v) {
     m->unk_84_3 = v;
@@ -924,19 +924,19 @@ ObjPoolEntry *func_02059c98(ObjPool *pool, u16 id, ObjPoolParam *param, int flip
         }
     }
     {
-        BoxMesh *mesh = (BoxMesh *)func_0203dd9c(0x98);
+        BoxMesh *mesh = (BoxMesh *)Heap_Alloc(0x98);
         if (mesh != NULL) {
             func_0203f80c(mesh);
         }
         e->obj = mesh;
     }
-    func_0203f990((BoxMesh *)e->obj, res);
+    HitMesh_SetRes((BoxMesh *)e->obj, res);
     if (((BoxMesh *)e->obj)->active != 1) {
-        func_0203f8d8((BoxMesh *)e->obj);
+        HitMesh_Link((BoxMesh *)e->obj);
     }
     Box_SetBit3((BoxMesh *)e->obj, 1);
     Box_SetMtx(&m, e->x, e->y, e->z);
-    func_0203f9dc((BoxMesh *)e->obj, &m);
+    HitMesh_SetMtx((BoxMesh *)e->obj, &m);
     Box_SetBit1((BoxMesh *)e->obj, 0);
     return e;
 }
@@ -970,14 +970,14 @@ typedef struct ObjPoolVec {
 
 extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
-extern void *func_ov000_0218e750(void *mgr, u16 kind, u16 id, s32 *pos, s32 r);
+extern void *ActorMgr_FindKindNear(void *mgr, u16 kind, u16 id, s32 *pos, s32 r);
 extern s32 func_ov000_0218c040(void *mgr, s32 max, ObjPoolVec *out, int kind, u16 id);
 
 static inline void *ObjPool_FindObj(u16 kind, u16 id, s32 *pos, s32 r) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e750(data_ov000_021ccd68, kind, id, pos, r);
+    return ActorMgr_FindKindNear(data_ov000_021ccd68, kind, id, pos, r);
 }
 
 static inline void ObjPool_Trigger(ObjPool *pool, ObjPoolEntry *entry) {
@@ -1254,7 +1254,7 @@ void func_0205a6e8(StageRes *res) {
     func_0205a6a0(res);
 }
 
-PosEvRes *func_0205a7f8(PosEvRes *res) {
+PosEvRes *PosEvRes_DtorDelete(PosEvRes *res) {
     res->type = 0;
     res->posCount = 0;
     res->pos = NULL;
@@ -1262,7 +1262,7 @@ PosEvRes *func_0205a7f8(PosEvRes *res) {
     res->ev = NULL;
     *(const u32 **)res = data_0208b318;
     res->Unload();
-    func_0203de1c(res);
+    Heap_Free(res);
     return res;
 }
 
@@ -1284,7 +1284,7 @@ void func_0205a840(StageRes *res, const char *arcName, const char *name) {
         DataRes *sub;
         STD_CopyString(file, name);
         STD_CopyString(STD_SearchString(file, "."), ".ccmes");
-        sub = (DataRes *)func_0203dd9c(0x58);
+        sub = (DataRes *)Heap_Alloc(0x58);
         if (sub != NULL) {
             *(const u32 **)sub = data_0208b318;
             sub->Clear();
@@ -1298,7 +1298,7 @@ void func_0205a840(StageRes *res, const char *arcName, const char *name) {
         PosEvRes *posEv;
         STD_CopyString(file, name);
         STD_CopyString(STD_SearchString(file, "."), ".cctmp");
-        posEv = (PosEvRes *)func_0203dd9c(0x5c);
+        posEv = (PosEvRes *)Heap_Alloc(0x5c);
         if (posEv != NULL) {
             *(const u32 **)posEv = data_0208b318;
             posEv->Clear();
@@ -1972,7 +1972,7 @@ extern int func_0205f354(StageResSlot *slot);
 extern int func_0205f978(StageResSlot *slot);
 extern int func_020616b0(StageResSlot *slot);
 extern int func_02061c8c(StageResSlot *slot);
-extern s32 func_02040498(s32 max);
+extern s32 Rand_UpTo(s32 max);
 extern u16 func_0205b3cc(StageRes *res, u16 id, u32 argc, u16 *cmd);
 extern StageResSlot *func_0205b378(BOOL pop);
 
@@ -2076,7 +2076,7 @@ u16 func_0205b8dc(StageRes *res, u16 *cmd) {
     case 0x1f0:
         len++;
         len += res->Eval(cmd + 2, 0, 0);
-        *(u16 *)data_02fe1534.unk_7e = func_02040498(func_0205ae7c(res));
+        *(u16 *)data_02fe1534.unk_7e = Rand_UpTo(func_0205ae7c(res));
         break;
     case 0xf1:
         len++;
@@ -2555,7 +2555,7 @@ int func_0205c968(StageResSlot *slot) {
         if (data_ov000_021ccd68 == NULL) {
             obj = NULL;
         } else {
-            obj = (StageObj3D *)func_ov000_0218e6d0(data_ov000_021ccd68, a & 0xf000, a);
+            obj = (StageObj3D *)ActorMgr_FindKind(data_ov000_021ccd68, a & 0xf000, a);
         }
         if (obj != NULL) {
             info.pos.x = obj->pos.x;
@@ -2674,7 +2674,7 @@ int func_0205cbf0(StageResSlot *slot) {
     res = slot->res;
     if (id == 0) {
         o = Stage_FindObj3DByIdx(slot->args[3]);
-        l = func_ov000_0218bd5c(data_ov000_021ccd64, slot->args[3]);
+        l = Group_FindNode(data_ov000_021ccd64, slot->args[3]);
     } else if (!(id & 0x8000)) {
         o = Stage_FindObj3DPtr(id);
         l = (StageLightObj *)func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[1], 0xff);
@@ -3213,7 +3213,7 @@ int func_0205e04c(StageResSlot *slot) {
         StageRes *res = slot->res;
         u16 hi = (arg >> 12) & 8;
         u16 id = arg & ~0x8000;
-        func_ov000_02172390(data_ov000_021ccd30, slot->args[0], func_0204c0e8(hi ? data_02149ef8 : (void *)res->sub, id));
+        func_ov000_02172390(data_ov000_021ccd30, slot->args[0], MsgRes_GetString(hi ? data_02149ef8 : (void *)res->sub, id));
     }
     Field_PushEvent(data_ov000_021ccd54, 0x1a, 0);
     return 1;
@@ -3487,7 +3487,7 @@ int func_0205e818(StageResSlot *slot) {
     {
         void *obj = func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
         if (obj != NULL) {
-            func_ov000_0218bc9c(data_ov000_021ccd64, obj, 1);
+            Group_RemoveNode(data_ov000_021ccd64, obj, 1);
         } else {
             StageObj3D *o = Stage_FindObj3DPtr(slot->args[0]);
             if (o != NULL) {
@@ -3511,7 +3511,7 @@ int func_0205e964(StageResSlot *slot) {
     {
         void *obj = func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[0], slot->args[1] & 0xff);
         if (obj != NULL) {
-            func_ov000_0218bc9c(data_ov000_021ccd64, obj, 1);
+            Group_RemoveNode(data_ov000_021ccd64, obj, 1);
         } else {
             StageObj3D *o = Stage_FindObj3DPtr(slot->args[0]);
             if (o != NULL) {
@@ -3531,7 +3531,7 @@ int func_0205ea9c(StageResSlot *slot) {
     if (func_ov000_0218bddc(data_ov000_021ccd64, slot->args[0], slot->args[2] & 0xff) == NULL) {
         void *obj = func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[0], slot->args[1] & 0xff);
         if (obj != NULL) {
-            func_ov000_0218bc9c(data_ov000_021ccd64, obj, 1);
+            Group_RemoveNode(data_ov000_021ccd64, obj, 1);
         }
     }
     return 1;
@@ -3550,7 +3550,7 @@ int func_0205ebb0(StageResSlot *slot) {
             if (data_ov000_021ccd68 == NULL) {
                 o = NULL;
             } else {
-                o = (StageObj3D *)func_ov000_0218e6d0(data_ov000_021ccd68, kind, id);
+                o = (StageObj3D *)ActorMgr_FindKind(data_ov000_021ccd68, kind, id);
             }
         } else {
             StageArea *area = (StageArea *)(slot->res->posEv->ev + idx * 12);
@@ -3563,7 +3563,7 @@ int func_0205ebb0(StageResSlot *slot) {
             if (data_ov000_021ccd68 == NULL) {
                 o = NULL;
             } else {
-                o = func_ov000_0218e750(data_ov000_021ccd68, kind, id, &pos, r);
+                o = ActorMgr_FindKindNear(data_ov000_021ccd68, kind, id, &pos, r);
             }
         }
     }
@@ -3655,7 +3655,7 @@ int func_0205eff8(StageResSlot *slot) {
         l = (StageLightObj *)func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
     } else {
         o = Stage_FindObj3DByIdx(slot->args[1]);
-        l = func_ov000_0218bd5c(data_ov000_021ccd64, slot->args[1]);
+        l = Group_FindNode(data_ov000_021ccd64, slot->args[1]);
     }
     if (o != NULL) {
         o->pos = pos;
@@ -3694,10 +3694,10 @@ int func_0205f22c(StageResSlot *slot) {
         l = (StageLightObj *)func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
     } else if (slot->args[1] == 0xffff) {
         o = Stage_FindObj3DByIdx(data_02fe1534.unk_26);
-        l = func_ov000_0218bd5c(data_ov000_021ccd64, data_02fe1534.unk_26);
+        l = Group_FindNode(data_ov000_021ccd64, data_02fe1534.unk_26);
     } else {
         o = Stage_FindObj3DByIdx(slot->args[1]);
-        l = func_ov000_0218bd5c(data_ov000_021ccd64, slot->args[1]);
+        l = Group_FindNode(data_ov000_021ccd64, slot->args[1]);
     }
     if (o != NULL) {
         o->params[slot->args[2]] = slot->args[3];
@@ -3720,10 +3720,10 @@ int func_0205f354(StageResSlot *slot) {
         l = (StageLightObj *)func_ov000_0218bd9c(data_ov000_021ccd64, slot->args[0], data_02fe1534.b & 0xff);
     } else if (slot->args[1] == 0xffff) {
         o = Stage_FindObj3DByIdx(data_02fe1534.unk_26);
-        l = func_ov000_0218bd5c(data_ov000_021ccd64, data_02fe1534.unk_26);
+        l = Group_FindNode(data_ov000_021ccd64, data_02fe1534.unk_26);
     } else {
         o = Stage_FindObj3DByIdx(slot->args[1]);
-        l = func_ov000_0218bd5c(data_ov000_021ccd64, slot->args[1]);
+        l = Group_FindNode(data_ov000_021ccd64, slot->args[1]);
     }
     if (o != NULL) {
         v = o->params[slot->args[2]];
@@ -3748,7 +3748,7 @@ int func_0205f47c(StageResSlot *slot) {
     if (id == 0xffff) {
         l = (StageObj3D *)data_02149f10;
     } else if (id != 0) {
-        o = func_ov000_0218e4cc(data_ov000_021ccd68, id & 0xf000);
+        o = ActorMgr_GetGroup(data_ov000_021ccd68, id & 0xf000);
     } else if (slot->args[1] == 0xffff) {
         l = Stage_FindObj3DByIdx(data_02fe1534.unk_26);
     } else {
@@ -4081,8 +4081,8 @@ extern void func_0204aa10(SndQueue *queue);
 extern void func_02049564(SndMgr *mgr, int a, int b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
-extern u16 func_0204aac4(SndQueue *queue);
-extern void func_0204aa90(SndQueue *queue);
+extern u16 SndQueue_Peek(SndQueue *queue);
+extern void SndQueue_Pop(SndQueue *queue);
 int func_02060898(u16 id, u16 idx, int val);
 
 u16 func_020600cc(StageResSlot *slot, StageVec *pos, u16 *rot, u16 *idx) {
@@ -4152,8 +4152,8 @@ extern void func_0204aa10(SndQueue *queue);
 extern void func_02049564(SndMgr *mgr, int a, int b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
-extern u16 func_0204aac4(SndQueue *queue);
-extern void func_0204aa90(SndQueue *queue);
+extern u16 SndQueue_Peek(SndQueue *queue);
+extern void SndQueue_Pop(SndQueue *queue);
 int func_02060898(u16 id, u16 idx, int val);
 
 int func_02060364(StageResSlot *slot) {
@@ -4240,7 +4240,7 @@ int func_020605fc(StageResSlot *slot) {
             ObjPoolEntry *e = func_02059b14(pool, slot->args[0], prm);
             HitSphere *h;
             e->kind = 3;
-            h = (HitSphere *)func_0203dd9c(sizeof(HitSphere));
+            h = (HitSphere *)Heap_Alloc(sizeof(HitSphere));
             if (h != NULL) {
                 func_0203f260(h);
             }
@@ -4253,7 +4253,7 @@ int func_020605fc(StageResSlot *slot) {
             h->pos.y = e->y;
             h->pos.z = e->z;
             if (((HitSphere *)e->obj)->active != 1) {
-                func_0203f324((HitSphere *)e->obj);
+                HitSphere_Link((HitSphere *)e->obj);
             }
         }
     } else {
@@ -4286,8 +4286,8 @@ extern void func_0204aa10(SndQueue *queue);
 extern void func_02049564(SndMgr *mgr, int a, int b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
-extern u16 func_0204aac4(SndQueue *queue);
-extern void func_0204aa90(SndQueue *queue);
+extern u16 SndQueue_Peek(SndQueue *queue);
+extern void SndQueue_Pop(SndQueue *queue);
 int func_02060898(u16 id, u16 idx, int val);
 
 int func_02060714(StageResSlot *slot) {
@@ -4363,7 +4363,7 @@ int func_02060898(u16 id, u16 idx, int val) {
         l = (StageLightObj *)func_ov000_0218bd9c(data_ov000_021ccd64, id, data_02fe1534.b & 0xff);
     } else {
         o = Stage_FindObj3DByIdx(idx);
-        l = func_ov000_0218bd5c(data_ov000_021ccd64, idx);
+        l = Group_FindNode(data_ov000_021ccd64, idx);
     }
     if (o != NULL) {
         o->params[5] = val;
@@ -4470,8 +4470,8 @@ extern void func_0204aa10(SndQueue *queue);
 extern void func_02049564(SndMgr *mgr, int a, int b);
 extern void func_ov000_02188140(FieldState *state, int a, int b, int c);
 extern void func_0204aab0(SndQueue *queue, u16 value);
-extern u16 func_0204aac4(SndQueue *queue);
-extern void func_0204aa90(SndQueue *queue);
+extern u16 SndQueue_Peek(SndQueue *queue);
+extern void SndQueue_Pop(SndQueue *queue);
 int func_02060898(u16 id, u16 idx, int val);
 
 int func_02060be4(StageResSlot *slot) {
@@ -4572,7 +4572,7 @@ int func_02061088(StageResSlot *slot) {
     {
         SndQueue *q = data_02097e48;
         if (q->flag0) {
-            u16 cur = func_0204aac4(q);
+            u16 cur = SndQueue_Peek(q);
             if (!(q->unk_06 == 0xffff && q->unk_04 == cur)) {
                 if (cur == 0xffff) {
                     if (q->flag2 == 1 && q->flag3) {
@@ -4585,7 +4585,7 @@ int func_02061088(StageResSlot *slot) {
                     q->unk_08 = 10;
                     q->unk_02 = 0;
                 }
-                func_0204aa90(q);
+                SndQueue_Pop(q);
             }
         }
     }

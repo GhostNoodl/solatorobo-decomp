@@ -5,7 +5,7 @@ extern "C" {
 
 Movie *data_02097e3c;
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void MIi_CpuClearFast(u32 value, void *dst, u32 size);
 extern void PM_AppendPreSleepCallback(MovieSleepCb *cb);
 extern void PM_AppendPostSleepCallback(MovieSleepCb *cb);
@@ -39,7 +39,7 @@ extern void DC_StoreRange(const void *addr, u32 size);
 extern void func_02049564(void *obj, int a, int b);
 extern void *data_02097e4c;
 
-void func_02043e38(void) {
+void Movie_Pause(void) {
     Movie *m = data_02097e3c;
     if (m->state == 0) {
         return;
@@ -48,7 +48,7 @@ void func_02043e38(void) {
     m->paused = TRUE;
 }
 
-void func_02043e6c(void) {
+void Movie_Resume(void) {
     Movie *m = data_02097e3c;
     if (m->state == 0) {
         return;
@@ -64,7 +64,7 @@ void func_02043e9c(void) {
         return;
     }
     data_02097dd0->cur = data_02097dd0->unk_04;
-    m = (Movie *)func_0203dd9c(sizeof(Movie));
+    m = (Movie *)Heap_Alloc(sizeof(Movie));
     if (m != NULL) {
         func_02043ef8(m);
     }
@@ -84,10 +84,10 @@ void func_02043ef8(Movie *m) {
     m->numQueued = 0;
     MIi_CpuClearFast(0, m, 0xc0);
     m->buf = NULL;
-    m->preSleep.func = (void (*)(void))func_02043e38;
+    m->preSleep.func = (void (*)(void))Movie_Pause;
     m->preSleep.arg = NULL;
     PM_AppendPreSleepCallback(&m->preSleep);
-    m->postSleep.func = (void (*)(void))func_02043e6c;
+    m->postSleep.func = (void (*)(void))Movie_Resume;
     m->postSleep.arg = NULL;
     PM_AppendPostSleepCallback(&m->postSleep);
 }
@@ -107,7 +107,7 @@ extern u32 func_0203367c(void *audio);
 extern u16 func_02033694(void *audio);
 extern BOOL func_02033730(void *audio);
 extern BOOL func_02033778(void *audio, u32 vram, int stride, int mode);
-extern NNSSndHeap *func_02049550(void *obj, int idx);
+extern NNSSndHeap *SndMgr_GetHeap(void *obj, int idx);
 extern void *func_0203dec8(u32 size, u32 align);
 extern void OS_CreateThread(Movie *m, void (*cb)(int), int arg, void *buf, u32 size, int prio);
 extern void OS_WakeupThreadDirect(Movie *m);
@@ -183,11 +183,11 @@ void func_02043f70(Movie *m) {
         m->blockCount = n;
         if (m->channels >= 1) {
             func_02049564(data_02097e4c, 1, 1);
-            m->bufL = (s16 *)NNS_SndHeapAlloc(func_02049550(data_02097e4c, 1), m->bufSize, NULL, 0, 0);
+            m->bufL = (s16 *)NNS_SndHeapAlloc(SndMgr_GetHeap(data_02097e4c, 1), m->bufSize, NULL, 0, 0);
             MIi_CpuClearFast(0, m->bufL, m->bufSize);
         }
         if (m->channels >= 2) {
-            m->bufR = (s16 *)NNS_SndHeapAlloc(func_02049550(data_02097e4c, 1), m->bufSize, NULL, 0, 0);
+            m->bufR = (s16 *)NNS_SndHeapAlloc(SndMgr_GetHeap(data_02097e4c, 1), m->bufSize, NULL, 0, 0);
             MIi_CpuClearFast(0, m->bufR, m->bufSize);
         }
         m->buf = func_0203dec8(0x300, 4);

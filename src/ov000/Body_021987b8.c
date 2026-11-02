@@ -70,12 +70,12 @@ typedef struct {
     u16 angle;
 } Rot021987b8;
 
-ActorC *func_ov000_0218e640(ActorMgr *mgr, u16 id);
+ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 void VEC_Normalize(const VecFx32 *src, VecFx32 *dst);
 void func_0203f364(Body *self);
-void func_0203f324(Body *self);
+void HitSphere_Link(Body *self);
 s32 func_0203f3d0(Body *self);
 void func_ov000_02198ad8(Body *self, VecFx32 *pos, const VecFx32 *vel);
 
@@ -90,7 +90,7 @@ static inline ActorC *FindActor(u16 id) {
     if (mgr == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(mgr, id);
+    return ActorMgr_GetActor(mgr, id);
 }
 
 void func_ov000_021987b8(Body *self, u8 keep, VecFx32 *pos, const Rot021987b8 *rot) {
@@ -166,7 +166,7 @@ void func_ov000_021987b8(Body *self, u8 keep, VecFx32 *pos, const Rot021987b8 *r
     }
     self->unk_25 = 0;
     if (!keep && active) {
-        func_0203f324(self);
+        HitSphere_Link(self);
     }
     if (self->unk_44 != 0) {
         self->unk_38 = self->unk_44;

@@ -23,7 +23,7 @@ static const VecFx32 data_ov012_0220b090 = data_ov012_0220a834;
 namespace m_02206374 {
 extern "C" {
 void func_ov012_02206374(Ov012Actor *self) {
-    if (func_ov000_02199ba0(self->unk_4c)->kind == 0x1000 && self->unk_40->state == 0 &&
+    if (Target_Get(self->unk_4c)->kind == 0x1000 && self->unk_40->state == 0 &&
         !(FLD(u32, self, 0xd0) & 0x100000)) {
         u8 b = 2;
         func_ov000_0219bd20(0x5c03, self->kind, 6, 1, 1, &b);
@@ -71,7 +71,7 @@ void func_ov012_02206508(Ov012Actor *self) {
         Ov012SpawnDesc d;
         Ov012Actor *o;
         Ov012Spawn_Init(&d, 0x4824);
-        o = func_ov000_0218bf1c(data_ov000_021ccd64, &d, &self->pos, self->rot, 0xffff);
+        o = Group_SpawnActor(data_ov000_021ccd64, &d, &self->pos, self->rot, 0xffff);
         if (o != NULL) {
             void *p;
             o->unk_16.b0 = 1;
@@ -80,7 +80,7 @@ void func_ov012_02206508(Ov012Actor *self) {
             o->unk_90 = self->unk_90;
             p = o->unk_4c;
             if (p != NULL) {
-                func_ov000_02199b88(p, func_ov000_02199ba0(self->unk_4c));
+                Target_Set(p, Target_Get(self->unk_4c));
             }
         }
     }
@@ -98,7 +98,7 @@ void func_ov012_022065d8(Ov012Actor *self) {
         r = 0xccd;
     }
     self->unk_48->unk_44 = r;
-    k = func_ov000_02199ba0(self->unk_4c)->id & 0xf000;
+    k = Target_Get(self->unk_4c)->id & 0xf000;
     n = func_ov000_0219a510(self, ~(1 << (k >> 12)), &self->pos, r, 0, list);
     if (n == 0) {
         return;
@@ -152,7 +152,7 @@ static inline s32 Ov012_FxMul64(s32 a, s64 b) {
 }
 
 void func_ov012_02206718(Ov012ActExVt_0220b150 *self) {
-    u8 *m = (u8 *)func_ov000_02199ba0(self->unk_4c);
+    u8 *m = (u8 *)Target_Get(self->unk_4c);
     if (m == NULL) {
         return;
     }
@@ -172,7 +172,7 @@ void func_ov012_02206718(Ov012ActExVt_0220b150 *self) {
         Ov012Vec v;
         s32 r;
         u16 a;
-        func_ov000_0218d240(self);
+        Actor_GetTarget(self);
         func_01ffc9fc(&v, &data_ov012_0220a810, self->rot[1]);
         VEC_Add(&self->pos, &v, &self->unk_84);
         self->unk_84.y = 0;
@@ -203,9 +203,9 @@ void func_ov012_02206718(Ov012ActExVt_0220b150 *self) {
         return;
     }
     case 1:
-        func_ov000_0218d918(self, &self->unk_84, 0x1000);
+        Actor_TurnToPos(self, &self->unk_84, 0x1000);
         self->unk_98 = self->rot[1];
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         func_ov012_02206f18(self);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         if (self->unk_48->unk_50 & 0x20000000) {
@@ -329,10 +329,10 @@ void func_ov012_02206bb0(Ov012ActExVt_0220b150 *self) {
     }
     case 1:
         if (self->unk_dc & 0x400000) {
-            func_ov000_0218d918(self, &self->unk_84, 0x1000);
+            Actor_TurnToPos(self, &self->unk_84, 0x1000);
             VEC_Add(&self->pos, (Ov012Vec *)&self->unk_9c, &self->pos);
         } else {
-            func_ov000_0218dbe0(self, 0);
+            Actor_Move(self, 0);
         }
         func_ov012_02206f18(self);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
@@ -382,7 +382,7 @@ void func_ov012_02206f18(Ov012ActExVt_0220b150 *self) {
         r = 0xccd;
     }
     self->unk_48->unk_44 = r;
-    k = func_ov000_02199ba0(self->unk_4c)->id & 0xf000;
+    k = Target_Get(self->unk_4c)->id & 0xf000;
     n = func_ov000_0219a510(self, ~(1 << (k >> 12)), &self->pos, r, 0, list);
     if (n == 0) {
         return;
@@ -407,7 +407,7 @@ extern "C" {
 extern u8 data_ov012_0220b0b8[];
 #pragma force_active on
 Ov012ActEx_02207018 *Ov012ActEx_02207018_Ctor(Ov012ActEx_02207018 *self) {
-    func_ov000_02194074(self);
+    ActorEx_Ctor(self);
     FLD(void *, self, 0) = data_ov012_0220b0b8;
     self->unk_d0 = 0;
     self->unk_d4 = 0;
@@ -432,7 +432,7 @@ void *Ov012ActEx_02207018_DtorDelete(void *self) {
     FLD(void *, self, 0) = data_ov012_0220b0b8;
     Ov012_FreeFx(self, 0xd4);
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 }
@@ -547,7 +547,7 @@ void func_ov012_0220717c(Ov012ActEx_02207018 *self) {
             r = 0xccd;
         }
         self->unk_48->unk_44 = r;
-        k = func_ov000_02199ba0(self->unk_4c)->id & 0xf000;
+        k = Target_Get(self->unk_4c)->id & 0xf000;
         n = func_ov000_0219a510(self, ~(1 << (k >> 12)), &self->pos, r, 0, list);
         if (n != 0) {
             for (i = 0; i < n; i++) {
@@ -594,8 +594,8 @@ void func_ov012_0220717c(Ov012ActEx_02207018 *self) {
             FLD(s32, e, 0x3c) = 0x800;
             e->v24(0, 0x800, 0);
             e->v0c(0x1b33);
-            a = func_02040498(0xffff);
-            b = func_02040498(0xffff);
+            a = Rand_UpTo(0xffff);
+            b = Rand_UpTo(0xffff);
             e->v34((u16)a, (u16)b, 0);
             func_ov003_021da9ac(((void *)self->unk_d4), (u8)(0xfd - i), e);
         }

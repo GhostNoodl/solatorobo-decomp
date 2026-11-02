@@ -24,8 +24,8 @@ extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
 extern void *func_ov000_0219b71c(Ov009Vec *pos, Ov009Vec *v, s32 a, s32 b, s32 c, s32 d);
-extern s32 func_02040528(s32 range);
-extern s32 func_02040498(s32 max);
+extern s32 Rand_PlusMinus(s32 range);
+extern s32 Rand_UpTo(s32 max);
 void func_ov009_022117e4(Ov009ActVt_02217aac *self) {
     Ov009Vec p;
     Ov009Vec v;
@@ -108,14 +108,14 @@ void func_ov009_022117e4(Ov009ActVt_02217aac *self) {
         q.x = self->pos.x;
         q.y = self->pos.y;
         q.z = self->pos.z;
-        q.x += func_02040528(self->unk_64);
-        q.z += func_02040528(self->unk_64);
+        q.x += Rand_PlusMinus(self->unk_64);
+        q.z += Rand_PlusMinus(self->unk_64);
         h = self->unk_68;
-        q.y += h + func_02040528(h >> 2);
+        q.y += h + Rand_PlusMinus(h >> 2);
         e = func_02065f88(0x325, &q);
         e->v34(0xc000, 0, 0);
         e->v0c(0xccd);
-        self->unk_40->timer = func_02040498(0x28) + 0x3c;
+        self->unk_40->timer = Rand_UpTo(0x28) + 0x3c;
         return;
     }
     }

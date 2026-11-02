@@ -91,7 +91,7 @@ extern u8 data_ov013_0220b68c[];
 extern u8 data_ov013_0220bc80[];
 extern u8 data_ov013_0220bdd8[];
 extern u8 *data_ov000_021ccd54;
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 s32 func_0206ffa0(u16 id);
 s32 func_ov003_021cf77c(Spawn021cfab4 *s);
 void *func_ov000_0218e9c4(void *p);
@@ -100,7 +100,7 @@ void *func_ov000_0218fe1c(void *p);
 void *func_ov000_0218fee4(void *p);
 void func_ov003_021d0c1c(void *p);
 void *func_ov003_021d0c94(void *p);
-void func_ov000_0218d1c0(void *p, u16 sub, u16 id, s32 a);
+void Actor_JoinGroup(void *p, u16 sub, u16 id, s32 a);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void *Ov012Lift_Ctor(void *p);
 void *Ov014Act_021fa6a0_Ctor(void *p);
@@ -126,7 +126,7 @@ void *Ov014Act_0221267c_Ctor(void *p);
 
 #define NEW_CTOR(size, ctor)                   \
     {                                          \
-        u8 *t = (u8 *)func_0203dd9c(size);     \
+        u8 *t = (u8 *)Heap_Alloc(size);     \
         if (t != NULL) {                       \
             t = (u8 *)ctor(t);                 \
         }                                      \
@@ -135,7 +135,7 @@ void *Ov014Act_0221267c_Ctor(void *p);
 
 #define NEW_BASIC(size, vt)                    \
     {                                          \
-        u8 *t = (u8 *)func_0203dd9c(size);     \
+        u8 *t = (u8 *)Heap_Alloc(size);     \
         if (t != NULL) {                       \
             Base(t);                           \
             ((GmHead021cfab4 *)t)->vtbl = (vt);     \
@@ -145,7 +145,7 @@ void *Ov014Act_0221267c_Ctor(void *p);
 
 #define NEW_DERIV(size, base, vt)              \
     {                                          \
-        u8 *t = (u8 *)func_0203dd9c(size);     \
+        u8 *t = (u8 *)Heap_Alloc(size);     \
         if (t != NULL) {                       \
             base(t);                           \
             ((GmHead021cfab4 *)t)->vtbl = (vt);     \
@@ -166,7 +166,7 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
     case 0x5048:
     case 0x5054:
         {
-            Gm10c021cfab4 *t = (Gm10c021cfab4 *)func_0203dd9c(0x10c);
+            Gm10c021cfab4 *t = (Gm10c021cfab4 *)Heap_Alloc(0x10c);
             if (t != NULL) {
                 Base(t);
                 t->vtbl = data_ov009_0221707c;
@@ -240,7 +240,7 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
         break;
     case 0x5414:
         {
-            u8 *t = (u8 *)func_0203dd9c(0x310);
+            u8 *t = (u8 *)Heap_Alloc(0x310);
             if (t != NULL) {
                 Base(t);
                 ((GmHead021cfab4 *)t)->vtbl = data_ov009_02217844;
@@ -263,7 +263,7 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
     case 0x540f:
     case 0x5410:
         {
-            u8 *t = (u8 *)func_0203dd9c(0x4ac);
+            u8 *t = (u8 *)Heap_Alloc(0x4ac);
             if (t != NULL) {
                 Base(t);
                 ((GmHead021cfab4 *)t)->vtbl = data_ov009_0221743c;
@@ -359,7 +359,7 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
     case 0x5057:
     case 0x5c01:
         {
-            u8 *t = (u8 *)func_0203dd9c(0x22c);
+            u8 *t = (u8 *)Heap_Alloc(0x22c);
             if (t != NULL) {
                 Base(t);
                 ((GmHead021cfab4 *)t)->vtbl = data_ov012_0220b280;
@@ -406,7 +406,7 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
         break;
     case 0x5c11:
         {
-            Gm39c021cfab4 *t = (Gm39c021cfab4 *)func_0203dd9c(0x39c);
+            Gm39c021cfab4 *t = (Gm39c021cfab4 *)Heap_Alloc(0x39c);
             if (t != NULL) {
                 Base(t);
                 t->vtbl = data_ov011_02207da4;
@@ -468,7 +468,7 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
         break;
     case 0x541e:
         {
-            u8 *t = (u8 *)func_0203dd9c(0x31c);
+            u8 *t = (u8 *)Heap_Alloc(0x31c);
             if (t != NULL) {
                 Base(t);
                 ((GmHead021cfab4 *)t)->vtbl = data_ov009_02217594;
@@ -506,7 +506,7 @@ u8 *func_ov003_021cfab4(Spawn021cfab4 *s) {
         NEW_BASIC(0xfc, data_ov009_02217cb0);
         break;
     }
-    func_ov000_0218d1c0(p, s->sub, s->id, func_0206ffa0(s->id));
+    Actor_JoinGroup(p, s->sub, s->id, func_0206ffa0(s->id));
     *(Rgb021cfab4 *)(p + 0xac) = *(Rgb021cfab4 *)(data_ov000_021ccd54 + 0xca);
     return p;
 }

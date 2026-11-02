@@ -16,7 +16,7 @@ struct Obj021c2a88 {
 void func_ov000_021c2a88(Obj021c2a88 *self, s32 arg) {
     u8 *p;
     if ((u8 *)self->unk_38 == NULL) {
-        p = (u8 *)func_0203dd9c(0xb8);
+        p = (u8 *)Heap_Alloc(0xb8);
         if (p != NULL) {
             VOBJ_SET_VTABLE(p, data_0208ba70);
             func_0204c7d0(p);

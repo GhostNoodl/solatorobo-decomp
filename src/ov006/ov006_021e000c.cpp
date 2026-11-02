@@ -62,7 +62,7 @@ extern "C" {
 extern void *data_0214a420;
 VObj *func_020657b0(void *a, int id);
 ov006_Eff021e000c *func_ov006_021e37d0(int type, ov006_Vec021e000c *arg);
-s32 func_02049130(fx32 t, s32 a, s32 b);
+s32 Interp_SinLerp(fx32 t, s32 a, s32 b);
 BOOL func_02054f10(void *a, int b);
 void func_ov006_021df44c(ov006_Win021e000c *self);
 
@@ -191,7 +191,7 @@ void func_ov006_021e000c(ov006_Unk021e000c *self) {
         break;
     }
     {
-        s32 x = func_02049130(self->fade, 0x46000, 0x86000);
+        s32 x = Interp_SinLerp(self->fade, 0x46000, 0x86000);
         ov006_Pic021e000c_SetPos(self->unk1C, (u32)FX_Whole(x) << 12, -0x4a000, self->unk1C->z);
     }
     {

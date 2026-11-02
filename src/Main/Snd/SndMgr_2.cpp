@@ -2,7 +2,7 @@
 
 extern "C" {
 
-NNSSndHeap *func_02049550(SndMgr *mgr, u32 idx) {
+NNSSndHeap *SndMgr_GetHeap(SndMgr *mgr, u32 idx) {
     if (idx >= 2) {
         return NULL;
     }

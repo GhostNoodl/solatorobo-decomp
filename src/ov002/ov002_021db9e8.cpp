@@ -59,7 +59,7 @@ void func_ov002_021db9e8(void *self) {
         }
     case 1:
         if (FIELD(self, 0x34, s32) <= 0) {
-            void *p = func_0203dd9c(0x134);
+            void *p = Heap_Alloc(0x134);
             if (p != NULL) {
                 p = ov002_Step_ctor(p);
             }

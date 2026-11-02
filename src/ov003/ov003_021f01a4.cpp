@@ -104,7 +104,7 @@ extern "C" {
 extern void *data_ov000_021ccd64;
 extern const Ov003FxEntry data_ov003_021f6fc8[];
 extern void func_ov000_02194758(void *self);
-extern Ov003FxUnit *func_ov000_0218bd5c(void *mgr, u16 id);
+extern Ov003FxUnit *Group_FindNode(void *mgr, u16 id);
 extern Ov003FxObj *func_02065f88(s32 id, Ov003FxVec *pos);
 extern Ov003FxGame *data_ov000_021ccd54;
 extern void *data_02097e4c;
@@ -114,7 +114,7 @@ extern void func_ov000_021915a0(void *model);
 extern void VEC_Add(const Ov003FxVec *a, const Ov003FxVec *b, Ov003FxVec *out);
 extern void VEC_Normalize(const Ov003FxVec *a, Ov003FxVec *out);
 extern BOOL func_01ffc198(Ov003FxVec *a, Ov003FxVec *b, s32 r);
-extern s32 func_02040498(s32 max);
+extern s32 Rand_UpTo(s32 max);
 extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
 extern void *func_0204a028(void *mgr, s32 id, Ov003FxVec *pos, s32 a);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
@@ -148,7 +148,7 @@ void Ov003ActVt_021f9fe4_Start(Ov003FxProp *self) {
     const Ov003FxEntry *e;
     Ov003FxObj *fx;
     func_ov000_02194758(self);
-    u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_5 = 1;
     }
@@ -194,7 +194,7 @@ void func_ov003_021f0258(Ov003FxProp *self) {
             if (e->sound >= 0 && Ov003Fx_GameIdle()) {
                 s16 vol = e->volume;
                 if (e->volumeRand != 0) {
-                    vol += (s16)func_02040498(e->volumeRand);
+                    vol += (s16)Rand_UpTo(e->volumeRand);
                 }
                 if (self->id == 0x4048) {
                     func_02049bdc(data_02097e4c, e->sound, vol);

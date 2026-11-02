@@ -84,7 +84,7 @@ void func_ov000_02154c34(Obj02154c34 *self) {
             Ent02154c34 *p = e;
             if (p != NULL) {
                 Ent02154c34_Dtor(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             e = NULL;
         }
@@ -98,7 +98,7 @@ void func_ov000_02154c34(Obj02154c34 *self) {
             Obj02154c34Sub *p = self->unk_ac;
             if (p != NULL) {
                 Sub02154c34_Dtor(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->unk_ac = NULL;
         }

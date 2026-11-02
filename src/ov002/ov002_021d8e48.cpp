@@ -26,7 +26,7 @@ void func_ov002_021d8e90(void *self) {
         u32 saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0x80, void *) != NULL) {
-            func_0203de1c(FIELD(self, 0x80, void *));
+            Heap_Free(FIELD(self, 0x80, void *));
             FIELD(self, 0x80, void *) = NULL;
         }
         HEAP_POP(saved);
@@ -44,7 +44,7 @@ void func_ov002_021d8e90(void *self) {
                 if (p != NULL) {
                     func_02041558(p);
                     func_02041278((u8 *)p + 0x88);
-                    func_0203de1c(p);
+                    Heap_Free(p);
                 }
                 FIELD(self, 0x90, void *) = NULL;
             }

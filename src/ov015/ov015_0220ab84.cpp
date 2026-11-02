@@ -5,7 +5,7 @@ extern "C" {
 extern void **data_0214a420;
 Ov015V *func_020657b0(void *a, void *b);
 s32 FX_Div(s32 a, s32 b);
-s32 func_02049130(s32 t, s32 a, s32 b);
+s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 void MTX_RotY33_(void *m, s32 s, s32 c);
 void MTX_MultVec33(void *a, void *b, void *c);
 void VEC_Normalize(void *src, void *dst);
@@ -45,7 +45,7 @@ void func_ov015_0220ac40(Ov015FishState2c *self, Ov015Fish *p) {
     s32 m[9];
     s32 t = FX_Div(self->unk_06 << 12, 0x14000);
     s32 b = Ov015_FxMul((self->unk_20)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
-    s32 d = Ov015_FxMul(func_02049130(Ov015_FxMul(self->unk_18, self->unk_18), b / 5, b), t);
+    s32 d = Ov015_FxMul(Interp_SinLerp(Ov015_FxMul(self->unk_18, self->unk_18), b / 5, b), t);
     p->unk_a8 = d;
     p->unk_40.x = pos.x + d;
     p->unk_40.y = pos.y;
@@ -63,7 +63,7 @@ void func_ov015_0220ad68(Ov015FishState2c *self, Ov015Fish *p) {
     s32 m[9];
     s32 t = FX_Div(self->unk_06 << 12, 0x14000);
     s32 b = Ov015_FxMul((self->unk_20)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
-    s32 d = Ov015_FxMul(func_02049130(Ov015_FxMul(self->unk_18, self->unk_18), b / 5, b), t);
+    s32 d = Ov015_FxMul(Interp_SinLerp(Ov015_FxMul(self->unk_18, self->unk_18), b / 5, b), t);
     p->unk_a8 = d;
     p->unk_40.x = pos.x - d;
     p->unk_40.y = pos.y;

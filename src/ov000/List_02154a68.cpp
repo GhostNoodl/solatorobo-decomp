@@ -93,8 +93,8 @@ extern "C" {
 extern HeapState *data_02097dd0;
 
 BOOL STD_CompareString(const char *a, const char *b);
-void func_0203de1c(void *ptr);
-void *func_0203dd9c(u32 size);
+void Heap_Free(void *ptr);
+void *Heap_Alloc(u32 size);
 void func_02041558(Model *model);
 void func_02041278(void *a);
 void func_02041218(void *a);
@@ -158,12 +158,12 @@ void func_ov000_021546ec(ListOwner *self, const char *name, void *a, u32 b) {
         if (model != NULL) {
             func_02041558(model);
             func_02041278(model->unk_88);
-            func_0203de1c(model);
+            Heap_Free(model);
         }
         self->unk_b8_model = NULL;
     }
     data_02097dd0->current = saved;
-    model = (Model *)func_0203dd9c(sizeof(Model));
+    model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         func_02041218(model->unk_88);
         func_02041440(model, a, 0);
@@ -188,12 +188,12 @@ void func_ov000_021547e8(ListOwner *self, const char *name, void *a, void *b) {
         if (model != NULL) {
             func_02041558(model);
             func_02041278(model->unk_88);
-            func_0203de1c(model);
+            Heap_Free(model);
         }
         self->unk_bc = NULL;
     }
     data_02097dd0->current = saved;
-    model = (Model *)func_0203dd9c(sizeof(Model));
+    model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         func_02041218(model->unk_88);
         func_02041440(model, a, 0);
@@ -239,7 +239,7 @@ void func_ov000_021548ec(ListOwner *self, ListArg *arg) {
 }
 
 void func_ov000_021549a0(ListOwner *self, const char *name, u16 id, u16 a, u32 b) {
-    ListEntry *entry = (ListEntry *)func_0203dd9c(sizeof(ListEntry));
+    ListEntry *entry = (ListEntry *)Heap_Alloc(sizeof(ListEntry));
     ListEntry *last;
     if (entry != NULL) {
         entry->name = NULL;

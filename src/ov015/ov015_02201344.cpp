@@ -46,7 +46,7 @@ void func_ov015_0220f470(void *p);
 void *func_020359d0(void *a, int b, int c);
 
 static inline void *Ov015_NewTex(void) {
-    u8 *t = (u8 *)func_0203dd9c(0x160);
+    u8 *t = (u8 *)Heap_Alloc(0x160);
     if (t != NULL) {
         func_02041218(t + 0x88);
         func_02041440(t, NULL, 0);
@@ -58,14 +58,14 @@ BOOL func_ov015_02201344(Ov015Game *self) {
     Ov015Ship *s;
     u8 *o;
     u8 *q;
-    s = (Ov015Ship *)func_0203dd9c(0xd58);
+    s = (Ov015Ship *)Heap_Alloc(0xd58);
     if (s != NULL) {
         s = (Ov015Ship *)func_ov015_0220765c(s);
     }
     self->unk_18 = s;
     func_ov015_02207858(s);
     self->unk_18->unk_d48 = data_ov015_02213368->unk_2c;
-    o = (u8 *)func_0203dd9c(0x664);
+    o = (u8 *)Heap_Alloc(0x664);
     if (o != NULL) {
         SET_VT(o, data_ov015_0221294c);
         func_ov000_0218e9c4(o + 0x4);
@@ -133,7 +133,7 @@ BOOL func_ov015_02201344(Ov015Game *self) {
         }
         s->p[2].mdl.unk_00 = 0;
     }
-    q = (u8 *)func_0203dd9c(0x30);
+    q = (u8 *)Heap_Alloc(0x30);
     if (q != NULL) {
         SET_VT(q, data_ov015_0221293c);
         FLD(s32, q, 0x4) = 0;
@@ -151,7 +151,7 @@ BOOL func_ov015_02201344(Ov015Game *self) {
     FLD(void *, q, 0x24) = Ov015_NewTex();
     FLD(void *, q, 0x28) = Ov015_NewTex();
     {
-        void *f = func_0203dd9c(0x14);
+        void *f = Heap_Alloc(0x14);
         if (f != NULL) {
             f = Ov015Result_Ctor(f);
         }

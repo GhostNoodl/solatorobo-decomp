@@ -48,10 +48,10 @@ extern "C" {
 extern u32 data_ov003_021f7d2c;
 extern void *data_ov000_021ccd68;
 extern void *func_ov003_021d0edc(void *p);
-extern void *func_0203dd9c(u32 size);
-extern void func_0203de1c(void *p);
+extern void *Heap_Alloc(u32 size);
+extern void Heap_Free(void *p);
 extern void func_0203df0c(void *p);
-extern void *func_ov000_0218e640(void *mgr, u16 id);
+extern void *ActorMgr_GetActor(void *mgr, u16 id);
 
 void func_ov003_021d7948(Ov003Pool *self) {
     if (self->active) {
@@ -95,7 +95,7 @@ Ov003PoolOwner *Ov003Vt_021f7d2c_Dtor(Ov003PoolOwner *self) {
 Ov003PoolOwner *Ov003Vt_021f7d2c_DtorDelete(Ov003PoolOwner *self) {
     *(void **)self = &data_ov003_021f7d2c;
     self->Release();
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

@@ -17,7 +17,7 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
     Ov011Scene *p;
     Ov011Sa104 *q;
     func_ov003_021d112c(self);
-    p = (Ov011Scene *)func_0203dd9c(0x23c);
+    p = (Ov011Scene *)Heap_Alloc(0x23c);
     if (p != NULL) {
         p->ring.b0 = 0;
         func_ov000_02198328(&p->seq);
@@ -35,14 +35,14 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
     }
     self->scene = p;
     func_ov011_021fd4d8(p, self);
-    q = (Ov011Sa104 *)func_0203dd9c(0x3c);
+    q = (Ov011Sa104 *)Heap_Alloc(0x3c);
     if (q != NULL) {
         func_ov000_02198328(q);
         Ov011Vt_022079b0_Ctor(&q->tw);
     }
     self->unk_104 = q;
-    self->unk_108 = (Ov011Sa108 *)func_0203dd9c(6);
-    self->unk_10c = (Ov011Sa10c *)func_0203dd9c(4);
+    self->unk_108 = (Ov011Sa108 *)Heap_Alloc(6);
+    self->unk_10c = (Ov011Sa10c *)Heap_Alloc(4);
     {
         Ov011Sa104 *s = self->unk_104;
         func_ov003_021da48c(s, 0);

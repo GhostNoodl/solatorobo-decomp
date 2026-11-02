@@ -37,8 +37,8 @@ BOOL func_ov000_02191120(void *p);
 void func_ov000_0218996c(u8 a, u8 b);
 void func_ov000_021ad130(Actor *self);
 Effect021b0d04 *func_02065f88(s32 id, VecFx32 *pos);
-s32 func_02040528(s32 max);
-s32 func_02040498(s32 max);
+s32 Rand_PlusMinus(s32 max);
+s32 Rand_UpTo(s32 max);
 
 void func_ov000_021b0c50(Actor *self) {
     switch (self->unk_40->st) {
@@ -76,9 +76,9 @@ void func_ov000_021b0d04(Actor *self) {
         e->unk_3c = 0x2000;
         ROBO_TAIL(self)->unk_b48 = e->unk_24;
         ROBO_TAIL(self)->unk_b5e = 0x29;
-        a = func_02040528(0x1800);
-        b = func_02040498(0x3000);
-        c = func_02040528(0x1800);
+        a = Rand_PlusMinus(0x1800);
+        b = Rand_UpTo(0x3000);
+        c = Rand_PlusMinus(0x1800);
         ROBO_TAIL(self)->unk_b4c = a;
         ROBO_TAIL(self)->unk_b50 = b;
         ROBO_TAIL(self)->unk_b54 = c;

@@ -33,7 +33,7 @@ extern char data_ov000_021cc5d9[];
 void *func_0207011c(u16 id);
 s32 func_020701d4(u16 id);
 u8 *func_0206ef10(u16 id);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void *func_ov000_021919c8(void *p);
 void func_ov000_02191b70(void *s);
 void func_ov000_0218f074(void *o, void *a, BOOL b, BOOL c, s32 d, BOOL e);
@@ -43,7 +43,7 @@ static inline void SetNames0219c54c(char *d0, char *d1, const char *a, const cha
     STD_CopyString(d1, b);
 }
 
-void func_ov000_0219c54c(Robo021ca458 *self) {
+void Robo021ca458_Init(Robo021ca458 *self) {
     void *res;
     void *p;
     Entry0219c54c *e;
@@ -62,7 +62,7 @@ void func_ov000_0219c54c(Robo021ca458 *self) {
         }
     }
     self->unk_860 = 0;
-    p = func_0203dd9c(0x1c);
+    p = Heap_Alloc(0x1c);
     if (p != NULL) {
         p = func_ov000_021919c8(p);
     }

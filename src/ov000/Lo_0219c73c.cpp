@@ -8,7 +8,7 @@ BOOL func_ov000_0218f110(void *p);
 BOOL func_ov000_02191b9c(void *p);
 void func_ov000_0219c8e0(void *self);
 
-BOOL func_ov000_0219c73c(Robo021ca458 *self) {
+BOOL Robo021ca458_IsReady(Robo021ca458 *self) {
     BOOL ret = TRUE;
     if (self->unk_194 >= 0 && !func_ov000_0218f110((u8 *)self + 0x194)) {
         ret = FALSE;

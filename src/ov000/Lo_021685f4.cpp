@@ -25,7 +25,7 @@ void func_ov000_021685f4(Lo021cb894 *self) {
     self->unk_78 = 0;
     self->unk_7c = -0x2000;
     res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         void *nm = data_0208cc88;
         func_02041218(m + 0x88);

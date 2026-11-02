@@ -22,9 +22,9 @@ extern "C" {
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
 extern u8 data_ov014_02216cf4[];
-extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, Ov014Vec16 *rot, u16 a);
+extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, Ov014Vec16 *rot, u16 a);
 extern Ov014Actor *func_ov000_0219bf90(void);
-extern Ov014Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 Ov014Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self) {
     Ov014Vec pos;
@@ -54,7 +54,7 @@ Ov014Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self) {
     rot.y = self->rot[1];
     rot.z = self->rot[2];
     Ov014Spawn_Init(&desc, 0x4814);
-    o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
+    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
     o->unk_90 = func_ov000_0219bf90()->id;
     o->flags_0 = 1;
     if (o->unk_4c != NULL) {
@@ -73,7 +73,7 @@ Ov014Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self) {
     if (data_ov000_021ccd68 == NULL) {
         o = NULL;
     } else {
-        o = func_ov000_0218e640(data_ov000_021ccd68, id);
+        o = ActorMgr_GetActor(data_ov000_021ccd68, id);
     }
     if (o != NULL) {
         return NULL;
@@ -87,7 +87,7 @@ Ov014Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self) {
     rot.y = self->rot[1];
     rot.z = self->rot[2];
     rot.x = 0x2c00;
-    o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
+    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
     if (o == NULL) {
         return NULL;
     }

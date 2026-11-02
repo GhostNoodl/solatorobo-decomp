@@ -17,7 +17,7 @@ void func_ov002_021dbdb8(void *self) {
             if (p != NULL) {
                 func_02041558(p);
                 func_02041278((u8 *)p + 0x88);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             FIELD(self, 0x10, void *) = NULL;
         }

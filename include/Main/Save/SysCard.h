@@ -25,7 +25,7 @@ typedef struct SysCard {
 
 extern SysCard *data_02097e44;
 
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern void CARD_Init(void);
 extern s32 OS_GetLockID(void);
 extern void CARD_LockBackup(u16 lockId);

@@ -35,7 +35,7 @@ extern void *data_02097e4c;
 extern const Ov003SVec data_ov003_021f7694[];
 extern BOOL func_ov000_0218cf5c(void *self);
 extern BOOL func_ov000_0218f110(s16 *p);
-extern void func_ov000_021b4c60(void *self);
+extern void Ov000ActVt_021cc7cc_Start(void *self);
 extern BOOL func_ov000_0218ffdc(void *anim, s16 *res, s32 a, s32 b);
 extern BOOL func_ov000_02190cb0(void *anim, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *anim);
@@ -58,7 +58,7 @@ BOOL Ov003ActVt_021fa5f8_IsReady(Ov003Prop *self) {
 }
 
 void Ov003ActVt_021fa5f8_Start(Ov003Prop *self) {
-    func_ov000_021b4c60(self);
+    Ov000ActVt_021cc7cc_Start(self);
     if (self->kind == 0x6a01) {
         return;
     }

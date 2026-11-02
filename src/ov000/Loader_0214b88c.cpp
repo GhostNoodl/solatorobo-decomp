@@ -47,8 +47,8 @@ extern const char data_ov000_021ca8ff[];
 extern const char data_ov000_021ca907[];
 extern const char data_ov000_021ca917[];
 
-void *func_0203dddc(u32 size);
-void *func_0203dd9c(u32 size);
+void *Heap_AllocArray(u32 size);
+void *Heap_Alloc(u32 size);
 BOOL OS_IsRunOnTwl(void);
 void func_020359fc(void *a, char *name, s32 b, s32 c);
 BOOL func_02035bd4(void *a, char *name, s32 b);
@@ -65,7 +65,7 @@ s32 func_0205aa30(VObj *obj);
 
 void func_ov000_0214b88c(Loader *self, const char *name) {
     s32 len = STD_GetStringLength(name);
-    self->unk_1c = (char *)func_0203dddc(len + 1);
+    self->unk_1c = (char *)Heap_AllocArray(len + 1);
     STD_CopyLString(self->unk_1c, name, len + 1);
     self->unk_08 = 1;
     self->unk_04 = OS_IsRunOnTwl() ? 0 : 1;
@@ -125,7 +125,7 @@ void func_ov000_0214b910(Loader *self) {
 }
 
 static inline VObj *CreateLoader(void) {
-    VObj *obj = (VObj *)func_0203dd9c(0xc4);
+    VObj *obj = (VObj *)Heap_Alloc(0xc4);
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b318);
         obj->vfunc_08();

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov000_0218dab0(Actor *self, Actor *other, s32 step) {
+void Actor_PitchToActor(Actor *self, Actor *other, s32 step) {
     s32 dx;
     s32 dz;
     s32 oy;
@@ -37,7 +37,7 @@ void func_ov000_0218db58(Actor *self, u16 angle, u16 center, u16 range, s32 step
 
 #define AMUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
-void func_ov000_0218dbe0(Actor *self, s32 rate) {
+void Actor_Move(Actor *self, s32 rate) {
     if (rate != 0) {
         if (rate == 0x1000) {
             self->rot_y = self->unk_98;

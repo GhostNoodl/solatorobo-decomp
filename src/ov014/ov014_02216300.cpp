@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void func_ov000_02195d88(void *self);
-extern Ov014Actor *func_ov000_02199ba0(void *p);
+extern Ov014Actor *Target_Get(void *p);
 extern Ov014Actor *func_ov000_0219bf90(void);
 extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s32 a, Ov014Actor **list);
 extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
@@ -24,7 +24,7 @@ static inline s32 Ov014z_FxMul64(s32 a, s64 b) {
 }
 
 void func_ov014_02215ffc(Ov014ActEx_022152e8 *self) {
-    func_ov000_02199ba0(self->unk_4c);
+    Target_Get(self->unk_4c);
     switch (self->unk_40->state) {
     case 0: {
         Ov014Vec *p;
@@ -109,7 +109,7 @@ BOOL func_ov014_02216324(Ov014Obj *self) {
     u16 mask;
     s32 rad;
     s32 n;
-    o = func_ov000_02199ba0(self->unk_4c);
+    o = Target_Get(self->unk_4c);
     p = func_ov000_0219bf90();
     k = o->id & 0xf000;
     mask = ~(1 << (k >> 12));

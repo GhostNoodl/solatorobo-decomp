@@ -13,7 +13,7 @@ void func_ov000_0215ec44(void *self);
 void func_ov000_0215e8b0(void *self);
 
 static inline TextWin *TextWin_New(void) {
-    TextWin *win = (TextWin *)func_0203dd9c(0xb8);
+    TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
         func_0204c7d0(win);
@@ -102,7 +102,7 @@ void func_ov000_021c628c(Obj021c628cS *self) {
         func_02041d9c(self->unk_10, 0, 4);
     }
     self->unk_88 = self->unk_84;
-    o = (u8 *)func_0203dd9c(0x2c);
+    o = (u8 *)Heap_Alloc(0x2c);
     if (o != NULL) {
         func_ov000_0215ec44(o);
     }

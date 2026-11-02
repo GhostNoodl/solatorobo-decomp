@@ -74,7 +74,7 @@ s32 func_ov000_021ba92c(Obj021ba92c *self) {
             break;
         }
         str = func_02061d64(self->unk_08);
-        t = (Ov000Text *)func_0203dd9c(0xb8);
+        t = (Ov000Text *)Heap_Alloc(0xb8);
         if (t != NULL) {
             t->vtbl = data_0208ba70;
             func_0204c7d0(t);

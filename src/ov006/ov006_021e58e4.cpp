@@ -22,7 +22,7 @@ extern void *data_02149ef8;
 extern void *data_ov000_021cac60[];
 extern void *data_ov000_021cad50[];
 
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215c1bc(void *a, int b, void *c);
 void func_02045094(ov006_Net021e58e4 *net);
 BOOL func_02044f70(ov006_Net021e58e4 *net);
@@ -51,7 +51,7 @@ static inline void ov006_MenuNode_Delete(ov006_MenuNode *node) {
 }
 
 static inline Object *ov006_NewDialog(void) {
-    Object *obj = (Object *)func_0203dd9c(0xe8);
+    Object *obj = (Object *)Heap_Alloc(0xe8);
     if (obj != NULL) {
         obj->vtbl = (ObjectVtbl *)data_ov000_021cac60;
         ((VObj *)obj)->v28();
@@ -65,7 +65,7 @@ static inline void ov006_Menu_OpenDialog(ov006_Unk021ec888 *self) {
     ov006_ObjectHolder *h = self->unk1D8;
     ov006_ObjectHolder_Clear(h);
     h->obj = ov006_NewDialog();
-    func_ov000_0215c1bc(h->obj, 0x11, func_0204c0e8(data_02149ef8, 0x172));
+    func_ov000_0215c1bc(h->obj, 0x11, MsgRes_GetString(data_02149ef8, 0x172));
     ((ov006_Dialog021e58e4 *)h->obj)->unk68 = -0x666;
     ((VObj *)h->obj)->v08();
     ((ov006_Dialog021e58e4 *)h->obj)->flags |= 0x10000;

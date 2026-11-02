@@ -114,8 +114,8 @@ extern "C" {
 extern void *data_ov000_021ccd64;
 extern Ov003SdGame *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
-extern Ov003SdUnit *func_ov000_0218bd5c(void *mgr, u16 id);
-extern Ov003SdObj *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov003SdUnit *Group_FindNode(void *mgr, u16 id);
+extern Ov003SdObj *ActorMgr_GetActor(void *mgr, u16 id);
 extern s32 FX_Div(s32 a, s32 b);
 extern void NNS_G3dRenderObjSetInitFunc(void *rob, void *func);
 extern void func_ov003_021d0c04(void *self);
@@ -195,7 +195,7 @@ static inline Ov003SdObj *Ov003Sd_FindObj(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 extern "C" u16 func_ov003_021d16cc(Ov003Sd *self) {
@@ -222,7 +222,7 @@ extern "C" u16 func_ov003_021d16cc(Ov003Sd *self) {
     alpha = 0x1f;
     unit = NULL;
     if (!self->unk_ea_14) {
-        unit = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+        unit = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     }
     if (unit != NULL) {
         Ov003SdGame *g = data_ov000_021ccd54;

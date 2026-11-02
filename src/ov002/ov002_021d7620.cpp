@@ -37,7 +37,7 @@ void func_ov002_021d7620(void *self) {
     u32 *q;
     char *name;
     res = func_02035d5c(FIELD(self, 0x4, void *));
-    FIELD(self, 0x18, void *) = func_0203dd9c(0x54);
+    FIELD(self, 0x18, void *) = Heap_Alloc(0x54);
     FIELD(self, 0x10, u32 *) = (u32 *)func_02034ec0(res, FIELD(self, 0x8, void *));
     ov002_strSet(buf, &FIELD(self, 0x8, void *), sizeof(buf));
     FIELD(self, 0x14, void *) = ov002_findEntry((u8 *)NNS_G3dGetMdlSet((void *)*FIELD(self, 0x10, u32 *)), buf);

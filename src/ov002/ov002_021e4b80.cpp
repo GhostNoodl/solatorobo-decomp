@@ -21,7 +21,7 @@ void func_ov002_021e4b80(void *self) {
         u32 saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0xc, void *) != NULL) {
-            func_0203de50(FIELD(self, 0xc, void *));
+            Heap_FreeArray(FIELD(self, 0xc, void *));
             FIELD(self, 0xc, void *) = NULL;
         }
         HEAP_POP(saved);
@@ -1483,7 +1483,7 @@ extern "C" {
 
 #define FIELD(p, off, T) (*(T *)((u8 *)(p) + (off)))
 extern void *data_02097ce0;
-u8 func_0206e8f0(void);
+u8 LangData_GetLang(void);
 void *func_0203a4c0(void *a);
 void func_0203a4e4(void *mgr, void *arg);
 int NNSi_G2dFontGetTextWidth(const void *pFont, int hSpace, const void *txt);
@@ -1511,7 +1511,7 @@ void func_ov002_021e6d4c(void *self) {
     if (Ov002_IsValidIdx(FIELD(self, 0xb8, s32))) {
         return;
     }
-    if (!func_0206e8f0()) {
+    if (!LangData_GetLang()) {
         y = 0x9c;
         pal = 3;
         x = 10;
@@ -1557,7 +1557,7 @@ static inline s32 classifyChar(s32 ch) {
     if (ch == 10) {
         return 4;
     }
-    if (((int (*)(void))func_0206e8f0)() == 0) {
+    if (((int (*)(void))LangData_GetLang)() == 0) {
         if (ch == 0x8141) {
             return 2;
         }
@@ -1585,13 +1585,13 @@ void func_ov002_021e6e40(void *self) {
         case 1:
             break;
         case 2:
-            if (((int (*)(void))func_0206e8f0)() == 0) {
+            if (((int (*)(void))LangData_GetLang)() == 0) {
                 ch = 0x8140;
             }
             FIELD(self, 0xb4, s32) += FIELD(self, 0xbc, s16) != 0 ? 0x5000 : 0;
             break;
         case 3:
-            if (((int (*)(void))func_0206e8f0)() == 0) {
+            if (((int (*)(void))LangData_GetLang)() == 0) {
                 ch = 0x8140;
             }
             FIELD(self, 0xb4, s32) += FIELD(self, 0xbc, s16) != 0 ? 0xa000 : 0;
@@ -1615,7 +1615,7 @@ void func_ov002_021e6fbc(void *self, s32 ch) {
     if (FIELD(self, 0x144, u8 *) > FIELD(self, 0xc4, Buf80) + 0x7e) {
         return;
     }
-    if (((int (*)(void))func_0206e8f0)() == 0) {
+    if (((int (*)(void))LangData_GetLang)() == 0) {
         if (ch == (ch & 0xff)) {
             *FIELD(self, 0x144, u8 *)++ = ch;
             *FIELD(self, 0x144, u8 *) = 0;
@@ -1684,7 +1684,7 @@ BOOL func_ov002_021e715c(void *self) {
 namespace m_021e719c {
 extern "C" {
 
-s32 func_02049130(s32 t, s32 a, s32 b);
+s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 
 void NNS_G3dGlbFlushP(void);
 
@@ -1705,7 +1705,7 @@ void func_ov002_021e719c(void *self) {
     if (now - FIELD(self, 0x18, s32) >= FIELD(self, 0x5c, s32)) {
         a = FIELD(self, 0x58, s32);
     } else {
-        a = func_02049130(FX_Div(now - FIELD(self, 0x18, s32), FIELD(self, 0x5c, s32)), FIELD(self, 0x54, s32) << 12, FIELD(self, 0x58, s32) << 12) >> 12;
+        a = Interp_SinLerp(FX_Div(now - FIELD(self, 0x18, s32), FIELD(self, 0x5c, s32)), FIELD(self, 0x54, s32) << 12, FIELD(self, 0x58, s32) << 12) >> 12;
     }
     {
         Vec3 zero = {0, 0, 0};
@@ -2002,7 +2002,7 @@ void func_ov002_021e7b58(void) {
         DELETE_VOBJ(*(VObject **)&data_ov002_021f0f9c);
         HEAP_POP(saved);
     }
-    p = func_0203dd9c(0x2cc);
+    p = Heap_Alloc(0x2cc);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0674;
         *(VFunc **)((u8 *)p + 0x6c) = data_ov002_021f0684;
@@ -2031,7 +2031,7 @@ void *Ov002Vt_021f0674_DtorDelete(void *self) {
     func_ov002_021e7dac(self);
     *(VFunc **)((u8 *)self + 0x6c) = data_ov002_021f0684;
     func_ov002_021eae3c((u8 *)self + 0x6c);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -2405,7 +2405,7 @@ void func_0204aad0(void *a);
 
 void func_0204a360(void *a, int b);
 
-BOOL func_0204985c(void *a);
+BOOL SndMgr_IsLoadDone(void *a);
 
 void func_ov002_021eaf20(void *self);
 
@@ -2419,7 +2419,7 @@ BOOL func_ov002_021e86a0(void *self) {
     case 0: {
         void **tbl;
         void *res;
-        void *m = func_0203dd9c(0x160);
+        void *m = Heap_Alloc(0x160);
         if (m != NULL) {
             void *file = data_ov002_021f0104[1];
             void *name = data_ov002_021f0104[2];
@@ -2447,7 +2447,7 @@ BOOL func_ov002_021e86a0(void *self) {
         FIELD(self, 0x8, s32) = 10;
     }
     case 10:
-        if (func_0204985c(data_02097e4c)) {
+        if (SndMgr_IsLoadDone(data_02097e4c)) {
             FIELD(self, 0x8, s32) = 0x14;
         }
         break;
@@ -2549,7 +2549,7 @@ extern "C" {
 void *Ov002Vt_021f0734_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -2617,7 +2617,7 @@ void func_ov002_021e8c0c(void *self) {
                 if (p != NULL) {
                     func_02041558(p);
                     func_02041278((u8 *)p + 0x88);
-                    func_0203de1c(p);
+                    Heap_Free(p);
                 }
                 FIELD(self, 0x124, void *) = NULL;
             }
@@ -2748,7 +2748,7 @@ void func_ov002_021e8f04(s32 idx) {
         DELETE_VOBJ(*(VObject **)&data_ov002_021f0f9c);
         HEAP_POP(saved);
     }
-    p = func_0203dd9c(0x2cc);
+    p = Heap_Alloc(0x2cc);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0674;
         *(VFunc **)((u8 *)p + 0x6c) = data_ov002_021f0684;
@@ -2762,7 +2762,7 @@ void func_ov002_021e8f04(s32 idx) {
     name = *(void **)(data_ov002_021f0878 + off);
     g = (u8 *)GAME;
     FIELD(g, 0x20, void *) = name;
-    m = ((u8 (*)(void))func_0206e8f0)();
+    m = ((u8 (*)(void))LangData_GetLang)();
     MI_CpuFill8(g + 0x24, 0, 0x20);
     STD_CopyLString(g + 0x24, name, 0x20);
     STD_TSNPrintf(g + 0x24, 0x20, data_ov002_021f0647, name, data_ov002_021f0624[m]);
@@ -2772,7 +2772,7 @@ void func_ov002_021e8f04(s32 idx) {
         g2 = GAME;
         desc = *(void **)(data_ov002_021f087c + off);
         FIELD(g2, 0x44, void *) = desc;
-        func_ov002_021e9d7c(g2 + 0x48, 0x20, desc, 0, ((u8 (*)(void))func_0206e8f0)());
+        func_ov002_021e9d7c(g2 + 0x48, 0x20, desc, 0, ((u8 (*)(void))LangData_GetLang)());
     }
     v = *(s16 *)(data_ov002_021f0880 + off);
     if (v > 0) {
@@ -2855,7 +2855,7 @@ static inline void func_ov002_021e4cd8_inline5(void *self) {
     FIELD(ctx, 0xe0, void *) = self;
 }
 void *func_ov002_021e91c8(s32 a, s32 b, s32 c, bool d, u8 e) {
-    void *p = func_0203dd9c(0x1f4);
+    void *p = Heap_Alloc(0x1f4);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline5(p);
@@ -2892,7 +2892,7 @@ static inline void func_ov002_021e4cd8_inline2(void *self) {
     FIELD(ctx, 0xe0, void *) = self;
 }
 void *func_ov002_021e92b0(s32 a, s32 b, s32 c, s32 d, s32 e) {
-    void *p = func_0203dd9c(0xec);
+    void *p = Heap_Alloc(0xec);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
@@ -2937,7 +2937,7 @@ static inline void func_ov002_021e4cd8_inline2(void *self) {
 }
 
 void *func_ov002_021e9380(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f) {
-    void *p = func_0203dd9c(0x70);
+    void *p = Heap_Alloc(0x70);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
@@ -2959,7 +2959,7 @@ void *func_ov002_021e9380(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f) {
 extern VFunc data_ov002_021f0784[];
 
 void *func_ov002_021e9478(s32 a, s32 b, s32 c, s32 d, u16 e, s32 mode, u8 f, u8 g) {
-    void *p = func_0203dd9c(0x60);
+    void *p = Heap_Alloc(0x60);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
@@ -3009,7 +3009,7 @@ extern const Vec3 data_ov002_021ef0c8;
 
 void *func_ov002_021e95c4(u8 *a, u8 *b) {
     s32 i;
-    u8 *p = (u8 *)func_0203dd9c(0xcc);
+    u8 *p = (u8 *)Heap_Alloc(0xcc);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
@@ -3071,7 +3071,7 @@ extern VFunc data_ov002_021f07fc[];
 
 void *func_ov002_021e97e8(u8 *a, u8 *b) {
     s32 i;
-    u8 *p = (u8 *)func_0203dd9c(0xb8);
+    u8 *p = (u8 *)Heap_Alloc(0xb8);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
@@ -3138,7 +3138,7 @@ static inline void func_ov002_021e4cd8_inline4(void *self) {
     FIELD(ctx, 0xe0, void *) = self;
 }
 void *func_ov002_021e9974(s32 a, s32 b, s16 c, void *d) {
-    void *p = func_0203dd9c(0x54);
+    void *p = Heap_Alloc(0x54);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline4(p);
@@ -3177,7 +3177,7 @@ static inline void func_ov002_021e4cd8_inline3(void *self) {
     FIELD(ctx, 0xe0, void *) = self;
 }
 void *func_ov002_021e9a50(void *a, void *b) {
-    void *p = func_0203dd9c(0x160);
+    void *p = Heap_Alloc(0x160);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline3(p);
@@ -3212,7 +3212,7 @@ static inline void func_ov002_021e4cd8_inline(void *self) {
     FIELD(ctx, 0xe0, void *) = self;
 }
 void *func_ov002_021e9b28(void *arg) {
-    void *p = func_0203dd9c(0x4c);
+    void *p = Heap_Alloc(0x4c);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline(p);
@@ -3259,7 +3259,7 @@ void *Ov002Vt_021f0cf8_Ctor(void *p);
 void func_ov002_021ec1c4(void *p);
 
 void *func_ov002_021e9bd8(void *a, void *b) {
-    void *p = func_0203dd9c(0xac);
+    void *p = Heap_Alloc(0xac);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
@@ -3356,7 +3356,7 @@ void func_ov002_021e9e40(int idx) {
     name = *(void **)(data_ov002_021f0878 + off);
     g = (u8 *)GAME;
     FIELD(g, 0x20, void *) = name;
-    m = ((u8 (*)(void))func_0206e8f0)();
+    m = ((u8 (*)(void))LangData_GetLang)();
     MI_CpuFill8(g + 0x24, 0, 0x20);
     STD_CopyLString(g + 0x24, name, 0x20);
     STD_TSNPrintf(g + 0x24, 0x20, data_ov002_021f0647, name, data_ov002_021f0624[m]);
@@ -3366,7 +3366,7 @@ void func_ov002_021e9e40(int idx) {
         g2 = GAME;
         desc = *(void **)(data_ov002_021f087c + off);
         FIELD(g2, 0x44, void *) = desc;
-        func_ov002_021e9d7c(g2 + 0x48, 0x20, desc, 0, ((u8 (*)(void))func_0206e8f0)());
+        func_ov002_021e9d7c(g2 + 0x48, 0x20, desc, 0, ((u8 (*)(void))LangData_GetLang)());
     }
     v = *(s16 *)(data_ov002_021f0880 + off);
     if (v > 0) {

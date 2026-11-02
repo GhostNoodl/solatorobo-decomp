@@ -12,7 +12,7 @@ typedef struct {
 extern "C" {
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *out);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
-void func_ov000_0218d398(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 
 void func_ov000_021b4560(Actor *self, Actor *t) {
     VecFx32 p;
@@ -36,6 +36,6 @@ void func_ov000_021b4560(Actor *self, Actor *t) {
     msg.rot[1] = t->rot_y;
     msg.rot[2] = t->rot_z;
     msg.unk_1c = 0;
-    func_ov000_0218d398(t, self->id, 7, TRUE, 0x18, &msg);
+    Actor_SendMsg(t, self->id, 7, TRUE, 0x18, &msg);
 }
 }

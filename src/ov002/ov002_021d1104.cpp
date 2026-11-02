@@ -15,7 +15,7 @@ void func_ov002_021d1108(Task50 *self) {
 }
 
 Task50 *func_ov002_021d1144(void) {
-    Task50 *p = (Task50 *)func_0203dd9c(0x70);
+    Task50 *p = (Task50 *)Heap_Alloc(0x70);
     if (p != NULL) {
         TaskBase_ctor(p);
         *(VFunc **)p = data_ov002_021ef71c;
@@ -41,7 +41,7 @@ Task50 *Ov002TaskVt_021ef71c_DtorDelete(Task50 *self) {
     *(VFunc **)self = data_ov002_021ef71c;
     func_ov002_021e916c();
     TaskBase_dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

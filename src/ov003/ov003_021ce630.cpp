@@ -207,7 +207,7 @@ extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
 extern void func_02040a98(char *buf, u16 v);
 extern u32 *func_ov000_0219bf7c(void);
 extern Ov003Effect *func_02065f88(s32 id, const Ov003Vec *pos);
-extern const char *func_0204c0e8(void *mgr, s32 id);
+extern const char *MsgRes_GetString(void *mgr, s32 id);
 extern void func_ov003_021cebe8(s32 n);
 
 s16 *func_ov003_021ce630(s16 *p, Ov003Hit *hit) {
@@ -428,7 +428,7 @@ void func_ov003_021cebe8(s32 n) {
         pl->unk_b44 = fx->handle;
         Ov003Log_AddEmpty(7);
         if (data_02149ef8 != NULL) {
-            Ov003Log_Add(0, func_0204c0e8(data_02149ef8, 0x4e));
+            Ov003Log_Add(0, MsgRes_GetString(data_02149ef8, 0x4e));
         }
         hp = pl->hp;
         hp->unk_0a = 0x78;

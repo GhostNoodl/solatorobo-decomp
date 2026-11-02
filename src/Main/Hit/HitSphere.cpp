@@ -6,7 +6,7 @@ extern "C" {
 extern HitSphere *data_02fe0f10;
 extern int data_02fe0ef4;
 
-int func_0203f248(int a, int b) {
+int Hit_FxMul(int a, int b) {
     return (int)(((s64)a * b + 0x800) >> 12);
 }
 
@@ -53,7 +53,7 @@ void func_0203f2b8(HitSphere *hit) {
     HitSphere_Unlink(hit);
 }
 
-void func_0203f324(HitSphere *hit) {
+void HitSphere_Link(HitSphere *hit) {
     if (hit->active != 0) {
         return;
     }
@@ -327,7 +327,7 @@ void func_0203f864(HitMesh *mesh) {
     }
 }
 
-void func_0203f8d8(HitMesh *mesh) {
+void HitMesh_Link(HitMesh *mesh) {
     if (mesh->active) {
         return;
     }
@@ -341,7 +341,7 @@ void func_0203f920(HitMesh *mesh) {
     HitMesh_Unlink(mesh);
 }
 
-void func_0203f990(HitMesh *mesh, HitMeshRes *res) {
+void HitMesh_SetRes(HitMesh *mesh, HitMeshRes *res) {
     mesh->res = res;
     mesh->scale = 0x1000;
     mesh->invScale = 0x1000;
@@ -349,13 +349,13 @@ void func_0203f990(HitMesh *mesh, HitMeshRes *res) {
     func_0203fa0c(mesh);
 }
 
-void func_0203f9b8(HitMesh *mesh, int scale) {
+void HitMesh_SetScale(HitMesh *mesh, int scale) {
     mesh->scale = scale;
     mesh->invScale = FX_Inv(scale);
     func_0203fa0c(mesh);
 }
 
-void func_0203f9dc(HitMesh *mesh, const HitMtx *mtx) {
+void HitMesh_SetMtx(HitMesh *mesh, const HitMtx *mtx) {
     MI_Copy48B(mtx, &mesh->mtx);
     MTX_Inverse43(mtx, &mesh->invMtx);
     func_0203fa0c(mesh);
@@ -441,7 +441,7 @@ void func_0203fb08(HitMesh *mesh) {
     header->relocated = 1;
 }
 
-void func_0203fc1c(void) {
+void Hit_ResetLists(void) {
     data_02fe0ef4 = 0;
     data_02fe0f10 = NULL;
     data_02fe0f0c = 0;
@@ -452,7 +452,7 @@ void func_0203fc1c(void) {
 void func_0203fc54(void) {
 }
 
-HitMeshRes *func_0203fc58(HitMesh *mesh) {
+HitMeshRes *HitMesh_GetRes(HitMesh *mesh) {
     return mesh->res;
 }
 

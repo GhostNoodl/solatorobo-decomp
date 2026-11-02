@@ -43,7 +43,7 @@ BOOL func_ov002_021d2410(void *self, void *ev) {
         if (n <= 0) {
             VObject *p;
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
-            p = (VObject *)func_0203dd9c(0xe8);
+            p = (VObject *)Heap_Alloc(0xe8);
             if (p != NULL) {
                 *(VFunc **)p = data_ov000_021cac60;
                 p->v0x28();
@@ -51,14 +51,14 @@ BOOL func_ov002_021d2410(void *self, void *ev) {
                 p->v0x28();
             }
             FIELD(owner, 0x48, VObject *) = p;
-            func_ov000_0215c1bc(FIELD(owner, 0x48, void *), 0x11, func_0204c0e8(data_02149ef8, 0xf6));
+            func_ov000_0215c1bc(FIELD(owner, 0x48, void *), 0x11, MsgRes_GetString(data_02149ef8, 0xf6));
             FIELD(FIELD(owner, 0x48, void *), 0xc, u32) &= ~0x10000;
             FIELD(owner, 0x48, VObject *)->v0x8();
             FIELD(owner, 0x48, VObject *)->v0x70();
         } else {
             u8 *w = (u8 *)func_ov000_0218084c(data_ov000_021ccd44, 0x19, 0);
             if (idx < 7) {
-                int mode = func_0206e8f0();
+                int mode = LangData_GetLang();
                 func_ov002_021d4540(w + 0x44, 0x20, data_ov002_021ef5ac.param, data_ov002_021ef650, mode);
                 func_ov002_021d4540(w + 0x64, 0x18, data_ov002_021ef634[idx], data_ov002_021ef5ac.bmExt, mode);
                 func_ov002_021d4540(w + 0x7c, 0x18, data_ov002_021ef634[idx], data_ov002_021ef5ac.hdExt, mode);
@@ -102,7 +102,7 @@ void func_ov002_021d25ec(Task50 *self) {
 }
 
 void func_ov002_021d2720(void *self) {
-    func_ov002_021d4540((u8 *)self + 0xf4, 0x20, data_ov002_021ef5ac.param, data_ov002_021ef650, func_0206e8f0());
+    func_ov002_021d4540((u8 *)self + 0xf4, 0x20, data_ov002_021ef5ac.param, data_ov002_021ef650, LangData_GetLang());
     func_020359d0((u8 *)self + 0xf4, 7, 0);
 }
 
@@ -168,11 +168,11 @@ void func_ov002_021d278c(void *self) {
     }
     g = data_02149ef8;
     for (i = 0; i < 7; i++) {
-        func_ov002_021d4540(buf, 0x18, data_ov002_021ef634[i], data_ov002_021ef5ac.hdExt, ((int (*)(void))func_0206e8f0)());
+        func_ov002_021d4540(buf, 0x18, data_ov002_021ef634[i], data_ov002_021ef5ac.hdExt, ((int (*)(void))LangData_GetLang)());
         func_ov002_021e4814((u8 *)self + 0x4c + i * 0x18, *(u8 **)func_02035d8c((u8 *)self + 0xf4, buf));
     }
     {
-        VObject *p = (VObject *)func_0203dd9c(0xf4);
+        VObject *p = (VObject *)Heap_Alloc(0xf4);
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
             p->v0x28();
@@ -189,14 +189,14 @@ void func_ov002_021d278c(void *self) {
         FIELD(s, 0x66, s16) = 0x14;
         FIELD(s, 0x68, s16) = -0x199a;
     }
-    FIELD(self, 0x3c, VObject *)->v0x10(func_0204c0e8(g, 0xe5));
-    FIELD(self, 0x3c, VObject *)->v0x14(func_0204c0e8(g, 0xe7));
+    FIELD(self, 0x3c, VObject *)->v0x10(MsgRes_GetString(g, 0xe5));
+    FIELD(self, 0x3c, VObject *)->v0x14(MsgRes_GetString(g, 0xe7));
     FIELD(FIELD(self, 0x3c, void *), 0xc, u32) &= ~0x40000;
     for (i = 0; i < 7; i++) {
         u32 val;
         u32 lvl;
         u8 *q;
-        q = (u8 *)func_0203dd9c(0x44);
+        q = (u8 *)Heap_Alloc(0x44);
         if (q != NULL) {
             *(VFunc **)q = data_ov002_021ef684;
             func_ov000_021c22d8(q);
@@ -226,7 +226,7 @@ void func_ov002_021d278c(void *self) {
     FIELD(FIELD(self, 0x3c, void *), 0xe4, void *) = (void *)func_ov002_021d2410;
     FIELD(self, 0x3c, VObject *)->v0x8();
     {
-        VObject *p = (VObject *)func_0203dd9c(0x8c);
+        VObject *p = (VObject *)Heap_Alloc(0x8c);
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
             p->v0x28();
@@ -254,7 +254,7 @@ void func_ov002_021d278c(void *self) {
     FIELD(FIELD(self, 0x40, void *), 0x48, u16) = 0xb;
     FIELD(self, 0x40, VObject *)->v0x8();
     {
-        VObject *p = (VObject *)func_0203dd9c(0xe0);
+        VObject *p = (VObject *)Heap_Alloc(0xe0);
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
             p->v0x28();
@@ -275,8 +275,8 @@ void func_ov002_021d278c(void *self) {
     }
     FIELD(FIELD(self, 0x44, void *), 0xc, u32) |= 0x20000000;
     FIELD(FIELD(self, 0x44, void *), 0xc, u32) |= 0x80000000;
-    FIELD(self, 0x44, VObject *)->v0xf4(1, func_0204c0e8(g, 0x34));
-    FIELD(self, 0x44, VObject *)->v0xf4(2, func_0204c0e8(g, 0x33));
+    FIELD(self, 0x44, VObject *)->v0xf4(1, MsgRes_GetString(g, 0x34));
+    FIELD(self, 0x44, VObject *)->v0xf4(2, MsgRes_GetString(g, 0x33));
     FIELD(self, 0x44, VObject *)->v0x8();
     func_ov000_02173648(self);
 }
@@ -394,7 +394,7 @@ void func_ov002_021d2ef8(Task50 *self) {
 }
 
 Task50 *func_ov002_021d2f64(void) {
-    Task50 *p = (Task50 *)func_0203dd9c(0xd0);
+    Task50 *p = (Task50 *)Heap_Alloc(0xd0);
     if (p != NULL) {
         TaskBase_ctor(p);
         *(VFunc **)p = data_ov002_021ef91c;
@@ -450,7 +450,7 @@ void func_ov002_021d2fdc(void *self) {
     func_ov002_021e4814((u8 *)self + 0x94, *(u8 **)func_02035d8c((u8 *)self + 0x44, (u8 *)self + 0x7c));
     func_ov002_021e4a78((u8 *)self + 0xac, *(u8 **)func_02035d8c((u8 *)self + 0x44, (u8 *)self + 0x64));
     {
-        p = (VObject *)func_0203dd9c(0xe0);
+        p = (VObject *)Heap_Alloc(0xe0);
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
             p->v0x28();
@@ -477,10 +477,10 @@ void func_ov002_021d2fdc(void *self) {
     }
     FIELD(FIELD(self, 0x40, void *), 0xc, u32) |= 0x20000000;
     FIELD(FIELD(self, 0x40, void *), 0xc, u32) |= 0x80000000;
-    FIELD(self, 0x40, VObject *)->v0xf4(2, func_0204c0e8(g, 0x33));
+    FIELD(self, 0x40, VObject *)->v0xf4(2, MsgRes_GetString(g, 0x33));
     FIELD(self, 0x40, VObject *)->v0x8();
     {
-        p = (VObject *)func_0203dd9c(0xd4);
+        p = (VObject *)Heap_Alloc(0xd4);
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
             p->v0x28();
@@ -495,7 +495,7 @@ void func_ov002_021d2fdc(void *self) {
     FIELD(FIELD(self, 0x3c, void *), 0xc4, u32) &= ~2;
     FIELD(FIELD(self, 0x3c, void *), 0xc4, u32) &= ~1;
     for (i = 0; i < FIELD(self, 0xc0, u32); i++) {
-        u8 *q = (u8 *)func_0203dd9c(0x44);
+        u8 *q = (u8 *)Heap_Alloc(0x44);
         if (q != NULL) {
             *(VFunc **)q = data_ov002_021ef684;
             func_ov000_021c22d8(q);
@@ -561,7 +561,7 @@ void func_ov002_021d331c(void *self) {
             if (p != NULL) {
                 func_02041558(p);
                 func_02041278((u8 *)p + 0x88);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             FIELD(self, 0xc4, void *) = NULL;
         }

@@ -2,7 +2,7 @@
 
 extern void func_0203835c(void *data);
 
-ResList *func_02034b44(ResList *list) {
+ResList *ResList_Init(ResList *list) {
     list->head = NULL;
     return list;
 }
@@ -95,7 +95,7 @@ extern const char data_0208b301[]; // ".nsbtp"
 extern const char data_0208b308[]; // ".nsbva"
 
 extern BOOL func_020395a8(const char *a, const char *b, int len);
-extern void func_02039610(char *dst, const char *src, int len);
+extern void Str_CopyStem(char *dst, const char *src, int len);
 extern const char *func_02039644(const char *path);
 extern void NNS_G2dFontInitAuto(void *out, void *data);
 extern BOOL NNS_G2dGetUnpackedCellBank(void *data, void *out);
@@ -137,7 +137,7 @@ void func_02035094(ResList *list, ResRequest *req) {
         if (entry->type == 0) {
             STD_CopyString(node->name, entry->name);
         } else {
-            func_02039610(node->name, entry->name, 0x18);
+            Str_CopyStem(node->name, entry->name, 0x18);
         }
         node->hash = ResMgr_Hash(data_02097cdc, node->name);
         node->type = entry->type;

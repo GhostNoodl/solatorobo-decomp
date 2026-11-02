@@ -19,7 +19,7 @@ void *Ov015FishState18_DtorDelete(void *self) {
     SET_VT(self, data_ov015_02212f20);
     VCALL(self)->v10(0);
     SET_VT(self, data_ov015_02212eb0);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

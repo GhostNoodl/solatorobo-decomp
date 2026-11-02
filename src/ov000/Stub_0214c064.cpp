@@ -19,7 +19,7 @@ extern "C" {
 
 extern u8 data_ov000_021ccd24[];
 extern Shared02fe1534 data_02fe1534;
-s32 func_0204c0e8(void *a, void *b);
+s32 MsgRes_GetString(void *a, void *b);
 
 u32 func_ov000_0214c01c(u16 arg) {
     data_02fe1534.unk_70 = 1;
@@ -30,7 +30,7 @@ u32 func_ov000_0214c01c(u16 arg) {
 }
 
 s32 func_ov000_0214c064(void *arg) {
-    return func_0204c0e8(*(void **)((u8 *)((void **)data_ov000_021ccd24)[2] + 0xbc), arg);
+    return MsgRes_GetString(*(void **)((u8 *)((void **)data_ov000_021ccd24)[2] + 0xbc), arg);
 }
 
 }

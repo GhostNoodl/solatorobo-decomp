@@ -61,7 +61,7 @@ void func_02043b20(void *p);
 void func_020434e0(void *p);
 void func_ov000_021b65ec(Mgr021b53f4 *self);
 void *func_ov000_021b7a7c(Node021b53f4 *n);
-void func_0203de1c(void *p);
+void Heap_Free(void *p);
 Ent021b53f4 *func_0206e7d0(u8 id);
 void func_0206dfd4(char *buf, u8 *ids);
 void func_02035acc(void *a, char *buf, s32 c);
@@ -88,7 +88,7 @@ void func_ov000_021b53f4(Mgr021b53f4 *self) {
         next = n->next;
         if (n != NULL) {
             func_ov000_021b7a7c(n);
-            func_0203de1c(n);
+            Heap_Free(n);
         }
         if (prev != NULL) {
             prev->next = next;

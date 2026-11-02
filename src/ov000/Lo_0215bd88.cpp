@@ -26,7 +26,7 @@ static inline void ModelInit(u8 *m, void *s, void *nm) {
 class Model {
 public:
     u8 data[0x160];
-    static void *operator new(unsigned long size) { return func_0203dd9c(size); }
+    static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     Model(void *nm, void *s) {
         func_02041218(data + 0x88);
         func_02041440(data, nm, 0);

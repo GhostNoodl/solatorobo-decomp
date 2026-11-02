@@ -44,7 +44,7 @@ ov006_Unk021d90e8 *Ov006Vt_021ec040_Dtor(ov006_Unk021d90e8 *self) {
 
 ov006_Unk021d90e8 *Ov006Vt_021ec040_DtorDelete(ov006_Unk021d90e8 *self) {
     ov006_Unk021d90e8_dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

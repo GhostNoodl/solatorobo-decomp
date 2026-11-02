@@ -14,7 +14,7 @@ extern BOOL FS_OpenFile(FSFile *file, const char *path);
 extern u32 FS_GetLength(FSFile *file);
 extern ResList *func_02034b50(ResList *list);
 extern void func_0203835c(ResData *data);
-extern void func_0203de1c(void *ptr);
+extern void Heap_Free(void *ptr);
 extern void *func_0203de84(u32 size, int align);
 extern void func_0203df0c(void *ptr);
 extern void func_0203df40(void *ptr);
@@ -28,7 +28,7 @@ void func_020381cc(ResMgr *mgr, ResNode *node) {
         if (list != NULL) {
             if (list != NULL) {
                 func_02034b50(list);
-                func_0203de1c(list);
+                Heap_Free(list);
             }
             node->u.arc.list = NULL;
         }

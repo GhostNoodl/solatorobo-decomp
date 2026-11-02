@@ -34,7 +34,7 @@ static inline BOOL Fade021633ac_Done(void) {
 }
 
 static inline VObj *Res021633ac_New(const char *arc, const char *name) {
-    VObj *o = (VObj *)func_0203dd9c(0x58);
+    VObj *o = (VObj *)Heap_Alloc(0x58);
     if (o != NULL) {
         VOBJ_SET_VTABLE(o, data_0208b318);
         o->vfunc_08();
@@ -61,7 +61,7 @@ BOOL func_ov000_021633ac(Loader021633ac *self) {
     case 2:
         func_0204c030(self->unk_24);
         self->unk_18 = func_0204c08c(self->unk_24, self->unk_14, &self->unk_1c, 1);
-        o = (VObj *)func_0203dd9c(0xb80);
+        o = (VObj *)Heap_Alloc(0xb80);
         if (o != NULL) {
             VOBJ_SET_VTABLE(o, data_0208ba70);
             func_0204c7d0(o);

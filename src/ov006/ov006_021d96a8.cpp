@@ -51,7 +51,7 @@ extern ov006_Pad021d96a8 *data_02097dc8;
 extern u8 *data_0214a424;
 extern u8 *data_02097e40;
 extern void *data_02097e4c;
-void *func_02046a50(void *a, int idx);
+void *Wh_GetSharedData(void *a, int idx);
 void func_0203cb78(s32 a, int b, int c);
 void func_0203cc58(s32 a, int b, int c);
 void func_ov000_0215d980(void *a, s32 b, s32 c);
@@ -101,7 +101,7 @@ BOOL func_ov006_021d96a8(ov006_Task021d96a8 *self) {
     BOOL send = FALSE;
     if (data_ov006_021ec860->unk1C != 0 && data_ov006_021ec888->unk8 != 9) {
         send = TRUE;
-        func_02046a50(data_02097e40, 0);
+        Wh_GetSharedData(data_02097e40, 0);
     }
     switch (self->unkC) {
     case 0:

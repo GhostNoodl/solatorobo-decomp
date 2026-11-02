@@ -117,9 +117,9 @@ extern void *data_02097e4c;
 extern u8 *data_ov000_021ccd54;
 extern u8 *data_ov000_021ccd68;
 extern u8 *data_0214a424;
-u8 *func_ov000_0218d240(u8 *self);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
-u16 func_ov000_0218d8f4(void *self, void *target);
+u8 *Actor_GetTarget(u8 *self);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
+u16 Actor_YawToPos(void *self, void *target);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 BOOL func_ov000_02198360(void *st, s32 state, s32 x);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
@@ -131,12 +131,12 @@ BOOL func_ov000_02191508(void *a);
 void func_ov000_021911c8(void *a, s32 b);
 void *func_ov000_02191318(void *a, s32 frame);
 void func_ov000_02191418(void *a, s32 b, s32 c);
-u16 func_0204bfa8(void *cam);
+u16 Camera_GetYaw(void *cam);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-s32 func_02040498(s32 max);
+s32 Rand_UpTo(s32 max);
 void func_ov000_0218996c(s32 a, s32 b);
 void func_ov000_021899d8(VecFx32 *a, s32 b, s32 c, s32 d, s16 e, s16 f);
-void func_ov000_0218d398(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
@@ -148,7 +148,7 @@ static inline u16 CamYaw_021a6280(u8 *cam) {
     if (LFLD(u16, cam, 0x40) != 0) {
         return LFLD(u16, cam, 0x44);
     }
-    return func_0204bfa8(cam);
+    return Camera_GetYaw(cam);
 }
 
 static inline u8 *FindActor_021a6280(u16 id) {
@@ -156,7 +156,7 @@ static inline u8 *FindActor_021a6280(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    r = (u8 *)func_ov000_0218e640(data_ov000_021ccd68, id);
+    r = (u8 *)ActorMgr_GetActor(data_ov000_021ccd68, id);
     return r;
 }
 
@@ -315,10 +315,10 @@ void func_ov000_021a6280(Robo021ca458 *self) {
         ST(self)->st++;
         break;
     case 1:
-        t = func_ov000_0218d240((u8 *)self);
+        t = Actor_GetTarget((u8 *)self);
         if (t != NULL) {
             if (LFLD(void *, t, 0x44) != NULL) {
-                ang = func_ov000_0218d8f4(self, LFLD(void *, t, 0x44));
+                ang = Actor_YawToPos(self, LFLD(void *, t, 0x44));
             } else {
                 ang = AngleTo_021a6280(self, t);
             }
@@ -372,7 +372,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
                         m.pos = v;
                         *(Rot_021a6280 *)m.rot = LFLD(Rot_021a6280, a, 0x7c);
                         m.x = 0;
-                        func_ov000_0218d398(a, self->id, 7, TRUE, 0x18, &m);
+                        Actor_SendMsg(a, self->id, 7, TRUE, 0x18, &m);
                     }
                 }
                 LFLD(u16, a, 0x7e) = ang;
@@ -450,7 +450,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
                     }
                     if (B24(self).b22 != 0 || B24(self).b26) {
                         if (RgbEq_021a6280((Rgb_021a6280 *)(data_ov000_021ccd54 + 0xca), data_ov000_021c9fe8.rgb)) {
-                            func_02049bdc(data_02097e4c, 0x5e, func_02040498(3));
+                            func_02049bdc(data_02097e4c, 0x5e, Rand_UpTo(3));
                         }
                     }
                 }

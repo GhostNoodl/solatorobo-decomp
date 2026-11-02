@@ -45,7 +45,7 @@ extern u8 *data_ov000_021ccd6c;
 extern u8 *data_02149f0c;
 extern u8 *data_0214a424;
 void func_ov000_021b06dc(u8 *self);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_ov000_0216adc0(void *p, s32 a, u16 b);
 void func_ov000_021b3d78(u8 *self);
 void func_ov000_0218c208(void *a, void *pos, u16 ang);
@@ -62,7 +62,7 @@ static inline Actor *GetObj021a0d4c(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline void Reset021a0d4c(Robo021ca458 *self) {

@@ -29,7 +29,7 @@ void func_ov002_021e2fb4(void *self) {
     switch (FIELD(self, 0x48, s32)) {
     case 0:
         if (FIELD(self, 0x45, u8)) {
-            void *m = func_0203dd9c(0x160);
+            void *m = Heap_Alloc(0x160);
             u8 *info;
             if (m != NULL) {
                 char *nm = data_ov002_021effec;
@@ -75,7 +75,7 @@ void func_ov002_021e2fb4(void *self) {
                     if (p != NULL) {
                         func_02041558(p);
                         func_02041278((u8 *)p + 0x88);
-                        func_0203de1c(p);
+                        Heap_Free(p);
                     }
                     FIELD(self, 0x30, void *) = NULL;
                 }

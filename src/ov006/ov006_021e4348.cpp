@@ -24,7 +24,7 @@ extern ov006_Unk02097e40 *data_02097e40;
 
 void func_ov006_021e3dd4(ov006_ModelHolder *self, int a);
 BOOL func_02044e38(ov006_Unk02097e40 *a, int b);
-void func_02046a6c(ov006_Unk02097e40 *a, u32 b);
+void Wh_SetGgid(ov006_Unk02097e40 *a, u32 b);
 void func_02046a78(ov006_Unk02097e40 *a, void *b, u32 c);
 void OS_GetOwnerInfo(void *a);
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
@@ -57,7 +57,7 @@ void func_ov006_021e4348(ov006_Unk021ec888 *self) {
     ov006_ObjectHolder *h;
     switch (self->unk8) {
     case 0: {
-        ov006_ModelHolder *mh = (ov006_ModelHolder *)func_0203dd9c(sizeof(ov006_ModelHolder));
+        ov006_ModelHolder *mh = (ov006_ModelHolder *)Heap_Alloc(sizeof(ov006_ModelHolder));
         ov006_ObjectHolder *oh;
         if (mh != NULL) {
             mh->vtbl = &data_ov006_021ec424;
@@ -67,7 +67,7 @@ void func_ov006_021e4348(ov006_Unk021ec888 *self) {
         }
         self->unk1D4 = mh;
         func_ov006_021e3dd4(self->unk1D4, 2);
-        oh = (ov006_ObjectHolder *)func_0203dd9c(sizeof(ov006_ObjectHolder));
+        oh = (ov006_ObjectHolder *)Heap_Alloc(sizeof(ov006_ObjectHolder));
         if (oh != NULL) {
             oh->vtbl = &data_ov006_021ec414;
             oh->obj = NULL;
@@ -78,7 +78,7 @@ void func_ov006_021e4348(ov006_Unk021ec888 *self) {
     }
     case 2:
         func_02044e38(data_02097e40, 0);
-        func_02046a6c(data_02097e40, 0x401336);
+        Wh_SetGgid(data_02097e40, 0x401336);
         func_02046a78(data_02097e40, self->unkF4, ov006_GetOwnerName(self->unkF4, 0x16));
         data_02097e40->unk80 = (void *)func_ov006_021e5ef0;
         data_02097dd0->unk18 = 0;

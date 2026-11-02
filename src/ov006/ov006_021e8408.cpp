@@ -67,7 +67,7 @@ void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 void func_ov000_0218996c(s32 a, s32 b);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 void func_ov000_021911c8(void *a, s32 b);
-s32 func_02040528(s32 range);
+s32 Rand_PlusMinus(s32 range);
 u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
 void func_ov006_021e96cc(ov006_Prop021e8408 *self);
 
@@ -107,8 +107,8 @@ void func_ov006_021e8408(ov006_Prop021e8408 *self) {
             VecFx32 at;
             ov006_Eff021e8408 *eff;
             at = self->pos;
-            at.x += func_02040528(0x1000);
-            at.z += func_02040528(0x1000);
+            at.x += Rand_PlusMinus(0x1000);
+            at.z += Rand_PlusMinus(0x1000);
             eff = func_02065f88(0x325, &at);
             if (eff != NULL) {
                 ((VObj *)eff)->v0C(0xc00);

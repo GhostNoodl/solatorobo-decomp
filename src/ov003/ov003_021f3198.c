@@ -66,11 +66,11 @@ extern Ov003BlinkTarget *func_ov000_0219bf90(void);
 extern BOOL func_ov000_02191120(void *model);
 extern char data_ov003_021fa2d2[];
 
-extern void func_ov000_021b4c60(void *self);
+extern void Ov000ActVt_021cc7cc_Start(void *self);
 extern BOOL func_ov000_02190cb0(void *model, const void *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 v);
-extern s32 func_02040528(s32 max);
+extern s32 Rand_PlusMinus(s32 max);
 extern void VEC_MultAdd(s32 scale, const Ov003Vec *dir, const Ov003Vec *base, Ov003Vec *out);
 extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 extern Ov003BlinkInfo *func_0206fef8(u16 id);
@@ -115,7 +115,7 @@ void func_ov003_021f3198(Ov003Blink *self) {
 }
 
 void Ov003ActVt_021fa3e8_Start(Ov003Blink *self) {
-    func_ov000_021b4c60(self);
+    Ov000ActVt_021cc7cc_Start(self);
     self->u.drift.offset.x = 0;
     self->u.drift.offset.y = 0;
     self->u.drift.offset.z = 0;
@@ -127,12 +127,12 @@ void Ov003ActVt_021fa3e8_Start(Ov003Blink *self) {
 void func_ov003_021f32c0(Ov003Blink *self) {
     Ov003Vec v;
     s32 z;
-    self->u.drift.phase += func_02040528(0xe1) + 0x9a;
+    self->u.drift.phase += Rand_PlusMinus(0xe1) + 0x9a;
     if (self->u.drift.phase > 0x1000) {
         self->u.drift.phase = 0;
     }
-    z = func_02040528(0x400);
-    v.x = func_02040528(0x400) - self->u.drift.offset.x;
+    z = Rand_PlusMinus(0x400);
+    v.x = Rand_PlusMinus(0x400) - self->u.drift.offset.x;
     v.y = -self->u.drift.offset.y;
     v.z = z - self->u.drift.offset.z;
     VEC_MultAdd(0x400, &v, &self->u.drift.offset, &self->u.drift.offset);
@@ -172,7 +172,7 @@ BOOL Ov003ActVt_021fa3e8_Draw(Ov003Blink *self) {
 
 void Ov003ActVt_021fa338_Start(Ov003Blink *self) {
     s16 rot;
-    func_ov000_021b4c60(self);
+    Ov000ActVt_021cc7cc_Start(self);
     if (func_0206fef8(self->id)->flip) {
         u16 a = self->rotY;
         if (a > 0x4000 && a < 0xc000) {
@@ -180,6 +180,6 @@ void Ov003ActVt_021fa338_Start(Ov003Blink *self) {
         }
     }
     rot = 0x1c3;
-    rot += (s16)func_02040528(0xa4);
+    rot += (s16)Rand_PlusMinus(0xa4);
     func_ov000_021911c8(self->model, rot);
 }

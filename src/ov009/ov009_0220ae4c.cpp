@@ -76,7 +76,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
     case 1:
         if ((self->unk_48->unk_50 & 0x40000000) || func_01ffc198(&self->pos, &v, self->unk_64 + 0xc00)) {
             {
-                s32 z = func_02040528(0x800) + 0x2400;
+                s32 z = Rand_PlusMinus(0x800) + 0x2400;
                 v.x = 0;
                 v.y = 0;
                 v.z = z;
@@ -84,7 +84,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
             func_01ffc9fc(&v, &v, (u16)(self->unk_fc - 0x4000));
             VEC_Add(&v, &self->unk_f0, &v);
             self->unk_b8 = v;
-            self->unk_b6 = func_02040498(0x1e) + 0x14;
+            self->unk_b6 = Rand_UpTo(0x1e) + 0x14;
             self->unk_b4 = 10;
         } else {
             self->unk_40->flags |= 4;
@@ -101,7 +101,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
     case 11:
         if ((self->unk_48->unk_50 & 0x40000000) || func_01ffc198(&self->pos, &v, self->unk_64 + 0xc00)) {
             {
-                s32 z = func_02040528(0x800) + 0x2400;
+                s32 z = Rand_PlusMinus(0x800) + 0x2400;
                 v.x = 0;
                 v.y = 0;
                 v.z = z;
@@ -109,7 +109,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
             func_01ffc9fc(&v, &v, (u16)(self->unk_fc + 0x4000));
             VEC_Add(&v, &self->unk_f0, &v);
             self->unk_b8 = v;
-            self->unk_b6 = func_02040498(0x1e) + 0x14;
+            self->unk_b6 = Rand_UpTo(0x1e) + 0x14;
             self->unk_b4 = 0;
         } else {
             self->unk_40->flags |= 4;

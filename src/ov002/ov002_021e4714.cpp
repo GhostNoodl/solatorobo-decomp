@@ -20,7 +20,7 @@ void *Ov002Vt_021f00fc_Dtor(void *self) {
 void *Ov002Vt_021f00fc_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f00fc;
     func_ov002_021e4904_inline(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

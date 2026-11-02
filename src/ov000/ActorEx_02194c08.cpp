@@ -23,8 +23,8 @@ typedef struct {
 extern "C" {
 extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;
-u8 *func_ov000_02199ba0(void *p);
-u8 *func_ov000_0218bd5c(void *mgr, u16 id);
+u8 *Target_Get(void *p);
+u8 *Group_FindNode(void *mgr, u16 id);
 u8 *func_0206fef8(u16 id);
 void func_ov000_02190758(void *a, void *b, s32 c);
 BOOL func_ov000_021903b4(void *a);
@@ -87,7 +87,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
         u8 alpha;
         u8 *cam;
         if (((u8 *)self->unk_4c) != NULL) {
-            p = func_ov000_02199ba0(((u8 *)self->unk_4c));
+            p = Target_Get(((u8 *)self->unk_4c));
         }
         if (p == NULL) {
             p = (u8 *)self;
@@ -123,7 +123,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
         }
         self->unk_93_0 = 0;
         alpha = 0x1f;
-        cam = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+        cam = Group_FindNode(data_ov000_021ccd64, self->unk_20);
         if (cam != NULL) {
             s32 dist;
             s32 r;
@@ -161,7 +161,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
     if (ret && self->unk_3c != NULL) {
         u8 *info = func_0206fef8(self->kind);
         u8 *o = (u8 *)self->unk_48;
-        u8 *t = func_ov000_02199ba0(((u8 *)self->unk_4c));
+        u8 *t = Target_Get(((u8 *)self->unk_4c));
         if (t != NULL) {
             if (self->unk_40->current == 9) {
                 o = LFLD(u8 *, t, 0x48);

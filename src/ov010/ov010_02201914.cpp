@@ -54,7 +54,7 @@ Ov010TaskList *func_ov010_02201974(Ov010TaskList *o) {
     o->vtbl = data_ov010_0220fe1c;
     ((Ov010V *)o)->v08();
     func_ov003_021d7858(o->pool);
-    func_0203de1c(o);
+    Heap_Free(o);
     return o;
 }
 

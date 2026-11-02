@@ -33,7 +33,7 @@ BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_0203f364(void *a);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
-u8 *func_ov000_02199ba0(void *a);
+u8 *Target_Get(void *a);
 u16 func_ov000_02199bc8(void *a, void *pos, u16 t, s32 n);
 Robo021ca458 *func_ov000_0219bf90(void);
 void func_ov003_021f0c60(void *self, s32 a);
@@ -88,7 +88,7 @@ void func_ov000_02195d88(ActorEx *self) {
         self->unk_40->st++;
         break;
     case 1: {
-        u8 *t = func_ov000_02199ba0(((u8 *)self->unk_4c));
+        u8 *t = Target_Get(((u8 *)self->unk_4c));
         u16 r;
         Robo021ca458 *pl;
         if (t != NULL) {

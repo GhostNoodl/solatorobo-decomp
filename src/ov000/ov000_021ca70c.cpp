@@ -55,7 +55,7 @@ BOOL func_020396e8(ResHandle *handle);
 u16 func_0205b588(StageRes *res, u16 *cmd);
 u16 func_0205b68c(StageRes *res, u16 *cmd, BOOL set, u16 value);
 u16 func_0205b8dc(StageRes *res, u16 *cmd);
-VObj *func_ov000_02181ab0(VObj *self);
+VObj *Ov000Vt_021cc158_DtorDelete(VObj *self);
 s32 func_ov000_02181efc(Obj02181efc *self, s32 a);
 s32 func_ov000_02182cb8(CmdEx *self);
 s32 func_ov000_021833d8(CmdObj *self);
@@ -86,7 +86,7 @@ s32 func_ov000_02187b88(CmdEx *self);
 s32 func_ov000_0218819c(CmdObj *self);
 s32 func_ov000_02188438(CmdObj *self);
 s32 func_ov000_0218867c(CmdObj *self);
-VObj *func_ov000_02189a38(VObj *self);
+VObj *Ov000Vt_021cc158_Dtor(VObj *self);
 extern Ov000ScpNames data_ov000_021cc0d8;
 extern const char *const data_ov000_021c9d44;
 extern const char *const data_ov000_021c9d48;
@@ -107,7 +107,7 @@ char data_ov000_021cc130[] = "misinfo";
 char data_ov000_021cc138[] = "scpqst%d.ccscp";
 char data_ov000_021cc147[] = "qstinfo";
 u32 data_ov000_021cc150[2] = {0, 0};
-Ov000Fn data_ov000_021cc158[18] = { (Ov000Fn)func_ov000_02189a38, (Ov000Fn)func_ov000_02181ab0, (Ov000Fn)func_02038504, (Ov000Fn)func_02038520, (Ov000Fn)func_02038dbc, (Ov000Fn)func_02038638, (Ov000Fn)func_02038a10, (Ov000Fn)func_02038b0c, (Ov000Fn)func_02038b48, (Ov000Fn)func_02038b88, (Ov000Fn)func_02038c14, (Ov000Fn)func_02038ca0, (Ov000Fn)func_020396e8, (Ov000Fn)func_020396d4, (Ov000Fn)func_ov000_02181efc, (Ov000Fn)func_0205b588, (Ov000Fn)func_0205b68c, (Ov000Fn)func_0205b8dc };
+Ov000Fn data_ov000_021cc158[18] = { (Ov000Fn)Ov000Vt_021cc158_Dtor, (Ov000Fn)Ov000Vt_021cc158_DtorDelete, (Ov000Fn)func_02038504, (Ov000Fn)func_02038520, (Ov000Fn)func_02038dbc, (Ov000Fn)func_02038638, (Ov000Fn)func_02038a10, (Ov000Fn)func_02038b0c, (Ov000Fn)func_02038b48, (Ov000Fn)func_02038b88, (Ov000Fn)func_02038c14, (Ov000Fn)func_02038ca0, (Ov000Fn)func_020396e8, (Ov000Fn)func_020396d4, (Ov000Fn)func_ov000_02181efc, (Ov000Fn)func_0205b588, (Ov000Fn)func_0205b68c, (Ov000Fn)func_0205b8dc };
 __declspec(weak) Ov000ScpEnt data_ov000_021cc1a0[42] = {
     { 0, { .pm = 0 } },
     { 0, { .pm = 0 } },

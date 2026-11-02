@@ -150,7 +150,7 @@ void Ov014Act_021fa6a0_Update(Ov014Act_021fa6a0 *self) {
         }
     }
     if (self->unk_30 & 0x200) {
-        if (func_02040498(1)) {
+        if (Rand_UpTo(1)) {
             func_02049f44(data_02097e4c, 0x905, &self->pos, 0);
         } else {
             func_02049f44(data_02097e4c, 0xa05, &self->pos, 0);
@@ -225,7 +225,7 @@ extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
 extern void *func_020657b0(void *a, void *b);
 extern void func_ov014_021fbb90(Ov014Act_021fa6a0 *self, s16 n);
-extern Ov014Actor *func_ov000_0218e640(void *mgr, u16 id);
+extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(void *p);
@@ -265,7 +265,7 @@ void func_ov014_021fae44(Ov014Act_021fa6a0 *self) {
         if (data_ov000_021ccd68 == NULL) {
             a = NULL;
         } else {
-            a = func_ov000_0218e640(data_ov000_021ccd68, id);
+            a = ActorMgr_GetActor(data_ov000_021ccd68, id);
         }
         if (a != NULL) {
             Ov014Sub40 *s = a->unk_40;
@@ -292,7 +292,7 @@ void func_ov014_021fae44(Ov014Act_021fa6a0 *self) {
         if (data_ov000_021ccd68 == NULL) {
             a = NULL;
         } else {
-            a = func_ov000_0218e640(data_ov000_021ccd68, id);
+            a = ActorMgr_GetActor(data_ov000_021ccd68, id);
         }
         if (a == NULL) {
             u8 *g;
@@ -312,13 +312,13 @@ void func_ov014_021fae44(Ov014Act_021fa6a0 *self) {
 }
 
 extern const Ov014Vec data_ov014_0221645c;
-extern Ov014Actor *func_ov000_0218d240(Ov014Obj *self);
+extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
 extern void func_ov014_021fbab8(Ov014Act_021fa6a0 *self, s16 n);
 
 void func_ov014_021fb198(Ov014Act_021fa6a0 *self) {
     Ov014Vec v;
     Ov014Vec w;
-    Ov014Actor *t = func_ov000_0218d240(self);
+    Ov014Actor *t = Actor_GetTarget(self);
     v.x = t->pos.x;
     v.y = t->pos.y;
     v.z = t->pos.z;
@@ -415,11 +415,11 @@ void func_ov014_021fb198(Ov014Act_021fa6a0 *self) {
 }
 
 extern void func_020639d4(void *e, s32 a, s32 b);
-extern void *func_ov000_02199ba0(void *p);
+extern void *Target_Get(void *p);
 
 void func_ov014_021fb554(Ov014Act_021fa6a0 *self) {
     Ov014Vec v;
-    func_ov000_0218d240(self);
+    Actor_GetTarget(self);
     switch (self->unk_40->state) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov014_022170fe, 0x111, 0);
@@ -450,13 +450,13 @@ void func_ov014_021fb554(Ov014Act_021fa6a0 *self) {
         if (data_ov000_021ccd68 == NULL) {
             a = NULL;
         } else {
-            a = func_ov000_0218e640(data_ov000_021ccd68, id);
+            a = ActorMgr_GetActor(data_ov000_021ccd68, id);
         }
         if (a != NULL) {
             if (a->unk_4c == NULL) {
                 break;
             }
-            r = func_ov000_02199ba0(a->unk_4c);
+            r = Target_Get(a->unk_4c);
             if (r == NULL) {
                 break;
             }
@@ -553,7 +553,7 @@ extern void func_ov000_0219bebc(Ov014Actor *a, s32 b);
 extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
-extern void *func_ov000_02194074(void *self);
+extern void *ActorEx_Ctor(void *self);
 extern void *func_ov003_021da940(void *p);
 extern void func_ov000_02194758(void *self);
 
@@ -713,7 +713,7 @@ void func_ov014_021fbd50(Ov014Act_021fa6a0 *self) {
 
 #pragma force_active on
 Ov014ActEx_021fbd64 *Ov014ActEx_021fbd64_Ctor(Ov014ActEx_021fbd64 *self) {
-    func_ov000_02194074(self);
+    ActorEx_Ctor(self);
     FLD(void *, self, 0) = data_ov014_022172c4;
     FLD(u8, self, 0xce) = 0;
     self->unk_d0 = NULL;
@@ -728,7 +728,7 @@ static inline void Ov014_FreeD0(Ov014ActEx_021fbd64 *self) {
         void *p = self->unk_d0;
         if (p != NULL) {
             func_ov003_021da940(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_d0 = NULL;
     }
@@ -746,7 +746,7 @@ Ov014ActEx_021fbd64 *Ov014ActEx_021fbd64_DtorDelete(Ov014ActEx_021fbd64 *self) {
     FLD(void *, self, 0) = data_ov014_022172c4;
     Ov014_FreeD0(self);
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -763,7 +763,7 @@ void Ov014ActEx_021fbd64_Start(Ov014ActEx_021fbd64 *self) {
     } else {
         self->pos.x = self->pos.x - data_ov014_022164e8[(s16)(n % 10)];
     }
-    p = (s32 *)func_0203dd9c(4);
+    p = (s32 *)Heap_Alloc(4);
     if (p != NULL) {
         *p = 0;
     }
@@ -776,7 +776,7 @@ extern char data_ov014_022171d0[];
 extern char data_ov014_022171df[];
 extern char data_ov014_022171f1[];
 extern char data_ov014_022171fd[];
-extern Ov014V *func_02066900(const char *arc, const char *name, Ov014Vec *pos);
+extern Ov014V *EffectGroup_Create(const char *arc, const char *name, Ov014Vec *pos);
 extern Ov014V *func_02066774(const void *a, const void *b, s32 c, Ov014Vec *pos);
 extern void MIi_CpuClear32(u32 data, void *dst, u32 size);
 extern void func_ov003_021da9ac(void *p, s32 id, void *e);
@@ -787,13 +787,13 @@ extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern s32 FX_Div(s32 a, s32 b);
 extern void func_020639d4(void *e, s32 a, s32 b);
 extern BOOL func_ov000_0219aca8(Ov014Obj *a, Ov014Obj *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
-extern Ov014Actor *func_ov000_0218d240(Ov014Obj *self);
+extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
 
 void func_ov014_021fbf0c(Ov014ActEx_021fbd64 *self) {
     Ov014V *e;
     switch (self->unk_40->state) {
     case 0:
-        e = func_02066900(data_ov014_022171d0, data_ov014_022171df, &self->pos);
+        e = EffectGroup_Create(data_ov014_022171d0, data_ov014_022171df, &self->pos);
         e->v24(0, 0xcd, 0);
         e->v0c(0x1333);
         MIi_CpuClear32(0xffffffff, (u8 *)e + 0x84, 0x40);
@@ -835,7 +835,7 @@ void func_ov014_021fbf0c(Ov014ActEx_021fbd64 *self) {
     case 3: {
         Ov014Param *pr = ((Ov014Param *)self->unk_4c);
         if (func_ov000_0219aca8(self, self, pr->unk_08, FLD(u16, pr, 0xa), 0, 0, 0x119a, 0x5000, 0x6b, 0x1000)) {
-            Ov014Actor *o = func_ov000_0218d240(self);
+            Ov014Actor *o = Actor_GetTarget(self);
             if (o != NULL) {
                 Ov014Vec v;
                 v.x = o->pos.x;

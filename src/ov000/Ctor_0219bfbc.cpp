@@ -36,15 +36,15 @@ typedef struct {
 extern "C" {
 extern u8 data_ov000_021cc774[];
 extern u8 *data_0214a424;
-void *func_ov000_0218c2d4(void *self);
+void *Actor_Ctor(void *self);
 void *func_ov000_0218fe1c(void *p);
 void *func_ov000_0218e9c4(void *p);
 void *func_ov000_021985e8(void *p);
 void func_0203d45c(void *q, u16 a, u16 b, u16 c, u16 d);
 
-u8 *func_ov000_0219bfbc(u8 *self) {
+u8 *Robo021ca458_Ctor(u8 *self) {
     u32 mode;
-    func_ov000_0218c2d4(self);
+    Actor_Ctor(self);
     F(void *, 0) = data_ov000_021cc774;
     func_ov000_0218fe1c(self + 0xac);
     func_ov000_0218e9c4(self + 0x194);

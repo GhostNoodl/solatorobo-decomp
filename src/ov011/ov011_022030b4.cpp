@@ -4,10 +4,10 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern u8 data_ov011_02207bd8[];
-void *func_ov000_0218e4cc(void *mgr, u16 key);
-u16 func_ov000_0218dfb4(void *g, u16 id);
+void *ActorMgr_GetGroup(void *mgr, u16 key);
+u16 ActorGroup_CountKind(void *g, u16 id);
 void func_ov003_021d1e8c(void *p);
-void func_ov000_0218d988(void *self, void *target, s32 c);
+void Actor_TurnToActor(void *self, void *target, s32 c);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 void func_ov000_021911c8(void *a, s32 b);
@@ -22,7 +22,7 @@ void func_ov003_021d6054(void *p);
 void func_ov000_0218e8ec(void *mgr, u16 id, s32 c);
 void func_ov003_021d112c(void *p);
 void func_ov000_0218d7e8(void *self, s32 a);
-void func_ov000_0218dbe0(void *self, s32 a);
+void Actor_Move(void *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void *func_ov003_021d0edc(void *p);
 void func_0203f2b8(void *p);
@@ -35,8 +35,8 @@ void Ov011ActVt_02207b34_Update(Ov011Actor *self) {
     }
     self->unk_93_4 = 1;
     ok = TRUE;
-    g = func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000);
-    if (g != NULL && func_ov000_0218dfb4(g, 0x5807) >= 1) {
+    g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+    if (g != NULL && ActorGroup_CountKind(g, 0x5807) >= 1) {
         ok = FALSE;
     }
     if (ok) {
@@ -88,7 +88,7 @@ void func_ov011_022031a0(Ov011Actor *self) {
         }
         t = Ov011_FindActor(self->target);
         if (t != NULL) {
-            func_ov000_0218d988(self, t, 0x400);
+            Actor_TurnToActor(self, t, 0x400);
         }
     }
     self->unk_3c->unk_14 = v;
@@ -200,7 +200,7 @@ void func_ov011_02203654(Ov011Actor *self) {
             self->unk_a8 = 0x29;
             func_ov000_02198360(self->unk_40, 4, 0);
         }
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         func_ov000_021987b8(self->unk_48, 0, 0, 0);
         break;
     }
@@ -213,7 +213,7 @@ Ov011Actor *Ov011ActVt_02207b34_Dtor(Ov011Actor *self) {
 
 Ov011Actor *Ov011ActVt_02207b34_DtorDelete(Ov011Actor *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -224,7 +224,7 @@ Ov011Actor *Ov011ActVt_02207a88_Dtor(Ov011Actor *self) {
 
 Ov011Actor *Ov011ActVt_02207a88_DtorDelete(Ov011Actor *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -237,7 +237,7 @@ void Ov011Act7cf8_Start(Ov011Act7cf8 *self) {
         void *p = self->unk_48;
         if (p != NULL) {
             func_0203f2b8(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_48 = NULL;
     }

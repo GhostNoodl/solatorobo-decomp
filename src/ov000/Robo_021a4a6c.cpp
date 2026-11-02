@@ -91,7 +91,7 @@ extern void *data_02097e4c;
 extern u8 *data_ov000_021ccd54;
 extern u8 *data_ov000_021ccd68;
 extern u8 *data_0214a424;
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
 BOOL func_ov000_02198360(void *st, s32 state, s32 x);
@@ -108,10 +108,10 @@ void func_ov000_021915a0(void *a);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL func_01ffc584(void *hit, VecFx32 *pos, s32 r, s32 h);
 BOOL func_01ffc198(void *a, VecFx32 *b, s32 r);
-void func_ov000_0218d988(void *self, void *other, s32 step);
-void func_ov000_0218d398(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_TurnToActor(void *self, void *other, s32 step);
+void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
-void func_ov000_02199b88(void *body, void *p);
+void Target_Set(void *body, void *p);
 void func_02062764(s32 a, s32 b);
 void func_020627a0(u16 a, u16 b);
 void func_ov000_02182590(void *p);
@@ -139,13 +139,13 @@ static inline Actor *FindActor_021a4a6c(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline u8 *FindActor2_021a4a6c(u16 id) {
     u8 *a = NULL;
     if (data_ov000_021ccd68 != NULL) {
-        a = (u8 *)func_ov000_0218e640(data_ov000_021ccd68, id);
+        a = (u8 *)ActorMgr_GetActor(data_ov000_021ccd68, id);
     }
     return a;
 }
@@ -332,7 +332,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
         ST(self)->st++;
     case 2:
         if (B24(self).b7 == 2) {
-            func_ov000_0218d988(self, t, 0x400);
+            Actor_TurnToActor(self, t, 0x400);
         }
         if (B24(self).b5 != 0) {
             break;
@@ -405,7 +405,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
                     self->unk_b1c = id;
                     self->target = 0xffff;
                     func_ov000_0218d46c(t, self->id, 9);
-                    func_ov000_02199b88(sub, self);
+                    Target_Set(sub, self);
                     if (LFLD(S18_021a4a6c, sub, 0x18).b1) {
                         func_02062764(0x3c0, 0x200);
                         func_020627a0(LFLD(u16, t, 0xe), LFLD(u16, t, 0xc));
@@ -542,7 +542,7 @@ end:
                 m.rot[1] = LFLD(u16, a, 0x7e);
                 m.rot[2] = LFLD(u16, a, 0x80);
                 m.x = 0;
-                func_ov000_0218d398(a, self->id, 7, TRUE, 0x18, &m);
+                Actor_SendMsg(a, self->id, 7, TRUE, 0x18, &m);
                 func_ov000_0218d46c(a, self->id, 10);
                 if (LFLD(u8 *, a, 0x4c) != NULL) {
                     LFLD(S18_021a4a6c, LFLD(u8 *, a, 0x4c), 0x18).b0 = 0;

@@ -52,7 +52,7 @@ static inline BOOL LoD78Idle(void) {
 
 void func_ov000_021692e0(Lo021cb7ec *self) {
     void *res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-    u8 *m = (u8 *)func_0203dd9c(0x160);
+    u8 *m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         void *nm = data_0208cc88;
         func_02041218(m + 0x88);

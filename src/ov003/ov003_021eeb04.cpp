@@ -83,20 +83,20 @@ extern u8 data_ov003_021f9e10[];
 extern char data_ov003_021f9fd6[];
 extern char data_ov003_021f9fd0[];
 extern void *func_ov000_0218fee4(void *p);
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 extern void *func_ov000_0219429c(void *p);
 extern void func_ov000_0219433c(void *self);
-extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
+extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern void func_ov000_02197d80(void *self);
 extern BOOL func_ov000_02194c08(void *self);
 extern BOOL func_ov000_021903b4(void *anim);
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
 extern void func_ov000_02194758(void *self);
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern Ov003BrCtl *func_ov000_021985e8(void *p);
 extern void func_ov000_02198c8c(Ov003BrCtl *p, u16 id);
-extern void func_0203f324(Ov003BrCtl *p);
+extern void HitSphere_Link(Ov003BrCtl *p);
 extern Ov003BrAnim *func_ov000_0218fe1c(void *p);
 extern BOOL func_ov000_0218ffdc(Ov003BrAnim *anim, void *res, s32 a, s32 b);
 extern void func_ov000_02190758(Ov003BrAnim *anim, void *p, s32 a);
@@ -115,7 +115,7 @@ static inline void Ov003Bridge_Dtor(Ov003Bridge *self) {
     if (p != NULL) {
         if (p != NULL) {
             func_ov000_0218fee4(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->anim = NULL;
     }
@@ -130,14 +130,14 @@ Ov003Bridge *Ov003ActVt_021f9e10_Dtor(Ov003Bridge *self) {
 
 Ov003Bridge *Ov003ActVt_021f9e10_DtorDelete(Ov003Bridge *self) {
     Ov003Bridge_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
 void Ov003ActVt_021f9e10_Init(Ov003Bridge *self) {
     Ov003Unit *u;
     func_ov000_0219433c(self);
-    u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unitId);
+    u = Group_FindNode(data_ov000_021ccd64, self->unitId);
     if (u != NULL) {
         u->active = 0;
     }
@@ -181,7 +181,7 @@ void Ov003ActVt_021f9e10_Start(Ov003Bridge *self) {
         name = data_ov003_021f9fd6;
         self->unk_cc_0 = 0;
         if (self->ctl == NULL) {
-            Ov003BrCtl *c = (Ov003BrCtl *)func_0203dd9c(0x9c);
+            Ov003BrCtl *c = (Ov003BrCtl *)Heap_Alloc(0x9c);
             if (c != NULL) {
                 c = func_ov000_021985e8(c);
             }
@@ -193,7 +193,7 @@ void Ov003ActVt_021f9e10_Start(Ov003Bridge *self) {
             c = self->ctl;
             c->enable = 1;
             c->visible = 1;
-            func_0203f324(c);
+            HitSphere_Link(c);
             c = self->ctl;
             c->unk_9a_1 = 0;
             c->unk_9a_4 = 0;
@@ -205,7 +205,7 @@ void Ov003ActVt_021f9e10_Start(Ov003Bridge *self) {
             }
         }
         if (res != NULL) {
-            Ov003BrAnim *a = (Ov003BrAnim *)func_0203dd9c(0xe8);
+            Ov003BrAnim *a = (Ov003BrAnim *)Heap_Alloc(0xe8);
             if (a != NULL) {
                 a = func_ov000_0218fe1c(a);
             }

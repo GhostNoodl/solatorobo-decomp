@@ -5,7 +5,7 @@
 
 #define NEW_02170620(o)                                    \
     do {                                                   \
-        o = (VObj *)func_0203dd9c(0x1e4);                  \
+        o = (VObj *)Heap_Alloc(0x1e4);                  \
         if (o != NULL) {                                   \
             *(void **)o = data_ov000_021cac60;             \
             o->vfunc_28();                                 \
@@ -24,7 +24,7 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb0b8[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 BOOL func_ov000_02184498(void *p);
 
 struct Obj02170620 {

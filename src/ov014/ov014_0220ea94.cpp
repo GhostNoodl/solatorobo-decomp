@@ -10,7 +10,7 @@ extern u8 data_ov014_02217c6c[];
 extern void func_02065860(void *a, void *b);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_0219763c(void *self);
-extern Ov014Actor *func_ov000_02199ba0(void *p);
+extern Ov014Actor *Target_Get(void *p);
 extern Ov014Actor *func_ov000_0219bf90(void);
 extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s32 a, Ov014Actor **list);
 extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
@@ -18,11 +18,11 @@ extern s32 **func_ov000_02190a30(void *a, s32 b);
 extern s32 func_ov000_02191318(void *a, s32 b);
 extern s32 func_ov000_02191f18(void *a, void *b);
 extern s32 func_ov014_0220ec18(s16 *a, u8 *b);
-extern void *func_ov000_02194074(void *self);
+extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02194c08(void *self);
 extern void func_02049de8(void *a, s32 b);
-extern u8 func_02043d48(void *p);
+extern u8 Gfx3DState_NextPolyId(void *p);
 extern void func_ov000_02191920(void *a, s32 b, s32 c, s32 d);
 extern void func_ov000_02191618(void *p);
 extern void func_ov000_02191708(void *p);
@@ -104,7 +104,7 @@ void func_ov014_0220e72c(Ov014ActEx_0220dcf4 *self) {
         if (!(self->unk_48->unk_50 & 0xe0000000) && !func_ov014_0220eb14(self)) {
             return;
         }
-        a = func_ov000_02199ba0(self->unk_4c);
+        a = Target_Get(self->unk_4c);
         v.x = self->pos.x - FLD(s32, self, 0x70);
         v.y = self->pos.y - FLD(s32, self, 0x74);
         v.z = self->pos.z - FLD(s32, self, 0x78);
@@ -144,7 +144,7 @@ BOOL func_ov014_0220eb14(Ov014Obj *self) {
     u16 mask;
     s32 rad;
     s32 n;
-    o = func_ov000_02199ba0(self->unk_4c);
+    o = Target_Get(self->unk_4c);
     p = func_ov000_0219bf90();
     if (o == NULL || p == NULL) {
         return FALSE;

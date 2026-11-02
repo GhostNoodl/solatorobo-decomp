@@ -104,7 +104,7 @@ void func_ov012_02205990(Ov012Actor *self) {
     Ov012Actor *g;
     Ov012Actor *pl;
     Ov012Vec pp;
-    g = (Ov012Actor *)func_ov000_02199ba0(self->unk_4c);
+    g = (Ov012Actor *)Target_Get(self->unk_4c);
     if (g != NULL) {
     {
         Ov012Sub48 *m = g->unk_48;
@@ -117,7 +117,7 @@ void func_ov012_02205990(Ov012Actor *self) {
         func_ov012_02206098(self);
         return;
     }
-    pl = func_ov000_0218d240(self);
+    pl = Actor_GetTarget(self);
     pp = pl->pos;
     switch (self->unk_40->state) {
     case 0: {
@@ -139,8 +139,8 @@ void func_ov012_02205990(Ov012Actor *self) {
         break;
     }
     case 1:
-        func_ov000_0218d918(self, &self->unk_84, 0x1000);
-        func_ov000_0218ddd4(self, &self->unk_84, 0);
+        Actor_TurnToPos(self, &self->unk_84, 0x1000);
+        Actor_MoveToPos(self, &self->unk_84, 0);
         func_ov012_022065d8(self);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         if (VEC_Distance(&self->pos, &self->unk_84) <= 0x800) {
@@ -189,9 +189,9 @@ void func_ov012_02205990(Ov012Actor *self) {
     }
     case 11: {
         Ov012Sub40 *s;
-        func_ov000_0218d918(self, &self->unk_84, 0x7b);
+        Actor_TurnToPos(self, &self->unk_84, 0x7b);
         self->unk_98 = self->rot[1];
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         func_ov012_022065d8(self);
         s = self->unk_40;
         s->timer++;
@@ -218,9 +218,9 @@ void func_ov012_02205990(Ov012Actor *self) {
         break;
     }
     case 13:
-        func_ov000_0218d918(self, &self->unk_84, 0x19a);
+        Actor_TurnToPos(self, &self->unk_84, 0x19a);
         self->unk_98 = self->rot[1];
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         func_ov012_022065d8(self);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         if (self->unk_48->unk_50 & 0x60000000) {

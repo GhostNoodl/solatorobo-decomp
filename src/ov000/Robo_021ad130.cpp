@@ -59,7 +59,7 @@ u8 func_0206d204(void *p, s32 a);
 VObj *func_02065f88(s32 id, void *pos);
 void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
 u8 *func_ov000_0219b71c(Vec021ad130 *pos, Vec021ad130 *v, s32 a, s32 b, s32 c, s32 d);
-s32 func_02040498(s32 max);
+s32 Rand_UpTo(s32 max);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 void *func_0204a028(void *a, s32 b, void *c, s32 d);
 void func_ov000_0218996c(s32 a, s32 b);
@@ -169,7 +169,7 @@ void func_ov000_021ad130(Robo021ca458 *self) {
                         s32 k = LFLD(s32, hit, 0x20);
                         if (k != 4) {
                             if (k == 0x322) {
-                                func_02049f44(data_02097e4c, func_02040498(2) + 0x78, (u8 *)self + 0x70, 0);
+                                func_02049f44(data_02097e4c, Rand_UpTo(2) + 0x78, (u8 *)self + 0x70, 0);
                             }
                         } else {
                             func_0204a028(data_02097e4c, 0x35, (u8 *)self + 0x70, 8);

@@ -69,8 +69,8 @@ void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 void *func_ov000_0218e9c4(void *p);
 void *STD_CopyString(void *dst, const char *src);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
-void func_ov000_0218d398(void *a, u16 id, s32 b, s32 c, s32 d, void *e);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
+void Actor_SendMsg(void *a, u16 id, s32 b, s32 c, s32 d, void *e);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
 void func_ov000_02191008(void *p);
 void func_ov000_0218ec60(void *p, s32 a, s32 b, s32 c, s32 d);
@@ -102,7 +102,7 @@ static inline Actor *FindActor_021afaf8(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline BOOL SameRoom_021afaf8(Robo021ca458 *self) {
@@ -122,7 +122,7 @@ static inline void FreeModels_021afaf8(Robo021ca458 *self) {
             void *p = self->unk_998;
             if (p != NULL) {
                 func_ov000_0218fee4(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->unk_998 = NULL;
         }
@@ -135,7 +135,7 @@ static inline void FreeModels_021afaf8(Robo021ca458 *self) {
             void *p = self->unk_99c;
             if (p != NULL) {
                 func_ov000_0218ea20(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->unk_99c = NULL;
         }
@@ -259,7 +259,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
             LFLD(s32, self->unk_3c, 0xc) = 0x14000;
             FreeModels_021afaf8(self);
             {
-                void *p_1 = func_0203dd9c(0x138);
+                void *p_1 = Heap_Alloc(0x138);
                 if (p_1 != NULL) {
                     p_1 = func_ov000_0218e9c4(p_1);
                 }
@@ -298,7 +298,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
                     st.ry = a->rot_y;
                     st.rz = a->rot_z;
                     st.unk = 0;
-                    func_ov000_0218d398(a, self->id, 7, 1, 0x18, &st);
+                    Actor_SendMsg(a, self->id, 7, 1, 0x18, &st);
                     func_ov000_0218d46c(a, self->id, 0xa);
                     if (((u8 *)a->unk_4c) != NULL) {
                         LFLD(C_021afaf8, ((u8 *)a->unk_4c), 0x18).b0 = 0;

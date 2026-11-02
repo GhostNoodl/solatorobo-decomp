@@ -123,11 +123,11 @@ extern const u8 data_ov003_021f4c50[];
 extern void VEC_Add(const Ov003Vec3 *a, const Ov003Vec3 *b, Ov003Vec3 *out);
 extern Ov003DfSpawn *func_ov000_0219be1c(s32 id, const void *pos, const void *rot, u16 a, u16 b);
 extern Ov003DfEffect *func_02065f88(s32 id, const Ov003Vec3 *pos);
-extern Ov003DfActor *func_ov000_0218e6d0(void *mgr, s32 a, s32 b);
+extern Ov003DfActor *ActorMgr_FindKind(void *mgr, s32 a, s32 b);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
-extern u16 func_0204bfa8(Ov003DfCam *cam);
+extern u16 Camera_GetYaw(Ov003DfCam *cam);
 extern void func_01ffc9fc(Ov003Vec3 *src, Ov003Vec3 *dst, u16 angle);
 extern void func_ov000_02191008(void *p);
 extern void *func_ov000_0219b71c(Ov003Vec3 *pos, Ov003Vec3 *v, s32 a, s32 b, s32 c, s32 d);
@@ -136,14 +136,14 @@ extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
 extern char data_ov003_021f8350[];
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 extern void *func_ov000_0219429c(void *p);
 extern void func_ov000_02194758(void *p);
 extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_02049bb4(void *mgr, s32 id);
+extern void SndMgr_StopSeqArc(void *mgr, s32 id);
 extern s32 func_02049afc(void *mgr, s32 v);
-extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
+extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern void func_ov000_0218b700(Ov003Unit *u, s32 a, s32 b);
 
 void func_ov003_021df0c8(Ov003BgProp *self) {
@@ -220,7 +220,7 @@ void func_ov003_021df0c8(Ov003BgProp *self) {
 Ov003Prop *Ov003ActVt_021f8350_Dtor(Ov003Prop *self) {
     self->vtbl = data_ov003_021f8350;
     if (self->unk_d0 >= 0) {
-        func_02049bb4(data_02097e4c, self->unk_d0);
+        SndMgr_StopSeqArc(data_02097e4c, self->unk_d0);
     }
     func_ov000_0219429c(self);
     return self;
@@ -229,10 +229,10 @@ Ov003Prop *Ov003ActVt_021f8350_Dtor(Ov003Prop *self) {
 Ov003Prop *Ov003ActVt_021f8350_DtorDelete(Ov003Prop *self) {
     self->vtbl = data_ov003_021f8350;
     if (self->unk_d0 >= 0) {
-        func_02049bb4(data_02097e4c, self->unk_d0);
+        SndMgr_StopSeqArc(data_02097e4c, self->unk_d0);
     }
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -250,7 +250,7 @@ void Ov003ActVt_021f8350_Start(Ov003Prop *self) {
     self->unk_84.x = self->unk_70.x;
     self->unk_84.y = self->unk_70.y;
     self->unk_84.z = self->unk_70.z;
-    u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_0 = 0;
         func_ov000_0218b700(u, 0x5000, 0);
@@ -309,7 +309,7 @@ void func_ov003_021df534(Ov003Prop *self) {
         if (data_ov000_021ccd68 == NULL) {
             a = NULL;
         } else {
-            a = func_ov000_0218e6d0(data_ov000_021ccd68, 0x4000, 0x480b);
+            a = ActorMgr_FindKind(data_ov000_021ccd68, 0x4000, 0x480b);
         }
         if (a != NULL && Ov003DfKind_Get(a->unk_40) != 0x15) {
             goto end;
@@ -340,7 +340,7 @@ end:
 }
 
 static inline u16 Ov003DfCam_GetAngle(Ov003DfCam *cam) {
-    return cam->unk_40 != 0 ? cam->unk_44 : func_0204bfa8(cam);
+    return cam->unk_40 != 0 ? cam->unk_44 : Camera_GetYaw(cam);
 }
 
 void func_ov003_021df6f4(Ov003Prop *self) {
@@ -355,7 +355,7 @@ void func_ov003_021df6f4(Ov003Prop *self) {
         VEC_Add(&self->unk_70, &v, &self->unk_70);
         self->unk_7c = 0xfff0;
         func_ov000_02191008(self->unk_38);
-        func_02049bb4(data_02097e4c, self->unk_d0);
+        SndMgr_StopSeqArc(data_02097e4c, self->unk_d0);
         self->unk_d0 = -1;
         self->unk_40[0]++;
     }

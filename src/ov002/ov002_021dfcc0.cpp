@@ -118,7 +118,7 @@ void func_ov002_021dfcc0(void *self) {
             return;
         }
         {
-            void *s = func_0204c0e8(mgr, 0x10c);
+            void *s = MsgRes_GetString(mgr, 0x10c);
             u8 *o = FIELD(self, 0x4, u8 *);
             func_ov000_0215bb14(FIELD(o, 0x20, void *), s);
             VC(FIELD(o, 0x20, void *), 0x70)();

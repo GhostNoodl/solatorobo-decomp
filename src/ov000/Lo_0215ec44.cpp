@@ -75,7 +75,7 @@ extern u16 data_02fe0158[];
 extern u16 data_02fe0164[];
 extern u16 data_02fe0170[];
 extern u16 data_02fe017c[];
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
 static inline void G3_Vec(int cmd, int x, int y, int z) {
@@ -156,7 +156,7 @@ void func_ov000_0215ed18(Obj0215ed18 *self) {
     if (self->flags.b0) {
         x -= self->w >> 1;
     }
-    G3_Cmd1(0x29, misc | mode | (func_02043d48(g + 0x8b0) << 24) | (alpha << 16));
+    G3_Cmd1(0x29, misc | mode | (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | (alpha << 16));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, x, y, z);
     G3_Vec(0x1b, w, self->h + 0x2000, 0x1000);
@@ -181,7 +181,7 @@ void func_ov000_0215ed18(Obj0215ed18 *self) {
     }
     NNS_G3dGeBufferOP_N(0x41, NULL, 0);
     G3_Cmd1(0x12, 1);
-    LFLD(MdlFlags0215ed18, self->model, 0x6c).polyId = func_02043d48(g + 0x8b0);
+    LFLD(MdlFlags0215ed18, self->model, 0x6c).polyId = Gfx3DState_NextPolyId(g + 0x8b0);
 }
 
 }

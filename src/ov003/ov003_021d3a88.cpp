@@ -92,15 +92,15 @@ typedef struct {
 
 extern "C" {
 
-extern s32 func_02040528(s32 max);
+extern s32 Rand_PlusMinus(s32 max);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 extern void *data_02097e4c;
 extern void *data_0214a420;
-extern void func_0203f324(Ov003Ct *ctl);
+extern void HitSphere_Link(Ov003Ct *ctl);
 extern void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 extern void func_ov000_02199dc0(Ov003S4c *p, void *self);
-extern void func_ov000_0218dbe0(void *self, s32 a);
+extern void Actor_Move(void *self, s32 a);
 extern void func_ov000_021987b8(Ov003Ct *ctl, s32 a, s32 b, s32 c);
 extern s32 FX_Div(s32 a, s32 b);
 extern void func_02065804(void *mgr, void *p);
@@ -118,7 +118,7 @@ void func_ov003_021d3a88(Ov003Unk *self) {
         ctl = self->ctl;
         ctl->unk_9a_0 = 1;
         ctl->unk_9a_3 = 1;
-        func_0203f324(ctl);
+        HitSphere_Link(ctl);
         s = self->unk_44;
         s->unk_22_0 = 1;
         s->unk_22_1 = 1;
@@ -155,7 +155,7 @@ void func_ov003_021d3a88(Ov003Unk *self) {
         if (w->timer > 2) {
             func_ov000_02198360(self->work, 4, 0);
         }
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         func_ov000_021987b8(self->ctl, 0, 0, 0);
         if (self->unk_a0 > 0 && (self->ctl->flags & 0x80000000)) {
             self->unk_a0 = -0xcd;
@@ -169,7 +169,7 @@ void func_ov003_021d3c78(Ov003Unk *self) {
     case 0:
         self->unk_b4 = 0;
         self->unk_b6 = 0;
-        self->unk_9c = func_02040528(0x7b) + 0xf6;
+        self->unk_9c = Rand_PlusMinus(0x7b) + 0xf6;
         self->unk_a0 = 0x35c - 0x7b;
         self->unk_a4 = 0;
         self->unk_a8 = 0x52;

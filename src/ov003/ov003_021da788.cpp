@@ -82,8 +82,8 @@ extern void func_01ffc9fc(Ov003Vec *out, const Ov003Vec *in, u16 ang);
 extern const Ov003VecP data_ov003_021f7cc4;
 extern void *func_02065f88(void *mgr, const void *arg);
 extern void func_02065804(void *mgr, void *handle);
-extern void *func_0203dd9c(u32 size);
-extern void func_0203de1c(void *p);
+extern void *Heap_Alloc(u32 size);
+extern void Heap_Free(void *p);
 extern void func_ov003_021da520(Ov003Follow *self);
 extern void func_ov003_021da620(Ov003Follow *self);
 
@@ -142,7 +142,7 @@ static inline void Ov003_HeapDelete(void *p) {
     void *old = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->alt;
     if (p != NULL) {
-        func_0203de1c(p);
+        Heap_Free(p);
     }
     data_02097dd0->cur = old;
 }
@@ -159,7 +159,7 @@ Ov003FxList *func_ov003_021da940(Ov003FxList *self) {
 }
 
 void func_ov003_021da9ac(Ov003FxList *self, u8 id, Ov003Handled *obj) {
-    Ov003FxNode *node = (Ov003FxNode *)func_0203dd9c(sizeof(Ov003FxNode));
+    Ov003FxNode *node = (Ov003FxNode *)Heap_Alloc(sizeof(Ov003FxNode));
     node->id = id;
     node->handle = obj->handle;
     node->next = NULL;

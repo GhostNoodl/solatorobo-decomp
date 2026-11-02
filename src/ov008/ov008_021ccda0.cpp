@@ -17,7 +17,7 @@ void func_02041d9c(void *a, int b, int c);
 s32 FX_Div(s32 a, s32 b);
 
 Ov008Item *func_ov008_021ccda0(Ov008Menu *list, s32 a, s16 b, s16 c, s32 d) {
-    Ov008Item *n = (Ov008Item *)func_0203dd9c(0x34);
+    Ov008Item *n = (Ov008Item *)Heap_Alloc(0x34);
     Ov008Item *p;
     if (n != NULL) {
         func_ov000_02153f90(n);
@@ -88,7 +88,7 @@ void func_ov008_021ccf44(Ov008Panel *o) {
         break;
     case 0xf:
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
-        m = (Ov008Sprite *)func_0203dd9c(0x160);
+        m = (Ov008Sprite *)Heap_Alloc(0x160);
         if (m != NULL) {
             func_02041218(m->unk_88);
             func_02041440(m, o->pic.unk_24, 1);

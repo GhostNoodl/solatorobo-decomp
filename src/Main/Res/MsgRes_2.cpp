@@ -10,8 +10,8 @@ MsgRes *data_02149ef8;
 extern const char data_0208b9dc[];
 extern const char data_0208b9e6[];
 
-extern void *func_0203dd9c(u32 size);
-extern void func_0203de1c(void *ptr);
+extern void *Heap_Alloc(u32 size);
+extern void Heap_Free(void *ptr);
 extern void func_0206e900(char *dst, const char *src);
 
 static inline void MsgRes_Reset(MsgRes *res) {
@@ -37,7 +37,7 @@ BOOL func_0204c030(MsgRes *res);
 
 u32 func_0204c08c(MsgRes *res, s32 idx, char **out, s32 max);
 
-char *func_0204c0e8(MsgRes *res, s32 idx) {
+char *MsgRes_GetString(MsgRes *res, s32 idx) {
     return res->strings + (res->entries[idx] & ~0xff000000);
 }
 
@@ -59,12 +59,12 @@ void func_0204c158(void);
 
 void func_0204c214(void);
 
-void *func_0204c270(void);
+void *Heap_GetCurrent(void);
 
 void func_0204c284(void);
 
-MsgRes *func_0204c29c(MsgRes *res);
+MsgRes *MainVt_0208ba30_DtorDelete(MsgRes *res);
 
-void func_0204c2e0(void *heap);
+void Heap_SetCurrent(void *heap);
 
 }

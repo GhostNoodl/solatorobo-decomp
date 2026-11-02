@@ -69,13 +69,13 @@ extern "C" {
 
 void func_ov000_0218adf0(Obj0218ac98 *self);
 void func_ov000_0218af9c(Obj0218ac98 *self);
-void func_ov000_0218bc9c(void *mgr, Obj0218ac98 *self, s32 a);
+void Group_RemoveNode(void *mgr, Obj0218ac98 *self, s32 a);
 
 extern Glob0218ac98 *data_ov000_021ccd54;
 extern Mgr0218ac98 *data_ov000_021ccd64;
 BOOL func_01ffc89c(Obj0218ac98 *vol, Seg0218ac98 *seg);
 s32 func_ov000_0219a2f4(VecFx32 *pos, s32 up, s32 down);
-Spawn0218ac98 *func_ov000_0218bf1c(Mgr0218ac98 *mgr, void *a, VecFx32 *pos, void *b, u16 c);
+Spawn0218ac98 *Group_SpawnActor(Mgr0218ac98 *mgr, void *a, VecFx32 *pos, void *b, u16 c);
 
 static inline BOOL Obj0218ac98_SameColor(Obj0218ac98 *self) {
     Glob0218ac98 *g = data_ov000_021ccd54;
@@ -116,7 +116,7 @@ void func_ov000_0218ac98(Obj0218ac98 *self) {
             self->state = 3;
             return;
         }
-        func_ov000_0218bc9c(data_ov000_021ccd64, self, 0);
+        Group_RemoveNode(data_ov000_021ccd64, self, 0);
         break;
     }
     case 3:
@@ -149,7 +149,7 @@ void func_ov000_0218adf0(Obj0218ac98 *self) {
             if (self->b4) {
                 func_ov000_0219a2f4(&pos, 0x5dc000, -0x1000);
             }
-            sp = func_ov000_0218bf1c(data_ov000_021ccd64, (u8 *)self + 0x30, &pos, &self->unk_94, self->unk_08);
+            sp = Group_SpawnActor(data_ov000_021ccd64, (u8 *)self + 0x30, &pos, &self->unk_94, self->unk_08);
             if (sp != NULL) {
                 Rec0218ac98 *r;
                 done = TRUE;

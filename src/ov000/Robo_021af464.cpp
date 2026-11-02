@@ -51,9 +51,9 @@ void func_ov000_02191780(void *a);
 void func_ov000_021917f8(void *a);
 BOOL func_ov000_02198360(St_021af464 *st, s32 state, s32 x);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
-void func_ov000_0218ddd4(void *self, const void *target, s32 turn);
-void func_ov000_0218dbe0(void *self, s32 turn);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
+void Actor_MoveToPos(void *self, const void *target, s32 turn);
+void Actor_Move(void *self, s32 turn);
 s32 func_ov000_021b288c(void *self);
 void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_0203f364(void *obj);
@@ -65,7 +65,7 @@ static inline Actor *FindActor021af464(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline s32 Dist021af464(s32 dx, s32 dz) {
@@ -165,7 +165,7 @@ void func_ov000_021af464(Robo021ca458 *self) {
         break;
     case 1:
         self->rot_y = func_01ffc128(ang, self->rot_y, 0x400, 1, 0x8000);
-        func_ov000_0218ddd4(self, &pos, 0);
+        Actor_MoveToPos(self, &pos, 0);
         {
             St_021af464 *st = ((St_021af464 *)self->unk_40);
             st->timer++;
@@ -235,7 +235,7 @@ void func_ov000_021af464(Robo021ca458 *self) {
     }
     case 10:
         self->unk_b29 |= 2;
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         func_ov000_021987b8(self->unk_48, 0, 0, 0);
         if (self->unk_a0 > 0) {
             break;

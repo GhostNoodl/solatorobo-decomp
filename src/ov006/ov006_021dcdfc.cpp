@@ -24,7 +24,7 @@ ov006_Unk021dcdfc *Ov006Vt_021ec24c_Dtor(ov006_Unk021dcdfc *self) {
 
 ov006_Unk021dcdfc *Ov006Vt_021ec24c_DtorDelete(ov006_Unk021dcdfc *self) {
     ov006_Unk021dcdfc_dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

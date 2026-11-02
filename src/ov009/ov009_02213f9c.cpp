@@ -38,7 +38,7 @@ Ov009ActVt_02217f60 *Ov009ActVt_02217f60_Dtor(Ov009ActVt_02217f60 *self) {
 
 Ov009ActVt_02217f60 *Ov009ActVt_02217f60_DtorDelete(Ov009ActVt_02217f60 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -49,7 +49,7 @@ Ov009ActVt_02217eb4 *Ov009ActVt_02217eb4_Dtor(Ov009ActVt_02217eb4 *self) {
 
 Ov009ActVt_02217eb4 *Ov009ActVt_02217eb4_DtorDelete(Ov009ActVt_02217eb4 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -60,7 +60,7 @@ Ov009ActVt_02217b58 *Ov009ActPair110_Dtor(Ov009ActVt_02217b58 *self) {
 
 Ov009ActVt_02217b58 *Ov009ActPair110_DtorDelete(Ov009ActVt_02217b58 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -71,7 +71,7 @@ Ov009ActVt_02217e08 *Ov009ActVt_02217e08_Dtor(Ov009ActVt_02217e08 *self) {
 
 Ov009ActVt_02217e08 *Ov009ActVt_02217e08_DtorDelete(Ov009ActVt_02217e08 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -82,7 +82,7 @@ Ov009ActVt_02217c04 *Ov009ActVt_02217c04_Dtor(Ov009ActVt_02217c04 *self) {
 
 Ov009ActVt_02217c04 *Ov009ActVt_02217c04_DtorDelete(Ov009ActVt_02217c04 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -93,7 +93,7 @@ Ov009ActVt_02217aac *Ov009ActVt_02217aac_Dtor(Ov009ActVt_02217aac *self) {
 
 Ov009ActVt_02217aac *Ov009ActVt_02217aac_DtorDelete(Ov009ActVt_02217aac *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -104,7 +104,7 @@ Ov009ActVt_02217a00 *Ov009ActSpin_Dtor(Ov009ActVt_02217a00 *self) {
 
 Ov009ActVt_02217a00 *Ov009ActSpin_DtorDelete(Ov009ActVt_02217a00 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -115,7 +115,7 @@ Ov009ActVt_02217d5c *Ov009ActVt_02217d5c_Dtor(Ov009ActVt_02217d5c *self) {
 
 Ov009ActVt_02217d5c *Ov009ActVt_02217d5c_DtorDelete(Ov009ActVt_02217d5c *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -126,7 +126,7 @@ Ov009ActVt_02217cb0 *Ov009ActVt_02217cb0_Dtor(Ov009ActVt_02217cb0 *self) {
 
 Ov009ActVt_02217cb0 *Ov009ActVt_02217cb0_DtorDelete(Ov009ActVt_02217cb0 *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

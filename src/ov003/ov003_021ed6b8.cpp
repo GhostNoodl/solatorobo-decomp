@@ -156,17 +156,17 @@ extern void func_ov000_021911c8(void *p, s32 a);
 extern void *func_ov000_02191318(void *p, s32 a);
 extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_ov000_0218d398(Ov003LfTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
+extern void Actor_SendMsg(Ov003LfTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
 extern Ov003LfTgt *func_ov000_0219bf90(void);
 extern Ov003LfFx *func_02065f88(s32 id, Ov003Vec *pos);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern Ov003LfTgt *func_ov000_0218d240(Ov003Lift *self);
+extern Ov003LfTgt *Actor_GetTarget(Ov003Lift *self);
 extern void MTX_Identity43_(Ov003LfMtx *m);
 extern void MTX_RotX43_(Ov003LfMtx *m, s32 s, s32 c);
 extern void MTX_RotY43_(Ov003LfMtx *m, s32 s, s32 c);
 extern void MTX_RotZ43_(Ov003LfMtx *m, s32 s, s32 c);
 extern void MTX_Concat43(Ov003LfMtx *a, Ov003LfMtx *b, Ov003LfMtx *out);
-extern void func_0203f9dc(void *o, Ov003LfMtx *m);
+extern void HitMesh_SetMtx(void *o, Ov003LfMtx *m);
 extern void VEC_MultAdd(s32 a, Ov003Vec *v1, Ov003Vec *v2, Ov003Vec *dst);
 extern s32 VEC_Distance(const Ov003Vec *a, const Ov003Vec *b);
 extern BOOL func_ov000_021b4738(void);
@@ -222,7 +222,7 @@ static inline void Ov003Lf_SetMtx(void *o, const Ov003Vec *p, u16 rx, u16 ry, u1
     m.tx = p->x;
     m.ty = p->y;
     m.tz = p->z;
-    func_0203f9dc(o, &m);
+    HitMesh_SetMtx(o, &m);
 }
 
 static inline BOOL Ov003Lf_Flag(Ov003LfTgt *p) {
@@ -343,7 +343,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
                 wp.rot[1] = o->rot[1];
                 wp.rot[2] = o->rot[2];
                 wp.unk_14 = 0x52;
-                func_ov000_0218d398(o, self->unk_0c, 7, 1, 0x18, &wp);
+                Actor_SendMsg(o, self->unk_0c, 7, 1, 0x18, &wp);
             }
             if (res == 0) {
                 res = 1;
@@ -477,7 +477,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
             self->unk_cc_0 = 0;
             self->work->timer = 0;
             if (self->cfg->type == 1) {
-                t = func_ov000_0218d240(self);
+                t = Actor_GetTarget(self);
                 if (t != NULL) {
                     Ov003LfWarp wp;
                     wp.pos.x = self->pos.x;
@@ -487,7 +487,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
                     wp.rot[1] = t->rot[1];
                     wp.rot[2] = t->rot[2];
                     wp.unk_14 = 0;
-                    func_ov000_0218d398(t, self->unk_0c, 7, 1, 0x18, &wp);
+                    Actor_SendMsg(t, self->unk_0c, 7, 1, 0x18, &wp);
                 }
                 if (self->state == 0) {
                     Ov003Lf_Notify(self, t);
@@ -512,7 +512,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
         if (self->cfg->type != 1) {
             return;
         }
-        t = func_ov000_0218d240(self);
+        t = Actor_GetTarget(self);
         if (t == NULL) {
             return;
         }
@@ -520,7 +520,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
             Ov003LfWarp wp;
             Ov003Lf_Approach(&wp, t, self);
             wp.unk_14 = 0;
-            func_ov000_0218d398(t, self->unk_0c, 7, 1, 0x18, &wp);
+            Actor_SendMsg(t, self->unk_0c, 7, 1, 0x18, &wp);
         }
         break;
     }

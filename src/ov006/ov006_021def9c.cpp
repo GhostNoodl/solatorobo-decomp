@@ -33,7 +33,7 @@ extern char *data_0208cc94;
 extern char *data_0208cc88;
 extern char *data_0208cb7c;
 extern char data_0214b105[];
-void func_02048be4(void *p);
+void PlayTime_Clear(void *p);
 void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, const char *b);
 void func_02041c34(ov006_Model *m, int a, void *cb, int b);
@@ -54,7 +54,7 @@ ov006_Unk021def9c *Ov006Vt_021ec26c_Dtor(ov006_Unk021def9c *self) {
 
 ov006_Unk021def9c *Ov006Vt_021ec26c_DtorDelete(ov006_Unk021def9c *self) {
     ov006_Unk021def9c_dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -65,17 +65,17 @@ void func_ov006_021df19c(ov006_Unk021def9c *self) {
     ov006_Model *m3;
     void *res;
 
-    icon = (ov006_Icon021df19c *)func_0203dd9c(sizeof(ov006_Icon021df19c));
+    icon = (ov006_Icon021df19c *)Heap_Alloc(sizeof(ov006_Icon021df19c));
     if (icon != NULL) {
         icon->vtbl = data_ov006_021ec2dc;
         icon->unk4 = 0;
-        func_02048be4(icon->unk6);
+        PlayTime_Clear(icon->unk6);
         icon->unk1C = NULL;
         icon->unkE = 1;
     }
     self->unk88 = icon;
     res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-    m1 = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    m1 = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (m1 != NULL) {
         const char *name = data_0208cc94;
         func_02041218(m1->unk88);
@@ -92,7 +92,7 @@ void func_ov006_021df19c(ov006_Unk021def9c *self) {
     func_02041c34(icon->unk1C, 0x24, (void *)func_ov006_021dd5dc, 0);
     icon->unk1C->unk6C |= 0x80000;
     icon->unk1C->unk6C = (icon->unk1C->unk6C & ~0x7c) | 0x78;
-    m2 = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    m2 = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (m2 != NULL) {
         const char *name = data_0208cb7c;
         func_02041218(m2->unk88);
@@ -104,7 +104,7 @@ void func_ov006_021df19c(ov006_Unk021def9c *self) {
     self->unk8C->unk6C |= 2;
     self->unk8C->unk6C |= 0x80000;
     func_02041d9c(self->unk8C, 0, 0xe);
-    m3 = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    m3 = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (m3 != NULL) {
         const char *name = data_0208cc94;
         func_02041218(m3->unk88);

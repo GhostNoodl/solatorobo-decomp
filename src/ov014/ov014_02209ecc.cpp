@@ -51,7 +51,7 @@ static inline void Ov014SpawnB_Init(Ov014SpawnDescB *d, u16 k) {
 }
 
 extern void *data_ov000_021ccd64;
-extern Ov014Actor *func_ov000_0218bf1c(void *mgr, Ov014SpawnDescB *d, Ov014Vec *pos, u16 *rot, u16 a);
+extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, Ov014Vec *pos, u16 *rot, u16 a);
 
 void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 kind) {
     Ov014SpawnDescB desc;
@@ -68,23 +68,23 @@ void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 kind) {
         b = 0x24d;
         switch (self->unk_f8 % 3) {
         case 0:
-            pos.x -= func_02040528(0x1000) + 0x4000;
+            pos.x -= Rand_PlusMinus(0x1000) + 0x4000;
             pos.y = 0;
-            pos.z += func_02040528(0x1000) + 0x3000;
+            pos.z += Rand_PlusMinus(0x1000) + 0x3000;
             rot[0] = 0;
             rot[1] = 0xe001;
             rot[2] = 0;
             break;
         case 1:
-            pos.x += func_02040528(0x1000) + 0x4000;
+            pos.x += Rand_PlusMinus(0x1000) + 0x4000;
             pos.y = 0;
-            pos.z += func_02040528(0x1000) + 0x3000;
+            pos.z += Rand_PlusMinus(0x1000) + 0x3000;
             rot[0] = 0;
             rot[1] = 0x1fff;
             rot[2] = 0;
             break;
         case 2:
-            pos.z -= func_02040528(0x1800) + 0x4000;
+            pos.z -= Rand_PlusMinus(0x1800) + 0x4000;
             rot[0] = 0;
             rot[1] = 0;
             rot[2] = 0;
@@ -98,23 +98,23 @@ void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 kind) {
         b = 0x29a;
         switch (self->unk_f8 % 3) {
         case 0:
-            pos.x -= func_02040528(0x1000) + 0x4000;
+            pos.x -= Rand_PlusMinus(0x1000) + 0x4000;
             pos.y = 0;
-            pos.z += func_02040528(0x1000);
+            pos.z += Rand_PlusMinus(0x1000);
             rot[0] = 0;
             rot[1] = 0x1fff;
             rot[2] = 0;
             break;
         case 1:
-            pos.x += func_02040528(0x1000) + 0x4000;
+            pos.x += Rand_PlusMinus(0x1000) + 0x4000;
             pos.y = 0;
-            pos.z += func_02040528(0x1000);
+            pos.z += Rand_PlusMinus(0x1000);
             rot[0] = 0;
             rot[1] = 0xe001;
             rot[2] = 0;
             break;
         case 2:
-            pos.z += func_02040528(0x1800) + 0x2000;
+            pos.z += Rand_PlusMinus(0x1800) + 0x2000;
             rot[0] = 0;
             rot[1] = 0;
             rot[2] = 0;
@@ -127,16 +127,16 @@ void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 kind) {
         pos.z = 0x8000;
         b = 0x200;
         if (self->unk_f8 % 2) {
-            pos.x += func_02040528(0x5000);
+            pos.x += Rand_PlusMinus(0x5000);
             pos.y = 0;
-            pos.z -= 0x3000 - func_02040498(0x1800);
+            pos.z -= 0x3000 - Rand_UpTo(0x1800);
             rot[0] = 0;
             rot[1] = 0;
             rot[2] = 0;
         } else {
-            pos.x += func_02040528(0x5000);
+            pos.x += Rand_PlusMinus(0x5000);
             pos.y = 0;
-            pos.z += func_02040498(0x1800) + 0x3000;
+            pos.z += Rand_UpTo(0x1800) + 0x3000;
             rot[0] = 0;
             rot[1] = 0x7fff;
             rot[2] = 0;
@@ -147,7 +147,7 @@ void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 kind) {
     desc.unk_04[1] = b;
     desc.unk_04[2] = 0x380;
     self->target_id = 0xffff;
-    o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, &pos, rot, 0xffff);
+    o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, rot, 0xffff);
     if (o == NULL) {
         return;
     }

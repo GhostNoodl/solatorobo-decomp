@@ -52,7 +52,7 @@ void func_ov015_022120fc(Ov015Obj292c *self) {
     if (o != NULL) {
         if (o != NULL) {
             func_ov000_021bd228(o);
-            func_0203de1c(o);
+            Heap_Free(o);
         }
         self->unk_08 = NULL;
     }
@@ -76,7 +76,7 @@ BOOL func_ov015_022121b4(Ov015Obj292c *self) {
     FLD(s32, self->unk_04, 0xc8) = -1;
     FLD(u8, self->unk_04, 0x28) = 0;
     FLD(s32, self->unk_04, 0x3c) = 0x800;
-    q = (u8 *)func_0203dd9c(0xa8);
+    q = (u8 *)Heap_Alloc(0xa8);
     if (q != NULL) {
         func_ov000_021bd198(q);
     }

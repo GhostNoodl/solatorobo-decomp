@@ -4,7 +4,7 @@ extern "C" {
 
 extern u8 data_ov009_02216aaa[];
 extern u8 data_ov009_02216abc[];
-extern void func_ov000_0218ddd4(Ov009Actor *self, Ov009Vec *v, s32 a);
+extern void Actor_MoveToPos(Ov009Actor *self, Ov009Vec *v, s32 a);
 
 void func_ov009_021fb890(Ov009ActVt_022166a4 *self) {
     Ov009Vec v;
@@ -24,7 +24,7 @@ void func_ov009_021fb890(Ov009ActVt_022166a4 *self) {
     p = self->unk_b0;
     self->unk_9c = p->unk_00;
     v = self->unk_b8;
-    func_ov000_0218ddd4(self, &v, p->unk_02);
+    Actor_MoveToPos(self, &v, p->unk_02);
     self->pos.y += Ov009_FxMul(v.y + 0x1400 - self->pos.y, 0xcd);
     if (self->pos.y - v.y > 0x3000) {
         self->unk_48->unk_30 = 0x80000000;
@@ -36,14 +36,14 @@ void func_ov009_021fb890(Ov009ActVt_022166a4 *self) {
 extern void *data_ov000_021ccd68;
 extern u8 data_ov009_02216aa4[];
 extern u8 data_ov009_02216ab6[];
-extern Ov009Actor *func_ov000_0218e640(void *mgr, u16 id);
-extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
-extern void func_ov000_0218dbe0(Ov009Obj *self, s32 turn);
+extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
+extern void Actor_Move(Ov009Obj *self, s32 turn);
 static inline Ov009Actor *Ov009_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 void func_ov009_021fb9b0(Ov009ActVt_022166a4 *self) {
@@ -64,7 +64,7 @@ void func_ov009_021fb9b0(Ov009ActVt_022166a4 *self) {
         self->unk_a8 = 0;
         break;
     case 1:
-        func_ov000_0218d988(self, Ov009_FindActor(self->unk_90), self->unk_b0->unk_02);
+        Actor_TurnToActor(self, Ov009_FindActor(self->unk_90), self->unk_b0->unk_02);
         if (self->unk_38->anim_state == 1) {
             self->unk_40->state++;
         }
@@ -96,7 +96,7 @@ void func_ov009_021fb9b0(Ov009ActVt_022166a4 *self) {
         }
         break;
     }
-    func_ov000_0218dbe0(self, 0);
+    Actor_Move(self, 0);
     func_ov000_021987b8(self->unk_48, 0, 0, 0);
 }
 

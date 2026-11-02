@@ -2,7 +2,7 @@
 
 typedef void (*VFunc)(void *);
 
-extern void func_0203de1c(void *p);
+extern void Heap_Free(void *p);
 extern void *func_ov000_0219429c(void *p);
 
 void *Ov003ActVt_021fa07c_Dtor(void *self) {
@@ -12,7 +12,7 @@ void *Ov003ActVt_021fa07c_Dtor(void *self) {
 
 void *Ov003ActVt_021fa07c_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -23,7 +23,7 @@ void *Ov003ActVt_021fa114_Dtor(void *self) {
 
 void *Ov003ActVt_021fa114_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -34,7 +34,7 @@ void *Ov003ActVt_021f9fe4_Dtor(void *self) {
 
 void *Ov003ActVt_021f9fe4_DtorDelete(void *self) {
     func_ov000_0219429c(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -124,7 +124,7 @@ typedef struct {
 } Ov003CntSelf;
 
 extern void *data_ov000_021ccd68;
-extern Ov003CntGroup *func_ov000_0218e4cc(void *mgr, u16 key);
+extern Ov003CntGroup *ActorMgr_GetGroup(void *mgr, u16 key);
 
 s32 func_ov003_021f093c(Ov003CntSelf *self) {
     Ov003CntGroup *g;
@@ -134,7 +134,7 @@ s32 func_ov003_021f093c(Ov003CntSelf *self) {
     s32 total = 0;
     s32 n = 0;
     BOOL flag = FALSE;
-    g = func_ov000_0218e4cc(data_ov000_021ccd68, 0x4000);
+    g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000);
     if (g != NULL && (a = g->head) != NULL) {
         for (; a != NULL; a = (a != NULL) ? a->next : g->head) {
             BOOL found = FALSE;

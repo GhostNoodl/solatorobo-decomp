@@ -138,8 +138,8 @@ typedef struct ov006_Unk021ec888 {
 extern ov006_Manager *data_ov006_021ec860;
 extern ov006_Unk021ec888 *data_ov006_021ec888;
 
-void *func_0203dd9c(u32 size);
-void func_0203de1c(void *p);
+void *Heap_Alloc(u32 size);
+void Heap_Free(void *p);
 void func_0201bbfc(int a);
 
 #ifdef __cplusplus

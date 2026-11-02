@@ -23,7 +23,7 @@ void func_ov006_021dab5c(ov006_Slot *self) {
 }
 
 ov006_Slot *func_ov006_021dab60(ov006_Slot *self) {
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

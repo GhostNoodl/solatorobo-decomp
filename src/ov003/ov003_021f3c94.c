@@ -68,7 +68,7 @@ extern Ov003NmSave *data_0214a424;
 extern Ov003NmPlayer *func_ov000_0219bf90(void);
 extern Ov003NmInfo *func_0206fef8(u16 id);
 extern u32 func_020705fc(u16 id);
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern Ov003NmLabel *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_021919c8(void *p);
 extern void func_ov000_02191b70(void *p);
@@ -83,7 +83,7 @@ void Ov003ActVt_021fa548_Init(Ov003NmObj *self) {
     names = func_ov000_0219bf90()->names;
     info = func_0206fef8(self->unk_0e);
     self->unk_ac = func_020705fc(self->unk_0e);
-    l = (Ov003NmLabel *)func_0203dd9c(0x138);
+    l = (Ov003NmLabel *)Heap_Alloc(0x138);
     if (l != NULL) {
         l = func_ov000_0218e9c4(l);
     }
@@ -114,7 +114,7 @@ void Ov003ActVt_021fa548_Init(Ov003NmObj *self) {
     }
     self->flag = names->flag;
     if (info->unk_12_c) {
-        p = func_0203dd9c(0x1c);
+        p = Heap_Alloc(0x1c);
         if (p != NULL) {
             p = func_ov000_021919c8(p);
         }

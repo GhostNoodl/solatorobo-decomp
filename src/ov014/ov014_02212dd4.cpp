@@ -5,10 +5,10 @@ extern "C" {
 extern u8 data_ov014_02217d3a[];
 extern void *func_ov000_02191318(void *a, s32 b);
 extern Ov014Actor *func_ov000_0219bf90(void);
-extern void func_ov000_0218d988(Ov014Obj *self, Ov014Obj *target, s32 a);
+extern void Actor_TurnToActor(Ov014Obj *self, Ov014Obj *target, s32 a);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
 extern s32 FX_Div(s32 a, s32 b);
-extern s32 func_02049130(s32 a, s32 b, s32 c);
+extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
 
 static inline void Ov014_TimerTick(Ov014Sub40 *s) {
     if (s->timer != 0) {
@@ -28,7 +28,7 @@ void func_ov014_02212dd4(Ov014Act_0221267c *self) {
         break;
     case 1: {
         u16 t = s->timer;
-        u8 b = func_02049130(FX_Div(t << 12, 0x78000), 0x1f000, 0) >> 12;
+        u8 b = Interp_SinLerp(FX_Div(t << 12, 0x78000), 0x1f000, 0) >> 12;
         self->unk_38->unk_be = b;
         self->unk_2e6 = b;
         if (t == 50) {
@@ -42,7 +42,7 @@ void func_ov014_02212dd4(Ov014Act_0221267c *self) {
             v.y += 0x2000;
             func_02065f88(0x38a, &v)->v14(0x2000, 0x2000, 0x2000);
         }
-        func_ov000_0218d988(self, func_ov000_0219bf90(), 0x400);
+        Actor_TurnToActor(self, func_ov000_0219bf90(), 0x400);
         s = self->unk_40;
         if (Ov014Sub40_Timer(s) == 0) {
             s->state++;

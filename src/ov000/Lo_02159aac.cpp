@@ -25,7 +25,7 @@ typedef s32 (*VFn9aac)(void *);
 
 #define LO_MODEL_NEW(out, NAME, ARC)                 \
     do {                                             \
-        u8 *m_ = (u8 *)func_0203dd9c(0x160);         \
+        u8 *m_ = (u8 *)Heap_Alloc(0x160);         \
         if (m_) {                                    \
             void *arc_;                              \
             void *name_;                             \

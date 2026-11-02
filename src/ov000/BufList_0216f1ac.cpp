@@ -6,7 +6,7 @@ extern HeapState *data_02097dd0;
 extern u8 data_ov000_021cb6d0[];
 extern u8 data_ov000_021cb960[];
 
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_ov000_0216f1ac(ListBuffer *buf, BufferList *list);
 
 }
@@ -16,7 +16,7 @@ static inline ListBuffer *MessageQueue_AddBuffer(MessageQueue *self, ListBuffer 
     BOOL allocated = FALSE;
     if (b == NULL) {
         allocated = TRUE;
-        b = (ListBuffer *)func_0203dd9c(0x20);
+        b = (ListBuffer *)Heap_Alloc(0x20);
         if (b != NULL) {
             VOBJ_SET_VTABLE(b, data_ov000_021cb6d0);
             b->flags = 0;
@@ -155,7 +155,7 @@ void func_ov000_0216f498(MessageQueue *self, Message *msg) {
 }
 
 void func_ov000_0216f4cc(MessageQueue *self, u32 a, u32 b, u32 c, u32 d) {
-    TimedBuffer *buf = (TimedBuffer *)func_0203dd9c(sizeof(TimedBuffer));
+    TimedBuffer *buf = (TimedBuffer *)Heap_Alloc(sizeof(TimedBuffer));
     if (buf != NULL) {
         buf->flags = 0;
         buf->priority = 0;

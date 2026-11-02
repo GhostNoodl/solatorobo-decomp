@@ -43,13 +43,13 @@ static inline void GameSave_Dtor(GameSave *s) {
     s->Finalize();
 }
 
-GameSave *func_0206db84(GameSave *s) {
+GameSave *MainVt_0208c994_DtorDelete(GameSave *s) {
     GameSave_Dtor(s);
-    func_0203de1c(s);
+    Heap_Free(s);
     return s;
 }
 
-GameSave *func_0206dbec(GameSave *s) {
+GameSave *MainVt_0208c994_Dtor(GameSave *s) {
     GameSave_Dtor(s);
     return s;
 }
@@ -61,25 +61,25 @@ static inline void GameSaveBase_Dtor(GameSave *s) {
     s->Finalize();
 }
 
-GameSave *func_0206dc4c(GameSave *s) {
+GameSave *MainVt_0208ca9c_DtorDelete(GameSave *s) {
     GameSaveBase_Dtor(s);
-    func_0203de1c(s);
+    Heap_Free(s);
     return s;
 }
 
-GameSave *func_0206dc98(GameSave *s) {
-    GameSaveBase_Dtor(s);
-    return s;
-}
-
-GameSave *func_0206dcdc(GameSave *s) {
+GameSave *MainVt_0208ca9c_Dtor(GameSave *s) {
     GameSaveBase_Dtor(s);
     return s;
 }
 
-GameSave *func_0206dd20(GameSave *s) {
+GameSave *MainVt_0208ca18_Dtor(GameSave *s) {
     GameSaveBase_Dtor(s);
-    func_0203de1c(s);
+    return s;
+}
+
+GameSave *MainVt_0208ca18_DtorDelete(GameSave *s) {
+    GameSaveBase_Dtor(s);
+    Heap_Free(s);
     return s;
 }
 

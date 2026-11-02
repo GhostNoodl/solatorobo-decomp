@@ -91,7 +91,7 @@ void func_ov015_0220f878(Ov015Result *self) {
         func_ov002_021e9e40(5);
         break;
     }
-    o = (u8 *)func_0203dd9c(0x584);
+    o = (u8 *)Heap_Alloc(0x584);
     if (o != NULL) {
         o = (u8 *)func_ov015_0220dde8(o);
     }
@@ -165,7 +165,7 @@ void func_ov015_0220fb78(Ov015Result *self) {
     u16 id;
     void *name;
     func_ov002_021e9e40(6);
-    o = (u8 *)func_0203dd9c(0x584);
+    o = (u8 *)Heap_Alloc(0x584);
     if (o != NULL) {
         o = (u8 *)func_ov015_0220dde8(o);
     }
@@ -238,7 +238,7 @@ void *Ov015Msg_Dtor(Ov015Msg *self) {
         if (o != NULL) {
             func_02041558(o);
             func_02041278(o + 0x88);
-            func_0203de1c(o);
+            Heap_Free(o);
         }
         self->unk_14 = NULL;
     }
@@ -274,7 +274,7 @@ void *Ov015Msg_DtorDelete(Ov015Msg *self) {
         if (o != NULL) {
             func_02041558(o);
             func_02041278(o + 0x88);
-            func_0203de1c(o);
+            Heap_Free(o);
         }
         self->unk_14 = NULL;
     }
@@ -292,7 +292,7 @@ void *Ov015Msg_DtorDelete(Ov015Msg *self) {
     DELETE_V(self->unk_2c);
     HEAP_POP(saved);
 
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -394,7 +394,7 @@ void func_ov015_0221015c(Ov015Msg *self) {
 }
 
 void func_ov015_02210298(Ov015Msg *self) {
-    void *p = func_0203dd9c(0x58);
+    void *p = Heap_Alloc(0x58);
     if (p != NULL) {
         SET_VT(p, data_0208b318);
         VCALL(p)->v08();
@@ -427,7 +427,7 @@ void *func_02035de0(void *a, void *b);
 void func_020417e0(void *a, void *b);
 void func_02041d9c(void *a, int b, int c);
 void func_0204c7d0(void *p);
-void *func_0204c0e8(void *a, s32 b);
+void *MsgRes_GetString(void *a, s32 b);
 s32 func_0204c4fc(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
 void func_ov015_02208544(Ov015UiText *self);
@@ -457,7 +457,7 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     u8 *p;
     func_0204c030(self->unk_10);
     self->unk_b0 = func_0204c08c(self->unk_10, self->unk_0c, self->unk_30, 0x20);
-    p = (u8 *)func_0203dd9c(0x160);
+    p = (u8 *)Heap_Alloc(0x160);
     if (p != NULL) {
         void *file = data_0208cc94;
         void *name = data_0208cc88;
@@ -470,7 +470,7 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     FLD(u32, self->unk_14, 0x6c) |= 2;
     func_02041d9c(self->unk_14, 0, 0x1d);
     FLD(s32, self->unk_14, 0x150) = -0xccd;
-    p = (u8 *)func_0203dd9c(0xb8);
+    p = (u8 *)Heap_Alloc(0xb8);
     if (p != NULL) {
         SET_VT(p, data_0208ba70);
         func_0204c7d0(p);
@@ -478,7 +478,7 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     self->unk_18 = p;
     FLD(s32, p, 0x28) = 4;
     {
-        void *t = func_0204c0e8(data_02149ef8, 0x118);
+        void *t = MsgRes_GetString(data_02149ef8, 0x118);
         p = self->unk_18;
         FLD(void *, p, 0x24) = t;
         FLD(s32, p, 0x4c) = func_0204c4fc(FLD(s32, p, 0x28), FLD(s32, p, 0x38), FLD(void *, p, 0x24), p + 0x44, p + 0x48,
@@ -495,7 +495,7 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     FLD(u32, self->unk_18, 0x4) |= 0x40000000;
     FLD(u32, self->unk_18, 0x4) |= 4;
     func_0204ca70(self->unk_18);
-    p = (u8 *)func_0203dd9c(0x8c);
+    p = (u8 *)Heap_Alloc(0x8c);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
@@ -510,7 +510,7 @@ BOOL func_ov015_02210314(Ov015Msg *self) {
     self->unk_28->unk_20 = 3;
     Ov015T_SetXYZ16(self->unk_28, 4, 0x86, -0xccd);
     VCALL(self->unk_28)->v08();
-    p = (u8 *)func_0203dd9c(0xb4);
+    p = (u8 *)Heap_Alloc(0xb4);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();

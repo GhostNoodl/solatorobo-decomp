@@ -129,7 +129,7 @@ extern "C" {
 u32 func_ov011_02201244(void *self);
 void *func_ov011_02201254(void *self);
 void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
-void func_ov000_0219bdb0(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
+void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
 u32 func_ov011_02201b64(void *p);
 BOOL func_ov011_02201b40(void *p);
 void func_ov011_02201aac(void *p, const Ov011Vec *v);
@@ -139,7 +139,7 @@ void MTX_RotY33_(Ov011Mtx33 *m, s32 s, s32 c);
 void MTX_MultVec33(const Ov011Vec *v, const Ov011Mtx33 *m, Ov011Vec *out);
 extern const Ov011Vec data_ov011_02207290;
 extern void *data_ov000_021ccd64;
-void *func_ov000_0218bf1c(void *mgr, Ov011SpawnDesc *d, Ov011Vec *pos, Ov011Rot *rot, u16 a);
+void *Group_SpawnActor(void *mgr, Ov011SpawnDesc *d, Ov011Vec *pos, Ov011Rot *rot, u16 a);
 void func_ov011_022011c0(void *self, u16 v);
 void func_ov011_022011c8(void *a, s32 b);
 void func_ov011_02201214(void *self, void *p);
@@ -149,7 +149,7 @@ static inline void Ov011_Send(u16 id, s32 a, s32 b) {
     Ov011Msg m;
     m.a = a;
     m.b = b;
-    func_ov000_0219bdb0(id, 0xffff, 0xe, 1, 0xc, &m);
+    ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &m);
 }
 
 static inline BOOL Ov011_NodeAlive(Ov011Node *n) {
@@ -163,7 +163,7 @@ static inline BOOL Ov011_NodeAlive(Ov011Node *n) {
 }
 
 static inline Ov011PNode *Ov011_NewPNode(const Ov011Vec *v) {
-    Ov011PNode *n = (Ov011PNode *)func_0203dd9c(0x10);
+    Ov011PNode *n = (Ov011PNode *)Heap_Alloc(0x10);
     n->v.x = v->x;
     n->v.y = v->y;
     n->v.z = v->z;
@@ -201,11 +201,11 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
         mb.b1 = 0;
         mb.c = 0;
         mb.d = 0x1000;
-        func_ov000_0219bdb0(id, 0xffff, 0xe, 1, 0xc, &mb);
+        ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &mb);
         id = self->actor->id;
         mc.a = 1;
         mc.b = 2;
-        func_ov000_0219bdb0(id, 0xffff, 0xe, 1, 0xc, &mc);
+        ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &mc);
         self->seq.state = 1;
         break;
     }
@@ -250,7 +250,7 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
                 rot.x = 0;
                 rot.y = 0;
                 rot.z = 0;
-                ob = (Ov011Npc *)func_ov000_0218bf1c(data_ov000_021ccd64, &d, &p, &rot, 0xffff);
+                ob = (Ov011Npc *)Group_SpawnActor(data_ov000_021ccd64, &d, &p, &rot, 0xffff);
                 func_ov011_022011c0(ob, self->actor->id);
                 func_ov011_022011c8(ob, 1);
                 ob->unk_4c->unk_1c = self->actor->id;

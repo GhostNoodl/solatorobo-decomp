@@ -9,7 +9,7 @@ typedef struct {
 
 extern "C" {
 BOOL func_020621f8(void);
-Actor *func_ov000_0218bf1c(void *mgr, Spawn0219b5dc *desc, s32 a, s32 b, u16 c);
+Actor *Group_SpawnActor(void *mgr, Spawn0219b5dc *desc, s32 a, s32 b, u16 c);
 
 void func_ov000_0219b5dc(u16 amount, s32 a, s32 b) {
     s32 n;
@@ -46,7 +46,7 @@ void func_ov000_0219b5dc(u16 amount, s32 a, s32 b) {
                 desc.args[i] = 0;
             }
             desc.unk_0c = -1;
-            o = func_ov000_0218bf1c(data_ov000_021ccd64, &desc, a, b, 0xffff);
+            o = Group_SpawnActor(data_ov000_021ccd64, &desc, a, b, 0xffff);
             if (o != NULL) {
                 o->flags_0 = 1;
             }

@@ -65,7 +65,7 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
     switch (self->unk_28) {
     case 1: {
         char buf[0x20];
-        VObj *p = (VObj *)func_0203dd9c(0x4c);
+        VObj *p = (VObj *)Heap_Alloc(0x4c);
         if (p != NULL) {
             *(void **)p = data_0208b318;
             p->vfunc_08();
@@ -99,7 +99,7 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         if (!func_ov000_02184498(data_ov000_021ccd54)) {
             break;
         }
-        p = (u8 *)func_0203dd9c(0x160);
+        p = (u8 *)Heap_Alloc(0x160);
         if (p != NULL) {
             func_02041218(p + 0x88);
             func_02041440(p, (u8 *)self + 4, 0);

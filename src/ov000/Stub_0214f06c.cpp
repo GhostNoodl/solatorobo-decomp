@@ -6,7 +6,7 @@ static inline BOOL Bit4_Inline(void *self) { return ((Bits_04 *)((u8 *)self + 4)
 
 extern "C" {
 
-bool func_ov000_0214f06c(void *self) {
+bool Task_GetFlag4(void *self) {
     return Bit4_Inline(self);
 }
 

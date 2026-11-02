@@ -32,10 +32,10 @@ extern ov006_Net021e51f8 *data_02097e40;
 
 BOOL func_020463c8(ov006_Net021e51f8 *net);
 BOOL func_020455ac(ov006_Net021e51f8 *net);
-int func_02046abc(ov006_Net021e51f8 *net);
+int Wh_GetError(ov006_Net021e51f8 *net);
 u16 func_0204584c(ov006_Net021e51f8 *net);
 void func_02044a0c(ov006_NetParam021e51f8 *param);
-void func_02045940(ov006_Net021e51f8 *net, void *data, u32 size);
+void Wh_SetGameInfo(ov006_Net021e51f8 *net, void *data, u32 size);
 void func_02045950(ov006_Net021e51f8 *net, void *data, u32 size);
 BOOL func_020459cc(ov006_Net021e51f8 *net, int a, u16 tgid, u16 b);
 BOOL func_02045ea4(ov006_Net021e51f8 *net, BOOL enabled);
@@ -116,12 +116,12 @@ void func_ov006_021e51f8(ov006_Unk021ec888 *self) {
         return;
     }
     case 10: {
-        int err = func_02046abc(data_02097e40);
+        int err = Wh_GetError(data_02097e40);
         if (err == 0x18 || err == 0x16) {
             ov006_Menu_Error(2);
             return;
         }
-        if (func_02046abc(data_02097e40) == 3) {
+        if (Wh_GetError(data_02097e40) == 3) {
             self->unkC = 0;
             return;
         }
@@ -143,7 +143,7 @@ void func_ov006_021e51f8(ov006_Unk021ec888 *self) {
         net->param.unk8 = 0x74;
         net->param.unkC = 1;
         func_02044a0c(&net->param);
-        func_02045940(data_02097e40, self->unkF4, 0x66);
+        Wh_SetGameInfo(data_02097e40, self->unkF4, 0x66);
         MI_CpuFill8(data_02097e40->buf, 0, 0x200);
         menu = data_ov006_021ec888;
         for (i = 0; i < 4; i++) {

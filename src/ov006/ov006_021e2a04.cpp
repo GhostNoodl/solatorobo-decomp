@@ -29,7 +29,7 @@ ov006_Unk021e2a04 *Ov006Vt_021ec29c_Dtor(ov006_Unk021e2a04 *self) {
 
 ov006_Unk021e2a04 *Ov006Vt_021ec29c_DtorDelete(ov006_Unk021e2a04 *self) {
     ov006_Unk021e2a04_dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -42,7 +42,7 @@ void func_ov006_021e2c14(ov006_Unk021e2a04 *self) {
     ov006_Caption_Init(self->unk14);
     text = data_ov006_021ec1b5;
     ov006_AnimHolder_Play((ov006_AnimHolder *)self->unk14, (int)text, 4);
-    model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec1a9;
         if (name) {

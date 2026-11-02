@@ -73,7 +73,7 @@ static inline void ov006_Unk021ddcc0_dtor(ov006_Unk021ddcc0 *self) {
             if (self->unk1C != NULL) {
                 void *p = self->unk1C;
                 func_ov000_0216e5d0(p);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             self->unk1C = NULL;
         }
@@ -91,7 +91,7 @@ ov006_Unk021ddcc0 *Ov006Vt_021ec2bc_Dtor(ov006_Unk021ddcc0 *self) {
 
 ov006_Unk021ddcc0 *Ov006Vt_021ec2bc_DtorDelete(ov006_Unk021ddcc0 *self) {
     ov006_Unk021ddcc0_dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -102,7 +102,7 @@ void func_ov006_021de008(ov006_Unk021ddcc0 *self) {
     ov006_ObjC021de008 *c;
     ov006_Model *model;
 
-    a = (ov006_ObjA021de008 *)func_0203dd9c(sizeof(ov006_ObjA021de008));
+    a = (ov006_ObjA021de008 *)Heap_Alloc(sizeof(ov006_ObjA021de008));
     if (a != NULL) {
         a->vtbl = data_ov006_021ec24c;
         a->unk4 = 0;
@@ -118,7 +118,7 @@ void func_ov006_021de008(ov006_Unk021ddcc0 *self) {
     self->unk14 = a;
     func_ov006_021dcf7c(a);
     self->unk14->unk1C = -0x2000;
-    b = (ov006_ObjB021de008 *)func_0203dd9c(sizeof(ov006_ObjB021de008));
+    b = (ov006_ObjB021de008 *)Heap_Alloc(sizeof(ov006_ObjB021de008));
     if (b != NULL) {
         b->vtbl = data_ov006_021ec21c;
         b->unk4 = 0;
@@ -130,7 +130,7 @@ void func_ov006_021de008(ov006_Unk021ddcc0 *self) {
     self->unk18 = b;
     func_ov006_021dd450(b);
     self->unk18->unk14 = -0x2000;
-    c = (ov006_ObjC021de008 *)func_0203dd9c(sizeof(ov006_ObjC021de008));
+    c = (ov006_ObjC021de008 *)Heap_Alloc(sizeof(ov006_ObjC021de008));
     if (c != NULL) {
         func_ov000_0216e574(c);
     }
@@ -141,7 +141,7 @@ void func_ov006_021de008(ov006_Unk021ddcc0 *self) {
     self->unk1C->unk18 = 2;
     self->unk1C->unk0 |= 0x400000;
     func_0206e900(file, data_ov006_021ec178);
-    model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec191;
         const char *path = file;
@@ -158,7 +158,7 @@ void func_ov006_021de008(ov006_Unk021ddcc0 *self) {
     self->unk20->unk150 = -0x2000;
     func_02041d9c(self->unk20, 0, 7);
     func_02041d9c(self->unk20, 0, 8);
-    model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec191;
         const char *path = file;
@@ -174,7 +174,7 @@ void func_ov006_021de008(ov006_Unk021ddcc0 *self) {
     self->unk24->unk6C |= 0x80000;
     self->unk24->unk150 = -0x2000;
     func_02041d9c(self->unk24, 0, 0xffff);
-    model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec185;
         const char *path = file;

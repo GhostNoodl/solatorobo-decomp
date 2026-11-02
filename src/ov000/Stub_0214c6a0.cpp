@@ -45,7 +45,7 @@ extern const u8 data_0208ba70[];
 extern const u8 data_0208bbc8[];
 extern Shared02fe1534 data_02fe1534;
 
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_0204c7d0(void *obj);
 void func_02050f70(void *obj);
 
@@ -74,7 +74,7 @@ void func_ov000_0214c6b4(Obj0214c668 *self, s32 a, s32 b, s32 c) {
     Obj0214c6b4 *obj;
 
     self->unk_204 = c;
-    obj = (Obj0214c6b4 *)func_0203dd9c(0xb80);
+    obj = (Obj0214c6b4 *)Heap_Alloc(0xb80);
     if (obj != NULL) {
         obj->vtbl = data_0208ba70;
         func_0204c7d0(obj);

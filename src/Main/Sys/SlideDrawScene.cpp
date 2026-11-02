@@ -72,15 +72,15 @@ extern const SlideCol3 data_020829c8;
 
 u8 *func_0204f354(void);
 void *func_02055a9c(u8 *p);
-void func_02056c0c(u32 mode, ...);
-void func_02056c30(void);
-void func_0204f430(s32 x, s32 y, s32 z);
-void func_0204f3a0(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
-void func_0204f368(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
-void func_0204f3ec(void);
-void func_0204f404(s32 x, s32 y, s32 z);
-void func_0204f45c(u32 color);
-void func_0204f478(s32 num, ...);
+void GfxGe_StoreMtx(u32 mode, ...);
+void GfxGe_Identity(void);
+void GfxGe_Scale(s32 x, s32 y, s32 z);
+void GfxGe_TexImageParam(int texFmt, int texGen, int s, int t, int repeat, int flip, int pltt0, u32 addr);
+void GfxGe_PolygonAttr(int light, int polyMode, int cullMode, int polygonId, int alpha, int misc);
+void GfxGe_PushMtx(void);
+void GfxGe_Translate(s32 x, s32 y, s32 z);
+void GfxGe_Color(u32 color);
+void GfxGe_PopMtx(s32 num, ...);
 extern void func_020435e8(void *pltt, void *src, u32 size);
 BOOL func_02056c48(void);
 s16 func_0204e2ac(s32 angle);
@@ -134,10 +134,10 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
     pltt = func_02055a9c(func_0204f354());
     sx = scene->shakeX & ~0xfff;
     sy = scene->shakeY & ~0xfff;
-    func_02056c0c(0);
-    func_02056c30();
-    func_0204f430(0x1000, 0x1000, 0x1000);
-    func_0204f3a0(0, 0, 0, 0, 0, 0, 1, 0);
+    GfxGe_StoreMtx(0);
+    GfxGe_Identity();
+    GfxGe_Scale(0x1000, 0x1000, 0x1000);
+    GfxGe_TexImageParam(0, 0, 0, 0, 0, 0, 1, 0);
     if (!scene->fading) {
         return;
     }
@@ -155,33 +155,33 @@ void func_02056230(SlideDrawScene *scene, s32 i) {
     if (panel && panel && panel) {}
     dy = func_020534c4(func_0204e2c4(scene->dimT, 0x7000));
     lift = func_020534d4(scene);
-    func_0204f3ec();
+    GfxGe_PushMtx();
     if (scene->fadeOut) {
         s = 0x1000 - func_0204e2ac((scene->fadeT << 14) >> 12);
     } else {
         s = func_0204e2ac((scene->fadeT << 14) >> 12);
     }
     func_0204e2c4(0x80000, s);
-    func_0204f368(0, 1, 3, func_02056c94(gfx), 0x12, 0);
-    func_0204f3ec();
-    func_0204f404(sx + (func_0204e2c4(0x110000, s) - 0x90000), sy + (dy + 0x35000) - (lift << 12), -0xa9a);
-    func_0204f430(0x1000, 0x1000, 0x1000);
-    func_0204f45c(0);
+    GfxGe_PolygonAttr(0, 1, 3, func_02056c94(gfx), 0x12, 0);
+    GfxGe_PushMtx();
+    GfxGe_Translate(sx + (func_0204e2c4(0x110000, s) - 0x90000), sy + (dy + 0x35000) - (lift << 12), -0xa9a);
+    GfxGe_Scale(0x1000, 0x1000, 0x1000);
+    GfxGe_Color(0);
     scene->DrawBox(0x100, 4);
-    func_0204f478(1);
-    func_0204f3ec();
-    func_0204f404(sx + (func_0204e2c4(-0x110000, s) + 0x190000), sy + (dy + 0x77000) - (lift << 12), -0xa9a);
-    func_0204f430(0x1000, 0x1000, 0x1000);
-    func_0204f45c(0);
+    GfxGe_PopMtx(1);
+    GfxGe_PushMtx();
+    GfxGe_Translate(sx + (func_0204e2c4(-0x110000, s) + 0x190000), sy + (dy + 0x77000) - (lift << 12), -0xa9a);
+    GfxGe_Scale(0x1000, 0x1000, 0x1000);
+    GfxGe_Color(0);
     scene->DrawBox(0x100, 4);
-    func_0204f478(1);
-    func_0204f368(0, 1, 3, func_02043d84(gfx), polyId, 0);
-    func_0204f3ec();
-    func_0204f404(sx + 0x80000, sy + (dy + 0x56000) - (lift << 12), -0xa9a);
-    func_0204f430(s, s, 0x1000);
+    GfxGe_PopMtx(1);
+    GfxGe_PolygonAttr(0, 1, 3, func_02043d84(gfx), polyId, 0);
+    GfxGe_PushMtx();
+    GfxGe_Translate(sx + 0x80000, sy + (dy + 0x56000) - (lift << 12), -0xa9a);
+    GfxGe_Scale(s, s, 0x1000);
     scene->DrawGrad(0x100, 0x3e, top, bottom);
-    func_0204f478(1);
-    func_0204f478(1);
+    GfxGe_PopMtx(1);
+    GfxGe_PopMtx(1);
     {
     s32 off[5] = {0, 0, 0, 0, 0};
     i = 0;

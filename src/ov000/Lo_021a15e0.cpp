@@ -17,14 +17,14 @@ static inline void SetS(S0219bebc *p, S0219bebc v) {
 extern "C" {
 void func_ov000_0215eab4(void *p);
 void MTX_FrustumW(s32 t, s32 b, s32 l, s32 r, s32 n, s32 f, s32 scaleW, void *mtx);
-Actor *func_ov000_0218e640(ActorMgr *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
 static inline Actor *FindA(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(mgr, id);
+    return ActorMgr_GetActor(mgr, id);
 }
 
 void func_ov000_021a15e0(Robo021ca458 *self) {

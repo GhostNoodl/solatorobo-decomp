@@ -51,7 +51,7 @@ extern "C" {
 #endif
 
 extern LoCreateFn data_ov000_021c9c6c[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 void func_ov000_02173648(void *self);
 void func_ov000_02178dcc(void *p, BOOL add);
 
@@ -90,7 +90,7 @@ void func_ov000_02178dcc(void *p, BOOL add);
             if (p_ != NULL) {                         \
                 func_02041558((struct Model *)p_);    \
                 func_02041278((u8 *)p_ + 0x88);       \
-                func_0203de1c(p_);                    \
+                Heap_Free(p_);                    \
             }                                         \
             LFLD(void *, self, off) = NULL;           \
         }                                             \

@@ -46,7 +46,7 @@ void func_02065ac0(void *p);
 void func_ov015_021ff380(void *p);
 void func_ov015_02200194(void *p);
 void func_02043d20(void *p, s32 a);
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 n);
 void func_02043db4(s32 a, s32 b, s32 c, s32 d);
 s32 FX_Div(s32 a, s32 b);
@@ -56,7 +56,7 @@ static inline Ov015V *Ov015_NewChild(Ov015Main *self, s32 kind) {
     Ov015V *c = NULL;
     switch (kind) {
     case 1: {
-        Ov015Child *p = (Ov015Child *)func_0203dd9c(0x14);
+        Ov015Child *p = (Ov015Child *)Heap_Alloc(0x14);
         if (p != NULL) {
             p->state = 0;
             p->unk_08 = 0;
@@ -69,7 +69,7 @@ static inline Ov015V *Ov015_NewChild(Ov015Main *self, s32 kind) {
     case 2: {
         Ov015Game *p;
         data_ov015_02213368->unk_04 = self->unk_04;
-        p = (Ov015Game *)func_0203dd9c(0xcc);
+        p = (Ov015Game *)Heap_Alloc(0xcc);
         if (p != NULL) {
             p->state = 0;
             p->unk_08 = 0;
@@ -139,7 +139,7 @@ void func_ov015_021fa6e0(void) {
 }
 
 void *func_ov015_021fa6e4(void *self) {
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -184,7 +184,7 @@ void func_ov015_021fa77c(void) {
         DELETE_V(data_ov015_02213320.unk_00);
         HEAP_POP(saved);
     }
-    p = (Ov015Main *)func_0203dd9c(sizeof(Ov015Main));
+    p = (Ov015Main *)Heap_Alloc(sizeof(Ov015Main));
     if (p != NULL) {
         u8 *sys;
         SET_VT(p, data_ov015_022127cc);
@@ -214,7 +214,7 @@ void func_ov015_021fa868(void) {
 Ov015Main *func_ov015_021fa8c4(Ov015Main *self) {
     SET_VT(self, data_ov015_022127cc);
     func_ov015_021fa8ec(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -240,7 +240,7 @@ void func_ov015_021fa8ec(Ov015Main *self) {
 
 void *func_ov015_021faa54(void *self) {
     SET_VT(self, data_ov015_0221280c);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -293,7 +293,7 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
         HEAP_PUSH(saved);
         DELETE_V(data_ov015_02213320.unk_04);
         HEAP_POP(saved);
-        f = (Ov015Fade *)func_0203dd9c(sizeof(Ov015Fade));
+        f = (Ov015Fade *)Heap_Alloc(sizeof(Ov015Fade));
         if (f != NULL) {
             SET_VT(f, data_ov015_022127fc);
             f->unk_04 = -0x1000;
@@ -427,7 +427,7 @@ void func_ov015_021fb088(Ov015Main *self) {
     NNS_G3dGeBufferOP_N(0x15, NULL, 0);
     texParam = 0;
     NNS_G3dGeBufferOP_N(0x2a, &texParam, 1);
-    polyAttr = G3_PackPolygonAttr(0, 0, 3, func_02043d48(data_02097d48 + 0x8b0), fd->unk_18, 0);
+    polyAttr = G3_PackPolygonAttr(0, 0, 3, Gfx3DState_NextPolyId(data_02097d48 + 0x8b0), fd->unk_18, 0);
     NNS_G3dGeBufferOP_N(0x29, &polyAttr, 1);
     trans[2] = fd->unk_04;
     trans[0] = 0;
@@ -441,14 +441,14 @@ void func_ov015_021fb088(Ov015Main *self) {
 void *func_ov015_021fb1c0(void *self) {
     SET_VT(self, data_ov015_022127dc);
     func_ov015_02200194(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
 void *Ov015Obj30_DtorDelete(void *self) {
     SET_VT(self, data_ov015_022127ec);
     func_ov015_021ff380(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

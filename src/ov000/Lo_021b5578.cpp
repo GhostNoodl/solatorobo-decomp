@@ -89,7 +89,7 @@ BOOL func_0203e688(void);
 void func_02039494(void *r);
 void *func_0206e230(Res2021b5578 *r);
 u8 *func_0206e2a4(Res2021b5578 *r);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 Node021b5578 *func_ov000_021b79f4(void *p);
 void func_ov000_021b8014(Node021b5578 *n, u8 *d, u8 *e, u8 c);
 BOOL func_ov000_021b7f0c(Node021b5578 *n);
@@ -359,7 +359,7 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
             n_1 = self->unk_14->n;
             e_4 = func_0206e150(self->unk_10);
             for (i_4 = 0; i_4 < n_1; i_4++) {
-                Node021b5578 *nd = (Node021b5578 *)func_0203dd9c(0x114);
+                Node021b5578 *nd = (Node021b5578 *)Heap_Alloc(0x114);
                 if (nd != NULL) {
                     nd = func_ov000_021b79f4(nd);
                 }

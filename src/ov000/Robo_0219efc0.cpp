@@ -86,9 +86,9 @@ extern u8 *data_ov000_021ccd30;
 extern u8 *data_0214a424;
 extern void *data_02097dc8;
 extern void *data_02097e4c;
-Actor *func_ov000_0218e640(void *mgr, u16 id);
-void *func_ov000_0218e4cc(void *mgr, u16 key);
-u16 func_0203d434(void *pad, void *p);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
+void *ActorMgr_GetGroup(void *mgr, u16 key);
+u16 Pad_LookupDir(void *pad, void *p);
 void func_ov000_021b3738(void *self, void *t);
 void func_ov000_021b2d48(void *self);
 void func_ov000_02168e18(void *self, s32 a, s32 b, VecFx32 *p);
@@ -103,7 +103,7 @@ static inline Actor *FindActor_0219efc0(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline BOOL IsBusy_0219efc0(u8 *g) {
@@ -251,7 +251,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
         self->unk_b68 = LFLD(u16, data_02097dc8, 0x10);
         self->unk_b6a = LFLD(u16, data_02097dc8, 0x12);
         self->unk_b6c = LFLD(u16, data_02097dc8, 0x14);
-        self->unk_b6e = func_0203d434(data_02097dc8, (u8 *)self + 0xb70);
+        self->unk_b6e = Pad_LookupDir(data_02097dc8, (u8 *)self + 0xb70);
     }
     if ((self->unk_b68 & 1) && !B24(self).b18) {
         self->unk_b36++;
@@ -470,7 +470,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
             } else if (B24(self).b1) {
                 LockKeys_0219efc0(self);
             } else if (!(self->unk_48->unk_54 & 0x400)) {
-                if (B93(self).b4 || LFLD(u16, func_ov000_0218e4cc(data_ov000_021ccd68, 0x5000), 0x16) != 0) {
+                if (B93(self).b4 || LFLD(u16, ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000), 0x16) != 0) {
                     KEYS(self) |= 0x10000;
                 }
             }

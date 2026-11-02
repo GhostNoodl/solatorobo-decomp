@@ -32,7 +32,7 @@ BOOL func_ov015_02201618(Ov015Game *self) {
     Ov015List *l;
     u32 n;
     u32 i;
-    o = (Ov015CamPair *)func_0203dd9c(0x1a0);
+    o = (Ov015CamPair *)Heap_Alloc(0x1a0);
     if (o != NULL) {
         SET_VT(o, data_ov015_0221291c);
         func_0204b370(&o->cam0);
@@ -50,14 +50,14 @@ BOOL func_ov015_02201618(Ov015Game *self) {
     self->unk_24 = o;
     func_ov015_021fce94(o);
     if ((u32)(FLD(s32, data_ov015_02213320.unk_00, 0x4) - 1) <= 1) {
-        u8 *p = (u8 *)func_0203dd9c(0x14);
+        u8 *p = (u8 *)Heap_Alloc(0x14);
         if (p != NULL) {
             SET_VT(p, data_ov015_02213198);
             func_ov015_02210b3c(p);
         }
         self->unk_90 = p;
     }
-    l = (Ov015List *)func_0203dd9c(0x10);
+    l = (Ov015List *)Heap_Alloc(0x10);
     if (l != NULL) {
         SET_VT(l, data_ov015_0221290c);
         l->head = NULL;
@@ -70,7 +70,7 @@ BOOL func_ov015_02201618(Ov015Game *self) {
     for (i = 0; i < n; i++) {
         u16 id = ids[i];
         u8 *def = func_02070744(id);
-        Ov015Fish *e = (Ov015Fish *)func_0203dd9c(0x5b0);
+        Ov015Fish *e = (Ov015Fish *)Heap_Alloc(0x5b0);
         Ov015List *L;
         Ov015Node *nd;
         if (e != NULL) e = (Ov015Fish *)Ov015Fish_Ctor(e);
@@ -80,7 +80,7 @@ BOOL func_ov015_02201618(Ov015Game *self) {
         e->unk_c0.unk_24 = self->unk_94.unk_24;
         func_ov015_02209364(e);
         L = self->unk_1c;
-        nd = (Ov015Node *)func_0203dd9c(0x10);
+        nd = (Ov015Node *)Heap_Alloc(0x10);
         if (nd != NULL) {
             SET_VT(nd, data_ov015_0221295c);
             nd->key = (s32)e;

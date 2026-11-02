@@ -27,7 +27,7 @@ extern const u8 data_ov006_021eb728[];
 extern const u8 data_ov006_021eb770[];
 extern const u8 data_ov006_021eb740[];
 
-void *func_0204c0e8(void *a, int id);
+void *MsgRes_GetString(void *a, int id);
 void func_ov006_021cd580(int a, void *b, int c);
 void func_ov000_021548cc(void *a, int b);
 void *func_ov000_02154b80(void *a, int b);
@@ -55,7 +55,7 @@ BOOL func_ov006_021d1df8(ov006_Window *window, ov006_ListNode *node);
 BOOL func_ov006_021d1f00(ov006_Window *window, ov006_ListNode *node);
 
 static inline ov006_Window *ov006_NewWindow_caec8(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0xd4);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xd4);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -66,7 +66,7 @@ static inline ov006_Window *ov006_NewWindow_caec8(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cadcc(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0x8c);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0x8c);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -77,7 +77,7 @@ static inline ov006_Window *ov006_NewWindow_cadcc(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cb0b8(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0x1e4);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0x1e4);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -92,7 +92,7 @@ static inline ov006_Window *ov006_NewWindow_cb0b8(void) {
 }
 
 static inline ov006_Window *ov006_NewWindow_cad50(void) {
-    ov006_Window *w = (ov006_Window *)func_0203dd9c(0xe8);
+    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xe8);
     if (w != NULL) {
         w->vtbl = &data_ov000_021cac60;
         VCALL(w, 28);
@@ -126,8 +126,8 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     }
     res = data_02149ef8;
     self->unk54 = ov006_NewWindow_caec8();
-    VCALL(self->unk54, 10, func_0204c0e8(res, 0x128));
-    VCALL(self->unk54, 14, func_0204c0e8(res, 0x129));
+    VCALL(self->unk54, 10, MsgRes_GetString(res, 0x128));
+    VCALL(self->unk54, 14, MsgRes_GetString(res, 0x129));
     self->unk54->unk4A = 0x2c00;
     self->unk54->unk20 = 4;
     self->unk54->unk24 = 0x8c;
@@ -151,7 +151,7 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     self->unk54->owner = self;
     self->unk54->unk88 = func_ov006_021d1df8;
     {
-        void *p = func_0203dd9c(0x708);
+        void *p = Heap_Alloc(0x708);
         if (p != NULL) {
             p = func_ov000_02162124(p);
         }
@@ -169,7 +169,7 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     VCALL(self->unk5C, 08);
     self->unk60 = ov006_NewWindow_cb0b8();
     F(self->unk60, 0x1d8, u16) = 0x12c;
-    F(self->unk60, 0x1dc, void *) = func_0204c0e8(res, 0x18);
+    F(self->unk60, 0x1dc, void *) = MsgRes_GetString(res, 0x18);
     F(self->unk60, 0x1e0, u16) = 1;
     self->unk60->unk84 = func_ov006_021d1f00;
     self->unk60->owner = &self->unk4C;
@@ -177,12 +177,12 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     self->unk60->unk68 = -0x1666;
     self->unk60->flags |= 2;
     self->unk64 = ov006_NewWindow_cad50();
-    func_ov000_0215c1bc(self->unk64, 0x74, func_0204c0e8(res, 0x139));
+    func_ov000_0215c1bc(self->unk64, 0x74, MsgRes_GetString(res, 0x139));
     self->unk64->flags |= 0x10000;
     self->unk64->flags &= ~0x20000;
     self->unk64->flags |= 2;
     {
-        void *p = func_0203dd9c(0x2c);
+        void *p = Heap_Alloc(0x2c);
         if (p != NULL) {
             p = ov006_Caption_Ctor(p);
         }
@@ -190,13 +190,13 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     }
     F(self->unk68, 0x20, int) = 1;
     func_ov006_021e0954(self->unk68);
-    func_ov006_021e0ca8(self->unk68, func_0204c0e8(res, 0x128), 4);
+    func_ov006_021e0ca8(self->unk68, MsgRes_GetString(res, 0x128), 4);
     ov006_SetPair(self->unk68, 0x8, -0xa0, -0x61);
     ov006_SetPair2(self->unk68, 0xf, 0);
     F(self->unk68, 0x1c, int) = -0x1e;
     y = -0x3e;
     for (i = 0; i < 4; i++) {
-        void *p = func_0203dd9c(0x24);
+        void *p = Heap_Alloc(0x24);
         if (p != NULL) {
             p = Ov006Vt_021ec20c_Ctor(p);
         }
@@ -206,10 +206,10 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
         y += 0x20;
         F(self->gauges[i], 0x10, int) = i;
     }
-    func_ov006_021e13c8(self->gauges[0], func_0204c0e8(res, 0x13a));
-    func_ov006_021e13c8(self->gauges[1], func_0204c0e8(res, 0x13b));
-    func_ov006_021e13c8(self->gauges[2], func_0204c0e8(res, 0x13c));
-    func_ov006_021e13c8(self->gauges[3], func_0204c0e8(res, 0x13e));
+    func_ov006_021e13c8(self->gauges[0], MsgRes_GetString(res, 0x13a));
+    func_ov006_021e13c8(self->gauges[1], MsgRes_GetString(res, 0x13b));
+    func_ov006_021e13c8(self->gauges[2], MsgRes_GetString(res, 0x13c));
+    func_ov006_021e13c8(self->gauges[3], MsgRes_GetString(res, 0x13e));
     {
         u8 buf[0x18];
         ov006_Slot_Pack(func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5), buf);
@@ -231,7 +231,7 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
         const void *str;
         ov006_Unk020706a0 *p;
         self->unk4A = id;
-        str = func_0204c0e8(data_02149ef8, data_ov006_021eb78c[(u16)(id & 0xfff)]);
+        str = MsgRes_GetString(data_02149ef8, data_ov006_021eb78c[(u16)(id & 0xfff)]);
         if (self->unk5C != NULL && str != NULL) {
             func_ov000_0215bb14(self->unk5C, str);
             VCALL(self->unk5C, 70);

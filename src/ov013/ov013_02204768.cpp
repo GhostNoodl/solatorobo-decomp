@@ -11,7 +11,7 @@ extern void *data_ov013_0220bbb8[];
 extern char data_ov013_0220ba58[];
 extern char data_ov013_0220ba60[];
 extern void func_ov003_021d9980(Ov013Vec *out, u16 rot, const Ov013Vec *v);
-extern void *func_ov000_02194074(void *self);
+extern void *ActorEx_Ctor(void *self);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
 extern void *func_ov000_0218ea20(void *p);
@@ -52,7 +52,7 @@ static inline void Ov013_DtorDc(void *self) {
         void *p = FLD(void *, self, 0xdc);
         if (p != NULL) {
             func_ov000_0218ea20(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         FLD(void *, self, 0xdc) = NULL;
     }
@@ -63,7 +63,7 @@ static inline void Ov013_DtorDc(void *self) {
         void *p = FLD(void *, self, 0xe0);
         if (p != NULL) {
             func_ov000_0218fee4(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         FLD(void *, self, 0xe0) = NULL;
     }

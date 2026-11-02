@@ -17,7 +17,7 @@ extern "C" {
 extern void *data_ov006_021ebe40;
 
 ov006_TaskCDF *func_ov006_021cdfc4(void) {
-    ov006_TaskCDF *self = (ov006_TaskCDF *)func_0203dd9c(sizeof(ov006_TaskCDF));
+    ov006_TaskCDF *self = (ov006_TaskCDF *)Heap_Alloc(sizeof(ov006_TaskCDF));
     if (self != NULL) {
         OV006_TASKBASE_CTOR(&self->head);
         self->head.vtbl = &data_ov006_021ebe40;

@@ -9,10 +9,10 @@ extern Ov009Eff *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void func_01ffc9fc(Ov009Vec *dst, const Ov009Vec *src, s32 angle);
 extern void func_020639d4(Ov009Eff *o, s32 a, s32 b);
 extern s32 FX_Div(s32 a, s32 b);
-extern void func_0203f324(Ov009Sub48 *p);
+extern void HitSphere_Link(Ov009Sub48 *p);
 extern Ov009Actor *func_ov000_0219bf90(void);
-extern void func_ov000_0218d988(Ov009Actor *self, Ov009Actor *other, s32 a);
-extern void func_ov000_0218dbe0(Ov009Obj *self, s32 a);
+extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
+extern void Actor_Move(Ov009Obj *self, s32 a);
 extern void func_02065804(void *mgr, s32 h);
 extern void *func_020657b0(void *mgr, s32 id);
 extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
@@ -26,13 +26,13 @@ struct Ov009AngSrc {
     u16 unk_44;
 };
 
-extern u16 func_0204bfa8(Ov009AngSrc *p);
+extern u16 Camera_GetYaw(Ov009AngSrc *p);
 
 static inline s32 Ov009_GetAng(Ov009AngSrc *p) {
     if (p->unk_40 != 0) {
         return p->unk_44;
     }
-    return func_0204bfa8(p);
+    return Camera_GetYaw(p);
 }
 
 static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {
@@ -118,7 +118,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
             s48 = self->unk_48;
             s48->unk_9a_0 = 1;
             s48->unk_9a_3 = 1;
-            func_0203f324(s48);
+            HitSphere_Link(s48);
             s44 = self->unk_44;
             s44->unk_22_0 = 1;
             s44->unk_22_1 = 1;
@@ -128,8 +128,8 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
             self->unk_40->state++;
         }
         self->unk_38->scale = s;
-        func_ov000_0218dbe0(self, 0);
-        func_ov000_0218d988(self, pl, 0x1000);
+        Actor_Move(self, 0);
+        Actor_TurnToActor(self, pl, 0x1000);
         self->unk_48->unk_9a_5 = 1;
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         if (self->unk_48->unk_50 & 0x20000000) {
@@ -198,7 +198,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
             s48 = self->unk_48;
             s48->unk_9a_0 = 1;
             s48->unk_9a_3 = 1;
-            func_0203f324(s48);
+            HitSphere_Link(s48);
             self->unk_40->timer = 0;
             self->unk_40->state++;
         }
@@ -233,7 +233,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
                 self->unk_40->state = 0x1e;
             }
         }
-        func_ov000_0218d988(self, pl, 0x400);
+        Actor_TurnToActor(self, pl, 0x400);
         break;
     }
     case 0x1e:

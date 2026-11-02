@@ -55,7 +55,7 @@ typedef struct ActorMgr ActorMgr;
 
 extern ActorMgr *data_ov000_021ccd68;
 
-ActorC *func_ov000_0218e640(ActorMgr *mgr, u16 id);
+ActorC *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u32 angle);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *offset, u32 angle);
@@ -70,7 +70,7 @@ static inline ActorC *FindActor(u16 id) {
     if (mgr == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(mgr, id);
+    return ActorMgr_GetActor(mgr, id);
 }
 
 static inline void VEC_Set(VecFx32 *v, s32 x, s32 y, s32 z) {
@@ -124,7 +124,7 @@ typedef struct {
     Query *query;
 } Finder;
 
-GroupL *func_ov000_0218e4cc(ActorMgr *mgr, u16 key);
+GroupL *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
 BOOL func_ov000_02199684(Finder *self, ActorL *actor);
 ActorL *func_ov000_02199000(Finder *self, Query *q, ActorL *from);
 
@@ -349,13 +349,13 @@ ActorL *func_ov000_02199000(Finder *self, Query *q, ActorL *from) {
     }
     actor = NULL;
     if (from != NULL) {
-        group = func_ov000_0218e4cc(data_ov000_021ccd68, from->id & 0xf000);
+        group = ActorMgr_GetGroup(data_ov000_021ccd68, from->id & 0xf000);
         actor = from->next;
         if (actor == NULL && group != NULL) {
             group = group->next;
         }
     } else {
-        group = func_ov000_0218e4cc(data_ov000_021ccd68, 0xf000);
+        group = ActorMgr_GetGroup(data_ov000_021ccd68, 0xf000);
     }
     for (; group != NULL; group = group->next) {
         if (mask & (1 << (group->key >> 12))) {

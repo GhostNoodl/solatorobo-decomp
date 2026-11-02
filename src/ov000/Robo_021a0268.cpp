@@ -30,7 +30,7 @@ extern s32 data_ov000_021ca100[];
 extern s32 data_ov000_021ca168[];
 void func_ov000_021b05b0(u8 *self);
 u8 func_0206d37c(void *save, s32 a);
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 void func_ov000_0218d46c(void *self, u16 id, u8 value);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
@@ -41,7 +41,7 @@ static inline Actor *GetObj021a0268(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline void Reset021a0268(Robo021ca458 *self) {
@@ -124,7 +124,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
                 m.rot[1] = o->rot_y;
                 m.rot[2] = o->rot_z;
                 m.z = 0;
-                func_ov000_0218d398((Actor *)o, self->id, 7, 1, 0x18, &m);
+                Actor_SendMsg((Actor *)o, self->id, 7, 1, 0x18, &m);
                 func_ov000_0218d46c(o, self->id, 10);
                 if (((u8 *)o->unk_4c) != NULL) {
                     LFLD(C18_021a0268, ((u8 *)o->unk_4c), 0x18).b0 = 0;

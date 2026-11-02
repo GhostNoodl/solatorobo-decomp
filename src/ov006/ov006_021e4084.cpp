@@ -43,13 +43,13 @@ ov006_Unk021ec888 *Ov006Vt_021ec404_Dtor(ov006_Unk021ec888 *self) {
 
 ov006_Unk021ec888 *Ov006Vt_021ec404_DtorDelete(ov006_Unk021ec888 *self) {
     ov006_Menu_Dtor(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
 void func_ov006_021e42b4(void) {
     if (data_ov006_021ec888 == NULL) {
-        ov006_Unk021ec888 *obj = (ov006_Unk021ec888 *)func_0203dd9c(sizeof(ov006_Unk021ec888));
+        ov006_Unk021ec888 *obj = (ov006_Unk021ec888 *)Heap_Alloc(sizeof(ov006_Unk021ec888));
         if (obj != NULL) {
             obj = Ov006Vt_021ec404_Ctor(obj);
         }

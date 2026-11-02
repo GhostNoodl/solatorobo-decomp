@@ -32,9 +32,9 @@ extern u8 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;
 extern Save02196258 *data_0214a424;
 void func_0203f364(void *a);
-void *func_ov000_02199ba0(void *p);
+void *Target_Get(void *p);
 void func_ov003_021f0c60(void *self, s32 a);
-void func_ov000_0218dbe0(void *self, s32 a);
+void Actor_Move(void *self, s32 a);
 void func_ov000_0218bed8(void *a, s32 b, void *c);
 void *func_02065f88(s32 a, void *b);
 void func_02062764(s32 a, s32 b);
@@ -106,7 +106,7 @@ static inline void Die02196258(VObj *obj) {
 void func_ov000_02196258(VObj *obj) {
     ActorEx *self = (ActorEx *)obj;
     s32 zero = 0;
-    u8 *t = (u8 *)func_ov000_02199ba0(((u8 *)self->unk_4c));
+    u8 *t = (u8 *)Target_Get(((u8 *)self->unk_4c));
     ActorSub40 *s = self->unk_40;
     switch (s->st) {
     case 0:
@@ -162,7 +162,7 @@ void func_ov000_02196258(VObj *obj) {
             }
             self->unk_40->st++;
         }
-        func_ov000_0218dbe0(self, 0);
+        Actor_Move(self, 0);
         return;
     }
     case 3:

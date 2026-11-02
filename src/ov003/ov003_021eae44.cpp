@@ -223,31 +223,31 @@ extern BOOL func_ov000_0218f110(s16 *res);
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_0218ffdc(Ov003Anim *anim, s16 *res, s32 a, s32 b);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void *func_0203dd9c(u32 size);
+extern void *Heap_Alloc(u32 size);
 extern Ov003Part *func_ov000_02199b00(void *p);
 extern void *func_0203db40(void *p);
 extern void func_ov000_02190a80(void *a, void *b);
 extern void func_ov000_02190758(Ov003Anim *anim, Ov003Rot3 *rot, s32 a);
 extern BOOL func_ov000_021903b4(Ov003Anim *anim);
-extern Ov003Unit *func_ov000_0218bd5c(void *mgr, u16 id);
+extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 extern Ov003Snd *data_02fe152c;
 extern s32 func_0205976c(Ov003Snd *s, s32 a);
 extern u16 func_02059544(Ov003Snd *s, u8 *p, s32 a, s32 b, u16 c);
 extern Ov003SubAnim *func_ov000_02190a30(Ov003Mdl *m, s32 a);
 extern void func_ov000_02191920(Ov003Mdl *m, s32 a, s32 b, s32 c);
-extern void *func_ov000_0218d240(void *self);
-extern void func_ov000_0218d988(void *self, void *other, s32 a);
+extern void *Actor_GetTarget(void *self);
+extern void Actor_TurnToActor(void *self, void *other, s32 a);
 extern void func_ov000_02197ee0(void *self, void *p, s32 a, s32 b, s32 c);
 extern void func_0203f364(Ov003Ctl *ctl);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 a);
-extern s32 func_02040528(s32 max);
+extern s32 Rand_PlusMinus(s32 max);
 extern void func_ov000_02195848(void *self);
 extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern char data_ov003_021f9983[];
 extern char data_ov003_021f9989[];
 extern s32 func_01ffbd6c(Ov003Vec3 *a, Ov003Vec3 *b, s32 c, s32 d, s32 e, s32 f);
-extern void func_ov000_0218ddd4(void *self, Ov003Vec3 *v, s32 a);
+extern void Actor_MoveToPos(void *self, Ov003Vec3 *v, s32 a);
 extern void func_ov000_021987b8(Ov003Ctl *ctl, s32 a, s32 b, s32 c);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
@@ -355,7 +355,7 @@ BOOL Ov003ActVt_021f9704_IsReady(Ov003ObjB *self) {
     if (self->unk_310 && self->res >= 0 && !func_ov000_0218f110(&self->res)) {
         r = FALSE;
     }
-    u = func_ov000_0218bd5c(data_ov000_021ccd64, self->unk_20);
+    u = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (u != NULL) {
         u->unk_a2_5 = 1;
         u->unk_a2_6 = 0;
@@ -445,9 +445,9 @@ void Ov003ActVt_021f9704_Update(Ov003ObjB *self) {
         return;
     }
     if (!Ov003_GameIdle()) {
-        void *o = func_ov000_0218d240(self);
+        void *o = Actor_GetTarget(self);
         if (o != NULL) {
-            func_ov000_0218d988(self, o, 0x400);
+            Actor_TurnToActor(self, o, 0x400);
         }
     } else {
         func_ov000_02197ee0(self, self->unk_2fc, 0x400, 0x333, 0x6000);
@@ -481,7 +481,7 @@ void func_ov003_021eb48c(Ov003ObjB *self) {
     if (self->work->state == 0) {
         func_ov000_02190cb0(self->model, data_ov003_021f9983, 0x1000, 0);
         func_ov000_021915a0(self->model);
-        func_ov000_021911c8(self->model, (s16)(func_02040528(0x59a) + 0x1000));
+        func_ov000_021911c8(self->model, (s16)(Rand_PlusMinus(0x59a) + 0x1000));
     }
     func_ov000_02195848(self);
     self->unk_93_0 = 0;
@@ -491,8 +491,8 @@ void func_ov003_021eb48c(Ov003ObjB *self) {
             self->unk_2f0[3] = 0;
             self->unk_2f0[5] = 0;
         } else if ((n & 7) == 0) {
-            self->unk_2f0[3] = func_02040528(n) << 2;
-            self->unk_2f0[5] = func_02040528(n) << 2;
+            self->unk_2f0[3] = Rand_PlusMinus(n) << 2;
+            self->unk_2f0[5] = Rand_PlusMinus(n) << 2;
         }
         self->unk_2f0[0] = func_01ffc128(self->unk_2f0[3], self->unk_2f0[0], 0x8cd, 1, 0x8000);
         self->unk_2f0[2] = func_01ffc128(self->unk_2f0[5], self->unk_2f0[2], 0x8cd, 1, 0x8000);
@@ -559,7 +559,7 @@ void func_ov003_021eb5ec(Ov003ObjB *self) {
     v.x = self->unk_300.x;
     v.y = self->unk_300.y;
     v.z = self->unk_300.z;
-    func_ov000_0218ddd4(self, &v, 0x333);
+    Actor_MoveToPos(self, &v, 0x333);
     func_ov000_021987b8(self->ctl, 1, 0, 0);
     if (self->ctl->flags & 0x20000000) {
         return;

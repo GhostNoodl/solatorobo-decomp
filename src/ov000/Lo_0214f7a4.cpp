@@ -70,7 +70,7 @@ void func_ov000_0214f7a4(Lo021caa44 *self) {
                     b = func_0204c08c(LFLD(void *, data_ov000_021ccd24.unk_08, 0xbc), self->unk_64, &a, 1);
                     w = (Obj0214c668 *)self->unk_60;
                     w->unk_204 = 0x1e;
-                    obj = (Obj0214c6b4 *)func_0203dd9c(0xb80);
+                    obj = (Obj0214c6b4 *)Heap_Alloc(0xb80);
                     if (obj != NULL) {
                         obj->vtbl = data_0208ba70;
                         func_0204c7d0(obj);

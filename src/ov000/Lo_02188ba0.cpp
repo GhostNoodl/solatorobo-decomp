@@ -46,12 +46,12 @@ typedef struct {
 
 extern "C" {
 
-void func_0203db10(void *node);
-void *func_ov000_02189a74(void *p);
+void PauseNode_Init(void *node);
+void *Ov000Vt_021cc3a0_Ctor(void *p);
 
 Obj02188ba0 *func_ov000_02188ba0(Obj02188ba0 *self) {
     s32 i;
-    func_0203db10(self->unk_08);
+    PauseNode_Init(self->unk_08);
     for (i = 0; i < 0x10; i++) {
         self->kinds[i] = 0;
         self->args[i] = 0;
@@ -70,7 +70,7 @@ Obj02188ba0 *func_ov000_02188ba0(Obj02188ba0 *self) {
     self->unk_bc = 0;
     self->unk_c0 = 0;
     self->unk_c4 = 0;
-    func_ov000_02189a74(self->unk_f4);
+    Ov000Vt_021cc3a0_Ctor(self->unk_f4);
     self->state = 2;
     self->unk_04 = 0;
     self->unk_06 = 0;

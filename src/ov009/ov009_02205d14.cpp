@@ -162,13 +162,13 @@ void Ov009ActVt_02216dcc_Update(Ov009ActVt_02216dcc *self) {
             }
         }
         if (dist <= 0x5000) {
-            if (pct <= 0x50 && func_02040498(1) == 0) {
+            if (pct <= 0x50 && Rand_UpTo(1) == 0) {
                 self->unk_40->flags |= 0x10000;
             } else {
                 self->unk_40->flags |= 0x8000;
             }
         } else if (dist > 0x5000) {
-            if (pct <= 0x3c && func_02040498(2) != 0) {
+            if (pct <= 0x3c && Rand_UpTo(2) != 0) {
                 self->unk_40->flags |= 0x10000;
             } else {
                 self->unk_40->flags |= 4;

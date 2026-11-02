@@ -39,7 +39,7 @@ void func_02035450(ResLoader *loader) {
     }
 }
 
-ResLoader *func_0203562c(ResLoader *loader) {
+ResLoader *ResLoader_Init(ResLoader *loader) {
     ResRing_Init(&loader->ring);
     loader->state = 0;
     ResRequest_Init(&loader->req);

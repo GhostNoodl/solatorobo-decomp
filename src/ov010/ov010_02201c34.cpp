@@ -64,12 +64,12 @@ void func_ov010_02201c84(void) {
 }
 
 void *func_ov010_02201c88(void *o) {
-    func_0203de1c(o);
+    Heap_Free(o);
     return o;
 }
 
 void *func_ov010_02201c9c(void) {
-    u8 *p = (u8 *)func_0203dd9c(0x24);
+    u8 *p = (u8 *)Heap_Alloc(0x24);
     if (p != NULL) {
         FLD(void *, p, 0) = data_ov010_0220fe08;
         FLD(Ov010Flags8, p, 4).b0 = 0;

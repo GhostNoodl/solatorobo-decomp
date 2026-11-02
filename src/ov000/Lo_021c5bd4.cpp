@@ -8,7 +8,7 @@ extern void *data_02149ef8;
 extern void *data_0208cc88;
 extern void *data_0208cc94;
 void func_0204c7d0(void *p);
-void *func_0204c0e8(void *a, s32 b);
+void *MsgRes_GetString(void *a, s32 b);
 s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_02041218(void *a);
 void func_02041440(void *p, void *name, s32 c);
@@ -28,7 +28,7 @@ void func_ov000_021c5bd4(Lo021cca40 *self) {
         return;
     }
     res = data_02149ef8;
-    p = (u8 *)func_0203dd9c(0xb8);
+    p = (u8 *)Heap_Alloc(0xb8);
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);
@@ -38,7 +38,7 @@ void func_ov000_021c5bd4(Lo021cca40 *self) {
     {
         void *t = self->unk_38;
         if (t == NULL) {
-            t = func_0204c0e8(res, 0x50);
+            t = MsgRes_GetString(res, 0x50);
         }
         p = self->unk_30;
         LFLD(void *, p, 0x24) = t;
@@ -50,7 +50,7 @@ void func_ov000_021c5bd4(Lo021cca40 *self) {
     LFLD(u32, self->unk_30, 0x4) |= 0x1000000;
     LFLD(u32, self->unk_30, 0x4) |= 0x400000;
     LFLD(u32, self->unk_30, 0x4) |= 0x4;
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
         void *arc;
         void *name;

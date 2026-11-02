@@ -119,7 +119,7 @@ void func_ov002_021ec838(void *self) {
             if (p != NULL) {
                 func_02041558(p);
                 func_02041278((u8 *)p + 0x88);
-                func_0203de1c(p);
+                Heap_Free(p);
             }
             FIELD(self, 0x38, void *) = NULL;
         }
@@ -153,7 +153,7 @@ BOOL func_ov002_021ec8d8(void) {
 BOOL func_ov002_021ec968(void *self) {
     switch (FIELD(self, 0x10, s32)) {
     case 0: {
-        VObject *o = (VObject *)func_0203dd9c(0x4c);
+        VObject *o = (VObject *)Heap_Alloc(0x4c);
         if (o != NULL) {
             *(VFunc **)o = data_0208b318;
             o->v0x8();
@@ -235,7 +235,7 @@ BOOL func_ov002_021eca14(StaffTask_eca14 *self) {
             if (n >= data_ov002_021f0d88.w28) {
                 return FALSE;
             }
-            m = (StaffModel_eca14 *)func_0203dd9c(0x160);
+            m = (StaffModel_eca14 *)Heap_Alloc(0x160);
             if (m != NULL) {
                 void *r = self->res;
                 func_02041218((u8 *)m + 0x88);

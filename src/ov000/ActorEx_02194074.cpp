@@ -71,31 +71,31 @@ extern const u8 data_ov000_021cc480[];
 extern HeapState *data_02097dd0;
 extern void *data_0214a420;
 
-void *func_ov000_0218c2d4(void *self);
+void *Actor_Ctor(void *self);
 void *func_ov000_0218c928(void *self);
 ResSet *func_ov000_0218ea20(ResSet *self);
-void func_0203de1c(void *ptr);
+void Heap_Free(void *ptr);
 void func_02065804(void *mgr, void *handle);
 BOOL func_ov000_0218cf5c(void *self);
 BOOL func_ov000_0218f110(AnimRes *res);
-BOOL func_ov000_0218d850(void *self);
-void *func_ov000_02199ba0(void *p);
+BOOL Actor_DespawnIfFar(void *self);
+void *Target_Get(void *p);
 void *func_ov000_0219bf90(void);
 void func_0203f364(Obj48 *obj);
-void func_0203f8d8(void *obj);
+void HitMesh_Link(void *obj);
 void func_ov000_0219864c(Obj48 *obj, VecFx32 *pos, s32 c);
 
 static inline void ResSet_Delete(ResSet *res) {
     if (res != NULL) {
         func_ov000_0218ea20(res);
-        func_0203de1c(res);
+        Heap_Free(res);
     }
 }
 
 static inline void ActorEx_Init(ActorEx *self) {
     s32 i;
 
-    func_ov000_0218c2d4(self);
+    Actor_Ctor(self);
     self->vtbl = data_ov000_021cc480;
     self->unk_ac = 0xff;
     self->unk_ad = 0xff;
@@ -133,7 +133,7 @@ static inline void ActorEx_Destroy(ActorEx *self) {
     func_ov000_0218c928(self);
 }
 
-ActorEx *func_ov000_02194074(ActorEx *self) {
+ActorEx *ActorEx_Ctor(ActorEx *self) {
     ActorEx_Init(self);
     return self;
 }
@@ -143,14 +143,14 @@ ActorEx *func_ov000_021940e4(ActorEx *self) {
     return self;
 }
 
-ActorEx *func_ov000_02194154(ActorEx *self) {
+ActorEx *ActorEx_Dtor(ActorEx *self) {
     ActorEx_Destroy(self);
     return self;
 }
 
-ActorEx *func_ov000_021941f4(ActorEx *self) {
+ActorEx *ActorEx_DtorDelete(ActorEx *self) {
     ActorEx_Destroy(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -264,7 +264,7 @@ typedef struct {
 
 extern "C" {
 extern const s16 FX_SinCosTable_[];
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 Info0219433c *func_0206fef8(u16 id);
 Data0219433c *func_020704b4(u16 id);
 void *func_ov000_0218e9c4(void *p);
@@ -285,7 +285,7 @@ void MI_Copy48B(const void *src, void *dst);
 #define COS0219433c(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
 static inline void *NewRes0219433c(void) {
-    void *p = func_0203dd9c(0x138);
+    void *p = Heap_Alloc(0x138);
     if (p != NULL) {
         p = func_ov000_0218e9c4(p);
     }
@@ -293,7 +293,7 @@ static inline void *NewRes0219433c(void) {
 }
 
 static inline void *NewA0219433c(void) {
-    void *p = func_0203dd9c(0x1c);
+    void *p = Heap_Alloc(0x1c);
     if (p != NULL) {
         p = func_ov000_021919c8(p);
     }
@@ -301,7 +301,7 @@ static inline void *NewA0219433c(void) {
 }
 
 static inline void *NewB0219433c(void) {
-    void *p = func_0203dd9c(0x14);
+    void *p = Heap_Alloc(0x14);
     if (p != NULL) {
         p = func_ov000_02198328(p);
     }
@@ -309,7 +309,7 @@ static inline void *NewB0219433c(void) {
 }
 
 static inline Sub0219433c *NewSub0219433c(void) {
-    void *p = func_0203dd9c(0x5c);
+    void *p = Heap_Alloc(0x5c);
     if (p != NULL) {
         p = func_ov000_02199b00(p);
     }

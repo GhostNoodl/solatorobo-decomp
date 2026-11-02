@@ -61,9 +61,9 @@ void *func_ov004_021cce88(void) {
     Ov004V *o;
     u32 k;
     func_ov004_021ce50c();
-    o = (Ov004V *)func_0203dd9c(0xac);
+    o = (Ov004V *)Heap_Alloc(0xac);
     if (o != NULL) {
-        func_ov000_0218c2d4(o);
+        Actor_Ctor(o);
         *(u8 **)o = data_ov004_021cf808;
     }
     data_ov004_021cf864 = o;
@@ -95,7 +95,7 @@ void func_ov004_021ccf10(void) {
 
 void *Ov004ActVt_021cf808_DtorDelete(void *p) {
     func_ov000_0218c928(p);
-    func_0203de1c(p);
+    Heap_Free(p);
     return p;
 }
 

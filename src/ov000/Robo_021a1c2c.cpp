@@ -60,7 +60,7 @@ extern u8 *data_ov000_021ccd54;
 extern void *data_02097dc8;
 extern u8 *data_0214a424;
 void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
-void func_ov000_0218dbe0(void *self, s32 a);
+void Actor_Move(void *self, s32 a);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 BOOL func_ov000_02198360(void *st, s32 state, s32 x);
 s32 func_ov003_021ce5b8(u32 color);
@@ -69,8 +69,8 @@ void *func_02049f44(void *a, s32 b, void *c, s32 d);
 VObj *func_02065f88(s32 id, void *pos);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_021b468c(void *self);
-u16 func_0204bfa8(void *cam);
-u16 func_0203d434(void *rng, void *p);
+u16 Camera_GetYaw(void *cam);
+u16 Pad_LookupDir(void *rng, void *p);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 void func_02062764(s32 a, s32 b);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
@@ -81,7 +81,7 @@ static inline u16 CamYaw_021a1c2c(u8 *cam) {
     if (LFLD(u16, cam, 0x40) != 0) {
         return LFLD(u16, cam, 0x44);
     }
-    return func_0204bfa8(cam);
+    return Camera_GetYaw(cam);
 }
 
 void func_ov000_021a1c2c(Robo021ca458 *self) {
@@ -109,7 +109,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
             }
             func_ov000_021b1dd8((u8 *)self, target, 0x200, 0xf00, 0x466, self->unk_b2b < 8);
         } else if (B24(self).b18) {
-            func_ov000_0218dbe0(self, 0);
+            Actor_Move(self, 0);
         } else {
             s32 f = 1;
             if (B24(self).b17 || self->unk_b2b >= 8) {
@@ -193,7 +193,7 @@ void func_ov000_021a1c2c(Robo021ca458 *self) {
         if (!B24(self).b1) {
             if (self->unk_b2b >= 8 && self->unk_b2b <= 0x10) {
                 u16 yaw = CamYaw_021a1c2c(data_ov000_021ccd54 + 0xf4);
-                u16 ang = yaw + func_0203d434(data_02097dc8, (u8 *)self + 0xb70);
+                u16 ang = yaw + Pad_LookupDir(data_02097dc8, (u8 *)self + 0xb70);
                 s32 h;
                 s32 r;
                 a = self->pos;

@@ -50,7 +50,7 @@ void Ov006ActVt_021ec4f4_Init(ov006_Prop021e663c *self) {
     func_0206fef8(self->unkE);
     self->unkAC = func_020706a0(self->unkE);
     res = func_0207011c(self->unkE);
-    obj = (ov006_Obj021e663c *)func_0203dd9c(0x138);
+    obj = (ov006_Obj021e663c *)Heap_Alloc(0x138);
     if (obj != NULL) {
         obj = func_ov000_0218e9c4(obj);
     }

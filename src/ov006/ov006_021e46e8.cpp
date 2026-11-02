@@ -42,7 +42,7 @@ static inline BOOL ov006_KeyEq(const u8 *a, const u8 *b) {
 }
 
 static inline ov006_MenuNode *ov006_MenuNode_New(void) {
-    ov006_MenuNode *n = (ov006_MenuNode *)func_0203dd9c(sizeof(ov006_MenuNode));
+    ov006_MenuNode *n = (ov006_MenuNode *)Heap_Alloc(sizeof(ov006_MenuNode));
     if (n != NULL) {
         n->vtbl = &data_ov006_021ec434;
         n->id = 0;

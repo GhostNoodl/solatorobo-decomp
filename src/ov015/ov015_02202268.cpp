@@ -141,7 +141,7 @@ void *Ov015Game_DtorDelete(Ov015Game *self) {
     self->unk_30.unk_28 = 0;
     SET_VT(self, data_ov015_0221280c);
     func_ov015_021fa6cc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -197,7 +197,7 @@ void *func_ov015_022027e8(u8 *self) {
                 if (o != NULL) {
                     func_02041558(o);
                     func_02041278(o + 0x88);
-                    func_0203de1c(o);
+                    Heap_Free(o);
                 }
                 FLD(void *, self, 0x24) = NULL;
             }
@@ -213,7 +213,7 @@ void *func_ov015_022027e8(u8 *self) {
                 if (o != NULL) {
                     func_02041558(o);
                     func_02041278(o + 0x88);
-                    func_0203de1c(o);
+                    Heap_Free(o);
                 }
                 FLD(void *, self, 0x28) = NULL;
             }
@@ -301,7 +301,7 @@ Ov015List *func_ov015_02202a78(Ov015List *self) {
         n = next;
     }
     self->count = 0;
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -313,7 +313,7 @@ Ov015Node *func_ov015_02202af8(Ov015Node *self) {
     if (self->next != NULL) {
         self->next->prev = self->prev;
     }
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -392,7 +392,7 @@ void func_ov015_02202bf0(u8 *self) {
     }
     FLD(u32, self, 0x4) &= ~2;
     if (VCALL(self)->v28()) return;
-    l = (u8 *)func_0203dd9c(0x160);
+    l = (u8 *)Heap_Alloc(0x160);
     if (l != NULL) {
         file = data_0208cca0;
         name = data_0208ccc0;

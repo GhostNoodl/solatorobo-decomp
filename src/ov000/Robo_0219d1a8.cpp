@@ -43,7 +43,7 @@ s16 *func_ov003_021ce630(s16 *p, void *hit);
 u16 func_ov003_021ce6fc(u16 v);
 u16 func_ov003_021ce79c(u16 v);
 u16 func_ov003_021ce7c0(u16 v);
-void *func_0203dd9c(u32 size);
+void *Heap_Alloc(u32 size);
 Info0219d1a8 *func_0206fef8(u16 id);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 s32 func_ov000_021909a8(void *m, void *p, const char *name);
@@ -57,7 +57,7 @@ BOOL func_ov000_021bd314(void *p, s32 a);
 void func_02062764(s32 a, s32 b);
 
 static inline void *NewObj44_0219d1a8(void) {
-    void *p = func_0203dd9c(0x24);
+    void *p = Heap_Alloc(0x24);
     if (p != NULL) {
         p = func_ov000_021984c8(p);
     }
@@ -65,7 +65,7 @@ static inline void *NewObj44_0219d1a8(void) {
 }
 
 static inline void *NewObj40_0219d1a8(void) {
-    void *p = func_0203dd9c(0x14);
+    void *p = Heap_Alloc(0x14);
     if (p != NULL) {
         p = func_ov000_02198328(p);
     }
@@ -73,7 +73,7 @@ static inline void *NewObj40_0219d1a8(void) {
 }
 
 static inline void *NewObj5c_0219d1a8(void) {
-    void *p = func_0203dd9c(0xa8);
+    void *p = Heap_Alloc(0xa8);
     if (p != NULL) {
         func_ov000_021bd198(p);
     }
@@ -81,7 +81,7 @@ static inline void *NewObj5c_0219d1a8(void) {
 }
 
 static inline Gauge0219d1a8 *NewGauge0219d1a8(void) {
-    Gauge0219d1a8 *g = (Gauge0219d1a8 *)func_0203dd9c(0x1c);
+    Gauge0219d1a8 *g = (Gauge0219d1a8 *)Heap_Alloc(0x1c);
     if (g != NULL) {
         g->max = 100;
         g->cur = g->max;
@@ -97,7 +97,7 @@ static inline Gauge0219d1a8 *NewGauge0219d1a8(void) {
 }
 
 static inline Trio0219d1a8 *NewTrio0219d1a8(void) {
-    Trio0219d1a8 *t = (Trio0219d1a8 *)func_0203dd9c(6);
+    Trio0219d1a8 *t = (Trio0219d1a8 *)Heap_Alloc(6);
     if (t != NULL) {
         t->a = 0;
         t->b = 0;
@@ -106,7 +106,7 @@ static inline Trio0219d1a8 *NewTrio0219d1a8(void) {
     return t;
 }
 
-void func_ov000_0219d1a8(Robo021ca458 *self) {
+void Robo021ca458_Start(Robo021ca458 *self) {
     Info0219d1a8 *info = func_0206fef8(self->kind);
     u8 *p;
     u32 *q;

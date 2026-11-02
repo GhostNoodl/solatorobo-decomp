@@ -80,7 +80,7 @@ void Ov009ActVt_02217844_Start(Ov009ActVt_02217844 *self) {
         Ov009Sub48 *p = self->unk_48;
         if (p != NULL) {
             func_0203f2b8(p);
-            func_0203de1c(p);
+            Heap_Free(p);
         }
         self->unk_48 = NULL;
     }
@@ -88,7 +88,7 @@ void Ov009ActVt_02217844_Start(Ov009ActVt_02217844 *self) {
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->def;
     if (self->unk_44 != NULL) {
-        func_0203de1c(self->unk_44);
+        Heap_Free(self->unk_44);
         self->unk_44 = NULL;
     }
     data_02097dd0->cur = saved;

@@ -8,7 +8,7 @@
         void *saved = data_02097dd0->current;             \
         data_02097dd0->current = data_02097dd0->unk_08;   \
         if ((field) != NULL) {                            \
-            func_0203de1c(field);                         \
+            Heap_Free(field);                         \
             (field) = 0;                                  \
         }                                                 \
         data_02097dd0->current = saved;                   \
@@ -58,14 +58,14 @@ void func_ov000_021bd228(void *p);
     HEAP_DELETE_FN(F(void *, 0x5c), func_ov000_021bd228);  \
     }
 
-u8 *func_ov000_0218c3e0(u8 *self) {
+u8 *Actor_Dtor(u8 *self) {
     DTOR_0218C3E0_BODY(self);
     return self;
 }
 
-u8 *func_ov000_0218c680(u8 *self) {
+u8 *Actor_DtorDelete(u8 *self) {
     DTOR_0218C3E0_BODY(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 

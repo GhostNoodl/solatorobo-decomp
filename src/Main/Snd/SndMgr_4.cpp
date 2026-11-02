@@ -197,7 +197,7 @@ BOOL func_0204a118(SndMgr *mgr, s32 id);
 
 void func_0204a160(SndMgr *mgr);
 
-void func_0204a1c4(SndMgr *mgr);
+void SndMgr_ResumeAll(SndMgr *mgr);
 
 void func_0204a20c(SndMgr *mgr, s32 strmNo);
 

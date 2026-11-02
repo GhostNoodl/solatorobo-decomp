@@ -16,7 +16,7 @@ struct Obj021523a8 : public VObj {
 void func_ov000_021523a8(Obj021523a8 *self, s32 arg) {
     u8 *p;
     LO_FREE_V(self, 0x14);
-    p = (u8 *)func_0203dd9c(0xb8);
+    p = (u8 *)Heap_Alloc(0xb8);
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);
@@ -42,7 +42,7 @@ void func_ov000_021524f8(LoBase021ca94c_021caac8 *self, const char *src) {
     char buf[0x100];
     char *d;
     LO_FREE_V(self, 0x18);
-    p = (u8 *)func_0203dd9c(0xb8);
+    p = (u8 *)Heap_Alloc(0xb8);
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);

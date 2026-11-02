@@ -32,7 +32,7 @@ BOOL func_020463c8(ov006_Net021e5604 *net);
 void func_02044a0c(ov006_NetParam021e5604 *param);
 BOOL func_020464e0(ov006_Net021e5604 *net, int a, ov006_MenuData *data);
 void func_02045094(ov006_Net021e5604 *net);
-int func_02046abc(ov006_Net021e5604 *net);
+int Wh_GetError(ov006_Net021e5604 *net);
 void func_ov006_021e5fec(void);
 
 static inline void ov006_Menu_Advance(ov006_Unk021ec888 *self) {
@@ -103,11 +103,11 @@ void func_ov006_021e5604(ov006_Unk021ec888 *self) {
             data_02097dd0->unk18 = (int)func_ov006_021e5fec;
             self->unkC = 0x1e;
         } else if (data_02097e40->state == 8) {
-            func_02046abc(data_02097e40);
+            Wh_GetError(data_02097e40);
             ov006_Menu_Error(3);
             return;
         } else if (data_02097e40->state == 7) {
-            func_02046abc(data_02097e40);
+            Wh_GetError(data_02097e40);
             ov006_Menu_Error(3);
             return;
         } else {
@@ -115,7 +115,7 @@ void func_ov006_021e5604(ov006_Unk021ec888 *self) {
         }
     case 0x1e:
         if (data_02097e40->state == 8) {
-            func_02046abc(data_02097e40);
+            Wh_GetError(data_02097e40);
             ov006_Menu_Error(3);
         }
         if (self->unk18 != 0) {
@@ -125,7 +125,7 @@ void func_ov006_021e5604(ov006_Unk021ec888 *self) {
         return;
     case 0x1f:
         if (data_02097e40->state == 8) {
-            func_02046abc(data_02097e40);
+            Wh_GetError(data_02097e40);
             ov006_Menu_Error(4);
         }
         return;

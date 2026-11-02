@@ -23,7 +23,7 @@ void *Ov002Vt_021efe3c_Ctor(void *self);
 void func_ov002_021d7620(void *self);
 
 static inline void ov002_AddItem(void *list, s32 k, void *a, void *b) {
-    u8 *q = (u8 *)func_0203dd9c(0x4c);
+    u8 *q = (u8 *)Heap_Alloc(0x4c);
     if (q != NULL) {
         *(VFunc **)q = data_ov002_021ef684;
         func_ov000_021c22d8(q);
@@ -38,7 +38,7 @@ static inline void ov002_AddItem(void *list, s32 k, void *a, void *b) {
 }
 
 static inline u8 *ov002_NewCursor(void) {
-    u8 *c = (u8 *)func_0203dd9c(0x8c);
+    u8 *c = (u8 *)Heap_Alloc(0x8c);
     if (c != NULL) {
         *(VFunc **)c = data_ov002_021efe8c;
         Ov002Vt_021efe3c_Ctor(c + 4);
@@ -100,7 +100,7 @@ void func_ov002_021ddf18(void *self, void *owner, s32 h, u8 *cam) {
     FIELD(self, 0x4, void *) = owner;
     cam = FIELD(owner, 0x4, u8 *);
     g = GetMgr021ddf18();
-    p = (VObject *)func_0203dd9c(0xf4);
+    p = (VObject *)Heap_Alloc(0xf4);
     if (p != NULL) {
         *(VFunc **)p = data_ov000_021cac60;
         p->v0x28();
@@ -119,11 +119,11 @@ void func_ov002_021ddf18(void *self, void *owner, s32 h, u8 *cam) {
     }
     FIELD(FIELD(self, 0x8, void *), 0xc, u32) &= ~0x20000;
     FIELD(FIELD(self, 0x8, void *), 0xc, u32) &= ~0x40000;
-    ov002_AddItem(FIELD(self, 0x8, void *), 0, func_0204c0e8(g, 0x48), func_0204c0e8(g, 0x160));
-    ov002_AddItem(FIELD(self, 0x8, void *), 1, func_0204c0e8(g, 0x49), func_0204c0e8(g, 0x161));
-    ov002_AddItem(FIELD(self, 0x8, void *), 2, func_0204c0e8(g, 0x4a), func_0204c0e8(g, 0x162));
-    ov002_AddItem(FIELD(self, 0x8, void *), 3, func_0204c0e8(g, 0x4b), func_0204c0e8(g, 0x163));
-    ov002_AddItem(FIELD(self, 0x8, void *), 4, func_0204c0e8(g, 0x4c), func_0204c0e8(g, 0x164));
+    ov002_AddItem(FIELD(self, 0x8, void *), 0, MsgRes_GetString(g, 0x48), MsgRes_GetString(g, 0x160));
+    ov002_AddItem(FIELD(self, 0x8, void *), 1, MsgRes_GetString(g, 0x49), MsgRes_GetString(g, 0x161));
+    ov002_AddItem(FIELD(self, 0x8, void *), 2, MsgRes_GetString(g, 0x4a), MsgRes_GetString(g, 0x162));
+    ov002_AddItem(FIELD(self, 0x8, void *), 3, MsgRes_GetString(g, 0x4b), MsgRes_GetString(g, 0x163));
+    ov002_AddItem(FIELD(self, 0x8, void *), 4, MsgRes_GetString(g, 0x4c), MsgRes_GetString(g, 0x164));
     FIELD(self, 0x8, VObject *)->v0x8();
     {
         u8 *s_1 = FIELD(self, 0x8, u8 *);

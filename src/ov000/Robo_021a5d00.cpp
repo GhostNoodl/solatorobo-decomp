@@ -39,13 +39,13 @@ extern char data_ov000_021cc67e[];
 extern char data_ov000_021cc61e[];
 extern char data_ov000_021cc660[];
 extern char data_ov000_021cc684[];
-Actor *func_ov000_0218e640(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(void *mgr, u16 id);
 u16 FX_Atan2(s32 y, s32 x);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL func_01ffc584(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-void func_ov000_0218dbe0(void *self, s32 turn);
+void Actor_Move(void *self, s32 turn);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 BOOL func_ov000_02191120(void *a);
@@ -54,7 +54,7 @@ void func_020627a0(u16 a, u16 b);
 void func_ov000_02182590(void *p);
 BOOL func_0205b1fc(void);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
-void func_ov000_02199b88(u8 *info, u8 *self);
+void Target_Set(u8 *info, u8 *self);
 void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 BOOL func_ov000_02198360(St_021a5d00 *st, s32 state, s32 x);
 
@@ -62,7 +62,7 @@ static inline Actor *FindActor021a5d00(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return func_ov000_0218e640(data_ov000_021ccd68, id);
+    return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline u16 AngleTo021a5d00(Robo021ca458 *self, u8 *a) {
@@ -127,7 +127,7 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
                         func_ov000_02190cb0(self->unk_38, data_ov000_021cc61e, 0x400, 0);
                         func_ov000_021915a0(self->unk_38);
                         self->unk_9c = 0x15c;
-                        func_ov000_0218dbe0(self, 0);
+                        Actor_Move(self, 0);
                         func_ov000_021987b8(self->unk_48, 0, 0, 0);
                         return;
                     }
@@ -175,7 +175,7 @@ void func_ov000_021a5d00(Robo021ca458 *self) {
                     self->unk_b1c = self->target;
                     self->target = 0xffff;
                     func_ov000_0218d46c(a, self->id, 0xd);
-                    func_ov000_02199b88(info, (u8 *)self);
+                    Target_Set(info, (u8 *)self);
                     info[1] = 9;
                     if (info[3] != 10 && info[3] != 11) {
                         func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);

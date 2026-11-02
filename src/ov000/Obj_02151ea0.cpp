@@ -74,7 +74,7 @@ static inline BOOL IsState2(Obj02151 *self) {
     return self->unk_04 == 2 ? TRUE : FALSE;
 }
 
-Obj02151 *func_ov000_02151ea0(Obj02151 *self) {
+Obj02151 *Lo021caa44_Dtor(Obj02151 *self) {
     *(void **)self = data_ov000_021caa44;
     self->vfunc_5c();
     *(void **)self = data_ov000_021cc060;

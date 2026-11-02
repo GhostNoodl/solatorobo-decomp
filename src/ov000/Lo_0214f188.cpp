@@ -29,7 +29,7 @@ void func_ov000_0214f188(Obj0214f188 *self, s32 idx) {
         LO_FREE_V(self, 0x48);
     }
     val = info[0];
-    p = (u8 *)func_0203dd9c(0xb8);
+    p = (u8 *)Heap_Alloc(0xb8);
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);

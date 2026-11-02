@@ -125,11 +125,11 @@ extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
 extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern void func_ov000_0218d398(Ov003BrTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
+extern void Actor_SendMsg(Ov003BrTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
 extern Ov003BrTgt *func_ov000_0219bf90(void);
 extern Ov003BrFx *func_02065f88(s32 id, Ov003Vec *pos);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern Ov003BrTgt *func_ov000_0218d240(Ov003Bridge *self);
+extern Ov003BrTgt *Actor_GetTarget(Ov003Bridge *self);
 extern void func_ov000_02197d80(void *self);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern void MTX_Identity43_(Ov003BrMtx *m);
@@ -137,7 +137,7 @@ extern void MTX_RotX43_(Ov003BrMtx *m, s32 s, s32 c);
 extern void MTX_RotY43_(Ov003BrMtx *m, s32 s, s32 c);
 extern void MTX_RotZ43_(Ov003BrMtx *m, s32 s, s32 c);
 extern void MTX_Concat43(Ov003BrMtx *a, Ov003BrMtx *b, Ov003BrMtx *out);
-extern void func_0203f9dc(void *o, Ov003BrMtx *m);
+extern void HitMesh_SetMtx(void *o, Ov003BrMtx *m);
 extern void VEC_MultAdd(s32 a, Ov003Vec *v1, Ov003Vec *v2, Ov003Vec *dst);
 extern BOOL func_ov000_021b4738(void);
 extern void func_020627b4(void);
@@ -192,7 +192,7 @@ static inline void Ov003Br_SetMtx(void *o, s32 x, s32 y, s32 z, u16 rx, u16 ry, 
     m.tx = x;
     m.ty = y;
     m.tz = z;
-    func_0203f9dc(o, &m);
+    HitMesh_SetMtx(o, &m);
 }
 
 static inline void Ov003Br_Approach(Ov003BrWarp *w, Ov003BrTgt *t, Ov003Bridge *self) {
@@ -261,7 +261,7 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
         func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
         func_ov000_0218996c(5, 10);
         b = 0;
-        func_ov000_0218d398(found, self->unk_0c, 0xd, 1, 1, &b);
+        Actor_SendMsg(found, self->unk_0c, 0xd, 1, 1, &b);
         pl = func_ov000_0219bf90();
         if (pl != NULL) {
             v.x = pl->pos.x;
@@ -281,7 +281,7 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
         if (w->timer >= 0xf) {
             self->unk_cc_0 = 0;
             self->work->timer = 0;
-            t = func_ov000_0218d240(self);
+            t = Actor_GetTarget(self);
             if (t != NULL) {
                 Ov003BrWarp wp;
                 s16 mode;
@@ -293,7 +293,7 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
                 wp.rot[1] = t->rot[1];
                 wp.rot[2] = t->rot[2];
                 wp.unk_14 = 0;
-                func_ov000_0218d398(t, self->unk_0c, 7, 1, 0x18, &wp);
+                Actor_SendMsg(t, self->unk_0c, 7, 1, 0x18, &wp);
                 func_ov000_02197d80(self);
                 mode = 1;
                 if (self->kind == 0) {
@@ -337,19 +337,19 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
             Ov003Br_SetMtx(self->unk_58, p.x, p.y, p.z, self->rot[0], self->rot[1], self->rot[2]);
 
         }
-        t = func_ov000_0218d240(self);
+        t = Actor_GetTarget(self);
         if (t != NULL) {
             Ov003BrWarp wp;
             Ov003Br_Approach(&wp, t, self);
             wp.unk_14 = 0;
-            func_ov000_0218d398(t, self->unk_0c, 7, 1, 0x18, &wp);
+            Actor_SendMsg(t, self->unk_0c, 7, 1, 0x18, &wp);
         }
         break;
     }
     case 10:
         if (func_ov000_0219bf90() != NULL && !func_ov000_021b4738()) {
             u16 id = 0;
-            Ov003BrTgt *t = func_ov000_0218d240(self);
+            Ov003BrTgt *t = Actor_GetTarget(self);
             if (t != NULL) {
                 id = t->unk_0e;
             }

@@ -72,8 +72,8 @@ extern Ov003HeapCtx *data_02097dd0;
 extern u8 data_ov003_021f7974[];
 extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
 extern Ov003Area *func_0206ef10(u16 id);
-extern void func_0203de1c(void *p);
-extern s32 func_02040498(s32 max);
+extern void Heap_Free(void *p);
+extern s32 Rand_UpTo(s32 max);
 
 void func_ov003_021cedf4(u16 add) {
     u16 c;
@@ -108,7 +108,7 @@ void func_ov003_021ceec4(void) {
 }
 
 void *func_ov003_021ceec8(void *self) {
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -149,12 +149,12 @@ Ov003ScriptList *Ov003Vt_021f7974_Dtor(Ov003ScriptList *self) {
 Ov003ScriptList *Ov003Vt_021f7974_DtorDelete(Ov003ScriptList *self) {
     self->vtbl = data_ov003_021f7974;
     Ov003ScriptList_Clear(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
 static inline BOOL Ov003_Chance(s32 p) {
-    return func_02040498(0x1000) <= p ? TRUE : FALSE;
+    return Rand_UpTo(0x1000) <= p ? TRUE : FALSE;
 }
 
 static inline void Ov003Track_Set(Ov003Track *t, u16 v) {
@@ -202,7 +202,7 @@ Ov003Step *func_ov003_021ceff4(Ov003ScriptList *self) {
                 if (hi == 0xffff) {
                     hi = cur->max - 1;
                 }
-                v = lo + func_02040498(hi - lo);
+                v = lo + Rand_UpTo(hi - lo);
                 if (v < cur->max) {
                     cur->val = v;
                 }

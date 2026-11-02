@@ -17,7 +17,7 @@ void func_ov006_021dc8f8(ov006_Unk021dc8f8 *self) {
     char file[0x20];
     ov006_Model *model;
     func_0206e900(file, data_ov006_021ec178);
-    model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec185;
         const char *path = file;

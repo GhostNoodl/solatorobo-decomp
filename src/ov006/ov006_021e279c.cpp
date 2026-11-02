@@ -11,7 +11,7 @@ extern const char data_ov006_021ec864[];
 extern const char data_ov006_021ec1a9[];
 
 void func_ov006_021e279c(ov006_Unk021e279c *self) {
-    ov006_Model *model = (ov006_Model *)func_0203dd9c(sizeof(ov006_Model));
+    ov006_Model *model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec1a9;
         if (name) {

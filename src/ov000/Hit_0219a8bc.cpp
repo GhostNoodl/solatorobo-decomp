@@ -42,7 +42,7 @@ BOOL func_ov000_0219a8bc(void *hit, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *po
                 } else {
                     msg.id = 0xffff;
                 }
-                func_ov000_0218d398(t, b->id, 9, 0, 6, &msg);
+                Actor_SendMsg(t, b->id, 9, 0, 6, &msg);
             }
             if (h != -1) {
                 if (t->unk_93_5 != 0) {
@@ -137,7 +137,7 @@ typedef struct {
     u16 b2 : 14;
 } Bits22_0219aca8;
 
-void *func_ov000_0218d240(Actor *a);
+void *Actor_GetTarget(Actor *a);
 u8 *func_ov000_0218d2e0(Actor *a);
 BOOL func_01ffc584(void *hit, VecFx32 *pos, s32 r, s32 h);
 BOOL func_01ffc624(void *hit, VecFx32 *pos, u16 *box, s32 r, s32 h);
@@ -158,7 +158,7 @@ BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, VecFx32 *ofs, u16 *box
     if (a == NULL || b == NULL) {
         return FALSE;
     }
-    if (func_ov000_0218d240(b) == NULL) {
+    if (Actor_GetTarget(b) == NULL) {
         return FALSE;
     }
     hit = func_ov000_0218d2e0(b);

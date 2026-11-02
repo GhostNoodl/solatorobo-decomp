@@ -108,7 +108,7 @@ typedef struct {
 extern char data_ov003_021f7a60[];
 extern char data_ov003_021f7a78[];
 extern char data_ov003_021f7a7f[];
-extern Ov003DwTgt *func_ov000_02199ba0(Ov003DwS4c *p);
+extern Ov003DwTgt *Target_Get(Ov003DwS4c *p);
 extern u16 func_ov000_02199bc8(Ov003DwS4c *p, Ov003DwVec *pos, s32 a, s32 b);
 extern void func_ov000_02191008(Ov003DwModel *model);
 extern BOOL func_ov000_02190cb0(Ov003DwModel *model, const char *name, s32 a, s32 b);
@@ -117,7 +117,7 @@ extern void func_ov000_021911c8(Ov003DwModel *model, s32 v);
 extern void func_0203f364(Ov003DwCtl *ctl);
 extern BOOL func_ov000_02198360(Ov003DwWork *w, s32 a, s32 b);
 extern Ov003DwPl *func_ov000_0219bf90(void);
-extern void func_ov000_0218d398(Ov003DwPl *p, u16 id, s32 a, s32 b, s32 c, Ov003DwArg *arg);
+extern void Actor_SendMsg(Ov003DwPl *p, u16 id, s32 a, s32 b, s32 c, Ov003DwArg *arg);
 extern void func_ov000_021b4560(Ov003DwPl *p, Ov003Dw *self);
 extern void MI_Copy36B(const void *src, void *dst);
 extern void MI_Copy48B(const void *src, void *dst);
@@ -132,7 +132,7 @@ void func_ov003_021d36fc(Ov003Dw *self) {
     Ov003DwTgt *t;
     Ov003DwCtl *ctl;
     Ov003DwCtl_Clear(self->ctl);
-    t = func_ov000_02199ba0(self->unk_4c);
+    t = Target_Get(self->unk_4c);
     switch (self->work->state) {
     case 0: {
         const char *name;
@@ -209,7 +209,7 @@ void func_ov003_021d36fc(Ov003Dw *self) {
                         arg.a = 10;
                         arg.b = 0x50;
                         arg.c = 0xffff;
-                        func_ov000_0218d398(p, self->unk_0c, 9, 0, 6, &arg);
+                        Actor_SendMsg(p, self->unk_0c, 9, 0, 6, &arg);
                         func_ov000_021b4560(p, self);
                         func_ov000_02190cb0(self->model, data_ov003_021f7a60, 0x400, 0);
                         func_ov000_02198360(self->work, 10, 0);

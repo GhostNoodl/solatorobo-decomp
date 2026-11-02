@@ -41,7 +41,7 @@ struct Obj02157c90 {
 };
 
 void func_ov000_02157c90(Obj02157c90 *self, s32 a) {
-    void *p = func_0203dd9c(0x2c);
+    void *p = Heap_Alloc(0x2c);
     if (p != NULL) {
         LFLD(s32, p, 0x0) = 0;
         LFLD(s32, p, 0x4) = 0;

@@ -28,7 +28,7 @@ extern Entry0215f618 data_02fe0188[];
 extern u8 *data_02097d48;
 extern u8 data_0208b3d0[];
 extern u8 data_020828f8[];
-u8 func_02043d48(void *p);
+u8 Gfx3DState_NextPolyId(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
 
@@ -94,7 +94,7 @@ void func_ov000_0215f618(Obj0215f618 *self, s32 *pos) {
         sw = (self->unk_14 << 12) - (e->ofsX << 1);
         sh = ((self->unk_18 - 2) << 12) - (e->ofsY << 1);
     }
-    cmd = misc | 0xd0 | (func_02043d48(g + 0x8b0) << 24);
+    cmd = misc | 0xd0 | (Gfx3DState_NextPolyId(g + 0x8b0) << 24);
     shadow = TRUE;
     G3_Cmd1(0x29, cmd | (alpha << 16));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
@@ -122,7 +122,7 @@ void func_ov000_0215f618(Obj0215f618 *self, s32 *pos) {
     G3_Cmd1(0x25, 0x10001000);
     NNS_G3dGeBufferOP_N(0x41, NULL, 0);
     G3_Cmd1(0x12, 1);
-    MF(self->unk_28).f7 = func_02043d48(g + 0x8b0);
+    MF(self->unk_28).f7 = Gfx3DState_NextPolyId(g + 0x8b0);
 }
 
 }

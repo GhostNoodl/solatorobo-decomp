@@ -93,7 +93,7 @@ EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def) {
     EffectObj *ret = NULL;
     switch (def->type) {
     case 0: {
-        Effect3D *e = (Effect3D *)func_0203dd9c(sizeof(Effect3D));
+        Effect3D *e = (Effect3D *)Heap_Alloc(sizeof(Effect3D));
         if (e != NULL) {
             *(u32 **)e = data_0208c2e4;
             func_02063a34(e);
@@ -110,7 +110,7 @@ EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def) {
         break;
     }
     case 1: {
-        EffectEmitter *em = (EffectEmitter *)func_0203dd9c(0x1d8);
+        EffectEmitter *em = (EffectEmitter *)Heap_Alloc(0x1d8);
         EffectPartSet *parts;
         if (em != NULL) {
             *(u32 **)em = data_0208c2e4;
@@ -131,7 +131,7 @@ EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def) {
         em->loopCount = def->loopCount;
         func_020689ec(setup, em, def->emitName);
         func_02068ab8(setup, em, def->paramId);
-        parts = (EffectPartSet *)func_0203dd9c(0x12c);
+        parts = (EffectPartSet *)Heap_Alloc(0x12c);
         if (parts != NULL) {
             *(u32 **)parts = data_0208c364;
             func_0206a0cc(parts);
@@ -146,7 +146,7 @@ EffectObj *func_020687f8(EffectSetup *setup, EffectDef *def) {
     return ret;
 }
 
-EffectEmitterSub *func_020689cc(EffectEmitterSub *sub) {
+EffectEmitterSub *MainVt_0208c354_Dtor(EffectEmitterSub *sub) {
     *(u32 **)sub = data_0208c354;
     func_02069248(sub);
     return sub;
@@ -251,10 +251,10 @@ void func_02068c40(EffectSetup *setup, EffectObj *obj, s32 id) {
     }
 }
 
-EffectPartSet *func_02068d2c(EffectPartSet *parts) {
+EffectPartSet *MainVt_0208c364_DtorDelete(EffectPartSet *parts) {
     *(u32 **)parts = data_0208c364;
     func_0206a0d8(parts);
-    func_0203de1c(parts);
+    Heap_Free(parts);
     return parts;
 }
 
@@ -265,16 +265,16 @@ BOOL func_02068d54(EffectPartSet *parts) {
 void func_02068d5c(EffectPartSet *parts) {
 }
 
-EffectPartSet *func_02068d60(EffectPartSet *parts) {
+EffectPartSet *MainVt_0208c364_Dtor(EffectPartSet *parts) {
     *(u32 **)parts = data_0208c364;
     func_0206a0d8(parts);
     return parts;
 }
 
-EffectEmitterSub *func_02068d80(EffectEmitterSub *sub) {
+EffectEmitterSub *MainVt_0208c354_DtorDelete(EffectEmitterSub *sub) {
     *(u32 **)sub = data_0208c354;
     func_02069248(sub);
-    func_0203de1c(sub);
+    Heap_Free(sub);
     return sub;
 }
 

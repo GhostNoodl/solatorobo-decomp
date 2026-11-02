@@ -35,11 +35,11 @@ extern "C" {
 extern u32 data_ov003_021f7d2c;
 extern void *data_ov000_021ccd68;
 extern void *func_ov003_021d0edc(void *p);
-extern void *func_0203dd9c(u32 size);
-extern void func_0203de1c(void *p);
+extern void *Heap_Alloc(u32 size);
+extern void Heap_Free(void *p);
 extern void func_0203df0c(void *p);
 extern void *func_0203de84(u32 size, s32 align);
-extern void *func_ov000_0218e640(void *mgr, u16 id);
+extern void *ActorMgr_GetActor(void *mgr, u16 id);
 
 void *Ov003ActVt_021f7c0c_Dtor(void *self) {
     func_ov003_021d0edc(self);
@@ -48,7 +48,7 @@ void *Ov003ActVt_021f7c0c_Dtor(void *self) {
 
 void *Ov003ActVt_021f7c0c_DtorDelete(void *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
@@ -59,13 +59,13 @@ void *Ov003ActVt_021f7b60_Dtor(void *self) {
 
 void *Ov003ActVt_021f7b60_DtorDelete(void *self) {
     func_ov003_021d0edc(self);
-    func_0203de1c(self);
+    Heap_Free(self);
     return self;
 }
 
 Ov003Node8 *func_ov003_021d77e0(Ov003NodeSrc *self) {
     u16 id = self->unk_0c;
-    Ov003Node8 *node = (Ov003Node8 *)func_0203dd9c(8);
+    Ov003Node8 *node = (Ov003Node8 *)Heap_Alloc(8);
     node->id = id;
     node->next = NULL;
     return node;
@@ -73,7 +73,7 @@ Ov003Node8 *func_ov003_021d77e0(Ov003NodeSrc *self) {
 
 void func_ov003_021d7800(void *p) {
     if (p != NULL) {
-        func_0203de1c(p);
+        Heap_Free(p);
     }
 }
 
@@ -83,7 +83,7 @@ BOOL func_ov003_021d7814(u16 *self) {
     if (data_ov000_021ccd68 == NULL) {
         r = NULL;
     } else {
-        r = func_ov000_0218e640(data_ov000_021ccd68, id);
+        r = ActorMgr_GetActor(data_ov000_021ccd68, id);
     }
     return r != NULL;
 }

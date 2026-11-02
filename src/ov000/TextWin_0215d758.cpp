@@ -15,11 +15,11 @@ extern void *data_02149ef8;
 void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
 void func_02041c5c(void *model, void *fn);
-u32 func_0204c0e8(void *a, s32 b);
+u32 MsgRes_GetString(void *a, s32 b);
 void *func_ov000_02154128(u8 *self, void *req, void *buf, u16 *count);
 
 static inline TextWin *TextWin_New(void) {
-    TextWin *win = (TextWin *)func_0203dd9c(0xb8);
+    TextWin *win = (TextWin *)Heap_Alloc(0xb8);
     if (win != NULL) {
         *(const u32 **)win = data_0208ba70;
         func_0204c7d0(win);
@@ -38,7 +38,7 @@ void func_ov000_0215d758(Lo021cae48 *self) {
     u8 *m;
     void *res;
     TextWin *win;
-    m = (u8 *)func_0203dd9c(0x160);
+    m = (u8 *)Heap_Alloc(0x160);
     if (m) {
         void *arc_;
         void *name_;
@@ -60,7 +60,7 @@ void func_ov000_0215d758(Lo021cae48 *self) {
     win = TextWin_New();
     self->unk_94 = win;
     win->unk_28 = 4;
-    SetText(self->unk_94, func_0204c0e8(res, ent[1]));
+    SetText(self->unk_94, MsgRes_GetString(res, ent[1]));
     self->unk_94->unk_2c = 0;
     self->unk_94->unk_74 = 0x77df;
     self->unk_94->unk_76 = 0x67e;
