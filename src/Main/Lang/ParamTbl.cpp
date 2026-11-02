@@ -43,7 +43,7 @@ typedef struct ParamItem {
 char *func_02040ab0(char *str, int c);
 void func_02040a98(char *dst, int num);
 
-void func_0206ecd4(void *self, char *dst, u32 id) {
+void func_0206ecd4(u32 dstSize, char *dst, u32 id) {
     char num[0x10];
     char buf[0x100];
     const char *str = (const char *)Param_GetStr(id);

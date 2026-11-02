@@ -1,42 +1,25 @@
 #include "nitro/fx.h"
 #include "ov006/Caption.h"
-
-typedef struct ov006_Unk021e0f00 {
-    u8 unk0[0x1c];
-    Model *unk1C;
-    TextWin *unk20;
-} ov006_Unk021e0f00;
-
-typedef struct ov006_Fader021e10d0 {
-    void *vtbl;
-    u8 unk4;
-    u8 unk5;
-    u8 unk6[2];
-    s32 unk8;
-    s32 unkC;
-    u8 unk10[0xc];
-    void *unk1C;
-    void *unk20;
-} ov006_Fader021e10d0;
+#include "ov006/Gauge.h"
 
 extern "C" {
 
 BOOL func_02054f10(void *a, int b);
 
-void func_ov006_021e0f00(ov006_Unk021e0f00 *self) {
+void func_ov006_021e0f00(ov006_Gauge *self) {
     Model *model;
     const char *text;
 
-    self->unk20 = ov006_TextWin_New();
+    self->text = ov006_TextWin_New();
     text = data_ov006_021ec1b5;
-    if (self->unk20 != NULL) {
-        self->unk20->unk_vf08();
-        self->unk20->font = 3;
-        self->unk20->unk_2c = 4;
-        self->unk20->unk_34 = 0;
-        ov006_TextWin_Start(self->unk20, (int)text);
-        TextWin_InitLines(self->unk20, 8);
-        self->unk20->flags |= 4;
+    if (self->text != NULL) {
+        self->text->unk_vf08();
+        self->text->font = 3;
+        self->text->unk_2c = 4;
+        self->text->unk_34 = 0;
+        ov006_TextWin_Start(self->text, (int)text);
+        TextWin_InitLines(self->text, 8);
+        self->text->flags |= 4;
     }
     model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
@@ -47,17 +30,17 @@ void func_ov006_021e0f00(ov006_Unk021e0f00 *self) {
             STD_CopyString(model->name, data_ov006_021ec864);
         }
     }
-    self->unk1C = model;
-    func_020417e0(self->unk1C, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
-    self->unk1C->flags |= 2;
-    self->unk1C->flags &= ~0x80000;
-    self->unk1C->flags |= 0x400000;
-    func_02041d9c(self->unk1C, 2, 2);
-    func_02041d9c(self->unk1C, 2, 3);
-    func_02041d9c(self->unk1C, 2, 4);
-    func_02041d9c(self->unk1C, 2, 5);
-    func_02041d9c(self->unk1C, 2, 6);
-    func_02041d9c(self->unk1C, 2, 7);
+    self->model = model;
+    func_020417e0(self->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
+    self->model->flags |= 2;
+    self->model->flags &= ~0x80000;
+    self->model->flags |= 0x400000;
+    func_02041d9c(self->model, 2, 2);
+    func_02041d9c(self->model, 2, 3);
+    func_02041d9c(self->model, 2, 4);
+    func_02041d9c(self->model, 2, 5);
+    func_02041d9c(self->model, 2, 6);
+    func_02041d9c(self->model, 2, 7);
 }
 
 static inline s32 ov006_ApproachFx(s32 cur, s32 target, fx32 rate) {
@@ -68,12 +51,12 @@ static inline s32 ov006_ApproachFx(s32 cur, s32 target, fx32 rate) {
     return cur;
 }
 
-void func_ov006_021e10d0(ov006_Fader021e10d0 *self) {
+void func_ov006_021e10d0(ov006_Gauge *self) {
     if (!self->unk4) {
-        if (self->unk1C == NULL) {
+        if (self->model == NULL) {
             return;
         }
-        if (!func_02054f10(self->unk1C, 0xffff)) {
+        if (!func_02054f10(self->model, 0xffff)) {
             return;
         }
         self->unk4 = 1;
@@ -83,7 +66,7 @@ void func_ov006_021e10d0(ov006_Fader021e10d0 *self) {
     } else {
         self->unk8 = self->unkC;
     }
-    VCALL(self->unk20, 8c);
+    self->text->unk_vf8c();
 }
 
 }

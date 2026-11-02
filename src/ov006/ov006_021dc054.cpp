@@ -1,33 +1,6 @@
-#include "ov006/Model.h"
+#include "ov006/Label.h"
 #include "nitro/fx.h"
 #include "Main/Gfx/GfxMgr.h"
-
-typedef struct ov006_Unk021dc054 {
-    void *vtbl;
-    s32 state;
-    s16 timer;
-    u8 unkA[2];
-    u8 unkC[8];
-    u8 unk14[4];
-    char unk18[0x20];
-    char unk38[0x6c];
-    u16 unkA4;
-    u8 unkA6[2];
-    Model *unkA8;
-    u16 unkAC;
-    u8 unkAE[2];
-    s32 unkB0;
-    s32 unkB4;
-    s32 unkB8;
-    VecFx32 pos;
-    VecFx32 dir;
-    fx32 speed;
-    fx32 unkD8;
-    s32 unkDC;
-    s32 unkE0;
-    s32 unkE4;
-    u8 unkE8;
-} ov006_Unk021dc054;
 
 static inline void ov006_VecZero(VecFx32 *v) {
     v->x = 0;
@@ -46,39 +19,39 @@ extern "C" {
 u8 Gfx3DState_NextPolyId(void *p);
 
 BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
-void func_ov006_021dbbac(void *p);
+void func_ov006_021dbbac(ov006_ResLoader *self);
 BOOL func_02054f10(void *a, int b);
 
-void func_ov006_021dc054(ov006_Unk021dc054 *self) {
+void func_ov006_021dc054(ov006_Label *self) {
     VecFx32 v = {0, 0, 0};
     fx32 t;
     u16 id;
     t = 0x1000;
     switch (self->state) {
     case 0:
-        if (!VCALL(self->unk14, 34)) {
+        if (!self->loader.res.vfunc_34()) {
             self->state = 5;
             self->timer = 0;
             break;
         }
-        id = self->unkA4;
-        self->unkAC = id;
+        id = self->partId;
+        self->part = id;
         {
             Model *model = (Model *)Heap_Alloc(sizeof(Model));
             if (model != NULL) {
                 func_02041218(&model->pltt);
-                func_02041440(model, self->unk38, 1);
-                STD_CopyString(model->name, self->unk18);
+                func_02041440(model, self->loader.res.name, 1);
+                STD_CopyString(model->name, self->loader.res.arcName);
             }
-            self->unkA8 = model;
+            self->model = model;
         }
-        func_020417e0(self->unkA8, (void *)VCALL(self->unk14, 10));
-        self->unkA8->flags |= 2;
-        func_02041d9c(self->unkA8, self->unkE0, id);
-        self->unkA8->flags |= 0x80000;
-        self->unkA8->flags |= 0x400000;
-        VCALL(self->unk14, 08);
-        self->unkA4 = 0xffff;
+        func_020417e0(self->model, (void *)self->loader.res.vfunc_10());
+        self->model->flags |= 2;
+        func_02041d9c(self->model, self->unkE0, id);
+        self->model->flags |= 0x80000;
+        self->model->flags |= 0x400000;
+        self->loader.res.vfunc_08();
+        self->partId = 0xffff;
         self->state = 1;
         ov006_VecScale(&self->dir, self->speed, &self->pos);
         self->timer = 0;
@@ -106,11 +79,11 @@ void func_ov006_021dc054(ov006_Unk021dc054 *self) {
         if (self->timer != 0) {
             break;
         }
-        if (self->unkA8 == NULL) {
+        if (self->model == NULL) {
             self->timer++;
             break;
         }
-        if (func_02054f10(self->unkA8, 0xffff)) {
+        if (func_02054f10(self->model, 0xffff)) {
             self->timer++;
         }
         break;
@@ -133,12 +106,12 @@ void func_ov006_021dc054(ov006_Unk021dc054 *self) {
         if (mag < self->unkD8) {
             break;
         }
-        OV006_DELETE_MODEL(self->unkA8);
+        OV006_DELETE_MODEL(self->model);
         self->state = 5;
         self->timer = 0;
     }
     case 5:
-        if (VCALL(self->unk14, 34)) {
+        if (self->loader.res.vfunc_34()) {
             self->state = 0;
             self->timer = 0;
         }
@@ -162,8 +135,8 @@ void func_ov006_021dc054(ov006_Unk021dc054 *self) {
     } else if (t < 0) {
         t = 0;
     }
-    self->unkDC = FX_Mul(t, 0x1f000) >> 12;
-    func_ov006_021dbbac(self->unkC);
+    self->alpha = FX_Mul(t, 0x1f000) >> 12;
+    func_ov006_021dbbac(&self->loader);
 }
 
 }

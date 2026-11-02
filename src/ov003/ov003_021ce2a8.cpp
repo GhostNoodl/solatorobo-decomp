@@ -1,5 +1,6 @@
 #include "types.h"
 #include "nitro/mi.h"
+#include "ov000/VObj.h"
 
 #define V(n) virtual void v##n();
 
@@ -158,7 +159,8 @@ Ov003Scene *Ov003TaskVt_021f78f4_Dtor(Ov003Scene *self) {
     return self;
 }
 
-void *func_ov003_021ce5a4(void *self) {
+// The deleting destructor (slot 0x04) of the object at 0x60 of Ov003Scene (vtable data_ov003_021f78e4).
+void *func_ov003_021ce5a4(VObj *self) {
     Heap_Free(self);
     return self;
 }

@@ -114,14 +114,14 @@ Ov003FlagObj *Ov003Vt_021f79a8_DtorDelete(Ov003FlagObj *self) {
     return self;
 }
 
-int func_ov003_021cf330(void *self, const char *name, void *arg) {
+int func_ov003_021cf330(Ov003FlagObj *self, const char *name, void *arg) {
     return 1;
 }
 
 void func_ov003_021cf338() {
 }
 
-void func_ov003_021cf33c(void *self, void *arg) {
+void func_ov003_021cf33c(Ov003FlagObj *self, void *arg) {
 }
 
 void func_ov003_021cf340(const char *str) {

@@ -1,16 +1,11 @@
 #include "ov006/ov006.h"
+#include "ov000/ObjLayouts.h"
 #include <nitro/mi.h>
 
 typedef struct ov006_Unk02097e40 {
     u8 unk0[0x2c];
     int unk2C;
 } ov006_Unk02097e40;
-
-typedef struct ov006_Obj021e4ed4 {
-    void *vtbl;
-    u8 unk4[8];
-    u32 unkC;
-} ov006_Obj021e4ed4;
 
 extern "C" {
 
@@ -30,7 +25,7 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
         data_02097dd0->cur = data_02097dd0->heapHi;
         if (node != NULL) {
             if (node != NULL) {
-                node->vtbl->dtor((Object *)node);
+                node->vfunc_04();
             }
             node = NULL;
         }
@@ -62,7 +57,7 @@ void func_ov006_021e4d38(ov006_Unk021ec888 *self) {
         func_02045094(data_02097e40);
         self->stateTime = 10;
         if (self->unk1D8 != NULL && self->unk1D8->obj != NULL) {
-            ((ov006_Obj021e4ed4 *)self->unk1D8->obj)->unkC |= 2;
+            self->unk1D8->obj->flags |= 2;
         }
     case 10:
         if (data_02097e40->unk2C == 1) {

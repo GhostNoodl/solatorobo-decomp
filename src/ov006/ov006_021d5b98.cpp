@@ -7,21 +7,23 @@
 #include "Main/Res/ResArc.h"
 #include "Main/Res/ArcName.h"
 
-extern "C" u8 *data_ov000_021ccd54;
+#include "Main/Sys/FieldState.h"
+#include "ov000/Group.h"
+#include "Main/Math/Rot16.h"
 
-typedef struct ov006_Unk021d5b98 {
-    void *vtbl;
-    u8 unk4[0x18];
-    Object *unk1C;
-    Object *unk20;
+/* The task with vtable data_ov006_021ebfc0 (func_ov006_021d5b04, task type 1). */
+struct ov006_Unk021d5b98 : public ov006_Task {
+    u8 unk10[0xc];
+    VObj *unk1C;
+    VObj *unk20;
     Model *unk24;
-    Object *unk28;
-    Object *unk2C;
-    Object *unk30;
-    Object *unk34;
+    VObj *unk28;
+    VObj *unk2C;
+    VObj *unk30;
+    VObj *unk34;
     u8 unk38[0x38];
     void *unk70[6];
-} ov006_Unk021d5b98;
+};
 
 extern "C" {
 
@@ -30,12 +32,12 @@ extern char data_0214b105[];
 extern char data_ov006_021ec864[];
 void func_0206e900(char *dst, const char *src);
 void *func_ov000_0218ea20(void *p);
-void func_ov006_021ccddc(void *self);
+void func_ov006_021ccddc(ov006_Task *self);
 
 static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
     char buf[0x20];
     int i;
-    self->vtbl = data_ov006_021ebfc0;
+    *(void **)self = data_ov006_021ebfc0;
     OV006_DELETE_OBJECT(self->unk1C);
     OV006_DELETE_OBJECT(self->unk20);
     OV006_DELETE_MODEL(self->unk24);
@@ -85,17 +87,6 @@ ov006_Unk021d5b98 *Ov006Vt_021ebfc0_DtorDelete(ov006_Unk021d5b98 *self) {
 }
 
 
-typedef struct ov006_Color021d6140 {
-    u8 c[3];
-} ov006_Color021d6140;
-
-typedef struct ov006_Game021d6140 {
-    u8 unk0[0xca];
-    ov006_Color021d6140 cur;
-    ov006_Color021d6140 next;
-    ov006_Color021d6140 prev;
-} ov006_Game021d6140;
-
 typedef struct ov006_Info021d6140 {
     u8 unk0[0xa];
     u8 lo : 4;
@@ -112,14 +103,10 @@ typedef struct ov006_Unk02097e48 {
     u16 unk8;
 } ov006_Unk02097e48;
 
-typedef struct ov006_Task021d6140 {
-    void *vtbl;
-    int type;
-    int state;
-    int subState;
+struct ov006_Task021d6140 : public ov006_Task {
     u8 unk10[0x60];
     void *unk70[6];
-} ov006_Task021d6140;
+};
 
 extern "C" {
 
@@ -134,12 +121,12 @@ void func_0203cd10(void);
 
 static inline void ov006_Game_SetColor(u8 r, u8 g, u8 b) {
     // The aggregate initializer keeps c in memory; its stores are dead but still emitted.
-    ov006_Color021d6140 c = {r, g, b};
-    ov006_Game021d6140 *game = ((ov006_Game021d6140 *)data_ov000_021ccd54);
-    game->next = c;
-    game = ((ov006_Game021d6140 *)data_ov000_021ccd54);
-    game->prev = game->cur;
-    game->cur = game->next;
+    FieldId c = {r, g, b};
+    FieldState *game = data_ov000_021ccd54;
+    game->unk_cd = c;
+    game = data_ov000_021ccd54;
+    game->unk_d0 = game->unk_ca;
+    game->unk_ca = game->unk_cd;
 }
 
 BOOL func_ov006_021d6140(ov006_Task021d6140 *self) {
@@ -181,20 +168,8 @@ BOOL func_ov006_021d6140(ov006_Task021d6140 *self) {
 }
 
 
-typedef struct ov006_Pos {
-    s32 x;
-    s32 y;
-    s32 z;
-} ov006_Pos;
-
-typedef struct ov006_Rot {
-    u16 x;
-    u16 y;
-    u16 z;
-} ov006_Rot;
-
 typedef struct ov006_PartyEntry {
-    ov006_Pos pos;
+    VecFx32 pos;
     u16 rot;
     u16 pad;
 } ov006_PartyEntry;
@@ -209,11 +184,6 @@ typedef struct ov006_Unk021ccd6c {
     ov006_Party *party;
 } ov006_Unk021ccd6c;
 
-typedef struct ov006_Bits0c {
-    u8 b0 : 1;
-    u8 rest : 7;
-} ov006_Bits0c;
-
 typedef struct ov006_BitsDA {
     u8 b0 : 1;
     u8 b1 : 1;
@@ -227,24 +197,20 @@ typedef struct ov006_Info021d630c {
     u16 unk8;
 } ov006_Info021d630c;
 
-typedef struct ov006_Task021d630c {
-    void *vtbl;
-    int type;
-    int state;
-    int subState;
+struct ov006_Task021d630c : public ov006_Task {
     u8 unk10[0x60];
     s16 *unk70[6];
-} ov006_Task021d630c;
+};
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd64;
+extern Group *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
 extern ov006_Unk021ccd6c *data_ov000_021ccd6c;
-extern u8 *data_ov000_021ccd54;
 extern void *data_02097e4c;
 
-void func_ov000_0218be9c(void *p);
+void func_ov000_0218be9c(Group *self);
+void func_ov000_0218be54(Group *self);
 void ActorMgr_DestroyAll(void *p);
 void func_ov000_021b53f4(void *p);
 void func_0206e900(char *dst, const char *src);
@@ -253,9 +219,7 @@ BOOL func_ov000_021b5578(void *p);
 void func_ov000_021b5dc0(void *p);
 int func_0206e264(ov006_Party *party);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
-Ov006Racer *func_ov006_021ea430(u32 id, u8 a, const ov006_Pos *pos, const ov006_Rot *rot);
-void Obj0218c208_AddPoint(void *a, const ov006_Pos *pos, u16 rot);
-void func_ov000_0218be54(void *p);
+Ov006Racer *func_ov006_021ea430(u32 id, u8 a, const VecFx32 *pos, const Rot16 *rot);
 BOOL ActorMgr_IsReady(void *p);
 void func_0204a2f0(void *a, u16 b);
 BOOL SndMgr_IsLoadDone(void *a);
@@ -277,7 +241,7 @@ BOOL func_ov006_021d630c(ov006_Task021d630c *self) {
     switch (self->subState) {
     case 0:
         EffectMgr_FreeAll(data_0214a420);
-        ((ov006_Bits0c *)(data_ov000_021ccd64 + 0xc))->b0 = 1;
+        data_ov000_021ccd64->unk_0c.bits.flag_0 = 1;
         func_ov000_0218be9c(data_ov000_021ccd64);
         ActorMgr_DestroyAll(data_ov000_021ccd68);
         func_ov000_021b53f4(data_ov000_021ccd6c);
@@ -341,8 +305,8 @@ BOOL func_ov006_021d630c(ov006_Task021d630c *self) {
         tbl = (ov006_PartyEntry *)ov006_GetPartyValue(data_ov000_021ccd6c);
         n = data_ov006_021ec884->numActive;
         for (j = 0; j < n; j++) {
-            ov006_Pos pos;
-            ov006_Rot rot;
+            VecFx32 pos;
+            Rot16 rot;
             ov006_Slot *slot;
             if (tbl != NULL) {
                 pos.x = tbl[j].pos.x;
@@ -368,16 +332,16 @@ BOOL func_ov006_021d630c(ov006_Task021d630c *self) {
                 }
             }
             if (j == data_ov006_021ec884->unk5) {
-                u8 *o = data_ov000_021ccd54 + 0xf4;
-                o[0xd8] |= 2;
-                *(ov006_Pos *)(o + 0xe8) = pos;
-                o[0xda] |= 2;
-                *(ov006_Rot *)(o + 0xf8) = rot;
-                *(int *)(o + 0xf4) = 0xa000;
-                o[0xda] = ((o[0xda] | 0x70) & ~0xc) | 4;
-                ((ov006_Bits0c *)(o + 0x9c))->b0 = 0;
-                VCALL(o, 00);
-                ((ov006_Bits0c *)(o + 0x9c))->b0 = 1;
+                FieldCam *cam = &data_ov000_021ccd54->cam;
+                cam->unk_d8 |= 2;
+                cam->unk_e8 = pos;
+                cam->unk_da |= 2;
+                *(Rot16 *)&cam->unk_f8 = rot;
+                cam->unk_f4 = 0xa000;
+                cam->unk_da = ((cam->unk_da | 0x70) & ~0xc) | 4;
+                cam->base.smooth = 0;
+                ((VObj *)cam)->vfunc_00(); // slot 0x00: apply the camera
+                cam->base.smooth = 1;
             }
         }
         if (data_ov000_021ccd64 != NULL) {
@@ -423,7 +387,7 @@ typedef struct ov006_Gauge021d6724 {
     void *unk1C;
 } ov006_Gauge021d6724;
 
-typedef struct ov006_Pos021d6724 {
+typedef struct VecFx32021d6724 {
     u8 unk0[8];
     int x;
     int y;
@@ -432,21 +396,17 @@ typedef struct ov006_Pos021d6724 {
     int unk54;
     int unk58;
     int unk5C;
-} ov006_Pos021d6724;
+} VecFx32021d6724;
 
-typedef struct ov006_Task021d6724 {
-    void *vtbl;
-    int type;
-    int state;
-    int subState;
+struct ov006_Task021d6724 : public ov006_Task {
     u8 unk10[0xc];
     ov006_Gauge021d6724 *unk1C;
     void *unk20;
     Model *unk24;
-    ov006_Pos021d6724 *unk28;
-    ov006_Pos021d6724 *unk2C;
-    ov006_Pos021d6724 *unk30;
-} ov006_Task021d6724;
+    VecFx32021d6724 *unk28;
+    VecFx32021d6724 *unk2C;
+    VecFx32021d6724 *unk30;
+};
 
 typedef struct ov006_Msg021d6724 {
     u16 unk0;
@@ -479,15 +439,15 @@ void func_ov006_021cd580(int a, void *b, int c);
 ov006_Gauge021d6724 *Ov006Vt_021ec2bc_Ctor(void *p);
 void func_ov006_021de008(ov006_Gauge021d6724 *p);
 void func_ov000_0216da2c(void *p, int a, int b, int c);
-ov006_Pos021d6724 *Ov006Vt_021ec1fc_Ctor(void *p);
-void func_ov006_021e16b0(ov006_Pos021d6724 *p);
+VecFx32021d6724 *Ov006Vt_021ec1fc_Ctor(void *p);
+void func_ov006_021e16b0(VecFx32021d6724 *p);
 void *func_0206ec48(u32 id);
-void func_ov006_021e1e6c(ov006_Pos021d6724 *a, const void *b);
-void func_ov006_021e1ddc(ov006_Pos021d6724 *a, const char *b, int c, int d);
-ov006_Pos021d6724 *Ov006Vt_021ec2cc_Ctor(void *p);
-void func_ov006_021e22e4(ov006_Pos021d6724 *p);
-ov006_Pos021d6724 *Ov006Vt_021ec2ac_Ctor(void *p);
-void func_ov006_021e279c(ov006_Pos021d6724 *p);
+void func_ov006_021e1e6c(VecFx32021d6724 *a, const void *b);
+void func_ov006_021e1ddc(VecFx32021d6724 *a, const char *b, int c, int d);
+VecFx32021d6724 *Ov006Vt_021ec2cc_Ctor(void *p);
+void func_ov006_021e22e4(VecFx32021d6724 *p);
+VecFx32021d6724 *Ov006Vt_021ec2ac_Ctor(void *p);
+void func_ov006_021e279c(VecFx32021d6724 *p);
 BOOL func_0203e688(void);
 void func_02039518(void *p);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
@@ -501,12 +461,12 @@ static inline void ov006_Gauge_Init(ov006_Gauge021d6724 *g, int a, int b, int c)
     }
 }
 
-static inline void ov006_Pos_SetXY(ov006_Pos021d6724 *p, int x, int y) {
+static inline void VecFx32_SetXY(VecFx32021d6724 *p, int x, int y) {
     p->x = x;
     p->y = y;
 }
 
-static inline void ov006_Pos_Set3(ov006_Pos021d6724 *p, int x, int y, int z) {
+static inline void VecFx32_Set3(VecFx32021d6724 *p, int x, int y, int z) {
     p->unk54 = x;
     p->unk58 = y;
     p->unk5C = z;
@@ -521,7 +481,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         ov006_Info021d6724 *info;
         ov006_Gauge021d6724 *g;
         Model *model;
-        ov006_Pos021d6724 *p;
+        VecFx32021d6724 *p;
         u8 n;
         func_ov006_021cd580(7, ov006_GetSlotManager(), result);
         g = (ov006_Gauge021d6724 *)Heap_Alloc(0x38);
@@ -545,7 +505,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         self->unk24->flags |= 0x400000;
         func_02041d9c(self->unk24, 2, 0xffff);
         info = (ov006_Info021d6724 *)data_ov006_021ec884->info;
-        p = (ov006_Pos021d6724 *)Heap_Alloc(0x30);
+        p = (VecFx32021d6724 *)Heap_Alloc(0x30);
         if (p != NULL) {
             p = Ov006Vt_021ec1fc_Ctor(p);
         }
@@ -553,24 +513,24 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         func_ov006_021e16b0(p);
         func_ov006_021e1e6c(self->unk28, func_0206ec48(data_ov006_021ec884->unk6));
         func_ov006_021e1ddc(self->unk28, "menu/skyrace_map", info->unk4, zero);
-        ov006_Pos_SetXY(self->unk28, -0x2c, 0xc);
-        p = (ov006_Pos021d6724 *)Heap_Alloc(0xa4);
+        VecFx32_SetXY(self->unk28, -0x2c, 0xc);
+        p = (VecFx32021d6724 *)Heap_Alloc(0xa4);
         if (p != NULL) {
             p = Ov006Vt_021ec2cc_Ctor(p);
         }
         self->unk2C = p;
         func_ov006_021e22e4(p);
-        ov006_Pos_SetXY(self->unk2C, 0x24, -0x2c);
-        p = (ov006_Pos021d6724 *)Heap_Alloc(0x64);
+        VecFx32_SetXY(self->unk2C, 0x24, -0x2c);
+        p = (VecFx32021d6724 *)Heap_Alloc(0x64);
         if (p != NULL) {
             p = Ov006Vt_021ec2ac_Ctor(p);
         }
         self->unk30 = p;
         func_ov006_021e279c(p);
-        ov006_Pos_SetXY(self->unk30, -0x2d, 9);
+        VecFx32_SetXY(self->unk30, -0x2d, 9);
         self->unk30->unk50 = (info->unkC << 12) / 100;
-        ov006_Pos_Set3(self->unk30, info->unkE << 12, zero, info->unk10 << 12);
-        ((ov006_Bits0e *)(data_ov000_021ccd54 + 0xe))->b2 = 0;
+        VecFx32_Set3(self->unk30, info->unkE << 12, zero, info->unk10 << 12);
+        ((ov006_Bits0e *)&data_ov000_021ccd54->pause[6])->b2 = 0;
         data_02097dd0->frameWait = 2;
         data_ov006_021ec888->unk15E = 1;
         self->subState++;

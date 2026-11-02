@@ -216,8 +216,8 @@ void func_ov003_021d9f80(void *rot, const VecFx32 *a, const VecFx32 *b);
 VecFx32 func_ov003_021da214(void *actor);
 void func_ov003_021da40c(ActorSub40 *p);
 void func_ov003_021da48c(void *p, s32 a);
-VObj *func_ov003_021da788(s32 id, void *self, const VecFx32 *ofs);
-VObj *func_ov003_021da7e8(s32 id, void *src, const VecFx32 *ofs);
+EffectObj *func_ov003_021da788(s32 id, void *self, const VecFx32 *ofs);
+EffectObj *func_ov003_021da7e8(s32 id, void *src, const VecFx32 *ofs);
 EffectObj *func_ov003_021da8e4(s32 fxId, const VecFx32 *pos, s32 scale);
 void func_ov003_021da904(EffectObj *e, void *src, const VecFx32 *off);
 void func_ov003_021f0c60(void *self, s32 a);
@@ -346,6 +346,12 @@ void Ov010Coll_ClearHandler(Ov010Coll *self);
 BOOL Ov010Coll_IsFree(Ov010Coll *self);
 }
 
+// An area circle (func_ov010_022090b4 type 1): the centre and the radius.
+typedef struct Ov010Circle {
+    VecFx32 centre;
+    fx32 radius;
+} Ov010Circle;
+
 // ---- The 0x4817 actor (vtable data_ov010_02210378, ctor Ov010ActVt_02210378_Ctor).
 // Spawned by func_ov010_0220da74 and set up by func_ov010_0220a948. Its methods are in
 // ov010_0220f9b4.cpp (0220a6a0..0220d3d8). It is built by ActorEx_Ctor, but reads 0xcf as an
@@ -364,7 +370,7 @@ public:
     s32 unk_d8;
     s32 unk_dc;      // area kind: 0 rectangle (unk_e0), 1 circle (unk_e4) (func_ov010_022090b4)
     s32 *unk_e0;     // {x0, z0, x1, z1, y}
-    VecFx32 *unk_e4; // centre, followed by the radius
+    Ov010Circle *unk_e4;
     Ov010Trail *trail;
     Ov010Path *path;
     VecFx32 unk_f0;
@@ -473,7 +479,7 @@ public:
     u8 unk_f6[0x2];
     Ov010Arena *arena;
     const s32 *unk_fc;      // area rectangle {x0, z0, x1, z1, y}, for the Ov010Trig handlers
-    const VecFx32 *unk_100; // area circle (centre and radius)
+    const Ov010Circle *unk_100; // area circle
     VObj *unk_104; // handlers that run on coll (Ov010Coll_SetHandler)
     VObj *unk_108;
     VObj *unk_10c;

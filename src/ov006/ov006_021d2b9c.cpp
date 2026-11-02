@@ -12,8 +12,8 @@ void func_ov000_02162a20(ov006_Actor58 *self);
 void func_ov000_02162a58(ov006_Actor58 *self);
 void func_ov006_021e0af4(ov006_Caption *self);
 void func_ov006_021e0b80(ov006_Caption *self);
-void func_ov006_021e10d0(ov006_Unk021e139c *self);
-void func_ov006_021e1180(ov006_Unk021e139c *self);
+void func_ov006_021e10d0(ov006_Gauge *self);
+void func_ov006_021e1180(ov006_Gauge *self);
 void func_ov006_021e463c(ov006_Unk021ec888 *self);
 void func_ov006_021cd580(int a, int b, int c);
 void func_ov006_021d2ff0(ov006_TaskD1F *self);
@@ -73,7 +73,7 @@ void func_ov006_021d2c84(ov006_TaskD1F *self) {
             func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC = self->unk4A;
         }
     }
-    VCALL(self->unk54, 1c);
+    self->unk54->vfunc_1c();
     func_ov000_02162a20(self->unk58);
     {
         ov006_Actor58 *a = self->unk58;
@@ -85,9 +85,9 @@ void func_ov006_021d2c84(ov006_TaskD1F *self) {
     if (self->unk58->unk6B8 / 10 == 1) {
         self->unk44 = 0;
     }
-    VCALL(self->unk5C, 1c);
-    VCALL(self->unk60, 1c);
-    VCALL(self->unk64, 1c);
+    self->unk5C->vfunc_1c();
+    self->unk60->vfunc_1c();
+    self->unk64->vfunc_1c();
     func_ov006_021e0af4(self->unk68);
     for (i = 0; i < 4; i++) {
         func_ov006_021e10d0(self->gauges[i]);

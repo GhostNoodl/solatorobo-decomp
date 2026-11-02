@@ -1,4 +1,5 @@
 #include "ov006/Model.h"
+#include "ov000/ObjLayouts.h"
 #include "Main/Net/Wh.h"
 
 typedef struct ov006_Unk02097e40 {
@@ -32,9 +33,9 @@ void func_ov006_021e4574(ov006_Unk021ec888 *self) {
 }
 
 void func_ov006_021e463c(ov006_Unk021ec888 *self) {
-    Object *obj;
+    Lo021cad50 *obj;
     if (data_ov006_021ec888->state != 0 && (obj = self->unk1D8->obj) != NULL) {
-        VCALL(obj, 20);
+        obj->vfunc_20();
     }
 }
 

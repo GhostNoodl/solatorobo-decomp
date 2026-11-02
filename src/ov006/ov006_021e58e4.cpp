@@ -1,14 +1,5 @@
-#include "ov006/ov006.h"
+#include "ov006/Window.h"
 #include "nitro/mi.h"
-
-typedef struct ov006_Dialog021e58e4 {
-    ObjectVtbl *vtbl;
-    int state;
-    u8 unk8[4];
-    u32 flags;
-    u8 unk10[0x58];
-    s16 unk68;
-} ov006_Dialog021e58e4;
 
 typedef struct ov006_Net021e58e4 {
     u8 unk0[0x2c];
@@ -19,11 +10,8 @@ extern "C" {
 
 extern ov006_Net021e58e4 *data_02097e40;
 extern void *data_02149ef8;
-extern void *data_ov000_021cac60[];
-extern void *data_ov000_021cad50[];
 
 void *MsgRes_GetString(void *a, int id);
-void func_ov000_0215c1bc(void *a, int b, void *c);
 void func_02045094(ov006_Net021e58e4 *net);
 BOOL Wh_End(ov006_Net021e58e4 *net);
 
@@ -38,7 +26,7 @@ static inline void ov006_Menu_SetState(ov006_Unk021ec888 *self, int state) {
     self->stateTime = 0;
 }
 
-static inline BOOL ov006_Dialog_IsDone(ov006_Dialog021e58e4 *d) {
+static inline BOOL ov006_Dialog_IsDone(Lo021cad50 *d) {
     return d->state == 5 ? TRUE : FALSE;
 }
 
@@ -50,26 +38,15 @@ static inline void ov006_MenuNode_Delete(ov006_MenuNode *node) {
     OV006_DELETE_OBJECT(node);
 }
 
-static inline Object *ov006_NewDialog(void) {
-    Object *obj = (Object *)Heap_Alloc(0xe8);
-    if (obj != NULL) {
-        obj->vtbl = (ObjectVtbl *)data_ov000_021cac60;
-        ((VObj *)obj)->vfunc_28();
-        obj->vtbl = (ObjectVtbl *)data_ov000_021cad50;
-        ((VObj *)obj)->vfunc_28();
-    }
-    return obj;
-}
-
 static inline void ov006_Menu_OpenDialog(ov006_Unk021ec888 *self) {
     ov006_ObjectHolder *h = self->unk1D8;
     ov006_ObjectHolder_Clear(h);
-    h->obj = ov006_NewDialog();
+    h->obj = ov006_NewLo021cad50();
     func_ov000_0215c1bc(h->obj, 0x11, MsgRes_GetString(data_02149ef8, 0x172));
-    ((ov006_Dialog021e58e4 *)h->obj)->unk68 = -0x666;
-    ((VObj *)h->obj)->vfunc_08();
-    ((ov006_Dialog021e58e4 *)h->obj)->flags |= 0x10000;
-    ((VObj *)h->obj)->vfunc_70();
+    h->obj->posZ = -0x666;
+    h->obj->vfunc_08();
+    h->obj->flags |= 0x10000;
+    h->obj->vfunc_70();
     ov006_Menu_Advance(self);
     data_02097dd0->vblankFunc = NULL;
     func_02045094(data_02097e40);
@@ -89,7 +66,7 @@ static inline void ov006_Menu_Close(ov006_Unk021ec888 *self) {
     BOOL done = TRUE;
     ov006_MenuNode *node;
     int i;
-    if (self->unk1D8->obj != NULL && !ov006_Dialog_IsDone((ov006_Dialog021e58e4 *)self->unk1D8->obj)) {
+    if (self->unk1D8->obj != NULL && !ov006_Dialog_IsDone(self->unk1D8->obj)) {
         done = FALSE;
     }
     if (!done) {

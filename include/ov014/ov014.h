@@ -496,6 +496,21 @@ public:
 };
 SIZE_ASSERT(Ov014Act_02209280, 0x1f8);
 
+// Watches two actors (vtable data_ov014_02217db0, 0x1c bytes, made by Ov014Act_0220f9d0's init and
+// updated by func_ov014_02213cfc): ids are cleared to 0xffff as the actors go, count is how many are left.
+class Ov014Watch : public VObj {
+public:
+    u16 ids[2];
+    u16 count;
+    u8 unk_0a;
+    u8 unk_0b;
+    s32 timer;
+    s32 step;
+    s32 mode;
+    u32 wait;
+};
+SIZE_ASSERT(Ov014Watch, 0x1c);
+
 // Actor class of Ov014Act_0220f9d0_Ctor (vtable data_ov014_02217e6c).
 class Ov014Act_0220f9d0 : public Ov003Actor {
 public:
@@ -509,7 +524,7 @@ public:
     u16 unk_14e;
     u16 unk_150;
     u8 unk_152[0x2];
-    void *unk_154;
+    Ov014Watch *unk_154;
     u32 unk_158;
     Ov014B4Save unk_15c; // Ov003Actor::unk_b4..unk_b8 saved while a 0x200 message is handled
     u8 unk_16c;

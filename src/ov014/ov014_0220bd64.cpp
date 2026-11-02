@@ -155,10 +155,10 @@ static inline void Ov014e_Aim(Ov003Actor *self, Ov003Actor *t) {
     Actor_TurnClamped(self, a, FX_Atan2(-self->pos.x, 0x8000 - self->pos.z), 0x1fff, self->unk_b0->unk_02);
 }
 
-static inline void Ov014e_Clr(u16 *q) {
-    q[3] = 0;
-    FLD(u8, q, 8) = 0;
-    FLD(u8, q, 9) = 0;
+static inline void Ov014e_Clr(ActorHp *q) {
+    q->dmg = 0;
+    q->kind = 0;
+    q->kind2 = 0;
 }
 
 static inline void Ov014e_Shake(u8 *g, u8 a, u8 b, u8 c) {
@@ -361,8 +361,8 @@ void func_ov014_0220c09c(Ov014Act_02209280 *self) {
             self->target_id = 0xffff;
             func_ov000_0218d46c(self, self->id, 0x14);
             if (self->hp != NULL) {
-                self->hp[2] = self->id;
-                Ov014e_Clr(self->hp);
+                self->hpObj->unk_04 = self->id;
+                Ov014e_Clr(self->hpObj);
             }
             func_ov000_021911c8(self->model, 0x159a);
             func_ov000_02191708(self->model);

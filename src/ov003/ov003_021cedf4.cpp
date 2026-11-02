@@ -61,7 +61,7 @@ u8 func_ov003_021cee68(void) {
 void func_ov003_021ceec4(void) {
 }
 
-void *func_ov003_021ceec8(void *self) {
+void *func_ov003_021ceec8(Ov003Track *self) {
     Heap_Free(self);
     return self;
 }

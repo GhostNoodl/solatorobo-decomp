@@ -37,7 +37,7 @@ extern const VecFx32 data_ov011_022072b4;
 
 void func_ov011_0220121c(void *o, s32 a);
 void *__cxa_vec_new(u32 count, u32 size, u32 hdr, void *ctor, void *dtor);
-void *func_ov011_021fc0a0(void *self);
+Ov011E40b *func_ov011_021fc0a0(Ov011E40b *self);
 BOOL func_ov011_02201f28(void *self, u16 id, const VecFx32 *off, s16 c, s16 d, s16 e);
 void func_ov011_02202464(void *self);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
@@ -128,8 +128,8 @@ void func_ov011_021fbe08(Ov011Mgr3 *self) {
 }
 
 #pragma force_active on
-void *func_ov011_021fc0a0(void *self) {
-    Ov003Vt_021f7d2c_Ctor((u8 *)self + 8);
+Ov011E40b *func_ov011_021fc0a0(Ov011E40b *self) {
+    Ov003Vt_021f7d2c_Ctor(&self->mover);
     return self;
 }
 #pragma force_active reset

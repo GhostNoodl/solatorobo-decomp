@@ -1,14 +1,9 @@
-#include "ov006/SlotManager.h"
+#include "ov006/Tasks.h"
 
 typedef struct ov006_Price021da098 {
     u16 unk0;
     u16 unk2;
 } ov006_Price021da098;
-
-typedef struct ov006_Task021da098 {
-    u8 unk0[0x38];
-    int unk38;
-} ov006_Task021da098;
 
 extern "C" {
 
@@ -37,7 +32,7 @@ static inline const ov006_Price021da098 *ov006_GetItemPrice(u8 item) {
     return p;
 }
 
-void func_ov006_021da098(ov006_Task021da098 *self) {
+void func_ov006_021da098(ov006_Task021ec040 *self) {
     u8 n = data_ov006_021ec884->lap;
     u8 i;
     if (n < 1) {

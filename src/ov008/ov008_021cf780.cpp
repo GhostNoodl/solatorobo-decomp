@@ -22,7 +22,7 @@ s32 func_ov008_021cf788(void) {
     return 3;
 }
 
-BOOL func_ov008_021cf790(void *self, Ov008Sel *sel) {
+BOOL func_ov008_021cf790(Ov008Menu *self, Ov008Sel *sel) {
     Ov008Mgr *m;
     if (sel == NULL) {
         func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
@@ -45,7 +45,7 @@ BOOL func_ov008_021cf790(void *self, Ov008Sel *sel) {
     return TRUE;
 }
 
-BOOL func_ov008_021cf844(void *self, Ov008Sel *sel) {
+BOOL func_ov008_021cf844(Ov008Menu *self, Ov008Sel *sel) {
     Ov008Mgr *m;
     u16 id;
     if (sel == NULL) {
@@ -58,7 +58,7 @@ BOOL func_ov008_021cf844(void *self, Ov008Sel *sel) {
     return TRUE;
 }
 
-BOOL func_ov008_021cf878(void *self, Ov008Sel *sel) {
+BOOL func_ov008_021cf878(Ov008Menu *self, Ov008Sel *sel) {
     u16 id;
     if (sel == NULL) {
         func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);

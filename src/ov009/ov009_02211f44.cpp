@@ -37,16 +37,9 @@ extern void HitMesh_SetRes(void *p, s32 v);
 extern void HitMesh_SetScale(void *p, s32 v);
 extern void HitMesh_SetMtx(void *mesh, const void *mtx);
 extern void HitMesh_Link(void *p);
-extern u8 *Group_FindNode(void *mgr, u16 id);
-extern void func_ov000_0218b700(u8 *p, s32 a, s32 b);
 struct Ov009Mtx43b {
     s32 m[9];
     VecFx32 t;
-};
-
-struct Ov009Bit8 {
-    u8 b0 : 1;
-    u8 b1 : 7;
 };
 
 void func_ov009_02211f9c(Ov009ActSpin *self) {
@@ -55,7 +48,7 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
     u32 *o;
     u32 v;
     void *saved;
-    u8 *p;
+    GroupNode *p;
     func_ov003_021d112c(self);
     switch (self->kind) {
     case 0x504f:
@@ -83,7 +76,7 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
     }
     data_02097dd0->cur = saved;
     c = func_0206fef8((void *)self->kind);
-    o = FLD(u32 *, self->unk_34, 0x84);
+    o = ((Ov009Names *)self->unk_34)->unk_84;
     v = o != NULL ? *o : 0;
     if (v != 0) {
         void *q = Heap_Alloc(0x98);
@@ -91,7 +84,7 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
             HitMesh_Init(q);
         }
         self->hitMesh = q;
-        o = FLD(u32 *, self->unk_34, 0x84);
+        o = ((Ov009Names *)self->unk_34)->unk_84;
         HitMesh_SetRes(self->hitMesh, o != NULL ? *o : 0);
         HitMesh_SetScale(self->hitMesh, FLD(s16, c, 0x10));
         {
@@ -138,7 +131,7 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
     }
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
-        ((Ov009Bit8 *)(p + 0xa2))->b0 = 0;
+        p->flags.unk_0 = 0;
         func_ov000_0218b700(p, 0x3000, 0);
     }
     self->unk_b6 = 0x1e;

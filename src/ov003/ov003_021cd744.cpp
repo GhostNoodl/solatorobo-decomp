@@ -132,8 +132,6 @@ void func_ov003_021cd744(Ov003Menu2 *self) {
 #include "nitro/fx.h"
 #include "ov000/VObj.h"
 
-#define OV003_VCALL(obj, off, ...) (((VObj *)(obj))->vfunc_##off(__VA_ARGS__))
-
 typedef struct Ov003CdPad {
     u8 unk0[0x12];
     u16 trig;
@@ -166,15 +164,13 @@ typedef struct Ov003CdScene {
     Ov003CdBits *unk84;
 } Ov003CdScene;
 
-typedef struct Ov003CdWin {
-    void *vtbl;
+struct Ov003CdWin : public VObj {
     int state;
     void *owner;
     u32 flags;
-} Ov003CdWin;
+};
 
-typedef struct Ov003CdTask {
-    void *vtbl;
+struct Ov003CdTask : public VObj {
     u8 unk4[0x38];
     Ov003CdScene *unk3C;
     Ov003CdWin *unk40;
@@ -190,7 +186,7 @@ typedef struct Ov003CdTask {
     s32 timer;
     VecFx32 pos;
     VecFx32 ofs;
-} Ov003CdTask;
+};
 
 extern "C" {
 
@@ -334,23 +330,23 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
         void *res = data_02149ef8;
         w = (Ov003CdWin *)Heap_Alloc(0xe8);
         if (w != NULL) {
-            w->vtbl = &data_ov000_021cac60;
-            OV003_VCALL(w, 28);
-            w->vtbl = &data_ov000_021cad50;
-            OV003_VCALL(w, 28);
+            *(void **)w = &data_ov000_021cac60;
+            w->vfunc_28();
+            *(void **)w = &data_ov000_021cad50;
+            w->vfunc_28();
         }
         self->unk40 = w;
         func_ov000_0215c1bc(self->unk40, 0x11, MsgRes_GetString(res, 0x5d));
         self->unk40->flags &= ~0x10000;
-        OV003_VCALL(self->unk40, 08);
-        OV003_VCALL(self->unk40, 70);
+        self->unk40->vfunc_08();
+        self->unk40->vfunc_70();
         self->state++;
     }
     case 0x29:
         if (--self->timer < 0) {
             self->timer = 0x28;
         }
-        OV003_VCALL(self->unk40, 1c);
+        self->unk40->vfunc_1c();
         if (!(self->unk40->state == 5 ? TRUE : FALSE)) {
             break;
         }
@@ -359,7 +355,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
             data_02097dd0->cur = data_02097dd0->heapHi;
             if (self->unk40 != NULL) {
                 if (self->unk40 != NULL) {
-                    OV003_VCALL(self->unk40, 04);
+                    self->unk40->vfunc_04();
                 }
                 self->unk40 = NULL;
             }
@@ -370,7 +366,7 @@ void func_ov003_021cd91c(Ov003CdTask *self) {
     case 0x32:
         self->unk3C->flags |= 2;
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
-        OV003_VCALL(self, 0c, 0);
+        self->vfunc_0c(0);
         self->state++;
     case 0x33:
         Ov003Cd_SetSprite(self->unk44, &self->pos, 0x99a, 0);

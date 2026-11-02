@@ -19,7 +19,7 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
         data_02097dd0->cur = data_02097dd0->heapHi;
         if (node != NULL) {
             if (node != NULL) {
-                node->vtbl->dtor((Object *)node);
+                node->vfunc_04();
             }
             node = NULL;
         }

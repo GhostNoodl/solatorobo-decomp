@@ -3,6 +3,7 @@
 #include "Main/Save/PlayTime.h"
 #include "Main/Sys/Pad.h"
 #include "ov006/Racer.h"
+#include "ov006/Window.h"
 
 typedef struct ov006_GObjBits {
     u32 b0 : 13;
@@ -74,11 +75,6 @@ typedef struct ov006_Map021d6ff0 {
     ov006_Mark021d6ff0 marks[4];
 } ov006_Map021d6ff0;
 
-typedef struct ov006_Win021d6ff0 {
-    ObjectVtbl *vtbl;
-    int state;
-} ov006_Win021d6ff0;
-
 typedef struct ov006_Info021d6ff0 {
     u8 unk0[8];
     u16 unk8;
@@ -86,10 +82,9 @@ typedef struct ov006_Info021d6ff0 {
     u8 laps;
 } ov006_Info021d6ff0;
 
-typedef struct ov006_Task021d6ff0 {
-    u8 unk0[0x10];
-    u16 state;
-    u16 sub;
+struct ov006_Task021d6ff0 : public ov006_Task {
+    u16 step;
+    u16 subStep;
     u16 timer;
     u8 unk16[2];
     int frame;
@@ -98,7 +93,7 @@ typedef struct ov006_Task021d6ff0 {
     u8 unk24[8];
     ov006_Rank021d6ff0 *ranks;
     ov006_Map021d6ff0 *map;
-    ov006_Win021d6ff0 *win;
+    ov006_ListWin *win; // func_ov006_021d86a0
     int unk38;
     int unk3C;
     int splits[10];
@@ -106,7 +101,7 @@ typedef struct ov006_Task021d6ff0 {
     u8 lap;
     u8 unk6D;
     u8 unk6E;
-} ov006_Task021d6ff0;
+};
 
 
 typedef struct ov006_E40021d6ff0 {
@@ -311,7 +306,7 @@ static inline BOOL ov006_Win_Busy(ov006_Task021d6ff0 *self) {
         busy = FALSE;
     } else {
         busy = TRUE;
-        VCALL(self->win, 1c);
+        self->win->vfunc_1c();
         if (self->win->state == 5 ? busy : FALSE) {
             busy = FALSE;
             ov006_DeleteWin(self);
@@ -383,10 +378,10 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
         me = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
     }
     info = (ov006_Info021d6ff0 *)data_ov006_021ec884->info;
-    switch (self->state) {
+    switch (self->step) {
     case 0:
         self->gauge->flag13 = ov006_Racer_B8(me);
-        switch (self->sub) {
+        switch (self->subStep) {
         case 0: {
             u8 i;
             ov006_Gauge_SetCount(self->gauge, me->unk_19f, info->laps);
@@ -396,7 +391,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 self->ranks[i].rank = func_ov006_021db060(data_ov006_021ec884, i)->active ? i + 1 : 0;
             }
             ov006_UpdateMap(self);
-            self->sub++;
+            self->subStep++;
             self->timer = 0;
             break;
         }
@@ -410,8 +405,8 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             }
             func_0203cb78(0xa000, 0, 0);
             func_0203cb78(0xa000, 0, 1);
-            self->state = 1;
-            self->sub = 0;
+            self->step = 1;
+            self->subStep = 0;
             self->timer = 0;
             break;
         }
@@ -419,7 +414,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
     case 1:
         self->gauge->flag13 = ov006_Racer_B8(me);
         ov006_UpdateMap(self);
-        switch (self->sub) {
+        switch (self->subStep) {
         case 0:
             self->timer++;
             if (self->timer >= 30) {
@@ -429,7 +424,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 func_ov006_021e37d0(0, &v);
                 func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
                 self->timer = 0;
-                self->sub++;
+                self->subStep++;
             }
             break;
         case 1: {
@@ -450,8 +445,8 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 }
                 func_020498ac(data_02097e4c, info->unk8);
                 func_02049a48(data_02097e4c, 0x2c, -1, -1, -1);
-                self->state = 2;
-                self->sub = 0;
+                self->step = 2;
+                self->subStep = 0;
                 self->timer = 0;
             }
             break;
@@ -468,8 +463,8 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             if (o != NULL) {
                 ActorGroup_BroadcastKind(o, 0xffff, 1);
             }
-            self->state = 8;
-            self->sub = 0;
+            self->step = 8;
+            self->subStep = 0;
             self->timer = 0;
             break;
         }
@@ -486,8 +481,8 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 data_ov006_021ec860->unk20 = 5;
             }
             if (data_ov006_021ec860->unk20 == 5) {
-                self->state = 7;
-                self->sub = 0;
+                self->step = 7;
+                self->subStep = 0;
                 self->timer = 0;
                 break;
             }
@@ -510,8 +505,8 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 func_020498ac(data_02097e4c, 0x24);
                 ov006_UpdateRanks(self);
                 ov006_UpdateMap(self);
-                self->state = 4;
-                self->sub = 0;
+                self->step = 4;
+                self->subStep = 0;
                 self->timer = 0;
             }
         }
@@ -526,8 +521,8 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             ov006_Gauge_Finish(self->gauge, TRUE);
             SndMgr_StopSeqNo(data_02097e4c, info->unk8, 0);
             func_020498ac(data_02097e4c, 0x26);
-            self->state = 3;
-            self->sub = 0;
+            self->step = 3;
+            self->subStep = 0;
             self->timer = 0;
         }
         {
@@ -563,13 +558,13 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             ov006_UpdateRanks(self);
         }
         ov006_UpdateMap(self);
-        switch (self->sub) {
+        switch (self->subStep) {
         case 0: {
             if (!ov006_Gauge_Done(self->gauge)) {
                 break;
             }
             self->timer = 0;
-            self->sub++;
+            self->subStep++;
             res = (ov006_Result021d6ff0 *)Heap_Alloc(0x24);
             if (res != NULL) {
                 res = Ov006Vt_021ec23c_Ctor(res);
@@ -662,21 +657,21 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             }
             if (data_ov006_021ec860->unk1C != 0) {
                 self->timer = 0;
-                self->sub++;
+                self->subStep++;
                 break;
             }
             if (func_ov006_021cd2a8(data_ov006_021ec860)) {
                 self->timer++;
                 if (self->timer > 150 || (data_02097dc8->trig & 3)) {
                     self->result->bits.b1 = 1;
-                    self->state = 7;
-                    self->sub = 0;
+                    self->step = 7;
+                    self->subStep = 0;
                     self->timer = 0;
                 }
             } else if (data_02097dc8->trig & 3) {
                 self->result->bits.b1 = 1;
-                self->state = 7;
-                self->sub = 0;
+                self->step = 7;
+                self->subStep = 0;
                 self->timer = 0;
             }
             break;
@@ -687,12 +682,12 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             if (func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->aid == 0) {
                 if (func_ov006_021e616c(9, data_02097e40->unk32 & ~1) && (data_02097dc8->trig & 3)) {
                     self->unk6D = 9;
-                    self->sub++;
+                    self->subStep++;
                     self->timer = 0;
                 }
             } else {
                 self->unk6D = 9;
-                self->sub++;
+                self->subStep++;
                 self->timer = 0;
             }
             break;
@@ -704,8 +699,8 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 break;
             }
             self->result->bits.b1 = 1;
-            self->state = 7;
-            self->sub = 0;
+            self->step = 7;
+            self->subStep = 0;
             self->timer = 0;
             break;
         }
@@ -716,13 +711,13 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
         if (self->unk6E != 0) {
             break;
         }
-        switch (self->sub) {
+        switch (self->subStep) {
         case 0:
             if (self->result != NULL) {
                 self->result->bits.b1 = 1;
             }
             self->timer = 0;
-            self->sub++;
+            self->subStep++;
             break;
         case 1:
             if (self->result != NULL && self->result->state != 6) {
@@ -731,7 +726,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             func_0203cc58(0xf000, 0, 0);
             func_0203cc58(0xf000, 0, 1);
             self->timer = 0;
-            self->sub++;
+            self->subStep++;
             break;
         case 2:
             if (self->timer++ > 15) {

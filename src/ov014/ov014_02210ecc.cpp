@@ -1,4 +1,5 @@
 #include "ov014/ov014.h"
+#include "nnsys/g3d.h"
 
 struct Ov014SpawnDescB {
     u16 kind;
@@ -396,7 +397,7 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
             func_ov000_02191618(self->model);
             q = func_ov000_02190a30(self->model, 0);
             if (q->cur != NULL) {
-                q->cur->frame = (FLD(u16, q->cur->res, 4) << 12) - 1;
+                q->cur->frame = (((NNSG3dResAnmCommon *)q->cur->res)->numFrame << 12) - 1;
             }
             t = 0;
             q = func_ov000_02190a30(self->model, 0);

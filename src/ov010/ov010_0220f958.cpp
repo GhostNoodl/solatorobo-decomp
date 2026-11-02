@@ -240,7 +240,7 @@ extern "C" {
 extern u8 data_ov010_0220ffc4[];
 extern Ov010Arena data_ov010_0220f160;
 extern Ov010Arena data_ov010_0220f174;
-extern const VecFx32 data_ov010_0220f150;
+extern const Ov010Circle data_ov010_0220f150;
 extern void *Heap_Alloc(u32 size);
 extern void *Ov010Vt_02210280_Ctor(void *p);
 extern void *Ov010Vt_022102c0_Ctor(void *p);
@@ -477,7 +477,7 @@ struct Ov010Mtx33 {
 
 extern void *data_02097e4c;
 extern Robo021ca458 *func_ov000_0219bf90(void);
-extern void func_ov010_02209578(VObj *t, s32 a, const s32 *rect, const VecFx32 *circ, u16 d, u16 e);
+extern void func_ov010_02209578(VObj *t, s32 a, const s32 *rect, const Ov010Circle *circ, u16 d, u16 e);
 extern void func_ov010_02204030(VecFx32 *out, void *c, const VecFx32 *target, s32 n, u16 ang);
 extern u16 Ov003Vec_Yaw(VecFx32 *v);
 extern u32 Rand_Get(void);
@@ -651,7 +651,7 @@ extern void func_ov000_021915a0(void *a);
 extern BOOL func_ov000_02191120(void *p);
 extern Robo021ca458 *func_ov000_0219bf90(void);
 extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
-extern void func_ov010_0220a040(VObj *self, u16 a, s32 b, const s32 *rect, const VecFx32 *circ, u16 e, u16 f);
+extern void func_ov010_0220a040(VObj *self, u16 a, s32 b, const s32 *rect, const Ov010Circle *circ, u16 e, u16 f);
 extern void Ov003StateMachine_Leave(void *p);
 
 void func_ov010_0220522c(Ov010Obj02210154 *self) {
@@ -866,7 +866,7 @@ void func_ov010_02205444(Ov010Obj02210154 *self) {
         break;
     case 0x28: {
         FieldState *g;
-        VObj *e;
+        EffectObj *e;
         func_ov000_02190cb0(self->model, data_ov010_0220f030, 0x266, 0);
         func_ov000_021915a0(self->model);
         Ov010_ClearSpeed(self);
@@ -879,8 +879,8 @@ void func_ov010_02205444(Ov010Obj02210154 *self) {
         VecFx32 o = {0, 0, 0};
         o.y = self->height / 2;
         e = func_ov003_021da788(0x4b0, self, &o);
-        e->vfunc_34(0, self->rot_y, 0);
-        e->vfunc_0c(0x1800);
+        e->SetRotXYZ(0, self->rot_y, 0);
+        e->SetScaleAll(0x1800);
         if (self->unk_f1 != 0) {
             self->unk_f1 = 0;
             func_02049f44(data_02097e4c, self->sfx[7], &self->pos, 0);
@@ -943,6 +943,13 @@ void func_ov010_02205444(Ov010Obj02210154 *self) {
 
 // ---- merged from ov010_02205c30.cpp
 namespace m_02205c30 {
+// The child spawn entry at 0x3a of the actor's func_02070558 record: none when unk_00 is 0xffff;
+// arg goes to the spawned actor's Actor::unk_18.
+struct Ov010ChildSpawn {
+    u16 unk_00;
+    s8 arg;
+};
+
 extern "C" {
 
 extern void *data_02097e4c;
@@ -983,13 +990,13 @@ void func_ov010_02205c30(Ov010Obj02210154 *self) {
         return;
     case 2: {
         u8 *res;
-        u8 *ent;
+        Ov010ChildSpawn *ent;
         if (self->model->anim_state != 3) {
             return;
         }
         res = func_02070558(self->kind);
-        ent = res != NULL ? res + 0x3a : NULL;
-        if (ent == NULL || FLD(u16, ent, 0) == 0xffff) {
+        ent = res != NULL ? (Ov010ChildSpawn *)(res + 0x3a) : NULL;
+        if (ent == NULL || ent->unk_00 == 0xffff) {
             self->fsm->st = 4;
         } else {
             VecFx32 v;
@@ -1002,7 +1009,7 @@ void func_ov010_02205c30(Ov010Obj02210154 *self) {
             VEC_Add(&v, &self->pos, &v);
             o = func_ov003_021d69f0(self, 0x4818, &v, &self->rot_x, tgt);
             if (o != NULL) {
-                o->unk_18 = FLD(s8, ent, 2);
+                o->unk_18 = ent->arg;
                 func_ov010_0220de4c(o, self->step.b);
             }
             self->fsm->st = 3;

@@ -1,13 +1,13 @@
 #include "ov006/ov006.h"
-#include "ov006/Model.h"
+#include "ov006/Window.h"
+#include "ov006/Emblem.h"
 #include "ov006/MsgBox.h"
 #include "Main/Res/ResArc.h"
 #include "Main/Res/ArcName.h"
 
-typedef struct ov006_Task0 {
-    ov006_Task base;
+struct ov006_Task0 : public ov006_Task {
     int unk10;
-} ov006_Task0;
+};
 
 typedef struct ov006_Unk02097e48 {
     u16 active : 1;
@@ -18,34 +18,8 @@ typedef struct ov006_Unk02097e48 {
     u16 unk8;
 } ov006_Unk02097e48;
 
-typedef struct ov006_Unk021ccd40 {
-    u8 unk0[0x14];
-    int unk14;
-} ov006_Unk021ccd40;
 
-typedef struct ov006_Flags {
-    void *vtbl;
-    u32 bit0 : 1;
-    u32 bit1 : 1;
-    u32 bit2 : 1;
-    u32 bit3 : 1;
-    u32 bit4 : 1;
-    u32 bit5 : 1;
-    u32 bit6 : 1;
-    u32 bit7 : 1;
-    u32 unk4_8 : 24;
-} ov006_Flags;
-
-typedef struct ov006_Unk021d58cc {
-    void *vtbl;
-    u8 unk4[0x38];
-    Model *unk3C;
-    Model *unk40;
-    u8 unk44;
-} ov006_Unk021d58cc;
-
-typedef struct ov006_Task1 {
-    ov006_Task base;
+struct ov006_Task1 : public ov006_Task {
     u16 unk10;
     u16 unk12;
     u16 unk14;
@@ -65,7 +39,7 @@ typedef struct ov006_Task1 {
     u8 unk6D;
     u8 unk6E;
     int unk70[6];
-} ov006_Task1;
+};
 
 extern "C" {
 
@@ -74,14 +48,13 @@ extern void *data_ov006_021ebe40;
 extern void *data_ov006_021ebc80;
 extern void *data_ov006_021ebc70;
 extern void *data_ov006_021ebfc0;
-extern void *data_ov000_021cc060;
 extern char data_ov006_021ec864[];
 extern ov006_Unk02097e48 *data_02097e48;
-extern ov006_Unk021ccd40 *data_ov000_021ccd40;
+extern Task *data_ov000_021ccd40;
 extern int data_ov000_021ccd38;
 
-void func_ov006_021ccda0(void *self);
-void func_ov006_021ccddc(void *self);
+void func_ov006_021ccda0(ov006_Task *self);
+void func_ov006_021ccddc(ov006_Task *self);
 void func_ov006_021cd580(int a, int b, int c);
 void func_ov000_02180754(void);
 void func_ov000_02180660(int a, int b);
@@ -91,13 +64,13 @@ void func_0204aab0(ov006_Unk02097e48 *a);
 
 ov006_Task0 *func_ov006_021d54b0(ov006_Task0 *self) {
     func_ov006_021ccda0(self);
-    self->base.vtbl = (ObjectVtbl *)&data_ov006_021ebc98;
+    *(void **)self = &data_ov006_021ebc98;
     self->unk10 = 1;
     return self;
 }
 
 static inline void ov006_Task0_Dtor(ov006_Task0 *self) {
-    self->base.vtbl = (ObjectVtbl *)&data_ov006_021ebc98;
+    *(void **)self = &data_ov006_021ebc98;
     func_ov000_02180754();
     func_02036838(data_02097cdc, data_0208cc94, 7, 0);
     func_02036838(data_02097cdc, data_ov006_021ec864, 7, 0);
@@ -143,13 +116,13 @@ BOOL func_ov006_021d5678(void) {
 }
 
 BOOL func_ov006_021d56bc(ov006_Task0 *self) {
-    switch (self->base.subState) {
+    switch (self->subState) {
     case 0:
         func_ov000_02180660(0x23, 0);
-        self->base.subState++;
+        self->subState++;
     case 1:
         if (data_ov000_021ccd40 != NULL) {
-            VCALL(data_ov000_021ccd40, 4c);
+            data_ov000_021ccd40->vfunc_4c();
             func_ov006_021cd580(2, 0, 0);
             data_ov006_021ec888->unk15E = 2;
             return TRUE;
@@ -175,67 +148,67 @@ BOOL func_ov006_021d5764(void) {
 void func_ov006_021d5780(void) {
 }
 
-static inline void ov006_SetUnk021ccd40(ov006_Unk021ccd40 *p) {
+static inline void ov006_SetUnk021ccd40(Task *p) {
     if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = data_ov000_021ccd40->unk14;
+        data_ov000_021ccd38 = data_ov000_021ccd40->id;
     } else {
         data_ov000_021ccd38 = 0;
     }
     data_ov000_021ccd40 = p;
 }
 
-void func_ov006_021d5784(ov006_Unk021ccd40 *p) {
+void func_ov006_021d5784(Task *p) {
     ov006_SetUnk021ccd40(p);
 }
 
-void func_ov006_021d57b8(void *self) {
-    if (VCALL(self, 54)) {
+void func_ov006_021d57b8(Task *self) {
+    if (self->vfunc_54()) {
         ov006_SetUnk021ccd40(NULL);
     }
 }
 
-static inline BOOL ov006_Flags_Test(ov006_Flags *self, u32 mask) {
-    return (((u32 *)self)[1] & mask) != 0;
+static inline BOOL Task_Test(Task *self, u32 mask) {
+    return (self->unk_04 & mask) != 0;
 }
 
-BOOL Ov006Task_TestFlags(ov006_Flags *self, u32 mask) {
-    return ov006_Flags_Test(self, mask) ? TRUE : FALSE;
+BOOL Ov006Task_TestFlags(Task *self, u32 mask) {
+    return Task_Test(self, mask) ? TRUE : FALSE;
 }
 
-void Ov006Task_ClearFlag7(ov006_Flags *self) {
-    self->bit7 = 0;
+void Ov006Task_ClearFlag7(Task *self) {
+    self->unk_04_7 = 0;
 }
 
-static inline BOOL ov006_Flags_Bit6(ov006_Flags *self) {
-    return self->bit6 != 0;
+static inline BOOL Task_Bit6(Task *self) {
+    return self->unk_04_6 != 0;
 }
 
-BOOL Ov006Task_GetFlag6(ov006_Flags *self) {
-    return ov006_Flags_Bit6(self) ? TRUE : FALSE;
+BOOL Ov006Task_GetFlag6(Task *self) {
+    return Task_Bit6(self) ? TRUE : FALSE;
 }
 
-void Ov006Task_SetFlag6(ov006_Flags *self) {
-    self->bit6 = 1;
+void Ov006Task_SetFlag6(Task *self) {
+    self->unk_04_6 = 1;
 }
 
-static inline BOOL ov006_Flags_Bit5(ov006_Flags *self) {
-    return self->bit5 != 0;
+static inline BOOL Task_Bit5(Task *self) {
+    return self->unk_04_5 != 0;
 }
 
-BOOL Ov006Task_GetFlag5(ov006_Flags *self) {
-    return ov006_Flags_Bit5(self) ? TRUE : FALSE;
+BOOL Ov006Task_GetFlag5(Task *self) {
+    return Task_Bit5(self) ? TRUE : FALSE;
 }
 
-void Ov006Task_SetFlag5(ov006_Flags *self) {
-    self->bit5 = 1;
+void Ov006Task_SetFlag5(Task *self) {
+    self->unk_04_5 = 1;
 }
 
-void Ov006Task_ClearFlag4(ov006_Flags *self) {
-    self->bit4 = 0;
+void Ov006Task_ClearFlag4(Task *self) {
+    self->unk_04_4 = 0;
 }
 
-void Ov006Task_SetFlag4(ov006_Flags *self) {
-    self->bit4 = 1;
+void Ov006Task_SetFlag4(Task *self) {
+    self->unk_04_4 = 1;
 }
 
 BOOL func_ov006_021d58c0(void) {
@@ -245,23 +218,22 @@ BOOL func_ov006_021d58c0(void) {
 void func_ov006_021d58c8(void) {
 }
 
-static inline void ov006_Unk021d58cc_Dtor(ov006_Unk021d58cc *self) {
-    self->vtbl = &data_ov006_021ebe40;
+static inline void ov006_Emblem_Dtor(ov006_Emblem *self) {
+    *(void **)self = &data_ov006_021ebe40;
     OV006_DELETE_MODEL(self->unk3C);
     OV006_DELETE_MODEL(self->unk40);
     self->unk44 = 0;
-    self->vtbl = &data_ov000_021cc060;
-    VCALL(self, 5c);
+    OV006_TASKBASE_DTOR(self);
 }
 
-ov006_Unk021d58cc *Ov006TaskVt_021ebe40_DtorDelete(ov006_Unk021d58cc *self) {
-    ov006_Unk021d58cc_Dtor(self);
+ov006_Emblem *Ov006TaskVt_021ebe40_DtorDelete(ov006_Emblem *self) {
+    ov006_Emblem_Dtor(self);
     Heap_Free(self);
     return self;
 }
 
-ov006_Unk021d58cc *Ov006TaskVt_021ebe40_Dtor(ov006_Unk021d58cc *self) {
-    ov006_Unk021d58cc_Dtor(self);
+ov006_Emblem *Ov006TaskVt_021ebe40_Dtor(ov006_Emblem *self) {
+    ov006_Emblem_Dtor(self);
     return self;
 }
 
@@ -293,7 +265,7 @@ ov006_MsgBox *func_ov006_021d5ae4(ov006_MsgBox *self) {
 ov006_Task1 *func_ov006_021d5b04(ov006_Task1 *self) {
     int i;
     func_ov006_021ccda0(self);
-    self->base.vtbl = (ObjectVtbl *)&data_ov006_021ebfc0;
+    *(void **)self = &data_ov006_021ebfc0;
     self->unk10 = 0;
     self->unk12 = 0;
     self->unk14 = 0;

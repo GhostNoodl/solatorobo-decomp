@@ -17,8 +17,13 @@ static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
 }
 
-static inline VecFx32 *Ov009_MaxScale(Ov003Actor *a) {
-    return &FLD(VecFx32, a, 0x100);
+static inline VecFx32 *Ov009_MaxScale(Ov009ActVt_02216bc8 *a) {
+    return &a->unk_100;
+}
+
+// Read through a const view: MWCC does not merge it with the compare's read just before.
+static inline s32 Ov009_MaxScaleX(const Ov009ActVt_02216bc8 *a) {
+    return a->unk_100.x;
 }
 
 void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
@@ -168,8 +173,8 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
             break;
         }
         h = self->model->scale.x + 0x266;
-        if (h >= FLD(s32, self, 0x100)) {
-            h = FLD(u32, self, 0x100);
+        if (h >= self->unk_100.x) {
+            h = Ov009_MaxScaleX(self);
             o = func_02065f88(0x69, &self->pos);
             o->SetScaleAll(0xccd);
             func_02065f88(0x38a, &self->pos);

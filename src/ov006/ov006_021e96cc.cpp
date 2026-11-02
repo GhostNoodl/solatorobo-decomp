@@ -156,19 +156,19 @@ void func_ov006_021e96cc(Ov006Racer *self) {
                     s32 nz = col->unk_88;
                     p = col->unk_74;
                     if ((col->unk_50 & 0xf0f0f0) == 0x90b0c0) {
-                        void *e = Effect3D_Create(data_ov006_021ec4ad, data_ov006_021ec4e0, data_ov006_021ec4e0, &self->pos);
+                        Effect3D *e = Effect3D_Create(data_ov006_021ec4ad, data_ov006_021ec4e0, data_ov006_021ec4e0, &self->pos);
                         if (e != NULL) {
-                            ((u8 *)e)[0x28] = 0;
-                            VCALL(e, 34, b.x, b.y, 0);
-                            VCALL(e, 0c, 0x3ccd);
+                            e->unk_28 = 0;
+                            e->SetRotXYZ(b.x, b.y, 0);
+                            e->SetScaleAll(0x3ccd);
                         }
                         if (self->idx == data_ov006_021ec884->unk5) {
                             func_02049f44(data_02097e4c, 0x35, &p, 0);
                         }
                     } else {
-                        void *e = func_02065f88(0x66, &p);
+                        EffectObj *e = func_02065f88(0x66, &p);
                         if (e != NULL) {
-                            VCALL(e, 34, FX_AcosIdx(ny), FX_Atan2(nx, nz), 0);
+                            e->SetRotXYZ(FX_AcosIdx(ny), FX_Atan2(nx, nz), 0);
                         }
                         if (self->idx == data_ov006_021ec884->unk5) {
                             func_02049f44(data_02097e4c, 0x52, &p, 0);

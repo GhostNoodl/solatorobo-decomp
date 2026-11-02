@@ -19,7 +19,7 @@ static inline u16 ov006_SlotId(ov006_SlotManager *m) {
     return m->unk6 & 0xfff;
 }
 
-void func_ov006_021cd5a8(int type, void *obj, int arg) {
+void func_ov006_021cd5a8(int type, UiList *obj, int arg) {
     switch (type) {
     case 0:
         break;
@@ -61,7 +61,7 @@ void func_ov006_021cd5a8(int type, void *obj, int arg) {
         for (i = 0; i < n; i++) {
             id = i | 0x7000;
             if (func_02059544((ov006_DataRes *)data_02fe152c, base + 0x1d0, tbl, 1, i)) {
-                VCALL(obj, 74, func_0206ffa0(id), id, 0xffff, 0xffff);
+                obj->vfunc_74(func_0206ffa0(id), id, 0xffff, 0xffff);
             }
         }
         break;
@@ -74,11 +74,11 @@ void func_ov006_021cd5a8(int type, void *obj, int arg) {
         }
         break;
     case 5:
-        VCALL(obj, 74, func_0206ec48(0xb000), 0xb000, 0xffff, 0xffff);
-        VCALL(obj, 74, func_0206ec48(0xb001), 0xb001, 0xffff, 0xffff);
-        VCALL(obj, 74, func_0206ec48(0xb002), 0xb002, 0xffff, 0xffff);
-        VCALL(obj, 74, func_0206ec48(0xb003), 0xb003, 0xffff, 0xffff);
-        VCALL(obj, 74, func_0206ec48(0xb004), 0xb004, 0xffff, 0xffff);
+        obj->vfunc_74(func_0206ec48(0xb000), 0xb000, 0xffff, 0xffff);
+        obj->vfunc_74(func_0206ec48(0xb001), 0xb001, 0xffff, 0xffff);
+        obj->vfunc_74(func_0206ec48(0xb002), 0xb002, 0xffff, 0xffff);
+        obj->vfunc_74(func_0206ec48(0xb003), 0xb003, 0xffff, 0xffff);
+        obj->vfunc_74(func_0206ec48(0xb004), 0xb004, 0xffff, 0xffff);
         break;
     case 6:
         if (obj != NULL) {

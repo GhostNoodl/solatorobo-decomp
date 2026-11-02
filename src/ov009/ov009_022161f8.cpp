@@ -311,16 +311,8 @@ extern "C" {
 extern void *data_02097e4c;
 extern u8 data_ov009_02215dc0[];
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_01ffc9fc(VecFx32 *out, const void *a, u16 ang);
 extern void func_0203f2b8(void *p);
-
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 4;
-    u8 b5 : 1;
-    u8 b6 : 2;
-};
 
 void func_ov009_021ffff4(Ov009ActVt_022171d4 *self) {
     if (self->fsm->st == 0) {
@@ -330,13 +322,13 @@ void func_ov009_021ffff4(Ov009ActVt_022171d4 *self) {
 }
 
 void Ov009ActVt_02217128_Init(Ov009ActVt_02217128 *self) {
-    u8 *p;
+    GroupNode *p;
     func_ov003_021d0fc0(self);
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
-        Ov009Byte *b = (Ov009Byte *)(p + 0xa2);
-        b->b0 = 0;
-        b->b5 = 1;
+        GroupNodeFlags *b = &p->flags;
+        b->unk_0 = 0;
+        b->unk_5 = 1;
     }
 }
 
@@ -615,20 +607,12 @@ extern void *data_ov009_02216d20;
 extern char data_ov009_02216b89[];
 extern char data_ov009_02216b90[];
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern Ov003Actor *func_ov000_02192b24(void *desc);
 extern s32 func_ov000_021909a8(Model0218fe1c *m, const char *a, const char *b);
 extern void NNS_G3dRenderObjSetInitFunc(void *p, void *cb);
 extern void func_ov009_021ff690(Ov003Actor *self);
-
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 4;
-    u8 b5 : 1;
-    u8 b6 : 2;
-};
 
 struct Ov009SpawnDesc {
     u16 kind;
@@ -675,7 +659,7 @@ void func_ov009_022009c8(Ov009ActVt_02217128 *self) {
 Ov009Act_02200b48 *Ov009Act_02200b48_Ctor(Ov009Act_02200b48 *self) {
     func_ov003_021d0c1c(self);
     *(void **)self = &data_ov009_02216d20;
-    MIi_CpuClear32(0, &FLD(u8, self, 0xf8), 0x34);
+    MIi_CpuClear32(0, &self->joint, sizeof(self->joint));
     return self;
 }
 #pragma force_active reset
@@ -684,7 +668,7 @@ void Ov009Act_02200b48_Init(Ov009Act_02200b48 *self) {
     Ov009SpawnDesc desc;
     Ov003Actor *o;
     s32 i;
-    u8 *p;
+    GroupNode *p;
     func_ov003_021d0fc0(self);
     self->unk_f4 = 0xffff;
     desc.kind = 0x408f;
@@ -707,22 +691,22 @@ void Ov009Act_02200b48_Init(Ov009Act_02200b48 *self) {
     }
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
-        Ov009Byte *b = (Ov009Byte *)(p + 0xa2);
-        b->b0 = 0;
-        b->b5 = 1;
+        GroupNodeFlags *b = &p->flags;
+        b->unk_0 = 0;
+        b->unk_5 = 1;
     }
 }
 
 void Ov009Act_02200b48_Start(Ov009Act_02200b48 *self) {
     Model0218fe1c *m;
     func_ov003_021d112c(self);
-    FLD(s32, self, 0xf8) = func_ov000_021909a8(self->model, data_ov009_02216b89, data_ov009_02216b90);
-    MTX_Identity43_((MtxFx43 *)(&self->unk_fc));
+    self->joint.joint = func_ov000_021909a8(self->model, data_ov009_02216b89, data_ov009_02216b90);
+    MTX_Identity43_(&self->joint.mtx);
     m = self->model;
     NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov009_021ff690);
     m->clearInit = 0;
     self->model->flushVP = 1;
-    self->model->renderUser = &FLD(u8, self, 0xf8);
+    self->model->renderUser = &self->joint;
     self->unk_f0 = 0;
     self->unk_f6 = 0x1000;
 }
@@ -792,9 +776,9 @@ void func_ov009_02200d00(Ov009Act_02200b48 *self) {
                 func_ov000_02198360(self->fsm, 0x13, zero);
             } else {
                 if (((Ov009EaBits *)&self->unk_ea)->b13) {
-                    MI_Copy48B(&self->unk_fc, mtx);
+                    MI_Copy48B(&self->joint.mtx, mtx);
                     Actor_SendMsg(a, self->id, 8, TRUE, 0x30, mtx);
-                    msg.pos = self->unk_120;
+                    msg.pos = self->joint.trans;
                 } else {
                     msg.pos = self->pos;
                 }
@@ -1058,7 +1042,7 @@ void Ov009ActVt_0221707c_Start(Ov009ActVt_0221707c *self) {
     if (p != NULL) {
         *p = 0;
     }
-    FLD(u32 *, self, 0x104) = p;
+    self->unk_104 = p;
     self->unk_f0 = 0;
     switch (self->kind) {
     case 0x503f:
@@ -1579,7 +1563,7 @@ void func_ov009_022026c8(Ov009Names *self, void *res) {
 Ov009Act_02202788 *Ov009Act_02202788_Ctor(Ov009Act_02202788 *self) {
     func_ov003_021d0c1c(self);
     *(void **)self = &data_ov009_02216e78;
-    MIi_CpuClear32(0, &FLD(u8, self, 0xf8), 0x34);
+    MIi_CpuClear32(0, &self->joint, sizeof(self->joint));
     return self;
 }
 #pragma force_active reset
@@ -1619,17 +1603,9 @@ extern "C" {
 extern void *data_02097e4c;
 extern char data_ov009_02216b98[];
 extern Ov003Actor *func_ov000_02192b24(void *desc);
-extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 void func_ov009_022026c8(Ov009Names *self, void *res);
-
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 4;
-    u8 b5 : 1;
-    u8 b6 : 2;
-};
 
 struct Ov009SpawnDesc {
     u16 kind;
@@ -1649,7 +1625,7 @@ struct Ov009SpawnDesc {
 void Ov009Act_02202788_Init(Ov009Act_02202788 *self) {
     Ov009Names *n;
     Ov003Actor *o;
-    u8 *p;
+    GroupNode *p;
     u16 kind;
     char *a;
     char *b;
@@ -1662,8 +1638,8 @@ void Ov009Act_02202788_Init(Ov009Act_02202788 *self) {
     a = func_0207011c((void *)kind);
     b = func_020701d4((void *)kind);
     n = ((Ov009Names *)self->unk_34);
-    STD_CopyString(&FLD(char, n, 0x88), a);
-    STD_CopyString(&FLD(char, n, 0xa8), b);
+    STD_CopyString(n->unk_88, a);
+    STD_CopyString(n->unk_a8, b);
     n->unk_03_3 = 1;
     ((Ov009Names *)self->unk_34)->unk_00 = 0;
     k = 0x4083;
@@ -1690,9 +1666,9 @@ void Ov009Act_02202788_Init(Ov009Act_02202788 *self) {
     }
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
-        Ov009Byte *bb = (Ov009Byte *)(p + 0xa2);
-        bb->b0 = 0;
-        bb->b5 = 1;
+        GroupNodeFlags *bb = &p->flags;
+        bb->unk_0 = 0;
+        bb->unk_5 = 1;
     }
     if (self->kind == 0x5055) {
         func_020359d0(data_ov009_02216b98, 7, 0);
@@ -1765,13 +1741,13 @@ void Ov009Act_02202788_Start(Ov009Act_02202788 *self) {
         s48->offset.y = 0x1800;
         s48->offset.z = 0;
     }
-    FLD(s32, self, 0xf8) = func_ov000_021909a8(self->model, func_020701d4((void *)self->kind), data_ov009_02216ba7);
-    MTX_Identity43_((MtxFx43 *)(&self->unk_fc));
+    self->joint.joint = func_ov000_021909a8(self->model, func_020701d4((void *)self->kind), data_ov009_02216ba7);
+    MTX_Identity43_(&self->joint.mtx);
     m = self->model;
     NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov009_021ff690);
     m->clearInit = 0;
     self->model->flushVP = 1;
-    self->model->renderUser = &FLD(u8, self, 0xf8);
+    self->model->renderUser = &self->joint;
     {
         ActorSub44 *s44 = self->unk_44;
         s44->unk_22_0 = 0;
@@ -1779,7 +1755,7 @@ void Ov009Act_02202788_Start(Ov009Act_02202788 *self) {
     }
     self->unk_ea_6 = 1;
     c = func_0206fef8((void *)self->kind);
-    o = FLD(u32 *, self->unk_34, 0x84);
+    o = ((Ov009Names *)self->unk_34)->unk_84;
     v = o != NULL ? *o : 0;
     if (v != 0) {
         void *p = Heap_Alloc(0x98);
@@ -1787,7 +1763,7 @@ void Ov009Act_02202788_Start(Ov009Act_02202788 *self) {
             HitMesh_Init(p);
         }
         self->hitMesh = p;
-        o = FLD(u32 *, self->unk_34, 0x84);
+        o = ((Ov009Names *)self->unk_34)->unk_84;
         HitMesh_SetRes(self->hitMesh, o != NULL ? *o : 0);
         HitMesh_SetScale(self->hitMesh, FLD(s16, c, 0x10));
         {
@@ -1897,7 +1873,7 @@ void func_ov009_02202e18(Ov009Act_02202788 *self) {
         return;
     }
     if (self->hitMesh != NULL) {
-        HitMesh_SetMtx(self->hitMesh, &self->unk_fc);
+        HitMesh_SetMtx(self->hitMesh, &self->joint.mtx);
     }
     if (Ov009_Mode(a) != 1) {
         return;
@@ -1905,13 +1881,13 @@ void func_ov009_02202e18(Ov009Act_02202788 *self) {
     if (self->unk_1e == 0) {
         return;
     }
-    msg.pos = self->unk_120;
+    msg.pos = self->joint.trans;
     msg.rot[0] = self->rot_x;
     msg.rot[1] = self->rot_y;
     msg.rot[2] = self->rot_z;
     msg.unk_14 = 0;
     Actor_SendMsg(a, self->id, 7, TRUE, 0x18, &msg);
-    MI_Copy48B(&self->unk_fc, mtx);
+    MI_Copy48B(&self->joint.mtx, mtx);
     Actor_SendMsg(a, self->id, 8, TRUE, 0x30, mtx);
 }
 
@@ -2274,16 +2250,8 @@ namespace m_0220397c {
 extern "C" {
 
 extern void *data_02097e4c;
-extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(FieldState *g, s32 a);
-
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 4;
-    u8 b5 : 1;
-    u8 b6 : 2;
-};
 
 void func_ov009_0220397c(Ov009Names *self, void *res) {
     char *a = func_0207011c(res);
@@ -2309,16 +2277,16 @@ void func_ov009_0220397c(Ov009Names *self, void *res) {
 
 
 void Ov009ActVt_02216c74_Init(Ov009ActVt_02216c74 *self) {
-    u8 *p;
+    GroupNode *p;
     if (self->kind == 0x5053) {
         self->unk_d8 = (void *)func_ov009_0220397c;
     }
     func_ov003_021d0fc0(self);
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
-        Ov009Byte *bb = (Ov009Byte *)(p + 0xa2);
-        bb->b0 = 0;
-        bb->b5 = 1;
+        GroupNodeFlags *bb = &p->flags;
+        bb->unk_0 = 0;
+        bb->unk_5 = 1;
     }
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     switch (self->kind) {
@@ -2340,7 +2308,7 @@ void Ov009ActVt_02216c74_Init(Ov009ActVt_02216c74 *self) {
     }
     self->unk_c8 = 0x1e000;
     self->unk_cc = 0xc000;
-    FLD(s32, self, 0xf0) = 0;
+    self->unk_f0 = 0;
 }
 
 }
@@ -2526,30 +2494,22 @@ namespace m_0220413c {
 extern "C" {
 
 extern void *data_02097e4c;
-extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(FieldState *g, s32 a);
-
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 4;
-    u8 b5 : 1;
-    u8 b6 : 2;
-};
 
 void func_ov009_0220397c(Ov009Names *self, void *res);
 
 void Ov009ActVt_02216bc8_Init(Ov009ActVt_02216bc8 *self) {
-    u8 *p;
+    GroupNode *p;
     if (self->kind != 0x5810 && self->kind != 0x5811) {
         self->unk_d8 = (void *)func_ov009_0220397c;
     }
     func_ov003_021d0fc0(self);
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
-        Ov009Byte *bb = (Ov009Byte *)(p + 0xa2);
-        bb->b0 = 0;
-        bb->b5 = 1;
+        GroupNodeFlags *bb = &p->flags;
+        bb->unk_0 = 0;
+        bb->unk_5 = 1;
     }
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     switch (self->kind) {
@@ -2657,6 +2617,11 @@ static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
 }
 
+// Read through a const view: MWCC does not merge it with the compare's read just before.
+static inline s32 Ov009_MaxScaleX(const Ov009ActVt_02216bc8 *a) {
+    return a->unk_100.x;
+}
+
 void func_ov009_02204468(Ov009ActVt_02216bc8 *self) {
     VecFx32 v;
     EffectObj *obj;
@@ -2696,8 +2661,8 @@ void func_ov009_02204468(Ov009ActVt_02216bc8 *self) {
         st->timer++;
         if (st->timer >= 0x32) {
             h = self->model->scale.x + 0x266;
-            if (h >= FLD(s32, self, 0x100)) {
-                h = FLD(u32, self, 0x100);
+            if (h >= self->unk_100.x) {
+                h = Ov009_MaxScaleX(self);
                 func_02065f88(0x69, &self->pos);
                 func_02065f88(0x38a, &self->pos);
                 s44 = self->unk_44;
@@ -2869,7 +2834,6 @@ extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
 extern void func_ov000_0219bd20(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
-extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_ov000_02191690(void *model);
 
 static inline BOOL Ov009Game_IsPaused(FieldState *g) {
@@ -3104,14 +3068,14 @@ void func_ov009_02204a10(Ov009ActVt_02216bc8 *self) {
             func_ov000_02198360(self->fsm, 0x10, 0);
         }
         if (self->unk_f2 == 0) {
-            u8 *b = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+            GroupNode *b = Group_FindNode(data_ov000_021ccd64, self->unk_20);
             if (b != NULL) {
-                x = FLD(VecFx32, b, 0x88);
+                x = b->pos;
             }
             x.y = self->pos.y;
             if (VEC_Distance(&self->pos, &x) > self->unk_c8 + 0x4800) {
                 if (b != NULL) {
-                    x = FLD(VecFx32, b, 0x88);
+                    x = b->pos;
                 }
                 x.y += 0x2000;
                 self->pos = x;

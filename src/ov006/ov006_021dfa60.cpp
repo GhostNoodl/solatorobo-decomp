@@ -6,8 +6,8 @@ typedef struct ov006_Unk021dfa60 {
     u8 unk4[0x10];
     int unk14;
     int unk18;
-    Object *unk1C;
-    Object *unk20;
+    VObj *unk1C;
+    VObj *unk20;
 } ov006_Unk021dfa60;
 
 extern "C" {

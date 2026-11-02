@@ -147,18 +147,18 @@ extern void *data_ov006_021ebdc0;
 ov006_Info021daaa8 *func_ov006_021daaa8(u16 id);
 const void *func_0206ec8c(u16 id);
 const void *func_0206ec48(u16 id);
-void func_ov006_021dbfb8(ov006_Obj58 *a, const char *b, int c, int d);
+void func_ov006_021dbfb8(ov006_Label *a, const char *b, int c, int d);
 void func_ov006_021e1ddc(ov006_Obj13C *a, const char *b, int c, int d);
 void func_ov006_021e1e6c(ov006_Obj13C *a, const void *b);
-void *func_0204b370(void *self);
-void func_0204b420(void *self);
-void *func_ov000_0218ea20(void *self);
-void *func_ov000_0218fee4(void *self);
-ov006_Model60 *func_ov000_0218e9c4(void *self);
+ActorRes *func_ov000_0218ea20(ActorRes *self);
+Camera *func_0204b370(Camera *cam);
+void func_0204b420(Camera *cam);
+Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *self);
+ActorRes *func_ov000_0218e9c4(ActorRes *self);
 void func_02035acc(const char *a, const char *b, int c);
 const char *func_0207011c(u16 id);
 const char *func_020701d4(u16 id);
-int func_ov000_0218f110(ov006_Model60 *self);
+int func_ov000_0218f110(ActorRes *self);
 
 static inline void ov006_TaskD37_Select(ov006_TaskD37 *self, u16 id) {
     ov006_Info021daaa8 *info;
@@ -209,19 +209,19 @@ ov006_TaskD37 *func_ov006_021d3874(ov006_TaskD37 *self) {
     return self;
 }
 
-#define OV006_DELETE_WITH(obj, dtor)                             \
+#define OV006_DELETE_WITH(T, obj, dtor)                          \
     do {                                                         \
-        void *saved_ = data_02097dd0->cur;                   \
-        data_02097dd0->cur = data_02097dd0->heapHi;            \
+        void *saved_ = data_02097dd0->cur;                       \
+        data_02097dd0->cur = data_02097dd0->heapHi;              \
         if ((obj) != NULL) {                                     \
             if ((obj) != NULL) {                                 \
-                void *p_ = (obj);                                \
+                T *p_ = (obj);                                   \
                 dtor(p_);                                        \
-                Heap_Free(p_);                               \
+                Heap_Free(p_);                                   \
             }                                                    \
             (obj) = NULL;                                        \
         }                                                        \
-        data_02097dd0->cur = saved_;                         \
+        data_02097dd0->cur = saved_;                             \
     } while (0)
 
 static inline void ov006_TaskD37_Dtor(ov006_TaskD37 *self) {
@@ -230,11 +230,11 @@ static inline void ov006_TaskD37_Dtor(ov006_TaskD37 *self) {
     OV006_DELETE_OBJECT(self->unk54);
     OV006_DELETE_OBJECT(self->unk58);
     OV006_DELETE_OBJECT(self->unk5C);
-    OV006_DELETE_WITH(self->unk60, func_ov000_0218ea20);
-    OV006_DELETE_WITH(self->unk64, func_ov000_0218fee4);
-    OV006_DELETE_WITH(self->unk68, func_ov000_0218ea20);
-    OV006_DELETE_WITH(self->unk6C, func_ov000_0218fee4);
-    OV006_DELETE_WITH(self->unk70, func_ov000_0218ea20);
+    OV006_DELETE_WITH(ActorRes, self->unk60, func_ov000_0218ea20);
+    OV006_DELETE_WITH(Model0218fe1c, self->unk64, func_ov000_0218fee4);
+    OV006_DELETE_WITH(ActorRes, self->unk68, func_ov000_0218ea20);
+    OV006_DELETE_WITH(Model0218fe1c, self->unk6C, func_ov000_0218fee4);
+    OV006_DELETE_WITH(ActorRes, self->unk70, func_ov000_0218ea20);
     if (self->anm != NULL) {
         Heap_FreeHi(self->anm);
         self->anm = NULL;
@@ -268,32 +268,32 @@ namespace m_021d3f04 {
 extern "C" {
 
 
-ov006_Model60 *func_ov000_0218e9c4(void *self);
+ActorRes *func_ov000_0218e9c4(ActorRes *self);
 const char *func_0207011c(u16 id);
 const char *func_020701d4(u16 id);
 
-static inline ov006_Model60 *ov006_NewModel60(void) {
-    void *p = Heap_Alloc(0x138);
+static inline ActorRes *ov006_NewModel60(void) {
+    ActorRes *p = (ActorRes *)Heap_Alloc(sizeof(ActorRes));
     if (p != NULL) {
         p = func_ov000_0218e9c4(p);
     }
-    return (ov006_Model60 *)p;
+    return p;
 }
 
-static inline void ov006_Model60_SetName1(ov006_Model60 *m, const char *a, const char *b) {
-    STD_CopyString(m->unk10, a);
-    STD_CopyString(m->unk30, b);
-    m->unk3 |= 2;
+static inline void ActorRes_SetName1(ActorRes *m, const char *a, const char *b) {
+    STD_CopyString(m->unk_10, a);
+    STD_CopyString(m->unk_30, b);
+    m->unk_03_1 = 1;
 }
 
-static inline void ov006_Model60_SetName2(ov006_Model60 *m, const char *a, const char *b) {
-    STD_CopyString(m->unk4C, a);
-    STD_CopyString(m->unk6C, b);
-    m->unk3 |= 4;
+static inline void ActorRes_SetName2(ActorRes *m, const char *a, const char *b) {
+    STD_CopyString(m->unk_4c, a);
+    STD_CopyString(m->unk_6c, b);
+    m->unk_03_2 = 1;
 }
 
 void func_ov006_021d3f04(ov006_TaskD37 *self) {
-    ov006_Model60 *m;
+    ActorRes *m;
     u16 id;
     const char *a;
     const char *b;
@@ -301,22 +301,22 @@ void func_ov006_021d3f04(ov006_TaskD37 *self) {
     const char *d;
     m = ov006_NewModel60();
     self->unk60 = m;
-    ov006_Model60_SetName1(m, "menu/worldmap", "u3map1cld00");
-    ov006_Model60_SetName2(self->unk60, "menu/worldmap", "u3map1cld00");
-    self->unk60->unk0 = 0;
+    ActorRes_SetName1(m, "menu/worldmap", "u3map1cld00");
+    ActorRes_SetName2(self->unk60, "menu/worldmap", "u3map1cld00");
+    self->unk60->unk_00 = 0;
     self->unk68 = ov006_NewModel60();
     id = func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC;
     a = func_0207011c(id);
     b = func_020701d4(id);
     c = func_0207011c(id);
     d = func_020701d4(id);
-    ov006_Model60_SetName1(self->unk68, a, b);
-    ov006_Model60_SetName2(self->unk68, c, d);
-    self->unk68->unk0 = 0;
+    ActorRes_SetName1(self->unk68, a, b);
+    ActorRes_SetName2(self->unk68, c, d);
+    self->unk68->unk_00 = 0;
     m = ov006_NewModel60();
     self->unk70 = m;
-    ov006_Model60_SetName2(m, "ac/c1dum1", "c1dum1");
-    self->unk70->unk0 = 0;
+    ActorRes_SetName2(m, "ac/c1dum1", "c1dum1");
+    self->unk70->unk_00 = 0;
 }
 
 }
@@ -337,28 +337,28 @@ extern void *data_ov006_021ebdc0;
 ov006_Info021daaa8 *func_ov006_021daaa8(u16 id);
 const void *func_0206ec8c(u16 id);
 const void *func_0206ec48(u16 id);
-void func_ov006_021dbfb8(ov006_Obj58 *a, const char *b, int c, int d);
+void func_ov006_021dbfb8(ov006_Label *a, const char *b, int c, int d);
 void func_ov006_021e1ddc(ov006_Obj13C *a, const char *b, int c, int d);
 void func_ov006_021e1e6c(ov006_Obj13C *a, const void *b);
-void *func_0204b370(void *self);
-void func_0204b420(void *self);
-void *func_ov000_0218ea20(void *self);
-void *func_ov000_0218fee4(void *self);
-ov006_Model60 *func_ov000_0218e9c4(void *self);
+ActorRes *func_ov000_0218ea20(ActorRes *self);
+Camera *func_0204b370(Camera *cam);
+void func_0204b420(Camera *cam);
+Model0218fe1c *func_ov000_0218fee4(Model0218fe1c *self);
+ActorRes *func_ov000_0218e9c4(ActorRes *self);
 void func_02035acc(const char *a, const char *b, int c);
 const char *func_0207011c(u16 id);
 const char *func_020701d4(u16 id);
-int func_ov000_0218f110(ov006_Model60 *self);
+int func_ov000_0218f110(ActorRes *self);
 
 BOOL func_ov006_021d40a8(ov006_TaskD37 *self) {
     BOOL r = TRUE;
-    if (self->unk60->unk0 >= 0) {
+    if (self->unk60->unk_00 >= 0) {
         r = (r & func_ov000_0218f110(self->unk60)) ? TRUE : FALSE;
     }
-    if (self->unk68->unk0 >= 0) {
+    if (self->unk68->unk_00 >= 0) {
         r = (r & func_ov000_0218f110(self->unk68)) ? TRUE : FALSE;
     }
-    if (self->unk70->unk0 >= 0) {
+    if (self->unk70->unk_00 >= 0) {
         r = (r & func_ov000_0218f110(self->unk70)) ? TRUE : FALSE;
     }
     return r;
@@ -370,7 +370,6 @@ BOOL func_ov006_021d40a8(ov006_TaskD37 *self) {
 // ---- merged from ov006_021d4118.cpp
 namespace m_021d4118 {
 
-#define F(p, off, T) (*(T *)((u8 *)(p) + (off)))
 
 typedef struct ov006_Info021daaa8 {
     int unk0;
@@ -399,9 +398,9 @@ void func_ov006_021cd580(int a, void *b, int c);
 UiListItem *ListOwner_GetNth(UiList *self, int n);
 BOOL func_ov006_021d37d0(UiList *window, UiListItem *node);
 BOOL func_ov006_021d1f00(UiList *window, UiListItem *node);
-ov006_Obj58 *Ov006Vt_021ec2fc_Ctor(void *p);
+ov006_Label *Ov006Vt_021ec2fc_Ctor(void *p);
 Model0218fe1c *func_ov000_0218fe1c(void *p);
-BOOL func_ov000_0218ffdc(Model0218fe1c *a, ov006_Model60 *b, int c, int d);
+BOOL func_ov000_0218ffdc(Model0218fe1c *a, ActorRes *b, int c, int d);
 BOOL func_ov000_02190cb0(void *a, const void *b, int c, int d);
 void func_ov000_021915a0(void *a);
 AnimCtrl *func_ov000_02190a30(Model0218fe1c *a, int b);
@@ -416,11 +415,11 @@ void func_ov006_021e16b0(ov006_Obj13C *p);
 ov006_Info021daaa8 *func_ov006_021daaa8(u16 id);
 const void *func_0206ec8c(u16 id);
 const void *func_0206ec48(u16 id);
-void func_ov006_021dbfb8(ov006_Obj58 *a, const char *b, int c, int d);
+void func_ov006_021dbfb8(ov006_Label *a, const char *b, int c, int d);
 void func_ov006_021e1ddc(ov006_Obj13C *a, const char *b, int c, int d);
 void func_ov006_021e1e6c(ov006_Obj13C *a, const void *b);
 void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
-void func_ov000_02173648(void *self);
+void func_ov000_02173648(Task *self);
 
 static inline Model0218fe1c *ov006_NewModel64(void) {
     void *p = Heap_Alloc(0xe8);
@@ -430,10 +429,10 @@ static inline Model0218fe1c *ov006_NewModel64(void) {
     return (Model0218fe1c *)p;
 }
 
-static inline void ov006_SetPos3(void *p, int x, int y, int z) {
-    F(p, 0xb0, int) = x;
-    F(p, 0xb4, int) = y;
-    F(p, 0xb8, int) = z;
+static inline void ov006_SetPos3(ov006_Label *p, int x, int y, int z) {
+    p->origin.x = x;
+    p->origin.y = y;
+    p->origin.z = z;
 }
 
 static inline void ov006_Obj13C_SetPair(ov006_Obj13C *o, int a, int b) {
@@ -534,10 +533,10 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
         if (p != NULL) {
             p = Ov006Vt_021ec2fc_Ctor(p);
         }
-        self->unk58 = (ov006_Obj58 *)p;
+        self->unk58 = (ov006_Label *)p;
     }
-    ov006_SetPos3(self->unk58, 0xbf000, 0x50000, F(self->unk58, 0xb8, int));
-    F(self->unk58, 0xb8, int) = -0x1fccd;
+    ov006_SetPos3(self->unk58, 0xbf000, 0x50000, self->unk58->origin.z);
+    self->unk58->origin.z = -0x1fccd;
     self->unk64 = ov006_NewModel64();
     func_ov000_0218ffdc(self->unk64, self->unk60, 0, 1);
     func_ov000_02190cb0(self->unk64, "s00", 0, 1);
@@ -632,7 +631,7 @@ extern "C" {
 extern ov006_Unk02097e40 *data_02097e40;
 
 u16 func_ov006_021e60e8(int type, u16 mask);
-void func_ov006_021dc048(ov006_Obj58 *p);
+void func_ov006_021dc048(ov006_Label *p);
 void func_ov006_021e5e00(ov006_Unk021ec888 *self);
 BOOL func_ov000_02190cb0(void *a, const void *b, int c, int d);
 AnimCtrl *func_ov000_02190a30(Model0218fe1c *a, int b);
@@ -640,7 +639,7 @@ void func_ov006_021d526c(ov006_TaskD37 *self, const char *name, s16 speed, u8 lo
 ov006_Info021daaa8 *func_ov006_021daaa8(u16 id);
 const void *func_0206ec8c(u16 id);
 const void *func_0206ec48(u16 id);
-void func_ov006_021dbfb8(ov006_Obj58 *a, const char *b, int c, int d);
+void func_ov006_021dbfb8(ov006_Label *a, const char *b, int c, int d);
 void func_ov006_021e1ddc(ov006_Obj13C *a, const char *b, int c, int d);
 void func_ov006_021e1e6c(ov006_Obj13C *a, const void *b);
 
@@ -856,12 +855,12 @@ extern void *data_02097e40;
 ov006_Info021daaa8 *func_ov006_021daaa8(u16 id);
 const void *func_0206ec8c(u16 id);
 const void *func_0206ec48(u16 id);
-void func_ov006_021dbfb8(ov006_Obj58 *a, const char *b, int c, int d);
+void func_ov006_021dbfb8(ov006_Label *a, const char *b, int c, int d);
 void func_ov006_021e1ddc(ov006_Obj13C *a, const char *b, int c, int d);
 void func_ov006_021e1e6c(ov006_Obj13C *a, const void *b);
 ov006_Unk02046a50 *Wh_GetSharedData(void *a, int idx);
-void func_ov006_021dc054(ov006_Obj58 *a);
-void func_ov006_021dc578(ov006_Obj58 *a);
+void func_ov006_021dc054(ov006_Label *a);
+void func_ov006_021dc578(ov006_Label *a);
 void func_ov006_021e0af4(ov006_Caption *self);
 void func_ov006_021e0b80(ov006_Caption *self);
 void func_ov006_021e1af0(ov006_Obj13C *a);
@@ -874,6 +873,11 @@ void func_ov006_021cd580(int a, int b, int c);
 void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
 void func_ov006_021e463c(ov006_Unk021ec888 *self);
 int STD_TSNPrintf(char *dst, u32 size, const char *fmt, ...);
+
+// The camera's vtable (data_0208b8c0) holds Camera_Apply in slot 0x00.
+static inline void ov006_Camera_Apply(Camera *cam) {
+    ((VObj *)cam)->vfunc_00();
+}
 
 static inline void ov006_Window_SetSel(UiList *w, u16 id) {
     UiListItem *item = func_ov000_02154b58(w, id);
@@ -956,7 +960,7 @@ void func_ov006_021d51cc(ov006_TaskD37 *self) {
     self->unk50->vfunc_20();
     self->unk54->vfunc_20();
     self->unk5C->vfunc_20();
-    VCALL(&self->cam, 00);
+    ov006_Camera_Apply(&self->cam);
     func_ov000_021903b4(self->unk64);
     func_ov000_021903b4(self->unk6C);
     if (data_ov006_021ec888 != NULL) {
@@ -973,9 +977,9 @@ void func_ov006_021d526c(ov006_TaskD37 *self, const char *name, s16 speed, u8 lo
     if (self->anm == NULL) {
         self->anm = (ov006_Anm74 *)Heap_AllocHi(0x100, 4);
     }
-    res = self->unk70->unk48;
+    res = self->unk70->unk_48;
     MI_CpuFill8(buf, 0, sizeof(buf));
-    STD_TSNPrintf(buf, sizeof(buf), "%s%s", self->unk70->unk6C, name);
+    STD_TSNPrintf(buf, sizeof(buf), "%s%s", self->unk70->unk_6c, name);
     self->anm->res = (typeof(self->anm->res))NNS_G3dGetAnmByName(*res, (const NNSG3dResName *)buf);
     self->anm->frame = 0;
     self->anm->speed = 0x1000;

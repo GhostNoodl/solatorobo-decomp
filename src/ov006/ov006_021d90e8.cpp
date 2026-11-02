@@ -1,28 +1,16 @@
-#include "ov006/Model.h"
+#include "ov006/Tasks.h"
 #include "Main/Res/ResArc.h"
 #include "Main/Res/ArcName.h"
-
-typedef struct ov006_Unk021d90e8 {
-    void *vtbl;
-    u8 unk4[0xc];
-    Object *unk10;
-    Object *unk14;
-    Object *unk18;
-    Object *unk1C;
-    Object *unk20;
-    Object *unk24;
-    Object *unk28;
-} ov006_Unk021d90e8;
 
 extern "C" {
 
 extern u8 data_ov006_021ec040[];
 extern char data_ov006_021ec864[];
 void func_ov000_02180754(void);
-void func_ov006_021ccddc(void *self);
+void func_ov006_021ccddc(ov006_Task *self);
 
-static inline void ov006_Unk021d90e8_dtor(ov006_Unk021d90e8 *self) {
-    self->vtbl = data_ov006_021ec040;
+static inline void ov006_Task021ec040_dtor(ov006_Task021ec040 *self) {
+    *(void **)self = data_ov006_021ec040;
     OV006_DELETE_OBJECT(self->unk10);
     OV006_DELETE_OBJECT(self->unk14);
     OV006_DELETE_OBJECT(self->unk18);
@@ -36,13 +24,13 @@ static inline void ov006_Unk021d90e8_dtor(ov006_Unk021d90e8 *self) {
     func_ov006_021ccddc(self);
 }
 
-ov006_Unk021d90e8 *Ov006Vt_021ec040_Dtor(ov006_Unk021d90e8 *self) {
-    ov006_Unk021d90e8_dtor(self);
+ov006_Task021ec040 *Ov006Vt_021ec040_Dtor(ov006_Task021ec040 *self) {
+    ov006_Task021ec040_dtor(self);
     return self;
 }
 
-ov006_Unk021d90e8 *Ov006Vt_021ec040_DtorDelete(ov006_Unk021d90e8 *self) {
-    ov006_Unk021d90e8_dtor(self);
+ov006_Task021ec040 *Ov006Vt_021ec040_DtorDelete(ov006_Task021ec040 *self) {
+    ov006_Task021ec040_dtor(self);
     Heap_Free(self);
     return self;
 }

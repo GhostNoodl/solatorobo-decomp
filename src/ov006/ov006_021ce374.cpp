@@ -30,7 +30,7 @@ extern char *data_0208ccc0;
 
 void func_ov006_021ce048(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 void func_ov006_021ce3f0(ov006_Emblem *self);
-void func_ov000_02173648(ov006_Emblem *self);
+void func_ov000_02173648(Task *self);
 void func_02041c20(Model *self, int a, void *b);
 BOOL func_02054f10(Model *a, int b);
 
@@ -42,18 +42,18 @@ BOOL func_ov006_021ce378(void) {
 }
 
 void func_ov006_021ce380(ov006_Emblem *self) {
-    self->unk4_1 = 0;
-    if (VCALL(self, 28)) {
+    self->unk_04_1 = 0;
+    if (self->vfunc_28()) {
         return;
     }
     func_ov006_021ce3f0(self);
     self->unk44 = 1;
-    self->unk2C = 0;
+    self->parent = NULL;
     func_ov000_02173648(self);
 }
 
 static inline BOOL ov006_Emblem_Bit4(ov006_Emblem *self) {
-    return self->unk4_4 != 0;
+    return self->unk_04_4 != 0;
 }
 
 BOOL Ov006Task_GetFlag4(ov006_Emblem *self) {
@@ -107,7 +107,7 @@ extern char *data_0208ccc0;
 
 void func_ov006_021ce3f0(ov006_Emblem *self);
 void func_ov006_021ce048(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
-void func_ov000_02173648(ov006_Emblem *self);
+void func_ov000_02173648(Task *self);
 void func_02041c20(Model *self, int a, void *b);
 BOOL func_02054f10(Model *a, int b);
 
@@ -295,7 +295,7 @@ extern void *data_ov006_021ebc80;
 void *MsgRes_GetString(void *a, int id);
 void func_02043904(void *p);
 void func_02043b20(void *p);
-void func_ov000_02173648(void *self);
+void func_ov000_02173648(Task *self);
 void func_ov006_021daea0(ov006_SlotManager *a);
 u8 func_ov006_021db078(ov006_SlotManager *self);
 void func_ov006_021d8f44(void);
@@ -441,22 +441,14 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
 
 }
 }  // namespace m_021cec68
-#undef F
 
 // ---- merged from ov006_021cf350.cpp
 namespace m_021cf350 {
 
-typedef struct ov006_Unk021cf350 {
-    void *vtbl;
-    u32 unk4_0 : 7;
-    u32 unk4_7 : 1;
-    u32 unk4_8 : 24;
-} ov006_Unk021cf350;
-
 extern "C" {
 
-void Ov006Task_SetFlag7(ov006_Unk021cf350 *self) {
-    self->unk4_7 = 1;
+void Ov006Task_SetFlag7(Task *self) {
+    self->unk_04_7 = 1;
 }
 
 }
@@ -946,7 +938,7 @@ BOOL func_ov006_021e4ce8(ov006_Unk021ec888 *self, ov006_MenuData *data);
 void func_ov006_021e463c(ov006_Unk021ec888 *self);
 ov006_MenuNode *ov006_Menu_FindNode(ov006_Unk021ec888 *self, int id);
 void *MsgRes_GetString(void *a, int id);
-void func_ov000_02173648(void *self);
+void func_ov000_02173648(Task *self);
 void func_02040b0c(void *dst, int *dstLen, const void *src, int *srcLen);
 void func_ov006_021d0ab8(ov006_TaskD0 *self);
 
@@ -1264,7 +1256,7 @@ extern void *data_ov000_021cadcc;
 extern u8 *data_02097e40;
 
 void *MsgRes_GetString(void *a, int id);
-void func_ov000_02173648(void *self);
+void func_ov000_02173648(Task *self);
 void func_ov006_021daea0(ov006_SlotManager *a);
 BOOL func_ov006_021db0a8(ov006_SlotManager *a, int b);
 u32 ov006_CopyOwnerInfo(void *a, int b);
@@ -1603,7 +1595,7 @@ void func_02040b0c(void *dst, int *dstLen, const void *src, int *srcLen);
 void *MsgRes_GetString(void *a, int id);
 void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);
 ov006_Unk020706a0 *func_020706a0(u16 id);
-void func_ov006_021e139c(ov006_Unk021e139c *self, int a, int b, u8 c);
+void func_ov006_021e139c(ov006_Gauge *self, int a, int b, u8 c);
 ov006_TaskD1F *func_ov006_021d1f68(ov006_TaskD1F *self);
 
 void func_ov006_021d1b24(ov006_TaskD0C *self) {

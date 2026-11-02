@@ -38,8 +38,8 @@ extern u8 data_ov000_021cad50[];
 extern u8 data_ov000_021cae48[];
 extern u8 data_ov000_021ccbe0[];
 extern u8 data_ov000_021ccb54[];
-void func_ov000_021c3af4(void *self);
-void func_ov000_021c54f4(void *self);
+void func_ov000_021c3af4(LoBase021ccb54_021ccbe0 *self);
+void func_ov000_021c54f4(ov006_HudList *self);
 
 // The ov000 window methods the ov006 menus call (text arguments are message strings).
 UiListItem *func_ov000_02154b58(UiList *self, u16 id);

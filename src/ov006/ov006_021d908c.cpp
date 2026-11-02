@@ -1,36 +1,27 @@
-#include "ov006/ov006.h"
-
-typedef struct ov006_Unk021d908c {
-    void *vtbl;
-    u8 unk4[0xc];
-    int unk10[11];
-    u8 unk3C;
-    u16 unk3E;
-    u16 unk40;
-} ov006_Unk021d908c;
+#include "ov006/Tasks.h"
 
 extern "C" {
 
 extern u8 data_ov006_021ec040[];
-void func_ov006_021ccda0(void *self);
+void func_ov006_021ccda0(ov006_Task *self);
 
-ov006_Unk021d908c *Ov006Vt_021ec040_Ctor(ov006_Unk021d908c *self) {
+ov006_Task021ec040 *Ov006Vt_021ec040_Ctor(ov006_Task021ec040 *self) {
     func_ov006_021ccda0(self);
-    self->vtbl = data_ov006_021ec040;
-    self->unk10[0] = 0;
-    self->unk10[1] = 0;
-    self->unk10[2] = 0;
-    self->unk10[3] = 0;
-    self->unk10[4] = 0;
-    self->unk10[5] = 0;
-    self->unk10[6] = 0;
-    self->unk10[7] = 0;
-    self->unk10[8] = 0;
-    self->unk10[9] = 0;
-    self->unk10[10] = 0;
+    *(void **)self = data_ov006_021ec040;
+    self->unk10 = NULL;
+    self->unk14 = NULL;
+    self->unk18 = NULL;
+    self->unk1C = NULL;
+    self->unk20 = NULL;
+    self->unk24 = NULL;
+    self->unk28 = NULL;
+    self->unk2C = 0;
+    self->unk30 = 0;
+    self->unk34 = 0;
+    self->unk38 = 0;
     self->unk3C = 0;
-    self->unk3E = 0;
-    self->unk40 = 0;
+    self->unk3E[0] = 0;
+    self->unk3E[1] = 0;
     return self;
 }
 

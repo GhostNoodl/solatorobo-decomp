@@ -8,6 +8,7 @@
 #include "Main/Sys/Field.h"
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/Group.h"
 #include "ov003/Actor.h"
 #include "Main/Effect/Effect.h"
 
@@ -187,7 +188,11 @@ struct Ov009Names {
     char mdlDir[0x20];
     char mdlName[0x1c];
     char anmDir[0x20];
-    char anmName[0x58];
+    char anmName[0x18];
+    u32 *unk_84;     // entry 2 (ActorRes::unk_84): handle, name and extension
+    char unk_88[0x20];
+    char unk_a8[0x18];
+    u32 *unk_c0;
     char evDir[0x20];
     char evName[0x20];
     u8 unk_104[0x34];
@@ -233,6 +238,8 @@ static inline BOOL Ov009_GameIdle(void) {
 
 extern "C" {
 void *Heap_Alloc(u32 size); // Main/Gfx/ObjPool.h
+// The spawn group node an actor came from (Actor::unk_20; mgr is data_ov000_021ccd64).
+GroupNode *Group_FindNode(void *mgr, u16 id);
 void Heap_Free(void *ptr);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
@@ -247,6 +254,20 @@ char *func_020701d4(void *res);
 u8 *func_02070558(void *res);
 }
 
+
+// Render user data of a model (the 0x34-byte block the joint draw callback fills): the joint
+// (func_ov000_021909a8) and its current matrix.
+struct Ov009JointMtx {
+    s32 joint;
+    union {
+        MtxFx43 mtx;
+        struct {
+            u8 unk_04[0x24];
+            VecFx32 trans; // mtx's translation row
+        };
+    };
+};
+
 // Actor class of Ov009Act_02200b48_Ctor (vtable data_ov009_02216d20).
 class Ov009Act_02200b48 : public Ov003Actor {
 public:
@@ -254,10 +275,7 @@ public:
     u16 unk_f2;
     u16 unk_f4;
     u16 unk_f6;
-    u8 unk_f8[0x4];
-    u8 unk_fc;
-    u8 unk_fd[0x23];
-    VecFx32 unk_120;
+    Ov009JointMtx joint; // the model's renderUser
 };
 SIZE_ASSERT(Ov009Act_02200b48, 0x12c);
 
@@ -267,10 +285,7 @@ public:
     u16 unk_f0;
     u8 unk_f2[0x2];
     s32 unk_f4;
-    u8 unk_f8[0x4];
-    u8 unk_fc;
-    u8 unk_fd[0x23];
-    VecFx32 unk_120;
+    Ov009JointMtx joint; // the model's renderUser
 };
 SIZE_ASSERT(Ov009Act_02202788, 0x12c);
 

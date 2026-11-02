@@ -3,7 +3,6 @@
 extern "C" {
 
 extern void *data_02097e4c;
-extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_0203f2b8(void *p);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern s32 func_02049afc(void *mgr, s32 id);

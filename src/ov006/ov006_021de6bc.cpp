@@ -1,4 +1,5 @@
 #include "ov006/Model.h"
+#include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
 
 typedef struct ov006_Pair021de6bc {
@@ -11,19 +12,12 @@ typedef struct ov006_Pair021de6bc {
     VecFx32 pos;
 } ov006_Pair021de6bc;
 
-typedef struct ov006_Obj021de6bc {
-    u8 unk0[0x74];
-    s32 x;
-    s32 y;
-    s32 z;
-} ov006_Obj021de6bc;
-
 typedef struct ov006_Item021de6bc {
     void *vtbl;
     int visible;
     u8 unk8[4];
     VecFx32 pos;
-    ov006_Obj021de6bc *obj;
+    ObjBase021cac0c_021cb6f0 *obj;
     Model *model;
 } ov006_Item021de6bc;
 
@@ -55,10 +49,10 @@ static inline void ov006_Model_SetPosV(Model *self, const VecFx32 *p) {
     self->pos[0].y = p->y;
 }
 
-static inline void ov006_Obj_SetPos(ov006_Obj021de6bc *self, s32 x, s32 y, s32 z) {
-    self->x = x;
-    self->y = y;
-    self->z = z;
+static inline void ov006_Obj_SetPos(ObjBase021cac0c_021cb6f0 *self, s32 x, s32 y, s32 z) {
+    self->unk_74 = x;
+    self->unk_78 = y;
+    self->unk_7c = z;
 }
 
 static inline void ov006_Model_PlayPartF(Model *model, int idx, int flag) {
@@ -125,7 +119,7 @@ void func_ov006_021de6bc(ov006_Hud021de6bc *self) {
             s32 pz = item->pos.z;
             ov006_Obj_SetPos(item->obj, px + 0x55, py + 8, pz + 0x10);
         }
-        VCALL(item->obj, 10);
+        item->obj->vfunc_10();
         ov006_Model_SetPosV(item->model, &item->pos);
         item->model->unk_150 = item->pos.z;
         ov006_Model_PlayPartChk(item->model, 2);

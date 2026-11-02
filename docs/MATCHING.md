@@ -8664,3 +8664,47 @@ Readability only; every function stays byte-identical (per-function code+reloc c
   - The drafts `021512b4`, `02166180`, `021652e4` (scores unchanged) and `Misc_0214dcc4`; `Menu_021763c8`'s local views (round pmA).
   - `TextWin_02167d64` keeps its view: its `unk_40` is a `TextWin *`, but `Lo021cb6b0::unk_40` is called as a `VObj` elsewhere.
 - **Renames:** none (fields and types only).
+
+### Round acN (ov006 VCALL removed and ov006 tasks/labels/gauges typed; ov009/ov010/ov014 raw offsets; `void *self` in ov003/ov008/ov010/ov011/ov014)
+
+Readability only; every function stays byte-identical. Each step was checked function by function (code and relocations) against a baseline built at `a0e1ab73`; at the end all 1906 objects were compared again (0 differ), then the full gate passed: 0 FAILED with 19/19 ROM checks and `check symbols` OK, `ninja report` at 8138 matched, and `check_drafts.py --score` exits 0 (`ov003_021cd91c` 44/35 and `ov011_021fc0b8` 26/17 unchanged).
+
+**Counts** (src + include of each overlay; `void *self` counts definitions and prototypes in src)
+
+| | before | after |
+|---|---|---|
+| ov006 `VCALL(` | 77 | 0 |
+| ov003 `VCALL(` (in the `021cd91c` draft) | 7 | 0 |
+| raw-offset macros ov006 / ov009 / ov010 / ov013 / ov014 | 5 / 47 / 27 / 15 / 29 | 0 / 19 / 14 / 12 / 25 |
+| raw-offset macros ov003 / ov012 / Main | 17 / 34 / 2 | 17 / 34 / 2 |
+| `void *self` ov006 / ov003 / ov011 / ov008 / ov010 / ov014 / Main | 42 / 10 / 12 / 6 / 4 / 1 / 3 | 17 / 6 / 10 / 0 / 0 / 0 / 2 |
+
+- **ov006.**
+  - `ov006.h`: the `Object`/`ObjectVtbl` stand-in and `VCALL` are gone; `OV006_DELETE_OBJECT` calls `VObj::vfunc_04`. New `ov006_Task : VObj` (vtable `021ebb58`, ctor `func_ov006_021ccda0`: `type`, `state`, `subState`); `ov006_MenuNode : VObj` (vtable `021ec434`); `ov006_ObjectHolder::obj` is the dialog `Lo021cad50 *`.
+  - `Tasks.h`: `ov006_Task021ec040 : ov006_Task` with its list/HUD/window/dialog members; `data_ov000_021ccd40` is `Task *` (`ov006_SetCurrent021ccd40` uses `id`). The old `ov006_Model60` and `ov006_Obj58` views are replaced by `ActorRes` and `ov006_Label`.
+  - `Label.h`: `ov006_ResHandle : VObj` (Main's 0x4c resource head, vtable `0208b318`), `ov006_ResLoader : VObj` (vtable `021ec25c`, 0x98) and `ov006_Label : VObj` (vtable `021ec2fc`, 0xec: loader, part ids, origin/pos/dir/speed, alpha), with `ov006_Label_Set`. The label files (`021dbacc`..`021dc578`, `021dbfb8`, `021e16b0`, `021e1ddc`) use them; `021dc054` takes the model names from `loader.res`.
+  - New untracked header `include/ov006/Gauge.h`: `ov006_Gauge` (vtable `021ec20c`, 0x24: values, position, `Model *`, `TextWin *`), used by `021e0d64`..`021e13c8`.
+  - `Emblem.h`: `ov006_Emblem : Task` (vtable `021ebe40`, 0x5c). `Slider.h`, `Window.h` prototypes typed (`ov006_Caption`, `LoBase021ccb54_021ccbe0`, `ov006_HudList`).
+  - Window/task files call `->vfunc_XX()` on `UiObj`/`UiList`/`Task`/`ov006_Task`; `021d3498` uses a typed `OV006_DELETE_WITH(T, obj, dtor)`, `ActorRes` and a `Camera_Apply` inline; `021d5b98` uses `FieldState`/`FieldCam`/`GroupNode` (the `+0xe` byte offset became `&data_ov000_021ccd54->pause[6]`); `021d6ff0`'s own fields are `step`/`subStep` so they do not hide `ov006_Task::state`; `021e4348`..`021e5e00` use the `Lo021cad50` dialog; `021e96cc` `EffectObj` slots; `021ead6c`/`021eb2cc` `ActorEx` (`unk_ce_u`).
+  - `ov000/ActorParts.h` (layout-neutral): `ActorRes::unk_04[0x80]` is split into entries 0 and 1 (`unk_0c` handle, `unk_10` name, `unk_30` extension; `unk_48`, `unk_4c`, `unk_6c`).
+  - Left: the `void *self` prototypes of functions in other overlays, the OAM callbacks `021ce048`/`021dd5dc`, and `021e61fc` (the deleting thunk of `ov006_Unk021ec888`'s second vtable `021ec444`).
+- **ov009.**
+  - `ov009.h`: new `Ov009JointMtx` (joint + `MtxFx43`, with a `trans` view) ending `Ov009Act_02200b48`/`Ov009Act_02202788`; `Ov009Names::anmName` split like `ActorRes` (entry 2 name/extension, `unk_84`/`unk_c0`); `Group_FindNode` returns `GroupNode *` (`ov000/Group.h`).
+  - The `Group_FindNode` users read `GroupNode`/`GroupNodeFlags` (`unk_0`/`unk_5`, `pos`, `rot.y`) in place of the local byte views; `022161f8`/`02205490` use the joint block and an `Ov009_MaxScaleX` const view (the plain member reload is CSE'd); `02214360`/`022162d0` `unk_ce_u`; `0220a560` `unk_e4`; `02207aa0` stores the callback in `hpObj->unk_18`.
+  - Left (19): the render callbacks of `021ff040`/`02211f44`, the info records at `c + 0x28/0x10/0x12`, the `0xcc` and hit-mesh `0x84` bits, the `0221134c`/`022117ac` table and the `func_02070558` record read in `02205d14`.
+- **ov010.**
+  - `ActorMgr_GetGroup` returns `ActorGroup *` (`ov000/ActorMgr.h` included; the per-file `extern void *data_ov000_021ccd68` are gone): `->key`, `->head`; the local `Ov010Node` was `Actor` (`kind`, `id`).
+  - `func_ov003_021da788`/`021da7e8` return `EffectObj *` (`->id`, `SetRotXYZ`, `SetScaleAll`).
+  - New `Ov010Circle {centre, radius}` for the type-1 area (`Obj0220a6b0::unk_e4`, the `Ov010Trig`/`0220a040` members, `data_ov010_0220f150`, `func_ov010_022090b4`/`02209190`, the path/random-point inlines).
+  - `0220f828`: `Ov010Beam_On` const view replaces `FLD(u8, b, 0)` (as `b->on` it changes `02201064`). `0220f958`: `Ov010ChildSpawn` for the entry at 0x3a of the `func_02070558` record.
+  - `0220f5dc`: the five deleting dtors take `VObj *`/`Ov010State3 *`/`Ov010Shake *`/`Ov010Wobble *` (vtables `0220fcac`, `0220fc8c`, `0220fc6c`, `0220fc34`, `0220fc50`); `Ov010State3` moved to file scope and replaces the duplicate `Obj021ff124` (slots `021ff160`/`021ff21c`/`021ff3d0`).
+  - Left (14): the `data_ov010_0220f024` base + offset reads (the merged TU's comment explains: the relocations must stay on `f024`).
+- **ov014.** New `Ov014Watch : VObj` in `ov014.h` (vtable `02217db0`, 0x1c) replaces `Ov014Ctl154` and the file-local `Ov014Watch`; `Ov014Act_0220f9d0::unk_154` is `Ov014Watch *` (no casts; delete through `vfunc_04`), `func_ov014_02213ce8` takes it. `0220bd64` clears `ActorHp` (`dmg`, `kind`, `kind2`); `02210ecc` reads `NNSG3dResAnmCommon::numFrame`; `02216f60` stores `unk_ce_u`.
+- **ov013.** `022065ac`'s setters take `Ov013ActEx_022065ac *` (`unk_f4`/`unk_f6`), and the effect is `EffectObj *` (`loopCount`).
+- **ov003.** The `021cd91c` draft derives `Ov003CdWin`/`Ov003CdTask` from `VObj` and calls `vfunc_XX` (score unchanged). `021ce5a4` takes `VObj *` (the 0x60 member of `Ov003Scene`), `021ceec8` `Ov003Track *`, `021cf330`/`021cf33c` `Ov003FlagObj *`.
+  - Kept: `021cd744`'s `FIELD` model reads. With `Main/Gfx/Model.h` the code changes, because that header declares `NNS_G2dGetAnimSequenceByIdx(void *, int)` and this function needs the `u16` index; changing the header to `u16` breaks 23 other objects.
+- **ov008.** The menu callbacks `021cf790`/`021cf844`/`021cf878` take `Ov008Menu *` (`Ov008Menu` calls them with itself).
+- **ov011.** `021fc0a0` (the `__cxa_vec_new` element ctor) takes `Ov011E40b *` and builds `mover`.
+- **Main.** `func_0206ecd4`'s unused first parameter is `u32 dstSize` (callers pass 0x100).
+- **Kept forms (unchanged from round acA):** ov012's `pos - FLD(s32, self, 0x70)` and `feacc`/`fec58` (`u8 *self`, the `0220a4a4/a8/ac` reads), ov014 `0220d6f8` and the render callbacks `02208fe4`/`0220f8a4`, ov013 `0220b444`'s `info` record.
+- **Renames:** none (fields and types only).

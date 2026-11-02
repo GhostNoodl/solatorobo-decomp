@@ -4,47 +4,36 @@
 #include "types.h"
 #include "Main/Sys/SysState.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "ov000/VObj.h"
 
-/* Generic object with a virtual table. */
-typedef struct Object Object;
-typedef struct ObjectVtbl {
-    void *unk0;
-    void (*dtor)(Object *self);
-    int (*unk8)(Object *self);
-    int (*unkC)(Object *self);
-    int (*unk10)(Object *self);
-    int (*unk14)(Object *self);
-    int (*unk18)(Object *self);
-    int (*unk1C)(Object *self);
-} ObjectVtbl;
-struct Object {
-    ObjectVtbl *vtbl;
-};
-
-
-/* Deletes a virtual object while temporarily switching the current heap. */
+/* Deletes a virtual object (slot 0x04, its deleting dtor) while temporarily switching the current
+   heap. */
 #define OV006_DELETE_OBJECT(obj)                                 \
     do {                                                         \
         void *saved_ = data_02097dd0->cur;                       \
         data_02097dd0->cur = data_02097dd0->heapHi;              \
         if ((obj) != NULL) {                                     \
             if ((obj) != NULL) {                                 \
-                ((Object *)(obj))->vtbl->dtor((Object *)(obj));  \
+                ((VObj *)(obj))->vfunc_04();                     \
             }                                                    \
             (obj) = NULL;                                        \
         }                                                        \
         data_02097dd0->cur = saved_;                             \
     } while (0)
 
-typedef struct ov006_Task {
-    ObjectVtbl *vtbl;
+/* The overlay's task base (vtable data_ov006_021ebb58, ctor func_ov006_021ccda0, which sets type 3).
+   func_ov006_021cd2c8 creates the task data_ov006_021ec860->taskType names and steps it through
+   slots 0x08, 0x0c, 0x10, 0x14 (while it returns TRUE) and 0x18; func_ov006_021cd264 calls slot
+   0x1c once state reaches 3. */
+struct ov006_Task : public VObj {
     int type;
     int state;
     int subState;
-} ov006_Task;
+};
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct ov006_Manager {
     void *vtbl;
@@ -69,20 +58,23 @@ typedef struct ov006_MenuData {
     u8 unk48[0x78];
 } ov006_MenuData;
 
-typedef struct ov006_MenuNode {
-    ObjectVtbl *vtbl;
+/* A menu entry node (vtable data_ov006_021ec434, func_ov006_021e46e8). */
+struct ov006_MenuNode : public VObj {
     int id;
     u32 count;
     u8 timer;
     ov006_MenuData data;
     struct ov006_MenuNode *next;
     struct ov006_MenuNode *prev;
-} ov006_MenuNode;
+};
 
-/* Holds one virtual object (vtable data_ov006_021ec414). */
+struct Lo021cad50;
+
+/* Holds one dialog window (vtable data_ov006_021ec414; func_ov006_021e58e4 opens an ov000
+   Lo021cad50 in it). */
 typedef struct ov006_ObjectHolder {
     void *vtbl;
-    Object *obj;
+    struct Lo021cad50 *obj;
 } ov006_ObjectHolder;
 
 typedef struct ov006_MenuEntry {
@@ -132,9 +124,5 @@ void func_0201bbfc(u32 a);
 #endif
 
 
-#ifdef __cplusplus
-#include "ov000/VObj.h"
-#define VCALL(obj, off, ...) (((VObj *)(obj))->vfunc_##off(__VA_ARGS__))
-#endif
 
 #endif

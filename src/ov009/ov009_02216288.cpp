@@ -28,14 +28,7 @@ namespace m_0220d2d8 {
 extern "C" {
 
 
-extern u8 *Group_FindNode(void *mgr, u16 id);
-extern void func_ov000_0218b700(u8 *p, s32 a, s32 b);
 extern void func_0203f2b8(void *p);
-
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 7;
-};
 
 static inline BOOL Ov009Game_IsVer(Ov009Ver v) {
     FieldState *g = data_ov000_021ccd54;
@@ -48,7 +41,7 @@ static inline BOOL Ov009Game_IsVer(Ov009Ver v) {
 
 void func_ov009_0220d2d8(Ov009ActPair110 *self) {
     void *saved;
-    u8 *p;
+    GroupNode *p;
     func_ov003_021d112c(self);
     if (Ov009Game_IsVer(data_ov009_02216004[0])) {
         u16 v = self->hp[1] >> 1;
@@ -71,7 +64,7 @@ void func_ov009_0220d2d8(Ov009ActPair110 *self) {
     data_02097dd0->cur = saved;
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
-        ((Ov009Byte *)(p + 0xa2))->b0 = 0;
+        p->flags.unk_0 = 0;
         func_ov000_0218b700(p, 0x3000, 0);
     }
     self->unk_fc = self->unk_f0;
@@ -412,18 +405,11 @@ void func_ov009_0220dd84(Ov009ActVt_02217f60 *self) {
 namespace m_0220dfe8 {
 extern "C" {
 
-extern u8 *Group_FindNode(void *mgr, u16 id);
-extern void func_ov000_0218b700(u8 *p, s32 a, s32 b);
 extern void func_0203f2b8(void *p);
-
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 7;
-};
 
 void Ov009ActVt_02217eb4_Start(Ov009ActVt_02217eb4 *self) {
     void *saved;
-    u8 *p;
+    GroupNode *p;
     func_ov003_021d112c(self);
     self->unk_f0 = self->pos;
     self->pos.y -= 0x1e000;
@@ -441,7 +427,7 @@ void Ov009ActVt_02217eb4_Start(Ov009ActVt_02217eb4 *self) {
     data_02097dd0->cur = saved;
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
-        ((Ov009Byte *)(p + 0xa2))->b0 = 0;
+        p->flags.unk_0 = 0;
         func_ov000_0218b700(p, 0x3000, 0);
     }
     self->unk_fc = self->unk_f0;
@@ -1787,23 +1773,17 @@ void func_ov009_02210848(Ov009ActVt_02217e08 *self) {
     func_ov003_021d6054(self);
 }
 
-extern u8 *Group_FindNode(void *mgr, u16 id);
-
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 7;
-};
 
 void Ov009ActVt_02217c04_Start(Ov009ActVt_02217c04 *self) {
     ActorSub48 *s48;
-    u8 *p;
+    GroupNode *p;
     func_ov003_021d112c(self);
     s48 = self->hit;
     s48->unk_9a_1 = 0;
     s48->unk_9a_4 = 0;
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
-        ((Ov009Byte *)(p + 0xa2))->b0 = 0;
+        p->flags.unk_0 = 0;
     }
     self->unk_f0 = self->pos;
     self->unk_93_4 = 1;

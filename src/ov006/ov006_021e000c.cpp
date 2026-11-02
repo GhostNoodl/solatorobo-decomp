@@ -56,13 +56,13 @@ void func_ov006_021df44c(ov006_Win021e000c *self);
 
 static inline void ov006_Unk021e000c_Kill(int id) {
     if (id != -1) {
-        Object *o = (Object *)func_020657b0(data_0214a420, id);
+        VObj *o = (VObj *)func_020657b0(data_0214a420, id);
         if (o != NULL) {
             void *saved = data_02097dd0->cur;
             data_02097dd0->cur = data_02097dd0->heapHi;
             if (o != NULL) {
                 if (o != NULL) {
-                    o->vtbl->dtor(o);
+                    o->vfunc_04();
                 }
             }
             data_02097dd0->cur = saved;

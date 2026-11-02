@@ -34,7 +34,7 @@ void func_ov009_022143d8(Ov009ActExVt_0221828c *self) {
         s48->unk_9a_0 = 0;
         s48->unk_9a_3 = 0;
         func_0203f364(s48);
-        FLD(u8, self, 0xce) = 0;
+        self->unk_ce_u = 0;
         if (self->kind == 0x408f) {
             ActorSub44 *s44 = self->unk_44;
             s44->unk_22_0 = 0;
@@ -42,7 +42,7 @@ void func_ov009_022143d8(Ov009ActExVt_0221828c *self) {
         }
         self->fsm->st++;
     }
-    self->unk_94_1 = FLD(u8, self, 0xce);
+    self->unk_94_1 = self->unk_ce_u;
 }
 
 }

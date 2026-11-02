@@ -4,17 +4,9 @@
 
 extern "C" {
 
-extern u8 *Group_FindNode(void *mgr, u16 id);
-
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 4;
-    u8 b5 : 1;
-    u8 b6 : 2;
-};
 
 void func_ov009_021fc7c0(Ov003Actor *self) {
-    u8 *p;
+    GroupNode *p;
     func_ov003_021d112c(self);
     if (self->unk_1a == 0) {
         return;
@@ -22,7 +14,7 @@ void func_ov009_021fc7c0(Ov003Actor *self) {
     self->pos.y += 0x4000;
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
-        ((Ov009Byte *)(p + 0xa2))->b0 = 0;
+        p->flags.unk_0 = 0;
     }
     self->fsm->flags |= 0x100000000ULL;
     self->targetObj->unk_18 |= 2;

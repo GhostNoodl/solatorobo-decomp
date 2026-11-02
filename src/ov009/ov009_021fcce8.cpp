@@ -3,20 +3,12 @@
 
 extern "C" {
 
-extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void SndMgr_LoadHeapState(SndMgr *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
 extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
 
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 4;
-    u8 b5 : 1;
-    u8 b6 : 2;
-};
-
 void Ov009ActVt_02216750_Init(Ov009ActVt_02216750 *self) {
-    u8 *p;
+    GroupNode *p;
     func_ov003_021d0fc0(self);
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     if (self->kind != 0x5038 && self->kind != 0x5044) {
@@ -26,7 +18,7 @@ void Ov009ActVt_02216750_Init(Ov009ActVt_02216750 *self) {
     self->unk_18 = 1;
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
-        ((Ov009Byte *)(p + 0xa2))->b5 = 1;
+        p->flags.unk_5 = 1;
     }
     if (self->kind != 0x5044) {
         return;

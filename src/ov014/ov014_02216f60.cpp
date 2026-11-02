@@ -689,7 +689,7 @@ void func_ov014_021fbd50(Ov014Act_021fa6a0 *self) {
 Ov014ActEx_021fbd64 *Ov014ActEx_021fbd64_Ctor(Ov014ActEx_021fbd64 *self) {
     ActorEx_Ctor(self);
     *(void **)self = data_ov014_022172c4;
-    FLD(u8, self, 0xce) = 0;
+    self->unk_ce_u = 0;
     self->unk_d0 = NULL;
     return self;
 }

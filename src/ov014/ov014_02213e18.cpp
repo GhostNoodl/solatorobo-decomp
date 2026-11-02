@@ -1,17 +1,5 @@
 #include "ov014/ov014.h"
 
-struct Ov014Watch {
-    u8 unk_00[4];
-    u16 ids[2];
-    u16 count;
-    u8 unk_0a;
-    u8 unk_0b;
-    s32 timer;
-    s32 step;
-    s32 mode;
-    u32 wait;
-};
-
 extern "C" {
 
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);

@@ -16,22 +16,6 @@ typedef struct ov006_Entry021da208 {
     int unk40;
 } ov006_Entry021da208;
 
-typedef struct ov006_Task021da208 {
-    void *vtbl;
-    u32 flags;
-    int unk8;
-    int unkC;
-    UiList021cb4a8 *unk10;
-    ov006_HudList *unk14;
-    Lo021cae48 *unk18;
-    Lo021cae48 *unk1C;
-    Lo021cb5a8 *unk20;
-    Lo021cad50 *unk24;
-    Lo021cb0b8 *unk28;
-    u8 unk2C[0xc];
-    int unk38;
-} ov006_Task021da208;
-
 extern "C" {
 
 extern void *data_ov000_021cca40;
@@ -88,7 +72,7 @@ static inline void ov006_Entry_Set(ov006_Entry021da208 *e, void *res, const ov00
     e->unk40 = price * cnt;
 }
 
-void func_ov006_021da208(ov006_Task021da208 *self) {
+void func_ov006_021da208(ov006_Task021ec040 *self) {
     void *res = ov006_GetRes();
     u8 n = data_ov006_021ec884->lap;
     const ov006_Price021da208 *base;
@@ -196,7 +180,7 @@ void func_ov006_021da208(ov006_Task021da208 *self) {
     self->unk28->text = (char *)MsgRes_GetString(ov006_GetRes(), 0x26);
     self->unk28->key = 0;
     self->unk28->onDecide = func_ov006_021da19c;
-    self->unk28->owner = self->unk2C;
+    self->unk28->owner = &self->unk2C;
     self->unk28->vfunc_08();
     self->unk28->posZ = -0x1666;
     self->unk28->flags |= 2;

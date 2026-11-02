@@ -8,7 +8,7 @@ extern Actor *Target_Get(ActorSub4c *p);
 
 void func_ov009_02214360(Ov009ActExVt_0221828c *self, ActorMsg *msg) {
     if (msg->type == 6) {
-        FLD(u8, self, 0xce) = msg->unk_08;
+        self->unk_ce_u = msg->unk_08;
         self->msg_flags |= 1 << msg->type;
         msg->type = 0;
     }

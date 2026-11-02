@@ -1,27 +1,17 @@
 #include "ov006/Tasks.h"
-
-struct ov006_TaskCDF : public Task {
-    int unk3C;
-    int unk40;
-    u8 unk44;
-    int unk48;
-    int unk4C;
-    int unk50;
-    int unk54;
-    int unk58;
-};
+#include "ov006/Emblem.h"
 
 extern "C" {
 
 extern void *data_ov006_021ebe40;
 
-ov006_TaskCDF *func_ov006_021cdfc4(void) {
-    ov006_TaskCDF *self = (ov006_TaskCDF *)Heap_Alloc(sizeof(ov006_TaskCDF));
+ov006_Emblem *func_ov006_021cdfc4(void) {
+    ov006_Emblem *self = (ov006_Emblem *)Heap_Alloc(sizeof(ov006_Emblem));
     if (self != NULL) {
         OV006_TASKBASE_CTOR(self);
         *(void **)self = &data_ov006_021ebe40;
-        self->unk3C = 0;
-        self->unk40 = 0;
+        self->unk3C = NULL;
+        self->unk40 = NULL;
         self->unk44 = 0;
         self->unk48 = 0;
         self->unk4C = 0;

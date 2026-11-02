@@ -15,12 +15,12 @@ Ov013ActEx_022065ac *Ov013ActEx_022065ac_Ctor(Ov013ActEx_022065ac *self) {
     return self;
 }
 
-void func_ov013_022065d8(Ov003Actor *self, u16 a) {
-    FLD(u16, self, 0xf6) = a;
+void func_ov013_022065d8(Ov013ActEx_022065ac *self, u16 a) {
+    self->unk_f6 = a;
 }
 
-void func_ov013_022065e0(Ov003Actor *self, u8 a) {
-    FLD(u8, self, 0xf4) = a;
+void func_ov013_022065e0(Ov013ActEx_022065ac *self, u8 a) {
+    self->unk_f4 = a;
 }
 
 void func_ov013_022065e8(Ov013ActEx_022065ac *self) {
@@ -31,9 +31,9 @@ void func_ov013_022065e8(Ov013ActEx_022065ac *self) {
         self->rot_y = FX_Atan2(self->vel.x, self->vel.z);
     }
     if (self->unk_f4 != 0 && ((s32)self->unk_bc) != 0) {
-        void *p = func_020657b0(data_0214a420, ((s32)self->unk_bc));
+        EffectObj *p = func_020657b0(data_0214a420, ((s32)self->unk_bc));
         if (p != NULL) {
-            FLD(s32, p, 0xc8) = -1;
+            p->loopCount = -1;
         }
     }
 }

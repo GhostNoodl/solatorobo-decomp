@@ -10,6 +10,8 @@
 #include "ov000/Model0218fe1c.h"
 #include "ov006/MsgBox.h"
 #include "ov006/Caption.h"
+#include "ov006/Label.h"
+#include "ov006/Gauge.h"
 
 /* Task with vtable data_ov006_021ebd40 (0x58 bytes). */
 struct ov006_TaskCE : public ov006_TaskBase {
@@ -44,22 +46,6 @@ struct ov006_TaskD0C : public Task {
     Lo021cad50 *unk124;
 };
 
-/* A gauge (vtable data_ov006_021ec20c, 0x24 bytes, ctor Ov006Vt_021ec20c_Ctor): func_ov006_021e139c
-   sets its ratio unkC = a / b. */
-typedef struct ov006_Unk021e139c {
-    void *vtbl;
-    u8 unk4;
-    u8 unk5;
-    u8 unk6[2];
-    int unk8;
-    int unkC;
-    int unk10;
-    int x;
-    int y;
-    int unk1C;
-    int unk20;
-} ov006_Unk021e139c;
-
 typedef struct ov006_Vec32 {
     s32 x, y, z;
 } ov006_Vec32;
@@ -91,21 +77,29 @@ struct ov006_TaskD1F : public ov006_TaskBase {
     Lo021cb0b8 *unk60;
     Lo021cad50 *unk64;
     ov006_Caption *unk68;
-    ov006_Unk021e139c *gauges[4];
+    ov006_Gauge *gauges[4];
 };
 
-typedef struct ov006_Model60 {
-    s16 unk0;
-    u8 unk2;
-    u8 unk3;
-    u8 unk4[0xc];
-    char unk10[0x20];
-    char unk30[0x18];
-    void **unk48;
-    char unk4C[0x20];
-    char unk6C[0x20];
-} ov006_Model60;
-typedef struct ov006_Obj58 ov006_Obj58;
+/* Task with vtable data_ov006_021ec040 (0x44 bytes, ctor Ov006Vt_021ec040_Ctor), created by
+   func_ov006_021cd2c8 for task type 2. func_ov006_021da208 builds its windows, func_ov006_021da098
+   sums unk38 from the price tables, func_ov006_021d96a8 runs it and func_ov006_021d9fc0 draws it. */
+struct ov006_Task021ec040 : public ov006_Task {
+    UiList021cb4a8 *unk10;
+    ov006_HudList *unk14;
+    Lo021cae48 *unk18;
+    Lo021cae48 *unk1C;
+    Lo021cb5a8 *unk20;
+    Lo021cad50 *unk24;
+    Lo021cb0b8 *unk28;
+    int unk2C;          // the unk28 dialog's owner: func_ov006_021da19c writes the choice here
+    int unk30;
+    int unk34;
+    u32 unk38;
+    u8 unk3C;
+    u8 unk3D;
+    u16 unk3E[2];       // sent with unk3C by ov006_Menu_SetOwnEntry
+};
+
 /* Vtable data_ov006_021ec1fc (0x30 bytes, ctor Ov006Vt_021ec1fc_Ctor). */
 typedef struct ov006_Obj13C {
     void *vtbl;
@@ -151,13 +145,13 @@ struct ov006_TaskD37 : public Task {
     u8 unk4E[2];
     UiList *unk50;
     Lo021cadcc *unk54;
-    ov006_Obj58 *unk58;
+    ov006_Label *unk58;
     Lo021cb0b8 *unk5C;
-    ov006_Model60 *unk60;
+    ActorRes *unk60;
     Model0218fe1c *unk64;
-    ov006_Model60 *unk68;
+    ActorRes *unk68;
     Model0218fe1c *unk6C;
-    ov006_Model60 *unk70;
+    ActorRes *unk70;
     ov006_Anm74 *anm;
     u8 animLoop;
     u8 unk79;
@@ -178,7 +172,7 @@ extern char data_ov006_021ebbde[];
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 
 extern void *data_ov000_021ccd44;
-extern void *data_ov000_021ccd40;
+extern Task *data_ov000_021ccd40; // the task that is finishing
 extern s32 data_ov000_021ccd38;
 extern s32 data_02097d78[];
 
@@ -222,9 +216,9 @@ static inline BOOL ov006_IsMode4(void) {
     return r;
 }
 
-static inline void ov006_SetCurrent021ccd40(void *p) {
+static inline void ov006_SetCurrent021ccd40(Task *p) {
     if (data_ov000_021ccd40 != NULL) {
-        data_ov000_021ccd38 = *(s32 *)((u8 *)data_ov000_021ccd40 + 0x14);
+        data_ov000_021ccd38 = data_ov000_021ccd40->id;
     } else {
         data_ov000_021ccd38 = 0;
     }

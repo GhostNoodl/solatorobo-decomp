@@ -79,7 +79,7 @@ void Ov009Multi_Start(Ov009Multi *self) {
         func_ov000_02190758(&self->models[i], &self->rot_x, 0);
     }
     self->unk_490 = 4;
-    FLD(void *, self->hp, 0x18) = (void *)func_ov009_02207cc4;
+    self->hpObj->unk_18 = (u32)func_ov009_02207cc4;
     self->unk_ea_6 = 1;
 }
 

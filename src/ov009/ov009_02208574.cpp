@@ -9,14 +9,6 @@ extern void func_ov000_021911c8(Model0218fe1c *m, s16 a);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnClamped(Ov003Actor *self, u16 ang, u16 b, s32 c, s32 d);
 extern void func_0203f2b8(void *p);
-extern u8 *Group_FindNode(void *mgr, u16 id);
-
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 4;
-    u8 b5 : 1;
-    u8 b6 : 2;
-};
 
 static inline Ov003Actor *Ov009_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -201,13 +193,13 @@ BOOL func_ov009_02208764(Ov003Actor *self) {
 }
 
 void func_ov009_02208788(Ov003Actor *self) {
-    u8 *p;
+    GroupNode *p;
     func_ov003_021d0fc0(self);
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
-        Ov009Byte *b = (Ov009Byte *)(p + 0xa2);
-        b->b0 = 0;
-        b->b5 = 1;
+        GroupNodeFlags *b = &p->flags;
+        b->unk_0 = 0;
+        b->unk_5 = 1;
     }
 }
 

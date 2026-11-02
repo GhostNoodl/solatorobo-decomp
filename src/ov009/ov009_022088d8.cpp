@@ -87,7 +87,6 @@ static inline s32 Ov009_DistXZ(const VecFx32 *a, const VecFx32 *b) {
 // p->end.x reads in case 3 are one load across the unk_9c store (round qpC).
 extern const Ov009Path data_ov009_02215fbc[];
 extern char data_ov009_022172c7[];
-extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_ov000_021911c8(Model0218fe1c *m, s16 a);
 extern s16 *func_ov000_02191318(Model0218fe1c *m, s32 a);
 extern void func_ov000_02191780(Model0218fe1c *m);
@@ -149,11 +148,11 @@ void func_ov009_02208b24(Ov003Actor *self) {
         break;
     case 5:
         if (self->unk_18 == 2) {
-            u8 *o = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+            GroupNode *o = Group_FindNode(data_ov000_021ccd64, self->unk_20);
             if (o != NULL) {
                 s32 off;
-                self->rot_y = FLD(u16, o, 0x96);
-                v = FLD(VecFx32, o, 0x88);
+                self->rot_y = o->rot.y;
+                v = o->pos;
                 off = p->end.y;
                 self->unk_b8 = v;
                 v.y += off;

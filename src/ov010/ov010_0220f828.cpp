@@ -768,11 +768,15 @@ static inline s32 Ov010k_Mul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
 }
 
-// Idle/Mode/GetA/GetB keep the FLD read of `on`: as b->on they change the code of
-// func_ov010_02201064 (SetA/SetB take the member).
+// Idle/Mode/GetRx/GetRy read `on` through a const view: as b->on they change the code of
+// func_ov010_02201064 (SetRx/SetRy take the member).
+static inline u8 Ov010Beam_On(const Ov010Beam *b) {
+    return b->on;
+}
+
 static inline BOOL Ov010Beam_Idle(Ov010Beam *b) {
     BOOL r = TRUE;
-    if (FLD(u8, b, 0) != 0) {
+    if (Ov010Beam_On(b) != 0) {
         r = b->st.current == 5;
     }
     return r;
@@ -780,7 +784,7 @@ static inline BOOL Ov010Beam_Idle(Ov010Beam *b) {
 
 static inline s32 Ov010Beam_Mode(Ov010Beam *b) {
     s32 r = 0;
-    if (FLD(u8, b, 0) != 0) {
+    if (Ov010Beam_On(b) != 0) {
         r = b->mode;
     }
     return r;
@@ -788,7 +792,7 @@ static inline s32 Ov010Beam_Mode(Ov010Beam *b) {
 
 static inline u16 Ov010Beam_GetRx(Ov010Beam *b) {
     u16 r = 0;
-    if (FLD(u8, b, 0) != 0 && !Ov010Beam_Idle(b)) {
+    if (Ov010Beam_On(b) != 0 && !Ov010Beam_Idle(b)) {
         r = b->rx;
     }
     return r;
@@ -805,7 +809,7 @@ static inline void Ov010Beam_SetRx(Ov010Beam *b, u16 v) {
 
 static inline u16 Ov010Beam_GetRy(Ov010Beam *b) {
     u16 r = 0;
-    if (FLD(u8, b, 0) != 0 && !Ov010Beam_Idle(b)) {
+    if (Ov010Beam_On(b) != 0 && !Ov010Beam_Idle(b)) {
         r = b->ry;
     }
     return r;

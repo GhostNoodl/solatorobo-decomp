@@ -6,7 +6,7 @@
 
 extern "C" {
 
-extern ObjectVtbl data_ov006_021ec434;
+extern u8 data_ov006_021ec434[];
 extern u8 data_ov006_021eb840[];
 
 int func_ov006_021e4674(ov006_Unk021ec888 *self);
@@ -43,7 +43,7 @@ static inline BOOL ov006_KeyEq(const u8 *a, const u8 *b) {
 static inline ov006_MenuNode *ov006_MenuNode_New(void) {
     ov006_MenuNode *n = (ov006_MenuNode *)Heap_Alloc(sizeof(ov006_MenuNode));
     if (n != NULL) {
-        n->vtbl = &data_ov006_021ec434;
+        *(void **)n = data_ov006_021ec434;
         n->id = 0;
         n->count = 0;
         n->timer = 0;

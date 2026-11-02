@@ -1,23 +1,19 @@
 #include "ov006/Anim.h"
-
-typedef struct ov006_Unk021e13c8 {
-    u8 unk0[0x20];
-    TextWin *unk20;
-} ov006_Unk021e13c8;
+#include "ov006/Gauge.h"
 
 extern "C" {
 
-void func_ov006_021e13c8(ov006_Unk021e13c8 *self, int a) {
-    if (self->unk20 == NULL) {
+void func_ov006_021e13c8(ov006_Gauge *self, int a) {
+    if (self->text == NULL) {
         return;
     }
-    self->unk20->unk_vf08();
-    self->unk20->font = 3;
-    self->unk20->unk_2c = 4;
-    self->unk20->unk_34 = 0;
-    ov006_TextWin_Start(self->unk20, a);
-    TextWin_InitLines(self->unk20, 8);
-    self->unk20->flags |= 4;
+    self->text->unk_vf08();
+    self->text->font = 3;
+    self->text->unk_2c = 4;
+    self->text->unk_34 = 0;
+    ov006_TextWin_Start(self->text, a);
+    TextWin_InitLines(self->text, 8);
+    self->text->flags |= 4;
 }
 
 }

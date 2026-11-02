@@ -225,13 +225,7 @@ Ov009ActVt_02216dcc *Ov009ActVt_02216dcc_DtorDelete(Ov009ActVt_02216dcc *self) {
     Heap_Free(self);
     return self;
 }
-extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_0203f2b8(void *p);
-
-struct Ov009ByteA2 {
-    u8 b0 : 1;
-    u8 b1 : 7;
-};
 
 static inline void Ov009_VecSet3(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
@@ -240,7 +234,7 @@ static inline void Ov009_VecSet3(VecFx32 *v, s32 x, s32 y, s32 z) {
 }
 
 void Ov009ActVt_022178f0_Start(Ov009ActVt_022178f0 *self) {
-    u8 *p;
+    GroupNode *p;
     func_ov003_021d112c(self);
     self->unk_f0 = self->pos;
     self->pos.y -= 0xc000;
@@ -264,7 +258,7 @@ void Ov009ActVt_022178f0_Start(Ov009ActVt_022178f0 *self) {
     Ov009_VecSet3(&self->unk_44->unk_0c, 0x3800, self->centerY, 0);
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
-        ((Ov009ByteA2 *)(p + 0xa2))->b0 = 0;
+        p->flags.unk_0 = 0;
     }
     self->unk_10c = -1;
 }

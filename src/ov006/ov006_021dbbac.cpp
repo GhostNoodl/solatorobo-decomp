@@ -1,61 +1,40 @@
-#include "ov006/ov006.h"
-
-typedef struct ov006_Sub021dbbac {
-    void *vtbl;
-    s8 unk4;
-    u8 unk5[0x1f];
-    s8 unk24;
-    u8 unk25[0x1f];
-    int unk44;
-    u8 unk48[4];
-    u8 unk4C[0x20];
-    s8 unk6C;
-} ov006_Sub021dbbac;
-
-typedef struct ov006_Unk021dbbac {
-    void *vtbl;
-    u8 unk4;
-    u8 unk5[3];
-    ov006_Sub021dbbac sub;
-    u8 unk78[0x1c];
-    u8 unk94;
-} ov006_Unk021dbbac;
+#include "ov006/Label.h"
 
 extern "C" {
 
-static inline void ov006_Sub021dbbac_Stop(ov006_Sub021dbbac *sub) {
-    if (sub->unk24 != 0 || sub->unk4 != 0) {
-        VCALL(sub, 0c);
+static inline void ov006_ResHandle_Close(ov006_ResHandle *res) {
+    if (res->name[0] != 0 || res->arcName[0] != 0) {
+        res->vfunc_0c();
     }
-    VCALL(sub, 08);
+    res->vfunc_08();
 }
 
-void func_ov006_021dbbac(ov006_Unk021dbbac *self) {
-    switch (self->unk4) {
+void func_ov006_021dbbac(ov006_ResLoader *self) {
+    switch (self->step) {
     case 0:
-        if (!self->unk94) {
+        if (!self->request) {
             return;
         }
-        ov006_Sub021dbbac_Stop(&self->sub);
-        self->sub.unk44 = 2;
-        if (self->sub.unk6C != 0) {
-            VCALL(&self->sub, 24, self->sub.unk4C, &self->sub.unk6C);
+        ov006_ResHandle_Close(&self->res);
+        self->res.type = 2;
+        if (self->name[0] != 0) {
+            self->res.vfunc_24(self->arcName, self->name);
         } else {
-            VCALL(&self->sub, 1c, self->sub.unk4C);
+            self->res.vfunc_1c(self->arcName);
         }
-        self->unk94 = 0;
-        self->unk4++;
+        self->request = 0;
+        self->step++;
         break;
     case 1:
-        if (VCALL(&self->sub, 2c)) {
-            self->unk4++;
+        if (self->res.vfunc_2c()) {
+            self->step++;
         }
         break;
     case 2:
-        if (!self->unk94) {
-            VCALL(&self->sub, 30);
+        if (!self->request) {
+            self->res.vfunc_30();
         }
-        self->unk4 = 0;
+        self->step = 0;
         break;
     }
 }

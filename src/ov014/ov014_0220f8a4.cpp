@@ -74,24 +74,12 @@ void func_ov014_0220f8e4(u8 *self) {
     FLD(u8, self, 0x92) = 3;
 }
 
-struct Ov014Ctl154 {
-    void *vt;
-    u16 slots[2];
-    u16 unk_08;
-    u8 unk_0a;
-    u8 unk_0b;
-    s32 unk_0c;
-    s32 unk_10;
-    s32 unk_14;
-    s32 unk_18;
-};
-
 // arg is the actor that owns the list.
 void func_ov014_0220f8fc(Ov003ScriptList *self, Ov014Act_0220f9d0 *a) {
     u16 pct = a->hp[0] * 100 / a->hp[1];
     u16 s;
     if (a->unk_154 != NULL) {
-        s = ((Ov014Ctl154 *)a->unk_154)->unk_08;
+        s = a->unk_154->count;
     } else {
         s = 0;
     }
@@ -139,10 +127,10 @@ Ov003Actor *Ov014Act_0220f9d0_Ctor(Ov014Act_0220f9d0 *self) {
 static inline void Ov014_Free154(Ov014Act_0220f9d0 *self) {
     void *saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
-    if (((Ov014V *)self->unk_154) != NULL) {
-        Ov014V *p = ((Ov014V *)self->unk_154);
+    if (self->unk_154 != NULL) {
+        Ov014Watch *p = self->unk_154;
         if (p != NULL) {
-            p->v04();
+            p->vfunc_04();
         }
         self->unk_154 = NULL;
     }
@@ -201,7 +189,7 @@ void func_ov014_0220fc00(Ov014Act_0220f9d0 *self, Ov014Msg *msg) {
 
 void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
     Model0218fe1c *m;
-    Ov014Ctl154 *p;
+    Ov014Watch *p;
     func_ov003_021d112c(self);
     self->pos.x = 0;
     self->pos.y = 0;
@@ -248,16 +236,16 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
     self->model->flushVP = 1;
     self->model->renderUser = &self->unk_f0;
     self->model->boxTest = 0;
-    p = (Ov014Ctl154 *)Heap_Alloc(sizeof(Ov014Ctl154));
+    p = (Ov014Watch *)Heap_Alloc(sizeof(Ov014Watch));
     if (p != NULL) {
-        p->vt = data_ov014_02217db0;
-        MIi_CpuClear16(0xffff, p->slots, sizeof(p->slots));
-        p->unk_08 = 0;
+        *(void **)p = data_ov014_02217db0;
+        MIi_CpuClear16(0xffff, p->ids, sizeof(p->ids));
+        p->count = 0;
         p->unk_0a = 0;
         p->unk_0b = 0;
-        p->unk_10 = 0;
-        p->unk_14 = 0xffff;
-        p->unk_18 = 0;
+        p->step = 0;
+        p->mode = 0xffff;
+        p->wait = 0;
     }
     self->unk_154 = p;
     func_ov003_021cf1f0(&self->scripts, 0, 7, data_ov014_02216c80);
@@ -287,7 +275,7 @@ static inline void Ov014SpawnB_Init(Ov014SpawnDescB *d, u16 k) {
 
 extern VecFx32 data_ov014_02216c18[];
 extern Ov003Actor *func_ov000_0219bf90(void);
-extern BOOL func_ov014_02213cfc(void *p);
+extern BOOL func_ov014_02213cfc(Ov014Watch *self);
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, VecFx32 *pos, Ov014Vec16 *rot, u16 a);
 
 static inline BOOL Ov014_WaitB6(Ov003Actor *self) {
@@ -301,10 +289,10 @@ static inline BOOL Ov014_WaitB6(Ov003Actor *self) {
 }
 
 static inline void Ov014_SpawnPair(Ov014Act_0220f9d0 *self) {
-    Ov014Ctl154 *p = ((Ov014Ctl154 *)self->unk_154);
+    Ov014Watch *p = self->unk_154;
     u32 i;
     for (i = 0; i < 2; i++) {
-        if (p->slots[i] == 0xffff) {
+        if (p->ids[i] == 0xffff) {
             Ov014SpawnDescB desc;
             Ov014Vec16 rot;
             Ov003Actor *o;
@@ -314,7 +302,7 @@ static inline void Ov014_SpawnPair(Ov014Act_0220f9d0 *self) {
             rot.z = 0;
             o = Group_SpawnActor(data_ov000_021ccd64, &desc, &data_ov014_02216c18[i], &rot, 0xffff);
             o->flags_0 = 1;
-            p->slots[i] = o->id;
+            p->ids[i] = o->id;
         }
     }
 }
@@ -381,8 +369,8 @@ void Ov014Act_0220f9d0_Update(Ov014Act_0220f9d0 *self) {
         }
         break;
     case 10: {
-        Ov014Ctl154 *p = ((Ov014Ctl154 *)self->unk_154);
-        if (p->unk_0c == 0 && p->unk_08 == 0) {
+        Ov014Watch *p = self->unk_154;
+        if (p->timer == 0 && p->count == 0) {
             self->unk_b4 = 0x46;
             self->unk_b6 = 0xffff;
             break;
@@ -436,16 +424,16 @@ void Ov014Act_0220f9d0_Update(Ov014Act_0220f9d0 *self) {
         self->unk_b6 = self->step->b;
         break;
     case 0x1e: {
-        Ov014Ctl154 *p;
+        Ov014Watch *p;
         s32 v;
         self->fsm->flags |= 2;
         self->fsm->st = 0;
         v = self->step->op - 6;
-        p = ((Ov014Ctl154 *)self->unk_154);
+        p = self->unk_154;
         if (p->unk_0a != 0) {
-            p->unk_14 = v;
-            p->unk_10 = 0;
-            p->unk_18 = 0;
+            p->mode = v;
+            p->step = 0;
+            p->wait = 0;
         }
         self->unk_b4++;
         break;

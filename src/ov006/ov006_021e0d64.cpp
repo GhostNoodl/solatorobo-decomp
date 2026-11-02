@@ -6,7 +6,7 @@ extern "C" {
 
 extern void *data_ov006_021ec20c;
 
-ov006_Unk021e139c *Ov006Vt_021ec20c_Ctor(ov006_Unk021e139c *self) {
+ov006_Gauge *Ov006Vt_021ec20c_Ctor(ov006_Gauge *self) {
     self->vtbl = &data_ov006_021ec20c;
     self->unk4 = 0;
     self->unk8 = 0;
@@ -14,8 +14,8 @@ ov006_Unk021e139c *Ov006Vt_021ec20c_Ctor(ov006_Unk021e139c *self) {
     self->unk5 = 0;
     self->x = 0;
     self->y = 0;
-    self->unk1C = 0;
-    self->unk20 = 0;
+    self->model = NULL;
+    self->text = NULL;
     return self;
 }
 

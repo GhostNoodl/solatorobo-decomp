@@ -70,7 +70,7 @@ extern BOOL func_ov000_02191508(Model0218fe1c *m);
 void func_ov009_0220a750(Ov009ActVt_02217390 *self) {
     ActorSub40 *st = self->fsm;
     Model0218fe1c *m = self->model;
-    u32 f = FLD(u32, m, 0xe4);
+    u32 f = m->unk_e4;
     ActorSub44 *s44;
     switch (st->st) {
     case 0:

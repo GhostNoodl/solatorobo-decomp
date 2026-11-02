@@ -29,29 +29,22 @@ ov006_Task *Ov006Vt_021ec040_Ctor(void *mem);
 int func_ov006_021cd2c8(ov006_Manager *self);
 int func_ov006_021cd4c0(ov006_Manager *self);
 
-typedef struct {
-    void *vtbl;
-    u32 unk4;
-    u32 unk8;
-    u32 unkC;
-} ov006_Unk021ccda0;
-
-void func_ov006_021ccda0(ov006_Unk021ccda0 *self) {
-    self->vtbl = &data_ov006_021ebb58;
-    self->unk4 = 3;
-    self->unk8 = 0;
-    self->unkC = 0;
+void func_ov006_021ccda0(ov006_Task *self) {
+    *(void **)self = &data_ov006_021ebb58;
+    self->type = 3;
+    self->state = 0;
+    self->subState = 0;
 }
 
 void func_ov006_021ccdc4(void) {
 }
 
-void *func_ov006_021ccdc8(void *self) {
+ov006_Task *func_ov006_021ccdc8(ov006_Task *self) {
     Heap_Free(self);
     return self;
 }
 
-void func_ov006_021ccddc(void *self) {
+void func_ov006_021ccddc(ov006_Task *self) {
 }
 
 int func_ov006_021ccde0(void) {
@@ -198,7 +191,7 @@ int func_ov006_021cd0ac(ov006_Manager *self) {
 void func_ov006_021cd264(ov006_Manager *self) {
     ov006_Task *task = self->task;
     if (task != NULL && task->state >= 3) {
-        task->vtbl->unk1C((Object *)task);
+        task->vfunc_1c();
     }
     if (data_ov006_021ec888 != NULL) {
         func_ov006_021e4574(data_ov006_021ec888);
@@ -222,17 +215,6 @@ static inline void ov006_Update021ec888(void) {
 
 }
 
-struct TaskV {
-    virtual void v0();
-    virtual void v1();
-    virtual int unk8();
-    virtual int unkC();
-    virtual int unk10();
-    virtual int unk14();
-    virtual int unk18();
-    virtual int unk1C();
-};
-#define ov006_Task_Call(t, fn) (((TaskV *)(t))->fn())
 
 extern "C" {
 
@@ -278,31 +260,31 @@ BOOL func_ov006_021cd2c8(ov006_Manager *self) {
     if (task != NULL) {
         switch (task->state) {
         case 0:
-            if (!ov006_Task_Call(task, unk8)) {
+            if (!task->vfunc_08()) {
                 break;
             }
             task->state = 1;
             task->subState = zero;
         case 1:
-            if (!ov006_Task_Call(task, unkC)) {
+            if (!task->vfunc_0c()) {
                 break;
             }
             task->state = 2;
             task->subState = zero;
         case 2:
-            if (!ov006_Task_Call(task, unk10)) {
+            if (!task->vfunc_10()) {
                 break;
             }
             task->state = 3;
             task->subState = zero;
         case 3:
-            if (ov006_Task_Call(task, unk14)) {
+            if (task->vfunc_14()) {
                 break;
             }
             task->state = 4;
             task->subState = zero;
         case 4:
-            if (ov006_Task_Call(task, unk18)) {
+            if (task->vfunc_18()) {
                 task->state = 5;
                 task->subState = zero;
             }

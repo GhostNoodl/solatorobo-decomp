@@ -1,10 +1,6 @@
 #include "ov006/ov006.h"
+#include "ov000/ObjLayouts.h"
 #include "nitro/mi.h"
-
-typedef struct ov006_Flagged {
-    u8 unk0[0xc];
-    u32 flags;
-} ov006_Flagged;
 
 typedef struct ov006_TempBuffer {
     u32 unk0;
@@ -27,8 +23,8 @@ void OS_GetOwnerInfo(void *a);
 
 void func_ov006_021e5e00(ov006_Unk021ec888 *self) {
     ov006_ObjectHolder *holder = self->unk1D8;
-    ov006_Flagged *obj;
-    if (holder != NULL && (obj = (ov006_Flagged *)holder->obj) != NULL) {
+    Lo021cad50 *obj;
+    if (holder != NULL && (obj = holder->obj) != NULL) {
         obj->flags &= ~0x10000;
     }
 }

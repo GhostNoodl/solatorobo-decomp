@@ -1,4 +1,5 @@
 #include "ov006/ov006.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
@@ -8,9 +9,9 @@ void func_ov000_021736dc(void);
 void *func_0206ec48(u32 id);
 void func_0203cb78(s32 a, int b, int c);
 void func_ov006_021db65c(void);
-void func_ov006_021cd5a8(int type, void *obj);
+void func_ov006_021cd5a8(int type, UiList *obj);
 
-void func_ov006_021cddf8(int type, void *obj, int arg) {
+void func_ov006_021cddf8(int type, UiList *obj, int arg) {
     switch (type) {
     case 2:
         func_ov006_021db65c();
@@ -29,12 +30,12 @@ void func_ov006_021cddf8(int type, void *obj, int arg) {
         }
         break;
     case 5:
-        VCALL(obj, 74, func_0206ec48(0xb005), 0xb005, 0xffff, 0xffff);
-        VCALL(obj, 74, func_0206ec48(0xb006), 0xb006, 0xffff, 0xffff);
-        VCALL(obj, 74, func_0206ec48(0xb007), 0xb007, 0xffff, 0xffff);
-        VCALL(obj, 74, func_0206ec48(0xb008), 0xb008, 0xffff, 0xffff);
-        VCALL(obj, 74, func_0206ec48(0xb009), 0xb009, 0xffff, 0xffff);
-        VCALL(obj, 74, func_0206ec48(0xb00a), 0xb00a, 0xffff, 0xffff);
+        obj->vfunc_74(func_0206ec48(0xb005), 0xb005, 0xffff, 0xffff);
+        obj->vfunc_74(func_0206ec48(0xb006), 0xb006, 0xffff, 0xffff);
+        obj->vfunc_74(func_0206ec48(0xb007), 0xb007, 0xffff, 0xffff);
+        obj->vfunc_74(func_0206ec48(0xb008), 0xb008, 0xffff, 0xffff);
+        obj->vfunc_74(func_0206ec48(0xb009), 0xb009, 0xffff, 0xffff);
+        obj->vfunc_74(func_0206ec48(0xb00a), 0xb00a, 0xffff, 0xffff);
         break;
     default:
         func_ov006_021cd5a8(type, obj);

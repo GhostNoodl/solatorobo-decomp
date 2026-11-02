@@ -3,9 +3,9 @@
 typedef struct ov006_Unk021e14c8 {
     void *vtbl;
     u8 unk4[0x20];
-    Object *unk24;
+    VObj *unk24;
     Model *unk28;
-    Object *unk2C;
+    VObj *unk2C;
 } ov006_Unk021e14c8;
 
 extern "C" {

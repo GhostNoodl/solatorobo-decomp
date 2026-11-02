@@ -169,7 +169,7 @@ void func_ov010_02209074(EffectObj *p) {
 }
 
 extern s32 Ov003Vec_DistSq(const VecFx32 *a, const VecFx32 *b);
-BOOL func_ov010_022090b4(s32 type, const s32 *rect, const s32 *circ, const VecFx32 *p) {
+BOOL func_ov010_022090b4(s32 type, const s32 *rect, const Ov010Circle *circ, const VecFx32 *p) {
     BOOL r;
     switch (type) {
     case 0: {
@@ -184,9 +184,9 @@ BOOL func_ov010_022090b4(s32 type, const s32 *rect, const s32 *circ, const VecFx
         a.x = p->x;
         a.z = p->z;
         VecFx32 b = {0, 0, 0};
-        b.x = circ[0];
-        b.z = circ[2];
-        if (Ov003Vec_DistSq(&a, &b) > Ov010_FxMul(circ[3], circ[3])) {
+        b.x = circ->centre.x;
+        b.z = circ->centre.z;
+        if (Ov003Vec_DistSq(&a, &b) > Ov010_FxMul(circ->radius, circ->radius)) {
             r = TRUE;
         }
         break;

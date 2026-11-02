@@ -27,17 +27,17 @@ void func_ov000_0216295c(void *p, const void *v, int s);
 ov006_Caption *ov006_Caption_Ctor(ov006_Caption *self);
 void func_ov006_021e0954(ov006_Caption *self);
 void func_ov006_021e0ca8(ov006_Caption *self, void *text, int b);
-ov006_Unk021e139c *Ov006Vt_021ec20c_Ctor(ov006_Unk021e139c *self);
-void func_ov006_021e0f00(ov006_Unk021e139c *self);
-void func_ov006_021e13c8(ov006_Unk021e139c *self, void *text);
-void func_ov006_021e139c(ov006_Unk021e139c *self, int a, int b, u8 c);
+ov006_Gauge *Ov006Vt_021ec20c_Ctor(ov006_Gauge *self);
+void func_ov006_021e0f00(ov006_Gauge *self);
+void func_ov006_021e13c8(ov006_Gauge *self, void *text);
+void func_ov006_021e139c(ov006_Gauge *self, int a, int b, u8 c);
 void ov006_Slot_Pack(ov006_Slot *self, void *buf);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 void func_ov006_021d3498(ov006_TaskD1F *self, u16 id, BOOL dir);
 ov006_Unk020706a0 *func_020706a0(u16 id);
 void func_02043904(void *p);
 void func_02043b20(void *p);
-void func_ov000_02173648(void *self);
+void func_ov000_02173648(Task *self);
 BOOL func_ov006_021d1df8(UiList *window, UiListItem *node);
 BOOL func_ov006_021d1f00(UiList *window, UiListItem *node);
 
@@ -51,7 +51,7 @@ static inline void ov006_Caption_SetTextPos(ov006_Caption *c, int x, int y) {
     c->textY = y;
 }
 
-static inline void ov006_Gauge_SetPos(ov006_Unk021e139c *g, int x, int y) {
+static inline void ov006_Gauge_SetPos(ov006_Gauge *g, int x, int y) {
     g->x = x;
     g->y = y;
 }
@@ -135,7 +135,7 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     self->unk68->ofsY = -0x1e;
     y = -0x3e;
     for (i = 0; i < 4; i++) {
-        ov006_Unk021e139c *p = (ov006_Unk021e139c *)Heap_Alloc(sizeof(ov006_Unk021e139c));
+        ov006_Gauge *p = (ov006_Gauge *)Heap_Alloc(sizeof(ov006_Gauge));
         if (p != NULL) {
             p = Ov006Vt_021ec20c_Ctor(p);
         }

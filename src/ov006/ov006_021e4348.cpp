@@ -1,5 +1,6 @@
 #include "ov006/ov006.h"
 #include "ov006/Model.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct ov006_TempBuffer {
     u32 unk0;
@@ -10,11 +11,6 @@ typedef struct ov006_Unk02097e40 {
     u8 unk0[0x80];
     void *unk80;
 } ov006_Unk02097e40;
-
-typedef struct ov006_Stateful {
-    ObjectVtbl *vtbl;
-    int state;
-} ov006_Stateful;
 
 extern "C" {
 
@@ -48,7 +44,7 @@ static inline u32 ov006_GetOwnerName(void *dst, u32 size) {
     return size;
 }
 
-static inline BOOL ov006_Stateful_IsDone(ov006_Stateful *s) {
+static inline BOOL ov006_Stateful_IsDone(UiObj *s) {
     return s->state == 5 ? TRUE : FALSE;
 }
 
@@ -114,8 +110,8 @@ void func_ov006_021e4348(ov006_Unk021ec888 *self) {
     if (h->obj == NULL) {
         return;
     }
-    h->obj->vtbl->unk1C(h->obj);
-    if (!ov006_Stateful_IsDone((ov006_Stateful *)h->obj)) {
+    h->obj->vfunc_1c();
+    if (!ov006_Stateful_IsDone(h->obj)) {
         return;
     }
     OV006_DELETE_OBJECT(h->obj);
