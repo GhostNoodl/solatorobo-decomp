@@ -22,11 +22,11 @@ void func_ov002_021e9cec(void *dst, u32 size, void *src, int mode, u8 idx);
 
 void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx);
 
-void *func_ov002_021e9a50(void *a, void *b);
+Ov002Obj *func_ov002_021e9a50(void *a, void *b);
 
-void *func_ov002_021e9bd8(void *a, void *b);
+Ov002Obj *func_ov002_021e9bd8(void *a, void *b);
 
-void *func_ov002_021e9478(s32 a, s32 b, s32 c, s32 d, u16 e, s32 mode, u8 f, u8 g);
+Ov002Obj *func_ov002_021e9478(s32 a, s32 b, s32 c, s32 d, u16 e, s32 mode, u8 f, u8 g);
 
 typedef struct Hdr021eaf20 {
     s32 count;
@@ -87,13 +87,13 @@ void func_ov002_021eaf20(void *self) {
 
 void *Heap_AllocArray(u32 size);
 
-void *func_ov002_021e97e8(u8 *a, u8 *b);
+Ov002Obj *func_ov002_021e97e8(u8 *a, u8 *b);
 
-void *func_ov002_021e95c4(u8 *a, u8 *b);
+Ov002Obj *func_ov002_021e95c4(u8 *a, u8 *b);
 
 void func_ov002_021e772c(void *self, s32 v);
 
-void func_ov002_021e4dac(void *self, void *item);
+void func_ov002_021e4dac(Ov002Obj *self, void *item);
 
 typedef struct Hdr021eb0f8 {
     s32 count;
@@ -107,7 +107,7 @@ typedef struct Rec021eb0f8 {
 } Rec021eb0f8;
 
 typedef struct Ent021eb0f8 {
-    u8 *obj;
+    Ov002Obj *obj;
     s32 parent;
 } Ent021eb0f8;
 
@@ -126,29 +126,29 @@ void func_ov002_021eb0f8(void *self) {
     src = d + 0x10;
     tbl = (Ent021eb0f8 *)Heap_AllocArray(n * 8);
     for (i = 0; i < n; i++) {
-        u8 *obj;
+        Ov002Obj *obj;
         s32 k;
         s32 cnt;
         MI_CpuCopy8(src, &rec, 6);
         switch (rec.type) {
         case 0:
-            obj = (u8 *)func_ov002_021e97e8(NULL, NULL);
+            obj = func_ov002_021e97e8(NULL, NULL);
             break;
         case 1:
-            obj = (u8 *)func_ov002_021e95c4(NULL, NULL);
+            obj = func_ov002_021e95c4(NULL, NULL);
             func_ov002_021e772c(obj, 0x1e000);
             break;
         case 2:
-            obj = (u8 *)func_ov002_021e95c4(NULL, NULL);
+            obj = func_ov002_021e95c4(NULL, NULL);
             func_ov002_021e772c(obj, 0x28000);
             break;
         case 3:
-            obj = (u8 *)func_ov002_021e95c4(NULL, NULL);
+            obj = func_ov002_021e95c4(NULL, NULL);
             func_ov002_021e772c(obj, 0xf000);
             break;
         }
         FIELD(obj, 0x4c, s32) = rec.id;
-        FIELD(obj, 0x8, s32) = (i % 2) ? 2 : 1;
+        obj->unk_08 = (i % 2) ? 2 : 1;
         cnt = FIELD(self, 0x58, s32);
         for (k = 0; k < cnt; k++) {
             u8 *q = FIELD(self, 0x48, u8 **)[k];
@@ -163,10 +163,10 @@ void func_ov002_021eb0f8(void *self) {
     }
     for (i = 0; i < n; i++) {
         s32 par = tbl[i].parent;
-        u8 *o = tbl[i].obj;
+        Ov002Obj *o = tbl[i].obj;
         if (par >= 0) {
-            u8 *po = tbl[par].obj;
-            FIELD(o, 0x48, void *) = po;
+            Ov002Obj *po = tbl[par].obj;
+            o->owner = (struct Ov002Obj *)po;
             func_ov002_021e4dac(po, o);
         }
     }
@@ -267,8 +267,8 @@ void func_ov002_021eb298(void *self) {
     }
 }
 
-void *func_ov002_021e91c8(s32 a, s32 b, s32 c, bool d, u8 e);
-void func_ov002_021e50a8(void *obj, void *entry);
+Ov002Obj *func_ov002_021e91c8(s32 a, s32 b, s32 c, bool d, u8 e);
+void func_ov002_021e50a8(Ov002Obj021f07d4 *self, Ov002ObjLink *src);
 
 typedef struct Hdr021eb448 {
     s32 count;
@@ -287,11 +287,6 @@ typedef struct Rec021eb448 {
     u32 mask;
 } Rec021eb448;
 
-typedef struct Link021eb448 {
-    s32 id;
-    u8 unk4[0x18];
-} Link021eb448;
-
 void func_ov002_021eb448(void *self) {
     Hdr021eb448 hdr;
     Rec021eb448 rec;
@@ -306,7 +301,7 @@ void func_ov002_021eb448(void *self) {
     n = hdr.count;
     stride = hdr.stride;
     for (i = 0; i < n; i++) {
-        u8 *obj;
+        Ov002Obj021f07d4 *obj;
         u8 *s1;
         u8 *s2;
         u8 *s3;
@@ -318,20 +313,20 @@ void func_ov002_021eb448(void *self) {
         s32 m2;
         s32 k;
         MI_CpuCopy8(src, &rec, 0x18);
-        obj = (u8 *)func_ov002_021e91c8(rec.a, rec.b, rec.c, false, 0);
-        FIELD(obj, 0x4c, s32) = rec.id;
+        obj = (Ov002Obj021f07d4 *)func_ov002_021e91c8(rec.a, rec.b, rec.c, false, 0);
+        obj->unk_4c = rec.id;
         switch (rec.kind) {
         case 0:
-            FIELD(obj, 0x1f0, Bits8).b1 = 0;
-            FIELD(obj, 0x1f0, Bits8).b0 = 0;
+            obj->unk_1f0_1 = 0;
+            obj->unk_1f0_0 = 0;
             break;
         case 1:
-            FIELD(obj, 0x1f0, Bits8).b1 = 1;
-            FIELD(obj, 0x1f0, Bits8).b0 = 0;
+            obj->unk_1f0_1 = 1;
+            obj->unk_1f0_0 = 0;
             break;
         case 2:
-            FIELD(obj, 0x1f0, Bits8).b1 = 0;
-            FIELD(obj, 0x1f0, Bits8).b0 = 1;
+            obj->unk_1f0_1 = 0;
+            obj->unk_1f0_0 = 1;
             break;
         }
         switch (rec.speed) {
@@ -351,7 +346,7 @@ void func_ov002_021eb448(void *self) {
             spd = -0xa66;
             break;
         }
-        FIELD(obj, 0x20, s32) = spd;
+        obj->unk_20 = spd;
         off = 0x18;
         s1 = (rec.mask & 1) ? src + 0x18 : NULL;
         if (rec.mask & 1) {
@@ -362,12 +357,12 @@ void func_ov002_021eb448(void *self) {
             off += 0x18;
         }
         s3 = (rec.mask & 4) ? src + off : NULL;
-        FIELD(obj, 0x50, u8 *) = s1;
-        FIELD(obj, 0x54, u8 *) = s2;
-        FIELD(obj, 0x58, u8 *) = s3;
+        obj->unk_50 = (void *)s1;
+        obj->unk_54 = (void *)s2;
+        obj->unk_58 = (void *)s3;
         for (q = 0; q < FIELD(self, 0x50, s32); q++) {
-            Link021eb448 *l = &FIELD(self, 0x40, Link021eb448 *)[q];
-            if (l->id == FIELD(obj, 0x4c, s32)) {
+            Ov002ObjLink *l = &FIELD(self, 0x40, Ov002ObjLink *)[q];
+            if (l->id == obj->unk_4c) {
                 func_ov002_021e50a8(obj, l);
             }
         }
@@ -375,16 +370,16 @@ void func_ov002_021eb448(void *self) {
         for (j = 0; j < m; j++) {
             if (rec.id == FIELD(FIELD(self, 0x44, u8 **)[j], 0x5c, s32)) {
                 func_ov002_021e4dac(obj, FIELD(self, 0x44, u8 **)[j]);
-                FIELD(FIELD(self, 0x44, u8 **)[j], 0x48, u8 *) = obj;
-                FIELD(FIELD(self, 0x44, u8 **)[j], 0x8, s32) = FIELD(obj, 0x8, s32);
+                FIELD(FIELD(self, 0x44, u8 **)[j], 0x48, Ov002Obj *) = obj;
+                FIELD(FIELD(self, 0x44, u8 **)[j], 0x8, s32) = obj->unk_08;
             }
         }
         m2 = FIELD(self, 0x5c, s32);
         for (k = 0; k < m2; k++) {
             if (rec.id == FIELD(FIELD(self, 0x4c, u8 **)[k], 0x5c, s32)) {
                 func_ov002_021e4dac(obj, FIELD(self, 0x4c, u8 **)[k]);
-                FIELD(FIELD(self, 0x4c, u8 **)[k], 0x48, u8 *) = obj;
-                FIELD(FIELD(self, 0x4c, u8 **)[k], 0x8, s32) = FIELD(obj, 0x8, s32);
+                FIELD(FIELD(self, 0x4c, u8 **)[k], 0x48, Ov002Obj *) = obj;
+                FIELD(FIELD(self, 0x4c, u8 **)[k], 0x8, s32) = obj->unk_08;
             }
         }
         if (FIELD(self, 0x60, u8 *) != NULL && s1 != NULL && s2 != NULL) {

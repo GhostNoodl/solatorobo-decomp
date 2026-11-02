@@ -31,22 +31,22 @@ static inline void ov002_Menu_Close(void *self) {
     }
 }
 
-void func_ov002_021db2a4(void *self) {
+void func_ov002_021db2a4(Obj021eff74 *self) {
     u16 id;
     u32 flags;
-    if (FIELD(self, 0x18, s32) >= 2) {
+    if (self->unk_18 >= 2) {
         return;
     }
-    if (FIELD(self, 0xc, void *) != NULL) {
-        if (ov002_Menu_IsBusy(FIELD(self, 0xc, u8 *))) {
+    if (self->unk_0c != NULL) {
+        if (ov002_Menu_IsBusy(((u8 *)self->unk_0c))) {
             return;
         }
-        if (!FIELD(self, 0xc, VObject *)->v0xc()) {
+        if (!self->unk_0c->vfunc_0c()) {
             return;
         }
     }
-    id = FIELD(ov002_Menu_GetSel(FIELD(self, 0xc, u8 *)), 0x6, u16);
-    if (FIELD(self, 0x14, s32) != id && FIELD(self, 0x10, void *) != NULL) {
+    id = FIELD(ov002_Menu_GetSel(((u8 *)self->unk_0c)), 0x6, u16);
+    if (self->unk_14 != id && self->unk_10 != NULL) {
         void *str;
         void *g = data_02149ef8;
         switch (id) {
@@ -63,22 +63,22 @@ void func_ov002_021db2a4(void *self) {
             str = data_ov002_021efe30;
             break;
         }
-        func_ov000_0215bb14(FIELD(self, 0x10, void *), str);
-        FIELD(self, 0x10, VObject *)->v0x70();
+        func_ov000_0215bb14(self->unk_10, str);
+        self->unk_10->vfunc_70();
     }
-    FIELD(self, 0x14, s32) = id;
-    flags = FIELD(self, 0x1c, u32);
+    self->unk_14 = id;
+    flags = self->unk_1c;
     if (flags & 1) {
         switch (id) {
         case 0:
             func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
-            FIELD(self, 0x8, s32) = 1;
+            self->unk_08 = 1;
             ov002_Menu_Close(self);
             break;
         case 1:
-            if (FIELD(self, 0x20, u8) == 0) {
+            if (self->unk_20 == 0) {
                 func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
-                FIELD(self, 0x8, s32) = 2;
+                self->unk_08 = 2;
                 ov002_Menu_Close(self);
             } else {
                 void *str;
@@ -86,29 +86,29 @@ void func_ov002_021db2a4(void *self) {
                 func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
                 g = data_02149ef8;
                 str = NULL;
-                if (FIELD(self, 0x20, u8) == 1) {
+                if (self->unk_20 == 1) {
                     str = MsgRes_GetString(g, 0xc0);
-                } else if (FIELD(self, 0x20, u8) == 2) {
+                } else if (self->unk_20 == 2) {
                     str = MsgRes_GetString(g, 0xc1);
                 }
                 if (str != NULL) {
-                    func_ov000_0215bb14(FIELD(self, 0x10, void *), str);
-                    FIELD(self, 0x10, VObject *)->v0x70();
+                    func_ov000_0215bb14(self->unk_10, str);
+                    self->unk_10->vfunc_70();
                 }
             }
             break;
         case 2:
             func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
-            FIELD(self, 0x8, s32) = 3;
+            self->unk_08 = 3;
             ov002_Menu_Close(self);
             break;
         }
     } else if (flags & 2) {
         func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
-        FIELD(self, 0x8, s32) = 3;
+        self->unk_08 = 3;
         ov002_Menu_Close(self);
     }
-    FIELD(self, 0x1c, u32) = 0;
+    self->unk_1c = 0;
 }
 
 }

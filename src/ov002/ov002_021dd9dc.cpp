@@ -73,9 +73,9 @@ static inline void ov002_Board_Add(void *self, void *node) {
         FIELD(self, 0x6c, void *) = node;
     }
     func_ov002_021da184(self, node);
-    if (FIELD(data_0214a424, 0x18, Bits021d9e38).mode == 1) {
+    if (data_0214a424->bits18.mode == 1) {
         func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
-        func_ov000_021c95ac((u8 *)self + 0x76, FIELD(data_0214a424, 0x18, Bits021d9e38).id | 0x8000);
+        func_ov000_021c95ac((u8 *)self + 0x76, data_0214a424->bits18.unk_3 | 0x8000);
     } else {
         func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
     }
@@ -84,9 +84,9 @@ static inline void ov002_Board_Add(void *self, void *node) {
 // `w` is an unused register parameter reused as a local: it has to be numbered
 // below every compiler temp, which only a parameter is. Each new piece reuses `a`
 // (the first loop's cursor), so it is a split web of `a` with the target's register.
-void func_ov002_021dd9dc(void *self, u8 *w) {
+void func_ov002_021dd9dc(Obj021eff10 *self, u8 *w) {
     Ent021dd9dc *e;
-    w = FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *);
+    w = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
     u8 *a;
     u8 *next;
     a = FIELD(w, 0x6c, u8 *);
@@ -112,7 +112,7 @@ void func_ov002_021dd9dc(void *self, u8 *w) {
                 func_ov002_021d7e54(a);
             }
             FIELD(a, 0x48, u16) = id;
-            VC(a, 0x8)();
+            ((VObj *)(a))->vfunc_08();
             if (FIELD(a, 0xac, s32) != 2) {
                 FIELD(a, 0xac, s32) = 2;
                 FIELD(a, 0xa4, s32) = 0;

@@ -6,26 +6,26 @@ static inline BOOL ov002_ResReady(void) {
     return (func_02035bd4(data_ov002_021ef3e4, data_ov002_021ef3f9, 2) & 1) ? TRUE : FALSE;
 }
 
-void func_ov002_021ce204(VObject *self) {
+void func_ov002_021ce204(Task021ef430 *self) {
     void *saved;
-    switch (FIELD(self, 0x8, s32)) {
+    switch (self->state) {
     case 8:
         break;
     case 0xc:
         func_ov000_0218084c(*(void **)&data_ov000_021ccd44, 0x12, 0);
-        self->v0x4c();
+        self->vfunc_4c();
         break;
     }
-    switch (FIELD(self, 0x4e, s8)) {
+    switch (self->unk_4e) {
     case 0:
         func_020359fc(data_ov002_021ef3e4, data_ov002_021ef3f9, 2, 0);
-        FIELD(self, 0x4f, u8) = 1;
-        FIELD(self, 0x4e, s8) = 1;
+        self->unk_4f = 1;
+        self->unk_4e = 1;
     case 1:
         if (!ov002_ResReady()) {
             return;
         }
-        FIELD(self, 0x4e, s8) = 2;
+        self->unk_4e = 2;
     case 2: {
         void *m = Heap_Alloc(0x160);
         if (m != NULL) {
@@ -37,47 +37,47 @@ void func_ov002_021ce204(VObject *self) {
                 STD_CopyString((char *)((u8 *)m + 0x2c), file);
             }
         }
-        FIELD(self, 0x3c, void *) = m;
-        func_020417e0((Model *)FIELD(self, 0x3c, void *), func_02034d88(func_02035f30(data_ov002_021ef3e4, data_ov002_021ef3f9, 2), data_ov002_021ef3f9));
-        FIELD(FIELD(self, 0x3c, void *), 0x6c, u32) |= 2;
-        func_02041d9c((Model *)FIELD(self, 0x3c, void *), 0, 0);
+        self->unk_3c = (Model *)m;
+        func_020417e0((Model *)self->unk_3c, func_02034d88(func_02035f30(data_ov002_021ef3e4, data_ov002_021ef3f9, 2), data_ov002_021ef3f9));
+        self->unk_3c->flags |= 2;
+        func_02041d9c((Model *)self->unk_3c, 0, 0);
         {
-            void *p = FIELD(self, 0x3c, void *);
+            void *p = self->unk_3c;
             FIELD(p, 0xfc, s32) = 0;
             FIELD(p, 0x100, s32) = 0;
         }
-        FIELD(FIELD(self, 0x3c, void *), 0x150, s32) = -0x1fe66;
-        FIELD(self, 0x4e, s8) = 3;
+        self->unk_3c->unk_150 = -0x1fe66;
+        self->unk_4e = 3;
         break;
     }
     case 3:
-        if (FIELD(self, 0x4d, u8) == 0) {
+        if (self->unk_4d == 0) {
             return;
         }
-        FIELD(self, 0x4d, u8) = 0;
+        self->unk_4d = 0;
         HEAP_PUSH(saved);
         {
-            void *p = FIELD(self, 0x3c, void *);
+            void *p = self->unk_3c;
             if (p != NULL) {
                 if (p != NULL) {
                     func_02041558((Model *)p);
                     func_02041278((PlttRes *)((u8 *)p + 0x88));
                     Heap_Free(p);
                 }
-                FIELD(self, 0x3c, void *) = NULL;
+                self->unk_3c = NULL;
             }
         }
         HEAP_POP(saved);
-        if (FIELD(self, 0x4f, u8) != 0) {
+        if (self->unk_4f != 0) {
             func_02035acc(data_ov002_021ef3e4, data_ov002_021ef3f9, 2);
         }
-        FIELD(self, 0x4f, u8) = 0;
-        FIELD(self, 0x4e, s8) = 4;
+        self->unk_4f = 0;
+        self->unk_4e = 4;
         break;
     case 4:
-        if (FIELD(self, 0x4c, u8) != 0) {
-            FIELD(self, 0x4c, u8) = 0;
-            FIELD(self, 0x4e, s8) = 0;
+        if (self->unk_4c != 0) {
+            self->unk_4c = 0;
+            self->unk_4e = 0;
         }
         break;
     }

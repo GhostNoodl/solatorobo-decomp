@@ -3,18 +3,18 @@
 extern "C" {
 
 void func_0204aab0(void *p);
-void func_ov002_021ce724(void *p);
-void func_ov002_021ce660(void *p, void *a);
-BOOL func_ov002_021d166c(void *self);
-BOOL func_ov002_021d178c(void *self);
+void func_ov002_021ce724(Task021ef4b0 *p);
+void func_ov002_021ce660(Task021ef4b0 *p, void *a);
+BOOL func_ov002_021d166c(Task021ef71c *self);
+BOOL func_ov002_021d178c(Task021ef71c *self);
 
 static inline void ov002_FreeParts(void *t) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(t, 0x3c, VObject *));
+    DELETE_VOBJ(FIELD(t, 0x3c, VObj *));
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(t, 0x40, VObject *));
+    DELETE_VOBJ(FIELD(t, 0x40, VObj *));
     HEAP_POP(saved);
 }
 
@@ -48,8 +48,8 @@ static inline void ov002_PlayBgm(u16 id) {
     }
 }
 
-void func_ov002_021d1258(void *self) {
-    switch (FIELD(self, 0x8, s32)) {
+void func_ov002_021d1258(Task021ef71c *self) {
+    switch (self->state) {
     case 8: {
         void *t = Task_FindById(0x15);
         void *o;
@@ -58,22 +58,22 @@ void func_ov002_021d1258(void *self) {
         }
         o = Task_FindById(0x12);
         if (o != NULL) {
-            FIELD(self, 0x6c, void *) = FIELD(o, 0x44, void *);
-            func_ov002_021ce724(o);
+            self->unk_6c = FIELD(o, 0x44, void *);
+            func_ov002_021ce724((Task021ef4b0 *)o);
         }
         o = Task_FindById(0x11);
         if (o != NULL) {
             FIELD(o, 0x4d, u8) = 1;
         }
         if (data_ov000_021ccd30 != NULL) {
-            FIELD(self, 0x69, u8) = ov002_HasActive(data_ov000_021ccd30);
-            if (FIELD(self, 0x69, u8) && FIELD(data_ov000_021ccd30, 0x118, void *) != NULL) {
+            self->unk_69 = ov002_HasActive(data_ov000_021ccd30);
+            if (self->unk_69 && FIELD(data_ov000_021ccd30, 0x118, void *) != NULL) {
                 func_ov000_0216f844(FIELD(data_ov000_021ccd30, 0x118, void *), 0);
             }
         }
         {
             u8 *m;
-            FIELD(data_02097e48.queue, 0x0, Bits16).b0 = 1;
+            data_02097e48.queue->flag0 = 1;
             FIELD(data_02097e48.queue, 0x0, u16) |= 8;
             m = (u8 *)data_02097e48.queue;
             if (FIELD(m, 0x0, Bits16).b3) {
@@ -87,17 +87,17 @@ void func_ov002_021d1258(void *self) {
             FIELD(m, 0x80, u16) = 0x8000;
             FIELD(m, 0x7c, u16) = 0;
         }
-        if (FIELD(self, 0x60, s32) >= 0) {
-            ov002_PlayBgm(FIELD(self, 0x60, s32));
+        if (self->unk_60 >= 0) {
+            ov002_PlayBgm(self->unk_60);
         }
         break;
     }
     case 13:
-        if (FIELD(self, 0x68, u8) ? func_ov002_021d166c(self) : func_ov002_021d178c(self)) {
+        if (self->unk_68 ? func_ov002_021d166c(self) : func_ov002_021d178c(self)) {
             break;
         }
-        FIELD(self, 0x20, s32) = 0x1e000;
-        ((VObject *)self)->v0xc(0);
+        self->fadeLen = 0x1e000;
+        self->vfunc_0c(0);
         break;
     case 10: {
         void *saved;
@@ -105,24 +105,24 @@ void func_ov002_021d1258(void *self) {
         void *o;
         if (t != NULL) {
             HEAP_PUSH(saved);
-            DELETE_VOBJ(FIELD(t, 0x3c, VObject *));
+            DELETE_VOBJ(FIELD(t, 0x3c, VObj *));
             HEAP_POP(saved);
             HEAP_PUSH(saved);
-            DELETE_VOBJ(FIELD(t, 0x40, VObject *));
+            DELETE_VOBJ(FIELD(t, 0x40, VObj *));
             HEAP_POP(saved);
-            func_ov002_021d0b98((Task50 *)t);
+            func_ov002_021d0b98((Task021ef89c *)t);
             FIELD(FIELD(t, 0x3c, void *), 0xc, u32) |= 2;
             FIELD(FIELD(t, 0x40, void *), 0xc, u32) |= 2;
         }
         o = Task_FindById(0x12);
         if (o != NULL) {
-            func_ov002_021ce660(o, FIELD(self, 0x6c, void *));
+            func_ov002_021ce660((Task021ef4b0 *)o, self->unk_6c);
         }
         o = Task_FindById(0x11);
         if (o != NULL) {
             FIELD(o, 0x4c, u8) = 1;
         }
-        if (FIELD(self, 0x69, u8) && FIELD(data_ov000_021ccd30, 0x118, void *) != NULL) {
+        if (self->unk_69 && FIELD(data_ov000_021ccd30, 0x118, void *) != NULL) {
             func_ov000_0216f844(FIELD(data_ov000_021ccd30, 0x118, void *), 1);
         }
         ov002_PlayBgm(0xd);

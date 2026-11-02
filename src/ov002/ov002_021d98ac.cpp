@@ -85,9 +85,9 @@ static inline void ov002_AddNode(void *self, void *node) {
         FIELD(self, 0x6c, void *) = node;
     }
     func_ov002_021da184(self, node);
-    if (FIELD(data_0214a424, 0x18, Bits021d9e38).mode == 1) {
+    if (data_0214a424->bits18.mode == 1) {
         func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
-        func_ov000_021c95ac((u8 *)self + 0x76, FIELD(data_0214a424, 0x18, Bits021d9e38).id | 0x8000);
+        func_ov000_021c95ac((u8 *)self + 0x76, data_0214a424->bits18.unk_3 | 0x8000);
     } else {
         func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
     }
@@ -114,8 +114,8 @@ void func_ov002_021d98ac(void *self) {
                 func_ov002_021d8e48(n);
             }
             FIELD(n, 0x48, u16) = id;
-            ((VObject *)n)->v0x8();
-            FIELD(n, 0xac, s32) = FIELD(n, 0xa8, u16) <= FIELD(data_0214a424, 0x24, u16) ? 2 : 1;
+            ((VObj *)n)->vfunc_08();
+            FIELD(n, 0xac, s32) = FIELD(n, 0xa8, u16) <= data_0214a424->unk_024 ? 2 : 1;
         } else {
             n = (u8 *)Heap_Alloc(0xd4);
             if (n != NULL) {
@@ -125,7 +125,7 @@ void func_ov002_021d98ac(void *self) {
                 func_ov002_021d7e54(n);
             }
             FIELD(n, 0x48, u16) = id;
-            ((VObject *)n)->v0x8();
+            ((VObj *)n)->vfunc_08();
             if (e->info.flag) {
                 n[0x6c] = 1;
             }
@@ -147,10 +147,10 @@ void func_ov002_021d98ac(void *self) {
         ov002_SetRot(n, e->info.rot);
         ov002_AddNode(self, n);
     }
-    FIELD(self, 0x8a, u16) = FIELD(data_0214a424, 0x24, u16);
-    if (FIELD(data_0214a424, 0x18, Bits021d9e38).mode == 1) {
+    FIELD(self, 0x8a, u16) = data_0214a424->unk_024;
+    if (data_0214a424->bits18.mode == 1) {
         func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
-        func_ov000_021c95ac((u8 *)self + 0x76, FIELD(data_0214a424, 0x18, Bits021d9e38).id | 0x8000);
+        func_ov000_021c95ac((u8 *)self + 0x76, data_0214a424->bits18.unk_3 | 0x8000);
     } else {
         func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
     }

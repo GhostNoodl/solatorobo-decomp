@@ -31,7 +31,7 @@ static inline void updateModel(u8 *m) {
 
 // Callers pass only self. The loop counter `i` is declared as an unused second
 // parameter because that gives the target's register allocation.
-void func_ov002_021dedf0(void *self, s32 i) {
+void func_ov002_021dedf0(Obj021efef0 *self, s32 i) {
     u8 *sh;
     s32 j;
     s32 rows;
@@ -42,12 +42,12 @@ void func_ov002_021dedf0(void *self, s32 i) {
     Vec2 v;
     Vec2 out;
     sh = NULL;
-    t = FIELD(FIELD(self, 0xc, u8 *), 0xa0, u8 *);
+    t = FIELD(((u8 *)self->unk_0c), 0xa0, u8 *);
     if (t != NULL) {
         sh = (u8 *)func_02070dcc(func_0206ede8(FIELD(t, 0x38, u16))[1]);
     }
-    pos.x = FIELD(self, 0x2c, s32);
-    pos.y = FIELD(self, 0x30, s32);
+    pos.x = self->unk_2c;
+    pos.y = self->unk_30;
     if (sh == NULL) {
         return;
     }
@@ -60,10 +60,10 @@ void func_ov002_021dedf0(void *self, s32 i) {
                 v.x = j;
                 v.y = i;
                 func_ov002_021e3a18(&out, (u8)FIELD(sh, 0x6, Bits021e0280).rot, &v, &org, &pos);
-                u8 *m = FIELD(self, 0x14, u8 *);
+                u8 *m = ((u8 *)self->unk_14);
                 FIELD(m, 0x74, s32) = out.x;
                 FIELD(m, 0x78, s32) = out.y;
-                updateModel(FIELD(self, 0x14, u8 *));
+                updateModel(((u8 *)self->unk_14));
             }
         }
     }

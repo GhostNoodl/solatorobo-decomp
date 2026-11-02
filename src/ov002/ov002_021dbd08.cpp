@@ -25,15 +25,15 @@ void *Ov002Vt_021eff10_Ctor(void *self) {
     return self;
 }
 
-void func_ov002_021dbd60(void *self) {
-    if (FIELD(self, 0x20, VObject *) != NULL) {
-        FIELD(self, 0x20, VObject *)->v0x20();
+void func_ov002_021dbd60(Obj021eff50 *self) {
+    if (self->unk_20 != NULL) {
+        self->unk_20->vfunc_20();
     }
-    if (FIELD(self, 0x24, VObject *) != NULL) {
-        FIELD(self, 0x24, VObject *)->v0x20();
+    if (self->unk_24 != NULL) {
+        self->unk_24->vfunc_20();
     }
-    if (FIELD(self, 0x18, VObject *) != NULL) {
-        FIELD(self, 0x18, VObject *)->v0x14(self);
+    if (self->unk_18 != NULL) {
+        self->unk_18->vfunc_14(self);
     }
 }
 

@@ -17,30 +17,30 @@ typedef struct {
     u16 b;
 } Pair021d0b98;
 
-void func_ov002_021d0b98(Task50 *self) {
+void func_ov002_021d0b98(Task021ef89c *self) {
     void *g = data_02149ef8;
-    VObject *p;
+    UiObj *p;
     {
-        p = (VObject *)Heap_Alloc(0xf4);
+        p = (UiObj *)Heap_Alloc(0xf4);
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
-            p->v0x28();
+            p->vfunc_28();
             *(VFunc **)p = data_ov000_021ccbe0;
             func_ov000_021c3af4(p);
         }
-        FIELD(self, 0x3c, VObject *) = p;
-        FIELD(p, 0x20, s32) = 7;
+        self->unk_3c = (UiObj *)p;
+        p->rows = 7;
     }
-    FIELD(FIELD(self, 0x3c, void *), 0x24, s32) = 0xf9;
+    self->unk_3c->width = 0xf9;
     {
-        u8 *s = FIELD(self, 0x3c, u8 *);
-        FIELD(s, 0x64, s16) = 4;
-        FIELD(s, 0x66, s16) = 0x23;
-        FIELD(s, 0x68, s16) = -0x199a;
+        UiObj *s = self->unk_3c;
+        s->posX = 4;
+        s->posY = 0x23;
+        s->posZ = -0x199a;
     }
-    FIELD(self, 0x3c, VObject *)->v0x10(MsgRes_GetString(g, 0xeb));
-    FIELD(self, 0x3c, VObject *)->v0x14(MsgRes_GetString(g, 0xed));
-    FIELD(FIELD(self, 0x3c, void *), 0xe4, void *) = (void *)func_ov002_021d0a80;
+    self->unk_3c->vfunc_10(MsgRes_GetString(g, 0xeb));
+    self->unk_3c->vfunc_14(MsgRes_GetString(g, 0xed));
+    FIELD(self->unk_3c, 0xe4, void *) = (void *)func_ov002_021d0a80;
     {
         u16 i;
         u8 *base;
@@ -48,7 +48,7 @@ void func_ov002_021d0b98(Task50 *self) {
         u16 id;
         u8 *q;
         u32 count;
-        base = FIELD(data_02fe152c, 0x4c, u8 *) + 0x10 + 9 * 0x20;
+        base = data_02fe152c->data + 0x10 + 9 * 0x20;
         tbl = func_0205976c(data_02fe152c, 9);
         count = func_0205975c(data_02fe152c, 9);
         for (i = 0; i < count; i++) {
@@ -65,40 +65,40 @@ void func_ov002_021d0b98(Task50 *self) {
                 id = ((Pair021d0b98 *)func_0205976c(data_02fe152c, 9))[i].b | 0x5000;
                 func_ov000_021c2a88(q, func_0206ec48(id));
                 FIELD(q, 0x8, s32) = id;
-                func_ov000_021c3fd4(FIELD(self, 0x3c, void *), q);
+                func_ov000_021c3fd4(self->unk_3c, q);
             }
         }
     }
-    FIELD(FIELD(self, 0x3c, void *), 0x8, void *) = self;
-    FIELD(self, 0x3c, VObject *)->v0x8();
-    func_ov000_021c403c(FIELD(self, 0x3c, void *), data_ov002_021f0f84[1]);
-    FIELD(FIELD(self, 0x3c, void *), 0xc, u32) &= ~2;
+    self->unk_3c->owner = self;
+    self->unk_3c->vfunc_08();
+    func_ov000_021c403c(self->unk_3c, data_ov002_021f0f84[1]);
+    self->unk_3c->flags &= ~2;
     {
-        p = (VObject *)Heap_Alloc(0xe0);
+        p = (UiObj *)Heap_Alloc(0xe0);
         if (p != NULL) {
             *(VFunc **)p = data_ov000_021cac60;
-            p->v0x28();
+            p->vfunc_28();
             *(VFunc **)p = data_ov000_021caec8;
-            p->v0x28();
+            p->vfunc_28();
             *(VFunc **)p = data_ov000_021cb5a8;
-            p->v0x28();
+            p->vfunc_28();
         }
-        FIELD(self, 0x40, VObject *) = p;
-        FIELD(p, 0xc, u32) |= 0x4000000;
+        self->unk_40 = (Lo021cb5a8 *)p;
+        p->flags |= 0x4000000;
     }
-    FIELD(FIELD(self, 0x40, void *), 0x2c, s32) = 1;
+    self->unk_40->slideMode = 1;
     {
-        u8 *s = FIELD(self, 0x40, u8 *);
-        FIELD(s, 0x58, s32) = -0x200;
-        FIELD(s, 0x5c, s32) = 0;
-        FIELD(s, 0x60, s32) = -0x199a;
+        Lo021cb5a8 *s = self->unk_40;
+        s->slideX = -0x200;
+        s->slideY = 0;
+        s->slideZ = -0x199a;
     }
-    FIELD(FIELD(self, 0x40, void *), 0xc, u32) |= 0x20000000;
-    FIELD(FIELD(self, 0x40, void *), 0xc, u32) |= 0x80000000;
-    FIELD(self, 0x40, VObject *)->v0xf4(1, MsgRes_GetString(g, 0x39));
-    FIELD(self, 0x40, VObject *)->v0xf4(2, MsgRes_GetString(g, 0x33));
-    FIELD(self, 0x40, VObject *)->v0x8();
-    FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~2;
+    self->unk_40->flags |= 0x20000000;
+    self->unk_40->flags |= 0x80000000;
+    self->unk_40->vfunc_f4(1, MsgRes_GetString(g, 0x39));
+    self->unk_40->vfunc_f4(2, MsgRes_GetString(g, 0x33));
+    self->unk_40->vfunc_08();
+    self->unk_40->flags &= ~2;
 }
 
 }

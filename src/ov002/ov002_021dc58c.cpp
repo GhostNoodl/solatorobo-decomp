@@ -46,35 +46,35 @@ static inline void updateModel(u8 *m) {
     }
 }
 
-void func_ov002_021dc58c(void *self, void *ev) {
-    if (FIELD(self, 0x10, void *) != NULL) {
-        func_02041c20((Model *)FIELD(self, 0x10, void *), 6, FIELD(FIELD(ev, 0x4, u8 *), 0x6c, void *));
-        ov002_Model_PlayPart(FIELD(self, 0x10, void *), 6);
+void func_ov002_021dc58c(Obj021eff10 *self, void *ev) {
+    if (self->unk_10 != NULL) {
+        func_02041c20((Model *)self->unk_10, 6, FIELD(FIELD(ev, 0x4, u8 *), 0x6c, void *));
+        ov002_Model_PlayPart(self->unk_10, 6);
     }
-    if (FIELD(self, 0x18, s32) != 20 && FIELD(self, 0x18, s32) / 10 != 0) {
-        u8 *m = FIELD(self, 0x14, u8 *);
-        FIELD(m, 0x74, s32) = FIELD(self, 0x24, s32);
-        FIELD(m, 0x78, s32) = FIELD(self, 0x28, s32);
-        updateModel(FIELD(self, 0x14, u8 *));
+    if (self->unk_18 != 20 && self->unk_18 / 10 != 0) {
+        u8 *m = ((u8 *)self->unk_14);
+        FIELD(m, 0x74, s32) = self->unk_24;
+        FIELD(m, 0x78, s32) = self->unk_28;
+        updateModel(((u8 *)self->unk_14));
     }
-    if (FIELD(self, 0xc, VObject *) != NULL) {
-        FIELD(self, 0xc, VObject *)->v0x20();
+    if (self->unk_0c != NULL) {
+        self->unk_0c->vfunc_20();
     }
-    FIELD(FIELD(self, 0x8, u8 *), 0x1d4, u8) = FIELD(self, 0x18, s32) == 20;
-    func_ov002_021d7988(FIELD(self, 0x8, void *));
+    FIELD(((u8 *)self->unk_08), 0x1d4, u8) = self->unk_18 == 20;
+    func_ov002_021d7988(self->unk_08);
 }
 
 void func_ov002_021d9ed8(void *w, void *a, int b);
 
-void func_ov002_021dd7f0(void *self, void *a, void *b, int c);
+void func_ov002_021dd7f0(Obj021eff10 *self, void *a, void *b, int c);
 
-void func_ov002_021dc730(void *self) {
+void func_ov002_021dc730(Obj021eff10 *self) {
     BOOL done;
     u8 *w;
     u8 *a;
     u8 *next;
-    w = FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *);
-    switch (FIELD(self, 0x18, s32)) {
+    w = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
+    switch (self->unk_18) {
     case 0:
         for (a = FIELD(w, 0x6c, u8 *); a != NULL; a = FIELD(a, 0x70, u8 *)) {
             if (FIELD(a, 0x4a, u8) == 1 && FIELD(a, 0x6c, u8) && FIELD(a, 0xa4, s32) == 0) {
@@ -83,7 +83,7 @@ void func_ov002_021dc730(void *self) {
                 FIELD(a, 0xac, s32) = 10;
             }
         }
-        FIELD(self, 0x18, s32)++;
+        self->unk_18++;
     case 1:
         done = TRUE;
         a = FIELD(w, 0x6c, u8 *);
@@ -100,7 +100,7 @@ void func_ov002_021dc730(void *self) {
         }
         if (done) {
             func_ov002_021dd7f0(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
-            FIELD(self, 0x18, s32) = 10;
+            self->unk_18 = 10;
         }
         break;
     }

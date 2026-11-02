@@ -49,40 +49,40 @@ u32 func_ov002_021e4c30(int which) {
         r = data_02097dd0->frameCount / 3600;
         break;
     case 1:
-        r = FIELD(data_0214a424, 0xa, u16);
+        r = data_0214a424->unk_00a;
         break;
     case 2:
-        r = FIELD(data_0214a424, 0xc, u32);
+        r = data_0214a424->unk_00c;
         break;
     case 3:
-        r = FIELD(data_0214a424, 0x61c, u16);
+        r = data_0214a424->unk_61c;
         break;
     case 4:
-        r = FIELD(data_0214a424, 0x10, u32);
+        r = data_0214a424->unk_010;
         break;
     case 5:
-        r = FIELD(data_0214a424, 0x14, u16);
+        r = data_0214a424->unk_014;
         break;
     case 6:
-        r = FIELD(data_0214a424, 0x16, u16);
+        r = data_0214a424->unk_016;
         break;
     }
     return r;
 }
 
-void func_ov002_021e4cd8(void *self) {
+void func_ov002_021e4cd8(Ov002Obj *self) {
     u8 *ctx;
-    FIELD(self, 0x4, s32) = -1;
-    FIELD(self, 0x8, s32) = 1;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x14, s32) = 0;
-    FIELD(self, 0x18, s32) = 0;
-    FIELD(self, 0x1c, s32) = 0;
-    FIELD(self, 0x20, s32) = -0x29;
-    FIELD(self, 0x24, s32) = 0;
+    self->unk_04 = -1;
+    self->unk_08 = 1;
+    self->unk_0c = 0;
+    self->unk_10 = 0;
+    self->unk_14 = 0;
+    self->unk_18 = 0;
+    self->unk_1c = 0;
+    self->unk_20 = -0x29;
+    self->next = NULL;
     MIi_CpuClear32(0, (u8 *)self + 0x28, 0x20);
-    FIELD(self, 0x48, s32) = 0;
+    self->owner = NULL;
     ctx = (u8 *)data_ov002_021f0f9c;
     if (FIELD(ctx, 0xe0, void *) == NULL) {
         FIELD(ctx, 0xdc, void *) = self;
@@ -92,9 +92,9 @@ void func_ov002_021e4cd8(void *self) {
     FIELD(ctx, 0xe0, void *) = self;
 }
 
-void func_ov002_021e4d4c(void *self) {
+void func_ov002_021e4d4c(Ov002Obj *self) {
     int i;
-    u8 *owner = FIELD(self, 0x48, u8 *);
+    u8 *owner = ((u8 *)self->owner);
     if (owner != NULL) {
         for (i = 0; i < 8; i++) {
             if (((void **)(owner + 0x28))[i] == self) {
@@ -102,7 +102,7 @@ void func_ov002_021e4d4c(void *self) {
                 break;
             }
         }
-        FIELD(self, 0x48, void *) = NULL;
+        self->owner = NULL;
     }
     for (i = 0; i < 8; i++) {
         void *child = ((void **)((u8 *)self + 0x28))[i];
@@ -112,7 +112,7 @@ void func_ov002_021e4d4c(void *self) {
     }
 }
 
-void func_ov002_021e4dac(void *self, void *item) {
+void func_ov002_021e4dac(Ov002Obj *self, void *item) {
     int i;
     for (i = 0; i < 8; i++) {
         if (((void **)((u8 *)self + 0x28))[i] == NULL) {
@@ -129,45 +129,45 @@ void func_ov002_021e4dac(void *self, void *item) {
 namespace m_021e4dd4 {
 extern "C" {
 
-BOOL func_ov002_021e4dd4(VObject *self) {
+BOOL func_ov002_021e4dd4(Ov002Obj *self) {
     BOOL r = TRUE;
-    switch (FIELD(self, 0xc, s32)) {
+    switch (self->unk_0c) {
     case 0:
-        if (!self->v0xc()) {
+        if (!self->vfunc_0c()) {
             break;
         }
-        FIELD(self, 0xc, s32) = 1;
+        self->unk_0c = 1;
     case 1:
-        if (!self->v0x10()) {
+        if (!self->vfunc_10()) {
             break;
         }
-        FIELD(self, 0xc, s32) = 2;
+        self->unk_0c = 2;
     case 2:
-        if (!self->v0x14()) {
+        if (!self->vfunc_14()) {
             break;
         }
-        FIELD(self, 0xc, s32) = 3;
+        self->unk_0c = 3;
     case 3: {
         u8 *g = (u8 *)data_ov002_021f0f9c;
         s32 m;
         if (FIELD(g, 0x10, u8)) {
             break;
         }
-        m = FIELD(self, 0x8, s32);
+        m = self->unk_08;
         if (m == 3) {
             m = 2;
         }
         if (m != FIELD(g, 0xc, s32)) {
             break;
         }
-        if (self->v0x18()) {
+        if (self->vfunc_18()) {
             break;
         }
-        FIELD(self, 0xc, s32) = 4;
+        self->unk_0c = 4;
     }
     case 4:
     default:
-        FIELD(self, 0xc, s32) = 4;
+        self->unk_0c = 4;
         r = FALSE;
         break;
     }
@@ -200,15 +200,15 @@ BOOL func_ov002_021e4ed8(void) {
 void func_ov002_021e4ee0(void) {
 }
 
-void *func_ov002_021e4ee4(void *self, s32 kind, s32 min) {
+Ov002Obj *func_ov002_021e4ee4(Ov002Obj *self, s32 kind, s32 min) {
     s32 limit;
-    void *best = NULL;
+    Ov002Obj *best = NULL;
     limit = FIELD(data_ov002_021f0f9c, 0xd0, s32);
     int i;
     for (i = 0; i < 8; i++) {
-        u8 *item = ((u8 **)((u8 *)self + 0x28))[i];
-        if (item != NULL && kind == FIELD(item, 0x4, s32)) {
-            s32 v = FIELD(item, 0x18, s32);
+        Ov002Obj *item = self->children[i];
+        if (item != NULL && kind == item->unk_04) {
+            s32 v = item->unk_18;
             if (min + 1 <= v && v <= limit) {
                 best = item;
                 limit = v;
@@ -286,9 +286,9 @@ void func_ov002_021e4fac(void *self) {
 namespace m_021e50a8 {
 extern "C" {
 
-void func_ov002_021e50a8(void *self, void *src) {
-    MIi_CpuCopy32(src, (u8 *)self + 0xc0 + FIELD(self, 0x1a0, s32) * 0x1c, 0x1c);
-    FIELD(self, 0x1a0, s32)++;
+void func_ov002_021e50a8(Ov002Obj021f07d4 *self, Ov002ObjLink *src) {
+    MIi_CpuCopy32(src, (u8 *)self + 0xc0 + self->linkCount * 0x1c, 0x1c);
+    self->linkCount++;
 }
 
 }
@@ -308,7 +308,7 @@ typedef struct Rec021e50d8 {
     s32 g;
 } Rec021e50d8;
 
-void func_ov002_021e50d8(void *self, s32 a, s32 b) {
+void func_ov002_021e50d8(Ov002Obj021f07d4 *self, s32 a, s32 b) {
     Rec021e50d8 rec;
     rec.id = 0;
     rec.a = a;
@@ -318,9 +318,9 @@ void func_ov002_021e50d8(void *self, s32 a, s32 b) {
     rec.e = 0;
     rec.f = 0;
     rec.g = 0;
-    rec.id = (u8)FIELD(self, 0x4c, s32);
-    MIi_CpuCopy32(&rec, (u8 *)self + 0xc0 + FIELD(self, 0x1a0, s32) * 0x1c, 0x1c);
-    FIELD(self, 0x1a0, s32)++;
+    rec.id = (u8)self->unk_4c;
+    MIi_CpuCopy32(&rec, (u8 *)self + 0xc0 + self->linkCount * 0x1c, 0x1c);
+    self->linkCount++;
 }
 }
 }  // namespace m_021e50d8
@@ -351,18 +351,18 @@ static inline void setv021e5140(void *self, s32 v) {
     FIELD(self, 0x20, s32) = v;
 }
 
-void func_ov002_021e5140(void *self) {
+void func_ov002_021e5140(Ov002Obj021f07d4 *self) {
     s32 i;
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x20, s32) = -0xa66;
-    FIELD(self, 0x4c, s32) = FIELD(self, 0x20, s32) >> 12;
-    FIELD(self, 0x50, s32) = 0;
-    FIELD(self, 0x54, s32) = 0;
-    FIELD(self, 0x58, s32) = 0;
-    FIELD(self, 0x5c, s32) = 0;
-    FIELD(self, 0x60, s32) = 0;
-    FIELD(self, 0x64, s32) = 0;
-    FIELD(self, 0xbc, s32) = 0;
+    self->unk_04 = 0;
+    self->unk_20 = -0xa66;
+    self->unk_4c = self->unk_20 >> 12;
+    self->unk_50 = NULL;
+    self->unk_54 = NULL;
+    self->unk_58 = NULL;
+    self->unk_5c = NULL;
+    self->unk_60 = NULL;
+    self->unk_64 = NULL;
+    self->unk_bc = 0;
     for (i = 0; i < 8; i++) {
         u8 *e = (u8 *)self + i * 0x1c;
         FIELD(e, 0xc0, s32) = 0;
@@ -374,28 +374,28 @@ void func_ov002_021e5140(void *self) {
         FIELD(e, 0xd5, u8) = 0;
         FIELD(e, 0xd8, s32) = 0;
     }
-    FIELD(self, 0x1a0, s32) = 0;
-    FIELD(self, 0x1a4, s32) = 0;
-    FIELD(self, 0x1a8, s32) = 0;
-    FIELD(self, 0x1ac, s32) = 0;
-    FIELD(self, 0x1b0, s32) = 0x1000;
-    FIELD(self, 0x1b4, s32) = 0x1000;
-    FIELD(self, 0x1b8, s32) = 0x1000;
+    self->linkCount = 0;
+    self->unk_1a4.x = 0;
+    self->unk_1a4.y = 0;
+    self->unk_1a4.z = 0;
+    self->unk_1b0.x = 0x1000;
+    self->unk_1b0.y = 0x1000;
+    self->unk_1b0.z = 0x1000;
     MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x1bc));
-    FIELD(self, 0x1e0, s32) = 0;
-    FIELD(self, 0x1e4, s32) = 0;
-    FIELD(self, 0x1e8, s32) = 0;
-    FIELD(self, 0x1ec, s32) = 0;
-    FIELD(self, 0x1f0, u8) = 0;
+    self->unk_1e0 = NULL;
+    self->unk_1e4 = NULL;
+    self->unk_1e8 = NULL;
+    self->unk_1ec = NULL;
+    self->unk_1f0 = 0;
 }
 
-void func_ov002_021e51f8(void *self) {
+void func_ov002_021e51f8(Ov002Obj021f07d4 *self) {
     s32 i;
-    if (FIELD(self, 0x10, s32) >= 0x28) {
+    if (self->unk_10 >= 0x28) {
         if (FIELD(self, 0x5c, void **) != NULL) {
             func_0203f0b4(*FIELD(self, 0x5c, void **));
         }
-        for (i = 0; i < FIELD(self, 0x1a0, s32); i++) {
+        for (i = 0; i < self->linkCount; i++) {
             u8 *e = (u8 *)self + 0xc0 + i * 0x1c;
             if (FIELD(e, 0x10, void **) != NULL) {
                 func_0203f0b4(*FIELD(e, 0x10, void **));
@@ -405,13 +405,13 @@ void func_ov002_021e51f8(void *self) {
         }
     }
     if (FIELD(self, 0x14, void *) != NULL) {
-        if (FIELD(self, 0x50, void *) != NULL) {
-            func_02035acc(FIELD(self, 0x50, void *), FIELD(self, 0x54, void *), 4);
+        if (self->unk_50 != NULL) {
+            func_02035acc(self->unk_50, self->unk_54, 4);
         } else {
-            func_02036838(data_02097cdc, (char *)FIELD(self, 0x54, void *), 4, 0);
+            func_02036838(data_02097cdc, (char *)self->unk_54, 4, 0);
         }
     }
-    for (i = 0; i < FIELD(self, 0x1a0, s32); i++) {
+    for (i = 0; i < self->linkCount; i++) {
         u8 *e = (u8 *)self + 0xc0 + i * 0x1c;
         if (FIELD(e, 0x14, u8)) {
             if (FIELD(e, 0x4, void *) != NULL) {
@@ -482,65 +482,65 @@ static inline u32 *ov002_021e534c_res(Ent021e534c *e) {
     return e->alt ? e->res2 : e->res;
 }
 
-BOOL func_ov002_021e534c(void *self) {
+BOOL func_ov002_021e534c(Ov002Obj021f07d4 *self) {
     BOOL done = FALSE;
-    switch (FIELD(self, 0x10, s32)) {
+    switch (self->unk_10) {
     case 0:
-        if (FIELD(self, 0x50, void *) != NULL) {
-            func_020359fc(FIELD(self, 0x50, void *), FIELD(self, 0x54, void *), 4, 0);
+        if (self->unk_50 != NULL) {
+            func_020359fc(self->unk_50, self->unk_54, 4, 0);
         } else {
-            func_020359d0((char *)FIELD(self, 0x54, void *), 4, 0);
+            func_020359d0((char *)self->unk_54, 4, 0);
         }
-        FIELD(self, 0x14, s32) = 1;
-        FIELD(self, 0x10, s32) = 10;
+        self->unk_14 = 1;
+        self->unk_10 = 10;
     case 10: {
         void *res;
-        if (FIELD(self, 0x50, void *) != NULL) {
-            if (!func_02035bd4(FIELD(self, 0x50, void *), FIELD(self, 0x54, void *), 4)) {
+        if (self->unk_50 != NULL) {
+            if (!func_02035bd4(self->unk_50, self->unk_54, 4)) {
                 break;
             }
-            void *p = func_02035f30(FIELD(self, 0x50, void *), FIELD(self, 0x54, void *), 4);
+            void *p = func_02035f30(self->unk_50, self->unk_54, 4);
             res = func_02034ec0(p, FIELD(self, 0x54, void *));
         } else {
-            if (!func_02035b90((char *)FIELD(self, 0x54, void *), 4)) {
+            if (!func_02035b90((char *)self->unk_54, 4)) {
                 break;
             }
-            res = func_02035ccc(FIELD(self, 0x54, void *));
+            res = func_02035ccc(self->unk_54);
         }
-        FIELD(self, 0x5c, void *) = res;
-        FIELD(self, 0x10, s32)++;
+        self->unk_5c = res;
+        self->unk_10++;
     }
     case 11: {
         char name[16];
         char path[32];
         MI_CpuFill8(name, 0, sizeof(name));
-        if (FIELD(self, 0x58, void *) != NULL) {
-            STD_CopyLString(name, (char *)FIELD(self, 0x58, void *), sizeof(name));
+        if (self->unk_58 != NULL) {
+            STD_CopyLString(name, (char *)self->unk_58, sizeof(name));
         } else {
-            STD_CopyLString(name, (char *)FIELD(self, 0x54, void *), sizeof(name));
+            STD_CopyLString(name, (char *)self->unk_54, sizeof(name));
         }
-        FIELD(self, 0x60, void *) = ov002_021e534c_getMdl((u8 *)NNS_G3dGetMdlSet((NNSG3dResFileHeader *)*FIELD(self, 0x5c, u32 *)), name);
+        self->unk_60 = ov002_021e534c_getMdl((u8 *)NNS_G3dGetMdlSet((NNSG3dResFileHeader *)*FIELD(self, 0x5c, u32 *)), name);
         STD_CopyLString(path, data_ov002_021f0640, sizeof(path));
-        STD_ConcatenateString(path, FIELD(self, 0x54, char *));
+        STD_ConcatenateString(path, ((char *)self->unk_54));
         if (FIELD(self, 0x5c, u32 *) != NULL) {
             func_0203ed04(path, *FIELD(self, 0x5c, u32 *));
         }
-        FIELD(self, 0xbc, u32) = func_0203ebf8();
-        NNSi_G3dModifyMatFlag(FIELD(self, 0x60, void *), FALSE, 0x40);
-        NNSi_G3dModifyMatFlag(FIELD(self, 0x60, void *), FALSE, 0x80);
-        NNSi_G3dModifyMatFlag(FIELD(self, 0x60, void *), FALSE, 0x200);
-        NNSi_G3dModifyMatFlag(FIELD(self, 0x60, void *), FALSE, 0x400);
-        FIELD(self, 0x10, s32)++;
+        self->unk_bc = func_0203ebf8();
+        NNSi_G3dModifyMatFlag(self->unk_60, FALSE, 0x40);
+        NNSi_G3dModifyMatFlag(self->unk_60, FALSE, 0x80);
+        NNSi_G3dModifyMatFlag(self->unk_60, FALSE, 0x200);
+        NNSi_G3dModifyMatFlag(self->unk_60, FALSE, 0x400);
+        self->unk_10++;
     }
     case 12:
-        if (func_0203e63c((unsigned int)FIELD(self, 0xbc, u32))) {
-            FIELD(self, 0xbc, u32) = 0;
-            FIELD(self, 0x10, s32)++;
+        if (func_0203e63c((unsigned int)self->unk_bc)) {
+            self->unk_bc = 0;
+            self->unk_10++;
         }
         break;
     case 13:
         func_02039494(*FIELD(self, 0x5c, u32 *));
-        for (s32 i = 0; i < FIELD(self, 0x1a0, s32); i++) {
+        for (s32 i = 0; i < self->linkCount; i++) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             if (e->arc != NULL) {
                 func_020359fc(e->arc, e->name, 5, 0);
@@ -549,10 +549,10 @@ BOOL func_ov002_021e534c(void *self) {
             }
             e->loaded = 1;
         }
-        FIELD(self, 0x10, s32) = 20;
+        self->unk_10 = 20;
     case 20: {
         BOOL ok = TRUE;
-        for (s32 i = 0; i < FIELD(self, 0x1a0, s32); i++) {
+        for (s32 i = 0; i < self->linkCount; i++) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             BOOL r;
             if (e->arc != NULL) {
@@ -565,10 +565,10 @@ BOOL func_ov002_021e534c(void *self) {
         if (!ok) {
             break;
         }
-        FIELD(self, 0x10, s32)++;
+        self->unk_10++;
     }
     case 21:
-        for (s32 i = 0; i < FIELD(self, 0x1a0, s32); i++) {
+        for (s32 i = 0; i < self->linkCount; i++) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             if (e->arc != NULL) {
                 void *p = func_02035f30(e->arc, e->name, 5);
@@ -583,10 +583,10 @@ BOOL func_ov002_021e534c(void *self) {
                 func_02035cfc(e->name);
             }
         }
-        FIELD(self, 0x10, s32)++;
+        self->unk_10++;
     case 22: {
         BOOL ok = TRUE;
-        for (s32 i = 0; i < FIELD(self, 0x1a0, s32); i++) {
+        for (s32 i = 0; i < self->linkCount; i++) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             if (e->alt) {
                 ok = (ok & func_02035bd4(e->arc, e->name, 4)) ? TRUE : FALSE;
@@ -595,19 +595,19 @@ BOOL func_ov002_021e534c(void *self) {
         if (!ok) {
             break;
         }
-        FIELD(self, 0x10, s32)++;
+        self->unk_10++;
     }
     case 23:
-        for (s32 i = 0; i < FIELD(self, 0x1a0, s32); i++) {
+        for (s32 i = 0; i < self->linkCount; i++) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             if (e->alt) {
                 void *p = func_02035f30(e->arc, e->name, 4);
                 e->res2 = (u32 *)func_02034ec0(p, e->name);
             }
         }
-        FIELD(self, 0x10, s32) = 30;
+        self->unk_10 = 30;
     case 30:
-        for (s32 i = 0; i < FIELD(self, 0x1a0, s32); i++) {
+        for (s32 i = 0; i < self->linkCount; i++) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             char path[32];
             void *tex;
@@ -624,38 +624,38 @@ BOOL func_ov002_021e534c(void *self) {
                     func_0203ed04(path, *e->res);
                 }
             }
-            NNS_G3dBindMdlTex(FIELD(self, 0x60, void *), tex);
-            NNS_G3dBindMdlPltt(FIELD(self, 0x60, void *), tex);
+            NNS_G3dBindMdlTex(self->unk_60, tex);
+            NNS_G3dBindMdlPltt(self->unk_60, tex);
             e->task = func_0203ebf8();
         }
-        FIELD(self, 0x10, s32)++;
+        self->unk_10++;
     case 31: {
         BOOL ok = TRUE;
-        for (s32 i = 0; i < FIELD(self, 0x1a0, s32); i++) {
+        for (s32 i = 0; i < self->linkCount; i++) {
             if (!func_0203e63c((unsigned int)(void *)((Ent021e534c *)((u8 *)self + 0xc0))[i].task)) {
                 ok = FALSE;
                 break;
             }
         }
         if (ok) {
-            FIELD(self, 0x10, s32)++;
+            self->unk_10++;
         }
         break;
     }
     case 32:
-        for (s32 i = 0; i < FIELD(self, 0x1a0, s32); i++) {
+        for (s32 i = 0; i < self->linkCount; i++) {
             Ent021e534c *e = &((Ent021e534c *)((u8 *)self + 0xc0))[i];
             if (e->task != 0) {
                 func_02039494(*(e->alt ? e->res2 : e->res));
             }
             e->task = 0;
         }
-        FIELD(self, 0x10, s32) = 0x28;
+        self->unk_10 = 0x28;
     case 0x28:
         done = TRUE;
         break;
     default:
-        FIELD(self, 0x10, s32) = 0x28;
+        self->unk_10 = 0x28;
         break;
     }
     return done;
@@ -674,12 +674,12 @@ typedef enum Ov002ObjKind {
     OV002_OBJ_CAMERA2 = 8
 } Ov002ObjKind;
 
-BOOL func_ov002_021e5974(void *self) {
+BOOL func_ov002_021e5974(Ov002Obj021f07d4 *self) {
     Ov002ObjKind kind;
     u8 *p;
-    NNS_G3dRenderObjInit((NNSG3dRenderObj *)((u8 *)self + 0x68), (NNSG3dResMdl *)FIELD(self, 0x60, void *));
-    FIELD(self, 0x64, void *) = NNS_G3dGetTex((NNSG3dResFileHeader *)*FIELD(self, 0x5c, void **));
-    if (FIELD(self, 0x1f0, Bits8).b0) {
+    NNS_G3dRenderObjInit((NNSG3dRenderObj *)((u8 *)self + 0x68), (NNSG3dResMdl *)self->unk_60);
+    self->unk_64 = NNS_G3dGetTex((NNSG3dResFileHeader *)*FIELD(self, 0x5c, void **));
+    if (self->unk_1f0_0) {
         kind = OV002_OBJ_CAMERA2;
     } else {
         kind = OV002_OBJ_CAMERA;
@@ -689,13 +689,13 @@ BOOL func_ov002_021e5974(void *self) {
             s32 st = FIELD(p, 0x8, s32);
             switch (st) {
             case 1:
-                FIELD(self, 0x1e0, u8 *) = p;
+                self->unk_1e0 = (VObj *)p;
                 break;
             case 2:
-                FIELD(self, 0x1e4, u8 *) = p;
+                self->unk_1e4 = (VObj *)p;
                 break;
             default:
-                FIELD(self, 0x1e0, u8 *) = p;
+                self->unk_1e0 = (VObj *)p;
                 break;
             }
             FIELD(p, 0x8, s32) = st;
@@ -711,41 +711,41 @@ BOOL func_ov002_021e5974(void *self) {
 namespace m_021e5a10 {
 extern "C" {
 
-void func_ov002_021e5fe4(void *p);
+void func_ov002_021e5fe4(Ov002Obj021f075c *p);
 
-BOOL func_ov002_021e5a10(void *self) {
-    void *n;
-    void *c;
-    if (FIELD(data_ov002_021f0f9c, 0xd0, s32) > FIELD(self, 0x1c, s32)) {
+BOOL func_ov002_021e5a10(Ov002Obj021f07d4 *self) {
+    Ov002Obj021f075c *n;
+    Ov002Obj021f075c *c;
+    if (FIELD(data_ov002_021f0f9c, 0xd0, s32) > self->unk_1c) {
         return FALSE;
     }
     n = NULL;
-    c = FIELD(self, 0x1e8, void *);
+    c = self->unk_1e8;
     if (c == NULL) {
-        n = func_ov002_021e4ee4(self, 2, -1);
+        n = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 2, -1);
     } else if (FIELD(c, 0xe8, Bits8).b1) {
-        n = func_ov002_021e4ee4(self, 2, FIELD(c, 0x18, s32));
+        n = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 2, c->unk_18);
     }
     if (n != NULL) {
-        if (FIELD(self, 0x1e8, void *) != NULL) {
-            func_ov002_021e6360(FIELD(self, 0x1e8, void *));
+        if (self->unk_1e8 != NULL) {
+            func_ov002_021e6360(self->unk_1e8);
         }
         func_ov002_021e5fe4(n);
-        FIELD(self, 0x1e8, void *) = n;
+        self->unk_1e8 = n;
     }
     n = NULL;
-    c = FIELD(self, 0x1ec, void *);
+    c = self->unk_1ec;
     if (c == NULL) {
-        n = func_ov002_021e4ee4(self, 3, -1);
+        n = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, -1);
     } else if (FIELD(c, 0xe8, Bits8).b1) {
-        n = func_ov002_021e4ee4(self, 3, FIELD(c, 0x18, s32));
+        n = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, c->unk_18);
     }
     if (n != NULL) {
-        if (FIELD(self, 0x1ec, void *) != NULL) {
-            func_ov002_021e6360(FIELD(self, 0x1ec, void *));
+        if (self->unk_1ec != NULL) {
+            func_ov002_021e6360(self->unk_1ec);
         }
         func_ov002_021e61b4(n);
-        FIELD(self, 0x1ec, void *) = n;
+        self->unk_1ec = n;
     }
     return TRUE;
 }
@@ -767,30 +767,30 @@ static inline void ov002_021e5b08_Scale(VecFx32 *out, const VecFx32 *in, s32 s) 
     out->z = FX_MUL(in->z, s);
 }
 
-void func_ov002_021e5b08(void *self) {
-    VObject *o;
-    if (FIELD(data_ov002_021f0f9c, 0xd0, s32) <= FIELD(self, 0x18, s32)) {
+void func_ov002_021e5b08(Ov002Obj021f07d4 *self) {
+    VObj *o;
+    if (FIELD(data_ov002_021f0f9c, 0xd0, s32) <= self->unk_18) {
         return;
     }
     switch (FIELD(data_ov002_021f0f9c, 0xc, s32)) {
     case 1:
-        o = FIELD(self, 0x1e0, VObject *);
+        o = self->unk_1e0;
         break;
     case 2:
-        o = FIELD(self, 0x1e4, VObject *);
+        o = self->unk_1e4;
         break;
     default:
-        o = FIELD(self, 0x1e0, VObject *);
+        o = self->unk_1e0;
         break;
     }
-    o->v0x20();
-    if (FIELD(self, 0x1f0, Bits8).b0) {
+    o->vfunc_20();
+    if (self->unk_1f0_0) {
         VecFx32 v;
-        ov002_021e5b08_Scale(&v, &FIELD(self, 0x1b0, VecFx32), 0x64000);
+        ov002_021e5b08_Scale(&v, &self->unk_1b0, 0x64000);
         v.z = 0x1000;
         NNS_G3dGlbSetBaseScale(&v);
-        ov002_021e5b08_Scale(&v, &FIELD(self, 0x1a4, VecFx32), 0x64000);
-        v.z = FIELD(self, 0x20, s32);
+        ov002_021e5b08_Scale(&v, &self->unk_1a4, 0x64000);
+        v.z = self->unk_20;
         NNS_G3dGlbSetBaseTrans(&v);
         MI_Copy36B((u8 *)self + 0x1bc, data_020928b4);
         NNS_G3dGlb.flag &= ~0xa4;
@@ -812,60 +812,60 @@ void func_ov002_021e5b08(void *self) {
 void func_ov002_021e5cf4(void) {
 }
 
-BOOL func_ov002_021e5cf8(void *self) {
-    return FIELD(self, 0xc, s32) >= 3;
+BOOL func_ov002_021e5cf8(Ov002Obj021f07d4 *self) {
+    return self->unk_0c >= 3;
 }
 
-void func_ov002_021e5d0c(void *self) {
-    FIELD(self, 0x4, s32) = 2;
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x4c, s32) = 0;
-    FIELD(self, 0x50, s32) = 0;
+void func_ov002_021e5d0c(Ov002Obj021f075c *self) {
+    self->unk_04 = 2;
+    self->unk_10 = 0;
+    self->unk_4c = NULL;
+    self->unk_50 = NULL;
     FIELD(self, 0x54, s32) = 0;
     FIELD(self, 0x58, s32) = -1;
     FIELD(self, 0x5c, s32) = -1;
-    FIELD(self, 0x60, s32) = 0;
-    FIELD(self, 0x64, s32) = 0;
-    FIELD(self, 0x68, s32) = 0;
-    FIELD(self, 0x6c, s32) = 0;
-    FIELD(self, 0x70, s32) = 0;
-    FIELD(self, 0x74, s32) = 0;
-    FIELD(self, 0x78, s32) = 0;
-    FIELD(self, 0x7c, s32) = 0;
+    self->unk_60 = NULL;
+    self->unk_64 = NULL;
+    self->unk_68 = NULL;
+    self->unk_6c = NULL;
+    self->unk_70 = NULL;
+    self->unk_74 = NULL;
+    self->unk_78 = 0;
+    self->unk_7c = 0;
     FIELD(self, 0x80, s32) = 0;
-    FIELD(self, 0x84, s32) = 0;
-    FIELD(self, 0x88, s32) = 0x1000;
-    FIELD(self, 0x8c, s32) = 0;
+    self->unk_84 = 0;
+    self->unk_88 = 0x1000;
+    self->unk_8c = 0;
     MI_CpuFill8((u8 *)self + 0x90, 0, 0x58);
     FIELD(self, 0xe8, s32) = 0;
 }
 
-void func_ov002_021e5d88(void *self) {
-    if (FIELD(self, 0x64, void *) != NULL) {
-        Heap_FreeHi(FIELD(self, 0x64, void *));
-        FIELD(self, 0x64, void *) = NULL;
+void func_ov002_021e5d88(Ov002Obj021f075c *self) {
+    if (self->unk_64 != NULL) {
+        Heap_FreeHi(self->unk_64);
+        self->unk_64 = NULL;
     }
-    if (FIELD(self, 0x68, void *) != NULL) {
-        Heap_FreeHi(FIELD(self, 0x68, void *));
-        FIELD(self, 0x68, void *) = NULL;
+    if (self->unk_68 != NULL) {
+        Heap_FreeHi(self->unk_68);
+        self->unk_68 = NULL;
     }
-    if (FIELD(self, 0x6c, void *) != NULL) {
-        Heap_FreeHi(FIELD(self, 0x6c, void *));
-        FIELD(self, 0x6c, void *) = NULL;
+    if (self->unk_6c != NULL) {
+        Heap_FreeHi(self->unk_6c);
+        self->unk_6c = NULL;
     }
-    if (FIELD(self, 0x70, void *) != NULL) {
-        Heap_FreeHi(FIELD(self, 0x70, void *));
-        FIELD(self, 0x70, void *) = NULL;
+    if (self->unk_70 != NULL) {
+        Heap_FreeHi(self->unk_70);
+        self->unk_70 = NULL;
     }
-    if (FIELD(self, 0x74, void *) != NULL) {
-        Heap_FreeHi(FIELD(self, 0x74, void *));
-        FIELD(self, 0x74, void *) = NULL;
+    if (self->unk_74 != NULL) {
+        Heap_FreeHi(self->unk_74);
+        self->unk_74 = NULL;
     }
-    if (FIELD(self, 0x14, s32) != 0) {
-        if (FIELD(self, 0x4c, void *) != NULL) {
-            func_02035acc(FIELD(self, 0x4c, void *), FIELD(self, 0x50, void *), 6);
+    if (self->unk_14 != 0) {
+        if (self->unk_4c != NULL) {
+            func_02035acc(self->unk_4c, self->unk_50, 6);
         } else {
-            func_02036838(data_02097cdc, (char *)FIELD(self, 0x50, void *), 6, 0);
+            func_02036838(data_02097cdc, (char *)self->unk_50, 6, 0);
         }
     }
 }
@@ -874,35 +874,35 @@ BOOL func_ov002_021e5e3c(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021e5e44(void *self) {
+BOOL func_ov002_021e5e44(Ov002Obj021f075c *self) {
     BOOL r = FALSE;
-    switch (FIELD(self, 0x10, s32)) {
+    switch (self->unk_10) {
     case 0:
-        if (FIELD(self, 0x4c, void *) != NULL) {
-            func_020359fc(FIELD(self, 0x4c, void *), FIELD(self, 0x50, void *), 6, 0);
+        if (self->unk_4c != NULL) {
+            func_020359fc(self->unk_4c, self->unk_50, 6, 0);
         } else {
-            func_020359d0((char *)FIELD(self, 0x50, void *), 6, 0);
+            func_020359d0((char *)self->unk_50, 6, 0);
         }
-        FIELD(self, 0x14, s32) = 1;
-        FIELD(self, 0x10, s32)++;
+        self->unk_14 = 1;
+        self->unk_10++;
         break;
     case 1:
-        if (FIELD(self, 0x4c, void *) != NULL) {
-            if (func_02035bd4(FIELD(self, 0x4c, void *), FIELD(self, 0x50, void *), 6) == 0) {
+        if (self->unk_4c != NULL) {
+            if (func_02035bd4(self->unk_4c, self->unk_50, 6) == 0) {
                 break;
             }
             {
-                void *t = func_02035f30(FIELD(self, 0x4c, void *), FIELD(self, 0x50, void *), 6);
-                FIELD(self, 0x60, void *) = func_02034ff8(t, (char *)FIELD(self, 0x50, void *));
+                void *t = func_02035f30(self->unk_4c, self->unk_50, 6);
+                self->unk_60 = func_02034ff8(t, (char *)self->unk_50);
             }
         } else {
-            if (func_02035b90((char *)FIELD(self, 0x50, void *), 6) == 0) {
+            if (func_02035b90((char *)self->unk_50, 6) == 0) {
                 break;
             }
-            FIELD(self, 0x60, void *) = func_02035d2c(FIELD(self, 0x50, void *));
+            self->unk_60 = func_02035d2c(self->unk_50);
         }
     case 10:
-        FIELD(self, 0x10, s32) = -1;
+        self->unk_10 = -1;
         r = TRUE;
         break;
     }
@@ -913,18 +913,18 @@ BOOL func_ov002_021e5f2c(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021e5f34(void *self) {
+BOOL func_ov002_021e5f34(Ov002Obj021f075c *self) {
     Bits8 *fl = &FIELD(self, 0xe8, Bits8);
     s32 lim = FIELD(data_ov002_021f0f9c, 0xd0, s32);
     if (fl->b2) {
         return FALSE;
     }
-    if (!fl->b0 || lim <= FIELD(self, 0x18, s32)) {
+    if (!fl->b0 || lim <= self->unk_18) {
         return TRUE;
     }
     if (!fl->b1) {
         BOOL t = FALSE;
-        if (FIELD(self, 0x8c, s32) >= 0 && FIELD(self, 0x7c, s32) > FIELD(self, 0x8c, s32)) {
+        if (self->unk_8c >= 0 && self->unk_7c > self->unk_8c) {
             t = TRUE;
         }
         if (t) {
@@ -933,7 +933,7 @@ BOOL func_ov002_021e5f34(void *self) {
     }
     func_ov002_021e63f0(self);
     if (!FIELD(self, 0xe8, Bits8).b1) {
-        FIELD(self, 0x7c, s32) += FIELD(data_ov002_021f0f9c, 0xd8, s32);
+        self->unk_7c += FIELD(data_ov002_021f0f9c, 0xd8, s32);
     }
     return TRUE;
 }
@@ -957,96 +957,96 @@ static inline void ov002_021e5fe4_Load(void **slot, void *set, char *name, void 
     }
 }
 
-void func_ov002_021e5fe4(void *self) {
+void func_ov002_021e5fe4(Ov002Obj021f075c *self) {
     char name[0x10];
-    void *obj = FIELD(self, 0x48, void *);
+    void *obj = self->owner;
     void *mdl = FIELD(obj, 0x60, void *);
     void *tex = FIELD(obj, 0x64, void *);
     MI_CpuFill8(name, 0, sizeof(name));
     if (FIELD(self, 0x54, void *) != NULL) {
         STD_CopyLString(name, (char *)FIELD(self, 0x54, void *), sizeof(name));
     } else {
-        STD_CopyLString(name, (char *)FIELD(self, 0x50, void *), sizeof(name));
+        STD_CopyLString(name, (char *)self->unk_50, sizeof(name));
     }
-    ov002_021e5fe4_Load(&FIELD(self, 0x64, void *), FIELD(self, 0x60, void **)[0], name, mdl, tex, (u8 *)obj + 0x68);
-    ov002_021e5fe4_Load(&FIELD(self, 0x68, void *), FIELD(self, 0x60, void **)[1], name, mdl, tex, (u8 *)obj + 0x68);
-    ov002_021e5fe4_Load(&FIELD(self, 0x6c, void *), FIELD(self, 0x60, void **)[2], name, mdl, tex, (u8 *)obj + 0x68);
-    ov002_021e5fe4_Load(&FIELD(self, 0x70, void *), FIELD(self, 0x60, void **)[3], name, mdl, tex, (u8 *)obj + 0x68);
-    ov002_021e5fe4_Load(&FIELD(self, 0x74, void *), FIELD(self, 0x60, void **)[4], name, mdl, tex, (u8 *)obj + 0x68);
+    ov002_021e5fe4_Load(&self->unk_64, FIELD(self, 0x60, void **)[0], name, mdl, tex, (u8 *)obj + 0x68);
+    ov002_021e5fe4_Load(&self->unk_68, FIELD(self, 0x60, void **)[1], name, mdl, tex, (u8 *)obj + 0x68);
+    ov002_021e5fe4_Load(&self->unk_6c, FIELD(self, 0x60, void **)[2], name, mdl, tex, (u8 *)obj + 0x68);
+    ov002_021e5fe4_Load(&self->unk_70, FIELD(self, 0x60, void **)[3], name, mdl, tex, (u8 *)obj + 0x68);
+    ov002_021e5fe4_Load(&self->unk_74, FIELD(self, 0x60, void **)[4], name, mdl, tex, (u8 *)obj + 0x68);
     func_ov002_021e63f0(self);
     func_ov002_021e6290(self);
 }
 
-void func_ov002_021e61b4(void *self) {
+void func_ov002_021e61b4(Ov002Obj021f075c *self) {
     char name[0x10];
     void *anm;
-    FIELD(self, 0x4, s32) = 3;
+    self->unk_04 = 3;
     MI_CpuFill8(name, 0, sizeof(name));
     if (FIELD(self, 0x54, void *) != NULL) {
         STD_CopyLString(name, (char *)FIELD(self, 0x54, void *), sizeof(name));
     } else {
-        STD_CopyLString(name, (char *)FIELD(self, 0x50, void *), sizeof(name));
+        STD_CopyLString(name, (char *)self->unk_50, sizeof(name));
     }
     anm = NNS_G3dGetAnmByName(*FIELD(self, 0x60, void **), (NNSG3dResName *)name);
-    FIELD(self, 0x64, void *) = Heap_AllocHi(0x100, 4);
-    FIELD(FIELD(self, 0x64, void *), 0x8, void *) = anm;
-    FIELD(FIELD(self, 0x64, void *), 0x0, s32) = 0;
-    FIELD(FIELD(self, 0x64, void *), 0x4, s32) = 0x1000;
-    FIELD(FIELD(self, 0x64, void *), 0xc, void *) = (void *)NNS_G3dFuncAnmJntNsBcaDefault;
-    FIELD(FIELD(self, 0x64, void *), 0x10, s32) = 0;
-    FIELD(FIELD(self, 0x64, void *), 0x14, s32) = 0;
-    FIELD(FIELD(self, 0x64, void *), 0x18, u8) = 0x7f;
-    FIELD(FIELD(self, 0x64, void *), 0x19, u8) = 0;
+    self->unk_64 = Heap_AllocHi(0x100, 4);
+    FIELD(self->unk_64, 0x8, void *) = anm;
+    FIELD(self->unk_64, 0x0, s32) = 0;
+    FIELD(self->unk_64, 0x4, s32) = 0x1000;
+    FIELD(self->unk_64, 0xc, void *) = (void *)NNS_G3dFuncAnmJntNsBcaDefault;
+    FIELD(self->unk_64, 0x10, s32) = 0;
+    FIELD(self->unk_64, 0x14, s32) = 0;
+    FIELD(self->unk_64, 0x18, u8) = 0x7f;
+    FIELD(self->unk_64, 0x19, u8) = 0;
     func_ov002_021e63f0(self);
     func_ov002_021e6290(self);
 }
 
-void func_ov002_021e6290(void *self) {
+void func_ov002_021e6290(Ov002Obj021f075c *self) {
     void *m;
     s32 cur;
     s32 lim;
     s32 t;
-    if (FIELD(self, 0x64, void *) != NULL) {
-        m = FIELD(self, 0x64, void *);
-    } else if (FIELD(self, 0x68, void *) != NULL) {
-        m = FIELD(self, 0x68, void *);
-    } else if (FIELD(self, 0x6c, void *) != NULL) {
-        m = FIELD(self, 0x6c, void *);
+    if (self->unk_64 != NULL) {
+        m = self->unk_64;
+    } else if (self->unk_68 != NULL) {
+        m = self->unk_68;
+    } else if (self->unk_6c != NULL) {
+        m = self->unk_6c;
     }
-    t = FIELD(self, 0x1c, s32);
+    t = self->unk_1c;
     lim = (FIELD(FIELD(m, 8, void *), 4, u16) << 12) - 0x1000;
     FIELD(self, 0x80, s32) = lim;
     cur = FIELD(data_ov002_021f0f9c, 0xd0, s32);
     if (t < 0) {
-        FIELD(self, 0x8c, s32) = -1;
-    } else if (FIELD(self, 0x78, s32) == 0) {
-        FIELD(self, 0x8c, s32) = t - FIELD(self, 0x18, s32);
-    } else if (FIELD(self, 0x78, s32) == 1) {
-        FIELD(self, 0x8c, s32) = ((t - FIELD(self, 0x18, s32)) / lim + 1) * lim;
+        self->unk_8c = -1;
+    } else if (self->unk_78 == 0) {
+        self->unk_8c = t - self->unk_18;
+    } else if (self->unk_78 == 1) {
+        self->unk_8c = ((t - self->unk_18) / lim + 1) * lim;
     }
     {
-        FIELD(self, 0x7c, s32) = cur > FIELD(self, 0x18, s32) ? cur - FIELD(self, 0x18, s32) : 0;
+        self->unk_7c = cur > self->unk_18 ? cur - self->unk_18 : 0;
     }
     FIELD(self, 0xe8, Bits8).b0 = 1;
 }
 
-void func_ov002_021e6360(void *self) {
-    u8 *o = FIELD(self, 0x48, u8 *);
-    if (FIELD(self, 4, s32) == 2) {
-        if (FIELD(self, 0x64, void *) != NULL) {
-            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)FIELD(self, 0x64, void *));
+void func_ov002_021e6360(Ov002Obj021f075c *self) {
+    u8 *o = ((u8 *)self->owner);
+    if (self->unk_04 == 2) {
+        if (self->unk_64 != NULL) {
+            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)self->unk_64);
         }
-        if (FIELD(self, 0x68, void *) != NULL) {
-            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)FIELD(self, 0x68, void *));
+        if (self->unk_68 != NULL) {
+            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)self->unk_68);
         }
-        if (FIELD(self, 0x6c, void *) != NULL) {
-            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)FIELD(self, 0x6c, void *));
+        if (self->unk_6c != NULL) {
+            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)self->unk_6c);
         }
-        if (FIELD(self, 0x70, void *) != NULL) {
-            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)FIELD(self, 0x70, void *));
+        if (self->unk_70 != NULL) {
+            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)self->unk_70);
         }
-        if (FIELD(self, 0x74, void *) != NULL) {
-            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)FIELD(self, 0x74, void *));
+        if (self->unk_74 != NULL) {
+            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)self->unk_74);
         }
     } else {
         FIELD(self, 0xe8, Bits8).b2 = 1;
@@ -1060,8 +1060,8 @@ void func_ov002_021e6360(void *self) {
 namespace m_021e63f0 {
 /* The frame read sits in every arm of the mode switch; the arms are tail-merged
    into one block that loads 0x7c before the join loads the rate at 0x88. */
-static inline s32 Ov002Anm_Frame(void *self) {
-    switch (FIELD(self, 0x84, s32)) {
+static inline s32 Ov002Anm_Frame(Ov002Obj021f075c *self) {
+    switch (self->unk_84) {
     case 1:
         return FIELD(self, 0x7c, s32);
     case 0:
@@ -1073,7 +1073,7 @@ static inline s32 Ov002Anm_Frame(void *self) {
 
 extern "C" {
 
-void func_ov002_021e6508(void *self, void *out);
+void func_ov002_021e6508(Ov002Obj021f075c *self, void *out);
 
 extern void *NNS_G3dRS;
 
@@ -1083,60 +1083,60 @@ void MIi_CpuClearFast(int v, void *dst, u32 size);
 
 typedef void (*Func0208b000)(void *a, void *b, int c);
 
-void func_ov002_021e63f0(void *self) {
+void func_ov002_021e63f0(Ov002Obj021f075c *self) {
     u8 buf[0x188];
     u32 fl;
-    if (FIELD(self, 0x64, void *) != NULL) {
-        func_ov002_021e6508(self, FIELD(self, 0x64, void *));
+    if (self->unk_64 != NULL) {
+        func_ov002_021e6508(self, self->unk_64);
     }
-    if (FIELD(self, 0x68, void *) != NULL) {
-        func_ov002_021e6508(self, FIELD(self, 0x68, void *));
+    if (self->unk_68 != NULL) {
+        func_ov002_021e6508(self, self->unk_68);
     }
-    if (FIELD(self, 0x6c, void *) != NULL) {
-        func_ov002_021e6508(self, FIELD(self, 0x6c, void *));
+    if (self->unk_6c != NULL) {
+        func_ov002_021e6508(self, self->unk_6c);
     }
-    if (FIELD(self, 0x70, void *) != NULL) {
-        func_ov002_021e6508(self, FIELD(self, 0x70, void *));
+    if (self->unk_70 != NULL) {
+        func_ov002_021e6508(self, self->unk_70);
     }
-    if (FIELD(self, 0x74, void *) != NULL) {
-        func_ov002_021e6508(self, FIELD(self, 0x74, void *));
+    if (self->unk_74 != NULL) {
+        func_ov002_021e6508(self, self->unk_74);
     }
-    if (FIELD(self, 0x64, void *) == NULL) {
+    if (self->unk_64 == NULL) {
         return;
     }
     NNS_G3dRS = buf;
     MIi_CpuClearFast(0, buf, 0x188);
     FIELD(buf, 0xe8, u32) = NNS_G3dGetJointScale_FuncArray;
-    ((Func0208b000)NNS_G3dFuncAnmJntNsBcaDefault)((u8 *)self + 0x90, FIELD(self, 0x64, void *), 0);
-    fl = FIELD(self, 0x90, u32);
+    ((Func0208b000)NNS_G3dFuncAnmJntNsBcaDefault)((u8 *)self + 0x90, self->unk_64, 0);
+    fl = self->unk_90;
     if (fl & 2) {
         MTX_Identity33_((MtxFx33 *)((u8 *)self + 0xb8));
     }
     if (fl & 4) {
-        FIELD(self, 0xdc, s32) = 0;
-        FIELD(self, 0xe0, s32) = 0;
-        FIELD(self, 0xe4, s32) = 0;
+        self->trans.x = 0;
+        self->trans.y = 0;
+        self->trans.z = 0;
     }
     if (fl & 1) {
-        FIELD(self, 0x94, s32) = 0x1000;
-        FIELD(self, 0x98, s32) = 0x1000;
-        FIELD(self, 0x9c, s32) = 0x1000;
+        self->scale.x = 0x1000;
+        self->scale.y = 0x1000;
+        self->scale.z = 0x1000;
     }
     NNS_G3dRS = NULL;
 }
 
-void func_ov002_021e6508(void *self, void *out) {
+void func_ov002_021e6508(Ov002Obj021f075c *self, void *out) {
     s32 n = FIELD(FIELD(out, 0x8, u8 *), 0x4, u16) << 12;
     s32 f;
     f = Ov002Anm_Frame(self);
     f = FX_MUL(f, FIELD(self, 0x88, s32));
-    if (FIELD(self, 0x78, s32) == 0) {
+    if (self->unk_78 == 0) {
         if (f >= n - 0x1000) {
             f = n - 0x1000;
         }
         FIELD(out, 0x0, s32) = f;
-    } else if (FIELD(self, 0x78, s32) == 1) {
-        if (FIELD(self, 0x7c, s32) >= FIELD(self, 0x8c, s32) && FIELD(self, 0x8c, s32) >= 0) {
+    } else if (self->unk_78 == 1) {
+        if (FIELD(self, 0x7c, s32) >= self->unk_8c && self->unk_8c >= 0) {
             FIELD(out, 0x0, s32) = n - 0x1000;
             return;
         }
@@ -1151,8 +1151,8 @@ void func_ov002_021e6508(void *self, void *out) {
 namespace m_021e659c {
 extern "C" {
 
-BOOL func_ov002_021e659c(void *self) {
-    FIELD(self, 0x6c, s32) = FIELD(self, 0x18, s32);
+BOOL func_ov002_021e659c(Ov002Obj021f070c *self) {
+    self->unk_6c = self->unk_18;
     return TRUE;
 }
 
@@ -1163,7 +1163,7 @@ BOOL func_ov002_021e659c(void *self) {
 namespace m_021e65ac {
 extern "C" {
 
-void func_ov002_021e6784(void *self);
+void func_ov002_021e6784(Ov002Obj021f070c *self);
 
 void Math_DirToAngles(void *out, VecFx32 *dir);
 
@@ -1176,25 +1176,25 @@ static inline BOOL ov002_inWindow(s32 t) {
     return r;
 }
 
-BOOL func_ov002_021e65ac(void *self) {
+BOOL func_ov002_021e65ac(Ov002Obj021f070c *self) {
     u8 *g = (u8 *)data_ov002_021f0f9c;
     s32 now = FIELD(g, 0xd0, s32);
     s32 i;
-    if (now > FIELD(self, 0x1c, s32)) {
+    if (now > self->unk_1c) {
         return FALSE;
     }
-    if (now < FIELD(self, 0x18, s32)) {
+    if (now < self->unk_18) {
         return TRUE;
     }
-    if (FIELD(self, 0x18, s32) > FIELD(g, 0xd4, s32) && FIELD(self, 0x18, s32) <= now) {
-        func_ov002_021e61b4(FIELD(self, 0x60, void *));
+    if (self->unk_18 > FIELD(g, 0xd4, s32) && self->unk_18 <= now) {
+        func_ov002_021e61b4(self->unk_60);
     }
-    if (FIELD(self, 0x64, s32) == 1) {
-        while (ov002_inWindow(FIELD(self, 0x6c, s32))) {
+    if (self->unk_64 == 1) {
+        while (ov002_inWindow(self->unk_6c)) {
             func_ov002_021e6784(self);
-            FIELD(self, 0x6c, s32) += FIELD(self, 0x68, s32);
+            self->unk_6c += self->unk_68;
         }
-    } else if (ov002_inWindow(FIELD(self, 0x18, s32))) {
+    } else if (ov002_inWindow(self->unk_18)) {
         func_ov002_021e6784(self);
     }
     for (i = 0; i < 4; i++) {
@@ -1206,17 +1206,17 @@ BOOL func_ov002_021e65ac(void *self) {
             VecFx32 scale;
             VecFx32 pos;
             s32 rot[2];
-            u8 *m = FIELD(self, 0x60, u8 *);
-            pos.x = FIELD(m, 0xdc, s32);
-            pos.y = FIELD(m, 0xe0, s32);
-            pos.z = FIELD(m, 0xe4, s32);
-            scale.x = FIELD(m, 0x94, s32);
-            scale.y = FIELD(m, 0x98, s32);
-            scale.z = FIELD(m, 0x9c, s32);
+            Ov002Obj021f075c *m = self->unk_60;
+            pos.x = m->trans.x;
+            pos.y = m->trans.y;
+            pos.z = m->trans.z;
+            scale.x = m->scale.x;
+            scale.y = m->scale.y;
+            scale.z = m->scale.z;
             dir.x = 0;
             dir.y = 0;
             dir.z = 0x1000;
-            MTX_MultVec33(&dir, (MtxFx33 *)(m + 0xb8), &dir);
+            MTX_MultVec33(&dir, &m->rot, &dir);
             Math_DirToAngles(rot, &dir);
             o->SetPos(&pos);
             o->SetScale(&scale);
@@ -1227,7 +1227,7 @@ BOOL func_ov002_021e65ac(void *self) {
 }
 
 
-void func_ov002_021e6784(void *self) {
+void func_ov002_021e6784(Ov002Obj021f070c *self) {
     s32 i;
     for (i = 0; i < 4; i++) {
         if (((u32 *)((u8 *)self + 0x50))[i] == 0) {
@@ -1237,31 +1237,31 @@ void func_ov002_021e6784(void *self) {
             VecFx32 pos;
             s32 rot[2];
             EffectObj *o;
-            u8 *m;
+            Ov002Obj021f075c *m;
             s32 k;
             zero.x = 0;
             zero.y = 0;
             zero.z = 0;
-            o = func_02065f88(FIELD(self, 0x4c, s32), &zero);
-            m = FIELD(self, 0x60, u8 *);
-            pos.x = FIELD(m, 0xdc, s32);
-            pos.y = FIELD(m, 0xe0, s32);
-            pos.z = FIELD(m, 0xe4, s32);
-            scale.x = FIELD(m, 0x94, s32);
-            scale.y = FIELD(m, 0x98, s32);
-            scale.z = FIELD(m, 0x9c, s32);
+            o = func_02065f88(self->unk_4c, &zero);
+            m = self->unk_60;
+            pos.x = m->trans.x;
+            pos.y = m->trans.y;
+            pos.z = m->trans.z;
+            scale.x = m->scale.x;
+            scale.y = m->scale.y;
+            scale.z = m->scale.z;
             dir.x = 0;
             dir.y = 0;
             dir.z = 0x1000;
-            MTX_MultVec33(&dir, (MtxFx33 *)(m + 0xb8), &dir);
+            MTX_MultVec33(&dir, &m->rot, &dir);
             Math_DirToAngles(rot, &dir);
             o->SetPos(&pos);
             o->SetScale(&scale);
             o->SetRot((const EffectRot *)rot); // rot is s32[2]: Rot16 would shrink the frame
-            o->SetParam(FIELD(self, 0x8, s32));
+            o->SetParam(self->unk_08);
             o->unk_50 = 0xfb1e0000;
             o->unk_54 = 0;
-            k = FIELD(self, 0x64, s32);
+            k = self->unk_64;
             if (k == -1) {
                 o->loopCount = -1;
             } else if (k == -2) {
@@ -1280,16 +1280,16 @@ void func_ov002_021e6784(void *self) {
 namespace m_021e68d4 {
 extern "C" {
 
-BOOL func_ov002_021e68d4(void *self) {
+BOOL func_ov002_021e68d4(Ov002Obj021f06bc *self) {
     BOOL r = FALSE;
-    switch (FIELD(self, 0x10, s32)) {
+    switch (self->unk_10) {
     case 0:
         if (FIELD(self, 0x4c, s8) != 0 && FIELD(self, 0x6c, s8) != 0) {
             func_020359fc((u8 *)self + 0x4c, (u8 *)self + 0x6c, 0, 0);
-            FIELD(self, 0x10, s32)++;
-            FIELD(self, 0x14, s32) = 1;
+            self->unk_10++;
+            self->unk_14 = 1;
         } else {
-            FIELD(self, 0x10, s32) = -1;
+            self->unk_10 = -1;
             r = TRUE;
             break;
         }
@@ -1297,13 +1297,13 @@ BOOL func_ov002_021e68d4(void *self) {
         if (func_02035bd4((u8 *)self + 0x4c, (u8 *)self + 0x6c, 0) == 0) {
             break;
         }
-        FIELD(self, 0x10, s32)++;
+        self->unk_10++;
     case 2: {
         void *t = func_02035fe8((u8 *)self + 0x4c, (u8 *)self + 0x6c);
         if (t != NULL) {
             func_ov002_021ec1e0((u8 *)self + 0x94, t);
         }
-        FIELD(self, 0x10, s32) = -1;
+        self->unk_10 = -1;
         break;
     }
     case -1:
@@ -1325,10 +1325,10 @@ BOOL func_ov002_021e69a8(void) {
 namespace m_021e69b0 {
 extern "C" {
 
-BOOL func_ov002_021e69b0(void *self) {
+BOOL func_ov002_021e69b0(Ov002Obj021f06bc *self) {
     s16 *p;
     s32 v;
-    while ((p = FIELD(self, 0xa8, s16 *)) != NULL && FIELD((u8 *)data_ov002_021f0f9c, 0xd4, s32) < (v = *p << 12) && v <= FIELD((u8 *)data_ov002_021f0f9c, 0xd0, s32)) {
+    while ((p = self->unk_a8) != NULL && FIELD((u8 *)data_ov002_021f0f9c, 0xd4, s32) < (v = *p << 12) && v <= FIELD((u8 *)data_ov002_021f0f9c, 0xd0, s32)) {
         func_0204aaec(data_02097e48.queue, (SndCmd *)p);
         func_ov002_021ec2ac((u8 *)self + 0x94);
     }
@@ -1342,9 +1342,9 @@ BOOL func_ov002_021e69b0(void *self) {
 namespace m_021e6a14 {
 extern "C" {
 
-void func_ov002_021e6a14(void *self) {
-    FIELD(self, 4, s32) = 5;
-    FIELD(self, 0x20, s32) = -0x29;
+void func_ov002_021e6a14(Ov002Obj021f07ac *self) {
+    self->unk_04 = 5;
+    self->unk_20 = -0x29;
     MI_CpuFill8((u8 *)self + 0x4c, 0, 0x20);
     MI_CpuFill8((u8 *)self + 0x6c, 0, 0x20);
     func_ov002_021ebfd0((u8 *)self + 0x8c);
@@ -1354,24 +1354,24 @@ void func_ov002_021e6a14(void *self) {
     FIELD(self, 0xc0, s32) = 0;
     MI_CpuFill8((u8 *)self + 0xc4, 0, 0x80);
     FIELD(self, 0x144, void *) = (u8 *)self + 0xc4;
-    FIELD(self, 0x148, s32) = 0xff;
-    FIELD(self, 0x150, s32) = 6;
+    self->unk_148 = 0xff;
+    self->unk_150 = 6;
     FIELD(self, 0x14c, s32) = 0;
-    FIELD(self, 0x154, s32) = 2;
+    self->unk_154 = 2;
     FIELD(self, 0x158, s32) = 0;
     FIELD(self, 0x15c, s32) = 0;
 }
 
-BOOL func_ov002_021e6aac(void *self) {
+BOOL func_ov002_021e6aac(Ov002Obj021f07ac *self) {
     BOOL r = FALSE;
-    switch (FIELD(self, 0x10, s32)) {
+    switch (self->unk_10) {
     case 0:
         if (FIELD(self, 0x4c, s8) != 0 && FIELD(self, 0x6c, s8) != 0) {
             func_020359fc((u8 *)self + 0x4c, (u8 *)self + 0x6c, 0, 0);
-            FIELD(self, 0x14, s32) = 1;
-            FIELD(self, 0x10, s32)++;
+            self->unk_14 = 1;
+            self->unk_10++;
         } else {
-            FIELD(self, 0x10, s32) = 2;
+            self->unk_10 = 2;
             r = TRUE;
             break;
         }
@@ -1379,7 +1379,7 @@ BOOL func_ov002_021e6aac(void *self) {
         if (func_02035bd4((u8 *)self + 0x4c, (u8 *)self + 0x6c, 0) == 0) {
             break;
         }
-        FIELD(self, 0x10, s32)++;
+        self->unk_10++;
     case 2:
         r = TRUE;
         break;
@@ -1387,32 +1387,32 @@ BOOL func_ov002_021e6aac(void *self) {
     return r;
 }
 
-BOOL func_ov002_021e6b54(void *self) {
+BOOL func_ov002_021e6b54(Ov002Obj021f07ac *self) {
     s8 **r;
-    if (FIELD(self, 0x14, s32) != 0) {
+    if (self->unk_14 != 0) {
         void *t = func_02035fe8((u8 *)self + 0x4c, (u8 *)self + 0x6c);
         if (t == NULL) {
-            FIELD(self, 8, s32) = 0;
+            self->unk_08 = 0;
         } else {
             func_ov002_021ec010((u8 *)self + 0x8c, t);
-            FIELD(self, 8, s32) = 2;
+            self->unk_08 = 2;
         }
     }
-    switch (FIELD(self, 8, s32)) {
+    switch (self->unk_08) {
     case 1:
-        FIELD(self, 0x150, s32) = 5;
-        FIELD(self, 0x154, s32) = 1;
+        self->unk_150 = 5;
+        self->unk_154 = 1;
         break;
     case 2:
-        FIELD(self, 0x150, s32) = 6;
-        FIELD(self, 0x154, s32) = 2;
+        self->unk_150 = 6;
+        self->unk_154 = 2;
         break;
     }
-    FIELD(data_02097ce0, 4, s32) = FIELD(self, 0x150, s32);
+    data_02097ce0->unk_004 = self->unk_150;
     r = (s8 **)GfxMgr_GetFont(data_02097ce0);
     FIELD(self, 0x158, s8 **) = r;
     FIELD(self, 0x15c, s8 *) = r[1];
-    FIELD(data_ov002_021f0f9c, 0x128, s32) = FIELD(self, 8, s32);
+    FIELD(data_ov002_021f0f9c, 0x128, s32) = self->unk_08;
     return TRUE;
 }
 
@@ -1425,7 +1425,7 @@ extern "C" {
 
 void func_ov002_021ec0cc(void *p);
 
-void func_ov002_021e6e40(void *self);
+void func_ov002_021e6e40(Ov002Obj021f07ac *self);
 
 static inline bool isVisible021e6c0c(void *self) {
     BOOL in = FALSE;
@@ -1436,7 +1436,7 @@ static inline bool isVisible021e6c0c(void *self) {
     return in;
 }
 
-BOOL func_ov002_021e6c0c(void *self) {
+BOOL func_ov002_021e6c0c(Ov002Obj021f07ac *self) {
     if (FIELD(self, 0x96, s16) != 0) {
         if (FIELD(data_ov002_021f0f9c, 0xd4, s32) < FIELD(self, 0x9c, s16) << 12 && FIELD(self, 0x9c, s16) << 12 <= FIELD(data_ov002_021f0f9c, 0xd0, s32)) {
             BOOL has;
@@ -1454,11 +1454,11 @@ BOOL func_ov002_021e6c0c(void *self) {
                 has = TRUE;
             }
             if (!has) {
-                FIELD(self, 0x148, s32) = 0xff;
+                self->unk_148 = 0xff;
             } else if (FIELD(self, 0xa8, s8) == 1) {
-                FIELD(self, 0x148, s32) = 0;
+                self->unk_148 = 0;
             } else {
-                FIELD(self, 0x148, s32) = 1;
+                self->unk_148 = 1;
             }
             func_ov002_021ec0cc((u8 *)self + 0x8c);
         }
@@ -1467,9 +1467,9 @@ BOOL func_ov002_021e6c0c(void *self) {
         func_ov002_021e6e40(self);
     }
     if (isVisible021e6c0c(self)) {
-        FIELD(self, 0x148, s32) = 0xff;
+        self->unk_148 = 0xff;
     }
-    FIELD(data_ov002_021f0f9c, 0x12c, s32) = FIELD(self, 0x148, s32);
+    FIELD(data_ov002_021f0f9c, 0x12c, s32) = self->unk_148;
     return TRUE;
 }
 
@@ -1501,7 +1501,7 @@ static inline void Pos_Set(s16 *p, s16 x, s16 y) {
     p[1] = y;
 }
 
-void func_ov002_021e6d4c(void *self) {
+void func_ov002_021e6d4c(Ov002Obj021f07ac *self) {
     s16 x;
     s16 y;
     s16 pal;
@@ -1517,20 +1517,20 @@ void func_ov002_021e6d4c(void *self) {
         pal = 1;
         x = 10;
     }
-    FIELD(data_02097ce0, 0x4, s32) = FIELD(self, 0x150, s32);
-    FIELD(data_02097ce0, 0x8, s32) = 0;
+    data_02097ce0->unk_004 = self->unk_150;
+    data_02097ce0->unk_008 = 0;
     Pos_Set((s16 *)((u8 *)data_02097ce0 + 0xc), x, y);
-    FIELD(data_02097ce0, 0x10, s16) = pal;
+    data_02097ce0->unk_010 = pal;
     func_0203a4e4(data_02097ce0, (u8 *)self + 0xc4);
-    if (FIELD(self, 0x148, s32) == 0xff) {
+    if (self->unk_148 == 0xff) {
         return;
     }
     {
         void *txt = FIELD(self, 0x14c, void *);
         void *font = GfxMgr_GetFont(data_02097ce0);
         s32 w = NNSi_G2dFontGetTextWidth(font, 0, txt);
-        FIELD(data_02097ce0, 0x4, s32) = FIELD(self, 0x154, s32);
-        FIELD(data_02097ce0, 0x8, s32) = 0;
+        data_02097ce0->unk_004 = self->unk_154;
+        data_02097ce0->unk_008 = 0;
         Pos_Set((s16 *)((u8 *)data_02097ce0 + 0xc), (0x60 - w) >> 1, 0x8d);
         func_0203a4e4(data_02097ce0, FIELD(self, 0x14c, void *));
     }
@@ -1543,7 +1543,7 @@ void func_ov002_021e6d4c(void *self) {
 namespace m_021e6e40 {
 extern "C" {
 
-void func_ov002_021e6fbc(void *self, s32 ch);
+void func_ov002_021e6fbc(Ov002Obj021f07ac *self, s32 ch);
 
 typedef s32 (*GetChar)(void *);
 
@@ -1569,7 +1569,7 @@ static inline s32 classifyChar(s32 ch) {
     return 0;
 }
 
-void func_ov002_021e6e40(void *self) {
+void func_ov002_021e6e40(Ov002Obj021f07ac *self) {
     char *s = FIELD(self, 0xc0, char *);
     if (s == NULL || s[0] == 0) {
         return;
@@ -1608,31 +1608,31 @@ void func_ov002_021e6e40(void *self) {
 
 typedef u8 Buf80[0x80];
 
-void func_ov002_021e6fbc(void *self, s32 ch) {
-    if (FIELD(self, 0x144, u8 *) > FIELD(self, 0xc4, Buf80) + 0x7e) {
+void func_ov002_021e6fbc(Ov002Obj021f07ac *self, s32 ch) {
+    if (self->unk_144 > FIELD(self, 0xc4, Buf80) + 0x7e) {
         return;
     }
     if (((int (*)(void))LangData_GetLang)() == 0) {
         if (ch == (ch & 0xff)) {
-            *FIELD(self, 0x144, u8 *)++ = ch;
-            *FIELD(self, 0x144, u8 *) = 0;
+            *self->unk_144++ = ch;
+            *self->unk_144 = 0;
         } else {
-            *FIELD(self, 0x144, u8 *)++ = ch >> 8;
-            *FIELD(self, 0x144, u8 *)++ = ch;
-            *FIELD(self, 0x144, u8 *) = 0;
+            *self->unk_144++ = ch >> 8;
+            *self->unk_144++ = ch;
+            *self->unk_144 = 0;
         }
     } else if (ch == (ch & 0x7f)) {
-        *FIELD(self, 0x144, u8 *)++ = ch;
-        *FIELD(self, 0x144, u8 *) = 0;
+        *self->unk_144++ = ch;
+        *self->unk_144 = 0;
     } else if (ch == (ch & 0x7ff)) {
-        *FIELD(self, 0x144, u8 *)++ = ((ch >> 6) & 0x1f) | 0xc0;
-        *FIELD(self, 0x144, u8 *)++ = (ch & 0x3f) | 0x80;
-        *FIELD(self, 0x144, u8 *) = 0;
+        *self->unk_144++ = ((ch >> 6) & 0x1f) | 0xc0;
+        *self->unk_144++ = (ch & 0x3f) | 0x80;
+        *self->unk_144 = 0;
     } else {
-        *FIELD(self, 0x144, u8 *)++ = ((ch >> 12) & 0xf) | 0xe0;
-        *FIELD(self, 0x144, u8 *)++ = ((ch >> 6) & 0x3f) | 0x80;
-        *FIELD(self, 0x144, u8 *)++ = (ch & 0x3f) | 0x80;
-        *FIELD(self, 0x144, u8 *) = 0;
+        *self->unk_144++ = ((ch >> 12) & 0xf) | 0xe0;
+        *self->unk_144++ = ((ch >> 6) & 0x3f) | 0x80;
+        *self->unk_144++ = (ch & 0x3f) | 0x80;
+        *self->unk_144 = 0;
     }
 }
 
@@ -1647,30 +1647,30 @@ BOOL func_ov002_021e7118(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021e7120(void *self) {
-    switch (FIELD(self, 0x4c, s32)) {
+BOOL func_ov002_021e7120(Ov002Obj021f0784 *self) {
+    switch (self->unk_4c) {
     case 0:
-        FIELD(self, 0x54, s32) = 0x1f;
-        FIELD(self, 0x58, s32) = 0;
+        self->unk_54 = 0x1f;
+        self->unk_58 = 0;
         break;
     case 1:
-        FIELD(self, 0x54, s32) = 0;
-        FIELD(self, 0x58, s32) = 0x1f;
+        self->unk_54 = 0;
+        self->unk_58 = 0x1f;
         break;
     }
     return TRUE;
 }
 
-BOOL func_ov002_021e715c(void *self) {
+BOOL func_ov002_021e715c(Ov002Obj021f0784 *self) {
     u8 *ctx = (u8 *)data_ov002_021f0f9c;
     s32 v = FIELD(ctx, 0xd0, s32);
-    if (v <= FIELD(self, 0x18, s32)) {
+    if (v <= self->unk_18) {
         return TRUE;
     }
-    if (v > FIELD(self, 0x1c, s32)) {
+    if (v > self->unk_1c) {
         return FALSE;
     }
-    FIELD(ctx, 0x138, u16) = FIELD(self, 0x50, u16);
+    FIELD(ctx, 0x138, u16) = self->unk_50;
     return TRUE;
 }
 
@@ -1693,16 +1693,16 @@ extern VecFx32 data_ov002_021ef104;
 
 extern VecFx32 data_ov002_021ef0bc;
 
-void func_ov002_021e719c(void *self) {
+void func_ov002_021e719c(Ov002Obj021f0784 *self) {
     s32 now = FIELD(data_ov002_021f0f9c, 0xd0, s32);
     s32 a;
-    if (now < FIELD(self, 0x18, s32)) {
+    if (now < self->unk_18) {
         return;
     }
-    if (now - FIELD(self, 0x18, s32) >= FIELD(self, 0x5c, s32)) {
-        a = FIELD(self, 0x58, s32);
+    if (now - self->unk_18 >= self->unk_5c) {
+        a = self->unk_58;
     } else {
-        a = Interp_SinLerp(FX_Div(now - FIELD(self, 0x18, s32), FIELD(self, 0x5c, s32)), FIELD(self, 0x54, s32) << 12, FIELD(self, 0x58, s32) << 12) >> 12;
+        a = Interp_SinLerp(FX_Div(now - self->unk_18, self->unk_5c), self->unk_54 << 12, self->unk_58 << 12) >> 12;
     }
     {
         VecFx32 zero = {0, 0, 0};
@@ -1728,11 +1728,11 @@ void func_ov002_021e719c(void *self) {
         NNS_G3dGeBufferOP_N(0x15, NULL, 0);
         c = 0x3f0000c0 | (a << 16);
         NNS_G3dGeBufferOP_N(0x29, &c, 1);
-        w.z = FIELD(self, 0x20, s32);
+        w.z = self->unk_20;
         w.x = 0x80000;
         w.y = 0x60000;
         NNS_G3dGeBufferOP_N(0x1c, &w, 3);
-        func_02043db4(0, 0x100000, 0xc0000, FIELD(self, 0x50, u16));
+        func_02043db4(0, 0x100000, 0xc0000, self->unk_50);
         t2 = 2;
         NNS_G3dGeBufferOP_N(0x10, &t2, 1);
         t3 = 1;
@@ -1765,8 +1765,8 @@ static inline void ov002_Cross(const VecFx32 *a, const VecFx32 *b, VecFx32 *axb)
     axb->z = z;
 }
 
-void func_ov002_021e7390(void *self) {
-    void *obj = FIELD(self, 0x48, void *);
+void func_ov002_021e7390(Ov002Cam021f0828 *self) {
+    void *obj = self->owner;
     if (obj != NULL && FIELD(obj, 0x4, s32) == 7) {
         VecFx32 pos;
         VecFx32 at;
@@ -1787,17 +1787,17 @@ void func_ov002_021e7390(void *self) {
         MTX_RotAxis33(&m, &axis, FX_SINCOS((ang >> 4) * 2), FX_SINCOS((ang >> 4) * 2 + 1));
         MTX_MultVec33(&dir, (MtxFx33 *)&m, &dir);
         VEC_Add(&dir, &pos, &at);
-        FIELD(self, 0x5c, VecFx32) = at;
-        FIELD(self, 0x50, VecFx32) = pos;
-        FIELD(self, 0x68, VecFx32) = up;
+        self->at = at;
+        self->eye = pos;
+        self->up = up;
     }
-    NNS_G3dGlb.camPos = FIELD(self, 0x50, VecFx32);
-    NNS_G3dGlb.camUp = FIELD(self, 0x68, VecFx32);
-    NNS_G3dGlb.camTarget = FIELD(self, 0x5c, VecFx32);
+    NNS_G3dGlb.camPos = self->eye;
+    NNS_G3dGlb.camUp = self->up;
+    NNS_G3dGlb.camTarget = self->at;
     MTX_LookAt((VecFx32 *)((u8 *)self + 0x50), (VecFx32 *)((u8 *)self + 0x68), (VecFx32 *)((u8 *)self + 0x5c), (MtxFx43 *)data_02092844);
     NNS_G3dGlb.flag &= ~0xe8;
-    MTX_PerspectiveW(FIELD(self, 0xba, s16), FIELD(self, 0xbc, s16), FIELD(self, 0xbe, s16), FIELD(self, 0xc0, s32),
-                     FIELD(self, 0xc4, s32), 0x1000, (u8 *)self + 0x74);
+    MTX_PerspectiveW(self->fovySin, self->fovyCos, ((s16)self->unk_be), self->unk_c0,
+                     self->unk_c4, 0x1000, (u8 *)self + 0x74);
     MIi_CpuCopyFast((u8 *)self + 0x74, data_02092800, 0x40);
     NNS_G3dGlb.flag &= ~0x50;
 }
@@ -1815,38 +1815,38 @@ extern VecFx32 data_ov002_021ef0d4;
 
 void VEC_Add(void *a, void *b, void *c);
 
-BOOL func_ov002_021e75f0(void *self) {
-    void *n;
-    void *c;
-    u8 *m;
+BOOL func_ov002_021e75f0(Ov002Cam021f0828 *self) {
+    Ov002Obj021f075c *n;
+    Ov002Obj021f075c *c;
+    Ov002Obj021f075c *m;
     n = NULL;
-    c = FIELD(self, 0xc8, void *);
+    c = self->unk_c8;
     if (c == NULL) {
-        n = func_ov002_021e4ee4(self, 3, -1);
+        n = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, -1);
     } else if (FIELD(c, 0xe8, Bits8).b1) {
-        n = func_ov002_021e4ee4(self, 3, FIELD(c, 0x18, s32));
+        n = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, c->unk_18);
     }
     if (n != NULL) {
-        if (FIELD(self, 0xc8, void *) != NULL) {
-            func_ov002_021e6360(FIELD(self, 0xc8, void *));
+        if (self->unk_c8 != NULL) {
+            func_ov002_021e6360(self->unk_c8);
         }
         func_ov002_021e61b4(n);
-        FIELD(self, 0xc8, void *) = n;
+        self->unk_c8 = n;
     }
-    m = FIELD(self, 0xc8, u8 *);
+    m = self->unk_c8;
     if (m != NULL) {
         VecFx32 pos;
         VecFx32 a = data_ov002_021ef0f8;
         VecFx32 b = data_ov002_021ef0d4;
-        pos.x = FIELD(m, 0xdc, s32);
-        pos.y = FIELD(m, 0xe0, s32);
-        pos.z = FIELD(m, 0xe4, s32);
-        MTX_MultVec33(&a, (MtxFx33 *)(m + 0xb8), &a);
+        pos.x = m->trans.x;
+        pos.y = m->trans.y;
+        pos.z = m->trans.z;
+        MTX_MultVec33(&a, &m->rot, &a);
         VEC_Add(&pos, &a, &a);
-        MTX_MultVec33(&b, (MtxFx33 *)(m + 0xb8), &b);
-        FIELD(self, 0x50, VecFx32) = pos;
-        FIELD(self, 0x5c, VecFx32) = a;
-        FIELD(self, 0x68, VecFx32) = b;
+        MTX_MultVec33(&b, &m->rot, &b);
+        self->eye = pos;
+        self->at = a;
+        self->up = b;
     }
     return TRUE;
 }
@@ -1867,14 +1867,14 @@ void func_ov002_021e772c(void *self, s32 deg) {
 namespace m_021e779c {
 extern "C" {
 
-void func_ov002_021e779c(void *self) {
-    void *o = FIELD(self, 0x48, void *);
+void func_ov002_021e779c(Ov002Cam021f07fc *self) {
+    void *o = self->owner;
     NNSG3dGlb *g;
     if (o != NULL && FIELD(o, 4, s32) == 8) {
         s32 y = FIELD(o, 0x54, s32) + 0x120000;
         s32 x = FIELD(o, 0x50, s32);
-        VecFx32 *v = &FIELD(self, 0x50, VecFx32);
-        VecFx32 *w = &FIELD(self, 0x5c, VecFx32);
+        VecFx32 *v = &self->eye;
+        VecFx32 *w = &self->at;
         v->x = x;
         v->y = y;
         v->z = 0;
@@ -1883,54 +1883,54 @@ void func_ov002_021e779c(void *self) {
         w->z = -0x1000;
     }
     g = &NNS_G3dGlb;
-    g->camPos = FIELD(self, 0x50, VecFx32);
-    g->camUp = FIELD(self, 0x68, VecFx32);
-    g->camTarget = FIELD(self, 0x5c, VecFx32);
+    g->camPos = self->eye;
+    g->camUp = self->up;
+    g->camTarget = self->at;
     MTX_LookAt((VecFx32 *)((u8 *)self + 0x50), (VecFx32 *)((u8 *)self + 0x68), (VecFx32 *)((u8 *)self + 0x5c), (MtxFx43 *)data_02092844);
     g->flag &= ~0xe8;
     MIi_CpuCopyFast((u8 *)self + 0x74, data_02092800, 0x40);
     g->flag &= ~0x50;
 }
 
-BOOL func_ov002_021e7880(void *self) {
+BOOL func_ov002_021e7880(Ov002Cam021f07fc *self) {
     VecFx32 v = data_ov002_021ef110;
     s32 x;
-    FIELD(self, 0x68, VecFx32) = v;
-    if (FIELD(self, 8, s32) == 1) {
+    self->up = v;
+    if (self->unk_08 == 1) {
         x = 0x90000;
-    } else if (FIELD(self, 8, s32) == 2) {
+    } else if (self->unk_08 == 2) {
         x = -0x90000;
     }
-    FIELD(self, 0x50, s32) = 0;
-    FIELD(self, 0x54, s32) = x;
-    FIELD(self, 0x58, s32) = 0;
-    FIELD(self, 0x5c, s32) = 0;
-    FIELD(self, 0x60, s32) = x;
-    FIELD(self, 0x64, s32) = -0x1000;
+    self->eye.x = 0;
+    self->eye.y = x;
+    self->eye.z = 0;
+    self->at.x = 0;
+    self->at.y = x;
+    self->at.z = -0x1000;
     return TRUE;
 }
 
-BOOL func_ov002_021e7900(void *self) {
-    void *found = NULL;
-    void *cur = FIELD(self, 0xb4, void *);
+BOOL func_ov002_021e7900(Ov002Cam021f07fc *self) {
+    Ov002Obj021f075c *found = NULL;
+    Ov002Obj021f075c *cur = self->unk_b4;
     if (cur == NULL) {
-        found = func_ov002_021e4ee4(self, 3, -1);
+        found = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, -1);
     } else if (FIELD(cur, 0xe8, Bits8).b1) {
-        found = func_ov002_021e4ee4(self, 3, FIELD(cur, 0x18, s32));
+        found = (Ov002Obj021f075c *)func_ov002_021e4ee4(self, 3, cur->unk_18);
     }
     if (found != NULL) {
-        if (FIELD(self, 0xb4, void *) != NULL) {
-            func_ov002_021e6360(FIELD(self, 0xb4, void *));
+        if (self->unk_b4 != NULL) {
+            func_ov002_021e6360(self->unk_b4);
         }
         func_ov002_021e61b4(found);
-        FIELD(self, 0xb4, void *) = found;
+        self->unk_b4 = found;
     }
-    cur = FIELD(self, 0xb4, void *);
+    cur = self->unk_b4;
     if (cur != NULL) {
-        s32 x = FIELD(cur, 0xdc, s32);
-        s32 y = FIELD(cur, 0xe0, s32);
-        VecFx32 *v = &FIELD(self, 0x50, VecFx32);
-        VecFx32 *w = &FIELD(self, 0x5c, VecFx32);
+        s32 x = cur->trans.x;
+        s32 y = cur->trans.y;
+        VecFx32 *v = &self->eye;
+        VecFx32 *w = &self->at;
         v->x = x * 100;
         v->y = y * 100;
         v->z = 0;
@@ -1941,17 +1941,17 @@ BOOL func_ov002_021e7900(void *self) {
     return TRUE;
 }
 
-BOOL func_ov002_021e79b0(void *self) {
+BOOL func_ov002_021e79b0(Ov002Obj021f06e4 *self) {
     FIELD(self, 0x4c, Bits16).b6 = 0;
     return TRUE;
 }
 
-BOOL func_ov002_021e79c4(void *self) {
+BOOL func_ov002_021e79c4(Ov002Obj021f06e4 *self) {
     u8 *ctx = (u8 *)data_ov002_021f0f9c;
     BOOL r = TRUE;
-    if (FIELD(self, 0x18, s32) > FIELD(ctx, 0xd4, s32) && FIELD(self, 0x18, s32) <= FIELD(ctx, 0xd0, s32)) {
+    if (self->unk_18 > FIELD(ctx, 0xd4, s32) && self->unk_18 <= FIELD(ctx, 0xd0, s32)) {
         u8 *g;
-        func_0206e3a0((u8 *)self + 0x4c, FIELD(self, 0x50, void *));
+        func_0206e3a0((u8 *)self + 0x4c, self->unk_50);
         g = data_02097d48->unk_8b0;
         if (!FIELD(self, 0x4c, Bits16).b2) {
             FIELD(g, 0, Bits8).b4 = 0;
@@ -1968,9 +1968,9 @@ BOOL func_ov002_021e79c4(void *self) {
     return r;
 }
 
-BOOL func_ov002_021e7a94(void *self) {
+BOOL func_ov002_021e7a94(Ov002Obj *self) {
     BOOL r = TRUE;
-    if (FIELD(data_ov002_021f0f9c, 0xd0, s32) >= FIELD(self, 0x1c, s32)) {
+    if (FIELD(data_ov002_021f0f9c, 0xd0, s32) >= self->unk_1c) {
         r = FALSE;
     }
     return r;
@@ -1996,7 +1996,7 @@ void func_ov002_021e7b58(void) {
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(*(VObject **)&data_ov002_021f0f9c);
+        DELETE_VOBJ(*(VObj **)&data_ov002_021f0f9c);
         HEAP_POP(saved);
     }
     p = Heap_Alloc(0x2cc);
@@ -2019,7 +2019,7 @@ void *Ov002Vt_021f0684_Dtor(void *self) {
 void func_ov002_021e7c1c(void) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(*(VObject **)&data_ov002_021f0f9c);
+    DELETE_VOBJ(*(VObj **)&data_ov002_021f0f9c);
     HEAP_POP(saved);
 }
 
@@ -2098,9 +2098,9 @@ void func_ov002_021e7dac(void *self) {
         func_02043b20(g + 0x8b0);
         FIELD(self, 0x148, u8) = 0;
     }
-    FIELD(data_02097d48, 0x4, s32) = 1;
-    FIELD(data_0214a420, 0x10, u8) = 0;
-    FIELD(data_0214a420, 0x34, u8) = 0;
+    data_02097d48->nextState = 1;
+    data_0214a420->drawFilter = 0;
+    data_0214a420->useCamera = 0;
     GXx_SetMasterBrightness_(0x400006c, 0);
     GXx_SetMasterBrightness_(0x400106c, 0);
 }
@@ -2145,7 +2145,7 @@ BOOL func_ov002_021e7ea8(void *self) {
     int mode;
     u8 *g;
     s32 b;
-    FIELD(self, 0xc, s32) = FIELD(data_02097d48, 0xa30, Bits8).b4 ? 1 : 2;
+    FIELD(self, 0xc, s32) = data_02097d48->unk_a30_4 ? 1 : 2;
     switch (FIELD(self, 0x4, s32)) {
     case 0: {
         b = 0;
@@ -2177,9 +2177,9 @@ BOOL func_ov002_021e7ea8(void *self) {
         FIELD(gx, 0xb2, u16) = 0;
         func_02043b20(gx);
         FIELD(self, 0x148, u8) = 1;
-        FIELD(data_02097d48, 0x4, s32) = 2;
-        FIELD(data_0214a420, 0x10, u8) = 1;
-        FIELD(data_0214a420, 0x34, u8) = 1;
+        data_02097d48->nextState = 2;
+        data_0214a420->drawFilter = 1;
+        data_0214a420->useCamera = 1;
         ov002_SetState(self, 1);
         break;
     }
@@ -2246,8 +2246,8 @@ BOOL func_ov002_021e7ea8(void *self) {
         if (done) {
             func_ov002_021e8c0c(self);
             EffectMgr_FreeAll(data_0214a420);
-            FIELD(data_0214a420, 0x10, u8) = 0;
-            FIELD(data_02097d48, 0x4, s32) = 1;
+            data_0214a420->drawFilter = 0;
+            data_02097d48->nextState = 1;
             ov002_SetState(self, 6);
         }
         break;
@@ -2451,7 +2451,7 @@ BOOL func_ov002_021e86a0(void *self) {
     return r;
 }
 
-BOOL func_ov002_021e4dd4(void *n);
+BOOL func_ov002_021e4dd4(Ov002Obj *n);
 
 void func_ov002_021e8bbc(void *self, void *n);
 
@@ -2472,27 +2472,27 @@ BOOL func_ov002_021e8828(void *self) {
     BOOL busy = FALSE;
     BOOL in;
     BOOL r;
-    u8 *next;
-    u8 *n;
+    Ov002Obj *next;
+    Ov002Obj *n;
     if (FIELD(self, 0x1c, s32) != 0x5c && FIELD(self, 0x1c, s32) != 0x1e) {
         if ((data_02097dc8->trig & 8) && FIELD(self, 0x1a, u8) != 0) {
             ret = busy;
         }
     }
-    for (n = FIELD(self, 0xdc, u8 *); n != NULL; n = next) {
-        next = FIELD(n, 0x24, u8 *);
+    for (n = (Ov002Obj *)FIELD(self, 0xdc, u8 *); n != NULL; n = (Ov002Obj *)next) {
+        next = (Ov002Obj *)((u8 *)n->next);
         r = func_ov002_021e4dd4(n);
-        if (FIELD(n, 0x4, s32) == 7 && FIELD(self, 0xc, s32) == FIELD(n, 0x8, s32)) {
+        if (n->unk_04 == 7 && FIELD(self, 0xc, s32) == n->unk_08) {
             {
-                s32 *sv = (s32 *)(n + 0x50);
+                s32 *sv = (s32 *)((u8 *)n + 0x50);
                 s32 a0 = sv[0], a1 = sv[1], a2 = sv[2], a3 = sv[3], a4 = sv[4], a5 = sv[5], a6 = sv[6], a7 = sv[7], a8 = sv[8];
                 s32 *d = (s32 *)((u8 *)data_0214a420 + 0x38);
                 d[0] = a0; d[1] = a1; d[2] = a2; d[3] = a3; d[4] = a4; d[5] = a5; d[6] = a6; d[7] = a7; d[8] = a8;
             }
-            MI_Copy64B(n + 0x74, (u8 *)data_0214a420 + 0x5c);
+            MI_Copy64B((u8 *)n + 0x74, (u8 *)data_0214a420 + 0x5c);
         }
         if (!r) {
-            if (FIELD(n, 0x4, s32) == 9) {
+            if (n->unk_04 == 9) {
                 ret = FALSE;
             }
             func_ov002_021e8bbc(self, n);
@@ -2501,12 +2501,12 @@ BOOL func_ov002_021e8828(void *self) {
                 HEAP_PUSH(saved);
                 if (n != NULL) {
                     if (n != NULL) {
-                        ((VObject *)n)->v0x4();
+                        ((VObj *)n)->vfunc_04();
                     }
                 }
                 HEAP_POP(saved);
             }
-        } else if (!((VObject *)n)->v0x8()) {
+        } else if (!((VObj *)n)->vfunc_08()) {
             busy = TRUE;
         }
     }
@@ -2522,10 +2522,10 @@ BOOL func_ov002_021e8828(void *self) {
             FIELD(self, 0xd4, s32) = FIELD(self, 0xd0, s32);
             FIELD(self, 0xd0, s32) = FIELD(self, 0xd0, s32) + FIELD(self, 0xd8, s32);
             func_02065ac0(data_0214a420);
-            for (p = FIELD(data_0214a420, 0x20, u8 *); p != NULL; p = FIELD(p, 0xec, u8 *)) {
+            for (p = ((u8 *)data_0214a420->head); p != NULL; p = FIELD(p, 0xec, u8 *)) {
                 FIELD(p, 0x3c, s32) = FIELD(self, 0xd8, s32);
             }
-            FIELD(data_0214a420, 0x34, u8) = 1;
+            data_0214a420->useCamera = 1;
         }
         { BOOL v = TRUE; if (!busy && !ov002_inRange8828(self)) v = FALSE; FIELD(self, 0x10, u8) = v; }
     }
@@ -2539,18 +2539,18 @@ BOOL func_ov002_021e8828(void *self) {
 namespace m_021e8aac {
 extern "C" {
 
-void *Ov002Vt_021f0734_DtorDelete(void *self) {
+void *Ov002Vt_021f0734_DtorDelete(Ov002Obj *self) {
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
     Heap_Free(self);
     return self;
 }
 
-BOOL func_ov002_021e8b28(void *self) {
-    return FIELD(self, 0xc, s32) >= 3;
+BOOL func_ov002_021e8b28(Ov002Obj *self) {
+    return self->unk_0c >= 3;
 }
 
-void func_ov002_021e8b3c(VObject *self) {
+void func_ov002_021e8b3c(VObj *self) {
     u32 mask;
     if (FIELD(self, 4, s32) != 4 && FIELD(self, 4, s32) != 5) {
         return;
@@ -2559,9 +2559,9 @@ void func_ov002_021e8b3c(VObject *self) {
     if ((FIELD(self, 0x128, u32) & mask) && FIELD(self, 0xd0, s32) > 0) {
         func_ov002_021e8cc4(self);
     }
-    for (self = FIELD(self, 0xdc, VObject *); self != NULL; self = FIELD(self, 0x24, VObject *)) {
+    for (self = FIELD(self, 0xdc, VObj *); self != NULL; self = FIELD(self, 0x24, VObj *)) {
         if ((FIELD(self, 8, u32) & mask) && FIELD(self, 0xc, s32) == 3) {
-            self->v0x1c();
+            self->vfunc_1c();
         }
     }
 }
@@ -2587,14 +2587,14 @@ void func_ov002_021e8bbc(void *self, void *item) {
 }
 
 void func_ov002_021e8c0c(void *self) {
-    VObject *o = FIELD(self, 0xdc, VObject *);
+    VObj *o = FIELD(self, 0xdc, VObj *);
     while (o != NULL) {
-        VObject *next = FIELD(o, 0x24, VObject *);
+        VObj *next = FIELD(o, 0x24, VObj *);
         void *saved;
         HEAP_PUSH(saved);
         if (o != NULL) {
             if (o != NULL) {
-                o->v0x4();
+                o->vfunc_04();
             }
         }
         HEAP_POP(saved);
@@ -2738,7 +2738,7 @@ void func_ov002_021e8f04(s32 idx) {
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(*(VObject **)&data_ov002_021f0f9c);
+        DELETE_VOBJ(*(VObj **)&data_ov002_021f0f9c);
         HEAP_POP(saved);
     }
     p = Heap_Alloc(0x2cc);
@@ -2800,7 +2800,7 @@ bool func_ov002_021e90ac(void) {
 }
 
 void func_ov002_021e90dc(void) {
-    VObject *self = (VObject *)data_ov002_021f0f9c;
+    VObj *self = (VObj *)data_ov002_021f0f9c;
     u32 mask;
     if (self == NULL) {
         return;
@@ -2812,9 +2812,9 @@ void func_ov002_021e90dc(void) {
     if ((FIELD(self, 0x128, u32) & mask) && FIELD(self, 0xd0, s32) > 0) {
         func_ov002_021e8cc4(self);
     }
-    for (self = FIELD(self, 0xdc, VObject *); self != NULL; self = FIELD(self, 0x24, VObject *)) {
+    for (self = FIELD(self, 0xdc, VObj *); self != NULL; self = FIELD(self, 0x24, VObj *)) {
         if ((FIELD(self, 8, u32) & mask) && FIELD(self, 0xc, s32) == 3) {
-            self->v0x1c();
+            self->vfunc_1c();
         }
     }
 }
@@ -2822,23 +2822,23 @@ void func_ov002_021e90dc(void) {
 void func_ov002_021e916c(void) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(*(VObject **)&data_ov002_021f0f9c);
+    DELETE_VOBJ(*(VObj **)&data_ov002_021f0f9c);
     HEAP_POP(saved);
 }
 
-static inline void func_ov002_021e4cd8_inline5(void *self) {
+static inline void func_ov002_021e4cd8_inline5(Ov002Obj *self) {
     u8 *ctx;
-    FIELD(self, 0x4, s32) = -1;
-    FIELD(self, 0x8, s32) = 1;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x14, s32) = 0;
-    FIELD(self, 0x18, s32) = 0;
-    FIELD(self, 0x1c, s32) = 0;
-    FIELD(self, 0x20, s32) = -0x29;
-    FIELD(self, 0x24, s32) = 0;
+    self->unk_04 = -1;
+    self->unk_08 = 1;
+    self->unk_0c = 0;
+    self->unk_10 = 0;
+    self->unk_14 = 0;
+    self->unk_18 = 0;
+    self->unk_1c = 0;
+    self->unk_20 = -0x29;
+    self->next = NULL;
     MIi_CpuClear32(0, (u8 *)self + 0x28, 0x20);
-    FIELD(self, 0x48, s32) = 0;
+    self->owner = NULL;
     ctx = (u8 *)data_ov002_021f0f9c;
     if (FIELD(ctx, 0xe0, void *) == NULL) {
         FIELD(ctx, 0xdc, void *) = self;
@@ -2847,35 +2847,35 @@ static inline void func_ov002_021e4cd8_inline5(void *self) {
     }
     FIELD(ctx, 0xe0, void *) = self;
 }
-void *func_ov002_021e91c8(s32 a, s32 b, s32 c, bool d, u8 e) {
-    void *p = Heap_Alloc(0x1f4);
+Ov002Obj *func_ov002_021e91c8(s32 a, s32 b, s32 c, bool d, u8 e) {
+    Ov002Obj021f07d4 *p = (Ov002Obj021f07d4 *)Heap_Alloc(0x1f4);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline5(p);
         *(VFunc **)p = data_ov002_021f07d4;
         func_ov002_021e5140(p);
     }
-    FIELD(p, 0x18, s32) = a;
-    FIELD(p, 0x1c, s32) = b;
-    FIELD(p, 0x8, s32) = c;
-    FIELD(p, 0x1f0, Bits8).b0 = e;
-    FIELD(p, 0x1f0, Bits8).b1 = d;
+    p->unk_18 = a;
+    p->unk_1c = b;
+    p->unk_08 = c;
+    p->unk_1f0_0 = e;
+    p->unk_1f0_1 = d;
     return p;
 }
 
-static inline void func_ov002_021e4cd8_inline2(void *self) {
+static inline void func_ov002_021e4cd8_inline2(Ov002Obj *self) {
     u8 *ctx;
-    FIELD(self, 0x4, s32) = -1;
-    FIELD(self, 0x8, s32) = 1;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x14, s32) = 0;
-    FIELD(self, 0x18, s32) = 0;
-    FIELD(self, 0x1c, s32) = 0;
-    FIELD(self, 0x20, s32) = -0x29;
-    FIELD(self, 0x24, s32) = 0;
+    self->unk_04 = -1;
+    self->unk_08 = 1;
+    self->unk_0c = 0;
+    self->unk_10 = 0;
+    self->unk_14 = 0;
+    self->unk_18 = 0;
+    self->unk_1c = 0;
+    self->unk_20 = -0x29;
+    self->next = NULL;
     MIi_CpuClear32(0, (u8 *)self + 0x28, 0x20);
-    FIELD(self, 0x48, s32) = 0;
+    self->owner = NULL;
     ctx = (u8 *)data_ov002_021f0f9c;
     if (FIELD(ctx, 0xe0, void *) == NULL) {
         FIELD(ctx, 0xdc, void *) = self;
@@ -2884,19 +2884,19 @@ static inline void func_ov002_021e4cd8_inline2(void *self) {
     }
     FIELD(ctx, 0xe0, void *) = self;
 }
-void *func_ov002_021e92b0(s32 a, s32 b, s32 c, s32 d, s32 e) {
-    void *p = Heap_Alloc(0xec);
+Ov002Obj *func_ov002_021e92b0(s32 a, s32 b, s32 c, s32 d, s32 e) {
+    Ov002Obj021f075c *p = (Ov002Obj021f075c *)Heap_Alloc(0xec);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
         *(VFunc **)p = data_ov002_021f075c;
         func_ov002_021e5d0c(p);
     }
-    FIELD(p, 0x18, s32) = a;
-    FIELD(p, 0x1c, s32) = b;
-    FIELD(p, 0x8, s32) = c;
-    FIELD(p, 0x78, s32) = d;
-    FIELD(p, 0x88, s32) = e;
+    p->unk_18 = a;
+    p->unk_1c = b;
+    p->unk_08 = c;
+    p->unk_78 = d;
+    p->unk_88 = e;
     return p;
 }
 
@@ -2907,19 +2907,19 @@ void *func_ov002_021e92b0(s32 a, s32 b, s32 c, s32 d, s32 e) {
 namespace m_021e9380 {
 extern "C" {
 
-static inline void func_ov002_021e4cd8_inline2(void *self) {
+static inline void func_ov002_021e4cd8_inline2(Ov002Obj *self) {
     u8 *ctx;
-    FIELD(self, 0x4, s32) = -1;
-    FIELD(self, 0x8, s32) = 1;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x14, s32) = 0;
-    FIELD(self, 0x18, s32) = 0;
-    FIELD(self, 0x1c, s32) = 0;
-    FIELD(self, 0x20, s32) = -0x29;
-    FIELD(self, 0x24, s32) = 0;
+    self->unk_04 = -1;
+    self->unk_08 = 1;
+    self->unk_0c = 0;
+    self->unk_10 = 0;
+    self->unk_14 = 0;
+    self->unk_18 = 0;
+    self->unk_1c = 0;
+    self->unk_20 = -0x29;
+    self->next = NULL;
     MIi_CpuClear32(0, (u8 *)self + 0x28, 0x20);
-    FIELD(self, 0x48, s32) = 0;
+    self->owner = NULL;
     ctx = (u8 *)data_ov002_021f0f9c;
     if (FIELD(ctx, 0xe0, void *) == NULL) {
         FIELD(ctx, 0xdc, void *) = self;
@@ -2929,60 +2929,60 @@ static inline void func_ov002_021e4cd8_inline2(void *self) {
     FIELD(ctx, 0xe0, void *) = self;
 }
 
-void *func_ov002_021e9380(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f) {
-    void *p = Heap_Alloc(0x70);
+Ov002Obj *func_ov002_021e9380(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f) {
+    Ov002Obj021f070c *p = (Ov002Obj021f070c *)Heap_Alloc(0x70);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
         *(VFunc **)p = data_ov002_021f070c;
-        FIELD(p, 0x4c, s32) = -1;
+        p->unk_4c = -1;
         MIi_CpuClear32(0, (u8 *)p + 0x50, 0x10);
-        FIELD(p, 0x68, s32) = -1;
-        FIELD(p, 0x6c, s32) = -1;
+        p->unk_68 = -1;
+        p->unk_6c = -1;
     }
-    FIELD(p, 0x18, s32) = a;
-    FIELD(p, 0x1c, s32) = b;
-    FIELD(p, 0x8, s32) = c;
-    FIELD(p, 0x4c, s32) = d;
-    FIELD(p, 0x64, s32) = e;
-    FIELD(p, 0x68, s32) = e == 1 ? f : -1;
+    p->unk_18 = a;
+    p->unk_1c = b;
+    p->unk_08 = c;
+    p->unk_4c = d;
+    p->unk_64 = e;
+    p->unk_68 = e == 1 ? f : -1;
     return p;
 }
 
 extern VFunc data_ov002_021f0784[];
 
-void *func_ov002_021e9478(s32 a, s32 b, s32 c, s32 d, u16 e, s32 mode, u8 f, u8 g) {
-    void *p = Heap_Alloc(0x60);
+Ov002Obj *func_ov002_021e9478(s32 a, s32 b, s32 c, s32 d, u16 e, s32 mode, u8 f, u8 g) {
+    Ov002Obj021f0784 *p = (Ov002Obj021f0784 *)Heap_Alloc(0x60);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
         *(VFunc **)p = data_ov002_021f0784;
-        FIELD(p, 0x4, s32) = 6;
-        FIELD(p, 0x20, s32) = -0x19a;
-        FIELD(p, 0x4c, s32) = 0;
-        FIELD(p, 0x50, u16) = 0;
-        FIELD(p, 0x54, s32) = 0;
-        FIELD(p, 0x58, s32) = 0;
-        FIELD(p, 0x5c, s32) = 0;
+        p->unk_04 = 6;
+        p->unk_20 = -0x19a;
+        p->unk_4c = 0;
+        p->unk_50 = 0;
+        p->unk_54 = 0;
+        p->unk_58 = 0;
+        p->unk_5c = 0;
     }
-    FIELD(p, 0x18, s32) = a;
-    FIELD(p, 0x1c, s32) = b;
-    FIELD(p, 0x8, s32) = d;
+    p->unk_18 = a;
+    p->unk_1c = b;
+    p->unk_08 = d;
     switch (mode) {
     case 0:
-        FIELD(p, 0x4c, s32) = 0;
+        p->unk_4c = 0;
         break;
     case 1:
-        FIELD(p, 0x4c, s32) = 1;
+        p->unk_4c = 1;
         break;
     case 2:
-        FIELD(p, 0x4c, s32) = 2;
-        FIELD(p, 0x54, u32) = f > 0x1f ? 0x1f : f;
-        FIELD(p, 0x58, u32) = g > 0x1f ? 0x1f : g;
+        p->unk_4c = 2;
+        p->unk_54 = f > 0x1f ? 0x1f : f;
+        p->unk_58 = g > 0x1f ? 0x1f : g;
         break;
     }
-    FIELD(p, 0x5c, s32) = c;
-    FIELD(p, 0x50, u16) = e;
+    p->unk_5c = c;
+    p->unk_50 = e;
     return p;
 }
 
@@ -3000,42 +3000,42 @@ extern const VecFx32 data_ov002_021ef0ec;
 
 extern const VecFx32 data_ov002_021ef0c8;
 
-void *func_ov002_021e95c4(u8 *a, u8 *b) {
+Ov002Obj *func_ov002_021e95c4(u8 *a, u8 *b) {
     s32 i;
-    u8 *p = (u8 *)Heap_Alloc(0xcc);
+    Ov002Cam021f0828 *p = (Ov002Cam021f0828 *)Heap_Alloc(0xcc);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
         *(VFunc **)p = data_ov002_021f0854;
-        GfxCamPos_Init(p + 0x50);
-        FIELD(p, 0x4, s32) = 7;
-        FIELD(p, 0x4c, s32) = -1;
-        MTX_Identity44_(p + 0x74);
+        GfxCamPos_Init((u8 *)p + 0x50);
+        p->unk_04 = 7;
+        p->unk_4c = -1;
+        MTX_Identity44_((u8 *)p + 0x74);
         *(VFunc **)p = data_ov002_021f0828;
-        FIELD(p, 0x4, s32) = 7;
+        p->unk_04 = 7;
         {
             VecFx32 v = data_ov002_021ef0e0;
-            FIELD(p, 0x50, VecFx32) = v;
+            p->eye = v;
         }
         {
             VecFx32 v = data_ov002_021ef0ec;
-            FIELD(p, 0x68, VecFx32) = v;
+            p->up = v;
         }
         {
             VecFx32 v = data_ov002_021ef0c8;
-            FIELD(p, 0x5c, VecFx32) = v;
+            p->at = v;
         }
-        FIELD(p, 0xb8, u16) = 0xaaa;
-        FIELD(p, 0xb4, s32) = 0xeff1;
-        FIELD(p, 0xba, s16) = FX_SINCOS(0xaa);
-        FIELD(p, 0xbc, s16) = FX_SINCOS(0xab);
-        FIELD(p, 0xbe, u16) = 0x1555;
-        FIELD(p, 0xc0, s32) = 0x2000;
-        FIELD(p, 0xc4, s32) = 0x7d0000;
-        FIELD(p, 0xc8, s32) = 0;
+        p->unk_b8 = 0xaaa;
+        p->unk_b4 = 0xeff1;
+        p->fovySin = FX_SINCOS(0xaa);
+        p->fovyCos = FX_SINCOS(0xab);
+        p->unk_be = 0x1555;
+        p->unk_c0 = 0x2000;
+        p->unk_c4 = 0x7d0000;
+        p->unk_c8 = NULL;
     }
     if (a != NULL) {
-        FIELD(p, 0x48, void *) = a;
+        p->owner = (struct Ov002Obj *)a;
         for (i = 0; i < 8; i++) {
             if (((void **)(a + 0x28))[i] == NULL) {
                 ((void **)(a + 0x28))[i] = p;
@@ -3045,16 +3045,16 @@ void *func_ov002_021e95c4(u8 *a, u8 *b) {
     }
     if (b != NULL) {
         for (i = 0; i < 8; i++) {
-            if (((void **)(p + 0x28))[i] == NULL) {
-                ((void **)(p + 0x28))[i] = b;
+            if (((void **)(&p->children))[i] == NULL) {
+                ((void **)(&p->children))[i] = b;
                 break;
             }
         }
         FIELD(b, 0x48, void *) = p;
     }
-    FIELD(p, 0x18, s32) = 0;
-    FIELD(p, 0x1c, s32) = 0x7ffffffe;
-    FIELD(p, 0x8, s32) = 1;
+    p->unk_18 = 0;
+    p->unk_1c = 0x7ffffffe;
+    p->unk_08 = 1;
     return p;
 }
 
@@ -3062,24 +3062,24 @@ void MTX_OrthoW(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, void *out);
 
 extern VFunc data_ov002_021f07fc[];
 
-void *func_ov002_021e97e8(u8 *a, u8 *b) {
+Ov002Obj *func_ov002_021e97e8(u8 *a, u8 *b) {
     s32 i;
-    u8 *p = (u8 *)Heap_Alloc(0xb8);
+    Ov002Cam021f07fc *p = (Ov002Cam021f07fc *)Heap_Alloc(0xb8);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
         *(VFunc **)p = data_ov002_021f0854;
-        GfxCamPos_Init(p + 0x50);
-        FIELD(p, 0x4, s32) = 7;
-        FIELD(p, 0x4c, s32) = -1;
-        MTX_Identity44_(p + 0x74);
+        GfxCamPos_Init((u8 *)p + 0x50);
+        p->unk_04 = 7;
+        p->unk_4c = -1;
+        MTX_Identity44_((u8 *)p + 0x74);
         *(VFunc **)p = data_ov002_021f07fc;
-        FIELD(p, 0x4, s32) = 8;
-        MTX_OrthoW(0x60000, -0x60000, -0x80000, 0x80000, 0, 0x20000, 0x400000, p + 0x74);
-        FIELD(p, 0xb4, s32) = 0;
+        p->unk_04 = 8;
+        MTX_OrthoW(0x60000, -0x60000, -0x80000, 0x80000, 0, 0x20000, 0x400000, (u8 *)p + 0x74);
+        p->unk_b4 = NULL;
     }
     if (a != NULL) {
-        FIELD(p, 0x48, void *) = a;
+        p->owner = (struct Ov002Obj *)a;
         for (i = 0; i < 8; i++) {
             if (((void **)(a + 0x28))[i] == NULL) {
                 ((void **)(a + 0x28))[i] = p;
@@ -3089,16 +3089,16 @@ void *func_ov002_021e97e8(u8 *a, u8 *b) {
     }
     if (b != NULL) {
         for (i = 0; i < 8; i++) {
-            if (((void **)(p + 0x28))[i] == NULL) {
-                ((void **)(p + 0x28))[i] = b;
+            if (((void **)(&p->children))[i] == NULL) {
+                ((void **)(&p->children))[i] = b;
                 break;
             }
         }
         FIELD(b, 0x48, void *) = p;
     }
-    FIELD(p, 0x18, s32) = 0;
-    FIELD(p, 0x1c, s32) = 0x7ffffffe;
-    FIELD(p, 0x8, s32) = 1;
+    p->unk_18 = 0;
+    p->unk_1c = 0x7ffffffe;
+    p->unk_08 = 1;
     return p;
 }
 
@@ -3109,19 +3109,19 @@ void *func_ov002_021e97e8(u8 *a, u8 *b) {
 namespace m_021e9974 {
 extern "C" {
 
-static inline void func_ov002_021e4cd8_inline4(void *self) {
+static inline void func_ov002_021e4cd8_inline4(Ov002Obj *self) {
     u8 *ctx;
-    FIELD(self, 0x4, s32) = -1;
-    FIELD(self, 0x8, s32) = 1;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x14, s32) = 0;
-    FIELD(self, 0x18, s32) = 0;
-    FIELD(self, 0x1c, s32) = 0;
-    FIELD(self, 0x20, s32) = -0x29;
-    FIELD(self, 0x24, s32) = 0;
+    self->unk_04 = -1;
+    self->unk_08 = 1;
+    self->unk_0c = 0;
+    self->unk_10 = 0;
+    self->unk_14 = 0;
+    self->unk_18 = 0;
+    self->unk_1c = 0;
+    self->unk_20 = -0x29;
+    self->next = NULL;
     MIi_CpuClear32(0, (u8 *)self + 0x28, 0x20);
-    FIELD(self, 0x48, s32) = 0;
+    self->owner = NULL;
     ctx = (u8 *)data_ov002_021f0f9c;
     if (FIELD(ctx, 0xe0, void *) == NULL) {
         FIELD(ctx, 0xdc, void *) = self;
@@ -3130,37 +3130,37 @@ static inline void func_ov002_021e4cd8_inline4(void *self) {
     }
     FIELD(ctx, 0xe0, void *) = self;
 }
-void *func_ov002_021e9974(s32 a, s32 b, s16 c, void *d) {
-    void *p = Heap_Alloc(0x54);
+Ov002Obj *func_ov002_021e9974(s32 a, s32 b, s16 c, void *d) {
+    Ov002Obj021f06e4 *p = (Ov002Obj021f06e4 *)Heap_Alloc(0x54);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline4(p);
         *(VFunc **)p = data_ov002_021f06e4;
-        FIELD(p, 4, s32) = 10;
-        FIELD(p, 0x4c, s16) = 0;
-        FIELD(p, 0x50, void *) = NULL;
+        p->unk_04 = 10;
+        p->unk_4c = 0;
+        p->unk_50 = NULL;
     }
-    FIELD(p, 0x18, s32) = a;
-    FIELD(p, 0x1c, s32) = b;
-    FIELD(p, 0x8, s32) = 2;
-    FIELD(p, 0x4c, s16) = c;
-    FIELD(p, 0x50, void *) = d;
+    p->unk_18 = a;
+    p->unk_1c = b;
+    p->unk_08 = 2;
+    p->unk_4c = c;
+    p->unk_50 = d;
     return p;
 }
 
-static inline void func_ov002_021e4cd8_inline3(void *self) {
+static inline void func_ov002_021e4cd8_inline3(Ov002Obj *self) {
     u8 *ctx;
-    FIELD(self, 0x4, s32) = -1;
-    FIELD(self, 0x8, s32) = 1;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x14, s32) = 0;
-    FIELD(self, 0x18, s32) = 0;
-    FIELD(self, 0x1c, s32) = 0;
-    FIELD(self, 0x20, s32) = -0x29;
-    FIELD(self, 0x24, s32) = 0;
+    self->unk_04 = -1;
+    self->unk_08 = 1;
+    self->unk_0c = 0;
+    self->unk_10 = 0;
+    self->unk_14 = 0;
+    self->unk_18 = 0;
+    self->unk_1c = 0;
+    self->unk_20 = -0x29;
+    self->next = NULL;
     MIi_CpuClear32(0, (u8 *)self + 0x28, 0x20);
-    FIELD(self, 0x48, s32) = 0;
+    self->owner = NULL;
     ctx = (u8 *)data_ov002_021f0f9c;
     if (FIELD(ctx, 0xe0, void *) == NULL) {
         FIELD(ctx, 0xdc, void *) = self;
@@ -3169,8 +3169,8 @@ static inline void func_ov002_021e4cd8_inline3(void *self) {
     }
     FIELD(ctx, 0xe0, void *) = self;
 }
-void *func_ov002_021e9a50(void *a, void *b) {
-    void *p = Heap_Alloc(0x160);
+Ov002Obj *func_ov002_021e9a50(void *a, void *b) {
+    Ov002Obj021f07ac *p = (Ov002Obj021f07ac *)Heap_Alloc(0x160);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline3(p);
@@ -3183,19 +3183,19 @@ void *func_ov002_021e9a50(void *a, void *b) {
     return p;
 }
 
-static inline void func_ov002_021e4cd8_inline(void *self) {
+static inline void func_ov002_021e4cd8_inline(Ov002Obj *self) {
     u8 *ctx;
-    FIELD(self, 0x4, s32) = -1;
-    FIELD(self, 0x8, s32) = 1;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x14, s32) = 0;
-    FIELD(self, 0x18, s32) = 0;
-    FIELD(self, 0x1c, s32) = 0;
-    FIELD(self, 0x20, s32) = -0x29;
-    FIELD(self, 0x24, s32) = 0;
+    self->unk_04 = -1;
+    self->unk_08 = 1;
+    self->unk_0c = 0;
+    self->unk_10 = 0;
+    self->unk_14 = 0;
+    self->unk_18 = 0;
+    self->unk_1c = 0;
+    self->unk_20 = -0x29;
+    self->next = NULL;
     MIi_CpuClear32(0, (u8 *)self + 0x28, 0x20);
-    FIELD(self, 0x48, s32) = 0;
+    self->owner = NULL;
     ctx = (u8 *)data_ov002_021f0f9c;
     if (FIELD(ctx, 0xe0, void *) == NULL) {
         FIELD(ctx, 0xdc, void *) = self;
@@ -3204,13 +3204,13 @@ static inline void func_ov002_021e4cd8_inline(void *self) {
     }
     FIELD(ctx, 0xe0, void *) = self;
 }
-void *func_ov002_021e9b28(void *arg) {
-    void *p = Heap_Alloc(0x4c);
+Ov002Obj *func_ov002_021e9b28(void *arg) {
+    Ov002Obj *p = (Ov002Obj *)Heap_Alloc(0x4c);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline(p);
         *(VFunc **)p = data_ov002_021f0694;
-        FIELD(p, 4, s32) = 9;
+        p->unk_04 = 9;
     }
     FIELD(p, 0x1c, void *) = arg;
     return p;
@@ -3223,19 +3223,19 @@ void *func_ov002_021e9b28(void *arg) {
 namespace m_021e9bd8 {
 extern "C" {
 
-static inline void func_ov002_021e4cd8_inline2(void *self) {
+static inline void func_ov002_021e4cd8_inline2(Ov002Obj *self) {
     u8 *ctx;
-    FIELD(self, 0x4, s32) = -1;
-    FIELD(self, 0x8, s32) = 1;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x14, s32) = 0;
-    FIELD(self, 0x18, s32) = 0;
-    FIELD(self, 0x1c, s32) = 0;
-    FIELD(self, 0x20, s32) = -0x29;
-    FIELD(self, 0x24, s32) = 0;
+    self->unk_04 = -1;
+    self->unk_08 = 1;
+    self->unk_0c = 0;
+    self->unk_10 = 0;
+    self->unk_14 = 0;
+    self->unk_18 = 0;
+    self->unk_1c = 0;
+    self->unk_20 = -0x29;
+    self->next = NULL;
     MIi_CpuClear32(0, (u8 *)self + 0x28, 0x20);
-    FIELD(self, 0x48, s32) = 0;
+    self->owner = NULL;
     ctx = (u8 *)data_ov002_021f0f9c;
     if (FIELD(ctx, 0xe0, void *) == NULL) {
         FIELD(ctx, 0xdc, void *) = self;
@@ -3251,18 +3251,18 @@ void *Ov002Vt_021f0cf8_Ctor(void *p);
 
 void func_ov002_021ec1c4(void *p);
 
-void *func_ov002_021e9bd8(void *a, void *b) {
-    void *p = Heap_Alloc(0xac);
+Ov002Obj *func_ov002_021e9bd8(void *a, void *b) {
+    Ov002Obj021f06bc *p = (Ov002Obj021f06bc *)Heap_Alloc(0xac);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021f0734;
         func_ov002_021e4cd8_inline2(p);
         *(VFunc **)p = data_ov002_021f06bc;
         Ov002Vt_021f0cf8_Ctor((u8 *)p + 0x94);
-        FIELD(p, 0x4, s32) = 4;
+        p->unk_04 = 4;
         MI_CpuFill8((u8 *)p + 0x4c, 0, 0x20);
         MI_CpuFill8((u8 *)p + 0x6c, 0, 0x20);
-        FIELD(p, 0x8c, s32) = 0;
-        FIELD(p, 0x90, s32) = 0;
+        p->unk_8c = 0;
+        p->unk_90 = 0;
         func_ov002_021ec1c4((u8 *)p + 0x94);
     }
     STD_CopyLString((char *)((u8 *)p + 0x4c), (char *)a, 0x20);

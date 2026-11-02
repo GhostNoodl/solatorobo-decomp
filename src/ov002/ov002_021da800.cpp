@@ -29,13 +29,13 @@ void func_ov002_021da894(void *self) {
 
 BOOL func_ov002_021da8d8(void *self) {
     BOOL r = TRUE;
-    VObject *o;
+    VObj *o;
     func_ov002_021d9728(FIELD(self, 4, void *));
-    o = FIELD(self, 8, VObject *);
+    o = FIELD(self, 8, VObj *);
     if (o != NULL) {
-        o->v0xc();
-        FIELD(self, 8, VObject *)->v0x10();
-        if (FIELD(self, 8, VObject *)->v0x18()) {
+        o->vfunc_0c();
+        FIELD(self, 8, VObj *)->vfunc_10();
+        if (FIELD(self, 8, VObj *)->vfunc_18()) {
             func_ov002_021dab58(self, FIELD(FIELD(self, 8, void *), 8, int));
         }
     }

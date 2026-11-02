@@ -86,20 +86,20 @@ BOOL func_ov002_021ec390(ov002_State021ec390 *self, ov002_Ctx021ec390 *ctx) {
     }
     switch (self->state) {
     case 1:
-        if (!VC(self, 0x1c)()) {
+        if (!((VObj *)(self))->vfunc_1c()) {
             ov002_State_Fail(self, ctx);
             break;
         }
         ov002_State_Change(self, 5);
     case 5:
-        if (!VC(self, 0x18)()) {
+        if (!((VObj *)(self))->vfunc_18()) {
             ov002_State_Fail(self, ctx);
             break;
         }
         self->flags.b4 = 1;
         ov002_State_Change(self, 6);
     case 6:
-        if (!VC(self, 0x20)()) {
+        if (!((VObj *)(self))->vfunc_20()) {
             ov002_State_Fail(self, ctx);
             break;
         }
@@ -107,7 +107,7 @@ BOOL func_ov002_021ec390(ov002_State021ec390 *self, ov002_Ctx021ec390 *ctx) {
         ov002_State_Change(self, 9);
     case 9:
         if (ov002_State_IsActive(self)) {
-            VC(self, 0x24)();
+            ((VObj *)(self))->vfunc_24();
             if (self->state != 7) {
                 self->next = 7;
             }
@@ -115,7 +115,7 @@ BOOL func_ov002_021ec390(ov002_State021ec390 *self, ov002_Ctx021ec390 *ctx) {
         break;
     case 3:
     case 7:
-        result = VC(self, 0x28)();
+        result = ((VObj *)(self))->vfunc_28();
         break;
     }
     return result;

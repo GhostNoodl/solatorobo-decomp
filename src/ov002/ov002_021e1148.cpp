@@ -39,11 +39,11 @@ void TextWin_InitLines(ov002_Anim021e1148 *a, int b);
 static inline void ov002_Anim1148_Start(ov002_Anim021e1148 *s, s32 a) {
     s->unk24 = a;
     s->unk4C = Text_Measure(s->unk28, s->unk38, s->unk24, s->unk44, s->unk48, s->unk37 != 0 ? TRUE : FALSE);
-    FIELD(data_02097ce0, 0x4, s32) = s->unk28;
+    data_02097ce0->unk_004 = s->unk28;
 }
 
 static inline void ov002_Anim1148_Show(ov002_Anim021e1148 *a, s32 text, s32 font, s32 pal) {
-    ((VObject *)a)->v0x8();
+    ((VObj *)a)->vfunc_08();
     a->unk28 = font;
     a->unk2C = pal;
     a->unk34 = 0;
@@ -69,12 +69,12 @@ void func_ov002_021e1148(void *self, u16 id) {
     int i;
     ov002_Info021e1148 *info;
     for (i = 0; i < 4; i++) {
-        VObject *o = ((VObject **)((u8 *)self + 8))[i];
+        VObj *o = ((VObj **)((u8 *)self + 8))[i];
         if (o != NULL) {
-            o->v0x8();
+            o->vfunc_08();
         }
     }
-    FIELD(self, 4, VObject *)->v0x8();
+    FIELD(self, 4, VObj *)->vfunc_08();
     if (id == 0xffff) {
         return;
     }
@@ -121,7 +121,7 @@ void func_ov002_021e1148(void *self, u16 id) {
         if (FIELD(self, 4, void *) == NULL) {
             return;
         }
-        FIELD(self, 4, VObject *)->v0x8();
+        FIELD(self, 4, VObj *)->vfunc_08();
         FIELD(self, 4, ov002_Anim021e1148 *)->unk28 = 7;
         FIELD(self, 4, ov002_Anim021e1148 *)->unk2C = 4;
         FIELD(self, 4, ov002_Anim021e1148 *)->unk34 = 0;

@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021d0740(Task50 *self) {
+void func_ov002_021d0740(Task021efa1c *self) {
     u16 k = data_02097dc8->trig;
     if (k & 0x800) {
         u8 *g = (u8 *)data_02097e48.queue;
@@ -20,7 +20,7 @@ void func_ov002_021d0740(Task50 *self) {
     }
     func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
     data_ov002_021f0f84[0] = FIELD(FIELD(self->unk_3c, 0xa0, void *), 4, s32);
-    self->v0xc(0);
+    self->vfunc_0c(0);
 }
 
 }

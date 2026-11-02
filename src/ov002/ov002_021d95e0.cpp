@@ -34,10 +34,10 @@ static inline void ov002_Hud_Set(void *hud, u8 k) {
 void func_ov002_021d95e0(void *self) {
     void *cam;
     void *t;
-    if (FIELD(data_0214a424, 0x12a, u16) == 0x9000 && FIELD(data_0214a424, 0x18, Bits021d95e0).mode != 0) {
+    if (data_0214a424->shapeId == 0x9000 && data_0214a424->bits18.mode != 0) {
         func_0206ce78(data_0214a424, 0x9001);
     }
-    FIELD(FIELD(self, 0x4, void *), 0x68, u16) = FIELD(data_0214a424, 0x12a, u16);
+    FIELD(FIELD(self, 0x4, void *), 0x68, u16) = data_0214a424->shapeId;
     func_ov002_021d7058(FIELD(self, 0x4, void *));
     cam = Heap_Alloc(0x24);
     if (cam != NULL) {

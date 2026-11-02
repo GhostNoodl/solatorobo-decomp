@@ -54,30 +54,30 @@ static inline void ov002_Cursor_SetMode(u8 *c) {
 }
 
 // y, x, id and w are locals; declaring them as parameters gives the target register allocation.
-void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
+void func_ov002_021df2ec(Obj021eff30 *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
     s32 kind;
     u8 *c;
     u8 *o;
     u8 *map;
     u8 r[0x10];
     u8 *m;
-    FIELD(self, 0x4, void *) = own;
+    self->unk_04 = own;
     kind = FIELD(own, 0x1c, s32);
     w = FIELD(own, 0x4, u8 *);
-    FIELD(self, 0x8, s32) = kind;
+    self->unk_08 = kind;
     if (kind == 10) {
-        FIELD(self, 0x10, u8 *) = FIELD(ov002_GetCell(w, (Vec2 *)((u8 *)own + 0x28)), 0x8, u8 *);
-        func_ov002_021d9ed8(w, FIELD(self, 0x10, u8 *), 0);
-        o = FIELD(self, 0x10, u8 *);
+        self->unk_10 = (VObj *)(FIELD(ov002_GetCell(w, (Vec2 *)((u8 *)own + 0x28)), 0x8, u8 *));
+        func_ov002_021d9ed8(w, ((u8 *)self->unk_10), 0);
+        o = ((u8 *)self->unk_10);
         if (FIELD(o, 0xa4, s32) == 0 && FIELD(o, 0xac, s32) == 2) {
             FIELD(o, 0xa4, s32) = 5;
             FIELD(o, 0xa8, s32) = 5;
             FIELD(o, 0xac, s32) = 7;
         }
-        o = FIELD(self, 0x10, u8 *);
-        FIELD(self, 0x24, s32) = FIELD(o, 0x54, s32);
-        FIELD(self, 0x28, s32) = FIELD(o, 0x58, s32);
-        FIELD(self, 0x2c, u8) = FIELD(o, 0x52, Bits52).rot;
+        o = ((u8 *)self->unk_10);
+        self->unk_24 = FIELD(o, 0x54, s32);
+        self->unk_28 = FIELD(o, 0x58, s32);
+        self->unk_2c = FIELD(o, 0x52, Bits52).rot;
     } else {
         id = FIELD(own, 0x30, u16);
         func_0206ede8(id);
@@ -90,28 +90,28 @@ void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
             *(VFunc **)o = data_ov002_021efe9c;
             func_ov002_021d7e54(o);
         }
-        FIELD(self, 0x10, u8 *) = o;
+        self->unk_10 = (VObj *)o;
         FIELD(o, 0x48, u16) = id;
-        FIELD(self, 0x10, VObject *)->v0x8();
+        self->unk_10->vfunc_08();
         map = FIELD(FIELD(w, 0x4, u8 *), 0x6c, u8 *);
         {
             s32 mw = FIELD(map, 0x6, Nibbles16).n0;
             s32 mh = FIELD(map, 0x6, Nibbles16).n1;
-            o = FIELD(self, 0x10, u8 *);
+            o = ((u8 *)self->unk_10);
             FIELD(o, 0x64, s32) = mw;
             FIELD(o, 0x68, s32) = mh;
         }
-        o = FIELD(self, 0x10, u8 *);
+        o = ((u8 *)self->unk_10);
         FIELD(o, 0x54, s32) = (u16)x;
         FIELD(o, 0x58, s32) = (u16)y;
         func_ov002_021e3b0c((s32 *)(o + 0x4), (s32 *)(o + 0x54), (s32 *)(o + 0x64));
-        o = FIELD(self, 0x10, u8 *);
+        o = ((u8 *)self->unk_10);
         FIELD(o, 0x52, Bits52).rot = 0;
         FIELD(o, 0x10, u16) = 0;
         FIELD(o, 0x12, u16) = 0;
         FIELD(o, 0x14, u16) = 0;
         MTX_Identity33_((MtxFx33 *)(o + 0x18));
-        o = FIELD(self, 0x10, u8 *);
+        o = ((u8 *)self->unk_10);
         map = FIELD(FIELD(w, 0x4, u8 *), 0x6c, u8 *);
         if (FIELD(o, 0xac, s32) != 9 && FIELD(o, 0xa4, s32) == 0) {
             func_ov002_021d7d5c(o, map);
@@ -125,9 +125,9 @@ void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
             FIELD(o, 0xac, s32) = 9;
         }
         (w + 8)[(u16)(id & 0xfff)]--;
-        FIELD(self, 0x24, s32) = x;
-        FIELD(self, 0x28, s32) = y;
-        FIELD(self, 0x2c, u8) = 0;
+        self->unk_24 = x;
+        self->unk_28 = y;
+        self->unk_2c = 0;
     }
     {
         c = (u8 *)Heap_Alloc(0x8c);
@@ -142,17 +142,17 @@ void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
             c[0x88] = 0;
             FIELD(c, 0x8a, u16) = 0x7fff;
         }
-        FIELD(self, 0x14, u8 *) = c;
+        self->unk_14 = (VObj *)c;
         {
-            u8 *map = FIELD(FIELD(FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *), 0x4, u8 *), 0x6c, u8 *);
+            u8 *map = FIELD(FIELD(FIELD(((u8 *)self->unk_04), 0x4, u8 *), 0x4, u8 *), 0x6c, u8 *);
             s32 mw = FIELD(map, 0x6, Nibbles16).n0;
             s32 mh = FIELD(map, 0x6, Nibbles16).n1;
             FIELD(c, 0x7c, s32) = mw;
             FIELD(c, 0x80, s32) = mh;
         }
     }
-    FIELD(self, 0x14, u8 *)[0x88] = 1;
-    ov002_Cursor_SetMode(FIELD(self, 0x14, u8 *));
+    ((u8 *)self->unk_14)[0x88] = 1;
+    ov002_Cursor_SetMode(((u8 *)self->unk_14));
     m = (u8 *)Heap_Alloc(0x1e8);
     if (m != NULL) {
         *(VFunc **)m = data_ov002_021efe5c;
@@ -164,7 +164,7 @@ void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
         FIELD(m, 0x1e0, s32) = 0;
         FIELD(m, 0x1e4, s32) = 0;
     }
-    FIELD(self, 0xc, u8 *) = m;
+    self->unk_0c = (void *)m;
     FIELD(m, 0x8, void *) = ((char *)K::data_ov002_021efdf6);
     FIELD(m, 0xc, void *) = ((char *)K::data_ov002_021efe0e);
     FIELD(m, 0x10, void *) = ((char *)K::data_ov002_021efe0e);
@@ -183,33 +183,33 @@ void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
     MTX_Rot22_((MtxFx22 *)r, FX_SINCOS(0xbff * 2), FX_SINCOS(0xbff * 2 + 1));
     MTX_Concat22((MtxFx22 *)r, (MtxFx22 *)(m + 0x188), (MtxFx22 *)(m + 0x188));
     {
-        u8 *q = FIELD(self, 0xc, u8 *);
+        u8 *q = ((u8 *)self->unk_0c);
         FIELD(q, 0x1dc, s32) = 0xb33;
         FIELD(q, 0x1e0, s32) = 0x23d;
         FIELD(q, 0x1e4, s32) = 0;
     }
     {
-        void *str = func_0206ec48(FIELD(FIELD(self, 0x10, u8 *), 0x48, u16));
-        u8 *t = FIELD(self, 0x4, u8 *);
+        void *str = func_0206ec48(FIELD(((u8 *)self->unk_10), 0x48, u16));
+        u8 *t = ((u8 *)self->unk_04);
         func_ov000_0215bb14(FIELD(t, 0x20, void *), str);
-        FIELD(t, 0x20, VObject *)->v0x70();
+        FIELD(t, 0x20, VObj *)->vfunc_70();
     }
     {
-        u8 *b = FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *);
+        u8 *b = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
         b[0x74] = 7;
         b[0x75] = 1;
     }
     {
         s32 px;
         s32 py;
-        py = FIELD(FIELD(self, 0x10, u8 *), 0x58, s32);
-        px = FIELD(FIELD(self, 0x10, u8 *), 0x54, s32);
+        py = FIELD(((u8 *)self->unk_10), 0x58, s32);
+        px = FIELD(((u8 *)self->unk_10), 0x54, s32);
         func_ov002_021e019c(self, px, py);
-        FIELD(self, 0x1c, s32) = px;
-        FIELD(self, 0x20, s32) = py;
+        self->unk_1c = px;
+        self->unk_20 = py;
     }
-    FIELD(self, 0x18, s32) = 0;
-    FIELD(self, 0x4, void *) = NULL;
+    self->unk_18 = 0;
+    self->unk_04 = NULL;
 }
 
 }

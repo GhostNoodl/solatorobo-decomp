@@ -5,25 +5,25 @@ extern "C" {
 static inline BOOL func_ov002_021db1f0_is5(void *t) {
     return FIELD(t, 4, s32) == 5 ? TRUE : FALSE;
 }
-void func_ov002_021db1f0(void *self) {
-    switch (FIELD(self, 0x18, s32)) {
+void func_ov002_021db1f0(Obj021eff74 *self) {
+    switch (self->unk_18) {
     case 0:
-        FIELD(FIELD(self, 0xc, void *), 0xc, u32) &= ~2;
-        FIELD(FIELD(self, 0x10, void *), 0xc, u32) &= ~2;
-        FIELD(self, 0x18, s32) = 1;
+        FIELD(self->unk_0c, 0xc, u32) &= ~2;
+        FIELD(self->unk_10, 0xc, u32) &= ~2;
+        self->unk_18 = 1;
         break;
     case 1:
         break;
     case 2:
-        if (func_ov002_021db1f0_is5(FIELD(self, 0xc, void *)) && func_ov002_021db1f0_is5(FIELD(self, 0x10, void *))) {
-            FIELD(self, 0x18, s32) = 3;
+        if (func_ov002_021db1f0_is5(self->unk_0c) && func_ov002_021db1f0_is5(self->unk_10)) {
+            self->unk_18 = 3;
         }
         break;
     case 3:
         break;
     }
-    FIELD(self, 0xc, VObject *)->v0x1c();
-    FIELD(self, 0x10, VObject *)->v0x1c();
+    self->unk_0c->vfunc_1c();
+    self->unk_10->vfunc_1c();
 }
 
 }

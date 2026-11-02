@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void *Ov002Vt_021f070c_DtorDelete(void *self) {
+void *Ov002Vt_021f070c_DtorDelete(Ov002Obj021f070c *self) {
     int i;
     *(VFunc **)self = data_ov002_021f070c;
     for (i = 0; i < 4; i++) {
@@ -22,7 +22,7 @@ void *Ov002Vt_021f070c_DtorDelete(void *self) {
     return self;
 }
 
-void *Ov002Vt_021f070c_Dtor(void *self) {
+void *Ov002Vt_021f070c_Dtor(Ov002Obj021f070c *self) {
     int i;
     *(VFunc **)self = data_ov002_021f070c;
     for (i = 0; i < 4; i++) {
@@ -41,7 +41,7 @@ void *Ov002Vt_021f070c_Dtor(void *self) {
     return self;
 }
 
-void *Ov002Vt_021f075c_DtorDelete(void *self) {
+void *Ov002Vt_021f075c_DtorDelete(Ov002Obj021f075c *self) {
     *(VFunc **)self = data_ov002_021f075c;
     func_ov002_021e5d88(self);
     *(VFunc **)self = data_ov002_021f0734;
@@ -53,7 +53,7 @@ void *Ov002Vt_021f075c_DtorDelete(void *self) {
 void func_ov002_021eaaa4(void) {
 }
 
-void *Ov002Vt_021f075c_Dtor(void *self) {
+void *Ov002Vt_021f075c_Dtor(Ov002Obj021f075c *self) {
     *(VFunc **)self = data_ov002_021f075c;
     func_ov002_021e5d88(self);
     *(VFunc **)self = data_ov002_021f0734;
@@ -61,7 +61,7 @@ void *Ov002Vt_021f075c_Dtor(void *self) {
     return self;
 }
 
-void *Ov002Vt_021f07d4_DtorDelete(void *self) {
+void *Ov002Vt_021f07d4_DtorDelete(Ov002Obj021f07d4 *self) {
     *(VFunc **)self = data_ov002_021f07d4;
     func_ov002_021e51f8(self);
     *(VFunc **)self = data_ov002_021f0734;
@@ -70,7 +70,7 @@ void *Ov002Vt_021f07d4_DtorDelete(void *self) {
     return self;
 }
 
-void *Ov002Vt_021f07d4_Dtor(void *self) {
+void *Ov002Vt_021f07d4_Dtor(Ov002Obj021f07d4 *self) {
     *(VFunc **)self = data_ov002_021f07d4;
     func_ov002_021e51f8(self);
     *(VFunc **)self = data_ov002_021f0734;
@@ -78,7 +78,7 @@ void *Ov002Vt_021f07d4_Dtor(void *self) {
     return self;
 }
 
-void *Ov002Vt_021f0734_Dtor(void *self) {
+void *Ov002Vt_021f0734_Dtor(Ov002Obj *self) {
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
     return self;

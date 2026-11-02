@@ -6,14 +6,14 @@ extern VFunc data_ov002_021f06bc[];
 
 void *Ov002Vt_021f0cf8_Dtor(void *p);
 
-void *Ov002Vt_021f06bc_DtorDelete(void *self) {
+void *Ov002Vt_021f06bc_DtorDelete(Ov002Obj021f06bc *self) {
     s16 *p;
     s32 t;
     *(VFunc **)self = data_ov002_021f06bc;
     if (FIELD(self, 0x14, void *) != NULL) {
         func_02035acc((u8 *)self + 0x4c, (u8 *)self + 0x6c, 0);
     }
-    for (p = FIELD(self, 0xa8, s16 *); p != NULL; p = FIELD(self, 0xa8, s16 *)) {
+    for (p = self->unk_a8; p != NULL; p = self->unk_a8) {
         t = p[1];
         if (t == 1 || t == 3 || t == 7 || t == 10) {
             func_0204aaec(data_02097e48.queue, (SndCmd *)p);
@@ -27,14 +27,14 @@ void *Ov002Vt_021f06bc_DtorDelete(void *self) {
     return self;
 }
 
-void *Ov002Vt_021f06bc_Dtor(void *self) {
+void *Ov002Vt_021f06bc_Dtor(Ov002Obj021f06bc *self) {
     s16 *p;
     s32 t;
     *(VFunc **)self = data_ov002_021f06bc;
     if (FIELD(self, 0x14, void *) != NULL) {
         func_02035acc((u8 *)self + 0x4c, (u8 *)self + 0x6c, 0);
     }
-    for (p = FIELD(self, 0xa8, s16 *); p != NULL; p = FIELD(self, 0xa8, s16 *)) {
+    for (p = self->unk_a8; p != NULL; p = self->unk_a8) {
         t = p[1];
         if (t == 1 || t == 3 || t == 7 || t == 10) {
             func_0204aaec(data_02097e48.queue, (SndCmd *)p);

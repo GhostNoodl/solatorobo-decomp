@@ -4,7 +4,7 @@ extern "C" {
 
 s32 func_0201e950(const void *a, const void *b, u32 n);
 
-void *func_ov002_021e92b0(s32 a, s32 b, s32 c, s32 d, s32 e);
+Ov002Obj *func_ov002_021e92b0(s32 a, s32 b, s32 c, s32 d, s32 e);
 
 typedef struct Hdr021ebcf8 {
     s32 count;

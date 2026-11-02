@@ -15,14 +15,14 @@ static inline u8 *ov002_getSelected(void *list) {
     return item;
 }
 
-void func_ov002_021cffe8(void *self) {
+void func_ov002_021cffe8(Task021ef79c *self) {
     u16 keys;
     u16 id;
     u8 *item;
     keys = data_02097dc8->trig;
-    item = ov002_getSelected(FIELD(self, 0x3c, void *));
+    item = ov002_getSelected(self->unk_3c);
     id = FIELD(item, 0x6, u16);
-    if (id != FIELD(self, 0x44, u16)) {
+    if (id != self->unk_44) {
         void *s;
         switch (id) {
         case 0xb:
@@ -32,24 +32,24 @@ void func_ov002_021cffe8(void *self) {
             s = MsgRes_GetString(data_02149ef8, 0xf4);
             break;
         }
-        func_ov000_0215bb14(FIELD(self, 0x40, void *), s);
-        FIELD(self, 0x40, VObject *)->v0x70();
+        func_ov000_0215bb14(self->unk_40, s);
+        self->unk_40->vfunc_70();
     }
-    FIELD(self, 0x44, u16) = id;
+    self->unk_44 = id;
     if (keys & 2) {
         func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
-        FIELD(FIELD(self, 0x3c, void *), 0xc, u32) |= 2;
-        FIELD(FIELD(self, 0x40, void *), 0xc, u32) |= 2;
-        ((VObject *)self)->v0xc(0);
+        self->unk_3c->flags |= 2;
+        self->unk_40->flags |= 2;
+        self->vfunc_0c(0);
         return;
     }
     if (keys & 1) {
-        item = ov002_getSelected(FIELD(self, 0x3c, void *));
+        item = ov002_getSelected(self->unk_3c);
         if (FIELD(item, 0x10, s32) >= 0) {
-            func_ov000_0218084c(data_ov000_021ccd44, FIELD(item, 0x6, u16), (int)FIELD(self, 0xc, s32));
+            func_ov000_0218084c(data_ov000_021ccd44, FIELD(item, 0x6, u16), (int)self->param);
             func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
-            FIELD(FIELD(self, 0x3c, void *), 0xc, u32) |= 2;
-            FIELD(FIELD(self, 0x40, void *), 0xc, u32) |= 2;
+            self->unk_3c->flags |= 2;
+            self->unk_40->flags |= 2;
         } else {
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
         }

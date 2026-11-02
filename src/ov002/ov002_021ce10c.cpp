@@ -2,10 +2,10 @@
 
 extern "C" {
 
-void func_ov002_021ce10c(VObject *self) {
+void func_ov002_021ce10c(Task021ef430 *self) {
     void *m;
-    FIELD(self, 0x4, u32) &= ~2;
-    if (self->v0x28()) {
+    self->unk_04 &= ~2;
+    if (self->vfunc_28()) {
         return;
     }
     m = Heap_Alloc(0x160);
@@ -18,21 +18,21 @@ void func_ov002_021ce10c(VObject *self) {
             STD_CopyString((char *)((u8 *)m + 0x2c), file);
         }
     }
-    FIELD(self, 0x3c, void *) = m;
-    func_020417e0((Model *)FIELD(self, 0x3c, void *), func_02034d88(func_02035f30(data_ov002_021ef3e4, data_ov002_021ef3f9, 2), data_ov002_021ef3f9));
-    FIELD(FIELD(self, 0x3c, void *), 0x6c, u32) |= 2;
-    func_02041d9c((Model *)FIELD(self, 0x3c, void *), 0, 0);
+    self->unk_3c = (Model *)m;
+    func_020417e0((Model *)self->unk_3c, func_02034d88(func_02035f30(data_ov002_021ef3e4, data_ov002_021ef3f9, 2), data_ov002_021ef3f9));
+    self->unk_3c->flags |= 2;
+    func_02041d9c((Model *)self->unk_3c, 0, 0);
     {
-        void *p = FIELD(self, 0x3c, void *);
+        void *p = self->unk_3c;
         FIELD(p, 0xfc, s32) = 0;
         FIELD(p, 0x100, s32) = 0;
     }
-    FIELD(FIELD(self, 0x3c, void *), 0x150, s32) = -0x1fe66;
-    FIELD(self, 0x2c, s32) = 0;
+    self->unk_3c->unk_150 = -0x1fe66;
+    self->parent = NULL;
     func_ov000_02173648(self);
-    FIELD(self, 0x4c, u8) = 0;
-    FIELD(self, 0x4d, u8) = 0;
-    FIELD(self, 0x4e, u8) = 3;
+    self->unk_4c = 0;
+    self->unk_4d = 0;
+    self->unk_4e = 3;
 }
 
 }

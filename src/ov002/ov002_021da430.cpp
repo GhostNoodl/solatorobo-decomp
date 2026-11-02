@@ -7,10 +7,10 @@ extern "C" {
 void func_ov002_021da430(void *self) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 8, VObject *));
+    DELETE_VOBJ(FIELD(self, 8, VObj *));
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 4, VObject *));
+    DELETE_VOBJ(FIELD(self, 4, VObj *));
     HEAP_POP(saved);
     func_02036838(data_02097cdc, data_ov002_021efdf6, 7, 0);
     if (FIELD(self, 0x10, u8)) {

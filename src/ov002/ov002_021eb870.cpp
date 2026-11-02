@@ -2,9 +2,9 @@
 
 extern "C" {
 
-void *func_ov002_021e92b0(s32 a, s32 b, s32 c, s32 d, s32 e);
+Ov002Obj *func_ov002_021e92b0(s32 a, s32 b, s32 c, s32 d, s32 e);
 
-void *func_ov002_021e9380(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+Ov002Obj *func_ov002_021e9380(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 
 typedef struct Rec021eb870 {
     s32 a;

@@ -51,10 +51,10 @@ static inline void ov002_Cursor_SetMode(u8 *c) {
     func_ov002_021d7620(c + 4);
 }
 
-void func_ov002_021dbec8(void *self, void *owner) {
+void func_ov002_021dbec8(Obj021eff10 *self, void *owner) {
     u8 *m;
     u8 r[0x10];
-    FIELD(self, 0x4, void *) = owner;
+    self->unk_04 = owner;
     m = (u8 *)Heap_Alloc(0x1e8);
     if (m != NULL) {
         *(VFunc **)m = data_ov002_021efe5c;
@@ -66,7 +66,7 @@ void func_ov002_021dbec8(void *self, void *owner) {
         FIELD(m, 0x1e0, s32) = 0;
         FIELD(m, 0x1e4, s32) = 0;
     }
-    FIELD(self, 0x8, u8 *) = m;
+    self->unk_08 = (void *)m;
     FIELD(m, 0x8, void *) = ((char *)K::data_ov002_021efdf6);
     FIELD(m, 0xc, void *) = ((char *)K::data_ov002_021efe0e);
     FIELD(m, 0x10, void *) = ((char *)K::data_ov002_021efe0e);
@@ -85,7 +85,7 @@ void func_ov002_021dbec8(void *self, void *owner) {
     MTX_Rot22_((MtxFx22 *)r, FX_SINCOS(0xbff * 2), FX_SINCOS(0xbff * 2 + 1));
     MTX_Concat22((MtxFx22 *)r, (MtxFx22 *)(m + 0x188), (MtxFx22 *)(m + 0x188));
     {
-        u8 *q = FIELD(self, 0x8, u8 *);
+        u8 *q = ((u8 *)self->unk_08);
         FIELD(q, 0x1dc, s32) = 0xb33;
         FIELD(q, 0x1e0, s32) = 0x23d;
         FIELD(q, 0x1e4, s32) = 0;
@@ -99,13 +99,13 @@ void func_ov002_021dbec8(void *self, void *owner) {
             func_02041440((Model *)mdl, (char *)nm, 0);
             STD_CopyString((char *)((u8 *)mdl + 0x2c), (char *)file);
         }
-        FIELD(self, 0x10, void *) = mdl;
+        self->unk_10 = mdl;
     }
-    func_020417e0((Model *)FIELD(self, 0x10, void *), func_02035de0(data_0208cc94, data_0208cc88));
-    FIELD(FIELD(self, 0x10, void *), 0x6c, u32) |= 2;
-    FIELD(FIELD(self, 0x10, void *), 0x150, s32) = -0x2000;
-    func_02041c34(FIELD(self, 0x10, void *), 6, (void *)func_ov002_021e0488, 0);
-    func_02041d9c((Model *)FIELD(self, 0x10, void *), 0, 6);
+    func_020417e0((Model *)self->unk_10, func_02035de0(data_0208cc94, data_0208cc88));
+    FIELD(self->unk_10, 0x6c, u32) |= 2;
+    FIELD(self->unk_10, 0x150, s32) = -0x2000;
+    func_02041c34(self->unk_10, 6, (void *)func_ov002_021e0488, 0);
+    func_02041d9c((Model *)self->unk_10, 0, 6);
     {
         u8 *c = (u8 *)Heap_Alloc(0x8c);
         if (c != NULL) {
@@ -119,7 +119,7 @@ void func_ov002_021dbec8(void *self, void *owner) {
             c[0x88] = 0;
             FIELD(c, 0x8a, u16) = 0x7fff;
         }
-        FIELD(self, 0x14, u8 *) = c;
+        self->unk_14 = (VObj *)c;
         {
             u8 *map = FIELD(FIELD(FIELD(owner, 0x4, u8 *), 0x4, u8 *), 0x6c, u8 *);
             s32 w = FIELD(map, 0x6, Nibbles16).n0;
@@ -128,10 +128,10 @@ void func_ov002_021dbec8(void *self, void *owner) {
             FIELD(c, 0x80, s32) = h;
         }
     }
-    FIELD(self, 0x14, u8 *)[0x88] = 0;
-    ov002_Cursor_SetMode(FIELD(self, 0x14, u8 *));
-    FIELD(self, 0x24, s32) = FIELD(owner, 0x28, s32);
-    FIELD(self, 0x28, s32) = FIELD(owner, 0x2c, s32);
+    ((u8 *)self->unk_14)[0x88] = 0;
+    ov002_Cursor_SetMode(((u8 *)self->unk_14));
+    self->unk_24 = FIELD(owner, 0x28, s32);
+    self->unk_28 = FIELD(owner, 0x2c, s32);
     {
         s32 d;
         s32 px;
@@ -140,7 +140,7 @@ void func_ov002_021dbec8(void *self, void *owner) {
         s32 tz;
         u8 *c;
         c = FIELD(owner, 0x4, u8 *);
-        d = (u8)FIELD(self, 0x28, s32) - FIELD(FIELD(FIELD(c, 0x4, u8 *), 0x6c, u8 *), 6, Nibbles16).n1;
+        d = (u8)self->unk_28 - FIELD(FIELD(FIELD(c, 0x4, u8 *), 0x6c, u8 *), 6, Nibbles16).n1;
         px = *(s32 *)(data_ov002_021eef74 + 0x58);
         py = *(s32 *)(data_ov002_021eef74 + 0x5c);
         pz = *(s32 *)(data_ov002_021eef74 + 0x60);
@@ -154,8 +154,8 @@ void func_ov002_021dbec8(void *self, void *owner) {
         }
         ov002_CamMove(c, px, py, pz, 0, 0, tz);
     }
-    FIELD(self, 0x18, s32) = 0;
-    FIELD(self, 0x4, void *) = NULL;
+    self->unk_18 = 0;
+    self->unk_04 = NULL;
 }
 
 }

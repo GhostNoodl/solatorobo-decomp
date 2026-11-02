@@ -51,7 +51,7 @@ void func_ov002_021da5c0(void *self) {
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(FIELD(p, 0x4, VObject *));
+        DELETE_VOBJ(FIELD(p, 0x4, VObj *));
         HEAP_POP(saved);
     }
     {

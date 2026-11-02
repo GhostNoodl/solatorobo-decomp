@@ -34,7 +34,7 @@ static inline void updateModel(u8 *m) {
 // second parameter for `i` and a one-element `sh` array).
 static inline u8 *GetShape021e0280(u8 *o) { return o + 0x4c; }
 
-void func_ov002_021e0280(void *self) {
+void func_ov002_021e0280(Obj021eff30 *self) {
     u8 *sh;
     s32 j;
     s32 rows;
@@ -45,7 +45,7 @@ void func_ov002_021e0280(void *self) {
     Vec2 org;
     Vec2 v;
     Vec2 out;
-    o = FIELD(self, 0x10, u8 *);
+    o = ((u8 *)self->unk_10);
     if (o == NULL) {
         return;
     }
@@ -68,10 +68,10 @@ void func_ov002_021e0280(void *self) {
                 v.x = j;
                 v.y = i;
                 func_ov002_021e3a18(&out, (u8)FIELD(sh, 0x6, Bits021e0280).rot, &v, &org, &pos);
-                u8 *m = FIELD(self, 0x14, u8 *);
+                u8 *m = ((u8 *)self->unk_14);
                 FIELD(m, 0x74, s32) = out.x;
                 FIELD(m, 0x78, s32) = out.y;
-                updateModel(FIELD(self, 0x14, u8 *));
+                updateModel(((u8 *)self->unk_14));
             }
         }
     }

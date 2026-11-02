@@ -8,16 +8,16 @@ static inline BOOL ov002_isState5(void *o) {
     return FIELD(o, 0x4, s32) == 5 ? TRUE : FALSE;
 }
 
-void func_ov002_021d0810(Task50 *self) {
-    switch (self->unk_08) {
+void func_ov002_021d0810(Task021efa1c *self) {
+    switch (self->state) {
     case 8:
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
-        FIELD(self->unk_3c, 0xc, u32) &= ~2;
-        FIELD(self->unk_40, 0xc, u32) &= ~2;
+        self->unk_3c->flags &= ~2;
+        self->unk_40->flags &= ~2;
         break;
     case 10:
-        FIELD(self->unk_3c, 0xc, u32) |= 2;
-        FIELD(self->unk_40, 0xc, u32) |= 2;
+        self->unk_3c->flags |= 2;
+        self->unk_40->flags |= 2;
         func_02049a48(data_02097e4c, 0x28, -1, -1, -1);
         break;
     case 11:
@@ -30,7 +30,7 @@ void func_ov002_021d0810(Task50 *self) {
             {
                 u8 *m;
                 u16 id;
-                FIELD(data_02097e48.queue, 0x0, Bits16).b0 = 1;
+                data_02097e48.queue->flag0 = 1;
                 FIELD(data_02097e48.queue, 0x0, u16) |= 8;
                 m = (u8 *)data_02097e48.queue;
                 id = 0xd;
@@ -56,8 +56,8 @@ void func_ov002_021d0810(Task50 *self) {
     case 13:
         break;
     }
-    ((VObject *)self->unk_3c)->v0x1c();
-    self->unk_40->v0x1c();
+    ((VObj *)self->unk_3c)->vfunc_1c();
+    self->unk_40->vfunc_1c();
 }
 
 }

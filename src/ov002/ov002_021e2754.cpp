@@ -17,7 +17,7 @@ void func_ov002_021e2754(void *self, u16 id) {
         if (id == 0xffff) {
             void *saved;
             HEAP_PUSH(saved);
-            DELETE_VOBJ(FIELD(self, 0x28, VObject *));
+            DELETE_VOBJ(FIELD(self, 0x28, VObj *));
             HEAP_POP(saved);
         }
     } else if (id != 0xffff) {

@@ -28,11 +28,11 @@ void func_ov002_021d7b80(void *self) {
     FIELD(self, 0x74, s32) = 0;
 }
 
-void func_ov002_021d7c04(void *self) {
-    u8 *info = func_0206ede8(FIELD(self, 0x48, u16));
+void func_ov002_021d7c04(Obj021efeb8 *self) {
+    u8 *info = func_0206ede8(self->unk_48);
     void *v;
-    FIELD(self, 0x4a, u8) = info[0] == 0x80 ? 2 : 1;
-    v = func_02070dcc(FIELD(self, 0x4b, u8) = info[1]);
+    self->unk_4a = info[0] == 0x80 ? 2 : 1;
+    v = func_02070dcc(self->unk_4b = info[1]);
     MI_CpuCopy8(v, (u8 *)self + 0x4c, 8);
     func_ov002_021e38f8((s32 *)((u8 *)self + 0x5c), v);
 }

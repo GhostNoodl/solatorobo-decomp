@@ -7,7 +7,7 @@ void func_ov002_021da2fc(void) {
     if (data_ov002_021f0f90[1] != NULL) {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(*(VObject **)&data_ov002_021f0f90[1]);
+        DELETE_VOBJ(*(VObj **)&data_ov002_021f0f90[1]);
         HEAP_POP(saved);
     }
     p = Heap_Alloc(0x14);
@@ -24,7 +24,7 @@ void func_ov002_021da2fc(void) {
 void func_ov002_021da39c(void) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(*(VObject **)&data_ov002_021f0f90[1]);
+    DELETE_VOBJ(*(VObj **)&data_ov002_021f0f90[1]);
     HEAP_POP(saved);
 }
 

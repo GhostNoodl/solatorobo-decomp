@@ -57,38 +57,38 @@ static inline void *ov002_new637c(void) {
     return o;
 }
 
-void func_ov002_021d637c(void *self) {
+void func_ov002_021d637c(Task021efc24 *self) {
     s32 z = 0;
     void *g;
     u16 keys;
     u8 *p;
     void *o;
     void *x;
-    if (FIELD(self, 0x5c, void *) != NULL) {
+    if (self->unk_5c != NULL) {
         return;
     }
     if (!ov002_isIdle637c()) {
         return;
     }
-    g = FIELD(self, 0x50, void *);
+    g = self->unk_50;
     if (g != NULL) {
         if (ov002_moving637c(g)) {
             return;
         }
-        if (!((VObject *)g)->v0xc()) {
+        if (!((VObj *)g)->vfunc_0c()) {
             return;
         }
     }
-    g = FIELD(self, 0x50, void *);
+    g = self->unk_50;
     keys = data_02097dc8->trig;
     if (ov002_unsel637c(g) && (keys & 2)) {
         z = -1;
         func_02049a48(data_02097e4c, 0x1f, z, z, z);
-        FIELD(FIELD(self, 0x4c, void *), 0xc, u32) |= 2;
-        FIELD(FIELD(self, 0x50, void *), 0xc, u32) |= 2;
-        FIELD(FIELD(self, 0x54, void *), 0xc, u32) |= 2;
-        func_0203cc58(FIELD(FIELD(self, 0x50, void *), 0x34, int), 2, z);
-        FIELD(self, 0x4, Bits32).b0 = 1;
+        self->unk_4c->flags |= 2;
+        self->unk_50->flags |= 2;
+        self->unk_54->flags |= 2;
+        func_0203cc58(self->unk_50->openLen, 2, z);
+        self->unk_04_0 = 1;
         return;
     }
     if (!(keys & 0x800)) {
@@ -101,11 +101,11 @@ void func_ov002_021d637c(void *self) {
     if (p == NULL) {
         return;
     }
-    FIELD(self, 0x5c, void *) = ov002_new637c();
-    func_ov000_021632f0(FIELD(self, 0x5c, void *), FIELD(p, 6, u16) & 0xfff, data_ov002_021efa94.a, data_ov002_021efa94.b, z);
-    FIELD(FIELD(self, 0x50, void *), 0xc, u32) |= 4;
-    FIELD(FIELD(self, 0x54, void *), 0xc, u32) |= 4;
-    FIELD(FIELD(self, 0x54, void *), 0xc, u32) |= 2;
+    self->unk_5c = (VObj *)(ov002_new637c());
+    func_ov000_021632f0(self->unk_5c, FIELD(p, 6, u16) & 0xfff, data_ov002_021efa94.a, data_ov002_021efa94.b, z);
+    self->unk_50->flags |= 4;
+    self->unk_54->flags |= 4;
+    self->unk_54->flags |= 2;
     x = Task_FindById(0x1b);
     if (x != NULL && FIELD(x, 0x3c, void *) != NULL) {
         func_ov002_021e2690(FIELD(x, 0x3c, void *), z, z);

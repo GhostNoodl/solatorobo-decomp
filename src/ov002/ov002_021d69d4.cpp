@@ -2,7 +2,7 @@
 
 extern "C" {
 
-Task50 *Ov002TaskVt_021efb24_DtorDelete(Task50 *self) {
+Task021efb24 *Ov002TaskVt_021efb24_DtorDelete(Task021efb24 *self) {
     *(VFunc **)self = data_ov002_021efb24;
     func_ov002_021da39c();
     TaskBase_dtor(self);
@@ -10,7 +10,7 @@ Task50 *Ov002TaskVt_021efb24_DtorDelete(Task50 *self) {
     return self;
 }
 
-Task50 *Ov002TaskVt_021efb24_Dtor(Task50 *self) {
+Task021efb24 *Ov002TaskVt_021efb24_Dtor(Task021efb24 *self) {
     *(VFunc **)self = data_ov002_021efb24;
     func_ov002_021da39c();
     TaskBase_dtor(self);
@@ -24,19 +24,19 @@ void func_ov002_021d6a54(void *self, void *arg, int a) {
     }
 }
 
-int func_ov002_021d6a78(VObject *self) {
+int func_ov002_021d6a78(VObj *self) {
     s8 base;
-    FIELD(data_02097ce0, 0x4, s32) = FIELD(self, 0x1c, s32);
+    data_02097ce0->unk_004 = FIELD(self, 0x1c, s32);
     base = (*(s8 **)GfxMgr_GetFont(data_02097ce0))[1];
-    return base + self->v0x3c();
+    return base + self->vfunc_3c();
 }
 
 BOOL func_ov002_021d6abc(void) {
     return FALSE;
 }
 
-int func_ov002_021d6ac4(VObject *self, int a, int b, int c) {
-    return self->v0x60(a, b, c);
+int func_ov002_021d6ac4(VObj *self, int a, int b, int c) {
+    return self->vfunc_60(a, b, c);
 }
 
 int func_ov002_021d6ad8(void *self) {
@@ -84,15 +84,15 @@ int func_ov002_021d6b6c(void *self, void *arg) {
     return cb(self, arg);
 }
 
-static inline int func_ov002_021d6b88_calc(VObject *self) {
-    int a = self->v0x40() * FIELD(self, 0x20, s32);
-    int b = self->v0x34();
-    int c = self->v0x38();
+static inline int func_ov002_021d6b88_calc(VObj *self) {
+    int a = self->vfunc_40() * FIELD(self, 0x20, s32);
+    int b = self->vfunc_34();
+    int c = self->vfunc_38();
     a += b;
     return a + c;
 }
 
-int func_ov002_021d6b88(VObject *self) {
+int func_ov002_021d6b88(VObj *self) {
     int r;
     if (FIELD(self, 0xc, u32) & 0x20000) {
         FIELD(self, 0x20, s32) += 2;
@@ -123,8 +123,8 @@ int func_ov002_021d6c5c(void) {
     return 6;
 }
 
-int func_ov002_021d6c64(VObject *self) {
-    return self->v0x30() + FIELD(self, 0xc0, u8) + 0x12;
+int func_ov002_021d6c64(VObj *self) {
+    return self->vfunc_30() + FIELD(self, 0xc0, u8) + 0x12;
 }
 
 int func_ov002_021d6c88(void) {
@@ -191,11 +191,11 @@ void *Ov002Vt_021efb04_Dtor(void *self) {
     return self;
 }
 
-VObject *Ov002Vt_021efca4_Dtor(VObject *self) {
+VObj *Ov002Vt_021efca4_Dtor(VObj *self) {
     *(VFunc **)self = data_ov000_021caec8;
-    self->v0x2c();
+    self->vfunc_2c();
     *(VFunc **)self = data_ov000_021cac60;
-    self->v0x2c();
+    self->vfunc_2c();
     return self;
 }
 

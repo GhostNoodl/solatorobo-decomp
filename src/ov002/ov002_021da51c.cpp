@@ -7,7 +7,7 @@ void *Ov002Vt_021efe6c_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021efe6c;
     func_ov002_021d9504(self);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 4, VObject *));
+    DELETE_VOBJ(FIELD(self, 4, VObj *));
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     if (FIELD(self, 0x8c, void *) != NULL) {

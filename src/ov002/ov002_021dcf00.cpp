@@ -5,12 +5,12 @@
 
 extern "C" {
 
-void func_ov002_021dd7f0(void *self, Vec2 *a, Vec2 *b, int c);
+void func_ov002_021dd7f0(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c);
 
 static inline void ov002_ShowMsg(void *self, void *str) {
     u8 *t = FIELD(self, 0x4, u8 *);
     func_ov000_0215bb14(FIELD(t, 0x20, void *), str);
-    FIELD(t, 0x20, VObject *)->v0x70();
+    FIELD(t, 0x20, VObj *)->vfunc_70();
 }
 
 static inline void ov002_CamMove(u8 *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {
@@ -44,7 +44,7 @@ static inline u16 sumItems(u8 *w) {
     return sum;
 }
 
-void func_ov002_021dcf00(void *self) {
+void func_ov002_021dcf00(Obj021eff10 *self) {
     s32 px;
     u16 trig;
     s32 py;
@@ -54,7 +54,7 @@ void func_ov002_021dcf00(void *self) {
     u8 *w;
     void *msg;
     trig = data_02097dc8->trig;
-    w = FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *);
+    w = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
     msg = data_02149ef8;
     if (trig & 1) {
         if (sumItems(w) == 0) {
@@ -65,11 +65,11 @@ void func_ov002_021dcf00(void *self) {
         {
             u8 *q = FIELD(w, 0x4, u8 *);
             void *p;
-            FIELD(self, 0x24, s32) = FIELD(FIELD(q, 0x6c, u8 *), 6, Nibbles16).n0;
-            FIELD(self, 0x28, s32) = FIELD(FIELD(q, 0x6c, u8 *), 6, Nibbles16).n1;
+            self->unk_24 = FIELD(FIELD(q, 0x6c, u8 *), 6, Nibbles16).n0;
+            self->unk_28 = FIELD(FIELD(q, 0x6c, u8 *), 6, Nibbles16).n1;
             u8 *t;
             p = ov002_NewDcee0();
-            t = FIELD(self, 0x4, u8 *);
+            t = ((u8 *)self->unk_04);
             FIELD(t, 0x10, void *) = p;
             FIELD(t, 0xc, s32) = 0x14;
         }
@@ -77,7 +77,7 @@ void func_ov002_021dcf00(void *self) {
         return;
     }
     if ((trig & 0x20) || (trig & 2)) {
-        d = (u8)FIELD(self, 0x28, s32) - FIELD(FIELD(FIELD(w, 0x4, u8 *), 0x6c, u8 *), 6, Nibbles16).n1;
+        d = (u8)self->unk_28 - FIELD(FIELD(FIELD(w, 0x4, u8 *), 0x6c, u8 *), 6, Nibbles16).n1;
         px = *(s32 *)(data_ov002_021eef74 + 0x58);
         py = *(s32 *)(data_ov002_021eef74 + 0x5c);
         pz = *(s32 *)(data_ov002_021eef74 + 0x60);
@@ -91,7 +91,7 @@ void func_ov002_021dcf00(void *self) {
         }
         ov002_CamMove(w, px, py, pz, 0, 0, tz);
         func_ov002_021dd7f0(self, (Vec2 *)((u8 *)self + 0x24), (Vec2 *)((u8 *)self + 0x24), 1);
-        FIELD(self, 0x18, s32) = 10;
+        self->unk_18 = 10;
         func_02049a48(data_02097e4c, 0xf, -1, -1, -1);
     }
 }

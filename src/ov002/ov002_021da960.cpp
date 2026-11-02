@@ -32,28 +32,28 @@ void func_ov002_021da960(void *self) {
         if (n[0x4a] == 2) {
             FIELD(n, 0xac, s32) = FIELD(n, 0xa8, u16) <= FIELD(w, 0x8a, u16) ? 2 : 1;
         }
-        ((VObject *)n)->v0x10();
+        ((VObj *)n)->vfunc_10();
     }
-    if (FIELD(self, 0x8, VObject *) != NULL) {
-        FIELD(self, 0x8, VObject *)->v0x14();
+    if (FIELD(self, 0x8, VObj *) != NULL) {
+        FIELD(self, 0x8, VObj *)->vfunc_14();
     }
 }
 
 
 void func_ov002_021dab58(void *self, s32 mode) {
-    VObject *p;
+    VObj *p;
     if (FIELD(self, 0x8, void *) != NULL && FIELD(self, 0xc, s32) == mode) {
         return;
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(FIELD(self, 0x8, VObject *));
+        DELETE_VOBJ(FIELD(self, 0x8, VObj *));
         HEAP_POP(saved);
     }
     switch (mode) {
     case 0:
-        p = (VObject *)Heap_Alloc(0x24);
+        p = (VObj *)Heap_Alloc(0x24);
         if (p != NULL) {
             FIELD(p, 0x4, s32) = 0;
             *(VFunc **)p = data_ov002_021eff74;
@@ -65,12 +65,12 @@ void func_ov002_021dab58(void *self, s32 mode) {
             FIELD(p, 0x1c, s32) = 0;
             FIELD(p, 0x20, u8) = 0;
         }
-        FIELD(self, 0x8, VObject *) = p;
+        FIELD(self, 0x8, VObj *) = p;
         FIELD(p, 0x4, s32) = FIELD(self, 0x4, s32);
-        FIELD(self, 0x8, VObject *)->v0x8();
+        FIELD(self, 0x8, VObj *)->vfunc_08();
         break;
     case 1:
-        p = (VObject *)Heap_Alloc(0x38);
+        p = (VObj *)Heap_Alloc(0x38);
         if (p != NULL) {
             FIELD(p, 0x4, s32) = 0;
             *(VFunc **)p = data_ov002_021eff50;
@@ -83,9 +83,9 @@ void func_ov002_021dab58(void *self, s32 mode) {
             FIELD(p, 0x24, s32) = 0;
             FIELD(p, 0x34, s32) = 0;
         }
-        FIELD(self, 0x8, VObject *) = p;
+        FIELD(self, 0x8, VObj *) = p;
         FIELD(p, 0x4, s32) = FIELD(self, 0x4, s32);
-        FIELD(self, 0x8, VObject *)->v0x8();
+        FIELD(self, 0x8, VObj *)->vfunc_08();
         break;
     case 2:
         break;

@@ -18,18 +18,18 @@ static inline u8 *ov002_GetCell(u8 *w, Vec2 *pos) {
 static inline void ov002_ShowMsg(void *self, void *str) {
     u8 *t = FIELD(self, 0x4, u8 *);
     func_ov000_0215bb14(FIELD(t, 0x20, void *), str);
-    FIELD(t, 0x20, VObject *)->v0x70();
+    FIELD(t, 0x20, VObj *)->vfunc_70();
     FIELD(self, 0x20, u8) = 0;
 }
 
-void func_ov002_021dd7f0(void *self, Vec2 *a, Vec2 *b, int c) {
-    u8 *w = FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *);
+void func_ov002_021dd7f0(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c) {
+    u8 *w = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
     u8 *cur = ov002_GetCell(w, b);
     u8 *nxt = ov002_GetCell(w, a);
     void *msg = data_02149ef8;
     switch (nxt[2]) {
     case 1:
-        if (FIELD(nxt, 8, void *) != FIELD(cur, 8, void *) || c != 0 || FIELD(self, 0x20, u8) != 0) {
+        if (FIELD(nxt, 8, void *) != FIELD(cur, 8, void *) || c != 0 || self->unk_20 != 0) {
             FIELD(w, 0x74, u8) = 1;
             FIELD(w, 0x75, u8) = 1;
             func_0206ecd4(0x100, (u8 *)self + 0x34, FIELD(FIELD(nxt, 8, u8 *), 0x48, u16));
@@ -37,14 +37,14 @@ void func_ov002_021dd7f0(void *self, Vec2 *a, Vec2 *b, int c) {
         }
         break;
     case 0:
-        if (nxt[2] != cur[2] || c != 0 || FIELD(self, 0x20, u8) != 0) {
+        if (nxt[2] != cur[2] || c != 0 || self->unk_20 != 0) {
             FIELD(w, 0x74, u8) = 2;
             FIELD(w, 0x75, u8) = 1;
             ov002_ShowMsg(self, MsgRes_GetString(msg, 0x109));
         }
         break;
     case 2:
-        if (nxt[2] != cur[2] || c != 0 || FIELD(self, 0x20, u8) != 0) {
+        if (nxt[2] != cur[2] || c != 0 || self->unk_20 != 0) {
             FIELD(w, 0x74, u8) = 3;
             FIELD(w, 0x75, u8) = 1;
             ov002_ShowMsg(self, MsgRes_GetString(msg, 0x108));

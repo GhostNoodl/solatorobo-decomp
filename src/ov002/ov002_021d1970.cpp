@@ -23,28 +23,28 @@ typedef struct {
     u16 b;
 } Pair021d1970;
 
-void func_ov002_021d1970(void *self) {
+void func_ov002_021d1970(Task021ef69c *self) {
     void *g;
-    VObject *p;
-    FIELD(self, 0x4, u32) &= ~2;
-    if (((VObject *)self)->v0x28()) {
+    UiObj *p;
+    self->unk_04 &= ~2;
+    if (self->vfunc_28()) {
         return;
     }
     g = data_02149ef8;
-    p = (VObject *)Heap_Alloc(0xd4);
+    p = (UiObj *)Heap_Alloc(0xd4);
     if (p != NULL) {
         *(VFunc **)p = data_ov000_021cac60;
-        p->v0x28();
+        p->vfunc_28();
         *(VFunc **)p = data_ov000_021ccadc;
         func_ov000_021c6140(p);
     }
-    FIELD(self, 0x3c, VObject *) = p;
-    FIELD(self, 0x3c, VObject *)->v0x10(MsgRes_GetString(g, 0xee));
-    FIELD(self, 0x3c, VObject *)->v0x14(MsgRes_GetString(g, 0xf0));
-    FIELD(FIELD(self, 0x3c, void *), 0x68, s16) = -0x199a;
-    FIELD(FIELD(self, 0x3c, void *), 0xc4, u32) |= 2;
-    FIELD(FIELD(self, 0x3c, void *), 0xc4, BitWord).flag0 = 1;
-    FIELD(FIELD(self, 0x3c, void *), 0xa4, s32) = 0xf0;
+    self->unk_3c = (UiObj *)p;
+    self->unk_3c->vfunc_10(MsgRes_GetString(g, 0xee));
+    self->unk_3c->vfunc_14(MsgRes_GetString(g, 0xf0));
+    self->unk_3c->posZ = -0x199a;
+    FIELD(self->unk_3c, 0xc4, u32) |= 2;
+    FIELD(self->unk_3c, 0xc4, BitWord).flag0 = 1;
+    FIELD(self->unk_3c, 0xa4, s32) = 0xf0;
     {
         u16 i;
         u16 id;
@@ -70,46 +70,46 @@ void func_ov002_021d1970(void *self) {
                 func_ov000_021c308c(q, id);
                 FIELD(q, 0x44, s32) = i + 1;
                 FIELD(q, 0x40, void *) = func_0206ec48(id);
-                func_ov000_021c6474(FIELD(self, 0x3c, void *), q);
+                func_ov000_021c6474(self->unk_3c, q);
             }
         }
     }
-    FIELD(FIELD(self, 0x3c, void *), 0xcc, void *) = (void *)func_ov002_021d18d4;
-    FIELD(FIELD(self, 0x3c, void *), 0xc8, void *) = (void *)func_ov002_021d18e8;
-    FIELD(FIELD(self, 0x3c, void *), 0x8, void *) = self;
-    FIELD(self, 0x3c, VObject *)->v0x8();
-    func_ov000_021c65e0(FIELD(self, 0x3c, void *), data_ov002_021f0f84[2]);
-    func_ov000_021c64b4(FIELD(self, 0x3c, void *), FIELD(FIELD(FIELD(self, 0x3c, void *), 0x88, void *), 0x40, void *));
-    p = (VObject *)Heap_Alloc(0xe0);
+    FIELD(self->unk_3c, 0xcc, void *) = (void *)func_ov002_021d18d4;
+    FIELD(self->unk_3c, 0xc8, void *) = (void *)func_ov002_021d18e8;
+    self->unk_3c->owner = self;
+    self->unk_3c->vfunc_08();
+    func_ov000_021c65e0(self->unk_3c, data_ov002_021f0f84[2]);
+    func_ov000_021c64b4(self->unk_3c, FIELD(FIELD(self->unk_3c, 0x88, void *), 0x40, void *));
+    p = (UiObj *)Heap_Alloc(0xe0);
     if (p != NULL) {
         *(VFunc **)p = data_ov000_021cac60;
-        p->v0x28();
+        p->vfunc_28();
         *(VFunc **)p = data_ov000_021caec8;
-        p->v0x28();
+        p->vfunc_28();
         *(VFunc **)p = data_ov000_021cb5a8;
-        p->v0x28();
+        p->vfunc_28();
     }
-    FIELD(self, 0x40, VObject *) = p;
-    FIELD(p, 0xc, u32) |= 0x4000000;
-    FIELD(FIELD(self, 0x40, void *), 0x2c, s32) = 1;
-    FIELD(FIELD(self, 0x40, void *), 0x68, s16) = -0x199a;
+    self->unk_40 = (Lo021cb5a8 *)p;
+    p->flags |= 0x4000000;
+    self->unk_40->slideMode = 1;
+    self->unk_40->posZ = -0x199a;
     {
-        u8 *s = FIELD(self, 0x40, u8 *);
-        FIELD(s, 0x58, s32) = 0x100;
-        FIELD(s, 0x5c, s32) = 0;
-        FIELD(s, 0x60, s32) = -0x199a;
+        Lo021cb5a8 *s = self->unk_40;
+        s->slideX = 0x100;
+        s->slideY = 0;
+        s->slideZ = -0x199a;
     }
-    FIELD(FIELD(self, 0x40, void *), 0xc, u32) |= 0x20000000;
-    FIELD(FIELD(self, 0x40, void *), 0xc, u32) |= 0x80000000;
-    FIELD(self, 0x40, VObject *)->v0xf4(1, MsgRes_GetString(g, 0x34));
-    FIELD(self, 0x40, VObject *)->v0xf4(2, MsgRes_GetString(g, 0x33));
-    FIELD(self, 0x40, VObject *)->v0x8();
-    FIELD(self, 0x5c, s32) = -0x100;
-    FIELD(self, 0x50, s32) = 0;
-    FIELD(self, 0x54, s32) = 0;
-    FIELD(self, 0x60, s32) = 0;
-    FIELD(self, 0x58, s32) = -0x199a;
-    FIELD(self, 0x64, s32) = -0x199a;
+    self->unk_40->flags |= 0x20000000;
+    self->unk_40->flags |= 0x80000000;
+    self->unk_40->vfunc_f4(1, MsgRes_GetString(g, 0x34));
+    self->unk_40->vfunc_f4(2, MsgRes_GetString(g, 0x33));
+    self->unk_40->vfunc_08();
+    self->unk_5c = -0x100;
+    self->unk_50 = 0;
+    self->unk_54 = 0;
+    self->unk_60 = 0;
+    self->unk_58 = -0x199a;
+    self->unk_64 = -0x199a;
     func_ov000_02173648(self);
 }
 

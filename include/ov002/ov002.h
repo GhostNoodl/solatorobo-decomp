@@ -24,6 +24,12 @@
 #include "Main/Sys/Field.h"
 #include "Main/Sys/GameScene.h"
 #include "ov000/TaskList.h"
+#include "ov000/VObj.h"
+#include "ov000/UiObj.h"
+#include "ov000/ObjLayouts.h"
+#include "ov002/Ov002Task.h"
+#include "ov002/StageObj.h"
+#include "ov002/ObjLayouts.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,79 +49,6 @@ typedef int (*VFunc)(...);
 typedef int (*VFunc)();
 #endif
 
-/* Generic object with a vtable as the first member. Slot vN is the virtual function at vtable offset N. */
-#ifdef __cplusplus
-}
-class VObject {
-public:
-    virtual int v0x0(...);
-    virtual int v0x4(...);
-    virtual int v0x8(...);
-    virtual int v0xc(...);
-    virtual int v0x10(...);
-    virtual int v0x14(...);
-    virtual int v0x18(...);
-    virtual int v0x1c(...);
-    virtual int v0x20(...);
-    virtual int v0x24(...);
-    virtual int v0x28(...);
-    virtual int v0x2c(...);
-    virtual int v0x30(...);
-    virtual int v0x34(...);
-    virtual int v0x38(...);
-    virtual int v0x3c(...);
-    virtual int v0x40(...);
-    virtual int v0x44(...);
-    virtual int v0x48(...);
-    virtual int v0x4c(...);
-    virtual int v0x50(...);
-    virtual int v0x54(...);
-    virtual int v0x58(...);
-    virtual int v0x5c(...);
-    virtual int v0x60(...);
-    virtual int v0x64(...);
-    virtual int v0x68(...);
-    virtual int v0x6c(...);
-    virtual int v0x70(...);
-    virtual int v0x74(...);
-    virtual int v0x78(...);
-    virtual int v0x7c(...);
-    virtual int v0x80(...);
-    virtual int v0x84(...);
-    virtual int v0x88(...);
-    virtual int v0x8c(...);
-    virtual int v0x90(...);
-    virtual int v0x94(...);
-    virtual int v0x98(...);
-    virtual int v0x9c(...);
-    virtual int v0xa0(...);
-    virtual int v0xa4(...);
-    virtual int v0xa8(...);
-    virtual int v0xac(...);
-    virtual int v0xb0(...);
-    virtual int v0xb4(...);
-    virtual int v0xb8(...);
-    virtual int v0xbc(...);
-    virtual int v0xc0(...);
-    virtual int v0xc4(...);
-    virtual int v0xc8(...);
-    virtual int v0xcc(...);
-    virtual int v0xd0(...);
-    virtual int v0xd4(...);
-    virtual int v0xd8(...);
-    virtual int v0xdc(...);
-    virtual int v0xe0(...);
-    virtual int v0xe4(...);
-    virtual int v0xe8(...);
-    virtual int v0xec(...);
-    virtual int v0xf0(...);
-    virtual int v0xf4(...);
-    virtual int v0xf8(...);
-    virtual int v0xfc(...);
-};
-extern "C" {
-#define VC(obj, off) (((VObject *)(obj))->v##off)
-#endif
 
 /* Switch new allocations to the alternate heap (data_02097dd0->heapHi) and back. */
 #define HEAP_PUSH(saved)                                  \
@@ -177,42 +110,16 @@ int func_02035bd4(void *a, void *b, u16 c);
 void *func_ov000_0218084c(void *a, int b, int c);
 void func_ov000_0215bb14(void *a, void *b);
 
-struct Task50 : public VObject {
-    u32 flag0 : 1;
-    u32 flag1 : 1;
-    u32 flag2 : 1;
-    u32 flag3 : 1;
-    u32 flag4 : 1;
-    u32 flag5 : 1;
-    u32 flag6 : 1;
-    u32 flag7 : 1;
-    u32 flags_rest : 24;
-    s32 unk_08;
-    u8 unk_0c[0x14];
-    s32 unk_20;
-    s32 unk_24;
-    u8 unk_28[0x4];
-    s32 unk_2c;
-    u8 unk_30[0xc];
-    void *unk_3c;
-    VObject *unk_40;
-    VObject *unk_44;
-    s32 unk_48;
-    s8 unk_4c;
-    s8 unk_4d;
-    s8 unk_4e;
-    u8 unk_4f;
-};
 
-static inline void TaskBase_ctor(Task50 *self) {
+static inline void TaskBase_ctor(Task *self) {
     *(VFunc **)self = (VFunc *)data_ov000_021cc060;
-    VC(self, 0x58)();
+    self->vfunc_58();
 }
 
-static inline Task50 *Task_021cd06c_ctor(Task50 *self) {
+static inline Task021ef530 *Task_021cd06c_ctor(Task021ef530 *self) {
     TaskBase_ctor(self);
     *(VFunc **)self = data_ov002_021ef530;
-    VC(self, 0x58)();
+    self->vfunc_58();
     return self;
 }
 
@@ -230,8 +137,8 @@ int func_02054f10(void *a, int b);
 void func_ov000_0217357c(void *self);
 extern char data_ov002_021ef3f9[];
 
-static inline bool Task50_getFlag4(Task50 *self) {
-    return self->flag4;
+static inline bool Task_getFlag4(Task *self) {
+    return self->unk_04_4;
 }
 
 static inline bool func_ov002_isCurrent021ccd40(void *p) {
@@ -242,7 +149,7 @@ void *func_02035f30(void *a, void *b, u16 c);
 void func_ov000_02173648(void *self);
 extern u8 data_ov000_021ccd34;
 void func_0203cb78(s32 a, int b, int c);
-void func_ov002_021ce7b8(Task50 *self);
+void func_ov002_021ce7b8(Task021ef4b0 *self);
 
 static inline void func_ov002_setCurrent021ccd40(void *p) {
     if (data_ov000_021ccd40 != NULL) {
@@ -259,26 +166,26 @@ static inline bool func_ov002_isMode4(void) {
 
 #define DELETE_VOBJ(field)              \
     do {                                \
-        VObject *o_ = (field);          \
+        VObj *o_ = (field);          \
         if (o_ != NULL) {               \
             if (o_ != NULL) {           \
-                o_->v0x4();             \
+                o_->vfunc_04();             \
             }                           \
             (field) = NULL;             \
         }                               \
     } while (0)
 
-#define TASK_VOBJ(self, off) FIELD(self, off, VObject *)
+#define TASK_VOBJ(self, off) FIELD(self, off, VObj *)
 
-static inline bool Task50_testFlags(Task50 *self, u32 mask) {
-    return FIELD(self, 0x4, u32) & mask;
+static inline bool Task_testFlags(Task *self, u32 mask) {
+    return self->unk_04 & mask;
 }
-static inline bool Task50_getFlag5(Task50 *self) {
-    return self->flag5;
+static inline bool Task_getFlag5(Task *self) {
+    return self->unk_04_5;
 }
 
-static inline bool Task50_getFlag6(Task50 *self) {
-    return self->flag6;
+static inline bool Task_getFlag6(Task *self) {
+    return self->unk_04_6;
 }
 
 extern VFunc data_ov002_021ef4b0[];
@@ -287,12 +194,14 @@ extern VFunc data_ov002_021ef410[];
 extern VFunc data_ov002_021ef79c[];
 void func_ov000_0216f168(void *self);
 
-static inline void TaskBase_dtor(Task50 *self) {
+static inline void TaskBase_dtor(Task *self) {
     *(VFunc **)self = (VFunc *)data_ov000_021cc060;
-    self->v0x5c();
+    self->vfunc_5c();
 }
 
-static inline void Task_deleteModel(Task50 *self) {
+}
+// Frees the Model at unk_3c (Task021ef430, Task021ef530).
+template <class T> static inline void Task_deleteModel(T *self) {
     void *p = self->unk_3c;
     if (p != NULL) {
         if (p != NULL) {
@@ -303,6 +212,7 @@ static inline void Task_deleteModel(Task50 *self) {
         self->unk_3c = NULL;
     }
 }
+extern "C" {
 
 static inline bool func_ov002_isMode4b(void) {
     BOOL r;
@@ -323,7 +233,7 @@ s16 *func_0206ee90(u32 id);
 extern s32 data_ov002_021f0f84[];
 extern VFunc data_ov002_021ef71c[];
 void func_ov002_021e916c(void);
-void func_ov002_021d0b98(Task50 *self);
+void func_ov002_021d0b98(Task021ef89c *self);
 
 typedef struct Info0206ee90 {
     u16 unk_00 : 15;
@@ -336,13 +246,13 @@ u16 func_02059544(void *a, void *b, void *c, u16 d, u16 e);
 
 void func_ov002_021e90dc(void);
 void func_ov002_021e8f04(s32 id);
-void *func_ov002_021e9b28(void *arg);
+Ov002Obj *func_ov002_021e9b28(void *arg);
 bool func_ov002_021e90ac(void);
 extern void *data_ov002_021f0f9c;
 extern VFunc data_ov002_021ef69c[];
 void func_ov000_021c64b4(void *a, void *b);
 void func_ov000_021c7000(void *a);
-void func_ov002_021d1f70(void *self);
+void func_ov002_021d1f70(Task021ef69c *self);
 
 void func_0203caf8(int a);
 void Movie_Load(void *a, s32 b, int c, int d);
@@ -376,15 +286,15 @@ void *Ov002Vt_021f00fc_Dtor(void *p);
 extern VFunc data_ov002_021ef99c[];
 
 void func_ov002_021e4b80(void *p);
-void func_ov002_021d37f8(void *self);
+void func_ov002_021d37f8(Task021ef91c *self);
 extern VFunc data_ov002_021ef81c[];
 void func_ov000_021763c8(void);
 u32 func_ov000_02176538(void);
 u32 func_ov000_02180838(void *a);
-void func_ov002_021d3ccc(void *self);
+void func_ov002_021d3ccc(Task021ef81c *self);
 
 void *Ov002Vt_021f00ec_Dtor(void *p);
-void func_ov002_021d25ec(Task50 *self);
+void func_ov002_021d25ec(Task021ef99c *self);
 void __cxa_vec_cleanup(void *arr, int n, u32 size, void (*dtor)(void *));
 extern VFunc data_ov002_021ef684[];
 void func_ov000_021c2310(void *self);
@@ -407,8 +317,8 @@ BOOL func_ov002_021da800(void *self);
 void func_ov002_021da894(void *self);
 void func_ov002_021da960(void *self);
 
-static inline bool Task50_isFlag1Clear(Task50 *self) {
-    return !self->flag1;
+static inline bool Task_isFlag1Clear(Task *self) {
+    return !self->unk_04_1;
 }
 
 void func_ov002_021dab58(void *a, int b);
@@ -468,7 +378,7 @@ extern char data_ov002_021efddd[];
 
 u8 *func_0206ede8(u16 id);
 BOOL func_ov002_021e38f8(s32 *out, void *ev);
-void func_ov002_021d8148(void *self);
+void func_ov002_021d8148(Obj021efe9c *self);
 
 static inline void func_ov002_021d7c04_inline(void *self) {
     u8 *info = func_0206ede8(FIELD(self, 0x48, u16));
@@ -479,7 +389,7 @@ static inline void func_ov002_021d7c04_inline(void *self) {
     func_ov002_021e38f8((s32 *)((u8 *)self + 0x5c), v);
 }
 
-void func_ov002_021d83f0(void *self);
+void func_ov002_021d83f0(Obj021efe9c *self);
 u8 Gfx3DState_NextPolyId(void *a);
 void NNS_G3dMdlSetMdlPolygonIDAll(void *mdl, int polygonID);
 void func_ov002_021e3b0c(s32 *out, s32 *pos, s32 *origin);
@@ -497,7 +407,7 @@ typedef struct Bits021d8b48 {
 
 void func_ov002_021eae48(void *self);
 extern void *data_ov002_021f0f90[];
-void func_ov002_021df1c4(void *self);
+void func_ov002_021df1c4(Obj021eff30 *self);
 
 typedef struct Bits16 {
     u16 b0 : 1;
@@ -529,9 +439,9 @@ extern VFunc data_ov002_021f00ec[];
 extern void *data_ov002_021f0f98;
 void func_ov002_021ddd80(void *self);
 void func_ov002_021da430(void *self);
-void func_ov002_021dddd0(void *self);
-void func_ov002_021dbdb8(void *self);
-void func_ov002_021db64c(void *self);
+void func_ov002_021dddd0(Obj021efef0 *self);
+void func_ov002_021dbdb8(Obj021eff10 *self);
+void func_ov002_021db64c(Obj021eff50 *self);
 void func_ov002_021d6ec4(void *self);
 void func_ov002_021eae3c(void *self);
 
@@ -592,8 +502,8 @@ extern VFunc data_ov002_021f0e4c[];
 extern VFunc data_ov002_021f0f2c[];
 extern VFunc data_ov002_021efed4[];
 extern VFunc data_ov002_021efe9c[];
-void func_ov002_021d8e90(void *self);
-void func_ov002_021d7ed8(void *self);
+void func_ov002_021d8e90(Obj021efed4 *self);
+void func_ov002_021d7ed8(Obj021efe9c *self);
 
 typedef struct Bits021e0420 {
     u32 lo : 16;
@@ -611,7 +521,7 @@ typedef struct Bits021e2f04 {
     u32 hi : 16;
 } Bits021e2f04;
 
-void func_ov002_021e0280(void *self);
+void func_ov002_021e0280(Obj021eff30 *self);
 void func_ov002_021d7988(void *a);
 void *func_ov000_0214b724(void *p);
 
@@ -634,7 +544,7 @@ typedef struct Bits8 {
 
 extern VFunc data_ov002_021f0734[];
 
-static inline void func_ov002_021e4d4c_inline(void *self) {
+static inline void func_ov002_021e4d4c_inline(Ov002Obj *self) {
     u8 *owner = FIELD(self, 0x48, u8 *);
     int i;
     if (owner != NULL) {
@@ -678,7 +588,7 @@ void func_ov000_021c4ab8(void *self);
 extern u8 data_ov002_021ef038[];
 
 extern VFunc data_ov002_021f075c[];
-void func_ov002_021e5d88(void *self);
+void func_ov002_021e5d88(Ov002Obj021f075c *self);
 void func_ov002_021e8cc4(void *self);
 void *func_ov000_0214b6d8(void *p);
 void func_ov000_0214b88c(void *p, const void *a);
@@ -707,7 +617,7 @@ extern char data_ov002_021f00cc[];
 extern char data_ov002_021f00d8[];
 
 extern VFunc data_ov002_021f07d4[];
-void func_ov002_021e51f8(void *self);
+void func_ov002_021e51f8(Ov002Obj021f07d4 *self);
 void func_ov002_021d9728(void *p);
 
 void func_ov002_021e391c(s32 *m, int rot);
@@ -744,21 +654,21 @@ typedef struct Oam021e7ab8 {
     u32 b1 : 16;
 } Oam021e7ab8;
 
-void func_ov002_021d36b8(void *self, s32 n);
+void func_ov002_021d36b8(Task021ef91c *self, s32 n);
 extern VFunc data_ov002_021eff74[];
 void func_ov002_021eacd0(void *self);
 void Gfx3DState_Init(void *p);
 void func_ov002_021e7cb4(void *self);
 
 BOOL func_ov002_021e41cc(Vec2 *a, Vec2 *b, void *c, void *d, Vec2 *out);
-void func_ov002_021e63f0(void *self);
-void *func_ov002_021e4ee4(void *self, s32 kind, s32 min);
-void func_ov002_021e61b4(void *p);
+void func_ov002_021e63f0(Ov002Obj021f075c *self);
+Ov002Obj *func_ov002_021e4ee4(Ov002Obj *self, s32 kind, s32 min);
+void func_ov002_021e61b4(Ov002Obj021f075c *p);
 extern VFunc data_ov002_021f0694[];
 
-void func_ov002_021e6360(void *self);
+void func_ov002_021e6360(Ov002Obj021f075c *self);
 
-void *func_ov002_021e9974(s32 a, s32 b, s16 c, void *d);
+Ov002Obj *func_ov002_021e9974(s32 a, s32 b, s16 c, void *d);
 
 void *func_02035fe8(void *a, void *b);
 void func_ov002_021ec010(void *p, const void *src);
@@ -791,25 +701,25 @@ void func_ov000_02163594(void *p);
 
 void func_0206e3a0(void *a, void *b);
 void func_02043b20(void *p);
-void func_ov002_021e5d0c(void *self);
+void func_ov002_021e5d0c(Ov002Obj021f075c *self);
 
 void *Ov002Vt_021f0ce8_Ctor(void *p);
-void func_ov002_021e6a14(void *self);
+void func_ov002_021e6a14(Ov002Obj021f07ac *self);
 void func_ov002_021ec1e0(void *self, void *src);
 
 extern VFunc data_ov002_021f06e4[];
 
-void func_ov002_021e6290(void *self);
+void func_ov002_021e6290(Ov002Obj021f075c *self);
 
 void *func_0206ec48(u16 id);
-void func_ov002_021e019c(void *self, u8 a, u8 b);
+void func_ov002_021e019c(Obj021eff30 *self, u8 a, u8 b);
 
 void func_ov000_0216f844(void *p, int a);
 extern VFunc data_ov002_021f070c[];
 
 extern const u8 data_ov002_021eef74[];
 
-void func_ov002_021e5140(void *self);
+void func_ov002_021e5140(Ov002Obj021f07d4 *self);
 void *func_02035d2c(void *a);
 
 #ifdef __cplusplus

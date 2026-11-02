@@ -27,25 +27,25 @@ void *func_ov002_021e3874(void *v, u8 a, u8 b);
 void func_ov002_021d7424(int se);
 void func_ov002_021d7c54(void *self, u16 rot);
 void func_ov002_021df7b4(void *self, void *ev);
-void func_ov002_021e00bc(void *self);
-void func_ov002_021dfcc0(void *self);
+void func_ov002_021e00bc(Obj021eff30 *self);
+void func_ov002_021dfcc0(Obj021eff30 *self);
 void func_ov002_021d792c(void *self);
 void func_ov002_021d788c(void *self);
 void *Heap_GetCurrent(void);
 void Heap_SetCurrentHi(void);
 void Heap_SetCurrent(void *heap);
 
-void func_ov002_021df7f0(void *self, void *a) {
-    FIELD(self, 0x4, void *) = a;
-    func_ov002_021d792c(FIELD(self, 0xc, void *));
-    FIELD(self, 0x10, VObject *)->v0xc();
-    func_ov002_021d788c(FIELD(self, 0x14, void *));
-    switch (FIELD(self, 0x18, s32)) {
+void func_ov002_021df7f0(Obj021eff30 *self, void *a) {
+    self->unk_04 = a;
+    func_ov002_021d792c(self->unk_0c);
+    self->unk_10->vfunc_0c();
+    func_ov002_021d788c(self->unk_14);
+    switch (self->unk_18) {
     case 0:
-        if (func_ov002_021dc834(FIELD(self, 0x10, void *)) == 1) {
-            FIELD(self, 0x18, s32)++;
+        if (func_ov002_021dc834(self->unk_10) == 1) {
+            self->unk_18++;
         } else {
-            func_ov002_021d8ba4(FIELD(self, 0x10, void *));
+            func_ov002_021d8ba4(self->unk_10);
             break;
         }
     case 1:
@@ -55,11 +55,11 @@ void func_ov002_021df7f0(void *self, void *a) {
         func_ov002_021e00bc(self);
         break;
     case 20:
-        if (func_ov002_021dc834(FIELD(self, 0x10, void *)) == 2) {
-            FIELD(self, 0x18, s32)++;
-            func_ov002_021d8b04(FIELD(self, 0x10, void *), (Vec2 *)((u8 *)self + 0x1c));
+        if (func_ov002_021dc834(self->unk_10) == 2) {
+            self->unk_18++;
+            func_ov002_021d8b04(self->unk_10, (Vec2 *)((u8 *)self + 0x1c));
         } else {
-            func_ov002_021d8b7c(FIELD(self, 0x10, void *));
+            func_ov002_021d8b7c(self->unk_10);
             break;
         }
     case 21: {
@@ -68,10 +68,10 @@ void func_ov002_021df7f0(void *self, void *a) {
         VecFx32 off;
         Vec2 p;
         u8 *m;
-        func_ov002_021d8b2c(FIELD(self, 0x10, void *), &p);
+        func_ov002_021d8b2c(self->unk_10, &p);
         func_ov002_021e3b0c(&v.x, (s32 *)((u8 *)self + 0x1c), &p.x);
-        m = (u8 *)func_ov002_021d8b40(FIELD(self, 0x10, void *));
-        func_ov002_021e398c(mtx, func_ov002_021d8b48(FIELD(self, 0x10, void *)));
+        m = (u8 *)func_ov002_021d8b40(self->unk_10);
+        func_ov002_021e398c(mtx, func_ov002_021d8b48(self->unk_10));
         off.x = Ov002_FxMul((FIELD(m, 4, Nibbles16).n2 - FIELD(m, 6, Nibbles16).n0 * 2) << 11, 0x28f) + (0x148 - 0x28f);
         off.y = 0;
         off.z = Ov002_FxMul((FIELD(m, 4, Nibbles16).n3 - FIELD(m, 6, Nibbles16).n1 * 2) << 11, 0x28f) + (0x148 - 0x28f);
@@ -79,10 +79,10 @@ void func_ov002_021df7f0(void *self, void *a) {
         v.y = 0x266;
         v.x += off.x;
         v.z += off.z;
-        func_ov002_021e3874(&v, func_ov002_021d8b74(FIELD(self, 0x10, void *)), FIELD(m, 4, Nibbles16).n2);
+        func_ov002_021e3874(&v, func_ov002_021d8b74(self->unk_10), FIELD(m, 4, Nibbles16).n2);
         func_ov002_021d7424(0x45);
-        func_ov002_021d9e38(func_ov002_021dc270(a), FIELD(self, 0x10, void *));
-        FIELD(self, 0x10, void *) = NULL;
+        func_ov002_021d9e38(func_ov002_021dc270(a), self->unk_10);
+        self->unk_10 = NULL;
         {
             void *q = Heap_Alloc(0x134);
             if (q != NULL) {
@@ -90,14 +90,14 @@ void func_ov002_021df7f0(void *self, void *a) {
             }
             func_ov002_021dbd08(a, q, 10);
         }
-        FIELD(self, 0x18, s32) = 0x32;
+        self->unk_18 = 0x32;
         break;
     }
     case 30:
-        if (FIELD(self, 0x8, s32) == 10) {
-            if (func_ov002_021dc834(FIELD(self, 0x10, void *)) == 2) {
-                func_ov002_021d9e38(func_ov002_021dc270(a), FIELD(self, 0x10, void *));
-                FIELD(self, 0x10, void *) = NULL;
+        if (self->unk_08 == 10) {
+            if (func_ov002_021dc834(self->unk_10) == 2) {
+                func_ov002_021d9e38(func_ov002_021dc270(a), self->unk_10);
+                self->unk_10 = NULL;
                 {
                     void *q = Heap_Alloc(0x134);
                     if (q != NULL) {
@@ -105,15 +105,15 @@ void func_ov002_021df7f0(void *self, void *a) {
                     }
                     func_ov002_021dbd08(a, q, 10);
                 }
-                FIELD(self, 0x18, s32) = 0x32;
+                self->unk_18 = 0x32;
             } else {
-                func_ov002_021d8b7c(FIELD(self, 0x10, void *));
-                func_ov002_021df7b4(FIELD(self, 0x10, void *), (u8 *)self + 0x24);
-                func_ov002_021d7c54(FIELD(self, 0x10, void *), FIELD(self, 0x2c, u8));
-                func_ov002_021d8b04(FIELD(self, 0x10, void *), (Vec2 *)((u8 *)self + 0x1c));
+                func_ov002_021d8b7c(self->unk_10);
+                func_ov002_021df7b4(self->unk_10, (u8 *)self + 0x24);
+                func_ov002_021d7c54(self->unk_10, self->unk_2c);
+                func_ov002_021d8b04(self->unk_10, (Vec2 *)((u8 *)self + 0x1c));
             }
-        } else if (func_ov002_021dc834(FIELD(self, 0x10, void *)) == 0) {
-            u16 id = func_ov002_021d9e30(FIELD(self, 0x10, void *));
+        } else if (func_ov002_021dc834(self->unk_10) == 0) {
+            u16 id = func_ov002_021d9e30(self->unk_10);
             void *q;
             void *h;
             func_ov002_021dd9d4(func_ov002_021dc270(a))[(u16)(id & 0xfff)]++;
@@ -122,39 +122,39 @@ void func_ov002_021df7f0(void *self, void *a) {
             if (q != NULL) {
                 q = Ov002Vt_021efef0_Ctor(q);
             }
-            func_ov002_021dfc44(q, func_ov002_021d9e30(FIELD(self, 0x10, void *)));
+            func_ov002_021dfc44(q, func_ov002_021d9e30(self->unk_10));
             func_ov002_021dbd08(a, q, 0x14);
             h = Heap_GetCurrent();
             Heap_SetCurrentHi();
-            DELETE_VOBJ(FIELD(self, 0x10, VObject *));
+            DELETE_VOBJ(FIELD(self, 0x10, VObj *));
             Heap_SetCurrent(h);
-            FIELD(self, 0x18, s32) = 0x32;
+            self->unk_18 = 0x32;
         } else {
-            func_ov002_021d8bcc(FIELD(self, 0x10, void *));
+            func_ov002_021d8bcc(self->unk_10);
         }
         break;
     case 40:
-        if (func_ov002_021dc834(FIELD(self, 0x10, void *)) == 0) {
-            u16 id = func_ov002_021d9e30(FIELD(self, 0x10, void *));
+        if (func_ov002_021dc834(self->unk_10) == 0) {
+            u16 id = func_ov002_021d9e30(self->unk_10);
             void *q;
             void *h;
-            func_ov002_021dd9d4(func_ov002_021dc270(FIELD(self, 0x4, void *)))[(u16)(id & 0xfff)]++;
+            func_ov002_021dd9d4(func_ov002_021dc270(self->unk_04))[(u16)(id & 0xfff)]++;
             q = Heap_Alloc(0x134);
             if (q != NULL) {
                 q = Ov002Vt_021eff10_Ctor(q);
             }
-            func_ov002_021dbd08(FIELD(self, 0x4, void *), q, 10);
+            func_ov002_021dbd08(self->unk_04, q, 10);
             h = Heap_GetCurrent();
             Heap_SetCurrentHi();
-            DELETE_VOBJ(FIELD(self, 0x10, VObject *));
+            DELETE_VOBJ(FIELD(self, 0x10, VObj *));
             Heap_SetCurrent(h);
-            FIELD(self, 0x18, s32) = 0x32;
+            self->unk_18 = 0x32;
         } else {
-            func_ov002_021d8bcc(FIELD(self, 0x10, void *));
+            func_ov002_021d8bcc(self->unk_10);
         }
         break;
     }
-    FIELD(self, 0x4, void *) = NULL;
+    self->unk_04 = NULL;
 }
 
 }

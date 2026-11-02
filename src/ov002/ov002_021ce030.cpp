@@ -2,8 +2,8 @@
 
 extern "C" {
 
-Task50 *func_ov002_021ce030(void) {
-    Task50 *p = (Task50 *)Heap_Alloc(0x50);
+Task021ef430 *func_ov002_021ce030(void) {
+    Task021ef430 *p = (Task021ef430 *)Heap_Alloc(0x50);
     if (p != NULL) {
         TaskBase_ctor(p);
         *(VFunc **)p = data_ov002_021ef430;
@@ -16,11 +16,11 @@ Task50 *func_ov002_021ce030(void) {
         p->unk_4e = 3;
         p->unk_4f = 0;
     }
-    p->v0x8(0x11, 0x3e8);
+    p->vfunc_08(0x11, 0x3e8);
     return p;
 }
 
-void func_ov002_021ce0b0(Task50 *self) {
+void func_ov002_021ce0b0(Task021ef430 *self) {
     func_020359fc(data_ov002_021ef3e4, data_ov002_021ef3f9, 2, 0);
     self->unk_4f = 1;
 }

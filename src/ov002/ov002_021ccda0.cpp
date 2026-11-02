@@ -81,16 +81,16 @@ void func_ov002_021cceb4(Unk021cceb4 *self) {
 void func_ov002_021cd068(void *self) {
 }
 
-Task50 *func_ov002_021cd06c(void) {
-    Task50 *p = (Task50 *)Heap_Alloc(sizeof(Task50));
+Task021ef530 *func_ov002_021cd06c(void) {
+    Task021ef530 *p = (Task021ef530 *)Heap_Alloc(sizeof(Task021ef530));
     if (p != NULL) {
         Task_021cd06c_ctor(p);
     }
-    VC(p, 0x8)(0x10, 0);
+    p->vfunc_08(0x10, 0);
     return p;
 }
 
-void func_ov002_021cd0d4(Task50 *self) {
+void func_ov002_021cd0d4(Task021ef530 *self) {
     func_020359fc(data_ov002_021ef3e4, data_ov002_021ef3ec, 2, 0);
     self->unk_4d = 1;
 }
@@ -120,11 +120,11 @@ typedef struct {
     u32 rest : 29;
 } Flags021cd124;
 
-void func_ov002_021cd124(Task50 *self) {
+void func_ov002_021cd124(Task021ef530 *self) {
     void *g;
     void *res;
     void *m;
-    VObject *o;
+    UiObj *o;
     {
         u8 *mm = (u8 *)data_02097e48.queue;
         if (FIELD(mm, 0x0, Bits16).b0) {
@@ -142,8 +142,8 @@ void func_ov002_021cd124(Task50 *self) {
             }
         }
     }
-    FIELD(self, 0x4, u32) &= ~2;
-    if (((VObject *)self)->v0x28()) {
+    self->unk_04 &= ~2;
+    if (self->vfunc_28()) {
         return;
     }
     g = data_02149ef8;
@@ -153,98 +153,98 @@ void func_ov002_021cd124(Task50 *self) {
         func_02041218((PlttRes *)((u8 *)m + 0x88));
         func_02041440((Model *)m, NULL, 0);
     }
-    FIELD(self, 0x3c, void *) = m;
+    self->unk_3c = (Model *)m;
     func_020417e0((Model *)m, res);
-    FIELD(FIELD(self, 0x3c, void *), 0x6c, u32) |= 2;
-    func_02041d9c((Model *)FIELD(self, 0x3c, void *), 0, 0);
-    o = (VObject *)Heap_Alloc(0xd4);
+    self->unk_3c->flags |= 2;
+    func_02041d9c((Model *)self->unk_3c, 0, 0);
+    o = (UiObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
-        o->v0x28();
+        o->vfunc_28();
         *(VFunc **)o = data_ov000_021caec8;
-        o->v0x28();
+        o->vfunc_28();
     }
-    FIELD(self, 0x40, VObject *) = o;
-    FIELD(self, 0x40, VObject *)->v0x10(MsgRes_GetString(g, 0xd7));
-    FIELD(self, 0x40, VObject *)->v0x14(MsgRes_GetString(g, 0xd8));
-    FIELD(FIELD(self, 0x40, void *), 0x24, s32) = 0x92;
-    FIELD(FIELD(self, 0x40, void *), 0x20, s32) = 6;
+    self->unk_40 = (UiList *)o;
+    self->unk_40->vfunc_10(MsgRes_GetString(g, 0xd7));
+    self->unk_40->vfunc_14(MsgRes_GetString(g, 0xd8));
+    self->unk_40->width = 0x92;
+    self->unk_40->rows = 6;
     {
-        u8 *s = FIELD(self, 0x40, u8 *);
-        FIELD(s, 0x64, s16) = 0;
-        FIELD(s, 0x66, s16) = 0x1e;
-        FIELD(s, 0x68, s16) = -0x1ccd;
+        UiList *s = self->unk_40;
+        s->posX = 0;
+        s->posY = 0x1e;
+        s->posZ = -0x1ccd;
     }
     {
-        u8 *s = FIELD(self, 0x40, u8 *);
-        FIELD(s, 0x58, s32) = -0x100;
-        FIELD(s, 0x5c, s32) = 0;
-        FIELD(s, 0x60, s32) = -0x1ccd;
+        UiList *s = self->unk_40;
+        s->slideX = -0x100;
+        s->slideY = 0;
+        s->slideZ = -0x1ccd;
     }
-    FIELD(FIELD(self, 0x40, void *), 0x2c, s32) = 1;
-    FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~0x400000;
-    FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~0x800000;
-    FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~0x20000;
-    FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~0x80000;
-    FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~0x40000;
-    FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~0x10000;
-    FIELD(self, 0x40, VObject *)->v0x74(MsgRes_GetString(g, 0x96), 0, 0xffff, 0xffff);
-    FIELD(self, 0x40, VObject *)->v0x74(MsgRes_GetString(g, 0xba), 1, 0xffff, 0xffff);
-    FIELD(self, 0x40, VObject *)->v0x74(MsgRes_GetString(g, 0xc2), 2, 0xffff, 0xffff);
-    FIELD(self, 0x40, VObject *)->v0x74(MsgRes_GetString(g, 0x4f), 3, 0xffff, 0xffff);
-    FIELD(self, 0x40, VObject *)->v0x74(MsgRes_GetString(g, 0xd9), 4, 0xffff, 0xffff);
-    FIELD(self, 0x40, VObject *)->v0x74(MsgRes_GetString(g, 0xdd), 5, 0xffff, 0xffff);
+    self->unk_40->slideMode = 1;
+    self->unk_40->flags &= ~0x400000;
+    self->unk_40->flags &= ~0x800000;
+    self->unk_40->flags &= ~0x20000;
+    self->unk_40->flags &= ~0x80000;
+    self->unk_40->flags &= ~0x40000;
+    self->unk_40->flags &= ~0x10000;
+    self->unk_40->vfunc_74(MsgRes_GetString(g, 0x96), 0, 0xffff, 0xffff);
+    self->unk_40->vfunc_74(MsgRes_GetString(g, 0xba), 1, 0xffff, 0xffff);
+    self->unk_40->vfunc_74(MsgRes_GetString(g, 0xc2), 2, 0xffff, 0xffff);
+    self->unk_40->vfunc_74(MsgRes_GetString(g, 0x4f), 3, 0xffff, 0xffff);
+    self->unk_40->vfunc_74(MsgRes_GetString(g, 0xd9), 4, 0xffff, 0xffff);
+    self->unk_40->vfunc_74(MsgRes_GetString(g, 0xdd), 5, 0xffff, 0xffff);
     self->unk_4c = data_ov002_021f0f80->unk_08;
     data_ov002_021f0f80->unk_08 = -1;
     if (self->unk_4c == -1) {
         self->unk_4c = 0;
     }
     {
-        VObject *mm = FIELD(self, 0x40, VObject *);
-        mm->v0xa8(func_ov000_02154b58(mm, (void *)self->unk_4c));
+        VObj *mm = self->unk_40;
+        mm->vfunc_a8(func_ov000_02154b58(mm, (void *)self->unk_4c));
     }
-    func_ov000_021547e8(FIELD(self, 0x40, void *), data_0214b105, data_0208cb7c, 0xb);
-    FIELD(self, 0x40, VObject *)->v0x8();
-    FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~0x10;
-    o = (VObject *)Heap_Alloc(0x8c);
+    func_ov000_021547e8(self->unk_40, data_0214b105, data_0208cb7c, 0xb);
+    self->unk_40->vfunc_08();
+    self->unk_40->flags &= ~0x10;
+    o = (UiObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
-        o->v0x28();
+        o->vfunc_28();
         *(VFunc **)o = data_ov000_021cadcc;
-        o->v0x28();
+        o->vfunc_28();
     }
-    FIELD(self, 0x44, VObject *) = o;
-    FIELD(o, 0x24, s32) = 0xf8;
-    FIELD(FIELD(self, 0x44, void *), 0x20, s32) = 2;
+    self->unk_44 = (Lo021cadcc *)o;
+    o->width = 0xf8;
+    self->unk_44->rows = 2;
     {
-        u8 *s = FIELD(self, 0x44, u8 *);
-        FIELD(s, 0x64, s16) = 4;
-        FIELD(s, 0x66, s16) = 0x95;
-        FIELD(s, 0x68, s16) = -0x199a;
+        Lo021cadcc *s = self->unk_44;
+        s->posX = 4;
+        s->posY = 0x95;
+        s->posZ = -0x199a;
     }
     {
-        u8 *s = FIELD(self, 0x44, u8 *);
-        FIELD(s, 0x58, s32) = -0x100;
-        FIELD(s, 0x5c, s32) = 0;
-        FIELD(s, 0x60, s32) = -0x199a;
+        Lo021cadcc *s = self->unk_44;
+        s->slideX = -0x100;
+        s->slideY = 0;
+        s->slideZ = -0x199a;
     }
-    FIELD(FIELD(self, 0x44, void *), 0x2c, s32) = 1;
-    FIELD(self, 0x44, VObject *)->v0x8();
-    FIELD(self, 0x48, Flags021cd124).b1 = !func_020624d8();
-    FIELD(self, 0x48, Flags021cd124).b0 = func_ov000_02188dfc() != 0;
+    self->unk_44->slideMode = 1;
+    self->unk_44->vfunc_08();
+    self->unk_48_1 = !func_020624d8();
+    self->unk_48_0 = func_ov000_02188dfc() != 0;
     if (func_020594bc(data_02fe152c, 5, 1, 0) == 0) {
-        FIELD(self, 0x48, Flags021cd124).b2 = 1;
+        self->unk_48_2 = 1;
     }
-    if (FIELD(self, 0x48, Flags021cd124).b0) {
-        FIELD(func_ov000_02154b58(FIELD(self, 0x40, void *), (void *)0), 0x24, s32) = 0xe;
+    if (self->unk_48_0) {
+        FIELD(func_ov000_02154b58(self->unk_40, (void *)0), 0x24, s32) = 0xe;
     }
-    if (FIELD(self, 0x48, Flags021cd124).b2) {
-        FIELD(func_ov000_02154b58(FIELD(self, 0x40, void *), (void *)1), 0x24, s32) = 0xe;
+    if (self->unk_48_2) {
+        FIELD(func_ov000_02154b58(self->unk_40, (void *)1), 0x24, s32) = 0xe;
     }
-    if (FIELD(self, 0x48, Flags021cd124).b1) {
-        FIELD(func_ov000_02154b58(FIELD(self, 0x40, void *), (void *)5), 0x24, s32) = 0xe;
+    if (self->unk_48_1) {
+        FIELD(func_ov000_02154b58(self->unk_40, (void *)5), 0x24, s32) = 0xe;
     }
-    ((VObject *)self)->v0x78(self->unk_4c);
+    self->vfunc_78(self->unk_4c);
     {
         FieldPlayer *t = data_ov000_021ccd30;
         if (t != NULL) {
@@ -266,7 +266,7 @@ void func_ov002_021cd124(Task50 *self) {
         }
     }
     if (func_ov002_isMode4()) {
-        func_0203cb78(self->unk_20, 0, 0);
+        func_0203cb78(self->fadeLen, 0, 0);
     }
     func_ov000_02173648(self);
 }

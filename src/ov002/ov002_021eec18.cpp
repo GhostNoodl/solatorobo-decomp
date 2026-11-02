@@ -2,98 +2,98 @@
 
 extern "C" {
 
-VObject *Ov002Vt_021f0f2c_DtorDelete(VObject *self) {
+VObj *Ov002Vt_021f0f2c_DtorDelete(VObj *self) {
     *(VFunc **)self = data_ov002_021f0f2c;
-    self->v0xc();
+    self->vfunc_0c();
     *(VFunc **)self = (VFunc *)data_0208b318;
-    self->v0xc();
+    self->vfunc_0c();
     Heap_Free(self);
     return self;
 }
 
-VObject *Ov002Vt_021f0e14_DtorDelete(VObject *self) {
+VObj *Ov002Vt_021f0e14_DtorDelete(VObj *self) {
     *(VFunc **)self = data_ov002_021f0e14;
-    self->v0x14();
+    self->vfunc_14();
     *(VFunc **)self = data_ov002_021f0ef4;
-    self->v0x14();
+    self->vfunc_14();
     Heap_Free(self);
     return self;
 }
 
-VObject *Ov002Vt_021f0e14_Dtor(VObject *self) {
+VObj *Ov002Vt_021f0e14_Dtor(VObj *self) {
     *(VFunc **)self = data_ov002_021f0e14;
-    self->v0x14();
+    self->vfunc_14();
     *(VFunc **)self = data_ov002_021f0ef4;
-    self->v0x14();
+    self->vfunc_14();
     return self;
 }
 
-VObject *Ov002Vt_021f0e84_DtorDelete(VObject *self) {
+VObj *Ov002Vt_021f0e84_DtorDelete(VObj *self) {
     *(VFunc **)self = data_ov002_021f0e84;
-    self->v0x14();
+    self->vfunc_14();
     *(VFunc **)self = data_ov002_021f0ef4;
-    self->v0x14();
+    self->vfunc_14();
     Heap_Free(self);
     return self;
 }
 
-VObject *Ov002Vt_021f0e84_Dtor(VObject *self) {
+VObj *Ov002Vt_021f0e84_Dtor(VObj *self) {
     *(VFunc **)self = data_ov002_021f0e84;
-    self->v0x14();
+    self->vfunc_14();
     *(VFunc **)self = data_ov002_021f0ef4;
-    self->v0x14();
+    self->vfunc_14();
     return self;
 }
 
-VObject *Ov002Vt_021f0ebc_DtorDelete(VObject *self) {
+VObj *Ov002Vt_021f0ebc_DtorDelete(VObj *self) {
     *(VFunc **)self = data_ov002_021f0ebc;
-    self->v0x14();
+    self->vfunc_14();
     *(VFunc **)self = data_ov002_021f0e4c;
-    self->v0x14();
+    self->vfunc_14();
     *(VFunc **)self = data_ov002_021f0ef4;
-    self->v0x14();
+    self->vfunc_14();
     Heap_Free(self);
     return self;
 }
 
-VObject *Ov002Vt_021f0ebc_Dtor(VObject *self) {
+VObj *Ov002Vt_021f0ebc_Dtor(VObj *self) {
     *(VFunc **)self = data_ov002_021f0ebc;
-    self->v0x14();
+    self->vfunc_14();
     *(VFunc **)self = data_ov002_021f0e4c;
-    self->v0x14();
+    self->vfunc_14();
     *(VFunc **)self = data_ov002_021f0ef4;
-    self->v0x14();
+    self->vfunc_14();
     return self;
 }
 
-VObject *Ov002Vt_021f0e4c_DtorDelete(VObject *self) {
+VObj *Ov002Vt_021f0e4c_DtorDelete(VObj *self) {
     *(VFunc **)self = data_ov002_021f0e4c;
-    self->v0x14();
+    self->vfunc_14();
     *(VFunc **)self = data_ov002_021f0ef4;
-    self->v0x14();
+    self->vfunc_14();
     Heap_Free(self);
     return self;
 }
 
-VObject *Ov002Vt_021f0e4c_Dtor(VObject *self) {
+VObj *Ov002Vt_021f0e4c_Dtor(VObj *self) {
     *(VFunc **)self = data_ov002_021f0e4c;
-    self->v0x14();
+    self->vfunc_14();
     *(VFunc **)self = data_ov002_021f0ef4;
-    self->v0x14();
+    self->vfunc_14();
     return self;
 }
 
-VObject *Ov002Vt_021f0ef4_Dtor(VObject *self) {
+VObj *Ov002Vt_021f0ef4_Dtor(VObj *self) {
     *(VFunc **)self = data_ov002_021f0ef4;
-    self->v0x14();
+    self->vfunc_14();
     return self;
 }
 
-VObject *Ov002Vt_021f0f2c_Dtor(VObject *self) {
+VObj *Ov002Vt_021f0f2c_Dtor(VObj *self) {
     *(VFunc **)self = data_ov002_021f0f2c;
-    self->v0xc();
+    self->vfunc_0c();
     *(VFunc **)self = (VFunc *)data_0208b318;
-    self->v0xc();
+    self->vfunc_0c();
     return self;
 }
 

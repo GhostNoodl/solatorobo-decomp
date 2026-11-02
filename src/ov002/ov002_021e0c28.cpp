@@ -55,7 +55,7 @@ static inline ov002_Anim021e0c28 *ov002_Anim_New(void) {
 static inline void ov002_Anim_Start(ov002_Anim021e0c28 *s, s32 a) {
     s->unk24 = a;
     s->unk4C = Text_Measure(s->unk28, s->unk38, s->unk24, s->unk44, s->unk48, s->unk37 != 0 ? TRUE : FALSE);
-    FIELD(data_02097ce0, 0x4, s32) = s->unk28;
+    data_02097ce0->unk_004 = s->unk28;
 }
 
 
@@ -78,7 +78,7 @@ void func_ov002_021e0c28(ov002_Caption021e0c28 *self) {
     if (self->anim == NULL) {
         return;
     }
-    ((VObject *)self->anim)->v0x8c();
+    ((VObj *)self->anim)->vfunc_8c();
     if (self->timer >= 0) {
     switch (self->mode) {
     case 1:
@@ -93,7 +93,7 @@ void func_ov002_021e0c28(ov002_Caption021e0c28 *self) {
                 if (self->anim == NULL) {
                     self->anim = ov002_Anim_New();
                 }
-                ((VObject *)self->anim)->v0x8();
+                ((VObj *)self->anim)->vfunc_08();
                 self->anim->unk28 = 3;
                 self->anim->unk2C = 0;
                 self->anim->unk34 = 1;

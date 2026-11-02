@@ -2,9 +2,9 @@
 
 extern "C" {
 
-void func_ov002_021db620(void *self) {
-    FIELD(self, 0xc, VObject *)->v0x20();
-    FIELD(self, 0x10, VObject *)->v0x20();
+void func_ov002_021db620(Obj021eff74 *self) {
+    self->unk_0c->vfunc_20();
+    self->unk_10->vfunc_20();
 }
 
 }

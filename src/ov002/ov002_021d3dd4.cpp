@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021d3dd4(void *self) {
+void func_ov002_021d3dd4(Task021ef81c *self) {
     func_ov000_021763c8();
 }
 

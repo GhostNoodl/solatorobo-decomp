@@ -46,72 +46,71 @@ static inline bool ov002_Ready(u8 *m) {
     return m[0x5d] != 0 && FIELD(m, 0x10, void *) != NULL && func_ov000_02191120(FIELD(m, 0x10, void *));
 }
 
-void func_ov002_021db9e8(void *self) {
-    switch (FIELD(self, 0x14, s32)) {
+void func_ov002_021db9e8(Obj021eff50 *self) {
+    switch (self->unk_14) {
     case 0:
-        if (FIELD(self, 0x34, s32) <= 0 || ov002_Ready(FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *))) {
-            FIELD(self, 0x34, s32) = 20;
-            FIELD(self, 0x14, s32)++;
+        if (self->unk_34 <= 0 || ov002_Ready(FIELD(((u8 *)self->unk_04), 0x4, u8 *))) {
+            self->unk_34 = 20;
+            self->unk_14++;
         } else {
-            FIELD(self, 0x34, s32)--;
+            self->unk_34--;
             return;
         }
     case 1:
-        if (FIELD(self, 0x34, s32) <= 0) {
+        if (self->unk_34 <= 0) {
             void *p = Heap_Alloc(0x134);
             if (p != NULL) {
                 p = ov002_Step_ctor(p);
             }
             ov002_SetNext(self, p, 10);
         } else {
-            FIELD(self, 0x34, s32)--;
+            self->unk_34--;
             return;
         }
     case 10:
     case 20:
     case 30:
-        if (FIELD(self, 0xc, s32) != -1) {
-            if (FIELD(self, 0x18, VObject *) != NULL) {
-                FIELD(self, 0x18, VObject *)->v0x10(self);
+        if (self->unk_0c != -1) {
+            if (self->unk_18 != NULL) {
+                self->unk_18->vfunc_10(self);
                 {
                     void *saved;
                     HEAP_PUSH(saved);
-                    DELETE_VOBJ(FIELD(self, 0x18, VObject *));
+                    DELETE_VOBJ(FIELD(self, 0x18, VObj *));
                     HEAP_POP(saved);
                 }
             }
-            FIELD(self, 0x1c, s32) = FIELD(self, 0x14, s32);
-            FIELD(self, 0x18, void *) = FIELD(self, 0x10, void *);
-            FIELD(self, 0x14, s32) = FIELD(self, 0xc, s32);
-            FIELD(self, 0x10, void *) = NULL;
-            FIELD(self, 0xc, s32) = -1;
-            if (FIELD(self, 0x18, VObject *) != NULL) {
-                FIELD(self, 0x18, VObject *)->v0x8(self);
+            self->unk_1c = self->unk_14;
+            self->unk_18 = (VObj *)(self->unk_10);          self->unk_14 = self->unk_0c;
+            self->unk_10 = NULL;
+            self->unk_0c = -1;
+            if (self->unk_18 != NULL) {
+                self->unk_18->vfunc_08(self);
             }
         }
-        if (FIELD(self, 0x18, VObject *) == NULL) {
-            FIELD(self, 0x8, s32) = 0;
-            FIELD(self, 0x14, s32) = 40;
-            FIELD(FIELD(self, 0x20, void *), 0xc, u32) |= 2;
-            FIELD(FIELD(self, 0x24, void *), 0xc, u32) |= 2;
+        if (self->unk_18 == NULL) {
+            self->unk_08 = 0;
+            self->unk_14 = 40;
+            FIELD(self->unk_20, 0xc, u32) |= 2;
+            FIELD(self->unk_24, 0xc, u32) |= 2;
         } else {
-            FIELD(self, 0x18, VObject *)->v0xc(self);
+            self->unk_18->vfunc_0c(self);
         }
-        FIELD(self, 0x20, VObject *)->v0x1c();
-        FIELD(self, 0x24, VObject *)->v0x1c();
+        self->unk_20->vfunc_1c();
+        self->unk_24->vfunc_1c();
         break;
     case 40:
-        FIELD(self, 0x20, VObject *)->v0x1c();
-        FIELD(self, 0x24, VObject *)->v0x1c();
-        if (!ov002_IsDone(FIELD(self, 0x20, void *))) {
+        self->unk_20->vfunc_1c();
+        self->unk_24->vfunc_1c();
+        if (!ov002_IsDone(self->unk_20)) {
             return;
         }
-        if (!ov002_IsDone(FIELD(self, 0x24, void *))) {
+        if (!ov002_IsDone(self->unk_24)) {
             return;
         }
         {
             Key021db9e8 *k;
-            u8 *m = FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *);
+            u8 *m = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
             s32 x;
             func_ov000_02191780(FIELD(m, 0x10, void *));
             k = data_ov002_021eeffc;
@@ -132,8 +131,8 @@ void func_ov002_021db9e8(void *self) {
             }
             FIELD(m, 0x64, Key021db9e8 *) = k;
             m[0x5d] = 0;
-            func_ov002_021d9c04(FIELD(self, 0x4, void *));
-            FIELD(self, 0x14, s32) = 50;
+            func_ov002_021d9c04(self->unk_04);
+            self->unk_14 = 50;
         }
         break;
     case 50:

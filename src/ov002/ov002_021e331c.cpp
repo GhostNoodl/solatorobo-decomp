@@ -13,7 +13,7 @@ void func_ov002_021e331c(void *self) {
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(FIELD(self, 0x34, VObject *));
+        DELETE_VOBJ(FIELD(self, 0x34, VObj *));
         HEAP_POP(saved);
     }
     p = (u8 *)Heap_Alloc(0xb8);
@@ -26,10 +26,10 @@ void func_ov002_021e331c(void *self) {
     p = FIELD(self, 0x34, u8 *);
     FIELD(p, 0x24, s32) = FIELD(self, 0x3c, s32);
     FIELD(p, 0x4c, s32) = Text_Measure(FIELD(p, 0x28, s32), FIELD(p, 0x38, s32), FIELD(p, 0x24, s32), p + 0x44, p + 0x48, FIELD(p, 0x37, s8) != 0);
-    FIELD(data_02097ce0, 0x4, s32) = FIELD(p, 0x28, s32);
+    data_02097ce0->unk_004 = FIELD(p, 0x28, s32);
     FIELD(FIELD(self, 0x34, void *), 0x4, u32) = (FIELD(FIELD(self, 0x34, void *), 0x4, u32) & ~0x1f00) | 0x1e00;
     FIELD(FIELD(self, 0x34, void *), 0x4, u32) |= 0x40;
-    FIELD(self, 0x34, VObject *)->v0x14();
+    FIELD(self, 0x34, VObj *)->vfunc_14();
     FIELD(FIELD(self, 0x34, void *), 0x4, u32) |= 0x1000000;
     FIELD(FIELD(self, 0x34, void *), 0x4, u32) |= 0x400000;
     FIELD(FIELD(self, 0x34, void *), 0x4, u32) |= 0x200000;

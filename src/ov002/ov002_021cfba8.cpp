@@ -4,82 +4,82 @@ extern "C" {
 
 extern VFunc data_ov000_021cadcc[];
 
-void func_ov002_021cfba8(void *self) {
-    VObject *o;
-    VObject *o2;
+void func_ov002_021cfba8(Task021ef79c *self) {
+    UiObj *o;
+    UiObj *o2;
     u8 *s;
-    VObject *m;
+    VObj *m;
     void *g;
-    FIELD(self, 0x4, u32) &= ~2;
-    if (((VObject *)self)->v0x28()) {
-        FIELD(FIELD(self, 0x3c, void *), 0xc, u32) &= ~2;
-        FIELD(FIELD(self, 0x40, void *), 0xc, u32) &= ~2;
-        FIELD(self, 0x44, u16) = 0;
+    self->unk_04 &= ~2;
+    if (self->vfunc_28()) {
+        self->unk_3c->flags &= ~2;
+        self->unk_40->flags &= ~2;
+        self->unk_44 = 0;
         return;
     }
     g = data_02149ef8;
-    o = (VObject *)Heap_Alloc(0xd4);
+    o = (UiObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
-        o->v0x28();
+        o->vfunc_28();
         *(VFunc **)o = data_ov000_021caec8;
-        o->v0x28();
+        o->vfunc_28();
     }
-    FIELD(self, 0x3c, VObject *) = o;
-    FIELD(o, 0x20, s32) = 2;
-    FIELD(FIELD(self, 0x3c, void *), 0x24, s32) = 0x92;
-    s = FIELD(self, 0x3c, u8 *);
+    self->unk_3c = (UiList *)o;
+    o->rows = 2;
+    self->unk_3c->width = 0x92;
+    s = ((u8 *)self->unk_3c);
     FIELD(s, 0x64, s16) = 0;
     FIELD(s, 0x66, s16) = 0x23;
     FIELD(s, 0x68, s16) = -0x199a;
-    FIELD(self, 0x3c, VObject *)->v0x10(MsgRes_GetString(g, 0xe8));
-    FIELD(self, 0x3c, VObject *)->v0x14(MsgRes_GetString(g, 0xea));
-    FIELD(FIELD(self, 0x3c, void *), 0xc, u32) &= ~0x10000;
-    FIELD(FIELD(self, 0x3c, void *), 0xc, u32) &= ~0x40000;
-    FIELD(FIELD(self, 0x3c, void *), 0xc, u32) &= ~0x20000;
-    FIELD(self, 0x3c, VObject *)->v0x74(MsgRes_GetString(g, 0xf1), 0xb, 0xffff, 0xffff);
-    FIELD(self, 0x3c, VObject *)->v0x74(MsgRes_GetString(g, 0xf2), 0x14, 0xffff, 0xffff);
-    FIELD(self, 0x3c, VObject *)->v0x8();
-    m = FIELD(self, 0x3c, VObject *);
-    m->v0xa8(func_ov000_02154b58(m, (void *)0xb));
-    o2 = (VObject *)Heap_Alloc(0x8c);
+    self->unk_3c->vfunc_10(MsgRes_GetString(g, 0xe8));
+    self->unk_3c->vfunc_14(MsgRes_GetString(g, 0xea));
+    self->unk_3c->flags &= ~0x10000;
+    self->unk_3c->flags &= ~0x40000;
+    self->unk_3c->flags &= ~0x20000;
+    self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xf1), 0xb, 0xffff, 0xffff);
+    self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xf2), 0x14, 0xffff, 0xffff);
+    self->unk_3c->vfunc_08();
+    m = self->unk_3c;
+    m->vfunc_a8(func_ov000_02154b58(m, (void *)0xb));
+    o2 = (UiObj *)Heap_Alloc(0x8c);
     if (o2 != NULL) {
         *(VFunc **)o2 = data_ov000_021cac60;
-        o2->v0x28();
+        o2->vfunc_28();
         *(VFunc **)o2 = data_ov000_021cadcc;
-        o2->v0x28();
+        o2->vfunc_28();
     }
-    FIELD(self, 0x40, VObject *) = o2;
-    FIELD(o2, 0x24, s32) = 0xf8;
-    FIELD(FIELD(self, 0x40, void *), 0x20, s32) = 2;
-    s = FIELD(self, 0x40, u8 *);
+    self->unk_40 = (Lo021cadcc *)o2;
+    o2->width = 0xf8;
+    self->unk_40->rows = 2;
+    s = ((u8 *)self->unk_40);
     FIELD(s, 0x64, s16) = 4;
     FIELD(s, 0x66, s16) = 0x95;
     FIELD(s, 0x68, s16) = -0x199a;
-    s = FIELD(self, 0x40, u8 *);
+    s = ((u8 *)self->unk_40);
     FIELD(s, 0x58, s32) = -0x100;
     FIELD(s, 0x5c, s32) = 0;
     FIELD(s, 0x60, s32) = -0x199a;
-    FIELD(FIELD(self, 0x40, void *), 0x2c, s32) = 1;
-    FIELD(self, 0x40, VObject *)->v0x8();
+    self->unk_40->slideMode = 1;
+    self->unk_40->vfunc_08();
     func_ov000_02173648(self);
 }
 
 BOOL func_ov002_021cf314(int idx, u32 arg);
 
-void func_ov002_021cfe48(void *self) {
+void func_ov002_021cfe48(Task021ef79c *self) {
     u8 *e;
     void *mgr;
     void *s1;
     void *s2;
     u8 *e2;
-    if (FIELD(self, 0x8, s32) == 8) {
+    if (self->state == 8) {
         mgr = data_02149ef8;
-        e = (u8 *)func_ov000_02154b58(FIELD(self, 0x3c, void *), (void *)0xb);
+        e = (u8 *)func_ov000_02154b58(self->unk_3c, (void *)0xb);
         FIELD(e, 0x0, void *) = NULL;
         {
             HEAP_PUSH(s1);
-            DELETE_VOBJ(FIELD(e, 0x1c, VObject *));
+            DELETE_VOBJ(FIELD(e, 0x1c, VObj *));
             HEAP_POP(s1);
         }
         FIELD(e, 0x0, void *) = MsgRes_GetString(mgr, 0xf1);
@@ -91,11 +91,11 @@ void func_ov002_021cfe48(void *self) {
             FIELD(e, 0x10, s32) = 0;
         }
         func_ov000_02153c48(e, 8, 0, 0, 0);
-        e2 = (u8 *)func_ov000_02154b58(FIELD(self, 0x3c, void *), (void *)0x14);
+        e2 = (u8 *)func_ov000_02154b58(self->unk_3c, (void *)0x14);
         FIELD(e2, 0x0, void *) = NULL;
         {
             HEAP_PUSH(s2);
-            DELETE_VOBJ(FIELD(e2, 0x1c, VObject *));
+            DELETE_VOBJ(FIELD(e2, 0x1c, VObj *));
             HEAP_POP(s2);
         }
         FIELD(e2, 0x0, void *) = MsgRes_GetString(mgr, 0xf2);
@@ -108,8 +108,8 @@ void func_ov002_021cfe48(void *self) {
         }
         func_ov000_02153c48(e2, 8, 0, 0, 0);
     }
-    FIELD(self, 0x3c, VObject *)->v0x1c();
-    FIELD(self, 0x40, VObject *)->v0x1c();
+    self->unk_3c->vfunc_1c();
+    self->unk_40->vfunc_1c();
 }
 
 }

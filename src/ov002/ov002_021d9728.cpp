@@ -29,7 +29,7 @@ void func_ov002_021d9728(void *self) {
     }
     func_ov002_021d7320(o, x, 0x1000);
     for (n = FIELD(self, 0x6c, void *); n != NULL; n = FIELD(n, 0x70, void *)) {
-        ((VObject *)n)->v0xc();
+        ((VObj *)n)->vfunc_0c();
     }
     t = Task_FindById(0x1b);
     if (t != NULL && FIELD(self, 0x75, u8)) {

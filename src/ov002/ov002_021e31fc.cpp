@@ -59,9 +59,9 @@ void func_ov002_021e31fc(void *self) {
         ov002_Model_PlayPart(model, FIELD(self, 0x3a, u16));
         x += 0xc000;
     }
-    FIELD(self, 0x34, VObject *)->v0x20(x >> 12, y >> 12);
+    FIELD(self, 0x34, VObj *)->vfunc_20(x >> 12, y >> 12);
     FIELD(FIELD(self, 0x34, void *), 0x70, s32) = z;
-    FIELD(self, 0x34, VObject *)->v0x90();
+    FIELD(self, 0x34, VObj *)->vfunc_90();
 }
 
 }

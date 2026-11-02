@@ -37,14 +37,14 @@ void *Ov002Vt_021efe4c_DtorDelete(void *self) {
 }
 
 void func_ov002_021d9504(void *self) {
-    VObject *o = FIELD(self, 0x6c, VObject *);
+    VObj *o = FIELD(self, 0x6c, VObj *);
     while (o != NULL) {
-        VObject *next = FIELD(o, 0x70, VObject *);
+        VObj *next = FIELD(o, 0x70, VObj *);
         void *saved;
         HEAP_PUSH(saved);
         if (o != NULL) {
             if (o != NULL) {
-                o->v0x4();
+                o->vfunc_04();
             }
         }
         HEAP_POP(saved);
@@ -61,7 +61,7 @@ void func_ov002_021d9504(void *self) {
     }
 }
 
-void *func_ov002_021d959c(void *self) {
+void *func_ov002_021d959c(Obj021efeb8 *self) {
     func_ov002_021e0b08_inline(self);
     Heap_Free(self);
     return self;

@@ -25,9 +25,9 @@ void func_ov002_021d9e38(void *self, void *node) {
         FIELD(self, 0x6c, void *) = node;
     }
     func_ov002_021da184(self, node);
-    if (FIELD(data_0214a424, 0x18, Bits021d9e38).mode == 1) {
+    if (data_0214a424->bits18.mode == 1) {
         func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
-        func_ov000_021c95ac((u8 *)self + 0x76, FIELD(data_0214a424, 0x18, Bits021d9e38).id | 0x8000);
+        func_ov000_021c95ac((u8 *)self + 0x76, data_0214a424->bits18.unk_3 | 0x8000);
     } else {
         func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
     }

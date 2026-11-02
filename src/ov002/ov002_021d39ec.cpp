@@ -22,12 +22,12 @@ BOOL func_ov002_021d39ec(void *self, void *ev) {
     u8 *o;
     u8 *c;
     u8 *item;
-    VObject *list;
+    VObj *list;
     u32 cost;
     o = FIELD(self, 0x8, u8 *);
     if (ev != NULL) {
         if (FIELD(ev, 0x6, u16) == 0) {
-            list = FIELD(o, 0x3c, VObject *);
+            list = FIELD(o, 0x3c, VObj *);
             c = FIELD(o, 0x44, u8 *);
             item = FIELD(list, 0x98, u8 *);
             if (item == NULL) {
@@ -41,7 +41,7 @@ BOOL func_ov002_021d39ec(void *self, void *ev) {
             cost = FIELD(c, 0x8c, u32) - FIELD(item, 0xc, u32);
             func_ov000_0215d980(c, cost, 0);
             { u8 *g = (u8 *)data_0214a424; if (cost > 9999) { cost = 9999; } FIELD(g, 0x614, u32) = cost; }
-            list->v0x70(item);
+            list->vfunc_70(item);
             func_0206f5e4(FIELD(item, 0x6, u16), 1);
             func_02049a48(data_02097e4c, 0x31, -1, -1, -1);
         } else {
@@ -64,9 +64,9 @@ BOOL func_ov002_021d3b10(void *self, void *ev) {
             func_ov000_02152294(a, 0xf5, 0x18, func_ov002_021d39ec);
             func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
         } else {
-            VObject *b = FIELD(o, 0x40, VObject *);
+            VObj *b = FIELD(o, 0x40, VObj *);
             func_ov000_0215bb14(b, MsgRes_GetString(data_02149ef8, 0x9c));
-            b->v0x70();
+            b->vfunc_70();
             FIELD(o, 0x4c, u8) = 0;
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
         }

@@ -25,17 +25,17 @@ static inline void ov002_Model_PlayPart(void *model, int idx) {
     func_02042628((Model *)model, anim, (ModelPart *)part, 0);
 }
 
-void func_ov002_021d65e0(void *self) {
-    if (!((VObject *)self)->v0x28()) {
+void func_ov002_021d65e0(Task021efc24 *self) {
+    if (!self->vfunc_28()) {
         return;
     }
-    ov002_Model_PlayPart(FIELD(self, 0x3c, void *), 0);
-    FIELD(self, 0x4c, VObject *)->v0x20();
-    FIELD(self, 0x50, VObject *)->v0x20();
-    FIELD(self, 0x54, VObject *)->v0x20();
-    func_ov000_02162a58(FIELD(self, 0x58, void *));
-    if (FIELD(self, 0x5c, void *) != NULL) {
-        func_ov000_02163594(FIELD(self, 0x5c, void *));
+    ov002_Model_PlayPart(self->unk_3c, 0);
+    self->unk_4c->vfunc_20();
+    self->unk_50->vfunc_20();
+    self->unk_54->vfunc_20();
+    func_ov000_02162a58(self->unk_58);
+    if (self->unk_5c != NULL) {
+        func_ov000_02163594(self->unk_5c);
     }
 }
 

@@ -5,15 +5,15 @@ extern "C" {
 void func_ov002_021cf240(void) {
 }
 
-void func_ov002_021cf244(Task50 *self) {
-    if (self->unk_24 != 0) {
+void func_ov002_021cf244(Task021ef4b0 *self) {
+    if (self->fadeRatio != 0) {
         func_ov000_0217357c(self);
-        TASK_VOBJ(self, 0x3c)->v0x20();
-        self->unk_40->v0x20();
+        TASK_VOBJ(self, 0x3c)->vfunc_20();
+        self->unk_40->vfunc_20();
     }
 }
 
-void func_ov002_021cf280(Task50 *self, int kind) {
+void func_ov002_021cf280(Task021ef4b0 *self, int kind) {
     void *msg;
     void *str;
     if (self->unk_40 == NULL) {
@@ -39,7 +39,7 @@ void func_ov002_021cf280(Task50 *self, int kind) {
         break;
     }
     func_ov000_0215bb14(self->unk_40, str);
-    self->unk_40->v0x70();
+    self->unk_40->vfunc_70();
 }
 
 }

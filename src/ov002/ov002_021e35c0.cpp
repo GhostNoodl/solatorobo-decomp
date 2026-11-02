@@ -32,10 +32,10 @@ BOOL func_ov002_021e364c(void) {
     return TRUE;
 }
 
-int func_ov002_021e3654(VObject *self) {
-    int a = self->v0x40() * FIELD(self, 0x20, s32);
-    int b = self->v0x34();
-    int c = self->v0x38();
+int func_ov002_021e3654(VObj *self) {
+    int a = self->vfunc_40() * FIELD(self, 0x20, s32);
+    int b = self->vfunc_34();
+    int c = self->vfunc_38();
     a += b;
     return a + c;
 }
@@ -61,7 +61,7 @@ void *Ov002Vt_021f002c_DtorDelete(void *self) {
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x34, VObject *));
+    DELETE_VOBJ(FIELD(self, 0x34, VObj *));
     HEAP_POP(saved);
     *(VFunc **)self = data_ov002_021ef684;
     func_ov000_021c2310(self);
@@ -86,18 +86,18 @@ void *Ov002Vt_021f002c_Dtor(void *self) {
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x34, VObject *));
+    DELETE_VOBJ(FIELD(self, 0x34, VObj *));
     HEAP_POP(saved);
     *(VFunc **)self = data_ov002_021ef684;
     func_ov000_021c2310(self);
     return self;
 }
 
-VObject *Ov002Vt_021f0044_Dtor(VObject *self) {
+VObj *Ov002Vt_021f0044_Dtor(VObj *self) {
     *(VFunc **)self = data_ov000_021ccbe0;
     func_ov000_021c3bb0(self);
     *(VFunc **)self = data_ov000_021cac60;
-    self->v0x2c();
+    self->vfunc_2c();
     return self;
 }
 

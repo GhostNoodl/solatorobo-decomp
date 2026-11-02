@@ -33,12 +33,12 @@ void func_ov002_021d5f60(void *self) {
     func_ov002_021e3620(FIELD(self, 0x50, void *), (void *)(u32)prev, 0);
     func_ov002_021e3620(FIELD(self, 0x50, void *), (void *)(u32)FIELD(self, 0x74, u16), 4);
     func_ov000_0215bb14(FIELD(self, 0x4c, void *), func_0206ec48(FIELD(self, 0x74, u16)));
-    FIELD(self, 0x4c, VObject *)->v0x70();
-    FIELD(data_0214a424, 0x18, Bits021d9e38).id = FIELD(self, 0x74, u16);
+    FIELD(self, 0x4c, VObj *)->vfunc_70();
+    data_0214a424->bits18.unk_3 = FIELD(self, 0x74, u16);
     if (func_ov000_0219bf90()) {
         func_ov000_021b1d28();
     } else {
-        FIELD(data_0214a424, 0x18, Bits021d9e38).mode = 1;
+        data_0214a424->bits18.mode = 1;
     }
     for (i = 0; i < 5; i++) {
         s16 v = ((s16 *)((u8 *)self + 0x60))[i] + ((s16 *)((u8 *)self + 0x6a))[i];
@@ -76,17 +76,17 @@ static inline void *ov002_cursor60dc(void *g) {
     return p;
 }
 
-void func_ov002_021d60dc(void *self) {
-    switch (FIELD(self, 0x8, s32)) {
+void func_ov002_021d60dc(Task021efc24 *self) {
+    switch (self->state) {
     case 8:
-        FIELD(FIELD(self, 0x4c, void *), 0xc, u32) &= ~2;
-        FIELD(FIELD(self, 0x50, void *), 0xc, u32) &= ~2;
-        FIELD(FIELD(self, 0x54, void *), 0xc, u32) &= ~2;
+        self->unk_4c->flags &= ~2;
+        self->unk_50->flags &= ~2;
+        self->unk_54->flags &= ~2;
         break;
     case 13: {
-        BOOL a = isState5(FIELD(self, 0x50, void *));
+        BOOL a = isState5(self->unk_50);
         if (a) {
-            BOOL b = isState5(FIELD(self, 0x54, void *));
+            BOOL b = isState5(self->unk_54);
             if (b) {
                 void *x = Task_FindById(0x1b);
                 if (x != NULL) {
@@ -102,42 +102,42 @@ void func_ov002_021d60dc(void *self) {
                         func_ov002_021e2754(FIELD(x, 0x3c, void *), 0xffff);
                     }
                 }
-                FIELD(self, 0x4, u32) |= 6;
-                FIELD(self, 0x18, s32) = 0x1c;
+                self->unk_04 |= 6;
+                self->pendingId = 0x1c;
             }
         }
         break;
     }
     }
-    func_ov000_02162a20(FIELD(self, 0x58, void *));
-    if (FIELD(self, 0x5c, void *) != NULL && !func_ov000_021633ac(FIELD(self, 0x5c, void *))) {
+    func_ov000_02162a20(self->unk_58);
+    if (self->unk_5c != NULL && !func_ov000_021633ac(self->unk_5c)) {
         u8 *p;
         u16 id;
         void *x;
         {
             void *saved;
             HEAP_PUSH(saved);
-            DELETE_VOBJ(FIELD(self, 0x5c, VObject *));
+            DELETE_VOBJ(FIELD(self, 0x5c, VObj *));
             HEAP_POP(saved);
         }
-        FIELD(FIELD(self, 0x50, void *), 0xc, u32) &= ~4;
-        FIELD(FIELD(self, 0x54, void *), 0xc, u32) &= ~4;
-        FIELD(FIELD(self, 0x54, void *), 0xc, u32) &= ~2;
-        FIELD(self, 0x54, VObject *)->v0x1c();
-        p = (u8 *)ov002_cursor60dc(FIELD(self, 0x50, void *));
+        self->unk_50->flags &= ~4;
+        self->unk_54->flags &= ~4;
+        self->unk_54->flags &= ~2;
+        self->unk_54->vfunc_1c();
+        p = (u8 *)ov002_cursor60dc(self->unk_50);
         id = FIELD(p, 6, u16);
-        if (FIELD(self, 0x54, void *) != NULL) {
-            func_ov000_0215bb14(FIELD(self, 0x54, void *), func_0206ec8c(id));
-            FIELD(self, 0x54, VObject *)->v0x70();
+        if (self->unk_54 != NULL) {
+            func_ov000_0215bb14(self->unk_54, func_0206ec8c(id));
+            self->unk_54->vfunc_70();
         }
         x = Task_FindById(0x1b);
         if (x != NULL && FIELD(x, 0x3c, void *) != NULL) {
             func_ov002_021e2690(FIELD(x, 0x3c, void *), 9, 0);
         }
     }
-    FIELD(self, 0x4c, VObject *)->v0x1c();
-    FIELD(self, 0x50, VObject *)->v0x1c();
-    FIELD(self, 0x54, VObject *)->v0x1c();
+    self->unk_4c->vfunc_1c();
+    self->unk_50->vfunc_1c();
+    self->unk_54->vfunc_1c();
 }
 
 }

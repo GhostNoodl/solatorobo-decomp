@@ -37,16 +37,16 @@ static inline void ov002_021d37f8_stop(FieldPlayer *t) {
     }
 }
 
-void func_ov002_021d37f8(void *self) {
+void func_ov002_021d37f8(Task021ef91c *self) {
     void *res;
     void *m;
-    if (FIELD(self, 0xc4, void *) != NULL) {
+    if (self->unk_c4 != NULL) {
         return;
     }
-    if (FIELD(self, 0xc8, VObject *) == NULL) {
+    if (self->unk_c8 == NULL) {
         return;
     }
-    res = (void *)FIELD(self, 0xc8, VObject *)->v0x10();
+    res = (void *)self->unk_c8->vfunc_10();
     if (res == NULL) {
         return;
     }
@@ -64,11 +64,11 @@ void func_ov002_021d37f8(void *self) {
         func_02041218((PlttRes *)((u8 *)m + 0x88));
         func_02041440((Model *)m, NULL, 0);
     }
-    FIELD(self, 0xc4, void *) = m;
+    self->unk_c4 = (Model *)m;
     func_020417e0((Model *)m, res);
-    FIELD(FIELD(self, 0xc4, void *), 0x6c, u32) |= 2;
-    FIELD(FIELD(self, 0xc4, void *), 0x150, s32) = -0x2000;
-    func_02041d9c((Model *)FIELD(self, 0xc4, void *), 2, 0);
+    self->unk_c4->flags |= 2;
+    self->unk_c4->unk_150 = -0x2000;
+    func_02041d9c((Model *)self->unk_c4, 2, 0);
 }
 
 }

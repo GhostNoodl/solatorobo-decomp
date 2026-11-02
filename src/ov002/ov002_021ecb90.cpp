@@ -310,10 +310,10 @@ void func_ov002_021ed1ac(void *self) {
 void func_ov002_021ed1dc(void *self) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x34, VObject *));
+    DELETE_VOBJ(FIELD(self, 0x34, VObj *));
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x44, VObject *));
+    DELETE_VOBJ(FIELD(self, 0x44, VObj *));
     HEAP_POP(saved);
 }
 
@@ -358,7 +358,7 @@ static inline Ov002Text2 *ov002_021ed270_newText(char *str) {
     t->font = 4;
     t->str = (s32)str;
     t->unk_4c = Text_Measure(t->font, t->spacing, t->str, &t->width, &t->height, t->unk_37 != 0);
-    FIELD(data_02097ce0, 0x4, s32) = t->font;
+    data_02097ce0->unk_004 = t->font;
     return t;
 }
 
@@ -401,11 +401,11 @@ void func_ov002_021ed270(void *self) {
         break;
     case 2:
         ov002_021ed270_create(self, FIELD(info, 0x8, char *));
-        FIELD(self, 0x34, VObject *)->v0x14();
+        FIELD(self, 0x34, VObj *)->vfunc_14();
         FIELD(self, 0x3c, s32) = 0x60000 - ((FIELD(self, 0x34, Ov002Text2 *)->height >> 1) << 12);
         if (FIELD(self, 0x44, void *) != NULL) {
             s32 h;
-            FIELD(self, 0x44, VObject *)->v0x14();
+            FIELD(self, 0x44, VObj *)->vfunc_14();
             h = FIELD(self, 0x44, Ov002Text2 *)->height;
             FIELD(self, 0x4c, s32) = FIELD(self, 0x3c, s32) + h + ((h + 2) << 12);
         }
@@ -556,9 +556,9 @@ void func_ov002_021edcec(void *self, int mode) {
     }
     FIELD(FIELD(self, 0x34, void *), 0x4, SprAttr021edcec).pal = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
     FIELD(FIELD(self, 0x34, void *), 0x4, SprAttr021edcec).prio = FIELD(self, 0x54, u8);
-    FIELD(self, 0x34, VObject *)->v0x20(x, y);
+    FIELD(self, 0x34, VObj *)->vfunc_20(x, y);
     FIELD(FIELD(self, 0x34, void *), 0x70, s32) = -0x1000;
-    FIELD(self, 0x34, VObject *)->v0x90();
+    FIELD(self, 0x34, VObj *)->vfunc_90();
     if (FIELD(self, 0x44, void *) == NULL) {
         return;
     }
@@ -569,9 +569,9 @@ void func_ov002_021edcec(void *self, int mode) {
     }
     FIELD(FIELD(self, 0x44, void *), 0x4, SprAttr021edcec).pal = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
     FIELD(FIELD(self, 0x44, void *), 0x4, SprAttr021edcec).prio = FIELD(self, 0x54, u8);
-    FIELD(self, 0x44, VObject *)->v0x20(x, y);
+    FIELD(self, 0x44, VObj *)->vfunc_20(x, y);
     FIELD(FIELD(self, 0x44, void *), 0x70, s32) = -0x1000;
-    FIELD(self, 0x44, VObject *)->v0x90();
+    FIELD(self, 0x44, VObj *)->vfunc_90();
 }
 
 }
@@ -737,7 +737,7 @@ void func_ov002_021ee024(void) {
                     HEAP_PUSH(s2);
                     if (n != NULL) {
                         if (n != NULL) {
-                            ((VObject *)n)->v0x4();
+                            ((VObj *)n)->vfunc_04();
                         }
                     }
                     HEAP_POP(s2);
@@ -745,7 +745,7 @@ void func_ov002_021ee024(void) {
             }
             {
                 HEAP_PUSH(s3);
-                DELETE_VOBJ(FIELD(x, 0x24, VObject *));
+                DELETE_VOBJ(FIELD(x, 0x24, VObj *));
                 HEAP_POP(s3);
             }
             Heap_Free(x);
@@ -777,7 +777,7 @@ typedef struct ov002_Staff {
     s32 prevTimer;
     s32 step;
     s32 nextStep;
-    VObject *loader;
+    VObj *loader;
     u8 unk28[4];
     u16 scroll;
 } ov002_Staff;
@@ -801,7 +801,7 @@ extern ov002_Disp021ee1a8 *data_ov000_021ccd54;
 
 int func_0200779c(char *dst, const char *fmt, ...);
 void func_02070874(char *dst, const char *fmt, ...);
-void func_ov002_021ec2d8(VObject *obj);
+void func_ov002_021ec2d8(VObj *obj);
 BOOL func_ov002_021ee55c(ov002_Staff *self, u16 y, int h);
 void func_ov002_021ee7f8(ov002_Staff *self);
 
@@ -830,7 +830,7 @@ static inline void ov002_Staff_SetNext(ov002_Staff *s, s32 state) {
 }
 
 void func_ov002_021ee1a8(void) {
-    VObject *o;
+    VObj *o;
     ov002_Staff *s = (ov002_Staff *)data_ov002_021f0fa4;
 
     ov002_Staff_Update(s);
@@ -849,23 +849,23 @@ void func_ov002_021ee1a8(void) {
             char num[8];
             char dir[0x20];
             s32 id;
-            o = (VObject *)Heap_Alloc(0x50);
+            o = (VObj *)Heap_Alloc(0x50);
             if (o != NULL) {
                 *(VFunc **)o = (VFunc *)data_0208b318;
-                o->v0x8();
+                o->vfunc_08();
                 *(VFunc **)o = data_ov002_021f0f2c;
-                o->v0x8();
+                o->vfunc_08();
             }
             s->loader = o;
             id = s->id;
             func_0206e900(dir, data_ov002_021f0d88.dir2);
             func_0200779c(num, data_ov002_021f0e06, id);
             func_02070874(path, data_ov002_021f0d88.pathFmt, num);
-            o->v0x24(dir, path);
+            o->vfunc_24(dir, path);
             s->sub = 4;
         }
         case 4:
-            if (!s->loader->v0x2c()) {
+            if (!s->loader->vfunc_2c()) {
                 break;
             }
             func_ov002_021ec2d8(s->loader);
@@ -928,13 +928,13 @@ extern "C" {
 
 void func_ov002_021ee4d0(void) {
     void *o4 = data_ov002_021f0fa4;
-    BOOL flag = FIELD(data_02097d48, 0xa30, Bits8).b4 ? TRUE : FALSE;
-    VObject *v;
+    BOOL flag = data_02097d48->unk_a30_4 ? TRUE : FALSE;
+    VObj *v;
     if (FIELD(o4, 8, s32) != 3 && FIELD(o4, 8, s32) != 7) {
         return;
     }
-    for (v = (VObject *)data_ov002_021f0fa0; v != NULL; v = FIELD(v, 0x2c, VObject *)) {
-        v->v0xc(flag);
+    for (v = (VObj *)data_ov002_021f0fa0; v != NULL; v = FIELD(v, 0x2c, VObj *)) {
+        v->vfunc_0c(flag);
     }
     if (FIELD(o4, 8, s32) == 3) {
         func_ov002_021eea74(o4);
@@ -958,7 +958,7 @@ struct N3_55c {
     N3_55c() {
         vt = data_ov002_021f0ef4;
         f4 = 0; f8 = 0; fc = 0; f10 = 0; f14 = 0; f18 = 0; f1c = 0x1000;
-        ((VObject *)this)->v0x10();
+        ((VObj *)this)->vfunc_10();
     }
 };
 
@@ -966,22 +966,22 @@ struct N3b_55c : N3_55c { u8 pad[0x34 - 0x24]; };
 
 struct N4_55c : N3_55c {
     u8 pad[0x58 - 0x24];
-    N4_55c() { vt = data_ov002_021f0e84; ((VObject *)this)->v0x10(); }
+    N4_55c() { vt = data_ov002_021f0e84; ((VObj *)this)->vfunc_10(); }
 };
 
 struct N5_55c : N3_55c {
     u8 pad[0x4c - 0x24];
-    N5_55c() { vt = data_ov002_021f0e4c; ((VObject *)this)->v0x10(); }
+    N5_55c() { vt = data_ov002_021f0e4c; ((VObj *)this)->vfunc_10(); }
 };
 
 struct N6_55c : N5_55c {
     u8 pad6[0x50 - 0x4c];
-    N6_55c() { vt = data_ov002_021f0ebc; ((VObject *)this)->v0x10(); }
+    N6_55c() { vt = data_ov002_021f0ebc; ((VObj *)this)->vfunc_10(); }
 };
 
 struct N7_55c : N3_55c {
     u8 pad[0x34 - 0x24];
-    N7_55c() { vt = data_ov002_021f0e14; ((VObject *)this)->v0x10(); }
+    N7_55c() { vt = data_ov002_021f0e14; ((VObj *)this)->vfunc_10(); }
 };
 
 BOOL func_ov002_021ee55c(void *self, s32 start, s32 count) {
@@ -1030,9 +1030,9 @@ BOOL func_ov002_021ee55c(void *self, s32 start, s32 count) {
 namespace m_021ee7c8 {
 extern "C" {
 
-VObject *Ov002Vt_021f0ef4_DtorDelete(VObject *self) {
+VObj *Ov002Vt_021f0ef4_DtorDelete(VObj *self) {
     *(VFunc **)self = data_ov002_021f0ef4;
-    self->v0x14();
+    self->vfunc_14();
     Heap_Free(self);
     return self;
 }
@@ -1078,7 +1078,7 @@ static inline void ov002_unlink7f8(u8 *n) {
         HEAP_PUSH(s2);
         if (n != NULL) {
             if (n != NULL) {
-                ((VObject *)n)->v0x4();
+                ((VObj *)n)->vfunc_04();
             }
         }
         HEAP_POP(s2);
@@ -1098,7 +1098,7 @@ void func_ov002_021ee7f8(void *self) {
         FIELD(self, 0x28, s32) = 0;
         for (; n != NULL; n = next) {
             next = FIELD(n, 0x2c, u8 *);
-            if (!((VObject *)n)->v0x8((u8 *)self + 4)) {
+            if (!((VObj *)n)->vfunc_08((u8 *)self + 4)) {
                 ov002_unlink7f8(n);
             }
         }

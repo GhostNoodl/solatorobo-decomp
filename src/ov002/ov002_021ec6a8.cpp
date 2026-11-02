@@ -24,7 +24,7 @@ BOOL func_ov002_021ec6b8(void) {
 void func_ov002_021ec6c0(void) {
 }
 
-void func_ov002_021ec6c4(VObject *self, s32 kind) {
+void func_ov002_021ec6c4(VObj *self, s32 kind) {
     s32 k = FIELD(self, 0x24, s32);
     s32 st;
     if (k != 2 && k != kind) {
@@ -32,7 +32,7 @@ void func_ov002_021ec6c4(VObject *self, s32 kind) {
     }
     st = FIELD(self, 0x8, s32);
     if (st == 3 || st == 7) {
-        self->v0x2c(kind);
+        self->vfunc_2c(kind);
     }
 }
 
@@ -126,7 +126,7 @@ void func_ov002_021ec838(void *self) {
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x34, VObject *));
+    DELETE_VOBJ(FIELD(self, 0x34, VObj *));
     HEAP_POP(saved);
 }
 
@@ -153,19 +153,19 @@ BOOL func_ov002_021ec8d8(void) {
 BOOL func_ov002_021ec968(void *self) {
     switch (FIELD(self, 0x10, s32)) {
     case 0: {
-        VObject *o = (VObject *)Heap_Alloc(0x4c);
+        VObj *o = (VObj *)Heap_Alloc(0x4c);
         if (o != NULL) {
             *(VFunc **)o = (VFunc *)data_0208b318;
-            o->v0x8();
+            o->vfunc_08();
         }
-        FIELD(self, 0x34, VObject *) = o;
+        FIELD(self, 0x34, VObj *) = o;
         FIELD(o, 0x44, s32) = 2;
-        FIELD(self, 0x34, VObject *)->v0x24(data_ov002_021f0d88.dir, FIELD(FIELD(self, 0x20, void *), 8, void *));
+        FIELD(self, 0x34, VObj *)->vfunc_24(data_ov002_021f0d88.dir, FIELD(FIELD(self, 0x20, void *), 8, void *));
         FIELD(self, 0x10, s32)++;
         break;
     }
     case 1:
-        if (FIELD(self, 0x34, VObject *)->v0x2c()) {
+        if (FIELD(self, 0x34, VObj *)->vfunc_2c()) {
             return TRUE;
         }
         break;
@@ -201,7 +201,7 @@ typedef struct {
     u32 flags;
 } StaffModel_eca14;
 
-struct StaffTask_eca14 : public VObject {
+struct StaffTask_eca14 : public VObj {
     Bits32 flags;
     u8 unk_08[0x8];
     s32 state;
@@ -210,7 +210,7 @@ struct StaffTask_eca14 : public VObject {
     s32 unk_24;
     u8 unk_28[0x8];
     StaffTask_eca14 *next;
-    VObject *res;
+    VObj *res;
     StaffModel_eca14 *model;
     u8 unk_3c[0xd];
     u8 unk_49;
@@ -243,7 +243,7 @@ BOOL func_ov002_021eca14(StaffTask_eca14 *self) {
                 STD_CopyString((char *)((u8 *)m + 0x2c), (char *)((u8 *)r + 4));
             }
             self->model = m;
-            func_020417e0((Model *)(self->model), (void *)self->res->v0x10());
+            func_020417e0((Model *)(self->model), (void *)self->res->vfunc_10());
             self->model->flags |= 2;
             func_02041d9c((Model *)(self->model), 0, 0xffff);
             self->model->flags |= 0x80000;

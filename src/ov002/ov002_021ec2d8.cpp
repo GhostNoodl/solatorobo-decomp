@@ -3,7 +3,7 @@
 extern "C" {
 
 void func_ov002_021ec2d8(void *self) {
-    u8 *p = *(u8 **)VC(self, 0x10)();
+    u8 *p = *(u8 **)((VObj *)(self))->vfunc_10();
     u8 *base;
     u16 i;
     FIELD(self, 0x4c, u8 *) = p;

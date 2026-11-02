@@ -51,9 +51,9 @@ void func_ov002_021d9ed8(void *self, void *obj, bool del) {
             }
         }
     }
-    if (FIELD(data_0214a424, 0x18, Bits9ed8).mode == 1) {
+    if (data_0214a424->bits18.mode == 1) {
         func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
-        func_ov000_021c95ac((u8 *)self + 0x76, FIELD(data_0214a424, 0x18, Bits9ed8).id | 0x8000);
+        func_ov000_021c95ac((u8 *)self + 0x76, data_0214a424->bits18.unk_3 | 0x8000);
     } else {
         func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
     }
@@ -61,7 +61,7 @@ void func_ov002_021d9ed8(void *self, void *obj, bool del) {
         HEAP_PUSH(saved);
         if (obj != NULL) {
             if (obj != NULL) {
-                VC(obj, 0x4)();
+                ((VObj *)(obj))->vfunc_04();
             }
         }
         HEAP_POP(saved);

@@ -63,7 +63,7 @@ void func_ov002_021e2fb4(void *self) {
         }
         o = FIELD(self, 0x34, void *);
         if (ov002_021e2fb4_flag2(o)) {
-            ((VObject *)o)->v0x8();
+            ((VObj *)o)->vfunc_08();
             FIELD(FIELD(self, 0x34, void *), 0x4, u32) &= ~4;
         }
         {
@@ -85,7 +85,7 @@ void func_ov002_021e2fb4(void *self) {
         {
             void *saved;
             HEAP_PUSH(saved);
-            DELETE_VOBJ(FIELD(self, 0x34, VObject *));
+            DELETE_VOBJ(FIELD(self, 0x34, VObj *));
             HEAP_POP(saved);
         }
         FIELD(self, 0x48, s32) = 2;

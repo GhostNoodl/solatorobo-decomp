@@ -10,7 +10,7 @@ BOOL func_ov002_021cf314(int idx, u32 arg) {
     void *tbl;
     ok = TRUE;
     count = func_0205975c(data_02fe152c, idx);
-    base = FIELD(data_02fe152c, 0x4c, u8 *) + 0x10 + idx * 0x20;
+    base = data_02fe152c->data + 0x10 + idx * 0x20;
     tbl = func_0205976c(data_02fe152c, idx);
     for (i = 0; i < count; i++) {
         if (func_02059544(data_02fe152c, base, tbl, arg, i)) {

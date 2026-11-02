@@ -2,8 +2,8 @@
 
 extern "C" {
 
-Task50 *func_ov002_021d22cc(void) {
-    Task50 *p = (Task50 *)Heap_Alloc(0x118);
+Task021ef99c *func_ov002_021d22cc(void) {
+    Task021ef99c *p = (Task021ef99c *)Heap_Alloc(0x118);
     if (p != NULL) {
         int i;
         TaskBase_ctor(p);
@@ -19,7 +19,7 @@ Task50 *func_ov002_021d22cc(void) {
         MI_CpuFill8((u8 *)p + 0xf4, 0, 0x20);
         FIELD(p, 0x114, u8) = 0;
     }
-    p->v0x8(0x18, 0x64);
+    p->vfunc_08(0x18, 0x64);
     return p;
 }
 
@@ -29,9 +29,9 @@ BOOL func_ov002_021d2390(void *self, void *arg) {
         u16 i = FIELD(arg, 0x4, u32);
         if (i <= 7) {
             void *str = FIELD(owner + i * 0x18, 0x60, void *);
-            if (FIELD(owner, 0x40, VObject *) != NULL) {
-                func_ov000_0215bb14(FIELD(owner, 0x40, VObject *), str);
-                FIELD(owner, 0x40, VObject *)->v0x70();
+            if (FIELD(owner, 0x40, VObj *) != NULL) {
+                func_ov000_0215bb14(FIELD(owner, 0x40, VObj *), str);
+                FIELD(owner, 0x40, VObj *)->vfunc_70();
             }
             func_02049a48(data_02097e4c, 0x1d, -1, -1, -1);
         }

@@ -45,9 +45,9 @@ void func_ov002_021e23ac(void *self) {
             FIELD(w, 0x29, u8) = 2;
         }
         for (i = 0; i < 4; i++) {
-            (&FIELD(w, 0x8, VObject *))[i]->v0x8c();
+            (&FIELD(w, 0x8, VObj *))[i]->vfunc_8c();
         }
-        FIELD(w, 0x4, VObject *)->v0x8c();
+        FIELD(w, 0x4, VObj *)->vfunc_8c();
         if (FIELD(w, 0x29, u8) != 0) {
             FIELD(w, 0x29, u8)--;
         }
@@ -95,9 +95,9 @@ void func_ov002_021e2528(void *self) {
     ov002_Model_PlayPart(FIELD(self, 0x8, void *), 0);
     for (i = 0; i < 5; i++) {
         u8 *e = ((u8 **)((u8 *)self + 0x14))[i];
-        if (FIELD(e, 0x4, VObject *) != NULL) {
-            FIELD(e, 0x4, VObject *)->v0x20(FIELD(e, 0xc, s32) + (FIELD(e, 0x1c, s32) - FIELD(FIELD(e, 0x4, void *), 0x44, s32)) / 2, FIELD(e, 0x10, s32));
-            FIELD(e, 0x4, VObject *)->v0x90();
+        if (FIELD(e, 0x4, VObj *) != NULL) {
+            FIELD(e, 0x4, VObj *)->vfunc_20(FIELD(e, 0xc, s32) + (FIELD(e, 0x1c, s32) - FIELD(FIELD(e, 0x4, void *), 0x44, s32)) / 2, FIELD(e, 0x10, s32));
+            FIELD(e, 0x4, VObj *)->vfunc_90();
         }
     }
     if (FIELD(self, 0x28, void *) != NULL) {

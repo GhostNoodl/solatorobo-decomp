@@ -31,13 +31,13 @@ void *Ov002Vt_021f000c_Dtor(void *self) {
     for (i = 0; i < 4; i++) {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(((VObject **)((u8 *)self + 8))[i]);
+        DELETE_VOBJ(((VObj **)((u8 *)self + 8))[i]);
         HEAP_POP(saved);
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(FIELD(self, 4, VObject *));
+        DELETE_VOBJ(FIELD(self, 4, VObj *));
         HEAP_POP(saved);
     }
     return self;
@@ -49,13 +49,13 @@ void *Ov002Vt_021f000c_DtorDelete(void *self) {
     for (i = 0; i < 4; i++) {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(((VObject **)((u8 *)self + 8))[i]);
+        DELETE_VOBJ(((VObj **)((u8 *)self + 8))[i]);
         HEAP_POP(saved);
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(FIELD(self, 4, VObject *));
+        DELETE_VOBJ(FIELD(self, 4, VObj *));
         HEAP_POP(saved);
     }
     Heap_Free(self);
@@ -72,7 +72,7 @@ void func_ov002_021e0ff8(void *self, void *model) {
     y = FIELD(self, 0x1c, s32) >> 12;
     if (FIELD(self, 0x29, u8) == 0) {
         int i;
-        VObject *o;
+        VObj *o;
         s32 by;
         /* i has a second, never-taken definition so the backend keeps the
            i = 0 / by order of the source in the loop preheader. */
@@ -82,13 +82,13 @@ void func_ov002_021e0ff8(void *self, void *model) {
         }
         by = y + 0x14;
         do {
-            o = ((VObject **)((u8 *)self + 8))[i];
-            o->v0x20(i < 2 ? x + 0x12 : x + 0x8a, by + (i % 2) * 16);
-            o->v0x90();
+            o = ((VObj **)((u8 *)self + 8))[i];
+            o->vfunc_20(i < 2 ? x + 0x12 : x + 0x8a, by + (i % 2) * 16);
+            o->vfunc_90();
         } while (++i < 4);
-        o = FIELD(self, 4, VObject *);
-        o->v0x20(x + 0x8c + (0x4c - FIELD(o, 0x44, s32)) / 2, y + 4);
-        FIELD(self, 4, VObject *)->v0x90();
+        o = FIELD(self, 4, VObj *);
+        o->vfunc_20(x + 0x8c + (0x4c - FIELD(o, 0x44, s32)) / 2, y + 4);
+        FIELD(self, 4, VObj *)->vfunc_90();
     }
     if (model == NULL) {
         return;

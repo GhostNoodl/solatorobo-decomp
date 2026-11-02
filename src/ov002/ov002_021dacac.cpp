@@ -27,79 +27,79 @@ static inline void ov002_CamInit(u8 *c, const VecFx32 *pos) {
     FIELD(c, 0xc4, s32) = 0x2b8;
 }
 
-void func_ov002_021dacac(void *self) {
+void func_ov002_021dacac(Obj021eff74 *self) {
     void *g = data_02149ef8;
-    VObject *o;
-    VObject *m;
+    UiObj *o;
+    VObj *m;
     u8 *s;
     u8 *w;
     void *t;
-    o = (VObject *)Heap_Alloc(0xd4);
+    o = (UiObj *)Heap_Alloc(0xd4);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
-        o->v0x28();
+        o->vfunc_28();
         *(VFunc **)o = data_ov000_021caec8;
-        o->v0x28();
+        o->vfunc_28();
     }
-    FIELD(self, 0xc, VObject *) = o;
-    FIELD(self, 0xc, VObject *)->v0x10(MsgRes_GetString(g, 0xba));
-    FIELD(self, 0xc, VObject *)->v0x14(MsgRes_GetString(g, 0xbb));
-    FIELD(FIELD(self, 0xc, void *), 0x20, s32) = 2;
-    FIELD(FIELD(self, 0xc, void *), 0x24, s32) = 0x78;
-    s = FIELD(self, 0xc, u8 *);
+    self->unk_0c = (UiList *)o;
+    self->unk_0c->vfunc_10(MsgRes_GetString(g, 0xba));
+    self->unk_0c->vfunc_14(MsgRes_GetString(g, 0xbb));
+    FIELD(self->unk_0c, 0x20, s32) = 2;
+    FIELD(self->unk_0c, 0x24, s32) = 0x78;
+    s = ((u8 *)self->unk_0c);
     FIELD(s, 0x64, s16) = 0;
     FIELD(s, 0x66, s16) = 0x1e;
     FIELD(s, 0x68, s16) = -0x2000;
-    FIELD(FIELD(self, 0xc, void *), 0x68, s16) = -0x2000;
-    s = FIELD(self, 0xc, u8 *);
+    FIELD(self->unk_0c, 0x68, s16) = -0x2000;
+    s = ((u8 *)self->unk_0c);
     FIELD(s, 0x58, s32) = -0xff;
     FIELD(s, 0x5c, s32) = 0;
     FIELD(s, 0x60, s32) = -0x2000;
-    FIELD(FIELD(self, 0xc, void *), 0xc, u32) &= ~0x400000;
-    FIELD(FIELD(self, 0xc, void *), 0xc, u32) &= ~0x80000;
-    FIELD(FIELD(self, 0xc, void *), 0xc, u32) &= ~0x40000;
-    FIELD(FIELD(self, 0xc, void *), 0xc, u32) |= 0x800000;
-    FIELD(FIELD(self, 0xc, void *), 0x8, void *) = self;
-    FIELD(FIELD(self, 0xc, void *), 0x84, void *) = (void *)func_ov002_021dac8c;
-    FIELD(self, 0xc, VObject *)->v0x74(MsgRes_GetString(g, 0xbc), 0, 0xffff, 0xffff);
+    FIELD(self->unk_0c, 0xc, u32) &= ~0x400000;
+    FIELD(self->unk_0c, 0xc, u32) &= ~0x80000;
+    FIELD(self->unk_0c, 0xc, u32) &= ~0x40000;
+    FIELD(self->unk_0c, 0xc, u32) |= 0x800000;
+    FIELD(self->unk_0c, 0x8, void *) = self;
+    FIELD(self->unk_0c, 0x84, void *) = (void *)func_ov002_021dac8c;
+    self->unk_0c->vfunc_74(MsgRes_GetString(g, 0xbc), 0, 0xffff, 0xffff);
     if (func_020594bc(data_02fe152c, 5, 1, 1)) {
-        u8 *e = (u8 *)FIELD(self, 0xc, VObject *)->v0x74(MsgRes_GetString(g, 0xbe), 1, 0xffff, 0xffff);
+        u8 *e = (u8 *)self->unk_0c->vfunc_74(MsgRes_GetString(g, 0xbe), 1, 0xffff, 0xffff);
         if (func_ov000_0219bf90()) {
-            if ((FIELD(self, 0x20, u8) = func_ov000_0219d5a0()) != 0) {
+            if ((self->unk_20 = func_ov000_0219d5a0()) != 0) {
                 FIELD(e, 0x24, s32) = 0xe;
             }
         }
     }
-    FIELD(self, 0xc, VObject *)->v0x74(MsgRes_GetString(g, 0xfa), 2, 0xffff, 0xffff);
-    m = FIELD(self, 0xc, VObject *);
-    m->v0xa8(ListOwner_GetNth(m, *(u8 *)data_ov002_021f0f90));
-    FIELD(FIELD(self, 0xc, void *), 0xc, u32) &= ~0x20000;
-    FIELD(FIELD(self, 0xc, void *), 0xc, u32) &= ~0x40000;
-    FIELD(FIELD(self, 0xc, void *), 0xc, u32) &= ~0x10000;
-    FIELD(self, 0xc, VObject *)->v0x8();
-    o = (VObject *)Heap_Alloc(0x8c);
+    self->unk_0c->vfunc_74(MsgRes_GetString(g, 0xfa), 2, 0xffff, 0xffff);
+    m = self->unk_0c;
+    m->vfunc_a8(ListOwner_GetNth(m, *(u8 *)data_ov002_021f0f90));
+    FIELD(self->unk_0c, 0xc, u32) &= ~0x20000;
+    FIELD(self->unk_0c, 0xc, u32) &= ~0x40000;
+    FIELD(self->unk_0c, 0xc, u32) &= ~0x10000;
+    self->unk_0c->vfunc_08();
+    o = (UiObj *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
-        o->v0x28();
+        o->vfunc_28();
         *(VFunc **)o = data_ov000_021cadcc;
-        o->v0x28();
+        o->vfunc_28();
     }
-    FIELD(self, 0x10, VObject *) = o;
-    FIELD(o, 0x24, s32) = 0xf8;
-    FIELD(FIELD(self, 0x10, void *), 0x20, s32) = 2;
-    s = FIELD(self, 0x10, u8 *);
+    self->unk_10 = (Lo021cadcc *)o;
+    o->width = 0xf8;
+    FIELD(self->unk_10, 0x20, s32) = 2;
+    s = ((u8 *)self->unk_10);
     FIELD(s, 0x64, s16) = 4;
     FIELD(s, 0x66, s16) = 0x96;
     FIELD(s, 0x68, s16) = -0x2000;
-    s = FIELD(self, 0x10, u8 *);
+    s = ((u8 *)self->unk_10);
     FIELD(s, 0x58, s32) = -0x100;
     FIELD(s, 0x5c, s32) = 0;
     FIELD(s, 0x60, s32) = -0x2000;
-    FIELD(FIELD(self, 0x10, void *), 0x2c, s32) = 1;
-    FIELD(self, 0x10, VObject *)->v0x8();
+    FIELD(self->unk_10, 0x2c, s32) = 1;
+    self->unk_10->vfunc_08();
     {
         u8 kind = *(u8 *)data_ov002_021f0f90;
-        if (FIELD(self, 0x10, void *) != NULL) {
+        if (self->unk_10 != NULL) {
             void *str;
             void *g2 = data_02149ef8;
             switch (kind) {
@@ -116,29 +116,29 @@ void func_ov002_021dacac(void *self) {
                 str = data_ov002_021efe30;
                 break;
             }
-            func_ov000_0215bb14(FIELD(self, 0x10, void *), str);
-            FIELD(self, 0x10, VObject *)->v0x70();
+            func_ov000_0215bb14(self->unk_10, str);
+            self->unk_10->vfunc_70();
         }
     }
-    ov002_CamInit(FIELD(self, 0x4, u8 *), (const VecFx32 *)(data_ov002_021eef74 + 0x70));
+    ov002_CamInit(self->unk_04, (const VecFx32 *)(data_ov002_021eef74 + 0x70));
     if (func_ov002_isMode4()) {
         func_0203cb78(0xa000, 0, -1);
     }
     {
-        u8 *c = FIELD(self, 0x4, u8 *);
+        u8 *c = self->unk_04;
         FIELD(c, 0x74, u8) = 0;
         FIELD(c, 0x75, u8) = 1;
     }
-    w = FIELD(self, 0x4, u8 *);
-    if (FIELD(data_0214a424, 0x18, Bits021d9e38).mode == 1) {
+    w = self->unk_04;
+    if (data_0214a424->bits18.mode == 1) {
         func_ov000_021c9544(w + 0x76, FIELD(w, 0x6c, void *));
-        func_ov000_021c95ac(w + 0x76, FIELD(data_0214a424, 0x18, Bits021d9e38).id | 0x8000);
+        func_ov000_021c95ac(w + 0x76, data_0214a424->bits18.unk_3 | 0x8000);
     } else {
         func_ov000_021c9544(w + 0x76, FIELD(w, 0x6c, void *));
     }
     t = Task_FindById(0x1b);
-    if (t != NULL && FIELD(data_0214a424, 0x18, Bits021d9e38).mode == 1) {
-        ov002_SetId(FIELD(t, 0x3c, void *), FIELD(data_0214a424, 0x18, Bits021d9e38).id | 0x8000);
+    if (t != NULL && data_0214a424->bits18.mode == 1) {
+        ov002_SetId(FIELD(t, 0x3c, void *), data_0214a424->bits18.unk_3 | 0x8000);
     }
 }
 

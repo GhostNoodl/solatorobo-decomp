@@ -15,7 +15,7 @@ static inline void ov002_CamMove(u8 *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, 
 
 extern "C" {
 
-void func_ov002_021e019c(void *self, u8 a, u8 b) {
+void func_ov002_021e019c(Obj021eff30 *self, u8 a, u8 b) {
     s32 dx;
     s32 dy;
     s32 px;
@@ -24,7 +24,7 @@ void func_ov002_021e019c(void *self, u8 a, u8 b) {
     s32 tx;
     s32 tz;
     u8 *c;
-    c = FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *);
+    c = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
     dx = a - FIELD(FIELD(FIELD(c, 0x4, u8 *), 0x6c, u8 *), 6, Nibbles16).n0;
     dy = b - FIELD(FIELD(FIELD(c, 0x4, u8 *), 0x6c, u8 *), 6, Nibbles16).n1;
     px = *(s32 *)(data_ov002_021eef74 + 0x40);

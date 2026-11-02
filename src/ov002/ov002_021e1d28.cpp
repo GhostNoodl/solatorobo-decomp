@@ -95,11 +95,11 @@ void func_ov002_021e1d28(void *self) {
     for (i = 0; i < 5; i++) {
         void *saved2;
         HEAP_PUSH(saved2);
-        DELETE_VOBJ((&FIELD(self, 0x14, VObject *))[i]);
+        DELETE_VOBJ((&FIELD(self, 0x14, VObj *))[i]);
         HEAP_POP(saved2);
     }
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x28, VObject *));
+    DELETE_VOBJ(FIELD(self, 0x28, VObj *));
     HEAP_POP(saved);
 }
 
@@ -130,7 +130,7 @@ static inline ov002_Anim021e0c28 *ov002_Anim_New(void) {
 static inline void ov002_Anim_Start(ov002_Anim021e0c28 *s, s32 a) {
     s->unk24 = a;
     s->unk4C = Text_Measure(s->unk28, s->unk38, s->unk24, s->unk44, s->unk48, s->unk37 != 0 ? TRUE : FALSE);
-    FIELD(data_02097ce0, 0x4, s32) = s->unk28;
+    data_02097ce0->unk_004 = s->unk28;
 }
 
 static inline void *ov002_Model_New(void *name, void *file) {
@@ -228,7 +228,7 @@ void func_ov002_021e1ed8(void *self) {
             if (c->anim == NULL) {
                 c->anim = ov002_Anim_New();
             }
-            ((VObject *)c->anim)->v0x8();
+            ((VObj *)c->anim)->vfunc_08();
             c->anim->unk28 = 3;
             c->anim->unk2C = 0;
             c->anim->unk34 = 1;

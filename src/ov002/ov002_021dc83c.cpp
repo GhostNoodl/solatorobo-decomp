@@ -3,8 +3,8 @@
 extern "C" {
 
 s32 func_02049bdc(void *a, int b, int c);
-void *func_ov002_021dd6a4(void *self, s32 a, u16 b);
-void func_ov002_021dd7f0(void *self, Vec2 *a, Vec2 *b, int c);
+void *func_ov002_021dd6a4(Obj021eff10 *self, s32 a, u16 b);
+void func_ov002_021dd7f0(Obj021eff10 *self, Vec2 *a, Vec2 *b, int c);
 
 static inline u8 *ov002_GetCell(u8 *w, Vec2 *pos) {
     s32 y = pos->y;
@@ -20,7 +20,7 @@ static inline u8 *ov002_GetCell(u8 *w, Vec2 *pos) {
 static inline void ov002_ShowMsg(void *self, void *str) {
     u8 *t = FIELD(self, 0x4, u8 *);
     func_ov000_0215bb14(FIELD(t, 0x20, void *), str);
-    FIELD(t, 0x20, VObject *)->v0x70();
+    FIELD(t, 0x20, VObj *)->vfunc_70();
 }
 
 static inline void ov002_CamMove(u8 *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {
@@ -36,14 +36,14 @@ static inline void ov002_CamMove(u8 *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, 
     FIELD(c, 0xc4, s32) = tz;
 }
 
-void func_ov002_021dc83c(void *self) {
+void func_ov002_021dc83c(Obj021eff10 *self) {
     u16 trig = data_02097dc8->trig;
-    u8 *w = FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *);
+    u8 *w = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
     void *msg = data_02149ef8;
     u16 rep = data_02097dc8->repeat;
     u8 *cell;
     if (trig & 2) {
-        FIELD(self, 0x18, s32) = 0x46;
+        self->unk_18 = 0x46;
         func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
         return;
     }
@@ -52,7 +52,7 @@ void func_ov002_021dc83c(void *self) {
         switch (cell[2]) {
         case 1: {
             void *p;
-            FIELD(self, 0x30, void *) = FIELD(cell, 8, void *);
+            self->unk_30 = FIELD(cell, 8, void *);
             func_02049bdc(data_02097e4c, 0x47, -5);
             p = Heap_Alloc(0x30);
             if (p != NULL) {
@@ -70,7 +70,7 @@ void func_ov002_021dc83c(void *self) {
                 FIELD(p, 0x2c, u8) = 0;
             }
             {
-                u8 *t = FIELD(self, 0x4, u8 *);
+                u8 *t = ((u8 *)self->unk_04);
                 FIELD(t, 0x10, void *) = p;
                 FIELD(t, 0xc, s32) = 0x1e;
             }
@@ -79,14 +79,14 @@ void func_ov002_021dc83c(void *self) {
         case 2: {
             u8 *o = FIELD(cell, 8, u8 *);
             if (FIELD(w, 0x8a, u16) >= FIELD(o, 0xa8, u16)) {
-                FIELD(self, 0x2c, void *) = o;
+                self->unk_2c = o;
                 func_ov002_021dd6a4(self, (s32)MsgRes_GetString(data_02149ef8, 0x1f), 0x8d);
-                FIELD(self, 0x18, s32) = 0x1e;
+                self->unk_18 = 0x1e;
                 return;
             }
             ov002_ShowMsg(self, MsgRes_GetString(msg, 0x106));
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
-            FIELD(self, 0x20, u8) = 1;
+            self->unk_20 = 1;
             return;
         }
         case 0: {
@@ -99,7 +99,7 @@ void func_ov002_021dc83c(void *self) {
             if (sum == 0) {
                 ov002_ShowMsg(self, MsgRes_GetString(msg, 0x107));
                 func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
-                FIELD(self, 0x20, u8) = 1;
+                self->unk_20 = 1;
                 return;
             }
             p = Heap_Alloc(0x138);
@@ -108,7 +108,7 @@ void func_ov002_021dc83c(void *self) {
                 func_ov002_021ddd80(p);
             }
             {
-                u8 *t = FIELD(self, 0x4, u8 *);
+                u8 *t = ((u8 *)self->unk_04);
                 FIELD(t, 0x10, void *) = p;
                 FIELD(t, 0xc, s32) = 0x14;
             }
@@ -120,7 +120,7 @@ void func_ov002_021dc83c(void *self) {
     }
     if (trig & 0x400) {
         func_ov002_021dd6a4(self, (s32)MsgRes_GetString(msg, 0x20), 0x8d);
-        FIELD(self, 0x18, s32) = 0x32;
+        self->unk_18 = 0x32;
         return;
     }
     if (trig & 0x800) {
@@ -128,17 +128,17 @@ void func_ov002_021dc83c(void *self) {
         if (cell[2] != 1) {
             return;
         }
-        FIELD(self, 0x30, void *) = FIELD(cell, 8, void *);
+        self->unk_30 = FIELD(cell, 8, void *);
         func_ov002_021dd6a4(self, (s32)MsgRes_GetString(data_02149ef8, 0x21), 0x8d);
-        FIELD(self, 0x18, s32) = 0x28;
+        self->unk_18 = 0x28;
         return;
     }
     if (rep & 0xf0) {
         Vec2 np;
         void *v = func_02070dcc(4);
         u8 *map = FIELD(FIELD(w, 0x4, u8 *), 0x6c, u8 *);
-        np.x = FIELD(self, 0x24, s32);
-        np.y = FIELD(self, 0x28, s32);
+        np.x = self->unk_24;
+        np.y = self->unk_28;
         if (rep & 0x20) {
             np.x--;
         } else if (rep & 0x10) {
@@ -154,11 +154,11 @@ void func_ov002_021dc83c(void *self) {
             s32 d;
             s32 px, py, pz, tz;
             func_02049a48(data_02097e4c, 0x22, -1, -1, -1);
-            old.x = FIELD(self, 0x24, s32);
-            old.y = FIELD(self, 0x28, s32);
+            old.x = self->unk_24;
+            old.y = self->unk_28;
             func_ov002_021dd7f0(self, &np, &old, 0);
-            c = FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *);
-            d = (u8)np.y - FIELD(FIELD(FIELD(FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *), 0x4, u8 *), 0x6c, u8 *), 6, Nibbles16).n1;
+            c = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
+            d = (u8)np.y - FIELD(FIELD(FIELD(FIELD(((u8 *)self->unk_04), 0x4, u8 *), 0x4, u8 *), 0x6c, u8 *), 6, Nibbles16).n1;
             px = *(s32 *)(data_ov002_021eef74 + 0x58);
             py = *(s32 *)(data_ov002_021eef74 + 0x5c);
             pz = *(s32 *)(data_ov002_021eef74 + 0x60);
@@ -171,11 +171,11 @@ void func_ov002_021dc83c(void *self) {
                 tz += 0x1ec;
             }
             ov002_CamMove(c, px, py, pz, 0, 0, tz);
-            FIELD(self, 0x24, s32) = np.x;
-            FIELD(self, 0x28, s32) = np.y;
+            self->unk_24 = np.x;
+            self->unk_28 = np.y;
             return;
         }
-        if (np.x <= FIELD(self, 0x24, s32)) {
+        if (np.x <= self->unk_24) {
             return;
         }
         if (np.x < FIELD(map, 4, Nibbles16).n2) {
@@ -183,7 +183,7 @@ void func_ov002_021dc83c(void *self) {
         }
         func_02049a48(data_02097e4c, 0xe, -1, -1, -1);
         {
-            u8 *c = FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *);
+            u8 *c = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
             s32 py = *(s32 *)(data_ov002_021eef74 + 0x5c);
             s32 pz = *(s32 *)(data_ov002_021eef74 + 0x60);
             ov002_CamMove(c, 0xb33, py, pz, 0xb33, 0, 0x148);
@@ -199,7 +199,7 @@ void func_ov002_021dc83c(void *self) {
         } else if (cell[2] == 2) {
             FIELD(FIELD(cell, 8, u8 *), 0x9c, u8) = 0;
         }
-        FIELD(self, 0x18, s32) = 0x14;
+        self->unk_18 = 0x14;
     }
 }
 

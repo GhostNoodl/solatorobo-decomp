@@ -24,35 +24,35 @@ BOOL func_ov002_021ddcbc(void *self, void *ev);
 BOOL func_ov002_021ddd30(void *self, void *ev);
 void func_ov002_021e34fc(void *self, s32 (*cmp)(void *, void *));
 
-void *func_ov002_021def98(void *self, u32 kind) {
+void *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
     u16 id;
     s32 n;
     s32 j;
-    VObject *p;
-    VObject *q;
+    UiObj *p;
+    VObj *q;
     s32 i;
     u8 *counts;
-    p = (VObject *)Heap_Alloc(0xf4);
+    p = (UiObj *)Heap_Alloc(0xf4);
     if (p != NULL) {
         *(VFunc **)p = data_ov000_021cac60;
-        p->v0x28();
+        p->vfunc_28();
         *(VFunc **)p = data_ov000_021ccbe0;
         func_ov000_021c3af4(p);
         *(VFunc **)p = data_ov002_021f0044;
     }
-    FIELD(p, 0x20, s32) = 6;
-    FIELD(p, 0x24, s32) = 0x8c;
-    FIELD(p, 0x64, s16) = 0x73;
-    FIELD(p, 0x66, s16) = 0x19;
-    FIELD(p, 0x68, s16) = -0x199a;
-    counts = FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *) + 8;
+    p->rows = 6;
+    p->width = 0x8c;
+    p->posX = 0x73;
+    p->posY = 0x19;
+    p->posZ = -0x199a;
+    counts = FIELD(((u8 *)self->unk_04), 0x4, u8 *) + 8;
     for (i = 0; i < 100; i++) {
         id = i | 0x2000;
         u8 t = func_0206ede8(id)[0];
         if (t == kind) {
             n = counts[i];
             for (j = 0; j < n; j++) {
-                q = (VObject *)Heap_Alloc(0x4c);
+                q = (VObj *)Heap_Alloc(0x4c);
                 if (q != NULL) {
                     *(VFunc **)q = data_ov002_021ef684;
                     func_ov000_021c22d8(q);
@@ -66,24 +66,24 @@ void *func_ov002_021def98(void *self, u32 kind) {
             }
         }
     }
-    FIELD(p, 0x8, void *) = (u8 *)self + 0x22;
+    p->owner = (u8 *)self + 0x22;
     FIELD(p, 0xe4, void *) = (void *)func_ov002_021ddcbc;
     FIELD(p, 0xe8, void *) = (void *)func_ov002_021ddd30;
-    p->v0x8();
-    FIELD(p, 0x58, s32) = 0x100;
-    FIELD(p, 0x5c, s32) = 0;
-    FIELD(p, 0x60, s32) = -0x199a;
-    FIELD(p, 0x2c, s32) = 1;
-    FIELD(p, 0xc, u32) = ((FIELD(p, 0xc, u32) | 2) & ~4) | 0x10;
+    p->vfunc_08();
+    p->slideX = 0x100;
+    p->slideY = 0;
+    p->slideZ = -0x199a;
+    p->slideMode = 1;
+    p->flags = ((p->flags | 2) & ~4) | 0x10;
     {
-        s32 k = FIELD(self, 0x34, s32);
+        s32 k = self->unk_34;
         void *r;
         u8 *w;
         func_ov002_021e34fc(p, data_ov002_021eef8c[k].fn);
         r = MsgRes_GetString(data_02149ef8, data_ov002_021eef90[k].id);
-        w = FIELD(self, 0x4, u8 *);
+        w = ((u8 *)self->unk_04);
         func_ov000_0215bb14(FIELD(w, 0x20, void *), r);
-        FIELD(w, 0x20, VObject *)->v0x70();
+        FIELD(w, 0x20, VObj *)->vfunc_70();
     }
     return p;
 }
