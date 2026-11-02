@@ -23,27 +23,27 @@ extern const VecFx32 data_02092a50;
 extern const VecFx32 data_02092a38;
 extern const Ov011PathEnt data_ov011_022076a0[];
 extern u8 data_ov011_02207598[];
-Ov011Obj *func_ov000_0219be1c(s32 kind, VecFx32 *pos, Ov011Rot *rot, u16 a, u16 b);
+Actor *func_ov000_0219be1c(s32 kind, VecFx32 *pos, Ov011Rot *rot, u16 a, u16 b);
 
 void func_ov011_02203ef0(Ov011Act7e50 *self) {
     VecFx32 d;
     VecFx32 v;
     Ov011Rot r;
-    Ov011Sub40 *st = self->unk_40;
-    switch (st->state) {
+    ActorSub40 *st = self->fsm;
+    switch (st->st) {
     case 0:
         self->unk_f0 = data_ov011_022076a0[self->unk_1a].a;
         self->unk_84 = data_ov011_022076a0[self->unk_1a].b;
-        self->unk_9c = data_ov011_022076a0[self->unk_1a].spd0;
-        st->state++;
+        self->speed = data_ov011_022076a0[self->unk_1a].spd0;
+        st->st++;
         break;
     case 1: {
         s16 i = self->unk_1a;
         st->timer++;
         if (st->timer > data_ov011_022076a0[i].dur0) {
-            self->unk_9c = data_ov011_022076a0[self->unk_1a].spd1;
-            self->unk_40->timer = 0;
-            self->unk_40->state++;
+            self->speed = data_ov011_022076a0[self->unk_1a].spd1;
+            self->fsm->timer = 0;
+            self->fsm->st++;
         }
         break;
     }
@@ -52,16 +52,16 @@ void func_ov011_02203ef0(Ov011Act7e50 *self) {
         s16 i = self->unk_1a;
         st->timer++;
         if (st->timer > data_ov011_022076a0[i].dur1) {
-            self->unk_40->timer = 0;
-            self->unk_40->state++;
+            self->fsm->timer = 0;
+            self->fsm->st++;
             break;
         }
         {
-            u16 t = self->unk_40->timer;
+            u16 t = self->fsm->timer;
             if (t == 10 || t == 0x19 || t == 0x28) {
                 Ov011Player *pl = (Ov011Player *)func_ov000_0219bf90();
                 if (pl != NULL) {
-                    Ov011Obj *o;
+                    Actor *o;
                     v.x = pl->unk_af0.x;
                     v.y = pl->unk_af0.y;
                     v.z = pl->unk_af0.z;
@@ -84,16 +84,16 @@ void func_ov011_02203ef0(Ov011Act7e50 *self) {
     }
     case 4:
         self->unk_84 = data_ov011_022076a0[self->unk_1a].c;
-        self->unk_9c = data_ov011_022076a0[self->unk_1a].spd2;
-        st->state++;
+        self->speed = data_ov011_022076a0[self->unk_1a].spd2;
+        st->st++;
     case 5: {
         s16 i;
-        st = self->unk_40;
+        st = self->fsm;
         i = self->unk_1a;
         st->timer++;
         if (st->timer > data_ov011_022076a0[i].dur2) {
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
-            self->v08();
+            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            self->vfunc_08();
         }
         break;
     }
@@ -101,7 +101,7 @@ void func_ov011_02203ef0(Ov011Act7e50 *self) {
     d.x = self->unk_84.x - self->unk_f0.x;
     d.y = self->unk_84.y - self->unk_f0.y;
     d.z = self->unk_84.z - self->unk_f0.z;
-    VEC_MultAdd(self->unk_9c, &d, &self->unk_f0, &self->unk_f0);
+    VEC_MultAdd(self->speed, &d, &self->unk_f0, &self->unk_f0);
     d.x = 0;
     d.y = 0;
     d.z = 0;
@@ -115,7 +115,7 @@ void func_ov011_02203ef0(Ov011Act7e50 *self) {
     {
         const s32 *b = (const s32 *)&data_02092a38;
         const s32 *a = (const s32 *)&data_02092a50;
-        self->rot[1] = FX_Atan2(b[0] - a[0], b[2] - a[2]);
+        self->rot_y = FX_Atan2(b[0] - a[0], b[2] - a[2]);
     }
 }
 

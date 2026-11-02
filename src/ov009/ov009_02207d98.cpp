@@ -4,9 +4,9 @@ extern "C" {
 
 extern char data_ov009_022172af[];
 extern char data_ov009_022172b5[];
-extern BOOL func_ov000_0218ffdc(Ov009Sub38 *m, void *res, s32 a, s32 b);
-extern void func_ov000_02190758(Ov009Sub38 *m, u16 *rot, s32 a);
-extern BOOL func_ov000_021903b4(Ov009Sub38 *m);
+extern BOOL func_ov000_0218ffdc(Model0218fe1c *m, void *res, s32 a, s32 b);
+extern void func_ov000_02190758(Model0218fe1c *m, u16 *rot, s32 a);
+extern BOOL func_ov000_021903b4(Model0218fe1c *m);
 
 struct Ov009Bits16 {
     u16 b0 : 1;
@@ -24,7 +24,7 @@ BOOL Ov009Multi_Draw(Ov009Multi *self) {
 
 struct Ov009Query {
     u32 unk_00;
-    Ov009Vec pos;
+    VecFx32 pos;
     u16 unk_10;
     u16 unk_12;
     u16 unk_14;
@@ -42,17 +42,17 @@ struct Ov009Query {
     u8 unk_2e_4 : 4;
 };
 
-static inline void Ov009Query_Set(Ov009Query *q, const Ov009Vec *pos, u16 ang) {
+static inline void Ov009Query_Set(Ov009Query *q, const VecFx32 *pos, u16 ang) {
     q->pos = *pos;
     q->unk_10 = ang;
     q->unk_00 = 0;
 }
 
-extern s32 func_ov000_02199180(Ov009Query *q, Ov009Vec *pos, Ov009Actor **out, s32 max);
+extern s32 func_ov000_02199180(Ov009Query *q, VecFx32 *pos, Ov003Actor **out, s32 max);
 
-void Ov009Multi_Update(Ov009Actor *self) {
+void Ov009Multi_Update(Ov003Actor *self) {
     Ov009Query q;
-    Ov009Actor *res[0x20];
+    Ov003Actor *res[0x20];
     s32 n;
     s32 i;
     if (!Ov009_GameIdle()) {
@@ -60,10 +60,10 @@ void Ov009Multi_Update(Ov009Actor *self) {
     }
     switch (self->unk_b4) {
     case 0:
-        if (self->unk_40->unk_13 != 1 || FLD(u8, self, 0x490) != 4) {
+        if (self->fsm->current != 1 || FLD(u8, self, 0x490) != 4) {
             return;
         }
-        self->unk_90 = 0xffff;
+        self->target = 0xffff;
         q.unk_2c = 0xffff;
         *(u8 *)((u8 *)&q + 0x2e) = 0;
         q.unk_16 = 0xcc00;
@@ -77,19 +77,19 @@ void Ov009Multi_Update(Ov009Actor *self) {
         q.unk_2e_3 = 1;
         q.unk_12 = 0x22;
         q.unk_2c = self->id;
-        Ov009Query_Set(&q, &FLD(Ov009Vec, self, 0x494), FLD(u16, self, 0x492));
+        Ov009Query_Set(&q, &FLD(VecFx32, self, 0x494), FLD(u16, self, 0x492));
         n = func_ov000_02199180(&q, &q.pos, res, 0x20);
         for (i = 0; i < n; i++) {
-            Ov009Actor *a = res[i];
+            Ov003Actor *a = res[i];
             if (a != NULL && a->kind != self->kind) {
-                self->unk_90 = res[i]->id;
-                if (VEC_Distance(&self->pos, &FLD(Ov009Vec, self, 0x494)) > 0x3c00) {
+                self->target = res[i]->id;
+                if (VEC_Distance(&self->pos, &FLD(VecFx32, self, 0x494)) > 0x3c00) {
                     return;
                 }
                 if (VEC_Distance(&self->pos, &res[i]->pos) > 0x5800) {
                     return;
                 }
-                self->unk_40->flags |= 0x8000;
+                self->fsm->flags |= 0x8000;
                 self->unk_b6 = 0;
                 self->unk_b4++;
                 return;
@@ -107,7 +107,6 @@ void Ov009Multi_Update(Ov009Actor *self) {
 }
 
 
-extern void func_ov003_021d3008(Ov009Actor *self);
 
 static inline s32 Ov009m_Mul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
@@ -121,7 +120,7 @@ static inline s32 Ov009m_Sqrt64(s64 v) {
     return (*(volatile s32 *)0x40002b4 + 1) >> 1;
 }
 
-static inline s32 Ov009m_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
+static inline s32 Ov009m_DistXZ(const VecFx32 *a, const VecFx32 *b) {
     s64 sq;
     s32 dz = a->z - b->z;
     s32 dx = a->x - b->x;
@@ -130,21 +129,21 @@ static inline s32 Ov009m_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
     return Ov009m_Sqrt64(sq);
 }
 
-static inline void Ov009m_VecSub(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *o) {
+static inline void Ov009m_VecSub(const VecFx32 *a, const VecFx32 *b, VecFx32 *o) {
     o->x = a->x - b->x;
     o->y = a->y - b->y;
     o->z = a->z - b->z;
 }
 
-static inline void Ov009m_VecScale(Ov009Vec *v, s32 k) {
+static inline void Ov009m_VecScale(VecFx32 *v, s32 k) {
     v->x = Ov009m_Mul(v->x, k);
     v->y = Ov009m_Mul(v->y, k);
     v->z = Ov009m_Mul(v->z, k);
 }
 
 void func_ov009_02207fd8(Ov009Multi *self) {
-    Ov009Vec p;
-    Ov009Vec d;
+    VecFx32 p;
+    VecFx32 d;
     s32 i;
     s32 len;
     s32 s;
@@ -155,7 +154,7 @@ void func_ov009_02207fd8(Ov009Multi *self) {
     p = self->unk_494;
     for (i = 2; i < 4; i++) {
         VEC_Add(&d, &p, &p);
-        self->models[i].unk_78 = p;
+        self->models[i].trans = p;
     }
     len = Ov009m_DistXZ(&self->pos, &self->unk_494);
     rot[0] = 0;

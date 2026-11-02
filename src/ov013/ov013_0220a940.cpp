@@ -7,26 +7,26 @@ extern char data_ov013_0220b3f8[];
 extern char data_ov013_0220b404[];
 extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
-extern Ov013Actor *func_ov000_0219bf90(void);
-extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
+extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov013V *func_02065f88(s32 id, VecFx32 *pos);
 
-void func_ov013_0220a940(Ov013Actor *self) {
-    Ov013Sub38 *s;
-    Ov013Sub40 *q;
+void func_ov013_0220a940(Ov003Actor *self) {
+    Model0218fe1c *s;
+    ActorSub40 *q;
     u8 v;
-    Actor_Move((Actor *)self, 0);
-    s = self->unk_38;
-    v = s->unk_be;
+    Actor_Move(self, 0);
+    s = self->model;
+    v = s->alpha;
     if (v > 1) {
         v -= 2;
     } else if (v != 0) {
         v -= 1;
     }
-    s->unk_be = v;
-    q = self->unk_40;
+    s->alpha = v;
+    q = self->fsm;
     q->timer++;
     if (q->timer > 0xf) {
-        func_ov000_02198360(self->unk_40, 0x15, 0);
+        func_ov000_02198360(self->fsm, 0x15, 0);
     }
 }
 
@@ -42,17 +42,17 @@ Ov013ActEx_0220a9a8 *Ov013ActEx_0220a9a8_Ctor(Ov013ActEx_0220a9a8 *self) {
 #pragma force_active reset
 
 void Ov013ActEx_0220a9a8_Start(Ov013ActEx_0220a9a8 *self) {
-    Ov013Actor *pl;
+    Ov003Actor *pl;
     Ov013V *fx;
     func_ov000_02194758(self);
-    func_ov000_02198360(self->unk_40, 1, 0);
+    func_ov000_02198360(self->fsm, 1, 0);
     self->unk_ce = 600;
-    self->unk_48->unk_38 = 0x1b33;
+    self->hit->radius = 0x1b33;
     self->unk_d0 = 0x1000;
-    self->unk_90 = 0xffff;
+    self->target = 0xffff;
     pl = func_ov000_0219bf90();
     if (pl != NULL) {
-        self->unk_90 = pl->id;
+        self->target = pl->id;
     }
     fx = func_02065f88(0x38c, &self->pos);
     if (fx == NULL) {
@@ -65,11 +65,11 @@ void Ov013ActEx_0220a9a8_Start(Ov013ActEx_0220a9a8 *self) {
 extern void *data_0214a420;
 extern Ov013V *func_020657b0(void *a, void *b);
 extern void func_0203f364(void *p);
-extern BOOL func_ov000_021b4738(Ov013Actor *a);
-extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern BOOL func_ov000_021b4738(Ov003Actor *a);
+extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 
-static inline Ov013Actor *Ov013_FindActorA(u16 id) {
+static inline Ov003Actor *Ov013_FindActorA(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -77,17 +77,17 @@ static inline Ov013Actor *Ov013_FindActorA(u16 id) {
 }
 
 void func_ov013_0220aa7c(Ov013ActEx_0220a9a8 *self) {
-    Ov013Actor *t;
-    switch (self->unk_40->state) {
+    Ov003Actor *t;
+    switch (self->fsm->st) {
     case 0:
         if (self->unk_d4 != 0) {
             Ov013V *fx;
             s32 k = 0x1b33;
-            self->unk_48->unk_38 = FX_Mul(self->unk_d4, k);
+            self->hit->radius = FX_Mul(self->unk_d4, k);
             self->unk_d0 = FX_Mul(self->unk_d4, 0x1000);
             fx = func_020657b0(data_0214a420, self->unk_bc);
             if (fx != NULL) {
-                Ov013Vec v;
+                VecFx32 v;
                 s32 d = self->unk_d4;
                 v.x = FX_Mul(d, 0x1000);
                 v.z = v.x;
@@ -95,33 +95,33 @@ void func_ov013_0220aa7c(Ov013ActEx_0220a9a8 *self) {
                 fx->v10(&v);
             }
         }
-        self->unk_40->state++;
+        self->fsm->st++;
         {
-            Ov013Sub48 *m = self->unk_48;
+            ActorSub48 *m = self->hit;
             m->unk_9a_0 = 0;
             m->unk_9a_3 = 0;
             func_0203f364(m);
         }
         break;
     case 1: {
-        Ov013Actor *pl = func_ov000_0219bf90();
+        Ov003Actor *pl = func_ov000_0219bf90();
         if (pl == NULL || func_ov000_021b4738(pl)) {
             self->unk_ce = 1;
         }
         self->unk_ce--;
         if (self->unk_ce == 0) {
-            func_ov000_02198360(self->unk_40, 10, 0);
+            func_ov000_02198360(self->fsm, 10, 0);
             return;
         }
         break;
     }
     }
-    t = Ov013_FindActorA(self->unk_90);
+    t = Ov013_FindActorA(self->target);
     if (t == NULL) {
         return;
     }
-    func_ov000_0219aae8(self, self, self->unk_4c->unk_08, self->unk_4c->unk_0a, (u16)(1 << (t->id >> 12)), NULL, 0,
-                        self->unk_48->unk_38, self->unk_d0, 0x25f, 0x1000);
+    func_ov000_0219aae8(self, self, self->targetObj->unk_08, self->targetObj->unk_0a, (u16)(1 << (t->id >> 12)), NULL, 0,
+                        self->hit->radius, self->unk_d0, 0x25f, 0x1000);
 }
 
 }

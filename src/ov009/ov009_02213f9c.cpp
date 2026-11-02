@@ -7,28 +7,28 @@ void func_ov009_02213f9c(Ov009ActVt_02217cb0 *self) {
     self->unk_94_1 = 0;
 }
 
-void func_ov009_02213fb8(Ov009Actor *self) {
-    self->v7c();
+void func_ov009_02213fb8(Ov003Actor *self) {
+    self->vfunc_7c();
 }
 
 void func_ov009_02213fcc(Ov009ActVt_02217aac *self) {
-    self->v7c();
+    self->vfunc_7c();
 }
 
 void func_ov009_02213fe0(Ov009ActVt_02217c04 *self) {
-    self->v7c();
+    self->vfunc_7c();
 }
 
 void func_ov009_02213ff4(Ov009ActVt_02217b58 *self) {
-    self->v7c();
+    self->vfunc_7c();
 }
 
 void func_ov009_02214008(Ov009ActVt_02217eb4 *self) {
-    self->v7c();
+    self->vfunc_7c();
 }
 
 void func_ov009_0221401c(Ov009ActVt_02217f60 *self) {
-    self->v7c();
+    self->vfunc_7c();
 }
 
 Ov009ActVt_02217f60 *Ov009ActVt_02217f60_Dtor(Ov009ActVt_02217f60 *self) {

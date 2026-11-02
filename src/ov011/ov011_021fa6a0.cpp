@@ -220,10 +220,10 @@ static inline void Ov011_Send(u16 id, s32 a, s32 b) {
 void func_ov011_021facc4(Ov011Mgr *self) {
     VecFx32 v2;
     VecFx32 v1;
-    Ov011Obj *actor;
+    Actor *actor;
     BOOL ok;
     u16 i;
-    Ov011Obj *a;
+    Actor *a;
     actor = self->list->actor;
     switch (self->state) {
     case 0:
@@ -305,11 +305,11 @@ void func_ov011_021fb02c(Ov011Mgr *self) {
     VecFx32 v;
     VecFx32 p;
     VecFx32 v2;
-    Ov011Obj *a;
+    Actor *a;
     u16 i;
     s32 j;
     Ov011Ent *e;
-    Ov011Obj *actor;
+    Actor *actor;
     BOOL ok;
     actor = self->list->actor;
     if (self->state == 0) {

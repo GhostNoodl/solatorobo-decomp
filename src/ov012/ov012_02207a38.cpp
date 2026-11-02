@@ -4,14 +4,14 @@ extern "C" {
 void func_ov012_02207a38(Ov012ActEx_02207018 *self) {
     if (self->unk_d0 & 0x200000) {
         if (!Ov003FxList_Has(((void *)self->unk_d4), 0xfe) && !Ov003FxList_Has(((void *)self->unk_d4), 0xff)) {
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
-            self->v08();
+            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            self->vfunc_08();
         }
         func_ov003_021dacfc(((void *)self->unk_d4));
         return;
     }
-    if (self->unk_40->state == 0) {
-        self->unk_64 = 0x3000;
+    if (self->fsm->st == 0) {
+        self->radius = 0x3000;
         Ov003FxList_Kill(((void *)self->unk_d4), 0xfa);
         func_02065f88(0x69, &self->pos)->v0c(0x2000);
     }

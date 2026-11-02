@@ -17,7 +17,7 @@ BOOL Robo021ca458_IsReady(Robo021ca458 *self) {
         ret = FALSE;
     }
     {
-        u8 *p = self->unk_3c;
+        u8 *p = (u8 *)self->unk_3c;
         BOOL ok = TRUE;
         if (p[0x1b] != 3 && p[0x1b] != 0) {
             ok = FALSE;

@@ -105,7 +105,7 @@ void func_ov000_02196258(VObj *obj) {
     switch (s->st) {
     case 0:
         if (self->unk_44 != NULL) {
-            u8 *q = self->unk_44;
+            ActorSub44 *q = self->unk_44;
             LFLD(Bits02196258, q, 0x22).b0 = 0;
             LFLD(Bits02196258, q, 0x22).b1 = 0;
         }

@@ -53,6 +53,7 @@ struct ActorEx : public Actor {
             u16 unk_cc_9_f : 7;
         };
     };
+    u16 unk_ce;
 };
 SIZE_ASSERT(ActorEx, 0xd0);
 

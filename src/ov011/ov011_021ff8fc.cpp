@@ -75,7 +75,6 @@ struct F24cList {
 
 extern "C" {
 
-BOOL func_ov003_021da03c(void *self);
 u32 func_ov011_02201244(void *self);
 void func_ov011_021fff38(void *self);
 void func_ov011_0220023c(void *self);
@@ -144,7 +143,7 @@ static inline const s32 *F24c_RingAt(const F24cRing *r, u16 i) {
     return p;
 }
 
-static inline BOOL F24c_Valid(Ov011Obj *a) {
+static inline BOOL F24c_Valid(Actor *a) {
     Ov011Player *pl;
     if (a == NULL) {
         return FALSE;
@@ -156,7 +155,7 @@ static inline BOOL F24c_Valid(Ov011Obj *a) {
     if (pl->unk_b1c == a->id) {
         return FALSE;
     }
-    if (!(a->unk_48->unk_50 & 0x20000000)) {
+    if (!(a->hit->unk_50 & 0x20000000)) {
         return FALSE;
     }
     return TRUE;
@@ -190,9 +189,9 @@ static inline const F24cRing *F24c_GetRing(const F24cList *l) {
     return r;
 }
 
-static inline BOOL F24c_Mode1(Ov011Actor *self) {
+static inline BOOL F24c_Mode1(Ov003Actor *self) {
     BOOL r = FALSE;
-    if (self->unk_40->unk_13 == 1) {
+    if (self->fsm->current == 1) {
         r = TRUE;
     }
     return r;
@@ -264,7 +263,7 @@ void Ov011SceneActor_Update(Ov011SceneActor *self) {
                 l = ((F24cList *)self->scene);
                 if (l->f.b0) {
                     for (nd = l->head; nd != NULL; nd = nd->next) {
-                        Ov011Obj *a = Ov011_FindActor(nd->id);
+                        Actor *a = Ov011_FindActor(nd->id);
                         if (a != NULL && !func_ov011_02201244(a) && F24c_Valid(a)) {
                             found = TRUE;
                             break;
@@ -290,13 +289,13 @@ void Ov011SceneActor_Update(Ov011SceneActor *self) {
                     F24c_SetState(((F24cList *)self->scene), 5);
                     self->unk_f0_1 = 0;
                 } else if (cnt < 2) {
-                    self->unk_40->flags |= 0x8000;
+                    self->fsm->flags |= 0x8000;
                     self->unk_f0_0 = 1;
                 } else if (F24c_Count(((F24cList *)self->scene)) != 5) {
                     F24c_SetState(((F24cList *)self->scene), 5);
                     self->unk_f0_1 = 0;
                 } else {
-                    self->unk_40->flags |= 0x10000;
+                    self->fsm->flags |= 0x10000;
                 }
             }
             self->unk_f2++;
@@ -333,13 +332,13 @@ void func_020627dc(s32 a);
 s32 Rand_PlusMinus(s32 max);
 
 void func_ov011_021ff8fc(Ov011SceneActor *self) {
-    Ov011Sub40 *s = self->unk_40;
-    switch (s->state) {
+    ActorSub40 *s = self->fsm;
+    switch (s->st) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov011_022078e1, 0x1000, 0);
-        func_ov000_021915a0(self->unk_38);
-        self->unk_38->unk_c2_0 = 0;
-        self->unk_40->state++;
+        func_ov000_02190cb0(self->model, data_ov011_022078e1, 0x1000, 0);
+        func_ov000_021915a0(self->model);
+        self->model->visible = 0;
+        self->fsm->st++;
         break;
     case 1: {
         Ov011V *p;
@@ -348,12 +347,12 @@ void func_ov011_021ff8fc(Ov011SceneActor *self) {
             p = func_02065f88(50 + 0x358, &self->pos);
             p->v14(0x1666, 0x1666, 0x1666);
             p->v24(0, 0x1000, 0);
-            self->unk_38->unk_c2_0 = 1;
-            self->unk_38->alpha = 0;
-            self->unk_40->timer = 0;
-            self->unk_40->state++;
+            self->model->visible = 1;
+            self->model->alpha = 0;
+            self->fsm->timer = 0;
+            self->fsm->st++;
         } else {
-            u16 t = self->unk_40->timer;
+            u16 t = self->fsm->timer;
             if (t <= 75 && t % 15 == 0) {
                 s32 x;
                 s32 z;
@@ -361,8 +360,8 @@ void func_ov011_021ff8fc(Ov011SceneActor *self) {
                 s32 b;
                 p = func_02065f88(0x398 - 15, &self->pos);
                 p->v14(0x1666, 0x1666, 0x1666);
-                x = self->unk_64;
-                z = self->unk_6c;
+                x = self->radius;
+                z = self->centerY;
                 a = Rand_PlusMinus(x);
                 b = Rand_PlusMinus(z);
                 p->v24(a, z + 0x1000 + b, x);
@@ -375,14 +374,14 @@ void func_ov011_021ff8fc(Ov011SceneActor *self) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             data_ov000_021ccd54->stageFlags = 1;
-            self->unk_38->alpha = 0x1f;
-            func_ov000_02198360(self->unk_40, 1, 0);
-        } else if (self->unk_40->timer > 30) {
-            u8 v = self->unk_38->alpha + 1;
+            self->model->alpha = 0x1f;
+            func_ov000_02198360(self->fsm, 1, 0);
+        } else if (self->fsm->timer > 30) {
+            u8 v = self->model->alpha + 1;
             if (v > 0x1f) {
                 v = 0x1f;
             }
-            self->unk_38->alpha = v;
+            self->model->alpha = v;
         }
         break;
     }

@@ -157,7 +157,7 @@ void func_ov011_021fc94c(Ov011Tut *self) {
         break;
     case 1:
         if (Ov011Fade_AllDone(self->fade) && self->timer > 50) {
-            Ov011Obj *a;
+            Actor *a;
             self->timer = 0;
             self->flags |= 8;
             a = Ov011_FindActor(self->id);
@@ -222,7 +222,7 @@ static inline void Ov011_SendC(u16 id, s32 kind, BOOL b0) {
 
 static inline s32 Ov011_HpRatio(u16 id) {
     s32 r = 0;
-    Ov011Obj *a = Ov011_FindActor(id);
+    Actor *a = Ov011_FindActor(id);
     if (a != NULL) {
         u16 *hp = a->hp;
         r = (hp[0] << 12) / hp[1];
@@ -277,7 +277,7 @@ void func_ov011_021fce2c(Ov011Tut *self) {
         }
         break;
     case 6: {
-        Ov011Obj *a;
+        Actor *a;
         Ov011_SendC(self->id, 2, 1);
         self->state = 7;
         if (Ov011_HpRatio(self->id) < 0x554) {

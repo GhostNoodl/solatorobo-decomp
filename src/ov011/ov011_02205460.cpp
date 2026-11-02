@@ -41,7 +41,7 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
         Ov011SpawnDesc d;
         s32 r;
         u16 k;
-        Ov011Obj *o;
+        Actor *o;
         pos.x = 0;
         pos.y = 0;
         pos.z = 0;
@@ -58,10 +58,10 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
             d.unk_04[2] = 3;
         }
         d.unk_04[3] = 1;
-        o = (Ov011Obj *)Group_SpawnActor(data_ov000_021ccd64, &d, &pos, &rot, 0xffff);
+        o = (Actor *)Group_SpawnActor(data_ov000_021ccd64, &d, &pos, &rot, 0xffff);
         if (o != NULL) {
             void *x;
-            o->unk_16_0 = 1;
+            o->flags_0 = 1;
             x = NULL;
             if (r & 1) {
                 if (self->unk_364 != NULL && self->unk_394 == 0) {
@@ -85,7 +85,7 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
         VecFx32 pos;
         Ov011Rot rot;
         Ov011SpawnDesc d;
-        Ov011Obj *o;
+        Actor *o;
         pos.x = 0;
         pos.y = 0;
         pos.z = 0;
@@ -94,9 +94,9 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
         rot.z = 0;
         Ov011Spawn_Init(&d, 0x409e);
         d.unk_04[3] = 2;
-        o = (Ov011Obj *)Group_SpawnActor(data_ov000_021ccd64, &d, &pos, &rot, 0xffff);
+        o = (Actor *)Group_SpawnActor(data_ov000_021ccd64, &d, &pos, &rot, 0xffff);
         if (o != NULL) {
-            o->unk_16_0 = 1;
+            o->flags_0 = 1;
         }
     }
     }
@@ -110,8 +110,8 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, s32 c);
 
 #pragma force_active on
 void func_ov011_02205674(Ov011Act7da4 *self) {
-    Ov011Sub40 *st = self->unk_40;
-    switch (st->state) {
+    ActorSub40 *st = self->fsm;
+    switch (st->st) {
     case 0:
         if (st->timer > 0x12c) {
             FieldState *g;
@@ -120,7 +120,7 @@ void func_ov011_02205674(Ov011Act7da4 *self) {
             g = data_ov000_021ccd54;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
-            self->unk_40->state++;
+            self->fsm->st++;
         }
         break;
     case 1:
@@ -129,20 +129,20 @@ void func_ov011_02205674(Ov011Act7da4 *self) {
         }
         break;
     }
-    self->unk_40->timer++;
-    func_ov011_02205460(self, self->unk_40->timer, 0);
+    self->fsm->timer++;
+    func_ov011_02205460(self, self->fsm->timer, 0);
 }
 
 extern VecFx32 data_02092a50;
 
 void func_ov011_0220576c(Ov011Act7da4 *self) {
-    Ov011Sub40 *st = self->unk_40;
-    switch (st->state) {
+    ActorSub40 *st = self->fsm;
+    switch (st->st) {
     case 0: {
         VecFx32 v;
         Ov011Rot rot;
         Ov011SpawnDesc d;
-        Ov011Obj *o;
+        Actor *o;
         v.x = 0;
         v.y = -0xa000;
         v.z = -0xa000;
@@ -153,17 +153,17 @@ void func_ov011_0220576c(Ov011Act7da4 *self) {
         rot.z = 0;
         Ov011Spawn_Init(&d, 0x406a);
         d.unk_04[1] = 2;
-        o = (Ov011Obj *)Group_SpawnActor(data_ov000_021ccd64, &d, &v, &rot, 0xffff);
+        o = (Actor *)Group_SpawnActor(data_ov000_021ccd64, &d, &v, &rot, 0xffff);
         if (o != NULL) {
             self->unk_36c = o->id;
-            o->unk_16_0 = 1;
+            o->flags_0 = 1;
             func_ov000_0218d46c((StageObj3D *)o, self->id, 6);
         }
-        self->unk_40->state++;
+        self->fsm->st++;
     }
     case 1:
-        if (self->unk_40->timer > 0x96) {
-            Ov011Obj *a = Ov011_FindActor(self->unk_36c);
+        if (self->fsm->timer > 0x96) {
+            Actor *a = Ov011_FindActor(self->unk_36c);
             FieldState *g;
             if (a != NULL) {
                 a->unk_18 = 2;
@@ -173,7 +173,7 @@ void func_ov011_0220576c(Ov011Act7da4 *self) {
             g = data_ov000_021ccd54;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
-            self->unk_40->state++;
+            self->fsm->st++;
         }
         break;
     case 2:
@@ -182,26 +182,26 @@ void func_ov011_0220576c(Ov011Act7da4 *self) {
         }
         break;
     }
-    self->unk_40->timer++;
-    func_ov011_02205460(self, self->unk_40->timer, 1);
+    self->fsm->timer++;
+    func_ov011_02205460(self, self->fsm->timer, 1);
 }
 
 void func_ov011_022059f8(Ov011Act7da4 *self) {
-    Ov011Sub40 *st = self->unk_40;
-    switch (st->state) {
+    ActorSub40 *st = self->fsm;
+    switch (st->st) {
     case 0: {
-        Ov011Obj *a;
-        Ov011Sub38 *p = self->unk_38;
+        Actor *a;
+        Model0218fe1c *p = self->model;
         p->scale.x = 0;
         p->scale.y = 0;
         p->scale.z = 0;
-        self->unk_38->alpha = 0;
-        self->unk_38->unk_c2_0 = 1;
+        self->model->alpha = 0;
+        self->model->visible = 1;
         a = Ov011_FindActor(self->unk_36c);
         if (a != NULL) {
             a->unk_18 = 3;
         }
-        self->unk_40->state++;
+        self->fsm->st++;
         break;
     }
     case 1:
@@ -211,8 +211,8 @@ void func_ov011_022059f8(Ov011Act7da4 *self) {
             if (a != NULL) {
                 a->v08();
             }
-            self->unk_40->timer = 0;
-            self->unk_40->state++;
+            self->fsm->timer = 0;
+            self->fsm->st++;
         }
         break;
     case 2:
@@ -224,8 +224,8 @@ void func_ov011_022059f8(Ov011Act7da4 *self) {
             g = data_ov000_021ccd54;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
-            self->unk_40->timer = 0;
-            self->unk_40->state++;
+            self->fsm->timer = 0;
+            self->fsm->st++;
         }
         break;
     case 3:
@@ -241,37 +241,37 @@ void NNSi_G3dModifyPolygonAttrMask(void *mdl, u32 a, u32 mask);
 #define OV011_F32_TO_FX32(f) ((s32)(((f) > 0) ? (f) * 4096.0f + 0.5f : (f) * 4096.0f - 0.5f))
 
 void func_ov011_02205bc4(Ov011Act7da4 *self) {
-    Ov011Sub40 *st = self->unk_40;
-    switch (st->state) {
+    ActorSub40 *st = self->fsm;
+    switch (st->st) {
     case 0: {
-        Ov011Sub38 *p = self->unk_38;
+        Model0218fe1c *p = self->model;
         p->scale.x = 0;
         p->scale.y = 0;
         p->scale.z = 0;
-        self->unk_38->alpha = 0;
-        self->unk_38->unk_c2_0 = 1;
-        self->unk_40->state++;
+        self->model->alpha = 0;
+        self->model->visible = 1;
+        self->fsm->st++;
         break;
     }
     case 1:
         st->timer++;
         if (st->timer < 0xb4) {
-            u16 t = self->unk_40->timer;
+            u16 t = self->fsm->timer;
             s32 sc = OV011_F32_TO_FX32(0.11f * t / 180.0f) + 0x1c3;
-            Ov011Sub38 *p = self->unk_38;
+            Model0218fe1c *p = self->model;
             p->scale.x = sc;
             p->scale.y = sc;
             p->scale.z = sc;
-            self->unk_38->alpha = self->unk_40->timer * 31 / 180;
+            self->model->alpha = self->fsm->timer * 31 / 180;
         } else {
-            Ov011Sub38 *p = self->unk_38;
+            Model0218fe1c *p = self->model;
             p->scale.x = 0x385;
             p->scale.y = 0x385;
             p->scale.z = 0x385;
-            self->unk_38->alpha = 0x1f;
-            NNSi_G3dModifyPolygonAttrMask(self->unk_38->unk_04, 1, 0x1f0000);
-            self->unk_40->timer = 0;
-            self->unk_40->state++;
+            self->model->alpha = 0x1f;
+            NNSi_G3dModifyPolygonAttrMask(self->model->mdl, 1, 0x1f0000);
+            self->fsm->timer = 0;
+            self->fsm->st++;
         }
         break;
     case 2:
@@ -283,19 +283,19 @@ void func_ov011_02205bc4(Ov011Act7da4 *self) {
             g = data_ov000_021ccd54;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
-            self->unk_40->timer = 0;
-            self->unk_40->state++;
+            self->fsm->timer = 0;
+            self->fsm->st++;
         }
         break;
     case 3:
         st->timer++;
         if (st->timer > 0x78 && Ov011_GameIdle()) {
-            Ov011Sub44 *q;
+            ActorSub44 *q;
             self->unk_ea_6 = 0;
             q = self->unk_44;
             q->unk_22_0 = 1;
             q->unk_22_1 = 1;
-            func_ov000_02198360(self->unk_40, 1, 0);
+            func_ov000_02198360(self->fsm, 1, 0);
         }
         break;
     }

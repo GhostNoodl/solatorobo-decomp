@@ -3,22 +3,22 @@
 extern "C" {
 
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
-extern void func_ov000_021984f4(void *a, Ov014Vec *b, s32 c);
+extern void func_ov000_021984f4(void *a, VecFx32 *b, s32 c);
 
 void func_ov014_02209ecc(Ov014Act_02209280 *self) {
     u16 k = self->unk_b4;
     if (k != 100 && k != 110) {
-        self->unk_48->unk_60 = self->unk_6c >> 1;
-        self->unk_48->unk_38 = self->unk_64;
+        self->hit->offset.y = self->centerY >> 1;
+        self->hit->radius = self->radius;
     } else {
-        self->unk_48->unk_60 = 0x1000;
-        self->unk_48->unk_38 = 0x1000;
+        self->hit->offset.y = 0x1000;
+        self->hit->radius = 0x1000;
     }
-    func_ov000_0219864c(self->unk_48, 0, 0);
+    func_ov000_0219864c(self->hit, 0, 0);
 }
 
 void func_ov014_02209f24(Ov014Act_02209280 *self) {
-    Ov014Vec v;
+    VecFx32 v;
     u16 k;
     Ov014_VecCopy(&v, &self->pos);
     k = self->unk_b4;
@@ -50,14 +50,14 @@ static inline void Ov014SpawnB_Init(Ov014SpawnDescB *d, u16 k) {
     d->parent = -1;
 }
 
-extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, Ov014Vec *pos, u16 *rot, u16 a);
+extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, VecFx32 *pos, u16 *rot, u16 a);
 
 void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 kind) {
     Ov014SpawnDescB desc;
-    Ov014Vec pos;
+    VecFx32 pos;
     u16 rot[3];
     u16 b;
-    Ov014Actor *o;
+    Ov003Actor *o;
     Ov014SpawnB_Init(&desc, 0x481e);
     switch (kind) {
     case 5:
@@ -150,10 +150,10 @@ void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 kind) {
     if (o == NULL) {
         return;
     }
-    if (o->unk_4c != NULL) {
-        o->unk_4c->target = self->id;
+    if (o->targetObj != NULL) {
+        o->targetObj->target = self->id;
     }
-    o->unk_90 = 0xffff;
+    o->target = 0xffff;
     o->flags_0 = 1;
     self->target_id = o->id;
 }

@@ -4,13 +4,14 @@ extern "C" {
 
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 
-void func_ov009_02211f44(Ov009Actor *self) {
-    u8 *p = FLD(u8 *, self->unk_04, 0x2c);
+void func_ov009_02211f44(Ov003Actor *self) {
+    u8 *p = FLD(u8 *, self->prev, 0x2c);
     s32 v;
     if (p == NULL) {
         return;
     }
-    if (self->unk_08 & 0x10) {
+    // This method reads 0x04 as an owner and 0x08 as flag bits, not as Actor::prev/next.
+    if ((u32)self->next & 0x10) {
         v = self->unk_ae;
     } else {
         v = -1;
@@ -20,7 +21,7 @@ void func_ov009_02211f44(Ov009Actor *self) {
     }
 }
 
-void func_ov009_02211f84(Ov009Actor *self) {
+void func_ov009_02211f84(Ov003Actor *self) {
     FLD(void *, self, 0x24) = (void *)func_ov009_02211f44;
     self->unk_92 = 3;
 }
@@ -29,7 +30,7 @@ extern char data_ov009_022179c0[];
 extern char data_ov009_022179c7[];
 extern char data_ov009_022179d1[];
 extern char data_ov009_022179d8[];
-extern s32 func_ov000_021909a8(Ov009Sub38 *m, const char *a, const char *b);
+extern s32 func_ov000_021909a8(Model0218fe1c *m, const char *a, const char *b);
 extern void NNS_G3dRenderObjSetInitFunc(void *p, void *cb);
 extern void func_0203f2b8(void *p);
 extern u8 *func_0206fef8(void *res);
@@ -42,7 +43,7 @@ extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_ov000_0218b700(u8 *p, s32 a, s32 b);
 struct Ov009Mtx43b {
     s32 m[9];
-    Ov009Vec t;
+    VecFx32 t;
 };
 
 struct Ov009Bit8 {
@@ -51,7 +52,7 @@ struct Ov009Bit8 {
 };
 
 void func_ov009_02211f9c(Ov009ActSpin *self) {
-    Ov009Sub38 *m;
+    Model0218fe1c *m;
     u8 *c;
     u32 *o;
     u32 v;
@@ -60,27 +61,27 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
     func_ov003_021d112c(self);
     switch (self->kind) {
     case 0x504f:
-        self->unk_f4 = func_ov000_021909a8(self->unk_38, data_ov009_022179c0, data_ov009_022179c7);
+        self->unk_f4 = func_ov000_021909a8(self->model, data_ov009_022179c0, data_ov009_022179c7);
         break;
     case 0x5050:
-        self->unk_f4 = func_ov000_021909a8(self->unk_38, data_ov009_022179d1, data_ov009_022179d8);
+        self->unk_f4 = func_ov000_021909a8(self->model, data_ov009_022179d1, data_ov009_022179d8);
         break;
     }
     MTX_Identity43_((MtxFx43 *)(&self->unk_f8));
-    m = self->unk_38;
+    m = self->model;
     NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov009_02211f84);
-    m->unk_c2_5 = 0;
-    self->unk_38->unk_c2_8 = 1;
-    self->unk_38->unk_50 = &self->unk_f4;
+    m->clearInit = 0;
+    self->model->flushVP = 1;
+    self->model->renderUser = &self->unk_f4;
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
-    if (self->unk_48 != NULL) {
-        Ov009Sub48 *d = self->unk_48;
+    if (self->hit != NULL) {
+        ActorSub48 *d = self->hit;
         if (d != NULL) {
             func_0203f2b8(d);
             Heap_Free(d);
         }
-        self->unk_48 = NULL;
+        self->hit = NULL;
     }
     data_02097dd0->cur = saved;
     c = func_0206fef8((void *)self->kind);
@@ -91,10 +92,10 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
         if (q != NULL) {
             HitMesh_Init(q);
         }
-        self->unk_58 = q;
+        self->hitMesh = q;
         o = FLD(u32 *, self->unk_34, 0x84);
-        HitMesh_SetRes(self->unk_58, o != NULL ? *o : 0);
-        HitMesh_SetScale(self->unk_58, FLD(s16, c, 0x10));
+        HitMesh_SetRes(self->hitMesh, o != NULL ? *o : 0);
+        HitMesh_SetScale(self->hitMesh, FLD(s16, c, 0x10));
         {
             void *obj;
             Ov009Mtx43b t;
@@ -103,10 +104,10 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
             u16 ry;
             u16 rz;
             BOOL set = FALSE;
-            rz = self->rot[2];
-            obj = self->unk_58;
-            ry = self->rot[1];
-            rx = self->rot[0];
+            rz = self->rot_z;
+            obj = self->hitMesh;
+            ry = self->rot_y;
+            rx = self->rot_x;
             MTX_Identity43_((MtxFx43 *)&mt);
             if (rz != 0) {
                 MTX_RotZ43_((MtxFx43 *)&mt, OV009_SIN(rz), OV009_COS(rz));
@@ -135,7 +136,7 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
             mt.t.z = self->pos.z;
             HitMesh_SetMtx(obj, &mt);
         }
-        HitMesh_Link(self->unk_58);
+        HitMesh_Link(self->hitMesh);
     }
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {

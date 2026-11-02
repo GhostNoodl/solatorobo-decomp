@@ -55,7 +55,7 @@ void Actor_Tick(Actor *self) {
             b->b6 = 1;
         }
         if (self->unk_44 != NULL) {
-            ActorSub44 *s = (ActorSub44 *)self->unk_44;
+            ActorSub44 *s = self->unk_44;
             s->unk_22_1 = s->unk_22_0;
         }
         Actor_ProcessMsgs(self);

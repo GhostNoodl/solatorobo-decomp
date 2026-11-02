@@ -3,7 +3,6 @@
 extern "C" {
 
 extern const s16 data_ov011_0220726e[4];
-void func_ov003_021d112c(void *self);
 void *History_Init(void *p);
 void *func_ov011_02201510(void *p);
 void *func_ov011_02201c18(void *p);
@@ -11,7 +10,6 @@ void Ov011Mov_Init(void *p);
 void *Ov011Vt_022079b0_Ctor(void *p);
 BOOL func_ov011_021fd4d8(void *p, void *owner);
 BOOL func_020621c4(void);
-void func_ov003_021d6bac(void *p, const void *data);
 
 void Ov011SceneActor_Start(Ov011SceneActor *self) {
     Ov011Scene *p;
@@ -62,42 +60,42 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
         s->b2 = 1;
         s->timer = 0;
     }
-    self->unk_48->unk_30 = 0x60000000;
-    self->target = ((Ov011Obj *)func_ov000_0219bf90())->id;
+    self->hit->unk_30 = 0x60000000;
+    self->target = ((Actor *)func_ov000_0219bf90())->id;
     if (func_020621c4()) {
         func_ov003_021d6bac(self, data_ov011_0220726e);
     }
-    self->unk_15 = 2;
+    self->mode = 2;
 }
 
 extern void *data_02097e4c;
 extern const char *const data_ov011_02207258;
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
-BOOL func_ov003_021d1c00(Ov011Actor *self, Ov011ActMsg *msg);
+BOOL func_ov003_021d1c00(Ov003Actor *self, Ov011ActMsg *msg);
 
 
 BOOL func_ov011_021ff084(Ov011SceneActor *self, Ov011ActMsg *msg) {
     if (msg->type == 0xe) {
         switch (msg->cmd) {
         case 1: {
-            Ov011Sub40 *st;
+            ActorSub40 *st;
             s32 sub = msg->u.arg;
             if (sub == 0) {
                 st = &self->unk_104->seq;
-                if (st->unk_13 == 0) {
+                if (st->current == 0) {
                     st->flags |= 2;
                     func_0204a028(data_02097e4c, 9, &self->pos, -2);
                 }
             } else if (sub == 1) {
                 st = &self->unk_104->seq;
-                if (st->unk_13 == 1) {
+                if (st->current == 1) {
                     st->flags |= 4;
                     func_02049f44(data_02097e4c, 0x5b, &self->pos, 0);
                 }
             } else if (sub == 2) {
                 st = &self->unk_104->seq;
-                if (st->unk_13 == 2) {
+                if (st->current == 2) {
                     st->flags |= 8;
                 }
             }
@@ -125,12 +123,12 @@ BOOL func_ov011_021ff084(Ov011SceneActor *self, Ov011ActMsg *msg) {
                 s->b1 = 0;
                 s->b2 = 0;
                 s->timer = 0;
-                func_ov000_02190cb0(self->unk_38, data_ov011_02207258, 0x1000, 0);
-                func_ov000_021915a0(self->unk_38);
+                func_ov000_02190cb0(self->model, data_ov011_02207258, 0x1000, 0);
+                func_ov000_021915a0(self->model);
             }
             break;
         }
-        self->unk_30 |= 1 << msg->type;
+        self->msg_flags |= 1 << msg->type;
         msg->type = 0;
         return TRUE;
     }

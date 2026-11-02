@@ -2,10 +2,10 @@
 
 extern "C" {
 
-extern Ov009Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *func_ov000_0219bf90(void);
 struct Ov009AngSrc3 {
     u8 unk_00[0x10];
-    Ov009Vec pos;
+    VecFx32 pos;
     u8 unk_1c[0x24];
     u16 unk_40;
     u8 unk_42[2];
@@ -35,24 +35,24 @@ void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
         break;
     }
     case 1:
-        self->unk_a0 = 0x466;
-        func_ov000_02198360(self->unk_40, 0x20, 0);
+        self->velY = 0x466;
+        func_ov000_02198360(self->fsm, 0x20, 0);
         break;
     case 2: {
-        Ov009Actor *t = func_ov000_0219bf90();
+        Ov003Actor *t = func_ov000_0219bf90();
         if (t != NULL) {
-            u16 r = t->rot[1];
+            u16 r = t->rot_y;
             u16 a = r + Rand_PlusMinus(0x1000);
             s64 k = 0x333;
             self->pos.x = t->pos.x;
             self->pos.y = t->pos.y;
             self->pos.z = t->pos.z;
-            self->unk_9c = (s32)((OV009_SIN(a) * k + 0x800) >> 12);
-            self->unk_a4 = (s32)((OV009_COS(a) * k + 0x800) >> 12);
-            self->unk_a0 = 0x266;
-            VEC_MultAdd(0x28000, (Ov009Vec *)&self->unk_9c, &self->pos, &self->pos);
+            self->speed = (s32)((OV009_SIN(a) * k + 0x800) >> 12);
+            self->friction = (s32)((OV009_COS(a) * k + 0x800) >> 12);
+            self->velY = 0x266;
+            VEC_MultAdd(0x28000, (VecFx32 *)&self->speed, &self->pos, &self->pos);
         }
-        func_ov000_02198360(self->unk_40, 0x20, 0);
+        func_ov000_02198360(self->fsm, 0x20, 0);
         break;
     }
     }
@@ -82,17 +82,17 @@ extern void *data_0214a420;
 extern void EffectMgr_Kill(void *mgr, s32 h);
 
 void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
-    Ov009Vec t;
-    Ov009Actor *pl;
+    VecFx32 t;
+    Ov003Actor *pl;
     self->unk_93_4 = 0;
-    if (*self->unk_50 == 0) {
+    if (*self->hp == 0) {
         return;
     }
     pl = func_ov000_0219bf90();
     if (pl == NULL) {
         return;
     }
-    self->unk_90 = pl->id;
+    self->target = pl->id;
     switch (self->unk_b4) {
     case 0: {
         BOOL blocked = FALSE;
@@ -105,7 +105,7 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
         self->unk_f0 = 0;
         if (FLD(Ov009PlB22, pl, 0xb22).b0 != 3 && FLD(Ov009PlB22, pl, 0xb22).b0 != 4) {
             self->unk_f0 = 1;
-            if (pl->unk_48 != NULL && (pl->unk_48->unk_50 & 0x20000000)) {
+            if (pl->hit != NULL && (pl->hit->unk_50 & 0x20000000)) {
                 if (Ov009_GameIdle()) {
                     go = TRUE;
                 } else {
@@ -119,7 +119,7 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
         if (go) {
             self->unk_b6++;
             if (self->unk_b6 > self->unk_f2) {
-                self->unk_40->flags |= 0x8000;
+                self->fsm->flags |= 0x8000;
                 self->unk_b4++;
             }
         } else {
@@ -132,7 +132,7 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
             ang = Ov009_GetAng3(g);
         }
         if (blocked) {
-            ang = pl->rot[1];
+            ang = pl->rot_y;
         }
         a = FX_Atan2(self->pos.x - t.x, self->pos.z - t.z);
         d = a - ang;
@@ -158,8 +158,8 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
         }
         t.x += FX_Mul(dist, OV009_SIN(a));
         t.z += FX_Mul(dist, OV009_COS(a));
-        if (!Hit_DiffInSphere(&self->pos, &t, self->unk_64 + 0x400)) {
-            self->unk_40->flags |= 4;
+        if (!Hit_DiffInSphere(&self->pos, &t, self->radius + 0x400)) {
+            self->fsm->flags |= 4;
             self->unk_b8 = t;
         }
         break;
@@ -167,24 +167,24 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
     case 1:
         if (Ov009_GameIdle()) {
             self->unk_93_4 = 1;
-            if (self->unk_40->unk_13 != 0xf) {
+            if (self->fsm->current != 0xf) {
                 self->unk_b6 = Rand_UpTo(0x3c);
                 self->unk_b4 = 0;
             }
         }
         break;
     }
-    if (self->unk_40->unk_13 == 0xf) {
+    if (self->fsm->current == 0xf) {
         return;
     }
     if (self->unk_f8 != 0) {
         EffectMgr_Kill(data_0214a420, self->unk_f8);
         self->unk_f8 = 0;
     }
-    if (self->rot[0] == 0) {
+    if (self->rot_x == 0) {
         return;
     }
-    self->rot[0] = func_01ffc128(0, self->rot[0], 0x19a, 1, 0x8000);
+    self->rot_x = func_01ffc128(0, self->rot_x, 0x19a, 1, 0x8000);
 }
 
 }

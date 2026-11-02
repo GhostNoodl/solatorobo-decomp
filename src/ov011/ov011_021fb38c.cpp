@@ -103,7 +103,7 @@ void *func_ov011_02201254(void *self);
 void func_ov011_021fb38c(Ov011Mgr *self) {
     Ov011Node *n;
     Ov011Ent *e;
-    Ov011Obj *owner = self->list->actor;
+    Actor *owner = self->list->actor;
     if (self->state == 0) {
         Ov011Ent_LerpD(self->ent, 0x2000 + 0x4800, 0x2000, 40);
         Ov011Ent_LerpB(self->ent, 0x3800 - 0x3333, 0x3333, 40);
@@ -112,7 +112,7 @@ void func_ov011_021fb38c(Ov011Mgr *self) {
         return;
     }
     for (n = self->list->head; n != NULL; n = n->next) {
-        Ov011Obj *a = Ov011_FindActor(n->id);
+        Actor *a = Ov011_FindActor(n->id);
         if (func_ov011_02201244(a)) {
             e = self->ent;
             if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {

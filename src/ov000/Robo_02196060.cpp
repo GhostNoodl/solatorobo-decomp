@@ -48,7 +48,7 @@ void func_ov000_02196060(ActorEx *self) {
         }
         self->moveYaw = self->rot_y;
         {
-            u8 *q = self->unk_44;
+            ActorSub44 *q = self->unk_44;
             LFLD(Bits02196060, self->unk_44, 0x22).b0 = 1;
             LFLD(Bits02196060, q, 0x22).b1 = 1;
         }

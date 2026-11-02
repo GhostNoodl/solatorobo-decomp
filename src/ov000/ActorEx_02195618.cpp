@@ -70,7 +70,7 @@ void func_ov000_02195618(ActorEx *self) {
             func_ov000_0219af3c((u8 *)self, self->unk_5c);
             if (!self->unk_cc_7) {
                 s32 r;
-                u8 *hit = self->unk_44;
+                ActorSub44 *hit = self->unk_44;
                 if (hit != NULL) {
                     pos = *(VecFx32 *)hit;
                     if (LFLD(B22_02195618, hit, 0x22).b4) {

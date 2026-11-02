@@ -3,9 +3,9 @@
 extern "C" {
 
 void Ov009ActVt_022172e4_Start(Ov009ActVt_022172e4 *self) {
-    Ov009Sub44 *s44;
+    ActorSub44 *s44;
     func_ov003_021d112c(self);
-    self->unk_fc = self->rot[1];
+    self->unk_fc = self->rot_y;
     self->unk_f0 = self->pos;
     self->unk_b8 = self->pos;
     self->unk_ea |= 0x1000;
@@ -23,28 +23,28 @@ struct Ov009RotS {
 };
 
 extern void *data_02097e4c;
-extern Ov009Actor *func_ov000_0219bf90(void);
-extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b);
-extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
-extern void func_0203f364(Ov009Sub48 *p);
-extern BOOL func_01ffc624(const Ov009Vec *a, const Ov009Vec *b, Ov009RotS *r, s32 c, s32 d);
+extern Ov003Actor *func_ov000_0219bf90(void);
+extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
+extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
+extern void func_0203f364(ActorSub48 *p);
+extern BOOL func_01ffc624(const VecFx32 *a, const VecFx32 *b, Ov009RotS *r, s32 c, s32 d);
 
 void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
-    Ov009Vec v;
+    VecFx32 v;
     Ov009RotS r;
-    Ov009Actor *pl;
-    Ov009Sub40 *s = self->unk_40;
-    u8 st = s->unk_13;
+    Ov003Actor *pl;
+    ActorSub40 *s = self->fsm;
+    u8 st = s->current;
     if (st != 0x15) {
-        u32 f = self->unk_48->unk_50;
-        if ((f & 0x20000000) && (!(f & 0x400) || st == 0x13) && self->unk_4c->target == 0xffff) {
+        u32 f = self->hit->unk_50;
+        if ((f & 0x20000000) && (!(f & 0x400) || st == 0x13) && self->targetObj->target == 0xffff) {
             s->flags |= 0x200000;
             func_02049f44(data_02097e4c, 0x6c, &self->pos, 0);
             return;
         }
     }
     {
-        Ov009Sub48 *s48 = self->unk_48;
+        ActorSub48 *s48 = self->hit;
         s48->unk_9a_0 = 0;
         s48->unk_9a_3 = 0;
         func_0203f364(s48);
@@ -53,14 +53,14 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
         return;
     }
     {
-        Ov009Sub44 *s44 = self->unk_44;
+        ActorSub44 *s44 = self->unk_44;
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
     }
-    self->unk_90 = 0xffff;
+    self->target = 0xffff;
     pl = func_ov000_0219bf90();
     if (pl != NULL) {
-        self->unk_90 = pl->id;
+        self->target = pl->id;
     }
     v = self->unk_b8;
     switch (self->unk_b4) {
@@ -73,7 +73,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
         }
         break;
     case 1:
-        if ((self->unk_48->unk_50 & 0x40000000) || Hit_DiffInSphere(&self->pos, &v, self->unk_64 + 0xc00)) {
+        if ((self->hit->unk_50 & 0x40000000) || Hit_DiffInSphere(&self->pos, &v, self->radius + 0xc00)) {
             {
                 s32 z = Rand_PlusMinus(0x800) + 0x2400;
                 v.x = 0;
@@ -86,7 +86,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
             self->unk_b6 = Rand_UpTo(0x1e) + 0x14;
             self->unk_b4 = 10;
         } else {
-            self->unk_40->flags |= 4;
+            self->fsm->flags |= 4;
         }
         break;
     case 10:
@@ -98,7 +98,7 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
         }
         break;
     case 11:
-        if ((self->unk_48->unk_50 & 0x40000000) || Hit_DiffInSphere(&self->pos, &v, self->unk_64 + 0xc00)) {
+        if ((self->hit->unk_50 & 0x40000000) || Hit_DiffInSphere(&self->pos, &v, self->radius + 0xc00)) {
             {
                 s32 z = Rand_PlusMinus(0x800) + 0x2400;
                 v.x = 0;
@@ -111,11 +111,11 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
             self->unk_b6 = Rand_UpTo(0x1e) + 0x14;
             self->unk_b4 = 0;
         } else {
-            self->unk_40->flags |= 4;
+            self->fsm->flags |= 4;
         }
         break;
     }
-    if ((u8)(self->unk_40->unk_13 + 0xff) > 1) {
+    if ((u8)(self->fsm->current + 0xff) > 1) {
         return;
     }
     {
@@ -124,10 +124,10 @@ void Ov009ActVt_022172e4_Update(Ov009ActVt_022172e4 *self) {
         r.y = ry;
         r.z = 0;
     }
-    if (!func_01ffc624(&pl->pos, &self->pos, &r, pl->unk_64 + 0x1800, 0x6000)) {
+    if (!func_01ffc624(&pl->pos, &self->pos, &r, pl->radius + 0x1800, 0x6000)) {
         return;
     }
-    self->unk_40->flags |= 0x8000;
+    self->fsm->flags |= 0x8000;
 }
 
 }

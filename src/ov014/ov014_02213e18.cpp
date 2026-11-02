@@ -15,7 +15,7 @@ struct Ov014Watch {
 extern "C" {
 
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
-extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 
 BOOL func_ov014_02213e18(Ov014Watch *self);
@@ -29,7 +29,7 @@ BOOL func_ov014_02213cfc(Ov014Watch *self) {
     BOOL r;
     for (i = 0; i < 2; i++) {
         u16 id = self->ids[i];
-        Ov014Actor *a = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
+        Ov003Actor *a = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
         if (a != NULL) {
             n++;
         } else {
@@ -126,7 +126,7 @@ BOOL func_ov014_02213f74(Ov014Watch *self) {
     case 1:
         if (self->ids[0] != 0xffff) {
             u8 b = 0x42;
-            Ov014Actor *o;
+            Ov003Actor *o;
             u16 id;
             ActorMgr_SendMsg(self->ids[0], 0xffff, 6, 0, 1, &b);
             id = self->ids[0];
@@ -151,7 +151,7 @@ BOOL func_ov014_02213f74(Ov014Watch *self) {
     case 3:
         if (self->ids[1] != 0xffff) {
             u8 c = 2;
-            Ov014Actor *o;
+            Ov003Actor *o;
             u16 id;
             ActorMgr_SendMsg(self->ids[1], 0xffff, 6, 0, 1, &c);
             id = self->ids[1];
@@ -192,7 +192,7 @@ BOOL func_ov014_02214138(Ov014Watch *self) {
     case 1:
         if (self->ids[0] != 0xffff) {
             u8 b = 0x42;
-            Ov014Actor *o;
+            Ov003Actor *o;
             u16 id;
             ActorMgr_SendMsg(self->ids[0], 0xffff, 6, 0, 1, &b);
             id = self->ids[0];
@@ -217,7 +217,7 @@ BOOL func_ov014_02214138(Ov014Watch *self) {
     case 3:
         if (self->ids[1] != 0xffff) {
             u8 c = 2;
-            Ov014Actor *o;
+            Ov003Actor *o;
             u16 id;
             ActorMgr_SendMsg(self->ids[1], 0xffff, 6, 0, 1, &c);
             id = self->ids[1];

@@ -4,7 +4,7 @@ extern "C" {
 
 extern void func_ov000_021984f4(void *a, void *b, s32 c);
 
-void func_ov009_02212668(Ov009Actor *self) {
+void func_ov009_02212668(Ov003Actor *self) {
     if (self->unk_44 == NULL) {
         return;
     }
@@ -15,7 +15,7 @@ extern char data_ov009_022179b4[];
 extern void func_ov000_021911c8(void *model, s32 a);
 
 void func_ov009_0221268c(Ov009ActSpin *self) {
-    Ov009Vec d;
+    VecFx32 d;
     s32 x, y, z;
     int s;
     x = self->unk_134.x;
@@ -26,9 +26,9 @@ void func_ov009_0221268c(Ov009ActSpin *self) {
     d.y = y - self->pos.y;
     d.z = z - self->pos.z;
     VEC_MultAdd(0x7b, &d, &self->pos, &self->pos);
-    func_ov000_02190cb0(self->unk_38, data_ov009_022179b4, 0x2ab, 0);
-    func_ov000_021915a0(self->unk_38);
-    func_ov000_021911c8(self->unk_38, 0x99a);
+    func_ov000_02190cb0(self->model, data_ov009_022179b4, 0x2ab, 0);
+    func_ov000_021915a0(self->model);
+    func_ov000_021911c8(self->model, 0x99a);
 }
 
 }

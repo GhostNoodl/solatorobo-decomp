@@ -14,7 +14,7 @@ void func_ov011_021fd4a4(Ov011Sub1b4 *self) {
 extern BOOL func_ov011_02201578(void *p);
 extern BOOL func_ov011_021fa720(void *e, s32 a, s32 b, s32 c, s32 d);
 
-BOOL func_ov011_021fd4d8(Ov011Scene *self, Ov011Obj *owner) {
+BOOL func_ov011_021fd4d8(Ov011Scene *self, Actor *owner) {
     self->b0 = 1;
     self->b1 = 0;
     self->b2 = 1;
@@ -132,7 +132,7 @@ static inline void Ov011Sub1b4_Update(Ov011Sub1b4 *s) {
     if (!s->b1) {
         return;
     }
-    key = s->seq.unk_13;
+    key = s->seq.current;
     for (i = 0; i < 5; i++) {
         if (key == data_ov011_02207308[i].key && *(s32 *)&data_ov011_02207308[i].fn != 0) {
             (s->*data_ov011_02207308[i].fn)();
@@ -175,7 +175,7 @@ void func_ov011_021fd638(Ov011Scene *self) {
     while (n != NULL) {
         next = n->next;
         if (!func_ov003_021d7814(n)) {
-            Ov011Obj *a = Ov011_FindActor(n->id);
+            Actor *a = Ov011_FindActor(n->id);
             if (a != NULL) {
                 Ov011Ent_Remove(&self->ent, func_ov011_02201254(a));
                 func_ov011_02201214(a, NULL);
@@ -187,7 +187,7 @@ void func_ov011_021fd638(Ov011Scene *self) {
     }
     {
         u32 i;
-        u8 key = self->seq.unk_13;
+        u8 key = self->seq.current;
         for (i = 0; i < 10; i++) {
             if (key == data_ov011_022073a0[i].key && *(s32 *)&data_ov011_022073a0[i].fn != 0) {
                 (((Ov011Top *)self)->*data_ov011_022073a0[i].fn)();

@@ -3,7 +3,7 @@
 extern "C" {
 
 extern void *data_ov013_0220bd2c;
-extern Ov013Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *func_ov000_0219bf90(void);
 
 Ov013Act_02207968 *Ov013Act_02207968_Ctor(Ov013Act_02207968 *self) {
     func_ov003_021d0c1c(self);
@@ -23,22 +23,22 @@ Ov013Act_02207968 *Ov013Act_02207968_Ctor(Ov013Act_02207968 *self) {
     return self;
 }
 
-void Ov013Act_02207968_Start(Ov013Actor *self) {
-    Ov013Sub48 *m;
-    Ov013Actor *p;
+void Ov013Act_02207968_Start(Ov003Actor *self) {
+    ActorSub48 *m;
+    Ov003Actor *p;
     func_ov003_021d112c(self);
     self->pos.x = -0x3000;
     self->pos.y = -0x32000;
     self->pos.z = -0x8000;
-    Ov013_VecSet(&FLD(Ov013Vec, self->unk_48, 0x5c), 0, -0x4cd, 0);
-    m = self->unk_48;
+    Ov013_VecSet(&FLD(VecFx32, self->hit, 0x5c), 0, -0x4cd, 0);
+    m = self->hit;
     m->unk_9a_1 = 0;
     m->unk_9a_4 = 0;
-    Ov013_VecSet(&FLD(Ov013Vec, self->unk_44, 0xc), 0, -0x4cd, 0);
-    self->unk_90 = 0xffff;
+    Ov013_VecSet(&FLD(VecFx32, self->unk_44, 0xc), 0, -0x4cd, 0);
+    self->target = 0xffff;
     p = func_ov000_0219bf90();
     if (p != NULL) {
-        self->unk_90 = p->id;
+        self->target = p->id;
     }
     self->unk_93_4 = 1;
     self->unk_94_1 = 1;

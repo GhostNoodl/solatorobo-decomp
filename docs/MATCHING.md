@@ -7613,3 +7613,58 @@ Fixes of names that the fnA/fnB field names contradicted, and a second function-
 - **Plain functions named from named fields or calls (Main).** Heap: `Heap_AllocHi`/`AllocLo`/`FreeHi`/`FreeLo` (`0203de84`/`dec8`/`df0c`/`df40`, the interrupt-guarded calls on `heapHi`/`heapLo`), `Heap_SetCurrentHi`. Singleton create/delete pairs (the delete switches to `heapHi`): `GfxSys_Create`, `Movie_Create`, `Wh_Create`, `EffectMgr_Create`/`Delete`, `MsgRes_Create`/`Delete`, `LangData_CreateRes`/`DeleteRes`, `LangRes2_Create`/`Delete`, `StageFlags_Create`. Effects: `EffectMgr_Kill` (`state = 4` by id; the ov010 fx handles are freed with it), `EffectMgr_StopLoop`/`EffectObj_StopLoop` (`loopCount = 0` down the child chain), `EffectMgr_SaveList`/`RestoreList`, `EffectMgr_Contains`, `EffectMgr_FreeAll`, `Effect3D_Create`, `Effect3D_SetFrame`, `EffectGroup_Reset`/`SetName`, `EffectObj_AddSndCue`, `EffectPartSet_Init`/`AddSlot`/`Accel`/`AddSpeed`, `EffectEmitter_Reset`/`ResetParams`, `EffectSetup_Init`. Gfx/text: `GfxMgr_NextCell`, `GfxMgr_GetFont` (the font of `unk_004`, cast to `NNSG2dFont`), `GfxSys_FreeSlots`, `Gfx3DState_Init`, `GfxCamPos_Init`, `PlttRes_Load`, `Camera_SetAnim`, `TextWin_InitLines`, `Model_GetName`, `Model_SetColorRGB`, `Model_MovePos`, `Obj3DLayer_SetCur`, `SlideCtrl_Lock`/`Unlock`, `FieldMsg_IsBusy`, `Field_ClearEvent`, `Field_IsEventQueued`. Hit (ITCM): `Hit_DiffInBox`/`DiffInSphere`/`DiffInCylinder`, `HitAabb_Overlap`, `HitSegQuery_CalcBox`, `HitSegLocal_Transform`, `HitSphereLocal_Transform`, `HitSphereMeshQuery_ToLocal`, `HitMesh_Init`/`Detach`. Res/save/sound/net: `ResList_Dtor`/`FindPath`, `ResMgr_ReleaseList`, `StageRes_IsAllLoaded`, `Tbl_GetEntryData`, `NamedTable_Find`, `Lang_GetGroup`, `SaveBase_AllocBuffers`/`FreeBuffers` (SaveBase slots 0x08/0x18), `StageFlags_IsValid`/`CountEntries`, `SndMgr_PauseAll` (the pair of `SndMgr_ResumeAll`), `SndMgr_FreeFileBuf`, `SndMgr_LoadHeapState`, `SndQueue_StopSeqArcs`, `Movie_Load`/`RequestStop`/`ReleaseBlock`, `Wh_End`/`SelectChannel`/`SetEntry`, `Math_DirToAngles`.
 - **Plain functions (overlays).** ov000: `Actor_MoveByPad`, `Actor_TurnClamped`, `ActorMgr_BroadcastKind`, `ActorGroup_BroadcastKind`, `Task_FindById`, `MessageQueue_Init`/`FreeBuffer`/`RemoveAll`, `Group_FindById`, `History_Init` (the `ActorSub40` reset), `Body_SetPos`, `Filter_Apply`, `ListOwner_GetNth`, `Shadow_Load`, `Obj0218c208_AddPoint`. ov003: `Ov003Pool_Alloc`/`Release`/`Dtor`, `Ov003Group_Release`/`Dtor`, `Ov003FxList_Has`/`Get`/`Kill`/`KillAll`, `Ov003Vec_YawTo`/`MultAdd`/`DirXZ`, `Ov003Mover_Start`, `Ov003StateMachine_IsState`, `Ov003Sequence_Update`/`HasEntries`, `Ov003TickerSet_Init`, `Ov003ScriptList_Init`, `Ov003NodeSrc_NewNode`. ov006: `ov006_SlotManager_CountActive`/`InitSlot`, `ov006_CaptionSet_SetText`, `ov006_Menu_FindNode`/`ClearEntries`/`SetEntryAt`/`SetOwnEntry`. ov008: `Ov008Mgr_Delete`. ov010: `Ov010Coll_Init`/`Release`/`Dtor`/`SetHandler`/`ClearHandler`/`IsFree`, `Ov010BeamSet_Stop`/`IsDone`, `Ov010TaskList_Init`. ov011: `Ov011TwB_Start`. ov015: `Ov015Fade_Start`/`ToClear`/`ToOpaque`/`Reset` (the `alphaFrom`/`alphaTo`/`duration` setters of `Ov015Fade_Update`), `Ov015Fish_SetNextState`, `Ov015CamPair_Init`.
 - **Not named:** the actor slots above `0x2c` (still no names defined), the Stage command handlers, wrappers that are out-of-line copies of a same-named inline (`HitSphere_Unlink`, `StageFlags_ClearEntries`, `DataRes_ReadBits`, ...), getters and setters of fields that are still `unk_*`, and data-resource singletons whose only identity is an asset file name.
+
+### Round shA (one actor hierarchy)
+
+The ov009..ov014 actor classes now derive from the shared ov000 classes and a new `Ov003Actor`, instead of each overlay's own copies of the actor layout. Every object is the same: each `build/usa` object (1906) was compared function by function (code bytes and relocations) with a baseline built at the upstream HEAD the work was rebased on. The 30 `NONMATCHING` drafts compiled with `NONMATCHING` give the same disassembly and relocations as before. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` 8138 matched (unchanged), `check_drafts.py --score` exit 0. `tools/declaudit.py` at the base and after: `--scope hh` 50 -> **40** (all 13 `func_ov003_021d*` header/header conflicts gone), `--scope hs` 617 -> 634, all scopes 1912 -> 1916. The `hs` and tree-wide rises are 13 more ov003 functions that are now declared in a header with `Ov003Actor *` while their ov003 definitions still take local views (`Ov003En`, `Ov003Kb`, `Ov003FxActor`, ...): the same conflict as before, now between a header and a source rather than two sources. Two more are `Ov003SubD0` against the `ov003_021d0ba8.c` local struct, and `ActorSub44`/`ActorSub4c`, which ov010 TUs see with their own `VecFx32` view (like `ActorSub48` already). All of them go away once the ov003 sources and ov010 use the shared types.
+
+- **Hierarchy.**
+  - `Actor` (ov000, 0xac) and `ActorEx` (0xd0) as before.
+  - **`Ov003Actor : Actor`** (0xf0, ctor `func_ov003_021d0c1c`) is in the new `include/ov003/Actor.h`, with `Ov003Param` (`unk_b0`) and `Ov003SubD0` (`unk_d0`). The 0xea word is a union of the whole `u16` and its bitfields, because several ov009 members or it as a whole.
+  - Every `OvNNNAct*`/`OvNNNMulti`/`Boss`/`Lift`/`Spin`/... class in ov009, ov011, ov012, ov013 and ov014 is now `: public Ov003Actor` or `: public ActorEx`, and keeps only its own fields from 0xf0/0xd0 on.
+  - ov011's `Ov011Npc` and `Ov011Player` were `Ov011Obj` (0xcc). They are `: public Actor` with their 0xac..0xcb fields written out, since they are not built by the ov003 ctor.
+- **Merged per-overlay types.** Each type below was deleted from `ov009.h`, `ov011.h`, `ov012.h`, `ov013.h` and `ov014.h` and replaced by the shared ov000 type it duplicated:
+  - `OvNNNObj`/`OvNNNActor` -> `Actor`/`Ov003Actor`; `OvNNNActorEx` -> `ActorEx`; `OvNNNParam` -> `Ov003Param`; `Ov012SubD0` -> `Ov003SubD0`.
+  - `OvNNNSub38` -> `Model0218fe1c`; `Sub40` -> `ActorSub40`; `Sub44` -> `ActorSub44`; `Sub48` -> `ActorSub48`; `Ov011Sub4c` -> `ActorSub4c`; `Ov011Sub3c` -> the new ov000 `ActorShadow` (`Actor::unk_3c`); `OvNNNVec` -> `VecFx32`.
+  - `OvNNNTarget` was a view of `Actor` and is gone.
+  - Where two names disagreed, the more meaningful one was kept, and fnA's/fxA's names were taken as they are on main:
+    - `Model0218fe1c`: `res`, `renderUser`, `rot` (the 0x2c..0x50 `MtxFx33`), `anim_state`.
+    - `Actor`: `flags_0..2` (0x16), `unk_94_*`.
+    - `ActorEx`: `param` (0xb0) and `res` (0xb4).
+    - `Ov003Actor::target_id` (0xde).
+    - Every overlay `vNN` method view became `vfunc_NN`.
+  - `Ov009ActModel`'s embedded model is `modelObj`, so it does not hide `Actor::model`.
+  - ov014's effect calls go through a small `Ov014Eff` view of `EffectObj` in `ov014.h` (`id`, `loopCount`, `SetScaleXYZ`, `AddPosXYZ`, `SetRotXYZ`, ...), because `Main/Effect/Effect.h` clashes with ov014's TU-local globals.
+- **Shared ov000 changes, all layout-neutral.**
+  - `ActorSub4c` is extended to its full 0x5c, with a `SIZE_ASSERT`.
+  - `ActorSub44` moved to `ActorParts.h`, with its 0x0c vector and 0x22 bits.
+  - `ActorSub48::unk_9a_0:3` is split into three 1-bit fields.
+  - `Actor::unk_18[4]` -> `s16 unk_18..1e`, and `unk_44` is typed `ActorSub44 *`.
+  - `Model0218fe1c` gains a 0xc2 union and `s16 anim_state`, which drops the `(s16)` casts in ov000.
+  - `ActorEx` gains `u16 unk_ce`.
+- **ov003 actor API declared once.** The 31 functions in `include/ov003/Actor.h` take `Ov003Actor *` (`func_ov003_021d0edc` keeps `void *`, since the ActorEx classes call it too). 177 per-TU and per-header redeclarations in ov009/ov011..ov014 were removed. That includes the `void *self` copies in ov011 and `ov012.h`, and with them all 13 `func_ov003_021d*` header/header conflicts that declaudit listed.
+  - `func_ov003_021d1c00`, `021d69a0`, `021d69f0` and `021da32c` stay TU-local, because their message/kind parameter types still differ by overlay.
+  - The remaining ov003 prototypes in the overlays take pools, fx lists and vectors (`void *`), not actors.
+  - The ov003 sources keep their local views of the actor; only `ov003_021d6cf4.cpp` includes the new header.
+- **Casts removed.**
+  - 142 actor casts: `(Actor *)`, `(OvNNNActor *)` and `(Ov011Obj *)` went from 185 to 43, now 10 `(Actor *)` and 33 `(Ov003Actor *)`.
+  - 14 vector casts in ov009..ov014.
+  - Every removal was made by `castrm.py` and checked by the object compare. The ones left are downcasts from `ActorMgr_GetActor`/`Group_SpawnActor`/`func_ov000_0219bf90` results (`void *`/`Actor *`) and casts of word arrays.
+- **Kept forms, with comments.**
+  - `ov009_021ff040`/`ov009_02211f44` read 0x04 as an owner and 0x08 as flag bits, not as `prev`/`next`, so they keep `(u32)self->next & 0x10`.
+  - `ov013_021fe948` keeps `static_cast<Ov003Actor *>(a->next)` (that group lists only ov003 actors).
+  - `ov013_0220b444` keeps `o->unk_60 = (void *)d` (the caller passes an `s32`).
+  - Whole-array uses of the old `rot` are `&rot_x`.
+- **ov015 (goal 3): none removed.** All 321 `(VecFx32 *)` casts convert an `Ov015Vec` (a different struct). Retyping it as `VecFx32` changes code (round hdB), so no removal there is codegen-neutral.
+- **Left:**
+  - ov010 still has `Ov010Obj` and its `Ov010Vec` view, and 178 TU-local `void *` ov003 prototypes. Its classes use a different 0xac.. layout and were not converted in this round.
+  - The ov003 sources' own actor views (`Ov003En`, `Ov003Kb`, `Ov003Dw`, ...) are not yet `Ov003Actor`.
+  - `Ov011Player` is probably a view of `Robo021ca458`.
+  - `ActorSub40` has both `st` and `state` names, in different views.
+  - The declaudit `record ActorSub44`/`ActorSub4c`/`ActorSub48` entries that remain are the ov010 `VecFx32` view artifact.
+- **Scratch:** the session scratchpad `shA/`.
+  - `cfix.py MAP DIR...`: clang-driven member renames from `Record old new` maps; run it with `-fno-spell-checking`, otherwise clang's typo correction renames the wrong members.
+  - `castrm.py TYPE DIR...`: drops a cast and restores it where clang errors.
+  - `conv.sh`, `vfix.py`, `api2.py`: the header conversion, local retyping and API dedup.
+  - `mksig.py`/`objsiglib.py`/`chk.sh`: the per-function object compare.
+  - `dcmp.sh`: the draft compare.

@@ -10,10 +10,10 @@ extern char data_ov014_02217c6c[];
 extern void EffectMgr_StopLoop(void *a, void *b);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_0219763c(void *self);
-extern Ov014Actor *Target_Get(void *p);
-extern Ov014Actor *func_ov000_0219bf90(void);
-extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s32 a, Ov014Actor **list);
-extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
+extern Ov003Actor *Target_Get(void *p);
+extern Ov003Actor *func_ov000_0219bf90(void);
+extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
+extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
 extern s32 **func_ov000_02190a30(void *a, s32 b);
 extern s32 func_ov000_02191318(void *a, s32 b);
 extern s32 func_ov000_02191f18(void *a, void *b);
@@ -63,32 +63,32 @@ Ov014ActEx_0220eca0 *Ov014ActEx_0220eca0_DtorDelete(Ov014ActEx_0220eca0 *self) {
 }
 
 void Ov014ActEx_0220eca0_Draw(Ov014ActEx_0220eca0 *self) {
-    self->unk_38->unk_c1 = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
+    self->model->polyId = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
     func_ov000_02194c08(self);
 }
 
 void Ov014ActEx_0220eca0_Start(Ov014ActEx_0220eca0 *self) {
-    Ov014Sub38 *m;
+    Model0218fe1c *m;
     func_ov000_02194758(self);
     FLD(s16, self, 0xce) = self->unk_18;
     self->unk_d0 = self->unk_1a << 4;
     self->unk_d4 = self->unk_1c << 4;
-    FLD(Ov014Flags, self->unk_38, 0xc2).b6 = 0;
-    func_ov000_02191920(self->unk_38, 0, 0x1000, 0);
-    FLD(Ov014Flags8, func_ov000_02190a30(self->unk_38, 3), 0x111).b3 = 0;
-    FLD(Ov014Flags8, func_ov000_02190a30(self->unk_38, 3), 0x111).b2 = 1;
-    func_ov000_02190cb0(self->unk_38, data_ov014_02217c6c, 0x1000, 1);
-    func_ov000_02191618(self->unk_38);
-    func_ov000_02191708(self->unk_38);
-    Ov014_VecSet(&self->unk_38->unk_a8, self->unk_d0, self->unk_d4, 0x99a);
-    self->unk_38->unk_e0 = (void *)func_ov014_0220ec18;
-    func_ov000_02198360(self->unk_40, 1, 0);
+    FLD(Ov014Flags, self->model, 0xc2).b6 = 0;
+    func_ov000_02191920(self->model, 0, 0x1000, 0);
+    FLD(Ov014Flags8, func_ov000_02190a30(self->model, 3), 0x111).b3 = 0;
+    FLD(Ov014Flags8, func_ov000_02190a30(self->model, 3), 0x111).b2 = 1;
+    func_ov000_02190cb0(self->model, data_ov014_02217c6c, 0x1000, 1);
+    func_ov000_02191618(self->model);
+    func_ov000_02191708(self->model);
+    Ov014_VecSet(&self->model->scale, self->unk_d0, self->unk_d4, 0x99a);
+    self->model->evFunc = (void *)func_ov014_0220ec18;
+    func_ov000_02198360(self->fsm, 1, 0);
 }
 
-extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
-extern BOOL func_ov000_021b4738(Ov014Actor *p);
+extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
+extern BOOL func_ov000_021b4738(Ov003Actor *p);
 
-extern void func_ov014_0220f20c(Ov014Obj *self, void *a, void *b, void *c);
+extern void func_ov014_0220f20c(Actor *self, void *a, void *b, void *c);
 
 static inline void Ov014_Flash(u8 c) {
     FieldState *g = data_ov000_021ccd54;
@@ -100,86 +100,86 @@ static inline void Ov014_Flash(u8 c) {
     g->cam.base.shakeCur = 0xf;
 }
 
-static inline void Ov014_Release(Ov014Obj *self) {
+static inline void Ov014_Release(Actor *self) {
     s32 t = 0;
     s32 **p;
-    self->unk_38->unk_c4 = 0;
-    p = func_ov000_02190a30(self->unk_38, 0);
+    self->model->anim_state = 0;
+    p = func_ov000_02190a30(self->model, 0);
     if (*p != NULL) {
         t = **p;
     }
-    func_ov000_02191318(self->unk_38, t + 0x2000);
+    func_ov000_02191318(self->model, t + 0x2000);
 }
 
 void func_ov014_0220ee9c(Ov014ActEx_0220eca0 *self) {
-    switch (self->unk_40->state) {
+    switch (self->fsm->st) {
     case 0:
-        self->unk_40->timer = 0x1e;
-        self->unk_40->state++;
+        self->fsm->timer = 0x1e;
+        self->fsm->st++;
         func_02049f44(data_02097e4c, 0x82, &self->pos, 0);
     case 1: {
-        Ov014Sub40 *w = self->unk_40;
+        ActorSub40 *w = self->fsm;
         if (w->timer != 0) {
             w->timer--;
         }
-        if (w->timer == 0 && self->unk_38->unk_c4 == 1) {
+        if (w->timer == 0 && self->model->anim_state == 1) {
             Ov014_Release(self);
             Ov014_Flash(0x28);
             func_02049f44(data_02097e4c, 0x1b, &self->pos, 0);
             func_02049f44(data_02097e4c, 0x38, &self->pos, 0);
-            self->unk_40->timer = FLD(u16, self, 0xce);
-            self->unk_40->state++;
+            self->fsm->timer = FLD(u16, self, 0xce);
+            self->fsm->st++;
         }
         break;
     }
     case 2: {
-        Ov014Actor *pl = func_ov000_0219bf90();
+        Ov003Actor *pl = func_ov000_0219bf90();
         s32 t;
-        Ov014Sub40 *w;
+        ActorSub40 *w;
         if (pl == NULL || func_ov000_021b4738(pl)) {
-            self->unk_40->timer = 0;
+            self->fsm->timer = 0;
             func_02049de8(data_02097e4c, 0x38);
         }
-        t = self->unk_40->timer;
+        t = self->fsm->timer;
         if (t % 4 == 1) {
-            s32 h = FX_Mul(self->unk_68, self->unk_d4);
-            self->unk_e4 = FX_Mul(self->unk_64, self->unk_d0);
+            s32 h = FX_Mul(self->height, self->unk_d4);
+            self->unk_e4 = FX_Mul(self->radius, self->unk_d0);
             self->unk_e8 = h;
             self->unk_ec = 0x1000;
             self->unk_d8 = self->pos;
             self->unk_d8.y += h / 2;
 
-            self->unk_f0 = self->rot[0];
-            self->unk_f2 = self->rot[1];
-            self->unk_f4 = self->rot[2];
+            self->unk_f0 = self->rot_x;
+            self->unk_f2 = self->rot_y;
+            self->unk_f4 = self->rot_z;
             func_ov014_0220f20c(self, (u8 *)self + 0xd8, (u8 *)self + 0xf0, (u8 *)self + 0xe4);
         }
 
         if (t < FLD(u16, self, 0xce) - 0xf && t % 15 == 1) {
             Ov014_Flash(0xc);
         }
-        w = self->unk_40;
+        w = self->fsm;
         if (w->timer != 0) {
             w->timer--;
         }
-        if (w->timer == 0 && self->unk_38->unk_c4 == 2) {
+        if (w->timer == 0 && self->model->anim_state == 2) {
             Ov014_Release(self);
             func_02049de8(data_02097e4c, 0x38);
-            self->unk_40->state++;
+            self->fsm->st++;
         }
         break;
     }
     case 3: {
         BOOL done = FALSE;
-        Ov014Actor *pl = func_ov000_0219bf90();
+        Ov003Actor *pl = func_ov000_0219bf90();
         if (pl == NULL || func_ov000_021b4738(pl)) {
             done = TRUE;
         }
-        if (func_ov000_02191120(self->unk_38) || done) {
+        if (func_ov000_02191120(self->model) || done) {
             func_02049de8(data_02097e4c, 0x38);
-            self->unk_38->unk_c2_0 = 0;
-            func_ov000_02198360(self->unk_40, 0x15, 0);
-            self->unk_40->state++;
+            self->model->visible = 0;
+            func_ov000_02198360(self->fsm, 0x15, 0);
+            self->fsm->st++;
         }
         break;
     }

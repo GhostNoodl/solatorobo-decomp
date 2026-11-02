@@ -92,17 +92,17 @@ void *func_ov011_02201254(void *self);
 #pragma force_active on
 void func_ov011_021fe1d4(Ov011Scene *self) {
     Ov011Node *n;
-    switch (self->seq.state) {
+    switch (self->seq.st) {
     case 0:
         if (self->s1b4.b0) {
-            Ov011Obj *o = self->actor;
+            Actor *o = self->actor;
             self->s1b4.b1 = 1;
             self->s1b4.id = o->id;
             self->s1b4.scene = self;
             self->s1b4.ent = &self->ent;
             func_ov000_02198360(&self->s1b4.seq, 2, 0);
         }
-        self->seq.state = 1;
+        self->seq.st = 1;
         break;
     case 1: {
         BOOL r = FALSE;
@@ -110,16 +110,16 @@ void func_ov011_021fe1d4(Ov011Scene *self) {
             r = !self->s1b4.b1;
         }
         if (r) {
-            self->seq.state = 2;
+            self->seq.st = 2;
             self->b2 = 1;
         }
         break;
     }
     }
     for (n = self->head; n != NULL; n = n->next) {
-        Ov011Obj *a = Ov011_FindActor(n->id);
+        Actor *a = Ov011_FindActor(n->id);
         if (func_ov011_02201244(a)) {
-            Ov011Obj *owner = self->actor;
+            Actor *owner = self->actor;
             if (Ov011Ent_Find(&self->ent, func_ov011_02201254(a)) != NULL) {
                 Ov011PNode *p = Ov011Ent_Find(&self->ent, func_ov011_02201254(a));
                 VecFx32 r;

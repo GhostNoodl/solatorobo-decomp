@@ -6,7 +6,7 @@ extern void *data_02097e4c;
 extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
-extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const Ov009Vec *pos);
+extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
 
 struct Ov009Byte {
     u8 b0 : 1;
@@ -38,26 +38,26 @@ void Ov009ActVt_02216750_Init(Ov009ActVt_02216750 *self) {
 }
 
 void Ov009ActVt_02216750_Start(Ov009ActVt_02216750 *self) {
-    Ov009Sub48 *s48;
+    ActorSub48 *s48;
     func_ov003_021d112c(self);
     self->unk_f0 = self->pos;
     self->unk_fc = self->pos;
     if (data_ov000_021ccd54->unk_ca.c[0] != 0x11) {
-        s48 = self->unk_48;
+        s48 = self->hit;
         s48->unk_9a_1 = 0;
         s48->unk_9a_4 = 0;
     }
-    s48 = self->unk_48;
+    s48 = self->hit;
     s48->unk_9a_2 = 0;
     s48->unk_9a_5 = 0;
     if (self->kind != 0x5012) {
         self->unk_44->unk_1c += 0x800;
-        self->unk_44->unk_10 = -0x1000;
-        self->unk_48->unk_60 = -0x1000;
+        self->unk_44->unk_0c.y = -0x1000;
+        self->hit->offset.y = -0x1000;
     }
     self->unk_ea_6 = 1;
     if (self->unk_1a != 0) {
-        self->unk_40->flags |= 0x100000000ULL;
+        self->fsm->flags |= 0x100000000ULL;
     }
 }
 
@@ -69,7 +69,7 @@ static inline s32 Ov009_Sqrt64(s64 v) {
     return (*(volatile s32 *)0x40002b4 + 1) >> 1;
 }
 
-static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
+static inline s32 Ov009_DistXZ(const VecFx32 *a, const VecFx32 *b) {
     s64 sq;
     s32 dz = a->z - b->z;
     s32 dx = a->x - b->x;
@@ -82,14 +82,14 @@ static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
 }
 
-extern Ov009Actor *func_ov000_0219bf90(void);
-extern Ov009Actor *ActorMgr_GetGroup(void *mgr, u16 id);
-extern Ov009Actor *func_ov003_021d69a0(Ov009Actor *self, s32 id, s32 a);
-extern void func_01ffc9fc(Ov009Vec *dst, Ov009Vec *src, u16 angle);
-extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
+extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
+extern Ov003Actor *func_ov003_021d69a0(Ov003Actor *self, s32 id, s32 a);
+extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 angle);
+extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 
 void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
-    Ov009Actor *pl;
+    Ov003Actor *pl;
     s32 dist;
     s32 dy;
     if (!Ov009_GameIdle()) {
@@ -99,15 +99,15 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
         return;
     }
     self->unk_93_4 = 0;
-    if (*self->unk_50 == 0) {
+    if (*self->hp == 0) {
         return;
     }
-    self->unk_90 = 0xffff;
+    self->target = 0xffff;
     pl = func_ov000_0219bf90();
     if (pl == NULL) {
         return;
     }
-    self->unk_90 = pl->id;
+    self->target = pl->id;
     dy = pl->pos.y - self->pos.y;
     self->unk_cc = 0x7800;
     dist = 0x7fffffff;
@@ -121,7 +121,7 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
         return;
     }
     self->unk_93_4 = 1;
-    if (pl->unk_50[5] != 0) {
+    if (pl->hp[5] != 0) {
         return;
     }
     switch (self->unk_b4) {
@@ -132,7 +132,7 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
         if (self->unk_b6 != 0) {
             self->unk_b6--;
         }
-        if (self->unk_b6 != 0 || self->unk_40->unk_13 != 1) {
+        if (self->unk_b6 != 0 || self->fsm->current != 1) {
             return;
         }
         time = 0x3c;
@@ -149,10 +149,10 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
             }
         }
         {
-            Ov009Actor *o = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+            Ov003Actor *o = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
             if (o != NULL && FLD(u16, o, 0x16) < max) {
-                Ov009Vec ofs;
-                Ov009Actor *e;
+                VecFx32 ofs;
+                Ov003Actor *e;
                 ofs.x = 0;
                 ofs.y = 0;
                 ofs.z = 0;
@@ -175,7 +175,7 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
                 }
                 e = func_ov003_021d69a0(self, id, 0x20);
                 if (e != NULL) {
-                    func_01ffc9fc(&ofs, &ofs, self->rot[1]);
+                    func_01ffc9fc(&ofs, &ofs, self->rot_y);
                     VEC_Add(&ofs, &self->pos, &ofs);
                     e->pos = ofs;
                     e->unk_1a = 1;
@@ -190,8 +190,8 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
         if (self->unk_b6 != 0) {
             self->unk_b6--;
         }
-        if (self->unk_b6 == 0 && self->unk_40->unk_13 == 1) {
-            self->unk_40->flags |= 0x4000;
+        if (self->unk_b6 == 0 && self->fsm->current == 1) {
+            self->fsm->flags |= 0x4000;
             self->unk_b6 = 0x78;
             self->unk_b4 = 0;
             return;

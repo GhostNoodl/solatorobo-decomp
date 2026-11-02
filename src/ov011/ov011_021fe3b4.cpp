@@ -146,7 +146,7 @@ static inline void Ov011_Send(u16 id, s32 a, s32 b) {
 
 static inline BOOL Ov011_NodeAlive(Ov011Node *n) {
     if (n != NULL) {
-        Ov011Obj *a = Ov011_FindActor(n->id);
+        Actor *a = Ov011_FindActor(n->id);
         if (a != NULL && func_ov011_02201244(a)) {
             return TRUE;
         }
@@ -185,7 +185,7 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
         }
     }
     rem = 5 - cnt;
-    switch (self->seq.state) {
+    switch (self->seq.st) {
     case 0: {
         u16 id = self->actor->id;
         mb.a = 2;
@@ -198,14 +198,14 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
         mc.a = 1;
         mc.b = 2;
         ActorMgr_SendMsg(id, 0xffff, 0xe, 1, 0xc, &mc);
-        self->seq.state = 1;
+        self->seq.st = 1;
         break;
     }
     case 1:
         if (rem == 0) {
-            self->seq.state = 5;
+            self->seq.st = 5;
         } else {
-            self->seq.state = 2;
+            self->seq.st = 2;
         }
         break;
     case 2:
@@ -220,14 +220,14 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
                 Ov011Ent_Lerp2(e, 0x3333, 1);
             }
             func_ov011_02201aac(&self->fx, &data_ov011_02207290);
-            self->seq.state = 3;
+            self->seq.st = 3;
         }
         break;
     case 3:
         if (func_ov011_02201b40(&self->fx)) {
-            Ov011Obj *owner = self->actor;
+            Actor *owner = self->actor;
             s32 i;
-            MTX_RotY33_(&m, OV011_SIN(owner->rot[1]), OV011_COS(owner->rot[1]));
+            MTX_RotY33_(&m, OV011_SIN(owner->rot_y), OV011_COS(owner->rot_y));
             MTX_MultVec33(&data_ov011_02207290, &m, &v);
             owner = self->actor;
             p.x = owner->pos.x;
@@ -245,9 +245,9 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
                 ob = (Ov011Npc *)Group_SpawnActor(data_ov000_021ccd64, &d, &p, &rot, 0xffff);
                 func_ov011_022011c0(ob, self->actor->id);
                 func_ov011_022011c8(ob, 1);
-                ob->unk_4c->unk_1c = self->actor->id;
+                ob->targetObj->target = self->actor->id;
                 func_ov011_02201214(ob, NULL);
-                ob->unk_16_0 = 1;
+                ob->flags_0 = 1;
                 nn = Ov003NodeSrc_NewNode(ob);
                 {
                     Ov011Node *h = self->head;
@@ -270,14 +270,14 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
                     func_ov011_02201214(a, pn);
                 }
             }
-            self->seq.state = 4;
+            self->seq.st = 4;
         }
         break;
     case 4:
         self->seq.timer++;
         if (self->seq.timer > 10) {
             self->seq.timer = 10;
-            self->seq.state = 1;
+            self->seq.st = 1;
         }
         break;
     case 5: {
@@ -292,9 +292,9 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
     }
     }
     for (Ov011Node *n2 = self->head; n2 != NULL; n2 = n2->next) {
-        Ov011Obj *a = Ov011_FindActor(n2->id);
+        Actor *a = Ov011_FindActor(n2->id);
         if (func_ov011_02201244(a)) {
-            Ov011Obj *owner = self->actor;
+            Actor *owner = self->actor;
             if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {
                 Ov011PNode *pp = Ov011Ent_Find(e, func_ov011_02201254(a));
                 w.x = pp->v.x;
@@ -311,12 +311,12 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
         }
     }
     if (!func_ov011_02201b40(&self->fx)) {
-        Ov011Obj *owner = self->actor;
+        Actor *owner = self->actor;
         t.x = owner->pos.x;
         t.y = owner->pos.y;
         t.z = owner->pos.z;
         func_ov011_02201b80(&self->fx, &t);
-        func_ov011_02201bac(&self->fx, self->actor->rot[1]);
+        func_ov011_02201bac(&self->fx, self->actor->rot_y);
     }
 }
 

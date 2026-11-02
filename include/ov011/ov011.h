@@ -9,6 +9,8 @@
 #include "Main/Sys/Field.h"
 #include "Main/Res/StageCmd.h"
 #include "ov000/Actor.h"
+#include "ov003/Actor.h"
+#include "ov000/ObjLayouts.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
 class Ov011V {
@@ -303,8 +305,6 @@ struct Ov011TwObj {
     Ov011Tw tw;
 };
 
-struct Ov011Sub38;
-
 // The 0x138-byte animation object (func_ov000_0218e9c4); unk_00 is negative until it is ready.
 struct Ov011Anim {
     s16 unk_00;
@@ -322,7 +322,7 @@ struct Ov011Model2 {
     s16 unk_02;
     s16 unk_04;
     u8 unk_06[0x2];
-    Ov011Sub38 *model;
+    Model0218fe1c *model;
     u8 m0c[0x30];
     u8 m3c[0x24];
 };
@@ -330,207 +330,22 @@ struct Ov011Model2 {
 #define OV011_TWV(p) ((Ov011V *)(p))
 #define OV011_TW(p) ((Ov011Tw *)((u8 *)(p) + 4))
 
-// The 0xe8-byte 3D model (func_ov000_0218fe1c), an object's unk_38.
-struct Ov011Sub38 {
-    void *unk_00;
-    void *unk_04;
-    u8 unk_08[0x1c];
-    u8 unk_24[0x2c];
-    void *unk_50;
-    u8 unk_54[0x24];
-    VecFx32 pos;
-    u8 mtx[0x24];
-    VecFx32 scale;
-    u16 unk_b4;
-    u8 unk_b6[0x8];
-    u8 alpha;
-    u8 unk_bf;
-    u8 unk_c0;
-    u8 unk_c1;
-    u16 unk_c2_0 : 1;
-    u16 unk_c2_1 : 4;
-    u16 unk_c2_5 : 1;
-    u16 unk_c2_6 : 2;
-    u16 unk_c2_8 : 1;
-    u16 unk_c2_9 : 2;
-    u16 unk_c2_11 : 5;
-    u8 unk_c4[0x24];
-};
 
-OV011_SIZE(Ov011Sub38, 0xe8);
 
-// State/timer/flags block (reset by func_ov003_021da48c, ticked by func_ov003_021da40c);
-// unk_13 is the state the owner's handler table is keyed on.
-struct Ov011Sub40 {
-    u16 state;
-    u16 timer;
-    u64 flags;
-    u8 unk_0c[0x7];
-    u8 unk_13;
-};
-OV011_SIZE(Ov011Sub40, 0x14);
+OV011_SIZE(Ov003Actor, 0xf0);
 
-struct Ov011Sub44 {
-    u8 unk_00[0xc];
-    VecFx32 unk_0c;
-    u8 unk_18[0x4];
-    s32 unk_1c;
-    u8 unk_20[0x2];
-    u16 unk_22_0 : 1;
-    u16 unk_22_1 : 1;
-    u16 unk_22_2 : 14;
-};
-
-struct Ov011Sub48 {
-    u8 unk_00[0x30];
-    s32 unk_30;
-    u8 unk_34[0x4];
-    s32 unk_38;
-    u8 unk_3c[0x8];
-    s32 unk_44;
-    s32 unk_48;
-    u8 unk_4c[0x4];
-    u32 unk_50;
-    u32 unk_54;
-    u8 unk_58[0x8];
-    s32 unk_60;
-    u8 unk_64[0x4];
-    VecFx32 unk_68;
-    u8 unk_74[0x26];
-    u16 unk_9a_0 : 1;
-    u16 unk_9a_1 : 1;
-    u16 unk_9a_2 : 1;
-    u16 unk_9a_3 : 1;
-    u16 unk_9a_4 : 1;
-    u16 unk_9a_5 : 1;
-    u16 unk_9a_6 : 1;
-    u16 unk_9a_7 : 1;
-    u16 unk_9a_8 : 8;
-};
-
-struct Ov011Sub3c {
-    u8 unk_00[0x14];
-    s32 unk_14;
-    u8 unk_18;
-    u8 unk_19;
-};
-
-// An object's unk_4c.
-struct Ov011Sub4c {
-    u8 unk_00[0x8];
-    u16 unk_08;
-    u16 unk_0a;
-    u8 unk_0c[0x10];
-    u16 unk_1c;
-};
-
-struct Ov011Param {
-    s16 unk_00;
-    s16 unk_02;
-    u8 unk_04[0x4];
-    u16 unk_08;
-    u16 unk_0a_0 : 7;
-    u16 unk_0a_7 : 3;
-    u16 unk_0a_10 : 6;
-};
-
-// Common object base (the ov000 object class, 0xcc bytes) that every actor in the
-// actor manager derives from.
-class Ov011Obj : public Ov011V {
+// The ov011 NPC class (constructor Ov011Npc_Ctor, vtable data_ov011_022079f0),
+// derived straight from the object base.
+class Ov011Npc : public Actor {
 public:
-    u8 unk_04[0x8];
-    u16 id;
-    u16 kind;
-    u8 unk_10[0x5];
-    u8 unk_15;
-    u8 unk_16_0 : 1;
-    u8 unk_16_1 : 7;
-    u8 unk_17;
-    s16 unk_18;
-    s16 unk_1a;
-    s16 unk_1c;
-    s16 unk_1e;
-    u16 unk_20;
-    u8 unk_22[0x2];
-    u8 unk_24[0xc];
-    u32 unk_30;
-    u8 unk_34[0x4];
-    Ov011Sub38 *unk_38;
-    Ov011Sub3c *unk_3c;
-    Ov011Sub40 *unk_40;
-    Ov011Sub44 *unk_44;
-    Ov011Sub48 *unk_48;
-    Ov011Sub4c *unk_4c;
-    u16 *hp; // hp[0] current, hp[1] maximum
-    u8 unk_54[0xc];
-    void *unk_60;
-    s32 unk_64;
-    s32 unk_68;
-    s32 unk_6c;
-    VecFx32 pos;
-    u16 rot[3];
-    u8 unk_82[0x2];
-    VecFx32 unk_84;
-    u16 target; // id of the targeted actor (ov000 Actor::target)
-    u8 unk_92;
-    u8 unk_93_0 : 1;
-    u8 unk_93_1 : 3;
-    u8 unk_93_4 : 1;
-    u8 unk_93_5 : 3;
-    u8 unk_94_0 : 1;
-    u8 unk_94_1 : 2;
-    u8 unk_94_3 : 5;
-    u8 unk_95[0x3];
-    u16 unk_98;
-    u8 unk_9a[0x2];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
+    // 0xac..0xcb laid out as in Ov003Actor
     u8 unk_ac[0x4];
-    Ov011Param *unk_b0;
+    Ov003Param *unk_b0;
     u16 unk_b4;
     u16 unk_b6;
     VecFx32 unk_b8;
     s32 unk_c4;
     s32 unk_c8;
-};
-
-// The ov003 actor class; subclass fields start at 0xf0.
-class Ov011Actor : public Ov011Obj {
-public:
-    s32 unk_cc;
-    u8 unk_d0[0xe];
-    u16 unk_de;
-    u8 unk_e0[0xa];
-    u16 unk_ea_0 : 3;
-    u16 unk_ea_3 : 3;
-    u16 unk_ea_6 : 2;
-    u16 unk_ea_8 : 1;
-    u16 unk_ea_9 : 1;
-    u16 unk_ea_10 : 1;
-    u16 unk_ea_11 : 3;
-    u16 unk_ea_14 : 1;
-    u16 unk_ea_15 : 1;
-    u8 unk_ec_0 : 1;
-    u8 unk_ec_1 : 1;
-    u8 unk_ec_2 : 6;
-    u8 unk_ed;
-    u16 unk_ee_0 : 1;
-    u16 unk_ee_1 : 1;
-    u16 unk_ee_2 : 2;
-    u16 unk_ee_4 : 1;
-    u16 unk_ee_5 : 1;
-    u16 unk_ee_6 : 1;
-    u16 unk_ee_7 : 2;
-    u16 unk_ee_9 : 7;
-};
-OV011_SIZE(Ov011Actor, 0xf0);
-
-// The ov011 NPC class (constructor Ov011Npc_Ctor, vtable data_ov011_022079f0),
-// derived straight from the object base.
-class Ov011Npc : public Ov011Obj {
-public:
     Ov011Flags unk_cc;
     u8 unk_ce_0 : 1;
     u8 unk_ce_1 : 1;
@@ -553,7 +368,7 @@ public:
     u8 b3 : 5;
     u8 unk_01[0x3];
     s32 unk_04;
-    Ov011Obj *actor;
+    Actor *actor;
     Ov011Node *head;
 };
 
@@ -629,7 +444,7 @@ struct Ov011Fx {
     u8 unk_01;
     s16 unk_02;
     Ov011Anim *anim;
-    Ov011Sub38 *model;
+    Model0218fe1c *model;
     VecFx32 v0c;
     VecFx32 v18;
     MtxFx33 mtx;
@@ -666,7 +481,7 @@ public:
     u16 id;
     Ov011Scene *scene;
     Ov011Ent *ent;
-    Ov011Sub40 seq;
+    ActorSub40 seq;
 };
 OV011_SIZE(Ov011Sub1b4, 0x20);
 
@@ -676,7 +491,7 @@ OV011_SIZE(Ov011Sub1b4, 0x20);
 class Ov011Scene : public Ov011List {
 public:
     Ov011Ring ring;
-    Ov011Sub40 seq;
+    ActorSub40 seq;
     Ov011Fx fx;
     Ov011Mgr2 mgr2;
     Ov011Sub1b4 s1b4;
@@ -692,7 +507,7 @@ struct Ov011E24 : public Ov011V {
 
 // The 0x3c-byte object at Ov011SceneActor::unk_104.
 struct Ov011Sa104 {
-    Ov011Sub40 seq;
+    ActorSub40 seq;
     Ov011E24 tw;
     void *unk_38;
 };
@@ -722,7 +537,7 @@ OV011_SIZE(Ov011Sa10c, 4);
 
 // The ov011 actor that owns the scene (constructor Ov011SceneActor_Ctor, vtable
 // data_ov011_022078f0, setup Ov011SceneActor_Start).
-class Ov011SceneActor : public Ov011Actor {
+class Ov011SceneActor : public Ov003Actor {
 public:
     u8 unk_f0_0 : 1;
     u8 unk_f0_1 : 1;
@@ -738,13 +553,13 @@ public:
 
 // ov003-actor subclasses named after their vtables (only the fields ov011 reads).
 // vtable data_ov011_02207cf8: Ov011Act7cf8_Start, func_ov011_022038ac.
-class Ov011Act7cf8 : public Ov011Actor {
+class Ov011Act7cf8 : public Ov003Actor {
 public:
     VecFx32 unk_f0;
 };
 
 // vtable data_ov011_02207e50: Ov011Act7e50_Start, func_ov011_02203e94, func_ov011_02203ef0.
-class Ov011Act7e50 : public Ov011Actor {
+class Ov011Act7e50 : public Ov003Actor {
 public:
     VecFx32 unk_f0;
     u16 unk_fc;
@@ -752,7 +567,7 @@ public:
 
 // vtable data_ov011_02207c4c: Ov011Act7c4c_Start, func_ov011_022043cc, func_ov011_02204428,
 // func_ov011_02204a8c.
-class Ov011Act7c4c : public Ov011Actor {
+class Ov011Act7c4c : public Ov003Actor {
 public:
     VecFx32 unk_f0;
     u16 unk_fc;
@@ -765,7 +580,7 @@ class Ov011Bar;
 
 // vtable data_ov011_02207da4: Ov011Act7da4_Dtor .. func_ov011_02206e18 (the photo/boss
 // actor of ov011_02204b94.cpp .. ov011_022071b4.cpp).
-class Ov011Act7da4 : public Ov011Actor {
+class Ov011Act7da4 : public Ov003Actor {
 public:
     u8 unk_f0;
     Ov011Anim unk_f4[2];
@@ -811,8 +626,16 @@ struct Ov011ActMsg {
 };
 
 // The player actor (func_ov000_0219bf90); only the fields ov011 reads.
-class Ov011Player : public Ov011Obj {
+class Ov011Player : public Actor {
 public:
+    // 0xac..0xcb laid out as in Ov003Actor
+    u8 unk_ac[0x4];
+    Ov003Param *unk_b0;
+    u16 unk_b4;
+    u16 unk_b6;
+    VecFx32 unk_b8;
+    s32 unk_c4;
+    s32 unk_c8;
     u8 unk_cc[0xa24];
     VecFx32 unk_af0;
     u8 unk_afc[0x20];
@@ -822,15 +645,15 @@ public:
     s32 unk_b9c;
 };
 
-static inline Ov011Obj *Ov011_FindActor(u16 id) {
+static inline Actor *Ov011_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return (Ov011Obj *)ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return (Actor *)ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline BOOL Ov011_ActorValid(u16 id) {
-    Ov011Obj *a;
+    Actor *a;
     Ov011Player *pl;
     a = Ov011_FindActor(id);
     if (a == NULL) {
@@ -843,7 +666,7 @@ static inline BOOL Ov011_ActorValid(u16 id) {
     if (pl->unk_b1c == a->id) {
         return FALSE;
     }
-    if (!(a->unk_48->unk_50 & 0x20000000)) {
+    if (!(a->hit->unk_50 & 0x20000000)) {
         return FALSE;
     }
     return TRUE;

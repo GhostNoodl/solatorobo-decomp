@@ -8,21 +8,21 @@ extern void func_ov000_02190a80(void *p, s32 a);
 BOOL Ov009ActVt_02217594_Draw(Ov009ActVt_02217594 *self) {
     BOOL r = func_ov003_021d16cc(self);
     if (r) {
-        func_ov000_021903b4(&self->model);
+        func_ov000_021903b4(&self->modelObj);
     }
     return r;
 }
 
 void func_ov009_0220923c(Ov009ActVt_02217594 *self) {
     func_ov003_021d1b88(self);
-    func_ov000_02190a80(&self->model, 0x1000);
+    func_ov000_02190a80(&self->modelObj, 0x1000);
 }
 
-extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
-extern BOOL Hit_DiffInCylinder(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
+extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
+extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 r, s32 h);
 
 void Ov009ActVt_02217594_Update(Ov009ActVt_02217594 *self) {
-    Ov009Actor *t;
+    Ov003Actor *t;
     if (!Ov009_GameIdle()) {
         return;
     }
@@ -30,7 +30,7 @@ void Ov009ActVt_02217594_Update(Ov009ActVt_02217594 *self) {
     if (t == NULL) {
         return;
     }
-    if (self->unk_40->unk_13 != 1) {
+    if (self->fsm->current != 1) {
         return;
     }
     if (self->unk_b6 != 0) {
@@ -42,7 +42,7 @@ void Ov009ActVt_02217594_Update(Ov009ActVt_02217594 *self) {
     switch (self->unk_1a) {
     case 0:
     case 1: {
-        Ov009Vec p;
+        VecFx32 p;
         {
         s32 x = self->pos.x;
         s32 z = self->pos.z;
@@ -51,15 +51,15 @@ void Ov009ActVt_02217594_Update(Ov009ActVt_02217594 *self) {
         p.y = y;
         p.z = z;
         }
-        if (!Hit_DiffInCylinder(&t->pos, &p, t->unk_64 + 0x4000, 0x6000)) {
+        if (!Hit_DiffInCylinder(&t->pos, &p, t->radius + 0x4000, 0x6000)) {
             return;
         }
-        self->unk_40->flags |= 0x8000;
+        self->fsm->flags |= 0x8000;
         self->unk_b6 = 0x28;
         break;
     }
     case 2:
-        self->unk_40->flags |= 0x10000;
+        self->fsm->flags |= 0x10000;
         self->unk_b6 = 0x5a;
         break;
     }

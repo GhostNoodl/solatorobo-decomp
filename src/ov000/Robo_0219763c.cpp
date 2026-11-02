@@ -162,7 +162,7 @@ void func_ov000_0219763c(VObj *obj) {
             func_ov000_0219b400((u16 *)(r + 0x20), r + 0x24, 2, &p, (u8 *)self + 0x7c, zero);
         }
         if (self->unk_44 != NULL) {
-            u8 *q = self->unk_44;
+            ActorSub44 *q = self->unk_44;
             LFLD(Bits0219763c, q, 0x22).b0 = 0;
             LFLD(Bits0219763c, q, 0x22).b1 = 0;
         }

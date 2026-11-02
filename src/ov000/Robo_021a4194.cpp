@@ -187,7 +187,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
         return;
     }
     case 2: {
-        s16 f = ((s16)self->model->unk_c4);
+        s16 f = self->model->anim_state;
         Actor *a;
         if (f == 1 || self->unk_b22_3) {
             sub->st = 10;

@@ -18,6 +18,8 @@ typedef struct {
     u64 flags;
 } Ov003ActorState;
 
+// View of Ov003Actor (ov003/Actor.h) with Ov003Vec positions: the Ov003Vec constructor is
+// load-bearing in this file (round hdB), so it does not use the shared class.
 typedef struct {
     u8 unk_00[0x40];
     Ov003ActorState *state;
@@ -25,7 +27,7 @@ typedef struct {
     Ov003Vec pos;
     u8 unk_7c[8];
     Ov003Vec lastPos;
-} Ov003Actor;
+} Ov003ActorP;
 
 typedef struct {
     u8 unk_00[0x18];
@@ -111,7 +113,7 @@ void *Ov003ActVt_021f9d78_DtorDelete(void *self) {
     return self;
 }
 
-void Ov003ActVt_021fa07c_Start(Ov003Actor *self) {
+void Ov003ActVt_021fa07c_Start(Ov003ActorP *self) {
     func_ov000_02194758(self);
     self->state->flags |= 0x100000000ULL;
     self->lastPos.x = self->pos.x;

@@ -354,7 +354,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
             B2C(self).b3 = 1;
             B2C(self).b7++;
         }
-        if (((s16)self->model->unk_c4) == 1) {
+        if (self->model->anim_state == 1) {
             if (B24(self).b5 != 0 && a != NULL) {
                 u8 *s2;
                 func_ov000_0218d46c(a, self->id, 0xb);

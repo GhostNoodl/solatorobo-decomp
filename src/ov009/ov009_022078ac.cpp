@@ -14,10 +14,10 @@ struct Ov009Bits16 {
 BOOL Ov009ActVt_02217844_Draw(Ov009ActVt_02217844 *self) {
     BOOL r = func_ov003_021d16cc(self);
     if (r) {
-        Ov009Vec p;
+        VecFx32 p;
         p = self->pos;
         if (func_ov000_0219a2f4(&p, 0x2000, -0x5000) != -0x1000) {
-            func_ov000_021903b4(&self->model);
+            func_ov000_021903b4(&self->modelObj);
         }
     }
     return r;
@@ -25,34 +25,34 @@ BOOL Ov009ActVt_02217844_Draw(Ov009ActVt_02217844 *self) {
 
 void func_ov009_02207910(Ov009ActVt_02217844 *self) {
     func_ov003_021d1b88(self);
-    func_ov000_02190a80(&self->model, 0x1000);
+    func_ov000_02190a80(&self->modelObj, 0x1000);
 }
-extern BOOL Hit_DiffInCylinder(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
-extern Ov009Actor *func_ov000_0219bf90(void);
+extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 r, s32 h);
+extern Ov003Actor *func_ov000_0219bf90(void);
 
 void Ov009ActVt_02217844_Update(Ov009ActVt_02217844 *self) {
-    Ov009Actor *pl;
+    Ov003Actor *pl;
     if (!Ov009_GameIdle()) {
         return;
     }
     if (func_ov000_0219a2f4(&self->pos, 0x1000, -0x3000) == -0x1000) {
         return;
     }
-    self->unk_90 = 0xffff;
+    self->target = 0xffff;
     pl = func_ov000_0219bf90();
     if (pl != NULL) {
-        self->unk_90 = pl->id;
+        self->target = pl->id;
     }
     if (self->unk_1a == 0) {
-        if (self->unk_40->unk_13 == 0xf) {
+        if (self->fsm->current == 0xf) {
             return;
         }
-        if (Hit_DiffInCylinder(&pl->pos, &self->pos, pl->unk_64 + 0x6800, 0x6000)) {
-            self->unk_40->flags |= 0x8000;
+        if (Hit_DiffInCylinder(&pl->pos, &self->pos, pl->radius + 0x6800, 0x6000)) {
+            self->fsm->flags |= 0x8000;
         }
     } else {
-        Ov009Vec v;
-        if (self->unk_40->unk_13 == 0x10) {
+        VecFx32 v;
+        if (self->fsm->current == 0x10) {
             return;
         }
         {
@@ -63,8 +63,8 @@ void Ov009ActVt_02217844_Update(Ov009ActVt_02217844 *self) {
             v.z = z;
             v.y = y;
         }
-        if (Hit_DiffInCylinder(&pl->pos, &v, pl->unk_64 + 0x6800, 0x6000)) {
-            self->unk_40->flags |= 0x10000;
+        if (Hit_DiffInCylinder(&pl->pos, &v, pl->radius + 0x6800, 0x6000)) {
+            self->fsm->flags |= 0x10000;
         }
     }
 }

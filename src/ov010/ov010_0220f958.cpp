@@ -741,7 +741,7 @@ void func_ov010_02204d44(Obj02204aac *self) {
         self->fsm->st = 0x1f;
         break;
     case 0x1f:
-        if (((s16)self->model->unk_c4) == 1) {
+        if (self->model->anim_state == 1) {
             func_ov010_0220984c(self->unk_108, self->id);
             Ov010Coll_SetHandler((u8 *)self + 0x174, self->unk_108);
             self->fsm->st = 0x28;
@@ -763,7 +763,7 @@ void func_ov010_02204d44(Obj02204aac *self) {
         func_ov003_021d969c((u8 *)self + 0x160, 1);
         break;
     }
-    if (flag && ((s16)self->model->unk_c4) == 2) {
+    if (flag && self->model->anim_state == 2) {
         FLD(Ov010Flags8, func_ov000_02190a30(self->model, 0), 0x111).b3 = 1;
     }
 }
@@ -1143,14 +1143,14 @@ void func_ov010_02205c30(Obj02204aac *self) {
         return;
     case 1:
         Actor_TurnToActor(self, tgt, r);
-        if (((s16)self->model->unk_c4) == 1) {
+        if (self->model->anim_state == 1) {
             self->fsm->st = 2;
         }
         return;
     case 2: {
         u8 *res;
         u8 *ent;
-        if (((s16)self->model->unk_c4) != 3) {
+        if (self->model->anim_state != 3) {
             return;
         }
         res = func_02070558(self->kind);
@@ -1326,7 +1326,7 @@ void func_ov010_02205f40(Obj02204aac *self) {
         self->fsm->st = 0x31;
         break;
     case 0x31:
-        if (((s16)self->model->unk_c4) == 1) {
+        if (self->model->anim_state == 1) {
             self->fsm->st = 0x40;
             self->velY = 0;
             self->friction = 0;

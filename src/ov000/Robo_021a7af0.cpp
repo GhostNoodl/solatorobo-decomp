@@ -485,7 +485,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
             ST(self)->st = 0x1e;
             return;
         }
-        if (((s16)self->model->unk_c4) != 3) {
+        if (self->model->anim_state != 3) {
             return;
         }
         bonus = 0;
@@ -779,7 +779,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
         self->hit->unk_9a_4 = 0;
         return;
     case 13:
-        if (func_ov000_02191120(self->model) || ((s16)self->model->unk_c4) == 2) {
+        if (func_ov000_02191120(self->model) || self->model->anim_state == 2) {
             func_ov000_021911c8(self->model, 0x800);
             ST(self)->timer = 0;
             ST(self)->st++;

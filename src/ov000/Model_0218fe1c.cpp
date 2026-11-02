@@ -100,7 +100,7 @@ Model0218fe1c *func_ov000_0218fe1c(Model0218fe1c *self) {
     self->scale.y = 0x1000;
     self->scale.z = 0x1000;
     self->actor_id = 0xffff;
-    self->unk_c4 = 0;
+    self->anim_state = 0;
     self->unk_c6 = 0;
     self->unk_c8 = 0;
     self->unk_ca = 0;

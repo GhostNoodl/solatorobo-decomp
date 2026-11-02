@@ -94,7 +94,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
         }
         ok = FALSE;
         Charge021ab68c(self);
-        v = ((s16)self->model->unk_c4);
+        v = self->model->anim_state;
         if (v == 1) {
             ok = TRUE;
         }

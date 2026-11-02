@@ -11,7 +11,7 @@ void func_ov011_021fab74(void *p);
 
 void func_ov011_021febd8(Ov011Scene *self) {
     Ov011Node *n;
-    if (self->seq.state != 0) {
+    if (self->seq.st != 0) {
         return;
     }
     func_ov011_02201b28(&self->fx);
@@ -47,25 +47,22 @@ void func_ov011_021febd8(Ov011Scene *self) {
         self->ent.nodes = NULL;
     }
     for (n = self->head; n != NULL; n = n->next) {
-        Ov011Obj *a = Ov011_FindActor(n->id);
+        Actor *a = Ov011_FindActor(n->id);
         if (a != NULL) {
             func_ov000_0218d46c((StageObj3D *)a, 0xffff, 0x15);
         }
     }
     self->b2 = 1;
-    self->seq.state = 1;
+    self->seq.st = 1;
 }
 
 
 extern u8 data_ov011_022078f0[];
 void func_ov011_0220068c(void *self);
-void *func_ov003_021d0edc(void *self);
 
-void func_ov003_021d0c1c(void *self);
 u32 func_ov011_02202ecc(void *p);
 void func_ov011_02202260(void *p);
 void func_ov011_0220192c(void *p);
-u16 func_ov003_021d16cc(void *p);
 extern s32 data_ov011_02207258[];
 
 #pragma force_active on

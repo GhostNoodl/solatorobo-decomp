@@ -60,7 +60,7 @@ static inline u16 Kind0219af3c(u16 id) {
     return id & 0xf000;
 }
 
-static inline BOOL Both0219af3c(u8 *p) {
+static inline BOOL Both0219af3c(ActorSub44 *p) {
     return LFLD(Bits22_0219af3c, p, 0x22).b0 == 1 && LFLD(Bits22_0219af3c, p, 0x22).b1 == 1 ? TRUE : FALSE;
 }
 

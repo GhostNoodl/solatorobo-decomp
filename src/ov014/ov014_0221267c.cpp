@@ -10,12 +10,12 @@ extern void *func_ov000_0218fe1c(void *p);
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218ea20(void *p);
 extern void MIi_CpuClearFast(s32 v, void *p, u32 n);
-extern BOOL func_ov000_0218cf5c(Ov014Actor *self);
+extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
-extern s32 func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
+extern s32 func_ov003_021d1c00(Ov003Actor *self, Ov014Msg *msg);
 
 #pragma force_active on
-Ov014Actor *Ov014Act_0221267c_Ctor(Ov014Act_0221267c *self) {
+Ov003Actor *Ov014Act_0221267c_Ctor(Ov014Act_0221267c *self) {
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217dc0;
     func_ov000_0218e9c4((u8 *)self + 0xf0);

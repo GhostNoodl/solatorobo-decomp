@@ -29,19 +29,19 @@ void func_ov014_02210854(Ov014Act_0220f9d0 *self) {
 extern const Ov014Blk12 data_ov014_02216bf4;
 extern const Ov014Blk12 data_ov014_02216c00;
 extern u8 data_ov014_02216cb8[];
-extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, Ov014Rot16 *rot, u16 a);
-extern Ov014Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, VecFx32 *pos, Ov014Rot16 *rot, u16 a);
+extern Ov003Actor *func_ov000_0219bf90(void);
 
-Ov014Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
-    Ov014Vec v;
-    Ov014Vec base;
+Ov003Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
+    VecFx32 v;
+    VecFx32 base;
     Ov014SpawnDesc desc;
     Ov014Mtx33 m2;
-    Ov014Vec off;
+    VecFx32 off;
     Ov014Mtx33 m;
     Ov014Rot16 rot;
-    Ov014Actor *o;
-    Ov014Actor *pl;
+    Ov003Actor *o;
+    Ov003Actor *pl;
     s32 px;
     s32 i;
     s32 pz;
@@ -81,21 +81,21 @@ Ov014Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
     o->unk_84.y = 0;
     o->unk_84.z = pz;
     o->flags_0 = 1;
-    if (o->unk_4c != NULL) {
-        o->unk_4c->target = self->id;
+    if (o->targetObj != NULL) {
+        o->targetObj->target = self->id;
     }
     self->target_id = o->id;
     return o;
 }
 
-extern const Ov014Vec data_ov014_02216c0c;
+extern const VecFx32 data_ov014_02216c0c;
 
-Ov014Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self) {
-    Ov014Vec pos;
-    Ov014Vec d;
+Ov003Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self) {
+    VecFx32 pos;
+    VecFx32 d;
     Ov014SpawnDesc desc;
     Ov014Rot16 rot;
-    Ov014Actor *o;
+    Ov003Actor *o;
     s32 k;
     s32 i;
     pos.x = self->unk_118.x;
@@ -135,8 +135,8 @@ Ov014Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self) {
     o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
     o->unk_84 = d;
     o->flags_0 = 1;
-    if (o->unk_4c != NULL) {
-        o->unk_4c->target = self->id;
+    if (o->targetObj != NULL) {
+        o->targetObj->target = self->id;
     }
     self->target_id = o->id;
     return o;

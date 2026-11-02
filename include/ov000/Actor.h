@@ -150,13 +150,6 @@ typedef struct {
 } ActorSub38;
 
 typedef struct {
-    u8 unk_00[0x22];
-    u16 unk_22_0 : 1;
-    u16 unk_22_1 : 1;
-    u16 unk_22_2 : 14;
-} ActorSub44;
-
-typedef struct {
     void *unk_08;
     s16 unk_0c;
     u8 unk_0e;

@@ -20,15 +20,15 @@ static inline void Ov014Spawn_Init(Ov014SpawnDesc *d, u16 k) {
 extern "C" {
 
 extern u8 data_ov014_02216cf4[];
-extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, Ov014Vec16 *rot, u16 a);
-extern Ov014Actor *func_ov000_0219bf90(void);
-extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, VecFx32 *pos, Ov014Vec16 *rot, u16 a);
+extern Ov003Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
-Ov014Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self) {
-    Ov014Vec pos;
+Ov003Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self) {
+    VecFx32 pos;
     Ov014Vec16 rot;
     Ov014SpawnDesc desc;
-    Ov014Actor *o;
+    Ov003Actor *o;
     pos.x = self->unk_118.x;
     pos.y = self->unk_118.y;
     pos.z = self->unk_118.z;
@@ -48,25 +48,25 @@ Ov014Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self) {
         pos.y = self->unk_118.y + 0x1000;
         break;
     }
-    rot.x = self->rot[0];
-    rot.y = self->rot[1];
-    rot.z = self->rot[2];
+    rot.x = self->rot_x;
+    rot.y = self->rot_y;
+    rot.z = self->rot_z;
     Ov014Spawn_Init(&desc, 0x4814);
     o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
-    o->unk_90 = func_ov000_0219bf90()->id;
+    o->target = func_ov000_0219bf90()->id;
     o->flags_0 = 1;
-    if (o->unk_4c != NULL) {
-        o->unk_4c->target = self->id;
+    if (o->targetObj != NULL) {
+        o->targetObj->target = self->id;
     }
     self->target_id = o->id;
     return o;
 }
 
-Ov014Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self) {
+Ov003Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self) {
     Ov014SpawnDesc desc;
-    Ov014Vec pos;
+    VecFx32 pos;
     Ov014Vec16 rot;
-    Ov014Actor *o;
+    Ov003Actor *o;
     u16 id = self->target_id;
     if (data_ov000_021ccd68 == NULL) {
         o = NULL;
@@ -81,18 +81,18 @@ Ov014Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self) {
     pos.y = self->unk_118.y;
     pos.z = self->unk_118.z + 0x2000;
     pos.y -= 0x1000;
-    rot.x = self->rot[0];
-    rot.y = self->rot[1];
-    rot.z = self->rot[2];
+    rot.x = self->rot_x;
+    rot.y = self->rot_y;
+    rot.z = self->rot_z;
     rot.x = 0x2c00;
     o = Group_SpawnActor(data_ov000_021ccd64, &desc, &pos, &rot, 0xffff);
     if (o == NULL) {
         return NULL;
     }
-    o->unk_90 = self->unk_90;
+    o->target = self->target;
     o->flags_0 = 1;
-    if (o->unk_4c != NULL) {
-        o->unk_4c->target = self->id;
+    if (o->targetObj != NULL) {
+        o->targetObj->target = self->id;
     }
     o->unk_60 = data_ov014_02216cf4;
     self->target_id = o->id;

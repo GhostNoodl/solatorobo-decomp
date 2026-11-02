@@ -10,7 +10,7 @@ static inline s32 Ov009_Sqrt64(s64 v) {
     return (*(volatile s32 *)0x40002b4 + 1) >> 1;
 }
 
-static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
+static inline s32 Ov009_DistXZ(const VecFx32 *a, const VecFx32 *b) {
     s64 sq;
     s32 dz = a->z - b->z;
     s32 dx = a->x - b->x;
@@ -19,10 +19,10 @@ static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
     return Ov009_Sqrt64(sq);
 }
 
-extern Ov009Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *func_ov000_0219bf90(void);
 
 void Ov009ActVt_02217d5c_Update(Ov009ActVt_02217d5c *self) {
-    Ov009Actor *t;
+    Ov003Actor *t;
     if (!Ov009_GameIdle()) {
         return;
     }
@@ -34,14 +34,14 @@ void Ov009ActVt_02217d5c_Update(Ov009ActVt_02217d5c *self) {
         self->unk_93_4 = 0;
         self->unk_ea_6 = 1;
     } else {
-        if (*self->unk_50 == 0) {
+        if (*self->hp == 0) {
             self->unk_93_4 = 0;
         } else {
             self->unk_93_4 = 1;
         }
         self->unk_ea_6 = 0;
     }
-    if (self->unk_40->unk_13 != 1) {
+    if (self->fsm->current != 1) {
         return;
     }
     if (!self->unk_93_4) {
@@ -54,9 +54,9 @@ void Ov009ActVt_02217d5c_Update(Ov009ActVt_02217d5c *self) {
         return;
     }
     if (t != NULL) {
-        self->unk_90 = t->id;
+        self->target = t->id;
     }
-    self->unk_40->flags |= 0x4000;
+    self->fsm->flags |= 0x4000;
     self->unk_b6 = 0x96;
 }
 

@@ -10,7 +10,7 @@ static inline s32 Ov009_Sqrt64(s64 v) {
     return (*(volatile s32 *)0x40002b4 + 1) >> 1;
 }
 
-static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
+static inline s32 Ov009_DistXZ(const VecFx32 *a, const VecFx32 *b) {
     s64 sq;
     s32 dz = a->z - b->z;
     s32 dx = a->x - b->x;
@@ -20,17 +20,17 @@ static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
 }
 
 void Ov009ActVt_02217aac_Update(Ov009ActVt_02217aac *self) {
-    Ov009Vec v;
+    VecFx32 v;
     if (!Ov009_GameIdle()) {
         return;
     }
-    v = *(Ov009Vec *)(((u8 *)self->unk_100) + self->unk_fc * 16);
+    v = *(VecFx32 *)(((u8 *)self->unk_100) + self->unk_fc * 16);
     if (Ov009_DistXZ(&self->pos, &v) > 0x333) {
         self->unk_b8 = v;
-        self->unk_40->flags |= 4;
+        self->fsm->flags |= 4;
         return;
     }
-    if (self->unk_40->unk_13 != 1) {
+    if (self->fsm->current != 1) {
         return;
     }
     if (self->unk_b6 != 0) {
@@ -40,7 +40,7 @@ void Ov009ActVt_02217aac_Update(Ov009ActVt_02217aac *self) {
     if (self->unk_b6 != 0) {
         return;
     }
-    self->unk_40->flags |= 0x4000;
+    self->fsm->flags |= 0x4000;
 }
 
 }

@@ -130,7 +130,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
         self->fsm->st++;
         break;
     case 1:
-        if (((s16)self->model->unk_c4) != 1) {
+        if (self->model->anim_state != 1) {
             break;
         }
         self->moveYaw = self->rot_y;
@@ -188,7 +188,7 @@ void func_ov000_021aa978(Robo021ca458 *self) {
             st->st++;
             break;
         }
-        if (((s16)self->model->unk_c4) != 2) {
+        if (self->model->anim_state != 2) {
             break;
         }
         func_ov000_0218d46c(a, self->id, 0xb);

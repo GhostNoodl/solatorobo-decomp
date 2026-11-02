@@ -2,7 +2,7 @@
 
 extern "C" {
 void func_ov012_02207b7c(Ov012Names *n, void *res);
-void func_ov012_02207c40(Ov012Actor *self) {
+void func_ov012_02207c40(Ov003Actor *self) {
     FLD(void *, self, 0xd8) = (void *)func_ov012_02207b7c;
     func_ov003_021d0fc0(self);
     func_ov000_0218f074((u8 *)self + 0xf0, func_0207011c((void *)0x480e), 1, 0, 0, 0);
@@ -18,7 +18,7 @@ void func_ov012_02207c40(Ov012Actor *self) {
 }
 
 extern "C" {
-BOOL func_ov012_02207cf0(Ov012Actor *self) {
+BOOL func_ov012_02207cf0(Ov003Actor *self) {
     BOOL r = func_ov000_0218cf5c(self);
     if (FLD(s16, self, 0xf0) >= 0 && !func_ov000_0218f110((u8 *)self + 0xf0)) {
         r = FALSE;
@@ -33,7 +33,7 @@ BOOL func_ov012_02207cf0(Ov012Actor *self) {
 extern "C" {
 extern const u8 data_ov012_0220a870[];
 extern const u8 data_ov012_0220a878[];
-void func_ov012_02207d44(Ov012Actor *self) {
+void func_ov012_02207d44(Ov003Actor *self) {
     func_ov003_021d112c(self);
     self->unk_ea_3 = 0;
     if (func_020621c4()) {
@@ -49,7 +49,7 @@ void func_ov012_02207d44(Ov012Actor *self) {
 extern "C" {
 
 struct Ov012Query {
-    Ov012Vec pos;
+    VecFx32 pos;
     u16 unk_0c;
     u16 mask;
     u16 kind;
@@ -95,32 +95,32 @@ static inline void Ov012_FinderQuery_Init(Ov012FinderQuery *fq) {
     fq->q.flags = 0;
 }
 
-static inline u16 Ov012_HpPct(Ov012Actor *self) {
-    return self->unk_50[0] * 100 / self->unk_50[1];
+static inline u16 Ov012_HpPct(Ov003Actor *self) {
+    return self->hp[0] * 100 / self->hp[1];
 }
 
-static inline s32 Ov012_Kind(Ov012Actor *o) {
-    return o->unk_40 != NULL ? o->unk_40->unk_13 : 0;
+static inline s32 Ov012_Kind(Ov003Actor *o) {
+    return o->fsm != NULL ? o->fsm->current : 0;
 }
 
-static inline u16 Ov012_FaceAng(Ov012Actor *self, Ov012Actor *o) {
+static inline u16 Ov012_FaceAng(Ov003Actor *self, Ov003Actor *o) {
     if (o == NULL || o == self) {
-        return self->rot[1];
+        return self->rot_y;
     }
     return FX_Atan2(o->pos.x - self->pos.x, o->pos.z - self->pos.z);
 }
 
-static inline void Ov012_Query_SetPosRot(Ov012Query *q, const Ov012Vec *pos, u16 rot) {
+static inline void Ov012_Query_SetPosRot(Ov012Query *q, const VecFx32 *pos, u16 rot) {
     q->pos = *pos;
     q->unk_0c = rot;
 }
 
-void func_ov012_02207dac(Ov012Actor *self) {
+void func_ov012_02207dac(Ov003Actor *self) {
     s32 n;
     BOOL found;
     s32 i;
-    Ov012Actor *pl;
-    Ov012Vec v;
+    Ov003Actor *pl;
+    VecFx32 v;
     s32 dist;
     u8 kind;
     s32 hp;
@@ -128,28 +128,28 @@ void func_ov012_02207dac(Ov012Actor *self) {
     if (!Ov012_GameIdle()) {
         return;
     }
-    self->unk_90 = 0xffff;
-    pl = (Ov012Actor *)func_ov000_0219bf90();
+    self->target = 0xffff;
+    pl = (Ov003Actor *)func_ov000_0219bf90();
     if (pl == NULL) {
         return;
     }
     if (func_ov000_021b4738(pl)) {
         return;
     }
-    self->unk_90 = pl->id;
+    self->target = pl->id;
     self->unk_93_4 = 1;
     v = pl->pos;
     dist = VEC_Distance(&self->pos, &v);
-    kind = self->unk_40->unk_13;
+    kind = self->fsm->current;
     if (kind != 0x10) {
         self->unk_ea_3 = 0;
     }
-    if (Ov012_HpPct(self) < 0x50 && !func_ov000_021983b0(self->unk_40, 0x11, 5, 1)) {
+    if (Ov012_HpPct(self) < 0x50 && !func_ov000_021983b0(self->fsm, 0x11, 5, 1)) {
         Ov012FinderQuery fq;
-        Ov012Actor *hits[0x20];
+        Ov003Actor *hits[0x20];
         found = FALSE;
         Ov012_FinderQuery_Init(&fq);
-        Ov012_Query_SetPosRot(&fq.q, &self->pos, self->rot[1]);
+        Ov012_Query_SetPosRot(&fq.q, &self->pos, self->rot_y);
         fq.q.mask = 0x10;
         fq.q.kind = 0x480e;
         fq.q.unk_18 = 0;
@@ -162,20 +162,20 @@ void func_ov012_02207dac(Ov012Actor *self) {
             for (i = 0; i < n; i++) {
                 if (hits[i] != NULL && Ov012_Kind(hits[i]) == 0xb) {
                     u16 ang = Ov012_FaceAng(self, hits[i]);
-                    if ((u16)(hits[i]->rot[1] - ang - 0x4000) <= 0x8000) {
+                    if ((u16)(hits[i]->rot_y - ang - 0x4000) <= 0x8000) {
                         found = TRUE;
                         break;
                     }
                 }
             }
             if (found) {
-                self->unk_40->flags |= 0x20000;
+                self->fsm->flags |= 0x20000;
                 self->unk_b6 = 0x3c;
             }
         }
     }
     if (kind == 2 && VEC_Distance(&self->pos, &self->unk_b8) > 0x1800) {
-        self->unk_40->flags |= 4;
+        self->fsm->flags |= 4;
     }
     if (self->unk_b6 != 0) {
         self->unk_b6--;
@@ -188,17 +188,17 @@ void func_ov012_02207dac(Ov012Actor *self) {
     if (hp < 0x3c) {
         lvl = 2;
     }
-    if (lvl != 0 && (func_ov000_021983b0(self->unk_40, 0x12, lvl, 1) || func_ov000_021983b0(self->unk_40, 0x13, lvl, 1) ||
-                     func_ov000_021983b0(self->unk_40, 0x14, lvl, 1))) {
+    if (lvl != 0 && (func_ov000_021983b0(self->fsm, 0x12, lvl, 1) || func_ov000_021983b0(self->fsm, 0x13, lvl, 1) ||
+                     func_ov000_021983b0(self->fsm, 0x14, lvl, 1))) {
         self->unk_b8 = v;
-        self->unk_40->flags |= 0x10000;
+        self->fsm->flags |= 0x10000;
         FLD(u16, self, 0x228) = 0;
     } else if (dist < 0x5800) {
         if (hp < 0x28 && !Rand_UpTo(1)) {
-            self->unk_40->flags |= 0x10000;
+            self->fsm->flags |= 0x10000;
             FLD(u16, self, 0x228) = 0;
         } else {
-            self->unk_40->flags |= 0x8000;
+            self->fsm->flags |= 0x8000;
         }
         if (hp < 0x28) {
             self->unk_b6 = 0x5a;
@@ -206,13 +206,13 @@ void func_ov012_02207dac(Ov012Actor *self) {
             self->unk_b6 = 0x87;
         }
     } else if (dist < 0xa000) {
-        if (!func_ov000_021983b0(self->unk_40, 0xe, 2, 1)) {
-            self->unk_40->flags |= 0x4000;
+        if (!func_ov000_021983b0(self->fsm, 0xe, 2, 1)) {
+            self->fsm->flags |= 0x4000;
             self->unk_b6 = 0xe1;
         }
     }
     if (dist >= 0x5000) {
-        self->unk_40->flags |= 4;
+        self->fsm->flags |= 4;
         self->unk_b8 = v;
         self->unk_b6 = 0x23;
     }

@@ -156,12 +156,12 @@ void Robo021ca458_Start(Robo021ca458 *self) {
     self->unk_75a_3 = 0;
     func_0203f364((u8 *)self + 0x6c0);
     self->unk_708 = x;
-    self->unk_44 = (u8 *)(NewObj44_0219d1a8());
+    self->unk_44 = (ActorSub44 *)(NewObj44_0219d1a8());
     LFLD(u16, self->unk_44, 0x20) = self->id;
     LFLD(s32, self->unk_44, 0x1c) = x;
     LFLD(s32, self->unk_44, 0x10) = z;
     {
-        u8 *o = self->unk_44;
+        ActorSub44 *o = self->unk_44;
         LFLD(B16_0219d1a8, o, 0x22).b0 = 1;
         LFLD(B16_0219d1a8, o, 0x22).b1 = 1;
     }

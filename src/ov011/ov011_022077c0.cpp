@@ -36,10 +36,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
-void func_ov003_021d4fd8(void *p);
-void func_ov003_021d5348(void *p);
 
-void func_ov003_021d5900(void *p);
 void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 c);
 void EffectMgr_Kill(void *a, void *b);
 extern void *data_0214a420;
@@ -61,18 +58,18 @@ static inline u32 Ov011_ChrBusy(Ov011Scene *c) {
 
 #pragma force_active on
 void func_ov011_021ffb58(Ov011SceneActor *self) {
-    switch (self->unk_40->state) {
+    switch (self->fsm->st) {
     case 0:
         if (self->unk_f0_1) {
             Ov011_ChrKick(self->scene, 2);
         } else {
             Ov011_ChrKick(self->scene, 3);
         }
-        self->unk_40->state = 1;
+        self->fsm->st = 1;
         break;
     case 1:
         if (Ov011_ChrBusy(self->scene)) {
-            func_ov000_02198360(self->unk_40, 1, 0);
+            func_ov000_02198360(self->fsm, 1, 0);
         }
         break;
     }
@@ -80,21 +77,21 @@ void func_ov011_021ffb58(Ov011SceneActor *self) {
 }
 
 void func_ov011_021ffc38(Ov011SceneActor *self) {
-    switch (self->unk_40->state) {
+    switch (self->fsm->st) {
     case 0:
         Ov011_ChrKick(self->scene, 4);
-        self->unk_40->state = 1;
+        self->fsm->st = 1;
         break;
     case 1:
         if (Ov011_ChrBusy(self->scene)) {
-            func_ov000_02198360(self->unk_40, 1, 0);
+            func_ov000_02198360(self->fsm, 1, 0);
         }
         break;
     }
 }
 
 void func_ov011_021ffcd0(Ov011SceneActor *self) {
-    if (self->unk_40->state == 0) {
+    if (self->fsm->st == 0) {
         Ov011Scene *c;
         Ov011Sa108 *p;
         Ov011Sa104 *o;
@@ -117,7 +114,7 @@ void func_ov011_021ffcd0(Ov011SceneActor *self) {
                 o->unk_38 = NULL;
             }
         }
-        self->unk_3c->unk_14 = self->unk_64 << 1;
+        self->unk_3c->unk_14 = self->radius << 1;
         self->unk_3c->unk_19 = 0xff;
         if (*self->hp == 0) {
             ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4812, 0x15);
@@ -127,23 +124,22 @@ void func_ov011_021ffcd0(Ov011SceneActor *self) {
 }
 
 void func_ov011_021ffdd0(Ov011SceneActor *self) {
-    if (self->unk_40->state == 0) {
+    if (self->fsm->st == 0) {
         func_02049f44(data_02097e4c, 0x42, &self->pos, 0);
     }
     func_ov003_021d4fd8(self);
 }
 
 void func_ov011_021ffe10(Ov011SceneActor *self) {
-    if (self->unk_40->state == 0) {
+    if (self->fsm->st == 0) {
         func_02049f44(data_02097e4c, 0x42, &self->pos, 0);
     }
     func_ov003_021d5348(self);
 }
 
 Ov011Eff *func_02065f88(s32 id, VecFx32 *v);
-void func_ov003_021d6054(void *p);
 void func_ov011_021ffe50(Ov011SceneActor *self) {
-    if (self->unk_40->state == 0) {
+    if (self->fsm->st == 0) {
         Ov011Sa104 *o;
         Ov011V *v;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4812, 0x15);
@@ -156,7 +152,7 @@ void func_ov011_021ffe50(Ov011SceneActor *self) {
                 o->unk_38 = NULL;
             }
         }
-        self->unk_3c->unk_14 = self->unk_64 << 1;
+        self->unk_3c->unk_14 = self->radius << 1;
         self->unk_3c->unk_19 = 0xff;
         v = func_02065f88(0x69, &self->pos);
         if (v != NULL) {
@@ -194,7 +190,7 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
     if (o == NULL) {
         return;
     }
-    switch (o->seq.unk_13) {
+    switch (o->seq.current) {
     case 0:
         break;
     case 1: {
@@ -215,12 +211,12 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
         break;
     }
     case 2:
-        if (o->seq.state == 0) {
+        if (o->seq.st == 0) {
             Ov011Eff *g;
             o->tw.v08();
             Ov011TwB_Start(&self->unk_104->tw, &t, home, 0x19a);
-            self->unk_104->seq.state++;
-            spawnPos = self->unk_48->unk_68;
+            self->unk_104->seq.st++;
+            spawnPos = self->hit->check;
             g = EffectGroup_Create(data_ov011_02207260, data_ov011_0220725c, &spawnPos);
             self->unk_104->unk_38 = (void *)g->unk_24;
             g->unk_c8 = -1;
@@ -228,17 +224,17 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
         if (self->unk_104->unk_38 != NULL) {
             Ov011Eff *e = func_020657b0(data_0214a420, self->unk_104->unk_38);
             if (e != NULL) {
-                effPos = self->unk_48->unk_68;
+                effPos = self->hit->check;
                 e->v18(&effPos);
             }
         }
         self->unk_94_1 = 1;
         break;
     case 3:
-        if (o->seq.state == 0) {
+        if (o->seq.st == 0) {
             o->tw.v08();
             Ov011TwB_Start(&self->unk_104->tw, home, &t, 0x19a);
-            self->unk_104->seq.state++;
+            self->unk_104->seq.st++;
             if (self->unk_104->unk_38 != NULL) {
                 EffectMgr_StopLoop(data_0214a420, self->unk_104->unk_38);
                 self->unk_104->unk_38 = NULL;
@@ -257,7 +253,7 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
                 }
             } else {
                 n--;
-                v += FX_Mul((self->unk_64 << 1) - v, 0x59a);
+                v += FX_Mul((self->radius << 1) - v, 0x59a);
             }
             self->unk_3c->unk_14 = v;
             self->unk_3c->unk_19 = n;
@@ -283,7 +279,7 @@ void func_ov000_021911c8(void *a, s32 b);
 #pragma force_active on
 void func_ov011_0220023c(Ov011SceneActor *self) {
     void *pl;
-    Ov011Param *q;
+    Ov003Param *q;
     s32 s;
     if (self->unk_108 == NULL) {
         return;
@@ -299,11 +295,11 @@ void func_ov011_0220023c(Ov011SceneActor *self) {
         self->unk_ea_0 = self->unk_b0->unk_0a_7;
     }
     if (self->unk_108->b0) {
-        func_ov000_02191690(self->unk_38);
+        func_ov000_02191690(self->model);
     } else {
-        func_ov000_02191708(self->unk_38);
+        func_ov000_02191708(self->model);
     }
-    func_ov000_021911c8(self->unk_38, self->unk_108->unk_04);
+    func_ov000_021911c8(self->model, self->unk_108->unk_04);
 }
 #pragma force_active reset
 
@@ -333,7 +329,7 @@ void func_ov011_02200310(Ov011SceneActor *self) {
     u32 i;
     u8 st;
     Ov011Sa10c *p;
-    st = self->unk_40->unk_13;
+    st = self->fsm->current;
     ok = TRUE;
     for (i = 0; i < 6; i++) {
         s32 *e = &tbl.v[i];
@@ -357,12 +353,12 @@ void func_ov011_02200310(Ov011SceneActor *self) {
                 p->b1 = 1;
                 p->b2 = 1;
                 p->timer = 0x78;
-                func_ov000_02190cb0(self->unk_38, data_ov011_02207264, 0x1000, 0);
-                func_ov000_02191618(self->unk_38);
-                self->unk_9c = 0;
-                self->unk_a0 = 0;
-                self->unk_a4 = 0;
-                self->unk_a8 = 0;
+                func_ov000_02190cb0(self->model, data_ov011_02207264, 0x1000, 0);
+                func_ov000_02191618(self->model);
+                self->speed = 0;
+                self->velY = 0;
+                self->friction = 0;
+                self->gravity = 0;
             } else {
                 Ov011_SetTw(self->unk_108, 0x1000, 0x1000);
                 p = self->unk_10c;
@@ -370,8 +366,8 @@ void func_ov011_02200310(Ov011SceneActor *self) {
                 p->b1 = 0;
                 p->b2 = 1;
                 p->timer = 1;
-                func_ov000_02190cb0(self->unk_38, data_ov011_02207258, 0x1000, 0);
-                func_ov000_021915a0(self->unk_38);
+                func_ov000_02190cb0(self->model, data_ov011_02207258, 0x1000, 0);
+                func_ov000_021915a0(self->model);
             }
             v = self->unk_b8;
             r = Ov003Vec_YawTo(&v, &self->pos);
@@ -380,24 +376,24 @@ void func_ov011_02200310(Ov011SceneActor *self) {
             e->v14(0x4000, 0x4000, 0x4000);
             func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
         } else if (p->b1 == 1) {
-            self->unk_48->unk_9a_5 = 1;
+            self->hit->unk_9a_5 = 1;
             self->unk_10c->b2 = 0;
             if (VEC_Distance(&self->pos, &self->unk_b8) < 0x4000) {
-                if (self->unk_9c >= 0x200) {
-                    self->unk_9c = 0x200;
+                if (self->speed >= 0x200) {
+                    self->speed = 0x200;
                 }
-                self->unk_a4 = 0xf60;
+                self->friction = 0xf60;
             } else {
-                self->unk_9c += FX_Mul(self->unk_b0->unk_00, 0xcd);
-                self->unk_9c = self->unk_9c > self->unk_b0->unk_00 ? self->unk_b0->unk_00 : (self->unk_9c < 0 ? 0 : self->unk_9c);
+                self->speed += FX_Mul(self->unk_b0->unk_00, 0xcd);
+                self->speed = self->speed > self->unk_b0->unk_00 ? self->unk_b0->unk_00 : (self->speed < 0 ? 0 : self->speed);
             }
-            Actor_Move((Actor *)self, 0);
-            func_ov000_021987b8(self->unk_48, 1, 0, 0);
-            if (self->unk_48->unk_50 & 0x40000000) {
-                self->unk_9c = 0;
-                self->unk_a0 = 0;
-                self->unk_a4 = 0;
-                self->unk_a8 = 0;
+            Actor_Move(self, 0);
+            func_ov000_021987b8(self->hit, 1, 0, 0);
+            if (self->hit->unk_50 & 0x40000000) {
+                self->speed = 0;
+                self->velY = 0;
+                self->friction = 0;
+                self->gravity = 0;
                 self->unk_10c->b0 = 0;
             }
         }
@@ -410,11 +406,11 @@ void func_ov011_02200310(Ov011SceneActor *self) {
         return;
     }
     {
-        Ov011Obj *pl = (Ov011Obj *)func_ov000_0219bf90();
+        Actor *pl = (Actor *)func_ov000_0219bf90();
         VecFx32 t;
         t = pl->pos;
         self->unk_b8 = t;
-        self->unk_98 = FX_Atan2(t.x - self->pos.x, t.z - self->pos.z);
+        self->moveYaw = FX_Atan2(t.x - self->pos.x, t.z - self->pos.z);
     }
 }
 }

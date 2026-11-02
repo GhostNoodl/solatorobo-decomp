@@ -9,15 +9,15 @@ struct Ov009Rot {
 };
 
 extern void *data_02097e4c;
-extern Ov009Actor *func_ov000_0219be1c(u16 kind, const Ov009Vec *pos, const void *rot, u16 id, u16 parent);
-extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
-extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
-extern BOOL Hit_DiffInCylinder(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
+extern Ov003Actor *func_ov000_0219be1c(u16 kind, const VecFx32 *pos, const void *rot, u16 id, u16 parent);
+extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
+extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
+extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 r, s32 h);
 
 void func_ov009_021fd71c(Ov009ActVt_02216750 *self) {
-    Ov009Vec p;
-    Ov009Actor *o;
-    Ov009Actor *t;
+    VecFx32 p;
+    Ov003Actor *o;
+    Ov003Actor *t;
     u16 kind = 0x483f;
     p = self->pos;
     if (self->kind == 0x5012) {
@@ -26,36 +26,34 @@ void func_ov009_021fd71c(Ov009ActVt_02216750 *self) {
         p.y -= 0x2800;
         kind = 0x482d;
     }
-    o = func_ov000_0219be1c(kind, &p, self->rot, self->id, self->unk_90);
+    o = func_ov000_0219be1c(kind, &p, &self->rot_x, self->id, self->target);
     if (self->unk_18 == 1) {
         func_02049f44(data_02097e4c, 0xd02, &self->pos, 0);
         t = Actor_GetTarget(self);
         if (t != NULL) {
-            Ov009Vec tp;
+            VecFx32 tp;
             tp = t->pos;
             if (Hit_DiffInCylinder(&p, &tp, 0x6800, 0x7000)) {
                 Ov009Rot r;
                 r.x = 0xf000;
-                r.y = o->rot[1];
-                r.z = o->rot[2];
-                *(Ov009Rot *)o->rot = r;
+                r.y = o->rot_y;
+                r.z = o->rot_z;
+                *(Ov009Rot *)&o->rot_x = r;
             }
         }
     }
-    func_ov000_02198360(self->unk_40, 1, 0);
+    func_ov000_02198360(self->fsm, 1, 0);
 }
 
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
-extern void func_0203f364(Ov009Sub48 *p);
+extern void func_0203f364(ActorSub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
-extern void *func_ov000_0219b71c(Ov009Vec *pos, Ov009Vec *v, s32 a, s32 b, s32 c, s32 d);
-extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
-extern void func_ov003_021d6954(Ov009Actor *self, u8 a);
+extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
+extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 
-static inline void Ov009_VecSet(Ov009Vec *v, s32 x, s32 y, s32 z) {
+static inline void Ov009_VecSet(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
     v->y = y;
     v->z = z;
@@ -78,35 +76,35 @@ static inline void Ov009_ReleaseFx(Ov009ActVt_02216750 *self) {
 }
 
 void func_ov009_021fd830(Ov009ActVt_02216750 *self) {
-    Ov009Sub48 *s48;
-    Ov009Sub44 *s44;
-    Ov009Sub38 *m;
+    ActorSub48 *s48;
+    ActorSub44 *s44;
+    Model0218fe1c *m;
     Ov009V *e;
     s32 spd;
-    Ov009Sub40 *st = self->unk_40;
-    switch (st->state) {
+    ActorSub40 *st = self->fsm;
+    switch (st->st) {
     case 0:
-        *self->unk_50 = 0;
-        s48 = self->unk_48;
+        *self->hp = 0;
+        s48 = self->hit;
         s48->unk_9a_0 = 0;
         s48->unk_9a_3 = 0;
         func_0203f364(s48);
         s44 = self->unk_44;
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
-        self->unk_4c->target = 0xffff;
+        self->targetObj->target = 0xffff;
         if (data_ov000_021ccd54->unk_ca.c[0] == 0x11) {
-            Ov009_VecSet((Ov009Vec *)&self->unk_9c, 0, 0, 0);
+            Ov009_VecSet((VecFx32 *)&self->speed, 0, 0, 0);
         } else {
-            Ov009_VecSet((Ov009Vec *)&self->unk_9c, Rand_PlusMinus(0x29), -0x71, Rand_PlusMinus(0x29));
+            Ov009_VecSet((VecFx32 *)&self->speed, Rand_PlusMinus(0x29), -0x71, Rand_PlusMinus(0x29));
         }
         Ov009_ReleaseFx(self);
-        m = self->unk_38;
-        m->unk_c2_9 = 2;
-        NNSi_G3dModifyPolygonAttrMask(m->unk_04, 0, 0xc0);
-        self->unk_40->state++;
+        m = self->model;
+        m->cull = 2;
+        NNSi_G3dModifyPolygonAttrMask(m->mdl, 0, 0xc0);
+        self->fsm->st++;
     case 1:
-        if (self->unk_40->timer > 0x78) {
+        if (self->fsm->timer > 0x78) {
             func_ov000_0218996c(10, 0x28);
             func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
             e = func_02065f88(5, &self->pos);
@@ -115,15 +113,15 @@ void func_ov009_021fd830(Ov009ActVt_02216750 *self) {
                 spd = 0x4800;
             }
             e->v0c(spd);
-            self->unk_40->timer = 0x29;
-            self->unk_40->state++;
+            self->fsm->timer = 0x29;
+            self->fsm->st++;
             return;
         }
-        if ((self->unk_40->timer & 0xf) == 0) {
-            Ov009Vec v;
+        if ((self->fsm->timer & 0xf) == 0) {
+            VecFx32 v;
             s32 a = -1;
             s32 b = 100;
-            switch (self->unk_40->timer & 0x3f) {
+            switch (self->fsm->timer & 0x3f) {
             case 0:
                 a = 3;
                 break;
@@ -144,8 +142,8 @@ void func_ov009_021fd830(Ov009ActVt_02216750 *self) {
             func_ov000_0219b71c(&self->pos, &v, 0xc00, 0x1400, a, b);
             func_ov000_0218996c(6, 10);
         }
-        self->unk_40->timer++;
-        VEC_Add(&self->pos, (Ov009Vec *)&self->unk_9c, &self->pos);
+        self->fsm->timer++;
+        VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         break;
     case 2:
         if (st->timer != 0) {
@@ -156,10 +154,10 @@ void func_ov009_021fd830(Ov009ActVt_02216750 *self) {
             func_ov003_021d6a3c(self, 1, 1, 1);
             return;
         }
-        if ((u8)self->unk_40->timer < 0x1f) {
-            func_ov003_021d6954(self, self->unk_40->timer);
+        if ((u8)self->fsm->timer < 0x1f) {
+            func_ov003_021d6954(self, self->fsm->timer);
         }
-        VEC_Add(&self->pos, (Ov009Vec *)&self->unk_9c, &self->pos);
+        VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         break;
     }
 }

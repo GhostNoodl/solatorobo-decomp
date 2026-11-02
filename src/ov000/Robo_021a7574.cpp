@@ -121,7 +121,7 @@ void func_ov000_021a70b0(Robo021ca458 *self) {
         }
         self->rot_y = func_01ffc128(ang, self->rot_y, 0x59a, 1, 0x8000);
         if (self->unk_b24_5 != 0 &&
-            (((s16)self->model->unk_c4) == 1 || self->unk_b22_3)) {
+            (self->model->anim_state == 1 || self->unk_b22_3)) {
             Actor *a;
             func_02049a48(data_02097e4c, 0x301, -1, -1, -1);
             a = FindActor021a783c(self->unk_b1c);
@@ -208,7 +208,7 @@ void func_ov000_021a7574(Robo021ca458 *self) {
         ((State021a783c *)self->fsm)->state++;
         break;
     case 1:
-        if (((s16)self->model->unk_c4) == 1 || func_ov000_02191120(self->model)) {
+        if (self->model->anim_state == 1 || func_ov000_02191120(self->model)) {
             if (self->unk_b24_5 != 0) {
                 VObj *e;
                 u8 *a = (u8 *)FindActor021a783c(self->unk_b1c);
@@ -293,7 +293,7 @@ void func_ov000_021a783c(Robo021ca458 *self) {
             }
         }
         self->rot_y = func_01ffc128(ang, self->rot_y, 0x8cd, 1, 0x8000);
-        if (self->unk_b24_5 != 0 && ((s16)self->model->unk_c4) == 1) {
+        if (self->unk_b24_5 != 0 && self->model->anim_state == 1) {
             u8 *a = (u8 *)FindActor021a783c(self->unk_b1c);
             if (a != NULL) {
                 func_ov000_0218d46c(a, self->id, 0xe);

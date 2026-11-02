@@ -98,7 +98,7 @@ void *func_ov011_02201254(void *self);
 void func_ov011_021fdd3c(Ov011Scene *self) {
     Ov011Ent *e = &self->ent;
     Ov011Node *n;
-    if (self->seq.state == 0) {
+    if (self->seq.st == 0) {
         if (e->active) {
             Ov011Ent_Lerp4(e, 0x2000, 1);
         }
@@ -108,14 +108,14 @@ void func_ov011_021fdd3c(Ov011Scene *self) {
         if (e->active) {
             Ov011Ent_Lerp2(e, 0x3333, 1);
         }
-        self->seq.state++;
+        self->seq.st++;
     } else if (Ov011Ent_AllDone(e)) {
         self->b2 = 1;
     }
     for (n = self->head; n != NULL; n = n->next) {
-        Ov011Obj *a = Ov011_FindActor(n->id);
+        Actor *a = Ov011_FindActor(n->id);
         if (func_ov011_02201244(a)) {
-            Ov011Obj *owner = self->actor;
+            Actor *owner = self->actor;
             if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {
                 Ov011PNode *p = Ov011Ent_Find(e, func_ov011_02201254(a));
                 VecFx32 r;

@@ -337,7 +337,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
         if (B24(self).b5 != 0) {
             break;
         }
-        if (((s16)self->model->unk_c4) < 1) {
+        if (self->model->anim_state < 1) {
             break;
         }
         ST(self)->st++;
@@ -421,7 +421,7 @@ void func_ov000_021a4a6c(Robo021ca458 *self) {
             func_ov000_02198360(ST(self), 0xf, 0);
             break;
         }
-        if (((s16)self->model->unk_c4) == 2 || func_ov000_02191120(self->model)) {
+        if (self->model->anim_state == 2 || func_ov000_02191120(self->model)) {
             B24(self).b5 = 0;
             self->unk_b1c = 0xffff;
             self->unk_b1e = 0xffff;

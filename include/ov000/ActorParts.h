@@ -20,6 +20,29 @@ typedef struct ActorSub40 {
 } ActorSub40;
 SIZE_ASSERT(ActorSub40, 0x14);
 
+// Reads through a const view: MWCC does not merge these with an earlier plain read of the same
+// field, so a state machine re-reads the state or timer where the target does.
+static inline u16 ActorSub40_State(const ActorSub40 *s) {
+    return s->st;
+}
+
+static inline u16 ActorSub40_Timer(const ActorSub40 *s) {
+    return s->timer;
+}
+
+// The block at Actor::unk_44 (0x24 bytes; func_ov000_021984f4 sets it up).
+typedef struct ActorSub44 {
+    u8 unk_00[0xc];
+    VecFx32 unk_0c;
+    u8 unk_18[0x4];
+    s32 unk_1c;
+    u8 unk_20[0x2];
+    u16 unk_22_0 : 1;
+    u16 unk_22_1 : 1;
+    u16 unk_22_2 : 2;
+    u16 unk_22_4 : 12;
+} ActorSub44;
+
 // The actor's collision sphere (Actor::hit, ctor func_ov000_021985e8, 0x9c bytes). It starts with a
 // Main HitSphere (func_0203f260, HitSphere_Link; the names up to radius are HitSphere's) and follows
 // its owner actor (func_ov000_0219864c).
@@ -48,7 +71,9 @@ typedef struct ActorSub48 {
     s32 unk_88;
     u8 unk_8c[0xc];
     u16 owner; // id of the actor the sphere follows
-    u16 unk_9a_0 : 3;
+    u16 unk_9a_0 : 1;
+    u16 unk_9a_1 : 1;
+    u16 unk_9a_2 : 1;
     u16 unk_9a_3 : 1;
     u16 unk_9a_4 : 1;
     u16 unk_9a_5 : 1;

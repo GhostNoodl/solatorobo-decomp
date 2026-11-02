@@ -13,7 +13,7 @@ extern "C" {
 extern void *data_ov013_0220bbb8[];
 extern char data_ov013_0220ba58[];
 extern char data_ov013_0220ba60[];
-extern void func_ov003_021d9980(Ov013Vec *out, u16 rot, const Ov013Vec *v);
+extern void func_ov003_021d9980(VecFx32 *out, u16 rot, const VecFx32 *v);
 extern void *ActorEx_Ctor(void *self);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
@@ -95,7 +95,7 @@ struct Ov013Shadow {
 };
 
 extern void func_ov003_021cf33c(void *p, void *q);
-extern Ov013Actor *func_ov000_0219bf90(void);
+extern Ov003Actor *func_ov000_0219bf90(void);
 extern void func_ov000_02190758(void *m, u16 *rot, s32 a);
 extern BOOL func_ov000_021903b4(void *m);
 extern BOOL func_ov000_02194c08(void *self);

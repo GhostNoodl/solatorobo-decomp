@@ -56,7 +56,7 @@ void func_ov011_02202fbc(void *p);
 void func_ov011_021fab74(void *p);
 
 void func_ov011_021fdb28(Ov011Scene *self) {
-    s32 bit = self->seq.unk_13;
+    s32 bit = self->seq.current;
     if (self->unk_04 != 0) {
         switch (self->unk_04) {
         case 1:
@@ -81,7 +81,7 @@ void func_ov011_021fdb28(Ov011Scene *self) {
             bit = 7;
             break;
         }
-        self->seq.state = 0;
+        self->seq.st = 0;
         self->seq.timer = 0;
         Ov011Ring_Push(&self->ring, self->unk_04);
     }

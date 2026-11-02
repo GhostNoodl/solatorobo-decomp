@@ -43,7 +43,7 @@ void func_ov000_02196860(ActorEx *self) {
                 }
                 LFLD(u16, g, 0x16) = n;
                 if (self->unk_44 != NULL) {
-                    u8 *q = self->unk_44;
+                    ActorSub44 *q = self->unk_44;
                     LFLD(Bits02196860, q, 0x22).b0 = 0;
                     LFLD(Bits02196860, q, 0x22).b1 = 0;
                 }
@@ -70,7 +70,7 @@ void func_ov000_02196860(ActorEx *self) {
         func_ov000_02190cb0(self->model, data_ov000_021cc456, 0x1000, 0);
         func_ov000_021915a0(self->model);
         if (self->unk_44 != NULL) {
-            u8 *q = self->unk_44;
+            ActorSub44 *q = self->unk_44;
             LFLD(Bits02196860, q, 0x22).b0 = 1;
             LFLD(Bits02196860, q, 0x22).b1 = 1;
         }

@@ -129,7 +129,7 @@ void func_ov000_02196c40(ActorEx *self) {
             case 2: {
                 Robo021ca458 *p;
                 if (self->unk_44 != NULL) {
-                    u8 *q = self->unk_44;
+                    ActorSub44 *q = self->unk_44;
                     LFLD(Bits02196c40, q, 0x22).b0 = 0;
                     LFLD(Bits02196c40, q, 0x22).b1 = 0;
                 }

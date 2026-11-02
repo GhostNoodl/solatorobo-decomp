@@ -122,7 +122,7 @@ void func_ov000_021aaf80(Robo021ca458 *self) {
         break;
     case 1: {
         VObj *o;
-        if (((s16)self->model->unk_c4) != 1) {
+        if (self->model->anim_state != 1) {
             break;
         }
         o = func_02065f88(0x192, (VecFx32 *)((u8 *)self + 0x70));

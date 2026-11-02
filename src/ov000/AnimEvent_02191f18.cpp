@@ -64,7 +64,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
 
     switch (op) {
     case 0:
-        m->unk_c4 = *p++;
+        m->anim_state = *p++;
         break;
     case 2:
         actor = NULL;

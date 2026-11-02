@@ -66,11 +66,11 @@ static inline Actor *FindActor_021a9be8(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-static inline BOOL Both_021a9be8(u8 *c) {
+static inline BOOL Both_021a9be8(ActorSub44 *c) {
     return (LFLD(H22_021a9be8, c, 0x22).b0 == 1 && LFLD(H22_021a9be8, c, 0x22).b1 == 1) ? TRUE : FALSE;
 }
 
-static inline BOOL Has_021a9be8(u8 *c) {
+static inline BOOL Has_021a9be8(ActorSub44 *c) {
     return LFLD(H22_021a9be8, c, 0x22).b2 != 0 ? TRUE : FALSE;
 }
 
@@ -137,7 +137,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
 
     tg = FindActor_021a9be8(self->target);
     if (tg != NULL) {
-        u8 *c = tg->unk_44;
+        ActorSub44 *c = tg->unk_44;
         if (!(c != NULL && Both_021a9be8(c) && (u16)(tg->id & 0xf000) == 0x5000 && Has_021a9be8(c))) {
             tg = NULL;
         } else if (self->unk_b2f == 0) {

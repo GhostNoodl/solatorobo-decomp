@@ -35,9 +35,9 @@ void func_ov011_021fb8d4(void *a, s32 b, void *c, void *d);
 
 void func_ov011_021fdfd8(Ov011Scene *self) {
     Ov011Node *n;
-    switch (self->seq.state) {
+    switch (self->seq.st) {
     case 0: {
-        u8 key = self->seq.unk_13;
+        u8 key = self->seq.current;
         s32 v = -1;
         u32 i;
         for (i = 0; i < 2; i++) {
@@ -47,7 +47,7 @@ void func_ov011_021fdfd8(Ov011Scene *self) {
             }
         }
         func_ov011_021fb8d4(&self->mgr2, v, self, &self->ent);
-        self->seq.state = 1;
+        self->seq.st = 1;
         break;
     }
     case 1: {
@@ -56,16 +56,16 @@ void func_ov011_021fdfd8(Ov011Scene *self) {
             r = !self->mgr2.b1;
         }
         if (r) {
-            self->seq.state = 2;
+            self->seq.st = 2;
             self->b2 = 1;
         }
         break;
     }
     case 2:
         for (n = self->head; n != NULL; n = n->next) {
-            Ov011Obj *a = Ov011_FindActor(n->id);
+            Actor *a = Ov011_FindActor(n->id);
             if (func_ov011_02201244(a)) {
-                Ov011Obj *owner = self->actor;
+                Actor *owner = self->actor;
                 if (Ov011Ent_Find(&self->ent, func_ov011_02201254(a)) != NULL) {
                     Ov011PNode *p = Ov011Ent_Find(&self->ent, func_ov011_02201254(a));
                     VecFx32 r;

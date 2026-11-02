@@ -66,7 +66,7 @@ void Robo021ca458_Init(Robo021ca458 *self) {
     if (p != NULL) {
         p = func_ov000_021919c8(p);
     }
-    self->unk_3c = (u8 *) p;
+    self->unk_3c = (ActorShadow *)p;
     Shadow_Load(p);
     kind = self->unk_b22_6;
     e = &data_ov000_021ca398[kind];

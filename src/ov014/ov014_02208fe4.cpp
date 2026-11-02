@@ -12,10 +12,10 @@ extern void *data_02097e4c;
 extern void *data_0214a420;
 extern u8 data_ov014_02217968[];
 extern u8 data_ov014_02217a0c[];
-extern Ov014Actor *Target_Get(void *p);
-extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s32 a, Ov014Actor **list);
-extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
-extern void func_ov003_021f0c60(Ov014Obj *self, s32 a);
+extern Ov003Actor *Target_Get(void *p);
+extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
+extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
+extern void func_ov003_021f0c60(Actor *self, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
@@ -25,10 +25,10 @@ extern Ov014V *func_020657b0(void *a, void *b);
 extern void func_02036838(void *a, void *b, s32 c, s32 d);
 extern void *func_020359d0(void *a, s32 b, s32 c);
 extern void func_02049678(void *a, s32 b, s32 c, s32 d);
-extern BOOL func_ov000_0218cf5c(Ov014Actor *self);
+extern BOOL func_ov000_0218cf5c(Ov003Actor *self);
 extern BOOL func_02035b90(void *a, s32 b);
 extern BOOL SndMgr_IsLoadDone(void *a);
-extern BOOL func_ov003_021d1c00(Ov014Actor *self, Ov014Msg *msg);
+extern BOOL func_ov003_021d1c00(Ov003Actor *self, Ov014Msg *msg);
 extern u8 data_ov014_02216a60[];
 extern u8 data_ov014_02216afc[];
 extern u8 data_ov014_02216b6c[];
@@ -41,29 +41,29 @@ extern s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 extern void NNS_G3dRenderObjSetInitFunc(void *a, void *b);
 
 void func_ov014_02208fe4(Ov014ActEx_02208618 *self) {
-    Ov014Actor *list[0x20];
+    Ov003Actor *list[0x20];
     s32 r;
     s32 n;
     u16 k;
     s32 i;
-    r = self->unk_64 + 0x4cd;
+    r = self->radius + 0x4cd;
     if (r < 0xccd) {
         r = 0xccd;
     }
-    self->unk_48->unk_44 = r;
-    k = Target_Get(self->unk_4c)->id & 0xf000;
+    self->hit->unk_44 = r;
+    k = Target_Get(self->targetObj)->id & 0xf000;
     n = func_ov000_0219a510(self, ~(1 << (k >> 12)), &self->pos, r, 0, list);
     if (n == 0) {
         return;
     }
     for (i = 0; i < n; i++) {
-        Ov014Actor *q;
+        Ov003Actor *q;
         if (list[i] != NULL && (q = func_ov000_021985c0(list[i])) != NULL) {
-            Ov014Target *s = q->unk_4c;
+            ActorSub4c *s = q->targetObj;
             if (s == NULL || k != (u16)(s->target & 0xf000)) {
                 func_ov003_021f0c60(self, 0);
                 self->unk_d0 |= 0x1000;
-                func_ov000_02198360(self->unk_40, 0x15, 0);
+                func_ov000_02198360(self->fsm, 0x15, 0);
                 func_ov000_0218996c(5, 8);
                 return;
             }
@@ -120,8 +120,8 @@ void func_ov014_022091d4(u8 *self) {
     FLD(u8, self, 0x92) = 3;
 }
 
-void func_ov014_022091ec(void *self, Ov014Actor *a) {
-    u16 *hp = a->unk_50;
+void func_ov014_022091ec(void *self, Ov003Actor *a) {
+    u16 *hp = a->hp;
     u32 cur = hp[0];
     u32 max = hp[1];
     u8 *q = FLD(u8 *, self, 0xc);
@@ -141,7 +141,7 @@ void func_ov014_022091ec(void *self, Ov014Actor *a) {
 }
 
 #pragma force_active on
-Ov014Actor *Ov014Act_02209280_Ctor(Ov014Act_02209280 *self) {
+Ov003Actor *Ov014Act_02209280_Ctor(Ov014Act_02209280 *self) {
     s32 i;
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217968;
@@ -225,27 +225,27 @@ void func_ov014_02209520(Ov014Act_02209280 *self, Ov014Msg *msg) {
 }
 
 void Ov014Act_02209280_Start(Ov014Act_02209280 *self) {
-    Ov014Sub38 *m;
+    Model0218fe1c *m;
     func_ov003_021d112c(self);
     {
-        Ov014Sub48 *q = self->unk_48;
+        ActorSub48 *q = self->hit;
         q->unk_9a_1 = 0;
         q->unk_9a_4 = 0;
     }
     {
-        Ov014Sub48 *q = self->unk_48;
+        ActorSub48 *q = self->hit;
         q->unk_9a_2 = 0;
         q->unk_9a_5 = 0;
     }
     {
-        Ov014Sub44 *n = self->unk_44;
+        ActorSub44 *n = self->unk_44;
         FLD(s32, n, 0xc) = 0;
-        n->unk_10 = -0x800;
+        n->unk_0c.y = -0x800;
         FLD(s32, n, 0x14) = 0x1000;
     }
     self->unk_44->unk_1c = 0x1000;
     {
-        Ov014Sub44 *n = self->unk_44;
+        ActorSub44 *n = self->unk_44;
         n->unk_22_0 = 1;
         n->unk_22_1 = 1;
     }
@@ -256,16 +256,16 @@ void Ov014Act_02209280_Start(Ov014Act_02209280 *self) {
     self->unk_1d4 = self;
     self->unk_1d0 = (void *)func_ov014_022091ec;
     self->unk_100 = 3;
-    self->unk_104 = func_ov000_021909a8(self->unk_38, data_ov014_02217a1b, data_ov014_02217a1c);
-    self->unk_138 = func_ov000_021909a8(self->unk_38, data_ov014_02217a1b, data_ov014_02217a28);
-    self->unk_16c = func_ov000_021909a8(self->unk_38, data_ov014_02217a1b, data_ov014_02217a38);
-    m = self->unk_38;
+    self->unk_104 = func_ov000_021909a8(self->model, data_ov014_02217a1b, data_ov014_02217a1c);
+    self->unk_138 = func_ov000_021909a8(self->model, data_ov014_02217a1b, data_ov014_02217a28);
+    self->unk_16c = func_ov000_021909a8(self->model, data_ov014_02217a1b, data_ov014_02217a38);
+    m = self->model;
     NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov014_022091d4);
-    m->unk_c2_5 = 0;
-    self->unk_38->unk_c2_8 = 1;
-    self->unk_38->unk_50 = &self->unk_fc;
-    FLD(Ov014Flags, self->unk_38, 0xc2).b4 = 0;
-    self->unk_4c->unk_18 |= 0x10;
+    m->clearInit = 0;
+    self->model->flushVP = 1;
+    self->model->renderUser = &self->unk_fc;
+    FLD(Ov014Flags, self->model, 0xc2).b4 = 0;
+    self->targetObj->unk_18 |= 0x10;
     self->unk_1a8 = self->pos.x;
     self->unk_1ac = self->pos.y;
     self->unk_1b0 = self->pos.z;
@@ -292,21 +292,21 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
         return;
     }
     pl = func_ov000_0219bf90();
-    self->unk_90 = 0xffff;
+    self->target = 0xffff;
     if (pl != NULL) {
-        self->unk_90 = FLD(u16, pl, 0xc);
+        self->target = FLD(u16, pl, 0xc);
     }
     if (self->unk_b4 != 0 && !FLD(Ov014Flags, self->unk_b0, 0xa).b12) {
         self->unk_93_4 = 1;
     }
-    if (*self->unk_50 == 0 || (self->unk_40->flags & 0x200000)) {
+    if (*self->hp == 0 || (self->fsm->flags & 0x200000)) {
         if (self->unk_b4 / 10 != 9) {
             self->unk_b4 = 0x5a;
         }
-        *self->unk_50 = 0;
+        *self->hp = 0;
         self->unk_93_4 = 0;
     }
-    if (self->unk_30 != 0 && (self->unk_30 & 0x200)) {
+    if (self->msg_flags != 0 && (self->msg_flags & 0x200)) {
         self->unk_fc = 0;
         EffectMgr_StopLoop(data_0214a420, self->unk_1dc);
         self->unk_1dc = NULL;
@@ -317,23 +317,23 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
     }
     switch (self->unk_b4) {
     case 0:
-        if (func_ov000_021983b0(self->unk_40, 0x14, 1, 1)) {
+        if (func_ov000_021983b0(self->fsm, 0x14, 1, 1)) {
             self->unk_b4 = 0x64;
             break;
         }
-        if (func_ov000_021983b0(self->unk_40, 0xb, 3, 1)) {
+        if (func_ov000_021983b0(self->fsm, 0xb, 3, 1)) {
             self->unk_b4 = 0x6e;
             break;
         }
-        if (func_ov000_021983b0(self->unk_40, 0x13, 1, 1)) {
+        if (func_ov000_021983b0(self->fsm, 0x13, 1, 1)) {
             self->unk_b4 = 0x50;
         } else {
             self->unk_b4 = 10;
         }
         break;
     case 10:
-        self->unk_40->flags |= 2;
-        self->unk_40->state = 0;
+        self->fsm->flags |= 2;
+        self->fsm->st = 0;
         self->unk_b4 = 0x15;
         self->unk_b6 = 0xc8;
         break;
@@ -344,7 +344,7 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
         u8 *t;
         u16 idx;
         u8 *a;
-        if (!Ov014_TickB6(self) && self->unk_40->state != 0xffff) {
+        if (!Ov014_TickB6(self) && self->fsm->st != 0xffff) {
             break;
         }
         t = self->unk_1cc;
@@ -382,135 +382,135 @@ void Ov014Act_02209280_Update(Ov014Act_02209280 *self) {
         break;
     }
     case 0x1e:
-        func_ov000_02198360(self->unk_40, 0xe, 0);
-        self->unk_40->state = 0;
+        func_ov000_02198360(self->fsm, 0xe, 0);
+        self->fsm->st = 0;
         self->unk_b6 = 0xffff;
         self->unk_b4++;
         break;
     case 0x1f:
-        if (self->unk_40->state != 0xffff) {
+        if (self->fsm->st != 0xffff) {
             break;
         }
-        self->unk_40->flags |= 2;
-        self->unk_40->state = 0;
+        self->fsm->flags |= 2;
+        self->fsm->st = 0;
         self->unk_b4 = 0x14;
         self->unk_b6 = self->step->unk_06;
         break;
     case 0x32:
-        func_ov000_02198360(self->unk_40, 0x10, 0);
-        self->unk_40->state = 0;
+        func_ov000_02198360(self->fsm, 0x10, 0);
+        self->fsm->st = 0;
         self->unk_b6 = 0xffff;
         self->unk_b4++;
         break;
     case 0x33:
-        if (self->unk_40->state != 0xffff) {
+        if (self->fsm->st != 0xffff) {
             break;
         }
-        self->unk_40->flags |= 2;
-        self->unk_40->state = 0;
+        self->fsm->flags |= 2;
+        self->fsm->st = 0;
         self->unk_b4 = 0x14;
         self->unk_b6 = self->step->unk_06;
         break;
     case 0x28:
-        func_ov000_02198360(self->unk_40, 0xf, 0);
-        self->unk_40->state = 0;
+        func_ov000_02198360(self->fsm, 0xf, 0);
+        self->fsm->st = 0;
         self->unk_b6 = 0xffff;
         self->unk_b4++;
         break;
     case 0x29:
-        if (self->unk_40->state != 0xffff) {
+        if (self->fsm->st != 0xffff) {
             break;
         }
-        self->unk_40->flags |= 2;
-        self->unk_40->state = 0;
+        self->fsm->flags |= 2;
+        self->fsm->st = 0;
         self->unk_b4 = 0x14;
         self->unk_b6 = self->step->unk_06;
         break;
     case 0x3c:
-        func_ov000_02198360(self->unk_40, 0x11, 0);
-        self->unk_40->state = 0;
+        func_ov000_02198360(self->fsm, 0x11, 0);
+        self->fsm->st = 0;
         self->unk_b6 = 0xffff;
         self->unk_b4++;
         break;
     case 0x3d:
-        if (self->unk_40->state != 0xffff) {
+        if (self->fsm->st != 0xffff) {
             break;
         }
-        self->unk_40->flags |= 2;
-        self->unk_40->state = 0;
+        self->fsm->flags |= 2;
+        self->fsm->st = 0;
         self->unk_b4 = 0x14;
         self->unk_b6 = self->step->unk_06;
         break;
     case 0x46:
-        if (self->unk_40->unk_13 == 1) {
+        if (self->fsm->current == 1) {
             self->unk_b4 = 0x14;
             self->unk_b6 = 0x3c;
         }
         break;
     case 0x47:
-        if (self->unk_40->state != 0xffff) {
+        if (self->fsm->st != 0xffff) {
             break;
         }
-        self->unk_40->flags |= 2;
-        self->unk_40->timer = 0;
+        self->fsm->flags |= 2;
+        self->fsm->timer = 0;
         self->unk_b4 = 0x14;
         self->unk_b6 = 0x3c;
         break;
     case 0x50:
-        if (self->unk_40->unk_13 == 1) {
+        if (self->fsm->current == 1) {
             self->unk_b4 = 0x14;
             self->unk_b6 = 0x3c;
         }
         break;
     case 0x5a:
-        self->unk_40->flags |= 0x200000;
-        self->unk_40->state = 0;
+        self->fsm->flags |= 0x200000;
+        self->fsm->st = 0;
         self->unk_b6 = 0xffff;
         self->unk_b4++;
         break;
     case 0x64:
-        self->unk_48->unk_9a_5 = 0;
-        if (self->unk_40->unk_13 == 1) {
+        self->hit->unk_9a_5 = 0;
+        if (self->fsm->current == 1) {
             self->unk_b4 = 0x14;
             self->unk_b6 = 0x3c;
         }
         break;
     case 0x6e:
-        self->unk_48->unk_9a_5 = 0;
-        if (self->unk_40->unk_13 == 1) {
+        self->hit->unk_9a_5 = 0;
+        if (self->fsm->current == 1) {
             self->unk_b4 = 0x14;
             self->unk_b6 = 0x3c;
         }
         break;
     case 0x78:
-        self->unk_40->flags |= 4;
-        self->unk_40->state = 0;
+        self->fsm->flags |= 4;
+        self->fsm->st = 0;
         self->unk_b4++;
         break;
     case 0x79:
-        if (self->unk_40->state != 0xffff) {
-            self->unk_40->flags |= 4;
+        if (self->fsm->st != 0xffff) {
+            self->fsm->flags |= 4;
             break;
         }
-        self->unk_40->flags |= 2;
-        self->unk_40->timer = 0;
+        self->fsm->flags |= 2;
+        self->fsm->timer = 0;
         self->unk_b4 = 0x14;
         self->unk_b6 = self->step->unk_06;
-        self->unk_a0 = 0;
-        self->unk_a8 = 0;
+        self->velY = 0;
+        self->gravity = 0;
         break;
     case 0x82:
-        self->unk_40->flags |= 0x400000000ULL;
-        self->unk_40->state = 0;
+        self->fsm->flags |= 0x400000000ULL;
+        self->fsm->st = 0;
         self->unk_ea_0 = 4;
         self->unk_b4++;
         break;
     case 0x83:
-        if (self->unk_40->state != 0xffff) {
+        if (self->fsm->st != 0xffff) {
             break;
         }
-        self->unk_40->flags |= 2;
-        self->unk_40->timer = 0;
+        self->fsm->flags |= 2;
+        self->fsm->timer = 0;
         self->unk_ea_0 = self->unk_b0->unk_0a_7;
         self->unk_b4 = 0x14;
         self->unk_b6 = 0;

@@ -278,7 +278,7 @@ static inline void Ov011Ent_RestoreB2(Ov011Ent *e, s32 to, s32 frames) {
     }
 }
 
-static inline void Ov011_Attach(Ov011PNode *p, Ov011Obj *owner, Ov011Obj *a) {
+static inline void Ov011_Attach(Ov011PNode *p, Actor *owner, Actor *a) {
     VecFx32 v;
     VecFx32 o;
     VecFx32 r;
@@ -294,7 +294,7 @@ static inline void Ov011_Attach(Ov011PNode *p, Ov011Obj *owner, Ov011Obj *a) {
     a->pos.z = r.z;
 }
 
-void func_ov011_021fb9b8(Ov011Mgr2 *self, Ov011Obj *owner) {
+void func_ov011_021fb9b8(Ov011Mgr2 *self, Actor *owner) {
     BOOL any;
     BOOL ok;
     Ov011Node *head;
@@ -328,7 +328,7 @@ void func_ov011_021fb9b8(Ov011Mgr2 *self, Ov011Obj *owner) {
     case 1: {
         ok = TRUE;
         for (n = head; n != NULL; n = n->next) {
-            Ov011Obj *a = Ov011_FindActor(n->id);
+            Actor *a = Ov011_FindActor(n->id);
             if (func_ov011_02201244(a)) {
                 s32 y;
                 Ov011Ent *e;

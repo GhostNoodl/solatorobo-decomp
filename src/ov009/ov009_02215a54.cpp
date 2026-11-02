@@ -2,46 +2,46 @@
 
 extern "C" {
 
-extern Ov009Obj *Target_Get(void *p);
-extern s32 func_ov000_0219a510(Ov009Obj *self, u16 mask, const Ov009Vec *pos, s32 r, s32 a, void **list);
-extern Ov009Actor *func_ov000_021985c0(void *p);
-extern void func_ov003_021f0c60(Ov009Obj *self, s32 a);
+extern Actor *Target_Get(void *p);
+extern s32 func_ov000_0219a510(Actor *self, u16 mask, const VecFx32 *pos, s32 r, s32 a, void **list);
+extern Ov003Actor *func_ov000_021985c0(void *p);
+extern void func_ov003_021f0c60(Actor *self, s32 a);
 extern s32 func_0203db40(void *p);
-extern void func_ov000_02190a80(Ov009Sub38 *m, s32 a);
+extern void func_ov000_02190a80(Model0218fe1c *m, s32 a);
 extern void *func_ov000_0219429c(void *self);
 
 void func_ov009_02215a54(Ov009ActExVt_0221802c *self) {
-    func_ov000_02198360(self->unk_40, 0x15, 0);
+    func_ov000_02198360(self->fsm, 0x15, 0);
 }
 
 void func_ov009_02215a6c(Ov009ActExVt_0221802c *self) {
     void *list[0x20];
-    s32 r = self->unk_64 + 0x333;
+    s32 r = self->radius + 0x333;
     u16 grp;
     s32 n;
     s32 i;
-    self->unk_48->unk_44 = r;
-    grp = Target_Get(self->unk_4c)->id & 0xf000;
+    self->hit->unk_44 = r;
+    grp = Target_Get(self->targetObj)->id & 0xf000;
     n = func_ov000_0219a510(self, ~(1 << (grp >> 12)), &self->pos, r, 0, list);
     if (n == 0) {
         return;
     }
     for (i = 0; i < n; i++) {
-        Ov009Actor *a;
+        Ov003Actor *a;
         if (list[i] != NULL && (a = func_ov000_021985c0(list[i])) != NULL) {
-            Ov009Target *p = a->unk_4c;
+            ActorSub4c *p = a->targetObj;
             if (p == NULL || grp != (u16)(p->target & 0xf000)) {
                 func_ov003_021f0c60(self, 0);
-                func_ov000_02198360(self->unk_40, 0x15, 0);
+                func_ov000_02198360(self->fsm, 0x15, 0);
                 return;
             }
         }
     }
 }
 
-void func_ov009_02215b5c(Ov009Actor *self) {
-    if (self->unk_38 != NULL) {
-        func_ov000_02190a80(self->unk_38, func_0203db40(&FLD(u8, self, 0x24)));
+void func_ov009_02215b5c(Ov003Actor *self) {
+    if (self->model != NULL) {
+        func_ov000_02190a80(self->model, func_0203db40(&FLD(u8, self, 0x24)));
     }
 }
 

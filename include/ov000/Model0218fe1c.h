@@ -94,7 +94,13 @@ typedef struct {
     AnimCtrl *unk_18;
     AnimCtrl *unk_1c;
     ResSet *unk_20;
-    u8 renderObj[0x54]; // NNSG3dRenderObj (NNS_G3dRenderObjInit / NNS_G3dDraw)
+    union {
+        u8 renderObj[0x54]; // NNSG3dRenderObj (NNS_G3dRenderObjInit / NNS_G3dDraw)
+        struct {
+            u8 unk_24[0x2c];
+            void *renderUser; // renderObj.ptrUser (ov009 points it at the actor's own data)
+        };
+    };
     // base transform, set with NNS_G3dGlbSetBaseTrans / prmBaseRot / NNS_G3dGlbSetBaseScale when drawn
     VecFx32 trans;
     MtxFx33 rot;
@@ -108,18 +114,23 @@ typedef struct {
     u8 bright; // diffuse brightness, 0x1f is full
     u8 unk_c0;
     u8 polyId; // NNS_G3dGlbPolygonAttr polygonID (0: 5)
-    u16 visible : 1; // drawn only when set
-    u16 unk_c2_1 : 1;
-    u16 invV : 1;  // billboard: rotate by the inverse view matrix
-    u16 flipX : 1; // with invV: mirror the x scale
-    u16 boxTest : 1; // draw only if the G3 box test of the model bounds passes
-    u16 clearInit : 1; // clear the render object's init callback after drawing
-    u16 unk_c2_6 : 1;
-    u16 restoreMat : 1; // restore the material flags after a colour blend
-    u16 flushVP : 1; // NNS_G3dGlbFlushVP instead of NNS_G3dGlbFlushP
-    u16 cull : 2; // NNS_G3dGlbPolygonAttr cullMode
-    u16 unk_c2_11 : 5;
-    u16 unk_c4;
+    union {
+        u16 unk_c2; // or-ed whole by some ov009 actors
+        struct {
+            u16 visible : 1; // drawn only when set
+            u16 unk_c2_1 : 1;
+            u16 invV : 1;  // billboard: rotate by the inverse view matrix
+            u16 flipX : 1; // with invV: mirror the x scale
+            u16 boxTest : 1; // draw only if the G3 box test of the model bounds passes
+            u16 clearInit : 1; // clear the render object's init callback after drawing
+            u16 unk_c2_6 : 1;
+            u16 restoreMat : 1; // restore the material flags after a colour blend
+            u16 flushVP : 1; // NNS_G3dGlbFlushVP instead of NNS_G3dGlbFlushP
+            u16 cull : 2; // NNS_G3dGlbPolygonAttr cullMode
+            u16 unk_c2_11 : 5;
+        };
+    };
+    s16 anim_state;
     u16 unk_c6;
     u16 unk_c8;
     u16 unk_ca;

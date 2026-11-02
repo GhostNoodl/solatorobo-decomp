@@ -138,7 +138,7 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         handled = TRUE;
         break;
     case 13:
-        sub44 = (ActorSub44 *)self->unk_44;
+        sub44 = self->unk_44;
         if (sub44 != NULL) {
             if (msg->data[0] != 0) {
                 sub44->unk_22_0 = 1;

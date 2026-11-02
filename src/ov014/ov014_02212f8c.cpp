@@ -20,44 +20,44 @@ static inline void Ov014Spawn_Init(Ov014SpawnDesc *d, u16 k) {
 extern "C" {
 
 extern char data_ov014_02217d3a[];
-extern Ov014Actor *func_ov000_0219bf90(void);
-extern void Actor_TurnToActor(Ov014Obj *self, Ov014Obj *target, s32 a);
+extern Ov003Actor *func_ov000_0219bf90(void);
+extern void Actor_TurnToActor(Actor *self, Actor *target, s32 a);
 extern char data_ov014_02217d4c[];
 extern u8 data_ov014_02216dc0[];
-extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
-extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
+extern Ov003Actor *Actor_GetTarget(Actor *self);
+extern Ov014Eff *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_ov000_02191618(void *a);
-extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, void *pos, void *rot, u16 a);
+extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, void *pos, void *rot, u16 a);
 
-static inline void Ov014_TimerTick(Ov014Sub40 *s) {
+static inline void Ov014_TimerTick(ActorSub40 *s) {
     if (s->timer != 0) {
         s->timer--;
     }
 }
 
 void func_ov014_02212f8c(Ov014Act_0221267c *self) {
-    Ov014Sub40 *s = self->unk_40;
-    switch (Ov014Sub40_State(s)) {
+    ActorSub40 *s = self->fsm;
+    switch (ActorSub40_State(s)) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov014_02217d3a, 0x19a, 0);
-        func_ov000_021915a0(self->unk_38);
-        self->unk_40->state++;
-        self->unk_40->timer = 60;
+        func_ov000_02190cb0(self->model, data_ov014_02217d3a, 0x19a, 0);
+        func_ov000_021915a0(self->model);
+        self->fsm->st++;
+        self->fsm->timer = 60;
         break;
     case 1:
         Actor_TurnToActor(self, func_ov000_0219bf90(), 0x400);
-        s = self->unk_40;
-        if (Ov014Sub40_Timer(s) == 0) {
-            s->state++;
-            self->unk_40->timer = 30;
+        s = self->fsm;
+        if (ActorSub40_Timer(s) == 0) {
+            s->st++;
+            self->fsm->timer = 30;
         } else {
             Ov014_TimerTick(s);
         }
         break;
     case 2:
-        if (Ov014Sub40_Timer(s) == 0) {
-            s->state--;
-            self->unk_40->timer = 60;
+        if (ActorSub40_Timer(s) == 0) {
+            s->st--;
+            self->fsm->timer = 60;
         } else {
             Ov014_TimerTick(s);
         }
@@ -66,77 +66,77 @@ void func_ov014_02212f8c(Ov014Act_0221267c *self) {
 }
 
 void func_ov014_0221308c(Ov014Act_0221267c *self) {
-    Ov014Sub40 *s = self->unk_40;
-    switch (Ov014Sub40_State(s)) {
+    ActorSub40 *s = self->fsm;
+    switch (ActorSub40_State(s)) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov014_02217d3a, 0x19a, 0);
-        func_ov000_021915a0(self->unk_38);
-        self->unk_40->state = 10;
-        self->unk_40->timer = 20;
+        func_ov000_02190cb0(self->model, data_ov014_02217d3a, 0x19a, 0);
+        func_ov000_021915a0(self->model);
+        self->fsm->st = 10;
+        self->fsm->timer = 20;
         break;
     case 10:
         Actor_TurnToActor(self, Actor_GetTarget(self), 0x400);
-        s = self->unk_40;
-        if (Ov014Sub40_Timer(s) == 0) {
-            func_02065f88(0x5e2, (Ov014Vec *)((u8 *)self + 0x33c))->v14(0x2000, 0x2000, 0x2000);
-            self->unk_40->state++;
-            self->unk_40->timer = 60;
+        s = self->fsm;
+        if (ActorSub40_Timer(s) == 0) {
+            func_02065f88(0x5e2, (VecFx32 *)((u8 *)self + 0x33c))->SetScaleXYZ(0x2000, 0x2000, 0x2000);
+            self->fsm->st++;
+            self->fsm->timer = 60;
         } else {
             Ov014_TimerTick(s);
         }
         break;
     case 11:
-        if (Ov014Sub40_Timer(s) == 0) {
-            func_ov000_02190cb0(self->unk_38, data_ov014_02217d4c, 0x19a, 0);
-            func_ov000_02191618(self->unk_38);
-            self->unk_40->state++;
+        if (ActorSub40_Timer(s) == 0) {
+            func_ov000_02190cb0(self->model, data_ov014_02217d4c, 0x19a, 0);
+            func_ov000_02191618(self->model);
+            self->fsm->st++;
         } else {
             Ov014_TimerTick(s);
         }
         break;
     case 12:
-        if (self->unk_38->unk_c4 == 1) {
+        if (self->model->anim_state == 1) {
             Ov014SpawnDesc desc;
-            Ov014Actor *o;
+            Ov003Actor *o;
             Ov014Spawn_Init(&desc, 0x483a);
-            o = Group_SpawnActor(data_ov000_021ccd64, &desc, (u8 *)self + 0x33c, self->rot, 0xffff);
+            o = Group_SpawnActor(data_ov000_021ccd64, &desc, (u8 *)self + 0x33c, &self->rot_x, 0xffff);
             o->unk_60 = data_ov014_02216dc0;
-            o->unk_90 = self->unk_90;
-            if (o->unk_4c != NULL) {
-                o->unk_4c->target = self->id;
+            o->target = self->target;
+            if (o->targetObj != NULL) {
+                o->targetObj->target = self->id;
             }
             o->flags_0 = 1;
             self->target_id = o->id;
-            self->unk_40->state = 20;
-            self->unk_40->timer = 120;
+            self->fsm->st = 20;
+            self->fsm->timer = 120;
         }
         break;
     case 20:
-        if (Ov014Sub40_Timer(s) == 0) {
-            s->state = 0xffff;
+        if (ActorSub40_Timer(s) == 0) {
+            s->st = 0xffff;
         } else {
             Ov014_TimerTick(s);
         }
         break;
     default:
-        s->state = 0xffff;
+        s->st = 0xffff;
         break;
     }
 }
 
 
-extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 void func_ov014_02213318(Ov014Act_0221267c *self) {
-    Ov014Sub40 *s = self->unk_40;
-    switch (Ov014Sub40_State(s)) {
+    ActorSub40 *s = self->fsm;
+    switch (ActorSub40_State(s)) {
     case 0: {
         s32 base;
         u16 ang;
-        func_ov000_02190cb0(self->unk_38, data_ov014_02217d3a, 0x19a, 0);
-        func_ov000_021915a0(self->unk_38);
-        self->unk_40->state = 10;
-        self->unk_40->timer = 0x14;
+        func_ov000_02190cb0(self->model, data_ov014_02217d3a, 0x19a, 0);
+        func_ov000_021915a0(self->model);
+        self->fsm->st = 10;
+        self->fsm->timer = 0x14;
         base = self->unk_354 != 0 ? 0x1fff : -0x1fff;
         ang = FX_Atan2(self->unk_84.x - self->pos.x, self->unk_84.z - self->pos.z);
         self->unk_34c = base + ang;
@@ -144,51 +144,51 @@ void func_ov014_02213318(Ov014Act_0221267c *self) {
         break;
     }
     case 10:
-        self->rot[1] = func_01ffc128(self->unk_34c, self->rot[1], 0x400, 1, 0x8000);
-        s = self->unk_40;
-        if (Ov014Sub40_Timer(s) == 0) {
-            func_02065f88(0x5dd, (Ov014Vec *)((u8 *)self + 0x33c))->v14(0x2000, 0x2000, 0x2000);
-            self->unk_40->state++;
-            self->unk_40->timer = 0x3c;
+        self->rot_y = func_01ffc128(self->unk_34c, self->rot_y, 0x400, 1, 0x8000);
+        s = self->fsm;
+        if (ActorSub40_Timer(s) == 0) {
+            func_02065f88(0x5dd, (VecFx32 *)((u8 *)self + 0x33c))->SetScaleXYZ(0x2000, 0x2000, 0x2000);
+            self->fsm->st++;
+            self->fsm->timer = 0x3c;
         } else {
             Ov014_TimerTick(s);
         }
         break;
     case 11:
-        if (Ov014Sub40_Timer(s) == 0) {
-            func_ov000_02190cb0(self->unk_38, data_ov014_02217d4c, 0x19a, 0);
-            func_ov000_02191618(self->unk_38);
-            self->unk_40->state++;
+        if (ActorSub40_Timer(s) == 0) {
+            func_ov000_02190cb0(self->model, data_ov014_02217d4c, 0x19a, 0);
+            func_ov000_02191618(self->model);
+            self->fsm->st++;
         } else {
             Ov014_TimerTick(s);
         }
         break;
     case 12:
-        if (self->unk_38->unk_c4 == 1) {
+        if (self->model->anim_state == 1) {
             Ov014SpawnDesc desc;
-            Ov014Actor *o;
+            Ov003Actor *o;
             Ov014Spawn_Init(&desc, 0x483a);
-            o = Group_SpawnActor(data_ov000_021ccd64, &desc, (u8 *)self + 0x33c, self->rot, 0xffff);
+            o = Group_SpawnActor(data_ov000_021ccd64, &desc, (u8 *)self + 0x33c, &self->rot_x, 0xffff);
             o->unk_60 = data_ov014_02216dc0;
-            o->unk_90 = self->unk_90;
-            if (o->unk_4c != NULL) {
-                o->unk_4c->target = self->id;
+            o->target = self->target;
+            if (o->targetObj != NULL) {
+                o->targetObj->target = self->id;
             }
             o->flags_0 = 1;
             self->target_id = o->id;
             self->unk_312--;
-            self->unk_40->state++;
-            self->unk_40->timer = 0x78;
+            self->fsm->st++;
+            self->fsm->timer = 0x78;
         }
         break;
     case 13:
-        if (Ov014Sub40_Timer(s) == 0) {
-            s->state = 0x14;
+        if (ActorSub40_Timer(s) == 0) {
+            s->st = 0x14;
         } else {
-            Ov014Actor *a;
+            Ov003Actor *a;
             u16 id;
             self->unk_34c += self->unk_350;
-            self->rot[1] = self->unk_34c;
+            self->rot_y = self->unk_34c;
             id = self->target_id;
             if (data_ov000_021ccd68 == NULL) {
                 a = NULL;
@@ -197,16 +197,16 @@ void func_ov014_02213318(Ov014Act_0221267c *self) {
             }
             if (a != NULL) {
                 a->pos = self->unk_33c;
-                a->rot[1] = self->unk_34c;
+                a->rot_y = self->unk_34c;
             }
-            Ov014_TimerTick(self->unk_40);
+            Ov014_TimerTick(self->fsm);
         }
         break;
     case 20:
-        s->state = 0xffff;
+        s->st = 0xffff;
         break;
     default:
-        s->state = 0xffff;
+        s->st = 0xffff;
         break;
     }
 }

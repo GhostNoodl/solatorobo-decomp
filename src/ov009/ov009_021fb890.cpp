@@ -4,40 +4,40 @@ extern "C" {
 
 extern u8 data_ov009_02216aaa[];
 extern u8 data_ov009_02216abc[];
-extern void Actor_MoveToPos(Ov009Actor *self, Ov009Vec *v, s32 a);
+extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 
 void func_ov009_021fb890(Ov009ActVt_022166a4 *self) {
-    Ov009Vec v;
-    Ov009Param *p;
-    if (self->unk_40->state == 0) {
+    VecFx32 v;
+    Ov003Param *p;
+    if (self->fsm->st == 0) {
         u8 *anim = data_ov009_02216aaa;
         if (self->unk_ee_0) {
             anim = data_ov009_02216abc;
         }
-        func_ov000_02190cb0(self->unk_38, (char *)anim, 0x2ab, 0);
-        func_ov000_021915a0(self->unk_38);
-        self->unk_40->state++;
-        self->unk_a0 = 0;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0;
+        func_ov000_02190cb0(self->model, (char *)anim, 0x2ab, 0);
+        func_ov000_021915a0(self->model);
+        self->fsm->st++;
+        self->velY = 0;
+        self->friction = 0;
+        self->gravity = 0;
     }
     p = self->unk_b0;
-    self->unk_9c = p->unk_00;
+    self->speed = p->unk_00;
     v = self->unk_b8;
     Actor_MoveToPos(self, &v, p->unk_02);
     self->pos.y += FX_Mul(v.y + 0x1400 - self->pos.y, 0xcd);
     if (self->pos.y - v.y > 0x3000) {
-        self->unk_48->unk_30 = 0x80000000;
+        self->hit->unk_30 = 0x80000000;
     }
-    func_ov000_021987b8(self->unk_48, 1, 0, 0);
-    self->unk_48->unk_30 = 0xc0000000;
+    func_ov000_021987b8(self->hit, 1, 0, 0);
+    self->hit->unk_30 = 0xc0000000;
 }
 
 extern char data_ov009_02216aa4[];
 extern char data_ov009_02216ab6[];
-extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
-static inline Ov009Actor *Ov009_FindActor(u16 id) {
+extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
+static inline Ov003Actor *Ov009_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
@@ -45,57 +45,57 @@ static inline Ov009Actor *Ov009_FindActor(u16 id) {
 }
 
 void func_ov009_021fb9b0(Ov009ActVt_022166a4 *self) {
-    Ov009Sub40 *st;
+    ActorSub40 *st;
     s32 g;
     if (!Ov009_GameIdle()) {
-        func_ov000_02198360(self->unk_40, 1, 0);
+        func_ov000_02198360(self->fsm, 1, 0);
         return;
     }
-    st = self->unk_40;
-    switch (st->state) {
+    st = self->fsm;
+    switch (st->st) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov009_02216aa4, 0x200, 1);
-        self->unk_40->state++;
-        self->unk_9c = 0;
-        self->unk_a0 = 0;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0;
+        func_ov000_02190cb0(self->model, data_ov009_02216aa4, 0x200, 1);
+        self->fsm->st++;
+        self->speed = 0;
+        self->velY = 0;
+        self->friction = 0;
+        self->gravity = 0;
         break;
     case 1:
-        Actor_TurnToActor(self, Ov009_FindActor(self->unk_90), self->unk_b0->unk_02);
-        if (self->unk_38->anim_state == 1) {
-            self->unk_40->state++;
+        Actor_TurnToActor(self, Ov009_FindActor(self->target), self->unk_b0->unk_02);
+        if (self->model->anim_state == 1) {
+            self->fsm->st++;
         }
         break;
     case 2:
-        g = self->unk_48->unk_68.y;
+        g = self->hit->check.y;
         st->timer++;
         if (st->timer > 0x2d || self->pos.y < g + 0xc00) {
-            func_ov000_02190cb0(self->unk_38, data_ov009_02216ab6, 0x200, 0);
-            func_ov000_021915a0(self->unk_38);
-            self->unk_40->timer = 0;
-            self->unk_40->state++;
+            func_ov000_02190cb0(self->model, data_ov009_02216ab6, 0x200, 0);
+            func_ov000_021915a0(self->model);
+            self->fsm->timer = 0;
+            self->fsm->st++;
             if (self->pos.y < g + 0xc00) {
-                self->unk_a0 >>= 1;
+                self->velY >>= 1;
             }
         }
         break;
     case 3:
-        self->unk_9c -= self->unk_9c >> 3;
-        self->unk_a0 -= self->unk_a0 >> 2;
+        self->speed -= self->speed >> 3;
+        self->velY -= self->velY >> 2;
         g = self->unk_1c;
         st->timer++;
         if (st->timer > g) {
-            func_ov000_02198360(self->unk_40, 1, 0);
-            self->unk_9c = 0;
-            self->unk_a0 = 0;
-            self->unk_a4 = 0;
-            self->unk_a8 = 0;
+            func_ov000_02198360(self->fsm, 1, 0);
+            self->speed = 0;
+            self->velY = 0;
+            self->friction = 0;
+            self->gravity = 0;
         }
         break;
     }
-    Actor_Move((Actor *)self, 0);
-    func_ov000_021987b8(self->unk_48, 0, 0, 0);
+    Actor_Move(self, 0);
+    func_ov000_021987b8(self->hit, 0, 0, 0);
 }
 
 }

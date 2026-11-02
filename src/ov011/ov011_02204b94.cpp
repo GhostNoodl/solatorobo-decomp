@@ -24,9 +24,6 @@ s32 func_ov000_0214b6d0(void *p);
 BOOL func_ov000_0214b640(void *p);
 void func_ov000_0214b5bc(void *p);
 void *func_ov000_0218ea20(void *p);
-void *func_ov003_021d0edc(void *self);
-void func_ov003_021d0fc0(void *self);
-void func_ov003_021d112c(void *self);
 void *func_020359d0(const char *arc, s32 b, s32 c);
 BOOL func_02035b90(const char *arc, s32 b);
 void func_02036838(void *mgr, const char *arc, s32 c, s32 d);
@@ -48,7 +45,7 @@ static inline void Ov011_FreeTwl(void **slot) {
     data_02097dd0->cur = saved;
 }
 
-Ov011Actor *Ov011Act7da4_Dtor(Ov011Act7da4 *self) {
+Ov003Actor *Ov011Act7da4_Dtor(Ov011Act7da4 *self) {
     *(void **)self = data_ov011_02207da4;
     Ov011_FreeTwl(&self->unk_364);
     Ov011_FreeTwl(&self->unk_368);
@@ -58,7 +55,7 @@ Ov011Actor *Ov011Act7da4_Dtor(Ov011Act7da4 *self) {
     return self;
 }
 
-Ov011Actor *Ov011Act7da4_DtorDelete(Ov011Act7da4 *self) {
+Ov003Actor *Ov011Act7da4_DtorDelete(Ov011Act7da4 *self) {
     *(void **)self = data_ov011_02207da4;
     Ov011_FreeTwl(&self->unk_364);
     Ov011_FreeTwl(&self->unk_368);
@@ -121,23 +118,23 @@ void Ov011Act7da4_Start(Ov011Act7da4 *self) {
     {
         void *saved = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->heapHi;
-        if (self->unk_48 != NULL) {
-            void *p = self->unk_48;
+        if (self->hit != NULL) {
+            void *p = self->hit;
             if (p != NULL) {
                 func_0203f2b8(p);
                 Heap_Free(p);
             }
-            self->unk_48 = NULL;
+            self->hit = NULL;
         }
         data_02097dd0->cur = saved;
     }
     Ov011_VecSet(&self->unk_44->unk_0c, 0, 0x5000, 0x7800);
     {
-        Ov011Sub44 *s = self->unk_44;
+        ActorSub44 *s = self->unk_44;
         s->unk_22_0 = 0;
         s->unk_22_1 = 0;
     }
-    self->unk_38->unk_c2_0 = 0;
+    self->model->visible = 0;
     self->unk_ea_8 = 1;
     self->unk_ea_9 = 1;
     self->unk_ea_6 = 1;

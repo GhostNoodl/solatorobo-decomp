@@ -2,11 +2,10 @@
 
 extern "C" {
 
-void func_ov003_021d3524(void *p);
 
 #pragma force_active on
 void func_ov011_021ff87c(Ov011SceneActor *self) {
-    if (self->unk_40->state == 0) {
+    if (self->fsm->st == 0) {
         Ov011Scene *c = self->scene;
         if (c->b0 && c->b2) {
             c->unk_04 = 1;

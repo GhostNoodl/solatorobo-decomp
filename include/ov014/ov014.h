@@ -7,6 +7,8 @@
 #include "Main/Sys/SysState.h"
 #include "Main/Sys/Field.h"
 #include "ov000/Actor.h"
+#include "ov000/ObjLayouts.h"
+#include "ov003/Actor.h"
 #include "nitro/std.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
@@ -191,22 +193,21 @@ struct Ov014Rot16 {
     u16 z;
 };
 
-typedef VecFx32 Ov014Vec;
 
-static inline void Ov014_VecSet(Ov014Vec *v, s32 x, s32 y, s32 z) {
+static inline void Ov014_VecSet(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
     v->y = y;
     v->z = z;
 }
 
-static inline void Ov014_VecCopy(Ov014Vec *d, const Ov014Vec *s) {
+static inline void Ov014_VecCopy(VecFx32 *d, const VecFx32 *s) {
     d->x = s->x;
     d->y = s->y;
     d->z = s->z;
 }
 
 // Copy that loads y and z before x (matches the original's load order)
-static inline void Ov014_VecCopyYZ(Ov014Vec *d, const Ov014Vec *s) {
+static inline void Ov014_VecCopyYZ(VecFx32 *d, const VecFx32 *s) {
     s32 y = s->y;
     s32 z = s->z;
     d->x = s->x;
@@ -220,136 +221,12 @@ struct Ov014Msg {
     u8 unk_06[0x2];
     u8 idx;
     u8 unk_09[0x3];
-    Ov014Vec v;
+    VecFx32 v;
 };
 
 #define OV014_SINCOS FX_SinCosTable_
 #define OV014_SIN(a) (OV014_SINCOS[((a) >> 4) * 2])
 #define OV014_COS(a) (OV014_SINCOS[((a) >> 4) * 2 + 1])
-
-struct Ov014Sub38 {
-    void *unk_00;
-    void *unk_04;
-    u8 unk_08[0x1c];
-    u8 unk_24[0x2c];
-    void *unk_50;
-    u8 unk_54[0x24];
-    Ov014Vec unk_78;
-    u8 unk_84[0x24];
-    Ov014Vec unk_a8;
-    u8 unk_b4[0x2];
-    u16 unk_b6;
-    u16 unk_b8;
-    u16 unk_ba;
-    u16 unk_bc;
-    u8 unk_be;
-    u8 unk_bf[0x2];
-    u8 unk_c1;
-    u16 unk_c2_0 : 1;
-    u16 unk_c2_1 : 4;
-    u16 unk_c2_5 : 1;
-    u16 unk_c2_6 : 2;
-    u16 unk_c2_8 : 1;
-    u16 unk_c2_9 : 2;
-    u16 unk_c2_11 : 5;
-    s16 unk_c4;
-    u8 unk_c6[0x1a];
-    void *unk_e0;
-    u8 unk_e4[0x4];
-};
-
-struct Ov014Sub40 {
-    u16 state;
-    u16 timer;
-    u64 flags;
-    u8 unk_0c[0x7];
-    u8 unk_13;
-};
-
-// Reads through a const view: MWCC does not merge these with an earlier plain read of the same field,
-// so a state machine re-reads state/timer where the target does (instead of `volatile` casts).
-static inline u16 Ov014Sub40_State(const Ov014Sub40 *s) {
-    return s->state;
-}
-
-static inline u16 Ov014Sub40_Timer(const Ov014Sub40 *s) {
-    return s->timer;
-}
-
-struct Ov014Sub44 {
-    u8 unk_00[0x10];
-    s32 unk_10;
-    u8 unk_14[0x8];
-    s32 unk_1c;
-    u8 unk_20[0x2];
-    u16 unk_22_0 : 1;
-    u16 unk_22_1 : 1;
-    u16 unk_22_2 : 14;
-};
-
-struct Ov014Sub48 {
-    u8 unk_00[0x30];
-    s32 unk_30;
-    u8 unk_34[0x4];
-    s32 unk_38;
-    u8 unk_3c[0x8];
-    s32 unk_44;
-    s32 unk_48;
-    s32 unk_4c;
-    u32 unk_50;
-    u32 unk_54;
-    u32 unk_58;
-    s32 unk_5c;
-    s32 unk_60;
-    s32 unk_64;
-    Ov014Vec unk_68;
-    u8 unk_74[0x26];
-    u16 unk_9a_0 : 1;
-    u16 unk_9a_1 : 1;
-    u16 unk_9a_2 : 1;
-    u16 unk_9a_3 : 1;
-    u16 unk_9a_4 : 1;
-    u16 unk_9a_5 : 1;
-    u16 unk_9a_6 : 10;
-};
-
-struct Ov014Param {
-    s16 unk_00;
-    s16 unk_02;
-    u8 unk_04[0x4];
-    u16 unk_08;
-    u16 unk_0a_0 : 7;
-    u16 unk_0a_7 : 3;
-    u16 unk_0a_10 : 6;
-};
-
-// The ov000 Target object at Ov014Obj::unk_4c (Target_02199b00.c; Target_Get looks up
-// the actor whose id is in target).
-struct Ov014Target {
-    u8 type;
-    u8 unk_01;
-    u8 unk_02;
-    u8 unk_03;
-    u16 unk_04;
-    u16 unk_06;
-    u16 unk_08;
-    u16 unk_0a;
-    u8 unk_0c[0x4];
-    u16 kinds[2];
-    u16 ids[2];
-    u8 unk_18;
-    u8 unk_19;
-    u8 unk_1a;
-    u8 unk_1b;
-    u16 target;
-    u16 unk_1e;
-    u8 unk_20[0x24];
-    Ov014Vec dest;
-    u32 unk_50;
-    u32 unk_54;
-    u32 unk_58;
-};
-SIZE_ASSERT(Ov014Target, 0x5c);
 
 // One step of an Ov014Act_02209280 action script (8 bytes; the actor's step points at the current one).
 struct Ov014Step {
@@ -359,121 +236,29 @@ struct Ov014Step {
     u16 unk_06;
 };
 
-// The object base shared by the ov003 actor (Ov014Actor, built by func_ov003_021d0c1c) and the
-// ov000 actor (Ov014ActorEx, built by ActorEx_Ctor): the fields below 0xac.
-class Ov014Obj : public Ov014V {
+// View of the Main EffectObj (Main/Effect/Effect.h) with its real virtual signatures, for the
+// objects returned by func_02065f88 (Main/Effect/Effect.h is not included: its globals clash with
+// the local views some ov014 files keep). vf0c takes one argument at these call sites.
+class Ov014Eff {
 public:
-    u8 unk_04[0x8];
-    u16 id;
-    u16 kind;
-    u8 unk_10[0x6];
-    union {
-        u8 unk_16; // read and written whole in func_ov014_022049e8
-        struct {
-            u8 flags_0 : 1;
-            u8 flags_1 : 1;
-            u8 flags_2 : 6;
-        };
-    };
-    u8 unk_17;
-    s16 unk_18;
-    s16 unk_1a;
-    s16 unk_1c;
-    s16 unk_1e;
-    u16 unk_20;
-    u8 unk_22[0x2];
-    u32 unk_24;
-    u8 unk_28[0x8];
-    u32 unk_30;
-    u8 unk_34[0x4];
-    Ov014Sub38 *unk_38;
-    Ov014V *unk_3c;
-    Ov014Sub40 *unk_40;
-    Ov014Sub44 *unk_44;
-    Ov014Sub48 *unk_48;
-    Ov014Target *unk_4c;
-    u16 *unk_50;
-    u8 unk_54[0x8];
-    void *unk_5c;
-    void *unk_60;
-    s32 unk_64;
-    s32 unk_68;
-    s32 unk_6c;
-    Ov014Vec pos;
-    u16 rot[3];
-    u8 unk_82[0x2];
-    Ov014Vec unk_84;
-    u16 unk_90;
-    u8 unk_92;
-    u8 unk_93_0 : 1;
-    u8 unk_93_1 : 3;
-    u8 unk_93_4 : 1;
-    u8 unk_93_5 : 3;
-    u8 unk_94_0 : 1;
-    u8 unk_94_1 : 2;
-    u8 unk_94_3 : 5;
-    u8 unk_95[0x3];
-    u16 unk_98;
-    u8 unk_9a[0x2];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
-};
-
-// Common actor base (the ov003 actor class); subclass fields start at 0xf0.
-class Ov014Actor : public Ov014Obj {
-public:
-    u8 unk_ac[0x4];
-    Ov014Param *unk_b0;
-    u16 unk_b4;
-    u16 unk_b6;
-    Ov014Vec unk_b8;
-    s32 unk_c4;
-    s32 unk_c8;
-    s32 unk_cc;
-    // 0xd0..0xee as func_ov003_021d0c1c sets them.
-    void *unk_d0;
-    void *unk_d4;
-    void *unk_d8;
-    u16 unk_dc;
-    u16 target_id;  // id of the actor this one tracks; 0xffff for none
-    void *unk_e0;
-    void *unk_e4;
-    u16 unk_e8;
-    u16 unk_ea_0 : 3;
-    u16 unk_ea_3 : 3;
-    u16 unk_ea_6 : 2;
-    u16 unk_ea_8 : 2;
-    u16 unk_ea_10 : 1;
-    u16 unk_ea_11 : 3;
-    u16 unk_ea_14 : 1;
-    u16 unk_ea_15 : 1;
-    u8 unk_ec_0 : 1;
-    u8 unk_ec_1 : 1;
-    u8 unk_ec_2 : 6;
-    u8 unk_ed;
-    u16 unk_ee_0 : 1;
-    u16 unk_ee_1 : 1;
-    u16 unk_ee_2 : 2;
-    u16 unk_ee_4 : 1;
-    u16 unk_ee_5 : 1;
-    u16 unk_ee_6 : 1;
-    u16 unk_ee_7 : 2;
-    u16 unk_ee_9 : 7;
-};
-
-// The ov000 actor base (ActorEx_Ctor): 0xd0 bytes, with its own fields from 0xac.
-class Ov014ActorEx : public Ov014Obj {
-public:
-    u8 unk_ac[0x4];
-    Ov014Param *unk_b0;
-    void *unk_b4[2];
-    void *unk_bc;
-    s32 unk_c0;
-    s32 unk_c4;
-    s32 unk_c8;
-    u8 unk_cc[0x4];
+    virtual void Dtor();
+    virtual void Delete();
+    virtual void SetParam(s32 param);
+    virtual void vf0c(s32 v);
+    virtual void SetScale(const VecFx32 *scale);
+    virtual void SetScaleXYZ(s32 x, s32 y, s32 z);
+    virtual void SetPos(const VecFx32 *pos);
+    virtual void SetPosXYZ(s32 x, s32 y, s32 z);
+    virtual void AddPos(const VecFx32 *delta);
+    virtual void AddPosXYZ(s32 x, s32 y, s32 z);
+    virtual void vf28();
+    virtual void vf2c();
+    virtual void SetRot(const u16 *rot);
+    virtual void SetRotXYZ(u16 x, u16 y, u16 z);
+    u8 unk_04[0x20];
+    u32 id; // EffectObj::id
+    u8 unk_28[0xa0];
+    s32 loopCount; // EffectObj::loopCount
 };
 
 struct Ov014Names {
@@ -494,18 +279,18 @@ struct Ov014Names {
     char evName[0x20];
 };
 
-class Ov014Multi : public Ov014Actor {
+class Ov014Multi : public Ov003Actor {
 public:
-    Ov014Sub38 models[4];
+    Model0218fe1c models[4];
     u8 unk_490;
     u8 unk_491;
     u16 unk_492;
-    Ov014Vec unk_494;
+    VecFx32 unk_494;
 };
 
 struct Ov014Path {
-    Ov014Vec start;
-    Ov014Vec end;
+    VecFx32 start;
+    VecFx32 end;
 };
 
 static inline BOOL Ov014Game_IsBusy(FieldState *g) {
@@ -534,27 +319,13 @@ extern "C" {
 void *Heap_Alloc(u32 size); // Main/Gfx/ObjPool.h
 void Heap_Free(void *ptr);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
-void *func_ov003_021d0edc(void *self);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 void func_ov000_021915a0(void *a);
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-s32 func_ov000_0219a2f4(Ov014Vec *v, s32 y, s32 b);
+s32 func_ov000_0219a2f4(VecFx32 *v, s32 y, s32 b);
 BOOL func_ov000_02191120(void *p);
-void func_ov003_021d5348(Ov014Actor *self);
-void func_ov003_021d3a88(Ov014Actor *self);
-void func_ov003_021d5900(Ov014Actor *self);
-void func_ov003_021d6054(Ov014Actor *self);
-void func_ov003_021d0fc0(Ov014Actor *self);
-void func_ov003_021d3524(Ov014Actor *self);
-void func_ov003_021d3600(Ov014Actor *self);
-void func_ov003_021d112c(Ov014Actor *self);
-void func_ov003_021d1e8c(Ov014Actor *self);
-void func_ov003_021d4b68(Ov014Actor *self);
-u16 func_ov003_021d16cc(Ov014Actor *self);
-void func_ov003_021d1b88(Ov014Actor *self);
-void func_ov003_021d0c1c(Ov014Actor *self);
 char *func_0207011c(void *res);
 char *func_020701d4(void *res);
 u8 *func_02070558(void *res);
@@ -593,21 +364,21 @@ static inline s32 *Ov014_NewFx(void) {
 }
 
 // Actor class of Ov014Act_021fa6a0_Ctor (vtable data_ov014_02217114).
-class Ov014Act_021fa6a0 : public Ov014Actor {
+class Ov014Act_021fa6a0 : public Ov003Actor {
 public:
     u8 unk_f0;
     u8 unk_f1[0x3];
     s32 unk_f4;
-    Ov014Vec unk_f8;
-    Ov014Vec unk_104;
-    Ov014Vec unk_110;
+    VecFx32 unk_f8;
+    VecFx32 unk_104;
+    VecFx32 unk_110;
     s16 unk_11c;
     u8 unk_11e;
     u8 unk_11f;
     u32 unk_120;
     Ov014Names unk_124;
     u8 unk_228[0xac];
-    Ov014Vec unk_2d4;
+    VecFx32 unk_2d4;
     u8 unk_2e0[0x24];
     s32 unk_304;
     s32 unk_308;
@@ -630,7 +401,7 @@ public:
 SIZE_ASSERT(Ov014Act_021fa6a0, 0x368);
 
 // Actor class of Ov014Act_021fd4d4_Ctor (vtable data_ov014_02217588).
-class Ov014Act_021fd4d4 : public Ov014Actor {
+class Ov014Act_021fd4d4 : public Ov003Actor {
 public:
     s16 unk_f0;
     u8 unk_f2[0x2];
@@ -640,7 +411,7 @@ public:
     u8 unk_fa[0x2];
     void *unk_fc;
     u8 unk_100[0x2c];
-    Ov014Vec unk_12c;
+    VecFx32 unk_12c;
     u8 unk_138;
     u8 unk_139;
     s16 unk_13a;
@@ -648,19 +419,19 @@ public:
     u8 unk_140[0xc];
     u8 *unk_14c;
     void *unk_150;
-    Ov014Actor *unk_154;
+    Ov003Actor *unk_154;
     u8 unk_158[0x4];
     u8 *unk_15c;
     u8 unk_160[0xc];
     u8 *unk_16c;
     void *unk_170;
-    Ov014Actor *unk_174;
+    Ov003Actor *unk_174;
     u8 unk_178[0x4];
 };
 SIZE_ASSERT(Ov014Act_021fd4d4, 0x17c);
 
 // Actor class of Ov014Act_0220011c_Ctor (vtable data_ov014_022174dc).
-class Ov014Act_0220011c : public Ov014Actor {
+class Ov014Act_0220011c : public Ov003Actor {
 public:
     s16 unk_f0;
     u8 unk_f2[0x2];
@@ -680,7 +451,7 @@ public:
 SIZE_ASSERT(Ov014Act_0220011c, 0x124);
 
 // Actor class of Ov014Act_02201b94_Ctor (vtable data_ov014_02217430).
-class Ov014Act_02201b94 : public Ov014Actor {
+class Ov014Act_02201b94 : public Ov003Actor {
 public:
     s16 unk_f0;
     u8 unk_f2[0x2];
@@ -701,7 +472,7 @@ public:
     u8 unk_152;
     u8 unk_153;
     u8 unk_154[0x1ac];
-    Ov014Vec unk_300;
+    VecFx32 unk_300;
     u8 unk_30c[0x24];
     s32 unk_330;
     s32 unk_334;
@@ -713,7 +484,7 @@ public:
 SIZE_ASSERT(Ov014Act_02201b94, 0x370);
 
 // Actor class of Ov014Act_0221267c_Ctor (vtable data_ov014_02217dc0).
-class Ov014Act_0221267c : public Ov014Actor {
+class Ov014Act_0221267c : public Ov003Actor {
 public:
     s16 unk_f0;
     u8 unk_f2[0x1f4];
@@ -722,7 +493,7 @@ public:
     u16 unk_310;
     u16 unk_312;
     u8 unk_314[0x28];
-    Ov014Vec unk_33c;
+    VecFx32 unk_33c;
     s32 unk_348;
     u16 unk_34c;
     u8 unk_34e[0x2];
@@ -733,7 +504,7 @@ public:
 SIZE_ASSERT(Ov014Act_0221267c, 0x358);
 
 // Actor class of Ov014Act_02209280_Ctor (vtable data_ov014_02217968).
-class Ov014Act_02209280 : public Ov014Actor {
+class Ov014Act_02209280 : public Ov003Actor {
 public:
     Ov014Step *step;
     u32 unk_f4;
@@ -744,7 +515,7 @@ public:
     s32 unk_100;
     s32 unk_104;
     u8 unk_108[0x24];
-    Ov014Vec unk_12c;
+    VecFx32 unk_12c;
     s32 unk_138;
     u8 unk_13c[0x24];
     s32 unk_160;
@@ -763,7 +534,7 @@ public:
     s32 unk_1a8;
     s32 unk_1ac;
     s32 unk_1b0;
-    Ov014Vec unk_1b4;
+    VecFx32 unk_1b4;
     u8 unk_1c0;
     u8 unk_1c1[0xb];
     u8 *unk_1cc;
@@ -782,10 +553,10 @@ public:
 SIZE_ASSERT(Ov014Act_02209280, 0x1f8);
 
 // Actor class of Ov014Act_0220f9d0_Ctor (vtable data_ov014_02217e6c).
-class Ov014Act_0220f9d0 : public Ov014Actor {
+class Ov014Act_0220f9d0 : public Ov003Actor {
 public:
     u8 unk_f0[0x28];
-    Ov014Vec unk_118;
+    VecFx32 unk_118;
     u8 unk_124;
     u8 unk_125[0xb];
     u8 *unk_130;
@@ -813,7 +584,7 @@ public:
 SIZE_ASSERT(Ov014Act_0220f9d0, 0x184);
 
 // Actor class of Ov014ActEx_02208618_Ctor (vtable data_ov014_02217708).
-class Ov014ActEx_02208618 : public Ov014ActorEx {
+class Ov014ActEx_02208618 : public ActorEx {
 public:
     u32 unk_d0;
     u8 unk_d4;
@@ -823,7 +594,7 @@ public:
 SIZE_ASSERT(Ov014ActEx_02208618, 0xdc);
 
 // Actor class of Ov014ActEx_0220d70c_Ctor (vtable data_ov014_02217bdc).
-class Ov014ActEx_0220d70c : public Ov014ActorEx {
+class Ov014ActEx_0220d70c : public ActorEx {
 public:
     void *unk_d0;
     void *unk_d4;
@@ -833,7 +604,7 @@ public:
 SIZE_ASSERT(Ov014ActEx_0220d70c, 0xe0);
 
 // Actor class of Ov014ActEx_0220dcf4_Ctor (vtable data_ov014_02217b44).
-class Ov014ActEx_0220dcf4 : public Ov014ActorEx {
+class Ov014ActEx_0220dcf4 : public ActorEx {
 public:
     void *unk_d0;
     u8 unk_d4;
@@ -845,20 +616,20 @@ public:
 SIZE_ASSERT(Ov014ActEx_0220dcf4, 0xdc);
 
 // Actor class of Ov014ActEx_021fbd64_Ctor (vtable data_ov014_022172c4).
-class Ov014ActEx_021fbd64 : public Ov014ActorEx {
+class Ov014ActEx_021fbd64 : public ActorEx {
 public:
     void *unk_d0;
 };
 SIZE_ASSERT(Ov014ActEx_021fbd64, 0xd4);
 
 // Actor class of Ov014ActEx_021fc24c_Ctor (vtable data_ov014_0221722c).
-class Ov014ActEx_021fc24c : public Ov014ActorEx {
+class Ov014ActEx_021fc24c : public ActorEx {
 public:
-    Ov014Vec unk_d0;
+    VecFx32 unk_d0;
     s32 unk_dc;
     s32 unk_e0;
     s32 unk_e4;
-    Ov014Vec unk_e8;
+    VecFx32 unk_e8;
     s32 unk_f4;
     u32 unk_f8;
     u8 unk_fc;
@@ -870,7 +641,7 @@ public:
 SIZE_ASSERT(Ov014ActEx_021fc24c, 0x104);
 
 // Actor class of Ov014ActEx_02206c68_Ctor (vtable data_ov014_02217670).
-class Ov014ActEx_02206c68 : public Ov014ActorEx {
+class Ov014ActEx_02206c68 : public ActorEx {
 public:
     s32 unk_d0;
     s32 unk_d4;
@@ -881,7 +652,7 @@ public:
 SIZE_ASSERT(Ov014ActEx_02206c68, 0xe0);
 
 // Actor class of Ov014ActEx_0220774c_Ctor (vtable data_ov014_022177a0).
-class Ov014ActEx_0220774c : public Ov014ActorEx {
+class Ov014ActEx_0220774c : public ActorEx {
 public:
     u32 unk_d0;
     s32 unk_d4;
@@ -890,11 +661,11 @@ public:
 SIZE_ASSERT(Ov014ActEx_0220774c, 0xdc);
 
 // Actor class of Ov014ActEx_0220eca0_Ctor (vtable data_ov014_02217aac).
-class Ov014ActEx_0220eca0 : public Ov014ActorEx {
+class Ov014ActEx_0220eca0 : public ActorEx {
 public:
     s32 unk_d0;
     s32 unk_d4;
-    Ov014Vec unk_d8;
+    VecFx32 unk_d8;
     s32 unk_e4;
     s32 unk_e8;
     s32 unk_ec;
@@ -906,19 +677,19 @@ public:
 SIZE_ASSERT(Ov014ActEx_0220eca0, 0xf8);
 
 // Actor class of Ov014ActEx_022142fc_Ctor (vtable data_ov014_02217fb0).
-class Ov014ActEx_022142fc : public Ov014ActorEx {
+class Ov014ActEx_022142fc : public ActorEx {
 public:
-    Ov014Vec unk_d0;
+    VecFx32 unk_d0;
     s32 unk_dc;
     s32 unk_e0;
 };
 SIZE_ASSERT(Ov014ActEx_022142fc, 0xe4);
 
 // Actor class of Ov014ActEx_022152e8_Ctor (vtable data_ov014_02217f18).
-class Ov014ActEx_022152e8 : public Ov014ActorEx {
+class Ov014ActEx_022152e8 : public ActorEx {
 public:
-    Ov014Vec unk_d0;
-    Ov014Vec unk_dc;
+    VecFx32 unk_d0;
+    VecFx32 unk_dc;
     s32 unk_e8;
     s32 unk_ec;
     u16 unk_f0;
@@ -929,10 +700,10 @@ SIZE_ASSERT(Ov014ActEx_022152e8, 0xf8);
 
 // The ov000-factory classes with vtables data_ov014_022178d0 (0xe8 bytes, exactly this class) and
 // data_ov014_02217838 (Ov014ActExVt_02217838): both scale in from 0 to the model's scale.
-class Ov014ActExGrow : public Ov014ActorEx {
+class Ov014ActExGrow : public ActorEx {
 public:
     u32 flags;      // 0x1000: remove, 0x200000: hit
-    Ov014Vec scale; // the model's scale, saved at start
+    VecFx32 scale; // the model's scale, saved at start
     s32 cur_scale;
     u8 timer;
     u8 unk_e5[0x3];

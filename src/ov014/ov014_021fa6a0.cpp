@@ -2,7 +2,7 @@
 
 struct Ov014A {
     u8 unk_00[0xf8];
-    Ov014Vec unk_f8[2];
+    VecFx32 unk_f8[2];
 };
 
 struct Ov014Flags127 {
@@ -15,7 +15,7 @@ struct Ov014Flags127 {
 extern "C" {
 
 extern u8 data_ov014_02217114[];
-extern const Ov014Vec data_ov014_02216468[];
+extern const VecFx32 data_ov014_02216468[];
 extern u8 data_ov014_022170d8[];
 extern char data_ov014_022170e7[];
 extern char data_ov014_022170f4[];
@@ -35,7 +35,7 @@ extern void func_ov000_02187a20(void *a, s32 b);
 extern void *func_020359d0(void *a, s32 b, s32 c);
 
 #pragma force_active on
-Ov014Actor *Ov014Act_021fa6a0_Ctor(Ov014Act_021fa6a0 *self) {
+Ov003Actor *Ov014Act_021fa6a0_Ctor(Ov014Act_021fa6a0 *self) {
     u8 i;
     func_ov003_021d0c1c(self);
     FLD(void *, self, 0) = data_ov014_02217114;

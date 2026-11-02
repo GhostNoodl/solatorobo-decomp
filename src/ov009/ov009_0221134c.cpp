@@ -3,133 +3,133 @@
 extern "C" {
 
 extern char data_ov009_022179b4[];
-extern void Actor_MoveToPos(Ov009Actor *self, const Ov009Vec *v, s32 a);
+extern void Actor_MoveToPos(Ov003Actor *self, const VecFx32 *v, s32 a);
 
 void func_ov009_0221134c(Ov009ActVt_02217aac *self) {
-    Ov009Vec v;
-    if (self->unk_40->state == 0) {
-        func_ov000_02190cb0(self->unk_38, data_ov009_022179b4, 0x155, 0);
-        func_ov000_021915a0(self->unk_38);
-        self->unk_9c = 0;
-        self->unk_a0 = 0;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0;
-        self->unk_40->state++;
+    VecFx32 v;
+    if (self->fsm->st == 0) {
+        func_ov000_02190cb0(self->model, data_ov009_022179b4, 0x155, 0);
+        func_ov000_021915a0(self->model);
+        self->speed = 0;
+        self->velY = 0;
+        self->friction = 0;
+        self->gravity = 0;
+        self->fsm->st++;
     }
-    self->unk_9c = self->unk_b0->unk_00;
+    self->speed = self->unk_b0->unk_00;
     if (self->unk_ff != 0) {
-        self->unk_9c = self->unk_9c + (self->unk_9c >> 3);
+        self->speed = self->speed + (self->speed >> 3);
     }
     v = self->unk_b8;
     if (self->pos.y > v.y) {
-        self->unk_a0 = -self->unk_b0->unk_00 >> 2;
+        self->velY = -self->unk_b0->unk_00 >> 2;
     } else if (self->pos.y < v.y) {
-        self->unk_a0 = self->unk_b0->unk_00 >> 2;
+        self->velY = self->unk_b0->unk_00 >> 2;
     } else {
-        self->unk_a0 = 0;
+        self->velY = 0;
     }
     Actor_MoveToPos(self, &v, self->unk_b0->unk_02);
-    if ((self->unk_a0 > 0 && self->pos.y > v.y) || (self->unk_a0 < 0 && self->pos.y < v.y)) {
+    if ((self->velY > 0 && self->pos.y > v.y) || (self->velY < 0 && self->pos.y < v.y)) {
         self->pos.y = v.y;
     }
 }
 
 extern void *data_02097e4c;
 extern u8 data_ov009_022160b8[];
-extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
-extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
-extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
-extern void func_ov000_0219a210(Ov009Vec *v, const void *a, u16 b);
-extern Ov009Actor *func_ov003_021d69f0(Ov009Actor *self, u16 kind, const Ov009Vec *pos, const void *rot, Ov009Actor *t);
-extern void func_ov000_0218d46c(Ov009Actor *a, u16 id, s32 msg);
-extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
+extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
+extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
+extern void func_ov000_0219a210(VecFx32 *v, const void *a, u16 b);
+extern Ov003Actor *func_ov003_021d69f0(Ov003Actor *self, u16 kind, const VecFx32 *pos, const void *rot, Ov003Actor *t);
+extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
+extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 typedef u16 Ov009Row3[3];
 
 void func_ov009_02211470(Ov009ActVt_02217aac *self) {
-    Ov009Actor *t = Actor_GetTarget(self);
-    Ov009Sub40 *st;
+    Ov003Actor *t = Actor_GetTarget(self);
+    ActorSub40 *st;
     if (t == NULL) {
         return;
     }
-    switch (self->unk_40->state) {
+    switch (self->fsm->st) {
     case 0: {
         u16 pct;
-        func_ov000_02190cb0(self->unk_38, data_ov009_022179b4, 0x155, 0);
-        func_ov000_021915a0(self->unk_38);
-        pct = (self->unk_50[0] * 100) / self->unk_50[1];
+        func_ov000_02190cb0(self->model, data_ov009_022179b4, 0x155, 0);
+        func_ov000_021915a0(self->model);
+        pct = (self->hp[0] * 100) / self->hp[1];
         if (pct >= 0x4b) {
             self->unk_fd = 1;
-            self->unk_40->state = 1;
+            self->fsm->st = 1;
             return;
         }
         if (pct >= 0x28) {
             self->unk_fd = 2;
-            self->unk_40->state = 2;
+            self->fsm->st = 2;
             return;
         }
         self->unk_fd = 3;
-        self->unk_40->state = 2;
+        self->fsm->st = 2;
         return;
     }
     case 1:
         Actor_TurnToActor(self, t, self->unk_b0->unk_02);
-        st = self->unk_40;
+        st = self->fsm;
         st->timer++;
         if (st->timer > 0x1e) {
-            self->unk_40->state = 3;
-            self->unk_40->timer = 0;
+            self->fsm->st = 3;
+            self->fsm->timer = 0;
         }
         return;
     case 2:
-        self->rot[1] = func_01ffc128((((u16 *)self->unk_104) + self->unk_fc * 3)[self->unk_fd - 1], self->rot[1], self->unk_b0->unk_02, 1, 0x8000);
-        st = self->unk_40;
+        self->rot_y = func_01ffc128((((u16 *)self->unk_104) + self->unk_fc * 3)[self->unk_fd - 1], self->rot_y, self->unk_b0->unk_02, 1, 0x8000);
+        st = self->fsm;
         st->timer++;
         if (st->timer > 0x14) {
-            self->unk_40->state = 3;
-            self->unk_40->timer = 0;
+            self->fsm->st = 3;
+            self->fsm->timer = 0;
         }
         return;
     case 3: {
-        Ov009Vec p;
-        Ov009Actor *h;
+        VecFx32 p;
+        Ov003Actor *h;
         func_02049f44(data_02097e4c, 0x2b, &self->pos, 0);
         p.x = self->pos.x;
         p.y = self->pos.y;
         p.z = self->pos.z;
-        func_ov000_0219a210(&p, data_ov009_022160b8, self->rot[1]);
-        h = func_ov003_021d69f0(self, 0x4802, &p, self->rot, t);
+        func_ov000_0219a210(&p, data_ov009_022160b8, self->rot_y);
+        h = func_ov003_021d69f0(self, 0x4802, &p, &self->rot_x, t);
         if (h != NULL) {
             func_ov000_0218d46c(h, self->id, 0xb);
-            func_02065f88(0x12c, &p)->v34(0, self->rot[1], 0);
+            func_02065f88(0x12c, &p)->v34(0, self->rot_y, 0);
         }
         if (--self->unk_fd == 0) {
             if (++self->unk_fe >= 2) {
                 self->unk_fe = 0;
-                self->unk_40->timer = 0xb4;
+                self->fsm->timer = 0xb4;
                 if (self->unk_ff != 0) {
-                    self->unk_40->timer = 100;
+                    self->fsm->timer = 100;
                 }
-                self->unk_40->state = 4;
+                self->fsm->st = 4;
                 return;
             }
-            func_ov000_02198360(self->unk_40, 1, 0);
+            func_ov000_02198360(self->fsm, 1, 0);
             self->unk_b6 = 0xb4;
             if (self->unk_ff != 0) {
                 self->unk_b6 = 0x96;
             }
             return;
         }
-        self->unk_40->state = 2;
+        self->fsm->st = 2;
         return;
     }
     case 4:
-        st = self->unk_40;
+        st = self->fsm;
         if (st->timer != 0) {
             st->timer--;
         }
         if (st->timer == 0) {
             self->unk_fc = FLD(u8, ((u8 *)self->unk_100) + self->unk_fc * 16, 0xc);
-            func_ov000_02198360(self->unk_40, 1, 0);
+            func_ov000_02198360(self->fsm, 1, 0);
         }
         break;
     }

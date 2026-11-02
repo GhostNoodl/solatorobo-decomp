@@ -103,10 +103,10 @@ void func_ov011_022051ec(Ov011Act7da4 *self) {
         }
         return;
     }
-    switch (self->unk_40->state) {
+    switch (self->fsm->st) {
     case 0:
         if (((Ov011BarSnd *)ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000))->unk_16 > 1) {
-            Ov011Sub40 *w = self->unk_40;
+            ActorSub40 *w = self->fsm;
             w->timer++;
             if (w->timer <= 900) {
                 return;
@@ -119,13 +119,13 @@ void func_ov011_022051ec(Ov011Act7da4 *self) {
             g = data_ov000_021ccd54;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
-            self->unk_40->state++;
-            self->unk_40->timer = 0;
+            self->fsm->st++;
+            self->fsm->timer = 0;
         }
         break;
     case 1:
         if (Ov011_GameIdle()) {
-            func_ov000_02198360(self->unk_40, 0x21, 0);
+            func_ov000_02198360(self->fsm, 0x21, 0);
         }
         break;
     }

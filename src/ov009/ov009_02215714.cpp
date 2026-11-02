@@ -2,9 +2,9 @@
 
 extern "C" {
 
-extern Ov009Vec *func_ov000_0218d2e0(void *self);
-extern void Actor_TurnToPos(Ov009Obj *self, Ov009Vec *v, s32 a);
-extern void HitSphere_Link(Ov009Sub48 *p);
+extern VecFx32 *func_ov000_0218d2e0(void *self);
+extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
+extern void HitSphere_Link(ActorSub48 *p);
 extern void func_ov009_02215a6c(Ov009ActExVt_0221802c *self);
 
 #define OV009_SQRTCNT (*(volatile u16 *)0x40002b0)
@@ -12,26 +12,26 @@ extern void func_ov009_02215a6c(Ov009ActExVt_0221802c *self);
 #define OV009_SQRT_PARAM (*(volatile u64 *)0x40002b8)
 
 void func_ov009_02215714(Ov009ActExVt_0221802c *self) {
-    Ov009Vec d;
-    switch (self->unk_40->state) {
+    VecFx32 d;
+    switch (self->fsm->st) {
     case 0: {
-        Ov009Vec *p;
+        VecFx32 *p;
         {
-            Ov009Sub44 *n = self->unk_44;
+            ActorSub44 *n = self->unk_44;
             n->unk_22_0 = 1;
             n->unk_22_1 = 1;
         }
         {
-            Ov009Sub48 *m = self->unk_48;
+            ActorSub48 *m = self->hit;
             m->unk_9a_0 = 1;
             m->unk_9a_3 = 1;
             HitSphere_Link(m);
         }
-        self->unk_48->unk_30 = 0x40000000;
-        self->unk_9c = 0;
-        self->unk_a0 = 0;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0;
+        self->hit->unk_30 = 0x40000000;
+        self->speed = 0;
+        self->velY = 0;
+        self->friction = 0;
+        self->gravity = 0;
         p = func_ov000_0218d2e0(self);
         if (p != NULL) {
             s32 r;
@@ -54,41 +54,41 @@ void func_ov009_02215714(Ov009ActExVt_0221802c *self) {
             while (OV009_SQRTCNT & 0x8000) {
             }
             r = (s32)(OV009_SQRT_RESULT + 1) >> 1;
-            d.x = FX_Mul(r, OV009_SIN(self->rot[1]));
-            d.z = FX_Mul(r, OV009_COS(self->rot[1]));
+            d.x = FX_Mul(r, OV009_SIN(self->rot_y));
+            d.z = FX_Mul(r, OV009_COS(self->rot_y));
             VEC_Normalize(&d, &d);
-            self->unk_9c = FX_Mul(d.x, 0x666);
-            self->unk_a0 = FX_Mul(d.y, 0x666);
-            self->unk_a4 = FX_Mul(d.z, 0x666);
+            self->speed = FX_Mul(d.x, 0x666);
+            self->velY = FX_Mul(d.y, 0x666);
+            self->friction = FX_Mul(d.z, 0x666);
             FX_Atan2(r, self->unk_84.y - self->pos.y);
-            self->rot[0] = FX_Atan2(self->pos.y - self->unk_84.y, r);
+            self->rot_x = FX_Atan2(self->pos.y - self->unk_84.y, r);
             self->unk_d0 |= 0x200000;
-            self->unk_48->unk_30 = 0x20000000;
+            self->hit->unk_30 = 0x20000000;
         } else {
-            self->unk_9c = 0x4cd;
-            self->unk_98 = self->rot[1];
+            self->speed = 0x4cd;
+            self->moveYaw = self->rot_y;
         }
         {
-            Ov009Sub48 *m = self->unk_48;
+            ActorSub48 *m = self->hit;
             m->unk_50 = 0;
             m->unk_54 = 0;
             m->unk_58 = 0;
         }
         self->unk_d4 = 0;
-        self->unk_40->state++;
+        self->fsm->st++;
         break;
     }
     case 1:
         if (self->unk_d0 & 0x200000) {
             Actor_TurnToPos(self, &self->unk_84, 0x1000);
-            VEC_Add(&self->pos, (Ov009Vec *)&self->unk_9c, &self->pos);
+            VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         } else {
-            Actor_Move((Actor *)self, 0);
+            Actor_Move(self, 0);
         }
         func_ov009_02215a6c(self);
-        func_ov000_021987b8(self->unk_48, 1, 0, 0);
-        if ((self->unk_48->unk_50 & 0x60000000) || ++self->unk_d4 >= 150) {
-            func_ov000_02198360(self->unk_40, 0x15, 0);
+        func_ov000_021987b8(self->hit, 1, 0, 0);
+        if ((self->hit->unk_50 & 0x60000000) || ++self->unk_d4 >= 150) {
+            func_ov000_02198360(self->fsm, 0x15, 0);
         }
         break;
     }

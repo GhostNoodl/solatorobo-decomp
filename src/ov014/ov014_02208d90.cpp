@@ -4,14 +4,14 @@ extern "C" {
 
 void func_ov014_02208d90(Ov014ActEx_02208618 *self) {
     self->unk_d0 |= 0x1000;
-    func_ov000_02198360(self->unk_40, 0x15, 0);
+    func_ov000_02198360(self->fsm, 0x15, 0);
 }
 extern void *data_02097e4c;
 extern void *data_0214a420;
 extern void func_ov000_02198c8c(void *p, s32 a);
-extern void func_0203f364(Ov014Sub48 *p);
-extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
-extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
+extern void func_0203f364(ActorSub48 *p);
+extern Ov014V *func_02065f88(s32 id, VecFx32 *pos);
+extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern Ov014V *func_020657b0(void *a, void *b);
 extern void func_ov003_021da9ac(void *p, u8 id, void *obj);
 extern BOOL Ov003FxList_Has(void *p, u8 id);
@@ -19,26 +19,26 @@ extern void *Ov003FxList_Get(void *p, u8 id);
 extern void func_ov000_0218996c(s32 a, s32 b);
 
 void func_ov014_02208db4(Ov014ActEx_02208618 *self) {
-    switch (self->unk_40->state) {
+    switch (self->fsm->st) {
     case 0: {
-        Ov014Actor *a;
+        Ov014V *a;
         if (self->unk_44 != NULL) {
-            Ov014Sub44 *n = self->unk_44;
+            ActorSub44 *n = self->unk_44;
             n->unk_22_0 = 0;
             n->unk_22_1 = 0;
         }
-        if (self->unk_48 != NULL) {
-            Ov014Sub48 *m;
-            func_ov000_02198c8c(self->unk_48, 0xffff);
-            m = self->unk_48;
+        if (self->hit != NULL) {
+            ActorSub48 *m;
+            func_ov000_02198c8c(self->hit, 0xffff);
+            m = self->hit;
             m->unk_9a_0 = 0;
             m->unk_9a_3 = 0;
             func_0203f364(m);
-            m = self->unk_48;
+            m = self->hit;
             m->unk_9a_1 = 0;
             m->unk_9a_4 = 0;
         }
-        self->unk_38->unk_c2_0 = 0;
+        self->model->visible = 0;
         a = func_02065f88(0x69, &self->pos);
         a->v0c(0x40);
         func_ov003_021da9ac(((void *)self->unk_d8), 0xff, a);
@@ -48,7 +48,7 @@ void func_ov014_02208db4(Ov014ActEx_02208618 *self) {
         func_ov000_0218996c(0xf, 0xf);
         func_02049f44(data_02097e4c, 0x7f, &self->pos, 0);
         func_02049f44(data_02097e4c, 0x56, &self->pos, 0);
-        self->unk_40->state++;
+        self->fsm->st++;
         break;
     }
     case 1: {
@@ -62,13 +62,13 @@ void func_ov014_02208db4(Ov014ActEx_02208618 *self) {
             o->v0c(FLD(s32, o, 0x40) + 0xcd);
         }
         if (!Ov003FxList_Has(((void *)self->unk_d8), 0xff)) {
-            self->unk_40->state++;
+            self->fsm->st++;
         }
         break;
     }
     case 2:
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
-        self->v08();
+        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        self->vfunc_08();
         break;
     }
 }

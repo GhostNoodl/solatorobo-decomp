@@ -46,20 +46,20 @@ void func_ov000_021a98bc(Robo021ca458 *self) {
         if (self->velY < 0) {
             self->gravity = 0x14;
         }
-        if (((s16)self->model->unk_c4) == 1) {
+        if (self->model->anim_state == 1) {
             self->unk_b24_21 = 1;
             self->gravity = 0x29;
             ((State021a98bc *)self->fsm)->state++;
         }
         break;
     case 2:
-        if (((s16)self->model->unk_c4) == 2) {
+        if (self->model->anim_state == 2) {
             func_ov000_02190cb0(self->model, data_ov000_021cc6a2, 0x333, 1);
             ((State021a98bc *)self->fsm)->state = 10;
         }
         break;
     case 10:
-        if (((s16)self->model->unk_c4) == 1) {
+        if (self->model->anim_state == 1) {
             s->state = ((const State021a98bc *)s)->state + 1;
         }
         break;
@@ -103,7 +103,7 @@ void func_ov000_021a98bc(Robo021ca458 *self) {
         ((State021a98bc *)self->fsm)->state++;
         break;
     case 21:
-        if (((s16)self->model->unk_c4) == 1) {
+        if (self->model->anim_state == 1) {
             self->unk_b24_21 = 0;
         }
         if (func_ov000_02191120(self->model)) {

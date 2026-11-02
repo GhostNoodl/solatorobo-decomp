@@ -110,7 +110,7 @@ void func_ov000_02190a80(Model0218fe1c *self, s16 speed) {
     s16 *ev;
     s16 *best;
     s16 *it;
-    self->unk_c4 = 0;
+    self->anim_state = 0;
     if (self->blend != 0) {
         self->blend--;
     }
@@ -227,7 +227,7 @@ BOOL func_ov000_02190cb0(Model0218fe1c *self, const char *name, s16 blend, u8 fo
                 }
             }
         }
-        self->unk_c4 = 0;
+        self->anim_state = 0;
         self->evCursor = self->evScript;
     }
     return ret;
