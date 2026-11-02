@@ -7328,3 +7328,23 @@ Handoff round: every unmatched code function now has its best clean draft in the
 - **Lower scratch scores that were rejected as not clean:** `02204a10` 57-67 (a `volatile` trail base; without it 297-300, the tree's clean draft is 295), `021512b4` 11, `0216c310` 65 / 10, `02053254` 36 and `021652e4` 91 (permuter output with fake parameters), `0215e6f0` 9 (a no-op cast), `021e7004` 20-21 (a junk store). `docs/UNMATCHED.md` lists them too.
 - Every block now starts with a `Status (round drA)` comment of three or four lines: the current score, the blocker in one sentence, and the rounds that hold the history. The older notes stay below it. Several of them quote scores from earlier scorers.
 - No new data. No renames.
+
+### Round svF
+
+FLD cleanup in `src/ov015` / `include/ov015`. **`FLD`/`CFLD`/`LFLD` accesses in ov015: 2640 -> 878.** ov009, ov012, ov013 and ov014 are unchanged: 568, 365, 576 and 707. Every function is byte-identical to before, checked by a per-function hash of code plus relocations against a baseline taken at the start. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, and `ninja report` 8138 matched (8138 at start). No `NONMATCHING` draft changed, and no data was added. The scratch is in the session scratchpad `svF/`: `verify.sh`, `scan.py`, `decast.py` and `errfix.py`, plus svB's `b/conv.py` with a `CONV_LOCAL=1` switch that keeps its prototype pass inside the files given.
+
+- **New types in `ov015.h`:**
+  - Fish-state classes (vtable `02212eb0`): `Ov015FishState` plus `FishState18`, `2c`, `1c`, `40` and `08`, each with an `Ov015Fish *` owner.
+  - UI classes: `Ov015Ui` (0x80, base vtable `021cac60`), `Ov015UiLabel`, `Ov015UiNum`, `Ov015UiText`, `Ov015Menu`/`Ov015MenuItem` and `Ov015Dialog`.
+  - `Ov015CamView` (0x3c).
+  - The five scene classes `02202dac` / `022038c8` / `022048a0` / `0220566c` / `02206564` (`Ov015Scene2a88`, `2a08`, `2c08`, `2b88`, `2b08`).
+  - `Ov015Msg`/`Ov015MsgMgr`, `Ov015Result`/`Ov015ResultPanel`, `Ov015Obj290` and `Ov015Obj292c`.
+  - `Ov015Task` was widened to 0x3c.
+  - Every type whose allocation size is known has a `SIZE_ASSERT`.
+- **Menu handlers take `Ov015Menu *self`.** The owning scene is reached through a cast of `self->unk_08`.
+- **Pitfall (again):** once a field has a struct-pointer type, `self->unk_10 + 0xc` scales by the struct size. `021ff968` and `021ffdd4` now spell it `&self->unk_10->unk_0c`.
+- **Left as they were:**
+  - Two render-state helpers, `02211954` and `022119d0`, take the NNS state and not `RenderObj`, so their parameter stays `u8 *`.
+  - The panel helper class in `0220ec40.cpp` and the classes behind vtables `02212f3c`/`02212f64` (`0220e024`, `0220dde8`; fields 0x3a4-0x520) were not converted.
+  - The ov000 effect objects reached through `func_02066774`, the sprite code (`021fb758`, `021fb408`, `021fce4c`), the bit-field views (`Ov015ObjFlags`, `Ov015Bits10d24`, `Ov015Nib`) and the globals stay `FLD`.
+- **Not a base field in ov014:** `Ov014Actor` 0xd4-0xdf is different in each subclass. It is a `u16` id at 0xde in about ten classes, an `Ov014Vec` at 0xd4 in `02217050`, and a pointer at 0xdc. It therefore stays padding in the base. Typing it needs one intermediate class per layout.

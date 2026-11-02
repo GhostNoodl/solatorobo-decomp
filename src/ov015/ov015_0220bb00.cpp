@@ -17,10 +17,10 @@ extern u8 data_ov015_02212e0d[];
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 
-BOOL func_ov015_0220bb00(u8 *self) {
+BOOL func_ov015_0220bb00(Ov015FishState18 *self) {
     Ov015V *o;
     u32 saved;
-    o = func_020657b0(data_0214a420, FLD(void *, self, 0x14));
+    o = func_020657b0(data_0214a420, self->unk_14);
     if (o != NULL) {
         HEAP_PUSH(saved);
         if (o != NULL) {
@@ -33,36 +33,36 @@ BOOL func_ov015_0220bb00(u8 *self) {
     return TRUE;
 }
 
-static inline void Ov015_Spawn0bb68(u8 *self, s32 s1, s32 s2) {
+static inline void Ov015_Spawn0bb68(Ov015FishState18 *self, s32 s1, s32 s2) {
     s32 m = 0;
     u8 *o;
     Ov015Vec a;
     Ov015Vec b;
-    u8 *q;
+    Ov015Fish *q;
     s32 y;
-    o = func_02066774(data_ov015_02212e20, data_ov015_02212e68, 0, FLD(u8 *, self, 0x4) + 0x40);
+    o = func_02066774(data_ov015_02212e20, data_ov015_02212e68, 0, &self->unk_04->unk_40);
     FLD(s32, o, 0xd4) = 1;
     FLD(u8, o, 0x28) = 1;
     FLD(s32, o, 0x50) = -0xc8000;
-    q = FLD(u8 *, self, 0x4);
-    a.x = FLD(s32, q, 0x40);
-    y = FLD(s32, q, 0x44);
+    q = self->unk_04;
+    a.x = q->unk_40.x;
+    y = q->unk_40.y;
     if (y <= 0) m = y;
     a.y = m;
-    a.z = FLD(s32, q, 0x48);
+    a.z = q->unk_40.z;
     VCALL(o)->v18(&a);
-    q = FLD(u8 *, self, 0x4);
+    q = self->unk_04;
     {
-        s32 k = FLD(s32, q, 0x7c);
-        b.x = Ov015_FxMul(FLD(s32, q, 0x70), k);
-        b.y = Ov015_FxMul(FLD(s32, q, 0x74), k);
-        b.z = Ov015_FxMul(FLD(s32, q, 0x78), k);
+        s32 k = q->unk_7c;
+        b.x = Ov015_FxMul(q->unk_70, k);
+        b.y = Ov015_FxMul(q->unk_74, k);
+        b.z = Ov015_FxMul(q->unk_78, k);
     }
     VCALL(o)->v10(&b);
     func_02049a48(data_02097e4c, s1, -1, -1, -1);
     func_02049a48(data_02097e4c, s2, -1, -1, -1);
 }
-void func_ov015_0220bb68(u8 *self, Ov015Fish *p) {
+void func_ov015_0220bb68(Ov015FishState18 *self, Ov015Fish *p) {
     Ov015VecC t(*(Ov015VecC *)&p->unk_40);
     s32 d = 0x4000 - t.y;
     if ((d < 0 ? -d : d) <= 0x19a) {
@@ -71,20 +71,20 @@ void func_ov015_0220bb68(u8 *self, Ov015Fish *p) {
         t.y += Ov015_FxMul(d, 0x29);
     }
     *(Ov015VecC *)&p->unk_40 = t;
-    if (FLD(s32, self, 0xc) == 0x50) {
+    if (self->unk_0c == 0x50) {
         Ov015_Spawn0bb68(self, 0x19, 0x3e);
-    } else if (FLD(s32, self, 0xc) == 1) {
+    } else if (self->unk_0c == 1) {
         Ov015_Spawn0bb68(self, 0x3e, 0x1b);
     }
 }
 
-void func_ov015_0220be38(u8 *self, Ov015Fish *p) {
+void func_ov015_0220be38(Ov015FishState18 *self, Ov015Fish *p) {
     Ov015Vec a;
     Ov015Vec c;
     Ov015Vec d;
     Ov015Vec b;
     Ov015V *e;
-    u8 *q;
+    Ov015Fish *q;
     s32 n;
     {
         Ov015VecC t(*(Ov015VecC *)&p->unk_40);
@@ -96,31 +96,31 @@ void func_ov015_0220be38(u8 *self, Ov015Fish *p) {
         }
         *(Ov015VecC *)&p->unk_40 = t;
     }
-    q = FLD(u8 *, self, 0x4);
-    a.x = FLD(s32, q, 0x40);
-    a.y = FLD(s32, q, 0x44) > 0 ? 0 : FLD(s32, q, 0x44);
-    a.z = FLD(s32, q, 0x48);
-    e = func_020657b0(data_0214a420, FLD(void *, self, 0x14));
+    q = self->unk_04;
+    a.x = q->unk_40.x;
+    a.y = q->unk_40.y > 0 ? 0 : q->unk_40.y;
+    a.z = q->unk_40.z;
+    e = func_020657b0(data_0214a420, self->unk_14);
     if (e == NULL) {
-        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e55, 0, FLD(u8 *, self, 0x4) + 0x40);
+        e = (Ov015V *)func_02066774(data_ov015_02212e20, data_ov015_02212e55, 0, &self->unk_04->unk_40);
         FLD(s32, e, 0xd4) = 1;
         FLD(u8, e, 0x28) = 0;
         FLD(s32, e, 0x3c) = 0x800;
         FLD(s32, e, 0xc8) = -1;
         FLD(s32, e, 0x50) = -0xc8000;
         e->v34(0, 0x3fff, 0);
-        FLD(void *, self, 0x14) = FLD(void *, e, 0x24);
+        self->unk_14 = FLD(void *, e, 0x24);
     }
     e->v18(&a);
-    q = FLD(u8 *, self, 0x4);
+    q = self->unk_04;
     {
-        s32 k = FLD(s32, q, 0x7c);
-        b.x = Ov015_FxMul(FLD(s32, q, 0x70), k);
-        b.y = Ov015_FxMul(FLD(s32, q, 0x74), k);
-        b.z = Ov015_FxMul(FLD(s32, q, 0x78), k);
+        s32 k = q->unk_7c;
+        b.x = Ov015_FxMul(q->unk_70, k);
+        b.y = Ov015_FxMul(q->unk_74, k);
+        b.z = Ov015_FxMul(q->unk_78, k);
     }
     e->v10(&b);
-    n = FLD(s32, self, 0xc);
+    n = self->unk_0c;
     if (n > 0x28) {
         s32 s = Ov015_FxMul(FX_Div((0x50 - n) << 12, 0x28000), -0x99a) + 0x1000;
         c.x = Ov015_FxMul(FLD(s32, e, 0x40), s);
@@ -133,7 +133,7 @@ void func_ov015_0220be38(u8 *self, Ov015Fish *p) {
         d.y = Ov015_FxMul(FLD(s32, e, 0x44), s);
         d.z = Ov015_FxMul(FLD(s32, e, 0x48), s);
         e->v10(&d);
-        if (FLD(s32, self, 0xc) == 1) {
+        if (self->unk_0c == 1) {
             func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
         }
     }
@@ -150,12 +150,12 @@ void *func_ov015_0220c198(void *self) {
     return self;
 }
 
-BOOL func_ov015_0220c1b8(u8 *self, Ov015Fish *p) {
-    FLD(Ov015Fish *, self, 0x18) = p;
-    FLD(s32, self, 0x4) = 0;
-    FLD(s32, self, 0x8) = 0x1e;
-    FLD(s32, self, 0xc) = 0x4b0;
-    FLD(s32, self, 0x10) = 0;
+BOOL func_ov015_0220c1b8(Ov015FishState1c *self, Ov015Fish *p) {
+    self->unk_18 = p;
+    self->unk_04 = 0;
+    self->unk_08 = 0x1e;
+    self->unk_0c = 0x4b0;
+    self->unk_10 = 0;
     func_ov000_02190cb0(&p->unk_244, data_ov015_02212e0d, 0x19a, 0);
     p->unk_104 = 0x1000;
     func_ov000_021915a0(&p->unk_244);
@@ -166,38 +166,38 @@ BOOL func_ov015_0220c1b8(u8 *self, Ov015Fish *p) {
 }
 
 
-BOOL func_ov015_0220c810(u8 *self);
-void func_ov015_0220c6c8(u8 *self, Ov015Fish *p);
+BOOL func_ov015_0220c810(Ov015FishState1c *self);
+void func_ov015_0220c6c8(Ov015FishState1c *self, Ov015Fish *p);
 s32 func_02040498(s32 n);
 void func_ov000_02191618(void *a);
 void VEC_Normalize(void *src, void *dst);
 extern u8 data_ov015_02212e74[];
 
-BOOL func_ov015_0220c21c(u8 *self, Ov015Fish *p) {
+BOOL func_ov015_0220c21c(Ov015FishState1c *self, Ov015Fish *p) {
     BOOL ret = TRUE;
     s32 a;
     s32 off;
     s32 t;
     s32 v;
-    FLD(Ov015Fish *, self, 0x18) = p;
-    if (FLD(s32, self, 0x4) != 0 && FLD(s32, self, 0x4) != 5 && !func_ov015_0220c810(self)) {
-        FLD(s32, self, 0x4) = 5;
-        FLD(s32, self, 0x8) = 0x5a;
+    self->unk_18 = p;
+    if (self->unk_04 != 0 && self->unk_04 != 5 && !func_ov015_0220c810(self)) {
+        self->unk_04 = 5;
+        self->unk_08 = 0x5a;
         func_ov000_02190cb0(&p->unk_244, data_ov015_02212e74, 0x19a, 0);
         p->unk_104 = 0x800;
         func_ov000_02191618(&p->unk_244);
         p->unk_bc = 0;
     }
-    switch (FLD(s32, self, 0x4)) {
+    switch (self->unk_04) {
     case 0: {
         Ov015VecC t(*(Ov015VecC *)&p->unk_40);
         t.y -= FX_Div(0x28000, 0x1e000);
         *(Ov015VecC *)&p->unk_40 = t;
-        if (FLD(s32, self, 0x8) == 0) {
+        if (self->unk_08 == 0) {
             s32 s = func_02040498(1) ? 3 : 4;
-            FLD(s32, self, 0x4) = s;
-            FLD(s32, self, 0x14) = s == 3 ? p->unk_b0 : -p->unk_ac;
-            FLD(s32, self, 0x8) = 0x1e;
+            self->unk_04 = s;
+            self->unk_14 = s == 3 ? p->unk_b0 : -p->unk_ac;
+            self->unk_08 = 0x1e;
             p->unk_104 = 0x800;
             p->unk_bc = 4;
         }
@@ -205,30 +205,30 @@ BOOL func_ov015_0220c21c(u8 *self, Ov015Fish *p) {
     }
     case 1: {
         Ov015VecC t(*(Ov015VecC *)&p->unk_40);
-        t.x -= Ov015_FxMul((FLD(Ov015Fish *, self, 0x18))->unk_c0.unk_0a << 4, 0x19a) + 0x800;
+        t.x -= Ov015_FxMul((self->unk_18)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
         *(Ov015VecC *)&p->unk_40 = t;
-        if (t.x < FLD(s32, self, 0x14)) {
-            FLD(s32, self, 0x4) = 4;
-            FLD(s32, self, 0x8) = 0x1e;
+        if (t.x < self->unk_14) {
+            self->unk_04 = 4;
+            self->unk_08 = 0x1e;
         }
         break;
     }
     case 2: {
         Ov015VecC t(*(Ov015VecC *)&p->unk_40);
-        t.x += Ov015_FxMul((FLD(Ov015Fish *, self, 0x18))->unk_c0.unk_0a << 4, 0x19a) + 0x800;
+        t.x += Ov015_FxMul((self->unk_18)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
         *(Ov015VecC *)&p->unk_40 = t;
-        if (t.x > FLD(s32, self, 0x14)) {
-            FLD(s32, self, 0x4) = 3;
-            FLD(s32, self, 0x8) = 0x1e;
+        if (t.x > self->unk_14) {
+            self->unk_04 = 3;
+            self->unk_08 = 0x1e;
         }
         break;
     }
     case 3: {
         off = 0;
-        a = Ov015_FxMul((FLD(Ov015Fish *, self, 0x18))->unk_c0.unk_0a << 4, 0x19a) + 0x800;
-        t = FX_Div((FLD(s32, self, 0x8) - 0x1e) >> 1, 0xf);
+        a = Ov015_FxMul((self->unk_18)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
+        t = FX_Div((self->unk_08 - 0x1e) >> 1, 0xf);
         v = Ov015_FxMul(a >> 1, Ov015_FxMul(t, t));
-        (FLD(Ov015Fish *, self, 0x18))->unk_a8 = v;
+        (self->unk_18)->unk_a8 = v;
         {
             Ov015VecC q(*(Ov015VecC *)&p->unk_40);
             q.x -= v;
@@ -241,24 +241,24 @@ BOOL func_ov015_0220c21c(u8 *self, Ov015Fish *p) {
             d2.x += off;
             VEC_Normalize(&d2, &p->unk_9c);
         }
-        if (FLD(s32, self, 0x8) == 0xf) {
+        if (self->unk_08 == 0xf) {
             func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         }
-        if (FLD(s32, self, 0x8) <= 0) {
+        if (self->unk_08 <= 0) {
             s32 w;
-            FLD(s32, self, 0x4) = 1;
+            self->unk_04 = 1;
             w = p->unk_ac;
             if (w < 0) w = -w;
-            FLD(s32, self, 0x14) = -func_02040498(w);
+            self->unk_14 = -func_02040498(w);
         }
         break;
     }
     case 4: {
         off = 0;
-        a = Ov015_FxMul((FLD(Ov015Fish *, self, 0x18))->unk_c0.unk_0a << 4, 0x19a) + 0x800;
-        t = FX_Div((FLD(s32, self, 0x8) - 0x1e) >> 1, 0xf);
+        a = Ov015_FxMul((self->unk_18)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
+        t = FX_Div((self->unk_08 - 0x1e) >> 1, 0xf);
         v = Ov015_FxMul(a >> 1, Ov015_FxMul(t, t));
-        (FLD(Ov015Fish *, self, 0x18))->unk_a8 = v;
+        (self->unk_18)->unk_a8 = v;
         {
             Ov015VecC q(*(Ov015VecC *)&p->unk_40);
             q.x += v;
@@ -271,21 +271,21 @@ BOOL func_ov015_0220c21c(u8 *self, Ov015Fish *p) {
             d2.x += off;
             VEC_Normalize(&d2, &p->unk_9c);
         }
-        if (FLD(s32, self, 0x8) == 0xf) {
+        if (self->unk_08 == 0xf) {
             func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
         }
-        if (FLD(s32, self, 0x8) <= 0) {
-            FLD(s32, self, 0x4) = 2;
-            FLD(s32, self, 0x14) = func_02040498(p->unk_b0);
+        if (self->unk_08 <= 0) {
+            self->unk_04 = 2;
+            self->unk_14 = func_02040498(p->unk_b0);
         }
         break;
     }
     case 5:
         func_ov015_0220c6c8(self, p);
-        if (FLD(s32, self, 0x8) == 0) ret = FALSE;
+        if (self->unk_08 == 0) ret = FALSE;
         break;
     }
-    if (--FLD(s32, self, 0x8) < 0) FLD(s32, self, 0x8) = 0;
+    if (--self->unk_08 < 0) self->unk_08 = 0;
     return ret;
 }
 

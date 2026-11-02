@@ -70,27 +70,27 @@ bool func_ov015_02202e74(void *self) {
     return r;
 }
 
-void func_ov015_02202e9c(u8 *self) {
-    s32 a = FLD(s32, self, 0x44);
+void func_ov015_02202e9c(Ov015Scene2a88 *self) {
+    s32 a = self->unk_44;
     s32 r = 0;
     if (a < 0x1000000) {
         r = a + 0x8000;
     }
-    FLD(s32, self, 0x44) = r;
-    if (FLD(s32, self, 0x48) >= 0x1000000) {
-        FLD(s32, self, 0x48) = 0;
+    self->unk_44 = r;
+    if (self->unk_48 >= 0x1000000) {
+        self->unk_48 = 0;
     } else {
-        FLD(s32, self, 0x48) += 0x8000;
+        self->unk_48 += 0x8000;
     }
 }
 
-void func_ov015_02202ec8(u8 *self) {
-    u8 *model = FLD(u8 *, self, 0x3c);
+void func_ov015_02202ec8(Ov015Scene2a88 *self) {
+    u8 *model = self->unk_3c;
     u8 *res;
     u8 *anim;
     u8 *t;
     void *arg;
-    if (model == NULL || FLD(u8, self, 0x40) == 0 || (res = FLD(u8 *, model, 0x28)) == NULL) {
+    if (model == NULL || self->unk_40 == 0 || (res = FLD(u8 *, model, 0x28)) == NULL) {
         return;
     }
     anim = NULL;
@@ -106,10 +106,10 @@ void func_ov015_02202ec8(u8 *self) {
     func_02042628(model, arg, anim, 0);
 }
 
-BOOL func_ov015_02202f44(u8 *self, u8 *ev) {
+BOOL func_ov015_02202f44(Ov015Menu *self, Ov015MenuItem *ev) {
     if (ev != NULL) {
-        if (FLD(s32, ev, 0x10) != -1) {
-            FLD(u8, FLD(u8 *, self, 0x8), 0xa4) = 1;
+        if (ev->unk_10 != -1) {
+            FLD(u8, self->unk_08, 0xa4) = 1;
             func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
         } else {
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
@@ -118,11 +118,11 @@ BOOL func_ov015_02202f44(u8 *self, u8 *ev) {
     return TRUE;
 }
 
-BOOL func_ov015_02202fa8(u8 *self, u8 *ev) {
-    u8 *o = FLD(u8 *, self, 0x8);
+BOOL func_ov015_02202fa8(Ov015Menu *self, Ov015MenuItem *ev) {
+    Ov015Scene2a08 *o = (Ov015Scene2a08 *)self->unk_08;
     void *d = data_02149ef8;
     void *m;
-    switch (FLD(u16, ev, 0x6)) {
+    switch (ev->unk_06) {
     case 0:
         m = func_0204c0e8(d, 0xc7);
         break;
@@ -133,41 +133,41 @@ BOOL func_ov015_02202fa8(u8 *self, u8 *ev) {
         m = func_0204c0e8(d, 0xd5);
         break;
     }
-    if (FLD(void *, o, 0x84) != NULL) {
-        func_ov000_0215bb14(FLD(void *, o, 0x84), m);
-        VCALL(FLD(void *, o, 0x84))->v70();
+    if (o->unk_84 != NULL) {
+        func_ov000_0215bb14(o->unk_84, m);
+        VCALL(o->unk_84)->v70();
     }
     return TRUE;
 }
 
-void func_ov015_02203020(u8 *self) {
+void func_ov015_02203020(Ov015Scene2a08 *self) {
     u32 saved;
     HEAP_PUSH(saved);
     {
-    Ov015Ship *o = FLD(Ov015Ship *, self, 0x3c);
+    Ov015Ship *o = self->unk_3c;
     if (o != NULL) {
         if (o != NULL) {
             func_ov015_02207738(o);
             func_0203de1c(o);
         }
-        FLD(void *, self, 0x3c) = NULL;
+        self->unk_3c = NULL;
     }
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x40));
+    DELETE_V(self->unk_40);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x80));
+    DELETE_V(self->unk_80);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x84));
+    DELETE_V(self->unk_84);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x88));
+    DELETE_V(self->unk_88);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x8c));
+    DELETE_V(self->unk_8c);
     HEAP_POP(saved);
 }
 
@@ -184,34 +184,34 @@ void *func_ov015_022031b4(void *self) {
     return self;
 }
 
-void func_ov015_022031d0(u8 *self) {
+void func_ov015_022031d0(Ov015Scene2a08 *self) {
     Ov015Ship *p;
     void *q;
     p = (Ov015Ship *)func_0203dd9c(0xd58);
     if (p != NULL) {
         p = (Ov015Ship *)func_ov015_0220765c(p);
     }
-    FLD(void *, self, 0x3c) = p;
+    self->unk_3c = p;
     func_ov015_02207858(p);
-    FLD(Ov015Ship *, self, 0x3c)->unk_d48 = data_ov015_02213368->unk_2c;
+    ((Ov015Ship *)self->unk_3c)->unk_d48 = data_ov015_02213368->unk_2c;
     q = func_0203dd9c(0x1c);
     if (q != NULL) {
         func_ov000_0219196c(q);
         SET_VT(q, data_ov015_022129d0);
     }
-    FLD(void *, self, 0x40) = q;
+    self->unk_40 = (Ov015Shadow *)q;
     func_ov000_02191b70(q);
 }
 
-BOOL func_ov015_02203244(u8 *self) {
-    BOOL r = func_ov015_022078bc(FLD(Ov015Ship *, self, 0x3c)) & 1 ? TRUE : FALSE;
-    u8 st = FLD(u8, FLD(u8 *, self, 0x40), 0x1b);
+BOOL func_ov015_02203244(Ov015Scene2a08 *self) {
+    BOOL r = func_ov015_022078bc(self->unk_3c) & 1 ? TRUE : FALSE;
+    u8 st = self->unk_40->state;
     BOOL idle = TRUE;
     if (st != 3 && st != 0) {
         idle = FALSE;
     }
     if (!idle) {
-        r = r & func_ov000_02191b9c(FLD(void *, self, 0x40)) ? TRUE : FALSE;
+        r = r & func_ov000_02191b9c(self->unk_40) ? TRUE : FALSE;
     }
     return r;
 }
@@ -238,53 +238,53 @@ struct Ov015Nib {
     u8 hi : 4;
 };
 
-static inline void Ov015_SetXYZ16(u8 *o, s16 x, s16 y, s16 z) {
-    FLD(s16, o, 0x64) = x;
-    FLD(s16, o, 0x66) = y;
-    FLD(s16, o, 0x68) = z;
+static inline void Ov015_SetXYZ16(Ov015Ui *o, s16 x, s16 y, s16 z) {
+    o->unk_64 = x;
+    o->unk_66 = y;
+    o->unk_68 = z;
 }
 
-static inline void Ov015_SetXYZ32(u8 *o, s32 x, s32 y, s32 z) {
-    FLD(s32, o, 0x58) = x;
-    FLD(s32, o, 0x5c) = y;
-    FLD(s32, o, 0x60) = z;
+static inline void Ov015_SetXYZ32(Ov015Ui *o, s32 x, s32 y, s32 z) {
+    o->unk_58 = x;
+    o->unk_5c = y;
+    o->unk_60 = z;
 }
 
-void func_ov015_02203298(u8 *self) {
+void func_ov015_02203298(Ov015Scene2a08 *self) {
     u8 *p;
     void *res;
     if (VCALL(self)->v28()) {
         return;
     }
     res = data_02149ef8;
-    FLD(s16, FLD(u8 *, self, 0x3c), 0xd3c) = 2;
-    func_ov015_02207adc(FLD(Ov015Ship *, self, 0x3c));
+    self->unk_3c->unk_d3c = 2;
+    func_ov015_02207adc(self->unk_3c);
     {
-        u8 *o = FLD(u8 *, self, 0x3c);
+        Ov015Ship *o = self->unk_3c;
         FLD(s16, o, 0xd20) = 0;
         FLD(s16, o, 0xd22) = 0;
         FLD(s16, o, 0xd24) = 0;
     }
-    FLD(u8, FLD(u8 *, self, 0x3c), 0xd40) = 0;
-    FLD(u8, FLD(u8 *, self, 0x3c), 0xd41) = 0;
+    self->unk_3c->unk_d40 = 0;
+    self->unk_3c->unk_d41 = 0;
     {
-        Ov015Nib *n = &FLD(Ov015Nib, FLD(u8 *, self, 0x40), 0x18);
+        Ov015Nib *n = &FLD(Ov015Nib, self->unk_40, 0x18);
         n->hi = n->lo;
         n->lo = 3;
     }
-    FLD(s32, FLD(u8 *, self, 0x40), 0x10) = 0;
-    FLD(s32, FLD(u8 *, self, 0x40), 0xc) = 0;
-    FLD(u8, FLD(u8 *, self, 0x40), 0x19) = 0x14;
-    FLD(s32, self, 0x44) = 0x27d7;
-    FLD(s32, self, 0x48) = 0x4ee1;
-    FLD(s32, self, 0x4c) = 0x6052;
-    FLD(s32, self, 0x50) = -0x130a;
-    FLD(s32, self, 0x54) = 0x14cd;
-    FLD(s32, self, 0x58) = -0x452;
-    FLD(s32, self, 0x5c) = 0;
-    FLD(s32, self, 0x60) = 0x1000;
-    FLD(s32, self, 0x64) = 0;
-    func_020434e0(self + 0x68);
+    self->unk_40->unk_10 = 0;
+    self->unk_40->unk_0c = 0;
+    self->unk_40->alpha = 0x14;
+    self->unk_44.eye.x = 0x27d7;
+    self->unk_44.eye.y = 0x4ee1;
+    self->unk_44.eye.z = 0x6052;
+    self->unk_44.at.x = -0x130a;
+    self->unk_44.at.y = 0x14cd;
+    self->unk_44.at.z = -0x452;
+    self->unk_44.up.x = 0;
+    self->unk_44.up.y = 0x1000;
+    self->unk_44.up.z = 0;
+    func_020434e0(&self->unk_44.fovSin);
     p = (u8 *)func_0203dd9c(0xe0);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
@@ -294,14 +294,14 @@ void func_ov015_02203298(u8 *self) {
         SET_VT(p, data_ov000_021cb5a8);
         VCALL(p)->v28();
     }
-    FLD(u8 *, self, 0x88) = p;
-    FLD(u32, FLD(u8 *, self, 0x88), 0xc) |= 0x4000000;
-    FLD(s32, FLD(u8 *, self, 0x88), 0x2c) = 1;
-    Ov015_SetXYZ16(FLD(u8 *, self, 0x88), 0x91, 0x12, -0x333);
-    Ov015_SetXYZ32(FLD(u8 *, self, 0x88), 0x100, 0, -0x333);
-    FLD(u32, FLD(u8 *, self, 0x88), 0xc) |= 0x20000000;
-    VCALL(FLD(u8 *, self, 0x88))->vf4(1, func_0204c0e8(res, 0x32));
-    VCALL(FLD(u8 *, self, 0x88))->v08();
+    self->unk_88 = (Ov015Menu *)p;
+    self->unk_88->unk_0c |= 0x4000000;
+    self->unk_88->unk_2c = 1;
+    Ov015_SetXYZ16(self->unk_88, 0x91, 0x12, -0x333);
+    Ov015_SetXYZ32(self->unk_88, 0x100, 0, -0x333);
+    self->unk_88->unk_0c |= 0x20000000;
+    VCALL(self->unk_88)->vf4(1, func_0204c0e8(res, 0x32));
+    VCALL(self->unk_88)->v08();
     p = (u8 *)func_0203dd9c(0xd4);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
@@ -309,31 +309,31 @@ void func_ov015_02203298(u8 *self) {
         SET_VT(p, data_ov000_021caec8);
         VCALL(p)->v28();
     }
-    FLD(u8 *, self, 0x80) = p;
-    VCALL(FLD(u8 *, self, 0x80))->v10(func_0204c0e8(res, 0xc4));
-    VCALL(FLD(u8 *, self, 0x80))->v14(func_0204c0e8(res, 0xc5));
-    FLD(s32, FLD(u8 *, self, 0x80), 0x24) = 0x88;
-    FLD(s32, FLD(u8 *, self, 0x80), 0x20) = 4;
-    Ov015_SetXYZ16(FLD(u8 *, self, 0x80), 0, 0x1e, -0xccd);
-    Ov015_SetXYZ32(FLD(u8 *, self, 0x80), 0, -0x100, -0xccd);
-    FLD(s32, FLD(u8 *, self, 0x80), 0x2c) = 1;
-    FLD(u32, FLD(u8 *, self, 0x80), 0xc) &= ~0x400000;
-    FLD(u32, FLD(u8 *, self, 0x80), 0xc) &= ~0x800000;
-    FLD(u32, FLD(u8 *, self, 0x80), 0xc) &= ~0x20000;
-    FLD(u32, FLD(u8 *, self, 0x80), 0xc) &= ~0x80000;
-    FLD(u32, FLD(u8 *, self, 0x80), 0xc) &= ~0x40000;
-    FLD(u32, FLD(u8 *, self, 0x80), 0xc) &= ~0x10000;
-    VCALL(FLD(u8 *, self, 0x80))->v74(func_0204c0e8(res, 0xc6), 0, 0xffff, 0xffff);
-    VCALL(FLD(u8 *, self, 0x80))->v74(func_0204c0e8(res, 0xca), 1, 0xffff, 0xffff);
-    VCALL(FLD(u8 *, self, 0x80))->v74(func_0204c0e8(res, 0xd4), 2, 0xffff, 0xffff);
+    self->unk_80 = (Ov015Menu *)p;
+    VCALL(self->unk_80)->v10(func_0204c0e8(res, 0xc4));
+    VCALL(self->unk_80)->v14(func_0204c0e8(res, 0xc5));
+    self->unk_80->unk_24 = 0x88;
+    self->unk_80->unk_20 = 4;
+    Ov015_SetXYZ16(self->unk_80, 0, 0x1e, -0xccd);
+    Ov015_SetXYZ32(self->unk_80, 0, -0x100, -0xccd);
+    self->unk_80->unk_2c = 1;
+    self->unk_80->unk_0c &= ~0x400000;
+    self->unk_80->unk_0c &= ~0x800000;
+    self->unk_80->unk_0c &= ~0x20000;
+    self->unk_80->unk_0c &= ~0x80000;
+    self->unk_80->unk_0c &= ~0x40000;
+    self->unk_80->unk_0c &= ~0x10000;
+    VCALL(self->unk_80)->v74(func_0204c0e8(res, 0xc6), 0, 0xffff, 0xffff);
+    VCALL(self->unk_80)->v74(func_0204c0e8(res, 0xca), 1, 0xffff, 0xffff);
+    VCALL(self->unk_80)->v74(func_0204c0e8(res, 0xd4), 2, 0xffff, 0xffff);
     {
-        u8 *o = FLD(u8 *, self, 0x80);
+        Ov015Menu *o = self->unk_80;
         VCALL(o)->va8(func_ov000_02154b58(o, 0));
     }
-    FLD(void *, FLD(u8 *, self, 0x80), 0x84) = (void *)func_ov015_02202f44;
-    FLD(void *, FLD(u8 *, self, 0x80), 0x88) = (void *)func_ov015_02202fa8;
-    FLD(u8 *, FLD(u8 *, self, 0x80), 0x8) = self;
-    VCALL(FLD(u8 *, self, 0x80))->v08();
+    self->unk_80->unk_84 = (void *)func_ov015_02202f44;
+    self->unk_80->unk_88 = (void *)func_ov015_02202fa8;
+    self->unk_80->unk_08 = (u8 *)self;
+    VCALL(self->unk_80)->v08();
     p = (u8 *)func_0203dd9c(0x8c);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
@@ -341,16 +341,16 @@ void func_ov015_02203298(u8 *self) {
         SET_VT(p, data_ov000_021cadcc);
         VCALL(p)->v28();
     }
-    FLD(u8 *, self, 0x84) = p;
-    FLD(s32, FLD(u8 *, self, 0x84), 0x24) = 0xf8;
-    FLD(s32, FLD(u8 *, self, 0x84), 0x20) = 2;
-    Ov015_SetXYZ16(FLD(u8 *, self, 0x84), 4, 0x95, -0xccd);
-    Ov015_SetXYZ32(FLD(u8 *, self, 0x84), -0x100, 0, -0xccd);
-    FLD(s32, FLD(u8 *, self, 0x84), 0x2c) = 1;
-    func_ov000_0215bb14(FLD(u8 *, self, 0x84), func_0204c0e8(res, 0xc7));
-    VCALL(FLD(u8 *, self, 0x84))->v70();
-    VCALL(FLD(u8 *, self, 0x84))->v08();
-    switch (FLD(s32, self, 0xc)) {
+    self->unk_84 = (Ov015UiLabel *)p;
+    self->unk_84->unk_24 = 0xf8;
+    self->unk_84->unk_20 = 2;
+    Ov015_SetXYZ16(self->unk_84, 4, 0x95, -0xccd);
+    Ov015_SetXYZ32(self->unk_84, -0x100, 0, -0xccd);
+    self->unk_84->unk_2c = 1;
+    func_ov000_0215bb14(self->unk_84, func_0204c0e8(res, 0xc7));
+    VCALL(self->unk_84)->v70();
+    VCALL(self->unk_84)->v08();
+    switch (self->unk_0c) {
     case 1:
         if (data_ov015_02213360 == 0) {
             p = (u8 *)func_0203dd9c(0x2c);
@@ -359,17 +359,17 @@ void func_ov015_02203298(u8 *self) {
                 func_ov000_02163224(p);
             }
             FLD(u8 *, self, 0x8c) = p;
-            func_ov000_021632f0(FLD(u8 *, self, 0x8c), 5, data_ov015_02212990, data_ov015_0221299d, 0);
-            FLD(u32, FLD(u8 *, self, 0x80), 0xc) |= 4;
-            FLD(u32, FLD(u8 *, self, 0x84), 0xc) |= 4;
-            FLD(u32, FLD(u8 *, self, 0x88), 0xc) |= 2;
-            FLD(u32, FLD(u8 *, self, 0x84), 0xc) |= 2;
+            func_ov000_021632f0(self->unk_8c, 5, data_ov015_02212990, data_ov015_0221299d, 0);
+            self->unk_80->unk_0c |= 4;
+            self->unk_84->unk_0c |= 4;
+            self->unk_88->unk_0c |= 2;
+            self->unk_84->unk_0c |= 2;
         }
     case 2: {
-        u8 *o = (u8 *)func_ov000_02154b58(FLD(u8 *, self, 0x80), 1);
+        u8 *o = (u8 *)func_ov000_02154b58(self->unk_80, 1);
         FLD(s32, o, 0x24) = 0xe;
         FLD(s32, o, 0x10) = -1;
-        o = (u8 *)func_ov000_02154b58(FLD(u8 *, self, 0x80), 2);
+        o = (u8 *)func_ov000_02154b58(self->unk_80, 2);
         FLD(s32, o, 0x24) = 0xe;
         FLD(s32, o, 0x10) = -1;
         break;

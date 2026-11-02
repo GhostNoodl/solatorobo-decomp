@@ -21,7 +21,7 @@ void *func_ov000_02191318(void *a, s32 b);
 s32 FX_Div(s32 a, s32 b);
 void func_0203f364(void *a);
 void *func_0203dd9c(u32 size);
-void *func_ov015_0220a0c8(u8 *self);
+void *func_ov015_0220a0c8(Ov015FishState2c *self);
 void func_ov000_02190a80(void *a, s32 b);
 void func_ov015_02209a50(Ov015Fish *self);
 int func_0203f3d0(void *a);
@@ -29,7 +29,7 @@ extern u32 data_02fe0f04;
 s32 func_02049130(s32 t, s32 a, s32 b);
 void func_ov015_02209c90(Ov015Fish *self);
 u16 FX_Atan2(s32 x, s32 z);
-void func_ov015_0220daf4(void *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
+void func_ov015_0220daf4(Ov015Shadow *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
 void NNS_G3dGeFlushBuffer(void);
 BOOL func_ov000_021903b4(void *a);
 void VEC_Normalize(void *src, void *dst);
@@ -100,7 +100,7 @@ BOOL func_ov015_02209500(Ov015Fish *self) {
     self->unk_94 = FLD(s16, func_0206fef8(self->unk_c0.unk_04), 0x16) << 4;
     self->unk_98 = FLD(s16, func_0206fef8(self->unk_c0.unk_04), 0x14) << 4;
     m = (Ov015V *)func_0203dd9c(0x2c);
-    if (m != NULL) m = (Ov015V *)func_ov015_0220a0c8((u8 *)m);
+    if (m != NULL) m = (Ov015V *)func_ov015_0220a0c8((Ov015FishState2c *)m);
     self->unk_f8 = m;
     self->unk_f4 = 2;
     m->v08(self);
@@ -296,21 +296,21 @@ void func_ov015_0220a058(Ov015Fish *self, void *out) {
     VEC_Add(&v, &self->unk_30, out);
 }
 
-void *func_ov015_0220a0c8(u8 *self) {
+void *func_ov015_0220a0c8(Ov015FishState2c *self) {
     SET_VT(self, data_ov015_02212e94);
-    FLD(u16, self, 0x4) = 0;
-    FLD(u16, self, 0x6) = 0;
-    FLD(u16, self, 0x8) = 0;
-    FLD(u16, self, 0xa) = 0;
-    FLD(s32, self, 0xc) = 0;
-    FLD(s32, self, 0x10) = 0;
-    FLD(u8, self, 0x14) = 0;
-    FLD(u16, self, 0x16) = 0;
-    FLD(s32, self, 0x18) = 0;
-    FLD(u16, self, 0x1c) = 0;
-    FLD(s32, self, 0x20) = 0;
-    FLD(s32, self, 0x24) = 0;
-    FLD(s32, self, 0x28) = 0;
+    self->unk_04 = 0;
+    self->unk_06 = 0;
+    self->unk_08 = 0;
+    self->unk_0a = 0;
+    self->unk_0c = 0;
+    self->unk_10 = 0;
+    self->unk_14 = 0;
+    self->unk_16 = 0;
+    self->unk_18 = 0;
+    self->unk_1c = 0;
+    self->unk_20 = 0;
+    self->unk_24 = 0;
+    self->unk_28 = 0;
     return self;
 }
 
@@ -329,18 +329,18 @@ void *func_ov015_0220a148(void *self) {
     return self;
 }
 
-BOOL func_ov015_0220a188(u8 *self, Ov015Fish *p) {
-    FLD(Ov015Fish *, self, 0x20) = p;
-    FLD(u16, self, 0x6) = 0;
-    FLD(u16, self, 0x8) = 2;
-    FLD(u16, self, 0xa) = 0;
-    FLD(s32, self, 0xc) = p->unk_c0.unk_1c;
+BOOL func_ov015_0220a188(Ov015FishState2c *self, Ov015Fish *p) {
+    self->unk_20 = p;
+    self->unk_06 = 0;
+    self->unk_08 = 2;
+    self->unk_0a = 0;
+    self->unk_0c = p->unk_c0.unk_1c;
     p->unk_a8 = 0;
     p->unk_bc = 1;
     func_ov000_02190cb0(&p->unk_244, data_ov015_02212e0d, 0x19a, 0);
     p->unk_104 = 0x800;
     func_ov000_021915a0(&p->unk_244);
-    FLD(u16, self, 0x4) = 0;
+    self->unk_04 = 0;
     return TRUE;
 }
 

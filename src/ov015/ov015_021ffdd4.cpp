@@ -5,8 +5,8 @@ extern "C" {
 BOOL func_ov015_0220a028(Ov015Fish *self, void *a);
 void func_ov015_021fd00c(Ov015CamPair *self, s32 mode, const Ov015VecC *v);
 BOOL func_ov015_02209790(Ov015Fish *self, s32 a);
-void func_ov015_0221234c(u8 *self);
-void func_ov015_022123c4(u8 *self);
+void func_ov015_0221234c(Ov015Obj292c *self);
+void func_ov015_022123c4(Ov015Obj292c *self);
 Ov015Fish *func_ov015_021fffc4(Ov015Obj30 *self);
 BOOL func_ov015_02209ff0(Ov015Fish *self, void *a);
 Ov015V *func_02065f88(s32 id, void *pos);
@@ -16,7 +16,7 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
     Ov015Fish *found;
     u8 *n;
     if (self->unk_0c != 0) return r;
-    func_ov015_021fd00c(self->unk_20, 7, (const Ov015VecC *)(self->unk_10 + 0xc));
+    func_ov015_021fd00c(self->unk_20, 7, (const Ov015VecC *)&self->unk_10->unk_0c);
     VCALL(self->unk_14)->v18();
     self->unk_18 = func_ov015_021fffc4(self);
     if (VCALL(self->unk_14)->v20() || self->unk_18 != NULL) {
@@ -44,7 +44,7 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
         Ov015Fish *obj = FLD(Ov015Fish *, n, 0x4);
         Ov015Vec v;
         n = FLD(u8 *, n, 0xc);
-        v = FLD(Ov015Vec, self->unk_10, 0xc);
+        v = self->unk_10->unk_0c;
         if (func_ov015_0220a028(obj, &v)) {
             found = obj;
             break;
@@ -86,7 +86,7 @@ Ov015Fish *func_ov015_021fffc4(Ov015Obj30 *self) {
     while (n != NULL) {
         Ov015Fish *obj = FLD(Ov015Fish *, n, 0x4);
         n = FLD(u8 *, n, 0xc);
-        if (func_ov015_02209ff0(obj, self->unk_14 + 0x234)) {
+        if (func_ov015_02209ff0(obj, &self->unk_14->unk_234)) {
             Ov015Vec v;
             Ov015Eff *e;
             v = FLD(Ov015Vec, self->unk_14, 0x240);

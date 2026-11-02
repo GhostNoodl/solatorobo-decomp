@@ -75,7 +75,7 @@ extern const Ov015Vec1F878 data_ov015_02212fdc;
 extern char data_ov015_0221311c[];
 u8 *func_ov002_021e91c8(s32 a, s32 b, s32 c, s32 d, s32 e);
 void func_ov002_021e50d8(void *a, s32 b, s32 c);
-void func_ov015_0220f878(void *self) {
+void func_ov015_0220f878(Ov015Result *self) {
     u8 *o;
     u16 id;
     void *name;
@@ -159,7 +159,7 @@ struct Ov015ItemBits {
     u16 kind : 3;
     u16 hi : 8;
 };
-void func_ov015_0220fb78(u8 *self) {
+void func_ov015_0220fb78(Ov015Result *self) {
     u8 *o;
     u8 *t;
     u16 id;
@@ -200,113 +200,113 @@ void func_ov015_0220fb78(u8 *self) {
     FLD(u8 *, t, 0x48) = o;
 }
 
-void *func_ov015_0220fcec(u8 *self) {
+void *func_ov015_0220fcec(Ov015Msg *self) {
     SET_VT(self, data_ov015_022131c4);
-    FLD(u8, self, 0x4) = 0;
-    FLD(u16, self, 0xc) = 0;
+    self->unk_04 = 0;
+    self->unk_0c = 0;
     FLD(s32, self, 0x10) = 0;
     FLD(s32, self, 0x14) = 0;
     FLD(s32, self, 0x18) = 0;
-    FLD(s32, self, 0x1c) = 0;
-    FLD(s32, self, 0x20) = -0x100000;
-    FLD(s32, self, 0x24) = 0;
+    self->unk_1c = 0;
+    self->unk_20 = -0x100000;
+    self->unk_24 = 0;
     FLD(s32, self, 0x28) = 0;
     FLD(s32, self, 0x2c) = 0;
-    MIi_CpuClear32(0, self + 0x30, 0x80);
-    FLD(s32, self, 0xb0) = 0;
-    FLD(s32, self, 0xb4) = 0;
-    MIi_CpuClearFast(0, self + 0xb8, 0x80);
-    FLD(s32, self, 0x138) = 0;
-    FLD(s32, self, 0x13c) = 0;
-    FLD(s32, self, 0x140) = 0;
-    FLD(s32, self, 0x8) = 0;
+    MIi_CpuClear32(0, self->unk_30, 0x80);
+    self->unk_b0 = 0;
+    self->unk_b4 = 0;
+    MIi_CpuClearFast(0, self->unk_b8, 0x80);
+    self->unk_138 = 0;
+    self->unk_13c = 0;
+    self->unk_140 = 0;
+    self->unk_08 = 0;
     return self;
 }
 
-void *func_ov015_0220fd74(u8 *self) {
+void *func_ov015_0220fd74(Ov015Msg *self) {
     u32 saved;
     SET_VT(self, data_ov015_022131c4);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x10));
+    DELETE_V(self->unk_10);
     HEAP_POP(saved);
     {
     u32 saved2;
     HEAP_PUSH(saved2);
     {
-    u8 *o = FLD(u8 *, self, 0x14);
+    u8 *o = self->unk_14;
     if (o != NULL) {
         if (o != NULL) {
             func_02041558(o);
             func_02041278(o + 0x88);
             func_0203de1c(o);
         }
-        FLD(void *, self, 0x14) = NULL;
+        self->unk_14 = NULL;
     }
     }
     HEAP_POP(saved2);
     }
 
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x18));
+    DELETE_V(self->unk_18);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x28));
+    DELETE_V(self->unk_28);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x2c));
+    DELETE_V(self->unk_2c);
     HEAP_POP(saved);
 
     return self;
 }
 
-void *func_ov015_0220fec0(u8 *self) {
+void *func_ov015_0220fec0(Ov015Msg *self) {
     u32 saved;
     SET_VT(self, data_ov015_022131c4);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x10));
+    DELETE_V(self->unk_10);
     HEAP_POP(saved);
     {
     u32 saved2;
     HEAP_PUSH(saved2);
     {
-    u8 *o = FLD(u8 *, self, 0x14);
+    u8 *o = self->unk_14;
     if (o != NULL) {
         if (o != NULL) {
             func_02041558(o);
             func_02041278(o + 0x88);
             func_0203de1c(o);
         }
-        FLD(void *, self, 0x14) = NULL;
+        self->unk_14 = NULL;
     }
     }
     HEAP_POP(saved2);
     }
 
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x18));
+    DELETE_V(self->unk_18);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x28));
+    DELETE_V(self->unk_28);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_V(FLD(void *, self, 0x2c));
+    DELETE_V(self->unk_2c);
     HEAP_POP(saved);
 
     func_0203de1c(self);
     return self;
 }
 
-static inline void Ov015_SetSeq(u8 *self, s32 n) {
-    FLD(s32, self, 0x138) = n;
-    FLD(s32, self, 0x13c) = 0;
-    FLD(s32, self, 0x140) = 0;
+static inline void Ov015_SetSeq(Ov015Msg *self, s32 n) {
+    self->unk_138 = n;
+    self->unk_13c = 0;
+    self->unk_140 = 0;
 }
-BOOL func_ov015_02210014(u8 *self) {
+BOOL func_ov015_02210014(Ov015Msg *self) {
     BOOL r = TRUE;
-    switch (FLD(s32, self, 0x138)) {
+    switch (self->unk_138) {
     case 0:
         VCALL(self)->v14();
-        Ov015_SetSeq(self, FLD(s32, self, 0x138) + 1);
+        Ov015_SetSeq(self, self->unk_138 + 1);
     case 1:
         if (VCALL(self)->v18()) {
             Ov015_SetSeq(self, 10);
@@ -319,14 +319,14 @@ BOOL func_ov015_02210014(u8 *self) {
         break;
     case 20:
         if (VCALL(self)->v20()) {
-            FLD(s32, self, 0x8) = 0;
+            self->unk_08 = 0;
             Ov015_SetSeq(self, 30);
         }
         break;
     case 30:
         if (!VCALL(self)->v24()) {
             VCALL(self)->v28();
-            FLD(s32, self, 0x8) = 0;
+            self->unk_08 = 0;
             Ov015_SetSeq(self, 40);
         }
         break;
@@ -368,32 +368,32 @@ static inline void Ov015_ModelPlayPart(u8 *m, s32 idx) {
     }
     func_02042628(m, anim, part, 0);
 }
-void func_ov015_0221015c(u8 *self) {
+void func_ov015_0221015c(Ov015Msg *self) {
     u8 *p;
     if (!FLD(Ov015D48Bits, data_02097d48, 0xa30).b4) {
         return;
     }
-    if (FLD(void *, self, 0x28) != NULL) {
-        VCALL(FLD(void *, self, 0x28))->v20();
+    if (self->unk_28 != NULL) {
+        VCALL(self->unk_28)->v20();
     }
-    if (FLD(void *, self, 0x2c) != NULL) {
-        VCALL(FLD(void *, self, 0x2c))->v20();
+    if (self->unk_2c != NULL) {
+        VCALL(self->unk_2c)->v20();
     }
-    if (FLD(u8 *, self, 0x14) != NULL) {
-        u8 *m = FLD(u8 *, self, 0x14);
-        FLD(s32, m, 0xfc) = FLD(s32, self, 0x1c);
-        FLD(s32, m, 0x100) = FLD(s32, self, 0x20);
-        Ov015_ModelPlayPart(FLD(u8 *, self, 0x14), 0x1d);
+    if (self->unk_14 != NULL) {
+        u8 *m = self->unk_14;
+        FLD(s32, m, 0xfc) = self->unk_1c;
+        FLD(s32, m, 0x100) = self->unk_20;
+        Ov015_ModelPlayPart(self->unk_14, 0x1d);
     }
-    p = FLD(u8 *, self, 0x18);
+    p = self->unk_18;
     if (p == NULL) {
         return;
     }
-    VCALL(p)->v20(((FLD(s32, self, 0x1c) >> 12) + 0x80) - FLD(s32, p, 0x44) / 2, ((FLD(s32, self, 0x20) >> 12) + 0x60) - FLD(s32, p, 0x48) / 2);
-    VCALL(FLD(void *, self, 0x18))->v90();
+    VCALL(p)->v20(((self->unk_1c >> 12) + 0x80) - FLD(s32, p, 0x44) / 2, ((self->unk_20 >> 12) + 0x60) - FLD(s32, p, 0x48) / 2);
+    VCALL(self->unk_18)->v90();
 }
 
-void func_ov015_02210298(u8 *self) {
+void func_ov015_02210298(Ov015Msg *self) {
     void *p = func_0203dd9c(0x58);
     if (p != NULL) {
         SET_VT(p, data_0208b318);
@@ -401,12 +401,12 @@ void func_ov015_02210298(u8 *self) {
         SET_VT(p, data_0208ba30);
         func_0204bfcc(p);
     }
-    FLD(void *, self, 0x10) = p;
+    self->unk_10 = p;
     func_0204bfe4(p, data_ov015_02213163, data_ov015_02213170);
 }
 
-void func_ov015_022102fc(u8 *self) {
-    VCALL(FLD(void *, self, 0x10))->v2c();
+void func_ov015_022102fc(Ov015Msg *self) {
+    VCALL(self->unk_10)->v2c();
 }
 
 
@@ -430,10 +430,10 @@ void func_0204c7d0(void *p);
 void *func_0204c0e8(void *a, s32 b);
 s32 func_0204c4fc(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
-void func_ov015_02208544(u8 *self);
+void func_ov015_02208544(Ov015UiText *self);
 s32 func_0204c2f4(void *p, s32 n, void *src);
 void func_ov000_0215bb14(void *a, void *b);
-void func_ov015_0220866c(u8 *self, void *msg);
+void func_ov015_0220866c(Ov015UiText *self, void *msg);
 
 struct Ov015Bits10314 {
     u32 b0 : 8;
@@ -441,22 +441,22 @@ struct Ov015Bits10314 {
     u32 rest : 19;
 };
 
-static inline void Ov015T_SetXYZ16(u8 *o, s16 x, s16 y, s16 z) {
-    FLD(s16, o, 0x64) = x;
-    FLD(s16, o, 0x66) = y;
-    FLD(s16, o, 0x68) = z;
+static inline void Ov015T_SetXYZ16(Ov015Ui *o, s16 x, s16 y, s16 z) {
+    o->unk_64 = x;
+    o->unk_66 = y;
+    o->unk_68 = z;
 }
 
-static inline void Ov015T_SetXYZ32(u8 *o, s32 x, s32 y, s32 z) {
-    FLD(s32, o, 0x58) = x;
-    FLD(s32, o, 0x5c) = y;
-    FLD(s32, o, 0x60) = z;
+static inline void Ov015T_SetXYZ32(Ov015Ui *o, s32 x, s32 y, s32 z) {
+    o->unk_58 = x;
+    o->unk_5c = y;
+    o->unk_60 = z;
 }
 
-BOOL func_ov015_02210314(u8 *self) {
+BOOL func_ov015_02210314(Ov015Msg *self) {
     u8 *p;
-    func_0204c030(FLD(void *, self, 0x10));
-    FLD(s32, self, 0xb0) = func_0204c08c(FLD(void *, self, 0x10), FLD(u16, self, 0xc), self + 0x30, 0x20);
+    func_0204c030(self->unk_10);
+    self->unk_b0 = func_0204c08c(self->unk_10, self->unk_0c, self->unk_30, 0x20);
     p = (u8 *)func_0203dd9c(0x160);
     if (p != NULL) {
         void *file = data_0208cc94;
@@ -465,36 +465,36 @@ BOOL func_ov015_02210314(u8 *self) {
         func_02041440(p, name, 0);
         STD_CopyString(p + 0x2c, file);
     }
-    FLD(u8 *, self, 0x14) = p;
-    func_020417e0(FLD(void *, self, 0x14), func_02035de0(data_0208cc94, data_0208cc88));
-    FLD(u32, FLD(u8 *, self, 0x14), 0x6c) |= 2;
-    func_02041d9c(FLD(void *, self, 0x14), 0, 0x1d);
-    FLD(s32, FLD(u8 *, self, 0x14), 0x150) = -0xccd;
+    self->unk_14 = p;
+    func_020417e0(self->unk_14, func_02035de0(data_0208cc94, data_0208cc88));
+    FLD(u32, self->unk_14, 0x6c) |= 2;
+    func_02041d9c(self->unk_14, 0, 0x1d);
+    FLD(s32, self->unk_14, 0x150) = -0xccd;
     p = (u8 *)func_0203dd9c(0xb8);
     if (p != NULL) {
         SET_VT(p, data_0208ba70);
         func_0204c7d0(p);
     }
-    FLD(u8 *, self, 0x18) = p;
+    self->unk_18 = p;
     FLD(s32, p, 0x28) = 4;
     {
         void *t = func_0204c0e8(data_02149ef8, 0x118);
-        p = FLD(u8 *, self, 0x18);
+        p = self->unk_18;
         FLD(void *, p, 0x24) = t;
         FLD(s32, p, 0x4c) = func_0204c4fc(FLD(s32, p, 0x28), FLD(s32, p, 0x38), FLD(void *, p, 0x24), p + 0x44, p + 0x48,
                                           FLD(s8, p, 0x37) != 0);
         FLD(s32, data_02097ce0, 0x4) = FLD(s32, p, 0x28);
     }
-    FLD(s16, FLD(u8 *, self, 0x18), 0x74) = 0x7fff;
-    FLD(s16, FLD(u8 *, self, 0x18), 0x76) = 0x67f;
-    FLD(s32, FLD(u8 *, self, 0x18), 0x78) = 0x7000;
-    FLD(u32, FLD(u8 *, self, 0x18), 0x4) |= 0x40;
-    FLD(u32, FLD(u8 *, self, 0x18), 0x4) |= 0x1000000;
-    VCALL(FLD(u8 *, self, 0x18))->v14();
-    FLD(Ov015Bits10314, FLD(u8 *, self, 0x18), 0x4).f8 = 0x1e;
-    FLD(u32, FLD(u8 *, self, 0x18), 0x4) |= 0x40000000;
-    FLD(u32, FLD(u8 *, self, 0x18), 0x4) |= 4;
-    func_0204ca70(FLD(u8 *, self, 0x18));
+    FLD(s16, self->unk_18, 0x74) = 0x7fff;
+    FLD(s16, self->unk_18, 0x76) = 0x67f;
+    FLD(s32, self->unk_18, 0x78) = 0x7000;
+    FLD(u32, self->unk_18, 0x4) |= 0x40;
+    FLD(u32, self->unk_18, 0x4) |= 0x1000000;
+    VCALL(self->unk_18)->v14();
+    FLD(Ov015Bits10314, self->unk_18, 0x4).f8 = 0x1e;
+    FLD(u32, self->unk_18, 0x4) |= 0x40000000;
+    FLD(u32, self->unk_18, 0x4) |= 4;
+    func_0204ca70(self->unk_18);
     p = (u8 *)func_0203dd9c(0x8c);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
@@ -504,34 +504,34 @@ BOOL func_ov015_02210314(u8 *self) {
     }
     FLD(u8 *, self, 0x28) = p;
     FLD(s32, p, 0x24) = 0xf8;
-    Ov015T_SetXYZ32(FLD(u8 *, self, 0x28), -0x100, 0, -0xccd);
-    FLD(s32, FLD(u8 *, self, 0x28), 0x2c) = 1;
-    FLD(u32, FLD(u8 *, self, 0x28), 0xc) |= 0x80000;
-    FLD(s32, FLD(u8 *, self, 0x28), 0x20) = 3;
-    Ov015T_SetXYZ16(FLD(u8 *, self, 0x28), 4, 0x86, -0xccd);
-    VCALL(FLD(u8 *, self, 0x28))->v08();
+    Ov015T_SetXYZ32(self->unk_28, -0x100, 0, -0xccd);
+    self->unk_28->unk_2c = 1;
+    self->unk_28->unk_0c |= 0x80000;
+    self->unk_28->unk_20 = 3;
+    Ov015T_SetXYZ16(self->unk_28, 4, 0x86, -0xccd);
+    VCALL(self->unk_28)->v08();
     p = (u8 *)func_0203dd9c(0xb4);
     if (p != NULL) {
         SET_VT(p, data_ov000_021cac60);
         VCALL(p)->v28();
         SET_VT(p, data_ov015_02212d3c);
-        func_ov015_02208544(p);
+        func_ov015_02208544((Ov015UiText *)p);
     }
-    FLD(u8 *, self, 0x2c) = p;
-    Ov015T_SetXYZ16(p, 0, 0x7b, -0x99a);
-    Ov015T_SetXYZ32(FLD(u8 *, self, 0x2c), -0x100, 0, -0x99a);
-    FLD(s32, FLD(u8 *, self, 0x2c), 0x2c) = 1;
-    FLD(u32, FLD(u8 *, self, 0x2c), 0xc) &= ~0x10000;
-    VCALL(FLD(u8 *, self, 0x2c))->v08();
-    if (FLD(u8 *, self, 0x28) != NULL && FLD(void *, self, 0x30) != NULL) {
+    self->unk_2c = (Ov015UiText *)p;
+    Ov015T_SetXYZ16((Ov015Ui *)p, 0, 0x7b, -0x99a);
+    Ov015T_SetXYZ32(self->unk_2c, -0x100, 0, -0x99a);
+    self->unk_2c->unk_2c = 1;
+    self->unk_2c->unk_0c &= ~0x10000;
+    VCALL(self->unk_2c)->v08();
+    if (self->unk_28 != NULL && self->unk_30[0] != NULL) {
         u8 *o;
-        func_0204c2f4(self + 0xb8, 0x80, FLD(void *, self, 0x30));
-        func_ov000_0215bb14(FLD(u8 *, self, 0x28), self + 0xb8);
-        VCALL(FLD(u8 *, self, 0x28))->v70();
-        FLD(u32, FLD(u8 *, FLD(u8 *, self, 0x28), 0x84), 0x4) |= 0x4000000;
-        o = FLD(u8 *, self, 0x28);
+        func_0204c2f4(self->unk_b8, 0x80, self->unk_30[0]);
+        func_ov000_0215bb14(self->unk_28, self->unk_b8);
+        VCALL(self->unk_28)->v70();
+        FLD(u32, self->unk_28->unk_84, 0x4) |= 0x4000000;
+        o = ((u8 *)self->unk_28);
         VCALL(FLD(u8 *, o, 0x84))->v1c(FLD(s16, o, 0x64) + FLD(s32, o, 0x24) - 0x14, FLD(s16, o, 0x66) + FLD(s32, o, 0x28) - 0xc, -0xcbd);
-        func_ov015_0220866c(FLD(u8 *, self, 0x2c), FLD(void *, self, 0x30));
+        func_ov015_0220866c(self->unk_2c, self->unk_30[0]);
     }
     return TRUE;
 }

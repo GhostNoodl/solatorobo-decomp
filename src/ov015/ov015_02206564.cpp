@@ -22,10 +22,10 @@ void func_ov000_02180660(s32 a, s32 b);
 extern void *data_ov000_021ccd40;
 extern u8 data_ov015_02213360[];
 
-void func_ov015_02206564(u8 *self) {
+void func_ov015_02206564(Ov015Scene2b08 *self) {
     u8 *pd = data_02097dc8;
     u16 pad = FLD(u16, pd, 0x12);
-    BOOL on = FLD(Ov015ObjFlags, FLD(u8 *, self, 0x4c), 0xc).b1 ? TRUE : FALSE;
+    BOOL on = FLD(Ov015ObjFlags, self->unk_4c, 0xc).b1 ? TRUE : FALSE;
     if (!on) {
 
         return;
@@ -34,25 +34,25 @@ void func_ov015_02206564(u8 *self) {
         return;
     }
     func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
-    FLD(s32, self, 0x54) = 0;
-    FLD(u32, FLD(u8 *, self, 0x3c), 0xc) |= 2;
-    FLD(u32, FLD(u8 *, self, 0x44), 0xc) |= 2;
-    FLD(u32, FLD(u8 *, self, 0x40), 0xc) |= 2;
-    FLD(u32, FLD(u8 *, self, 0x48), 0xc) |= 2;
-    FLD(u32, FLD(u8 *, self, 0x50), 0xc) |= 2;
-    func_ov000_0218084c(data_ov000_021ccd44, 0x1f, FLD(s32, self, 0xc));
+    self->unk_54 = 0;
+    self->unk_3c->unk_0c |= 2;
+    self->unk_44->unk_0c |= 2;
+    self->unk_40->unk_0c |= 2;
+    self->unk_48->unk_0c |= 2;
+    self->unk_50->unk_0c |= 2;
+    func_ov000_0218084c(data_ov000_021ccd44, 0x1f, self->unk_0c);
     FLD(u32, self, 0x4) |= 6;
 }
 
-static inline BOOL Ov015_IsFinished(u8 *o) {
+static inline BOOL Ov015_IsFinished(Ov015Ui *o) {
     BOOL r = FALSE;
     if (FLD(Ov015ObjFlags, o, 0xc).b1 ? TRUE : FALSE) {
         if (VCALL(o)->v0c() == 0) r = TRUE;
     }
     return r;
 }
-void func_ov015_02206648(u8 *self) {
-    switch (FLD(s32, self, 0x8)) {
+void func_ov015_02206648(Ov015Scene2b08 *self) {
+    switch (self->unk_08) {
     case 8:
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
         break;
@@ -60,20 +60,20 @@ void func_ov015_02206648(u8 *self) {
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
         break;
     }
-    if (!Ov015_IsFinished(FLD(u8 *, self, 0x4c)) || !Ov015_IsFinished(FLD(u8 *, self, 0x50))) {
+    if (!Ov015_IsFinished(self->unk_4c) || !Ov015_IsFinished(self->unk_50)) {
         data_ov000_021ccd34 = 1;
-        FLD(u32, FLD(u8 *, self, 0x3c), 0xc) |= 4;
+        self->unk_3c->unk_0c |= 4;
     } else {
         data_ov000_021ccd34 = 0;
-        FLD(u32, FLD(u8 *, self, 0x3c), 0xc) &= ~4;
+        self->unk_3c->unk_0c &= ~4;
     }
 
-    VCALL(FLD(void *, self, 0x3c))->v1c();
-    VCALL(FLD(void *, self, 0x40))->v1c();
-    VCALL(FLD(void *, self, 0x44))->v1c();
-    VCALL(FLD(void *, self, 0x48))->v1c();
-    VCALL(FLD(void *, self, 0x4c))->v1c();
-    VCALL(FLD(void *, self, 0x50))->v1c();
+    VCALL(self->unk_3c)->v1c();
+    VCALL(self->unk_40)->v1c();
+    VCALL(self->unk_44)->v1c();
+    VCALL(self->unk_48)->v1c();
+    VCALL(self->unk_4c)->v1c();
+    VCALL(self->unk_50)->v1c();
 }
 
 static inline bool Ov015Child_Is2(Ov015Child *c) {
@@ -85,66 +85,66 @@ bool func_ov015_022067b4(Ov015Child *self) {
     return r;
 }
 
-void func_ov015_022067d4(u8 *self) {
-    s32 a = FLD(s32, self, 0x58);
+void func_ov015_022067d4(Ov015Scene2b08 *self) {
+    s32 a = self->unk_58;
     s32 r = 0;
     if (a < 0x1000000) {
         r = a + 0x8000;
     }
-    FLD(s32, self, 0x58) = r;
-    if (FLD(s32, self, 0x5c) <= 0) {
-        FLD(s32, self, 0x5c) = 0x1000000;
+    self->unk_58 = r;
+    if (self->unk_5c <= 0) {
+        self->unk_5c = 0x1000000;
     } else {
-        FLD(s32, self, 0x5c) -= 0x8000;
+        self->unk_5c -= 0x8000;
     }
 }
 
-void func_ov015_02206800(u8 *self) {
+void func_ov015_02206800(Ov015Scene2b08 *self) {
     if (VCALL(self)->v28() == 0) {
         return;
     }
     func_ov000_0217357c(self);
-    VCALL(FLD(void *, self, 0x3c))->v20();
-    VCALL(FLD(void *, self, 0x40))->v20();
-    VCALL(FLD(void *, self, 0x44))->v20();
-    VCALL(FLD(void *, self, 0x48))->v20();
-    VCALL(FLD(void *, self, 0x4c))->v20();
-    VCALL(FLD(void *, self, 0x50))->v20();
+    VCALL(self->unk_3c)->v20();
+    VCALL(self->unk_40)->v20();
+    VCALL(self->unk_44)->v20();
+    VCALL(self->unk_48)->v20();
+    VCALL(self->unk_4c)->v20();
+    VCALL(self->unk_50)->v20();
 }
 
-static inline u8 *Ov015_ListNth3(u8 *o) {
-    u8 *p = FLD(u8 *, o, 0x98);
+static inline Ov015MenuItem *Ov015_ListNth3(Ov015Menu *o) {
+    Ov015MenuItem *p = o->unk_98;
     s32 n;
     if (p == NULL) return NULL;
-    n = FLD(s8, o, 0xb1);
+    n = o->unk_b1;
     while (n-- != 0) {
-        p = FLD(u8 *, p, 0x2c);
+        p = p->unk_2c;
     }
     return p;
 }
-static inline void Ov015_ShopMsg(u8 *self, s32 id) {
-    func_ov000_0215c1bc(FLD(void *, self, 0x50), 0x8000, func_0204c0e8(data_02149ef8, id));
-    FLD(u32, FLD(u8 *, self, 0x50), 0xc) &= ~2;
-    VCALL(FLD(void *, self, 0x50))->v70();
+static inline void Ov015_ShopMsg(Ov015Scene2b08 *self, s32 id) {
+    func_ov000_0215c1bc(self->unk_50, 0x8000, func_0204c0e8(data_02149ef8, id));
+    self->unk_50->unk_0c &= ~2;
+    VCALL(self->unk_50)->v70();
 }
 static inline void Ov015_SetMoney24(u16 v) {
     if (v > 9999) v = 9999;
     FLD(u16, data_0214a424, 0x24) = v;
 }
-BOOL func_ov015_02206888(u8 *self) {
-    u8 *item = Ov015_ListNth3(FLD(u8 *, self, 0x3c));
-    u16 id = FLD(s32, item, 0x10);
+BOOL func_ov015_02206888(Ov015Scene2b08 *self) {
+    Ov015MenuItem *item = Ov015_ListNth3(self->unk_3c);
+    u16 id = item->unk_10;
     u8 *def = func_0206f000(id);
     BOOL consume = TRUE;
     BOOL r = TRUE;
-    if (FLD(u32, FLD(u8 *, self, 0x40), 0x8c) < FLD(u32, item, 0xc)) {
-        if (FLD(void *, self, 0x50) != NULL) Ov015_ShopMsg(self, 0x9c);
+    if (self->unk_40->unk_8c < item->unk_0c) {
+        if (self->unk_50 != NULL) Ov015_ShopMsg(self, 0x9c);
         return FALSE;
     }
     switch (def[0]) {
     case 0:
         if (FLD(u16, data_0214a424, 0x28) >= 100) {
-            if (FLD(void *, self, 0x50) != NULL) Ov015_ShopMsg(self, 0x9e);
+            if (self->unk_50 != NULL) Ov015_ShopMsg(self, 0x9e);
             r = FALSE;
         } else {
             func_0206f21c(FLD(u16, def, 0x2), consume);
@@ -159,14 +159,14 @@ BOOL func_ov015_02206888(u8 *self) {
     }
     }
     if (r) {
-        func_ov000_0215d980(FLD(void *, self, 0x40), FLD(u32, FLD(u8 *, self, 0x40), 0x8c) - FLD(u32, item, 0xc), 0);
+        func_ov000_0215d980(self->unk_40, self->unk_40->unk_8c - item->unk_0c, 0);
         if (consume) {
-            VCALL(FLD(void *, self, 0x3c))->v70(item);
+            VCALL(self->unk_3c)->v70(item);
             func_0206f5e4(id, 1);
         }
         {
             u8 *save = data_0214a424;
-            u32 m = FLD(u32, FLD(u8 *, self, 0x40), 0x8c);
+            u32 m = self->unk_40->unk_8c;
             if (m > 99999) m = 99999;
             FLD(u32, save, 0x618) = m;
 

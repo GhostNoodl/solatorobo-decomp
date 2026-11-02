@@ -15,9 +15,9 @@ void func_ov000_02180754(void);
 void func_ov015_021fa6cc(void *p);
 extern void *data_ov000_021ccd40;
 extern void *data_ov000_021ccd38;
-void func_ov015_02205c7c(void *p);
-void func_ov015_02204110(void *p);
-void func_ov015_02203020(void *p);
+void func_ov015_02205c7c(Ov015Scene2b08 *self);
+void func_ov015_02204110(Ov015Scene2c08 *self);
+void func_ov015_02203020(Ov015Scene2a08 *self);
 void func_02041558(void *p);
 void func_02041278(void *p);
 extern u8 data_ov015_022129c0[];
@@ -36,104 +36,104 @@ void func_01ffc9fc(Ov015V3 *in, Ov015V3 *out, u16 ang);
 void VEC_Add(const void *a, const void *b, void *out);
 
 void *func_ov015_02206f04(void) {
-    u8 *p = (u8 *)func_0203dd9c(0x58);
+    Ov015Scene2a88 *p = (Ov015Scene2a88 *)func_0203dd9c(0x58);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212a88);
-        FLD(s32, p, 0x3c) = 0;
-        FLD(u8, p, 0x40) = 0;
-        FLD(s32, p, 0x44) = 0;
-        FLD(s32, p, 0x48) = 0;
-        FLD(s32, p, 0x4c) = 0;
-        FLD(s32, p, 0x50) = 0;
-        FLD(s32, p, 0x54) = 0;
+        p->unk_3c = 0;
+        p->unk_40 = 0;
+        p->unk_44 = 0;
+        p->unk_48 = 0;
+        p->unk_4c = 0;
+        p->unk_50 = 0;
+        p->unk_54 = 0;
     }
     VCALL(p)->v08(0x1e, 0xc8);
     return p;
 }
 
 void *func_ov015_02206f7c(void) {
-    u8 *p = (u8 *)func_0203dd9c(0xb0);
+    Ov015Scene2a08 *p = (Ov015Scene2a08 *)func_0203dd9c(0xb0);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212a08);
-        func_02043548(p + 0x44);
-        func_020434e0(p + 0x68);
-        FLD(s32, p, 0x3c) = 0;
-        FLD(s32, p, 0x40) = 0;
-        FLD(s32, p, 0x80) = 0;
-        FLD(s32, p, 0x84) = 0;
-        FLD(s32, p, 0x88) = 0;
-        FLD(s32, p, 0x8c) = 0;
-        FLD(s32, p, 0x90) = 0;
-        FLD(s32, p, 0x94) = 0;
-        FLD(s32, p, 0x98) = 0;
-        FLD(s32, p, 0x9c) = 0;
-        FLD(s32, p, 0xa0) = 0;
-        FLD(u8, p, 0xa4) = 0;
-        FLD(s32, p, 0xa8) = 0;
-        FLD(s32, p, 0xac) = 0;
+        func_02043548(&p->unk_44.eye);
+        func_020434e0(&p->unk_44.fovSin);
+        p->unk_3c = 0;
+        p->unk_40 = 0;
+        p->unk_80 = 0;
+        p->unk_84 = 0;
+        p->unk_88 = 0;
+        p->unk_8c = 0;
+        p->unk_90 = 0;
+        p->unk_94 = 0;
+        p->unk_98 = 0;
+        p->unk_9c = 0;
+        p->unk_a0 = 0;
+        p->unk_a4 = 0;
+        p->unk_a8 = 0;
+        p->unk_ac = 0;
     }
     VCALL(p)->v08(0x1f, 0xc8);
     return p;
 }
 
 void *func_ov015_02207020(void) {
-    u8 *p = (u8 *)func_0203dd9c(0x6c);
+    Ov015Scene2c08 *p = (Ov015Scene2c08 *)func_0203dd9c(0x6c);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212c08);
-        FLD(s32, p, 0x3c) = 0;
-        FLD(s32, p, 0x40) = 0;
-        FLD(s32, p, 0x44) = 0;
-        FLD(s32, p, 0x48) = 0;
-        FLD(s32, p, 0x4c) = 0;
-        FLD(s32, p, 0x50) = 0;
-        FLD(s32, p, 0x54) = 0;
-        FLD(s32, p, 0x58) = 1;
-        FLD(s32, p, 0x5c) = 0;
-        FLD(s32, p, 0x60) = 0;
-        FLD(s32, p, 0x64) = 0;
-        FLD(u16, p, 0x68) = 0xa000;
-        FLD(u8, p, 0x6a) = 0;
+        p->unk_3c = 0;
+        p->unk_40 = 0;
+        p->unk_44 = 0;
+        p->unk_48 = 0;
+        p->unk_4c = 0;
+        p->unk_50 = 0;
+        p->unk_54 = 0;
+        p->unk_58 = 1;
+        p->unk_5c = 0;
+        p->unk_60 = 0;
+        p->unk_64 = 0;
+        p->unk_68 = 0xa000;
+        p->unk_6a = 0;
     }
     VCALL(p)->v08(0x20, 0xc8);
     return p;
 }
 
 void *func_ov015_022070b8(void) {
-    u8 *p = (u8 *)func_0203dd9c(0x58);
+    Ov015Scene2b88 *p = (Ov015Scene2b88 *)func_0203dd9c(0x58);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212b88);
-        FLD(s32, p, 0x3c) = 0;
-        FLD(s32, p, 0x40) = 0;
-        FLD(s32, p, 0x44) = 0;
-        FLD(s32, p, 0x48) = 0;
-        FLD(s32, p, 0x4c) = 0;
-        FLD(s32, p, 0x50) = 1;
-        FLD(u16, p, 0x54) = 0xffff;
+        p->unk_3c = 0;
+        p->unk_40 = 0;
+        p->unk_44 = 0;
+        p->unk_48 = 0;
+        p->unk_4c = 0;
+        p->unk_50 = 1;
+        p->unk_54 = 0xffff;
     }
     VCALL(p)->v08(0x21, 0xc8);
     return p;
 }
 
 void *func_ov015_02207138(void) {
-    u8 *p = (u8 *)func_0203dd9c(0x164);
+    Ov015Scene2b08 *p = (Ov015Scene2b08 *)func_0203dd9c(0x164);
     if (p != NULL) {
         Ov015TaskBase_Ctor(p);
         SET_VT(p, data_ov015_02212b08);
-        FLD(s32, p, 0x3c) = 0;
-        FLD(s32, p, 0x40) = 0;
-        FLD(s32, p, 0x44) = 0;
-        FLD(s32, p, 0x48) = 0;
-        FLD(s32, p, 0x4c) = 0;
-        FLD(s32, p, 0x50) = 0;
-        FLD(s32, p, 0x54) = 3;
-        FLD(s32, p, 0x58) = 0;
-        FLD(s32, p, 0x5c) = 0;
-        FLD(s32, p, 0x60) = 0;
-        FLD(u8, p, 0x64) = 0;
+        p->unk_3c = 0;
+        p->unk_40 = 0;
+        p->unk_44 = 0;
+        p->unk_48 = 0;
+        p->unk_4c = 0;
+        p->unk_50 = 0;
+        p->unk_54 = 3;
+        p->unk_58 = 0;
+        p->unk_5c = 0;
+        p->unk_60 = 0;
+        p->unk_64[0] = 0;
     }
     VCALL(p)->v08(0x22, 0xc8);
     return p;
@@ -232,7 +232,7 @@ s32 func_ov015_02207380(void) {
     return 1;
 }
 
-void *func_ov015_02207388(void *self) {
+void *func_ov015_02207388(Ov015Scene2b08 *self) {
     SET_VT(self, data_ov015_02212b08);
     func_ov015_02205c7c(self);
     Ov015TaskBase_Dtor(self);
@@ -240,7 +240,7 @@ void *func_ov015_02207388(void *self) {
     return self;
 }
 
-void *func_ov015_022073cc(void *self) {
+void *func_ov015_022073cc(Ov015Scene2b08 *self) {
     SET_VT(self, data_ov015_02212b08);
     func_ov015_02205c7c(self);
     Ov015TaskBase_Dtor(self);
@@ -248,7 +248,7 @@ void *func_ov015_022073cc(void *self) {
     return self;
 }
 
-void *func_ov015_02207408(void *self) {
+void *func_ov015_02207408(Ov015Scene2c08 *self) {
     SET_VT(self, data_ov015_02212c08);
     func_ov015_02204110(self);
     Ov015TaskBase_Dtor(self);
@@ -256,7 +256,7 @@ void *func_ov015_02207408(void *self) {
     return self;
 }
 
-void *func_ov015_0220744c(void *self) {
+void *func_ov015_0220744c(Ov015Scene2c08 *self) {
     SET_VT(self, data_ov015_02212c08);
     func_ov015_02204110(self);
     Ov015TaskBase_Dtor(self);
@@ -264,7 +264,7 @@ void *func_ov015_0220744c(void *self) {
     return self;
 }
 
-void *func_ov015_02207488(void *self) {
+void *func_ov015_02207488(Ov015Scene2a08 *self) {
     SET_VT(self, data_ov015_02212a08);
     func_ov015_02203020(self);
     Ov015TaskBase_Dtor(self);
@@ -272,7 +272,7 @@ void *func_ov015_02207488(void *self) {
     return self;
 }
 
-void *func_ov015_022074cc(void *self) {
+void *func_ov015_022074cc(Ov015Scene2a08 *self) {
     SET_VT(self, data_ov015_02212a08);
     func_ov015_02203020(self);
     Ov015TaskBase_Dtor(self);
@@ -283,45 +283,45 @@ void *func_ov015_022074cc(void *self) {
 void func_ov015_02207508(void) {
 }
 
-void *func_ov015_0220750c(u8 *self) {
+void *func_ov015_0220750c(Ov015Scene2a88 *self) {
     u32 saved;
     SET_VT(self, data_ov015_02212a88);
     HEAP_PUSH(saved);
     {
-        u8 *p = FLD(u8 *, self, 0x3c);
+        u8 *p = self->unk_3c;
         if (p != NULL) {
             if (p != NULL) {
                 func_02041558(p);
                 func_02041278(p + 0x88);
                 func_0203de1c(p);
             }
-            FLD(u8 *, self, 0x3c) = NULL;
+            self->unk_3c = NULL;
         }
     }
     HEAP_POP(saved);
-    FLD(u8, self, 0x40) = 0;
+    self->unk_40 = 0;
     Ov015TaskBase_Dtor(self);
     func_0203de1c(self);
     return self;
 }
 
-void *func_ov015_022075a8(u8 *self) {
+void *func_ov015_022075a8(Ov015Scene2a88 *self) {
     u32 saved;
     SET_VT(self, data_ov015_02212a88);
     HEAP_PUSH(saved);
     {
-        u8 *p = FLD(u8 *, self, 0x3c);
+        u8 *p = self->unk_3c;
         if (p != NULL) {
             if (p != NULL) {
                 func_02041558(p);
                 func_02041278(p + 0x88);
                 func_0203de1c(p);
             }
-            FLD(u8 *, self, 0x3c) = NULL;
+            self->unk_3c = NULL;
         }
     }
     HEAP_POP(saved);
-    FLD(u8, self, 0x40) = 0;
+    self->unk_40 = 0;
     Ov015TaskBase_Dtor(self);
 
     return self;

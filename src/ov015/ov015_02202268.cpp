@@ -9,7 +9,7 @@ void func_ov015_02208070(Ov015Ship *p);
 void func_ov015_02209b8c(Ov015Fish *self);
 void func_ov015_0220f7a8(u8 *self);
 void func_ov015_02210d04(u8 *self);
-void func_ov015_02212264(u8 *self);
+void func_ov015_02212264(Ov015Obj292c *self);
 void func_ov015_021fb758(u8 *self);
 BOOL func_ov000_021903b4(void *a);
 extern void **data_0214a420;
@@ -43,7 +43,7 @@ void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 void func_ov015_0220900c(void *p);
 extern u8 data_ov015_0221292c[];
-void func_ov015_022120fc(void *p);
+void func_ov015_022120fc(Ov015Obj292c *self);
 extern u8 data_ov015_0221290c[];
 extern u8 data_ov015_0221295c[];
 
@@ -256,7 +256,7 @@ void *func_ov015_02202950(Ov015Fish *self) {
     return self;
 }
 
-void *func_ov015_022029b4(void *self) {
+void *func_ov015_022029b4(Ov015Obj292c *self) {
     SET_VT(self, data_ov015_0221292c);
     func_ov015_022120fc(self);
     return self;

@@ -160,6 +160,7 @@ struct Ov015Vec {
 
 extern "C" {
 
+// ov000 task base (0x3c bytes, vtable data_ov000_021cc060; see Ov015TaskBase_Ctor).
 struct Ov015Task {
     void *vt;
     u32 flag0 : 1;
@@ -173,7 +174,14 @@ struct Ov015Task {
     u32 flags_rest : 24;
     s32 unk_08;
     s32 unk_0c;
+    u8 unk_10[0x10];
+    s32 unk_20;
+    void *unk_24;
+    u8 unk_28[0x4];
+    s32 unk_2c;
+    u8 unk_30[0xc];
 };
+SIZE_ASSERT(Ov015Task, 0x3c);
 
 
 struct Ov015Node {
@@ -195,6 +203,8 @@ struct Ov015Fish;
 struct Ov015Ship;
 struct Ov015CamPair;
 struct Ov015Info38;
+struct Ov015Obj290;
+struct Ov015Obj292c;
 
 // Fishing phase state (0x2c bytes, vtable data_ov015_022127ec, func_ov015_021ff350).
 struct Ov015Obj30 {
@@ -202,8 +212,8 @@ struct Ov015Obj30 {
     s32 unk_04;
     s32 unk_08;
     u8 unk_0c;
-    u8 *unk_10;
-    u8 *unk_14;
+    Ov015Obj292c *unk_10;
+    Ov015Obj290 *unk_14;
     Ov015Fish *unk_18;
     Ov015Ship *unk_1c;
     Ov015CamPair *unk_20;
@@ -814,5 +824,373 @@ struct Ov015Game {
 OV015_SIZE(Ov015Game, 0xcc);
 // ---- end struct types (svD) ----
 }
+
+extern "C" {
+// Fish behaviour state (abstract base, vtable data_ov015_02212eb0, dtor func_ov015_0220e5b8).
+// The fish calls v08 on entry (with itself), v0c each frame and v10 on exit.
+struct Ov015FishState {
+    void *vt;
+};
+}
+
+struct Ov015UiText;
+
+// ov000 UI object (base vtable data_ov000_021cac60). Only the fields below 0x80 that ov015 uses
+// are named; the subclasses start at 0x80.
+struct Ov015Ui {
+    void *vt;
+    s32 unk_04;
+    u8 *unk_08; // owner (read back by the menu callbacks)
+    u32 unk_0c; // flags
+    s32 unk_10;
+    s32 unk_14;
+    u8 *unk_18;
+    s32 unk_1c;
+    s32 unk_20;
+    s32 unk_24;
+    u8 unk_28[0x4];
+    s32 unk_2c;
+    u8 unk_30[0x4];
+    s32 unk_34;
+    s32 unk_38;
+    u8 unk_3c[0x1c];
+    s32 unk_58; // position (fx32)
+    s32 unk_5c;
+    s32 unk_60;
+    s16 unk_64; // screen position
+    s16 unk_66;
+    s16 unk_68;
+    u8 unk_6a[0x16];
+};
+SIZE_ASSERT(Ov015Ui, 0x80);
+
+// ov000 text label (0x8c bytes, vtables data_ov000_021cac60 -> data_ov000_021cadcc).
+struct Ov015UiLabel : public Ov015Ui {
+    u8 unk_80[0x4];
+    s32 unk_84;
+    u8 unk_88[0x4];
+};
+SIZE_ASSERT(Ov015UiLabel, 0x8c);
+
+// ov000 number display (0x98 bytes, vtables data_ov000_021cac60 -> data_ov000_021cae48).
+struct Ov015UiNum : public Ov015Ui {
+    u8 unk_80[0x8];
+    s32 unk_88;
+    u32 unk_8c; // value
+    u8 unk_90[0x8];
+};
+SIZE_ASSERT(Ov015UiNum, 0x98);
+
+// ov000 list-menu item (linked through unk_2c).
+struct Ov015MenuItem {
+    u8 unk_00[0x6];
+    u16 unk_06; // id
+    u8 unk_08[0x4];
+    u32 unk_0c; // price
+    s32 unk_10;
+    u8 unk_14[0x18];
+    Ov015MenuItem *unk_2c; // next
+};
+
+// ov000 list menu (0xd4 bytes, vtables data_ov000_021cac60 -> data_ov000_021caec8; the 0xe0
+// subclasses data_ov000_021cb4a8 and data_ov000_021cb5a8 are reached through this type too).
+struct Ov015Menu : public Ov015Ui {
+    u8 unk_80[0x4];
+    void *unk_84; // decide callback
+    void *unk_88; // cursor callback
+    u8 unk_8c[0x8];
+    Ov015MenuItem *unk_94; // first item
+    Ov015MenuItem *unk_98; // first shown item
+    s16 unk_9c; // item count
+    u8 unk_9e[0x13];
+    s8 unk_b1; // cursor (from unk_98)
+    u8 unk_b2[0xe];
+    u8 unk_c0;
+    u8 unk_c1;
+    u8 unk_c2[0x12];
+};
+SIZE_ASSERT(Ov015Menu, 0xd4);
+
+// ov000 yes/no dialog (0x1e4 bytes, vtables data_ov000_021caec8 -> data_ov000_021cb1b0 ->
+// data_ov000_021cb0b8).
+struct Ov015Dialog : public Ov015Menu {
+    u8 unk_d4[0x108];
+    void *unk_1dc; // text
+    u16 unk_1e0;
+    u8 unk_1e2[0x2];
+};
+SIZE_ASSERT(Ov015Dialog, 0x1e4);
+
+// Camera view block: eye/at/up and the projection, laid out like Main Camera 0x04..0x3f
+// (0x3c bytes; initialised by func_02043548 and func_020434e0).
+struct Ov015CamView {
+    Ov015Vec eye;
+    Ov015Vec at;
+    Ov015Vec up;
+    s32 fovSin;
+    s32 fovCos;
+    s16 aspect;
+    s16 nearClip;
+    s16 farClip;
+    u8 unk_32[0x8];
+    u8 projDirty;
+    u8 unk_3b;
+};
+SIZE_ASSERT(Ov015CamView, 0x3c);
+
+// Fish state, vtable data_ov015_02212f20 (0x18 bytes; built in func_ov015_0220a1f8).
+struct Ov015FishState18 : public Ov015FishState {
+    Ov015Fish *unk_04;
+    s32 unk_08;
+    s32 unk_0c;
+    s32 unk_10;
+    void *unk_14;
+};
+SIZE_ASSERT(Ov015FishState18, 0x18);
+
+// Fish state, vtable data_ov015_02212e94 (0x2c bytes, ctor func_ov015_0220a0c8).
+struct Ov015FishState2c : public Ov015FishState {
+    s16 unk_04;
+    s16 unk_06;
+    s16 unk_08;
+    s16 unk_0a;
+    s32 unk_0c;
+    s32 unk_10;
+    bool unk_14;
+    u8 unk_15;
+    s16 unk_16;
+    s32 unk_18;
+    s16 unk_1c;
+    u8 unk_1e[0x2];
+    Ov015Fish *unk_20;
+    void *unk_24;
+    void *unk_28;
+};
+SIZE_ASSERT(Ov015FishState2c, 0x2c);
+
+// Fish state, vtable data_ov015_02212f04 (0x1c bytes; built in func_ov015_0220a1f8).
+struct Ov015FishState1c : public Ov015FishState {
+    s32 unk_04;
+    s32 unk_08;
+    s32 unk_0c;
+    s32 unk_10;
+    s32 unk_14;
+    Ov015Fish *unk_18;
+};
+SIZE_ASSERT(Ov015FishState1c, 0x1c);
+
+// Fish state, vtable data_ov015_02212ee8 (0x40 bytes, ctor func_ov015_0220c93c).
+struct Ov015FishState40 : public Ov015FishState {
+    s32 unk_04;
+    void *unk_08;
+    s32 unk_0c;
+    s32 unk_10;
+    s32 unk_14;
+    s32 unk_18;
+    Ov015Vec unk_1c;
+    Ov015Vec unk_28;
+    s32 unk_34;
+    s32 unk_38;
+    Ov015Fish *unk_3c;
+};
+SIZE_ASSERT(Ov015FishState40, 0x40);
+
+// Fish state, vtable data_ov015_02212ecc (8 bytes, ctor func_ov015_0220d878).
+struct Ov015FishState08 : public Ov015FishState {
+    s32 unk_04;
+};
+SIZE_ASSERT(Ov015FishState08, 0x8);
+
+// Scene task, vtable data_ov015_02212a88 (0x58 bytes, built by func_ov015_02206f04).
+struct Ov015Scene2a88 : public Ov015Task {
+    u8 *unk_3c;
+    u8 unk_40;
+    u8 unk_41[0x3];
+    s32 unk_44;
+    s32 unk_48;
+    s32 unk_4c;
+    s32 unk_50;
+    s32 unk_54;
+};
+SIZE_ASSERT(Ov015Scene2a88, 0x58);
+
+// Scene task, vtable data_ov015_02212a08 (0xb0 bytes, built by func_ov015_02206f7c).
+struct Ov015Scene2a08 : public Ov015Task {
+    Ov015Ship *unk_3c;
+    Ov015Shadow *unk_40;
+    Ov015CamView unk_44;
+    Ov015Menu *unk_80;
+    Ov015UiLabel *unk_84;
+    Ov015Menu *unk_88;
+    void *unk_8c;
+    s32 unk_90;
+    s32 unk_94;
+    s32 unk_98;
+    s32 unk_9c;
+    s32 unk_a0;
+    u8 unk_a4;
+    u8 unk_a5[0x3];
+    s32 unk_a8;
+    s32 unk_ac;
+};
+SIZE_ASSERT(Ov015Scene2a08, 0xb0);
+
+// Scene task, vtable data_ov015_02212c08 (0x6c bytes, built by func_ov015_02207020).
+struct Ov015Scene2c08 : public Ov015Task {
+    Ov015Menu *unk_3c;
+    Ov015UiLabel *unk_40;
+    Ov015Menu *unk_44;
+    Ov015UiNum *unk_48;
+    void *unk_4c;
+    u8 *unk_50;
+    s32 unk_54;
+    s32 unk_58;
+    s32 unk_5c;
+    s32 unk_60;
+    s32 unk_64;
+    u16 unk_68;
+    u8 unk_6a;
+    u8 unk_6b;
+};
+SIZE_ASSERT(Ov015Scene2c08, 0x6c);
+
+// Scene task, vtable data_ov015_02212b88 (0x58 bytes, built by func_ov015_022070b8).
+struct Ov015Scene2b88 : public Ov015Task {
+    Ov015Menu *unk_3c;
+    Ov015UiLabel *unk_40;
+    Ov015Menu *unk_44;
+    Ov015Dialog *unk_48;
+    u8 *unk_4c;
+    s32 unk_50;
+    u16 unk_54;
+    u8 unk_56[0x2];
+};
+SIZE_ASSERT(Ov015Scene2b88, 0x58);
+
+// Scene task, vtable data_ov015_02212b08 (0x164 bytes, built by func_ov015_02207138).
+struct Ov015Scene2b08 : public Ov015Task {
+    Ov015Menu *unk_3c;
+    Ov015UiNum *unk_40;
+    Ov015UiLabel *unk_44;
+    Ov015Menu *unk_48;
+    Ov015Dialog *unk_4c;
+    Ov015Ui *unk_50; // 0xe8 object, vtables data_ov000_021cac60 -> data_ov000_021cad50
+    s32 unk_54;
+    s32 unk_58;
+    s32 unk_5c;
+    s32 unk_60;
+    u8 unk_64[0x100]; // text buffer
+};
+SIZE_ASSERT(Ov015Scene2b08, 0x164);
+
+// Event message task, vtable data_ov015_022131c4 (0x144 bytes, ctor func_ov015_0220fcec).
+struct Ov015Msg {
+    void *vt;
+    u8 unk_04;
+    u8 unk_05[0x3];
+    s32 unk_08;
+    u16 unk_0c;
+    u8 unk_0e[0x2];
+    void *unk_10;
+    u8 *unk_14; // model (0x160 bytes)
+    u8 *unk_18; // text window (0xb8 bytes, vtable data_0208ba70)
+    s32 unk_1c;
+    s32 unk_20;
+    s32 unk_24;
+    Ov015UiLabel *unk_28;
+    Ov015UiText *unk_2c;
+    void *unk_30[0x20]; // message pages
+    s32 unk_b0; // page count
+    s32 unk_b4;
+    char unk_b8[0x80]; // text buffer
+    s32 unk_138;
+    s32 unk_13c;
+    s32 unk_140;
+};
+SIZE_ASSERT(Ov015Msg, 0x144);
+
+// Text window with a portrait model (0xb4 bytes, vtables data_ov000_021cac60 -> data_ov015_02212d3c, init func_ov015_02208544).
+struct Ov015UiText : public Ov015Ui {
+    u8 unk_80[0x4];
+    u8 *unk_84;
+    u8 unk_88[0x24];
+    s32 unk_ac;
+    s32 unk_b0;
+};
+SIZE_ASSERT(Ov015UiText, 0xb4);
+
+// Event message manager, vtable data_ov015_02213198 (0x14 bytes, init func_ov015_02210b3c).
+struct Ov015MsgMgr {
+    void *vt;
+    void *unk_04;
+    u8 unk_08;
+    u8 unk_09;
+    u8 unk_0a[0x2];
+    s32 unk_0c;
+    s32 unk_10;
+};
+SIZE_ASSERT(Ov015MsgMgr, 0x14);
+
+// Result panel (0x64 bytes, vtable data_ov015_02213188, built by func_ov015_0220f470 and set up by
+// func_ov015_0220e634).
+struct Ov015ResultPanel {
+    void *vt;
+    Ov015Menu *unk_04; // 0xf0 bytes, vtable data_ov000_021cb3a8
+    u8 *unk_08; // 0x100 bytes, vtable data_ov000_021ccb54
+    Ov015UiNum *unk_0c;
+    Ov015UiNum *unk_10;
+    Ov015Menu *unk_14;
+    s32 unk_18; // state
+    s32 unk_1c; // timer
+    char unk_20[0x40]; // name
+    s32 unk_60; // mode
+};
+SIZE_ASSERT(Ov015ResultPanel, 0x64);
+
+// Result sequence (0x14 bytes, vtable data_ov015_022128ec, ctor func_ov015_0220f448).
+struct Ov015Result {
+    void *vt;
+    s32 unk_04; // state
+    s8 unk_08; // mode
+    u8 unk_09[0x3];
+    s32 unk_0c;
+    Ov015ResultPanel *unk_10;
+};
+SIZE_ASSERT(Ov015Result, 0x14);
+
+// Fishing tackle object (0x290 bytes, vtable data_ov015_022132e0, init func_ov015_022119e8), with
+// its own animation and model; data_ov015_0221336c points to it.
+struct Ov015Obj290 {
+    void *vt;
+    s32 unk_04;
+    s32 unk_08;
+    s32 unk_0c;
+    s32 unk_10;
+    Ov015Anim unk_14;
+    Ov015Model unk_14c;
+    Ov015VecC unk_234;
+    Ov015VecC unk_240;
+    Ov015Mtx33 unk_24c;
+    Ov015VecC unk_270;
+    Ov015VecC unk_27c;
+    u16 unk_288;
+    u16 unk_28a;
+    s32 unk_28c;
+};
+SIZE_ASSERT(Ov015Obj290, 0x290);
+
+// Object holding a spawned effect (0x34 bytes, vtable data_ov015_0221292c, init func_ov015_022120c0).
+struct Ov015Obj292c {
+    void *vt;
+    u8 *unk_04; // effect object
+    void *unk_08;
+    Ov015Vec unk_0c; // position
+    Ov015Vec unk_18; // scale
+    s32 unk_24;
+    s32 unk_28;
+    s32 unk_2c;
+    s32 unk_30;
+};
+SIZE_ASSERT(Ov015Obj292c, 0x34);
 
 #endif
