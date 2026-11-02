@@ -3,6 +3,7 @@
 #include "ov000/ObjLayouts.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "nitro/mi.h"
+#include "ov000/MapCtx.h"
 
 extern "C" {
 
@@ -10,37 +11,27 @@ Robo021ca458 *func_ov000_0219bf90(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 s32 func_02043d84(void *a);
 
-struct Obj02165da0 {
-    u8 unk_00[0x30];
-    void *unk_30;
-};
-
-void func_ov000_02165da0(Obj02165da0 *self) {
-    void *o = self->unk_30;
-    void *q;
-    if (o == NULL || (q = LFLD(void *, o, 0xcdc)) == NULL) {
+void func_ov000_02165da0(Lo021cb6b0 *self) {
+    Ctx0216607c *o = self->unk_30;
+    LoAnimC *q;
+    if (o == NULL || (q = o->anim) == NULL) {
         return;
     }
-    if (LFLD(u16, q, 0x10a) != 0) {
+    if (q->state != 0) {
         return;
     }
-    LFLD(u16, q, 0x10a) = 1;
-    LFLD(u16, LFLD(void *, o, 0xcdc), 0x10c) = LFLD(u8, LFLD(void *, o, 0xcdc), 0x108) - 1;
-    LFLD(u16, LFLD(void *, o, 0xcdc), 0x10e) = 0;
+    q->state = 1;
+    o->anim->idx = o->anim->cnt - 1;
+    o->anim->timer = 0;
 }
 
-struct Obj02165df4 {
-    u8 unk_00[0x30];
-    void *unk_30;
-};
-
-BOOL func_ov000_02165df4(Obj02165df4 *self) {
-    void *o = self->unk_30;
-    void *q;
-    if (o == NULL || (q = LFLD(void *, o, 0xcdc)) == NULL) {
+BOOL func_ov000_02165df4(Lo021cb6b0 *self) {
+    Ctx0216607c *o = self->unk_30;
+    LoAnimC *q;
+    if (o == NULL || (q = o->anim) == NULL) {
         return TRUE;
     }
-    return LFLD(u16, q, 0x10a) == 0xffff ? TRUE : FALSE;
+    return q->state == 0xffff ? TRUE : FALSE;
 }
 
 }

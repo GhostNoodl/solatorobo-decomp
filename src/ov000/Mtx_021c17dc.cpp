@@ -2,6 +2,7 @@
 #include "ov000/Bss021ccd74.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/ActorMarker.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "nitro/mi.h"
 
@@ -41,7 +42,7 @@ static inline void SetScale021c17dc(Model0218fe1c *model, s32 x, s32 y, s32 z) {
     model->scale.z = z;
 }
 
-void func_ov000_021c17dc(Lo021cc938 *self) {
+void func_ov000_021c17dc(ActorMarker3D *self) {
     u8 proj[0x40];
     u8 cam[0x30];
     Ofs021c17dc *o;
@@ -49,7 +50,7 @@ void func_ov000_021c17dc(Lo021cc938 *self) {
     u8 *g;
     MtxFx43 *cm;
 
-    if (self->unk_68 != 10) {
+    if (self->work.state != 10) {
         return;
     }
     cm = GetCam021c17dc();
@@ -60,14 +61,14 @@ void func_ov000_021c17dc(Lo021cc938 *self) {
     MTX_Identity43_(cm);
     cm->m[3][2] = 0;
     NNS_G3dGlbPolygonAttr(0, 0, 3, 0, 0, 0);
-    o = &data_ov000_021cc8f0[self->unk_44 - 0xc];
-    p.x = self->unk_78 + o->x;
-    p.y = self->unk_7c + o->y;
-    p.z = self->unk_80;
-    data_ov000_021ccd74.unk_00 = LO_FX_MUL(self->unk_88, 0x1e000) >> 12;
-    LFLD(VecFx32, self->unk_90, 0x78) = p;
-    SetScale021c17dc((Model0218fe1c *)self->unk_90, 0x1000, -0x1000, 0x1000);
-    func_ov000_021903b4((u8 *)self->unk_90);
+    o = &data_ov000_021cc8f0[self->kind - 0xc];
+    p.x = self->work.x + o->x;
+    p.y = self->work.y + o->y;
+    p.z = self->work.z;
+    data_ov000_021ccd74.unk_00 = LO_FX_MUL(self->work.alpha, 0x1e000) >> 12;
+    self->unk_90->trans = p;
+    SetScale021c17dc(self->unk_90, 0x1000, -0x1000, 0x1000);
+    func_ov000_021903b4(self->unk_90);
     SetProj021c17dc(proj);
     MI_Copy48B(cam, cm);
 }

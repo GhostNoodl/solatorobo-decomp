@@ -13,6 +13,7 @@
 #include "Main/Sys/Field.h"
 #include "Main/Res/StageRes.h"
 #include "Main/Res/StageCmd.h"
+#include "ov000/FieldMgr.h"
 #include "Main/Hit/HitSphere.h"
 #define SND_DEFINE_GLOBALS
 #include "Main/Snd/SndMgr.h"
@@ -2424,7 +2425,7 @@ int func_0205c83c(StageResSlot *slot) {
         w = 0;
         z = 0;
     }
-    if (data_ov000_021ccd6c->unk_0a == 0xff) {
+    if (data_ov000_021ccd6c->destExit == 0xff) {
         StageCamera *cam = (StageCamera *)((u8 *)data_ov000_021ccd54 + 0xf4);
         cam->x = x;
         cam->y = y;
@@ -3887,22 +3888,22 @@ int func_0205fa48(StageResSlot *slot) {
             pos.y = p[1] << 4;
             pos.z = p[2] << 4;
         } else if (arg == 0xff) {
-            StageCamMgr *mgr = data_ov000_021ccd6c;
-            u8 i = mgr->next;
-            StageCamPoint *pts = mgr->points;
-            StageCamPoint *pt;
+            FieldMgr *mgr = data_ov000_021ccd6c;
+            u8 i = mgr->exit;
+            FieldExit *exits = mgr->exits;
+            FieldExit *pt;
             if (i != 0xff) {
-                mgr->next = 0xff;
+                mgr->exit = 0xff;
             } else {
-                i = mgr->cur;
+                i = mgr->curExit;
                 if (i == 0xff) {
                     i = 0;
                 }
             }
-            pt = &pts[i];
-            pos.x = pt->x << 4;
-            pos.y = pt->y << 4;
-            pos.z = pt->z << 4;
+            pt = &exits[i];
+            pos.x = pt->ox << 4;
+            pos.y = pt->oy << 4;
+            pos.z = pt->oz << 4;
             VEC_Add(&pos, &pt->pos, &pos);
         }
     }
@@ -3995,29 +3996,29 @@ int func_0205fe10(StageResSlot *slot) {
         func_020600cc(slot, &pos, rot, &idx);
         if (idx == 0xfe) {
             data_02fe1534.unk_16 = 1;
-            data_ov000_021ccd6c->unk_0a = 0xff;
+            data_ov000_021ccd6c->destExit = 0xff;
         } else if (idx == 0xffff) {
-            if (data_ov000_021ccd6c->unk_0a == 0xff && player != NULL) {
+            if (data_ov000_021ccd6c->destExit == 0xff && player != NULL) {
                 func_ov000_0219cbf8(player, &pos, rot);
                 if (!(flags & 0x20)) {
                     player->unk_vf18();
                 }
                 {
-                    StageVec *v = (StageVec *)((u8 *)data_ov000_021ccd6c + 0x24);
+                    VecFx32 *v = &data_ov000_021ccd6c->playerPos;
                     v->x = pos.x;
                     v->y = pos.y;
                     v->z = pos.z;
                 }
             }
             Stage_SetMark(&pos, rot[1], 1);
-            data_ov000_021ccd6c->unk_0a = 0xff;
+            data_ov000_021ccd6c->destExit = 0xff;
             if (player != NULL && !Field_HasEvent(10)) {
                 data_02fe1534.unk_16 = 0;
             }
         } else {
-            data_ov000_021ccd6c->unk_0a = idx;
+            data_ov000_021ccd6c->destExit = idx;
         }
-        data_ov000_021ccd6c->next = 0xff;
+        data_ov000_021ccd6c->exit = 0xff;
         if (flags == 0) {
             break;
         }
@@ -5222,7 +5223,7 @@ void func_02062424(const StageColor *c) {
     data_02fe1534.unk_6a = 0;
     data_02fe1534.unk_6c = 0;
     data_02fe1534.unk_6e = 0;
-    data_02fe1534.unk_80 = data_ov000_021ccd6c->unk_0a;
+    data_02fe1534.unk_80 = data_ov000_021ccd6c->destExit;
 }
 
 void func_02062478(const StageColor *c) {
@@ -5230,7 +5231,7 @@ void func_02062478(const StageColor *c) {
     data_02fe1534.unk_4c = c->r;
     data_02fe1534.unk_4e = c->g;
     data_02fe1534.unk_50 = c->b;
-    data_02fe1534.unk_80 = data_ov000_021ccd6c->unk_0a;
+    data_02fe1534.unk_80 = data_ov000_021ccd6c->destExit;
 }
 
 void func_020624b8(void) {

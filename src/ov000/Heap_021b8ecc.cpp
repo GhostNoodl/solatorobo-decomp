@@ -6,6 +6,7 @@
 #include "nitro/fx.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/Model.h"
+#include "ov000/MsgEntry.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -60,11 +61,6 @@ typedef struct {
     u32 rest : 31;
 } Bits021b9010;
 
-typedef struct {
-    u8 body[0x30];
-    u16 h[4];
-} Buf021b9010;
-
 extern "C" {
 void *Heap_Alloc(u32 size);
 extern char *data_ov000_021cc858[];
@@ -91,11 +87,8 @@ BOOL func_ov000_0219bf90(void);
 void func_ov000_021b4774(void);
 BOOL func_02054f10(void *m, s32 a);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_02153f90(Buf021b9010 *b);
-void func_ov000_02153fd8(Buf021b9010 *b);
 void *func_ov000_0214c064(u16 id);
-void func_0204c6bc(void *a, s32 b, Buf021b9010 *c, void *fn);
-void func_ov000_0214dc20(void);
+void func_0204c6bc(void *a, s32 b, void *c, void *fn);
 void func_ov000_0214c668(VObj *o, u16 a);
 BOOL func_ov000_0214c6a0(void *o);
 
@@ -136,7 +129,7 @@ static inline BOOL Idle_021b9010(VObj *o) {
 
 BOOL func_ov000_021b9010(Obj021b9010 *self) {
     char buf[0x20];
-    Buf021b9010 tb;
+    MsgEntryEx tb;
 
     switch (self->state) {
     case 1: {
@@ -332,12 +325,12 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
             break;
         case 0xf:
             func_ov000_02153f90(&tb);
-            tb.h[0] = 0;
-            tb.h[1] = 0;
-            tb.h[2] = 0;
-            tb.h[3] = 0;
+            tb.vals[0] = 0;
+            tb.vals[1] = 0;
+            tb.vals[2] = 0;
+            tb.vals[3] = 0;
             func_0204c6bc(func_ov000_0214c064(self->unk_10), 1, &tb, (void *)func_ov000_0214dc20);
-            func_ov000_0214c668(self->unk_14, tb.h[3]);
+            func_ov000_0214c668(self->unk_14, tb.vals[3]);
             self->unk_12 = 0x10;
             func_ov000_02153fd8(&tb);
             break;

@@ -8,9 +8,9 @@ extern u8 *data_ov000_021ccd30;
 void func_0206e900(char *buf, const void *s);
 void *func_020359d0(const char *name, s32 a, s32 b);
 BOOL func_02035b90(const char *name, s32 a);
-void func_ov000_02164a94(void *self);
-void func_ov000_02167d64(void *self);
-void func_ov000_02166be8(void *self);
+void func_ov000_02164a94(Lo021cb6b0 *self);
+void func_ov000_02167d64(Lo021cb6b0 *self);
+void func_ov000_02166be8(Lo021cb6b0 *self);
 
 void func_ov000_021645b8(Lo021cb6b0 *self) {
     switch (self->unk_20) {

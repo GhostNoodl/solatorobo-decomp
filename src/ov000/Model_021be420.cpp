@@ -1,38 +1,31 @@
 #include "ov000/ModelPart.h"
 #include "Main/Gfx/GfxMgr.h"
+#include "ov000/ActorMarker.h"
 
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
-typedef struct {
-    u8 pad_00[0x68];
-    s32 unk_68;
-    u8 pad_6c[0xc];
-    s32 unk_78;
-    s32 unk_7c;
-    s32 unk_80;
-    u8 pad_84[4];
-    s32 unk_88;
+struct Marker021be420 : ActorMarker {
     Model *unk_8c;
     u8 pad_90[4];
     s32 unk_94;
-} Obj021be420;
+};
 
 extern "C" {
 
 u8 Gfx3DState_NextPolyId(void *p);
 
-void func_ov000_021be420(Obj021be420 *self) {
+void func_ov000_021be420(Marker021be420 *self) {
     s32 x;
     s32 y;
     s32 a;
-    if (self->unk_68 != 10) {
+    if (self->work.state != 10) {
         return;
     }
-    x = (self->unk_78 >> 12) - 0x80;
-    y = (self->unk_7c >> 12) - 0x60 + (self->unk_94 >> 12);
-    self->unk_8c->unk_150 = self->unk_80;
+    x = (self->work.x >> 12) - 0x80;
+    y = (self->work.y >> 12) - 0x60 + (self->unk_94 >> 12);
+    self->unk_8c->unk_150 = self->work.z;
     Model_SetPos(self->unk_8c, x << 12, y << 12);
-    a = FX_MUL(self->unk_88, 0x1f000) >> 12;
+    a = FX_MUL(self->work.alpha, 0x1f000) >> 12;
     MODEL_FLAGS(self->unk_8c)->unk_19 = 1;
     MODEL_FLAGS(self->unk_8c)->polygon_id = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
     MODEL_FLAGS(self->unk_8c)->alpha = (u8)a;

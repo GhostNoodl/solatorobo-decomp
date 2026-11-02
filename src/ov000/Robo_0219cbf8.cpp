@@ -5,6 +5,7 @@
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/FieldMgr.h"
+#include "ov000/ActorMarker.h"
 
 typedef struct {
     u8 pad[0x258];
@@ -13,8 +14,6 @@ typedef struct {
 
 extern "C" {
 extern Glb0219cbf8 NNS_G3dGlb;
-void func_ov000_021bd300(void *p);
-void func_ov000_021bd438(void *p, VecFx32 *v, s32 dy);
 void Body_SetPos(void *body, VecFx32 *pos, u32 angle);
 
 void func_ov000_0219cbf8(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {

@@ -50,12 +50,12 @@ void func_ov000_02150c38(Lo021ca9c4 *self) {
     self->unk_54 = 0;
     self->unk_58 = 0;
     self->unk_5c = 0xffff;
-    func_0204c7d0((u8 *)self + 0x60);
-    func_0204c7d0((u8 *)self + 0x118);
-    func_0204c7d0((u8 *)self + 0x1d0);
-    func_0204c7d0((u8 *)self + 0x288);
-    func_0204c7d0((u8 *)self + 0x340);
-    func_0204c7d0((u8 *)self + 0x3f8);
+    func_0204c7d0(&self->text[0]);
+    func_0204c7d0(&self->text[1]);
+    func_0204c7d0(&self->text[2]);
+    func_0204c7d0(&self->text[3]);
+    func_0204c7d0(&self->text[4]);
+    func_0204c7d0(&self->text[5]);
     self->unk_40 = 0xffff;
     self->unk_42 = 0xffff;
 }

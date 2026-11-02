@@ -3,6 +3,7 @@
 #include "ov000/ObjLayouts.h"
 #include "ov000/Group.h"
 #include "nitro/mi.h"
+#include "ov000/ActorMarker.h"
 
 typedef struct {
     u16 b0 : 12;
@@ -23,7 +24,6 @@ void func_ov000_02190758(void *a, void *b, s32 c);
 BOOL func_ov000_021903b4(void *a);
 void func_ov000_02191c24(void *a, void *b);
 void func_ov000_02191ec4(void *a, s32 b, u32 c);
-void func_ov000_021bd7a0(void *p);
 s32 FX_Div(s32 a, s32 b);
 
 static inline BOOL GBusy02194c08(FieldState *g) {
@@ -184,7 +184,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
     }
     if (ret && self->unk_5c != NULL) {
         if (GIdle02194c08() && !GHasD4_02194c08()) {
-            func_ov000_021bd7a0(((u8 *)self->unk_5c));
+            func_ov000_021bd7a0(self->unk_5c);
         }
     }
     return ret;

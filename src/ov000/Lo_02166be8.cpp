@@ -16,11 +16,11 @@ extern "C" {
 extern u8 data_ov000_021c9a9c[];
 extern s32 data_02097d78[5];
 Robo021ca458 *func_ov000_0219bf90(void);
-void func_ov000_021658e8(void *self);
-u8 *func_ov000_02165f94(void *self);
-void *func_ov000_02165e2c(void *self, void *area);
-void func_ov000_02164c50(void *self, void *tgt);
-void func_ov000_02166180(void *self);
+void func_ov000_021658e8(Lo021cb6b0 *self);
+u8 *func_ov000_02165f94(Lo021cb6b0 *self);
+Item0216607c *func_ov000_02165e2c(Lo021cb6b0 *self, Node0216607c *area);
+void func_ov000_02164c50(Lo021cb6b0 *self, u8 *tgt);
+void func_ov000_02166180(Lo021cb6b0 *self);
 s32 FX_Div(s32 a, s32 b);
 
 static inline BOOL FieldState_HasCmd(FieldState *q, s32 kind) {
@@ -65,15 +65,7 @@ static inline BOOL Skip02166be8(void) {
     return skip;
 }
 
-struct Obj02166be8 {
-    u8 unk_00[0x30];
-    Ctx0216607c *unk_30;
-    s32 unk_34;
-    s32 unk_38;
-    s32 unk_3c;
-};
-
-void func_ov000_02166be8(Obj02166be8 *self) {
+void func_ov000_02166be8(Lo021cb6b0 *self) {
     Node0216607c *area;
     u8 *rgb;
     s32 k;
@@ -170,7 +162,7 @@ void func_ov000_02166be8(Obj02166be8 *self) {
             if (area == NULL) {
                 return;
             }
-            e = (Item0216607c *)func_ov000_02165e2c(self, area);
+            e = func_ov000_02165e2c(self, area);
             if (e != w->cur) {
                 if (e == NULL || w->cur == NULL) {
                     if (!FieldState_HasCmd(data_ov000_021ccd54, 0x14)) {

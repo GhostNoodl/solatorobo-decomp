@@ -3,11 +3,7 @@
 #include "ov000/ObjLayouts.h"
 #include "Main/Gfx/Model.h"
 #include "ov000/ModelPart.h"
-
-typedef struct {
-    u32 b0 : 3;
-    u32 b3 : 1;
-} LoCb8Bits;
+#include "ov000/MapCtx.h"
 
 extern "C" {
 
@@ -30,8 +26,8 @@ void func_ov000_02164708(void) {
 }
 
 void func_02041c20(void *a, int b, int c);
-void func_ov000_0216715c(Lo021cb6b0 *self, u8 *p);
-void func_ov000_021675ec(void *self, u8 *p);
+void func_ov000_0216715c(Lo021cb6b0 *self, Ctx0216607c *p);
+void func_ov000_021675ec(Lo021cb6b0 *self, Ctx0216607c *p);
 
 static inline void LoPlayIf(Model *m, int idx) {
     if (m != NULL) {
@@ -39,29 +35,15 @@ static inline void LoPlayIf(Model *m, int idx) {
     }
 }
 
-static inline void *LoGetQ(u8 *p) {
-    if (p == NULL || LFLD(void *, p, 0xcb4) == NULL) {
-        return NULL;
-    }
-    return LFLD(void *, p, 0xcb8);
-}
-static inline BOOL LoReady(u8 *p) {
-    return p != NULL && LFLD(void *, p, 0xcb4) != NULL && LFLD(void *, p, 0xcb8) != NULL && p[1] >= 2;
-}
-static inline BOOL LoReady2(u8 *p) {
-    if (p == NULL || LFLD(void *, p, 0xcb4) == NULL || LFLD(void *, p, 0xcb8) == NULL) return FALSE;
-    if (p[1] < 2) return FALSE;
-    return TRUE;
-}
-static inline void LoTail(Lo021cb6b0 *self, u8 *p) {
-    void *q;
-    if (p == NULL || LFLD(void *, p, 0xcb4) == NULL || (q = LFLD(void *, p, 0xcb8)) == NULL) {
+static inline void LoTail(Lo021cb6b0 *self, Ctx0216607c *p) {
+    Node0216607c *q;
+    if (p == NULL || p->cur == NULL || (q = p->sel) == NULL) {
         return;
     }
-    if (p[1] < 2) {
+    if (p->oamUsed < 2) {
         return;
     }
-    if (!LFLD(LoCb8Bits, q, 0).b3) {
+    if (!q->f3) {
         func_ov000_0216715c(self, p);
     } else {
         func_ov000_021675ec(self, p);
@@ -71,8 +53,6 @@ static inline void LoTail(Lo021cb6b0 *self, u8 *p) {
 void func_ov000_02164750(Lo021cb6b0 *self) {
     Model *m;
     VObj *o;
-    void *q;
-    u8 *p;
     if (self->unk_20 != 7) {
         return;
     }

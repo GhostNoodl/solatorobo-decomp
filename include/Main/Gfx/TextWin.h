@@ -94,7 +94,10 @@ struct TextWin {
     /* 0x1c */ s16 modelY;
     /* 0x1e */ s16 unk_1e;
     /* 0x20 */ VramBlock *vram;
-    /* 0x24 */ u32 str; // the text to lay out (a const char *)
+    /* 0x24 */ union {
+        u32 str; // the text to lay out
+        const char *strPtr; // the same word as a pointer
+    };
     /* 0x28 */ u32 font;
     /* 0x2c */ s32 unk_2c;
     /* 0x30 */ u32 unk_30;

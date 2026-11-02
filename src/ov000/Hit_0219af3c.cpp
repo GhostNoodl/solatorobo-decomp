@@ -3,6 +3,7 @@
 #include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
 #include "ov000/ActorBase.h"
+#include "ov000/ActorMarker.h"
 
 typedef struct {
     u8 type;
@@ -16,18 +17,11 @@ typedef struct {
     u16 target;
 } Tgt0219af3c;
 
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 rest : 30;
-} PBits0219af3c;
-
 extern "C" {
 Robo021ca458 *func_ov000_0219bf90(void);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL func_ov000_02199cd8(Tgt0219af3c *self, u16 id);
 BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
-BOOL func_ov000_021bd314(void *p, s32 x);
 
 static inline s32 Cur0219af3c(Actor *self) {
     u8 *h = ((u8 *)self->fsm);
@@ -67,13 +61,13 @@ static inline BOOL Special0219af3c(Tgt0219af3c *t) {
     return r;
 }
 
-void func_ov000_0219af3c(Actor *self, u8 *p) {
+void func_ov000_0219af3c(Actor *self, ActorMarker *p) {
     Robo021ca458 *pl;
     Tgt0219af3c *tgt;
     u8 type;
     s32 r4;
     s32 act;
-    LFLD(PBits0219af3c, p, 0).b1 = 0;
+    p->show = 0;
     r4 = 0;
     pl = func_ov000_0219bf90();
     if (pl == NULL) {
@@ -139,12 +133,12 @@ void func_ov000_0219af3c(Actor *self, u8 *p) {
             }
         }
         func_ov000_021bd314(p, 1);
-        if (LFLD(s32, p, 0x44) == 1) {
-            LFLD(s32, p, 0x98) = r4;
+        if (p->kind == 1) {
+            LFLD(s32, p, 0x98) = r4; // kind 1's own field
         } else {
-            LFLD(s32, p, 0x28) = r4;
+            p->unk_28[0] = r4;
         }
-        LFLD(PBits0219af3c, p, 0).b1 = 1;
+        p->show = 1;
         return;
     }
     act = -1;
@@ -174,12 +168,12 @@ void func_ov000_0219af3c(Actor *self, u8 *p) {
         }
     }
     if (act == 3 || act == 4 || act == 6) {
-        LFLD(s32, p, 0x28) = r4;
+        p->unk_28[0] = r4;
     }
     if (act == -1) {
         return;
     }
     func_ov000_021bd314(p, act);
-    LFLD(PBits0219af3c, p, 0).b1 = 1;
+    p->show = 1;
 }
 }

@@ -2,16 +2,10 @@
 #include "ov000/ObjLayouts.h"
 #include "ov000/LoCommon.h"
 #include "Main/Effect/Effect.h"
-
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 rest : 30;
-} Bd_0219e998;
+#include "ov000/ActorMarker.h"
 
 extern "C" {
 
-void func_ov000_021bd300(void *p);
 BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg);
 
 static inline void MinB32_0219e998(Robo021ca458 *self, u16 n) {
@@ -104,11 +98,11 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, FieldState *g) {
                 s->unk_93_5 = 0;
                 MinB32_0219e998(s, 0x96);
                 s->target = 0xffff;
-                LFLD(Bd_0219e998, s->unk_5c, 0).b1 = 0;
+                s->unk_5c->show = 0;
                 bit = 0x13;
                 kind = 0x20;
                 func_ov000_021bd300(s->unk_5c);
-                LFLD(Bd_0219e998, s->unk_9b0, 0).b1 = 0;
+                s->unk_9b0->show = 0;
                 func_ov000_021bd300(s->unk_9b0);
             }
             p50 = (ActorHp *)s->hp;

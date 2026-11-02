@@ -47,7 +47,6 @@ u8 *func_0206ef10(u16 id);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 void *func_ov000_0218e9c4(void *p);
-void *STD_CopyString(void *dst, const char *src);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Actor_SendMsg(void *a, u16 id, s32 b, s32 c, s32 d, void *e);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
@@ -249,12 +248,12 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
                 s2 = K021afaf8::data_ov000_021cc747;
             }
             r = (u8 *)self->unk_99c;
-            STD_CopyString(r + 0x10, s1);
-            STD_CopyString(r + 0x30, s2);
+            STD_CopyString((char *)r + 0x10, s1);
+            STD_CopyString((char *)r + 0x30, s2);
             LFLD(C_021afaf8, r, 3).b1 = 1;
             r = (u8 *)self->unk_99c;
-            STD_CopyString(r + 0x4c, s1);
-            STD_CopyString(r + 0x6c, s2);
+            STD_CopyString((char *)r + 0x4c, s1);
+            STD_CopyString((char *)r + 0x6c, s2);
             LFLD(C_021afaf8, r, 3).b2 = 1;
             LFLD(u16, self->unk_99c, 0) = 0;
             self->unk_9a6 = 0;

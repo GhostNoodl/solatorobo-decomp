@@ -8,8 +8,7 @@
 #include "ov000/ActorBase.h"
 
 // The field manager data_ov000_021ccd6c and the records it loads. Main/Res/StageCmd.h declares the
-// global with its own partial view (StageCamMgr); TUs that include StageCmd.h keep that view and do
-// not include this header.
+// same global with an incomplete FieldMgr; the Main stage code includes this header for the members.
 
 // The two data blocks of a field, as Main's Lang code reads them (LangBlockA / LangBlockB, declared
 // locally in src/Main/Lang). Block A is FieldMgr::blockA (func_0206e150 / 0206e180 / 0206e1bc return

@@ -1,6 +1,7 @@
 #include "types.h"
 #include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
+#include "ov000/ActorMarker.h"
 
 typedef struct {
     u8 pad[0x10];
@@ -51,11 +52,6 @@ typedef struct {
 } Model02194758;
 
 typedef struct {
-    u8 pad00[0x5c];
-    s32 unk_5c;
-} Obj5c_02194758;
-
-typedef struct {
     u8 pad00[0x14];
     s32 unk_14;
 } Obj3c_02194758;
@@ -86,7 +82,7 @@ typedef struct {
     Obj4c_02194758 *unk_4c;
     u8 pad50[0x8];
     void *unk_58;
-    Obj5c_02194758 *unk_5c;
+    ActorMarker *unk_5c;
     u8 pad60[0x4];
     s32 unk_64;
     s32 unk_68;
@@ -122,8 +118,6 @@ void HitMesh_Init(void *p);
 void HitMesh_SetRes(void *mesh, void *res);
 void HitMesh_SetScale(void *mesh, s32 scale);
 void HitMesh_SetMtx(void *mesh, const MtxFx43 *mtx);
-void func_ov000_021bd198(void *p);
-BOOL func_ov000_021bd314(Obj5c_02194758 *p, s32 a);
 
 #define SIN02194758(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define COS02194758(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
@@ -160,12 +154,12 @@ static inline void *NewMesh02194758(void) {
     return p;
 }
 
-static inline Obj5c_02194758 *NewObj5c_02194758(void) {
-    void *p = Heap_Alloc(0xa8);
+static inline ActorMarker *NewMarker02194758(void) {
+    ActorMarker *p = (ActorMarker *)Heap_Alloc(0xa8);
     if (p != NULL) {
         func_ov000_021bd198(p);
     }
-    return (Obj5c_02194758 *)p;
+    return p;
 }
 
 static inline void *GetRes02194758(Res02194758 *res) {
@@ -281,10 +275,10 @@ void func_ov000_02194758(Actor02194758 *self) {
         self->cc_0 = 1;
     }
     if (self->unk_b0->unk_02_7) {
-        Obj5c_02194758 *p = NewObj5c_02194758();
+        ActorMarker *p = NewMarker02194758();
         self->unk_5c = p;
         func_ov000_021bd314(p, 1);
-        self->unk_5c->unk_5c = self->unk_68;
+        self->unk_5c->height = self->unk_68;
     }
 }
 

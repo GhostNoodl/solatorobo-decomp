@@ -3,6 +3,7 @@
 #include "ov003/Actor.h"
 #include "Main/Sys/FieldState.h"
 #include "Main/Gfx/PlttRes.h"
+#include "ov000/ActorMarker.h"
 
 typedef struct {
     u16 a;
@@ -55,11 +56,6 @@ typedef struct {
 } Ov003InObj54;
 
 typedef struct {
-    u8 pad00[0x5c];
-    s32 unk_5c;
-} Ov003InObj5c;
-
-typedef struct {
     s32 frame;
     u32 unk_04;
     u8 *unk_08;
@@ -84,8 +80,6 @@ void func_ov000_0219864c(ActorSub48 *o, VecFx32 *a, u16 *b);
 ActorSub44 *func_ov000_021984c8(void *p);
 void func_ov000_021984f4(ActorSub44 *o, void *a, s32 b);
 Ov003InObj4c *func_ov000_02199b00(void *p);
-void func_ov000_021bd198(void *p);
-BOOL func_ov000_021bd314(Ov003InObj5c *p, s32 a);
 s32 NNS_G3dGetResDictIdxByName(const void *dict, const void *name);
 BOOL func_ov000_0218ffdc(Model0218fe1c *m, void *res, s32 idx, s32 b);
 Ov003InAnm *func_ov000_02190a30(Model0218fe1c *m, s32 n);
@@ -124,12 +118,12 @@ static inline Ov003InObj4c *Ov003In_NewObj4c(void) {
     return (Ov003InObj4c *)p;
 }
 
-static inline Ov003InObj5c *Ov003In_NewObj5c(void) {
-    void *p = Heap_Alloc(0xa8);
+static inline ActorMarker *Ov003In_NewObj5c(void) {
+    ActorMarker *p = (ActorMarker *)Heap_Alloc(0xa8);
     if (p != NULL) {
         func_ov000_021bd198(p);
     }
-    return (Ov003InObj5c *)p;
+    return p;
 }
 
 static inline ActorHp *Ov003In_NewObj50(void) {
@@ -313,10 +307,10 @@ extern "C" void func_ov003_021d112c(Ov003Actor *self) {
     }
     self->unk_54 = Ov003In_NewObj54();
     {
-        Ov003InObj5c *p = Ov003In_NewObj5c();
+        ActorMarker *p = Ov003In_NewObj5c();
         self->unk_5c = p;
         func_ov000_021bd314(p, 1);
-        ((Ov003InObj5c *)self->unk_5c)->unk_5c = self->height;
+        self->unk_5c->height = self->height;
     }
     if (data_ov000_021ccd54->unk_ca.c[0] == 0x11) {
         self->unk_ea_14 = 1;

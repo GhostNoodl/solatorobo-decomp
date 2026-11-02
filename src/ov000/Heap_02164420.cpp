@@ -2,34 +2,20 @@
 #include "ov000/HeapScope.h"
 #include "Main/Gfx/PlttRes.h"
 #include "Main/Res/ResArc.h"
-
-typedef struct {
-    u8 pad[0xcdc];
-    void *unk_cdc;
-} Sub02164420;
-
-typedef struct {
-    u8 pad[0x20];
-    s32 unk_20;
-    void *unk_24;
-    void *unk_28;
-    void *unk_2c;
-    Sub02164420 *unk_30;
-    u8 pad34[0xc];
-    VObj *unk_40;
-} Obj02164420;
+#include "ov000/ObjLayouts.h"
+#include "ov000/MapCtx.h"
 
 extern "C" {
 
 extern char data_ov000_021cb8e0[];
 void func_0206e900(char *dst, const char *src);
-void func_ov000_021658e8(Obj02164420 *self);
+void func_ov000_021658e8(Lo021cb6b0 *self);
 
-void func_ov000_02164420(Obj02164420 *self) {
-    Sub02164420 *s = self->unk_30;
-    if (s != NULL && s->unk_cdc != NULL) {
-        Heap_FreeHi(s->unk_cdc);
-        s->unk_cdc = NULL;
+void func_ov000_02164420(Lo021cb6b0 *self) {
+    Ctx0216607c *s = self->unk_30;
+    if (s != NULL && s->anim != NULL) {
+        Heap_FreeHi(s->anim);
+        s->anim = NULL;
     }
     func_ov000_021658e8(self);
     if (self->unk_20 >= 1) {

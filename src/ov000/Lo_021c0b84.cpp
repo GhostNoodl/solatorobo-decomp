@@ -1,5 +1,6 @@
 #include "ov000/ModelPart.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/ActorMarker.h"
 #include "Main/Gfx/GfxMgr.h"
 
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
@@ -11,18 +12,18 @@ static inline void SetOfs(Model *m, s32 x, s32 y) {
     Model_SetPos(m, x << 12, (y - 0x58) << 12);
 }
 
-void func_ov000_021c0b84(Lo021cc938 *self) {
+void func_ov000_021c0b84(ActorMarker2D *self) {
     GfxSys *g;
     s32 x;
     s32 id;
-    if (self->unk_68 != 10) {
+    if (self->work.state != 10) {
         return;
     }
     g = data_02097d48;
-    x = ((LO_FX_MUL(0x1000 - self->unk_88, 0x40000) + 0xce000) >> 12) - 0x80;
-    self->unk_90->unk_150 = self->unk_80;
+    x = ((LO_FX_MUL(0x1000 - self->work.alpha, 0x40000) + 0xce000) >> 12) - 0x80;
+    self->unk_90->unk_150 = self->work.z;
     SetOfs(self->unk_90, x, 0);
-    self->unk_8c->unk_150 = self->unk_80;
+    self->unk_8c->unk_150 = self->work.z;
     SetOfs(self->unk_8c, x, 0);
     id = Gfx3DState_NextPolyId(g->unk_8b0) & 0x3f;
 

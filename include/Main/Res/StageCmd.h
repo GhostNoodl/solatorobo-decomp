@@ -285,25 +285,8 @@ static inline void *Stage_FindLight2(u16 id, u16 b) {
     return func_ov000_0218bddc(data_ov000_021ccd64, id, (u8)b);
 }
 
-typedef struct StageCamPoint {
-    /* 0x00 */ StageVec pos;
-    /* 0x0c */ u8 unk_0c[8];
-    /* 0x14 */ s16 x;
-    /* 0x16 */ s16 y;
-    /* 0x18 */ s16 z;
-    /* 0x1a */ u8 unk_1a[0xa];
-} StageCamPoint;
-
-typedef struct StageCamMgr {
-    /* 0x00 */ u8 unk_00[9];
-    /* 0x09 */ u8 cur;
-    /* 0x0a */ u8 unk_0a;
-    /* 0x0b */ u8 next;
-    /* 0x0c */ u8 unk_0c[0xc];
-    /* 0x18 */ StageCamPoint *points;
-} StageCamMgr;
-
-extern StageCamMgr *data_ov000_021ccd6c;
+struct FieldMgr; // ov000/FieldMgr.h
+extern struct FieldMgr *data_ov000_021ccd6c;
 extern s32 data_02097d78[5];
 // Camera request block inside the field state (data_ov000_021ccd54).
 typedef struct StageAng {

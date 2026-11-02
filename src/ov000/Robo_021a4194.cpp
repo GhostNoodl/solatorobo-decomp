@@ -2,12 +2,7 @@
 #include "ov000/ActorMgr.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
-
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 rest : 30;
-} W_021a4194;
+#include "ov000/ActorMarker.h"
 
 typedef struct {
     VecFx32 pos;
@@ -40,8 +35,6 @@ void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const vo
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
 void Target_Set(void *a, void *b);
 void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
-void func_ov000_021bd300(void *p);
-void func_ov000_021bd438(void *p, VecFx32 *v, s32 dy);
 
 static inline Actor *FindActor_021a4194(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -265,7 +258,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                 self->fsm->st = 0x32;
             }
             self->target = 0xffff;
-            LFLD(W_021a4194, self->unk_5c, 0).b1 = 0;
+            self->unk_5c->show = 0;
             func_ov000_021bd300(self->unk_5c);
             func_ov000_021bd438(self->unk_5c, (VecFx32 *)((u8 *)self + 0x70), 0);
         }

@@ -1,88 +1,66 @@
 #include "ov000/HeapScope.h"
 #include "nitro/mi.h"
+#include "ov000/ActorMarker.h"
+#include "Main/Gfx/Model.h"
 
-typedef struct {
-    u8 pad_00[0x6c];
-    u32 unk_6c;
-} Model021c0958;
-
-typedef struct Obj021c0958 {
-    u32 unk_00_0 : 1;
-    u32 unk_00_1 : 1;
-    u32 unk_00_2 : 1;
-    u32 unk_00_3 : 1;
-    u32 unk_00_4 : 28;
-    u8 pad_04[0x14];
-    Model021c0958 *unk_18;
-    Model021c0958 *unk_1c;
-    u8 pad_20[0x24];
-    s32 unk_44;
-    u8 pad_48[0x18];
-    void (*unk_60)(struct Obj021c0958 *self);
-    s32 unk_64;
-    s32 unk_68;
-    u8 pad_6c[0x14];
-    s32 unk_80;
-    s32 unk_84;
-    s32 unk_88;
-    Model021c0958 *unk_8c;
-    Model021c0958 *unk_90;
+struct Marker021c0958 : ActorMarker {
+    Model *unk_8c;
+    Model *unk_90;
     s32 unk_94;
-} Obj021c0958;
+};
 
 extern "C" {
 
-BOOL func_ov000_021bd374(Obj021c0958 *self, s32 len);
-void *func_ov000_021c04e4(void *self, void *src, void *out, u16 *count);
+void *func_ov000_021c04e4(ActorMarkerWork *work, void *src, void *out, u16 *count);
 void func_02041c34(void *model, s32 a, void *cb, void *arg);
 
-static inline BOOL Obj021c0958_Wait(Obj021c0958 *self) {
-    if (!(self->unk_00_1 == 1 ? TRUE : FALSE) || (self->unk_00_3 == 1 ? TRUE : FALSE)) {
+static inline BOOL Obj021c0958_Wait(Marker021c0958 *self) {
+    if (!(self->show == 1 ? TRUE : FALSE) || (self->change == 1 ? TRUE : FALSE)) {
         return TRUE;
     }
-    self->unk_68 = 10;
+    self->work.state = 10;
     return FALSE;
 }
 
-void func_ov000_021c0958(Obj021c0958 *self) {
-    switch (self->unk_68) {
+void func_ov000_021c0958(Marker021c0958 *self) {
+    switch (self->work.state) {
     case 5:
         HEAP_DELETE_MODEL(self->unk_8c);
         HEAP_DELETE_MODEL(self->unk_90);
         return;
     case 1:
         {
-            Model021c0958 *model = self->unk_18;
-            self->unk_90 = self->unk_1c;
-            self->unk_18 = NULL;
+            Model *model = self->mdl[4];
+            self->unk_90 = self->mdl[5];
+            self->mdl[4] = NULL;
             self->unk_8c = model;
-            self->unk_1c = NULL;
+            self->mdl[5] = NULL;
             self->unk_94 = 5;
-            model->unk_6c |= 0x200000;
-            self->unk_8c->unk_6c |= 0x80000;
-            self->unk_90->unk_6c |= 0x200000;
-            self->unk_90->unk_6c |= 0x80000;
-            func_02041c34(self->unk_90, 2, (void *)func_ov000_021c04e4, &self->unk_68);
+            model->flags |= 0x200000;
+            self->unk_8c->flags |= 0x80000;
+            self->unk_90->flags |= 0x200000;
+            self->unk_90->flags |= 0x80000;
+            func_02041c34(self->unk_90, 2, (void *)func_ov000_021c04e4, &self->work);
         }
-        self->unk_68 = 4;
+        self->work.state = 4;
     case 4:
-        self->unk_84 = 0;
-        self->unk_88 = 0;
+        self->work.fade = 0;
+        self->work.alpha = 0;
         if (Obj021c0958_Wait(self)) {
-            self->unk_68 = 5;
-            if (self->unk_60 != NULL) {
-                self->unk_60(self);
+            self->work.state = 5;
+            if (self->update != NULL) {
+                self->update(self);
             }
-            MI_CpuFill8(&self->unk_68, 0, 0x24);
-            self->unk_68 = 4;
-            self->unk_44 = -1;
-            self->unk_60 = NULL;
-            self->unk_64 = 0;
+            MI_CpuFill8(&self->work, 0, 0x24);
+            self->work.state = 4;
+            self->kind = -1;
+            self->update = NULL;
+            self->draw = 0;
             return;
         }
     case 10:
         if (!func_ov000_021bd374(self, 0x6000)) {
-            self->unk_80 = -0x1ccd;
+            self->work.z = -0x1ccd;
         }
         break;
     case 0:

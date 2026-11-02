@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov000/ActorMarker.h"
 
 typedef struct {
     u32 a : 8;
@@ -21,8 +22,7 @@ static inline s32 GlyphX(Glyph021c0d50 *g) {
     return x;
 }
 
-
-Glyph021c0d50 *func_ov000_021c0d50(u8 *self, u16 *cmd, Glyph021c0d50 *arr, u16 *count) {
+Glyph021c0d50 *func_ov000_021c0d50(ActorMarkerWork *work, u16 *cmd, Glyph021c0d50 *arr, u16 *count) {
     u16 n = *count;
     Glyph021c0d50 *last = &arr[n - 1];
     s32 off = 0;

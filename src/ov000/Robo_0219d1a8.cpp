@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Res/StageFlags.h"
+#include "ov000/ActorMarker.h"
 
 typedef struct {
     u8 pad_00[0x14];
@@ -44,8 +45,6 @@ void func_ov000_02198c8c(void *o, u16 id);
 void func_0203f364(void *o);
 void *func_ov000_021984c8(void *p);
 void *History_Init(void *p);
-void func_ov000_021bd198(void *p);
-BOOL func_ov000_021bd314(void *p, s32 a);
 void func_02062764(s32 a, s32 b);
 
 static inline void *NewObj44_0219d1a8(void) {
@@ -64,8 +63,8 @@ static inline void *NewObj40_0219d1a8(void) {
     return p;
 }
 
-static inline void *NewObj5c_0219d1a8(void) {
-    void *p = Heap_Alloc(0xa8);
+static inline ActorMarker *NewMarker_0219d1a8(void) {
+    ActorMarker *p = (ActorMarker *)Heap_Alloc(0xa8);
     if (p != NULL) {
         func_ov000_021bd198(p);
     }
@@ -169,14 +168,14 @@ void Robo021ca458_Start(Robo021ca458 *self) {
     self->unk_b34 = n;
     self->unk_54 = NewTrio0219d1a8();
     self->mode = 3;
-    self->unk_5c = NewObj5c_0219d1a8();
+    self->unk_5c = NewMarker_0219d1a8();
     func_ov000_021bd314(self->unk_5c, 0);
-    LFLD(s32, self->unk_5c, 0x4c) = 0x400;
-    self->unk_9b0 = NewObj5c_0219d1a8();
-    LFLD(s32, self->unk_9b0, 0x28) = 3;
+    self->unk_5c->rate = 0x400;
+    self->unk_9b0 = NewMarker_0219d1a8();
+    self->unk_9b0->unk_28[0] = 3;
     func_ov000_021bd314(self->unk_9b0, 6);
-    LFLD(s32, self->unk_9b0, 0x5c) = z >> 1;
-    self->unk_9b4 = NewObj5c_0219d1a8();
+    self->unk_9b0->height = z >> 1;
+    self->unk_9b4 = NewMarker_0219d1a8();
     func_ov000_021bd314(self->unk_9b4, 9);
     {
         s32 v = 1;

@@ -1,14 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
-#include "ov000/ObjLayouts.h"
-
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 1;
-    u32 b3 : 1;
-    u32 rest : 28;
-} F_021c14f4;
+#include "ov000/ActorMarker.h"
 
 typedef struct {
     u8 pad[0x428];
@@ -27,8 +19,6 @@ typedef struct {
     u8 pad[0x1ec];
     Cam_021c14f4 cam;
 } Gfx_021c14f4;
-
-typedef struct { u16 b0 : 5; u16 b5 : 1; u16 rest : 10; } B16_021c14f4;
 
 extern "C" {
 extern Gfx_021c14f4 *data_02097d48;
@@ -50,8 +40,6 @@ BOOL func_ov000_0218ffdc(void *m, void *res, u8 mode, s32 e);
 BOOL func_ov000_02190cb0(void *m, const char *name, s32 blend, s32 force);
 void func_ov000_021915a0(void *m);
 void func_ov000_02190a80(void *m, s32 a);
-BOOL func_ov000_021bd374(u8 *self, s32 r);
-void func_ov000_021bd474(u8 *self, VecFx32 *pos);
 
 static inline s32 Mul_021c14f4(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
@@ -63,10 +51,10 @@ static inline s32 CalcSub_021c14f4(CamSub_021c14f4 *s, s32 q) {
     return FX_Div(r - s->b, s->a);
 }
 
-void func_ov000_021c14f4(Lo021cc938 *self) {
+void func_ov000_021c14f4(ActorMarker3D *self) {
     BOOL ok = FALSE;
 
-    switch (self->unk_68) {
+    switch (self->work.state) {
     case 0:
     case 2:
     case 3:
@@ -78,7 +66,7 @@ void func_ov000_021c14f4(Lo021cc938 *self) {
     case 5: {
         u32 saved;
         LO_HEAP_PUSH(saved);
-        if ((void *)self->unk_8c != NULL) {
+        if (self->unk_8c != NULL) {
             void *p = self->unk_8c;
             if (p != NULL) {
                 func_ov000_0218ea20(p);
@@ -88,7 +76,7 @@ void func_ov000_021c14f4(Lo021cc938 *self) {
         }
         LO_HEAP_POP(saved);
         LO_HEAP_PUSH(saved);
-        if ((void *)self->unk_90 != NULL) {
+        if (self->unk_90 != NULL) {
             void *p = self->unk_90;
             if (p != NULL) {
                 func_ov000_0218fee4(p);
@@ -100,33 +88,33 @@ void func_ov000_021c14f4(Lo021cc938 *self) {
         break;
     }
     case 1: {
-        void *res = self->unk_04;
+        ActorRes *res = self->res;
         void *m;
-        u8 *model;
-        self->unk_04 = NULL;
-        self->unk_8c = (Model *)(res);
+        Model0218fe1c *model;
+        self->res = NULL;
+        self->unk_8c = res;
         m = Heap_Alloc(0xe8);
         if (m != NULL) {
             m = func_ov000_0218fe1c(m);
         }
-        self->unk_90 = (Model *)(m);
+        self->unk_90 = (Model0218fe1c *)m;
         func_ov000_0218ffdc(m, self->unk_8c, 0, 1);
         func_ov000_02190cb0(self->unk_90, data_ov000_021cc929, 0, 1);
-        LFLD(u16, self->unk_90, 0xb4) = 0;
-        model = (u8 *)self->unk_90;
-        NNS_G3dRenderObjSetInitFunc(model + 0x24, (void *)func_ov000_021c14dc);
-        LFLD(B16_021c14f4, model, 0xc2).b5 = 0;
+        self->unk_90->actor_id = 0;
+        model = self->unk_90;
+        NNS_G3dRenderObjSetInitFunc(model->renderObj, (void *)func_ov000_021c14dc);
+        model->clearInit = 0;
         func_ov000_021915a0(self->unk_90);
-        self->unk_68 = 4;
+        self->work.state = 4;
     }
     case 4:
-        self->unk_84 = 0;
-        self->unk_88 = 0;
-        if (!(LFLD(F_021c14f4, self, 0).b1 == 1 ? TRUE : ok)) {
+        self->work.fade = 0;
+        self->work.alpha = 0;
+        if (!(self->show == 1 ? TRUE : ok)) {
             return;
         }
-        if (!(LFLD(F_021c14f4, self, 0).b3 == 1 ? TRUE : FALSE)) {
-            self->unk_68 = 10;
+        if (!(self->change == 1 ? TRUE : FALSE)) {
+            self->work.state = 10;
         }
         break;
     case 10: {
@@ -137,20 +125,20 @@ void func_ov000_021c14f4(Lo021cc938 *self) {
         s32 b;
         s32 q;
         Cam_021c14f4 *g;
-        if (func_ov000_021bd374((u8 *)self, 0x6000)) {
+        if (func_ov000_021bd374(self, 0x6000)) {
             return;
         }
-        v.x = self->unk_50;
-        v.y = self->unk_54;
-        v.z = self->unk_58;
-        func_ov000_021bd474((u8 *)self, &v);
+        v.x = self->unk_50.x;
+        v.y = self->unk_50.y;
+        v.z = self->unk_50.z;
+        func_ov000_021bd474(self, &v);
         proj = &NNS_G3dGlb.projMtx;
         MTX_MultVec43(&v, &NNS_G3dGlb.cameraMtx, &out);
         out.z += 0x3000;
         a = Mul_021c14f4(out.z, -0x1000);
         b = LO_FX_MUL(LFLD(s32, proj, 0x28), out.z) + proj->_32;
         q = FX_Div(b + a, a << 1);
-        self->unk_80 = CalcSub_021c14f4(&data_02097d48->cam.sub, Mul_021c14f4(q, 0x2000));
+        self->work.z = CalcSub_021c14f4(&data_02097d48->cam.sub, Mul_021c14f4(q, 0x2000));
         func_ov000_02190a80(self->unk_90, 0x1000);
         break;
     }

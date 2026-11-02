@@ -1,8 +1,10 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/Model.h"
 #include "ov000/ModelPart.h"
+#include "ov000/MapCtx.h"
 
 extern "C" {
 
@@ -31,16 +33,7 @@ static inline Model *NewModel(char *nm) {
     return m;
 }
 
-struct Obj02164a94 {
-    u8 unk_00[0x24];
-    Model *unk_24;
-    Model *unk_28;
-    Model *unk_2c;
-    u8 unk_30[0x20];
-    s32 unk_50;
-};
-
-void func_ov000_02164a94(Obj02164a94 *self) {
+void func_ov000_02164a94(Lo021cb6b0 *self) {
     char buf[0x20];
     void *a;
     void *b;
@@ -100,17 +93,7 @@ void func_02040d94(void *res, void *a, s32 b, s32 c);
 void func_02040dd8(void *res, s32 a, s32 b);
 struct Out_52e4;
 struct Def_52e4;
-struct Obj02164c50 {
-    u8 unk_00[0x24];
-    Model *unk_24;
-    u8 unk_28[0x8];
-    u8 *unk_30;
-    u8 unk_34[0x4];
-    s32 unk_38;
-    s32 unk_3c;
-};
-
-void func_ov000_021652e4(Obj02164c50 *self, u8 *p, struct Out_52e4 *rec, const struct Def_52e4 *e);
+void func_ov000_021652e4(Lo021cb6b0 *self, Ctx0216607c *p, struct Out_52e4 *rec, const struct Def_52e4 *e);
 
 static inline void *LoModelGetCell(Model *model, int idx) {
     ModelRes *res = model->res;
@@ -133,8 +116,8 @@ static inline u8 *Next02164c50(u8 *e) {
     return q;
 }
 
-void func_ov000_02164c50(Obj02164c50 *self, u8 *arg) {
-    u8 *p;
+void func_ov000_02164c50(Lo021cb6b0 *self, u8 *arg) {
+    Ctx0216607c *p;
     PlttRes *m;
     u8 *buf;
     u16 base;
@@ -142,63 +125,63 @@ void func_ov000_02164c50(Obj02164c50 *self, u8 *arg) {
     OamAttr02164c50 *oa;
     self->unk_38 = 0;
     self->unk_3c = 0;
-    p = (u8 *)Heap_AllocHi(0xce0, 4);
+    p = (Ctx0216607c *)Heap_AllocHi(sizeof(Ctx0216607c), 4);
     self->unk_30 = p;
-    MI_CpuFill8(p, 0, 0xce0);
-    p[0] = 1;
-    LFLD(u16, p, 0x4) = LFLD(u16, arg, 0x8);
-    p[8] = arg[0xa];
-    p[2] = 0;
+    MI_CpuFill8(p, 0, sizeof(Ctx0216607c));
+    p->unk_00 = 1;
+    p->unk_04 = LFLD(u16, arg, 0x8);
+    p->count = arg[0xa];
+    p->markCount = 0;
     m = (PlttRes *)Heap_Alloc(sizeof(PlttRes));
     if (m != NULL) {
         func_02041218(m);
     }
-    LFLD(void *, p, 0xc8c) = m;
+    p->pltt = m;
     func_02040be0(m, self->unk_24);
-    buf = LFLD(u8 *, LFLD(void *, p, 0xc8c), 0x30);
-    LFLD(u16, p, 0xc94) = 2;
-    LFLD(u16, p, 0xc96) = 4;
+    buf = (u8 *)p->pltt->buf;
+    p->unk_c94[0] = 2;
+    p->unk_c94[1] = 4;
     {
-        u8 *r = LFLD(u8 *, p, 0xc8c);
-        LFLD(u16, r, 0x34) = 2;
-        LFLD(void *, r, 0x38) = p + 0xc94;
-        func_02040d14(LFLD(void *, p, 0xc8c), 0, LFLD(u16, r, 0x34) << 5);
+        PlttRes *r = p->pltt;
+        r->count = 2;
+        r->table = p->unk_c94;
+        func_02040d14(p->pltt, 0, r->count << 5);
     }
-    func_02040d94(LFLD(void *, p, 0xc8c), buf + 0x40, 0, 0x20);
-    func_02040d94(LFLD(void *, p, 0xc8c), buf + 0x80, 0x20, 0x20);
-    func_02040dd8(LFLD(void *, p, 0xc8c), 2, 1);
+    func_02040d94(p->pltt, buf + 0x40, 0, 0x20);
+    func_02040d94(p->pltt, buf + 0x80, 0x20, 0x20);
+    func_02040dd8(p->pltt, 2, 1);
 
     cell = LoModelGetCell(self->unk_24, 2);
     base = LFLD(u16, self->unk_24, 0xf4);
     oa = LFLD(OamAttr02164c50 *, cell, 0x4);
-    LFLD(s32, p, 0xc90) = LFLD(s32, self->unk_24->extPltt, 0x58);
-    *(OamAttr02164c50 *)(p + 0x2c) = *oa;
-    LFLD(OamW2_02164c50, p, 0x30).tile += base;
-    p[1]++;
+    p->palMap = self->unk_24->extPltt->maps[2];
+    *(OamAttr02164c50 *)&p->oams[0] = *oa;
+    p->oams[0].w1.tile += base;
+    p->oamUsed++;
 
     cell = LoModelGetCell(self->unk_24, 3);
     oa = LFLD(OamAttr02164c50 *, cell, 0x4);
-    *(OamAttr02164c50 *)(p + 0xc) = *oa;
-    LFLD(OamW2_02164c50, p, 0x10).tile += base;
+    *(OamAttr02164c50 *)&p->unk_0c = *oa;
+    p->unk_0c.w1.tile += base;
 
     cell = LoModelGetCell(self->unk_24, 0xc);
     oa = LFLD(OamAttr02164c50 *, cell, 0x4);
-    *(OamAttr02164c50 *)(p + 0x14) = *oa;
-    LFLD(OamW2_02164c50, p, 0x18).tile += base;
-    LFLD(OamW2_02164c50, p, 0x18).prio = LFLD(OamW2_02164c50, p, 0x10).prio;
-    LFLD(u16, p, 0x24) = base + LFLD(OamW2_02164c50, oa, 0x4).tile;
+    *(OamAttr02164c50 *)&p->unk_14 = *oa;
+    p->unk_14.w1.tile += base;
+    p->unk_14.w1.prio = p->unk_0c.w1.prio;
+    p->tiles[0] = base + LFLD(OamW2_02164c50, oa, 0x4).tile;
 
     cell = LoModelGetCell(self->unk_24, 0xd);
-    LFLD(u16, p, 0x26) = base + LFLD(OamW2_02164c50, LFLD(void *, cell, 0x4), 0x4).tile;
+    p->tiles[1] = base + LFLD(OamW2_02164c50, LFLD(void *, cell, 0x4), 0x4).tile;
 
     cell = LoModelGetCell(self->unk_24, 0xe);
-    LFLD(u16, p, 0x28) = base + LFLD(OamW2_02164c50, LFLD(void *, cell, 0x4), 0x4).tile;
+    p->tiles[2] = base + LFLD(OamW2_02164c50, LFLD(void *, cell, 0x4), 0x4).tile;
 
     cell = LoModelGetCell(self->unk_24, 0xb);
     oa = LFLD(OamAttr02164c50 *, cell, 0x4);
-    *(OamAttr02164c50 *)(p + 0x1c) = *oa;
-    LFLD(OamW2_02164c50, p, 0x20).prio = 2;
-    LFLD(OamW2_02164c50, p, 0x20).tile += base;
+    *(OamAttr02164c50 *)&p->unk_1c = *oa;
+    p->unk_1c.w1.prio = 2;
+    p->unk_1c.w1.tile += base;
 
     {
         u16 n1 = 0;
@@ -207,43 +190,42 @@ void func_ov000_02164c50(Obj02164c50 *self, u8 *arg) {
         s32 j;
         s32 k;
         u8 *e = arg + 0xc;
-        for (i = 0; i < p[8]; i++) {
+        for (i = 0; i < p->count; i++) {
             u8 *s;
             n1 += e[6];
             n2 += e[7];
             for (j = 0, s = e + 8; j < e[6]; j++, s += 0x14) {
-                p[9] = p[9] < s[0x10] ? s[0x10] : p[9];
+                p->slotCount = p->slotCount < s[0x10] ? s[0x10] : p->slotCount;
             }
             e = Next02164c50(e);
         }
-        p[9]++;
+        p->slotCount++;
         {
-            u32 sz = n2 * 0x14;
-            LFLD(void *, p, 0xc7c) = Heap_AllocHi(sz, 4);
-            MI_CpuFill8(LFLD(void *, p, 0xc7c), 0, sz);
+            u32 sz = n2 * sizeof(MapPart);
+            p->parts = (MapPart *)Heap_AllocHi(sz, 4);
+            MI_CpuFill8(p->parts, 0, sz);
         }
         {
-            u32 sz = n1 * 0x18;
-            LFLD(void *, p, 0xc80) = Heap_AllocHi(sz, 4);
-            MI_CpuFill8(LFLD(void *, p, 0xc80), 0, sz);
+            u32 sz = n1 * sizeof(Item0216607c);
+            p->items = (Item0216607c *)Heap_AllocHi(sz, 4);
+            MI_CpuFill8(p->items, 0, sz);
         }
-        LFLD(void *, p, 0xc84) = Heap_AllocHi(p[8] * 0x1c, 4);
-        MI_CpuFill8(LFLD(void *, p, 0xc84), 0, p[8] * 0x1c);
-        LFLD(void *, p, 0xc88) = Heap_AllocHi(p[9] << 3, 4);
-        MI_CpuFill8(LFLD(void *, p, 0xc88), 0, p[9] << 3);
-        for (k = 0; k < p[9]; k++) {
-            LFLD(void *, LFLD(u8 *, p, 0xc88) + k * 8, 4) = Heap_AllocHi(p[8] << 2, 4);
-            MI_CpuFill8(LFLD(void *, LFLD(u8 *, p, 0xc88) + k * 8, 4), 0, p[8] << 2);
+        p->nodes = (Node0216607c *)Heap_AllocHi(p->count * sizeof(Node0216607c), 4);
+        MI_CpuFill8(p->nodes, 0, p->count * sizeof(Node0216607c));
+        p->slots = (Slot0216607c *)Heap_AllocHi(p->slotCount * sizeof(Slot0216607c), 4);
+        MI_CpuFill8(p->slots, 0, p->slotCount * sizeof(Slot0216607c));
+        for (k = 0; k < p->slotCount; k++) {
+            p->slots[k].list = (Item0216607c **)Heap_AllocHi(p->count * sizeof(Item0216607c *), 4);
+            MI_CpuFill8(p->slots[k].list, 0, p->count * sizeof(Item0216607c *));
         }
     }
     {
         u8 i;
         u8 *e = arg + 0xc;
-        for (i = 0; i < p[8]; i++) {
-            u32 off = i * 0x1c;
-            LFLD(u32, LFLD(u8 *, p, 0xc84) + off, 0) = LFLD(u32, e, 0);
-            LFLD(u8, LFLD(u8 *, p, 0xc84) + off, 8) = i;
-            func_ov000_021652e4(self, p, (struct Out_52e4 *)(LFLD(u8 *, p, 0xc84) + off), (const struct Def_52e4 *)e);
+        for (i = 0; i < p->count; i++) {
+            p->nodes[i].flags = LFLD(u32, e, 0);
+            p->nodes[i].slot = i;
+            func_ov000_021652e4(self, p, (struct Out_52e4 *)&p->nodes[i], (const struct Def_52e4 *)e);
             e = Next02164c50(e);
         }
     }
@@ -378,10 +360,10 @@ typedef struct Out_52e4 {
     Hit_52e4 *hits;
 } Out_52e4;
 
-#define D_OAM_52e4(i) (&((Oam_52e4 *)((u8 *)d + 0x2c))[i])
-#define D_POS_52e4(i) (&((Pos_52e4 *)((u8 *)d + 0x65c))[i])
+#define D_OAM_52e4(i) (&((Oam_52e4 *)d->oams)[i])
+#define D_POS_52e4(i) (&((Pos_52e4 *)d->poss)[i])
 
-void func_ov000_021652e4(Obj02164c50 *self, u8 *d, Out_52e4 *o, const Def_52e4 *def) {
+void func_ov000_021652e4(Lo021cb6b0 *self, Ctx0216607c *d, Out_52e4 *o, const Def_52e4 *def) {
     const HitDef_52e4 *he;
     s32 col; Hit_52e4 *h; s32 j; s32 k; s32 rx;
     Oam_52e4 tmpl = *D_OAM_52e4(0);
@@ -407,8 +389,8 @@ void func_ov000_021652e4(Obj02164c50 *self, u8 *d, Out_52e4 *o, const Def_52e4 *
             tbl = data_ov000_021c9b69;
         }
     }
-    o->pos = D_POS_52e4(LFLD(u8, d, 1));
-    o->oam = D_OAM_52e4(LFLD(u8, d, 1));
+    o->pos = D_POS_52e4(d->oamUsed);
+    o->oam = D_OAM_52e4(d->oamUsed);
     o->n = 0;
     o->unk_04 = 0;
     o->w = def->w;
@@ -430,7 +412,7 @@ void func_ov000_021652e4(Obj02164c50 *self, u8 *d, Out_52e4 *o, const Def_52e4 *
             t = (tbl[ry * 3 + rx]);
             e->a01.y = (u16)q->y & 0x1ff;
             e->a23.tile += (t & ~0xc0) - 1;
-            e->a23.pal = LFLD(s8 *, d, 0xc90)[e->a23.pal];
+            e->a23.pal = d->palMap[e->a23.pal];
             if (t & 0x40) {
                 e->a01.hf = 1;
             }
@@ -440,9 +422,9 @@ void func_ov000_021652e4(Obj02164c50 *self, u8 *d, Out_52e4 *o, const Def_52e4 *
             o->n++;
         }
     }
-    LFLD(u8, d, 1) += o->n;
+    d->oamUsed += o->n;
     o->nPart = def->nPart;
-    o->parts = &LFLD(Part_52e4 *, d, 0xc7c)[LFLD(u8, d, 6)];
+    o->parts = &((Part_52e4 *)d->parts)[d->partUsed];
     pe = (const PartDef_52e4 *)def->hits;
     if (def->nHit != 0) {
         pe = (const PartDef_52e4 *)&def->hits[def->nHit];
@@ -452,9 +434,9 @@ void func_ov000_021652e4(Obj02164c50 *self, u8 *d, Out_52e4 *o, const Def_52e4 *
         s32 ax;
         s32 ay;
         u8 t;
-        p->pos = D_POS_52e4(LFLD(u8, d, 1));
+        p->pos = D_POS_52e4(d->oamUsed);
         pos = p->pos;
-        p->oam = D_OAM_52e4(LFLD(u8, d, 1));
+        p->oam = D_OAM_52e4(d->oamUsed);
         oam = p->oam;
         p->c[0] = pe->c[0];
         p->c[1] = pe->c[1];
@@ -477,7 +459,7 @@ void func_ov000_021652e4(Obj02164c50 *self, u8 *d, Out_52e4 *o, const Def_52e4 *
         oam->a01.x = (u16)pos->x;
         oam->a01.y = (u16)pos->y & 0x1ff;
         oam->a23.tile += (t & ~0xc0) - 1;
-        oam->a23.pal = LFLD(s8 *, d, 0xc90)[oam->a23.pal];
+        oam->a23.pal = d->palMap[oam->a23.pal];
         if (t & 0x40) {
             oam->a01.hf = 1;
         }
@@ -485,16 +467,16 @@ void func_ov000_021652e4(Obj02164c50 *self, u8 *d, Out_52e4 *o, const Def_52e4 *
             oam->a01.vf = 1;
         }
         p++;
-        LFLD(u8, d, 1) = LFLD(u8, d, 1) + 1;
+        d->oamUsed = d->oamUsed + 1;
         pe = (const PartDef_52e4 *)((u8 *)pe + 0xc);
     }
-    LFLD(u8, d, 6) += o->nPart;
+    d->partUsed += o->nPart;
     o->nHit = def->nHit;
-    h = &LFLD(Hit_52e4 *, d, 0xc80)[LFLD(u8, d, 7)];
+    h = &((Hit_52e4 *)d->items)[d->itemUsed];
     o->hits = h;
     he = def->hits;
     for (j = 0; j < o->nHit; j++) {
-        LFLD(Hit_52e4 **, LFLD(u8 *, d, 0xc88) + he->c * 8, 4)[o->slot] = h;
+        ((Hit_52e4 **)d->slots[he->c].list)[o->slot] = h;
         h->owner = o;
         h->a = he->a;
         h->b = he->b;
@@ -509,7 +491,7 @@ void func_ov000_021652e4(Obj02164c50 *self, u8 *d, Out_52e4 *o, const Def_52e4 *
         he += 1;
         h++;
     }
-    LFLD(u8, d, 7) += o->nHit;
+    d->itemUsed += o->nHit;
 }
 
 }

@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
 #include "nitro/mi.h"
+#include "ov000/ModelViewer.h"
 
 typedef struct {
     u8 unk_00[0x8];
@@ -20,27 +21,16 @@ extern u8 data_02092800[];
 void func_ov000_02190758(void *m, void *p, s32 a);
 BOOL func_ov000_021903b4(void *m);
 
-struct Obj02162a58 {
-    u8 unk_00[0x5d4];
-    VecFx32 unk_5d4;
-    u8 unk_5e0[0x64];
-    VecFx32 unk_644;
-    VecFx32 unk_650;
-    VecFx32 unk_65c;
-    u8 unk_668[0x70];
-    VecFx32 unk_6d8;
-};
-
-void func_ov000_02162a58(Obj02162a58 *self) {
-    NNS_G3dGlb.camPos = self->unk_644;
-    NNS_G3dGlb.camUp = self->unk_65c;
-    NNS_G3dGlb.camTarget = self->unk_650;
-    MTX_LookAt(&self->unk_644, &self->unk_65c, &self->unk_650, (MtxFx43 *)data_02092844);
+void func_ov000_02162a58(ModelViewer *self) {
+    NNS_G3dGlb.camPos = self->eye;
+    NNS_G3dGlb.camUp = self->up;
+    NNS_G3dGlb.camTarget = self->at;
+    MTX_LookAt(&self->eye, &self->up, &self->at, (MtxFx43 *)data_02092844);
     NNS_G3dGlb.flag &= ~0xe8;
-    MIi_CpuCopyFast((u8 *)self + 0x668, data_02092800, 0x40);
+    MIi_CpuCopyFast(&self->proj, data_02092800, 0x40);
     NNS_G3dGlb.flag &= ~0x50;
-    self->unk_5d4 = self->unk_6d8;
-    func_ov000_02190758((u8 *)self + 0x55c, (u8 *)self + 0x6e4, 0);
-    func_ov000_021903b4((u8 *)self + 0x55c);
+    self->model.trans = self->pos;
+    func_ov000_02190758(&self->model, self->rot, 0);
+    func_ov000_021903b4(&self->model);
 }
 }

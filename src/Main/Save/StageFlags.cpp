@@ -1,4 +1,5 @@
 #include "Main/Res/StageCmd.h"
+#include "ov000/FieldMgr.h"
 #include "Main/Res/ResLoader.h"
 
 extern "C" {
@@ -122,7 +123,7 @@ void func_0206c72c(StageFlags *f, StageColor *rgb) {
         f->color2.b = rgb->b;
     }
     {
-        u8 v = data_ov000_021ccd6c->unk_0a;
+        u8 v = data_ov000_021ccd6c->destExit;
         if (v != 0xff) {
             f->unk_138 = v;
         }

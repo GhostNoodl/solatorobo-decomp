@@ -1,6 +1,7 @@
 #include "ov000/ModelPart.h"
 #include "ov000/VObj.h"
 #include "Main/Gfx/GfxMgr.h"
+#include "ov000/ActorMarker.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
@@ -17,7 +18,7 @@ s32 func_02041b10(Model *model, void *tex);
 s32 func_02041bb0(Model *model, void *tex);
 void func_02041774(Model *model, s32 idx);
 void func_02041c34(Model *model, s32 idx, void *cb, void *arg);
-void *func_ov000_021c0d50(u8 *self, u16 *cmd, void *arr, u16 *count);
+void *func_ov000_021c0d50(ActorMarkerWork *work, u16 *cmd, void *arr, u16 *count);
 
 static inline void *Lo_GetPartTex(Model *model, s32 idx) {
     ModelRes *res = model->res;
@@ -36,15 +37,7 @@ static inline s32 Lo_GetHeight(Model *model, s32 idx) {
     return func_02041bb0(model, Lo_GetPartTex(model, idx));
 }
 
-struct Obj021c1180 {
-    u8 unk_00[0x68];
-    s32 unk_68;
-    u8 unk_6c[0xc];
-    s32 unk_78;
-    s32 unk_7c;
-    s32 unk_80;
-    u8 unk_84[0x4];
-    s32 unk_88;
+struct Marker021c1180 : ActorMarker {
     Model *unk_8c;
     VObj *unk_90;
     u8 unk_94[0x2];
@@ -52,19 +45,19 @@ struct Obj021c1180 {
     s32 unk_98;
 };
 
-void func_ov000_021c1180(Obj021c1180 *self) {
+void func_ov000_021c1180(Marker021c1180 *self) {
     s32 h;
     GfxSys *g;
     u8 a;
     s32 hw;
     ModelPos p;
-    if (self->unk_68 != 10) {
+    if (self->work.state != 10) {
         return;
     }
-    p.x = self->unk_78 >> 12;
+    p.x = self->work.x >> 12;
     g = data_02097d48;
-    p.y = self->unk_7c >> 12;
-    a = LO_FX_MUL(self->unk_88, 0x1e000) >> 12;
+    p.y = self->work.y >> 12;
+    a = LO_FX_MUL(self->work.alpha, 0x1e000) >> 12;
     hw = (Lo_GetWidth(self->unk_8c, self->unk_96) >> 1) - 10;
     h = Lo_GetHeight(self->unk_8c, self->unk_96);
     if (p.x + hw > 0x100) {
@@ -79,14 +72,14 @@ void func_ov000_021c1180(Obj021c1180 *self) {
     }
     if (self->unk_90 != NULL) {
         s32 w = self->unk_98;
-        LFLD(s32, self->unk_90, 0x70) = self->unk_80 + 0x20;
+        LFLD(s32, self->unk_90, 0x70) = self->work.z + 0x20;
         self->unk_90->vfunc_20(p.x - (w >> 1), p.y - 0x1c);
         LFLD(Obj021c1180Bits, self->unk_90, 4).id = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
         self->unk_90->vfunc_90();
     }
     Model_SetPos(self->unk_8c, (p.x - 0x80) << 12, (p.y - 0x60) << 12);
-    self->unk_8c->unk_150 = self->unk_80;
-    func_02041c34(self->unk_8c, self->unk_96, (void *)func_ov000_021c0d50, (u8 *)self + 0x68);
+    self->unk_8c->unk_150 = self->work.z;
+    func_02041c34(self->unk_8c, self->unk_96, (void *)func_ov000_021c0d50, &self->work);
     if (a < 0x1e) {
         MODEL_FLAGS(self->unk_8c)->unk_21 = 0;
     } else {

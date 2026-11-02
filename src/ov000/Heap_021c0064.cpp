@@ -1,74 +1,51 @@
 #include "ov000/HeapScope.h"
 #include "ov000/Vec.h"
+#include "ov000/ActorMarker.h"
+#include "Main/Gfx/Model.h"
 
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
-typedef struct {
-    u8 pad_00[0x6c];
-    u32 unk_6c;
-} Model021c0064;
-
-typedef struct {
-    u32 unk_00_0 : 1;
-    u32 unk_00_1 : 1;
-    u32 unk_00_2 : 1;
-    u32 unk_00_3 : 1;
-    u32 unk_00_4 : 28;
-    u8 pad_04[0x14];
-    Model021c0064 *unk_18;
-    u8 pad_1c[0xc];
-    s32 unk_28;
-    u8 pad_2c[0x24];
-    VecFx32 unk_50;
-    u8 pad_5c[0xc];
-    s32 unk_68;
-    u8 pad_6c[0x14];
-    s32 unk_80;
-    s32 unk_84;
-    s32 unk_88;
-    Model021c0064 *unk_8c;
+struct Marker021c0064 : ActorMarker {
+    Model *unk_8c;
     s32 unk_90;
     s32 unk_94;
     s32 unk_98;
     s32 unk_9c;
     s32 unk_a0;
     s32 unk_a4;
-} Obj021c0064;
+};
 
 extern "C" {
 
-BOOL func_ov000_021bd374(Obj021c0064 *self, s32 len);
-void func_ov000_021bd474(Obj021c0064 *self, VecFx32 *pos);
-
-static inline BOOL Obj021c0064_Wait(Obj021c0064 *self) {
-    if (!(self->unk_00_1 == 1 ? TRUE : FALSE) || (self->unk_00_3 == 1 ? TRUE : FALSE)) {
+static inline BOOL Obj021c0064_Wait(Marker021c0064 *self) {
+    if (!(self->show == 1 ? TRUE : FALSE) || (self->change == 1 ? TRUE : FALSE)) {
         return TRUE;
     }
-    self->unk_68 = 10;
+    self->work.state = 10;
     return FALSE;
 }
 
-void func_ov000_021c0064(Obj021c0064 *self) {
+void func_ov000_021c0064(Marker021c0064 *self) {
     VecFx32 pos;
-    switch (self->unk_68) {
+    switch (self->work.state) {
     case 5:
         HEAP_DELETE_MODEL(self->unk_8c);
         return;
     case 1:
         {
-            Model021c0064 *model = self->unk_18;
+            Model *model = self->mdl[4];
             self->unk_90 = 0;
-            self->unk_18 = NULL;
+            self->mdl[4] = NULL;
             self->unk_8c = model;
             self->unk_94 = 0;
             self->unk_98 = 0;
-            model->unk_6c |= 0x200000;
-            self->unk_8c->unk_6c |= 0x80000;
+            model->flags |= 0x200000;
+            self->unk_8c->flags |= 0x80000;
         }
-        self->unk_68 = 4;
+        self->work.state = 4;
     case 4:
-        self->unk_84 = 0;
-        self->unk_88 = 0;
+        self->work.fade = 0;
+        self->work.alpha = 0;
         if (Obj021c0064_Wait(self)) {
             return;
         }
@@ -86,7 +63,7 @@ void func_ov000_021c0064(Obj021c0064 *self) {
         }
         pos = self->unk_50;
         func_ov000_021bd474(self, &pos);
-        self->unk_80 = -0x1ccd;
+        self->work.z = -0x1ccd;
         break;
     case 0:
     case 2:

@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "ov000/ActorMarker.h"
 
 typedef struct {
     u32 b0 : 8;
@@ -22,7 +23,7 @@ typedef struct {
 
 extern "C" {
 
-Entry021c04e4 *func_ov000_021c04e4(void *self, Src021c04e4 *src, Entry021c04e4 *out, u16 *count) {
+Entry021c04e4 *func_ov000_021c04e4(ActorMarkerWork *work, Src021c04e4 *src, Entry021c04e4 *out, u16 *count) {
     u16 n = *count;
     Entry021c04e4 *e = &out[n - 1];
     if (src->type == 2) {

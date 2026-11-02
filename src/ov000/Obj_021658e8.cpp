@@ -1,57 +1,38 @@
 #include "ov000/HeapScope.h"
 #include "Main/Gfx/PlttRes.h"
-
-typedef struct {
-    u32 unk_00;
-    void *unk_04;
-} Ent021658e8;
-
-typedef struct {
-    u8 pad_00[9];
-    u8 count;
-    u8 pad_0a[0xc72];
-    void *unk_c7c;
-    void *unk_c80;
-    void *unk_c84;
-    Ent021658e8 *unk_c88;
-    void *unk_c8c;
-} Data021658e8;
-
-typedef struct {
-    u8 pad_00[0x30];
-    Data021658e8 *unk_30;
-} Obj021658e8;
+#include "ov000/ObjLayouts.h"
+#include "ov000/MapCtx.h"
 
 extern "C" {
 
-void func_ov000_021658e8(Obj021658e8 *self) {
+void func_ov000_021658e8(Lo021cb6b0 *self) {
     s32 i;
     if (self->unk_30 == NULL) {
         return;
     }
-    for (i = 0; i < self->unk_30->count; i++) {
-        if (self->unk_30->unk_c88[i].unk_04 != NULL) {
-            Heap_FreeHi(self->unk_30->unk_c88[i].unk_04);
-            self->unk_30->unk_c88[i].unk_04 = NULL;
+    for (i = 0; i < self->unk_30->slotCount; i++) {
+        if (self->unk_30->slots[i].list != NULL) {
+            Heap_FreeHi(self->unk_30->slots[i].list);
+            self->unk_30->slots[i].list = NULL;
         }
     }
-    if (self->unk_30->unk_c88 != NULL) {
-        Heap_FreeHi(self->unk_30->unk_c88);
-        self->unk_30->unk_c88 = NULL;
+    if (self->unk_30->slots != NULL) {
+        Heap_FreeHi(self->unk_30->slots);
+        self->unk_30->slots = NULL;
     }
-    if (self->unk_30->unk_c84 != NULL) {
-        Heap_FreeHi(self->unk_30->unk_c84);
-        self->unk_30->unk_c84 = NULL;
+    if (self->unk_30->nodes != NULL) {
+        Heap_FreeHi(self->unk_30->nodes);
+        self->unk_30->nodes = NULL;
     }
-    if (self->unk_30->unk_c80 != NULL) {
-        Heap_FreeHi(self->unk_30->unk_c80);
-        self->unk_30->unk_c80 = NULL;
+    if (self->unk_30->items != NULL) {
+        Heap_FreeHi(self->unk_30->items);
+        self->unk_30->items = NULL;
     }
-    if (self->unk_30->unk_c7c != NULL) {
-        Heap_FreeHi(self->unk_30->unk_c7c);
-        self->unk_30->unk_c7c = NULL;
+    if (self->unk_30->parts != NULL) {
+        Heap_FreeHi(self->unk_30->parts);
+        self->unk_30->parts = NULL;
     }
-    HEAP_DELETE(void *, self->unk_30->unk_c8c, func_02041278((struct PlttRes *)p); Heap_Free(p));
+    HEAP_DELETE(PlttRes *, self->unk_30->pltt, func_02041278(p); Heap_Free(p));
     if (self->unk_30 != NULL) {
         Heap_FreeHi(self->unk_30);
         self->unk_30 = NULL;

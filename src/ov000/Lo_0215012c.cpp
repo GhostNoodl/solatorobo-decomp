@@ -1,26 +1,27 @@
 #include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021ca9c4[];
 extern u8 data_0208ba70[];
 void *Heap_Alloc(u32 size);
-void func_0204c7d0(void *p);
+void func_0204c7d0(TextWin *win);
 
-#define SUB(o, off) VOBJ_SET_VTABLE((u8 *)(o) + (off), data_0208ba70); func_0204c7d0((u8 *)(o) + (off))
+#define TEXTWIN_INIT(win) VOBJ_SET_VTABLE(win, data_0208ba70); func_0204c7d0(win)
 
-VObj *Lo021ca9c4_New(void) {
-    VObj *o = (VObj *)Heap_Alloc(0x4b0);
+Lo021ca9c4 *Lo021ca9c4_New(void) {
+    Lo021ca9c4 *o = (Lo021ca9c4 *)Heap_Alloc(sizeof(Lo021ca9c4));
     if (o != NULL) {
         VOBJ_SET_VTABLE(o, data_ov000_021cc060);
         o->vfunc_58();
         VOBJ_SET_VTABLE(o, data_ov000_021ca9c4);
-        SUB(o, 0x60);
-        SUB(o, 0x118);
-        SUB(o, 0x1d0);
-        SUB(o, 0x288);
-        SUB(o, 0x340);
-        SUB(o, 0x3f8);
+        TEXTWIN_INIT(&o->text[0]);
+        TEXTWIN_INIT(&o->text[1]);
+        TEXTWIN_INIT(&o->text[2]);
+        TEXTWIN_INIT(&o->text[3]);
+        TEXTWIN_INIT(&o->text[4]);
+        TEXTWIN_INIT(&o->text[5]);
         o->vfunc_58();
     }
     o->vfunc_08(0xf, 0xb4);

@@ -22,12 +22,7 @@ static inline BOOL LoAnimValid(LoAnimC *p) {
     return TRUE;
 }
 
-struct Obj02165f94 {
-    u8 unk_00[0x30];
-    Ctx0216607c *unk_30;
-};
-
-u8 *func_ov000_02165f94(Obj02165f94 *self) {
+u8 *func_ov000_02165f94(Lo021cb6b0 *self) {
     LoAnimC *p = self->unk_30->anim;
     FieldState *g = data_ov000_021ccd54;
     if (!LoAnimValid(p)) {
@@ -51,16 +46,11 @@ u8 *func_ov000_02165f94(Obj02165f94 *self) {
     }
     p->rgb[0] = ((u8 *)g)[0xca];
     p->rgb[1] = ((u8 *)g)[0xcb];
-    p->rgb[2] = p->frames[p->idx][8];
+    p->rgb[2] = p->frames[p->idx]->slot;
     return p->rgb;
 }
 
-struct Obj0216607c {
-    u8 unk_00[0x30];
-    Ctx0216607c *unk_30;
-};
-
-Node0216607c *func_ov000_0216607c(Obj0216607c *self, Node0216607c *node, u8 *outIdx, BOOL deep) {
+Node0216607c *func_ov000_0216607c(Lo021cb6b0 *self, Node0216607c *node, u8 *outIdx, BOOL deep) {
     Ctx0216607c *ctx = self->unk_30;
     Item0216607c **lst;
     u8 i;
@@ -198,7 +188,7 @@ static inline u32 PalIdx6180(u8 *p) {
     return LFLD(Oam6180, p, 0x2c).w1.pal;
 }
 
-static inline u8 *FindNode6180(Obj0216607c *self, u8 c, u8 d) {
+static inline u8 *FindNode6180(Lo021cb6b0 *self, u8 c, u8 d) {
     u8 *q = (u8 *)self->unk_30;
     u8 n = q[8];
     u8 *e = LFLD(u8 *, q, 0xc84);
@@ -211,7 +201,7 @@ static inline u8 *FindNode6180(Obj0216607c *self, u8 c, u8 d) {
     return NULL;
 }
 
-static inline u8 *GetNode6180(Obj0216607c *self, u8 d) {
+static inline u8 *GetNode6180(Lo021cb6b0 *self, u8 d) {
     u8 *q = (u8 *)self->unk_30;
     if (d >= q[8]) {
         return NULL;
@@ -219,7 +209,7 @@ static inline u8 *GetNode6180(Obj0216607c *self, u8 d) {
     return LFLD(u8 *, q, 0xc84) + d * 0x1c;
 }
 
-void func_ov000_02166180(Obj0216607c *self) {
+void func_ov000_02166180(Lo021cb6b0 *self) {
     s16 y;
     u8 *e;
     Oam6180 *oams;
@@ -326,7 +316,7 @@ void func_ov000_02166180(Obj0216607c *self) {
     if (busy) {
         h = self->unk_30->anim;
         for (i = 0; i < h->cnt; i++) {
-            r = h->frames[i];
+            r = (u8 *)h->frames[i];
             off = (i == h->cnt - 1) ? 0 : 2;
             for (j = 0; j < r[0xa]; j++) {
                 o = LFLD(Oam6180 *, LFLD(u8 *, r, 0x14) + j * 0x14, 4);
@@ -337,7 +327,7 @@ void func_ov000_02166180(Obj0216607c *self) {
                 oams[j].w1.pal = (pal + off)[PalIdx6180(p)];
             }
         }
-        nd = func_ov000_0216607c(self, (Node0216607c *)h->frames[0], &j, TRUE);
+        nd = func_ov000_0216607c(self, h->frames[0], &j, TRUE);
         if (nd != NULL) {
             k = p[2]++;
             o = &((Oam6180 *)(p + 0x64c))[k];

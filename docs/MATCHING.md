@@ -8636,3 +8636,31 @@ Readability only; every function stays byte-identical (per-function code+reloc c
   - `021db2a4` (`Obj021eff74` menu close), `021d83f0` (`Obj021efe9c` state helpers), `021dacac` (window pos/slide), `021db64c` (`UiObj` window, `Obj021efe4c`, cue table typed as `Ov002SndCue[]`), `021e4b80` (OAM callback on `TexObj`), plus `021d22cc`, `021d0740`, `021d03c8`, `021d0b98`, `021ddf18`, `021def98`, `021de544`, `021d1970`, `021d7058`.
   - Left: `021e4b80` (stage/link edits changed code and were reverted), the event objects of `021d1e44`/`021e0420`, the item info records of `func_0206ef10`, and `__sinit_ov002_021ef1f0` (not touched).
 - **Renames:** none (fields and types only).
+
+### Round acL (ov000 records typed: the actor marker, text windows, message entries, the model viewer, the map work area; StageCmd users on FieldMgr)
+
+Readability only; every function stays byte-identical (per-function code+reloc compare of all 1906 objects against a baseline built first, then the full gate).
+
+**Counts** (src/ov000 + include/ov000; `void *self` in src+include (src))
+
+| | before | after |
+|---|---|---|
+| ov000 `LFLD(` | 931 | 789 |
+| ov000 `void *self` | 199 (197) | 172 (170) |
+
+- **StageCmd / FieldMgr.** `Main/Res/StageCmd.h` no longer has its own `StageCamPoint`/`StageCamMgr` view: it forward-declares `struct FieldMgr` and declares `data_ov000_021ccd6c` as `FieldMgr *`. `Stage.cpp` and `StageFlags.cpp` include `ov000/FieldMgr.h` and use `destExit`/`exit`/`curExit`/`exits[]` (`ox/oy/oz`) and `playerPos`. All ov000 includers of `StageCmd.h` compile with `FieldMgr.h` too (no includes were added where nothing uses it).
+- **Actor marker (new `ov000/ActorMarker.h`).**
+  - `ActorMarker` (0x8c base, allocated 0xa8; core in `Stub_021bd198` .. `ov000_021bd8ac`): flags, `res`, `mdl[8]`, `step`, `kind`/`nextKind`, `rate`, `height`, the `update`/`draw` callbacks and `ActorMarkerWork work` (0x68: state, pos, x/y/z, fade, alpha).
+  - `ActorMarker2D` (three `Model *` at 0x8c) and `ActorMarker3D` (`ActorRes *` + `Model0218fe1c *`) are the two tail forms; the kind files derive local `Marker*` structs from `ActorMarker` for their own tails. `Lo021cc938` is gone (its users are `ActorMarker2D`; `unk_8c->mtx` replaces the `+0x114` cast).
+  - `Actor::unk_5c` and `Robo021ca458::unk_9b0/unk_9b4` are `ActorMarker *`; the kind callbacks take `ActorMarkerWork *`; `HEAP_DELETE_MARKER` frees one. `St_021bd624` reads the kind table as `{update, draw}` pairs (`data_ov000_021cc938` is `021cc934 + 4`).
+  - `src/ov003/ov003_021d112c.cpp` needed one change for the retyped `unk_5c` (its `Ov003InObj5c` view is replaced by `ActorMarker`/`height`).
+- **Text windows of `Lo021ca9c4`.** `ObjLayouts.h` includes `Main/Gfx/TextWin.h`; `Lo021ca9c4` holds `TextWin text[6]` (built in place by `Lo021ca9c4_New`) and `unk_54` is `MsgEntryEx *`. `TextWin::str` (0x24) is a union with `const char *strPtr` (layout-neutral): the `buf` stores of `Lo_021502d8` only match as pointer stores, while the `u32` reads elsewhere keep `str`. `Lo_02150c38`, `Flags_021519fc`, `Lo_0215012c`, `Lo_02150cb0` use the members; `Lo_021501e4`/`Robo_021afaf8` dropped local `STD_` redeclarations that clashed with the header.
+- **Message entries (new `ov000/MsgEntry.h`).** `MsgEntry` (0x30, ctor `02153f90`, dtor `02153fd8`, `prev`/`next` list) and `MsgEntryEx` (+`vals[4]`, set by `0214dc20`); used by `Stub_02153f30`, `Lo_02153fd8`, `Lo_0214dc20`, `Lo_021502d8`, `Lo_02150cb0`, `Heap_021b8ecc`.
+- **Model viewer (new `ov000/ModelViewer.h`).** `ModelViewerRes` (0x558, two `ActorRes` pairs loaded by name) and `ModelViewer` (0x708: model, camera `eye/at/up`, `proj`, state, animation, `home`/`pos`/`rot`, `timer`); used by `Lo_02162b40`, `Lo_02162a20`, `Snd_02161fac`, `Lo_0216295c`, `Cam_021627ac`, `Cam_02162a58`, `Cam_02162124`.
+- **Map work area (`ov000/MapCtx.h`).** New `MapOam` (bitfield words), `MapPos`, `MapPart`; `Node0216607c`/`Item0216607c`/`LoAnimC` fields named; `Ctx0216607c` laid out up to `pltt`/`palMap`. `Lo021cb6b0::unk_30` is `Ctx0216607c *` and `unk_38` is split into `unk_38`/`unk_3c`. The `Lo021cb6b0` methods use it instead of local views: `Model_02164a94`, `MiniMap_021675ec`, `Lo_02164708`, `Lo_02165da0`, `Stub_02165d78`, `Heap_02164420`, `Area_02165e2c`, `Lo_02165f94`, `Obj_021658e8`, `Lo_02166be8`, `Lo_021645b8` (prototypes).
+- **Left.**
+  - `Slot_02161cd4` (the viewer dtor): typed forms change the code, as its comment says.
+  - `Hit_0219af3c` keeps `LFLD(s32, p, 0x98)` (a field of kind 1's own tail); `Lo_02162b40` keeps `ActorRes + 0x48`; the cell reads in `Model_02164a94`.
+  - The drafts `021512b4`, `02166180`, `021652e4` (scores unchanged) and `Misc_0214dcc4`; `Menu_021763c8`'s local views (round pmA).
+  - `TextWin_02167d64` keeps its view: its `unk_40` is a `TextWin *`, but `Lo021cb6b0::unk_40` is called as a `VObj` elsewhere.
+- **Renames:** none (fields and types only).

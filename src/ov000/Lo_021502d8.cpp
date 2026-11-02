@@ -5,6 +5,7 @@
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/Model.h"
 #include "ov000/SceneRes.h"
+#include "ov000/MsgEntry.h"
 
 extern "C" {
 
@@ -81,14 +82,12 @@ void *func_0204c08c(void *a, u16 id, void *out, s32 n);
 void func_0204c6bc(void *a, void *b, void *c, void *fn);
 void func_02040a98(char *buf, s32 n);
 SceneScript *func_ov000_021824d0(SceneStage *self, u16 index);
-void func_ov000_02153f90(void *p);
-void func_ov000_0214dc20(void *self, s32 *msg);
 s32 func_ov000_02151610(VObj *self, s32 a, s32 b, s32 c);
 void func_ov000_0215158c(void *self);
 
-static inline void LoTextInit(u8 *t) {
-    LFLD(s32, t, 0x4c) = Text_Measure(LFLD(s32, t, 0x28), LFLD(s32, t, 0x38), LFLD(s32, t, 0x24), t + 0x44, t + 0x48, LFLD(s8, t, 0x37) != 0);
-    data_02097ce0->unk_004 = LFLD(s32, t, 0x28);
+static inline void LoTextInit(TextWin *t) {
+    t->unk_4c = Text_Measure(t->font, t->spacing, t->str, &t->width, &t->height, (s8)t->unk_37 != 0);
+    data_02097ce0->unk_004 = t->font;
 }
 
 void func_ov000_02150338(Lo021ca9c4 *self) {
@@ -97,7 +96,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     const char *name;
         VObj *o;
     void *g;
-    u8 *p;
+    MsgEntryEx *p;
     void *out[2];
     char buf[0x100];
     self->unk_04 &= ~2;
@@ -202,96 +201,96 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
         t->posY = 0;
         t->posZ = -0x199a;
     }
-    p = (u8 *)Heap_Alloc(0x38);
+    p = (MsgEntryEx *)Heap_Alloc(sizeof(MsgEntryEx));
     if (p != NULL) {
         func_ov000_02153f90(p);
-        LFLD(u16, p, 0x30) = 0;
-        LFLD(u16, p, 0x32) = 0;
-        LFLD(u16, p, 0x34) = 0;
-        LFLD(u16, p, 0x36) = 0;
+        p->vals[0] = 0;
+        p->vals[1] = 0;
+        p->vals[2] = 0;
+        p->vals[3] = 0;
     }
     self->unk_54 = p;
     if (self->unk_42 != 0xffff) {
-        LFLD(u16, p, 6) = self->unk_42;
+        p->id = self->unk_42;
     } else {
-        LFLD(u16, self->unk_54, 6) = func_ov000_021824d0(&SceneCmd_Get()->stage, 0)->id;
+        self->unk_54->id = func_ov000_021824d0(&SceneCmd_Get()->stage, 0)->id;
     }
     {
-        void *r = func_0204c08c(data_ov000_021ccd24.unk_08->sub, LFLD(u16, self->unk_54, 6), out, 2);
+        void *r = func_0204c08c(data_ov000_021ccd24.unk_08->sub, self->unk_54->id, out, 2);
         func_0204c6bc(out[0], r, self->unk_54, (void *)func_ov000_0214dc20);
     }
 
-    self->unk_88 = 8;
-    self->unk_84 = func_02061e7c(LFLD(u16, self->unk_54, 6));
-    LoTextInit((u8 *)self + 0x60);
-    self->unk_d4 = 0x7fff;
-    self->unk_d6 = 0x67f;
-    self->unk_d8 = 0x9000;
-    self->unk_64 |= 0x40;
-    self->unk_64 |= 0x1400000;
-    self->unk_64 |= 0x40000004;
-    func_0204ca70((u8 *)self + 0x60);
+    self->text[0].font = 8;
+    self->text[0].str = func_02061e7c(self->unk_54->id);
+    LoTextInit(&self->text[0]);
+    self->text[0].color0 = 0x7fff;
+    self->text[0].color1 = 0x67f;
+    self->text[0].unk_78 = 0x9000;
+    self->text[0].flags |= 0x40;
+    self->text[0].flags |= 0x1400000;
+    self->text[0].flags |= 0x40000004;
+    func_0204ca70(&self->text[0]);
 
-    self->unk_150 = 3;
-    self->unk_140 = 8;
-    self->unk_13c = MsgRes_GetString(data_ov000_021ccd24.unk_08->sub, LFLD(u16, self->unk_54, 6));
-    LoTextInit((u8 *)self + 0x118);
-    self->unk_11c |= 0x40;
-    self->unk_11c |= 0x1000000;
-    self->unk_11c |= 0x40000004;
-    func_0204ca70((u8 *)self + 0x118);
+    self->text[1].spacing = 3;
+    self->text[1].font = 8;
+    self->text[1].str = (u32)MsgRes_GetString(data_ov000_021ccd24.unk_08->sub, self->unk_54->id);
+    LoTextInit(&self->text[1]);
+    self->text[1].flags |= 0x40;
+    self->text[1].flags |= 0x1000000;
+    self->text[1].flags |= 0x40000004;
+    func_0204ca70(&self->text[1]);
 
-    self->unk_1f8 = 8;
-    self->unk_1f4 = MsgRes_GetString(g, 0x115);
-    LoTextInit((u8 *)self + 0x1d0);
-    self->unk_244 = 0x7fff;
-    self->unk_246 = 0x67f;
-    self->unk_248 = 0x9000;
-    self->unk_1d4 |= 0x40;
-    self->unk_1d4 |= 0x1400000;
-    self->unk_1d4 |= 0x40000004;
-    func_0204ca70((u8 *)self + 0x1d0);
+    self->text[2].font = 8;
+    self->text[2].str = (u32)MsgRes_GetString(g, 0x115);
+    LoTextInit(&self->text[2]);
+    self->text[2].color0 = 0x7fff;
+    self->text[2].color1 = 0x67f;
+    self->text[2].unk_78 = 0x9000;
+    self->text[2].flags |= 0x40;
+    self->text[2].flags |= 0x1400000;
+    self->text[2].flags |= 0x40000004;
+    func_0204ca70(&self->text[2]);
 
-    if (LFLD(u16, self->unk_54, 0x32) != 0) {
-        func_02040a98(buf, LFLD(u16, self->unk_54, 0x32));
+    if (self->unk_54->vals[1] != 0) {
+        func_02040a98(buf, self->unk_54->vals[1]);
         STD_ConcatenateString(buf, data_ov000_021ca93e);
         STD_ConcatenateString(buf, (const char *)MsgRes_GetString(g, 0x3e));
     } else {
         STD_CopyString(buf, (const char *)out[1]);
     }
-    self->unk_2ac = buf;
-    self->unk_2b0 = 8;
-    LoTextInit((u8 *)self + 0x288);
-    self->unk_28c |= 0x40;
-    self->unk_28c |= 0x1000000;
-    self->unk_28c |= 0x4;
-    func_0204ca70((u8 *)self + 0x288);
+    self->text[3].strPtr = buf;
+    self->text[3].font = 8;
+    LoTextInit(&self->text[3]);
+    self->text[3].flags |= 0x40;
+    self->text[3].flags |= 0x1000000;
+    self->text[3].flags |= 0x4;
+    func_0204ca70(&self->text[3]);
 
-    self->unk_368 = 8;
-    self->unk_364 = MsgRes_GetString(g, 0x116);
-    LoTextInit((u8 *)self + 0x340);
-    self->unk_3b4 = 0x7fff;
-    self->unk_3b6 = 0x67f;
-    self->unk_3b8 = 0x9000;
-    self->unk_344 |= 0x40;
-    self->unk_344 |= 0x1400000;
-    self->unk_344 |= 0x40000004;
-    func_0204ca70((u8 *)self + 0x340);
+    self->text[4].font = 8;
+    self->text[4].str = (u32)MsgRes_GetString(g, 0x116);
+    LoTextInit(&self->text[4]);
+    self->text[4].color0 = 0x7fff;
+    self->text[4].color1 = 0x67f;
+    self->text[4].unk_78 = 0x9000;
+    self->text[4].flags |= 0x40;
+    self->text[4].flags |= 0x1400000;
+    self->text[4].flags |= 0x40000004;
+    func_0204ca70(&self->text[4]);
 
     {
-        u16 n = LFLD(u16, self->unk_54, 0x34);
+        u16 n = self->unk_54->vals[2];
         if (n == 0) {
             n = 1;
         }
         func_02040a98(buf, n);
     }
-    self->unk_420 = 8;
-    self->unk_41c = buf;
-    LoTextInit((u8 *)self + 0x3f8);
-    self->unk_3fc |= 0x40;
-    self->unk_3fc |= 0x1000000;
-    self->unk_3fc |= 0x40000004;
-    func_0204ca70((u8 *)self + 0x3f8);
+    self->text[5].font = 8;
+    self->text[5].strPtr = buf;
+    LoTextInit(&self->text[5]);
+    self->text[5].flags |= 0x40;
+    self->text[5].flags |= 0x1000000;
+    self->text[5].flags |= 0x40000004;
+    func_0204ca70(&self->text[5]);
 }
 
 }

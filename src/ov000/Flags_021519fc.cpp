@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     u32 unk_00;
@@ -109,21 +110,21 @@ BOOL func_ov000_02151af8(void) {
     return TRUE;
 }
 
-VObj *Lo021ca9c4_DtorDelete(VObj *self) {
+Lo021ca9c4 *Lo021ca9c4_DtorDelete(Lo021ca9c4 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021ca9c4);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x3f8), data_0208ba70);
-    VOBJ_AT(self, 0x3f8)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x340), data_0208ba70);
-    VOBJ_AT(self, 0x340)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x288), data_0208ba70);
-    VOBJ_AT(self, 0x288)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x1d0), data_0208ba70);
-    VOBJ_AT(self, 0x1d0)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x118), data_0208ba70);
-    VOBJ_AT(self, 0x118)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x60), data_0208ba70);
-    VOBJ_AT(self, 0x60)->vfunc_08();
+    VOBJ_SET_VTABLE(&self->text[5], data_0208ba70);
+    self->text[5].unk_vf08();
+    VOBJ_SET_VTABLE(&self->text[4], data_0208ba70);
+    self->text[4].unk_vf08();
+    VOBJ_SET_VTABLE(&self->text[3], data_0208ba70);
+    self->text[3].unk_vf08();
+    VOBJ_SET_VTABLE(&self->text[2], data_0208ba70);
+    self->text[2].unk_vf08();
+    VOBJ_SET_VTABLE(&self->text[1], data_0208ba70);
+    self->text[1].unk_vf08();
+    VOBJ_SET_VTABLE(&self->text[0], data_0208ba70);
+    self->text[0].unk_vf08();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
     Heap_Free(self);
@@ -150,21 +151,21 @@ BOOL func_ov000_02151bcc(StateOwner *self) {
     return TRUE;
 }
 
-VObj *Lo021ca9c4_Dtor(VObj *self) {
+Lo021ca9c4 *Lo021ca9c4_Dtor(Lo021ca9c4 *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021ca9c4);
     self->vfunc_5c();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x3f8), data_0208ba70);
-    VOBJ_AT(self, 0x3f8)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x340), data_0208ba70);
-    VOBJ_AT(self, 0x340)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x288), data_0208ba70);
-    VOBJ_AT(self, 0x288)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x1d0), data_0208ba70);
-    VOBJ_AT(self, 0x1d0)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x118), data_0208ba70);
-    VOBJ_AT(self, 0x118)->vfunc_08();
-    VOBJ_SET_VTABLE(VOBJ_AT(self, 0x60), data_0208ba70);
-    VOBJ_AT(self, 0x60)->vfunc_08();
+    VOBJ_SET_VTABLE(&self->text[5], data_0208ba70);
+    self->text[5].unk_vf08();
+    VOBJ_SET_VTABLE(&self->text[4], data_0208ba70);
+    self->text[4].unk_vf08();
+    VOBJ_SET_VTABLE(&self->text[3], data_0208ba70);
+    self->text[3].unk_vf08();
+    VOBJ_SET_VTABLE(&self->text[2], data_0208ba70);
+    self->text[2].unk_vf08();
+    VOBJ_SET_VTABLE(&self->text[1], data_0208ba70);
+    self->text[1].unk_vf08();
+    VOBJ_SET_VTABLE(&self->text[0], data_0208ba70);
+    self->text[0].unk_vf08();
     VOBJ_SET_VTABLE(self, data_ov000_021cc060);
     self->vfunc_5c();
     return self;

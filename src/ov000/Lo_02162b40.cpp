@@ -1,33 +1,21 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ModelViewer.h"
 
 extern "C" {
 
 int STD_CopyLString(void *dst, const void *src, s32 n);
 
-struct Obj02162b40 {
-    u8 unk_00[0xa];
-    u8 unk_0a;
-    u8 unk_0b[0x70];
-    u8 unk_7b;
-    u8 unk_7c[0x640];
-    u8 unk_6bc;
-    u8 unk_6bd[0x3];
-    s32 unk_6c0;
-    s32 unk_6c4;
-    s16 unk_6c8;
-};
-
-void func_ov000_02162b40(Obj02162b40 *self, const void *s0, const void *s1, const void *s2, const void *s3, s32 d, s32 e, s16 f) {
-    STD_CopyLString((u8 *)self + 0xb, s0, 0x20);
-    STD_CopyLString((u8 *)self + 0x2b, s1, 0x18);
-    STD_CopyLString((u8 *)self + 0x43, s2, 0x20);
-    STD_CopyLString((u8 *)self + 0x63, s3, 0x18);
-    self->unk_7b = e != 0 ? TRUE : FALSE;
-    self->unk_0a = 1;
-    self->unk_6bc = 1;
-    self->unk_6c0 = d;
-    self->unk_6c4 = e;
-    self->unk_6c8 = f;
+void func_ov000_02162b40(ModelViewer *self, const void *s0, const void *s1, const void *s2, const void *s3, s32 d, s32 e, s16 f) {
+    STD_CopyLString(self->res.mdlArc, s0, sizeof(self->res.mdlArc));
+    STD_CopyLString(self->res.mdlName, s1, sizeof(self->res.mdlName));
+    STD_CopyLString(self->res.anmArc, s2, sizeof(self->res.anmArc));
+    STD_CopyLString(self->res.anmName, s3, sizeof(self->res.anmName));
+    self->res.useMdlForB = e != 0 ? TRUE : FALSE;
+    self->res.reload = 1;
+    self->request = 1;
+    self->anim = (const char *)d;
+    self->frame = e;
+    self->speed = f;
 }
 
 }
@@ -38,44 +26,24 @@ extern "C" {
 
 void func_ov000_0218ec60(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0218edf0(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_02161fac(void *p);
+void func_ov000_02161fac(ModelViewerRes *res);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021911c8(void *a, s32 b);
 void func_ov000_021915a0(void *a);
 void func_ov000_02191870(void *a, void *b);
-u8 *func_ov000_02190a30(void *a, s32 b);
+AnimCtrl *func_ov000_02190a30(void *a, s32 b);
 void func_ov000_02191920(void *a, s32 b, s32 c, s32 d);
 BOOL func_02049244(void *out, s32 speed, const void *from, const void *to, s32 minDist);
 void VEC_Normalize(const VecFx32 *src, VecFx32 *dst);
 void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 
-typedef struct {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 1;
-    u16 b6 : 1;
-} CamFlags;
-
-typedef struct {
-    s16 unk_00;
-    u8 pad02[0x136];
-} Track;
-typedef struct {
-    u8 pad[0x78];
-    Track a[2];
-    Track b[2];
-} Slot;
-
-static inline void StopSlot(u8 *self, u8 i) {
+static inline void StopSlot(ModelViewerRes *res, u8 i) {
     if (i > 2) {
         return;
     }
-    Track *a = ((Slot *)self)->a;
-    Track *b = ((Slot *)self)->b;
+    ActorRes *a = res->a;
+    ActorRes *b = res->b;
     func_ov000_0218ec60(&a[i], 0, 0, 1, 0);
     func_ov000_0218edf0(&a[i], 0, 0, 1, 0);
     a[i].unk_00 = 0;
@@ -83,149 +51,133 @@ static inline void StopSlot(u8 *self, u8 i) {
     b[i].unk_00 = 0;
 }
 
-#define V(off) LFLD(VecFx32, self, off)
 
-struct Obj02162bd4 {
-    u8 unk_00[0x8];
-    u8 unk_08;
-    u8 unk_09;
-    u8 unk_0a[0x6ae];
-    s32 unk_6b8;
-    u8 unk_6bc;
-    u8 unk_6bd[0x3];
-    void *unk_6c0;
-    s32 unk_6c4;
-    s16 unk_6c8;
-    u8 unk_6ca[0x3a];
-    s32 unk_704;
-};
-
-void func_ov000_02162bd4(Obj02162bd4 *self) {
-    switch (self->unk_6b8) {
+void func_ov000_02162bd4(ModelViewer *self) {
+    switch (self->state) {
     case 0:
-        if (self->unk_6bc) {
-            self->unk_6b8 = 10;
-            self->unk_6bc = 0;
+        if (self->request) {
+            self->state = 10;
+            self->request = 0;
         }
         break;
     case 10:
-        LFLD(CamFlags, self, 0x61e).b0 = 0;
-        StopSlot((u8 *)self + 4, LFLD(u8, (u8 *)self + 4, 5));
-        self->unk_6b8++;
+        self->model.visible = 0;
+        StopSlot(&self->res, self->res.cur);
+        self->state++;
         break;
     case 11: {
-        u8 *ctrl;
+        AnimCtrl *ctrl;
 
-        func_ov000_02161fac((u8 *)self + 4);
-        if (self->unk_08 != 0x14) {
+        func_ov000_02161fac(&self->res);
+        if (self->res.state != 20) {
             break;
         }
-        self->unk_09 ^= 1;
-        func_ov000_0218ffdc((u8 *)self + 0x55c, (u8 *)self + 0x7c + self->unk_09 * 0x138, 0, 1);
-        LFLD(CamFlags, self, 0x61e).b6 = 1;
-        func_ov000_02190cb0((u8 *)self + 0x55c, self->unk_6c0, 0x1000, 0);
-        func_ov000_021911c8((u8 *)self + 0x55c, self->unk_6c8);
-        func_ov000_021915a0((u8 *)self + 0x55c);
-        LFLD(CamFlags, self, 0x61e).b4 = 0;
-        LFLD(CamFlags, self, 0x61e).b0 = 0;
-        if (LFLD(void *, (u8 *)self + 0x2ec + self->unk_09 * 0x138, 0x48) != NULL &&
-            LFLD(s32, LFLD(void *, (u8 *)self + 0x2ec + self->unk_09 * 0x138, 0x48), 0xc) != 0) {
-            func_ov000_02191870((u8 *)self + 0x55c, (u8 *)self + 0x2ec + self->unk_09 * 0x138);
-            ctrl = func_ov000_02190a30((u8 *)self + 0x55c, 3);
+        self->res.cur ^= 1;
+        func_ov000_0218ffdc(&self->model, &self->res.a[self->res.cur], 0, 1);
+        self->model.unk_c2_6 = 1;
+        func_ov000_02190cb0(&self->model, self->anim, 0x1000, 0);
+        func_ov000_021911c8(&self->model, self->speed);
+        func_ov000_021915a0(&self->model);
+        self->model.boxTest = 0;
+        self->model.visible = 0;
+        if (LFLD(void *, &self->res.b[self->res.cur], 0x48) != NULL &&
+            LFLD(s32, LFLD(void *, &self->res.b[self->res.cur], 0x48), 0xc) != 0) {
+            func_ov000_02191870(&self->model, &self->res.b[self->res.cur]);
+            ctrl = func_ov000_02190a30(&self->model, 3);
             if (ctrl != NULL) {
                 s32 v;
                 float f;
                 s32 frame;
-                func_ov000_02191920((u8 *)self + 0x55c, 0, 0x1000, 0);
-                v = self->unk_6c4;
+                func_ov000_02191920(&self->model, 0, 0x1000, 0);
+                v = self->frame;
                 if (v > 0) {
                     f = (float)(v << 12) + 0.5f;
                 } else {
                     f = (float)(v << 12) - 0.5f;
                 }
                 frame = (s32)f;
-                if (LFLD(u8 *, ctrl, 0) != NULL) {
+                if (ctrl->cur != NULL) {
                     if (frame >= 0) {
-                        LFLD(s32, LFLD(u8 *, ctrl, 0), 0) = frame;
+                        ctrl->cur->frame = frame;
                     } else {
-                        LFLD(s32, LFLD(u8 *, ctrl, 0), 0) = (LFLD(u16, LFLD(u8 *, LFLD(u8 *, ctrl, 0), 8), 4) << 12) - 1;
+                        ctrl->cur->frame = (LFLD(u16, ctrl->cur->res, 4) << 12) - 1;
                     }
                 }
-                LFLD(u8, ctrl, 0x111) |= 8;
+                ctrl->paused = 1;
             }
         } else {
-            func_ov000_02191870((u8 *)self + 0x55c, (u8 *)self + 0x7c + self->unk_09 * 0x138);
+            func_ov000_02191870(&self->model, &self->res.a[self->res.cur]);
         }
-        self->unk_6b8 = 0x14;
-        self->unk_6bc = 0;
+        self->state = 0x14;
+        self->request = 0;
     }
     case 20:
-        self->unk_704 = 0xc;
-        V(0x6d8) = V(0x6ec);
-        self->unk_6b8++;
+        self->timer = 0xc;
+        self->pos = self->unk_6ec;
+        self->state++;
     case 21:
-        if (self->unk_704 != 0) {
-            if (self->unk_6bc) {
-                self->unk_6b8 = 10;
-                self->unk_6bc = 0;
+        if (self->timer != 0) {
+            if (self->request) {
+                self->state = 10;
+                self->request = 0;
             }
-            self->unk_704--;
+            self->timer--;
             break;
         }
-        LFLD(CamFlags, self, 0x61e).b0 = 1;
-        if (func_02049244((u8 *)self + 0x6d8, 0x266, (u8 *)self + 0x6d8, (u8 *)self + 0x6cc, 0xcd)) {
-            self->unk_6b8++;
+        self->model.visible = 1;
+        if (func_02049244(&self->pos, 0x266, &self->pos, &self->home, 0xcd)) {
+            self->state++;
         }
         break;
     case 22:
-        V(0x6d8) = V(0x6cc);
-        if (self->unk_6bc) {
-            self->unk_6b8 = 0x1e;
-            self->unk_6bc = 0;
+        self->pos = self->home;
+        if (self->request) {
+            self->state = 0x1e;
+            self->request = 0;
         }
         break;
     case 30: {
         VecFx32 d;
-        d.x = V(0x6f8).x - V(0x6cc).x;
-        d.y = V(0x6f8).y - V(0x6cc).y;
-        d.z = V(0x6f8).z - V(0x6cc).z;
+        d.x = self->unk_6f8.x - self->home.x;
+        d.y = self->unk_6f8.y - self->home.y;
+        d.z = self->unk_6f8.z - self->home.z;
         VEC_Normalize(&d, &d);
-        VEC_MultAdd(0xcd, &d, &V(0x6cc), &V(0x6d8));
-        self->unk_6b8++;
+        VEC_MultAdd(0xcd, &d, &self->home, &self->pos);
+        self->state++;
         break;
     }
     case 31: {
         VecFx32 d;
-        d.x = V(0x6d8).x - V(0x6cc).x;
-        d.y = V(0x6d8).y - V(0x6cc).y;
-        d.z = V(0x6d8).z - V(0x6cc).z;
-        VEC_MultAdd(0x14cd, &d, &V(0x6cc), &V(0x6d8));
-        if ((s32)(((s64)d.x * (V(0x6f8).x - V(0x6d8).x) + (s64)d.y * (V(0x6f8).y - V(0x6d8).y) + (s64)d.z * (V(0x6f8).z - V(0x6d8).z) + 0x800) >> 12) <= 0) {
-            self->unk_6b8 = 10;
+        d.x = self->pos.x - self->home.x;
+        d.y = self->pos.y - self->home.y;
+        d.z = self->pos.z - self->home.z;
+        VEC_MultAdd(0x14cd, &d, &self->home, &self->pos);
+        if ((s32)(((s64)d.x * (self->unk_6f8.x - self->pos.x) + (s64)d.y * (self->unk_6f8.y - self->pos.y) + (s64)d.z * (self->unk_6f8.z - self->pos.z) + 0x800) >> 12) <= 0) {
+            self->state = 10;
         }
         break;
     }
     case 40: {
         VecFx32 d;
-        d.x = V(0x6f8).x - V(0x6cc).x;
-        d.y = V(0x6f8).y - V(0x6cc).y;
-        d.z = V(0x6f8).z - V(0x6cc).z;
+        d.x = self->unk_6f8.x - self->home.x;
+        d.y = self->unk_6f8.y - self->home.y;
+        d.z = self->unk_6f8.z - self->home.z;
         VEC_Normalize(&d, &d);
-        VEC_MultAdd(0xcd, &d, &V(0x6cc), &V(0x6d8));
-        self->unk_6b8++;
+        VEC_MultAdd(0xcd, &d, &self->home, &self->pos);
+        self->state++;
         break;
     }
     case 41: {
         VecFx32 d;
-        d.x = V(0x6d8).x - V(0x6cc).x;
-        d.y = V(0x6d8).y - V(0x6cc).y;
-        d.z = V(0x6d8).z - V(0x6cc).z;
-        VEC_MultAdd(0x14cd, &d, &V(0x6cc), &V(0x6d8));
-        if ((s32)(((s64)d.x * (V(0x6f8).x - V(0x6d8).x) + (s64)d.y * (V(0x6f8).y - V(0x6d8).y) + (s64)d.z * (V(0x6f8).z - V(0x6d8).z) + 0x800) >> 12) > 0) {
+        d.x = self->pos.x - self->home.x;
+        d.y = self->pos.y - self->home.y;
+        d.z = self->pos.z - self->home.z;
+        VEC_MultAdd(0x14cd, &d, &self->home, &self->pos);
+        if ((s32)(((s64)d.x * (self->unk_6f8.x - self->pos.x) + (s64)d.y * (self->unk_6f8.y - self->pos.y) + (s64)d.z * (self->unk_6f8.z - self->pos.z) + 0x800) >> 12) > 0) {
             break;
         }
-        LFLD(CamFlags, self, 0x61e).b0 = 0;
-        self->unk_6b8++;
+        self->model.visible = 0;
+        self->state++;
         break;
     }
     case 42: // empty case; moves the compare-tree pivot to 30

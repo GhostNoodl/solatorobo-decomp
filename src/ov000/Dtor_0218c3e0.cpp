@@ -2,7 +2,7 @@
 #include "ov000/VObj.h"
 #include "ov000/HeapScope.h"
 #include "ov000/ActorBase.h"
-
+#include "ov000/ActorMarker.h"
 
 #define HEAP_FREE(field)                                  \
     {                                                     \
@@ -22,7 +22,6 @@ void *func_ov000_0218ea20(void *p);
 void func_0203f2b8(void *p);
 void func_0203f920(void *p);
 void HitMesh_Detach(void *p);
-void func_ov000_021bd228(void *p);
 
 // Shared body of the three destructor variants below.
 #define DTOR_0218C3E0_BODY(self)                           \
@@ -50,7 +49,7 @@ void func_ov000_021bd228(void *p);
         func_0203f920((self)->hitMesh);                    \
         HEAP_DELETE_FN((self)->hitMesh, HitMesh_Detach);   \
     }                                                      \
-    HEAP_DELETE_FN((self)->unk_5c, func_ov000_021bd228);   \
+    HEAP_DELETE_MARKER((self)->unk_5c);                    \
     }
 
 Actor *Actor_Dtor(Actor *self) {

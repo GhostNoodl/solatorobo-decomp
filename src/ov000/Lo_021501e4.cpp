@@ -6,17 +6,15 @@ extern "C" {
 
 extern u8 data_0208b318[];
 extern u8 data_0208bf54[];
-extern u8 data_ov000_021ca8f7[];
-extern u8 data_ov000_021ca8ff[];
+extern char data_ov000_021ca8f7[];
+extern char data_ov000_021ca8ff[];
 extern u8 data_ov000_021ca917[];
 extern s32 data_ov000_021ca8d8;
 void func_0205a6a0(void *p);
-void *STD_CopyString(void *buf, const void *s);
-void *STD_ConcatenateString(void *buf, const void *s);
 void func_0205a840(void *p, void *buf, const void *s);
 
 void func_ov000_021501e4(Lo021ca9c4 *self) {
-    u8 buf[0x20];
+    char buf[0x20];
     VObj *obj;
     if (self->unk_42 == 0xffff) {
         obj = (VObj *)Heap_Alloc(0xc4);

@@ -7,21 +7,9 @@
 #include "Main/Gfx/Model.h"
 #include "ov000/ModelPart.h"
 #include "ov000/FieldMgr.h"
+#include "ov000/MapCtx.h"
 // Mini-map markers: quest targets, visible actors and point markers.
 #define ABS021675ec(x) ((x) < 0 ? -(x) : (x))
-
-typedef struct {
-    u32 y : 8;
-    u32 a0_8 : 6;
-    u32 shape : 2;
-    u32 x : 9;
-    u32 a1_25 : 5;
-    u32 size : 2;
-    u32 tile : 10;
-    u32 prio : 2;
-    u32 pal : 4;
-    u32 a2 : 16;
-} Oam021675ec;
 
 typedef struct {
     s32 x;
@@ -95,9 +83,9 @@ static inline BOOL ToMap021675ec(Pos021675ec *m, s32 x, s32 z, const Ctr021675ec
     return TRUE;
 }
 
-static inline void SetPos021675ec(Oam021675ec *e, u16 x, u16 y) {
-    e->x = x;
-    e->y = y & 0x1ff;
+static inline void SetPos021675ec(MapOam *e, u16 x, u16 y) {
+    e->w0.x = x;
+    e->w0.y = y & 0x1ff;
 }
 
 typedef struct {
@@ -113,12 +101,7 @@ static inline BOOL Bit2_021675ec(Robo021ca458 *pl) {
     return pl->unk_b28_2 == 1 ? TRUE : FALSE;
 }
 
-struct Obj021675ec {
-    u8 unk_00[0x24];
-    Model *unk_24;
-};
-
-void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
+void func_ov000_021675ec(Lo021cb6b0 *self, Ctx0216607c *w) {
     u16 k;
     VecFx32 pos;
     FieldProp *o;
@@ -145,15 +128,15 @@ void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
     Ctr021675ec c(pl->pos.x, pl->pos.z);
     Pos021675ec m;
     ents = (Ent021675ec *)data_0214a424->slots;
-    w[2] = 0;
+    w->markCount = 0;
     for (i = 0; i < 2; i++) {
         if (ents[i].kind == 2) {
             u16 id = ents[i].id;
             if (func_ov000_0218c040(data_ov000_021ccd64, 1, &pos, id >> 12, id) && ToMap021675ec(&m, pos.x, pos.z, &c)) {
-                u8 n = w[2]++;
-                Oam021675ec *e = &((Oam021675ec *)(w + 0x64c))[n];
-                LFLD(u32, e, 0) = LFLD(u32, w, 0x1c);
-                LFLD(u32, e, 4) = LFLD(u32, w, 0x20);
+                u8 n = w->markCount++;
+                MapOam *e = &w->marks[n];
+                e->w0.raw = w->unk_1c.w0.raw;
+                e->w1.raw = w->unk_1c.w1.raw;
                 m.x = (m.x >> 12) + 0x7c;
                 m.y = (m.y >> 12) + 0x54;
                 if (m.x < 8 || m.x > 0xf8 || m.y < 8 || m.y > 0xb8) {
@@ -161,18 +144,18 @@ void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
                 } else {
                     SetPos021675ec(e, m.x, m.y);
                 }
-                LFLD(u32, e, 0) = (LFLD(u32, e, 0) & ~0xc000c000) | 0x40000000;
-                e->pal = LFLD(s8 *, w, 0xc90)[((u32)(u16)LFLD(u32, w, 0x30) >> 12) - 2];
+                e->w0.raw = (e->w0.raw & ~0xc000c000) | 0x40000000;
+                e->w1.pal = w->palMap[w->oams[0].w1.pal - 2];
             }
         }
     }
-    if (w[2] != 0 && LFLD(s32, w, 0xcd8) > 0x800) {
-        NNS_G2dEntryOamManagerOam(oam, w + 0x64c, w[2]);
+    if (w->markCount != 0 && w->unk_cd8 > 0x800) {
+        NNS_G2dEntryOamManagerOam(oam, w->marks, w->markCount);
     }
-    if (pl->unk_b28_0 == 0 && !Bit2_021675ec(pl) && w[0] == 0) {
+    if (pl->unk_b28_0 == 0 && !Bit2_021675ec(pl) && w->unk_00 == 0) {
         LFLD(Pos021675ec, self->unk_24, 0x10c) = LFLD(const Pos021675ec, data_ov000_021c9a9c, 0x74);
         Model_PlayPartF(self->unk_24, 3, 0);
-        NNS_G2dEntryOamManagerOam(oam, w + 0x14, 1);
+        NNS_G2dEntryOamManagerOam(oam, &w->unk_14, 1);
     }
     for (o = data_ov000_021ccd6c->head; o != NULL; o = o->next) {
         if (Vis021675ec(o)) {

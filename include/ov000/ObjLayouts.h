@@ -13,7 +13,7 @@
 #include "ov000/Task.h"
 
 struct Model;
-struct TextWin;
+#include "Main/Gfx/TextWin.h"
 struct Lo021cb5a8;
 struct Lo021caac8;
 struct Lo021cad50;
@@ -126,8 +126,8 @@ struct Robo021ca458 : public Actor {
     u16 unk_9aa;
     u16 unk_9ac;
     u16 unk_9ae;
-    void *unk_9b0;
-    void *unk_9b4;
+    struct ActorMarker *unk_9b0; // markers (ov000/ActorMarker.h)
+    struct ActorMarker *unk_9b4;
     u8 unk_9b8[0x24];
     VecFx32 unk_9dc;
     u8 unk_9e8[0x60];
@@ -334,58 +334,10 @@ struct Lo021ca9c4 : public Task {
     Model *unk_48;
     Lo021cb5a8 *unk_4c;
     Lo021caac8 *unk_50;
-    void *unk_54;
+    struct MsgEntryEx *unk_54; // ov000/MsgEntry.h
     Lo021cad50 *unk_58;
     s32 unk_5c;
-    u32 unk_60;  // bit fields, read through per-file views
-    u32 unk_64;
-    u8 unk_68[0x1c];
-    s32 unk_84;
-    s32 unk_88;
-    u8 unk_8c[0x48];
-    u16 unk_d4;
-    u16 unk_d6;
-    s32 unk_d8;
-    u8 unk_dc[0x3c];
-    u32 unk_118;  // bit fields, read through per-file views
-    u32 unk_11c;
-    u8 unk_120[0x1c];
-    void *unk_13c;
-    s32 unk_140;
-    u8 unk_144[0xc];
-    s32 unk_150;
-    u8 unk_154[0x7c];
-    u32 unk_1d0;  // bit fields, read through per-file views
-    u32 unk_1d4;
-    u8 unk_1d8[0x1c];
-    void *unk_1f4;
-    s32 unk_1f8;
-    u8 unk_1fc[0x48];
-    u16 unk_244;
-    u16 unk_246;
-    s32 unk_248;
-    u8 unk_24c[0x3c];
-    u32 unk_288;  // bit fields, read through per-file views
-    u32 unk_28c;
-    u8 unk_290[0x1c];
-    char *unk_2ac;
-    s32 unk_2b0;
-    u8 unk_2b4[0x8c];
-    u32 unk_340;  // bit fields, read through per-file views
-    u32 unk_344;
-    u8 unk_348[0x1c];
-    void *unk_364;
-    s32 unk_368;
-    u8 unk_36c[0x48];
-    u16 unk_3b4;
-    u16 unk_3b6;
-    s32 unk_3b8;
-    u8 unk_3bc[0x3c];
-    u32 unk_3f8;  // bit fields, read through per-file views
-    u32 unk_3fc;
-    u8 unk_400[0x1c];
-    char *unk_41c;
-    s32 unk_420;
+    TextWin text[6]; // built in place by Lo021ca9c4_New (func_0204c7d0, vtable data_0208ba70)
 };
 
 // Vtable data_ov000_021caa44; methods in 6 files, Lo_0214e7f0.cpp .. Lo_0214f9ec.cpp.
@@ -545,9 +497,10 @@ struct Lo021cb6b0 : public VObj {
     Model *unk_24;
     Model *unk_28;
     Model *unk_2c;
-    u8 *unk_30;
-    s32 unk_34;
-    u8 unk_38[0x8];
+    struct Ctx0216607c *unk_30; // the map work area (ov000/MapCtx.h)
+    s32 unk_34; // state (func_ov000_02166be8)
+    s32 unk_38;
+    s32 unk_3c; // unk_38 / 0x1000, clamped to 0..0x1000
     VObj *unk_40;
     u8 unk_44[0x8];
     s32 unk_4c;
@@ -611,30 +564,6 @@ struct Lo021cb894 : public ObjBase021cac0c_021cb6f0 {
     s32 unk_b0;
     s32 unk_b4;
     s32 unk_b8;
-};
-
-// Vtable data_ov000_021cc938; methods in 9 files, Lo_021befc0.cpp .. ov000_021c14f4.cpp.
-struct Lo021cc938 {
-    u8 unk_00[0x4];
-    void *unk_04;
-    u8 unk_08[0x3c];
-    s32 unk_44;
-    u8 unk_48[0x8];
-    s32 unk_50;
-    s32 unk_54;
-    s32 unk_58;
-    u8 unk_5c[0xc];
-    s32 unk_68;
-    u8 unk_6c[0xc];
-    s32 unk_78;
-    s32 unk_7c;
-    s32 unk_80;
-    s32 unk_84;
-    s32 unk_88;
-    Model *unk_8c;
-    Model *unk_90;
-    Model *unk_94;
-    s32 unk_98;
 };
 
 // Vtable data_ov000_021cca10; methods in Hud_021c2450.cpp, Hud_021c28cc.cpp.

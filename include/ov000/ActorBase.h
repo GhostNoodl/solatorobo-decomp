@@ -142,7 +142,7 @@ public:
     };
     void *unk_54;
     void *hitMesh; // HitMesh (HitMesh_Link / func_0203f920)
-    void *unk_5c;
+    struct ActorMarker *unk_5c; // marker over the actor (ov000/ActorMarker.h)
     union {
         void *unk_60;
         // set by a spawner before the first update: replaces the def record that the ov003 shot
