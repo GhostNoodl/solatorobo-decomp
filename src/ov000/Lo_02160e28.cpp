@@ -1,5 +1,4 @@
 #include "types.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     u32 a : 8;

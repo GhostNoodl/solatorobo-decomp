@@ -1,72 +1,44 @@
-#include "types.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
+#include "ov000/Group.h"
 
 extern "C" {
 
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 rest : 5;
-} Bits0218b420;
-
-struct Obj0218b420 {
-    u8 unk_00[0x44];
-    s32 unk_44;
-    s32 unk_48;
-    s32 unk_4c;
-    s32 unk_50;
-    s32 unk_54;
-    s32 unk_58;
-    s32 unk_5c;
-    s32 unk_60;
-    s32 unk_64;
-    s32 unk_68;
-    s32 unk_6c;
-    s32 unk_70;
-    s32 unk_74;
-    s32 unk_78;
-    s32 unk_7c;
-    s32 unk_80;
-    u8 unk_84[0x1e];
-    Bits0218b420 unk_a2;
-};
-
-void func_ov000_0218b420(Obj0218b420 *self) {
+// Rebuilds the spawn and despawn volumes around the node from the ranges and heights; without
+// useRange / useHeight the spawn volume is unlimited on those axes.
+void func_ov000_0218b420(GroupNode *self) {
     s32 na, a, nb, b, c, nc, y;
-    if (!self->unk_a2.b2) {
+    if (!self->flags.useHeight) {
         na = 0x80000000;
         a = 0x7fffffff;
     } else {
-        a = self->unk_7c;
+        a = self->spawnHeight;
         na = -a;
     }
-    if (!self->unk_a2.b1) {
+    if (!self->flags.useRange) {
         nb = 0x80000000;
         b = 0x7fffffff;
     } else {
-        b = self->unk_74;
+        b = self->spawnRange;
         nb = -b;
     }
-    self->unk_48 = na;
-    self->unk_54 = a;
-    self->unk_44 = nb;
-    if (!self->unk_a2.b2) {
+    self->spawnMin.y = na;
+    self->spawnMax.y = a;
+    self->spawnMin.x = nb;
+    if (!self->flags.useHeight) {
         nc = 0x80000000;
         c = 0x7fffffff;
     } else {
-        c = self->unk_80;
+        c = self->despawnHeight;
         nc = -c;
     }
-    y = self->unk_78;
-    self->unk_60 = nc;
-    self->unk_4c = nb;
-    self->unk_50 = b;
-    self->unk_58 = b;
-    self->unk_5c = -y;
-    self->unk_64 = -y;
-    self->unk_68 = y;
-    self->unk_6c = c;
-    self->unk_70 = y;
+    y = self->despawnRange;
+    self->despawnMin.y = nc;
+    self->spawnMin.z = nb;
+    self->spawnMax.x = b;
+    self->spawnMax.z = b;
+    self->despawnMin.x = -y;
+    self->despawnMin.z = -y;
+    self->despawnMax.x = y;
+    self->despawnMax.y = c;
+    self->despawnMax.z = y;
 }
 }

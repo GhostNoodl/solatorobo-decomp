@@ -3,7 +3,6 @@
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     u16 x, y, z;

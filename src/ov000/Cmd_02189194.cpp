@@ -1,4 +1,5 @@
 #include "ov000/CmdObj.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/VObj.h"
 #include "Main/Effect/Effect.h"
@@ -125,7 +126,6 @@ extern Obj02097e48 *data_02097e48;
 extern Obj02097dc8 *data_02097dc8;
 extern void *data_ov000_021ccd6c;
 extern void *data_ov000_021ccd64;
-extern void *data_ov000_021ccd68;
 
 void func_0203cb78(s32 a, s32 b, s32 c);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
@@ -141,7 +141,7 @@ void func_ov000_0216bcbc(void *p);
 void func_ov000_021645a4(s32 a);
 void func_ov000_021b53f4(void *p);
 void func_ov000_0218be9c(void *p);
-void ActorMgr_DestroyAll(void *p);
+void ActorMgr_DestroyAll(ActorMgr *p);
 
 static inline BOOL IsMode(s32 m) {
     BOOL r;

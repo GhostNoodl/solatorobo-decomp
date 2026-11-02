@@ -1,4 +1,5 @@
 #include "ov000/MessageQueue.h"
+#include "ov000/LoTimer.h"
 #include "ov000/LoTicker.h"
 
 extern "C" {
@@ -9,7 +10,6 @@ void func_0204ffdc(void *p);
 void func_ov000_021b8db4(void *p);
 void func_ov000_021b86a4(void *p);
 void func_ov000_0216d14c(void *p);
-void func_ov000_0216df28(void *p);
 void func_ov000_0216b880(void *p);
 void func_ov000_0216b1b4(void *p);
 

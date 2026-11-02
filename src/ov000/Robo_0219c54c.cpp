@@ -3,7 +3,6 @@
 #include "nitro/std.h"
 #include "ov000/ObjLayouts.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     char *name[6];

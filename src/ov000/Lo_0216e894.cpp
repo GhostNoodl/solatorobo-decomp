@@ -2,6 +2,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
+#include "ov000/LoTimer.h"
 
 extern "C" {
 
@@ -13,94 +14,79 @@ void func_ov000_02182590(void *p);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
 
-struct Obj0216e894 {
-    u8 unk_00[0x4];
-    s32 unk_04;
-    s32 unk_08;
-    s32 unk_0c;
-    u8 unk_10[0xc];
-    s32 unk_1c;
-    u8 unk_20[0x8];
-    s32 unk_28;
-    u8 unk_2c[0x8];
-    s32 unk_34;
-    s32 unk_38;
-    s32 unk_3c;
-};
-
-void func_ov000_0216e894(Obj0216e894 *self) {
-    if (LBIT(self, 0).b13 == 1) {
+void func_ov000_0216e894(LoTimer *self) {
+    if (self->b13 == 1) {
         return;
     }
-    LBIT(self, 0).b13 = 1;
-    if (LBIT(self, 0).b14 == 1) {
-        self->unk_0c = 1;
-    } else if (LBIT(self, 0).b10 == 1) {
-        self->unk_0c = 2;
+    self->b13 = 1;
+    if (self->b14 == 1) {
+        self->result = 1;
+    } else if (self->b10 == 1) {
+        self->result = 2;
     } else {
-        self->unk_0c = 3;
+        self->result = 3;
     }
-    if (LBIT(self, 0).b6 != 1) {
+    if (self->b6 != 1) {
         return;
     }
     func_ov000_0219bf90();
     if (!func_ov000_021b4738()) {
-        s32 v = self->unk_1c;
+        s32 v = self->time;
         FieldState *g;
         if (v > 0xffff) {
             v = 0xffff;
         }
-        func_020627fc(self->unk_0c);
+        func_020627fc(self->result);
         func_0206280c(v);
         g = data_ov000_021ccd54;
         ((u8 *)g)[0xac] = 1;
         func_ov000_02182590((u8 *)g + 0xac);
     }
-    self->unk_04 = 9;
+    self->state = 9;
 }
 
-static inline void Bounce(Obj0216e894 *self) {
-    LBIT(self, 0).b16 = 0;
-    LBIT(self, 0).b8 = 0;
-    LBIT(self, 0).b10 = 1;
+static inline void Bounce(LoTimer *self) {
+    self->b16 = 0;
+    self->b8 = 0;
+    self->b10 = 1;
     self->unk_34 = 0x2000;
     self->unk_38 = 0x2000;
     self->unk_3c = 0;
 }
 
-void func_ov000_0216e968(Obj0216e894 *self) {
+void func_ov000_0216e968(LoTimer *self) {
     s32 t;
-    if (!LBIT(self, 0).b16) {
+    if (!self->b16) {
         func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
-        LBIT(self, 0).b16 = 1;
+        self->b16 = 1;
     }
     self->unk_38 += 0x1000;
     t = FX_Div(self->unk_38, 0x14000);
     if (t >= 0x1000) {
         t = 0x1000;
         if (self->unk_38 >= 0x3c000) {
-            if (LBIT(self, 0).b9 == 1) {
+            if (self->b9 == 1) {
                 if (self->unk_38 >= 0x64000) {
-                    if (self->unk_08 == 2) {
-                        if (LBIT(self, 0).b17 == 1 && !LBIT(self, 0).b14 && self->unk_28 != 0 && self->unk_28 < self->unk_1c) {
+                    if (self->mode == 2) {
+                        if (self->b17 == 1 && !self->b14 && self->unk_28 != 0 && self->unk_28 < self->time) {
                             Bounce(self);
                         } else {
                             func_ov000_0216e894(self);
                         }
                     } else {
-                        if (LBIT(self, 0).b17 == 1 && !LBIT(self, 0).b14 && self->unk_28 != 0 && self->unk_28 > self->unk_1c) {
+                        if (self->b17 == 1 && !self->b14 && self->unk_28 != 0 && self->unk_28 > self->time) {
                             Bounce(self);
                         } else {
                             func_ov000_0216e894(self);
                         }
                     }
                     self->unk_38 = 0;
-                    LBIT(self, 0).b8 = 0;
+                    self->b8 = 0;
                 }
             } else {
-                LBIT(self, 0).b5 = 0;
+                self->b5 = 0;
                 self->unk_38 = 0;
-                LBIT(self, 0).b8 = 0;
+                self->b8 = 0;
             }
         }
     }

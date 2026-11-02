@@ -2,7 +2,6 @@
 #include "nitro/std.h"
 #include "Main/Gfx/Model.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     u8 b0 : 1;

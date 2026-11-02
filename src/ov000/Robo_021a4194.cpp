@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 
@@ -17,7 +18,6 @@ typedef struct {
 } Pose_021a4194;
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern char *data_ov000_021ca050[];
 extern char *data_ov000_021ca040[];
 extern char data_ov000_021cc64e[];
@@ -25,7 +25,7 @@ extern char data_ov000_021cc654[];
 extern char data_ov000_021cc65a[];
 extern char data_ov000_021cc660[];
 extern char data_ov000_021cc61e[];
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);

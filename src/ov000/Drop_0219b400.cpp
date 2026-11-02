@@ -1,11 +1,6 @@
 #include "types.h"
+#include "ov000/Group.h"
 
-typedef struct {
-    u16 kind;
-    u16 flags;
-    u16 unk_04[4];
-    s16 parent;
-} SpawnDesc0219b400;
 
 typedef struct {
     u8 b0 : 1;
@@ -26,17 +21,17 @@ extern "C" {
 extern void *data_ov000_021ccd64;
 BOOL func_020621f8(void);
 s32 Rand_UpTo(s32 max);
-Actor0219b400 *Group_SpawnActor(void *mgr, SpawnDesc0219b400 *d, void *pos, void *rot, u16 a);
+Actor0219b400 *Group_SpawnActor(void *mgr, GroupActorDesc *d, void *pos, void *rot, u16 a);
 void func_ov000_0218d46c(Actor0219b400 *o, u16 id, s32 m);
 
-static inline void Spawn0219b400_Init(SpawnDesc0219b400 *d, u16 k) {
+static inline void Spawn0219b400_Init(GroupActorDesc *d, u16 k) {
     s32 i;
     d->kind = k;
-    d->flags = k & 0xf000;
+    d->group = k & 0xf000;
     for (i = 0; i < 4; i++) {
-        d->unk_04[i] = 0;
+        d->args[i] = 0;
     }
-    d->parent = -1;
+    d->unk_0c = -1;
 }
 
 static inline void Actor0219b400_SetPos(Actor0219b400 *o, s32 x, s32 y, s32 z) {
@@ -47,7 +42,7 @@ static inline void Actor0219b400_SetPos(Actor0219b400 *o, s32 x, s32 y, s32 z) {
 
 void func_ov000_0219b400(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 check) {
     s32 w[32];
-    SpawnDesc0219b400 desc;
+    GroupActorDesc desc;
     s32 total;
     s32 i;
     s32 r;
@@ -86,7 +81,7 @@ void func_ov000_0219b400(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 ch
                 o = Group_SpawnActor(data_ov000_021ccd64, &desc, pos, rot, 0xffff);
                 if (o != NULL) {
                     o->unk_16.b0 = 1;
-                    if (desc.flags != 0x5000) {
+                    if (desc.group != 0x5000) {
                         return;
                     }
                     Actor0219b400_SetPos(o, Rand_UpTo(0x7b) + 0xf6, Rand_UpTo(0xb8) + 0x2e1, 0);

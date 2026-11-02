@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/MessageQueue.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
@@ -18,7 +19,6 @@ typedef struct {
 } B19_021a7af0;
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd6c;
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_02097e4c;
@@ -30,7 +30,7 @@ extern char data_ov000_021cc61e[];
 extern char data_ov000_021cc64e[];
 extern char data_ov000_021cc636[];
 extern char data_ov000_021cc630[];
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL func_ov000_02191120(void *a);
 s32 func_ov000_02190cb0(void *model, const char *name, s16 blend, u8 force);
 void *func_ov000_02191318(void *model, s32 frame);
@@ -599,7 +599,7 @@ void func_ov000_021a7af0(Robo021ca458 *self) {
                 s32 b = Rand_UpTo(0x800);
                 s32 c = Rand_PlusMinus(0x4cd);
                 o->AddPosXYZ(a, b, c);
-                o->SetScaleAll((LFLD(u16, data_ov000_021ccd68, 0xa) & 0xff) + 0xf00);
+                o->SetScaleAll((data_ov000_021ccd68->frame & 0xff) + 0xf00);
             }
             n = func_0206d37c(data_0214a424, 2);
             if (self->unk_b22_3) {

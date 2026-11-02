@@ -3,8 +3,6 @@
 #include "Main/Gfx/Model.h"
 #include "ov000/ModelPart.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
 
 extern "C" {
 

@@ -3,7 +3,6 @@
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     u8 b0, b1, b2, b3;

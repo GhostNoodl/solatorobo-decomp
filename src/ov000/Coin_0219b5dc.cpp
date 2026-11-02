@@ -1,15 +1,10 @@
 #include "ov000/Actor.h"
+#include "ov000/Group.h"
 
-typedef struct {
-    u16 id;
-    u16 kind;
-    u16 args[4];
-    s16 unk_0c;
-} Spawn0219b5dc;
 
 extern "C" {
 BOOL func_020621f8(void);
-Actor *Group_SpawnActor(void *mgr, Spawn0219b5dc *desc, s32 a, s32 b, u16 c);
+Actor *Group_SpawnActor(void *mgr, GroupActorDesc *desc, s32 a, s32 b, u16 c);
 
 void func_ov000_0219b5dc(u16 amount, s32 a, s32 b) {
     s32 n;
@@ -37,11 +32,11 @@ void func_ov000_0219b5dc(u16 amount, s32 a, s32 b) {
             return;
         }
         if (id != 0xffff) {
-            Spawn0219b5dc desc;
+            GroupActorDesc desc;
             s32 i;
             Actor *o;
-            desc.id = id;
-            desc.kind = id & 0xf000;
+            desc.kind = id;
+            desc.group = id & 0xf000;
             for (i = 0; i < 4; i++) {
                 desc.args[i] = 0;
             }

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
 #include "ov000/ActorBase.h"
@@ -22,9 +23,8 @@ typedef struct {
 } PBits0219af3c;
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 Robo021ca458 *func_ov000_0219bf90(void);
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL func_ov000_02199cd8(Tgt0219af3c *self, u16 id);
 BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 BOOL func_ov000_021bd314(void *p, s32 x);
@@ -35,7 +35,7 @@ static inline s32 Cur0219af3c(Actor *self) {
 }
 
 static inline Actor *FindActor0219af3c(u16 id) {
-    void *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
     }

@@ -1,45 +1,17 @@
-#include "ov000/VObj.h"
-#include "ov000/Vec.h"
-#include "Main/Math/Rot16.h"
-
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u8 r, g, b;
-} Rgb8;
-
-
-typedef struct {
-    u16 id;
-    u16 unk_02;
-    s16 unk_04[4];
-    s16 unk_0c;
-    Rgb8 rgb;
-    Rot16 rot;
-    VecFx32 pos;
-} Entry0218b60c;
-
-typedef struct {
-    u8 unk_00[0xa];
-    u8 mode;
-    u8 count;
-    Entry0218b60c entries[1];
-    u16 cur_id;
-    u16 cur_02;
-    s16 cur_04[4];
-    s16 cur_0c;
-} Obj0218b60c;
+#include "ov000/Group.h"
 
 extern "C" {
 
-void func_ov000_0218b60c(Obj0218b60c *self, const Rgb8 *rgb, const VecFx32 *pos, const Rot16 *rot) {
-    Entry0218b60c *e;
+// Sets the position, rotation and field of the entry of the node's spawn kind; a node that is not
+// in state 2 first gets its first entry from `spawn` and goes to state 2.
+void func_ov000_0218b60c(GroupNode *self, const FieldId *fieldId, const VecFx32 *pos, const Rot16 *rot) {
+    GroupEntry *e;
     s32 i;
     i = 0;
     e = NULL;
-    if (self->mode == 2) {
+    if (self->state == 2) {
         for (; i < self->count; i++) {
-            if (self->cur_id == self->entries[i].id) {
+            if (self->spawn.kind == self->entries[i].kind) {
                 e = &self->entries[i];
                 break;
             }
@@ -48,19 +20,19 @@ void func_ov000_0218b60c(Obj0218b60c *self, const Rgb8 *rgb, const VecFx32 *pos,
             return;
         }
     } else {
-        self->mode = 2;
+        self->state = 2;
         self->count++;
         e = &self->entries[0];
-        e->unk_02 = self->cur_02;
-        e->id = self->cur_id;
+        e->actor = self->spawn.group;
+        e->kind = self->spawn.kind;
         for (; i < 4; i++) {
-            e->unk_04[i] = self->cur_04[i];
+            e->args[i] = self->spawn.args[i];
         }
-        e->unk_0c = self->cur_0c;
+        e->unk_0c = self->spawn.unk_0c;
     }
     e->pos = *pos;
     e->rot = *rot;
-    e->rgb = *rgb;
+    e->fieldId = *fieldId;
 }
 
 }

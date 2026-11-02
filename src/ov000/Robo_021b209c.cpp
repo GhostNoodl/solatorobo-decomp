@@ -1,9 +1,9 @@
 #include "nitro/fx.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     s16 speed;
@@ -60,11 +60,10 @@ public:
 };
 
 extern "C" {
-extern u8 *data_ov000_021ccd68;
 extern Hang_021b209c data_ov000_021ca320[];
 extern Pad_021b209c data_02fe0f14;
 extern void *data_02097e4c;
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 mask, s32 c, s32 d, s32 e);
 u16 FX_Atan2(s32 x, s32 z);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
@@ -197,7 +196,7 @@ void func_ov000_021b209c(Robo021ca458 *self) {
                     func_0204a0d4(data_02097e4c, self->unk_b66, info->se1arg);
                 }
             }
-            if ((self->hit->unk_50 & 0x400) && (LFLD(u16, data_ov000_021ccd68, 0xa) & 0x1f)) {
+            if ((self->hit->unk_50 & 0x400) && (data_ov000_021ccd68->frame & 0x1f)) {
                 func_02065f88(0x2bd, &self->pos);
             }
         } else {

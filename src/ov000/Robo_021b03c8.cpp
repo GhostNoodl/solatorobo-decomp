@@ -1,12 +1,12 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern VecFx32 data_ov000_021ca000;
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 ang);
 void *func_ov000_0219be1c(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
 void func_ov000_0218996c(u8 a, u8 b);
@@ -16,7 +16,7 @@ BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void func_ov000_021b2b08(void *self);
 
 static inline Actor *FindActor021b03c8(u16 id) {
-    void *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
     }

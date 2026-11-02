@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
@@ -15,7 +16,6 @@ typedef struct {
 } Ba4_021a2670;
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd30;
 extern void *data_02097e4c;
 extern void *data_ov000_021ca030[];
@@ -26,7 +26,7 @@ BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 void func_ov000_021b1dd8(void *self, s32 a, s32 b, s32 c, s32 d, s32 e);
 BOOL func_ov000_02198360(void *st, s32 a, s32 b);
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_02168e18(void *a, s32 b, s32 c, VecFx32 *v);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
@@ -209,7 +209,7 @@ void func_ov000_021a2670(Robo021ca458 *self) {
         PlaySe021a2670(snd, &self->pos);
         if (!self->unk_93_4) {
             s32 se = 0x300;
-            if (LFLD(u16, data_ov000_021ccd68, 0xa) & 1) {
+            if (data_ov000_021ccd68->frame & 1) {
                 se = 0x304;
             }
             PlaySe021a2670(se, &self->pos);

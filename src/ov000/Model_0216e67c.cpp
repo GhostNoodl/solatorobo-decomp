@@ -2,16 +2,7 @@
 #include "ov000/ModelPart.h"
 #include "Main/Gfx/Model.h"
 #include "Main/Res/ResArc.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-
-typedef struct {
-    u32 b0 : 1;
-    u32 busy : 1;
-    u32 b2 : 15;
-    u32 b17 : 1;
-    u32 rest : 14;
-} Bits0216e67c;
+#include "ov000/LoTimer.h"
 
 extern "C" {
 extern char data_0214b105[];
@@ -22,19 +13,12 @@ void *Heap_Alloc(u32 size);
 void func_02041c34(void *model, s32 a, void *cb, void *arg);
 void *func_ov000_0216d5b0(u8 *self, u16 *cmd, void *arr, u16 *count);
 
-struct Obj0216e67c {
-    Bits0216e67c unk_00;
-    u8 unk_04[0xc];
-    Model *unk_10;
-    Model *unk_14;
-};
-
-void func_ov000_0216e67c(Obj0216e67c *self) {
+void func_ov000_0216e67c(LoTimer *self) {
     void *res;
     Model *m;
     Model *m2;
     void *res2;
-    if (self->unk_00.busy == 1) {
+    if (self->built == 1) {
         return;
     }
     res = func_02034d88(func_02035d5c(data_0214b105), data_0208cb7c);
@@ -76,7 +60,7 @@ void func_ov000_0216e67c(Obj0216e67c *self) {
     func_02041d9c(self->unk_14, 0, 0x20);
     self->unk_14->flags |= 0x80000;
     MODEL_FLAGS(self->unk_14)->alpha = 0x1e;
-    self->unk_00.b17 = 1;
-    self->unk_00.busy = 1;
+    self->b17 = 1;
+    self->built = 1;
 }
 }

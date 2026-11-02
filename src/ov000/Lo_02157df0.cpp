@@ -4,18 +4,11 @@
 
 extern "C" {
 
-static inline void Free02157df0(u8 *p) {
-    LO_FREE_V(p, 0x24);
-    LO_FREE_M(p, 0x28);
-    LFLD(s32, p, 0x0) = 0;
-    LFLD(s32, p, 0x4) = 0;
-    LFLD(s32, p, 0x8) = 0;
-    LFLD(s32, p, 0xc) = 0;
-    LFLD(s32, p, 0x10) = 0;
-    LFLD(s32, p, 0x14) = 0x80;
-    LFLD(s32, p, 0x18) = 6;
-    LFLD(s32, p, 0x24) = 0;
-    LFLD(s32, p, 0x28) = 0;
+// func_ov000_0215f548 inlined, then the label itself.
+static inline void Free02157df0(UiLabel *p) {
+    LO_FREE_V(p, 0x24); // text
+    LO_FREE_M(p, 0x28); // model
+    UiLabel_Reset(p);
     Heap_Free(p);
 }
 
@@ -24,7 +17,7 @@ void func_ov000_02157df0(UiList021cb4a8 *self) {
         u32 saved;
         LO_HEAP_PUSH(saved);
         if (self->unk_d4 != NULL) {
-            u8 *p = self->unk_d4;
+            UiLabel *p = self->unk_d4;
             if (p != NULL) {
                 Free02157df0(p);
             }
@@ -36,7 +29,7 @@ void func_ov000_02157df0(UiList021cb4a8 *self) {
         u32 saved;
         LO_HEAP_PUSH(saved);
         if (self->unk_d8 != NULL) {
-            u8 *p = self->unk_d8;
+            UiLabel *p = self->unk_d8;
             if (p != NULL) {
                 Free02157df0(p);
             }

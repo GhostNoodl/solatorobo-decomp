@@ -1,7 +1,6 @@
 #include "ov000/ModelPart.h"
 #include "nitro/fx.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     u32 b0 : 1;

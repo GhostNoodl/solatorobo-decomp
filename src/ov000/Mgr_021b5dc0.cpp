@@ -1,20 +1,14 @@
 #include "types.h"
+#include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/Group.h"
 #include "nitro/fx.h"
 #include "Main/Gfx/GfxMgr.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 class Mgr021b5dc0Cls;
 typedef void (Mgr021b5dc0Cls::*Mgr021b5dc0Pmf)();
-
-typedef struct {
-    u8 pad_00[0x17];
-    u8 unk_17;
-    u8 unk_18;
-    u8 unk_19;
-} Rect021b5dc0;
 
 typedef struct {
     u8 b0 : 2;
@@ -23,20 +17,19 @@ typedef struct {
 } Bits021b5dc0;
 
 typedef struct {
+    u8 pad_00[0x17];
+    u8 unk_17;
+    u8 unk_18;
+    Bits021b5dc0 unk_19;
+} Rect021b5dc0;
+
+typedef struct {
     VecFx32 pos;
-    u16 unk_0c;
-    u16 unk_0e;
-    u16 unk_10;
+    Rot16 rot;
     u16 id;
     s16 h[4];
 } Ent021b5dc0;
 
-typedef struct {
-    u16 id;
-    u16 kind;
-    s16 v[4];
-    s16 m;
-} Spawn021b5dc0;
 
 typedef struct Node021b5dc0 {
     u8 pad_00[4];
@@ -63,8 +56,7 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
-extern void *data_ov000_021ccd68;
+extern Group *data_ov000_021ccd64;
 extern const Mgr021b5dc0Pmf data_ov000_021cc81c;
 extern const Mgr021b5dc0Pmf data_ov000_021cc824;
 extern char data_ov000_021cc82c[];
@@ -75,12 +67,9 @@ void func_0206e648(void *p);
 void func_02043b20(void *p);
 s32 func_0206e340(Rect021b5dc0 *r);
 Ent021b5dc0 *func_0206e2ec(Rect021b5dc0 *r);
-void *func_ov000_0218b9ec(Spawn021b5dc0 *s, u8 *a, u8 *b, s32 c, s32 d);
-void func_ov000_0218b7c0(void *o, u16 kind, s32 mode);
 Robo021ca458 *func_ov000_0219bf90(void);
-BOOL func_ov000_0218c040(void *mgr, s32 a, VecFx32 *out, s32 b, s32 c);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Body_SetPos(void *body, VecFx32 *pos, u16 angle);
 void **func_02035edc(const char *a, const char *b);
 void *NNS_G3dGetAnmByIdx(void *p, s32 idx);
@@ -90,20 +79,20 @@ void func_ov000_021b7e60(Node021b5dc0 *n, s32 v);
 static inline BOOL SameArea021b5dc0(void) {
     FieldState *g = data_ov000_021ccd54;
     BOOL r = FALSE;
-    if (((u8 *)g)[0xca] == ((u8 *)g)[0xd0] && ((u8 *)g)[0xcb] == ((u8 *)g)[0xd1] && ((u8 *)g)[0xcc] == ((u8 *)g)[0xd2]) {
+    if (g->unk_ca.c[0] == g->unk_d0.c[0] && g->unk_ca.c[1] == g->unk_d0.c[1] && g->unk_ca.c[2] == g->unk_d0.c[2]) {
         r = TRUE;
     }
     return r;
 }
 
-static inline void SpawnInit021b5dc0(Spawn021b5dc0 *s, u16 id) {
+static inline void SpawnInit021b5dc0(GroupActorDesc *s, u16 id) {
     s32 k;
-    s->id = id;
-    s->kind = id & 0xf000;
+    s->kind = id;
+    s->group = id & 0xf000;
     for (k = 0; k < 4; k++) {
-        s->v[k] = 0;
+        s->args[k] = 0;
     }
-    s->m = -1;
+    s->unk_0c = -1;
 }
 
 static inline u16 Kind021b5dc0(u16 v) {
@@ -111,7 +100,7 @@ static inline u16 Kind021b5dc0(u16 v) {
 }
 
 void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
-    Spawn021b5dc0 s;
+    GroupActorDesc s;
     VecFx32 base;
     VecFx32 out;
     FieldCam *cam;
@@ -139,33 +128,33 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
     cam->unk_d6 = v;
     g = data_ov000_021ccd54;
     ents = func_0206e2ec(self->unk_14);
-    if (ents != NULL && (!SameArea021b5dc0() || ((u8 *)data_ov000_021ccd54)[0xc9] != 0)) {
+    if (ents != NULL && (!SameArea021b5dc0() || data_ov000_021ccd54->unk_c9 != 0)) {
         for (i = 0; i < self->unk_14->unk_17; i++) {
-            void *o;
+            GroupNode *o;
             u16 kind;
             id = ents[i].id;
             if (id == 0xffff) {
-                if (((u8 *)g)[0xca] != 0x12) {
+                if (g->unk_ca.c[0] != 0x12) {
                     continue;
                 }
                 id = 0x4f41;
             }
             SpawnInit021b5dc0(&s, id);
             for (k = 0; k < 4; k++) {
-                s.v[k] = ents[i].h[k];
+                s.args[k] = ents[i].h[k];
             }
             mode = 0;
-            o = func_ov000_0218b9ec(&s, (u8 *)g + 0xca, (u8 *)g + 0xca, 0, 0);
-            LFLD(VecFx32, o, 0x88) = ents[i].pos;
-            LFLD(u16, o, 0x94) = ents[i].unk_0c;
-            LFLD(u16, o, 0x96) = ents[i].unk_0e;
-            LFLD(u16, o, 0x98) = ents[i].unk_10;
-            kind = Kind021b5dc0(s.id);
-            if (((u8 *)g)[0xca] == 2 || ((u8 *)g)[0xca] == 0xd) {
+            o = func_ov000_0218b9ec(&s, &g->unk_ca, &g->unk_ca, NULL, NULL);
+            o->pos = ents[i].pos;
+            o->rot.x = ents[i].rot.x;
+            o->rot.y = ents[i].rot.y;
+            o->rot.z = ents[i].rot.z;
+            kind = Kind021b5dc0(s.kind);
+            if (g->unk_ca.c[0] == 2 || g->unk_ca.c[0] == 0xd) {
                 mode = 3;
-            } else if (((u8 *)g)[0xca] == 0xa || ((u8 *)g)[0xca] == 0xf || ((u8 *)g)[0xca] == 0xe || ((u8 *)g)[0xca] == 0x10 || id == 0x461a) {
+            } else if (g->unk_ca.c[0] == 0xa || g->unk_ca.c[0] == 0xf || g->unk_ca.c[0] == 0xe || g->unk_ca.c[0] == 0x10 || id == 0x461a) {
                 mode = 4;
-            } else if (((u8 *)g)[0xca] == 0x12) {
+            } else if (g->unk_ca.c[0] == 0x12) {
                 mode = 5;
             }
             func_ov000_0218b7c0(o, kind, mode);
@@ -204,22 +193,22 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
     }
     self->unk_28c = NULL;
     self->unk_1f2 = 0;
-    if (((u8 *)g)[0xca] == 0x10 && ((u8 *)g)[0xcb] == 0 && (((u8 *)g)[0xcc] == 0 || ((u8 *)g)[0xcc] == 3)) {
+    if (g->unk_ca.c[0] == 0x10 && g->unk_ca.c[1] == 0 && (g->unk_ca.c[2] == 0 || g->unk_ca.c[2] == 3)) {
         void **res = func_02035edc(data_ov000_021cc82c, data_ov000_021cc83d);
         if (res != NULL && *res != NULL) {
             Camera_SetAnim(&cam->base, NNS_G3dGetAnmByIdx(*res, 0));
             self->unk_1f2 = 0x52;
-            if (((u8 *)g)[0xcc] == 3) {
+            if (g->unk_ca.c[2] == 3) {
                 self->unk_1f2 = 0xa4;
             }
             cam->base.speed = self->unk_1f2;
             self->unk_28c = data_ov000_021cc81c;
         }
     }
-    if (LFLD(Bits021b5dc0, self->unk_14, 0x19).b2) {
+    if (self->unk_14->unk_19.b2) {
         self->unk_28c = data_ov000_021cc824;
     }
-    if (((u8 *)g)[0xca] != 0x12) {
+    if (g->unk_ca.c[0] != 0x12) {
         return;
     }
     for (n = self->unk_1c; n != NULL; n = n->next) {

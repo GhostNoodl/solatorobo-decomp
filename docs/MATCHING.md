@@ -8261,3 +8261,77 @@ No symbols were renamed.
   - `0x480b`/`0x482d` spawns write 0xcc bits that no class owns.
   - The `022161f8` render-user block at 0xf8 and the name buffers at 0x88/0xa8 stay; no class owns those either.
   - The `0x2c`/`0x24` task-chain links in `021ff040`/`02211f44` stay.
+
+### Round acE (ov000 spawn groups, actor manager, UI labels and the stage timer typed)
+
+Cleanup only, over `src/ov000` and `include/ov000`, and every function is still byte-identical.
+
+**How it was checked.** After every step, each rebuilt object was compared function by function, on code bytes and relocations, with a baseline built at `fa9a9cca`. At the end, all 1906 objects were compared again: 0 differ. `origin/main` did not move during the round.
+
+**Gate.** All of these pass:
+- 0 FAILED, with 19/19 ROM checks and `check symbols` OK;
+- `ninja report` shows 8138 matched (unchanged);
+- `check_drafts.py --score` exits 0 (no draft changed score).
+
+No symbols were renamed.
+
+**Counts.** Measured as in round acB, over `src/ov000` and `include/ov000`.
+
+| | before | after |
+|---|---|---|
+| `LFLD` | 1511 | 1225 |
+| `void *self` | 460 | 453 |
+
+- **`ov000/Group.h` (new).** The spawn groups:
+  - `Group` is 0x48 bytes (`data_ov000_021ccd64`, built by `func_ov000_0218bb34`). It holds the node list, the serial, its flag bits and the camera views of the frame.
+  - `GroupNode` is 0xa4 bytes, with ctor `func_ov000_0218a9d8`, made by `func_ov000_0218b9ec`. It holds its `GroupEntry` records (0x14 + position), the `GroupActorDesc` it spawns from, the field and field filter, the spawn and despawn volumes and their ranges and heights, the fade distance, the respawn timer and counters, and `GroupNodeFlags`.
+  - `GroupView` is the segment `func_01ffc89c` tests.
+  - These TUs use it: `Spawn_0218ab00`, `Spawn_0218ac98`, `Spawn_0218b9ec`, `Lo_0218af9c`, `Lo_0218b420`, `Lo_0218b4b4`, `Lo_0218b60c`, `Unit_0218b700`, `Group_0218bb34`, `Group_0218c040` and `Stub_0218c208`.
+  - So do these callers: `Lo_021b5578`, `Mgr_021b5dc0`, `Coin_0219b5dc`, `Drop_0219b400`, `Stub_0219bdb0`, `Robo_021a9be8` and `ActorEx_02194c08`.
+  - `Lo_0218af9c`'s view built from two adjacent stack vectors is now a `GroupView`.
+  - `data_ov000_021ccd64` itself is still declared `void *` in `Actor.h`/`StageCmd.h`. `Group.h` does not redeclare it, so that the types do not clash in a TU.
+- **`ov000/ActorMgr.h` (new).**
+  - `ActorGroup`/`ActorMgr` moved out of `Actor.h` (which includes it; the layout is unchanged), with `extern ActorMgr *data_ov000_021ccd68`.
+  - The 36 TUs that declared their own `void *`/`u8 *` `data_ov000_021ccd68` include it now.
+  - The `ActorMgr_*` prototypes take `ActorMgr *`. `LFLD(u16, data_ov000_021ccd68, 0xa)` is `->frame`.
+  - `Lo_0218d2e0` returns `ActorSub44 *` from an `Actor *`. `Lo_021b1110` and `Robo_0219efc0` use `ActorGroup`/`count`.
+- **`UiLabel` (`ov000/UiObj.h`).**
+  - `UiLabel` is 0x2c bytes, with flags, style, position, size, `TextWin *text` and `Model *model`. Its style record is `UiLabelStyle` (0x18 bytes), and `UiLabel_Reset` is inline.
+  - The label functions `0215f0ec`, `0215f334`, `0215f514`, `0215f548` and `0215f618` have shared prototypes, and about 19 local copies are gone.
+  - `UiList021cb4a8::unk_d4`/`unk_d8` are `UiLabel *`. ov002 does not read them.
+  - These TUs use it: `Win_0215f0ec`, `Win_0215f334`, `Win_0215f618`, `Lo_0215f514`, `Lo_0215f548`, `Lo_02157c28`, `Lo_02157d2c`, `Lo_02157df0`, `Lo_02157fc0`, `Lo_02158a58`, `Win_021c588c`, `Heap_021c5508` and `Stub_021c55e8`.
+- **`ov000/LoTimer.h` (new).**
+  - `LoTimer` is the 0x54-byte stage timer, with ctor `func_ov000_0216e574`. It holds the state, mode, result, two models, the step/time/shown time/limit, the slide-in and the flag bits.
+  - It has prototypes for its methods.
+  - `MessageQueue.h`'s `ListBuffer021cb940::unk_54` is `struct LoTimer *` (forward declaration only).
+  - These TUs use it: `Lo_0216e574`, `Lo_0216d9dc`, `Lo_0216df28`, `Lo_0216e5d0`, `Model_0216e67c`, `Lo_0216e894`, `Lo_0216eaf8`, `Task_02171478`, `Task_02170a58`, `Dtor_0216fb14` and `Scene_02171270`.
+- **Others.**
+  - `func_ov000_02151664` takes `(UiList *, UiListItem *)`, and the prototypes in `Lo_02158a58`, `Lo_0215af64` and `Lo_02150f24` match it.
+  - `Lo_02159f94` uses `UiListItem`.
+  - `Robo_021b3738` uses the actor fields.
+  - `Lo_021b1814`'s `021b1b88` part is typed.
+  - `Dtor_0218c3e0`'s `Actor_Dtor`/`Actor_DtorDelete`/`0218c928` take `Actor *`.
+  - `Lo_021c5028`'s dead copy is gone.
+  - The unused `#define LFLD` lines are gone from 58 files.
+
+**Codegen notes.**
+- A `const` on `func_ov000_0218b9ec`'s struct-copy sources changed the copy scheduling, so `desc`/`pos`/`rot` stay non-`const`.
+- `GroupNode::timer` must be `u32` (`strhs`, not `strge`).
+- In `func_ov000_0218ab00`, `self->entries[i]` changed the load order. The `u8 *base` + `ENTRY(base)` form, with declarations `s32 i; u8 *base;`, keeps it (see the comment there).
+- `TextWin::width` is unsigned, so `0215f334` needs `(s32)t->width` to keep `asr`.
+- `func_ov000_0218b700` copies the flags byte as a whole struct: that is why `GroupNodeFlags` is a named type.
+- `HEAP_DELETE_FN` passes `void *`, so the typed dtors use `HEAP_DELETE(T *, field, ...)`.
+
+**Kept forms.**
+- These have no ctor, allocation or vtable evidence: `Model_02164a94`, `Lo_02165f94` and the 0xce0 MiniMap record.
+- These stay because `Model.h` is a shared Main header: `Lo_021502d8`, the Menu file and `Lo_0216df28`'s `Model::unk_15c` reads.
+- The `LO_FREE` macros (offset-based) stay.
+- The UiPanel allocations in `TextWin_021c628c`/`Unit_021c3d20` stay.
+- The Main/ov003 users of the group node stay.
+- `Robo_021a0d4c`'s target views stay, and so do `Menu_021763c8`'s local views (round pmA).
+
+**Scratch:** session scratchpad `acE/`:
+- `mksig.py` (per-function code+reloc signatures, `--cmp`);
+- `chk.py FILES` (rebuild and compare named objects);
+- `dd.sh SRC FUNC` (disassembly diff against a baseline worktree);
+- `b.sh`, `cnt.sh`.

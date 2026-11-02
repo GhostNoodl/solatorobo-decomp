@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
@@ -34,8 +35,7 @@ extern char data_ov000_021cc61e[];
 extern char data_ov000_021cc672[];
 extern char data_ov000_021cc5e3[];
 extern void *data_02097e4c;
-extern u8 *data_ov000_021ccd68;
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
 BOOL func_ov000_02198360(void *st, s32 state, s32 x);

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
@@ -13,13 +14,12 @@ typedef struct {
 } Pose_021ac844;
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern char data_ov000_021cc6cc[];
 extern char data_ov000_021cc6d2[];
 extern char data_ov000_021cc6d8[];
 extern char data_ov000_021cc6de[];
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);

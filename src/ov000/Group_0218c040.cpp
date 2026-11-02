@@ -1,48 +1,50 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorBase.h"
 #include "ov000/Vec.h"
+#include "ov000/Group.h"
 
 extern "C" {
-extern void *data_ov000_021ccd68;
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
 static inline Actor *FindActor0218c040(u16 id) {
-    void *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
     }
     return ActorMgr_GetActor(mgr, id);
 }
 
-static inline BOOL IsHere0218c040(u8 *e) {
+static inline BOOL IsHere0218c040(GroupNode *e) {
     FieldState *g = data_ov000_021ccd54;
     BOOL ret = FALSE;
-    if (((u8 *)g)[0xca] == e[0x3e] && ((u8 *)g)[0xcb] == e[0x3f] && ((u8 *)g)[0xcc] == e[0x40]) {
+    if (g->unk_ca.c[0] == e->fieldId.c[0] && g->unk_ca.c[1] == e->fieldId.c[1] && g->unk_ca.c[2] == e->fieldId.c[2]) {
         ret = TRUE;
     }
     return ret;
 }
 
-s32 func_ov000_0218c040(u8 **list, s32 max, VecFx32 *out, s32 kind, u16 id) {
+// Collects up to max positions of the group's nodes in the current field: their actors (or the
+// recorded position of an actor that is gone), or the node's own position before it spawned.
+s32 func_ov000_0218c040(Group *list, s32 max, VecFx32 *out, s32 kind, u16 id) {
     s32 n = 0;
-    u8 *e;
+    GroupNode *e;
     s32 i;
 
-    for (e = *list; e != NULL; e = LFLD(u8 *, e, 0x4)) {
+    for (e = list->head; e != NULL; e = e->next) {
         if (!IsHere0218c040(e)) {
             continue;
         }
-        if (kind != 0 && kind != (LFLD(u16, e, 0x32) >> 12)) {
+        if (kind != 0 && kind != (e->spawn.group >> 12)) {
             continue;
         }
-        if (id != 0xffff && LFLD(u16, e, 0x30) != id) {
+        if (id != 0xffff && e->spawn.kind != id) {
             continue;
         }
-        if (e[0xb] != 0) {
-            for (i = 0; i < e[0xb]; i++) {
-                u8 *ent = e + i * 0x24;
-                Actor *a = FindActor0218c040(LFLD(u16, ent, 0xe));
+        if (e->count != 0) {
+            for (i = 0; i < e->count; i++) {
+                Actor *a = FindActor0218c040(e->entries[i].actor);
                 if (a != NULL) {
                     if (id == 0xffff || id == a->kind) {
                         out[n].x = a->pos.x;
@@ -50,10 +52,10 @@ s32 func_ov000_0218c040(u8 **list, s32 max, VecFx32 *out, s32 kind, u16 id) {
                         out[n].z = a->pos.z;
                         n++;
                     }
-                } else if (LFLD(u16, ent, 0xe) != 0xffff && (id == 0xffff || id == LFLD(u16, ent, 0xc))) {
-                    out[n].x = LFLD(s32, ent, 0x24);
-                    out[n].y = LFLD(s32, ent, 0x28);
-                    out[n].z = LFLD(s32, ent, 0x2c);
+                } else if (e->entries[i].actor != 0xffff && (id == 0xffff || id == e->entries[i].kind)) {
+                    out[n].x = e->entries[i].pos.x;
+                    out[n].y = e->entries[i].pos.y;
+                    out[n].z = e->entries[i].pos.z;
                     n++;
                 }
                 if (n >= max) {
@@ -61,9 +63,9 @@ s32 func_ov000_0218c040(u8 **list, s32 max, VecFx32 *out, s32 kind, u16 id) {
                 }
             }
         } else {
-            out[n].x = LFLD(s32, e, 0x88);
-            out[n].y = LFLD(s32, e, 0x8c);
-            out[n].z = LFLD(s32, e, 0x90);
+            out[n].x = e->pos.x;
+            out[n].y = e->pos.y;
+            out[n].z = e->pos.z;
             n++;
         }
         if (n >= max) {

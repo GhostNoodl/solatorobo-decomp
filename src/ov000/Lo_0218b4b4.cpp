@@ -1,57 +1,30 @@
 #include "types.h"
 #include "Main/Sys/FieldState.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
+#include "ov000/Group.h"
 
 extern "C" {
 
-
-typedef struct {
-    u8 b0 : 5;
-    u8 b5 : 1;
-    u8 b6 : 1;
-    u8 b7 : 1;
-} Bits0218b4b4;
-
-typedef struct {
-    u16 unk_00;
-    u16 unk_02;
-    s16 unk_04[4];
-    s16 unk_0c;
-    FieldId rgb;
-    u8 pad_11;
-    u16 unk_12, unk_14, unk_16;
-    s32 unk_18, unk_1c, unk_20;
-} Slot0218b4b4;
-
+// The actor (an Actor; its unk_18 .. unk_1e are read as the array the spawn args were copied to).
 typedef struct {
     u8 pad_00[0xc];
     u16 id;
-    u16 unk_0e;
+    u16 kind;
     u8 pad_10[8];
     s16 unk_18[4];
     u8 pad_20[2];
     s16 unk_22;
     u8 pad_24[0x4c];
-    s32 unk_70, unk_74, unk_78;
-    u16 unk_7c, unk_7e, unk_80;
+    VecFx32 pos;
+    Rot16 rot;
 } Src0218b4b4;
 
-struct Obj0218b4b4 {
-    u8 unk_00[0xb];
-    u8 unk_0b;
-    u8 unk_0c[0x96];
-    Bits0218b4b4 unk_a2;
-};
-
-void func_ov000_0218b4b4(Obj0218b4b4 *self, s32 mode, Src0218b4b4 *src) {
-    Slot0218b4b4 *slot = NULL;
-    Slot0218b4b4 *e = (Slot0218b4b4 *)((u8 *)self + 0xc);
-    BOOL flag = self->unk_a2.b5;
+void func_ov000_0218b4b4(GroupNode *self, s32 mode, Src0218b4b4 *src) {
+    GroupEntry *slot = NULL;
+    GroupEntry *e = self->entries;
+    BOOL flag = self->flags.unk_5;
     s32 i;
-
-    u8 *m;
-    for (i = 0; i < self->unk_0b; i++, e = (Slot0218b4b4 *)((u8 *)e + 0x24)) {
-        if (e->unk_02 == src->id) {
+    for (i = 0; i < self->count; i++, e++) {
+        if (e->actor == src->id) {
             slot = e;
             break;
         }
@@ -61,31 +34,31 @@ void func_ov000_0218b4b4(Obj0218b4b4 *self, s32 mode, Src0218b4b4 *src) {
     }
     switch (mode) {
     case 0:
-        slot->unk_02 = 0xffff;
-        slot->unk_00 = 0xffff;
+        slot->actor = 0xffff;
+        slot->kind = 0xffff;
         return;
     case 2:
-        if (!self->unk_a2.b6) {
+        if (!self->flags.unk_6) {
             flag = TRUE;
         }
     case 1:
-        slot->unk_02 &= 0xf000;
-        slot->unk_00 = src->unk_0e;
+        slot->actor &= 0xf000;
+        slot->kind = src->kind;
         if (!flag) {
-            slot->unk_18 = src->unk_70;
-            slot->unk_1c = src->unk_74;
-            slot->unk_20 = src->unk_78;
-            slot->unk_12 = src->unk_7c;
-            slot->unk_14 = src->unk_7e;
-            slot->unk_16 = src->unk_80;
+            slot->pos.x = src->pos.x;
+            slot->pos.y = src->pos.y;
+            slot->pos.z = src->pos.z;
+            slot->rot.x = src->rot.x;
+            slot->rot.y = src->rot.y;
+            slot->rot.z = src->rot.z;
             if (mode == 2) {
-                slot->rgb = data_ov000_021ccd54->unk_d0;
+                slot->fieldId = data_ov000_021ccd54->unk_d0;
             } else {
-                slot->rgb = data_ov000_021ccd54->unk_ca;
+                slot->fieldId = data_ov000_021ccd54->unk_ca;
             }
         }
         for (i = 0; i < 4; i++) {
-            slot->unk_04[i] = src->unk_18[i];
+            slot->args[i] = src->unk_18[i];
         }
         slot->unk_0c = src->unk_22;
         break;

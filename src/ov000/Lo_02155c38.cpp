@@ -1,7 +1,6 @@
 #include "types.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
 

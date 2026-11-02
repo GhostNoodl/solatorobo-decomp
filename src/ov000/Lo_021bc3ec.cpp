@@ -1,5 +1,4 @@
 #include "types.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
 extern s32 data_02097d78[];

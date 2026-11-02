@@ -1,19 +1,9 @@
-#include "ov000/LoCommon.h"
-#include "nitro/std.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
-
-void func_ov000_0215f514(void *p) {
-    LFLD(s32, p, 0x0) = 0;
-    LFLD(s32, p, 0x4) = 0;
-    LFLD(s32, p, 0x8) = 0;
-    LFLD(s32, p, 0xc) = 0;
-    LFLD(s32, p, 0x10) = 0;
-    LFLD(s32, p, 0x14) = 0x80;
-    LFLD(s32, p, 0x18) = 6;
-    LFLD(s32, p, 0x24) = 0;
-    LFLD(s32, p, 0x28) = 0;
+void func_ov000_0215f514(UiLabel *self) {
+    UiLabel_Reset(self);
 }
 
 }

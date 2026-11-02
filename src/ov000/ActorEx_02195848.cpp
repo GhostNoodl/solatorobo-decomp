@@ -3,7 +3,6 @@
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define SC(r) FX_SinCosTable_[((r) >> 4) * 2], FX_SinCosTable_[((r) >> 4) * 2 + 1]
 
 extern "C" {

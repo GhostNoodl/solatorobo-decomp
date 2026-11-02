@@ -1,7 +1,6 @@
 #include "types.h"
 #include "nitro/fx.h"
 #include "ov000/VObj.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     u8 pad_00[0x12];

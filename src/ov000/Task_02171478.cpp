@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/MessageQueue.h"
+#include "ov000/LoTimer.h"
 #include "ov000/CmdQueue.h"
 
 typedef struct {
@@ -33,8 +34,6 @@ BOOL func_ov000_021708ec(ListBuffer021cb940 *t, s32 b, s32 c);
 void func_ov000_021b87d8(void *p, u16 a);
 void func_ov000_0216c954(void *p, u16 a, s32 b);
 void func_ov000_0216ca64(void *p, s32 a, s32 b);
-void func_ov000_0216e574(void *p);
-void func_ov000_0216da2c(void *p, u8 a, s32 b, u32 c);
 void func_ov000_021b8884(void *p, u16 a);
 void func_ov000_021bacb8(void *p, u16 a);
 void func_ov000_021bbc68(void *p, u8 a, u8 b, u8 c);
@@ -181,7 +180,7 @@ static inline BOOL Task_Start50(ListBuffer021cb940 *t, u32 b, u32 c) {
 }
 
 static inline BOOL Task_Start54(ListBuffer021cb940 *t, u32 b, s32 c) {
-    void *p;
+    LoTimer *p;
     u8 lo;
     u32 hi;
     if (t->unk_54 != NULL) {
@@ -189,22 +188,22 @@ static inline BOOL Task_Start54(ListBuffer021cb940 *t, u32 b, s32 c) {
     }
     lo = b;
     hi = (b >> 8) & 0xffffff;
-    p = Heap_Alloc(0x54);
+    p = (LoTimer *)Heap_Alloc(sizeof(LoTimer));
     if (p != NULL) {
         func_ov000_0216e574(p);
     }
     t->unk_54 = p;
     func_ov000_0216da2c(p, lo, c, hi);
-    LFLD(u32, t->unk_54, 0) |= 0x40;
-    LFLD(u32, t->unk_54, 0) |= 4;
+    t->unk_54->b6 = 1;
+    t->unk_54->b2 = 1;
     return TRUE;
 }
 
-static inline BOOL Task_Stop54(void *p) {
+static inline BOOL Task_Stop54(LoTimer *p) {
     if (p == NULL) {
         return TRUE;
     }
-    LFLD(Bit02171478, p, 0).b0 = 1;
+    p->b0 = 1;
     return TRUE;
 }
 

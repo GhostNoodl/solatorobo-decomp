@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
@@ -14,14 +15,13 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd6c;
 extern void *data_02097e4c;
 extern char data_ov000_021cc67e[];
 extern char data_ov000_021cc61e[];
 extern char data_ov000_021cc660[];
 extern char data_ov000_021cc684[];
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 u16 FX_Atan2(s32 y, s32 x);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);

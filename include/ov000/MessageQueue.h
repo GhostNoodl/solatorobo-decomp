@@ -36,6 +36,7 @@ public:
 };
 
 struct LoTicker;
+struct LoTimer;
 
 // Vtable data_ov000_021cb940 (0x80 bytes; base vtable data_ov000_021cb6d0, init func_ov000_0216faac,
 // dtor func_ov000_0216fb14): the field's sub-object holder, data_ov000_021ccd30's 0x11c buffer, made by
@@ -56,7 +57,7 @@ public:
     VObj *unk_48;
     void *unk_4c;
     void *unk_50;
-    void *unk_54;
+    struct LoTimer *unk_54; // the stage timer
     VObj *unk_58;
     VObj *unk_5c;
     VObj *unk_60;

@@ -1,7 +1,6 @@
 #include "Main/Gfx/FieldMsg.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     u32 b0 : 1;

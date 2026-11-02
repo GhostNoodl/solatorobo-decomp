@@ -1,47 +1,18 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    u8 b4 : 4;
-} Bits0218af9c;
-
-typedef struct {
-    u8 pad_00[0xc];
-    Bits0218af9c flags;
-    u8 count;
-    u8 pad_0e[2];
-    VecFx32 pos[4];
-    u16 ang[4];
-} Mgr0218af9c;
-
-typedef struct {
-    u16 unk_00;
-    u16 unk_02;
-    s16 unk_04[4];
-    s16 unk_0c;
-} Desc0218af9c;
-
-typedef struct {
-    VecFx32 pos;
-    u16 ang;
-} Pt0218af9c;
+#include "ov000/Group.h"
 
 extern "C" {
-extern Mgr0218af9c *data_ov000_021ccd64;
-extern void *data_ov000_021ccd68;
+extern Group *data_ov000_021ccd64;
 Robo021ca458 *func_ov000_0219bf90(void);
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL Hit_DiffInBox(VecFx32 *a, VecFx32 *b, VecFx32 *min, VecFx32 *max);
-BOOL func_01ffc89c(void *vol, VecFx32 *seg);
 u16 FX_Atan2(s32 x, s32 z);
-void func_ov000_0218b4b4(u8 *self, s32 mode, u8 *src);
-u8 *Group_SpawnActor(void *mgr, Desc0218af9c *d, void *pos, void *rot, u16 a);
+void func_ov000_0218b4b4(GroupNode *self, s32 mode, Actor *src);
+Actor *Group_SpawnActor(Group *g, const GroupActorDesc *desc, const VecFx32 *pos, const Rot16 *rot, u16 id);
 
 static inline BOOL GBusy0218af9c(FieldState *g) {
     return g->head != g->tail ? TRUE : FALSE;
@@ -65,68 +36,46 @@ static inline s32 FxMul0218af9c(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
-struct Obj0218af9c {
-    u8 unk_00[0x8];
-    u16 unk_08;
-    u8 unk_0a[0x1];
-    u8 unk_0b;
-    u16 unk_0c;
-    u16 unk_0e;
-    u8 unk_10[0x8];
-    s16 unk_18;
-    u8 unk_1a;
-    u8 unk_1b;
-    u8 unk_1c;
-    u8 unk_1d[0x7];
-    VecFx32 unk_24;
-    u8 unk_30[0x48];
-    s32 unk_78;
-    u8 unk_7c[0x26];
-    Bits0218af9c unk_a2;
-    u8 unk_a3;
-};
-
-void func_ov000_0218af9c(Obj0218af9c *self) {
+void func_ov000_0218af9c(GroupNode *self) {
     unsigned long on;
     s32 dist;
     BOOL any;
     Robo021ca458 *pl;
     u8 i;
-    Bits0218af9c *fl;
+    GroupNodeFlags *fl;
     s32 mode;
-    u8 *best;
-    u8 *tgt;
-    Pt0218af9c t;
-    VecFx32 tp;
-    Desc0218af9c d;
+    Actor *best;
+    Actor *tgt;
+    GroupView seg;
+    GroupActorDesc d;
 
     mode = 0;
     best = NULL;
     any = FALSE;
     pl = func_ov000_0219bf90();
     on = FALSE;
-    fl = &self->unk_a2;
-    if (self->unk_a2.b0 && data_ov000_021ccd64->flags.b1) {
+    fl = &self->flags;
+    if (self->flags.unk_0 && data_ov000_021ccd64->unk_0c.bits.flag_1) {
         on = TRUE;
     }
     if (on && pl != NULL) {
         on = GIdle0218af9c();
     }
-    for (i = 0; i < data_ov000_021ccd64->count; i++) {
-        t.pos.x = data_ov000_021ccd64->pos[i].x;
-        t.pos.y = data_ov000_021ccd64->pos[i].y;
-        t.pos.z = data_ov000_021ccd64->pos[i].z;
-        t.ang = data_ov000_021ccd64->ang[i];
+    for (i = 0; i < data_ov000_021ccd64->viewCount; i++) {
+        seg.to.x = data_ov000_021ccd64->viewPos[i].x;
+        seg.to.y = data_ov000_021ccd64->viewPos[i].y;
+        seg.to.z = data_ov000_021ccd64->viewPos[i].z;
+        seg.yaw = data_ov000_021ccd64->viewYaw[i];
         if (mode == 3 || mode == 1) {
             continue;
         }
-        if (self->unk_0e != 0xffff && (u16)(self->unk_0e & 0xfff) != 0) {
+        if (self->entries[0].actor != 0xffff && (u16)(self->entries[0].actor & 0xfff) != 0) {
             tgt = best;
             if (best == NULL) {
                 if (data_ov000_021ccd68 == NULL) {
                     tgt = NULL;
                 } else {
-                    tgt = (u8 *)ActorMgr_GetActor(data_ov000_021ccd68, self->unk_0e);
+                    tgt = ActorMgr_GetActor(data_ov000_021ccd68, self->entries[0].actor);
                 }
             }
             if (tgt != NULL) {
@@ -137,18 +86,18 @@ void func_ov000_0218af9c(Obj0218af9c *self) {
                     continue;
                 }
                 if (pl != NULL) {
-                    if (self->unk_0e == LFLD(u16, (u8 *)pl + 0xb00, 0x1c) || self->unk_0e == LFLD(u16, (u8 *)pl + 0xb00, 0x20)) {
+                    if (self->entries[0].actor == pl->unk_b1c || self->entries[0].actor == pl->unk_b20) {
                         continue;
                     }
                 }
-                tp = LFLD(VecFx32, tgt, 0x70);
-                if (!Hit_DiffInBox(&tp, &t.pos, (VecFx32 *)((u8 *)self + 0x5c), (VecFx32 *)((u8 *)self + 0x68))) {
+                seg.from = tgt->pos;
+                if (!Hit_DiffInBox(&seg.from, &seg.to, &self->despawnMin, &self->despawnMax)) {
                     r = TRUE;
                 } else {
 
                     {
-                        s32 dx = t.pos.x - tp.x;
-                        s32 dz = t.pos.z - tp.z;
+                        s32 dx = seg.to.x - seg.from.x;
+                        s32 dz = seg.to.z - seg.from.z;
                         s64 sq = (s64)dx * dx;
                         sq += (s64)dz * dz;
                         REG_SQRTCNT = 1;
@@ -157,12 +106,12 @@ void func_ov000_0218af9c(Obj0218af9c *self) {
                     while (REG_SQRTCNT & 0x8000) {
                     }
                     dist = (s32)(REG_SQRT_RESULT + 1) >> 1;
-                    if (self->unk_78 < dist) {
+                    if (self->despawnRange < dist) {
                         r = TRUE;
-                    } else if (!fl->b3) {
+                    } else if (!fl->useAngle) {
                         r = FALSE;
                     } else {
-                        u16 a = FX_Atan2(tp.x - t.pos.x, tp.z - t.pos.z) - t.ang;
+                        u16 a = FX_Atan2(seg.from.x - seg.to.x, seg.from.z - seg.to.z) - seg.yaw;
                         s32 k;
                         if (a > 0x8000) {
                             a = -a;
@@ -175,7 +124,7 @@ void func_ov000_0218af9c(Obj0218af9c *self) {
                         }
                         if (k == 0x1000) {
                             r = FALSE;
-                        } else if (dist > FxMul0218af9c(self->unk_78, k)) {
+                        } else if (dist > FxMul0218af9c(self->despawnRange, k)) {
                             r = TRUE;
                         } else {
                             r = FALSE;
@@ -187,20 +136,20 @@ void func_ov000_0218af9c(Obj0218af9c *self) {
                     mode = 2;
                 }
             } else {
-                self->unk_0e = 0xffff;
-                self->unk_0c = 0xffff;
+                self->entries[0].actor = 0xffff;
+                self->entries[0].kind = 0xffff;
             }
-        } else if (self->unk_0c != 0xffff) {
+        } else if (self->entries[0].kind != 0xffff) {
             FieldState *g = data_ov000_021ccd54;
             BOOL same;
             any = TRUE;
             same = FALSE;
-            if (self->unk_1a == ((u8 *)g)[0xca] && self->unk_1b == ((u8 *)g)[0xcb] && self->unk_1c == ((u8 *)g)[0xcc]) {
+            if (self->entries[0].fieldId.c[0] == g->unk_ca.c[0] && self->entries[0].fieldId.c[1] == g->unk_ca.c[1] && self->entries[0].fieldId.c[2] == g->unk_ca.c[2]) {
                 same = TRUE;
             }
             if (same) {
-                tp = self->unk_24;
-                if (func_01ffc89c(self, &tp)) {
+                seg.from = self->entries[0].pos;
+                if (func_01ffc89c(self, &seg)) {
                     mode = 3;
                 }
             }
@@ -209,31 +158,31 @@ void func_ov000_0218af9c(Obj0218af9c *self) {
     if (any) {
         switch (mode) {
         case 2:
-            func_ov000_0218b4b4((u8 *)self, 1, best);
-            ((VObj *)best)->vfunc_08();
+            func_ov000_0218b4b4(self, 1, best);
+            best->vfunc_08();
             break;
         case 3: {
-            u16 kind = self->unk_08;
+            u16 kind = self->id;
             s32 j;
-            u8 *o;
-            d.unk_00 = self->unk_0c;
-            d.unk_02 = self->unk_0e & 0xf000;
+            Actor *o;
+            d.kind = self->entries[0].kind;
+            d.group = self->entries[0].actor & 0xf000;
             for (j = 0; j < 4; j++) {
-                d.unk_04[j] = LFLD(s16, (u8 *)self + j * 2, 0x10);
+                d.args[j] = self->entries[0].args[j];
             }
-            d.unk_0c = self->unk_18;
-            o = Group_SpawnActor(data_ov000_021ccd64, &d, &self->unk_24, (u8 *)self + 0x1e, kind);
+            d.unk_0c = self->entries[0].unk_0c;
+            o = Group_SpawnActor(data_ov000_021ccd64, &d, &self->entries[0].pos, &self->entries[0].rot, kind);
             if (o != NULL) {
-                self->unk_0e = LFLD(u16, o, 0xc);
+                self->entries[0].actor = o->id;
             }
             if (o != NULL && self->unk_a3 != 0xff) {
-                o[0x17] = self->unk_a3;
+                o->unk_17 = self->unk_a3;
             }
             break;
         }
         }
     } else {
-        self->unk_0b = 0;
+        self->count = 0;
     }
 }
 

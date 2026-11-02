@@ -1,12 +1,11 @@
 #include "nitro/fx.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
-extern u8 *data_ov000_021ccd68;
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_01ffc9fc(VecFx32 *out, const VecFx32 *in, u16 angle);
 
 static inline void VecSet_021b4130(VecFx32 *v, s32 x, s32 y, s32 z) {
@@ -45,7 +44,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
                 o->unk_18_0 = 0;
             }
             if (self->unk_b22_3) {
-                v.y -= (FX_SinCosTable_[((u16)(LFLD(u16, data_ov000_021ccd68, 0xa) << 9) >> 4) * 2] + 0x1400) >> 2;
+                v.y -= (FX_SinCosTable_[((u16)(data_ov000_021ccd68->frame << 9) >> 4) * 2] + 0x1400) >> 2;
                 v.x += FX_SinCosTable_[(self->rot_y >> 4) * 2] >> 1;
                 v.z += FX_SinCosTable_[(self->rot_y >> 4) * 2 + 1] >> 1;
             } else if (self->unk_b2c_1) {

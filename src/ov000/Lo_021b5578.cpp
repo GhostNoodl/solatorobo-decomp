@@ -1,7 +1,7 @@
 #include "nitro/fx.h"
 #include "Main/Sys/FieldState.h"
+#include "ov000/Group.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct Node021b5578 {
     struct Node021b5578 *prev;
@@ -34,21 +34,13 @@ typedef struct {
 
 typedef struct {
     VecFx32 pos;
-    u16 unk_0c;
-    u16 unk_0e;
-    u16 unk_10;
+    Rot16 rot;
     u16 id;
     s16 h[4];
-    u8 c[3];
+    FieldId c;
     u8 flag;
 } Ent021b5578;
 
-typedef struct {
-    u16 id;
-    u16 kind;
-    s16 v[4];
-    s16 m;
-} Spawn021b5578;
 
 typedef struct {
     u8 unk_00[0x158];
@@ -74,8 +66,6 @@ void **func_02035fe8(void *a, char *buf);
 Ent021b5578 *func_0206e1bc(Res021b5578 *r);
 u16 func_0206e7ec(u32 a, u32 b);
 u8 *func_020704b4(u16 id);
-void *func_ov000_0218b9ec(Spawn021b5578 *s, u8 *a, u8 *b, s32 c, s32 d);
-void func_ov000_0218b7c0(void *o, u16 kind, s32 mode);
 u8 *func_0206e150(Res021b5578 *r);
 u8 *func_0206e180(Res021b5578 *r);
 void *func_020359d0(void *e, s32 a, s32 b);
@@ -108,14 +98,14 @@ static inline int GetNibble021b5578(s32 row, s32 idx) {
     return (v >> ((idx % 8) * 4)) & 0xf;
 }
 
-static inline void SpawnInit021b5578(Spawn021b5578 *s, u16 id) {
+static inline void SpawnInit021b5578(GroupActorDesc *s, u16 id) {
     s32 k;
-    s->id = id;
-    s->kind = id & 0xf000;
+    s->kind = id;
+    s->group = id & 0xf000;
     for (k = 0; k < 4; k++) {
-        s->v[k] = 0;
+        s->args[k] = 0;
     }
-    s->m = -1;
+    s->unk_0c = -1;
 }
 
 static inline u16 Kind021b5578(u16 v) {
@@ -179,10 +169,10 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
                     Ent021b5578 *e_0 = &ents[i_0];
                     u8 f = e_0->flag;
                     s16 h = e_0->h[0];
-                    Spawn021b5578 s;
-                    u8 a[3];
-                    u8 b[3];
-                    void *o;
+                    GroupActorDesc s;
+                    FieldId a;
+                    FieldId b;
+                    GroupNode *o;
                     s32 mode;
                     s32 k_0;
                     if (f != 0xff) {
@@ -205,24 +195,24 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
                         }
                     }
                     SpawnInit021b5578(&s, e_0->id);
-                    s.v[0] = h;
+                    s.args[0] = h;
                     for (k_0 = 1; k_0 < 4; k_0++) {
-                        s.v[k_0] = e_0->h[k_0];
+                        s.args[k_0] = e_0->h[k_0];
                     }
-                    a[0] = e_0->c[0];
-                    a[1] = e_0->c[1];
-                    a[2] = e_0->c[2];
-                    b[0] = e_0->c[0];
-                    b[1] = e_0->c[1];
-                    b[2] = 0xff;
+                    a.c[0] = e_0->c.c[0];
+                    a.c[1] = e_0->c.c[1];
+                    a.c[2] = e_0->c.c[2];
+                    b.c[0] = e_0->c.c[0];
+                    b.c[1] = e_0->c.c[1];
+                    b.c[2] = 0xff;
                     mode = 0;
-                    o = func_ov000_0218b9ec(&s, a, b, 0, 0);
-                    LFLD(VecFx32, o, 0x88) = e_0->pos;
-                    LFLD(u16, o, 0x94) = e_0->unk_0c;
-                    LFLD(u16, o, 0x96) = e_0->unk_0e;
-                    LFLD(u16, o, 0x98) = e_0->unk_10;
-                    LFLD(u8, o, 0xa3) = e_0->flag;
-                    kind = Kind021b5578(s.id);
+                    o = func_ov000_0218b9ec(&s, &a, &b, NULL, NULL);
+                    o->pos = e_0->pos;
+                    o->rot.x = e_0->rot.x;
+                    o->rot.y = e_0->rot.y;
+                    o->rot.z = e_0->rot.z;
+                    o->unk_a3 = e_0->flag;
+                    kind = Kind021b5578(s.kind);
                     if (e_0->flag != 0xff) {
                         mode = 1;
                     }

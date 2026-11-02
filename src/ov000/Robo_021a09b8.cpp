@@ -1,10 +1,10 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
-extern void *data_ov000_021ccd68;
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 s32 func_ov000_0219840c(void *s, s32 *list, s32 count, BOOL push);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void func_020627a0(u16 a, u16 b);
@@ -14,7 +14,7 @@ BOOL func_0205b1fc(void);
 void func_0205c234(s32 a, s32 b);
 
 static inline Actor *FindActor021a09b8(u16 id) {
-    void *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
     }

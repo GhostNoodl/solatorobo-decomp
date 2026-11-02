@@ -1,36 +1,10 @@
 #include "Main/Gfx/FieldMsg.h"
 #include "ov000/ModelPart.h"
 #include "Main/Res/ResArc.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u16 id;
-    u8 pad_02[0xa];
-    s32 unk_0c;
-    u8 pad_10[0x8];
-} Entry0215f0ec;
-
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 1;
-    u32 b3 : 1;
-    u32 b4 : 1;
-    u32 rest : 27;
-} Flags0215f0ec;
-
-typedef struct {
-    Flags0215f0ec flags;
-    s32 idx;
-    u8 pad_08[0x10];
-    s32 unk_18;
-    u8 pad_1c[8];
-    TextWin *win;
-    Model *model;
-} Obj0215f0ec;
+#include "ov000/UiObj.h"
 
 extern "C" {
-extern Entry0215f0ec data_02fe0188[];
+extern UiLabelStyle data_02fe0188[];
 extern const char *data_0208cb84;
 extern const char *data_0208cc8c;
 extern const char *data_0208cb74;
@@ -52,14 +26,14 @@ static inline void SetText(TextWin *win, u32 text) {
     data_02097ce0->unk_004 = win->font;
 }
 
-void func_ov000_0215f0ec(Obj0215f0ec *self, u32 text) {
-    Entry0215f0ec *e;
+void func_ov000_0215f0ec(UiLabel *self, u32 text) {
+    UiLabelStyle *e;
     TextWin *win;
     if (self->model != NULL) {
         return;
     }
-    e = &data_02fe0188[self->idx];
-    if (self->flags.b4 ? TRUE : FALSE) {
+    e = &data_02fe0188[self->style];
+    if (self->bits.altFrame ? TRUE : FALSE) {
         MODEL_NEW(self->model, data_0208cb84, data_0208cc8c);
     } else {
         MODEL_NEW(self->model, data_0208cb74, data_0208cca0);
@@ -70,21 +44,21 @@ void func_ov000_0215f0ec(Obj0215f0ec *self, u32 text) {
         func_020417e0((Model *)self->model, b);
     }
     self->model->flags |= 2;
-    func_02041d9c((Model *)self->model, 0, e->id);
-    func_02041c20(self->model, e->id, self);
+    func_02041d9c((Model *)self->model, 0, e->part);
+    func_02041c20(self->model, e->part, self);
     win = TextWin_New();
-    self->win = win;
+    self->text = win;
     win->font = 4;
-    SetText(self->win, text);
-    self->win->color0 = 0x77df;
-    self->win->color1 = 0x67e;
-    self->win->noVram = 1;
-    self->win->flag24 = 1;
-    *(u32 *)((u8 *)self->win + 4) |= 0x400000;
-    self->win->unk_78 = 0x9000;
-    self->win->unk_4_30 = 1;
-    self->win->rendering = 1;
-    self->unk_18 = e->unk_0c >> 12;
+    SetText(self->text, text);
+    self->text->color0 = 0x77df;
+    self->text->color1 = 0x67e;
+    self->text->noVram = 1;
+    self->text->flag24 = 1;
+    self->text->flags |= 0x400000;
+    self->text->unk_78 = 0x9000;
+    self->text->unk_4_30 = 1;
+    self->text->rendering = 1;
+    self->height = e->height >> 12;
 }
 
 }

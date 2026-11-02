@@ -7,22 +7,21 @@ BOOL func_02054f10(void *a, s32 b);
 extern u8 *data_02097dc8;
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *data_02097e4c;
-void func_ov000_02152294(void *self, s32 a, s32 b, void *cb);
-BOOL func_ov000_02151664(void *p, u8 *msg);
-void func_ov000_0215f334(void *p);
+void func_ov000_02152294(UiList *self, s32 a, s32 b, void *cb);
+BOOL func_ov000_02151664(UiList *p, UiListItem *msg);
 
 void func_ov000_02150f24(Lo021ca9c4 *self) {
     u16 k;
-    void *p;
+    Lo021caac8 *p;
     if (self->unk_58) {
         return;
     }
     if ((void *)self->unk_50 == NULL) {
         return;
     }
-    LBIT(self->unk_50, 0xc).b2 = 0;
+    self->unk_50->flag2 = 0;
     p = self->unk_50;
-    if (!(LBIT(p, 0xc).b0 ? FALSE : TRUE)) {
+    if (!(p->busy ? FALSE : TRUE)) {
         return;
     }
     k = LFLD(u16, data_02097dc8, 0x12);

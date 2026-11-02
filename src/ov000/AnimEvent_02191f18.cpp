@@ -1,4 +1,5 @@
 #include "ov000/FieldCam.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/Vec.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorBase.h"
@@ -7,12 +8,10 @@
 #include "Main/Effect/Effect.h"
 
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 s32 Rand_UpTo(s32 n);

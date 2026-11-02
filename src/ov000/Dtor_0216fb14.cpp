@@ -1,7 +1,7 @@
 #include "ov000/MessageQueue.h"
+#include "ov000/LoTimer.h"
 #include "ov000/HeapScope.h"
 #include "ov000/LoTicker.h"
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
 
@@ -14,7 +14,6 @@ void func_020507d8(void *p);
 void func_ov000_0216ad34(void *p);
 void func_ov000_0216b490(void *p);
 void func_ov000_0216c9b0(void *p);
-void func_ov000_0216e5d0(void *p);
 void func_ov000_021b8800(void *p);
 void func_ov000_021b88d8(void *p);
 void func_ov000_021b8ecc(void *p);
@@ -34,7 +33,7 @@ void func_ov000_0216fb14(ListBuffer021cb940 *self) {
     HEAP_DELETE(u8 *, self->unk_44, func_ov000_021bbcac(p); *(void **)(p + 4) = data_0208b318; ((VObj *)(p + 4))->vfunc_0c(); Heap_Free(p));
     HEAP_DELETE_FN(self->unk_4c, func_ov000_021bb840);
     HEAP_DELETE_FN(self->unk_50, func_ov000_0216c9b0);
-    HEAP_DELETE_FN(self->unk_54, func_ov000_0216e5d0);
+    HEAP_DELETE(LoTimer *, self->unk_54, func_ov000_0216e5d0(p); Heap_Free(p));
     HEAP_DELETE(VObj *, self->unk_58, p->vfunc_04());
     HEAP_DELETE(VObj *, self->unk_5c, p->vfunc_04());
     HEAP_DELETE(VObj *, self->unk_60, p->vfunc_04());

@@ -1,11 +1,11 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 void *func_ov000_0218d2e0(void *self);
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void *func_ov000_02199d78(void *p);
 void *func_ov000_021b2f08(void *self, void *a, void *b, BOOL c);
 void *func_02049a48(void *p, s32 id, s32 a, s32 b, s32 c);
@@ -15,7 +15,7 @@ void func_ov000_021b3bd8(void *self);
 void func_ov000_021b3738(void *self, void *t);
 
 static inline Actor *FindActor021b2d48(u16 id) {
-    void *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
     }

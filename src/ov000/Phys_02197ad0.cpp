@@ -1,6 +1,5 @@
 #include "ov000/Actor.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 typedef struct {

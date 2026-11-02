@@ -1,8 +1,8 @@
 #include "nitro/fx.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     u8 unk_00[0x158];
@@ -11,12 +11,11 @@ typedef struct {
 
 extern "C" {
 extern char data_ov000_021cc469[];
-extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern Save021971c4 *data_0214a424;
 void *Target_Get(void *p);
 BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
 void Target_Set(void *a, void *b);
 BOOL func_ov000_02199cd8(void *a, u16 id);
@@ -31,7 +30,7 @@ void func_ov000_0218bed8(void *a, s32 b, void *c);
 u16 func_ov000_02199bc8(void *a, void *pos, s32 b, s32 c);
 
 static inline Actor *FindActor021971c4(u16 id) {
-    void *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
     }

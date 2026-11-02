@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
@@ -10,11 +11,10 @@ typedef struct {
 } Msg021a3e50;
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd30;
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc648[];
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void Actor_TurnToActor(void *self, void *other, s32 step);
 BOOL func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
@@ -26,7 +26,7 @@ void *Task_FindById(s32 kind);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 static inline Actor *FindActor021a3e50(u16 id) {
-    void *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
     }

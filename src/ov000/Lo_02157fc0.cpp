@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
+#include "Main/Gfx/TextWin.h"
 
 extern "C" {
 
@@ -8,24 +9,24 @@ BOOL func_02054f10(void *a, s32 b);
 BOOL func_0203e63c(void *p);
 BOOL func_ov000_021580e8(void *self);
 
-static inline BOOL LoResDone(u8 *o) {
-    if (LFLD(void *, o, 0x6c) == NULL) {
+static inline BOOL TextReady(TextWin *t) {
+    if (t->unk_6c == NULL) {
         return TRUE;
     }
-    if (func_0203e63c(LFLD(void *, o, 0x6c))) {
-        LFLD(void *, o, 0x6c) = NULL;
+    if (func_0203e63c(t->unk_6c)) {
+        t->unk_6c = NULL;
     } else {
-        return LBIT(o, 4).b6 ? FALSE : TRUE;
+        return t->noVram ? FALSE : TRUE;
     }
     return TRUE;
 }
 
-static inline BOOL LoPartReady(u8 *q) {
+static inline BOOL LabelReady(UiLabel *q) {
     BOOL r = TRUE;
-    if (LFLD(u8 *, q, 0x24) && !LoResDone(LFLD(u8 *, q, 0x24))) {
+    if (q->text && !TextReady(q->text)) {
         r = FALSE;
     }
-    if (LFLD(void *, q, 0x28) && !func_02054f10(LFLD(void *, q, 0x28), 0xffff)) {
+    if (q->model && !func_02054f10(q->model, 0xffff)) {
         r = FALSE;
     }
     return r;
@@ -33,10 +34,10 @@ static inline BOOL LoPartReady(u8 *q) {
 
 BOOL func_ov000_02157fc0(UiList021cb4a8 *self) {
     BOOL ok = func_ov000_021580e8(self);
-    if (self->unk_d4 && !LoPartReady(self->unk_d4)) {
+    if (self->unk_d4 && !LabelReady(self->unk_d4)) {
         ok = FALSE;
     }
-    if (self->unk_d8 && !LoPartReady(self->unk_d8)) {
+    if (self->unk_d8 && !LabelReady(self->unk_d8)) {
         ok = FALSE;
     }
     return ok;

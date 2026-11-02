@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
@@ -42,13 +43,12 @@ extern "C" const char data_ov000_021cc747[];
 extern "C" {
 extern Def_021afaf8 data_ov000_021ca398[];
 extern Def_021afaf8 data_ov000_021ca248[];
-extern void *data_ov000_021ccd68;
 u8 *func_0206ef10(u16 id);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 void *func_ov000_0218e9c4(void *p);
 void *STD_CopyString(void *dst, const char *src);
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Actor_SendMsg(void *a, u16 id, s32 b, s32 c, s32 d, void *e);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
 void func_ov000_02191008(void *p);

@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
+#include "ov000/LoTimer.h"
 
 extern "C" {
 
@@ -19,50 +20,34 @@ void func_ov000_0216d9dc(void *self, s32 unused, u16 *msg) {
     MTX_RotY43_((MtxFx43 *)self, FX_SinCosTable_[(ang >> 4) * 2], FX_SinCosTable_[(ang >> 4) * 2 + 1]);
 }
 
-struct Obj0216da2c {
-    u8 unk_00[0x8];
-    s32 unk_08;
-    u8 unk_0c[0x10];
-    s32 unk_1c;
-    s32 unk_20;
-    s32 unk_24;
-    s32 unk_28;
-};
-
-void func_ov000_0216da2c(Obj0216da2c *self, s32 a, s32 b, s32 c) {
-    self->unk_08 = a;
-    self->unk_24 = b;
+void func_ov000_0216da2c(LoTimer *self, s32 mode, s32 limit, s32 c) {
+    self->mode = mode;
+    self->limit = limit;
     self->unk_28 = c;
-    switch (a) {
+    switch (mode) {
     case 1:
-        self->unk_20 = 0;
-        self->unk_1c = 0;
-        if (b == 0) {
-            self->unk_24 = 0x7fffffff;
+        self->shownTime = 0;
+        self->time = 0;
+        if (limit == 0) {
+            self->limit = 0x7fffffff;
         }
         break;
     case 2:
-        self->unk_20 = b;
-        self->unk_1c = b;
+        self->shownTime = limit;
+        self->time = limit;
         break;
     }
-    LBIT(self, 0).b7 = 0;
+    self->b7 = 0;
 }
 
-struct Obj0216da78 {
-    u8 unk_00[0x1c];
-    s32 unk_1c;
-    s32 unk_20;
-};
-
-void func_ov000_0216da78(Obj0216da78 *self) {
-    s32 v = self->unk_1c;
-    LBIT(self, 0).b9 = 1;
-    LBIT(self, 0).b16 = 0;
-    LBIT(self, 0).b5 = 1;
-    LBIT(self, 0).b8 = 1;
-    self->unk_20 = v;
-    if (LBIT(self, 0).b6 == 1) {
+void func_ov000_0216da78(LoTimer *self) {
+    s32 v = self->time;
+    self->b9 = 1;
+    self->b16 = 0;
+    self->b5 = 1;
+    self->b8 = 1;
+    self->shownTime = v;
+    if (self->b6 == 1) {
         FieldState *d;
         func_020627fc(4);
         d = data_ov000_021ccd54;
@@ -75,34 +60,10 @@ void func_ov000_0216da78(Obj0216da78 *self) {
 }
 
 
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 1;
-    u32 b3 : 1;
-    u32 b4 : 1;
-    u32 b5 : 1;
-    u32 b6 : 1;
-    u32 b7 : 1;
-    u32 b8 : 1;
-    u32 b9 : 1;
-    u32 b10 : 4;
-    u32 b14 : 1;
-    u32 b15 : 1;
-    u32 b16 : 1;
-    u32 b17 : 1;
-    u32 f18 : 4;
-    u32 b22 : 1;
-    u32 rest : 9;
-} Bits0216dae4;
-
 extern "C" {
 extern const s16 FX_SinCosTable_[];
 extern int data_02097d78[];
 bool func_ov000_021735e8(void);
-void func_ov000_0216e67c(void *self);
-void func_ov000_0216eaf8(void *self);
-void func_ov000_0216e968(void *self);
 BOOL func_02054f10(void *a, s32 b);
 s32 FX_Div(s32 a, s32 b);
 void func_020627fc(s32 a);
@@ -132,37 +93,21 @@ static inline BOOL FadeIdle0216dae4(void) {
     return (data_02097d78[3] == 0 && data_02097d78[0] == 0) ? TRUE : FALSE;
 }
 
-struct Obj0216dae4 {
-    u8 unk_00[0x4];
-    s32 unk_04;
-    s32 unk_08;
-    u8 unk_0c[0x4];
-    void *unk_10;
-    void *unk_14;
-    s32 unk_18;
-    s32 unk_1c;
-    s32 unk_20;
-    s32 unk_24;
-    u8 unk_28[0x4];
-    s32 unk_2c;
-    s32 unk_30;
-};
-
-static inline BOOL Ready0216dae4(Obj0216dae4 *self) {
+static inline BOOL Ready0216dae4(LoTimer *self) {
     if (!func_02054f10(self->unk_10, 0xffff) || !func_02054f10(self->unk_14, 0xffff)) {
         return FALSE;
     }
     return TRUE;
 }
 
-static inline void Done0216dae4(Obj0216dae4 *self) {
-    s32 v = self->unk_1c;
-    self->unk_20 = v;
-    LBIT(self, 0).b9 = 1;
-    LBIT(self, 0).b16 = 0;
-    LBIT(self, 0).b5 = 1;
-    LBIT(self, 0).b8 = 1;
-    if (LBIT(self, 0).b6 == 1) {
+static inline void Done0216dae4(LoTimer *self) {
+    s32 v = self->time;
+    self->shownTime = v;
+    self->b9 = 1;
+    self->b16 = 0;
+    self->b5 = 1;
+    self->b8 = 1;
+    if (self->b6 == 1) {
         FieldState *d;
         func_020627fc(4);
         d = data_ov000_021ccd54;
@@ -172,100 +117,100 @@ static inline void Done0216dae4(Obj0216dae4 *self) {
     }
 }
 
-BOOL func_ov000_0216dae4(Obj0216dae4 *self) {
-    if (LFLD(Bits0216dae4, self, 0).b2 == 1) {
-        if (!LFLD(Bits0216dae4, self, 0).b0 && !func_ov000_021735e8()) {
-            LFLD(Bits0216dae4, self, 0).b4 = 1;
-        } else if (self->unk_04 == 7 || self->unk_04 == 9) {
-            LFLD(Bits0216dae4, self, 0).b4 = 0;
-            LFLD(Bits0216dae4, self, 0).f18 = 0;
+BOOL func_ov000_0216dae4(LoTimer *self) {
+    if (self->b2 == 1) {
+        if (!self->b0 && !func_ov000_021735e8()) {
+            self->b4 = 1;
+        } else if (self->state == 7 || self->state == 9) {
+            self->b4 = 0;
+            self->f18 = 0;
         }
     }
-    switch (self->unk_04) {
+    switch (self->state) {
     case 3:
         return FALSE;
     case 0:
-        self->unk_04 = 1;
+        self->state = 1;
     case 1:
-        self->unk_04 = 4;
+        self->state = 4;
     case 4:
-        if (LFLD(Bits0216dae4, self, 0).b2 && LFLD(Bits0216dae4, self, 0).b4) {
-            LFLD(Bits0216dae4, self, 0).b3 = 1;
-            self->unk_04 = 5;
+        if (self->b2 && self->b4) {
+            self->b3 = 1;
+            self->state = 5;
         } else {
-            if (LFLD(Bits0216dae4, self, 0).b0) {
-                self->unk_04 = 3;
+            if (self->b0) {
+                self->state = 3;
             }
             break;
         }
     case 5:
         func_ov000_0216e67c(self);
-        self->unk_04 = 6;
+        self->state = 6;
     case 6:
         if (!Ready0216dae4(self)) {
             break;
         }
-        LFLD(Bits0216dae4, self, 0).b5 = 1;
-        self->unk_2c = 0;
-        self->unk_30 = 0x1000;
-        self->unk_04 = 8;
+        self->b5 = 1;
+        self->slideTime = 0;
+        self->slide = 0x1000;
+        self->state = 8;
     case 8: {
         s32 t;
-        self->unk_2c += 0x1000;
-        t = FX_Div(self->unk_2c, 0x1e000);
+        self->slideTime += 0x1000;
+        t = FX_Div(self->slideTime, 0x1e000);
         if (t >= 0x1000) {
-            self->unk_2c = 0;
-            LFLD(Bits0216dae4, self, 0).b5 = 0;
+            self->slideTime = 0;
+            self->b5 = 0;
             t = 0x1000;
-            if (LFLD(Bits0216dae4, self, 0).b3) {
-                self->unk_04 = 7;
+            if (self->b3) {
+                self->state = 7;
             } else {
-                self->unk_04 = 4;
+                self->state = 4;
                 break;
             }
         }
-        self->unk_30 = FX_SinCosTable_[(((t * 0x4000) >> 12) >> 4) * 2];
-        if (LFLD(Bits0216dae4, self, 0).b3) {
-            self->unk_30 = 0x1000 - self->unk_30;
+        self->slide = FX_SinCosTable_[(((t * 0x4000) >> 12) >> 4) * 2];
+        if (self->b3) {
+            self->slide = 0x1000 - self->slide;
         }
     }
     case 7:
-        if (LFLD(Bits0216dae4, self, 0).b9 == 1) {
+        if (self->b9 == 1) {
             func_ov000_0216eaf8(self);
-        } else if ((LFLD(Bits0216dae4, self, 0).b22 || FadeIdle0216dae4()) && (!LFLD(Bits0216dae4, self, 0).b6 || GIdle0216dae4()) && LFLD(Bits0216dae4, self, 0).b7 == 1) {
-            if (self->unk_08 == 2) {
-                self->unk_1c -= self->unk_18;
-                if (self->unk_1c <= 0) {
-                    self->unk_1c = 0;
-                    LFLD(Bits0216dae4, self, 0).b14 = 1;
-                    if (LFLD(Bits0216dae4, self, 0).b6 == 1) {
+        } else if ((self->b22 || FadeIdle0216dae4()) && (!self->b6 || GIdle0216dae4()) && self->b7 == 1) {
+            if (self->mode == 2) {
+                self->time -= self->step;
+                if (self->time <= 0) {
+                    self->time = 0;
+                    self->b14 = 1;
+                    if (self->b6 == 1) {
                         Done0216dae4(self);
                     }
                 }
             } else {
-                self->unk_1c += self->unk_18;
-                if (self->unk_1c >= 0x57e40) {
-                    self->unk_1c = 0x57e40;
+                self->time += self->step;
+                if (self->time >= 0x57e40) {
+                    self->time = 0x57e40;
                 }
-                if (self->unk_1c > self->unk_24) {
-                    self->unk_1c = self->unk_24;
-                    LFLD(Bits0216dae4, self, 0).b14 = 1;
-                    if (LFLD(Bits0216dae4, self, 0).b6 == 1) {
+                if (self->time > self->limit) {
+                    self->time = self->limit;
+                    self->b14 = 1;
+                    if (self->b6 == 1) {
                         Done0216dae4(self);
                     }
                 }
             }
         }
-        if (LFLD(Bits0216dae4, self, 0).b8 != 1) {
-            self->unk_20 = self->unk_1c;
+        if (self->b8 != 1) {
+            self->shownTime = self->time;
         } else {
             func_ov000_0216e968(self);
         }
     case 9:
-        if (!LFLD(Bits0216dae4, self, 0).b2 || !LFLD(Bits0216dae4, self, 0).b4) {
-            LFLD(Bits0216dae4, self, 0).b5 = 1;
-            LFLD(Bits0216dae4, self, 0).b3 = 0;
-            self->unk_04 = 8;
+        if (!self->b2 || !self->b4) {
+            self->b5 = 1;
+            self->b3 = 0;
+            self->state = 8;
         }
         break;
     }

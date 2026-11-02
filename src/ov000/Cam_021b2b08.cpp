@@ -1,4 +1,5 @@
 #include "ov000/FieldCam.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
@@ -12,14 +13,13 @@ typedef struct {
 } Msg021b2b08;
 
 extern "C" {
-extern void *data_ov000_021ccd68;
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 void Actor_TurnClamped(void *self, u16 angle, u16 center, u16 range, s32 step);
 void Actor_SendMsg(void *t, u16 id, s32 a, s32 b, s32 c, void *arg);
 
 static inline Actor *FindActor021b2b08(u16 id) {
-    void *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
     }

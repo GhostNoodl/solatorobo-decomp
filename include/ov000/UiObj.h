@@ -135,6 +135,42 @@ struct UiPanel {
     Model *model;       // 0x28 freed with LO_FREE_M
 };
 
+// A text label in a frame (0x2c bytes): reset by func_ov000_0215f514, released by
+// func_ov000_0215f548, built by func_ov000_0215f0ec (the frame model and the text window) and
+// drawn by func_ov000_0215f334, which centres the text in width x height.
+struct UiLabel {
+    union {
+        u32 flags;
+        struct {
+            u32 centered : 1; // x is the centre (func_ov000_0215f334)
+            u32 b1 : 3;
+            u32 altFrame : 1; // the frame comes from the second archive (func_ov000_0215f0ec)
+            u32 rest : 27;
+        } bits;
+    };
+    s32 style;          // 0x04 index into data_02fe0188
+    s32 x;              // 0x08 screen position
+    s32 y;
+    s32 z;
+    s32 width;          // 0x14 text width + 0x10 once built
+    s32 height;         // 0x18 from the style
+    s32 unk_1c;
+    s32 unk_20;
+    TextWin *text;      // 0x24
+    Model *model;       // 0x28 the frame
+};
+
+// The label styles (data_02fe0188, 0x18 bytes each).
+typedef struct UiLabelStyle {
+    u16 part;           // frame model part
+    u16 color0;         // gradient colours of the frame (func_ov000_0215f618)
+    u16 color1;
+    u8 unk_06[0x6];
+    s32 height;         // fx32
+    s32 ofsX;           // fx32 inset of the frame
+    s32 ofsY;
+} UiLabelStyle;
+
 // List menu (vtable data_ov000_021caec8, 0xd4 bytes, slot 0x28 UiList_Init).
 struct UiList : public UiObj {
     UiItemFn onDecide;  // 0x84 slot 0x98
@@ -170,8 +206,8 @@ struct UiList : public UiObj {
 // List subclass (vtable data_ov000_021cb4a8, 0xe0 bytes); data_ov000_021cb2a8 (0xe0), data_ov000_021caac8
 // (0xe4) and data_ov000_021cb3a8 (0xf0) derive from it.
 struct UiList021cb4a8 : public UiList {
-    u8 *unk_d4;
-    u8 *unk_d8;
+    UiLabel *unk_d4;    // func_ov000_02157c90
+    UiLabel *unk_d8;    // func_ov000_02157d2c
     u8 unk_dc;          // func_ov000_021520a4: row height - 0x12
     u8 unk_dd[0x3];
 };
@@ -187,6 +223,26 @@ static inline UiListItem *UiList_GetCurrent(UiList *self) {
         item = item->next;
     }
     return item;
+}
+
+static inline void UiLabel_Reset(UiLabel *self) {
+    self->flags = 0;
+    self->style = 0;
+    self->x = 0;
+    self->y = 0;
+    self->z = 0;
+    self->width = 0x80;
+    self->height = 6;
+    self->text = NULL;
+    self->model = NULL;
+}
+
+extern "C" {
+void func_ov000_0215f0ec(UiLabel *self, u32 text);
+void func_ov000_0215f334(UiLabel *self);
+void func_ov000_0215f514(UiLabel *self);
+void func_ov000_0215f548(UiLabel *self);
+void func_ov000_0215f618(UiLabel *self, s32 *pos);
 }
 
 #endif

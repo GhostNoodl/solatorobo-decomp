@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/MessageQueue.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
@@ -15,10 +16,9 @@ typedef struct {
 #define COS_0219d9fc(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern u8 data_ov000_021ca320[];
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_02191ec4(void *a, s32 b, u32 c);
 int func_02043d9c(void *p);
 void func_ov000_02190758(void *model, void *rot, s32 a);
@@ -160,7 +160,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
             lvl = 0x1e;
             n = 1;
         } else if (self->unk_b22_3 && IsIdle_0219d9fc(data_ov000_021ccd54)) {
-            if (!(LFLD(u16, data_ov000_021ccd68, 0xa) & 0x3f)) {
+            if (!(data_ov000_021ccd68->frame & 0x3f)) {
                 ca = 0x63fc;
                 cb = 0x5ad4;
                 n = 0x40;

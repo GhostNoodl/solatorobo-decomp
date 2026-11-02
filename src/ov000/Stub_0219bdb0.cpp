@@ -1,15 +1,10 @@
 #include "ov000/Actor.h"
+#include "ov000/Group.h"
 
 extern "C" {
 
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
-typedef struct {
-    u16 kind;
-    u16 group;
-    s16 unk_04[4];
-    s16 unk_0c;
-} SpawnDesc0219be1c;
 
 typedef struct {
     u8 pad_00[0x1c];
@@ -26,7 +21,7 @@ typedef struct {
     u16 unk_90;
 } Spawned0219be1c;
 
-Spawned0219be1c *Group_SpawnActor(void *mgr, const SpawnDesc0219be1c *desc, const void *pos, const void *rot, u16 id);
+Spawned0219be1c *Group_SpawnActor(void *mgr, const GroupActorDesc *desc, const void *pos, const void *rot, u16 id);
 
 void ActorMgr_SendMsg(u16 target, u16 id, u8 type, BOOL notify, u32 size, const void *data) {
     Actor *actor = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, target);
@@ -37,14 +32,14 @@ void ActorMgr_SendMsg(u16 target, u16 id, u8 type, BOOL notify, u32 size, const 
 }
 
 Spawned0219be1c *func_ov000_0219be1c(u16 kind, const void *pos, const void *rot, u16 a, u16 b) {
-    SpawnDesc0219be1c desc;
+    GroupActorDesc desc;
     s32 i;
     Spawned0219be1c *o;
 
     desc.kind = kind;
     desc.group = kind & 0xf000;
     for (i = 0; i < 4; i++) {
-        desc.unk_04[i] = 0;
+        desc.args[i] = 0;
     }
     desc.unk_0c = -1;
     o = Group_SpawnActor(data_ov000_021ccd64, &desc, pos, rot, 0xffff);

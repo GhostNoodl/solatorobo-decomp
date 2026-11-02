@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/FieldCam.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
@@ -10,14 +11,13 @@ extern u8 data_ov000_021cc672[];
 extern u8 data_ov000_021ca0a4[];
 extern u8 data_ov000_021cc5e3[];
 extern u8 data_ov000_021cc618[];
-extern void *data_ov000_021ccd68;
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02191120(void *a);
 BOOL func_ov000_02198360(ActorSub40 *st, s32 state, s32 x);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 void func_ov000_021b03c8(void *self);
 u8 *Actor_GetTarget(void *self);
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 

@@ -2,35 +2,11 @@
 #define OV000_ACTOR_H
 
 #include "ov000/ActorBase.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/Vec.h"
 #include "Main/Sys/Pad.h"
 #include "Main/Sys/Field.h"
 #include "nitro/fx.h" // REG_SQRTCNT, REG_SQRT_PARAM, REG_SQRT_RESULT
-
-typedef struct ActorGroup {
-    struct ActorGroup *prev;
-    struct ActorGroup *next;
-    u16 key;
-    u16 unk_0a;
-    Actor *head;
-    Actor *tail;
-    u16 serial;
-    u16 count;
-    PauseNode pause;
-} ActorGroup;
-
-typedef struct ActorMgr {
-    ActorGroup *head;
-    ActorGroup *tail;
-    u16 count;
-    u16 frame;
-    ActorMsg msgs[0x80];
-    PauseNode pause;
-} ActorMgr;
-
-extern "C" {
-extern ActorMgr *data_ov000_021ccd68;
-}
 
 static inline void ActorGroup_Remove(ActorGroup *group, Actor *actor);
 

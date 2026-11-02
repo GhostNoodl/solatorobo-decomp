@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/MessageQueue.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
@@ -16,12 +17,11 @@ typedef struct {
 } Ba4_0219efc0;
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_02097dc8;
 extern void *data_02097e4c;
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
-void *ActorMgr_GetGroup(void *mgr, u16 key);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
+ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
 u16 Pad_LookupDir(void *pad, void *p);
 void func_ov000_021b3738(void *self, void *t);
 void func_ov000_021b2d48(void *self);
@@ -404,7 +404,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
             } else if (self->unk_b24_1) {
                 LockKeys_0219efc0(self);
             } else if (!(self->hit->unk_54 & 0x400)) {
-                if (self->unk_93_4 || LFLD(u16, ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000), 0x16) != 0) {
+                if (self->unk_93_4 || ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000)->count != 0) {
                     self->fsm->flags |= 0x10000;
                 }
             }

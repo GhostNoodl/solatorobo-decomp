@@ -1,55 +1,9 @@
 #include "ov000/VObj.h"
 #include "ov000/ActorBase.h"
 #include "ov000/Vec.h"
+#include "ov000/Group.h"
 
-typedef struct {
-    u16 id;
-    u16 actor;
-    u8 unk_04[0xc];
-    u8 unk_10;
-    u8 unk_11[0x13];
-} GroupEntry;
-
-typedef struct GroupNode {
-    struct GroupNode *prev;
-    struct GroupNode *next;
-    u16 id;
-    u8 unk_0a;
-    u8 count;
-    GroupEntry entries[1];
-} GroupNode;
-
-typedef struct {
-    u8 flag_0 : 1;
-    u8 flag_1 : 7;
-} GroupFlags;
-
-typedef struct {
-    GroupNode *head;
-    GroupNode *tail;
-    u16 serial;
-    u16 count;
-    union {
-        u8 raw;
-        GroupFlags bits;
-    } unk_0c;
-    u8 unk_0d;
-} Group;
-
-typedef struct {
-    u16 x;
-    u16 y;
-    u16 z;
-} Rot3;
-
-struct GroupVec {
-    s32 x;
-    s32 y;
-    s32 z;
-    GroupVec() {}
-    GroupVec(const GroupVec &o) : x(o.x), y(o.y), z(o.z) {}
-};
-
+// The spawned actor (an Actor, with unk_18 .. unk_1e as the array the spawn args are copied to).
 class GroupActor : public VObj {
 public:
     u8 unk_04[0x14];
@@ -57,16 +11,9 @@ public:
     u16 unk_20;
     s16 unk_22;
     u8 unk_24[0x4c];
-    GroupVec pos;
-    Rot3 rot;
+    VecFx32 pos;
+    Rot16 rot;
 };
-
-typedef struct {
-    u16 kind;
-    u8 unk_02[2];
-    s16 unk_04[4];
-    s16 unk_0c;
-} GroupActorDesc;
 
 typedef struct ActorMgr ActorMgr;
 
@@ -75,14 +22,11 @@ extern "C" {
 extern ActorMgr *data_ov000_021ccd68;
 GroupActor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Heap_Free(void *p);
-void func_ov000_0218ab00(GroupNode *node);
-void func_ov000_0218ac98(GroupNode *node);
 void func_ov000_0218b4b4(GroupNode *node, s32 a, GroupActor *actor);
 GroupActor *func_ov003_021f1420(const GroupActorDesc *desc);
 GroupActor *func_ov000_02192b24(const GroupActorDesc *desc);
 GroupActor *func_ov003_021cfab4(const GroupActorDesc *desc);
 GroupActor *func_ov000_021b4828(const GroupActorDesc *desc);
-void Group_RemoveNode(Group *g, GroupNode *node, BOOL notify);
 
 static inline Group *Group_Init(Group *g) {
     g->head = NULL;
@@ -90,7 +34,7 @@ static inline Group *Group_Init(Group *g) {
     g->count = 0;
     g->serial = 0;
     g->unk_0c.raw = 0xff;
-    g->unk_0d = 0;
+    g->viewCount = 0;
     return g;
 }
 
@@ -195,7 +139,7 @@ GroupNode *Group_FindById(Group *g, u16 id, u8 b) {
     GroupNode *ret = NULL;
     GroupNode *n;
     for (n = g->head; n != NULL; n = n->next) {
-        if (n->entries[1].id == id && (b == 0xff || n->entries[1].unk_10 == b)) {
+        if (n->spawn.kind == id && (b == 0xff || n->fieldId.c[2] == b)) {
             ret = n;
             break;
         }
@@ -209,7 +153,7 @@ GroupNode *func_ov000_0218bddc(Group *g, u16 id, u8 b) {
     for (n = g->head; n != NULL; n = n->next) {
         u8 i;
         for (i = 0; i < n->count; i++) {
-            if (id == n->entries[i].id && (b == 0xff || b == n->entries[i].unk_10)) {
+            if (id == n->entries[i].kind && (b == 0xff || b == n->entries[i].fieldId.c[2])) {
                 ret = n;
                 break;
             }
@@ -222,7 +166,7 @@ GroupNode *func_ov000_0218bddc(Group *g, u16 id, u8 b) {
 }
 
 void func_ov000_0218be54(Group *g) {
-    if (g->unk_0c.bits.flag_0 && g->unk_0d != 0) {
+    if (g->unk_0c.bits.flag_0 && g->viewCount != 0) {
         GroupNode *n = g->head;
         while (n != NULL) {
             GroupNode *next = n->next;
@@ -230,7 +174,7 @@ void func_ov000_0218be54(Group *g) {
             n = next;
         }
     }
-    g->unk_0d = 0;
+    g->viewCount = 0;
 }
 
 void func_ov000_0218be9c(Group *g) {
@@ -258,7 +202,7 @@ void func_ov000_0218bed8(Group *g, s32 a, GroupActor *actor) {
     }
 }
 
-GroupActor *Group_SpawnActor(Group *g, const GroupActorDesc *desc, const GroupVec *pos, const Rot3 *rot, u16 id) {
+GroupActor *Group_SpawnActor(Group *g, const GroupActorDesc *desc, const VecFx32 *pos, const Rot16 *rot, u16 id) {
     GroupActor *actor = NULL;
     s32 i;
     switch ((u16)(desc->kind & 0xf000)) {
@@ -282,7 +226,7 @@ GroupActor *Group_SpawnActor(Group *g, const GroupActorDesc *desc, const GroupVe
     if (actor != NULL) {
         actor->unk_20 = id;
         for (i = 0; i < 4; i++) {
-            actor->unk_18[i] = desc->unk_04[i];
+            actor->unk_18[i] = desc->args[i];
         }
         actor->unk_22 = desc->unk_0c;
         actor->pos.x = pos->x;

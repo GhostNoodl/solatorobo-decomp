@@ -1,7 +1,6 @@
 #include "ov000/VObj.h"
 #include "ov000/ModelPart.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
 void func_02041c18(Model *m, s32 a);

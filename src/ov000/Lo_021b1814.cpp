@@ -83,49 +83,13 @@ void func_ov000_021b1814(Robo021ca458 *self, BOOL flag, BOOL mode) {
         data_ov000_021ccd54->stageFlags = 1;
     }
 }
-}
 
-typedef struct {
-    u16 b0 : 3;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 1;
-    u16 st : 3;
-    u16 b9 : 2;
-    u16 b11 : 2;
-    u16 b13 : 1;
-    u16 b14 : 2;
-} Bits021b1a54;
-
-typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 1;
-    u32 b2 : 2;
-    u32 rest : 28;
-} Bits021b1b88b;
-
-typedef struct {
-    u8 unk_00[0x108];
-    u8 unk_108;
-    u8 unk_109[7];
-    u8 unk_110;
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 6;
-} Anm021b1b88;
-
-extern "C" {
-extern char data_ov000_021cc5e3[];
-void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
-void func_02062764(s32 a, s32 b);
-
-static inline void SetSt(u8 *self, u16 st) {
-    Bits021b1a54 *b = &LFLD(Bits021b1a54, self, 0xb22);
-    if (LFLD(Bits021b1a54, self, 0xb22).b9 < 2) {
-        b->st = st;
-        b->b9 = 1;
-        LFLD(ActorSub40 *, self, 0x40)->flags |= 0x80000000;
-        func_ov000_02198360(LFLD(void *, self, 0x40), 0x1f, 0);
+static inline void SetSt(Robo021ca458 *self, u16 st) {
+    if (self->unk_b22_9 < 2) {
+        self->unk_b22_6 = st;
+        self->unk_b22_9 = 1;
+        self->fsm->flags |= 0x80000000;
+        func_ov000_02198360(self->fsm, 0x1f, 0);
     }
 }
 
@@ -152,14 +116,14 @@ void func_ov000_021b1a54(Robo021ca458 *self, BOOL flag) {
     }
     self->unk_b22_4 = 0;
     self->unk_b22_5 = 0;
-    SetSt((u8 *)self, st);
+    SetSt(self, st);
     func_02062764(0xc00, 0x400);
     if (flag) {
         data_ov000_021ccd54->stageFlags = 1;
     }
 }
 
-void func_ov000_021b1b88(VObj *self, s32 mode) {
+void func_ov000_021b1b88(Robo021ca458 *self, s32 mode) {
     u32 st;
     switch (mode) {
     default:
@@ -169,17 +133,17 @@ void func_ov000_021b1b88(VObj *self, s32 mode) {
         st = 2;
         break;
     case 2:
-        if (!LFLD(Bits021b1b88b, self, 0xb24).b1) {
-            Anm021b1b88 *anm;
-            LFLD(Bits021b1b88b, self, 0xb24).b1 = 1;
-            LFLD(Bits021b1b88b, self, 0xb24).b2 = 0;
+        if (!self->unk_b24_1) {
+            Anm021b12c0 *anm;
+            self->unk_b24_1 = 1;
+            self->unk_b24_2 = 0;
             self->vfunc_18();
-            LFLD(VecFx32, self, 0x75c) = LFLD(VecFx32, self, 0x70);
-            LFLD(u16, self, 0x76c) = LFLD(u16, self, 0x7c);
-            LFLD(u16, self, 0x76e) = LFLD(u16, self, 0x7e);
-            LFLD(u16, self, 0x770) = LFLD(u16, self, 0x80);
+            self->unk_75c = self->pos;
+            self->unk_76c = self->rot_x;
+            self->unk_76e = self->rot_y;
+            self->unk_770 = self->rot_z;
             func_ov000_02190cb0((u8 *)self + 0x368, data_ov000_021cc5e3, 0x1000, 1);
-            anm = LFLD(Anm021b1b88 *, self, 0x384);
+            anm = (Anm021b12c0 *)self->mdl1.unk_1c;
             if (anm != NULL) {
                 NNS_G3dRenderObjRemoveAnmObj((u8 *)self + 0x38c, *(void **)anm);
                 anm->unk_108 = 0;
@@ -187,7 +151,7 @@ void func_ov000_021b1b88(VObj *self, s32 mode) {
                 anm->b0 = 0;
                 anm->b1 = 0;
             }
-            LFLD(s16, self, 0x178) = -1;
+            self->mdl0.unk_cc = -1;
             data_0214a424->bits18.flag8 = 0;
             data_0214a424->bits18.flag9 = 0;
             func_02062764(3, 1);
@@ -195,8 +159,8 @@ void func_ov000_021b1b88(VObj *self, s32 mode) {
         st = 5;
         break;
     }
-    LFLD(Bits021b1a54, self, 0xb22).b13 = 1;
-    SetSt((u8 *)self, st);
+    self->unk_b22_13 = 1;
+    SetSt(self, st);
 }
 
 void func_ov000_021b1d28(Robo021ca458 *self) {
@@ -210,6 +174,6 @@ void func_ov000_021b1d28(Robo021ca458 *self) {
         st = 2;
     }
     self->unk_b22_13 = 0;
-    SetSt((u8 *)self, st);
+    SetSt(self, st);
 }
 }

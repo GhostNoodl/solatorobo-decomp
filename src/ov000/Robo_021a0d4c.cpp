@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/MessageQueue.h"
 #include "Main/Res/StageFlags.h"
 #include "Main/Sys/FieldState.h"
@@ -26,12 +27,11 @@ typedef struct {
 extern "C" {
 extern Robo021a0d4cEntry data_ov000_021ca458[];
 extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern u8 *data_ov000_021ccd6c;
 extern u8 *data_02149f0c;
 void func_ov000_021b06dc(u8 *self);
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_0216adc0(void *p, s32 a, u16 b);
 void func_ov000_021b3d78(u8 *self);
 void Obj0218c208_AddPoint(void *a, void *pos, u16 ang);

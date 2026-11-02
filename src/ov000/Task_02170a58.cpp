@@ -1,4 +1,5 @@
 #include "ov000/MessageQueue.h"
+#include "ov000/LoTimer.h"
 #include "ov000/LoTicker.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/HeapScope.h"
@@ -28,14 +29,12 @@ BOOL func_ov000_021b8994(void *p);
 BOOL func_ov000_021bb33c(void *p);
 BOOL func_ov000_021b8284(void *p);
 BOOL func_ov000_0216ca70(void *p);
-BOOL func_ov000_0216dae4(void *p);
 void func_ov000_02182524(void *p);
 void func_ov000_0216b550(void *p);
 void func_ov000_0216adf8(void *p);
 void func_ov000_021bbcac(void *p);
 void func_020507d8(void *p);
 void func_ov000_0216c9b0(void *p);
-void func_ov000_0216e5d0(void *p);
 void func_ov000_021b8800(void *p);
 void func_ov000_021b88d8(void *p);
 void func_ov000_021b8ecc(void *p);
@@ -185,7 +184,7 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
         HEAP_DELETE_FN(self->unk_50, func_ov000_0216c9b0);
     }
     if (self->unk_54 != NULL && !func_ov000_0216dae4(self->unk_54)) {
-        HEAP_DELETE_FN(self->unk_54, func_ov000_0216e5d0);
+        HEAP_DELETE(LoTimer *, self->unk_54, func_ov000_0216e5d0(p); Heap_Free(p));
     }
     if (self->unk_58 != NULL) {
         self->unk_58->vfunc_0c();

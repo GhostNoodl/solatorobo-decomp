@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 
@@ -19,7 +20,6 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd6c;
 extern void *data_02097e4c;
 extern char data_ov000_021cc62a[];
@@ -33,7 +33,7 @@ void func_ov000_02191780(void *a);
 void func_ov000_021917f8(void *a);
 BOOL func_ov000_02198360(St_021af464 *st, s32 state, s32 x);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void Actor_MoveToPos(void *self, const void *target, s32 turn);
 void Actor_Move(void *self, s32 turn);
 s32 func_ov000_021b288c(void *self);

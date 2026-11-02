@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/Group.h"
 #include "nitro/mi.h"
 
 typedef struct {
@@ -16,7 +17,7 @@ typedef struct {
 extern "C" {
 extern void *data_ov000_021ccd64;
 u8 *Target_Get(void *p);
-u8 *Group_FindNode(void *mgr, u16 id);
+GroupNode *Group_FindNode(void *mgr, u16 id);
 u8 *func_0206fef8(u16 id);
 void func_ov000_02190758(void *a, void *b, s32 c);
 BOOL func_ov000_021903b4(void *a);
@@ -51,13 +52,13 @@ static inline BOOL GHasD4_02194c08(void) {
     return GD4_02194c08() ? TRUE : FALSE;
 }
 
-static inline s32 Fade02194c08(s32 dist, u8 *cam) {
+static inline s32 Fade02194c08(s32 dist, GroupNode *node) {
     s32 r = 0x1000;
-    if (dist > LFLD(s32, cam, 0x84)) {
-        if (dist >= LFLD(s32, cam, 0x74)) {
+    if (dist > node->fadeStart) {
+        if (dist >= node->spawnRange) {
             r = 0;
         } else {
-            r -= FX_Div(dist - LFLD(s32, cam, 0x84), LFLD(s32, cam, 0x74) - LFLD(s32, cam, 0x84));
+            r -= FX_Div(dist - node->fadeStart, node->spawnRange - node->fadeStart);
         }
     }
     return r;
@@ -75,7 +76,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
     ret = TRUE;
     if (self->model != NULL) {
         u8 alpha;
-        u8 *cam;
+        GroupNode *node;
         if (self->targetObj != NULL) {
             p = Target_Get(((u8 *)self->targetObj));
         }
@@ -113,8 +114,8 @@ BOOL func_ov000_02194c08(ActorEx *self) {
         }
         self->unk_93_0 = 0;
         alpha = 0x1f;
-        cam = Group_FindNode(data_ov000_021ccd64, self->unk_20);
-        if (cam != NULL) {
+        node = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+        if (node != NULL) {
             s32 dist;
             s32 r;
             FieldState *g = data_ov000_021ccd54;
@@ -130,7 +131,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
             while (REG_SQRTCNT & 0x8000) {
             }
             dist = (s32)(REG_SQRT_RESULT + 1) >> 1;
-            r = Fade02194c08(dist, cam);
+            r = Fade02194c08(dist, node);
             if (r == 0) {
                 alpha = 0;
             } else if (r < 0x1000) {

@@ -4,45 +4,44 @@
 
 extern "C" {
 
-void func_ov000_0215eab4(void *p);
-
-void func_ov000_02159f94(Lo021cb5a8 *self, s32 b, s32 c) {
-    u8 *n = (u8 *)Heap_Alloc(0x30);
-    u8 *t;
-    u8 *nx;
-    s16 id;
+// Appends an item, as UiList_AddItem without the item's unk_08 / unk_0c.
+void func_ov000_02159f94(Lo021cb5a8 *self, s32 id, const char *name) {
+    UiListItem *n = (UiListItem *)Heap_Alloc(sizeof(UiListItem));
+    UiListItem *t;
+    UiListItem *nx;
+    s16 index;
     if (n) {
-        LFLD(s32, n, 0) = 0;
-        LFLD(s16, n, 4) = 0;
-        LFLD(s16, n, 6) = 0;
-        LFLD(u16, n, 8) = 0xffff;
-        LFLD(u16, n, 0xa) = 0xffff;
-        LFLD(s32, n, 0xc) = 0;
-        LFLD(s32, n, 0x10) = 0;
-        LFLD(s32, n, 0x14) = 0;
-        LFLD(s32, n, 0x18) = 0;
-        LFLD(s32, n, 0x1c) = 0;
-        LFLD(s32, n, 0x20) = 0;
-        LFLD(s32, n, 0x24) = 0;
-        LFLD(s32, n, 0x28) = 0;
-        LFLD(s32, n, 0x2c) = 0;
+        n->name = NULL;
+        n->index = 0;
+        n->id = 0;
+        n->unk_08 = 0xffff;
+        n->unk_0a = 0xffff;
+        n->unk_0c = 0;
+        n->unk_10 = 0;
+        n->unk_14 = 0;
+        n->unk_18 = 0;
+        n->label = NULL;
+        n->unk_20 = NULL;
+        n->unk_24 = 0;
+        n->prev = NULL;
+        n->next = NULL;
     }
-    LFLD(s32, n, 0) = c;
-    id = self->itemCount;
-    self->itemCount = id + 1;
-    LFLD(s16, n, 4) = id;
-    LFLD(s16, n, 6) = b;
-    t = (u8 *)self->items;
+    n->name = name;
+    index = self->itemCount;
+    self->itemCount = index + 1;
+    n->index = index;
+    n->id = id;
+    t = self->items;
     if (t == NULL) {
-        self->items = (UiListItem *)n;
-        self->topItem = (UiListItem *)n;
+        self->items = n;
+        self->topItem = n;
         return;
     }
-    for (nx = LFLD(u8 *, t, 0x2c); nx != NULL; nx = LFLD(u8 *, nx, 0x2c)) {
+    for (nx = t->next; nx != NULL; nx = nx->next) {
         t = nx;
     }
-    LFLD(u8 *, t, 0x2c) = n;
-    LFLD(u8 *, n, 0x28) = t;
+    t->next = n;
+    n->prev = t;
 }
 
 }

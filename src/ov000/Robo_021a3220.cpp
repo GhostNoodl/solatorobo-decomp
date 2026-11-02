@@ -1,4 +1,5 @@
 #include "ov000/FieldCam.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
@@ -29,10 +30,9 @@ extern char data_ov000_021cc62a[];
 extern char data_ov000_021cc636[];
 extern char *const data_ov000_021ca030[];
 extern void *data_02097e4c;
-extern u8 *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd6c;
 u8 *Actor_GetTarget(u8 *self);
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
 void func_ov000_021b1fac(void *self, BOOL a, s32 b);
 BOOL func_ov000_02198360(void *st, s32 state, s32 x);
@@ -49,7 +49,7 @@ void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const voi
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
 
 static inline Actor *FindActor_021a3220(u16 id) {
-    u8 *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
     }
@@ -104,7 +104,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             }
             if (!self->unk_93_4) {
                 s32 se = 0x300;
-                if (LFLD(u16, data_ov000_021ccd68, 0xa) & 1) {
+                if (data_ov000_021ccd68->frame & 1) {
                     se = 0x304;
                 }
                 func_02049f44(data_02097e4c, se, &self->pos, 0);

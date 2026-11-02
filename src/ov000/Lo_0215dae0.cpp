@@ -1,4 +1,3 @@
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 #include "types.h"
 #include "ov000/ObjLayouts.h"

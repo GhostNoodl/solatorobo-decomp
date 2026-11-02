@@ -1,35 +1,9 @@
 #include "ov000/VObj.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
-#include "Main/Math/Rot16.h"
 #include "ov000/UiObj.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
-
-typedef struct {
-    u8 r, g, b;
-} Rgb8;
-
-typedef struct {
-    u16 id;
-    u16 unk_02;
-    s16 unk_04[4];
-    s16 unk_0c;
-    Rgb8 rgb;
-    Rot16 rot;
-    VecFx32 pos;
-} Entry0218b60c;
-
-typedef struct {
-    u8 unk_00[0xa];
-    u8 mode;
-    u8 count;
-    Entry0218b60c entries[1];
-    u16 cur_id;
-    u16 cur_02;
-    s16 cur_04[4];
-    s16 cur_0c;
-} Obj0218b60c;
 
 extern "C" {
 

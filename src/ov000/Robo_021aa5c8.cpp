@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
@@ -24,10 +25,9 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
 extern Rgb021aa5c8 data_ov000_021c9fe8;
 extern void *data_02097e4c;
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_ov003_021cedf4(u16 n);
 s32 Rand_UpTo(s32 max);
@@ -40,7 +40,7 @@ BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
 static inline Actor *FindActor021aa5c8(u16 id) {
-    void *mgr = data_ov000_021ccd68;
+    ActorMgr *mgr = data_ov000_021ccd68;
     if (mgr == NULL) {
         return NULL;
     }

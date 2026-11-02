@@ -1,7 +1,6 @@
 #include "ov000/Actor.h"
 
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     VecFx32 pos;

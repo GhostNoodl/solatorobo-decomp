@@ -9,7 +9,6 @@ extern void *data_02097e4c;
 extern u8 data_02fe1534[];
 void func_0206281c(void);
 u32 func_0204045c(void);
-void func_ov000_0215f0ec(void *p, void *q);
 extern const s16 FX_SinCosTable_[];
 typedef BOOL (*LoMsgFn)(void *, void *);
 

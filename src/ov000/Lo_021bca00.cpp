@@ -4,7 +4,6 @@
 #include "ov000/Vec.h"
 #include "Main/Res/ResArc.h"
 
-#define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
     u32 b0 : 1;

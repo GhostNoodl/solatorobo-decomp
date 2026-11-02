@@ -1,9 +1,11 @@
 #include "ov000/FieldCam.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/MessageQueue.h"
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/Group.h"
 #include "Main/Effect/Effect.h"
 
 typedef struct {
@@ -14,21 +16,14 @@ typedef struct {
     s32 unk;
 } Pose_021a9be8;
 
-typedef struct {
-    u16 a;
-    u16 b;
-    u16 c[4];
-    s16 d;
-} Desc_021a9be8;
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_02097e4c;
 extern char data_ov000_021cc68a[];
 extern char data_ov000_021ca12c[];
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL func_ov000_02190cb0(void *p, void *a, s32 b, s32 c);
@@ -41,7 +36,7 @@ u16 Actor_YawToPos(void *self, void *target);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
-u8 *Group_SpawnActor(void *mgr, Desc_021a9be8 *d, void *pos, void *rot, u16 a);
+u8 *Group_SpawnActor(void *mgr, GroupActorDesc *d, void *pos, void *rot, u16 a);
 void *func_0204a028(void *a, s32 b, void *c, s32 d);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
@@ -105,7 +100,7 @@ static inline void Bump_021a9be8(Robo021ca458 *self) {
 }
 
 void func_ov000_021a9be8(Robo021ca458 *self) {
-    Desc_021a9be8 desc;
+    GroupActorDesc desc;
     VecFx32 z;
     Pose_021a9be8 m;
     VecFx32 t;
@@ -175,12 +170,12 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
             self->fsm->timer = 0x20;
             func_0204a028(data_02097e4c, 0x44, &self->pos, 2);
             func_02049f44(data_02097e4c, 0x78, &self->pos, 0);
-            desc.a = 0x480c;
-            desc.b = 0x4000;
+            desc.kind = 0x480c;
+            desc.group = 0x4000;
             for (i = 0; i < 4; i++) {
-                desc.c[i] = 0;
+                desc.args[i] = 0;
             }
-            desc.d = -1;
+            desc.unk_0c = -1;
             a = (Actor *)Group_SpawnActor(data_ov000_021ccd64, &desc, (u8 *)self + 0xa74, (u8 *)self + 0x7c, 0xffff);
             if (a != NULL) {
                 ActorSub4c *p;

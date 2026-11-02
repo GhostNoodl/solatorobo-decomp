@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/MessageQueue.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
@@ -77,11 +78,10 @@ typedef struct {
 } H1_0219cdb8;
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern u8 *data_ov000_021ccd6c;
 extern void *data_02097e4c;
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_02191008(void *p);
 void SndMgr_StopSeqArc(void *mgr, s32 id);
 void func_ov000_021697dc(void *p, u16 a, u16 b);

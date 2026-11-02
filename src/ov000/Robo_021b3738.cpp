@@ -1,14 +1,10 @@
 #include "nitro/fx.h"
+#include "ov000/ActorMgr.h"
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define SC(r) FX_SinCosTable_[((r) >> 4) * 2], FX_SinCosTable_[((r) >> 4) * 2 + 1]
-
-typedef struct {
-    u8 b0 : 1;
-    u8 rest : 7;
-} Bits94_021b3738;
 
 typedef struct {
     u32 b0 : 1;
@@ -17,24 +13,23 @@ typedef struct {
 } Flags_021b3738;
 
 extern "C" {
-extern u8 *data_ov000_021ccd68;
-VObj *func_ov000_021985c0(void *hit);
+Actor *func_ov000_021985c0(ActorSub44 *hit);
 void func_ov000_0219a210(VecFx32 *pos, const VecFx32 *ofs, s32 angle);
 BOOL func_ov000_0219b3b4(void *p);
 BOOL func_ov000_021bd314(void *p, s32 x);
 void func_ov000_021bd438(void *p, VecFx32 *v, s32 dy);
 void func_ov000_021bd624(void *p);
-Actor *ActorMgr_GetActor(void *mgr, u16 id);
+Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 
-static inline void RotYXZ_021b3738(MtxFx33 *m, const u16 *rot) {
+static inline void RotYXZ_021b3738(MtxFx33 *m, const ActorRot *rot) {
     MtxFx33 t;
     u16 rx;
     u16 ry;
     u16 rz;
     BOOL any = FALSE;
-    ry = rot[1];
-    rz = rot[2];
-    rx = rot[0];
+    ry = rot->y;
+    rz = rot->z;
+    rx = rot->x;
     MTX_Identity33_(m);
     if (ry != 0) {
         MTX_RotY33_(m, SC(ry));
@@ -59,9 +54,9 @@ static inline void RotYXZ_021b3738(MtxFx33 *m, const u16 *rot) {
     }
 }
 
-static inline s32 State_021b3738(VObj *a) {
-    u8 *s = LFLD(u8 *, a, 0x40);
-    return s != NULL ? s[0x13] : 0;
+static inline s32 State_021b3738(Actor *a) {
+    ActorSub40 *s = a->fsm;
+    return s != NULL ? s->current : 0;
 }
 
 static inline BOOL IsB1_021b3738(void *p) {
@@ -78,32 +73,32 @@ void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
     MtxFx33 m;
     s32 r;
     if (hit != NULL && (self->fsm->current != 0x18 || self->unk_b1e == 0xffff)) {
-        VObj *a = func_ov000_021985c0(hit);
+        Actor *a = func_ov000_021985c0(hit);
         BOOL flag;
-        u8 *e;
-        pos = *(VecFx32 *)hit;
+        ActorSub4c *e;
+        pos = hit->pos;
         if (hit->unk_22_4) {
             ofs.z = hit->unk_1c;
             ofs.x = 0;
             ofs.y = 0;
-            func_ov000_0219a210(&pos, &ofs, LFLD(u16, a, 0x7e));
+            func_ov000_0219a210(&pos, &ofs, a->rot_y);
         }
         r = hit->unk_0c.y;
         if (r == 0) {
             r = hit->unk_1c;
         }
         r += 0x400;
-        if (State_021b3738(a) == 0x13 || State_021b3738(a) == 0x14 || LFLD(Bits94_021b3738, a, 0x94).b0) {
+        if (State_021b3738(a) == 0x13 || State_021b3738(a) == 0x14 || a->unk_94_0) {
             r >>= 2;
         }
-        e = LFLD(u8 *, a, 0x4c);
+        e = a->targetObj;
         flag = TRUE;
         if (e != NULL) {
-            u8 k = e[0];
+            u8 k = e->type;
             if ((u8)(k + 0xfa) <= 5) {
                 flag = FALSE;
             } else if (!self->unk_b24_1) {
-                if (k == 2 || k == 3 || k == 4 || k == 5 || ((u8)(k + 0xf2) <= 1 && e[2] == 1) || func_ov000_0219b3b4(e) || (u16)(LFLD(u16, a, 0xe) & 0xf000) == 0x5000) {
+                if (k == 2 || k == 3 || k == 4 || k == 5 || ((u8)(k + 0xf2) <= 1 && e->unk_02 == 1) || func_ov000_0219b3b4(e) || (u16)(a->kind & 0xf000) == 0x5000) {
                     flag = FALSE;
                 }
             }
@@ -117,27 +112,27 @@ void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
         LFLD(u32, self->unk_5c, 0) |= 2;
     } else if (self->unk_b24_12 == 3) {
         u16 id = self->unk_b20;
-        u8 *o = data_ov000_021ccd68 == NULL ? NULL : (u8 *)ActorMgr_GetActor(data_ov000_021ccd68, id);
+        Actor *o = data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
         if (o == NULL) {
             goto end;
         }
-        if (LFLD(u16, LFLD(u8 *, o, 0x4c), 0x1e) == 0) {
+        if (o->targetObj->unk_1e == 0) {
             func_ov000_021bd314(self->unk_5c, 5);
             pos = self->pos;
             r = self->height;
         } else {
-            s32 h = LFLD(s16, o, 0x1e);
+            s32 h = o->unk_1e;
             s32 d = 0x14000;
             if (h != 0) {
                 d = h << 4;
             }
             r = 0;
-            RotYXZ_021b3738(&m, (u16 *)((u8 *)self + 0x7c));
+            RotYXZ_021b3738(&m, &self->rot);
             pos.x = 0;
             pos.y = 0x1000;
             pos.z = d;
             MTX_MultVec33(&pos, &m, &pos);
-            VEC_Add(&pos, (VecFx32 *)((u8 *)self + 0x70), &pos);
+            VEC_Add(&pos, &self->pos, &pos);
             func_ov000_021bd314(self->unk_5c, 2);
         }
         LFLD(u32, self->unk_5c, 0) |= 2;
@@ -145,13 +140,13 @@ void func_ov000_021b3738(Robo021ca458 *self, ActorSub44 *hit) {
         pos = self->pos;
         r = self->centerY;
         LFLD(u32, self->unk_5c, 0) &= ~2;
-        func_ov000_021bd438(self->unk_5c, (VecFx32 *)((u8 *)self + 0x70), 0);
+        func_ov000_021bd438(self->unk_5c, &self->pos, 0);
     }
 end:
     LFLD(s32, self->unk_5c, 0x5c) = r;
     LFLD(VecFx32, self->unk_5c, 0x50) = pos;
     func_ov000_021bd624(self->unk_5c);
-    if (self->unk_b24_4 && !IsLocked_021b3738(self->unk_5c) && (LFLD(u16, data_ov000_021ccd68, 0xa) & 0x3f) < 0x2c) {
+    if (self->unk_b24_4 && !IsLocked_021b3738(self->unk_5c) && (data_ov000_021ccd68->frame & 0x3f) < 0x2c) {
         LFLD(u32, self->unk_9b0, 0) |= 2;
     } else {
         LFLD(u32, self->unk_9b0, 0) &= ~2;
