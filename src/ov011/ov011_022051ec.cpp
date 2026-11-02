@@ -51,18 +51,13 @@ struct Ov011BarSnd {
 
 extern "C" {
 
-extern int data_02097d78[];
 extern void *data_ov000_021cac60[];
 extern void *data_ov000_021cad50[];
-extern void *data_02149ef8;
-extern const char *MsgRes_GetString(void *mgr, s32 id);
 extern void func_ov000_0215c1bc(void *a, s32 b, const char *c);
 extern void func_ov000_02188140(void *p, s32 a, s32 b, s32 c);
-extern Ov011BarSnd *ActorMgr_GetGroup(void *mgr, u16 id);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(void *p);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 
 static inline BOOL Ov011Bar_FadeIdle(void) {
     if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
@@ -98,7 +93,7 @@ void func_ov011_022051ec(Ov011Act7da4 *self) {
             self->unk_398->flags |= 0x20000;
             self->unk_398->unk_1c = 4;
             self->unk_398->v08();
-            func_ov000_0215c1bc(self->unk_398, 0x8000, MsgRes_GetString(data_02149ef8, 0x76));
+            func_ov000_0215c1bc(self->unk_398, 0x8000, (char *)MsgRes_GetString(data_02149ef8, 0x76));
             self->unk_398->unk_68 = -0x299a;
             self->unk_398->v70();
             func_ov000_02188140(data_ov000_021ccd54, 0xffff, 0, 0);
@@ -110,7 +105,7 @@ void func_ov011_022051ec(Ov011Act7da4 *self) {
     }
     switch (self->unk_40->state) {
     case 0:
-        if (ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000)->unk_16 > 1) {
+        if (((Ov011BarSnd *)ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000))->unk_16 > 1) {
             Ov011Sub40 *w = self->unk_40;
             w->timer++;
             if (w->timer <= 900) {
@@ -118,7 +113,7 @@ void func_ov011_022051ec(Ov011Act7da4 *self) {
             }
         }
         {
-            Ov011Game54 *g;
+            FieldState *g;
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;

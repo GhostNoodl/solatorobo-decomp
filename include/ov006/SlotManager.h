@@ -2,6 +2,8 @@
 #define OV006_SLOTMANAGER_H
 
 #include "ov006/ov006.h"
+#include "nitro/mi.h"
+#include "nitro/std.h"
 
 typedef struct ov006_SlotSub {
     u16 unk0;
@@ -65,9 +67,6 @@ extern void *data_ov006_021ec078;
 extern void *data_ov006_021ec068;
 extern ov006_SlotManager *data_ov006_021ec884;
 
-void MI_CpuFill8(void *dst, u8 value, u32 size);
-void MI_CpuCopy8(const void *src, void *dst, u32 size);
-int STD_CopyLString(void *dst, const void *src, u32 size);
 void __cxa_vec_ctor(void *arr, int count, u32 size, void *ctor, void *dtor);
 void __cxa_vec_cleanup(void *arr, int count, u32 size, void *dtor);
 

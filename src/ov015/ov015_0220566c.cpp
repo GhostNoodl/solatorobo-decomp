@@ -2,12 +2,10 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern u8 *data_ov000_021ccd44;
 extern u8 data_ov000_021ccd34;
 extern Ov015Shared *data_ov015_02213368;
 extern u8 *data_0214a424;
-void *func_02049a48(void *a, int b, int c, int d, int e);
 u8 *func_0206ef88(u16 id);
 void func_0203cc58(int a, int b, int c);
 extern u8 *data_02097dc8;
@@ -19,7 +17,6 @@ void func_ov000_02163594(void *p);
 extern void *data_02149ef8;
 void *MsgRes_GetString(void *a, s32 b);
 void func_0206ecd4(s32 n, void *buf, u16 id);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void *func_ov000_02154b58(void *a, s32 b);
 BOOL func_ov015_02206888(Ov015Scene2b08 *o);
 
@@ -91,7 +88,7 @@ static inline Ov015MenuItem *Ov015_ListNthB(Ov015Menu *o) {
     return r;
 }
 void func_ov015_022058d0(Ov015Scene2b88 *self) {
-    u32 saved;
+    void *saved;
     void *s;
     switch (self->unk_08) {
     case 8:
@@ -197,7 +194,7 @@ BOOL func_ov015_02205bc8(Ov015Menu *self, Ov015MenuItem *item) {
 }
 
 void func_ov015_02205c7c(Ov015Scene2b08 *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_3c);
     HEAP_POP(saved);

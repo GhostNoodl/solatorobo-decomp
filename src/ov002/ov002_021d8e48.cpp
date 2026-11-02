@@ -23,7 +23,7 @@ void func_ov002_021d8e48(void *self) {
 void func_ov002_021d8e90(void *self) {
     func_0203f0b4(*FIELD(self, 0x78, void **));
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0x80, void *) != NULL) {
             Heap_Free(FIELD(self, 0x80, void *));
@@ -36,14 +36,14 @@ void func_ov002_021d8e90(void *self) {
         FIELD(self, 0x88, void *) = NULL;
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         {
             void *p = FIELD(self, 0x90, void *);
             if (p != NULL) {
                 if (p != NULL) {
-                    func_02041558(p);
-                    func_02041278((u8 *)p + 0x88);
+                    func_02041558((Model *)p);
+                    func_02041278((PlttRes *)((u8 *)p + 0x88));
                     Heap_Free(p);
                 }
                 FIELD(self, 0x90, void *) = NULL;

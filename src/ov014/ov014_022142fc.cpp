@@ -9,9 +9,9 @@ static inline s32 Ov014_FxMul64(s32 a, s32 b) {
 }
 
 static inline void Ov014_VecScale(Ov014Vec *v, s32 s) {
-    v->x = Ov014_FxMul(v->x, s);
-    v->y = Ov014_FxMul(v->y, s);
-    v->z = Ov014_FxMul(v->z, s);
+    v->x = FX_Mul(v->x, s);
+    v->y = FX_Mul(v->y, s);
+    v->z = FX_Mul(v->z, s);
 }
 
 static inline s32 Ov014_Approach(s32 cur, s32 target) {
@@ -121,16 +121,7 @@ extern char data_ov014_0221805b[];
 extern void *data_0214a420;
 extern void *Actor_GetTarget(void *self);
 extern void func_ov014_02214f10(Ov014Obj *self);
-extern void MTX_Identity33_(Ov014Mtx33 *m);
-extern void MTX_RotX33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_RotY33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_RotZ33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_Concat33(Ov014Mtx33 *a, Ov014Mtx33 *b, Ov014Mtx33 *out);
-extern void MTX_MultVec33(Ov014Vec *v, Ov014Mtx33 *m, Ov014Vec *out);
 extern void *func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
-extern s32 FX_Div(s32 a, s32 b);
-extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
-extern void VEC_Normalize(const Ov014Vec *in, Ov014Vec *out);
 extern void HitSphere_Link(Ov014Sub48 *p);
 extern Ov014V *func_02066774(void *a, void *b, s32 c, Ov014Vec *d);
 extern Ov014V *EffectGroup_Create(void *a, void *b, Ov014Vec *d);
@@ -173,37 +164,37 @@ void func_ov014_022144f8(Ov014ActEx_022142fc *self) {
         rz = self->rot[2];
         rx = self->rot[0];
         set = FALSE;
-        MTX_Identity33_(&m);
+        MTX_Identity33_((MtxFx33 *)&m);
         if (ry != 0) {
-            MTX_RotY33_(&m, OV014_SIN(ry), OV014_COS(ry));
+            MTX_RotY33_((MtxFx33 *)&m, OV014_SIN(ry), OV014_COS(ry));
             set = TRUE;
         }
         if (rx != 0) {
             if (set) {
-                MTX_RotX33_(&t, OV014_SIN(rx), OV014_COS(rx));
-                MTX_Concat33(&t, &m, &m);
+                MTX_RotX33_((MtxFx33 *)&t, OV014_SIN(rx), OV014_COS(rx));
+                MTX_Concat33((MtxFx33 *)&t, (MtxFx33 *)&m, (MtxFx33 *)&m);
             } else {
-                MTX_RotX33_(&m, OV014_SIN(rx), OV014_COS(rx));
+                MTX_RotX33_((MtxFx33 *)&m, OV014_SIN(rx), OV014_COS(rx));
                 set = TRUE;
             }
         }
         if (rz != 0) {
             if (set) {
-                MTX_RotZ33_(&t, OV014_SIN(rz), OV014_COS(rz));
-                MTX_Concat33(&t, &m, &m);
+                MTX_RotZ33_((MtxFx33 *)&t, OV014_SIN(rz), OV014_COS(rz));
+                MTX_Concat33((MtxFx33 *)&t, (MtxFx33 *)&m, (MtxFx33 *)&m);
             } else {
-                MTX_RotZ33_(&m, OV014_SIN(rz), OV014_COS(rz));
+                MTX_RotZ33_((MtxFx33 *)&m, OV014_SIN(rz), OV014_COS(rz));
                 set = TRUE;
             }
         }
         self->unk_a4 = 0x1000;
         self->unk_9c = 0;
         self->unk_a0 = 0;
-        MTX_MultVec33((Ov014Vec *)&self->unk_9c, &m, (Ov014Vec *)&self->unk_9c);
+        MTX_MultVec33((Ov014Vec *)&self->unk_9c, (MtxFx33 *)&m, (Ov014Vec *)&self->unk_9c);
         self->unk_dc = 0x333;
-        self->unk_9c = Ov014_FxMul(self->unk_9c, self->unk_dc);
-        self->unk_a0 = Ov014_FxMul(self->unk_a0, self->unk_dc);
-        self->unk_a4 = Ov014_FxMul(self->unk_a4, self->unk_dc);
+        self->unk_9c = FX_Mul(self->unk_9c, self->unk_dc);
+        self->unk_a0 = FX_Mul(self->unk_a0, self->unk_dc);
+        self->unk_a4 = FX_Mul(self->unk_a4, self->unk_dc);
         func_02049f44(data_02097e4c, 0x2b, &self->pos, 0);
         self->unk_40->state++;
         self->unk_40->timer = 0x14;
@@ -407,8 +398,8 @@ void func_ov014_02214f10(Ov014Obj *self) {
             while (OV014_SQRTCNT & 0x8000) {
             }
             r = (s32)(OV014_SQRT_RESULT + 1) >> 1;
-            d.x = Ov014_FxMul(r, OV014_SIN(self->rot[1]));
-            d.z = Ov014_FxMul(r, OV014_COS(self->rot[1]));
+            d.x = FX_Mul(r, OV014_SIN(self->rot[1]));
+            d.z = FX_Mul(r, OV014_COS(self->rot[1]));
             VEC_Normalize(&d, &d);
             self->unk_9c = Ov014k_FxMul64(d.x, 0x39a);
             self->unk_a0 = Ov014k_FxMul64(d.y, 0x39a);

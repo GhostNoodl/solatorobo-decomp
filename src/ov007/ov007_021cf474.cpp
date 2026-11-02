@@ -16,15 +16,8 @@ extern const Ov007Lights data_ov007_021cfa3c;
 extern const u16 data_ov007_021cfa98[][0x20];
 extern void *data_02097e4c;
 void *func_02049a48(void *a, int b, int c, int d, int e);
-void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
-void G3X_SetToonTable(const void *p);
-void NNS_G3dGlbLightVector(int light, int x, int y, int z);
 BOOL func_ov000_021903b4(void *a);
-s32 FX_Div(s32 a, s32 b);
 void *func_02070dcc(int kind);
-Ov007SprSeq *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
 
 }
 
@@ -34,37 +27,37 @@ static inline s32 Ov007_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
-static inline void Ov007_DrawMdl(Ov007Sprite *m) {
-    Ov007SprAnim *anim;
-    Ov007SprRes *res = m->unk_28;
+static inline void Ov007_DrawMdl(Model *m) {
+    ModelPart *anim;
+    ModelRes *res = m->res;
     void *arg;
-    Ov007SprFrame *t;
+    ModelPartRes *t;
     if (res == NULL) {
         return;
     }
     anim = NULL;
-    if (m->unk_80 > 0) {
-        anim = m->unk_78;
+    if (m->numParts > 0) {
+        anim = m->parts;
     }
-    if (anim != NULL && (t = anim->unk_04) != NULL) {
-        arg = t->unk_30;
+    if (anim != NULL && (t = anim->res) != NULL) {
+        arg = t->tex;
     } else {
-        Ov007SprSeq *e = NNS_G2dGetAnimSequenceByIdx(res->unk_0c, 0);
-        arg = NNS_G2dGetCellDataByIdx(res->unk_04, **e->unk_0c);
+        Ov007SprSeq *e = (Ov007SprSeq *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0);
+        arg = NNS_G2dGetCellDataByIdx(res->texRes, **e->unk_0c);
     }
     func_02042628(m, arg, anim, 0);
 }
 
-static inline void Ov007_SetOfs(Ov007Sprite *m, s32 x, s32 y) {
-    m->unk_fc = x;
-    m->unk_100 = y;
+static inline void Ov007_SetOfs(Model *m, s32 x, s32 y) {
+    m->x = x;
+    m->y = y;
 }
 
-static inline void Ov007_SetToon(Ov007G3 *st, const u16 *tbl) {
-    st->unk_38 = 0;
+static inline void Ov007_SetToon(Gfx3DState *st, const u16 *tbl) {
+    st->shading = 0;
     *(vu16 *)0x4000060 = *(vu16 *)0x4000060 & ~0x3002;
     if (tbl != NULL) {
-        MIi_CpuCopyFast(tbl, st->unk_3c, 0x40);
+        MIi_CpuCopyFast(tbl, st->toonTable, 0x40);
         G3X_SetToonTable(tbl);
     }
 }
@@ -77,7 +70,7 @@ void func_ov007_021cf474(Ov007Scene *s) {
     s32 i;
     s32 off;
     s32 x;
-    Ov007G3 *st;
+    Gfx3DState *st;
     s32 y;
     if (Ov007_FadeDone()) {
         return;
@@ -85,12 +78,12 @@ void func_ov007_021cf474(Ov007Scene *s) {
     if (s->unk_3c == NULL) {
         return;
     }
-    st = &data_02097d48->unk_8b0;
+    st = (Gfx3DState *)data_02097d48->unk_8b0;
     {
         Ov007Lights l = data_ov007_021cfa3c;
         Ov007Light *v = &l.v[s->unk_4c - 1];
         Ov007_SetToon(st, data_ov007_021cfa98[s->unk_4c - 1]);
-        NNS_G3dGlbLightVector(0, v->x, v->y, v->z);
+        NNS_G3dGlbLightVector(GX_LIGHTID_0, v->x, v->y, v->z);
     }
     s->unk_3c->v00();
     func_ov000_021903b4(s->unk_30);
@@ -149,8 +142,8 @@ void func_ov007_021cf474(Ov007Scene *s) {
         if (alpha != 0) {
             if (i == s->unk_64) {
                 s->unk_2c->flags |= 0x80000;
-                s->unk_2c->attr.pid = Gfx3DState_NextPolyId(st);
-                s->unk_2c->attr.alpha = alpha;
+                MODEL_FLAGS(s->unk_2c)->polygon_id = Gfx3DState_NextPolyId(st);
+                MODEL_FLAGS(s->unk_2c)->alpha = alpha;
                 Ov007_SetOfs(s->unk_2c, off, y);
                 s->unk_2c->unk_150 = -0x2ccd;
                 Ov007_DrawMdl(s->unk_2c);

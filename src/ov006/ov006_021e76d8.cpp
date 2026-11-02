@@ -195,7 +195,7 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
             if (self->unk19C_0 & 1) {
                 e = func_02065f88(0x38a, &self->pos);
                 if (e != NULL) {
-                    VCALL(e, 0C, 0x1800);
+                    VCALL(e, 0c, 0x1800);
                     self->unk1EC = e->unk24;
                     if (self->unk19E == data_ov006_021ec884->unk5) {
                         func_02049f44(data_02097e4c, 0x82, &self->pos, 0);
@@ -206,9 +206,9 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
             e = func_02065f88(0x38c, &self->pos);
             if (e != NULL) {
                 if (self->unk19E == data_ov006_021ec884->unk5) {
-                    VCALL(e, 0C, 0x1266);
+                    VCALL(e, 0c, 0x1266);
                 } else {
-                    VCALL(e, 0C, 0xa66);
+                    VCALL(e, 0c, 0xa66);
                 }
                 e->unk3C = 0x800;
                 self->unk1EC = e->unk24;
@@ -358,7 +358,7 @@ void func_ov006_021e76d8(ov006_Car021e76d8 *self) {
             if (self->unk1FC < 10) {
                 s += (10 - self->unk1FC) * 0x2800 / 10;
             }
-            VCALL(e, 0C, s);
+            VCALL(e, 0c, s);
             } else {
                 e->unk1C = 4;
                 self->unk1F0 = 0;

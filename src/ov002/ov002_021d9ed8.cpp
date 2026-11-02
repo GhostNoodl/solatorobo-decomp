@@ -12,7 +12,7 @@ typedef struct {
 void func_ov002_021d9ed8(void *self, void *obj, bool del) {
     s32 j;
     s32 i;
-    u32 saved;
+    void *saved;
     s32 rows;
     s32 cols;
     u8 *grid;
@@ -80,7 +80,7 @@ void func_ov002_021da054(void *self) {
         return;
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0x70, void *) != NULL) {
             Heap_Free(FIELD(self, 0x70, void *));

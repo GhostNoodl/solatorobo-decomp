@@ -12,15 +12,15 @@ typedef struct ov006_Unk021dd0e4 {
     u8 flag1 : 1;
     u8 flag2 : 6;
     u8 unkB;
-    ov006_Model *unkC;
-    ov006_Model *unk10;
+    Model *unkC;
+    Model *unk10;
 } ov006_Unk021dd0e4;
 
 extern "C" {
 
 BOOL func_02054f10(void *a, int b);
 
-static inline MtxFx22 *ov006_Model_Mtx22(ov006_Model *m) {
+static inline MtxFx22 *ov006_Model_Mtx22(Model *m) {
     return (MtxFx22 *)((u8 *)m + 0x114);
 }
 

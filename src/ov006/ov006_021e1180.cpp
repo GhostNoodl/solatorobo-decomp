@@ -17,7 +17,7 @@ typedef struct ov006_Gauge021e1180 {
     int unk10;
     s32 x;
     s32 y;
-    ov006_Model *model;
+    Model *model;
     ov006_Anim021e1180 *anim;
 } ov006_Gauge021e1180;
 
@@ -38,11 +38,11 @@ void func_ov006_021e1180(ov006_Gauge021e1180 *self) {
     ov006_Anim_SetScreenPos(self->anim, x + 0x28 - (self->anim->unk44 >> 1), y + 0x54);
     VCALL(self->anim, 90);
     ov006_Model_SetPos(self->model, 2, x << 12, y << 12);
-    ov006_Model_PlayPart(self->model, (u16)(self->unk10 + 2));
+    Model_PlayPart(self->model, (u16)(self->unk10 + 2));
     ov006_Model_SetPos(self->model, 2, (x + (s16)(FX_Whole(FX_Mul(self->unk8, 0x4b000)) - 0x4b) + 0x50) << 12, y << 12);
-    ov006_Model_PlayPart(self->model, 7);
+    Model_PlayPart(self->model, 7);
     ov006_Model_SetPos(self->model, 2, (x + 0x50) << 12, y << 12);
-    ov006_Model_PlayPart(self->model, 6);
+    Model_PlayPart(self->model, 6);
 }
 
 }

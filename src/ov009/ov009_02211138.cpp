@@ -2,10 +2,9 @@
 
 extern "C" {
 
-extern u8 data_ov009_022179b4[];
+extern char data_ov009_022179b4[];
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
-extern void VEC_Normalize(const Ov009Vec *in, Ov009Vec *out);
 
 void func_ov009_02211138(Ov009ActVt_02217aac *self) {
     Ov009Vec d;

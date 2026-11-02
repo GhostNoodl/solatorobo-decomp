@@ -85,7 +85,7 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         }
         if (self->model != NULL) {
             MsgData4 *data = (MsgData4 *)msg->data;
-            func_ov000_02190cb0(self->model, data->unk_08, data->unk_0c, 0);
+            func_ov000_02190cb0(self->model, (const char *)data->unk_08, data->unk_0c, 0);
             if (data->unk_0e) {
                 func_ov000_021915a0(self->model);
             }

@@ -2,12 +2,7 @@
 #define OV003_GMOBJ_H
 
 #include "types.h"
-
-typedef struct {
-    s32 x, y, z;
-} Ov003Vec3;
-
-extern "C" void NNS_G3dRenderObjRemoveAnmObj(void *a, void *b);
+#include "nnsys/g3d.h"
 
 typedef struct {
     u16 state;
@@ -67,7 +62,7 @@ typedef struct {
 } Ov003Anim;
 
 typedef struct {
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u8 unk_0c[0x16];
     u16 unk_22_0 : 1;
     u16 unk_22_1 : 1;
@@ -89,7 +84,7 @@ typedef struct {
 } Ov003Part;
 
 typedef struct {
-    Ov003Vec3 pos;
+    VecFx32 pos;
     s16 speed;
     u8 wait;
     s8 next;
@@ -108,7 +103,7 @@ typedef struct {
     Ov003Anim *unk_10;
     u8 unk_14[0x10];
     u8 unk_24[0x54];
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u8 unk_84[0x24];
     s32 unk_a8;
     s32 unk_ac;
@@ -156,7 +151,7 @@ typedef struct Ov003Obj {
     s32 unk_64;
     u8 unk_68[4];
     s32 unk_6c;
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u8 unk_7c[0x8];
     s32 unk_84;
     s32 unk_88;
@@ -184,7 +179,7 @@ typedef struct Ov003Obj {
     };
     u8 unk_d2;
     u8 unk_d3;
-    Ov003Vec3 unk_d4;
+    VecFx32 unk_d4;
     u8 unk_e0[0xec];
     void **unk_1cc;
     u8 unk_1d0[0x20];
@@ -223,7 +218,7 @@ static inline void Ov003Obj_Destroy(Ov003Obj *self) {
 static inline void Ov003Model_ResetAnim(Ov003Model *m) {
     Ov003Anim *a = m->unk_10;
     if (a != NULL) {
-        NNS_G3dRenderObjRemoveAnmObj(m->unk_24, a->unk_00);
+        NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)m->unk_24, (NNSG3dAnmObj *)a->unk_00);
         a->unk_108 = 0;
         a->unk_110 = 0xff;
         a->unk_111_0 = 0;

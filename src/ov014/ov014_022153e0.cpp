@@ -20,28 +20,14 @@ extern Ov014Actor *Target_Get(void *p);
 extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
 extern void func_ov014_02215ffc(Ov014ActEx_022152e8 *self);
 extern void func_ov000_021911c8(void *a, s32 b);
-extern void MTX_Identity33_(Ov014Mtx33 *m);
-extern void MTX_RotX33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_RotY33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_RotZ33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_Concat33(Ov014Mtx33 *a, Ov014Mtx33 *b, Ov014Mtx33 *out);
-extern s32 Rand_UpTo(s32 max);
-extern s32 Rand_PlusMinus(s32 n);
-extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
-extern void VEC_Normalize(const Ov014Vec *in, Ov014Vec *out);
-extern void VEC_MultAdd(s32 s, const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
 extern void *func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
-extern s32 FX_Div(s32 a, s32 b);
-extern u16 FX_Atan2(s32 x, s32 z);
 extern void Interp_SinLerpVec(Ov014Vec *out, s32 t, Ov014Vec *a, Ov014Vec *b);
 extern void Actor_TurnToActor(Ov014Obj *self, Ov014Obj *target, s32 a);
 extern void Actor_TurnToPos(Ov014Obj *self, Ov014Vec *v, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, Ov014Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
-extern void Actor_Move(Ov014Obj *self, s32 a);
 extern u8 *func_ov000_02190a30(void *p, s32 a);
 extern void func_ov003_021f0c60(Ov014Obj *self, s32 a);
-extern void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 
 static inline void Ov014z_Set(Ov014Vec *v, s32 x, s32 y, s32 z) { v->x = x; v->y = y; v->z = z; }
 void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
@@ -78,26 +64,26 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
         ry = self->rot[1];
         rz = self->rot[2];
         rx = self->rot[0];
-        MTX_Identity33_(&m);
+        MTX_Identity33_((MtxFx33 *)&m);
         if (ry != 0) {
-            MTX_RotY33_(&m, OV014_SIN(ry), OV014_COS(ry));
+            MTX_RotY33_((MtxFx33 *)&m, OV014_SIN(ry), OV014_COS(ry));
             set = TRUE;
         }
         if (rx != 0) {
             if (set) {
-                MTX_RotX33_(&t, OV014_SIN(rx), OV014_COS(rx));
-                MTX_Concat33(&t, &m, &m);
+                MTX_RotX33_((MtxFx33 *)&t, OV014_SIN(rx), OV014_COS(rx));
+                MTX_Concat33((MtxFx33 *)&t, (MtxFx33 *)&m, (MtxFx33 *)&m);
             } else {
-                MTX_RotX33_(&m, OV014_SIN(rx), OV014_COS(rx));
+                MTX_RotX33_((MtxFx33 *)&m, OV014_SIN(rx), OV014_COS(rx));
                 set = TRUE;
             }
         }
         if (rz != 0) {
             if (set) {
-                MTX_RotZ33_(&t, OV014_SIN(rz), OV014_COS(rz));
-                MTX_Concat33(&t, &m, &m);
+                MTX_RotZ33_((MtxFx33 *)&t, OV014_SIN(rz), OV014_COS(rz));
+                MTX_Concat33((MtxFx33 *)&t, (MtxFx33 *)&m, (MtxFx33 *)&m);
             } else {
-                MTX_RotZ33_(&m, OV014_SIN(rz), OV014_COS(rz));
+                MTX_RotZ33_((MtxFx33 *)&m, OV014_SIN(rz), OV014_COS(rz));
                 set = TRUE;
             }
         }
@@ -137,7 +123,7 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
         if (self->unk_40->timer == 0xf) {
             Ov014V *e;
             Ov014V *e2;
-            Ov014Game54 *g;
+            FieldState *g;
             e = func_02065f88(0x66, &self->pos);
             e->v0c(0x2800);
             e->v30(self->rot);
@@ -145,12 +131,12 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
             e2->v0c(0x3800);
             e2->v30(self->rot);
             g = data_ov000_021ccd54;
-            g->unk_190_2 = 1;
-            g->unk_190_3 = 1;
-            g->unk_190_4 = 1;
-            g->unk_18d = 0x14;
-            g->unk_18e = 10;
-            g->unk_18f = 10;
+            g->cam.base.shakeX = 1;
+            g->cam.base.shakeY = 1;
+            g->cam.base.shakeZ = 1;
+            g->cam.base.shakeTime = 0x14;
+            g->cam.base.shakeLen = 10;
+            g->cam.base.shakeCur = 10;
             func_02049f44(data_02097e4c, 0x29, &self->pos, 0);
         }
         st = self->unk_40;
@@ -226,9 +212,9 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
         v2.z = OV014_COS(self->rot[1]);
         VEC_MultAdd(self->unk_e8, &v2, &self->pos, &self->pos);
         sp = self->unk_e8;
-        self->unk_9c = Ov014_FxMul(v2.x, sp);
-        self->unk_a0 = Ov014_FxMul(v2.y, sp);
-        self->unk_a4 = Ov014_FxMul(v2.z, sp);
+        self->unk_9c = FX_Mul(v2.x, sp);
+        self->unk_a0 = FX_Mul(v2.y, sp);
+        self->unk_a4 = FX_Mul(v2.z, sp);
         self->pos.y -= 0xcd;
         if (self->pos.y < 0x1000) {
             self->pos.y = 0x1000;
@@ -268,7 +254,7 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
         VEC_Normalize((Ov014Vec *)&self->unk_9c, &n);
         self->unk_98 = FX_Atan2(n.x, n.z) - 0x7fff;
         sp = self->unk_e8;
-        self->unk_9c = Ov014_FxMul(Rand_PlusMinus(0x333) + 0x1000, sp);
+        self->unk_9c = FX_Mul(Rand_PlusMinus(0x333) + 0x1000, sp);
         self->unk_a4 = 0xf33;
         self->unk_a8 = 0x52;
         self->unk_a0 = 0x333;
@@ -278,9 +264,9 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
         q4->unk_22_1 = 1;
         m38 = self->unk_38;
         {
-            s32 x = Ov014_FxMul(m38->unk_a8.x, 0x800);
-            s32 y = Ov014_FxMul(m38->unk_a8.y, 0x800);
-            s32 z = Ov014_FxMul(m38->unk_a8.z, 0x800);
+            s32 x = FX_Mul(m38->unk_a8.x, 0x800);
+            s32 y = FX_Mul(m38->unk_a8.y, 0x800);
+            s32 z = FX_Mul(m38->unk_a8.z, 0x800);
             m38->unk_a8.x = x;
             m38->unk_a8.y = y;
             m38->unk_a8.z = z;
@@ -291,7 +277,7 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
     }
     case 0x15: {
         s16 k;
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         k = FLD(s16, func_ov000_02190a30(self->unk_38, 0), 0x112) - 0x29;
         if (k < 0) {
             k = 0;
@@ -300,7 +286,7 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
         if (k < 0x800) {
             u16 rz;
             s32 d;
-            self->rot[1] += (u16)Ov014_FxMul(k, 0x200);
+            self->rot[1] += (u16)FX_Mul(k, 0x200);
             rz = self->rot[2];
             if (rz < 0x3fff) {
                 d = 0x71c - rz;

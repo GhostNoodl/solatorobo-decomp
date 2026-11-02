@@ -25,7 +25,7 @@ extern "C" {
 
 static inline void ov006_Sub021dbbac_Stop(ov006_Sub021dbbac *sub) {
     if (sub->unk24 != 0 || sub->unk4 != 0) {
-        VCALL(sub, 0C);
+        VCALL(sub, 0c);
     }
     VCALL(sub, 08);
 }
@@ -41,13 +41,13 @@ void func_ov006_021dbbac(ov006_Unk021dbbac *self) {
         if (self->sub.unk6C != 0) {
             VCALL(&self->sub, 24, self->sub.unk4C, &self->sub.unk6C);
         } else {
-            VCALL(&self->sub, 1C, self->sub.unk4C);
+            VCALL(&self->sub, 1c, self->sub.unk4C);
         }
         self->unk94 = 0;
         self->unk4++;
         break;
     case 1:
-        if (VCALL(&self->sub, 2C)) {
+        if (VCALL(&self->sub, 2c)) {
             self->unk4++;
         }
         break;

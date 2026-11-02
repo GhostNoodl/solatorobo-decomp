@@ -73,7 +73,7 @@ void func_ov006_021e6210(ov006_Prop6210 *self) {
                 func_ov006_021e7004(self, &sub);
             }
         } else {
-            sub.unk0 = data_02097dc8->unk10;
+            sub.unk0 = data_02097dc8->cur;
         }
         ov006_Prop6210_Commit(self, slot, &sub);
     } else {

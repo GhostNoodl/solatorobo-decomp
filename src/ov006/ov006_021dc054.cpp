@@ -12,7 +12,7 @@ typedef struct ov006_Unk021dc054 {
     char unk38[0x6c];
     u16 unkA4;
     u8 unkA6[2];
-    ov006_Model *unkA8;
+    Model *unkA8;
     u16 unkAC;
     u8 unkAE[2];
     s32 unkB0;
@@ -71,19 +71,19 @@ void func_ov006_021dc054(ov006_Unk021dc054 *self) {
         id = self->unkA4;
         self->unkAC = id;
         {
-            ov006_Model *model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
+            Model *model = (Model *)Heap_Alloc(sizeof(Model));
             if (model != NULL) {
-                func_02041218(model->unk88);
+                func_02041218(&model->pltt);
                 func_02041440(model, self->unk38, 1);
-                STD_CopyString(model->unk2C, self->unk18);
+                STD_CopyString(model->name, self->unk18);
             }
             self->unkA8 = model;
         }
         func_020417e0(self->unkA8, (void *)VCALL(self->unk14, 10));
-        self->unkA8->unk6C |= 2;
+        self->unkA8->flags |= 2;
         func_02041d9c(self->unkA8, self->unkE0, id);
-        self->unkA8->unk6C |= 0x80000;
-        self->unkA8->unk6C |= 0x400000;
+        self->unkA8->flags |= 0x80000;
+        self->unkA8->flags |= 0x400000;
         VCALL(self->unk14, 08);
         self->unkA4 = 0xffff;
         self->state = 1;

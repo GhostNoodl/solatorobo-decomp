@@ -3,6 +3,10 @@
 
 #include "types.h"
 #include "nitro/std.h"
+#include "nitro/fx.h"
+#include "Main/Sys/SysState.h"
+#include "Main/Sys/Field.h"
+#include "ov000/Actor.h"
 
 #define OV009_SIZE(T, n) typedef char T##_size_check[(sizeof(T) == (n)) ? 1 : -1]
 
@@ -141,11 +145,7 @@ public:
 
 #define FLD(type, p, off) (*(type *)((u8 *)(p) + (off)))
 
-struct Ov009Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
+typedef VecFx32 Ov009Vec;
 
 // 12-byte block: assigning one copies with ldm/stm (as Ov010Blk12 / Ov011Blk12)
 struct Ov009Blk12 {
@@ -153,12 +153,6 @@ struct Ov009Blk12 {
 };
 #define OV009_BLKCPY(dst, src) (*(Ov009Blk12 *)(dst) = *(const Ov009Blk12 *)(src))
 
-static inline s32 Ov009_FxMul(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
-
-// NitroSDK sin/cos table: s16 sin,cos pairs
-extern "C" const s16 FX_SinCosTable_[];
 #define OV009_SINCOS FX_SinCosTable_
 #define OV009_SIN(a) (OV009_SINCOS[((a) >> 4) * 2])
 #define OV009_COS(a) (OV009_SINCOS[((a) >> 4) * 2 + 1])
@@ -454,12 +448,6 @@ struct Ov009Names {
     u8 unk_104[0x34];
 };
 
-struct Ov009Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
 class Ov009Multi : public Ov009Actor {
 public:
     Ov009Sub38 models[4];
@@ -474,46 +462,12 @@ struct Ov009Path {
     Ov009Vec end;
 };
 
-struct Ov009Game54 {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-    u8 unk_98[0x14];
-    u8 unk_ac;
-    u8 unk_ad[0x1d];
-    u8 unk_ca;
-    u8 unk_cb;
-    u8 unk_cc;
-    u8 unk_cd[0x7];
-    s32 unk_d4;
-    u8 unk_d8[0xb4];
-    u8 unk_18c;
-    u8 unk_18d;
-    u8 unk_18e;
-    u8 unk_18f;
-    union {
-        u8 unk_190;
-        struct {
-            u8 unk_190_0 : 2;
-            u8 unk_190_2 : 1;
-            u8 unk_190_3 : 1;
-            u8 unk_190_4 : 1;
-            u8 unk_190_5 : 3;
-        };
-    };
-};
 
-extern "C" {
-extern Ov009Game54 *data_ov000_021ccd54;
-extern Ov009Heap *data_02097dd0;
+static inline BOOL Ov009Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov009Game_IsBusy(Ov009Game54 *g) {
-    return g->unk_90 != g->unk_94;
-}
-
-static inline BOOL Ov009Game_IsIdle(Ov009Game54 *g) {
+static inline BOOL Ov009Game_IsIdle(FieldState *g) {
     if (Ov009Game_IsBusy(g)) {
         return FALSE;
     }
@@ -524,7 +478,7 @@ static inline BOOL Ov009Game_IsIdle(Ov009Game54 *g) {
 }
 
 static inline BOOL Ov009_GameIdle(void) {
-    Ov009Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov009Game_IsIdle(g);
     }
@@ -532,20 +486,16 @@ static inline BOOL Ov009_GameIdle(void) {
 }
 
 extern "C" {
-void Heap_Free(void *p);
-void *Heap_Alloc(u32 size);
+void *Heap_Alloc(u32 size); // Main/Gfx/ObjPool.h
+void Heap_Free(void *ptr);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 void *func_ov003_021d0edc(void *self);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
-void VEC_MultAdd(s32 scale, const Ov009Vec *dir, const Ov009Vec *base, Ov009Vec *out);
-s32 VEC_Distance(const Ov009Vec *a, const Ov009Vec *b);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 s32 func_ov000_0219a2f4(Ov009Vec *v, s32 y, s32 b);
-BOOL func_01ffc198(const Ov009Vec *pos, const Ov009Vec *target, s32 dist);
 BOOL func_ov000_02191120(void *p);
 void func_ov003_021d5348(Ov009Actor *self);
 void func_ov003_021d3a88(Ov009Actor *self);

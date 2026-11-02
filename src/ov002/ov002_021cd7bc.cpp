@@ -18,7 +18,7 @@ void func_ov002_021cd7e0(Task50 *self) {
 }
 
 void func_ov002_021cd80c(Task50 *self) {
-    u32 saved;
+    void *saved;
     void *p;
     VObject *o;
 
@@ -26,8 +26,8 @@ void func_ov002_021cd80c(Task50 *self) {
     p = self->unk_3c;
     if (p != NULL) {
         if (p != NULL) {
-            func_02041558(p);
-            func_02041278((u8 *)p + 0x88);
+            func_02041558((Model *)p);
+            func_02041278((PlttRes *)((u8 *)p + 0x88));
             Heap_Free(p);
         }
         self->unk_3c = NULL;
@@ -93,12 +93,7 @@ void func_ov002_021cd92c(Task50 *self, int kind) {
 }
 
 extern "C" {
-extern void *data_ov000_021ccd54;
-typedef struct { u8 pad[0x52]; u16 r, g, b; } Save1534;
-extern Save1534 data_02fe1534;
-void func_ov000_02186bb0(void *p);
 void func_ov000_02187b50(void *p);
-void func_ov000_02188ca0(u8 *buf, int a);
 void func_02062524(void);
 BOOL func_020624d8(void);
 void func_ov000_0216f42c(void *a, void *b);
@@ -127,7 +122,7 @@ void func_ov002_021cd9c0(Task50 *self) {
     u16 keys;
     s8 sel;
     s8 v;
-    keys = FIELD(data_02097dc8, 0x12, u16);
+    keys = data_02097dc8->trig;
     sel = (s8)FIELD(ov002_021cd9c0_getSelected(self->unk_40), 0x6, u16);
     v = data_ov002_021f0f80->unk_08;
     if (v != -1) {
@@ -193,9 +188,9 @@ void func_ov002_021cd9c0(Task50 *self) {
                 func_0203cc58(self->unk_20, 2, -1);
                 if (func_020624d8()) {
                     u8 buf[3];
-                    buf[0] = data_02fe1534.r;
-                    buf[1] = data_02fe1534.g;
-                    buf[2] = data_02fe1534.b;
+                    buf[0] = data_02fe1534.unk_52;
+                    buf[1] = data_02fe1534.unk_54;
+                    buf[2] = data_02fe1534.unk_56;
                     func_ov000_02187b50(data_ov000_021ccd54);
                     func_ov000_02188ca0(buf, 1);
                     func_02062524();

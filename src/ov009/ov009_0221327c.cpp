@@ -1,7 +1,6 @@
 #include "ov009/ov009.h"
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
@@ -54,15 +53,12 @@ void func_ov009_0221327c(Ov009ActVt_02217d5c *self) {
     self->unk_40->timer = 0;
 }
 
-extern void *data_ov000_021ccd64;
 extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_0218d46c(Ov009Actor *a, u16 id, s32 msg);
 extern void *func_ov000_0219b71c(Ov009Vec *pos, Ov009Vec *v, s32 a, s32 b, s32 c, s32 d);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern void func_ov003_021d6954(Ov009Actor *self, u8 a);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
-extern void func_ov000_0218bed8(void *mgr, s32 a, Ov009Actor *actor);
 static inline Ov009Actor *Ov009_FindActor4(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
@@ -120,7 +116,7 @@ void func_ov009_02213460(Ov009ActVt_02217d5c *self) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             data_ov000_021ccd54->unk_ac = 1;
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
             self->v08();
             return;
         }

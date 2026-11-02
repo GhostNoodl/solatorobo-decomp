@@ -2,6 +2,19 @@
 #define OV007_H
 
 #include "types.h"
+#include "nitro/mi.h"
+#include "nitro/os.h"
+#include "Main/Sys/SysState.h"
+#include "Main/Sys/Pad.h"
+#include "Main/Sys/GameScene.h"
+#include "Main/Gfx/Gfx3D.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Res/StageCmd.h"
+#include "Main/Res/StageRes.h"
+#include "Main/Save/GameSave.h"
+#include "ov000/ModelPart.h"
+#include "ov000/TaskList.h"
+#include "Main/Sys/SysTask.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
 class Ov007V {
@@ -140,70 +153,10 @@ public:
 #define OV007_SET_VT(p, vt) (*(void **)(p) = (void *)(vt))
 #define OV007_SIZE(T, n) typedef char T##_size_check[(sizeof(T) == (n)) ? 1 : -1]
 
-struct Ov007Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-    u8 unk_0c[0x13];
-    u8 unk_1f;
-    u8 unk_20[0x11];
-    u8 unk_31;
-};
-
-// 2D sprite (main, 0x160 bytes; set up by func_02041218 + func_02041440).
-struct Ov007SprRes {
-    u8 unk_00[0x4];
-    void *unk_04; // cell bank
-    u8 unk_08[0x4];
-    void *unk_0c; // animation bank
-};
-
-struct Ov007SprFrame {
-    u8 unk_00[0x30];
-    void *unk_30;
-};
-
-struct Ov007SprAnim {
-    u8 unk_00[0x4];
-    Ov007SprFrame *unk_04;
-};
-
 struct Ov007SprSeq {
     u8 unk_00[0xc];
     u16 **unk_0c;
 };
-
-struct Ov007SprAttr {
-    u32 b0 : 2;
-    u32 alpha : 5;
-    u32 pid : 6;
-    u32 b13 : 6;
-    u32 b19 : 1;
-    u32 rest : 12;
-};
-
-struct Ov007Sprite {
-    u8 unk_00[0x28];
-    Ov007SprRes *unk_28;
-    u8 unk_2c[0x20];
-    u8 unk_4c[0x20];
-    union {
-        u32 flags;
-        Ov007SprAttr attr;
-    };
-    u8 unk_70[0x8];
-    Ov007SprAnim *unk_78;
-    u8 unk_7c[0x4];
-    s32 unk_80;
-    u8 unk_84[0x4];
-    u8 unk_88[0x74]; // initialised by func_02041218
-    s32 unk_fc;
-    s32 unk_100;
-    u8 unk_104[0x4c];
-    s32 unk_150;
-    u8 unk_154[0xc];
-};
-OV007_SIZE(Ov007Sprite, 0x160);
 
 // ov000 model resource (0x138 bytes, func_ov000_0218e9c4).
 struct Ov007Anim {
@@ -251,20 +204,6 @@ struct Ov007Rs {
     u8 unk_90;
     u8 unk_91[0x1f];
     Ov007RsMat *unk_b0;
-};
-
-// The G3 state block at data_02097d48 + 0x8b0.
-struct Ov007G3 {
-    u8 unk_00[0x38];
-    s32 unk_38;
-    u16 unk_3c[0x20]; // toon table
-};
-
-struct Ov007Sys {
-    u8 unk_000[0x8b0];
-    Ov007G3 unk_8b0;
-    u8 unk_92c[0xb8];
-    s32 unk_9e4;
 };
 
 // The license / title picture (0x4c bytes, vtable data_0208b318).
@@ -398,15 +337,12 @@ struct Ov007RankA {
 };
 
 extern "C" {
-extern Ov007Heap *data_02097dd0;
-void *Heap_Alloc(u32 size);
-void Heap_Free(void *p);
 }
 
 #define OV007_FREE_V(field, slot)                       \
     {                                                   \
-        u32 saved = data_02097dd0->cur;                 \
-        data_02097dd0->cur = data_02097dd0->def;        \
+        void *saved = data_02097dd0->cur;                 \
+        data_02097dd0->cur = data_02097dd0->unk_08;        \
         if ((field) != NULL) {                          \
             Ov007V *p_ = (field);                       \
             if (p_ != NULL) {                           \
@@ -419,8 +355,8 @@ void Heap_Free(void *p);
 
 #define OV007_FREE_D(field, dtor)                       \
     {                                                   \
-        u32 saved = data_02097dd0->cur;                 \
-        data_02097dd0->cur = data_02097dd0->def;        \
+        void *saved = data_02097dd0->cur;                 \
+        data_02097dd0->cur = data_02097dd0->unk_08;        \
         if ((field) != NULL) {                          \
             void *p_ = (field);                         \
             if (p_ != NULL) {                           \
@@ -434,13 +370,13 @@ void Heap_Free(void *p);
 
 #define OV007_FREE_M(field)                             \
     {                                                   \
-        u32 saved = data_02097dd0->cur;                 \
-        data_02097dd0->cur = data_02097dd0->def;        \
+        void *saved = data_02097dd0->cur;                 \
+        data_02097dd0->cur = data_02097dd0->unk_08;        \
         if ((field) != NULL) {                          \
-            Ov007Sprite *p_ = (field);                  \
+            Model *p_ = (field);                  \
             if (p_ != NULL) {                           \
                 func_02041558(p_);                      \
-                func_02041278(p_->unk_88);         \
+                func_02041278(&p_->pltt);         \
                 Heap_Free(p_);                      \
             }                                           \
             (field) = NULL;                             \
@@ -459,8 +395,8 @@ struct Ov007Scene {
     Ov007Anim *unk_1c;
     Ov007Anim *unk_20;
     Ov007Anim *unk_24;
-    Ov007Sprite *unk_28;
-    Ov007Sprite *unk_2c;
+    Model *unk_28;
+    Model *unk_2c;
     Ov007Model *unk_30;
     Ov007Model *unk_34;
     Ov007Model *unk_38;
@@ -487,12 +423,8 @@ OV007_SIZE(Ov007Scene, 0x6c);
 extern "C" {
 
 extern Ov007Scene *data_ov007_021cfc60;
-extern Ov007Sys *data_02097d48;
-extern void *data_0208b318;
-extern void *data_ov000_021ccd54;
 extern void *data_ov000_021cac60;
 extern void *data_ov000_021cad50;
-extern void *data_02149ef8;
 
 void func_ov007_021cce28(Ov007Scene *s);
 void func_ov007_021ccec0(Ov007Scene *s);
@@ -500,16 +432,9 @@ void func_ov007_021ccf9c(Ov007Scene *s);
 void func_ov007_021cd628(Ov007Scene *s);
 void func_ov007_021cef80(Ov007Scene *s);
 void func_ov007_021ce038(Ov007Scene *s);
-void *func_ov000_0218ea20(void *p);
-void *func_ov000_0218fee4(void *p);
-void func_02041558(void *p);
-void func_02041278(void *p);
-void func_0203c9e8(int a, int b);
-void func_0203cc58(int a, int b, int c);
 void func_0203cb78(s32 a, int b, int c);
 BOOL func_ov000_02189068(void *p);
-s32 MsgRes_GetString(void *p, s32 id);
-void func_ov000_0215c1bc(void *p, s32 a, s32 b);
+void func_ov000_0215c1bc(void *self, u32 flags, char *str);
 }
 
 #define OV007_DEL_V(field, slot)                        \
@@ -531,17 +456,17 @@ void func_ov000_0215c1bc(void *p, s32 a, s32 b);
     }
 #define OV007_DEL_M(field)                              \
     if ((field) != NULL) {                              \
-        Ov007Sprite *p_ = (field);                      \
+        Model *p_ = (field);                      \
         if (p_ != NULL) {                               \
             func_02041558(p_);                          \
-            func_02041278(p_->unk_88);             \
+            func_02041278(&p_->pltt);             \
             Heap_Free(p_);                          \
         }                                               \
         (field) = NULL;                                 \
     }
 #define OV007_PUSH(saved)                               \
     saved = data_02097dd0->cur;                         \
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
 #define OV007_POP(saved) data_02097dd0->cur = saved;
 
 #define OV007_DEL2(field, stmt)                         \
@@ -563,20 +488,6 @@ struct Ov007RowB {
     u8 unk_01[0x17];
 };
 
-struct Ov007Fade {
-    s32 unk_00;
-    s32 unk_04;
-    s32 unk_08;
-    s32 unk_0c;
-};
-
-struct Ov007Pad {
-    u8 unk_00[0x12];
-    u16 trg;
-    u8 unk_14[0x2];
-    u16 unk_16;
-};
-
 
 struct Ov007Bits {
     u32 b0 : 1;
@@ -586,8 +497,6 @@ struct Ov007Bits {
 
 extern "C" {
 
-extern Ov007Fade data_02097d78;
-extern Ov007Pad *data_02097dc8;
 extern Ov007Bits *data_ov000_021ccd44;
 extern const Ov007Row data_ov007_021cfa50[];
 extern const Ov007Row data_ov007_021cfa54[];
@@ -595,17 +504,8 @@ extern const Ov007Row data_ov007_021cfa58[];
 extern const Ov007Row data_ov007_021cfa5c[];
 extern const Ov007Row data_ov007_021cfa60[];
 extern const Ov007RowB data_ov007_021cfa64[];
-extern void *data_0208b614;
-extern void *data_0208ca9c;
-extern void *data_0208c994;
 
-void func_02041218(void *p);
-void func_02041440(void *p, s32 res, int c);
-void *func_02034d88(Ov007V *a, void *b);
-void func_020417e0(void *a, void *b);
-void func_02041d9c(void *a, int b, int c);
 BOOL func_02054f10(void *a, int b);
-BOOL OS_IsRunOnTwl(void);
 void func_ov000_02180660(int a, int b);
 void func_ov000_02180754(void);
 Ov007Menu8 *func_ov000_02173610(int id);
@@ -614,7 +514,7 @@ Ov007Menu8 *func_ov000_02173610(int id);
 
 static inline BOOL Ov007_FadeIdle(void) {
     BOOL r;
-    if (data_02097d78.unk_0c == 0 && data_02097d78.unk_00 == 0) {
+    if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
         r = TRUE;
     } else {
         r = FALSE;
@@ -624,10 +524,10 @@ static inline BOOL Ov007_FadeIdle(void) {
 
 static inline BOOL Ov007_FadeDone(void) {
     BOOL r;
-    if (data_02097d78.unk_0c == 4) {
+    if (data_02097d78[3] == 4) {
         r = TRUE;
     } else {
-        r = data_02097d78.unk_00 == 4;
+        r = data_02097d78[0] == 4;
     }
     return r;
 }
@@ -673,7 +573,7 @@ static inline Ov007Player *Ov007_NewPlayer(Ov007Scene *s, s32 id) {
     s->unk_68->unk_0c |= 0x20000;
     s->unk_68->unk_1c = 4;
     s->unk_68->v08();
-    func_ov000_0215c1bc(s->unk_68, 0x8000, MsgRes_GetString(data_02149ef8, id));
+    func_ov000_0215c1bc(s->unk_68, 0x8000, (char *)MsgRes_GetString(data_02149ef8, id));
     s->unk_68->unk_68 = -0x299a;
     s->unk_68->v70();
     return p;

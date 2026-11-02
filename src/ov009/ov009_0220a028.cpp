@@ -43,7 +43,6 @@ struct Ov009RotS {
 
 extern void *data_02097e4c;
 extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern BOOL func_01ffc624(const Ov009Vec *a, const Ov009Vec *b, Ov009RotS *r, s32 c, s32 d);
 extern void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);

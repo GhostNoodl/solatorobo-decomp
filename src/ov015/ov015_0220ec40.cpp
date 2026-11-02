@@ -206,7 +206,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
 }
 
 void func_ov015_0220ec40(Ov015ResultPanel *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_04);
     HEAP_POP(saved);

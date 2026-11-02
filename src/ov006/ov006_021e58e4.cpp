@@ -54,9 +54,9 @@ static inline Object *ov006_NewDialog(void) {
     Object *obj = (Object *)Heap_Alloc(0xe8);
     if (obj != NULL) {
         obj->vtbl = (ObjectVtbl *)data_ov000_021cac60;
-        ((VObj *)obj)->v28();
+        ((VObj *)obj)->vfunc_28();
         obj->vtbl = (ObjectVtbl *)data_ov000_021cad50;
-        ((VObj *)obj)->v28();
+        ((VObj *)obj)->vfunc_28();
     }
     return obj;
 }
@@ -67,11 +67,11 @@ static inline void ov006_Menu_OpenDialog(ov006_Unk021ec888 *self) {
     h->obj = ov006_NewDialog();
     func_ov000_0215c1bc(h->obj, 0x11, MsgRes_GetString(data_02149ef8, 0x172));
     ((ov006_Dialog021e58e4 *)h->obj)->unk68 = -0x666;
-    ((VObj *)h->obj)->v08();
+    ((VObj *)h->obj)->vfunc_08();
     ((ov006_Dialog021e58e4 *)h->obj)->flags |= 0x10000;
-    ((VObj *)h->obj)->v70();
+    ((VObj *)h->obj)->vfunc_70();
     ov006_Menu_Advance(self);
-    data_02097dd0->unk18 = 0;
+    data_02097dd0->vblankFunc = NULL;
     func_02045094(data_02097e40);
 }
 

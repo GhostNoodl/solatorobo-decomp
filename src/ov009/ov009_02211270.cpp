@@ -2,11 +2,11 @@
 
 extern "C" {
 
-extern u8 data_ov009_022179b4[];
+extern char data_ov009_022179b4[];
 extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
 
-static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {
+static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->unk_d4 != 0;
 }
 

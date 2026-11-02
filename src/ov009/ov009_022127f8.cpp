@@ -52,7 +52,6 @@ struct Ov009CamDA {
 };
 
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd68;
 extern void func_0203f920(void *mesh);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_02184508(void *g);
@@ -66,7 +65,6 @@ extern void func_ov003_021d6954(Ov009Actor *self, u8 a);
 extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern Ov009Actor *func_ov000_0219bf90(void);
 
 static inline void *Ov009_FindActorD68(u16 id) {

@@ -194,7 +194,7 @@ BOOL func_ov000_0219aca8(Actor *a, Actor *b, u16 c, u8 d, VecFx32 *ofs, u16 *box
         if (!IsSolid0219aca8(hit)) {
             ok = FALSE;
         } else {
-            ok = func_01ffc198(hit, &pos, r + LFLD(s32, hit, 0x1c));
+            ok = func_01ffc198((VecFx32 *)hit, &pos, r + LFLD(s32, hit, 0x1c));
         }
     } else if (box == NULL || (box[0] == 0 && box[1] == 0 && box[2] == 0)) {
         if (!IsSolid0219aca8(hit)) {

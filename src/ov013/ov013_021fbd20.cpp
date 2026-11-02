@@ -19,8 +19,6 @@ static inline void Ov013Spawn_Init(Ov013SpawnDesc *d, u16 k) {
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
-extern void *data_ov000_021ccd64;
 extern char data_ov013_0220b5d0[];
 extern char data_ov013_0220b5b8[];
 extern Ov013Vec data_ov013_0220ae70;

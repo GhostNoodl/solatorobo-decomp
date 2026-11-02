@@ -4,12 +4,7 @@ extern "C" {
 
 void Interp_SinLerpVec(void *out, s32 t, void *a, void *b);
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
-void MTX_RotY33_(void *m, s32 s, s32 c);
 void func_ov002_021d8860(void *self);
-
-static inline s32 FX_Mul(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
 
 static inline void ov002_SetState(void *self, s32 st) {
     if (FIELD(self, 0xac, s32) != st) {
@@ -59,9 +54,9 @@ void func_ov002_021d83f0(void *self) {
         ang = (from + FX_Mul(to - from, t)) >> 12;
         FIELD(self, 0x12, u16) = ang;
         FIELD(self, 0x14, s16) = 0;
-        MTX_Identity33_((u8 *)self + 0x18);
+        MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x18));
         if (ang != 0) {
-            MTX_RotY33_((u8 *)self + 0x18, FX_SINCOS((ang >> 4) * 2), FX_SINCOS((ang >> 4) * 2 + 1));
+            MTX_RotY33_((MtxFx33 *)((u8 *)self + 0x18), FX_SINCOS((ang >> 4) * 2), FX_SINCOS((ang >> 4) * 2 + 1));
         }
         if (FIELD(self, 0xa4, s32) == 0) {
             ov002_SetState(self, 1);

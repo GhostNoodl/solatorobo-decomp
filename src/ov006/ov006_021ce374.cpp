@@ -29,8 +29,8 @@ void func_ov006_021ce3f0(ov006_Emblem *self);
 void func_ov000_02173648(ov006_Emblem *self);
 void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, const char *b);
-void func_02041c20(ov006_Model *self, int a, void *b);
-BOOL func_02054f10(ov006_Model *a, int b);
+void func_02041c20(Model *self, int a, void *b);
+BOOL func_02054f10(Model *a, int b);
 
 void func_ov006_021ce374(void) {
 }
@@ -59,36 +59,36 @@ BOOL func_ov006_021ce3cc(ov006_Emblem *self) {
 }
 
 void func_ov006_021ce3f0(ov006_Emblem *self) {
-    ov006_Model *model;
-    ov006_Model *model2;
+    Model *model;
+    Model *model2;
 
-    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
+    model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         const char *name = "cefly1pic00";
-        func_02041218(model->unk88);
+        func_02041218(&model->pltt);
         func_02041440(model, name, 0);
-        STD_CopyString(model->unk2C, data_ov006_021ec864);
+        STD_CopyString(model->name, data_ov006_021ec864);
     }
     self->unk3C = model;
     func_020417e0(self->unk3C, func_02035de0(data_ov006_021ec864, "cefly1pic00"));
-    self->unk3C->unk6C |= 2;
-    self->unk3C->unk6C |= 0x80000;
+    self->unk3C->flags |= 2;
+    self->unk3C->flags |= 0x80000;
     func_02041d9c(self->unk3C, 2, 0xffff);
-    model2 = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
+    model2 = (Model *)Heap_Alloc(sizeof(Model));
     if (model2 != NULL) {
         const char *file = data_0208cca0;
         const char *name = data_0208ccc0;
-        func_02041218(model2->unk88);
+        func_02041218(&model2->pltt);
         func_02041440(model2, name, 0);
-        STD_CopyString(model2->unk2C, file);
+        STD_CopyString(model2->name, file);
     }
     self->unk40 = model2;
     func_020417e0(self->unk40, func_02034d88(func_02035d5c(data_0208cca0), data_0208ccc0));
-    self->unk40->unk6C |= 2;
+    self->unk40->flags |= 2;
     func_02041d9c(self->unk40, 0, 0);
     ov006_Model_SetPos(self->unk40, 0, 0, 0);
-    self->unk40->unk150 = 0xfffe019a;
-    self->unk40->unk158 = (void *)func_ov006_021ce048;
+    self->unk40->unk_150 = 0xfffe019a;
+    self->unk40->unk_158 = (void *)func_ov006_021ce048;
     func_02041c20(self->unk40, 0, &self->unk48);
 }
 
@@ -109,8 +109,8 @@ void func_ov006_021ce048(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam,
 void func_ov000_02173648(ov006_Emblem *self);
 void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, const char *b);
-void func_02041c20(ov006_Model *self, int a, void *b);
-BOOL func_02054f10(ov006_Model *a, int b);
+void func_02041c20(Model *self, int a, void *b);
+BOOL func_02054f10(Model *a, int b);
 
 void func_ov006_021ce560(void) {
 }
@@ -129,10 +129,10 @@ void func_ov006_021ce590(ov006_Emblem *self) {
         return;
     }
     if (self->unk40 != NULL && func_02054f10(self->unk40, 0xffff)) {
-        ov006_Model_PlayPart(self->unk40, 0);
+        Model_PlayPart(self->unk40, 0);
     }
     if (self->unk3C != NULL && func_02054f10(self->unk3C, 0xffff)) {
-        ov006_Model_PlayPart(self->unk3C, 0);
+        Model_PlayPart(self->unk3C, 0);
     }
 }
 
@@ -397,7 +397,7 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
     self->base.flags &= ~2;
     func_ov006_021daea0(data_ov006_021ec884);
     self->base.unk20 = 0x19000;
-    VCALL(self, 3C);
+    VCALL(self, 3c);
     void *res = data_02149ef8;
     self->unk44 = ov006_NewWindow_caec8();
     VCALL(self->unk44, 10, MsgRes_GetString(res, 0x122));
@@ -423,7 +423,7 @@ void func_ov006_021cec68(ov006_TaskCE *self) {
     VCALL(self->unk44, 74, MsgRes_GetString(res, 0x146), 5, 0xffff, 0xffff);
     {
         ov006_Window *w = self->unk44;
-        VCALL(w, A8, func_ov000_02154b58(w, 0));
+        VCALL(w, a8, func_ov000_02154b58(w, 0));
     }
     self->unk44->unk84 = (ov006_WindowFunc)func_ov006_021ce734;
     self->unk44->unk88 = (ov006_WindowFunc)func_ov006_021ce954;
@@ -700,10 +700,10 @@ void func_ov006_021cf420(ov006_TaskCE *self) {
     case 7:
         break;
     }
-    VCALL(self->unk44, 1C);
-    VCALL(self->unk48, 1C);
+    VCALL(self->unk44, 1c);
+    VCALL(self->unk48, 1c);
     if (self->unk50 != NULL) {
-        VCALL(self->unk50, 1C);
+        VCALL(self->unk50, 1c);
     }
     func_ov006_021e2f3c(self->unk54);
 }
@@ -742,8 +742,8 @@ void func_ov006_021cf7c8(ov006_TaskCE *self) {
         }
         break;
     case 2:
-        if (!data_0214a424->unk620_0) {
-            data_0214a424->unk620_0 = 1;
+        if (!data_0214a424->unk_620_0) {
+            data_0214a424->unk_620_0 = 1;
             self->base.state = 1;
             self->base.subState = 0;
         } else if (self->unk50 == NULL) {
@@ -769,10 +769,10 @@ void func_ov006_021cf89c(ov006_TaskCE *self) {
         self->base.subState++;
         break;
     case 1:
-        if (!VCALL(self->unk50, 0C)) {
+        if (!VCALL(self->unk50, 0c)) {
             return;
         }
-        if (!(data_02097dc8->unk12 & 1)) {
+        if (!(data_02097dc8->trig & 1)) {
             return;
         }
         func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
@@ -811,13 +811,13 @@ void func_ov006_021cfa80(ov006_TaskCE *self) {
             self->base.subState++;
             return;
         }
-        if (!(data_02097dc8->unk12 & 2)) {
+        if (!(data_02097dc8->trig & 2)) {
             return;
         }
         func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
         {
             ov006_Window *w = self->unk44;
-            VCALL(w, A8, func_ov000_02154b58(w, 5));
+            VCALL(w, a8, func_ov000_02154b58(w, 5));
         }
         break;
     case 2:
@@ -847,7 +847,7 @@ void func_ov006_021cfc60(ov006_TaskCE *self) {
             return;
         }
         func_ov000_0218084c(data_ov000_021ccd44, 7, 1);
-        VCALL(self, 4C);
+        VCALL(self, 4c);
         self->base.subState++;
         break;
     case 2:
@@ -1118,7 +1118,7 @@ void func_ov006_021d023c(ov006_TaskD0 *self) {
     item->unk10 = 0;
     {
         ov006_Window *w = self->unk104;
-        VCALL(w, A8, func_ov000_02154b58(w, 0));
+        VCALL(w, a8, func_ov000_02154b58(w, 0));
     }
     VCALL(self->unk104, 08);
     self->unk104->flags &= ~2;
@@ -1151,7 +1151,7 @@ static inline void ov006_TaskD0_Close(ov006_TaskD0 *self) {
 }
 
 void func_ov006_021d065c(ov006_TaskD0 *self) {
-    u16 trg = data_02097dc8->unk12;
+    u16 trg = data_02097dc8->trig;
     if (self->unk110) {
         if (trg & 1) {
             ov006_TaskD0_Close(self);
@@ -1197,15 +1197,15 @@ void func_ov006_021d065c(ov006_TaskD0 *self) {
 
 void func_ov006_021d0938(ov006_TaskD0 *self) {
     if (self->unk110) {
-        VCALL(self->unk10C, 1C);
+        VCALL(self->unk10C, 1c);
         return;
     }
     if (!data_ov006_021ec888->unk2C && data_ov006_021ec888->unk26) {
         func_ov006_021d0ab8(self);
         data_ov006_021ec888->unk26 = 0;
     }
-    VCALL(self->unk104, 1C);
-    VCALL(self->unk108, 1C);
+    VCALL(self->unk104, 1c);
+    VCALL(self->unk108, 1c);
 }
 
 void func_ov006_021d09b8(ov006_TaskD0 *self) {
@@ -1450,7 +1450,7 @@ void func_ov006_021d0f50(ov006_TaskD0C *self) {
         VCALL(self->unk11C, 74, " ", i, 0xffff, 0xffff);
     }
     self->unk11C->flags &= ~0x2000000;
-    VCALL(self->unk11C, A8, 0);
+    VCALL(self->unk11C, a8, 0);
     VCALL(self->unk11C, 08);
     self->unk11C->flags &= ~2;
     self->unk120 = ov006_NewWindow_cadcc();
@@ -1510,7 +1510,7 @@ void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215bb14(void *a, const void *b);
 
 void func_ov006_021d1490(ov006_TaskD0C *self) {
-    u16 trg = data_02097dc8->unk12;
+    u16 trg = data_02097dc8->trig;
     if (self->unk3C) {
         return;
     }
@@ -1560,9 +1560,9 @@ void func_ov006_021d1570(ov006_TaskD0C *self) {
             }
         }
     }
-    VCALL(self->unk11C, 1C);
-    VCALL(self->unk120, 1C);
-    VCALL(self->unk124, 1C);
+    VCALL(self->unk11C, 1c);
+    VCALL(self->unk120, 1c);
+    VCALL(self->unk124, 1c);
 }
 
 }
@@ -1790,7 +1790,7 @@ void func_ov006_021d1b8c(ov006_TaskD0C *self) {
                 if (!(ov006_Window_IsBit1(w) ? TRUE : FALSE)) {
                     w->flags |= 0x2000000;
                 }
-                VCALL(self->unk11C, A8, item);
+                VCALL(self->unk11C, a8, item);
                 func_ov000_021548cc(self->unk11C, data_ov006_021eb6fe[i]);
                 {
                     const u8 *c = data_ov006_021eb710[i];

@@ -39,9 +39,6 @@ extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e55[];
 extern u8 data_ov015_02212e4e[];
 extern u8 data_ov015_02212e61[];
-extern void *data_02097e4c;
-void *func_02049a48(void *a, int b, int c, int d, int e);
-s32 FX_Div(s32 a, s32 b);
 BOOL func_ov000_02191120(void *p);
 void func_ov000_021915a0(void *a);
 void func_ov015_0220bb68(Ov015FishState18 *self, Ov015Fish *p);
@@ -51,11 +48,11 @@ static inline void Ov015_SpeedB6f0(Ov015Fish *p) {
     s32 sp = p->unk_c0.unk_28;
     s32 s = p->unk_c0.unk_10 << 12;
     if (sp < 0xe10000) {
-        r = Ov015_FxMul(s, 0x1000);
+        r = FX_Mul(s, 0x1000);
     } else if (sp < 0x1c20000) {
-        r = Ov015_FxMul(s, 0xccd);
+        r = FX_Mul(s, 0xccd);
     } else {
-        r = Ov015_FxMul(s, 0xb33);
+        r = FX_Mul(s, 0xb33);
     }
     p->unk_c0.unk_1c = r;
 }
@@ -83,8 +80,8 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
             Ov015VecC v(*(Ov015VecC *)&p->unk_40);
             if (t - c >= 0x3c) {
                 s32 r = FX_Div(c << 12, t >> 12);
-                u16 idx = Ov015_FxMul(0x1000 - r, 0x2ffff) >> 12;
-                v.y = Ov015_FxMul(FX_SinCosTable_[(idx >> 4) * 2], 0xccd) + 0x4000;
+                u16 idx = FX_Mul(0x1000 - r, 0x2ffff) >> 12;
+                v.y = FX_Mul(FX_SinCosTable_[(idx >> 4) * 2], 0xccd) + 0x4000;
             }
             *(Ov015VecC *)&p->unk_40 = v;
         }
@@ -107,9 +104,9 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
         q = self->unk_04;
         {
             s32 k = q->unk_7c;
-            b.x = Ov015_FxMul(q->unk_70, k);
-            b.y = Ov015_FxMul(q->unk_74, k);
-            b.z = Ov015_FxMul(q->unk_78, k);
+            b.x = FX_Mul(q->unk_70, k);
+            b.y = FX_Mul(q->unk_74, k);
+            b.z = FX_Mul(q->unk_78, k);
         }
         e->v10(&b);
         if (self->unk_0c % 50 == 0) {
@@ -124,7 +121,7 @@ BOOL Ov015FishState18_Update(Ov015FishState18 *self, Ov015Fish *p) {
             p->unk_104 = 0x800;
             e = func_020657b0(data_0214a420, self->unk_14);
             if (e != NULL) {
-                u32 saved;
+                void *saved;
                 HEAP_PUSH(saved);
                 if (e != NULL) {
                     if (e != NULL) {

@@ -4,7 +4,7 @@ typedef struct ov006_Unk021dd2e8 {
     void *vtbl;
     u8 unk4[0x14];
     Object *unk18;
-    ov006_Model *unk1C;
+    Model *unk1C;
 } ov006_Unk021dd2e8;
 
 extern "C" {

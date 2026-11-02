@@ -52,7 +52,9 @@ typedef struct StageFlags {
             u16 mode : 2;
             u16 unk_3 : 4;
             u16 flag7 : 1;
-            u16 unk_8 : 8;
+            u16 flag8 : 1;
+            u16 flag9 : 1;
+            u16 unk_a : 6;
         } bits18;
     };
     /* 0x01a */ u8 unk_01a;
@@ -88,7 +90,13 @@ typedef struct StageFlags {
     /* 0x618 */ u32 unk_618;
     /* 0x61c */ u16 unk_61c;
     /* 0x61e */ u8 unk_61e[2];
-    /* 0x620 */ u32 unk_620;
+    /* 0x620 */ union {
+        u32 unk_620;
+        struct {
+            u32 unk_620_0 : 1;
+            u32 unk_620_1 : 31;
+        };
+    };
     /* 0x624 */ u32 unk_624[5];
     /* 0x638 */ u8 unk_638;
     /* 0x639 */ u8 unk_639;

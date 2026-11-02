@@ -2,9 +2,6 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
-void *func_02049a48(void *a, int b, int c, int d, int e);
-s32 FX_Div(s32 a, s32 b);
 s32 Interp_QuadLerp(s32 t, s32 a, s32 b);
 
 BOOL func_ov015_022106f8(Ov015Msg *self) {
@@ -33,7 +30,7 @@ BOOL func_ov015_022106f8(Ov015Msg *self) {
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
     }
     case 3: {
-        s32 y = Ov015_FxMul(FX_SinCosTable_[((self->unk_140 * 0x3fff / 40) >> 4) * 2], 0x6000) - 0x46000;
+        s32 y = FX_Mul(FX_SinCosTable_[((self->unk_140 * 0x3fff / 40) >> 4) * 2], 0x6000) - 0x46000;
         self->unk_1c = 0x50000;
         self->unk_20 = y;
         self->unk_24 = -0x333;
@@ -58,7 +55,7 @@ void func_ov015_0220866c(Ov015UiText *self, void *msg);
 BOOL func_ov015_02210860(Ov015Msg *self) {
     BOOL r = TRUE;
     self->unk_1c = 0x50000;
-    self->unk_20 = Ov015_FxMul(FX_SinCosTable_[((self->unk_140 * 0x3fff / 80) >> 4) * 2], 0x6000) - 0x46000;
+    self->unk_20 = FX_Mul(FX_SinCosTable_[((self->unk_140 * 0x3fff / 80) >> 4) * 2], 0x6000) - 0x46000;
     self->unk_24 = -0x333;
     self->unk_140 = (self->unk_140 + 1) % 80;
     VCALL(self->unk_28)->v1c();

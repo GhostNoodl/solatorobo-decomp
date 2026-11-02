@@ -13,8 +13,8 @@ typedef struct ov006_Emblem {
     u8 unk8[0x24];
     int unk2C;
     u8 unk30[0xc];
-    ov006_Model *unk3C;
-    ov006_Model *unk40;
+    Model *unk3C;
+    Model *unk40;
     u8 unk44;
     int unk48;
     int unk4C;

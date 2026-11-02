@@ -75,21 +75,11 @@ void Ov014ActEx_0220dcf4_Start(Ov014ActEx_0220dcf4 *self) {
 }
 
 extern void *data_02097e4c;
-extern void MTX_Identity33_(Ov014Mtx33 *m);
-extern void MTX_RotX33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_RotY33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_RotZ33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_Concat33(Ov014Mtx33 *a, Ov014Mtx33 *b, Ov014Mtx33 *out);
-extern void MTX_MultVec33(Ov014Vec *v, Ov014Mtx33 *m, Ov014Vec *out);
 extern u8 *func_ov014_0220f7f0(s32 k, Ov014Vec *pos);
 extern void *func_02049f44(void *mgr, s32 id, Ov014Vec *pos, s32 a);
 extern Ov014V *func_020657b0(void *a, void *b);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
-extern s32 FX_Div(s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern s32 VEC_Mag(const Ov014Vec *v);
-extern void VEC_Normalize(const Ov014Vec *in, Ov014Vec *out);
-extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern void func_02040578(u16 *ang, Ov014Vec *v);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
 extern void func_02065860(void *a, void *b);
@@ -122,30 +112,30 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
         self->unk_a4 = 0x1000;
         rz = self->rot[2];
         rx = self->rot[0];
-        MTX_Identity33_(&m);
+        MTX_Identity33_((MtxFx33 *)&m);
         if (ry != 0) {
-            MTX_RotY33_(&m, OV014_SIN(ry), OV014_COS(ry));
+            MTX_RotY33_((MtxFx33 *)&m, OV014_SIN(ry), OV014_COS(ry));
             set = TRUE;
         }
         if (rx != 0) {
             if (set) {
-                MTX_RotX33_(&t, OV014_SIN(rx), OV014_COS(rx));
-                MTX_Concat33(&t, &m, &m);
+                MTX_RotX33_((MtxFx33 *)&t, OV014_SIN(rx), OV014_COS(rx));
+                MTX_Concat33((MtxFx33 *)&t, (MtxFx33 *)&m, (MtxFx33 *)&m);
             } else {
-                MTX_RotX33_(&m, OV014_SIN(rx), OV014_COS(rx));
+                MTX_RotX33_((MtxFx33 *)&m, OV014_SIN(rx), OV014_COS(rx));
                 set = TRUE;
             }
         }
         if (rz != 0) {
             if (set) {
-                MTX_RotZ33_(&t, OV014_SIN(rz), OV014_COS(rz));
-                MTX_Concat33(&t, &m, &m);
+                MTX_RotZ33_((MtxFx33 *)&t, OV014_SIN(rz), OV014_COS(rz));
+                MTX_Concat33((MtxFx33 *)&t, (MtxFx33 *)&m, (MtxFx33 *)&m);
             } else {
-                MTX_RotZ33_(&m, OV014_SIN(rz), OV014_COS(rz));
+                MTX_RotZ33_((MtxFx33 *)&m, OV014_SIN(rz), OV014_COS(rz));
                 set = TRUE;
             }
         }
-        MTX_MultVec33((Ov014Vec *)&self->unk_9c, &m, (Ov014Vec *)&self->unk_9c);
+        MTX_MultVec33((Ov014Vec *)&self->unk_9c, (MtxFx33 *)&m, (Ov014Vec *)&self->unk_9c);
         self->unk_9c = (s32)(((s64)self->unk_9c * 0x29 + 0x800) >> 12);
         self->unk_a0 = (s32)(((s64)self->unk_a0 * 0x29 + 0x800) >> 12);
         self->unk_a4 = (s32)(((s64)self->unk_a4 * 0x29 + 0x800) >> 12);
@@ -215,9 +205,9 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
         if (sp > 0x800) {
             sp = 0x800;
         }
-        self->unk_9c = Ov014_FxMul(dir.x, sp);
-        self->unk_a0 = Ov014_FxMul(dir.y, sp);
-        self->unk_a4 = Ov014_FxMul(dir.z, sp);
+        self->unk_9c = FX_Mul(dir.x, sp);
+        self->unk_a0 = FX_Mul(dir.y, sp);
+        self->unk_a4 = FX_Mul(dir.z, sp);
         VEC_Add(&self->pos, (Ov014Vec *)&self->unk_9c, &self->pos);
         self->rot[0] += 0x1ff;
         self->rot[1] = FLD(u16, self, 0xd8);
@@ -267,9 +257,9 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
         }
         if (t % 15 == 0) {
             u16 a = Rand_UpTo(0xffff);
-            p.x = self->pos.x + Ov014_FxMul(OV014_SIN(a), 0x4000);
+            p.x = self->pos.x + FX_Mul(OV014_SIN(a), 0x4000);
             p.y = self->pos.y;
-            p.z = self->pos.z + Ov014_FxMul(OV014_COS(a), 0x4000);
+            p.z = self->pos.z + FX_Mul(OV014_COS(a), 0x4000);
             func_02065f88(0x6d, &p);
         }
         st = self->unk_40;

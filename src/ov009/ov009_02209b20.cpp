@@ -33,9 +33,8 @@ void func_ov009_02209b70(Ov009ActVt_02217594 *self) {
 }
 
 
-extern u8 data_ov009_022172b5[];
+extern char data_ov009_022172b5[];
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd64;
 extern void *func_ov000_02191318(Ov009Sub38 *m, s32 a);
 extern void func_ov000_02191780(void *p);
 extern void func_ov000_021917f8(void *p);
@@ -45,7 +44,6 @@ extern void *func_ov000_0219b71c(Ov009Vec *pos, Ov009Vec *v, s32 a, s32 b, s32 c
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
-extern void func_ov000_0218bed8(void *mgr, s32 a, Ov009Actor *actor);
 
 void func_ov009_02209bdc(Ov009ActVt_02217594 *self) {
     Ov009Vec p;
@@ -116,7 +114,7 @@ void func_ov009_02209bdc(Ov009ActVt_02217594 *self) {
                 func_020627a0(self->kind, self->id);
                 func_020627dc(4);
                 data_ov000_021ccd54->unk_ac = 1;
-                func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+                func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
                 self->v08();
             }
             break;
@@ -159,7 +157,7 @@ void func_ov009_02209bdc(Ov009ActVt_02217594 *self) {
                 func_020627a0(self->kind, self->id);
                 func_020627dc(4);
                 data_ov000_021ccd54->unk_ac = 1;
-                func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+                func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
                 self->v08();
             }
             break;

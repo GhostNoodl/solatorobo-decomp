@@ -2,14 +2,11 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
 extern char data_ov009_022172af[];
 extern char data_ov009_022172b5[];
 extern BOOL func_ov000_0218ffdc(Ov009Sub38 *m, void *res, s32 a, s32 b);
 extern void func_ov000_02190758(Ov009Sub38 *m, u16 *rot, s32 a);
 extern BOOL func_ov000_021903b4(Ov009Sub38 *m);
-extern void func_ov000_02190e98(void *p, s32 a, s32 b, s32 c);
-extern void func_ov000_0218bed8(void *mgr, s32 a, Ov009Actor *actor);
 
 struct Ov009Bits16 {
     u16 b0 : 1;
@@ -111,8 +108,6 @@ void Ov009Multi_Update(Ov009Actor *self) {
 
 
 extern void func_ov003_021d3008(Ov009Actor *self);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *o);
-extern u16 FX_Atan2(s32 y, s32 x);
 
 static inline s32 Ov009m_Mul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);

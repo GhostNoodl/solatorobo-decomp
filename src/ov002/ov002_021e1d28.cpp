@@ -45,15 +45,15 @@ typedef struct ov002_Flags41 {
 extern "C" {
 
 void func_ov002_021e1d28(void *self) {
-    u32 saved;
+    void *saved;
     void *p;
     s32 i;
     HEAP_PUSH(saved);
     p = FIELD(self, 0x4, void *);
     if (p != NULL) {
         if (p != NULL) {
-            func_02041558(p);
-            func_02041278((u8 *)p + 0x88);
+            func_02041558((Model *)p);
+            func_02041278((PlttRes *)((u8 *)p + 0x88));
             Heap_Free(p);
         }
         FIELD(self, 0x4, void *) = NULL;
@@ -63,8 +63,8 @@ void func_ov002_021e1d28(void *self) {
     p = FIELD(self, 0x8, void *);
     if (p != NULL) {
         if (p != NULL) {
-            func_02041558(p);
-            func_02041278((u8 *)p + 0x88);
+            func_02041558((Model *)p);
+            func_02041278((PlttRes *)((u8 *)p + 0x88));
             Heap_Free(p);
         }
         FIELD(self, 0x8, void *) = NULL;
@@ -74,8 +74,8 @@ void func_ov002_021e1d28(void *self) {
     p = FIELD(self, 0xc, void *);
     if (p != NULL) {
         if (p != NULL) {
-            func_02041558(p);
-            func_02041278((u8 *)p + 0x88);
+            func_02041558((Model *)p);
+            func_02041278((PlttRes *)((u8 *)p + 0x88));
             Heap_Free(p);
         }
         FIELD(self, 0xc, void *) = NULL;
@@ -85,15 +85,15 @@ void func_ov002_021e1d28(void *self) {
     p = FIELD(self, 0x10, void *);
     if (p != NULL) {
         if (p != NULL) {
-            func_02041558(p);
-            func_02041278((u8 *)p + 0x88);
+            func_02041558((Model *)p);
+            func_02041278((PlttRes *)((u8 *)p + 0x88));
             Heap_Free(p);
         }
         FIELD(self, 0x10, void *) = NULL;
     }
     HEAP_POP(saved);
     for (i = 0; i < 5; i++) {
-        u32 saved2;
+        void *saved2;
         HEAP_PUSH(saved2);
         DELETE_VOBJ((&FIELD(self, 0x14, VObject *))[i]);
         HEAP_POP(saved2);
@@ -104,7 +104,6 @@ void func_ov002_021e1d28(void *self) {
 }
 
 extern VFunc data_0208ba70[];
-extern VFunc data_ov002_021f001c[];
 extern char data_ov002_021eff94[];
 extern char data_ov002_021effa4[];
 extern char data_ov002_021effb0[];
@@ -115,7 +114,6 @@ extern char data_ov002_021effd2[];
 void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_0204ca14(ov002_Anim021e0c28 *a, int b);
-void *func_02035d5c(char *name);
 void *func_02035de0(void *file, void *name);
 void func_02041c5c(void *a, void *fn);
 void *func_ov002_021e1988(void *a, void *b, void *c, u16 *d);
@@ -138,9 +136,9 @@ static inline void ov002_Anim_Start(ov002_Anim021e0c28 *s, s32 a) {
 static inline void *ov002_Model_New(void *name, void *file) {
     u8 *m = (u8 *)Heap_Alloc(0x160);
     if (m != NULL) {
-        func_02041218(m + 0x88);
-        func_02041440(m, name, 0);
-        STD_CopyString(m + 0x2c, file);
+        func_02041218((PlttRes *)(m + 0x88));
+        func_02041440((Model *)m, (char *)name, 0);
+        STD_CopyString((char *)(m + 0x2c), (char *)file);
     }
     return m;
 }
@@ -178,20 +176,20 @@ void func_ov002_021e1ed8(void *self) {
         data = func_02034d88(arc, name);
         FIELD(self, 0x4, void *) = ov002_Model_New(name, buf);
     }
-    func_020417e0(FIELD(self, 0x4, void *), data);
+    func_020417e0((Model *)FIELD(self, 0x4, void *), data);
     FIELD(FIELD(self, 0x4, u8 *), 0x6c, u32) |= 2;
     FIELD(FIELD(self, 0x4, u8 *), 0x150, s32) = -0x2000;
-    func_02041d9c(FIELD(self, 0x4, void *), 2, 0);
+    func_02041d9c((Model *)FIELD(self, 0x4, void *), 2, 0);
     FIELD(self, 0x41, u8) |= 1;
     {
         char *name = data_ov002_021effb0;
         data = func_02034d88(arc, name);
         FIELD(self, 0x8, void *) = ov002_Model_New(name, buf);
     }
-    func_020417e0(FIELD(self, 0x8, void *), data);
+    func_020417e0((Model *)FIELD(self, 0x8, void *), data);
     FIELD(FIELD(self, 0x8, u8 *), 0x6c, u32) |= 2;
     FIELD(FIELD(self, 0x8, u8 *), 0x150, s32) = -0x1ccd;
-    func_02041d9c(FIELD(self, 0x8, void *), 2, 0);
+    func_02041d9c((Model *)FIELD(self, 0x8, void *), 2, 0);
     FIELD(self, 0x41, u8) |= 2;
     {
         char *file = buf;
@@ -199,10 +197,10 @@ void func_ov002_021e1ed8(void *self) {
         data = func_02035de0(file, name);
         FIELD(self, 0xc, void *) = ov002_Model_New(name, file);
     }
-    func_020417e0(FIELD(self, 0xc, void *), data);
+    func_020417e0((Model *)FIELD(self, 0xc, void *), data);
     FIELD(FIELD(self, 0xc, u8 *), 0x6c, u32) |= 2;
     FIELD(FIELD(self, 0xc, u8 *), 0x150, s32) = -0x2000;
-    func_02041d9c(FIELD(self, 0xc, void *), 2, 0);
+    func_02041d9c((Model *)FIELD(self, 0xc, void *), 2, 0);
     FIELD(self, 0x41, u8) |= 4;
     {
         char *file = data_ov002_021effc8;
@@ -210,14 +208,14 @@ void func_ov002_021e1ed8(void *self) {
         data = func_02035de0(file, name);
         FIELD(self, 0x10, void *) = ov002_Model_New(name, file);
     }
-    func_020417e0(FIELD(self, 0x10, void *), data);
+    func_020417e0((Model *)FIELD(self, 0x10, void *), data);
     FIELD(FIELD(self, 0x10, u8 *), 0x6c, u32) |= 2;
     FIELD(FIELD(self, 0x10, u8 *), 0x150, s32) = -0x1ccd;
     func_02041c5c(FIELD(self, 0x10, void *), (void *)func_ov002_021e1988);
-    func_02041d9c(FIELD(self, 0x10, void *), 2, 1);
-    func_02041d9c(FIELD(self, 0x10, void *), 2, 8);
-    func_02041d9c(FIELD(self, 0x10, void *), 2, 9);
-    func_02041d9c(FIELD(self, 0x10, void *), 2, 10);
+    func_02041d9c((Model *)FIELD(self, 0x10, void *), 2, 1);
+    func_02041d9c((Model *)FIELD(self, 0x10, void *), 2, 8);
+    func_02041d9c((Model *)FIELD(self, 0x10, void *), 2, 9);
+    func_02041d9c((Model *)FIELD(self, 0x10, void *), 2, 10);
     FIELD(self, 0x41, u8) |= 8;
     for (i = 0; i < 5; i++) {
         ov002_Caption021e0c28 *c;

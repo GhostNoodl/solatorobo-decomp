@@ -77,7 +77,7 @@ extern Ov003BlinkInfo *func_0206fef8(u16 id);
 extern BOOL func_ov000_0218cea4(void *self);
 extern BOOL func_ov000_021903b4(void *model);
 
-static inline s32 Ov003_FxMul(s32 a, s32 b) {
+static inline s32 FX_Mul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
@@ -154,7 +154,7 @@ BOOL Ov003ActVt_021fa3e8_Draw(Ov003Blink *self) {
     model->pos.z = self->pos.z;
     r = func_ov000_0218cea4(self);
     if (r) {
-        s32 d = s + Ov003_FxMul(self->u.drift.phase, 0x59a);
+        s32 d = s + FX_Mul(self->u.drift.phase, 0x59a);
         model = self->model;
         model->scaleX = d + 0x333;
         model->scaleY = d;

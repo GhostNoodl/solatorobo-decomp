@@ -12,15 +12,15 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
         void *saved;
         ov006_MenuNode *next;
         next = node->next;
-        saved = data_02097dd0->current;
-        data_02097dd0->current = data_02097dd0->unk8;
+        saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (node != NULL) {
             if (node != NULL) {
                 node->vtbl->dtor((Object *)node);
             }
             node = NULL;
         }
-        data_02097dd0->current = saved;
+        data_02097dd0->cur = saved;
         node = next;
     }
     self->nodes = NULL;
@@ -30,7 +30,7 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
 
 static inline void ov006_Menu_Dtor(ov006_Unk021ec888 *self) {
     self->vtbl = &data_ov006_021ec404;
-    data_02097dd0->unk18 = 0;
+    data_02097dd0->vblankFunc = NULL;
     ov006_Menu_ClearNodes(self);
     OV006_DELETE_OBJECT(self->unk1D4);
     OV006_DELETE_OBJECT(self->unk1D8);

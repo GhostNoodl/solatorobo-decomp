@@ -13,7 +13,6 @@ extern void *data_02097e4c;
 extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
 extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s32 a, Ov014Actor **list);
 extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
-extern void Actor_SendMsg(Ov014Actor *t, u16 id, s32 a, s32 b, s32 c, Ov014HitArg *arg);
 extern BOOL func_ov003_021daa0c(void *p, s32 a);
 extern void func_ov003_021da9ac(void *p, s32 a, void *e);
 extern void func_ov003_021daae4(void *p, s32 a, Ov014Vec *v, s32 b, s32 c, s32 d, s32 e);
@@ -26,7 +25,7 @@ static inline BOOL Ov014_AnyHit(Ov014ActEx_0220774c *self) {
     s32 r = self->unk_d4;
     if (r != 0) {
         Ov014Actor *list[0x20];
-        s32 n = func_ov000_0219a510(self, 2, &self->pos, Ov014_FxMul(r, 0xb33), 0x800, list);
+        s32 n = func_ov000_0219a510(self, 2, &self->pos, FX_Mul(r, 0xb33), 0x800, list);
         s32 i;
         if (n != 0) {
             for (i = 0; i < n; i++) {
@@ -51,7 +50,7 @@ void func_ov014_0220840c(Ov014ActEx_0220774c *self) {
             arg.b = 0x666;
             arg.a = 1;
             arg.c = 1;
-            Actor_SendMsg(t, self->id, 0xb, 1, 6, &arg);
+            Actor_SendMsg((Actor *)t, self->id, 0xb, 1, 6, &arg);
             p.y += 0x1800;
             if (!func_ov003_021daa0c(self->unk_d8, 0xfe)) {
                 Ov014V *e = func_02065f88(0xcb, &p);

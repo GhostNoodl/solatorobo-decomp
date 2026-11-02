@@ -3,8 +3,8 @@
 typedef struct ov006_Unk021dc778 {
     void *vtbl;
     u8 unk4[0x28];
-    ov006_Model *unk2C;
-    ov006_Model *unk30;
+    Model *unk2C;
+    Model *unk30;
 } ov006_Unk021dc778;
 
 extern "C" {

@@ -211,8 +211,8 @@ ov006_TaskD37 *func_ov006_021d3874(ov006_TaskD37 *self) {
 
 #define OV006_DELETE_WITH(obj, dtor)                             \
     do {                                                         \
-        void *saved_ = data_02097dd0->current;                   \
-        data_02097dd0->current = data_02097dd0->unk8;            \
+        void *saved_ = data_02097dd0->cur;                   \
+        data_02097dd0->cur = data_02097dd0->unk_08;            \
         if ((obj) != NULL) {                                     \
             if ((obj) != NULL) {                                 \
                 void *p_ = (obj);                                \
@@ -221,7 +221,7 @@ ov006_TaskD37 *func_ov006_021d3874(ov006_TaskD37 *self) {
             }                                                    \
             (obj) = NULL;                                        \
         }                                                        \
-        data_02097dd0->current = saved_;                         \
+        data_02097dd0->cur = saved_;                         \
     } while (0)
 
 static inline void ov006_TaskD37_Dtor(ov006_TaskD37 *self) {
@@ -563,10 +563,10 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     func_ov000_021548cc(self->unk50, data_ov006_021eb6fe[data_ov006_021ec884->unk5]);
     if (self->unk4A != none && self->head.unkC == 0) {
         ov006_Window *w = self->unk50;
-        VCALL(w, A8, func_ov000_02154b58(w, self->unk4A));
+        VCALL(w, a8, func_ov000_02154b58(w, self->unk4A));
     } else {
         ov006_Window *w = self->unk50;
-        VCALL(w, A8, func_ov000_02154b80(w, 0));
+        VCALL(w, a8, func_ov000_02154b80(w, 0));
     }
     self->unk50->owner = self;
     self->unk50->unk88 = func_ov006_021d37d0;
@@ -770,7 +770,7 @@ void func_ov006_021d4880(ov006_TaskD37 *self) {
             self->unk3C = 100;
             return;
         }
-        trg = data_02097dc8->unk12;
+        trg = data_02097dc8->trig;
         if (trg & 2) {
             if (self->unk3D) {
                 func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
@@ -796,7 +796,7 @@ void func_ov006_021d4880(ov006_TaskD37 *self) {
         self->unk5C->flags &= ~2;
         {
             ov006_Window *w = self->unk5C;
-            VCALL(w, A8, func_ov000_02154b58(w, 1));
+            VCALL(w, a8, func_ov000_02154b58(w, 1));
         }
         self->unk3C++;
         break;
@@ -861,7 +861,7 @@ void func_ov006_021d4880(ov006_TaskD37 *self) {
         if (!func_ov006_021e60e8(6, 1)) {
             return;
         }
-        VCALL(self->unk50, A8, func_ov000_02154b58(self->unk50, self->unk4C));
+        VCALL(self->unk50, a8, func_ov000_02154b58(self->unk50, self->unk4C));
         ov006_TaskD37_Select(self, self->unk4C);
         self->unk3C = 0x1e;
         break;
@@ -944,7 +944,7 @@ void MIi_CpuClearFast(u32 data, void *destp, u32 size);
 
 static inline void ov006_Window_SetSel(ov006_Window *w, u16 id) {
     int idx = func_ov000_02154b58(w, id);
-    VCALL(w, A8, idx);
+    VCALL(w, a8, idx);
 }
 
 static inline void ov006_TaskD37_Select(ov006_TaskD37 *self, u16 id) {
@@ -969,17 +969,17 @@ void func_ov006_021d4f64(ov006_TaskD37 *self) {
         if (self->head.unkC == 2 && self->unk3C == 0x28) {
             self->unk4C = p->unk4;
             if (self->unk4A != self->unk4C) {
-                VCALL(self->unk50, A8, func_ov000_02154b58(self->unk50, self->unk4C));
+                VCALL(self->unk50, a8, func_ov000_02154b58(self->unk50, self->unk4C));
                 ov006_TaskD37_Select(self, self->unk4C);
             }
         }
     }
-    VCALL(self->unk50, 1C);
-    VCALL(self->unk54, 1C);
+    VCALL(self->unk50, 1c);
+    VCALL(self->unk54, 1c);
     func_ov006_021dc054(self->unk58);
     func_ov006_021e0af4(self->unk138);
     func_ov006_021e1af0(self->unk13C);
-    VCALL(self->unk5C, 1C);
+    VCALL(self->unk5C, 1c);
     func_ov000_02190a80(self->unk64, 0x1000);
     func_ov000_02190a80(self->unk6C, 0x1000);
     func_ov006_021d5368(self, self->unk6C);

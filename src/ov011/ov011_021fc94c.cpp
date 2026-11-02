@@ -143,7 +143,7 @@ static inline void Ov011_SendB(u16 id, s32 kind, s16 x, s16 y) {
 }
 
 extern void *data_02097e4c;
-extern void *func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 
 #pragma force_active on
 void func_ov011_021fc94c(Ov011Tut *self) {
@@ -162,7 +162,7 @@ void func_ov011_021fc94c(Ov011Tut *self) {
             self->flags |= 8;
             a = Ov011_FindActor(self->id);
             if (a != NULL) {
-                Ov011Vec pos;
+                VecFx32 pos;
                 pos.x = a->pos.x;
                 pos.y = a->pos.y;
                 pos.z = a->pos.z;
@@ -208,7 +208,7 @@ void func_ov011_021fcd00(Ov011Tut *self) {
         break;
     }
 }
-extern Ov011V *func_02065f88(s32 id, const Ov011Vec *pos);
+extern Ov011V *func_02065f88(s32 id, const VecFx32 *pos);
 
 static inline void Ov011_SendC(u16 id, s32 kind, BOOL b0) {
     Ov011ArgB b;
@@ -285,7 +285,7 @@ void func_ov011_021fce2c(Ov011Tut *self) {
         }
         a = Ov011_FindActor(self->id);
         if (a != NULL) {
-            Ov011Vec v;
+            VecFx32 v;
             v.x = a->pos.x;
             v.y = a->pos.y;
             v.z = a->pos.z;

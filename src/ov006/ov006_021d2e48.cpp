@@ -82,7 +82,7 @@ void func_ov006_021d2ff0(ov006_TaskD1F *self) {
         self->unk60->flags &= ~2;
         {
             ov006_Window *w = self->unk60;
-            VCALL(w, A8, func_ov000_02154b58(w, 1));
+            VCALL(w, a8, func_ov000_02154b58(w, 1));
         }
         self->base.subState++;
         break;

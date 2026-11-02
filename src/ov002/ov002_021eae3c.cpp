@@ -8,7 +8,7 @@ void func_ov002_021eae3c(void *self) {
 
 void func_ov002_021eae48(void *self) {
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0x40, void *) != NULL) {
             Heap_FreeArray(FIELD(self, 0x40, void *));
@@ -17,7 +17,7 @@ void func_ov002_021eae48(void *self) {
         HEAP_POP(saved);
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0x44, void *) != NULL) {
             Heap_FreeArray(FIELD(self, 0x44, void *));
@@ -26,7 +26,7 @@ void func_ov002_021eae48(void *self) {
         HEAP_POP(saved);
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0x48, void *) != NULL) {
             Heap_FreeArray(FIELD(self, 0x48, void *));
@@ -35,7 +35,7 @@ void func_ov002_021eae48(void *self) {
         HEAP_POP(saved);
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0x4c, void *) != NULL) {
             Heap_FreeArray(FIELD(self, 0x4c, void *));

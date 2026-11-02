@@ -190,7 +190,7 @@ BOOL func_ov002_021e046c(void *self, void *ev);
 void *func_ov002_021dd6a4(void *self, s32 a, u16 b) {
     VObject *p;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_VOBJ(FIELD(self, 0xc, VObject *));
         HEAP_POP(saved);

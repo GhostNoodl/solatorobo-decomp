@@ -5,7 +5,6 @@ extern "C" {
 extern VFunc data_ov000_021cadcc[];
 extern u8 data_ov002_021efe30[];
 int func_ov002_021dac8c(void *self, void *arg);
-BOOL func_ov000_0219bf90(void);
 BOOL func_ov000_0219d5a0(void);
 void *func_ov000_02154b80(void *a, u8 b);
 
@@ -15,13 +14,13 @@ static inline void ov002_SetId(void *x, u16 id) {
     }
 }
 
-static inline void ov002_CamInit(u8 *c, const Vec3 *pos) {
+static inline void ov002_CamInit(u8 *c, const VecFx32 *pos) {
     FIELD(c, 0x90, s32) = 15;
     FIELD(c, 0x94, s32) = 15;
-    *(Vec3 *)(c + 0x98) = *(Vec3 *)FIELD(c, 0x8c, u8 *);
-    *(Vec3 *)(c + 0xa4) = *(Vec3 *)(FIELD(c, 0x8c, u8 *) + 0xc);
+    *(VecFx32 *)(c + 0x98) = *(VecFx32 *)FIELD(c, 0x8c, u8 *);
+    *(VecFx32 *)(c + 0xa4) = *(VecFx32 *)(FIELD(c, 0x8c, u8 *) + 0xc);
     if (pos != NULL) {
-        *(Vec3 *)(c + 0xb0) = *pos;
+        *(VecFx32 *)(c + 0xb0) = *pos;
     }
     FIELD(c, 0xbc, s32) = -0x2b8;
     FIELD(c, 0xc0, s32) = 0;
@@ -121,7 +120,7 @@ void func_ov002_021dacac(void *self) {
             FIELD(self, 0x10, VObject *)->v0x70();
         }
     }
-    ov002_CamInit(FIELD(self, 0x4, u8 *), (const Vec3 *)(data_ov002_021eef74 + 0x70));
+    ov002_CamInit(FIELD(self, 0x4, u8 *), (const VecFx32 *)(data_ov002_021eef74 + 0x70));
     if (func_ov002_isMode4()) {
         func_0203cb78(0xa000, 0, -1);
     }

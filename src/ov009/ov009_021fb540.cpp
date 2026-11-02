@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern u8 data_ov009_02216ab6[];
+extern char data_ov009_02216ab6[];
 
 void Ov009ActVt_022166a4_Update(Ov009ActVt_022166a4 *self) {
     if (self->unk_1a != 0 || (self->kind != 0x540a && self->kind != 0x540b)) {
@@ -40,8 +40,6 @@ void func_ov009_021fb5ac(Ov009ActVt_022166a4 *self) {
     func_ov000_021987b8(self->unk_48, 0, 0, 0);
 }
 
-extern s32 Rand_PlusMinus(s32 range);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 void func_ov009_021fb6b0(Ov009ActVt_022166a4 *self) {
     Ov009Vec d;
     Ov009Sub40 *st;
@@ -72,9 +70,9 @@ void func_ov009_021fb6b0(Ov009ActVt_022166a4 *self) {
     d.x = self->unk_100.x - self->pos.x;
     d.y = self->unk_100.y - self->pos.y;
     d.z = self->unk_100.z - self->pos.z;
-    d.x = Ov009_FxMul(d.x, 0x33);
-    d.y = Ov009_FxMul(d.y, 0x33);
-    d.z = Ov009_FxMul(d.z, 0x33);
+    d.x = FX_Mul(d.x, 0x33);
+    d.y = FX_Mul(d.y, 0x33);
+    d.z = FX_Mul(d.z, 0x33);
     d.y *= 3;
     VEC_Add(&self->pos, &d, &self->pos);
     if (self->pos.y - self->unk_100.y > 0x3000) {

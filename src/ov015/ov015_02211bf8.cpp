@@ -3,15 +3,8 @@
 extern "C" {
 
 extern Ov015Obj290 *data_ov015_0221336c;
-void MI_Copy36B(const void *src, void *dst);
 BOOL func_ov000_021903b4(void *a);
-extern void *data_02097e4c;
-void *func_02049a48(void *a, int b, int c, int d, int e);
 BOOL func_ov000_02191120(void *p);
-void MTX_Identity33_(void *a);
-void MTX_RotY33_(void *m, s32 s, s32 c);
-void MTX_RotZ33_(void *m, s32 s, s32 c);
-void MTX_Concat33(void *a, void *b, void *out);
 void func_ov000_02190a80(void *a, s32 b);
 void *func_02065f88(s32 id, void *pos);
 extern u8 data_ov015_02213286[];
@@ -68,17 +61,17 @@ BOOL func_ov015_02211d14(Ov015Obj290 *self) {
     u16 b = self->unk_28a;
     r = TRUE;
     BOOL done = FALSE;
-    MTX_Identity33_(&self->unk_24c);
+    MTX_Identity33_((MtxFx33 *)(&self->unk_24c));
     if (a != 0) {
-        MTX_RotY33_(&self->unk_24c, FX_SinCosTable_[((a) >> 4) * 2], FX_SinCosTable_[((a) >> 4) * 2 + 1]);
+        MTX_RotY33_((MtxFx33 *)(&self->unk_24c), FX_SinCosTable_[((a) >> 4) * 2], FX_SinCosTable_[((a) >> 4) * 2 + 1]);
         done = r;
     }
     if (b != 0) {
         if (done) {
-            MTX_RotZ33_(m, FX_SinCosTable_[((b) >> 4) * 2], FX_SinCosTable_[((b) >> 4) * 2 + 1]);
-            MTX_Concat33(m, &self->unk_24c, &self->unk_24c);
+            MTX_RotZ33_((MtxFx33 *)m, FX_SinCosTable_[((b) >> 4) * 2], FX_SinCosTable_[((b) >> 4) * 2 + 1]);
+            MTX_Concat33((MtxFx33 *)m, (MtxFx33 *)(&self->unk_24c), (MtxFx33 *)(&self->unk_24c));
         } else {
-            MTX_RotZ33_(&self->unk_24c, FX_SinCosTable_[((b) >> 4) * 2], FX_SinCosTable_[((b) >> 4) * 2 + 1]);
+            MTX_RotZ33_((MtxFx33 *)(&self->unk_24c), FX_SinCosTable_[((b) >> 4) * 2], FX_SinCosTable_[((b) >> 4) * 2 + 1]);
         }
     }
     if (self->unk_10 % 10 == 0) {
@@ -125,8 +118,6 @@ BOOL func_ov015_02211f54(Ov015Obj290 *self) {
     return r;
 }
 
-void VEC_Normalize(void *src, void *dst);
-u16 FX_Atan2(s32 x, s32 z);
 void func_ov000_02191618(void *a);
 void func_ov015_02211fc0(Ov015Obj290 *self, const Ov015VecC *to, const Ov015VecC *from) {
     Ov015Vec d;
@@ -143,7 +134,7 @@ void func_ov015_02211fc0(Ov015Obj290 *self, const Ov015VecC *to, const Ov015VecC
     d.x = t.x - self->unk_270.x;
     d.y = t.y - self->unk_270.y;
     d.z = t.z - self->unk_270.z;
-    VEC_Normalize(&d, &d);
+    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
     self->unk_288 = FX_Atan2(d.x, d.z) + 0x7fff;
     func_ov000_02190cb0(&self->unk_14c, data_ov015_02213280, 0x1000, 0);
     func_ov000_021911c8(&self->unk_14c, (s16)self->unk_28c);

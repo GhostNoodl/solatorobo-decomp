@@ -3,6 +3,16 @@
 
 #include "types.h"
 #include "nitro/std.h"
+#include "nitro/fx.h"
+#include "Main/Sys/SysState.h"
+#include "Main/Sys/Field.h"
+#include "ov000/Actor.h"
+#include "Main/Res/ResMgr.h"
+#include "Main/Res/StageCmd.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
+#include "Main/Hit/HitSphere.h"
+#include "nitro/std.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
 class Ov012V {
@@ -170,11 +180,7 @@ struct Ov012Flags8 {
     u8 b7 : 1;
 };
 
-struct Ov012Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
+typedef VecFx32 Ov012Vec;
 
 static inline void Ov012_VecSet(Ov012Vec *v, s32 x, s32 y, s32 z) {
     v->x = x;
@@ -197,10 +203,6 @@ static inline void Ov012_VecCopyYZ(Ov012Vec *d, const Ov012Vec *s) {
     d->z = z;
 }
 
-static inline s32 Ov012_FxMul(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
-
 struct Ov012Msg {
     u8 unk_00[0x5];
     u8 type;
@@ -210,8 +212,6 @@ struct Ov012Msg {
     Ov012Vec v;
 };
 
-// NitroSDK sin/cos table: s16 sin,cos pairs
-extern "C" const s16 FX_SinCosTable_[];
 #define OV012_SINCOS FX_SinCosTable_
 #define OV012_SIN(a) (OV012_SINCOS[((a) >> 4) * 2])
 #define OV012_COS(a) (OV012_SINCOS[((a) >> 4) * 2 + 1])
@@ -466,12 +466,6 @@ struct Ov012Names {
     char unk_e4[0x20];
 };
 
-struct Ov012Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
 class Ov012Multi : public Ov012Actor {
 public:
     Ov012Sub38 models[4];
@@ -486,44 +480,11 @@ struct Ov012Path {
     Ov012Vec end;
 };
 
-struct Ov012Game54 {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-    u8 unk_98[0x14];
-    u8 unk_ac;
-    u8 unk_ad[0x1d];
-    u8 unk_ca;
-    u8 unk_cb[0x9];
-    s32 unk_d4;
-    u8 unk_d8[0xb4];
-    u8 unk_18c;
-    u8 unk_18d;
-    u8 unk_18e;
-    u8 unk_18f;
-    union {
-        u8 unk_190;
-        struct {
-            u8 unk_190_0 : 2;
-            u8 unk_190_2 : 1;
-            u8 unk_190_3 : 1;
-            u8 unk_190_4 : 1;
-            u8 unk_190_5 : 3;
-        };
-    };
-};
-
-extern "C" {
-extern Ov012Game54 *data_ov000_021ccd54;
-extern Ov012Heap *data_02097dd0;
+static inline BOOL Ov012Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov012Game_IsBusy(Ov012Game54 *g) {
-    return g->unk_90 != g->unk_94;
-}
-
-static inline BOOL Ov012Game_IsIdle(Ov012Game54 *g) {
+static inline BOOL Ov012Game_IsIdle(FieldState *g) {
     if (Ov012Game_IsBusy(g)) {
         return FALSE;
     }
@@ -534,7 +495,7 @@ static inline BOOL Ov012Game_IsIdle(Ov012Game54 *g) {
 }
 
 static inline BOOL Ov012_GameIdle(void) {
-    Ov012Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov012Game_IsIdle(g);
     }
@@ -542,20 +503,16 @@ static inline BOOL Ov012_GameIdle(void) {
 }
 
 extern "C" {
-void Heap_Free(void *p);
-void *Heap_Alloc(u32 size);
+void *Heap_Alloc(u32 size); // Main/Gfx/ObjPool.h
+void Heap_Free(void *ptr);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 void *func_ov003_021d0edc(void *self);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
-void VEC_MultAdd(s32 scale, const Ov012Vec *dir, const Ov012Vec *base, Ov012Vec *out);
-s32 VEC_Distance(const Ov012Vec *a, const Ov012Vec *b);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 s32 func_ov000_0219a2f4(Ov012Vec *v, s32 y, s32 b);
-BOOL func_01ffc198(const Ov012Vec *pos, const Ov012Vec *target, s32 dist);
 BOOL func_ov000_02191120(void *p);
 void func_ov003_021d5348(Ov012Actor *self);
 void func_ov003_021d3a88(Ov012Actor *self);
@@ -586,8 +543,8 @@ extern "C" void *func_ov003_021da940(void *p);
 
 // Frees the effect handle at self+off with the default heap selected.
 static inline void Ov012_FreeFx(void *self, u32 off) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (FLD(void *, self, off) != NULL) {
         void *p = FLD(void *, self, off);
         if (p != NULL) {
@@ -609,25 +566,18 @@ static inline s32 *Ov012_NewFx(void) {
 
 
 extern "C" {
-extern void *data_02097cdc;
-extern void *data_02097e4c;
 extern void *data_ov000_021ccd64;
-extern u8 data_ov012_0220aaf9[];
+extern char data_ov012_0220aaf9[];
 extern void *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_0218fe1c(void *p);
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218ea20(void *p);
-extern BOOL func_02035b90(void *a, s32 b);
-extern void func_02036838(void *a, void *b, s32 c, s32 d);
 extern void func_02049564(void *a, s32 b, s32 c);
 extern void func_ov000_02187a20(void *a, s32 b);
-extern void *func_020359d0(void *a, s32 b, s32 c);
 extern BOOL func_ov000_0218cf5c(Ov012Actor *self);
 extern BOOL func_ov000_0218f110(void *p);
 extern BOOL func_ov000_021903b4(void *p);
 extern s32 func_ov003_021d1c00(Ov012Actor *self, Ov012Msg *msg);
-extern Ov012Actor *Group_FindNode(void *mgr, u16 id);
-extern void VEC_Add(void *a, const void *b, void *c);
 extern BOOL func_020621c4(void);
 extern void func_ov003_021d6bac(Ov012Actor *self, const void *p);
 extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
@@ -641,10 +591,7 @@ static inline void Ov012_StopSnd(void) {
 
 
 extern "C" {
-extern void *data_ov000_021ccd68;
 extern void func_0203f364(Ov012Sub48 *p);
-extern Ov012Actor *func_ov000_0219bf90(void);
-extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern void *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern void func_ov003_021daa6c(void *p, s32 a);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
@@ -667,7 +614,6 @@ extern BOOL SndMgr_IsLoadDone(void *a);
 
 
 extern "C" {
-extern struct SndHandle *func_02049f44(void *mgr, s32 id, const Ov012Vec *pos, s32 pitch);
 extern void func_ov003_021daab0(void *p);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_0218f074(void *a, const void *b, s32 c, s32 d, s32 e, s32 f);
@@ -680,7 +626,6 @@ extern void func_ov000_02194758(void *self);
 
 
 extern "C" {
-extern void *data_0214a420;
 extern void *func_020657b0(void *a, void *b);
 extern void *ActorEx_Ctor(void *self);
 }
@@ -698,21 +643,18 @@ extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
 
 
 extern "C" {
-extern Ov012Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_ov000_0218d46c(void *o, u16 id, s32 c);
 }
 
 static inline Ov012Actor *Ov012_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
-    return ActorMgr_GetActor(data_ov000_021ccd68, id);
+    return (Ov012Actor *)ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 
 extern "C" {
 extern void Actor_MoveToPos(void *self, Ov012Vec *v, s32 a);
-extern void Actor_Move(void *self, s32 a);
 extern Ov012Actor *Actor_GetTarget(void *self);
 extern void Actor_TurnToActor(void *self, Ov012Actor *a, s32 b);
 }
@@ -763,7 +705,6 @@ extern "C" {
 extern s32 func_ov000_0219a510(void *self, u16 mask, Ov012Vec *pos, s32 r, s32 a, void **list);
 extern void *func_ov000_021985c0(void *p);
 extern void func_ov003_021f0c60(void *self, s32 a);
-extern void func_02049de8(void *a, s32 b);
 extern void func_020639d4(void *e, s32 a, s32 b);
 extern void func_ov000_0218996c(u8 a, u8 b);
 }
@@ -774,7 +715,7 @@ extern void func_ov003_021cf1f0(void *a, s32 b, s32 c, const void *d);
 }
 
 static inline void Ov012_ClearOwnerFlag(Ov012Actor *self) {
-    Ov012Actor *o = Group_FindNode(data_ov000_021ccd64, self->unk_20);
+    Ov012Actor *o = (Ov012Actor *)Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (o != NULL) {
         FLD(Ov012Flags8, o, 0xa2).b0 = 0;
     }
@@ -860,7 +801,6 @@ extern const char *const data_ov012_0220a57c;
 
 
 extern "C" {
-extern void VEC_Normalize(Ov012Vec *a, Ov012Vec *b);
 extern u16 FX_AsinIdx(s32 a);
 extern u16 FX_Atan2(s32 a, s32 b);
 extern void func_ov003_021da9ac(void *p, s32 a, void *e);
@@ -882,7 +822,6 @@ static inline void Ov012Spawn_Set(Ov012SpawnDesc *d, u16 k) {
 extern "C" {
 extern Ov012Actor *func_ov000_02192b24(Ov012SpawnDesc *d);
 extern void func_ov000_02182590(void *p);
-extern void HitSphere_Link(Ov012Sub48 *p);
 }
 
 

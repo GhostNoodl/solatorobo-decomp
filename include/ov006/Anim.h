@@ -2,7 +2,10 @@
 #define OV006_ANIM_H
 
 #include "ov006/ov006.h"
+#include "Main/Gfx/FieldMsg.h"
+#include "Main/Gfx/GfxMgr.h"
 
+// A plain-struct view of TextWin (Main/Gfx/TextWin.h, 0xb8 bytes) as the overlay 6 menus use it.
 typedef struct ov006_Anim {
     void *vtbl;
     u32 unk4;
@@ -27,17 +30,10 @@ typedef struct ov006_AnimHolder {
     ov006_Anim *unk28;
 } ov006_AnimHolder;
 
-typedef struct ov006_Unk02097ce0 {
-    u8 unk0[4];
-    int unk4;
-} ov006_Unk02097ce0;
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-extern ov006_Unk02097ce0 *data_02097ce0;
-int func_0204c4fc(int a, int b, int c, void *d, void *e, BOOL f);
 void func_0204ca14(ov006_Anim *a, int b);
 
 #ifdef __cplusplus
@@ -46,8 +42,8 @@ void func_0204ca14(ov006_Anim *a, int b);
 
 static inline void ov006_Anim_Start(ov006_Anim *s, int a) {
     s->unk24 = a;
-    s->unk4C = func_0204c4fc(s->unk28, s->unk38, s->unk24, s->unk44, s->unk48, s->unk37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk4 = s->unk28;
+    s->unk4C = func_0204c4fc(s->unk28, s->unk38, s->unk24, (u32 *)s->unk44, (u32 *)s->unk48, s->unk37 != 0 ? TRUE : FALSE);
+    data_02097ce0->unk_004 = s->unk28;
 }
 
 static inline void ov006_AnimHolder_Play(ov006_AnimHolder *self, int a, int b) {

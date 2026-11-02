@@ -15,7 +15,7 @@ typedef struct ov006_Loader021df5a0 {
     s32 x;
     s32 y;
     s32 z;
-    ov006_Model *model;
+    Model *model;
 } ov006_Loader021df5a0;
 
 typedef struct ov006_Unk021df5a0 {
@@ -32,14 +32,14 @@ typedef struct ov006_Unk021df5a0 {
     u8 unk83;
     int alpha;
     ov006_Loader021df5a0 *unk88;
-    ov006_Model *unk8C;
-    ov006_Model *unk90;
+    Model *unk8C;
+    Model *unk90;
 } ov006_Unk021df5a0;
 
 extern "C" {
 
 void Interp_SinLerpVec(VecFx32 *out, fx32 t, const VecFx32 *from, const VecFx32 *to);
-void func_02041c18(ov006_Model *m, const void *name);
+void func_02041c18(Model *m, const void *name);
 
 static inline void ov006_Loader021df5a0_SetPos(ov006_Loader021df5a0 *l, s32 x, s32 y, s32 z) {
     l->x = x;
@@ -61,17 +61,17 @@ static inline void ov006_Loader021df5a0_Draw(ov006_Loader021df5a0 *l) {
     }
     func_02041c18(l->model, &l->name);
     {
-        ov006_Model *m = l->model;
-        m->unkFC[0].x = l->x;
-        m->unkFC[0].y = l->y;
+        Model *m = l->model;
+        m->pos[0].x = l->x;
+        m->pos[0].y = l->y;
     }
-    l->model->unk150 = l->z;
+    l->model->unk_150 = l->z;
     if (l->unkE) {
-        ov006_Model_PlayPart(l->model, 0x1e);
+        Model_PlayPart(l->model, 0x1e);
     } else {
-        ov006_Model_PlayPart(l->model, 0x24);
+        Model_PlayPart(l->model, 0x24);
     }
-    ov006_Model_PlayPart(l->model, 0x1f);
+    Model_PlayPart(l->model, 0x1f);
 }
 
 static inline fx32 ov006_Clamp021df5a0(fx32 t) {
@@ -99,8 +99,8 @@ void func_ov006_021df5a0(ov006_Unk021df5a0 *self) {
     base = (self->count + 1) * -9;
     Interp_SinLerpVec(&out, ov006_Clamp021df5a0(FX_Div(self->alpha << 12, 0xa000)), &from, &self->pos);
     ov006_Model_SetPos(self->unk8C, 0, ((out.x >> 12) + 0x3e) << 12, (base + (out.y >> 12)) << 12);
-    self->unk8C->unk150 = out.z;
-    ov006_Model_PlayPart(self->unk8C, 0xe);
+    self->unk8C->unk_150 = out.z;
+    Model_PlayPart(self->unk8C, 0xe);
     n = self->count;
     for (i = 0; i < n; i++) {
         Interp_SinLerpVec(&out, ov006_Clamp021df5a0(FX_Div((self->alpha - i * 2) << 12, 0xa000)), &from, &self->pos);
@@ -109,9 +109,9 @@ void func_ov006_021df5a0(ov006_Unk021df5a0 *self) {
         x >>= 12;
         y = base + (i * 9 + (y >> 12) + 8);
         ov006_Model_SetPos(self->unk90, 0, x << 12, y << 12);
-        self->unk90->unk150 = out.z;
+        self->unk90->unk_150 = out.z;
         func_02041c18(self->unk90, (const void *)(i + 1));
-        ov006_Model_PlayPart(self->unk90, 0x1e);
+        Model_PlayPart(self->unk90, 0x1e);
         ov006_Loader021df5a0_SetPos(self->unk88, (s16)(x + 0xc) << 12, (s16)y << 12, self->unk88->z);
         self->unk88->z = out.z;
         {

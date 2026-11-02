@@ -4,24 +4,16 @@ extern "C" {
 
 
 extern Ov015Globals data_ov015_02213320;
-extern u8 *data_02097d48;
 extern u8 data_ov015_022127cc[];
 extern u8 data_ov015_0221280c[];
 void func_02043904(void *p);
 void func_02043b20(void *p);
 void func_ov015_021fa8ec(Ov015Main *self);
 void func_ov015_022110f0(void);
-extern void *data_02097cdc;
-extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_0208ccc8;
 extern char data_0214b105[];
-extern u8 *data_ov000_021ccd54;
-extern void **data_0214a420;
-void func_02036838(void *a, void *b, int c, int d);
 void GXx_SetMasterBrightness_(u32 reg, s32 v);
-void *func_020359d0(void *a, int b, int c);
-s32 func_02035b90(void *a, int b);
 
 
 
@@ -29,7 +21,6 @@ s32 func_02035b90(void *a, int b);
 extern Ov015Shared *data_ov015_02213368;
 
 
-extern Ov015Pad *data_02097e48;
 extern u8 *data_0214a424;
 extern u8 data_ov015_022127fc[];
 extern u8 data_ov015_022129e0[];
@@ -45,11 +36,8 @@ void func_ov015_02200f74(Ov015Game *p);
 void func_02065ac0(void *p);
 void func_ov015_021ff380(void *p);
 void func_ov015_02200194(void *p);
-void func_02043d20(void *p, s32 a);
 u8 Gfx3DState_NextPolyId(void *p);
-void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 n);
 void func_02043db4(s32 a, s32 b, s32 c, s32 d);
-s32 FX_Div(s32 a, s32 b);
 BOOL func_ov015_021faa74(Ov015Main *self);
 
 static inline Ov015V *Ov015_NewChild(Ov015Main *self, s32 kind) {
@@ -89,7 +77,7 @@ static inline Ov015V *Ov015_NewChild(Ov015Main *self, s32 kind) {
 }
 
 static inline s32 Ov015_Lerp(s32 from, s32 to, s32 t) {
-    return from + Ov015_FxMul(to - from, t);
+    return from + FX_Mul(to - from, t);
 }
 
 static inline void Ov015Fade_Update(Ov015Fade *f) {
@@ -98,7 +86,7 @@ static inline void Ov015Fade_Update(Ov015Fade *f) {
     s32 to = b << 12;
     s32 from = a << 12;
     s32 t = FX_Div(f->unk_14, f->unk_0c);
-    f->unk_18 = (from + Ov015_FxMul(-from + to, t)) >> 12;
+    f->unk_18 = (from + FX_Mul(-from + to, t)) >> 12;
     f->unk_14 += 0x1000;
     if (f->unk_14 >= f->unk_0c) {
         f->unk_14 = f->unk_0c;
@@ -179,14 +167,14 @@ void func_ov015_021fa75c(Ov015Fade *self) {
 void func_ov015_021fa77c(void) {
     Ov015Main *p;
     if (data_ov015_02213320.unk_00 != NULL) {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_V(data_ov015_02213320.unk_00);
         HEAP_POP(saved);
     }
     p = (Ov015Main *)Heap_Alloc(sizeof(Ov015Main));
     if (p != NULL) {
-        u8 *sys;
+        GfxSys *sys;
         SET_VT(p, data_ov015_022127cc);
         p->unk_04 = 0;
         p->unk_08 = -1;
@@ -195,16 +183,16 @@ void func_ov015_021fa77c(void) {
         p->unk_14 = 1;
         p->unk_18 = NULL;
         sys = data_02097d48;
-        func_02043904(sys + 0x8b0);
-        sys[0x8b0] |= 0x30;
+        func_02043904(sys->unk_8b0);
+        sys->unk_8b0[0] |= 0x30;
         REG16(0x4000060) = (REG16(0x4000060) & ~0x3000) | 0x20;
-        func_02043b20(sys + 0x8b0);
+        func_02043b20(sys->unk_8b0);
     }
     data_ov015_02213320.unk_00 = (Ov015V *)p;
 }
 
 void func_ov015_021fa868(void) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_V(data_ov015_02213320.unk_00);
     HEAP_POP(saved);
@@ -219,7 +207,7 @@ Ov015Main *func_ov015_021fa8c4(Ov015Main *self) {
 }
 
 void func_ov015_021fa8ec(Ov015Main *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_18);
     HEAP_POP(saved);
@@ -228,11 +216,11 @@ void func_ov015_021fa8ec(Ov015Main *self) {
     DELETE_V(data_ov015_02213320.unk_04);
     HEAP_POP(saved);
     func_02036838(data_02097cdc, data_0208cca0, 7, 0);
-    func_02036838(data_02097cdc, data_0208cc94, 7, 0);
-    func_02036838(data_02097cdc, data_0208ccc8, 7, 0);
+    func_02036838(data_02097cdc, (char *)data_0208cc94, 7, 0);
+    func_02036838(data_02097cdc, (char *)data_0208ccc8, 7, 0);
     func_02036838(data_02097cdc, data_0214b105, 7, 0);
     if (data_ov000_021ccd54 != NULL) {
-        *data_0214a420 = data_ov000_021ccd54 + 8;
+        *(void **)data_0214a420->task = data_ov000_021ccd54->pause;
     }
     GXx_SetMasterBrightness_(0x400006c, 0);
     GXx_SetMasterBrightness_(0x400106c, 0);
@@ -249,14 +237,14 @@ BOOL func_ov015_021faa74(Ov015Main *self) {
     switch (self->unk_10) {
     case 0:
         func_020359d0(data_0208cca0, 7, 0);
-        func_020359d0(data_0208cc94, 7, 0);
-        func_020359d0(data_0208ccc8, 7, 0);
+        func_020359d0((char *)data_0208cc94, 7, 0);
+        func_020359d0((char *)data_0208ccc8, 7, 0);
         func_020359d0(data_0214b105, 7, 0);
         self->unk_10 = 10;
     case 10: {
         bool ok = func_02035b90(data_0208cca0, 7) != 0;
-        ok &= func_02035b90(data_0208cc94, 7);
-        ok &= func_02035b90(data_0208ccc8, 7);
+        ok &= func_02035b90((char *)data_0208cc94, 7);
+        ok &= func_02035b90((char *)data_0208ccc8, 7);
         ok &= func_02035b90(data_0214b105, 7);
         if (!ok) {
             break;
@@ -278,7 +266,7 @@ BOOL func_ov015_021faa74(Ov015Main *self) {
 
 BOOL func_ov015_021faba0(Ov015Main *self) {
     BOOL r = TRUE;
-    u32 saved;
+    void *saved;
     switch (self->unk_0c) {
     case 1:
         if (!func_ov015_021faa74(self)) {
@@ -315,7 +303,7 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
             self->unk_14 = 1;
             break;
         }
-        *data_0214a420 = NULL;
+        *(void **)data_0214a420->task = NULL;
         kind = self->unk_14;
         {
             Ov015V *c = Ov015_NewChild(self, kind);
@@ -374,9 +362,9 @@ BOOL func_ov015_021faba0(Ov015Main *self) {
         break;
     }
     case 4: {
-        Ov015Pad *pad;
-        pad = data_02097e48;
-        if (pad->b3) {
+        SndQueue *pad;
+        pad = data_02097e48.queue;
+        if (pad->flag3) {
             pad->unk_06 = 0x8000;
             pad->unk_08 = 0x1e;
             pad->unk_02 = 0;
@@ -420,22 +408,22 @@ void func_ov015_021fb088(Ov015Main *self) {
     if (fd == NULL || fd->unk_18 == 0) {
         return;
     }
-    func_02043d20(data_02097d48 + 0x8b0, 0);
+    func_02043d20(data_02097d48->unk_8b0, 0);
     mtxMode = 2;
-    NNS_G3dGeBufferOP_N(0x10, &mtxMode, 1);
+    NNS_G3dGeBufferOP_N(0x10, (unsigned int *)&mtxMode, 1);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     NNS_G3dGeBufferOP_N(0x15, NULL, 0);
     texParam = 0;
-    NNS_G3dGeBufferOP_N(0x2a, &texParam, 1);
-    polyAttr = G3_PackPolygonAttr(0, 0, 3, Gfx3DState_NextPolyId(data_02097d48 + 0x8b0), fd->unk_18, 0);
+    NNS_G3dGeBufferOP_N(0x2a, (unsigned int *)&texParam, 1);
+    polyAttr = G3_PackPolygonAttr(0, 0, 3, Gfx3DState_NextPolyId(data_02097d48->unk_8b0), fd->unk_18, 0);
     NNS_G3dGeBufferOP_N(0x29, &polyAttr, 1);
     trans[2] = fd->unk_04;
     trans[0] = 0;
     trans[1] = 0;
-    NNS_G3dGeBufferOP_N(0x1c, trans, 3);
+    NNS_G3dGeBufferOP_N(0x1c, (unsigned int *)trans, 3);
     func_02043db4(1, 0x100000, 0xc0000, fd->unk_10);
     pop = 1;
-    NNS_G3dGeBufferOP_N(0x12, &pop, 1);
+    NNS_G3dGeBufferOP_N(0x12, (unsigned int *)&pop, 1);
 }
 
 void *func_ov015_021fb1c0(void *self) {

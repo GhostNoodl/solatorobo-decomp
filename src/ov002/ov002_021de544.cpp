@@ -86,7 +86,7 @@ void func_ov002_021de544(void *self, u8 *a) {
         break;
     }
     case 2:
-        if (FIELD(data_02097dc8, 0x12, u16) & 2) {
+        if (data_02097dc8->trig & 2) {
             func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
             FIELD(self, 0x1c, s32) = 0x1e;
         } else if (FIELD(self, 0x20, u8)) {
@@ -115,7 +115,7 @@ void func_ov002_021de544(void *self, u8 *a) {
             break;
         }
         {
-            u32 saved;
+            void *saved;
             HEAP_PUSH(saved);
             DELETE_VOBJ(FIELD(self, 0xc, VObject *));
             HEAP_POP(saved);

@@ -3,8 +3,6 @@
 extern "C" {
 
 extern Ov015Globals data_ov015_02213320;
-extern u8 *data_02097d48;
-void NNS_G3dGeFlushBuffer(void);
 void func_ov015_02208070(Ov015Ship *p);
 void func_ov015_02209b8c(Ov015Fish *self);
 void func_ov015_0220f7a8(u8 *self);
@@ -12,11 +10,8 @@ void func_ov015_02210d04(u8 *self);
 void func_ov015_02212264(Ov015Obj292c *self);
 void func_ov015_021fb758(u8 *self);
 BOOL func_ov000_021903b4(void *a);
-extern void **data_0214a420;
-extern void *data_02097cdc;
 s32 func_02065748(void *a, void *b);
 void func_ov015_021fa6cc(void *p);
-void func_02036838(void *a, void *b, int c, int d);
 void func_020656b4(void *p);
 void func_ov015_0220101c(Ov015Game *self);
 void func_ov015_02211878(void *p);
@@ -28,8 +23,6 @@ extern char data_ov015_022128c1[];
 extern u8 data_ov015_0221293c[];
 extern char data_ov015_022128ab[];
 void func_0206e900(char *buf, const char *name);
-void func_02041558(void *p);
-void func_02041278(void *p);
 extern u8 data_ov015_0221294c[];
 void *func_ov000_0218fee4(void *a);
 void *func_ov000_0218ea20(void *a);
@@ -80,7 +73,7 @@ void func_ov015_022022ac(Ov015Game *self) {
         break;
 
     case 0x28:
-        if (self->unk_30.unk_04 > 2 && FLD(Ov015D48Bits2, data_02097d48, 0xa30).b4) {
+        if (self->unk_30.unk_04 > 2 && data_02097d48->unk_a30_4) {
             if (self->unk_30.unk_10 != NULL) func_ov015_02212264(self->unk_30.unk_10);
             if (self->unk_30.unk_14 != NULL) VCALL(self->unk_30.unk_14)->v1c();
         }
@@ -91,7 +84,7 @@ void func_ov015_022022ac(Ov015Game *self) {
         break;
     case 0x32:
     case 0x3c:
-        if (FLD(Ov015D48Bits2, data_02097d48, 0xa30).b4) {
+        if (data_02097d48->unk_a30_4) {
             func_ov015_021fb758(self->unk_28);
         }
         Ov015_022022ac_Draw(self);
@@ -105,7 +98,7 @@ void func_ov015_022022ac(Ov015Game *self) {
 }
 
 void *Ov015Game_DtorDelete(Ov015Game *self) {
-    u32 saved;
+    void *saved;
     SET_VT(self, data_ov015_0221296c);
     func_ov015_0220101c(self);
     func_02036838(data_02097cdc, data_ov015_022128c1, 7, 0);
@@ -113,8 +106,8 @@ void *Ov015Game_DtorDelete(Ov015Game *self) {
     DELETE_V(self->unk_2c);
     HEAP_POP(saved);
     func_020656b4(data_0214a420);
-    FLD(u8, data_0214a420, 0x10) = 0;
-    FLD(s32, data_02097d48, 0x4) = 1;
+    data_0214a420->drawFilter = 0;
+    data_02097d48->nextState = 1;
     func_ov015_02211878(&self->unk_94);
     SET_VT(&self->unk_5c, data_ov015_022127dc);
     if (func_02065748(data_0214a420, self->unk_5c.unk_04)) {
@@ -146,7 +139,7 @@ void *Ov015Game_DtorDelete(Ov015Game *self) {
 }
 
 void *Ov015Game_Dtor(Ov015Game *self) {
-    u32 saved;
+    void *saved;
     SET_VT(self, data_ov015_0221296c);
     func_ov015_0220101c(self);
     func_02036838(data_02097cdc, data_ov015_022128c1, 7, 0);
@@ -154,8 +147,8 @@ void *Ov015Game_Dtor(Ov015Game *self) {
     DELETE_V(self->unk_2c);
     HEAP_POP(saved);
     func_020656b4(data_0214a420);
-    FLD(u8, data_0214a420, 0x10) = 0;
-    FLD(s32, data_02097d48, 0x4) = 1;
+    data_0214a420->drawFilter = 0;
+    data_02097d48->nextState = 1;
     func_ov015_02211878(&self->unk_94);
     SET_VT(&self->unk_5c, data_ov015_022127dc);
     if (func_02065748(data_0214a420, self->unk_5c.unk_04)) {
@@ -189,14 +182,14 @@ void *func_ov015_022027e8(u8 *self) {
     char buf[0x20];
     SET_VT(self, data_ov015_0221293c);
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         {
             u8 *o = FLD(u8 *, self, 0x24);
             if (o != NULL) {
                 if (o != NULL) {
-                    func_02041558(o);
-                    func_02041278(o + 0x88);
+                    func_02041558((Model *)o);
+                    func_02041278((PlttRes *)(o + 0x88));
                     Heap_Free(o);
                 }
                 FLD(void *, self, 0x24) = NULL;
@@ -205,14 +198,14 @@ void *func_ov015_022027e8(u8 *self) {
         HEAP_POP(saved);
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         {
             u8 *o = FLD(u8 *, self, 0x28);
             if (o != NULL) {
                 if (o != NULL) {
-                    func_02041558(o);
-                    func_02041278(o + 0x88);
+                    func_02041558((Model *)o);
+                    func_02041278((PlttRes *)(o + 0x88));
                     Heap_Free(o);
                 }
                 FLD(void *, self, 0x28) = NULL;
@@ -264,7 +257,7 @@ void *Ov015Obj292c_Dtor(Ov015Obj292c *self) {
 
 void func_ov015_022029d4(Ov015List *self, s32 key) {
     Ov015Node *n;
-    u32 saved;
+    void *saved;
     if (self->head == NULL) {
         return;
     }
@@ -294,7 +287,7 @@ Ov015List *func_ov015_02202a78(Ov015List *self) {
     n = self->head;
     while (n != NULL) {
         Ov015Node *next = n->next;
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_V(n);
         HEAP_POP(saved);
@@ -323,7 +316,7 @@ Ov015List *func_ov015_02202b3c(Ov015List *self) {
     n = self->head;
     while (n != NULL) {
         Ov015Node *next = n->next;
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_V(n);
         HEAP_POP(saved);
@@ -351,59 +344,49 @@ s32 func_ov015_02202be8(void) {
     return 1;
 }
 
-extern void *data_0208cca0;
-extern void *data_0208ccc0;
-void func_02041218(void *p);
-void func_02041440(void *p, void *name, int c);
-void *STD_CopyString(void *p, void *name);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *a, void *b);
-void func_02041d9c(void *a, int b, int c);
-void func_02041c20(void *a, int b, void *c);
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_ov000_02173648(void *p);
 void func_ov015_02206bf0(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 static inline void Ov015Label_Ctor2(u8 *l, void *name, void *dict) {
-    func_02041218(l + 0x88);
-    func_02041440(l, dict, 0);
-    STD_CopyString(l + 0x2c, name);
+    func_02041218((PlttRes *)(l + 0x88));
+    func_02041440((Model *)l, (char *)dict, 0);
+    STD_CopyString((char *)(l + 0x2c), (char *)name);
 }
 void func_ov015_02202bf0(u8 *self) {
-    Ov015Bgm *p = (Ov015Bgm *)data_02097e48;
+    SndQueue *p = data_02097e48.queue;
     void *name;
     void *file;
     u8 *l;
-    if (p->active) {
-        if (p->unk6 != 0xffff || p->unk4 != 0x25) {
+    if (p->flag0) {
+        if (p->unk_06 != 0xffff || p->unk_04 != 0x25) {
             u16 v;
-            if (p->unk2 != 10 && p->unk2 != 0) {
-                if (p->unk6 != 0xffff) {
-                    func_0204aab0(p);
+            if (p->unk_02 != 10 && p->unk_02 != 0) {
+                if (p->unk_06 != 0xffff) {
+                    func_0204aab0(p, p->unk_06);
                 }
                 v = 1;
             } else {
                 v = 0;
             }
-            p->unk2 = v;
-            p->unk6 = 0x25;
-            p->unk8 = 10;
+            p->unk_02 = v;
+            p->unk_06 = 0x25;
+            p->unk_08 = 10;
         }
     }
     FLD(u32, self, 0x4) &= ~2;
     if (VCALL(self)->v28()) return;
     l = (u8 *)Heap_Alloc(0x160);
     if (l != NULL) {
-        file = data_0208cca0;
+        file = (void *)data_0208cca0;
         name = data_0208ccc0;
-        func_02041218(l + 0x88);
-        func_02041440(l, name, 0);
-        STD_CopyString(l + 0x2c, file);
+        func_02041218((PlttRes *)(l + 0x88));
+        func_02041440((Model *)l, (char *)name, 0);
+        STD_CopyString((char *)(l + 0x2c), (char *)file);
     }
     FLD(u8 *, self, 0x3c) = l;
-    func_020417e0(FLD(void *, self, 0x3c), func_02034d88(func_02035d5c(data_0208cca0), data_0208ccc0));
+    func_020417e0((Model *)FLD(void *, self, 0x3c), func_02034d88(func_02035d5c(data_0208cca0), data_0208ccc0));
     FLD(u32, FLD(u8 *, self, 0x3c), 0x6c) |= 2;
-    func_02041d9c(FLD(void *, self, 0x3c), 0, 0);
+    func_02041d9c((Model *)FLD(void *, self, 0x3c), 0, 0);
     {
         u8 *p = FLD(u8 *, self, 0x3c);
         FLD(s32, p, 0xfc) = 0;
@@ -411,7 +394,7 @@ void func_ov015_02202bf0(u8 *self) {
     }
     FLD(s32, FLD(u8 *, self, 0x3c), 0x150) = 0xfffe019a;
     FLD(void *, FLD(u8 *, self, 0x3c), 0x158) = (void *)func_ov015_02206bf0;
-    func_02041c20(FLD(void *, self, 0x3c), 0, self + 0x44);
+    func_02041c20((Model *)FLD(void *, self, 0x3c), 0, self + 0x44);
     FLD(s32, self, 0x2c) = 0;
     FLD(u8, self, 0x40) = 1;
     func_ov000_02173648(self);

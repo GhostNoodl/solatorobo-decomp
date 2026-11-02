@@ -27,8 +27,8 @@ typedef struct {
 } Save021b1814;
 
 extern "C" {
-extern u8 data_ov000_021cc5e3[];
-extern u8 data_ov000_021cc5e9[];
+extern char data_ov000_021cc5e3[];
+extern char data_ov000_021cc5e9[];
 extern u8 *data_0214a424;
 void func_ov000_02190a80(void *a, s32 b);
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
@@ -141,7 +141,7 @@ typedef struct {
 } Anm021b1b88;
 
 extern "C" {
-extern u8 data_ov000_021cc5e3[];
+extern char data_ov000_021cc5e3[];
 void NNS_G3dRenderObjRemoveAnmObj(void *obj, void *anm);
 extern u8 *data_0214a424;
 void func_02062764(s32 a, s32 b);

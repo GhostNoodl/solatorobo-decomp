@@ -8,7 +8,6 @@ void func_ov011_02201b28(void *p);
 void func_ov011_0220205c(void *p);
 void func_ov011_02202fbc(void *p);
 void func_ov011_021fab74(void *p);
-void func_ov000_0218d46c(void *o, u16 id, s32 c);
 
 void func_ov011_021febd8(Ov011Scene *self) {
     Ov011Node *n;
@@ -20,8 +19,8 @@ void func_ov011_021febd8(Ov011Scene *self) {
     self->mgr2.count = 0;
     self->mgr2.unk_04 = -1;
     {
-        u32 saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->mgr2.arr8 != NULL) {
             __cxa_vec_delete(self->mgr2.arr8, 0x40, 8, func_ov011_021fb66c);
             self->mgr2.arr8 = NULL;
@@ -50,7 +49,7 @@ void func_ov011_021febd8(Ov011Scene *self) {
     for (n = self->head; n != NULL; n = n->next) {
         Ov011Obj *a = Ov011_FindActor(n->id);
         if (a != NULL) {
-            func_ov000_0218d46c(a, 0xffff, 0x15);
+            func_ov000_0218d46c((StageObj3D *)a, 0xffff, 0x15);
         }
     }
     self->b2 = 1;
@@ -102,7 +101,7 @@ void *Ov011SceneActor_DtorDelete(void *self) {
 }
 
 s32 Ov011SceneActor_Draw(Ov011SceneActor *self) {
-    Ov011Vec save = self->pos;
+    VecFx32 save = self->pos;
     s32 old;
     s32 ret;
     Ov011Scene *c;

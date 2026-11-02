@@ -9,7 +9,6 @@ void *func_ov000_02191b04(void *p);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 void func_ov015_0220900c(void *p);
-s32 FX_Div(s32 a, s32 b);
 BOOL func_ov015_022121b4(Ov015Obj292c *self);
 void func_ov015_022123c4(Ov015Obj292c *self);
 void *func_ov000_02191318(void *a, s32 b);
@@ -91,7 +90,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
             u8 *m;
             Ov015Fish *obj;
             u8 *n;
-            u32 saved;
+            void *saved;
             m = (u8 *)Heap_Alloc(8);
             if (m != NULL) {
                 m = (u8 *)Ov015FishState08_Ctor((Ov015FishState08 *)m);
@@ -177,7 +176,7 @@ BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a1, Ov015CamPair *a2, Ov01
             }
         }
         if (done) {
-            u32 saved;
+            void *saved;
             HEAP_PUSH(saved);
             DELETE_V(self->unk_10);
             HEAP_POP(saved);
@@ -254,10 +253,10 @@ void func_ov015_021ff9e8(Ov015Obj30 *self) {
         if (m != NULL) m = (u8 *)Ov015FishState40_Ctor((Ov015FishState40 *)m);
         func_ov015_02209b80(obj, (s32)m, 5);
         q = FX_Div(i << 12, cnt << 12);
-        obj->unk_40.x = Ov015_FxMul(q, 0x64000) - 0x32000;
+        obj->unk_40.x = FX_Mul(q, 0x64000) - 0x32000;
         obj->unk_40.y = -0x32000;
-        obj->unk_40.z = Ov015_FxMul(q, -0x41000) - 0x4b000;
-        func_ov000_02191318(&obj->unk_244, Ov015_FxMul(q, 0x3c000));
+        obj->unk_40.z = FX_Mul(q, -0x41000) - 0x4b000;
+        func_ov000_02191318(&obj->unk_244, FX_Mul(q, 0x3c000));
         obj->unk_ac = -0x32000;
         obj->unk_b0 = 0x32000;
         obj->unk_b4 = -0x4b000;
@@ -268,14 +267,11 @@ void func_ov015_021ff9e8(Ov015Obj30 *self) {
 
 
 extern u8 *data_02097dc8;
-extern void *data_02097e4c;
 BOOL func_ov015_0220a028(Ov015Fish *self, void *a);
 void func_ov015_0221234c(Ov015Obj292c *self);
 void func_ov015_02212250(Ov015Obj292c *self, s32 a);
 void func_ov015_02207c30(Ov015Ship *p);
-u16 FX_Atan2(s32 y, s32 x);
 Ov015V *func_02065f88(s32 id, void *pos);
-void *func_02049a48(void *a, int b, int c, int d, int e);
 
 BOOL func_ov015_021ffb90(Ov015Obj30 *self) {
     BOOL r = FALSE;

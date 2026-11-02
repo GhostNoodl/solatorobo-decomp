@@ -1,10 +1,5 @@
 #include "ov012/ov012.h"
 
-typedef s16 fx16;
-typedef s32 fx32;
-typedef Ov012Vec VecFx32;
-struct VecFx16 { fx16 x, y, z; };
-#define FX32_ONE 0x1000
 
 // A header's zero rotation and vector, plus copies made at startup, around this TU's offsets
 // and scale. Two of the offsets are read by the functions of 0x02206374..0x02207a38 (four files,
@@ -55,7 +50,7 @@ void func_ov012_02206400(Ov012Actor *self) {
         e->v0c(0x1b33);
         func_020639d4(e, 0x79, 0);
         func_ov000_0218996c(10, 10);
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
         self->v08();
         self->unk_1a = 1;
     } else {
@@ -205,7 +200,7 @@ void func_ov012_02206718(Ov012ActExVt_0220b150 *self) {
     case 1:
         Actor_TurnToPos(self, &self->unk_84, 0x1000);
         self->unk_98 = self->rot[1];
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         func_ov012_02206f18(self);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         if (self->unk_48->unk_50 & 0x20000000) {
@@ -304,12 +299,12 @@ void func_ov012_02206bb0(Ov012ActExVt_0220b150 *self) {
             while (OV012_SQRTCNT & 0x8000) {
             }
             r = (s32)(OV012_SQRT_RESULT + 1) >> 1;
-            d.x = Ov012_FxMul(r, OV012_SIN(self->rot[1]));
-            d.z = Ov012_FxMul(r, OV012_COS(self->rot[1]));
+            d.x = FX_Mul(r, OV012_SIN(self->rot[1]));
+            d.z = FX_Mul(r, OV012_COS(self->rot[1]));
             VEC_Normalize(&d, &d);
-            self->unk_9c = Ov012_FxMul(d.x, 0x4cd);
-            self->unk_a0 = Ov012_FxMul(d.y, 0x4cd);
-            self->unk_a4 = Ov012_FxMul(d.z, 0x4cd);
+            self->unk_9c = FX_Mul(d.x, 0x4cd);
+            self->unk_a0 = FX_Mul(d.y, 0x4cd);
+            self->unk_a4 = FX_Mul(d.z, 0x4cd);
             FX_Atan2(r, self->unk_84.y - self->pos.y);
             self->rot[0] = FX_Atan2(self->pos.y - self->unk_84.y, r);
             self->unk_dc |= 0x400000;
@@ -332,7 +327,7 @@ void func_ov012_02206bb0(Ov012ActExVt_0220b150 *self) {
             Actor_TurnToPos(self, &self->unk_84, 0x1000);
             VEC_Add(&self->pos, (Ov012Vec *)&self->unk_9c, &self->pos);
         } else {
-            Actor_Move(self, 0);
+            Actor_Move((Actor *)self, 0);
         }
         func_ov012_02206f18(self);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
@@ -363,7 +358,7 @@ void func_ov012_02206eb4(Ov012ActExVt_0220b150 *self) {
         if (func_020657b0(data_0214a420, ((void *)self->unk_e4)) != NULL) {
             return;
         }
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
         self->v08();
     } else {
         func_ov000_0219763c(self);
@@ -457,8 +452,6 @@ void Ov012ActEx_02207018_Update(Ov012ActEx_02207018 *self) {
 namespace m_0220717c {
 extern "C" {
 
-extern s32 FX_Div(s32 a, s32 b);
-extern void MIi_CpuClear32(u32 data, void *dest, u32 size);
 extern void func_ov003_021daae4(void *p, s32 a, Ov012Vec *v, void *b, void *c, void *d, s32 e);
 extern BOOL func_ov000_0219aca8(Ov012Obj *a, Ov012Obj *b, u16 c, u8 d, Ov012Vec *e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern const Ov012Vec data_ov012_0220a840;
@@ -507,12 +500,12 @@ void func_ov012_0220717c(Ov012ActEx_02207018 *self) {
         while (OV012_SQRTCNT & 0x8000) {
         }
         r = (s32)(OV012_SQRT_RESULT + 1) >> 1;
-        d.x = Ov012_FxMul(r, OV012_SIN(self->rot[1]));
-        d.z = Ov012_FxMul(r, OV012_COS(self->rot[1]));
+        d.x = FX_Mul(r, OV012_SIN(self->rot[1]));
+        d.z = FX_Mul(r, OV012_COS(self->rot[1]));
         VEC_Normalize(&d, &d);
-        self->unk_9c = Ov012_FxMul(d.x, 0x400);
-        self->unk_a0 = Ov012_FxMul(d.y, 0x400);
-        self->unk_a4 = Ov012_FxMul(d.z, 0x400);
+        self->unk_9c = FX_Mul(d.x, 0x400);
+        self->unk_a0 = FX_Mul(d.y, 0x400);
+        self->unk_a4 = FX_Mul(d.z, 0x400);
         self->rot[0] = FX_Atan2(self->pos.y - self->unk_84.y, r);
         e = func_02065f88(0x4b0, &self->pos);
         e->v0c(0x800);
@@ -541,7 +534,7 @@ void func_ov012_0220717c(Ov012ActEx_02207018 *self) {
         u16 k;
         s32 n;
         s32 i;
-        VEC_Add(&self->pos, &self->unk_9c, &self->pos);
+        VEC_Add(&self->pos, (VecFx32 *)(&self->unk_9c), &self->pos);
         r = self->unk_64 + 0x4cd;
         if (r < 0xccd) {
             r = 0xccd;
@@ -632,7 +625,7 @@ void func_ov012_0220717c(Ov012ActEx_02207018 *self) {
             v.x += 0x266;
             v.z += 0x266;
             o->v10(&v);
-            func_ov000_0219aca8(self, self, self->unk_4c->unk_08, self->unk_4c->unk_0a, 0, 0, Ov012_FxMul(v.x, 0x1666), 0x1000, 100, 0x1000);
+            func_ov000_0219aca8(self, self, self->unk_4c->unk_08, self->unk_4c->unk_0a, 0, 0, FX_Mul(v.x, 0x1666), 0x1000, 100, 0x1000);
             if (v.x >= 0x7800) {
                 func_ov000_02198360(self->unk_40, 0x15, 0);
             }

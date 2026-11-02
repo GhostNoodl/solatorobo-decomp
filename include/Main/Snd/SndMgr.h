@@ -88,6 +88,10 @@ extern SndGlobal data_02097e48;
 extern const s8 data_0208b778[];
 extern const s32 data_0208b688[];
 
+struct SndCmd;
+void func_0204aad0(SndQueue *queue);
+void func_0204aaec(SndQueue *queue, struct SndCmd *cmd);
+void func_0204ab54(SndQueue *queue);
 void func_02049690(SndMgr *mgr);
 SndHandle *func_02049984(SndMgr *mgr, s32 id, s32 *outSeqArc, s32 *outIndex);
 s32 func_02049afc(SndMgr *mgr, s32 id);

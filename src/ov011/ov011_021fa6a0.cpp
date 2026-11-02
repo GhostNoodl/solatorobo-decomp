@@ -68,31 +68,29 @@ void *Ov003Vt_021f7d2c_Dtor(void *p);
 void *Ov003Vt_021f7d2c_Ctor(void *p);
 void *Ov011Vt_022079d0_Dtor(void *p);
 void *Ov011Vt_022079d0_Ctor(void *p);
-void func_ov003_021da40c(void *p);
-void func_ov003_021da48c(void *p, u8 a);
 void func_ov011_022011fc(void *a, u8 b);
 
 void func_ov011_021fa7dc(Ov011Mgr *self) {
-    u32 saved;
+    void *saved;
     if (!self->b0) {
         return;
     }
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->arr8 != NULL) {
         __cxa_vec_delete(self->arr8, 0x38, 8, Ov003Vt_021f7d2c_Dtor);
         self->arr8 = NULL;
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->arrC != NULL) {
         __cxa_vec_delete(self->arrC, 0x30, 8, Ov011Vt_022079d0_Dtor);
         self->arrC = NULL;
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->ids != NULL) {
         Heap_FreeArray(self->ids);
         self->ids = NULL;
@@ -162,7 +160,7 @@ void func_ov011_021fa9d8(Ov011Mgr *self) {
 
 void func_ov011_021fab74(Ov011Mgr *self) {
     s32 i;
-    u32 saved;
+    void *saved;
     if (self->ids != NULL) {
         for (i = 0; i < self->count; i++) {
             void *a = Ov011_FindActor(self->ids[i]);
@@ -175,21 +173,21 @@ void func_ov011_021fab74(Ov011Mgr *self) {
     self->b1 = 0;
     self->unk_04 = -1;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->arr8 != NULL) {
         __cxa_vec_delete(self->arr8, 0x38, 8, Ov003Vt_021f7d2c_Dtor);
         self->arr8 = NULL;
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->arrC != NULL) {
         __cxa_vec_delete(self->arrC, 0x30, 8, Ov011Vt_022079d0_Dtor);
         self->arrC = NULL;
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->ids != NULL) {
         Heap_FreeArray(self->ids);
         self->ids = NULL;
@@ -210,7 +208,7 @@ struct Ov011Msg {
 
 void ActorMgr_SendMsg(u16 a, u16 b, u8 c, s32 d, s32 e, void *f);
 void func_ov011_022011c8(void *a, s32 b);
-BOOL func_ov011_02202ac8(void *p, Ov011Vec *a, Ov011Vec *b, s32 c, u8 d);
+BOOL func_ov011_02202ac8(void *p, VecFx32 *a, VecFx32 *b, s32 c, u8 d);
 
 static inline void Ov011_Send(u16 id, s32 a, s32 b) {
     Ov011Msg m;
@@ -220,8 +218,8 @@ static inline void Ov011_Send(u16 id, s32 a, s32 b) {
 }
 
 void func_ov011_021facc4(Ov011Mgr *self) {
-    Ov011Vec v2;
-    Ov011Vec v1;
+    VecFx32 v2;
+    VecFx32 v1;
     Ov011Obj *actor;
     BOOL ok;
     u16 i;
@@ -271,7 +269,7 @@ void func_ov011_021facc4(Ov011Mgr *self) {
         for (i = 0; i < self->count; i++) {
             a = Ov011_FindActor(self->ids[i]);
             if (a != NULL) {
-                a->pos = *(Ov011Vec *)self->arrC[i].v10();
+                a->pos = *(VecFx32 *)self->arrC[i].v10();
                 if (!self->arrC[i].v14()) {
                     ok = FALSE;
                 }
@@ -290,11 +288,11 @@ void func_ov011_021facc4(Ov011Mgr *self) {
 
 extern "C" {
 
-BOOL func_ov003_021d7a44(void *self, const Ov011Vec *target, const Ov011Vec *start, s32 speed, s32 maxDist, u8 noSnap);
-void func_ov003_021d7c08(void *self, const Ov011Vec *target);
+BOOL func_ov003_021d7a44(void *self, const VecFx32 *target, const VecFx32 *start, s32 speed, s32 maxDist, u8 noSnap);
+void func_ov003_021d7c08(void *self, const VecFx32 *target);
 void func_ov011_02201214(void *self, void *p);
 
-static inline Ov011PNode *Ov011_NewPNode(const Ov011Vec *v) {
+static inline Ov011PNode *Ov011_NewPNode(const VecFx32 *v) {
     Ov011PNode *n = (Ov011PNode *)Heap_Alloc(0x10);
     n->v.x = v->x;
     n->v.y = v->y;
@@ -304,9 +302,9 @@ static inline Ov011PNode *Ov011_NewPNode(const Ov011Vec *v) {
 }
 
 void func_ov011_021fb02c(Ov011Mgr *self) {
-    Ov011Vec v;
-    Ov011Vec p;
-    Ov011Vec v2;
+    VecFx32 v;
+    VecFx32 p;
+    VecFx32 v2;
     Ov011Obj *a;
     u16 i;
     s32 j;
@@ -336,7 +334,7 @@ void func_ov011_021fb02c(Ov011Mgr *self) {
     for (i = 0; i < self->count; i++) {
         a = Ov011_FindActor(self->ids[i]);
         if (a != NULL) {
-            a->pos = *(Ov011Vec *)self->arr8[i].v10();
+            a->pos = *(VecFx32 *)self->arr8[i].v10();
             if (!self->arr8[i].v14()) {
                 ok = FALSE;
             }
@@ -348,7 +346,7 @@ void func_ov011_021fb02c(Ov011Mgr *self) {
     for (j = 0; j < self->count; j++) {
         a = Ov011_FindActor(self->ids[j]);
         if (a != NULL) {
-            Ov011Vec delta;
+            VecFx32 delta;
             Ov011PNode *n;
             delta.x = a->pos.x - actor->pos.x;
             delta.y = a->pos.y - actor->pos.y;

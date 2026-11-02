@@ -15,7 +15,6 @@ struct Ov014Watch {
 extern "C" {
 
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
-extern void *data_ov000_021ccd68;
 extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 

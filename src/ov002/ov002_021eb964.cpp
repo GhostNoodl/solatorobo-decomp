@@ -2,7 +2,6 @@
 
 extern "C" {
 
-int STD_CompareNString(const char *a, const char *b, int n);
 extern char data_ov002_021f0d1e[];
 extern char data_ov002_021f0d26[];
 extern char data_ov002_021f0d2e[];

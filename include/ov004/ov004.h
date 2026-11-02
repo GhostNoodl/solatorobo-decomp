@@ -2,6 +2,8 @@
 #define OV004_H
 
 #include "types.h"
+#include "Main/Sys/SysState.h"
+#include "Main/Res/StageCmd.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
 class Ov004V {
@@ -31,16 +33,9 @@ public:
 };
 typedef char Ov004V_size_check[(sizeof(Ov004V) == 0xac) ? 1 : -1];
 
-struct Ov004Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
 typedef void *(*Ov004Cb)(void *a, s32 b);
 
 extern "C" {
-extern Ov004Heap *data_02097dd0;
 extern Ov004Cb data_ov004_021cf860;
 extern Ov004V *data_ov004_021cf864;
 extern s32 data_ov004_021cf868;
@@ -49,7 +44,6 @@ extern u8 data_ov004_021cf808[];
 void *Heap_Alloc(u32 size);
 void Heap_Free(void *p);
 s32 func_0203db40(void *p);
-void *func_ov000_0219bf90(void);
 void func_ov000_02176264(void *p);
 void func_ov000_021761f0(void *p);
 void *Actor_Ctor(void *p);

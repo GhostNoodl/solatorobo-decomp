@@ -193,7 +193,7 @@ int func_ov006_021cd0ac(ov006_Manager *self) {
         break;
     }
     if (data_ov006_021ec888 != NULL && data_ov006_021ec888->unk8 != 0 && data_ov006_021ec888->unk8 != 1) {
-        data_02097dd0->unk1F = one;
+        data_02097dd0->unk_1f = one;
     }
     return result;
 }

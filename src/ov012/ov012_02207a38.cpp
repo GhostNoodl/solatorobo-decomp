@@ -4,7 +4,7 @@ extern "C" {
 void func_ov012_02207a38(Ov012ActEx_02207018 *self) {
     if (self->unk_d0 & 0x200000) {
         if (!func_ov003_021daa0c(((void *)self->unk_d4), 0xfe) && !func_ov003_021daa0c(((void *)self->unk_d4), 0xff)) {
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
             self->v08();
         }
         func_ov003_021dacfc(((void *)self->unk_d4));

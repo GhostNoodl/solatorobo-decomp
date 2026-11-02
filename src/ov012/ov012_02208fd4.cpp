@@ -67,7 +67,6 @@ extern "C" {
 
 extern char data_ov012_0220b347[];
 extern s32 func_ov000_02199128(s32 *out, Ov012Query *q, void **list, s32 max);
-extern void func_ov000_02191418(void *p, u16 a, s32 b);
 
 #define OV012Q_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV012Q_SQRT_RESULT (*(volatile u32 *)0x40002b4)
@@ -299,7 +298,7 @@ void func_ov012_02208c0c(Ov012Actor *self) {
         }
         break;
     }
-    Actor_Move(self, 0);
+    Actor_Move((Actor *)self, 0);
     func_ov000_021987b8(self->unk_48, 0, 0, 0);
     if (self->unk_48->unk_50 & 0x20000000) {
         self->unk_a0 = 0;

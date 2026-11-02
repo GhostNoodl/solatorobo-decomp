@@ -119,7 +119,7 @@ void func_ov006_021e86dc(ov006_Car021e86dc *self) {
                     if (e != NULL) {
                         self->unk1D4 = e->unk24;
                         e->unk3C = 0x2000;
-                        VCALL(e, 0C, 0x4000);
+                        VCALL(e, 0c, 0x4000);
                         VCALL(e, 30, &self->rot);
                     }
                 }
@@ -127,7 +127,7 @@ void func_ov006_021e86dc(ov006_Car021e86dc *self) {
                 e = func_02065f88(0x4b0, &self->pos);
                 if (e != NULL) {
                     self->unk1D4 = e->unk24;
-                    VCALL(e, 0C, 0x1ccd);
+                    VCALL(e, 0c, 0x1ccd);
                     VCALL(e, 30, &self->rot);
                     e->unk7C = FX_Div(0x15000, 0x1f000);
                 }
@@ -296,7 +296,7 @@ void func_ov006_021e86dc(ov006_Car021e86dc *self) {
         self->unk1D4 = e->unk24;
         VCALL(e, 30, &self->rot);
         e->unk28 = 0;
-        VCALL(e, 0C, self->speed * 2 < 0x666 ? 0x666 : self->speed * 2);
+        VCALL(e, 0c, self->speed * 2 < 0x666 ? 0x666 : self->speed * 2);
         {
             s32 s = self->speed;
             if (s < 0xe66) {

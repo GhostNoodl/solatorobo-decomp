@@ -23,16 +23,16 @@ void func_ov002_021d0810(Task50 *self) {
     case 11:
         if (ov002_isState5(self->unk_3c) && ov002_isState5(self->unk_40)) {
             {
-                u8 *m = data_02097e48;
+                u8 *m = (u8 *)data_02097e48.queue;
                 FIELD(m, 0x80, u16) = 0x8000;
                 FIELD(m, 0x7c, u16) = 0;
             }
             {
                 u8 *m;
                 u16 id;
-                FIELD(data_02097e48, 0x0, Bits16).b0 = 1;
-                FIELD(data_02097e48, 0x0, u16) |= 8;
-                m = data_02097e48;
+                FIELD(data_02097e48.queue, 0x0, Bits16).b0 = 1;
+                FIELD(data_02097e48.queue, 0x0, u16) |= 8;
+                m = (u8 *)data_02097e48.queue;
                 id = 0xd;
                 if (FIELD(m, 0x0, Bits16).b0) {
                     if (FIELD(m, 0x6, u16) != 0xffff || FIELD(m, 0x4, u16) != id) {

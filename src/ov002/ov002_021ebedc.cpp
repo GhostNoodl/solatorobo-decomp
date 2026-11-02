@@ -130,7 +130,7 @@ void func_ov002_021ec010(void *p, const void *src) {
         MI_CpuCopy8(body, &self->unk10, 0xe);
         name = body + self->unk18;
         self->name = name;
-        self->text = name + (STD_GetStringLength(name) + 1);
+        self->text = name + (STD_GetStringLength((char *)name) + 1);
     }
     self->loaded = 1;
 }

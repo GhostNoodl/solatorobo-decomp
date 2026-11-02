@@ -3,7 +3,7 @@
 extern "C" {
 
 Task50 *Ov002TaskVt_021efc24_DtorDelete(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021efc24;
     HEAP_PUSH(saved);
     Task_deleteModel(self);

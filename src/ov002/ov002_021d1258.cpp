@@ -9,7 +9,7 @@ BOOL func_ov002_021d166c(void *self);
 BOOL func_ov002_021d178c(void *self);
 
 static inline void ov002_FreeParts(void *t) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(t, 0x3c, VObject *));
     HEAP_POP(saved);
@@ -31,7 +31,7 @@ static inline bool ov002_HasActive(void *t) {
 }
 
 static inline void ov002_PlayBgm(u16 id) {
-    u8 *m = data_02097e48;
+    u8 *m = (u8 *)data_02097e48.queue;
     if (FIELD(m, 0x0, Bits16).b0) {
         if (FIELD(m, 0x6, u16) != 0xffff || FIELD(m, 0x4, u16) != id) {
             if (FIELD(m, 0x2, u16) != 10 && FIELD(m, 0x2, u16) != 0) {
@@ -73,9 +73,9 @@ void func_ov002_021d1258(void *self) {
         }
         {
             u8 *m;
-            FIELD(data_02097e48, 0x0, Bits16).b0 = 1;
-            FIELD(data_02097e48, 0x0, u16) |= 8;
-            m = data_02097e48;
+            FIELD(data_02097e48.queue, 0x0, Bits16).b0 = 1;
+            FIELD(data_02097e48.queue, 0x0, u16) |= 8;
+            m = (u8 *)data_02097e48.queue;
             if (FIELD(m, 0x0, Bits16).b3) {
                 FIELD(m, 0x6, u16) = 0x8000;
                 FIELD(m, 0x8, u16) = 10;
@@ -83,7 +83,7 @@ void func_ov002_021d1258(void *self) {
             }
         }
         {
-            u8 *m = data_02097e48;
+            u8 *m = (u8 *)data_02097e48.queue;
             FIELD(m, 0x80, u16) = 0x8000;
             FIELD(m, 0x7c, u16) = 0;
         }
@@ -100,7 +100,7 @@ void func_ov002_021d1258(void *self) {
         ((VObject *)self)->v0xc(0);
         break;
     case 10: {
-        u32 saved;
+        void *saved;
         void *t = func_ov000_02173610(0x15);
         void *o;
         if (t != NULL) {

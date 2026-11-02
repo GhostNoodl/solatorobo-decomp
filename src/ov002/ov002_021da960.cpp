@@ -2,7 +2,6 @@
 
 extern "C" {
 
-void MTX_PerspectiveW(s32 s, s32 c, s32 aspect, s32 n, s32 f, s32 scale, void *mtx);
 
 BOOL func_ov000_021903b4(void *a);
 
@@ -11,22 +10,22 @@ void func_ov002_021da960(void *self) {
     u8 *cam = FIELD(w, 0x8c, u8 *);
     u8 *q;
     u8 *n;
-    NNS_G3dGlb.v240 = FIELD(cam, 0x0, Vec3);
-    NNS_G3dGlb.v24c = FIELD(cam, 0x18, Vec3);
-    NNS_G3dGlb.v258 = FIELD(cam, 0xc, Vec3);
-    MTX_LookAt(cam, cam + 0x18, cam + 0xc, data_02092844);
-    NNS_G3dGlb.fc &= ~0xe8;
-    MTX_PerspectiveW(FX_SINCOS(0x2aa), FX_SINCOS(0x2ab), 0x1548, 0x333, 0x19000, 0x1000, data_02092800);
-    NNS_G3dGlb.fc &= ~0x50;
+    NNS_G3dGlb.camPos = FIELD(cam, 0x0, VecFx32);
+    NNS_G3dGlb.camUp = FIELD(cam, 0x18, VecFx32);
+    NNS_G3dGlb.camTarget = FIELD(cam, 0xc, VecFx32);
+    MTX_LookAt((VecFx32 *)cam, (VecFx32 *)(cam + 0x18), (VecFx32 *)(cam + 0xc), (MtxFx43 *)data_02092844);
+    NNS_G3dGlb.flag &= ~0xe8;
+    MTX_PerspectiveW(FX_SINCOS(0x2aa), FX_SINCOS(0x2ab), 0x1548, 0x333, 0x19000, 0x1000, (MtxFx44 *)data_02092800);
+    NNS_G3dGlb.flag &= ~0x50;
     q = FIELD(w, 0x4, u8 *);
     if (q[0x5c] != 0) {
         MI_Copy36B(q + 0x2c, FIELD(q, 0x8, u8 *) + 0x84);
-        FIELD(FIELD(q, 0x8, u8 *), 0x78, Vec3) = FIELD(q, 0x18, Vec3);
-        FIELD(FIELD(q, 0x8, u8 *), 0xa8, Vec3) = FIELD(q, 0x50, Vec3);
+        FIELD(FIELD(q, 0x8, u8 *), 0x78, VecFx32) = FIELD(q, 0x18, VecFx32);
+        FIELD(FIELD(q, 0x8, u8 *), 0xa8, VecFx32) = FIELD(q, 0x50, VecFx32);
         func_ov000_021903b4(FIELD(q, 0x8, void *));
         MI_Copy36B(q + 0x2c, FIELD(q, 0x10, u8 *) + 0x84);
-        FIELD(FIELD(q, 0x10, u8 *), 0x78, Vec3) = FIELD(q, 0x18, Vec3);
-        FIELD(FIELD(q, 0x10, u8 *), 0xa8, Vec3) = FIELD(q, 0x50, Vec3);
+        FIELD(FIELD(q, 0x10, u8 *), 0x78, VecFx32) = FIELD(q, 0x18, VecFx32);
+        FIELD(FIELD(q, 0x10, u8 *), 0xa8, VecFx32) = FIELD(q, 0x50, VecFx32);
         func_ov000_021903b4(FIELD(q, 0x10, void *));
     }
     for (n = FIELD(w, 0x6c, u8 *); n != NULL; n = FIELD(n, 0x70, u8 *)) {
@@ -40,7 +39,6 @@ void func_ov002_021da960(void *self) {
     }
 }
 
-extern VFunc data_ov002_021eff50[];
 
 void func_ov002_021dab58(void *self, s32 mode) {
     VObject *p;
@@ -48,7 +46,7 @@ void func_ov002_021dab58(void *self, s32 mode) {
         return;
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_VOBJ(FIELD(self, 0x8, VObject *));
         HEAP_POP(saved);

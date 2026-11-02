@@ -3,7 +3,7 @@
 extern "C" {
 
 void func_ov002_021e00bc(void *self) {
-    u16 k = FIELD(data_02097dc8, 0x12, u16);
+    u16 k = data_02097dc8->trig;
     void *w;
     u8 *q;
     if (k & 1) {

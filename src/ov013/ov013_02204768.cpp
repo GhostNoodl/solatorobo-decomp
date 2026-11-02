@@ -43,11 +43,11 @@ static inline void Ov013_InitDc(void *self) {
 }
 
 static inline void Ov013_DtorDc(void *self) {
-    u32 saved;
+    void *saved;
     FLD(void *, self, 0) = data_ov013_0220bbb8;
     ((Ov013V *)((u8 *)self + 0xec))->v08();
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (FLD(void *, self, 0xdc) != NULL) {
         void *p = FLD(void *, self, 0xdc);
         if (p != NULL) {
@@ -58,7 +58,7 @@ static inline void Ov013_DtorDc(void *self) {
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (FLD(void *, self, 0xe0) != NULL) {
         void *p = FLD(void *, self, 0xe0);
         if (p != NULL) {
@@ -156,11 +156,11 @@ BOOL Ov013ActEx_02204454_Draw(Ov013ActEx_02204454 *self) {
         s32 z = FLD(s32, m, 0xb0);
         s32 sc;
         BOOL r;
-        FLD(s32, m, 0xa8) = Ov013_FxMul(x, 0xd00);
-        FLD(s32, m, 0xac) = Ov013_FxMul(y, 0xd00);
-        FLD(s32, m, 0xb0) = Ov013_FxMul(z, 0xd00);
+        FLD(s32, m, 0xa8) = FX_Mul(x, 0xd00);
+        FLD(s32, m, 0xac) = FX_Mul(y, 0xd00);
+        FLD(s32, m, 0xb0) = FX_Mul(z, 0xd00);
         sc = FLD(s32, self->unk_3c, 0x14);
-        FLD(s32, self->unk_3c, 0x14) = Ov013_FxMul(sc, 0x59a);
+        FLD(s32, self->unk_3c, 0x14) = FX_Mul(sc, 0x59a);
         r = func_ov000_02194c08(self);
         FLD(s32, self->unk_3c, 0x14) = sc;
         m = self->unk_38;
@@ -219,7 +219,7 @@ void func_ov013_0220498c(Ov013Actor *self, s16 v) {
     FLD(u16, self, 0xd4) = v;
     p = func_020704b4(self->kind);
     t = *((Ov013Anim10 *)self->unk_4c);
-    t.speed = Ov013_FxMul((s32)(FLD(u16, p, 4) << 12), (s32)v) >> 12;
+    t.speed = FX_Mul((s32)(FLD(u16, p, 4) << 12), (s32)v) >> 12;
     *FLD(Ov013Anim10 *, self, 0x4c) = t;
 }
 

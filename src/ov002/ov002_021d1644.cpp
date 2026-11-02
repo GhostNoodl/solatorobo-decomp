@@ -22,7 +22,7 @@ BOOL func_ov002_021d166c(void *self) {
         }
         break;
     case 1:
-        if (FIELD(data_02097dc8, 0x12, u16) & 0xa) {
+        if (data_02097dc8->trig & 0xa) {
             func_02044524(data_02097e3c);
         }
         if (FIELD(data_02097e3c, 0x149, u8) == 0) {
@@ -51,7 +51,7 @@ BOOL func_ov002_021d178c(void *self) {
             break;
         }
     case 1:
-        if (FIELD(data_02097dc8, 0x12, u16) & 2) {
+        if (data_02097dc8->trig & 2) {
             func_ov002_021e9b28(FIELD(data_ov002_021f0f9c, 0xd0, void *));
             FIELD(self, 0x5c, s32) = 7;
         }

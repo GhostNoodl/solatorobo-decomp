@@ -8,7 +8,6 @@ struct Ov009Rot {
     u16 z;
 };
 
-extern void *data_ov000_021ccd68;
 extern u8 data_ov009_022160ac[];
 extern u8 data_ov009_022160c4[];
 extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);

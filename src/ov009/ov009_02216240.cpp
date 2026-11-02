@@ -1,8 +1,5 @@
 #include "ov009/ov009.h"
 
-typedef s16 fx16;
-typedef Ov009Vec VecFx32;
-struct VecFx16 { fx16 x, y, z; };
 
 // A header's zero rotation and vector, plus copies made at startup, among this TU's motion
 // names, the pointers to them, a 6-byte table and offsets. Other functions read all but the
@@ -99,12 +96,10 @@ void Ov009ActVt_02217640_Start(Ov009ActVt_02217640 *self) {
 extern u8 data_ov009_02215f38[];
 extern void *data_02097e4c;
 extern Ov009Actor *func_ov000_0219bf90(void);
-extern s32 func_ov000_0219a2f4(Ov009Vec *pos, s32 a, s32 b);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern void Actor_PitchToPos(Ov009Obj *self, Ov009Vec *v, s32 a);
 extern void *func_02049f44(void *a, s32 b, Ov009Vec *c, s32 d);
 
-static inline BOOL Ov009Game_IsPausedB(Ov009Game54 *g) {
+static inline BOOL Ov009Game_IsPausedB(FieldState *g) {
     return g->unk_d4 != 0;
 }
 
@@ -127,7 +122,7 @@ void Ov009ActVt_02217640_Update(Ov009ActVt_02217640 *self) {
             func_ov000_021987b8(self->unk_48, 1, 0, 0);
             v = self->pos;
             func_ov000_0219a2f4(&v, self->pos.y + 0x1800, -0xa000);
-            self->pos.y += Ov009_FxMul(*(volatile s32 *)&v.y + 0x1800 - self->pos.y, 0x19a);
+            self->pos.y += FX_Mul(*(volatile s32 *)&v.y + 0x1800 - self->pos.y, 0x19a);
             v.y += 0x1800;
             VEC_Distance(&self->pos, &v);
         }
@@ -177,13 +172,11 @@ extern "C" {
 
 extern void HitSphere_Link(Ov009Sub48 *p);
 extern void *NNS_G3dGlbGetInvV(void);
-extern void MTX_MultVec33(const Ov009Vec *v, const void *m, Ov009Vec *out);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
 
-static inline BOOL Ov009Game_IsPaused3(Ov009Game54 *g) {
+static inline BOOL Ov009Game_IsPaused3(FieldState *g) {
     return g->unk_d4 != 0;
 }
 
@@ -230,7 +223,7 @@ void func_ov009_0220bb70(Ov009ActVt_02217640 *self) {
             v.x = x;
             v.y = y;
             v.z = w;
-            MTX_MultVec33(&v, NNS_G3dGlbGetInvV(), &v);
+            MTX_MultVec33(&v, (MtxFx33 *)NNS_G3dGlbGetInvV(), &v);
             VEC_Add(&v, &p, &v);
             r = Rand_UpTo(0x1000);
             func_02065f88(0x389, &v)->v0c(r + 0x1000);
@@ -370,10 +363,8 @@ extern "C" {
 extern const Ov009Vec data_ov009_02215f2c;
 extern const Ov009Vec data_ov009_02215f44;
 extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern void Actor_PitchToPos(Ov009Obj *self, const Ov009Vec *v, s32 a);
 extern void Actor_TurnToPos(Ov009Actor *self, const Ov009Vec *v, s32 a);
-extern void Actor_Move(Ov009Obj *self, s32 a);
 
 struct Ov009RotC {
     u16 x;
@@ -410,7 +401,6 @@ extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
 extern void func_ov000_02191690(void *p);
 extern void func_ov000_02191708(void *p);
-extern u16 FX_Atan2(s32 y, s32 x);
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_0219aca8(Ov009Actor *a, Ov009Actor *b, u16 c, u8 d, s32 e, Ov009RotC *f, s32 g, s32 h, s32 i, s32 j);
 extern void func_ov000_0218996c(s32 a, s32 b);
@@ -460,7 +450,7 @@ void func_ov009_0220c094(Ov009ActVt_02217640 *self) {
         self->unk_98 = self->rot[1];
         v.y = -0x1000;
         Actor_PitchToPos(self, &v, self->unk_b0->unk_02);
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         if (func_ov000_02191120(self->unk_38)) {
             func_ov000_02191690(self->unk_38);
             self->unk_40->state++;
@@ -479,8 +469,8 @@ void func_ov009_0220c094(Ov009ActVt_02217640 *self) {
                 s32 sn = OV009_SIN(ang);
                 s32 cs = OV009_COS(ang);
                 s32 spd = self->unk_b0->unk_00;
-                self->unk_9c = Ov009_FxMul(spd, sn);
-                self->unk_a0 = Ov009_FxMul(spd, cs);
+                self->unk_9c = FX_Mul(spd, sn);
+                self->unk_a0 = FX_Mul(spd, cs);
             }
             func_0204a028(data_02097e4c, 0x32, &self->pos, 5);
             self->unk_98 = self->rot[1];
@@ -490,7 +480,7 @@ void func_ov009_0220c094(Ov009ActVt_02217640 *self) {
         break;
     }
     case 3:
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         if (*func_ov000_0219bf90()->unk_50 != 0) {
             r = *(Ov009RotC *)self->rot;
             r.x += 0x4000;
@@ -629,7 +619,7 @@ void func_ov009_0220c594(Ov009ActVt_02217640 *self) {
         }
         break;
     }
-    Actor_Move(self, 0);
+    Actor_Move((Actor *)self, 0);
 }
 
 void func_ov009_0220c93c(Ov009ActVt_02217640 *self) {
@@ -654,7 +644,6 @@ extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
 extern void func_ov003_021d6954(Ov009Actor *self, u8 a);
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToPos(Ov009Actor *self, const Ov009Vec *v, s32 a);
-extern void Actor_Move(Ov009Obj *self, s32 a);
 
 void func_ov009_0220c970(Ov009ActVt_02217640 *self) {
     switch (self->unk_40->state) {
@@ -687,13 +676,12 @@ void func_ov009_0220c970(Ov009ActVt_02217640 *self) {
 }
 
 extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 
 void func_ov009_0220ca64(Ov009Actor *self) {
     Ov009Vec t;
     Ov009Actor *a;
     Ov009Sub44 *s44;
-    u32 saved;
+    void *saved;
     func_ov003_021d112c(self);
     self->unk_9c = 0x52;
     func_01ffc9fc(&t, &data_ov009_02215f14, (u16)(Rand_PlusMinus(0x1e) * 0xb6));
@@ -714,7 +702,7 @@ void func_ov009_0220ca64(Ov009Actor *self) {
     s44->unk_22_0 = 0;
     s44->unk_22_1 = 0;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->unk_3c != NULL) {
         if (self->unk_3c != NULL) {
             self->unk_3c->v04();
@@ -733,7 +721,6 @@ extern "C" {
 
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToPos(Ov009Actor *self, const Ov009Vec *v, s32 a);
-extern void Actor_Move(Ov009Obj *self, s32 a);
 
 void func_ov009_0220cb64(Ov009Actor *self) {
     Ov009Vec v;
@@ -754,7 +741,7 @@ void func_ov009_0220cb64(Ov009Actor *self) {
     v = func_ov000_0219bf90()->pos;
     Actor_TurnToPos(self, &v, 0x1000);
     self->unk_98 = self->rot[1];
-    Actor_Move(self, 0);
+    Actor_Move((Actor *)self, 0);
 }
 
 }
@@ -768,7 +755,6 @@ extern s32 func_ov000_0219a510(Ov009Obj *self, s32 a, const Ov009Vec *pos, s32 r
 extern BOOL func_ov000_021985c0(void *p);
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToPos(Ov009Actor *self, const Ov009Vec *v, s32 a);
-extern void Actor_Move(Ov009Obj *self, s32 a);
 
 void func_ov009_0220cc24(Ov009Actor *self) {
     Ov009Vec v;
@@ -796,14 +782,12 @@ void func_ov009_0220cc24(Ov009Actor *self) {
     v = func_ov000_0219bf90()->pos;
     Actor_TurnToPos(self, &v, 0x1000);
     self->unk_98 = self->rot[1];
-    Actor_Move(self, 0);
+    Actor_Move((Actor *)self, 0);
 }
 
 extern void *data_02097e4c;
 extern void func_0203f364(Ov009Sub48 *p);
 extern void *NNS_G3dGlbGetInvV(void);
-extern void MTX_MultVec33(const Ov009Vec *v, const void *m, Ov009Vec *out);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
@@ -848,7 +832,7 @@ void func_ov009_0220cd40(Ov009Actor *self) {
             v.x = x;
             v.y = y;
             v.z = w;
-            MTX_MultVec33(&v, NNS_G3dGlbGetInvV(), &v);
+            MTX_MultVec33(&v, (MtxFx33 *)NNS_G3dGlbGetInvV(), &v);
             VEC_Add(&v, &p, &v);
             s = Rand_UpTo(0x4cd) + 0x4cd;
             n = self->unk_18;

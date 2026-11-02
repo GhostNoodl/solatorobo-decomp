@@ -13,13 +13,13 @@ extern u8 data_ov000_021cac60[];
 
 static inline void ov006_Unk021db95c_dtor(ov006_Unk021db95c *self) {
     self->vtbl = data_ov000_021cb0b8;
-    VCALL(self, 2C);
+    VCALL(self, 2c);
     self->vtbl = data_ov000_021cb1b0;
-    VCALL(self, 2C);
+    VCALL(self, 2c);
     self->vtbl = data_ov000_021caec8;
-    VCALL(self, 2C);
+    VCALL(self, 2c);
     self->vtbl = data_ov000_021cac60;
-    VCALL(self, 2C);
+    VCALL(self, 2c);
 }
 
 ov006_Unk021db95c *ov006_Window_Dtor(ov006_Unk021db95c *self) {

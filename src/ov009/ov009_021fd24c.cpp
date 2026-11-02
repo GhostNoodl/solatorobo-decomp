@@ -2,7 +2,6 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd30;
 extern Ov009Path data_ov009_02215cf4[];
 extern u8 data_ov009_02216ab6[];
 extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const Ov009Vec *pos);
@@ -29,7 +28,7 @@ void func_ov009_021fd2b4(Ov009ActVt_02216750 *self) {
     switch (self->unk_40->state) {
     case 0: {
         Ov009Sub44 *s44;
-        func_ov000_02190cb0(self->unk_38, anim, 0x2ab, 0);
+        func_ov000_02190cb0(self->unk_38, (char *)anim, 0x2ab, 0);
         func_ov000_021915a0(self->unk_38);
         {
             u16 r = self->rot[1];
@@ -86,9 +85,7 @@ void func_ov009_021fd430(Ov009ActVt_02216750 *self) {
 }
 
 extern void *data_02097e4c;
-extern s32 Rand_UpTo(s32 max);
 extern Ov009Actor *func_ov000_02199f60(void *p);
-extern u16 FX_Atan2(s32 y, s32 x);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 static inline u16 Ov009_AngleTo(Ov009Actor *a, Ov009Actor *b) {
     if (a != NULL && a != b) {
@@ -112,12 +109,12 @@ void func_ov009_021fd510(Ov009ActVt_02216750 *self) {
         if (self->unk_fc.y < self->unk_f0.y - 0x1000) {
             self->unk_fc.y = self->unk_f0.y - 0x1000;
         }
-        if (data_ov000_021ccd54->unk_ca != 0x11) {
+        if (data_ov000_021ccd54->unk_ca.c[0] != 0x11) {
             p = func_ov000_02199f60(self->unk_50);
             if (p != NULL) {
                 u16 a = Ov009_AngleTo(self, p);
-                self->unk_fc.x += Ov009_FxMul(OV009_SIN(a), 0x1000);
-                self->unk_fc.z += Ov009_FxMul(OV009_COS(a), 0x1000);
+                self->unk_fc.x += FX_Mul(OV009_SIN(a), 0x1000);
+                self->unk_fc.z += FX_Mul(OV009_COS(a), 0x1000);
             }
         }
         if (self->unk_18 == 1) {

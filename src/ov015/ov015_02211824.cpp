@@ -5,14 +5,11 @@ extern "C" {
 extern u8 data_ov015_022132d0[];
 u8 *func_0206ef88(u16 id);
 extern Ov015Obj290 *data_ov015_0221336c;
-void NNS_G3dGetCurrentMtx(void *p, s32 a);
 void func_ov015_02211954(u8 *self);
-void MTX_Identity33_(void *a);
 extern Ov015Shared *data_ov015_02213368;
 extern const char *data_ov015_02213228[];
 extern const char *data_ov015_02213230[];
 extern const char *data_ov015_02213208[];
-void *STD_CopyString(void *dst, const void *src);
 s32 func_ov000_0218f110(void *a);
 
 void func_ov015_02211824(void) {
@@ -80,7 +77,7 @@ void func_ov015_02211954(u8 *self) {
     if (k != g->unk_0c) {
         return;
     }
-    NNS_G3dGetCurrentMtx(&info, 0);
+    NNS_G3dGetCurrentMtx((MtxFx43 *)&info, (MtxFx33 *)0);
     g->unk_234 = info.v;
     FLD(void *, self, 0x24) = NULL;
     FLD(u8, self, 0x92) = 0;
@@ -110,7 +107,7 @@ void func_ov015_02211a1c(Ov015Obj290 *self) {
     self->unk_240.x = 0;
     self->unk_240.y = 0;
     self->unk_240.z = 0;
-    MTX_Identity33_(&self->unk_24c);
+    MTX_Identity33_((MtxFx33 *)(&self->unk_24c));
     self->unk_270.x = 0;
     self->unk_270.y = 0;
     self->unk_270.z = 0;
@@ -122,8 +119,8 @@ void func_ov015_02211a1c(Ov015Obj290 *self) {
 }
 
 static inline void Ov015_SetPairB(u8 *l, s32 i, const void *a, const void *b) {
-    STD_CopyString(l + 0x10 + i * 0x3c, a);
-    STD_CopyString(l + 0x30 + i * 0x3c, b);
+    STD_CopyString((char *)(l + 0x10 + i * 0x3c), (char *)a);
+    STD_CopyString((char *)(l + 0x30 + i * 0x3c), (char *)b);
     l[3] |= 2 << i;
 }
 void func_ov015_02211a74(Ov015Obj290 *self) {
@@ -145,7 +142,6 @@ BOOL func_ov015_02211b00(Ov015Obj290 *self) {
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_02191618(void *a);
-void NNS_G3dRenderObjSetInitFunc(void *a, void *cb);
 s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 extern u8 data_ov015_02213280[];
 extern const char *data_ov015_02213210[];
@@ -157,7 +153,7 @@ BOOL func_ov015_02211b2c(Ov015Obj290 *self) {
     self->unk_14c.unk_c2.b4 = 0;
     self->unk_14c.unk_c2.b2 = 0;
     self->unk_14c.unk_c2.b0 = 0;
-    NNS_G3dRenderObjSetInitFunc(&self->unk_14c.unk_24, (void *)func_ov015_022119d0);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->unk_14c.unk_24), (NNSG3dSbcCallBackFunc)func_ov015_022119d0);
     self->unk_14c.unk_c2.b5 = 0;
     self->unk_14c.unk_c2.b8 = 1;
     s32 r = data_ov015_02213368->unk_2c;

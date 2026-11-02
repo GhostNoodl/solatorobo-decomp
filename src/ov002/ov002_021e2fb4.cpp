@@ -35,13 +35,13 @@ void func_ov002_021e2fb4(void *self) {
                 char *nm = data_ov002_021effec;
                 char *file = data_ov002_021efff8;
                 if (nm) {
-                    func_02041218((u8 *)m + 0x88);
-                    func_02041440(m, nm, 0);
-                    STD_CopyString((u8 *)m + 0x2c, file);
+                    func_02041218((PlttRes *)((u8 *)m + 0x88));
+                    func_02041440((Model *)m, nm, 0);
+                    STD_CopyString((char *)((u8 *)m + 0x2c), file);
                 }
             }
             FIELD(self, 0x30, void *) = m;
-            func_020417e0(FIELD(self, 0x30, void *), func_020360b8(data_ov002_021efff8, data_ov002_021effec));
+            func_020417e0((Model *)FIELD(self, 0x30, void *), func_020360b8(data_ov002_021efff8, data_ov002_021effec));
             FIELD(FIELD(self, 0x30, void *), 0x6c, u32) |= 2;
             FIELD(FIELD(self, 0x30, void *), 0x6c, u32) |= 0x80000;
             FIELD(FIELD(self, 0x30, void *), 0x6c, u32) |= 0x100000;
@@ -50,7 +50,7 @@ void func_ov002_021e2fb4(void *self) {
             info = func_0206ede8(FIELD(self, 0x38, u16));
             FIELD(self, 0x3a, u16) = FIELD(func_02070dcc(info[1]), 0x4, Lo8_021e2fb4).lo;
             func_02041c18(FIELD(self, 0x30, void *), info[0]);
-            func_02041d9c(FIELD(self, 0x30, void *), 0, FIELD(self, 0x3a, u16));
+            func_02041d9c((Model *)FIELD(self, 0x30, void *), 0, FIELD(self, 0x3a, u16));
             FIELD(FIELD(self, 0x30, void *), 0x6c, MdlFlags021e2fb4).alpha = 0x1e;
         }
         func_ov002_021e331c(self);
@@ -67,14 +67,14 @@ void func_ov002_021e2fb4(void *self) {
             FIELD(FIELD(self, 0x34, void *), 0x4, u32) &= ~4;
         }
         {
-            u32 saved;
+            void *saved;
             HEAP_PUSH(saved);
             {
                 void *p = FIELD(self, 0x30, void *);
                 if (p != NULL) {
                     if (p != NULL) {
-                        func_02041558(p);
-                        func_02041278((u8 *)p + 0x88);
+                        func_02041558((Model *)p);
+                        func_02041278((PlttRes *)((u8 *)p + 0x88));
                         Heap_Free(p);
                     }
                     FIELD(self, 0x30, void *) = NULL;
@@ -83,7 +83,7 @@ void func_ov002_021e2fb4(void *self) {
             HEAP_POP(saved);
         }
         {
-            u32 saved;
+            void *saved;
             HEAP_PUSH(saved);
             DELETE_VOBJ(FIELD(self, 0x34, VObject *));
             HEAP_POP(saved);

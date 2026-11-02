@@ -5,11 +5,8 @@ extern "C" {
 Ov015V *func_ov015_021fa6d0(void);
 void func_ov015_021fa6f8(Ov015Fade *self, u8 a, u8 b, s32 c, u16 d);
 extern u8 *data_02097dc8;
-extern void *data_02097e4c;
-void *func_02049a48(void *a, int b, int c, int d, int e);
 extern u8 data_ov015_022128ec[];
 extern u8 data_ov015_02213188[];
-void MI_CpuFill8(void *dst, u32 value, u32 size);
 extern u8 *data_ov002_021f0f9c;
 void func_ov002_021e7c1c(void);
 void func_ov015_0220ec40(Ov015ResultPanel *self);
@@ -234,7 +231,7 @@ void func_ov015_0220f470(Ov015Result *self) {
 }
 
 void func_ov015_0220f4d4(Ov015Result *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_10);
     HEAP_POP(saved);
@@ -315,7 +312,7 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
             break;
         }
         if (!ok) {
-            u32 saved;
+            void *saved;
             HEAP_PUSH(saved);
             DELETE_V(self->unk_10);
             HEAP_POP(saved);

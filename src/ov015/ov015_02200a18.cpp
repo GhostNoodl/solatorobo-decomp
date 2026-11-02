@@ -2,8 +2,6 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
-void *func_02049a48(void *a, int b, int c, int d, int e);
 void *func_02065f88(s32 id, void *pos);
 s32 func_ov015_02200bf4(Ov015Obj34 *self, u8 *b, s32 c);
 s32 func_ov015_022090f0(Ov015FishInfo *p);

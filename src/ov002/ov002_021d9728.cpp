@@ -8,11 +8,11 @@ s32 **func_ov000_02190a30(void *a, int b);
 
 void func_ov002_021d7320(void *self, s32 t, s32 range);
 
-void Interp_SinLerpVec(Vec3 *out, s32 t, void *a, void *b);
+void Interp_SinLerpVec(VecFx32 *out, s32 t, void *a, void *b);
 
 void func_ov002_021d9728(void *self) {
-    Vec3 a;
-    Vec3 b;
+    VecFx32 a;
+    VecFx32 b;
     u8 *o;
     s32 x;
     void *n;
@@ -52,8 +52,8 @@ void func_ov002_021d9728(void *self) {
         Interp_SinLerpVec(&a, f, (u8 *)self + 0x98, (u8 *)self + 0xb0);
         Interp_SinLerpVec(&b, f, (u8 *)self + 0xa4, (u8 *)self + 0xbc);
     }
-    FIELD(self, 0x8c, Vec3 *)[0] = a;
-    FIELD(self, 0x8c, Vec3 *)[1] = b;
+    FIELD(self, 0x8c, VecFx32 *)[0] = a;
+    FIELD(self, 0x8c, VecFx32 *)[1] = b;
     FIELD(self, 0x90, s32)--;
 }
 

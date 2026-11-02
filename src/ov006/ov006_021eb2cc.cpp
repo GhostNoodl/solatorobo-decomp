@@ -69,7 +69,7 @@ void func_ov006_021eb2cc(ov006_Obj021eb2cc *self) {
         if (state->timer > 0xa8c || self->unkCE >= 3) {
             p = func_02065f88(5, &self->unk70);
             if (p != NULL) {
-                VCALL(p, 0C, 0x5000);
+                VCALL(p, 0c, 0x5000);
             }
             func_02049f44(data_02097e4c, 0x56, &self->unk70, 0);
             func_ov000_0219aae8(self, self, 1, 0x11, 0x80, NULL, NULL, 0x7800, 0, -1, 0x1000);

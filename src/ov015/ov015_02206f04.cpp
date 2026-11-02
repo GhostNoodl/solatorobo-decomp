@@ -18,8 +18,6 @@ extern void *data_ov000_021ccd38;
 void func_ov015_02205c7c(Ov015Scene2b08 *self);
 void func_ov015_02204110(Ov015Scene2c08 *self);
 void func_ov015_02203020(Ov015Scene2a08 *self);
-void func_02041558(void *p);
-void func_02041278(void *p);
 extern u8 data_ov015_022129c0[];
 void func_ov000_02163254(void *p);
 void *func_ov000_0218e9c4(void *p);
@@ -27,13 +25,11 @@ void *func_ov000_0218fe1c(void *p);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_021919c8(void *p);
 void __cxa_vec_ctor(void *p, s32 n, s32 size, void *ctor, void *dtor);
-extern void **data_0214a420;
 s32 func_02065748(void *a, void *b);
 void *Ov000Vt_021cc438_Dtor(void *p);
 void *func_ov000_0218ea20(void *p);
 void __cxa_vec_cleanup(void *p, s32 n, s32 size, void *dtor);
 void func_01ffc9fc(Ov015V3 *in, Ov015V3 *out, u16 ang);
-void VEC_Add(const void *a, const void *b, void *out);
 
 void *func_ov015_02206f04(void) {
     Ov015Scene2a88 *p = (Ov015Scene2a88 *)Heap_Alloc(0x58);
@@ -284,15 +280,15 @@ void func_ov015_02207508(void) {
 }
 
 void *Ov015Scene2a88_DtorDelete(Ov015Scene2a88 *self) {
-    u32 saved;
+    void *saved;
     SET_VT(self, data_ov015_02212a88);
     HEAP_PUSH(saved);
     {
         u8 *p = self->unk_3c;
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558(p);
-                func_02041278(p + 0x88);
+                func_02041558((Model *)p);
+                func_02041278((PlttRes *)(p + 0x88));
                 Heap_Free(p);
             }
             self->unk_3c = NULL;
@@ -306,15 +302,15 @@ void *Ov015Scene2a88_DtorDelete(Ov015Scene2a88 *self) {
 }
 
 void *Ov015Scene2a88_Dtor(Ov015Scene2a88 *self) {
-    u32 saved;
+    void *saved;
     SET_VT(self, data_ov015_02212a88);
     HEAP_PUSH(saved);
     {
         u8 *p = self->unk_3c;
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558(p);
-                func_02041278(p + 0x88);
+                func_02041558((Model *)p);
+                func_02041278((PlttRes *)(p + 0x88));
                 Heap_Free(p);
             }
             self->unk_3c = NULL;
@@ -367,7 +363,7 @@ void *func_ov015_0220765c(Ov015Ship *self) {
 }
 
 void *func_ov015_02207738(Ov015Ship *self) {
-    u32 saved;
+    void *saved;
     if (func_02065748(data_0214a420, self->unk_d28) != 0) {
         HEAP_PUSH(saved);
         DELETE_V(self->unk_d28);
@@ -394,7 +390,7 @@ void func_ov015_02207858(Ov015Ship *self) {
     v.x = 0;
     v.y = 0;
     func_01ffc9fc(&v, &v, self->unk_d22);
-    VEC_Add(&self->unk_d14, &v, &self->unk_d4c);
+    VEC_Add((VecFx32 *)(&self->unk_d14), (VecFx32 *)&v, (VecFx32 *)(&self->unk_d4c));
     self->unk_d38 = 10;
 }
 

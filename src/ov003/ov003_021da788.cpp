@@ -116,9 +116,9 @@ void func_ov003_021da854(Ov003Scaled *self) {
     }
     Ov003Vec v = self->base;
     s32 s = self->scale;
-    v.x = Ov003_FxMul(v.x, s);
-    v.y = Ov003_FxMul(v.y, s);
-    v.z = Ov003_FxMul(v.z, s);
+    v.x = FX_Mul(v.x, s);
+    v.y = FX_Mul(v.y, s);
+    v.z = FX_Mul(v.z, s);
     self->SetScale(&v);
 }
 
@@ -244,7 +244,7 @@ void func_ov003_021daae4(Ov003FxList *self, u8 id, const Ov003Vec *pos, s32 a, s
                     Ov003_RotX((Ov003Vec *)&vp, (Ov003Vec *)&vp, rot[0]);
                     func_01ffc9fc((Ov003Vec *)&vp, (Ov003Vec *)&vp, rot[1]);
                 }
-                VEC_Add((Ov003Vec *)&vp, pos, (Ov003Vec *)&vp);
+                VEC_Add((VecFx32 *)&vp, (VecFx32 *)pos, (VecFx32 *)&vp);
                 {
                     Ov003Vec base = o->base;
                     vp.x -= base.x;

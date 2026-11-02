@@ -19,14 +19,14 @@ static inline void ov006_Unk021dfa60_Kill(int id) {
     if (id != -1) {
         Object *o = func_020657b0(data_0214a420, id);
         if (o != NULL) {
-            void *saved = data_02097dd0->current;
-            data_02097dd0->current = data_02097dd0->unk8;
+            void *saved = data_02097dd0->cur;
+            data_02097dd0->cur = data_02097dd0->unk_08;
             if (o != NULL) {
                 if (o != NULL) {
                     o->vtbl->dtor(o);
                 }
             }
-            data_02097dd0->current = saved;
+            data_02097dd0->cur = saved;
         }
     }
 }

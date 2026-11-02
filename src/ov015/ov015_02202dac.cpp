@@ -6,11 +6,6 @@ extern void *data_ov000_021ccd44;
 u8 *func_ov000_0218084c(void *a, s32 b, s32 c);
 extern void *data_ov000_021ccd40;
 extern void *data_ov000_021ccd38;
-void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
-extern void *data_02097e4c;
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 extern void *data_02149ef8;
 void *MsgRes_GetString(void *a, s32 b);
 void func_ov000_0215bb14(void *a, void *b);
@@ -103,7 +98,7 @@ void func_ov015_02202ec8(Ov015Scene2a88 *self) {
         void *e = NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), 0);
         arg = NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **(u16 **)FLD(void *, e, 0xc));
     }
-    func_02042628(model, arg, anim, 0);
+    func_02042628((Model *)model, arg, (ModelPart *)anim, 0);
 }
 
 BOOL func_ov015_02202f44(Ov015Menu *self, Ov015MenuItem *ev) {
@@ -141,7 +136,7 @@ BOOL func_ov015_02202fa8(Ov015Menu *self, Ov015MenuItem *ev) {
 }
 
 void func_ov015_02203020(Ov015Scene2a08 *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     {
     Ov015Ship *o = self->unk_3c;
@@ -223,7 +218,6 @@ extern u8 data_ov000_021cadcc[];
 extern u8 data_ov015_02212990[];
 extern u8 data_ov015_0221299d[];
 extern u8 data_ov015_02213360;
-extern u8 *data_02097d48;
 BOOL func_ov015_02207adc(Ov015Ship *p);
 void func_020434e0(void *p);
 void *func_ov000_02154b58(void *a, s32 b);
@@ -376,11 +370,11 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
     }
     }
     {
-        u8 *g = data_02097d48;
-        func_02043904(g + 0x8b0);
-        FLD(u8, g, 0x8b0) |= 0x30;
+        GfxSys *g = data_02097d48;
+        func_02043904(g->unk_8b0);
+        g->unk_8b0[0] |= 0x30;
         REG16(0x4000060) = (REG16(0x4000060) & ~0x3000) | 0x20;
-        func_02043b20(g + 0x8b0);
+        func_02043b20(g->unk_8b0);
     }
     func_ov000_02173648(self);
     if (++data_ov015_02213360 > 100) {

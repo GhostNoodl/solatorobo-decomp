@@ -26,15 +26,15 @@ static inline void ov006_Menu_ClearNodes(ov006_Unk021ec888 *self) {
         void *saved;
         ov006_MenuNode *next;
         next = node->next;
-        saved = data_02097dd0->current;
-        data_02097dd0->current = data_02097dd0->unk8;
+        saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (node != NULL) {
             if (node != NULL) {
                 node->vtbl->dtor((Object *)node);
             }
             node = NULL;
         }
-        data_02097dd0->current = saved;
+        data_02097dd0->cur = saved;
         node = next;
     }
     self->nodes = NULL;
@@ -53,7 +53,7 @@ void func_ov006_021e4d38(ov006_Unk021ec888 *self) {
 
     switch (self->unkC) {
     case 0:
-        data_02097dd0->unk18 = 0;
+        data_02097dd0->vblankFunc = NULL;
         if (func_02044c80()) {
             self->unk8 = 1;
             self->unkC = 0;

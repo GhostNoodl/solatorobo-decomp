@@ -18,7 +18,7 @@ void func_ov002_021e4b80(void *self) {
     FIELD(self, 0x4, s32) = 0;
     FIELD(self, 0x8, s32) = 0;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0xc, void *) != NULL) {
             Heap_FreeArray(FIELD(self, 0xc, void *));
@@ -46,7 +46,7 @@ u32 func_ov002_021e4c30(int which) {
     u32 r = 0;
     switch (which) {
     case 0:
-        r = data_02097dd0[5] / 3600;
+        r = data_02097dd0->frameCount / 3600;
         break;
     case 1:
         r = FIELD(data_0214a424, 0xa, u16);
@@ -267,7 +267,7 @@ void func_ov002_021e4fac(void *self) {
     FIELD(m, 0x8, s32) = FX_MUL(sy, FIELD(m, 0x8, s32));
     FIELD(m, 0xc, s32) = FX_MUL(sz, FIELD(m, 0xc, s32));
     if (FIELD(m, 0x0, u32) & 2) {
-        MTX_Identity33_(m + 0x28);
+        MTX_Identity33_((MtxFx33 *)(m + 0x28));
         FIELD(m, 0x0, u32) &= ~2;
     }
     MTX_Concat33(m + 0x28, o + 0xb8, m + 0x28);
@@ -381,7 +381,7 @@ void func_ov002_021e5140(void *self) {
     FIELD(self, 0x1b0, s32) = 0x1000;
     FIELD(self, 0x1b4, s32) = 0x1000;
     FIELD(self, 0x1b8, s32) = 0x1000;
-    MTX_Identity33_((u8 *)self + 0x1bc);
+    MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x1bc));
     FIELD(self, 0x1e0, s32) = 0;
     FIELD(self, 0x1e4, s32) = 0;
     FIELD(self, 0x1e8, s32) = 0;
@@ -408,7 +408,7 @@ void func_ov002_021e51f8(void *self) {
         if (FIELD(self, 0x50, void *) != NULL) {
             func_02035acc(FIELD(self, 0x50, void *), FIELD(self, 0x54, void *), 4);
         } else {
-            func_02036838(data_02097cdc, FIELD(self, 0x54, void *), 4, 0);
+            func_02036838(data_02097cdc, (char *)FIELD(self, 0x54, void *), 4, 0);
         }
     }
     for (i = 0; i < FIELD(self, 0x1a0, s32); i++) {
@@ -421,7 +421,7 @@ void func_ov002_021e51f8(void *self) {
                     func_02035acc(FIELD(e, 0x4, void *), FIELD(e, 0x8, void *), 5);
                 }
             } else {
-                func_02036838(data_02097cdc, FIELD(e, 0x8, void *), 5, 0);
+                func_02036838(data_02097cdc, (char *)FIELD(e, 0x8, void *), 5, 0);
             }
         }
     }
@@ -489,7 +489,7 @@ BOOL func_ov002_021e534c(void *self) {
         if (FIELD(self, 0x50, void *) != NULL) {
             func_020359fc(FIELD(self, 0x50, void *), FIELD(self, 0x54, void *), 4, 0);
         } else {
-            func_020359d0(FIELD(self, 0x54, void *), 4, 0);
+            func_020359d0((char *)FIELD(self, 0x54, void *), 4, 0);
         }
         FIELD(self, 0x14, s32) = 1;
         FIELD(self, 0x10, s32) = 10;
@@ -502,7 +502,7 @@ BOOL func_ov002_021e534c(void *self) {
             void *p = func_02035f30(FIELD(self, 0x50, void *), FIELD(self, 0x54, void *), 4);
             res = func_02034ec0(p, FIELD(self, 0x54, void *));
         } else {
-            if (!func_02035b90(FIELD(self, 0x54, void *), 4)) {
+            if (!func_02035b90((char *)FIELD(self, 0x54, void *), 4)) {
                 break;
             }
             res = func_02035ccc(FIELD(self, 0x54, void *));
@@ -515,11 +515,11 @@ BOOL func_ov002_021e534c(void *self) {
         char path[32];
         MI_CpuFill8(name, 0, sizeof(name));
         if (FIELD(self, 0x58, void *) != NULL) {
-            STD_CopyLString(name, FIELD(self, 0x58, void *), sizeof(name));
+            STD_CopyLString(name, (char *)FIELD(self, 0x58, void *), sizeof(name));
         } else {
-            STD_CopyLString(name, FIELD(self, 0x54, void *), sizeof(name));
+            STD_CopyLString(name, (char *)FIELD(self, 0x54, void *), sizeof(name));
         }
-        FIELD(self, 0x60, void *) = ov002_021e534c_getMdl((u8 *)NNS_G3dGetMdlSet((void *)*FIELD(self, 0x5c, u32 *)), name);
+        FIELD(self, 0x60, void *) = ov002_021e534c_getMdl((u8 *)NNS_G3dGetMdlSet((NNSG3dResFileHeader *)*FIELD(self, 0x5c, u32 *)), name);
         STD_CopyLString(path, data_ov002_021f0640, sizeof(path));
         STD_ConcatenateString(path, FIELD(self, 0x54, char *));
         if (FIELD(self, 0x5c, u32 *) != NULL) {
@@ -533,7 +533,7 @@ BOOL func_ov002_021e534c(void *self) {
         FIELD(self, 0x10, s32)++;
     }
     case 12:
-        if (func_0203e63c((void *)FIELD(self, 0xbc, u32))) {
+        if (func_0203e63c((unsigned int)FIELD(self, 0xbc, u32))) {
             FIELD(self, 0xbc, u32) = 0;
             FIELD(self, 0x10, s32)++;
         }
@@ -614,7 +614,7 @@ BOOL func_ov002_021e534c(void *self) {
             path[0] = 0;
             STD_CopyLString(path, data_ov002_021f0640, sizeof(path));
             STD_ConcatenateString(path, e->name);
-            tex = NNS_G3dGetTex((void *)*ov002_021e534c_res(e));
+            tex = NNS_G3dGetTex((NNSG3dResFileHeader *)*ov002_021e534c_res(e));
             if (e->alt) {
                 if (e->res2 != NULL) {
                     func_0203ed04(path, *e->res2);
@@ -632,7 +632,7 @@ BOOL func_ov002_021e534c(void *self) {
     case 31: {
         BOOL ok = TRUE;
         for (s32 i = 0; i < FIELD(self, 0x1a0, s32); i++) {
-            if (!func_0203e63c((void *)((Ent021e534c *)((u8 *)self + 0xc0))[i].task)) {
+            if (!func_0203e63c((unsigned int)(void *)((Ent021e534c *)((u8 *)self + 0xc0))[i].task)) {
                 ok = FALSE;
                 break;
             }
@@ -677,8 +677,8 @@ typedef enum Ov002ObjKind {
 BOOL func_ov002_021e5974(void *self) {
     Ov002ObjKind kind;
     u8 *p;
-    NNS_G3dRenderObjInit((u8 *)self + 0x68, FIELD(self, 0x60, void *));
-    FIELD(self, 0x64, void *) = NNS_G3dGetTex(*FIELD(self, 0x5c, void **));
+    NNS_G3dRenderObjInit((NNSG3dRenderObj *)((u8 *)self + 0x68), (NNSG3dResMdl *)FIELD(self, 0x60, void *));
+    FIELD(self, 0x64, void *) = NNS_G3dGetTex((NNSG3dResFileHeader *)*FIELD(self, 0x5c, void **));
     if (FIELD(self, 0x1f0, Bits8).b0) {
         kind = OV002_OBJ_CAMERA2;
     } else {
@@ -761,7 +761,7 @@ void NNS_G3dRenderObjSetCallBack(void *a, void *fn, int b, int c, int d);
 void NNS_G3dRenderObjResetCallBack(void *a);
 void func_ov002_021e4f48(void *self);
 
-static inline void ov002_021e5b08_Scale(Vec3 *out, const Vec3 *in, s32 s) {
+static inline void ov002_021e5b08_Scale(VecFx32 *out, const VecFx32 *in, s32 s) {
     out->x = FX_MUL(in->x, s);
     out->y = FX_MUL(in->y, s);
     out->z = FX_MUL(in->z, s);
@@ -785,25 +785,25 @@ void func_ov002_021e5b08(void *self) {
     }
     o->v0x20();
     if (FIELD(self, 0x1f0, Bits8).b0) {
-        Vec3 v;
-        ov002_021e5b08_Scale(&v, &FIELD(self, 0x1b0, Vec3), 0x64000);
+        VecFx32 v;
+        ov002_021e5b08_Scale(&v, &FIELD(self, 0x1b0, VecFx32), 0x64000);
         v.z = 0x1000;
         NNS_G3dGlbSetBaseScale(&v);
-        ov002_021e5b08_Scale(&v, &FIELD(self, 0x1a4, Vec3), 0x64000);
+        ov002_021e5b08_Scale(&v, &FIELD(self, 0x1a4, VecFx32), 0x64000);
         v.z = FIELD(self, 0x20, s32);
         NNS_G3dGlbSetBaseTrans(&v);
         MI_Copy36B((u8 *)self + 0x1bc, data_020928b4);
-        NNS_G3dGlb.fc &= ~0xa4;
+        NNS_G3dGlb.flag &= ~0xa4;
     } else {
         MI_Copy36B((u8 *)self + 0x1bc, data_020928b4);
-        NNS_G3dGlb.fc &= ~0xa4;
-        NNS_G3dGlbSetBaseTrans((u8 *)self + 0x1a4);
-        NNS_G3dGlbSetBaseScale((u8 *)self + 0x1b0);
+        NNS_G3dGlb.flag &= ~0xa4;
+        NNS_G3dGlbSetBaseTrans((VecFx32 *)((u8 *)self + 0x1a4));
+        NNS_G3dGlbSetBaseScale((VecFx32 *)((u8 *)self + 0x1b0));
     }
     NNS_G3dGlbFlushVP();
     data_ov002_021f0f98 = self;
     NNS_G3dRenderObjSetCallBack((u8 *)self + 0x68, (void *)func_ov002_021e4f48, 0, 6, 2);
-    NNS_G3dDraw((u8 *)self + 0x68);
+    NNS_G3dDraw((NNSG3dRenderObj *)((u8 *)self + 0x68));
     NNS_G3dRenderObjResetCallBack((u8 *)self + 0x68);
     data_ov002_021f0f98 = NULL;
 }
@@ -865,7 +865,7 @@ void func_ov002_021e5d88(void *self) {
         if (FIELD(self, 0x4c, void *) != NULL) {
             func_02035acc(FIELD(self, 0x4c, void *), FIELD(self, 0x50, void *), 6);
         } else {
-            func_02036838(data_02097cdc, FIELD(self, 0x50, void *), 6, 0);
+            func_02036838(data_02097cdc, (char *)FIELD(self, 0x50, void *), 6, 0);
         }
     }
 }
@@ -881,7 +881,7 @@ BOOL func_ov002_021e5e44(void *self) {
         if (FIELD(self, 0x4c, void *) != NULL) {
             func_020359fc(FIELD(self, 0x4c, void *), FIELD(self, 0x50, void *), 6, 0);
         } else {
-            func_020359d0(FIELD(self, 0x50, void *), 6, 0);
+            func_020359d0((char *)FIELD(self, 0x50, void *), 6, 0);
         }
         FIELD(self, 0x14, s32) = 1;
         FIELD(self, 0x10, s32)++;
@@ -893,10 +893,10 @@ BOOL func_ov002_021e5e44(void *self) {
             }
             {
                 void *t = func_02035f30(FIELD(self, 0x4c, void *), FIELD(self, 0x50, void *), 6);
-                FIELD(self, 0x60, void *) = func_02034ff8(t, FIELD(self, 0x50, void *));
+                FIELD(self, 0x60, void *) = func_02034ff8(t, (char *)FIELD(self, 0x50, void *));
             }
         } else {
-            if (func_02035b90(FIELD(self, 0x50, void *), 6) == 0) {
+            if (func_02035b90((char *)FIELD(self, 0x50, void *), 6) == 0) {
                 break;
             }
             FIELD(self, 0x60, void *) = func_02035d2c(FIELD(self, 0x50, void *));
@@ -949,7 +949,7 @@ void NNS_G3dAnmObjInit(void *a, void *b, void *c, int d);
 void NNS_G3dRenderObjAddAnmObj(void *a, void *b);
 
 static inline void ov002_021e5fe4_Load(void **slot, void *set, char *name, void *mdl, void *tex, void *robj) {
-    void *a = NNS_G3dGetAnmByName(set, name);
+    void *a = NNS_G3dGetAnmByName(set, (NNSG3dResName *)name);
     if (a != NULL) {
         *slot = func_0203de84(NNS_G3dAnmObjCalcSizeRequired(a, mdl), 4);
         NNS_G3dAnmObjInit(*slot, a, mdl, (int)tex);
@@ -964,9 +964,9 @@ void func_ov002_021e5fe4(void *self) {
     void *tex = FIELD(obj, 0x64, void *);
     MI_CpuFill8(name, 0, sizeof(name));
     if (FIELD(self, 0x54, void *) != NULL) {
-        STD_CopyLString(name, FIELD(self, 0x54, void *), sizeof(name));
+        STD_CopyLString(name, (char *)FIELD(self, 0x54, void *), sizeof(name));
     } else {
-        STD_CopyLString(name, FIELD(self, 0x50, void *), sizeof(name));
+        STD_CopyLString(name, (char *)FIELD(self, 0x50, void *), sizeof(name));
     }
     ov002_021e5fe4_Load(&FIELD(self, 0x64, void *), FIELD(self, 0x60, void **)[0], name, mdl, tex, (u8 *)obj + 0x68);
     ov002_021e5fe4_Load(&FIELD(self, 0x68, void *), FIELD(self, 0x60, void **)[1], name, mdl, tex, (u8 *)obj + 0x68);
@@ -983,11 +983,11 @@ void func_ov002_021e61b4(void *self) {
     FIELD(self, 0x4, s32) = 3;
     MI_CpuFill8(name, 0, sizeof(name));
     if (FIELD(self, 0x54, void *) != NULL) {
-        STD_CopyLString(name, FIELD(self, 0x54, void *), sizeof(name));
+        STD_CopyLString(name, (char *)FIELD(self, 0x54, void *), sizeof(name));
     } else {
-        STD_CopyLString(name, FIELD(self, 0x50, void *), sizeof(name));
+        STD_CopyLString(name, (char *)FIELD(self, 0x50, void *), sizeof(name));
     }
-    anm = NNS_G3dGetAnmByName(*FIELD(self, 0x60, void **), name);
+    anm = NNS_G3dGetAnmByName(*FIELD(self, 0x60, void **), (NNSG3dResName *)name);
     FIELD(self, 0x64, void *) = func_0203de84(0x100, 4);
     FIELD(FIELD(self, 0x64, void *), 0x8, void *) = anm;
     FIELD(FIELD(self, 0x64, void *), 0x0, s32) = 0;
@@ -1034,19 +1034,19 @@ void func_ov002_021e6360(void *self) {
     u8 *o = FIELD(self, 0x48, u8 *);
     if (FIELD(self, 4, s32) == 2) {
         if (FIELD(self, 0x64, void *) != NULL) {
-            NNS_G3dRenderObjRemoveAnmObj(o + 0x68, FIELD(self, 0x64, void *));
+            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)FIELD(self, 0x64, void *));
         }
         if (FIELD(self, 0x68, void *) != NULL) {
-            NNS_G3dRenderObjRemoveAnmObj(o + 0x68, FIELD(self, 0x68, void *));
+            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)FIELD(self, 0x68, void *));
         }
         if (FIELD(self, 0x6c, void *) != NULL) {
-            NNS_G3dRenderObjRemoveAnmObj(o + 0x68, FIELD(self, 0x6c, void *));
+            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)FIELD(self, 0x6c, void *));
         }
         if (FIELD(self, 0x70, void *) != NULL) {
-            NNS_G3dRenderObjRemoveAnmObj(o + 0x68, FIELD(self, 0x70, void *));
+            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)FIELD(self, 0x70, void *));
         }
         if (FIELD(self, 0x74, void *) != NULL) {
-            NNS_G3dRenderObjRemoveAnmObj(o + 0x68, FIELD(self, 0x74, void *));
+            NNS_G3dRenderObjRemoveAnmObj((NNSG3dRenderObj *)(o + 0x68), (NNSG3dAnmObj *)FIELD(self, 0x74, void *));
         }
     } else {
         FIELD(self, 0xe8, Bits8).b2 = 1;
@@ -1110,7 +1110,7 @@ void func_ov002_021e63f0(void *self) {
     ((Func0208b000)NNS_G3dFuncAnmJntNsBcaDefault)((u8 *)self + 0x90, FIELD(self, 0x64, void *), 0);
     fl = FIELD(self, 0x90, u32);
     if (fl & 2) {
-        MTX_Identity33_((u8 *)self + 0xb8);
+        MTX_Identity33_((MtxFx33 *)((u8 *)self + 0xb8));
     }
     if (fl & 4) {
         FIELD(self, 0xdc, s32) = 0;
@@ -1165,7 +1165,7 @@ extern "C" {
 
 void func_ov002_021e6784(void *self);
 
-void func_02040578(void *out, Vec3 *dir);
+void func_02040578(void *out, VecFx32 *dir);
 
 static inline BOOL ov002_inWindow(s32 t) {
     u8 *g = (u8 *)data_ov002_021f0f9c;
@@ -1202,9 +1202,9 @@ BOOL func_ov002_021e65ac(void *self) {
         if (o == NULL) {
             ((void **)((u8 *)self + 0x50))[i] = NULL;
         } else {
-            Vec3 dir;
-            Vec3 scale;
-            Vec3 pos;
+            VecFx32 dir;
+            VecFx32 scale;
+            VecFx32 pos;
             s32 rot[2];
             u8 *m = FIELD(self, 0x60, u8 *);
             pos.x = FIELD(m, 0xdc, s32);
@@ -1216,7 +1216,7 @@ BOOL func_ov002_021e65ac(void *self) {
             dir.x = 0;
             dir.y = 0;
             dir.z = 0x1000;
-            MTX_MultVec33(&dir, m + 0xb8, &dir);
+            MTX_MultVec33(&dir, (MtxFx33 *)(m + 0xb8), &dir);
             func_02040578(rot, &dir);
             o->v0x18(&pos);
             o->v0x10(&scale);
@@ -1226,16 +1226,16 @@ BOOL func_ov002_021e65ac(void *self) {
     return TRUE;
 }
 
-VObject *func_02065f88(void *a, Vec3 *b);
+VObject *func_02065f88(void *a, VecFx32 *b);
 
 void func_ov002_021e6784(void *self) {
     s32 i;
     for (i = 0; i < 4; i++) {
         if (((void **)((u8 *)self + 0x50))[i] == NULL) {
-            Vec3 zero;
-            Vec3 dir;
-            Vec3 scale;
-            Vec3 pos;
+            VecFx32 zero;
+            VecFx32 dir;
+            VecFx32 scale;
+            VecFx32 pos;
             s32 rot[2];
             VObject *o;
             u8 *m;
@@ -1254,7 +1254,7 @@ void func_ov002_021e6784(void *self) {
             dir.x = 0;
             dir.y = 0;
             dir.z = 0x1000;
-            MTX_MultVec33(&dir, m + 0xb8, &dir);
+            MTX_MultVec33(&dir, (MtxFx33 *)(m + 0xb8), &dir);
             func_02040578(rot, &dir);
             o->v0x18(&pos);
             o->v0x10(&scale);
@@ -1330,7 +1330,7 @@ BOOL func_ov002_021e69b0(void *self) {
     s16 *p;
     s32 v;
     while ((p = FIELD(self, 0xa8, s16 *)) != NULL && FIELD((u8 *)data_ov002_021f0f9c, 0xd4, s32) < (v = *p << 12) && v <= FIELD((u8 *)data_ov002_021f0f9c, 0xd0, s32)) {
-        func_0204aaec(data_02097e48, p);
+        func_0204aaec(data_02097e48.queue, (SndCmd *)p);
         func_ov002_021ec2ac((u8 *)self + 0x94);
     }
     return TRUE;
@@ -1410,7 +1410,7 @@ BOOL func_ov002_021e6b54(void *self) {
         break;
     }
     FIELD(data_02097ce0, 4, s32) = FIELD(self, 0x150, s32);
-    r = func_0203a4c0(data_02097ce0);
+    r = (s8 **)func_0203a4c0(data_02097ce0);
     FIELD(self, 0x158, s8 **) = r;
     FIELD(self, 0x15c, s8 *) = r[1];
     FIELD(data_ov002_021f0f9c, 0x128, s32) = FIELD(self, 8, s32);
@@ -1482,9 +1482,7 @@ namespace m_021e6d4c {
 extern "C" {
 
 #define FIELD(p, off, T) (*(T *)((u8 *)(p) + (off)))
-extern void *data_02097ce0;
 u8 LangData_GetLang(void);
-void *func_0203a4c0(void *a);
 void func_0203a4e4(void *mgr, void *arg);
 int NNSi_G2dFontGetTextWidth(const void *pFont, int hSpace, const void *txt);
 
@@ -1692,9 +1690,9 @@ void NNS_G3dGeBufferOP_N(int cmd, void *data, int n);
 
 void func_02043db4(int a, s32 b, s32 c, u16 d);
 
-extern Vec3 data_ov002_021ef104;
+extern VecFx32 data_ov002_021ef104;
 
-extern Vec3 data_ov002_021ef0bc;
+extern VecFx32 data_ov002_021ef0bc;
 
 void func_ov002_021e719c(void *self) {
     s32 now = FIELD(data_ov002_021f0f9c, 0xd0, s32);
@@ -1708,22 +1706,22 @@ void func_ov002_021e719c(void *self) {
         a = Interp_SinLerp(FX_Div(now - FIELD(self, 0x18, s32), FIELD(self, 0x5c, s32)), FIELD(self, 0x54, s32) << 12, FIELD(self, 0x58, s32) << 12) >> 12;
     }
     {
-        Vec3 zero = {0, 0, 0};
-        Vec3 up = data_ov002_021ef104;
-        Vec3 at = data_ov002_021ef0bc;
-        Vec3 w;
+        VecFx32 zero = {0, 0, 0};
+        VecFx32 up = data_ov002_021ef104;
+        VecFx32 at = data_ov002_021ef0bc;
+        VecFx32 w;
         s32 t;
         u32 c;
         s32 t2;
         s32 t3;
         u8 *g2 = (u8 *)data_ov002_021f0f9c;
-        NNS_G3dGlb.v240 = zero;
-        NNS_G3dGlb.v24c = up;
-        NNS_G3dGlb.v258 = at;
-        MTX_LookAt(&zero, &up, &at, data_02092844);
-        NNS_G3dGlb.fc &= ~0xe8;
+        NNS_G3dGlb.camPos = zero;
+        NNS_G3dGlb.camUp = up;
+        NNS_G3dGlb.camTarget = at;
+        MTX_LookAt(&zero, &up, &at, (MtxFx43 *)data_02092844);
+        NNS_G3dGlb.flag &= ~0xe8;
         MIi_CpuCopyFast(g2 + 0xe4, data_02092800, 0x40);
-        NNS_G3dGlb.fc &= ~0x50;
+        NNS_G3dGlb.flag &= ~0x50;
         NNS_G3dGlbFlushP();
         t = 2;
         NNS_G3dGeBufferOP_N(0x10, &t, 1);
@@ -1750,16 +1748,16 @@ void func_ov002_021e719c(void *self) {
 namespace m_021e7390 {
 extern "C" {
 
-void VEC_Normalize(Vec3 *src, Vec3 *dst);
-void VEC_Add(Vec3 *a, Vec3 *b, Vec3 *ab);
-void MTX_RotAxis33(void *m, Vec3 *axis, s32 s, s32 c);
+void VEC_Normalize(VecFx32 *src, VecFx32 *dst);
+void VEC_Add(VecFx32 *a, VecFx32 *b, VecFx32 *ab);
+void MTX_RotAxis33(void *m, VecFx32 *axis, s32 s, s32 c);
 void MTX_PerspectiveW(s32 s, s32 c, s32 aspect, s32 n, s32 f, s32 scale, void *mtx);
 
 typedef struct Mtx33_021e7390 {
     s32 m[3][3];
 } Mtx33_021e7390;
 
-static inline void ov002_Cross(const Vec3 *a, const Vec3 *b, Vec3 *axb) {
+static inline void ov002_Cross(const VecFx32 *a, const VecFx32 *b, VecFx32 *axb) {
     s32 x = (s32)(((s64)a->y * b->z - (s64)a->z * b->y + 0x800) >> 12);
     s32 y = (s32)(((s64)a->z * b->x - (s64)a->x * b->z + 0x800) >> 12);
     s32 z = (s32)(((s64)a->x * b->y - (s64)a->y * b->x + 0x800) >> 12);
@@ -1771,16 +1769,16 @@ static inline void ov002_Cross(const Vec3 *a, const Vec3 *b, Vec3 *axb) {
 void func_ov002_021e7390(void *self) {
     void *obj = FIELD(self, 0x48, void *);
     if (obj != NULL && FIELD(obj, 0x4, s32) == 7) {
-        Vec3 pos;
-        Vec3 at;
-        Vec3 dir;
-        Vec3 axis;
+        VecFx32 pos;
+        VecFx32 at;
+        VecFx32 dir;
+        VecFx32 axis;
         Mtx33_021e7390 m;
-        Vec3 up;
+        VecFx32 up;
         u16 ang;
-        pos = FIELD(obj, 0x50, Vec3);
-        at = FIELD(obj, 0x5c, Vec3);
-        up = FIELD(obj, 0x68, Vec3);
+        pos = FIELD(obj, 0x50, VecFx32);
+        at = FIELD(obj, 0x5c, VecFx32);
+        up = FIELD(obj, 0x68, VecFx32);
         ang = FIELD(obj, 0xb8, u16) + 0x3e9;
         dir.x = at.x - pos.x;
         dir.y = at.y - pos.y;
@@ -1788,21 +1786,21 @@ void func_ov002_021e7390(void *self) {
         ov002_Cross(&dir, &up, &axis);
         VEC_Normalize(&axis, &axis);
         MTX_RotAxis33(&m, &axis, FX_SINCOS((ang >> 4) * 2), FX_SINCOS((ang >> 4) * 2 + 1));
-        MTX_MultVec33(&dir, &m, &dir);
+        MTX_MultVec33(&dir, (MtxFx33 *)&m, &dir);
         VEC_Add(&dir, &pos, &at);
-        FIELD(self, 0x5c, Vec3) = at;
-        FIELD(self, 0x50, Vec3) = pos;
-        FIELD(self, 0x68, Vec3) = up;
+        FIELD(self, 0x5c, VecFx32) = at;
+        FIELD(self, 0x50, VecFx32) = pos;
+        FIELD(self, 0x68, VecFx32) = up;
     }
-    NNS_G3dGlb.v240 = FIELD(self, 0x50, Vec3);
-    NNS_G3dGlb.v24c = FIELD(self, 0x68, Vec3);
-    NNS_G3dGlb.v258 = FIELD(self, 0x5c, Vec3);
-    MTX_LookAt((u8 *)self + 0x50, (u8 *)self + 0x68, (u8 *)self + 0x5c, data_02092844);
-    NNS_G3dGlb.fc &= ~0xe8;
+    NNS_G3dGlb.camPos = FIELD(self, 0x50, VecFx32);
+    NNS_G3dGlb.camUp = FIELD(self, 0x68, VecFx32);
+    NNS_G3dGlb.camTarget = FIELD(self, 0x5c, VecFx32);
+    MTX_LookAt((VecFx32 *)((u8 *)self + 0x50), (VecFx32 *)((u8 *)self + 0x68), (VecFx32 *)((u8 *)self + 0x5c), (MtxFx43 *)data_02092844);
+    NNS_G3dGlb.flag &= ~0xe8;
     MTX_PerspectiveW(FIELD(self, 0xba, s16), FIELD(self, 0xbc, s16), FIELD(self, 0xbe, s16), FIELD(self, 0xc0, s32),
                      FIELD(self, 0xc4, s32), 0x1000, (u8 *)self + 0x74);
     MIi_CpuCopyFast((u8 *)self + 0x74, data_02092800, 0x40);
-    NNS_G3dGlb.fc &= ~0x50;
+    NNS_G3dGlb.flag &= ~0x50;
 }
 
 }
@@ -1812,9 +1810,9 @@ void func_ov002_021e7390(void *self) {
 namespace m_021e75f0 {
 extern "C" {
 
-extern Vec3 data_ov002_021ef0f8;
+extern VecFx32 data_ov002_021ef0f8;
 
-extern Vec3 data_ov002_021ef0d4;
+extern VecFx32 data_ov002_021ef0d4;
 
 void VEC_Add(void *a, void *b, void *c);
 
@@ -1838,18 +1836,18 @@ BOOL func_ov002_021e75f0(void *self) {
     }
     m = FIELD(self, 0xc8, u8 *);
     if (m != NULL) {
-        Vec3 pos;
-        Vec3 a = data_ov002_021ef0f8;
-        Vec3 b = data_ov002_021ef0d4;
+        VecFx32 pos;
+        VecFx32 a = data_ov002_021ef0f8;
+        VecFx32 b = data_ov002_021ef0d4;
         pos.x = FIELD(m, 0xdc, s32);
         pos.y = FIELD(m, 0xe0, s32);
         pos.z = FIELD(m, 0xe4, s32);
-        MTX_MultVec33(&a, m + 0xb8, &a);
+        MTX_MultVec33(&a, (MtxFx33 *)(m + 0xb8), &a);
         VEC_Add(&pos, &a, &a);
-        MTX_MultVec33(&b, m + 0xb8, &b);
-        FIELD(self, 0x50, Vec3) = pos;
-        FIELD(self, 0x5c, Vec3) = a;
-        FIELD(self, 0x68, Vec3) = b;
+        MTX_MultVec33(&b, (MtxFx33 *)(m + 0xb8), &b);
+        FIELD(self, 0x50, VecFx32) = pos;
+        FIELD(self, 0x5c, VecFx32) = a;
+        FIELD(self, 0x68, VecFx32) = b;
     }
     return TRUE;
 }
@@ -1872,12 +1870,12 @@ extern "C" {
 
 void func_ov002_021e779c(void *self) {
     void *o = FIELD(self, 0x48, void *);
-    G020927f8 *g;
+    NNSG3dGlb *g;
     if (o != NULL && FIELD(o, 4, s32) == 8) {
         s32 y = FIELD(o, 0x54, s32) + 0x120000;
         s32 x = FIELD(o, 0x50, s32);
-        Vec3 *v = &FIELD(self, 0x50, Vec3);
-        Vec3 *w = &FIELD(self, 0x5c, Vec3);
+        VecFx32 *v = &FIELD(self, 0x50, VecFx32);
+        VecFx32 *w = &FIELD(self, 0x5c, VecFx32);
         v->x = x;
         v->y = y;
         v->z = 0;
@@ -1886,19 +1884,19 @@ void func_ov002_021e779c(void *self) {
         w->z = -0x1000;
     }
     g = &NNS_G3dGlb;
-    g->v240 = FIELD(self, 0x50, Vec3);
-    g->v24c = FIELD(self, 0x68, Vec3);
-    g->v258 = FIELD(self, 0x5c, Vec3);
-    MTX_LookAt((u8 *)self + 0x50, (u8 *)self + 0x68, (u8 *)self + 0x5c, data_02092844);
-    g->fc &= ~0xe8;
+    g->camPos = FIELD(self, 0x50, VecFx32);
+    g->camUp = FIELD(self, 0x68, VecFx32);
+    g->camTarget = FIELD(self, 0x5c, VecFx32);
+    MTX_LookAt((VecFx32 *)((u8 *)self + 0x50), (VecFx32 *)((u8 *)self + 0x68), (VecFx32 *)((u8 *)self + 0x5c), (MtxFx43 *)data_02092844);
+    g->flag &= ~0xe8;
     MIi_CpuCopyFast((u8 *)self + 0x74, data_02092800, 0x40);
-    g->fc &= ~0x50;
+    g->flag &= ~0x50;
 }
 
 BOOL func_ov002_021e7880(void *self) {
-    Vec3 v = data_ov002_021ef110;
+    VecFx32 v = data_ov002_021ef110;
     s32 x;
-    FIELD(self, 0x68, Vec3) = v;
+    FIELD(self, 0x68, VecFx32) = v;
     if (FIELD(self, 8, s32) == 1) {
         x = 0x90000;
     } else if (FIELD(self, 8, s32) == 2) {
@@ -1932,8 +1930,8 @@ BOOL func_ov002_021e7900(void *self) {
     if (cur != NULL) {
         s32 x = FIELD(cur, 0xdc, s32);
         s32 y = FIELD(cur, 0xe0, s32);
-        Vec3 *v = &FIELD(self, 0x50, Vec3);
-        Vec3 *w = &FIELD(self, 0x5c, Vec3);
+        VecFx32 *v = &FIELD(self, 0x50, VecFx32);
+        VecFx32 *w = &FIELD(self, 0x5c, VecFx32);
         v->x = x * 100;
         v->y = y * 100;
         v->z = 0;
@@ -1955,14 +1953,14 @@ BOOL func_ov002_021e79c4(void *self) {
     if (FIELD(self, 0x18, s32) > FIELD(ctx, 0xd4, s32) && FIELD(self, 0x18, s32) <= FIELD(ctx, 0xd0, s32)) {
         u8 *g;
         func_0206e3a0((u8 *)self + 0x4c, FIELD(self, 0x50, void *));
-        g = data_02097d48 + 0x8b0;
+        g = data_02097d48->unk_8b0;
         if (!FIELD(self, 0x4c, Bits16).b2) {
             FIELD(g, 0, Bits8).b4 = 0;
             FIELD(g, 0, Bits8).b5 = 1;
             *(vu16 *)0x04000060 &= 0xcfdf;
         }
         if (!FIELD(self, 0x4c, Bits16).b3) {
-            G3X_SetFog(0, FIELD(g, 8, void *), FIELD(g, 0xc, void *), FIELD(g, 0x10, u16));
+            G3X_SetFog(0, (GXFogBlend)FIELD(g, 8, void *), (GXFogSlope)FIELD(g, 0xc, void *), FIELD(g, 0x10, u16));
             FIELD(g, 0, Bits8).b3 = 0;
         }
         func_02043b20(g);
@@ -1997,7 +1995,7 @@ Oam021e7ab8 *func_ov002_021e7ab8(void *self, u16 *flag, Oam021e7ab8 *oam, u16 *c
 void func_ov002_021e7b58(void) {
     void *p;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_VOBJ(*(VObject **)&data_ov002_021f0f9c);
         HEAP_POP(saved);
@@ -2020,7 +2018,7 @@ void *Ov002Vt_021f0684_Dtor(void *self) {
 }
 
 void func_ov002_021e7c1c(void) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(*(VObject **)&data_ov002_021f0f9c);
     HEAP_POP(saved);
@@ -2079,7 +2077,6 @@ void func_ov002_021e7cb4(void *self) {
 
 void func_ov002_021e8c0c(void *self);
 
-void func_0204ab54(void *p);
 
 void GXx_SetMasterBrightness_(u32 reg, int v);
 
@@ -2091,13 +2088,13 @@ void func_ov002_021e7dac(void *self) {
         if (FIELD(self, 0x20, void *) != NULL) {
             func_02035acc((u8 *)self + 0x24, (u8 *)self + 0x48, 0);
         } else {
-            func_02036838(data_02097cdc, (u8 *)self + 0x48, 0, 0);
+            func_02036838(data_02097cdc, (char *)((u8 *)self + 0x48), 0, 0);
         }
     }
     func_02035acc(data_ov002_021f0104[1], data_ov002_021f0104[2], 2);
-    func_0204ab54(data_02097e48);
+    func_0204ab54(data_02097e48.queue);
     if (FIELD(self, 0x148, u8)) {
-        u8 *g = data_02097d48;
+        u8 *g = (u8 *)data_02097d48;
         MIi_CpuCopy32((u8 *)self + 0x14c, g + 0x8b0, 0x180);
         func_02043b20(g + 0x8b0);
         FIELD(self, 0x148, u8) = 0;
@@ -2170,7 +2167,7 @@ BOOL func_ov002_021e7ea8(void *self) {
         FIELD(self, 0x13c, s32) = b << 12;
         FIELD(self, 0x140, s32) = 0;
         FIELD(self, 0x144, s32) = 0;
-        gx = data_02097d48 + 0x8b0;
+        gx = data_02097d48->unk_8b0;
         MIi_CpuCopy32(gx, (u8 *)self + 0x14c, 0x180);
         func_02043904(gx);
         FIELD(gx, 0, Bits8).b4 = 0;
@@ -2259,7 +2256,7 @@ BOOL func_ov002_021e7ea8(void *self) {
     }
     case 6: {
         ov002_SetBright(0);
-        g = data_02097d48;
+        g = (u8 *)data_02097d48;
         MIi_CpuCopy32((u8 *)self + 0x14c, g + 0x8b0, 0x180);
         func_02043b20(g + 0x8b0);
         FIELD(self, 0x148, u8) = 0;
@@ -2291,7 +2288,7 @@ static inline BOOL ov002_ResReady(void *self) {
             FIELD(self, 0x68, void *) = func_02035fe8((u8 *)self + 0x24, (u8 *)self + 0x48);
         }
     } else {
-        if (func_02035b90((u8 *)self + 0x48, 0)) {
+        if (func_02035b90((char *)((u8 *)self + 0x48), 0)) {
             r = TRUE;
             FIELD(self, 0x68, void *) = func_02035c9c((u8 *)self + 0x48);
         }
@@ -2303,7 +2300,7 @@ static inline void ov002_ResLoad(void *self) {
     if (FIELD(self, 0x20, void *) != NULL) {
         func_020359fc((u8 *)self + 0x24, (u8 *)self + 0x48, 0, 0);
     } else {
-        func_020359d0((u8 *)self + 0x48, 0, 0);
+        func_020359d0((char *)((u8 *)self + 0x48), 0, 0);
     }
 }
 
@@ -2311,7 +2308,7 @@ static inline void ov002_ResFree(void *self) {
     if (FIELD(self, 0x20, void *) != NULL) {
         func_02035acc((u8 *)self + 0x24, (u8 *)self + 0x48, 0);
     } else {
-        func_02036838(data_02097cdc, (u8 *)self + 0x48, 0, 0);
+        func_02036838(data_02097cdc, (char *)((u8 *)self + 0x48), 0, 0);
     }
 }
 
@@ -2343,7 +2340,7 @@ BOOL func_ov002_021e828c(void *self) {
             func_020359fc((u8 *)self + 0x24, (u8 *)self + 0x48, 0, 0);
         } else {
             func_ov002_021e9d7c((u8 *)self + 0x48, 0x20, FIELD(self, 0x44, void *), 0, 1);
-            func_020359d0((u8 *)self + 0x48, 0, 0);
+            func_020359d0((char *)((u8 *)self + 0x48), 0, 0);
         }
         FIELD(self, 0x8, s32)++;
     case 0x15:
@@ -2360,13 +2357,13 @@ BOOL func_ov002_021e828c(void *self) {
         char *n = FIELD(self, 0x20, char *);
         if (n != NULL) {
             MI_CpuFill8((u8 *)self + 0x24, 0, 0x20);
-            STD_CopyLString((u8 *)self + 0x24, n, 0x20);
+            STD_CopyLString((char *)((u8 *)self + 0x24), n, 0x20);
             STD_TSNPrintf((u8 *)self + 0x24, 0x20, data_ov002_021f0647, n, data_ov002_021f0104[0x520 / 4]);
             func_ov002_021e9d7c((u8 *)self + 0x48, 0x20, FIELD(self, 0x44, void *), 0, 0);
             func_020359fc((u8 *)self + 0x24, (u8 *)self + 0x48, 0, 0);
         } else {
             func_ov002_021e9d7c((u8 *)self + 0x48, 0x20, FIELD(self, 0x44, void *), 0, 0);
-            func_020359d0((u8 *)self + 0x48, 0, 0);
+            func_020359d0((char *)((u8 *)self + 0x48), 0, 0);
         }
         FIELD(self, 0x8, s32)++;
     }
@@ -2401,7 +2398,6 @@ extern void *data_02097e4c;
 
 void func_02041c34(void *a, int b, void *c, int d);
 
-void func_0204aad0(void *a);
 
 void func_0204a360(void *a, int b);
 
@@ -2423,22 +2419,22 @@ BOOL func_ov002_021e86a0(void *self) {
         if (m != NULL) {
             void *file = data_ov002_021f0104[1];
             void *name = data_ov002_021f0104[2];
-            func_02041218((u8 *)m + 0x88);
-            func_02041440(m, name, 0);
-            STD_CopyString((u8 *)m + 0x2c, file);
+            func_02041218((PlttRes *)((u8 *)m + 0x88));
+            func_02041440((Model *)m, (char *)name, 0);
+            STD_CopyString((char *)((u8 *)m + 0x2c), (char *)file);
         }
         FIELD(self, 0x124, void *) = m;
         tbl = data_ov002_021f0104;
         res = func_02035f30(tbl[1], tbl[2], 2);
-        func_020417e0(FIELD(self, 0x124, void *), func_02034d88(res, tbl[2]));
+        func_020417e0((Model *)FIELD(self, 0x124, void *), func_02034d88(res, tbl[2]));
         FIELD(FIELD(self, 0x124, void *), 0x6c, u32) |= 2;
         FIELD(FIELD(self, 0x124, void *), 0x150, s32) = -9;
         func_02041c34(FIELD(self, 0x124, void *), 0, (void *)func_ov002_021e7ab8, 0);
-        func_02041d9c(FIELD(self, 0x124, void *), 0, 0);
+        func_02041d9c((Model *)FIELD(self, 0x124, void *), 0, 0);
         FIELD(FIELD(self, 0x124, void *), 0x6c, u32) |= 0x80000;
         FIELD(FIELD(self, 0x124, void *), 0x6c, u32) |= 0x200000;
         FIELD(FIELD(self, 0x124, void *), 0x6c, u32) = (FIELD(FIELD(self, 0x124, void *), 0x6c, u32) & ~0x7c) | 0x78;
-        func_0204aad0(data_02097e48);
+        func_0204aad0(data_02097e48.queue);
         if (FIELD(self, 0x68, void *) != NULL) {
             func_ov002_021ead1c((u8 *)self + 0x6c, *FIELD(self, 0x68, u8 **), FIELD(self, 0x44, s32), 1);
             func_ov002_021eaf20((u8 *)self + 0x6c);
@@ -2482,7 +2478,7 @@ BOOL func_ov002_021e8828(void *self) {
     u8 *next;
     u8 *n;
     if (FIELD(self, 0x1c, s32) != 0x5c && FIELD(self, 0x1c, s32) != 0x1e) {
-        if ((FIELD(data_02097dc8, 0x12, u16) & 8) && FIELD(self, 0x1a, u8) != 0) {
+        if ((data_02097dc8->trig & 8) && FIELD(self, 0x1a, u8) != 0) {
             ret = busy;
         }
     }
@@ -2504,7 +2500,7 @@ BOOL func_ov002_021e8828(void *self) {
             }
             func_ov002_021e8bbc(self, n);
             {
-                u32 saved;
+                void *saved;
                 HEAP_PUSH(saved);
                 if (n != NULL) {
                     if (n != NULL) {
@@ -2518,7 +2514,7 @@ BOOL func_ov002_021e8828(void *self) {
         }
     }
     in = ov002_inRange8828(self);
-    if (in && (FIELD(self, 0x18, u16) & FIELD(data_02097dc8, 0x12, u16))) {
+    if (in && (FIELD(self, 0x18, u16) & data_02097dc8->trig)) {
         u8 *ctx = (u8 *)data_ov002_021f0f9c;
         FIELD(ctx, 0x14, s32) = -1;
         FIELD(ctx, 0x18, u16) = 0;
@@ -2597,7 +2593,7 @@ void func_ov002_021e8c0c(void *self) {
     VObject *o = FIELD(self, 0xdc, VObject *);
     while (o != NULL) {
         VObject *next = FIELD(o, 0x24, VObject *);
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (o != NULL) {
             if (o != NULL) {
@@ -2609,14 +2605,14 @@ void func_ov002_021e8c0c(void *self) {
     }
     FIELD(self, 0xdc, void *) = NULL;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         {
             void *p = FIELD(self, 0x124, void *);
             if (p != NULL) {
                 if (p != NULL) {
-                    func_02041558(p);
-                    func_02041278((u8 *)p + 0x88);
+                    func_02041558((Model *)p);
+                    func_02041278((PlttRes *)((u8 *)p + 0x88));
                     Heap_Free(p);
                 }
                 FIELD(self, 0x124, void *) = NULL;
@@ -2637,8 +2633,8 @@ void NNS_G3dGlbFlushP(void);
 void NNS_G3dGeBufferOP_N(int cmd, void *data, int n);
 void func_02043db4(int a, s32 b, s32 c, u16 d);
 void func_02041c18(void *a, int b);
-extern Vec3 data_ov002_021ef104;
-extern Vec3 data_ov002_021ef0bc;
+extern VecFx32 data_ov002_021ef104;
+extern VecFx32 data_ov002_021ef0bc;
 
 static inline void *ov002_Model_GetPart(void *self, int idx) {
     if (idx >= FIELD(self, 0x80, s32)) {
@@ -2660,7 +2656,7 @@ static inline void ov002_Model_PlayPart(void *model, int idx) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
     }
-    func_02042628(model, anim, part, 0);
+    func_02042628((Model *)model, anim, (ModelPart *)part, 0);
 }
 
 typedef struct Blk12 {
@@ -2674,22 +2670,22 @@ typedef struct Bits021e8cc4 {
 } Bits021e8cc4;
 
 void func_ov002_021e8cc4(void *self) {
-    Vec3 at;
-    Vec3 up = data_ov002_021ef104;
-    Vec3 zero = {0, 0, 0};
-    Vec3 w;
+    VecFx32 at;
+    VecFx32 up = data_ov002_021ef104;
+    VecFx32 zero = {0, 0, 0};
+    VecFx32 w;
     s32 t;
     u32 c;
     s32 t2;
     s32 t3;
     *(Blk12 *)&at = *(Blk12 *)&data_ov002_021ef0bc;
-    NNS_G3dGlb.v240 = zero;
-    NNS_G3dGlb.v24c = up;
-    NNS_G3dGlb.v258 = at;
-    MTX_LookAt(&zero, &up, &at, data_02092844);
-    NNS_G3dGlb.fc &= ~0xe8;
+    NNS_G3dGlb.camPos = zero;
+    NNS_G3dGlb.camUp = up;
+    NNS_G3dGlb.camTarget = at;
+    MTX_LookAt(&zero, &up, &at, (MtxFx43 *)data_02092844);
+    NNS_G3dGlb.flag &= ~0xe8;
     MIi_CpuCopyFast((u8 *)self + 0xe4, data_02092800, 0x40);
-    NNS_G3dGlb.fc &= ~0x50;
+    NNS_G3dGlb.flag &= ~0x50;
     NNS_G3dGlbFlushP();
     t = 2;
     NNS_G3dGeBufferOP_N(0x10, &t, 1);
@@ -2743,7 +2739,7 @@ void func_ov002_021e8f04(s32 idx) {
     float f;
     s32 off;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_VOBJ(*(VObject **)&data_ov002_021f0f9c);
         HEAP_POP(saved);
@@ -2764,7 +2760,7 @@ void func_ov002_021e8f04(s32 idx) {
     FIELD(g, 0x20, void *) = name;
     m = ((u8 (*)(void))LangData_GetLang)();
     MI_CpuFill8(g + 0x24, 0, 0x20);
-    STD_CopyLString(g + 0x24, name, 0x20);
+    STD_CopyLString((char *)(g + 0x24), (char *)name, 0x20);
     STD_TSNPrintf(g + 0x24, 0x20, data_ov002_021f0647, name, data_ov002_021f0624[m]);
     {
         void *desc;
@@ -2827,7 +2823,7 @@ void func_ov002_021e90dc(void) {
 }
 
 void func_ov002_021e916c(void) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(*(VObject **)&data_ov002_021f0f9c);
     HEAP_POP(saved);
@@ -3001,11 +2997,11 @@ extern VFunc data_ov002_021f0854[];
 
 extern VFunc data_ov002_021f0828[];
 
-extern const Vec3 data_ov002_021ef0e0;
+extern const VecFx32 data_ov002_021ef0e0;
 
-extern const Vec3 data_ov002_021ef0ec;
+extern const VecFx32 data_ov002_021ef0ec;
 
-extern const Vec3 data_ov002_021ef0c8;
+extern const VecFx32 data_ov002_021ef0c8;
 
 void *func_ov002_021e95c4(u8 *a, u8 *b) {
     s32 i;
@@ -3021,16 +3017,16 @@ void *func_ov002_021e95c4(u8 *a, u8 *b) {
         *(VFunc **)p = data_ov002_021f0828;
         FIELD(p, 0x4, s32) = 7;
         {
-            Vec3 v = data_ov002_021ef0e0;
-            FIELD(p, 0x50, Vec3) = v;
+            VecFx32 v = data_ov002_021ef0e0;
+            FIELD(p, 0x50, VecFx32) = v;
         }
         {
-            Vec3 v = data_ov002_021ef0ec;
-            FIELD(p, 0x68, Vec3) = v;
+            VecFx32 v = data_ov002_021ef0ec;
+            FIELD(p, 0x68, VecFx32) = v;
         }
         {
-            Vec3 v = data_ov002_021ef0c8;
-            FIELD(p, 0x5c, Vec3) = v;
+            VecFx32 v = data_ov002_021ef0c8;
+            FIELD(p, 0x5c, VecFx32) = v;
         }
         FIELD(p, 0xb8, u16) = 0xaaa;
         FIELD(p, 0xb4, s32) = 0xeff1;
@@ -3185,8 +3181,8 @@ void *func_ov002_021e9a50(void *a, void *b) {
         Ov002Vt_021f0ce8_Ctor((u8 *)p + 0x8c);
         func_ov002_021e6a14(p);
     }
-    STD_CopyLString((u8 *)p + 0x4c, a, 0x20);
-    STD_CopyLString((u8 *)p + 0x6c, b, 0x20);
+    STD_CopyLString((char *)((u8 *)p + 0x4c), (char *)a, 0x20);
+    STD_CopyLString((char *)((u8 *)p + 0x6c), (char *)b, 0x20);
     return p;
 }
 
@@ -3272,8 +3268,8 @@ void *func_ov002_021e9bd8(void *a, void *b) {
         FIELD(p, 0x90, s32) = 0;
         func_ov002_021ec1c4((u8 *)p + 0x94);
     }
-    STD_CopyLString((u8 *)p + 0x4c, a, 0x20);
-    STD_CopyLString((u8 *)p + 0x6c, b, 0x20);
+    STD_CopyLString((char *)((u8 *)p + 0x4c), (char *)a, 0x20);
+    STD_CopyLString((char *)((u8 *)p + 0x6c), (char *)b, 0x20);
     return p;
 }
 
@@ -3287,7 +3283,7 @@ extern "C" {
 void func_ov002_021e9cec(void *dst, u32 size, void *src, int mode, u8 idx) {
     void *s;
     MI_CpuFill8(dst, 0, size);
-    STD_CopyLString(dst, src, size);
+    STD_CopyLString((char *)dst, (char *)src, size);
     switch (mode) {
     case 0:
         s = data_ov002_021f0624[idx];
@@ -3309,7 +3305,7 @@ void func_ov002_021e9d7c(void *dst, u32 size, void *src, int mode, u8 idx) {
     void *a;
     void *b;
     MI_CpuFill8(dst, 0, size);
-    STD_CopyLString(dst, src, size);
+    STD_CopyLString((char *)dst, (char *)src, size);
     switch (mode) {
     case 0:
         a = data_ov002_021f0624[idx];
@@ -3358,7 +3354,7 @@ void func_ov002_021e9e40(int idx) {
     FIELD(g, 0x20, void *) = name;
     m = ((u8 (*)(void))LangData_GetLang)();
     MI_CpuFill8(g + 0x24, 0, 0x20);
-    STD_CopyLString(g + 0x24, name, 0x20);
+    STD_CopyLString((char *)(g + 0x24), (char *)name, 0x20);
     STD_TSNPrintf(g + 0x24, 0x20, data_ov002_021f0647, name, data_ov002_021f0624[m]);
     {
         void *desc;

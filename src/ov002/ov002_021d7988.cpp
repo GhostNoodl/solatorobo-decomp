@@ -2,8 +2,6 @@
 
 extern "C" {
 
-void MTX_Copy43To44_(void *src, void *dst);
-void MTX_Concat44(void *a, void *b, void *ab);
 void func_ov002_021e3b6c(s32 *out, s32 *v, void *m);
 
 static inline void *ov002_Model_GetPart(void *self, int idx) {
@@ -26,7 +24,7 @@ static inline void ov002_Model_PlayPart(void *model, int idx, int flag) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
     }
-    func_02042628(model, anim, part, flag);
+    func_02042628((Model *)model, anim, (ModelPart *)part, flag);
 }
 
 static inline void setPos(u8 *self, s32 x, s32 y) {
@@ -61,13 +59,13 @@ void func_ov002_021d7988(void *selfp) {
     FIELD(self, 0x38, s32) = x;
     FIELD(self, 0x3c, s32) = y;
     FIELD(self, 0x40, s32) = z;
-    if (FIELD(self, 0x1c, void *) != NULL && func_0203e63c(FIELD(self, 0x20, void *))) {
-        NNS_G3dGlbSetBaseTrans(self + 0x38);
-        NNS_G3dGlbSetBaseScale(self + 0x44);
+    if (FIELD(self, 0x1c, void *) != NULL && func_0203e63c((unsigned int)FIELD(self, 0x20, void *))) {
+        NNS_G3dGlbSetBaseTrans((VecFx32 *)(self + 0x38));
+        NNS_G3dGlbSetBaseScale((VecFx32 *)(self + 0x44));
         MI_Copy36B(self + 0x50, data_020928b4);
-        NNS_G3dGlb.fc &= ~0xa4;
+        NNS_G3dGlb.flag &= ~0xa4;
         NNS_G3dGlbFlushVP();
-        NNS_G3dDraw(FIELD(self, 0x1c, void *));
+        NNS_G3dDraw((NNSG3dRenderObj *)FIELD(self, 0x1c, void *));
         NNS_G3dGeFlushBuffer();
     }
     if (FIELD(self, 0x1d4, u8) != 0) {
@@ -81,8 +79,8 @@ void func_ov002_021d7988(void *selfp) {
         t %= 30;
         v[0] = x - ((t / 5) * 0xda / 6 + 0xda);
     }
-    MTX_Copy43To44_(data_02092844, m);
-    MTX_Concat44(m, data_02092800, m);
+    MTX_Copy43To44_((MtxFx43 *)data_02092844, (MtxFx44 *)m);
+    MTX_Concat44((MtxFx44 *)m, (MtxFx44 *)data_02092800, (MtxFx44 *)m);
     func_ov002_021e3b6c(out, v, m);
     setPos(self, out[0], out[1]);
     ov002_Model_PlayPart(self + 0x74, 4, 1);

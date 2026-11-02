@@ -38,11 +38,11 @@ static inline void Ov013_InitDc(void *self) {
 }
 
 static inline void Ov013_DtorDc(void *self) {
-    u32 saved;
+    void *saved;
     FLD(void *, self, 0) = data_ov013_0220bbb8;
     ((Ov013V *)((u8 *)self + 0xec))->v08();
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (FLD(void *, self, 0xdc) != NULL) {
         void *p = FLD(void *, self, 0xdc);
         if (p != NULL) {
@@ -53,7 +53,7 @@ static inline void Ov013_DtorDc(void *self) {
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (FLD(void *, self, 0xe0) != NULL) {
         void *p = FLD(void *, self, 0xe0);
         if (p != NULL) {

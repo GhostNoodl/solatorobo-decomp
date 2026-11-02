@@ -40,7 +40,7 @@ void func_ov002_021ce4c8(Task50 *self) {
         void *e = NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), 0);
         arg = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(e, 0xc, void *));
     }
-    func_02042628(model, arg, anim, 0);
+    func_02042628((Model *)model, arg, (ModelPart *)anim, 0);
 }
 
 Task50 *func_ov002_021ce53c(void) {
@@ -79,7 +79,7 @@ void func_ov002_021ce650(Task50 *self) {
 }
 
 void func_ov002_021ce660(Task50 *self, void *arg) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
     HEAP_POP(saved);
@@ -93,7 +93,7 @@ void func_ov002_021ce660(Task50 *self, void *arg) {
 }
 
 void func_ov002_021ce724(Task50 *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
     HEAP_POP(saved);
@@ -260,7 +260,7 @@ static inline u8 *ov002_021cedec_getSelected(void *list) {
 void func_ov002_021cedec(Task50 *self) {
     u16 keys;
     u32 id;
-    keys = FIELD(data_02097dc8, 0x12, u16);
+    keys = data_02097dc8->trig;
     id = FIELD(ov002_021cedec_getSelected(self->unk_3c), 0x6, u16);
     if (FIELD(self, 0x44, u32) != id) {
         func_ov002_021cf280(self, id);

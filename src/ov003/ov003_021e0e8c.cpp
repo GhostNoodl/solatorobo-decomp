@@ -763,14 +763,14 @@ extern "C" {
 
 typedef struct {
     s32 x, y, z;
-} Ov003Vec3;
+} VecFx32;
 
 typedef struct {
     u8 unk_00[0xc];
     u8 unk_0c[0xc];
-    Ov003Vec3 unk_18;
-    Ov003Vec3 unk_24;
-    Ov003Vec3 unk_30;
+    VecFx32 unk_18;
+    VecFx32 unk_24;
+    VecFx32 unk_30;
     s32 speed;
     u16 unk_40;
     u16 unk_42;
@@ -819,12 +819,12 @@ typedef struct {
     u8 unk_17[0x29];
     Ov003SpotSub *unk_40;
     u8 unk_44[0x2c];
-    Ov003Vec3 pos;
+    VecFx32 pos;
     Ov003Rot3 rot;
 } Ov003SpotUnit;
 
 typedef struct {
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u16 rx;
     u16 ry;
     u16 rz;
@@ -845,7 +845,7 @@ typedef struct {
 
 typedef struct {
     u8 unk_00[0x70];
-    Ov003Vec3 unk_70;
+    VecFx32 unk_70;
 } Ov003Player;
 
 typedef struct {
@@ -881,14 +881,14 @@ typedef struct {
     u8 unk_5c[8];
     s32 unk_64;
     u8 unk_68[8];
-    Ov003Vec3 unk_70;
+    VecFx32 unk_70;
     u8 unk_7c[0x8];
-    Ov003Vec3 unk_84;
+    VecFx32 unk_84;
     u8 unk_90[0x3];
     u8 unk_93_0 : 4;
     u8 unk_93_4 : 1;
     u8 unk_94[8];
-    Ov003Vec3 vel;
+    VecFx32 vel;
     u8 unk_a8[0x26];
     u16 unk_ce;
 } Ov003Prop;
@@ -902,9 +902,9 @@ extern void func_020627dc(s32 a);
 extern void func_ov000_0219433c(void *self);
 extern void func_ov000_02194758(void *self);
 extern Ov003Player *func_ov000_0219bf90(void);
-extern BOOL func_01ffc2a4(Ov003Vec3 *a, Ov003Vec3 *b, const void *c, const void *d);
+extern BOOL func_01ffc2a4(VecFx32 *a, VecFx32 *b, const void *c, const void *d);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
-extern void VEC_Add(const Ov003Vec3 *a, const Ov003Vec3 *b, Ov003Vec3 *out);
+extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
 
 void func_ov003_021e1914(Ov003Prop *self) {
     self->unk_1c = 0;
@@ -917,7 +917,7 @@ void func_ov003_021e1914(Ov003Prop *self) {
 void Ov003ActVt_021f8df0_Init(Ov003Prop *self) {
     const Ov003SpotDef *def;
     Ov003Player *pl;
-    Ov003Vec3 v;
+    VecFx32 v;
     func_ov000_0219433c(self);
     def = &data_ov003_021f6428[self->unk_1a];
     if ((def->unk_42 >> 12) != 5) {
@@ -951,11 +951,11 @@ void Ov003ActVt_021f8df0_Start(Ov003Prop *self) {
 
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
-extern void VEC_Normalize(const Ov003Vec3 *a, Ov003Vec3 *out);
-extern Ov003SpotUnit *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, Ov003Vec3 *pos, Ov003Rot3 *rot, u16 a);
+extern void VEC_Normalize(const VecFx32 *a, VecFx32 *out);
+extern Ov003SpotUnit *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, VecFx32 *pos, Ov003Rot3 *rot, u16 a);
 extern Ov003SpotUnit *ActorMgr_GetActor(void *mgr, u16 id);
-extern BOOL func_01ffc198(Ov003Vec3 *a, Ov003Vec3 *b, s32 r);
-extern void *func_02049f44(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
+extern BOOL func_01ffc198(VecFx32 *a, VecFx32 *b, s32 r);
+extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void Actor_SendMsg(Ov003SpotUnit *u, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 extern void func_ov000_0218d46c(Ov003SpotUnit *u, u16 id, s32 m);
@@ -1001,7 +1001,7 @@ static inline BOOL Ov003Spot_IsLocked(Ov003SpotUnit *u) {
 
 void func_ov003_021e1a68(Ov003Prop *self) {
     const Ov003SpotDef *def;
-    Ov003Vec3 v;
+    VecFx32 v;
     if (!Ov003Spot_GameIdle()) {
         return;
     }
@@ -1017,7 +1017,7 @@ void func_ov003_021e1a68(Ov003Prop *self) {
         v.z = pl->unk_70.z;
         if (func_01ffc2a4(&v, &self->unk_84, def, def->unk_0c)) {
             Ov003SpawnInfo info;
-            Ov003Vec3 pos;
+            VecFx32 pos;
             Ov003Rot3 rot;
             Ov003SpotUnit *u;
             s32 i;
@@ -2680,8 +2680,8 @@ typedef struct {
     u8 unk_16_0 : 1;
 } Ov003Spawned;
 
-extern Ov003Spawned *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, Ov003Vec3 *pos, void *rot, u16 a);
-extern void *func_ov000_0219b71c(Ov003Vec3 *pos, Ov003Vec3 *v, s32 a, s32 b, s32 c, s32 d);
+extern Ov003Spawned *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, VecFx32 *pos, void *rot, u16 a);
+extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern s32 Rand_UpTo(s32 max);
 
 void func_ov003_021e41e8(Ov003Obj *self) {
@@ -2722,7 +2722,7 @@ void func_ov003_021e41e8(Ov003Obj *self) {
         if (func_ov000_02191120(self->model)) {
             if (self->kind == 0) {
                 Ov003SpawnInfo info;
-                Ov003Vec3 p;
+                VecFx32 p;
                 Ov003Spawned *o;
                 s32 id;
                 s32 i;
@@ -2749,8 +2749,8 @@ void func_ov003_021e41e8(Ov003Obj *self) {
             return;
         }
         if ((self->work->timer & 0xf) == 0) {
-            Ov003Vec3 sc;
-            Ov003Vec3 p;
+            VecFx32 sc;
+            VecFx32 p;
             sc.x = 0x3000;
             sc.y = 0x2000;
             sc.z = 0x3000;
@@ -2799,7 +2799,7 @@ typedef struct {
 typedef struct {
     u16 unk_00;
     u16 ang;
-    Ov003Vec3 v;
+    VecFx32 v;
 } Ov003BigEnt;
 
 typedef struct {
@@ -2822,7 +2822,7 @@ typedef struct {
     u8 unk_1c[0x18];
     Ov003BigRes *unk_34;
     u8 unk_38[0x38];
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u16 rot[3];
     u8 unk_82[0xe];
     u8 unk_90[3];
@@ -2841,13 +2841,13 @@ typedef struct {
     u8 unk_2b0[0x90];
     Ov003BigMdl sub;
     u8 unk_404[0x24];
-    Ov003Vec3 unk_428[4];
+    VecFx32 unk_428[4];
     s32 unk_458[4];
     u8 unk_468[4];
     u8 unk_46c[0x260];
     Ov003BigRObj obj1[4];
     Ov003BigRObj obj2[3];
-    Ov003Vec3 unk_af4[3];
+    VecFx32 unk_af4[3];
     u8 unk_b18;
 } Ov003Big;
 
@@ -2858,10 +2858,10 @@ extern void *data_ov000_021ccd64;
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern BOOL func_ov000_02191120(void *model);
-extern void *func_02049f44(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
-extern Ov003Spawned *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, Ov003Vec3 *pos, void *rot, u16 a);
-extern void *func_ov000_0219b71c(Ov003Vec3 *pos, Ov003Vec3 *v, s32 a, s32 b, s32 c, s32 d);
+extern Ov003Spawned *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, VecFx32 *pos, void *rot, u16 a);
+extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern s32 Rand_UpTo(s32 max);
 extern void func_ov000_0219433c(void *self);
@@ -2906,8 +2906,8 @@ extern BOOL func_ov000_0218ffdc(Ov003BigMdl *m, s16 *res, s32 a, s32 b);
 extern void func_ov000_02190758(Ov003BigMdl *m, u16 *rot, s32 a);
 extern void NNSi_G3dModifyMatFlag(void *mdl, s32 on, u32 flag);
 extern void NNSi_G3dModifyPolygonAttrMask(void *mdl, s32 on, u32 mask);
-extern void func_01ffc9fc(Ov003Vec3 *dst, const Ov003Vec3 *src, u16 angle);
-extern void VEC_Add(Ov003Vec3 *a, Ov003Vec3 *b, Ov003Vec3 *dst);
+extern void func_01ffc9fc(VecFx32 *dst, const VecFx32 *src, u16 angle);
+extern void VEC_Add(VecFx32 *a, VecFx32 *b, VecFx32 *dst);
 extern void HitMesh_SetRes(Ov003BigRObj *o, void *res);
 extern void MTX_Identity43_(Ov003BigMtx *m);
 extern void MTX_RotX43_(Ov003BigMtx *m, s32 s, s32 c);
@@ -2922,7 +2922,7 @@ extern void func_ov003_021e51f8(Ov003Big *self, u32 a);
 #define OV003BIG_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003BIG_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
-static inline void Ov003Big_SetMtx(Ov003BigRObj *o, Ov003Vec3 *v, u16 rx, u16 ry, u16 rz) {
+static inline void Ov003Big_SetMtx(Ov003BigRObj *o, VecFx32 *v, u16 rx, u16 ry, u16 rz) {
     Ov003BigMtx m;
     Ov003BigMtx t;
     BOOL set = FALSE;
@@ -2974,7 +2974,7 @@ void Ov003ActVt_021f8af8_Start(Ov003Big *self) {
     NNSi_G3dModifyPolygonAttrMask(self->sub.mdl, 1, 0x1f0000);
     for (i = 0; i < 4; i++) {
         const Ov003BigEnt *e = &data_ov003_021f5bf0[i];
-        Ov003Vec3 v;
+        VecFx32 v;
         u16 ry;
         u16 rz;
         u16 rx;
@@ -3045,7 +3045,7 @@ typedef struct {
     u8 unk_2b0[0x90];
     Ov003Model sub;
     u8 unk_404[0x24];
-    Ov003Vec3 unk_428[4];
+    VecFx32 unk_428[4];
     s32 unk_458[4];
     u8 unk_468[4];
     u8 unk_46c[0x6ac];
@@ -3099,7 +3099,7 @@ typedef struct {
 typedef struct {
     u16 unk_00;
     u16 ang;
-    Ov003Vec3 v;
+    VecFx32 v;
 } Ov003BigEnt;
 
 typedef struct {
@@ -3128,7 +3128,7 @@ typedef struct {
     s32 unk_64;
     s32 unk_68;
     u8 unk_6c[4];
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u16 rot[3];
     u8 unk_82[0xe];
     u16 unk_90;
@@ -3148,24 +3148,24 @@ typedef struct {
     u8 unk_2b0[0x90];
     Ov003BigMdl sub;
     u8 unk_404[0x24];
-    Ov003Vec3 unk_428[4];
+    VecFx32 unk_428[4];
     s32 unk_458[4];
     u8 unk_468[4];
     Ov003BigRObj obj0[4];
     Ov003BigRObj obj1[4];
     Ov003BigRObj obj2[3];
-    Ov003Vec3 unk_af4[3];
+    VecFx32 unk_af4[3];
     u8 unk_b18;
 } Ov003Big;
 
 typedef struct {
     s16 unk_00;
     u16 ang;
-    Ov003Vec3 v;
+    VecFx32 v;
 } Ov003BigEnt2;
 
 typedef struct {
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u16 unk_0c;
     u16 mask;
     u16 unk_10;
@@ -3188,18 +3188,18 @@ typedef struct {
     u16 unk_0c;
     u16 unk_0e;
     u8 unk_10[0x60];
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u16 rot[3];
 } Ov003BigTgt;
 
 typedef struct {
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u8 unk_0c[4];
     s32 unk_10;
 } Ov003BigHit;
 
 typedef struct {
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u16 rot[3];
     s32 unk_14;
 } Ov003BigWarp;
@@ -3208,8 +3208,8 @@ extern "C" {
 
 extern const s16 FX_SinCosTable_[];
 extern const Ov003BigEnt2 data_ov003_021f6230[][4];
-extern void func_01ffc9fc(Ov003Vec3 *dst, const Ov003Vec3 *src, u16 angle);
-extern void VEC_Add(Ov003Vec3 *a, Ov003Vec3 *b, Ov003Vec3 *dst);
+extern void func_01ffc9fc(VecFx32 *dst, const VecFx32 *src, u16 angle);
+extern void VEC_Add(VecFx32 *a, VecFx32 *b, VecFx32 *dst);
 extern void HitMesh_SetRes(Ov003BigRObj *o, void *res);
 extern void MTX_Identity43_(Ov003BigMtx *m);
 extern void MTX_RotX43_(Ov003BigMtx *m, s32 s, s32 c);
@@ -3220,15 +3220,15 @@ extern void HitMesh_SetMtx(Ov003BigRObj *o, Ov003BigMtx *m);
 extern void HitMesh_SetScale(Ov003BigRObj *o, s32 a);
 extern void HitMesh_Link(Ov003BigRObj *o);
 extern void func_0203f920(Ov003BigRObj *o);
-extern s32 func_ov000_0219a2f4(Ov003Vec3 *pos, s32 a, s32 b);
+extern s32 func_ov000_0219a2f4(VecFx32 *pos, s32 a, s32 b);
 extern void *data_02097e4c;
 extern s32 func_ov000_021993fc(Ov003BigFinder *f, Ov003BigQuery *q, Ov003BigHit **out, s32 max);
 extern Ov003BigTgt *func_ov000_021985c0(Ov003BigHit *h);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void *func_0204a028(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void Actor_SendMsg(Ov003BigTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
 extern Ov003BigTgt *Actor_GetTarget(Ov003Big *self);
-extern void VEC_MultAdd(s32 a, Ov003Vec3 *v1, Ov003Vec3 *v2, Ov003Vec3 *dst);
+extern void VEC_MultAdd(s32 a, VecFx32 *v1, VecFx32 *v2, VecFx32 *dst);
 extern u16 func_01ffc128(u16 cur, u16 tgt, s32 step, s32 a, s32 b);
 void func_ov003_021e51f8(Ov003Big *self, u32 t);
 
@@ -3245,7 +3245,7 @@ static inline void Ov003BigQuery_Init(Ov003BigQuery *q) {
     q->flags = 0;
 }
 
-static inline void Ov003Big_Sub(Ov003Vec3 *d, Ov003Vec3 *a, Ov003Vec3 *b) {
+static inline void Ov003Big_Sub(VecFx32 *d, VecFx32 *a, VecFx32 *b) {
     d->x = a->x - b->x;
     d->y = a->y - b->y;
     d->z = a->z - b->z;
@@ -3254,7 +3254,7 @@ static inline void Ov003Big_Sub(Ov003Vec3 *d, Ov003Vec3 *a, Ov003Vec3 *b) {
 #define OV003BIG_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003BIG_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
-static inline void Ov003Big_SetMtx(Ov003BigRObj *o, Ov003Vec3 *v, u16 rx, u16 ry, u16 rz) {
+static inline void Ov003Big_SetMtx(Ov003BigRObj *o, VecFx32 *v, u16 rx, u16 ry, u16 rz) {
     Ov003BigMtx m;
     Ov003BigMtx t;
     BOOL set = FALSE;
@@ -3294,7 +3294,7 @@ static inline void *Ov003Big_Res(Ov003BigRes *r) {
 }
 
 static inline void Ov003Big_Approach(Ov003BigWarp *w, Ov003BigTgt *o, Ov003Big *self) {
-    Ov003Vec3 d;
+    VecFx32 d;
     w->pos.x = o->pos.x;
     w->pos.y = o->pos.y;
     w->pos.z = o->pos.z;
@@ -3470,7 +3470,7 @@ void func_ov003_021e4b18(Ov003Big *self) {
 }
 
 void func_ov003_021e51f8(Ov003Big *self, u32 t) {
-    Ov003Vec3 v;
+    VecFx32 v;
     if (t == 0) {
         s32 i;
         for (i = 0; i < 4; i++) {
@@ -3559,7 +3559,7 @@ namespace m_021e57b8 {
 
 typedef struct {
     s32 x, y, z;
-} Ov003Vec3;
+} VecFx32;
 
 typedef struct {
     u16 state;
@@ -3642,7 +3642,7 @@ typedef struct {
     void *unk_5c;
     void *unk_60;
     u8 unk_64[0xc];
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u8 unk_7c[0x8];
     s32 unk_84;
     s32 unk_88;
@@ -3662,7 +3662,7 @@ typedef struct {
     s16 res;
     u8 unk_d2;
     u8 unk_d3;
-    Ov003Vec3 unk_d4;
+    VecFx32 unk_d4;
     u8 unk_e0[0xec];
     void **unk_1cc;
     u8 unk_1d0[0x20];
@@ -3679,11 +3679,11 @@ extern Ov003ColState data_02fe0f14;
 extern Ov003HeapCtx *data_02097dd0;
 extern char data_ov003_021f8768[];
 extern void func_ov000_02194758(void *self);
-extern s32 func_ov000_0219a2f4(Ov003Vec3 *pos, s32 a, s32 b);
+extern s32 func_ov000_0219a2f4(VecFx32 *pos, s32 a, s32 b);
 extern void func_ov000_02197ee0(void *self, s16 *res, s32 a, s32 b, s32 c);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
-extern void Actor_MoveToPos(void *self, Ov003Vec3 *v, s32 a);
+extern void Actor_MoveToPos(void *self, VecFx32 *v, s32 a);
 extern void func_ov000_021987b8(Ov003Ctl *ctl, s32 a, s32 b, s32 c);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void *func_ov000_0214b598(void *p);
@@ -3763,7 +3763,7 @@ void Ov003ActVt_021f8898_Update(Ov003Obj *self) {
 }
 
 void func_ov003_021e5838(Ov003Obj *self) {
-    Ov003Vec3 v;
+    VecFx32 v;
     if (self->work->state == 0) {
         func_ov000_02190cb0(self->model, "run00", 0x2ab, 0);
         func_ov000_021915a0(self->model);
@@ -4040,7 +4040,7 @@ extern void *data_ov000_021cad50[];
 extern void *data_02149ef8;
 extern void *data_ov000_021ccd68;
 extern Ov003Game54 *data_ov000_021ccd54;
-extern Ov003Vec3 data_02092a50;
+extern VecFx32 data_02092a50;
 extern void *Heap_Alloc(u32 size);
 extern const char *MsgRes_GetString(void *mgr, s32 id);
 extern void func_ov000_0215c1bc(void *a, s32 b, const char *c);
@@ -4048,7 +4048,7 @@ extern void func_ov000_02188140(void *p, s32 a, s32 b, s32 c);
 extern Ov003BarSnd *ActorMgr_GetGroup(void *mgr, u16 id);
 extern BOOL func_ov000_0218fb64(Ov003Anim *self, void *obj, void *tex, void *file, s32 index, s16 blend, u8 force);
 extern Ov003BarMtx *NNS_G3dGlbGetInvV(void);
-extern void VEC_Add(Ov003Vec3 *a, Ov003Vec3 *b, Ov003Vec3 *dst);
+extern void VEC_Add(VecFx32 *a, VecFx32 *b, VecFx32 *dst);
 
 static inline BOOL Ov003Bar_FadeIdle(void) {
     if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
@@ -4143,7 +4143,7 @@ void func_ov003_021e5e70(Ov003Obj *self) {
                 func_ov000_0218fb64(md->unk_10, md->unk_24, *(void **)(md->unk_04 + 4), ((Ov003BarHdr *)md->unk_00)->unk_48->unk_04, 0, 0x1000, 0);
             }
         }
-        VEC_Add((Ov003Vec3 *)&self->unk_84, (Ov003Vec3 *)&self->unk_9c, (Ov003Vec3 *)&self->unk_84);
+        VEC_Add((VecFx32 *)&self->unk_84, (VecFx32 *)&self->unk_9c, (VecFx32 *)&self->unk_84);
         m = NNS_G3dGlbGetInvV();
         y = self->unk_88;
         x = self->unk_84;
@@ -4168,7 +4168,7 @@ namespace m_021e6274 {
 
 typedef struct {
     s32 x, y, z;
-} Ov003Vec3;
+} VecFx32;
 
 extern "C" void NNS_G3dRenderObjRemoveAnmObj(void *a, void *b);
 
@@ -4240,7 +4240,7 @@ typedef struct {
 } Ov003Part;
 
 typedef struct {
-    Ov003Vec3 pos;
+    VecFx32 pos;
     s32 unk_0c;
 } Ov003PathPt;
 
@@ -4294,7 +4294,7 @@ typedef struct Ov003Obj {
     void *unk_5c;
     void *unk_60;
     u8 unk_64[0xc];
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u8 unk_7c[0x8];
     s32 unk_84;
     s32 unk_88;
@@ -4314,7 +4314,7 @@ typedef struct Ov003Obj {
     s16 res;
     u8 unk_d2;
     u8 unk_d3;
-    Ov003Vec3 unk_d4;
+    VecFx32 unk_d4;
     u8 unk_e0[0xec];
     void **unk_1cc;
     u8 unk_1d0[0x20];
@@ -4361,7 +4361,7 @@ extern void func_ov000_021915a0(void *model);
 extern void func_ov000_02191618(void *model);
 extern void *func_ov000_02191318(void *model, s32 a);
 extern BOOL func_ov000_02191120(void *model);
-extern void *func_0204a028(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void Actor_SendMsg(void *p, u16 a, s32 b, s32 c, s32 d, s32 e);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -4615,9 +4615,9 @@ extern void func_0203f364(Ov003Ctl *ctl);
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern void func_ov000_021911c8(void *model, s32 v);
-extern void VEC_Normalize(Ov003Vec3 *src, Ov003Vec3 *dst);
-extern void VEC_Add(Ov003Vec3 *a, Ov003Vec3 *b, Ov003Vec3 *dst);
-extern BOOL func_01ffc198(Ov003Vec3 *a, Ov003Vec3 *b, s32 r);
+extern void VEC_Normalize(VecFx32 *src, VecFx32 *dst);
+extern void VEC_Add(VecFx32 *a, VecFx32 *b, VecFx32 *dst);
+extern BOOL func_01ffc198(VecFx32 *a, VecFx32 *b, s32 r);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern void Actor_TurnToPos(Ov003Obj *self, Ov003PathPt *pt, s32 a);
 
@@ -4667,7 +4667,7 @@ void func_ov003_021e6974(Ov003Obj *self) {
         self->unk_cc_8 = 0;
         self->work->state++;
     case 1: {
-        Ov003Vec3 *v = (Ov003Vec3 *)&self->unk_9c;
+        VecFx32 *v = (VecFx32 *)&self->unk_9c;
         s32 sp;
         v->x = pt->pos.x - self->pos.x;
         v->y = pt->pos.y - self->pos.y;
@@ -4687,7 +4687,7 @@ void func_ov003_021e6974(Ov003Obj *self) {
         break;
     }
     case 2: {
-        Ov003Vec3 *v = (Ov003Vec3 *)&self->unk_9c;
+        VecFx32 *v = (VecFx32 *)&self->unk_9c;
         if (w->timer != 0) {
             w->timer--;
         }
@@ -4728,12 +4728,12 @@ extern void func_ov000_021911c8(void *model, s32 a);
 extern BOOL func_ov000_02191120(void *model);
 extern void HitSphere_Link(Ov003Ctl *ctl);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
-extern Ov003Fx *func_02065f88(s32 id, const Ov003Vec3 *pos);
+extern Ov003Fx *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern Ov003Part *Target_Get(Ov003Part *p);
-extern void *func_02049f44(void *mgr, s32 id, Ov003Vec3 *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern s32 Rand_PlusMinus(s32 max);
 extern void *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(void *self, void *other, s32 a);
@@ -4887,7 +4887,7 @@ typedef struct {
 
 extern Ov003Game54 *data_ov000_021ccd54;
 extern Ov003Plyr *func_ov000_0219bf90(void);
-extern s32 func_ov000_0219a7bc(void *self, s32 a, Ov003Vec3 *pos, s32 r, s32 b, Ov003NearObj **list);
+extern s32 func_ov000_0219a7bc(void *self, s32 a, VecFx32 *pos, s32 r, s32 b, Ov003NearObj **list);
 extern void func_ov000_02196860(void *self);
 
 static inline BOOL Ov003MapId_Equal(const Ov003MapId *a, const Ov003MapId *b) {
@@ -4906,7 +4906,7 @@ void func_ov003_021e7114(Ov003Obj *self) {
         self->unk_cc_8 = 0;
         p = func_ov000_0219bf90();
         if (p != NULL && !Ov003MapId_Equal((Ov003MapId *)&data_ov000_021ccd54->unk_ca, &p->map)) {
-            Ov003Vec3 v;
+            VecFx32 v;
             Ov003NearObj *list[32];
             s32 n;
             s32 i;

@@ -23,7 +23,6 @@ void func_ov013_02206ca8(Ov013Actor *self) {
     }
 }
 
-extern void *data_ov000_021ccd68;
 extern char data_ov013_0220be82[];
 extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_021911c8(void *p, s32 a);

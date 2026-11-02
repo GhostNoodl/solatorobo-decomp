@@ -22,7 +22,6 @@ void func_ov014_0220b318(Ov014Act_02209280 *self) {
 
 
 extern void *data_0214a420;
-extern void *data_ov000_021ccd68;
 extern char data_ov014_02217a84[];
 extern void func_02065860(void *a, void *b);
 extern Ov014V *func_020657b0(void *a, void *b);
@@ -30,7 +29,6 @@ extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
 extern void func_020639d4(void *e, s32 a, s32 b);
 extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
 extern void func_ov000_021911c8(void *a, s32 b);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
 extern u8 *func_ov000_02190a30(void *p, s32 a);
 extern void func_ov003_021d6a3c(Ov014Actor *self, s32 a, s32 b, s32 c);
 
@@ -142,7 +140,6 @@ void func_ov014_0220b33c(Ov014Act_02209280 *self) {
 extern Ov014V *func_020658cc(void *mgr, s32 id);
 extern void func_02063a14(void *e);
 extern s32 Interp_QuadLerp(s32 t, s32 from, s32 to);
-extern s32 FX_Div(s32 a, s32 b);
 
 static inline s32 Ov014b_Mul64(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);
@@ -224,8 +221,8 @@ void func_ov014_0220b74c(Ov014Act_02209280 *self) {
             if (t == 0x5a) {
                 Ov014V *e = func_020658cc(data_0214a420, 0x391);
                 if (e != NULL) {
-                    u32 saved = data_02097dd0->cur;
-                    data_02097dd0->cur = data_02097dd0->def;
+                    void *saved = data_02097dd0->cur;
+                    data_02097dd0->cur = data_02097dd0->unk_08;
                     if (e != NULL) {
                         if (e != NULL) {
                             e->v04();

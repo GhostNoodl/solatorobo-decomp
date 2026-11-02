@@ -6,14 +6,12 @@ void func_ov014_02208d90(Ov014ActEx_02208618 *self) {
     self->unk_d0 |= 0x1000;
     func_ov000_02198360(self->unk_40, 0x15, 0);
 }
-extern void *data_ov000_021ccd64;
 extern void *data_02097e4c;
 extern void *data_0214a420;
 extern void func_ov000_02198c8c(void *p, s32 a);
 extern void func_0203f364(Ov014Sub48 *p);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
 extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
-extern void func_ov000_0218bed8(void *a, s32 b, void *c);
 extern Ov014V *func_020657b0(void *a, void *b);
 extern void func_ov003_021da9ac(void *p, u8 id, void *obj);
 extern BOOL func_ov003_021daa0c(void *p, u8 id);
@@ -69,7 +67,7 @@ void func_ov014_02208db4(Ov014ActEx_02208618 *self) {
         break;
     }
     case 2:
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
         self->v08();
         break;
     }

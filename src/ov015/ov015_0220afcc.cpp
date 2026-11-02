@@ -7,8 +7,6 @@ extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e34[];
 struct Ov015Blk0afcc { s32 w[3]; };
 extern const Ov015Blk0afcc data_ov015_02212650;
-void VEC_Normalize(void *src, void *dst);
-u16 FX_AcosIdx(s32 x);
 
 #define Ov015_Dot0afcc(a, b) ((s32)(((s64)(a)->x * (b)->x + (s64)(a)->y * (b)->y + (s64)(a)->z * (b)->z + 0x800) >> 12))
 void func_ov015_0220afcc(Ov015FishState2c *self) {
@@ -37,21 +35,20 @@ void func_ov015_0220afcc(Ov015FishState2c *self) {
     *(Ov015Blk0afcc *)&base = data_ov015_02212650;
     dir = (self->unk_20)->unk_9c;
     dir.y = 0;
-    VEC_Normalize(&dir, &dir);
+    VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)&dir);
     ang = FX_AcosIdx(Ov015_Dot0afcc(&dir, &base));
     if (dir.x < 0) ang = 0xffff - ang;
     e->v34(0, ang, 0);
     {
         Ov015Fish *o = self->unk_20;
         s32 s = o->unk_7c;
-        sc.x = Ov015_FxMul(o->unk_70, s);
-        sc.y = Ov015_FxMul(o->unk_74, s);
-        sc.z = Ov015_FxMul(o->unk_78, s);
+        sc.x = FX_Mul(o->unk_70, s);
+        sc.y = FX_Mul(o->unk_74, s);
+        sc.z = FX_Mul(o->unk_78, s);
         e->v10(&sc);
     }
 }
 
-s32 FX_Div(s32 a, s32 b);
 Ov015V *func_02065f88(s32 id, void *pos);
 void func_02065860(void *a, void *b);
 s32 Rand_PlusMinus(s32 n);
@@ -84,11 +81,11 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
     Ov015Fish *p = self->unk_20;
     v = p->unk_c0.unk_10 << 12;
     if (p->unk_c0.unk_28 < 0xe10000) {
-        lim = Ov015_FxMul(v, 0x1000);
+        lim = FX_Mul(v, 0x1000);
     } else if (p->unk_c0.unk_28 < 0x1c20000) {
-        lim = Ov015_FxMul(v, 0xccd);
+        lim = FX_Mul(v, 0xccd);
     } else {
-        lim = Ov015_FxMul(v, 0xb33);
+        lim = FX_Mul(v, 0xb33);
     }
     if (lim > 0) {
         r = FX_Div(self->unk_0c, lim);
@@ -103,7 +100,7 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
     }
     if (r > 0x99a) {
         FX_Div(r - 0x99a, 0x666);
-        tgt = Ov015_FxMul(r, -0x13ccd) + 0x1ccd;
+        tgt = FX_Mul(r, -0x13ccd) + 0x1ccd;
     } else {
         tgt = 0x1ccd;
     }
@@ -122,7 +119,7 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
         Ov015Vec s;
         Ov015Fish *o = self->unk_20;
         a = o->unk_40;
-        a.z += Ov015_FxMul(o->unk_70, 0xc000);
+        a.z += FX_Mul(o->unk_70, 0xc000);
         a.y -= 0x4000;
         s.x = 0x1333;
         s.y = 0x1333;
@@ -143,7 +140,7 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
         Ov015Fish *o = self->unk_20;
         b = o->unk_40;
         b.y += 0x8000;
-        b.z += Ov015_FxMul(o->unk_70, 0xc000);
+        b.z += FX_Mul(o->unk_70, 0xc000);
         e = func_020657b0(data_0214a420, self->unk_28);
         if (e == NULL) {
             e = func_02065f88(0x325, &b);
@@ -161,7 +158,7 @@ void func_ov015_0220b1b8(Ov015FishState2c *self) {
     if (((u8)self->unk_14)) {
         func_ov000_02190cb0(&self->unk_20->unk_244, data_ov015_02212e40, 0x19a, 0);
         func_ov000_021915a0(&self->unk_20->unk_244);
-        (self->unk_20)->unk_104 = Ov015_FxMul(r, 0x4cc) + 0x19a;
+        (self->unk_20)->unk_104 = FX_Mul(r, 0x4cc) + 0x19a;
     } else {
         func_ov000_02190cb0(&self->unk_20->unk_244, data_ov015_02212e0d, 0x19a, 0);
         func_ov000_021915a0(&self->unk_20->unk_244);

@@ -2,14 +2,9 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
-extern void *data_ov000_021ccd30;
 extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void Actor_SendMsg(Ov009Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 extern void HitMesh_SetMtx(void *mesh, const void *mtx);
-extern void MI_Copy48B(const void *src, void *dst);
 extern void func_ov003_021d3008(Ov009Actor *self);
-extern u16 FX_Atan2(s32 y, s32 x);
 extern void func_ov000_02184508(void *g);
 struct Ov009AngSrc2 {
     u8 unk_00[4];
@@ -103,9 +98,9 @@ void func_ov009_022122ac(Ov009ActVt_02217a00 *self) {
     msg.rot[1] = self->rot[1];
     msg.rot[2] = self->rot[2];
     msg.unk_14 = 0;
-    Actor_SendMsg(a, self->id, 7, TRUE, 0x18, &msg);
+    Actor_SendMsg((Actor *)a, self->id, 7, TRUE, 0x18, &msg);
     MI_Copy48B(&self->unk_f8, mtx);
-    Actor_SendMsg(a, self->id, 8, TRUE, 0x30, mtx);
+    Actor_SendMsg((Actor *)a, self->id, 8, TRUE, 0x30, mtx);
 }
 
 }

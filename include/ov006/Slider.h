@@ -42,7 +42,7 @@ static inline void ov006_Slider_Update(ov006_Slider *self) {
         }
         break;
     }
-    VCALL(self->unk28, 8C);
+    VCALL(self->unk28, 8c);
 }
 
 #endif

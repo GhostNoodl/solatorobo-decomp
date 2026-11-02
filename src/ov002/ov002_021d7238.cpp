@@ -14,7 +14,7 @@ static inline int func_ov002_021d7238_find(u8 *res, const char *name) {
     if (dict == NULL) {
         return -1;
     }
-    return NNS_G3dGetResDictIdxByName(dict + 4, name);
+    return NNS_G3dGetResDictIdxByName((NNSG3dResDict *)(dict + 4), (NNSG3dResName *)name);
 }
 
 void func_ov002_021d7238(void *self) {

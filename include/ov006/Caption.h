@@ -21,7 +21,7 @@ typedef struct ov006_Caption {
     int unk18;
     int unk1C;
     int unk20;
-    ov006_Model *unk24;
+    Model *unk24;
     ov006_Anim *unk28;
 } ov006_Caption;
 
@@ -35,7 +35,6 @@ extern char data_ov006_021ec864[];
 extern const ov006_CaptionEntry data_ov006_021eb824[];
 extern const u32 data_0208ba70[];
 extern u8 data_ov006_021ec22c[];
-void func_0204c7d0(ov006_Anim *anim);
 
 #ifdef __cplusplus
 }
@@ -45,7 +44,7 @@ static inline ov006_Anim *ov006_Anim_New(void) {
     ov006_Anim *anim = (ov006_Anim *)Heap_Alloc(0xb8);
     if (anim != NULL) {
         *(const u32 **)anim = data_0208ba70;
-        func_0204c7d0(anim);
+        func_0204c7d0((TextWin *)anim);
     }
     return anim;
 }
@@ -69,24 +68,24 @@ static inline ov006_Caption *ov006_Caption_New(void) {
 }
 
 static inline void ov006_Caption_Init(ov006_Caption *self) {
-    ov006_Model *model;
+    Model *model;
     const char *text;
 
     if (self->unk20 != 2) {
-        model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
+        model = (Model *)Heap_Alloc(sizeof(Model));
         if (model != NULL) {
             const char *name = data_ov006_021ec1a9;
             if (name) {
-                func_02041218(model->unk88);
+                func_02041218(&model->pltt);
                 func_02041440(model, name, 0);
-                STD_CopyString(model->unk2C, data_ov006_021ec864);
+                STD_CopyString(model->name, data_ov006_021ec864);
             }
         }
         self->unk24 = model;
         func_020417e0(self->unk24, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
-        self->unk24->unk6C |= 2;
-        self->unk24->unk6C &= ~0x80000;
-        self->unk24->unk6C |= 0x400000;
+        self->unk24->flags |= 2;
+        self->unk24->flags &= ~0x80000;
+        self->unk24->flags |= 0x400000;
         func_02041d9c(self->unk24, 2, data_ov006_021eb824[self->unk20].unk0);
     }
     self->unk28 = ov006_Anim_New();

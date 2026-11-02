@@ -6,7 +6,7 @@ void func_ov002_021e4904(void *self) {
     FIELD(self, 0x4, s32) = 0;
     FIELD(self, 0x8, s32) = 0;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0xc, void *) != NULL) {
             Heap_FreeArray(FIELD(self, 0xc, void *));
@@ -43,7 +43,7 @@ void func_ov002_021e49a0(void *self) {
 void *Ov002Vt_021f00ec_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021f00ec;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0xc, void *) != NULL) {
             Heap_FreeArray(FIELD(self, 0xc, void *));
@@ -57,7 +57,7 @@ void *Ov002Vt_021f00ec_Dtor(void *self) {
 void *Ov002Vt_021f00ec_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f00ec;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0xc, void *) != NULL) {
             Heap_FreeArray(FIELD(self, 0xc, void *));

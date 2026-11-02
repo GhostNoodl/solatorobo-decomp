@@ -111,7 +111,7 @@ BOOL func_ov003_021d7a44(Ov003Mover *self, const Ov003Vec *target, const Ov003Ve
     self->dir.x = target->x - start->x;
     self->dir.y = target->y - start->y;
     self->dir.z = target->z - start->z;
-    VEC_Normalize(&self->dir, &self->dir);
+    VEC_Normalize((VecFx32 *)&self->dir, (VecFx32 *)&self->dir);
     return TRUE;
 }
 

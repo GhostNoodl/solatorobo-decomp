@@ -22,7 +22,7 @@ static inline void ov002_Model_PlayPart(void *model, int idx) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
     }
-    func_02042628(model, anim, part, 0);
+    func_02042628((Model *)model, anim, (ModelPart *)part, 0);
 }
 
 void func_ov002_021d65e0(void *self) {

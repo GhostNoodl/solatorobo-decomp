@@ -3,12 +3,7 @@
 extern "C" {
 
 extern Ov009Vec *func_ov000_0218d2e0(void *self);
-extern void VEC_Normalize(Ov009Vec *a, Ov009Vec *b);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern void Actor_TurnToPos(Ov009Obj *self, Ov009Vec *v, s32 a);
-extern void Actor_Move(Ov009Obj *self, s32 a);
-extern void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-extern u16 FX_Atan2(s32 x, s32 z);
 extern void HitSphere_Link(Ov009Sub48 *p);
 extern void func_ov009_02215a6c(Ov009ActExVt_0221802c *self);
 
@@ -59,12 +54,12 @@ void func_ov009_02215714(Ov009ActExVt_0221802c *self) {
             while (OV009_SQRTCNT & 0x8000) {
             }
             r = (s32)(OV009_SQRT_RESULT + 1) >> 1;
-            d.x = Ov009_FxMul(r, OV009_SIN(self->rot[1]));
-            d.z = Ov009_FxMul(r, OV009_COS(self->rot[1]));
+            d.x = FX_Mul(r, OV009_SIN(self->rot[1]));
+            d.z = FX_Mul(r, OV009_COS(self->rot[1]));
             VEC_Normalize(&d, &d);
-            self->unk_9c = Ov009_FxMul(d.x, 0x666);
-            self->unk_a0 = Ov009_FxMul(d.y, 0x666);
-            self->unk_a4 = Ov009_FxMul(d.z, 0x666);
+            self->unk_9c = FX_Mul(d.x, 0x666);
+            self->unk_a0 = FX_Mul(d.y, 0x666);
+            self->unk_a4 = FX_Mul(d.z, 0x666);
             FX_Atan2(r, self->unk_84.y - self->pos.y);
             self->rot[0] = FX_Atan2(self->pos.y - self->unk_84.y, r);
             self->unk_d0 |= 0x200000;
@@ -88,7 +83,7 @@ void func_ov009_02215714(Ov009ActExVt_0221802c *self) {
             Actor_TurnToPos(self, &self->unk_84, 0x1000);
             VEC_Add(&self->pos, (Ov009Vec *)&self->unk_9c, &self->pos);
         } else {
-            Actor_Move(self, 0);
+            Actor_Move((Actor *)self, 0);
         }
         func_ov009_02215a6c(self);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);

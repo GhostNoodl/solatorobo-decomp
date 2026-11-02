@@ -35,12 +35,12 @@ void func_ov012_02206098(Ov012Actor *self) {
             while (OV012_SQRTCNT & 0x8000) {
             }
             r = (s32)(OV012_SQRT_RESULT + 1) >> 1;
-            d.x = Ov012_FxMul(r, OV012_SIN(self->rot[1]));
-            d.z = Ov012_FxMul(r, OV012_COS(self->rot[1]));
+            d.x = FX_Mul(r, OV012_SIN(self->rot[1]));
+            d.z = FX_Mul(r, OV012_COS(self->rot[1]));
             VEC_Normalize(&d, &d);
-            self->unk_9c = Ov012_FxMul(d.x, 0x4cd);
-            self->unk_a0 = Ov012_FxMul(d.y, 0x4cd);
-            self->unk_a4 = Ov012_FxMul(d.z, 0x4cd);
+            self->unk_9c = FX_Mul(d.x, 0x4cd);
+            self->unk_a0 = FX_Mul(d.y, 0x4cd);
+            self->unk_a4 = FX_Mul(d.z, 0x4cd);
             FX_Atan2(r, self->unk_84.y - self->pos.y);
             self->rot[0] = FX_Atan2(self->pos.y - self->unk_84.y, r);
             if (!(FLD(u32, self, 0xd0) & 0x100000)) {
@@ -65,7 +65,7 @@ void func_ov012_02206098(Ov012Actor *self) {
             Actor_TurnToPos(self, &self->unk_84, 0x1000);
             VEC_Add(&self->pos, (Ov012Vec *)&self->unk_9c, &self->pos);
         } else {
-            Actor_Move(self, 0);
+            Actor_Move((Actor *)self, 0);
         }
         func_ov012_022065d8(self);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);

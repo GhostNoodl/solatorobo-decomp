@@ -1,12 +1,11 @@
 #include "ov012/ov012.h"
 
 extern "C" {
-extern const u8 data_ov012_0220b406[];
-extern const u8 data_ov012_0220b40c[];
-extern const u8 data_ov012_0220b412[];
-extern const u8 data_ov012_0220b418[];
+extern char data_ov012_0220b406[];
+extern char data_ov012_0220b40c[];
+extern char data_ov012_0220b412[];
+extern char data_ov012_0220b418[];
 extern Ov012Actor *func_ov003_021d69a0(Ov012Actor *self, u16 kind, s32 a);
-extern u16 func_01ffc128(u16 a, u16 b, s32 c, s32 d, s32 e);
 
 static inline u16 Ov012_AngTo(Ov012Actor *self, Ov012Actor *t) {
     if (t == NULL || t == self) {
@@ -64,7 +63,7 @@ void func_ov012_02209bd4(Ov012Actor *self) {
             break;
         }
         if (o != NULL) {
-            func_ov000_0218d46c(o, self->id, 0xe);
+            func_ov000_0218d46c((StageObj3D *)o, self->id, 0xe);
         }
         self->unk_40->state++;
         break;
@@ -75,7 +74,7 @@ void func_ov012_02209bd4(Ov012Actor *self) {
         if (o != NULL && o->unk_4c != NULL && o->unk_4c->unk_1e == 0) {
             Ov012Actor *n = Ov012_FindActor(self->unk_d0->target_id);
             if (n != NULL) {
-                func_ov000_0218d46c(n, self->id, 10);
+                func_ov000_0218d46c((StageObj3D *)n, self->id, 10);
                 if (n->unk_4c != NULL) {
                     FLD(Ov012Flags8, n->unk_4c, 0x18).b0 = 0;
                 }
@@ -138,7 +137,7 @@ void func_ov012_02209f80(Ov012Actor *self) {
         if (s->timer > 0x3c) {
             func_ov000_02198360(self->unk_40, 1, 0);
         }
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         break;
     }
     Actor_TurnToActor(self, Actor_GetTarget(self), 0x400);
@@ -152,7 +151,7 @@ void func_ov012_0220a0f4(Ov012Actor *self) {
         Ov012Actor *o = Ov012_FindActor(self->unk_d0->target_id);
         if (o != NULL) {
             void *p;
-            func_ov000_0218d46c(o, self->id, 10);
+            func_ov000_0218d46c((StageObj3D *)o, self->id, 10);
             p = o->unk_4c;
             if (p != NULL) {
                 FLD(Ov012Flags8, p, 0x18).b0 = 0;
@@ -189,7 +188,7 @@ void func_ov012_0220a244(Ov012Actor *self) {
         Ov012Actor *o = Ov012_FindActor(self->unk_d0->target_id);
         if (o != NULL) {
             void *p;
-            func_ov000_0218d46c(o, self->id, 10);
+            func_ov000_0218d46c((StageObj3D *)o, self->id, 10);
             p = o->unk_4c;
             if (p != NULL) {
                 FLD(Ov012Flags8, p, 0x18).b0 = 0;
@@ -208,7 +207,7 @@ void func_ov012_0220a2ec(Ov012Actor *self) {
         Ov012Actor *o = Ov012_FindActor(self->unk_d0->target_id);
         if (o != NULL) {
             void *p;
-            func_ov000_0218d46c(o, self->id, 10);
+            func_ov000_0218d46c((StageObj3D *)o, self->id, 10);
             p = o->unk_4c;
             if (p != NULL) {
                 FLD(Ov012Flags8, p, 0x18).b0 = 0;

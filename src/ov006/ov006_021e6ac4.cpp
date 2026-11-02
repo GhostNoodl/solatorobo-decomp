@@ -56,7 +56,6 @@ typedef struct ov006_Prop6ac4 {
 extern "C" {
 
 extern void *data_0214a420;
-extern void *data_02097e4c;
 extern const u16 data_ov006_021eb89c[];
 
 BOOL func_ov000_0218d494(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg);
@@ -102,7 +101,7 @@ BOOL func_ov006_021e6ac4(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg) {
                 ov006_Effect6ac4 *e = func_02065f88(0x648, self->unk70);
                 if (e != NULL) {
                     void *old;
-                    VCALL(e, 0C, 0x1800);
+                    VCALL(e, 0c, 0x1800);
                     e->unk3C = 0x1800;
                     old = func_020657b0(data_0214a420, self->unk1EC);
                     if (old != NULL) {

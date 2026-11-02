@@ -9,12 +9,10 @@ void func_ov015_02208474(u8 *self);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-void NNS_G3dRenderObjSetInitFunc(void *a, void *cb);
 void func_ov000_02190e98(void *a, s32 b, s32 c, s32 d);
 void func_ov000_021911c8(void *a, s32 b);
 s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 
-void STD_CopyString(void *p, const char *name);
 BOOL func_ov000_0218f110(void *p);
 void func_ov000_02191b70(void *p);
 BOOL func_ov000_02191b9c(void *p);
@@ -23,14 +21,20 @@ extern const char *data_ov015_02212cb4[];
 extern const char *data_ov015_02212cbc[];
 extern const char *data_ov015_02212cc4[];
 
+// STD_CopyString (nitro/std.h) returns its destination; this TU was built against a void-returning
+// declaration, and the char * result changes the scheduling of func_ov015_022078bc, so the calls
+// go through a void view of the same function.
+typedef void (*Ov015CopyStringFn)(char *dst, const char *src);
+#define OV015_COPY_STRING(d, s) ((Ov015CopyStringFn)STD_CopyString)(d, s)
+
 static inline void Ov015_SetModel(Ov015Anim *o, const char *file, const char *name) {
-    STD_CopyString(o->unk_10, file);
-    STD_CopyString(o->unk_30, name);
+    OV015_COPY_STRING(o->unk_10, file);
+    OV015_COPY_STRING(o->unk_30, name);
     o->unk_03_1 = 1;
 }
 static inline void Ov015_SetAnim(Ov015Anim *o, const char *file, const char *name) {
-    STD_CopyString(o->unk_4c, file);
-    STD_CopyString(o->unk_6c, name);
+    OV015_COPY_STRING(o->unk_4c, file);
+    OV015_COPY_STRING(o->unk_6c, name);
     o->unk_03_2 = 1;
 }
 
@@ -47,8 +51,8 @@ BOOL func_ov015_022078bc(Ov015Ship *self) {
         self->unk_220.unk_00 = 0;
         {
             const char *n = data_ov015_02212cbc[self->unk_d48];
-            STD_CopyString(self->unk_a98.unk_10, data_ov015_02212cc4[self->unk_d48]);
-            STD_CopyString(self->unk_a98.unk_30, n);
+            OV015_COPY_STRING(self->unk_a98.unk_10, data_ov015_02212cc4[self->unk_d48]);
+            OV015_COPY_STRING(self->unk_a98.unk_30, n);
         }
         self->unk_a98.unk_00 = 0;
         self->unk_a98.unk_03_1 = 1;
@@ -88,7 +92,7 @@ BOOL func_ov015_02207adc(Ov015Ship *self) {
     func_ov000_0218ffdc(&self->unk_138, self, 0, 1);
     func_ov000_02190cb0(&self->unk_138, "ang00", 0x1000, 0);
     func_ov000_021915a0(&self->unk_138);
-    NNS_G3dRenderObjSetInitFunc(&self->unk_138.unk_24, (void *)func_ov015_02208474);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(&self->unk_138.unk_24), (NNSG3dSbcCallBackFunc)func_ov015_02208474);
     self->unk_138.unk_c2.b5 = 0;
     self->unk_138.unk_c2.b8 = 1;
     self->unk_cd4.id = func_ov000_021909a8(&self->unk_138, self->unk_00.unk_6c, "ang05");
@@ -198,13 +202,13 @@ void func_ov015_02207c30(Ov015Ship *self) {
         }
     } else {
         if (func_02065748(data_0214a420, self->unk_d28)) {
-            u32 saved;
+            void *saved;
             HEAP_PUSH(saved);
             DELETE_V(self->unk_d28);
             HEAP_POP(saved);
         }
         if (func_02065748(data_0214a420, self->unk_d30)) {
-            u32 saved;
+            void *saved;
             HEAP_PUSH(saved);
             DELETE_V(self->unk_d30);
             HEAP_POP(saved);

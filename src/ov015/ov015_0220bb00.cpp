@@ -2,16 +2,10 @@
 
 extern "C" {
 
-extern void **data_0214a420;
-Ov015V *func_020657b0(void *a, void *b);
-extern void *data_02097e4c;
 extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e68[];
-void *func_02049a48(void *a, int b, int c, int d, int e);
 u8 *func_02066774(void *a, void *b, int c, void *d);
 extern u8 data_ov015_02212e55[];
-s32 FX_Div(s32 a, s32 b);
-s32 FX_Sqrt(s32 a);
 extern u8 data_ov015_02212eb0[];
 extern u8 data_ov015_02212e0d[];
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
@@ -19,7 +13,7 @@ void func_ov000_021915a0(void *a);
 
 BOOL Ov015FishState18_Exit(Ov015FishState18 *self) {
     Ov015V *o;
-    u32 saved;
+    void *saved;
     o = func_020657b0(data_0214a420, self->unk_14);
     if (o != NULL) {
         HEAP_PUSH(saved);
@@ -54,9 +48,9 @@ static inline void Ov015_Spawn0bb68(Ov015FishState18 *self, s32 s1, s32 s2) {
     q = self->unk_04;
     {
         s32 k = q->unk_7c;
-        b.x = Ov015_FxMul(q->unk_70, k);
-        b.y = Ov015_FxMul(q->unk_74, k);
-        b.z = Ov015_FxMul(q->unk_78, k);
+        b.x = FX_Mul(q->unk_70, k);
+        b.y = FX_Mul(q->unk_74, k);
+        b.z = FX_Mul(q->unk_78, k);
     }
     VCALL(o)->v10(&b);
     func_02049a48(data_02097e4c, s1, -1, -1, -1);
@@ -68,7 +62,7 @@ void func_ov015_0220bb68(Ov015FishState18 *self, Ov015Fish *p) {
     if ((d < 0 ? -d : d) <= 0x19a) {
         t.y = 0x4000;
     } else {
-        t.y += Ov015_FxMul(d, 0x29);
+        t.y += FX_Mul(d, 0x29);
     }
     *(Ov015VecC *)&p->unk_40 = t;
     if (self->unk_0c == 0x50) {
@@ -92,7 +86,7 @@ void func_ov015_0220be38(Ov015FishState18 *self, Ov015Fish *p) {
         if ((y < 0 ? -y : y) >= 0x19a) {
             t.y = 0;
         } else {
-            t.y = Ov015_FxMul(y, 0xfd7);
+            t.y = FX_Mul(y, 0xfd7);
         }
         *(Ov015VecC *)&p->unk_40 = t;
     }
@@ -115,23 +109,23 @@ void func_ov015_0220be38(Ov015FishState18 *self, Ov015Fish *p) {
     q = self->unk_04;
     {
         s32 k = q->unk_7c;
-        b.x = Ov015_FxMul(q->unk_70, k);
-        b.y = Ov015_FxMul(q->unk_74, k);
-        b.z = Ov015_FxMul(q->unk_78, k);
+        b.x = FX_Mul(q->unk_70, k);
+        b.y = FX_Mul(q->unk_74, k);
+        b.z = FX_Mul(q->unk_78, k);
     }
     e->v10(&b);
     n = self->unk_0c;
     if (n > 0x28) {
-        s32 s = Ov015_FxMul(FX_Div((0x50 - n) << 12, 0x28000), -0x99a) + 0x1000;
-        c.x = Ov015_FxMul(FLD(s32, e, 0x40), s);
-        c.y = Ov015_FxMul(FLD(s32, e, 0x44), s);
-        c.z = Ov015_FxMul(FLD(s32, e, 0x48), s);
+        s32 s = FX_Mul(FX_Div((0x50 - n) << 12, 0x28000), -0x99a) + 0x1000;
+        c.x = FX_Mul(FLD(s32, e, 0x40), s);
+        c.y = FX_Mul(FLD(s32, e, 0x44), s);
+        c.z = FX_Mul(FLD(s32, e, 0x48), s);
         e->v10(&c);
     } else if (n < 10) {
-        s32 s = FX_Sqrt(Ov015_FxMul(FX_Div((10 - n) << 12, 0xa000), 0x299a) + 0x666);
-        d.x = Ov015_FxMul(FLD(s32, e, 0x40), s);
-        d.y = Ov015_FxMul(FLD(s32, e, 0x44), s);
-        d.z = Ov015_FxMul(FLD(s32, e, 0x48), s);
+        s32 s = FX_Sqrt(FX_Mul(FX_Div((10 - n) << 12, 0xa000), 0x299a) + 0x666);
+        d.x = FX_Mul(FLD(s32, e, 0x40), s);
+        d.y = FX_Mul(FLD(s32, e, 0x44), s);
+        d.z = FX_Mul(FLD(s32, e, 0x48), s);
         e->v10(&d);
         if (self->unk_0c == 1) {
             func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
@@ -170,7 +164,6 @@ BOOL func_ov015_0220c810(Ov015FishState1c *self);
 void func_ov015_0220c6c8(Ov015FishState1c *self, Ov015Fish *p);
 s32 Rand_UpTo(s32 n);
 void func_ov000_02191618(void *a);
-void VEC_Normalize(void *src, void *dst);
 extern u8 data_ov015_02212e74[];
 
 BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
@@ -205,7 +198,7 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
     }
     case 1: {
         Ov015VecC t(*(Ov015VecC *)&p->unk_40);
-        t.x -= Ov015_FxMul((self->unk_18)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
+        t.x -= FX_Mul((self->unk_18)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
         *(Ov015VecC *)&p->unk_40 = t;
         if (t.x < self->unk_14) {
             self->unk_04 = 4;
@@ -215,7 +208,7 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
     }
     case 2: {
         Ov015VecC t(*(Ov015VecC *)&p->unk_40);
-        t.x += Ov015_FxMul((self->unk_18)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
+        t.x += FX_Mul((self->unk_18)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
         *(Ov015VecC *)&p->unk_40 = t;
         if (t.x > self->unk_14) {
             self->unk_04 = 3;
@@ -225,9 +218,9 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
     }
     case 3: {
         off = 0;
-        a = Ov015_FxMul((self->unk_18)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
+        a = FX_Mul((self->unk_18)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
         t = FX_Div((self->unk_08 - 0x1e) >> 1, 0xf);
-        v = Ov015_FxMul(a >> 1, Ov015_FxMul(t, t));
+        v = FX_Mul(a >> 1, FX_Mul(t, t));
         (self->unk_18)->unk_a8 = v;
         {
             Ov015VecC q(*(Ov015VecC *)&p->unk_40);
@@ -239,7 +232,7 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
             if (d2.x > -0x1000) off = -0xcd;
             d2.z = -0x1000;
             d2.x += off;
-            VEC_Normalize(&d2, &p->unk_9c);
+            VEC_Normalize((VecFx32 *)&d2, (VecFx32 *)(&p->unk_9c));
         }
         if (self->unk_08 == 0xf) {
             func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);
@@ -255,9 +248,9 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
     }
     case 4: {
         off = 0;
-        a = Ov015_FxMul((self->unk_18)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
+        a = FX_Mul((self->unk_18)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
         t = FX_Div((self->unk_08 - 0x1e) >> 1, 0xf);
-        v = Ov015_FxMul(a >> 1, Ov015_FxMul(t, t));
+        v = FX_Mul(a >> 1, FX_Mul(t, t));
         (self->unk_18)->unk_a8 = v;
         {
             Ov015VecC q(*(Ov015VecC *)&p->unk_40);
@@ -269,7 +262,7 @@ BOOL Ov015FishState1c_Update(Ov015FishState1c *self, Ov015Fish *p) {
             if (d2.x < 0x1000) off = 0xcd;
             d2.z = -0x1000;
             d2.x += off;
-            VEC_Normalize(&d2, &p->unk_9c);
+            VEC_Normalize((VecFx32 *)&d2, (VecFx32 *)(&p->unk_9c));
         }
         if (self->unk_08 == 0xf) {
             func_02049a48(data_02097e4c, 0x3e, -1, -1, -1);

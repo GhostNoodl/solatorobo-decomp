@@ -2,12 +2,11 @@
 
 extern "C" {
 
-extern u8 data_ov014_02217d3a[];
+extern char data_ov014_02217d3a[];
 extern void *func_ov000_02191318(void *a, s32 b);
 extern Ov014Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToActor(Ov014Obj *self, Ov014Obj *target, s32 a);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
-extern s32 FX_Div(s32 a, s32 b);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
 
 static inline void Ov014_TimerTick(Ov014Sub40 *s) {

@@ -4,16 +4,10 @@ extern "C" {
 
 extern void *data_ov015_02212db8[];
 void func_0203f364(void *a);
-extern void *data_02097e4c;
-void *func_02049a48(void *a, int b, int c, int d, int e);
 u8 *func_02066774(void *a, void *b, int c, void *d);
 extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e34[];
-s32 FX_Div(s32 a, s32 b);
-void VEC_Normalize(void *src, void *dst);
-void VEC_MultAdd(s32 scale, const Ov015Vec *dir, const Ov015Vec *base, Ov015Vec *out);
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
-u16 FX_Atan2(s32 x, s32 z);
 extern u8 data_ov015_02212ecc[];
 extern u8 data_ov015_02212eb0[];
 extern u8 data_ov015_02212e47[];
@@ -46,11 +40,11 @@ void func_ov015_0220d328(Ov015FishState40 *self, Ov015Fish *o) {
     Ov015V *e;
     s32 t = 0x1000 - FX_Div(self->unk_10 << 12, 0x5a000);
     d = self->unk_1c;
-    d.y = Ov015_FxMul(FX_SinCosTable_[((Ov015_FxMul(t, 0x7fff000) >> 12) >> 4) * 2], 0x800);
-    VEC_Normalize(&d, &d);
-    VEC_Normalize(&d, &o->unk_9c);
+    d.y = FX_Mul(FX_SinCosTable_[((FX_Mul(t, 0x7fff000) >> 12) >> 4) * 2], 0x800);
+    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
+    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)(&o->unk_9c));
     p = o->unk_40;
-    VEC_MultAdd(self->unk_0c, &self->unk_1c, &p, &p);
+    VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)&p, (VecFx32 *)&p);
     p.y = Interp_SinLerp(t, -0x32000, 0x1ccd);
     if (p.y > 0) p.y = 0;
     o->unk_40 = p;
@@ -83,11 +77,11 @@ void func_ov015_0220d578(Ov015FishState40 *self, Ov015Fish *o) {
     Ov015V *e;
     s32 t = 0x1000 - FX_Div(self->unk_10 << 12, 0x5a000);
     d = self->unk_1c;
-    d.y = Ov015_FxMul(FX_SinCosTable_[(((Ov015_FxMul(t, 0x7fff000) >> 12) + 0x7fff) >> 4) * 2], 0x800);
-    VEC_Normalize(&d, &d);
-    VEC_Normalize(&d, &o->unk_9c);
+    d.y = FX_Mul(FX_SinCosTable_[(((FX_Mul(t, 0x7fff000) >> 12) + 0x7fff) >> 4) * 2], 0x800);
+    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
+    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)(&o->unk_9c));
     p = o->unk_40;
-    VEC_MultAdd(self->unk_0c, &self->unk_1c, &p, &p);
+    VEC_MultAdd(self->unk_0c, (VecFx32 *)(&self->unk_1c), (VecFx32 *)&p, (VecFx32 *)&p);
     p.y = Interp_SinLerp(t, 0x1ccd, -0x32000);
     if (p.y < -0x32000) p.y = -0x32000;
     o->unk_40 = p;
@@ -159,7 +153,7 @@ BOOL Ov015FishState08_Enter(Ov015FishState08 *self, Ov015Fish *p) {
     p->unk_104 = 0x800;
     v = *(Ov015VecC *)&p->unk_9c;
     v.y = 0;
-    VEC_Normalize(&v, &p->unk_9c);
+    VEC_Normalize((VecFx32 *)&v, (VecFx32 *)(&p->unk_9c));
     self->unk_04 = 1;
     return TRUE;
 }
@@ -218,21 +212,11 @@ BOOL Ov015FishState08_Exit(u8 *self, Ov015Fish *p) {
     return TRUE;
 }
 
-extern u8 *data_02097d48;
 u8 Gfx3DState_NextPolyId(void *p);
-void MTX_Identity33_(void *a);
-void MTX_Concat33(void *a, void *b, void *out);
-void MI_Copy36B(const void *src, void *dst);
-void MTX_RotX33_(void *mtx, s32 sin, s32 cos);
-void MTX_RotY33_(void *mtx, s32 sin, s32 cos);
-void NNS_G3dGlbSetBaseScale(const void *v);
-void NNS_G3dGlbSetBaseTrans(const void *v);
-void NNS_G3dGlbFlushVP(void);
 void NNS_G3dMdlSetMdlAlpha(void *mdl, s32 a, s32 b);
 void NNS_G3dMdlSetMdlPolygonID(void *mdl, s32 a, s32 b);
 void NNS_G3dMdlSetMdlCullMode(void *mdl, s32 a, s32 b);
 void NNS_G3dDraw1Mat1Shp(void *mdl, s32 a, s32 b, s32 c);
-extern u8 data_020928b4[];
 struct Ov015ResDict0daf4 {
     u8 revision;
     u8 num_entry;
@@ -249,7 +233,6 @@ struct Ov015MdlSet0daf4 {
     u8 unk_00[0x8];
     Ov015ResDict0daf4 dict;
 };
-Ov015MdlSet0daf4 *NNS_G3dGetMdlSet(void *file);
 static inline void *Ov015_DictGet0daf4(const Ov015ResDict0daf4 *dict, u32 idx) {
     if (dict != NULL && idx < dict->num_entry) {
         const Ov015ResEntry0daf4 *entry = (const Ov015ResEntry0daf4 *)((const u8 *)dict + dict->ofs_entry);
@@ -266,7 +249,7 @@ static inline void *Ov015_GetMdl0daf4(Ov015MdlSet0daf4 *set, u32 idx) {
     }
 }
 static inline void *Ov015_Find0daf4(void *file, u32 idx) {
-    Ov015MdlSet0daf4 *set = NNS_G3dGetMdlSet(file);
+    Ov015MdlSet0daf4 *set = (Ov015MdlSet0daf4 *)NNS_G3dGetMdlSet((NNSG3dResFileHeader *)file);
     if (set != NULL) {
         u32 *data = (u32 *)Ov015_DictGet0daf4(&set->dict, idx);
         if (data != NULL) {
@@ -293,7 +276,7 @@ void func_ov015_0220daf4(Ov015Shadow *self, const Ov015Vec *pos, s32 sx, s32 sz,
         s.x = sx;
         s.y = 0x1000;
         s.z = sz;
-        NNS_G3dGlbSetBaseScale(&s);
+        NNS_G3dGlbSetBaseScale((VecFx32 *)&s);
     }
     {
         Ov015VecC t(*(const Ov015VecC *)pos);
@@ -302,29 +285,29 @@ void func_ov015_0220daf4(Ov015Shadow *self, const Ov015Vec *pos, s32 sx, s32 sz,
         } else {
             t.y += 0xcd - self->unk_10;
         }
-        NNS_G3dGlbSetBaseTrans(&t);
+        NNS_G3dGlbSetBaseTrans((VecFx32 *)&t);
     }
     {
         s32 m[9];
         BOOL f;
         f = FALSE;
-        MTX_Identity33_(m);
+        MTX_Identity33_((MtxFx33 *)m);
         if (ry != 0) {
-            MTX_RotY33_(m, FX_SinCosTable_[(ry >> 4) * 2], FX_SinCosTable_[(ry >> 4) * 2 + 1]);
+            MTX_RotY33_((MtxFx33 *)m, FX_SinCosTable_[(ry >> 4) * 2], FX_SinCosTable_[(ry >> 4) * 2 + 1]);
             f = TRUE;
         }
         if (rx != 0) {
             if (f) {
                 s32 m2[9];
-                MTX_RotX33_(m2, FX_SinCosTable_[(rx >> 4) * 2], FX_SinCosTable_[(rx >> 4) * 2 + 1]);
-                MTX_Concat33(m2, m, m);
+                MTX_RotX33_((MtxFx33 *)m2, FX_SinCosTable_[(rx >> 4) * 2], FX_SinCosTable_[(rx >> 4) * 2 + 1]);
+                MTX_Concat33((MtxFx33 *)m2, (MtxFx33 *)m, (MtxFx33 *)m);
             } else {
-                MTX_RotX33_(m, FX_SinCosTable_[(rx >> 4) * 2], FX_SinCosTable_[(rx >> 4) * 2 + 1]);
+                MTX_RotX33_((MtxFx33 *)m, FX_SinCosTable_[(rx >> 4) * 2], FX_SinCosTable_[(rx >> 4) * 2 + 1]);
             }
         }
         MI_Copy36B(m, data_020928b4);
     }
-    NNS_G3dGlb.fc &= ~0xa4;
+    NNS_G3dGlb.flag &= ~0xa4;
     NNS_G3dGlbFlushVP();
     NNS_G3dMdlSetMdlAlpha(self->mdl, 0, self->alpha);
     if (self->type <= 1) {
@@ -335,7 +318,7 @@ void func_ov015_0220daf4(Ov015Shadow *self, const Ov015Vec *pos, s32 sx, s32 sz,
         NNS_G3dMdlSetMdlCullMode(self->mdl, 0, 3);
         NNS_G3dDraw1Mat1Shp(self->mdl, 0, 0, 1);
     } else {
-        NNS_G3dMdlSetMdlPolygonID(self->mdl, 0, Gfx3DState_NextPolyId(data_02097d48 + 0x8b0));
+        NNS_G3dMdlSetMdlPolygonID(self->mdl, 0, Gfx3DState_NextPolyId(data_02097d48->unk_8b0));
         NNS_G3dDraw1Mat1Shp(self->mdl, 0, 0, 1);
     }
 }

@@ -3,7 +3,7 @@
 typedef struct ov006_Unk021e0d98 {
     void *vtbl;
     u8 unk4[0x18];
-    ov006_Model *unk1C;
+    Model *unk1C;
     Object *unk20;
 } ov006_Unk021e0d98;
 

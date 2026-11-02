@@ -25,20 +25,18 @@ static inline void Ov014SpawnB_Init(Ov014SpawnDescB *d, u16 k) {
 
 extern "C" {
 
-extern u8 data_ov014_02217d3a[];
-extern u8 data_ov014_02217d40[];
-extern u8 data_ov014_02217d46[];
+extern char data_ov014_02217d3a[];
+extern char data_ov014_02217d40[];
+extern char data_ov014_02217d46[];
 extern void func_ov000_021911c8(void *a, s32 b);
 extern Ov014Actor *func_ov000_0219bf90(void);
-extern u16 FX_Atan2(s32 x, s32 z);
-extern u8 data_ov014_02217d4c[];
+extern char data_ov014_02217d4c[];
 extern void *func_ov000_02191318(void *a, s32 b);
-extern s32 Rand_UpTo(s32 max);
 extern void *func_ov014_02210878(Ov014Act_0220f9d0 *self);
 extern void *data_02097e4c;
 extern u8 data_ov014_02217d1d[];
 extern u8 data_ov014_02217d52[];
-extern u8 data_ov014_02217d5e[];
+extern char data_ov014_02217d5e[];
 extern u8 data_ov014_02217d64[];
 extern void func_ov000_02191618(void *a);
 extern s32 **func_ov000_02190a30(void *a, s32 b);
@@ -238,11 +236,8 @@ void func_ov014_022112b8(Ov014Act_0220f9d0 *self) {
 }
 
 
-extern u8 data_ov014_02217d70[];
+extern char data_ov014_02217d70[];
 extern u8 data_ov014_02216d30[];
-extern void *data_ov000_021ccd64;
-extern void MTX_MultVec43(const Ov014Vec *in, const void *m, Ov014Vec *out);
-extern s32 VEC_Mag(const Ov014Vec *v);
 extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, Ov014Vec *pos, Ov014Rot16 *rot, u16 a);
 
 void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
@@ -299,7 +294,7 @@ void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
         Ov014SpawnDescB desc;
         Ov014Rot16 rot;
         Ov014Actor *o;
-        Ov014Game54 *g;
+        FieldState *g;
         if (self->unk_38->unk_c4 != 1) {
             break;
         }
@@ -309,7 +304,7 @@ void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
         v.x = 0;
         v.y = 0;
         v.z = 0x1000;
-        MTX_MultVec43(&v, (u8 *)self + 0xf4, &v);
+        MTX_MultVec43(&v, (MtxFx43 *)((u8 *)self + 0xf4), &v);
         w.x = v.x;
         w.y = 0;
         w.z = v.z;
@@ -327,10 +322,10 @@ void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
         o->flags_0 = 1;
         self->target_id = o->id;
         g = data_ov000_021ccd54;
-        g->unk_190 |= 0x1c;
-        g->unk_18d = 0x1e;
-        g->unk_18e = 0x78;
-        g->unk_18f = 0x78;
+        g->cam.base.flags |= 0x1c;
+        g->cam.base.shakeTime = 0x1e;
+        g->cam.base.shakeLen = 0x78;
+        g->cam.base.shakeCur = 0x78;
         self->unk_40->state++;
         self->unk_40->timer = 0xa0;
         break;
@@ -355,10 +350,8 @@ void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
     }
 }
 
-extern u8 data_ov014_02217d76[];
+extern char data_ov014_02217d76[];
 extern u8 data_ov014_02216d78[];
-extern void *data_ov000_021ccd68;
-extern s32 FX_Div(s32 a, s32 b);
 extern void func_ov000_02191780(void *a);
 extern void func_ov000_021917f8(void *a);
 extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
@@ -453,7 +446,7 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
         v.x = 0;
         v.y = 0;
         v.z = 0x1000;
-        MTX_MultVec43(&v, (u8 *)self + 0xf4, &v);
+        MTX_MultVec43(&v, (MtxFx43 *)((u8 *)self + 0xf4), &v);
         w.x = v.x;
         w.y = 0;
         w.z = v.z;
@@ -463,7 +456,7 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
         rot.z = 0;
         if (tm % self->unk_14a == 0) {
             Ov014Actor *o;
-            Ov014Game54 *g;
+            FieldState *g;
             Ov014Actor *e;
             desc.kind = 0x4839;
             desc.flags = 0x4839 & 0xf000;
@@ -481,10 +474,10 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
             self->target_id = o->id;
             self->target_id = o != NULL ? o->id : 0xffff;
             g = data_ov000_021ccd54;
-            g->unk_190 |= 0x1c;
-            g->unk_18d = 0x1e;
-            g->unk_18e = 0x2d;
-            g->unk_18f = 0x2d;
+            g->cam.base.flags |= 0x1c;
+            g->cam.base.shakeTime = 0x1e;
+            g->cam.base.shakeLen = 0x2d;
+            g->cam.base.shakeCur = 0x2d;
             e = func_02065f88(0x579, &p);
             e->v0c(0x24cd);
             FLD(s32, e, 0x50) = -0x64000;

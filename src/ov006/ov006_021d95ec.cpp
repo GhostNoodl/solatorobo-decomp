@@ -24,7 +24,7 @@ BOOL func_ov006_021d95ec(ov006_Task021d95ec *self) {
         self->unkC++;
     case 1:
         if (data_ov000_021ccd40 != NULL) {
-            VCALL(data_ov000_021ccd40, 4C);
+            VCALL(data_ov000_021ccd40, 4c);
             data_ov006_021ec888->unk15E = 2;
             func_ov006_021da098(self);
             func_ov006_021da208(self);

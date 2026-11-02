@@ -25,23 +25,17 @@ void func_ov009_02211f84(Ov009Actor *self) {
     self->unk_92 = 3;
 }
 
-extern void *data_ov000_021ccd64;
 extern char data_ov009_022179c0[];
 extern char data_ov009_022179c7[];
 extern char data_ov009_022179d1[];
 extern char data_ov009_022179d8[];
 extern s32 func_ov000_021909a8(Ov009Sub38 *m, const char *a, const char *b);
-extern void MTX_Identity43_(void *p);
 extern void NNS_G3dRenderObjSetInitFunc(void *p, void *cb);
 extern void func_0203f2b8(void *p);
 extern u8 *func_0206fef8(void *res);
 extern void func_0203f80c(void *p);
 extern void HitMesh_SetRes(void *p, s32 v);
 extern void HitMesh_SetScale(void *p, s32 v);
-extern void MTX_RotX43_(void *m, s32 s, s32 c);
-extern void MTX_RotY43_(void *m, s32 s, s32 c);
-extern void MTX_RotZ43_(void *m, s32 s, s32 c);
-extern void MTX_Concat43(void *a, void *b, void *out);
 extern void HitMesh_SetMtx(void *mesh, const void *mtx);
 extern void HitMesh_Link(void *p);
 extern u8 *Group_FindNode(void *mgr, u16 id);
@@ -61,7 +55,7 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
     u8 *c;
     u32 *o;
     u32 v;
-    u32 saved;
+    void *saved;
     u8 *p;
     func_ov003_021d112c(self);
     switch (self->kind) {
@@ -72,14 +66,14 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
         self->unk_f4 = func_ov000_021909a8(self->unk_38, data_ov009_022179d1, data_ov009_022179d8);
         break;
     }
-    MTX_Identity43_(&self->unk_f8);
+    MTX_Identity43_((MtxFx43 *)(&self->unk_f8));
     m = self->unk_38;
     NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov009_02211f84);
     m->unk_c2_5 = 0;
     self->unk_38->unk_c2_8 = 1;
     self->unk_38->unk_50 = &self->unk_f4;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->unk_48 != NULL) {
         Ov009Sub48 *d = self->unk_48;
         if (d != NULL) {
@@ -113,26 +107,26 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
             obj = self->unk_58;
             ry = self->rot[1];
             rx = self->rot[0];
-            MTX_Identity43_(&mt);
+            MTX_Identity43_((MtxFx43 *)&mt);
             if (rz != 0) {
-                MTX_RotZ43_(&mt, OV009_SIN(rz), OV009_COS(rz));
+                MTX_RotZ43_((MtxFx43 *)&mt, OV009_SIN(rz), OV009_COS(rz));
                 set = TRUE;
             }
             if (ry != 0) {
                 if (set) {
-                    MTX_RotY43_(&t, OV009_SIN(ry), OV009_COS(ry));
-                    MTX_Concat43(&t, &mt, &mt);
+                    MTX_RotY43_((MtxFx43 *)&t, OV009_SIN(ry), OV009_COS(ry));
+                    MTX_Concat43((MtxFx43 *)&t, (MtxFx43 *)&mt, (MtxFx43 *)&mt);
                 } else {
-                    MTX_RotY43_(&mt, OV009_SIN(ry), OV009_COS(ry));
+                    MTX_RotY43_((MtxFx43 *)&mt, OV009_SIN(ry), OV009_COS(ry));
                     set = TRUE;
                 }
             }
             if (rx != 0) {
                 if (set) {
-                    MTX_RotX43_(&t, OV009_SIN(rx), OV009_COS(rx));
-                    MTX_Concat43(&t, &mt, &mt);
+                    MTX_RotX43_((MtxFx43 *)&t, OV009_SIN(rx), OV009_COS(rx));
+                    MTX_Concat43((MtxFx43 *)&t, (MtxFx43 *)&mt, (MtxFx43 *)&mt);
                 } else {
-                    MTX_RotX43_(&mt, OV009_SIN(rx), OV009_COS(rx));
+                    MTX_RotX43_((MtxFx43 *)&mt, OV009_SIN(rx), OV009_COS(rx));
                     set = TRUE;
                 }
             }

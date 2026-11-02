@@ -20,27 +20,27 @@ static inline void *ov002_NewAnim(void) {
 }
 
 static inline void ov002_AnimSetA(u8 *a, char *name, char *file) {
-    STD_CopyString(a + 0x10, name);
-    STD_CopyString(a + 0x30, file);
+    STD_CopyString((char *)(a + 0x10), name);
+    STD_CopyString((char *)(a + 0x30), file);
     a[3] |= 2;
 }
 
 static inline void ov002_AnimSetB(u8 *a, char *name, char *file) {
-    STD_CopyString(a + 0x4c, name);
-    STD_CopyString(a + 0x6c, file);
+    STD_CopyString((char *)(a + 0x4c), name);
+    STD_CopyString((char *)(a + 0x6c), file);
     a[3] |= 4;
 }
 
 static inline void ov002_AnimSetC(u8 *a, char *name, char *file) {
-    STD_CopyString(a + 0x100, name);
-    STD_CopyString(a + 0x120, file);
+    STD_CopyString((char *)(a + 0x100), name);
+    STD_CopyString((char *)(a + 0x120), file);
     a[3] |= 0x20;
 }
 
 void func_ov002_021da5c0(void *self) {
     void *p;
     void *q;
-    func_020359d0(data_ov002_021efdf6, 7, 0);
+    func_020359d0((char *)data_ov002_021efdf6, 7, 0);
     p = Heap_Alloc(0xc8);
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021efe6c;
@@ -49,13 +49,13 @@ void func_ov002_021da5c0(void *self) {
     FIELD(self, 0x4, void *) = p;
     func_ov002_021d9504(p);
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_VOBJ(FIELD(p, 0x4, VObject *));
         HEAP_POP(saved);
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(p, 0x8c, void *) != NULL) {
             Heap_Free(FIELD(p, 0x8c, void *));

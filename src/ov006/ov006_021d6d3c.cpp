@@ -92,7 +92,7 @@ BOOL func_ov006_021d6d3c(ov006_Scene021d6d3c *self) {
             game->unk18E = 0;
             game->unk18F = 0;
         }
-        data_02097dd0->unk1C = 1;
+        data_02097dd0->frameWait = 1;
         data_ov006_021ec888->unk15E = 2;
         if (ov006_FadeIdle()) {
             func_0203cc58(0x1000, 0, 0);

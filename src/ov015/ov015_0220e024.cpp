@@ -9,7 +9,6 @@ extern char data_ov015_02212e14[];
 extern char data_ov015_02212e15[];
 s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 u8 *func_0206fef8(u16 id);
-void NNS_G3dRenderObjSetInitFunc(void *a, void *cb);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 void func_ov015_022090fc(u8 *self);
 BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
@@ -17,13 +16,11 @@ void func_ov000_021915a0(void *a);
 void func_ov000_02191618(void *a);
 void func_ov000_02191690(void *a);
 void *func_ov000_02191318(void *a, s32 b);
-void MI_Copy36B(const void *src, void *dst);
 void func_ov000_02190a80(void *a, s32 b);
 void *func_ov002_021e4ee4(void *self, s32 a, s32 b);
 void func_ov002_021e6360(void *p);
 void func_ov002_021e61b4(void *p);
 BOOL func_ov000_021903b4(void *a);
-void NNS_G3dGeFlushBuffer(void);
 extern u8 data_ov015_02212eb0[];
 extern u8 data_ov015_02212f64[];
 void func_ov002_021e4d4c(void *self);
@@ -48,7 +45,7 @@ BOOL func_ov015_0220e074(u8 *self) {
     FLD(Ov015AnimFlags, self, 0x246).b4 = 0;
     func_ov000_021915a0(self + 0x184);
     FLD(Ov015AnimFlags, self, 0x246).b0 = 1;
-    NNS_G3dRenderObjSetInitFunc(self + 0x1a8, (void *)func_ov015_022090fc);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)(self + 0x1a8), (NNSG3dSbcCallBackFunc)func_ov015_022090fc);
     FLD(Ov015AnimFlags, self, 0x246).b5 = 0;
     FLD(u8 *, self, 0x1d4) = self + 0x49c;
     FLD(Ov015AnimFlags, self, 0x246).b8 = 1;
@@ -167,9 +164,9 @@ void func_ov015_0220e434(u8 *self) {
 
     {
         s32 k = FLD(s32, self, 0x50c);
-        s32 x = Ov015_FxMul(FLD(s32, self, 0x500), k);
-        s32 y = Ov015_FxMul(FLD(s32, self, 0x504), k);
-        s32 z = Ov015_FxMul(FLD(s32, self, 0x508), k);
+        s32 x = FX_Mul(FLD(s32, self, 0x500), k);
+        s32 y = FX_Mul(FLD(s32, self, 0x504), k);
+        s32 z = FX_Mul(FLD(s32, self, 0x508), k);
         *(Ov015VecC *)(self + 0x1fc) = *(Ov015VecC *)(self + 0x4d0);
         MI_Copy36B(self + 0x4dc, self + 0x208);
         FLD(s32, self, 0x22c) = x;

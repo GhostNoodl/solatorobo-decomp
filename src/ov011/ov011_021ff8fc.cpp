@@ -47,7 +47,7 @@ struct Ov011ResTbl {
     s16 rot[3];
     s16 scale[4];
     u16 pad;
-    Ov011Vec pos;
+    VecFx32 pos;
 };
 
 extern "C" {
@@ -82,7 +82,6 @@ void func_ov011_0220023c(void *self);
 void func_ov011_02200310(void *self);
 void func_ov011_02202a38(void);
 void func_ov011_021fd638(void *p);
-void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
 
 static inline u32 F24c_Active(const F24cList *l) {
     u32 r = 0;
@@ -222,7 +221,7 @@ static inline BOOL F24c_IsMove(s32 e) {
 }
 
 void Ov011SceneActor_Update(Ov011SceneActor *self) {
-    Ov011Vec v;
+    VecFx32 v;
     if (!func_ov003_021da03c(self)) {
         self->unk_b4 = 0;
         self->unk_b6 = 0;
@@ -326,14 +325,11 @@ void Ov011SceneActor_Update(Ov011SceneActor *self) {
 extern "C" {
 
 extern void *data_02097e4c;
-extern u8 data_ov011_022078e1[];
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
+extern const char data_ov011_022078e1[];
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
-Ov011V *func_02065f88(s32 id, Ov011Vec *v);
+Ov011V *func_02065f88(s32 id, VecFx32 *v);
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 s32 Rand_PlusMinus(s32 max);
 
 void func_ov011_021ff8fc(Ov011SceneActor *self) {

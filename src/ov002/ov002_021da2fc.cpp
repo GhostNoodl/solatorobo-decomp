@@ -5,7 +5,7 @@ extern "C" {
 void func_ov002_021da2fc(void) {
     void *p;
     if (data_ov002_021f0f90[1] != NULL) {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_VOBJ(*(VObject **)&data_ov002_021f0f90[1]);
         HEAP_POP(saved);
@@ -22,7 +22,7 @@ void func_ov002_021da2fc(void) {
 }
 
 void func_ov002_021da39c(void) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(*(VObject **)&data_ov002_021f0f90[1]);
     HEAP_POP(saved);

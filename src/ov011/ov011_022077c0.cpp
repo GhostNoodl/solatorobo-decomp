@@ -1,8 +1,5 @@
 #include "ov011/ov011.h"
 
-typedef s16 fx16;
-typedef Ov011Vec VecFx32;
-struct VecFx16 { fx16 x, y, z; };
 
 // A header's zero rotation and vector, plus copies made at startup, between this TU's resource
 // names and the pointers to them. The first pointer and a scale are read by other functions.
@@ -44,7 +41,6 @@ void func_ov003_021d5348(void *p);
 
 void func_ov003_021d5900(void *p);
 void func_ov000_0218e8ec(void *mgr, u16 id, s32 c);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 void func_02065804(void *a, void *b);
 extern void *data_0214a420;
 
@@ -144,7 +140,7 @@ void func_ov011_021ffe10(Ov011SceneActor *self) {
     func_ov003_021d5348(self);
 }
 
-Ov011Eff *func_02065f88(s32 id, Ov011Vec *v);
+Ov011Eff *func_02065f88(s32 id, VecFx32 *v);
 void func_ov003_021d6054(void *p);
 void func_ov011_021ffe50(Ov011SceneActor *self) {
     if (self->unk_40->state == 0) {
@@ -171,25 +167,24 @@ void func_ov011_021ffe50(Ov011SceneActor *self) {
     func_ov003_021d6054(self);
 }
 
-Ov011Eff *EffectGroup_Create(const char *arc, const char *name, const Ov011Vec *pos);
+Ov011Eff *EffectGroup_Create(const char *arc, const char *name, const VecFx32 *pos);
 Ov011Eff *func_020657b0(void *m, void *id);
 void func_02065860(void *m, void *id);
-BOOL func_ov011_02202d04(void *self, const Ov011Vec *to, const Ov011Vec *from, s16 speed);
-void func_ov003_021da40c(void *p);
+BOOL func_ov011_02202d04(void *self, const VecFx32 *to, const VecFx32 *from, s16 speed);
 
-static inline void VSet_ff38(Ov011Vec *v, s32 x, s32 y, s32 z) {
+static inline void VSet_ff38(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
     v->y = y;
     v->z = z;
 }
 
 void func_ov011_021fff38(Ov011SceneActor *self) {
-    Ov011Vec t;
-    Ov011Vec spawnPos;
-    Ov011Vec effPos;
+    VecFx32 t;
+    VecFx32 spawnPos;
+    VecFx32 effPos;
 
     Ov011Sa104 *o;
-    const Ov011Vec *home;
+    const VecFx32 *home;
 
     home = &data_ov011_02207278;
     t.x = data_ov011_02207278.x;
@@ -209,7 +204,7 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
         if (n == 0xff) {
             n = 0xf;
         }
-        v += Ov011_FxMul(0x8000 - v, 0x333);
+        v += FX_Mul(0x8000 - v, 0x333);
         if (n >= 0x1e) {
             n = 0x1e;
         } else {
@@ -262,7 +257,7 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
                 }
             } else {
                 n--;
-                v += Ov011_FxMul((self->unk_64 << 1) - v, 0x59a);
+                v += FX_Mul((self->unk_64 << 1) - v, 0x59a);
             }
             self->unk_3c->unk_14 = v;
             self->unk_3c->unk_19 = n;
@@ -296,7 +291,7 @@ void func_ov011_0220023c(Ov011SceneActor *self) {
     pl = func_ov000_0219bf90();
     q = self->unk_b0;
     if (q != NULL && pl != NULL && (s = self->unk_108->unk_02) != 0) {
-        Actor_TurnToActor(self, pl, Ov011_FxMul(q->unk_02, s));
+        Actor_TurnToActor(self, pl, FX_Mul(q->unk_02, s));
     }
     if (self->unk_108->b1) {
         self->unk_ea_0 = 2;
@@ -318,16 +313,11 @@ struct Ov011Tbl6 {
 
 extern const Ov011Tbl6 data_ov011_022072c0;
 extern void *data_02097e4c;
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_02191618(void *a);
-void func_ov000_021915a0(void *a);
-u16 func_ov003_021d9c50(Ov011Vec *a, Ov011Vec *b);
-Ov011Eff *func_02065f88(s32 id, Ov011Vec *pos);
-void *func_02049f44(void *mgr, s32 id, const Ov011Vec *pos, s32 a);
-s32 VEC_Distance(const Ov011Vec *a, const Ov011Vec *b);
-void Actor_Move(void *self, s32 a);
+u16 func_ov003_021d9c50(VecFx32 *a, VecFx32 *b);
+Ov011Eff *func_02065f88(s32 id, VecFx32 *pos);
+void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-u16 FX_Atan2(s32 y, s32 x);
 
 static inline void Ov011_SetTw(Ov011Sa108 *q, s16 a, s16 b) {
     q->b0 = 0;
@@ -338,7 +328,7 @@ static inline void Ov011_SetTw(Ov011Sa108 *q, s16 a, s16 b) {
 
 void func_ov011_02200310(Ov011SceneActor *self) {
     Ov011Tbl6 tbl = data_ov011_022072c0;
-    Ov011Vec v;
+    VecFx32 v;
     BOOL ok;
     u32 i;
     u8 st;
@@ -398,10 +388,10 @@ void func_ov011_02200310(Ov011SceneActor *self) {
                 }
                 self->unk_a4 = 0xf60;
             } else {
-                self->unk_9c += Ov011_FxMul(self->unk_b0->unk_00, 0xcd);
+                self->unk_9c += FX_Mul(self->unk_b0->unk_00, 0xcd);
                 self->unk_9c = self->unk_9c > self->unk_b0->unk_00 ? self->unk_b0->unk_00 : (self->unk_9c < 0 ? 0 : self->unk_9c);
             }
-            Actor_Move(self, 0);
+            Actor_Move((Actor *)self, 0);
             func_ov000_021987b8(self->unk_48, 1, 0, 0);
             if (self->unk_48->unk_50 & 0x40000000) {
                 self->unk_9c = 0;
@@ -421,7 +411,7 @@ void func_ov011_02200310(Ov011SceneActor *self) {
     }
     {
         Ov011Obj *pl = (Ov011Obj *)func_ov000_0219bf90();
-        Ov011Vec t;
+        VecFx32 t;
         t = pl->pos;
         self->unk_b8 = t;
         self->unk_98 = FX_Atan2(t.x - self->pos.x, t.z - self->pos.z);
@@ -455,8 +445,8 @@ void *Ov011Vt_022079b0_Dtor(void *p);
 
 static inline void Ov011B_FreeBuf(Ov011Scene *b) {
     if (b->ring.b0) {
-        u32 saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (b->ring.buf != NULL) {
             Heap_FreeArray(b->ring.buf);
             b->ring.buf = NULL;
@@ -470,8 +460,8 @@ static inline void Ov011B_FreeVec(Ov011Scene *b) {
     if (b->mgr2.b0) {
         b->mgr2.b0 = 0;
         {
-            u32 saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->def;
+            void *saved = data_02097dd0->cur;
+            data_02097dd0->cur = data_02097dd0->unk_08;
             if (b->mgr2.arr8 != NULL) {
                 __cxa_vec_delete(b->mgr2.arr8, 0x40, 8, func_ov011_021fb66c);
                 b->mgr2.arr8 = NULL;
@@ -552,8 +542,8 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
         q->unk_04 = 0x1000;
     }
     {
-        u32 saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->scene != NULL) {
             Ov011Scene *b = self->scene;
             if (b != NULL) {
@@ -565,8 +555,8 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
         data_02097dd0->cur = saved;
     }
     {
-        u32 saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->unk_104 != NULL) {
             Ov011Sa104 *b = self->unk_104;
             if (b != NULL) {
@@ -578,8 +568,8 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
         data_02097dd0->cur = saved;
     }
     {
-        u32 saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->unk_108 != NULL) {
             Heap_Free(self->unk_108);
             self->unk_108 = NULL;
@@ -587,8 +577,8 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
         data_02097dd0->cur = saved;
     }
     {
-        u32 saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->unk_10c != NULL) {
             Heap_Free(self->unk_10c);
             self->unk_10c = NULL;

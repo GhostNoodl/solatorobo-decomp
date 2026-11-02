@@ -3,13 +3,10 @@
 extern "C" {
 
 extern void *data_02097e4c;
-extern u8 data_ov009_022172af[];
-extern u8 data_ov009_022172bb[];
-extern s32 Rand_UpTo(s32 max);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+extern char data_ov009_022172af[];
+extern char data_ov009_022172bb[];
 extern void func_ov000_02191418(void *m, s32 a, s32 b);
 extern BOOL func_ov000_02191508(void *m);
-extern void Actor_Move(Ov009Obj *self, s32 turn);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 void func_ov009_0220b258(Ov009ActVt_022172e4 *self) {
@@ -35,7 +32,7 @@ void func_ov009_0220b258(Ov009ActVt_022172e4 *self) {
             func_ov000_02191418(self->unk_38, 3, 0);
         }
         if (!func_ov000_02191508(self->unk_38)) {
-            Actor_Move(self, 0);
+            Actor_Move((Actor *)self, 0);
         }
         if (self->unk_a0 < 0 && (self->unk_48->unk_50 & 0x20000000)) {
             self->unk_a0 = 0;

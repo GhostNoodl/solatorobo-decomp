@@ -2,6 +2,14 @@
 #define OV015_H
 
 #include "types.h"
+#include "nitro/fx.h"
+#include "nnsys/g3d.h"
+#include "Main/Sys/SysState.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Sys/Field.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Effect/Effect.h"
+#include "ov000/TaskList.h"
 
 typedef volatile u16 vu16;
 typedef volatile u32 vu32;
@@ -145,6 +153,9 @@ public:
     virtual s32 v1fc(...);
 };
 
+// Laid out as VecFx32 (nitro/fx.h), which the SDK calls take through casts. Kept as its own type:
+// its user-declared constructor changes how locals initialised by copy are built (see
+// func_ov015_021fd0f4, func_ov015_02203d64), so VecFx32 here would not match.
 struct Ov015Vec {
     s32 x;
     s32 y;
@@ -379,7 +390,6 @@ struct Ov015Stat {
     s32 unk_30;
 };
 extern Ov015Stat data_ov015_0221332c;
-extern u8 *data_02097d48;
 
 struct Ov015Gauge {
     void *vt;
@@ -393,12 +403,6 @@ struct Ov015Gauge {
     s32 unk_20;
     u8 unk_24[8];
     u32 unk_2c;
-};
-
-struct Ov015SysA30 {
-    u8 b0 : 4;
-    u8 b4 : 1;
-    u8 b5 : 3;
 };
 
 
@@ -447,16 +451,6 @@ struct Ov015Flags18 {
     u16 b3 : 13;
 };
 
-struct Ov015Pad {
-    u16 b0 : 3;
-    u16 b3 : 1;
-    u16 b4 : 12;
-    u16 unk_02;
-    u16 unk_04;
-    u16 unk_06;
-    u16 unk_08;
-};
-
 struct Ov015VecC {
     s32 x;
     s32 y;
@@ -466,19 +460,11 @@ struct Ov015VecC {
 };
 
 
-void *Heap_Alloc(u32 size);
-void Heap_Free(void *p);
 u64 _u32_div_f(u32 a, u32 b);
-
-// Heap selector: [0] = current, [1], [2] = alternate
-extern u32 *data_02097dd0;
-
-extern const s16 FX_SinCosTable_[];
 
 }
 
 extern "C" {
-extern u8 data_ov000_021cc060[];
 
 static inline void Ov015TaskBase_Ctor(void *p) {
     SET_VT(p, data_ov000_021cc060);
@@ -492,10 +478,10 @@ static inline void Ov015TaskBase_Dtor(void *p) {
 
 #define HEAP_PUSH(saved)                      \
     do {                                      \
-        (saved) = data_02097dd0[0];           \
-        data_02097dd0[0] = data_02097dd0[2];  \
+        (saved) = data_02097dd0->cur;          \
+        data_02097dd0->cur = data_02097dd0->unk_08; \
     } while (0)
-#define HEAP_POP(saved) (data_02097dd0[0] = (saved))
+#define HEAP_POP(saved) (data_02097dd0->cur = (saved))
 
 #define DELETE_V(field)                 \
     do {                                \
@@ -508,10 +494,6 @@ static inline void Ov015TaskBase_Dtor(void *p) {
         }                               \
     } while (0)
 
-static inline s32 Ov015_FxMul(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
-
 extern "C" {
 struct Ov015Slot524 {
     s32 a;
@@ -521,12 +503,11 @@ struct Ov015Slot524 {
 };
 struct Ov015SlotHost { u8 pad[0x524]; Ov015Slot524 slots[8]; };
 
-extern void **data_0214a420;
 Ov015V *func_020657b0(void *a, void *b);
 
 static inline void Ov015_DeleteFound(void *heap, void *key) {
     Ov015V *o = func_020657b0(heap, key);
-    u32 saved;
+    void *saved;
     if (o != NULL) {
         HEAP_PUSH(saved);
         if (o != NULL) {
@@ -560,49 +541,26 @@ struct Ov015AnimFlags {
     u16 rest : 7;
 };
 
-struct Ov015D48Bits2 {
-    u8 lo : 4;
-    u8 b4 : 1;
-    u8 hi : 3;
-};
-struct Ov015Bgm {
-    u16 active : 1;
-    u16 rest : 15;
-    u16 unk2;
-    u16 unk4;
-    u16 unk6;
-    u16 unk8;
-};
-extern Ov015Pad *data_02097e48;
-void func_0204aab0(Ov015Bgm *p);
+void func_0204aab0(SndQueue *queue, u16 value); // defined in Main/Snd/SndQueue.cpp
 static inline void Ov015_BgmFade(void) {
-    Ov015Bgm *p = (Ov015Bgm *)data_02097e48;
-    if (p->active) {
-        if (p->unk6 != 0xffff || p->unk4 != 0x25) {
+    SndQueue *p = data_02097e48.queue;
+    if (p->flag0) {
+        if (p->unk_06 != 0xffff || p->unk_04 != 0x25) {
             u16 v;
-            if (p->unk2 != 10 && p->unk2 != 0) {
-                if (p->unk6 != 0xffff) {
-                    func_0204aab0(p);
+            if (p->unk_02 != 10 && p->unk_02 != 0) {
+                if (p->unk_06 != 0xffff) {
+                    func_0204aab0(p, p->unk_06);
                 }
                 v = 1;
             } else {
                 v = 0;
             }
-            p->unk2 = v;
-            p->unk6 = 0x25;
-            p->unk8 = 10;
+            p->unk_02 = v;
+            p->unk_06 = 0x25;
+            p->unk_08 = 10;
         }
     }
 }
-struct Ov015Gfx7f8 {
-    u8 pad[0xfc];
-    u32 fc;
-    u8 pad2[0x240 - 0x100];
-    Ov015Vec a;
-    Ov015Vec b;
-    Ov015Vec c;
-};
-extern Ov015Gfx7f8 NNS_G3dGlb;
 }
 
 extern "C" {

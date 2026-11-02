@@ -10,7 +10,7 @@ void func_ov002_021e4a78(void *self, u8 *src) {
     FIELD(self, 0x4, s32) = 0;
     FIELD(self, 0x8, s32) = 0;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0xc, void *) != NULL) {
             Heap_FreeArray(FIELD(self, 0xc, void *));
@@ -29,9 +29,9 @@ void func_ov002_021e4a78(void *self, u8 *src) {
         s = p + 4;
         FIELD(FIELD(self, 0xc, u8 *) + i * 12, 0x0, u16) = i;
         FIELD(FIELD(self, 0xc, u8 *) + i * 12, 0x4, u8 *) = s;
-        s = s + (STD_GetStringLength(s) + 1);
+        s = s + (STD_GetStringLength((char *)s) + 1);
         FIELD(FIELD(self, 0xc, u8 *) + i * 12, 0x8, u8 *) = s;
-        STD_GetStringLength(s);
+        STD_GetStringLength((char *)s);
         p += len;
     }
 }

@@ -1,7 +1,6 @@
 #include "ov012/ov012.h"
 
 extern "C" {
-extern void *ActorMgr_GetGroup(void *mgr, s32 kind);
 extern u16 ActorGroup_CountKind(void *p, s32 kind);
 
 static inline u16 Ov012_HpPct(Ov012Actor *self) {
@@ -35,7 +34,7 @@ void func_ov012_02209268(Ov012Actor *self) {
         return;
     }
     self->unk_90 = 0xffff;
-    pl = func_ov000_0219bf90();
+    pl = (Ov012Actor *)func_ov000_0219bf90();
     if (pl == NULL) {
         return;
     }
@@ -129,8 +128,8 @@ void func_ov012_022096fc(Ov012Actor *self) {
     }
     func_ov003_021d452c(self);
 }
-extern u8 data_ov012_0220b400[];
-extern u8 data_ov012_0220b406[];
+extern char data_ov012_0220b400[];
+extern char data_ov012_0220b406[];
 extern void func_ov000_021911c8(void *p, s32 a);
 extern void func_0204a028(void *a, s32 b, Ov012Vec *c, s32 d);
 
@@ -228,7 +227,7 @@ void func_ov012_02209740(Ov012Actor *self) {
         }
         break;
     }
-    Actor_Move(self, 0);
+    Actor_Move((Actor *)self, 0);
     self->unk_48->unk_9a_5 = 1;
     func_ov000_021987b8(self->unk_48, 0, 0, 0);
     if (self->unk_48->unk_50 & 0x20000000) {

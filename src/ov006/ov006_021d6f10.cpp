@@ -7,7 +7,7 @@ typedef struct ov006_Task021d6f10 {
     u8 unkC[0x10];
     void *unk1C;
     void *unk20;
-    ov006_Model *unk24;
+    Model *unk24;
     void *unk28;
     void *unk2C;
     void *unk30;
@@ -32,7 +32,7 @@ void func_ov006_021d6f10(ov006_Task021d6f10 *self) {
         func_ov006_021e28b4(self->unk30);
         func_ov006_021e1bb4(self->unk28);
         func_ov006_021e2490(self->unk2C);
-        ov006_Model_PlayPart(self->unk24, 0);
+        Model_PlayPart(self->unk24, 0);
         if (self->unk34 != NULL) {
             VCALL(self->unk34, 20);
         }

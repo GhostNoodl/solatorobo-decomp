@@ -42,7 +42,9 @@ typedef struct Model {
     /* 0x078 */ ModelPart *parts;
     /* 0x07c */ s32 unk_07c;
     /* 0x080 */ s32 numParts;
-    /* 0x084 */ u8 unk_084[4];
+    /* 0x084 */ u8 unk_084;
+    /* 0x085 */ u8 unk_085;
+    /* 0x086 */ u8 unk_086[2];
     /* 0x088 */ PlttRes pltt;
     /* 0x0ec */ PlttRes *extPltt;
     /* 0x0f0 */ u8 unk_0f0[0xc];
@@ -53,10 +55,15 @@ typedef struct Model {
         };
         ModelPos pos[1];
     };
-    /* 0x104 */ u8 unk_104[0x4c];
+    /* 0x104 */ u8 unk_104[8];
+    /* 0x10c */ s32 unk_10c;
+    /* 0x110 */ s32 unk_110;
+    /* 0x114 */ u8 unk_114[0x3c];
     /* 0x150 */ s32 unk_150;
     /* 0x154 */ u16 color;
-    /* 0x156 */ u8 unk_156[0xa];
+    /* 0x156 */ u8 unk_156[2];
+    /* 0x158 */ void *unk_158;
+    /* 0x15c */ u8 unk_15c[4];
 } Model; // size 0x160
 
 extern void func_02041440(Model *model, const char *name, int a);

@@ -4,7 +4,6 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
-extern void Actor_Move(Ov009Obj *self, s32 turn);
 
 void func_ov009_021fc51c(Ov009ActVt_02216348 *self) {
     Ov009Sub40 *st;
@@ -37,7 +36,7 @@ void func_ov009_021fc51c(Ov009ActVt_02216348 *self) {
         }
         break;
     }
-    Actor_Move(self, 0);
+    Actor_Move((Actor *)self, 0);
     if (self->unk_48 != NULL) {
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
     }

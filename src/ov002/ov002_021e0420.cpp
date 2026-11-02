@@ -43,8 +43,6 @@ BOOL func_ov002_021e046c(void *self, void *ev) {
 // removes its accesses (round frA). The template is read through a pointer to
 // the last cell (chr first), and the object's two positions are read into
 // locals before the vector is built (round frB).
-void MTX_Copy43To44_(void *src, void *dst);
-void MTX_Concat44(void *a, void *b, void *ab);
 void func_ov002_021e3b6c(s32 *out, s32 *v, void *m);
 
 static inline void SetV0488(s32 *v, s32 x, s32 y, s32 z) {
@@ -62,8 +60,8 @@ Oam0488 *func_ov002_021e0488(void *ctx, u16 *cell, Oam0488 *oam, u16 *num) {
         s32 mtx[16];
         u8 *o;
         n = 0;
-        MTX_Copy43To44_(data_02092844, mtx);
-        MTX_Concat44(mtx, data_02092800, mtx);
+        MTX_Copy43To44_((MtxFx43 *)data_02092844, (MtxFx44 *)mtx);
+        MTX_Concat44((MtxFx44 *)mtx, (MtxFx44 *)data_02092800, (MtxFx44 *)mtx);
         for (o = FIELD(cell, 0x8, u8 *); o != NULL; o = FIELD(o, 0x70, u8 *)) {
             if (FIELD(o, 0x4a, u8) == 2) {
                 u32 y;

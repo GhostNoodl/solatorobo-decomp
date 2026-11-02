@@ -13,8 +13,8 @@ void *func_ov002_021e35c0(void *self, u16 id) {
     return node;
 }
 
-void func_ov002_021e35e8(void *a, void *b, Vec3 *pos, s32 d) {
-    Vec3 tmp;
+void func_ov002_021e35e8(void *a, void *b, VecFx32 *pos, s32 d) {
+    VecFx32 tmp;
     tmp.x = pos->x;
     tmp.y = pos->y;
     tmp.z = pos->z;
@@ -45,15 +45,15 @@ BOOL func_ov002_021e36a0(void) {
 }
 
 void *Ov002Vt_021f002c_DtorDelete(void *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021f002c;
     HEAP_PUSH(saved);
     {
         void *p = FIELD(self, 0x30, void *);
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558(p);
-                func_02041278((u8 *)p + 0x88);
+                func_02041558((Model *)p);
+                func_02041278((PlttRes *)((u8 *)p + 0x88));
                 Heap_Free(p);
             }
             FIELD(self, 0x30, void *) = NULL;
@@ -70,15 +70,15 @@ void *Ov002Vt_021f002c_DtorDelete(void *self) {
 }
 
 void *Ov002Vt_021f002c_Dtor(void *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021f002c;
     HEAP_PUSH(saved);
     {
         void *p = FIELD(self, 0x30, void *);
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558(p);
-                func_02041278((u8 *)p + 0x88);
+                func_02041558((Model *)p);
+                func_02041278((PlttRes *)((u8 *)p + 0x88));
                 Heap_Free(p);
             }
             FIELD(self, 0x30, void *) = NULL;

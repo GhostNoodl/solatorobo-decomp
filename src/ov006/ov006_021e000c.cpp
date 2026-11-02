@@ -70,14 +70,14 @@ static inline void ov006_Unk021e000c_Kill(int id) {
     if (id != -1) {
         Object *o = (Object *)func_020657b0(data_0214a420, id);
         if (o != NULL) {
-            void *saved = data_02097dd0->current;
-            data_02097dd0->current = data_02097dd0->unk8;
+            void *saved = data_02097dd0->cur;
+            data_02097dd0->cur = data_02097dd0->unk_08;
             if (o != NULL) {
                 if (o != NULL) {
                     o->vtbl->dtor(o);
                 }
             }
-            data_02097dd0->current = saved;
+            data_02097dd0->cur = saved;
         }
     }
 }
@@ -160,11 +160,11 @@ void func_ov006_021e000c(ov006_Unk021e000c *self) {
         fx32 t = (self->timer << 12) / 20;
         VObj *o = func_020657b0(data_0214a420, self->id1);
         if (o != NULL) {
-            o->v14(0x1000, FX_Mul(t, 0x800) + 0x1000, 0x1000);
+            o->vfunc_14(0x1000, FX_Mul(t, 0x800) + 0x1000, 0x1000);
         }
         o = func_020657b0(data_0214a420, self->id2);
         if (o != NULL) {
-            o->v1C(FX_Mul(t, -0x80000), 0, *(s32 *)((u8 *)o + 0x60));
+            o->vfunc_1c(FX_Mul(t, -0x80000), 0, *(s32 *)((u8 *)o + 0x60));
         }
         self->fade += 0xcc;
         if (self->fade > 0x1000) {

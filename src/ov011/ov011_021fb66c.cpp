@@ -74,8 +74,6 @@ extern "C" {
 extern const Ov011Mgr2Entry data_ov011_022072d8[];
 void *Ov003Vt_021f7d2c_Dtor(void *p);
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
-void func_ov003_021da40c(void *p);
-void func_ov003_021da48c(void *p, u8 a);
 void func_ov011_0220205c(void *p);
 void func_ov011_02202130(void *p);
 void func_ov011_02202fbc(void *p);
@@ -87,12 +85,12 @@ void *func_ov011_021fb66c(Ov011E40 *self) {
 }
 
 static inline void Ov011Mgr2_Reset(Ov011Mgr2 *self) {
-    u32 saved;
+    void *saved;
     self->b1 = 0;
     self->count = 0;
     self->unk_04 = -1;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->arr8 != NULL) {
         __cxa_vec_delete(self->arr8, 0x40, 8, func_ov011_021fb66c);
         self->arr8 = NULL;
@@ -239,11 +237,10 @@ struct Ov011ArgB {
 void ActorMgr_SendMsg(u16 a, u16 b, u8 c, s32 d, s32 e, void *f);
 u32 func_ov011_02201244(void *self);
 void *func_ov011_02201254(void *self);
-void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
-BOOL Ov011Mov_Start(void *self, const Ov011Vec *pos, const Ov011Vec *vel, s32 scale, s32 accel);
-Ov011Vec *Ov011Mov_GetPos(void *self);
-extern const Ov011Vec data_ov011_0220729c;
-extern const Ov011Vec data_ov011_022072a8;
+BOOL Ov011Mov_Start(void *self, const VecFx32 *pos, const VecFx32 *vel, s32 scale, s32 accel);
+VecFx32 *Ov011Mov_GetPos(void *self);
+extern const VecFx32 data_ov011_0220729c;
+extern const VecFx32 data_ov011_022072a8;
 
 static inline void Ov011_SendB(u16 id, s32 kind, s16 x, s16 y) {
     Ov011ArgB b;
@@ -282,9 +279,9 @@ static inline void Ov011Ent_RestoreB2(Ov011Ent *e, s32 to, s32 frames) {
 }
 
 static inline void Ov011_Attach(Ov011PNode *p, Ov011Obj *owner, Ov011Obj *a) {
-    Ov011Vec v;
-    Ov011Vec o;
-    Ov011Vec r;
+    VecFx32 v;
+    VecFx32 o;
+    VecFx32 r;
     v.x = p->v.x;
     v.y = p->v.y;
     v.z = p->v.z;
@@ -317,8 +314,8 @@ void func_ov011_021fb9b8(Ov011Mgr2 *self, Ov011Obj *owner) {
             self->b1 = 0;
         }
         {
-            Ov011Vec a = data_ov011_0220729c;
-            Ov011Vec b = data_ov011_022072a8;
+            VecFx32 a = data_ov011_0220729c;
+            VecFx32 b = data_ov011_022072a8;
             func_ov011_02202fbc(&self->mov);
             Ov011Mov_Start(&self->mov, &a, &b, 0x500, 0x80);
         }

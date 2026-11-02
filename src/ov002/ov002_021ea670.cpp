@@ -16,7 +16,7 @@ void *Ov002Vt_021f06bc_DtorDelete(void *self) {
     for (p = FIELD(self, 0xa8, s16 *); p != NULL; p = FIELD(self, 0xa8, s16 *)) {
         t = p[1];
         if (t == 1 || t == 3 || t == 7 || t == 10) {
-            func_0204aaec(data_02097e48, p);
+            func_0204aaec(data_02097e48.queue, (SndCmd *)p);
         }
         func_ov002_021ec2ac((u8 *)self + 0x94);
     }
@@ -37,7 +37,7 @@ void *Ov002Vt_021f06bc_Dtor(void *self) {
     for (p = FIELD(self, 0xa8, s16 *); p != NULL; p = FIELD(self, 0xa8, s16 *)) {
         t = p[1];
         if (t == 1 || t == 3 || t == 7 || t == 10) {
-            func_0204aaec(data_02097e48, p);
+            func_0204aaec(data_02097e48.queue, (SndCmd *)p);
         }
         func_ov002_021ec2ac((u8 *)self + 0x94);
     }

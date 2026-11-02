@@ -76,13 +76,13 @@ void *func_ov004_021cce88(void) {
 }
 
 void func_ov004_021ccf10(void) {
-    u32 saved;
+    void *saved;
     if (data_ov004_021cf860 != NULL) {
         data_ov004_021cf860(data_ov004_021cf864, 0x2010000);
     }
     data_ov004_021cf860 = NULL;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (data_ov004_021cf864 != NULL) {
         Ov004V *p = data_ov004_021cf864;
         if (p != NULL) {

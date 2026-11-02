@@ -4,7 +4,6 @@ extern "C" {
 
 void func_ov002_021e3b40(s32 *out, s32 x, s32 z, s32 *origin);
 
-void func_02041c20(void *a, int b, void *c);
 
 static inline void *ov002_Model_GetPart(void *self, int idx) {
     if (idx >= FIELD(self, 0x80, s32)) {
@@ -26,7 +25,7 @@ static inline void ov002_Model_PlayPart(void *model, int idx) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
     }
-    func_02042628(model, anim, part, 0);
+    func_02042628((Model *)model, anim, (ModelPart *)part, 0);
 }
 
 static inline void updateModel(u8 *m) {
@@ -36,20 +35,20 @@ static inline void updateModel(u8 *m) {
     FIELD(m, 0x38, s32) = v[0];
     FIELD(m, 0x3c, s32) = v[1];
     FIELD(m, 0x40, s32) = v[2];
-    if (FIELD(m, 0x1c, void *) != NULL && func_0203e63c(FIELD(m, 0x20, void *))) {
-        NNS_G3dGlbSetBaseTrans(m + 0x38);
-        NNS_G3dGlbSetBaseScale(m + 0x44);
+    if (FIELD(m, 0x1c, void *) != NULL && func_0203e63c((unsigned int)FIELD(m, 0x20, void *))) {
+        NNS_G3dGlbSetBaseTrans((VecFx32 *)(m + 0x38));
+        NNS_G3dGlbSetBaseScale((VecFx32 *)(m + 0x44));
         MI_Copy36B(m + 0x50, data_020928b4);
-        NNS_G3dGlb.fc &= ~0xa4;
+        NNS_G3dGlb.flag &= ~0xa4;
         NNS_G3dGlbFlushVP();
-        NNS_G3dDraw(FIELD(m, 0x1c, void *));
+        NNS_G3dDraw((NNSG3dRenderObj *)FIELD(m, 0x1c, void *));
         NNS_G3dGeFlushBuffer();
     }
 }
 
 void func_ov002_021dc58c(void *self, void *ev) {
     if (FIELD(self, 0x10, void *) != NULL) {
-        func_02041c20(FIELD(self, 0x10, void *), 6, FIELD(FIELD(ev, 0x4, u8 *), 0x6c, void *));
+        func_02041c20((Model *)FIELD(self, 0x10, void *), 6, FIELD(FIELD(ev, 0x4, u8 *), 0x6c, void *));
         ov002_Model_PlayPart(FIELD(self, 0x10, void *), 6);
     }
     if (FIELD(self, 0x18, s32) != 20 && FIELD(self, 0x18, s32) / 10 != 0) {

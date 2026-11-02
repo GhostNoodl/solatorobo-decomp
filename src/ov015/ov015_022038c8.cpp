@@ -2,8 +2,6 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
-void *func_02049a48(void *a, int b, int c, int d, int e);
 extern u8 *data_02097dc8;
 extern u8 *data_ov000_021ccd44;
 extern u8 data_ov000_021ccd34;
@@ -15,18 +13,12 @@ void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215bb14(void *a, void *b);
 void func_ov015_02203ee0(Ov015Scene2a08 *self);
 void func_ov015_02207c30(Ov015Ship *p);
-void VEC_Normalize(void *src, void *dst);
-void VEC_MultAdd(s32 scale, const Ov015Vec *dir, const Ov015Vec *base, Ov015Vec *out);
 BOOL func_ov000_021633ac(void *p);
 extern Ov015Vec data_ov015_02212614;
 extern Ov015Vec data_ov015_02212620;
 void func_ov000_02163594(void *p);
 void func_ov000_0217357c(void *self);
 void func_ov015_0220daf4(void *a, Ov015Vec *pos, s32 b, s32 c, s32 ang, s32 d);
-extern u8 data_02092844[];
-extern u8 data_02092800[];
-void MTX_LookAt(void *a, void *b, void *c, void *d);
-void MTX_PerspectiveW(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, void *g);
 void func_ov015_02208070(Ov015Ship *p);
 void *func_0206ec8c(u16 id);
 extern u8 *data_0214a424;
@@ -117,17 +109,17 @@ void func_ov015_02203ab8(Ov015Scene2a08 *self) {
         func_ov015_02203ee0(self);
         break;
     }
-    k = Ov015_FxMul(0x1000 - self->unk_80->unk_38, 0x3000);
+    k = FX_Mul(0x1000 - self->unk_80->unk_38, 0x3000);
     v.x = -0x64a4;
     v.y = 0;
     v.z = 0x3ae1;
-    VEC_Normalize(&v, &v);
-    VEC_MultAdd(k, &v, &data_ov015_02212614, &out);
+    VEC_Normalize((VecFx32 *)&v, (VecFx32 *)&v);
+    VEC_MultAdd(k, (VecFx32 *)&v, (VecFx32 *)&data_ov015_02212614, (VecFx32 *)&out);
     self->unk_44.eye = out;
-    VEC_MultAdd(k, &v, &data_ov015_02212620, &out);
+    VEC_MultAdd(k, (VecFx32 *)&v, (VecFx32 *)&data_ov015_02212620, (VecFx32 *)&out);
     self->unk_44.at = out;
     if (self->unk_8c != NULL && !func_ov000_021633ac(self->unk_8c)) {
-        u32 saved;
+        void *saved;
         Ov015Menu *o;
         Ov015Scene2a08 *t;
         void *s;
@@ -177,15 +169,15 @@ void func_ov015_02203d60(void) {
 }
 
 static inline void Ov015_02203d64_Cam(Ov015Scene2a08 *self) {
-    NNS_G3dGlb.a = self->unk_44.eye;
-    NNS_G3dGlb.b = self->unk_44.up;
-    NNS_G3dGlb.c = self->unk_44.at;
-    MTX_LookAt(&self->unk_44.eye, &self->unk_44.up, &self->unk_44.at, data_02092844);
-    NNS_G3dGlb.fc &= ~0xe8;
+    NNS_G3dGlb.camPos = *(VecFx32 *)&self->unk_44.eye;
+    NNS_G3dGlb.camUp = *(VecFx32 *)&self->unk_44.up;
+    NNS_G3dGlb.camTarget = *(VecFx32 *)&self->unk_44.at;
+    MTX_LookAt((VecFx32 *)(&self->unk_44.eye), (VecFx32 *)(&self->unk_44.up), (VecFx32 *)(&self->unk_44.at), (MtxFx43 *)data_02092844);
+    NNS_G3dGlb.flag &= ~0xe8;
     if (self->unk_44.projDirty == 1) {
         MTX_PerspectiveW(self->unk_44.aspect, self->unk_44.nearClip, self->unk_44.farClip, self->unk_44.fovSin,
-                      self->unk_44.fovCos, 0x1000, data_02092800);
-        NNS_G3dGlb.fc &= ~0x50;
+                      self->unk_44.fovCos, 0x1000, (MtxFx44 *)data_02092800);
+        NNS_G3dGlb.flag &= ~0x50;
         self->unk_44.projDirty = 0;
     }
 }
@@ -279,7 +271,7 @@ BOOL func_ov015_02204030(Ov015Menu *self, Ov015MenuItem *item) {
 }
 
 void func_ov015_02204110(Ov015Scene2c08 *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_3c);
     HEAP_POP(saved);

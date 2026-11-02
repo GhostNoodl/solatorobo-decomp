@@ -27,7 +27,6 @@ BOOL func_02044e38(ov006_Unk02097e40 *a, int b);
 void Wh_SetGgid(ov006_Unk02097e40 *a, u32 b);
 void func_02046a78(ov006_Unk02097e40 *a, void *b, u32 c);
 void OS_GetOwnerInfo(void *a);
-void MI_CpuCopy8(const void *src, void *dst, u32 size);
 int WM_GetLinkLevel(void);
 BOOL func_ov006_021e5ef0(const ov006_MenuData *data);
 void func_ov006_021e5050(ov006_Unk021ec888 *self);
@@ -81,7 +80,7 @@ void func_ov006_021e4348(ov006_Unk021ec888 *self) {
         Wh_SetGgid(data_02097e40, 0x401336);
         func_02046a78(data_02097e40, self->unkF4, ov006_GetOwnerName(self->unkF4, 0x16));
         data_02097e40->unk80 = (void *)func_ov006_021e5ef0;
-        data_02097dd0->unk18 = 0;
+        data_02097dd0->vblankFunc = NULL;
         ov006_Menu_SetState(self, 3);
         break;
     case 4:

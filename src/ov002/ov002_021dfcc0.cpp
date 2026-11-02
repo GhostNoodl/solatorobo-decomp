@@ -10,8 +10,8 @@ s32 func_02049bdc(void *a, int b, int c);
 static inline void ov002_CamMove(u8 *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {
     FIELD(c, 0x90, s32) = 15;
     FIELD(c, 0x94, s32) = 15;
-    *(Vec3 *)(c + 0x98) = *(Vec3 *)FIELD(c, 0x8c, u8 *);
-    *(Vec3 *)(c + 0xa4) = *(Vec3 *)(FIELD(c, 0x8c, u8 *) + 0xc);
+    *(VecFx32 *)(c + 0x98) = *(VecFx32 *)FIELD(c, 0x8c, u8 *);
+    *(VecFx32 *)(c + 0xa4) = *(VecFx32 *)(FIELD(c, 0x8c, u8 *) + 0xc);
     FIELD(c, 0xb0, s32) = px;
     FIELD(c, 0xb4, s32) = py;
     FIELD(c, 0xb8, s32) = pz;
@@ -64,7 +64,7 @@ void func_ov002_021dfcc0(void *self) {
     u8 *cam;
     void *mgr;
     u8 *cur;
-    u8 *pad = data_02097dc8;
+    u8 *pad = (u8 *)data_02097dc8;
     s32 trg = FIELD(pad, 0x12, u16);
     u16 rep = FIELD(pad, 0x16, u16);
     u8 *unit = GetUnit021dfcc0(self);

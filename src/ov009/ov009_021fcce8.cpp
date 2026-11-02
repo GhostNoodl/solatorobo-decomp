@@ -3,8 +3,6 @@
 extern "C" {
 
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd64;
-extern void *data_ov000_021ccd30;
 extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_02049564(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
@@ -34,7 +32,7 @@ void Ov009ActVt_02216750_Init(Ov009ActVt_02216750 *self) {
         return;
     }
     self->pos.y += 0x1000;
-    if (data_ov000_021ccd54->unk_ca == 0x11) {
+    if (data_ov000_021ccd54->unk_ca.c[0] == 0x11) {
         self->pos.y += 0x1000;
     }
 }
@@ -44,7 +42,7 @@ void Ov009ActVt_02216750_Start(Ov009ActVt_02216750 *self) {
     func_ov003_021d112c(self);
     self->unk_f0 = self->pos;
     self->unk_fc = self->pos;
-    if (data_ov000_021ccd54->unk_ca != 0x11) {
+    if (data_ov000_021ccd54->unk_ca.c[0] != 0x11) {
         s48 = self->unk_48;
         s48->unk_9a_1 = 0;
         s48->unk_9a_4 = 0;
@@ -80,16 +78,14 @@ static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
     return Ov009_Sqrt64(sq);
 }
 
-static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {
+static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->unk_d4 != 0;
 }
 
-extern void *data_ov000_021ccd68;
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern Ov009Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern Ov009Actor *func_ov003_021d69a0(Ov009Actor *self, s32 id, s32 a);
 extern void func_01ffc9fc(Ov009Vec *dst, Ov009Vec *src, u16 angle);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
 
 void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
@@ -147,7 +143,7 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
                 time = 0x1a4;
             } else {
                 time = 0x12c;
-                if (data_ov000_021ccd54->unk_ca != 2) {
+                if (data_ov000_021ccd54->unk_ca.c[0] != 2) {
                     time = 0x5a;
                 }
             }

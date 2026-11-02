@@ -39,17 +39,14 @@ u8 *func_ov015_0220765c(Ov015Ship *p);
 void func_ov015_02207858(Ov015Ship *p);
 void *func_ov000_0218e9c4(void *p);
 void *func_ov000_0218fe1c(void *p);
-void func_02041218(void *p);
-void func_02041440(void *p, void *name, int c);
 void *Ov015Result_Ctor(void *p);
 void func_ov015_0220f470(void *p);
-void *func_020359d0(void *a, int b, int c);
 
 static inline void *Ov015_NewTex(void) {
     u8 *t = (u8 *)Heap_Alloc(0x160);
     if (t != NULL) {
-        func_02041218(t + 0x88);
-        func_02041440(t, NULL, 0);
+        func_02041218((PlttRes *)(t + 0x88));
+        func_02041440((Model *)t, (char *)NULL, 0);
     }
     return t;
 }

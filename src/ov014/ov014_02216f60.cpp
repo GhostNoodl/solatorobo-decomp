@@ -1,10 +1,5 @@
 #include "ov014/ov014.h"
 
-typedef s16 fx16;
-typedef s32 fx32;
-typedef Ov014Vec VecFx32;
-struct VecFx16 { fx16 x, y, z; };
-#define FX32_ONE 0x1000
 
 // A header's zero rotation and vector, plus copies made at startup, next to this TU's name,
 // colour scale and offset, which other functions read. The readers of 0x021fa8f8..0x021fc220
@@ -216,12 +211,9 @@ void func_ov014_021fad9c(Ov014Act_021fa6a0 *self) {
     self->unk_40->state++;
 }
 
-extern const u8 data_ov014_022170fe[];
-extern const u8 data_ov014_02217104[];
+extern char data_ov014_022170fe[];
+extern char data_ov014_02217104[];
 extern void *data_0214a420;
-extern void *data_ov000_021ccd68;
-extern BOOL func_ov000_02191120(void *a);
-extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
 extern void *func_020657b0(void *a, void *b);
 extern void func_ov014_021fbb90(Ov014Act_021fa6a0 *self, s16 n);
@@ -543,18 +535,15 @@ extern "C" {
 
 extern const s32 data_ov014_022164e8[];
 extern u8 data_ov014_022172c4[];
-extern void *data_ov000_021ccd68;
 extern void func_ov000_021911c8(void *a, s32 b);
 extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
 extern void func_0203f364(Ov014Sub48 *p);
 extern void func_ov003_021d6a3c(Ov014Actor *self, s32 a, s32 b, s32 c);
 extern Ov014Actor *func_ov000_02192b24(Ov014SpawnDesc *desc);
 extern void func_ov000_0219bebc(Ov014Actor *a, s32 b);
-extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern void func_ov000_0219864c(void *a, s32 b, s32 c);
 extern void *ActorEx_Ctor(void *self);
-extern void *func_ov003_021da940(void *p);
 extern void func_ov000_02194758(void *self);
 
 void func_ov014_021fb8dc(Ov014Act_021fa6a0 *self) {
@@ -722,8 +711,8 @@ Ov014ActEx_021fbd64 *Ov014ActEx_021fbd64_Ctor(Ov014ActEx_021fbd64 *self) {
 #pragma force_active reset
 
 static inline void Ov014_FreeD0(Ov014ActEx_021fbd64 *self) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->unk_d0 != NULL) {
         void *p = self->unk_d0;
         if (p != NULL) {
@@ -784,7 +773,6 @@ extern BOOL func_ov003_021daa0c(void *p, s32 id);
 extern void func_ov003_021daa6c(void *p, s32 id);
 extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
-extern s32 FX_Div(s32 a, s32 b);
 extern void func_020639d4(void *e, s32 a, s32 b);
 extern BOOL func_ov000_0219aca8(Ov014Obj *a, Ov014Obj *b, u16 c, u8 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
@@ -814,7 +802,7 @@ void func_ov014_021fbf0c(Ov014ActEx_021fbd64 *self) {
         func_ov003_021daa6c(self->unk_d0, 0xff);
         self->unk_40->state++;
     case 2: {
-        Ov014Game54 *g;
+        FieldState *g;
         e = func_02066774(data_ov014_022171d0, data_ov014_022171fd, 0, &self->pos);
         e->v14(0x14cd, 0x1800, 0x14cd);
         FLD(s32, e, 0x3c) = 0x1800;
@@ -824,12 +812,12 @@ void func_ov014_021fbf0c(Ov014ActEx_021fbd64 *self) {
         func_ov003_021da9ac(self->unk_d0, 0xfd, e);
         func_02049f44(data_02097e4c, 0x19, &self->pos, 0x140);
         g = data_ov000_021ccd54;
-        g->unk_190_2 = 0;
-        g->unk_190_3 = 1;
-        g->unk_190_4 = 0;
-        g->unk_18d = 0xf;
-        g->unk_18e = 5;
-        g->unk_18f = 5;
+        g->cam.base.shakeX = 0;
+        g->cam.base.shakeY = 1;
+        g->cam.base.shakeZ = 0;
+        g->cam.base.shakeTime = 0xf;
+        g->cam.base.shakeLen = 5;
+        g->cam.base.shakeCur = 5;
         self->unk_40->state++;
     }
     case 3: {

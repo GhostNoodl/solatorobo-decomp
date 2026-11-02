@@ -11,7 +11,7 @@ void func_ov009_02212668(Ov009Actor *self) {
     func_ov000_021984f4(self->unk_44, (u8 *)self + 0x11c, 0);
 }
 
-extern u8 data_ov009_022179b4[];
+extern char data_ov009_022179b4[];
 extern void func_ov000_021911c8(void *model, s32 a);
 
 void func_ov009_0221268c(Ov009ActSpin *self) {

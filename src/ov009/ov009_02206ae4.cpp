@@ -3,23 +3,18 @@
 extern "C" {
 
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd64;
 extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_0203f2b8(void *p);
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern s32 func_02049afc(void *mgr, s32 id);
 
 extern Ov009Vec data_ov009_02215f98[];
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
-extern u16 FX_Atan2(s32 x, s32 z);
 extern Ov009Actor *func_ov000_0219be1c(u16 kind, const Ov009Vec *pos, const void *rot, u16 id, u16 parent);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 extern void func_0204a058(void *mgr, s32 a, s32 b, s32 c);
 
-extern void *data_ov000_021ccd64;
-extern void func_ov000_0218bed8(void *mgr, s32 a, Ov009Actor *actor);
 extern void SndMgr_StopSeqArc(void *mgr, s32 id);
 extern BOOL func_ov000_021b4738(Ov009Actor *a);
 
@@ -151,7 +146,7 @@ void func_ov009_02206e30(Ov009ActVt_022178f0 *self) {
         st = self->unk_40;
         st->timer++;
         if (st->timer > 0x104) {
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
             self->v08();
         }
         break;
@@ -238,7 +233,6 @@ void func_ov009_02207164(Ov009ActVt_022178f0 *self) {
     func_ov000_02198360(self->unk_40, 1, 0);
 }
 
-extern void *data_ov000_021ccd68;
 extern const u16 data_ov009_02215ef0[3];
 extern void func_ov000_0218e8ec(void *mgr, s32 a, s32 b);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);

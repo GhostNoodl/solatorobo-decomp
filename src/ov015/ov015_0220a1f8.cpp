@@ -2,17 +2,13 @@
 
 extern "C" {
 
-s32 FX_Div(s32 a, s32 b);
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
-void VEC_Normalize(void *src, void *dst);
 void func_ov015_0220afcc(Ov015FishState2c *self);
 void func_ov015_0220b1b8(Ov015FishState2c *self);
 void func_ov015_0220ac40(Ov015FishState2c *self, Ov015Fish *p);
 void func_ov015_0220ad68(Ov015FishState2c *self, Ov015Fish *p);
 BOOL func_ov015_0220ae90(Ov015FishState2c *self);
 s32 Rand_UpTo(s32 max);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
-extern void *data_02097e4c;
 extern u8 data_ov015_02212f20[];
 extern u8 data_ov015_02212f04[];
 
@@ -53,7 +49,7 @@ static inline void Ov015_Sounds(void) {
 
 static inline s32 Ov015_Speed(Ov015FishState2c *self) {
     s32 b = Ov015_FxMul64((self->unk_20)->unk_c0.unk_0a << 4, 0x19a) + 0x800;
-    return Interp_SinLerp(Ov015_FxMul(self->unk_18, self->unk_18), b / 5, b);
+    return Interp_SinLerp(FX_Mul(self->unk_18, self->unk_18), b / 5, b);
 }
 
 static inline s32 Ov015_Wait(Ov015FishState2c *self) {
@@ -138,7 +134,7 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
         p->unk_40.y = pos.y;
         p->unk_40.z = pos.z;
         dir.x -= d;
-        VEC_Normalize(&dir, &p->unk_9c);
+        VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->unk_9c));
         func_ov015_0220afcc(self);
         func_ov015_0220b1b8(self);
         if (self->unk_06 <= 0 || p->unk_40.x < p->unk_ac) {
@@ -158,7 +154,7 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
         p->unk_40.y = pos.y;
         p->unk_40.z = pos.z;
         dir.x += d;
-        VEC_Normalize(&dir, &p->unk_9c);
+        VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->unk_9c));
         func_ov015_0220afcc(self);
         func_ov015_0220b1b8(self);
         if (self->unk_06 <= 0 || p->unk_40.x > p->unk_b0) {
@@ -189,15 +185,15 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
         Ov015VecC pos(*(Ov015VecC *)&p->unk_40);
         Ov015VecC dir(*(Ov015VecC *)&p->unk_9c);
         s32 t = FX_Div((0x1e - self->unk_06) << 12, 0x1e000);
-        s32 d = Ov015_FxMul(Ov015_Speed(self), t);
+        s32 d = FX_Mul(Ov015_Speed(self), t);
         BOOL spawn;
         p->unk_40.x = pos.x - d;
         p->unk_40.y = pos.y;
         p->unk_40.z = pos.z;
         p->unk_a8 = d;
-        dir.z = Ov015_FxMul(dir.z, 0xfae);
+        dir.z = FX_Mul(dir.z, 0xfae);
         dir.x -= 0x29;
-        VEC_Normalize(&dir, &p->unk_9c);
+        VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->unk_9c));
         func_ov015_0220afcc(self);
         func_ov015_0220b1b8(self);
         if (self->unk_06 > 0) {
@@ -228,15 +224,15 @@ BOOL Ov015FishState2c_Update(Ov015FishState2c *self, Ov015Fish *p) {
         Ov015VecC pos(*(Ov015VecC *)&p->unk_40);
         Ov015VecC dir(*(Ov015VecC *)&p->unk_9c);
         s32 t = FX_Div((0x1e - self->unk_06) << 12, 0x1e000);
-        s32 d = Ov015_FxMul(Ov015_Speed(self), t);
+        s32 d = FX_Mul(Ov015_Speed(self), t);
         BOOL spawn;
         p->unk_40.x = pos.x + d;
         p->unk_40.y = pos.y;
         p->unk_40.z = pos.z;
         p->unk_a8 = d;
-        dir.z = Ov015_FxMul(dir.z, 0xfae);
+        dir.z = FX_Mul(dir.z, 0xfae);
         dir.x += 0x29;
-        VEC_Normalize(&dir, &p->unk_9c);
+        VEC_Normalize((VecFx32 *)&dir, (VecFx32 *)(&p->unk_9c));
         func_ov015_0220afcc(self);
         func_ov015_0220b1b8(self);
         if (self->unk_06 > 0) {

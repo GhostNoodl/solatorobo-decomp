@@ -2,13 +2,11 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern char data_ov013_0220b88d[];
 extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void HitSphere_Link(Ov013Sub48 *p);
 extern void *func_02049f44(void *a, s32 b, Ov013Vec *c, s32 d);
-extern void Actor_Move(Ov013Obj *self, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
 extern void func_ov000_0218996c(s32 a, s32 b);
@@ -51,7 +49,7 @@ void func_ov013_021fdc30(Ov013Actor *self) {
         self->unk_40->state++;
         self->unk_40->timer = 0;
     }
-    Actor_Move(self, 0);
+    Actor_Move((Actor *)self, 0);
     func_ov000_021987b8(self->unk_48, 1, 0, 0);
     func_ov000_0219aae8(self, self, self->unk_4c->unk_08, 0x20, 1 << (t->id >> 12), NULL, NULL, self->unk_64, 0, 100, 0x1000);
     if (!(self->unk_48->unk_50 & 0x20000000)) {
@@ -76,7 +74,6 @@ void func_ov013_021fdc30(Ov013Actor *self) {
 extern char data_ov013_0220b893[];
 extern char data_ov013_0220aec4[];
 extern void *data_0214a420;
-extern void *data_ov000_021ccd64;
 extern Ov013Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov013Actor *p);
 extern void func_ov000_02191690(void *p);

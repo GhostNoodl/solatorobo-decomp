@@ -73,11 +73,11 @@ static inline void ov002_Cursor_SetMode(u8 *c) {
     func_ov002_021d7620(c + 4);
 }
 
-static inline void ov002_CamMove(u8 *c, const Vec3 *pos, s32 tx, s32 ty, s32 tz) {
+static inline void ov002_CamMove(u8 *c, const VecFx32 *pos, s32 tx, s32 ty, s32 tz) {
     FIELD(c, 0x90, s32) = 20;
     FIELD(c, 0x94, s32) = 20;
-    *(Vec3 *)(c + 0x98) = *(Vec3 *)FIELD(c, 0x8c, u8 *);
-    *(Vec3 *)(c + 0xa4) = *(Vec3 *)(FIELD(c, 0x8c, u8 *) + 0xc);
+    *(VecFx32 *)(c + 0x98) = *(VecFx32 *)FIELD(c, 0x8c, u8 *);
+    *(VecFx32 *)(c + 0xa4) = *(VecFx32 *)(FIELD(c, 0x8c, u8 *) + 0xc);
     if (pos != NULL) {
         FIELD(c, 0xb0, s32) = pos->x;
         FIELD(c, 0xb4, s32) = pos->y;
@@ -163,7 +163,7 @@ void func_ov002_021ddf18(void *self, void *owner, s32 h, u8 *cam) {
     FIELD(self, 0x30, s32) = FIELD(owner, 0x2c, s32);
     cam[0x74] = 5;
     cam[0x75] = 1;
-    ov002_CamMove(FIELD(owner, 0x4, u8 *), (const Vec3 *)(data_ov002_021eef74 + 0x28), 0x99a, 0, 0x148);
+    ov002_CamMove(FIELD(owner, 0x4, u8 *), (const VecFx32 *)(data_ov002_021eef74 + 0x28), 0x99a, 0, 0x148);
     {
         u16 id = FIELD(self, 0x18, u16);
         if (id == 0xffff) {

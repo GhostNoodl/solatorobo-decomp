@@ -3,15 +3,13 @@
 extern "C" {
 
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd68;
-extern u8 data_ov009_022179f1[];
-extern u8 data_ov009_022179b4[];
+extern char data_ov009_022179f1[];
+extern char data_ov009_022179b4[];
 extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern void *func_ov000_02191318(Ov009Sub38 *m, s32 a);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void Actor_MoveToPos(Ov009Actor *self, Ov009Vec *v, s32 a);
-extern s32 Rand_UpTo(s32 max);
 
 static inline Ov009Actor *Ov009_FindActor3(u16 id) {
     if (data_ov000_021ccd68 == NULL) {

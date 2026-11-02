@@ -5,7 +5,6 @@ extern "C" {
 extern void *data_ov013_0220beb4;
 extern char data_ov013_0220b3f8[];
 extern char data_ov013_0220b404[];
-extern void Actor_Move(Ov013Obj *self, s32 a);
 extern void *ActorEx_Ctor(void *self);
 extern void func_ov000_02194758(void *self);
 extern Ov013Actor *func_ov000_0219bf90(void);
@@ -15,7 +14,7 @@ void func_ov013_0220a940(Ov013Actor *self) {
     Ov013Sub38 *s;
     Ov013Sub40 *q;
     u8 v;
-    Actor_Move(self, 0);
+    Actor_Move((Actor *)self, 0);
     s = self->unk_38;
     v = s->unk_be;
     if (v > 1) {
@@ -64,7 +63,6 @@ void Ov013ActEx_0220a9a8_Start(Ov013ActEx_0220a9a8 *self) {
     FLD(s32, self, 0xbc) = FLD(s32, fx, 0x24);
 }
 extern void *data_0214a420;
-extern void *data_ov000_021ccd68;
 extern Ov013V *func_020657b0(void *a, void *b);
 extern void func_0203f364(void *p);
 extern BOOL func_ov000_021b4738(Ov013Actor *a);
@@ -85,15 +83,15 @@ void func_ov013_0220aa7c(Ov013ActEx_0220a9a8 *self) {
         if (self->unk_d4 != 0) {
             Ov013V *fx;
             s32 k = 0x1b33;
-            self->unk_48->unk_38 = Ov013_FxMul(self->unk_d4, k);
-            self->unk_d0 = Ov013_FxMul(self->unk_d4, 0x1000);
+            self->unk_48->unk_38 = FX_Mul(self->unk_d4, k);
+            self->unk_d0 = FX_Mul(self->unk_d4, 0x1000);
             fx = func_020657b0(data_0214a420, self->unk_bc);
             if (fx != NULL) {
                 Ov013Vec v;
                 s32 d = self->unk_d4;
-                v.x = Ov013_FxMul(d, 0x1000);
+                v.x = FX_Mul(d, 0x1000);
                 v.z = v.x;
-                v.y = Ov013_FxMul(d, k - 0x1000);
+                v.y = FX_Mul(d, k - 0x1000);
                 fx->v10(&v);
             }
         }

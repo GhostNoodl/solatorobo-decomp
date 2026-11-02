@@ -33,8 +33,8 @@ typedef struct ov006_Unk021de2e0 {
     ov006_Obj14_021de2e0 *unk14;
     ov006_Obj18_021de2e0 *unk18;
     u32 *unk1C;
-    ov006_Model *unk20;
-    ov006_Model *unk24;
+    Model *unk20;
+    Model *unk24;
     VecFx32 unk28;
     void *unk34;
 } ov006_Unk021de2e0;
@@ -72,7 +72,7 @@ static inline void ov006_Obj18_Update(ov006_Obj18_021de2e0 *o) {
         } else {
             func_ov000_0215fdfc(o->unk18, 2, data_ov006_021ec0a0);
         }
-        o->unk18->v0C();
+        o->unk18->vfunc_0c();
     }
 }
 

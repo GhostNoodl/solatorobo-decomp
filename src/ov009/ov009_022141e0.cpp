@@ -3,7 +3,6 @@
 extern "C" {
 
 extern Ov009Obj *Target_Get(void *p);
-extern void Actor_Move(Ov009Obj *self, s32 a);
 extern s32 func_ov000_0219a510(Ov009Obj *self, u16 mask, const Ov009Vec *pos, s32 r, s32 b, void **out);
 extern Ov009Actor *func_ov000_021985c0(void *p);
 extern void func_ov003_021f0c60(Ov009Obj *self, s32 a);
@@ -19,7 +18,7 @@ void func_ov009_022141e0(Ov009ActorEx *self) {
         return;
     }
     if (self->unk_40->state == 1) {
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         if (self->unk_48 != NULL) {
             func_ov000_021987b8(self->unk_48, 0, 0, 0);
             if (self->unk_48->unk_50 & 0x20000000) {

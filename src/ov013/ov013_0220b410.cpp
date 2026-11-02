@@ -1,7 +1,5 @@
 #include "ov013/ov013.h"
 
-typedef s32 fx32;
-typedef Ov013Vec VecFx32;
 
 // Two vectors built at startup at the start of the overlay's .data. The stub stores every member
 // as an immediate: the original computed them with an expression MWCC folds in __sinit, which the
@@ -48,7 +46,6 @@ public:
 };
 extern "C" {
 
-extern void *data_ov000_021ccd68;
 extern char data_ov013_0220b5b8[];
 extern char data_ov013_0220b5ca[];
 extern Ov013Actor *func_ov000_0219bf90(void);
@@ -58,8 +55,6 @@ extern Ov013Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(Ov013Actor *a, u16 id);
 extern Ov013Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void Actor_Move(Ov013Obj *self, s32 a);
 
 s32 func_ov013_021fc400(Ov013Actor *self) {
     s32 r = 0x10;
@@ -237,7 +232,7 @@ void func_ov013_021fc7e0(Ov013ActVt_0220b5e0 *self) {
         Ef13 *o;
         tgt = self->unk_b8;
         if (self->pos.y < tgt.y) {
-            Actor_Move(self, 0);
+            Actor_Move((Actor *)self, 0);
             if (self->pos.y > tgt.y) {
                 self->pos.y = tgt.y;
             }
@@ -329,7 +324,7 @@ void func_ov013_021fc7e0(Ov013ActVt_0220b5e0 *self) {
             Actor_TurnToPos(self, &tgt, 0x1000);
         }
         self->unk_98 = self->rot[1];
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         o = (Ef13 *)func_020657b0(data_0214a420, self->unk_f4);
         if (o != NULL) {
             Ov013Vec v;

@@ -83,11 +83,11 @@ void func_ov014_0220d274(Ov014Act_02209280 *self) {
             break;
         }
         if (FLD(s16, m, 0xc4) == 1) {
-            Ov014Game54 *g = data_ov000_021ccd54;
-            g->unk_190 |= 0x1c;
-            g->unk_18d = 0x1e;
-            g->unk_18e = 10;
-            g->unk_18f = 10;
+            FieldState *g = data_ov000_021ccd54;
+            g->cam.base.flags |= 0x1c;
+            g->cam.base.shakeTime = 0x1e;
+            g->cam.base.shakeLen = 10;
+            g->cam.base.shakeCur = 10;
             self->unk_40->state++;
             self->unk_40->timer = 0;
             self->unk_f8 = self->step->unk_04;
@@ -302,10 +302,10 @@ void func_ov014_0220d890(Ov014ActEx_0220d70c *self) {
                 FLD(s32, e, 0x50) = -0x64000;
                 func_02049f44(data_02097e4c, 0x19, &self->pos, 0);
                 {
-                    Ov014Game54 *g = data_ov000_021ccd54;
-                    g->unk_190 |= 0x1c;
-                    g->unk_18d = 0x1e;
-                    g->unk_18f = g->unk_18e = 10;
+                    FieldState *g = data_ov000_021ccd54;
+                    g->cam.base.flags |= 0x1c;
+                    g->cam.base.shakeTime = 0x1e;
+                    g->cam.base.shakeCur = g->cam.base.shakeLen = 10;
                 }
             }
             self->unk_40->state++;

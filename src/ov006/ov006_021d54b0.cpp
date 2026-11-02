@@ -159,7 +159,7 @@ BOOL func_ov006_021d56bc(ov006_Task0 *self) {
         self->base.subState++;
     case 1:
         if (data_ov000_021ccd40 != NULL) {
-            VCALL(data_ov000_021ccd40, 4C);
+            VCALL(data_ov000_021ccd40, 4c);
             func_ov006_021cd580(2, 0, 0);
             data_ov006_021ec888->unk15E = 2;
             return TRUE;
@@ -257,8 +257,8 @@ void func_ov006_021d58c8(void) {
 
 #define OV006_DELETE_MEMBER(obj)                                 \
     do {                                                         \
-        void *saved_ = data_02097dd0->current;                   \
-        data_02097dd0->current = data_02097dd0->unk8;            \
+        void *saved_ = data_02097dd0->cur;                   \
+        data_02097dd0->cur = data_02097dd0->unk_08;            \
         if ((obj) != NULL) {                                     \
             if ((obj) != NULL) {                                 \
                 ov006_Unk021d58cc_Member *m_ = (obj);            \
@@ -268,7 +268,7 @@ void func_ov006_021d58c8(void) {
             }                                                    \
             (obj) = NULL;                                        \
         }                                                        \
-        data_02097dd0->current = saved_;                         \
+        data_02097dd0->cur = saved_;                         \
     } while (0)
 
 static inline void ov006_Unk021d58cc_Dtor(ov006_Unk021d58cc *self) {
@@ -277,7 +277,7 @@ static inline void ov006_Unk021d58cc_Dtor(ov006_Unk021d58cc *self) {
     OV006_DELETE_MEMBER(self->unk40);
     self->unk44 = 0;
     self->vtbl = &data_ov000_021cc060;
-    VCALL(self, 5C);
+    VCALL(self, 5c);
 }
 
 ov006_Unk021d58cc *Ov006TaskVt_021ebe40_DtorDelete(ov006_Unk021d58cc *self) {

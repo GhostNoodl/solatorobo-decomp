@@ -15,8 +15,8 @@ void func_ov007_021ccda0(void) {
 }
 
 void func_ov007_021ccdc8(void) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (data_ov007_021cfc60 != NULL) {
         Ov007Scene *p = data_ov007_021cfc60;
         if (p != NULL) {
@@ -74,7 +74,7 @@ void func_ov007_021ccec0(Ov007Scene *s) {
 
 void func_ov007_021ccf9c(Ov007Scene *s) {
     s32 i;
-    u32 saved;
+    void *saved;
     s->unk_64 = 0;
     s->unk_4f = 0;
     OV007_FREE_D(s->unk_18, func_ov000_0218ea20);
@@ -106,7 +106,7 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
     switch (s->state) {
     case 1: {
         s32 m1 = -1;
-        data_02097d48->unk_9e4 = m1;
+        data_02097d48->pltt.id = m1;
         func_0203c9e8(0x3f, m1);
         func_0203cc58(0, 1, m1);
         s->state = 2;
@@ -168,7 +168,7 @@ s32 func_ov007_021cd270(Ov007Scene *s) {
                 s->unk_68->unk_0c |= 0x20000;
                 s->unk_68->unk_1c = 4;
                 s->unk_68->v08();
-                func_ov000_0215c1bc(s->unk_68, 0x8000, MsgRes_GetString(data_02149ef8, 0x76));
+                func_ov000_0215c1bc(s->unk_68, 0x8000, (char *)MsgRes_GetString(data_02149ef8, 0x76));
                 s->unk_68->unk_68 = -0x299a;
                 s->unk_68->v70();
             }
@@ -213,9 +213,9 @@ void func_ov007_021cd58c(Ov007RankA *task, Ov007Scene *s) {
 extern "C" {
 
 void func_ov007_021cd628(Ov007Scene *s) {
-    u32 saved;
+    void *saved;
     Ov007V *p;
-    Ov007Sprite *m;
+    Model *m;
     Ov007Menu8 *t;
     Ov007Menu *mn;
     s32 res;
@@ -273,25 +273,25 @@ void func_ov007_021cd628(Ov007Scene *s) {
             s->idx = 0;
             return;
         }
-        m = (Ov007Sprite *)Heap_Alloc(0x160);
+        m = (Model *)Heap_Alloc(0x160);
         if (m != NULL) {
             res = data_ov007_021cfa50[s->idx].v;
-            func_02041218(m->unk_88);
-            func_02041440(m, res, 0);
+            func_02041218(&m->pltt);
+            func_02041440(m, (const char *)res, 0);
         }
         s->unk_28 = m;
-        func_020417e0(s->unk_28, func_02034d88(p, m->unk_4c));
+        func_020417e0(s->unk_28, func_02034d88(p, m->unk_04c));
         s->unk_28->flags |= 2;
         func_02041d9c(s->unk_28, 2, 0xffff);
         if (data_ov007_021cfa54[s->idx].v != 0) {
-            m = (Ov007Sprite *)Heap_Alloc(0x160);
+            m = (Model *)Heap_Alloc(0x160);
             if (m != NULL) {
                 res = data_ov007_021cfa54[s->idx].v;
-                func_02041218(m->unk_88);
-                func_02041440(m, res, 0);
+                func_02041218(&m->pltt);
+                func_02041440(m, (const char *)res, 0);
             }
             s->unk_2c = m;
-            func_020417e0(s->unk_2c, func_02034d88(p, m->unk_4c));
+            func_020417e0(s->unk_2c, func_02034d88(p, m->unk_04c));
             s->unk_2c->flags |= 2;
             func_02041d9c(s->unk_2c, 0, 0xffff);
         }
@@ -317,7 +317,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
             if (data_ov007_021cfa64[s->idx].v != 1) {
                 return;
             }
-            if (!(data_02097dc8->trg & 1)) {
+            if (!(data_02097dc8->trig & 1)) {
                 return;
             }
             func_0203cb78(0, 0, -1);
@@ -328,7 +328,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
         return;
     case 5: {
         u8 kind = data_ov007_021cfa64[s->idx].v;
-        if (kind != 0 && (data_02097dc8->trg & 1)) {
+        if (kind != 0 && (data_02097dc8->trig & 1)) {
             if (s->timer < 0xf000) {
                 return;
             }
@@ -357,7 +357,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
             if (kind == 0) {
                 return;
             }
-            if (!(data_02097dc8->trg & 1)) {
+            if (!(data_02097dc8->trig & 1)) {
                 return;
             }
             if (kind == 1) {
@@ -371,7 +371,7 @@ void func_ov007_021cd628(Ov007Scene *s) {
         return;
     case 7:
         if (s->timer < 0x1e000 && s->unk_4e == 0) {
-            if (!(data_02097dc8->trg & 1)) {
+            if (!(data_02097dc8->trig & 1)) {
                 return;
             }
             s->unk_4e = 1;
@@ -469,7 +469,7 @@ void func_ov007_021cdff0(Ov007Rs *rs) {
     Ov007RsMat *q;
     q = rs->unk_b0;
     v = q->unk_0c;
-    q->unk_0c = (v & ~0x3f000000) | (Gfx3DState_NextPolyId(&data_02097d48->unk_8b0) << 24);
+    q->unk_0c = (v & ~0x3f000000) | (Gfx3DState_NextPolyId((Gfx3DState *)data_02097d48->unk_8b0) << 24);
 }
 
 void func_ov007_021ce020(Ov007Rs *rs) {
@@ -480,7 +480,6 @@ void func_ov007_021ce020(Ov007Rs *rs) {
 }
 
 
-extern "C" const s16 FX_SinCosTable_[];
 
 
 struct Ov007Bits16 {
@@ -526,22 +525,17 @@ extern "C" {
 extern const Ov007Tbl3 data_ov007_021cfbb4;
 extern Ov007SndQ *data_02097e48;
 extern void *data_02097e4c;
-extern Ov007Ce0 *data_02097ce0;
 extern void *data_0208ba70;
 
-void func_0206e900(char *dst, const char *src);
 void *func_ov000_0218e9c4(void *p);
 BOOL func_ov000_0218f110(void *p);
 void *func_0204b370(void *p);
-void *NNS_G3dGetAnmByIdx(void *file, s32 index);
 void func_0204b8e8(void *cam, void *anim);
 void *func_ov000_0218fe1c(void *p);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 void func_ov000_021915a0(void *p);
-void NNS_G3dRenderObjSetInitFunc(void *p, void *cb);
 void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
-s32 Rand_UpTo(s32 max);
 void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
@@ -698,7 +692,7 @@ static inline void Ov007Cam_SetE(Ov007Cam *o, s32 v) {
 }
 
 static inline void Ov007Mdl_SetCb(Ov007Model *m, void *cb) {
-    NNS_G3dRenderObjSetInitFunc(m->unk_24, cb);
+    NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)cb);
     m->unk_c2 = m->unk_c2 & ~0x20;
 }
 
@@ -748,7 +742,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
     case 1: {
         Ov007Tbl3 tbl;
         Ov007V *p;
-        Ov007Sprite *m;
+        Model *m;
         const char *res;
         if (!s->unk_14->v2c()) {
             break;
@@ -767,24 +761,24 @@ void func_ov007_021ce038(Ov007Scene *s) {
         }
         tbl = data_ov007_021cfbb4;
         p = (Ov007V *)s->unk_14->v10();
-        m = (Ov007Sprite *)Heap_Alloc(0x160);
+        m = (Model *)Heap_Alloc(0x160);
         if (m != NULL) {
             res = tbl.s[s->unk_4c - 1];
-            func_02041218(m->unk_88);
-            func_02041440(m, (s32)res, 0);
+            func_02041218(&m->pltt);
+            func_02041440(m, (const char *)res, 0);
         }
         s->unk_28 = m;
-        func_020417e0(s->unk_28, func_02034d88(p, m->unk_4c));
+        func_020417e0(s->unk_28, func_02034d88(p, m->unk_04c));
         s->unk_28->flags |= 2;
         func_02041d9c(s->unk_28, 2, 0xffff);
-        m = (Ov007Sprite *)Heap_Alloc(0x160);
+        m = (Model *)Heap_Alloc(0x160);
         if (m != NULL) {
             res = "cepct1cmn00";
-            func_02041218(m->unk_88);
-            func_02041440(m, (s32)res, 0);
+            func_02041218(&m->pltt);
+            func_02041440(m, (const char *)res, 0);
         }
         s->unk_2c = m;
-        func_020417e0(s->unk_2c, func_02034d88(p, m->unk_4c));
+        func_020417e0(s->unk_2c, func_02034d88(p, m->unk_04c));
         s->unk_2c->flags |= 2;
         func_02041d9c(s->unk_2c, 0, 0xffff);
         s->sub = 2;
@@ -842,8 +836,8 @@ void func_ov007_021ce038(Ov007Scene *s) {
         }
         {
             void *mgr = data_02149ef8;
-            s->unk_5c[0] = Ov007_MakeWin(MsgRes_GetString(mgr, 0x51));
-            s->unk_5c[1] = Ov007_MakeWin(MsgRes_GetString(mgr, 0x52));
+            s->unk_5c[0] = Ov007_MakeWin((s32)MsgRes_GetString(mgr, 0x51));
+            s->unk_5c[1] = Ov007_MakeWin((s32)MsgRes_GetString(mgr, 0x52));
         }
         func_0203cb78(0x3c000, 0, -1);
         Ov007_RequestBgm(data_02097e48, 3);
@@ -864,7 +858,7 @@ void func_ov007_021ce038(Ov007Scene *s) {
         }
         break;
     case 4: {
-        u16 trg = data_02097dc8->trg;
+        u16 trg = data_02097dc8->trig;
         BOOL moved;
         if (s->unk_4d != 0) {
             if (--s->unk_58 < 0) {
@@ -884,14 +878,14 @@ void func_ov007_021ce038(Ov007Scene *s) {
             break;
         }
         moved = FALSE;
-        if (data_02097dc8->unk_16 & 0x80) {
+        if (data_02097dc8->repeat & 0x80) {
             s->unk_64++;
             if (s->unk_64 >= 2) {
                 s->unk_64 = 1;
             } else {
                 moved = TRUE;
             }
-        } else if (data_02097dc8->unk_16 & 0x40) {
+        } else if (data_02097dc8->repeat & 0x40) {
             s->unk_64--;
             if (s->unk_64 < 0) {
                 s->unk_64 = 0;
@@ -1015,15 +1009,8 @@ void func_ov007_021ce038(Ov007Scene *s) {
 extern "C" {
 
 extern Ov007Game *data_02097e3c;
-BOOL func_02036328(void);
 void func_020444b0(void *a, s32 b, int c, int d);
 void func_02044524(void *a);
-void func_0206e900(char *dst, const char *src);
-Ov007SprSeq *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
-void func_02043d20(void *a, int b);
-void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void func_02043db4(int a, s32 b, s32 c, s32 d);
 void func_ov007_021cf474(Ov007Scene *s);
 
@@ -1042,37 +1029,37 @@ static inline s32 Ov007_Choice(Ov007Scene *s) {
     return r;
 }
 
-static inline void Ov007_DrawModel(Ov007Sprite *m) {
-    Ov007SprAnim *anim;
-    Ov007SprRes *res = m->unk_28;
+static inline void Ov007_DrawModel(Model *m) {
+    ModelPart *anim;
+    ModelRes *res = m->res;
     void *arg;
-    Ov007SprFrame *t;
+    ModelPartRes *t;
     if (res == NULL) {
         return;
     }
     anim = NULL;
-    if (m->unk_80 > 0) {
-        anim = m->unk_78;
+    if (m->numParts > 0) {
+        anim = m->parts;
     }
-    if (anim != NULL && (t = anim->unk_04) != NULL) {
-        arg = t->unk_30;
+    if (anim != NULL && (t = anim->res) != NULL) {
+        arg = t->tex;
     } else {
-        Ov007SprSeq *e = NNS_G2dGetAnimSequenceByIdx(res->unk_0c, 0);
-        arg = NNS_G2dGetCellDataByIdx(res->unk_04, **e->unk_0c);
+        Ov007SprSeq *e = (Ov007SprSeq *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0);
+        arg = NNS_G2dGetCellDataByIdx(res->texRes, **e->unk_0c);
     }
     func_02042628(m, arg, anim, 0);
 }
 
-static inline void *Ov007_GetTex(Ov007Sprite *m, Ov007SprRes *res, Ov007SprAnim *anim) {
-    if (anim != NULL && anim->unk_04 != NULL) {
-        return anim->unk_04->unk_30;
+static inline void *Ov007_GetTex(Model *m, ModelRes *res, ModelPart *anim) {
+    if (anim != NULL && anim->res != NULL) {
+        return anim->res->tex;
     }
-    return NNS_G2dGetCellDataByIdx(res->unk_04, **NNS_G2dGetAnimSequenceByIdx(res->unk_0c, 0)->unk_0c);
+    return NNS_G2dGetCellDataByIdx(res->texRes, **((Ov007SprSeq *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0))->unk_0c);
 }
-static inline void Ov007_DrawModel2(Ov007Sprite *m) {
-    Ov007SprRes *res = m->unk_28;
+static inline void Ov007_DrawModel2(Model *m) {
+    ModelRes *res = m->res;
     if (res != NULL) {
-        Ov007SprAnim *anim = 0 >= m->unk_80 ? NULL : m->unk_78;
+        ModelPart *anim = 0 >= m->numParts ? NULL : m->parts;
         func_02042628(m, Ov007_GetTex(m, res, anim), anim, 0);
     }
 }
@@ -1087,7 +1074,7 @@ static inline void Ov007_SetupView(void) {
     u32 a;
     u32 b;
     Ov007Vec v;
-    func_02043d20(&data_02097d48->unk_8b0, 0);
+    func_02043d20((Gfx3DState *)data_02097d48->unk_8b0, 0);
     a = 0x20000000;
     NNS_G3dGeBufferOP_N(0x2a, &a, 1);
     b = 0x141f00d0;
@@ -1095,7 +1082,7 @@ static inline void Ov007_SetupView(void) {
     v.z = -0x3000;
     v.x = 0;
     v.y = 0;
-    NNS_G3dGeBufferOP_N(0x1c, &v, 3);
+    NNS_G3dGeBufferOP_N(0x1c, (u32 *)&v, 3);
     func_02043db4(1, 0x100000, 0xc0000, 0x7fff);
 }
 
@@ -1103,7 +1090,7 @@ static inline void Ov007_SetupView1(void) {
     u32 b;
     u32 a;
     Ov007Vec v;
-    func_02043d20(&data_02097d48->unk_8b0, 0);
+    func_02043d20((Gfx3DState *)data_02097d48->unk_8b0, 0);
     a = 0x20000000;
     NNS_G3dGeBufferOP_N(0x2a, &a, 1);
     b = 0x141f00d0;
@@ -1111,7 +1098,7 @@ static inline void Ov007_SetupView1(void) {
     v.z = -0x3000;
     v.x = 0;
     v.y = 0;
-    NNS_G3dGeBufferOP_N(0x1c, &v, 3);
+    NNS_G3dGeBufferOP_N(0x1c, (u32 *)&v, 3);
     func_02043db4(1, 0x100000, 0xc0000, 0x7fff);
 }
 
@@ -1155,7 +1142,7 @@ void func_ov007_021cef80(Ov007Scene *s) {
             s->sub = 3;
             return;
         }
-        if (!(data_02097dc8->trg & 1)) {
+        if (!(data_02097dc8->trig & 1)) {
             return;
         }
         func_02044524(data_02097e3c);
@@ -1186,7 +1173,7 @@ void func_ov007_021cf1d8(Ov007Scene *s) {
         if (s->unk_2c != NULL) {
             s->unk_2c->unk_150 = -0x3000;
             s->unk_2c->flags &= ~0x80000;
-            s->unk_2c->attr.alpha = 0x1f;
+            MODEL_FLAGS(s->unk_2c)->alpha = 0x1f;
             Ov007_DrawModel2(s->unk_2c);
             break;
         }

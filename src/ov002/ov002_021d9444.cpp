@@ -40,7 +40,7 @@ void func_ov002_021d9504(void *self) {
     VObject *o = FIELD(self, 0x6c, VObject *);
     while (o != NULL) {
         VObject *next = FIELD(o, 0x70, VObject *);
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (o != NULL) {
             if (o != NULL) {
@@ -51,7 +51,7 @@ void func_ov002_021d9504(void *self) {
         o = next;
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0x70, void *) != NULL) {
             Heap_Free(FIELD(self, 0x70, void *));

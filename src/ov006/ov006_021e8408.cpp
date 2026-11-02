@@ -111,8 +111,8 @@ void func_ov006_021e8408(ov006_Prop021e8408 *self) {
             at.z += Rand_PlusMinus(0x1000);
             eff = func_02065f88(0x325, &at);
             if (eff != NULL) {
-                ((VObj *)eff)->v0C(0xc00);
-                ((VObj *)eff)->v30(&self->rotX);
+                ((VObj *)eff)->vfunc_0c(0xc00);
+                ((VObj *)eff)->vfunc_30(&self->rotX);
             }
         }
         break;

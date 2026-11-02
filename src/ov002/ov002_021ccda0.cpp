@@ -17,42 +17,41 @@ void func_ov002_021ccda0(void) {
 }
 
 void func_ov002_021ccde4(void) {
-    u32 saved;
+    void *saved;
     Unk021f0f80 *p;
     if (data_ov002_021f0f80 == NULL) {
         return;
     }
-    saved = data_02097dd0[0];
-    data_02097dd0[0] = data_02097dd0[2];
+    HEAP_PUSH(saved);
     p = data_ov002_021f0f80;
     if (p != NULL) {
         if (p != NULL) {
             if (p->unk_04 >= 1) {
                 func_02036838(data_02097cdc, data_0208cca0, 7, 0);
-                func_02036838(data_02097cdc, data_0208cc94, 7, 0);
+                func_02036838(data_02097cdc, (char *)data_0208cc94, 7, 0);
                 func_02036838(data_02097cdc, data_0214b105, 7, 0);
             }
             Heap_Free(p);
         }
         data_ov002_021f0f80 = NULL;
     }
-    data_02097dd0[0] = saved;
+    HEAP_POP(saved);
 }
 
 void func_ov002_021cceb4(Unk021cceb4 *self) {
     switch (self->state) {
     case 0:
         if (func_020594bc(data_02fe152c, 5, 1, 0) == 1) {
-            data_0214a424->unk_18.b8 = 0;
-            data_0214a424->unk_18.b9 = 0;
+            data_0214a424->bits18.flag8 = 0;
+            data_0214a424->bits18.flag9 = 0;
         }
         func_020359d0(data_0208cca0, 7, 0);
-        func_020359d0(data_0208cc94, 7, 0);
+        func_020359d0((char *)data_0208cc94, 7, 0);
         func_020359d0(data_0214b105, 7, 0);
         self->state = 1;
     case 1:
         func_02035b90(data_0208cca0, 7);
-        func_02035b90(data_0208cc94, 7);
+        func_02035b90((char *)data_0208cc94, 7);
         if (func_02035b90(data_0214b105, 7) == 0) {
             return;
         }
@@ -60,7 +59,7 @@ void func_ov002_021cceb4(Unk021cceb4 *self) {
     case 2:
         func_ov000_02180660(0x10, 0);
         {
-            BitByte *b = (BitByte *)(data_02097d48 + 0x8b0);
+            BitByte *b = (BitByte *)(data_02097d48->unk_8b0);
             b->b4 = 0;
             b->b5 = 1;
         }
@@ -127,7 +126,7 @@ void func_ov002_021cd124(Task50 *self) {
     void *m;
     VObject *o;
     {
-        u8 *mm = data_02097e48;
+        u8 *mm = (u8 *)data_02097e48.queue;
         if (FIELD(mm, 0x0, Bits16).b0) {
             if (FIELD(mm, 0x6, u16) != 0xffff || FIELD(mm, 0x4, u16) != 13) {
                 if (FIELD(mm, 0x2, u16) != 10 && FIELD(mm, 0x2, u16) != 0) {
@@ -151,13 +150,13 @@ void func_ov002_021cd124(Task50 *self) {
     res = func_02034d88(func_02035f30(data_ov002_021ef3e4, data_ov002_021ef3ec, 2), data_ov002_021ef3ec);
     m = Heap_Alloc(0x160);
     if (m != NULL) {
-        func_02041218((u8 *)m + 0x88);
-        func_02041440(m, NULL, 0);
+        func_02041218((PlttRes *)((u8 *)m + 0x88));
+        func_02041440((Model *)m, NULL, 0);
     }
     FIELD(self, 0x3c, void *) = m;
-    func_020417e0(m, res);
+    func_020417e0((Model *)m, res);
     FIELD(FIELD(self, 0x3c, void *), 0x6c, u32) |= 2;
-    func_02041d9c(FIELD(self, 0x3c, void *), 0, 0);
+    func_02041d9c((Model *)FIELD(self, 0x3c, void *), 0, 0);
     o = (VObject *)Heap_Alloc(0xd4);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;
@@ -247,7 +246,7 @@ void func_ov002_021cd124(Task50 *self) {
     }
     ((VObject *)self)->v0x78(self->unk_4c);
     {
-        void *t = data_ov000_021ccd30;
+        FieldPlayer *t = data_ov000_021ccd30;
         if (t != NULL) {
             if (FIELD(t, 0x118, void *) == NULL) {
                 void *task = Heap_Alloc(0x34);

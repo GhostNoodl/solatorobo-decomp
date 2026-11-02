@@ -3,10 +3,8 @@
 extern "C" {
 
 extern u8 *data_02097dc8;
-extern void *data_02097e4c;
 extern u8 *data_ov000_021ccd44;
 extern Ov015Shared *data_ov015_02213368;
-void *func_02049a48(void *a, int b, int c, int d, int e);
 void *func_ov000_0218084c(void *a, s32 b, s32 c);
 BOOL func_ov000_021633ac(void *p);
 void *func_0206ec8c(u16 id);
@@ -57,7 +55,7 @@ static inline Ov015MenuItem *Ov015_ListNth(Ov015Menu *o) {
     return r;
 }
 void func_ov015_022049f8(Ov015Scene2c08 *self) {
-    u32 saved;
+    void *saved;
     Ov015MenuItem *item;
     u8 *o2;
     u16 id;
@@ -172,7 +170,7 @@ BOOL func_ov015_02204d48(Ov015Menu *self, Ov015MenuItem *ev) {
 }
 
 void *Ov015Scene2b88_Dtor(Ov015Scene2b88 *self) {
-    u32 saved;
+    void *saved;
     SET_VT(self, data_ov015_02212b88);
     HEAP_PUSH(saved);
     DELETE_V(self->unk_3c);
@@ -194,7 +192,7 @@ void *Ov015Scene2b88_Dtor(Ov015Scene2b88 *self) {
 }
 
 void *Ov015Scene2b88_DtorDelete(Ov015Scene2b88 *self) {
-    u32 saved;
+    void *saved;
     SET_VT(self, data_ov015_02212b88);
     HEAP_PUSH(saved);
     DELETE_V(self->unk_3c);

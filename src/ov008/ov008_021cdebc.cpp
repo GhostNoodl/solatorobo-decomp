@@ -57,10 +57,9 @@ extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_0208b318;
 extern void *data_ov000_021cac60;
-void *STD_CopyString(void *dst, const void *src);
 
-extern const Ov008Vec3 data_ov008_021d02d0;
-extern const Ov008Vec3 data_ov008_021d02dc;
+extern const VecFx32 data_ov008_021d02d0;
+extern const VecFx32 data_ov008_021d02dc;
 extern const Ov008Rot3 data_ov008_021d02c8;
 extern char data_ov008_021d04f0[];
 extern char data_ov008_021d04c5[];
@@ -76,9 +75,6 @@ BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *a, const char *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 Ov008MdlAnm *func_ov000_02190a30(void *a, s32 b);
-void func_02041440(void *p, const void *res, int c);
-void func_020417e0(void *a, void *b);
-void func_02041d9c(void *a, int b, int c);
 void func_02041cf8(void *a, int b);
 void func_02041c18(void *a, void *b);
 void func_02041c34(void *a, int b, void *f, int c);
@@ -106,11 +102,11 @@ static inline Ov008Model *Ov008_NewMdl(void) {
 extern "C" {
 
 void func_ov008_021cdebc(Ov008Mgr *m) {
-    Ov008Vec3 pos = data_ov008_021d02d0;
-    Ov008Vec3 tgt = data_ov008_021d02dc;
+    VecFx32 pos = data_ov008_021d02d0;
+    VecFx32 tgt = data_ov008_021d02dc;
     Ov008Rot3 rot = data_ov008_021d02c8;
     void *res;
-    Ov008Sprite *p;
+    Model *p;
     Ov008Caption *c;
     Ov008Panel *pn;
     Ov008Talk *t;
@@ -136,11 +132,11 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     func_ov000_021915a0(m->unk_d0);
     func_ov000_02190a30(m->unk_d0, 0)->unk_112 = 0x400;
 
-    p = (Ov008Sprite *)Heap_Alloc(0x160);
+    p = (Model *)Heap_Alloc(0x160);
     if (p != NULL) {
         const char *name = data_ov008_021d04a7;
         if (name) {
-            func_02041218(p->unk_88);
+            func_02041218(&p->pltt);
             func_02041440(p, name, 0);
         }
     }
@@ -148,11 +144,11 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     func_020417e0(m->unk_d8, (void *)m->unk_d4->v10());
     func_02041d9c(m->unk_d8, 2, 0xffff);
 
-    p = (Ov008Sprite *)Heap_Alloc(0x160);
+    p = (Model *)Heap_Alloc(0x160);
     if (p != NULL) {
         const char *name = data_ov008_021d04a7;
         if (name) {
-            func_02041218(p->unk_88);
+            func_02041218(&p->pltt);
             func_02041440(p, name, 0);
         }
     }
@@ -161,11 +157,11 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     func_02041d9c(m->unk_e0, 0, 0xffff);
     m->unk_e0->unk_150 = -0x1fe66;
 
-    p = (Ov008Sprite *)Heap_Alloc(0x160);
+    p = (Model *)Heap_Alloc(0x160);
     if (p != NULL) {
         const char *name = data_ov008_021d04c5;
         if (name) {
-            func_02041218(p->unk_88);
+            func_02041218(&p->pltt);
             func_02041440(p, name, 0);
         }
     }
@@ -174,21 +170,21 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     func_02041d9c(m->unk_e8, 2, 0xffff);
     func_02041d9c(m->unk_e8, 0, 0xffff);
     func_02041cf8(m->unk_e8, 0);
-    m->unk_e8->unk_85 &= (u8)~4;
-    m->unk_e8->unk_85 &= (u8)~1;
+    m->unk_e8->unk_085 &= (u8)~4;
+    m->unk_e8->unk_085 &= (u8)~1;
     func_02041c18(m->unk_e8, m);
     func_02041c34(m->unk_e8, 2, (void *)func_ov008_021cd26c, 0);
 
     {
-    Ov008Sprite *q;
+    Model *q;
     res = func_02034d88(func_02035d5c(data_0208cca0), data_0208cb74);
-    q = (Ov008Sprite *)Heap_Alloc(0x160);
+    q = (Model *)Heap_Alloc(0x160);
     if (q != NULL) {
         void *file = data_0208cca0;
         void *nm = data_0208cb74;
-        func_02041218(q->unk_88);
-        func_02041440(q, nm, 0);
-        STD_CopyString(q->unk_2c, file);
+        func_02041218(&q->pltt);
+        func_02041440(q, (char *)nm, 0);
+        STD_CopyString(q->name, (char *)file);
     }
     m->unk_ec = q;
     func_020417e0(q, res);
@@ -197,15 +193,15 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     }
 
     {
-    Ov008Sprite *q;
+    Model *q;
     res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-    q = (Ov008Sprite *)Heap_Alloc(0x160);
+    q = (Model *)Heap_Alloc(0x160);
     if (q != NULL) {
         void *file = data_0208cc94;
         void *nm = data_0208cc88;
-        func_02041218(q->unk_88);
-        func_02041440(q, nm, 0);
-        STD_CopyString(q->unk_2c, file);
+        func_02041218(&q->pltt);
+        func_02041440(q, (char *)nm, 0);
+        STD_CopyString(q->name, (char *)file);
     }
     m->unk_f0 = q;
     func_020417e0(q, res);
@@ -213,7 +209,7 @@ void func_ov008_021cdebc(Ov008Mgr *m) {
     func_02041d9c(m->unk_f0, 0, 6);
     }
     m->unk_f0->flags |= 0x80000;
-    m->unk_f0->attr.alpha = 0x1e;
+    MODEL_FLAGS(m->unk_f0)->alpha = 0x1e;
     func_02041c5c(m->unk_f0, (void *)func_ov008_021cd3dc);
 
     c = (Ov008Caption *)Heap_Alloc(0x54);

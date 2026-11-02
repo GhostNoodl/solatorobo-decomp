@@ -342,7 +342,7 @@ static inline BOOL ov006_Win_Busy(ov006_Task021d6ff0 *self) {
         busy = FALSE;
     } else {
         busy = TRUE;
-        VCALL(self->win, 1C);
+        VCALL(self->win, 1c);
         if (self->win->state == 5 ? busy : FALSE) {
             busy = FALSE;
             ov006_DeleteWin(self);

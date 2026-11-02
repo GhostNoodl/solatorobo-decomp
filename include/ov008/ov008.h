@@ -2,6 +2,10 @@
 #define OV008_H
 
 #include "types.h"
+#include "nitro/fx.h"
+#include "Main/Sys/SysState.h"
+#include "Main/Sys/SysTask.h"
+#include "ov000/ModelPart.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
 class Ov008V {
@@ -140,81 +144,10 @@ public:
 #define OV008_SET_VT(p, vt) (*(void **)(p) = (void *)(vt))
 #define OV008_SIZE(T, n) typedef char T##_size_check[(sizeof(T) == (n)) ? 1 : -1]
 
-struct Ov008Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
-struct Ov008Vec3 {
-    s32 x;
-    s32 y;
-    s32 z;
-};
-
-// 2D sprite (main, 0x160 bytes; set up by func_02041218 + func_02041440).
-struct Ov008SprRes {
-    u8 unk_00[0x4];
-    void *unk_04; // cell bank
-    u8 unk_08[0x4];
-    void *unk_0c; // animation bank
-};
-
-struct Ov008SprFrame {
-    u8 unk_00[0x30];
-    void *unk_30;
-};
-
-struct Ov008SprAnim {
-    u8 unk_00[0x4];
-    Ov008SprFrame *unk_04;
-    u8 unk_08[0x20];
-};
-OV008_SIZE(Ov008SprAnim, 0x28);
-
 struct Ov008SprSeq {
     u8 unk_00[0xc];
     u16 **unk_0c;
 };
-
-struct Ov008SprAttr {
-    u32 b0 : 2;
-    u32 alpha : 5;
-    u32 pid : 6;
-    u32 b13 : 6;
-    u32 b19 : 1;
-    u32 b20 : 1;
-    u32 b21 : 1;
-    u32 rest : 10;
-};
-
-struct Ov008Sprite {
-    u8 unk_00[0x28];
-    Ov008SprRes *unk_28;
-    char unk_2c[0x20]; // file name
-    u8 unk_4c[0x20];
-    union {
-        u32 flags;
-        Ov008SprAttr attr;
-    };
-    u8 unk_70[0x8];
-    Ov008SprAnim *unk_78;
-    u8 unk_7c[0x4];
-    s32 unk_80;
-    u8 unk_84;
-    u8 unk_85;
-    u8 unk_86[0x2];
-    u8 unk_88[0x74]; // initialised by func_02041218
-    s32 unk_fc;
-    s32 unk_100;
-    u8 unk_104[0x8];
-    s32 unk_10c;
-    s32 unk_110;
-    u8 unk_114[0x3c];
-    s32 unk_150;
-    u8 unk_154[0xc];
-};
-OV008_SIZE(Ov008Sprite, 0x160);
 
 // ov000 model resource (0x138 bytes, func_ov000_0218e9c4).
 struct Ov008Anim {
@@ -275,7 +208,7 @@ OV008_SIZE(Ov008Caption, 0x54);
 struct Ov008Panel {
     s32 state;
     Ov008Pic pic;
-    Ov008Sprite *unk_50;
+    Model *unk_50;
     s32 unk_54; // offset
     s32 unk_58;
     s32 unk_5c;
@@ -300,8 +233,8 @@ OV008_SIZE(Ov008Win, 0xb8);
 class Ov008Cam : public Ov008V {
 public:
     u8 unk_04[0xc];
-    Ov008Vec3 unk_10; // position
-    Ov008Vec3 unk_1c; // target
+    VecFx32 unk_10; // position
+    VecFx32 unk_1c; // target
     u8 unk_28[0x18];
     u16 unk_40;
     u16 unk_42;
@@ -369,7 +302,7 @@ public:
     s32 unk_04; // state
     Ov008Mgr *unk_08; // owner
     u32 unk_0c;
-    Ov008Sprite *unk_10;
+    Model *unk_10;
     Ov008MenuRes *unk_14;
     Ov008MenuRes *unk_18;
     s32 unk_1c;
@@ -392,7 +325,7 @@ public:
     u8 unk_9e[0x13];
     s8 unk_b1; // cursor (from unk_98)
     u8 unk_b2[0x2];
-    Ov008Sprite *unk_b4;
+    Model *unk_b4;
     void *unk_b8;
     u8 unk_bc[0x4];
     u8 unk_c0;
@@ -496,13 +429,13 @@ struct Ov008Mgr {
     Ov008Anim *unk_cc;
     Ov008Model *unk_d0;
     Ov008Pic *unk_d4;
-    Ov008Sprite *unk_d8;
+    Model *unk_d8;
     Ov008Pic *unk_dc;
-    Ov008Sprite *unk_e0;
+    Model *unk_e0;
     Ov008Pic *unk_e4;
-    Ov008Sprite *unk_e8;
-    Ov008Sprite *unk_ec;
-    Ov008Sprite *unk_f0;
+    Model *unk_e8;
+    Model *unk_ec;
+    Model *unk_f0;
     Ov008Caption *unk_f4;
     Ov008Panel *unk_f8;
     Ov008PicC4 *unk_fc;
@@ -519,20 +452,13 @@ struct Ov008Mgr {
 OV008_SIZE(Ov008Mgr, 0x120);
 
 extern "C" {
-extern Ov008Heap *data_02097dd0;
-void *Heap_Alloc(u32 size);
-void Heap_Free(void *p);
-void func_02041558(void *p);
-void func_02041278(void *p);
-void func_02041218(void *p);
-void *func_ov000_0218fee4(void *p);
 }
 
 // Frees the object at field with the default heap selected.
 #define OV008_FREE(field, T, stmt)                      \
     {                                                   \
-        u32 saved = data_02097dd0->cur;                 \
-        data_02097dd0->cur = data_02097dd0->def;        \
+        void *saved = data_02097dd0->cur;                 \
+        data_02097dd0->cur = data_02097dd0->unk_08;        \
         if ((field) != NULL) {                          \
             T p_ = (field);                             \
             if (p_ != NULL) {                           \
@@ -546,55 +472,43 @@ void *func_ov000_0218fee4(void *p);
 #define OV008_FREE_V(field, slot) OV008_FREE(field, Ov008V *, p_->slot())
 #define OV008_FREE_D(field, dtor) OV008_FREE(field, void *, (dtor(p_), Heap_Free(p_)))
 #define OV008_FREE_M(field) \
-    OV008_FREE(field, Ov008Sprite *, (func_02041558(p_), func_02041278(p_->unk_88), Heap_Free(p_)))
+    OV008_FREE(field, Model *, (func_02041558(p_), func_02041278(&p_->pltt), Heap_Free(p_)))
 
-extern "C" {
-Ov008SprSeq *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, u8 d);
-}
-
-static inline void Ov008_DrawModel(Ov008Sprite *m) {
-    Ov008SprAnim *anim;
-    Ov008SprRes *res = m->unk_28;
+static inline void Ov008_DrawModel(Model *m) {
+    ModelPart *anim;
+    ModelRes *res = m->res;
     void *arg;
-    Ov008SprFrame *t;
+    ModelPartRes *t;
     if (res == NULL) {
         return;
     }
     anim = NULL;
-    if (m->unk_80 > 0) {
-        anim = m->unk_78;
+    if (m->numParts > 0) {
+        anim = m->parts;
     }
-    if (anim != NULL && (t = anim->unk_04) != NULL) {
-        arg = t->unk_30;
+    if (anim != NULL && (t = anim->res) != NULL) {
+        arg = t->tex;
     } else {
-        Ov008SprSeq *e = NNS_G2dGetAnimSequenceByIdx(res->unk_0c, 0);
-        arg = NNS_G2dGetCellDataByIdx(res->unk_04, **e->unk_0c);
+        Ov008SprSeq *e = (Ov008SprSeq *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0);
+        arg = NNS_G2dGetCellDataByIdx(res->texRes, **e->unk_0c);
     }
     func_02042628(m, arg, anim, 0);
 }
 
-static inline void *Ov008_GetTex(Ov008Sprite *m, Ov008SprRes *res, Ov008SprAnim *anim) {
-    if (anim != NULL && anim->unk_04 != NULL) {
-        return anim->unk_04->unk_30;
+static inline void *Ov008_GetTex(Model *m, ModelRes *res, ModelPart *anim) {
+    if (anim != NULL && anim->res != NULL) {
+        return anim->res->tex;
     }
-    return NNS_G2dGetCellDataByIdx(res->unk_04, **NNS_G2dGetAnimSequenceByIdx(res->unk_0c, 0)->unk_0c);
+    return NNS_G2dGetCellDataByIdx(res->texRes, **((Ov008SprSeq *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, 0))->unk_0c);
 }
 
-static inline void Ov008_DrawModel2(Ov008Sprite *m) {
-    Ov008SprRes *res = m->unk_28;
+static inline void Ov008_DrawModel2(Model *m) {
+    ModelRes *res = m->res;
     if (res != NULL) {
-        Ov008SprAnim *anim = 0 >= m->unk_80 ? NULL : m->unk_78;
+        ModelPart *anim = 0 >= m->numParts ? NULL : m->parts;
         func_02042628(m, Ov008_GetTex(m, res, anim), anim, 0);
     }
 }
-
-static inline s32 Ov008_FxMul(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
-
-#define OV008_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 static inline s32 Ov008_Abs(s32 v) {
     return v < 0 ? -v : v;

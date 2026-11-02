@@ -120,26 +120,18 @@ struct Ov011MsgB {
     s16 d;
 };
 
-struct Ov011Mtx33 {
-    s32 m[9];
-};
-
 extern "C" {
 
 u32 func_ov011_02201244(void *self);
 void *func_ov011_02201254(void *self);
-void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
 void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
 u32 func_ov011_02201b64(void *p);
 BOOL func_ov011_02201b40(void *p);
-void func_ov011_02201aac(void *p, const Ov011Vec *v);
-void func_ov011_02201b80(void *p, const Ov011Vec *v);
+void func_ov011_02201aac(void *p, const VecFx32 *v);
+void func_ov011_02201b80(void *p, const VecFx32 *v);
 void func_ov011_02201bac(void *p, u16 ang);
-void MTX_RotY33_(Ov011Mtx33 *m, s32 s, s32 c);
-void MTX_MultVec33(const Ov011Vec *v, const Ov011Mtx33 *m, Ov011Vec *out);
-extern const Ov011Vec data_ov011_02207290;
-extern void *data_ov000_021ccd64;
-void *Group_SpawnActor(void *mgr, Ov011SpawnDesc *d, Ov011Vec *pos, Ov011Rot *rot, u16 a);
+extern const VecFx32 data_ov011_02207290;
+void *Group_SpawnActor(void *mgr, Ov011SpawnDesc *d, VecFx32 *pos, Ov011Rot *rot, u16 a);
 void func_ov011_022011c0(void *self, u16 v);
 void func_ov011_022011c8(void *a, s32 b);
 void func_ov011_02201214(void *self, void *p);
@@ -162,7 +154,7 @@ static inline BOOL Ov011_NodeAlive(Ov011Node *n) {
     return FALSE;
 }
 
-static inline Ov011PNode *Ov011_NewPNode(const Ov011Vec *v) {
+static inline Ov011PNode *Ov011_NewPNode(const VecFx32 *v) {
     Ov011PNode *n = (Ov011PNode *)Heap_Alloc(0x10);
     n->v.x = v->x;
     n->v.y = v->y;
@@ -172,16 +164,16 @@ static inline Ov011PNode *Ov011_NewPNode(const Ov011Vec *v) {
 }
 
 void func_ov011_021fe3b4(Ov011Scene *self) {
-    Ov011Vec v;
-    Ov011Vec p;
-    Ov011Mtx33 m;
-    Ov011Vec t;
+    VecFx32 v;
+    VecFx32 p;
+    MtxFx33 m;
+    VecFx32 t;
     Ov011MsgB mb;
     Ov011Msg mc;
     Ov011SpawnDesc d;
-    Ov011Vec r;
-    Ov011Vec o;
-    Ov011Vec w;
+    VecFx32 r;
+    VecFx32 o;
+    VecFx32 w;
     Ov011Rot rot;
     Ov011Ent *e = &self->ent;
     Ov011Node *n;

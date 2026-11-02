@@ -31,8 +31,6 @@ struct Ov013Rot16 {
 extern "C" {
 
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd68;
-extern void *data_ov000_021ccd64;
 extern char data_ov013_0220b5b8[];
 extern char data_ov013_0220b5be[];
 extern char data_ov013_0220b5ca[];
@@ -52,8 +50,6 @@ extern void HitSphere_Link(Ov013Sub48 *p);
 extern void func_0203f364(Ov013Sub48 *p);
 extern BOOL func_01ffc584(Ov013Vec *a, Ov013Vec *b, s32 r, s32 h);
 extern Ov013Actor *Group_SpawnActor(void *mgr, Ov013SpawnDesc *d, Ov013Vec *pos, u16 *rot, u16 a);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void Actor_Move(Ov013Obj *self, s32 a);
 extern void func_ov000_0218a358(void *a, const Ov013Vec *b, Ov013Rot16 *c, s32 d, s32 e, s32 f, s32 g, s32 h);
 }
 
@@ -151,12 +147,12 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
             func_ov000_021915a0(self->unk_38);
             func_02049a48(data_02097e4c, 0x4f, -1, -1, -1);
             range = 0xf000 - (self->unk_64 << 3);
-            z_0 = Ov013_FxMul(Rand_PlusMinus(0x1000), range) - 0x7800;
+            z_0 = FX_Mul(Rand_PlusMinus(0x1000), range) - 0x7800;
             for (cnt_1 = 0, i = 0; i < 4; i++) {
-                POLE(self, i)->v.x = Ov013_FxMul(Rand_Fx(), 0x3800) + i * 0x3800 - 0x7000;
+                POLE(self, i)->v.x = FX_Mul(Rand_Fx(), 0x3800) + i * 0x3800 - 0x7000;
                 on = 0;
                 POLE(self, i)->v.y = 0;
-                POLE(self, i)->v.z = z_0 + Ov013_FxMul(Rand_PlusMinus(0x1000), self->unk_64);
+                POLE(self, i)->v.z = z_0 + FX_Mul(Rand_PlusMinus(0x1000), self->unk_64);
                 if (cnt_1 < 2 && (!(Rand_Get() & 1) || i > 1)) {
                     cnt_1++;
                     on = 1;
@@ -323,13 +319,13 @@ void func_ov013_021fb1b4(Ov013Boss *self, const Ov013Vec *pos, Ov013Vec *prev, O
             self->unk_40->state = 0x64;
             self->unk_40->timer = 0;
         } else {
-            Actor_Move(self, 0);
+            Actor_Move((Actor *)self, 0);
         }
         break;
     case 0x64:
         if (self->pos.y > 0) {
             self->rot[1] = func_01ffc128(0, self->rot[1], self->unk_b0->unk_02, 1, 0x8000);
-            Actor_Move(self, 0);
+            Actor_Move((Actor *)self, 0);
             Ov013_Show(self);
         } else {
             func_ov000_02190cb0(self->unk_38, data_ov013_0220b5b8, 0x155, 0);

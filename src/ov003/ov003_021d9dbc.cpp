@@ -68,15 +68,15 @@ extern Ov003Effect *func_02065f88(void *mgr, const Ov003Vec *pos);
 void func_ov003_021d9dbc(Ov003Vec *out, const Ov003Vec *a, const Ov003Vec *b, s32 dist, s32 yoff) {
     Ov003Vec d;
     Ov003Vec r;
-    if (VEC_Distance(a, b) <= dist) {
+    if (VEC_Distance((VecFx32 *)a, (VecFx32 *)b) <= dist) {
         *out = *a;
         return;
     }
     d.x = a->x - b->x;
     d.y = a->y - b->y;
     d.z = a->z - b->z;
-    VEC_Normalize(&d, &d);
-    VEC_MultAdd(dist, &d, b, &r);
+    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
+    VEC_MultAdd(dist, (VecFx32 *)&d, (VecFx32 *)b, (VecFx32 *)&r);
     if (yoff != 0) {
         r.y += yoff;
     }
@@ -85,7 +85,7 @@ void func_ov003_021d9dbc(Ov003Vec *out, const Ov003Vec *a, const Ov003Vec *b, s3
 
 void func_ov003_021d9e90(Ov003Vec *out, const Ov003Vec *dir, const Ov003Vec *base, s32 scale, s32 yoff) {
     Ov003Vec r;
-    VEC_MultAdd(scale, dir, base, &r);
+    VEC_MultAdd(scale, (VecFx32 *)dir, (VecFx32 *)base, (VecFx32 *)&r);
     if (yoff != 0) {
         r.y += yoff;
     }
@@ -107,7 +107,7 @@ void func_ov003_021d9f80(Ov003Rot *out, const Ov003Vec *a, const Ov003Vec *b) {
     d.x = a->x - b->x;
     d.y = a->y - b->y;
     d.z = a->z - b->z;
-    VEC_Normalize(&d, &d);
+    VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
     out->x = Ov003_Pitch(d.y);
     out->y = FX_Atan2(d.x, d.z);
     out->z = 0;
@@ -158,8 +158,8 @@ static inline Ov003Effect *Ov003_SpawnScatter(const Ov003Vec *base, s32 range, v
     v.x = Rand_PlusMinus(range);
     v.y = y;
     v.z = 0;
-    MTX_MultVec33(&v, NNS_G3dGlbGetInvV(), &v);
-    VEC_Add(base, &v, &p);
+    MTX_MultVec33((VecFx32 *)&v, NNS_G3dGlbGetInvV(), (VecFx32 *)&v);
+    VEC_Add((VecFx32 *)base, (VecFx32 *)&v, (VecFx32 *)&p);
     return func_02065f88(mgr, &p);
 }
 
@@ -174,7 +174,7 @@ void func_ov003_021da108(Ov003FxActor *self, s32 range, void *mgr, s32 base, s32
         off.y = self->unk_44->pos.y;
         off.z = self->unk_44->pos.z;
     }
-    VEC_Add(&pos, (Ov003Vec *)&off, &pos);
+    VEC_Add((VecFx32 *)&pos, (VecFx32 *)&off, (VecFx32 *)&pos);
     r = Rand_UpTo(top - base);
     e = Ov003_SpawnScatter(&pos, range, mgr);
     if (e != NULL) {
@@ -189,7 +189,7 @@ static inline void Ov003_RotY(Ov003VecP *out, s32 angle, const Ov003VecP *in) {
         return;
     }
     MTX_RotY33_(&m, OV003_SIN(angle), OV003_COS(angle));
-    MTX_MultVec33((const Ov003Vec *)in, &m, (Ov003Vec *)out);
+    MTX_MultVec33((VecFx32 *)in, &m, (VecFx32 *)out);
 }
 
 Ov003VecP func_ov003_021da214(Ov003YawActor *actor) {

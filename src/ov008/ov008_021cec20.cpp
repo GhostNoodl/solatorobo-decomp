@@ -11,9 +11,8 @@ extern Ov008Pos16 data_ov008_021d02fc[];
 void func_ov008_021cf040(Ov008Mgr *m);
 BOOL func_ov000_021903b4(void *p);
 void func_ov008_021ccf44(Ov008Panel *p);
-void MI_CpuCopy8(const void *src, void *dst, u32 size);
 
-static inline void Ov008_SetPos(Ov008Sprite *e, Ov008Pos16 *p) {
+static inline void Ov008_SetPos(Model *e, Ov008Pos16 *p) {
     s32 x = p->x - 0x80;
     s32 y = p->y - 0x60;
     e->unk_10c = x << 12;
@@ -26,9 +25,9 @@ void func_ov008_021cec20(Ov008Mgr *m) {
     }
     if (m->unk_e8 != NULL) {
         Ov008_SetPos(m->unk_e8, &data_ov008_021d02fc[m->unk_112]);
-        m->unk_e8->unk_85 = (u8)(m->unk_e8->unk_85 & 0xfb) | 4;
+        m->unk_e8->unk_085 = (u8)(m->unk_e8->unk_085 & 0xfb) | 4;
         Ov008_DrawModel2(m->unk_e8);
-        m->unk_e8->unk_85 &= 0xfb;
+        m->unk_e8->unk_085 &= 0xfb;
     }
     func_ov008_021cf040(m);
     if (m->state >= 5 && m->unk_c8 != NULL && m->unk_d0 != NULL) {
@@ -91,7 +90,7 @@ void func_ov008_021cee4c(Ov008Mgr *m) {
     }
     func_ov008_021ccf44(m->unk_f8);
     if (m->flags.b4 == 1) {
-        m->unk_11c += Ov008_FxMul(m->unk_11c, 0x666);
+        m->unk_11c += FX_Mul(m->unk_11c, 0x666);
         if (Ov008_Abs(m->unk_11c) > 0x80000) {
             m->unk_11c = 0x80000;
             m->flags.b3 = 0;
@@ -100,7 +99,7 @@ void func_ov008_021cee4c(Ov008Mgr *m) {
         s16 c = m->flags.cnt - 1;
         if (c < 0) {
             c = 0;
-            m->unk_11c -= Ov008_FxMul(m->unk_11c, 0x333);
+            m->unk_11c -= FX_Mul(m->unk_11c, 0x333);
             if (Ov008_Abs(m->unk_11c) < 0x800) {
                 m->unk_11c = 0;
             }

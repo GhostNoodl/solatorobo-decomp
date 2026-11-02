@@ -2,8 +2,6 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 extern u8 data_ov015_022128ec[];
 void func_ov015_0220f4d4(void *p);
 void *func_ov015_02207738(Ov015Ship *p);
@@ -12,11 +10,7 @@ void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 extern u8 data_ov015_0221293c[];
 extern char data_ov015_022128ab[];
-extern void *data_02097cdc;
-void func_02036838(void *a, void *b, int c, int d);
 void func_0206e900(char *buf, const char *name);
-void func_02041558(void *p);
-void func_02041278(void *p);
 extern u8 data_ov015_02213198[];
 void func_ov015_02210b58(void *p);
 
@@ -87,7 +81,7 @@ void *Ov015Result_DtorDelete(void *self) {
 }
 
 void func_ov015_0220101c(Ov015Game *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     {
     Ov015Ship *o = self->unk_18;
@@ -139,14 +133,14 @@ void *func_ov015_02201220(u8 *self) {
     char buf[0x20];
     SET_VT(self, data_ov015_0221293c);
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         {
             u8 *o = FLD(u8 *, self, 0x24);
             if (o != NULL) {
                 if (o != NULL) {
-                    func_02041558(o);
-                    func_02041278(o + 0x88);
+                    func_02041558((Model *)o);
+                    func_02041278((PlttRes *)(o + 0x88));
                     Heap_Free(o);
                 }
                 FLD(void *, self, 0x24) = NULL;
@@ -155,14 +149,14 @@ void *func_ov015_02201220(u8 *self) {
         HEAP_POP(saved);
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         {
             u8 *o = FLD(u8 *, self, 0x28);
             if (o != NULL) {
                 if (o != NULL) {
-                    func_02041558(o);
-                    func_02041278(o + 0x88);
+                    func_02041558((Model *)o);
+                    func_02041278((PlttRes *)(o + 0x88));
                     Heap_Free(o);
                 }
                 FLD(void *, self, 0x28) = NULL;

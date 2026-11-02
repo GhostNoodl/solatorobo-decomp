@@ -26,14 +26,14 @@ void *Ov002Vt_021efe3c_Ctor(void *self) {
     FIELD(self, 0x40, s32) = 0x1000;
     FIELD(self, 0x44, s32) = 0x1000;
     FIELD(self, 0x48, s32) = 0x1000;
-    MTX_Identity33_((u8 *)self + 0x4c);
+    MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x4c));
     return self;
 }
 
 void *Ov002Vt_021efe3c_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021efe3c;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0x18, void *) != NULL) {
             Heap_Free(FIELD(self, 0x18, void *));
@@ -60,7 +60,7 @@ void *Ov002Vt_021efe3c_Dtor(void *self) {
 void *Ov002Vt_021efe3c_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021efe3c;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0x18, void *) != NULL) {
             Heap_Free(FIELD(self, 0x18, void *));

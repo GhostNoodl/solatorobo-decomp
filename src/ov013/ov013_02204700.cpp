@@ -6,7 +6,6 @@ extern char data_ov013_0220ba58[];
 extern char data_ov013_0220ba60[];
 void func_ov000_0219433c(void *self);
 void *func_ov000_0218e9c4(void *p);
-void *STD_CopyString(char *dst, const char *src);
 
 void Ov013ActEx_02204454_Init(Ov013ActEx_02204454 *self) {
     Ov013Names *n;

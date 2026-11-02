@@ -21,7 +21,6 @@ extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
 extern void *func_ov003_021cf278(void *self, s32 a, s32 b);
 extern void func_ov003_021ceedc(void *p);
 extern void *Ov003Vt_021f7974_Dtor(void *p);
-extern void MTX_Identity43_(void *p);
 extern Ov014V *func_020657b0(void *a, void *b);
 extern void func_02036838(void *a, void *b, s32 c, s32 d);
 extern void *func_020359d0(void *a, s32 b, s32 c);
@@ -37,7 +36,6 @@ extern u8 data_ov014_02217a1b[];
 extern u8 data_ov014_02217a1c[];
 extern u8 data_ov014_02217a28[];
 extern u8 data_ov014_02217a38[];
-extern void func_ov003_021d112c(Ov014Actor *self);
 extern void func_ov003_021cf1f0(void *p, s32 a, s32 b, const void *c);
 extern s32 func_ov000_021909a8(void *a, const void *b, const void *c);
 extern void NNS_G3dRenderObjSetInitFunc(void *a, void *b);
@@ -154,7 +152,7 @@ Ov014Actor *Ov014Act_02209280_Ctor(Ov014Act_02209280 *self) {
     self->unk_fc = 0;
     for (i = 0; i < 3; i++) {
         ((Ov014Slot *)((u8 *)self + 0x104))[i].id = -1;
-        MTX_Identity43_((u8 *)self + 0x108 + i * 0x34);
+        MTX_Identity43_((MtxFx43 *)((u8 *)self + 0x108 + i * 0x34));
     }
     self->unk_1a0 = 0;
     self->unk_1a2 = 0;
@@ -179,8 +177,8 @@ Ov014Actor *Ov014Act_02209280_Ctor(Ov014Act_02209280 *self) {
 static inline void Ov014_Kill1f0(Ov014Act_02209280 *self) {
     Ov014V *o;
     if (data_0214a420 != NULL && (o = func_020657b0(data_0214a420, ((void *)self->unk_1f0))) != NULL) {
-        u32 saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (o != NULL) {
             if (o != NULL) {
                 o->v04();

@@ -7,13 +7,7 @@ extern "C" {
 Ov015Glyph *func_ov015_021fb25c(u8 *self, u16 *ctx, Ov015Glyph *e, u16 *count);
 Ov015Glyph *func_ov015_021fb408(void *self, u16 *ctx, Ov015Glyph *e, u16 *count);
 void func_0206e900(char *buf, const char *name);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_02041440(void *p, void *name, int c);
-void func_020417e0(void *a, void *b);
-void func_02041d9c(void *a, int b, int c);
 void func_02041c34(void *a, int b, void *cb, void *arg);
-void *STD_CopyString(void *p, void *name);
 extern char data_ov015_022128ab[];
 extern char data_ov015_022128b5[];
 extern void *data_0208cc94;
@@ -31,8 +25,8 @@ Ov015Glyph *func_ov015_021fb408(void *self, u16 *ctx, Ov015Glyph *e, u16 *count)
 }
 
 static inline void Ov015_LabelInit(u8 *t, void *dict, void *name) {
-    func_02041440(t, dict, 0);
-    STD_CopyString(t + 0x2c, name);
+    func_02041440((Model *)t, (char *)dict, 0);
+    STD_CopyString((char *)(t + 0x2c), (char *)name);
 }
 
 s32 func_ov015_021fb474(u8 *self) {
@@ -41,9 +35,9 @@ s32 func_ov015_021fb474(u8 *self) {
     u8 *t;
     func_0206e900(buf, data_ov015_022128ab);
     res = func_02034d88(func_02035d5c(buf), data_ov015_022128b5);
-    func_02041440(FLD(void *, self, 0x24), NULL, 0);
-    func_020417e0(FLD(void *, self, 0x24), res);
-    func_02041d9c(FLD(void *, self, 0x24), 0, 0xffff);
+    func_02041440((Model *)FLD(void *, self, 0x24), (char *)NULL, 0);
+    func_020417e0((Model *)FLD(void *, self, 0x24), res);
+    func_02041d9c((Model *)FLD(void *, self, 0x24), 0, 0xffff);
     FLD(u32, FLD(u8 *, self, 0x24), 0x6c) |= 2;
     FLD(u32, FLD(u8 *, self, 0x24), 0x6c) |= 0x80000;
     {
@@ -51,10 +45,10 @@ s32 func_ov015_021fb474(u8 *self) {
         func_02041c34(FLD(void *, self, 0x24), 0xf, (void *)func_ov015_021fb25c, arg);
         func_02041c34(FLD(void *, self, 0x24), 0xe, (void *)func_ov015_021fb25c, arg);
     }
-    res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
+    res = func_02034d88(func_02035d5c((char *)data_0208cc94), data_0208cc88);
     Ov015_LabelInit(FLD(u8 *, self, 0x28), data_0208cc88, data_0208cc94);
-    func_020417e0(FLD(void *, self, 0x28), res);
-    func_02041d9c(FLD(void *, self, 0x28), 0, 0x10);
+    func_020417e0((Model *)FLD(void *, self, 0x28), res);
+    func_02041d9c((Model *)FLD(void *, self, 0x28), 0, 0x10);
     FLD(u32, FLD(u8 *, self, 0x28), 0x6c) |= 2;
     func_02041c34(FLD(void *, self, 0x28), 0x10, (void *)func_ov015_021fb408, NULL);
     return 1;
@@ -64,7 +58,7 @@ BOOL func_ov015_021fb5d4(u8 *self) {
     Ov015Stat *g;
     s32 t3;
     s32 t4;
-    if (!FLD(Ov015SysA30, data_02097d48, 0xa30).b4) {
+    if (!data_02097d48->unk_a30_4) {
         return TRUE;
     }
     FLD(s32, self, 0x8)++;
@@ -97,7 +91,7 @@ BOOL func_ov015_021fb5d4(u8 *self) {
         }
     }
     FLD(s32, self, 0x14) = g->unk_10;
-    FLD(s32, self, 0x2c) = (u16)(FLD(s32, self, 0x2c) + (Ov015_FxMul(-g->unk_04, 0x1388000) >> 12));
+    FLD(s32, self, 0x2c) = (u16)(FLD(s32, self, 0x2c) + (FX_Mul(-g->unk_04, 0x1388000) >> 12));
     return TRUE;
 }
 

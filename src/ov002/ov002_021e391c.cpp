@@ -32,7 +32,7 @@ void func_ov002_021e391c(s32 *m, int rot) {
 }
 
 void func_ov002_021e398c(s32 *m, int rot) {
-    MTX_Identity33_(m);
+    MTX_Identity33_((MtxFx33 *)m);
     switch (rot) {
     case 0:
         break;

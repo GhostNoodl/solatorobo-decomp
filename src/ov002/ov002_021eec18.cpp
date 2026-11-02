@@ -5,7 +5,7 @@ extern "C" {
 VObject *Ov002Vt_021f0f2c_DtorDelete(VObject *self) {
     *(VFunc **)self = data_ov002_021f0f2c;
     self->v0xc();
-    *(VFunc **)self = data_0208b318;
+    *(VFunc **)self = (VFunc *)data_0208b318;
     self->v0xc();
     Heap_Free(self);
     return self;
@@ -92,7 +92,7 @@ VObject *Ov002Vt_021f0ef4_Dtor(VObject *self) {
 VObject *Ov002Vt_021f0f2c_Dtor(VObject *self) {
     *(VFunc **)self = data_ov002_021f0f2c;
     self->v0xc();
-    *(VFunc **)self = data_0208b318;
+    *(VFunc **)self = (VFunc *)data_0208b318;
     self->v0xc();
     return self;
 }

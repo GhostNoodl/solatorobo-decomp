@@ -51,7 +51,7 @@ BOOL func_ov015_021ffdd4(Ov015Obj30 *self) {
         }
     }
     if (found != NULL) {
-        s32 d = Ov015_FxMul(found->unk_70, 0x14000);
+        s32 d = FX_Mul(found->unk_70, 0x14000);
         Ov015VecC t(*(Ov015VecC *)&found->unk_40);
         t.y += d;
         if (t.y < 0) t.y = 0;

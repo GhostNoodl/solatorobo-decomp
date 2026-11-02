@@ -12,8 +12,6 @@ typedef struct ov006_Unk020706a0 {
 
 extern "C" {
 
-extern void *data_02149ef8;
-extern u8 *data_02097d48;
 extern void *data_ov000_021cac60;
 extern void *data_ov000_021caec8;
 extern void *data_ov000_021cadcc;
@@ -27,7 +25,6 @@ extern const u8 data_ov006_021eb728[];
 extern const u8 data_ov006_021eb770[];
 extern const u8 data_ov006_021eb740[];
 
-void *MsgRes_GetString(void *a, int id);
 void func_ov006_021cd580(int a, void *b, int c);
 void func_ov000_021548cc(void *a, int b);
 void *func_ov000_02154b80(void *a, int b);
@@ -144,9 +141,9 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
     func_ov000_021548cc(self->unk54, data_ov006_021eb6fe[data_ov006_021ec884->unk5]);
     if (self->unk4A != 0xffff) {
         ov006_Window *w = self->unk54;
-        VCALL(w, A8, func_ov000_02154b58(w, self->unk4A));
+        VCALL(w, a8, func_ov000_02154b58(w, self->unk4A));
     } else {
-        VCALL(self->unk54, A8, func_ov000_02154b80(self->unk54, 0));
+        VCALL(self->unk54, a8, func_ov000_02154b80(self->unk54, 0));
     }
     self->unk54->owner = self;
     self->unk54->unk88 = func_ov006_021d1df8;
@@ -219,7 +216,7 @@ void func_ov006_021d23dc(ov006_TaskD1F *self) {
         self->unk48 = 0;
     }
     {
-        u8 *g = data_02097d48;
+        u8 *g = (u8 *)data_02097d48;
         func_02043904(g + 0x8b0);
         g[0x8b0] |= 0x30;
         *(vu16 *)0x4000060 = (*(vu16 *)0x4000060 & ~0x3000) | 0x20;

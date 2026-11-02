@@ -25,7 +25,6 @@ extern "C" {
 
 u32 func_ov011_02201244(void *self);
 void *func_ov011_02201254(void *self);
-void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
 
 struct Ov011KeyVal {
     s32 key;
@@ -69,9 +68,9 @@ void func_ov011_021fdfd8(Ov011Scene *self) {
                 Ov011Obj *owner = self->actor;
                 if (Ov011Ent_Find(&self->ent, func_ov011_02201254(a)) != NULL) {
                     Ov011PNode *p = Ov011Ent_Find(&self->ent, func_ov011_02201254(a));
-                    Ov011Vec r;
-                    Ov011Vec o;
-                    Ov011Vec v;
+                    VecFx32 r;
+                    VecFx32 o;
+                    VecFx32 v;
                     v.x = p->v.x;
                     v.y = p->v.y;
                     v.z = p->v.z;

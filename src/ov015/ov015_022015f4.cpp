@@ -5,7 +5,6 @@ namespace Dup { extern "C" Ov015Stat data_ov015_0221332c; }
 extern "C" {
 
 extern char data_ov015_022128c1[];
-s32 func_02035b90(void *a, int b);
 extern Ov015Shared *data_ov015_02213368;
 extern Ov015Globals data_ov015_02213320;
 extern u8 data_ov015_0221291c[];
@@ -99,8 +98,8 @@ BOOL func_ov015_02201618(Ov015Game *self) {
     }
     self->unk_0c = 10;
     {
-        Ov015Pad *pad = data_02097e48;
-        if (pad->b3) {
+        SndQueue *pad = data_02097e48.queue;
+        if (pad->flag3) {
             pad->unk_06 = 0x8000;
             pad->unk_08 = 0x1e;
             pad->unk_02 = 0;
@@ -109,9 +108,6 @@ BOOL func_ov015_02201618(Ov015Game *self) {
     return TRUE;
 }
 
-extern const s16 FX_SinCosTable_[];
-extern u8 *data_02097d48;
-extern void *data_02097e4c;
 extern char data_ov015_022128ab[];
 extern char data_ov015_02212899[];
 extern char data_ov015_0221289f[];
@@ -126,7 +122,6 @@ BOOL func_ov015_022078bc(Ov015Ship *p);
 s32 func_ov000_0218f110(void *a);
 BOOL func_ov015_0220947c(Ov015Fish *self);
 void func_0206e900(char *buf, const char *name);
-void *func_020359d0(void *a, int b, int c);
 int func_ov015_02210bd8(u8 *self);
 BOOL func_ov015_02207adc(Ov015Ship *self);
 BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
@@ -135,8 +130,6 @@ void func_ov000_021915a0(void *a);
 BOOL func_ov015_02209500(Ov015Fish *self);
 s32 func_ov015_021fb474(u8 *self);
 BOOL func_ov015_02210c28(void);
-void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
-void func_02049de8(void *a, s32 b);
 void func_ov000_02190a80(void *a, s32 b);
 s32 func_ov015_02210c30(u8 *self, Ov015Stat *a, s32 b);
 BOOL func_ov015_021ff4a0(Ov015Obj30 *self, Ov015Ship *a, Ov015CamPair *b, Ov015List *c, Ov015Info38 *d);
@@ -147,7 +140,7 @@ void func_020656b4(void *p);
 BOOL func_ov015_0220f568(u8 *self);
 
 static inline BOOL Ov015_SysB4(void) {
-    return ((Ov015SysA30 *)(data_02097d48 + 0xa30))->b4 ? TRUE : FALSE;
+    return data_02097d48->unk_a30_4 ? TRUE : FALSE;
 }
 
 static inline void Ov015_CamFovy(Ov015Cam *c) {
@@ -172,19 +165,19 @@ static inline void Ov015_CamUpdate(Ov015Game *self) {
 }
 
 static inline void Ov015_BgmFadeTo(u16 id) {
-    Ov015Bgm *p = (Ov015Bgm *)data_02097e48;
-    if (p->active) {
-        if (p->unk6 != 0xffff || p->unk4 != id) {
-            if (p->unk2 != 10 && p->unk2 != 0) {
-                if (p->unk6 != 0xffff) {
-                    func_0204aab0(p);
+    SndQueue *p = data_02097e48.queue;
+    if (p->flag0) {
+        if (p->unk_06 != 0xffff || p->unk_04 != id) {
+            if (p->unk_02 != 10 && p->unk_02 != 0) {
+                if (p->unk_06 != 0xffff) {
+                    func_0204aab0(p, p->unk_06);
                 }
-                p->unk2 = 1;
+                p->unk_02 = 1;
             } else {
-                p->unk2 = 0;
+                p->unk_02 = 0;
             }
-            p->unk6 = id;
-            p->unk8 = 10;
+            p->unk_06 = id;
+            p->unk_08 = 10;
         }
     }
 }
@@ -213,10 +206,10 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
     case 0:
         self->unk_0c = 10;
     case 10: {
-        u8 *sys = data_02097d48;
-        if (FLD(s32, sys, 0) == 1) {
+        GfxSys *sys = data_02097d48;
+        if (sys->state == 1) {
             Ov015SysMode v = OV015_SYS_MODE_2;
-            FLD(s32, sys, 4) = v;
+            sys->nextState = v;
             func_0203cb78(0x1000, 0, v - 3);
         }
         func_ov015_021fa73c((Ov015Fade *)func_ov015_021fa6d0(), 0x1000, 0);
@@ -304,7 +297,7 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         if (self->unk_90 != NULL) {
             func_ov015_02210c28();
         }
-        FLD(u8, data_0214a420, 0x10) = 1;
+        data_0214a420->drawFilter = 1;
         func_ov015_021fa71c((Ov015Fade *)func_ov015_021fa6d0(), 0x1e000, 0);
         self->unk_0c = 0x28;
         func_02049a48(data_02097e4c, 0x4f, -1, -1, -1);
@@ -369,8 +362,8 @@ BOOL func_ov015_0220182c(Ov015Game *self) {
         }
         self->unk_0c = 0x46;
         {
-            Ov015Pad *pad = data_02097e48;
-            if (pad->b3) {
+            SndQueue *pad = data_02097e48.queue;
+            if (pad->flag3) {
                 pad->unk_06 = 0x8000;
                 pad->unk_08 = 0x1e;
                 pad->unk_02 = 0;

@@ -21,11 +21,11 @@ extern u8 data_0208b318[];
 ov006_Unk021dbacc *Ov006Vt_021ec25c_DtorDelete(ov006_Unk021dbacc *self) {
     self->vtbl = data_ov006_021ec25c;
     if (self->sub.unk24 != 0 || self->sub.unk4 != 0) {
-        VCALL(&self->sub, 0C);
+        VCALL(&self->sub, 0c);
     }
     VCALL(&self->sub, 08);
     self->sub.vtbl = data_0208b318;
-    VCALL(&self->sub, 0C);
+    VCALL(&self->sub, 0c);
     Heap_Free(self);
     return self;
 }

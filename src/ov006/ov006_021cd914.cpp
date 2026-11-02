@@ -2,8 +2,6 @@
 
 extern "C" {
 
-extern void *data_02fe152c;
-extern u8 *data_ov000_021ccd54;
 extern const char data_ov006_021ebb91[];
 extern const char data_ov006_021ebb94[];
 extern const char data_ov006_021ebb9b[];
@@ -172,7 +170,7 @@ void func_ov006_021cd914(int type, void *obj, int arg) {
             func_020627fc(c);
             func_0206280c(n16);
             {
-                u8 *p = data_ov000_021ccd54 + 0xac;
+                u8 *p = (u8 *)data_ov000_021ccd54 + 0xac;
                 *p = 1;
                 func_ov000_02182590(p);
             }

@@ -5,7 +5,6 @@ extern "C" {
 extern void *data_02097e4c;
 extern char data_ov013_0220be7c[];
 extern void *func_0204a028(void *a, s32 b, Ov013Vec *c, s32 d);
-extern void VEC_MultAdd(s32 s, const Ov013Vec *a, const Ov013Vec *b, Ov013Vec *out);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 
@@ -16,40 +15,6 @@ extern void func_ov003_021ce9c4(u16 a);
 extern Ov013Actor *Actor_GetTarget(Ov013Obj *self);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
 extern s32 func_ov013_02209b44(Ov013Act_02207968 *self);
-
-#define OV013_SQRTCNT (*(volatile u16 *)0x40002b0)
-#define OV013_SQRT_RESULT (*(volatile u32 *)0x40002b4)
-#define OV013_SQRT_PARAM (*(volatile u64 *)0x40002b8)
-
-static inline void CP_SetSqrtImm64_NS_(u64 param) {
-    OV013_SQRT_PARAM = param;
-}
-
-static inline void CP_SetSqrt64(u64 param) {
-    OV013_SQRTCNT = 1;
-    CP_SetSqrtImm64_NS_(param);
-}
-
-static inline void CP_WaitSqrt(void) {
-    while (OV013_SQRTCNT & 0x8000) {
-    }
-}
-
-static inline u32 CP_GetSqrtResult32(void) {
-    return OV013_SQRT_RESULT;
-}
-
-static inline s32 Ov013_Sqrt2(s64 sq) {
-    CP_SetSqrt64((u64)(sq << 2));
-    CP_WaitSqrt();
-    return (s32)(CP_GetSqrtResult32() + 1) >> 1;
-}
-
-static inline s32 Ov013_DistXZ(const Ov013Vec *a, const Ov013Vec *b) {
-    s32 dx = a->x - b->x;
-    s32 dz = a->z - b->z;
-    return Ov013_Sqrt2((s64)dx * dx + (s64)dz * dz);
-}
 
 void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
     Ov013Actor *pl;
@@ -69,7 +34,7 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
     if (self->unk_111 == 0) {
         u16 pct = self->unk_50[0] * 100 / self->unk_50[1];
         if (pct <= 0x14 && pl != NULL && !func_ov000_021b4738(pl)) {
-            Ov013Game54 *g;
+            FieldState *g;
             func_020627a0(self->kind, self->id);
             func_020627dc(5);
             g = data_ov000_021ccd54;
@@ -102,7 +67,7 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
             s32 dx = self->pos.x - t->pos.x;
             s64 sq = (s64)dx * dx;
             sq += (s64)dz * dz;
-            dist = Ov013_Sqrt2(sq);
+            dist = Dist2D(sq);
         }
     }
     if (dist < 0x6800 && !func_ov000_021983b0(self->unk_40, 2, 2, 1)) {
@@ -164,11 +129,8 @@ void func_ov013_02207d00(Ov013Actor *self) {
     }
 }
 
-extern void *data_ov000_021ccd68;
 extern void *ActorMgr_GetGroup(void *mgr, s32 a);
 extern u16 ActorGroup_CountKind(void *p, s32 a);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void Actor_Move(Ov013Obj *self, s32 a);
 
 void func_ov013_02207eac(Ov013Act_02207968 *self) {
     if (self->unk_40->state == 0) {
@@ -202,7 +164,7 @@ void func_ov013_02207eac(Ov013Act_02207968 *self) {
     case 3: {
         s32 y = self->unk_b8.y;
         if (self->pos.y < y) {
-            Actor_Move(self, 0);
+            Actor_Move((Actor *)self, 0);
             if (self->pos.y > y) {
                 self->pos.y = y;
             }
@@ -221,7 +183,7 @@ void func_ov013_02207eac(Ov013Act_02207968 *self) {
         return;
     }
     case 4:
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         self->rot[0] = func_01ffc128(0, self->rot[0], 0xcd, 1, 0x8000);
         if (self->pos.y >= 0x9000) {
             self->pos.y = 0x9000;
@@ -276,7 +238,7 @@ static inline s32 Ov013_DistXZ3(const Ov013Vec *a, const Ov013Vec *b) {
     s32 dx = a->x - b->x;
     s64 sq = (s64)dx * dx;
     sq += (s64)dz * dz;
-    return Ov013_Sqrt2(sq);
+    return Dist2D(sq);
 }
 
 static inline s32 Ov013_DistXZc(s32 x, s32 z, const Ov013Vec *b) {
@@ -284,7 +246,7 @@ static inline s32 Ov013_DistXZc(s32 x, s32 z, const Ov013Vec *b) {
     s32 dx = x - b->x;
     s64 sq = (s64)dx * dx;
     sq += (s64)dz * dz;
-    return Ov013_Sqrt2(sq);
+    return Dist2D(sq);
 }
 
 void func_ov013_022080bc(Ov013Act_02207968 *self) {
@@ -345,7 +307,6 @@ void func_ov013_022080bc(Ov013Act_02207968 *self) {
 }
 
 extern char data_ov013_0220be82[];
-extern s32 FX_Div(s32 a, s32 b);
 extern BOOL func_01ffc584(const Ov013Vec *a, const Ov013Vec *b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_ov000_02191318(void *a, s32 b);
@@ -664,10 +625,10 @@ void func_ov013_022090ac(Ov013Act_02207968 *self) {
             Ov013Vec w;
             s32 k;
             if (self->unk_f2 == 1) {
-                Ov013_VecSet(&w, Ov013_FxMul(self->unk_104.z, 0x1000), 0, (s32)((0x800 - (s64)self->unk_104.x * 0x1000) >> 12));
+                Ov013_VecSet(&w, FX_Mul(self->unk_104.z, 0x1000), 0, (s32)((0x800 - (s64)self->unk_104.x * 0x1000) >> 12));
                 k = 0x3000;
             } else {
-                Ov013_VecSet(&w, (s32)((0x800 - (s64)self->unk_104.z * 0x1000) >> 12), 0, Ov013_FxMul(self->unk_104.x, 0x1000));
+                Ov013_VecSet(&w, (s32)((0x800 - (s64)self->unk_104.z * 0x1000) >> 12), 0, FX_Mul(self->unk_104.x, 0x1000));
                 k = 0x6000;
             }
             VEC_MultAdd(k, &w, pt, pt);

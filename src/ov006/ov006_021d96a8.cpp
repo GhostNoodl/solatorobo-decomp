@@ -269,13 +269,13 @@ BOOL func_ov006_021d96a8(ov006_Task021d96a8 *self) {
         }
         break;
     }
-    VCALL(self->unk10, 1C);
-    VCALL(self->unk14, 1C);
-    VCALL(self->unk18, 1C);
-    VCALL(self->unk1C, 1C);
-    VCALL(self->unk20, 1C);
-    VCALL(self->unk28, 1C);
-    VCALL(self->unk24, 1C);
+    VCALL(self->unk10, 1c);
+    VCALL(self->unk14, 1c);
+    VCALL(self->unk18, 1c);
+    VCALL(self->unk1C, 1c);
+    VCALL(self->unk20, 1c);
+    VCALL(self->unk28, 1c);
+    VCALL(self->unk24, 1c);
     if (send) {
         func_ov006_021e4a80(data_ov006_021ec888, self->unk3C, 2, self->unk3E, 4);
     }

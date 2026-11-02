@@ -2,6 +2,7 @@
 #define OV006_OV006_H
 
 #include "types.h"
+#include "Main/Sys/SysState.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,35 +24,19 @@ struct Object {
     ObjectVtbl *vtbl;
 };
 
-/* Global heap context (data_02097dd0). */
-typedef struct HeapCtx {
-    void *current;
-    void *unk4;
-    void *unk8;
-    int unkC;
-    int unk10;
-    int unk14;
-    int unk18;
-    u8 unk1C;
-    u8 unk1D;
-    u8 unk1E;
-    u8 unk1F;
-} HeapCtx;
-
-extern HeapCtx *data_02097dd0;
 
 /* Deletes a virtual object while temporarily switching the current heap. */
 #define OV006_DELETE_OBJECT(obj)                                 \
     do {                                                         \
-        void *saved_ = data_02097dd0->current;                   \
-        data_02097dd0->current = data_02097dd0->unk8;            \
+        void *saved_ = data_02097dd0->cur;                       \
+        data_02097dd0->cur = data_02097dd0->unk_08;              \
         if ((obj) != NULL) {                                     \
             if ((obj) != NULL) {                                 \
                 ((Object *)(obj))->vtbl->dtor((Object *)(obj));  \
             }                                                    \
             (obj) = NULL;                                        \
         }                                                        \
-        data_02097dd0->current = saved_;                         \
+        data_02097dd0->cur = saved_;                             \
     } while (0)
 
 typedef struct ov006_Task {
@@ -148,75 +133,8 @@ void func_0201bbfc(int a);
 
 
 #ifdef __cplusplus
-/* Declares virtual slots by byte offset so C++ code can make virtual calls
- * on objects whose classes are not known yet. Never instantiated. */
-struct VObj {
-    virtual int v00(...);
-    virtual int v04(...);
-    virtual int v08(...);
-    virtual int v0C(...);
-    virtual int v10(...);
-    virtual int v14(...);
-    virtual int v18(...);
-    virtual int v1C(...);
-    virtual int v20(...);
-    virtual int v24(...);
-    virtual int v28(...);
-    virtual int v2C(...);
-    virtual int v30(...);
-    virtual int v34(...);
-    virtual int v38(...);
-    virtual int v3C(...);
-    virtual int v40(...);
-    virtual int v44(...);
-    virtual int v48(...);
-    virtual int v4C(...);
-    virtual int v50(...);
-    virtual int v54(...);
-    virtual int v58(...);
-    virtual int v5C(...);
-    virtual int v60(...);
-    virtual int v64(...);
-    virtual int v68(...);
-    virtual int v6C(...);
-    virtual int v70(...);
-    virtual int v74(...);
-    virtual int v78(...);
-    virtual int v7C(...);
-    virtual int v80(...);
-    virtual int v84(...);
-    virtual int v88(...);
-    virtual int v8C(...);
-    virtual int v90(...);
-    virtual int v94(...);
-    virtual int v98(...);
-    virtual int v9C(...);
-    virtual int vA0(...);
-    virtual int vA4(...);
-    virtual int vA8(...);
-    virtual int vAC(...);
-    virtual int vB0(...);
-    virtual int vB4(...);
-    virtual int vB8(...);
-    virtual int vBC(...);
-    virtual int vC0(...);
-    virtual int vC4(...);
-    virtual int vC8(...);
-    virtual int vCC(...);
-    virtual int vD0(...);
-    virtual int vD4(...);
-    virtual int vD8(...);
-    virtual int vDC(...);
-    virtual int vE0(...);
-    virtual int vE4(...);
-    virtual int vE8(...);
-    virtual int vEC(...);
-    virtual int vF0(...);
-    virtual int vF4(...);
-    virtual int vF8(...);
-    virtual int vFC(...);
-};
-#define VCALL(obj, off, ...) (((VObj *)(obj))->v##off(__VA_ARGS__))
+#include "ov000/VObj.h"
+#define VCALL(obj, off, ...) (((VObj *)(obj))->vfunc_##off(__VA_ARGS__))
 #endif
 
 #endif

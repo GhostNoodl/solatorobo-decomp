@@ -11,7 +11,7 @@ s32 func_0204c4fc(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_ov002_021e331c(void *self) {
     u8 *p;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_VOBJ(FIELD(self, 0x34, VObject *));
         HEAP_POP(saved);

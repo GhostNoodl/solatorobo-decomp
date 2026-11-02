@@ -1,6 +1,5 @@
 #include "ov012/ov012.h"
 
-typedef Ov012Vec VecFx32;
 
 // This TU's .rodata from its base to the vector the static initialiser copies, and its .data up to
 // the copy. The copied vector and its source are weak: the stub loads each through its own pool
@@ -15,7 +14,6 @@ struct Ov012Rot { u16 x, y, z; };
 
 extern "C" {
 
-extern const char *const data_ov012_0220a57c;
 extern const char *const data_ov012_0220a580;
 extern const char *const data_ov012_0220a584;
 extern const Ov012Rot data_ov012_0220a588;
@@ -245,7 +243,7 @@ void Ov012Act_02202b10_Start(Ov012Act_02202b10 *self) {
     m->unk_5c = 0;
     m->unk_60 = 0x1800;
     m->unk_64 = 0;
-    v = data_ov000_021ccd54->unk_ca;
+    v = data_ov000_021ccd54->unk_ca.c[0];
     self->unk_f4 = v;
     if (v == 3) {
         self->unk_50[1] = 700;
@@ -434,7 +432,7 @@ void func_ov012_022032f4(Ov012Act_02202b10 *self) {
         }
     }
     if (self->unk_f0 & 0x400000) {
-        Ov012Actor *o = func_ov000_0219bf90();
+        Ov012Actor *o = (Ov012Actor *)func_ov000_0219bf90();
         if (o != NULL && !func_ov000_021b4738(o)) {
             func_ov012_022054cc(self);
         }
@@ -462,7 +460,6 @@ void func_ov012_022032f4(Ov012Act_02202b10 *self) {
 namespace m_02203420 {
 extern "C" {
 
-extern u16 func_01ffc128(u16 target, u16 cur, s32 a, s32 b, s32 c);
 extern void func_ov003_021daae4(void *p, s32 a, Ov012Vec *v, void *b, void *c, void *d, void *e);
 extern BOOL func_ov000_0219aca8(Ov012Obj *a, Ov012Obj *b, u16 c, u8 d, Ov012Vec *e, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern Ov012Vec data_ov012_0220a748[];
@@ -477,7 +474,7 @@ void func_ov012_02203420(Ov012Act_02202b10 *self) {
     Ov012Vec tgt;
     Ov012Vec p;
     Ov012Sub40 *s;
-    u8 k = data_ov000_021ccd54->unk_ca;
+    u8 k = data_ov000_021ccd54->unk_ca.c[0];
     if (k != 3) {
         if (k == 8) {
             tgt = data_ov012_0220a748[self->unk_fa];
@@ -561,7 +558,7 @@ void func_ov012_02203420(Ov012Act_02202b10 *self) {
         if (o != NULL) {
             o->v0c(FLD(s32, o, 0x40) + 0x19a);
         }
-        func_ov000_0219aca8(self, self, Ov012_FxMul(self->unk_124, 0x3c), 0x30, 0, 0, self->unk_64 + 0x800, self->unk_68, 100, 0xccd);
+        func_ov000_0219aca8(self, self, FX_Mul(self->unk_124, 0x3c), 0x30, 0, 0, self->unk_64 + 0x800, self->unk_68, 100, 0xccd);
         if (VEC_Distance(&self->pos, &self->unk_b8) > 0x800) {
             return;
         }
@@ -607,7 +604,7 @@ void func_ov012_02203420(Ov012Act_02202b10 *self) {
         m = self->unk_48;
         m->unk_9a_0 = 1;
         m->unk_9a_3 = 1;
-        HitSphere_Link(m);
+        HitSphere_Link((HitSphere *)m);
         self->unk_40->timer = 0;
         FLD(Ov012bEA, self, 0xea).b0 = self->unk_b0->unk_0a_7;
         func_ov000_02198360(self->unk_40, 1, 0);
@@ -799,7 +796,7 @@ void func_ov012_02203ed4(Ov012Act_02202b10 *self) {
         break;
     }
     }
-    switch (data_ov000_021ccd54->unk_ca) {
+    switch (data_ov000_021ccd54->unk_ca.c[0]) {
     case 8:
         Actor_TurnToPos(self, &data_ov012_0220a618, 0x400);
         break;
@@ -972,8 +969,8 @@ void func_ov012_0220422c(Ov012Act_02202b10 *self) {
         }
         r = (s32)(OV012R_SQRT_RESULT + 1) >> 1;
         ang = FX_Atan2(r, self->unk_84.y - self->pos.y);
-        self->unk_9c = Ov012_FxMul(OV012_SIN(ang), 0x19a);
-        self->unk_a0 = Ov012_FxMul(OV012_COS(ang), 0x19a);
+        self->unk_9c = FX_Mul(OV012_SIN(ang), 0x19a);
+        self->unk_a0 = FX_Mul(OV012_COS(ang), 0x19a);
         self->unk_b8 = self->unk_84;
         self->unk_40->state++;
         break;
@@ -1171,7 +1168,7 @@ void func_ov012_02204dbc(Ov012Act_02202b10 *self) {
         }
         self->unk_40->state++;
     case 1:
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         self->unk_48->unk_9a_5 = 1;
         if (!(self->unk_48->unk_50 & 0x20000000)) {
@@ -1181,7 +1178,7 @@ void func_ov012_02204dbc(Ov012Act_02202b10 *self) {
         m = self->unk_48;
         m->unk_9a_0 = 1;
         m->unk_9a_3 = 1;
-        HitSphere_Link(m);
+        HitSphere_Link((HitSphere *)m);
         self->unk_40->timer = 0;
         self->unk_40->state++;
         break;
@@ -1301,7 +1298,7 @@ void func_ov012_02205254(Ov012Act_02202b10 *self) {
     o->unk_16.b0 = 1;
     o->unk_18 = 0;
     func_ov000_0219bebc(o, self->unk_124);
-    switch (data_ov000_021ccd54->unk_ca) {
+    switch (data_ov000_021ccd54->unk_ca.c[0]) {
     case 8:
         Ov012_VecSet(&o->unk_84, 0, 0x2000, -0x1f0a);
         break;
@@ -1408,7 +1405,7 @@ void func_ov012_022054cc(Ov012Act_02202b10 *self) {
         m = self->unk_48;
         m->unk_9a_0 = 1;
         m->unk_9a_3 = 1;
-        HitSphere_Link(m);
+        HitSphere_Link((HitSphere *)m);
         n = self->unk_44;
         n->unk_22_0 = 1;
         n->unk_22_1 = 1;

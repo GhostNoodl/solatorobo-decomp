@@ -12,13 +12,7 @@ extern "C" {
 
 extern const s32 data_ov015_02212524[];
 
-void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
-void func_02043d20(void *p, s32 a);
 u8 Gfx3DState_NextPolyId(void *p);
-void NNS_G3dGeBufferOP_N(s32 cmd, void *data, s32 n);
-s32 FX_Div(s32 a, s32 b);
 void func_ov015_021fcb1c(void *self);
 void func_ov015_021fc40c(void *self, s32 a);
 
@@ -42,7 +36,7 @@ static inline void Ov015b_PlayPart(void *model, int idx) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **(u16 **)FLD(void *, NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), idx), 0xc));
     }
-    func_02042628(model, anim, part, 0);
+    func_02042628((Model *)model, anim, (ModelPart *)part, 0);
 }
 
 static inline s32 Ov015b_Sub(s32 a, s32 b) {
@@ -88,7 +82,7 @@ static inline void Ov015b_End(void) {
 }
 static inline void Ov015b_PopMtx(s32 n) {
     s32 v = n;
-    NNS_G3dGeBufferOP_N(0x12, &v, 1);
+    NNS_G3dGeBufferOP_N(0x12, (unsigned int *)&v, 1);
 }
 static inline void Ov015b_Quad(s32 sc, u32 c1, u32 c2) {
     s32 s[3];
@@ -107,7 +101,7 @@ static inline void Ov015b_Quad(s32 sc, u32 c1, u32 c2) {
     s[0] = 0x7000;
     s[1] = sc;
     s[2] = 0x1000;
-    NNS_G3dGeBufferOP_N(0x1b, s, 3);
+    NNS_G3dGeBufferOP_N(0x1b, (unsigned int *)s, 3);
     beg = 3;
     NNS_G3dGeBufferOP_N(0x40, &beg, 1);
     k1 = c1;
@@ -131,7 +125,7 @@ static inline void Ov015b_Quad(s32 sc, u32 c1, u32 c2) {
     NNS_G3dGeBufferOP_N(0x25, &v6, 1);
     NNS_G3dGeBufferOP_N(0x41, NULL, 0);
     pop = 1;
-    NNS_G3dGeBufferOP_N(0x12, &pop, 1);
+    NNS_G3dGeBufferOP_N(0x12, (unsigned int *)&pop, 1);
 }
 
 
@@ -177,20 +171,20 @@ void func_ov015_021fb758(u8 *self) {
     Ov015b_PlayPart(FLD(void *, self, 0x24), 0);
     FLD(s32, FLD(void *, self, 0x24), 0x150) = -0x1fe0;
     Ov015b_PlayPart(FLD(void *, self, 0x24), 1);
-    func_02043d20(data_02097d48 + 0x8b0, 1);
+    func_02043d20(data_02097d48->unk_8b0, 1);
     mtxMode = 2;
-    NNS_G3dGeBufferOP_N(0x10, &mtxMode, 1);
+    NNS_G3dGeBufferOP_N(0x10, (unsigned int *)&mtxMode, 1);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     NNS_G3dGeBufferOP_N(0x15, NULL, 0);
     texParam = 0x20000000;
-    NNS_G3dGeBufferOP_N(0x2a, &texParam, 1);
-    polyAttr = 0x1f00c0 | (Gfx3DState_NextPolyId(data_02097d48 + 0x8b0) << 24);
+    NNS_G3dGeBufferOP_N(0x2a, (unsigned int *)&texParam, 1);
+    polyAttr = 0x1f00c0 | (Gfx3DState_NextPolyId(data_02097d48->unk_8b0) << 24);
     NNS_G3dGeBufferOP_N(0x29, &polyAttr, 1);
     trans[0] = 0;
     trans[1] = 0x97000;
     trans[2] = -0x1fc0;
-    NNS_G3dGeBufferOP_N(0x1c, trans, 3);
-    sc = Ov015_FxMul(FX_Div(g->unk_24, 0x64000), 0x6e000);
+    NNS_G3dGeBufferOP_N(0x1c, (unsigned int *)trans, 3);
+    sc = FX_Mul(FX_Div(g->unk_24, 0x64000), 0x6e000);
     if (FLD(s32, self, 0x10) == 3) {
         Ov015b_Quad(sc, 0x201c, 0x2a1f);
     } else if (FLD(s32, self, 0x10) == 1) {
@@ -213,8 +207,8 @@ void func_ov015_021fb758(u8 *self) {
         x = off.x;
         y = off.y;
         t = FX_Div((30 - FLD(s32, self, 0x8) % 30) << 12, 0x1e000);
-        t = 0x1000 - Ov015_FxMul(t, t);
-        x -= Ov015_FxMul(t, 0x4000);
+        t = 0x1000 - FX_Mul(t, t);
+        x -= FX_Mul(t, 0x4000);
         Ov015b_SetPos(FLD(void *, self, 0x24), x, y);
         Ov015b_PlayPart(FLD(void *, self, 0x24), 0x15);
     }
@@ -250,13 +244,6 @@ struct Ov015cVec {
 
 extern const Ov015cVec data_ov015_02212584;
 extern const Ov015cVec data_ov015_02212590;
-void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
-s32 FX_Div(s32 a, s32 b);
-void MTX_Identity22_(void *m);
-void MTX_ScaleApply22(void *src, void *dst, s32 x, s32 y);
-void VEC_Add(const Ov015cVec *a, const Ov015cVec *b, Ov015cVec *o);
 void func_ov000_021c8408(void *self, int x, int y, int z, u16 color, const void *oam, const void *tex, u32 texBase, u32 plttBase, const void *mtx, u32 arg);
 
 static inline void *Ov015c_GetPart(void *self, int idx) {
@@ -279,11 +266,11 @@ static inline void Ov015c_PlayPart(void *model, int idx, int flag) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **(u16 **)FLD(void *, NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), idx), 0xc));
     }
-    func_02042628(model, anim, part, flag);
+    func_02042628((Model *)model, anim, (ModelPart *)part, flag);
 }
 
 static inline s32 Ov015c_Sin(s32 t) {
-    return FX_SinCosTable_[(Ov015_FxMul(t, 0x3fff000) >> 16) * 2];
+    return FX_SinCosTable_[(FX_Mul(t, 0x3fff000) >> 16) * 2];
 }
 
 static inline s32 Ov015c_SinIdx(s32 idx) {
@@ -291,7 +278,7 @@ static inline s32 Ov015c_SinIdx(s32 idx) {
 }
 
 static inline s32 Ov015c_Sin2(s32 t) {
-    return Ov015c_SinIdx(Ov015_FxMul(t, 0x3fff000) >> 16);
+    return Ov015c_SinIdx(FX_Mul(t, 0x3fff000) >> 16);
 }
 
 static inline void Ov015c_SetV(Ov015cVec *v, s32 x, s32 y, s32 z) {
@@ -405,7 +392,7 @@ void func_ov015_021fc40c(void *self, s32 mode) {
         u8 old;
         void *m;
         n = FLD(s32, self, 0x8) % 20;
-        al = (u8)(Ov015_FxMul(FX_SinCosTable_[(Ov015_FxMul(0x7fff, FX_Div(n << 12, 0x14000)) >> 4) * 2], 0x3c000) >> 12);
+        al = (u8)(FX_Mul(FX_SinCosTable_[(FX_Mul(0x7fff, FX_Div(n << 12, 0x14000)) >> 4) * 2], 0x3c000) >> 12);
         if (al > 30) {
             al = 30;
         }
@@ -418,7 +405,7 @@ void func_ov015_021fc40c(void *self, s32 mode) {
         Ov015c_PlayPart(FLD(void *, self, 0x24), 0x16, 0);
         FLD(Ov015cFlags, FLD(void *, self, 0x24), 0x6c).alpha = old;
     }
-    VEC_Add(&b, &a, &a);
+    VEC_Add((VecFx32 *)&b, (VecFx32 *)&a, (VecFx32 *)&a);
     if (flip) {
         FLD(u32, FLD(void *, self, 0x24), 0x6c) |= 0x20000;
     }
@@ -439,11 +426,11 @@ void func_ov015_021fc40c(void *self, s32 mode) {
     c.y -= 0x10000;
     cnt = FLD(s32, self, 0x8);
     FLD(s32, FLD(void *, self, 0x28), 0x150) = -0x199a;
-    VEC_Add(&c, &data_ov015_02212584, &v);
+    VEC_Add((VecFx32 *)&c, (VecFx32 *)&data_ov015_02212584, (VecFx32 *)&v);
     Ov015c_SetPosV(FLD(void *, self, 0x28), &v);
     Ov015c_PlayPart(FLD(void *, self, 0x28), 0x10, 0);
     if (cnt % 8 < 4) {
-        VEC_Add(&c, &data_ov015_02212590, &v2);
+        VEC_Add((VecFx32 *)&c, (VecFx32 *)&data_ov015_02212590, (VecFx32 *)&v2);
         FLD(s32, FLD(void *, self, 0x24), 0x150) = -0x1ccd;
         Ov015c_SetPosV(FLD(void *, self, 0x24), &v2);
         Ov015c_PlayPart(FLD(void *, self, 0x24), 0xd, 0);

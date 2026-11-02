@@ -30,12 +30,12 @@ void func_ov009_0220a560(Ov009ActVt_02217390 *self) {
     self->unk_48->unk_9a_5 = 0;
 }
 
-extern u8 data_ov009_022172cd[];
+extern char data_ov009_022172cd[];
 extern void func_ov003_021d36fc(Ov009Actor *self);
 extern void func_ov000_02191618(void *model);
 extern void func_ov000_021911c8(void *model, s32 a);
 
-static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {
+static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->unk_d4 != 0;
 }
 
@@ -64,13 +64,10 @@ void func_ov009_0220a654(Ov009ActVt_02217390 *self) {
 }
 
 extern void *data_02097e4c;
-extern u8 data_ov009_022172af[];
-extern u8 data_ov009_022172bb[];
-extern s32 Rand_UpTo(s32 max);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
+extern char data_ov009_022172af[];
+extern char data_ov009_022172bb[];
 extern void func_ov000_02191418(void *m, s32 a, s32 b);
 extern BOOL func_ov000_02191508(void *m);
-extern void Actor_Move(Ov009Obj *self, s32 turn);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 void func_ov009_0220a750(Ov009ActVt_02217390 *self) {
@@ -98,7 +95,7 @@ void func_ov009_0220a750(Ov009ActVt_02217390 *self) {
             func_ov000_02191418(self->unk_38, 3, 0);
         }
         if (!func_ov000_02191508(self->unk_38)) {
-            Actor_Move(self, 0);
+            Actor_Move((Actor *)self, 0);
         }
         if (self->unk_a0 < 0 && (self->unk_48->unk_50 & 0x20000000)) {
             self->unk_a0 = 0;
@@ -137,7 +134,7 @@ void func_ov009_0220a750(Ov009ActVt_02217390 *self) {
     }
 }
 
-extern u8 data_ov009_022172d3[];
+extern char data_ov009_022172d3[];
 extern void *func_ov000_02191318(Ov009Sub38 *m, s32 a);
 void func_ov009_0220a984(Ov009ActVt_02217390 *self) {
     s32 prev;
@@ -171,7 +168,7 @@ void func_ov009_0220a984(Ov009ActVt_02217390 *self) {
                 st->timer--;
             }
             if (st->timer == 0) {
-                Actor_Move(self, 0);
+                Actor_Move((Actor *)self, 0);
                 if (prev > 0 && self->unk_a0 < 0) {
                     self->unk_40->timer = 0x78;
                     func_ov000_02190cb0(self->unk_38, data_ov009_022172d3, 0x155, 0);

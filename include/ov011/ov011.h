@@ -2,6 +2,13 @@
 #define OV011_H
 
 #include "types.h"
+#include "nitro/fx.h"
+#include "nitro/os.h"
+#include "nnsys/g3d.h"
+#include "Main/Sys/SysState.h"
+#include "Main/Sys/Field.h"
+#include "Main/Res/StageCmd.h"
+#include "ov000/Actor.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
 class Ov011V {
@@ -170,13 +177,7 @@ struct Ov011Flags8 {
     u8 b7 : 1;
 };
 
-struct Ov011Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
-
-static inline void Ov011_VecSet(Ov011Vec *v, s32 x, s32 y, s32 z) {
+static inline void Ov011_VecSet(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
     v->y = y;
     v->z = z;
@@ -188,61 +189,22 @@ struct Ov011Blk12 {
 };
 #define OV011_BLKCPY(dst, src) (*(Ov011Blk12 *)(dst) = *(const Ov011Blk12 *)(src))
 
-static inline s32 Ov011_FxMul(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
-
-// NitroSDK sin/cos table: s16 sin,cos pairs
-extern "C" const s16 FX_SinCosTable_[];
 #define OV011_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV011_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
-struct Ov011Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
-// The sub-object at Ov011Game54::unk_f4.
-struct Ov011GameF4 {
-    u8 unk_00[0x99];
-    u8 unk_99;
-    u8 unk_9a;
-    u8 unk_9b;
-    Ov011Flags8 unk_9c;
-};
-
-struct Ov011Game54 {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-    u8 unk_98[0x14];
-    u8 unk_ac;
-    u8 unk_ad[0x47];
-    Ov011GameF4 unk_f4;
-};
-
 extern "C" {
-extern Ov011Game54 *data_ov000_021ccd54;
-extern Ov011Heap *data_02097dd0;
-extern void *data_ov000_021ccd68;
-void Heap_Free(void *p);
-void *Heap_Alloc(u32 size);
 void Heap_FreeArray(void *p);
 void *Heap_AllocArray(u32 size);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
-void *ActorMgr_GetActor(void *mgr, u16 id);
-void *func_ov000_0219bf90(void);
 void func_ov003_021da40c(void *p);
 void func_ov003_021da48c(void *p, u8 a);
 }
 
-static inline BOOL Ov011Game_IsBusy(Ov011Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov011Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov011Game_IsIdle(Ov011Game54 *g) {
+static inline BOOL Ov011Game_IsIdle(FieldState *g) {
     if (Ov011Game_IsBusy(g)) {
         return FALSE;
     }
@@ -253,7 +215,7 @@ static inline BOOL Ov011Game_IsIdle(Ov011Game54 *g) {
 }
 
 static inline BOOL Ov011_GameIdle(void) {
-    Ov011Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov011Game_IsIdle(g);
     }
@@ -272,7 +234,7 @@ struct Ov011LNode {
 };
 
 struct Ov011PNode {
-    Ov011Vec v;
+    VecFx32 v;
     Ov011PNode *next;
 };
 
@@ -331,9 +293,9 @@ struct Ov011Tw {
     u8 unk_01;
     u16 unk_02;
     s32 unk_04;
-    Ov011Vec v08;
-    Ov011Vec v14;
-    Ov011Vec v20;
+    VecFx32 v08;
+    VecFx32 v14;
+    VecFx32 v20;
 };
 
 struct Ov011TwObj {
@@ -376,9 +338,9 @@ struct Ov011Sub38 {
     u8 unk_24[0x2c];
     void *unk_50;
     u8 unk_54[0x24];
-    Ov011Vec pos;
+    VecFx32 pos;
     u8 mtx[0x24];
-    Ov011Vec scale;
+    VecFx32 scale;
     u16 unk_b4;
     u8 unk_b6[0x8];
     u8 alpha;
@@ -410,7 +372,7 @@ OV011_SIZE(Ov011Sub40, 0x14);
 
 struct Ov011Sub44 {
     u8 unk_00[0xc];
-    Ov011Vec unk_0c;
+    VecFx32 unk_0c;
     u8 unk_18[0x4];
     s32 unk_1c;
     u8 unk_20[0x2];
@@ -433,7 +395,7 @@ struct Ov011Sub48 {
     u8 unk_58[0x8];
     s32 unk_60;
     u8 unk_64[0x4];
-    Ov011Vec unk_68;
+    VecFx32 unk_68;
     u8 unk_74[0x26];
     u16 unk_9a_0 : 1;
     u16 unk_9a_1 : 1;
@@ -505,10 +467,10 @@ public:
     s32 unk_64;
     s32 unk_68;
     s32 unk_6c;
-    Ov011Vec pos;
+    VecFx32 pos;
     u16 rot[3];
     u8 unk_82[0x2];
-    Ov011Vec unk_84;
+    VecFx32 unk_84;
     u16 target; // id of the targeted actor (ov000 Actor::target)
     u8 unk_92;
     u8 unk_93_0 : 1;
@@ -529,7 +491,7 @@ public:
     Ov011Param *unk_b0;
     u16 unk_b4;
     u16 unk_b6;
-    Ov011Vec unk_b8;
+    VecFx32 unk_b8;
     s32 unk_c4;
     s32 unk_c8;
 };
@@ -631,8 +593,8 @@ struct Ov011Mov {
     u8 active;
     u8 unk_01[0x3];
     s32 accel;
-    Ov011Vec pos;
-    Ov011Vec vel;
+    VecFx32 pos;
+    VecFx32 vel;
 };
 OV011_SIZE(Ov011Mov, 0x20);
 
@@ -668,9 +630,9 @@ struct Ov011Fx {
     s16 unk_02;
     Ov011Anim *anim;
     Ov011Sub38 *model;
-    Ov011Vec v0c;
-    Ov011Vec v18;
-    u8 mtx[0x24];
+    VecFx32 v0c;
+    VecFx32 v18;
+    MtxFx33 mtx;
     u16 state;
     u16 timer;
     u8 unk_4c[0x10];
@@ -767,7 +729,7 @@ public:
     u8 unk_f0_2 : 6;
     u8 unk_f1;
     u16 unk_f2;
-    Ov011Vec unk_f4;
+    VecFx32 unk_f4;
     Ov011Scene *scene;
     Ov011Sa104 *unk_104;
     Ov011Sa108 *unk_108;
@@ -778,13 +740,13 @@ public:
 // vtable data_ov011_02207cf8: Ov011Act7cf8_Start, func_ov011_022038ac.
 class Ov011Act7cf8 : public Ov011Actor {
 public:
-    Ov011Vec unk_f0;
+    VecFx32 unk_f0;
 };
 
 // vtable data_ov011_02207e50: Ov011Act7e50_Start, func_ov011_02203e94, func_ov011_02203ef0.
 class Ov011Act7e50 : public Ov011Actor {
 public:
-    Ov011Vec unk_f0;
+    VecFx32 unk_f0;
     u16 unk_fc;
 };
 
@@ -792,11 +754,11 @@ public:
 // func_ov011_02204a8c.
 class Ov011Act7c4c : public Ov011Actor {
 public:
-    Ov011Vec unk_f0;
+    VecFx32 unk_f0;
     u16 unk_fc;
     u16 unk_fe;
     s32 unk_100;
-    Ov011Vec unk_104;
+    VecFx32 unk_104;
 };
 
 class Ov011Bar;
@@ -812,7 +774,7 @@ public:
     u16 unk_36c;
     u8 unk_36e;
     u8 unk_36f;
-    Ov011Vec unk_370[3];
+    VecFx32 unk_370[3];
     u8 unk_394;
     Ov011Bar *unk_398;
 };
@@ -852,11 +814,11 @@ struct Ov011ActMsg {
 class Ov011Player : public Ov011Obj {
 public:
     u8 unk_cc[0xa24];
-    Ov011Vec unk_af0;
+    VecFx32 unk_af0;
     u8 unk_afc[0x20];
     u16 unk_b1c;
     u8 unk_b1e[0x72];
-    Ov011Vec unk_b90;
+    VecFx32 unk_b90;
     s32 unk_b9c;
 };
 
@@ -896,5 +858,15 @@ static inline BOOL Ov011_NodeValid(Ov011Node *n) {
 }
 
 
+
+// v * the 3x3 part of m (the rotation of a 4x3 matrix), as MTX_MultVec33 would compute it.
+static inline void Ov011_MulVec33(const VecFx32 *v, const MtxFx43 *m, VecFx32 *out) {
+    s32 x = v->x;
+    s32 y = v->y;
+    s32 z = v->z;
+    out->x = (s32)(((s64)x * m->a[0] + (s64)y * m->a[3] + (s64)z * m->a[6]) >> 12);
+    out->y = (s32)(((s64)x * m->a[1] + (s64)y * m->a[4] + (s64)z * m->a[7]) >> 12);
+    out->z = (s32)(((s64)x * m->a[2] + (s64)y * m->a[5] + (s64)z * m->a[8]) >> 12);
+}
 
 #endif

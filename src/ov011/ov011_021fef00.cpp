@@ -72,10 +72,8 @@ void Ov011SceneActor_Start(Ov011SceneActor *self) {
 
 extern void *data_02097e4c;
 extern const char *const data_ov011_02207258;
-extern void *func_0204a028(void *a, s32 b, Ov011Vec *c, s32 d);
-extern void *func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
-void func_ov000_021915a0(void *a);
+extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
+extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 BOOL func_ov003_021d1c00(Ov011Actor *self, Ov011ActMsg *msg);
 
 

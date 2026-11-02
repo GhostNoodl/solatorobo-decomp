@@ -94,7 +94,6 @@ void func_ov011_021fdd38(void) {
 
 u32 func_ov011_02201244(void *self);
 void *func_ov011_02201254(void *self);
-void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
 
 void func_ov011_021fdd3c(Ov011Scene *self) {
     Ov011Ent *e = &self->ent;
@@ -119,9 +118,9 @@ void func_ov011_021fdd3c(Ov011Scene *self) {
             Ov011Obj *owner = self->actor;
             if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {
                 Ov011PNode *p = Ov011Ent_Find(e, func_ov011_02201254(a));
-                Ov011Vec r;
-                Ov011Vec o;
-                Ov011Vec v;
+                VecFx32 r;
+                VecFx32 o;
+                VecFx32 v;
                 v.x = p->v.x;
                 v.y = p->v.y;
                 v.z = p->v.z;

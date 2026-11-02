@@ -154,7 +154,7 @@ void func_ov006_021e9c5c(ov006_Prop021e9c5c *self) {
             ov006_Eff021e9c5c *e = func_02065f88(0x391, &self->pos);
             if (e != NULL) {
                 self->unk1E8 = e->unk24;
-                VCALL(e, 0C, 0x199a);
+                VCALL(e, 0c, 0x199a);
                 e->unkC8 = -1;
             }
         }
@@ -179,7 +179,7 @@ void func_ov006_021e9c5c(ov006_Prop021e9c5c *self) {
         e = func_02065f88(0x389, &self->pos);
         if (e != NULL) {
             self->unk1E4 = e->unk24;
-            VCALL(e, 0C, 0x2800);
+            VCALL(e, 0c, 0x2800);
             e->unk3C = 0x3000;
         }
         if (ent->se >= 0) {

@@ -69,16 +69,6 @@ void func_ov014_0220f20c(Ov014Obj *self, s32 a, s32 b, s32 c) {
     }
 }
 
-extern void MTX_Identity33_(Ov014Mtx33 *m);
-extern void MTX_RotX33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_RotY33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_RotZ33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_Concat33(const Ov014Mtx33 *a, const Ov014Mtx33 *b, Ov014Mtx33 *out);
-extern void MTX_MultVec33(const Ov014Vec *v, const Ov014Mtx33 *m, Ov014Vec *out);
-extern void VEC_Normalize(const Ov014Vec *a, Ov014Vec *b);
-extern s32 FX_Div(s32 a, s32 b);
-extern s32 VEC_Mag(const Ov014Vec *v);
-extern const s16 FX_SinCosTable_[];
 
 static inline s32 Ov014_Dot(const Ov014Vec *a, const Ov014Vec *b, const Ov014Vec *n) {
     s32 dx = a->x - b->x;
@@ -113,32 +103,32 @@ s32 func_ov014_0220f3f0(const Ov014Vec *a, const Ov014Vec *b, const u16 *rot, co
     ry = rot[1];
     rz = rot[2];
     rx = rot[0];
-    MTX_Identity33_(&m);
+    MTX_Identity33_((MtxFx33 *)&m);
     if (ry != 0) {
-        MTX_RotY33_(&m, FX_SinCosTable_[(ry >> 4) * 2], FX_SinCosTable_[(ry >> 4) * 2 + 1]);
+        MTX_RotY33_((MtxFx33 *)&m, FX_SinCosTable_[(ry >> 4) * 2], FX_SinCosTable_[(ry >> 4) * 2 + 1]);
         set = TRUE;
     }
     if (rx != 0) {
         if (set) {
-            MTX_RotX33_(&t, FX_SinCosTable_[(rx >> 4) * 2], FX_SinCosTable_[(rx >> 4) * 2 + 1]);
-            MTX_Concat33(&t, &m, &m);
+            MTX_RotX33_((MtxFx33 *)&t, FX_SinCosTable_[(rx >> 4) * 2], FX_SinCosTable_[(rx >> 4) * 2 + 1]);
+            MTX_Concat33((MtxFx33 *)&t, (MtxFx33 *)&m, (MtxFx33 *)&m);
         } else {
-            MTX_RotX33_(&m, FX_SinCosTable_[(rx >> 4) * 2], FX_SinCosTable_[(rx >> 4) * 2 + 1]);
+            MTX_RotX33_((MtxFx33 *)&m, FX_SinCosTable_[(rx >> 4) * 2], FX_SinCosTable_[(rx >> 4) * 2 + 1]);
             set = TRUE;
         }
     }
     if (rz != 0) {
         if (set) {
-            MTX_RotZ33_(&t, FX_SinCosTable_[(rz >> 4) * 2], FX_SinCosTable_[(rz >> 4) * 2 + 1]);
-            MTX_Concat33(&t, &m, &m);
+            MTX_RotZ33_((MtxFx33 *)&t, FX_SinCosTable_[(rz >> 4) * 2], FX_SinCosTable_[(rz >> 4) * 2 + 1]);
+            MTX_Concat33((MtxFx33 *)&t, (MtxFx33 *)&m, (MtxFx33 *)&m);
         } else {
-            MTX_RotZ33_(&m, FX_SinCosTable_[(rz >> 4) * 2], FX_SinCosTable_[(rz >> 4) * 2 + 1]);
+            MTX_RotZ33_((MtxFx33 *)&m, FX_SinCosTable_[(rz >> 4) * 2], FX_SinCosTable_[(rz >> 4) * 2 + 1]);
         }
     }
     ax.x = 0x1000;
     ax.y = 0;
     ax.z = 0;
-    MTX_MultVec33(&ax, &m, &ax);
+    MTX_MultVec33(&ax, (MtxFx33 *)&m, &ax);
     {
         s32 e = ext[0];
         s32 d = e != 0 ? Ov014_AxisDist(&ax, a, b, e) : 0;
@@ -149,7 +139,7 @@ s32 func_ov014_0220f3f0(const Ov014Vec *a, const Ov014Vec *b, const u16 *rot, co
     ax.x = 0;
     ax.y = 0x1000;
     ax.z = 0;
-    MTX_MultVec33(&ax, &m, &ax);
+    MTX_MultVec33(&ax, (MtxFx33 *)&m, &ax);
     {
         s32 e = ext[1];
         s32 d = e != 0 ? Ov014_AxisDist(&ax, a, b, e) : 0;
@@ -160,7 +150,7 @@ s32 func_ov014_0220f3f0(const Ov014Vec *a, const Ov014Vec *b, const u16 *rot, co
     ax.x = 0;
     ax.y = 0;
     ax.z = 0x1000;
-    MTX_MultVec33(&ax, &m, &ax);
+    MTX_MultVec33(&ax, (MtxFx33 *)&m, &ax);
     {
         s32 e = ext[2];
         s32 d = e != 0 ? Ov014_AxisDist(&ax, a, b, e) : 0;

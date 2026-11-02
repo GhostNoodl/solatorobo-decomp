@@ -10,7 +10,7 @@ typedef struct ov006_Sub021e0480 {
     s32 x;
     s32 y;
     s32 z;
-    ov006_Model *model;
+    Model *model;
 } ov006_Sub021e0480;
 
 typedef struct ov006_Pic021e0480 {
@@ -21,7 +21,7 @@ typedef struct ov006_Pic021e0480 {
     s32 x;
     s32 y;
     s32 z;
-    ov006_Model *model;
+    Model *model;
     ov006_Sub021e0480 *sub;
 } ov006_Pic021e0480;
 
@@ -35,7 +35,7 @@ typedef struct ov006_Unk021e0480 {
 
 extern "C" {
 
-void func_02041c18(ov006_Model *model, const char *name);
+void func_02041c18(Model *model, const char *name);
 void func_ov006_021df5a0(void *win);
 
 static inline void ov006_Sub021e0480_SetPos(ov006_Sub021e0480 *self, s16 x, s16 y, s32 z) {
@@ -48,7 +48,7 @@ void func_ov006_021e0480(ov006_Unk021e0480 *self) {
     int x;
     int y;
     ov006_Pic021e0480 *pic;
-    ov006_Model *m;
+    Model *m;
     ov006_Sub021e0480 *sub;
     if (self->state == 0) {
         return;
@@ -63,26 +63,26 @@ void func_ov006_021e0480(ov006_Unk021e0480 *self) {
         if (sub->ready) {
             func_02041c18(sub->model, sub->name);
             {
-                ov006_Model *mm = sub->model;
-                mm->unkFC[0].x = sub->x;
-                mm->unkFC[0].y = sub->y;
+                Model *mm = sub->model;
+                mm->pos[0].x = sub->x;
+                mm->pos[0].y = sub->y;
             }
-            sub->model->unk150 = sub->z;
+            sub->model->unk_150 = sub->z;
             m = sub->model;
             if (sub->flag) {
-                ov006_Model_PlayPart(m, 0x1e);
+                Model_PlayPart(m, 0x1e);
             } else {
-                ov006_Model_PlayPart(m, 0x24);
+                Model_PlayPart(m, 0x24);
             }
-            ov006_Model_PlayPart(sub->model, 0x1f);
+            Model_PlayPart(sub->model, 0x1f);
         }
         ov006_Model_SetPos(pic->model, 0, (s16)(x + 0x39) << 12, y << 12);
-        pic->model->unk150 = pic->z;
-        ov006_Model_PlayPart(pic->model, 0xd);
+        pic->model->unk_150 = pic->z;
+        Model_PlayPart(pic->model, 0xd);
         if (pic->show) {
             ov006_Model_SetPos(pic->model, 0, x << 12, (s16)(y + 0x18) << 12);
-            pic->model->unk150 = pic->z;
-            ov006_Model_PlayPart(pic->model, 0xf);
+            pic->model->unk_150 = pic->z;
+            Model_PlayPart(pic->model, 0xf);
         }
     }
     func_ov006_021df5a0(self->win);

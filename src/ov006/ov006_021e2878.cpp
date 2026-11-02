@@ -26,7 +26,7 @@ typedef struct ov006_Marks {
     s32 unk54;
     s32 unk58;
     s32 unk5C;
-    ov006_Model *unk60;
+    Model *unk60;
 } ov006_Marks;
 
 extern "C" {
@@ -74,7 +74,7 @@ void func_ov006_021e28b4(ov006_Marks *self) {
         dz = by + (dz >> 12);
         ov006_Model_SetPos(self->unk60, 2, dx << 12, dz << 12);
         idx = i + 0xc;
-        ov006_Model_PlayPart(self->unk60, idx);
+        Model_PlayPart(self->unk60, idx);
     }
 }
 

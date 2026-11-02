@@ -4,10 +4,10 @@ extern "C" {
 
 extern Ov009Actor *func_ov003_021d69a0(Ov009Actor *self, u16 kind, s32 a);
 extern void func_ov003_021d36fc(Ov009Actor *self);
-extern u8 data_ov009_02216ab6[];
+extern char data_ov009_02216ab6[];
 extern void func_ov000_02190758(Ov009Sub38 *m, u16 *rot, s32 a);
 extern void func_0203f364(Ov009Sub48 *p);
-extern u8 data_ov009_02216ac2[];
+extern char data_ov009_02216ac2[];
 extern u8 data_ov009_02216aaa[];
 extern u8 data_ov009_02216abc[];
 extern void Actor_MoveToPos(Ov009Actor *self, Ov009Vec *v, s32 a);
@@ -39,7 +39,7 @@ void func_ov009_021fbbc0(Ov009ActVt_022166a4 *self) {
         self->unk_ea_0 = self->unk_b0->unk_0a_7;
         self->unk_ec_0 = 1;
     case 0x34:
-        self->pos.y += Ov009_FxMul(self->unk_b8.y + 0x2400 - self->pos.y, 0xcd);
+        self->pos.y += FX_Mul(self->unk_b8.y + 0x2400 - self->pos.y, 0xcd);
         break;
     }
     func_ov003_021d4b68(self);
@@ -114,9 +114,9 @@ void Ov009ActVt_022163f4_Start(Ov009ActVt_022163f4 *self) {
 BOOL Ov009ActVt_022163f4_Draw(Ov009ActVt_022163f4 *self) {
     Ov009Vec t;
     if (self->unk_f0 != 0 || self->unk_ec_1) {
-        self->unk_f4 += Ov009_FxMul(-0xccd - self->unk_f4, 0x148);
+        self->unk_f4 += FX_Mul(-0xccd - self->unk_f4, 0x148);
     } else {
-        self->unk_f4 += Ov009_FxMul(-self->unk_f4, 0xf6);
+        self->unk_f4 += FX_Mul(-self->unk_f4, 0xf6);
     }
     t = self->pos;
     t.y += self->unk_f4;
@@ -194,7 +194,7 @@ void func_ov009_021fc1e4(Ov009ActVt_022163f4 *self) {
 
 void Ov009ActVt_02216348_Start(Ov009ActVt_02216348 *self) {
     Ov009Sub48 *s48;
-    u32 saved;
+    void *saved;
     func_ov003_021d112c(self);
     s48 = self->unk_48;
     self->unk_f0 = 0;
@@ -202,7 +202,7 @@ void Ov009ActVt_02216348_Start(Ov009ActVt_02216348 *self) {
     s48->unk_9a_3 = 0;
     func_0203f364(s48);
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->unk_44 != NULL) {
         Heap_Free(self->unk_44);
         self->unk_44 = NULL;
@@ -215,7 +215,6 @@ extern void *data_02097e4c;
 extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
-extern void Actor_SendMsg(Ov009Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 struct Ov009HitMsg {
     u8 a;
     u16 b;
@@ -249,7 +248,7 @@ void Ov009ActVt_02216348_Update(Ov009ActVt_02216348 *self) {
                 msg.a = 1;
                 msg.b = 0x333;
                 msg.c = 0xf;
-                Actor_SendMsg(p, self->id, 0xb, TRUE, 6, &msg);
+                Actor_SendMsg((Actor *)p, self->id, 0xb, TRUE, 6, &msg);
                 {
                     s32 x = p->pos.x;
                     s32 y = p->pos.y;

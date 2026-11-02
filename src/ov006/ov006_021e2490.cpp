@@ -21,30 +21,30 @@ typedef struct ov006_Unk021e2490 {
     s32 unk8;
     s32 unkC;
     ov006_Marker2490 markers[4];
-    ov006_Model *unkA0;
+    Model *unkA0;
 } ov006_Unk021e2490;
 
-typedef void *(*ov006_SeqFn16)(int a, u16 b);
+typedef void *(*ov006_SeqFn16)(void *res, u16 idx);
 
-static inline ov006_ModelPart *ov006_Model_GetPart16(ov006_Model *self, u16 idx) {
+static inline ModelPart *ov006_Model_GetPart16(Model *self, u16 idx) {
     if (idx >= self->numParts) {
         return NULL;
     }
     return &self->parts[idx];
 }
 
-static inline void ov006_Model_PlayPart16(ov006_Model *model, u16 idx) {
-    ov006_ModelRes *res = model->unk28;
-    ov006_ModelPart *part;
+static inline void ov006_Model_PlayPart16(Model *model, u16 idx) {
+    ModelRes *res = model->res;
+    ModelPart *part;
     void *anim;
     if (res == NULL) {
         return;
     }
     part = ov006_Model_GetPart16(model, idx);
-    if (part != NULL && part->unk4 != NULL) {
-        anim = part->unk4->unk30;
+    if (part != NULL && part->res != NULL) {
+        anim = part->res->tex;
     } else {
-        anim = NNS_G2dGetCellDataByIdx(res->unk4, **((ov006_Unk02023390 *)((ov006_SeqFn16)NNS_G2dGetAnimSequenceByIdx)(model->unk28->unkC, idx))->unkC);
+        anim = NNS_G2dGetCellDataByIdx(res->texRes, **((ov006_Unk02023390 *)((ov006_SeqFn16)NNS_G2dGetAnimSequenceByIdx)(model->res->mdlRes, idx))->unkC);
     }
     func_02042628(model, anim, part, 0);
 }

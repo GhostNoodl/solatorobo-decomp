@@ -2,7 +2,6 @@
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd70;
 
 extern const char data_ov002_021efaa0[];
 extern const char data_ov002_021efaad[];
@@ -81,7 +80,7 @@ void func_ov002_021d637c(void *self) {
         }
     }
     g = FIELD(self, 0x50, void *);
-    keys = FIELD(data_02097dc8, 0x12, u16);
+    keys = data_02097dc8->trig;
     if (ov002_unsel637c(g) && (keys & 2)) {
         z = -1;
         func_02049a48(data_02097e4c, 0x1f, z, z, z);

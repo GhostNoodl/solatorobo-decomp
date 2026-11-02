@@ -9,7 +9,7 @@ void func_ov003_021d9900(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
         return;
     }
     MTX_RotX33_(&m, OV003_SIN(angle), OV003_COS(angle));
-    MTX_MultVec33(in, &m, out);
+    MTX_MultVec33((VecFx32 *)in, &m, (VecFx32 *)out);
 }
 
 void func_ov003_021d9980(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
@@ -19,7 +19,7 @@ void func_ov003_021d9980(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
         return;
     }
     MTX_RotY33_(&m, OV003_SIN(angle), OV003_COS(angle));
-    MTX_MultVec33(in, &m, out);
+    MTX_MultVec33((VecFx32 *)in, &m, (VecFx32 *)out);
 }
 
 void func_ov003_021d9a00(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
@@ -29,30 +29,30 @@ void func_ov003_021d9a00(Ov003Vec *out, s32 angle, const Ov003Vec *in) {
         return;
     }
     MTX_RotZ33_(&m, OV003_SIN(angle), OV003_COS(angle));
-    MTX_MultVec33(in, &m, out);
+    MTX_MultVec33((VecFx32 *)in, &m, (VecFx32 *)out);
 }
 
 s32 Ov003Vec_DistSq(const Ov003Vec *a, const Ov003Vec *b) {
     s32 dx = b->x - a->x;
     s32 dy = b->y - a->y;
     s32 dz = b->z - a->z;
-    return Ov003_FxMul(dx, dx) + Ov003_FxMul(dy, dy) + Ov003_FxMul(dz, dz);
+    return FX_Mul(dx, dx) + FX_Mul(dy, dy) + FX_Mul(dz, dz);
 }
 
 void func_ov003_021d9aec(Ov003Vec *out, const Ov003Vec *in, s32 max) {
-    s32 len = VEC_Mag(in);
+    s32 len = VEC_Mag((VecFx32 *)in);
     if (len != 0 && len > max) {
         s32 s = FX_Div(max, len);
-        out->x = Ov003_FxMul(in->x, s);
-        out->y = Ov003_FxMul(in->y, s);
-        out->z = Ov003_FxMul(in->z, s);
+        out->x = FX_Mul(in->x, s);
+        out->y = FX_Mul(in->y, s);
+        out->z = FX_Mul(in->z, s);
     } else {
         *out = *in;
     }
 }
 
 void func_ov003_021d9b8c(Ov003Vec *out, const Ov003Vec *in, s32 max, s32 sub) {
-    s32 len = VEC_Mag(in);
+    s32 len = VEC_Mag((VecFx32 *)in);
     if (len != 0 && len > max) {
         s32 t = len - sub;
         s32 s;
@@ -60,9 +60,9 @@ void func_ov003_021d9b8c(Ov003Vec *out, const Ov003Vec *in, s32 max, s32 sub) {
             t = max;
         }
         s = FX_Div(t, len);
-        out->x = Ov003_FxMul(in->x, s);
-        out->y = Ov003_FxMul(in->y, s);
-        out->z = Ov003_FxMul(in->z, s);
+        out->x = FX_Mul(in->x, s);
+        out->y = FX_Mul(in->y, s);
+        out->z = FX_Mul(in->z, s);
     } else {
         *out = *in;
     }
@@ -83,7 +83,7 @@ u16 Ov003Vec_Pitch(const Ov003Vec *v) {
 void Ov003Vec_RotY(Ov003Vec *out, const Ov003Vec *in, s32 angle) {
     Ov003Mtx33 m;
     MTX_RotY33_(&m, OV003_SIN(angle), OV003_COS(angle));
-    MTX_MultVec33(in, &m, out);
+    MTX_MultVec33((VecFx32 *)in, &m, (VecFx32 *)out);
 }
 
 void func_ov003_021d9d28(Ov003Vec *out, const Ov003Vec *in, s32 angle, const Ov003Vec *center) {
@@ -93,8 +93,8 @@ void func_ov003_021d9d28(Ov003Vec *out, const Ov003Vec *in, s32 angle, const Ov0
     d.y = in->y - center->y;
     d.z = in->z - center->z;
     MTX_RotY33_(&m, OV003_SIN(angle), OV003_COS(angle));
-    MTX_MultVec33(&d, &m, out);
-    VEC_Add(out, center, out);
+    MTX_MultVec33((VecFx32 *)&d, &m, (VecFx32 *)out);
+    VEC_Add((VecFx32 *)out, (VecFx32 *)center, (VecFx32 *)out);
 }
 
 }

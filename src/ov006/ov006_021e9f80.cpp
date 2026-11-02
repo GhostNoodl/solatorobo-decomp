@@ -42,7 +42,6 @@ extern const VecFx32 data_ov006_021eb8a4;
 extern const VecFx32 data_ov006_021eb8b0;
 
 BOOL func_01ffc318(void *col, const VecFx32 *pos, VecFx32 *min, VecFx32 *max, void *rot);
-u16 FX_Atan2(s32 y, s32 x);
 void *func_ov006_021e37d0(int type, int arg);
 
 static inline BOOL ov006_Racer021e9f80_Done(ov006_Racer021e9f80 *self) {

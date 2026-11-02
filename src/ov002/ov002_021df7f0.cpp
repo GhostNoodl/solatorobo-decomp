@@ -63,9 +63,9 @@ void func_ov002_021df7f0(void *self, void *a) {
             break;
         }
     case 21: {
-        Vec3 v;
+        VecFx32 v;
         s32 mtx[9];
-        Vec3 off;
+        VecFx32 off;
         Vec2 p;
         u8 *m;
         func_ov002_021d8b2c(FIELD(self, 0x10, void *), &p);

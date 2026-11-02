@@ -169,7 +169,6 @@ void Ov013ActExVt_0220b7d0_Start(Ov013ActExVt_0220b7d0 *self) {
 }
 
 
-extern void *data_ov000_021ccd68;
 extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern const Ov013Vec data_ov013_0220aeb8;
 extern char data_ov013_0220b86f[];
@@ -180,9 +179,7 @@ extern Ov013V *EffectGroup_Create(const void *a, const void *b, Ov013Vec *pos);
 extern void func_020639d4(Ov013V *o, s32 a, s32 b);
 extern BOOL func_ov000_021b4738(Ov013Actor *p);
 extern void Actor_TurnToPos(Ov013Obj *self, Ov013Vec *p, s32 a);
-extern void Actor_Move(Ov013Obj *self, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
-extern void VEC_Normalize(const Ov013Vec *in, Ov013Vec *out);
 extern void func_ov000_0219b808(u16 id, Ov013Vec *pos, void *box, s32 a, s32 b);
 
 struct Ov013HitBox {
@@ -288,12 +285,12 @@ void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
         Actor_TurnToPos(self, &pp, 0xcd);
         self->unk_98 = self->rot[1];
     }
-    Actor_Move(self, 0);
+    Actor_Move((Actor *)self, 0);
     for (i = 0; i < 2; i++) {
         Ov013V *o = (Ov013V *)func_020657b0(data_0214a420, FLD(s32, (u8 *)self + i * 4, 0xd0));
         if (o != NULL) {
             if (i == 0) {
-                o->v14(self->unk_d8, Ov013_FxMul(self->unk_d8, 0x1333), self->unk_d8);
+                o->v14(self->unk_d8, FX_Mul(self->unk_d8, 0x1333), self->unk_d8);
             } else {
                 o->v0c(self->unk_d8 >> 1);
             }
@@ -303,7 +300,7 @@ void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
     if (self->pos.y < 0) {
         self->pos.y = 0;
     }
-    func_ov000_0219aae8(self, self, self->unk_4c->unk_08, self->unk_4c->unk_0a, 1 << (pl->id >> 12), NULL, NULL, Ov013_FxMul(self->unk_d8, 0x800), 0x2000, 100, 0x1000);
+    func_ov000_0219aae8(self, self, self->unk_4c->unk_08, self->unk_4c->unk_0a, 1 << (pl->id >> 12), NULL, NULL, FX_Mul(self->unk_d8, 0x800), 0x2000, 100, 0x1000);
     if (pl->unk_50[0] == 0) {
         return;
     }
@@ -331,9 +328,9 @@ void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
         }
         box.v.y = 0;
         VEC_Normalize(&box.v, &box.v);
-        box.v.x = Ov013_FxMul(box.v.x, 0xb8);
-        box.v.y = Ov013_FxMul(box.v.y, 0xb8);
-        box.v.z = Ov013_FxMul(box.v.z, 0xb8);
+        box.v.x = FX_Mul(box.v.x, 0xb8);
+        box.v.y = FX_Mul(box.v.y, 0xb8);
+        box.v.z = FX_Mul(box.v.z, 0xb8);
         box.unk_30 = -1;
         func_ov000_0219b808(self->id, &self->pos, &box, 0, 0);
     }

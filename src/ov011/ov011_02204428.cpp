@@ -3,33 +3,16 @@
 extern "C" {
 
 extern void *data_0214a420;
-extern void *data_ov000_021ccd64;
-extern Ov011Vec data_02092a50;
-extern Ov011Vec data_02092a38;
+extern VecFx32 data_02092a50;
+extern VecFx32 data_02092a38;
 extern char data_ov011_022075d4[];
-s32 *NNS_G3dGlbGetInvV(void);
-void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
-void VEC_MultAdd(s32 scale, const Ov011Vec *dir, const Ov011Vec *base, Ov011Vec *out);
-void VEC_Normalize(const Ov011Vec *src, Ov011Vec *dst);
-u16 FX_Atan(s32 x);
-u16 FX_Atan2(s32 y, s32 x);
-Ov011Eff *func_02065f88(s32 id, Ov011Vec *v);
+Ov011Eff *func_02065f88(s32 id, VecFx32 *v);
 Ov011Eff *func_020657b0(void *mgr, s32 h);
 s32 Rand_PlusMinus(s32 max);
-Ov011Obj *func_ov000_0219be1c(s32 id, Ov011Vec *pos, u16 *rot, u16 a, u16 b);
-void func_ov000_0218bed8(void *mgr, s32 a, void *self);
-
-static inline void Ov011_MulVec33(const Ov011Vec *v, const s32 *m, Ov011Vec *out) {
-    s32 x = v->x;
-    s32 y = v->y;
-    s32 z = v->z;
-    out->x = (s32)(((s64)x * m[0] + (s64)y * m[3] + (s64)z * m[6]) >> 12);
-    out->y = (s32)(((s64)x * m[1] + (s64)y * m[4] + (s64)z * m[7]) >> 12);
-    out->z = (s32)(((s64)x * m[2] + (s64)y * m[5] + (s64)z * m[8]) >> 12);
-}
+Ov011Obj *func_ov000_0219be1c(s32 id, VecFx32 *pos, u16 *rot, u16 a, u16 b);
 
 void func_ov011_02204428(Ov011Act7c4c *self) {
-    Ov011Vec v;
+    VecFx32 v;
     Ov011Sub40 *s = self->unk_40;
     switch (s->state) {
     case 0:
@@ -96,7 +79,7 @@ void func_ov011_02204428(Ov011Act7c4c *self) {
         if (self->unk_40->timer == 0) {
             Ov011Player *pl = (Ov011Player *)func_ov000_0219bf90();
             if (pl != NULL) {
-                Ov011Vec d;
+                VecFx32 d;
                 u16 rot[3];
                 Ov011Obj *r;
                 d = pl->unk_af0;
@@ -148,7 +131,7 @@ void func_ov011_02204428(Ov011Act7c4c *self) {
             s->timer--;
         }
         if (s->timer == 0) {
-            func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+            func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
             self->v08();
         }
         break;

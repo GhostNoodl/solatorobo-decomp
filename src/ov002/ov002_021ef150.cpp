@@ -1,6 +1,5 @@
 #include "ov002/ov002.h"
 
-#define FX32_ONE 0x1000
 
 // The resource-name table (Ov002ResNames in ov002.h) read by ov002_021d2410.cpp .. ov002_021d36b8.cpp. The original TU also
 // held those functions and the string pool at 0x021ef5c4; here the strings stay extern. Round dtD
@@ -81,7 +80,7 @@ extern "C" {
 
 
 void func_ov002_021d25ec(Task50 *self) {
-    u32 saved;
+    void *saved;
     int i;
     HEAP_PUSH(saved);
     DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
@@ -98,16 +97,16 @@ void func_ov002_021d25ec(Task50 *self) {
     for (i = 0; i < 7; i++) {
         func_ov002_021e4904((u8 *)self + 0x4c + i * 0x18);
     }
-    func_02036838(data_02097cdc, (u8 *)self + 0xf4, 7, 0);
+    func_02036838(data_02097cdc, (char *)((u8 *)self + 0xf4), 7, 0);
 }
 
 void func_ov002_021d2720(void *self) {
     func_ov002_021d4540((u8 *)self + 0xf4, 0x20, data_ov002_021ef5ac.param, data_ov002_021ef650, LangData_GetLang());
-    func_020359d0((u8 *)self + 0xf4, 7, 0);
+    func_020359d0((char *)((u8 *)self + 0xf4), 7, 0);
 }
 
 bool func_ov002_021d276c(void *self) {
-    return func_02035b90((u8 *)self + 0xf4, 7) != 0;
+    return func_02035b90((char *)((u8 *)self + 0xf4), 7) != 0;
 }
 
 }
@@ -289,7 +288,7 @@ namespace m_021d2c2c {
 extern "C" {
 
 void func_ov002_021d2c2c(Task50 *self) {
-    if (!(FIELD(data_02097dc8, 0x12, u16) & 2)) {
+    if (!(data_02097dc8->trig & 2)) {
         return;
     }
     if (self->unk_48 != 0) {
@@ -344,7 +343,7 @@ void func_ov002_021d2ca4(Task50 *self) {
         FIELD(self->unk_3c, 0xc, u32) |= 4;
         FIELD(self, 0x48, VObject *)->v0x1c();
         if (ov002_isDone2ca4(FIELD(self, 0x48, VObject *))) {
-            u32 saved;
+            void *saved;
             HEAP_PUSH(saved);
             DELETE_VOBJ(FIELD(self, 0x48, VObject *));
             HEAP_POP(saved);
@@ -430,7 +429,7 @@ static inline bool ov002_IsActive(void *p) {
     return FIELD(p, 0x28, s32) != 1 ? 0 : FIELD(p, 0x30, s32);
 }
 
-static inline bool ov002_HasActive(void *t) {
+static inline bool ov002_HasActive(FieldPlayer *t) {
     void *p = FIELD(t, 0x118, void *);
     if (p == NULL) {
         return false;
@@ -509,7 +508,7 @@ void func_ov002_021d2fdc(void *self) {
     FIELD(self, 0x3c, VObject *)->v0x8();
     func_ov000_02173648(self);
     {
-        void *t = data_ov000_021ccd30;
+        FieldPlayer *t = data_ov000_021ccd30;
         if (t != NULL) {
             if (ov002_HasActive(t) && FIELD(t, 0x118, void *) != NULL) {
                 // Read as a u32, so MWCC does not reuse the void * load from the test above.
@@ -547,7 +546,7 @@ namespace m_021d331c {
 extern "C" {
 
 void func_ov002_021d331c(void *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(self, 0x3c, VObject *));
     HEAP_POP(saved);
@@ -559,8 +558,8 @@ void func_ov002_021d331c(void *self) {
         void *p = FIELD(self, 0xc4, void *);
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558(p);
-                func_02041278((u8 *)p + 0x88);
+                func_02041558((Model *)p);
+                func_02041278((PlttRes *)((u8 *)p + 0x88));
                 Heap_Free(p);
             }
             FIELD(self, 0xc4, void *) = NULL;
@@ -591,7 +590,7 @@ static inline bool func_ov002_021d3434_idle(void) {
 }
 void func_ov002_021d3434(Task50 *self) {
     void *t;
-    if (!(FIELD(data_02097dc8, 0x12, u16) & 2) || FIELD(self, 0xc4, void *) == NULL) {
+    if (!(data_02097dc8->trig & 2) || FIELD(self, 0xc4, void *) == NULL) {
         return;
     }
     if (!func_ov002_021d3434_idle()) {
@@ -690,7 +689,7 @@ void func_ov002_021d35d4(Task50 *self) {
         void *e = NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), 0);
         arg = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(e, 0xc, void *));
     }
-    func_02042628(model, arg, anim, 0);
+    func_02042628((Model *)model, arg, (ModelPart *)anim, 0);
 }
 
 }

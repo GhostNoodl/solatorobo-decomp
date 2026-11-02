@@ -14,17 +14,17 @@ struct Ov008ListInfo {
     u32 pid;
 };
 
-static inline void *Ov008_GetTexIdx(Ov008SprRes *res, Ov008SprAnim *anim, int idx) {
-    if (anim != NULL && anim->unk_04 != NULL) {
-        return anim->unk_04->unk_30;
+static inline void *Ov008_GetTexIdx(ModelRes *res, ModelPart *anim, int idx) {
+    if (anim != NULL && anim->res != NULL) {
+        return anim->res->tex;
     }
-    return NNS_G2dGetCellDataByIdx(res->unk_04, **NNS_G2dGetAnimSequenceByIdx(res->unk_0c, idx)->unk_0c);
+    return NNS_G2dGetCellDataByIdx(res->texRes, **((Ov008SprSeq *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx))->unk_0c);
 }
 
-static inline void Ov008_DrawModelIdx(Ov008Sprite *m, int idx) {
-    Ov008SprRes *res = m->unk_28;
+static inline void Ov008_DrawModelIdx(Model *m, int idx) {
+    ModelRes *res = m->res;
     if (res != NULL) {
-        Ov008SprAnim *anim = idx >= m->unk_80 ? NULL : &m->unk_78[idx];
+        ModelPart *anim = idx >= m->numParts ? NULL : &m->parts[idx];
         func_02042628(m, Ov008_GetTexIdx(res, anim, idx), anim, 0);
     }
 }
@@ -47,9 +47,9 @@ struct Ov008Tbl5 {
     s32 v[5];
 };
 
-static inline void Ov008_SetXY(Ov008Sprite *o, s32 x, s32 y) {
-    o->unk_fc = x;
-    o->unk_100 = y;
+static inline void Ov008_SetXY(Model *o, s32 x, s32 y) {
+    o->x = x;
+    o->y = y;
 }
 
 extern "C" {
@@ -66,13 +66,13 @@ void func_02041c20(void *a, int b, int c);
 void func_ov008_021cf040(Ov008Mgr *m) {
     void *p;
     Ov008Item *item;
-    Ov008Vec3 v;
+    VecFx32 v;
     s32 x;
     s32 y;
     s32 i;
     p = m->unk_e0;
     if (p != NULL) {
-        Ov008_DrawModelIdx((Ov008Sprite *)p, 0);
+        Ov008_DrawModelIdx((Model *)p, 0);
     }
     p = m->unk_f8;
     if (p != NULL) {
@@ -85,8 +85,8 @@ void func_ov008_021cf040(Ov008Mgr *m) {
                 s32 a = (u8)((Ov008Panel *)p)->unk_60;
                 s32 px = (((Ov008Panel *)p)->unk_5c + (((Ov008Panel *)p)->unk_54 + 0x3d000)) & ~0xfff;
                 if (a > 0) {
-                    ((Ov008Panel *)p)->unk_50->attr.pid = Gfx3DState_NextPolyId(&data_02097d48->unk_8b0);
-                    ((Ov008Panel *)p)->unk_50->attr.alpha = (u8)a;
+                    MODEL_FLAGS(((Ov008Panel *)p)->unk_50)->polygon_id = Gfx3DState_NextPolyId(&data_02097d48->unk_8b0);
+                    MODEL_FLAGS(((Ov008Panel *)p)->unk_50)->alpha = (u8)a;
                     Ov008_SetXY(((Ov008Panel *)p)->unk_50, px, -0x1a000);
                     Ov008_DrawModelIdx(((Ov008Panel *)p)->unk_50, 0);
                 }
@@ -115,7 +115,7 @@ void func_ov008_021cf040(Ov008Mgr *m) {
         }
         Ov008_SetXY(m->unk_e8, x, y);
     }
-    m->unk_e8->unk_85 = (u8)(m->unk_e8->unk_85 & 0xfe) | 1;
+    m->unk_e8->unk_085 = (u8)(m->unk_e8->unk_085 & 0xfe) | 1;
     m->unk_e8->flags &= ~0x80000;
     m->unk_e8->flags &= ~0x200000;
     m->unk_e8->flags &= ~0x100000;
@@ -123,7 +123,7 @@ void func_ov008_021cf040(Ov008Mgr *m) {
     Ov008_DrawModelIdx(m->unk_e8, 1);
     m->unk_e8->unk_150 = -0x1fc0;
     Ov008_DrawModelIdx(m->unk_e8, 2);
-    m->unk_e8->unk_85 &= 0xfe;
+    m->unk_e8->unk_085 &= 0xfe;
     if (item == NULL || m->unk_f0 == NULL || m->unk_ec == NULL) {
         return;
     }
@@ -135,7 +135,7 @@ void func_ov008_021cf040(Ov008Mgr *m) {
         m->unk_f0->unk_150 = -0x1fc0;
         for (i = 0; i < 5; i++) {
             if ((item->unk_30 & (u16)(2 << i)) ? TRUE : FALSE) {
-                Ov008Sprite *e = m->unk_ec;
+                Model *e = m->unk_ec;
                 Ov008_SetXY(e, (t.v[i] + (x >> 12) - 3) << 12, ((y >> 12) + 0x2f) << 12);
                 Ov008_DrawModelIdx(m->unk_ec, 0xd);
                 Ov008_SetXY(m->unk_f0, (t.v[i] + (x >> 12)) << 12, ((y >> 12) + 0x28) << 12);
@@ -153,7 +153,7 @@ void func_ov008_021cf5c8(s32 type, Ov008Menu *list, Ov008ListInfo *info) {
     Ov008Mgr *mgr;
     s32 sy;
     Ov008Item *item;
-    Ov008Sprite *m;
+    Model *m;
     Ov008Win *pos;
     s32 scroll;
     mgr = list->unk_08;
@@ -173,20 +173,20 @@ void func_ov008_021cf5c8(s32 type, Ov008Menu *list, Ov008ListInfo *info) {
         if (!Ov008_ListVisible(list, yy)) {
             break;
         }
-        m->attr.b19 = 1;
-        m->attr.b20 = 0;
+        MODEL_FLAGS(m)->unk_19 = 1;
+        MODEL_FLAGS(m)->unk_20 = 0;
         scroll = list->unk_d0 >> 12;
         m->unk_150 = info->z - 0xa0;
         sx = info->x + pos->unk_44 - 0x78 - scroll;
         sy = info->y + (pos->unk_48 >> 1) - 0x60;
-        m->unk_fc = sx << 12;
-        m->unk_100 = sy << 12;
-        m->attr.pid = (u8)info->pid;
-        m->attr.alpha = 0x1e;
-        m->attr.b21 = 1;
-        m->unk_85 = (u8)(m->unk_85 & 0xfe) | 1;
+        m->x = sx << 12;
+        m->y = sy << 12;
+        MODEL_FLAGS(m)->polygon_id = (u8)info->pid;
+        MODEL_FLAGS(m)->alpha = 0x1e;
+        MODEL_FLAGS(m)->unk_21 = 1;
+        m->unk_085 = (u8)(m->unk_085 & 0xfe) | 1;
         Ov008_DrawModelIdx(m, 3);
-        m->unk_85 &= 0xfe;
+        m->unk_085 &= 0xfe;
         break;
     }
 }

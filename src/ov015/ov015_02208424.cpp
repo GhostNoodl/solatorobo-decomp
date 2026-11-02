@@ -3,49 +3,26 @@
 extern "C" {
 
 extern Ov015Ship *data_ov015_02213364;
-void NNS_G3dGetCurrentMtx(void *p, s32 a);
 void func_ov015_02208424(u8 *self);
-void MIi_CpuClearFast(u32 val, void *dst, u32 size);
 extern void *data_0208cb74;
-extern void *data_0208cca0;
-void func_02041218(void *p);
-void func_02041440(void *p, void *name, int c);
-void *STD_CopyString(void *p, void *name);
 void *func_02035f30(void *a, void *b, int c);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *a, void *b);
-void func_02041d9c(void *a, int b, int c);
 void func_02041c34(void *a, int b, void *cb, void *arg);
 Ov015Glyph *func_ov015_0220848c(void *self, u16 *ctx, Ov015Glyph *e, u16 *count);
 void func_ov015_02208bac(char *out, s32 *outId, u32 n, const char *src);
 void func_ov015_02208a28(u8 *self, void *p);
-s32 FX_Div(s32 a, s32 b);
-void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void *NNS_G2dGetCellDataByIdx(void *a, u16 b);
-void func_02042628(void *model, void *a, void *part, int b);
 s32 func_02041b10(void *m, void *anim);
 s32 func_02041bb0(void *m, void *anim);
-void func_02041c20(void *m, s32 a, s32 b);
-extern u8 *data_02097ce0;
-extern u8 *data_02097d48;
 extern u8 data_0208ba70[];
 void func_0204c7d0(void *p);
 s32 func_0204c4fc(s32 a, s32 b, void *c, void *d, void *e, BOOL f);
 u8 Gfx3DState_NextPolyId(void *p);
 const char *func_0206ffa0(u16 id);
-s32 STD_GetStringLength(const void *s);
 s32 func_0201e950(const void *s, const void *t, s32 n);
-s8 **func_0203a4c0(void *p);
 BOOL func_0204cc18(void *p, const char **s);
-int STD_CopyLString(void *dst, const void *src, u32 size);
 int func_02054f10(void *a, int b);
 s32 func_0203e63c(void *p);
 extern u8 data_ov015_02212d3c[];
 extern u8 data_ov000_021cac60[];
-s32 FX_Inv(s32 a);
-void MTX_Scale33_(void *m, s32 x, s32 y, s32 z);
-void MTX_Concat33(void *a, void *b, void *out);
-void MI_CpuCopy8(const void *src, void *dst, s32 n);
 void func_ov015_02208f7c(u8 *self);
 extern u8 data_ov015_022128fc[];
 extern u8 data_ov015_02212e84[];
@@ -54,18 +31,11 @@ void *func_ov000_0218e9c4(void *a);
 void *func_ov000_0218fe1c(void *a);
 void *func_ov000_0219196c(void *a);
 void func_0203f260(void *a);
-void MTX_Identity33_(void *a);
 extern u8 data_ov015_02212eb0[];
 
 void func_ov000_02191c24(void *a, void *b);
 void func_ov000_02190758(void *m, const void *rot, s32 c);
 BOOL func_ov000_021903b4(void *m);
-void MI_Copy36B(const void *src, void *dst);
-void NNS_G3dGeFlushBuffer(void);
-u16 FX_Atan2(s32 y, s32 x);
-void VEC_Normalize(const Ov015Vec *src, Ov015Vec *dst);
-void VEC_Add(const Ov015Vec *a, const Ov015Vec *b, Ov015Vec *out);
-void VEC_MultAdd(s32 a, const Ov015Vec *v1, const Ov015Vec *v2, Ov015Vec *out);
 
 #define OV015_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV015_SQRT_RESULT (*(volatile u32 *)0x40002b4)
@@ -111,10 +81,10 @@ void func_ov015_02208070(Ov015Ship *self) {
         rot[2] = 0;
         rot[0] = FX_Atan2(-d.y, h);
         rot[1] = FX_Atan2(d.x, d.z);
-        VEC_Normalize(&d, &d);
-        d.x = Ov015_FxMul(d.x, 0x1c00);
-        d.y = Ov015_FxMul(d.y, 0x1c00);
-        d.z = Ov015_FxMul(d.z, 0x1c00);
+        VEC_Normalize((VecFx32 *)&d, (VecFx32 *)&d);
+        d.x = FX_Mul(d.x, 0x1c00);
+        d.y = FX_Mul(d.y, 0x1c00);
+        d.z = FX_Mul(d.z, 0x1c00);
         switch (self->unk_d3c) {
         case 1: {
             s32 i;
@@ -124,7 +94,7 @@ void func_ov015_02208070(Ov015Ship *self) {
                 func_ov000_02190758((u8 *)self + 0x358 + i * 0xe8, rot, 0);
                 FLD(Ov015Vec, (u8 *)self + i * 0xe8, 0x3d0) = p;
                 func_ov000_021903b4((u8 *)self + 0x358 + i * 0xe8);
-                VEC_Add(&d, &p, &p);
+                VEC_Add((VecFx32 *)&d, (VecFx32 *)&p, (VecFx32 *)&p);
             }
             self->unk_d08 = p;
             break;
@@ -146,7 +116,7 @@ void func_ov015_02208070(Ov015Ship *self) {
         diff.x = self->unk_cd4.m[3].x - self->unk_d08.x;
         diff.y = self->unk_cd4.m[3].y - self->unk_d08.y;
         diff.z = self->unk_cd4.m[3].z - self->unk_d08.z;
-        VEC_MultAdd(t, &diff, &self->unk_d08, &out);
+        VEC_MultAdd(t, (VecFx32 *)&diff, (VecFx32 *)(&self->unk_d08), (VecFx32 *)&out);
         self->unk_d28->v18(&out);
     }
     if (self->unk_d30 != NULL) {
@@ -164,7 +134,7 @@ void func_ov015_02208424(u8 *self) {
     if (id != t->id) {
         return;
     }
-    NNS_G3dGetCurrentMtx(t->m, 0);
+    NNS_G3dGetCurrentMtx((MtxFx43 *)(t->m), (MtxFx33 *)0);
     FLD(void *, self, 0x24) = NULL;
     FLD(u8, self, 0x92) = 0;
 }
@@ -201,26 +171,26 @@ void func_ov015_02208544(u8 *self) {
 }
 
 static inline void Ov015Label_Ctor(u8 *l, void *name, void *dict) {
-    func_02041218(l + 0x88);
-    func_02041440(l, dict, 0);
-    STD_CopyString(l + 0x2c, name);
+    func_02041218((PlttRes *)(l + 0x88));
+    func_02041440((Model *)l, (char *)dict, 0);
+    STD_CopyString((char *)(l + 0x2c), (char *)name);
 }
 
 void func_ov015_02208584(Ov015UiText *self) {
     u8 *l = (u8 *)Heap_Alloc(0x160);
     void *r;
     if (l != NULL) {
-        Ov015Label_Ctor(l, data_0208cca0, data_0208cb74);
+        Ov015Label_Ctor(l, (void *)data_0208cca0, data_0208cb74);
     }
     FLD(u8 *, self, 0x10) = l;
     r = func_02034d88(func_02035f30(l + 0x2c, l + 0x4c, 2), ((u8 *)self->unk_10) + 0x4c);
-    func_020417e0(((void *)self->unk_10), r);
+    func_020417e0((Model *)((void *)self->unk_10), r);
     FLD(u32, self->unk_10, 0x6c) |= 2;
     func_02041c34(((void *)self->unk_10), 0, (void *)func_ov015_0220848c, NULL);
     if (self->unk_14 != 0) {
-        func_02041d9c(((void *)self->unk_10), 0, 7);
+        func_02041d9c((Model *)((void *)self->unk_10), 0, 7);
     }
-    func_02041d9c(((void *)self->unk_10), 0, 0);
+    func_02041d9c((Model *)((void *)self->unk_10), 0, 0);
     self->unk_0c &= ~2;
 }
 
@@ -297,7 +267,7 @@ static inline void Ov015_MdlPlay0(u8 *m) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(FLD(void *, res, 0x4), **FLD(u16 **, NNS_G2dGetAnimSequenceByIdx(FLD(void *, res, 0xc), 0), 0xc));
     }
-    func_02042628(m, anim, part, 0);
+    func_02042628((Model *)m, anim, (ModelPart *)part, 0);
 }
 void func_ov015_02208790(Ov015UiText *self, s32 b, u8 *p) {
     s32 x;
@@ -307,11 +277,11 @@ void func_ov015_02208790(Ov015UiText *self, s32 b, u8 *p) {
     if (self->unk_10 == NULL || self->unk_84 == NULL) {
         return;
     }
-    x = Ov015_FxMul(0x1000 - b, self->unk_58 << 12);
+    x = FX_Mul(0x1000 - b, self->unk_58 << 12);
     if (self->unk_0c & 0x10000) {
         s32 t = FX_Div(self->unk_b0 << 12, 0xf000);
         t = (s32)(((s64)t * 0xffff000 + 0x800) >> 12);
-        x += Ov015_FxMul(FX_SinCosTable_[(t >> 16) * 2 + 1], 0x80000) - 0x80000;
+        x += FX_Mul(FX_SinCosTable_[(t >> 16) * 2 + 1], 0x80000) - 0x80000;
     }
     { u8 *m = ((u8 *)self->unk_10); w = func_02041b10(m, Ov015_MdlAnim0(m)); }
     { u8 *m = ((u8 *)self->unk_10); h = func_02041bb0(m, Ov015_MdlAnim0(m)); }
@@ -319,7 +289,7 @@ void func_ov015_02208790(Ov015UiText *self, s32 b, u8 *p) {
     FLD(s32, m, 0xfc) = (x - 0x20000) & -0x1000;
     FLD(s32, m, 0x100) = py << 12; }
     FLD(s32, self->unk_10, 0x150) = self->unk_68;
-    func_02041c20(((u8 *)self->unk_10), 0, self->unk_ac);
+    func_02041c20((Model *)((u8 *)self->unk_10), 0, (void *)(self->unk_ac));
     Ov015_MdlPlay0(((u8 *)self->unk_10));
     o = ((Ov015V *)self->unk_84);
     {
@@ -344,7 +314,7 @@ struct Ov015Bits08a28 {
     u32 rest : 7;
 };
 void func_ov015_02208a28(u8 *self, void *name) {
-    u32 saved;
+    void *saved;
     u8 *o;
     u8 *p;
     const char *id;
@@ -365,12 +335,12 @@ void func_ov015_02208a28(u8 *self, void *name) {
     FLD(s32, p, 0x4c) = func_0204c4fc(FLD(s32, p, 0x28), FLD(s32, p, 0x38), FLD(void *, p, 0x24), p + 0x44, p + 0x48,
                                       FLD(s8, p, 0x37) != 0);
     FLD(s32, data_02097ce0, 0x4) = FLD(s32, p, 0x28);
-    FLD(Ov015Bits08a28, FLD(u8 *, self, 0x84), 0x4).f13 = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
+    FLD(Ov015Bits08a28, FLD(u8 *, self, 0x84), 0x4).f13 = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
     FLD(Ov015Bits08a28, FLD(u8 *, self, 0x84), 0x4).b24 = 1;
     FLD(Ov015Bits08a28, FLD(u8 *, self, 0x84), 0x4).b6 = 1;
     FLD(Ov015Bits08a28, FLD(u8 *, self, 0x84), 0x4).b2 = 1;
     id = func_0206ffa0(0x1000);
-    if (func_0201e950(name, id, STD_GetStringLength(name)) == 0) {
+    if (func_0201e950(name, id, STD_GetStringLength((char *)name)) == 0) {
         FLD(s32, self, 0xac) = 0;
     } else {
         FLD(s32, self, 0xac) = 1;
@@ -467,8 +437,8 @@ s32 func_ov015_02208db0(Ov015UiText *self) {
 
 s32 func_ov015_02208dfc(Ov015UiText *self) {
     s32 a;
-    FLD(s32, data_02097ce0, 0x4) = self->unk_1c;
-    a = (*func_0203a4c0(data_02097ce0))[1];
+    data_02097ce0->unk_004 = self->unk_1c;
+    a = (*(s8 **)func_0203a4c0(data_02097ce0))[1];
     return a + VCALL(self)->v3c();
 }
 
@@ -493,7 +463,7 @@ s32 func_ov015_02208e60(void *self, s32 a, s32 b, s32 c) {
 }
 
 void *func_ov015_02208e74(Ov015UiText *self) {
-    u32 saved;
+    void *saved;
     SET_VT(self, data_ov015_02212d3c);
     HEAP_PUSH(saved);
     DELETE_V(self->unk_84);
@@ -505,7 +475,7 @@ void *func_ov015_02208e74(Ov015UiText *self) {
 }
 
 void *func_ov015_02208efc(Ov015UiText *self) {
-    u32 saved;
+    void *saved;
     SET_VT(self, data_ov015_02212d3c);
     HEAP_PUSH(saved);
     DELETE_V(self->unk_84);
@@ -522,9 +492,9 @@ void func_ov015_02208f7c(u8 *self) {
     if (id != FLD(s32, t, 0x30)) {
         return;
     }
-    NNS_G3dGetCurrentMtx(t, 0);
-    MTX_Scale33_(m, FX_Inv(0xa000), FX_Inv(0xa000), FX_Inv(0xa000));
-    MTX_Concat33(t, m, t);
+    NNS_G3dGetCurrentMtx((MtxFx43 *)t, (MtxFx33 *)0);
+    MTX_Scale33_((MtxFx33 *)m, FX_Inv(0xa000), FX_Inv(0xa000), FX_Inv(0xa000));
+    MTX_Concat33((MtxFx33 *)t, (MtxFx33 *)m, (MtxFx33 *)t);
 }
 
 void func_ov015_0220900c(void *self) {
@@ -544,11 +514,11 @@ void func_ov015_02209024(Ov015FishInfo *self, u16 a, const void *src) {
     v = self->unk_10 << 12;
     s32 lim;
     if (self->unk_28 < 0xe10000) {
-        lim = Ov015_FxMul(v, 0x1000);
+        lim = FX_Mul(v, 0x1000);
     } else if (self->unk_28 < 0x1c20000) {
-        lim = Ov015_FxMul(v, 0xccd);
+        lim = FX_Mul(v, 0xccd);
     } else {
-        lim = Ov015_FxMul(v, 0xb33);
+        lim = FX_Mul(v, 0xb33);
     }
     self->unk_1c = lim;
 
@@ -589,7 +559,7 @@ void *Ov015Fish_Ctor(Ov015Fish *self) {
     self->unk_40.x = 0;
     self->unk_40.y = 0;
     self->unk_40.z = 0;
-    MTX_Identity33_(&self->unk_4c[0].x);
+    MTX_Identity33_((MtxFx33 *)(&self->unk_4c[0].x));
     self->unk_80 = 0;
     self->unk_84 = 0;
     self->unk_88 = 0;
@@ -622,7 +592,7 @@ void *Ov015Fish_Ctor(Ov015Fish *self) {
 }
 
 void func_ov015_02209270(Ov015Fish *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_f0);
     HEAP_POP(saved);

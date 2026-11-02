@@ -3,6 +3,9 @@
 
 #include "ov006/Window.h"
 #include "ov006/SlotManager.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Sys/Pad.h"
+#include "Main/Res/StageCmd.h"
 
 /* Holds a message box object built by func_ov000_02163224 (vtable data_ov006_021ebc70, 0x2c bytes). */
 typedef struct ov006_MsgBox {
@@ -175,31 +178,15 @@ extern "C" {
 #endif
 
 extern void *data_ov006_021ebc70;
-extern void *data_02097e4c;
 extern char data_ov006_021ebbd1[];
 extern char data_ov006_021ebbde[];
 
-void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 void func_ov000_02163224(void *self);
 void func_ov000_02163254(void *self);
 void func_ov000_021632f0(void *self, int a, const char *b, const char *c, u8 d);
 BOOL func_ov000_021633ac(void *self);
 void func_ov000_02163594(void *self);
-
-typedef struct ov006_Pad {
-    u8 unk0[0x10];
-    u16 unk10;
-    u16 unk12;
-} ov006_Pad;
-extern ov006_Pad *data_02097dc8;
-
-typedef struct ov006_Unk0214a424 {
-    u8 unk0[0x620];
-    u32 unk620_0 : 1;
-    u32 unk620_1 : 31;
-} ov006_Unk0214a424;
-extern ov006_Unk0214a424 *data_0214a424;
 
 extern void *data_ov000_021ccd44;
 extern void *data_ov000_021ccd40;

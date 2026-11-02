@@ -2,7 +2,6 @@
 
 extern "C" {
 
-extern s32 Rand_PlusMinus(s32 range);
 extern Ov009Actor *func_ov000_0219bf90(void);
 struct Ov009AngSrc3 {
     u8 unk_00[0x10];
@@ -30,8 +29,8 @@ void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
         u16 a = Ov009_GetAng3(g) + Rand_PlusMinus(0x1000);
         s32 r = Rand_PlusMinus(0x1800) + 0x3800;
         self->pos = g->pos;
-        self->pos.x += Ov009_FxMul(r, OV009_SIN(a));
-        self->pos.z += Ov009_FxMul(r, OV009_COS(a));
+        self->pos.x += FX_Mul(r, OV009_SIN(a));
+        self->pos.z += FX_Mul(r, OV009_COS(a));
         self->pos.y += 0xa000;
         break;
     }
@@ -66,7 +65,7 @@ void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
         self->unk_f2 = 0xc8;
         break;
     }
-    if (data_ov000_021ccd54->unk_ca == 2) {
+    if (data_ov000_021ccd54->unk_ca.c[0] == 2) {
         self->unk_18 = 1;
     }
     self->unk_f8 = 0;
@@ -80,9 +79,7 @@ struct Ov009PlB22 {
 };
 
 extern void *data_0214a420;
-extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 extern void func_02065804(void *mgr, s32 h);
-extern u16 FX_Atan2(s32 y, s32 x);
 
 void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
     Ov009Vec t;
@@ -159,8 +156,8 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
         if (self->unk_f0 != 0 && !blocked) {
             dist = 0x2800;
         }
-        t.x += Ov009_FxMul(dist, OV009_SIN(a));
-        t.z += Ov009_FxMul(dist, OV009_COS(a));
+        t.x += FX_Mul(dist, OV009_SIN(a));
+        t.z += FX_Mul(dist, OV009_COS(a));
         if (!func_01ffc198(&self->pos, &t, self->unk_64 + 0x400)) {
             self->unk_40->flags |= 4;
             self->unk_b8 = t;

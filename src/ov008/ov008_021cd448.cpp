@@ -8,11 +8,9 @@ void *func_0204b370(void *p);
 void func_0204b420(void *p);
 void func_ov008_021cd500(Ov008Mgr *m);
 void func_ov008_021cd584(Ov008Mgr *m);
-void *func_ov000_0218ea20(void *p);
 void func_02036838(void *a, void *b, int c, int d);
 void func_ov000_0214bc10(void);
 void func_ov000_0214c210(void);
-extern void *data_02097cdc;
 extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern void *data_0208b318;
@@ -75,8 +73,8 @@ void func_ov008_021cd584(Ov008Mgr *m) {
     OV008_FREE_M(m->unk_ec);
     OV008_FREE_M(m->unk_f0);
     {
-        u32 saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (m->unk_f8 != NULL) {
             Ov008Panel *p = m->unk_f8;
             if (p != NULL) {
@@ -124,8 +122,6 @@ void *func_020359d0(void *a, int b, int c);
 BOOL func_02035b90(void *a, int b);
 void *func_ov000_0218e9c4(void *p);
 BOOL func_ov000_0218f110(void *p);
-void *STD_CopyString(void *dst, const void *src);
-void *STD_ConcatenateString(void *dst, const void *src);
 void func_0206e900(char *dst, const char *src);
 void func_0205a6a0(void *p);
 void func_0205a840(void *p, const char *a, const char *b);

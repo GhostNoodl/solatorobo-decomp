@@ -2,6 +2,11 @@
 #define OV013_H
 
 #include "types.h"
+#include "nitro/std.h"
+#include "nitro/fx.h"
+#include "Main/Sys/SysState.h"
+#include "Main/Sys/Field.h"
+#include "ov000/Actor.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
 class Ov013V {
@@ -169,11 +174,7 @@ struct Ov013Flags8 {
     u8 b7 : 1;
 };
 
-struct Ov013Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
+typedef VecFx32 Ov013Vec;
 
 static inline void Ov013_VecSet(Ov013Vec *v, s32 x, s32 y, s32 z) {
     v->x = x;
@@ -196,10 +197,6 @@ static inline void Ov013_VecCopyYZ(Ov013Vec *d, const Ov013Vec *s) {
     d->z = z;
 }
 
-static inline s32 Ov013_FxMul(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
-
 struct Ov013Msg {
     u8 unk_00[0x5];
     u8 type;
@@ -209,8 +206,6 @@ struct Ov013Msg {
     Ov013Vec v;
 };
 
-// NitroSDK sin/cos table: s16 sin,cos pairs
-extern "C" const s16 FX_SinCosTable_[];
 #define OV013_SINCOS FX_SinCosTable_
 #define OV013_SIN(a) (OV013_SINCOS[((a) >> 4) * 2])
 #define OV013_COS(a) (OV013_SINCOS[((a) >> 4) * 2 + 1])
@@ -462,12 +457,6 @@ struct Ov013Names {
     char unk_e4[0x20];
 };
 
-struct Ov013Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
 class Ov013Multi : public Ov013Actor {
 public:
     Ov013Sub38 models[4];
@@ -482,44 +471,11 @@ struct Ov013Path {
     Ov013Vec end;
 };
 
-struct Ov013Game54 {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-    u8 unk_98[0x14];
-    u8 unk_ac;
-    u8 unk_ad[0x1d];
-    u8 unk_ca;
-    u8 unk_cb[0x9];
-    s32 unk_d4;
-    u8 unk_d8[0xb4];
-    u8 unk_18c;
-    u8 unk_18d;
-    u8 unk_18e;
-    u8 unk_18f;
-    union {
-        u8 unk_190;
-        struct {
-            u8 unk_190_0 : 2;
-            u8 unk_190_2 : 1;
-            u8 unk_190_3 : 1;
-            u8 unk_190_4 : 1;
-            u8 unk_190_5 : 3;
-        };
-    };
-};
-
-extern "C" {
-extern Ov013Game54 *data_ov000_021ccd54;
-extern Ov013Heap *data_02097dd0;
+static inline BOOL Ov013Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov013Game_IsBusy(Ov013Game54 *g) {
-    return g->unk_90 != g->unk_94;
-}
-
-static inline BOOL Ov013Game_IsIdle(Ov013Game54 *g) {
+static inline BOOL Ov013Game_IsIdle(FieldState *g) {
     if (Ov013Game_IsBusy(g)) {
         return FALSE;
     }
@@ -530,7 +486,7 @@ static inline BOOL Ov013Game_IsIdle(Ov013Game54 *g) {
 }
 
 static inline BOOL Ov013_GameIdle(void) {
-    Ov013Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov013Game_IsIdle(g);
     }
@@ -538,20 +494,16 @@ static inline BOOL Ov013_GameIdle(void) {
 }
 
 extern "C" {
-void Heap_Free(void *p);
-void *Heap_Alloc(u32 size);
+void *Heap_Alloc(u32 size); // Main/Gfx/ObjPool.h
+void Heap_Free(void *ptr);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 void *func_ov003_021d0edc(void *self);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
-void VEC_MultAdd(s32 scale, const Ov013Vec *dir, const Ov013Vec *base, Ov013Vec *out);
-s32 VEC_Distance(const Ov013Vec *a, const Ov013Vec *b);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 s32 func_ov000_0219a2f4(Ov013Vec *v, s32 y, s32 b);
-BOOL func_01ffc198(const Ov013Vec *pos, const Ov013Vec *target, s32 dist);
 BOOL func_ov000_02191120(void *p);
 void func_ov003_021d5348(Ov013Actor *self);
 void func_ov003_021d3a88(Ov013Actor *self);
@@ -569,7 +521,6 @@ void func_ov003_021d0c1c(Ov013Actor *self);
 char *func_0207011c(void *res);
 char *func_020701d4(void *res);
 u8 *func_02070558(void *res);
-void *STD_CopyString(char *dst, const char *src);
 }
 extern "C" {
 void func_ov000_021953b4(void *self);
@@ -583,8 +534,8 @@ extern "C" void *func_ov003_021da940(void *p);
 
 // Frees the effect handle at self+off with the default heap selected.
 static inline void Ov013_FreeFx(void *self, u32 off) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (FLD(void *, self, off) != NULL) {
         void *p = FLD(void *, self, off);
         if (p != NULL) {

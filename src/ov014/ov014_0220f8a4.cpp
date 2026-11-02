@@ -2,7 +2,6 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
 extern void *data_02097cdc;
 extern char data_ov014_02217c72[];
 extern char data_ov014_02217c81[];
@@ -34,10 +33,8 @@ extern u8 data_ov014_02216c80[];
 extern u8 data_ov014_02216e50[];
 extern u8 data_ov014_02216ea8[];
 extern u8 data_ov014_02216f00[];
-extern void func_ov003_021d112c(Ov014Actor *self);
 extern void func_0203f2b8(void *p);
 extern s32 func_ov000_021909a8(void *a, const void *b, const void *c);
-extern void MTX_Identity43_(void *m);
 extern void NNS_G3dRenderObjSetInitFunc(void *a, void *b);
 extern void MIi_CpuClear16(s32 v, void *p, u32 n);
 extern void func_ov003_021cf1f0(void *p, s32 a, s32 b, const void *c);
@@ -140,8 +137,8 @@ Ov014Actor *Ov014Act_0220f9d0_Ctor(Ov014Act_0220f9d0 *self) {
 #pragma force_active reset
 
 static inline void Ov014_Free154(Ov014Act_0220f9d0 *self) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (((Ov014V *)self->unk_154) != NULL) {
         Ov014V *p = ((Ov014V *)self->unk_154);
         if (p != NULL) {
@@ -213,8 +210,8 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
     self->rot[1] = 0;
     self->rot[2] = 0;
     {
-        u32 saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->unk_3c != NULL) {
             Ov014V *v = self->unk_3c;
             if (v != NULL) {
@@ -225,8 +222,8 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
         data_02097dd0->cur = saved;
     }
     {
-        u32 saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->unk_48 != NULL) {
             Ov014Sub48 *q = self->unk_48;
             if (q != NULL) {
@@ -244,7 +241,7 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
         n->unk_22_1 = 1;
     }
     FLD(s32, self, 0xf0) = func_ov000_021909a8(self->unk_38, data_ov014_02217d2c, data_ov014_02217d33);
-    MTX_Identity43_((u8 *)self + 0xf4);
+    MTX_Identity43_((MtxFx43 *)((u8 *)self + 0xf4));
     m = self->unk_38;
     NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov014_0220f8e4);
     m->unk_c2_5 = 0;
@@ -306,7 +303,6 @@ struct Ov014Ctl154 {
     s32 unk_18;
 };
 
-extern void *data_ov000_021ccd64;
 extern Ov014Vec data_ov014_02216c18[];
 extern u8 *func_ov000_0219bf90(void);
 extern void MIi_CpuCopyFast(const void *src, void *dst, u32 size);

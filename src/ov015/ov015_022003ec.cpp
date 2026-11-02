@@ -91,8 +91,6 @@ BOOL func_ov015_022003ec(Ov015Obj34 *self, Ov015Ship *a, Ov015Fish *b, Ov015CamP
 
 
 extern u8 *data_02097dc8;
-extern void *data_02097e4c;
-void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 Ov015V *func_02065f88(s32 id, void *pos);
 void func_ov015_02200a18(Ov015Obj34 *self, Ov015Stat *g);
 s32 func_ov015_022090bc(Ov015FishInfo *p);

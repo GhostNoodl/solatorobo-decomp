@@ -14,7 +14,7 @@ typedef struct ov006_Unk021e1bb4 {
     int unkC;
     u8 unk10[0x14];
     ov006_Caption *unk24;
-    ov006_Model *unk28;
+    Model *unk28;
     ov006_Lbl021e1bb4 *unk2C;
 } ov006_Unk021e1bb4;
 
@@ -44,7 +44,7 @@ static inline void ov006_Caption_Draw(ov006_Caption *self) {
         VCALL(self->unk28, 90);
         if (self->unk24 != NULL) {
             ov006_Model_SetPos(self->unk24, 2, x << 12, y << 12);
-            ov006_Model_PlayPart(self->unk24, e->unk0);
+            Model_PlayPart(self->unk24, e->unk0);
         }
     }
 }
@@ -75,7 +75,7 @@ void func_ov006_021e1bb4(ov006_Unk021e1bb4 *self) {
     ov006_Lbl_SetPos(self->unk2C, (x + 0x80) << 12, (y + 0x5d) << 12, self->unk2C->unkB8);
     func_ov006_021dc578(self->unk2C);
     ov006_Model_SetPos(self->unk28, 2, x << 12, y << 12);
-    ov006_Model_PlayPart(self->unk28, 8);
+    Model_PlayPart(self->unk28, 8);
 }
 
 }

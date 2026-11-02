@@ -3,9 +3,7 @@
 extern "C" {
 
 extern u8 *data_02097dc8;
-extern void *data_02097e4c;
 extern u8 *data_ov000_021ccd44;
-void *func_02049a48(void *a, int b, int c, int d, int e);
 void *func_ov000_0218084c(void *a, s32 b, s32 c);
 extern u8 data_ov000_021ccd34;
 void func_ov000_0217357c(void *self);
@@ -285,7 +283,6 @@ typedef struct {
 
 extern u32 data_ov015_02212600[];
 void func_02043064(const Ov015Oam *attr, u32 *w, u32 *h);
-void NNS_G3dGeBufferOP_N(u32 op, const void *args, u32 num);
 
 static inline void Ov015_G3Cmd2(u32 op, u32 a, u32 b) {
     u32 v[2];
@@ -333,17 +330,17 @@ void func_ov015_02206bf0(void *self, s32 x, s32 y, s32 z, s32 unused, Ov015Oam *
     mv[0] = ox & -0x1000;
     mv[1] = oy & -0x1000;
     mv[2] = 0;
-    NNS_G3dGeBufferOP_N(0x1c, mv, 3);
+    NNS_G3dGeBufferOP_N(0x1c, (unsigned int *)mv, 3);
     Ov015_G3Cmd1(0x10, 2);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     tv[0] = x - 0x80000;
     tv[1] = y - 0x60000;
     tv[2] = z;
-    NNS_G3dGeBufferOP_N(0x1c, tv, 3);
+    NNS_G3dGeBufferOP_N(0x1c, (unsigned int *)tv, 3);
     sv[0] = 0x100000;
     sv[1] = 0xc0000;
     sv[2] = 0x1000;
-    NNS_G3dGeBufferOP_N(0x1b, sv, 3);
+    NNS_G3dGeBufferOP_N(0x1b, (unsigned int *)sv, 3);
     Ov015_G3Cmd1(0x40, 1);
     Ov015_G3Cmd1(0x20, 0x2214);
     Ov015_G3Cmd1(0x22, 0xc000000);

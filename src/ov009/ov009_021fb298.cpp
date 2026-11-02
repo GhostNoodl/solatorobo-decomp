@@ -2,7 +2,6 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
 extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern Ov009Actor *ActorMgr_GetGroup(void *mgr, u16 id);
@@ -26,7 +25,7 @@ void func_ov009_021fb2e4(Ov009Actor *self) {
     }
     func_ov000_0218996c(0xc, 0x19);
     range = 0xa000;
-    if (data_ov000_021ccd54->unk_ca == 0x11) {
+    if (data_ov000_021ccd54->unk_ca.c[0] == 0x11) {
         range = 0x5000;
     }
     g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
@@ -56,7 +55,6 @@ void func_ov009_021fb3a8(Ov009Actor *self) {
 }
 
 extern u8 data_ov009_02216ab6[];
-extern s32 Rand_UpTo(s32 max);
 
 void Ov009ActVt_022166a4_Start(Ov009ActVt_022166a4 *self) {
     Ov009Vec *v = &self->unk_f4;
@@ -65,8 +63,8 @@ void Ov009ActVt_022166a4_Start(Ov009ActVt_022166a4 *self) {
     *v = self->pos;
     if ((u16)(self->kind + 0xabf6) <= 1) {
         s32 d = Rand_UpTo(0x800) + 0x3800;
-        v->x += Ov009_FxMul(d, OV009_SIN(self->rot[1]));
-        v->z += Ov009_FxMul(d, OV009_COS(self->rot[1]));
+        v->x += FX_Mul(d, OV009_SIN(self->rot[1]));
+        v->z += FX_Mul(d, OV009_COS(self->rot[1]));
     }
     self->unk_100 = *v;
     self->unk_b8 = *v;

@@ -19,7 +19,6 @@ static inline void Ov014Spawn_Init(Ov014SpawnDesc *d, u16 k) {
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
 extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, Ov014Vec16 *rot, u16 a);
 
 void func_ov014_0220a2d0(Ov014Act_02209280 *self, u16 a) {
@@ -47,8 +46,8 @@ void func_ov014_0220a2d0(Ov014Act_02209280 *self, u16 a) {
         ang = base - (u16)Rand_UpTo(0x4000);
     }
     spd = Rand_UpTo(0x3800) + 0x3800;
-    v.x = Ov014_FxMul(spd, OV014_SIN(ang));
-    v.z = Ov014_FxMul(spd, OV014_COS(ang)) + 0x8000;
+    v.x = FX_Mul(spd, OV014_SIN(ang));
+    v.z = FX_Mul(spd, OV014_COS(ang)) + 0x8000;
     Ov014Spawn_Init(&desc, 0x481d);
     desc.unk_04[0] = a;
     self->target_id = 0xffff;
@@ -100,7 +99,7 @@ void func_ov014_0220a490(Ov014Act_02209280 *self, Ov014Vec *vel, u16 a, u16 b, u
 }
 
 
-extern u8 data_ov014_02217a48[];
+extern char data_ov014_02217a48[];
 extern u8 data_ov014_02217a4e[];
 extern u8 data_ov014_02217a54[];
 extern void func_ov000_021911c8(void *a, s32 b);
@@ -116,7 +115,7 @@ void func_ov014_0220a588(Ov014Act_02209280 *self) {
         if (self->unk_ee_0) {
             anim = data_ov014_02217a54;
         }
-        func_ov000_02190cb0(self->unk_38, anim, 0xcd, 0);
+        func_ov000_02190cb0(self->unk_38, (char *)anim, 0xcd, 0);
         func_ov000_021911c8(self->unk_38, 0xc00);
         func_ov000_021915a0(self->unk_38);
         self->unk_9c = 0;
@@ -137,17 +136,14 @@ void func_ov014_0220a588(Ov014Act_02209280 *self) {
 
 
 extern const Ov014Vec data_ov014_02216aa8[];
-extern u8 data_ov014_02217a48[];
+extern char data_ov014_02217a48[];
 extern u8 data_ov014_02217a5a[];
 extern u8 data_ov014_02217a60[];
 extern u8 data_ov014_02217a66[];
 extern u8 data_ov014_02217a6c[];
-extern void *data_ov000_021ccd68;
-extern u16 FX_Atan2(s32 y, s32 x);
 extern BOOL func_01ffc584(Ov014Vec *a, Ov014Vec *b, s32 c, s32 d);
 extern void func_ov000_02191618(void *p);
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
-extern void VEC_Normalize(const Ov014Vec *a, Ov014Vec *b);
 extern BOOL func_02049244(Ov014Vec *out, s32 speed, const Ov014Vec *from, const Ov014Vec *to, s32 minDist);
 extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(Ov014Obj *self, Ov014Obj *t, s32 a);
@@ -196,7 +192,7 @@ void func_ov014_0220a67c(Ov014Act_02209280 *self) {
         } else {
             anim = data_ov014_02217a6c;
         }
-        func_ov000_02190cb0(self->unk_38, anim, 0x2ab, 0);
+        func_ov000_02190cb0(self->unk_38, (char *)anim, 0x2ab, 0);
         func_ov000_02191618(self->unk_38);
         self->unk_1b4 = self->pos;
         c = self->unk_48->unk_68;
@@ -222,7 +218,7 @@ void func_ov014_0220a67c(Ov014Act_02209280 *self) {
         d.y = t.y - p.y;
         d.z = t.z - p.z;
         VEC_Normalize(&d, &d);
-        s = Ov014_FxMul(VEC_Distance(&p, &self->unk_1b4), 0x19a);
+        s = FX_Mul(VEC_Distance(&p, &self->unk_1b4), 0x19a);
         if (s < 0x4cd) {
             s = 0x4cd;
         } else if (s > 0x99a) {

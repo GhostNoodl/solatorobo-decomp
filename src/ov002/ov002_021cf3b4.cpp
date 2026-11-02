@@ -48,7 +48,7 @@ BOOL func_ov002_021cf4bc(void) {
 }
 
 Task50 *Ov002TaskVt_021ef4b0_DtorDelete(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021ef4b0;
     HEAP_PUSH(saved);
     DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
@@ -57,7 +57,7 @@ Task50 *Ov002TaskVt_021ef4b0_DtorDelete(Task50 *self) {
     DELETE_VOBJ(self->unk_40);
     HEAP_POP(saved);
     {
-        u8 *gfx = data_02097e48;
+        u8 *gfx = (u8 *)data_02097e48.queue;
         *(u16 *)(gfx + 0x80) = 0x8000;
         *(u16 *)(gfx + 0x7c) = 0;
     }
@@ -74,7 +74,7 @@ void func_ov002_021cf5b0(void) {
 }
 
 Task50 *Ov002TaskVt_021ef4b0_Dtor(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021ef4b0;
     HEAP_PUSH(saved);
     DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
@@ -83,7 +83,7 @@ Task50 *Ov002TaskVt_021ef4b0_Dtor(Task50 *self) {
     DELETE_VOBJ(self->unk_40);
     HEAP_POP(saved);
     {
-        u8 *gfx = data_02097e48;
+        u8 *gfx = (u8 *)data_02097e48.queue;
         *(u16 *)(gfx + 0x80) = 0x8000;
         *(u16 *)(gfx + 0x7c) = 0;
     }
@@ -95,7 +95,7 @@ void func_ov002_021cf690(void) {
 }
 
 Task50 *Ov002TaskVt_021ef430_DtorDelete(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021ef430;
     HEAP_PUSH(saved);
     Task_deleteModel(self);
@@ -110,7 +110,7 @@ Task50 *Ov002TaskVt_021ef430_DtorDelete(Task50 *self) {
 }
 
 Task50 *Ov002TaskVt_021ef430_Dtor(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021ef430;
     HEAP_PUSH(saved);
     Task_deleteModel(self);
@@ -196,7 +196,7 @@ Task50 *func_ov002_021cf9b8(void) {
 }
 
 Task50 *Ov002TaskVt_021ef79c_Dtor(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021ef79c;
     HEAP_PUSH(saved);
     DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
@@ -209,7 +209,7 @@ Task50 *Ov002TaskVt_021ef79c_Dtor(Task50 *self) {
 }
 
 Task50 *Ov002TaskVt_021ef79c_DtorDelete(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021ef79c;
     HEAP_PUSH(saved);
     DELETE_VOBJ(TASK_VOBJ(self, 0x3c));

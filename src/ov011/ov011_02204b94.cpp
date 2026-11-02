@@ -17,7 +17,6 @@ void *const data_ov011_02207500[2] = { data_ov011_02207be0.photo1, data_ov011_02
 Ov011PhotoCfg data_ov011_02207be0 = {
     data_ov011_02207500[0], data_ov011_02207500[1], data_ov011_02207500[0], "photo01", "photo00",
 };
-extern void *data_02097cdc;
 void *func_ov000_0214b598(void *p);
 void *func_ov000_0214b570(void *p);
 void func_ov000_0214b5e8(void *p, void *t);
@@ -32,14 +31,12 @@ void *func_020359d0(const char *arc, s32 b, s32 c);
 BOOL func_02035b90(const char *arc, s32 b);
 void func_02036838(void *mgr, const char *arc, s32 c, s32 d);
 BOOL func_02036328(void);
-BOOL OS_IsRunOnTwl(void);
 BOOL func_ov000_0218cf5c(void *self);
-void func_0203f2b8(void *p);
 void func_ov000_0218e8ec(void *mgr, u16 id, s32 c);
 
 static inline void Ov011_FreeTwl(void **slot) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (*slot != NULL) {
         void *p = *slot;
         if (p != NULL) {
@@ -122,8 +119,8 @@ BOOL Ov011Act7da4_IsReady(Ov011Act7da4 *self) {
 void Ov011Act7da4_Start(Ov011Act7da4 *self) {
     func_ov003_021d112c(self);
     {
-        u32 saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->unk_48 != NULL) {
             void *p = self->unk_48;
             if (p != NULL) {

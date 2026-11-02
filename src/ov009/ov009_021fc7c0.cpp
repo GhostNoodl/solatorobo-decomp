@@ -2,7 +2,6 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
 extern u8 *Group_FindNode(void *mgr, u16 id);
 
 struct Ov009Byte {
@@ -43,15 +42,12 @@ void func_ov009_021fc834(Ov009Actor *self) {
 }
 
 extern void *data_02097e4c;
-extern u8 data_ov009_02216ac8[];
-extern u8 data_ov009_02216ab0[];
-extern s32 Rand_UpTo(s32 max);
+extern char data_ov009_02216ac8[];
+extern char data_ov009_02216ab0[];
 extern void func_020627a0(u16 kind, u16 id);
 extern void func_020627dc(s32 a);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_0218999c(s32 a, s32 b);
-extern void Actor_Move(Ov009Obj *self, s32 turn);
-extern BOOL func_ov000_02191120(void *m);
 void func_ov009_021fc8f4(Ov009Actor *self) {
     Ov009Sub40 *st = self->unk_40;
     Ov009Sub38 *m;
@@ -88,7 +84,7 @@ void func_ov009_021fc8f4(Ov009Actor *self) {
             self->unk_a8 = 0;
             self->unk_40->state++;
         } else {
-            Actor_Move(self, 0);
+            Actor_Move((Actor *)self, 0);
             func_ov000_021987b8(self->unk_48, 1, 0, 0);
         }
         break;
@@ -109,7 +105,6 @@ extern void func_ov000_0219b5dc(u16 id, const Ov009Vec *pos, const u16 *rot);
 extern void func_ov003_021ce9c4(u16 id);
 extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
 extern void func_ov003_021d6954(Ov009Actor *self, u8 a);
-extern void func_ov003_021d6054(Ov009Actor *self);
 extern u8 *data_0214a424;
 void func_ov009_021fcad0(Ov009Actor *self) {
     Ov009Vec p;

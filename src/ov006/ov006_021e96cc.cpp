@@ -201,7 +201,7 @@ void func_ov006_021e96cc(ov006_Car021e96cc *self) {
                         if (e != NULL) {
                             ((u8 *)e)[0x28] = 0;
                             VCALL(e, 34, b.x, b.y, 0);
-                            VCALL(e, 0C, 0x3ccd);
+                            VCALL(e, 0c, 0x3ccd);
                         }
                         if (self->unk19E == data_ov006_021ec884->unk5) {
                             func_02049f44(data_02097e4c, 0x35, &p, 0);

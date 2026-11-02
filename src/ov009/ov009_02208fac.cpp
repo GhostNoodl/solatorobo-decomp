@@ -20,7 +20,7 @@ extern BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 extern void func_ov000_02190758(void *a, const void *b, s32 c);
 extern Ov009Actor *func_ov000_0219bf90(void);
 void Ov009ActVt_02217594_Start(Ov009ActVt_02217594 *self) {
-    u32 saved;
+    void *saved;
     Ov009Sub48 *s48;
     Ov009Sub44 *s44;
     Ov009Actor *t;
@@ -67,7 +67,7 @@ void Ov009ActVt_02217594_Start(Ov009ActVt_02217594 *self) {
     self->model.unk_c2 |= 0x80;
     NNSi_G3dModifyPolygonAttrMask(self->model.unk_04, 1, 0x1f0000);
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->unk_3c != NULL) {
         if (self->unk_3c != NULL) {
             self->unk_3c->v04();

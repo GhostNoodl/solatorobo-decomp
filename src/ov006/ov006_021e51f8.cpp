@@ -85,7 +85,7 @@ static inline BOOL ov006_Menu_SetEntry(ov006_Unk021ec888 *self, u8 enabled) {
 void func_ov006_021e51f8(ov006_Unk021ec888 *self) {
     switch (self->unkC) {
     case 0:
-        data_02097dd0->unk18 = 0;
+        data_02097dd0->vblankFunc = NULL;
         if (data_02097e40->state == 3) {
             return;
         }
@@ -166,7 +166,7 @@ void func_ov006_021e51f8(ov006_Unk021ec888 *self) {
             return;
         }
         ov006_Menu_SetEntry(data_ov006_021ec888, TRUE);
-        data_02097dd0->unk18 = (int)func_ov006_021e5f24;
+        data_02097dd0->vblankFunc = func_ov006_021e5f24;
         self->unkC = 0x1e;
         return;
     }

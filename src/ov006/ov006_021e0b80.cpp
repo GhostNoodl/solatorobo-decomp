@@ -26,7 +26,7 @@ void func_ov006_021e0b80(ov006_Caption *self) {
         VCALL(self->unk28, 90);
         if (self->unk24 != NULL) {
             ov006_Model_SetPos(self->unk24, 2, x << 12, y << 12);
-            ov006_Model_PlayPart(self->unk24, e->unk0);
+            Model_PlayPart(self->unk24, e->unk0);
         }
     }
 }

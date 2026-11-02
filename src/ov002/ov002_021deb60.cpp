@@ -17,13 +17,13 @@ static inline void updateModel(u8 *m) {
     FIELD(m, 0x38, s32) = v[0];
     FIELD(m, 0x3c, s32) = v[1];
     FIELD(m, 0x40, s32) = v[2];
-    if (FIELD(m, 0x1c, void *) != NULL && func_0203e63c(FIELD(m, 0x20, void *))) {
-        NNS_G3dGlbSetBaseTrans(m + 0x38);
-        NNS_G3dGlbSetBaseScale(m + 0x44);
+    if (FIELD(m, 0x1c, void *) != NULL && func_0203e63c((unsigned int)FIELD(m, 0x20, void *))) {
+        NNS_G3dGlbSetBaseTrans((VecFx32 *)(m + 0x38));
+        NNS_G3dGlbSetBaseScale((VecFx32 *)(m + 0x44));
         MI_Copy36B(m + 0x50, data_020928b4);
-        NNS_G3dGlb.fc &= ~0xa4;
+        NNS_G3dGlb.flag &= ~0xa4;
         NNS_G3dGlbFlushVP();
-        NNS_G3dDraw(FIELD(m, 0x1c, void *));
+        NNS_G3dDraw((NNSG3dRenderObj *)FIELD(m, 0x1c, void *));
         NNS_G3dGeFlushBuffer();
     }
 }
@@ -67,7 +67,7 @@ void func_0206ecd4(int a, void *b, u16 c);
 void func_ov002_021e34fc(void *self, s32 (*cmp)(void *, void *));
 
 void func_ov002_021dec74(void *self) {
-    u16 btn = FIELD(data_02097dc8, 0x12, u16);
+    u16 btn = data_02097dc8->trig;
     BOOL ch;
     if (btn & 2) {
         FIELD(self, 0x24, s32) = 0;

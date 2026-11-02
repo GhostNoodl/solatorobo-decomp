@@ -18,7 +18,6 @@ extern void *data_02097e4c;
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern void func_0203f364(Ov009Sub48 *p);
 extern Ov009Actor *func_ov000_0219bf90(void);
-extern BOOL func_01ffc198(const Ov009Vec *a, const Ov009Vec *b, s32 r);
 extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 void Ov009ActVt_022176ec_Update(Ov009ActVt_022176ec *self) {
     Ov009Sub40 *st = self->unk_40;

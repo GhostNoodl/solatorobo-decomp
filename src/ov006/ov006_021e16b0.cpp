@@ -1,4 +1,5 @@
 #include "ov006/Model.h"
+#include "Main/Gfx/FieldMsg.h"
 
 typedef struct ov006_Txt021e16b0 {
     void *vtbl;
@@ -23,7 +24,7 @@ typedef struct ov006_Sub021e16b0 {
     u8 unk4;
     int unk8[6];
     int type;
-    ov006_Model *model;
+    Model *model;
     ov006_Txt021e16b0 *txt;
 } ov006_Sub021e16b0;
 
@@ -42,7 +43,7 @@ typedef struct ov006_Lbl021e16b0 {
     u8 unkA0;
     u8 unkA1[3];
     u16 unkA4;
-    ov006_Model *unkA8;
+    Model *unkA8;
     u8 unkAC[4];
     int unkB0[6];
     int unkC8;
@@ -59,7 +60,7 @@ typedef struct ov006_Lbl021e16b0 {
 typedef struct ov006_Unk021e16b0 {
     u8 unk0[0x24];
     ov006_Sub021e16b0 *unk24;
-    ov006_Model *unk28;
+    Model *unk28;
     ov006_Lbl021e16b0 *unk2C;
 } ov006_Unk021e16b0;
 
@@ -76,24 +77,19 @@ extern char data_ov006_021ec1a9[];
 extern char data_ov006_021ec864[];
 extern char data_ov006_021ec1b5[];
 extern ov006_Anim021eb824 data_ov006_021eb824[];
-extern u8 data_0208ba70[];
-extern u8 *data_02097ce0;
 extern u8 data_ov006_021ec2fc[];
 extern u8 data_ov006_021ec25c[];
 extern u8 data_0208b318[];
-void func_0204c7d0(void *p);
-s32 func_0204c4fc(s32 a, s32 b, const char *c, void *d, void *e, BOOL f);
 void func_0204ca14(void *p, int a);
-void MI_CpuFill8(void *dst, u8 value, u32 size);
 
-static inline ov006_Model *ov006_NewModel021e16b0(void) {
-    ov006_Model *model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
+static inline Model *ov006_NewModel021e16b0(void) {
+    Model *model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec1a9;
         if (name) {
-            func_02041218(model->unk88);
+            func_02041218(&model->pltt);
             func_02041440(model, name, 0);
-            STD_CopyString(model->unk2C, data_ov006_021ec864);
+            STD_CopyString(model->name, data_ov006_021ec864);
         }
     }
     return model;
@@ -111,8 +107,8 @@ static inline void ov006_Sub021e16b0_Reset(ov006_Sub021e16b0 *s, const char *str
     s->txt->unk34 = 0;
     t = s->txt;
     t->unk24 = p;
-    t->unk4C = func_0204c4fc(t->unk28, t->unk38, t->unk24, t->unk44, t->unk48, t->unk37 != 0);
-    *(int *)(data_02097ce0 + 4) = t->unk28;
+    t->unk4C = func_0204c4fc(t->unk28, t->unk38, (u32)t->unk24, (u32 *)t->unk44, (u32 *)t->unk48, t->unk37 != 0);
+    data_02097ce0->unk_004 = t->unk28;
     func_0204ca14(s->txt, 0x10);
     s->txt->flags |= 4;
 }
@@ -122,15 +118,15 @@ static inline void ov006_Sub021e16b0_Init(ov006_Sub021e16b0 *s) {
     if (s->type != 2) {
         s->model = ov006_NewModel021e16b0();
         func_020417e0(s->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
-        s->model->unk6C |= 2;
-        s->model->unk6C &= ~0x80000;
-        s->model->unk6C |= 0x400000;
+        s->model->flags |= 2;
+        s->model->flags &= ~0x80000;
+        s->model->flags |= 0x400000;
         func_02041d9c(s->model, 2, data_ov006_021eb824[s->type].unk0);
     }
     t = (ov006_Txt021e16b0 *)Heap_Alloc(0xb8);
     if (t != NULL) {
-        t->vtbl = data_0208ba70;
-        func_0204c7d0(t);
+        t->vtbl = (void *)data_0208ba70;
+        func_0204c7d0((TextWin *)t);
     }
     s->txt = t;
     ov006_Sub021e16b0_Reset(s, data_ov006_021ec1b5);
@@ -148,7 +144,7 @@ void func_ov006_021e16b0(ov006_Unk021e16b0 *self) {
     int zero = 0;
     ov006_Sub021e16b0 *s;
     ov006_Lbl021e16b0 *l;
-    ov006_Model *model;
+    Model *model;
     s = (ov006_Sub021e16b0 *)Heap_Alloc(0x2c);
     if (s != NULL) {
         s->vtbl = data_ov006_021ec22c;
@@ -204,9 +200,9 @@ void func_ov006_021e16b0(ov006_Unk021e16b0 *self) {
     ov006_Lbl_SetMove(self->unk2C, zero, zero, zero, zero, zero);
     self->unk28 = ov006_NewModel021e16b0();
     func_020417e0(self->unk28, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
-    self->unk28->unk6C |= 2;
-    self->unk28->unk6C |= 0x80000;
-    self->unk28->unk6C |= 0x400000;
+    self->unk28->flags |= 2;
+    self->unk28->flags |= 0x80000;
+    self->unk28->flags |= 0x400000;
     func_02041d9c(self->unk28, 2, 8);
 }
 

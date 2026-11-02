@@ -6,7 +6,6 @@ BOOL func_ov000_02191120(void *a);
 void func_ov000_02191780(void *a);
 s32 **func_ov000_02190a30(void *a, int b);
 void func_ov002_021d9c04(void *self);
-extern VFunc data_ov002_021eff10[];
 
 typedef struct Key021db9e8 {
     s16 t;
@@ -75,7 +74,7 @@ void func_ov002_021db9e8(void *self) {
             if (FIELD(self, 0x18, VObject *) != NULL) {
                 FIELD(self, 0x18, VObject *)->v0x10(self);
                 {
-                    u32 saved;
+                    void *saved;
                     HEAP_PUSH(saved);
                     DELETE_VOBJ(FIELD(self, 0x18, VObject *));
                     HEAP_POP(saved);

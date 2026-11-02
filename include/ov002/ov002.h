@@ -2,9 +2,26 @@
 #define OV002_OV002_H
 
 #include "types.h"
-
-typedef volatile u16 vu16;
-typedef volatile u32 vu32;
+#include "nitro/fx.h"
+#include "nitro/gx.h"
+#include "nitro/mi.h"
+#include "nitro/std.h"
+#include "nnsys/g3d.h"
+#include "Main/Sys/SysState.h"
+#include "Main/Res/ResMgr.h"
+#include "Main/Effect/Effect.h"
+#include "Main/Res/StageRes.h"
+#include "Main/Res/StageCmd.h"
+#include "Main/Gfx/Model.h"
+#include "Main/Gfx/PlttRes.h"
+#include "Main/Snd/SndMgr.h"
+#include "Main/Sys/Pad.h"
+#include "Main/Gfx/SlidePanel.h"
+#include "Main/Movie/Movie.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Sys/Field.h"
+#include "Main/Sys/GameScene.h"
+#include "ov000/TaskList.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -90,19 +107,15 @@ extern "C" {
 #define VC(obj, off) (((VObject *)(obj))->v##off)
 #endif
 
-/* Heap selector: [0] = current, [2] = alternate */
-extern u32 *data_02097dd0;
-
-#define HEAP_PUSH(saved)                       \
-    do {                                       \
-        (saved) = data_02097dd0[0];            \
-        data_02097dd0[0] = data_02097dd0[2];   \
+/* Switch new allocations to the alternate heap (data_02097dd0->unk_08) and back. */
+#define HEAP_PUSH(saved)                                  \
+    do {                                                  \
+        (saved) = data_02097dd0->cur;                     \
+        data_02097dd0->cur = data_02097dd0->unk_08;       \
     } while (0)
-#define HEAP_POP(saved) (data_02097dd0[0] = (saved))
+#define HEAP_POP(saved) (data_02097dd0->cur = (saved))
 
-void *Heap_Alloc(u32 size);
 void Heap_FreeArray(void *p);
-void Heap_Free(void *p);
 
 /* ---- */
 typedef struct Unk021f0f80 {
@@ -112,12 +125,9 @@ typedef struct Unk021f0f80 {
 } Unk021f0f80;
 
 extern Unk021f0f80 *data_ov002_021f0f80;
-extern void *data_02097cdc;
-extern void *data_0208cca0;
 extern void *data_0208cc94;
 extern char data_0214b105[];
 
-void func_02036838(void *a, void *b, int c, int d);
 
 typedef struct {
     s32 flag0 : 1;
@@ -137,33 +147,16 @@ typedef struct {
     u8 b6 : 2;
 } BitByte;
 
-extern void *data_02fe152c;
-typedef struct {
-    u16 b0 : 8;
-    u16 b8 : 1;
-    u16 b9 : 1;
-    u16 b10 : 6;
-} BitHalf;
-typedef struct {
-    u8 pad[0x18];
-    BitHalf unk_18;
-} Unk0214a424;
-extern Unk0214a424 *data_0214a424;
-extern u8 *data_02097d48;
 extern BitWord *data_ov000_021ccd44;
 
 u16 func_020594bc(void *a, int b, int c, int d);
-void *func_020359d0(void *a, int b, int c);
-int func_02035b90(void *a, int b);
 void func_ov000_02180660(int a, int b);
 void func_ov000_02180754(void);
-void func_0203cc58(int a, int b, int c);
 
 static inline bool func_ov002_inline_flag1(void) {
     return data_ov000_021ccd44->flag1;
 }
 
-extern VFunc data_ov000_021cc060[];
 extern VFunc data_ov002_021ef530[];
 extern char data_ov002_021ef3e4[];
 extern char data_ov002_021ef3ec[];
@@ -171,12 +164,8 @@ extern char data_ov002_021ef3f8[];
 void func_02035acc(void *a, void *b, u16 c);
 void func_020359fc(void *a, void *b, u16 c, u8 d);
 int func_02035bd4(void *a, void *b, u16 c);
-void func_02041558(void *p);
-void func_02041278(void *p);
 void *func_ov000_0218084c(void *a, int b, int c);
-void *MsgRes_GetString(void *a, int id);
 void func_ov000_0215bb14(void *a, void *b);
-extern void *data_02149ef8;
 
 struct Task50 : public VObject {
     u32 flag0 : 1;
@@ -206,7 +195,7 @@ struct Task50 : public VObject {
 };
 
 static inline void TaskBase_ctor(Task50 *self) {
-    *(VFunc **)self = data_ov000_021cc060;
+    *(VFunc **)self = (VFunc *)data_ov000_021cc060;
     VC(self, 0x58)();
 }
 
@@ -221,7 +210,6 @@ static inline Task50 *Task_021cd06c_ctor(Task50 *self) {
 #define FIELD(p, off, T) (*(T *)((u8 *)(p) + (off)))
 
 /* NitroSDK sin/cos table: s16 sin,cos pairs */
-extern "C" const s16 FX_SinCosTable_[];
 #define FX_SINCOS_TABLE FX_SinCosTable_
 /* Element i of the table, folded into a single symbol offset. */
 #define FX_SINCOS(i) (FX_SinCosTable_[(i)])
@@ -229,9 +217,6 @@ extern "C" const s16 FX_SinCosTable_[];
 extern void *data_ov000_021ccd40;
 extern s32 data_ov000_021ccd38;
 int func_02054f10(void *a, int b);
-void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, u8 d);
 void func_ov000_0217357c(void *self);
 extern char data_ov002_021ef3f9[];
 
@@ -243,16 +228,9 @@ static inline bool func_ov002_isCurrent021ccd40(void *p) {
     return data_ov000_021ccd40 == p;
 }
 
-void func_02041218(void *p);
-void func_02041440(void *p, void *name, int c);
-void *STD_CopyString(void *p, const void *name);
 void *func_02035f30(void *a, void *b, u16 c);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *a, void *b);
-void func_02041d9c(void *a, int b, int c);
 void func_ov000_02173648(void *self);
 extern u8 data_ov000_021ccd34;
-extern s32 data_02097d78[];
 void func_0203cb78(s32 a, int b, int c);
 void func_ov002_021ce7b8(Task50 *self);
 
@@ -297,11 +275,10 @@ extern VFunc data_ov002_021ef4b0[];
 extern VFunc data_ov002_021ef430[];
 extern VFunc data_ov002_021ef410[];
 extern VFunc data_ov002_021ef79c[];
-extern u8 *data_02097e48;
 void func_ov000_0216f168(void *self);
 
 static inline void TaskBase_dtor(Task50 *self) {
-    *(VFunc **)self = data_ov000_021cc060;
+    *(VFunc **)self = (VFunc *)data_ov000_021cc060;
     self->v0x5c();
 }
 
@@ -309,8 +286,8 @@ static inline void Task_deleteModel(Task50 *self) {
     void *p = self->unk_3c;
     if (p != NULL) {
         if (p != NULL) {
-            func_02041558(p);
-            func_02041278((u8 *)p + 0x88);
+            func_02041558((Model *)p);
+            func_02041278(&((Model *)p)->pltt);
             Heap_Free(p);
         }
         self->unk_3c = NULL;
@@ -333,12 +310,7 @@ extern VFunc data_ov002_021efa1c[];
 extern VFunc data_ov002_021ef89c[];
 
 s16 *func_0206ee90(u32 id);
-void func_0203c9e8(int a, int b);
 extern s32 data_ov002_021f0f84[];
-extern u8 *data_02097dc8;
-extern void *data_02097e4c;
-void *func_02049a48(void *a, int b, int c, int d, int e);
-void MIi_CpuClear32(int val, void *dst, u32 size);
 extern VFunc data_ov002_021ef71c[];
 void func_ov002_021e916c(void);
 void func_ov002_021d0b98(Task50 *self);
@@ -365,7 +337,6 @@ void func_ov002_021d1f70(void *self);
 void func_0203caf8(int a);
 void func_020444b0(void *a, s32 b, int c, int d);
 void func_02044524(void *a);
-extern u8 *data_02097e3c;
 void func_ov000_021c701c(void *a);
 
 void func_ov002_021e4904(void *p);
@@ -374,7 +345,7 @@ static inline void func_ov002_021e4904_inline(void *self) {
     FIELD(self, 0x4, s32) = 0;
     FIELD(self, 0x8, s32) = 0;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0xc, void *) != NULL) {
             Heap_FreeArray(FIELD(self, 0xc, void *));
@@ -391,7 +362,6 @@ extern VFunc data_ov002_021ef91c[];
 
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
 void *Ov002Vt_021f00fc_Dtor(void *p);
-void MI_CpuFill8(void *dst, int val, u32 size);
 
 extern VFunc data_ov002_021ef99c[];
 
@@ -413,7 +383,6 @@ extern VFunc data_ov002_021efba4[];
 extern VFunc data_ov002_021efb14[];
 extern char data_ov002_021efad1[];
 void func_ov002_021e1d28(void *self);
-void func_0206e900(char *dst, const char *src);
 
 void func_ov002_021e1cc8(void *self);
 void func_ov002_021e1ed8(void *self);
@@ -446,14 +415,11 @@ void *func_0206ec8c(u32 id);
 u8 *func_0206ef10(u32 id);
 void func_ov000_02162b40(void *a, s32 b, s32 c, const char *d, s32 e, const char *f, s32 g, s16 h);
 void func_ov000_021c95ac(void *a, u16 id);
-void MI_CpuCopy8(void *src, void *dst, u32 size);
 void func_ov002_021e2754(void *a, u16 id);
 extern char data_ov002_021efaeb[];
 extern char data_ov002_021efae1[];
 
 void func_ov002_021da39c(void);
-extern void *data_02097ce0;
-s8 **func_0203a4c0(void *a);
 typedef int (*MenuCallback)(void *self, void *arg);
 typedef void (*MenuCallback2)(void *arg, void *self);
 
@@ -464,10 +430,7 @@ static inline bool func_ov002_isState2(void *self) {
 typedef void (*MenuCallback3)(void *arg, void *self, int a);
 
 int func_ov002_021d6cf0(void *self);
-void MTX_Identity33_(void *p);
 
-void *NNS_G3dGetMdlSet(void *a);
-void NNS_G3dReleaseMdlSet(void *a);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
 
@@ -484,22 +447,17 @@ void *func_ov000_0218ea20(void *p);
     } while (0)
 
 extern VFunc data_ov002_021efe3c[];
-void func_0203df0c(void *p);
-void func_0203f0b4(void *p);
 
 void *Ov002Vt_021efe3c_Dtor(void *self);
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 u8 *func_0206ef50(u32 id);
 void *func_02070dcc(int id);
-int STD_CopyLStringZeroFill(char *dst, const char *src, u32 n);
-int NNS_G3dGetResDictIdxByName(void *dict, const char *name);
 void NNS_G3dMdlSetMdlAlpha(void *res, int idx, int val);
 extern char data_ov002_021efddd[];
 
 u8 *func_0206ede8(u16 id);
 BOOL func_ov002_021e38f8(s32 *out, void *ev);
-s32 FX_Div(s32 a, s32 b);
 void func_ov002_021d8148(void *self);
 
 static inline void func_ov002_021d7c04_inline(void *self) {
@@ -511,18 +469,9 @@ static inline void func_ov002_021d7c04_inline(void *self) {
     func_ov002_021e38f8((s32 *)((u8 *)self + 0x5c), v);
 }
 
-BOOL func_0203e63c(void *a);
 void func_ov002_021d83f0(void *self);
 u8 Gfx3DState_NextPolyId(void *a);
 void NNS_G3dMdlSetMdlPolygonIDAll(void *mdl, int polygonID);
-void NNS_G3dGlbSetBaseTrans(void *a);
-void MI_Copy36B(void *a, void *b);
-void NNS_G3dGlbSetBaseScale(void *a);
-void NNS_G3dGlbFlushVP(void);
-void NNS_G3dDraw(void *a);
-void NNS_G3dGeFlushBuffer(void);
-extern u8 data_020928b4[];
-void MTX_MultVec33(void *a, void *b, void *c);
 void func_ov002_021e3b0c(s32 *out, s32 *pos, s32 *origin);
 
 typedef struct Vec2 {
@@ -603,30 +552,15 @@ void func_ov000_02153c48(void *a, s32 b, int c, int d, u8 e);
 
 extern VFunc data_ov002_021efeb8[];
 extern VFunc data_ov002_021f0674[];
-void MIi_CpuCopy32(const void *src, void *dst, u32 size);
 int func_ov002_021e7ea8(void *a);
 void func_ov002_021e7dac(void *self);
-typedef struct Vec3 {
-    s32 x;
-    s32 y;
-    s32 z;
-} Vec3;
-typedef struct G020927f8 {
-    u8 pad[0xfc];
-    u32 fc;
-    u8 pad100[0x140];
-    Vec3 v240;
-    Vec3 v24c;
-    Vec3 v258;
-} G020927f8;
-extern G020927f8 NNS_G3dGlb;
-void func_ov000_021c524c(void *a, void *b, Vec3 *pos, s32 d);
+void func_ov002_021e0420(void *self);
+void func_ov000_021c524c(void *a, void *b, VecFx32 *pos, s32 d);
 
 extern VFunc data_ov000_021ccbe0[];
 void func_ov000_021c3bb0(void *self);
 void func_ov002_021d95e0(void *a);
 void func_02065eec(void *a);
-extern s32 *data_0214a420;
 
 static inline void *func_ov002_021e0b08_inline(void *self) {
     void *prev;
@@ -647,7 +581,6 @@ extern VFunc data_ov002_021f0e14[];
 extern VFunc data_ov002_021f0e84[];
 extern VFunc data_ov002_021f0e4c[];
 extern VFunc data_ov002_021f0f2c[];
-extern VFunc data_0208b318[];
 extern VFunc data_ov002_021efed4[];
 extern VFunc data_ov002_021efe9c[];
 void func_ov002_021d8e90(void *self);
@@ -678,7 +611,6 @@ extern char data_ov002_021effeb[];
 extern VFunc data_ov002_021f0ebc[];
 extern VFunc data_ov002_021f001c[];
 void func_ov002_021e4fac(void *self);
-void *NNS_G3dGlbGetInvV(void);
 
 typedef struct Bits8 {
     u8 b0 : 1;
@@ -713,7 +645,6 @@ static inline void func_ov002_021e4d4c_inline(void *self) {
     }
 }
 
-void func_0204aaec(void *a, void *b);
 void func_ov002_021ec2ac(void *self);
 
 BOOL func_ov002_021d52e0(void *self, void *ev);
@@ -733,7 +664,6 @@ typedef struct Ov002ResNames {
 } Ov002ResNames;
 extern u8 data_ov002_021ef650[];
 
-u32 STD_GetStringLength(const void *s);
 void func_ov000_021c3d20(void *self);
 void func_ov000_021c4ab8(void *self);
 extern u8 data_ov002_021ef038[];
@@ -762,7 +692,7 @@ struct Ov002StaffCfg {
 };
 extern Ov002StaffCfg data_ov002_021f0d88;
 
-extern Vec3 data_ov002_021ef110;
+extern VecFx32 data_ov002_021ef110;
 
 extern u8 data_ov002_021f00cc[];
 extern u8 data_ov002_021f00d8[];
@@ -776,9 +706,7 @@ void func_02065ac0(void *p);
 void func_ov002_021e391c(s32 *m, int rot);
 
 extern void *data_ov002_021f0fac[9];
-void NNS_G3dRenderObjRemoveAnmObj(void *a, void *b);
 void func_ov002_021eea74(void *p);
-int STD_CopyLString(void *dst, void *src, u32 size);
 int STD_TSNPrintf(void *dst, u32 size, const void *fmt, ...);
 extern void *data_ov002_021f0624[];
 extern u8 data_ov002_021f064c[];
@@ -791,8 +719,6 @@ void func_ov002_021d9504(void *self);
 void func_ov002_021ebfd0(void *p);
 extern VFunc data_ov002_021efe6c[];
 
-void NNS_G3dRenderObjInit(void *a, void *b);
-void *NNS_G3dGetTex(void *a);
 void func_ov002_021da184(void *self, void *p);
 void func_ov000_021c9544(void *a, void *b);
 typedef struct Bits021d9e38 {
@@ -841,8 +767,8 @@ extern u8 data_ov002_021ef665[];
 extern VFunc data_ov002_021f000c[];
 
 void *func_ov000_0214b8ec(void *p);
-void func_ov000_0214b1a0(Vec3 *a, Vec3 *b, s32 c, void *d);
-extern Vec3 data_ov002_021ef124;
+void func_ov000_0214b1a0(VecFx32 *a, VecFx32 *b, s32 c, void *d);
+extern VecFx32 data_ov002_021ef124;
 
 extern u8 data_ov002_021f064d[];
 extern u8 data_ov002_021f0654[];
@@ -857,7 +783,6 @@ void func_ov000_02162a58(void *p);
 void func_ov000_02163594(void *p);
 
 void func_0206e3a0(void *a, void *b);
-void G3X_SetFog(int a, void *b, void *c, int d);
 void func_02043b20(void *p);
 void func_ov002_021e5d0c(void *self);
 
@@ -865,9 +790,6 @@ void *Ov002Vt_021f0ce8_Ctor(void *p);
 void func_ov002_021e6a14(void *self);
 void func_ov002_021ec1e0(void *self, void *src);
 
-void *NNS_G3dGetAnmByName(void *a, void *b);
-void *func_0203de84(u32 size, int align);
-extern void *NNS_G3dFuncAnmJntNsBcaDefault;
 extern VFunc data_ov002_021f06e4[];
 
 void func_ov002_021e6290(void *self);
@@ -875,7 +797,6 @@ void func_ov002_021e6290(void *self);
 void *func_0206ec48(u16 id);
 void func_ov002_021e019c(void *self, u8 a, u8 b);
 
-extern void *data_ov000_021ccd30;
 void func_ov000_0216f844(void *p, int a);
 VObject *func_020657b0(void *a, void *b);
 extern VFunc data_ov002_021f070c[];
@@ -883,12 +804,7 @@ extern VFunc data_ov002_021f070c[];
 extern const u8 data_ov002_021eef74[];
 
 void func_ov002_021e5140(void *self);
-void *func_02034ff8(void *a, void *b);
 void *func_02035d2c(void *a);
-void MTX_LookAt(void *a, void *b, void *c, void *d);
-void MIi_CpuCopyFast(void *src, void *dst, u32 size);
-extern u8 data_02092844[];
-extern u8 data_02092800[];
 
 #ifdef __cplusplus
 }

@@ -13,15 +13,15 @@ void func_ov002_021ce10c(VObject *self) {
         char *nm = data_ov002_021ef3f9;
         char *file = data_ov002_021ef3e4;
         if (nm) {
-            func_02041218((u8 *)m + 0x88);
-            func_02041440(m, nm, 0);
-            STD_CopyString((u8 *)m + 0x2c, file);
+            func_02041218((PlttRes *)((u8 *)m + 0x88));
+            func_02041440((Model *)m, nm, 0);
+            STD_CopyString((char *)((u8 *)m + 0x2c), file);
         }
     }
     FIELD(self, 0x3c, void *) = m;
-    func_020417e0(FIELD(self, 0x3c, void *), func_02034d88(func_02035f30(data_ov002_021ef3e4, data_ov002_021ef3f9, 2), data_ov002_021ef3f9));
+    func_020417e0((Model *)FIELD(self, 0x3c, void *), func_02034d88(func_02035f30(data_ov002_021ef3e4, data_ov002_021ef3f9, 2), data_ov002_021ef3f9));
     FIELD(FIELD(self, 0x3c, void *), 0x6c, u32) |= 2;
-    func_02041d9c(FIELD(self, 0x3c, void *), 0, 0);
+    func_02041d9c((Model *)FIELD(self, 0x3c, void *), 0, 0);
     {
         void *p = FIELD(self, 0x3c, void *);
         FIELD(p, 0xfc, s32) = 0;

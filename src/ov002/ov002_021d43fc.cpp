@@ -124,7 +124,7 @@ Task50 *Ov002TaskVt_021ef99c_Dtor(Task50 *self) {
 }
 
 Task50 *Ov002TaskVt_021ef69c_DtorDelete(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021ef69c;
     HEAP_PUSH(saved);
     DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
@@ -138,7 +138,7 @@ Task50 *Ov002TaskVt_021ef69c_DtorDelete(Task50 *self) {
 }
 
 Task50 *Ov002TaskVt_021ef69c_Dtor(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021ef69c;
     HEAP_PUSH(saved);
     DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
@@ -154,7 +154,7 @@ void func_ov002_021d4970(void) {
 }
 
 Task50 *Ov002TaskVt_021ef89c_DtorDelete(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021ef89c;
     HEAP_PUSH(saved);
     DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
@@ -168,7 +168,7 @@ Task50 *Ov002TaskVt_021ef89c_DtorDelete(Task50 *self) {
 }
 
 Task50 *Ov002TaskVt_021ef89c_Dtor(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021ef89c;
     HEAP_PUSH(saved);
     DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
@@ -181,7 +181,7 @@ Task50 *Ov002TaskVt_021ef89c_Dtor(Task50 *self) {
 }
 
 Task50 *Ov002TaskVt_021efa1c_DtorDelete(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021efa1c;
     HEAP_PUSH(saved);
     DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
@@ -195,7 +195,7 @@ Task50 *Ov002TaskVt_021efa1c_DtorDelete(Task50 *self) {
 }
 
 Task50 *Ov002TaskVt_021efa1c_Dtor(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021efa1c;
     HEAP_PUSH(saved);
     DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
@@ -243,7 +243,7 @@ Task50 *func_ov002_021d4ce8(void) {
 }
 
 Task50 *Ov002TaskVt_021efba4_Dtor(Task50 *self) {
-    u32 saved;
+    void *saved;
     char buf[0x20];
     *(VFunc **)self = data_ov002_021efba4;
     HEAP_PUSH(saved);
@@ -263,7 +263,7 @@ void *Ov002Vt_021efb14_DtorDelete(void *self) {
 }
 
 Task50 *Ov002TaskVt_021efba4_DtorDelete(Task50 *self) {
-    u32 saved;
+    void *saved;
     char buf[0x20];
     *(VFunc **)self = data_ov002_021efba4;
     HEAP_PUSH(saved);

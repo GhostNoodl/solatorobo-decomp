@@ -2,7 +2,6 @@
 
 extern "C" {
 
-extern void **data_0214a420;
 s32 func_02065748(void *a, void *b);
 s32 func_ov015_02209fb8(s32 x);
 u8 *func_02066774(void *a, void *b, int c, void *d);
@@ -31,7 +30,7 @@ void func_ov015_0220015c(Ov015Obj34 *self) {
 }
 
 void func_ov015_02200194(Ov015Obj34 *self) {
-    u32 saved;
+    void *saved;
     if (func_02065748(data_0214a420, self->unk_04) == 0) {
         return;
     }

@@ -54,7 +54,7 @@ static inline void ov006_Menu_Error(int code) {
 void func_ov006_021e5604(ov006_Unk021ec888 *self) {
     switch (self->unkC) {
     case 0:
-        data_02097dd0->unk18 = 0;
+        data_02097dd0->vblankFunc = NULL;
         if (data_02097e40->state == 3) {
             return;
         }
@@ -100,7 +100,7 @@ void func_ov006_021e5604(ov006_Unk021ec888 *self) {
         }
     case 12:
         if (data_02097e40->state == 5) {
-            data_02097dd0->unk18 = (int)func_ov006_021e5fec;
+            data_02097dd0->vblankFunc = func_ov006_021e5fec;
             self->unkC = 0x1e;
         } else if (data_02097e40->state == 8) {
             Wh_GetError(data_02097e40);

@@ -12,7 +12,7 @@ void func_ov002_021ec0cc(void *self) {
     MI_CpuCopy8(p, (u8 *)self + 0x10, 0xe);
     p += FIELD(self, 0x18, s16);
     FIELD(self, 0x20, u8 *) = p;
-    FIELD(self, 0x24, u8 *) = p + (STD_GetStringLength(p) + 1);
+    FIELD(self, 0x24, u8 *) = p + (STD_GetStringLength((char *)p) + 1);
     FIELD(self, 0x8, s16)++;
 }
 

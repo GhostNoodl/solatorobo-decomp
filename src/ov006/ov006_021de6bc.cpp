@@ -6,8 +6,8 @@ typedef struct ov006_Pair021de6bc {
     u8 visible;
     s8 sel;
     u8 unk6[6];
-    ov006_Model *m1;
-    ov006_Model *m2;
+    Model *m1;
+    Model *m2;
     VecFx32 pos;
 } ov006_Pair021de6bc;
 
@@ -24,7 +24,7 @@ typedef struct ov006_Item021de6bc {
     u8 unk8[4];
     VecFx32 pos;
     ov006_Obj021de6bc *obj;
-    ov006_Model *model;
+    Model *model;
 } ov006_Item021de6bc;
 
 typedef struct ov006_Hud021de6bc {
@@ -38,21 +38,21 @@ typedef struct ov006_Hud021de6bc {
     ov006_Pair021de6bc *pair;
     ov006_Item021de6bc *item;
     void *unk1C;
-    ov006_Model *unk20;
-    ov006_Model *unk24;
+    Model *unk20;
+    Model *unk24;
     s32 x;
     s32 y;
     u8 unk30[4];
-    ov006_Model *unk34;
+    Model *unk34;
 } ov006_Hud021de6bc;
 
 extern "C" {
 
 void func_ov000_0216df28(void *p);
 
-static inline void ov006_Model_SetPosV(ov006_Model *self, const VecFx32 *p) {
-    self->unkFC[0].x = p->x;
-    self->unkFC[0].y = p->y;
+static inline void ov006_Model_SetPosV(Model *self, const VecFx32 *p) {
+    self->pos[0].x = p->x;
+    self->pos[0].y = p->y;
 }
 
 static inline void ov006_Obj_SetPos(ov006_Obj021de6bc *self, s32 x, s32 y, s32 z) {
@@ -61,44 +61,44 @@ static inline void ov006_Obj_SetPos(ov006_Obj021de6bc *self, s32 x, s32 y, s32 z
     self->z = z;
 }
 
-static inline void ov006_Model_PlayPartF(ov006_Model *model, int idx, int flag) {
-    ov006_ModelRes *res = model->unk28;
-    ov006_ModelPart *part;
+static inline void ov006_Model_PlayPartF(Model *model, int idx, int flag) {
+    ModelRes *res = model->res;
+    ModelPart *part;
     void *anim;
     if (res == NULL) {
         return;
     }
-    part = ov006_Model_GetPart(model, idx);
-    if (part != NULL && part->unk4 != NULL) {
-        anim = part->unk4->unk30;
+    part = Model_GetPart(model, idx);
+    if (part != NULL && part->res != NULL) {
+        anim = part->res->tex;
     } else {
-        anim = NNS_G2dGetCellDataByIdx(res->unk4, **((ov006_Unk02023390 *)NNS_G2dGetAnimSequenceByIdx(res->unkC, idx))->unkC);
+        anim = NNS_G2dGetCellDataByIdx(res->texRes, **((ov006_Unk02023390 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx))->unkC);
     }
     func_02042628(model, anim, part, flag);
 }
 
-static inline void ov006_Model_PlayPartChk(ov006_Model *model, int idx) {
-    ov006_ModelRes *res;
-    ov006_ModelPart *part;
+static inline void ov006_Model_PlayPartChk(Model *model, int idx) {
+    ModelRes *res;
+    ModelPart *part;
     void *anim;
-    if (model->unk28 == NULL) {
+    if (model->res == NULL) {
         return;
     }
-    res = model->unk28;
-    part = ov006_Model_GetPart(model, idx);
-    if (part != NULL && part->unk4 != NULL) {
-        anim = part->unk4->unk30;
+    res = model->res;
+    part = Model_GetPart(model, idx);
+    if (part != NULL && part->res != NULL) {
+        anim = part->res->tex;
     } else {
-        anim = NNS_G2dGetCellDataByIdx(res->unk4, **((ov006_Unk02023390 *)NNS_G2dGetAnimSequenceByIdx(res->unkC, idx))->unkC);
+        anim = NNS_G2dGetCellDataByIdx(res->texRes, **((ov006_Unk02023390 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx))->unkC);
     }
     func_02042628(model, anim, part, 0);
 }
 
 void func_ov006_021de6bc(ov006_Hud021de6bc *self) {
-    ov006_Model *m0;
+    Model *m0;
     ov006_Pair021de6bc *pair;
     ov006_Item021de6bc *item;
-    ov006_Model *m1;
+    Model *m1;
 
     if (!self->enabled) {
         return;
@@ -106,14 +106,14 @@ void func_ov006_021de6bc(ov006_Hud021de6bc *self) {
     pair = self->pair;
     if (pair->visible) {
         ov006_Model_SetPosV(pair->m1, &pair->pos);
-        pair->m1->unk150 = pair->pos.z;
+        pair->m1->unk_150 = pair->pos.z;
         m0 = pair->m1;
         ov006_Model_PlayPartChk(m0, 0);
-        pair->m1->unk150 = pair->pos.z + 0x20;
+        pair->m1->unk_150 = pair->pos.z + 0x20;
         ov006_Model_PlayPartChk(pair->m1, 1);
         if (pair->sel >= 0) {
             ov006_Model_SetPos(pair->m2, 0, pair->pos.x - 0x6a000, pair->pos.y - 0x4a000);
-            pair->m2->unk150 = pair->pos.z + 0x10;
+            pair->m2->unk_150 = pair->pos.z + 0x10;
             ov006_Model_PlayPartF(pair->m2, pair->sel, 1);
         }
     }
@@ -127,7 +127,7 @@ void func_ov006_021de6bc(ov006_Hud021de6bc *self) {
         }
         VCALL(item->obj, 10);
         ov006_Model_SetPosV(item->model, &item->pos);
-        item->model->unk150 = item->pos.z;
+        item->model->unk_150 = item->pos.z;
         ov006_Model_PlayPartChk(item->model, 2);
     }
     func_ov000_0216df28(self->unk1C);
@@ -147,7 +147,7 @@ void func_ov006_021de6bc(ov006_Hud021de6bc *self) {
         }
     }
     {
-        ov006_Model *m = self->unk24;
+        Model *m = self->unk24;
         if (m != NULL) {
             ov006_Model_PlayPartChk(m, (u16)(self->unk12 + 2));
         }

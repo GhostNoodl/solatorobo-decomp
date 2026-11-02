@@ -2,8 +2,7 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
-extern u8 data_ov009_022179b4[];
+extern char data_ov009_022179b4[];
 extern u8 data_ov009_02216148[];
 extern u8 data_ov009_02216058[];
 extern u8 data_ov009_02216188[];
@@ -19,7 +18,7 @@ struct Ov009Byte {
 void Ov009ActVt_02217aac_Start(Ov009ActVt_02217aac *self) {
     u8 *p;
     Ov009Actor *a;
-    Ov009Game54 *g;
+    FieldState *g;
     func_ov003_021d112c(self);
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
@@ -42,7 +41,7 @@ void Ov009ActVt_02217aac_Start(Ov009ActVt_02217aac *self) {
     self->unk_100 = data_ov009_02216148;
     self->unk_104 = data_ov009_02216058;
     g = data_ov000_021ccd54;
-    if (g->unk_ca == 0x11 && g->unk_cb == 0 && g->unk_cc == 0) {
+    if (g->unk_ca.c[0] == 0x11 && g->unk_ca.c[1] == 0 && g->unk_ca.c[2] == 0) {
         self->unk_ff = 1;
         self->unk_100 = data_ov009_02216188;
         self->unk_104 = data_ov009_02216070;

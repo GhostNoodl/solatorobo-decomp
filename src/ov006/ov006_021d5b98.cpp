@@ -10,7 +10,7 @@ typedef struct ov006_Unk021d5b98 {
     u8 unk4[0x18];
     Object *unk1C;
     Object *unk20;
-    ov006_Model *unk24;
+    Model *unk24;
     Object *unk28;
     Object *unk2C;
     Object *unk30;
@@ -22,7 +22,6 @@ typedef struct ov006_Unk021d5b98 {
 extern "C" {
 
 extern u8 data_ov006_021ebfc0[];
-extern void *data_02097cdc;
 extern char *data_0208cc94;
 extern char data_0214b105[];
 extern char data_ov006_021ec864[];
@@ -55,8 +54,8 @@ static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
     func_02036838(data_02097cdc, "ef/effect3dtri", 7, 0);
     i = 0;
     for (; i < 6; i++) {
-        void *saved = data_02097dd0->current;
-        data_02097dd0->current = data_02097dd0->unk8;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->unk70[i] != NULL) {
             if (self->unk70[i] != NULL) {
                 void *p = self->unk70[i];
@@ -65,7 +64,7 @@ static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
             }
             self->unk70[i] = NULL;
         }
-        data_02097dd0->current = saved;
+        data_02097dd0->cur = saved;
     }
     func_ov006_021ccddc(self);
 }
@@ -127,7 +126,6 @@ extern ov006_Unk02097e48 *data_02097e48;
 
 void *func_020359d0(const char *a, int b, int c);
 void func_0206e900(char *dst, const char *src);
-void *Heap_Alloc(u32 size);
 void *func_ov000_0218e9c4(void *p);
 void func_ov000_02193e5c(void *p, u16 id);
 void func_0203cc58(s32 a, int b, int c);
@@ -457,7 +455,7 @@ typedef struct ov006_Task021d6724 {
     u8 unk10[0xc];
     ov006_Gauge021d6724 *unk1C;
     void *unk20;
-    ov006_Model *unk24;
+    Model *unk24;
     ov006_Pos021d6724 *unk28;
     ov006_Pos021d6724 *unk2C;
     ov006_Pos021d6724 *unk30;
@@ -535,7 +533,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
     case 0: {
         ov006_Info021d6724 *info;
         ov006_Gauge021d6724 *g;
-        ov006_Model *model;
+        Model *model;
         ov006_Pos021d6724 *p;
         u8 n;
         func_ov006_021cd580(7, ov006_GetSlotManager(), result);
@@ -547,17 +545,17 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         func_ov006_021de008(g);
         ov006_Gauge_Init(self->unk1C, data_ov006_021ec884->unk13C ? 2 : 1, data_ov006_021ec884->unk140, data_ov006_021ec884->unk144);
         ov006_Gauge_Set(data_ov006_021ec884->unk8->unkB, self->unk1C);
-        model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
+        model = (Model *)Heap_Alloc(sizeof(Model));
         if (model != NULL) {
             const char *name = "cefly1pic00";
-            func_02041218(model->unk88);
+            func_02041218(&model->pltt);
             func_02041440(model, name, 0);
-            STD_CopyString(model->unk2C, data_ov006_021ec864);
+            STD_CopyString(model->name, data_ov006_021ec864);
         }
         self->unk24 = model;
         func_020417e0(self->unk24, func_02035de0(data_ov006_021ec864, "cefly1pic00"));
-        self->unk24->unk6C |= 2;
-        self->unk24->unk6C |= 0x400000;
+        self->unk24->flags |= 2;
+        self->unk24->flags |= 0x400000;
         func_02041d9c(self->unk24, 2, 0xffff);
         info = (ov006_Info021d6724 *)data_ov006_021ec884->unk8;
         p = (ov006_Pos021d6724 *)Heap_Alloc(0x30);
@@ -586,7 +584,7 @@ BOOL func_ov006_021d6724(ov006_Task021d6724 *self) {
         self->unk30->unk50 = (info->unkC << 12) / 100;
         ov006_Pos_Set3(self->unk30, info->unkE << 12, zero, info->unk10 << 12);
         ((ov006_Bits0e *)(data_ov000_021ccd54 + 0xe))->b2 = 0;
-        data_02097dd0->unk1C = 2;
+        data_02097dd0->frameWait = 2;
         data_ov006_021ec888->unk15E = 1;
         self->subState++;
         break;

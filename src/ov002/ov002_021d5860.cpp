@@ -24,11 +24,9 @@ extern "C" {
 extern VFunc data_ov000_021cadcc[];
 extern VFunc data_ov002_021efca4[];
 extern char *data_0208cb7c;
-extern char *data_0208ccc0;
 extern char data_ov002_021efaf1[];
 extern u8 data_ov002_021eef54[];
 void *func_02035de0(void *a, void *b);
-void func_02041c20(void *a, int b, void *c);
 void func_ov000_021547e8(void *a, void *b, void *c, int d);
 void *func_ov000_02162124(void *p);
 void func_ov000_021627ac(void *p);
@@ -86,16 +84,16 @@ void func_ov002_021d58b8(Task50 *self) {
     res = func_02035de0(data_ov002_021efaf1, data_0208ccc0);
     m = Heap_Alloc(0x160);
     if (m != NULL) {
-        func_02041218((u8 *)m + 0x88);
-        func_02041440(m, NULL, 0);
+        func_02041218((PlttRes *)((u8 *)m + 0x88));
+        func_02041440((Model *)m, NULL, 0);
     }
     FIELD(self, 0x3c, void *) = m;
-    func_020417e0(m, res);
+    func_020417e0((Model *)m, res);
     FIELD(FIELD(self, 0x3c, void *), 0x6c, u32) |= 2;
-    func_02041d9c(FIELD(self, 0x3c, void *), 0, 0);
+    func_02041d9c((Model *)FIELD(self, 0x3c, void *), 0, 0);
     FIELD(FIELD(self, 0x3c, void *), 0x150, s32) = -0x1fe66;
     FIELD(FIELD(self, 0x3c, void *), 0x158, void *) = (void *)func_ov002_021d66b0;
-    func_02041c20(FIELD(self, 0x3c, void *), 0, (u8 *)self + 0x40);
+    func_02041c20((Model *)FIELD(self, 0x3c, void *), 0, (u8 *)self + 0x40);
     o = (VObject *)Heap_Alloc(0x8c);
     if (o != NULL) {
         *(VFunc **)o = data_ov000_021cac60;

@@ -17,11 +17,9 @@ void func_ov009_022093b4(Ov009ActVt_02217594 *self) {
 }
 
 extern void *data_02097e4c;
-extern u8 data_ov009_022172b5[];
-extern void func_ov000_02190e98(void *p, s32 a, s32 b, s32 c);
+extern char data_ov009_022172b5[];
 extern void func_0203f364(Ov009Sub48 *p);
 extern void HitSphere_Link(Ov009Sub48 *p);
-extern BOOL func_ov000_02191120(void *m);
 extern void func_ov000_02191780(Ov009Sub38 *m);
 extern void func_ov000_021917f8(Ov009Sub38 *m);
 extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
@@ -102,7 +100,7 @@ struct Ov009Vec3x3 {
 };
 
 extern const Ov009Vec3x3 data_ov009_02215f50;
-extern u8 data_ov009_022172af[];
+extern char data_ov009_022172af[];
 extern void *data_0214a420;
 extern void func_ov000_021911c8(void *model, s32 a);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);

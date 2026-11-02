@@ -2,17 +2,13 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
 extern char data_ov009_022172c1[];
 extern char data_ov009_022172af[];
 extern Ov009Path data_ov009_02215fbc[];
 extern void func_ov000_021911c8(Ov009Sub38 *m, s32 a);
 extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern u16 FX_Atan2(s32 x, s32 z);
 extern void func_ov000_0218db58(Ov009Actor *self, u16 ang, u16 b, s32 c, s32 d);
-extern void Actor_Move(Ov009Obj *self, s32 turn);
 extern void func_0203f2b8(void *p);
-extern void *data_ov000_021ccd64;
 extern u8 *Group_FindNode(void *mgr, u16 id);
 
 struct Ov009Byte {
@@ -31,10 +27,6 @@ static inline Ov009Actor *Ov009_FindActor(u16 id) {
 
 extern char data_ov009_022172bb[];
 extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
-extern s32 Rand_PlusMinus(s32 n);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
-extern void VEC_MultAdd(s32 k, const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 
 static inline u16 Ov009_AngTo(Ov009Actor *self, Ov009Actor *a) {
     if (a == NULL || a == self) {
@@ -135,8 +127,8 @@ void func_ov009_02208204(Ov009Multi *self) {
     if (moved) {
         s32 r = self->unk_490 * 0xc00;
         FLD(s32, self, 0x4a4) = self->unk_494.y;
-        FLD(s32, self, 0x4a0) = self->unk_494.x + Ov009_FxMul(r, OV009_SIN(ang));
-        FLD(s32, self, 0x4a8) = self->unk_494.z + Ov009_FxMul(r, OV009_COS(ang));
+        FLD(s32, self, 0x4a0) = self->unk_494.x + FX_Mul(r, OV009_SIN(ang));
+        FLD(s32, self, 0x4a8) = self->unk_494.z + FX_Mul(r, OV009_COS(ang));
         VEC_Add(&FLD(Ov009Vec, self, 0x4a0), &off, &FLD(Ov009Vec, self, 0x4a0));
     }
     d.x = FLD(s32, self, 0x4a0) - self->pos.x;
@@ -197,7 +189,7 @@ void func_ov009_0220862c(Ov009Multi *self) {
         }
         break;
     }
-    Actor_Move(self, 0);
+    Actor_Move((Actor *)self, 0);
 }
 
 BOOL func_ov009_02208764(Ov009Actor *self) {
@@ -220,7 +212,7 @@ void func_ov009_02208788(Ov009Actor *self) {
 }
 
 void func_ov009_022087c4(Ov009Actor *self) {
-    u32 saved;
+    void *saved;
     func_ov003_021d112c(self);
     {
         Ov009Vec v = data_ov009_02215fbc[self->unk_1a].start;
@@ -228,7 +220,7 @@ void func_ov009_022087c4(Ov009Actor *self) {
         self->unk_84 = v;
     }
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->unk_3c != NULL) {
         if (self->unk_3c != NULL) {
             self->unk_3c->v04();
@@ -237,7 +229,7 @@ void func_ov009_022087c4(Ov009Actor *self) {
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->unk_48 != NULL) {
         Ov009Sub48 *p = self->unk_48;
         if (p != NULL) {
@@ -248,7 +240,7 @@ void func_ov009_022087c4(Ov009Actor *self) {
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->unk_44 != NULL) {
         Heap_Free(self->unk_44);
         self->unk_44 = NULL;

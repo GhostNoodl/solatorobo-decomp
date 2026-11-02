@@ -33,16 +33,16 @@ extern "C" {
 void *Ov003Vt_021f7d2c_Ctor(void *p);
 
 extern void *data_02097e4c;
-extern const Ov011Vec data_ov011_022072b4;
+extern const VecFx32 data_ov011_022072b4;
 
 BOOL func_ov011_02201244(void *o);
 void func_ov011_0220121c(void *o, s32 a);
 void *__cxa_vec_new(u32 count, u32 size, u32 hdr, void *ctor, void *dtor);
 void *func_ov011_021fb66c(void *self);
 void *func_ov011_021fc0a0(void *self);
-BOOL func_ov011_02201f28(void *self, u16 id, const Ov011Vec *off, s16 c, s16 d, s16 e);
+BOOL func_ov011_02201f28(void *self, u16 id, const VecFx32 *off, s16 c, s16 d, s16 e);
 void func_ov011_02202464(void *self);
-void *func_02049f44(void *a, s32 b, Ov011Vec *c, s32 d);
+void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 
 static inline Ov011Obj *Ov011_Find(u16 id) {
     return data_ov000_021ccd68 == NULL ? NULL : (Ov011Obj *)ActorMgr_GetActor(data_ov000_021ccd68, id);
@@ -68,8 +68,8 @@ void func_ov011_021fbe08(Ov011Mgr3 *self) {
         s16 cnt;
         s32 i;
         Ov011Obj *a;
-        Ov011Vec v;
-        Ov011Vec w;
+        VecFx32 v;
+        VecFx32 w;
         for (p = head; p != NULL; p = p->next) {
             if (Ov011_NodeOk(p) == TRUE) {
                 n++;
@@ -201,25 +201,24 @@ struct Ov011Msg2 {
 
 extern "C" {
 
-extern const Ov011Vec data_ov011_02207278;
+extern const VecFx32 data_ov011_02207278;
 void Ov003Mover_SetSpeed(void *p, s32 a);
 void Ov003Mover_SetMaxDist(void *p, s32 a);
-void func_ov003_021d7c08(void *p, Ov011Vec *v);
-Ov011Vec *Ov003Mover_GetDir(void *p);
-u16 Ov003Vec_Pitch(Ov011Vec *v);
-u16 Ov003Vec_Yaw(Ov011Vec *v);
-BOOL func_ov003_021d7a44(void *p, Ov011Vec *a, Ov011Vec *b, s32 c, s32 d, s32 e);
+void func_ov003_021d7c08(void *p, VecFx32 *v);
+VecFx32 *Ov003Mover_GetDir(void *p);
+u16 Ov003Vec_Pitch(VecFx32 *v);
+u16 Ov003Vec_Yaw(VecFx32 *v);
+BOOL func_ov003_021d7a44(void *p, VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e);
 void func_ov011_022011fc(void *a, s32 b);
 void func_ov011_022011c8(void *a, s32 b);
 void func_ov011_02201214(void *a, void *b);
 void *func_ov011_02201254(void *self);
 s32 Rand_PlusMinus(s32 max);
-Ov011V *func_02065f88(s32 id, Ov011Vec *pos);
-void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out);
+Ov011V *func_02065f88(s32 id, VecFx32 *pos);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void func_ov011_02202488(void *self, s16 v);
 void func_ov011_022024ac(void *self, s16 v);
-Ov011Vec func_ov011_022024d4(const void *self);
+VecFx32 func_ov011_022024d4(const void *self);
 Ov011LNode *func_ov011_021fa790(Ov011LNode *head, Ov011LNode *item);
 void ActorMgr_SendMsg(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
 BOOL func_ov000_021b4738(void *pl);
@@ -330,20 +329,20 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 continue;
             }
             {
-                Ov011Vec *p = (Ov011Vec *)self->slots[i].obj.v10();
+                VecFx32 *p = (VecFx32 *)self->slots[i].obj.v10();
                 a->pos.x = p->x;
                 a->pos.y = p->y;
                 a->pos.z = p->z;
             }
             if (self->slots[i].timer <= 0x50) {
-                Ov011Vec v = data_ov011_02207278;
-                Ov011Vec w;
+                VecFx32 v = data_ov011_02207278;
+                VecFx32 w;
                 Ov011Sub48 *m;
                 if (self->slots[i].timer == 0x50) {
                     Ov003Mover_SetSpeed(&self->slots[i].obj, 0x66);
                     Ov003Mover_SetMaxDist(&self->slots[i].obj, 0x948);
                     func_ov011_022011fc(a, 0);
-                    func_02049f44(data_02097e4c, 0x2f, (Ov011Vec *)self->slots[i].obj.v10(), 0);
+                    func_02049f44(data_02097e4c, 0x2f, (VecFx32 *)self->slots[i].obj.v10(), 0);
                     v.x = Rand_PlusMinus(0x1000);
                     v.z = Rand_PlusMinus(0x1000);
                 }
@@ -355,9 +354,9 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 w.y += 0x1000;
                 func_ov003_021d7c08(&self->slots[i].obj, &w);
                 if (self->slots[i].timer == 0x50) {
-                    Ov011Vec t = *(Ov011Vec *)self->slots[i].obj.v10();
+                    VecFx32 t = *(VecFx32 *)self->slots[i].obj.v10();
                     Ov011V *e = func_02065f88(0x192, &t);
-                    Ov011Vec d = *Ov003Mover_GetDir(&self->slots[i].obj);
+                    VecFx32 d = *Ov003Mover_GetDir(&self->slots[i].obj);
                     e->v34(Ov003Vec_Pitch(&d), Ov003Vec_Yaw(&d), 0);
                     e->v14(0x1ccd, 0x1ccd, 0x1ccd);
                 }
@@ -368,10 +367,10 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 continue;
             }
             {
-                Ov011Vec p;
+                VecFx32 p;
                 u16 ang;
                 Ov011V *e;
-                Ov011GameF4 *q;
+                Camera *q;
                 p.x = a->pos.x;
                 p.y = a->pos.y;
                 p.z = a->pos.z;
@@ -382,14 +381,14 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
                 e->v34(0, ang, 0);
                 e->v14(0x1ccd, 0x1ccd, 0x1ccd);
                 func_02049f44(data_02097e4c, 0x1a, &p, 0);
-                q = &data_ov000_021ccd54->unk_f4;
+                q = &data_ov000_021ccd54->cam.base;
                 if (q != NULL) {
-                    q->unk_9c.b2 = 1;
-                    q->unk_9c.b3 = 1;
-                    q->unk_9c.b4 = 1;
-                    q->unk_99 = 10;
-                    q->unk_9a = 10;
-                    q->unk_9b = 10;
+                    q->shakeX = 1;
+                    q->shakeY = 1;
+                    q->shakeZ = 1;
+                    q->shakeTime = 10;
+                    q->shakeLen = 10;
+                    q->shakeCur = 10;
                 }
                             Ov011Slot *s = &self->slots[i];
             s->b0 = 1;
@@ -445,8 +444,8 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
             }
         }
         {
-            Ov011Vec c;
-            Ov011Vec pp;
+            VecFx32 c;
+            VecFx32 pp;
             Ov011Obj *pl;
             c = func_ov011_022024d4(self->chr);
             pl = (Ov011Obj *)func_ov000_0219bf90();

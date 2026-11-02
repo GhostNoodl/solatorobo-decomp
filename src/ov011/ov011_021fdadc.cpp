@@ -92,8 +92,8 @@ void func_ov011_021fdb28(Ov011Scene *self) {
         self->mgr2.count = 0;
         self->mgr2.unk_04 = -1;
         {
-            u32 saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->def;
+            void *saved = data_02097dd0->cur;
+            data_02097dd0->cur = data_02097dd0->unk_08;
             if (self->mgr2.arr8 != NULL) {
                 __cxa_vec_delete(self->mgr2.arr8, 0x40, 8, func_ov011_021fb66c);
                 self->mgr2.arr8 = NULL;

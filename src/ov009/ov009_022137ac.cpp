@@ -2,7 +2,6 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
 extern u8 *Group_FindNode(void *mgr, u16 id);
 extern Ov009Actor *func_ov000_0219bf90(void);
 

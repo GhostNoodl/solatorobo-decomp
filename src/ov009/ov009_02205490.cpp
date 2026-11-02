@@ -8,11 +8,9 @@ extern void *data_0214a420;
 extern Ov009Eff *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void func_01ffc9fc(Ov009Vec *dst, const Ov009Vec *src, s32 angle);
 extern void func_020639d4(Ov009Eff *o, s32 a, s32 b);
-extern s32 FX_Div(s32 a, s32 b);
 extern void HitSphere_Link(Ov009Sub48 *p);
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
-extern void Actor_Move(Ov009Obj *self, s32 a);
 extern void func_02065804(void *mgr, s32 h);
 extern void *func_020657b0(void *mgr, s32 id);
 extern void func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
@@ -35,7 +33,7 @@ static inline s32 Ov009_GetAng(Ov009AngSrc *p) {
     return Camera_GetYaw(p);
 }
 
-static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {
+static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->unk_d4 != 0;
 }
 
@@ -100,7 +98,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
         if (func_ov000_0219a2f4(&v1, 0x3800, -0xa000) != -0x1000) {
             v1.y += 0x2000;
         }
-        self->pos.y += Ov009_FxMul(v1.y - self->pos.y, 0x1000);
+        self->pos.y += FX_Mul(v1.y - self->pos.y, 0x1000);
         VEC_Distance(&self->pos, &v1);
         break;
     case 2:
@@ -123,12 +121,12 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
             s44->unk_22_0 = 1;
             s44->unk_22_1 = 1;
             func_ov000_021984f4(self->unk_44, 0, 0);
-            func_ov000_02190cb0(self->unk_38, data_ov009_02215d0c[9], 0x1000, 0);
+            func_ov000_02190cb0(self->unk_38, (char *)data_ov009_02215d0c[9], 0x1000, 0);
             func_ov000_021915a0(self->unk_38);
             self->unk_40->state++;
         }
         self->unk_38->scale = s;
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         Actor_TurnToActor(self, pl, 0x1000);
         self->unk_48->unk_9a_5 = 1;
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
@@ -147,7 +145,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
                 func_ov000_02198360(self->unk_40, 1, 0);
             }
         } else {
-            func_ov000_02190cb0(self->unk_38, data_ov009_02215d0c[3], 0x400, 0);
+            func_ov000_02190cb0(self->unk_38, (char *)data_ov009_02215d0c[3], 0x400, 0);
             self->unk_40->state++;
         }
         break;
@@ -170,7 +168,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
             }
             v2.y += 0x2000;
         }
-        self->pos.y += Ov009_FxMul(v2.y - self->pos.y, 0x1000);
+        self->pos.y += FX_Mul(v2.y - self->pos.y, 0x1000);
         VEC_Distance(&self->pos, &v2);
         o = func_02065f88(0x389, &self->pos);
         o->vf0c(0x3000);

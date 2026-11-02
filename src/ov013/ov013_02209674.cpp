@@ -3,7 +3,6 @@
 extern "C" {
 
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd68;
 extern char data_ov013_0220be82[];
 extern void func_ov003_021d36fc(Ov013Actor *self);
 extern void func_ov003_021d3d28(Ov013Actor *self);

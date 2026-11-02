@@ -68,7 +68,7 @@ void *Ov002Vt_021eff50_Dtor(void *self) {
 }
 
 void *Ov002Vt_021eff74_DtorDelete(void *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021eff74;
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(self, 0xc, VObject *));
@@ -85,7 +85,7 @@ BOOL func_ov002_021e08c8(void *self) {
 }
 
 void *Ov002Vt_021eff74_Dtor(void *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021eff74;
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(self, 0xc, VObject *));
@@ -97,7 +97,7 @@ void *Ov002Vt_021eff74_Dtor(void *self) {
 }
 
 void *Ov002Vt_021efe6c_Dtor(void *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021efe6c;
     func_ov002_021d9504(self);
     HEAP_PUSH(saved);
@@ -156,7 +156,7 @@ void *Ov002Vt_021efe4c_Dtor(void *self) {
 }
 
 void *Ov002Vt_021f001c_Dtor(void *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021f001c;
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(self, 0x4, VObject *));
@@ -165,7 +165,7 @@ void *Ov002Vt_021f001c_Dtor(void *self) {
 }
 
 void *Ov002Vt_021f001c_DtorDelete(void *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021f001c;
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(self, 0x4, VObject *));

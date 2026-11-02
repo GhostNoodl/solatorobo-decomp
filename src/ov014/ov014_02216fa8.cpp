@@ -1,9 +1,5 @@
 #include "ov014/ov014.h"
 
-typedef s16 fx16;
-typedef Ov014Vec VecFx32;
-struct VecFx16 { fx16 x, y, z; };
-#define FX32_ONE 0x1000
 
 // A header's zero rotation and vector, plus copies made at startup, next to this TU's name,
 // scale and offsets. The pointer to the name and two offsets are read by other functions.
@@ -34,7 +30,6 @@ extern u8 data_ov014_0221722c[];
 extern void func_ov003_021daab0(void *p);
 extern void func_ov000_0219763c(void *self);
 extern void *ActorEx_Ctor(void *self);
-extern void *func_ov003_021da940(void *p);
 extern void func_ov000_02194758(void *self);
 extern void func_0203f364(Ov014Sub48 *p);
 
@@ -58,8 +53,8 @@ Ov014ActEx_021fc24c *Ov014ActEx_021fc24c_Ctor(Ov014ActEx_021fc24c *self) {
 #pragma force_active reset
 
 static inline void Ov014_Free100(Ov014ActEx_021fc24c *self) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->unk_100 != NULL) {
         void *p = self->unk_100;
         if (p != NULL) {
@@ -106,7 +101,7 @@ void Ov014ActEx_021fc24c_Start(Ov014ActEx_021fc24c *self) {
         s48->unk_9a_2 = 0;
         s48->unk_9a_5 = 0;
     }
-    self->unk_44->unk_1c = Ov014_FxMul(self->unk_64, 0x2800);
+    self->unk_44->unk_1c = FX_Mul(self->unk_64, 0x2800);
     p = (s32 *)Heap_Alloc(4);
     if (p != NULL) {
         *p = 0;
@@ -125,14 +120,10 @@ void Ov014ActEx_021fc24c_Start(Ov014ActEx_021fc24c *self) {
 }
 
 extern Ov014Vec data_ov014_022164dc;
-extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern Ov014V *func_02065f88(s32 id, Ov014Vec *pos);
 extern void func_ov003_021da9ac(void *p, u8 id, void *obj);
 extern BOOL func_ov003_021daa0c(void *p, u8 id);
-extern void func_ov003_021dacfc(void *p);
-extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
-extern u16 FX_Atan2(s32 x, s32 z);
 extern Ov014Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 
@@ -313,7 +304,6 @@ extern void func_ov014_021fcf00(Ov014ActEx_021fc24c *self);
 extern void *func_0204a028(void *a, s32 b, Ov014Vec *c, s32 d);
 extern void func_ov003_021daae4(void *p, s32 a, Ov014Vec *v, void *b, s32 c, s32 d, s32 e);
 extern void Actor_TurnToPos(Ov014Obj *self, Ov014Vec *v, s32 a);
-extern void Actor_Move(Ov014Obj *self, s32 a);
 extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s32 a, Ov014Actor **list);
 extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
 extern void func_ov003_021f0c60(Ov014Obj *self, s32 a);
@@ -373,7 +363,7 @@ void func_ov014_021fc9c8(Ov014ActEx_021fc24c *self) {
                 }
                 Actor_TurnToPos(self, &self->unk_d0, 0xcd);
                 self->unk_98 = self->rot[1];
-                Actor_Move(self, 0);
+                Actor_Move((Actor *)self, 0);
                 self->unk_fe++;
                 rad = self->unk_64;
                 team = Target_Get(self->unk_4c)->id & 0xf000;
@@ -466,10 +456,7 @@ extern "C" {
 
 extern Ov014Vec *func_ov000_0218d2e0(void *self);
 extern Ov014Actor *Target_Get(void *p);
-extern void VEC_Normalize(Ov014Vec *a, Ov014Vec *b);
-extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern void Actor_TurnToPos(Ov014Obj *self, Ov014Vec *v, s32 a);
-extern u16 FX_Atan2(s32 x, s32 z);
 extern s32 func_ov000_0219a510(Ov014Obj *self, u16 mask, Ov014Vec *pos, s32 r, s32 a, Ov014Actor **list);
 extern Ov014Actor *func_ov000_021985c0(Ov014Actor *p);
 extern void func_ov003_021f0c60(Ov014Obj *self, s32 a);
@@ -511,12 +498,12 @@ void func_ov014_021fcf00(Ov014ActEx_021fc24c *self) {
         while (OV014_SQRTCNT & 0x8000) {
         }
         r = (s32)(OV014_SQRT_RESULT + 1) >> 1;
-        d.x = Ov014_FxMul(r, OV014_SIN(self->rot[1])) - 0x2000;
-        d.z = Ov014_FxMul(r, OV014_COS(self->rot[1]));
+        d.x = FX_Mul(r, OV014_SIN(self->rot[1])) - 0x2000;
+        d.z = FX_Mul(r, OV014_COS(self->rot[1]));
         VEC_Normalize(&d, &d);
-        self->unk_9c = Ov014_FxMul(d.x, 0x400);
-        self->unk_a0 = Ov014_FxMul(d.y, 0x400);
-        self->unk_a4 = Ov014_FxMul(d.z, 0x400);
+        self->unk_9c = FX_Mul(d.x, 0x400);
+        self->unk_a0 = FX_Mul(d.y, 0x400);
+        self->unk_a4 = FX_Mul(d.z, 0x400);
         FX_Atan2(r, self->unk_d0.y - self->pos.y);
         self->rot[0] = FX_Atan2(self->pos.y - self->unk_d0.y, r);
         {

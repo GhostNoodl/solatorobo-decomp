@@ -70,8 +70,8 @@ BOOL func_ov002_021cf314(int idx, u32 arg);
 void func_ov002_021cfe48(void *self) {
     u8 *e;
     void *mgr;
-    u32 s1;
-    u32 s2;
+    void *s1;
+    void *s2;
     u8 *e2;
     if (FIELD(self, 0x8, s32) == 8) {
         mgr = data_02149ef8;

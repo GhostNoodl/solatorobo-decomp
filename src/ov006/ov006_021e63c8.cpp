@@ -51,7 +51,6 @@ extern void *data_02097e4c;
 void SndMgr_StopSeqArc(void *a, s32 b);
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218c928(void *self);
-void Heap_Free(void *p);
 
 ov006_Prop63c8 *Ov006ActVt_021ec4f4_Ctor(ov006_Prop63c8 *self) {
     int i;

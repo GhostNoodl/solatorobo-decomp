@@ -3,7 +3,7 @@
 extern "C" {
 
 void *Ov002Vt_021efe6c_DtorDelete(void *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021efe6c;
     func_ov002_021d9504(self);
     HEAP_PUSH(saved);

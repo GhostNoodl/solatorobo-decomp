@@ -11,7 +11,7 @@ typedef struct ov006_ModelFlags {
 
 typedef struct ov006_Lbl021dc578 {
     u8 unk0[0xa8];
-    ov006_Model *unkA8;
+    Model *unkA8;
     u16 unkAC;
     int unkB0;
     int unkB4;
@@ -28,12 +28,12 @@ extern u8 *data_02097d48;
 BOOL func_02054f10(void *a, int b);
 u8 Gfx3DState_NextPolyId(void *a);
 
-static inline void ov006_Model_SetPolyId(ov006_Model *m, int id) {
-    ((ov006_ModelFlags *)&m->unk6C)->polyId = id;
+static inline void ov006_Model_SetPolyId(Model *m, int id) {
+    ((ov006_ModelFlags *)&m->flags)->polyId = id;
 }
 
-static inline void ov006_Model_SetAlpha(ov006_Model *m, u8 a) {
-    ((ov006_ModelFlags *)&m->unk6C)->alpha = a;
+static inline void ov006_Model_SetAlpha(Model *m, u8 a) {
+    ((ov006_ModelFlags *)&m->flags)->alpha = a;
 }
 
 void func_ov006_021dc578(ov006_Lbl021dc578 *self) {
@@ -54,9 +54,9 @@ void func_ov006_021dc578(ov006_Lbl021dc578 *self) {
     }
     ov006_Model_SetPolyId(self->unkA8, Gfx3DState_NextPolyId(data_02097d48 + 0x8b0));
     ov006_Model_SetAlpha(self->unkA8, alpha);
-    { int i = self->unkE0; ov006_Model *m = self->unkA8; m->unkFC[i].x = x; m->unkFC[i].y = y; }
-    self->unkA8->unk150 = self->unkB8;
-    ov006_Model_PlayPart(self->unkA8, self->unkAC);
+    { int i = self->unkE0; Model *m = self->unkA8; m->pos[i].x = x; m->pos[i].y = y; }
+    self->unkA8->unk_150 = self->unkB8;
+    Model_PlayPart(self->unkA8, self->unkAC);
 }
 
 }

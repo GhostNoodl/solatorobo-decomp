@@ -23,10 +23,9 @@ struct Ov011Rot {
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
 extern const u16 data_ov011_0220751c[];
 s32 Rand_UpTo(s32 max);
-void *Group_SpawnActor(void *mgr, Ov011SpawnDesc *d, Ov011Vec *pos, Ov011Rot *rot, u16 a);
+void *Group_SpawnActor(void *mgr, Ov011SpawnDesc *d, VecFx32 *pos, Ov011Rot *rot, u16 a);
 void *func_ov000_0214b670(void *p);
 
 #pragma force_active on
@@ -37,7 +36,7 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
         m = 200;
     }
     if (t % m == 1) {
-        Ov011Vec pos;
+        VecFx32 pos;
         Ov011Rot rot;
         Ov011SpawnDesc d;
         s32 r;
@@ -83,7 +82,7 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
         m = 0x4b;
     }
     if (t % m == 1) {
-        Ov011Vec pos;
+        VecFx32 pos;
         Ov011Rot rot;
         Ov011SpawnDesc d;
         Ov011Obj *o;
@@ -104,11 +103,9 @@ void func_ov011_02205460(Ov011Act7da4 *self, u16 t, BOOL b) {
 }
 #pragma force_active reset
 
-
 void func_020627a0(u16 a, u16 b);
 void func_020627dc(s32 a);
 void func_ov000_02182590(void *p);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 void func_ov011_02205460(Ov011Act7da4 *self, u16 t, s32 c);
 
 #pragma force_active on
@@ -117,7 +114,7 @@ void func_ov011_02205674(Ov011Act7da4 *self) {
     switch (st->state) {
     case 0:
         if (st->timer > 0x12c) {
-            Ov011Game54 *g;
+            FieldState *g;
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;
@@ -136,25 +133,13 @@ void func_ov011_02205674(Ov011Act7da4 *self) {
     func_ov011_02205460(self, self->unk_40->timer, 0);
 }
 
-extern Ov011Vec data_02092a50;
-s32 *NNS_G3dGlbGetInvV(void);
-void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *c);
-void func_ov000_0218d46c(void *o, u16 id, s32 c);
-
-static inline void Ov011_MulVec33(const Ov011Vec *v, const s32 *m, Ov011Vec *out) {
-    s32 x = v->x;
-    s32 y = v->y;
-    s32 z = v->z;
-    out->x = (s32)(((s64)x * m[0] + (s64)y * m[3] + (s64)z * m[6]) >> 12);
-    out->y = (s32)(((s64)x * m[1] + (s64)y * m[4] + (s64)z * m[7]) >> 12);
-    out->z = (s32)(((s64)x * m[2] + (s64)y * m[5] + (s64)z * m[8]) >> 12);
-}
+extern VecFx32 data_02092a50;
 
 void func_ov011_0220576c(Ov011Act7da4 *self) {
     Ov011Sub40 *st = self->unk_40;
     switch (st->state) {
     case 0: {
-        Ov011Vec v;
+        VecFx32 v;
         Ov011Rot rot;
         Ov011SpawnDesc d;
         Ov011Obj *o;
@@ -172,14 +157,14 @@ void func_ov011_0220576c(Ov011Act7da4 *self) {
         if (o != NULL) {
             self->unk_36c = o->id;
             o->unk_16_0 = 1;
-            func_ov000_0218d46c(o, self->id, 6);
+            func_ov000_0218d46c((StageObj3D *)o, self->id, 6);
         }
         self->unk_40->state++;
     }
     case 1:
         if (self->unk_40->timer > 0x96) {
             Ov011Obj *a = Ov011_FindActor(self->unk_36c);
-            Ov011Game54 *g;
+            FieldState *g;
             if (a != NULL) {
                 a->unk_18 = 2;
             }
@@ -233,7 +218,7 @@ void func_ov011_022059f8(Ov011Act7da4 *self) {
     case 2:
         st->timer++;
         if (st->timer > 0x3c) {
-            Ov011Game54 *g;
+            FieldState *g;
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;
@@ -292,7 +277,7 @@ void func_ov011_02205bc4(Ov011Act7da4 *self) {
     case 2:
         st->timer++;
         if (st->timer > 0x3c) {
-            Ov011Game54 *g;
+            FieldState *g;
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;

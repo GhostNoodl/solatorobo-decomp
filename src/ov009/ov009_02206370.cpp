@@ -4,8 +4,8 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern void *data_ov009_0221707c;
-extern u8 data_ov009_02216bb4[];
-extern u8 data_ov009_02216bba[];
+extern char data_ov009_02216bb4[];
+extern char data_ov009_02216bba[];
 extern void func_ov003_021d452c(Ov009Actor *self);
 extern s32 func_ov003_021d1e30(s32 a);
 extern void *func_ov003_021da940(void *p);
@@ -111,10 +111,10 @@ void func_ov009_02206778(Ov009ActVt_02216dcc *self) {
 }
 
 Ov009ActVt_0221707c *Ov009ActVt_0221707c_DtorDelete(Ov009ActVt_0221707c *self) {
-    u32 saved;
+    void *saved;
     FLD(void *, self, 0) = &data_ov009_0221707c;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->unk_104 != NULL) {
         void *p = self->unk_104;
         if (p != NULL) {
@@ -130,10 +130,10 @@ Ov009ActVt_0221707c *Ov009ActVt_0221707c_DtorDelete(Ov009ActVt_0221707c *self) {
 }
 
 Ov009ActVt_0221707c *Ov009ActVt_0221707c_Dtor(Ov009ActVt_0221707c *self) {
-    u32 saved;
+    void *saved;
     FLD(void *, self, 0) = &data_ov009_0221707c;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->unk_104 != NULL) {
         void *p = self->unk_104;
         if (p != NULL) {
@@ -234,7 +234,6 @@ Ov009ActVt_02216dcc *Ov009ActVt_02216dcc_DtorDelete(Ov009ActVt_02216dcc *self) {
     Heap_Free(self);
     return self;
 }
-extern void *data_ov000_021ccd64;
 extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_0203f2b8(void *p);
 
@@ -257,8 +256,8 @@ void Ov009ActVt_022178f0_Start(Ov009ActVt_022178f0 *self) {
     self->unk_fc = self->unk_f0;
     self->pos.z += 0x18000;
     {
-        u32 saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->def;
+        void *saved = data_02097dd0->cur;
+        data_02097dd0->cur = data_02097dd0->unk_08;
         if (self->unk_48 != NULL) {
             void *q = self->unk_48;
             if (q != NULL) {

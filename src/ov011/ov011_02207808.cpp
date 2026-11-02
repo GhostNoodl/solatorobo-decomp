@@ -1,9 +1,5 @@
 #include "ov011/ov011.h"
 
-typedef s16 fx16;
-typedef Ov011Vec VecFx32;
-struct VecFx16 { fx16 x, y, z; };
-#define FX32_ONE 0x1000
 
 // A header's zero rotation and vector, plus copies made at startup, and two scales of this TU
 // that other functions read. MWCC emits this order as zero rotation, scales, zero vector.
@@ -34,7 +30,7 @@ BOOL func_ov000_0218ffdc(void *a, void *b, s32 c, s32 d);
 void func_ov000_0219badc(void *a, void *b, s32 c);
 
 s32 func_ov011_02200aac(void *p, s32 b) {
-    return Ov011_FxMul(func_ov003_021d7e58(p), b);
+    return FX_Mul(func_ov003_021d7e58(p), b);
 }
 
 void func_ov011_02200ad0(Ov011Actor *self) {
@@ -113,12 +109,10 @@ BOOL func_ov011_02200b88(Ov011Model2 *self, void *a, void *b) {
 
 extern "C" {
 
-extern const Ov011Vec data_ov011_02207450;
-extern const Ov011Vec data_ov011_0220745c;
-s32 VEC_Distance(const Ov011Vec *a, const Ov011Vec *b);
-s32 FX_Div(s32 a, s32 b);
+extern const VecFx32 data_ov011_02207450;
+extern const VecFx32 data_ov011_0220745c;
 
-static inline void Ov011Tw_InitA(Ov011Tw *t, const Ov011Vec *from, const Ov011Vec *to) {
+static inline void Ov011Tw_InitA(Ov011Tw *t, const VecFx32 *from, const VecFx32 *to) {
     s32 x;
     s32 y;
     s32 z;
@@ -149,12 +143,12 @@ static inline void Ov011Tw_InitB(Ov011Tw *t, s32 from, s32 to, u16 speed, s32 mu
     t->v14.x = to;
     t->v14.y = to;
     t->v14.z = to;
-    t->unk_04 = Ov011_FxMul(VEC_Distance(&t->v14, &t->v08), mul);
+    t->unk_04 = FX_Mul(VEC_Distance(&t->v14, &t->v08), mul);
 }
 
 void func_ov011_02200c30(Ov011Model2 *self) {
-    Ov011Vec a;
-    Ov011Vec b;
+    VecFx32 a;
+    VecFx32 b;
     s16 v2;
     s16 v4;
     if (!self->b0) {
@@ -179,7 +173,7 @@ void func_ov011_02200c30(Ov011Model2 *self) {
             OV011_TWV(self->m3c)->v08();
         } else {
             self->model->alpha = *(s32 *)OV011_TWV(self->m0c)->v10() >> 12;
-            self->model->scale = *(Ov011Vec *)OV011_TWV(self->m3c)->v10();
+            self->model->scale = *(VecFx32 *)OV011_TWV(self->m3c)->v10();
         }
     }
     OV011_TWV(self->m0c)->v0c();
@@ -249,16 +243,16 @@ s32 func_ov000_02194c08(void *p);
 
 #define OV011_ABS(x) ((x) < 0 ? -(x) : (x))
 
-static inline void Ov011_ScaleV(Ov011Vec *v, s32 x, s32 y, s32 z, s32 s) {
-    v->x = Ov011_FxMul(x, s);
-    v->y = Ov011_FxMul(y, s);
-    v->z = Ov011_FxMul(z, s);
+static inline void Ov011_ScaleV(VecFx32 *v, s32 x, s32 y, s32 z, s32 s) {
+    v->x = FX_Mul(x, s);
+    v->y = FX_Mul(y, s);
+    v->z = FX_Mul(z, s);
 }
 
 s32 Ov011Npc_Draw(Ov011Npc *self) {
     s32 r;
-    Ov011Vec saved;
-    Ov011Vec v;
+    VecFx32 saved;
+    VecFx32 v;
     Ov011Sub38 *m;
     u8 be;
     s32 a8;
@@ -278,10 +272,10 @@ s32 Ov011Npc_Draw(Ov011Npc *self) {
         self->pos = v;
     }
     if (self->unk_ce_0) {
-        Ov011_ScaleV(&self->unk_38->scale, a8, ac, b0, Ov011_FxMul(OV011_ABS(OV011_COS(data_ov011_02207f00)), 0xa00) + 0xd00);
+        Ov011_ScaleV(&self->unk_38->scale, a8, ac, b0, FX_Mul(OV011_ABS(OV011_COS(data_ov011_02207f00)), 0xa00) + 0xd00);
     }
     old = self->unk_3c->unk_14;
-    self->unk_3c->unk_14 = Ov011_FxMul(old, 0x2800);
+    self->unk_3c->unk_14 = FX_Mul(old, 0x2800);
     self->unk_38->pos = self->pos;
     r = func_ov000_02194c08(self);
     self->unk_3c->unk_14 = old;
@@ -365,7 +359,7 @@ void func_ov003_021d7dd0(void *p);
 void func_ov000_02195848(void *p);
 void *Target_Get(void *p);
 Ov011Obj *Actor_GetTarget(void *p);
-BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, Ov011Vec *v, s32 e, s32 f, s32 g, s32 h, s32 i);
+BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *v, s32 e, s32 f, s32 g, s32 h, s32 i);
 void func_ov000_02196c40(void *p);
 void func_ov000_02196060(void *p);
 void func_ov000_0219763c(void *p);
@@ -382,7 +376,7 @@ void Ov011Npc_Start(Ov011Npc *self) {
     self->unk_48->unk_9a_7 = 1;
     self->unk_48->unk_38 = 0x800;
     p = self->unk_44;
-    p->unk_1c = Ov011_FxMul(p->unk_1c, 0x1a00);
+    p->unk_1c = FX_Mul(p->unk_1c, 0x1a00);
 }
 
 void Ov011Npc_Update(Ov011Npc *self) {
@@ -419,12 +413,12 @@ void func_ov011_022013a8(Ov011Npc *self) {
             mask |= (u16)(1 << (b->id >> 12));
         }
     }
-    Ov011Vec v = {0, 0, 0};
+    VecFx32 v = {0, 0, 0};
     v.y = -self->unk_68 / 2;
     if (mask == 0) {
         return;
     }
-    func_ov000_0219aae8(self, self, self->unk_4c->unk_08, self->unk_4c->unk_0a, mask, (Ov011Vec *)&v, 0,
+    func_ov000_0219aae8(self, self, self->unk_4c->unk_08, self->unk_4c->unk_0a, mask, (VecFx32 *)&v, 0,
                         self->unk_64, self->unk_68, 100, 0x1000);
 }
 
@@ -472,12 +466,9 @@ extern "C" {
 void *func_ov000_0218e9c4(void *p);
 void *func_ov000_0218ea20(void *p);
 void *func_ov000_0218fee4(void *p);
-void MTX_Identity33_(void *m);
 void func_ov000_02193e5c(void *p, s32 a);
 BOOL func_ov000_0218f110(void *p);
-void MTX_MultVec33(const Ov011Vec *v, const void *m, Ov011Vec *out);
-void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out);
-Ov011V *func_02065f88(s32 id, Ov011Vec *v);
+Ov011V *func_02065f88(s32 id, VecFx32 *v);
 
 BOOL func_ov011_02201578(Ov011Fx *self) {
     void *p;
@@ -496,7 +487,7 @@ BOOL func_ov011_02201578(Ov011Fx *self) {
     }
     self->model = (Ov011Sub38 *)p;
     {
-        const Ov011Vec *src = &data_ov011_02207438;
+        const VecFx32 *src = &data_ov011_02207438;
         s32 x;
         s32 y;
         s32 z;
@@ -510,7 +501,7 @@ BOOL func_ov011_02201578(Ov011Fx *self) {
         self->v18.y = y;
         self->v18.z = z;
     }
-    MTX_Identity33_(self->mtx);
+    MTX_Identity33_(&self->mtx);
     func_ov003_021da48c(&self->state, 0);
     func_ov000_02193e5c(self->anim, 0x4812);
     func_ov003_021d7d24(self->s5c, 0, 0, 1, 0);
@@ -520,8 +511,8 @@ BOOL func_ov011_02201578(Ov011Fx *self) {
 }
 
 static inline void Ov011_FreeAnim(Ov011Fx *self) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->anim != NULL) {
         Ov011Anim *p = self->anim;
         if (p != NULL) {
@@ -534,8 +525,8 @@ static inline void Ov011_FreeAnim(Ov011Fx *self) {
 }
 
 static inline void Ov011_FreeModel(Ov011Fx *self) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (self->model != NULL) {
         Ov011Sub38 *p = self->model;
         if (p != NULL) {
@@ -560,8 +551,8 @@ void func_ov011_02201688(Ov011Fx *self) {
 }
 
 void func_ov011_02201758(Ov011Fx *self) {
-    Ov011Vec a;
-    Ov011Vec b;
+    VecFx32 a;
+    VecFx32 b;
     if (!self->b0) {
         return;
     }
@@ -581,7 +572,7 @@ void func_ov011_02201758(Ov011Fx *self) {
             self->unk_02 = 0x4cd;
             self->state = 1;
             OV011_BLKCPY(&a, &data_ov011_02207420);
-            MTX_MultVec33(&self->v0c, self->mtx, &b);
+            MTX_MultVec33(&self->v0c, &self->mtx, &b);
             VEC_Add(&b, &self->v18, &b);
             func_02065f88(0x648, &b)->v10(&a);
             break;
@@ -622,13 +613,11 @@ extern "C" {
 
 extern u8 data_ov011_02207468[];
 BOOL func_ov000_021903b4(void *p);
-void MTX_RotY33_(void *m, s32 s, s32 c);
-void MI_Copy36B(const void *src, void *dst);
 
 void func_ov011_0220192c(Ov011Fx *self) {
-    Ov011Vec p;
-    Ov011Vec q;
-    Ov011Vec s;
+    VecFx32 p;
+    VecFx32 q;
+    VecFx32 s;
     s32 a8;
     s32 ac;
     s32 b0;
@@ -641,7 +630,7 @@ void func_ov011_0220192c(Ov011Fx *self) {
     if (!self->b2) {
         return;
     }
-    MTX_MultVec33(&self->v0c, self->mtx, &p);
+    MTX_MultVec33(&self->v0c, &self->mtx, &p);
     VEC_Add(&p, &self->v18, &p);
     a8 = self->model->scale.x;
     ac = self->model->scale.y;
@@ -672,7 +661,7 @@ void func_ov011_0220192c(Ov011Fx *self) {
     }
 }
 
-void func_ov011_02201aac(Ov011Fx *self, const Ov011Vec *pos) {
+void func_ov011_02201aac(Ov011Fx *self, const VecFx32 *pos) {
     if (!self->b0) {
         return;
     }
@@ -682,7 +671,7 @@ void func_ov011_02201aac(Ov011Fx *self, const Ov011Vec *pos) {
     self->b2 = 1;
     self->v0c = *pos;
     self->v18 = data_ov011_02207438;
-    MTX_Identity33_(self->mtx);
+    MTX_Identity33_(&self->mtx);
     func_ov003_021da48c(&self->state, 0);
 }
 
@@ -711,7 +700,7 @@ u32 func_ov011_02201b64(Ov011Fx *self) {
     return r;
 }
 
-void func_ov011_02201b80(Ov011Fx *self, const Ov011Vec *v) {
+void func_ov011_02201b80(Ov011Fx *self, const VecFx32 *v) {
     if (!self->b0) {
         return;
     }
@@ -719,15 +708,15 @@ void func_ov011_02201b80(Ov011Fx *self, const Ov011Vec *v) {
 }
 
 void func_ov011_02201bac(Ov011Fx *self, u16 ang) {
-    u8 m[0x24];
+    MtxFx33 m;
     if (self == NULL) {
         return;
     }
-    MTX_RotY33_(m, OV011_SIN(ang), OV011_COS(ang));
+    MTX_RotY33_(&m, OV011_SIN(ang), OV011_COS(ang));
     if (!self->b0) {
         return;
     }
-    MI_Copy36B(m, self->mtx);
+    MI_Copy36B(&m, &self->mtx);
 }
 
 }
@@ -746,7 +735,7 @@ struct Ov011Chr {
     u16 unk_08;
     u16 id;
     s32 mode;
-    Ov011Vec off;
+    VecFx32 off;
     Ov011Anim *anim;
     Ov011Sub38 *model;
     s32 unk_24;
@@ -781,7 +770,6 @@ void func_ov000_02193e5c(void *p, s32 a);
 BOOL func_ov000_0218f110(void *p);
 s32 func_0206fef8(u32 id);
 void func_ov000_0219badc(void *a, void *b, s32 c);
-void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out);
 BOOL func_ov011_02200b88(Ov011Model2 *self, void *a, u32 b);
 void func_ov011_02200c30(Ov011Model2 *self);
 s32 func_ov011_02200aac(void *p, s32 b);
@@ -789,8 +777,8 @@ BOOL func_ov000_021903b4(void *p);
 }
 
 static inline void Ov011_FreeModelP(Ov011Sub38 **pp) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (*pp != NULL) {
         Ov011Sub38 *p = *pp;
         if (p != NULL) {
@@ -803,8 +791,8 @@ static inline void Ov011_FreeModelP(Ov011Sub38 **pp) {
 }
 
 static inline void Ov011_FreeAnimP(Ov011Anim **pp) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (*pp != NULL) {
         Ov011Anim *p = *pp;
         if (p != NULL) {
@@ -851,7 +839,7 @@ static inline void Ov011TwA_Ctor(void *obj) {
     OV011_TW(obj)->b0 = 0;
 }
 
-static inline void Ov011Tw_SetBoth(Ov011Tw *t, const Ov011Vec *src) {
+static inline void Ov011Tw_SetBoth(Ov011Tw *t, const VecFx32 *src) {
     s32 x;
     s32 y;
     s32 z;
@@ -914,7 +902,6 @@ static inline void Ov011TwA_Dtor(void *obj) {
 
 extern "C" {
 
-void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 
 Ov011Chr *func_ov011_02201d10(Ov011Chr *self) {
     Ov011Chr_Reset(self);
@@ -928,7 +915,7 @@ Ov011Chr *func_ov011_02201d10(Ov011Chr *self) {
     return self;
 }
 
-BOOL func_ov011_02201f28(Ov011Chr *self, u16 id, const Ov011Vec *off, u16 c, s16 d, s16 e) {
+BOOL func_ov011_02201f28(Ov011Chr *self, u16 id, const VecFx32 *off, u16 c, s16 d, s16 e) {
     Ov011Obj *a;
     u32 i;
     self->id = id;
@@ -943,7 +930,7 @@ BOOL func_ov011_02201f28(Ov011Chr *self, u16 id, const Ov011Vec *off, u16 c, s16
     func_ov000_02193e5c(self->anim, 0x4812);
     a = Ov011_FindActorN(self->id);
     if (a != NULL) {
-        Ov011Vec p;
+        VecFx32 p;
         p = a->pos;
         VEC_Add(&p, &self->off, &p);
         self->model->pos = p;
@@ -999,11 +986,11 @@ void func_ov011_02202260(Ov011Chr *self) {
         return;
     }
     if (self->model != NULL) {
-        Ov011Vec p;
-        Ov011Vec sv;
-        Ov011Vec sa;
-        Ov011Vec q;
-        Ov011Vec s;
+        VecFx32 p;
+        VecFx32 sv;
+        VecFx32 sa;
+        VecFx32 q;
+        VecFx32 s;
         Ov011Obj *a = Ov011_FindActor(self->id);
         if (a != NULL) {
             p = a->pos;
@@ -1059,8 +1046,8 @@ void func_ov011_022024ac(Ov011Chr *self, u16 v) {
 }
 
 
-Ov011Vec func_ov011_022024d4(const Ov011Chr *self) {
-    Ov011Vec v = data_ov011_02207438;
+VecFx32 func_ov011_022024d4(const Ov011Chr *self) {
+    VecFx32 v = data_ov011_02207438;
     if (self->b0) {
         Ov011Sub38 *m = self->model;
         v.x = m->pos.x;
@@ -1086,7 +1073,7 @@ struct Ov011Chr {
     s16 unk_08;
     u16 id;
     s32 mode;
-    Ov011Vec off;
+    VecFx32 off;
     Ov011Anim *anim;
     Ov011Sub38 *model;
     Ov011V *unk_24;
@@ -1097,14 +1084,12 @@ struct Ov011Chr {
 
 extern "C" {
 
-extern Ov011Vec data_ov011_02207474;
-extern const Ov011Vec data_ov011_02207480;
+extern VecFx32 data_ov011_02207474;
+extern const VecFx32 data_ov011_02207480;
 extern u8 data_ov011_0220748c[];
 extern void *data_0214a420;
-s32 FX_Div(s32 a, s32 b);
-Ov011V *func_02065f88(s32 id, Ov011Vec *v);
+Ov011V *func_02065f88(s32 id, VecFx32 *v);
 BOOL func_02065748(void *mgr, void *p);
-void MI_Copy36B(const void *src, void *dst);
 
 // unk_06 is read through a const view; a plain read schedules differently.
 static inline s32 Ov011_Progress(Ov011Chr *c, s32 n) {
@@ -1114,14 +1099,14 @@ static inline s32 Ov011_Progress(Ov011Chr *c, s32 n) {
 void func_ov011_02202538(Ov011Chr *self) {
     switch (self->mode) {
     case 1: {
-        Ov011Vec s;
-        Ov011Vec pos;
-        Ov011Vec c;
-        Ov011Vec t;
+        VecFx32 s;
+        VecFx32 pos;
+        VecFx32 c;
+        VecFx32 t;
         s32 r = Ov011_Progress(self, self->unk_06);
         s32 lo = self->unk_04;
         s32 hi = self->unk_02;
-        s32 v = lo + Ov011_FxMul(hi - lo, r);
+        s32 v = lo + FX_Mul(hi - lo, r);
         v = v > hi ? hi : (v < lo ? lo : v);
         OV011_BLKCPY(&t, &data_ov011_02207474);
         t.x = v;
@@ -1160,15 +1145,15 @@ static inline BOOL Ov011Model2_Idle(Ov011Model2 *m) {
 void func_ov011_022026b4(Ov011Chr *self) {
     switch (self->mode) {
     case 3: {
-        Ov011Vec s;
-        Ov011Vec pos;
-        Ov011Vec t;
+        VecFx32 s;
+        VecFx32 pos;
+        VecFx32 t;
         s16 a;
         s16 b;
         s32 r = FX_Div(self->unk_08 << 12, ((const Ov011Chr *)self)->unk_06 << 12);
         s32 lo = self->unk_04;
         s32 hi = self->unk_02;
-        s32 v = lo + Ov011_FxMul(hi - lo, r);
+        s32 v = lo + FX_Mul(hi - lo, r);
         v = v > hi ? hi : (v < lo ? lo : v);
         OV011_BLKCPY(&t, &data_ov011_02207474);
         t.x = v;
@@ -1209,10 +1194,10 @@ void func_ov011_022026b4(Ov011Chr *self) {
 void func_ov011_022028a8(Ov011Chr *self) {
     switch (self->mode) {
     case 5: {
-        Ov011Vec s;
-        Ov011Vec c;
-        Ov011Vec pos;
-        Ov011Vec t;
+        VecFx32 s;
+        VecFx32 c;
+        VecFx32 pos;
+        VecFx32 t;
         s32 r;
         s32 lo;
         s32 hi;
@@ -1226,7 +1211,7 @@ void func_ov011_022028a8(Ov011Chr *self) {
         r = FX_Div((s16)(self->unk_08 - 1) << 12, self->unk_06 << 12);
         lo = self->unk_04;
         hi = self->unk_02;
-        v = lo + Ov011_FxMul(hi - lo, r);
+        v = lo + FX_Mul(hi - lo, r);
         v = v > hi ? hi : (v < lo ? lo : v);
         OV011_BLKCPY(&t, &data_ov011_02207474);
         t.x = v;
@@ -1262,9 +1247,9 @@ struct Ov011TwA {
     u8 unk_05;
     s16 speed;
     s32 t;
-    Ov011Vec from;
-    Ov011Vec to;
-    Ov011Vec cur;
+    VecFx32 from;
+    VecFx32 to;
+    VecFx32 cur;
 };
 
 struct Ov011TwB {
@@ -1275,8 +1260,8 @@ struct Ov011TwB {
     u8 unk_05;
     s16 speed;
     s32 dist;
-    Ov011Vec cur;
-    Ov011Vec to;
+    VecFx32 cur;
+    VecFx32 to;
 };
 
 
@@ -1286,11 +1271,6 @@ extern u16 data_ov011_02207f00;
 extern u8 data_ov011_022079d0[];
 extern u8 data_ov011_022079b0[];
 extern u8 data_ov011_022074f8[];
-s32 VEC_Distance(const Ov011Vec *a, const Ov011Vec *b);
-s32 FX_Div(s32 a, s32 b);
-void VEC_MultAdd(s32 scale, const Ov011Vec *dir, const Ov011Vec *base, Ov011Vec *out);
-s32 VEC_Mag(const Ov011Vec *v);
-void VEC_Add(const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out);
 s32 func_0203db40(void *p);
 void func_ov000_02190a80(void *a, s32 b);
 void func_ov003_021d112c(void *p);
@@ -1320,7 +1300,7 @@ Ov011TwA *Ov011Vt_022079d0_DtorDelete(Ov011TwA *self) {
     return self;
 }
 
-BOOL func_ov011_02202ac8(Ov011TwA *self, const Ov011Vec *to, const Ov011Vec *from, s32 speed, u8 loop) {
+BOOL func_ov011_02202ac8(Ov011TwA *self, const VecFx32 *to, const VecFx32 *from, s32 speed, u8 loop) {
     self->b0 = 1;
     self->b1 = loop;
     self->t = 0;
@@ -1337,8 +1317,8 @@ void func_ov011_02202b5c(Ov011TwA *self) {
     }
 }
 
-static inline void Ov011_Lerp(s32 t, const Ov011Vec *a, const Ov011Vec *b, Ov011Vec *out) {
-    Ov011Vec d;
+static inline void Ov011_Lerp(s32 t, const VecFx32 *a, const VecFx32 *b, VecFx32 *out) {
+    VecFx32 d;
     d.x = b->x - a->x;
     d.y = b->y - a->y;
     d.z = b->z - a->z;
@@ -1357,8 +1337,8 @@ void func_ov011_02202b74(Ov011TwA *self) {
     Ov011_Lerp(self->t, &self->from, &self->to, &self->cur);
 }
 
-Ov011Vec *func_ov011_02202c10(Ov011TwA *self) {
-    Ov011Vec *r = NULL;
+VecFx32 *func_ov011_02202c10(Ov011TwA *self) {
+    VecFx32 *r = NULL;
     if (self->b0) {
         r = &self->cur;
     }
@@ -1372,7 +1352,7 @@ BOOL func_ov011_02202c2c(Ov011TwA *self) {
     return FALSE;
 }
 
-static inline void Ov011TwB_SetBoth(Ov011TwB *t, const Ov011Vec *src) {
+static inline void Ov011TwB_SetBoth(Ov011TwB *t, const VecFx32 *src) {
     s32 x;
     s32 y;
     s32 z;
@@ -1409,12 +1389,12 @@ Ov011TwB *Ov011Vt_022079b0_DtorDelete(Ov011TwB *self) {
     return self;
 }
 
-BOOL func_ov011_02202d04(Ov011TwB *self, const Ov011Vec *to, const Ov011Vec *from, s16 speed) {
+BOOL func_ov011_02202d04(Ov011TwB *self, const VecFx32 *to, const VecFx32 *from, s16 speed) {
     self->b0 = 1;
     self->cur = *from;
     self->to = *to;
     self->speed = speed;
-    self->dist = Ov011_FxMul(VEC_Distance(&self->to, &self->cur), 0x14);
+    self->dist = FX_Mul(VEC_Distance(&self->to, &self->cur), 0x14);
     return TRUE;
 }
 
@@ -1429,7 +1409,7 @@ void func_ov011_02202d88(Ov011TwB *self) {
 }
 
 void func_ov011_02202de0(Ov011TwB *self) {
-    Ov011Vec d;
+    VecFx32 d;
     s32 len;
     if (!self->b0) {
         return;
@@ -1452,7 +1432,7 @@ void func_ov011_02202de0(Ov011TwB *self) {
     }
 }
 
-Ov011Vec *func_ov011_02202ea4(Ov011TwB *self) {
+VecFx32 *func_ov011_02202ea4(Ov011TwB *self) {
     return self->b0 ? &self->cur : NULL;
 }
 
@@ -1489,12 +1469,12 @@ void func_ov011_02202f04(Ov011Mov *self) {
     self->vel.z = 0;
 }
 
-BOOL Ov011Mov_Start(Ov011Mov *self, const Ov011Vec *pos, const Ov011Vec *vel, s32 scale, s32 accel) {
+BOOL Ov011Mov_Start(Ov011Mov *self, const VecFx32 *pos, const VecFx32 *vel, s32 scale, s32 accel) {
     self->active = 1;
     self->pos = *pos;
-    self->vel.x = Ov011_FxMul(vel->x, scale);
-    self->vel.y = Ov011_FxMul(vel->y, scale);
-    self->vel.z = Ov011_FxMul(vel->z, scale);
+    self->vel.x = FX_Mul(vel->x, scale);
+    self->vel.y = FX_Mul(vel->y, scale);
+    self->vel.z = FX_Mul(vel->z, scale);
     self->accel = accel;
     return TRUE;
 }
@@ -1521,8 +1501,8 @@ void Ov011Mov_Update(Ov011Mov *self) {
     VEC_Add(&self->pos, &self->vel, &self->pos);
 }
 
-Ov011Vec *Ov011Mov_GetPos(Ov011Mov *self) {
-    Ov011Vec *r = NULL;
+VecFx32 *Ov011Mov_GetPos(Ov011Mov *self) {
+    VecFx32 *r = NULL;
     if (self->active) {
         r = &self->pos;
     }

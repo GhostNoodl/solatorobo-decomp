@@ -2,7 +2,6 @@
 
 extern "C" {
 
-void MI_CpuFill8(void *dst, u32 value, u32 size);
 u8 *func_0206ee20(u16 id);
 s32 Rand_UpTo(s32 max);
 s32 Rand_PlusMinus(s32 max);

@@ -17,7 +17,6 @@ extern void *data_ov008_021d0368;
 extern char *data_0208cb7c;
 extern char data_0214b105[];
 extern u8 *data_0214a424;
-void *Heap_Alloc(u32 size);
 s32 MsgRes_GetString(void *p, s32 id);
 BOOL func_020624d8(void);
 void func_ov000_021547e8(void *a, void *b, void *c, int d);

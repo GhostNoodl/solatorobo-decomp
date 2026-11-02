@@ -28,8 +28,6 @@ extern void func_ov000_02191618(void *p);
 extern void func_ov000_02191708(void *p);
 
 extern Ov014Vec *func_ov000_0218d2e0(void *self);
-extern void VEC_Normalize(Ov014Vec *a, Ov014Vec *b);
-extern void VEC_Add(const Ov014Vec *a, const Ov014Vec *b, Ov014Vec *out);
 extern BOOL func_ov014_0220eb14(Ov014Obj *self);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, Ov014Vec *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
@@ -73,8 +71,8 @@ void func_ov014_0220e72c(Ov014ActEx_0220dcf4 *self) {
             while (OV014Y_SQRTCNT & 0x8000) {
             }
             r = (s32)(OV014Y_SQRT_RESULT + 1) >> 1;
-            d.x = Ov014_FxMul(r, OV014_SIN(self->rot[1]));
-            d.z = Ov014_FxMul(r, OV014_COS(self->rot[1]));
+            d.x = FX_Mul(r, OV014_SIN(self->rot[1]));
+            d.z = FX_Mul(r, OV014_COS(self->rot[1]));
             VEC_Normalize(&d, &d);
             self->unk_9c = Ov014y_FxMul64(d.x, 0x800);
             self->unk_a0 = Ov014y_FxMul64(d.y, 0x800);

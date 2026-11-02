@@ -14,7 +14,7 @@ void func_ov015_021ff350(Ov015Obj30 *self) {
 }
 
 void func_ov015_021ff380(Ov015Obj30 *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_10);
     HEAP_POP(saved);

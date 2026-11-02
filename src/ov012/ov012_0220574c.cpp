@@ -42,7 +42,7 @@ void func_ov012_02205818(Ov012Actor *self) {
 }
 
 extern "C" {
-extern const u8 data_ov012_0220b0a7[];
+extern char data_ov012_0220b0a7[];
 void func_ov012_02205864(Ov012Actor *self) {
     func_ov000_02194758(self);
     FLD(u32, self, 0xd0) = 0;
@@ -82,7 +82,6 @@ extern "C" {
 extern void func_ov012_022065d8(Ov012Actor *self);
 extern void func_ov012_02206508(Ov012Actor *self);
 extern void func_ov012_02206098(Ov012Actor *self);
-extern void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 extern const Ov012Vec data_ov012_0220a84c[];
 
 static inline s32 Ov012_FxMul64d(s32 a, s64 b) {
@@ -130,8 +129,8 @@ void func_ov012_02205990(Ov012Actor *self) {
         if (FLD(u8, self, 0xd4) == 0) {
             d = Ov012_Dist84(self);
             a = FX_Atan2(d, self->unk_84.y - self->pos.y);
-            self->unk_9c = Ov012_FxMul(OV012_SIN(a), 0x400);
-            self->unk_a0 = Ov012_FxMul(OV012_COS(a), 0x400);
+            self->unk_9c = FX_Mul(OV012_SIN(a), 0x400);
+            self->unk_a0 = FX_Mul(OV012_COS(a), 0x400);
             self->unk_40->state++;
         } else {
             self->unk_40->state = 10;
@@ -191,7 +190,7 @@ void func_ov012_02205990(Ov012Actor *self) {
         Ov012Sub40 *s;
         Actor_TurnToPos(self, &self->unk_84, 0x7b);
         self->unk_98 = self->rot[1];
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         func_ov012_022065d8(self);
         s = self->unk_40;
         s->timer++;
@@ -220,7 +219,7 @@ void func_ov012_02205990(Ov012Actor *self) {
     case 13:
         Actor_TurnToPos(self, &self->unk_84, 0x19a);
         self->unk_98 = self->rot[1];
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         func_ov012_022065d8(self);
         func_ov000_021987b8(self->unk_48, 1, 0, 0);
         if (self->unk_48->unk_50 & 0x60000000) {

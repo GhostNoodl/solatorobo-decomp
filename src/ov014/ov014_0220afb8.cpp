@@ -3,8 +3,8 @@
 extern "C" {
 
 extern void *data_02097e4c;
-extern u8 data_ov014_02217a4e[];
-extern u8 data_ov014_02217a72[];
+extern char data_ov014_02217a4e[];
+extern char data_ov014_02217a72[];
 extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *p);
 extern void func_ov000_021911c8(void *a, s32 b);
@@ -86,7 +86,7 @@ void func_ov014_0220abf8(Ov014Act_02209280 *self) {
         break;
     }
     case 1: {
-        Ov014Game54 *g;
+        FieldState *g;
         Ov014V *e;
         if (self->unk_38->unk_c4 == 3) {
             e = func_02065f88(0x648, &self->pos);
@@ -103,12 +103,12 @@ void func_ov014_0220abf8(Ov014Act_02209280 *self) {
         e->v34(0x3fff, 0, 0);
         func_02049f44(data_02097e4c, 0xc06, &self->pos, 0);
         g = data_ov000_021ccd54;
-        g->unk_190_2 = 1;
-        g->unk_190_3 = 1;
-        g->unk_190_4 = 1;
-        g->unk_18d = 10;
-        g->unk_18e = 10;
-        g->unk_18f = 10;
+        g->cam.base.shakeX = 1;
+        g->cam.base.shakeY = 1;
+        g->cam.base.shakeZ = 1;
+        g->cam.base.shakeTime = 10;
+        g->cam.base.shakeLen = 10;
+        g->cam.base.shakeCur = 10;
         self->unk_40->state++;
         break;
     }
@@ -158,14 +158,13 @@ void func_ov014_0220afb8(Ov014Act_02209280 *self) {
 
 
 extern void *data_02097e4c;
-extern u8 data_ov014_02217a4e[];
-extern u8 data_ov014_02217a78[];
-extern u8 data_ov014_02217a7e[];
+extern char data_ov014_02217a4e[];
+extern char data_ov014_02217a78[];
+extern char data_ov014_02217a7e[];
 extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *p);
 extern void func_ov000_021911c8(void *a, s32 b);
 extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
-extern s32 FX_Div(s32 a, s32 b);
 extern void func_ov014_02209fa0(Ov014Act_02209280 *self, s32 a, s32 b);
 
 void func_ov014_0220afe8(Ov014Act_02209280 *self) {
@@ -179,13 +178,13 @@ void func_ov014_0220afe8(Ov014Act_02209280 *self) {
         self->unk_40->state++;
         break;
     case 1: {
-        Ov014Game54 *g = data_ov000_021ccd54;
-        g->unk_190_2 = 1;
-        g->unk_190_3 = 1;
-        g->unk_190_4 = 1;
-        g->unk_18d = 10;
-        g->unk_18e = 10;
-        g->unk_18f = 10;
+        FieldState *g = data_ov000_021ccd54;
+        g->cam.base.shakeX = 1;
+        g->cam.base.shakeY = 1;
+        g->cam.base.shakeZ = 1;
+        g->cam.base.shakeTime = 10;
+        g->cam.base.shakeLen = 10;
+        g->cam.base.shakeCur = 10;
         func_02049f44(data_02097e4c, 0xc03, &self->pos, 0);
         self->unk_40->state++;
         self->unk_40->timer = 0x28;
@@ -218,19 +217,19 @@ void func_ov014_0220afe8(Ov014Act_02209280 *self) {
         self->unk_40->state++;
         break;
     case 11: {
-        Ov014Game54 *g;
+        FieldState *g;
         if (self->unk_38->unk_c4 != 1) {
             break;
         }
         func_02049f44(data_02097e4c, 0xc04, &self->pos, 0);
         self->unk_38->unk_c4 = 0;
         g = data_ov000_021ccd54;
-        g->unk_190_2 = 1;
-        g->unk_190_3 = 1;
-        g->unk_190_4 = 1;
-        g->unk_18d = 5;
-        g->unk_18e = 7;
-        g->unk_18f = 7;
+        g->cam.base.shakeX = 1;
+        g->cam.base.shakeY = 1;
+        g->cam.base.shakeZ = 1;
+        g->cam.base.shakeTime = 5;
+        g->cam.base.shakeLen = 7;
+        g->cam.base.shakeCur = 7;
         func_ov014_02209fa0(self, (s16)self->step->unk_04, self->step->kind);
         self->unk_f8--;
         FLD(s32, self, 0xf4) ^= 1;

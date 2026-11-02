@@ -8,7 +8,6 @@ extern char data_ov013_0220b360[];
 extern void *ActorEx_Ctor(void *self);
 extern void func_ov003_021db244(Ov013Obj *self);
 extern void *func_ov003_021dae44(Ov013Actor *self);
-extern u16 FX_Atan2(s32 y, s32 x);
 extern void *func_020657b0(void *a, s32 b);
 extern Ov013Actor *func_ov000_0219bf90(void);
 extern BOOL func_020621c4(void);
@@ -85,7 +84,6 @@ void Ov013ActVt_0220bdd8_Start(Ov013ActVt_0220bdd8 *self) {
     }
 }
 
-extern void *data_ov000_021ccd68;
 extern Ov013Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(Ov013Actor *a, u16 id);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);

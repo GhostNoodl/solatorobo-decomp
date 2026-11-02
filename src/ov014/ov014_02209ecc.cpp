@@ -50,7 +50,6 @@ static inline void Ov014SpawnB_Init(Ov014SpawnDescB *d, u16 k) {
     d->parent = -1;
 }
 
-extern void *data_ov000_021ccd64;
 extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, Ov014Vec *pos, u16 *rot, u16 a);
 
 void func_ov014_02209fa0(Ov014Act_02209280 *self, s16 a, s32 kind) {

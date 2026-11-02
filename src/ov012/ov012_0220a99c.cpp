@@ -1,10 +1,5 @@
 #include "ov012/ov012.h"
 
-typedef s16 fx16;
-typedef s32 fx32;
-typedef Ov012Vec VecFx32;
-struct VecFx16 { fx16 x, y, z; };
-#define FX32_ONE 0x1000
 
 // A header's zero rotation and vector, plus copies made at startup, next to this TU's name and
 // offsets. The pointer to the name and the two offsets are read by the functions of
@@ -180,7 +175,7 @@ void Ov012ActExVt_0220af10_Update(Ov012ActExVt_0220af10 *self) {
     }
     FLD(Ov012Flags8, self, 0xe3).b2 = 1;
     self->unk_90 = 0xffff;
-    o = func_ov000_0219bf90();
+    o = (Ov012Actor *)func_ov000_0219bf90();
     if (o != NULL) {
         self->unk_90 = o->id;
     }
@@ -350,7 +345,7 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
             Ov012Sub48 *m = self->unk_48;
             m->unk_9a_0 = 1;
             m->unk_9a_3 = 1;
-            HitSphere_Link(m);
+            HitSphere_Link((HitSphere *)m);
             self->unk_dc = 0x28;
             self->unk_40->timer = 0;
             self->unk_40->state = 2;
@@ -450,7 +445,7 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
             }
         }
         self->unk_4c->target = 0xffff;
-        func_ov000_0218bed8(data_ov000_021ccd64, 0, self);
+        func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
         self->v08();
         break;
     }

@@ -111,14 +111,14 @@ void func_ov002_021ec810(void *self) {
 }
 
 void func_ov002_021ec838(void *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     {
         void *p = FIELD(self, 0x38, void *);
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558(p);
-                func_02041278((u8 *)p + 0x88);
+                func_02041558((Model *)p);
+                func_02041278((PlttRes *)((u8 *)p + 0x88));
                 Heap_Free(p);
             }
             FIELD(self, 0x38, void *) = NULL;
@@ -155,7 +155,7 @@ BOOL func_ov002_021ec968(void *self) {
     case 0: {
         VObject *o = (VObject *)Heap_Alloc(0x4c);
         if (o != NULL) {
-            *(VFunc **)o = data_0208b318;
+            *(VFunc **)o = (VFunc *)data_0208b318;
             o->v0x8();
         }
         FIELD(self, 0x34, VObject *) = o;
@@ -238,14 +238,14 @@ BOOL func_ov002_021eca14(StaffTask_eca14 *self) {
             m = (StaffModel_eca14 *)Heap_Alloc(0x160);
             if (m != NULL) {
                 void *r = self->res;
-                func_02041218((u8 *)m + 0x88);
-                func_02041440(m, (u8 *)r + 0x24, 0);
-                STD_CopyString((u8 *)m + 0x2c, (u8 *)r + 4);
+                func_02041218((PlttRes *)((u8 *)m + 0x88));
+                func_02041440((Model *)m, (char *)((u8 *)r + 0x24), 0);
+                STD_CopyString((char *)((u8 *)m + 0x2c), (char *)((u8 *)r + 4));
             }
             self->model = m;
-            func_020417e0(self->model, (void *)self->res->v0x10());
+            func_020417e0((Model *)(self->model), (void *)self->res->v0x10());
             self->model->flags |= 2;
-            func_02041d9c(self->model, 0, 0xffff);
+            func_02041d9c((Model *)(self->model), 0, 0xffff);
             self->model->flags |= 0x80000;
             self->flags.b6 = 1;
         }

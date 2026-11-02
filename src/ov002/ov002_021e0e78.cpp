@@ -22,20 +22,20 @@ static inline void ov002_Model_PlayPart(void *model, int idx) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
     }
-    func_02042628(model, anim, part, 0);
+    func_02042628((Model *)model, anim, (ModelPart *)part, 0);
 }
 
 void *Ov002Vt_021f000c_Dtor(void *self) {
     int i;
     *(VFunc **)self = data_ov002_021f000c;
     for (i = 0; i < 4; i++) {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_VOBJ(((VObject **)((u8 *)self + 8))[i]);
         HEAP_POP(saved);
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_VOBJ(FIELD(self, 4, VObject *));
         HEAP_POP(saved);
@@ -47,13 +47,13 @@ void *Ov002Vt_021f000c_DtorDelete(void *self) {
     int i;
     *(VFunc **)self = data_ov002_021f000c;
     for (i = 0; i < 4; i++) {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_VOBJ(((VObject **)((u8 *)self + 8))[i]);
         HEAP_POP(saved);
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_VOBJ(FIELD(self, 4, VObject *));
         HEAP_POP(saved);

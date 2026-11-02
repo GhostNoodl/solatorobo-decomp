@@ -27,7 +27,7 @@ void func_ov002_021d6a54(void *self, void *arg, int a) {
 int func_ov002_021d6a78(VObject *self) {
     s8 base;
     FIELD(data_02097ce0, 0x4, s32) = FIELD(self, 0x1c, s32);
-    base = (*func_0203a4c0(data_02097ce0))[1];
+    base = (*(s8 **)func_0203a4c0(data_02097ce0))[1];
     return base + self->v0x3c();
 }
 
@@ -155,7 +155,7 @@ static inline BOOL func_ov002_021d6cf0_check(void *o) {
     if (FIELD(o, 0x6c, void *) == NULL) {
         return TRUE;
     }
-    if (func_0203e63c(FIELD(o, 0x6c, void *))) {
+    if (func_0203e63c((unsigned int)FIELD(o, 0x6c, void *))) {
         FIELD(o, 0x6c, void *) = NULL;
     } else {
         return !FIELD(o, 4, Bits32).b6 ? TRUE : FALSE;
@@ -206,7 +206,7 @@ void func_ov002_021d6e48(void *self) {
     FIELD(self, 0x24, s16) = 0;
     FIELD(self, 0x26, s16) = 0;
     FIELD(self, 0x28, s16) = 0;
-    MTX_Identity33_((u8 *)self + 0x2c);
+    MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x2c));
     FIELD(self, 0x50, s32) = 0x1000;
     FIELD(self, 0x54, s32) = 0x1000;
     FIELD(self, 0x58, s32) = 0x1000;
@@ -226,7 +226,7 @@ void func_ov002_021d6e48(void *self) {
 
 static inline void func_ov002_021d6ec4_release(void *obj) {
     void **res = FIELD(*(void **)obj, 0xc, void **);
-    NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet(res != NULL ? *res : NULL));
+    NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet((NNSG3dResFileHeader *)(res != NULL ? *res : NULL)));
 }
 
 void func_ov002_021d6ec4(void *self) {
@@ -234,13 +234,13 @@ void func_ov002_021d6ec4(void *self) {
         func_ov002_021d6ec4_release(FIELD(self, 0x8, void *));
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_WITH(FIELD(self, 0x8, void *), func_ov000_0218fee4);
         HEAP_POP(saved);
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_WITH(FIELD(self, 0xc, void *), func_ov000_0218ea20);
         HEAP_POP(saved);
@@ -249,19 +249,19 @@ void func_ov002_021d6ec4(void *self) {
         func_ov002_021d6ec4_release(FIELD(self, 0x10, void *));
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_WITH(FIELD(self, 0x10, void *), func_ov000_0218fee4);
         HEAP_POP(saved);
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_WITH(FIELD(self, 0x14, void *), func_ov000_0218ea20);
         HEAP_POP(saved);
     }
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_WITH(FIELD(self, 0x4, void *), func_ov000_0218ea20);
         HEAP_POP(saved);

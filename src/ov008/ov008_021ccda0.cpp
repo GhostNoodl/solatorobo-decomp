@@ -10,11 +10,6 @@ void func_ov000_02153f90(void *p);
 Ov008Def *func_0206e7d0(u8 id);
 void func_02070874(char *dst, const char *fmt, ...);
 void *func_02049a48(void *a, int b, int c, int d, int e);
-void func_02041440(void *p, void *name, int c);
-void *STD_CopyString(void *dst, const void *src);
-void func_020417e0(void *a, void *b);
-void func_02041d9c(void *a, int b, int c);
-s32 FX_Div(s32 a, s32 b);
 
 Ov008Item *func_ov008_021ccda0(Ov008Menu *list, s32 a, s16 b, s16 c, s32 d) {
     Ov008Item *n = (Ov008Item *)Heap_Alloc(0x34);
@@ -79,7 +74,7 @@ void func_ov008_021cce38(Ov008Caption *o) {
 
 void func_ov008_021ccf44(Ov008Panel *o) {
     s32 t = 0;
-    Ov008Sprite *m;
+    Model *m;
     switch (o->state) {
     case 0:
         if (o->pic.v34() != 0) {
@@ -88,11 +83,11 @@ void func_ov008_021ccf44(Ov008Panel *o) {
         break;
     case 0xf:
         func_02049a48(data_02097e4c, 0x27, -1, -1, -1);
-        m = (Ov008Sprite *)Heap_Alloc(0x160);
+        m = (Model *)Heap_Alloc(0x160);
         if (m != NULL) {
-            func_02041218(m->unk_88);
+            func_02041218(&m->pltt);
             func_02041440(m, o->pic.unk_24, 1);
-            STD_CopyString(m->unk_2c, o->pic.unk_04);
+            STD_CopyString(m->name, o->pic.unk_04);
         }
         o->unk_50 = m;
         func_020417e0(o->unk_50, (void *)o->pic.v10());
@@ -107,7 +102,7 @@ void func_ov008_021ccf44(Ov008Panel *o) {
         o->state = 0x10;
     case 0x10:
         t = FX_Div(0x24000 - o->unk_54, 0x20000);
-        o->unk_54 = o->unk_54 + Ov008_FxMul(-o->unk_54, 0x333);
+        o->unk_54 = o->unk_54 + FX_Mul(-o->unk_54, 0x333);
         if (o->unk_54 < 0x800 && o->unk_68 != 0) {
             o->unk_64 = -0x400;
             o->state = 9;
@@ -118,7 +113,7 @@ void func_ov008_021ccf44(Ov008Panel *o) {
         o->state = 0x12;
     case 0x12:
         t = FX_Div(o->unk_54 + 0x20000, 0x20000);
-        o->unk_54 = o->unk_54 + Ov008_FxMul(o->unk_54, 0x666);
+        o->unk_54 = o->unk_54 + FX_Mul(o->unk_54, 0x666);
         if (o->unk_54 < -0x20000) {
             OV008_FREE_M(o->unk_50);
             if (o->pic.v34() != 0) {
@@ -141,7 +136,7 @@ void func_ov008_021ccf44(Ov008Panel *o) {
     } else if (t < 0) {
         t = 0;
     }
-    o->unk_60 = Ov008_FxMul(t, 0x1f000) >> 12;
+    o->unk_60 = FX_Mul(t, 0x1f000) >> 12;
 }
 
 }

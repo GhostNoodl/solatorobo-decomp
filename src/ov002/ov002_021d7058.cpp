@@ -18,7 +18,6 @@ s32 **func_ov000_02190a30(void *a, int b);
 
 void NNSi_G3dModifyPolygonAttrMask(void *a, int b, s32 c);
 
-BOOL NNS_G3dBindMdlSet(void *a, void *b);
 
 void func_ov002_021d7238(void *self);
 
@@ -44,7 +43,7 @@ static inline void *ov002_newAnim(void) {
 
 static inline void ov002_bindPal(void *anim, void *pal) {
     void **res = FIELD(*(void **)anim, 0xc, void **);
-    NNS_G3dBindMdlSet(NNS_G3dGetMdlSet(res != NULL ? *res : NULL), pal);
+    NNS_G3dBindMdlSet(NNS_G3dGetMdlSet((NNSG3dResFileHeader *)(res != NULL ? *res : NULL)), (NNSG3dResTex *)pal);
 }
 
 void func_ov002_021d7058(void *self) {
@@ -55,7 +54,7 @@ void func_ov002_021d7058(void *self) {
     if (src == NULL) {
         pal = NULL;
     } else {
-        pal = NNS_G3dGetTex(*(void **)src);
+        pal = NNS_G3dGetTex((NNSG3dResFileHeader *)*(void **)src);
     }
     FIELD(self, 0x8, void *) = ov002_newAnim();
     func_ov000_0218ffdc(FIELD(self, 0x8, void *), FIELD(self, 0xc, void *), 0, 1);

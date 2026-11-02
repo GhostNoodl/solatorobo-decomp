@@ -19,11 +19,10 @@ static inline void Ov014Spawn_Init(Ov014SpawnDesc *d, u16 k) {
 
 extern "C" {
 
-extern u8 data_ov014_02217d3a[];
+extern char data_ov014_02217d3a[];
 extern Ov014Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToActor(Ov014Obj *self, Ov014Obj *target, s32 a);
-extern void *data_ov000_021ccd64;
-extern u8 data_ov014_02217d4c[];
+extern char data_ov014_02217d4c[];
 extern u8 data_ov014_02216dc0[];
 extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
@@ -126,9 +125,6 @@ void func_ov014_0221308c(Ov014Act_0221267c *self) {
 }
 
 
-extern u16 FX_Atan2(s32 x, s32 z);
-extern u16 func_01ffc128(u16 a, u16 b, s32 c, s32 d, s32 e);
-extern void *data_ov000_021ccd68;
 extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
 void func_ov014_02213318(Ov014Act_0221267c *self) {

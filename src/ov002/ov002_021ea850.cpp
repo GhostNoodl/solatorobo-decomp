@@ -7,7 +7,7 @@ void *Ov002Vt_021f070c_DtorDelete(void *self) {
     *(VFunc **)self = data_ov002_021f070c;
     for (i = 0; i < 4; i++) {
         VObject *o = func_020657b0(data_0214a420, ((void **)((u8 *)self + 0x50))[i]);
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (o != NULL) {
             if (o != NULL) {
@@ -27,7 +27,7 @@ void *Ov002Vt_021f070c_Dtor(void *self) {
     *(VFunc **)self = data_ov002_021f070c;
     for (i = 0; i < 4; i++) {
         VObject *o = func_020657b0(data_0214a420, ((void **)((u8 *)self + 0x50))[i]);
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (o != NULL) {
             if (o != NULL) {

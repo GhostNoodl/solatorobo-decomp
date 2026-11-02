@@ -3,7 +3,6 @@
 extern "C" {
 
 extern void *data_0214a420;
-extern void *data_ov000_021ccd68;
 extern void *func_020657b0(void *a, s32 b);
 extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, void *v, s32 e, s32 f, s32 g, s32 h, s32 i);

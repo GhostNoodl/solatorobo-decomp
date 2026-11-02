@@ -12,7 +12,6 @@ void func_ov009_022117ac(Ov009ActVt_02217aac *self) {
     func_ov003_021d4fd8(self);
 }
 
-extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern void func_0203f364(Ov009Sub48 *p);
@@ -24,8 +23,6 @@ extern void *func_02049f44(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
 extern void *func_ov000_0219b71c(Ov009Vec *pos, Ov009Vec *v, s32 a, s32 b, s32 c, s32 d);
-extern s32 Rand_PlusMinus(s32 range);
-extern s32 Rand_UpTo(s32 max);
 void func_ov009_022117e4(Ov009ActVt_02217aac *self) {
     Ov009Vec p;
     Ov009Vec v;

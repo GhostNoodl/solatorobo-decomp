@@ -5,8 +5,6 @@ extern "C" {
 extern Ov014Actor *Target_Get(void *p);
 extern void func_0203f364(Ov014Sub48 *p);
 extern void Actor_TurnToPos(Ov014Obj *self, Ov014Vec *v, s32 a);
-extern void Actor_Move(Ov014Obj *self, s32 a);
-extern u16 FX_Atan2(s32 x, s32 z);
 extern Ov014Actor *func_02065f88(s32 id, Ov014Vec *pos);
 extern void func_ov014_02208a9c(Ov014ActEx_02208618 *self);
 extern void func_ov014_02208fe4(Ov014ActEx_02208618 *self);
@@ -53,8 +51,8 @@ void func_ov014_022087a8(Ov014ActEx_02208618 *self) {
             }
             r = (s32)(OV014_SQRT_RESULT + 1) >> 1;
             a = FX_Atan2(r, self->unk_84.y - self->pos.y);
-            self->unk_9c = Ov014_FxMul(OV014_SIN(a), 0x666);
-            self->unk_a0 = Ov014_FxMul(OV014_COS(a), 0x666);
+            self->unk_9c = FX_Mul(OV014_SIN(a), 0x666);
+            self->unk_a0 = FX_Mul(OV014_COS(a), 0x666);
             self->rot[0] = FX_Atan2(self->pos.y - self->unk_84.y, r);
             Actor_TurnToPos(self, &self->unk_84, 0x1000);
             self->unk_98 = self->rot[1];
@@ -69,7 +67,7 @@ void func_ov014_022087a8(Ov014ActEx_02208618 *self) {
             break;
         }
         case 1:
-            Actor_Move(self, 0);
+            Actor_Move((Actor *)self, 0);
             func_ov014_02208fe4(self);
             if ((self->unk_48->unk_50 & 0x20000000) || ++self->unk_d4 >= 200) {
                 self->unk_d0 |= 0x1000;

@@ -2,6 +2,7 @@
 #define OV006_WINDOW_H
 
 #include "ov006/Model.h"
+#include "ov000/TaskList.h"
 
 typedef struct ov006_ListNode {
     const char *text;
@@ -134,24 +135,17 @@ typedef struct ov006_TaskBase {
     int subState;
 } ov006_TaskBase;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-extern void *data_ov000_021cc060;
-#ifdef __cplusplus
-}
-#endif
 
 #define OV006_TASKBASE_CTOR(self)              \
     do {                                       \
-        (self)->vtbl = &data_ov000_021cc060;   \
+        (self)->vtbl = data_ov000_021cc060;   \
         VCALL((self), 58);                     \
     } while (0)
 
 #define OV006_TASKBASE_DTOR(self)              \
     do {                                       \
-        (self)->vtbl = &data_ov000_021cc060;   \
-        VCALL((self), 5C);                     \
+        (self)->vtbl = data_ov000_021cc060;   \
+        VCALL((self), 5c);                     \
     } while (0)
 
 #endif

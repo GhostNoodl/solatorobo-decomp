@@ -2,11 +2,7 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
-void *func_02049a48(void *a, int b, int c, int d, int e);
-s32 FX_Div(s32 a, s32 b);
 s32 Interp_QuadLerp(s32 t, s32 a, s32 b);
-extern void *data_0208cca0;
 extern void *data_0208cb74;
 void func_02035acc(void *a, void *b, int c);
 void func_020359fc(void *a, void *b, int c, int d);
@@ -19,7 +15,6 @@ extern u8 data_ov015_022131ac[];
 void func_ov000_021c2310(void *self);
 extern Ov015Shared *data_ov015_02213368;
 extern u8 data_ov015_02213200[];
-void MIi_CpuClearFast(u32 val, void *dst, u32 size);
 
 void func_ov015_02210a10(Ov015Msg *self) {
     self->unk_28->unk_0c |= 2;
@@ -64,20 +59,20 @@ void func_ov015_02210b3c(Ov015MsgMgr *self) {
 }
 
 void func_ov015_02210b58(Ov015MsgMgr *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_V(self->unk_04);
     HEAP_POP(saved);
     if (self->unk_09 != 0) {
-        func_02035acc(data_0208cca0, data_0208cb74, 2);
+        func_02035acc((void *)data_0208cca0, data_0208cb74, 2);
     }
 }
 
 int func_ov015_02210bd8(Ov015MsgMgr *self) {
     if (self->unk_09 == 0) {
-        func_020359fc(data_0208cca0, data_0208cb74, 2, 0);
+        func_020359fc((void *)data_0208cca0, data_0208cb74, 2, 0);
     }
-    return func_02035bd4(data_0208cca0, data_0208cb74, 2);
+    return func_02035bd4((void *)data_0208cca0, data_0208cb74, 2);
 }
 
 BOOL func_ov015_02210c28(void) {
@@ -95,7 +90,7 @@ s32 func_ov015_02210c30(Ov015MsgMgr *self, s32 a, s32 b) {
         self->unk_0c = 1;
     case 1:
         if (VCALL(self->unk_04)->v08() == 0) {
-            u32 saved;
+            void *saved;
             HEAP_PUSH(saved);
             DELETE_V(self->unk_04);
             HEAP_POP(saved);
@@ -202,13 +197,13 @@ Ov015Msg *func_ov015_02210d24(Ov015MsgMgr *self, u8 *b, s32 msg) {
 }
 
 void *Ov015MsgMgr_Dtor(Ov015MsgMgr *self) {
-    u32 saved;
+    void *saved;
     SET_VT(self, data_ov015_02213198);
     HEAP_PUSH(saved);
     DELETE_V(self->unk_04);
     HEAP_POP(saved);
     if (self->unk_09 != 0) {
-        func_02035acc(data_0208cca0, data_0208cb74, 2);
+        func_02035acc((void *)data_0208cca0, data_0208cb74, 2);
     }
     return self;
 }
@@ -242,7 +237,7 @@ void *func_ov015_0221100c(void *self) {
 void func_ov015_0221102c(void) {
     u8 *p;
     if (data_ov015_02213368 != NULL) {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         DELETE_V(data_ov015_02213368);
         HEAP_POP(saved);
@@ -262,7 +257,7 @@ void func_ov015_0221102c(void) {
 }
 
 void func_ov015_022110f0(void) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_V(data_ov015_02213368);
     HEAP_POP(saved);

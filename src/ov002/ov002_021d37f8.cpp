@@ -23,7 +23,7 @@ static inline BOOL ov002_021d37f8_on(void *p) {
     }
     return r ? TRUE : FALSE;
 }
-static inline BOOL ov002_021d37f8_busy(void *t) {
+static inline BOOL ov002_021d37f8_busy(FieldPlayer *t) {
     void *p = FIELD(t, 0x118, void *);
     if (p == NULL) {
         return FALSE;
@@ -31,7 +31,7 @@ static inline BOOL ov002_021d37f8_busy(void *t) {
     return ov002_021d37f8_on(p) ? TRUE : FALSE;
 }
 
-static inline void ov002_021d37f8_stop(void *t) {
+static inline void ov002_021d37f8_stop(FieldPlayer *t) {
     if (FIELD(t, 0x118, void *) != NULL) {
         func_ov000_0216f844(FIELD(t, 0x118, void *), 0);
     }
@@ -61,14 +61,14 @@ void func_ov002_021d37f8(void *self) {
     func_0203cb78(0xc000, 0, 1);
     m = Heap_Alloc(0x160);
     if (m != NULL) {
-        func_02041218((u8 *)m + 0x88);
-        func_02041440(m, NULL, 0);
+        func_02041218((PlttRes *)((u8 *)m + 0x88));
+        func_02041440((Model *)m, NULL, 0);
     }
     FIELD(self, 0xc4, void *) = m;
-    func_020417e0(m, res);
+    func_020417e0((Model *)m, res);
     FIELD(FIELD(self, 0xc4, void *), 0x6c, u32) |= 2;
     FIELD(FIELD(self, 0xc4, void *), 0x150, s32) = -0x2000;
-    func_02041d9c(FIELD(self, 0xc4, void *), 2, 0);
+    func_02041d9c((Model *)FIELD(self, 0xc4, void *), 2, 0);
 }
 
 }

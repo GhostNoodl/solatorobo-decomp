@@ -129,7 +129,7 @@ void func_ov012_02207dac(Ov012Actor *self) {
         return;
     }
     self->unk_90 = 0xffff;
-    pl = func_ov000_0219bf90();
+    pl = (Ov012Actor *)func_ov000_0219bf90();
     if (pl == NULL) {
         return;
     }

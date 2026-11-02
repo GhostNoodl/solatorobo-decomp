@@ -5,19 +5,12 @@ extern "C" {
 s32 func_02065748(void *a, void *b);
 void func_ov000_021bd228(void *p);
 extern u8 data_ov015_022132ac[];
-void *func_020359d0(void *a, int b, int c);
-int func_02035b90(void *a, int b);
 extern u8 data_ov015_022132bb[];
 u8 *func_02066774(void *a, void *b, int c, void *d);
 void func_ov000_021bd198(void *p);
 void func_ov015_02212430(Ov015Obj292c *self);
-void *NNS_G3dGlbGetInvV(void);
-void MTX_MultVec33(void *a, void *b, void *c);
-void VEC_Add(void *a, void *b, void *c);
-u16 FX_Atan2(s32 x, s32 z);
 void func_ov000_021bd624(void *p);
 void func_ov000_021bd7a0(void *p);
-extern void *data_02097e4c;
 s32 func_02049bdc(void *a, s32 b, s32 c);
 BOOL func_ov000_021bd314(void *o, s32 a);
 extern u8 *data_02097dc8;
@@ -41,7 +34,7 @@ void func_ov015_022120c0(Ov015Obj292c *self) {
 }
 
 void func_ov015_022120fc(Ov015Obj292c *self) {
-    u32 saved;
+    void *saved;
     void *o;
     if (func_02065748(data_0214a420, self->unk_04)) {
         FLD(s32, self->unk_04, 0x1c) = 4;
@@ -60,11 +53,11 @@ void func_ov015_022120fc(Ov015Obj292c *self) {
 }
 
 void func_ov015_02212180(Ov015Obj292c *self) {
-    func_020359d0(data_ov015_022132ac, 7, 0);
+    func_020359d0((char *)data_ov015_022132ac, 7, 0);
 }
 
 int func_ov015_0221219c(Ov015Obj292c *self) {
-    return func_02035b90(data_ov015_022132ac, 7);
+    return func_02035b90((char *)data_ov015_022132ac, 7);
 }
 
 BOOL func_ov015_022121b4(Ov015Obj292c *self) {
@@ -95,15 +88,15 @@ void func_ov015_02212250(Ov015Obj292c *self, s32 a) {
 void func_ov015_02212264(Ov015Obj292c *self) {
     u8 *o;
     if (self->unk_04 != NULL) {
-        void *m = NNS_G3dGlbGetInvV();
+        const MtxFx43 *m = NNS_G3dGlbGetInvV();
         Ov015Vec w;
         Ov015Vec v;
 
         v.x = 0;
         v.y = 0;
         v.z = 0xa000;
-        MTX_MultVec33(&v, m, &v);
-        VEC_Add(&v, &self->unk_0c, &w);
+        MTX_MultVec33((VecFx32 *)&v, (MtxFx33 *)m, (VecFx32 *)&v);
+        VEC_Add((VecFx32 *)&v, (VecFx32 *)(&self->unk_0c), (VecFx32 *)&w);
         VCALL(self->unk_04)->v18(&w);
         VCALL(self->unk_04)->v10(&self->unk_18);
         VCALL(self->unk_04)->v34(0xe00, FX_Atan2(v.x, v.z), 0);

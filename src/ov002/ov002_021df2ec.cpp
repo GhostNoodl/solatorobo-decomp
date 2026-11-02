@@ -17,14 +17,10 @@ extern VFunc data_ov002_021efe8c[];
 void *Ov002Vt_021efe3c_Ctor(void *self);
 void func_ov002_021d7620(void *self);
 void *func_02035de0(void *file, void *name);
-void MTX_Identity22_(void *m);
-void MTX_Rot22_(void *m, s32 s, s32 c);
-void MTX_Concat22(void *a, void *b, void *ab);
 void func_ov002_021d9ed8(void *self, void *obj, int del);
 void func_ov002_021d7b80(void *self);
 void func_ov002_021d7e54(void *self);
 void func_ov002_021d7d5c(void *self, void *b);
-void func_ov002_021e3b0c(s32 *out, s32 *pos, s32 *origin);
 
 static inline u8 *ov002_GetCell(u8 *w, Vec2 *pos) {
     s32 y = pos->y;
@@ -114,7 +110,7 @@ void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
         FIELD(o, 0x10, u16) = 0;
         FIELD(o, 0x12, u16) = 0;
         FIELD(o, 0x14, u16) = 0;
-        MTX_Identity33_(o + 0x18);
+        MTX_Identity33_((MtxFx33 *)(o + 0x18));
         o = FIELD(self, 0x10, u8 *);
         map = FIELD(FIELD(w, 0x4, u8 *), 0x6c, u8 *);
         if (FIELD(o, 0xac, s32) != 9 && FIELD(o, 0xa4, s32) == 0) {
@@ -161,8 +157,8 @@ void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
     if (m != NULL) {
         *(VFunc **)m = data_ov002_021efe5c;
         Ov002Vt_021efe3c_Ctor(m + 4);
-        func_02041218(m + 0x74 + 0x88);
-        func_02041440(m + 0x74, NULL, 0);
+        func_02041218((PlttRes *)(m + 0x74 + 0x88));
+        func_02041440((Model *)(m + 0x74), NULL, 0);
         m[0x1d4] = 0;
         FIELD(m, 0x1dc, s32) = 0;
         FIELD(m, 0x1e0, s32) = 0;
@@ -176,16 +172,16 @@ void func_ov002_021df2ec(void *self, u8 *own, s32 y, s32 x, u16 id, u8 *w) {
     {
         char *nm = ((char *)K::data_ov002_021efe1a);
         char *file = ((char *)K::data_ov002_021efe26);
-        func_02041440(m + 0x74, nm, 0);
-        STD_CopyString(m + 0x74 + 0x2c, file);
-        func_020417e0(m + 0x74, func_02035de0(file, nm));
+        func_02041440((Model *)(m + 0x74), nm, 0);
+        STD_CopyString((char *)(m + 0x74 + 0x2c), file);
+        func_020417e0((Model *)(m + 0x74), func_02035de0(file, nm));
     }
     FIELD(m, 0x74 + 0x6c, u32) |= 2;
     FIELD(m, 0x74 + 0x150, s32) = -0x2000;
-    func_02041d9c(m + 0x74, 0, 4);
-    MTX_Identity22_(m + 0x188);
-    MTX_Rot22_(r, FX_SINCOS(0xbff * 2), FX_SINCOS(0xbff * 2 + 1));
-    MTX_Concat22(r, m + 0x188, m + 0x188);
+    func_02041d9c((Model *)(m + 0x74), 0, 4);
+    MTX_Identity22_((MtxFx22 *)(m + 0x188));
+    MTX_Rot22_((MtxFx22 *)r, FX_SINCOS(0xbff * 2), FX_SINCOS(0xbff * 2 + 1));
+    MTX_Concat22((MtxFx22 *)r, (MtxFx22 *)(m + 0x188), (MtxFx22 *)(m + 0x188));
     {
         u8 *q = FIELD(self, 0xc, u8 *);
         FIELD(q, 0x1dc, s32) = 0xb33;

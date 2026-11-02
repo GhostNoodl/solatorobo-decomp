@@ -82,12 +82,12 @@ static inline void ov006_Menu_UpdateConnection(void) {
 }
 
 void func_ov006_021e5f24(void) {
-    data_02097dd0->unk18 = (int)func_ov006_021e5f24;
+    data_02097dd0->vblankFunc = func_ov006_021e5f24;
     ov006_Menu_UpdateConnection();
 }
 
 void func_ov006_021e5fec(void) {
-    data_02097dd0->unk18 = (int)func_ov006_021e5fec;
+    data_02097dd0->vblankFunc = func_ov006_021e5fec;
     ov006_Menu_UpdateConnection();
 }
 

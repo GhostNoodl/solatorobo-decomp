@@ -15,7 +15,6 @@ typedef struct ov006_Unk021d90e8 {
 extern "C" {
 
 extern u8 data_ov006_021ec040[];
-extern void *data_02097cdc;
 extern void *data_0208cc94;
 extern u8 data_ov006_021ec864[];
 void func_ov000_02180754(void);

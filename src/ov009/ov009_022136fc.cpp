@@ -4,7 +4,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern void func_02049564(void *mgr, s32 a, s32 b);
-extern void func_ov000_02187a20(Ov009Game54 *g, s32 a);
+extern void func_ov000_02187a20(FieldState *g, s32 a);
 
 void Ov009ActVt_02217cb0_Init(Ov009ActVt_02217cb0 *self) {
     func_ov003_021d0fc0(self);

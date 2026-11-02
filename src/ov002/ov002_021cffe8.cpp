@@ -19,7 +19,7 @@ void func_ov002_021cffe8(void *self) {
     u16 keys;
     u16 id;
     u8 *item;
-    keys = FIELD(data_02097dc8, 0x12, u16);
+    keys = data_02097dc8->trig;
     item = ov002_getSelected(FIELD(self, 0x3c, void *));
     id = FIELD(item, 0x6, u16);
     if (id != FIELD(self, 0x44, u16)) {

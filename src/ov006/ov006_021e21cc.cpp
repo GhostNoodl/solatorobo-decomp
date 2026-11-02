@@ -16,7 +16,7 @@ typedef struct ov006_MarkerSet {
     int unk8;
     int unkC;
     ov006_Marker markers[4];
-    ov006_Model *model;
+    Model *model;
 } ov006_MarkerSet;
 
 extern "C" {
@@ -46,7 +46,7 @@ ov006_MarkerSet *Ov006Vt_021ec2cc_DtorDelete(ov006_MarkerSet *self) {
 }
 
 void func_ov006_021e22e4(ov006_MarkerSet *self) {
-    ov006_Model *model;
+    Model *model;
     int i;
 
     for (i = 0; i < 4; i++) {
@@ -55,20 +55,20 @@ void func_ov006_021e22e4(ov006_MarkerSet *self) {
         self->markers[i].unkC = 0;
         self->markers[i].unk4 = 1;
     }
-    model = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
+    model = (Model *)Heap_Alloc(sizeof(Model));
     if (model != NULL) {
         const char *name = data_ov006_021ec1a9;
         if (name) {
-            func_02041218(model->unk88);
+            func_02041218(&model->pltt);
             func_02041440(model, name, 0);
-            STD_CopyString(model->unk2C, data_ov006_021ec864);
+            STD_CopyString(model->name, data_ov006_021ec864);
         }
     }
     self->model = model;
     func_020417e0(self->model, func_02035de0(data_ov006_021ec864, data_ov006_021ec1a9));
-    self->model->unk6C |= 2;
-    self->model->unk6C |= 0x80000;
-    self->model->unk6C |= 0x400000;
+    self->model->flags |= 2;
+    self->model->flags |= 0x80000;
+    self->model->flags |= 0x400000;
     func_02041d9c(self->model, 2, 0x10);
     func_02041d9c(self->model, 2, 0x11);
     func_02041d9c(self->model, 2, 0x12);

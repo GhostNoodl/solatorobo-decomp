@@ -3,7 +3,7 @@
 extern "C" {
 
 void func_ov002_021dbdb8(void *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(self, 0x8, VObject *));
     HEAP_POP(saved);
@@ -15,8 +15,8 @@ void func_ov002_021dbdb8(void *self) {
         void *p = FIELD(self, 0x10, void *);
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558(p);
-                func_02041278((u8 *)p + 0x88);
+                func_02041558((Model *)p);
+                func_02041278((PlttRes *)((u8 *)p + 0x88));
                 Heap_Free(p);
             }
             FIELD(self, 0x10, void *) = NULL;

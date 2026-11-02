@@ -24,7 +24,7 @@ typedef struct ov006_Unk021dbdb0 {
     u8 unkA0;
     u8 unkA1[3];
     u16 unkA4;
-    ov006_Model *unkA8;
+    Model *unkA8;
     u8 unkAC[4];
     int unkB0[6];
     int unkC8;
@@ -43,11 +43,10 @@ extern "C" {
 extern u8 data_ov006_021ec2fc[];
 extern u8 data_ov006_021ec25c[];
 extern u8 data_0208b318[];
-void MI_CpuFill8(void *dst, u8 value, u32 size);
 
 static inline void ov006_Sub021dbacc_Stop(ov006_Sub021dbacc *sub) {
     if (sub->unk24 != 0 || sub->unk4 != 0) {
-        VCALL(sub, 0C);
+        VCALL(sub, 0c);
     }
     VCALL(sub, 08);
 }
@@ -56,7 +55,7 @@ static inline void ov006_Unk021dbacc_dtor(ov006_Unk021dbacc *self) {
     self->vtbl = data_ov006_021ec25c;
     ov006_Sub021dbacc_Stop(&self->sub);
     self->sub.vtbl = data_0208b318;
-    VCALL(&self->sub, 0C);
+    VCALL(&self->sub, 0c);
 }
 
 static inline void ov006_Unk021dbdb0_dtor(ov006_Unk021dbdb0 *self) {

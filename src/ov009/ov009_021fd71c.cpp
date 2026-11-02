@@ -45,7 +45,6 @@ void func_ov009_021fd71c(Ov009ActVt_02216750 *self) {
     func_ov000_02198360(self->unk_40, 1, 0);
 }
 
-extern void *data_ov000_021ccd68;
 extern void func_ov000_0218e8ec(void *mgr, u16 id, s32 msg);
 extern void func_0203f364(Ov009Sub48 *p);
 extern void NNSi_G3dModifyPolygonAttrMask(void *p, s32 a, s32 b);
@@ -55,7 +54,6 @@ extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 extern void *func_ov000_0219b71c(Ov009Vec *pos, Ov009Vec *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov003_021d6a3c(Ov009Actor *self, s32 a, s32 b, s32 c);
 extern void func_ov003_021d6954(Ov009Actor *self, u8 a);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
 
 static inline void Ov009_VecSet(Ov009Vec *v, s32 x, s32 y, s32 z) {
     v->x = x;
@@ -97,7 +95,7 @@ void func_ov009_021fd830(Ov009ActVt_02216750 *self) {
         s44->unk_22_0 = 0;
         s44->unk_22_1 = 0;
         self->unk_4c->target = 0xffff;
-        if (data_ov000_021ccd54->unk_ca == 0x11) {
+        if (data_ov000_021ccd54->unk_ca.c[0] == 0x11) {
             Ov009_VecSet((Ov009Vec *)&self->unk_9c, 0, 0, 0);
         } else {
             Ov009_VecSet((Ov009Vec *)&self->unk_9c, Rand_PlusMinus(0x29), -0x71, Rand_PlusMinus(0x29));

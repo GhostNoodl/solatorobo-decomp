@@ -6,7 +6,7 @@ extern void *data_0214a420;
 extern void *data_02097e4c;
 extern u8 *data_02097d48;
 extern u8 data_ov014_02217aac[];
-extern u8 data_ov014_02217c6c[];
+extern char data_ov014_02217c6c[];
 extern void func_02065860(void *a, void *b);
 extern void func_ov000_02195d88(void *self);
 extern void func_ov000_0219763c(void *self);
@@ -87,18 +87,17 @@ void Ov014ActEx_0220eca0_Start(Ov014ActEx_0220eca0 *self) {
 
 extern void *func_02049f44(void *a, s32 b, Ov014Vec *c, s32 d);
 extern BOOL func_ov000_021b4738(Ov014Actor *p);
-extern BOOL func_ov000_02191120(void *p);
 
 extern void func_ov014_0220f20c(Ov014Obj *self, void *a, void *b, void *c);
 
 static inline void Ov014_Flash(u8 c) {
-    Ov014Game54 *g = data_ov000_021ccd54;
-    g->unk_190_2 = 0;
-    g->unk_190_3 = 1;
-    g->unk_190_4 = 0;
-    g->unk_18d = c;
-    g->unk_18e = 0xf;
-    g->unk_18f = 0xf;
+    FieldState *g = data_ov000_021ccd54;
+    g->cam.base.shakeX = 0;
+    g->cam.base.shakeY = 1;
+    g->cam.base.shakeZ = 0;
+    g->cam.base.shakeTime = c;
+    g->cam.base.shakeLen = 0xf;
+    g->cam.base.shakeCur = 0xf;
 }
 
 static inline void Ov014_Release(Ov014Obj *self) {
@@ -143,8 +142,8 @@ void func_ov014_0220ee9c(Ov014ActEx_0220eca0 *self) {
         }
         t = self->unk_40->timer;
         if (t % 4 == 1) {
-            s32 h = Ov014_FxMul(self->unk_68, self->unk_d4);
-            self->unk_e4 = Ov014_FxMul(self->unk_64, self->unk_d0);
+            s32 h = FX_Mul(self->unk_68, self->unk_d4);
+            self->unk_e4 = FX_Mul(self->unk_64, self->unk_d0);
             self->unk_e8 = h;
             self->unk_ec = 0x1000;
             self->unk_d8 = self->pos;

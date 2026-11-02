@@ -3,7 +3,7 @@
 extern "C" {
 
 void func_ov002_021d0ed8(Task50 *self) {
-    if (!(FIELD(data_02097dc8, 0x12, u16) & 2)) {
+    if (!(data_02097dc8->trig & 2)) {
         return;
     }
     func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);

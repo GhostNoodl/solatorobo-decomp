@@ -193,7 +193,7 @@ void func_ov002_021eceb8(void *self) {
             z = -0x1ccd;
         }
     }
-    FIELD(FIELD(self, 0x38, void *), 0x6c, Bits021eceb8).c = (u32)Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
+    FIELD(FIELD(self, 0x38, void *), 0x6c, Bits021eceb8).c = (u32)Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
     FIELD(FIELD(self, 0x38, void *), 0x6c, Bits021eceb8).b = FIELD(self, 0x48, u8);
     {
         u8 *m = FIELD(self, 0x38, u8 *);
@@ -215,7 +215,7 @@ void func_ov002_021eceb8(void *self) {
         void *e = NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), 0);
         arg = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(e, 0xc, void *));
     }
-    func_02042628(model, arg, anim, 0);
+    func_02042628((Model *)model, arg, (ModelPart *)anim, 0);
 }
 
 }
@@ -230,7 +230,7 @@ void func_ov002_021ecfd8(void *self) {
 }
 
 void func_ov002_021ecfe4(void *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_WITH(FIELD(self, 0x4c, void *), func_ov000_0214b724);
     HEAP_POP(saved);
@@ -279,8 +279,8 @@ void func_ov002_021ed0ec(void *self) {
         return;
     }
     {
-        Vec3 b = data_ov002_021ef124;
-        Vec3 a;
+        VecFx32 b = data_ov002_021ef124;
+        VecFx32 a;
         a.x = FIELD(self, 0x3c, s32);
         a.y = FIELD(self, 0x40, s32);
         a.z = FIELD(self, 0x44, s32);
@@ -308,7 +308,7 @@ void func_ov002_021ed1ac(void *self) {
 }
 
 void func_ov002_021ed1dc(void *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     DELETE_VOBJ(FIELD(self, 0x34, VObject *));
     HEAP_POP(saved);
@@ -554,7 +554,7 @@ void func_ov002_021edcec(void *self, int mode) {
     if (mode == 1) {
         y += 0xc0;
     }
-    FIELD(FIELD(self, 0x34, void *), 0x4, SprAttr021edcec).pal = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
+    FIELD(FIELD(self, 0x34, void *), 0x4, SprAttr021edcec).pal = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
     FIELD(FIELD(self, 0x34, void *), 0x4, SprAttr021edcec).prio = FIELD(self, 0x54, u8);
     FIELD(self, 0x34, VObject *)->v0x20(x, y);
     FIELD(FIELD(self, 0x34, void *), 0x70, s32) = -0x1000;
@@ -567,7 +567,7 @@ void func_ov002_021edcec(void *self, int mode) {
     if (mode == 1) {
         y += 0xc0;
     }
-    FIELD(FIELD(self, 0x44, void *), 0x4, SprAttr021edcec).pal = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
+    FIELD(FIELD(self, 0x44, void *), 0x4, SprAttr021edcec).pal = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
     FIELD(FIELD(self, 0x44, void *), 0x4, SprAttr021edcec).prio = FIELD(self, 0x54, u8);
     FIELD(self, 0x44, VObject *)->v0x20(x, y);
     FIELD(FIELD(self, 0x44, void *), 0x70, s32) = -0x1000;
@@ -636,7 +636,7 @@ BOOL func_ov002_021ede5c(void *self) {
         break;
     case 3:
         {
-            u8 *g = data_02097e48;
+            u8 *g = (u8 *)data_02097e48.queue;
             FIELD(g, 0x80, u16) = 0x8000;
             FIELD(g, 0x7c, u16) = 0;
         }
@@ -692,12 +692,12 @@ extern "C" {
 void func_0204a284(void *a, int b);
 
 void func_ov002_021ee024(void) {
-    u32 saved;
+    void *saved;
     u8 *n;
     u8 *next;
-    u32 s2;
+    void *s2;
     void *x;
-    u32 s3;
+    void *s3;
     HEAP_PUSH(saved);
     x = data_ov002_021f0fa4;
     if (x != NULL) {
@@ -851,7 +851,7 @@ void func_ov002_021ee1a8(void) {
             s32 id;
             o = (VObject *)Heap_Alloc(0x50);
             if (o != NULL) {
-                *(VFunc **)o = data_0208b318;
+                *(VFunc **)o = (VFunc *)data_0208b318;
                 o->v0x8();
                 *(VFunc **)o = data_ov002_021f0f2c;
                 o->v0x8();
@@ -1074,7 +1074,7 @@ static inline void ov002_unlink7f8(u8 *n) {
     FIELD(n, 0x28, void *) = NULL;
     FIELD(n, 0x2c, void *) = NULL;
     {
-        u32 s2;
+        void *s2;
         HEAP_PUSH(s2);
         if (n != NULL) {
             if (n != NULL) {

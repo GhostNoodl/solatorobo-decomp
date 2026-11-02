@@ -3,6 +3,11 @@
 
 #include "types.h"
 #include "nitro/std.h"
+#include "nitro/fx.h"
+#include "Main/Sys/SysState.h"
+#include "Main/Sys/Field.h"
+#include "ov000/Actor.h"
+#include "nitro/std.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
 class Ov014V {
@@ -186,11 +191,7 @@ struct Ov014Rot16 {
     u16 z;
 };
 
-struct Ov014Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
+typedef VecFx32 Ov014Vec;
 
 static inline void Ov014_VecSet(Ov014Vec *v, s32 x, s32 y, s32 z) {
     v->x = x;
@@ -213,10 +214,6 @@ static inline void Ov014_VecCopyYZ(Ov014Vec *d, const Ov014Vec *s) {
     d->z = z;
 }
 
-static inline s32 Ov014_FxMul(s32 a, s32 b) {
-    return (s32)(((s64)a * b + 0x800) >> 12);
-}
-
 struct Ov014Msg {
     u8 unk_00[0x5];
     u8 type;
@@ -226,8 +223,6 @@ struct Ov014Msg {
     Ov014Vec v;
 };
 
-// NitroSDK sin/cos table: s16 sin,cos pairs
-extern "C" const s16 FX_SinCosTable_[];
 #define OV014_SINCOS FX_SinCosTable_
 #define OV014_SIN(a) (OV014_SINCOS[((a) >> 4) * 2])
 #define OV014_COS(a) (OV014_SINCOS[((a) >> 4) * 2 + 1])
@@ -499,12 +494,6 @@ struct Ov014Names {
     char unk_e4[0x20];
 };
 
-struct Ov014Heap {
-    u32 cur;
-    u32 unk_04;
-    u32 def;
-};
-
 class Ov014Multi : public Ov014Actor {
 public:
     Ov014Sub38 models[4];
@@ -519,42 +508,11 @@ struct Ov014Path {
     Ov014Vec end;
 };
 
-struct Ov014Game54 {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-    u8 unk_98[0x14];
-    u8 unk_ac;
-    u8 unk_ad[0x27];
-    s32 unk_d4;
-    u8 unk_d8[0xb4];
-    u8 unk_18c;
-    u8 unk_18d;
-    u8 unk_18e;
-    u8 unk_18f;
-    union {
-        u8 unk_190;
-        struct {
-            u8 unk_190_0 : 2;
-            u8 unk_190_2 : 1;
-            u8 unk_190_3 : 1;
-            u8 unk_190_4 : 1;
-            u8 unk_190_5 : 3;
-        };
-    };
-};
-
-extern "C" {
-extern Ov014Game54 *data_ov000_021ccd54;
-extern Ov014Heap *data_02097dd0;
+static inline BOOL Ov014Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov014Game_IsBusy(Ov014Game54 *g) {
-    return g->unk_90 != g->unk_94;
-}
-
-static inline BOOL Ov014Game_IsIdle(Ov014Game54 *g) {
+static inline BOOL Ov014Game_IsIdle(FieldState *g) {
     if (Ov014Game_IsBusy(g)) {
         return FALSE;
     }
@@ -565,7 +523,7 @@ static inline BOOL Ov014Game_IsIdle(Ov014Game54 *g) {
 }
 
 static inline BOOL Ov014_GameIdle(void) {
-    Ov014Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov014Game_IsIdle(g);
     }
@@ -573,20 +531,16 @@ static inline BOOL Ov014_GameIdle(void) {
 }
 
 extern "C" {
-void Heap_Free(void *p);
-void *Heap_Alloc(u32 size);
+void *Heap_Alloc(u32 size); // Main/Gfx/ObjPool.h
+void Heap_Free(void *ptr);
 void __cxa_vec_cleanup(void *arr, s32 count, u32 size, void *dtor);
 void *func_ov003_021d0edc(void *self);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-BOOL func_ov000_02190cb0(void *a, const void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
-void VEC_MultAdd(s32 scale, const Ov014Vec *dir, const Ov014Vec *base, Ov014Vec *out);
-s32 VEC_Distance(const Ov014Vec *a, const Ov014Vec *b);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 s32 func_ov000_0219a2f4(Ov014Vec *v, s32 y, s32 b);
-BOOL func_01ffc198(const Ov014Vec *pos, const Ov014Vec *target, s32 dist);
 BOOL func_ov000_02191120(void *p);
 void func_ov003_021d5348(Ov014Actor *self);
 void func_ov003_021d3a88(Ov014Actor *self);
@@ -617,8 +571,8 @@ extern "C" void *func_ov003_021da940(void *p);
 
 // Frees the effect handle at self+off with the default heap selected.
 static inline void Ov014_FreeFx(void *self, u32 off) {
-    u32 saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->def;
+    void *saved = data_02097dd0->cur;
+    data_02097dd0->cur = data_02097dd0->unk_08;
     if (FLD(void *, self, off) != NULL) {
         void *p = FLD(void *, self, off);
         if (p != NULL) {

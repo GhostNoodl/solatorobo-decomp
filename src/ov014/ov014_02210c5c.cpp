@@ -19,8 +19,6 @@ static inline void Ov014Spawn_Init(Ov014SpawnDesc *d, u16 k) {
 
 extern "C" {
 
-extern void *data_ov000_021ccd64;
-extern void *data_ov000_021ccd68;
 extern u8 data_ov014_02216cf4[];
 extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, Ov014Vec16 *rot, u16 a);
 extern Ov014Actor *func_ov000_0219bf90(void);

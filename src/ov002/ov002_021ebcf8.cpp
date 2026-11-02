@@ -25,7 +25,7 @@ typedef struct Rec021ebcf8 {
 static inline void ov002_addPair(u8 *list, u8 *a, u8 *b, s32 kind) {
     u8 *n;
     for (n = FIELD(list, 0x4, u8 *); n != NULL; n = FIELD(n, 0x4c, u8 *)) {
-        if (func_0201e950(n, a, STD_GetStringLength(n)) == 0 && func_0201e950(n + 0x20, b, STD_GetStringLength(n)) == 0 && FIELD(n, 0x40, s32) == kind) {
+        if (func_0201e950(n, a, STD_GetStringLength((char *)n)) == 0 && func_0201e950(n + 0x20, b, STD_GetStringLength((char *)n)) == 0 && FIELD(n, 0x40, s32) == kind) {
             break;
         }
     }
@@ -36,8 +36,8 @@ static inline void ov002_addPair(u8 *list, u8 *a, u8 *b, s32 kind) {
         FIELD(n, 0x44, u8) = 0;
         FIELD(n, 0x48, s32) = 0;
         FIELD(n, 0x4c, u8 *) = NULL;
-        STD_CopyLString(n, a, 0x20);
-        STD_CopyLString(n + 0x20, b, 0x20);
+        STD_CopyLString((char *)n, (char *)a, 0x20);
+        STD_CopyLString((char *)(n + 0x20), (char *)b, 0x20);
         FIELD(n, 0x40, s32) = kind;
         FIELD(n, 0x4c, u8 *) = FIELD(list, 0x4, u8 *);
         FIELD(list, 0x4, u8 *) = n;

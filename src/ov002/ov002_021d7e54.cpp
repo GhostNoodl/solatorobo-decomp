@@ -30,7 +30,7 @@ void func_ov002_021d7e54(void *self) {
 }
 
 void func_ov002_021d7ed8(void *self) {
-    u32 saved;
+    void *saved;
     HEAP_PUSH(saved);
     if (FIELD(self, 0x80, void *) != NULL) {
         Heap_Free(FIELD(self, 0x80, void *));

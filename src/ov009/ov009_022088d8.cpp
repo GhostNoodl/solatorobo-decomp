@@ -9,7 +9,7 @@ extern BOOL func_01ffc584(const Ov009Vec *a, const Ov009Vec *b, s32 r, s32 h);
 extern BOOL func_ov000_0219aae8(Ov009Obj *self, Ov009Obj *src, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 
-static inline BOOL Ov009Game_IsPaused(Ov009Game54 *g) {
+static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->unk_d4 != 0;
 }
 
@@ -45,7 +45,7 @@ extern void *data_ov009_02215ee4[];
 void func_ov009_02208a84(Ov009Actor *self) {
     switch (self->unk_40->state) {
     case 0:
-        func_ov000_02190cb0(self->unk_38, data_ov009_02215ee4[0], 0x111, 0);
+        func_ov000_02190cb0(self->unk_38, (char *)data_ov009_02215ee4[0], 0x111, 0);
         func_ov000_021915a0(self->unk_38);
         self->unk_9c = 0;
         self->unk_a0 = 0;
@@ -87,13 +87,10 @@ static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
 // p->end.x reads in case 3 are one load across the unk_9c store (round qpC).
 extern const Ov009Path data_ov009_02215fbc[];
 extern char data_ov009_022172c7[];
-extern void *data_ov000_021ccd64;
 extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_ov000_021911c8(Ov009Sub38 *m, s32 a);
 extern void *func_ov000_02191318(Ov009Sub38 *m, s32 a);
 extern void func_ov000_02191780(Ov009Sub38 *m);
-extern void Actor_Move(Ov009Obj *self, s32 turn);
-extern u16 FX_Atan2(s32 y, s32 x);
 
 void func_ov009_02208b24(Ov009Actor *self) {
     Ov009Vec v;
@@ -115,7 +112,7 @@ void func_ov009_02208b24(Ov009Actor *self) {
         self->unk_40->state++;
     case 1:
         if (func_ov000_02191120(self->unk_38)) {
-            func_ov000_02190cb0(self->unk_38, data_ov009_02215ee4[1], 0x2ab, 0);
+            func_ov000_02190cb0(self->unk_38, (char *)data_ov009_02215ee4[1], 0x2ab, 0);
             func_ov000_021915a0(self->unk_38);
             func_ov000_021911c8(self->unk_38, 0xccd);
             self->unk_40->timer = 0;
@@ -138,8 +135,8 @@ void func_ov009_02208b24(Ov009Actor *self) {
         v.z -= 0x5000;
         self->unk_b8 = v;
         ang = FX_Atan2(Ov009_DistXZ(&self->pos, &v), v.y - self->pos.y);
-        self->unk_9c = Ov009_FxMul(p->end.x, OV009_SIN(ang));
-        self->unk_a0 = Ov009_FxMul(p->end.x, OV009_COS(ang));
+        self->unk_9c = FX_Mul(p->end.x, OV009_SIN(ang));
+        self->unk_a0 = FX_Mul(p->end.x, OV009_COS(ang));
         self->unk_98 = self->rot[1];
         self->unk_40->state++;
     }
@@ -190,7 +187,7 @@ void func_ov009_02208b24(Ov009Actor *self) {
                 func_ov000_02198360(self->unk_40, 1, 0);
             }
             if (func_ov000_02191120(self->unk_38)) {
-                func_ov000_02190cb0(self->unk_38, data_ov009_02215ee4[0], 0x89, 0);
+                func_ov000_02190cb0(self->unk_38, (char *)data_ov009_02215ee4[0], 0x89, 0);
                 func_ov000_021915a0(self->unk_38);
             }
         }
@@ -198,7 +195,7 @@ void func_ov009_02208b24(Ov009Actor *self) {
     }
     }
     if (state < 6) {
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
     }
 }
 

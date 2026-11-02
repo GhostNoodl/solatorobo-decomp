@@ -7,11 +7,10 @@ struct Ov014BgmC {
 
 extern "C" {
 
-extern u8 data_ov014_02217d7c[];
-extern u8 data_ov014_02217d82[];
+extern char data_ov014_02217d7c[];
+extern char data_ov014_02217d82[];
 extern void *func_ov000_02191318(void *a, s32 b);
 extern void func_ov000_02191618(void *a);
-extern BOOL func_ov000_02191120(void *a);
 
 void func_ov014_02211f0c(Ov014Act_0220f9d0 *self) {
     switch (self->unk_40->state) {
@@ -58,7 +57,7 @@ void func_ov014_02211f0c(Ov014Act_0220f9d0 *self) {
 extern void *data_02097e4c;
 extern u8 *data_02097e48;
 extern void *data_0214a420;
-extern u8 data_ov014_02217d88[];
+extern char data_ov014_02217d88[];
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_ov000_02182590(void *p);
@@ -81,7 +80,7 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
     u8 b;
     switch (Ov014Sub40_State(self->unk_40)) {
     case 0: {
-        Ov014Game54 *g;
+        FieldState *g;
         Ov014Sub44 *n;
         Ov014Actor *e;
         func_020627a0(self->kind, self->id);
@@ -132,15 +131,15 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
             func_02065860(data_0214a420, self->unk_158);
         }
         if (t == 0x140) {
-            Ov014Game54 *g = data_ov000_021ccd54;
+            FieldState *g = data_ov000_021ccd54;
             u8 *h;
-            g->unk_190_2 = 1;
-            g->unk_190_3 = 0;
-            g->unk_190_4 = 0;
-            g->unk_18d = 0x10;
-            g->unk_18e = 0x1e;
-            g->unk_18f = 0x1e;
-            g->unk_18c = 1;
+            g->cam.base.shakeX = 1;
+            g->cam.base.shakeY = 0;
+            g->cam.base.shakeZ = 0;
+            g->cam.base.shakeTime = 0x10;
+            g->cam.base.shakeLen = 0x1e;
+            g->cam.base.shakeCur = 0x1e;
+            g->cam.base.shakeRandom = 1;
             h = data_02097e48;
             if (FLD(Ov014BgmC, h, 0).active != 1 || FLD(u16, h, 0x74) != 0xffff || FLD(u16, h, 0x72) != 0x38) {
                 FLD(u16, h, 0x74) = 0x38;
@@ -180,13 +179,13 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
             }
         }
         } else {
-            Ov014Game54 *g;
+            FieldState *g;
             self->unk_40->state++;
             g = data_ov000_021ccd54;
-            g->unk_18c = 0;
-            g->unk_18d = 0;
-            g->unk_18e = 0;
-            g->unk_18f = 0;
+            g->cam.base.shakeRandom = 0;
+            g->cam.base.shakeTime = 0;
+            g->cam.base.shakeLen = 0;
+            g->cam.base.shakeCur = 0;
         }
         break;
     }

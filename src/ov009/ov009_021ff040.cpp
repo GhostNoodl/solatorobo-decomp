@@ -4,8 +4,8 @@ extern "C" {
 
 extern void *data_0214a420;
 extern void *data_02097e4c;
-extern u8 data_ov009_02216ab6[];
-extern u8 data_ov009_02216ace[];
+extern char data_ov009_02216ab6[];
+extern char data_ov009_02216ace[];
 extern void func_02065804(void *mgr, void *p);
 extern void func_02049564(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);

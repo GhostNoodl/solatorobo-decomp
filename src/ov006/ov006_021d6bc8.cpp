@@ -70,7 +70,7 @@ int func_ov006_021d6bc8(ov006_Scene021d6bc8 *self) {
         {
             VObj *sub = &data_ov000_021ccd54->sub;
             if (sub != NULL) {
-                sub->v00();
+                sub->vfunc_00();
             }
         }
         if (data_ov000_021ccd6c != NULL) {

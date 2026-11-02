@@ -26,18 +26,11 @@ void func_ov014_02210854(Ov014Act_0220f9d0 *self) {
     }
 }
 
-extern void *data_ov000_021ccd64;
 extern const Ov014Blk12 data_ov014_02216bf4;
 extern const Ov014Blk12 data_ov014_02216c00;
 extern u8 data_ov014_02216cb8[];
 extern Ov014Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, Ov014Vec *pos, Ov014Rot16 *rot, u16 a);
 extern Ov014Actor *func_ov000_0219bf90(void);
-extern void MTX_Identity33_(Ov014Mtx33 *m);
-extern void MTX_RotX33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_RotY33_(Ov014Mtx33 *m, s32 s, s32 c);
-extern void MTX_Concat33(Ov014Mtx33 *a, Ov014Mtx33 *b, Ov014Mtx33 *out);
-extern void MTX_MultVec33(const Ov014Vec *v, const Ov014Mtx33 *m, Ov014Vec *out);
-extern void VEC_MultAdd(s32 a, const Ov014Vec *v1, const Ov014Vec *v2, Ov014Vec *out);
 
 Ov014Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
     Ov014Vec v;
@@ -60,13 +53,13 @@ Ov014Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
     step = -0x5554 / cnt;
     ang = step * (u16)((self->unk_144 + self->unk_14c) % cnt) + 0x2aaa;
     *(Ov014Blk12 *)&off = data_ov014_02216c00;
-    MTX_Identity33_(&m);
-    MTX_RotX33_(&m, OV014_SIN(0xe000), OV014_COS(0xe000));
+    MTX_Identity33_((MtxFx33 *)&m);
+    MTX_RotX33_((MtxFx33 *)&m, OV014_SIN(0xe000), OV014_COS(0xe000));
     if (ang != 0) {
-        MTX_RotY33_(&m2, OV014_SIN(ang), OV014_COS(ang));
-        MTX_Concat33(&m2, &m, &m);
+        MTX_RotY33_((MtxFx33 *)&m2, OV014_SIN(ang), OV014_COS(ang));
+        MTX_Concat33((MtxFx33 *)&m2, (MtxFx33 *)&m, (MtxFx33 *)&m);
     }
-    MTX_MultVec33(&off, &m, &v);
+    MTX_MultVec33(&off, (MtxFx33 *)&m, &v);
     VEC_MultAdd(0x3000, &v, &base, &v);
     rot.x = 0xe001;
     rot.z = 0;
@@ -96,7 +89,6 @@ Ov014Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
 }
 
 extern const Ov014Vec data_ov014_02216c0c;
-extern void VEC_Normalize(const Ov014Vec *src, Ov014Vec *dst);
 
 Ov014Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self) {
     Ov014Vec pos;

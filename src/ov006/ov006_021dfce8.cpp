@@ -8,7 +8,7 @@ typedef struct ov006_Icon021dfce8 {
     u8 unk6[8];
     u8 unkE;
     u8 unkF[0xd];
-    ov006_Model *unk1C;
+    Model *unk1C;
 } ov006_Icon021dfce8;
 
 typedef struct ov006_Vec021dfce8 {
@@ -22,7 +22,7 @@ typedef struct ov006_Item021dfce8 {
     u8 unk4;
     u8 unk5;
     ov006_Vec021dfce8 unk8;
-    ov006_Model *unk14;
+    Model *unk14;
     ov006_Icon021dfce8 *unk18;
 } ov006_Item021dfce8;
 
@@ -66,7 +66,7 @@ extern char data_0214b105[];
 void PlayTime_Clear(void *p);
 void *func_02035d5c(const char *a);
 void *func_02034d88(void *a, const char *b);
-void func_02041c34(ov006_Model *m, int a, void *cb, int b);
+void func_02041c34(Model *m, int a, void *cb, int b);
 void *func_ov006_021dd5dc(void *self, u16 *flag, void *oam, u16 *count);
 void func_ov006_021df19c(ov006_Panel021dfce8 *p);
 
@@ -81,7 +81,7 @@ void func_ov006_021dfce8(ov006_Unk021dfce8 *self) {
     ov006_Icon021dfce8 *icon;
     ov006_Panel021dfce8 *panel;
     void *res;
-    ov006_Model *m1;
+    Model *m1;
 
     item = (ov006_Item021dfce8 *)Heap_Alloc(sizeof(ov006_Item021dfce8));
     if (item != NULL) {
@@ -105,34 +105,34 @@ void func_ov006_021dfce8(ov006_Unk021dfce8 *self) {
     }
     item->unk18 = icon;
     res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-    m1 = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
+    m1 = (Model *)Heap_Alloc(sizeof(Model));
     if (m1 != NULL) {
         const char *name = data_0208cc94;
-        func_02041218(m1->unk88);
+        func_02041218(&m1->pltt);
         func_02041440(m1, name, 0);
     }
     icon->unk1C = m1;
     func_020417e0(m1, res);
-    icon->unk1C->unk6C |= 2;
+    icon->unk1C->flags |= 2;
     func_02041d9c(icon->unk1C, 0, 0x1e);
     func_02041c34(icon->unk1C, 0x1e, (void *)func_ov006_021dd5dc, 0);
     func_02041d9c(icon->unk1C, 0, 0x1f);
     func_02041c34(icon->unk1C, 0x1f, (void *)func_ov006_021dd5dc, 0);
     func_02041d9c(icon->unk1C, 0, 0x24);
     func_02041c34(icon->unk1C, 0x24, (void *)func_ov006_021dd5dc, 0);
-    icon->unk1C->unk6C |= 0x80000;
-    icon->unk1C->unk6C = (icon->unk1C->unk6C & ~0x7c) | 0x78;
-    m1 = (ov006_Model *)Heap_Alloc(sizeof(ov006_Model));
+    icon->unk1C->flags |= 0x80000;
+    icon->unk1C->flags = (icon->unk1C->flags & ~0x7c) | 0x78;
+    m1 = (Model *)Heap_Alloc(sizeof(Model));
     if (m1 != NULL) {
         const char *name = data_0208cb7c;
-        func_02041218(m1->unk88);
+        func_02041218(&m1->pltt);
         func_02041440(m1, name, 0);
-        STD_CopyString(m1->unk2C, data_0214b105);
+        STD_CopyString(m1->name, data_0214b105);
     }
     item->unk14 = m1;
     func_020417e0(item->unk14, func_02035de0(data_0214b105, data_0208cb7c));
-    item->unk14->unk6C |= 2;
-    item->unk14->unk6C |= 0x80000;
+    item->unk14->flags |= 2;
+    item->unk14->flags |= 0x80000;
     func_02041d9c(item->unk14, 0, 0xd);
     func_02041d9c(item->unk14, 0, 0xf);
     self->unk1C->unk8.z = -0x1ccd;

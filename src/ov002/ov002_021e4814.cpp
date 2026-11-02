@@ -11,7 +11,7 @@ void func_ov002_021e4814(void *self, u8 *src) {
     MI_CpuCopy8(src, (u8 *)self + 0x8, 4);
     p = src + 4;
     {
-        u32 saved;
+        void *saved;
         HEAP_PUSH(saved);
         if (FIELD(self, 0xc, void *) != NULL) {
             Heap_FreeArray(FIELD(self, 0xc, void *));
@@ -23,8 +23,8 @@ void func_ov002_021e4814(void *self, u8 *src) {
     MI_CpuCopy8(p, FIELD(self, 0xc, void *), FIELD(self, 0x8, s32) << 2);
     p += FIELD(self, 0x8, s32) * 4;
     FIELD(self, 0x10, u8 *) = p;
-    FIELD(self, 0x14, u8 *) = p + (STD_GetStringLength(p) + 1);
-    STD_GetStringLength(FIELD(self, 0x14, u8 *));
+    FIELD(self, 0x14, u8 *) = p + (STD_GetStringLength((char *)p) + 1);
+    STD_GetStringLength((char *)FIELD(self, 0x14, u8 *));
 }
 
 }

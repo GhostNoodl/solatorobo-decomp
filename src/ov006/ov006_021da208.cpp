@@ -69,7 +69,6 @@ typedef struct ov006_Task021da208 {
 
 extern "C" {
 
-extern void *data_02149ef8;
 extern void *data_ov000_021cac60;
 extern void *data_ov000_021cad50;
 extern void *data_ov000_021cae48;
@@ -86,10 +85,8 @@ extern const ov006_Price021da208 data_ov006_021eb7b4[];
 extern const ov006_Price021da208 data_ov006_021eb7c4[];
 extern const ov006_Price021da208 data_ov006_021eb7e4;
 
-void *MsgRes_GetString(void *a, int id);
 void func_ov000_02157c90(void *a, const void *b);
 void func_ov000_02157d2c(void *a, const void *b);
-int func_ov000_02154b58(void *a, u16 b);
 void func_ov000_021c3af4(void *self);
 void func_ov000_021c54f4(void *self);
 void func_ov000_021c55e8(void *self, const void *a);
@@ -268,7 +265,7 @@ void func_ov006_021da208(ov006_Task021da208 *self) {
     self->unk10->flags &= ~0x2000000;
     {
         ov006_Window *w = self->unk10;
-        VCALL(w, A8, func_ov000_02154b58(w, 0));
+        VCALL(w, a8, func_ov000_02154b58(w, 0));
     }
     self->unk10->flags |= 4;
     VCALL(self->unk10, 08);
@@ -329,7 +326,7 @@ void func_ov006_021da208(ov006_Task021da208 *self) {
     self->unk20->flags |= 0x20000000;
     self->unk20->flags |= 0x80000000;
     ov006_SetPos(self->unk20, 0x100, 0, -0xcd);
-    VCALL(self->unk20, F4, 1, MsgRes_GetString(res, 0x36));
+    VCALL(self->unk20, f4, 1, MsgRes_GetString(res, 0x36));
     VCALL(self->unk20, 08);
     self->unk20->flags |= 2;
 

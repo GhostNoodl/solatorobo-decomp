@@ -2,10 +2,9 @@
 
 extern "C" {
 
-extern VFunc data_ov002_021efc24[];
 
 Task50 *Ov002TaskVt_021efc24_Dtor(Task50 *self) {
-    u32 saved;
+    void *saved;
     *(VFunc **)self = data_ov002_021efc24;
     HEAP_PUSH(saved);
     Task_deleteModel(self);

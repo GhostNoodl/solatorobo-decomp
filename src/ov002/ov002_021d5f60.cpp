@@ -4,7 +4,6 @@ extern "C" {
 
 void func_ov002_021e3620(void *self, void *a, s32 b);
 
-BOOL func_ov000_0219bf90(void);
 
 void func_ov000_021b1d28(void);
 
@@ -116,7 +115,7 @@ void func_ov002_021d60dc(void *self) {
         u16 id;
         void *x;
         {
-            u32 saved;
+            void *saved;
             HEAP_PUSH(saved);
             DELETE_VOBJ(FIELD(self, 0x5c, VObject *));
             HEAP_POP(saved);

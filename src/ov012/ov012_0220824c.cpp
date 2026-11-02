@@ -13,7 +13,6 @@ extern char data_ov012_0220b33b[];
 extern char data_ov012_0220b341[];
 extern void func_ov000_021911c8(void *p, s32 a);
 extern void func_0204a028(void *a, s32 b, Ov012Vec *c, s32 d);
-extern u16 func_01ffc128(u16 a, u16 b, s32 c, s32 d, s32 e);
 
 struct Ov012Rot8294 {
     u16 x;
@@ -88,7 +87,7 @@ void func_ov012_02208294(Ov012Actor *self) {
             self->unk_40->state++;
         }
         self->unk_94_1 = 1;
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         break;
     case 4:
         if (func_ov000_02191120(self->unk_38)) {

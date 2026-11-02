@@ -17,7 +17,6 @@ s32 func_ov014_022128f4(Ov014Act_0221267c *self, Ov014Msg *msg) {
 }
 
 
-extern void *data_ov000_021ccd68;
 extern u8 *func_ov000_0219bf90(void);
 extern Ov014Actor *Actor_GetTarget(Ov014Obj *self);
 extern Ov014Actor *ActorMgr_GetActor(void *mgr, u16 id);

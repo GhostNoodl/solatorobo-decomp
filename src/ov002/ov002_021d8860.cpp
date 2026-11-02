@@ -43,7 +43,7 @@ void func_ov002_021d8860(void *self) {
         v[0] = FX_MUL((FIELD(self, 0x50, Bits50).x - FIELD(self, 0x52, Bits52).x * 2) << 11, 0x28f) - 0x147;
         v[1] = 0;
         v[2] = FX_MUL((FIELD(self, 0x50, Bits50).z - FIELD(self, 0x52, Bits52).z * 2) << 11, 0x28f) - 0x147;
-        MTX_MultVec33(v, m, v);
+        MTX_MultVec33((VecFx32 *)v, (MtxFx33 *)m, (VecFx32 *)v);
         out[0] += v[0];
         out[1] = 0x266;
         out[2] += v[2];

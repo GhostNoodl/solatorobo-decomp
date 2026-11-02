@@ -146,6 +146,8 @@ extern GfxMgr *data_02097ce0;
 extern GfxSys *data_02097d48;
 extern const GfxFontEntry data_020827f8[9];
 
+void *func_0203a4c0(GfxMgr *mgr); // the current font
+
 #ifdef __cplusplus
 }
 #endif

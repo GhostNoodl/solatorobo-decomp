@@ -4,10 +4,8 @@ extern "C" {
 
 extern char data_ov013_0220be7c[];
 extern char data_ov013_0220be82[];
-extern void *data_ov000_021ccd68;
 extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void Actor_TurnToActor(Ov013Actor *self, Ov013Actor *t, s32 a);
-extern void Actor_Move(Ov013Obj *self, s32 a);
 
 static inline Ov013Actor *Ov013_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -17,12 +15,8 @@ static inline Ov013Actor *Ov013_FindActor(u16 id) {
 }
 extern char data_ov013_0220bea0[];
 extern char data_ov013_0220bea6[];
-extern void VEC_Add(const Ov013Vec *a, const Ov013Vec *b, Ov013Vec *out);
 extern void Actor_MoveToPos(Ov013Actor *self, Ov013Vec *v, s32 a);
 
-extern void func_ov003_021d112c(Ov013Actor *self);
-extern s32 Rand_PlusMinus(s32 a);
-extern s32 Rand_UpTo(s32 a);
 
 extern void *ActorMgr_GetGroup(void *mgr, s32 a);
 extern u16 ActorGroup_CountKind(void *p, s32 a);
@@ -85,8 +79,8 @@ void Ov013ActVt_0220bc80_Start(Ov013ActVt_0220bc80 *self) {
     v = &self->unk_f4;
     Ov013_VecCopy(v, &self->pos);
     r = Rand_UpTo(0x800) + 0x3800;
-    v->x += Ov013_FxMul(r, OV013_SIN(self->rot[1]));
-    v->z += Ov013_FxMul(r, OV013_COS(self->rot[1]));
+    v->x += FX_Mul(r, OV013_SIN(self->rot[1]));
+    v->z += FX_Mul(r, OV013_COS(self->rot[1]));
     self->unk_100.y = v->y;
     self->unk_b8.y = v->y;
     self->unk_100.x = v->x;
@@ -157,9 +151,9 @@ void func_ov013_02209ed8(Ov013ActVt_0220bc80 *self) {
     d.x = self->unk_100.x - self->pos.x;
     d.y = self->unk_100.y - self->pos.y;
     d.z = self->unk_100.z - self->pos.z;
-    d.x = Ov013_FxMul(d.x, 0x33);
-    d.y = Ov013_FxMul(d.y, 0x33);
-    d.z = Ov013_FxMul(d.z, 0x33);
+    d.x = FX_Mul(d.x, 0x33);
+    d.y = FX_Mul(d.y, 0x33);
+    d.z = FX_Mul(d.z, 0x33);
     d.y *= 3;
     VEC_Add(&self->pos, &d, &self->pos);
     func_ov000_021987b8(self->unk_48, 1, 0, 0);
@@ -182,7 +176,7 @@ void func_ov013_0220a080(Ov013Actor *self) {
     self->unk_9c = self->unk_b0->unk_00;
     v = self->unk_b8;
     Actor_MoveToPos(self, &v, self->unk_b0->unk_02);
-    self->pos.y += Ov013_FxMul(v.y + 0x1800 - self->pos.y, 0xcd);
+    self->pos.y += FX_Mul(v.y + 0x1800 - self->pos.y, 0xcd);
     func_ov000_021987b8(self->unk_48, 1, 0, 0);
 }
 
@@ -238,7 +232,7 @@ void func_ov013_0220a17c(Ov013Actor *self) {
         break;
     }
     }
-    Actor_Move(self, 0);
+    Actor_Move((Actor *)self, 0);
     func_ov000_021987b8(self->unk_48, 0, 0, 0);
 }
 

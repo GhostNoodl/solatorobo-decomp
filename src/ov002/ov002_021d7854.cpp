@@ -28,15 +28,15 @@ void func_ov002_021d788c(void *self) {
 }
 
 void *Ov002Vt_021efe5c_Dtor(void *self) {
-    func_02041558((u8 *)self + 0x74);
-    func_02041278((u8 *)self + 0xfc);
+    func_02041558((Model *)((u8 *)self + 0x74));
+    func_02041278((PlttRes *)((u8 *)self + 0xfc));
     Ov002Vt_021efe3c_Dtor((u8 *)self + 0x4);
     return self;
 }
 
 void *Ov002Vt_021efe5c_DtorDelete(void *self) {
-    func_02041558((u8 *)self + 0x74);
-    func_02041278((u8 *)self + 0xfc);
+    func_02041558((Model *)((u8 *)self + 0x74));
+    func_02041278((PlttRes *)((u8 *)self + 0xfc));
     Ov002Vt_021efe3c_Dtor((u8 *)self + 0x4);
     Heap_Free(self);
     return self;

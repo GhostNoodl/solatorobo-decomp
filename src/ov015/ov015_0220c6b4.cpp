@@ -2,11 +2,8 @@
 
 extern "C" {
 
-extern void *data_02097e4c;
 extern u8 data_ov015_02212e20[];
 extern u8 data_ov015_02212e68[];
-void *func_02049a48(void *a, int b, int c, int d, int e);
-s32 FX_Div(s32 a, s32 b);
 u8 *func_02066774(void *a, void *b, int c, void *d);
 
 BOOL Ov015FishState1c_Exit(Ov015FishState1c *self, Ov015Fish *p) {
@@ -75,7 +72,7 @@ BOOL func_ov015_0220c810(Ov015FishState1c *self) {
     if (c < 0 || y >= -0xa000) {
         s32 t = FX_Div(0x4b0000 - (self->unk_0c << 12), 0x4b0000);
         Ov015Fish *o = self->unk_18;
-        o->unk_c0.unk_1c = Ov015_FxMul(t, o->unk_c0.unk_1c);
+        o->unk_c0.unk_1c = FX_Mul(t, o->unk_c0.unk_1c);
         r = FALSE;
     }
     return r;

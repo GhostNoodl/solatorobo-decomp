@@ -6,7 +6,7 @@ void func_ov002_021d1e44(void) {
 }
 
 void func_ov002_021d1e48(Task50 *self) {
-    u16 keys = FIELD(data_02097dc8, 0x12, u16);
+    u16 keys = data_02097dc8->trig;
     void *ev = FIELD(self, 0x44, void *);
     if (ev != NULL) {
         if (!(keys & 2)) {
@@ -46,7 +46,6 @@ void func_ov002_021d1f20(Task50 *self) {
     }
 }
 
-void func_02041c20(void *a, int b, s32 c);
 
 static inline void *ov002_Model_GetPart(void *self, int idx) {
     if (idx >= FIELD(self, 0x80, s32)) {
@@ -71,7 +70,7 @@ static inline void ov002_Model_PlayPartR(void *model, int idx, void *&res) {
     } else {
         anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
     }
-    func_02042628(model, anim, part, 0);
+    func_02042628((Model *)model, anim, (ModelPart *)part, 0);
 }
 
 static inline void ov002_Model_PlayPart(void *model, int idx) {
@@ -110,22 +109,22 @@ void func_ov002_021d1f70(void *self) {
     ov002_Model_PlayPart(m, 4);
     ov002_SetPos(FIELD(self, 0x48, void *), (x + 0x10) << 12, y << 12);
     FIELD(FIELD(self, 0x48, void *), 0x150, s32) = z;
-    func_02041c20(FIELD(self, 0x48, void *), 6, v44);
+    func_02041c20((Model *)FIELD(self, 0x48, void *), 6, (void *)v44);
     ov002_Model_PlayPart(FIELD(self, 0x48, void *), 6);
-    func_02041c20(FIELD(self, 0x48, void *), 6, 0);
+    func_02041c20((Model *)FIELD(self, 0x48, void *), 6, (void *)0);
     bx = FIELD(self, 0x50, s32) + 0x50;
     fy = (FIELD(self, 0x54, s32) - 0x44) << 12;
     FIELD(FIELD(self, 0x48, void *), 0x150, s32) = FIELD(self, 0x58, s32) + 0x20;
     ov002_SetPos(FIELD(self, 0x48, void *), bx << 12, fy);
-    func_02041c20(FIELD(self, 0x48, void *), 6, n - d);
+    func_02041c20((Model *)FIELD(self, 0x48, void *), 6, (void *)(n - d));
     ov002_Model_PlayPart(FIELD(self, 0x48, void *), 6);
     ov002_SetPos(FIELD(self, 0x48, void *), (bx + 10) << 12, fy);
     num = FIELD(self, 0x48, void *);
     ov002_Model_PlayPartR(num, 8, res);
     ov002_SetPos(FIELD(self, 0x48, void *), (bx + 0x14) << 12, fy);
-    func_02041c20(FIELD(self, 0x48, void *), 6, n);
+    func_02041c20((Model *)FIELD(self, 0x48, void *), 6, (void *)n);
     ov002_Model_PlayPart(FIELD(self, 0x48, void *), 6);
-    func_02041c20(FIELD(self, 0x48, void *), 6, 0);
+    func_02041c20((Model *)FIELD(self, 0x48, void *), 6, (void *)0);
 }
 
 }

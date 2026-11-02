@@ -2,7 +2,6 @@
 
 extern "C" {
 
-extern void *data_ov000_021ccd68;
 extern Ov009Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov009Actor *a);
 extern void func_0203f364(Ov009Sub48 *p);
@@ -80,18 +79,15 @@ void Ov009ActVt_02216a00_Update(Ov009ActVt_02216a00 *self) {
     self->unk_40->flags |= 0x8000;
     self->unk_b6 = 0x5a;
 }
-extern u8 data_ov009_02216aa4[];
-extern u8 data_ov009_02216aaa[];
-extern u8 data_ov009_02216ab0[];
+extern char data_ov009_02216aa4[];
+extern char data_ov009_02216aaa[];
+extern char data_ov009_02216ab0[];
 extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
 extern Ov009Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern Ov009Actor *func_ov003_021d69a0(Ov009Actor *self, u16 kind, s32 a);
 extern void func_01ffc9fc(Ov009Vec *out, const void *a, s32 b);
-extern void VEC_Add(const Ov009Vec *a, const Ov009Vec *b, Ov009Vec *out);
-extern s32 Rand_UpTo(s32 max);
-extern void Actor_Move(Ov009Obj *self, s32 turn);
 extern Ov009V *func_02065f88(s32 id, const Ov009Vec *pos);
 static inline Ov009Actor *Ov009_FindActor5b(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -137,7 +133,7 @@ void func_ov009_021fa934(Ov009ActVt_02216a00 *self) {
         u16 a;
         Ov009Actor *g;
         u16 lim;
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         func_ov000_021987b8(self->unk_48, 0, 0, 0);
         if (!(self->unk_48->unk_50 & 0x20000000)) {
             return;
@@ -149,7 +145,7 @@ void func_ov009_021fa934(Ov009ActVt_02216a00 *self) {
         func_02065f88(0x66, &self->pos)->v0c(0x1c00);
         g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
         lim = 4;
-        if (data_ov000_021ccd54->unk_ca == 2) {
+        if (data_ov000_021ccd54->unk_ca.c[0] == 2) {
             lim = 3;
         }
         if (g != NULL && FLD(u16, g, 0x16) < lim) {

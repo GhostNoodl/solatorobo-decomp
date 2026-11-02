@@ -3,7 +3,6 @@
 extern "C" {
 
 extern void *data_02097e4c;
-extern void *data_ov000_021ccd68;
 extern char data_ov013_0220ae4e[];
 extern char data_ov013_0220b5b8[];
 extern char data_ov013_0220b5ca[];
@@ -18,8 +17,6 @@ extern Ov013Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(Ov013Actor *a, u16 id);
 extern Ov013Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
-extern u16 func_01ffc128(u16 target, u16 cur, s32 rate, s32 a, s32 b);
-extern void Actor_Move(Ov013Obj *self, s32 a);
 s32 func_ov013_021fc400(Ov013Actor *self);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
@@ -164,7 +161,6 @@ extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern Ov013Vec func_ov003_021dadc0(const Ov013Vec *a, const Ov013Vec *b);
 extern void Actor_TurnToPos(Ov013Actor *self, Ov013Vec *p, s32 a);
 extern void Actor_MoveToPos(Ov013Actor *self, Ov013Vec *v, s32 a);
-extern s32 FX_Div(s32 a, s32 b);
 
 static inline Ov013Actor *Ov013_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -279,15 +275,15 @@ void func_ov013_021faae8(Ov013Actor *self) {
         }
         break;
     case 0x15:
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         if (func_ov000_02191120(self->unk_38)) {
             self->unk_40->state = 0x16;
             self->unk_40->timer = 0;
         }
         break;
     case 0x16:
-        Actor_Move(self, 0);
-        self->unk_9c = Ov013_FxMul(self->unk_9c, 0xf33);
+        Actor_Move((Actor *)self, 0);
+        self->unk_9c = FX_Mul(self->unk_9c, 0xf33);
         {
             Ov013Sub40 *q = self->unk_40;
             q->timer++;
@@ -305,7 +301,7 @@ void func_ov013_021faae8(Ov013Actor *self) {
         self->unk_40->timer = 0;
         break;
     case 0x17:
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         if (self->pos.y > 0x3000) {
             Ov013Sub44 *n = self->unk_44;
             n->unk_22_0 = 0;
@@ -345,7 +341,7 @@ void func_ov013_021faae8(Ov013Actor *self) {
     case 0x63:
         if (self->pos.y > 0) {
             Ov013Sub44 *n;
-            Actor_Move(self, 0);
+            Actor_Move((Actor *)self, 0);
             if (self->pos.y >= 0x3000) {
                 break;
             }

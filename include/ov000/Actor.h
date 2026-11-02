@@ -188,19 +188,19 @@ extern "C" {
 void MI_CpuCopy8(const void *src, void *dst, u32 size);
 void ActorGroup_Add(ActorGroup *group, Actor *actor);
 void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-u16 FX_Atan2(s32 x, s32 z);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 void func_ov000_02190e98(void *a, u32 b, s16 c, u8 d);
-BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
+// Model_02190a30.cpp defines it as (Model0218fe1c *, const char *, s16 blend, u8 force); callers
+// here pass the model untyped and the last two as words.
+BOOL func_ov000_02190cb0(void *model, const char *name, s32 blend, s32 force);
 void func_ov000_021915a0(void *a);
-void MI_Copy36B(const void *src, void *dst);
-extern u8 data_ov000_021cc404[];
+extern char data_ov000_021cc404[];
 BOOL func_01ffc4ec(VecFx32 *v, s32 speed, s32 b);
 u16 Pad_LookupDir(void *rng, s32 range);
 void Actor_Move(Actor *self, s32 turn);
 void func_ov000_0218bed8(void *a, s32 b, Actor *actor);
 extern void *data_ov000_021ccd64;
-BOOL func_01ffc198(void *pos, void *target, s32 dist);
+BOOL func_01ffc198(VecFx32 *pos, VecFx32 *target, fx32 dist);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, u16 b);
 }
 

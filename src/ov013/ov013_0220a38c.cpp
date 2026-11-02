@@ -103,13 +103,10 @@ void Ov013ActEx_0220a4e0_Start(Ov013Actor *self) {
     self->unk_48->unk_48 = self->unk_64;
 }
 
-extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern char data_ov013_0220bfdc[];
 extern Ov013Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern u16 FX_Atan2(s32 y, s32 x);
 extern void HitSphere_Link(void *p);
-extern void Actor_Move(Ov013Obj *self, s32 a);
 extern Ov013V *func_02065f88(s32 id, Ov013Vec *pos);
 extern Ov013Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov013Actor *a);
@@ -160,8 +157,8 @@ void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
         self->unk_a8 = 0;
         d = Ov013_DistXZ3(&self->pos, &self->unk_d4);
         ang = FX_Atan2(d, self->unk_d4.y - self->pos.y);
-        self->unk_9c = Ov013_FxMul(OV013_SIN(ang), 0x214);
-        self->unk_a0 = Ov013_FxMul(OV013_COS(ang), 0x214);
+        self->unk_9c = FX_Mul(OV013_SIN(ang), 0x214);
+        self->unk_a0 = FX_Mul(OV013_COS(ang), 0x214);
         self->rot[0] = FX_Atan2(self->pos.y - self->unk_d4.y, d);
         self->unk_98 = self->rot[1];
         self->unk_ce = 0x12c;
@@ -173,7 +170,7 @@ void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
             m->unk_9a_3 = 1;
             HitSphere_Link(m);
             if (self->unk_d0 != 0) {
-                self->unk_48->unk_38 = Ov013_FxMul(self->unk_d0, self->unk_64);
+                self->unk_48->unk_38 = FX_Mul(self->unk_d0, self->unk_64);
             }
         }
         if (self->unk_44 != NULL) {
@@ -185,7 +182,7 @@ void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
     }
     case 1: {
         Ov013Sub48 *m;
-        Actor_Move(self, 0);
+        Actor_Move((Actor *)self, 0);
         if (self->unk_ce-- == 0) {
             func_ov000_02198360(self->unk_40, 10, 0);
             return;

@@ -29,7 +29,6 @@ typedef struct ov006_Prop6ca4 {
 
 extern "C" {
 
-extern ov006_Cam6ca4 *data_ov000_021ccd54;
 extern VecFx32 data_ov006_021eb8ec;
 extern VecFx32 data_ov006_021eb8d4;
 extern VecFx32 data_ov006_021eb8e0;
@@ -48,7 +47,7 @@ BOOL Ov006ActVt_021ec4f4_Draw(ov006_Prop6ca4 *self) {
     const ov006_Cam6ca4 *cam;
     self->unk19C_0 = 0;
     ret = FALSE;
-    cam = data_ov000_021ccd54;
+    cam = (const ov006_Cam6ca4 *)data_ov000_021ccd54;
     {
         fx32 cx = cam->pos.x;
         fx32 cy = cam->pos.y;
