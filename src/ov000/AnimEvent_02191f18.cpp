@@ -38,10 +38,10 @@ static inline Actor *FindActor_02191f18(u16 id) {
 }
 
 static inline void SetOfs_02191f18(Actor *a, s32 w, s32 x, s32 y, s32 z) {
-    a->unk_9c = w;
-    a->unk_a0 = x;
-    a->unk_a4 = y;
-    a->unk_a8 = z;
+    a->speed = w;
+    a->velY = x;
+    a->friction = y;
+    a->gravity = z;
 }
 
 static inline u16 CamYaw_02191f18(u8 *cam) {
@@ -155,14 +155,14 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
     }
     case 7:
         if (actor != NULL) {
-            actor->unk_98 = (u16)p[0] + actor->rot_y;
+            actor->moveYaw = (u16)p[0] + actor->rot_y;
             SetOfs_02191f18(actor, p[1] << 4, p[2] << 4, p[3] << 4, p[4] << 4);
         }
         p += 5;
         break;
     case 23:
         if (actor != NULL) {
-            actor->unk_98 = (u16)p[0] + CamYaw_02191f18((u8 *)data_ov000_021ccd54 + 0xf4);
+            actor->moveYaw = (u16)p[0] + CamYaw_02191f18((u8 *)data_ov000_021ccd54 + 0xf4);
             SetOfs_02191f18(actor, p[1] << 4, p[2] << 4, p[3] << 4, p[4] << 4);
         }
         p += 5;
@@ -385,7 +385,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
         if (actor != NULL) {
             func_020627a0(actor->kind, actor->id);
             func_020627dc(5);
-            data_ov000_021ccd54->unk_ac = 1;
+            data_ov000_021ccd54->stageFlags = 1;
         }
         break;
     }

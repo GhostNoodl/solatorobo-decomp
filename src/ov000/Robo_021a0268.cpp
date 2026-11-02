@@ -77,7 +77,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
     }
     if (self->unk_b24_1) {
         self->model = (Model0218fe1c *)((u8 *)self + 0x368);
-        self->unk_48 = (ActorSub48 *)((u8 *)self + 0x6c0);
+        self->hit = (ActorSub48 *)((u8 *)self + 0x6c0);
         if (self->unk_b24_5 == 2) {
             self->unk_b08 = 0x15c;
         } else {
@@ -89,7 +89,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         self->unk_b08 += func_0206d37c(data_0214a424, 3) * 4;
     } else {
         self->model = (Model0218fe1c *)&self->unk_ac;
-        self->unk_48 = (ActorSub48 *)((u8 *)self + 0x2cc);
+        self->hit = (ActorSub48 *)((u8 *)self + 0x2cc);
         self->unk_b08 = 0x19a;
     }
     if (self->unk_b0c != 0x1000) {
@@ -108,22 +108,22 @@ void func_ov000_021a0268(Robo021ca458 *self) {
             }
         }
     }
-    s = ((ActorSub40 *)self->unk_40);
+    s = ((ActorSub40 *)self->fsm);
     if (s->current != 0x1f) {
         if (s->flags & 1) {
             Actor *o = GetObj021a0268(self->unk_b1c);
             if (o != NULL) {
                 Msg021a0268 m;
                 m.pos = self->pos;
-                m.pos.y += self->unk_6c;
+                m.pos.y += self->centerY;
                 m.rot[0] = o->rot_x;
                 m.rot[1] = o->rot_y;
                 m.rot[2] = o->rot_z;
                 m.z = 0;
                 Actor_SendMsg((Actor *)o, self->id, 7, 1, 0x18, &m);
                 func_ov000_0218d46c(o, self->id, 10);
-                if (((u8 *)o->unk_4c) != NULL) {
-                    LFLD(C18_021a0268, ((u8 *)o->unk_4c), 0x18).b0 = 0;
+                if (((u8 *)o->targetObj) != NULL) {
+                    LFLD(C18_021a0268, ((u8 *)o->targetObj), 0x18).b0 = 0;
                 }
             }
             Reset021a0268(self);
@@ -139,7 +139,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
             func_ov000_02198360(s, 0x12, 1);
         }
     }
-    s = ((ActorSub40 *)self->unk_40);
+    s = ((ActorSub40 *)self->fsm);
     switch (s->current) {
     case 0x16:
         func_ov000_021a09b8((u8 *)self, data_ov000_021ca100, 0xb);
@@ -151,7 +151,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         if (self->unk_b24_12 != 0) {
             break;
         }
-        s = ((ActorSub40 *)self->unk_40);
+        s = ((ActorSub40 *)self->fsm);
         if (!(s->flags & 8)) {
             break;
         }
@@ -169,21 +169,21 @@ void func_ov000_021a0268(Robo021ca458 *self) {
             func_ov000_02198360(s, 0x1a, 0);
             break;
         }
-        s = ((ActorSub40 *)self->unk_40);
-        if ((s->flags & 0x2000000) && self->unk_a0 <= 0x19a &&
+        s = ((ActorSub40 *)self->fsm);
+        if ((s->flags & 0x2000000) && self->velY <= 0x19a &&
             self->pos.y - self->unk_af4 >= -0x2d000 && self->unk_b1c == 0xffff &&
-            !(self->unk_48->unk_50 & 0x20000000)) {
+            !(self->hit->unk_50 & 0x20000000)) {
             func_ov000_02198360(s, 0x19, 0);
             break;
         }
         if (s->flags & 8) {
-            u32 f = self->unk_48->unk_50;
+            u32 f = self->hit->unk_50;
             if ((f & 0x20000000) && !(f & 0x400)) {
                 func_ov000_02198360(s, 3, 0);
                 break;
             }
             if (self->unk_b24_1 && self->unk_b24_5 == 0 &&
-                self->unk_b24_12 == 0 && self->unk_a0 <= 0x19a &&
+                self->unk_b24_12 == 0 && self->velY <= 0x19a &&
                 !self->unk_b24_17 && !self->unk_b24_18) {
                 func_ov000_02198360(s, 0x17, 0);
                 break;
@@ -192,7 +192,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
         if (GIdle021a0268()) {
             break;
         }
-        if ((self->unk_48->unk_54 & 0x20000000) && !self->unk_b28_3) {
+        if ((self->hit->unk_54 & 0x20000000) && !self->unk_b28_3) {
             break;
         }
         if (self->unk_b24_1) {
@@ -214,7 +214,7 @@ void func_ov000_021a0268(Robo021ca458 *self) {
             break;
         }
     case 2:
-        if (self->unk_48->unk_50 & 0x20000000) {
+        if (self->hit->unk_50 & 0x20000000) {
             if (func_ov000_021a09b8((u8 *)self, data_ov000_021ca168, 0x12)) {
                 break;
             }
@@ -223,11 +223,11 @@ void func_ov000_021a0268(Robo021ca458 *self) {
                 break;
             }
         }
-        s = ((ActorSub40 *)self->unk_40);
+        s = ((ActorSub40 *)self->fsm);
         if ((u8)(s->current + 0xff) > 1) {
             break;
         }
-        if (self->unk_48->unk_50 & 0x20000000) {
+        if (self->hit->unk_50 & 0x20000000) {
             if (s->flags & 4) {
                 func_ov000_02198360(s, 2, 0);
             } else {
@@ -239,19 +239,19 @@ void func_ov000_021a0268(Robo021ca458 *self) {
             BOOL ok = TRUE;
             if (!GIdle021a0268()) {
                 if (self->unk_b24_1 ||
-                    ((self->unk_48->unk_54 & 0x20000000) && !self->unk_b28_3)) {
-                    self->unk_9c = 0;
-                    self->unk_a8 = 0x52;
+                    ((self->hit->unk_54 & 0x20000000) && !self->unk_b28_3)) {
+                    self->speed = 0;
+                    self->gravity = 0x52;
                 } else {
                     ok = FALSE;
                 }
             }
             if (ok) {
-                func_ov000_02198360(((ActorSub40 *)self->unk_40), 4, 0);
+                func_ov000_02198360(((ActorSub40 *)self->fsm), 4, 0);
             }
         }
         break;
     }
-    func_ov000_0218d7e8(self, self->unk_40->current);
+    func_ov000_0218d7e8(self, self->fsm->current);
 }
 }

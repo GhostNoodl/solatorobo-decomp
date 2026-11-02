@@ -34,7 +34,7 @@ static inline s32 Ov009_GetAng(Ov009AngSrc *p) {
 }
 
 static inline BOOL Ov009Game_IsPaused(FieldState *g) {
-    return g->unk_d4 != 0;
+    return g->event != 0;
 }
 
 static inline Ov009Vec *Ov009_MaxScale(Ov009Actor *a) {

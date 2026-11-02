@@ -6,7 +6,7 @@
 #define HEAP_FREE(field)                                  \
     {                                                     \
         void *saved = data_02097dd0->cur;             \
-        data_02097dd0->cur = data_02097dd0->unk_08;   \
+        data_02097dd0->cur = data_02097dd0->heapHi;   \
         if ((field) != NULL) {                            \
             Heap_Free(field);                         \
             (field) = 0;                                  \

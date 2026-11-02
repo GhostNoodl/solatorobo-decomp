@@ -86,7 +86,7 @@ void func_0206f9dc(void) {
 
 void func_0206fa70(void) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (data_0214b160.res != NULL) {
         if (data_0214b160.res != NULL) {
             data_0214b160.res->DeletingDtor();

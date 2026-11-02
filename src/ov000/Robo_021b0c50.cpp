@@ -41,23 +41,23 @@ s32 Rand_PlusMinus(s32 max);
 s32 Rand_UpTo(s32 max);
 
 void func_ov000_021b0c50(Actor *self) {
-    switch (self->unk_40->st) {
+    switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov000_021cc6c6, 0x800, 0);
         func_ov000_0218996c(8, 0xc);
-        self->unk_9c = 0;
-        self->unk_a0 = 0;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0;
-        self->unk_40->st++;
+        self->speed = 0;
+        self->velY = 0;
+        self->friction = 0;
+        self->gravity = 0;
+        self->fsm->st++;
     case 1:
         if (func_ov000_02191120(self->model)) {
             switch (ROBO_FLAGS(self)->bit0) {
             default:
-                func_ov000_02198360(self->unk_40, 0x14, 0);
+                func_ov000_02198360(self->fsm, 0x14, 0);
                 break;
             case 0:
-                func_ov000_02198360(self->unk_40, 1, 0);
+                func_ov000_02198360(self->fsm, 1, 0);
                 break;
             }
         }
@@ -68,7 +68,7 @@ void func_ov000_021b0c50(Actor *self) {
 
 void func_ov000_021b0d04(Actor *self) {
     func_ov000_021ad130(self);
-    if (*self->hp == 0 && !(self->unk_40->timer & 0x1f)) {
+    if (*self->hp == 0 && !(self->fsm->timer & 0x1f)) {
         Effect021b0d04 *e = func_02065f88(0x38f, &self->pos);
         s32 a;
         s32 b;

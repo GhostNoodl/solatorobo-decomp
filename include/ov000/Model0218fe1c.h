@@ -94,31 +94,30 @@ typedef struct {
     AnimCtrl *unk_18;
     AnimCtrl *unk_1c;
     ResSet *unk_20;
-    u8 unk_24[0x54];
-    u32 unk_78;
-    u32 unk_7c;
-    u32 unk_80;
-    MtxFx33 unk_84;
-    s32 unk_a8;
-    s32 unk_ac;
-    s32 unk_b0;
+    u8 renderObj[0x54]; // NNSG3dRenderObj (NNS_G3dRenderObjInit / NNS_G3dDraw)
+    // base transform, set with NNS_G3dGlbSetBaseTrans / prmBaseRot / NNS_G3dGlbSetBaseScale when drawn
+    VecFx32 trans;
+    MtxFx33 rot;
+    VecFx32 scale;
     u16 actor_id; // owner actor for animation events (0xffff: none)
-    u8 unk_b6[0x4];
-    u16 unk_ba;
-    u16 unk_bc;
+    u16 color;  // material colour while blend != 0 (NNS_G3dGlbMaterialColorDiffAmb)
+    u16 color2; // blended toward color by blend / blendMax
+    u16 blend;  // blend frames left (counts down each update)
+    u16 blendMax;
     u8 alpha; // polygon alpha, 0x1f opaque
-    u8 unk_bf;
+    u8 bright; // diffuse brightness, 0x1f is full
     u8 unk_c0;
-    u8 unk_c1;
-    u16 unk_c2_0 : 1;
+    u8 polyId; // NNS_G3dGlbPolygonAttr polygonID (0: 5)
+    u16 visible : 1; // drawn only when set
     u16 unk_c2_1 : 1;
-    u16 unk_c2_2 : 2;
-    u16 unk_c2_4 : 1;
-    u16 unk_c2_5 : 1;
+    u16 invV : 1;  // billboard: rotate by the inverse view matrix
+    u16 flipX : 1; // with invV: mirror the x scale
+    u16 boxTest : 1; // draw only if the G3 box test of the model bounds passes
+    u16 clearInit : 1; // clear the render object's init callback after drawing
     u16 unk_c2_6 : 1;
-    u16 unk_c2_7 : 1;
-    u16 unk_c2_8 : 1;
-    u16 unk_c2_9 : 2;
+    u16 restoreMat : 1; // restore the material flags after a colour blend
+    u16 flushVP : 1; // NNS_G3dGlbFlushVP instead of NNS_G3dGlbFlushP
+    u16 cull : 2; // NNS_G3dGlbPolygonAttr cullMode
     u16 unk_c2_11 : 5;
     u16 unk_c4;
     u16 unk_c6;
@@ -126,11 +125,11 @@ typedef struct {
     u16 unk_ca;
     s16 unk_cc;
     u16 unk_ce;
-    AnimEventTable *unk_d0;
-    s16 *unk_d4;
-    s16 *unk_d8;
-    s16 *unk_dc;
-    void *unk_e0;
+    AnimEventTable *evTable; // named animation event scripts
+    s16 *evData; // the inline scripts after evTable's entries
+    s16 *evScript; // script of the current animation (looked up by name in evTable)
+    s16 *evCursor; // next event in evScript (frame number, then the command)
+    void *evFunc; // AnimEventFunc that runs one event (func_ov000_02191f18)
     u32 unk_e4;
 } Model0218fe1c;
 

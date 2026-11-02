@@ -56,8 +56,8 @@ void func_ov000_021971c4(VObj *obj) {
     ActorEx *self = (ActorEx *)obj;
     u32 none = 0xffff;
     s32 zero = 0;
-    u8 *tgt = (u8 *)Target_Get(((u8 *)self->unk_4c));
-    switch (self->unk_40->st) {
+    u8 *tgt = (u8 *)Target_Get(((u8 *)self->targetObj));
+    switch (self->fsm->st) {
     case 0:
         if (self->model != NULL) {
             func_ov000_02190cb0(self->model, data_ov000_021cc469, 0x1000, zero);
@@ -70,16 +70,16 @@ void func_ov000_021971c4(VObj *obj) {
                 if (a != NULL) {
                     func_ov000_0218d46c(a, self->id, 6);
                     a->target = none;
-                    if (((void *)a->unk_4c) != NULL) {
-                        Target_Set(((void *)a->unk_4c), self);
+                    if (((void *)a->targetObj) != NULL) {
+                        Target_Set(((void *)a->targetObj), self);
                     }
                 }
-            } else if (func_ov000_02199cd8(((u8 *)self->unk_4c), LFLD(u16, tgt, 0xe))) {
+            } else if (func_ov000_02199cd8(((u8 *)self->targetObj), LFLD(u16, tgt, 0xe))) {
                 obj->vfunc_8c();
-                self->unk_4c->unk_1c = none;
+                self->targetObj->target = none;
             }
         }
-        self->unk_40->st++;
+        self->fsm->st++;
         break;
     case 1:
         if (self->model != NULL && !func_ov000_02191120(self->model)) {
@@ -88,23 +88,23 @@ void func_ov000_021971c4(VObj *obj) {
         if (tgt != NULL) {
             Actor_SendMsg(tgt, self->id, 3, 1, zero, (const void *)zero);
         }
-        if (self->unk_4c->unk_01 == 8) {
+        if (self->targetObj->unk_01 == 8) {
             u8 *d = func_020704b4(self->kind);
             func_ov000_0219b400((u16 *)(d + 0x20), d + 0x24, 2, &self->pos, (u8 *)self + 0x7c, zero);
         }
         if (self->target != none) {
-            u8 *m = ((u8 *)self->unk_4c);
+            u8 *m = ((u8 *)self->targetObj);
             if (LFLD(u8, m, 2) != 0 && LFLD(u8, m, 2) != 7) {
                 LFLD(u16, m, 0x1c) = none;
             } else {
-                func_ov000_02198360(self->unk_40, 9, 0);
+                func_ov000_02198360(self->fsm, 9, 0);
             }
             self->target = none;
         } else {
-            self->unk_4c->unk_1c = none;
-            func_ov000_02198360(self->unk_40, 1, 0);
+            self->targetObj->target = none;
+            func_ov000_02198360(self->fsm, 1, 0);
         }
-        if (self->unk_4c->unk_02 == 5) {
+        if (self->targetObj->unk_02 == 5) {
             u8 idx = self->unk_17;
             s32 row;
             if (idx != 0xff) {
@@ -122,7 +122,7 @@ void func_ov000_021971c4(VObj *obj) {
         break;
     }
     if (tgt != NULL && self->target != none) {
-        func_ov000_02199bc8(((u8 *)self->unk_4c), &self->pos, 0, 0);
+        func_ov000_02199bc8(((u8 *)self->targetObj), &self->pos, 0, 0);
         self->rot_x = LFLD(u16, tgt, 0x7c);
         self->rot_y = LFLD(u16, tgt, 0x7e);
         self->rot_z = LFLD(u16, tgt, 0x80);

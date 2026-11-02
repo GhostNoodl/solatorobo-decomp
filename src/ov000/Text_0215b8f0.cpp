@@ -37,7 +37,7 @@ void func_ov000_0215b8f0(LoBase021cafc0_021cb0b8 *self, s32 unused, VecFx32 *pos
             func_ov000_02153c48(node, self->unk_1c, 0, 0, 0);
         }
         LFLD(VObj *, node, 0x1c)->vfunc_14();
-        LFLD(s32, LFLD(VObj *, node, 0x1c), 0x70) = self->unk_68 - 0x100;
+        LFLD(s32, LFLD(VObj *, node, 0x1c), 0x70) = self->posZ - 0x100;
         LFLD(u32, LFLD(VObj *, node, 0x1c), 0x4) |= 0x200000;
         LFLD(Flags0215b8f0, LFLD(VObj *, node, 0x1c), 0x4).alpha = (u8)a;
         o = LFLD(VObj *, node, 0x1c);

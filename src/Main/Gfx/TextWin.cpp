@@ -99,7 +99,7 @@ void func_0204c158(void) {
 
 void func_0204c214(void) {
     void *heap = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (MSG_RES != NULL) {
         if (MSG_RES != NULL) {
             MSG_RES->DeletingDtor();
@@ -114,7 +114,7 @@ void *Heap_GetCurrent(void) {
 }
 
 void func_0204c284(void) {
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
 }
 
 MsgRes *MainVt_0208ba30_DtorDelete(MsgRes *res) {
@@ -461,18 +461,18 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
 void func_0204dda8(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
-    win->unk_3c++;
+    win->cursorX++;
     win->Render();
-    win->unk_3c--;
-    win->unk_3c--;
+    win->cursorX--;
+    win->cursorX--;
     win->Render();
-    win->unk_3c++;
-    win->unk_40++;
+    win->cursorX++;
+    win->cursorY++;
     win->Render();
-    win->unk_40--;
-    win->unk_40--;
+    win->cursorY--;
+    win->cursorY--;
     win->Render();
-    win->unk_40++;
+    win->cursorY++;
 }
 
 void func_0204de78(TextWin *win);
@@ -720,12 +720,12 @@ void func_0204c7d0(TextWin *win) {
     *(u32 *)((u8 *)win + 4) = 0;
     win->unk_4_13 = 1;
     win->lines = NULL;
-    win->unk_0c = NULL;
-    win->unk_10 = 0;
+    win->dl = NULL;
+    win->dlSize = 0;
     win->model = NULL;
     win->unk_18 = 0;
-    win->unk_1a = 0;
-    win->unk_1c = 0;
+    win->modelX = 0;
+    win->modelY = 0;
     win->unk_1e = 0;
     win->vram = NULL;
     win->str = 0;
@@ -736,22 +736,22 @@ void func_0204c7d0(TextWin *win) {
     win->unk_34 = 1;
     win->unk_36 = 0;
     win->unk_37 = 0;
-    win->unk_3c = 0;
-    win->unk_40 = 0;
+    win->cursorX = 0;
+    win->cursorY = 0;
     win->vramSize = 0;
     win->vramArg = 0;
     win->unk_4c = 0;
-    win->unk_50 = NULL;
-    win->unk_54 = NULL;
-    win->unk_58 = 0;
-    win->unk_5c = 0;
-    win->unk_60 = -1;
-    win->unk_64 = -1;
-    win->unk_68 = NULL;
+    win->texVram = NULL;
+    win->plttVram = NULL;
+    win->texSizeS = 0;
+    win->texSizeT = 0;
+    win->maxW = -1;
+    win->maxH = -1;
+    win->texBuf = NULL;
     win->unk_6c = NULL;
-    win->unk_70 = 0;
-    win->unk_74 = 0x7fff;
-    win->unk_76 = 0x7fff;
+    win->posZ = 0;
+    win->color0 = 0x7fff;
+    win->color1 = 0x7fff;
     win->unk_78 = 0;
     win->unk_7c = 0;
     win->code = -1;
@@ -775,12 +775,12 @@ void func_0204c8a8(TextWin *win) {
             win->lines = NULL;
         }
     }
-    if (win->unk_0c != NULL) {
-        func_0203df0c(win->unk_0c);
-        win->unk_0c = NULL;
+    if (win->dl != NULL) {
+        func_0203df0c(win->dl);
+        win->dl = NULL;
     }
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     {
         Model *p = win->model;
         if (p != NULL) {
@@ -798,15 +798,15 @@ void func_0204c8a8(TextWin *win) {
         MIi_CpuClearFast(0, (u8 *)(b->kind == 4 ? 0x6400000 : 0x6600000) + b->addr, b->size - b->pad);
         func_02039828(win->vram);
     }
-    if (win->unk_50 != NULL) {
-        NNS_GfdDefaultFuncFreeTexVram(win->unk_50);
+    if (win->texVram != NULL) {
+        NNS_GfdDefaultFuncFreeTexVram(win->texVram);
     }
-    if (win->unk_54 != NULL) {
-        NNS_GfdDefaultFuncFreePlttVram(win->unk_54);
+    if (win->plttVram != NULL) {
+        NNS_GfdDefaultFuncFreePlttVram(win->plttVram);
     }
-    if (win->unk_68 != NULL) {
-        func_0203df0c(win->unk_68);
-        win->unk_68 = NULL;
+    if (win->texBuf != NULL) {
+        func_0203df0c(win->texBuf);
+        win->texBuf = NULL;
     }
     func_0203e58c(win->unk_6c);
     func_0204c7d0(win);
@@ -1000,18 +1000,18 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
 void func_0204dda8(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
-    win->unk_3c++;
+    win->cursorX++;
     win->Render();
-    win->unk_3c--;
-    win->unk_3c--;
+    win->cursorX--;
+    win->cursorX--;
     win->Render();
-    win->unk_3c++;
-    win->unk_40++;
+    win->cursorX++;
+    win->cursorY++;
     win->Render();
-    win->unk_40--;
-    win->unk_40--;
+    win->cursorY--;
+    win->cursorY--;
     win->Render();
-    win->unk_40++;
+    win->cursorY++;
 }
 
 void func_0204de78(TextWin *win);
@@ -1710,18 +1710,18 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
 void func_0204dda8(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
-    win->unk_3c++;
+    win->cursorX++;
     win->Render();
-    win->unk_3c--;
-    win->unk_3c--;
+    win->cursorX--;
+    win->cursorX--;
     win->Render();
-    win->unk_3c++;
-    win->unk_40++;
+    win->cursorX++;
+    win->cursorY++;
     win->Render();
-    win->unk_40--;
-    win->unk_40--;
+    win->cursorY--;
+    win->cursorY--;
     win->Render();
-    win->unk_40++;
+    win->cursorY++;
 }
 
 void func_0204de78(TextWin *win);
@@ -2210,14 +2210,14 @@ void func_0204dda8(TextWin *win) {
     }
     if (!win->flag3 && win->flag26) {
         if (!win->flag28) {
-            win->unk_1a = win->unk_3c + win->vramSize + 8;
-            win->unk_1c = win->unk_40 + 0xc;
+            win->modelX = win->cursorX + win->vramSize + 8;
+            win->modelY = win->cursorY + 0xc;
         }
         win->unk_vf98();
     }
     data_02097ce0->unk_004 = win->font;
     data_02097ce0->unk_012 = win->unk_34;
-    TextWin_SetOrigin(win->unk_3c, win->unk_40);
+    TextWin_SetOrigin(win->cursorX, win->cursorY);
     if (win->noVram) {
         win->unk_vfa0();
     } else {
@@ -2226,34 +2226,34 @@ void func_0204dda8(TextWin *win) {
 }
 
 static inline void TextWin_RenderOutline(TextWin *win) {
-    win->unk_3c++;
+    win->cursorX++;
     win->Render();
-    win->unk_3c--;
-    win->unk_3c--;
+    win->cursorX--;
+    win->cursorX--;
     win->Render();
-    win->unk_3c++;
-    win->unk_40++;
+    win->cursorX++;
+    win->cursorY++;
     win->Render();
-    win->unk_40--;
-    win->unk_40--;
+    win->cursorY--;
+    win->cursorY--;
     win->Render();
-    win->unk_40++;
+    win->cursorY++;
 }
 
 void func_0204de78(TextWin *win) {
     if (win->noVram) {
-        u16 color0 = win->unk_74;
-        u16 color1 = win->unk_76;
-        s32 base = win->unk_70;
-        win->unk_76 = 0;
-        win->unk_74 = 0;
+        u16 color0 = win->color0;
+        u16 color1 = win->color1;
+        s32 base = win->posZ;
+        win->color1 = 0;
+        win->color0 = 0;
         if (!win->noShadowShift) {
-            win->unk_70 -= 0x20;
+            win->posZ -= 0x20;
         }
         TextWin_RenderOutline(win);
-        win->unk_74 = color0;
-        win->unk_76 = color1;
-        win->unk_70 = base;
+        win->color0 = color0;
+        win->color1 = color1;
+        win->posZ = base;
     } else {
         s32 pltt = win->unk_2c;
         win->unk_2c = pltt + 0x10;
@@ -2454,7 +2454,7 @@ void func_0204dff8(TextWin *win) {
         r = 0x1000;
     }
     s = FX_SinCosTable_[((r << 14) >> 16) * 2];
-    Model_SetPos(win->model, (win->unk_1a - 0x80) << 12, (win->unk_1c + (TextWin_FxMul(s, 0x6000) >> 12) - 0x60) << 12);
+    Model_SetPos(win->model, (win->modelX - 0x80) << 12, (win->modelY + (TextWin_FxMul(s, 0x6000) >> 12) - 0x60) << 12);
     win->model->unk_150 = win->unk_1e;
     Model_ApplyPart(win->model, 4);
 }
@@ -2629,18 +2629,18 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
 void func_0204dda8(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
-    win->unk_3c++;
+    win->cursorX++;
     win->Render();
-    win->unk_3c--;
-    win->unk_3c--;
+    win->cursorX--;
+    win->cursorX--;
     win->Render();
-    win->unk_3c++;
-    win->unk_40++;
+    win->cursorX++;
+    win->cursorY++;
     win->Render();
-    win->unk_40--;
-    win->unk_40--;
+    win->cursorY--;
+    win->cursorY--;
     win->Render();
-    win->unk_40++;
+    win->cursorY++;
 }
 
 void func_0204de78(TextWin *win);
@@ -2944,23 +2944,23 @@ void func_0204e5d4(TextWin *win) {
     s32 px;
 
     if (win->flag24 == 1) {
-        func_020430b8(win->vramSize + 2, win->vramArg + 2, &win->unk_58, &win->unk_5c);
+        func_020430b8(win->vramSize + 2, win->vramArg + 2, &win->texSizeS, &win->texSizeT);
         outline = TRUE;
     } else {
-        func_020430b8(win->vramSize, win->vramArg, &win->unk_58, &win->unk_5c);
+        func_020430b8(win->vramSize, win->vramArg, &win->texSizeS, &win->texSizeT);
         outline = FALSE;
     }
-    size = ((8 << win->unk_58) << win->unk_5c) << 2;
-    win->unk_68 = func_0203de84(size, 4);
+    size = ((8 << win->texSizeS) << win->texSizeT) << 2;
+    win->texBuf = func_0203de84(size, 4);
     bx = 0;
-    MIi_CpuClearFast(0, win->unk_68, size);
+    MIi_CpuClearFast(0, win->texBuf, size);
     font = (NNSG2dFont *)func_0203a4c0(data_02097ce0);
     fn = font->cbCharSpliter;
     s = (const char *)win->str;
     color = win->unk_2c % 15 + 1;
     shadow = (s32)win->unk_30 % 15 + 1;
-    pitch = (8 << win->unk_58) >> 3;
-    dst = (u32 *)win->unk_68;
+    pitch = (8 << win->texSizeS) >> 3;
+    dst = (u32 *)win->texBuf;
     y = bx;
     lineH = win->spacing + font->pRes->pGlyph->cellHeight;
     while ((c = fn((const void **)&s)) != 0) {
@@ -2969,7 +2969,7 @@ void func_0204e5d4(TextWin *win) {
 
             y += lineH;
             bx = 0;
-            dst = (u32 *)win->unk_68 + pitch * (y + 1);
+            dst = (u32 *)win->texBuf + pitch * (y + 1);
             continue;
         }
         if ((s8)win->unk_37 == 0) {
@@ -3034,12 +3034,12 @@ void func_0204e5d4(TextWin *win) {
             break;
         }
     }
-    DC_FlushRange(win->unk_68, size);
-    win->unk_50 = (void *)NNS_GfdDefaultFuncAllocTexVram(size, 0, 0);
-    win->unk_54 = (void *)NNS_GfdDefaultFuncAllocPlttVram(0x40, 0, 0);
+    DC_FlushRange(win->texBuf, size);
+    win->texVram = (void *)NNS_GfdDefaultFuncAllocTexVram(size, 0, 0);
+    win->plttVram = (void *)NNS_GfdDefaultFuncAllocPlttVram(0x40, 0, 0);
     OS_DisableIrq();
-    func_0203e458(0, win->unk_68, ((u32)win->unk_50 & 0x1ffff) << 3, size, 0);
-    win->unk_6c = func_0203e458(1, func_02039720(), ((u32)win->unk_54 & 0xffff) << 3, 0x40, 0);
+    func_0203e458(0, win->texBuf, ((u32)win->texVram & 0x1ffff) << 3, size, 0);
+    win->unk_6c = func_0203e458(1, func_02039720(), ((u32)win->plttVram & 0xffff) << 3, 0x40, 0);
     OS_EnableIrq();
     if (win->unk_4_30 == 1) {
         func_0204eb3c(win);
@@ -3064,19 +3064,19 @@ extern void *func_0203de84(u32 size, u32 align);
 void func_0204eb3c(TextWin *win) {
     u32 buf[0x40];
     GXDLInfo dl;
-    s32 w = (8 << win->unk_58) << 12;
-    s32 h = (8 << win->unk_5c) << 12;
-    if (win->unk_60 != -1) {
-        if (win->unk_60 < w) {
-            w = win->unk_60;
+    s32 w = (8 << win->texSizeS) << 12;
+    s32 h = (8 << win->texSizeT) << 12;
+    if (win->maxW != -1) {
+        if (win->maxW < w) {
+            w = win->maxW;
         }
         if (w == 0) {
             return;
         }
     }
-    if (win->unk_64 != -1) {
-        if (win->unk_64 < h) {
-            h = win->unk_64;
+    if (win->maxH != -1) {
+        if (win->maxH < h) {
+            h = win->maxH;
         }
         if (h == 0) {
             return;
@@ -3089,38 +3089,38 @@ void func_0204eb3c(TextWin *win) {
         s32 split = (s32)win->unk_78;
         y = FX_Div(split, h);
         G3B_Begin(&dl, GX_BEGIN_QUAD_STRIP);
-        G3B_Color(&dl, win->unk_74);
+        G3B_Color(&dl, win->color0);
         G3B_TexCoord(&dl, w, 0);
         G3B_Vtx(&dl, 0x1000, 0, 0);
         G3B_TexCoord(&dl, 0, 0);
         G3B_VtxXY(&dl, 0, 0);
-        G3B_Color(&dl, win->unk_76);
+        G3B_Color(&dl, win->color1);
         G3B_TexCoord(&dl, w, split);
         G3B_VtxXY(&dl, 0x1000, y);
         G3B_TexCoord(&dl, 0, split);
         G3B_VtxXY(&dl, 0, y);
-        G3B_Color(&dl, win->unk_76);
+        G3B_Color(&dl, win->color1);
         G3B_TexCoord(&dl, w, h);
         G3B_VtxXY(&dl, 0x1000, 0x1000);
         G3B_TexCoord(&dl, 0, h);
         G3B_VtxXY(&dl, 0, 0x1000);
     } else {
         G3B_Begin(&dl, GX_BEGIN_QUADS);
-        G3B_Color(&dl, win->unk_74);
+        G3B_Color(&dl, win->color0);
         G3B_TexCoord(&dl, w, 0);
         G3B_Vtx(&dl, 0x1000, 0, 0);
         G3B_TexCoord(&dl, 0, 0);
         G3B_VtxXY(&dl, 0, 0);
-        G3B_Color(&dl, win->unk_76);
+        G3B_Color(&dl, win->color1);
         G3B_TexCoord(&dl, 0, h);
         G3B_VtxXY(&dl, 0, 0x1000);
         G3B_TexCoord(&dl, w, h);
         G3B_VtxXY(&dl, 0x1000, 0x1000);
     }
-    win->unk_10 = G3_EndMakeDL(&dl);
-    win->unk_0c = func_0203de84(win->unk_10, 4);
-    MI_CpuCopy8(buf, win->unk_0c, win->unk_10);
-    DC_FlushRange(win->unk_0c, win->unk_10);
+    win->dlSize = G3_EndMakeDL(&dl);
+    win->dl = func_0203de84(win->dlSize, 4);
+    MI_CpuCopy8(buf, win->dl, win->dlSize);
+    DC_FlushRange(win->dl, win->dlSize);
 }
 
 extern void func_0203df0c(void *ptr);
@@ -3217,15 +3217,15 @@ static inline BOOL TextWin_IsReady(TextWin *win) {
 void func_0204edd8(TextWin *win) {
     s32 w;
     s32 h;
-    if (win->unk_50 == NULL) {
+    if (win->texVram == NULL) {
         func_0204e5d4(win);
     }
     if (!TextWin_IsReady(win)) {
         return;
     }
-    if (win->unk_68 != NULL) {
-        func_0203df0c(win->unk_68);
-        win->unk_68 = NULL;
+    if (win->texBuf != NULL) {
+        func_0203df0c(win->texBuf);
+        win->texBuf = NULL;
     }
     if (win->inRender) {
         return;
@@ -3245,31 +3245,31 @@ void func_0204edd8(TextWin *win) {
     }
     {
     s32 pl = win->unk_2c >> 4;
-    TW_TexImageParam(3, 1, win->unk_58, win->unk_5c, 0, 0, 1, ((u32)win->unk_50 & 0x1ffff) << 3);
-    TW_TexPlttBase(TW_PlttAddr(win->unk_54) + pl * 0x20);
+    TW_TexImageParam(3, 1, win->texSizeS, win->texSizeT, 0, 0, 1, ((u32)win->texVram & 0x1ffff) << 3);
+    TW_TexPlttBase(TW_PlttAddr(win->plttVram) + pl * 0x20);
     }
     {
-        s32 x = win->unk_3c << 12;
-        s32 y = (win->unk_40 - 2) << 12;
+        s32 x = win->cursorX << 12;
+        s32 y = (win->cursorY - 2) << 12;
         TW_PushMtx();
-        TW_Translate(x, y, win->unk_70);
+        TW_Translate(x, y, win->posZ);
     }
-    if (win->unk_0c != NULL) {
-        NNS_G3dGeSendDL(win->unk_0c, win->unk_10);
+    if (win->dl != NULL) {
+        NNS_G3dGeSendDL(win->dl, win->dlSize);
     } else {
-        w = (8 << win->unk_58) << 12;
-        h = (8 << win->unk_5c) << 12;
-        if (win->unk_60 != -1) {
-            if (win->unk_60 < w) {
-                w = win->unk_60;
+        w = (8 << win->texSizeS) << 12;
+        h = (8 << win->texSizeT) << 12;
+        if (win->maxW != -1) {
+            if (win->maxW < w) {
+                w = win->maxW;
             }
             if (w == 0) {
                 return;
             }
         }
-        if (win->unk_64 != -1) {
-            if (win->unk_64 < h) {
-                h = win->unk_64;
+        if (win->maxH != -1) {
+            if (win->maxH < h) {
+                h = win->maxH;
             }
             if (h == 0) {
                 return;
@@ -3281,29 +3281,29 @@ void func_0204edd8(TextWin *win) {
             s32 split = (s32)win->unk_78;
             y = FX_Div(split, h);
             TW_Begin(3);
-            TW_Color(win->unk_74);
+            TW_Color(win->color0);
             TW_TexCoord(w, 0);
             TW_Vtx(0x1000, 0, 0);
             TW_TexCoord(0, 0);
             TW_VtxXY(0, 0);
-            TW_Color(win->unk_76);
+            TW_Color(win->color1);
             TW_TexCoord(w, split);
             TW_VtxXY(0x1000, y);
             TW_TexCoord(0, split);
             TW_VtxXY(0, y);
-            TW_Color(win->unk_76);
+            TW_Color(win->color1);
             TW_TexCoord(w, h);
             TW_VtxXY(0x1000, 0x1000);
             TW_TexCoord(0, h);
             TW_VtxXY(0, 0x1000);
         } else {
             TW_Begin(1);
-            TW_Color(win->unk_74);
+            TW_Color(win->color0);
             TW_TexCoord(w, 0);
             TW_Vtx(0x1000, 0, 0);
             TW_TexCoord(0, 0);
             TW_VtxXY(0, 0);
-            TW_Color(win->unk_76);
+            TW_Color(win->color1);
             TW_TexCoord(0, h);
             TW_VtxXY(0, 0x1000);
             TW_TexCoord(w, h);
@@ -3484,18 +3484,18 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
 void func_0204dda8(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
-    win->unk_3c++;
+    win->cursorX++;
     win->Render();
-    win->unk_3c--;
-    win->unk_3c--;
+    win->cursorX--;
+    win->cursorX--;
     win->Render();
-    win->unk_3c++;
-    win->unk_40++;
+    win->cursorX++;
+    win->cursorY++;
     win->Render();
-    win->unk_40--;
-    win->unk_40--;
+    win->cursorY--;
+    win->cursorY--;
     win->Render();
-    win->unk_40++;
+    win->cursorY++;
 }
 
 void func_0204de78(TextWin *win);
@@ -3644,8 +3644,8 @@ void func_0204f49c(TextWinEx *win) {
     win->originY = 0;
     win->numBlocks = 0;
     win->originX = win->originY;
-    win->unk_1a = 0;
-    win->unk_1c = 0;
+    win->modelX = 0;
+    win->modelY = 0;
     win->unk_1e = -0x200;
     win->unk_3c4 = 0;
     win->unk_3c8 = 1;
@@ -3875,18 +3875,18 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
 void func_0204dda8(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
-    win->unk_3c++;
+    win->cursorX++;
     win->Render();
-    win->unk_3c--;
-    win->unk_3c--;
+    win->cursorX--;
+    win->cursorX--;
     win->Render();
-    win->unk_3c++;
-    win->unk_40++;
+    win->cursorX++;
+    win->cursorY++;
     win->Render();
-    win->unk_40--;
-    win->unk_40--;
+    win->cursorY--;
+    win->cursorY--;
     win->Render();
-    win->unk_40++;
+    win->cursorY++;
 }
 
 void func_0204de78(TextWin *win);
@@ -4032,8 +4032,8 @@ BOOL func_0204f5bc(TextWinEx *win) {
     win->unk_3c4--;
     if (!win->flag0) {
         win->flag0 = 1;
-        win->unk_3c = win->originX;
-        win->unk_40 = win->originY;
+        win->cursorX = win->originX;
+        win->cursorY = win->originY;
     }
     if (win->flag25 && win->blocksReady) {
         win->unk_18++;
@@ -4060,8 +4060,8 @@ BOOL func_0204f5bc(TextWinEx *win) {
                         win->blockIds[i] = 0;
                     }
                 }
-                win->unk_3c = win->originX;
-                win->unk_40 = win->originY;
+                win->cursorX = win->originX;
+                win->cursorY = win->originY;
             }
             win->flag25 = 0;
         }
@@ -4124,8 +4124,8 @@ s32 func_0204f804(TextWinEx *win) {
         saved = (char *)win->unk_3d8;
         while ((c = fn((const void **)&win->unk_3d8)) != 0) {
             if (c == '\n') {
-                win->unk_3c = win->originX;
-                win->unk_40 += lineH;
+                win->cursorX = win->originX;
+                win->cursorY += lineH;
                 saved = (char *)win->unk_3d8;
                 continue;
             }
@@ -4188,14 +4188,14 @@ s32 func_0204f804(TextWinEx *win) {
                 win->blocks[win->numBlocks] = func_020397fc(widths->left + glyph->cellWidth, glyph->cellHeight, 0);
             }
             func_0203a4dc(data_02097ce0, win->blocks[win->numBlocks]);
-            TextWin_SetOrigin(win->unk_3c, win->unk_40);
+            TextWin_SetOrigin(win->cursorX, win->cursorY);
             data_02097ce0->unk_008 = color;
             func_0203a5a4(data_02097ce0, c);
             n++;
             if (win->flag23 == 1 && (c < 0x80 || c > 0xaf)) {
                 func_02049a48(data_02097e4c, 0x23, 0xe, -1, -1);
             }
-            win->unk_3c = data_02097ce0->unk_00c;
+            win->cursorX = data_02097ce0->unk_00c;
             if (win->numBlocks + 1 < 0x80) {
                 win->numBlocks++;
             }
@@ -4217,8 +4217,8 @@ s32 func_0204f804(TextWinEx *win) {
             win->OnSkip();
         } else {
             if (!win->flag28) {
-                win->unk_1a = win->unk_3c + 8;
-                win->unk_1c = win->unk_40 + 0xc;
+                win->modelX = win->cursorX + 8;
+                win->modelY = win->cursorY + 0xc;
             }
             win->page++;
             win->unk_3d8++;
@@ -4279,7 +4279,7 @@ TextWinOam *func_0204fc4c(TextWin *win, const u16 *cmd, TextWinOam *oam, u16 *co
     TextWinOam *last = &oam[n - 1];
     if (*cmd == 2) {
         u32 name = last->charName;
-        s32 flags = win->unk_70;
+        s32 flags = win->posZ;
         n = 1;
         if (flags & 1) {
             oam->charName = name;
@@ -4476,18 +4476,18 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
 void func_0204dda8(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
-    win->unk_3c++;
+    win->cursorX++;
     win->Render();
-    win->unk_3c--;
-    win->unk_3c--;
+    win->cursorX--;
+    win->cursorX--;
     win->Render();
-    win->unk_3c++;
-    win->unk_40++;
+    win->cursorX++;
+    win->cursorY++;
     win->Render();
-    win->unk_40--;
-    win->unk_40--;
+    win->cursorY--;
+    win->cursorY--;
     win->Render();
-    win->unk_40++;
+    win->cursorY++;
 }
 
 void func_0204de78(TextWin *win);
@@ -4765,7 +4765,7 @@ void func_02050b50(TextBox *box);
 
 #define OBJ_DELETE_LINE(l) { \
         void *saved_ = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->unk_08; \
+        data_02097dd0->cur = data_02097dd0->heapHi; \
         { \
             TextBoxObj *p_ = (l)->obj; \
             if (p_ != NULL) { \
@@ -4901,8 +4901,8 @@ void func_0204ffdc(TextBox *box) {
                 win->unk_4c = func_0204c4fc(win->font, win->spacing, win->str, &win->vramSize, &win->vramArg, (s8)win->unk_37 != 0 ? TRUE : FALSE);
                 data_02097ce0->unk_004 = win->font;
                 win->unk_2c = 0;
-                win->unk_74 = 0x77df;
-                win->unk_76 = 0x67e;
+                win->color0 = 0x77df;
+                win->color1 = 0x67e;
                 win->noVram = 1;
                 win->flag22 = 1;
                 win->flag24 = 1;
@@ -5152,18 +5152,18 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
 void func_0204dda8(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
-    win->unk_3c++;
+    win->cursorX++;
     win->Render();
-    win->unk_3c--;
-    win->unk_3c--;
+    win->cursorX--;
+    win->cursorX--;
     win->Render();
-    win->unk_3c++;
-    win->unk_40++;
+    win->cursorX++;
+    win->cursorY++;
     win->Render();
-    win->unk_40--;
-    win->unk_40--;
+    win->cursorY--;
+    win->cursorY--;
     win->Render();
-    win->unk_40++;
+    win->cursorY++;
 }
 
 void func_0204de78(TextWin *win);
@@ -5308,8 +5308,8 @@ TextLayout *TextWin_DtorDelete(TextLayout *layout) {
 }
 
 void func_0205073c(TextWin *win, s32 x, s32 y) {
-    win->unk_3c = x;
-    win->unk_40 = y;
+    win->cursorX = x;
+    win->cursorY = y;
 }
 
 static inline void TextBoxLine_Init(TextBoxLine *line) {
@@ -5525,18 +5525,18 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
 void func_0204dda8(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
-    win->unk_3c++;
+    win->cursorX++;
     win->Render();
-    win->unk_3c--;
-    win->unk_3c--;
+    win->cursorX--;
+    win->cursorX--;
     win->Render();
-    win->unk_3c++;
-    win->unk_40++;
+    win->cursorX++;
+    win->cursorY++;
     win->Render();
-    win->unk_40--;
-    win->unk_40--;
+    win->cursorY--;
+    win->cursorY--;
     win->Render();
-    win->unk_40++;
+    win->cursorY++;
 }
 
 void func_0204de78(TextWin *win);
@@ -5694,7 +5694,7 @@ void func_020507d8(TextBox *box) {
     void *saved;
     int i;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     {
         Model *p = box->model;
         if (p != NULL) {
@@ -5708,7 +5708,7 @@ void func_020507d8(TextBox *box) {
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     {
         TextBoxObj *p = box->obj;
         if (p != NULL) {
@@ -5721,7 +5721,7 @@ void func_020507d8(TextBox *box) {
     data_02097dd0->cur = saved;
     for (i = 0; i < 3; i++) {
         void *saved2 = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         {
             TextBoxObj *p = box->lines[i].obj;
             if (p != NULL) {
@@ -6041,18 +6041,18 @@ static inline void TextWin_SetOrigin(u16 x, u16 y) {
 void func_0204dda8(TextWin *win);
 
 static inline void TextWin_RenderOutline(TextWin *win) {
-    win->unk_3c++;
+    win->cursorX++;
     win->Render();
-    win->unk_3c--;
-    win->unk_3c--;
+    win->cursorX--;
+    win->cursorX--;
     win->Render();
-    win->unk_3c++;
-    win->unk_40++;
+    win->cursorX++;
+    win->cursorY++;
     win->Render();
-    win->unk_40--;
-    win->unk_40--;
+    win->cursorY--;
+    win->cursorY--;
     win->Render();
-    win->unk_40++;
+    win->cursorY++;
 }
 
 void func_0204de78(TextWin *win);
@@ -6545,7 +6545,7 @@ extern void func_02050f70(SlideWin *win);
 #define SW_DELETE_T(T, field, dtor) \
     { \
         void *saved = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->unk_08; \
+        data_02097dd0->cur = data_02097dd0->heapHi; \
         { \
             T p = (field); \
             if (p != NULL) { \
@@ -6562,7 +6562,7 @@ extern void func_02050f70(SlideWin *win);
 #define SW_DELETE_MODEL(field) \
     { \
         void *saved = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->unk_08; \
+        data_02097dd0->cur = data_02097dd0->heapHi; \
         { \
             Model *p = (field); \
             if (p != NULL) { \
@@ -6620,7 +6620,7 @@ void func_02051210(SlideWin *win) {
     subObjBase = (u8 *)G2S_GetOBJCharPtr();
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         {
             SlideObj *p = win->obj;
             if (p != NULL) {
@@ -7182,7 +7182,7 @@ static inline s32 FxMulL(s32 a, s64 b) {
 static inline void AnimSlot_DeleteObj(Obj3DAnimSlot *slot) {
     Obj3DAnimObj *p;
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     {
         p = slot->obj;
         if (p != NULL) {
@@ -7199,7 +7199,7 @@ static inline void AnimSlot_DeleteObj(Obj3DAnimSlot *slot) {
 static inline void AnimSlot_DeleteMdl(Obj3DAnimSlot *slot) {
     Obj3DAnimMdl *p;
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     {
         p = slot->mdl;
         if (p != NULL) {
@@ -7264,7 +7264,7 @@ static inline s32 AnimSlot_Call(Obj3DAnim *anim, Obj3DAnimSlot *slot, u16 id, s3
 static inline void AnimSlot_DeleteOldObj(Obj3DAnimSlot *slot) {
     Obj3DAnimObj *p;
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     {
         p = slot->oldObj;
         if (p != NULL) {
@@ -7281,7 +7281,7 @@ static inline void AnimSlot_DeleteOldObj(Obj3DAnimSlot *slot) {
 static inline void AnimSlot_DeleteOldMdl(Obj3DAnimSlot *slot) {
     Obj3DAnimMdl *p;
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     {
         p = slot->oldMdl;
         if (p != NULL) {

@@ -268,7 +268,7 @@ static inline void Ov014_StopSnd(void) {
 
 static inline void Ov014_FreeFC(Ov014Act_021fd4d4 *self) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_fc != NULL) {
         void *p = self->unk_fc;
         if (p != NULL) {
@@ -1704,7 +1704,7 @@ Ov014Actor *Ov014Act_0220011c_Ctor(Ov014Act_0220011c *self) {
 
 static inline void Ov014_Free100(Ov014Act_0220011c *self) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_100 != NULL) {
         void *p = self->unk_100;
         if (p != NULL) {
@@ -2560,7 +2560,7 @@ Ov014Actor *Ov014Act_02201b94_Ctor(Ov014Act_02201b94 *self) {
 
 static inline void Ov014_FreeFC(Ov014Act_02201b94 *self) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_fc != NULL) {
         void *p = self->unk_fc;
         if (p != NULL) {

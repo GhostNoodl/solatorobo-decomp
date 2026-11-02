@@ -89,7 +89,7 @@ void func_ov000_021b4f28(void) {
     Obj021b4f28 *p;
     void *saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     p = data_ov000_021ccd6c;
     if (p != NULL) {
         if (p != NULL) {

@@ -94,15 +94,15 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
     dy = 0;
     switch (self->unk_b31) {
     case 0:
-        if (self->unk_b6a & 0x100) {
+        if (self->padTrig & 0x100) {
             if (self->unk_b30 != 0) {
                 self->unk_b31 = 1;
                 self->unk_b30 = 0;
             } else {
                 self->unk_b30 = 20;
             }
-        } else if (self->unk_b68 & 0x100) {
-            u16 keys = self->unk_b68;
+        } else if (self->padCur & 0x100) {
+            u16 keys = self->padCur;
             ret = TRUE;
             if (keys & 0x80) {
                 dp = 0xf800;
@@ -129,7 +129,7 @@ BOOL func_ov000_021b3e90(Robo021ca458 *self) {
                 cam->unk_f8 = dp;
                 cam->unk_da.b4 = 1;
             }
-            keys = self->unk_b68;
+            keys = self->padCur;
             if (keys & 0x10) {
                 dy = 0xf400;
             } else if (keys & 0x20) {

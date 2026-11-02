@@ -58,7 +58,7 @@ void func_ov000_0215b2e4(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 sy
     u8 *g;
     s32 sx;
     s32 sy;
-    z = self->unk_68 - 0x100;
+    z = self->posZ - 0x100;
     g = data_02097d48;
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | 0x8d0 | (0x18 << 16));
@@ -73,7 +73,7 @@ void func_ov000_0215b2e4(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 sy
     G3_Vec(0x1b, sx, sy, 0x1000);
     NNS_G3dGeBufferOP_N(0x19, &m, 12);
     G3_Cmd1(0x40, 2);
-    G3_Cmd1(0x20, self->unk_48);
+    G3_Cmd1(0x20, self->color);
     G3_Cmd2(0x23, 0x8aa0000, 0);
     G3_Cmd1(0x25, 0x1000014e);
     G3_Cmd1(0x25, 0x1b5);

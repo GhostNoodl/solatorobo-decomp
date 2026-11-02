@@ -74,8 +74,8 @@ void func_ov000_0215e0c0(Obj0215e0c0 *self, const char *text) {
     self->win = TextWin_New();
     self->win->font = 8;
     SetText(self->win, (u32)dst);
-    self->win->unk_74 = 0x7fff;
-    self->win->unk_76 = 0x67f;
+    self->win->color0 = 0x7fff;
+    self->win->color1 = 0x67f;
     *(u32 *)((u8 *)self->win + 4) |= 0x40;
     *(u32 *)((u8 *)self->win + 4) |= 0x1000000;
     *(u32 *)((u8 *)self->win + 4) |= 0x400000;
@@ -87,8 +87,8 @@ void func_ov000_0215e0c0(Obj0215e0c0 *self, const char *text) {
     self->win2 = TextWin_New();
     self->win2->font = 8;
     SetText(self->win2, (u32)(p + 1));
-    self->win2->unk_74 = 0x7fff;
-    self->win2->unk_76 = 0x67f;
+    self->win2->color0 = 0x7fff;
+    self->win2->color1 = 0x67f;
     *(u32 *)((u8 *)self->win2 + 4) |= 0x40;
     *(u32 *)((u8 *)self->win2 + 4) |= 0x1000000;
     *(u32 *)((u8 *)self->win2 + 4) |= 0x400000;

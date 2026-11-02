@@ -60,7 +60,7 @@ void Actor_Tick(Actor *self) {
         }
         Actor_ProcessMsgs(self);
         self->unk_94 = 0;
-        switch (self->unk_15) {
+        switch (self->mode) {
         case 1:
             self->vfunc_34();
             break;

@@ -59,7 +59,7 @@ void func_ov009_0220d2d8(Ov009ActPair110 *self) {
     self->pos.y -= 0x1e000;
     self->pos.x += 0x1e000;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_48 != NULL) {
         Ov009Sub48 *s = self->unk_48;
         if (s != NULL) {
@@ -158,7 +158,7 @@ void func_ov009_0220d5f8(Ov009ActPair110 *self) {
         self->unk_b6 = 0x1e;
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->unk_ac = 1;
+        data_ov000_021ccd54->stageFlags = 1;
         func_0204a058(data_02097e4c, self->unk_10c, 0x28, 0x1c2);
         break;
     }
@@ -168,7 +168,7 @@ extern Ov009Actor *ActorMgr_GetGroup(void *mgr, u16 id);
 extern u16 ActorGroup_CountKind(Ov009Actor *a, u16 id);
 
 static inline BOOL Ov009Game_IsPaused(FieldState *g) {
-    return g->unk_d4 != 0;
+    return g->event != 0;
 }
 
 void func_ov009_0220d730(Ov009ActVt_02217f60 *self) {
@@ -361,7 +361,7 @@ void func_ov009_0220dd84(Ov009ActVt_02217f60 *self) {
         SndMgr_StopSeqArc(data_02097e4c, self->unk_10c);
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->unk_ac = 1;
+        data_ov000_021ccd54->stageFlags = 1;
     }
     if (t > 0x1e0) {
         func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
@@ -432,7 +432,7 @@ void Ov009ActVt_02217eb4_Start(Ov009ActVt_02217eb4 *self) {
     self->pos.y -= 0x1e000;
     self->pos.x += 0x1e000;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_48 != NULL) {
         Ov009Sub48 *s = self->unk_48;
         if (s != NULL) {
@@ -582,7 +582,7 @@ void func_ov009_0220e434(Ov009ActVt_02217eb4 *self) {
     self->unk_b6 = 0x96;
     func_020627a0(self->kind, self->id);
     func_020627dc(4);
-    data_ov000_021ccd54->unk_ac = 1;
+    data_ov000_021ccd54->stageFlags = 1;
 }
 
 }
@@ -1197,7 +1197,7 @@ void func_ov009_0220f5fc(Ov009ActVt_02217b58 *self) {
         if (st->timer == 0) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
-            data_ov000_021ccd54->unk_ac = 1;
+            data_ov000_021ccd54->stageFlags = 1;
             func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
             self->v08();
             return;
@@ -1409,7 +1409,7 @@ void func_ov009_0220fc38(Ov009ActVt_02217e08 *self) {
         if (st->timer > 0x1e) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
-            data_ov000_021ccd54->unk_ac = 1;
+            data_ov000_021ccd54->stageFlags = 1;
             func_ov000_02198360(self->unk_40, 1, 0);
         }
         break;

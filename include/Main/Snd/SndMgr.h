@@ -28,7 +28,7 @@ typedef struct SndMgr {
     /* 0x28 */ SndHandle seqArc[5];
     /* 0x3c */ s32 curBgm;
     /* 0x40 */ s32 heapLevels[2];
-    /* 0x48 */ s32 unk_48;
+    /* 0x48 */ s32 curStrm; // stream playing on strm (func_0204a20c), -1: none
     /* 0x4c */ s32 loadType;
     /* 0x50 */ s32 loadId;
     /* 0x54 */ s32 loadArg;
@@ -37,15 +37,15 @@ typedef struct SndMgr {
     /* 0x5a */ u8 noAutoPlay;
     /* 0x5b */ u8 unk_5b;
     /* 0x5c */ SndHandle *seqArcHandles[5];
-    /* 0x70 */ s32 unk_70[5];
+    /* 0x70 */ s32 seqArcPaused[5]; // seqArc[i] was paused by func_0204a160 (SndMgr_ResumeAll)
     /* 0x84 */ s32 seqArcSlots[5];
     /* 0x98 */ s32 seqArcNext;
     /* 0x9c */ s32 unk_9c;
-    /* 0xa0 */ s32 unk_a0;
-    /* 0xa4 */ s32 unk_a4;
+    /* 0xa0 */ s32 fileBuf; // 0x10000 buffer func_0204a598 reads a file into (FS_ReadFile)
+    /* 0xa4 */ s32 fileSize;
     /* 0xa8 */ s32 loadedSeq;
     /* 0xac */ s32 loadedSeqEx[3];
-    /* 0xb8 */ s32 unk_b8[6];
+    /* 0xb8 */ s32 arcCounts[6]; // NNS_SndArcGet{Seq,SeqArc,Bank,WaveArc,Group,Strm}Count
 } SndMgr; // size 0xd0
 
 typedef struct SndQueueNode {
@@ -126,7 +126,7 @@ static inline void SndMgr_StopSlot(SndMgr *mgr, s32 idx) {
 
 static inline void SndMgr_StopStrm(SndMgr *mgr) {
     func_0203192c((StrmHandle *)&mgr->strm, 10);
-    mgr->unk_48 = -1;
+    mgr->curStrm = -1;
 }
 
 static inline void SndMgr_SetStrmVolume(SndMgr *mgr, s32 volume, s32 frames) {

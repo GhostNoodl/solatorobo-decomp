@@ -266,7 +266,7 @@ Actor *ActorMgr_FindKindNear(ActorMgr *mgr, u16 id, u16 kind, VecFx32 *pos, s32 
     if (group != NULL) {
         for (actor = group->head; actor != NULL; actor = actor->next) {
             if (kind == 0xffff || kind == actor->kind) {
-                if (func_01ffc198(&actor->pos, pos, dist + actor->unk_64)) {
+                if (func_01ffc198(&actor->pos, pos, dist + actor->radius)) {
                     ret = actor;
                     break;
                 }

@@ -11,9 +11,9 @@ void func_ov000_0218d7e8(void *self, u8 arg);
 void func_ov000_021b05b0(Robo021ca458 *self) {
     ActorSub40 *s;
     self->model = (Model0218fe1c *)((u8 *)self + 0x368);
-    self->unk_48 = (ActorSub48 *)((u8 *)self + 0x6c0);
+    self->hit = (ActorSub48 *)((u8 *)self + 0x6c0);
     self->unk_b08 = 0x2cd;
-    s = self->unk_40;
+    s = self->fsm;
     if (s->flags != 0) {
         if (s->flags & 1) {
             return;
@@ -26,7 +26,7 @@ void func_ov000_021b05b0(Robo021ca458 *self) {
             func_ov000_02198360(s, 0x12, 1);
         }
     }
-    s = self->unk_40;
+    s = self->fsm;
     switch (s->current) {
     case 1:
         if (s->flags & 2) {
@@ -34,10 +34,10 @@ void func_ov000_021b05b0(Robo021ca458 *self) {
         }
     case 2:
         if (!func_ov000_0219840c(s, data_ov000_021c9ff8, 2, TRUE)) {
-            func_ov000_02198360(self->unk_40, 1, 0);
+            func_ov000_02198360(self->fsm, 1, 0);
         }
         break;
     }
-    func_ov000_0218d7e8(self, self->unk_40->current);
+    func_ov000_0218d7e8(self, self->fsm->current);
 }
 }

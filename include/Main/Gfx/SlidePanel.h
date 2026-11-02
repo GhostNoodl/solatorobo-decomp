@@ -133,7 +133,7 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
     } \
     { \
         void *saved = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->unk_08; \
+        data_02097dd0->cur = data_02097dd0->heapHi; \
         { \
             PlttRes *p = panel->pltt; \
             if (p != NULL) { \
@@ -148,7 +148,7 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
     } \
     { \
         void *saved = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->unk_08; \
+        data_02097dd0->cur = data_02097dd0->heapHi; \
         { \
             Model *p = panel->model; \
             if (p != NULL) { \
@@ -164,7 +164,7 @@ static inline BOOL Gfx_IsFadeIdle(int ch) {
     } \
     { \
         void *saved = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->unk_08; \
+        data_02097dd0->cur = data_02097dd0->heapHi; \
         { \
             Model *p = panel->model2; \
             if (p != NULL) { \

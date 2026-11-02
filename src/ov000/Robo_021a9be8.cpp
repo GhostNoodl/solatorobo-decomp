@@ -110,14 +110,14 @@ static inline void SetFx_021a9be8(Robo021ca458 *self, u8 *o, s32 rz) {
 }
 
 static inline void Bump_021a9be8(Robo021ca458 *self) {
-    if (self->unk_b24_1 && (self->unk_48->unk_54 & 0x400)) {
-        self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
-        self->unk_9c = 0x66;
-        self->unk_a4 = 0;
-        if (!self->unk_b24_17 || (self->unk_48->unk_50 & 0x40000000)) {
-            self->unk_a0 = 0x200;
+    if (self->unk_b24_1 && (self->hit->unk_54 & 0x400)) {
+        self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
+        self->speed = 0x66;
+        self->friction = 0;
+        if (!self->unk_b24_17 || (self->hit->unk_50 & 0x40000000)) {
+            self->velY = 0x200;
         }
-        self->unk_a8 = 0x52;
+        self->gravity = 0x52;
         self->unk_b24_17 = 1;
     }
 }
@@ -145,7 +145,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         }
     }
     fall = FALSE;
-    if (!(self->unk_48->unk_54 & 0x20000000)) {
+    if (!(self->hit->unk_54 & 0x20000000)) {
         lim = -0xf000;
         if (self->unk_b22_0 || self->unk_b24_12 || self->unk_b24_19) {
             lim = -0x2d000;
@@ -158,39 +158,39 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         self->unk_b36 = 0;
         self->unk_b24 |= 0x40000;
     }
-    switch (self->unk_40->st) {
+    switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov000_021cc68a, 0x555, 1);
-        self->unk_9c = 0;
-        self->unk_a0 = 0;
+        self->speed = 0;
+        self->velY = 0;
         if (self->unk_b36 != 0) {
             self->unk_b36 = 1;
         }
-        self->unk_a4 = 0;
-        self->unk_a8 = 0x29;
-        self->unk_40->timer = 0;
-        self->unk_40->st++;
+        self->friction = 0;
+        self->gravity = 0x29;
+        self->fsm->timer = 0;
+        self->fsm->st++;
         break;
     case 1:
         if (self->unk_b36 == 0) {
-            func_ov000_02198360(self->unk_40, 1, 0);
+            func_ov000_02198360(self->fsm, 1, 0);
             break;
         }
         if (Frame_021a9be8(self->model) > 0x14000) {
             func_ov000_0219122c(self->model, 0x14000);
             self->unk_ae4_0 = 1;
         }
-        if (self->unk_40->timer == 0x14) {
+        if (self->fsm->timer == 0x14) {
             o = func_02065f88(0x640, (u8 *)self + 0xa74);
             if (o != NULL) {
                 SetFx_021a9be8(self, o, 0);
             }
         }
-        s = self->unk_40;
+        s = self->fsm;
         s->timer++;
         if (s->timer >= 0x20) {
             s32 i;
-            self->unk_40->timer = 0x20;
+            self->fsm->timer = 0x20;
             func_0204a028(data_02097e4c, 0x44, &self->pos, 2);
             func_02049f44(data_02097e4c, 0x78, &self->pos, 0);
             desc.a = 0x480c;
@@ -217,7 +217,7 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
                 if (o != NULL) {
                     SetFx_021a9be8(self, o, -0x7b);
                 }
-                self->unk_40->st++;
+                self->fsm->st++;
             }
         }
         break;
@@ -228,8 +228,8 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         if (self->unk_b36 == 0) {
             a = (u8 *)FindActor_021a9be8(self->unk_b1c);
             if (a == NULL || (LFLD(u8 *, a, 0x40) != NULL ? LFLD(u8, LFLD(u8 *, a, 0x40), 0x13) : 0) == 9) {
-                self->unk_40->timer = 0;
-                self->unk_40->st = 10;
+                self->fsm->timer = 0;
+                self->fsm->st = 10;
             }
         }
         break;
@@ -291,31 +291,31 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
         self->unk_b24_5 = 0;
         self->unk_b24_7 = self->unk_b24_9;
         self->target = 0xffff;
-        self->unk_40->st++;
+        self->fsm->st++;
         break;
     case 11:
         if (func_ov000_02191120(self->model)) {
-            self->unk_98 = self->rot_y;
+            self->moveYaw = self->rot_y;
             if (self->unk_b36 != 0) {
-                self->unk_40->st = 0;
+                self->fsm->st = 0;
             } else {
-                func_ov000_02198360(self->unk_40, 1, 0);
+                func_ov000_02198360(self->fsm, 1, 0);
             }
         }
         break;
     }
-    if (self->unk_40->st >= 10) {
+    if (self->fsm->st >= 10) {
         return;
     }
     if (!self->unk_b24_17) {
         u16 yaw = CamYaw_021a9be8((u8 *)data_ov000_021ccd54 + 0xf4);
         u16 ang;
-        if (self->unk_b68 & 0xf0) {
-            self->unk_9c = self->unk_b08 >> 2;
+        if (self->padCur & 0xf0) {
+            self->speed = self->unk_b08 >> 2;
             func_ov000_0218dd8c(self, yaw, 0, (u8 *)self + 0xb70);
-            ang = self->unk_98;
+            ang = self->moveYaw;
         } else {
-            self->unk_a4 = 0x29;
+            self->friction = 0x29;
             Actor_Move(self, 0);
             ang = self->rot_y;
         }
@@ -330,18 +330,18 @@ void func_ov000_021a9be8(Robo021ca458 *self) {
     } else {
         Actor_Move(self, 0);
     }
-    func_ov000_021987b8(self->unk_48, 1, 0, 0);
-    if (self->unk_a0 < 0 && (self->unk_48->unk_50 & 0x20000000)) {
-        self->unk_a0 = 0;
-        LFLD(u16, self->unk_48, 0x9a) |= 0x20;
+    func_ov000_021987b8(self->hit, 1, 0, 0);
+    if (self->velY < 0 && (self->hit->unk_50 & 0x20000000)) {
+        self->velY = 0;
+        LFLD(u16, self->hit, 0x9a) |= 0x20;
         if (self->unk_b24_17) {
             self->unk_b24_17 = 0;
-            self->unk_98 = self->rot_y;
-            self->unk_9c = 0;
+            self->moveYaw = self->rot_y;
+            self->speed = 0;
         }
     }
     Bump_021a9be8(self);
-    tm = self->unk_40->timer;
+    tm = self->fsm->timer;
     if (tm == 0) {
         return;
     }

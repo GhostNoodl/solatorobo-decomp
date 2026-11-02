@@ -31,17 +31,17 @@ static inline BOOL PlayerIdle021a16b0(void) {
 }
 
 void func_ov000_021a16b0(Robo021ca458 *self) {
-    switch (self->unk_40->st) {
+    switch (self->fsm->st) {
     case 0:
-        self->unk_40->timer = 0;
-        self->unk_40->st++;
+        self->fsm->timer = 0;
+        self->fsm->st++;
         if (self->unk_b22_0 > 1) {
             if (self->unk_998 != NULL) {
                 func_ov000_02191008(self->unk_998);
             }
-            if (self->unk_b64 >= 0) {
-                SndMgr_StopSeqArc(data_02097e4c, self->unk_b64);
-                self->unk_b64 = -1;
+            if (self->seSlot >= 0) {
+                SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
+                self->seSlot = -1;
             }
             if (self->unk_b22_0 > 1) {
                 self->unk_b22_0 = 1;
@@ -68,7 +68,7 @@ void func_ov000_021a16b0(Robo021ca458 *self) {
                 }
                 rate = 0xa4;
             }
-        } else if (self->unk_48->unk_50 & 0x400) {
+        } else if (self->hit->unk_50 & 0x400) {
             name = data_ov000_021cc618;
         }
         if (self->unk_b24_25) {
@@ -79,30 +79,30 @@ void func_ov000_021a16b0(Robo021ca458 *self) {
         func_ov000_02190cb0(self->model, name, rate, d);
         func_ov000_021915a0(self->model);
         if (self->unk_b24_12 != 0) {
-            self->unk_40->st++;
+            self->fsm->st++;
             if (self->unk_b2f == 0) {
                 self->unk_b2f = 1;
             }
             return;
         }
-        if (self->unk_40->timer >= 0x5a) {
+        if (self->fsm->timer >= 0x5a) {
             if (self->unk_b32 == 0) {
                 self->unk_b32 = 1;
             }
-        } else if (PlayerIdle021a16b0() && self->unk_15 == 1 && !self->unk_b29_1 &&
+        } else if (PlayerIdle021a16b0() && self->mode == 1 && !self->unk_b29_1 &&
                    !self->unk_b28_2 && self->unk_b2e == 0 &&
                    self->unk_b22_0 == 0) {
-            self->unk_40->timer++;
+            self->fsm->timer++;
         } else {
-            self->unk_40->timer = 0;
+            self->fsm->timer = 0;
         }
-        self->unk_9c = 0;
-        self->unk_a0 = 0;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0;
-        LFLD(u16, self->unk_48, 0x9a) |= 0x20;
+        self->speed = 0;
+        self->velY = 0;
+        self->friction = 0;
+        self->gravity = 0;
+        LFLD(u16, self->hit, 0x9a) |= 0x20;
         if (self->msg_flags & 0x80) {
-            func_ov000_021987b8(self->unk_48, 1, 0, 0);
+            func_ov000_021987b8(self->hit, 1, 0, 0);
         }
         return;
     }

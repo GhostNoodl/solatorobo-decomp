@@ -29,7 +29,7 @@ struct Object {
 #define OV006_DELETE_OBJECT(obj)                                 \
     do {                                                         \
         void *saved_ = data_02097dd0->cur;                       \
-        data_02097dd0->cur = data_02097dd0->unk_08;              \
+        data_02097dd0->cur = data_02097dd0->heapHi;              \
         if ((obj) != NULL) {                                     \
             if ((obj) != NULL) {                                 \
                 ((Object *)(obj))->vtbl->dtor((Object *)(obj));  \

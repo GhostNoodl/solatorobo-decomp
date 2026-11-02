@@ -72,7 +72,7 @@ void func_ov009_021fada8(Ov009ActVt_022164a0 *self) {
         if (st->timer > 0x2d) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
-            data_ov000_021ccd54->unk_ac = 1;
+            data_ov000_021ccd54->stageFlags = 1;
             func_ov000_02198360(self->unk_40, 1, 0);
         }
         break;

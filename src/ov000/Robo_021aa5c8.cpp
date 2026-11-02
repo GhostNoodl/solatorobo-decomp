@@ -74,12 +74,12 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
     actor = FindActor021aa5c8(self->unk_b1c);
     sub = NULL;
     if (actor != NULL) {
-        sub = ((u8 *)actor->unk_4c);
+        sub = ((u8 *)actor->targetObj);
     }
     g = data_ov000_021ccd54;
-    if (((State021aa5c8 *)self->unk_40)->st == 0) {
+    if (((State021aa5c8 *)self->fsm)->st == 0) {
         VObj *e = func_02065f88(0x391, &self->pos);
-        e->vfunc_24(0, self->unk_68 - (self->unk_68 >> 2), 0);
+        e->vfunc_24(0, self->height - (self->height >> 2), 0);
         e->vfunc_14(0x159a, 0x159a, 0x159a);
         LFLD(s32, e, 0x3c) = 0x4000;
         g->cam.base.shakeX = 1;
@@ -111,7 +111,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
     } else if (self->unk_b2c_2) {
         func_ov000_021ab68c((u8 *)self);
     }
-    if (((State021aa5c8 *)self->unk_40)->st <= 1 && sub != NULL && !(LFLD(Bits8021aa5c8, sub, 0x18).b4 ? TRUE : FALSE)) {
+    if (((State021aa5c8 *)self->fsm)->st <= 1 && sub != NULL && !(LFLD(Bits8021aa5c8, sub, 0x18).b4 ? TRUE : FALSE)) {
         d = actor->pos;
         d.x -= self->pos.x;
         d.y -= self->pos.y;
@@ -119,17 +119,17 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
         d.x = FxMulL021aa5c8(d.x, 0x733);
         d.y = FxMulL021aa5c8(d.y, 0x733);
         d.z = FxMulL021aa5c8(d.z, 0x733);
-        d.y = self->unk_6c;
+        d.y = self->centerY;
         VEC_Add(&d, (VecFx32 *)((u8 *)self + 0x70), &out);
-        func_ov000_0218a358((u8 *)g + 0xf4, &out, 0, actor->unk_64 + 0x8c00, 1, 0x2333, 0x1000, 1);
+        func_ov000_0218a358((u8 *)g + 0xf4, &out, 0, actor->radius + 0x8c00, 1, 0x2333, 0x1000, 1);
     }
-    if (((State021aa5c8 *)self->unk_40)->kind != 0x11) {
+    if (((State021aa5c8 *)self->fsm)->kind != 0x11) {
         return;
     }
     if (self->unk_b2c_0 || self->unk_b2c_1 || self->unk_b2c_2) {
         return;
     }
-    func_ov000_02198360(self->unk_40, 1, 0);
+    func_ov000_02198360(self->fsm, 1, 0);
 }
 
 }

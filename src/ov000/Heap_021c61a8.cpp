@@ -26,7 +26,7 @@ void func_ov000_021c61a8(Obj021c61a8 *self) {
     while (node != NULL) {
         Node021c61a8 *next = node->unk_28;
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (node != NULL) {
             if (node != NULL) {
                 node->vfunc_04();

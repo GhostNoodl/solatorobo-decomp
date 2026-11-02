@@ -27,7 +27,7 @@ static inline Actor *FindA(u16 id) {
 }
 
 void func_ov000_021a15e0(Robo021ca458 *self) {
-    ActorSub40 *s = (ActorSub40 *)self->unk_40;
+    ActorSub40 *s = (ActorSub40 *)self->fsm;
     Actor *a;
     ActorSub4c *p;
     if (s != NULL) {
@@ -41,13 +41,13 @@ void func_ov000_021a15e0(Robo021ca458 *self) {
     a = FindA(self->unk_b1c);
     p = NULL;
     if (a != NULL) {
-        p = a->unk_4c;
+        p = a->targetObj;
     }
-    if (p != NULL && p->unk_1c == self->id) {
+    if (p != NULL && p->target == self->id) {
         return;
     }
     if (p != NULL) {
-        p->unk_1c = 0xffff;
+        p->target = 0xffff;
     }
     self->unk_b1c = 0xffff;
     self->unk_b1e = 0xffff;

@@ -871,7 +871,7 @@ BOOL func_02064e98(EffectGroup *g) {
         g->child = first;
         first->parent = g;
         saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (g->setup != NULL) {
             if (g->setup != NULL) {
                 g->setup->Delete();
@@ -1068,7 +1068,7 @@ static inline void EffectMgr_Dtor(EffectMgr *m) {
 
 void func_02065534(void) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (data_0214a420 != NULL) {
         EffectMgr *m = data_0214a420;
         if (m != NULL) {

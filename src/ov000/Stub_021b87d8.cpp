@@ -40,7 +40,7 @@ void func_ov000_021b87d8(Obj021b87d8 *self, u16 a) {
 
 void func_ov000_021b8800(Obj021b87d8 *self) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_4c != NULL) {
         Obj021b87d8_DeleteMember(self->unk_4c);
         self->unk_4c = NULL;

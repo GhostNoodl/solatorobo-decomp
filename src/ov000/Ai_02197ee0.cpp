@@ -75,7 +75,7 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
     if (!GIdle02197ee0()) {
         return;
     }
-    h = ((Hist02197ee0 *)self->unk_40);
+    h = ((Hist02197ee0 *)self->fsm);
     cur = h->current;
     if (cur == 0 || (h->mask & 1) != 0) {
         st->st = 0;
@@ -108,7 +108,7 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
     }
     switch (st->st) {
     case 0:
-        if (((Hist02197ee0 *)self->unk_40)->current != 1) {
+        if (((Hist02197ee0 *)self->fsm)->current != 1) {
             return;
         }
         st->st++;
@@ -128,7 +128,7 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
         if (o != NULL) {
             ang = LFLD(u16, o, 0x1a);
         } else {
-            p.y += self->unk_6c;
+            p.y += self->centerY;
             ang = FX_Atan2(p.x - self->pos.x, p.z - self->pos.z);
             ang = func_ov000_0219a36c(&p, radius, (u16)(ang + (u16)(Rand_UpTo(0x2000) + 0x7000)), 5, 0, 0xc0000000);
         }
@@ -140,14 +140,14 @@ void func_ov000_02197ee0(Actor *self, AiState02197ee0 *st, s32 near, s32 arg, s3
     }
     case 2:
         st->timer++;
-        if (((s32)self->unk_48->unk_58) != 0 || st->timer >= 0x78 ||
+        if (((s32)self->hit->unk_58) != 0 || st->timer >= 0x78 ||
             near + (near >> 2) > Dist02197ee0(self->pos.x - st->pos.x, self->pos.z - st->pos.z)) {
             st->st = 0;
         }
-        if ((self->unk_48->unk_50 & 0x40000000) && st->timer >= 0x14) {
+        if ((self->hit->unk_50 & 0x40000000) && st->timer >= 0x14) {
             st->st = 0;
         }
-        ((Hist02197ee0 *)self->unk_40)->mask |= 4;
+        ((Hist02197ee0 *)self->fsm)->mask |= 4;
         return;
     case 10:
         st->timer++;

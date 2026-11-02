@@ -87,8 +87,8 @@ struct Obj021fffc0 : public Ov010Obj {
 };
 
 void func_ov010_021fffc0(Obj021fffc0 *self) {
-    if (self->unk_48 != NULL) {
-        func_ov000_0219864c(self->unk_48, 0, 0);
+    if (self->hit != NULL) {
+        func_ov000_0219864c(self->hit, 0, 0);
     }
 }
 

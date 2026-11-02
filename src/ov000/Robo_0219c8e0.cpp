@@ -64,13 +64,13 @@ void func_ov000_0219c8e0(u8 *self) {
     func_ov000_0218ffdc(M, self + 0x450, 0, 1);
     M->actor_id = F(u16, 0xc);
     tbl = F(void **, 0x510) != NULL ? (AnimEventTable *)((u8 *)*F(void **, 0x510) + 8) : NULL;
-    M->unk_d0 = tbl;
+    M->evTable = tbl;
     if (tbl != NULL) {
         if (tbl->is_ptr == 0) {
-            M->unk_d4 = (s16 *)&tbl->entries[tbl->count];
+            M->evData = (s16 *)&tbl->entries[tbl->count];
         }
     }
-    M->unk_e0 = (void *)func_ov003_021ce630;
+    M->evFunc = (void *)func_ov003_021ce630;
     {
         const char *nm = data_ov000_021cc5e3;
         if (!F(B24_0219c8e0, 0xb24).b1) {
@@ -145,7 +145,7 @@ void func_ov000_0219c8e0(u8 *self) {
         func_ov000_0218ffdc(p, F(void *, 0x99c), 0, 1);
     }
     if (F(Model0218fe1c *, 0x998) != NULL) {
-        F(Model0218fe1c *, 0x998)->unk_c2_0 = 1;
+        F(Model0218fe1c *, 0x998)->visible = 1;
     }
 }
 

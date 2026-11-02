@@ -202,7 +202,7 @@ void Ov009ActVt_02216348_Start(Ov009ActVt_02216348 *self) {
     s48->unk_9a_3 = 0;
     func_0203f364(s48);
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_44 != NULL) {
         Heap_Free(self->unk_44);
         self->unk_44 = NULL;

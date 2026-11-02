@@ -32,11 +32,11 @@ void func_ov000_021b2d48(Robo021ca458 *self) {
     if (self->unk_b2f != 0) {
         self->unk_b2f--;
         res = (u8 *)func_ov000_0218d2e0(self);
-    } else if ((self->unk_48->unk_54 & 0x400) || self->unk_b22_0 > 1) {
+    } else if ((self->hit->unk_54 & 0x400) || self->unk_b22_0 > 1) {
         self->unk_b2f = 0;
     } else {
         Actor *a = FindActor021b2d48(self->unk_b1c);
-        if (a != NULL && (sub = ((u8 *)a->unk_4c)) != NULL) {
+        if (a != NULL && (sub = ((u8 *)a->targetObj)) != NULL) {
             if (sub[1] == 6) {
                 tgt = (u8 *)func_ov000_02199d78(sub);
             } else if (sub[1] == 1 || sub[1] == 5) {

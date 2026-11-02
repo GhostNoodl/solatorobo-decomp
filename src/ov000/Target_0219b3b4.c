@@ -35,10 +35,10 @@ typedef struct {
 
 typedef struct {
     u8 unk_00[0x9c];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
+    s32 speed;
+    s32 velY;
+    s32 friction;
+    s32 gravity;
 } ActorP;
 
 typedef struct ActorMgr ActorMgr;

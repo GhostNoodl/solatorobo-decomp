@@ -6,15 +6,15 @@ extern char data_ov000_021cc5e3[];
 void func_ov000_021b0db0(Actor *self, s32 id);
 
 void func_ov000_021b0860(Actor *self) {
-    switch (self->unk_40->st) {
+    switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0x89, 0);
         func_ov000_021915a0(self->model);
-        self->unk_9c = 0;
-        self->unk_a0 = 0;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0;
-        self->unk_40->st++;
+        self->speed = 0;
+        self->velY = 0;
+        self->friction = 0;
+        self->gravity = 0;
+        self->fsm->st++;
     case 1:
         func_ov000_021b0db0(self, 0);
         break;

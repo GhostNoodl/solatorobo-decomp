@@ -83,7 +83,7 @@ void func_ov000_021b3738(Robo021ca458 *self, u8 *hit) {
     VecFx32 ofs;
     MtxFx33 m;
     s32 r;
-    if (hit != NULL && (self->unk_40->current != 0x18 || self->unk_b1e == 0xffff)) {
+    if (hit != NULL && (self->fsm->current != 0x18 || self->unk_b1e == 0xffff)) {
         VObj *a = func_ov000_021985c0(hit);
         BOOL flag;
         u8 *e;
@@ -130,7 +130,7 @@ void func_ov000_021b3738(Robo021ca458 *self, u8 *hit) {
         if (LFLD(u16, LFLD(u8 *, o, 0x4c), 0x1e) == 0) {
             func_ov000_021bd314(self->unk_5c, 5);
             pos = self->pos;
-            r = self->unk_68;
+            r = self->height;
         } else {
             s32 h = LFLD(s16, o, 0x1e);
             s32 d = 0x14000;
@@ -149,7 +149,7 @@ void func_ov000_021b3738(Robo021ca458 *self, u8 *hit) {
         LFLD(u32, self->unk_5c, 0) |= 2;
     } else {
         pos = self->pos;
-        r = self->unk_6c;
+        r = self->centerY;
         LFLD(u32, self->unk_5c, 0) &= ~2;
         func_ov000_021bd438(self->unk_5c, (VecFx32 *)((u8 *)self + 0x70), 0);
     }

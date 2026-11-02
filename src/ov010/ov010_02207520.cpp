@@ -197,8 +197,8 @@ struct Obj02207828 : public Ov010Obj {
 };
 
 static inline void Ov010_Move(Obj02207828 *self) {
-    func_ov003_021d9e90(&self->pos, &self->unk_150, &self->pos, self->unk_9c, self->unk_a0);
-    func_ov003_021da2c8(self, self->unk_9c, self->unk_a0, self->unk_a4, self->unk_a8);
+    func_ov003_021d9e90(&self->pos, &self->unk_150, &self->pos, self->speed, self->velY);
+    func_ov003_021da2c8(self, self->speed, self->velY, self->friction, self->gravity);
 }
 
 void func_ov010_02207828(Obj02207828 *self) {
@@ -207,22 +207,22 @@ void func_ov010_02207828(Obj02207828 *self) {
     t.y = self->unk_b8.y;
     t.z = self->unk_b8.z;
     if (VEC_Distance(&t, &self->pos) >= 0x3000) {
-        self->unk_9c += 0x180;
-        self->unk_9c = Ov010_Clamp(self->unk_9c, 0, 0xd00);
+        self->speed += 0x180;
+        self->speed = Ov010_Clamp(self->speed, 0, 0xd00);
         Ov010_Move(self);
         return;
     } else {
         BOOL slow = TRUE;
-        if (self->unk_9c >= 0x40) {
+        if (self->speed >= 0x40) {
             slow = FALSE;
         }
         if (Ov003Vec_Equal(&self->pos, &t) || slow) {
-            self->unk_9c = 0;
+            self->speed = 0;
             return;
         }
-        self->unk_a4 = 0xf00;
-        if (self->unk_9c >= 0x400) {
-            self->unk_9c = 0x400;
+        self->friction = 0xf00;
+        if (self->speed >= 0x400) {
+            self->speed = 0x400;
         }
     }
     Ov010_Move(self);
@@ -358,7 +358,7 @@ void func_ov010_02207bb4(Ov010Cls *self) {
     if (self->unk_1fc != 0) {
         return;
     }
-    key = self->unk_40->current;
+    key = self->fsm->current;
     for (i = 0; i < 6; i++) {
         if (key == data_ov010_0220f188[i].key && *(s32 *)&data_ov010_0220f188[i].fn != 0) {
             (self->*data_ov010_0220f188[i].fn)();
@@ -367,7 +367,7 @@ void func_ov010_02207bb4(Ov010Cls *self) {
     }
     func_ov003_021d3008(self);
     if (func_ov003_021cf408()) {
-        self->unk_15 = func_ov003_021cf408();
+        self->mode = func_ov003_021cf408();
     }
     pl = func_ov000_0219bf90();
     if (pl != NULL) {
@@ -401,10 +401,10 @@ extern void func_ov003_021d64f0(void *self);
 extern u16 FX_Atan2(s32 y, s32 x);
 
 void func_ov010_02207d2c(Obj02207828 *self) {
-    self->model->unk_c2_0 = 1;
+    self->model->visible = 1;
     switch (self->unk_18[0]) {
     case 0: {
-        ActorSub40 *st = self->unk_40;
+        ActorSub40 *st = self->fsm;
         switch (st->st) {
         case 0:
             func_ov000_02190cb0(self->model, FLD(const char *, data_ov010_0220f024, 0x2c), 0x1000, 0);
@@ -414,38 +414,38 @@ void func_ov010_02207d2c(Obj02207828 *self) {
             self->rot_y = FLD(u16, data_ov010_0220f024, 0x52);
             self->rot_z = FLD(u16, data_ov010_0220f024, 0x54);
             self->pos.y += 0x5000;
-            self->unk_9c = 0xcd;
-            self->unk_a0 = 0;
-            self->unk_a4 = 0;
-            self->unk_a8 = 0;
+            self->speed = 0xcd;
+            self->velY = 0;
+            self->friction = 0;
+            self->gravity = 0;
             func_02049f44(data_02097e4c, 0x51, &self->pos, 0);
-            self->unk_40->st = 1;
+            self->fsm->st = 1;
             return;
         case 1:
-            if (self->unk_9c >= 0x20) {
+            if (self->speed >= 0x20) {
                 const Ov010Vec *t = &data_ov010_0220f0fc;
-                if (self->unk_a4 == 0) {
+                if (self->friction == 0) {
                     if (VEC_Distance(t, &self->pos) < 0x333) {
-                        self->unk_a4 = 0xe66;
+                        self->friction = 0xe66;
                     }
                 }
-                func_ov003_021d9dbc(&self->pos, t, &self->pos, self->unk_9c, self->unk_a0);
-                func_ov003_021da2c8(self, self->unk_9c, self->unk_a0, self->unk_a4, self->unk_a8);
-                self->unk_98 = FX_Atan2(t->x - self->pos.x, t->z - self->pos.z);
+                func_ov003_021d9dbc(&self->pos, t, &self->pos, self->speed, self->velY);
+                func_ov003_021da2c8(self, self->speed, self->velY, self->friction, self->gravity);
+                self->moveYaw = FX_Atan2(t->x - self->pos.x, t->z - self->pos.z);
                 return;
             }
             func_02065f88(0x12f, &self->pos)->v0c(0xe66);
-            self->unk_40->st = 2;
+            self->fsm->st = 2;
             return;
         case 2:
             st->timer++;
-            if (self->unk_40->timer <= 0x5a) {
+            if (self->fsm->timer <= 0x5a) {
                 return;
             }
-            self->unk_9c = 0;
-            self->unk_a0 = 0;
-            self->unk_a4 = 0;
-            self->unk_a8 = 0;
+            self->speed = 0;
+            self->velY = 0;
+            self->friction = 0;
+            self->gravity = 0;
             func_ov003_021d64f0(self);
             return;
         }
@@ -487,7 +487,7 @@ static inline void Ov010_VecSub(const Ov010Vec *a, const Ov010Vec *b, Ov010Vec *
 }
 
 void func_ov010_02208018(Obj02207828 *self) {
-    if (self->unk_40->st == 0) {
+    if (self->fsm->st == 0) {
         Ov010_VecSet(&self->pos, 0x1da2, -0xb42d, 0x266f);
         self->rot_x = 0;
         self->rot_y = 0x7fff;
@@ -496,21 +496,21 @@ void func_ov010_02208018(Obj02207828 *self) {
         Ov010_VecSet(&self->unk_b8, 0x1da2, -0xb42d, 0x266f);
         Ov010_VecSub(&self->unk_b8, &self->pos, &self->unk_150);
         VEC_Normalize(&self->unk_150, &self->unk_150);
-        self->unk_98 = FX_Atan2(self->unk_150.x, self->unk_150.z);
-        self->unk_9c = 0;
-        self->unk_a0 = 0;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0;
+        self->moveYaw = FX_Atan2(self->unk_150.x, self->unk_150.z);
+        self->speed = 0;
+        self->velY = 0;
+        self->friction = 0;
+        self->gravity = 0;
         func_02049f44(data_02097e4c, 0x29, &self->pos, 0);
-        self->unk_40->st++;
+        self->fsm->st++;
         return;
     }
     func_ov010_02207828(self);
-    if (self->unk_9c == 0) {
+    if (self->speed == 0) {
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->unk_ac = 1;
-        func_ov000_02198360(self->unk_40, 1, 0);
+        data_ov000_021ccd54->stageFlags = 1;
+        func_ov000_02198360(self->fsm, 1, 0);
     }
 }
 
@@ -528,17 +528,17 @@ struct Ov010Rot3 {
 };
 
 void func_ov010_0220813c(Obj02207828 *self) {
-    switch (self->unk_40->st) {
+    switch (self->fsm->st) {
     case 0:
-        self->unk_40->st = 10;
+        self->fsm->st = 10;
         return;
     case 10:
         func_ov000_02190cb0(self->model, FLD(const char *, data_ov010_0220f024, 0x8), 0x266, 0);
         func_ov000_021911c8(self->model, 0x1800);
-        self->unk_40->st = 0xb;
+        self->fsm->st = 0xb;
     case 0xb:
         if (func_ov000_02191120(self->model)) {
-            self->unk_40->st = 0x14;
+            self->fsm->st = 0x14;
         }
         return;
     case 0x14: {
@@ -546,32 +546,32 @@ void func_ov010_0220813c(Obj02207828 *self) {
         func_ov000_02190cb0(self->model, FLD(const char *, data_ov010_0220f024, 0xc), 0x266, 0);
         func_ov000_021911c8(self->model, 0x1000);
         func_ov000_021915a0(self->model);
-        self->unk_98 = self->rot_y;
-        self->unk_9c = 0;
-        self->unk_a0 = 0;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0;
+        self->moveYaw = self->rot_y;
+        self->speed = 0;
+        self->velY = 0;
+        self->friction = 0;
+        self->gravity = 0;
         g = data_ov000_021ccd54;
         g->cam.base.flags |= 0x1c;
         g->cam.base.shakeTime = 0xf;
         g->cam.base.shakeLen = 0x28;
         g->cam.base.shakeCur = 0x28;
-        func_ov010_0220ea84(self, 0, self->unk_98)->v0c(0x2000);
+        func_ov010_0220ea84(self, 0, self->moveYaw)->v0c(0x2000);
         func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
-        self->unk_40->st = 0x15;
+        self->fsm->st = 0x15;
     }
     case 0x15:
         if (VEC_Distance(&self->pos, &data_ov010_0220f108) <= 0x14000) {
-            self->unk_9c += 0x333;
-            self->unk_9c = Ov010_Clamp(self->unk_9c, 0, 0x1000);
+            self->speed += 0x333;
+            self->speed = Ov010_Clamp(self->speed, 0, 0x1000);
             Actor_Move(self, 0x1000);
         }
-        self->unk_40->timer++;
-        if (self->unk_40->timer <= 0x5a) {
+        self->fsm->timer++;
+        if (self->fsm->timer <= 0x5a) {
             return;
         }
-        self->unk_40->timer = 0;
-        self->unk_40->st = 0x1e;
+        self->fsm->timer = 0;
+        self->fsm->st = 0x1e;
         Ov010_VecSet(&self->pos, 0x19a, 0x1b3b, -0x3a77);
         return;
     case 0x1e:
@@ -580,16 +580,16 @@ void func_ov010_0220813c(Obj02207828 *self) {
         func_02065f88(0x389, &data_ov010_0220f120)->v0c(0x2000);
         func_02065f88(0x322, &data_ov010_0220f114)->v0c(0x1800);
         func_02049f44(data_02097e4c, 0x79, &self->pos, 0);
-        self->unk_40->st = 0x1f;
-        self->unk_40->timer = 0x28;
+        self->fsm->st = 0x1f;
+        self->fsm->timer = 0x28;
         return;
     case 0x1f: {
-        ActorSub40 *st = self->unk_40;
+        ActorSub40 *st = self->fsm;
         if (st->timer != 0) {
             st->timer--;
         }
         if (st->timer == 0) {
-            self->unk_40->st = 0x28;
+            self->fsm->st = 0x28;
         }
         return;
     }
@@ -610,14 +610,14 @@ void func_ov010_0220813c(Obj02207828 *self) {
         func_02065f88(0x579, &data_ov010_0220f114)->v0c(0x2000);
         func_02065f88(0x579, &data_ov010_0220f120)->v0c(0x2000);
         func_02049f44(data_02097e4c, 0x5c, &self->pos, 0);
-        self->unk_40->st = 0x64;
+        self->fsm->st = 0x64;
         return;
     }
     case 0x64:
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->unk_ac = 1;
-        self->unk_40->st = 0x65;
+        data_ov000_021ccd54->stageFlags = 1;
+        self->fsm->st = 0x65;
         self->unk_1fc = 1;
         return;
     case 0x65:

@@ -512,7 +512,7 @@ BOOL func_ov011_02201578(Ov011Fx *self) {
 
 static inline void Ov011_FreeAnim(Ov011Fx *self) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->anim != NULL) {
         Ov011Anim *p = self->anim;
         if (p != NULL) {
@@ -526,7 +526,7 @@ static inline void Ov011_FreeAnim(Ov011Fx *self) {
 
 static inline void Ov011_FreeModel(Ov011Fx *self) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->model != NULL) {
         Ov011Sub38 *p = self->model;
         if (p != NULL) {
@@ -778,7 +778,7 @@ BOOL func_ov000_021903b4(void *p);
 
 static inline void Ov011_FreeModelP(Ov011Sub38 **pp) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (*pp != NULL) {
         Ov011Sub38 *p = *pp;
         if (p != NULL) {
@@ -792,7 +792,7 @@ static inline void Ov011_FreeModelP(Ov011Sub38 **pp) {
 
 static inline void Ov011_FreeAnimP(Ov011Anim **pp) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (*pp != NULL) {
         Ov011Anim *p = *pp;
         if (p != NULL) {

@@ -76,21 +76,21 @@ void func_ov011_021fa7dc(Ov011Mgr *self) {
         return;
     }
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->arr8 != NULL) {
         __cxa_vec_delete(self->arr8, 0x38, 8, Ov003Vt_021f7d2c_Dtor);
         self->arr8 = NULL;
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->arrC != NULL) {
         __cxa_vec_delete(self->arrC, 0x30, 8, Ov011Vt_022079d0_Dtor);
         self->arrC = NULL;
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->ids != NULL) {
         Heap_FreeArray(self->ids);
         self->ids = NULL;
@@ -173,21 +173,21 @@ void func_ov011_021fab74(Ov011Mgr *self) {
     self->b1 = 0;
     self->unk_04 = -1;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->arr8 != NULL) {
         __cxa_vec_delete(self->arr8, 0x38, 8, Ov003Vt_021f7d2c_Dtor);
         self->arr8 = NULL;
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->arrC != NULL) {
         __cxa_vec_delete(self->arrC, 0x30, 8, Ov011Vt_022079d0_Dtor);
         self->arrC = NULL;
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->ids != NULL) {
         Heap_FreeArray(self->ids);
         self->ids = NULL;

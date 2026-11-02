@@ -73,7 +73,7 @@ BOOL func_020554c8(SlidePanel *panel) {
 void func_020554e4(SlidePanel *panel) {
     if (panel->pltt != NULL) {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         {
             PlttRes *p = panel->pltt;
             if (p != NULL) {
@@ -95,7 +95,7 @@ void func_020554e4(SlidePanel *panel) {
         }
         {
             void *saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->unk_08;
+            data_02097dd0->cur = data_02097dd0->heapHi;
             {
                 Model *p = panel->model;
                 if (p != NULL) {
@@ -119,7 +119,7 @@ void func_020554e4(SlidePanel *panel) {
         }
         {
             void *saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->unk_08;
+            data_02097dd0->cur = data_02097dd0->heapHi;
             {
                 Model *p = panel->model2;
                 if (p != NULL) {

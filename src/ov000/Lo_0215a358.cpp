@@ -17,7 +17,7 @@ void func_ov000_0215a358(Lo021cb5a8 *self, s32 enable, s32 *pos) {
     if (enable == 0) {
         return;
     }
-    z = self->unk_68 - 0x80;
+    z = self->posZ - 0x80;
     item = self->unk_94;
     ox = self->vfunc_30();
     oy = self->vfunc_34();

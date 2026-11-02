@@ -60,7 +60,7 @@ void func_ov000_0215deb4(Lo021cae48 *self, s32 enable, s32 *pos, s32 scale) {
     if (enable == 0) {
         return;
     }
-    z = self->unk_68 - 0x80;
+    z = self->posZ - 0x80;
     g = data_02097d48;
     G3_Cmd1(0x2a, 0x20000000);
     alpha = self->unk_54;
@@ -72,7 +72,7 @@ void func_ov000_0215deb4(Lo021cae48 *self, s32 enable, s32 *pos, s32 scale) {
     G3_Vec(0x1b, scale, scale, 0x1000);
     G3_Vec(0x1b, sx, sy, 0x1000);
     G3_Cmd1(0x40, 2);
-    G3_Cmd1(0x20, self->unk_48);
+    G3_Cmd1(0x20, self->color);
     G3_Cmd2(0x23, 0xc000000, 0);
     G3_Cmd1(0x25, 0x100000cd);
     G3_Cmd1(0x25, 0xf6);

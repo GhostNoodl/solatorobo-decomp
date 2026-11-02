@@ -610,7 +610,7 @@ void func_ov000_021736dc(void) {
         do {
             next = task->next;
             saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->unk_08;
+            data_02097dd0->cur = data_02097dd0->heapHi;
             if (task != NULL) {
                 if (task != NULL) {
                     task->vfunc_04();
@@ -654,7 +654,7 @@ void func_ov000_02173784(void) {
             task->prev = NULL;
             task->next = NULL;
             saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->unk_08;
+            data_02097dd0->cur = data_02097dd0->heapHi;
             if (task != NULL) {
                 if (task != NULL) {
                     task->vfunc_04();
@@ -777,7 +777,7 @@ void func_ov000_021739f8(Task *self) {
     Model *model;
     func_ov000_0214c210();
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     model = self->unk_4c;
     if (model != NULL) {
         if (model != NULL) {
@@ -1598,7 +1598,7 @@ void func_ov000_021743bc(Obj021743bc *self) {
         Lo021cb5a8 *s_1 = self->unk_44;
         s_1->unk_64 = 0;
         s_1->unk_66 = 0x10;
-        s_1->unk_68 = -0x1ccd;
+        s_1->posZ = -0x1ccd;
     }
     self->unk_44->unk_0c |= 0x20000000;
     ((MenuBox021743bc *)self->unk_44)->SetText(1, MsgRes_GetString(g, 0x32));
@@ -2781,7 +2781,7 @@ void func_ov000_02176714(Lo02176714 *self) {
         Lo021cb5a8 *s = self->unk_3c;
         s->unk_64 = 0;
         s->unk_66 = 0x11;
-        s->unk_68 = -0x1ccd;
+        s->posZ = -0x1ccd;
     }
     self->unk_3c->unk_0c |= 0x20000000;
     self->unk_3c->vfunc_f4(1, MsgRes_GetString(g, 0x32));
@@ -2847,7 +2847,7 @@ void func_ov000_02176714(Lo02176714 *self) {
             Lo021cae48 *s = self->unk_44;
             s->unk_64 = 0x1a;
             s->unk_66 = 0x78;
-            s->unk_68 = -0x1ccd;
+            s->posZ = -0x1ccd;
         }
         func_ov000_0215d980(self->unk_44, 0, 0);
         self->unk_44->unk_2c = 1;
@@ -2874,7 +2874,7 @@ void func_ov000_02176714(Lo02176714 *self) {
             Lo021cae48 *s = self->unk_48;
             s->unk_64 = 0x1a;
             s->unk_66 = 0x83;
-            s->unk_68 = -0x1ccd;
+            s->posZ = -0x1ccd;
         }
         func_ov000_0215d980(self->unk_48, 0, 0);
         self->unk_48->unk_2c = 1;
@@ -2966,7 +2966,7 @@ void func_ov000_02176714(Lo02176714 *self) {
         LoBase021caac8_021cb2a8 *s = self->unk_4c;
         s->unk_64 = 0;
         s->unk_66 = 0x2c;
-        s->unk_68 = -0x1ccd;
+        s->posZ = -0x1ccd;
     }
     self->unk_4c->unk_c0 = 0x78;
     self->unk_4c->unk_0c |= 0x400000;
@@ -3874,7 +3874,7 @@ void func_ov000_021782e0(Lo02178110 *self, void *g) {
         Lo021cae48 *s = self->unk_48;
         s->unk_64 = 0x1a;
         s->unk_66 = 0x78;
-        s->unk_68 = -0x1ccd;
+        s->posZ = -0x1ccd;
     }
     func_ov000_0215d980(self->unk_48, 0, 0);
     self->unk_48->unk_2c = 1;
@@ -3901,7 +3901,7 @@ void func_ov000_021782e0(Lo02178110 *self, void *g) {
         Lo021cae48 *s = self->unk_4c;
         s->unk_64 = 0x1a;
         s->unk_66 = 0x83;
-        s->unk_68 = -0x1ccd;
+        s->posZ = -0x1ccd;
     }
     func_ov000_0215d980(self->unk_4c, 0, 0);
     self->unk_4c->unk_2c = 1;
@@ -3931,7 +3931,7 @@ void func_ov000_021782e0(Lo02178110 *self, void *g) {
         Lo021cb5a8 *s = self->unk_50;
         s->unk_64 = 0;
         s->unk_66 = 0x11;
-        s->unk_68 = -0x199a;
+        s->posZ = -0x199a;
     }
     self->unk_50->unk_0c |= 0x20000000;
     {
@@ -3978,7 +3978,7 @@ void func_ov000_021782e0(Lo02178110 *self, void *g) {
         LoBase021caac8_021cb2a8 *s = self->unk_3c;
         s->unk_64 = 0;
         s->unk_66 = 0x2c;
-        s->unk_68 = -0x1ccd;
+        s->posZ = -0x1ccd;
     }
     {
         LoBase021caac8_021cb2a8 *s = self->unk_3c;
@@ -4849,7 +4849,7 @@ void func_ov000_02179ab8(Lo021799e4 *self) {
         Lo021cb5a8 *s = self->unk_44;
         s->unk_64 = 0;
         s->unk_66 = 0;
-        s->unk_68 = -0x1ccd;
+        s->posZ = -0x1ccd;
     }
     self->unk_44->unk_0c |= 0x20000000;
     self->unk_44->unk_0c |= 0x80000000;
@@ -8661,7 +8661,7 @@ void func_ov000_0217fd70(Lo0217fd70 *self) {
         LoBase021caac8_021cb2a8 *s = self->unk_3c;
         s->unk_64 = 0;
         s->unk_66 = 0x2c;
-        s->unk_68 = -0xccd;
+        s->posZ = -0xccd;
     }
     {
         LoBase021caac8_021cb2a8 *s = self->unk_3c;
@@ -8750,7 +8750,7 @@ void func_ov000_0217fd70(Lo0217fd70 *self) {
     }
     self->unk_44 = (LoBase021cafc0_021cb0b8 *)o;
     self->unk_44->vfunc_10(MsgRes_GetString(g, 0x11c));
-    self->unk_44->unk_68 = -0x666;
+    self->unk_44->posZ = -0x666;
     self->unk_44->vfunc_08();
     self->unk_44->unk_08 = self;
     self->unk_44->unk_84 = (void *)func_ov000_0217fa34;
@@ -8772,7 +8772,7 @@ void func_ov000_0217fd70(Lo0217fd70 *self) {
         Lo021cb5a8 *s = self->unk_48;
         s->unk_64 = 0xa5;
         s->unk_66 = 0x12;
-        s->unk_68 = -0x99a;
+        s->posZ = -0x99a;
     }
     {
         Lo021cb5a8 *s = self->unk_48;
@@ -9031,7 +9031,7 @@ void func_ov000_02180754(void) {
     void *saved2;
     Holder02180754 *p;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     p = (Holder02180754 *)data_ov000_021ccd44;
     if (p != NULL) {
         if (p != NULL) {
@@ -9040,7 +9040,7 @@ void func_ov000_02180754(void) {
             while (task != NULL) {
                 next = task->next;
                 saved2 = data_02097dd0->cur;
-                data_02097dd0->cur = data_02097dd0->unk_08;
+                data_02097dd0->cur = data_02097dd0->heapHi;
                 if (task != NULL) {
                     if (task != NULL) {
                         task->vfunc_04();

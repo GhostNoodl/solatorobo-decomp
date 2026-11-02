@@ -59,7 +59,7 @@ void func_ov000_0215b598(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 a3
     s16 t;
     MtxFx43 m;
     MtxFx43 tr;
-    z = self->unk_68 - 0x100;
+    z = self->posZ - 0x100;
     g = data_02097d48;
     G3_Cmd1(0x2a, 0x20000000);
     {
@@ -82,16 +82,16 @@ void func_ov000_0215b598(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 a3
     NNS_G3dGeBufferOP_N(0x19, &m, 12);
     G3_Cmd1(0x40, 3);
     {
-        u16 b = (self->unk_48 >> 10) & 0x1f;
-        u16 g = (self->unk_48 >> 5) & 0x1f;
-        u16 r = self->unk_48 & 0x1f;
+        u16 b = (self->color >> 10) & 0x1f;
+        u16 g = (self->color >> 5) & 0x1f;
+        u16 r = self->color & 0x1f;
         G3_Cmd1(0x20, (u16)(((u8)(g >> 1) << 5) | (u8)(r >> 1) | ((u8)(b >> 1) << 10)));
     }
     G3_Vtx(0x1000, 0, 0);
     G3_VtxXY(0, 0);
     G3_VtxXY(0x1000, t);
     G3_VtxXY(0, t);
-    G3_Cmd1(0x20, self->unk_48);
+    G3_Cmd1(0x20, self->color);
     G3_VtxXY(0x1000, t);
     G3_VtxXY(0, t);
     G3_VtxXY(0x1000, 0x1000);

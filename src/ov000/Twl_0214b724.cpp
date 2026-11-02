@@ -85,7 +85,7 @@ TwlLoader *func_ov000_0214b724(TwlLoader *self) {
     }
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->unk_1c != NULL) {
             Heap_FreeArray(self->unk_1c);
             self->unk_1c = NULL;

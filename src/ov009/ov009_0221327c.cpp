@@ -115,7 +115,7 @@ void func_ov009_02213460(Ov009ActVt_02217d5c *self) {
         if (st->timer == 0) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
-            data_ov000_021ccd54->unk_ac = 1;
+            data_ov000_021ccd54->stageFlags = 1;
             func_ov000_0218bed8(data_ov000_021ccd64, 0, (Actor *)self);
             self->v08();
             return;

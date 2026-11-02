@@ -47,7 +47,7 @@ void func_ov000_0214c2d0(Menu021ca94c *self) {
     self->unk_28 = 0x2b;
     self->unk_64 = 0;
     self->unk_66 = 0xc0 - self->unk_28;
-    self->unk_68 = -0x1000;
+    self->posZ = -0x1000;
     if (func_ov000_02152e5c(self)) {
         func_02041d9c(self->unk_10, 0, 0xb);
         func_02041d9c(self->unk_10, 0, 0xc);

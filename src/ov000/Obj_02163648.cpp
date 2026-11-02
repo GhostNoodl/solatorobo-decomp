@@ -74,7 +74,7 @@ Obj02163648 *Lo021cacd8_Dtor(Obj02163648 *self) {
     Model *model;
     VOBJ_SET_VTABLE(self, data_ov000_021cacd8);
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     model = self->unk_84;
     if (model != NULL) {
         if (model != NULL) {

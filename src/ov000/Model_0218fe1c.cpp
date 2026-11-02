@@ -71,7 +71,7 @@ static inline BOOL AnimCtrl_IsReverse(AnimCtrl *ctrl) {
 
 static inline void FreeOnHeap(AnimCtrl **ptr) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (*ptr != NULL) {
         Heap_Free(*ptr);
         *ptr = NULL;
@@ -92,13 +92,13 @@ Model0218fe1c *func_ov000_0218fe1c(Model0218fe1c *self) {
     self->unk_18 = NULL;
     self->unk_1c = NULL;
     self->unk_20 = NULL;
-    self->unk_78 = 0;
-    self->unk_7c = 0;
-    self->unk_80 = 0;
-    MTX_Identity33_(&self->unk_84);
-    self->unk_a8 = 0x1000;
-    self->unk_ac = 0x1000;
-    self->unk_b0 = 0x1000;
+    self->trans.x = 0;
+    self->trans.y = 0;
+    self->trans.z = 0;
+    MTX_Identity33_(&self->rot);
+    self->scale.x = 0x1000;
+    self->scale.y = 0x1000;
+    self->scale.z = 0x1000;
     self->actor_id = 0xffff;
     self->unk_c4 = 0;
     self->unk_c6 = 0;
@@ -106,18 +106,18 @@ Model0218fe1c *func_ov000_0218fe1c(Model0218fe1c *self) {
     self->unk_ca = 0;
     self->unk_cc = -1;
     self->unk_ce = 0;
-    self->unk_d0 = NULL;
-    self->unk_d4 = NULL;
-    self->unk_d8 = NULL;
-    self->unk_dc = NULL;
-    self->unk_e0 = (void *)func_ov000_02191f18;
+    self->evTable = NULL;
+    self->evData = NULL;
+    self->evScript = NULL;
+    self->evCursor = NULL;
+    self->evFunc = (void *)func_ov000_02191f18;
     self->unk_e4 = 0;
-    self->unk_ba = 0;
-    self->unk_bc = 0;
+    self->blend = 0;
+    self->blendMax = 0;
     self->alpha = 0x1f;
-    self->unk_bf = 0x1f;
+    self->bright = 0x1f;
     self->unk_c0 = 0xff;
-    self->unk_c1 = 0;
+    self->polyId = 0;
     *(u16 *)((u8 *)self + 0xc2) = 0;
     return self;
 }
@@ -141,8 +141,8 @@ BOOL func_ov000_0218ffdc(Model0218fe1c *self, ResSet *res, u8 idx, BOOL anim) {
         return FALSE;
     }
     self->mdl = NULL;
-    self->unk_c2_0 = TRUE;
-    self->unk_c2_4 = 1;
+    self->visible = TRUE;
+    self->boxTest = 1;
     set = NNS_G3dGetMdlSet(file);
     {
         void *mdl;
@@ -162,9 +162,9 @@ BOOL func_ov000_0218ffdc(Model0218fe1c *self, ResSet *res, u8 idx, BOOL anim) {
     NNSi_G3dModifyMatFlag(self->mdl, FALSE, 0x80);
     NNSi_G3dModifyMatFlag(self->mdl, FALSE, 0x200);
     NNSi_G3dModifyMatFlag(self->mdl, FALSE, 0x400);
-    self->unk_c2_7 = 0;
-    self->unk_c2_9 = 3;
-    NNS_G3dRenderObjInit(self->unk_24, self->mdl);
+    self->restoreMat = 0;
+    self->cull = 3;
+    NNS_G3dRenderObjInit(self->renderObj, self->mdl);
     FreeOnHeap(&self->unk_0c);
     FreeOnHeap(&self->unk_10);
     FreeOnHeap(&self->unk_14);
@@ -191,8 +191,8 @@ BOOL func_ov000_0218ffdc(Model0218fe1c *self, ResSet *res, u8 idx, BOOL anim) {
         }
     }
     self->alpha = 0x1f;
-    self->unk_ba = 0;
-    self->unk_bc = 0;
+    self->blend = 0;
+    self->blendMax = 0;
     return TRUE;
 }
 

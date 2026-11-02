@@ -51,12 +51,12 @@ static inline BOOL IsBusy021a3e50(void) {
 void func_ov000_021a3e50(Robo021ca458 *self) {
     Actor *t;
     ActorSub40 *sub;
-    LFLD(u16, self->unk_48, 0x9a) |= 0x20;
+    LFLD(u16, self->hit, 0x9a) |= 0x20;
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
     }
     t = FindActor021a3e50(self->target);
-    sub = self->unk_40;
+    sub = self->fsm;
     switch (sub->st) {
     case 0:
         if (t != NULL) {
@@ -67,11 +67,11 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
             Actor_SendMsg(t, self->id, 5, TRUE, 6, &m);
             if (t->kind == 0x2003) {
                 u16 v;
-                self->unk_40->st++;
+                self->fsm->st++;
                 v = LFLD(u16, ((u8 *)self->hp), 2);
                 Actor_SendMsg(self, self->id, 10, TRUE, 2, &v);
             } else {
-                self->unk_40->st = 10;
+                self->fsm->st = 10;
                 if (self->unk_bac != self->target) {
                     u8 *g;
                     u32 n;
@@ -93,31 +93,31 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
             func_ov000_02190cb0(self->model, anim, 0x400, 0);
         }
         func_ov000_021915a0(self->model);
-        self->unk_40->timer = 0;
-        self->unk_9c = 0;
-        self->unk_a0 = 0;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0;
+        self->fsm->timer = 0;
+        self->speed = 0;
+        self->velY = 0;
+        self->friction = 0;
+        self->gravity = 0;
         break;
     case 1:
         sub->timer++;
         if (sub->timer > 0x1e) {
-            self->unk_40->st = 10;
-            self->unk_40->timer = 0;
+            self->fsm->st = 10;
+            self->fsm->timer = 0;
         }
         break;
     case 10:
         if (t != NULL) {
             func_020627a0(t->kind, t->id);
-            data_ov000_021ccd54->unk_ac = 1;
+            data_ov000_021ccd54->stageFlags = 1;
         }
-        self->unk_40->st++;
+        self->fsm->st++;
         break;
     case 11:
         sub->timer++;
         if (sub->timer > 0x14) {
-            self->unk_40->st++;
-            self->unk_40->timer = 0;
+            self->fsm->st++;
+            self->fsm->timer = 0;
         }
         break;
     case 12:
@@ -136,7 +136,7 @@ void func_ov000_021a3e50(Robo021ca458 *self) {
         }
         self->unk_b2f = 0x2d;
         self->target = 0xffff;
-        func_ov000_02198360(self->unk_40, 1, 0);
+        func_ov000_02198360(self->fsm, 1, 0);
         break;
     }
     Actor_TurnToActor(self, t, 0x400);

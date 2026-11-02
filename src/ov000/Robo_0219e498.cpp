@@ -84,8 +84,8 @@ void func_ov000_0219e498(Robo021ca458 *self) {
                 b += 0x35c;
             }
         }
-        self->unk_6f8 = a + self->unk_64;
-        self->unk_720 = b + self->unk_6c;
+        self->unk_6f8 = a + self->radius;
+        self->unk_720 = b + self->centerY;
         if (!On0219e498(self, 0x6c0)) {
             Show0219e498((u8 *)self, 0x6c0);
         }
@@ -100,8 +100,8 @@ void func_ov000_0219e498(Robo021ca458 *self) {
         return;
     }
     if (!G9_0219e498() && RgbEq0219e498(&data_ov000_021ccd54->unk_ca, &LFLD(FieldId, self, 0x772))) {
-        self->unk_6f8 = self->unk_64 >> 1;
-        self->unk_720 = self->unk_6c >> 1;
+        self->unk_6f8 = self->radius >> 1;
+        self->unk_720 = self->centerY >> 1;
         Show0219e498((u8 *)self, 0x6c0);
         LFLD(u16, self, 0x75a) |= 0x12;
         if ((self->unk_710 & 0x20000000) || !(self->unk_714 & 0x20000000)) {
@@ -125,9 +125,9 @@ void func_ov000_0219e498(Robo021ca458 *self) {
     func_ov000_0219864c((u8 *)self + 0x6c0, (u8 *)self + 0x75c, (u8 *)self + 0x76c);
     if (self->unk_b24_2 != 1) {
         if (self->unk_31c & 0x400) {
-            self->unk_304 = (self->unk_64 >> 1) + (self->unk_64 >> 2);
+            self->unk_304 = (self->radius >> 1) + (self->radius >> 2);
         } else {
-            self->unk_304 = (self->unk_64 >> 1) + (self->unk_64 >> 3);
+            self->unk_304 = (self->radius >> 1) + (self->radius >> 3);
         }
         Show0219e498((u8 *)self, 0x2cc);
         LFLD(u16, self, 0x366) |= 0x12;

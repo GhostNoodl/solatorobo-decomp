@@ -37,7 +37,7 @@ void Ov014Act_0221267c_Start(Ov014Act_0221267c *self) {
     func_ov003_021d112c(self);
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->unk_3c != NULL) {
             Ov014V *v = self->unk_3c;
             if (v != NULL) {

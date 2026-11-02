@@ -37,7 +37,7 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
             }
             rate = 0x111;
         }
-    } else if (self->unk_48->unk_50 & 0x400) {
+    } else if (self->hit->unk_50 & 0x400) {
         name = data_ov000_021cc624;
         if (self->unk_b36 == 1) {
             target = 0x1c3;
@@ -52,12 +52,12 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
     if (!self->unk_b22_3) {
         func_ov000_021915a0(self->model);
     }
-    LFLD(u16, self->unk_48, 0x9a) |= 0x20;
+    LFLD(u16, self->hit, 0x9a) |= 0x20;
     func_ov000_021b1dd8((u8 *)self, target, frame, speed, 0x466, 1);
     spd = 0x1000;
     if (!self->unk_b22_3) {
         // The repeated (s16)(v * 2) terms keep MWCC from folding the else branch into one multiply.
-        s16 v = self->unk_9c;
+        s16 v = self->speed;
         if (LBIT(self, 0xb24).b1) {
             spd = (s16)(v * 2) * 5;
         } else {
@@ -70,15 +70,15 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
         LFLD(VecFx32, self, 0xb10) = self->pos;
     }
     turned = FALSE;
-    if (LBIT(self, 0xb24).b1 && (self->unk_48->unk_54 & 0x400)) {
-        self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x,
+    if (LBIT(self, 0xb24).b1 && (self->hit->unk_54 & 0x400)) {
+        self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x,
                                          self->unk_af8 - self->pos.z);
-        self->unk_9c = 0x66;
-        self->unk_a4 = 0;
-        if (!LBIT(self, 0xb24).b17 || (self->unk_48->unk_50 & 0x40000000)) {
-            self->unk_a0 = 0x200;
+        self->speed = 0x66;
+        self->friction = 0;
+        if (!LBIT(self, 0xb24).b17 || (self->hit->unk_50 & 0x40000000)) {
+            self->velY = 0x200;
         }
-        self->unk_a8 = 0x52;
+        self->gravity = 0x52;
         LBIT(self, 0xb24).b17 = 1;
         turned = TRUE;
     }
@@ -86,7 +86,7 @@ void func_ov000_021a19a0(Robo021ca458 *self) {
         return;
     }
     func_ov000_02190cb0(self->model, data_ov000_021cc62a, 0x800, 0);
-    func_ov000_02198360(self->unk_40, 4, 0);
+    func_ov000_02198360(self->fsm, 4, 0);
 }
 
 }

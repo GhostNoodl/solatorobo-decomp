@@ -39,12 +39,12 @@ Robo021ca458 *func_ov000_0219bf90(void);
 void func_ov003_021f0c60(void *self, s32 a);
 
 void func_ov000_02195d88(ActorEx *self) {
-    ActorSub40 *s = self->unk_40;
+    ActorSub40 *s = self->fsm;
     switch (s->st) {
     case 0:
         self->unk_93_1 = 1;
         if (self->model != NULL) {
-            char *name = self->unk_4c->unk_0c;
+            char *name = self->targetObj->unk_0c;
             if (name != NULL) {
                 if (STD_CompareString(name, data_ov000_021cc45c) == 0) {
                     func_ov000_02191008(self->model);
@@ -60,49 +60,49 @@ void func_ov000_02195d88(ActorEx *self) {
             LFLD(Bits02195d88, q, 0x22).b0 = 0;
             LFLD(Bits02195d88, q, 0x22).b1 = 0;
         }
-        if (self->unk_48 != NULL) {
-            ActorSub48 *p = self->unk_48;
+        if (self->hit != NULL) {
+            ActorSub48 *p = self->hit;
             p->unk_50 = 0;
             p->unk_54 = 0;
             p->unk_58 = 0;
-            p = self->unk_48;
+            p = self->hit;
             LFLD(Bits02195d88, p, 0x9a).b0 = 0;
             p->unk_9a_3 = 0;
             func_0203f364(p);
-            p = self->unk_48;
+            p = self->hit;
             LFLD(Bits02195d88, p, 0x9a).b1 = 0;
             p->unk_9a_4 = 0;
         }
         self->target = 0xffff;
-        if (self->unk_58 != NULL) {
+        if (self->hitMesh != NULL) {
             self->unk_cc_0 = 0;
         }
         if (self->param->unk_02_8) {
-            LFLD(Bits8_02195d88, ((u8 *)self->unk_4c), 0x18).b0 = 1;
+            LFLD(Bits8_02195d88, ((u8 *)self->targetObj), 0x18).b0 = 1;
         }
-        self->unk_9c = 0;
-        self->unk_a0 = 0;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0;
-        self->unk_40->timer = 2;
-        self->unk_40->st++;
+        self->speed = 0;
+        self->velY = 0;
+        self->friction = 0;
+        self->gravity = 0;
+        self->fsm->timer = 2;
+        self->fsm->st++;
         break;
     case 1: {
-        u8 *t = Target_Get(((u8 *)self->unk_4c));
+        u8 *t = Target_Get(((u8 *)self->targetObj));
         u16 r;
         Robo021ca458 *pl;
         if (t != NULL) {
-            r = func_ov000_02199bc8(((u8 *)self->unk_4c), &self->pos, self->unk_40->timer, 10);
+            r = func_ov000_02199bc8(((u8 *)self->targetObj), &self->pos, self->fsm->timer, 10);
             LFLD(Rot02195d88, self, 0x7c) = LFLD(Rot02195d88, t, 0x7c);
-            self->unk_40->timer = r;
-            if (self->unk_4c->unk_01 != 3) {
+            self->fsm->timer = r;
+            if (self->targetObj->unk_01 != 3) {
                 break;
             }
             if (r < 10) {
                 break;
             }
             pl = func_ov000_0219bf90();
-            if (pl->id == self->unk_4c->unk_1c) {
+            if (pl->id == self->targetObj->target) {
                 u32 n = LFLD(u16, data_0214a424, 0x16) + 1;
                 if (n >= 0xffff) {
                     n = 0xffff;
@@ -113,23 +113,23 @@ void func_ov000_02195d88(ActorEx *self) {
                     LFLD(Bits02195d88, q, 0x22).b0 = 0;
                     LFLD(Bits02195d88, q, 0x22).b1 = 0;
                 }
-                if (self->unk_48 != NULL) {
-                    ActorSub48 *p = self->unk_48;
+                if (self->hit != NULL) {
+                    ActorSub48 *p = self->hit;
                     LFLD(Bits02195d88, p, 0x9a).b0 = 0;
                     p->unk_9a_3 = 0;
                     func_0203f364(p);
-                    p = self->unk_48;
+                    p = self->hit;
                     LFLD(Bits02195d88, p, 0x9a).b1 = 0;
                     p->unk_9a_4 = 0;
                 }
-                if (self->unk_4c->unk_03 != 0) {
-                    self->unk_4c->unk_1c = 0xffff;
+                if (self->targetObj->unk_03 != 0) {
+                    self->targetObj->target = 0xffff;
                     func_ov003_021f0c60(self, 0);
                 }
             }
-            func_ov000_02198360(self->unk_40, 0x15, 0);
+            func_ov000_02198360(self->fsm, 0x15, 0);
         } else {
-            func_ov000_02198360(self->unk_40, 4, 0);
+            func_ov000_02198360(self->fsm, 4, 0);
         }
         break;
     }

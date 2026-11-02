@@ -212,7 +212,7 @@ ov006_TaskD37 *func_ov006_021d3874(ov006_TaskD37 *self) {
 #define OV006_DELETE_WITH(obj, dtor)                             \
     do {                                                         \
         void *saved_ = data_02097dd0->cur;                   \
-        data_02097dd0->cur = data_02097dd0->unk_08;            \
+        data_02097dd0->cur = data_02097dd0->heapHi;            \
         if ((obj) != NULL) {                                     \
             if ((obj) != NULL) {                                 \
                 void *p_ = (obj);                                \

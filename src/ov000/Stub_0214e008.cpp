@@ -21,7 +21,7 @@ void func_ov000_0214e008(void *self) {
 
 void func_ov000_0214e014(void *self) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (*(u8 **)((u8 *)self + 0xe0) != NULL) {
         Obj0214e014_Delete(*(u8 **)((u8 *)self + 0xe0));
         *(u8 **)((u8 *)self + 0xe0) = NULL;

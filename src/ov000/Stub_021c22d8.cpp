@@ -39,7 +39,7 @@ void func_02041278(void *p);
     {                                                     \
         void *saved = data_02097dd0->cur;             \
         void *p;                                          \
-        data_02097dd0->cur = data_02097dd0->unk_08;   \
+        data_02097dd0->cur = data_02097dd0->heapHi;   \
         p = (void *)(field);                              \
         if (p != NULL) {                                  \
             if (p != NULL) {                              \
@@ -90,7 +90,7 @@ void func_ov000_021c2364(Obj021c2334 *self) {
     {
         void *saved = data_02097dd0->cur;
         VObj *p;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         p = (VObj *)self->unk_38;
         if (p != NULL) {
             if (p != NULL) {

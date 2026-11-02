@@ -66,7 +66,7 @@ void Ov009ActVt_02217844_Start(Ov009ActVt_02217844 *self) {
     self->model.unk_c2 |= 0x80;
     NNSi_G3dModifyPolygonAttrMask(self->model.unk_04, 1, 0x1f0000);
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_3c != NULL) {
         if (self->unk_3c != NULL) {
             self->unk_3c->v04();
@@ -75,7 +75,7 @@ void Ov009ActVt_02217844_Start(Ov009ActVt_02217844 *self) {
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_48 != NULL) {
         Ov009Sub48 *p = self->unk_48;
         if (p != NULL) {
@@ -86,7 +86,7 @@ void Ov009ActVt_02217844_Start(Ov009ActVt_02217844 *self) {
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_44 != NULL) {
         Heap_Free(self->unk_44);
         self->unk_44 = NULL;

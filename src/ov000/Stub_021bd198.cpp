@@ -58,7 +58,7 @@ void func_ov000_021bd228(Obj021bd198 *self) {
     for (i = 4; i < 8; i++) {
         void *saved = data_02097dd0->cur;
         void *p;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         p = (void *)self->unk_08[(u32)i];
         if (p != NULL) {
             if (p != NULL) {

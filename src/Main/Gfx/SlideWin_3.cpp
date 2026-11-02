@@ -336,9 +336,9 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
         v6 = SLIDE_VRAM_SUB;
         do {
             if (c == '\n') {
-                win->unk_3c = msg->x;
+                win->cursorX = msg->x;
                 saved = win->str;
-                win->unk_40 += lineH;
+                win->cursorY += lineH;
                 continue;
             }
             if (c == '\\') {
@@ -402,8 +402,8 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
                         win->text[0] = 0;
                         SlideMsg_Close(msg);
                         SlideMsg_Free(msg, v4, v6);
-                        win->unk_3c = msg->x;
-                        win->unk_40 = msg->y;
+                        win->cursorX = msg->x;
+                        win->cursorY = msg->y;
                     }
                     break;
                 case 18:
@@ -428,8 +428,8 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
                     win->text[0] = 0;
                     SlideMsg_Close(msg);
                     SlideMsg_Free(msg, v4, v6);
-                    win->unk_3c = msg->x;
-                    win->unk_40 = msg->y;
+                    win->cursorX = msg->x;
+                    win->cursorY = msg->y;
                     win->flag27 = 1;
                     break;
                 case 5: {
@@ -479,8 +479,8 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
                 case 4:
                     if (msg->active) {
                         SlideMsg_Free(msg, v4, v6);
-                        win->unk_3c = msg->x;
-                        win->unk_40 = msg->y;
+                        win->cursorX = msg->x;
+                        win->cursorY = msg->y;
                         win->str = saved;
                         return -1;
                     }
@@ -641,7 +641,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
                                                         font->pRes->pGlyph->cellHeight, 0);
             }
             func_0203a4dc(data_02097ce0, msg->blocks[msg->count]);
-            GfxMgr_SetCursor(data_02097ce0, win->unk_3c, win->unk_40 - 1);
+            GfxMgr_SetCursor(data_02097ce0, win->cursorX, win->cursorY - 1);
             data_02097ce0->unk_008 = color;
             func_0203a5a4(data_02097ce0, c);
             count++;
@@ -650,7 +650,7 @@ s32 func_020572f8(SlideWinX *win, SlideMsg *msg) {
             }
             {
                 u32 n;
-                win->unk_3c = data_02097ce0->unk_00c;
+                win->cursorX = data_02097ce0->unk_00c;
                 win->unk_b6c++;
                 n = msg->count + 1;
                 if (n < 0x80) {

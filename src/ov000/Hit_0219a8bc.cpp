@@ -47,9 +47,9 @@ BOOL func_ov000_0219a8bc(void *hit, Actor *a, Actor *b, s32 c, u8 d, VecFx32 *po
             if (h != -1) {
                 if (t->unk_93_5 != 0) {
                     h = 0x327;
-                    i = t->unk_64 << 1;
+                    i = t->radius << 1;
                 }
-                ActorSub4c *s4c = t->unk_4c;
+                ActorSub4c *s4c = t->targetObj;
                 if (s50 != NULL || s4c == NULL || *(u8 *)s4c == 0xb) {
                     VecFx32 p;
                     VObj *e;

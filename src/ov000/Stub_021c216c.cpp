@@ -18,7 +18,7 @@ void func_ov000_021c216c(Obj021c216c *self) {
     void *p;
 
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     p = self->unk_0c;
     if (p != NULL) {
         if (p != NULL) {
@@ -30,7 +30,7 @@ void func_ov000_021c216c(Obj021c216c *self) {
     data_02097dd0->cur = saved;
 
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     p = self->unk_08;
     if (p != NULL) {
         if (p != NULL) {

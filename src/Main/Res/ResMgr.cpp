@@ -272,13 +272,13 @@ void func_020363d8(ResMgr *mgr) {
     size = FS_TryLoadTable(NULL, 0);
     mgr->unk_7bb4 = func_0203dec8(size, 4);
     FS_TryLoadTable(mgr->unk_7bb4, size);
-    data_02097dd0->cur = data_02097dd0->unk_04;
+    data_02097dd0->cur = data_02097dd0->heapLo;
     loader = (ResLoader *)Heap_Alloc(0x40c);
     if (loader != NULL) {
         loader = ResLoader_Init(loader);
     }
     mgr->loader = loader;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     func_02035670(mgr->loader);
     for (i = 0; i < RES_MGR_NODE_COUNT; i++) {
         MI_CpuFill8(&mgr->pool[i], 0, sizeof(ResNode));

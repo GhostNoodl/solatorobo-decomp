@@ -16,7 +16,7 @@ void func_ov007_021ccda0(void) {
 
 void func_ov007_021ccdc8(void) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (data_ov007_021cfc60 != NULL) {
         Ov007Scene *p = data_ov007_021cfc60;
         if (p != NULL) {

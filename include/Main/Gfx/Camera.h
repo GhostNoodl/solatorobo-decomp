@@ -50,13 +50,13 @@ typedef struct Camera {
     /* 0x9c */ union {
         u8 flags; // the bits below as one byte (shakeX | shakeY | shakeZ is 0x1c)
         struct {
-            u8 flag0 : 1;
-            u8 flag1 : 1;
+            u8 smooth : 1;     // ease eye/at/up/angles toward their targets (func_0204bcb0)
+            u8 animated : 1;   // set by the path animation step (func_0204b924), skips the easing once
             u8 shakeX : 1;
             u8 shakeY : 1;
             u8 shakeZ : 1;
-            u8 flag5 : 1;
-            u8 flag6 : 1;
+            u8 groundClip : 1; // ray-cast down from above the eye and keep it over the map
+            u8 wallClip : 1;   // ray-cast at -> eye and pull the eye in front of the map
             u8 flag7 : 1;
         };
     };

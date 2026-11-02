@@ -104,7 +104,7 @@ void func_ov000_0216f23c(BufferList *list, BOOL mode) {
             next = BufferList_Remove(list, buf);
             if (buf->flags & 0x10) {
                 void *saved = data_02097dd0->cur;
-                data_02097dd0->cur = data_02097dd0->unk_08;
+                data_02097dd0->cur = data_02097dd0->heapHi;
                 if (buf != NULL) {
                     if (buf != NULL) {
                         buf->vfunc_04();

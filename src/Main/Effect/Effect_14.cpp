@@ -34,7 +34,7 @@ void func_0206adbc(EffectEmitter *em) {
     }
     {
         void *saved_ = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (em->parts != NULL) {
             if (em->parts != NULL) {
                 em->parts->Delete();

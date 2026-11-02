@@ -44,7 +44,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         self->unk_b2f++;
     }
     LFLD(Bits16_021abc88, self->unk_44, 0x22).b1 = 0;
-    switch (self->unk_40->st) {
+    switch (self->fsm->st) {
     case 0: {
         s32 dx;
         s32 dz;
@@ -61,17 +61,17 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         }
         while (REG_SQRTCNT & 0x8000) {
         }
-        self->unk_9c = (s32)(REG_SQRT_RESULT + 1) >> 5;
-        self->unk_a0 = 0x53f;
-        self->unk_a8 = 0x52;
+        self->speed = (s32)(REG_SQRT_RESULT + 1) >> 5;
+        self->velY = 0x53f;
+        self->gravity = 0x52;
         self->target = 0xffff;
-        self->unk_a4 = 0;
+        self->friction = 0;
         func_02049f44(data_02097e4c, 7, (u8 *)self + 0x70, 0);
-        self->unk_40->st++;
-        self->unk_40->timer = 0;
+        self->fsm->st++;
+        self->fsm->timer = 0;
         LFLD(G18_021abc88, data_0214a424, 0x18).b8 = 0;
         func_02062764(3, 1);
-        data_ov000_021ccd54->unk_ac = 1;
+        data_ov000_021ccd54->stageFlags = 1;
         break;
     }
     case 1: {
@@ -85,18 +85,18 @@ void func_ov000_021abc88(Robo021ca458 *self) {
         } else if (d > 0x1ccd) {
             self->pos.y += (self->unk_75c.y + 0x1ccd - self->pos.y) >> 2;
         }
-        s = (u16 *)self->unk_40;
+        s = (u16 *)self->fsm;
         s[1]++;
         if (s[1] < 0x10) {
             return;
         }
         self->rot_y = func_01ffc128(self->unk_76e, self->rot_y, 0x800, 1, 0x8000);
-        self->unk_9c = 0;
-        self->unk_a0 = 0;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0;
+        self->speed = 0;
+        self->velY = 0;
+        self->friction = 0;
+        self->gravity = 0;
         func_ov000_02190cb0((u8 *)self + 0xac, data_ov000_021cc6c0, 0x400, 0);
-        self->unk_40->st++;
+        self->fsm->st++;
         break;
     }
     case 2:
@@ -121,7 +121,7 @@ void func_ov000_021abc88(Robo021ca458 *self) {
                 LFLD(Bits8_021abc88, p, 0x111).b1 = 0;
             }
             func_02049f44(data_02097e4c, 0xe, (u8 *)self + 0x70, 0);
-            func_ov000_02198360(self->unk_40, 1, 0);
+            func_ov000_02198360(self->fsm, 1, 0);
         } else {
             VecFx32 d;
             s32 ty;

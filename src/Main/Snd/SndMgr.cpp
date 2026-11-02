@@ -44,8 +44,8 @@ void func_02049344(SndMgr *mgr) {
     if (OS_IsRunOnTwl() == TRUE) {
         func_0221d6d8();
     }
-    mgr->unk_a0 = 0;
-    mgr->unk_a4 = 0;
+    mgr->fileBuf = 0;
+    mgr->fileSize = 0;
     NNS_SndInit();
     heap = NNS_SndHeapCreate(data_020bbef0, 0x8e000);
     if (heap != NULL) {
@@ -70,7 +70,7 @@ void func_02049344(SndMgr *mgr) {
     mgr->unk_04 = 0x100;
     mgr->unk_08 = 0x100;
     mgr->curBgm = -1;
-    mgr->unk_48 = -1;
+    mgr->curStrm = -1;
     mgr->loadType = 0;
     mgr->loadId = -1;
     mgr->loadArg = -1;
@@ -83,14 +83,14 @@ void func_02049344(SndMgr *mgr) {
         mgr->loadedSeqEx[i] = -1;
     }
     for (i = 0; i < 5; i++) {
-        mgr->unk_70[i] = -1;
+        mgr->seqArcPaused[i] = -1;
     }
-    mgr->unk_b8[0] = NNS_SndArcGetSeqCount();
-    mgr->unk_b8[1] = NNS_SndArcGetSeqArcCount();
-    mgr->unk_b8[2] = NNS_SndArcGetBankCount();
-    mgr->unk_b8[3] = NNS_SndArcGetWaveArcCount();
-    mgr->unk_b8[4] = NNS_SndArcGetGroupCount();
-    mgr->unk_b8[5] = NNS_SndArcGetStrmCount();
+    mgr->arcCounts[0] = NNS_SndArcGetSeqCount();
+    mgr->arcCounts[1] = NNS_SndArcGetSeqArcCount();
+    mgr->arcCounts[2] = NNS_SndArcGetBankCount();
+    mgr->arcCounts[3] = NNS_SndArcGetWaveArcCount();
+    mgr->arcCounts[4] = NNS_SndArcGetGroupCount();
+    mgr->arcCounts[5] = NNS_SndArcGetStrmCount();
     NNS_SndPlayerSetPlayableSeqCount(0, 8);
     NNS_SndPlayerSetPlayerPriority(&mgr->bgm, 0x7f);
     for (i = 0; i < 5; i++) {

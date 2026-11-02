@@ -60,7 +60,7 @@ static inline void ActorEx_Destroy(ActorEx *self) {
     *(const void **)self = data_ov000_021cc480;
     for (i = 0; i < 2; i++) {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->res[i] != NULL) {
             ResSet_Delete(self->res[i]);
             self->res[i] = NULL;
@@ -77,7 +77,7 @@ void func_ov000_02195018(ActorEx *self) {
     VecFx32 tmp;
     VecFx32 *pos;
 
-    ActorSub48 *obj = self->unk_48;
+    ActorSub48 *obj = self->hit;
 
     if (obj != NULL) {
         if (self->param->type == 2) {
@@ -86,14 +86,14 @@ void func_ov000_02195018(ActorEx *self) {
         }
         pos = &self->pos;
         if (self->unk_3c != NULL && self->param->type == 3) {
-            self->unk_48->unk_9a_4 = 1;
+            self->hit->unk_9a_4 = 1;
             tmp = self->pos;
             pos = &tmp;
         }
-        func_ov000_0219864c(self->unk_48, pos, 0);
+        func_ov000_0219864c(self->hit, pos, 0);
     }
-    if (self->unk_58 != NULL && self->unk_cc_0) {
-        HitMesh_Link(self->unk_58);
+    if (self->hitMesh != NULL && self->unk_cc_0) {
+        HitMesh_Link(self->hitMesh);
     }
 }
 

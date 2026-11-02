@@ -34,21 +34,21 @@ void func_ov000_021b2b08(Robo021ca458 *self) {
     u16 ry;
     u16 rx;
     if (a != NULL) {
-        sub = ((void *)a->unk_4c);
+        sub = ((void *)a->targetObj);
     }
     if (self->unk_b2f == 0) {
         self->unk_b2f = 1;
     }
-    if (sub == NULL || (self->unk_b6a & 2)) {
-        self->unk_98 = self->rot_y - 0x8000;
-        self->unk_9c = 0x114;
-        self->unk_a4 = 0;
-        self->unk_a0 = 0x53f;
-        self->unk_a8 = 0x52;
+    if (sub == NULL || (self->padTrig & 2)) {
+        self->moveYaw = self->rot_y - 0x8000;
+        self->speed = 0x114;
+        self->friction = 0;
+        self->velY = 0x53f;
+        self->gravity = 0x52;
         self->rot_x = 0;
         self->unk_b29 |= 2;
-        func_ov000_02198360(((void *)self->unk_40), 0x1d, 0);
-        self->unk_40->st = 0x64;
+        func_ov000_02198360(((void *)self->fsm), 0x1d, 0);
+        self->fsm->st = 0x64;
         return;
     }
     cam = (u8 *)data_ov000_021ccd54 + 0xf4;
@@ -58,14 +58,14 @@ void func_ov000_021b2b08(Robo021ca458 *self) {
         ang = Camera_GetYaw(cam);
     }
     ry = self->rot_y;
-    if (self->unk_b68 & 0x20) {
+    if (self->padCur & 0x20) {
         ry += 0x280;
-    } else if (self->unk_b68 & 0x10) {
+    } else if (self->padCur & 0x10) {
         ry -= 0x280;
     }
     func_ov000_0218db58(self, ry, ang, 0x1500, 0x400);
     {
-        u16 f = self->unk_b68;
+        u16 f = self->padCur;
         u16 base = LFLD(u16, cam, 0x42);
         rx = self->rot_x;
         if (f & 0x40) {

@@ -28,13 +28,13 @@ void func_ov000_0215ba4c(LoBase021cafc0_021cb0b8 *self, s32 unused, s32 *pos) {
     s32 z;
     u8 *o;
     if (LBIT(self, 0xc).b3 ? TRUE : FALSE) {
-        z = self->unk_68 - 0x100;
+        z = self->posZ - 0x100;
         s32 y = hh + (pos[1] + (self->vfunc_34() << 12));
         o = self->unk_ac;
         LFLD(s32, o, 4) = pos[0] + ((self->unk_24 >> 1) << 12);
         LFLD(s32, o, 8) = y + 0x6000;
     } else {
-        z = self->unk_68 - 0x100;
+        z = self->posZ - 0x100;
         s32 y = hh + (pos[1] + (self->vfunc_34() << 12));
         o = self->unk_ac;
         LFLD(s32, o, 4) = pos[0] + ((self->unk_24 >> 1) << 12);

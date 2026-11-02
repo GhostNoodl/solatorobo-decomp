@@ -67,7 +67,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
     VecFx32 p;
     Pose_021a4194 pose;
 
-    LFLD(u16, self->unk_48, 0x9a) |= 0x20;
+    LFLD(u16, self->hit, 0x9a) |= 0x20;
     if (self->unk_b2f == 0) {
         self->unk_b2f++;
     }
@@ -76,11 +76,11 @@ void func_ov000_021a4194(Robo021ca458 *self) {
     if (t != NULL) {
         info = LFLD(u8 *, t, 0x4c);
     }
-    if (info == NULL && self->unk_40->st < 0x14) {
-        func_ov000_02198360(self->unk_40, 1, 0);
+    if (info == NULL && self->fsm->st < 0x14) {
+        func_ov000_02198360(self->fsm, 1, 0);
         return;
     }
-    sub = self->unk_40;
+    sub = self->fsm;
     switch (sub->st) {
     case 0:
         if (LFLD(u8, info, 0) != 0x12) {
@@ -90,52 +90,52 @@ void func_ov000_021a4194(Robo021ca458 *self) {
             } else {
                 ang = FX_Atan2(LFLD(s32, t, 0x70) - self->pos.x, LFLD(s32, t, 0x78) - self->pos.z);
             }
-            self->unk_98 = ang;
-            self->rot_y = func_01ffc128(self->unk_98, self->rot_y, 0x400, 1, 0x8000);
+            self->moveYaw = ang;
+            self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
             {
                 ActorSub40 *s;
                 pos.x = self->pos.x;
                 pos.y = self->pos.y;
                 pos.z = self->pos.z;
                 pos.y -= 0x1000;
-                s = self->unk_40;
+                s = self->fsm;
                 s->timer++;
                 if (s->timer < 0x23 &&
                     !func_01ffc584(t + 0x70, &pos, LFLD(s32, t, 0x64) * 2 + 0x1000, 0x3800)) {
                     hit = FALSE;
                     func_ov000_02190cb0(self->model, data_ov000_021ca050[self->unk_b24_5], 0x400, 0);
                     func_ov000_021915a0(self->model);
-                    self->unk_9c = 0x15c;
+                    self->speed = 0x15c;
                     Actor_Move(self, 0);
-                    func_ov000_021987b8(self->unk_48, 0, 0, 0);
-                    if (self->unk_b24_1 && (self->unk_48->unk_54 & 0x400)) {
-                        self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
-                        self->unk_9c = 0x66;
-                        self->unk_a4 = 0;
-                        if (!self->unk_b24_17 || (self->unk_48->unk_50 & 0x40000000)) {
-                            self->unk_a0 = 0x200;
+                    func_ov000_021987b8(self->hit, 0, 0, 0);
+                    if (self->unk_b24_1 && (self->hit->unk_54 & 0x400)) {
+                        self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
+                        self->speed = 0x66;
+                        self->friction = 0;
+                        if (!self->unk_b24_17 || (self->hit->unk_50 & 0x40000000)) {
+                            self->velY = 0x200;
                         }
-                        self->unk_a8 = 0x52;
+                        self->gravity = 0x52;
                         self->unk_b24_17 = 1;
                         hit = TRUE;
                     }
                     if (!hit) {
                         return;
                     }
-                    func_ov000_02198360(self->unk_40, 4, 0);
+                    func_ov000_02198360(self->fsm, 4, 0);
                     {
                         Actor *a = FindActor_021a4194(self->unk_b1c);
                         if (a != NULL) {
                             pose.pos = self->pos;
-                            pose.pos.y += self->unk_6c;
+                            pose.pos.y += self->centerY;
                             pose.rx = a->rot_x;
                             pose.ry = a->rot_y;
                             pose.rz = a->rot_z;
                             pose.unk = 0;
                             Actor_SendMsg(a, self->id, 7, 1, 0x18, &pose);
                             func_ov000_0218d46c(a, self->id, 0xa);
-                            if (((u8 *)a->unk_4c) != NULL) {
-                                LFLD(B8_021a4194, ((u8 *)a->unk_4c), 0x18).b0 = 0;
+                            if (((u8 *)a->targetObj) != NULL) {
+                                LFLD(B8_021a4194, ((u8 *)a->targetObj), 0x18).b0 = 0;
                             }
                         }
                     }
@@ -146,12 +146,12 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                     return;
                 }
             }
-            self->unk_9c = 0;
-            self->unk_a0 = 0;
-            self->unk_a4 = 0;
-            self->unk_a8 = 0;
+            self->speed = 0;
+            self->velY = 0;
+            self->friction = 0;
+            self->gravity = 0;
         }
-        self->unk_40->st++;
+        self->fsm->st++;
     case 1: {
         char *anim;
         if (self->unk_b1c != 0xffff) {
@@ -159,7 +159,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                 func_ov000_02190cb0(self->model, data_ov000_021cc64e, 0x555, 0);
                 func_ov000_02191318(self->model, 0xa000);
                 func_ov000_02191780(self->model);
-                self->unk_40->st++;
+                self->fsm->st++;
                 return;
             }
             if (self->unk_b24_5 == 2) {
@@ -169,7 +169,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
             }
         } else {
             if (LFLD(u8, info, 0) == 0x12) {
-                self->unk_40->st = 10;
+                self->fsm->st = 10;
                 return;
             }
             if (!self->unk_b22_3) {
@@ -183,7 +183,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
             }
         }
         func_ov000_02190cb0(self->model, anim, 0x400, 0);
-        self->unk_40->st++;
+        self->fsm->st++;
         return;
     }
     case 2: {
@@ -198,20 +198,20 @@ void func_ov000_021a4194(Robo021ca458 *self) {
         }
         a = FindActor_021a4194(self->unk_b1c);
         if (a != NULL) {
-            if (a->unk_4c->unk_02 == 7) {
+            if (a->targetObj->unk_02 == 7) {
                 if (a->model != NULL) {
                     func_ov000_02190cb0(a->model, data_ov000_021cc660, 0x1000, 0);
                 }
-                self->unk_40->timer = LFLD(s16, self->model, 0xc4);
-                self->unk_40->st++;
+                self->fsm->timer = LFLD(s16, self->model, 0xc4);
+                self->fsm->st++;
                 return;
             }
         } else if (info != NULL && LFLD(u8, info, 2) == 7) {
-            self->unk_40->timer = LFLD(s16, self->model, 0xc4);
-            self->unk_40->st++;
+            self->fsm->timer = LFLD(s16, self->model, 0xc4);
+            self->fsm->st++;
             return;
         }
-        self->unk_40->st = 10;
+        self->fsm->st = 10;
         return;
     }
     case 3:
@@ -219,7 +219,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
             sub->timer--;
         }
         if (sub->timer == 0) {
-            self->unk_40->st = 10;
+            self->fsm->st = 10;
         }
         return;
     case 10:
@@ -237,7 +237,7 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                 self->unk_b29_0 = 1;
             }
         }
-        self->unk_40->st++;
+        self->fsm->st++;
         return;
     case 11:
         if (func_ov000_02191120(self->model)) {
@@ -257,45 +257,45 @@ void func_ov000_021a4194(Robo021ca458 *self) {
                         o.y = 0;
                         o.z = -0x800;
                         func_ov000_0219a210(&p, &o, LFLD(u16, t, 0x7e));
-                        self->unk_98 = FX_Atan2(p.x - self->pos.x, p.z - self->pos.z);
+                        self->moveYaw = FX_Atan2(p.x - self->pos.x, p.z - self->pos.z);
                     }
-                    self->unk_9c = 0x15c;
-                    self->unk_a4 = 0;
-                    self->unk_a8 = 0;
-                    self->unk_40->st = 0x14;
+                    self->speed = 0x15c;
+                    self->friction = 0;
+                    self->gravity = 0;
+                    self->fsm->st = 0x14;
                 } else {
-                    func_ov000_02198360(self->unk_40, 1, 0);
+                    func_ov000_02198360(self->fsm, 1, 0);
                 }
             } else {
                 func_ov000_02190cb0(self->model, data_ov000_021ca040[self->unk_b24_5], 0xcd, 0);
                 func_ov000_021915a0(self->model);
-                self->unk_40->st = 0x32;
+                self->fsm->st = 0x32;
             }
             self->target = 0xffff;
             LFLD(W_021a4194, self->unk_5c, 0).b1 = 0;
             func_ov000_021bd300(self->unk_5c);
             func_ov000_021bd438(self->unk_5c, (VecFx32 *)((u8 *)self + 0x70), 0);
         }
-        self->rot_y = func_01ffc128(self->unk_98, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
         if (LFLD(u8, info, 2) == 6) {
             self->unk_b29_0 = 1;
             self->unk_b29_3 = 1;
         }
         return;
     case 0x14:
-        self->rot_y = func_01ffc128(self->unk_98, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
         Actor_Move(self, 0);
         self->unk_b29_0 = 1;
         self->unk_b29_3 = 1;
         return;
     case 0x32:
-        if (self->unk_48->unk_50 & 0x20000000) {
-            self->unk_a0 = 0;
+        if (self->hit->unk_50 & 0x20000000) {
+            self->velY = 0;
             return;
         }
-        self->unk_a8 = 0x52;
+        self->gravity = 0x52;
         Actor_Move(self, 0);
-        func_ov000_021987b8(self->unk_48, 0, 0, 0);
+        func_ov000_021987b8(self->hit, 0, 0, 0);
         break;
     }
 }

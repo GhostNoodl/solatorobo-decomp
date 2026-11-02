@@ -119,7 +119,7 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
     y = self->pos.y;
     ang = self->rot_y;
     z = self->pos.z;
-    r = self->unk_64;
+    r = self->radius;
     if (self->unk_b29_2) {
         flag = TRUE;
     }
@@ -135,11 +135,11 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
             r += 0xc666;
         }
         fq.q.bits.b0 = 1;
-        if (self->unk_40->current == 0xf) {
+        if (self->fsm->current == 0xf) {
             fq.q.mask = 0x20;
             fq.q.kind = 0xffff;
         }
-        SetRange_021b2f08(&fq, -0xf000, self->unk_68 + 0xf000);
+        SetRange_021b2f08(&fq, -0xf000, self->height + 0xf000);
     } else {
         s32 w;
         w = 0x2400;
@@ -170,13 +170,13 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
         if (tgt != 0) {
             fq.q.mask = tgt;
             fq.q.kind = 0xffff;
-            h = self->unk_68;
+            h = self->height;
             if (self->unk_b24_1) {
                 h += 0x800;
             }
             SetRange_021b2f08(&fq, -0x59a, h);
         } else {
-            SetRange_021b2f08(&fq, -0x2800, self->unk_68 + 0x4000);
+            SetRange_021b2f08(&fq, -0x2800, self->height + 0x4000);
         }
     }
     fq.q.unk_18 = 0;
@@ -263,7 +263,7 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
             return NULL;
         }
         Init_021b2f08(&fq);
-        SetRange_021b2f08(&fq, -0x59a, self->unk_68 + 0x800);
+        SetRange_021b2f08(&fq, -0x59a, self->height + 0x800);
         n2 = func_ov000_02199454(&fq.finder, &fq.q, list2, cnt);
         cnt2 = 0;
         for (j = 0; j < n2; j++) {
@@ -300,7 +300,7 @@ Part_021b2f08 *func_ov000_021b2f08(Robo021ca458 *self, u16 tgt, void *sub, u8 fl
         if (self->unk_b22_3) {
             h = 0;
         }
-        SetRange_021b2f08(&fq, 0x29, h + self->unk_68);
+        SetRange_021b2f08(&fq, 0x29, h + self->height);
         n2 = func_ov000_02199454(&fq.finder, &fq.q, list, cnt2);
         for (m = 0; m < n2; m++) {
             u16 kk;

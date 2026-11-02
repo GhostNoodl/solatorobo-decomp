@@ -40,44 +40,44 @@ void func_ov000_0218db58(Actor *self, u16 angle, u16 center, u16 range, s32 step
 void Actor_Move(Actor *self, s32 rate) {
     if (rate != 0) {
         if (rate == 0x1000) {
-            self->rot_y = self->unk_98;
+            self->rot_y = self->moveYaw;
         } else {
             u16 d;
-            self->rot_y = func_01ffc128(self->unk_98, self->rot_y, rate < 0 ? -rate : rate, 1, 0x8000);
-            d = self->unk_98 - self->rot_y;
+            self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, rate < 0 ? -rate : rate, 1, 0x8000);
+            d = self->moveYaw - self->rot_y;
             if (d > 0x8000) {
                 d = -d;
             }
             if (d > 0x400) {
                 s32 f = 0x1000 / (d >> 11);
                 if (f < 0x1000) {
-                    self->unk_9c = AMUL(self->unk_9c, f);
+                    self->speed = AMUL(self->speed, f);
                 }
             }
             if (rate < 0) {
-                self->unk_98 = self->rot_y;
+                self->moveYaw = self->rot_y;
             }
         }
     }
     {
-        u16 ang = self->unk_98;
-        s32 dx = AMUL(self->unk_9c, FX_SinCosTable_[(ang >> 4) * 2]);
-        s32 dz = AMUL(self->unk_9c, FX_SinCosTable_[(ang >> 4) * 2 + 1]);
+        u16 ang = self->moveYaw;
+        s32 dx = AMUL(self->speed, FX_SinCosTable_[(ang >> 4) * 2]);
+        s32 dz = AMUL(self->speed, FX_SinCosTable_[(ang >> 4) * 2 + 1]);
         s32 x = self->pos.x + dx;
         self->pos.z += dz;
         self->pos.x = x;
-        if (self->unk_a4 != 0 && self->unk_a4 != 0x1000) {
-            self->unk_9c = AMUL(self->unk_9c, self->unk_a4);
+        if (self->friction != 0 && self->friction != 0x1000) {
+            self->speed = AMUL(self->speed, self->friction);
         }
     }
-    if (self->unk_a8 != 0) {
-        self->pos.y += self->unk_a0;
-        self->unk_a0 -= self->unk_a8;
-        if (self->unk_a0 < -0x800) {
-            self->unk_a0 = -0x800;
+    if (self->gravity != 0) {
+        self->pos.y += self->velY;
+        self->velY -= self->gravity;
+        if (self->velY < -0x800) {
+            self->velY = -0x800;
         }
     } else {
-        s32 v = self->unk_a0;
+        s32 v = self->velY;
         if (v != 0.0f) {
             self->pos.y += v;
         }

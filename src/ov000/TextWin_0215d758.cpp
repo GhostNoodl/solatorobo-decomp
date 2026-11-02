@@ -62,15 +62,15 @@ void func_ov000_0215d758(Lo021cae48 *self) {
     win->font = 4;
     SetText(self->unk_94, MsgRes_GetString(res, ent[1]));
     self->unk_94->unk_2c = 0;
-    self->unk_94->unk_74 = 0x77df;
-    self->unk_94->unk_76 = 0x67e;
+    self->unk_94->color0 = 0x77df;
+    self->unk_94->color1 = 0x67e;
     self->unk_94->noVram = 1;
     self->unk_94->flag24 = 1;
     *(u32 *)((u8 *)self->unk_94 + 4) |= 0x400000;
     self->unk_94->unk_78 = 0x9000;
     self->unk_94->unk_4_30 = 1;
     self->unk_94->rendering = 1;
-    self->unk_48 = 0x4cc2;
+    self->color = 0x4cc2;
     self->unk_24 = 0x60;
     self->unk_28 = 0xe;
     LFLD(Bits0215d758, self, 0xc).b0 = 1;

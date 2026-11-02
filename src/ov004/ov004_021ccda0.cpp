@@ -82,7 +82,7 @@ void func_ov004_021ccf10(void) {
     }
     data_ov004_021cf860 = NULL;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (data_ov004_021cf864 != NULL) {
         Ov004V *p = data_ov004_021cf864;
         if (p != NULL) {

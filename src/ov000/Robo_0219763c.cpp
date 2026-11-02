@@ -111,7 +111,7 @@ static inline void Spawn0219763c(ActorEx *self, s16 id, const s16 *scale, VecFx3
     VObj *fx = func_02065f88(id, p);
     s32 s = *scale << 4;
     if (s == 0) {
-        s = self->unk_64 + (self->unk_64 >> 3);
+        s = self->radius + (self->radius >> 3);
     }
     fx->vfunc_0c(s);
     if (!self->unk_cc_5) {
@@ -122,10 +122,10 @@ static inline void Spawn0219763c(ActorEx *self, s16 id, const s16 *scale, VecFx3
 void func_ov000_0219763c(VObj *obj) {
     ActorEx *self = (ActorEx *)obj;
     s32 zero = 0;
-    ActorSub40 *s = self->unk_40;
+    ActorSub40 *s = self->fsm;
     switch (s->st) {
     case 0: {
-        u8 *t = ((u8 *)self->unk_4c);
+        u8 *t = ((u8 *)self->targetObj);
         Ent0219763c *e = (Ent0219763c *)zero;
         VecFx32 p;
         if (t != NULL) {
@@ -142,7 +142,7 @@ void func_ov000_0219763c(VObj *obj) {
             }
         }
         p = *(VecFx32 *)((u8 *)self + 0x70);
-        p.y += self->unk_6c + (self->unk_6c >> 1);
+        p.y += self->centerY + (self->centerY >> 1);
         if (e != NULL) {
             if (e->fx0 != -1) {
                 Spawn0219763c(self, e->fx0, &e->scale0, &p);
@@ -166,21 +166,21 @@ void func_ov000_0219763c(VObj *obj) {
             LFLD(Bits0219763c, q, 0x22).b0 = 0;
             LFLD(Bits0219763c, q, 0x22).b1 = 0;
         }
-        if (self->unk_48 != NULL) {
+        if (self->hit != NULL) {
             ActorSub48 *q;
-            func_ov000_02198c8c(self->unk_48, 0xffff);
-            q = self->unk_48;
+            func_ov000_02198c8c(self->hit, 0xffff);
+            q = self->hit;
             LFLD(Bits0219763c, q, 0x9a).b0 = 0;
             q->unk_9a_3 = 0;
             func_0203f364(q);
-            q = self->unk_48;
+            q = self->hit;
             LFLD(Bits0219763c, q, 0x9a).b1 = 0;
             q->unk_9a_4 = 0;
         }
-        if (self->unk_58 != NULL) {
+        if (self->hitMesh != NULL) {
             self->unk_cc_0 = 0;
         }
-        self->unk_40->st++;
+        self->fsm->st++;
         return;
     }
     case 1:
@@ -190,7 +190,7 @@ void func_ov000_0219763c(VObj *obj) {
             return;
         }
         if (((u8 *)self->model) != NULL) {
-            self->model->alpha = 0x1f - (self->unk_40->timer << 2);
+            self->model->alpha = 0x1f - (self->fsm->timer << 2);
         }
         return;
     }

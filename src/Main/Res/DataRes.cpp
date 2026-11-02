@@ -12,9 +12,9 @@ extern DataRes *data_02fe1530;
 extern DataRes *data_02fe152c;
 
 void func_02058b50(TextWin *win, s16 a, s16 b, s16 c) {
-    win->unk_1a = a;
+    win->modelX = a;
     win->flag28 = 1;
-    win->unk_1c = b;
+    win->modelY = b;
     win->unk_1e = c;
 }
 

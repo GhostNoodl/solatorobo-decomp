@@ -363,7 +363,7 @@ void func_0206e9e8(void) {
 
 void func_0206ea7c(void) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (data_0214b128.res != NULL) {
         if (data_0214b128.res != NULL) {
             data_0214b128.res->DeletingDtor();

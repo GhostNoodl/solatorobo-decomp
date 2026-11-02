@@ -91,8 +91,8 @@ void func_ov000_0215f0ec(Obj0215f0ec *self, u32 text) {
     self->win = win;
     win->font = 4;
     SetText(self->win, text);
-    self->win->unk_74 = 0x77df;
-    self->win->unk_76 = 0x67e;
+    self->win->color0 = 0x77df;
+    self->win->color1 = 0x67e;
     self->win->noVram = 1;
     self->win->flag24 = 1;
     *(u32 *)((u8 *)self->win + 4) |= 0x400000;

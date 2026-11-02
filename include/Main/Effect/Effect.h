@@ -337,7 +337,7 @@ void func_02063a14(struct EffectObj *obj);
 #define EFFECT_DELETE(obj) \
     { \
         void *saved_ = data_02097dd0->cur; \
-        data_02097dd0->cur = data_02097dd0->unk_08; \
+        data_02097dd0->cur = data_02097dd0->heapHi; \
         if ((obj) != NULL) { \
             if ((obj) != NULL) { \
                 (obj)->Delete(); \

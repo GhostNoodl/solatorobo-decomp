@@ -130,7 +130,7 @@ u16 func_ov000_0219b808(u16 id, void *a1, const Shape0219b808 *q, u16 *out, u32 
             continue;
         }
         do {
-            if (id != a->id && (sub = (u8 *)a->unk_48) != NULL &&
+            if (id != a->id && (sub = (u8 *)a->hit) != NULL &&
                 q->flags == (q->flags & LFLD(u32, sub, 0x50))) {
                 p2.x = a->pos.x;
                 p2.y = a->pos.y;

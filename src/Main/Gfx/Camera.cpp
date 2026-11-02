@@ -121,7 +121,7 @@ static inline void Cam_SqrtStart(s64 v) {
 
 void Camera_Apply(Camera *cam) {
     *(s32 **)((u8 *)data_02097d48 + 0xa2c) = &cam->nearClip;
-    if (cam->flag0 && !cam->flag1) {
+    if (cam->smooth && !cam->animated) {
         func_0204bcb0(cam);
     }
     if (cam->pitch < 0x8000) {
@@ -166,7 +166,7 @@ void Camera_Apply(Camera *cam) {
     if (cam->shakeTime) {
         func_0204bac8(cam);
     } else {
-        if (cam->flag6) {
+        if (cam->wallClip) {
             VecFx32 at;
             VecFx32 eye;
             s32 r;
@@ -174,13 +174,13 @@ void Camera_Apply(Camera *cam) {
             eye = cam->eye;
             r = func_01ffbd6c(&at, &eye, 0x60000000, 0, 0, -1);
             if (r != -0x1000) {
-                if (cam->flag0) {
+                if (cam->smooth) {
                     cam->distTarget = r;
                 } else {
                     cam->eye = eye;
                 }
             }
-        } else if (cam->flag5) {
+        } else if (cam->groundClip) {
             VecFx32 a;
             VecFx32 b;
             s32 r;
@@ -216,7 +216,7 @@ void Camera_Apply(Camera *cam) {
                     }
                     ang = FX_Atan2(by - ay, q >> 1);
                 }
-                if (cam->flag0) {
+                if (cam->smooth) {
                     cam->pitchTarget = ang;
                 } else {
                     cam->yaw = ang;
@@ -241,7 +241,7 @@ void Camera_Apply(Camera *cam) {
         NNS_G3dGlb.dirty &= ~0x50;
         cam->projDirty = 0;
     }
-    cam->flag1 = 0;
+    cam->animated = 0;
 }
 
 void func_0204b8e8(Camera *cam, void *anim);

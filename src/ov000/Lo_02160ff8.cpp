@@ -56,10 +56,10 @@ static inline BOOL EnsureModel(Lo021cacd8 *self) {
 void func_ov000_02160ff8(Lo021cacd8 *self) {
     self->unk_24 = 0x50;
     self->unk_28 = 0x1e;
-    self->unk_64 = 0x80;
-    self->unk_66 = 0x60;
+    self->posX = 0x80;
+    self->posY = 0x60;
     self->unk_2c = 0;
-    self->unk_48 = 0x294a;
+    self->color = 0x294a;
     LO_MODEL_NEW(self->unk_84, data_0208cc88, data_0208cc94);
     func_020417e0(self->unk_84, func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88));
     LFLD(u32, self->unk_84, 0x6c) |= 2;

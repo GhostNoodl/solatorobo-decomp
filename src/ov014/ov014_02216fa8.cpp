@@ -54,7 +54,7 @@ Ov014ActEx_021fc24c *Ov014ActEx_021fc24c_Ctor(Ov014ActEx_021fc24c *self) {
 
 static inline void Ov014_Free100(Ov014ActEx_021fc24c *self) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_100 != NULL) {
         void *p = self->unk_100;
         if (p != NULL) {

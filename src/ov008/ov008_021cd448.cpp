@@ -74,7 +74,7 @@ void func_ov008_021cd584(Ov008Mgr *m) {
     OV008_FREE_M(m->unk_f0);
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (m->unk_f8 != NULL) {
             Ov008Panel *p = m->unk_f8;
             if (p != NULL) {

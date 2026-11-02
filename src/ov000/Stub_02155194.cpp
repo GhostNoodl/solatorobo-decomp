@@ -213,7 +213,7 @@ void func_ov000_021553c8(Obj02155160 *self, s32 n, s32 commit) {
 
 static inline void Node02155160_DeleteObj(VObj **pp) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (*pp != NULL) {
         if (*pp != NULL) {
             (*pp)->vfunc_04();
@@ -308,7 +308,7 @@ void func_ov000_021554f0(Obj02155160 *self) {
         self->unk_0c |= 2;
     }
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (node != NULL) {
         Node02155160_Delete(node);
     }

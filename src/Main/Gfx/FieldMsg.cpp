@@ -56,7 +56,7 @@ BOOL func_020557f8(FieldMsg *msg) {
 }
 
 static inline BOOL Field_HasEvent(void) {
-    return data_ov000_021ccd54->unk_d4 != 0 ? TRUE : FALSE;
+    return data_ov000_021ccd54->event != 0 ? TRUE : FALSE;
 }
 
 BOOL func_02055844(void) {
@@ -64,8 +64,8 @@ BOOL func_02055844(void) {
 }
 
 void func_02055870(void) {
-    if (data_ov000_021ccd54->unk_d4 != 0xffff) {
-        data_ov000_021ccd54->unk_d4 = 0;
+    if (data_ov000_021ccd54->event != 0xffff) {
+        data_ov000_021ccd54->event = 0;
     }
 }
 

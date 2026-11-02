@@ -20,7 +20,7 @@ void func_ov011_021febd8(Ov011Scene *self) {
     self->mgr2.unk_04 = -1;
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->mgr2.arr8 != NULL) {
             __cxa_vec_delete(self->mgr2.arr8, 0x40, 8, func_ov011_021fb66c);
             self->mgr2.arr8 = NULL;

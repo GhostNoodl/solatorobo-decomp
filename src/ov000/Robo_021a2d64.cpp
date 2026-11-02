@@ -75,15 +75,15 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
     BOOL flag = FALSE;
     BOOL turned;
     St_021a2d64 *st;
-    switch (((St_021a2d64 *)self->unk_40)->state) {
+    switch (((St_021a2d64 *)self->fsm)->state) {
     case 0: {
         s32 lim;
         BOOL fall;
         B24(self).b17 = 0;
-        self->unk_a8 = 0x29;
+        self->gravity = 0x29;
         self->unk_b36 = 0;
         if (!(self->msg_flags & 0x80)) {
-            ActorSub48 *s48 = self->unk_48;
+            ActorSub48 *s48 = self->hit;
             s32 d = self->pos.y - s48->check.y;
             if (d <= 0 && !(s48->unk_54 & 0x20000000)) {
                 flag = TRUE;
@@ -93,7 +93,7 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
         }
         if (B22(self).b3) {
             if (!flag) {
-                self->unk_a0 = 0;
+                self->velY = 0;
             }
             if (idle) {
                 u8 *e = func_02065f88(0x2bd, (u8 *)self + 0x70);
@@ -101,20 +101,20 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
                 (*(void (**)(u8 *, s32))(LFLD(u8 *, e, 0) + 0xc))(e, 0x159a);
                 func_02049f44(data_02097e4c, 0x35, (u8 *)self + 0x70, 0);
             }
-            ((St_021a2d64 *)self->unk_40)->sub = 2;
-            ((St_021a2d64 *)self->unk_40)->state++;
+            ((St_021a2d64 *)self->fsm)->sub = 2;
+            ((St_021a2d64 *)self->fsm)->state++;
         } else if (idle && (Ba4_021a2d64 *)self->unk_ba4 != NULL && ((Ba4_021a2d64 *)self->unk_ba4)[3].b7 &&
                    self->unk_b38 >= 10) {
             u16 prev;
             func_ov000_02190cb0(self->model, data_ov000_021cc63c, 0x400, 0);
             func_ov000_021915a0(self->model);
             if (!flag) {
-                if (self->unk_9c > 0x29) {
-                    if (self->unk_a0 < -0x60) {
-                        self->unk_a0 = -0x60;
+                if (self->speed > 0x29) {
+                    if (self->velY < -0x60) {
+                        self->velY = -0x60;
                     }
                 } else {
-                    self->unk_a0 = 0x85;
+                    self->velY = 0x85;
                 }
             }
             func_ov000_021b1dd8((u8 *)self, self->unk_b08 >> 2, 0x200, 0xf00, 0, 1);
@@ -123,31 +123,31 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
             if (prev > 0x8000 && self->rot_y < 0x8000) {
                 func_02049f44(data_02097e4c, 0x35, (u8 *)self + 0x70, 0);
             }
-            ((St_021a2d64 *)self->unk_40)->sub = 2;
-        } else if (((St_021a2d64 *)self->unk_40)->sub == 0) {
+            ((St_021a2d64 *)self->fsm)->sub = 2;
+        } else if (((St_021a2d64 *)self->fsm)->sub == 0) {
             func_ov000_02190cb0(self->model, data_ov000_021cc642, 0x1000, 1);
             if (!flag) {
-                if (self->unk_9c > 0x29) {
-                    if (self->unk_a0 < -0x60) {
-                        self->unk_a0 = -0x60;
+                if (self->speed > 0x29) {
+                    if (self->velY < -0x60) {
+                        self->velY = -0x60;
                     }
                 } else {
-                    self->unk_a0 = 0x5c;
+                    self->velY = 0x5c;
                 }
             }
-            ((St_021a2d64 *)self->unk_40)->sub = 4;
+            ((St_021a2d64 *)self->fsm)->sub = 4;
             if (!idle) {
                 Model0218fe1c *mdl = self->model;
                 LFLD(s32, mdl, 0xd8) = 0;
                 LFLD(s32, mdl, 0xdc) = 0;
-                ((St_021a2d64 *)self->unk_40)->sub = 5;
+                ((St_021a2d64 *)self->fsm)->sub = 5;
             }
-            ((St_021a2d64 *)self->unk_40)->state++;
+            ((St_021a2d64 *)self->fsm)->state++;
         } else {
-            ((St_021a2d64 *)self->unk_40)->state++;
+            ((St_021a2d64 *)self->fsm)->state++;
         }
         fall = FALSE;
-        if (!(self->unk_48->unk_54 & 0x20000000)) {
+        if (!(self->hit->unk_54 & 0x20000000)) {
             lim = -0xf000;
             if (B22(self).b0 != 0 || B24(self).b12 != 0 || B24(self).b19) {
                 lim = -0x2d000;
@@ -158,8 +158,8 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
         }
         if (fall) {
             B24(self).b18 = 1;
-            self->unk_a8 = 0x52;
-            func_ov000_02198360(self->unk_40, 4, 0);
+            self->gravity = 0x52;
+            func_ov000_02198360(self->fsm, 4, 0);
         }
         break;
     }
@@ -167,30 +167,30 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
         if (idle) {
             func_ov000_021b1dd8((u8 *)self, self->unk_b08 >> 2, 0x200, 0xf00, 0x466, 1);
         } else {
-            func_ov000_021987b8(self->unk_48, 0, 0, 0);
+            func_ov000_021987b8(self->hit, 0, 0, 0);
         }
-        st = (St_021a2d64 *)self->unk_40;
+        st = (St_021a2d64 *)self->fsm;
         if (st->sub != 0) {
             st->sub--;
         }
         if (st->sub == 0) {
             if (!B22(self).b3) {
-                self->unk_a8 = 0x52;
+                self->gravity = 0x52;
             }
-            func_ov000_02198360(self->unk_40, 4, 0);
+            func_ov000_02198360(self->fsm, 4, 0);
         }
         break;
     }
     turned = FALSE;
-    if (B24(self).b1 && (self->unk_48->unk_54 & 0x400)) {
-        self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x,
+    if (B24(self).b1 && (self->hit->unk_54 & 0x400)) {
+        self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x,
                                          self->unk_af8 - self->pos.z);
-        self->unk_9c = 0x66;
-        self->unk_a4 = 0;
-        if (!B24(self).b17 || (self->unk_48->unk_50 & 0x40000000)) {
-            self->unk_a0 = 0x200;
+        self->speed = 0x66;
+        self->friction = 0;
+        if (!B24(self).b17 || (self->hit->unk_50 & 0x40000000)) {
+            self->velY = 0x200;
         }
-        self->unk_a8 = 0x52;
+        self->gravity = 0x52;
         B24(self).b17 = 1;
         turned = TRUE;
     }
@@ -198,7 +198,7 @@ void func_ov000_021a2d64(Robo021ca458 *self) {
         return;
     }
     func_ov000_02190cb0(self->model, data_ov000_021cc62a, 0x800, 0);
-    func_ov000_02198360(self->unk_40, 4, 0);
+    func_ov000_02198360(self->fsm, 4, 0);
 }
 
 }

@@ -72,7 +72,7 @@ void func_ov000_021b0db0(Robo021ca458 *self, s32 spd) {
             self->unk_af4 = -0x6800;
         }
         self->unk_af8 = 0;
-        keys = self->unk_b68;
+        keys = self->padCur;
         anim = data_ov000_021cc5e3;
         if (keys & 0x20) {
             tilt = 0xf800;

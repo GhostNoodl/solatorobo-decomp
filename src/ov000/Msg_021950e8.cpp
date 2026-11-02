@@ -25,20 +25,20 @@ BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg) {
     BOOL callBase = TRUE;
     switch (msg->type) {
     case 9: {
-        ActorSub4c *sub = self->unk_4c;
+        ActorSub4c *sub = self->targetObj;
         callBase = FALSE;
         if (sub != NULL) {
-            u8 k = sub->unk_00;
+            u8 k = sub->type;
             u8 k2 = sub->unk_02;
             if (k == 0x15) {
                 if (LFLD(u16, msg->data, 0) != 0) {
-                    ((ActorSub40 *)self->unk_40)->flags |= 0x40;
+                    ((ActorSub40 *)self->fsm)->flags |= 0x40;
                     if (((void *)self->hp) != NULL) {
                         LFLD(u16, ((void *)self->hp), 4) = LFLD(u16, msg->data, 4);
                     }
                 }
             } else if (k == 0xb) {
-                ((ActorSub40 *)self->unk_40)->flags |= 0x40000;
+                ((ActorSub40 *)self->fsm)->flags |= 0x40000;
             } else if (k2 == 1 && ((k != 0x11 && k != 0x12 && k != 0x13 && k != 0x14) || LFLD(u16, msg->data, 0) != 0)) {
                 if (!self->unk_cc_2) {
                     Actor *p = func_ov000_0219bf90();
@@ -49,23 +49,23 @@ BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg) {
                             n = 0xffff;
                         }
                         LFLD(u16, g, 0x16) = n;
-                        ((ActorSub40 *)self->unk_40)->flags |= 0x200000;
+                        ((ActorSub40 *)self->fsm)->flags |= 0x200000;
                     }
                 }
-            } else if (LFLD(u16, msg->data, 0) == 0 && sub->unk_1c == 0xffff) {
+            } else if (LFLD(u16, msg->data, 0) == 0 && sub->target == 0xffff) {
                 Actor *p = func_ov000_0219bf90();
                 if (p != NULL && !IsB1021950e8(p) && msg->id == p->id && p->target == self->id &&
-                    func_ov000_0219b3b4(self->unk_4c) && ((void *)self->unk_48) != NULL &&
-                    (self->unk_48->unk_54 & 0x20000000)) {
+                    func_ov000_0219b3b4(self->targetObj) && ((void *)self->hit) != NULL &&
+                    (self->hit->unk_54 & 0x20000000)) {
                     VecFx32 a;
                     VecFx32 b;
                     a = self->pos;
                     b = p->pos;
-                    a.y += self->unk_6c;
-                    b.y += p->unk_6c;
+                    a.y += self->centerY;
+                    b.y += p->centerY;
                     if (func_01ffbd6c(&a, &b, -1, 0, 0, -1) == -0x1000) {
-                        ((ActorSub40 *)self->unk_40)->flags |= 0x400;
-                        self->unk_4c->unk_1c = msg->id;
+                        ((ActorSub40 *)self->fsm)->flags |= 0x400;
+                        self->targetObj->target = msg->id;
                         self->unk_cc_8 = 1;
                     }
                 }

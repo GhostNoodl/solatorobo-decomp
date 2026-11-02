@@ -107,7 +107,7 @@ void func_ov000_021b209c(Robo021ca458 *self) {
     actor = FindActor_021b209c(self->unk_b20);
     sub = NULL;
     if (actor != NULL) {
-        sub = ((u8 *)actor->unk_4c);
+        sub = ((u8 *)actor->targetObj);
     }
     info = NULL;
     if (sub != NULL) {
@@ -117,15 +117,15 @@ void func_ov000_021b209c(Robo021ca458 *self) {
         return;
     }
     from = self->pos;
-    from.y += self->unk_68;
+    from.y += self->height;
     to = from;
-    to.x += Mul_021b209c(FX_SinCosTable_[((u16)(self->unk_98 + 0x1200) >> 4) * 2], 0x2333);
-    to.z += Mul_021b209c(FX_SinCosTable_[((u16)(self->unk_98 + 0x1200) >> 4) * 2 + 1], 0x2333);
+    to.x += Mul_021b209c(FX_SinCosTable_[((u16)(self->moveYaw + 0x1200) >> 4) * 2], 0x2333);
+    to.z += Mul_021b209c(FX_SinCosTable_[((u16)(self->moveYaw + 0x1200) >> 4) * 2 + 1], 0x2333);
     ret = func_01ffbd6c(&from, &to, 0x40000000, 0, 0, -1);
     if (ret == -0x1000) {
         to = from;
-        to.x += Mul_021b209c(FX_SinCosTable_[((u16)(self->unk_98 - 0x1200) >> 4) * 2], 0x2333);
-        to.z += Mul_021b209c(FX_SinCosTable_[((u16)(self->unk_98 - 0x1200) >> 4) * 2 + 1], 0x2333);
+        to.x += Mul_021b209c(FX_SinCosTable_[((u16)(self->moveYaw - 0x1200) >> 4) * 2], 0x2333);
+        to.z += Mul_021b209c(FX_SinCosTable_[((u16)(self->moveYaw - 0x1200) >> 4) * 2 + 1], 0x2333);
         ret = func_01ffbd6c(&from, &to, 0x40000000, 0, 0, -1);
     }
     if (ret != -0x1000) {
@@ -139,71 +139,71 @@ void func_ov000_021b209c(Robo021ca458 *self) {
         }
         if (ok) {
             u16 ang = FX_Atan2(data_02fe0f14.tx, data_02fe0f14.tz);
-            if ((u16)(ang - self->unk_98) < 0x8000) {
-                self->unk_98 = ang - 0x4000;
+            if ((u16)(ang - self->moveYaw) < 0x8000) {
+                self->moveYaw = ang - 0x4000;
             } else {
-                self->unk_98 = ang + 0x4000;
+                self->moveYaw = ang + 0x4000;
             }
         }
     }
     if (grab) {
-        self->unk_9c = 0;
+        self->speed = 0;
     } else {
         s32 spd = info->speed;
-        if (self->unk_9c != 0) {
-            s32 d = (spd - self->unk_9c) >> 3;
+        if (self->speed != 0) {
+            s32 d = (spd - self->speed) >> 3;
             if (d == 0) {
-                self->unk_9c = spd;
+                self->speed = spd;
             }
-            self->unk_9c += d;
+            self->speed += d;
         } else {
-            self->unk_9c = spd;
+            self->speed = spd;
         }
-        self->unk_a8 = 0x52;
-        if (!(self->unk_48->unk_54 & 0x20000000)) {
-            self->unk_a8 += 0x52;
+        self->gravity = 0x52;
+        if (!(self->hit->unk_54 & 0x20000000)) {
+            self->gravity += 0x52;
         }
-        self->rot_y = func_01ffc128(self->unk_98, self->rot_y, 0x400, 1, 0x8000);
-        if (((s32)self->unk_48->unk_58) != 0) {
-            self->unk_9c >>= 4;
-            self->unk_a0 = 0x200;
+        self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
+        if (((s32)self->hit->unk_58) != 0) {
+            self->speed >>= 4;
+            self->velY = 0x200;
             arg.c = 0xffff;
             arg.a = 0xa;
             arg.b = 1;
             Actor_SendMsg(self, self->id, 9, 0, 6, &arg);
             func_02049f44(data_02097e4c, 0x309, &self->pos, 0);
             func_ov000_0218996c(0xa, 0xf);
-            v.y = self->unk_6c;
+            v.y = self->centerY;
             v.x = 0;
             v.z = 0;
-            func_ov000_0219aae8(self, self, 0xa, 0, 0x30, &v, 0, self->unk_64 + 0xccd, 0, -1, 0x1000);
+            func_ov000_0219aae8(self, self, 0xa, 0, 0x30, &v, 0, self->radius + 0xccd, 0, -1, 0x1000);
         }
     }
-    self->unk_a4 = 0;
+    self->friction = 0;
     Actor_Move(self, 0);
-    func_ov000_021987b8(self->unk_48, 1, 0, 0);
+    func_ov000_021987b8(self->hit, 1, 0, 0);
     {
-        ActorSub48 *body = self->unk_48;
+        ActorSub48 *body = self->hit;
         if (body->unk_50 & 0x20000000) {
-            if (self->unk_a0 <= 0) {
-                self->unk_a0 = -0x800;
+            if (self->velY <= 0) {
+                self->velY = -0x800;
                 LFLD(u16, body, 0x9a) |= 0x20;
-                if (info->se0 >= 0 && self->unk_b64 < 0) {
-                    self->unk_b64 = func_02049afc(data_02097e4c, info->se0);
-                    func_0204a0d4(data_02097e4c, self->unk_b64, info->se0arg);
+                if (info->se0 >= 0 && self->seSlot < 0) {
+                    self->seSlot = func_02049afc(data_02097e4c, info->se0);
+                    func_0204a0d4(data_02097e4c, self->seSlot, info->se0arg);
                 }
                 if (info->se1 >= 0 && self->unk_b66 < 0) {
                     self->unk_b66 = func_02049afc(data_02097e4c, info->se1);
                     func_0204a0d4(data_02097e4c, self->unk_b66, info->se1arg);
                 }
             }
-            if ((self->unk_48->unk_50 & 0x400) && (LFLD(u16, data_ov000_021ccd68, 0xa) & 0x1f)) {
+            if ((self->hit->unk_50 & 0x400) && (LFLD(u16, data_ov000_021ccd68, 0xa) & 0x1f)) {
                 func_02065f88(0x2bd, &self->pos);
             }
         } else {
-            if (self->unk_b64 >= 0) {
-                SndMgr_StopSeqArc(data_02097e4c, self->unk_b64);
-                self->unk_b64 = -1;
+            if (self->seSlot >= 0) {
+                SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
+                self->seSlot = -1;
             }
             if (self->unk_b66 >= 0) {
                 SndMgr_StopSeqArc(data_02097e4c, self->unk_b66);
@@ -228,39 +228,39 @@ void func_ov000_021b209c(Robo021ca458 *self) {
     if (!grab) {
         return;
     }
-    if (self->unk_b24_12 == 1 && !(self->unk_48->unk_50 & 0x20000000)) {
+    if (self->unk_b24_12 == 1 && !(self->hit->unk_50 & 0x20000000)) {
         return;
     }
     if (info->mode == 2) {
         func_ov000_0218d46c(actor, self->id, 0xa);
     }
     if (info->mode == 3) {
-        self->unk_9c = info->speed;
-        self->unk_a0 = 0x200;
+        self->speed = info->speed;
+        self->velY = 0x200;
     } else {
-        self->unk_9c = Mul_021b209c(info->speed, 0x59a);
-        if (self->unk_9c < 0x229) {
-            self->unk_9c = 0x229;
+        self->speed = Mul_021b209c(info->speed, 0x59a);
+        if (self->speed < 0x229) {
+            self->speed = 0x229;
         }
-        self->unk_a0 = 0x53f;
+        self->velY = 0x53f;
     }
-    self->unk_a4 = 0;
-    self->unk_a8 = 0x52;
+    self->friction = 0;
+    self->gravity = 0x52;
     if (self->unk_b24_12 == 1) {
         Eff_021b209c *e = func_02065f88(0x6d, &self->pos);
         e->v0c(0xccd);
         e->v34(0x2000, 0, 0);
     }
-    if (self->unk_b64 >= 0) {
-        SndMgr_StopSeqArc(data_02097e4c, self->unk_b64);
-        self->unk_b64 = -1;
+    if (self->seSlot >= 0) {
+        SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
+        self->seSlot = -1;
     }
     if (self->unk_b66 >= 0) {
         SndMgr_StopSeqArc(data_02097e4c, self->unk_b66);
         self->unk_b66 = -1;
     }
     self->unk_b29_1 = 1;
-    func_ov000_02198360(((void *)self->unk_40), 0x1d, 0);
-    self->unk_40->st = 0x64;
+    func_ov000_02198360(((void *)self->fsm), 0x1d, 0);
+    self->fsm->st = 0x64;
 }
 }

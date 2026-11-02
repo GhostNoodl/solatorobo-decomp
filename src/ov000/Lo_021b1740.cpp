@@ -64,12 +64,12 @@ void func_ov000_021b1740(Robo021ca458 *self, BOOL flag) {
     if (self->unk_b22_9 < 2) {
         self->unk_b22_6 = (u16)st;
         self->unk_b22_9 = 1;
-        self->unk_40->flags |= 0x80000000;
-        func_ov000_02198360(self->unk_40, 0x1f, 0);
+        self->fsm->flags |= 0x80000000;
+        func_ov000_02198360(self->fsm, 0x1f, 0);
     }
     func_02062764(0x30, 0x10);
     if (flag) {
-        data_ov000_021ccd54->unk_ac = 1;
+        data_ov000_021ccd54->stageFlags = 1;
     }
 }
 

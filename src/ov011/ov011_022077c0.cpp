@@ -446,7 +446,7 @@ void *Ov011Vt_022079b0_Dtor(void *p);
 static inline void Ov011B_FreeBuf(Ov011Scene *b) {
     if (b->ring.b0) {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (b->ring.buf != NULL) {
             Heap_FreeArray(b->ring.buf);
             b->ring.buf = NULL;
@@ -461,7 +461,7 @@ static inline void Ov011B_FreeVec(Ov011Scene *b) {
         b->mgr2.b0 = 0;
         {
             void *saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->unk_08;
+            data_02097dd0->cur = data_02097dd0->heapHi;
             if (b->mgr2.arr8 != NULL) {
                 __cxa_vec_delete(b->mgr2.arr8, 0x40, 8, func_ov011_021fb66c);
                 b->mgr2.arr8 = NULL;
@@ -543,7 +543,7 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
     }
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->scene != NULL) {
             Ov011Scene *b = self->scene;
             if (b != NULL) {
@@ -556,7 +556,7 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
     }
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->unk_104 != NULL) {
             Ov011Sa104 *b = self->unk_104;
             if (b != NULL) {
@@ -569,7 +569,7 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
     }
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->unk_108 != NULL) {
             Heap_Free(self->unk_108);
             self->unk_108 = NULL;
@@ -578,7 +578,7 @@ void func_ov011_0220068c(Ov011SceneActor *self) {
     }
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->unk_10c != NULL) {
             Heap_Free(self->unk_10c);
             self->unk_10c = NULL;

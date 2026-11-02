@@ -43,7 +43,7 @@ void func_ov000_021bb810(Obj021bb810 *self, s32 a) {
 void func_ov000_021bb840(Obj021bb810 *self) {
     if (func_02065748(data_0214a420, self->unk_10)) {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->unk_10 != NULL) {
             if (self->unk_10 != NULL) {
                 self->unk_10->vfunc_04();

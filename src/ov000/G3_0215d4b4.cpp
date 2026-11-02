@@ -58,7 +58,7 @@ void func_ov000_0215d4b4(Lo021cad50 *self, s32 a1, s32 *pos, s32 sc) {
     if (a1 == 0) {
         return;
     }
-    z = self->unk_68 - 0x100;
+    z = self->posZ - 0x100;
     g = data_02097d48;
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | 0x8d0 | (0x18 << 16));
@@ -73,7 +73,7 @@ void func_ov000_0215d4b4(Lo021cad50 *self, s32 a1, s32 *pos, s32 sc) {
     MTX_TransApply43(&m, &m, -0x800, -0x800, 0);
     NNS_G3dGeBufferOP_N(0x19, &m, 12);
     G3_Cmd1(0x40, 2);
-    G3_Cmd1(0x20, self->unk_48);
+    G3_Cmd1(0x20, self->color);
     G3_Cmd2(0x23, 0x58d0052, 0);
     G3_Cmd1(0x25, 0x1000017e);
     G3_Cmd1(0x25, 0x130);

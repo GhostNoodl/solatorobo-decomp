@@ -342,7 +342,7 @@ extern "C" {
 #define OV007_FREE_V(field, slot)                       \
     {                                                   \
         void *saved = data_02097dd0->cur;                 \
-        data_02097dd0->cur = data_02097dd0->unk_08;        \
+        data_02097dd0->cur = data_02097dd0->heapHi;        \
         if ((field) != NULL) {                          \
             Ov007V *p_ = (field);                       \
             if (p_ != NULL) {                           \
@@ -356,7 +356,7 @@ extern "C" {
 #define OV007_FREE_D(field, dtor)                       \
     {                                                   \
         void *saved = data_02097dd0->cur;                 \
-        data_02097dd0->cur = data_02097dd0->unk_08;        \
+        data_02097dd0->cur = data_02097dd0->heapHi;        \
         if ((field) != NULL) {                          \
             void *p_ = (field);                         \
             if (p_ != NULL) {                           \
@@ -371,7 +371,7 @@ extern "C" {
 #define OV007_FREE_M(field)                             \
     {                                                   \
         void *saved = data_02097dd0->cur;                 \
-        data_02097dd0->cur = data_02097dd0->unk_08;        \
+        data_02097dd0->cur = data_02097dd0->heapHi;        \
         if ((field) != NULL) {                          \
             Model *p_ = (field);                  \
             if (p_ != NULL) {                           \
@@ -466,7 +466,7 @@ void func_ov000_0215c1bc(void *self, u32 flags, char *str);
     }
 #define OV007_PUSH(saved)                               \
     saved = data_02097dd0->cur;                         \
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
 #define OV007_POP(saved) data_02097dd0->cur = saved;
 
 #define OV007_DEL2(field, stmt)                         \

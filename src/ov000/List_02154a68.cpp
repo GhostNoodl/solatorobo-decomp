@@ -146,7 +146,7 @@ s32 func_ov000_02154638(ListOwner *self) {
 void func_ov000_021546ec(ListOwner *self, const char *name, void *a, u32 b) {
     void *saved = data_02097dd0->cur;
     Model *model;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     model = self->unk_b8_model;
     if (model != NULL) {
         if (model != NULL) {
@@ -176,7 +176,7 @@ void func_ov000_021546ec(ListOwner *self, const char *name, void *a, u32 b) {
 void func_ov000_021547e8(ListOwner *self, const char *name, void *a, void *b) {
     void *saved = data_02097dd0->cur;
     Model *model;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     model = self->unk_bc;
     if (model != NULL) {
         if (model != NULL) {
@@ -216,7 +216,7 @@ void func_ov000_021548ec(ListOwner *self, ListArg *arg) {
     self->unk_a0 = 0;
     arg->unk_00 = 0;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (arg->unk_1c != NULL) {
         if (arg->unk_1c != NULL) {
             arg->unk_1c->vfunc_04();

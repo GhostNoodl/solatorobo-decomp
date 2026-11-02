@@ -218,21 +218,21 @@ void func_ov013_021febf8(Ov013Act_021fea8c *self) {
     ((Ov013V *)((u8 *)self + 0x13c))->v08();
     func_ov003_021d8fa8((u8 *)self + 0x14c);
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (((Ov013Opt120 *)self->unk_120) != NULL) {
         Ov013_DelOpt(((Ov013Opt120 *)self->unk_120));
         FLD(Ov013Opt120 *, self, 0x120) = NULL;
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (((Ov013Opt120 *)self->unk_124) != NULL) {
         Ov013_DelOpt(((Ov013Opt120 *)self->unk_124));
         FLD(Ov013Opt120 *, self, 0x124) = NULL;
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (((Ov013V *)self->unk_128) != NULL) {
         Ov013V *v = ((Ov013V *)self->unk_128);
         if (v != NULL) {
@@ -441,7 +441,7 @@ void Ov013Act_021fea8c_Start(Ov013Act_021fea8c *self) {
     }
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->unk_5c != NULL) {
             void *p = self->unk_5c;
             if (p != NULL) {

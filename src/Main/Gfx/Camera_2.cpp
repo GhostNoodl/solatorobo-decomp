@@ -124,7 +124,7 @@ void func_0204b924(Camera *cam, s32 speed) {
     if (cam->anim == NULL) {
         return;
     }
-    cam->flag1 = TRUE;
+    cam->animated = TRUE;
     if (speed == 0x1000) {
         speed = cam->speed;
     } else if (cam->speed != 0x1000) {

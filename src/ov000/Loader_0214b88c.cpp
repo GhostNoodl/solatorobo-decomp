@@ -139,7 +139,7 @@ void func_ov000_0214ba18(void) {
 
 void func_ov000_0214baa8(void) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (data_ov000_021ccd24.unk_04 != NULL) {
         if (data_ov000_021ccd24.unk_04 != NULL) {
             data_ov000_021ccd24.unk_04->vfunc_04();
@@ -179,7 +179,7 @@ void func_ov000_0214bb80(void) {
 
 void func_ov000_0214bc10(void) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (data_ov000_021ccd24.unk_08 != NULL) {
         if (data_ov000_021ccd24.unk_08 != NULL) {
             data_ov000_021ccd24.unk_08->vfunc_04();

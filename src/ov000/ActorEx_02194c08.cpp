@@ -73,7 +73,7 @@ BOOL func_ov000_02194c08(ActorEx *self) {
     BOOL ret;
     u8 *p;
     u8 *q;
-    if (!GIdle02194c08() && ((u8 *)self->unk_4c) != NULL && *((u8 *)self->unk_4c) == 2) {
+    if (!GIdle02194c08() && ((u8 *)self->targetObj) != NULL && *((u8 *)self->targetObj) == 2) {
         return FALSE;
     }
     p = NULL;
@@ -82,8 +82,8 @@ BOOL func_ov000_02194c08(ActorEx *self) {
     if (((u8 *)self->model) != NULL) {
         u8 alpha;
         u8 *cam;
-        if (((u8 *)self->unk_4c) != NULL) {
-            p = Target_Get(((u8 *)self->unk_4c));
+        if (((u8 *)self->targetObj) != NULL) {
+            p = Target_Get(((u8 *)self->targetObj));
         }
         if (p == NULL) {
             p = (u8 *)self;
@@ -99,10 +99,10 @@ BOOL func_ov000_02194c08(ActorEx *self) {
                 LFLD(u8, s, 0xbf) = 0x1f;
             }
         }
-        if (((u8 *)self->unk_4c) != NULL && LFLD(B8_02194c08, ((u8 *)self->unk_4c), 0x18).b0) {
+        if (((u8 *)self->targetObj) != NULL && LFLD(B8_02194c08, ((u8 *)self->targetObj), 0x18).b0) {
             Mtx_02194c08 m;
             u8 *s;
-            MI_Copy48B(((u8 *)self->unk_4c) + 0x20, &m);
+            MI_Copy48B(((u8 *)self->targetObj) + 0x20, &m);
             s = ((u8 *)self->model);
             MI_Copy36B(&m, s + 0x84);
             LFLD(s32, s, 0x78) = m.m[9];
@@ -156,10 +156,10 @@ BOOL func_ov000_02194c08(ActorEx *self) {
     }
     if (ret && self->unk_3c != NULL) {
         u8 *info = func_0206fef8(self->kind);
-        u8 *o = (u8 *)self->unk_48;
-        u8 *t = Target_Get(((u8 *)self->unk_4c));
+        u8 *o = (u8 *)self->hit;
+        u8 *t = Target_Get(((u8 *)self->targetObj));
         if (t != NULL) {
-            if (self->unk_40->current == 9) {
+            if (self->fsm->current == 9) {
                 o = LFLD(u8 *, t, 0x48);
             }
         } else if (LFLD(Info12_02194c08, info, 0x12).b12 == 2) {

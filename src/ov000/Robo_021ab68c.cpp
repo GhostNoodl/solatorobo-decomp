@@ -58,10 +58,10 @@ static inline u16 AngleTo021ab68c(Actor *self, Actor *other) {
 }
 
 static inline void Charge021ab68c(Robo021ca458 *self) {
-    if (self->unk_b6a & 1) {
+    if (self->padTrig & 1) {
         self->unk_b2b++;
     }
-    if (self->unk_b6a & 0xf0) {
+    if (self->padTrig & 0xf0) {
         self->unk_b2b += 2;
     }
     if (self->unk_b2b > 4) {
@@ -76,13 +76,13 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
     BOOL hit;
     u8 lvl2;
     if (a != NULL) {
-        sub = a->unk_4c;
+        sub = a->targetObj;
     }
-    st = self->unk_40;
+    st = self->fsm;
     switch (st->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov000_021cc6ba, 0x555, 0);
-        self->unk_40->st++;
+        self->fsm->st++;
         return;
     case 1:
     case 10: {
@@ -102,7 +102,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
             ok = TRUE;
         }
         if (ok) {
-            self->unk_40->st++;
+            self->fsm->st++;
         }
         return;
     }
@@ -137,7 +137,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
             o->vfunc_34(0, AngleTo021ab68c(a, (Actor *)self), 0);
         }
         lvl2 = self->unk_b2c_7 * 2;
-        func_ov000_0219aae8(a, self, lvl2 * 3, 0x31, 0x30, NULL, 0, a->unk_64 + 0x2333, 0, 0x64, 0x1000);
+        func_ov000_0219aae8(a, self, lvl2 * 3, 0x31, 0x30, NULL, 0, a->radius + 0x2333, 0, 0x64, 0x1000);
         if (!hit) {
             Hit021ab68c msg;
             msg.val = lvl2;
@@ -161,7 +161,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
         if (a != NULL) {
             Msg021ab68c m;
             VecFx32 t;
-            VecFx32 *q = ((VecFx32 *)a->unk_48);
+            VecFx32 *q = ((VecFx32 *)a->hit);
             if (q != NULL) {
                 t.x = q->x;
                 t.y = q->y;
@@ -186,10 +186,10 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
         self->unk_b1e = 0xffff;
         self->unk_b24_5 = 0;
         self->unk_b24_7 = self->unk_b24_9;
-        self->unk_40->st = 0x14;
+        self->fsm->st = 0x14;
         return;
     again:
-        self->unk_40->st = 0xa;
+        self->fsm->st = 0xa;
         return;
     }
     case 0x14:
@@ -197,8 +197,8 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
             return;
         }
         func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0x89, 0);
-        self->unk_40->timer = 0;
-        self->unk_40->st++;
+        self->fsm->timer = 0;
+        self->fsm->st++;
         return;
     case 0x15:
         st->timer++;
@@ -206,7 +206,7 @@ void func_ov000_021ab68c(Robo021ca458 *self) {
             return;
         }
         self->unk_b2c_2 = 0;
-        func_ov000_02198360(self->unk_40, 1, 0);
+        func_ov000_02198360(self->fsm, 1, 0);
         return;
     }
 }

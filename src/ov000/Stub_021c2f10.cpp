@@ -45,7 +45,7 @@ void func_02041278(void *p);
     {                                                     \
         void *saved = data_02097dd0->cur;             \
         void *p;                                          \
-        data_02097dd0->cur = data_02097dd0->unk_08;   \
+        data_02097dd0->cur = data_02097dd0->heapHi;   \
         p = (void *)(field);                              \
         if (p != NULL) {                                  \
             if (p != NULL) {                              \

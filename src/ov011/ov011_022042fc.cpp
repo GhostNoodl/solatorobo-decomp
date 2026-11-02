@@ -6,7 +6,7 @@ void func_ov003_021d112c(void *p);
 
 static inline void Ov011_FreeSub48(Ov011Actor *self) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_48 != NULL) {
         void *p = self->unk_48;
         if (p != NULL) {

@@ -479,7 +479,7 @@ static inline void Ov015TaskBase_Dtor(void *p) {
 #define HEAP_PUSH(saved)                      \
     do {                                      \
         (saved) = data_02097dd0->cur;          \
-        data_02097dd0->cur = data_02097dd0->unk_08; \
+        data_02097dd0->cur = data_02097dd0->heapHi; \
     } while (0)
 #define HEAP_POP(saved) (data_02097dd0->cur = (saved))
 

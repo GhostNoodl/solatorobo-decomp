@@ -60,7 +60,7 @@ void func_ov000_0215d3bc(Lo021cad50 *self, void *a, s32 *pos, s32 d) {
             s32 x0 = LFLD(s32, o, 0x3c);
             s32 y0 = LFLD(s32, o, 0x40);
             o->vfunc_20(x0 + (pos[0] >> 12), y0 + (pos[1] >> 12));
-            LFLD(s32, ((LoArr98 *)self)->o[i], 0x70) = self->unk_68 - 0x40;
+            LFLD(s32, ((LoArr98 *)self)->o[i], 0x70) = self->posZ - 0x40;
             ((LoArr98 *)self)->o[i]->vfunc_90();
             ((LoArr98 *)self)->o[i]->vfunc_20(x0, y0);
         }

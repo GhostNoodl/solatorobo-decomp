@@ -29,13 +29,13 @@ s32 Rand_UpTo(s32 n);
 s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e, s32 f);
 
 void func_ov000_02196860(ActorEx *self) {
-    switch (self->unk_40->st) {
+    switch (self->fsm->st) {
     case 0: {
-        u8 *m = ((u8 *)self->unk_4c);
+        u8 *m = ((u8 *)self->targetObj);
         if (LFLD(u16, m, 0x1c) != 0xffff && (u8)(LFLD(u8, m, 2) + 0xff) <= 1) {
             BOOL done = FALSE;
             Robo021ca458 *p = func_ov000_0219bf90();
-            if (p->id == self->unk_4c->unk_1c) {
+            if (p->id == self->targetObj->target) {
                 u8 *g = data_0214a424;
                 u32 n = LFLD(u16, g, 0x16) + 1;
                 if (n >= 0xffff) {
@@ -47,23 +47,23 @@ void func_ov000_02196860(ActorEx *self) {
                     LFLD(Bits02196860, q, 0x22).b0 = 0;
                     LFLD(Bits02196860, q, 0x22).b1 = 0;
                 }
-                if (self->unk_48 != NULL) {
-                    ActorSub48 *q = self->unk_48;
+                if (self->hit != NULL) {
+                    ActorSub48 *q = self->hit;
                     LFLD(Bits02196860, q, 0x9a).b0 = 0;
                     q->unk_9a_3 = 0;
                     func_0203f364(q);
-                    q = self->unk_48;
+                    q = self->hit;
                     LFLD(Bits02196860, q, 0x9a).b1 = 0;
                     q->unk_9a_4 = 0;
                 }
-                if (self->unk_4c->unk_03 != 0) {
-                    self->unk_4c->unk_1c = 0xffff;
+                if (self->targetObj->unk_03 != 0) {
+                    self->targetObj->target = 0xffff;
                     func_ov003_021f0c60(self, 0);
                 }
                 done = TRUE;
             }
             if (done) {
-                func_ov000_02198360(self->unk_40, 0x15, 0);
+                func_ov000_02198360(self->fsm, 0x15, 0);
                 break;
             }
         }
@@ -74,24 +74,24 @@ void func_ov000_02196860(ActorEx *self) {
             LFLD(Bits02196860, q, 0x22).b0 = 1;
             LFLD(Bits02196860, q, 0x22).b1 = 1;
         }
-        if (self->unk_48 != NULL) {
-            self->unk_9c = 0xf6 - Rand_UpTo(0x7b);
-            self->unk_a0 = 0x2e1 - Rand_UpTo(0x5c);
-            self->unk_a4 = 0;
-            self->unk_a8 = 0x52;
-            if (self->unk_4c->unk_1c == 0xffff) {
-                self->unk_98 = self->rot_y;
+        if (self->hit != NULL) {
+            self->speed = 0xf6 - Rand_UpTo(0x7b);
+            self->velY = 0x2e1 - Rand_UpTo(0x5c);
+            self->friction = 0;
+            self->gravity = 0x52;
+            if (self->targetObj->target == 0xffff) {
+                self->moveYaw = self->rot_y;
             } else {
-                u8 *t = (u8 *)Target_Get(((u8 *)self->unk_4c));
+                u8 *t = (u8 *)Target_Get(((u8 *)self->targetObj));
                 if (t != NULL) {
                     VecFx32 a;
                     VecFx32 b;
                     s32 y;
-                    self->unk_98 = FX_Atan2(self->pos.x - LFLD(s32, t, 0x70), self->pos.z - LFLD(s32, t, 0x78));
+                    self->moveYaw = FX_Atan2(self->pos.x - LFLD(s32, t, 0x70), self->pos.z - LFLD(s32, t, 0x78));
                     a = *(VecFx32 *)(t + 0x70);
                     b = *(VecFx32 *)((u8 *)self + 0x70);
                     a.y += LFLD(s32, t, 0x6c);
-                    y = b.y + self->unk_6c;
+                    y = b.y + self->centerY;
                     b.y = y;
                     if (func_01ffbd6c(&a, &b, -1, 0, 0, -1) != -0x1000) {
                         a.x = a.x - b.x;
@@ -106,32 +106,32 @@ void func_ov000_02196860(ActorEx *self) {
                 }
             }
             {
-                ActorSub48 *q = self->unk_48;
+                ActorSub48 *q = self->hit;
                 LFLD(Bits02196860, q, 0x9a).b0 = 1;
                 q->unk_9a_3 = 1;
                 HitSphere_Link(q);
-                LFLD(u16, self->unk_48, 0x9a) |= 0x12;
-                self->unk_48->unk_9a_4 = 0;
+                LFLD(u16, self->hit, 0x9a) |= 0x12;
+                self->hit->unk_9a_4 = 0;
             }
-            self->unk_40->st++;
+            self->fsm->st++;
         } else {
-            func_ov000_02198360(self->unk_40, 1, 0);
+            func_ov000_02198360(self->fsm, 1, 0);
         }
-        self->unk_4c->unk_1c = 0xffff;
+        self->targetObj->target = 0xffff;
         break;
     }
     case 1:
-        if (self->unk_48 != NULL) {
-            self->unk_48->unk_9a_4 = 0;
+        if (self->hit != NULL) {
+            self->hit->unk_9a_4 = 0;
         }
-        func_ov000_02198360(self->unk_40, 4, 0);
+        func_ov000_02198360(self->fsm, 4, 0);
         break;
     }
-    if (((u8 *)self->unk_4c) != NULL && self->unk_4c->unk_00 == 2) {
-        void *r = func_ov003_021f0868(&self->pos, self->unk_64, self->unk_68);
+    if (((u8 *)self->targetObj) != NULL && self->targetObj->type == 2) {
+        void *r = func_ov003_021f0868(&self->pos, self->radius, self->height);
         if (r != NULL) {
-            Target_Set(((u8 *)self->unk_4c), r);
-            func_ov000_02198360(self->unk_40, 0xd, 0);
+            Target_Set(((u8 *)self->targetObj), r);
+            func_ov000_02198360(self->fsm, 0xd, 0);
         }
     }
 }

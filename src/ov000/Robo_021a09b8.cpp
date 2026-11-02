@@ -29,7 +29,7 @@ static inline Actor *FindActor021a09b8(u16 id) {
 
 static inline void Ping021a09b8(void) {
     FieldState *g = data_ov000_021ccd54;
-    g->unk_ac = 1;
+    g->stageFlags = 1;
     func_ov000_02182590((u8 *)g + 0xac);
 }
 
@@ -41,14 +41,14 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
     BOOL done;
 
     a = NULL;
-    r = func_ov000_0219840c(((void *)self->unk_40), list, count, FALSE);
+    r = func_ov000_0219840c(((void *)self->fsm), list, count, FALSE);
     if (r == 0) {
         return r;
     }
     a = FindActor021a09b8(self->target);
     sub = NULL;
     if (a != NULL) {
-        sub = ((u8 *)a->unk_4c);
+        sub = ((u8 *)a->targetObj);
     }
     kind = 0;
     if (sub != NULL) {
@@ -169,7 +169,7 @@ s32 func_ov000_021a09b8(Robo021ca458 *self, s32 *list, s32 count) {
         break;
     }
     if (r != 0) {
-        func_ov000_02198360(((void *)self->unk_40), (u8)r, 0);
+        func_ov000_02198360(((void *)self->fsm), (u8)r, 0);
     }
     return r;
 }

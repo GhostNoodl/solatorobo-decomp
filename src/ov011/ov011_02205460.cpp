@@ -118,8 +118,8 @@ void func_ov011_02205674(Ov011Act7da4 *self) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;
-            g->unk_ac = 1;
-            func_ov000_02182590(&g->unk_ac);
+            g->stageFlags = 1;
+            func_ov000_02182590(&g->stageFlags);
             self->unk_40->state++;
         }
         break;
@@ -171,8 +171,8 @@ void func_ov011_0220576c(Ov011Act7da4 *self) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;
-            g->unk_ac = 1;
-            func_ov000_02182590(&g->unk_ac);
+            g->stageFlags = 1;
+            func_ov000_02182590(&g->stageFlags);
             self->unk_40->state++;
         }
         break;
@@ -222,8 +222,8 @@ void func_ov011_022059f8(Ov011Act7da4 *self) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;
-            g->unk_ac = 1;
-            func_ov000_02182590(&g->unk_ac);
+            g->stageFlags = 1;
+            func_ov000_02182590(&g->stageFlags);
             self->unk_40->timer = 0;
             self->unk_40->state++;
         }
@@ -281,8 +281,8 @@ void func_ov011_02205bc4(Ov011Act7da4 *self) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
             g = data_ov000_021ccd54;
-            g->unk_ac = 1;
-            func_ov000_02182590(&g->unk_ac);
+            g->stageFlags = 1;
+            func_ov000_02182590(&g->stageFlags);
             self->unk_40->timer = 0;
             self->unk_40->state++;
         }

@@ -188,7 +188,7 @@ ActorC *func_ov000_021985c0(Obj021984c8 *self) {
 
 ActorSub48 *func_ov000_021985e8(ActorSub48 *self) {
     func_0203f260(self);
-    self->unk_98 = 0xffff;
+    self->owner = 0xffff;
     self->unk_44 = 0;
     self->unk_48 = 0;
     self->unk_4c = 0xa000;
@@ -208,7 +208,7 @@ ActorSub48 *func_ov000_021985e8(ActorSub48 *self) {
 void func_ov000_0219864c(ActorSub48 *self, VecFx32 *pos, u16 *rot) {
     VecFx32 base;
     VecFx32 ofs;
-    ActorC *actor = FindActor(self->unk_98);
+    ActorC *actor = FindActor(self->owner);
 
     if (actor == NULL) {
         func_0203f364(self);

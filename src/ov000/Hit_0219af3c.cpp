@@ -44,7 +44,7 @@ BOOL func_01ffc198(VecFx32 *a, VecFx32 *b, s32 r);
 BOOL func_ov000_021bd314(void *p, s32 x);
 
 static inline s32 Cur0219af3c(Actor *self) {
-    u8 *h = ((u8 *)self->unk_40);
+    u8 *h = ((u8 *)self->fsm);
     return h != NULL ? h[0x13] : 0;
 }
 
@@ -103,7 +103,7 @@ void func_ov000_0219af3c(Actor *self, u8 *p) {
         return;
     }
     if (!Both0219af3c(self->unk_44) || self->id == pl->unk_b20 ||
-        (tgt = ((Tgt0219af3c *)self->unk_4c)) == NULL || tgt->target == pl->id) {
+        (tgt = ((Tgt0219af3c *)self->targetObj)) == NULL || tgt->target == pl->id) {
         return;
     }
     type = tgt->type;
@@ -140,7 +140,7 @@ void func_ov000_0219af3c(Actor *self, u8 *p) {
             v.x = self->pos.x;
             v.y = self->pos.y;
             v.z = self->pos.z;
-            if (!func_01ffc198(&pl->pos, &v, pl->unk_64 + 0x6000)) {
+            if (!func_01ffc198(&pl->pos, &v, pl->radius + 0x6000)) {
                 return;
             }
         }

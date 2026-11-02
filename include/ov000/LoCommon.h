@@ -62,7 +62,7 @@ void func_ov000_02178dcc(void *p, BOOL add);
 #define LO_HEAP_PUSH(saved)                          \
     do {                                             \
         (saved) = (u32)data_02097dd0->cur;       \
-        data_02097dd0->cur = data_02097dd0->unk_08; \
+        data_02097dd0->cur = data_02097dd0->heapHi; \
     } while (0)
 #define LO_HEAP_POP(saved) (data_02097dd0->cur = (void *)(saved))
 

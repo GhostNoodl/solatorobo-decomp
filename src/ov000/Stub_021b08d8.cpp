@@ -39,18 +39,18 @@ static inline void SetPal(u8 *sub) {
 void func_ov000_021b08ec(Robo021ca458 *self) {
     ActorSub40 *s;
     s32 id;
-    switch (self->unk_40->st) {
+    switch (self->fsm->st) {
     case 0:
         if (self->unk_b36 != 0) {
             self->unk_b36 = 1;
         }
         self->unk_b08 = 0x2cd;
-        self->unk_40->st++;
+        self->fsm->st++;
     case 1:
-        s = self->unk_40;
+        s = self->fsm;
         s->timer++;
         if (s->timer <= self->unk_b36) {
-            u16 t = self->unk_40->timer;
+            u16 t = self->fsm->timer;
             VecFx32 ofs;
             u8 *p;
             if (t < 0xc) {
@@ -65,7 +65,7 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
             } else if (t >= 0x41) {
                 func_02049f44(data_02097e4c, 0x36, (u8 *)self + 0x70, 0);
                 SetPal(((u8 *)self->model));
-                self->unk_40->timer = 0x23;
+                self->fsm->timer = 0x23;
             }
             ofs.x = 0;
             ofs.y = 0xc00;
@@ -89,7 +89,7 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
             kind = 0x4831;
             tbl = data_ov000_021ca2a8;
             ang = 0x7b;
-            s = self->unk_40;
+            s = self->fsm;
             tm = s->timer;
             {
                 u16 nt = 0xa;
@@ -125,26 +125,26 @@ void func_ov000_021b08ec(Robo021ca458 *self) {
                 LFLD(u8, e, 0x29) = 1;
                 e->vfunc_0c(0x666);
             }
-            self->unk_40->st++;
+            self->fsm->st++;
         }
         break;
     case 2: {
-        s = self->unk_40;
+        s = self->fsm;
         if (s->timer != 0) {
             s->timer--;
         }
         if (s->timer == 0) {
             if (self->unk_b36 != 0) {
-                self->unk_40->st = 0;
+                self->fsm->st = 0;
             } else {
-                func_ov000_02198360(self->unk_40, 1, 0);
+                func_ov000_02198360(self->fsm, 1, 0);
             }
         }
         break;
     }
     }
     id = 0;
-    if (self->unk_b68 & 0xf0) {
+    if (self->padCur & 0xf0) {
         id = self->unk_b08;
     }
     func_ov000_021b0db0(self, id);

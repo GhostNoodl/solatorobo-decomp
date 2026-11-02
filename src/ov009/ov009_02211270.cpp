@@ -7,7 +7,7 @@ extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
 
 static inline BOOL Ov009Game_IsPaused(FieldState *g) {
-    return g->unk_d4 != 0;
+    return g->event != 0;
 }
 
 void func_ov009_02211270(Ov009ActVt_02217aac *self) {

@@ -114,9 +114,9 @@ void Robo021ca458_Start(Robo021ca458 *self) {
     s32 z;
     u16 n;
 
-    self->unk_64 = info->hx << 4;
-    self->unk_68 = info->hy << 4;
-    self->unk_6c = self->unk_68 >> 1;
+    self->radius = info->hx << 4;
+    self->height = info->hy << 4;
+    self->centerY = self->height >> 1;
     func_ov000_0218ffdc((u8 *)self + 0xac, (u8 *)self + 0x194, 0, 1);
     self->unk_160 = self->id;
     self->unk_18c = (void *)func_ov003_021ce630;
@@ -139,8 +139,8 @@ void Robo021ca458_Start(Robo021ca458 *self) {
     func_ov000_0218ffdc((u8 *)self + 0x778, (u8 *)self + 0x860, 0, 1);
     self->unk_82c = self->id;
     func_ov000_0219c8e0((u8 *)self);
-    x = self->unk_64;
-    z = self->unk_6c;
+    x = self->radius;
+    z = self->centerY;
     func_ov000_02198c8c((u8 *)self + 0x2cc, self->id);
     self->unk_304 = (x >> 1) + (x >> 3);
     self->unk_2f4 = 2;
@@ -165,7 +165,7 @@ void Robo021ca458_Start(Robo021ca458 *self) {
         LFLD(B16_0219d1a8, o, 0x22).b0 = 1;
         LFLD(B16_0219d1a8, o, 0x22).b1 = 1;
     }
-    self->unk_40 = (ActorSub40 *)NewObj40_0219d1a8();
+    self->fsm = (ActorSub40 *)NewObj40_0219d1a8();
     n = data_0214a424[0x1a] * 100 + 500;
     self->hp = (u16 *) NewGauge0219d1a8();
     ((Gauge0219d1a8 *)self->hp)->max = n;
@@ -176,7 +176,7 @@ void Robo021ca458_Start(Robo021ca458 *self) {
     ((Gauge0219d1a8 *)self->hp)->fn18 = (void *)func_ov003_021ce7c0;
     self->unk_b34 = n;
     self->unk_54 = NewTrio0219d1a8();
-    self->unk_15 = 3;
+    self->mode = 3;
     self->unk_5c = NewObj5c_0219d1a8();
     func_ov000_021bd314(self->unk_5c, 0);
     LFLD(s32, self->unk_5c, 0x4c) = 0x400;

@@ -52,7 +52,7 @@ void func_ov000_021b12c0(Robo021ca458 *self, BOOL flag) {
     LFLD(Bits0214a424, data_0214a424, 0x18).b9 = 0;
     func_02062764(3, 1);
     if (flag) {
-        data_ov000_021ccd54->unk_ac = 1;
+        data_ov000_021ccd54->stageFlags = 1;
     }
 }
 }
@@ -79,6 +79,6 @@ extern "C" void func_ov000_021b13cc(Robo021ca458 *self, BOOL flag) {
     SetRgb(data_0214a424, self->unk_772, self->unk_773, self->unk_774);
     func_02062764(3, 2);
     if (flag) {
-        data_ov000_021ccd54->unk_ac = 1;
+        data_ov000_021ccd54->stageFlags = 1;
     }
 }

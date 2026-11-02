@@ -458,7 +458,7 @@ extern "C" {
 #define OV008_FREE(field, T, stmt)                      \
     {                                                   \
         void *saved = data_02097dd0->cur;                 \
-        data_02097dd0->cur = data_02097dd0->unk_08;        \
+        data_02097dd0->cur = data_02097dd0->heapHi;        \
         if ((field) != NULL) {                          \
             T p_ = (field);                             \
             if (p_ != NULL) {                           \

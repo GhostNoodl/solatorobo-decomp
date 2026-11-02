@@ -333,12 +333,12 @@ struct Robo021ca458 : public Actor {
     u16 unk_b5c;
     u16 unk_b5e;
     s32 unk_b60;
-    s16 unk_b64;
+    s16 seSlot; // looping sound (func_02049afc / SndMgr_StopSeqArc), -1: none
     s16 unk_b66;
-    u16 unk_b68;
-    u16 unk_b6a;
-    u16 unk_b6c;
-    u16 unk_b6e;
+    u16 padCur; // copies of Pad cur / trig / release taken each frame (func_ov000_0219efc0)
+    u16 padTrig;
+    u16 padRelease;
+    u16 padDir; // Pad_LookupDir angle, added to the camera yaw for movement
     u8 unk_b70[0x20];
     VecFx32 unk_b90;
     s32 unk_b9c;
@@ -366,7 +366,7 @@ struct Menu021ca94c : public VObj {
     s32 unk_60;
     s16 unk_64;
     s16 unk_66;
-    s16 unk_68;
+    s16 posZ;
     u8 unk_6a[0x1a];
     void *unk_84;
     u8 *unk_88;
@@ -590,7 +590,7 @@ struct LoBase021caac8_021cb2a8 : public VObj {
     s32 unk_28;
     s32 unk_2c;
     u8 unk_30[0x18];
-    u16 unk_48;
+    u16 color;
     u8 unk_4a[0xa];
     s32 unk_54;
     s32 unk_58;
@@ -598,7 +598,7 @@ struct LoBase021caac8_021cb2a8 : public VObj {
     s32 unk_60;
     s16 unk_64;
     s16 unk_66;
-    s16 unk_68;
+    s16 posZ;
     u8 unk_6a[0x2];
     void *unk_6c;
     s32 unk_70;
@@ -664,11 +664,11 @@ struct Lo021cacd8 : public VObj {
     s32 unk_28;
     s32 unk_2c;
     u8 unk_30[0x18];
-    u16 unk_48;
+    u16 color;
     u8 unk_4a[0x1a];
-    s16 unk_64;
-    s16 unk_66;
-    s16 unk_68;
+    s16 posX;
+    s16 posY;
+    s16 posZ;
     u8 unk_6a[0x2];
     void *unk_6c;
     s32 unk_70;
@@ -696,9 +696,9 @@ struct Lo021cad50 : public VObj {
     s32 unk_34;
     s32 unk_38;
     u8 unk_3c[0xc];
-    u16 unk_48;
+    u16 color;
     u8 unk_4a[0x1e];
-    s16 unk_68;
+    s16 posZ;
     u8 unk_6a[0x2e];
     VObj *unk_98;
 };
@@ -747,7 +747,7 @@ struct Lo021cae48 : public VObj {
     s32 unk_34;
     s32 unk_38;
     u8 unk_3c[0xc];
-    u16 unk_48;
+    u16 color;
     u8 unk_4a[0xa];
     s32 unk_54;
     s32 unk_58;
@@ -755,7 +755,7 @@ struct Lo021cae48 : public VObj {
     s32 unk_60;
     s16 unk_64;
     s16 unk_66;
-    s16 unk_68;
+    s16 posZ;
     u8 unk_6a[0x1a];
     s32 unk_84;
     s32 unk_88;
@@ -801,14 +801,14 @@ struct LoBase021caec8_021efca4 : public VObj {
     s32 unk_28;
     s32 unk_2c;
     u8 unk_30[0x18];
-    u16 unk_48;
+    u16 color;
     u8 unk_4a[0xa];
     s32 unk_54;
     s32 unk_58;
     s32 unk_5c;
     s32 unk_60;
     u8 unk_64[0x4];
-    s16 unk_68;
+    s16 posZ;
     u8 unk_6a[0x2];
     void *unk_6c;
     s32 unk_70;
@@ -838,11 +838,11 @@ struct LoBase021cafc0_021cb0b8 : public VObj {
     s32 unk_34;
     s32 unk_38;
     u8 unk_3c[0xc];
-    u16 unk_48;
+    u16 color;
     u8 unk_4a[0xa];
     s32 unk_54;
     u8 unk_58[0x10];
-    s16 unk_68;
+    s16 posZ;
     u8 unk_6a[0x1a];
     void *unk_84;
     u8 unk_88[0xc];
@@ -886,13 +886,13 @@ struct Lo021cb3a8 : public VObj {
     s32 unk_24;
     s32 unk_28;
     u8 unk_2c[0x1c];
-    u16 unk_48;
+    u16 color;
     u8 unk_4a[0xa];
     s32 unk_54;
     u8 unk_58[0xc];
     s16 unk_64;
     u8 unk_66[0x2];
-    s16 unk_68;
+    s16 posZ;
     u8 unk_6a[0x2];
     void *unk_6c;
     s32 unk_70;
@@ -913,9 +913,9 @@ struct Lo021cb3a8 : public VObj {
     s8 unk_b2;
     s8 unk_b3;
     u8 unk_b4[0x2c];
-    char *unk_e0;
-    char *unk_e4;
-    s32 unk_e8;
+    char *srcStr;
+    char *str;
+    s32 strSize;
     VObj *unk_ec;
 };
 
@@ -936,7 +936,7 @@ struct Lo021cb5a8 : public VObj {
     s32 unk_60;
     s16 unk_64;
     s16 unk_66;
-    s16 unk_68;
+    s16 posZ;
     u8 unk_6a[0x2a];
     u8 *unk_94;
     u8 *unk_98;

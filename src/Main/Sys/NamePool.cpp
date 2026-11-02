@@ -55,31 +55,31 @@ static inline void *Sys_Alloc(u32 size) {
 
 static inline void *Sys_Alloc04(u32 size, u32 align) {
     u32 irq = OS_DisableInterrupts();
-    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->unk_04, size, align);
+    void *p = NNS_FndAllocFromExpHeapEx(data_02097dd0->heapLo, size, align);
     OS_RestoreInterrupts(irq);
     return p;
 }
 
 void func_0203dfb0(void) {
     NamePool *pool;
-    data_02097dd0->cur = data_02097dd0->unk_04;
+    data_02097dd0->cur = data_02097dd0->heapLo;
     pool = (NamePool *)Sys_Alloc(sizeof(NamePool));
     if (pool != NULL) {
         func_0203e300(pool, 0x60);
     }
     data_02097de4 = pool;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
 }
 
 void func_0203e024(void) {
     NamePool *pool;
-    data_02097dd0->cur = data_02097dd0->unk_04;
+    data_02097dd0->cur = data_02097dd0->heapLo;
     pool = (NamePool *)Sys_Alloc(sizeof(NamePool));
     if (pool != NULL) {
         func_0203e300(pool, 0x60);
     }
     data_02097dd8 = pool;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
 }
 
 static inline int NamePool_Hash(const char *name) {

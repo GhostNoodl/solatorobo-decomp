@@ -59,7 +59,7 @@ void func_ov000_021b06dc(Robo021ca458 *self) {
     if (self->unk_b2e != 0) {
         self->unk_b2e--;
     }
-    k = self->unk_40->current;
+    k = self->fsm->current;
     for (i = 0; i < 6; i++) {
         if (k == *(s32 *)((u8 *)data_ov000_021ca1b0 + i * 12)) {
             (((Robo021b06dcCls *)self)->*data_ov000_021ca1b0[i].fn)();
@@ -70,10 +70,10 @@ void func_ov000_021b06dc(Robo021ca458 *self) {
         LFLD(u16, ((u8 *)self->hp), 0xa)--;
     }
     {
-        u8 *st = ((u8 *)self->unk_40);
+        u8 *st = ((u8 *)self->fsm);
         LFLD(s64, st, 4) = 0;
     }
-    self->unk_48->unk_9a_4 = 0;
+    self->hit->unk_9a_4 = 0;
     if (PlayerIdle021b06dc()) {
         SetGauge021b06dc(LFLD(u16, ((u8 *)self->hp), 0), LFLD(u16, ((u8 *)self->hp), 2));
     }

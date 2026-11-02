@@ -61,7 +61,7 @@ void func_ov000_0215a4f4(Lo021cb5a8 *self, s32 enable, s32 *pos) {
     if (enable == 0) {
         return;
     }
-    z = self->unk_68 - 0x100;
+    z = self->posZ - 0x100;
     g = data_02097d48;
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, Gfx3DState_NextPolyId(g + 0x8b0), 0x1e, 0x800));

@@ -64,7 +64,7 @@ void func_ov000_02159e40(Owner02159e40 *self, Node02159e40 *node) {
     {
         void *saved = data_02097dd0->cur;
         Node02159e40 *p;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         p = node;
         if (p != NULL) {
             if (p != NULL) {

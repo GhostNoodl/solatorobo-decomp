@@ -27,7 +27,7 @@ static inline BOOL RgbEq0219d5a0(Rgb0219d5a0 *a, Rgb0219d5a0 b) {
 s32 func_ov000_0219d5a0(Robo021ca458 *self) {
     s32 result = 0;
     BOOL busy = FALSE;
-    u8 t = ((u8 *)self->unk_40)[0x13];
+    u8 t = ((u8 *)self->fsm)[0x13];
     u32 st;
     if (t != 1 && t != 2) {
         busy = TRUE;
@@ -35,7 +35,7 @@ s32 func_ov000_0219d5a0(Robo021ca458 *self) {
             busy = FALSE;
         }
     }
-    st = self->unk_48->unk_50;
+    st = self->hit->unk_50;
     if (st & 0x400) {
         busy = TRUE;
     }

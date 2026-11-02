@@ -544,7 +544,7 @@ extern "C" void *func_ov003_021da940(void *p);
 // Frees the effect handle at self+off with the default heap selected.
 static inline void Ov012_FreeFx(void *self, u32 off) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (FLD(void *, self, off) != NULL) {
         void *p = FLD(void *, self, off);
         if (p != NULL) {

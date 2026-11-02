@@ -65,7 +65,7 @@ void func_ov009_021fc8f4(Ov009Actor *self) {
         }
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->unk_ac = 1;
+        data_ov000_021ccd54->stageFlags = 1;
         m = self->unk_38;
         m->unk_c2_0 = 1;
         func_ov000_02190cb0(self->unk_38, data_ov009_02216ac8, 0x400, 0);

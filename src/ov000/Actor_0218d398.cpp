@@ -53,8 +53,8 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
     }
     switch (msg->type) {
     case 1:
-        if (self->unk_40 != NULL) {
-            func_ov000_02198360(self->unk_40, 0, 0);
+        if (self->fsm != NULL) {
+            func_ov000_02198360(self->fsm, 0, 0);
         }
         if (self->model != NULL) {
             func_ov000_02190e98(self->model, zero, 0x1000, zero);
@@ -63,7 +63,7 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         handled = TRUE;
         break;
     case 2:
-        sub40 = (ActorSub40 *)self->unk_40;
+        sub40 = (ActorSub40 *)self->fsm;
         if (sub40 == NULL) {
             handled = TRUE;
         } else {
@@ -71,7 +71,7 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         }
         break;
     case 3:
-        sub40 = (ActorSub40 *)self->unk_40;
+        sub40 = (ActorSub40 *)self->fsm;
         if (sub40 == NULL || sub40->current == 1) {
             handled = TRUE;
         } else {
@@ -79,7 +79,7 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         }
         break;
     case 4:
-        sub40 = (ActorSub40 *)self->unk_40;
+        sub40 = (ActorSub40 *)self->fsm;
         if (sub40 != NULL) {
             sub40->flags |= 1;
         }
@@ -93,7 +93,7 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         handled = TRUE;
         break;
     case 5:
-        sub40 = (ActorSub40 *)self->unk_40;
+        sub40 = (ActorSub40 *)self->fsm;
         if (sub40 != NULL) {
             sub40->flags |= 1;
         }
@@ -115,12 +115,12 @@ BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg) {
         self->rot_y = data->rot_y;
         self->rot_z = data->rot_z;
         if (data->unk_1c > 0) {
-            self->unk_a8 = data->unk_1c;
+            self->gravity = data->unk_1c;
         } else if (data->unk_1c == 0) {
-            self->unk_9c = handled;
-            self->unk_a0 = handled;
-            self->unk_a4 = handled;
-            self->unk_a8 = handled;
+            self->speed = handled;
+            self->velY = handled;
+            self->friction = handled;
+            self->gravity = handled;
         }
         handled = TRUE;
         break;
@@ -234,7 +234,7 @@ u16 Actor_YawToPos(Actor *self, VecFx32 *target) {
 }
 
 void Actor_TurnToPos(Actor *self, VecFx32 *target, s32 step) {
-    if (func_01ffc198(&self->pos, target, self->unk_64 + 0x400)) {
+    if (func_01ffc198(&self->pos, target, self->radius + 0x400)) {
         return;
     }
     self->rot_y = func_01ffc128(FX_Atan2(target->x - self->pos.x, target->z - self->pos.z), self->rot_y, step, 1, 0x8000);
@@ -256,7 +256,7 @@ void Actor_TurnToActor(Actor *self, Actor *other, s32 step) {
 void Actor_PitchToPos(Actor *self, VecFx32 *target, s32 step) {
     s32 dz;
     s32 dx;
-    if (func_01ffc198(&self->pos, target, self->unk_64 + 0x400)) {
+    if (func_01ffc198(&self->pos, target, self->radius + 0x400)) {
         return;
     }
     dx = self->pos.x - target->x;

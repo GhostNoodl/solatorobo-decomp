@@ -33,7 +33,7 @@ static inline void Task021cbac8_Dtor(Task021cbac8 *self) {
 
 static inline void DeleteMember(VObj **p) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (*p != NULL) {
         if (*p != NULL) {
             (*p)->vfunc_04();

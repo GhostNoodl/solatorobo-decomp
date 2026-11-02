@@ -55,7 +55,7 @@ static inline void ov006_Unk021d5b98_dtor(ov006_Unk021d5b98 *self) {
     i = 0;
     for (; i < 6; i++) {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->unk70[i] != NULL) {
             if (self->unk70[i] != NULL) {
                 void *p = self->unk70[i];

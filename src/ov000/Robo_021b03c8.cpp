@@ -24,12 +24,12 @@ static inline Actor *FindActor021b03c8(u16 id) {
 }
 
 static inline void Next021b03c8(Robo021ca458 *self) {
-    self->unk_40->timer = 0xd;
-    self->unk_40->st++;
+    self->fsm->timer = 0xd;
+    self->fsm->st++;
 }
 
 void func_ov000_021b03c8(Robo021ca458 *self) {
-    ActorSub40 *s = self->unk_40;
+    ActorSub40 *s = self->fsm;
     Actor *a;
     u8 *sub;
     void *o;
@@ -46,7 +46,7 @@ void func_ov000_021b03c8(Robo021ca458 *self) {
         a = FindActor021b03c8(self->unk_b20);
         sub = NULL;
         if (a != NULL) {
-            sub = ((u8 *)a->unk_4c);
+            sub = ((u8 *)a->targetObj);
         }
         if (sub == NULL || LFLD(u16, sub, 0x1e) == 0) {
             func_0204a028(data_02097e4c, 0x48, &self->pos, -5);
@@ -74,9 +74,9 @@ void func_ov000_021b03c8(Robo021ca458 *self) {
         }
         if (s->timer == 0) {
             if (self->unk_b36 != 0) {
-                self->unk_40->st = 0;
+                self->fsm->st = 0;
             } else {
-                func_ov000_02198360(self->unk_40, 1, 0);
+                func_ov000_02198360(self->fsm, 1, 0);
             }
         }
         func_ov000_021b2b08(self);

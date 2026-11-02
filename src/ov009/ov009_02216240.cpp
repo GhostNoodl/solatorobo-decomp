@@ -100,7 +100,7 @@ extern void Actor_PitchToPos(Ov009Obj *self, Ov009Vec *v, s32 a);
 extern void *func_02049f44(void *a, s32 b, Ov009Vec *c, s32 d);
 
 static inline BOOL Ov009Game_IsPausedB(FieldState *g) {
-    return g->unk_d4 != 0;
+    return g->event != 0;
 }
 
 void Ov009ActVt_02217640_Update(Ov009ActVt_02217640 *self) {
@@ -177,7 +177,7 @@ extern Ov009Actor *Actor_GetTarget(Ov009Actor *self);
 extern void Actor_TurnToActor(Ov009Actor *self, Ov009Actor *other, s32 a);
 
 static inline BOOL Ov009Game_IsPaused3(FieldState *g) {
-    return g->unk_d4 != 0;
+    return g->event != 0;
 }
 
 void func_ov009_0220bb70(Ov009ActVt_02217640 *self) {
@@ -702,7 +702,7 @@ void func_ov009_0220ca64(Ov009Actor *self) {
     s44->unk_22_0 = 0;
     s44->unk_22_1 = 0;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_3c != NULL) {
         if (self->unk_3c != NULL) {
             self->unk_3c->v04();

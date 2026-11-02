@@ -111,10 +111,10 @@ void func_ov000_02158588(LoBase021caac8_021cb2a8 *self, s32 on, s32 *pos) {
                 }
                 if (k < first || k > last) {
                     dim = 1;
-                    func_ov000_02153f30(it->text, self->unk_68);
+                    func_ov000_02153f30(it->text, self->posZ);
                 } else {
                     dim = 0;
-                    func_ov000_02153f60(it->text, self->unk_68);
+                    func_ov000_02153f60(it->text, self->posZ);
                 }
                 LFLD(TextFlags02158588, it->text, 4).color = (u8)col;
                 d = 0;
@@ -142,7 +142,7 @@ void func_ov000_02158588(LoBase021caac8_021cb2a8 *self, s32 on, s32 *pos) {
                     m.item = it;
                     m.x = px;
                     m.y = py;
-                    m.z = self->unk_68;
+                    m.z = self->posZ;
                     m.col = col;
                     m.dim = dim;
                     m.ofs = -0x110;

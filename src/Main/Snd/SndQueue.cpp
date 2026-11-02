@@ -339,9 +339,9 @@ void func_0204a160(SndMgr *mgr) {
         handle = &mgr->seqArc[i];
         if ((handle->player != NULL ? TRUE : FALSE)) {
             NNS_SndPlayerPause(handle, TRUE);
-            mgr->unk_70[i] = 1;
+            mgr->seqArcPaused[i] = 1;
         } else {
-            mgr->unk_70[i] = 0;
+            mgr->seqArcPaused[i] = 0;
         }
     }
 }
@@ -349,9 +349,9 @@ void func_0204a160(SndMgr *mgr) {
 void SndMgr_ResumeAll(SndMgr *mgr) {
     s32 i;
     for (i = 0; i < 5; i++) {
-        if (mgr->unk_70[i] != 0) {
+        if (mgr->seqArcPaused[i] != 0) {
             NNS_SndPlayerPause(&mgr->seqArc[i], FALSE);
-            mgr->unk_70[i] = 0;
+            mgr->seqArcPaused[i] = 0;
         }
     }
 }
@@ -360,7 +360,7 @@ void func_0204a20c(SndMgr *mgr, s32 strmNo) {
     void *thread;
     s32 prio;
     if (func_02031904((StrmHandle *)&mgr->strm, strmNo, 0)) {
-        mgr->unk_48 = strmNo;
+        mgr->curStrm = strmNo;
         func_02031948((StrmHandle *)&mgr->strm, 0x7f);
         thread = func_02031ac0();
         prio = 0xf;
@@ -371,7 +371,7 @@ void func_0204a20c(SndMgr *mgr, s32 strmNo) {
             OS_SetThreadPriority(thread, prio);
         }
     } else {
-        mgr->unk_48 = -1;
+        mgr->curStrm = -1;
     }
 }
 
@@ -493,11 +493,11 @@ BOOL func_0204a598(SndMgr *mgr) {
     s32 result;
     s32 len;
 
-    if (mgr->unk_a0 != 0) {
+    if (mgr->fileBuf != 0) {
         return FALSE;
     }
     SndMgr_TwlOpen();
-    mgr->unk_a0 = (s32)func_0203de84(0x10000, 4);
+    mgr->fileBuf = (s32)func_0203de84(0x10000, 4);
     result = 4;
     if (OS_IsRunOnTwl() == TRUE) {
         result = func_0221d814(&status);
@@ -515,13 +515,13 @@ BOOL func_0204a598(SndMgr *mgr) {
         return FALSE;
     }
     len = FS_GetFileLength(&file);
-    mgr->unk_a4 = len;
-    if (FS_ReadFile(&file, (void *)mgr->unk_a0, len) == -1) {
+    mgr->fileSize = len;
+    if (FS_ReadFile(&file, (void *)mgr->fileBuf, len) == -1) {
         OS_Terminate();
         return FALSE;
     }
     FS_CloseFile(&file);
-    DC_StoreRange((void *)mgr->unk_a0, mgr->unk_a4);
+    DC_StoreRange((void *)mgr->fileBuf, mgr->fileSize);
     return TRUE;
 }
 
@@ -529,9 +529,9 @@ void func_0204a734(SndMgr *mgr) {
     if (OS_IsRunOnTwl()) {
         func_0221dfa0();
     }
-    if (mgr->unk_a0 != 0) {
-        func_0203df0c((void *)mgr->unk_a0);
-        mgr->unk_a0 = 0;
+    if (mgr->fileBuf != 0) {
+        func_0203df0c((void *)mgr->fileBuf);
+        mgr->fileBuf = 0;
     }
 }
 
@@ -544,13 +544,13 @@ static inline s32 SndMgr_TwlIsBusy(void) {
 }
 
 void func_0204a768(SndMgr *mgr) {
-    void *buf = (void *)mgr->unk_a0;
+    void *buf = (void *)mgr->fileBuf;
     s32 len;
 
     if (buf == NULL) {
         return;
     }
-    len = mgr->unk_a4;
+    len = mgr->fileSize;
     if (OS_IsRunOnTwl()) {
         func_02219778(buf, len);
     }
@@ -587,13 +587,13 @@ void func_0204a924(SndQueue *queue);
 void func_0204a87c(void) {
     if (SND_MGR == NULL) {
         SndMgr *mgr;
-        data_02097dd0->cur = data_02097dd0->unk_04;
+        data_02097dd0->cur = data_02097dd0->heapLo;
         mgr = (SndMgr *)Heap_Alloc(sizeof(SndMgr));
         if (mgr != NULL) {
             mgr = func_020492e0(mgr);
         }
         SND_MGR = mgr;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         func_02049344(SND_MGR);
     }
     if (SND_QUEUE == NULL) {

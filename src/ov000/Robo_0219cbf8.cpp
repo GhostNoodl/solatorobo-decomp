@@ -36,7 +36,7 @@ void func_ov000_0219cbf8(Robo021ca458 *self, VecFx32 *pos, u16 *rot) {
         self->rot_x = rot[0];
         self->rot_y = ry = rot[1];
         self->rot_z = rot[2];
-        self->unk_98 = ry;
+        self->moveYaw = ry;
     }
     if (LBIT(self, 0xb24).b1) {
         self->unk_75c.x = self->pos.x;
@@ -124,7 +124,7 @@ void func_ov000_0219cdb8(Robo021ca458 *self) {
         Actor *o = GetObj0219cdb8(self->unk_b1c);
         u8 *p = NULL;
         if (o != NULL) {
-            p = ((u8 *)o->unk_4c);
+            p = ((u8 *)o->targetObj);
         }
         if (p == NULL || LFLD(u16, p, 0x1c) != self->id) {
             if (p != NULL) {
@@ -140,9 +140,9 @@ void func_ov000_0219cdb8(Robo021ca458 *self) {
         if (self->unk_998 != NULL) {
             func_ov000_02191008(self->unk_998);
         }
-        if (self->unk_b64 >= 0) {
-            SndMgr_StopSeqArc(data_02097e4c, self->unk_b64);
-            self->unk_b64 = -1;
+        if (self->seSlot >= 0) {
+            SndMgr_StopSeqArc(data_02097e4c, self->seSlot);
+            self->seSlot = -1;
         }
         if (self->unk_b22_0 > 1) {
             self->unk_b22_0 = 1;

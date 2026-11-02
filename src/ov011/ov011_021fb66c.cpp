@@ -90,7 +90,7 @@ static inline void Ov011Mgr2_Reset(Ov011Mgr2 *self) {
     self->count = 0;
     self->unk_04 = -1;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->arr8 != NULL) {
         __cxa_vec_delete(self->arr8, 0x40, 8, func_ov011_021fb66c);
         self->arr8 = NULL;

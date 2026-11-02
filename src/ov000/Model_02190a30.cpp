@@ -72,7 +72,7 @@ static inline BOOL AnimCtrl_IsReverse(AnimCtrl *ctrl) {
 
 static inline void FreeOnHeap(AnimCtrl **ptr) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (*ptr != NULL) {
         Heap_Free(*ptr);
         *ptr = NULL;
@@ -111,34 +111,34 @@ void func_ov000_02190a80(Model0218fe1c *self, s16 speed) {
     s16 *best;
     s16 *it;
     self->unk_c4 = 0;
-    if (self->unk_ba != 0) {
-        self->unk_ba--;
+    if (self->blend != 0) {
+        self->blend--;
     }
     self->unk_e4 = 0;
     if (self->res->anims == NULL) {
         return;
     }
     if (self->unk_0c != NULL) {
-        if (func_ov000_0218f874(self->unk_0c, self->unk_24, speed)) {
-            self->unk_dc = self->unk_d8;
+        if (func_ov000_0218f874(self->unk_0c, self->renderObj, speed)) {
+            self->evCursor = self->evScript;
         }
-        if (self->unk_dc != NULL) {
+        if (self->evCursor != NULL) {
             frame = AnimCtrl_GetFrame(self->unk_0c) >> 12;
             if (!AnimCtrl_IsReverse(self->unk_0c)) {
-                ev = self->unk_dc;
+                ev = self->evCursor;
                 while (*ev >= 0 && *ev <= frame) {
-                    ev = ((AnimEventFunc)self->unk_e0)(ev + 1, self);
+                    ev = ((AnimEventFunc)self->evFunc)(ev + 1, self);
                     if (ev == NULL) {
                         goto done;
                     }
-                    self->unk_dc = ev;
+                    self->evCursor = ev;
                     if (*ev == frame && (self->unk_e4 & 0x20000000)) {
                         goto done;
                     }
                     frame = AnimCtrl_GetFrame(self->unk_0c) >> 12;
                 }
             } else {
-                it = self->unk_d8;
+                it = self->evScript;
                 best = NULL;
                 while (*it < frame && *it >= 0) {
                     if (best == NULL || *best < *it) {
@@ -146,10 +146,10 @@ void func_ov000_02190a80(Model0218fe1c *self, s16 speed) {
                     }
                     it = func_ov000_02192a28(it + 1);
                 }
-                if (*self->unk_dc >= 0) {
+                if (*self->evCursor >= 0) {
                     ev = it;
-                    while (ev <= self->unk_dc && *ev >= 0) {
-                        ev = ((AnimEventFunc)self->unk_e0)(ev + 1, self);
+                    while (ev <= self->evCursor && *ev >= 0) {
+                        ev = ((AnimEventFunc)self->evFunc)(ev + 1, self);
                     }
                 }
                 if (best == NULL) {
@@ -158,22 +158,22 @@ void func_ov000_02190a80(Model0218fe1c *self, s16 speed) {
                         best = func_ov000_02192a28(best + 1);
                     }
                 }
-                self->unk_dc = best;
+                self->evCursor = best;
             }
         }
     }
 done:
     if (self->unk_10 != NULL) {
-        func_ov000_0218f874(self->unk_10, self->unk_24, speed);
+        func_ov000_0218f874(self->unk_10, self->renderObj, speed);
     }
     if (self->unk_14 != NULL) {
-        func_ov000_0218f874(self->unk_14, self->unk_24, speed);
+        func_ov000_0218f874(self->unk_14, self->renderObj, speed);
     }
     if (self->unk_18 != NULL && !self->unk_c2_6) {
-        func_ov000_0218f874(self->unk_18, self->unk_24, speed);
+        func_ov000_0218f874(self->unk_18, self->renderObj, speed);
     }
     if (self->unk_1c != NULL) {
-        func_ov000_0218f874(self->unk_1c, self->unk_24, speed);
+        func_ov000_0218f874(self->unk_1c, self->renderObj, speed);
     }
 }
 
@@ -188,47 +188,47 @@ BOOL func_ov000_02190cb0(Model0218fe1c *self, const char *name, s16 blend, u8 fo
     }
     ret = FALSE;
     if (self->unk_0c != NULL) {
-        ret = func_ov000_0218fa28(self->unk_0c, self->unk_24, self->res, list->list[0], name, blend, force);
+        ret = func_ov000_0218fa28(self->unk_0c, self->renderObj, self->res, list->list[0], name, blend, force);
     }
     if (self->unk_10 != NULL) {
-        func_ov000_0218fa28(self->unk_10, self->unk_24, self->res, list->list[1], name, blend, force);
+        func_ov000_0218fa28(self->unk_10, self->renderObj, self->res, list->list[1], name, blend, force);
     }
     if (self->unk_14 != NULL) {
-        func_ov000_0218fa28(self->unk_14, self->unk_24, self->res, list->list[2], name, 0, force);
+        func_ov000_0218fa28(self->unk_14, self->renderObj, self->res, list->list[2], name, 0, force);
     }
     if (self->unk_18 != NULL && !self->unk_c2_6) {
-        func_ov000_0218fa28(self->unk_18, self->unk_24, self->res, list->list[3], name, 0, force);
+        func_ov000_0218fa28(self->unk_18, self->renderObj, self->res, list->list[3], name, 0, force);
     }
     if (self->unk_1c != NULL) {
-        AnimCtrl_Stop(self->unk_1c, self->unk_24);
-        func_ov000_0218fa28(self->unk_1c, self->unk_24, self->res, list->list[4], name, 0, force);
+        AnimCtrl_Stop(self->unk_1c, self->renderObj);
+        func_ov000_0218fa28(self->unk_1c, self->renderObj, self->res, list->list[4], name, 0, force);
     }
     if (ret) {
         i = 0;
-        self->unk_d8 = NULL;
-        if (self->unk_d0 != NULL) {
-            if (self->unk_d0->is_ptr == 0) {
-                entry = self->unk_d0->entries;
-                ptr = self->unk_d4;
-                for (; i < self->unk_d0->count; i++, entry++) {
+        self->evScript = NULL;
+        if (self->evTable != NULL) {
+            if (self->evTable->is_ptr == 0) {
+                entry = self->evTable->entries;
+                ptr = self->evData;
+                for (; i < self->evTable->count; i++, entry++) {
                     if (!STD_CompareString(entry->name, name)) {
-                        self->unk_d8 = ptr;
+                        self->evScript = ptr;
                         break;
                     }
                     ptr += entry->value;
                 }
             } else {
-                entry = *(AnimEventEntry **)self->unk_d0->entries;
-                for (; i < self->unk_d0->count; i++, entry++) {
+                entry = *(AnimEventEntry **)self->evTable->entries;
+                for (; i < self->evTable->count; i++, entry++) {
                     if (!STD_CompareString(entry->name, name)) {
-                        self->unk_d8 = (s16 *)entry->value;
+                        self->evScript = (s16 *)entry->value;
                         break;
                     }
                 }
             }
         }
         self->unk_c4 = 0;
-        self->unk_dc = self->unk_d8;
+        self->evCursor = self->evScript;
     }
     return ret;
 }
@@ -240,28 +240,28 @@ void func_ov000_02190e98(Model0218fe1c *self, s32 index, s16 blend, u8 force) {
         return;
     }
     if (self->unk_0c != NULL) {
-        func_ov000_0218fb64(self->unk_0c, self->unk_24, self->tex, list->list[0], index, blend, force);
+        func_ov000_0218fb64(self->unk_0c, self->renderObj, self->tex, list->list[0], index, blend, force);
     }
     if (self->unk_10 != NULL) {
-        func_ov000_0218fb64(self->unk_10, self->unk_24, self->tex, self->res->anims->list[1], index, blend, force);
+        func_ov000_0218fb64(self->unk_10, self->renderObj, self->tex, self->res->anims->list[1], index, blend, force);
     }
     if (self->unk_14 != NULL) {
-        func_ov000_0218fb64(self->unk_14, self->unk_24, self->tex, self->res->anims->list[2], index, 0, force);
+        func_ov000_0218fb64(self->unk_14, self->renderObj, self->tex, self->res->anims->list[2], index, 0, force);
     }
     if (!self->unk_c2_6 && self->unk_18 != NULL) {
         ResSet *res = self->res;
         if (self->unk_20 != NULL) {
             res = self->unk_20;
         }
-        func_ov000_0218fb64(self->unk_18, self->unk_24, self->tex, res->anims->list[3], index, 0, force);
+        func_ov000_0218fb64(self->unk_18, self->renderObj, self->tex, res->anims->list[3], index, 0, force);
     }
     ctrl = self->unk_1c;
     if (ctrl == NULL) {
         return;
     }
-    AnimCtrl_Stop(ctrl, self->unk_24);
+    AnimCtrl_Stop(ctrl, self->renderObj);
     if (self->unk_1c != NULL) {
-        func_ov000_0218fb64(self->unk_1c, self->unk_24, self->tex, self->res->anims->list[4], index, 0, force);
+        func_ov000_0218fb64(self->unk_1c, self->renderObj, self->tex, self->res->anims->list[4], index, 0, force);
     }
 }
 
@@ -272,7 +272,7 @@ void func_ov000_02191008(Model0218fe1c *self) {
 
     a = self->unk_0c;
     if (a != NULL) {
-        NNS_G3dRenderObjRemoveAnmObj(self->unk_24, a->cur);
+        NNS_G3dRenderObjRemoveAnmObj(self->renderObj, a->cur);
         a->name[0] = zero;
         a->index = none;
         a->playing = 0;
@@ -280,7 +280,7 @@ void func_ov000_02191008(Model0218fe1c *self) {
     }
     a = self->unk_10;
     if (a != NULL) {
-        NNS_G3dRenderObjRemoveAnmObj(self->unk_24, a->cur);
+        NNS_G3dRenderObjRemoveAnmObj(self->renderObj, a->cur);
         a->name[0] = zero;
         a->index = none;
         a->playing = 0;
@@ -288,7 +288,7 @@ void func_ov000_02191008(Model0218fe1c *self) {
     }
     a = self->unk_14;
     if (a != NULL) {
-        NNS_G3dRenderObjRemoveAnmObj(self->unk_24, a->cur);
+        NNS_G3dRenderObjRemoveAnmObj(self->renderObj, a->cur);
         a->name[0] = zero;
         a->index = none;
         a->playing = 0;
@@ -296,7 +296,7 @@ void func_ov000_02191008(Model0218fe1c *self) {
     }
     a = self->unk_18;
     if (a != NULL) {
-        NNS_G3dRenderObjRemoveAnmObj(self->unk_24, a->cur);
+        NNS_G3dRenderObjRemoveAnmObj(self->renderObj, a->cur);
         a->name[0] = zero;
         a->index = none;
         a->playing = 0;
@@ -304,7 +304,7 @@ void func_ov000_02191008(Model0218fe1c *self) {
     }
     a = self->unk_1c;
     if (a != NULL) {
-        NNS_G3dRenderObjRemoveAnmObj(self->unk_24, a->cur);
+        NNS_G3dRenderObjRemoveAnmObj(self->renderObj, a->cur);
         a->name[0] = zero;
         a->index = none;
         a->playing = 0;
@@ -381,8 +381,8 @@ s16 *func_ov000_0219122c(Model0218fe1c *self, s32 frame) {
 
     if (a != NULL) {
         AnimCtrl_SetFrame(a, frame);
-        self->unk_dc = self->unk_d8;
-        if (self->unk_dc != NULL) {
+        self->evCursor = self->evScript;
+        if (self->evCursor != NULL) {
             a = self->unk_0c;
             cur = a->cur;
             if (cur != NULL) {
@@ -391,19 +391,19 @@ s16 *func_ov000_0219122c(Model0218fe1c *self, s32 frame) {
                 f = 0;
             }
             if (!AnimCtrl_IsReverse(a)) {
-                while (self->unk_dc[0] >= 0 && self->unk_dc[0] < (f >> 12)) {
-                    self->unk_dc = func_ov000_02192a28(self->unk_dc + 1);
+                while (self->evCursor[0] >= 0 && self->evCursor[0] < (f >> 12)) {
+                    self->evCursor = func_ov000_02192a28(self->evCursor + 1);
                 }
             } else {
-                while (self->unk_dc[0] >= 0 && self->unk_dc[0] <= (f >> 12)) {
-                    next = func_ov000_02192a28(self->unk_dc + 1);
+                while (self->evCursor[0] >= 0 && self->evCursor[0] <= (f >> 12)) {
+                    next = func_ov000_02192a28(self->evCursor + 1);
                     if (next[0] > (f >> 12) || next[0] < 0) {
                         break;
                     }
-                    self->unk_dc = next;
+                    self->evCursor = next;
                 }
             }
-            ret = self->unk_dc;
+            ret = self->evCursor;
         }
     }
     return ret;
@@ -596,7 +596,7 @@ void func_ov000_02191920(Model0218fe1c *self, s32 index, s16 blend, u8 force) {
     if (self->unk_20 != NULL) {
         res = self->unk_20;
     }
-    func_ov000_0218fb64(self->unk_18, self->unk_24, self->tex, res->anims->list[3], index, blend, force);
+    func_ov000_0218fb64(self->unk_18, self->renderObj, self->tex, res->anims->list[3], index, blend, force);
 }
 
 }

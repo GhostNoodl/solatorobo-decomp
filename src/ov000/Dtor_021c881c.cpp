@@ -39,7 +39,7 @@ static inline void Obj02041558_Delete(u8 *obj) {
 
 static inline void DeleteModel(u8 **p) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (*p != NULL) {
         Obj02041558_Delete(*p);
         *p = NULL;
@@ -49,7 +49,7 @@ static inline void DeleteModel(u8 **p) {
 
 static inline void DeleteMember(VObj **p) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (*p != NULL) {
         if (*p != NULL) {
             (*p)->vfunc_04();

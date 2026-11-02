@@ -245,14 +245,14 @@ void func_0203b6a0(void) {
     if (data_02097d48 != NULL) {
         return;
     }
-    data_02097dd0->cur = data_02097dd0->unk_04;
+    data_02097dd0->cur = data_02097dd0->heapLo;
     sys = (GfxSys *)Heap_Alloc(sizeof(GfxSys));
     if (sys != NULL) {
         func_02043858(sys->unk_8b0);
         func_0203b70c(sys);
     }
     data_02097d48 = sys;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
 }
 
 GfxFadeFunc data_02097d4c;

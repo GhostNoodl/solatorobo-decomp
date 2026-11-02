@@ -73,7 +73,7 @@ void func_ov009_02211f9c(Ov009ActSpin *self) {
     self->unk_38->unk_c2_8 = 1;
     self->unk_38->unk_50 = &self->unk_f4;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_48 != NULL) {
         Ov009Sub48 *d = self->unk_48;
         if (d != NULL) {

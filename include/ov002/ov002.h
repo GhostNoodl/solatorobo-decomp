@@ -107,11 +107,11 @@ extern "C" {
 #define VC(obj, off) (((VObject *)(obj))->v##off)
 #endif
 
-/* Switch new allocations to the alternate heap (data_02097dd0->unk_08) and back. */
+/* Switch new allocations to the alternate heap (data_02097dd0->heapHi) and back. */
 #define HEAP_PUSH(saved)                                  \
     do {                                                  \
         (saved) = data_02097dd0->cur;                     \
-        data_02097dd0->cur = data_02097dd0->unk_08;       \
+        data_02097dd0->cur = data_02097dd0->heapHi;       \
     } while (0)
 #define HEAP_POP(saved) (data_02097dd0->cur = (saved))
 

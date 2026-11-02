@@ -8,7 +8,7 @@ extern "C" {
 
 typedef struct HitSphere {
     /* 0x00 */ VecFx32 pos;
-    /* 0x0c */ VecFx32 unk_0c;
+    /* 0x0c */ VecFx32 prev;
     /* 0x18 */ VecFx32 push;
     /* 0x24 */ u8 active;
     /* 0x25 */ u8 unk_25;

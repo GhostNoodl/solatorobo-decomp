@@ -138,7 +138,7 @@ Ov014Actor *Ov014Act_0220f9d0_Ctor(Ov014Act_0220f9d0 *self) {
 
 static inline void Ov014_Free154(Ov014Act_0220f9d0 *self) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (((Ov014V *)self->unk_154) != NULL) {
         Ov014V *p = ((Ov014V *)self->unk_154);
         if (p != NULL) {
@@ -211,7 +211,7 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
     self->rot[2] = 0;
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->unk_3c != NULL) {
             Ov014V *v = self->unk_3c;
             if (v != NULL) {
@@ -223,7 +223,7 @@ void Ov014Act_0220f9d0_Start(Ov014Act_0220f9d0 *self) {
     }
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->unk_48 != NULL) {
             Ov014Sub48 *q = self->unk_48;
             if (q != NULL) {

@@ -53,14 +53,14 @@ void func_0203d5c4(void) {
     sys = (UnkSys *)OS_AllocFromArenaLo(0, sizeof(UnkSys), 4);
     data_02097dd0 = sys;
     sys->cur = NULL;
-    sys->unk_04 = NULL;
-    sys->unk_08 = NULL;
-    sys->unk_0c = (void *)-1;
+    sys->heapLo = NULL;
+    sys->heapHi = NULL;
+    sys->osHeap = (void *)-1;
     sys->frameCount = 0;
     sys->vblankFunc = NULL;
     sys->frameWait = 1;
     sys->vcount = 0;
-    sys->unk_1e = 0;
+    sys->lcdOn = 0;
     sys->unk_1f = 0;
     MI_CpuFill8(sys->unk_20, 0, sizeof(sys->unk_20));
     sys->unk_30 = 0;

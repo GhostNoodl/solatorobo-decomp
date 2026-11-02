@@ -63,7 +63,7 @@ static inline s32 DistXZSq(const VecFx32 *a, const VecFx32 *b) {
     return Dist2D(sq);
 }
 void func_ov000_02197ad0(Actor *self, BOOL b) {
-    Def02197ad0 *d = (Def02197ad0 *)self->unk_4c;
+    Def02197ad0 *d = (Def02197ad0 *)self->targetObj;
     Ent02197ad0 *e = data_ov000_021c9de8;
     if (d->unk_02 == 3 || d->unk_02 == 4 || d->unk_01 == 6) {
         u16 k = d->unk_06;
@@ -72,25 +72,25 @@ void func_ov000_02197ad0(Actor *self, BOOL b) {
         }
         e = &data_ov000_021c9de8[k];
     }
-    if ((((Body02197ad0 *)self->unk_48)->flags & 0x40000000) || ((Body02197ad0 *)self->unk_48)->unk_58 != 0) {
-        self->unk_98 = func_ov000_02198da8(((Body02197ad0 *)self->unk_48), self->unk_98);
-        if ((((Body02197ad0 *)self->unk_48)->flags & 0x40000000) && e->se >= 0 && ((Body02197ad0 *)self->unk_48)->unk_58 == 0) {
+    if ((((Body02197ad0 *)self->hit)->flags & 0x40000000) || ((Body02197ad0 *)self->hit)->unk_58 != 0) {
+        self->moveYaw = func_ov000_02198da8(((Body02197ad0 *)self->hit), self->moveYaw);
+        if ((((Body02197ad0 *)self->hit)->flags & 0x40000000) && e->se >= 0 && ((Body02197ad0 *)self->hit)->unk_58 == 0) {
             func_02049f44(data_02097e4c, e->se, &self->pos, 0);
         }
-        self->unk_9c = FX_MUL(self->unk_9c, e->m8);
-        if (self->unk_9c < 0x8f) {
-            self->unk_9c = 0x8f;
+        self->speed = FX_MUL(self->speed, e->m8);
+        if (self->speed < 0x8f) {
+            self->speed = 0x8f;
         }
-        if (((Body02197ad0 *)self->unk_48)->unk_84 > 0x100 || ((Body02197ad0 *)self->unk_48)->unk_58 != 0) {
-            if (self->unk_a0 < -0xcd) {
-                self->unk_a0 = -0xcd;
+        if (((Body02197ad0 *)self->hit)->unk_84 > 0x100 || ((Body02197ad0 *)self->hit)->unk_58 != 0) {
+            if (self->velY < -0xcd) {
+                self->velY = -0xcd;
             }
         }
-        self->unk_a8 = 0x52;
+        self->gravity = 0x52;
     }
-    if (((Body02197ad0 *)self->unk_48)->flags & 0x20000000) {
+    if (((Body02197ad0 *)self->hit)->flags & 0x20000000) {
         func_ov000_02190cb0(self->model, data_ov000_021cc46f, 0x1000, 0);
-        if (self->unk_92 == 0 && e->se2 >= 0 && self->unk_a0 <= -0xcd) {
+        if (self->unk_92 == 0 && e->se2 >= 0 && self->velY <= -0xcd) {
             Cam02197ad0 *cam = (Cam02197ad0 *)((u8 *)data_ov000_021ccd54 + 0xf4);
             if (cam != NULL && DistXZSq(&cam->pos, &self->pos) < 0x19000) {
                 func_02049f44(data_02097e4c, e->se2, &self->pos, 0);
@@ -107,16 +107,16 @@ void func_ov000_02197ad0(Actor *self, BOOL b) {
             }
         }
         if (++self->unk_92 > 3) {
-            self->unk_a0 = 0;
+            self->velY = 0;
         } else {
-            self->unk_a0 = FX_MUL(-self->unk_a0, e->mc);
-            if (self->unk_a0 <= 4) {
-                self->unk_a0 = 0;
+            self->velY = FX_MUL(-self->velY, e->mc);
+            if (self->velY <= 4) {
+                self->velY = 0;
             }
         }
-        self->unk_9c = FX_MUL(self->unk_9c, e->ma);
+        self->speed = FX_MUL(self->speed, e->ma);
     }
-    if (b && ((Def02197ad0 *)self->unk_4c)->unk_03 != 0) {
+    if (b && ((Def02197ad0 *)self->targetObj)->unk_03 != 0) {
         func_ov003_021f0c60(self, 0);
     }
 }

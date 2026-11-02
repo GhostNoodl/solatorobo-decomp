@@ -234,7 +234,7 @@ static inline BOOL WH_Destroy(WhMgr *wh) {
         return FALSE;
     }
     heap = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     wh = data_02097e40;
     if (wh != NULL) {
         if (wh != NULL) {

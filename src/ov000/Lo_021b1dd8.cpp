@@ -17,12 +17,12 @@ void func_ov000_021b1dd8(Robo021ca458 *self, s32 target, s32 rate, s32 speed, s3
     BOOL doAnim = TRUE;
     s32 ox = self->pos.x;
     s32 oz = self->pos.y;
-    if (self->unk_15 == 1) {
+    if (self->mode == 1) {
         if (self->unk_b24_12) {
             func_ov000_021b209c(self);
             return;
         }
-        if (self->unk_b68 & 0xf0) {
+        if (self->padCur & 0xf0) {
             u8 *cam = (u8 *)data_ov000_021ccd54 + 0xf4;
             u16 ang;
             if (LFLD(u16, cam, 0x40) != 0) {
@@ -30,28 +30,28 @@ void func_ov000_021b1dd8(Robo021ca458 *self, s32 target, s32 rate, s32 speed, s3
             } else {
                 ang = Camera_GetYaw(cam);
             }
-            self->unk_9c += LO_FX_MUL(rate, target - self->unk_9c);
-            if (self->unk_9c >= target) {
-                self->unk_a4 = speed;
+            self->speed += LO_FX_MUL(rate, target - self->speed);
+            if (self->speed >= target) {
+                self->friction = speed;
             } else {
-                self->unk_a4 = 0x1000;
+                self->friction = 0x1000;
             }
             func_ov000_0218dd8c(self, ang, turn, (u8 *)self + 0xb70);
             moved = TRUE;
         }
     } else if (self->unk_b28_0) {
-        self->unk_9c = self->unk_b08;
-        self->unk_a4 = 0x1000;
+        self->speed = self->unk_b08;
+        self->friction = 0x1000;
         Actor_MoveToPos(self, (VecFx32 *)((u8 *)self + 0xb10), turn);
         moved = doAnim;
         doAnim = FALSE;
     }
     if (!moved) {
-        self->unk_a4 = speed;
+        self->friction = speed;
         Actor_Move(self, 0);
     }
     if (ox != self->pos.x || oz != self->pos.y) {
-        self->unk_ba8 += self->unk_9c;
+        self->unk_ba8 += self->speed;
         if (self->unk_ba8 > 0x1000) {
             u32 v = LFLD(u32, data_0214a424, 0x10) + ((u32)self->unk_ba8 >> 12);
             if (v >= 0xf423f) {
@@ -63,12 +63,12 @@ void func_ov000_021b1dd8(Robo021ca458 *self, s32 target, s32 rate, s32 speed, s3
         }
     }
     if (doAnim) {
-        func_ov000_021987b8(((void *)self->unk_48), anim, 0, 0);
+        func_ov000_021987b8(((void *)self->hit), anim, 0, 0);
     }
-    if (self->unk_a0 < 0) {
-        u8 *m = (u8 *)((void *)self->unk_48);
+    if (self->velY < 0) {
+        u8 *m = (u8 *)((void *)self->hit);
         if (LFLD(u32, m, 0x50) & 0x20000000) {
-            self->unk_a0 = 0;
+            self->velY = 0;
             LFLD(u16, m, 0x9a) |= 0x20;
         }
     }

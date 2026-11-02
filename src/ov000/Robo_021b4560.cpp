@@ -21,8 +21,8 @@ void func_ov000_021b4560(Actor *self, Actor *t) {
     if (t == NULL) {
         return;
     }
-    if (((VecFx32 *)t->unk_48) != NULL) {
-        p = *((VecFx32 *)t->unk_48);
+    if (((VecFx32 *)t->hit) != NULL) {
+        p = *((VecFx32 *)t->hit);
     } else {
         p = t->pos;
     }

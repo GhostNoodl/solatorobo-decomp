@@ -51,10 +51,10 @@ void func_ov000_02195618(ActorEx *self) {
     VecFx32 ofs;
     VecFx32 v;
 
-    if (self->unk_58 != NULL) {
-        func_0203f920(self->unk_58);
+    if (self->hitMesh != NULL) {
+        func_0203f920(self->hitMesh);
     }
-    k = self->unk_40->current;
+    k = self->fsm->current;
     for (i = 0; i < 15; i++) {
         if (k == *(s32 *)((u8 *)data_ov000_021c9e18 + i * 12)) {
             (((Act02195618Cls *)self)->*data_ov000_021c9e18[i].fn)();
@@ -62,7 +62,7 @@ void func_ov000_02195618(ActorEx *self) {
         }
     }
     {
-        u8 *st = ((u8 *)self->unk_40);
+        u8 *st = ((u8 *)self->fsm);
         LFLD(s64, st, 4) = 0;
     }
     if (self->unk_5c != NULL) {
@@ -85,9 +85,9 @@ void func_ov000_02195618(ActorEx *self) {
                     }
                 } else {
                     pos = self->pos;
-                    r = self->unk_68;
+                    r = self->height;
                     if (r == 0) {
-                        r = self->unk_64;
+                        r = self->radius;
                     }
                 }
                 LFLD(VecFx32, self->unk_5c, 0x50) = pos;

@@ -13,10 +13,10 @@ void func_ov000_0218cfc8(Actor *self) {
         return;
     }
     busy = FALSE;
-    if (self->unk_4c != NULL && self->unk_4c->unk_1c != 0xffff && self->unk_4c->unk_1c != self->id) {
+    if (self->targetObj != NULL && self->targetObj->target != 0xffff && self->targetObj->target != self->id) {
         if (self->unk_20 != 0xffff || self->flags_1) {
             Actor *ret;
-            u16 id = self->unk_4c->unk_1c;
+            u16 id = self->targetObj->target;
             // FindActor with an early `return NULL` for a missing manager: each arm sets its own
             // NULL, and the post-RA head merge lifts the shared `mov r1, #0` above the test.
             if (data_ov000_021ccd68 == NULL) {

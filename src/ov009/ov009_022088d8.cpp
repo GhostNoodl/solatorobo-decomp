@@ -10,7 +10,7 @@ extern BOOL func_ov000_0219aae8(Ov009Obj *self, Ov009Obj *src, s32 a, s32 b, s32
 extern void *func_0204a028(void *mgr, s32 id, const Ov009Vec *pos, s32 a);
 
 static inline BOOL Ov009Game_IsPaused(FieldState *g) {
-    return g->unk_d4 != 0;
+    return g->event != 0;
 }
 
 void func_ov009_022088d8(Ov009Actor *self) {

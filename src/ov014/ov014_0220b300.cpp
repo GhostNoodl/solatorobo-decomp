@@ -222,7 +222,7 @@ void func_ov014_0220b74c(Ov014Act_02209280 *self) {
                 Ov014V *e = func_020658cc(data_0214a420, 0x391);
                 if (e != NULL) {
                     void *saved = data_02097dd0->cur;
-                    data_02097dd0->cur = data_02097dd0->unk_08;
+                    data_02097dd0->cur = data_02097dd0->heapHi;
                     if (e != NULL) {
                         if (e != NULL) {
                             e->v04();

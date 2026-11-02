@@ -61,7 +61,7 @@ static inline void ActorEx_Destroy(ActorEx *self) {
     *(const void **)self = data_ov000_021cc480;
     for (i = 0; i < 2; i++) {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->res[i] != NULL) {
             ResSet_Delete(self->res[i]);
             self->res[i] = NULL;

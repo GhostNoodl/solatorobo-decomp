@@ -84,8 +84,8 @@ BOOL func_ov000_021bca00(Obj021bca00 *self) {
         self->unk_10 = Lo_TextWinNew();
         self->unk_10->font = 4;
         Lo_SetText(self->unk_10, MsgRes_GetString(data_02149ef8, 0x118));
-        self->unk_10->unk_74 = 0x7fff;
-        self->unk_10->unk_76 = 0x67f;
+        self->unk_10->color0 = 0x7fff;
+        self->unk_10->color1 = 0x67f;
         self->unk_10->unk_78 = 0x7000;
         self->unk_10->noVram = 1;
         self->unk_10->flag24 = 1;

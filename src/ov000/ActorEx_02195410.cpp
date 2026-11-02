@@ -10,15 +10,15 @@ BOOL func_ov000_0219840c(void *s, s32 *list, s32 count, BOOL push);
 void func_ov000_0218d7e8(void *self, u8 arg);
 
 void func_ov000_02195410(ActorEx *self) {
-    ActorSub40 *s = self->unk_40;
+    ActorSub40 *s = self->fsm;
     if (s->flags != 0) {
         if (!func_ov000_0219840c(s, data_ov000_021c9d9c, 5, TRUE)) {
-            if (self->unk_40->flags & 2) {
-                func_ov000_02198360(self->unk_40, 1, 1);
+            if (self->fsm->flags & 2) {
+                func_ov000_02198360(self->fsm, 1, 1);
             }
         }
     }
-    s = self->unk_40;
+    s = self->fsm;
     switch (s->current) {
     case 9:
         func_ov000_0219840c(s, data_ov000_021c9db0, 5, TRUE);
@@ -50,13 +50,13 @@ void func_ov000_02195410(ActorEx *self) {
     case 2:
         if ((s->flags & 0x400) && (self->msg_flags & 0x80)) {
             s->flags &= ~0x400;
-            self->unk_4c->unk_1c = 0xffff;
+            self->targetObj->target = 0xffff;
         }
-        if (!func_ov000_0219840c(self->unk_40, data_ov000_021c9dc4, 9, TRUE)) {
-            func_ov000_02198360(self->unk_40, 1, 0);
+        if (!func_ov000_0219840c(self->fsm, data_ov000_021c9dc4, 9, TRUE)) {
+            func_ov000_02198360(self->fsm, 1, 0);
         }
         break;
     }
-    func_ov000_0218d7e8(self, self->unk_40->current);
+    func_ov000_0218d7e8(self, self->fsm->current);
 }
 }

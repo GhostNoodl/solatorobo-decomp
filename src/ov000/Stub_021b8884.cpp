@@ -54,7 +54,7 @@ void func_ov000_021b88d8(Obj021b88d8 *self) {
     func_0203caf8(2);
 
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     p = self->unk_30;
     if (p != NULL) {
         if (p != NULL) {
@@ -67,7 +67,7 @@ void func_ov000_021b88d8(Obj021b88d8 *self) {
     data_02097dd0->cur = saved;
 
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_24 != NULL) {
         if (self->unk_24 != NULL) {
             self->unk_24->vfunc_04();

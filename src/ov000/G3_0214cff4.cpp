@@ -58,13 +58,13 @@ void func_ov000_0214cff4(Menu021ca94c *self, s32 a1, s32 *pos) {
     s32 sy;
     u8 *g;
     g = data_02097d48 + 0x8b0;
-    z = self->unk_68 - 0x110;
+    z = self->posZ - 0x110;
     func_02043d20(g, 0);
     G3_Cmd1(0x2a, 0x20000000);
     sy = self->unk_28 << 12;
     G3_Cmd1(0x29, GX_PACK_POLYGONATTR_PARAM(0, 1, 3, Gfx3DState_NextPolyId(g), 0x1e, 0x800));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
-    G3_Vec(0x1c, pos[0], pos[1], self->unk_68);
+    G3_Vec(0x1c, pos[0], pos[1], self->posZ);
     G3_Vec(0x1b, 0x100000, 0x1000, 0x1000);
     G3_Cmd1(0x40, 0);
     G3_Cmd1(0x20, 0);

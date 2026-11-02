@@ -21,7 +21,7 @@ void func_ov000_021c2c0c(Obj021c2c0c *self, u32 text) {
     {
         void *saved = data_02097dd0->cur;
         TextWin *p;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         p = self->unk_34;
         if (p != NULL) {
             if (p != NULL) {

@@ -62,12 +62,12 @@ void func_ov000_0216150c(Lo021cacd8 *self, s32 a1, s32 a2, s32 sy2) {
     sx = self->unk_24 << 12;
     sy = self->unk_28 << 12;
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
-    G3_Vec(0x1c, self->unk_64 << 12, self->unk_66 << 12, self->unk_68);
+    G3_Vec(0x1c, self->posX << 12, self->posY << 12, self->posZ);
     G3_Vec(0x1b, sx, sy, 0x1000);
     G3_Vec(0x1b, 0x1000, sy2, 0x1000);
     G3_Vec(0x1c, -0x800, -0x800, 0);
     G3_Cmd1(0x40, 2);
-    G3_Cmd1(0x20, self->unk_48);
+    G3_Cmd1(0x20, self->color);
     if ((V6 *)self->unk_6c != NULL) {
         s32 i;
         for (i = 0; i < self->unk_70; i++) {

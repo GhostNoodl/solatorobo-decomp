@@ -86,12 +86,12 @@ struct TextWin {
         };
     };
     /* 0x08 */ TextLines *lines;
-    /* 0x0c */ void *unk_0c;
-    /* 0x10 */ u32 unk_10;
+    /* 0x0c */ void *dl; // display list (G3_EndMakeDL, NNS_G3dGeSendDL)
+    /* 0x10 */ u32 dlSize;
     /* 0x14 */ Model *model;
     /* 0x18 */ s16 unk_18;
-    /* 0x1a */ s16 unk_1a;
-    /* 0x1c */ s16 unk_1c;
+    /* 0x1a */ s16 modelX; // Model_SetPos of model (screen pixels)
+    /* 0x1c */ s16 modelY;
     /* 0x1e */ s16 unk_1e;
     /* 0x20 */ VramBlock *vram;
     /* 0x24 */ u32 str; // the text to lay out (a const char *)
@@ -102,22 +102,22 @@ struct TextWin {
     /* 0x36 */ u8 unk_36;
     /* 0x37 */ u8 unk_37;
     /* 0x38 */ u32 spacing;
-    /* 0x3c */ s32 unk_3c;
-    /* 0x40 */ s32 unk_40;
+    /* 0x3c */ s32 cursorX; // layout position (GfxMgr_SetCursor)
+    /* 0x40 */ s32 cursorY;
     /* 0x44 */ u32 vramSize;
     /* 0x48 */ u32 vramArg;
     /* 0x4c */ u32 unk_4c;
-    /* 0x50 */ void *unk_50;
-    /* 0x54 */ void *unk_54;
-    /* 0x58 */ u32 unk_58;
-    /* 0x5c */ u32 unk_5c;
-    /* 0x60 */ s32 unk_60;
-    /* 0x64 */ s32 unk_64;
-    /* 0x68 */ void *unk_68;
+    /* 0x50 */ void *texVram; // NNS_GfdDefaultFuncAllocTexVram
+    /* 0x54 */ void *plttVram; // NNS_GfdDefaultFuncAllocPlttVram
+    /* 0x58 */ u32 texSizeS; // TexImageParam s / t size (width 8 << texSizeS)
+    /* 0x5c */ u32 texSizeT;
+    /* 0x60 */ s32 maxW; // clamp of the drawn width / height (-1: none)
+    /* 0x64 */ s32 maxH;
+    /* 0x68 */ void *texBuf; // glyph image in main RAM, copied to texVram
     /* 0x6c */ void *unk_6c;
-    /* 0x70 */ s32 unk_70;
-    /* 0x74 */ u16 unk_74;
-    /* 0x76 */ u16 unk_76;
+    /* 0x70 */ s32 posZ; // translate z when drawn
+    /* 0x74 */ u16 color0; // vertex colours (G3B_Color)
+    /* 0x76 */ u16 color1;
     /* 0x78 */ u32 unk_78;
     /* 0x7c */ u32 unk_7c;
     /* 0x80 */ s32 code;

@@ -125,7 +125,7 @@ static inline BOOL IsIdle_0219efc0(void) {
 }
 
 static inline BOOL HasD4_0219efc0(FieldState *g) {
-    return ((s32)g->unk_d4) != 0;
+    return ((s32)g->event) != 0;
 }
 
 static inline void TogglePad_0219efc0(void) {
@@ -230,10 +230,10 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
     Actor *t9;
     BOOL x;
 
-    self->unk_b68 = 0;
-    self->unk_b6a = 0;
-    self->unk_b6c = 0;
-    self->unk_b6e = 0;
+    self->padCur = 0;
+    self->padTrig = 0;
+    self->padRelease = 0;
+    self->padDir = 0;
     if (!IsIdle_0219efc0()) {
         return;
     }
@@ -248,12 +248,12 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
     }
     if (!self->unk_b29_1 && !self->unk_b28_2 && self->unk_b2e == 0 &&
         !self->unk_b29_3) {
-        self->unk_b68 = LFLD(u16, data_02097dc8, 0x10);
-        self->unk_b6a = LFLD(u16, data_02097dc8, 0x12);
-        self->unk_b6c = LFLD(u16, data_02097dc8, 0x14);
-        self->unk_b6e = Pad_LookupDir(data_02097dc8, (u8 *)self + 0xb70);
+        self->padCur = LFLD(u16, data_02097dc8, 0x10);
+        self->padTrig = LFLD(u16, data_02097dc8, 0x12);
+        self->padRelease = LFLD(u16, data_02097dc8, 0x14);
+        self->padDir = Pad_LookupDir(data_02097dc8, (u8 *)self + 0xb70);
     }
-    if ((self->unk_b68 & 1) && !B24(self).b18) {
+    if ((self->padCur & 1) && !B24(self).b18) {
         self->unk_b36++;
         if (self->unk_b36 > 9999) {
             self->unk_b36 = 9999;
@@ -262,13 +262,13 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
         self->unk_b36 = 0;
     }
     if (B22(self).b6 == 5) {
-        if ((self->unk_b6a & 1) || ((self->unk_b68 & 1) && self->unk_b36 >= 0xc)) {
+        if ((self->padTrig & 1) || ((self->padCur & 1) && self->unk_b36 >= 0xc)) {
             KEYS(self) |= 0x4000;
         }
-        if (self->unk_b68 & 0xf0) {
+        if (self->padCur & 0xf0) {
             KEYS(self) |= 4;
         }
-        if (self->unk_b6a & 4) {
+        if (self->padTrig & 4) {
             TogglePad_0219efc0();
         }
         return;
@@ -285,7 +285,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
                         u8 *i = NULL;
                         s32 k;
                         if (a != NULL) {
-                            i = ((u8 *)a->unk_4c);
+                            i = ((u8 *)a->targetObj);
                         }
                         k = 0;
                         if (i != NULL) {
@@ -346,7 +346,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
         self->target == 0xffff && (u8)(ST(self)->kind + 0xff) <= 1) {
         KEYS(self) |= 0x80;
     }
-    if (self->unk_b6a & 1) {
+    if (self->padTrig & 1) {
         Actor *a;
         u8 *i;
         t9 = FindActor_0219efc0(self->target);
@@ -359,7 +359,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
             a = FindActor_0219efc0(self->unk_b1c);
             i = NULL;
             if (a != NULL) {
-                i = ((u8 *)a->unk_4c);
+                i = ((u8 *)a->targetObj);
             }
             if (i == NULL || LFLD(u16, i, 0x1c) != self->id) {
                 B24(self).b5 = 0;
@@ -371,7 +371,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
         }
         i = NULL;
         if (a != NULL) {
-            u8 *j = ((u8 *)a->unk_4c);
+            u8 *j = ((u8 *)a->targetObj);
             if (j != NULL) {
                 switch (j[1]) {
                 case 1:
@@ -401,7 +401,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
             }
         } else {
             if (t9 != NULL) {
-                i = ((u8 *)t9->unk_4c);
+                i = ((u8 *)t9->targetObj);
             }
             if (i != NULL) {
                 BOOL hold = (self->msg_flags & 0x80) ? TRUE : FALSE;
@@ -469,20 +469,20 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
                 }
             } else if (B24(self).b1) {
                 LockKeys_0219efc0(self);
-            } else if (!(self->unk_48->unk_54 & 0x400)) {
+            } else if (!(self->hit->unk_54 & 0x400)) {
                 if (B93(self).b4 || LFLD(u16, ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000), 0x16) != 0) {
                     KEYS(self) |= 0x10000;
                 }
             }
         }
     }
-    if (self->unk_b68 & 2) {
+    if (self->padCur & 2) {
         if (B24(self).b12 != 3) {
             self->unk_b38++;
             if (self->unk_b38 > 9999) {
                 self->unk_b38 = 9999;
             }
-            if (self->unk_b6a & 2) {
+            if (self->padTrig & 2) {
                 KEYS(self) |= 8;
             }
             if (B24(self).b1) {
@@ -492,9 +492,9 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
                 p = self->unk_ba4;
                 if (p != NULL && B24(self).b12 == 0) {
                     if ((LFLD(Ba4_0219efc0, p, 6).b7 && ST(self)->kind == 4 &&
-                         !(self->unk_48->unk_50 & 0x20000000) && self->unk_b38 >= 10) ||
+                         !(self->hit->unk_50 & 0x20000000) && self->unk_b38 >= 10) ||
                         (LFLD(Ba4_0219efc0, p, 6).b6 && ST(self)->kind != 3 && self->unk_b38 > 6 &&
-                         (self->unk_48->unk_50 & 0x20000000))) {
+                         (self->hit->unk_50 & 0x20000000))) {
                         KEYS(self) |= 8;
                     }
                 }
@@ -503,7 +503,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
     } else {
         self->unk_b38 = 0;
     }
-    if (self->unk_b6a & 0x800) {
+    if (self->padTrig & 0x800) {
         if (B24(self).b1) {
             if (B24(self).b5 == 0 && B24(self).b12 == 0 && !B22(self).b3 && B22(self).b9 == 0) {
                 KEYS(self) |= 0x8000000;
@@ -512,7 +512,7 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
             KEYS(self) |= 0x4000000;
         }
     }
-    if ((self->unk_b68 & 0x200) && (self->unk_b6a & 0x100) && PAD18.b1 == 1 && !B22(self).b3 &&
+    if ((self->padCur & 0x200) && (self->padTrig & 0x100) && PAD18.b1 == 1 && !B22(self).b3 &&
         B22(self).b9 == 0 && B24(self).b1 && B93(self).b4 && !self->unk_b29_3 && B22(self).b0 == 0 &&
         B24(self).b12 == 0 && ST(self)->kind != 0x11 && (ST(self)->kind != 0xb || !B24(self).b26) &&
         LFLD(u16, data_0214a424, 0x26) >= 0x2d0) {
@@ -521,14 +521,14 @@ void func_ov000_0219efc0(Robo021ca458 *self) {
     }
     x = FALSE;
     if (B22(self).b0 != 0 && CanMove_0219efc0(self)) {
-        if ((self->unk_b6a & 4) && B24(self).b1) {
+        if ((self->padTrig & 4) && B24(self).b1) {
             TogglePad_0219efc0();
         }
         if (B22(self).b0 != 3 && B22(self).b0 != 4) {
             x = func_ov000_021b3e90(self);
         }
     }
-    if (!x && B24(self).b12 == 0 && (self->unk_b68 & 0xf0)) {
+    if (!x && B24(self).b12 == 0 && (self->padCur & 0xf0)) {
         KEYS(self) |= 4;
     }
     if (!B22(self).b3) {

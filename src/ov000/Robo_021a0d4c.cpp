@@ -199,7 +199,7 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
     if (self->unk_b2e != 0) {
         self->unk_b2e--;
     }
-    k = self->unk_40->current;
+    k = self->fsm->current;
     for (i = 0; i < 0x1d; i++) {
         if (k == *(s32 *)((u8 *)data_ov000_021ca458 + i * 12)) {
             (((Robo021a0d4cCls *)self)->*data_ov000_021ca458[i].fn)();
@@ -208,7 +208,7 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
     }
     if (!self->unk_b24_1) {
         self->model = (Model0218fe1c *)&self->unk_ac;
-        self->unk_48 = (ActorSub48 *)((u8 *)self + 0x2cc);
+        self->hit = (ActorSub48 *)((u8 *)self + 0x2cc);
     } else {
         self->model = (Model0218fe1c *)((u8 *)self + 0x368);
         self->unk_75c.x = self->pos.x;
@@ -217,17 +217,17 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
         self->unk_76c = self->rot_x;
         self->unk_76e = self->rot_y;
         self->unk_770 = self->rot_z;
-        self->unk_48 = (ActorSub48 *)((u8 *)self + 0x6c0);
+        self->hit = (ActorSub48 *)((u8 *)self + 0x6c0);
     }
-    if (self->unk_48->unk_9a_8) {
-        u32 f = self->unk_48->unk_50;
+    if (self->hit->unk_9a_8) {
+        u32 f = self->hit->unk_50;
         if ((f & 0x20000000) && !(f & 0x40400) && !(f & 0x40000000)) {
             self->unk_af0 = self->pos.x;
             self->unk_af4 = self->pos.y;
             self->unk_af8 = self->pos.z;
         }
-        if (self->unk_48->unk_54 & 0x20000000) {
-            ActorSub48 *p = self->unk_48;
+        if (self->hit->unk_54 & 0x20000000) {
+            ActorSub48 *p = self->hit;
             self->unk_afc = p->check.x;
             self->unk_b00 = p->check.y;
             self->unk_b04 = p->check.z;
@@ -253,7 +253,7 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
         Actor *o = GetObj021a0d4c(self->unk_b20);
         u8 *p = NULL;
         if (o != NULL) {
-            p = ((u8 *)o->unk_4c);
+            p = ((u8 *)o->targetObj);
         }
         if (p != NULL) {
             Gauge021a0d4c(LFLD(u16, p, 0x1e));
@@ -339,8 +339,8 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
                 if (!self->unk_b22_3 && self->unk_b22_9 == 0 &&
                     self->unk_b24_1 && self->unk_93_4 &&
                     !self->unk_b29_3 && self->unk_b22_0 == 0 &&
-                    self->unk_b24_12 == 0 && self->unk_40->current != 0x11 &&
-                    !(self->unk_40->current == 0xb && self->unk_b24_26)) {
+                    self->unk_b24_12 == 0 && self->fsm->current != 0x11 &&
+                    !(self->fsm->current == 0xb && self->unk_b24_26)) {
                     on = TRUE;
                 } else {
                     on = FALSE;
@@ -349,12 +349,12 @@ void func_ov000_021a0d4c(Robo021ca458 *self) {
             }
         }
     }
-    if (self->unk_b22_0 != 0 && (self->unk_48->unk_50 & 0x20000000)) {
+    if (self->unk_b22_0 != 0 && (self->hit->unk_50 & 0x20000000)) {
         self->unk_9ac += 0x80;
         if (self->unk_9ac > self->unk_9ae) {
             self->unk_9ac = self->unk_9ae;
         }
     }
-    LFLD(s64, self->unk_40, 4) = 0;
+    LFLD(s64, self->fsm, 4) = 0;
 }
 }

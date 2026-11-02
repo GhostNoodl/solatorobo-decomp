@@ -837,7 +837,7 @@ Ov014ActEx_02206c68 *Ov014ActEx_02206c68_Ctor(Ov014ActEx_02206c68 *self) {
 
 static inline void Ov014_FreeDC(Ov014ActEx_02206c68 *self) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_dc != NULL) {
         void *p = self->unk_dc;
         if (p != NULL) {

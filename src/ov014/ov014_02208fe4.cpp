@@ -178,7 +178,7 @@ static inline void Ov014_Kill1f0(Ov014Act_02209280 *self) {
     Ov014V *o;
     if (data_0214a420 != NULL && (o = func_020657b0(data_0214a420, ((void *)self->unk_1f0))) != NULL) {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (o != NULL) {
             if (o != NULL) {
                 o->v04();

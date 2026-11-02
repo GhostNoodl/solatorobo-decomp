@@ -60,7 +60,7 @@ static inline void ActorEx_Destroy(ActorEx *self) {
     *(const void **)self = data_ov000_021cc480;
     for (i = 0; i < 2; i++) {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->res[i] != NULL) {
             ResSet_Delete(self->res[i]);
             self->res[i] = NULL;
@@ -77,7 +77,7 @@ BOOL func_ov000_021946f8(ActorEx *self) {
     BOOL ret = func_ov000_0218cf5c(self);
     s32 i;
 
-    if (self->unk_4c != NULL) {
+    if (self->targetObj != NULL) {
         for (i = 0; i < 2; i++) {
             AnimRes *res = (AnimRes *)self->res[i];
             if (res != NULL && res->state >= 0) {

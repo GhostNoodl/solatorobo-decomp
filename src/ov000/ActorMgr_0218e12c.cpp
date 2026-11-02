@@ -18,7 +18,7 @@ void ActorMgr_Destroy(void) {
     ActorGroup *group;
     Actor *actor;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     mgr = data_ov000_021ccd68;
     if (mgr != NULL) {
         if (mgr != NULL) {

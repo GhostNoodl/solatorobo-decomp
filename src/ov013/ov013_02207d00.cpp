@@ -38,8 +38,8 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
             func_020627a0(self->kind, self->id);
             func_020627dc(5);
             g = data_ov000_021ccd54;
-            g->unk_ac = 1;
-            func_ov000_02182590(&g->unk_ac);
+            g->stageFlags = 1;
+            func_ov000_02182590(&g->stageFlags);
             func_ov003_021ce9c4(FLD(u16, self->unk_b0, 4));
             {
                 Ov013Sub44 *n = self->unk_44;
@@ -118,7 +118,7 @@ void func_ov013_02207d00(Ov013Actor *self) {
         }
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->unk_ac = 1;
+        data_ov000_021ccd54->stageFlags = 1;
         {
             Ov013Sub44 *n = self->unk_44;
             n->unk_22_0 = 1;

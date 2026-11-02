@@ -192,7 +192,7 @@ void func_ov000_02181624(void) {
     func_02058fe4();
     func_02058e18();
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     v = data_ov000_021ccd30;
     if (v != NULL) {
         if (v != NULL) {
@@ -220,7 +220,7 @@ void func_ov000_02181624(void) {
         }
     }
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     obj = (u8 *)data_ov000_021ccd64;
     if (obj != NULL) {
         if (obj != NULL) {
@@ -233,7 +233,7 @@ void func_ov000_02181624(void) {
     ActorMgr_Destroy();
     func_02065534();
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     obj = (u8 *)data_ov000_021ccd54;
     if (obj != NULL) {
         if (obj != NULL) {
@@ -311,7 +311,7 @@ void func_ov000_021819a4(Obj021819a4 *self) {
     while (node != NULL) {
         next = node->next;
         saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (node != NULL) {
             if (node != NULL) {
                 node->vfunc_04();
@@ -885,7 +885,7 @@ void func_ov000_02182374(Obj02182374 *self, u32 id, BOOL force) {
     }
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (node != NULL) {
             if (node != NULL) {
                 node->vfunc_04();
@@ -1866,7 +1866,7 @@ void func_ov000_0218372c(Obj0218372c *self, s32 a) {
     void *saved;
     func_020592c4(data_02fe152c, 2, 0x101, a, 1);
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_b8 != NULL) {
         if (self->unk_b8 != NULL) {
             self->unk_b8->vfunc_04();

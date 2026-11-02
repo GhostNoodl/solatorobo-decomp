@@ -42,8 +42,8 @@ void func_ov000_021974b0(Obj021975b4 *self) {
     func_020627dc(0x8002);
     {
         FieldState *pl = data_ov000_021ccd54;
-        pl->unk_ac = 1;
-        func_ov000_02182590(&pl->unk_ac);
+        pl->stageFlags = 1;
+        func_ov000_02182590(&pl->stageFlags);
     }
     if (func_0205b1fc() == 1 && p != NULL && p->unk_b28_0 == 0) {
         p->unk_15 = 3;
@@ -70,8 +70,8 @@ void func_ov000_021975b4(Obj021975b4 *self) {
     func_020627dc(0x8003);
     {
         FieldState *pl = data_ov000_021ccd54;
-        pl->unk_ac = 1;
-        func_ov000_02182590(&pl->unk_ac);
+        pl->stageFlags = 1;
+        func_ov000_02182590(&pl->stageFlags);
     }
     if (func_0205b1fc() != 1) {
         return;

@@ -9,7 +9,7 @@ void func_02063374(Unk0214a418 *self) {
     SysTaskVObj *v;
 
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     p = self->unk_14;
     if (p != NULL) {
         if (p != NULL) {
@@ -22,7 +22,7 @@ void func_02063374(Unk0214a418 *self) {
     data_02097dd0->cur = saved;
 
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     v = self->unk_10;
     if (v != NULL) {
         if (v != NULL) {
@@ -33,7 +33,7 @@ void func_02063374(Unk0214a418 *self) {
     data_02097dd0->cur = saved;
 
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     p = self->unk_0c;
     if (p != NULL) {
         if (p != NULL) {
@@ -45,7 +45,7 @@ void func_02063374(Unk0214a418 *self) {
     data_02097dd0->cur = saved;
 
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     p = self->unk_08;
     if (p != NULL) {
         if (p != NULL) {

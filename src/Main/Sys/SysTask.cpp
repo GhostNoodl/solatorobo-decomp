@@ -10,7 +10,7 @@ void func_0206298c(void) {
     if (data_0214a418 != NULL) {
         return;
     }
-    data_02097dd0->cur = data_02097dd0->unk_04;
+    data_02097dd0->cur = data_02097dd0->heapLo;
     p = (Unk0214a418 *)Heap_Alloc(sizeof(Unk0214a418));
     if (p != NULL) {
         p->unk_00 = 0;
@@ -21,7 +21,7 @@ void func_0206298c(void) {
         p->unk_14 = NULL;
     }
     data_0214a418 = p;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     data_02097d4c = func_02062aa0;
     data_02097d44 = 0;
 }
@@ -39,7 +39,7 @@ static inline void Unk0214a418_Dtor(Unk0214a418 *p) {
 void func_02062a24(void) {
     void *saved = data_02097dd0->cur;
     Unk0214a418 *p;
-    data_02097dd0->cur = data_02097dd0->unk_04;
+    data_02097dd0->cur = data_02097dd0->heapLo;
     p = data_0214a418;
     if (p != NULL) {
         if (p != NULL) {

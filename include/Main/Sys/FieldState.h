@@ -68,8 +68,8 @@ typedef struct FieldState {
     /* 0x0a6 */ u16 unk_a6;
     /* 0x0a8 */ u16 unk_a8;
     /* 0x0aa */ u8 unk_aa[2];
-    // 0xac..0xc7: the sub-object of func_ov000_021819a4 / func_ov000_02182590
-    /* 0x0ac */ u8 unk_ac;
+    // 0xac..0xc7: the stage flag sub-object of func_ov000_021819a4 / func_ov000_02182590
+    /* 0x0ac */ u8 stageFlags; // start of the stage flag block (StageFlags_SaveBuf / LoadBuf)
     /* 0x0b0 */ s32 unk_b0;
     /* 0x0b4 */ u16 unk_b4;
     /* 0x0b8 */ void *unk_b8;
@@ -83,7 +83,7 @@ typedef struct FieldState {
     /* 0x0cd */ FieldId unk_cd;
     /* 0x0d0 */ FieldId unk_d0;
     /* 0x0d3 */ u8 unk_d3;
-    /* 0x0d4 */ u32 unk_d4;
+    /* 0x0d4 */ u32 event; // pending event (Field_HasEvent: != 0)
     /* 0x0d8 */ s32 unk_d8;
     /* 0x0dc */ s32 unk_dc;
     /* 0x0e0 */ s32 unk_e0;

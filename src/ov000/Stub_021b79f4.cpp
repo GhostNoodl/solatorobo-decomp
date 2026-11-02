@@ -89,7 +89,7 @@ Obj021b7a7c *func_ov000_021b7a7c(Obj021b7a7c *self) {
         void *p;
         func_0203f920(self->unk_ec);
         saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         p = self->unk_ec;
         if (p != NULL) {
             if (p != NULL) {

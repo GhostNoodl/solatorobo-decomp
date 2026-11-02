@@ -30,7 +30,7 @@ void func_ov000_021c3bb0(Obj021c3bb0 *self) {
     while (n != NULL) {
         Node021c3bb0 *next = n->next;
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (n != NULL) {
             if (n != NULL) {
                 n->vfunc_04();

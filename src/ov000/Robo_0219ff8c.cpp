@@ -38,10 +38,10 @@ static inline s32 Dist0219ff8c(Robo021ca458 *self) {
 }
 
 void func_ov000_0219ff8c(Robo021ca458 *self) {
-    self->unk_b68 = 0;
-    self->unk_b6a = 0;
-    self->unk_b6c = 0;
-    self->unk_b6e = 0;
+    self->padCur = 0;
+    self->padTrig = 0;
+    self->padRelease = 0;
+    self->padDir = 0;
     self->unk_b36 = 0;
     self->unk_b38 = 0;
     self->unk_b2c_4 = 0;
@@ -61,30 +61,30 @@ void func_ov000_0219ff8c(Robo021ca458 *self) {
     }
     if (self->unk_b28_0 != 0) {
         {
-            ActorSub48 *p = self->unk_48;
+            ActorSub48 *p = self->hit;
             p->unk_9a_3 = 0;
             func_0203f364(p);
         }
         switch (self->unk_b28_0) {
         case 1:
             if (Dist0219ff8c(self) <= 0x400) {
-                self->unk_40->flags |= 2;
+                self->fsm->flags |= 2;
             } else {
-                self->unk_40->flags |= 4;
+                self->fsm->flags |= 4;
             }
             break;
         case 2:
             if (Dist0219ff8c(self) <= 0x400) {
-                self->unk_15 = 1;
+                self->mode = 1;
                 self->unk_b28_0 = 0;
                 self->unk_b28_2 = 0;
-                self->unk_40->flags |= 2;
+                self->fsm->flags |= 2;
             } else {
-                self->unk_40->flags |= 4;
+                self->fsm->flags |= 4;
             }
             break;
         case 3:
-            self->unk_40->flags |= 4;
+            self->fsm->flags |= 4;
             self->unk_b28_0 = 2;
             break;
         }

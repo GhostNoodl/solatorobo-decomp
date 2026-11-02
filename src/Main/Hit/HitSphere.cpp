@@ -22,9 +22,9 @@ void func_0203f260(HitSphere *hit) {
     hit->pos.x = 0;
     hit->pos.y = 0;
     hit->pos.z = 0;
-    hit->unk_0c.x = 0;
-    hit->unk_0c.y = 0;
-    hit->unk_0c.z = 0;
+    hit->prev.x = 0;
+    hit->prev.y = 0;
+    hit->prev.z = 0;
     hit->push.x = 0;
     hit->push.y = 0;
     hit->push.z = 0;
@@ -195,7 +195,7 @@ int func_0203f3d0(HitSphere *self) {
             v.x = 0;
             v.y = 0;
             v.z = 0;
-            if (func_0203fc78(&v, &d, &self->unk_0c, self->radius, self->unk_30, self->unk_34) != -0x1000) {
+            if (func_0203fc78(&v, &d, &self->prev, self->radius, self->unk_30, self->unk_34) != -0x1000) {
                 VEC_Add(&self->push, &v, &self->push);
                 VEC_Add(&d, &v, &d);
                 info = data_02fe0f14;

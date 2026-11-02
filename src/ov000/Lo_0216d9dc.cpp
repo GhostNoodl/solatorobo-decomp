@@ -66,7 +66,7 @@ void func_ov000_0216da78(Obj0216da78 *self) {
         FieldState *d;
         func_020627fc(4);
         d = data_ov000_021ccd54;
-        d->unk_ac = 1;
+        d->stageFlags = 1;
         func_ov000_02182590((u8 *)d + 0xac);
         func_ov000_02188140(data_ov000_021ccd54, 0xffff, 0, 0);
     }
@@ -167,7 +167,7 @@ static inline void Done0216dae4(Obj0216dae4 *self) {
         FieldState *d;
         func_020627fc(4);
         d = data_ov000_021ccd54;
-        d->unk_ac = 1;
+        d->stageFlags = 1;
         func_ov000_02182590((u8 *)d + 0xac);
         func_ov000_02188140(data_ov000_021ccd54, 0xffff, 0, 0);
     }

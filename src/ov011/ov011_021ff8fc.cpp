@@ -374,7 +374,7 @@ void func_ov011_021ff8fc(Ov011SceneActor *self) {
         if (++s->timer > 60) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
-            data_ov000_021ccd54->unk_ac = 1;
+            data_ov000_021ccd54->stageFlags = 1;
             self->unk_38->alpha = 0x1f;
             func_ov000_02198360(self->unk_40, 1, 0);
         } else if (self->unk_40->timer > 30) {

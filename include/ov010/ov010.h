@@ -192,7 +192,8 @@ typedef Ov010Vec VecFx32;
 #include "ov000/ActorParts.h"
 #include "ov000/Model0218fe1c.h"
 
-// The ov000 actor base (ov000 Actor, ctor Actor_Ctor, 0xac bytes) as ov010 uses it.
+// The ov000 actor base (ov000 Actor, ctor Actor_Ctor, 0xac bytes) as ov010 uses it; the named
+// members are the ov000 Actor's (see ov000/ActorBase.h).
 class Ov010Obj : public Ov010V {
 public:
     Ov010Obj *prev;
@@ -201,7 +202,7 @@ public:
     u16 kind;
     s32 unk_10;
     u8 state;
-    u8 unk_15;
+    u8 mode;
     u8 unk_16;
     u8 unk_17;
     s16 unk_18[4];
@@ -213,18 +214,18 @@ public:
     s32 unk_34;
     Model0218fe1c *model;
     void *unk_3c;
-    ActorSub40 *unk_40; // state block (ov000 Actor::unk_40)
+    ActorSub40 *fsm; // state block (ov000 Actor::fsm)
     void *unk_44;
-    ActorSub48 *unk_48; // movement/collision body (ov000 Actor::unk_48)
-    u8 *unk_4c;
+    ActorSub48 *hit; // collision sphere (ov000 Actor::hit)
+    u8 *targetObj;
     u16 *hp; // hp gauge (ov000 Actor::hp)
     void *unk_54;
-    void *unk_58;
+    void *hitMesh;
     void *unk_5c;
     void *unk_60;
-    s32 unk_64;
-    s32 unk_68;
-    s32 unk_6c;
+    s32 radius;
+    s32 height;
+    s32 centerY;
     Ov010Vec pos;
     u16 rot_x;
     u16 rot_y;
@@ -237,12 +238,12 @@ public:
     u8 unk_94;
     u8 unk_95;
     u16 unk_96;
-    u16 unk_98;
+    u16 moveYaw;
     u16 unk_9a;
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
+    s32 speed;
+    s32 velY;
+    s32 friction;
+    s32 gravity;
 };
 SIZE_ASSERT(Ov010Obj, 0xac);
 

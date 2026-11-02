@@ -36,7 +36,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
     if (a == NULL) {
         return;
     }
-    o = ((u8 *)a->unk_4c);
+    o = ((u8 *)a->targetObj);
     switch (self->unk_b24_7) {
     default:
         MTX_Identity43_(&m);
@@ -55,7 +55,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
                 v.z += FX_SinCosTable_[(self->rot_y >> 4) * 2 + 1] >> 1;
             } else if (self->unk_b2c_1) {
                 VecFx32 t;
-                t.x = a->unk_64 >> 1;
+                t.x = a->radius >> 1;
                 t.y = 0;
                 t.z = 0;
                 MTX_MultVec33(&t, (MtxFx33 *)&m, &t);
@@ -68,7 +68,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
                 u16 r = self->rot_y;
                 s32 sn = FX_SinCosTable_[(r >> 4) * 2];
                 s32 cs = FX_SinCosTable_[(r >> 4) * 2 + 1];
-                s32 d = a->unk_64;
+                s32 d = a->radius;
                 sn = FX_Mul(d, sn);
                 cs = FX_Mul(d, cs);
                 v.x += sn;
@@ -76,7 +76,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
                 v.y -= 0x800;
             } else if (self->unk_b2c_2) {
                 VecFx32 t;
-                t.x = a->unk_64;
+                t.x = a->radius;
                 t.y = -0xc00;
                 t.z = 0;
                 MTX_MultVec33(&t, (MtxFx33 *)&m, &t);
@@ -86,7 +86,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
                 }
             }
         } else {
-            VecSet_021b4130(&v, self->unk_75c.x, self->unk_75c.y + self->unk_68, self->unk_75c.z);
+            VecSet_021b4130(&v, self->unk_75c.x, self->unk_75c.y + self->height, self->unk_75c.z);
         }
         m.m[3][0] = v.x;
         m.m[3][1] = v.y;
@@ -98,7 +98,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
             MI_Copy48B((u8 *)self + 0xa50, o + 0x20);
             return;
         }
-        VecSet_021b4130(&v, -0xccd, self->unk_68 >> 1, 0xccd);
+        VecSet_021b4130(&v, -0xccd, self->height >> 1, 0xccd);
         func_01ffc9fc(&v, &v, self->rot_y);
         VEC_Add(&v, &self->unk_75c, &v);
         LFLD(VecFx32, o, 0x44) = v;
@@ -108,7 +108,7 @@ void func_ov000_021b4130(Robo021ca458 *self, BOOL flag) {
             MI_Copy48B((u8 *)self + 0xa80, o + 0x20);
             return;
         }
-        VecSet_021b4130(&v, 0xccd, self->unk_68 >> 1, 0xccd);
+        VecSet_021b4130(&v, 0xccd, self->height >> 1, 0xccd);
         func_01ffc9fc(&v, &v, self->rot_y);
         VEC_Add(&v, &self->unk_75c, &v);
         LFLD(VecFx32, o, 0x44) = v;

@@ -35,7 +35,7 @@ static inline void ov006_Model_SetPos(Model *self, int idx, s32 x, s32 y) {
 #define OV006_DELETE_MODEL(obj)                                  \
     do {                                                         \
         void *saved_ = data_02097dd0->cur;                       \
-        data_02097dd0->cur = data_02097dd0->unk_08;              \
+        data_02097dd0->cur = data_02097dd0->heapHi;              \
         if ((obj) != NULL) {                                     \
             if ((obj) != NULL) {                                 \
                 Model *m_ = (obj);                               \

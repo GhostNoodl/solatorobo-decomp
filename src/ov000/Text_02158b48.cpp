@@ -16,12 +16,12 @@ void func_ov000_02158b48(Lo021cb3a8 *self) {
     self->unk_64 = (0x100 - self->unk_24) >> 1;
     line = 0;
     done = FALSE;
-    if (self->unk_e4 == NULL) {
-        self->unk_e8 = STD_GetStringLength(self->unk_e0) + 1;
-        self->unk_e4 = (char *)func_0203de84(self->unk_e8, 4);
-        STD_CopyString(self->unk_e4, self->unk_e0);
+    if (self->str == NULL) {
+        self->strSize = STD_GetStringLength(self->srcStr) + 1;
+        self->str = (char *)func_0203de84(self->strSize, 4);
+        STD_CopyString(self->str, self->srcStr);
     }
-    s = self->unk_e4;
+    s = self->str;
     do {
         p = STD_SearchString(s, data_ov000_021cabf4);
         if (p != NULL) {

@@ -40,7 +40,7 @@ void func_0203d1b4(void) {
     if (data_02097dc8 != NULL) {
         return;
     }
-    data_02097dd0->cur = data_02097dd0->unk_04;
+    data_02097dd0->cur = data_02097dd0->heapLo;
     pad = (Pad *)Heap_Alloc(sizeof(Pad));
     if (pad != NULL) {
         pad->repeatDelay = 12;
@@ -57,7 +57,7 @@ void func_0203d1b4(void) {
         pad->useForced = 0;
     }
     data_02097dc8 = pad;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
 }
 
 void func_0203d298(Pad *pad) {

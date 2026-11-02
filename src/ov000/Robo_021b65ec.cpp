@@ -98,8 +98,8 @@ void func_ov000_021b65ec(Obj021b65ec *self) {
     g = data_ov000_021ccd54;
     if (item->bits.b1 && pl->unk_b24_5) {
         Actor *a = FindActor021b65ec(pl->unk_b1c);
-        if (a != NULL && ((u8 *)a->unk_4c) != NULL) {
-            a->unk_4c->unk_1c = 0xffff;
+        if (a != NULL && ((u8 *)a->targetObj) != NULL) {
+            a->targetObj->target = 0xffff;
         }
         pl->unk_b1c = 0xffff;
         pl->unk_b1e = 0xffff;

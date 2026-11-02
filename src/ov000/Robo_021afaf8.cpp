@@ -158,7 +158,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
     Pose_021afaf8 st;
 
     LFLD(H_021afaf8, self->unk_44, 0x22).b1 = 0;
-    switch (self->unk_40->st) {
+    switch (self->fsm->st) {
     case 0: {
         self->unk_b22_9 = 2;
         self->unk_b2c = 0;
@@ -244,7 +244,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
         }
         if (!big && self->unk_b22_0 != 0) {
             self->unk_b22_0 = 0;
-            data_ov000_021ccd54->cam.base.flag6 = 0;
+            data_ov000_021ccd54->cam.base.wallClip = 0;
             self->unk_70c = 0xa000;
             LFLD(s32, self->unk_3c, 0xc) = 0xa000;
             FreeModels_021afaf8(self);
@@ -254,7 +254,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
             const char *s2;
             u8 *r;
             self->unk_b22_0 = 1;
-            data_ov000_021ccd54->cam.base.flag6 = 1;
+            data_ov000_021ccd54->cam.base.wallClip = 1;
             self->unk_70c = 0x14000;
             LFLD(s32, self->unk_3c, 0xc) = 0x14000;
             FreeModels_021afaf8(self);
@@ -293,15 +293,15 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
                     st.pos.x = self->pos.x;
                     st.pos.y = self->pos.y;
                     st.pos.z = self->pos.z;
-                    st.pos.y += self->unk_6c;
+                    st.pos.y += self->centerY;
                     st.rx = a->rot_x;
                     st.ry = a->rot_y;
                     st.rz = a->rot_z;
                     st.unk = 0;
                     Actor_SendMsg(a, self->id, 7, 1, 0x18, &st);
                     func_ov000_0218d46c(a, self->id, 0xa);
-                    if (((u8 *)a->unk_4c) != NULL) {
-                        LFLD(C_021afaf8, ((u8 *)a->unk_4c), 0x18).b0 = 0;
+                    if (((u8 *)a->targetObj) != NULL) {
+                        LFLD(C_021afaf8, ((u8 *)a->targetObj), 0x18).b0 = 0;
                     }
                 }
             }
@@ -339,11 +339,11 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
             }
             self->unk_b22_11 = 1;
             self->unk_b22_12 = 1;
-            self->unk_40->st++;
+            self->fsm->st++;
         } else {
             self->unk_b24_19 = 1;
             self->unk_b22_9 = 0;
-            func_ov000_02198360(((u8 *)self->unk_40), 1, 0);
+            func_ov000_02198360(((u8 *)self->fsm), 1, 0);
         }
         break;
     }
@@ -353,7 +353,7 @@ void func_ov000_021afaf8(VObj *self_, u8 *anm, Def_021afaf8 *def) {
         }
         self->unk_b22_13 = 0;
         self->unk_b22_9 = 0;
-        func_ov000_02198360(((u8 *)self->unk_40), 1, 0);
+        func_ov000_02198360(((u8 *)self->fsm), 1, 0);
         return;
         break;
     }

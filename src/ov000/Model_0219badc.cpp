@@ -55,9 +55,9 @@ void func_ov000_0219badc(Model0218fe1c *self, Res0219badc *res, const Cfg0219bad
     {
         s32 sc = cfg->scale;
         if (sc != 0x1000) {
-            self->unk_a8 = sc;
-            self->unk_ac = sc;
-            self->unk_b0 = sc;
+            self->scale.x = sc;
+            self->scale.y = sc;
+            self->scale.z = sc;
         }
     }
     if (cfg->f8) {
@@ -68,7 +68,7 @@ void func_ov000_0219badc(Model0218fe1c *self, Res0219badc *res, const Cfg0219bad
         NNSi_G3dModifyMatFlag(self->mdl, 1, 0x80);
         NNSi_G3dModifyMatFlag(self->mdl, 1, 0x200);
         NNSi_G3dModifyMatFlag(self->mdl, 1, 0x400);
-        self->unk_c2_7 = 1;
+        self->restoreMat = 1;
     }
     if (cfg->f10) {
         NNSi_G3dModifyPolygonAttrMask(self->mdl, 1, 0x1f0000);
@@ -101,9 +101,9 @@ void func_ov000_0219badc(Model0218fe1c *self, Res0219badc *res, const Cfg0219bad
     }
     tbl = res->events != NULL ? (AnimEventTable *)((u8 *)*res->events + 8) : NULL;
     if (tbl != NULL) {
-        self->unk_d0 = tbl;
+        self->evTable = tbl;
         if (tbl != NULL) {
-            if (!tbl->is_ptr) self->unk_d4 = (s16 *)(tbl->entries + tbl->count);
+            if (!tbl->is_ptr) self->evData = (s16 *)(tbl->entries + tbl->count);
         }
     }
 }

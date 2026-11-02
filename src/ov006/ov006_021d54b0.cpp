@@ -258,7 +258,7 @@ void func_ov006_021d58c8(void) {
 #define OV006_DELETE_MEMBER(obj)                                 \
     do {                                                         \
         void *saved_ = data_02097dd0->cur;                   \
-        data_02097dd0->cur = data_02097dd0->unk_08;            \
+        data_02097dd0->cur = data_02097dd0->heapHi;            \
         if ((obj) != NULL) {                                     \
             if ((obj) != NULL) {                                 \
                 ov006_Unk021d58cc_Member *m_ = (obj);            \

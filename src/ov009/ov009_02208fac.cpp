@@ -67,7 +67,7 @@ void Ov009ActVt_02217594_Start(Ov009ActVt_02217594 *self) {
     self->model.unk_c2 |= 0x80;
     NNSi_G3dModifyPolygonAttrMask(self->model.unk_04, 1, 0x1f0000);
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_3c != NULL) {
         if (self->unk_3c != NULL) {
             self->unk_3c->v04();

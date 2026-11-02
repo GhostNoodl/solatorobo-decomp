@@ -38,7 +38,7 @@ static inline void LoModelPlayPart(void *model, int idx) {
 }
 
 void func_ov000_0215a7d8(Lo021cb5a8 *self, s32 unused, s32 *pos) {
-    s16 z = self->unk_68 - 0x100;
+    s16 z = self->posZ - 0x100;
     LFLD(void *, self->unk_10, 0x158) = (void *)func_ov000_0215a8c8;
     LFLD(u32, self->unk_10, 0x6c) |= 0x80000;
     LFLD(u32, self->unk_10, 0x6c) |= 0x200000;

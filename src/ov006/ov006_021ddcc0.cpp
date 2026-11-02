@@ -68,7 +68,7 @@ static inline void ov006_Unk021ddcc0_dtor(ov006_Unk021ddcc0 *self) {
     OV006_DELETE_OBJECT(self->unk18);
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if (self->unk1C != NULL) {
             if (self->unk1C != NULL) {
                 void *p = self->unk1C;

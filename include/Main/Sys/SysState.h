@@ -20,15 +20,15 @@ typedef struct UnkSysNode {
 // frame counters and the vblank hook.
 typedef struct UnkSys {
     /* 0x00 */ void *cur;
-    /* 0x04 */ void *unk_04;
-    /* 0x08 */ void *unk_08;
-    /* 0x0c */ void *unk_0c;
+    /* 0x04 */ void *heapLo; // expanded heap at the start of the main arena (0x30000, 0x1c000 on NTR)
+    /* 0x08 */ void *heapHi; // expanded heap over the rest of the arena; the default cur
+    /* 0x0c */ void *osHeap; // OSHeapHandle (OS_AllocFromHeap), NTR only
     /* 0x10 */ u32 align;
     /* 0x14 */ u32 frameCount;
     /* 0x18 */ void (*vblankFunc)(void);
     /* 0x1c */ u8 frameWait;
     /* 0x1d */ volatile u8 vcount;
-    /* 0x1e */ u8 unk_1e;
+    /* 0x1e */ u8 lcdOn; // LCD power is on (PM_SetLCDPower; turned off while the lid is closed)
     /* 0x1f */ u8 unk_1f;
     /* 0x20 */ u32 unk_20[4];
     /* 0x30 */ u8 unk_30;

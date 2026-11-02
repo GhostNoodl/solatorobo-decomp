@@ -22,7 +22,7 @@ static inline void StageFlags_LoadBuf(StageFlags *f) {
     s32 n = 0;
     n += func_020591a4(data_02fe152c, f->buf, 0);
     n += func_02062370(f->buf + n);
-    func_ov000_02181c4c(&data_ov000_021ccd54->unk_ac, f->buf + n);
+    func_ov000_02181c4c(&data_ov000_021ccd54->stageFlags, f->buf + n);
     data_02fe1534.unk_04 = f->unk_518_16;
     data_02fe1534.unk_06 = f->unk_518_28;
 }

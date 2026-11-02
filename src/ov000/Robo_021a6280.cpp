@@ -230,18 +230,18 @@ void func_ov000_021a6280(Robo021ca458 *self) {
             B2C(self).b3 = 0;
             B2C(self).b7 = 0;
             if (self->unk_ba4 != NULL && B24(self).b22 != 0) {
-                if (BA4(self).b0 && (self->unk_b68 & 0xf0) && (self->unk_48->unk_50 & 0x20000000) &&
-                    (!BA4(self).b2 || (self->unk_b68 & 0x30))) {
+                if (BA4(self).b0 && (self->padCur & 0xf0) && (self->hit->unk_50 & 0x20000000) &&
+                    (!BA4(self).b2 || (self->padCur & 0x30))) {
                     B2C(self).b0 = true;
                     func_ov000_02198360(ST(self), 0x11, 0);
                     goto end;
                 }
-                if (BA4(self).b2 && (self->unk_b68 & 0xf0) && (self->unk_48->unk_50 & 0x20000000)) {
+                if (BA4(self).b2 && (self->padCur & 0xf0) && (self->hit->unk_50 & 0x20000000)) {
                     B2C(self).b2 = 1;
                     func_ov000_02198360(ST(self), 0x11, 0);
                     goto end;
                 }
-                if (BA4(self).b1 && (self->unk_b68 & 0xf0) && !(self->unk_48->unk_50 & 0x20000000)) {
+                if (BA4(self).b1 && (self->padCur & 0xf0) && !(self->hit->unk_50 & 0x20000000)) {
                     B2C(self).b1 = 1;
                     func_ov000_02198360(ST(self), 0x11, 0);
                     if (B24(self).b22 >= 2 && LFLD(u8, sub, 0x1a) >= 3) {
@@ -278,7 +278,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
             func_02049bdc(data_02097e4c, 0x44, lvl);
             e = func_02065f88(se, &self->pos);
             LFLD(s32, e, 0x3c) = 0x1400;
-            e->vfunc_24(0, self->unk_6c, 0);
+            e->vfunc_24(0, self->centerY, 0);
             {
                 u32 sc = 0xe66;
                 if (B24(self).b22 < 2) {
@@ -302,15 +302,15 @@ void func_ov000_021a6280(Robo021ca458 *self) {
             func_02067120();
         }
         if (B24(self).b12 == 0) {
-            if (self->unk_9c > 0x229) {
-                self->unk_9c = 0x229;
+            if (self->speed > 0x229) {
+                self->speed = 0x229;
             }
-            if (self->unk_a0 < 0x5c) {
-                self->unk_a0 = 0x5c;
+            if (self->velY < 0x5c) {
+                self->velY = 0x5c;
             }
-            self->unk_a0 -= self->unk_a0 >> 1;
-            self->unk_a8 = 10;
-            self->unk_a4 = 0xe66;
+            self->velY -= self->velY >> 1;
+            self->gravity = 10;
+            self->friction = 0xe66;
         }
         ST(self)->st++;
         break;
@@ -324,15 +324,15 @@ void func_ov000_021a6280(Robo021ca458 *self) {
             }
         } else if (B24(self).b12 == 0) {
             ang = self->rot_y;
-            if (self->unk_15 == 1 && (self->unk_b68 & 0xf0)) {
-                ang = self->unk_b6e + CamYaw_021a6280((u8 *)data_ov000_021ccd54 + 0xf4);
+            if (self->mode == 1 && (self->padCur & 0xf0)) {
+                ang = self->padDir + CamYaw_021a6280((u8 *)data_ov000_021ccd54 + 0xf4);
             }
         } else {
             ang = self->rot_y;
         }
         self->rot_y = func_01ffc128(ang, self->rot_y, 0x59a, 1, 0x8000);
         B2C(self).b3 = 0;
-        if (B24(self).b22 != 0 && self->unk_ba4 != NULL && BA4(self).b3 && (self->unk_b6a & 1) &&
+        if (B24(self).b22 != 0 && self->unk_ba4 != NULL && BA4(self).b3 && (self->padTrig & 1) &&
             B2C(self).b7 < 5 && sub != NULL) {
             VObj *e;
             p.x = LFLD(s32, sub, 0x44);
@@ -408,13 +408,13 @@ void func_ov000_021a6280(Robo021ca458 *self) {
                         while (SQRTCNT_021a6280 & 0x8000) {
                         }
                         x = (s32)(SQRT_RESULT_021a6280 + 1) >> 1;
-                        h = self->pos.y + self->unk_68;
+                        h = self->pos.y + self->height;
                         if (B22(self).b3) {
                             h += 0x333;
                         }
                         y = tp.y - h;
-                    } else if (!(self->unk_48->unk_50 & 0x20000000) &&
-                               self->pos.y - self->unk_48->check.y >= 0x159a) {
+                    } else if (!(self->hit->unk_50 & 0x20000000) &&
+                               self->pos.y - self->hit->check.y >= 0x159a) {
                         x = 0x2000;
                         y = -0x2000;
                     } else if (B24(self).b22 != 0 || B24(self).b26) {
@@ -422,7 +422,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
                         y = -0xc00;
                     }
                     if (B24(self).b12 != 0) {
-                        z = self->unk_9c;
+                        z = self->speed;
                         LFLD(S18_021a6280, s2, 0x18).b2 = 1;
                     }
                     LFLD(s32, s2, 0x50) = x;
@@ -463,7 +463,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
             if (B93(self).b4) {
                 func_ov000_021911c8(self->model, 0x1400);
             }
-            self->unk_a8 = 0x29;
+            self->gravity = 0x29;
             B2C(self).b3 = 0;
             ST(self)->st++;
         }
@@ -472,14 +472,14 @@ void func_ov000_021a6280(Robo021ca458 *self) {
             func_ov000_02190cb0(self->model, data_ov000_021cc5e3, 0x200, 0);
             ST(self)->st++;
             ST(self)->timer = 0;
-            self->unk_a4 = 0x800;
+            self->friction = 0x800;
         }
         break;
     case 3: {
         State_021a6280 *st = ST(self);
         st->timer++;
         if (st->timer > 6) {
-            self->unk_a8 = 0x52;
+            self->gravity = 0x52;
             func_ov000_02198360(ST(self), 1, 0);
         }
         break;
@@ -488,14 +488,14 @@ void func_ov000_021a6280(Robo021ca458 *self) {
 end:
     if (!func_ov000_02191508(self->model)) {
         func_ov000_021b1fac(self, FALSE, 0);
-        if (B24(self).b1 && (self->unk_48->unk_54 & 0x400)) {
-            self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
-            self->unk_9c = 0x66;
-            self->unk_a4 = 0;
-            if (!B24(self).b17 || (self->unk_48->unk_50 & 0x40000000)) {
-                self->unk_a0 = 0x200;
+        if (B24(self).b1 && (self->hit->unk_54 & 0x400)) {
+            self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
+            self->speed = 0x66;
+            self->friction = 0;
+            if (!B24(self).b17 || (self->hit->unk_50 & 0x40000000)) {
+                self->velY = 0x200;
             }
-            self->unk_a8 = 0x52;
+            self->gravity = 0x52;
             B24(self).b17 = 1;
         }
     }
@@ -508,7 +508,7 @@ end:
             d.x = FxMul_021a6280(d.x, 0x733);
             d.y = FxMul_021a6280(d.y, 0x733);
             d.z = FxMul_021a6280(d.z, 0x733);
-            d.y = self->unk_68;
+            d.y = self->height;
             VEC_Add(&d, (VecFx32 *)((u8 *)self + 0x70), &o);
             func_ov000_021899d8(&o, 0, 0x8ccd, 1, 0x2333, 0x1000);
         }

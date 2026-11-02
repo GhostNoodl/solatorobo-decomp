@@ -63,13 +63,13 @@ void func_02043e9c(void) {
     if (data_02097e3c != NULL) {
         return;
     }
-    data_02097dd0->cur = data_02097dd0->unk_04;
+    data_02097dd0->cur = data_02097dd0->heapLo;
     m = (Movie *)Heap_Alloc(sizeof(Movie));
     if (m != NULL) {
         func_02043ef8(m);
     }
     data_02097e3c = m;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
 }
 
 void func_02043ef8(Movie *m) {

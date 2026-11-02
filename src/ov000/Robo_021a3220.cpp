@@ -134,7 +134,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             ST(self)->timer = 5;
             func_02049f44(data_02097e4c, 0x79, &self->pos, 0);
         }
-        if (self->unk_a0 == 0) {
+        if (self->velY == 0) {
             if (!B2C(self).b6) {
                 func_02049f44(data_02097e4c, 7, &self->pos, 0);
             }
@@ -146,14 +146,14 @@ void func_ov000_021a3220(Robo021ca458 *self) {
                 func_02049f44(data_02097e4c, se, &self->pos, 0);
             }
         }
-        self->unk_98 = self->rot_y;
-        self->unk_9c >>= 3;
-        self->unk_a0 >>= 3;
+        self->moveYaw = self->rot_y;
+        self->speed >>= 3;
+        self->velY >>= 3;
         if ((self->unk_b1c >> 12) == 5) {
             Actor *a = FindActor_021a3220(self->unk_b1c);
             u8 *s = NULL;
             if (a != NULL) {
-                s = ((u8 *)a->unk_4c);
+                s = ((u8 *)a->targetObj);
             }
             if (s != NULL && (LFLD(u8, s, 0) == 0xf || LFLD(u8, s, 0) == 0x11)) {
                 B24(self).b22 = 1;
@@ -167,33 +167,33 @@ void func_ov000_021a3220(Robo021ca458 *self) {
         if (st->timer > 5) {
             VObj *e;
             if (self->unk_b1c == 0xffff && tgt != NULL && (u16)(LFLD(u16, tgt, 0xc) & 0xf000) == 0x5000) {
-                self->unk_a0 = (LFLD(s32, tgt, 0x74) - self->pos.y) >> 4;
-                self->unk_98 = AngTo_021a3220(self, tgt);
-                self->unk_a8 = 0x52;
+                self->velY = (LFLD(s32, tgt, 0x74) - self->pos.y) >> 4;
+                self->moveYaw = AngTo_021a3220(self, tgt);
+                self->gravity = 0x52;
             } else {
-                if (self->unk_a0 > 0) {
-                    self->unk_a0 = 0;
+                if (self->velY > 0) {
+                    self->velY = 0;
                 }
-                self->unk_a8 = 0x148;
+                self->gravity = 0x148;
             }
             if (Ba4Bit_021a3220(self)) {
-                self->unk_9c = self->unk_b08 + 0x5c3;
+                self->speed = self->unk_b08 + 0x5c3;
             } else {
-                self->unk_9c = self->unk_b08 + 0x51f;
+                self->speed = self->unk_b08 + 0x51f;
             }
-            if (self->unk_9c > 0x933) {
-                self->unk_9c = 0x933;
+            if (self->speed > 0x933) {
+                self->speed = 0x933;
             }
-            self->unk_a4 = 0xf9a;
+            self->friction = 0xf9a;
             ST(self)->timer = 0;
             ST(self)->st++;
-            if (self->unk_b68 & 0xf0) {
+            if (self->padCur & 0xf0) {
                 u16 yaw = CamYaw_021a3220((u8 *)data_ov000_021ccd54 + 0xf4);
-                self->unk_98 = yaw + self->unk_b6e;
+                self->moveYaw = yaw + self->padDir;
             }
             e = func_02065f88(0x192, &self->pos);
             self->unk_b40 = LFLD(s32, e, 0x24);
-            e->vfunc_34(0, self->unk_98, 0);
+            e->vfunc_34(0, self->moveYaw, 0);
             LFLD(s32, e, 0x3c) = 0x800;
             if (self->unk_b22_3) {
                 e->vfunc_14(0x1266, 0x1266, 0x1000);
@@ -201,40 +201,40 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             if (Ba4Bit_021a3220(self)) {
                 VecFx32 v;
                 VObj *e2;
-                v.y = self->unk_68 >> 2;
+                v.y = self->height >> 2;
                 v.z = 0x1800;
                 v.x = 0;
-                func_01ffc9fc(&v, &v, self->unk_98);
+                func_01ffc9fc(&v, &v, self->moveYaw);
                 VEC_Add(&v, (VecFx32 *)((u8 *)self + 0x70), &v);
                 e2 = func_02065f88(0x66, &v);
-                e2->vfunc_34(0xc000, self->unk_98, 0);
+                e2->vfunc_34(0xc000, self->moveYaw, 0);
                 e2->vfunc_14(0xb33, 0x3000, 0xb33);
                 LFLD(s32, e2, 0x3c) = 0x1ccd;
             }
         }
-        self->rot_y = func_01ffc128(self->unk_98, self->rot_y, 0x400, 1, 0x8000);
+        self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
         func_ov000_021b1fac(self, FALSE, 1);
         break;
     }
     case 2: {
         BOOL near;
         if (Ba4Bit_021a3220(self)) {
-            s32 spd = self->unk_9c;
+            s32 spd = self->speed;
             u8 f = 1;
             if (B2C(self).b6) {
                 f = 0;
             }
             func_ov000_021b1dd8((u8 *)self, spd, 0x1000, 0x1000, 0x466, f);
-            self->unk_9c = LO_FX_MUL(spd, 0xfc3);
-            if ((self->unk_48->unk_50 & 0x20000000) && (ST(self)->timer & 3) == 1) {
+            self->speed = LO_FX_MUL(spd, 0xfc3);
+            if ((self->hit->unk_50 & 0x20000000) && (ST(self)->timer & 3) == 1) {
                 VObj *e = func_02065f88(0x67, &self->pos);
-                e->vfunc_34(0, self->unk_98, 0);
+                e->vfunc_34(0, self->moveYaw, 0);
                 e->vfunc_0c(0x800);
                 LFLD(s32, e, 0x3c) = 0x2000;
             }
         } else {
             s32 f = 1;
-            self->rot_y = func_01ffc128(self->unk_98, self->rot_y, 0x400, 1, 0x8000);
+            self->rot_y = func_01ffc128(self->moveYaw, self->rot_y, 0x400, 1, 0x8000);
             if (B2C(self).b6) {
                 f = 0;
             }
@@ -244,7 +244,7 @@ void func_ov000_021a3220(Robo021ca458 *self) {
             u16 t = ST(self)->timer;
             if (!(t & 3) && t < 0x14) {
                 VObj *e = func_02065f88(0x322, &self->pos);
-                e->vfunc_24(0, self->unk_68 >> 2, 0);
+                e->vfunc_24(0, self->height >> 2, 0);
                 e->vfunc_34(0, (u16)Rand_UpTo(0xffff), 0);
                 e->vfunc_0c(((t & 0xfffe) << 7) + 0x800);
                 LFLD(s32, e, 0x3c) = 0x4800;
@@ -252,21 +252,21 @@ void func_ov000_021a3220(Robo021ca458 *self) {
         }
         {
             VecFx32 o;
-            o.y = self->unk_6c;
+            o.y = self->centerY;
             o.x = 0;
             o.z = 0xc00;
             hit = func_ov000_0219aae8(self, self, 0, 0x42, 0x20, &o, NULL, 0x1400, 0, 0x69, 0x800);
         }
-        if (self->unk_48->unk_58 & 1) {
+        if (self->hit->unk_58 & 1) {
             hit = TRUE;
         }
         if (B2C(self).b6) {
             hit = FALSE;
         }
         near = FALSE;
-        if (!hit && (self->unk_48->unk_50 & 0x30) && !Ba4Bit_021a3220(self)) {
-            u16 a = func_ov000_02198da8(self->unk_48, self->unk_98);
-            if ((u16)(a - self->unk_98 - 0x6400) < 0x3800) {
+        if (!hit && (self->hit->unk_50 & 0x30) && !Ba4Bit_021a3220(self)) {
+            u16 a = func_ov000_02198da8(self->hit, self->moveYaw);
+            if ((u16)(a - self->moveYaw - 0x6400) < 0x3800) {
                 near = TRUE;
             }
         }
@@ -290,39 +290,39 @@ void func_ov000_021a3220(Robo021ca458 *self) {
                 m.pos.x = self->pos.x;
                 m.pos.y = self->pos.y;
                 m.pos.z = self->pos.z;
-                m.pos.y += self->unk_6c;
+                m.pos.y += self->centerY;
                 m.rot[0] = a->rot_x;
                 m.rot[1] = a->rot_y;
                 m.rot[2] = a->rot_z;
                 m.x = 0;
                 Actor_SendMsg(a, self->id, 7, TRUE, 0x18, &m);
                 func_ov000_0218d46c(a, self->id, 10);
-                if (((u8 *)a->unk_4c) != NULL) {
-                    LFLD(B19_021a3220, ((u8 *)a->unk_4c), 0x18).b0 = 0;
+                if (((u8 *)a->targetObj) != NULL) {
+                    LFLD(B19_021a3220, ((u8 *)a->targetObj), 0x18).b0 = 0;
                 }
             }
             B24(self).b5 = 0;
             self->unk_b1c = 0xffff;
             B24(self).b7 = B24(self).b9;
             self->unk_b1e = 0xffff;
-            self->unk_98 += 0x8000;
-            self->unk_9c >>= 1;
+            self->moveYaw += 0x8000;
+            self->speed >>= 1;
             if (hit) {
-                self->unk_9c >>= 1;
+                self->speed >>= 1;
             }
-            self->unk_a0 = 0xb8;
-            self->unk_a8 = 0x52;
+            self->velY = 0xb8;
+            self->gravity = 0x52;
             B2C(self).b6 = 0;
             ST(self)->st = 10;
             ST(self)->timer = 0;
-        } else if (!IsIdle_021a3220() || self->unk_15 == 3 || func_ov000_021b68b8(data_ov000_021ccd6c, &self->pos) != NULL) {
-            self->unk_9c >>= 2;
+        } else if (!IsIdle_021a3220() || self->mode == 3 || func_ov000_021b68b8(data_ov000_021ccd6c, &self->pos) != NULL) {
+            self->speed >>= 2;
             func_ov000_02198360(ST(self), 4, 0);
         } else {
             State_021a3220 *st = ST(self);
             st->timer++;
             if (st->timer >= 0x14) {
-                if (Ba4Bit_021a3220(self) && (self->unk_48->unk_50 & 0x20000000)) {
+                if (Ba4Bit_021a3220(self) && (self->hit->unk_50 & 0x20000000)) {
                     if (self->unk_b38 != 0) {
                         func_ov000_02198360(ST(self), 4, 0);
                     } else if (ST(self)->timer > 0x28) {
@@ -342,9 +342,9 @@ void func_ov000_021a3220(Robo021ca458 *self) {
         st->timer++;
         if (st->timer >= 0x1e) {
             func_ov000_02198360(ST(self), 4, 0);
-        } else if (self->unk_48->unk_50 & 0x20000000) {
+        } else if (self->hit->unk_50 & 0x20000000) {
             func_ov000_02190cb0(self->model, data_ov000_021cc630, 0x800, 0);
-            self->unk_a4 = 0xe66;
+            self->friction = 0xe66;
             func_02049f44(data_02097e4c, 0x81, &self->pos, 0);
             func_02065f88(0x12f, &self->pos)->vfunc_0c(0x800);
             ST(self)->timer = 0;
@@ -367,14 +367,14 @@ void func_ov000_021a3220(Robo021ca458 *self) {
         B2C(self).b6 = 0;
     }
     turned = FALSE;
-    if (B24(self).b1 && (self->unk_48->unk_54 & 0x400)) {
-        self->unk_98 = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
-        self->unk_9c = 0x66;
-        self->unk_a4 = 0;
-        if (!B24(self).b17 || (self->unk_48->unk_50 & 0x40000000)) {
-            self->unk_a0 = 0x200;
+    if (B24(self).b1 && (self->hit->unk_54 & 0x400)) {
+        self->moveYaw = FX_Atan2(self->unk_af0 - self->pos.x, self->unk_af8 - self->pos.z);
+        self->speed = 0x66;
+        self->friction = 0;
+        if (!B24(self).b17 || (self->hit->unk_50 & 0x40000000)) {
+            self->velY = 0x200;
         }
-        self->unk_a8 = 0x52;
+        self->gravity = 0x52;
         B24(self).b17 = 1;
         turned = TRUE;
     }

@@ -86,7 +86,7 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
         func_020627a0(self->kind, self->id);
         func_020627dc(5);
         g = data_ov000_021ccd54;
-        g->unk_ac = 1;
+        g->stageFlags = 1;
         func_ov000_02182590((u8 *)g + 0xac);
         func_ov000_02190cb0(self->unk_38, data_ov014_02217d88, 0x19a, 0);
         func_ov000_021911c8(self->unk_38, 0x400);

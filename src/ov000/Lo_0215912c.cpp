@@ -58,7 +58,7 @@ void func_ov000_0215912c(Lo021cb3a8 *self, s32 a1, s32 *pos, s32 a3) {
     s32 sy;
     s32 alpha;
     V6 *v;
-    z = self->unk_68 - 0x110;
+    z = self->posZ - 0x110;
     g = data_02097d48;
     G3_Cmd1(0x2a, 0x20000000);
     alpha = self->unk_54;
@@ -69,7 +69,7 @@ void func_ov000_0215912c(Lo021cb3a8 *self, s32 a1, s32 *pos, s32 a3) {
     G3_Vec(0x1c, pos[0], pos[1], z);
     G3_Vec(0x1b, sx, sy, 0x1000);
     G3_Cmd1(0x40, 2);
-    G3_Cmd1(0x20, self->unk_48);
+    G3_Cmd1(0x20, self->color);
     v = (V6 *)self->unk_6c;
     if (v != NULL) {
         s32 i;

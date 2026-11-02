@@ -23,7 +23,7 @@ void func_020381cc(ResMgr *mgr, ResNode *node) {
     if (node->type == 7) {
         void *heap = data_02097dd0->cur;
         ResList *list;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         list = node->u.arc.list;
         if (list != NULL) {
             if (list != NULL) {

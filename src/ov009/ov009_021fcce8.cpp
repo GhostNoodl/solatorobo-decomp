@@ -79,7 +79,7 @@ static inline s32 Ov009_DistXZ(const Ov009Vec *a, const Ov009Vec *b) {
 }
 
 static inline BOOL Ov009Game_IsPaused(FieldState *g) {
-    return g->unk_d4 != 0;
+    return g->event != 0;
 }
 
 extern Ov009Actor *func_ov000_0219bf90(void);

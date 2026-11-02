@@ -86,7 +86,7 @@ void func_ov009_022093f8(Ov009ActVt_02217594 *self) {
             if (self->unk_312 != 0) {
                 func_020627a0(self->kind, self->id);
                 func_020627dc(4);
-                data_ov000_021ccd54->unk_ac = 1;
+                data_ov000_021ccd54->stageFlags = 1;
                 self->unk_312 = 0;
             }
         }
@@ -205,7 +205,7 @@ void func_ov009_02209668(Ov009ActVt_02217594 *self) {
         }
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->unk_ac = 1;
+        data_ov000_021ccd54->stageFlags = 1;
         self->unk_312 = 0;
         self->unk_b6 = 0xb4;
         break;

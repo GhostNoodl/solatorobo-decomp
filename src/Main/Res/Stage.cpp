@@ -118,7 +118,7 @@ void func_02058d10(BOOL flag) {
 
 void func_02058e18(void) {
     void *heap = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (data_02fe1530 != NULL) {
         if (data_02fe1530 != NULL) {
             data_02fe1530->DeletingDtor();
@@ -243,7 +243,7 @@ static inline void DataRes_Open1530_18(const char *arcName, const char *name) {
 
 void func_02058fe4(void) {
     void *heap = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (data_02fe152c != NULL) {
         if (data_02fe152c != NULL) {
             data_02fe152c->DeletingDtor();
@@ -614,7 +614,7 @@ void func_0205983c(void) {
 
 void func_020598a8(void) {
     void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     {
         ObjPool *p = data_02149f0c;
         if (p != NULL) {
@@ -636,7 +636,7 @@ void func_020599f4(ObjPool *pool, ObjPoolEntry *entry) {
     switch (entry->kind) {
     case 3: {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         {
             void *p = entry->obj;
             if (p != NULL) {
@@ -656,7 +656,7 @@ void func_020599f4(ObjPool *pool, ObjPoolEntry *entry) {
             func_0203df0c(((void **)entry->obj)[0x88 / 4]);
         }
         saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         {
             void *p = entry->obj;
             if (p != NULL) {
@@ -971,7 +971,7 @@ static inline void ObjPool_Trigger(ObjPool *pool, ObjPoolEntry *entry) {
         func_020599f4(pool, entry);
         data_02fe1534.unk_10 = entry->id;
         {
-            u8 *p = &data_ov000_021ccd54->unk_ac;
+            u8 *p = &data_ov000_021ccd54->stageFlags;
             *p = TRUE;
             func_ov000_02182590(p);
         }
@@ -1042,7 +1042,7 @@ BOOL func_0205a268(ObjPool *pool, ObjPoolEntry *entry) {
     func_020599f4(pool, entry);
     data_02fe1534.unk_10 = entry->id;
     {
-        u8 *p = &data_ov000_021ccd54->unk_ac;
+        u8 *p = &data_ov000_021ccd54->stageFlags;
         *p = TRUE;
         func_ov000_02182590(p);
     }
@@ -1207,7 +1207,7 @@ void func_0205a6e8(StageRes *res) {
     func_02038520(res);
     if (res->posEv != NULL) {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         {
             PosEvRes *p = res->posEv;
             if (p != NULL) {
@@ -1221,7 +1221,7 @@ void func_0205a6e8(StageRes *res) {
     }
     if (res->sub != NULL) {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         {
             DataRes *p = res->sub;
             if (p != NULL) {
@@ -2594,7 +2594,7 @@ int func_0205cb9c(StageResSlot *slot) {
     }
     state = data_ov000_021ccd54;
     state->unk_d3 = 0;
-    state->cam.base.flag0 = 1;
+    state->cam.base.smooth = 1;
     return 1;
 }
 
@@ -2750,7 +2750,7 @@ int func_0205d00c(StageResSlot *slot) {
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    state->unk_d4 = 0;
+    state->event = 0;
     return 1;
 }
 
@@ -2859,8 +2859,8 @@ int func_0205d124(StageResSlot *slot) {
     StageRes_Pop();
     {
         FieldState *state = data_ov000_021ccd54;
-        state->unk_ac = TRUE;
-        func_ov000_02182590(&state->unk_ac);
+        state->stageFlags = TRUE;
+        func_ov000_02182590(&state->stageFlags);
     }
     return -0x62;
 }
@@ -3836,7 +3836,7 @@ int func_0205f940(StageResSlot *slot) {
     if (Field_IsEventPending(state)) {
         return -0x63;
     }
-    state->unk_d4 = 0;
+    state->event = 0;
     return 1;
 }
 
@@ -4224,7 +4224,7 @@ int func_020605fc(StageResSlot *slot) {
             h->radius = e->unk_18;
             ((HitSphere *)e->obj)->group = -1;
             h = (HitSphere *)e->obj;
-            h->unk_0c = h->pos;
+            h->prev = h->pos;
             h->pos.x = e->x;
             h->pos.y = e->y;
             h->pos.z = e->z;

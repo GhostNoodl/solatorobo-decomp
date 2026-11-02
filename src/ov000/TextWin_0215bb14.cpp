@@ -68,7 +68,7 @@ void func_ov000_0215bb14(Obj0215bb14 *self, u32 text) {
     self->unk_0c &= ~0x40000;
     {
         void *saved = data_02097dd0->cur;
-        data_02097dd0->cur = data_02097dd0->unk_08;
+        data_02097dd0->cur = data_02097dd0->heapHi;
         if ((VObj *)self->unk_84 != NULL) {
             VObj *p_ = (VObj *)self->unk_84;
             if (p_ != NULL) {

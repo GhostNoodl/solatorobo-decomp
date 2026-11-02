@@ -122,7 +122,7 @@ void func_ov011_02203320(Ov011Actor *self) {
         if (++s->timer > 60) {
             func_020627a0(self->kind, self->id);
             func_020627dc(4);
-            data_ov000_021ccd54->unk_ac = 1;
+            data_ov000_021ccd54->stageFlags = 1;
             self->unk_38->alpha = 0x1f;
             func_ov000_02198360(self->unk_40, 1, 0);
         } else if (self->unk_40->timer > 30) {
@@ -226,7 +226,7 @@ void Ov011Act7cf8_Start(Ov011Act7cf8 *self) {
     void *saved;
     func_ov003_021d112c(self);
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_48 != NULL) {
         void *p = self->unk_48;
         if (p != NULL) {

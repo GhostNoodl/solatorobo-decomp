@@ -157,7 +157,7 @@ BOOL func_ov000_0219e998(Actor *self, ActorMsg *msg, u8 *g) {
             LFLD(u8, p50, 8) = kind;
             LFLD(u8, p50, 9) = kind;
             if (bit != 0) {
-                ((ActorSub40 *)self->unk_40)->flags |= (u64)1 << bit;
+                ((ActorSub40 *)self->fsm)->flags |= (u64)1 << bit;
             }
             if (msg->data[2] != 1) {
                 LFLD(u16, LFLD(u8 *, s, 0x50), 0xa) = 0x5a;

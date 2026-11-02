@@ -106,7 +106,7 @@ static inline u8 Begin_0219d9fc(void) {
 }
 
 static inline BOOL HasD4_0219d9fc(FieldState *g) {
-    return ((s32)g->unk_d4) != 0;
+    return ((s32)g->event) != 0;
 }
 
 static inline BOOL HasD4B_0219d9fc(FieldState *g) {
@@ -155,10 +155,10 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
     if (self->unk_b28_3) {
         return FALSE;
     }
-    func_ov000_02191ec4(((void *)self->unk_3c), 1, self->unk_48->unk_54);
+    func_ov000_02191ec4(((void *)self->unk_3c), 1, self->hit->unk_54);
     m = ((u8 *)self->model);
     v = LFLD(u8, m, 0xbf);
-    if (self->unk_48->unk_54 & 0x80000) {
+    if (self->hit->unk_54 & 0x80000) {
         if (B24(self).b20) {
             if (v > 5) {
                 LFLD(u8, m, 0xbf) = v - 3;
@@ -183,7 +183,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         u16 w = LFLD(u16, ((u8 *)self->hp), 0xa);
         n = 0;
         if (w != 0) {
-            if (self->model->unk_ba == 0) {
+            if (self->model->blend == 0) {
                 u16 k;
                 n = 1;
                 cb = ca = 0x53ff;
@@ -211,7 +211,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
                 n = 0x40;
             }
         } else if (B2C(self).b6) {
-            if (self->unk_40->current == 0x16) {
+            if (self->fsm->current == 0x16) {
                 cb = ca = 0x729c;
                 n = 1;
             }
@@ -245,7 +245,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
 
     {
     s32 res = 0;
-    s32 off = self->unk_64;
+    s32 off = self->radius;
     u8 alpha = Begin_0219d9fc();
     if (B24(self).b2) {
         VEC(self, 0x3e0) = VEC(self, 0x75c);
@@ -349,13 +349,13 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         if (B24(self).b5) {
             Actor *a = FindActor_0219d9fc(self->unk_b1c);
             if (a != NULL) {
-                u8 *s = ((u8 *)a->unk_4c);
+                u8 *s = ((u8 *)a->targetObj);
                 s32 q[3];
                 LFLD(u16, s, 0x1c) = self->id;
                 q[0] = self->pos.x;
                 q[1] = self->pos.y;
                 q[2] = self->pos.z;
-                q[1] += self->unk_6c;
+                q[1] += self->centerY;
                 VEC(s, 0x44) = *(VecFx32 *)q;
             }
         }
@@ -369,7 +369,7 @@ BOOL Robo021ca458_Draw(Robo021ca458 *self) {
         }
     }
     }
-    fl = self->unk_48->unk_54;
+    fl = self->hit->unk_54;
     if ((fl & 0xf0f0f0) != 0xe0e000 && (fl & 0x20000) != 0x20000) {
         LFLD(s32, ((void *)self->unk_3c), 0x14) = off;
         LFLD(s32, ((void *)self->unk_3c), 0x10) = self->pos.y - h;

@@ -24,9 +24,9 @@ static inline BOOL LoSubReady(void *p) {
 }
 
 void func_ov000_02158da8(Lo021cb3a8 *self) {
-    if ((void *)self->unk_e4 != NULL) {
-        func_0203df0c(self->unk_e4);
-        self->unk_e4 = NULL;
+    if ((void *)self->str != NULL) {
+        func_0203df0c(self->str);
+        self->str = NULL;
     }
     LO_FREE_V(self, 0xec);
 }

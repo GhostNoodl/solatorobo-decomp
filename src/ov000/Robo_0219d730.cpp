@@ -45,9 +45,9 @@ void func_ov000_0219d730(Robo021ca458 *self) {
             o->vfunc_10(&v);
             p = self->pos;
             if (!self->unk_b22_3) {
-                p.y += self->unk_68 >> 2;
+                p.y += self->height >> 2;
             } else {
-                p.y += self->unk_6c;
+                p.y += self->centerY;
             }
             o->vfunc_18(&p);
             if (!self->unk_b2c_1) {

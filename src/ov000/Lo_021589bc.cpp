@@ -30,7 +30,7 @@ void func_ov000_021589bc(LoBase021caac8_021cb2a8 *self, s32 unused, s32 *pos) {
         xoff = -0x8000;
     }
     cur = self->unk_b1;
-    z = self->unk_68 - 0xc0;
+    z = self->posZ - 0xc0;
     y = self->vfunc_34();
     px = pos[0];
     py = pos[1];

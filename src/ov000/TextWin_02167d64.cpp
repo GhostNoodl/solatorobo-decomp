@@ -40,7 +40,7 @@ void func_ov000_02167d64(Obj02167d64 *self) {
     case 4:
         {
             void *saved = data_02097dd0->cur;
-            data_02097dd0->cur = data_02097dd0->unk_08;
+            data_02097dd0->cur = data_02097dd0->heapHi;
             if ((VObj *)self->unk_40 != NULL) {
                 VObj *p_ = (VObj *)self->unk_40;
                 if (p_ != NULL) {

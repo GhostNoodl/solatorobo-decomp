@@ -220,7 +220,7 @@ void func_ov009_022087c4(Ov009Actor *self) {
         self->unk_84 = v;
     }
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_3c != NULL) {
         if (self->unk_3c != NULL) {
             self->unk_3c->v04();
@@ -229,7 +229,7 @@ void func_ov009_022087c4(Ov009Actor *self) {
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_48 != NULL) {
         Ov009Sub48 *p = self->unk_48;
         if (p != NULL) {
@@ -240,7 +240,7 @@ void func_ov009_022087c4(Ov009Actor *self) {
     }
     data_02097dd0->cur = saved;
     saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->unk_08;
+    data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_44 != NULL) {
         Heap_Free(self->unk_44);
         self->unk_44 = NULL;
