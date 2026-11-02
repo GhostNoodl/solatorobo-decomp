@@ -34,7 +34,6 @@ extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 
 extern const Ov003BxDef data_ov003_021f6e60[];
 extern Actor *func_ov000_0219bf90(void); // the player
-extern BOOL func_ov000_0219aae8(ActorEx *a, ActorEx *b, u16 c, u8 d, s32 e, VecFx32 *pos, Rot16 *rot, s32 f, s32 g, s32 h, s32 i);
 
 static inline BOOL Ov003Game_IsBusy(FieldState *g) {
     return g->head != g->tail;

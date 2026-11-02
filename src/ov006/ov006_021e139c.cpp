@@ -1,12 +1,6 @@
 #include "ov006/ov006.h"
+#include "ov006/Tasks.h"
 
-typedef struct ov006_Unk021e139c {
-    void *vtbl;
-    u8 unk4;
-    u8 unk5;
-    u8 unk6[6];
-    int unkC;
-} ov006_Unk021e139c;
 
 extern "C" {
 

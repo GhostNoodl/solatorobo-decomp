@@ -10,8 +10,8 @@ void ov006_Slot_Pack(ov006_Slot *self, void *buf);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 void func_ov000_02162a20(ov006_Actor58 *self);
 void func_ov000_02162a58(ov006_Actor58 *self);
-void func_ov006_021e0af4(ov006_Unk68 *self);
-void func_ov006_021e0b80(ov006_Unk68 *self);
+void func_ov006_021e0af4(ov006_Caption *self);
+void func_ov006_021e0b80(ov006_Caption *self);
 void func_ov006_021e10d0(ov006_Unk021e139c *self);
 void func_ov006_021e1180(ov006_Unk021e139c *self);
 void func_ov006_021e463c(ov006_Unk021ec888 *self);
@@ -25,17 +25,17 @@ void func_ov006_021e5e00(ov006_Unk021ec888 *self);
 
 void func_ov006_021d2b9c(ov006_TaskD1F *self) {
     u16 trg;
-    if (self->base.state != 0) {
+    if (self->step != 0) {
         return;
     }
     trg = data_02097dc8->trig;
     if (trg & 2) {
         if (self->unk48) {
-            if (self->base.unkC == 0) {
+            if (self->param == 0) {
                 func_02049a48(data_02097e4c, 0x1f, -1, -1, -1);
             }
-            self->base.state = 5;
-            self->base.subState = 0;
+            self->step = 5;
+            self->subStep = 0;
         } else {
             func_02049a48(data_02097e4c, 0x20, -1, -1, -1);
         }
@@ -45,8 +45,8 @@ void func_ov006_021d2b9c(ov006_TaskD1F *self) {
         return;
     }
     func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
-    self->base.state = 1;
-    self->base.subState = 0;
+    self->step = 1;
+    self->subStep = 0;
 }
 
 static inline void ov006_Actor58_SetPos(ov006_Actor58 *self, s32 x, s32 y, s32 z) {
@@ -64,8 +64,8 @@ static inline void ov006_Actor58_SetRot(ov006_Actor58 *self, s16 x, s16 y, s16 z
 void func_ov006_021d2c84(ov006_TaskD1F *self) {
     u8 buf[0x18];
     int i;
-    if (self->base.unk8 == 0xd) {
-        if (self->base.unkC != 0) {
+    if (self->state == 0xd) {
+        if (self->param != 0) {
             func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC = self->unk4A;
             ov006_Slot_Pack(func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5), buf);
             ov006_Menu_SetOwnEntry(data_ov006_021ec888, self->unk49, 1, buf, 0x18);

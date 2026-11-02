@@ -41,7 +41,6 @@ extern void func_ov000_02191690(void *model);
 extern BOOL func_ov000_02191120(void *model);
 extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 extern Ov003GmPlayer *func_ov000_0219bf90(void);
-extern BOOL func_ov000_0219aae8(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern BOOL func_ov000_0219a8bc(void *a, void *b, void *c, s32 d, s32 e, VecFx32 *f, s32 g, s32 h, s32 i);
 extern void func_ov000_0219bd20(s32 id, u16 a, s32 b, s32 c, s32 d, Ov003GmArg *arg);
 extern void *func_0206fef8(u16 id);
@@ -67,7 +66,7 @@ void func_ov003_021ec9e0(Ov003Gimmick *self) {
         if (w->timer >= 0xf && w->timer <= 0x64) {
             Ov003GmPlayer *pl = func_ov000_0219bf90();
             u16 id;
-            func_ov000_0219aae8(self, self, 0x78, 0x11, (u16)(1 << (pl->unk_0c >> 12)), 0, 0,
+            func_ov000_0219aae8(self, self, 0x78, 0x11, (u16)(1 << (pl->unk_0c >> 12)), NULL, NULL,
                                 self->radius + (self->radius >> 1), self->height, 0x6d, 0xccd);
             id = pl->target;
             if (id != 0xffff && id == self->id) {

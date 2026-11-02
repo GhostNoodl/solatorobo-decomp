@@ -29,7 +29,6 @@ extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 extern Ov003LvPlayer *func_ov000_0219bf90(void);
 extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern u32 Rand_UpTo(u32 max);
-extern BOOL func_ov000_0219aae8(void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j, s32 k);
 
 void func_ov003_021ee680(Ov003Lever *self, s16 kind, BOOL notify, s32 sound);
 
@@ -232,7 +231,7 @@ void func_ov003_021ee73c(Ov003Lever *self) {
         w->timer++;
         w = self->fsm;
         if (w->timer < 0x37) {
-            func_ov000_0219aae8(self, self, 0x32, 0x20, 2, 0, 0, 0x1800, 0, 0x322, 0x800);
+            func_ov000_0219aae8(self, self, 0x32, 0x20, 2, NULL, NULL, 0x1800, 0, 0x322, 0x800);
             return;
         }
         if (w->timer >= 0x87 - (self->unk_1a << 4)) {

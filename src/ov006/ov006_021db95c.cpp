@@ -1,8 +1,5 @@
 #include "ov006/ov006.h"
-
-typedef struct ov006_Unk021db95c {
-    void *vtbl;
-} ov006_Unk021db95c;
+#include "ov006/Window.h"
 
 extern "C" {
 
@@ -11,24 +8,24 @@ extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cac60[];
 
-static inline void ov006_Unk021db95c_dtor(ov006_Unk021db95c *self) {
-    self->vtbl = data_ov000_021cb0b8;
-    VCALL(self, 2c);
-    self->vtbl = data_ov000_021cb1b0;
-    VCALL(self, 2c);
-    self->vtbl = data_ov000_021caec8;
-    VCALL(self, 2c);
-    self->vtbl = data_ov000_021cac60;
-    VCALL(self, 2c);
+static inline void ov006_ListWin_Release(ov006_ListWin *self) {
+    *(void **)self = data_ov000_021cb0b8;
+    self->vfunc_2c();
+    *(void **)self = data_ov000_021cb1b0;
+    self->vfunc_2c();
+    *(void **)self = data_ov000_021caec8;
+    self->vfunc_2c();
+    *(void **)self = data_ov000_021cac60;
+    self->vfunc_2c();
 }
 
-ov006_Unk021db95c *ov006_Window_Dtor(ov006_Unk021db95c *self) {
-    ov006_Unk021db95c_dtor(self);
+ov006_ListWin *ov006_Window_Dtor(ov006_ListWin *self) {
+    ov006_ListWin_Release(self);
     return self;
 }
 
-ov006_Unk021db95c *ov006_Window_DtorDelete(ov006_Unk021db95c *self) {
-    ov006_Unk021db95c_dtor(self);
+ov006_ListWin *ov006_Window_DtorDelete(ov006_ListWin *self) {
+    ov006_ListWin_Release(self);
     Heap_Free(self);
     return self;
 }

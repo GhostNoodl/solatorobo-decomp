@@ -1,25 +1,12 @@
 #include "ov006/ov006.h"
+#include "ov006/Tasks.h"
 
-typedef struct ov006_Unk021e1484 {
-    void *vtbl;
-    u8 unk4;
-    int unk8;
-    int unkC;
-    int unk10;
-    int unk14;
-    u16 unk18;
-    int unk1C;
-    int unk20;
-    int unk24;
-    int unk28;
-    int unk2C;
-} ov006_Unk021e1484;
 
 extern "C" {
 
 extern u8 data_ov006_021ec1fc[];
 
-ov006_Unk021e1484 *Ov006Vt_021ec1fc_Ctor(ov006_Unk021e1484 *self) {
+ov006_Obj13C *Ov006Vt_021ec1fc_Ctor(ov006_Obj13C *self) {
     self->vtbl = data_ov006_021ec1fc;
     self->unk4 = 0;
     self->unk8 = 0;

@@ -48,6 +48,14 @@ typedef struct Ov003AiState {
     VecFx32 pos;
 } Ov003AiState;
 
+// Vtable 021f8898 (0xe0 bytes; func_ov000_02192b24 clears ai.st and ai.timer): an ActorEx that
+// walks with func_ov000_02197ee0 and runs to ai.pos (ov003_021e0e8c.cpp).
+class Ov003ActExWalk : public ActorEx {
+public:
+    Ov003AiState ai;
+};
+SIZE_ASSERT(Ov003ActExWalk, 0xe0);
+
 // Vtable 021f9704 (ov003_021eae44.cpp, ov003_021eba54.cpp), 0x314 bytes; func_ov000_02192b24
 // clears ai.st when it builds it. hasModel is set by Init when Actor::unk_1a is not 0: the actor
 // then loads the resources and draws the model, rotated by rotOfs, which eases toward rotGoal.
@@ -61,25 +69,35 @@ public:
 };
 SIZE_ASSERT(Ov003ActExSway, 0x314);
 
-// A model after the ActorEx part (vtable 021f953c).
+// A model after the ActorEx part (vtable 021f953c, ov003_021f7848.cpp): Draw draws mdl count
+// times around pos, turnStep apart from turnAngle (which turns by turnSpeed each frame).
 class Ov003ActExMdl : public ActorEx {
 public:
     Model0218fe1c mdl;
-    u8 unk_1b8[0x8];
+    u8 count; // Actor::unk_18, 1..3
+    u8 unk_1b9;
+    u16 turnSpeed;
+    u16 turnAngle;
+    u16 turnStep; // 0x10000 / count
 };
 SIZE_ASSERT(Ov003ActExMdl, 0x1c0);
 
-// Vtable 021f8af8: two ActorRes, a model and three HitMesh arrays.
+// Vtable 021f8af8: two ActorRes, a model and three HitMesh arrays (ov003_021e0e8c.cpp). Draw
+// draws the model again at each copyPos with copyScale and copyAlpha (none while copyAlpha is 0);
+// meshC[i] is linked only while meshCPos[i] is on the ground.
 class Ov003ActExMesh : public ActorEx {
 public:
     ActorRes res;
     ActorRes res2;
     Model0218fe1c mdl;
-    u8 unk_428[0x44];
+    VecFx32 copyPos[4];
+    s32 copyScale[4];
+    u8 copyAlpha[4];
     Ov003HitMesh meshA[4];
     Ov003HitMesh meshB[4];
     Ov003HitMesh meshC[3];
-    u8 unk_af4[0x28];
+    VecFx32 meshCPos[3];
+    u8 unk_b18; // Actor::unk_93_1 - 1
 };
 SIZE_ASSERT(Ov003ActExMesh, 0xb1c);
 

@@ -127,10 +127,19 @@ typedef struct ActorRes {
     u8 unk_03_2 : 1;
     u8 unk_03_3 : 1;
     u8 unk_03_4 : 1;
-    u8 unk_03_5 : 3;
-    u8 unk_04[0xbc];
+    u8 unk_03_5 : 1;
+    u8 unk_03_6 : 2;
+    // From 0x0c, five 0x3c-byte entries (a handle, a 0x20-byte name and a 0x18-byte extension;
+    // func_ov000_0218e9c4 clears them). The ov003 actors read entries 2 and 4.
+    u8 unk_04[0x80];
+    u32 *unk_84; // entry 2's handle
+    char unk_88[0x20]; // entry 2's name
+    char unk_a8[0x18]; // entry 2's extension
     u32 *unk_c0;
-    u8 unk_c4[0x74];
+    u8 unk_c4[0x38];
+    void **unk_fc; // entry 4's handle
+    char unk_100[0x20]; // entry 4's name
+    char unk_120[0x18]; // entry 4's extension
 } ActorRes;
 SIZE_ASSERT(ActorRes, 0x138);
 

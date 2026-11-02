@@ -1,11 +1,5 @@
 #include "ov006/ov006.h"
-
-typedef struct ov006_Unk021db8c4 {
-    void *vtbl;
-    u8 unk4[0x1de];
-    u16 unk1E2;
-    u16 unk1E4;
-} ov006_Unk021db8c4;
+#include "ov006/Window.h"
 
 extern "C" {
 
@@ -15,18 +9,18 @@ extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov006_021ec30c[];
 
-ov006_Unk021db8c4 *ov006_Window_Ctor(ov006_Unk021db8c4 *self) {
-    self->vtbl = data_ov000_021cac60;
-    VCALL(self, 28);
-    self->vtbl = data_ov000_021caec8;
-    VCALL(self, 28);
-    self->vtbl = data_ov000_021cb1b0;
-    VCALL(self, 28);
-    self->vtbl = data_ov000_021cb0b8;
-    VCALL(self, 28);
-    self->vtbl = data_ov006_021ec30c;
-    self->unk1E2 = 0;
-    self->unk1E4 = 0;
+ov006_ListWin *ov006_Window_Ctor(ov006_ListWin *self) {
+    *(void **)self = data_ov000_021cac60;
+    self->vfunc_28();
+    *(void **)self = data_ov000_021caec8;
+    self->vfunc_28();
+    *(void **)self = data_ov000_021cb1b0;
+    self->vfunc_28();
+    *(void **)self = data_ov000_021cb0b8;
+    self->vfunc_28();
+    *(void **)self = data_ov006_021ec30c;
+    self->unk_1e2 = 0;
+    self->unk_1e4 = 0;
     return self;
 }
 

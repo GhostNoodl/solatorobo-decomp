@@ -8544,3 +8544,63 @@ Cleanup only, over `src/ov000` and `include/ov000` (plus two layout-neutral line
   - `Lo_02170188` keeps `hi & 0xf` (the ROM masks twice).
 - **Left.** The 0xce0 mini-map record (`Model_02164a94`, `Lo_02165f94`, `Lo_02165da0`) is allocated and zeroed in `02164c50`, but its OAM/palette fields have not been typed yet. Also left: the target-marker object at `Actor::unk_5c`/`Robo021ca458::unk_9b0` (`021bd300..021bd624`), and `Menu_021763c8` (round pmA).
 - **Scratch:** session scratchpad `acK/` holds acI's `chk.py`, `mksig.py`, `dd.sh` and `vmap.py`/`vt.py`, re-pointed.
+
+### Round acJ (ov003 merged files on ActorEx/Actor; ov006 windows on ov000 UiObj/UiList, ov006 tasks on ov000 Task)
+
+Readability only; every function stays byte-identical (per-function code+reloc compare against a baseline built first, then the full gate).
+
+**Counts**
+
+| | before | after |
+|---|---|---|
+| `void *self`, `src/ov003` (+ `include/ov003`) | 87 (90) | 10 (13) |
+| `void *self` in `ov003_021e0e8c` / `ov003_021f7848` | 51 / 26 | 0 / 0 |
+| raw-offset macros (`rawcnt.sh`), ov003 / ov006 | 17 / 28 | 17 / 5 |
+| `VCALL(` in `src/ov006` | 266 | 76 |
+| `VCALL(` in `ce374` / `d23dc` / `d3498` / `da208` / `e3934` / `d2e48` | 89 / 19 / 35 / 26 / 6 / 7 | 1 / 0 / 1 / 0 / 0 / 0 |
+| `void *self`, `src/ov006` (+ `include/ov006`) | 51 (51) | 42 (44) |
+
+- **ov003 merged files.**
+  - `ov003_021e0e8c.cpp` and `ov003_021f7848.cpp` include `ov003/ActorApi.h`; every namespace's flat actor view is now `ActorEx`, `Actor`, `Robo021ca458` or a class on them.
+  - New file-top classes:
+    - in `021e0e8c`: `Ov003SpawnPt` (vtable `021f8a60`), `Ov003Spawner` (`021f8638`, with `Ov003SpawnStep`/`Ov003SpawnTable`), `Ov003ActExTex` (`021f8768`) and `Ov003ActExPath` (`021f8f20`);
+    - in `021f7848`: `Ov003Cannon` (`021f95d4`), `Ov003Swing` (`021f9374`), `Ov003Mover` (`021f91ac`), `Ov003Gate` (`021f9114`), `Ov003Hover` (`021f94a4`), `Ov003Patrol` (`021f940c`) and the shared `Ov003FlyParam` record of `data_ov003_021f6b5c`. Two namespaces had declared that record with different layouts.
+  - The local spawn record is `GroupActorDesc` (`ov000/Group.h`). `include/ov003/GmObj.h` was deleted: `021e0e8c` was its only user.
+  - Header changes:
+    - `ActEx.h`: `Ov003ActExMesh` fields, the new `Ov003ActExWalk` (vtable `021f8898`, 0xe0), and `Ov003ActExMdl` (`count`, `turnSpeed`/`turnAngle`/`turnStep`; a member named `speed` hid `Actor::speed` and changed a store).
+    - `Unit.h`: `Ov003Unit::unk_94`.
+    - `ActorParts.h`: `ActorRes` entries 2 and 4 split into handle, name and extension; the layout is unchanged.
+    - `ObjLayouts.h`: `ActorEx::unk_ce_s`/`unk_ce_s8`. The path follower loads `unk_ce` with ldrsh, and the cannon reads its low byte as signed.
+    - `ActorApi.h`: `Actor_TurnToPos` and `func_ov000_0219aae8`, typed as the ov000 definitions with `const VecFx32 *ofs` and `Rot16 *rot`. The local declarations in `021d3d28` (whose `Ov003HtActor` view became `Actor`), `021ec130`, `021ec9e0`, `021ee2a8`, `021efad8`, `021f01a4` and `021f7848` (six copies) are gone.
+  - `func_ov003_021ea234` builds an `MtxFx33` with the nitro `MTX_*33_` and `FX_SinIdx`/`FX_CosIdx` inlines, replacing the local matrix typedefs and the sine macros.
+  - The cannon's 12-byte shot-offset copy stays a block copy (`Ov003Blk12 { s32 w[3]; }`, as `Ov010Blk12`). A `VecFx32` assignment copies word by word.
+- **`(u32)self & 3` in `func_ov003_021eb818` (`ov003_021eba54`) is still there.** Tried:
+  - plain `stageFlags = 1`;
+  - a `FieldState *` local, as `Stub_021975b4` does;
+  - a `const s32 on = 1` shared by the fsm call, `0x8000 + on` and the store;
+  - all 24 orders of the speed/velY/friction/gravity stores;
+  - four inline helpers (start-event with an id, with an id and flag, and set-flag with u8 or BOOL).
+  
+  The plain form differs only in where `mov r4, #1` is scheduled (the constant 1 lives in r4 and is reused for `0x8001` and the flag). None of the forms matched.
+- **ov006 windows (`include/ov006/Window.h`).**
+  - `ov006_Window`, `ov006_ListNode` and `ov006_Widget` are gone. The windows are ov000's classes, typed by the vtable their constructor stores:
+    - `UiList` (`021caec8`), `UiList021cb4a8`, `Lo021cadcc`, `Lo021cad50`, `Lo021cae48`, `Lo021cb5a8` and `Lo021cb0b8`;
+    - new `ov006_HudList : LoBase021ccb54_021ccbe0` (0x100, vtable `021ccb54`; `func_ov000_021c54f4` clears `unk_f4..unk_fc`);
+    - new `ov006_ListWin : Lo021cb0b8` (vtable `data_ov006_021ec30c`, 0x1e8; `ov006_Window_Ctor`/`Dtor`, `func_ov006_021d86a0`, and the slots in `ov006_021e3934`, whose `unk_d4` widget is `title2`, a `TextWin`).
+  - The duplicated per-file constructor inlines became one set in `Window.h` (`ov006_NewUiList`, `ov006_NewUiList021cb4a8`, `ov006_NewLo021cb5a8`, `ov006_NewLo021cb0b8`, `ov006_NewLo021cadcc`, `ov006_NewLo021cad50` (0xe8: the class declares only to 0xc8), `ov006_NewLo021cae48`, `ov006_NewHudList`). They store the vtable with the `*(void **)w = ...` idiom and call `vfunc_28()`.
+  - The ov000 window prototypes the menus call (`02154b58` returning `UiListItem *`, `02153c48`, `021546ec`, `021548cc`, `02157c90`/`02157d2c`, `0215bb14` on `Lo021cadcc`, `0215c1bc` on `Lo021cad50`, `0215d980` on `Lo021cae48`, and `021c3fd4`/`021c55e8`/`021c5630`/`021c5678` on `ov006_HudList`) are declared once there, replacing the `void *` copies in `ce374`/`d23dc`/`d3498`/`da208`.
+  - Window calls are `->vfunc_XX()`, and the fields are the ov000 names: `unk_4a`, `unk_c0`/`unk_c1`, `openLen`, `color`, `items`, `onDrawItem`, `unk_8c`/`unk_90`, `msgId`/`text`/`key`; item fields `name`, `label`, `unk_0c`, `unk_10`, `unk_24`.
+  - The decide callbacks `func_ov006_021ce734`/`021ce954`/`021d88f8`/`021da19c` take `(UiList *, UiListItem *)` and read `owner`; `ov006_TaskOwner` and the per-file item/context views are gone.
+  - `ObjLayouts.h`: `Lo021cb0b8::unk_1e2` (cleared by the ov006 subclass's ctor; it lies in the 0x1e4 class's tail).
+- **ov006 tasks.**
+  - `ov006_TaskBase` is `class : public Task` (ov000 `Task.h`) plus `step`/`subStep` (the old `state`/`subState` at 0x3c/0x40, renamed so they do not hide `Task::state`). `ov006_TaskCE`, `ov006_TaskD0` and `ov006_TaskD1F` derive from it.
+  - `ov006_TaskD0C`, `ov006_TaskD37` and `ov006_TaskCDF` (own fields from 0x3c) derive from `Task`; `ov006_TaskHead`/`ov006_TaskFlags` are gone.
+  - The old `base.`/`head.` fields map to `Task::unk_04` (flags), `unk_04_0`, `state` (0x08), `param` (0x0c) and `fadeLen` (0x20; the tasks add the window's `openLen` to it, and `*(int *)&unk10[0x10]` was the same field).
+  - `OV006_TASKBASE_CTOR`/`DTOR` store `data_ov000_021cc060` and call `vfunc_58`/`vfunc_5c`. `func_ov006_021d3794` allocates `ov006_TaskD37`.
+- **Other ov006 records.**
+  - `ov006_Caption` (`Caption.h`) is the 0x2c object of `ov006_Caption_Ctor` (`021e07b0`). `TaskD1F::unk68` and `TaskD37::unk138` are `ov006_Caption *`, and their `F()` stores are `kind`, `x/y`, `textX/textY` and `ofsY`; `ov006_Unk68` is gone.
+  - The gauge `ov006_Unk021e139c` (vtable `021ec20c`, 0x24, `x`/`y`) and `ov006_Obj13C` (vtable `021ec1fc`, 0x30) are defined in `Tasks.h`, and their ctor files use them.
+- **Left.**
+  - `ov006_Obj58` (vtable `021ec2fc`, 0xec) keeps `F(…, 0xb0..0xb8)` in `d3498`: its ctor file's view is nested and not yet a class.
+  - The remaining `VCALL` uses are on the `void *vtbl` records (Emblem, the caption/marker/model holders, `ov006_Task`/`Manager`).
+- **Renames:** none (fields and types only).

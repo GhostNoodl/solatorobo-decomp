@@ -8,7 +8,9 @@
 #include "types.h"
 
 typedef struct {
-    u8 unk_00[0xa2];
+    u8 unk_00[0x94];
+    u16 unk_94; // read by the ov003 patrol actor (vtable 021f940c) as its start rot_x
+    u8 unk_96[0xc];
     u8 unk_a2_0 : 1;
     u8 unk_a2_1 : 4;
     u8 unk_a2_5 : 1;

@@ -16,88 +16,33 @@ typedef struct ov006_Entry021da208 {
     int unk40;
 } ov006_Entry021da208;
 
-typedef struct ov006_List021da208 {
-    void *vtbl;
-    int state;
-    void *owner;
-    u32 flags;
-    u8 unk10[0x10];
-    int unk20;
-    int unk24;
-    u8 unk28[0x30];
-    int unk58;
-    int unk5C;
-    int unk60;
-    s16 unk64;
-    s16 unk66;
-    s16 unk68;
-    u8 unk6A[0x86];
-    u8 unkF0;
-} ov006_List021da208;
-
-typedef struct ov006_Menu021da208 {
-    void *vtbl;
-    int state;
-    void *owner;
-    u32 flags;
-    u8 unk10[0x58];
-    s16 unk68;
-    u8 unk6A[0x1a];
-    void *unk84;
-    u8 unk88[0x150];
-    s16 unk1D8;
-    u8 unk1DA[2];
-    void *unk1DC;
-    s16 unk1E0;
-} ov006_Menu021da208;
-
 typedef struct ov006_Task021da208 {
     void *vtbl;
     u32 flags;
     int unk8;
     int unkC;
-    ov006_Window *unk10;
-    ov006_List021da208 *unk14;
-    ov006_Window *unk18;
-    ov006_Window *unk1C;
-    ov006_Window *unk20;
-    ov006_Window *unk24;
-    ov006_Menu021da208 *unk28;
+    UiList021cb4a8 *unk10;
+    ov006_HudList *unk14;
+    Lo021cae48 *unk18;
+    Lo021cae48 *unk1C;
+    Lo021cb5a8 *unk20;
+    Lo021cad50 *unk24;
+    Lo021cb0b8 *unk28;
     u8 unk2C[0xc];
     int unk38;
 } ov006_Task021da208;
 
 extern "C" {
 
-extern void *data_ov000_021cac60;
-extern void *data_ov000_021cad50;
-extern void *data_ov000_021cae48;
-extern void *data_ov000_021caec8;
-extern void *data_ov000_021cb4a8;
-extern void *data_ov000_021cb5a8;
-extern void *data_ov000_021cb1b0;
-extern void *data_ov000_021cb0b8;
-extern void *data_ov000_021ccbe0;
-extern void *data_ov000_021ccb54;
 extern void *data_ov000_021cca40;
 extern void *data_ov006_021ebc80;
 extern const ov006_Price021da208 data_ov006_021eb7b4[];
 extern const ov006_Price021da208 data_ov006_021eb7c4[];
 extern const ov006_Price021da208 data_ov006_021eb7e4;
 
-void func_ov000_02157c90(void *a, const void *b);
-void func_ov000_02157d2c(void *a, const void *b);
-void func_ov000_021c3af4(void *self);
-void func_ov000_021c54f4(void *self);
-void func_ov000_021c55e8(void *self, const void *a);
-void func_ov000_021c5630(void *self, const void *a);
-void func_ov000_021c5678(void *self, const void *a);
 void func_ov000_021c22d8(void *self);
 void func_ov000_021c5bac(void *self);
-void func_ov000_021c3fd4(void *list, void *item);
-void func_ov000_0215d980(void *a, s32 b, BOOL c);
-void func_ov000_0215c1bc(void *a, int b, const void *c);
-BOOL func_ov006_021da19c(void *ctx, void *item);
+BOOL func_ov006_021da19c(UiList *self, UiListItem *item);
 
 static inline u8 ov006_SlotManager_GetItem(ov006_SlotManager *self, u8 i) {
     if (i < 3) {
@@ -125,82 +70,6 @@ static inline void *ov006_GetRes(void) {
     return data_02149ef8;
 }
 
-static inline ov006_Window *ov006_NewWindow_cb4a8(void) {
-    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xe0);
-    if (w != NULL) {
-        w->vtbl = &data_ov000_021cac60;
-        VCALL(w, 28);
-        w->vtbl = &data_ov000_021caec8;
-        VCALL(w, 28);
-        w->vtbl = &data_ov000_021cb4a8;
-        VCALL(w, 28);
-    }
-    return w;
-}
-
-static inline ov006_Window *ov006_NewWindow_cb5a8(void) {
-    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xe0);
-    if (w != NULL) {
-        w->vtbl = &data_ov000_021cac60;
-        VCALL(w, 28);
-        w->vtbl = &data_ov000_021caec8;
-        VCALL(w, 28);
-        w->vtbl = &data_ov000_021cb5a8;
-        VCALL(w, 28);
-    }
-    return w;
-}
-
-static inline ov006_Window *ov006_NewWindow_cae48(void) {
-    ov006_Window *w = (ov006_Window *)Heap_Alloc(0x98);
-    if (w != NULL) {
-        w->vtbl = &data_ov000_021cac60;
-        VCALL(w, 28);
-        w->vtbl = &data_ov000_021cae48;
-        VCALL(w, 28);
-    }
-    return w;
-}
-
-static inline ov006_Window *ov006_NewWindow_cad50(void) {
-    ov006_Window *w = (ov006_Window *)Heap_Alloc(0xe8);
-    if (w != NULL) {
-        w->vtbl = &data_ov000_021cac60;
-        VCALL(w, 28);
-        w->vtbl = &data_ov000_021cad50;
-        VCALL(w, 28);
-    }
-    return w;
-}
-
-static inline ov006_Menu021da208 *ov006_NewMenu(void) {
-    ov006_Menu021da208 *w = (ov006_Menu021da208 *)Heap_Alloc(0x1e4);
-    if (w != NULL) {
-        w->vtbl = &data_ov000_021cac60;
-        VCALL(w, 28);
-        w->vtbl = &data_ov000_021caec8;
-        VCALL(w, 28);
-        w->vtbl = &data_ov000_021cb1b0;
-        VCALL(w, 28);
-        w->vtbl = &data_ov000_021cb0b8;
-        VCALL(w, 28);
-    }
-    return w;
-}
-
-static inline ov006_List021da208 *ov006_NewList(void) {
-    ov006_List021da208 *w = (ov006_List021da208 *)Heap_Alloc(0x100);
-    if (w != NULL) {
-        w->vtbl = &data_ov000_021cac60;
-        VCALL(w, 28);
-        w->vtbl = &data_ov000_021ccbe0;
-        func_ov000_021c3af4(w);
-        w->vtbl = &data_ov000_021ccb54;
-        func_ov000_021c54f4(w);
-    }
-    return w;
-}
-
 static inline ov006_Entry021da208 *ov006_NewEntry(void) {
     ov006_Entry021da208 *e = (ov006_Entry021da208 *)Heap_Alloc(0x48);
     if (e != NULL) {
@@ -210,20 +79,6 @@ static inline ov006_Entry021da208 *ov006_NewEntry(void) {
         func_ov000_021c5bac(e);
     }
     return e;
-}
-
-static inline void ov006_SetPos(void *p, s16 x, s16 y, s16 z) {
-    ov006_Window *self = (ov006_Window *)p;
-    self->posX = x;
-    self->posY = y;
-    self->posZ = z;
-}
-
-static inline void ov006_SetSlide(void *p, int x, int y, int z) {
-    ov006_Window *self = (ov006_Window *)p;
-    self->slideX = x;
-    self->slideY = y;
-    self->slideZ = z;
 }
 
 static inline void ov006_Entry_Set(ov006_Entry021da208 *e, void *res, const ov006_Price021da208 *p, int cnt) {
@@ -244,41 +99,41 @@ void func_ov006_021da208(ov006_Task021da208 *self) {
         n = 4;
     }
     base = &data_ov006_021eb7b4[(u8)(n - 1)];
-    self->unk10 = ov006_NewWindow_cb4a8();
-    VCALL(self->unk10, 10, MsgRes_GetString(res, 0x18e));
-    VCALL(self->unk10, 14, MsgRes_GetString(res, 0x18f));
-    self->unk10->unk4A = 0x2c00;
+    self->unk10 = ov006_NewUiList021cb4a8();
+    self->unk10->vfunc_10(MsgRes_GetString(res, 0x18e));
+    self->unk10->vfunc_14(MsgRes_GetString(res, 0x18f));
+    self->unk10->unk_4a = 0x2c00;
     func_ov000_02157c90(self->unk10, MsgRes_GetString(res, 0x190));
     func_ov000_02157d2c(self->unk10, MsgRes_GetString(res, 0x3e));
     self->unk10->width = 0xf8;
     self->unk10->rows = 1;
-    ov006_SetPos(self->unk10, 0, 0x19, -0x199a);
-    ov006_SetSlide(self->unk10, -0x100, 0, 0);
+    ov006_Window_SetPos(self->unk10, 0, 0x19, -0x199a);
+    ov006_Window_SetSlide(self->unk10, -0x100, 0, 0);
     self->unk10->flags |= 0x400000;
     self->unk10->flags &= ~0x800000;
-    self->unk10->unkC0 = 0x8c;
-    self->unk10->unkC1 = 4;
-    VCALL(self->unk10, 74, MsgRes_GetString(res, base->unk0), 0, 0xffff, base->unk2);
+    self->unk10->unk_c0 = 0x8c;
+    self->unk10->unk_c1 = 4;
+    self->unk10->vfunc_74(MsgRes_GetString(res, base->unk0), 0, 0xffff, base->unk2);
     self->unk10->flags &= ~0x40000;
     self->unk10->flags &= ~0x20000;
     self->unk10->flags &= ~0x10000;
     self->unk10->flags &= ~0x2000000;
     {
-        ov006_Window *w = self->unk10;
-        VCALL(w, a8, func_ov000_02154b58(w, 0));
+        UiList021cb4a8 *w = self->unk10;
+        w->vfunc_a8(func_ov000_02154b58(w, 0));
     }
     self->unk10->flags |= 4;
-    VCALL(self->unk10, 08);
+    self->unk10->vfunc_08();
     self->unk10->flags &= ~2;
 
-    self->unk14 = ov006_NewList();
+    self->unk14 = ov006_NewHudList();
     func_ov000_021c55e8(self->unk14, MsgRes_GetString(res, 0x191));
     func_ov000_021c5630(self->unk14, MsgRes_GetString(res, 0x192));
     func_ov000_021c5678(self->unk14, MsgRes_GetString(res, 0x3e));
-    self->unk14->unk24 = 0xf8;
-    self->unk14->unk20 = 4;
-    ov006_SetPos(self->unk14, 2, 0x3b, -0x199a);
-    ov006_SetSlide(self->unk14, -0x100, 0, 0);
+    self->unk14->width = 0xf8;
+    self->unk14->rows = 4;
+    ov006_Window_SetPos(self->unk14, 2, 0x3b, -0x199a);
+    ov006_Window_SetSlide(self->unk14, -0x100, 0, 0);
     if (data_ov006_021ec860->unk1C) {
         const ov006_Price021da208 *p = &data_ov006_021eb7e4;
         ov006_Entry021da208 *e = ov006_NewEntry();
@@ -301,49 +156,49 @@ void func_ov006_021da208(ov006_Task021da208 *self) {
         }
     }
     self->unk14->flags &= ~0x40000;
-    self->unk14->unkF0 = 0;
+    self->unk14->unk_f0 = 0;
     self->unk14->flags |= 4;
-    VCALL(self->unk14, 08);
+    self->unk14->vfunc_08();
     self->unk14->flags &= ~2;
 
-    self->unk18 = ov006_NewWindow_cae48();
-    ov006_SetPos(self->unk18, 0x92, 0x86, -0x199a);
-    ov006_SetSlide(self->unk18, 0x100, 0, 0);
+    self->unk18 = ov006_NewLo021cae48();
+    ov006_Window_SetPos(self->unk18, 0x92, 0x86, -0x199a);
+    ov006_Window_SetSlide(self->unk18, 0x100, 0, 0);
     self->unk18->slideMode = 1;
-    VCALL(self->unk18, 08);
+    self->unk18->vfunc_08();
     func_ov000_0215d980(self->unk18, self->unk38, 1);
 
-    self->unk1C = ov006_NewWindow_cae48();
-    ov006_SetPos(self->unk1C, 0x92, 0x96, -0x199a);
-    ov006_SetSlide(self->unk1C, 0x100, 0, 0);
+    self->unk1C = ov006_NewLo021cae48();
+    ov006_Window_SetPos(self->unk1C, 0x92, 0x96, -0x199a);
+    ov006_Window_SetSlide(self->unk1C, 0x100, 0, 0);
     self->unk1C->slideMode = 1;
-    VCALL(self->unk1C, 08);
+    self->unk1C->vfunc_08();
     func_ov000_0215d980(self->unk1C, *(s32 *)((u8 *)data_0214a424 + 0x20), 1);
 
-    self->unk20 = ov006_NewWindow_cb5a8();
+    self->unk20 = ov006_NewLo021cb5a8();
     self->unk20->flags |= 0x4000000;
     self->unk20->slideMode = 1;
     self->unk20->flags |= 0x20000000;
     self->unk20->flags |= 0x80000000;
-    ov006_SetSlide(self->unk20, 0x100, 0, -0xcd);
-    VCALL(self->unk20, f4, 1, MsgRes_GetString(res, 0x36));
-    VCALL(self->unk20, 08);
+    ov006_Window_SetSlide(self->unk20, 0x100, 0, -0xcd);
+    self->unk20->vfunc_f4(1, MsgRes_GetString(res, 0x36));
+    self->unk20->vfunc_08();
     self->unk20->flags |= 2;
 
-    self->unk24 = ov006_NewWindow_cad50();
+    self->unk24 = ov006_NewLo021cad50();
     func_ov000_0215c1bc(self->unk24, 0x74, MsgRes_GetString(res, 0x197));
     self->unk24->flags |= 0x10000;
     self->unk24->flags &= ~0x20000;
     self->unk24->flags |= 2;
 
-    self->unk28 = ov006_NewMenu();
-    self->unk28->unk1D8 = 0x8d;
-    self->unk28->unk1DC = MsgRes_GetString(ov006_GetRes(), 0x26);
-    self->unk28->unk1E0 = 0;
-    self->unk28->unk84 = (void *)func_ov006_021da19c;
+    self->unk28 = ov006_NewLo021cb0b8();
+    self->unk28->msgId = 0x8d;
+    self->unk28->text = (char *)MsgRes_GetString(ov006_GetRes(), 0x26);
+    self->unk28->key = 0;
+    self->unk28->onDecide = func_ov006_021da19c;
     self->unk28->owner = self->unk2C;
-    VCALL(self->unk28, 08);
-    self->unk28->unk68 = -0x1666;
+    self->unk28->vfunc_08();
+    self->unk28->posZ = -0x1666;
     self->unk28->flags |= 2;
 }
 

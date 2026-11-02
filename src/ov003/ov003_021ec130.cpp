@@ -37,7 +37,6 @@ extern void func_ov000_021915a0(void *model);
 extern u32 Rand_UpTo(u32 max);
 extern void func_ov003_021ec668(Ov003Gimmick *self);
 extern void func_ov000_0219bd20(u16 id, u16 a, s32 type, s32 b, s32 c, Ov003GmSig *sig);
-extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
 extern void func_ov003_021ec9e0(Ov003Gimmick *self);
 
 static inline void Ov003Gimmick_Finish(Ov003Gimmick *self) {

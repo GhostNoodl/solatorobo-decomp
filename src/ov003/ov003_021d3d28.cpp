@@ -6,15 +6,6 @@
 
 
 typedef struct {
-    u8 unk_00[0xc];
-    u16 id;
-    u8 unk_0e[0x3a];
-    ActorSub48 *ctl;
-    s32 *unk_4c;
-    s32 *unk_50;
-} Ov003HtActor;
-
-typedef struct {
     u8 unk_00[0x10];
     s32 unk_10;
     s32 unk_14;
@@ -40,19 +31,18 @@ void func_ov000_021915a0(Model0218fe1c *model);
 BOOL func_ov000_02198360(ActorSub40 *w, u8 a, BOOL b);
 void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 u16 func_ov000_02198da8(ActorSub48 *ctl, u16 angle);
-Ov003HtActor *Target_Get(ActorSub4c *t);
+Actor *Target_Get(ActorSub4c *t);
 u16 func_ov000_02199e94(ActorSub4c *t);
 u8 func_ov000_02199f08(ActorSub4c *t);
-void func_ov000_02199f48(ActorHp *t, Ov003HtActor *a);
+void func_ov000_02199f48(ActorHp *t, Actor *a);
 s32 Filter_Apply(ActorHp *a, Ov003HtSlot *b, s32 value);
-BOOL func_ov000_0219aae8(Ov003Actor *a, Ov003HtActor *b, u16 c, u8 d, u16 mask, VecFx32 *ofs, void *rot, s32 r, s32 rr, s16 h, s32 i);
 u8 func_ov003_021cee68(void);
 
 void func_ov003_021d3d28(Ov003Actor *self) {
     BOOL hit;
     u16 c;
     s32 h;
-    Ov003HtActor *tgt;
+    Actor *tgt;
     Ov003HtSlot *slot;
     switch (self->fsm->st) {
     case 0: {
@@ -82,7 +72,7 @@ void func_ov003_021d3d28(Ov003Actor *self) {
         if (tgt != NULL && self->targetObj->unk_01 == 1) {
             ActorSub48 *ctl = self->hit;
             if ((ctl->unk_50 & 0x60000000) || ctl->unk_58 != 0) {
-                slot = (Ov003HtSlot *)tgt->unk_50;
+                slot = (Ov003HtSlot *)tgt->hpObj;
                 hit = FALSE;
                 c = func_ov000_02199e94(self->targetObj);
                 switch (self->unk_b0->unk_0c_0) {
@@ -168,7 +158,7 @@ void func_ov003_021d3d28(Ov003Actor *self) {
                     msg.kind = kind;
                     msg.id = 0xffff;
                     if (hit && kind == 0x41) {
-                        tgt = (Ov003HtActor *)self;
+                        tgt = self;
                     }
                     Actor_SendMsg(self, tgt->id, 9, 0, sizeof(msg), &msg);
                 } else {
@@ -269,13 +259,13 @@ void func_ov003_021d3d28(Ov003Actor *self) {
         restore = FALSE;
         if (t != NULL && t->target != 0xffff && t->unk_01 == 1) {
             s32 r = self->radius + 0x4cd;
-            Ov003HtActor *a;
+            Actor *a;
             if (r < 0xccd) {
                 r = 0xccd;
             }
             self->hit->unk_44 = r;
             a = Target_Get(self->targetObj);
-            if (a != NULL && (other = a->ctl) != NULL && other->unk_9a_3) {
+            if (a != NULL && (other = a->hit) != NULL && other->unk_9a_3) {
                 other->unk_9a_3 = 0;
                 func_0203f364(other);
                 restore = TRUE;

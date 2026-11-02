@@ -67,6 +67,8 @@ struct ActorEx : public Actor {
     };
     union {
         u16 unk_ce;
+        s16 unk_ce_s; // signed (the point index of the ov003 path follower, negative: stop)
+        s8 unk_ce_s8; // the low byte signed (the ov003 cannon's shot index, -1: none)
         struct { // both bytes whole and unsigned (the ov003 gimmick)
             u8 unk_ce_u;
             u8 unk_cf_u;
@@ -517,6 +519,7 @@ struct Lo021cb0b8 : public LoBase021cafc0_021cb0b8 {
     u16 msgId;       // 0x1d8 (0xffff: none)
     char *text;      // 0x1dc the item lines, separated by data_ov000_021cabf4
     u16 key;         // 0x1e0 id of the item selected first
+    u16 unk_1e2;     // cleared by ov006's subclass (ov006_Window_Ctor)
 };
 
 

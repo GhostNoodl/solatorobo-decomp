@@ -12,32 +12,25 @@
 #include "ov006/Caption.h"
 
 /* Task with vtable data_ov006_021ebd40 (0x58 bytes). */
-typedef struct ov006_TaskCE {
-    ov006_TaskBase base;
-    ov006_Window *unk44;
-    ov006_Window *unk48;
+struct ov006_TaskCE : public ov006_TaskBase {
+    UiList *unk44;
+    Lo021cadcc *unk48;
     ov006_MsgBox *unk4C;
-    ov006_Window *unk50;
+    ov006_HudList *unk50;
     ov006_CaptionPanel *unk54;
-} ov006_TaskCE;
+};
 
 /* Task with vtable data_ov006_021ebcc0 (0x114 bytes). */
-typedef struct ov006_TaskD0 {
-    ov006_TaskBase base;
+struct ov006_TaskD0 : public ov006_TaskBase {
     char names[4][0x30];
-    ov006_Window *unk104;
-    ov006_Window *unk108;
-    ov006_Window *unk10C;
+    UiList021cb4a8 *unk104;
+    Lo021cadcc *unk108;
+    Lo021cad50 *unk10C;
     u8 unk110;
-} ov006_TaskD0;
+};
 
 /* Task with vtable data_ov006_021ebf40 (0x128 bytes). */
-typedef struct ov006_TaskD0C {
-    void *vtbl;
-    u32 flags;
-    int unk8;
-    int unkC;
-    u8 unk10[0x2c];
+struct ov006_TaskD0C : public Task {
     u8 unk3C;
     u8 unk3D;
     u8 unk3E[2];
@@ -46,12 +39,26 @@ typedef struct ov006_TaskD0C {
     u8 unk101;
     struct ov006_SlotPacked unk102;
     u8 unk11A[2];
-    ov006_Window *unk11C;
-    ov006_Window *unk120;
-    ov006_Window *unk124;
-} ov006_TaskD0C;
+    UiList021cb4a8 *unk11C;
+    Lo021cadcc *unk120;
+    Lo021cad50 *unk124;
+};
 
-typedef struct ov006_Unk021e139c ov006_Unk021e139c;
+/* A gauge (vtable data_ov006_021ec20c, 0x24 bytes, ctor Ov006Vt_021ec20c_Ctor): func_ov006_021e139c
+   sets its ratio unkC = a / b. */
+typedef struct ov006_Unk021e139c {
+    void *vtbl;
+    u8 unk4;
+    u8 unk5;
+    u8 unk6[2];
+    int unk8;
+    int unkC;
+    int unk10;
+    int x;
+    int y;
+    int unk1C;
+    int unk20;
+} ov006_Unk021e139c;
 
 typedef struct ov006_Vec32 {
     s32 x, y, z;
@@ -70,41 +77,22 @@ typedef struct ov006_Actor58 {
     ov006_Vec16 rot;
 } ov006_Actor58;
 
-typedef struct ov006_Unk68 {
-    void *vtbl;
-    u8 unk4;
-} ov006_Unk68;
-
 /* Task with vtable data_ov006_021ebec0 (0x7c bytes). */
-typedef struct ov006_TaskD1F {
-    ov006_TaskBase base;
+struct ov006_TaskD1F : public ov006_TaskBase {
     int unk44;
     u8 unk48;
     u8 unk49;
     u16 unk4A;
     int unk4C;
     int unk50;
-    ov006_Window *unk54;
+    UiList *unk54;
     struct ov006_Actor58 *unk58;
-    ov006_Window *unk5C;
-    ov006_Window *unk60;
-    ov006_Window *unk64;
-    struct ov006_Unk68 *unk68;
+    Lo021cadcc *unk5C;
+    Lo021cb0b8 *unk60;
+    Lo021cad50 *unk64;
+    ov006_Caption *unk68;
     ov006_Unk021e139c *gauges[4];
-} ov006_TaskD1F;
-
-typedef struct ov006_TaskHead {
-    void *vtbl;
-    union {
-        u32 flags;
-        ov006_TaskFlags f;
-    };
-    int unk8;
-    int unkC;
-    u8 unk10[0x10];
-    int unk20;
-    u8 unk24[0x18];
-} ov006_TaskHead;
+};
 
 typedef struct ov006_Model60 {
     s16 unk0;
@@ -118,7 +106,21 @@ typedef struct ov006_Model60 {
     char unk6C[0x20];
 } ov006_Model60;
 typedef struct ov006_Obj58 ov006_Obj58;
-typedef struct ov006_Obj13C ov006_Obj13C;
+/* Vtable data_ov006_021ec1fc (0x30 bytes, ctor Ov006Vt_021ec1fc_Ctor). */
+typedef struct ov006_Obj13C {
+    void *vtbl;
+    u8 unk4;
+    int unk8;
+    int unkC;
+    int unk10;
+    int unk14;
+    u16 unk18;
+    int unk1C;
+    int unk20;
+    int unk24;
+    int unk28;
+    int unk2C;
+} ov006_Obj13C;
 
 typedef struct ov006_Anm74 {
     int frame;
@@ -135,8 +137,7 @@ typedef struct ov006_Anm74 {
 } ov006_Anm74;
 
 /* Task with vtable data_ov006_021ebdc0 (0x140 bytes). */
-typedef struct ov006_TaskD37 {
-    ov006_TaskHead head;
+struct ov006_TaskD37 : public Task {
     u8 step;
     u8 unk3D;
     u8 unk3E[2];
@@ -148,10 +149,10 @@ typedef struct ov006_TaskD37 {
     u16 unk4A;
     u16 unk4C;
     u8 unk4E[2];
-    ov006_Window *unk50;
-    ov006_Window *unk54;
+    UiList *unk50;
+    Lo021cadcc *unk54;
     ov006_Obj58 *unk58;
-    ov006_Window *unk5C;
+    Lo021cb0b8 *unk5C;
     ov006_Model60 *unk60;
     Model0218fe1c *unk64;
     ov006_Model60 *unk68;
@@ -162,14 +163,9 @@ typedef struct ov006_TaskD37 {
     u8 unk79;
     s16 animSpeed;
     Camera cam;
-    ov006_Unk68 *unk138;
+    ov006_Caption *unk138;
     ov006_Obj13C *unk13C;
-} ov006_TaskD37;
-
-typedef struct ov006_TaskOwner {
-    u8 unk0[8];
-    void *task;
-} ov006_TaskOwner;
+};
 
 #ifdef __cplusplus
 extern "C" {
@@ -189,7 +185,6 @@ extern s32 data_02097d78[];
 void *func_ov000_0218084c(void *a, int b, int c);
 void func_0203cc58(int a, int b, int c);
 void func_0203cb78(int a, int b, int c);
-int func_ov000_02154b58(void *a, u16 b);
 
 #ifdef __cplusplus
 }

@@ -148,7 +148,7 @@ void *ActorMgr_GetGroup(void *mgr, u16 id);
 void ActorGroup_BroadcastKind(void *p, u16 a, int b);
 void func_ov000_0216da78(ov006_GObj021d6ff0 *p);
 void *MsgRes_GetString(void *a, int id);
-void func_ov006_021d86a0(ov006_Task021d6ff0 *self, u16 a, int b);
+void func_ov006_021d86a0(ov006_Task021d6ff0 *self, u16 a, char *text);
 ov006_Result021d6ff0 *Ov006Vt_021ec23c_Ctor(ov006_Result021d6ff0 *p);
 void func_ov006_021dfce8(ov006_Result021d6ff0 *p);
 void func_ov006_021dee68(void *p, PlayTime *t, BOOL a, BOOL b);
@@ -476,7 +476,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
         if (data_ov006_021ec860->unk1C == 0) {
             if (self->win == NULL) {
                 if (func_ov006_021dab98(func_ov006_021db060(data_ov006_021ec884, 0))->unk0 & 8) {
-                    func_ov006_021d86a0(self, 0x8d, (int)MsgRes_GetString(data_02149ef8, 0x28));
+                    func_ov006_021d86a0(self, 0x8d, (char *)MsgRes_GetString(data_02149ef8, 0x28));
                     break;
                 }
             } else {

@@ -26,6 +26,7 @@ void func_ov000_021953b4(ActorEx *self);
 BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg);
 void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
 void Actor_MoveToPos(Actor *self, const VecFx32 *target, s32 turn);
+void Actor_TurnToPos(Actor *self, const VecFx32 *target, s32 step);
 void Actor_Move(Actor *self, s32 rate);
 Actor *Actor_GetTarget(Actor *self);
 void func_ov000_02197ad0(Actor *self, BOOL b);
@@ -33,6 +34,7 @@ void func_ov000_0219763c(Actor *self);
 void func_ov000_02197ee0(Actor *self, Ov003AiState *st, s32 near, s32 arg, s32 radius);
 void func_ov000_02195848(VObj *obj);
 BOOL func_ov000_0218cea4(Actor *self);
+BOOL func_ov000_0219aae8(Actor *a, Actor *b, u16 c, u8 d, u16 mask, const VecFx32 *ofs, Rot16 *rot, s32 r, s32 rr, s16 h, s32 i);
 }
 #endif
 

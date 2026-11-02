@@ -1,26 +1,19 @@
 #include "ov006/ov006.h"
-
-typedef struct ov006_Unk021d88f8 {
-    u8 unk0[6];
-    u16 unk6;
-} ov006_Unk021d88f8;
-
-typedef struct ov006_Ctx021d88f8 {
-    u8 unk0[8];
-    int *unk8;
-} ov006_Ctx021d88f8;
+#include "ov006/Window.h"
 
 extern "C" {
 
+// The decide callback of func_ov006_021d86a0's list: it stores the chosen item's id (-1: none)
+// where the list's owner points.
 #pragma force_active on
-int func_ov006_021d88f8(ov006_Ctx021d88f8 *ctx, ov006_Unk021d88f8 *item) {
-    int *dst = ctx->unk8;
+BOOL func_ov006_021d88f8(UiList *self, UiListItem *item) {
+    s32 *dst = (s32 *)self->owner;
     if (item != NULL) {
-        *dst = item->unk6;
+        *dst = item->id;
     } else {
         *dst = -1;
     }
-    return 0;
+    return FALSE;
 }
 #pragma force_active reset
 
