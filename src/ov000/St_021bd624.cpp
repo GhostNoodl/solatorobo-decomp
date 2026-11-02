@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "nitro/mi.h"
 
 typedef void (*StFn021bd624)(void *self);
 
@@ -14,7 +15,6 @@ extern St021bd624 data_ov000_021cc938[];
 BOOL func_ov000_021bd8ac(void *self);
 BOOL func_0203e688(void);
 BOOL func_02054f10(void *p, u16 a);
-void MI_CpuFill8(void *dst, u8 value, u32 size);
 
 static inline s32 Norm021bd624(s32 k) {
     if (k >= 12 && k < 16) {

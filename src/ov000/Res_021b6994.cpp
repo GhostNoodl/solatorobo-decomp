@@ -1,11 +1,11 @@
 #include "ov000/VObj.h"
 #include "Main/Sys/FieldState.h"
+#include "Main/Res/ResMgr.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
 
-extern void *data_02097cdc;
 u8 *func_0206e150(void *p);
 u8 *func_0206e180(void *p);
 void *func_02035d5c(void *e);

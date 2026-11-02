@@ -1,5 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
+#include "Main/Gfx/Model.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 
@@ -7,11 +9,6 @@ extern s32 data_02097d78[5];
 BOOL func_02054f10(void *a, s32 b);
 extern void *data_0208cc94;
 extern void *data_0208cc88;
-void func_02041440(void *p, void *name, s32 c);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
 void func_ov000_0215fdfc(void *self, s32 a, const void *b);
 extern u8 data_ov000_021c9ab0[];
 extern s32 data_ov000_021c9bb4[];

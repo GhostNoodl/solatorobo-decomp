@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Gfx/GfxMgr.h"
 
 typedef struct {
     u32 unk_00;
@@ -6,7 +7,6 @@ typedef struct {
 } DLRef021bc86c;
 
 extern "C" {
-extern u8 *data_02097d48;
 extern DLRef021bc86c data_0208b3d0;
 extern DLRef021bc86c data_020828f8;
 void func_02043d20(void *obj, int a);
@@ -28,10 +28,10 @@ static inline void G3_Cmd1(int cmd, u32 value) {
 }
 
 void func_ov000_021bc86c(void) {
-    u8 *g = data_02097d48;
+    GfxSys *g = data_02097d48;
     u32 size;
-    func_02043d20(g + 0x8b0, 0);
-    G3_Cmd1(0x29, 0 | (1 << 4) | (3 << 6) | (1 << 11) | (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | (0x1e << 16));
+    func_02043d20(g->unk_8b0, 0);
+    G3_Cmd1(0x29, 0 | (1 << 4) | (3 << 6) | (1 << 11) | (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | (0x1e << 16));
     G3_Cmd1(0x2a, 0x20000000);
     G3_Cmd1(0x20, 0);
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);

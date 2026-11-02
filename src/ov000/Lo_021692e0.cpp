@@ -1,18 +1,15 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Gfx/Model.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 
 extern s32 data_02097d78[5];
 BOOL func_02054f10(void *a, s32 b);
-extern void *data_0208cc94;
-extern void *data_0208cc88;
-void func_02041440(void *p, void *name, s32 c);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
+extern const char *data_0208cc94;
+extern const char *data_0208cc88;
 void func_ov000_0215fdfc(void *self, s32 a, const void *b);
 extern u8 data_ov000_021c9ab0[];
 extern s32 data_ov000_021c9bb4[];
@@ -51,17 +48,17 @@ static inline BOOL LoD78Idle(void) {
 
 void func_ov000_021692e0(Lo021cb7ec *self) {
     void *res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-    u8 *m = (u8 *)Heap_Alloc(0x160);
+    Model *m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
-        void *nm = data_0208cc88;
-        func_02041218((struct PlttRes *)(m + 0x88));
+        const char *nm = data_0208cc88;
+        func_02041218(&m->pltt);
         func_02041440(m, nm, 0);
     }
     self->unk_9c = m;
     func_020417e0(m, res);
-    LFLD(u32, self->unk_9c, 0x6c) |= 2;
-    LFLD(u32, self->unk_9c, 0x6c) |= 0x200000;
-    LFLD(u32, self->unk_9c, 0x6c) |= 0x80000;
+    self->unk_9c->flags |= 2;
+    self->unk_9c->flags |= 0x200000;
+    self->unk_9c->flags |= 0x80000;
     func_02041d9c(self->unk_9c, 0, 1);
     self->unk_30 = 0xc000;
     self->unk_50 = 0x30;

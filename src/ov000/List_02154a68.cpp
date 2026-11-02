@@ -2,6 +2,7 @@
 #include "Main/Sys/SysState.h"
 #include "Main/Gfx/Model.h"
 #include "ov000/UiObj.h"
+#include "Main/Res/ResArc.h"
 
 
 typedef struct {
@@ -17,11 +18,8 @@ typedef struct {
 extern "C" {
 
 
-BOOL STD_CompareString(const char *a, const char *b);
 void Heap_Free(void *ptr);
 void *Heap_Alloc(u32 size);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
 
 static inline UiListItem *FindById(UiList *self, u16 id) {
     UiListItem *entry;

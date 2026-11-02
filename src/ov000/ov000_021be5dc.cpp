@@ -1,5 +1,6 @@
 #include "ov000/HeapScope.h"
 #include "ov000/Vec.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
@@ -44,7 +45,6 @@ void *func_ov000_021be564(void *self, void *src, void *out, u16 *count);
 void func_02041c34(void *model, s32 a, void *cb, void *arg);
 extern u8 data_02092800[]; // NNS_G3dGlb.projMtx
 extern u8 data_02092844[];  // NNS_G3dGlb.cameraMtx
-extern u8 *data_02097d48;
 
 static inline s32 FxMulL(s32 a, s64 b) {
     return (a * b + 0x800) >> 12;

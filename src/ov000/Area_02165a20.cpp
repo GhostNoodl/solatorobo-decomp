@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Main/Sys/FieldState.h"
+#include "Main/Gfx/PlttRes.h"
 
 typedef struct {
     u8 pad[0x12];
@@ -57,8 +58,6 @@ typedef struct {
 
 extern "C" {
 
-void *Heap_AllocHi(u32 size, s32 align);
-void Heap_FreeHi(void *p);
 u8 *func_ov000_02165e2c(Obj02165a20 *self, Area02165a20 *area);
 
 static inline Area02165a20 *GetArea02165a20(Sub02165a20 *w, u8 i) {

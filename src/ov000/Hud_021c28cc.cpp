@@ -1,5 +1,7 @@
 #include "types.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Gfx/Model.h"
+#include "ov000/ModelPart.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -50,32 +52,6 @@ public:
 };
 
 extern "C" {
-void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
-
-static inline void *Model_GetPart021c28cc(void *self, int idx) {
-    if (idx >= LFLD(s32, self, 0x80)) {
-        return NULL;
-    }
-    return (u8 *)LFLD(void *, self, 0x78) + idx * 0x28;
-}
-
-static inline void Model_PlayPart021c28cc(void *model, int idx) {
-    void *res = LFLD(void *, model, 0x28);
-    void *part;
-    void *anim;
-    if (res == NULL) {
-        return;
-    }
-    part = Model_GetPart021c28cc(model, idx);
-    if (part != NULL && LFLD(void *, part, 0x4) != NULL) {
-        anim = LFLD(void *, LFLD(void *, part, 0x4), 0x30);
-    } else {
-        anim = NNS_G2dGetCellDataByIdx(LFLD(void *, res, 0x4), **(u16 **)LFLD(void *, NNS_G2dGetAnimSequenceByIdx(LFLD(void *, res, 0xc), idx), 0xc));
-    }
-    func_02042628(model, anim, part, 0);
-}
 
 static inline void SetPos021c28cc(void *o, s32 x, s32 y) {
     LFLD(s32, o, 0xfc) = x;
@@ -93,9 +69,9 @@ static inline void ScreenPos021c28cc(s32 *ox, s32 *oy, s32 x, s32 y, s32 h) {
 void func_ov000_021c28cc(Hud021cca10 *self) {
     s32 x;
     s32 y;
-    void *m;
+    Model *m;
     s32 z;
-    void *n;
+    Model *n;
     if (self->unk_44 == 0) {
         return;
     }
@@ -105,13 +81,13 @@ void func_ov000_021c28cc(Hud021cca10 *self) {
     ScreenPos021c28cc(&x, &y, self->unk_0c, self->unk_10, self->unk_18);
     z = self->unk_14;
     SetPos021c28cc(self->unk_34, x << 12, (y + 7) << 12);
-    LFLD(s32, self->unk_34, 0x150) = z;
+    self->unk_34->unk_150 = z;
     m = self->unk_34;
-    Model_PlayPart021c28cc(m, 4);
+    Model_PlayPart(m, 4);
     SetPos021c28cc(self->unk_30, (x + 0x10) << 12, (y - 2) << 12);
-    LFLD(s32, self->unk_30, 0x150) = z;
+    self->unk_30->unk_150 = z;
     n = self->unk_30;
-    Model_PlayPart021c28cc(n, 6);
+    Model_PlayPart(n, 6);
     ((V021c28cc *)self->unk_38)->f20((self->unk_0c + 0x40000) >> 12, (self->unk_10 + ((self->unk_18 - LFLD(s32, self->unk_38, 0x48)) << 11)) >> 12);
     LFLD(s32, self->unk_38, 0x70) = z;
     ((V021c28cc *)self->unk_38)->f90();

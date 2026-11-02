@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "nitro/mi.h"
 
 typedef struct {
     u8 b0 : 1;
@@ -27,8 +28,6 @@ BOOL func_ov000_021903b4(void *a);
 void func_ov000_02191c24(void *a, void *b);
 void func_ov000_02191ec4(void *a, s32 b, u32 c);
 void func_ov000_021bd7a0(void *p);
-void MI_Copy48B(const void *src, void *dst);
-void MI_Copy36B(const void *src, void *dst);
 s32 FX_Div(s32 a, s32 b);
 
 static inline BOOL GBusy02194c08(FieldState *g) {

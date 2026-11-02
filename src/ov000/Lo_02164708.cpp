@@ -1,6 +1,8 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Gfx/Model.h"
+#include "ov000/ModelPart.h"
 
 typedef struct {
     u32 b0 : 3;
@@ -46,39 +48,13 @@ void func_ov000_02164708(void) {
 }
 
 
-void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
 void func_02041c20(void *a, int b, int c);
 void func_ov000_0216715c(void *self, u8 *p);
 void func_ov000_021675ec(void *self, u8 *p);
 
-static inline void *LoModelGetPart(void *self, int idx) {
-    if (idx >= LFLD(s32, self, 0x80)) {
-        return NULL;
-    }
-    return (u8 *)LFLD(void *, self, 0x78) + idx * 0x28;
-}
-
-static inline void LoModelPlayPart(void *model, int idx) {
-    void *res = LFLD(void *, model, 0x28);
-    void *part;
-    void *anim;
-    if (res == NULL) {
-        return;
-    }
-    part = LoModelGetPart(model, idx);
-    if (part != NULL && LFLD(void *, part, 0x4) != NULL) {
-        anim = LFLD(void *, LFLD(void *, part, 0x4), 0x30);
-    } else {
-        anim = NNS_G2dGetCellDataByIdx(LFLD(void *, res, 0x4), **(u16 **)LFLD(void *, NNS_G2dGetAnimSequenceByIdx(LFLD(void *, res, 0xc), idx), 0xc));
-    }
-    func_02042628(model, anim, part, 0);
-}
-
-static inline void LoPlayIf(void *m, int idx) {
+static inline void LoPlayIf(Model *m, int idx) {
     if (m != NULL) {
-        LoModelPlayPart(m, idx);
+        Model_PlayPart(m, idx);
     }
 }
 
@@ -125,11 +101,11 @@ void func_ov000_02164750(Lo021cb6b0 *self) {
     if (m != NULL) {
         LFLD(s32, m, 0x10c) = 0;
         LFLD(s32, m, 0x110) = 0;
-        LoModelPlayPart(self->unk_24, 0);
+        Model_PlayPart(self->unk_24, 0);
         func_02041c20(self->unk_24, 1, 0);
-        LoModelPlayPart(self->unk_24, 1);
+        Model_PlayPart(self->unk_24, 1);
         func_02041c20(self->unk_24, 1, 1);
-        LoModelPlayPart(self->unk_24, 1);
+        Model_PlayPart(self->unk_24, 1);
     }
     LoPlayIf(self->unk_2c, 0);
     o = self->unk_40;

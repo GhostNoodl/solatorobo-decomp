@@ -3,6 +3,7 @@
 #include "ov000/VObj.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
+#include "nitro/mi.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -35,7 +36,6 @@ void func_ov000_02182590(u8 *p);
 u16 func_0206e7ec(u32 a, u32 b);
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL func_ov000_021b4738(void);
-void MIi_CpuClear32(u32 data, void *dst, u32 size);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 void func_ov000_0218996c(u8 a, u8 b);
 u8 *func_020704b4(u16 id);

@@ -1,11 +1,11 @@
 #include "ov000/ModelPart.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 extern "C" {
-extern u8 *data_02097d48;
 u8 Gfx3DState_NextPolyId(void *p);
 
 static inline void SetOfs(Model *m, s32 x, s32 y) {
@@ -13,7 +13,7 @@ static inline void SetOfs(Model *m, s32 x, s32 y) {
 }
 
 void func_ov000_021c0b84(Lo021cc938 *self) {
-    u8 *g;
+    GfxSys *g;
     s32 x;
     s32 id;
     if (self->unk_68 != 10) {
@@ -25,7 +25,7 @@ void func_ov000_021c0b84(Lo021cc938 *self) {
     SetOfs(self->unk_90, x, 0);
     self->unk_8c->unk_150 = self->unk_80;
     SetOfs(self->unk_8c, x, 0);
-    id = Gfx3DState_NextPolyId(g + 0x8b0) & 0x3f;
+    id = Gfx3DState_NextPolyId(g->unk_8b0) & 0x3f;
 
     MODEL_FLAGS(self->unk_90)->polygon_id = id;
     MODEL_FLAGS(self->unk_90)->alpha = 0x1e;

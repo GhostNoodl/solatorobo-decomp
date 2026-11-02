@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "nitro/std.h"
+#include "Main/Gfx/Model.h"
 
 typedef struct {
     u8 c[3];
@@ -12,9 +13,6 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb5a8[];
 char *MsgRes_GetString(void *msg, s32 id);
-void func_02041440(void *p, void *name, s32 c);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
 void func_ov000_02165a20(s32 a, Rgb021bbd94 *c);
 
 static inline s32 Ccd30_Value(void) {
@@ -33,8 +31,11 @@ static inline void Rgb_Set(Rgb021bbd94 *c, u8 r, u8 g, u8 b) {
 }
 
 struct Obj021bbd94 {
-    u8 unk_00[0x58];
-    void *unk_58;
+    u8 unk_00[0x8];
+    char arcName[0x20];
+    char fileName[0x20];
+    u8 unk_48[0x10];
+    Model *unk_58;
     VObj *unk_5c;
     u8 unk_60[0x14];
     u8 unk_74;
@@ -45,7 +46,7 @@ struct Obj021bbd94 {
 void func_ov000_021bbd94(Obj021bbd94 *self) {
     void *msg = data_02149ef8;
     VObj *t;
-    u8 *m;
+    Model *m;
     Rgb021bbd94 c;
 
     t = (VObj *)Heap_Alloc(0xe0);
@@ -76,15 +77,15 @@ void func_ov000_021bbd94(Obj021bbd94 *self) {
     LFLD(u32, self->unk_5c, 0xc) |= 0x80000000;
     self->unk_5c->vfunc_f4(2, MsgRes_GetString(msg, 0x33));
     self->unk_5c->vfunc_08();
-    m = (u8 *)Heap_Alloc(0x160);
+    m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
-        func_02041218((struct PlttRes *)(m + 0x88));
-        func_02041440(m, (u8 *)self + 0x28, 0);
-        STD_CopyString((char *)m + 0x2c, (char *)self + 8);
+        func_02041218(&m->pltt);
+        func_02041440(m, self->fileName, 0);
+        STD_CopyString(m->name, self->arcName);
     }
     self->unk_58 = m;
     func_020417e0(self->unk_58, (void *)VOBJ_AT(self, 4)->vfunc_10());
-    LFLD(u32, self->unk_58, 0x6c) |= 2;
+    self->unk_58->flags |= 2;
     func_02041d9c(self->unk_58, 0, 0xffff);
     {
         s32 v = Ccd30_Value();

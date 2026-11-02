@@ -1,4 +1,6 @@
 #include "Main/Gfx/FieldMsg.h"
+#include "ov000/ModelPart.h"
+#include "Main/Res/ResArc.h"
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 typedef struct {
@@ -24,33 +26,16 @@ typedef struct {
     s32 unk_18;
     u8 pad_1c[8];
     TextWin *win;
-    u8 *model;
+    Model *model;
 } Obj0215f0ec;
 
 extern "C" {
 extern Entry0215f0ec data_02fe0188[];
-extern void *data_0208cb84;
-extern void *data_0208cc8c;
-extern void *data_0208cb74;
-extern void *data_0208cca0;
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
+extern const char *data_0208cb84;
+extern const char *data_0208cc8c;
+extern const char *data_0208cb74;
+extern const char *data_0208cca0;
 void func_02041c20(void *model, s32 a, void *b);
-
-#define LO_MODEL_NEW(out, NAME, ARC)                 \
-    do {                                             \
-        u8 *m_ = (u8 *)Heap_Alloc(0x160);         \
-        if (m_) {                                    \
-            void *arc_;                              \
-            void *name_;                             \
-            name_ = NAME;                            \
-            arc_ = ARC;                              \
-            func_02041218((struct PlttRes *)(m_ + 0x88));                \
-            func_02041440((Model *)m_, (const char *)name_, 0); \
-            STD_CopyString((char *)m_ + 0x2c, (const char *)arc_); \
-        }                                            \
-        out = m_;                                    \
-    } while (0)
 
 static inline TextWin *TextWin_New(void) {
     TextWin *win = (TextWin *)Heap_Alloc(0xb8);
@@ -75,16 +60,16 @@ void func_ov000_0215f0ec(Obj0215f0ec *self, u32 text) {
     }
     e = &data_02fe0188[self->idx];
     if (self->flags.b4 ? TRUE : FALSE) {
-        LO_MODEL_NEW(self->model, data_0208cb84, data_0208cc8c);
+        MODEL_NEW(self->model, data_0208cb84, data_0208cc8c);
     } else {
-        LO_MODEL_NEW(self->model, data_0208cb74, data_0208cca0);
+        MODEL_NEW(self->model, data_0208cb74, data_0208cca0);
     }
     {
-        void *a = func_02035d5c(self->model + 0x2c);
-        void *b = func_02034d88(a, self->model + 0x4c);
+        ResList *a = func_02035d5c(self->model->name);
+        void *b = func_02034d88(a, self->model->unk_04c);
         func_020417e0((Model *)self->model, b);
     }
-    LFLD(u32, self->model, 0x6c) |= 2;
+    self->model->flags |= 2;
     func_02041d9c((Model *)self->model, 0, e->id);
     func_02041c20(self->model, e->id, self);
     win = TextWin_New();

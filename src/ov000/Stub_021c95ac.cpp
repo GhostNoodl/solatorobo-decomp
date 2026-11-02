@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "nitro/mi.h"
 
 typedef struct {
     u8 unk_00[0xa];
@@ -11,7 +12,6 @@ typedef struct {
 
 extern "C" {
 
-void MI_CpuFill8(void *dst, s32 val, u32 size);
 s8 *func_0206ef10(u16 a);
 
 typedef struct Node021c9544 {

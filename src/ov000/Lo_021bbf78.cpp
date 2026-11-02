@@ -1,4 +1,5 @@
 #include "ov000/ModelPart.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
@@ -9,7 +10,6 @@ typedef struct {
 } DLRef021bbf78;
 
 extern "C" {
-extern u8 *data_02097d48;
 extern DLRef021bbf78 data_0208b3d0;
 extern DLRef021bbf78 data_020828f8;
 s32 func_02043d84(void *p);
@@ -46,7 +46,7 @@ struct Obj021bbf78 {
 };
 
 void func_ov000_021bbf78(Obj021bbf78 *self) {
-    u8 *g;
+    GfxSys *g;
     s32 alpha;
     s32 t;
     u32 k;
@@ -57,7 +57,7 @@ void func_ov000_021bbf78(Obj021bbf78 *self) {
     if (alpha == 0) {
         return;
     }
-    G3_Cmd1(0x29, (func_02043d84(g + 0x8b0) << 24) | 0xd0 | (alpha << 16));
+    G3_Cmd1(0x29, (func_02043d84(g->unk_8b0) << 24) | 0xd0 | (alpha << 16));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, 0, 0, -0x91a);
     G3_Cmd1(0x20, 0);
@@ -67,7 +67,7 @@ void func_ov000_021bbf78(Obj021bbf78 *self) {
     G3_Cmd1(0x12, 1);
     MODEL_FLAGS(self->unk_58)->unk_19 = 1;
     MODEL_FLAGS(self->unk_58)->alpha = (u8)alpha;
-    MODEL_FLAGS(self->unk_58)->polygon_id = func_02043d84(g + 0x8b0);
+    MODEL_FLAGS(self->unk_58)->polygon_id = func_02043d84(g->unk_8b0);
     self->unk_58->unk_150 = -0x89a;
     Model_SetPos(self->unk_58, 0, 0);
     Model_PlayPart(self->unk_58, 0);

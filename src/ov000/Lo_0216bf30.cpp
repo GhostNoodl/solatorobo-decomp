@@ -1,6 +1,8 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Effect/Effect.h"
+#include "Main/Gfx/GfxMgr.h"
 
 extern "C" {
 
@@ -15,7 +17,6 @@ typedef struct {
     LoTimedObj objs[10];
 } LoTimedHost;
 
-extern u8 *data_02097d48;
 Robo021ca458 *func_ov000_0219bf90(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 void func_ov000_0216c018(void *self);
@@ -23,7 +24,6 @@ struct LoHost0216c310;
 void func_ov000_0216c310(struct LoHost0216c310 *self);
 void func_ov000_0216c6fc(void *self);
 s32 func_02043d84(void *a);
-void MI_CpuFill8(void *dst, s32 v, s32 size);
 void func_ov000_0216bcbc(void *self);
 
 struct Obj0216bf30 {
@@ -88,14 +88,12 @@ typedef struct {
 } LoPair0216c018;
 
 extern u8 data_0208ba70[];
-extern u8 *data_02097ce0;
 extern LoPair0216c018 data_ov000_021c9bb4[];
 void func_0204c7d0(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
 void func_ov000_0216bae4(void *p, s32 b);
-u8 *func_02066c58(void);
-void func_ov000_0216bf18(void *self);
+void func_ov000_0216bf18(NNSG3dRS *rs);
 
 static inline LoText0216c018 *NewText0216c018(void) {
     LoText0216c018 *t = (LoText0216c018 *)Heap_Alloc(0xb8);
@@ -109,7 +107,7 @@ static inline LoText0216c018 *NewText0216c018(void) {
 static inline void SetText0216c018(LoText0216c018 *t, char *str) {
     t->unk_24 = (s32)str;
     t->unk_4c = Text_Measure(t->unk_28, t->unk_38, t->unk_24, &t->unk_44, &t->unk_48, t->unk_37 != 0);
-    LFLD(s32, data_02097ce0, 4) = t->unk_28;
+    data_02097ce0->unk_004 = t->unk_28;
 }
 
 static inline BOOL HasPending0216c018(u8 *self) {
@@ -182,10 +180,10 @@ void func_ov000_0216c018(void *obj) {
     func_ov000_0216bae4(self + 0x360 + tbl[LFLD(s32, s, 4)].a * 12, 0);
     func_ov000_0216bae4(self + 0x360 + tbl[LFLD(s32, s, 4)].b * 12, 0);
     if (LFLD(s32, s, 4) == 7) {
-        LFLD(u8 *, s, 0x24) = func_02066c58();
-        LFLD(void *, LFLD(u8 *, s, 0x24), 0x1c0) = (void *)func_ov000_0216bf18;
-        LFLD(s32, LFLD(u8 *, s, 0x24), 0xcc) = 0x7fffffff;
-        LFLD(s32, LFLD(u8 *, s, 0x24), 0xc8) = -1;
+        LFLD(Effect3D *, s, 0x24) = func_02066c58();
+        LFLD(Effect3D *, s, 0x24)->initCallback = func_ov000_0216bf18;
+        LFLD(Effect3D *, s, 0x24)->loopStart = 0x7fffffff;
+        LFLD(Effect3D *, s, 0x24)->loopCount = -1;
     }
     if (LFLD(void *, self, 0x24c) == NULL) {
         LFLD(void *, self, 0x24c) = s;
@@ -239,8 +237,6 @@ void func_ov000_0216c018(void *obj) {
 // This file's .text ends at 0x0216c310, so the function belongs here once it matches.
 extern "C" {
 
-extern void *data_0214a420;
-BOOL EffectMgr_Contains(void *p, VObj *obj);
 
 typedef struct LoSlot0216c310 LoSlot0216c310;
 struct LoSlot0216c310 {
@@ -253,7 +249,7 @@ struct LoSlot0216c310 {
     s32 y;
     s32 base;
     s32 timer;
-    VObj *eff;
+    EffectObj *eff;
     LoSlot0216c310 *next;
 };
 
@@ -330,8 +326,8 @@ void func_ov000_0216c310(LoHost0216c310 *self) {
             n->y = (0x24000 - y) >> 12;
             if (n->kind == 7 && n->eff != NULL) {
                 if (EffectMgr_Contains(data_0214a420, n->eff)) {
-                    n->eff->vfunc_14(0x1000, 0x1000, 0x1000);
-                    n->eff->vfunc_1c((n->x << 12) - 0x51000, -((n->y << 12) - 0x5b000), -0x400);
+                    n->eff->SetScaleXYZ(0x1000, 0x1000, 0x1000);
+                    n->eff->SetPosXYZ((n->x << 12) - 0x51000, -((n->y << 12) - 0x5b000), -0x400);
                 } else {
                     n->eff = NULL;
                 }
@@ -353,7 +349,7 @@ void func_ov000_0216c310(LoHost0216c310 *self) {
                 n->next = NULL;
                 HEAP_DELETE_VOBJ(n->obj);
                 if (n->eff != NULL && EffectMgr_Contains(data_0214a420, n->eff)) {
-                    LFLD(s32, n->eff, 0x1c) = 4;
+                    n->eff->state = 4;
                 }
                 n->eff = NULL;
                 n = NULL;

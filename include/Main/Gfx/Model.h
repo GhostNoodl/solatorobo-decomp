@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "Main/Gfx/PlttRes.h"
+#include "nitro/fx.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -36,7 +37,7 @@ typedef struct Model {
     /* 0x000 */ u8 unk_000[0x28];
     /* 0x028 */ ModelRes *res;
     /* 0x02c */ char name[0x20];
-    /* 0x04c */ u8 unk_04c[0x20];
+    /* 0x04c */ char unk_04c[0x20]; // file name (the name argument of func_02041440)
     /* 0x06c */ u32 flags;
     /* 0x070 */ u8 unk_070[8];
     /* 0x078 */ ModelPart *parts;
@@ -58,7 +59,10 @@ typedef struct Model {
     /* 0x104 */ u8 unk_104[8];
     /* 0x10c */ s32 unk_10c;
     /* 0x110 */ s32 unk_110;
-    /* 0x114 */ u8 unk_114[0x3c];
+    /* 0x114 */ MtxFx22 mtx[3]; // identity after func_02041440
+    /* 0x144 */ s32 unk_144;
+    /* 0x148 */ s32 unk_148;
+    /* 0x14c */ s32 unk_14c;
     /* 0x150 */ s32 unk_150;
     /* 0x154 */ u16 color;
     /* 0x156 */ u8 unk_156[2];

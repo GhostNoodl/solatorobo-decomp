@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
+#include "Main/Gfx/GfxMgr.h"
 
 typedef struct {
     u32 b0 : 13;
@@ -22,7 +23,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_02097d48;
 u8 Gfx3DState_NextPolyId(void *p);
 void func_ov000_02153c48(void *item, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_02153f30(VObj *self, s32 a);
@@ -33,7 +33,7 @@ void func_ov000_021593b8(Lo021cb3a8 *self, s32 on, s32 *pos) {
     s32 k;
     s32 px;
     s32 hi;
-    u8 *g;
+    GfxSys *g;
     s32 first;
     s32 py;
     s32 dim;
@@ -53,7 +53,7 @@ void func_ov000_021593b8(Lo021cb3a8 *self, s32 on, s32 *pos) {
     g = data_02097d48;
     k = 0;
     lh = self->vfunc_40();
-    col = Gfx3DState_NextPolyId(g + 0x8b0);
+    col = Gfx3DState_NextPolyId(g->unk_8b0);
     if (!(self->flags & 0x20000)) {
         lo = ((UiListItem *)self->topItem)->index;
         hi = lo + self->rows;

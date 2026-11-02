@@ -353,7 +353,7 @@ s16 *func_ov000_02191f18(s16 *p, Model0218fe1c *m) {
             pos.z = actor->pos.z;
             func_ov000_0219a210(&pos, &ofs, actor->rot_y);
             e = func_02065f88(p[0], &pos);
-            r = LFLD(Rot16, actor, 0x7c);
+            r = actor->rot;
             r.x += p[4];
             r.y += p[5];
             r.z += p[6];

@@ -1,10 +1,10 @@
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Gfx/GfxMgr.h"
 
 extern "C" {
 
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 void func_02043d20(void *obj, int a);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
@@ -36,7 +36,7 @@ void func_ov000_021601c4(ObjBase021cac0c_021cb6f0 *self) {
     if (!IsB3_021601c4(self)) {
         return;
     }
-    func_02043d20(data_02097d48 + 0x8b0, 0);
+    func_02043d20(data_02097d48->unk_8b0, 0);
     G3_Vec021601c4(0x1b, 0x1000, 0x1000, 0x1000);
     sn = FX_SinCosTable_[((self->unk_34 << 14) >> 16) * 2];
     pos.x = self->unk_74 << 12;

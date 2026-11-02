@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
+#include "Main/Gfx/GfxMgr.h"
 
 class Gauge021c7038 {
 public:
@@ -48,7 +49,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_02097d48;
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 s32 func_02043d84(void *p);
 s32 FX_Div(s32 n, s32 d);
@@ -73,11 +73,11 @@ static inline s32 Ratio021c7038(s32 n, s32 d) {
 #define FLAGS(g) (*(Flags021c7038 *)&(g)->unk_0c)
 
 void func_ov000_021c7038(Gauge021c7038 *self, s32 a, VecFx32 *pos, s32 h, s32 scale, s32 w, s32 i, s32 step) {
-    u8 *g = data_02097d48;
+    GfxSys *g = data_02097d48;
     u32 attr;
     s32 z;
 
-    s32 id = func_02043d84(g + 0x8b0);
+    s32 id = func_02043d84(g->unk_8b0);
     G3_Cmd1_021c7038(0x2a, 0x20000000);
     attr = 0x1f08d0 | (id << 24);
     G3_Cmd1_021c7038(0x29, attr);
@@ -92,7 +92,7 @@ void func_ov000_021c7038(Gauge021c7038 *self, s32 a, VecFx32 *pos, s32 h, s32 sc
     }
     z = pos->z;
     if (FLAGS(self).b8 && self->unk_5c < self->unk_68) {
-        G3_Cmd1_021c7038(0x29, (func_02043d84(g + 0x8b0) << 24) | 0x8d0 | ((LO_FX_MUL(scale, 0x14000) >> 12) << 16));
+        G3_Cmd1_021c7038(0x29, (func_02043d84(g->unk_8b0) << 24) | 0x8d0 | ((LO_FX_MUL(scale, 0x14000) >> 12) << 16));
         self->vfunc_44(pos->x, pos->y, z + 0x20, (LO_FX_MUL(w, Ratio021c7038(self->unk_68, self->unk_60)) + 0x800) & 0x7ffff000, h, 3);
     }
     z = pos->z;
@@ -112,7 +112,7 @@ void func_ov000_021c7038(Gauge021c7038 *self, s32 a, VecFx32 *pos, s32 h, s32 sc
     if (FLAGS(self).b4) {
         a = LO_FX_MUL(LO_FX_MUL(self->unk_48, scale), 0x10000) >> 12;
         if (a != 0) {
-            G3_Cmd1_021c7038(0x29, (func_02043d84(g + 0x8b0) << 24) | 0x8d0 | (a << 16));
+            G3_Cmd1_021c7038(0x29, (func_02043d84(g->unk_8b0) << 24) | 0x8d0 | (a << 16));
             self->vfunc_44(pos->x, pos->y, z + 0x50, w, h, 4);
         }
     }

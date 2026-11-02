@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
+#include "Main/Gfx/Model.h"
 
 typedef struct {
     u32 cnt : 16;
@@ -22,9 +23,6 @@ s32 func_0203ca84(s32 ch);
 void func_02042eac(s32 ch, s32 planes);
 void func_02042ebc(s32 ch, s32 duration, s32 start, s32 end);
 BOOL func_02042ef8(s32 ch);
-void func_02041440(void *p, void *name, s32 c);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
 
 static inline BOOL StOk021b8994(FieldState *g) {
     s32 st = g->unk_98;
@@ -53,11 +51,11 @@ static inline BOOL FadeIdle021b8994(void) {
 
 struct Obj021b8994 {
     Cnt021b8994 unk_00;
-    u8 unk_04[0x20];
+    char unk_04[0x20];
     VObj *unk_24;
     s32 unk_28;
     u8 unk_2c[0x4];
-    u8 *unk_30;
+    Model *unk_30;
 };
 
 BOOL func_ov000_021b8994(Obj021b8994 *self) {
@@ -72,7 +70,7 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         self->unk_24 = p;
         func_0206e900(buf, data_ov000_021cc885);
         LFLD(s32, self->unk_24, 0x44) = 2;
-        self->unk_24->vfunc_24(buf, (u8 *)self + 4);
+        self->unk_24->vfunc_24(buf, self->unk_04);
         self->unk_28 = 2;
         break;
     }
@@ -91,17 +89,17 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         self->unk_28 = 4;
         break;
     case 4: {
-        u8 *p;
+        Model *p;
         if (!StOk021b8994(data_ov000_021ccd54)) {
             break;
         }
         if (!func_ov000_02184498(data_ov000_021ccd54)) {
             break;
         }
-        p = (u8 *)Heap_Alloc(0x160);
+        p = (Model *)Heap_Alloc(sizeof(Model));
         if (p != NULL) {
-            func_02041218((struct PlttRes *)(p + 0x88));
-            func_02041440(p, (u8 *)self + 4, 0);
+            func_02041218(&p->pltt);
+            func_02041440(p, self->unk_04, 0);
         }
         self->unk_30 = p;
         func_020417e0(self->unk_30, (void *)self->unk_24->vfunc_10());
@@ -145,7 +143,7 @@ BOOL func_ov000_021b8994(Obj021b8994 *self) {
         func_0203ca24(v, 0, 2);
         func_02042eac(1, 1);
         func_02042ebc(1, 0x1e, 0x10, 0);
-        LFLD(u32, self->unk_30, 0x6c) |= 0x80000;
+        self->unk_30->flags |= 0x80000;
         self->unk_28 = 0xe;
         break;
     }

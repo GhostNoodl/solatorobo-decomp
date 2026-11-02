@@ -2,6 +2,8 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
+#include "Main/Gfx/Model.h"
+#include "Main/Res/ResArc.h"
 
 typedef struct {
     u32 flags;
@@ -22,7 +24,7 @@ typedef struct {
     u32 rest : 25;
     s32 state;
     s32 unk_08;
-    void *model;
+    Model *model;
     Eff0216ca70 *eff;
     s32 unk_14;
     u8 pad18[4];
@@ -48,18 +50,13 @@ extern "C" {
 extern void *data_ov000_021ccd30;
 extern s32 data_02097d78[5];
 extern VecFx32 data_ov000_021c9af8;
-extern void *data_0208cc94;
-extern void *data_0208cc88;
+extern const char *data_0208cc94;
+extern const char *data_0208cc88;
 extern void *data_ov000_021ccd64;
 BOOL PauseNode_IsDrawPaused(void *node, BOOL recurse);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_021705a0(void *p, s32 a);
 void func_ov000_021c2114(void *p);
-void func_02041440(void *p, void *name, s32 c);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
 void func_02041c34(void *a, int b, void *c, void *d);
 BOOL func_02054f10(void *a, s32 b);
 void *func_ov000_0216c800(void);
@@ -115,7 +112,7 @@ BOOL func_ov000_0216ca70(Obj0216ca70 *self) {
     Eff0216ca70 *e;
     VecFx32 *p;
     void *res;
-    void *m;
+    Model *m;
     s32 n;
     s32 maxd;
     s32 d;
@@ -188,15 +185,15 @@ BOOL func_ov000_0216ca70(Obj0216ca70 *self) {
             }
             if (self->unk_28 != 0xffff) {
                 res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-                m = Heap_Alloc(0x160);
+                m = (Model *)Heap_Alloc(sizeof(Model));
                 if (m) {
-                    void *name = data_0208cc88;
+                    const char *name = data_0208cc88;
                     func_02041218((struct PlttRes *)((u8 *)m + 0x88));
                     func_02041440(m, name, 0);
                 }
                 self->model = m;
                 func_020417e0(m, res);
-                LFLD(u32, self->model, 0x6c) |= 2;
+                self->model->flags |= 2;
                 func_02041d9c(self->model, 0, 0xd);
                 func_02041d9c(self->model, 0, 0xe);
                 func_02041d9c(self->model, 0, self->unk_28);

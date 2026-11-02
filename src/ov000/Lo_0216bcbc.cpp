@@ -1,5 +1,6 @@
 #include "ov000/VObj.h"
 #include "ov000/HeapScope.h"
+#include "nitro/mi.h"
 
 typedef struct {
     u8 pad[4];
@@ -41,7 +42,6 @@ typedef struct {
 extern "C" {
 
 extern const Pair0216bcbc data_ov000_021c9bb4[];
-void MI_CpuFill8(void *dst, u8 val, u32 size);
 
 static inline void Res_Release(Res0216bcbc *r) {
     if (r->obj != NULL) {

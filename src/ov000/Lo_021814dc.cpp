@@ -14,6 +14,9 @@
 #include "ov000/Vec.h"
 #include "nitro/fx.h"
 #include "types.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "nitro/mi.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 
@@ -365,7 +368,6 @@ VObj *Ov000Vt_021cc158_DtorDelete(VObj *self) {
 namespace m_Ser_02181af4 {
 
 extern "C" {
-void MI_CpuFill8(void *dst, u8 val, u32 size);
 
 static inline void Put2(u8 *buf, s32 i, u8 *src) {
     u8 *d = &buf[i];
@@ -2307,14 +2309,6 @@ typedef struct {
 } Obj021ccd64;
 
 typedef struct {
-    u8 pad_00[0x8b0];
-    u8 b0 : 4;
-    u8 b4 : 1;
-    u8 b5 : 1;
-    u8 b6 : 2;
-} Obj02097d48;
-
-typedef struct {
     u8 pad_00[0x15];
     u8 unk_15;
     u8 pad_16[0xb12];
@@ -2352,7 +2346,6 @@ extern Obj02097e48 *data_02097e48;
 extern void *data_0214a420;
 extern void *data_ov000_021ccd6c;
 extern void *data_ov000_021ccd68;
-extern Obj02097d48 *data_02097d48;
 extern u32 data_ov004_021cf868;
 extern ProtFn data_ov004_021cf86c[];
 extern u8 OVERLAY_3_ID[];
@@ -2531,11 +2524,11 @@ s32 func_ov000_02183db8(CmdEx *self) {
         self->unk_cd.c[1] = 0xff;
         self->unk_cd.c[2] = 0xff;
         if (self->unk_ca.c[0] == 0xfe) {
-            Obj02097d48 *d;
+            GfxSys *d;
             self->unk_a8 = 2;
             d = data_02097d48;
-            d->b4 = 0;
-            d->b5 = 1;
+            d->unk_8b0_4 = 0;
+            d->unk_8b0_5 = 1;
             *(vu16 *)0x4000060 &= 0xcfdf;
         }
         self->step++;
@@ -3973,9 +3966,8 @@ typedef struct {
 
 extern "C" {
 extern Mgr021ccd30 *data_ov000_021ccd30;
-extern void *data_02097cdc;
-extern void *data_0208cca0;
-extern void *data_0208cc94;
+extern const char *data_0208cca0;
+extern const char *data_0208cc94;
 extern char data_0214b105[];
 extern Obj02097e3c *data_02097e3c;
 extern Obj02097dc8 *data_02097dc8;
@@ -3991,9 +3983,6 @@ BOOL func_ov000_02170568(void *p);
 BOOL func_ov000_021708d8(void *p);
 BOOL func_ov000_021705a0(void *p, s32 a);
 BOOL func_ov000_0217060c(void *p);
-void func_02036838(void *a, void *b, int c, int d);
-void *func_020359d0(void *a, int b, int c);
-int func_02035b90(void *a, int b);
 void LangRes2_Delete(void);
 void LangData_DeleteRes(void);
 void func_0203caf8(s32 a);

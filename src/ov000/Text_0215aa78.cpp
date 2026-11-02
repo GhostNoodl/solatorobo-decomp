@@ -1,28 +1,13 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ModelPart.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
-extern void *data_0208cb84;
-extern void *data_0208cc8c;
-extern void *data_0208cb74;
-extern void *data_0208cca0;
-void func_02041440(void *p, void *name, s32 c);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
-void *STD_CopyString(void *dst, void *src);
+extern const char *data_0208cb84;
+extern const char *data_0208cc8c;
+extern const char *data_0208cb74;
+extern const char *data_0208cca0;
 void func_ov000_02153c48(void *node, void *a, s32 b, s32 c, s32 d);
-
-class Model0215aa78 {
-public:
-    u8 data[0x160];
-    static void *operator new(unsigned long size) { return Heap_Alloc(size); }
-    Model0215aa78(void *nm, void *s) {
-        func_02041218((struct PlttRes *)(data + 0x88));
-        func_02041440(data, nm, 0);
-        STD_CopyString(data + 0x2c, s);
-    }
-};
 
 typedef struct {
     u32 b0 : 1;
@@ -31,11 +16,6 @@ typedef struct {
     u32 rest : 28;
 } PFlags0215aa78;
 
-typedef struct {
-    u32 lo : 2;
-    u32 f2 : 5;
-    u32 rest : 25;
-} MFlags0215aa78;
 
 class Panel0215aa78 {
 public:
@@ -49,7 +29,7 @@ public:
     s32 unk_1c;
     s32 unk_20;
     s32 unk_24;
-    u8 *model;
+    Model *model;
     static void *operator new(unsigned long size) { return Heap_Alloc(size); }
     void SetOfs(s32 x, s32 y) {
         unk_18 = x;
@@ -74,7 +54,7 @@ void func_ov000_0215e8b0(Panel0215aa78 *p);
 
 struct Obj0215aa78 : public VObj {
     u8 unk_04[0xc];
-    Model0215aa78 *unk_10;
+    Model *unk_10;
     u8 unk_14[0x8];
     void *unk_1c;
     s32 unk_20;
@@ -117,18 +97,18 @@ void func_ov000_0215aa78(Obj0215aa78 *self) {
         }
     }
     self->unk_28 = self->vfunc_44();
-    if ((u8 *)self->unk_10 == NULL) {
+    if (self->unk_10 == NULL) {
         if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
-            self->unk_10 = new Model0215aa78(data_0208cb84, data_0208cc8c);
+            self->unk_10 = new ModelObj(data_0208cb84, data_0208cc8c);
         } else {
-            self->unk_10 = new Model0215aa78(data_0208cb74, data_0208cca0);
+            self->unk_10 = new ModelObj(data_0208cb74, data_0208cca0);
         }
         {
-            void *a = func_02035d5c((u8 *)self->unk_10 + 0x2c);
-            func_020417e0((u8 *)self->unk_10, func_02034d88(a, (u8 *)self->unk_10 + 0x4c));
+            ResList *a = func_02035d5c(self->unk_10->name);
+            func_020417e0(self->unk_10, func_02034d88(a, self->unk_10->unk_04c));
         }
-        LFLD(u32, self->unk_10, 0x6c) |= 2;
-        func_02041d9c((u8 *)self->unk_10, 0, 7);
+        self->unk_10->flags |= 2;
+        func_02041d9c(self->unk_10, 0, 7);
     }
     if (self->unk_ac == NULL) {
         self->unk_ac = new Panel0215aa78();
@@ -141,10 +121,10 @@ void func_ov000_0215aa78(Obj0215aa78 *self) {
         }
         func_ov000_0215e8b0(self->unk_ac);
         self->unk_ac->unk_10 = (self->unk_24 - 0x20) << 12;
-        LFLD(u32, self->unk_ac->model, 0x6c) |= 0x200000;
-        LFLD(u32, self->unk_ac->model, 0x6c) |= 0x100000;
-        LFLD(u32, self->unk_ac->model, 0x6c) |= 0x80000;
-        LFLD(MFlags0215aa78, self->unk_ac->model, 0x6c).f2 = 0x1e;
+        self->unk_ac->model->flags |= 0x200000;
+        self->unk_ac->model->flags |= 0x100000;
+        self->unk_ac->model->flags |= 0x80000;
+        MODEL_FLAGS(self->unk_ac->model)->alpha = 0x1e;
     }
     self->unk_2c = 0;
     self->unk_64 = 0x80 - (self->unk_24 >> 1);

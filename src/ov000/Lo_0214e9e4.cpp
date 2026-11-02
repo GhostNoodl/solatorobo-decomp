@@ -1,7 +1,10 @@
 #include "ov000/LoCommon.h"
+#include "Main/Gfx/TextWin.h"
 #include "Main/Res/StageFlags.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/Task.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/Model.h"
 
 typedef struct {
     u8 unk_00[0x68];
@@ -17,11 +20,10 @@ extern void *data_02149ef8;
 extern Shared02fe1534 data_02fe1534;
 extern void *data_02fe152c;
 extern u8 data_ov000_021ccd24[];
-extern void *data_ov000_021ca8d8[];
+extern const char *data_ov000_021ca8d8[];
 extern u8 data_0208ba70[];
-extern u8 *data_02097ce0;
-extern void *data_0208cca0;
-extern void *data_0208cb74;
+extern const char *data_0208cca0;
+extern const char *data_0208cb74;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb5a8[];
@@ -30,16 +32,12 @@ extern u8 data_ov000_021cb4a8[];
 extern u8 data_ov000_021caac8[];
 void *MsgRes_GetString(void *g, u32 id);
 BOOL func_0205aa30(void *p);
-void func_02041440(void *p, void *name, s32 c);
-void *STD_CopyString(void *dst, void *src);
 void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
 void func_02041c20(void *model, s32 a, void *b);
 void func_0204c7d0(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_ov000_02157c90(void *self, void *a);
-void func_ov000_021546ec(void *a, void *b, void *c, u16 d);
+void func_ov000_021546ec(void *a, const char *b, const char *c, u16 d);
 void *Task_FindById(s32 kind);
 u32 func_0205975c(void *a, s32 b);
 u16 func_ov000_0214bcc4(u16 id, u16 index);
@@ -53,10 +51,10 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     void *g;
     u32 n;
     u16 k;
-    void *name;
-    u8 *p;
-    void *arc;
-    u8 *m;
+    const char *name;
+    TextWin *p;
+    const char *arc;
+    Model *m;
     VObj *o;
     void *s;
     u16 i;
@@ -72,42 +70,42 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
         LFLD(VObj *, data_ov000_021ccd24, 8)->vfunc_38(1);
         data_02fe1534.unk_7a = 0;
     }
-    m = (u8 *)Heap_Alloc(0x160);
+    m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
         name = data_ov000_021ca8d8[1];
         arc = data_ov000_021ca8d8[0];
-        func_02041218((struct PlttRes *)(m + 0x88));
+        func_02041218(&m->pltt);
         func_02041440(m, name, 0);
-        STD_CopyString(m + 0x2c, arc);
+        STD_CopyString(m->name, arc);
     }
     self->unk_40 = m;
     func_020417e0(self->unk_40, func_02034d88((void *)self->unk_3c->vfunc_10(), (u8 *)self->unk_40 + 0x4c));
-    LFLD(u32, self->unk_40, 0x6c) |= 2;
+    self->unk_40->flags |= 2;
     func_02041d9c(self->unk_40, 0, 1);
-    LFLD(void *, self->unk_40, 0x158) = (void *)func_ov000_0214fcfc;
+    self->unk_40->unk_158 = (void *)func_ov000_0214fcfc;
     func_02041c20(self->unk_40, 1, self);
-    LFLD(u32, self->unk_40, 0x6c) |= 0x80000;
-    LFLD(u32, self->unk_40, 0x6c) |= 0x200000;
-    LFLD(s32, self->unk_40, 0x150) = -0x1ccd;
+    self->unk_40->flags |= 0x80000;
+    self->unk_40->flags |= 0x200000;
+    self->unk_40->unk_150 = -0x1ccd;
     s = MsgRes_GetString(g, 0x114);
-    p = (u8 *)Heap_Alloc(0xb8);
+    p = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);
     }
-    LFLD(s32, p, 0x28) = 8;
-    LFLD(void *, p, 0x24) = s;
-    LFLD(s32, p, 0x4c) = Text_Measure(LFLD(s32, p, 0x28), LFLD(s32, p, 0x38), LFLD(s32, p, 0x24), p + 0x44, p + 0x48, LFLD(s8, p, 0x37) != 0);
-    LFLD(s32, data_02097ce0, 0x4) = LFLD(s32, p, 0x28);
-    LFLD(s32, p, 0x2c) = 0;
-    LFLD(u16, p, 0x74) = 0x77df;
-    LFLD(u16, p, 0x76) = 0x67e;
-    LFLD(u32, p, 0x4) |= 0x40;
-    LFLD(u32, p, 0x4) |= 0x1400000;
+    p->font = 8;
+    p->str = (u32)s;
+    p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
+    data_02097ce0->unk_004 = ((s32)p->font);
+    p->unk_2c = 0;
+    p->color0 = 0x77df;
+    p->color1 = 0x67e;
+    p->flags |= 0x40;
+    p->flags |= 0x1400000;
     ((VObj *)p)->vfunc_14();
-    LFLD(s32, p, 0x78) = 0x9000;
-    LFLD(s32, p, 0x70) = -0x1ccd;
-    LFLD(u32, p, 0x4) |= 0x40000004;
+    p->unk_78 = 0x9000;
+    p->posZ = -0x1ccd;
+    p->flags |= 0x40000004;
     self->unk_44 = p;
     o = (VObj *)Heap_Alloc(0xe0);
     if (o != NULL) {

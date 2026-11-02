@@ -1,12 +1,12 @@
 #include "ov000/LoCommon.h"
 #include "ov000/MessageQueue.h"
+#include "Main/Gfx/PlttRes.h"
 
 extern "C" {
 
 extern u8 data_ov000_021cb920[];
 extern u8 data_ov000_021cb6d0[];
 extern u8 data_ov000_021cb9b0[];
-void Heap_FreeHi(void *p);
 
 static inline void LoListBufferDtor(ListBuffer *self) {
     VOBJ_SET_VTABLE(self, data_ov000_021cb6d0);

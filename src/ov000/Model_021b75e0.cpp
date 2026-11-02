@@ -1,4 +1,6 @@
 #include "ov000/Vec.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "nitro/mi.h"
 
 typedef struct {
     u8 unk_00[0x18];
@@ -39,9 +41,7 @@ typedef struct {
 } Glb021b75e0;
 
 extern Glb021b75e0 NNS_G3dGlb;
-extern u8 *data_02097d48;
 void *NNS_G3dGlbGetInvV(void);
-void MI_Copy36B(const void *src, void *dst);
 void NNS_G3dGlbSetBaseScale(const VecFx32 *s);
 void NNS_G3dGlbSetBaseTrans(const VecFx32 *t);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
@@ -93,8 +93,8 @@ BOOL func_ov000_021b75e0(Model021b75e0 *self) {
         NNSi_G3dModifyPolygonAttrMask(mdl, FALSE, 0x1f0000);
         NNSi_G3dModifyPolygonAttrMask(mdl, FALSE, 0xc0);
         NNSi_G3dModifyPolygonAttrMask(mdl, FALSE, 0x3f000000);
-        id = data_02097d48[0x8b1];
-        Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
+        id = data_02097d48->unk_8b0[1];
+        Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
         NNS_G3dGlbPolygonAttr(0, 0, 2, id, self->alpha, 0x1000);
     } else {
         NNS_G3dGlbPolygonAttr(0, 0, 3, 0x14, 0x1f, 0x1000);

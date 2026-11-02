@@ -1,5 +1,6 @@
 #include "ov000/VObj.h"
 #include "Main/Sys/SysState.h"
+#include "Main/Res/ResMgr.h"
 
 typedef struct {
     s32 unk_00;
@@ -46,7 +47,6 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_02097cdc;
 void func_0203f920(void *p);
 void HitMesh_Detach(void *p);
 void Heap_Free(void *p);

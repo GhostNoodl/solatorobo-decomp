@@ -1,6 +1,7 @@
 #include "ov000/ModelPart.h"
 #include "nitro/fx.h"
 #include "ov000/VObj.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
@@ -40,7 +41,6 @@ typedef struct Obj02169e64 {
 
 extern "C" {
 
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 extern Tbl9e64 data_ov000_021c9b84;
 s32 func_02043d84(void *a);
@@ -72,7 +72,7 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
 void func_ov000_02169e64(Obj02169e64 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
     Tbl9e64 tbl;
     MtxFx22 mtx;
-    u8 *g;
+    GfxSys *g;
     s32 t;
     s32 k;
     s32 ac;
@@ -121,7 +121,7 @@ void func_ov000_02169e64(Obj02169e64 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
         alpha = LO_FX_MUL(self->unk_48, 0x10000) >> 12;
         if (alpha != 0) {
             G3_Cmd1(0x2a, 0x20000000);
-            G3_Cmd1(0x29, 0x48d0 | (func_02043d84(g + 0x8b0) << 24) | (alpha << 16));
+            G3_Cmd1(0x29, 0x48d0 | (func_02043d84(g->unk_8b0) << 24) | (alpha << 16));
             ((VObj *)self)->vfunc_44( pos->x - 0x30000, pos->y - 0x1000, pos->z, (self->unk_50 + 0x40) << 12, (self->unk_54 << 12) + 0x2000, 4);
         }
     }
@@ -149,7 +149,7 @@ void func_ov000_02169e64(Obj02169e64 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
         MTX_Concat22(&mtx, (MtxFx22 *)((u8 *)m + 0x114), (MtxFx22 *)((u8 *)m + 0x114));
         MTX_ScaleApply22((MtxFx22 *)((u8 *)self->m1 + 0x114), (MtxFx22 *)((u8 *)self->m1 + 0x114), r, r);
         MODEL_FLAGS(self->m1)->alpha = (u8)(LO_FX_MUL(r, 0x1e000) >> 12);
-        MODEL_FLAGS(self->m1)->polygon_id = func_02043d84(g + 0x8b0);
+        MODEL_FLAGS(self->m1)->polygon_id = func_02043d84(g->unk_8b0);
         Model_PlayPartEx(self->m1, self->unk_a8, 1);
     }
     if (self->state != 0) {
@@ -158,7 +158,7 @@ void func_ov000_02169e64(Obj02169e64 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
     alpha = (u8)(LO_FX_MUL((s64)FX_SinCosTable_[((a << 15) >> 16) * 2], 0x1e000) >> 12);
     if (alpha != 0) {
         G3_Cmd1(0x2a, 0x20000000);
-        G3_Cmd1(0x29, 0x48d0 | (func_02043d84(g + 0x8b0) << 24) | (alpha << 16));
+        G3_Cmd1(0x29, 0x48d0 | (func_02043d84(g->unk_8b0) << 24) | (alpha << 16));
         ((VObj *)self)->vfunc_44( pos->x - 0x30000, pos->y - 0x1000, pos->z, (self->unk_50 + 0x40) << 12, (self->unk_54 << 12) + 0x2000, 5);
     }
 }

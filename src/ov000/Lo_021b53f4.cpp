@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Gfx/GfxMgr.h"
 
 typedef struct Node021b53f4 {
     struct Node021b53f4 *prev;
@@ -54,7 +55,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_02097d48;
 extern Player021b53f4 *data_ov000_021ccd54;
 void func_02043904(void *p);
 void func_02043b20(void *p);
@@ -72,9 +72,9 @@ void func_ov000_021b53f4(Mgr021b53f4 *self) {
     Node021b53f4 *prev;
     Node021b53f4 *next;
     Node021b53f4 *n;
-    u8 *d48 = data_02097d48;
-    func_02043904(d48 + 0x8b0);
-    func_02043b20(d48 + 0x8b0);
+    GfxSys *d48 = data_02097d48;
+    func_02043904(d48->unk_8b0);
+    func_02043b20(d48->unk_8b0);
     pb = (PlayerB021b53f4 *)data_ov000_021ccd54;
     func_020434e0(pb->unk_11c);
     pb->b6 = 0;

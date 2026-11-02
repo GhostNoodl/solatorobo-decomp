@@ -1,5 +1,6 @@
 #include "ov000/VObj.h"
 #include "nitro/fx.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define LFLD_U32(o, off) (*(u32 *)((u8 *)(o) + (off)))
 #define LFLD_S32(o, off) (*(s32 *)((u8 *)(o) + (off)))
@@ -19,7 +20,6 @@ extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb0b8[];
 extern u8 data_ov000_021cb1b0[];
 void Heap_Free(void *ptr);
-extern u8 *data_02097d48;
 void func_02043d20(void *p, s32 a);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
@@ -45,9 +45,9 @@ void UiObj_Draw(VObj *self) {
     VecFx32 ofs;
     BOOL draw = TRUE;
     s32 id;
-    u8 *gfx = data_02097d48;
+    GfxSys *gfx = data_02097d48;
     LFLD_U32(self, 0xc) &= ~0x200;
-    func_02043d20(gfx + 0x8b0, 0);
+    func_02043d20(gfx->unk_8b0, 0);
     scale.x = 0x1000;
     scale.y = 0x1000;
     scale.z = 0x1000;

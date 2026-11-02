@@ -1,5 +1,6 @@
 #include "ov000/ModelPart.h"
 #include "ov000/VObj.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
@@ -11,7 +12,6 @@ typedef struct {
 } Obj021c1180Bits;
 
 extern "C" {
-extern u8 *data_02097d48;
 u8 Gfx3DState_NextPolyId(void *p);
 s32 func_02041b10(Model *model, void *tex);
 s32 func_02041bb0(Model *model, void *tex);
@@ -54,7 +54,7 @@ struct Obj021c1180 {
 
 void func_ov000_021c1180(Obj021c1180 *self) {
     s32 h;
-    u8 *g;
+    GfxSys *g;
     u8 a;
     s32 hw;
     ModelPos p;
@@ -81,7 +81,7 @@ void func_ov000_021c1180(Obj021c1180 *self) {
         s32 w = self->unk_98;
         LFLD(s32, self->unk_90, 0x70) = self->unk_80 + 0x20;
         self->unk_90->vfunc_20(p.x - (w >> 1), p.y - 0x1c);
-        LFLD(Obj021c1180Bits, self->unk_90, 4).id = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
+        LFLD(Obj021c1180Bits, self->unk_90, 4).id = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
         self->unk_90->vfunc_90();
     }
     Model_SetPos(self->unk_8c, (p.x - 0x80) << 12, (p.y - 0x60) << 12);
@@ -93,7 +93,7 @@ void func_ov000_021c1180(Obj021c1180 *self) {
         MODEL_FLAGS(self->unk_8c)->unk_21 = 1;
     }
     MODEL_FLAGS(self->unk_8c)->unk_19 = 1;
-    MODEL_FLAGS(self->unk_8c)->polygon_id = Gfx3DState_NextPolyId(g + 0x8b0);
+    MODEL_FLAGS(self->unk_8c)->polygon_id = Gfx3DState_NextPolyId(g->unk_8b0);
     MODEL_FLAGS(self->unk_8c)->alpha = a;
     Model_PlayPart(self->unk_8c, self->unk_96);
     func_02041774(self->unk_8c, self->unk_96);

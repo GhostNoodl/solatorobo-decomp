@@ -1,6 +1,8 @@
 #include "ov000/LoCommon.h"
 #include "ov000/CmdQueue.h"
 #include "ov000/MapCtx.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/PlttRes.h"
 
 typedef struct {
     s32 x;
@@ -351,12 +353,10 @@ typedef struct {
 } Work715c;
 
 extern "C" {
-extern void *data_02097d48;
 typedef struct { s8 x; s8 y; } Ofs715c;
 extern Ofs715c data_ov000_021c9ae4[];
 void *func_0203bbfc(void *a, s32 b);
 BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
-void DC_FlushRange(const void *addr, u32 size);
 u32 func_02041080(void *a, s32 b, s32 c, s32 d);
 
 static inline void SetXY715c_b(Oam715c *o, u16 x, u16 y) {

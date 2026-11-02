@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
+#include "nitro/mi.h"
 
 typedef struct {
     u8 b0 : 1;
@@ -13,7 +14,6 @@ typedef struct {
 } Mtx021b7f0c;
 
 extern "C" {
-void MI_Copy36B(const void *src, void *dst);
 void HitMesh_Init(void *mesh);
 void HitMesh_Link(void *mesh);
 void HitMesh_SetRes(void *mesh, void *res);

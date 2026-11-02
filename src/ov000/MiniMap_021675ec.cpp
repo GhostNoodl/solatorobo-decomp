@@ -3,6 +3,9 @@
 #include "ov000/CmdQueue.h"
 #include "Main/Res/StageFlags.h"
 #include "nitro/fx.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/Model.h"
+#include "ov000/ModelPart.h"
 // Mini-map markers: quest targets, visible actors and point markers.
 #define ABS021675ec(x) ((x) < 0 ? -(x) : (x))
 
@@ -42,7 +45,6 @@ struct Ctr021675ec : Pos021675ec {
 extern "C" {
 
 extern CmdQueue *data_ov000_021ccd54;
-extern u8 *data_02097d48;
 extern void *data_ov000_021ccd64;
 // In .rodata; declaring it const lets the 0x74 copy load both words before either store.
 extern const u8 data_ov000_021c9a9c[];
@@ -52,9 +54,6 @@ void *func_0203bbfc(void *sys, int which);
 s32 func_ov000_0218c040(void *mgr, s32 max, VecFx32 *out, s32 kind, u16 id);
 BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
 
-void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
 
 static inline BOOL CmdQueue_Has021675ec(CmdQueue *q, s32 kind) {
     s32 i;
@@ -67,29 +66,6 @@ static inline BOOL CmdQueue_Has021675ec(CmdQueue *q, s32 kind) {
         }
     }
     return FALSE;
-}
-
-static inline void *GetPart021675ec(void *self, int idx) {
-    if (idx >= LFLD(s32, self, 0x80)) {
-        return NULL;
-    }
-    return (u8 *)LFLD(void *, self, 0x78) + idx * 0x28;
-}
-
-static inline void PlayPart021675ec(void *model, int idx, int f) {
-    void *res = LFLD(void *, model, 0x28);
-    void *part;
-    void *anim;
-    if (res == NULL) {
-        return;
-    }
-    part = GetPart021675ec(model, idx);
-    if (part != NULL && LFLD(void *, part, 0x4) != NULL) {
-        anim = LFLD(void *, LFLD(void *, part, 0x4), 0x30);
-    } else {
-        anim = NNS_G2dGetCellDataByIdx(LFLD(void *, res, 0x4), **(u16 **)LFLD(void *, NNS_G2dGetAnimSequenceByIdx(LFLD(void *, res, 0xc), idx), 0xc));
-    }
-    func_02042628(model, anim, part, f);
 }
 
 static inline void AddPos021675ec(const Pos021675ec *a, const Pos021675ec *b, Pos021675ec *o) {
@@ -145,7 +121,7 @@ static inline BOOL Bit2_021675ec(Robo021ca458 *pl) {
 
 struct Obj021675ec {
     u8 unk_00[0x24];
-    u8 *unk_24;
+    Model *unk_24;
 };
 
 void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
@@ -201,7 +177,7 @@ void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
     }
     if (pl->unk_b28_0 == 0 && !Bit2_021675ec(pl) && w[0] == 0) {
         LFLD(Pos021675ec, self->unk_24, 0x10c) = LFLD(const Pos021675ec, data_ov000_021c9a9c, 0x74);
-        PlayPart021675ec(self->unk_24, 3, 0);
+        Model_PlayPartF(self->unk_24, 3, 0);
         NNS_G2dEntryOamManagerOam(oam, w + 0x14, 1);
     }
     for (o = LFLD(u8 *, data_ov000_021ccd6c, 0x1c); o != NULL; o = LFLD(u8 *, o, 4)) {
@@ -223,17 +199,17 @@ void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
                     k += 2;
                 }
                 LFLD(Pos021675ec, self->unk_24, 0x10c) = m;
-                PlayPart021675ec(self->unk_24, k, 0);
+                Model_PlayPartF(self->unk_24, k, 0);
             }
         }
     }
     for (j = func_ov000_0218c040(data_ov000_021ccd64, 8, pts, 4, 0x406b) - 1; j >= 0; j--) {
         if (ToMap021675ec(&m, pts[j].x, pts[j].z, &c)) {
             LFLD(Pos021675ec, self->unk_24, 0x10c) = m;
-            PlayPart021675ec(self->unk_24, 4, 0);
+            Model_PlayPartF(self->unk_24, 4, 0);
         }
     }
-    MTX_Identity22_((MtxFx22 *)(self->unk_24 + 0x134));
+    MTX_Identity22_(&self->unk_24->mtx[2]);
 }
 
 }

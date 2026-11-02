@@ -2,6 +2,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "nitro/fx.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -62,7 +63,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_02097d48;
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
 extern const Mgr021b5dc0Pmf data_ov000_021cc81c;
@@ -132,7 +132,7 @@ void func_ov000_021b5dc0(Mgr021b5dc0 *self) {
     if (self->unk_14 != NULL) {
         func_0206e648(self->unk_14);
     }
-    func_02043b20(data_02097d48 + 0x8b0);
+    func_02043b20(data_02097d48->unk_8b0);
     v = self->unk_14->unk_18;
     cam = (u8 *)data_ov000_021ccd54 + 0xf4;
     LFLD(s32, cam, 0xc8) = func_0206e340(self->unk_14);

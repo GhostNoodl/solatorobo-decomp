@@ -1,4 +1,6 @@
 #include "ov000/Vec.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "nitro/mi.h"
 
 typedef struct {
     u8 unk_00[0x18];
@@ -46,9 +48,7 @@ typedef struct {
 } Glb021903b4;
 
 extern Glb021903b4 NNS_G3dGlb;
-extern u8 *data_02097d48;
 void *NNS_G3dGlbGetInvV(void);
-void MI_Copy36B(const void *src, void *dst);
 void NNS_G3dGlbSetBaseScale(const VecFx32 *s);
 void NNS_G3dGlbSetBaseTrans(const VecFx32 *t);
 u16 func_0203d144(u16 a, u16 b, s16 ratio);
@@ -160,7 +160,7 @@ BOOL func_ov000_021903b4(Model021903b4 *self) {
             NNSi_G3dModifyMatFlag(self->mdl, TRUE, 0x200);
             NNSi_G3dModifyMatFlag(self->mdl, TRUE, 0x400);
         }
-        func_02043578(data_02097d48 + 0x93c);
+        func_02043578(&data_02097d48->unk_8b0[0x8c]);
     }
     return drawn;
 }

@@ -2,6 +2,8 @@
 #include "Main/Sys/FieldState.h"
 #include "nitro/std.h"
 #include "ov000/VObj.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/PlttRes.h"
 
 typedef void (*VFunc0215c1bc)(void);
 
@@ -54,9 +56,7 @@ void func_ov000_0215c1a8(void *self, s32 *msg) {
 
 extern VFunc0215c1bc data_0208ba70[];
 extern char data_ov000_021cabf4[];
-extern u8 *data_02097ce0;
 void *Heap_Alloc(u32 size);
-void *Heap_AllocHi(u32 size, u32 align);
 void func_0204c7d0(void *p);
 s32 Text_Measure(s32 a, s32 b, char *c, void *d, void *e, BOOL f);
 void func_0204c6bc(char *s, s32 a, s32 *out, void *cb);
@@ -184,7 +184,7 @@ void func_ov000_0215c1bc(Obj0215c1bc *self, u32 flags, char *str) {
     self->unk_98 = tt;
     tt->str = str;
     tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
-    LFLD(s32, data_02097ce0, 4) = tt->unk_28;
+    data_02097ce0->unk_004 = tt->unk_28;
     for (i = 1; i < 12; i++) {
         if (lines[i] != NULL) {
             lines[i]++;
@@ -206,7 +206,7 @@ void func_ov000_0215c1bc(Obj0215c1bc *self, u32 flags, char *str) {
             ((Text0215c1bc **)((u8 *)self + 0x98))[i] = tt;
             tt->str = lines[i];
             tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
-            LFLD(s32, data_02097ce0, 4) = tt->unk_28;
+            data_02097ce0->unk_004 = tt->unk_28;
         }
     }
     w = self->unk_24 - self->vfunc_30() * 2;
@@ -398,7 +398,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
         self->unk_98 = tt;
         tt->str = lines[0];
         tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
-        LFLD(s32, data_02097ce0, 4) = tt->unk_28;
+        data_02097ce0->unk_004 = tt->unk_28;
     }
     for (i = 1; i < 12; i++) {
         if (lines[i] != NULL) {
@@ -420,7 +420,7 @@ void func_ov000_0215c744(Obj0215c744 *self, u32 flags, u16 id) {
             ((Text0215c1bc **)((u8 *)self + 0x98))[i] = tt;
             tt->str = lines[i];
             tt->unk_4c = Text_Measure(tt->unk_28, tt->unk_38, tt->str, &tt->unk_44, &tt->unk_48, tt->unk_37 != 0);
-            LFLD(s32, data_02097ce0, 4) = tt->unk_28;
+            data_02097ce0->unk_004 = tt->unk_28;
         }
     }
     w = self->unk_24 - self->vfunc_30() * 2;

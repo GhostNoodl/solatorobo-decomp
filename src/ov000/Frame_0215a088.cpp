@@ -2,6 +2,7 @@ extern "C" {
 #include "nitro/gx.h"
 }
 #include "nitro/gx_g3b.h"
+#include "Main/Gfx/PlttRes.h"
 
 typedef struct {
     VecFx16 v[4];
@@ -42,8 +43,6 @@ extern "C" {
 extern const Vtxs0215a088 data_ov000_021c98fa;
 extern const Tcs0215a088 data_ov000_021c995c;
 extern const Quads0215a088 data_ov000_021c99dc;
-void *Heap_AllocHi(u32 size, u32 align);
-void DC_FlushRange(const void *p, u32 size);
 
 void func_ov000_0215a088(Frame0215a088 *self) {
     Tcs0215a088 tc;

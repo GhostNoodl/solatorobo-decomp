@@ -1,12 +1,12 @@
 #include "ov000/ModelPart.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 extern "C" {
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 u8 Gfx3DState_NextPolyId(void *p);
 
@@ -27,7 +27,7 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
 }
 
 void func_ov000_021befc0(Lo021cc938 *self) {
-    u8 *g;
+    GfxSys *g;
     s32 x;
     s32 y;
     s32 id;
@@ -47,7 +47,7 @@ void func_ov000_021befc0(Lo021cc938 *self) {
     Model_SetPos(self->unk_90, x << 12, y << 12);
     self->unk_94->unk_150 = self->unk_80 + 0x20;
     Model_SetPos(self->unk_94, x << 12, y << 12);
-    id = Gfx3DState_NextPolyId(g + 0x8b0);
+    id = Gfx3DState_NextPolyId(g->unk_8b0);
     id &= 0x3f;
     a = LO_FX_MUL(self->unk_88, 0x1e000) >> 12;
     ang = LO_FX_MUL(self->unk_88 - 0x333, 0x1400);
@@ -59,7 +59,7 @@ void func_ov000_021befc0(Lo021cc938 *self) {
     MODEL_FLAGS(self->unk_90)->polygon_id = id;
     MODEL_FLAGS(self->unk_90)->alpha = al;
     Model_PlayPart(self->unk_90, 2);
-    MODEL_FLAGS(self->unk_8c)->polygon_id = Gfx3DState_NextPolyId(g + 0x8b0);
+    MODEL_FLAGS(self->unk_8c)->polygon_id = Gfx3DState_NextPolyId(g->unk_8b0);
     MODEL_FLAGS(self->unk_8c)->alpha = al;
     MTX_Identity22((MtxFx22 *)((u8 *)self->unk_8c + 0x114));
     MTX_ScaleApply22((MtxFx22 *)((u8 *)self->unk_8c + 0x114), (MtxFx22 *)((u8 *)self->unk_8c + 0x114), s + 0x1000, s + 0x1000);

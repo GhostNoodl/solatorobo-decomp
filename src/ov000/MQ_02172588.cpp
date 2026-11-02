@@ -1,5 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/MessageQueue.h"
+#include "Main/Res/ResMgr.h"
+#include "Main/Res/ResArc.h"
 
 class MQ021727b0 : public MessageQueue {
 public:
@@ -12,12 +14,10 @@ extern "C" {
 
 extern u8 data_ov000_021cb980[];
 extern u8 data_ov000_021cb9b0[];
-extern void *data_02097cdc;
-extern void *data_0208cc94;
-extern void *data_0208cca0;
+extern const char *data_0208cc94;
+extern const char *data_0208cca0;
 extern char data_0214b105[];
 void func_ov000_021bd09c(void);
-void func_02036838(void *a, void *b, s32 c, s32 d);
 
 static inline void LoMessageQueueDtor(MessageQueue *self) {
     ListBuffer *buf;

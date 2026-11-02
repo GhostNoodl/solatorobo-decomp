@@ -1,4 +1,5 @@
 #include "ov000/Vec.h"
+#include "Main/Gfx/GfxMgr.h"
 
 typedef struct {
     u8 revision;
@@ -56,16 +57,14 @@ extern "C" {
 
 extern const u8 data_ov000_021cc438[];
 extern ShadowArc data_ov000_021c9d80;
-extern void *data_02097cdc;
-extern u8 *data_02097d48;
 extern MtxFx33 data_020928b4;
 extern GxState NNS_G3dGlb;
 
 ShadowRes *func_02035e34(void *file, void *name);
 void func_0203f0b4(void *file);
-void func_02036838(void *a, void *b, int c, int d);
-void *func_020359d0(void *a, int b, int c);
 int func_02035b90(void *a, int b);
+void *func_020359d0(void *a, int b, int c);
+void func_02036838(void *a, void *b, int c, int d);
 char *func_0203ed04(void *name, void *file);
 void Heap_Free(void *ptr);
 ResMdlSet *NNS_G3dGetMdlSet(void *file);
@@ -257,8 +256,8 @@ void func_ov000_02191c24(Shadow *self, VecFx32 *pos) {
         NNS_G3dMdlSetMdlCullMode(self->mdl, 0, 3);
         NNS_G3dDraw1Mat1Shp(self->mdl, 0, 0, 1);
     } else {
-        u8 id = data_02097d48[0x8b1];
-        Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
+        u8 id = data_02097d48->unk_8b0[1];
+        Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
         NNS_G3dMdlSetMdlPolygonID(self->mdl, 0, id);
         NNS_G3dDraw1Mat1Shp(self->mdl, 0, 0, 1);
     }

@@ -81,7 +81,8 @@ typedef struct GfxSys {
     /* 0x8b0 */ union {
         u8 unk_8b0[0x134];
         struct {
-            u8 unk_8b0_0 : 5;
+            u8 unk_8b0_0 : 4;
+            u8 unk_8b0_4 : 1;
             u8 unk_8b0_5 : 1;
             u8 unk_8b0_6 : 2;
         };

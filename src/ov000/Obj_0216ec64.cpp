@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Gfx/PlttRes.h"
 
 typedef struct {
     u8 unk_00[0x4];
@@ -32,7 +33,6 @@ extern u8 data_ov000_021cb6d0[];
 extern Data02097d78 data_02097d78;
 
 void Heap_Free(void *ptr);
-void Heap_FreeHi(void *ptr);
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_ov000_02164420(void *self);
 void func_ov000_0216f168(Buffer0216f144 *self);

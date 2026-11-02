@@ -1,5 +1,6 @@
 #include "types.h"
 #include "nitro/std.h"
+#include "Main/Gfx/Model.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -16,8 +17,8 @@ typedef struct {
     u8 unk_21[0xf];
     char *unk_30;
     char *unk_34;
-    u8 *unk_38;
-    u8 *unk_3c;
+    Model *unk_38;
+    Model *unk_3c;
     void *unk_40;
     s32 unk_44;
     u8 unk_48[0x4];
@@ -48,10 +49,6 @@ BOOL func_02035bd4(const char *arc, const char *name, s32 a);
 void *func_02035f30(const char *arc, const char *name, s32 a);
 void *func_02034d88(void *a, const char *name);
 void *Heap_Alloc(u32 size);
-void func_02041218(void *p);
-void func_02041440(void *m, const char *name, s32 a);
-void func_020417e0(void *m, void *res);
-void func_02041d9c(void *m, s32 a, u16 b);
 s32 FX_Div(s32 n, s32 d);
 s32 Interp_SinLerp(s32 t, s32 a, s32 b);
 
@@ -63,24 +60,24 @@ static inline void *LoadObjRes021c3158(Obj021c3158 *o) {
     return func_02035f30(o->unk_30, o->unk_34, 2);
 }
 
-static inline u8 *NewModel021c3158(char *arc, char *name) {
-    u8 *m = (u8 *)Heap_Alloc(0x160);
+static inline Model *NewModel021c3158(char *arc, const char *name) {
+    Model *m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
-        func_02041218(m + 0x88);
+        func_02041218(&m->pltt);
         func_02041440(m, name, 0);
         STD_CopyString((char *)m + 0x2c, arc);
     }
     return m;
 }
 
-static inline u8 *NewModelObj021c3158(Obj021c3158 *self) {
+static inline Model *NewModelObj021c3158(Obj021c3158 *self) {
     char *arc;
-    u8 *m;
-    m = (u8 *)Heap_Alloc(0x160);
+    Model *m;
+    m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
-        char *name = ObjName021c3158(self);
+        const char *name = ObjName021c3158(self);
         arc = self->unk_30;
-        func_02041218(m + 0x88);
+        func_02041218(&m->pltt);
         func_02041440(m, name, 0);
         STD_CopyString((char *)m + 0x2c, arc);
     }
@@ -125,19 +122,19 @@ void func_ov000_021c3158(Obj021c3158 *self) {
         s32 n;
         s32 mask;
         {
-            u8 *m_0;
+            Model *m_0;
             void *res_0 = LoadObjRes021c3158(self);
             res_0 = func_02034d88(res_0, self->unk_34);
             m_0 = NewModelObj021c3158(self);
             self->unk_38 = m_0;
             func_020417e0(m_0, res_0);
         }
-        LFLD(u32, self->unk_38, 0x6c) |= 2;
-        LFLD(u32, self->unk_38, 0x6c) |= 0x80000;
-        LFLD(void *, self->unk_38, 0x158) = (void *)func_ov000_021c8408;
+        self->unk_38->flags |= 2;
+        self->unk_38->flags |= 0x80000;
+        self->unk_38->unk_158 = (void *)func_ov000_021c8408;
         {
             void *res_1;
-            u8 *m_1;
+            Model *m_1;
             char *arc = data_ov000_021cc9d3;
             char *name = data_ov000_021cc9dc;
             res_1 = func_02035f30(arc, name, 2);
@@ -146,17 +143,17 @@ void func_ov000_021c3158(Obj021c3158 *self) {
             self->unk_3c = m_1;
             func_020417e0(m_1, res_1);
         }
-        LFLD(u32, self->unk_3c, 0x6c) |= 2;
-        LFLD(u32, self->unk_3c, 0x6c) |= 0x80000;
-        LFLD(void *, self->unk_3c, 0x158) = (void *)func_ov000_021c8408;
+        self->unk_3c->flags |= 2;
+        self->unk_3c->flags |= 0x80000;
+        self->unk_3c->unk_158 = (void *)func_ov000_021c8408;
 
         n = self->unk_51;
         mask = self->unk_4e;
         for (i = 0; i < n; i++) {
             if (mask & (1 << i)) {
-                func_02041d9c(self->unk_38, 0, i);
+                func_02041d9c(self->unk_38, 0, (u16)i);
             } else {
-                func_02041d9c(self->unk_3c, 0, i);
+                func_02041d9c(self->unk_3c, 0, (u16)i);
             }
         }
         self->unk_68 = 30;

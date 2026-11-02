@@ -2,6 +2,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
@@ -9,7 +10,6 @@ extern u8 NNS_G3dGlb[];
 extern u8 data_02092844[];
 extern u8 data_02092800[];
 extern u8 *data_02097dc8;
-void MIi_CpuCopyFast(void *a, void *b, s32 c);
 void func_ov000_02190758(void *m, void *p, s32 a);
 BOOL func_ov000_021903b4(void *m);
 

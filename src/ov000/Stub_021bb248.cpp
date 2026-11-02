@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Gfx/GfxMgr.h"
 
 typedef struct {
     u32 unk_0_0 : 11;
@@ -22,18 +23,17 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *const data_02097d48;
 u8 Gfx3DState_NextPolyId(void *p);
 
 void func_ov000_021bb248(Obj021bb248 *self) {
     Sub021bb248 *sub = self->unk_b0;
-    u8 *p = data_02097d48;
+    GfxSys *p = data_02097d48;
     u32 flags = sub->unk_0c;
     u32 v = (flags & 0x1f0000) >> 16;
     if (v > 0x1e) {
         v = 0x1e;
     }
-    sub->unk_0c = (flags & 0xc0e0f7ff) | (v << 16) | (Gfx3DState_NextPolyId(p + 0x8b0) << 24) | 0x800;
+    sub->unk_0c = (flags & 0xc0e0f7ff) | (v << 16) | (Gfx3DState_NextPolyId(p->unk_8b0) << 24) | 0x800;
 }
 
 }

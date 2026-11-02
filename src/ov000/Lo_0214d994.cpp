@@ -1,5 +1,6 @@
 #include "ov000/VObj.h"
 #include "ov000/ModelPart.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
@@ -21,7 +22,6 @@ typedef struct {
 } DLRef0214d994;
 
 extern "C" {
-extern u8 *data_02097d48;
 extern DLRef0214d994 data_0208b3d0;
 extern DLRef0214d994 data_020828f8;
 void func_02043d20(void *obj, int a);
@@ -44,7 +44,7 @@ static inline void G3_Cmd1(int cmd, u32 value) {
 
 void func_ov000_0214d994(Obj0214d994 *self) {
     u8 *p = self->unk_200;
-    u8 *g = data_02097d48;
+    GfxSys *g = data_02097d48;
     s32 v;
     s32 alpha;
     v = LFLD(s32, p, 0xb30);
@@ -55,9 +55,9 @@ void func_ov000_0214d994(Obj0214d994 *self) {
     if (alpha == 0) {
         return;
     }
-    func_02043d20(g + 0x8b0, 0);
+    func_02043d20(g->unk_8b0, 0);
     G3_Cmd1(0x2a, 0x20000000);
-    G3_Cmd1(0x29, 0 | (1 << 4) | (3 << 6) | (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | (alpha << 16));
+    G3_Cmd1(0x29, 0 | (1 << 4) | (3 << 6) | (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | (alpha << 16));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, 0, 0, -0xccd);
     G3_Vec(0x1b, 0x100000, 0xc0000, 0x1000);

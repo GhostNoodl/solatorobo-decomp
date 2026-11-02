@@ -1,6 +1,8 @@
 #include "ov000/LoCommon.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "nitro/mi.h"
 
 typedef struct {
     u8 pad[0xfc];
@@ -15,13 +17,10 @@ typedef struct {
 
 extern "C" {
 extern Glb021c17dc NNS_G3dGlb;
-extern u8 *data_02097d48;
 extern u8 data_02092800[];
 extern u8 data_02092844[];
 extern Ofs021c17dc data_ov000_021cc8f0[];
 extern u8 data_ov000_021ccd74;
-void MI_Copy64B(const void *src, void *dst);
-void MIi_CpuCopyFast(const void *src, void *dst, u32 size);
 void NNS_G3dGlbPolygonAttr(int light, int polyMode, int cullMode, int polygonID, int alpha, int misc);
 BOOL func_ov000_021903b4(void *m);
 
@@ -54,7 +53,7 @@ void func_ov000_021c17dc(Lo021cc938 *self) {
         return;
     }
     cm = GetCam021c17dc();
-    g = data_02097d48 + 0x8b0;
+    g = data_02097d48->unk_8b0;
     MI_Copy64B(data_02092800, proj);
     MI_Copy48B(cm, cam);
     SetProj021c17dc(g + 0x13c);

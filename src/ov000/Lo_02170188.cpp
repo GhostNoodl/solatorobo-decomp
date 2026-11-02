@@ -1,5 +1,6 @@
 #include "ov000/VObj.h"
 #include "Main/Sys/FieldState.h"
+#include "Main/Effect/Effect.h"
 
 typedef struct {
     u8 pad[4];
@@ -24,11 +25,9 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_0214a420;
 extern u8 data_0208ba70[];
 extern u8 data_0208bbc8[];
 BOOL func_ov000_02184498(FieldState *p);
-BOOL func_020658cc(void *a, s32 id);
 void *func_0204c08c(s32 a, u16 b, s32 *out, s32 c);
 void *Heap_Alloc(u32 size);
 void func_0204c7d0(void *p);

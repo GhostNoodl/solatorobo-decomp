@@ -1,12 +1,13 @@
 #include "ov000/VObj.h"
 #include "Main/Sys/SysState.h"
+#include "Main/Gfx/Model.h"
 
 typedef struct {
     s32 unk_00;
     u8 unk_04[0x40];
     s32 unk_44;
     u16 unk_48;
-    u8 *unk_4c;
+    Model *unk_4c;
     s32 unk_50;
     s32 unk_54;
     u16 unk_58;
@@ -16,14 +17,12 @@ SIZE_ASSERT(Obj021b87d8, 0x5c);
 
 extern "C" {
 
-void func_02041558(void *obj);
-void func_02041278(void *obj);
 void Heap_Free(void *ptr);
 
-static inline void Obj021b87d8_DeleteMember(u8 *obj) {
+static inline void Obj021b87d8_DeleteMember(Model *obj) {
     if (obj != NULL) {
         func_02041558(obj);
-        func_02041278(obj + 0x88);
+        func_02041278(&obj->pltt);
         Heap_Free(obj);
     }
 }

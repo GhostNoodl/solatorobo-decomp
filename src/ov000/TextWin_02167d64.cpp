@@ -7,7 +7,6 @@ extern "C" {
 extern u8 *data_ov000_021ccd6c;
 char *func_0206e200(u32 a);
 void TextWin_InitLines(TextWin *win, s32 a);
-BOOL STD_CompareString(const char *a, const char *b);
 s32 FX_Div(s32 a, s32 b);
 
 static inline TextWin *TextWin_New(void) {

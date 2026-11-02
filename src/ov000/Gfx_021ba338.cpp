@@ -1,29 +1,18 @@
 #include "types.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/Model.h"
+#include "ov000/ModelPart.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
-typedef struct {
-    u32 b0 : 2;
-    u32 b2 : 5;
-    u32 b7 : 6;
-    u32 b13 : 6;
-    u32 b19 : 1;
-    u32 b20 : 1;
-    u32 b21 : 1;
-    u32 b22 : 10;
-} B6c_021ba338;
 
 extern "C" {
 
-extern u8 *data_02097d48;
 extern void *data_0208b3d0;
 extern const u32 data_020828f8;
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
 u8 Gfx3DState_NextPolyId(void *p);
-void *NNS_G2dGetAnimSequenceByIdx(void *p, int idx);
-void *NNS_G2dGetCellDataByIdx(void *p, u16 idx);
-void func_02042628(void *model, void *anim, void *part, int x);
 
 static inline void G3Vec021ba338(int cmd, s32 x, s32 y, s32 z) {
     s32 v[3];
@@ -38,35 +27,11 @@ static inline void G3Cmd1_021ba338(int cmd, u32 value) {
     NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
-static inline void *GetPart021ba338(void *self, int idx) {
-    if (idx >= LFLD(s32, self, 0x80)) {
-        return NULL;
-    }
-    return (u8 *)LFLD(void *, self, 0x78) + idx * 0x28;
-}
-
-static inline void PlayPart021ba338(void *model, int idx) {
-    void *res = LFLD(void *, model, 0x28);
-    void *part;
-    void *anim;
-    if (res == NULL) {
-        return;
-    }
-    part = GetPart021ba338(model, idx);
-    if (part != NULL && LFLD(void *, part, 0x4) != NULL) {
-        anim = LFLD(void *, LFLD(void *, part, 0x4), 0x30);
-    } else {
-        anim = NNS_G2dGetCellDataByIdx(LFLD(void *, res, 0x4),
-                                       **LFLD(u16 **, NNS_G2dGetAnimSequenceByIdx(LFLD(void *, res, 0xc), idx), 0xc));
-    }
-    func_02042628(model, anim, part, 0);
-}
-
 struct Obj021ba338 {
     u8 unk_00[0x8];
     s32 unk_08;
     u8 unk_0c[0x14];
-    u8 *unk_20;
+    Model *unk_20;
     u8 unk_24[0x8];
     s32 unk_2c;
     s32 unk_30;
@@ -75,7 +40,7 @@ struct Obj021ba338 {
 };
 
 void func_ov000_021ba338(Obj021ba338 *self) {
-    u8 *g = data_02097d48;
+    GfxSys *g = data_02097d48;
     s32 a = self->unk_2c;
     s32 b;
     s32 h;
@@ -90,7 +55,7 @@ void func_ov000_021ba338(Obj021ba338 *self) {
         b = 0x1000 - self->unk_30;
     }
     if (h != 0) {
-        G3Cmd1_021ba338(0x29, 0x1f00d0 | (Gfx3DState_NextPolyId(g + 0x8b0) << 24));
+        G3Cmd1_021ba338(0x29, 0x1f00d0 | (Gfx3DState_NextPolyId(g->unk_8b0) << 24));
         NNS_G3dGeBufferOP_N(0x11, NULL, 0);
         G3Vec021ba338(0x1c, 0x80000, 0x60000, -0x79a);
         G3Vec021ba338(0x1b, a, b, 0x1000);
@@ -108,7 +73,7 @@ void func_ov000_021ba338(Obj021ba338 *self) {
             w = (s32)(((s64)c * 0x100000 + 0x800) >> 12);
         }
     }
-    G3Cmd1_021ba338(0x29, 0x1e08d0 | (g[0x8b1] << 24));
+    G3Cmd1_021ba338(0x29, 0x1e08d0 | (g->unk_8b0[1] << 24));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3Vec021ba338(0x1c, w + 0x80000, 0x55000, -0x77a);
     G3Cmd1_021ba338(0x20, 0x68);
@@ -133,20 +98,20 @@ void func_ov000_021ba338(Obj021ba338 *self) {
         }
     }
     if ((r < 0 ? -r : r) < 0x100) {
-        LFLD(s32, self->unk_20, 0x150) = -0x71a;
-        LFLD(B6c_021ba338, self->unk_20, 0x6c).b19 = 1;
-        LFLD(B6c_021ba338, self->unk_20, 0x6c).b21 = 1;
-        LFLD(B6c_021ba338, self->unk_20, 0x6c).b2 = 0x1e;
-        LFLD(B6c_021ba338, self->unk_20, 0x6c).b7 = Gfx3DState_NextPolyId(g + 0x8b0);
+        self->unk_20->unk_150 = -0x71a;
+        MODEL_FLAGS(self->unk_20)->unk_19 = 1;
+        MODEL_FLAGS(self->unk_20)->unk_21 = 1;
+        MODEL_FLAGS(self->unk_20)->alpha = 0x1e;
+        MODEL_FLAGS(self->unk_20)->polygon_id = Gfx3DState_NextPolyId(g->unk_8b0);
         {
-            u8 *o = self->unk_20;
-            LFLD(s32, o, 0xfc) = r << 12;
-            LFLD(s32, o, 0x100) = 0;
+            Model *o = self->unk_20;
+            o->x = r << 12;
+            o->y = 0;
         }
-        PlayPart021ba338(self->unk_20, 0);
-        LFLD(B6c_021ba338, self->unk_20, 0x6c).b21 = 0;
+        Model_PlayPart(self->unk_20, 0);
+        MODEL_FLAGS(self->unk_20)->unk_21 = 0;
     }
-    Gfx3DState_NextPolyId(g + 0x8b0);
+    Gfx3DState_NextPolyId(g->unk_8b0);
 }
 
 }

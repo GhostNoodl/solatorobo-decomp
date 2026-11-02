@@ -1,8 +1,8 @@
 #include "ov000/VObj.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
-void MI_CpuFill8(void *dst, s32 val, u32 size);
 
 void func_ov000_0215e4fc(void *self) {
     MI_CpuFill8((u8 *)self + 0xd8, 0, 0x100);

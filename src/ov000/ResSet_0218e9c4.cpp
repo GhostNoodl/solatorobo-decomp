@@ -1,5 +1,7 @@
 #include "types.h"
 #include "nitro/std.h"
+#include "Main/Res/ResMgr.h"
+#include "Main/Res/ResArc.h"
 
 typedef struct {
     void *unk_00;
@@ -33,7 +35,6 @@ typedef struct {
 
 extern "C" {
 
-extern void *data_02097cdc;
 extern const char data_ov000_021cc41d[];
 extern const char data_ov000_021cc424[];
 extern const char data_ov000_021cc42b[];
@@ -42,7 +43,6 @@ void func_0203f0b4(void *a);
 BOOL func_0203e63c(void *a);
 void func_0203e58c(void *a);
 void func_02035acc(const char *name, const char *ext, s32 type);
-void func_02036838(void *a, const char *name, s32 b, s32 c);
 
 }
 
@@ -227,9 +227,6 @@ void func_ov000_0218f074(ResSet *self, const char *name, BOOL a, BOOL b, u8 c, u
 }
 
 extern "C" {
-void *func_020359d0(const char *name, s32 b, s32 c);
-BOOL func_02035b90(const char *name, s32 b);
-void *func_02035d5c(const char *name);
 ResHandle *func_02034ec0(void *arc, const char *name);
 BOOL func_0203ed04(const char *name, void *data);
 void *func_0203ebf8(void);

@@ -1,5 +1,6 @@
 #include "types.h"
 #include "nitro/std.h"
+#include "Main/Gfx/PlttRes.h"
 
 typedef struct {
     u8 pad_00[0x84];
@@ -21,8 +22,6 @@ char *func_0206ec48(u16 id);
 char *func_02062020(u16 id);
 void func_02040a98(char *buf, u16 id);
 char *MsgRes_GetString(void *msg, s32 id);
-void *Heap_AllocHi(u32 size, u32 align);
-void Heap_FreeHi(void *p);
 
 char *func_ov000_0215cfd0(Text0215cfd0 *self) {
     char tmp[0x20];

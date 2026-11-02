@@ -1,19 +1,16 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Gfx/Model.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 
-extern void *data_0208cc94;
-extern void *data_0208cc88;
-void func_02041440(void *p, void *name, s32 c);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
+extern const char *data_0208cc94;
+extern const char *data_0208cc88;
 
 void func_ov000_021685f4(Lo021cb894 *self) {
     void *res;
-    u8 *m;
+    Model *m;
     self->unk_28 = 0;
     self->unk_30 = 0xc000;
     self->unk_50 = 0;
@@ -24,17 +21,17 @@ void func_ov000_021685f4(Lo021cb894 *self) {
     self->unk_78 = 0;
     self->unk_7c = -0x2000;
     res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-    m = (u8 *)Heap_Alloc(0x160);
+    m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
-        void *nm = data_0208cc88;
-        func_02041218((struct PlttRes *)(m + 0x88));
+        const char *nm = data_0208cc88;
+        func_02041218(&m->pltt);
         func_02041440(m, nm, 0);
     }
     self->unk_9c = (Model *)(m);
     func_020417e0(m, res);
-    LFLD(u32, self->unk_9c, 0x6c) |= 2;
-    LFLD(u32, self->unk_9c, 0x6c) |= 0x200000;
-    LFLD(u32, self->unk_9c, 0x6c) |= 0x80000;
+    self->unk_9c->flags |= 2;
+    self->unk_9c->flags |= 0x200000;
+    self->unk_9c->flags |= 0x80000;
     func_02041d9c(self->unk_9c, 0, 0x1a);
     func_02041d9c(self->unk_9c, 0, 0x1b);
     func_02041d9c(self->unk_9c, 0, 0x1c);

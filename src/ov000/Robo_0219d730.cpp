@@ -34,7 +34,7 @@ void func_ov000_0219d730(Robo021ca458 *self) {
     }
     func_ov000_02190a80((u8 *)self + 0x368, t);
     if (LFLD(void *, self, 0xb40) != NULL) {
-        o = func_020657b0(data_0214a420, LFLD(u32, self, 0xb40));
+        o = func_020657b0(data_0214a420, self->unk_b40);
         if (o != NULL) {
             VecFx32 v;
             VecFx32 p;
@@ -57,7 +57,7 @@ void func_ov000_0219d730(Robo021ca458 *self) {
         }
     }
     if (LFLD(void *, self, 0xb44) != NULL) {
-        o = func_020657b0(data_0214a420, LFLD(u32, self, 0xb44));
+        o = func_020657b0(data_0214a420, self->unk_b44);
         if (o == NULL) {
             LFLD(void *, self, 0xb44) = zero;
         } else {
@@ -65,7 +65,7 @@ void func_ov000_0219d730(Robo021ca458 *self) {
         }
     }
     if (LFLD(void *, self, 0xb48) != NULL) {
-        o = func_020657b0(data_0214a420, LFLD(u32, self, 0xb48));
+        o = func_020657b0(data_0214a420, self->unk_b48);
         if (o == NULL) {
             LFLD(void *, self, 0xb48) = zero;
             return;
@@ -81,7 +81,7 @@ void func_ov000_0219d730(Robo021ca458 *self) {
             func_01ffc9fc(&w, (u8 *)self + 0xb4c, r.y);
             VEC_Add(&w, (VecFx32 *)((u8 *)self + 0x70), &w);
             o->SetPos(&w);
-            s = LFLD(VecFx32, o, 0x40);
+            s = o->scale;
             s.x += ((s16)self->unk_b5e);
             s.y += ((s16)self->unk_b5e);
             s.z += ((s16)self->unk_b5e);

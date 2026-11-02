@@ -1,8 +1,11 @@
 #include "ov000/VObj.h"
+#include "Main/Gfx/TextWin.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/HeapScope.h"
 #include "nitro/fx.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/Model.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -41,9 +44,9 @@ typedef struct {
     u16 unk_10;
     u16 unk_12;
     VObj *unk_14;
-    VObj *unk_18;
-    VObj *unk_1c;
-    u8 *unk_20;
+    TextWin *unk_18;
+    TextWin *unk_1c;
+    Model *unk_20;
     s32 timer;
     s32 v28;
     s32 v2c;
@@ -70,7 +73,6 @@ extern u8 data_0208b318[];
 extern u8 data_0208ba70[];
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021ca94c[];
-extern u8 *data_02097ce0;
 extern void *data_02097e4c;
 void func_0206e900(void *buf, const char *s);
 void func_ov000_0214bb80(void);
@@ -84,10 +86,7 @@ void *func_02061e7c(u16 id);
 void *MsgRes_GetString(void *g, void *id);
 void func_0204c7d0(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void func_02041440(void *m, void *a, s32 b);
 void *func_02034d88(s32 a, void *b);
-void func_020417e0(void *m, void *a);
-void func_02041d9c(void *m, s32 a, s32 b);
 BOOL func_ov000_0219bf90(void);
 void func_ov000_021b4774(void);
 BOOL func_02054f10(void *m, s32 a);
@@ -100,19 +99,19 @@ void func_ov000_0214dc20(void);
 void func_ov000_0214c668(VObj *o, u16 a);
 BOOL func_ov000_0214c6a0(void *o);
 
-static inline VObj *NewTextWin_021b9010(void) {
-    u8 *p = (u8 *)Heap_Alloc(0xb8);
+static inline TextWin *NewTextWin_021b9010(void) {
+    TextWin *p = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);
     }
-    return (VObj *)p;
+    return p;
 }
 
-static inline void TextWinStart_021b9010(VObj *w, void *text) {
-    LFLD(void *, w, 0x24) = text;
-    LFLD(s32, w, 0x4c) = Text_Measure(LFLD(s32, w, 0x28), LFLD(s32, w, 0x38), LFLD(s32, w, 0x24), (u8 *)w + 0x44, (u8 *)w + 0x48, LFLD(s8, w, 0x37) != 0);
-    LFLD(s32, data_02097ce0, 0x4) = LFLD(s32, w, 0x28);
+static inline void TextWinStart_021b9010(TextWin *w, void *text) {
+    w->str = (u32)text;
+    w->unk_4c = Text_Measure(w->font, w->spacing, w->str, &w->width, &w->height, (s8)w->unk_37 != 0);
+    data_02097ce0->unk_004 = ((s32)w->font);
 }
 
 static inline s32 Ease_021b9010(s32 t, s32 d) {
@@ -171,7 +170,7 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         void *text;
         void *text1;
         u8 *w;
-        u8 *m;
+        Model *m;
         VObj *o;
         if (!IsA_021b9010(v) && (u32)(v - 0x11) > 2) {
             break;
@@ -183,38 +182,38 @@ BOOL func_ov000_021b9010(Obj021b9010 *self) {
         }
         text1 = MsgRes_GetString(data_02149ef8, text);
         self->unk_18 = NewTextWin_021b9010();
-        LFLD(s32, self->unk_18, 0x28) = 4;
-        LFLD(s32, self->unk_18, 0x2c) = 0;
+        self->unk_18->font = 4;
+        self->unk_18->unk_2c = 0;
         TextWinStart_021b9010(self->unk_18, text1);
-        self->unk_18->vfunc_14();
-        LFLD(u32, self->unk_18, 4) |= 0x40;
-        LFLD(u32, self->unk_18, 4) |= 0x40000000;
-        LFLD(u32, self->unk_18, 4) |= 4;
+        self->unk_18->unk_vf14();
+        self->unk_18->flags |= 0x40;
+        self->unk_18->flags |= 0x40000000;
+        self->unk_18->flags |= 4;
         if (self->mode <= 1) {
             text = func_02061df0(self->unk_10);
         } else {
             text = func_02061e7c(self->unk_10);
         }
         self->unk_1c = NewTextWin_021b9010();
-        LFLD(s32, self->unk_1c, 0x28) = 8;
-        LFLD(s32, self->unk_1c, 0x2c) = 0;
+        self->unk_1c->font = 8;
+        self->unk_1c->unk_2c = 0;
         TextWinStart_021b9010(self->unk_1c, text);
-        self->unk_1c->vfunc_14();
-        LFLD(u32, self->unk_1c, 4) |= 0x40;
-        LFLD(u32, self->unk_1c, 4) |= 0x40000000;
-        LFLD(u32, self->unk_1c, 4) |= 4;
-        m = (u8 *)Heap_Alloc(0x160);
+        self->unk_1c->unk_vf14();
+        self->unk_1c->flags |= 0x40;
+        self->unk_1c->flags |= 0x40000000;
+        self->unk_1c->flags |= 4;
+        m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
-            char *nm = data_ov000_021cc858[1];
-            func_02041218((struct PlttRes *)(m + 0x88));
+            const char *nm = data_ov000_021cc858[1];
+            func_02041218(&m->pltt);
             func_02041440(m, nm, 0);
         }
         self->unk_20 = m;
-        func_020417e0(self->unk_20, func_02034d88(self->unk_04->vfunc_10(), self->unk_20 + 0x4c));
-        LFLD(u32, self->unk_20, 0x6c) |= 2;
+        func_020417e0(self->unk_20, func_02034d88(self->unk_04->vfunc_10(), self->unk_20->unk_04c));
+        self->unk_20->flags |= 2;
         func_02041d9c(self->unk_20, 0, 1);
         if (self->mode == 1 || self->mode == 3) {
-            LFLD(u32, self->unk_20, 0x6c) |= 2;
+            self->unk_20->flags |= 2;
             func_02041d9c(self->unk_20, 0, 0);
             if (func_ov000_0219bf90()) {
                 func_ov000_021b4774();

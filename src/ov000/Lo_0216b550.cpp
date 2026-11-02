@@ -1,25 +1,18 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ModelPart.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
+#include "Main/Gfx/Model.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 
 extern s32 data_02097d78[5];
-extern void *data_0208cc94;
-extern void *data_0208cc88;
+extern const char *data_0208cc94;
+extern const char *data_0208cc88;
 BOOL func_02054f10(void *a, s32 b);
-void func_02041440(void *p, void *name, s32 c);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
 s32 FX_Div(s32 a, s32 b);
 
-typedef struct {
-    u32 b0 : 2;
-    u32 alpha : 5;
-    u32 rest : 25;
-} LoMdlFlags0216b550;
 
 static inline BOOL LoGBusy(FieldState *g) {
     return g->head != g->tail ? TRUE : FALSE;
@@ -46,7 +39,7 @@ static inline BOOL LoD78Idle(void) {
 struct Obj0216b550 {
     u8 unk_00[0x4];
     s32 unk_04;
-    void *unk_08;
+    Model *unk_08;
     u8 unk_0c[0x8];
     s32 unk_14;
     s32 unk_18;
@@ -73,20 +66,20 @@ void func_ov000_0216b550(Obj0216b550 *self) {
         break;
     case 5: {
         void *res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-        u8 *m = (u8 *)Heap_Alloc(0x160);
+        Model *m = (Model *)Heap_Alloc(sizeof(Model));
         if (m) {
-            void *nm = data_0208cc88;
-            func_02041218((struct PlttRes *)(m + 0x88));
+            const char *nm = data_0208cc88;
+            func_02041218(&m->pltt);
             func_02041440(m, nm, 0);
         }
         self->unk_08 = m;
         func_020417e0(m, res);
-        LFLD(u32, self->unk_08, 0x6c) |= 2;
+        self->unk_08->flags |= 2;
         func_02041d9c(self->unk_08, 0, 0x22);
         func_02041d9c(self->unk_08, 0, 0x23);
-        LFLD(u32, self->unk_08, 0x6c) |= 0x80000;
-        LFLD(u32, self->unk_08, 0x6c) |= 0x200000;
-        LFLD(LoMdlFlags0216b550, self->unk_08, 0x6c).alpha = 0x1e;
+        self->unk_08->flags |= 0x80000;
+        self->unk_08->flags |= 0x200000;
+        MODEL_FLAGS(self->unk_08)->alpha = 0x1e;
         self->unk_04 = 6;
         break;
     }

@@ -1,5 +1,6 @@
 #include "ov000/ModelPart.h"
 #include "nitro/fx.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
@@ -19,7 +20,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 s32 func_02043d84(void *a);
 void func_ov000_02160534(Obj02169588 *self, s32 a, VecFx32 *pos, s32 c, s32 d);
@@ -42,7 +42,7 @@ static inline void Model_PlayPartEx(Model *model, s32 idx, s32 flag) {
 
 void func_ov000_02169588(Obj02169588 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
     s32 off;
-    u8 *g;
+    GfxSys *g;
     Model *m;
     s32 scl;
     s32 y;
@@ -79,7 +79,7 @@ void func_ov000_02169588(Obj02169588 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
     MTX_Concat22(&mtx, (MtxFx22 *)((u8 *)m + 0x114), (MtxFx22 *)((u8 *)m + 0x114));
     MTX_ScaleApply22((MtxFx22 *)((u8 *)self->m0 + 0x114), (MtxFx22 *)((u8 *)self->m0 + 0x114), scl, scl);
     MODEL_FLAGS(self->m0)->alpha = (u8)(LO_FX_MUL(LO_FX_MUL(sin, dd), 0x1e000) >> 12);
-    MODEL_FLAGS(self->m0)->polygon_id = func_02043d84(g + 0x8b0);
+    MODEL_FLAGS(self->m0)->polygon_id = func_02043d84(g->unk_8b0);
     Model_PlayPartEx(self->m0, 1, 1);
 }
 

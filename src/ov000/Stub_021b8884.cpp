@@ -1,5 +1,6 @@
 #include "ov000/VObj.h"
 #include "Main/Sys/SysState.h"
+#include "Main/Gfx/Model.h"
 
 typedef struct {
     u8 unk_00[0x4];
@@ -20,15 +21,13 @@ typedef struct {
     u8 unk_00[0x24];
     VObj *unk_24;
     u8 unk_28[0x8];
-    void *unk_30;
+    Model *unk_30;
 } Obj021b88d8;
 
 extern "C" {
 
 void func_0203caf8(s32 a);
 void func_0203c9e8(s32 a, s32 b);
-void func_02041558(void *p);
-void func_02041278(void *p);
 void Heap_Free(void *p);
 
 extern char data_ov000_021cc87b[];
@@ -48,7 +47,7 @@ void func_ov000_021b8884(Obj021b8884 *self, u16 a) {
 
 void func_ov000_021b88d8(Obj021b88d8 *self) {
     void *saved;
-    void *p;
+    Model *p;
 
     func_0203caf8(0);
     func_0203caf8(2);
@@ -59,7 +58,7 @@ void func_ov000_021b88d8(Obj021b88d8 *self) {
     if (p != NULL) {
         if (p != NULL) {
             func_02041558(p);
-            func_02041278((u8 *)p + 0x88);
+            func_02041278(&p->pltt);
             Heap_Free(p);
         }
         self->unk_30 = NULL;

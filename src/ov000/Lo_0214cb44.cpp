@@ -1,43 +1,14 @@
 #include "ov000/LoCommon.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/Model.h"
+#include "ov000/ModelPart.h"
 
-typedef struct {
-    u32 b0 : 7;
-    u32 alpha : 6;
-    u32 rest : 19;
-} LoAlpha0214cb44;
 
 extern "C" {
 
-extern u8 *data_02097d48;
-void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
 u8 Gfx3DState_NextPolyId(void *p);
 void func_ov000_0214d304(VObj *self, s32 a, s32 *pos, s32 d);
 void func_ov000_0214d994(VObj *self);
-
-static inline void *LoModelGetPart(void *self, int idx) {
-    if (idx >= LFLD(s32, self, 0x80)) {
-        return NULL;
-    }
-    return (u8 *)LFLD(void *, self, 0x78) + idx * 0x28;
-}
-
-static inline void LoModelPlayPart(void *model, int idx) {
-    void *res = LFLD(void *, model, 0x28);
-    void *part;
-    void *anim;
-    if (res == NULL) {
-        return;
-    }
-    part = LoModelGetPart(model, idx);
-    if (part != NULL && LFLD(void *, part, 0x4) != NULL) {
-        anim = LFLD(void *, LFLD(void *, part, 0x4), 0x30);
-    } else {
-        anim = NNS_G2dGetCellDataByIdx(LFLD(void *, res, 0x4), **(u16 **)LFLD(void *, NNS_G2dGetAnimSequenceByIdx(LFLD(void *, res, 0xc), idx), 0xc));
-    }
-    func_02042628(model, anim, part, 0);
-}
 
 struct Obj0214cb44 : public VObj {
     u8 unk_04[0x20];
@@ -48,7 +19,7 @@ struct Obj0214cb44 : public VObj {
     u8 unk_3c[0x2c];
     s16 unk_68;
     u8 unk_6a[0x1a];
-    void *unk_84;
+    Model *unk_84;
     u8 unk_88[0x4];
     VObj *unk_8c;
     VObj unk_90;
@@ -70,14 +41,14 @@ void func_ov000_0214cb44(Obj0214cb44 *self, s32 a, s32 *pos, s32 d) {
         z = self->unk_68 - 0x110;
         x = (pos[0] + ((self->unk_24 - 0x80) + ((0x100 - self->unk_24) >> 1))) << 12;
         y = pos[1] + (((self->unk_28 >> 1) - 0x60) << 12);
-        LFLD(LoAlpha0214cb44, self->unk_84, 0x6c).alpha = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
+        MODEL_FLAGS(self->unk_84)->polygon_id = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
         {
             u8 *o = (u8 *)self->unk_84;
             LFLD(s32, o, 0xfc) = x;
             LFLD(s32, o, 0x100) = y;
         }
-        LFLD(s32, self->unk_84, 0x150) = z;
-        LoModelPlayPart(self->unk_84, 0);
+        self->unk_84->unk_150 = z;
+        Model_PlayPart(self->unk_84, 0);
         {
             s32 py = pos[1];
             s32 px = pos[0];

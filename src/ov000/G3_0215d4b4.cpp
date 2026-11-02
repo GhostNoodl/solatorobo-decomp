@@ -6,9 +6,9 @@
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
+#include "Main/Gfx/GfxMgr.h"
 
 extern "C" {
-extern u8 *data_02097d48;
 u8 Gfx3DState_NextPolyId(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
@@ -53,7 +53,7 @@ void func_ov000_0215d4b4(Lo021cad50 *self, s32 a1, s32 *pos, s32 sc) {
     MtxFx43 m;
     MtxFx43 t;
     s16 z;
-    u8 *g;
+    GfxSys *g;
     s32 sx;
     s32 sy;
     if (a1 == 0) {
@@ -62,7 +62,7 @@ void func_ov000_0215d4b4(Lo021cad50 *self, s32 a1, s32 *pos, s32 sc) {
     z = self->posZ - 0x100;
     g = data_02097d48;
     G3_Cmd1(0x2a, 0x20000000);
-    G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | 0x8d0 | (0x18 << 16));
+    G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | 0x8d0 | (0x18 << 16));
     sx = self->width << 12;
     sy = self->height << 12;
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);

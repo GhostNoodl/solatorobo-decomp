@@ -1,4 +1,5 @@
 #include "ov000/HeapScope.h"
+#include "Main/Gfx/PlttRes.h"
 
 typedef struct {
     u32 unk_00;
@@ -22,7 +23,6 @@ typedef struct {
 } Obj021658e8;
 
 extern "C" {
-void Heap_FreeHi(void *p);
 
 void func_ov000_021658e8(Obj021658e8 *self) {
     s32 i;

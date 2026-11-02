@@ -1,31 +1,30 @@
 #include "ov000/LoCommon.h"
 #include "Main/Res/StageFlags.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/Model.h"
+#include "ov000/ModelPart.h"
 
 extern "C" {
 
 extern char data_0214b105[];
-extern char *data_0208cca0;
+extern const char *data_0208cca0;
 extern char data_ov000_021cb8e0[];
 extern char data_ov000_021cb8f1[];
 extern char data_ov000_021cb8fd[];
 extern char data_ov000_021cb909[];
-extern u8 *data_02097d48;
 void *func_02035d5c(const char *a);
 void func_0206e900(char *dst, const char *src);
-void func_02041440(void *p, void *name, s32 c);
 void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
 void func_02041c5c(void *model, void *fn);
 void func_02041c18(void *model, void *arg);
 void *func_ov000_021640fc(void *self, void *a, void *oam, u16 *cnt);
 
-static inline void *NewModel(char *nm) {
-    u8 *m = (u8 *)Heap_Alloc(0x160);
+static inline Model *NewModel(char *nm) {
+    Model *m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
         char *n = nm;
         if (n) {
-            func_02041218((struct PlttRes *)(m + 0x88));
+            func_02041218(&m->pltt);
             func_02041440(m, n, 0);
         }
     }
@@ -34,9 +33,9 @@ static inline void *NewModel(char *nm) {
 
 struct Obj02164a94 {
     u8 unk_00[0x24];
-    void *unk_24;
-    void *unk_28;
-    void *unk_2c;
+    Model *unk_24;
+    Model *unk_28;
+    Model *unk_2c;
     u8 unk_30[0x20];
     s32 unk_50;
 };
@@ -47,26 +46,26 @@ void func_ov000_02164a94(Obj02164a94 *self) {
     void *b;
     s32 *pp;
     s32 saved;
-    u8 *m;
+    Model *m;
     func_02035d5c(data_0214b105);
     a = func_02035d5c(data_0208cca0);
     func_0206e900(buf, data_ov000_021cb8e0);
     b = func_02035d5c(buf);
     self->unk_50 = ((s32)data_0214a424->unk_020);
-    pp = &LFLD(s32, data_02097d48, 0x9e4);
+    pp = &data_02097d48->pltt.id;
     saved = *pp;
     *pp = -1;
-    m = (u8 *)NewModel(data_ov000_021cb8f1);
+    m = NewModel(data_ov000_021cb8f1);
     self->unk_28 = m;
-    func_020417e0(self->unk_28, func_02034d88(b, m + 0x4c));
+    func_020417e0(self->unk_28, func_02034d88(b, m->unk_04c));
     func_02041d9c(self->unk_28, 2, 0xffff);
-    m = (u8 *)NewModel(data_ov000_021cb8fd);
+    m = NewModel(data_ov000_021cb8fd);
     self->unk_2c = m;
-    func_020417e0(self->unk_2c, func_02034d88(b, m + 0x4c));
+    func_020417e0(self->unk_2c, func_02034d88(b, m->unk_04c));
     func_02041d9c(self->unk_2c, 2, 0xffff);
-    m = (u8 *)NewModel(data_ov000_021cb909);
+    m = NewModel(data_ov000_021cb909);
     self->unk_24 = m;
-    func_020417e0(self->unk_24, func_02034d88(a, m + 0x4c));
+    func_020417e0(self->unk_24, func_02034d88(a, m->unk_04c));
     func_02041d9c(self->unk_24, 2, 0xffff);
     func_02041c5c(self->unk_24, (void *)func_ov000_021640fc);
     func_02041c18(self->unk_24, self);
@@ -94,20 +93,16 @@ typedef struct {
 
 extern "C" {
 
-void *Heap_AllocHi(u32 size, u32 align);
 void *Heap_Alloc(u32 size);
-void MI_CpuFill8(void *dst, u32 value, u32 size);
 void func_02040be0(void *res, void *src);
 void func_02040d14(void *res, s32 a, s32 b);
 void func_02040d94(void *res, void *a, s32 b, s32 c);
 void func_02040dd8(void *res, s32 a, s32 b);
-void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
 struct Out_52e4;
 struct Def_52e4;
 struct Obj02164c50 {
     u8 unk_00[0x24];
-    void *unk_24;
+    Model *unk_24;
     u8 unk_28[0x8];
     u8 *unk_30;
     u8 unk_34[0x4];
@@ -117,20 +112,13 @@ struct Obj02164c50 {
 
 void func_ov000_021652e4(Obj02164c50 *self, u8 *p, struct Out_52e4 *rec, const struct Def_52e4 *e);
 
-static inline void *LoModelGetPart(void *self, int idx) {
-    if (idx >= LFLD(s32, self, 0x80)) {
-        return NULL;
+static inline void *LoModelGetCell(Model *model, int idx) {
+    ModelRes *res = model->res;
+    ModelPart *part = Model_GetPart(model, idx);
+    if (part != NULL && part->res != NULL) {
+        return part->res->tex;
     }
-    return (u8 *)LFLD(void *, self, 0x78) + idx * 0x28;
-}
-
-static inline void *LoModelGetCell(void *model, int idx) {
-    void *res = LFLD(void *, model, 0x28);
-    void *part = LoModelGetPart(model, idx);
-    if (part != NULL && LFLD(void *, part, 0x4) != NULL) {
-        return LFLD(void *, LFLD(void *, part, 0x4), 0x30);
-    }
-    return NNS_G2dGetCellDataByIdx(LFLD(void *, res, 0x4), **(u16 **)LFLD(void *, NNS_G2dGetAnimSequenceByIdx(LFLD(void *, res, 0xc), idx), 0xc));
+    return NNS_G2dGetCellDataByIdx(res->texRes, ***(u16 ***)((u8 *)NNS_G2dGetAnimSequenceByIdx(res->mdlRes, idx) + 0xc));
 }
 
 typedef struct { u8 pad[6]; u8 n6; u8 n7; } Ent02164c50;
@@ -147,7 +135,7 @@ static inline u8 *Next02164c50(u8 *e) {
 
 void func_ov000_02164c50(Obj02164c50 *self, u8 *arg) {
     u8 *p;
-    void *m;
+    PlttRes *m;
     u8 *buf;
     u16 base;
     void *cell;
@@ -161,9 +149,9 @@ void func_ov000_02164c50(Obj02164c50 *self, u8 *arg) {
     LFLD(u16, p, 0x4) = LFLD(u16, arg, 0x8);
     p[8] = arg[0xa];
     p[2] = 0;
-    m = Heap_Alloc(0x64);
+    m = (PlttRes *)Heap_Alloc(sizeof(PlttRes));
     if (m != NULL) {
-        func_02041218((struct PlttRes *)m);
+        func_02041218(m);
     }
     LFLD(void *, p, 0xc8c) = m;
     func_02040be0(m, self->unk_24);
@@ -183,7 +171,7 @@ void func_ov000_02164c50(Obj02164c50 *self, u8 *arg) {
     cell = LoModelGetCell(self->unk_24, 2);
     base = LFLD(u16, self->unk_24, 0xf4);
     oa = LFLD(OamAttr02164c50 *, cell, 0x4);
-    LFLD(s32, p, 0xc90) = LFLD(s32, LFLD(void *, self->unk_24, 0xec), 0x58);
+    LFLD(s32, p, 0xc90) = LFLD(s32, ((void *)self->unk_24->extPltt), 0x58);
     *(OamAttr02164c50 *)(p + 0x2c) = *oa;
     LFLD(OamW2_02164c50, p, 0x30).tile += base;
     p[1]++;

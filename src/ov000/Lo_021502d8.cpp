@@ -2,6 +2,8 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/Task.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/Model.h"
 
 extern "C" {
 
@@ -60,10 +62,9 @@ BOOL func_ov000_021502d8(Lo021ca9c4 *self) {
 extern "C" {
 extern void *data_02149ef8;
 extern u8 data_ov000_021ccd24[];
-extern void *data_ov000_021ca8d8[];
-extern u8 *data_02097ce0;
-extern void *data_0208cca0;
-extern void *data_0208cb74;
+extern const char *data_ov000_021ca8d8[];
+extern const char *data_0208cca0;
+extern const char *data_0208cb74;
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb5a8[];
@@ -72,13 +73,8 @@ extern u8 data_ov000_021caac8[];
 extern char data_ov000_021ca93e[];
 void *MsgRes_GetString(void *g, u32 id);
 BOOL func_0205aa30(void *p);
-void func_02041440(void *p, void *name, s32 c);
-void *STD_CopyString(void *dst, void *src);
-void *STD_ConcatenateString(void *dst, void *src);
-void *func_02035d5c(void *a);
 void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
+void *func_02035d5c(void *a);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
 s32 func_02061e7c(u16 a);
@@ -93,13 +89,13 @@ void func_ov000_0215158c(void *self);
 
 static inline void LoTextInit(u8 *t) {
     LFLD(s32, t, 0x4c) = Text_Measure(LFLD(s32, t, 0x28), LFLD(s32, t, 0x38), LFLD(s32, t, 0x24), t + 0x44, t + 0x48, LFLD(s8, t, 0x37) != 0);
-    LFLD(s32, data_02097ce0, 0x4) = LFLD(s32, t, 0x28);
+    data_02097ce0->unk_004 = LFLD(s32, t, 0x28);
 }
 
 void func_ov000_02150338(Lo021ca9c4 *self) {
-    u8 *m;
-    void *arc;
-    void *name;
+    Model *m;
+    const char *arc;
+    const char *name;
         VObj *o;
     void *g;
     u8 *p;
@@ -115,29 +111,29 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
             func_0205aa30(LFLD(void *, data_ov000_021ccd24, 8));
         }
     }
-    m = (u8 *)Heap_Alloc(0x160);
+    m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
         arc = data_ov000_021ca8d8[0];
         name = data_ov000_021ca8d8[1];
-        func_02041218((struct PlttRes *)(m + 0x88));
+        func_02041218(&m->pltt);
         func_02041440(m, name, 0);
-        STD_CopyString(m + 0x2c, arc);
+        STD_CopyString(m->name, arc);
     }
     self->unk_44 = m;
     func_020417e0(self->unk_44, func_02034d88((void *)self->unk_3c->vfunc_10(), (u8 *)self->unk_44 + 0x4c));
-    LFLD(u32, self->unk_44, 0x6c) |= 2;
+    self->unk_44->flags |= 2;
     func_02041d9c(self->unk_44, 0, 0);
-    m = (u8 *)Heap_Alloc(0x160);
+    m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
         arc = data_0208cca0;
         name = data_0208cb74;
-        func_02041218((struct PlttRes *)(m + 0x88));
+        func_02041218(&m->pltt);
         func_02041440(m, name, 0);
-        STD_CopyString(m + 0x2c, arc);
+        STD_CopyString(m->name, arc);
     }
     self->unk_48 = m;
-    func_020417e0(self->unk_48, func_02034d88(func_02035d5c(m + 0x2c), (u8 *)self->unk_48 + 0x4c));
-    LFLD(u32, self->unk_48, 0x6c) |= 2;
+    func_020417e0(self->unk_48, func_02034d88(func_02035d5c(m->name), self->unk_48->unk_04c));
+    self->unk_48->flags |= 2;
     func_02041d9c(self->unk_48, 0, 0xb);
     g = data_02149ef8;
     if (self->unk_42 == 0xffff) {
@@ -260,9 +256,9 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     if (LFLD(u16, self->unk_54, 0x32) != 0) {
         func_02040a98(buf, LFLD(u16, self->unk_54, 0x32));
         STD_ConcatenateString(buf, data_ov000_021ca93e);
-        STD_ConcatenateString(buf, MsgRes_GetString(g, 0x3e));
+        STD_ConcatenateString(buf, (const char *)MsgRes_GetString(g, 0x3e));
     } else {
-        STD_CopyString(buf, out[1]);
+        STD_CopyString(buf, (const char *)out[1]);
     }
     self->unk_2ac = buf;
     self->unk_2b0 = 8;

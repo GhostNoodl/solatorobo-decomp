@@ -1,15 +1,15 @@
 #include "ov000/VObj.h"
+#include "Main/Res/ResMgr.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 
 extern u8 data_ov000_021ccc94[];
 extern u8 data_ov000_021cc060[];
-extern void *data_02097cdc;
-extern void *data_0208cc94;
+extern const char *data_0208cc94;
 extern char data_ov000_021ccc68[];
 extern char data_ov000_021ccc72[];
 extern char data_ov000_021ccc7e[];
-void func_02036838(void *a, void *b, s32 c, s32 d);
 void func_02035acc(void *a, void *b, s32 c);
 void Heap_Free(void *ptr);
 

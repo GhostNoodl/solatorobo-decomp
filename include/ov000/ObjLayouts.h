@@ -274,8 +274,8 @@ SIZE_ASSERT(Robo021ca458, 0xbb0);
 
 // Vtable data_ov000_021ca94c; methods in G3_0214cff4.cpp, Lo_0214cb44.cpp, Menu_0214c2d0.cpp.
 struct Menu021ca94c : public UiObj {
-    void *unk_84;
-    u8 *unk_88;
+    Model *unk_84;
+    Model *unk_88;
     VObj *unk_8c;
     u32 unk_90;  // bit fields, read through per-file views
     u32 unk_94;
@@ -314,8 +314,8 @@ struct Lo021ca9c4 : public Task {
     VObj *unk_3c;
     u16 unk_40;
     u16 unk_42;
-    void *unk_44;
-    void *unk_48;
+    Model *unk_44;
+    Model *unk_48;
     Lo021cb5a8 *unk_4c;
     Lo021caac8 *unk_50;
     void *unk_54;
@@ -375,8 +375,8 @@ struct Lo021ca9c4 : public Task {
 // Vtable data_ov000_021caa44; methods in 6 files, Lo_0214e7f0.cpp .. Lo_0214f9ec.cpp.
 struct Lo021caa44 : public Task {
     VObj *unk_3c;
-    void *unk_40;
-    u8 *unk_44;
+    Model *unk_40;
+    TextWin *unk_44;
     u8 unk_48[0x4];
     Lo021cb5a8 *unk_4c;
     Lo021caac8 *unk_50;
@@ -477,9 +477,9 @@ struct Lo021cb5a8 : public UiList {
 struct Lo021cb6b0 : public VObj {
     u8 unk_04[0x1c];
     s32 unk_20;
-    void *unk_24;
-    void *unk_28;
-    void *unk_2c;
+    Model *unk_24;
+    Model *unk_28;
+    Model *unk_2c;
     u8 *unk_30;
     s32 unk_34;
     u8 unk_38[0x8];
@@ -511,7 +511,7 @@ struct Lo021cb6f0 {
     s32 unk_84;
     s32 unk_88;
     u8 unk_8c[0x10];
-    void *unk_9c;
+    Model *unk_9c;
 };
 
 // Vtable data_ov000_021cb744; methods in Lo_0216a608.cpp, Lo_0216a7dc.cpp.
@@ -537,8 +537,8 @@ struct Lo021cb744 {
     s32 unk_78;
     s32 unk_7c;
     u8 unk_80[0x1c];
-    void *unk_9c;
-    void *unk_a0;
+    Model *unk_9c;
+    Model *unk_a0;
     u8 unk_a4;
     u8 unk_a5[0x1];
     u16 unk_a6;
@@ -573,8 +573,8 @@ struct Lo021cb798 {
     s32 unk_7c;
     u8 unk_80[0x1c];
     s32 unk_9c;
-    void *unk_a0;
-    void *unk_a4;
+    Model *unk_a0;
+    Model *unk_a4;
     u8 unk_a8;
     u8 unk_a9;
     u16 unk_aa;
@@ -599,7 +599,7 @@ struct Lo021cb7ec {
     s32 unk_78;
     s32 unk_7c;
     u8 unk_80[0x1c];
-    void *unk_9c;
+    Model *unk_9c;
     s32 unk_a0;
     u16 unk_a4;
     u8 unk_a6[0x2];
@@ -722,7 +722,7 @@ struct Lo021cca40 {
 
 // Vtable data_ov000_021ccb54, data_ov000_021ccbe0; methods in Text_021c524c.cpp, Unit_021c3d20.cpp.
 struct UnitBase021ccb54_021ccbe0 : public UiObj {
-    u8 *unk_84;
+    Model *unk_84;
     u8 unk_88[0x8];
     u8 *unk_90;
     void *unk_94;

@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define GX_PACK_POLYGONATTR_PARAM(light, polyMode, cullMode, polygonID, alpha, misc) \
     ((u32)(((light) << 0) | ((polyMode) << 4) | ((cullMode) << 6) | (misc) | ((polygonID) << 24) | ((alpha) << 16)))
@@ -12,7 +13,6 @@ typedef struct {
 } V6;
 
 extern "C" {
-extern u8 *data_02097d48;
 u8 Gfx3DState_NextPolyId(void *p);
 void func_02043d20(void *p, int a);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
@@ -58,7 +58,7 @@ void func_ov000_0214cff4(Menu021ca94c *self, s32 a1, s32 *pos) {
     s16 z;
     s32 sy;
     u8 *g;
-    g = data_02097d48 + 0x8b0;
+    g = data_02097d48->unk_8b0;
     z = self->posZ - 0x110;
     func_02043d20(g, 0);
     G3_Cmd1(0x2a, 0x20000000);

@@ -1,12 +1,12 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
 #include "nitro/fx.h"
+#include "Main/Gfx/GfxMgr.h"
 
 extern "C" {
 
 typedef void (*VFunc)(void);
 
-extern u8 *data_02097ce0;
 extern VFunc data_0208ba70[];
 void *func_02061d64(u16 idx);
 void func_0204c7d0(void *p);
@@ -85,7 +85,7 @@ s32 func_ov000_021ba92c(Obj021ba92c *self) {
         t = self->unk_10;
         t->unk_24 = (s32)str;
         t->unk_4c = Text_Measure(t->unk_28, t->unk_38, t->unk_24, &t->unk_44, &t->unk_48, t->unk_37 != 0);
-        LFLD(s32, data_02097ce0, 4) = t->unk_28;
+        data_02097ce0->unk_004 = t->unk_28;
         ((VObj *)self->unk_10)->vfunc_14();
         self->unk_10->flags |= 0x40;
         self->unk_10->flags |= 0x1000000;

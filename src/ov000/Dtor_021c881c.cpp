@@ -1,5 +1,6 @@
 #include "ov000/VObj.h"
 #include "Main/Sys/SysState.h"
+#include "Main/Gfx/Model.h"
 
 class Task021cbac8 : public VObj {
 public:
@@ -7,7 +8,7 @@ public:
     Task021cbac8 *next;
     Task021cbac8 *prev;
     VObj *unk_30;
-    u8 *unk_34;
+    Model *unk_34;
 };
 
 extern "C" {
@@ -15,8 +16,6 @@ extern "C" {
 extern u8 data_ov000_021cbac8[];
 extern u8 data_ov000_021cca28[];
 extern u8 data_ov000_021cca40[];
-void func_02041558(void *obj);
-void func_02041278(void *obj);
 void Heap_Free(void *ptr);
 
 static inline void Task021cbac8_Dtor(Task021cbac8 *self) {
@@ -29,15 +28,15 @@ static inline void Task021cbac8_Dtor(Task021cbac8 *self) {
     }
 }
 
-static inline void Obj02041558_Delete(u8 *obj) {
+static inline void Obj02041558_Delete(Model *obj) {
     if (obj != NULL) {
         func_02041558(obj);
-        func_02041278(obj + 0x88);
+        func_02041278(&obj->pltt);
         Heap_Free(obj);
     }
 }
 
-static inline void DeleteModel(u8 **p) {
+static inline void DeleteModel(Model **p) {
     void *saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (*p != NULL) {

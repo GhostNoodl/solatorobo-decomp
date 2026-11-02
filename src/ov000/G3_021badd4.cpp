@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "Main/Gfx/GfxMgr.h"
 
 typedef struct {
     u32 lo : 8;
@@ -20,7 +21,6 @@ typedef struct {
 } Self021badd4;
 
 extern "C" {
-extern u8 *data_02097d48;
 extern void *data_0208b3d0;
 extern void *data_020828f8;
 u8 Gfx3DState_NextPolyId(void *p);
@@ -45,7 +45,7 @@ static inline void G3_Cmd1(int cmd, u32 value) {
 }
 
 void func_ov000_021badd4(Self021badd4 *self) {
-    u8 *g = data_02097d48;
+    GfxSys *g = data_02097d48;
     s32 a;
     s32 b;
     s32 x;
@@ -63,7 +63,7 @@ void func_ov000_021badd4(Self021badd4 *self) {
         b = 0;
     }
     if (a != 0) {
-        G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | 0xd0 | (a << 16));
+        G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | 0xd0 | (a << 16));
         NNS_G3dGeBufferOP_N(0x11, NULL, 0);
         G3_Vec(0x1c, 0x80000, 0x60000 - b, -0x91a);
         G3_Cmd1(0x20, 0x87);
@@ -81,7 +81,7 @@ void func_ov000_021badd4(Self021badd4 *self) {
         b = 0;
     }
     if (a != 0) {
-        G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | 0xd0 | (a << 16));
+        G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | 0xd0 | (a << 16));
         NNS_G3dGeBufferOP_N(0x11, NULL, 0);
         G3_Vec(0x1c, 0x80000, b + 0x63000, -0x91a);
         G3_Cmd1(0x20, 0x7b);
@@ -110,7 +110,7 @@ void func_ov000_021badd4(Self021badd4 *self) {
     }
     LFLD(s32, obj, 0x70) = -0x81a;
     LFLD(Attr021badd4, self->obj, 4).alpha = (u8)c;
-    LFLD(Attr021badd4, self->obj, 4).id = Gfx3DState_NextPolyId(g + 0x8b0);
+    LFLD(Attr021badd4, self->obj, 4).id = Gfx3DState_NextPolyId(g->unk_8b0);
     self->obj->vfunc_20(x, y - 0xb);
     self->obj->vfunc_90();
 }

@@ -1,10 +1,10 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
+#include "Main/Gfx/PlttRes.h"
 
 extern "C" {
 
-void Heap_FreeHi(void *p);
 BOOL func_ov000_02152a58(void *self);
 BOOL func_ov000_021580e8(void *self);
 BOOL func_02054f10(void *p, s32 a);

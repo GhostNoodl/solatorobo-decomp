@@ -1,4 +1,8 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ModelPart.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/Model.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 
@@ -14,15 +18,12 @@ typedef struct {
 } LoTimedHost;
 
 extern void *data_ov000_021ccd54;
-extern u8 *data_02097d48;
 void *func_ov000_0219bf90(void);
-void VEC_Add(void *a, void *b, void *c);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 void func_ov000_0216c018(void *self);
 void func_ov000_0216c310(void *self);
 void func_ov000_0216c6fc(void *self);
 s32 func_02043d84(void *a);
-void MI_CpuFill8(void *dst, s32 v, s32 size);
 void func_ov000_0216bcbc(void *self);
 
 struct Obj0216adc0 {
@@ -53,14 +54,8 @@ void func_ov000_0216adc0(Obj0216adc0 *self, s32 a, s32 b) {
 extern "C" {
 extern u8 *data_ov000_021ccd30;
 extern u8 data_02097d78[];
-extern char *data_0208cc94;
-extern char *data_0208cc88;
-extern s16 FX_SinCosTable_[];
-void *func_02035d5c(const char *name);
-void *func_02034d88(void *a, const char *name);
-void func_02041440(void *m, const char *name, s32 c);
-void func_020417e0(void *m, void *res);
-void func_02041d9c(void *m, s32 a, s32 b);
+extern const char *data_0208cc94;
+extern const char *data_0208cc88;
 BOOL func_02054f10(void *m, s32 id);
 s32 FX_Div(s32 a, s32 b);
 
@@ -71,11 +66,6 @@ typedef struct {
     u32 rest : 29;
 } Flags0216adf8;
 
-typedef struct {
-    u32 b0 : 2;
-    u32 alpha : 5;
-    u32 rest : 25;
-} MdlFlags0216adf8;
 
 static inline void *GetObj0216adf8(void) {
     void *o = LFLD(void *, data_ov000_021ccd30, 0x11c);
@@ -111,7 +101,7 @@ struct Obj0216adf8 {
     Flags0216adf8 unk_00;
     s32 unk_04;
     u8 unk_08[0x4];
-    void *unk_0c;
+    Model *unk_0c;
     u8 unk_10[0x4];
     u16 unk_14;
     u8 unk_16[0x2];
@@ -149,10 +139,10 @@ void func_ov000_0216adf8(Obj0216adf8 *self) {
         break;
     case 5: {
         void *res;
-        void *m;
+        Model *m;
         self->unk_14 = 0xc;
         res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-        m = Heap_Alloc(0x160);
+        m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
             const char *nm = data_0208cc88;
             func_02041218((struct PlttRes *)((u8 *)m + 0x88));
@@ -160,14 +150,14 @@ void func_ov000_0216adf8(Obj0216adf8 *self) {
         }
         self->unk_0c = m;
         func_020417e0(m, res);
-        LFLD(u32, self->unk_0c, 0x6c) |= 2;
+        self->unk_0c->flags |= 2;
         func_02041d9c(self->unk_0c, 0, 0xb);
         func_02041d9c(self->unk_0c, 0, self->unk_14);
         func_02041d9c(self->unk_0c, 0, 7);
         func_02041d9c(self->unk_0c, 0, 6);
-        LFLD(u32, self->unk_0c, 0x6c) |= 0x80000;
-        LFLD(u32, self->unk_0c, 0x6c) |= 0x200000;
-        LFLD(MdlFlags0216adf8, self->unk_0c, 0x6c).alpha = 0x1e;
+        self->unk_0c->flags |= 0x80000;
+        self->unk_0c->flags |= 0x200000;
+        MODEL_FLAGS(self->unk_0c)->alpha = 0x1e;
         self->unk_04 = 6;
         break;
     }

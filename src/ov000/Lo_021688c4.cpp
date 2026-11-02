@@ -2,13 +2,13 @@
 #include "ov000/VObj.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
 
-extern u8 *data_02097d48;
 s32 func_02043d84(void *a);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
@@ -49,7 +49,7 @@ static inline void Model_PlayPartChk(Model *model, s32 idx) {
 
 void func_ov000_021688c4(Lo021cb894 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
     VecFx32 p;
-    u8 *g;
+    GfxSys *g;
     u8 alpha;
     s32 z;
     s32 r;
@@ -64,23 +64,23 @@ void func_ov000_021688c4(Lo021cb894 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
     self->unk_9c->unk_150 = pos->z;
     SetPosV021688c4(self->unk_9c, &p);
     MODEL_FLAGS(self->unk_9c)->alpha = alpha & 0x1f;
-    MODEL_FLAGS(self->unk_9c)->polygon_id = PolyId021688c4(g + 0x8b0);
+    MODEL_FLAGS(self->unk_9c)->polygon_id = PolyId021688c4(g->unk_8b0);
     Model_PlayPartChk(self->unk_9c, 0x1a);
     if (self->unk_b8 > 0) {
         self->unk_9c->unk_150 = pos->z;
         SetPosV021688c4(self->unk_9c, &p);
         MODEL_FLAGS(self->unk_9c)->alpha = alpha & 0x1f;
-        MODEL_FLAGS(self->unk_9c)->polygon_id = func_02043d84(g + 0x8b0);
+        MODEL_FLAGS(self->unk_9c)->polygon_id = func_02043d84(g->unk_8b0);
         Model_PlayPartChk(self->unk_9c, 0x1c);
     } else {
-        func_02043d84(g + 0x8b0);
+        func_02043d84(g->unk_8b0);
     }
     z = pos->z + 0x80;
     self->unk_9c->unk_150 = z;
     SetPosV021688c4(self->unk_9c, &p);
     MODEL_FLAGS(self->unk_9c)->alpha = alpha & 0x1f;
     MODEL_FLAGS(self->unk_9c)->unk_21 = 1;
-    MODEL_FLAGS(self->unk_9c)->polygon_id = func_02043d84(g + 0x8b0);
+    MODEL_FLAGS(self->unk_9c)->polygon_id = func_02043d84(g->unk_8b0);
     Model_PlayPartChk(self->unk_9c, 0x1b);
     if (self->unk_5c <= 0) {
         return;
@@ -91,7 +91,7 @@ void func_ov000_021688c4(Lo021cb894 *self, s32 a, VecFx32 *pos, s32 c, s32 d) {
     } else if (r < 0) {
         r = 0;
     }
-    G3_Cmd1(0x29, 0x48d0 | (func_02043d84(g + 0x8b0) << 24) | (alpha << 16));
+    G3_Cmd1(0x29, 0x48d0 | (func_02043d84(g->unk_8b0) << 24) | (alpha << 16));
     self->vfunc_48(pos->x + self->unk_ac, pos->y + self->unk_b0 - 0x8000, z, 0x10000, (MulL021688c4(r, 0x13000) + 0x800) & 0x7ffff000, 0);
 }
 

@@ -4,9 +4,9 @@
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
+#include "Main/Gfx/GfxMgr.h"
 
 extern "C" {
-extern u8 *data_02097d48;
 u8 Gfx3DState_NextPolyId(void *p);
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 
@@ -54,7 +54,7 @@ static inline void Box_SetMtx(MtxFx43 *m, s32 x, s32 y, s32 z) {
 
 void func_ov000_0215b598(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 a3) {
     s16 z;
-    u8 *g;
+    GfxSys *g;
     s32 sx;
     s32 sy;
     s16 t;
@@ -65,7 +65,7 @@ void func_ov000_0215b598(LoBase021cafc0_021cb0b8 *self, s32 a1, s32 *pos, s32 a3
     G3_Cmd1(0x2a, 0x20000000);
     {
         s32 a = self->unk_54;
-        G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | 0x8d0 | (a << 16));
+        G3_Cmd1(0x29, (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | 0x8d0 | (a << 16));
     }
     {
         s32 k = self->unk_d4 ? 0x10000 : 0;

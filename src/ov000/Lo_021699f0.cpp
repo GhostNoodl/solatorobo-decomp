@@ -1,22 +1,19 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Gfx/Model.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 extern char data_0214b105[];
-extern void *data_0208cb7c;
-extern void *data_0208cc94;
-extern void *data_0208cc88;
+extern const char *data_0208cb7c;
+extern const char *data_0208cc94;
+extern const char *data_0208cc88;
 extern u8 data_ov000_021c9ab6[];
-void func_02041440(void *p, void *name, s32 c);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
 void func_ov000_0215fdfc(void *self, s32 a, const void *b);
 
 void func_ov000_021699f0(Lo021cb798 *self) {
     void *res;
-    u8 *m;
+    Model *m;
     switch (self->unk_9c) {
     case 0:
         self->unk_54 = 7;
@@ -41,33 +38,33 @@ void func_ov000_021699f0(Lo021cb798 *self) {
         break;
     }
     res = func_02034d88(func_02035d5c(data_0214b105), data_0208cb7c);
-    m = (u8 *)Heap_Alloc(0x160);
+    m = (Model *)Heap_Alloc(sizeof(Model));
     if (m) {
-        void *nm = data_0208cb7c;
-        func_02041218((struct PlttRes *)(m + 0x88));
+        const char *nm = data_0208cb7c;
+        func_02041218(&m->pltt);
         func_02041440(m, nm, 0);
     }
     self->unk_a4 = m;
     func_020417e0(m, res);
-    LFLD(u32, self->unk_a4, 0x6c) |= 2;
-    LFLD(u32, self->unk_a4, 0x6c) |= 0x200000;
-    LFLD(u32, self->unk_a4, 0x6c) |= 0x80000;
+    self->unk_a4->flags |= 2;
+    self->unk_a4->flags |= 0x200000;
+    self->unk_a4->flags |= 0x80000;
     func_02041d9c(self->unk_a4, 0, (u16)self->unk_9c);
     if (self->unk_a8 != 0xff) {
-        u8 *m2;
+        Model *m2;
         void *res2;
         res2 = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-        m2 = (u8 *)Heap_Alloc(0x160);
+        m2 = (Model *)Heap_Alloc(sizeof(Model));
         if (m2) {
-            void *nm = data_0208cc88;
-            func_02041218((struct PlttRes *)(m2 + 0x88));
+            const char *nm = data_0208cc88;
+            func_02041218(&m2->pltt);
             func_02041440(m2, nm, 0);
         }
         self->unk_a0 = m2;
         func_020417e0(m2, res2);
-        LFLD(u32, self->unk_a0, 0x6c) |= 2;
-        LFLD(u32, self->unk_a0, 0x6c) |= 0x200000;
-        LFLD(u32, self->unk_a0, 0x6c) |= 0x80000;
+        self->unk_a0->flags |= 2;
+        self->unk_a0->flags |= 0x200000;
+        self->unk_a0->flags |= 0x80000;
         func_02041d9c(self->unk_a0, 0, self->unk_a8);
     }
     self->unk_28 = 2;

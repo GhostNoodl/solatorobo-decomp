@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Gfx/PlttRes.h"
 
 typedef struct {
     s32 unk_00;
@@ -29,7 +30,6 @@ typedef struct {
 extern "C" {
 
 void MTX_Identity33_(void *mtx);
-void Heap_FreeHi(void *p);
 
 #define FREE_FIELD(f)          \
     if ((f) != 0) {            \

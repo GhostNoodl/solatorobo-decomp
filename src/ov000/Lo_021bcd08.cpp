@@ -1,12 +1,12 @@
 #include "ov000/ModelPart.h"
 #include "ov000/VObj.h"
 #include "nitro/fx.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define LO_FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 extern "C" {
-extern u8 *data_02097d48;
 extern const s16 FX_SinCosTable_[];
 u8 Gfx3DState_NextPolyId(void *p);
 
@@ -31,7 +31,7 @@ void func_ov000_021bcd08(Obj021bcd08 *self) {
         return;
     }
     y = (self->unk_1c + LO_FX_MUL(0x1000 - FX_SinCosTable_[((self->unk_28 << 14) >> 16) * 2], -0x40000)) >> 12;
-    MODEL_FLAGS(self->unk_14)->polygon_id = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
+    MODEL_FLAGS(self->unk_14)->polygon_id = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
     self->unk_14->unk_150 = -0x99a;
     Model_SetPos(self->unk_14, 0x54000, (y - 0x4e) << 12);
     m = self->unk_14;

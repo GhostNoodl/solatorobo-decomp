@@ -2,6 +2,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/ModelPart.h"
 #include "ov000/Vec.h"
+#include "Main/Res/ResArc.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -12,14 +13,11 @@ typedef struct {
 } Bits021bca00;
 
 extern "C" {
-extern void *data_0208cc94;
-extern void *data_0208cc88;
+extern const char *data_0208cc94;
+extern const char *data_0208cc88;
 extern const u32 data_0208ba70[];
 extern void *data_02149ef8;
 void *Heap_Alloc(u32 size);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-char *STD_CopyString(char *dst, const char *src);
 void func_0204c7d0(void *p);
 u32 MsgRes_GetString(void *p, s32 a);
 u32 Text_Measure(u32 a, u32 b, u32 c, u32 *d, u32 *e, BOOL f);
@@ -65,15 +63,15 @@ BOOL func_ov000_021bca00(Obj021bca00 *self) {
     switch (self->unk_0c) {
     case 0: {
         void *res = func_02034d88(func_02035d5c(data_0208cc94), data_0208cc88);
-        u8 *m = (u8 *)Heap_Alloc(0x160);
+        Model *m = (Model *)Heap_Alloc(sizeof(Model));
         if (m != NULL) {
-            void *arc;
-            void *name;
+            const char *arc;
+            const char *name;
             name = data_0208cc88;
             arc = data_0208cc94;
-            func_02041218((struct PlttRes *)(m + 0x88));
-            func_02041440((Model *)m, (const char *)name, 0);
-            STD_CopyString((char *)m + 0x2c, (const char *)arc);
+            func_02041218(&m->pltt);
+            func_02041440(m, name, 0);
+            STD_CopyString(m->name, arc);
         }
         self->unk_14 = (Model *)m;
         func_020417e0((Model *)m, res);

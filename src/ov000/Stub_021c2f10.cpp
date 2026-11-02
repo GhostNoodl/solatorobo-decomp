@@ -1,5 +1,7 @@
 #include "ov000/VObj.h"
 #include "Main/Sys/SysState.h"
+#include "Main/Gfx/Model.h"
+#include "ov000/HeapScope.h"
 
 typedef struct {
     u8 unk_00[0x18];
@@ -8,8 +10,8 @@ typedef struct {
     u8 unk_20[0x10];
     s32 unk_30;
     s32 unk_34;
-    s32 unk_38;
-    s32 unk_3c;
+    Model *unk_38;
+    Model *unk_3c;
     void *unk_40;
     s32 unk_44;
     u8 unk_48[0x4];
@@ -37,26 +39,6 @@ extern u8 data_ov000_021cc9bc[];
 extern u8 data_ov000_021cc9d3[];
 extern u8 data_ov000_021cc9dc[];
 void func_02035acc(void *a, void *b, s32 c);
-void Heap_Free(void *p);
-void func_02041558(void *m);
-void func_02041278(void *p);
-
-#define HEAP_DELETE_MODEL(field)                          \
-    {                                                     \
-        void *saved = data_02097dd0->cur;             \
-        void *p;                                          \
-        data_02097dd0->cur = data_02097dd0->heapHi;   \
-        p = (void *)(field);                              \
-        if (p != NULL) {                                  \
-            if (p != NULL) {                              \
-                func_02041558(p);                         \
-                func_02041278((u8 *)p + 0x88);            \
-                Heap_Free(p);                         \
-            }                                             \
-            (field) = 0;                                  \
-        }                                                 \
-        data_02097dd0->cur = saved;                   \
-    }
 
 void func_ov000_021c2f10(Obj021c2f10 *self) {
     self->unk_1c = 0xc8;

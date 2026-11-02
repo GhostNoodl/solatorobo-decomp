@@ -1,4 +1,5 @@
 #include "ov000/Vec.h"
+#include "Main/Gfx/GfxMgr.h"
 
 typedef struct {
     u8 pad[8];
@@ -13,7 +14,6 @@ typedef struct {
 } DLRef021bc6c0;
 
 extern "C" {
-extern u8 *data_02097d48;
 extern DLRef021bc6c0 data_0208b3d0;
 extern DLRef021bc6c0 data_020828f8;
 void func_02043d20(void *obj, int a);
@@ -50,13 +50,13 @@ void func_ov000_021bc6c0(Obj021bc6c0 *self) {
         u32 c20;
         u32 c2a;
         u32 c29;
-        u8 *g = data_02097d48;
+        GfxSys *g = data_02097d48;
         s32 alpha = LO_FX_MUL(FX_SinCosTable_[((self->unk_28 << 14) >> 16) * 2], 0xf000) >> 12;
         if (alpha == 0) {
             return;
         }
-        func_02043d20(g + 0x8b0, 0);
-        c29 = (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | 0xd0 | (alpha << 16);
+        func_02043d20(g->unk_8b0, 0);
+        c29 = (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | 0xd0 | (alpha << 16);
         NNS_G3dGeBufferOP_N(0x29, &c29, 1);
         c2a = 0x20000000;
         NNS_G3dGeBufferOP_N(0x2a, &c2a, 1);

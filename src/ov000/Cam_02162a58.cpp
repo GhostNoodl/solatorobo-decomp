@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/Vec.h"
+#include "nitro/mi.h"
 
 typedef struct {
     u8 unk_00[0x8];
@@ -16,7 +17,6 @@ extern "C" {
 extern Glb02162a58 NNS_G3dGlb;
 extern u8 data_02092844[];
 extern u8 data_02092800[];
-void MIi_CpuCopyFast(const void *a, void *b, u32 c);
 void func_ov000_02190758(void *m, void *p, s32 a);
 BOOL func_ov000_021903b4(void *m);
 

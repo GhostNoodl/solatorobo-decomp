@@ -1,4 +1,5 @@
 #include "ov000/ModelPart.h"
+#include "Main/Gfx/GfxMgr.h"
 
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
@@ -18,7 +19,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_02097d48;
 u8 Gfx3DState_NextPolyId(void *p);
 
 void func_ov000_021be420(Obj021be420 *self) {
@@ -34,7 +34,7 @@ void func_ov000_021be420(Obj021be420 *self) {
     Model_SetPos(self->unk_8c, x << 12, y << 12);
     a = FX_MUL(self->unk_88, 0x1f000) >> 12;
     MODEL_FLAGS(self->unk_8c)->unk_19 = 1;
-    MODEL_FLAGS(self->unk_8c)->polygon_id = Gfx3DState_NextPolyId(data_02097d48 + 0x8b0);
+    MODEL_FLAGS(self->unk_8c)->polygon_id = Gfx3DState_NextPolyId(data_02097d48->unk_8b0);
     MODEL_FLAGS(self->unk_8c)->alpha = (u8)a;
     Model_PlayPart(self->unk_8c, 3);
 }

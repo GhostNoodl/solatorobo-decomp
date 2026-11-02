@@ -12,6 +12,7 @@ extern "C" {
 ResNode *func_020359d0(const char *name, int type, u8 toFront);
 BOOL func_02035b90(const char *name, int type);
 ResList *func_02035d5c(const char *name);
+void *func_02034d88(void *list, const void *name);
 void func_02036838(ResMgr *mgr, const char *name, int type, BOOL force);
 
 #ifdef __cplusplus

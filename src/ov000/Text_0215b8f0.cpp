@@ -2,6 +2,7 @@
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
+#include "Main/Gfx/GfxMgr.h"
 
 typedef struct {
     u32 lo : 13;
@@ -10,12 +11,11 @@ typedef struct {
 } Flags0215b8f0;
 
 extern "C" {
-extern u8 *data_02097d48;
 u8 Gfx3DState_NextPolyId(void *p);
 void func_ov000_02153c48(void *node, void *a, s32 b, s32 c, s32 d);
 
 void func_ov000_0215b8f0(LoBase021cafc0_021cb0b8 *self, s32 unused, VecFx32 *pos) {
-    u8 *g;
+    GfxSys *g;
     UiListItem *node;
     s32 i;
     s32 a;
@@ -26,7 +26,7 @@ void func_ov000_0215b8f0(LoBase021cafc0_021cb0b8 *self, s32 unused, VecFx32 *pos
     node = self->items;
     i = 0;
     lh = self->vfunc_40();
-    a = Gfx3DState_NextPolyId(g + 0x8b0);
+    a = Gfx3DState_NextPolyId(g->unk_8b0);
     x0 = self->vfunc_30() + (self->width >> 1);
     y0 = self->vfunc_34();
     if (node == NULL) {

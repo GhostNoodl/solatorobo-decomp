@@ -1,29 +1,30 @@
 #include "ov000/LoCommon.h"
+#include "Main/Gfx/TextWin.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
+#include "Main/Gfx/GfxMgr.h"
 
 extern "C" {
 extern u8 data_0208ba70[];
-extern u8 *data_02097ce0;
 void func_0204c7d0(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
 void func_0204ca70(void *p);
 
 
 void UiObj_SetTitle(UiObj *self, s32 arg) {
-    u8 *p;
+    TextWin *p;
     LO_FREE_V(self, 0x14);
-    p = (u8 *)Heap_Alloc(0xb8);
+    p = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);
     }
     self->title = (VObj *)p;
-    LFLD(s32, p, 0x28) = 8;
-    p = (u8 *)self->title;
-    LFLD(s32, p, 0x24) = arg;
-    LFLD(s32, p, 0x4c) = Text_Measure(LFLD(s32, p, 0x28), LFLD(s32, p, 0x38), LFLD(s32, p, 0x24), p + 0x44, p + 0x48, LFLD(s8, p, 0x37) != 0);
-    LFLD(s32, data_02097ce0, 0x4) = LFLD(s32, p, 0x28);
+    p->font = 8;
+    p = (TextWin *)self->title;
+    p->str = arg;
+    p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
+    data_02097ce0->unk_004 = ((s32)p->font);
     LFLD(u16, self->title, 0x74) = 0x7fff;
     LFLD(u16, self->title, 0x76) = 0x67f;
     LFLD(u32, self->title, 0x4) |= 0x40;
@@ -35,11 +36,11 @@ void UiObj_SetTitle(UiObj *self, s32 arg) {
 }
 
 void UiObj_SetCaption(UiObj *self, const char *src) {
-    u8 *p;
+    TextWin *p;
     char buf[0x100];
     char *d;
     LO_FREE_V(self, 0x18);
-    p = (u8 *)Heap_Alloc(0xb8);
+    p = (TextWin *)Heap_Alloc(sizeof(TextWin));
     if (p != NULL) {
         VOBJ_SET_VTABLE(p, data_0208ba70);
         func_0204c7d0(p);
@@ -56,10 +57,10 @@ void UiObj_SetCaption(UiObj *self, const char *src) {
     }
     *d = 0;
     LFLD(s32, self->caption, 0x28) = 4;
-    p = (u8 *)self->caption;
-    LFLD(char *, p, 0x24) = buf;
-    LFLD(s32, p, 0x4c) = Text_Measure(LFLD(s32, p, 0x28), LFLD(s32, p, 0x38), LFLD(s32, p, 0x24), p + 0x44, p + 0x48, LFLD(s8, p, 0x37) != 0);
-    LFLD(s32, data_02097ce0, 0x4) = LFLD(s32, p, 0x28);
+    p = (TextWin *)self->caption;
+    p->str = (u32)buf;
+    p->unk_4c = Text_Measure(p->font, p->spacing, p->str, &p->width, &p->height, (s8)p->unk_37 != 0);
+    data_02097ce0->unk_004 = ((s32)p->font);
     LFLD(u32, self->caption, 0x4) |= 0x40;
     LFLD(u32, self->caption, 0x4) |= 0x1000000;
     LFLD(u32, self->caption, 0x4) |= 0x400000;

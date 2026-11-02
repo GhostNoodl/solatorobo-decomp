@@ -1,4 +1,6 @@
 #include "ov000/VObj.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Gfx/Model.h"
 
 typedef struct {
     u8 unk_00[0x8];
@@ -18,7 +20,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_02097d48;
 void func_02043d20(void *p, s32 a);
 void func_ov000_021b9b14(Obj021b9a84 *self);
 void func_ov000_021ba338(Obj021b9a84 *self);
@@ -28,7 +29,7 @@ void func_ov000_021b9a84(Obj021b9a84 *self) {
     case 11:
     case 12:
     case 13:
-        func_02043d20(data_02097d48 + 0x8b0, 0);
+        func_02043d20(data_02097d48->unk_8b0, 0);
         func_ov000_021b9b14(self);
         if (self->unk_0c == 1 || self->unk_0c == 3) {
             func_ov000_021ba338(self);
@@ -170,9 +171,6 @@ extern u32 data_020828f8;
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
 void NNS_G3dGeSendDL(const void *dl, u32 size);
 u8 Gfx3DState_NextPolyId(void *p);
-void *NNS_G2dGetAnimSequenceByIdx(void *p, int idx);
-void *NNS_G2dGetCellDataByIdx(void *p, u16 idx);
-void func_02042628(void *model, void *anim, void *part, int x);
 void func_ov000_021ba858(void *self, s32 x, s32 y);
 
 /* generic s64 product: the constant's high word sits in a zero register */
@@ -222,7 +220,7 @@ static inline void PlayPart(Model_021b9b14 *m, int idx) {
         anim = NNS_G2dGetCellDataByIdx(res->cells,
                                        **((Seq_021b9b14 *)NNS_G2dGetAnimSequenceByIdx(res->seqs, idx))->frames);
     }
-    func_02042628(m, anim, part, 0);
+    func_02042628((Model *)m, anim, (ModelPart *)part, 0);
 }
 
 typedef enum { SPR_DEPTH_021b9b14 = -0x81a } SprDepth_021b9b14;
@@ -230,7 +228,7 @@ typedef enum { SPR_DEPTH_021b9b14 = -0x81a } SprDepth_021b9b14;
 void func_ov000_021b9b14(Obj021b9a84 *self) {
     u32 al;
     SprDepth_021b9b14 dp;
-    u8 *g = data_02097d48;
+    GfxSys *g = data_02097d48;
     s32 t;
     s32 h;
     s32 o;
@@ -262,8 +260,8 @@ void func_ov000_021b9b14(Obj021b9a84 *self) {
         o = 0;
     }
     if (h != 0) {
-        G3Cmd1(0x29, (g[0x8b1] << 24) | 0xd0 | (h << 16));
-        Gfx3DState_NextPolyId(g + 0x8b0);
+        G3Cmd1(0x29, (g->unk_8b0[1] << 24) | 0xd0 | (h << 16));
+        Gfx3DState_NextPolyId(g->unk_8b0);
         NNS_G3dGeBufferOP_N(0x11, NULL, 0);
         G3Vec(0x1c, 0x80000, 0x60000 - o, -0x91a);
         if (self->unk_0c <= 1) {
@@ -288,8 +286,8 @@ void func_ov000_021b9b14(Obj021b9a84 *self) {
         }
     }
     if (h != 0) {
-        G3Cmd1(0x29, (g[0x8b1] << 24) | 0xd0 | (h << 16));
-        Gfx3DState_NextPolyId(g + 0x8b0);
+        G3Cmd1(0x29, (g->unk_8b0[1] << 24) | 0xd0 | (h << 16));
+        Gfx3DState_NextPolyId(g->unk_8b0);
         NNS_G3dGeBufferOP_N(0x11, NULL, 0);
         G3Vec(0x1c, 0x80000, o + 0x63000, -0x91a);
         if (self->unk_0c <= 1) {
@@ -327,8 +325,8 @@ void func_ov000_021b9b14(Obj021b9a84 *self) {
     self->model->flags.b2 = (u8)a;
     if (a != 0) {
         Model_021b9b14 *m;
-        G3Cmd1(0x29, (g[0x8b1] << 24) | 0xd0 | (a << 16));
-        Gfx3DState_NextPolyId(g + 0x8b0);
+        G3Cmd1(0x29, (g->unk_8b0[1] << 24) | 0xd0 | (a << 16));
+        Gfx3DState_NextPolyId(g->unk_8b0);
         NNS_G3dGeBufferOP_N(0x11, NULL, 0);
         G3Vec(0x1c, 0x100000, q << 12, -0x91a);
         G3Cmd1(0x20, 0x7fff);
@@ -377,12 +375,12 @@ void func_ov000_021b9b14(Obj021b9a84 *self) {
     al = (u8)a;
     sa->depth = dp;
     self->sprA->attr.b8 = al;
-    self->sprA->attr.b13 = g[0x8b1];
+    self->sprA->attr.b13 = g->unk_8b0[1];
     self->sprA->vfunc_20(x, y - 9);
     self->sprA->vfunc_90();
     self->sprB->depth = dp;
     self->sprB->attr.b8 = al;
-    self->sprB->attr.b13 = Gfx3DState_NextPolyId(g + 0x8b0);
+    self->sprB->attr.b13 = Gfx3DState_NextPolyId(g->unk_8b0);
     self->sprB->vfunc_20(x + w, y - 0xb);
     self->sprB->vfunc_90();
 }

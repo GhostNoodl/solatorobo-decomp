@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Gfx/PlttRes.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -34,7 +35,6 @@ void **func_02034ec0(void *a, void *b);
 void NNS_G3dRenderObjInit(void *rob, void *mdl);
 void *NNS_G3dGetAnmByIdx(void *file, s32 idx);
 u32 NNS_G3dAnmObjCalcSizeRequired(void *anm, void *mdl);
-void *Heap_AllocHi(u32 size, s32 align);
 void NNS_G3dAnmObjInit(void *obj, void *anm, void *mdl, void *tex);
 void NNS_G3dRenderObjAddAnmObj(void *rob, void *obj);
 void NNS_G3dDraw(void *rob);

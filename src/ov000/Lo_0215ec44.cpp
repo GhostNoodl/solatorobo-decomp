@@ -1,5 +1,7 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ModelPart.h"
 #include "nitro/std.h"
+#include "Main/Gfx/GfxMgr.h"
 
 extern "C" {
 
@@ -43,16 +45,6 @@ typedef struct {
     u32 rest : 27;
 } Flags0215ed18;
 
-typedef struct {
-    u32 b0 : 2;
-    u32 alpha : 5;
-    u32 polyId : 6;
-    u32 b13 : 6;
-    u32 b19 : 1;
-    u32 b20 : 1;
-    u32 b21 : 1;
-    u32 rest : 10;
-} MdlFlags0215ed18;
 
 typedef struct {
     Flags0215ed18 flags;
@@ -64,11 +56,10 @@ typedef struct {
     s32 dx;
     s32 dy;
     u8 pad20[8];
-    u8 *model;
+    Model *model;
 } Obj0215ed18;
 
 extern "C" {
-extern u8 *data_02097d48;
 extern V6_0215ed18 data_02fe01a0[];
 extern u16 data_02fe014c[];
 extern u16 data_02fe0158[];
@@ -98,20 +89,20 @@ static inline void G3_Vtx(u16 x, u16 y, u16 z) {
     NNS_G3dGeBufferOP_N(0x23, v, 2);
 }
 
-static inline BOOL HasAlpha0215ed18(u8 *m) {
-    return LFLD(MdlFlags0215ed18, m, 0x6c).b19 ? TRUE : FALSE;
+static inline BOOL HasAlpha0215ed18(Model *m) {
+    return MODEL_FLAGS(m)->unk_19 ? TRUE : FALSE;
 }
 
-static inline BOOL Flag20_0215ed18(u8 *m) {
-    return LFLD(MdlFlags0215ed18, m, 0x6c).b20 ? TRUE : FALSE;
+static inline BOOL Flag20_0215ed18(Model *m) {
+    return MODEL_FLAGS(m)->unk_20 ? TRUE : FALSE;
 }
 
-static inline BOOL Flag21_0215ed18(u8 *m) {
-    return LFLD(MdlFlags0215ed18, m, 0x6c).b21 ? TRUE : FALSE;
+static inline BOOL Flag21_0215ed18(Model *m) {
+    return MODEL_FLAGS(m)->unk_21 ? TRUE : FALSE;
 }
 
 void func_ov000_0215ed18(Obj0215ed18 *self) {
-    u8 *g;
+    GfxSys *g;
     s32 y;
     s32 x;
     s32 z;
@@ -132,7 +123,7 @@ void func_ov000_0215ed18(Obj0215ed18 *self) {
     y += self->dy << 12;
     misc = 0;
     G3_Cmd1(0x2a, 0x20000000);
-    alpha = HasAlpha0215ed18(self->model) ? (u8)LFLD(MdlFlags0215ed18, self->model, 0x6c).alpha : 0x1e;
+    alpha = HasAlpha0215ed18(self->model) ? (u8)MODEL_FLAGS(self->model)->alpha : 0x1e;
     if (Flag20_0215ed18(self->model)) {
         misc |= 0x4000;
     }
@@ -156,7 +147,7 @@ void func_ov000_0215ed18(Obj0215ed18 *self) {
     if (self->flags.b0) {
         x -= self->w >> 1;
     }
-    G3_Cmd1(0x29, misc | mode | (Gfx3DState_NextPolyId(g + 0x8b0) << 24) | (alpha << 16));
+    G3_Cmd1(0x29, misc | mode | (Gfx3DState_NextPolyId(g->unk_8b0) << 24) | (alpha << 16));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, x, y, z);
     G3_Vec(0x1b, w, self->h + 0x2000, 0x1000);
@@ -170,7 +161,7 @@ void func_ov000_0215ed18(Obj0215ed18 *self) {
     if (Flag21_0215ed18(self->model)) {
         misc |= 0x800;
     }
-    G3_Cmd1(0x29, misc | mode | (g[0x8b1] << 24) | (alpha << 16));
+    G3_Cmd1(0x29, misc | mode | (g->unk_8b0[1] << 24) | (alpha << 16));
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, x, y + 0x1000, self->z);
     G3_Vec(0x1b, w, self->h, 0x1000);
@@ -181,7 +172,7 @@ void func_ov000_0215ed18(Obj0215ed18 *self) {
     }
     NNS_G3dGeBufferOP_N(0x41, NULL, 0);
     G3_Cmd1(0x12, 1);
-    LFLD(MdlFlags0215ed18, self->model, 0x6c).polyId = Gfx3DState_NextPolyId(g + 0x8b0);
+    MODEL_FLAGS(self->model)->polygon_id = Gfx3DState_NextPolyId(g->unk_8b0);
 }
 
 }

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "nitro/mi.h"
 
 extern "C" {
 
@@ -8,7 +9,6 @@ extern u8 data_ov000_021cac02[];
 void *func_ov000_0218e9c4(void *p);
 void *func_ov000_0218ea20(void *p);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
-void MI_CpuFill8(void *dst, u8 value, u32 size);
 void *func_ov000_0218fe1c(void *p);
 void *GfxCamPos_Init(void *p);
 void MTX_Identity44_(void *m);

@@ -1,5 +1,7 @@
 #include "ov000/VObj.h"
 #include "nnsys/g3d.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "Main/Res/ResArc.h"
 
 typedef struct {
     u8 pad_00[0x28];
@@ -59,21 +61,18 @@ extern "C" {
 
 extern u8 data_ov000_021cc060[];
 extern u8 data_ov000_021ccc94[];
-extern void *data_0208cc94;
+extern const char *data_0208cc94;
 extern char data_ov000_021ccc68[];
 extern char data_ov000_021ccc72[];
 extern char data_ov000_021ccc7e[];
 extern u8 data_ov002_021f0f90;
 void *Heap_Alloc(u32 size);
 void Gfx3DState_Init(void *p);
-void *func_020359d0(void *p, s32 a, s32 b);
 void func_020359fc(void *p, void *q, s32 a, s32 b);
-BOOL func_02035b90(void *p, s32 a);
 BOOL func_02035bd4(void *p, void *q, s32 a);
 void func_ov000_02173648(void *self);
 extern u8 *data_02149ef0;
 extern Mgr021c9198 *data_ov000_021ccd30;
-extern u8 *data_02097d48;
 // Overlay ids, defined by the linker script.
 extern u8 OVERLAY_2_ID[];
 extern u8 OVERLAY_3_ID[];
@@ -141,7 +140,7 @@ void func_ov000_021c9198(VObj *self) {
         func_0204b270(data_02149ef0, (s32)OVERLAY_2_ID, 0);
         break;
     case 0xc: {
-        u8 *g;
+        GfxSys *g;
         u8 flag = FALSE;
         func_ov000_0218084c(data_ov000_021ccd44, 0x1b, 0);
         self->vfunc_4c();
@@ -155,12 +154,12 @@ void func_ov000_021c9198(VObj *self) {
             }
         }
         g = data_02097d48;
-        MIi_CpuCopy32(g + 0x8b0, (u8 *)self + 0x40, 0x180);
-        func_02043904(g + 0x8b0);
-        ((Bits021c9198 *)(g + 0x8b0))->b4 = 0;
-        ((Bits021c9198 *)(g + 0x8b0))->b5 = 1;
+        MIi_CpuCopy32(g->unk_8b0, (u8 *)self + 0x40, 0x180);
+        func_02043904(g->unk_8b0);
+        ((Bits021c9198 *)(g->unk_8b0))->b4 = 0;
+        ((Bits021c9198 *)(g->unk_8b0))->b5 = 1;
         *(vu16 *)0x4000060 &= 0xcfdf;
-        func_02043b20(g + 0x8b0);
+        func_02043b20(g->unk_8b0);
         break;
     }
     case 0xd:
@@ -173,7 +172,7 @@ void func_ov000_021c9198(VObj *self) {
 }
 
 void func_ov000_021c930c(VObj *self) {
-    u8 *g;
+    GfxSys *g;
     Cam021c930c *cam;
     if (*(s32 *)((u8 *)self + 0x8) != 0) {
         return;
@@ -188,8 +187,8 @@ void func_ov000_021c930c(VObj *self) {
         func_ov000_0216f844(data_ov000_021ccd30->unk_118, 1);
     }
     g = data_02097d48;
-    MIi_CpuCopy32((u8 *)self + 0x40, g + 0x8b0, 0x180);
-    func_02043b20(g + 0x8b0);
+    MIi_CpuCopy32((u8 *)self + 0x40, g->unk_8b0, 0x180);
+    func_02043b20(g->unk_8b0);
     cam = data_ov000_021ccd54;
     if (cam != NULL) {
         Persp021c930c *p = &cam->persp;

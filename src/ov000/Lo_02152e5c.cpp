@@ -1,4 +1,7 @@
 #include "ov000/LoCommon.h"
+#include "Main/Gfx/Model.h"
+#include "ov000/ModelPart.h"
+#include "Main/Res/ResArc.h"
 
 typedef struct {
     u32 a : 8;
@@ -17,35 +20,14 @@ extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021caec8[];
 extern u8 data_ov000_021cb1b0[];
 extern u8 data_ov000_021cb0b8[];
-extern void *data_0208cb84;
-extern void *data_0208cc8c;
-extern void *data_0208cb74;
-extern void *data_0208cca0;
-void func_02041440(void *p, void *name, s32 c);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
-void *STD_CopyString(void *dst, void *src);
-
-#define LO_MODEL_NEW(out, NAME, ARC)                 \
-    do {                                             \
-        u8 *m_ = (u8 *)Heap_Alloc(0x160);         \
-        if (m_) {                                    \
-            void *arc_;                              \
-            void *name_;                             \
-            name_ = NAME;                            \
-            arc_ = ARC;                              \
-            func_02041218((struct PlttRes *)(m_ + 0x88));                \
-            func_02041440(m_, name_, 0);             \
-            STD_CopyString(m_ + 0x2c, arc_);          \
-        }                                            \
-        out = m_;                                    \
-    } while (0)
+extern const char *data_0208cb84;
+extern const char *data_0208cc8c;
+extern const char *data_0208cb74;
+extern const char *data_0208cca0;
 
 struct Obj02152e5c {
     u8 unk_00[0x10];
-    u8 *unk_10;
+    Model *unk_10;
 };
 
 BOOL func_ov000_02152e5c(Obj02152e5c *self) {
@@ -53,16 +35,16 @@ BOOL func_ov000_02152e5c(Obj02152e5c *self) {
         return TRUE;
     }
     if (LBIT(self, 0xc).b6 ? TRUE : FALSE) {
-        LO_MODEL_NEW(self->unk_10, data_0208cb84, data_0208cc8c);
+        MODEL_NEW(self->unk_10, data_0208cb84, data_0208cc8c);
     } else {
-        LO_MODEL_NEW(self->unk_10, data_0208cb74, data_0208cca0);
+        MODEL_NEW(self->unk_10, data_0208cb74, data_0208cca0);
     }
     {
-        void *a = func_02035d5c(self->unk_10 + 0x2c);
-        void *b = func_02034d88(a, self->unk_10 + 0x4c);
+        ResList *a = func_02035d5c(self->unk_10->name);
+        void *b = func_02034d88(a, self->unk_10->unk_04c);
         func_020417e0(self->unk_10, b);
     }
-    LFLD(u32, self->unk_10, 0x6c) |= 2;
+    self->unk_10->flags |= 2;
     func_02041d9c(self->unk_10, 0, 7);
     return TRUE;
 }

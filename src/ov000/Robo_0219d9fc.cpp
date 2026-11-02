@@ -3,6 +3,7 @@
 #include "Main/Sys/FieldState.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Gfx/GfxMgr.h"
 
 typedef struct {
     u8 b0 : 1;
@@ -15,7 +16,6 @@ typedef struct {
 extern "C" {
 extern void *data_ov000_021ccd68;
 extern u8 *data_ov000_021ccd30;
-extern u8 *data_02097d48;
 extern u8 data_ov000_021ca320[];
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 void func_ov000_02191ec4(void *a, s32 b, u32 c);
@@ -55,7 +55,7 @@ static inline BOOL IsIdle_0219d9fc(FieldState *g) {
 
 static inline u8 Begin_0219d9fc(void) {
     u8 a = LFLD(u8, data_02097d48, 0x8b3);
-    func_02043d9c(data_02097d48 + 0x8b0);
+    func_02043d9c(data_02097d48->unk_8b0);
     return a;
 }
 

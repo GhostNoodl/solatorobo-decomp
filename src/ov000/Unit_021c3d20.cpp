@@ -2,19 +2,15 @@
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/UiObj.h"
+#include "Main/Gfx/Model.h"
+#include "Main/Res/ResArc.h"
 
 extern "C" {
 
-extern void *data_0208cc88;
-extern void *data_0208cc94;
-void func_02041440(void *p, void *name, s32 c);
-void *func_02035d5c(void *a);
-void *func_02034d88(void *a, void *b);
-void func_020417e0(void *model, void *a);
-void func_02041d9c(void *model, s32 a, s32 b);
+extern const char *data_0208cc88;
+extern const char *data_0208cc94;
 void func_02041c5c(void *m, void *fn);
 void func_02041c20(void *m, s32 a, void *b);
-void *STD_CopyString(void *dst, void *src);
 BOOL func_ov000_02152e5c(void *self);
 void func_ov000_0215ec44(void *self);
 void func_ov000_0215e8b0(void *self);
@@ -23,7 +19,7 @@ void *func_ov000_021c782c(u8 *self, void *req, void *buf, u16 *count);
 
 void func_ov000_021c3d20(UnitBase021ccb54_021ccbe0 *self) {
     void *p;
-    u8 *m;
+    Model *m;
     u8 *o;
 
     LBIT(self, 0xc).b1 = 0;
@@ -70,19 +66,19 @@ void func_ov000_021c3d20(UnitBase021ccb54_021ccbe0 *self) {
         func_02041c20(self->model, 2, self);
     }
     if (self->flags & 0x400000) {
-        m = (u8 *)Heap_Alloc(0x160);
+        m = (Model *)Heap_Alloc(sizeof(Model));
         if (m) {
-            void *arc;
-            void *name;
+            const char *arc;
+            const char *name;
             name = data_0208cc88;
             arc = data_0208cc94;
-            func_02041218((struct PlttRes *)(m + 0x88));
+            func_02041218(&m->pltt);
             func_02041440(m, name, 0);
-            STD_CopyString(m + 0x2c, arc);
+            STD_CopyString(m->name, arc);
         }
         self->unk_84 = m;
-        func_020417e0(self->unk_84, func_02034d88(func_02035d5c(m + 0x2c), self->unk_84 + 0x4c));
-        LFLD(u32, self->unk_84, 0x6c) |= 2;
+        func_020417e0(self->unk_84, func_02034d88(func_02035d5c(m->name), self->unk_84->unk_04c));
+        self->unk_84->flags |= 2;
         func_02041d9c(self->unk_84, 0, 6);
         func_02041c20(self->unk_84, 6, self);
         if (self->flags & 0x800000) {

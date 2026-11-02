@@ -1,8 +1,8 @@
 #include "ov000/VObj.h"
+#include "Main/Gfx/PlttRes.h"
 
 extern "C" {
 
-void Heap_FreeHi(void *p);
 
 void func_ov000_0215a04c(void *self) {
     *(s32 *)((u8 *)self + 0xd4) = -1;

@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "nitro/mi.h"
 
 typedef struct {
     s8 unk_00;
@@ -30,7 +31,6 @@ typedef struct {
 extern "C" {
 
 extern Data021ccd74 data_ov000_021ccd74;
-void MI_Copy36B(const void *src, void *dst);
 void VEC_Add(const void *a, const void *b, void *out);
 
 void func_ov000_021c2090(Obj021c2090 *self) {

@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Gfx/Model.h"
+#include "ov000/ModelPart.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
@@ -10,34 +12,8 @@ typedef struct {
 
 extern "C" {
 extern u8 *data_ov000_021ccd30;
-void *NNS_G2dGetAnimSequenceByIdx(void *a, int b);
-void *NNS_G2dGetCellDataByIdx(void *a, int b);
-void func_02042628(void *a, void *b, void *c, int d);
 void func_02041c34(void *a, int b, void *c, void *d);
 void *func_ov000_0216ac14(void *self, u16 *msg, void *arr, u16 *cnt);
-
-static inline void *Model_GetPart0216b1b4(void *self, int idx) {
-    if (idx >= LFLD(s32, self, 0x80)) {
-        return NULL;
-    }
-    return (u8 *)LFLD(void *, self, 0x78) + idx * 0x28;
-}
-
-static inline void Model_PlayPart0216b1b4(void *model, int idx) {
-    void *res = LFLD(void *, model, 0x28);
-    void *part;
-    void *anim;
-    if (res == NULL) {
-        return;
-    }
-    part = Model_GetPart0216b1b4(model, idx);
-    if (part != NULL && LFLD(void *, part, 0x4) != NULL) {
-        anim = LFLD(void *, LFLD(void *, part, 0x4), 0x30);
-    } else {
-        anim = NNS_G2dGetCellDataByIdx(LFLD(void *, res, 0x4), **(u16 **)LFLD(void *, NNS_G2dGetAnimSequenceByIdx(LFLD(void *, res, 0xc), idx), 0xc));
-    }
-    func_02042628(model, anim, part, 0);
-}
 
 static inline void *GetObj0216b1b4(void) {
     void *o = LFLD(void *, data_ov000_021ccd30, 0x11c);
@@ -69,7 +45,7 @@ struct Obj0216b1b4 {
     u8 unk_00[0x4];
     s32 unk_04;
     u8 unk_08[0x4];
-    void *unk_0c;
+    Model *unk_0c;
     u8 unk_10[0x4];
     u16 unk_14;
     u8 unk_16[0x6];
@@ -87,11 +63,11 @@ void func_ov000_0216b1b4(Obj0216b1b4 *self) {
     base = IsFlag0216b1b4(data_ov000_021ccd30) ? 0xae000 : 0xb6000;
     SetPos0216b1b4(self->unk_0c, -0x53000, (base + (s32)(((s64)self->unk_1c * 0x40000 + 0x800) >> 12) - 0x61000) & ~0xfff);
     func_02041c34(self->unk_0c, 6, (void *)func_ov000_0216ac14, self);
-    LFLD(s32, self->unk_0c, 0x150) = -0x1f80;
-    Model_PlayPart0216b1b4(self->unk_0c, 6);
-    Model_PlayPart0216b1b4(self->unk_0c, 7);
-    Model_PlayPart0216b1b4(self->unk_0c, self->unk_14);
-    LFLD(s32, self->unk_0c, 0x150) = -0x2000;
-    Model_PlayPart0216b1b4(self->unk_0c, 0xb);
+    self->unk_0c->unk_150 = -0x1f80;
+    Model_PlayPart(self->unk_0c, 6);
+    Model_PlayPart(self->unk_0c, 7);
+    Model_PlayPart(self->unk_0c, self->unk_14);
+    self->unk_0c->unk_150 = -0x2000;
+    Model_PlayPart(self->unk_0c, 0xb);
 }
 }

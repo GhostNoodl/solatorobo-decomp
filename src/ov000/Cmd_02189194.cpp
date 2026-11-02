@@ -2,6 +2,7 @@
 #include "ov000/ObjLayouts.h"
 #include "ov000/VObj.h"
 #include "Main/Effect/Effect.h"
+#include "Main/Gfx/GfxMgr.h"
 
 typedef struct {
     u8 c[3];
@@ -96,13 +97,6 @@ typedef struct {
     Task11c *unk_11c;
 } Mgr021ccd30;
 
-typedef struct {
-    u8 pad_00[0x8b0];
-    u8 b0 : 4;
-    u8 b4 : 1;
-    u8 b5 : 1;
-    u8 b6 : 2;
-} Obj02097d48;
 
 typedef struct {
     u32 b0 : 1;
@@ -132,7 +126,6 @@ extern Obj02097dc8 *data_02097dc8;
 extern void *data_ov000_021ccd6c;
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
-extern Obj02097d48 *data_02097d48;
 
 void func_0203cb78(s32 a, s32 b, s32 c);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
@@ -415,9 +408,9 @@ s32 func_ov000_02189194(CmdEx *self) {
             self->unk_cd.c[1] = 0xff;
             self->unk_cd.c[2] = 0xff;
             if (self->unk_b4 == 0xfe ? TRUE : FALSE) {
-                Obj02097d48 *d = data_02097d48;
-                d->b4 = 0;
-                d->b5 = 1;
+                GfxSys *d = data_02097d48;
+                d->unk_8b0_4 = 0;
+                d->unk_8b0_5 = 1;
                 *(vu16 *)0x4000060 &= 0xcfdf;
             }
         }

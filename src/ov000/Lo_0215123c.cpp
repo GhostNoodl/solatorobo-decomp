@@ -1,5 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "Main/Gfx/GfxMgr.h"
+#include "nnsys/g2d/g2d_Font.h"
 
 extern "C" {
 
@@ -84,8 +86,6 @@ void func_ov000_0215123c(Lo021ca9c4 *self) {
 // written after bx): z is still propagated (only bx and h are scalarized), so the result is 30 / 0, the same as an @ bx.
 extern "C" {
 
-extern u8 *data_02097ce0;
-u8 **GfxMgr_GetFont(void *p);
 u32 func_ov000_0214bf2c(u16 a);
 
 }
@@ -182,8 +182,8 @@ void func_ov000_021512b4(LoStatusWin *self, s32 a, s32 *pos, s32 c) {
     self->unk_118.depth = -0x191a;
     self->unk_118.unk_vf20(bx + 0x19, y);
     self->unk_118.Render();
-    LFLD(s32, data_02097ce0, 4) = self->unk_118.unk_28;
-    h = self->unk_118.unk_38 + LFLD(u8, LFLD(u8 *, *GfxMgr_GetFont(data_02097ce0), 8), 1);
+    data_02097ce0->unk_004 = self->unk_118.unk_28;
+    h = self->unk_118.unk_38 + ((NNSG2dFont *)GfxMgr_GetFont(data_02097ce0))->pRes->pGlyph->cellHeight;
     y += h * 5 + 1;
     if (func_ov000_0214bf2c(LFLD(u16, self->unk_54, 6)) & 0x10) {
         self->unk_340.depth = -0x191a;

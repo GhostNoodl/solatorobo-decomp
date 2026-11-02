@@ -1,13 +1,12 @@
 #include "ov000/LoCommon.h"
 #include "Main/Sys/FieldState.h"
+#include "Main/Effect/Effect.h"
 
 extern "C" {
 
 extern u8 data_ov000_021cac60[];
 extern u8 data_ov000_021cad50[];
 BOOL func_ov000_02184498(void *g);
-extern void *data_0214a420;
-BOOL func_020658cc(void *a, s32 b);
 s32 func_0204c08c(void *res, u16 id, s32 *out, s32 d);
 void func_02050748(void *p);
 void func_020508f4(void *p, s32 n);

@@ -1,4 +1,5 @@
 #include "ov000/VObj.h"
+#include "Main/Gfx/GfxMgr.h"
 
 typedef struct {
     u8 unk_00[0x50];
@@ -9,7 +10,6 @@ typedef struct {
 
 extern "C" {
 
-extern u8 *data_02097d48;
 void func_02043d20(void *p, s32 a);
 void func_ov000_021bbf78(Obj021bbbdc *self);
 
@@ -19,7 +19,7 @@ void func_ov000_021bbbdc(Obj021bbbdc *self) {
     case 11:
     case 12:
     case 13:
-        func_02043d20(data_02097d48 + 0x8b0, 0);
+        func_02043d20(data_02097d48->unk_8b0, 0);
         func_ov000_021bbf78(self);
         if (self->unk_5c != NULL) {
             self->unk_5c->vfunc_20();
