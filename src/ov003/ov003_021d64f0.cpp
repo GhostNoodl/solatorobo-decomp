@@ -1,5 +1,6 @@
 #include "types.h"
 #include "ov003/Actor.h"
+#include "Main/Sys/FieldState.h"
 
 extern "C" {
 
@@ -9,12 +10,6 @@ typedef struct {
     u32 unk_b24_1 : 1;
 } Ov003EvPlayer;
 
-typedef struct {
-    u8 pad_00[0xac];
-    u8 unk_ac;
-} Ov003G54;
-
-extern Ov003G54 *data_ov000_021ccd54;
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
@@ -23,7 +18,7 @@ void func_ov003_021d64f0(Ov003Actor *self) {
     if (self->unk_b0->unk_0a_5) {
         func_020627a0(self->kind, self->id);
         func_020627dc(4);
-        data_ov000_021ccd54->unk_ac = 1;
+        data_ov000_021ccd54->stageFlags = 1;
     }
     func_ov000_02198360(self->fsm, 1, 0);
 }

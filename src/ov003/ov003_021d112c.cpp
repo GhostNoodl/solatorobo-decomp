@@ -1,6 +1,7 @@
 #include "types.h"
 #include "nitro/std.h"
 #include "ov003/Actor.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u16 a;
@@ -69,13 +70,7 @@ typedef struct {
     u8 unk_111;
 } Ov003InAnm;
 
-typedef struct {
-    u8 pad00[0xca];
-    u8 unk_ca;
-} Ov003InGame;
-
 extern "C" {
-extern Ov003InGame *data_ov000_021ccd54;
 void *Heap_Alloc(u32 size);
 void *Heap_AllocHi(u32 size, s32 align);
 Ov003InInfo *func_0206fef8(u16 id);
@@ -323,7 +318,7 @@ extern "C" void func_ov003_021d112c(Ov003Actor *self) {
         func_ov000_021bd314(p, 1);
         ((Ov003InObj5c *)self->unk_5c)->unk_5c = self->height;
     }
-    if (data_ov000_021ccd54->unk_ca == 0x11) {
+    if (data_ov000_021ccd54->unk_ca.c[0] == 0x11) {
         self->unk_ea_14 = 1;
     }
 }

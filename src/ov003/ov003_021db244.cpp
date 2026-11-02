@@ -1,110 +1,7 @@
 #include "types.h"
+#include "ov003/Shot.h"
 
-typedef struct {
-    s32 x, y, z;
-} Ov003PjVec;
-
-typedef struct {
-    u16 x, y, z;
-} Ov003PjRot;
-
-typedef struct {
-    s32 m[9];
-} Ov003PjMtx33;
-
-typedef struct {
-    s32 m[9];
-    Ov003PjVec t;
-} Ov003PjMtx43;
-
-typedef struct {
-    s16 fx;
-    s16 ox;
-    s16 oy;
-    s16 oz;
-    s16 scale;
-    u8 unk_0a[0xa];
-    s16 trail;
-    s16 tx;
-    s16 ty;
-    s16 tz;
-    s16 tscale;
-    u16 tint;
-    s16 life;
-    u8 unk_22[8];
-    u16 mode : 3;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 1;
-    u16 b6 : 1;
-    u16 b7 : 3;
-    u16 b10 : 1;
-} Ov003PjCfg;
-
-typedef struct {
-    u16 dur;
-    s16 speed;
-    s16 accel;
-    s16 homing;
-    s16 next;
-} Ov003PjStep;
-
-typedef struct {
-    u16 state;
-} Ov003PjWork;
-
-typedef struct {
-    u8 unk_00[0x30];
-    u32 unk_30;
-    u8 unk_34[0x66];
-    union {
-        u16 flags;
-        struct {
-            u16 b0 : 1;
-        } b;
-    } f9a;
-} Ov003PjAnim;
-
-typedef struct {
-    u8 unk_00[0x22];
-    union {
-        u16 flags;
-        struct {
-            u16 b0 : 1;
-        } b;
-    } f22;
-} Ov003PjS44;
-
-typedef struct {
-    u8 unk_00[2];
-    u16 b0 : 3;
-} Ov003PjB0;
-
-typedef struct {
-    u8 unk_00[0xe];
-    u16 unk_0e;
-} Ov003PjPart;
-
-typedef struct {
-    u8 unk_00[0x78];
-    Ov003PjVec pos;
-    s32 rot[9];
-} Ov003PjModel;
-
-typedef struct {
-    u8 unk_00[0x13];
-    u8 kind;
-} Ov003PjPlWork;
-
-typedef struct {
-    u8 unk_00[0x40];
-    Ov003PjPlWork *work;
-    u8 unk_44[0x4c];
-    u16 unk_90;
-    u8 unk_92[0xa8c];
-    u16 unk_b1e;
-} Ov003PjPlayer;
-
+// The effect object func_02065f88 returns (Main EffectObj; only the members used here).
 class Ov003PjFx {
 public:
     virtual void v00();
@@ -112,93 +9,38 @@ public:
     virtual void v08();
     virtual void v0c();
     virtual void v10();
-    virtual void SetScale(s32 x, s32 y, s32 z);
+    virtual void SetScaleXYZ(s32 x, s32 y, s32 z);
     virtual void v18();
     virtual void v1c();
-    virtual void SetOffset(Ov003PjVec *v);
+    virtual void AddPos(VecFx32 *v);
     virtual void v24();
     virtual void v28();
     virtual void v2c();
-    virtual void SetRot(Ov003PjRot *r);
+    virtual void SetRot(ActorRot *r);
     u8 unk_04[0x20];
-    void *unk_24;
+    void *id; // handle (EffectMgr_Kill / func_020657b0)
 };
-
-typedef struct {
-    u8 unk_00[0xc];
-    u16 id;
-    u8 unk_0e[0x2a];
-    Ov003PjModel *model;
-    u8 unk_3c[4];
-    Ov003PjWork *work;
-    Ov003PjS44 *unk_44;
-    Ov003PjAnim *anim;
-    void *unk_4c;
-    u8 unk_50[0x20];
-    Ov003PjVec pos;
-    Ov003PjRot rot;
-    u8 unk_82[2];
-    Ov003PjVec dest;
-    u8 unk_90[3];
-    u8 unk_93_0 : 1;
-    u8 unk_94[8];
-    Ov003PjVec vel;
-    u8 unk_a8[8];
-    Ov003PjB0 *unk_b0;
-    u8 unk_b4[8];
-    void *fxh;
-    Ov003PjVec fxofs;
-    u8 unk_cc[4];
-    Ov003PjCfg *cfg;
-    Ov003PjStep *steps;
-    u16 unk_d8;
-    u16 trailTimer;
-    u16 lockTimer;
-    u16 stepTimer;
-    s16 step;
-    u8 unk_e2[2];
-    s32 speed;
-    Ov003PjVec local;
-} Ov003Pj;
 
 extern "C" {
 
-extern const s16 FX_SinCosTable_[];
-extern Ov003PjStep data_ov003_021f49ba[];
-extern Ov003PjVec data_02092a50;
-extern Ov003PjPlayer *func_ov000_0219bf90(void);
-extern Ov003PjPart *Target_Get(void *def);
-extern Ov003PjVec *func_ov000_0218d2e0(Ov003Pj *self);
-extern BOOL func_ov003_021dbd80(Ov003Pj *self);
-extern Ov003PjFx *func_02065f88(s32 id, Ov003PjVec *pos);
-extern void func_01ffc9fc(Ov003PjVec *dst, Ov003PjVec *src, u16 ry);
-extern void HitSphere_Link(Ov003PjAnim *a);
-extern void func_ov000_021987b8(Ov003PjAnim *a, s32 b, s32 c, s32 d);
-extern void VEC_Normalize(Ov003PjVec *a, Ov003PjVec *b);
-extern void VEC_Add(Ov003PjVec *a, Ov003PjVec *b, Ov003PjVec *dst);
-extern void VEC_MultAdd(s32 a, Ov003PjVec *v1, Ov003PjVec *v2, Ov003PjVec *dst);
-extern void VEC_MultSubtract(s32 a, Ov003PjVec *v1, Ov003PjVec *v2, Ov003PjVec *dst);
-extern Ov003PjMtx43 *NNS_G3dGlbGetInvV(void);
-extern void MTX_Identity33_(Ov003PjMtx33 *m);
-extern void MTX_RotX33_(Ov003PjMtx33 *m, s32 s, s32 c);
-extern void MTX_RotY33_(Ov003PjMtx33 *m, s32 s, s32 c);
-extern void MTX_RotZ33_(Ov003PjMtx33 *m, s32 s, s32 c);
-extern void MTX_Concat33(Ov003PjMtx33 *a, Ov003PjMtx33 *b, Ov003PjMtx33 *out);
-extern void MTX_MultVec33(Ov003PjVec *v, Ov003PjMtx33 *m, Ov003PjVec *out);
-extern void MTX_Identity43_(Ov003PjMtx43 *m);
-extern void MTX_RotX43_(Ov003PjMtx43 *m, s32 s, s32 c);
-extern void MTX_RotY43_(Ov003PjMtx43 *m, s32 s, s32 c);
-extern void MTX_RotZ43_(Ov003PjMtx43 *m, s32 s, s32 c);
-extern void MTX_Concat43(Ov003PjMtx43 *a, Ov003PjMtx43 *b, Ov003PjMtx43 *out);
-extern void MI_Copy36B(const void *src, void *dst);
+extern Ov003ShotStep data_ov003_021f49ba[];
+extern VecFx32 data_02092a50;
+extern Robo021ca458 *func_ov000_0219bf90(void);
+extern Actor *Target_Get(ActorSub4c *t);
+extern VecFx32 *func_ov000_0218d2e0(Actor *self);
+extern Ov003PjFx *func_02065f88(s32 id, VecFx32 *pos);
+extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 ry);
+extern void HitSphere_Link(ActorSub48 *a);
+extern void func_ov000_021987b8(ActorSub48 *a, s32 b, s32 c, s32 d);
+extern MtxFx43 *NNS_G3dGlbGetInvV(void);
 
 #define OV003PJ_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003PJ_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 #define OV003PJ_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
-static inline u8 Ov003Pj_Kind(Ov003PjPlayer *pl) {
-    if (pl->work != NULL) {
-        return pl->work->kind;
+static inline u8 Ov003Pj_Kind(Robo021ca458 *pl) {
+    if (pl->fsm != NULL) {
+        return pl->fsm->current;
     }
     return 0;
 }
@@ -211,40 +53,40 @@ static inline s32 Ov003Pj_Sqrt(s64 v) {
     return *(volatile s32 *)0x40002b4;
 }
 
-static inline void Ov003Pj_Show(Ov003PjAnim *a) {
-    a->f9a.b.b0 = 1;
-    a->f9a.flags |= 8;
+static inline void Ov003Pj_Show(ActorSub48 *a) {
+    a->unk_9a_0 = 1;
+    a->unk_9a |= 8;
     HitSphere_Link(a);
 }
 
-static inline void Ov003Pj_SetMtx(Ov003PjModel *o, Ov003PjMtx43 *m) {
-    MI_Copy36B(m, o->rot);
-    o->pos = m->t;
+static inline void Ov003Pj_SetMtx(Model0218fe1c *o, MtxFx43 *m) {
+    MI_Copy36B(m, &o->rot);
+    o->trans = *(VecFx32 *)m->m[3]; // the translation row, copied as one struct
 }
 
-void func_ov003_021db244(Ov003Pj *self) {
-    Ov003PjMtx33 m33;
-    Ov003PjVec d2;
-    Ov003PjVec o;
-    Ov003PjVec v;
-    Ov003PjVec d;
-    Ov003PjMtx43 m;
-    Ov003PjMtx33 t33;
-    Ov003PjMtx43 t;
-    Ov003PjCfg *cfg;
-    Ov003PjStep *ent;
+void func_ov003_021db244(Ov003Shot *self) {
+    MtxFx33 m33;
+    VecFx32 d2;
+    VecFx32 o;
+    VecFx32 v;
+    VecFx32 d;
+    MtxFx43 m;
+    MtxFx33 t33;
+    MtxFx43 t;
+    Ov003ShotDef *cfg;
+    Ov003ShotStep *ent;
     BOOL changed;
     s32 spd;
-    Ov003PjPlayer *pl;
-    Ov003PjPart *part;
+    Robo021ca458 *pl;
+    Actor *part;
     u16 mode;
-    Ov003PjVec *tgt;
+    VecFx32 *tgt;
     pl = func_ov000_0219bf90();
-    part = Target_Get(self->unk_4c);
-    switch (self->work->state) {
+    part = Target_Get(self->targetObj);
+    switch (self->fsm->st) {
     case 0: {
-        cfg = self->cfg;
-        self->unk_d8 = 0;
+        cfg = self->def;
+        self->age = 0;
         self->trailTimer = 0;
         self->stepTimer = 0;
         self->step = 0;
@@ -254,26 +96,26 @@ void func_ov003_021db244(Ov003Pj *self) {
         self->vel.z = 0;
         mode = cfg->mode;
         tgt = func_ov000_0218d2e0(self);
-        if (part->unk_0e == 0x1000 && !self->cfg->b5) {
+        if (part->kind == 0x1000 && !self->def->noAim) {
             s32 a;
             mode = 2;
             self->steps = data_ov003_021f49ba;
             if (tgt == NULL) {
                 mode = 1;
             }
-            a = self->cfg->life;
+            a = self->def->life;
             if (a < 0) {
                 a = -a;
             }
             if (a > 0x96) {
-                self->unk_d8 = a - 0x96;
+                self->age = a - 0x96;
             }
         }
         switch (mode) {
         case 1:
-            self->vel.x = OV003PJ_MUL(self->steps->speed, OV003PJ_SIN(self->rot.y));
+            self->vel.x = OV003PJ_MUL(self->steps->speed, OV003PJ_SIN(self->rot_y));
             {
-                s32 z = OV003PJ_MUL(self->steps->speed, OV003PJ_COS(self->rot.y));
+                s32 z = OV003PJ_MUL(self->steps->speed, OV003PJ_COS(self->rot_y));
                 self->vel.y = 0;
                 self->vel.z = z;
             }
@@ -286,7 +128,7 @@ void func_ov003_021db244(Ov003Pj *self) {
             if (tgt != NULL) {
                 d2 = *tgt;
             } else {
-                d2 = self->dest;
+                d2 = self->unk_84;
             }
             d2.y -= self->pos.y;
             dz = self->pos.z - d2.z;
@@ -294,8 +136,8 @@ void func_ov003_021db244(Ov003Pj *self) {
             sq = (s64)dx * dx;
             sq += (s64)dz * dz;
             h = (Ov003Pj_Sqrt(sq << 2) + 1) >> 1;
-            d2.x = OV003PJ_MUL(h, OV003PJ_SIN(self->rot.y));
-            d2.z = OV003PJ_MUL(h, OV003PJ_COS(self->rot.y));
+            d2.x = OV003PJ_MUL(h, OV003PJ_SIN(self->rot_y));
+            d2.z = OV003PJ_MUL(h, OV003PJ_COS(self->rot_y));
             VEC_Normalize(&d2, &d2);
             {
                 s32 s = self->steps->speed;
@@ -310,9 +152,9 @@ void func_ov003_021db244(Ov003Pj *self) {
             u16 ry;
             u16 rz;
             u16 rx;
-            ry = self->rot.y;
-            rz = self->rot.z;
-            rx = self->rot.x;
+            ry = self->rot_y;
+            rz = self->rot_z;
+            rx = self->rot_x;
             set = FALSE;
             MTX_Identity33_(&m33);
             if (ry != 0) {
@@ -347,58 +189,58 @@ void func_ov003_021db244(Ov003Pj *self) {
             break;
         }
         }
-        self->speed = self->steps->speed;
-        if (self->cfg->fx != -1 && self->fxh == NULL) {
-            Ov003PjFx *e = func_02065f88(self->cfg->fx, &self->pos);
-            s32 s = self->cfg->scale << 4;
-            e->SetScale(s, s, s);
+        self->curSpeed = self->steps->speed;
+        if (self->def->fly.id != -1 && self->unk_bc == NULL) {
+            Ov003PjFx *e = func_02065f88(self->def->fly.id, &self->pos);
+            s32 s = self->def->fly.scale << 4;
+            e->SetScaleXYZ(s, s, s);
             e->SetRot(&self->rot);
-            self->fxh = e->unk_24;
-            o.x = self->cfg->ox << 4;
-            o.y = self->cfg->oy << 4;
-            o.z = self->cfg->oz << 4;
+            self->unk_bc = e->id;
+            o.x = self->def->fly.x << 4;
+            o.y = self->def->fly.y << 4;
+            o.z = self->def->fly.z << 4;
             if (mode == 1 || mode == 2) {
-                func_01ffc9fc(&self->fxofs, &o, self->rot.y);
+                func_01ffc9fc(&self->fxOffset, &o, self->rot_y);
             } else {
-                MTX_MultVec33(&o, &m33, &self->fxofs);
+                MTX_MultVec33(&o, &m33, &self->fxOffset);
             }
         }
-        if (self->anim != NULL) {
-            Ov003Pj_Show(self->anim);
-            self->anim->f9a.flags |= 0x12;
-            if ((self->cfg->b7 & 2) && tgt == NULL) {
-                self->anim->unk_30 = 0xe0000000;
+        if (self->hit != NULL) {
+            Ov003Pj_Show(self->hit);
+            self->hit->unk_9a |= 0x12;
+            if ((self->def->flags & 2) && tgt == NULL) {
+                self->hit->unk_30 = 0xe0000000;
             }
         }
         {
-            Ov003PjS44 *q = self->unk_44;
+            ActorSub44 *q = self->unk_44;
             if (q != NULL) {
-                q->f22.b.b0 = 1;
-                q->f22.flags |= 2;
+                q->unk_22_0 = 1;
+                q->unk_22 |= 2;
             }
         }
-        self->work->state++;
+        self->fsm->st++;
     }
     case 1: {
         if (func_ov003_021dbd80(self)) {
             return;
         }
-        cfg = self->cfg;
-        if (cfg->trail != -1) {
+        cfg = self->def;
+        if (cfg->trail.id != -1) {
             self->trailTimer++;
-            if (self->trailTimer > cfg->tint) {
+            if (self->trailTimer > cfg->trailInterval) {
                 Ov003PjFx *e;
                 s32 s;
                 self->trailTimer = 0;
-                e = func_02065f88(cfg->trail, &self->pos);
-                cfg = self->cfg;
-                v.x = cfg->tx << 4;
-                v.y = cfg->ty << 4;
-                v.z = cfg->tz << 4;
-                func_01ffc9fc(&v, &v, self->rot.y);
-                e->SetOffset(&v);
-                s = self->cfg->tscale << 4;
-                e->SetScale(s, s, s);
+                e = func_02065f88(cfg->trail.id, &self->pos);
+                cfg = self->def;
+                v.x = cfg->trail.x << 4;
+                v.y = cfg->trail.y << 4;
+                v.z = cfg->trail.z << 4;
+                func_01ffc9fc(&v, &v, self->rot_y);
+                e->AddPos(&v);
+                s = self->def->trail.scale << 4;
+                e->SetScaleXYZ(s, s, s);
                 e->SetRot(&self->rot);
             }
         }
@@ -418,11 +260,11 @@ void func_ov003_021db244(Ov003Pj *self) {
         }
         if (ent->accel != 0) {
             changed = TRUE;
-            self->speed += OV003PJ_MUL(ent->accel, ent->speed - self->speed);
+            self->curSpeed += OV003PJ_MUL(ent->accel, ent->speed - self->curSpeed);
         }
-        spd = self->speed;
-        if (self->cfg->b3) {
-            if (pl != NULL && (pl->unk_b1e == self->id || (Ov003Pj_Kind(pl) == 0x18 && pl->unk_90 == self->id))) {
+        spd = self->curSpeed;
+        if (self->def->slowOnLock) {
+            if (pl != NULL && (pl->unk_b1e == self->id || (Ov003Pj_Kind(pl) == 0x18 && pl->target == self->id))) {
                 self->lockTimer++;
                 if (self->lockTimer >= 0x5a) {
                     self->lockTimer = 0x5a;
@@ -445,7 +287,7 @@ void func_ov003_021db244(Ov003Pj *self) {
             if (tgt != NULL) {
                 d = *tgt;
             } else {
-                d = self->dest;
+                d = self->unk_84;
             }
             d.x -= self->pos.x;
             d.y -= self->pos.y;
@@ -454,28 +296,28 @@ void func_ov003_021db244(Ov003Pj *self) {
             VEC_MultSubtract(spd, &d, &self->vel, &d);
             VEC_MultAdd(ent->homing, &d, &self->vel, &self->vel);
         }
-        if (self->cfg->b10) {
-            Ov003PjMtx43 *iv;
+        if (self->def->viewSpace) {
+            MtxFx43 *iv;
             s32 x;
             s32 y;
             s32 z;
-            VEC_Add(&self->local, &self->vel, &self->local);
+            VEC_Add(&self->viewPos, &self->vel, &self->viewPos);
             iv = NNS_G3dGlbGetInvV();
-            y = self->local.y;
-            x = self->local.x;
-            z = self->local.z;
-            self->pos.x = (s32)(((s64)x * iv->m[0] + (s64)y * iv->m[3] + (s64)z * iv->m[6]) >> 12);
-            self->pos.y = (s32)(((s64)x * iv->m[1] + (s64)y * iv->m[4] + (s64)z * iv->m[7]) >> 12);
-            self->pos.z = (s32)(((s64)x * iv->m[2] + (s64)y * iv->m[5] + (s64)z * iv->m[8]) >> 12);
+            y = self->viewPos.y;
+            x = self->viewPos.x;
+            z = self->viewPos.z;
+            self->pos.x = (s32)(((s64)x * iv->a[0] + (s64)y * iv->a[3] + (s64)z * iv->a[6]) >> 12);
+            self->pos.y = (s32)(((s64)x * iv->a[1] + (s64)y * iv->a[4] + (s64)z * iv->a[7]) >> 12);
+            self->pos.z = (s32)(((s64)x * iv->a[2] + (s64)y * iv->a[5] + (s64)z * iv->a[8]) >> 12);
             VEC_Add(&self->pos, &data_02092a50, &self->pos);
             {
                 BOOL set;
                 u16 rz;
                 u16 ry;
                 u16 rx;
-                rz = self->rot.z;
-                ry = self->rot.y;
-                rx = self->rot.x;
+                rz = self->rot_z;
+                ry = self->rot_y;
+                rx = self->rot_x;
                 set = FALSE;
                 MTX_Identity43_(&m);
                 if (rz != 0) {
@@ -502,19 +344,19 @@ void func_ov003_021db244(Ov003Pj *self) {
                 }
             }
             MTX_Concat43(&m, NNS_G3dGlbGetInvV(), &m);
-            m.t = self->pos;
+            *(VecFx32 *)m.m[3] = self->pos; // translation row, one struct copy
             Ov003Pj_SetMtx(self->model, &m);
             self->unk_93_0 = 1;
         } else {
             VEC_Add(&self->pos, &self->vel, &self->pos);
         }
-        if (self->anim == NULL) {
+        if (self->hit == NULL) {
             return;
         }
-        if (!(self->unk_b0->b0 & 2)) {
-            Ov003Pj_Show(self->anim);
+        if (!(self->param->type & 2)) {
+            Ov003Pj_Show(self->hit);
         }
-        func_ov000_021987b8(self->anim, 0, 0, 0);
+        func_ov000_021987b8(self->hit, 0, 0, 0);
         break;
     }
     }

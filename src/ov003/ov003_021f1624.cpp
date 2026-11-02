@@ -1,13 +1,10 @@
 #include "types.h"
 #include "nitro/std.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     s32 x, y, z;
 } Ov003InVec;
-
-typedef struct {
-    u8 r, g, b;
-} Ov003InCol;
 
 typedef struct {
     u8 unk_00[0x12];
@@ -87,11 +84,6 @@ typedef struct {
 } Ov003InHit;
 
 typedef struct {
-    u8 unk_00[0xca];
-    Ov003InCol unk_ca;
-} Ov003InGame;
-
-typedef struct {
     u8 unk_00[0xc];
     u16 unk_0c;
     u16 unk_0e;
@@ -121,8 +113,7 @@ typedef struct {
 extern "C" {
 
 extern Ov003InHit data_02fe0f14;
-extern Ov003InGame *data_ov000_021ccd54;
-extern Ov003InCol data_ov003_021f7388;
+extern FieldId data_ov003_021f7388;
 extern char data_ov003_021fa208[];
 extern Ov003InRes *func_0206fef8(u16 id);
 extern Ov003InB0 *func_020702c8(u16 id);
@@ -153,9 +144,9 @@ static inline void Ov003In_Icon(Ov003InIcon *icon, u16 id) {
     icon->unk_28 = id;
 }
 
-static inline BOOL Ov003In_SameCol(const Ov003InCol *a, Ov003InCol b) {
+static inline BOOL Ov003In_SameField(const FieldId *a, FieldId b) {
     BOOL r = FALSE;
-    if (a->r == b.r && a->g == b.g && a->b == b.b) {
+    if (a->c[0] == b.c[0] && a->c[1] == b.c[1] && a->c[2] == b.c[2]) {
         r = TRUE;
     }
     return r;
@@ -233,7 +224,7 @@ skip:
             c->unk_9a_4 = 0;
             func_ov000_0219864c(self->ctl, 0, 0);
         }
-        if (!Ov003In_SameCol(&data_ov000_021ccd54->unk_ca, data_ov003_021f7388)) {
+        if (!Ov003In_SameField(&data_ov000_021ccd54->unk_ca, data_ov003_021f7388)) {
             Ov003InS44 *s = (Ov003InS44 *)Heap_Alloc(0x24);
             if (s != NULL) {
                 s = func_ov000_021984c8(s);

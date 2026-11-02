@@ -1,15 +1,6 @@
 #include "types.h"
-
-struct Ov003Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
-
-struct Ov003Work {
-    u16 state;
-    u16 timer;
-};
+#include "Main/Sys/FieldState.h"
+#include "ov000/ActorParts.h"
 
 struct Ov003GmPart {
     u8 unk_00[0x18];
@@ -27,17 +18,6 @@ struct Ov003GmCtl {
 struct Ov003GmModel {
     u8 unk_00[0xc4];
     s16 dir;
-};
-
-struct Ov003GmGlobal {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-    u8 unk_98[0x14];
-    u8 unk_ac;
-    u8 unk_ad[0x27];
-    s32 unk_d4;
 };
 
 struct Ov003GmRot {
@@ -120,7 +100,7 @@ struct Ov003Gimmick {
     u8 unk_34[4];
     Ov003GmModel *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     u8 unk_44[4];
     Ov003GmCtl *ctl;
     Ov003GmPart *part;
@@ -128,11 +108,11 @@ struct Ov003Gimmick {
     s32 scale;
     u8 unk_68[4];
     s32 rotY;
-    Ov003Vec pos;
+    VecFx32 pos;
     Ov003GmRot rot;
     u8 unk_82[0x3a];
     void *fx;
-    Ov003Vec ofs;
+    VecFx32 ofs;
     u8 unk_cc[2];
     u8 count;
     u8 state;
@@ -147,7 +127,6 @@ struct Ov003Gimmick {
 
 extern "C" {
 
-extern Ov003GmGlobal *data_ov000_021ccd54;
 extern void *data_02097e4c;
 extern u8 data_ov003_021f99e8[];
 extern char data_ov003_021f99d8[];
@@ -156,7 +135,7 @@ extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_020627b4(void);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
-extern void *func_ov000_0219b71c(Ov003Vec *pos, Ov003Vec *v, s32 a, s32 b, s32 c, s32 d);
+extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void *Target_Get(Ov003GmPart *p);
@@ -172,32 +151,31 @@ extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
 extern BOOL func_ov000_021950e8(void *self, Ov003GmMsg *msg);
 extern s32 Rand_UpTo(s32 max);
-extern Ov003GmEffect *func_02065f88(s32 id, const Ov003Vec *pos);
+extern Ov003GmEffect *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_ov003_021ec668(Ov003Gimmick *self);
 extern void *data_0214a420;
 extern void EffectMgr_Kill(void *mgr, void *handle);
 extern Ov003GmFx *func_020657b0(void *mgr, void *handle);
-extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
 extern void func_ov000_0219bd20(u16 id, u16 a, s32 type, s32 b, s32 c, Ov003GmSig *sig);
-extern void *func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
 extern void func_ov003_021ec9e0(Ov003Gimmick *self);
 
 static inline void Ov003Gimmick_Finish(Ov003Gimmick *self) {
     func_020627a0(self->id, self->unk_0c);
     func_020627dc(4);
-    data_ov000_021ccd54->unk_ac = 1;
+    data_ov000_021ccd54->stageFlags = 1;
     func_ov000_02198360(self->work, 1, 0);
 }
 
 void func_ov003_021ec130(Ov003Gimmick *self) {
-    Ov003Work *w = self->work;
+    ActorSub40 *w = self->work;
     u16 t;
     w->timer++;
     t = w->timer;
     if (t % 30 == 0) {
-        Ov003Vec pos;
-        Ov003Vec v;
+        VecFx32 pos;
+        VecFx32 v;
         pos.x = self->pos.x;
         pos.y = self->pos.y;
         pos.z = self->pos.z;
@@ -223,7 +201,7 @@ void func_ov003_021ec130(Ov003Gimmick *self) {
 
 void func_ov003_021ec270(Ov003Gimmick *self) {
     void *p;
-    if (self->work->state != 0) {
+    if (self->work->st != 0) {
         return;
     }
     func_020627b4();
@@ -232,7 +210,7 @@ void func_ov003_021ec270(Ov003Gimmick *self) {
         Actor_SendMsg(p, self->unk_0c, 3, 1, 0, 0);
     }
     self->part->unk_1c = 0xffff;
-    self->work->state++;
+    self->work->st++;
     Ov003Gimmick_Finish(self);
 }
 
@@ -331,7 +309,7 @@ void Ov003ActVt_021f99e8_Update(Ov003Gimmick *self) {
 
 void func_ov003_021ec580(Ov003Gimmick *self) {
     if (self->state == 1) {
-        Ov003Work *w = self->work;
+        ActorSub40 *w = self->work;
         w->timer++;
         if (w->timer >= 0x96) {
             Ov003GmEffect *e;
@@ -356,11 +334,11 @@ void func_ov003_021ec580(Ov003Gimmick *self) {
     }
 }
 
-static inline BOOL Ov003GmGlobal_IsBusy(Ov003GmGlobal *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003GmGlobal_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003GmGlobal_IsIdle(Ov003GmGlobal *g) {
+static inline BOOL Ov003GmGlobal_IsIdle(FieldState *g) {
     if (Ov003GmGlobal_IsBusy(g)) {
         return FALSE;
     }
@@ -371,19 +349,19 @@ static inline BOOL Ov003GmGlobal_IsIdle(Ov003GmGlobal *g) {
 }
 
 static inline BOOL Ov003Gm_GameIdle(void) {
-    Ov003GmGlobal *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003GmGlobal_IsIdle(g);
     }
     return TRUE;
 }
 
-static inline BOOL Ov003GmGlobal_Flag(Ov003GmGlobal *g) {
-    return g->unk_d4 != 0 ? TRUE : FALSE;
+static inline BOOL Ov003GmGlobal_Flag(FieldState *g) {
+    return g->event != 0 ? TRUE : FALSE;
 }
 
 void func_ov003_021ec668(Ov003Gimmick *self) {
-    Ov003Vec v;
+    VecFx32 v;
     Ov003GmRot r;
     Ov003GmSig sig0;
     Ov003GmSig sig1;
@@ -401,7 +379,7 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
             return;
         }
     }
-    switch (self->work->state) {
+    switch (self->work->st) {
     case 0: {
         u8 n = 0;
         u8 i;
@@ -428,7 +406,7 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
         r.z = self->unk_d4 + self->rot.z;
         self->fx = fx->handle;
         fx->SetRot(&r);
-        self->work->state++;
+        self->work->st++;
         sig0.idx = self->unk_1c;
         sig0.on = 1;
         func_ov000_0219bd20(0x4064, self->unk_0c, 0xe, 1, 2, &sig0);
@@ -439,7 +417,7 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
         fx = func_020657b0(data_0214a420, self->fx);
         if (fx != NULL) {
             s16 lim = self->unk_1e;
-            Ov003Work *w = self->work;
+            ActorSub40 *w = self->work;
             w->timer++;
             if (w->timer <= lim) {
                 goto attack;
@@ -450,7 +428,7 @@ void func_ov003_021ec668(Ov003Gimmick *self) {
                 fx->unk_1c = 4;
             }
             self->fx = NULL;
-            self->work->state = 0;
+            self->work->st = 0;
             self->work->timer = 0;
             sig1.idx = self->unk_1c;
             sig1.on = 0;

@@ -1,9 +1,5 @@
 #include "types.h"
-
-typedef struct {
-    u8 unk_00[0xa2];
-    u8 unk_a2_0 : 1;
-} Ov003Unit;
+#include "ov003/Unit.h"
 
 typedef struct {
     u8 unk_00[0x22];

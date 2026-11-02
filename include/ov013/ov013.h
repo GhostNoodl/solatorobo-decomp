@@ -9,6 +9,7 @@
 #include "ov000/Actor.h"
 #include "ov000/ObjLayouts.h"
 #include "ov003/Actor.h"
+#include "ov003/Shot.h"
 
 // Stand-in for a polymorphic object: vNN is the function at byte offset NN in the vtable.
 class Ov013V {
@@ -374,10 +375,10 @@ public:
 };
 SIZE_ASSERT(Ov013ActEx_02205ae4, 0xf0);
 
-// Actor class of Ov013ActEx_022065ac_Ctor (vtable data_ov013_0220bb20).
-class Ov013ActEx_022065ac : public ActorEx {
+// Actor class of Ov013ActEx_022065ac_Ctor (vtable data_ov013_0220bb20): an ov003 shot that
+// turns along its velocity.
+class Ov013ActEx_022065ac : public Ov003Shot {
 public:
-    u8 unk_d0[0x24];
     u8 unk_f4;
     u8 unk_f5;
     u16 unk_f6;

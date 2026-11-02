@@ -1,40 +1,11 @@
 #include "types.h"
+#include "ov003/Sequence.h"
 
 typedef struct {
     s32 x;
     s32 y;
     s32 z;
 } Ov003Vec;
-
-typedef struct {
-    u8 id;
-    u8 unk_01;
-    u8 unk_02;
-    u8 unk_03;
-    u8 unk_04;
-    u8 unk_05;
-} Ov003SeqEntry;
-
-typedef struct {
-    u8 a;
-    u8 b;
-} Ov003BytePair;
-
-typedef struct {
-    u8 active : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    u8 b4 : 1;
-    u8 b5 : 1;
-    u8 b6 : 1;
-    u8 pairA;
-    u8 pairB;
-    u16 unk_04;
-    u16 index;
-    u16 length;
-    Ov003SeqEntry *entries;
-} Ov003Sequence;
 
 static inline void Ov003Sequence_Step(Ov003Sequence *self) {
     self->index++;

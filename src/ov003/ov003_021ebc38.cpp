@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
+#include "ov000/ActorParts.h"
 
 typedef struct {
     s32 x;
@@ -11,20 +13,6 @@ typedef struct {
     u16 y;
     u16 z;
 } Ov003Rot;
-
-typedef struct {
-    u16 state;
-    u16 timer;
-} Ov003Work;
-
-typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-    u8 unk_98[0x3c];
-    void *unk_d4;
-} Ov003Game54;
 
 typedef struct {
     s16 handle;
@@ -57,7 +45,7 @@ typedef struct {
     u8 unk_24[0x14];
     Ov003LiftModel *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     u8 unk_44[4];
     void *obj;
     u8 unk_4c[0x10];
@@ -96,7 +84,6 @@ typedef struct {
 extern "C" {
 
 extern Ov003HeapCtx *data_02097dd0;
-extern Ov003Game54 *data_ov000_021ccd54;
 extern void *data_0214a420;
 extern char data_ov003_021f998f[];
 extern void func_ov000_0219433c(void *self);
@@ -205,11 +192,11 @@ void func_ov003_021ebe08(Ov003Lift *self) {
     self->timer++;
 }
 
-static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -220,19 +207,19 @@ static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
     return TRUE;
 }
 
-static inline BOOL Ov003Game_HasD4(Ov003Game54 *g) {
-    return g->unk_d4 != NULL ? TRUE : FALSE;
+static inline BOOL Ov003Game_HasEvent(FieldState *g) {
+    return g->event != NULL ? TRUE : FALSE;
 }
 
 static inline BOOL Ov003_GameHasD4(void) {
-    return Ov003Game_HasD4(data_ov000_021ccd54) ? TRUE : FALSE;
+    return Ov003Game_HasEvent(data_ov000_021ccd54) ? TRUE : FALSE;
 }
 
 BOOL Ov003ActVt_021f979c_Draw(Ov003Lift *self) {

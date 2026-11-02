@@ -1,6 +1,7 @@
 #include "types.h"
 #include "nitro/fx.h"
 #include "ov003/Actor.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u8 unk_00[0x50];
@@ -17,13 +18,6 @@ typedef struct {
     VecFx32 unk_b90;
     s32 unk_b9c;
 } Ov003EnPl;
-
-typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-} Ov003Game54;
 
 typedef struct {
     u8 unk_00[0x5c];
@@ -63,7 +57,6 @@ typedef struct {
 extern "C" {
 
 extern const Ov003EnEntry data_ov003_021f4750[];
-extern Ov003Game54 *data_ov000_021ccd54;
 extern Ov003Game30 *data_ov000_021ccd30;
 extern void *data_0214a420;
 extern u8 *func_02070558(u16 id);
@@ -76,11 +69,11 @@ extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecF
 extern Ov003EnPl *func_ov000_0219bf90(void);
 extern Ov003EnFx *func_020657b0(void *mgr, void *h);
 
-static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -91,14 +84,14 @@ static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
     return TRUE;
 }
 
-static inline BOOL Ov003_GameIdleP(Ov003Game54 *g) {
+static inline BOOL Ov003_GameIdleP(FieldState *g) {
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }

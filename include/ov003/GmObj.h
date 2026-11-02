@@ -3,13 +3,8 @@
 
 #include "types.h"
 #include "nnsys/g3d.h"
-
-typedef struct {
-    u16 state;
-    u16 timer;
-    u8 unk_04[0xf];
-    u8 kind;
-} Ov003Work;
+#include "ov000/ActorParts.h"
+#include "ov003/Unit.h"
 
 typedef struct {
     u8 unk_00[0x50];
@@ -33,14 +28,6 @@ typedef struct {
     u8 unk_00[0x2c];
     u32 unk_2c;
 } Ov003ColState;
-
-typedef struct {
-    u8 unk_00[0xa2];
-    u8 unk_a2_0 : 1;
-    u8 unk_a2_1 : 4;
-    u8 unk_a2_5 : 1;
-    u8 unk_a2_6 : 1;
-} Ov003Unit;
 
 typedef struct {
     void *unk_00;
@@ -141,7 +128,7 @@ typedef struct Ov003Obj {
     u8 unk_22[0x16];
     Ov003Model *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     Ov003Sub44 *unk_44;
     Ov003Ctl *ctl;
     Ov003Part *unk_4c;

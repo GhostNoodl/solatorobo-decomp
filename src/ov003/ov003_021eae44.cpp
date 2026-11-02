@@ -1,4 +1,7 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
+#include "ov000/ActorParts.h"
+#include "ov003/Unit.h"
 
 typedef struct {
     s32 x, y, z;
@@ -22,17 +25,6 @@ typedef struct {
     u8 unk_00[0x13];
     u8 kind;
 } Ov003Kind;
-
-typedef struct {
-    u8 unk_00[0x22];
-    u16 unk_22_0 : 1;
-    u16 unk_22_1 : 1;
-} Ov003Sub44;
-
-typedef struct {
-    u16 state;
-    u16 timer;
-} Ov003Work;
 
 typedef struct {
     u8 unk_00[0x38];
@@ -76,20 +68,6 @@ typedef struct {
     u32 unk_b24_0 : 1;
     u32 unk_b24_1 : 1;
 } Ov003Player;
-
-typedef struct {
-    u8 unk_00[0xa2];
-    u8 unk_a2_0 : 5;
-    u8 unk_a2_5 : 1;
-    u8 unk_a2_6 : 1;
-} Ov003Unit;
-
-typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-} Ov003Game54;
 
 typedef struct {
     u8 unk_00[0xa];
@@ -171,9 +149,9 @@ typedef struct {
     u8 unk_3c[4];
     union {
         Ov003Kind *unk_40;
-        Ov003Work *work;
+        ActorSub40 *work;
     };
-    Ov003Sub44 *unk_44;
+    ActorSub44 *unk_44;
     Ov003Ctl *ctl;
     Ov003Part *unk_4c;
     u8 unk_50[0xc];
@@ -204,7 +182,6 @@ typedef struct {
 
 extern "C" {
 
-extern Ov003Game54 *data_ov000_021ccd54;
 extern Ov003Game68 *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern char data_ov003_021f995c[];
@@ -251,11 +228,11 @@ extern void Actor_MoveToPos(void *self, Ov003Vec3 *v, s32 a);
 extern void func_ov000_021987b8(Ov003Ctl *ctl, s32 a, s32 b, s32 c);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
-static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -266,7 +243,7 @@ static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -280,10 +257,10 @@ static inline BOOL Ov003_GameIdle(void) {
 
 
 static inline BOOL Ov003_GameIdle2(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         BOOL busy = FALSE;
-        if (g->unk_90 != g->unk_94) {
+        if (g->head != g->tail) {
             busy = TRUE;
         }
         if (busy) {
@@ -470,7 +447,7 @@ void Ov003ActVt_021f9704_Update(Ov003ObjB *self) {
     func_0203f364(ctl);
 }
 
-static inline void Ov003Sub44_Clear(Ov003Sub44 *s) {
+static inline void Ov003Sub44_Clear(ActorSub44 *s) {
     if (s != NULL) {
         s->unk_22_0 = 0;
         s->unk_22_1 = 0;
@@ -478,7 +455,7 @@ static inline void Ov003Sub44_Clear(Ov003Sub44 *s) {
 }
 
 void func_ov003_021eb48c(Ov003ObjB *self) {
-    if (self->work->state == 0) {
+    if (self->work->st == 0) {
         func_ov000_02190cb0(self->model, data_ov003_021f9983, 0x1000, 0);
         func_ov000_021915a0(self->model);
         func_ov000_021911c8(self->model, (s16)(Rand_PlusMinus(0x59a) + 0x1000));
@@ -509,7 +486,7 @@ void func_ov003_021eb5ec(Ov003ObjB *self) {
     Ov003Vec3 a;
     Ov003Vec3 b;
     Ov003Vec3 v;
-    switch (self->work->state) {
+    switch (self->work->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov003_021f9989, 0x2ab, 0);
         func_ov000_021911c8(self->model, 0x2800);
@@ -518,7 +495,7 @@ void func_ov003_021eb5ec(Ov003ObjB *self) {
         self->unk_a0 = 0;
         self->unk_a4 = 0;
         self->unk_a8 = 0;
-        self->work->state++;
+        self->work->st++;
         break;
     case 1:
         if (self->work->timer >= 10) {
@@ -527,7 +504,7 @@ void func_ov003_021eb5ec(Ov003ObjB *self) {
             }
             BOOL on = FALSE;
             Ov003Player *pl = func_ov000_0219bf90();
-            Ov003Sub44 *s;
+            ActorSub44 *s;
             if (pl != NULL && pl->unk_b24_1 && !Ov003Player_Flag(pl)) {
                 a.x = self->pos.x;
                 a.y = self->pos.y;
@@ -550,7 +527,7 @@ void func_ov003_021eb5ec(Ov003ObjB *self) {
                 s->unk_22_1 = 1;
             }
         } else {
-            self->work->timer = ((const Ov003Work *)self->work)->timer + 1;
+            self->work->timer = ((const ActorSub40 *)self->work)->timer + 1;
         }
         break;
     }

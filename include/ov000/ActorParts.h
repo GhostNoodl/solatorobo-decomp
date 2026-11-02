@@ -8,6 +8,13 @@
 
 #define HISTORY_LEN 7
 
+// An actor's rotation (Actor::rot, three binary angles).
+typedef struct ActorRot {
+    u16 x;
+    u16 y;
+    u16 z;
+} ActorRot;
+
 // The actor's state block (Actor::fsm, ctor History_Init, 0x14 bytes): the step and
 // frame timer of the current state, flag bits, and the last states. func_ov000_02198360
 // switches to a new state and pushes the old one (History_0219830c.c).
@@ -37,11 +44,16 @@ typedef struct ActorSub44 {
     u8 unk_18[0x4];
     s32 unk_1c;
     u16 unk_20;
-    u16 unk_22_0 : 1;
-    u16 unk_22_1 : 1;
-    u16 unk_22_2 : 2;
-    u16 unk_22_4 : 1;
-    u16 unk_22_5 : 11;
+    union {
+        u16 unk_22; // or-ed whole by the ov003 shot
+        struct {
+            u16 unk_22_0 : 1;
+            u16 unk_22_1 : 1;
+            u16 unk_22_2 : 2;
+            u16 unk_22_4 : 1;
+            u16 unk_22_5 : 11;
+        };
+    };
 } ActorSub44;
 
 // The actor's hit-point block (Actor::hp as u16[], Actor::hpObj as a struct).
@@ -90,17 +102,22 @@ typedef struct ActorSub48 {
     s32 unk_88;
     u8 unk_8c[0xc];
     u16 owner; // id of the actor the sphere follows
-    u16 unk_9a_0 : 1;
-    u16 unk_9a_1 : 1;
-    u16 unk_9a_2 : 1;
-    u16 unk_9a_3 : 1;
-    u16 unk_9a_4 : 1;
-    u16 unk_9a_5 : 1;
-    u16 unk_9a_6 : 1;
-    u16 unk_9a_7 : 1;
-    u16 unk_9a_8 : 1;
-    u16 unk_9a_9 : 1;
-    u16 unk_9a_10 : 6;
+    union {
+        u16 unk_9a; // or-ed whole by the ov003 shot
+        struct {
+            u16 unk_9a_0 : 1;
+            u16 unk_9a_1 : 1;
+            u16 unk_9a_2 : 1;
+            u16 unk_9a_3 : 1;
+            u16 unk_9a_4 : 1;
+            u16 unk_9a_5 : 1;
+            u16 unk_9a_6 : 1;
+            u16 unk_9a_7 : 1;
+            u16 unk_9a_8 : 1;
+            u16 unk_9a_9 : 1;
+            u16 unk_9a_10 : 6;
+        };
+    };
 } ActorSub48;
 SIZE_ASSERT(ActorSub48, 0x9c);
 

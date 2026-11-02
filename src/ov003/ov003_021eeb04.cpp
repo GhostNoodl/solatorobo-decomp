@@ -1,4 +1,6 @@
 #include "types.h"
+#include "ov000/ActorParts.h"
+#include "ov003/Unit.h"
 
 struct Ov003Vec {
     s32 x;
@@ -10,16 +12,6 @@ struct Ov003HeapCtx {
     void *cur;
     u32 unk_04;
     void *alt;
-};
-
-struct Ov003Work {
-    u16 state;
-    u16 timer;
-};
-
-struct Ov003Unit {
-    u8 unk_00[0xa2];
-    u8 active : 1;
 };
 
 struct Ov003BrAnim {
@@ -56,7 +48,7 @@ struct Ov003Bridge {
     u8 unk_24[0x14];
     void *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     u8 unk_44[4];
     Ov003BrCtl *ctl;
     u8 unk_4c[0x18];
@@ -139,7 +131,7 @@ void Ov003ActVt_021f9e10_Init(Ov003Bridge *self) {
     func_ov000_0219433c(self);
     u = Group_FindNode(data_ov000_021ccd64, self->unitId);
     if (u != NULL) {
-        u->active = 0;
+        u->unk_a2_0 = 0;
     }
     func_ov000_02197d80(self);
     s16 kind;
@@ -215,7 +207,7 @@ void Ov003ActVt_021f9e10_Start(Ov003Bridge *self) {
             func_ov000_02190758(self->anim, self->rot, 0);
         }
         func_ov000_02198360(self->work, 1, 1);
-        self->work->state = 10;
+        self->work->st = 10;
     } else {
         name = data_ov003_021f9fd0;
     }

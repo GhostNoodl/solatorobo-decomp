@@ -1,5 +1,6 @@
 #include "types.h"
 #include "ov003/Actor.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u8 unk_00[0x74];
@@ -21,23 +22,9 @@ typedef struct {
     Ov003SdTgt *unk_4c;
 } Ov003SdObj;
 
-typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-    u8 unk_98[0x3c];
-    void *unk_d4;
-    u8 unk_d8[0x20];
-    s32 unk_f8;
-    u8 unk_fc[4];
-    s32 unk_100;
-} Ov003SdGame;
-
 extern "C" {
 
 extern void *data_ov000_021ccd64;
-extern Ov003SdGame *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern Ov003SdUnit *Group_FindNode(void *mgr, u16 id);
 extern Ov003SdObj *ActorMgr_GetActor(void *mgr, u16 id);
@@ -84,12 +71,12 @@ static inline void Ov003Sd_SetLight(Model0218fe1c *m) {
     m->blendMax = 1;
 }
 
-static inline BOOL Ov003Game_IsBusy(Ov003SdGame *g) {
-    BOOL r = g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    BOOL r = g->head != g->tail;
     return r;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003SdGame *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -100,19 +87,19 @@ static inline BOOL Ov003Game_IsIdle(Ov003SdGame *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003SdGame *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
     return TRUE;
 }
 
-static inline BOOL Ov003Game_HasD4(Ov003SdGame *g) {
-    return g->unk_d4 != NULL ? TRUE : FALSE;
+static inline BOOL Ov003Game_HasEvent(FieldState *g) {
+    return g->event != NULL ? TRUE : FALSE;
 }
 
 static inline BOOL Ov003_GameHasD4(void) {
-    return Ov003Game_HasD4(data_ov000_021ccd54) ? TRUE : FALSE;
+    return Ov003Game_HasEvent(data_ov000_021ccd54) ? TRUE : FALSE;
 }
 
 static inline Ov003SdObj *Ov003Sd_FindObj(u16 id) {
@@ -149,9 +136,9 @@ extern "C" u16 func_ov003_021d16cc(Ov003Actor *self) {
         unit = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     }
     if (unit != NULL) {
-        Ov003SdGame *g = data_ov000_021ccd54;
-        s32 dx = self->pos.x - g->unk_f8;
-        s32 dz = self->pos.z - g->unk_100;
+        FieldState *g = data_ov000_021ccd54;
+        s32 dx = self->pos.x - g->cam.base.eye.x;
+        s32 dz = self->pos.z - g->cam.base.eye.z;
         s64 sq = (s64)dx * dx;
         s32 dist;
         s32 f;

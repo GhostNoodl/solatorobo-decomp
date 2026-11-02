@@ -1,5 +1,6 @@
 #include "types.h"
 #include "ov003/Actor.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u8 unk_00[0x70];
@@ -476,15 +477,6 @@ void func_ov003_021d5348(Ov003Actor *self) {
 
 
 typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-    u8 unk_98[0x14];
-    u8 unk_ac;
-} Ov003KbGame;
-
-typedef struct {
     u8 unk_00[0xb24];
     u32 unk_b24_0 : 1;
     u32 unk_b24_1 : 1;
@@ -497,7 +489,6 @@ typedef struct {
 } Ov003KbFxEnt;
 
 extern char data_ov003_021f7a7f[];
-extern Ov003KbGame *data_ov000_021ccd54;
 extern void *data_0214a420;
 extern u8 func_ov003_021cee68(void);
 extern void HitSphere_Link(ActorSub48 *ctl);
@@ -507,11 +498,11 @@ extern void func_020627dc(s32 a);
 extern void EffectMgr_Kill(void *mgr, void *e);
 extern Ov003KbFxEnt *func_020657b0(void *mgr, void *e);
 
-static inline BOOL Ov003Kb_GameBusy(Ov003KbGame *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Kb_GameBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Kb_GameIsIdle(Ov003KbGame *g) {
+static inline BOOL Ov003Kb_GameIsIdle(FieldState *g) {
     if (Ov003Kb_GameBusy(g)) {
         return FALSE;
     }
@@ -522,7 +513,7 @@ static inline BOOL Ov003Kb_GameIsIdle(Ov003KbGame *g) {
 }
 
 static inline BOOL Ov003Kb_GameIdle(void) {
-    Ov003KbGame *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Kb_GameIsIdle(g);
     }
@@ -624,7 +615,7 @@ void func_ov003_021d5900(Ov003Actor *self) {
             if (p != NULL && p->unk_b24_1) {
                 func_020627a0(self->kind, self->id);
                 func_020627dc(3);
-                data_ov000_021ccd54->unk_ac = 1;
+                data_ov000_021ccd54->stageFlags = 1;
             }
         }
         if (self->targetObj->type == 0x11) {

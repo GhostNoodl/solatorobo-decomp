@@ -6,7 +6,6 @@ extern void *data_0214a420;
 extern void *data_ov013_0220bb20;
 extern char data_ov013_0220b360[];
 extern void *ActorEx_Ctor(void *self);
-extern void func_ov003_021db244(Actor *self);
 extern void *func_020657b0(void *a, s32 b);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern BOOL func_020621c4(void);
@@ -32,7 +31,7 @@ void func_ov013_022065e8(Ov013ActEx_022065ac *self) {
     if (self->unk_f6 != 0) {
         self->rot_y += self->unk_f6;
     } else {
-        self->rot_y = FX_Atan2(self->speed, self->friction);
+        self->rot_y = FX_Atan2(self->vel.x, self->vel.z);
     }
     if (self->unk_f4 != 0 && ((s32)self->unk_bc) != 0) {
         void *p = func_020657b0(data_0214a420, ((s32)self->unk_bc));

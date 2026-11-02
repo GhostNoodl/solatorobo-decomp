@@ -1,15 +1,12 @@
 #include "types.h"
 #include "ov003/Actor.h"
 #include "ov000/ObjLayouts.h"
+#include "ov003/Shot.h"
+#include "ov003/Unit.h"
 
 extern "C" {
 
 typedef void (*VFunc)(void *);
-
-typedef struct {
-    u8 unk_00[0xa2];
-    u8 unk_a2_0 : 1;
-} Ov003Unit;
 
 extern void *data_ov000_021ccd64;
 extern char data_ov003_021f9fd0[];
@@ -69,12 +66,12 @@ void *Ov003ActVt_021f9b18_DtorDelete(void *self) {
     return self;
 }
 
-ActorEx *Ov003ActVt_021f9a80_Dtor(ActorEx *self) {
+Ov003HomingShot *Ov003ActVt_021f9a80_Dtor(Ov003HomingShot *self) {
     func_ov003_021dae44(self);
     return self;
 }
 
-ActorEx *Ov003ActVt_021f9a80_DtorDelete(ActorEx *self) {
+Ov003HomingShot *Ov003ActVt_021f9a80_DtorDelete(Ov003HomingShot *self) {
     func_ov003_021dae44(self);
     Heap_Free(self);
     return self;

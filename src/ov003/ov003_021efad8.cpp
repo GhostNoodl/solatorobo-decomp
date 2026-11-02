@@ -1,8 +1,5 @@
 #include "types.h"
-
-typedef struct {
-    s32 x, y, z;
-} Ov003BxVec;
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u16 x, y, z;
@@ -81,15 +78,8 @@ typedef struct {
 
 typedef struct {
     u8 unk_00[0x70];
-    Ov003BxVec pos;
+    VecFx32 pos;
 } Ov003BxPlayer;
-
-typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-} Ov003Game54;
 
 typedef struct {
     u8 unk_00[0x1a];
@@ -105,7 +95,7 @@ typedef struct {
     u8 unk_50[0x14];
     s32 unk_64;
     u8 unk_68[8];
-    Ov003BxVec pos;
+    VecFx32 pos;
     Ov003BxRot rot;
     u8 unk_82[0x10];
     u8 state;
@@ -128,8 +118,8 @@ extern "C" {
 extern void *data_02097e4c;
 extern char data_ov003_021fa1a4[];
 extern void func_ov000_02196c40(Ov003Bx *self);
-extern void *func_02049f44(void *mgr, s32 id, Ov003BxVec *pos, s32 a);
-extern Ov003BxFx *func_02065f88(s32 id, Ov003BxVec *pos);
+extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
+extern Ov003BxFx *func_02065f88(s32 id, VecFx32 *pos);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_0203f364(Ov003BxCtl *ctl);
 extern void func_ov003_021f0c60(Ov003Bx *self, s32 a);
@@ -140,19 +130,17 @@ extern void Actor_Move(void *self, s32 a);
 extern void func_ov000_021987b8(Ov003BxCtl *ctl, s32 a, s32 b, s32 c);
 
 extern void *data_0214a420;
-extern Ov003Game54 *data_ov000_021ccd54;
 extern const Ov003BxDef data_ov003_021f6e60[];
 extern Ov003BxPlayer *func_ov000_0219bf90(void);
 extern void EffectMgr_StopLoop(void *mgr, void *p);
-extern s32 VEC_Distance(const Ov003BxVec *a, const Ov003BxVec *b);
-extern void *func_0204a028(void *mgr, s32 id, Ov003BxVec *pos, s32 a);
-extern BOOL func_ov000_0219aae8(Ov003Bx *a, Ov003Bx *b, u16 c, u8 d, s32 e, Ov003BxVec *pos, Ov003BxRot *rot, s32 f, s32 g, s32 h, s32 i);
+extern void *func_0204a028(void *mgr, s32 id, VecFx32 *pos, s32 a);
+extern BOOL func_ov000_0219aae8(Ov003Bx *a, Ov003Bx *b, u16 c, u8 d, s32 e, VecFx32 *pos, Ov003BxRot *rot, s32 f, s32 g, s32 h, s32 i);
 
-static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -163,14 +151,14 @@ static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
     return TRUE;
 }
 
-static inline s32 Ov003Bx_MaxDist(const Ov003BxVec *a, const Ov003BxVec *b) {
+static inline s32 Ov003Bx_MaxDist(const VecFx32 *a, const VecFx32 *b) {
     s32 dx = a->x - b->x;
     s32 dy = a->y - b->y;
     s32 dz = a->z - b->z;
@@ -215,7 +203,7 @@ typedef struct {
 extern void *data_ov000_021ccd64;
 extern s32 Rand_PlusMinus(s32 n);
 extern s32 Rand_UpTo(s32 n);
-extern BOOL Hit_DiffInCylinder(Ov003BxVec *a, Ov003BxVec *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, s32 r, s32 h);
 extern void HitSphere_Link(Ov003BxCtl *ctl);
 extern void *func_0206fef8(u16 id);
 extern Ov003BxSpawned *Group_SpawnActor(void *mgr, Ov003BxSpawnInfo *info, void *pos, Ov003BxRot *rot, u16 a);
@@ -264,7 +252,7 @@ void func_ov003_021ef70c(Ov003Bx *self) {
         } else {
             pl = func_ov000_0219bf90();
             if (pl != NULL) {
-                Ov003BxVec v;
+                VecFx32 v;
                 v.x = self->pos.x;
                 v.y = self->pos.y;
                 v.z = self->pos.z;
@@ -427,7 +415,7 @@ void func_ov003_021efad8(Ov003Bx *self) {
     func_ov000_021987b8(self->ctl, 1, 0, 0);
 }
 
-static inline s32 Ov003Bx_MaxDist2(const Ov003BxVec *a, const Ov003BxVec *b) {
+static inline s32 Ov003Bx_MaxDist2(const VecFx32 *a, const VecFx32 *b) {
     s32 dx = b->x;
     s32 dy = b->y;
     s32 dz = b->z;
@@ -508,7 +496,7 @@ void func_ov003_021efde8(Ov003Bx *self) {
             return;
         }
         {
-            Ov003BxVec pos;
+            VecFx32 pos;
             Ov003BxRot rot;
             rot.x = self->rot.x + def->rx;
             rot.y = self->rot.y + def->ry;

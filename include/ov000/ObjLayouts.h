@@ -34,10 +34,15 @@ struct ActorEx : public Actor {
     u8 unk_af;
     ActorExParam *param;
     ResSet *res[2];
-    void *unk_bc;
-    s32 unk_c0;
-    s32 unk_c4;
-    s32 unk_c8;
+    void *unk_bc; // effect handle that follows the actor (killed by the dtor)
+    union {
+        struct {
+            s32 unk_c0;
+            s32 unk_c4;
+            s32 unk_c8;
+        };
+        VecFx32 fxOffset; // where unk_bc's effect sits, from pos
+    };
     union {
         u16 unk_cc;
         struct {

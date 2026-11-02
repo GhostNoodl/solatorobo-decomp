@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov000/ActorParts.h"
 
 typedef struct {
     u8 unk_00[0x10];
@@ -14,11 +15,6 @@ typedef struct {
 } Ov003Part48;
 
 typedef struct {
-    u16 state;
-    u16 timer;
-} Ov003PropWk;
-
-typedef struct {
     s32 x, y, z;
 } Ov003PropVec;
 
@@ -29,7 +25,7 @@ typedef struct {
     u8 unk_1a[0x1e];
     void *unk_38;
     u8 unk_3c[0x4];
-    Ov003PropWk *work;
+    ActorSub40 *work;
     Ov003Part44 *unk_44;
     Ov003Part48 *unk_48;
     u8 unk_4c[0x24];
@@ -89,7 +85,7 @@ extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_ov000_0219b71c(Ov003PropVec *pos, Ov003PropVec *v, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov003_021deb80(Ov003Prop *self) {
-    Ov003PropWk *w;
+    ActorSub40 *w;
     s32 a;
     s32 b;
     Ov003PropVec p;

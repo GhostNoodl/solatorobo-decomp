@@ -1,6 +1,7 @@
 #include "types.h"
 #include "ov003/Actor.h"
 #include "ov000/ObjLayouts.h"
+#include "ov003/Shot.h"
 
 extern "C" {
 
@@ -46,12 +47,12 @@ void func_ov003_021ed058(ActorEx *self) {
     func_ov000_0219763c(self);
 }
 
-extern u32 data_ov003_021f6c04;
+extern Ov003ShotDef data_ov003_021f6c04;
 extern void func_ov003_021dae58(ActorEx *self);
 
-void Ov003ActVt_021f9a80_Init(ActorEx *self) {
+void Ov003ActVt_021f9a80_Init(Ov003HomingShot *self) {
     func_ov003_021dae58(self);
-    self->unk_60 = &data_ov003_021f6c04;
+    self->shotDef = &data_ov003_021f6c04;
 }
 
 }

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/Ticker.h"
 
 typedef struct {
     s32 x;
@@ -18,18 +19,6 @@ typedef struct {
     Ov003Vec target;
     Ov003Vec dir;
 } Ov003Mover;
-
-typedef struct {
-    u8 active : 1;
-    u8 loop : 1;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    s16 count;
-    s16 interval;
-    s16 timer;
-    s16 next;
-    s16 cur;
-} Ov003Ticker;
 
 extern "C" {
 

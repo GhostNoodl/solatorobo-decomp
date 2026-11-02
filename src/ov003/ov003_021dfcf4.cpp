@@ -1,34 +1,10 @@
 #include "types.h"
-
-typedef struct {
-    s32 x, y, z;
-} Ov003FvVec;
-
-typedef struct {
-    s32 m[3][3];
-} Ov003FvMtx;
-
-typedef struct {
-    u8 r, g, b;
-} Ov003FvCol;
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u16 state;
     u16 timer;
 } Ov003FvWork;
-
-typedef struct {
-    s32 state;
-    u8 unk_04[0xc];
-    s32 queue[16];
-    u8 unk_50[0x40];
-    s32 unk_90;
-    s32 unk_94;
-    u8 unk_98[0x14];
-    u8 unk_ac;
-    u8 unk_ad[0x1d];
-    Ov003FvCol unk_ca;
-} Ov003FvGame;
 
 typedef struct {
     u8 unk_00[0x14];
@@ -37,9 +13,9 @@ typedef struct {
 
 typedef struct {
     u8 unk_00[0x44];
-    Ov003FvCol col44;
+    FieldId col44;
     u8 unk_47[0x21];
-    Ov003FvCol col;
+    FieldId col;
 } Ov003FvArea;
 
 typedef struct {
@@ -54,9 +30,9 @@ typedef struct {
     u8 unk_00[0xc];
     u16 unk_0c;
     u8 unk_0e[0x74e];
-    Ov003FvVec unk_75c;
+    VecFx32 unk_75c;
     u8 unk_768[0xa];
-    Ov003FvCol unk_772;
+    FieldId unk_772;
     u8 unk_775[0x3af];
     u32 unk_b24_0 : 1;
     u32 unk_b24_1 : 1;
@@ -79,11 +55,11 @@ typedef struct {
     u8 unk_1c[0x24];
     Ov003FvWork *work;
     u8 unk_44[0x2c];
-    Ov003FvVec pos;
+    VecFx32 pos;
     u8 unk_7c[2];
     u16 rotY;
     u8 unk_80[4];
-    Ov003FvVec unk_84;
+    VecFx32 unk_84;
     u8 unk_90[0xc];
     s32 unk_9c;
     s32 unk_a0;
@@ -91,7 +67,6 @@ typedef struct {
 
 extern "C" {
 
-extern Ov003FvGame *data_ov000_021ccd54;
 extern Ov003FvCtx *data_ov000_021ccd6c;
 extern Ov003FvSnd *data_02097e48;
 extern void *data_02097e4c;
@@ -102,18 +77,16 @@ extern void func_ov000_0218999c(s32 a, s32 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern Ov003FvPlayer *func_ov000_0219bf90(void);
-extern void func_ov000_021b6b4c(Ov003FvCtx *ctx, u16 a, Ov003FvVec *v);
+extern void func_ov000_021b6b4c(Ov003FvCtx *ctx, u16 a, VecFx32 *v);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_0203cc58(s32 a, s32 b, s32 c);
-extern void func_ov000_02188140(Ov003FvGame *g, s32 a, s32 b, s32 c);
-extern void func_ov000_02188ca0(Ov003FvCol *c, s32 a);
-extern void MTX_RotY33_(Ov003FvMtx *m, s32 s, s32 c);
-extern void MTX_MultVec33(const Ov003FvVec *v, const Ov003FvMtx *m, Ov003FvVec *out);
+extern void func_ov000_02188140(FieldState *g, s32 a, s32 b, s32 c);
+extern void func_ov000_02188ca0(FieldId *c, s32 a);
 
-static inline BOOL Ov003Fv_HasEvent(Ov003FvGame *g, s32 id) {
-    s32 i = g->unk_90;
-    while (i != g->unk_94) {
+static inline BOOL Ov003Fv_HasEvent(FieldState *g, s32 id) {
+    s32 i = g->head;
+    while (i != g->tail) {
         if (g->queue[i] == id) {
             return TRUE;
         }
@@ -129,13 +102,13 @@ static inline u8 Ov003Fv_Level(Ov003FvLv *lv) {
     return lv != NULL ? lv->unk_14 : 0;
 }
 
-static inline Ov003FvCol *Ov003Fv_PlCol(Ov003FvPlayer *p) {
+static inline FieldId *Ov003Fv_PlCol(Ov003FvPlayer *p) {
     return &p->unk_772;
 }
 
-static inline BOOL Ov003Fv_SameCol(const Ov003FvCol *a, const Ov003FvCol *b) {
+static inline BOOL Ov003Fv_SameCol(const FieldId *a, const FieldId *b) {
     BOOL r = FALSE;
-    if (a->r == b->r && a->g == b->g && a->b == b->b) {
+    if (a->c[0] == b->c[0] && a->c[1] == b->c[1] && a->c[2] == b->c[2]) {
         r = TRUE;
     }
     return r;
@@ -151,16 +124,16 @@ static inline void Ov003Fv_Bgm(Ov003FvSnd *q, u16 id) {
 
 void func_ov003_021df8fc(Ov003Fv *self) {
     u8 r;
-    Ov003FvGame *gm;
+    FieldState *gm;
     Ov003FvPlayer *pl;
     Ov003FvArea *area;
     Ov003FvWork *w;
     u8 g;
     u8 b;
-    Ov003FvVec d;
-    Ov003FvVec v;
-    Ov003FvMtx m;
-    Ov003FvCol col;
+    VecFx32 d;
+    VecFx32 v;
+    MtxFx33 m;
+    FieldId col;
     w = self->work;
     switch (w->state) {
     case 0:
@@ -199,27 +172,27 @@ void func_ov003_021df8fc(Ov003Fv *self) {
                 }
                 func_020627a0(self->unk_0e, self->unk_0c);
                 func_020627dc(4);
-                data_ov000_021ccd54->unk_ac = 1;
-                r = area->col44.r;
-                g = area->col44.g;
-                b = area->col44.b;
+                data_ov000_021ccd54->stageFlags = 1;
+                r = area->col44.c[0];
+                g = area->col44.c[1];
+                b = area->col44.c[2];
                 {
                     gm = data_ov000_021ccd54;
                     if (r == 0xff) {
-                        r = gm->unk_ca.r;
+                        r = gm->unk_ca.c[0];
                     }
                     if (g == 0xff) {
-                        g = gm->unk_ca.g;
+                        g = gm->unk_ca.c[1];
                     }
                     if (b == 0xff) {
-                        b = gm->unk_ca.b;
+                        b = gm->unk_ca.c[2];
                     }
                 }
                 func_0203cc58(0x3c000, 2, 0);
                 func_ov000_02188140(data_ov000_021ccd54, 1, 0, 0);
-                col.r = r;
-                col.g = g;
-                col.b = b;
+                col.c[0] = r;
+                col.c[1] = g;
+                col.c[2] = b;
                 func_ov000_02188ca0(&col, 1);
             }
             self->work->state++;
@@ -253,16 +226,16 @@ void func_ov003_021df8fc(Ov003Fv *self) {
 
 void func_ov003_021dfcf4(Ov003Fv *self) {
     u8 r;
-    Ov003FvGame *gm;
+    FieldState *gm;
     Ov003FvPlayer *pl;
     Ov003FvArea *area;
     Ov003FvWork *w;
     u8 g;
     u8 b;
-    Ov003FvVec d;
-    Ov003FvVec v;
-    Ov003FvMtx m;
-    Ov003FvCol col;
+    VecFx32 d;
+    VecFx32 v;
+    MtxFx33 m;
+    FieldId col;
     w = self->work;
     switch (w->state) {
     case 0:
@@ -301,27 +274,27 @@ void func_ov003_021dfcf4(Ov003Fv *self) {
                 }
                 func_020627a0(self->unk_0e, self->unk_0c);
                 func_020627dc(4);
-                data_ov000_021ccd54->unk_ac = 1;
-                r = area->col.r;
-                g = area->col.g;
-                b = area->col.b;
+                data_ov000_021ccd54->stageFlags = 1;
+                r = area->col.c[0];
+                g = area->col.c[1];
+                b = area->col.c[2];
                 {
                     gm = data_ov000_021ccd54;
                     if (r == 0xff) {
-                        r = gm->unk_ca.r;
+                        r = gm->unk_ca.c[0];
                     }
                     if (g == 0xff) {
-                        g = gm->unk_ca.g;
+                        g = gm->unk_ca.c[1];
                     }
                     if (b == 0xff) {
-                        b = gm->unk_ca.b;
+                        b = gm->unk_ca.c[2];
                     }
                 }
                 func_0203cc58(0x3c000, 2, 0);
                 func_ov000_02188140(data_ov000_021ccd54, 1, 0, 0);
-                col.r = r;
-                col.g = g;
-                col.b = b;
+                col.c[0] = r;
+                col.c[1] = g;
+                col.c[2] = b;
                 func_ov000_02188ca0(&col, 1);
             }
             self->work->state++;

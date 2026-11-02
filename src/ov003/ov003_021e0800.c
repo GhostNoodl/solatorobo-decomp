@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
+#include "ov000/ActorParts.h"
 
 typedef struct {
     u8 unk_00[0xa8];
@@ -12,18 +14,13 @@ typedef struct {
 } Ov003Model;
 
 typedef struct {
-    u16 state;
-    u16 timer;
-} Ov003PropWk;
-
-typedef struct {
     u8 unk_00[0xc];
     u16 unk_0c;
     u16 unk_0e;
     u8 unk_10[0x28];
     Ov003Model *unk_38;
     u8 unk_3c[4];
-    Ov003PropWk *work;
+    ActorSub40 *work;
     u8 unk_44[0x30];
     s32 unk_74;
 } Ov003Prop;
@@ -39,14 +36,8 @@ void Ov003ActVt_021f8058_Start(Ov003Prop *self) {
     self->unk_74 -= 0x14000;
 }
 
-typedef struct {
-    u8 unk_00[0xac];
-    u8 unk_ac;
-} Ov003G54;
-
 extern char data_ov003_021f852b[];
 extern char data_ov003_021f8516[];
-extern Ov003G54 *data_ov000_021ccd54;
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern void func_ov000_021915a0(void *model);
@@ -61,8 +52,8 @@ extern s32 Rand_UpTo(s32 max);
 #define OV003_FX32_CONST(x) ((s32)(((x) > 0) ? ((x) * 4096.0f + 0.5f) : ((x) * 4096.0f - 0.5f)))
 
 void func_ov003_021e0848(Ov003Prop *self) {
-    Ov003PropWk *w = self->work;
-    switch (w->state) {
+    ActorSub40 *w = self->work;
+    switch (w->st) {
     case 0: {
         Ov003Model *m = self->unk_38;
         m->unk_a8 = 0;
@@ -72,7 +63,7 @@ void func_ov003_021e0848(Ov003Prop *self) {
         self->unk_38->unk_c2_0 = 1;
         func_ov000_02190cb0(self->unk_38, data_ov003_021f852b, 0x1000, 0);
         func_ov000_021911c8(self->unk_38, 0xc00);
-        self->work->state++;
+        self->work->st++;
         break;
     }
     case 1:
@@ -92,7 +83,7 @@ void func_ov003_021e0848(Ov003Prop *self) {
             m->unk_b0 = 0x3800;
             self->unk_38->unk_be = 26;
             self->work->timer = 0;
-            self->work->state++;
+            self->work->st++;
         }
         if (func_ov000_02191120(self->unk_38)) {
             func_ov000_02190cb0(self->unk_38, data_ov003_021f8516, 0xcd, 0);
@@ -108,14 +99,14 @@ void func_ov003_021e0848(Ov003Prop *self) {
         }
         pl = func_ov000_0219bf90();
         if (pl != NULL && !func_ov000_021b4738(pl)) {
-            Ov003G54 *g;
+            FieldState *g;
             func_020627a0(self->unk_0e, self->unk_0c);
             func_020627dc(4);
             g = data_ov000_021ccd54;
-            g->unk_ac = 1;
-            func_ov000_02182590(&g->unk_ac);
+            g->stageFlags = 1;
+            func_ov000_02182590(&g->stageFlags);
             self->work->timer = 0;
-            self->work->state++;
+            self->work->st++;
         } else {
             self->work->timer = 0x3c;
         }

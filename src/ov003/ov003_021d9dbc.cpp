@@ -1,17 +1,11 @@
 #include "ov003/Vec.h"
 #include "ov003/Actor.h"
+#include "Main/Sys/FieldState.h"
 
 struct Ov003VecP {
     s32 x;
     s32 y;
     s32 z;
-};
-
-struct Ov003Game54 {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
 };
 
 class Ov003Effect {
@@ -28,7 +22,6 @@ static inline s32 Ov003Kind_Get(ActorSub40 *k) {
 
 extern "C" {
 
-extern Ov003Game54 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern const Ov003VecP data_ov003_021f4988;
 extern void *ActorMgr_GetGroup(void *mgr, u16 id);
@@ -87,11 +80,11 @@ void func_ov003_021d9f80(Ov003Rot *out, const Ov003Vec *a, const Ov003Vec *b) {
     out->z = 0;
 }
 
-static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -102,7 +95,7 @@ static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }

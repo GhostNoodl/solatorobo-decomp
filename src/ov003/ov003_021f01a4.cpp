@@ -1,10 +1,5 @@
 #include "types.h"
-
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Ov003FxVec;
+#include "Main/Sys/FieldState.h"
 
 class Ov003FxObj {
 public:
@@ -26,7 +21,7 @@ public:
 };
 
 typedef struct {
-    Ov003FxVec pos;
+    VecFx32 pos;
     s16 speed;
     s16 next;
 } Ov003FxWaypoint;
@@ -60,13 +55,6 @@ typedef struct {
 } Ov003FxTask;
 
 typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-} Ov003FxGame;
-
-typedef struct {
     u8 unk_00[0xa2];
     u8 unk_a2_0 : 5;
     u8 unk_a2_5 : 1;
@@ -86,16 +74,16 @@ typedef struct {
     u8 unk_3c[4];
     Ov003FxTask *task;
     u8 unk_44[0x2c];
-    Ov003FxVec pos;
+    VecFx32 pos;
     Ov003FxRot rot;
     u8 unk_82[2];
-    Ov003FxVec target;
+    VecFx32 target;
     u8 unk_90[0xc];
-    Ov003FxVec vel;
+    VecFx32 vel;
     u8 unk_a8[0x14];
     u32 unk_bc;
     u8 unk_c0[0x10];
-    Ov003FxVec basePos;
+    VecFx32 basePos;
     s16 unk_dc;
 } Ov003FxProp;
 
@@ -105,27 +93,24 @@ extern void *data_ov000_021ccd64;
 extern const Ov003FxEntry data_ov003_021f6fc8[];
 extern void func_ov000_02194758(void *self);
 extern Ov003FxUnit *Group_FindNode(void *mgr, u16 id);
-extern Ov003FxObj *func_02065f88(s32 id, Ov003FxVec *pos);
-extern Ov003FxGame *data_ov000_021ccd54;
+extern Ov003FxObj *func_02065f88(s32 id, VecFx32 *pos);
 extern void *data_02097e4c;
 extern const char data_ov003_021fa1aa[];
 extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *model);
-extern void VEC_Add(const Ov003FxVec *a, const Ov003FxVec *b, Ov003FxVec *out);
-extern void VEC_Normalize(const Ov003FxVec *a, Ov003FxVec *out);
-extern BOOL Hit_DiffInSphere(Ov003FxVec *a, Ov003FxVec *b, s32 r);
+extern BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
 extern s32 Rand_UpTo(s32 max);
 extern s32 func_02049bdc(void *mgr, s32 a, s32 b);
-extern void *func_0204a028(void *mgr, s32 id, Ov003FxVec *pos, s32 a);
+extern void *func_0204a028(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
-extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, Ov003FxVec *shape, Ov003FxRot *rot, s32 f, s32 g, s32 h, s32 i);
+extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *shape, Ov003FxRot *rot, s32 f, s32 g, s32 h, s32 i);
 
-static inline BOOL Ov003FxGame_IsBusy(Ov003FxGame *g) {
-    BOOL r = g->unk_90 != g->unk_94;
+static inline BOOL Ov003FxGame_IsBusy(FieldState *g) {
+    BOOL r = g->head != g->tail;
     return r;
 }
 
-static inline BOOL Ov003FxGame_IsIdle(Ov003FxGame *g) {
+static inline BOOL Ov003FxGame_IsIdle(FieldState *g) {
     if (Ov003FxGame_IsBusy(g)) {
         return FALSE;
     }
@@ -136,7 +121,7 @@ static inline BOOL Ov003FxGame_IsIdle(Ov003FxGame *g) {
 }
 
 static inline BOOL Ov003Fx_GameIdle(void) {
-    Ov003FxGame *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003FxGame_IsIdle(g);
     }
@@ -237,7 +222,7 @@ void func_ov003_021f0258(Ov003FxProp *self) {
     }
     if (Ov003Fx_GameIdle()) {
         Ov003FxRot rot;
-        Ov003FxVec shape;
+        VecFx32 shape;
         rot = self->rot;
         rot.x += e->rot[0];
         rot.y += e->rot[1];

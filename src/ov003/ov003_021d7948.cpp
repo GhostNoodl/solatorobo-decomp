@@ -1,5 +1,6 @@
 #include "ov003/Vec.h"
 #include "ov003/Actor.h"
+#include "ov003/Pool.h"
 
 struct Ov003Mover {
     u32 unk_00;
@@ -13,36 +14,6 @@ struct Ov003Mover {
     Ov003Vec target;
     Ov003Vec dir;
 };
-
-typedef struct Ov003FreeNode {
-    struct Ov003FreeNode *next;
-} Ov003FreeNode;
-
-typedef struct {
-    u8 active : 1;
-    u16 elemSize;
-    void *buf;
-    void *end;
-    Ov003FreeNode *freeList;
-} Ov003Pool;
-
-class Ov003PoolOwner {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void Release();
-    u8 active : 1;
-};
-
-typedef struct {
-    u16 id;
-    void *next;
-} Ov003Node8;
-
-typedef struct {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-} Ov003NodeSrc;
 
 extern "C" {
 

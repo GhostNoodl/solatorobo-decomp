@@ -1,4 +1,5 @@
 #include "ov003/Vec.h"
+#include "ov003/FxList.h"
 
 struct Ov003Src {
     u8 unk_00[0xc];
@@ -23,16 +24,6 @@ public:
     s32 scale;
     u8 unk_08[0x38];
     Ov003Vec base;
-};
-
-struct Ov003FxNode {
-    u8 id;
-    void *handle;
-    Ov003FxNode *next;
-};
-
-struct Ov003FxList {
-    Ov003FxNode *head;
 };
 
 struct Ov003Handled {

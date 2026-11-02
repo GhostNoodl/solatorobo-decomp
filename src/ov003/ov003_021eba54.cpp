@@ -1,4 +1,7 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
+#include "ov000/ActorParts.h"
+#include "ov003/Unit.h"
 
 typedef struct {
     s32 x, y, z;
@@ -48,17 +51,6 @@ typedef struct {
     u8 unk_00[0x13];
     u8 kind;
 } Ov003Kind;
-
-typedef struct {
-    u8 unk_00[0x22];
-    u16 unk_22_0 : 1;
-    u16 unk_22_1 : 1;
-} Ov003Sub44;
-
-typedef struct {
-    u16 state;
-    u16 timer;
-} Ov003Work;
 
 typedef struct {
     u8 unk_00[0x38];
@@ -111,24 +103,6 @@ typedef struct {
     u32 unk_b24_0 : 1;
     u32 unk_b24_1 : 1;
 } Ov003Player;
-
-typedef struct {
-    u8 unk_00[0xa2];
-    u8 unk_a2_0 : 5;
-    u8 unk_a2_5 : 1;
-    u8 unk_a2_6 : 1;
-} Ov003Unit;
-
-typedef struct {
-    s32 state;
-    u8 unk_04[0xc];
-    s32 queue[16];
-    u8 unk_50[0x40];
-    s32 unk_90;
-    s32 unk_94;
-    u8 unk_98[0x14];
-    u8 unk_ac;
-} Ov003Game54;
 
 typedef struct {
     s32 v[3];
@@ -215,9 +189,9 @@ typedef struct {
     u8 unk_3c[4];
     union {
         Ov003Kind *unk_40;
-        Ov003Work *work;
+        ActorSub40 *work;
     };
-    Ov003Sub44 *unk_44;
+    ActorSub44 *unk_44;
     Ov003Ctl *ctl;
     Ov003Part *unk_4c;
     u8 unk_50[0xc];
@@ -251,7 +225,6 @@ typedef struct {
 
 extern "C" {
 
-extern Ov003Game54 *data_ov000_021ccd54;
 extern Ov003Game68 *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern char data_ov003_021f995c[];
@@ -298,11 +271,11 @@ extern void Actor_MoveToPos(void *self, Ov003Vec3 *v, s32 a);
 extern void func_ov000_021987b8(Ov003Ctl *ctl, s32 a, s32 b, s32 c);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
-static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -313,7 +286,7 @@ static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -327,10 +300,10 @@ static inline BOOL Ov003_GameIdle(void) {
 
 
 static inline BOOL Ov003_GameIdle2(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         BOOL busy = FALSE;
-        if (g->unk_90 != g->unk_94) {
+        if (g->head != g->tail) {
             busy = TRUE;
         }
         if (busy) {
@@ -381,7 +354,7 @@ public:
 
 extern Ov003Fx *func_02065f88(s32 id, const Ov003Vec3 *pos);
 
-static inline void Ov003Sub44_Clear(Ov003Sub44 *s) {
+static inline void Ov003Sub44_Clear(ActorSub44 *s) {
     if (s != NULL) {
         s->unk_22_0 = 0;
         s->unk_22_1 = 0;
@@ -418,9 +391,9 @@ static inline void Ov003PartB_Copy(Ov003PartB *d, const Ov003PartB *s) {
     }
 }
 
-static inline BOOL Ov003Game_HasEvent(Ov003Game54 *g, const s32 *ids) {
-    s32 i = g->unk_90;
-    while (i != g->unk_94) {
+static inline BOOL Ov003Game_HasEvent(FieldState *g, const s32 *ids) {
+    s32 i = g->head;
+    while (i != g->tail) {
         const s32 *p = ids;
         while (*p != 0) {
             if (*p++ == g->queue[i]) {
@@ -490,7 +463,7 @@ void func_ov003_021eb818(Ov003ObjB *self) {
         if ((u32)self & 3) {
             sfxOn = 1;
         }
-        data_ov000_021ccd54->unk_ac = sfxOn;
+        data_ov000_021ccd54->stageFlags = sfxOn;
     } else {
         func_ov000_02198360(self->work, 4, 0);
     }

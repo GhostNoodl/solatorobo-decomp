@@ -1,16 +1,10 @@
 #include "types.h"
+#include "ov000/ActorParts.h"
 
 struct Ov003Vec {
     s32 x;
     s32 y;
     s32 z;
-};
-
-struct Ov003Work {
-    u16 state;
-    u16 timer;
-    s64 unk_04;
-    u8 unk_0c;
 };
 
 struct Ov003GmPart {
@@ -114,7 +108,7 @@ struct Ov003Gimmick {
     u8 unk_34[4];
     Ov003GmModel *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     Ov003GmSub *sub;
     Ov003GmCtl *ctl;
     Ov003GmPart *part;
@@ -173,15 +167,15 @@ extern void func_ov000_021915a0(void *model);
 extern void func_ov000_0218996c(s32 a, s32 b);
 
 void func_ov003_021ec9e0(Ov003Gimmick *self) {
-    Ov003Work *w = self->work;
-    switch (w->state) {
+    ActorSub40 *w = self->work;
+    switch (w->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov003_021f99d8, 0x1000, 0);
         func_ov000_021911c8(self->model, 0x800);
         func_ov000_02191618(self->model);
         func_ov000_02191318(self->model, 0);
         func_ov000_02191708(self->model);
-        self->work->state++;
+        self->work->st++;
         break;
     case 1:
         w->timer++;
@@ -204,7 +198,7 @@ void func_ov003_021ec9e0(Ov003Gimmick *self) {
 }
 
 void func_ov003_021ecb6c(Ov003Gimmick *self) {
-    if (self->work->state == 0) {
+    if (self->work->st == 0) {
         if (self->id == 0x4064) {
             if (self->state != 1) {
                 self->state = 0;
@@ -231,8 +225,8 @@ void func_ov003_021ecb6c(Ov003Gimmick *self) {
 
 void func_ov003_021ecc68(Ov003Gimmick *self) {
     Ov003GmArg arg;
-    Ov003Work *w = self->work;
-    if (w->state == 0 && w->unk_0c != 10 && self->count != 0) {
+    ActorSub40 *w = self->work;
+    if (w->st == 0 && w->history[0] != 10 && self->count != 0) {
         self->count--;
     }
     if (self->count == 0 && self->state == 1) {
@@ -243,7 +237,7 @@ void func_ov003_021ecc68(Ov003Gimmick *self) {
         func_ov000_0219763c(self);
         return;
     }
-    switch (self->work->state) {
+    switch (self->work->st) {
     case 0:
         if (self->count == 0) {
             s16 m;
@@ -280,7 +274,7 @@ void func_ov003_021ecc68(Ov003Gimmick *self) {
         }
         self->unk_a0 = 0x2cd;
         self->unk_a8 = 0x52;
-        self->work->state++;
+        self->work->st++;
     case 1:
         func_ov000_02197ad0(self, 0);
         Actor_Move(self, 0);
@@ -294,7 +288,7 @@ void func_ov003_021ecc68(Ov003Gimmick *self) {
             func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
             func_ov000_0218996c(0xf, 0x14);
             self->unk_a0 = 0;
-            self->work->state++;
+            self->work->st++;
             self->work->timer = 0;
             return;
         }
@@ -320,7 +314,7 @@ void func_ov003_021ecc68(Ov003Gimmick *self) {
             return;
         }
         self->work->timer = 6;
-        if (!func_ov000_02191120(self->model) && self->work->unk_04 == 0) {
+        if (!func_ov000_02191120(self->model) && self->work->flags == 0) {
             return;
         }
         self->part->unk_1c = 0xffff;

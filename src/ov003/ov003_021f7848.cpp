@@ -1,4 +1,6 @@
 #include <nitro/fx.h>
+#include "Main/Sys/FieldState.h"
+#include "ov000/ActorParts.h"
 
 // A header's zero rotation and vector, plus copies made at startup, among this TU's motion
 // names, the pointers to them, two angle tables and six vectors. Other functions read the
@@ -64,18 +66,6 @@ struct Ov003Vec {
     s32 z;
 };
 
-struct Ov003Work {
-    u16 state;
-    u16 timer;
-};
-
-struct Ov003Game54 {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-};
-
 struct Ov003SnParam {
     u8 unk_00[0x8];
     u16 unk_08;
@@ -93,7 +83,7 @@ struct Ov003Sensor {
     u8 unk_1a[0x1e];
     void *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     u8 unk_44[0x8];
     Ov003SnParam *param;
     u8 unk_50[0x14];
@@ -127,7 +117,7 @@ struct Ov003Cannon {
     u8 unk_00[0x38];
     Ov003SnModel *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     u8 unk_44[0x8];
     Ov003SnParam *param;
     u8 unk_50[0x20];
@@ -157,7 +147,7 @@ struct Ov003Rotor {
     u8 unk_1c[0x1c];
     Ov003RtModel *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     u8 unk_44[0x2c];
     Ov003Vec pos;
     u8 unk_7c[0x20];
@@ -169,7 +159,6 @@ struct Ov003Rotor {
 
 extern "C" {
 
-extern Ov003Game54 *data_ov000_021ccd54;
 extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
@@ -187,11 +176,11 @@ extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern BOOL func_ov000_02191120(void *p);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
 
-static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -202,7 +191,7 @@ static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -222,7 +211,7 @@ void func_ov003_021e77b4(Ov003Sensor *self) {
     void *list[0x20];
     s32 n;
     s32 i;
-    switch (self->work->state) {
+    switch (self->work->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x1000, 0);
         func_ov000_021915a0(self->model);
@@ -230,7 +219,7 @@ void func_ov003_021e77b4(Ov003Sensor *self) {
         self->unk_a0 = 0;
         self->unk_a4 = 0;
         self->unk_a8 = 0;
-        self->work->state++;
+        self->work->st++;
     case 1:
         if (!Ov003_GameIdle()) {
             return;
@@ -250,8 +239,8 @@ void func_ov003_021e77b4(Ov003Sensor *self) {
 }
 
 void func_ov003_021e7900(Ov003Sensor *self) {
-    Ov003Work *w = self->work;
-    switch (w->state) {
+    ActorSub40 *w = self->work;
+    switch (w->st) {
     case 0:
         if (!Ov003_GameIdle()) {
             func_ov000_02198360(w, 1, 0);
@@ -265,7 +254,7 @@ void func_ov003_021e7900(Ov003Sensor *self) {
             self->unk_a4 = 0;
             self->unk_a8 = 0;
             self->work->timer = 0;
-            self->work->state++;
+            self->work->st++;
         }
         break;
     case 1:
@@ -275,7 +264,7 @@ void func_ov003_021e7900(Ov003Sensor *self) {
         }
         if (func_ov000_02191120(self->model)) {
             self->work->timer = 0;
-            self->work->state++;
+            self->work->st++;
         }
         break;
     case 2:
@@ -283,7 +272,7 @@ void func_ov003_021e7900(Ov003Sensor *self) {
         if (w->timer > 0xf) {
             func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x111, 0);
             self->work->timer = 0;
-            self->work->state = 0x1e;
+            self->work->st = 0x1e;
         }
         break;
     case 0x1e:
@@ -296,7 +285,7 @@ void func_ov003_021e7900(Ov003Sensor *self) {
 }
 
 void func_ov003_021e7bac(Ov003Cannon *self) {
-    switch (self->work->state) {
+    switch (self->work->st) {
     case 0:
         self->unk_9c = 0;
         self->unk_a0 = 0;
@@ -305,7 +294,7 @@ void func_ov003_021e7bac(Ov003Cannon *self) {
         func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x1000, 0);
         func_ov000_021915a0(self->model);
         self->idx = -1;
-        self->work->state++;
+        self->work->st++;
         break;
     case 1: {
         Ov003Vec v;
@@ -326,11 +315,11 @@ void func_ov003_021e7bac(Ov003Cannon *self) {
         func_01ffc9fc(&v, &v, self->rot.y);
         VEC_Add(&v, &self->pos, &v);
         func_02049f44(data_02097e4c, 0x50, &v, 0);
-        self->work->state++;
+        self->work->st++;
         break;
     }
     case 2: {
-        Ov003Work *w;
+        ActorSub40 *w;
         if (*func_ov000_0219bf90()->unk_50 != 0 && Ov003_GameIdle()) {
             Ov003Rot r;
             r = self->rot;
@@ -342,7 +331,7 @@ void func_ov003_021e7bac(Ov003Cannon *self) {
         if (w->timer > self->dur) {
             self->idx = -1;
             self->work->timer = 0;
-            self->work->state = 1;
+            self->work->st = 1;
         }
         break;
     }
@@ -350,7 +339,7 @@ void func_ov003_021e7bac(Ov003Cannon *self) {
 }
 
 void func_ov003_021e7e18(Ov003Rotor *self) {
-    switch (self->work->state) {
+    switch (self->work->st) {
     case 0:
         self->unk_9c = 0;
         self->unk_a0 = 0;
@@ -360,7 +349,7 @@ void func_ov003_021e7e18(Ov003Rotor *self) {
         func_ov000_021911c8(self->model, self->mode > 0 ? self->mode : 0x1000);
         func_ov000_021915a0(self->model);
         self->model->unk_c2_4 = 0;
-        self->work->state++;
+        self->work->st++;
     case 1: {
         s32 k = self->model->unk_c4;
         if (!(k != 1 && k != 2)) {
@@ -400,11 +389,6 @@ typedef struct {
 } Ov003RtInput;
 
 typedef struct {
-    u16 state;
-    u16 timer;
-} Ov003Work;
-
-typedef struct {
     u8 unk_00[0xa2];
     u8 active : 1;
 } Ov003Unit;
@@ -421,13 +405,6 @@ typedef struct {
     u8 unk_10[0x54];
     Ov003VecC offset;
 } Ov003RtNames;
-
-typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-} Ov003Game54;
 
 typedef struct {
     u8 unk_00[0x50];
@@ -494,7 +471,7 @@ typedef struct {
     void *res;
     void *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     u8 unk_44[4];
     Ov003RtCtl *ctl;
     Ov003RtLink *link;
@@ -545,7 +522,6 @@ extern void func_ov000_021915a0(void *p);
 extern s32 VEC_Distance(const Ov003Vec *a, const Ov003Vec *b);
 extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern Ov003Game54 *data_ov000_021ccd54;
 extern void *data_0214a420;
 extern void func_ov000_02196c40(void *self);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
@@ -555,11 +531,11 @@ BOOL func_ov003_021e83d0(Ov003Rotor *self);
 
 extern s32 **func_ov000_02190a30(void *model, s32 a);
 
-static inline BOOL Ov003Game54_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game54_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game54_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game54_IsIdle(FieldState *g) {
     if (Ov003Game54_IsBusy(g)) {
         return FALSE;
     }
@@ -570,7 +546,7 @@ static inline BOOL Ov003Game54_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_Game54Idle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game54_IsIdle(g);
     }
@@ -663,8 +639,8 @@ BOOL Ov003ActVt_021f953c_Draw(Ov003Rotor *self) {
 
 void func_ov003_021e8210(Ov003Rotor *self) {
     Ov003RtPlayer *pl = func_ov000_0219bf90();
-    Ov003Work *w = self->work;
-    switch (w->state) {
+    ActorSub40 *w = self->work;
+    switch (w->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x1000, 0);
         func_ov000_021915a0(self->model);
@@ -672,7 +648,7 @@ void func_ov003_021e8210(Ov003Rotor *self) {
         self->unk_a0 = 0;
         self->unk_a4 = 0;
         self->unk_a8 = 0;
-        self->work->state++;
+        self->work->st++;
     case 1: {
         Ov003Vec p;
         p.x = pl->pos.x;
@@ -684,7 +660,7 @@ void func_ov003_021e8210(Ov003Rotor *self) {
         }
         func_02049f44(data_02097e4c, 0x71, &self->pos, 0);
         self->active = 1;
-        self->work->state++;
+        self->work->st++;
         break;
     }
     case 2: {
@@ -697,7 +673,7 @@ void func_ov003_021e8210(Ov003Rotor *self) {
             s = 0x1000;
             func_ov000_0218996c(4, 4);
             func_02049f44(data_02097e4c, 0x66, &self->pos, 0);
-            self->work->state++;
+            self->work->st++;
         }
         self->scale.x = s;
         self->scale.y = s;
@@ -729,23 +705,11 @@ typedef struct {
 } Ov003Vec;
 
 typedef struct {
-    u16 state;
-    u16 timer;
-} Ov003Work;
-
-typedef struct {
     u8 unk_00[0x50];
     u16 *input;
     u8 unk_54[0x1c];
     Ov003Vec pos;
 } Ov003RtPlayer;
-
-typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-} Ov003Game54;
 
 typedef struct {
     u8 unk_00[0x50];
@@ -770,7 +734,7 @@ typedef struct {
     void *res;
     void *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     u8 unk_44[4];
     Ov003RtCtl *ctl;
     Ov003RtLink *link;
@@ -801,15 +765,14 @@ typedef struct {
 } Ov003Rotor;
 
 extern "C" {
-extern Ov003Game54 *data_ov000_021ccd54;
 extern Ov003RtPlayer *func_ov000_0219bf90(void);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
 
-static inline BOOL Ov003Game54_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game54_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game54_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game54_IsIdle(FieldState *g) {
     if (Ov003Game54_IsBusy(g)) {
         return FALSE;
     }
@@ -820,7 +783,7 @@ static inline BOOL Ov003Game54_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_Game54Idle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game54_IsIdle(g);
     }
@@ -876,11 +839,6 @@ typedef struct {
 } Ov003RtInput;
 
 typedef struct {
-    u16 state;
-    u16 timer;
-} Ov003Work;
-
-typedef struct {
     u8 unk_00[0xa2];
     u8 active : 1;
 } Ov003Unit;
@@ -897,13 +855,6 @@ typedef struct {
     u8 unk_10[0x54];
     Ov003VecC offset;
 } Ov003RtNames;
-
-typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-} Ov003Game54;
 
 typedef struct {
     u8 unk_00[0x50];
@@ -997,7 +948,7 @@ typedef struct {
     void *res;
     void *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     u8 unk_44[4];
     Ov003RtCtl *ctl;
     Ov003RtLink *link;
@@ -1048,7 +999,6 @@ extern void func_ov000_021915a0(void *p);
 extern s32 VEC_Distance(const Ov003Vec *a, const Ov003Vec *b);
 extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern Ov003Game54 *data_ov000_021ccd54;
 extern void *data_0214a420;
 extern void func_ov000_02196c40(void *self);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, void *g, s32 h, s32 i, s32 j, s32 k);
@@ -1117,11 +1067,11 @@ void Ov003ActVt_021f9374_Update(Ov003Swing *self) {
     }
 }
 
-static inline BOOL Ov003Game54_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game54_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game54_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game54_IsIdle(FieldState *g) {
     if (Ov003Game54_IsBusy(g)) {
         return FALSE;
     }
@@ -1132,7 +1082,7 @@ static inline BOOL Ov003Game54_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_Game54Idle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game54_IsIdle(g);
     }
@@ -1291,13 +1241,6 @@ typedef struct {
 } Ov003MvPlayer;
 
 typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-} Ov003Game54;
-
-typedef struct {
     u8 unk_00[0xe];
     u16 id;
     u8 unk_10[8];
@@ -1371,7 +1314,6 @@ void Ov003ActVt_021f91ac_Start(Ov003Mover *self) {
 }
 
 extern const Ov003Vec data_ov003_021f6ad8;
-extern Ov003Game54 *data_ov000_021ccd54;
 extern void *data_02097e4c;
 extern void *data_0214a420;
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
@@ -1383,11 +1325,11 @@ extern void *func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
 extern Ov003MvPlayer *func_ov000_0219bf90(void);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, const void *f, const void *g, s32 h, s32 i, s32 j, s32 k);
 
-static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -1398,7 +1340,7 @@ static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -1591,13 +1533,6 @@ struct Ov003GtPlayer {
     u32 state : 2;
 };
 
-struct Ov003Game54 {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-};
-
 struct Ov003Gate {
     u8 unk_00[0x18];
     s16 count;
@@ -1645,7 +1580,6 @@ void Ov003ActVt_021f9114_Start(Ov003Mover2 *self) {
 }
 
 extern void *data_02097e4c;
-extern Ov003Game54 *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern const Ov003Vec data_ov003_021f6af0;
 extern const Ov003Vec data_ov003_021f6b08;
@@ -1665,11 +1599,11 @@ extern Ov003GtSub *Target_Get(void *p);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void func_ov000_0218d46c(Ov003GtObj *o, u16 id, s32 a);
 
-static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -1680,7 +1614,7 @@ static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -1831,18 +1765,6 @@ struct Ov003Vec {
     s32 z;
 };
 
-struct Ov003Work {
-    u16 state;
-    u16 timer;
-};
-
-struct Ov003Game54 {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-};
-
 struct Ov003Unit {
     u8 unk_00[0x94];
     u16 unk_94;
@@ -1877,7 +1799,7 @@ struct Ov003Fly {
     u8 unk_22[0x16];
     void *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     u8 unk_44[8];
     Ov003FlyLink *link;
     u8 unk_50[0x20];
@@ -1912,7 +1834,6 @@ struct Ov003FlyParam {
 extern "C" {
 
 extern void *data_ov000_021ccd64;
-extern Ov003Game54 *data_ov000_021ccd54;
 extern u8 data_ov003_021f6b20[];
 extern const Ov003FlyParam data_ov003_021f6b5c[];
 extern const s16 FX_SinCosTable_[];
@@ -1933,11 +1854,11 @@ extern Ov003FlyPlayer *func_ov000_0219bf90(void);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern void Actor_Move(void *self, s32 a);
 
-static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -1948,7 +1869,7 @@ static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -1975,13 +1896,13 @@ void Ov003ActVt_021f94a4_Start(Ov003Fly *self) {
 void func_ov003_021e9448(Ov003Fly *self) {
     Ov003Vec pp;
     Ov003Vec d;
-    Ov003Work *w;
-    switch (self->work->state) {
+    ActorSub40 *w;
+    switch (self->work->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x89, 0);
         func_ov000_021915a0(self->model);
         self->work->timer = 0;
-        self->work->state++;
+        self->work->st++;
     case 1: {
         w = self->work;
         if (w->timer != 0) {
@@ -2022,20 +1943,20 @@ void func_ov003_021e9448(Ov003Fly *self) {
 }
 
 void func_ov003_021e9628(Ov003Fly *self) {
-    Ov003Work *w = self->work;
+    ActorSub40 *w = self->work;
     s32 top = self->home.y;
-    switch (w->state) {
+    switch (w->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov003_021f6a8c, 0x400, 0);
         func_ov000_021915a0(self->model);
         self->speed = -0x8f;
         self->work->timer = 0;
-        self->work->state++;
+        self->work->st++;
     case 1:
         if (self->pos.y < top - 0x3000) {
             func_ov000_021911c8(self->model, 0x99a);
             self->work->timer = 0;
-            self->work->state++;
+            self->work->st++;
         }
         if (*func_ov000_0219bf90()->input != 0 && Ov003_GameIdle()) {
             Ov003FlyLink *l = self->link;
@@ -2051,7 +1972,7 @@ void func_ov003_021e9628(Ov003Fly *self) {
         func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x89, 0);
         func_ov000_021915a0(self->model);
         self->speed = 0x3d;
-        self->work->state++;
+        self->work->st++;
         break;
     case 3:
         if (self->pos.y >= top) {
@@ -2210,18 +2131,6 @@ struct Ov003Vec {
     s32 z;
 };
 
-struct Ov003Work {
-    u16 state;
-    u16 timer;
-};
-
-struct Ov003Game54 {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-};
-
 struct Ov003FlyPlayer {
     u8 unk_00[0x50];
     u16 *input;
@@ -2251,7 +2160,7 @@ struct Ov003Fly {
     u8 unk_1c[0x1c];
     Ov003FlyModel *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     u8 unk_44[8];
     Ov003FlyLink *link;
     u8 unk_50[0x14];
@@ -2284,7 +2193,6 @@ struct Ov003FlyParam {
 
 extern "C" {
 
-extern Ov003Game54 *data_ov000_021ccd54;
 extern void *data_02097e4c;
 extern const Ov003FlyParam data_ov003_021f6b5c[];
 extern const Ov003Vec data_ov003_021f6acc;
@@ -2300,11 +2208,11 @@ extern void Actor_Move(void *self, s32 a);
 extern void Actor_TurnToPos(void *self, const Ov003Vec *v, s32 a);
 extern void *func_0204a028(void *mgr, s32 id, const Ov003Vec *pos, s32 a);
 
-static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -2315,7 +2223,7 @@ static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -2381,12 +2289,12 @@ static inline void Ov003_RotZ2(Ov003Vec *out, const Ov003Vec *in, u16 ang) {
 
 void func_ov003_021e9b74(Ov003Fly *self) {
     const Ov003FlyParam *prm = &data_ov003_021f6b5c[self->unk_1a];
-    switch (self->work->state) {
+    switch (self->work->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov003_021f6a84, 0x1000, 0);
         func_ov000_021915a0(self->model);
         self->work->timer = 0;
-        self->work->state++;
+        self->work->st++;
     case 1:
         self->rotZ += prm->unk_0c;
         Actor_Move(self, 0);
@@ -2397,12 +2305,12 @@ void func_ov003_021e9b74(Ov003Fly *self) {
             self->speed = -self->speed;
             func_ov000_02190cb0(self->model, data_ov003_021f6a88, 0x400, 0);
             func_ov000_021915a0(self->model);
-            self->work->state++;
+            self->work->st++;
         }
         break;
     case 2: {
         Ov003Vec d;
-        Ov003Work *w;
+        ActorSub40 *w;
         d.x = self->home.x - self->unk_e8.x;
         d.y = self->home.y - self->unk_e8.y;
         d.z = self->home.z - self->unk_e8.z;
@@ -2413,7 +2321,7 @@ void func_ov003_021e9b74(Ov003Fly *self) {
         w->timer++;
         if (w->timer == 100) {
             self->unk_102 = self->unk_102 ? 0 : 1;
-            self->work->state = 0;
+            self->work->st = 0;
         }
         break;
     }
@@ -2532,20 +2440,6 @@ typedef struct {
 } Ov003EaVec;
 
 typedef struct {
-    u8 unk_00[0x10];
-    Ov003EaVec pos;
-    u8 unk_1c[0x24];
-    u16 unk_40;
-    u8 unk_42[2];
-    u16 unk_44;
-} Ov003EaCam;
-
-typedef struct {
-    u8 unk_00[0xf4];
-    Ov003EaCam cam;
-} Ov003EaGame;
-
-typedef struct {
     Ov003EaVec pos;
     u16 angle;
     u8 unk_0e[2];
@@ -2576,20 +2470,19 @@ typedef struct {
     u16 unk_98;
 } Ov003EaObj;
 
-extern Ov003EaGame *data_ov000_021ccd54;
 extern const Ov003EaSpot data_ov003_021f6b8c[];
 extern void func_ov000_02194758(void *self);
 extern void func_0203f364(Ov003EaCtl *ctl);
-extern u16 Camera_GetYaw(Ov003EaCam *cam);
+extern u16 Camera_GetYaw(Camera *cam);
 extern s32 Rand_PlusMinus(s32 n);
 
 static inline s32 Ov003Ea_FxMul(s32 a, s32 b) {
     return (s32)(((s64)a * b + 0x800) >> 12);
 }
 
-static inline u16 Ov003EaCam_Angle(Ov003EaCam *cam) {
-    if (cam->unk_40 != 0) {
-        return cam->unk_44;
+static inline u16 Camera_Angle(Camera *cam) {
+    if (cam->mode != 0) {
+        return cam->yaw;
     }
     return Camera_GetYaw(cam);
 }
@@ -2603,12 +2496,12 @@ void Ov003ActVt_021f92dc_Start(Ov003EaObj *self) {
     func_0203f364(ctl);
     self->ctl->unk_30 = 0;
     if (self->kind == 0) {
-        Ov003EaCam *cam = &data_ov000_021ccd54->cam;
-        u16 a = Ov003EaCam_Angle(cam);
+        Camera *cam = &data_ov000_021ccd54->cam.base;
+        u16 a = Camera_Angle(cam);
         a = a + (u16)(Rand_PlusMinus(3) * 0xb6);
-        self->pos.x = cam->pos.x;
-        self->pos.y = cam->pos.y;
-        self->pos.z = cam->pos.z;
+        self->pos.x = cam->at.x;
+        self->pos.y = cam->at.y;
+        self->pos.z = cam->at.z;
         self->pos.x += Ov003Ea_FxMul(FX_SinCosTable_[(a >> 4) * 2], 0x14000);
         self->pos.z += Ov003Ea_FxMul(FX_SinCosTable_[(a >> 4) * 2 + 1], 0x14000);
         self->pos.y += 0x4000;
@@ -2638,13 +2531,6 @@ typedef struct {
     u8 unk_00[0x50];
     u16 *input;
 } Ov003EbPlayer;
-
-typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-} Ov003EbGame;
 
 typedef struct {
     u8 unk_00[8];
@@ -2692,10 +2578,10 @@ static inline s32 Ov003Eb_FxMul(s32 a, s64 b) {
 }
 
 static inline BOOL Ov003Eb_GameIdle(void) {
-    Ov003EbGame *g = (Ov003EbGame *)data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         BOOL busy = FALSE;
-        if (g->unk_90 != g->unk_94) {
+        if (g->head != g->tail) {
             busy = TRUE;
         }
         if (busy) {

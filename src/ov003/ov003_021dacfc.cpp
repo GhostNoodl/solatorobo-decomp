@@ -1,14 +1,5 @@
 #include "ov003/Vec.h"
-
-struct Ov003FxNode {
-    u8 id;
-    void *handle;
-    Ov003FxNode *next;
-};
-
-struct Ov003FxList {
-    Ov003FxNode *head;
-};
+#include "ov003/FxList.h"
 
 struct Ov003HeapCtx {
     void *cur;

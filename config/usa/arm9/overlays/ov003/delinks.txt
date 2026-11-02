@@ -265,7 +265,7 @@ src/ov003/ov003_021db244.cpp:
     complete
     .text       start:0x021db244 end:0x021dbd80
 
-src/ov003/ov003_021dc0c8.c:
+src/ov003/ov003_021dc0c8.cpp:
     complete
     .text       start:0x021dc0c8 end:0x021dc3fc
 

@@ -1,23 +1,9 @@
 #include "types.h"
-
-struct Ov003Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
-
-struct Ov003Work {
-    u16 state;
-    u16 timer;
-};
+#include "Main/Sys/FieldState.h"
+#include "ov000/ActorParts.h"
 
 typedef struct {
-    s32 m[9];
-    s32 tx, ty, tz;
-} Ov003BrMtx;
-
-typedef struct {
-    Ov003Vec pos;
+    VecFx32 pos;
     u16 unk_0c;
     u16 mask;
     u16 unk_10;
@@ -36,7 +22,7 @@ typedef struct {
 } Ov003BrFinder;
 
 typedef struct {
-    Ov003Vec pos;
+    VecFx32 pos;
     u8 unk_0c[4];
     s32 unk_10;
 } Ov003BrHit;
@@ -50,12 +36,12 @@ typedef struct {
     u8 unk_1c[0x4c];
     s32 unk_68;
     u8 unk_6c[4];
-    Ov003Vec pos;
+    VecFx32 pos;
     u16 rot[3];
 } Ov003BrTgt;
 
 typedef struct {
-    Ov003Vec pos;
+    VecFx32 pos;
     u16 rot[3];
     s32 unk_14;
 } Ov003BrWarp;
@@ -74,11 +60,6 @@ public:
     virtual void SetScale(s32 x, s32 y, s32 z);
 };
 
-typedef struct {
-    u8 unk_00[0xac];
-    u8 unk_ac;
-} Ov003BrGame;
-
 struct Ov003Bridge {
     void *vtbl;
     u8 unk_04[8];
@@ -91,7 +72,7 @@ struct Ov003Bridge {
     u8 unk_1e[0x1a];
     void *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     u8 unk_44[8];
     void *unk_4c;
     u8 unk_50[8];
@@ -100,7 +81,7 @@ struct Ov003Bridge {
     s32 unk_64;
     s32 unk_68;
     s32 unk_6c;
-    Ov003Vec pos;
+    VecFx32 pos;
     u16 rot[3];
     u8 unk_82[0xe];
     u16 unk_90;
@@ -115,7 +96,6 @@ extern "C" {
 
 extern const s16 FX_SinCosTable_[];
 extern void *data_02097e4c;
-extern Ov003BrGame *data_ov000_021ccd54;
 extern char data_ov003_021f9fd6[];
 extern s32 func_ov000_021993fc(Ov003BrFinder *f, Ov003BrQuery *q, Ov003BrHit **out, s32 max);
 extern Ov003BrTgt *func_ov000_021985c0(Ov003BrHit *h);
@@ -123,22 +103,16 @@ extern BOOL func_ov003_021f0a38(Ov003BrTgt *t, void *def);
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
-extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void Actor_SendMsg(Ov003BrTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
 extern Ov003BrTgt *func_ov000_0219bf90(void);
-extern Ov003BrFx *func_02065f88(s32 id, Ov003Vec *pos);
+extern Ov003BrFx *func_02065f88(s32 id, VecFx32 *pos);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern Ov003BrTgt *Actor_GetTarget(Ov003Bridge *self);
 extern void func_ov000_02197d80(void *self);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
-extern void MTX_Identity43_(Ov003BrMtx *m);
-extern void MTX_RotX43_(Ov003BrMtx *m, s32 s, s32 c);
-extern void MTX_RotY43_(Ov003BrMtx *m, s32 s, s32 c);
-extern void MTX_RotZ43_(Ov003BrMtx *m, s32 s, s32 c);
-extern void MTX_Concat43(Ov003BrMtx *a, Ov003BrMtx *b, Ov003BrMtx *out);
-extern void HitMesh_SetMtx(void *o, Ov003BrMtx *m);
-extern void VEC_MultAdd(s32 a, Ov003Vec *v1, Ov003Vec *v2, Ov003Vec *dst);
+extern void HitMesh_SetMtx(void *o, MtxFx43 *m);
 extern BOOL func_ov000_021b4738(void);
 extern void func_020627b4(void);
 extern void func_020627a0(u16 a, u16 b);
@@ -163,8 +137,8 @@ static inline void Ov003BrQuery_Init(Ov003BrQuery *q) {
 }
 
 static inline void Ov003Br_SetMtx(void *o, s32 x, s32 y, s32 z, u16 rx, u16 ry, u16 rz) {
-    Ov003BrMtx m;
-    Ov003BrMtx t;
+    MtxFx43 m;
+    MtxFx43 t;
     BOOL set = FALSE;
     MTX_Identity43_(&m);
     if (rz != 0) {
@@ -189,14 +163,14 @@ static inline void Ov003Br_SetMtx(void *o, s32 x, s32 y, s32 z, u16 rx, u16 ry, 
             set = TRUE;
         }
     }
-    m.tx = x;
-    m.ty = y;
-    m.tz = z;
+    m._30 = x;
+    m._31 = y;
+    m._32 = z;
     HitMesh_SetMtx(o, &m);
 }
 
 static inline void Ov003Br_Approach(Ov003BrWarp *w, Ov003BrTgt *t, Ov003Bridge *self) {
-    Ov003Vec d;
+    VecFx32 d;
     w->pos.x = t->pos.x;
     w->pos.y = t->pos.y;
     w->pos.z = t->pos.z;
@@ -211,11 +185,11 @@ static inline void Ov003Br_Approach(Ov003BrWarp *w, Ov003BrTgt *t, Ov003Bridge *
 }
 
 void func_ov003_021eeecc(Ov003Bridge *self) {
-    switch (self->work->state) {
+    switch (self->work->st) {
     case 0: {
         Ov003BrHit *list[0x20];
         Ov003BrQuery q;
-        Ov003Vec v;
+        VecFx32 v;
         Ov003BrFinder f;
         u8 b;
         s32 n;
@@ -270,12 +244,12 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
             func_02065f88(0x44f, &v)->SetScale(0, pl->unk_68, 0);
             func_02049a48(data_02097e4c, 0x4a, -1, -1, -1);
         }
-        self->work->state++;
+        self->work->st++;
         self->work->timer = 0;
         break;
     }
     case 1: {
-        Ov003Work *w = self->work;
+        ActorSub40 *w = self->work;
         Ov003BrTgt *t;
         w->timer++;
         if (w->timer >= 0xf) {
@@ -326,11 +300,11 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
                 func_02049f44(data_02097e4c, 0x17, &self->pos, 0);
                 func_ov000_0218996c(5, 10);
             }
-            self->work->state = 10;
+            self->work->st = 10;
             return;
         }
         if (self->unk_58 != NULL) {
-            Ov003Vec p;
+            VecFx32 p;
             p.x = self->pos.x;
             p.y = self->pos.y - self->work->timer * 0xcd;
             p.z = self->pos.z;
@@ -358,12 +332,12 @@ void func_ov003_021eeecc(Ov003Bridge *self) {
             func_020627dc(1);
             func_020627ec(id);
             {
-                u8 *ac = &data_ov000_021ccd54->unk_ac;
+                u8 *ac = &data_ov000_021ccd54->stageFlags;
                 *ac = 1;
                 func_ov000_02182590(ac);
             }
         }
-        self->work->state++;
+        self->work->st++;
         break;
     }
 }

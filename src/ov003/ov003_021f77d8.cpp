@@ -1,4 +1,6 @@
 #include "types.h"
+#include "ov003/Ticker.h"
+#include "ov003/StateMachine.h"
 
 struct Ov003Vec {
     s32 x;
@@ -6,18 +8,6 @@ struct Ov003Vec {
     s32 z;
     Ov003Vec() {}
 };
-
-typedef struct {
-    u8 active : 1;
-    u8 loop : 1;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    s16 count;
-    s16 interval;
-    s16 timer;
-    s16 next;
-    s16 cur;
-} Ov003Ticker;
 
 class Ov003TickerSet {
 public:
@@ -30,32 +20,6 @@ public:
     u8 b3 : 1;
     s16 count;
     Ov003Ticker tickers[3];
-};
-
-class Ov003State {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void Enter();
-    virtual void Leave();
-    virtual void Update();
-    virtual void Message(void *arg);
-};
-
-typedef struct Ov003StateNode {
-    u8 id;
-    Ov003State *state;
-    struct Ov003StateNode *next;
-} Ov003StateNode;
-
-class Ov003StateMachine {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void Release();
-    u8 active;
-    Ov003StateNode *cur;
-    Ov003StateNode *list;
 };
 
 class Ov003Timer {

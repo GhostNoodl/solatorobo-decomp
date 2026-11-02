@@ -1,21 +1,14 @@
 #include "types.h"
 #include "ov003/Actor.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u8 unk_00[0x70];
     VecFx32 pos;
 } Ov003KbUnit;
 
-typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-} Ov003KbGame;
-
 extern "C" {
 
-extern Ov003KbGame *data_ov000_021ccd54;
 extern void *data_ov000_021ccd68;
 extern void *data_02097e4c;
 extern const char *data_ov003_021f7a48[][2];
@@ -37,11 +30,11 @@ extern void Actor_Move(void *self, s32 a);
 extern void Actor_MoveToPos(void *self, VecFx32 *v, s32 a);
 extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 
-static inline BOOL Ov003Kb_GameBusy(Ov003KbGame *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Kb_GameBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Kb_GameIsIdle(Ov003KbGame *g) {
+static inline BOOL Ov003Kb_GameIsIdle(FieldState *g) {
     if (Ov003Kb_GameBusy(g)) {
         return FALSE;
     }
@@ -52,7 +45,7 @@ static inline BOOL Ov003Kb_GameIsIdle(Ov003KbGame *g) {
 }
 
 static inline BOOL Ov003Kb_GameIdle(void) {
-    Ov003KbGame *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Kb_GameIsIdle(g);
     }

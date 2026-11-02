@@ -35,6 +35,8 @@ typedef struct ActorMsg {
 } ActorMsg;
 
 class Actor;
+struct Ov003ShotDef;
+struct Ov003BeamDef;
 
 typedef struct PauseNode {
     struct PauseNode *parent;
@@ -61,7 +63,8 @@ typedef struct {
             u8 unk_18_1 : 1;
             u8 unk_18_2 : 3;
             u8 unk_18_5 : 1;
-            u8 unk_18_6 : 2;
+            u8 unk_18_6 : 1; // the ov003 shot's hit passes -1 instead of 100 to func_ov000_0219a8bc
+            u8 unk_18_7 : 1;
         };
     };
     u8 unk_19;
@@ -138,14 +141,25 @@ public:
     void *unk_54;
     void *hitMesh; // HitMesh (HitMesh_Link / func_0203f920)
     void *unk_5c;
-    void *unk_60;
+    union {
+        void *unk_60;
+        // set by a spawner before the first update: replaces the def record that the ov003 shot
+        // (Ov003Shot) or beam (Ov003Beam) would otherwise take from its table by Actor::unk_18
+        Ov003ShotDef *shotDef;
+        Ov003BeamDef *beamDef;
+    };
     s32 radius; // horizontal size (spawn info hx << 4; ActorMgr_FindKindNear adds it to the distance)
     s32 height; // vertical size (spawn info hy << 4)
     s32 centerY; // height of the body centre above pos (height / 2 for the robot)
     VecFx32 pos;
-    u16 rot_x;
-    u16 rot_y;
-    u16 rot_z;
+    union {
+        struct {
+            u16 rot_x;
+            u16 rot_y;
+            u16 rot_z;
+        };
+        ActorRot rot; // the three angles as one record (passed whole to effects)
+    };
     u8 unk_82[0x2];
     VecFx32 unk_84;
     u16 target;
@@ -167,9 +181,14 @@ public:
     u16 unk_96;
     u16 moveYaw; // heading Actor_Move moves along (Actor_MoveToPos aims it at the target)
     u16 unk_9a;
-    s32 speed; // horizontal speed along moveYaw (Actor_Move)
-    s32 velY; // vertical velocity, added to pos.y by Actor_Move
-    s32 friction; // speed multiplier per frame (0 or 0x1000: none)
+    union {
+        struct {
+            s32 speed; // horizontal speed along moveYaw (Actor_Move)
+            s32 velY; // vertical velocity, added to pos.y by Actor_Move
+            s32 friction; // speed multiplier per frame (0 or 0x1000: none)
+        };
+        VecFx32 vel; // the ov003 shots move by a 3D velocity here instead (VEC_Add to pos)
+    };
     s32 gravity; // subtracted from velY each frame (velY floor -0x800); 0: no gravity
 };
 

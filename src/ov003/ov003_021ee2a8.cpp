@@ -1,21 +1,11 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
+#include "ov000/ActorParts.h"
 
 struct Ov003Vec {
     s32 x;
     s32 y;
     s32 z;
-};
-
-struct Ov003Work {
-    u16 state;
-    u16 timer;
-};
-
-struct Ov003Game54 {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
 };
 
 struct Ov003SwPart {
@@ -59,7 +49,7 @@ struct Ov003Lever {
     u8 unk_1e[0x1a];
     void *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     Ov003SwPart *part;
     u8 unk_48[4];
     void *link;
@@ -77,7 +67,6 @@ struct Ov003Lever {
 extern "C" {
 
 extern void *data_02097e4c;
-extern Ov003Game54 *data_ov000_021ccd54;
 extern char data_ov003_021f9fd6[];
 extern char data_ov003_021f9fd0[];
 extern void func_ov000_02194758(void *self);
@@ -113,8 +102,8 @@ void Ov003ActVt_021f9ea8_Start(Ov003Lever *self) {
 }
 
 void func_ov003_021ee310(Ov003Lever *self) {
-    Ov003Work *w = self->work;
-    switch (w->state) {
+    ActorSub40 *w = self->work;
+    switch (w->st) {
     case 0:
         func_ov000_02197d80(self);
         if (self->kind == 1) {
@@ -123,7 +112,7 @@ void func_ov003_021ee310(Ov003Lever *self) {
                 return;
             }
             self->work->timer = 2;
-            self->work->state++;
+            self->work->st++;
         } else if (self->kind == 0) {
             self->state = 0;
         }
@@ -136,16 +125,16 @@ void func_ov003_021ee310(Ov003Lever *self) {
             return;
         }
         func_ov003_021ee680(self, 0, 1, -1);
-        self->work->state--;
+        self->work->st--;
         break;
     }
 }
 
-static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -156,14 +145,14 @@ static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
     return true;
 }
 
-static inline BOOL Ov003Work_Tick(Ov003Work *w) {
+static inline BOOL Ov003Work_Tick(ActorSub40 *w) {
     if (w->timer != 0) {
         w->timer--;
     }
@@ -172,8 +161,8 @@ static inline BOOL Ov003Work_Tick(Ov003Work *w) {
 
 void func_ov003_021ee3dc(Ov003Lever *self) {
     void *sp = Target_Get(self->link);
-    Ov003Work *w = self->work;
-    switch (w->state) {
+    ActorSub40 *w = self->work;
+    switch (w->st) {
     case 0: {
         s32 snd = 0x18;
         if (self->sound != 0) {
@@ -186,7 +175,7 @@ void func_ov003_021ee3dc(Ov003Lever *self) {
             func_ov003_021ee680(self, 0, 1, snd);
         }
         self->work->timer = 2;
-        self->work->state++;
+        self->work->st++;
         break;
     }
     case 1:
@@ -202,7 +191,7 @@ void func_ov003_021ee3dc(Ov003Lever *self) {
             func_ov003_021ee680(self, 0, 1, -1);
             self->work->timer = 0x3c;
         }
-        self->work->state++;
+        self->work->st++;
         break;
     case 2:
         if (self->sound != 0 && self->count < 0x41) {
@@ -230,7 +219,7 @@ void func_ov003_021ee3dc(Ov003Lever *self) {
         ((Ov003SwPart *)self->link)->unk_1c = 0xffff;
         if (self->mode != 0 && self->kind == 1) {
             Ov003SwPart *p;
-            self->work->state = 10;
+            self->work->st = 10;
             p = self->part;
             p->enable = 0;
             p->visible = 0;
@@ -269,7 +258,7 @@ void func_ov003_021ee680(Ov003Lever *self, s16 kind, BOOL notify, s32 sound) {
 }
 
 void func_ov003_021ee73c(Ov003Lever *self) {
-    Ov003Work *w;
+    ActorSub40 *w;
     if (self->kind == 1) {
         Ov003SwPart *p;
         self->state = 1;
@@ -280,7 +269,7 @@ void func_ov003_021ee73c(Ov003Lever *self) {
     }
     self->state = 0;
     w = self->work;
-    switch (w->state) {
+    switch (w->st) {
     case 0:
         if (!(w->timer & 0x7f)) {
             Ov003LvPlayer *pl = func_ov000_0219bf90();
@@ -288,7 +277,7 @@ void func_ov003_021ee73c(Ov003Lever *self) {
                 Ov003LvEffect *e = func_02065f88(0x322, &self->pos);
                 e->SetScale(0xe66, 0xe66, 0xe66);
                 func_02049f44(data_02097e4c, Rand_UpTo(1) + 0x79, &self->pos, 0);
-                self->work->state++;
+                self->work->st++;
                 self->work->timer = 0;
                 return;
             }
@@ -303,7 +292,7 @@ void func_ov003_021ee73c(Ov003Lever *self) {
             return;
         }
         if (w->timer >= 0x87 - (self->mode << 4)) {
-            w->state--;
+            w->st--;
             self->work->timer = 0;
         }
         break;
@@ -311,8 +300,8 @@ void func_ov003_021ee73c(Ov003Lever *self) {
 }
 
 void func_ov003_021ee910(Ov003Lever *self) {
-    Ov003Work *w = self->work;
-    switch (w->state) {
+    ActorSub40 *w = self->work;
+    switch (w->st) {
     case 0: {
         s16 k;
         Ov003SwPart *p;
@@ -326,7 +315,7 @@ void func_ov003_021ee910(Ov003Lever *self) {
         p->visible = 0;
         func_02049f44(data_02097e4c, 0x6e, &self->pos, 0);
         self->work->timer = 0x78;
-        self->work->state++;
+        self->work->st++;
         break;
     }
     case 1: {
@@ -342,7 +331,7 @@ void func_ov003_021ee910(Ov003Lever *self) {
             Actor_SendMsg(sp, self->unk_0c, 3, 1, 0, 0);
         }
         if (!Ov003_GameIdle()) {
-            self->work->state++;
+            self->work->st++;
             return;
         }
         func_ov000_02198360(self->work, 0x15, 0);

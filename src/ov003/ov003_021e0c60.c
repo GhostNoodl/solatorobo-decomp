@@ -1,8 +1,6 @@
 #include "types.h"
-
-typedef struct {
-    u16 state;
-} Ov003Work;
+#include "Main/Sys/FieldState.h"
+#include "ov000/ActorParts.h"
 
 typedef struct {
     u8 unk_00[0x1e];
@@ -13,18 +11,13 @@ typedef struct {
 } Ov003Part;
 
 typedef struct {
-    u8 unk_00[0xac];
-    u8 unk_ac;
-} Ov003Global54;
-
-typedef struct {
     u8 unk_00[0xc];
     u16 unk_0c;
     u16 unk_0e;
     u8 unk_10[0x28];
     void *unk_38;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     Ov003Part *unk_44;
     u8 unk_48[4];
     Ov003Part *unk_4c;
@@ -33,7 +26,6 @@ typedef struct {
 } Ov003Event;
 
 extern char data_ov003_021f8537[];
-extern Ov003Global54 *data_ov000_021ccd54;
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern BOOL func_ov000_02191120(void *p);
 extern void func_020627a0(u16 a, u16 b);
@@ -48,7 +40,7 @@ extern void *func_ov000_0219429c(void *p);
 
 void func_ov003_021e0c60(Ov003Event *self) {
     Ov003Part *part;
-    switch (self->work->state) {
+    switch (self->work->st) {
     case 0:
         func_ov000_02190cb0(self->unk_38, data_ov003_021f8537, 0x1000, 0);
         part = self->unk_44;
@@ -56,15 +48,15 @@ void func_ov003_021e0c60(Ov003Event *self) {
             part->flag0 = 0;
             part->flag1 = 0;
         }
-        self->work->state++;
+        self->work->st++;
     case 1:
         if (!func_ov000_02191120(self->unk_38)) {
             return;
         }
         func_020627a0(self->unk_0e, self->unk_0c);
         func_020627dc(4);
-        data_ov000_021ccd54->unk_ac = 1;
-        self->work->state = 0x7fff;
+        data_ov000_021ccd54->stageFlags = 1;
+        self->work->st = 0x7fff;
         break;
     }
 }

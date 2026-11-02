@@ -1,10 +1,5 @@
 #include "types.h"
-
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Ov003Vec;
+#include "nitro/fx.h"
 
 typedef struct {
     u8 unk_00[0xc];
@@ -36,14 +31,14 @@ typedef struct {
     u8 unk_40[0x24];
     s32 unk_64;
     u8 unk_68[8];
-    Ov003Vec pos;
+    VecFx32 pos;
     u16 unk_7c;
     u16 unk_7e;
     u8 unk_80[0x30];
     s16 unk_b0;
     u8 unk_b2[0x136];
     Ov003Anim anim;
-    Ov003Vec effectPos;
+    VecFx32 effectPos;
     u8 unk_26c[0x64];
     u16 unk_2d0;
 } Ov003Prop;
@@ -63,9 +58,8 @@ extern BOOL func_ov000_0218cea4(void *self);
 extern BOOL func_ov000_021903b4(Ov003Anim *anim);
 extern void *NNS_G3dGetMdlSet(s32 a);
 extern BOOL NNS_G3dBindMdlSet(void *a, s32 b);
-extern void func_01ffc9fc(Ov003Vec *src, Ov003Vec *dst, u16 angle);
-extern void VEC_Add(Ov003Vec *a, Ov003Vec *b, Ov003Vec *dst);
-extern void func_ov000_02191c24(Ov003Shadow *shadow, Ov003Vec *pos);
+extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
+extern void func_ov000_02191c24(Ov003Shadow *shadow, VecFx32 *pos);
 
 void func_ov003_021f3a94(Ov003Prop *self) {
     if (self->model != NULL) {
@@ -75,7 +69,7 @@ void func_ov003_021f3a94(Ov003Prop *self) {
 }
 
 BOOL Ov003ActVt_021fa5a0_Draw(Ov003Prop *self) {
-    Ov003Vec pos;
+    VecFx32 pos;
     BOOL r;
     self->shadow->unk_14 = self->unk_64 << 1;
     r = func_ov000_0218cea4(self);

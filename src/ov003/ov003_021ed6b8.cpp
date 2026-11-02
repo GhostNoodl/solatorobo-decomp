@@ -1,23 +1,9 @@
 #include "types.h"
-
-struct Ov003Vec {
-    s32 x;
-    s32 y;
-    s32 z;
-};
-
-struct Ov003Work {
-    u16 state;
-    u16 timer;
-};
+#include "Main/Sys/FieldState.h"
+#include "ov000/ActorParts.h"
 
 typedef struct {
-    s32 m[9];
-    s32 tx, ty, tz;
-} Ov003LfMtx;
-
-typedef struct {
-    Ov003Vec pos;
+    VecFx32 pos;
     u16 unk_0c;
     u16 mask;
     u16 unk_10;
@@ -36,7 +22,7 @@ typedef struct {
 } Ov003LfFinder;
 
 typedef struct {
-    Ov003Vec pos;
+    VecFx32 pos;
     u8 unk_0c[4];
     s32 unk_10;
 } Ov003LfHit;
@@ -68,18 +54,18 @@ typedef struct {
     s32 unk_64;
     s32 unk_68;
     u8 unk_6c[4];
-    Ov003Vec pos;
+    VecFx32 pos;
     u16 rot[3];
     u8 unk_82[0x1a];
     s32 unk_9c;
     u8 unk_a0[0x6bc];
-    Ov003Vec pos2;
+    VecFx32 pos2;
     u8 unk_768[0x3bc];
     Ov003LfBits bits;
 } Ov003LfTgt;
 
 typedef struct {
-    Ov003Vec pos;
+    VecFx32 pos;
     u16 rot[3];
     s32 unk_14;
 } Ov003LfWarp;
@@ -98,11 +84,6 @@ public:
     virtual void SetScale(s32 x, s32 y, s32 z);
 };
 
-typedef struct {
-    u8 unk_00[0xac];
-    u8 unk_ac;
-} Ov003LfGame;
-
 struct Ov003Lift {
     void *vtbl;
     u8 unk_04[8];
@@ -115,7 +96,7 @@ struct Ov003Lift {
     u8 unk_1e[0x1a];
     void *model;
     u8 unk_3c[4];
-    Ov003Work *work;
+    ActorSub40 *work;
     u8 unk_44[8];
     void *unk_4c;
     u8 unk_50[8];
@@ -124,7 +105,7 @@ struct Ov003Lift {
     s32 unk_64;
     s32 unk_68;
     s32 unk_6c;
-    Ov003Vec pos;
+    VecFx32 pos;
     u16 rot[3];
     u8 unk_82[0xe];
     u16 unk_90;
@@ -142,33 +123,25 @@ extern "C" {
 
 extern const s16 FX_SinCosTable_[];
 extern void *data_02097e4c;
-extern Ov003LfGame *data_ov000_021ccd54;
 extern char data_ov003_021f9fd0[];
 extern char data_ov003_021f9fd6[];
 extern s32 func_ov000_021993fc(Ov003LfFinder *f, Ov003LfQuery *q, Ov003LfHit **out, s32 max);
 extern Ov003LfTgt *func_ov000_021985c0(Ov003LfHit *h);
 extern BOOL func_ov003_021f0a38(Ov003LfTgt *t, void *def);
 extern BOOL func_ov000_02199d40(void *t);
-extern BOOL Hit_DiffInCylinder(const Ov003Vec *a, const Ov003Vec *b, s32 r, s32 h);
+extern BOOL Hit_DiffInCylinder(const VecFx32 *a, const VecFx32 *b, s32 r, s32 h);
 extern BOOL func_ov000_02190cb0(void *p, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(void *p);
 extern void func_ov000_021911c8(void *p, s32 a);
 extern void *func_ov000_02191318(void *p, s32 a);
-extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern void Actor_SendMsg(Ov003LfTgt *o, u16 id, s32 a, s32 b, s32 c, void *p);
 extern Ov003LfTgt *func_ov000_0219bf90(void);
-extern Ov003LfFx *func_02065f88(s32 id, Ov003Vec *pos);
+extern Ov003LfFx *func_02065f88(s32 id, VecFx32 *pos);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern Ov003LfTgt *Actor_GetTarget(Ov003Lift *self);
-extern void MTX_Identity43_(Ov003LfMtx *m);
-extern void MTX_RotX43_(Ov003LfMtx *m, s32 s, s32 c);
-extern void MTX_RotY43_(Ov003LfMtx *m, s32 s, s32 c);
-extern void MTX_RotZ43_(Ov003LfMtx *m, s32 s, s32 c);
-extern void MTX_Concat43(Ov003LfMtx *a, Ov003LfMtx *b, Ov003LfMtx *out);
-extern void HitMesh_SetMtx(void *o, Ov003LfMtx *m);
-extern void VEC_MultAdd(s32 a, Ov003Vec *v1, Ov003Vec *v2, Ov003Vec *dst);
-extern s32 VEC_Distance(const Ov003Vec *a, const Ov003Vec *b);
+extern void HitMesh_SetMtx(void *o, MtxFx43 *m);
 extern BOOL func_ov000_021b4738(void);
 extern void func_020627b4(void);
 extern void func_020627a0(u16 a, u16 b);
@@ -192,9 +165,9 @@ static inline void Ov003LfQuery_Init(Ov003LfQuery *q) {
     q->flags = 0;
 }
 
-static inline void Ov003Lf_SetMtx(void *o, const Ov003Vec *p, u16 rx, u16 ry, u16 rz) {
-    Ov003LfMtx m;
-    Ov003LfMtx t;
+static inline void Ov003Lf_SetMtx(void *o, const VecFx32 *p, u16 rx, u16 ry, u16 rz) {
+    MtxFx43 m;
+    MtxFx43 t;
     BOOL set = FALSE;
     MTX_Identity43_(&m);
     if (rz != 0) {
@@ -219,9 +192,9 @@ static inline void Ov003Lf_SetMtx(void *o, const Ov003Vec *p, u16 rx, u16 ry, u1
             set = TRUE;
         }
     }
-    m.tx = p->x;
-    m.ty = p->y;
-    m.tz = p->z;
+    m._30 = p->x;
+    m._31 = p->y;
+    m._32 = p->z;
     HitMesh_SetMtx(o, &m);
 }
 
@@ -244,7 +217,7 @@ static inline void Ov003Lf_Notify(Ov003Lift *self, Ov003LfTgt *t) {
         func_020627dc(self->kind);
         func_020627ec(id);
         {
-            u8 *ac = &data_ov000_021ccd54->unk_ac;
+            u8 *ac = &data_ov000_021ccd54->stageFlags;
             *ac = 1;
             func_ov000_02182590(ac);
         }
@@ -259,7 +232,7 @@ static inline void Ov003Lf_Sound(Ov003Lift *self) {
 }
 
 static inline void Ov003Lf_Approach(Ov003LfWarp *w, Ov003LfTgt *t, Ov003Lift *self) {
-    Ov003Vec d;
+    VecFx32 d;
     w->pos.x = t->pos.x;
     w->pos.y = t->pos.y;
     w->pos.z = t->pos.z;
@@ -273,7 +246,7 @@ static inline void Ov003Lf_Approach(Ov003LfWarp *w, Ov003LfTgt *t, Ov003Lift *se
 }
 
 void func_ov003_021ed6b8(Ov003Lift *self) {
-    switch (self->work->state) {
+    switch (self->work->st) {
     case 0: {
         Ov003LfQuery q;
         Ov003LfFinder f;
@@ -284,7 +257,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
         Ov003LfTgt *found;
         s32 i;
         u8 cnt;
-        Ov003Work *w = self->work;
+        ActorSub40 *w = self->work;
         if (w->timer != 0) {
             w->timer--;
         }
@@ -357,7 +330,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
             if (self->unk_4c == NULL || !func_ov000_02199d40(self->unk_4c)) {
                 Ov003LfTgt *pl = func_ov000_0219bf90();
                 if (!Ov003Lf_Flag(pl) || Ov003Lf_RideKind(pl) == 1 || Ov003Lf_RideKind(pl) == 2 || pl->unk_9c == 0) {
-                    Ov003Vec p;
+                    VecFx32 p;
                     p.x = pl->pos2.x;
                     p.y = pl->pos2.y;
                     p.z = pl->pos2.z;
@@ -399,7 +372,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
                     func_020627dc(0);
                     func_020627ec(0);
                     {
-                        u8 *ac = &data_ov000_021ccd54->unk_ac;
+                        u8 *ac = &data_ov000_021ccd54->stageFlags;
                         *ac = 1;
                         func_ov000_02182590(ac);
                     }
@@ -440,7 +413,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
                 Ov003Lf_Notify(self, found);
             }
             if (res != 0) {
-                self->work->state++;
+                self->work->st++;
                 self->work->timer = 0;
                 if (self->cfg->type == 1) {
                     Ov003Lf_Sound(self);
@@ -452,7 +425,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
         }
         func_02049f44(data_02097e4c, 0x18, &self->pos, 0);
         {
-            Ov003Vec v;
+            VecFx32 v;
             Ov003LfTgt *pl = func_ov000_0219bf90();
             if (pl == NULL) {
                 return;
@@ -466,7 +439,7 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
         return;
     }
     case 1: {
-        Ov003Work *w;
+        ActorSub40 *w;
         Ov003LfTgt *t;
         if (self->state == 2) {
             self->state = 1;
@@ -496,14 +469,14 @@ void func_ov003_021ed6b8(Ov003Lift *self) {
                         Ov003Lf_Sound(self);
                     }
                 }
-                self->work->state--;
+                self->work->st--;
                 return;
             }
-            self->work->state--;
+            self->work->st--;
             return;
         }
         if (self->unk_58 != NULL) {
-            Ov003Vec p;
+            VecFx32 p;
             p.x = self->pos.x;
             p.y = self->pos.y - self->work->timer * 0xcd;
             p.z = self->pos.z;

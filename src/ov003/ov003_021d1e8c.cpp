@@ -1,5 +1,6 @@
 #include "types.h"
 #include "ov003/Actor.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u16 start;
@@ -37,18 +38,8 @@ typedef struct {
     u8 unk_b28_2 : 1;
 } Ov003AgPl;
 
-typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-    u8 unk_98[0x3c];
-    void *unk_d4;
-} Ov003AgGame;
-
 extern "C" {
 
-extern Ov003AgGame *data_ov000_021ccd54;
 extern Ov003AgRangeB data_ov003_021f45e8[];
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd68;
@@ -67,12 +58,12 @@ extern void Actor_TurnToActor(void *self, void *target, s32 a);
 
 }
 
-static inline BOOL Ov003Game_IsBusy(Ov003AgGame *g) {
-    BOOL r = g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    BOOL r = g->head != g->tail;
     return r;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003AgGame *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -83,19 +74,19 @@ static inline BOOL Ov003Game_IsIdle(Ov003AgGame *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003AgGame *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
     return TRUE;
 }
 
-static inline BOOL Ov003Game_HasD4(Ov003AgGame *g) {
-    return g->unk_d4 != NULL ? TRUE : FALSE;
+static inline BOOL Ov003Game_HasEvent(FieldState *g) {
+    return g->event != NULL ? TRUE : FALSE;
 }
 
 static inline BOOL Ov003_GameHasD4(void) {
-    return Ov003Game_HasD4(data_ov000_021ccd54);
+    return Ov003Game_HasEvent(data_ov000_021ccd54);
 }
 
 static inline BOOL Ov003AgPl_Bit2(Ov003AgPl *pl) {

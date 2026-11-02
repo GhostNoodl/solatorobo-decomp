@@ -1,10 +1,6 @@
 #include "types.h"
 #include "ov003/Actor.h"
-
-typedef struct {
-    u8 unk_00[0xac];
-    u8 unk_ac;
-} Ov003Game54;
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u8 unk_00[0xa];
@@ -19,7 +15,6 @@ typedef struct {
 } Ov003Player;
 
 extern "C" {
-extern Ov003Game54 *data_ov000_021ccd54;
 extern Ov003SaveData *data_0214a424;
 extern void *data_ov000_021ccd64;
 
@@ -68,9 +63,9 @@ extern "C" void func_ov003_021d6a3c(Ov003Actor *self, BOOL release, BOOL mark, B
             func_020627a0(self->kind, self->id);
             func_020627dc(2);
             {
-                Ov003Game54 *g = data_ov000_021ccd54;
-                g->unk_ac = 1;
-                func_ov000_02182590(&g->unk_ac);
+                FieldState *g = data_ov000_021ccd54;
+                g->stageFlags = 1;
+                func_ov000_02182590(&g->stageFlags);
             }
         }
         if (mark) {

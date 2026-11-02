@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct Ov003SwNode Ov003SwNode;
 struct Ov003SwNode {
@@ -75,13 +76,6 @@ typedef struct {
 } Ov003SwObjList;
 
 typedef struct {
-    u8 unk_00[0xca];
-    u8 unk_ca;
-    u8 unk_cb;
-    u8 unk_cc;
-} Ov003SwGame;
-
-typedef struct {
     u8 unk_00[0x93];
     u8 unk_93_0 : 4;
     u8 unk_93_4 : 1;
@@ -89,7 +83,6 @@ typedef struct {
 
 extern void *data_ov000_021ccd68;
 extern Ov003SwObjList *data_ov000_021ccd64;
-extern Ov003SwGame *data_ov000_021ccd54;
 extern Ov003SwGroup *ActorMgr_GetGroup(void *mgr, u16 key);
 extern Ov003SwPlayer *func_ov000_0219bf90(void);
 
@@ -131,13 +124,13 @@ BOOL func_ov003_021f0abc(Ov003Switch *self, BOOL deep) {
                         }
                     }
                     if (deep) {
-                        Ov003SwGame *game = data_ov000_021ccd54;
+                        FieldState *game = data_ov000_021ccd54;
                         Ov003SwObjList *list = data_ov000_021ccd64;
                         u16 key = id & 0xf000;
                         Ov003SwObj *n;
                         for (n = list->head; n != NULL; n = (n != NULL) ? n->next : list->head) {
                             BOOL match = FALSE;
-                            if (n->unk_3e == game->unk_ca && n->unk_3f == game->unk_cb && n->unk_40 == game->unk_cc) {
+                            if (n->unk_3e == game->unk_ca.c[0] && n->unk_3f == game->unk_ca.c[1] && n->unk_40 == game->unk_ca.c[2]) {
                                 match = TRUE;
                             }
                             if (match && n->unk_32 == key) {

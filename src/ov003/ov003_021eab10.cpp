@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Main/Sys/FieldState.h"
+#include "ov003/Unit.h"
 
 typedef struct {
     s32 x, y, z;
@@ -26,20 +28,6 @@ typedef struct {
     u8 unk_7c[0x14];
     u16 unk_90;
 } Ov003Player;
-
-typedef struct {
-    u8 unk_00[0xa2];
-    u8 unk_a2_0 : 5;
-    u8 unk_a2_5 : 1;
-    u8 unk_a2_6 : 1;
-} Ov003Unit;
-
-typedef struct {
-    s32 state;
-    u8 unk_04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-} Ov003Game54;
 
 typedef struct {
     u8 unk_00[0xa];
@@ -120,7 +108,6 @@ typedef struct {
 
 extern "C" {
 
-extern Ov003Game54 *data_ov000_021ccd54;
 extern Ov003Game68 *data_ov000_021ccd68;
 extern void *data_ov000_021ccd64;
 extern char data_ov003_021f995c[];
@@ -147,11 +134,11 @@ extern void func_ov000_02190758(Ov003Anim *anim, Ov003Rot3 *rot, s32 a);
 extern BOOL func_ov000_021903b4(Ov003Anim *anim);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 
-static inline BOOL Ov003Game_IsBusy(Ov003Game54 *g) {
-    return g->unk_90 != g->unk_94;
+static inline BOOL Ov003Game_IsBusy(FieldState *g) {
+    return g->head != g->tail;
 }
 
-static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
+static inline BOOL Ov003Game_IsIdle(FieldState *g) {
     if (Ov003Game_IsBusy(g)) {
         return FALSE;
     }
@@ -162,7 +149,7 @@ static inline BOOL Ov003Game_IsIdle(Ov003Game54 *g) {
 }
 
 static inline BOOL Ov003_GameIdle(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         return Ov003Game_IsIdle(g);
     }
@@ -176,10 +163,10 @@ static inline BOOL Ov003_GameIdle(void) {
 
 
 static inline BOOL Ov003_GameIdle2(void) {
-    Ov003Game54 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         BOOL busy = FALSE;
-        if (g->unk_90 != g->unk_94) {
+        if (g->head != g->tail) {
             busy = TRUE;
         }
         if (busy) {

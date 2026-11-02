@@ -1,9 +1,6 @@
 #include "types.h"
-
-typedef struct {
-    u8 unk_00[0xa2];
-    u8 unk_a2_0 : 1;
-} Ov003Unit;
+#include "Main/Sys/FieldState.h"
+#include "ov003/Unit.h"
 
 typedef struct {
     u8 unk_00[0x20];
@@ -80,11 +77,6 @@ void Ov003ActVt_021f7fac_Init(Ov003Obj24 *self) {
 }
 
 typedef struct {
-    s32 m[9];
-    s32 tx, ty, tz;
-} Ov003GtMtx;
-
-typedef struct {
     u8 unk_00[0xc2];
     u16 unk_c2_0 : 4;
     u16 unk_c2_4 : 1;
@@ -113,11 +105,6 @@ typedef struct {
     u8 unk_00;
     u8 unk_01;
 } Ov003GtB0;
-
-typedef struct {
-    u8 unk_00[0xca];
-    u8 unk_ca;
-} Ov003GtGame;
 
 typedef struct {
     u8 unk_00[0xe];
@@ -150,18 +137,12 @@ typedef struct {
 } Ov003Gate;
 
 extern const s16 FX_SinCosTable_[];
-extern Ov003GtGame *data_ov000_021ccd54;
 extern char data_ov003_021f803c[];
 extern char data_ov003_021f8041[];
 extern char data_ov003_021f8046[];
 extern char data_ov003_021f804b[];
 extern void func_ov000_02194758(void *self);
-extern void MTX_Identity43_(Ov003GtMtx *m);
-extern void MTX_RotX43_(Ov003GtMtx *m, s32 s, s32 c);
-extern void MTX_RotY43_(Ov003GtMtx *m, s32 s, s32 c);
-extern void MTX_RotZ43_(Ov003GtMtx *m, s32 s, s32 c);
-extern void MTX_Concat43(Ov003GtMtx *a, Ov003GtMtx *b, Ov003GtMtx *out);
-extern void HitMesh_SetMtx(void *obj, Ov003GtMtx *m);
+extern void HitMesh_SetMtx(void *obj, MtxFx43 *m);
 extern void HitMesh_SetScale(void *obj, s32 a);
 extern void func_0203f920(void *obj);
 extern void func_ov000_02197d80(void *self);
@@ -185,8 +166,8 @@ void Ov003ActVt_021f7fac_Start(Ov003Gate *self) {
     func_ov000_02194758(self);
     obj = self->unk_58;
     if (obj != NULL && (self->unk_0e == 0x460b || self->unk_0e == 0x4625)) {
-        Ov003GtMtx t;
-        Ov003GtMtx m;
+        MtxFx43 t;
+        MtxFx43 m;
         u16 rx;
         u16 ry;
         u16 rz;
@@ -217,11 +198,11 @@ void Ov003ActVt_021f7fac_Start(Ov003Gate *self) {
                 set = TRUE;
             }
         }
-        m.tx = self->posX;
-        m.ty = self->posY;
-        m.tz = self->posZ;
+        m._30 = self->posX;
+        m._31 = self->posY;
+        m._32 = self->posZ;
         HitMesh_SetMtx(obj, &m);
-        if (data_ov000_021ccd54->unk_ca == 9) {
+        if (data_ov000_021ccd54->unk_ca.c[0] == 9) {
             HitMesh_SetScale(self->unk_58, 0x1b33);
         }
     }

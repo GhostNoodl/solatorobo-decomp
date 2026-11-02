@@ -1,50 +1,7 @@
 #include "types.h"
+#include "ov003/Shot.h"
 
-typedef struct {
-    s32 x, y, z;
-} Ov003HmVec;
-
-typedef struct {
-    u16 x, y, z;
-} Ov003HmRot;
-
-typedef struct {
-    u16 state;
-    u16 timer;
-} Ov003HmWork;
-
-typedef struct {
-    u8 unk_00[0x30];
-    u32 unk_30;
-    u8 unk_34[0x1c];
-    u32 flags;
-    u8 unk_54[0x46];
-    u16 b0 : 1;
-    u16 b1 : 2;
-    u16 b3 : 1;
-} Ov003HmAnim;
-
-typedef struct {
-    u8 unk_00[2];
-    u16 mode : 3;
-} Ov003HmB0;
-
-typedef struct {
-    u8 unk_00[0xe];
-    u16 unk_0e;
-} Ov003HmPart;
-
-typedef struct {
-    u8 unk_00[0x30];
-    u32 unk_30;
-} Ov003HmCfg;
-
-typedef struct {
-    u8 unk_00[0x6c];
-    s32 height;
-    Ov003HmVec pos;
-} Ov003HmTarget;
-
+// The effect object func_02065f88 returns (Main EffectObj; only the members used here).
 class Ov003HmFx {
 public:
     virtual void v00();
@@ -59,83 +16,47 @@ public:
     virtual void v24();
     virtual void v28();
     virtual void v2c();
-    virtual void SetRot(Ov003HmRot *r);
+    virtual void SetRot(ActorRot *r);
     u8 unk_04[0x20];
-    s32 unk_24;
+    void *id; // handle
 };
-
-typedef struct {
-    u8 unk_00[0x1a];
-    s16 unk_1a;
-    u8 unk_1c[0x24];
-    Ov003HmWork *work;
-    void *unk_44;
-    Ov003HmAnim *anim;
-    void *unk_4c;
-    u8 unk_50[0x20];
-    Ov003HmVec pos;
-    Ov003HmRot rot;
-    u8 unk_82[0xe];
-    u16 target;
-    u8 unk_92[6];
-    u16 dir;
-    u8 unk_9a[2];
-    Ov003HmVec vel;
-    s32 unk_a8;
-    u8 unk_ac[4];
-    Ov003HmB0 *unk_b0;
-    u8 unk_b4[8];
-    s32 fxh;
-    Ov003HmVec fxofs;
-    u8 unk_cc[4];
-    Ov003HmCfg *cfg;
-    u8 unk_d4[4];
-    u16 unk_d8;
-    u16 trailTimer;
-} Ov003Hm;
 
 extern "C" {
 
-extern const s16 FX_SinCosTable_[];
-extern const Ov003HmVec data_ov003_021f6bd8;
+extern const VecFx32 data_ov003_021f6bd8;
 extern void *data_ov000_021ccd68;
-extern Ov003HmPart *Target_Get(void *def);
-extern Ov003HmTarget *ActorMgr_GetActor(void *mgr, u16 id);
-extern void func_ov003_021db244(Ov003Hm *self);
-extern void func_ov003_021dc0c8(Ov003Hm *self);
-extern BOOL func_ov003_021dbd80(Ov003Hm *self);
-extern void Actor_TurnToPos(Ov003Hm *self, Ov003HmVec *v, s32 a);
-extern Ov003HmFx *func_02065f88(s32 id, Ov003HmVec *pos);
-extern void func_01ffc9fc(Ov003HmVec *dst, const Ov003HmVec *src, u16 ry);
-extern void HitSphere_Link(Ov003HmAnim *a);
-extern void func_ov000_021987b8(Ov003HmAnim *a, s32 b, s32 c, s32 d);
-extern void VEC_Normalize(Ov003HmVec *a, Ov003HmVec *b);
-extern void VEC_Add(Ov003HmVec *a, Ov003HmVec *b, Ov003HmVec *dst);
+extern Actor *Target_Get(ActorSub4c *t);
+extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
+extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
+extern Ov003HmFx *func_02065f88(s32 id, VecFx32 *pos);
+extern void func_01ffc9fc(VecFx32 *dst, const VecFx32 *src, u16 ry);
+extern void HitSphere_Link(ActorSub48 *a);
+extern void func_ov000_021987b8(ActorSub48 *a, s32 b, s32 c, s32 d);
 
 #define HM_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define HM_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 #define HM_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
-static inline Ov003HmTarget *Ov003Hm_FindActor(u16 id) {
+static inline Actor *Ov003Hm_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
     }
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-static inline void Ov003Hm_Show(Ov003HmAnim *a) {
-    a->b0 = 1;
-    a->b3 = 1;
+static inline void Ov003Hm_Show(ActorSub48 *a) {
+    a->unk_9a_0 = 1;
+    a->unk_9a_3 = 1;
     HitSphere_Link(a);
 }
 
-void func_ov003_021ed15c(Ov003Hm *self) {
-    Ov003HmVec ofs = data_ov003_021f6bd8;
-    Ov003HmTarget *t;
+void func_ov003_021ed15c(Ov003HomingShot *self) {
+    VecFx32 ofs = data_ov003_021f6bd8;
+    Actor *t;
     s32 speed;
-    if (Target_Get(self->unk_4c)->unk_0e == 0x1000) {
-        if (self->work->state == 0) {
-            self->anim->unk_30 = self->cfg->unk_30;
+    if (Target_Get(self->targetObj)->kind == 0x1000) {
+        if (self->fsm->st == 0) {
+            self->hit->unk_30 = self->def->sphereFlags;
         }
         func_ov003_021db244(self);
         return;
@@ -145,48 +66,48 @@ void func_ov003_021ed15c(Ov003Hm *self) {
         return;
     }
     speed = 0;
-    switch (self->work->state) {
+    switch (self->fsm->st) {
     case 0: {
         Ov003HmFx *e;
         func_ov003_021dc0c8(self);
         self->vel.x = 0;
         self->vel.y = 0;
         self->vel.z = 0;
-        self->unk_a8 = 0;
+        self->gravity = 0;
         speed = 0x333;
         e = func_02065f88(0x324, &self->pos);
-        func_01ffc9fc(&self->fxofs, &ofs, self->rot.y);
+        func_01ffc9fc(&self->fxOffset, &ofs, self->rot_y);
         e->SetScale(0x2333);
-        self->fxh = e->unk_24;
-        self->work->timer = 0;
-        self->work->state++;
+        self->unk_bc = e->id;
+        self->fsm->timer = 0;
+        self->fsm->st++;
         break;
     }
     case 1: {
-        Ov003HmWork *w = self->work;
+        ActorSub40 *w = self->fsm;
         speed = 0x333;
         w->timer++;
         if (w->timer > 0xf) {
             speed = 0x2e1;
             self->vel.y = 0x29;
-            self->work->timer = 0;
-            self->work->state++;
+            self->fsm->timer = 0;
+            self->fsm->st++;
         }
         break;
     }
     case 2: {
-        Ov003HmWork *w = self->work;
-        Ov003HmVec p;
+        ActorSub40 *w = self->fsm;
+        VecFx32 p;
         u16 timer;
         s32 turn;
         speed = 0x2e1;
         w->timer++;
         timer = w->timer;
         p = t->pos;
-        p.y += t->height;
+        p.y += t->centerY;
         turn = 0x11f;
         if (timer > 0x14) {
-            Ov003HmVec d;
+            VecFx32 d;
             d.x = p.x - self->pos.x;
             d.y = p.y - self->pos.y;
             d.z = p.z - self->pos.z;
@@ -196,39 +117,39 @@ void func_ov003_021ed15c(Ov003Hm *self) {
             turn = 0xe1;
         }
         Actor_TurnToPos(self, &p, turn);
-        self->dir = self->rot.y;
+        self->moveYaw = self->rot_y;
         if (timer > 0x64) {
             if (self->unk_1a == 0) {
-                self->anim->unk_30 = 0xe0000000;
+                self->hit->unk_30 = 0xe0000000;
             }
-            self->work->timer = 0;
-            self->work->state++;
+            self->fsm->timer = 0;
+            self->fsm->st++;
         }
         break;
     }
     case 3:
         speed = 0x333;
-        if (self->anim != NULL && (self->anim->flags & 0x60000000)) {
-            self->unk_d8 = 0x270f;
+        if (self->hit != NULL && (self->hit->unk_50 & 0x60000000)) {
+            self->age = 0x270f;
         }
         break;
     }
-    self->vel.x = HM_MUL(speed, HM_SIN(self->dir));
-    self->vel.z = HM_MUL(speed, HM_COS(self->dir));
+    self->vel.x = HM_MUL(speed, HM_SIN(self->moveYaw));
+    self->vel.z = HM_MUL(speed, HM_COS(self->moveYaw));
     VEC_Add(&self->pos, &self->vel, &self->pos);
     self->trailTimer++;
     if (self->trailTimer > 0xf) {
         self->trailTimer = 0;
         func_02065f88(0x12d, &self->pos)->SetRot(&self->rot);
     }
-    if (self->fxh != -1) {
-        func_01ffc9fc(&self->fxofs, &ofs, self->rot.y);
+    if (self->unk_bc != (void *)-1) { // the homing shot compares its effect handle with -1
+        func_01ffc9fc(&self->fxOffset, &ofs, self->rot_y);
     }
-    if (self->anim != NULL) {
-        if (!(self->unk_b0->mode & 2)) {
-            Ov003Hm_Show(self->anim);
+    if (self->hit != NULL) {
+        if (!(self->param->type & 2)) {
+            Ov003Hm_Show(self->hit);
         }
-        func_ov000_021987b8(self->anim, 0, 0, 0);
+        func_ov000_021987b8(self->hit, 0, 0, 0);
     }
     func_ov003_021dbd80(self);
 }

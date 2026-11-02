@@ -1,13 +1,6 @@
 #include "types.h"
-
-typedef struct {
-    u8 unk_00[0xa2];
-    u8 unk_a2_0 : 1;
-} Ov003Unit;
-
-typedef struct {
-    s32 x, y, z;
-} Ov003Vec3;
+#include "Main/Sys/FieldState.h"
+#include "ov003/Unit.h"
 
 typedef struct {
     u8 unk_00[0xa8];
@@ -30,10 +23,10 @@ typedef struct {
     u8 unk_3c[0x4];
     u16 *unk_40;
     u8 unk_44[0x2c];
-    Ov003Vec3 unk_70;
+    VecFx32 unk_70;
     u16 unk_7c;
     u8 unk_7e[0x6];
-    Ov003Vec3 unk_84;
+    VecFx32 unk_84;
     u8 unk_90[0x40];
     s32 unk_d0;
 } Ov003Prop;
@@ -70,22 +63,8 @@ typedef struct {
     u8 unk_00[0x40];
     Ov003DfKind *unk_40;
     u8 unk_44[0x2c];
-    Ov003Vec3 pos;
+    VecFx32 pos;
 } Ov003DfActor;
-
-typedef struct {
-    u8 unk_00[0x40];
-    u16 unk_40;
-    u8 unk_42[2];
-    u16 unk_44;
-} Ov003DfCam;
-
-typedef struct {
-    u8 unk_00[0xac];
-    u8 unk_ac;
-    u8 unk_ad[0x47];
-    Ov003DfCam cam;
-} Ov003DfGlobal;
 
 typedef struct {
     u8 unk_00[0x3c];
@@ -101,7 +80,7 @@ typedef struct {
     u8 unk_00[0x40];
     Ov003BgWk *work;
     u8 unk_44[0x2c];
-    Ov003Vec3 pos;
+    VecFx32 pos;
     u8 unk_7c[0x4];
     u16 unk_80;
 } Ov003BgProp;
@@ -117,20 +96,18 @@ extern "C" {
 
 extern const s16 FX_SinCosTable_[];
 extern void *data_ov000_021ccd68;
-extern Ov003DfGlobal *data_ov000_021ccd54;
-extern const Ov003Vec3 data_ov003_021f4c58;
+extern const VecFx32 data_ov003_021f4c58;
 extern const u8 data_ov003_021f4c50[];
-extern void VEC_Add(const Ov003Vec3 *a, const Ov003Vec3 *b, Ov003Vec3 *out);
 extern Ov003DfSpawn *func_ov000_0219be1c(s32 id, const void *pos, const void *rot, u16 a, u16 b);
-extern Ov003DfEffect *func_02065f88(s32 id, const Ov003Vec3 *pos);
+extern Ov003DfEffect *func_02065f88(s32 id, const VecFx32 *pos);
 extern Ov003DfActor *ActorMgr_FindKind(void *mgr, s32 a, s32 b);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
-extern u16 Camera_GetYaw(Ov003DfCam *cam);
-extern void func_01ffc9fc(Ov003Vec3 *src, Ov003Vec3 *dst, u16 angle);
+extern u16 Camera_GetYaw(Camera *cam);
+extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void func_ov000_02191008(void *p);
-extern void *func_ov000_0219b71c(Ov003Vec3 *pos, Ov003Vec3 *v, s32 a, s32 b, s32 c, s32 d);
+extern void *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s32 c, s32 d);
 extern void func_ov000_02197dec(void *self, u8 a, s16 b);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern void *data_02097e4c;
@@ -179,8 +156,8 @@ void func_ov003_021df0c8(Ov003BgProp *self) {
             return;
         }
         if ((self->work->timer & 0xf) == 0) {
-            Ov003Vec3 p;
-            Ov003Vec3 sc;
+            VecFx32 p;
+            VecFx32 sc;
             s32 a = -1;
             s32 b = 100;
             switch (self->work->timer & 0x3f) {
@@ -293,7 +270,7 @@ static inline s32 Ov003DfKind_Get(Ov003DfKind *k) {
 void func_ov003_021df534(Ov003Prop *self) {
     switch (self->unk_40[0]) {
     case 0: {
-        Ov003Vec3 v;
+        VecFx32 v;
         Ov003DfSpawn *sp;
         VEC_Add(&self->unk_70, &data_ov003_021f4c58, &v);
         sp = func_ov000_0219be1c(0x480b, &v, data_ov003_021f4c50, self->unk_0c, 0xffff);
@@ -316,7 +293,7 @@ void func_ov003_021df534(Ov003Prop *self) {
         }
         func_02049a48(data_02097e4c, 0x56, -1, -1, -1);
         if (a != NULL) {
-            Ov003Vec3 p;
+            VecFx32 p;
             Ov003DfEffect *e;
             p.x = a->pos.x;
             p.y = a->pos.y;
@@ -330,7 +307,7 @@ void func_ov003_021df534(Ov003Prop *self) {
         }
         func_020627a0(self->unk_0e, self->unk_0c);
         func_020627dc(4);
-        data_ov000_021ccd54->unk_ac = 1;
+        data_ov000_021ccd54->stageFlags = 1;
         self->unk_40[0]++;
         break;
     }
@@ -339,19 +316,19 @@ end:
     func_ov003_021df484(self);
 }
 
-static inline u16 Ov003DfCam_GetAngle(Ov003DfCam *cam) {
-    return cam->unk_40 != 0 ? cam->unk_44 : Camera_GetYaw(cam);
+static inline u16 Camera_GetAngle(Camera *cam) {
+    return cam->mode != 0 ? cam->yaw : Camera_GetYaw(cam);
 }
 
 void func_ov003_021df6f4(Ov003Prop *self) {
-    Ov003DfCam *cam = &data_ov000_021ccd54->cam;
+    Camera *cam = &data_ov000_021ccd54->cam.base;
     switch (self->unk_40[0]) {
     case 0: {
-        Ov003Vec3 v;
+        VecFx32 v;
         v.x = 0x2c00;
         v.y = -0x1000;
         v.z = 0x4000;
-        func_01ffc9fc(&v, &v, Ov003DfCam_GetAngle(cam));
+        func_01ffc9fc(&v, &v, Camera_GetAngle(cam));
         VEC_Add(&self->unk_70, &v, &self->unk_70);
         self->unk_7c = 0xfff0;
         func_ov000_02191008(self->unk_38);
@@ -361,8 +338,8 @@ void func_ov003_021df6f4(Ov003Prop *self) {
     }
     case 1:
         if ((self->unk_40[1] & 0xf) == 0) {
-            Ov003Vec3 p;
-            Ov003Vec3 sc;
+            VecFx32 p;
+            VecFx32 sc;
             s32 a = -1;
             s32 b = 100;
             switch (self->unk_40[1] & 0x3f) {
