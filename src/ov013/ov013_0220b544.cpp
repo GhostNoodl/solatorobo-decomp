@@ -71,7 +71,6 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern u8 *func_020704b4(u16 kind);
 extern void func_ov013_02205098(Ov003Actor *self);
 extern void func_ov000_02195d88(Actor *self);
-extern Ov003Actor *func_ov003_021da32c(u16 kind);
 extern void func_ov000_02197dec(Ov003Actor *self, s32 a, s32 b);
 extern void func_ov000_0219763c(Actor *self);
 
@@ -291,8 +290,8 @@ static inline void Ov013_RotZero(Ov013Rot *p) {
     p->z = 0;
 }
 
-static inline Ov003Actor *Ov013_SpawnAt(u16 kind, const VecFx32 *pos, const Ov013Rot *rot) {
-    Ov003Actor *b = func_ov003_021da32c(kind);
+static inline Actor *Ov013_SpawnAt(u16 kind, const VecFx32 *pos, const Ov013Rot *rot) {
+    Actor *b = func_ov003_021da32c(kind);
     if (b != NULL) {
         b->pos = *pos;
         FLD(Ov013Rot, b, 0x7c) = *rot;
@@ -593,7 +592,6 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern u8 *func_020704b4(u16 kind);
 extern void func_ov013_02205098(Ov003Actor *self);
 extern void func_ov000_02195d88(Actor *self);
-extern Ov003Actor *func_ov003_021da32c(u16 kind);
 extern void func_ov000_02197dec(Ov003Actor *self, s32 a, s32 b);
 extern void func_ov000_0219763c(Actor *self);
 
@@ -626,7 +624,7 @@ void func_ov013_02205760(Ov003Actor *self) {
     ang = Ov013_FaceAngle(self, Ov013_FindActor(self->target));
     lvl = self->targetObj->target;
     for (i = 0; i < 5; i++) {
-        Ov003Actor *c;
+        Actor *c;
         Ov013Rot r = {0, 0, 0};
         r.y = ang + offs.v[i];
         c = func_ov003_021da32c(0x480a);
@@ -770,7 +768,6 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern u8 *func_020704b4(u16 kind);
 extern void func_ov013_02205098(Ov003Actor *self);
 extern void func_ov000_02195d88(Actor *self);
-extern Ov003Actor *func_ov003_021da32c(u16 kind);
 extern void func_ov000_02197dec(Ov003Actor *self, s32 a, s32 b);
 extern void func_ov000_0219763c(Actor *self);
 
@@ -907,7 +904,6 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern u8 *func_020704b4(u16 kind);
 extern void func_ov013_02205098(Ov003Actor *self);
 extern void func_ov000_02195d88(Actor *self);
-extern Ov003Actor *func_ov003_021da32c(u16 kind);
 extern void func_ov000_02197dec(Ov003Actor *self, s32 a, s32 b);
 extern void func_ov000_0219763c(Actor *self);
 

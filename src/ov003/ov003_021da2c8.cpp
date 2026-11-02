@@ -1,12 +1,5 @@
 #include "ov003/Vec.h"
-
-struct Ov003Spring {
-    u8 unk_00[0x9c];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
-};
+#include "ov003/Actor.h"
 
 struct Ov003SpawnInfo {
     u16 id;
@@ -15,51 +8,38 @@ struct Ov003SpawnInfo {
     s16 unk_0c;
 };
 
-class Ov003Spawnable {
-public:
-    virtual void v00();
-    virtual void Init();
-};
-
-struct Ov003Bits {
-    u32 unk_00;
-    u64 mask;
-    u8 unk_0c[7];
-    u8 cur;
-};
-
 extern "C" {
 
-extern Ov003Spawnable *func_ov003_021f1420(Ov003SpawnInfo *info);
-extern Ov003Spawnable *func_ov000_02192b24(Ov003SpawnInfo *info);
-extern Ov003Spawnable *func_ov003_021cfab4(Ov003SpawnInfo *info);
-extern Ov003Spawnable *func_ov000_021b4828(Ov003SpawnInfo *info);
-extern void func_ov000_02198360(Ov003Bits *self, u8 idx, s32 flag);
+extern Actor *func_ov003_021f1420(Ov003SpawnInfo *info);
+extern Actor *func_ov000_02192b24(Ov003SpawnInfo *info);
+extern Actor *func_ov003_021cfab4(Ov003SpawnInfo *info);
+extern Actor *func_ov000_021b4828(Ov003SpawnInfo *info);
+extern void func_ov000_02198360(ActorSub40 *self, u8 idx, s32 flag);
 extern Ov003Mtx33 *NNS_G3dGlbGetInvV(void);
 extern void *func_02065f88(void *mgr, const void *arg);
 
-void func_ov003_021da2c8(Ov003Spring *self, s32 a, s32 b, s32 c, s32 d) {
+void func_ov003_021da2c8(Actor *self, s32 speed, s32 velY, s32 friction, s32 gravity) {
     if (self == NULL) {
         return;
     }
-    if (c > 0 && c < 0x1000) {
-        a = FX_Mul(a, c);
+    if (friction > 0 && friction < 0x1000) {
+        speed = FX_Mul(speed, friction);
     }
-    if (d != 0) {
-        b -= d;
-        if (b < -0x800) {
-            b = -0x800;
+    if (gravity != 0) {
+        velY -= gravity;
+        if (velY < -0x800) {
+            velY = -0x800;
         }
     }
-    self->unk_9c = a;
-    self->unk_a0 = b;
-    self->unk_a4 = c;
-    self->unk_a8 = d;
+    self->speed = speed;
+    self->velY = velY;
+    self->friction = friction;
+    self->gravity = gravity;
 }
 
-Ov003Spawnable *func_ov003_021da32c(u16 id) {
+Actor *func_ov003_021da32c(u16 id) {
     Ov003SpawnInfo info;
-    Ov003Spawnable *obj = NULL;
+    Actor *obj = NULL;
     s32 i;
     s32 kind = id & 0xf000;
     info.id = id;
@@ -87,30 +67,30 @@ Ov003Spawnable *func_ov003_021da32c(u16 id) {
         break;
     }
     if (obj != NULL) {
-        obj->Init();
+        obj->vfunc_04();
     }
     return obj;
 }
 
-void func_ov003_021da40c(Ov003Bits *self) {
+void func_ov003_021da40c(ActorSub40 *self) {
     u8 idx;
     u8 i;
-    if (self->mask == 0) {
+    if (self->flags == 0) {
         return;
     }
-    idx = self->cur;
+    idx = self->current;
     for (i = 0; i < 64; i++) {
-        if (((u64)1 << i) & self->mask) {
+        if (((u64)1 << i) & self->flags) {
             idx = i;
             break;
         }
     }
     func_ov000_02198360(self, idx, 0);
-    self->mask = 0;
+    self->flags = 0;
 }
 
-void func_ov003_021da48c(Ov003Bits *self, u8 idx) {
-    self->mask = 0;
+void func_ov003_021da48c(ActorSub40 *self, u8 idx) {
+    self->flags = 0;
     func_ov000_02198360(self, idx, 1);
 }
 

@@ -25,7 +25,7 @@ src/ov003/ov003_021ebff8.c:
     complete
     .text       start:0x021ebff8 end:0x021ec130
 
-src/ov003/ov003_021ed520.c:
+src/ov003/ov003_021ed520.cpp:
     complete
     .text       start:0x021ed520 end:0x021ed6b8
 
@@ -73,7 +73,7 @@ src/ov003/ov003_021d7f0c.cpp:
     complete
     .text       start:0x021d7f0c end:0x021d85c8
 
-src/ov003/ov003_021dae14.c:
+src/ov003/ov003_021dae14.cpp:
     complete
     .text       start:0x021dae14 end:0x021daec0
 
@@ -113,7 +113,7 @@ src/ov003/ov003_021ef558.cpp:
     complete
     .text       start:0x021ef558 end:0x021ef70c
 
-src/ov003/ov003_021ed140.c:
+src/ov003/ov003_021ed140.cpp:
     complete
     .text       start:0x021ed058 end:0x021ed15c
 
@@ -309,7 +309,7 @@ src/ov003/ov003_021e7274.c:
     complete
     .text       start:0x021e7274 end:0x021e72cc
 
-src/ov003/ov003_021d6868.c:
+src/ov003/ov003_021d6868.cpp:
     complete
     .text       start:0x021d6868 end:0x021d6a3c
 
@@ -317,7 +317,7 @@ src/ov003/ov003_021d6a3c.cpp:
     complete
     .text       start:0x021d6a3c end:0x021d6bac
 
-src/ov003/ov003_021d0ba8.c:
+src/ov003/ov003_021d0ba8.cpp:
     complete
     .text       start:0x021d0a2c end:0x021d112c
 
@@ -365,15 +365,15 @@ src/ov003/ov003_021eba54.cpp:
     complete
     .text       start:0x021eb818 end:0x021ebc38
 
-src/ov003/ov003_021d1e30.c:
+src/ov003/ov003_021d1e30.cpp:
     complete
     .text       start:0x021d1e30 end:0x021d1e8c
 
-src/ov003/ov003_021d64f0.c:
+src/ov003/ov003_021d64f0.cpp:
     complete
     .text       start:0x021d64f0 end:0x021d6868
 
-src/ov003/ov003_021d1b88.c:
+src/ov003/ov003_021d1b88.cpp:
     complete
     .text       start:0x021d1b88 end:0x021d1e30
 
@@ -382,11 +382,11 @@ src/ov003/ov003_021d6e04.cpp:
     .text       start:0x021d6e04 end:0x021d7780
     .data       start:0x021f7cb0 end:0x021f7cbc
 
-src/ov003/ov003_021d3524.c:
+src/ov003/ov003_021d3524.cpp:
     complete
     .text       start:0x021d3524 end:0x021d36fc
 
-src/ov003/ov003_021d36fc.c:
+src/ov003/ov003_021d36fc.cpp:
     complete
     .text       start:0x021d36fc end:0x021d3a88
 
@@ -406,7 +406,7 @@ src/ov003/ov003_021f3c94.c:
     complete
     .text       start:0x021f3c94 end:0x021f3dd4
 
-src/ov003/ov003_021d2e28.c:
+src/ov003/ov003_021d2e28.cpp:
     complete
     .text       start:0x021d2e28 end:0x021d3008
 

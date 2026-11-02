@@ -1,10 +1,5 @@
 #include "types.h"
-
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-} Ov003Vec;
+#include "ov003/Actor.h"
 
 typedef struct {
     u8 active : 1;
@@ -66,23 +61,11 @@ public:
     u8 b1 : 1;
     u8 b2 : 1;
     s16 unk_06;
-    struct Ov003TmTarget *target;
+    struct Ov003Actor *target;
     u16 state;
     u16 timer;
     u32 unk_10;
     u32 unk_14;
-};
-
-struct Ov003TmSub {
-    u8 unk_00[0xc];
-    Ov003Vec offset;
-};
-
-struct Ov003TmTarget {
-    u8 unk_00[0x44];
-    Ov003TmSub *sub;
-    u8 unk_48[0x28];
-    Ov003Vec pos;
 };
 
 class Ov003TmFx {
@@ -110,7 +93,6 @@ extern "C" {
 extern u32 data_ov003_021f7cf4;
 extern u32 data_ov003_021f7cd8;
 extern s16 func_ov003_021d7e58(Ov003Ticker *t);
-extern void VEC_MultAdd(s32 scale, Ov003Vec *dir, Ov003Vec *src, Ov003Vec *dst);
 extern void Heap_Free(void *p);
 extern void *Heap_Alloc(u32 size);
 extern void *History_Init(void *p);
@@ -122,13 +104,12 @@ void func_ov003_021d8c60(Ov003Timer *self) {
 }
 
 extern void *data_02097e4c;
-extern void VEC_Add(const Ov003Vec *a, const Ov003Vec *b, Ov003Vec *out);
-extern Ov003TmFx *func_02065f88(s32 id, const Ov003Vec *pos);
-extern void *func_0204a028(void *mgr, s32 id, Ov003Vec *pos, s32 a);
-extern void *func_02049f44(void *mgr, s32 id, Ov003Vec *pos, s32 a);
+extern void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *out);
+extern Ov003TmFx *func_02065f88(s32 id, const VecFx32 *pos);
+extern void *func_0204a028(void *mgr, s32 id, VecFx32 *pos, s32 a);
+extern void *func_02049f44(void *mgr, s32 id, VecFx32 *pos, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern s32 Rand_UpTo(s32 max);
-extern void func_ov003_021da108(Ov003TmTarget *t, s32 a, s32 b, s32 c, s32 d);
 
 void func_ov003_021d8c78(Ov003Timer *self) {
     BOOL fire;
@@ -164,20 +145,20 @@ void func_ov003_021d8c78(Ov003Timer *self) {
         self->timer++;
         break;
     case 3: {
-        Ov003TmTarget *t = self->target;
-        Ov003Vec p;
+        Ov003Actor *t = self->target;
+        VecFx32 p;
         Ov003TmFx *fx;
         s16 sc;
-        Ov003TmSub *sub;
+        ActorSub44 *sub;
         p.x = t->pos.x;
         p.y = t->pos.y;
         p.z = t->pos.z;
-        sub = t->sub;
+        sub = t->unk_44;
         if (sub != NULL) {
-            Ov003Vec o;
-            o.x = sub->offset.x;
-            o.y = sub->offset.y;
-            o.z = sub->offset.z;
+            VecFx32 o;
+            o.x = sub->unk_0c.x;
+            o.y = sub->unk_0c.y;
+            o.z = sub->unk_0c.z;
             VEC_Add(&p, &o, &p);
         }
         fx = func_02065f88(5, &p);
@@ -197,7 +178,7 @@ void func_ov003_021d8c78(Ov003Timer *self) {
         return;
     }
     {
-        Ov003Vec p;
+        VecFx32 p;
         func_ov003_021da108(self->target, self->unk_06, Rand_UpTo(1) != 0 ? 4 : 3, 0x733, 0xe66);
         p.x = self->target->pos.x;
         p.y = self->target->pos.y;

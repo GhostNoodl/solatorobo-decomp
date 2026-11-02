@@ -1,5 +1,8 @@
 #include "types.h"
 #include "nitro/std.h"
+#include "ov003/Actor.h"
+
+extern "C" {
 
 typedef struct {
     u8 unk_00[0x30];
@@ -15,6 +18,7 @@ typedef struct {
     Ov003SlotTable *table;
 } Ov003SlotOwner;
 
+// The object func_ov003_021d0ba8 is called with: 0x04 and 0x08 are not Actor::prev / next here.
 typedef struct {
     void *vtbl;
     Ov003SlotOwner *owner;
@@ -23,34 +27,12 @@ typedef struct {
     void (*func)(void *);
     u8 unk_28[0x6a];
     u8 unk_92;
-    u8 unk_93[0x19];
-    u8 unk_ac;
-    u8 unk_ad;
+    u8 unk_93[0x1b];
     u8 unk_ae;
-    u8 unk_af;
-    void *unk_b0;
-    u16 unk_b4;
-    u16 unk_b6;
-    u8 unk_b8[0xc];
-    void *unk_c4;
-    void *unk_c8;
-    void *unk_cc;
-    void *unk_d0;
-    void *unk_d4;
-    void *unk_d8;
-    u16 unk_dc;
-    u16 unk_de;
-    void *unk_e0;
-    void *unk_e4;
-    u16 unk_e8;
-    u16 unk_ea;
-    u8 unk_ec;
-    u8 unk_ed;
-    u16 unk_ee;
 } Ov003Obj;
 
 extern void NNS_G3dGetCurrentMtx(void *p, s32 a);
-extern void *Actor_Ctor(Ov003Obj *self);
+extern void *Actor_Ctor(Actor *self);
 extern char data_ov003_021f7ab4[];
 
 typedef struct {
@@ -149,9 +131,9 @@ void func_ov003_021d0c04(Ov003Obj *self) {
 }
 
 #define OV003_OBJ_CTOR(name)                 \
-Ov003Obj *name(Ov003Obj *self) {             \
-    Actor_Ctor(self);               \
-    self->vtbl = data_ov003_021f7ab4;        \
+Ov003Actor *name(Ov003Actor *self) {         \
+    Actor_Ctor(self);                        \
+    *(void **)self = data_ov003_021f7ab4;    \
     self->unk_b4 = 0;                        \
     self->unk_b6 = 0;                        \
     self->unk_ac = 0xff;                     \
@@ -163,12 +145,12 @@ Ov003Obj *name(Ov003Obj *self) {             \
     self->unk_d4 = NULL;                     \
     self->unk_d8 = NULL;                     \
     self->unk_e8 = 0;                        \
-    self->unk_de = 0xffff;                   \
+    self->target_id = 0xffff;                \
     self->unk_ea = 0;                        \
     self->unk_ec = 0;                        \
     self->unk_ee = 0;                        \
-    self->unk_c8 = NULL;                     \
-    self->unk_cc = NULL;                     \
+    self->unk_c8 = 0;                        \
+    self->unk_cc = 0;                        \
     self->unk_e4 = NULL;                     \
     self->unk_e0 = NULL;                     \
     return self;                             \
@@ -183,34 +165,29 @@ typedef struct {
     void *alt;
 } Ov003HeapCtx;
 
-typedef struct {
-    u8 unk_00[0x68];
-    void *unk_68[2];
-} Ov003SubD0;
-
 extern Ov003HeapCtx *data_02097dd0;
 extern void *data_0214a420;
 extern void *func_ov000_0218fee4(void *p);
 extern void Heap_Free(void *p);
 extern void Heap_FreeHi(void *p);
 extern void EffectMgr_Kill(void *mgr, void *p);
-extern void *func_ov000_0218c928(Ov003Obj *self);
+extern void *func_ov000_0218c928(Actor *self);
 
-static inline void Ov003Obj_DtorBody(Ov003Obj *self) {
+static inline void Ov003Actor_DtorBody(Ov003Actor *self) {
     s32 i;
-    self->vtbl = data_ov003_021f7ab4;
+    *(void **)self = data_ov003_021f7ab4;
     if (self->unk_d0 != NULL) {
         for (i = 0; i < 2; i++) {
             void *old = data_02097dd0->cur;
             void *m;
             data_02097dd0->cur = data_02097dd0->alt;
-            m = ((Ov003SubD0 *)self->unk_d0)->unk_68[i];
+            m = self->unk_d0->models[i];
             if (m != NULL) {
                 if (m != NULL) {
                     func_ov000_0218fee4(m);
                     Heap_Free(m);
                 }
-                ((Ov003SubD0 *)self->unk_d0)->unk_68[i] = NULL;
+                self->unk_d0->models[i] = NULL;
             }
             data_02097dd0->cur = old;
         }
@@ -227,19 +204,19 @@ static inline void Ov003Obj_DtorBody(Ov003Obj *self) {
     func_ov000_0218c928(self);
 }
 
-Ov003Obj *Ov003ActVt_021f7ab4_Dtor(Ov003Obj *self) {
-    Ov003Obj_DtorBody(self);
+Ov003Actor *Ov003ActVt_021f7ab4_Dtor(Ov003Actor *self) {
+    Ov003Actor_DtorBody(self);
     return self;
 }
 
-Ov003Obj *Ov003ActVt_021f7ab4_DtorDelete(Ov003Obj *self) {
-    Ov003Obj_DtorBody(self);
+Ov003Actor *Ov003ActVt_021f7ab4_DtorDelete(Ov003Actor *self) {
+    Ov003Actor_DtorBody(self);
     Heap_Free(self);
     return self;
 }
 
-Ov003Obj *func_ov003_021d0edc(Ov003Obj *self) {
-    Ov003Obj_DtorBody(self);
+void *func_ov003_021d0edc(void *self) {
+    Ov003Actor_DtorBody(static_cast<Ov003Actor *>(self));
     return self;
 }
 
@@ -250,72 +227,34 @@ typedef struct {
     u16 unk_12_14 : 2;
 } Ov003InitInfo;
 
-typedef struct {
-    u8 unk_00[0xa];
-    u16 unk_0a_0 : 3;
-    u16 unk_0a_3 : 4;
-    u16 unk_0a_7 : 3;
-    u16 unk_0a_10 : 3;
-    u16 unk_0a_13 : 1;
-} Ov003InitParam;
-
-typedef struct {
-    u8 unk_00[0x18];
-    u8 lo : 4;
-    u8 hi : 4;
-} Ov003InitShadow;
-
-typedef struct {
-    void *vtbl;
-    u8 unk_04[0xa];
-    u16 unk_0e;
-    u8 unk_10[0x24];
-    void *unk_34;
-    u8 unk_38[4];
-    Ov003InitShadow *unk_3c;
-    void *unk_40;
-    u8 unk_44[0x3a];
-    u16 unk_7e;
-    u8 unk_80[0x18];
-    u16 unk_98;
-    u8 unk_9a[0x16];
-    Ov003InitParam *unk_b0;
-    u8 unk_b4[0x24];
-    void (*unk_d8)(void *p, u16 id);
-    u8 unk_dc[0xe];
-    u16 unk_ea_0 : 3;
-    u16 unk_ea_3 : 7;
-    u16 unk_ea_10 : 1;
-} Ov003ObjInit;
-
 extern void *Heap_Alloc(u32 size);
 extern void *func_ov000_0218e9c4(void *p);
-extern Ov003InitShadow *func_ov000_021919c8(void *p);
-extern void Shadow_Load(Ov003InitShadow *p);
+extern ActorShadow *func_ov000_021919c8(void *p);
+extern void Shadow_Load(ActorShadow *p);
 extern void *History_Init(void *p);
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
-static inline void Ov003Shadow_Push(Ov003InitShadow *s, u8 v) {
-    s->hi = s->lo;
-    s->lo = v;
+static inline void Ov003Shadow_Push(ActorShadow *s, u8 v) {
+    s->unk_18_4 = s->unk_18_0;
+    s->unk_18_0 = v;
 }
 
-void func_ov003_021d0fc0(Ov003ObjInit *self) {
-    Ov003InitInfo *info = (Ov003InitInfo *)func_0206fef8(self->unk_0e);
+void func_ov003_021d0fc0(Ov003Actor *self) {
+    Ov003InitInfo *info = (Ov003InitInfo *)func_0206fef8(self->kind);
     void *p;
-    self->unk_b0 = (Ov003InitParam *)((u8 *)func_02070558(self->unk_0e) + 0x10);
+    self->unk_b0 = (Ov003Param *)((u8 *)func_02070558(self->kind) + 0x10);
     p = Heap_Alloc(0x138);
     if (p != NULL) {
         p = func_ov000_0218e9c4(p);
     }
     self->unk_34 = p;
-    if (self->unk_d8 != NULL) {
-        self->unk_d8(p, self->unk_0e);
+    if (self->nameFunc != NULL) {
+        self->nameFunc(p, self->kind);
     } else {
-        func_ov003_021d0a2c((Ov003Res *)p, self->unk_0e);
+        func_ov003_021d0a2c((Ov003Res *)p, self->kind);
     }
     if (info->unk_12_12 != 0) {
-        Ov003InitShadow *s = (Ov003InitShadow *)Heap_Alloc(0x1c);
+        ActorShadow *s = (ActorShadow *)Heap_Alloc(0x1c);
         if (s != NULL) {
             s = func_ov000_021919c8(s);
         }
@@ -331,11 +270,13 @@ void func_ov003_021d0fc0(Ov003ObjInit *self) {
     if (p != NULL) {
         p = History_Init(p);
     }
-    self->unk_40 = p;
+    self->fsm = (ActorSub40 *)p;
     if (self->unk_b0->unk_0a_13) {
         func_ov000_02198360(p, 0x20, 0);
     }
-    self->unk_98 = self->unk_7e;
+    self->moveYaw = self->rot_y;
     self->unk_ea_0 = self->unk_b0->unk_0a_7;
-    self->unk_ea_10 = self->unk_b0->unk_0a_0 != 0;
+    self->unk_ea_10 = self->unk_b0->unk_0a_0 ? 1 : 0;
+}
+
 }

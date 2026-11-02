@@ -1,4 +1,7 @@
 #include "types.h"
+#include "ov003/Actor.h"
+
+extern "C" {
 
 typedef struct {
     u16 start;
@@ -7,23 +10,25 @@ typedef struct {
 } Ov003Range;
 
 typedef struct {
-    u8 *ptr;
+    Ov003Entry *ptr;
     u32 pad;
 } Ov003RangePtr;
 
 extern Ov003Range data_ov003_021f45e8[];
 extern Ov003RangePtr data_ov003_021f45ec[];
 
-void *func_ov003_021d1e30(u32 id) {
-    void *ret = NULL;
+Ov003Entry *func_ov003_021d1e30(u32 id) {
+    Ov003Entry *ret = NULL;
     s32 i;
     for (i = 0; i < 11; i++) {
         if (data_ov003_021f45e8[i + 1].start > id) {
             if (data_ov003_021f45e8[i].start <= id) {
-                ret = data_ov003_021f45ec[i].ptr + (id - data_ov003_021f45e8[i].start) * 16;
+                ret = data_ov003_021f45ec[i].ptr + (id - data_ov003_021f45e8[i].start);
             }
             break;
         }
     }
     return ret;
+}
+
 }

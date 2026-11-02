@@ -1,4 +1,5 @@
 #include "ov003/Vec.h"
+#include "ov003/Actor.h"
 
 struct Ov003Mover {
     u32 unk_00;
@@ -47,7 +48,6 @@ extern "C" {
 
 extern u32 data_ov003_021f7d2c;
 extern void *data_ov000_021ccd68;
-extern void *func_ov003_021d0edc(void *p);
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
 extern void Heap_FreeHi(void *p);

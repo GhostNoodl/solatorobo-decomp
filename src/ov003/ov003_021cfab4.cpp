@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/Actor.h"
 
 /* Gimmick factory: picks the class from the gimmick id. */
 
@@ -98,7 +99,6 @@ void *func_ov000_0218e9c4(void *p);
 void *func_ov000_0218ea20(void *p);
 void *func_ov000_0218fe1c(void *p);
 void *func_ov000_0218fee4(void *p);
-void func_ov003_021d0c1c(void *p);
 void *func_ov003_021d0c94(void *p);
 void Actor_JoinGroup(void *p, u16 sub, u16 id, s32 a);
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
@@ -122,7 +122,7 @@ void *Ov014Act_02209280_Ctor(void *p);
 void *Ov014Act_0220f9d0_Ctor(void *p);
 void *Ov014Act_0221267c_Ctor(void *p);
 
-#define Base(p) func_ov003_021d0c1c(p)
+#define Base(p) func_ov003_021d0c1c((Ov003Actor *)(p))
 
 #define NEW_CTOR(size, ctor)                   \
     {                                          \

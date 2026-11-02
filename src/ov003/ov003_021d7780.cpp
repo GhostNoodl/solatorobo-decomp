@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/Actor.h"
 
 typedef struct Ov003FreeNode {
     struct Ov003FreeNode *next;
@@ -34,7 +35,6 @@ extern "C" {
 
 extern u32 data_ov003_021f7d2c;
 extern void *data_ov000_021ccd68;
-extern void *func_ov003_021d0edc(void *p);
 extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
 extern void Heap_FreeHi(void *p);

@@ -2,7 +2,6 @@
 
 extern "C" {
 
-extern Ov003Actor *func_ov003_021d69a0(Ov003Actor *self, u16 kind, s32 a);
 extern char data_ov009_02216ab6[];
 extern void func_ov000_02190758(Model0218fe1c *m, u16 *rot, s32 a);
 extern void func_0203f364(ActorSub48 *p);
@@ -18,7 +17,7 @@ struct Ov009Byte {
 };
 
 static inline void Ov009_SpawnChild(Ov009ActVt_022166a4 *self) {
-    Ov003Actor *o = func_ov003_021d69a0(self, 0x4011, 0);
+    Actor *o = func_ov003_021d69a0(self, 0x4011, 0);
     if (o != NULL) {
         ((Ov009Byte *)&FLD(u8, o, 0x16))->b1 = 1;
     }

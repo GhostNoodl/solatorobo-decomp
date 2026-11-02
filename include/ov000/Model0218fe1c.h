@@ -131,9 +131,9 @@ typedef struct {
         };
     };
     s16 anim_state;
-    u16 unk_c6;
-    u16 unk_c8;
-    u16 unk_ca;
+    s16 unk_c6;
+    s16 unk_c8;
+    s16 unk_ca;
     s16 unk_cc;
     u16 unk_ce;
     AnimEventTable *evTable; // named animation event scripts

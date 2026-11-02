@@ -1,4 +1,5 @@
 #include "ov003/Vec.h"
+#include "ov003/Actor.h"
 
 struct Ov003VecP {
     s32 x;
@@ -13,26 +14,6 @@ struct Ov003Game54 {
     s32 unk_94;
 };
 
-struct Ov003Kind {
-    u8 unk_00[0x13];
-    u8 kind;
-};
-
-struct Ov003Attach {
-    u8 unk_00[0xc];
-    Ov003Vec pos;
-};
-
-struct Ov003FxActor {
-    u8 unk_00[0x40];
-    Ov003Kind *unk_40;
-    Ov003Attach *unk_44;
-    u8 unk_48[8];
-    u16 *unk_50;
-    u8 unk_54[0x1c];
-    Ov003Vec pos;
-};
-
 class Ov003Effect {
 public:
     virtual void v00();
@@ -41,16 +22,9 @@ public:
     virtual void SetTime(s32 t);
 };
 
-static inline s32 Ov003Kind_Get(Ov003Kind *k) {
-    return k != NULL ? k->kind : 0;
+static inline s32 Ov003Kind_Get(ActorSub40 *k) {
+    return k != NULL ? k->current : 0;
 }
-
-struct Ov003YawActor {
-    u8 unk_00[0x44];
-    Ov003Attach *unk_44;
-    u8 unk_48[0x36];
-    u16 yaw;
-};
 
 extern "C" {
 
@@ -63,7 +37,7 @@ extern BOOL func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(void);
 extern s32 Rand_UpTo(s32 v);
 extern Ov003Mtx33 *NNS_G3dGlbGetInvV(void);
-extern Ov003Effect *func_02065f88(void *mgr, const Ov003Vec *pos);
+extern Ov003Effect *func_02065f88(s32 fx, const Ov003Vec *pos);
 
 void func_ov003_021d9dbc(Ov003Vec *out, const Ov003Vec *a, const Ov003Vec *b, s32 dist, s32 yoff) {
     Ov003Vec d;
@@ -135,14 +109,14 @@ static inline BOOL Ov003_GameIdle(void) {
     return true;
 }
 
-BOOL func_ov003_021da03c(Ov003FxActor *self) {
+BOOL func_ov003_021da03c(Ov003Actor *self) {
     if (!Ov003_GameIdle()) {
         return FALSE;
     }
-    if (*self->unk_50 == 0) {
+    if (*self->hp == 0) {
         return FALSE;
     }
-    if (Ov003Kind_Get(self->unk_40) == 0x20 || Ov003Kind_Get(self->unk_40) == 0) {
+    if (Ov003Kind_Get(self->fsm) == 0x20 || Ov003Kind_Get(self->fsm) == 0) {
         return FALSE;
     }
     if (!func_ov000_0219bf90() || func_ov000_021b4738()) {
@@ -151,7 +125,7 @@ BOOL func_ov003_021da03c(Ov003FxActor *self) {
     return TRUE;
 }
 
-static inline Ov003Effect *Ov003_SpawnScatter(const Ov003Vec *base, s32 range, void *mgr) {
+static inline Ov003Effect *Ov003_SpawnScatter(const Ov003Vec *base, s32 range, s32 fx) {
     Ov003Vec v;
     Ov003Vec p;
     s32 y = Rand_PlusMinus(range);
@@ -160,23 +134,23 @@ static inline Ov003Effect *Ov003_SpawnScatter(const Ov003Vec *base, s32 range, v
     v.z = 0;
     MTX_MultVec33((VecFx32 *)&v, NNS_G3dGlbGetInvV(), (VecFx32 *)&v);
     VEC_Add((VecFx32 *)base, (VecFx32 *)&v, (VecFx32 *)&p);
-    return func_02065f88(mgr, &p);
+    return func_02065f88(fx, &p);
 }
 
-void func_ov003_021da108(Ov003FxActor *self, s32 range, void *mgr, s32 base, s32 top) {
+void func_ov003_021da108(Ov003Actor *self, s32 range, s32 fx, s32 base, s32 top) {
     Ov003Vec pos;
     Ov003VecP off = data_ov003_021f4988;
-    pos = self->pos;
+    pos = *(Ov003Vec *)&self->pos; // copied as an Ov003Vec (see ov003/Vec.h)
     s32 r;
     Ov003Effect *e;
     if (self->unk_44 != NULL) {
-        off.x = self->unk_44->pos.x;
-        off.y = self->unk_44->pos.y;
-        off.z = self->unk_44->pos.z;
+        off.x = self->unk_44->unk_0c.x;
+        off.y = self->unk_44->unk_0c.y;
+        off.z = self->unk_44->unk_0c.z;
     }
     VEC_Add((VecFx32 *)&pos, (VecFx32 *)&off, (VecFx32 *)&pos);
     r = Rand_UpTo(top - base);
-    e = Ov003_SpawnScatter(&pos, range, mgr);
+    e = Ov003_SpawnScatter(&pos, range, fx);
     if (e != NULL) {
         e->SetTime(base + r);
     }
@@ -192,11 +166,11 @@ static inline void Ov003_RotY(Ov003VecP *out, s32 angle, const Ov003VecP *in) {
     MTX_MultVec33((VecFx32 *)in, &m, (VecFx32 *)out);
 }
 
-Ov003VecP func_ov003_021da214(Ov003YawActor *actor) {
+Ov003VecP func_ov003_021da214(Ov003Actor *actor) {
     Ov003VecP v = data_ov003_021f4988;
     if (actor != NULL && actor->unk_44 != NULL) {
-        v = *(Ov003VecP *)&actor->unk_44->pos;
-        Ov003_RotY(&v, actor->yaw, &v);
+        v = *(Ov003VecP *)&actor->unk_44->unk_0c;
+        Ov003_RotY(&v, actor->rot_y, &v);
     }
     return v;
 }

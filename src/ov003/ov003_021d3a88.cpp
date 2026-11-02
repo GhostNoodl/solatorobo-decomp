@@ -1,42 +1,5 @@
 #include "types.h"
-
-typedef struct {
-    s32 x, y, z;
-} Ov003V3;
-
-typedef struct {
-    u16 state;
-    u16 timer;
-} Ov003Wk;
-
-typedef struct {
-    u8 unk_00[0x50];
-    u32 flags;
-    u8 unk_54[0x46];
-    u16 unk_9a_0 : 1;
-    u16 unk_9a_1 : 2;
-    u16 unk_9a_3 : 1;
-    u16 unk_9a_4 : 1;
-    u16 unk_9a_5 : 1;
-} Ov003Ct;
-
-typedef struct {
-    u16 unk_00;
-} Ov003S50;
-
-typedef struct {
-    u8 unk_00[0x19];
-    u8 unk_19;
-    u8 unk_1a;
-    u8 unk_1b;
-    u16 unk_1c;
-} Ov003S4c;
-
-typedef struct {
-    u8 unk_00[0x22];
-    u16 unk_22_0 : 1;
-    u16 unk_22_1 : 1;
-} Ov003S44;
+#include "ov003/Actor.h"
 
 class Ov003Fx {
 public:
@@ -52,44 +15,6 @@ public:
     s32 unk_7c;
 };
 
-typedef struct {
-    s16 unk_00;
-    s16 unk_02;
-} Ov003SB0;
-
-typedef struct {
-    u8 unk_00[0x38];
-    void *model;
-    u8 unk_3c[4];
-    Ov003Wk *work;
-    Ov003S44 *unk_44;
-    Ov003Ct *ctl;
-    Ov003S4c *unk_4c;
-    Ov003S50 *unk_50;
-    u8 unk_54[0x10];
-    s32 unk_64;
-    u8 unk_68[8];
-    s32 pos[3];
-    u8 unk_7c[2];
-    u16 unk_7e;
-    u8 unk_80[0x18];
-    u16 unk_98;
-    u8 unk_9a[2];
-    s32 unk_9c;
-    s32 unk_a0;
-    s32 unk_a4;
-    s32 unk_a8;
-    u8 unk_ac[4];
-    Ov003SB0 *unk_b0;
-    u16 unk_b4;
-    u16 unk_b6;
-    Ov003V3 unk_b8;
-    u8 unk_c4[0x20];
-    void *unk_e4;
-    u8 unk_e8[6];
-    u16 unk_ee_0 : 1;
-} Ov003Unk;
-
 extern "C" {
 
 extern s32 Rand_PlusMinus(s32 max);
@@ -97,41 +22,41 @@ extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 extern void *data_02097e4c;
 extern void *data_0214a420;
-extern void HitSphere_Link(Ov003Ct *ctl);
+extern void HitSphere_Link(ActorSub48 *ctl);
 extern void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
-extern void func_ov000_02199dc0(Ov003S4c *p, void *self);
+extern void func_ov000_02199dc0(ActorSub4c *p, void *self);
 extern void Actor_Move(void *self, s32 a);
-extern void func_ov000_021987b8(Ov003Ct *ctl, s32 a, s32 b, s32 c);
+extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 extern s32 FX_Div(s32 a, s32 b);
 extern void EffectMgr_Kill(void *mgr, void *p);
 extern Ov003Fx *func_02065f88(s32 id, void *pos);
 
 
-void func_ov003_021d3a88(Ov003Unk *self) {
-    Ov003Wk *w = self->work;
-    switch (w->state) {
+void func_ov003_021d3a88(Ov003Actor *self) {
+    ActorSub40 *w = self->fsm;
+    switch (w->st) {
     case 0: {
-        Ov003Ct *ctl;
-        Ov003S44 *s;
+        ActorSub48 *ctl;
+        ActorSub44 *s;
         self->unk_b4 = 0;
         self->unk_b6 = 0;
-        ctl = self->ctl;
+        ctl = self->hit;
         ctl->unk_9a_0 = 1;
         ctl->unk_9a_3 = 1;
         HitSphere_Link(ctl);
         s = self->unk_44;
         s->unk_22_0 = 1;
         s->unk_22_1 = 1;
-        self->work->state++;
-        self->work->timer = 0;
-        if (self->unk_50->unk_00 == 0 || self->unk_4c->unk_19 != 0) {
-            func_02049f44(data_02097e4c, 0x32, self->pos, 0);
+        self->fsm->st++;
+        self->fsm->timer = 0;
+        if (self->hp[0] == 0 || self->targetObj->unk_19 != 0) {
+            func_02049f44(data_02097e4c, 0x32, &self->pos, 0);
         } else {
-            func_02049f44(data_02097e4c, 0xb, self->pos, 0);
+            func_02049f44(data_02097e4c, 0xb, &self->pos, 0);
         }
-        func_ov000_02199dc0(self->unk_4c, self);
-        self->unk_98 = self->unk_7e;
-        if (self->unk_4c->unk_1b == 0) {
+        func_ov000_02199dc0(self->targetObj, self);
+        self->moveYaw = self->rot_y;
+        if (self->targetObj->unk_1b == 0) {
             return;
         }
         if (self->unk_e4 != NULL) {
@@ -139,11 +64,11 @@ void func_ov003_021d3a88(Ov003Unk *self) {
             self->unk_e4 = NULL;
         }
         if (self->unk_e4 == NULL) {
-            Ov003Fx *fx = func_02065f88(0x321, self->pos);
+            Ov003Fx *fx = func_02065f88(0x321, &self->pos);
             s32 r;
             s32 t;
             self->unk_e4 = fx->unk_24;
-            r = self->unk_64;
+            r = self->radius;
             t = (r >> 2) + (r >> 3);
             fx->SetScale(r + t, r + t, r + t);
             fx->unk_7c = FX_Div(0x10000, 0x1f000);
@@ -153,35 +78,35 @@ void func_ov003_021d3a88(Ov003Unk *self) {
     case 1:
         w->timer++;
         if (w->timer > 2) {
-            func_ov000_02198360(self->work, 4, 0);
+            func_ov000_02198360(self->fsm, 4, 0);
         }
         Actor_Move(self, 0);
-        func_ov000_021987b8(self->ctl, 0, 0, 0);
-        if (self->unk_a0 > 0 && (self->ctl->flags & 0x80000000)) {
-            self->unk_a0 = -0xcd;
+        func_ov000_021987b8(self->hit, 0, 0, 0);
+        if (self->velY > 0 && (self->hit->unk_50 & 0x80000000)) {
+            self->velY = -0xcd;
         }
         break;
     }
 }
 
-void func_ov003_021d3c78(Ov003Unk *self) {
-    switch (self->work->state) {
+void func_ov003_021d3c78(Ov003Actor *self) {
+    switch (self->fsm->st) {
     case 0:
         self->unk_b4 = 0;
         self->unk_b6 = 0;
-        self->unk_9c = Rand_PlusMinus(0x7b) + 0xf6;
-        self->unk_a0 = 0x35c - 0x7b;
-        self->unk_a4 = 0;
-        self->unk_a8 = 0x52;
-        self->unk_98 = self->unk_7e;
-        self->unk_4c->unk_1c = 0xffff;
-        self->work->state++;
+        self->speed = Rand_PlusMinus(0x7b) + 0xf6;
+        self->velY = 0x35c - 0x7b;
+        self->friction = 0;
+        self->gravity = 0x52;
+        self->moveYaw = self->rot_y;
+        self->targetObj->target = 0xffff;
+        self->fsm->st++;
         break;
     case 1:
-        if (self->unk_50->unk_00 == 0) {
-            func_ov000_02198360(self->work, 0x14, 0);
+        if (self->hp[0] == 0) {
+            func_ov000_02198360(self->fsm, 0x14, 0);
         } else {
-            func_ov000_02198360(self->work, 4, 0);
+            func_ov000_02198360(self->fsm, 4, 0);
         }
         break;
     }

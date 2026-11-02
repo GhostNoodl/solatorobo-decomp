@@ -6,7 +6,6 @@ extern void *data_02097e4c;
 extern void *data_ov009_0221707c;
 extern char data_ov009_02216bb4[];
 extern char data_ov009_02216bba[];
-extern s32 func_ov003_021d1e30(s32 a);
 extern void *func_ov003_021da940(void *p);
 extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);

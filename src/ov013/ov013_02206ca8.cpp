@@ -89,13 +89,12 @@ extern char data_ov013_0220be88[];
 extern const Ov013Blk12 data_ov013_0220b3e0;
 extern void *ActorMgr_GetGroup(void *mgr, s32 a);
 extern u16 ActorGroup_CountKind(void *p, s32 a);
-extern Ov003Actor *func_ov003_021d69a0(Ov003Actor *self, s32 a, s32 b);
 extern void func_ov000_0219a210(VecFx32 *p, VecFx32 *o, u16 rot);
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 
 void func_ov013_02206edc(Ov013ActVt_0220bdd8 *self) {
     s32 flip;
-    Ov003Actor *a;
+    Actor *a;
     void *mgr;
     Ov003Actor *t;
     t = Ov013_FindActor(self->target);

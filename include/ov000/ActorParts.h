@@ -32,16 +32,33 @@ static inline u16 ActorSub40_Timer(const ActorSub40 *s) {
 
 // The block at Actor::unk_44 (0x24 bytes; func_ov000_021984f4 sets it up).
 typedef struct ActorSub44 {
-    u8 unk_00[0xc];
+    VecFx32 pos;
     VecFx32 unk_0c;
     u8 unk_18[0x4];
     s32 unk_1c;
-    u8 unk_20[0x2];
+    u16 unk_20;
     u16 unk_22_0 : 1;
     u16 unk_22_1 : 1;
     u16 unk_22_2 : 2;
-    u16 unk_22_4 : 12;
+    u16 unk_22_4 : 1;
+    u16 unk_22_5 : 11;
 } ActorSub44;
+
+// The actor's hit-point block (Actor::hp as u16[], Actor::hpObj as a struct).
+typedef struct ActorHp {
+    u16 cur; // hp[0]
+    u16 max; // hp[1]
+    u16 unk_04; // hp[2]
+    u16 dmg; // hp[3]: damage taken
+    u8 kind; // damage kind
+    u8 kind2;
+    u16 unk_0a;
+    u16 unk_0c;
+    u16 unk_0e;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+} ActorHp;
 
 // The actor's collision sphere (Actor::hit, ctor func_ov000_021985e8, 0x9c bytes). It starts with a
 // Main HitSphere (func_0203f260, HitSphere_Link; the names up to radius are HitSphere's) and follows
@@ -52,7 +69,9 @@ typedef struct ActorSub48 {
     VecFx32 push; // push-out from other spheres and the map (func_0203f3d0)
     u8 active; // linked into the sphere list
     u8 unk_25;
-    u8 unk_26[0xa];
+    u8 unk_26[0x2];
+    u32 unk_28;
+    u8 unk_2c[0x4];
     u32 unk_30;
     u32 unk_34;
     s32 radius;
@@ -67,7 +86,7 @@ typedef struct ActorSub48 {
     VecFx32 check;
     u8 unk_74[0xc];
     s32 unk_80;
-    u8 unk_84[0x4];
+    s32 unk_84;
     s32 unk_88;
     u8 unk_8c[0xc];
     u16 owner; // id of the actor the sphere follows

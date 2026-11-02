@@ -83,7 +83,6 @@ extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
-extern Ov003Actor *func_ov003_021d69a0(Ov003Actor *self, u16 kind, s32 a);
 extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
 static inline Ov003Actor *Ov009_FindActor5(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -148,7 +147,7 @@ void func_ov009_021faf48(Ov009ActVt_022164a0 *self) {
         g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
         if (g != NULL && FLD(u16, g, 0x16) <= 3) {
             do {
-                Ov003Actor *o = func_ov003_021d69a0(self, 0x5404, 4);
+                Actor *o = func_ov003_021d69a0(self, 0x5404, 4);
                 if (o != NULL) {
                     VecFx32 v;
                     v.z = self->radius;

@@ -1960,7 +1960,6 @@ extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern Ov009V *func_020657b0(void *mgr, s32 h);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern Ov003Actor *func_ov003_021d69f0(Ov003Actor *self, u16 kind, const VecFx32 *pos, const void *rot, Ov003Actor *t);
 extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
 extern void func_ov000_02191690(void *p);
 extern void func_ov000_02191708(void *p);
@@ -2049,7 +2048,7 @@ void func_ov009_02202f68(Ov009Act_02202788 *self) {
                     id = k;
                 }
                 VEC_Add(&off, &self->pos, &tmp);
-                a = func_ov003_021d69f0(self, id, &tmp, &self->rot_x, t);
+                a = static_cast<Ov003Actor *>(func_ov003_021d69f0(self, id, &tmp, &self->rot_x, t));
                 if (a != NULL) {
                     a->unk_60 = data_ov009_02215e60;
                     func_ov000_0218d46c(a, self->id, 0xb);

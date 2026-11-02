@@ -42,12 +42,12 @@ void func_ov013_022065e8(Ov013ActEx_022065ac *self) {
     }
 }
 
-Ov003Actor *Ov013ActEx_022065ac_Dtor(Ov003Actor *self) {
+Ov013ActEx_022065ac *Ov013ActEx_022065ac_Dtor(Ov013ActEx_022065ac *self) {
     func_ov003_021dae44(self);
     return self;
 }
 
-Ov003Actor *Ov013ActEx_022065ac_DtorDelete(Ov003Actor *self) {
+Ov013ActEx_022065ac *Ov013ActEx_022065ac_DtorDelete(Ov013ActEx_022065ac *self) {
     func_ov003_021dae44(self);
     Heap_Free(self);
     return self;

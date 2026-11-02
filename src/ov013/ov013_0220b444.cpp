@@ -585,7 +585,7 @@ BOOL func_ov013_021ff2ac(Ov013Act_021fea8c *self, Ov013Msg *msg) {
     if (msg->type == 9) {
         if (!Ov013_IsInvul(self->hp) && self->fsm->current != 0x20) {
             self->hp[2] = FLD(u16, msg, 6);
-            func_ov003_021d6548(self, (u8 *)msg + 8);
+            func_ov003_021d6548(self, (ActorMsgHit *)((u8 *)msg + 8));
             func_ov003_021d68e0(self, 0x14bf, 0x739f, 10);
             self->hp[5] = 5;
             func_ov000_02191418(self->model, 5, 0);
@@ -1043,7 +1043,6 @@ namespace m_02200fe8 {
 extern "C" {
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern void *data_02097e4c;
-extern Ov003Actor *func_ov003_021da32c(s32 id);
 extern void *func_0206fef8(u16 id);
 extern Ov013V *Effect3D_Create(const void *a, const void *b, s32 c, VecFx32 *pos);
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
@@ -1168,7 +1167,7 @@ static inline void Ov013b_Fade(void) {
 }
 
 static inline void Ov013b_Link(Ov013Act_021fea8c *self, u16 *out, s32 kind) {
-    Ov003Actor *o = func_ov003_021da32c(kind);
+    Actor *o = func_ov003_021da32c(kind);
     o->flags_0 = 1;
     o->target = func_ov000_0219bf90()->id;
     o->targetObj->target = self->id;
@@ -2296,7 +2295,6 @@ void func_ov013_02202d50(Ov013Act_021fea8c *self) {
 
 extern void *data_02097e4c;
 extern Ov003Actor *func_ov000_0219bf90(void);
-extern Ov003Actor *func_ov003_021da32c(u16 kind);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void *func_ov000_02190a30(void *a, s32 b);
 extern BOOL func_ov000_0218fa28(void *a, void *b, void *c, void *d, const char *e, s32 f, s32 g);
@@ -2332,7 +2330,7 @@ void func_ov013_02202dc8(Ov013Act_021fea8c *self, u16 a, s32 b, BOOL c, u16 d) {
     self->unk_f0.b4 = 0;
     switch (self->fsm->st) {
     case 0: {
-        Ov003Actor *o;
+        Actor *o;
         const char *anim;
         void *m;
         self->target = func_ov000_0219bf90()->id;
@@ -2511,7 +2509,7 @@ void func_ov013_02203494(Ov013Act_021fea8c *self, BOOL a, BOOL b, u16 c, s32 d) 
                 Ov013Rot3 r = {0, 0, 0};
                 r.y = rot;
                 VEC_Add(&self->pos, &v, &w);
-                o = func_ov003_021da32c(0x4807);
+                o = static_cast<Ov003Actor *>(func_ov003_021da32c(0x4807));
                 o->pos.x = w.x;
                 o->pos.y = w.y;
                 o->pos.z = w.z;

@@ -86,7 +86,6 @@ extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_021911c8(void *model, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
-extern Ov003Actor *func_ov003_021d69a0(Ov003Actor *self, u16 kind, s32 a);
 extern void func_01ffc9fc(VecFx32 *out, const void *a, s32 b);
 extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 static inline Ov003Actor *Ov009_FindActor5b(u16 id) {
@@ -150,7 +149,7 @@ void func_ov009_021fa934(Ov009ActVt_02216a00 *self) {
         }
         if (g != NULL && FLD(u16, g, 0x16) < lim) {
             u16 k = 0x5401;
-            Ov003Actor *o;
+            Actor *o;
             flag = 0;
             if (self->kind == 0x5422) {
                 k = 0x541f;

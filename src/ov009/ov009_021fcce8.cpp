@@ -84,7 +84,6 @@ static inline BOOL Ov009Game_IsPaused(FieldState *g) {
 
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
-extern Ov003Actor *func_ov003_021d69a0(Ov003Actor *self, s32 id, s32 a);
 extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 angle);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 
@@ -152,7 +151,7 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
             Ov003Actor *o = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
             if (o != NULL && FLD(u16, o, 0x16) < max) {
                 VecFx32 ofs;
-                Ov003Actor *e;
+                Actor *e;
                 ofs.x = 0;
                 ofs.y = 0;
                 ofs.z = 0;

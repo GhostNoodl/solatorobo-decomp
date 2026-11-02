@@ -9,7 +9,6 @@ extern u8 data_ov009_02216bb4[];
 extern u8 data_ov009_02216bba[];
 extern void SndMgr_LoadHeapState(void *mgr, s32 a, s32 b);
 extern void func_ov000_02187a20(void *p, s32 a);
-extern s32 func_ov003_021d1e30(s32 a);
 extern void *func_ov003_021da940(void *p);
 extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);

@@ -8,7 +8,6 @@ extern char data_ov012_0220b335[];
 extern u8 data_ov012_0220a88c[];
 extern void func_ov000_021911c8(void *p, s32 a);
 extern s32 func_ov000_02191318(void *a, s32 b);
-extern Ov003Actor *func_ov003_021d69f0(Ov003Actor *self, s32 kind, VecFx32 *pos, void *rot, Ov003Actor *tgt);
 
 struct Ov012Rot16T {
     u16 x;
@@ -121,7 +120,7 @@ void func_ov012_02208858(Ov003Actor *self) {
                 Ov003Actor *a = list[i];
                 if (a != NULL && a->targetObj != NULL && a->targetObj->target != 0xffff &&
                     a->targetObj->target != self->id) {
-                    Ov003Actor *o;
+                    Actor *o;
                     a->vfunc_08();
                     r.x = 0;
                     r.y = ang;
@@ -267,7 +266,7 @@ void func_ov012_02208c0c(Ov003Actor *self) {
             r.x = FX_Atan2(v.y, sq_r);
         }
         {
-            Ov003Actor *o = func_ov003_021d69f0(self, 0x480e, &v, &r, pl);
+            Actor *o = func_ov003_021d69f0(self, 0x480e, &v, &r, pl);
             if (o != NULL) {
                 o->unk_60 = data_ov012_0220a88c;
                 if (func_020621c4()) {

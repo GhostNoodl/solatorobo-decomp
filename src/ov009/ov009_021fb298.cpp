@@ -5,7 +5,6 @@ extern "C" {
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern void func_ov000_0218996c(s32 a, s32 b);
 extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
-extern Ov003Actor *func_ov003_021d69a0(Ov003Actor *self, u16 kind, s32 a);
 
 void func_ov009_021fb298(Ov009ActVt_022164a0 *self) {
     if (self->fsm->st == 0 && *self->hp == 0) {
@@ -17,7 +16,7 @@ void func_ov009_021fb298(Ov009ActVt_022164a0 *self) {
 void func_ov009_021fb2e4(Ov003Actor *self) {
     s32 range;
     Ov003Actor *g;
-    Ov003Actor *o;
+    Actor *o;
     func_ov003_021d452c(self);
     if (self->fsm->current != 0x13) {
         return;

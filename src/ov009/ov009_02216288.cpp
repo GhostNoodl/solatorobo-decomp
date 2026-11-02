@@ -1080,12 +1080,11 @@ struct Ov009Bits16 {
 extern VecFx32 data_ov009_02216040;
 extern VecFx32 data_ov009_0221604c;
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
-extern Ov003Actor *func_ov003_021d69f0(Ov003Actor *self, u16 kind, const VecFx32 *pos, const void *rot, Ov003Actor *t);
 extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 
 void func_ov009_0220f4b0(Ov009ActVt_02217b58 *self) {
     Ov003Actor *t;
-    Ov003Actor *o;
+    Actor *o;
     VecFx32 *off;
     VecFx32 a;
     VecFx32 b;
@@ -1440,7 +1439,6 @@ extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern void func_ov000_02191708(void *p);
 extern void func_ov000_02191690(void *p);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
-extern Ov003Actor *func_ov003_021d69f0(Ov003Actor *self, u16 kind, const VecFx32 *pos, const void *rot, Ov003Actor *t);
 extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
@@ -1508,7 +1506,7 @@ void func_ov009_0220fea4(Ov009ActVt_02217e08 *self) {
             p.y = self->pos.y;
             p.z = self->pos.z;
             p.y += self->height + 0x1000;
-            o = func_ov003_021d69f0(self, 0x482f, &p, &self->rot_x, t);
+            o = static_cast<Ov003Actor *>(func_ov003_021d69f0(self, 0x482f, &p, &self->rot_x, t));
             o->speed = 0;
             o->velY = 0;
             o->friction = 0;
@@ -1599,7 +1597,6 @@ extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
 extern void func_ov000_021911c8(void *m, s32 a);
 extern Ov009V *func_02065f88(s32 id, const VecFx32 *pos);
 extern void func_ov000_0218996c(s32 a, s32 b);
-extern Ov003Actor *func_ov003_021d69f0(Ov003Actor *self, u16 kind, const VecFx32 *pos, const void *rot, Ov003Actor *t);
 extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
 static inline Ov003Actor *Ov009_FindActor5(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -1665,7 +1662,7 @@ void func_ov009_02210348(Ov009ActVt_02217e08 *self) {
         p.y = t->pos.y;
         p.z = t->pos.z;
         p.y += self->height + 0x1000;
-        h = func_ov003_021d69f0(self, 0x482f, &p, &self->rot_x, t);
+        h = static_cast<Ov003Actor *>(func_ov003_021d69f0(self, 0x482f, &p, &self->rot_x, t));
         h->speed = 0;
         h->velY = -0x19a;
         h->friction = 0;
@@ -1688,7 +1685,7 @@ void func_ov009_02210348(Ov009ActVt_02217e08 *self) {
         q.y = t->pos.y;
         q.z = t->pos.z;
         q.y += self->height + 0x1000;
-        h = func_ov003_021d69f0(self, 0x482f, &q, &self->rot_x, t);
+        h = static_cast<Ov003Actor *>(func_ov003_021d69f0(self, 0x482f, &q, &self->rot_x, t));
         h->speed = 0;
         h->velY = -0x19a;
         h->friction = 0;
@@ -1937,7 +1934,6 @@ extern void *data_02097e4c;
 extern Ov003Actor *Actor_GetTarget(Ov003Actor *self);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 extern void func_ov000_0219a210(VecFx32 *v, const VecFx32 *a, u16 b);
-extern Ov003Actor *func_ov003_021d69f0(Ov003Actor *self, u16 kind, const VecFx32 *pos, const void *rot, Ov003Actor *t);
 extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 b);
 extern void *func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 
@@ -1957,7 +1953,7 @@ void func_ov009_02210ce8(Ov009ActVt_02217c04 *self) {
                 VecFx32 o = data_ov009_02216028;
                 func_ov000_0219a210(&p, &o, self->rot_y);
             }
-            a = func_ov003_021d69f0(self, 0x4802, &p, &self->rot_x, t);
+            a = static_cast<Ov003Actor *>(func_ov003_021d69f0(self, 0x4802, &p, &self->rot_x, t));
             if (a != NULL) {
                 a->speed = Rand_UpTo(0x80) + 0x19a;
                 a->velY = 0x19a;

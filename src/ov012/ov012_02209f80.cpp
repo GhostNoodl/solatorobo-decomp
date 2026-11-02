@@ -5,7 +5,6 @@ extern char data_ov012_0220b406[];
 extern char data_ov012_0220b40c[];
 extern char data_ov012_0220b412[];
 extern char data_ov012_0220b418[];
-extern Ov003Actor *func_ov003_021d69a0(Ov003Actor *self, u16 kind, s32 a);
 
 static inline u16 Ov012_AngTo(Ov003Actor *self, Ov003Actor *t) {
     if (t == NULL || t == self) {
@@ -36,7 +35,7 @@ void func_ov012_02209bd4(Ov003Actor *self) {
         break;
     case 1:
         if (self->model->anim_state == 1) {
-            Ov003Actor *n = func_ov003_021d69a0(self, 0x4009, 9);
+            Actor *n = func_ov003_021d69a0(self, 0x4009, 9);
             if (n != NULL) {
                 self->unk_d0->target_id = n->id;
             }

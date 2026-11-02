@@ -7668,3 +7668,71 @@ The ov009..ov014 actor classes now derive from the shared ov000 classes and a ne
   - `conv.sh`, `vfix.py`, `api2.py`: the header conversion, local retyping and API dedup.
   - `mksig.py`/`objsiglib.py`/`chk.sh`: the per-function object compare.
   - `dcmp.sh`: the draft compare.
+
+### Round shB (ov003 onto the shared actor types)
+
+The ov003 actor code now uses `Ov003Actor` (`include/ov003/Actor.h`) and the shared ov000 types instead of its own per-TU copies of the actor layout. Every object is the same: each `build/usa` object (1906) was compared function by function (code bytes and relocations) with a baseline built at upstream `1ce7832a`. The two edited `NONMATCHING` drafts (`ov009_02205d14`, `ov009_022161f8`) compiled with `NONMATCHING` give the same disassembly and relocations as before. Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` 8138 matched (unchanged), `check_drafts.py --score` exit 0.
+
+`tools/declaudit.py` at the base and after: all scopes 1916 -> **1858**, `--scope hs` 634 -> **613**, `--scope hh` 40 -> 40. Names containing `func_ov003_`/`Ov003` in the tree-wide list went from 244 to 186, and in `hs` from 70 to 49.
+
+- **C to C++.** 11 ov003 C files became C++ (`git mv`, body in `extern "C"`, `delinks.txt` updated), so they can use the C++ classes instead of a second C copy of the layout:
+  - `021d0ba8`, `021d1b88`, `021d1e30`, `021d2e28`, `021d3524`, `021d36fc`, `021d64f0`, `021d6868`, `021dae14`, `021ed140`, `021ed520`.
+  - Every one compiles to the same code.
+  - The only C/C++ difference found: `bit = (a != 0)` is an `int` store in C and a `bool` store in C++. `ov003_021d0ba8` therefore writes `self->unk_b0->unk_0a_0 ? 1 : 0`.
+- **Views converted.** 132 local struct/typedef views were deleted from 25 ov003 files. Most were whole-actor views: `Ov003In`, `Sd`, `Disp`, `Ag`, `HistObj`, `En`, `Unk` (x2), `Dw`, `Ht`, `Kb` (x2), `Dt`, `Ev`, `AnimObj`, `StObj`, `FxActor`, `YawActor`, `Spring`, `TmTarget` and `ObjInit` -> `Ov003Actor`. The rest were sub-object views:
+  - `...Sub44`/`S44` -> `ActorSub44`; `...48`/`Hit` -> `ActorSub48`; `...4c`/`Tgt` -> `ActorSub4c`; `...Ctl`/`Work`/`Bits` -> `ActorSub40`.
+  - `...Model` -> `Model0218fe1c`; `...Shadow`/`3c` -> `ActorShadow`; `...B0`/`Param` -> `Ov003Param`; `...D0`/`Parts` -> `Ov003SubD0`.
+  - `...S50`/`Hp` -> `ActorHp`; `...Vec`/`V3` -> `VecFx32`.
+  - The ActorEx views in `021dae14`, `021ed140` and `021ed520` -> `ActorEx`.
+  - `ov003_021d6e04`'s actor is `struct Ov003Act : public Ov003Actor { void *unk_f0; }`.
+- **Shared types extended (layout-neutral):**
+  - **`Ov003Param`:** u16 `unk_04`/`unk_06`; `unk_0a` and `unk_0c` split into their bits; `unk_0e[2]`; `const char *unk_10[2]`.
+  - **New `Ov003Entry`:** the 0x10-byte record that `func_ov003_021d1e30` returns, now typed `Ov003Entry *`. `Ov003Actor::unk_c4` is also an `Ov003Entry *`.
+  - **`Ov003SubD0`:** `mtx[2]`, `idx[2]`, `target_id`, `models[2]`.
+  - **`Ov003Actor`:**
+    - `nameFunc` union at 0xd8.
+    - `unk_ea_11..13`.
+    - Unions at 0xec and 0xee, with their bits.
+  - **`ActorMsg`:** the payload union now holds the new `ActorMsgHit {dmg, kind}`.
+  - **`Actor`:**
+    - `unk_34` is a `void *`.
+    - `hp` is a union with the new `ActorHp *hpObj` (in `ActorParts.h`).
+  - **`ActorSub44`:** `pos` at 0, `unk_20`, and `unk_22_4`/`unk_22_5`.
+  - **`ActorSub48`:** fields at 0x26..0x84.
+  - **Bit-field unions:** `ActorSub4c::unk_18` and `ActorShadow::unk_18`.
+  - **`Model0218fe1c`:** `unk_c6`/`c8`/`ca` are `s16`; the loads are `ldrsh`.
+- **API.**
+  - The 31 functions declared in `include/ov003/Actor.h` now match their ov003 definitions, except where ov010 still disagrees. `func_ov003_021d0edc` keeps `void *` (overlay dtors pass `void *`); its body does `static_cast<Ov003Actor *>`.
+  - Several parameters got their real types: `ActorMsgHit *` for `021d6548`, colors and frames for `021d6868`/`68e0`, `BOOL` flags for `021d6a3c`, `Actor *` for `021da2c8`, and `ActorEx *` for `021dae44`.
+  - **`func_ov003_021d69a0`, `021d69f0` and `021da32c` are now declared once, in `Actor.h`, returning `Actor *`.** Kinds 0x4000/0x6000 spawn plain ov000 actors, so `Actor *` is the true return type.
+    - 22 TU-local copies were removed in ov009, ov012, ov013 and ov014.
+    - Callers keep an `Actor *` where they only use `Actor` members.
+    - The rest downcast with `static_cast<Ov003Actor *>`: ov009 6, ov013 1.
+  - In all, 38 single-line TU-local `func_ov003_*` prototypes were removed: the 22 above, `021d1e30` in ov009, and the ov003-internal ones that `Actor.h` now provides.
+- **Still TU-local:** `func_ov003_021d1c00`. Its second parameter is each overlay's own message view (`Ov011ActMsg`, `Ov012Msg`, `Ov013Msg`, `Ov014Msg`), and those layouts differ beyond the shared `ActorMsg` head. The ov003 definition now takes `(Ov003Actor *, ActorMsg *)`.
+- **Casts.** This round removed conflicts, not casts. In the edited files, pointer casts went from 559 to 579.
+  - About 20 genuinely new casts:
+    - The 7 `static_cast` downcasts of the `Actor *` spawn results above, and the `ActorMsgHit *` argument in `ov013_0220b444`.
+    - `cfab4`'s `Base()` macro.
+    - Several in ov003 where a TU uses a base slot as something other than the shared sub-object, each with a small local view:
+      - `targetObj` -> `Ov003InObj4c`/`Ov003Stat`.
+      - `unk_54` -> `Ov003DispPos`.
+      - `unk_5c` -> `Ov003InObj5c`/`Ov003EnSub5c`.
+      - `fsm` from a heap block.
+  - Most of the other "changes" only renamed the cast's type, e.g. `(Ov003InModel *)` -> `(Model0218fe1c *)`.
+- **Kept forms, with comments:**
+  - `ov003_021d9dbc` copies `self->pos` through `*(Ov003Vec *)`, because `Ov003Vec`'s user constructor changes how the copy is scheduled (see `ov003/Vec.h`).
+  - `ov003_021d0ba8` keeps a minimal `Ov003Obj` view for `021d0ba8`/`021d0c04`: there, 0x04 and 0x08 are not `prev`/`next`.
+  - `*(void **)self = data_ov003_021f7ab4` sets the vtable.
+- **Left:**
+  - **ov010** (worker svK) still declares the ov003 API with `void *`. This is where nearly all of the remaining `func_ov003_*` hs conflicts come from (`021d0c1c`, `16cc`, `3008`, `64f0`, `6868`, `68e0`, `6a3c`, `da108`, `da2c8`, ...).
+  - **Ov003Actor subclasses not converted:** `Ov003Ak` (`021daec0`), `Ov003Pj` (`021db244`), `Ov003EmB` (`021dc0c8.c`), `Ov003Slot` (`021dc3fc`) and `Ov003Spawner` (`021dc840`). They reuse the base slots 0x4c (`targetObj`) and 0xd0 (`unk_d0`) as pointers to their own config records, and treat 0x7c as a `rot[3]` array. Deriving them from `Ov003Actor` would add a cast at every use (Slot 32 unmapped uses, Pj 87), so they keep their views. A union member for those slots in `Ov003Actor` would be the next step.
+  - **ActorEx-sized views not converted:** `Ov003Hitter` (`021dbd80`), `Ov003EmA` and `Ov003Hm` (`021ed15c`). Sizes 0xdc..0xe4; the layout above 0xd0 is not yet known.
+  - The remaining `record`/`typedef Ov003*` hs entries (`Ov003Anim`, `Ctl`, `Game54`, `Model`, `Obj`, `Part`, `Sub44`, `Unit`, `Work`, ...) are same-named but different local views in ov003 TUs outside the actor code: fx, script and stage modules.
+- **Scratch:** the session scratchpad `shB/` (shA's `cfix.py`, `castrm.py`, `api2.py`, `mksig.py`, `objsiglib.py`, `dcmp.sh`, plus):
+  - `remap.py FILE VIEW=SHARED...`: a libclang member remap by byte offset with an MWCC bit-field layout engine. It maps sub-views automatically, and `VIEW=Base+` derives the view from a base.
+  - `conv.sh`: remap plus include insertion.
+  - `unused.py`: deletes unreferenced local views.
+  - `c2cpp.sh`: C to C++ with `delinks.txt`.
+  - `retype.py`: retypes spawn-result locals, or wraps the call in `static_cast`.
+  - `c1.sh`/`full.sh`: per-object and full compares.

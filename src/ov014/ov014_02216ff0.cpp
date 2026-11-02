@@ -470,7 +470,6 @@ extern void func_0203f364(ActorSub48 *p);
 extern void HitSphere_Link(ActorSub48 *p);
 extern void func_ov003_021cf1f0(void *p, s32 a, s32 b, const void *c);
 extern BOOL func_020621c4(void);
-extern Ov003Actor *func_ov003_021d69a0(Ov003Actor *self, u16 kind, s32 a);
 extern void func_01ffc9fc(VecFx32 *a, const VecFx32 *b, u16 ang);
 extern void func_ov014_021fd37c(void *self, Ov003Actor *a);
 extern void func_ov014_021fd43c(void *self, Ov003Actor *a);
@@ -511,7 +510,7 @@ void Ov014Act_021fd4d4_Start(Ov014Act_021fd4d4 *self) {
         m->unk_9a_3 = 0;
         func_0203f364(m);
         for (i = 0; i < 5; i++) {
-            Ov003Actor *o = func_ov003_021d69a0(self, 0x5c19, 0x20);
+            Actor *o = func_ov003_021d69a0(self, 0x5c19, 0x20);
             if (o != NULL) {
                 o->unk_18 = i;
                 v = data_ov014_02216704[i];
@@ -1053,12 +1052,11 @@ extern Ov014V *func_02065f88(s32 id, VecFx32 *v);
 extern void func_ov000_021911c8(void *a, s32 b);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
-extern Ov003Actor *func_ov003_021d69a0(Ov003Actor *self, u16 kind, s32 a);
 extern s32 func_ov003_021d9edc(s32 kind);
 extern void func_01ffc9fc(VecFx32 *a, VecFx32 *b, u16 ang);
 
 static inline void Ov014_SpawnPart(Ov014Act_021fd4d4 *self, u16 kind, u8 bit, s16 n) {
-    Ov003Actor *o;
+    Actor *o;
     self->unk_138 |= bit;
     o = func_ov003_021d69a0(self, kind, 0x20);
     if (o != NULL) {

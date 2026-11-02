@@ -1,46 +1,12 @@
 #include "types.h"
 #include "nitro/fx.h"
-
-typedef struct {
-    u16 state;
-    u16 timer;
-    s32 unk_04;
-    s32 unk_08;
-    u8 unk_0c[7];
-    u8 kind;
-} Ov003EnWork;
-
-typedef struct {
-    VecFx32 pos;
-    s32 unk_0c;
-    s32 unk_10;
-    u8 unk_14[8];
-    s32 unk_1c;
-    u8 unk_20[2];
-    u16 unk_22_0 : 4;
-    u16 unk_22_4 : 1;
-} Ov003EnSub44;
-
-typedef struct {
-    u8 unk_00;
-    u8 unk_01[0x1b];
-    u16 unk_1c;
-} Ov003EnSub4c;
+#include "ov003/Actor.h"
 
 typedef struct {
     u8 unk_00[0x50];
     VecFx32 pos;
     s32 unk_5c;
 } Ov003EnSub5c;
-
-typedef struct {
-    u8 unk_00[0xa];
-    u16 unk_0a_0 : 5;
-    u16 unk_0a_5 : 1;
-    u16 unk_0a_6 : 1;
-    u16 : 0;
-    u16 unk_0c_0 : 5;
-} Ov003EnParam;
 
 typedef struct {
     u8 unk_00[0xc];
@@ -87,48 +53,7 @@ public:
     s32 unk_20;
 };
 
-class Ov003En {
-public:
-    void Update();
-
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u16 unk_0e;
-    u8 unk_10[0x20];
-    u32 unk_30;
-    u8 unk_34[0xc];
-    Ov003EnWork *work;
-    Ov003EnSub44 *unk_44;
-    u8 unk_48[4];
-    Ov003EnSub4c *unk_4c;
-    u16 *unk_50;
-    void *unk_54;
-    u8 unk_58[4];
-    Ov003EnSub5c *unk_5c;
-    u8 unk_60[4];
-    s32 unk_64;
-    s32 unk_68;
-    s32 unk_6c;
-    VecFx32 pos;
-    u8 unk_7c[2];
-    u16 unk_7e;
-    u8 unk_80[0x14];
-    u8 unk_94_0 : 1;
-    u8 unk_94_1 : 2;
-    u8 unk_95[0x1b];
-    Ov003EnParam *unk_b0;
-    u8 unk_b4[0x2c];
-    void *unk_e0;
-    void *unk_e4;
-    u16 unk_e8;
-    u16 unk_ea_0 : 6;
-    u16 unk_ea_6 : 2;
-    u16 unk_ea_8 : 5;
-    u16 unk_ea_13 : 1;
-    u8 unk_ec;
-};
-
-typedef void (Ov003En::*Ov003EnPmf)();
+typedef void (Ov003Actor::*Ov003EnPmf)();
 
 typedef struct {
     u32 kind;
@@ -143,9 +68,9 @@ extern Ov003Game30 *data_ov000_021ccd30;
 extern void *data_0214a420;
 extern u8 *func_02070558(u16 id);
 extern void func_ov000_0219a088(void *p);
-extern void func_ov000_0219af3c(Ov003En *self, Ov003EnSub5c *icon);
+extern void func_ov000_0219af3c(Ov003Actor *self, void *icon);
 extern void func_ov000_0219a210(VecFx32 *v, const VecFx32 *a, u16 rot);
-extern void func_ov000_021bd624(Ov003EnSub5c *p);
+extern void func_ov000_021bd624(void *p);
 extern void func_ov000_021697dc(void *p, u16 a, u16 b);
 extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
 extern Ov003EnPl *func_ov000_0219bf90(void);
@@ -194,7 +119,7 @@ static inline void Ov003_Call60(u16 id, u16 a, u16 b, const VecFx32 *pos) {
     }
 }
 
-static inline void Dispatch(Ov003En *self, u32 kind) {
+static inline void Dispatch(Ov003Actor *self, u32 kind) {
     s32 i;
     for (i = 0; i < 0x15; i++) {
         if (data_ov003_021f4750[i].kind != kind) {
@@ -205,7 +130,7 @@ static inline void Dispatch(Ov003En *self, u32 kind) {
     }
 }
 
-void func_ov003_021d3008(Ov003En *self) {
+void func_ov003_021d3008(Ov003Actor *self) {
     u16 *p50;
     u8 kind;
     s32 i;
@@ -215,7 +140,7 @@ void func_ov003_021d3008(Ov003En *self) {
         self->unk_94_1 = 1;
         break;
     case 2:
-        if (self->work->kind != 0x14) {
+        if (self->fsm->current != 0x14) {
             self->unk_94_1 = 2;
         }
         break;
@@ -223,15 +148,15 @@ void func_ov003_021d3008(Ov003En *self) {
         self->unk_94_1 = 3;
         break;
     }
-    Dispatch(self, self->work->kind);
-    if (self->unk_e8 != 0 && *self->unk_50 != 0 && self->work->kind != 0x14) {
+    Dispatch(self, self->fsm->current);
+    if (self->unk_e8 != 0 && *self->hp != 0 && self->fsm->current != 0x14) {
         self->unk_e8 = 0;
-        self->unk_4c->unk_00 = *func_02070558(self->unk_0e);
+        self->targetObj->type = *func_02070558(self->kind);
     }
     if (self->unk_e8 != 0) {
         self->unk_94_0 = 1;
     }
-    p50 = self->unk_50;
+    p50 = self->hp;
     if (p50 != NULL && p50[5] != 0) {
         p50[5]--;
     }
@@ -248,45 +173,45 @@ void func_ov003_021d3008(Ov003En *self) {
                     v.z = self->unk_44->unk_1c;
                     v.x = 0;
                     v.y = 0;
-                    func_ov000_0219a210(&pos, &v, self->unk_7e);
+                    func_ov000_0219a210(&pos, &v, self->rot_y);
                 }
-                r = self->unk_44->unk_10;
+                r = self->unk_44->unk_0c.y;
                 if (r == 0) {
                     r = self->unk_44->unk_1c;
                 }
             } else {
                 pos = self->pos;
-                r = self->unk_68;
+                r = self->height;
                 if (r == 0) {
-                    r = self->unk_64;
+                    r = self->radius;
                 }
             }
-            if (self->work->kind == 0x13 || self->work->kind == 0x14 || self->unk_94_0) {
+            if (self->fsm->current == 0x13 || self->fsm->current == 0x14 || self->unk_94_0) {
                 r >>= 2;
             }
-            self->unk_5c->pos = pos;
-            self->unk_5c->unk_5c = r;
+            ((Ov003EnSub5c *)self->unk_5c)->pos = pos;
+            ((Ov003EnSub5c *)self->unk_5c)->unk_5c = r;
             func_ov000_021bd624(self->unk_5c);
         }
         if (self->unk_ea_6 != 1) {
             if (self->unk_b0->unk_0a_5) {
-                Ov003_Call5c(self->unk_50[0], self->unk_50[1]);
+                Ov003_Call5c(self->hp[0], self->hp[1]);
             } else {
                 BOOL b = FALSE;
                 if (self->unk_ea_6 == 2) {
                     b = TRUE;
-                } else if (self->work->kind != 9) {
+                } else if (self->fsm->current != 9) {
                     Ov003EnPl *pl;
-                    if (self->unk_4c != NULL && (self->unk_30 & 0x200)) {
+                    if (self->targetObj != NULL && (self->msg_flags & 0x200)) {
                         b = TRUE;
                     }
                     pl = func_ov000_0219bf90();
-                    if (pl != NULL && (pl->unk_90 == self->unk_0c || self->unk_4c->unk_1c == pl->unk_0c)) {
+                    if (pl != NULL && (pl->unk_90 == self->id || self->targetObj->target == pl->unk_0c)) {
                         b = TRUE;
                     }
                 }
                 if (b) {
-                    Ov003_Call60(self->unk_0c, self->unk_50[0], self->unk_50[1], &self->pos);
+                    Ov003_Call60(self->id, self->hp[0], self->hp[1], &self->pos);
                 }
             }
         }
@@ -294,13 +219,13 @@ void func_ov003_021d3008(Ov003En *self) {
     if (self->unk_e4 != NULL) {
         Ov003EnFx *fx = func_020657b0(data_0214a420, self->unk_e4);
         if (fx != NULL) {
-            if (self->unk_e8 == 0 || (self->work->kind != 0x14 && self->work->kind != 0xb && self->work->kind != 4)) {
+            if (self->unk_e8 == 0 || (self->fsm->current != 0x14 && self->fsm->current != 0xb && self->fsm->current != 4)) {
                 fx->unk_1c = 4;
                 self->unk_e4 = NULL;
             } else {
                 s32 s;
                 fx->SetPos(&self->pos);
-                s = self->unk_68;
+                s = self->height;
                 switch (fx->unk_20) {
                 default:
                     s -= (s >> 1) + (s >> 3);
@@ -325,7 +250,7 @@ void func_ov003_021d3008(Ov003En *self) {
             self->unk_e0 = NULL;
         } else {
             fx->SetPos(&self->pos);
-            fx->SetScale(0, self->unk_6c, 0);
+            fx->SetScale(0, self->centerY, 0);
         }
     }
     if (self->unk_b0->unk_0a_6) {
@@ -336,9 +261,8 @@ void func_ov003_021d3008(Ov003En *self) {
         }
     }
     {
-        Ov003EnWork *w = self->work;
-        w->unk_04 = 0;
-        w->unk_08 = 0;
+        ActorSub40 *w = self->fsm;
+        w->flags = 0;
     }
 }
 

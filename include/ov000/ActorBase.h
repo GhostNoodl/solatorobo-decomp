@@ -11,12 +11,27 @@
 #include "ov000/ActorParts.h"
 #include "ov000/Model0218fe1c.h"
 
+// Payload of a hit message (ActorMsg type 9, applied by func_ov003_021d6548).
+typedef struct ActorMsgHit {
+    u16 dmg;
+    u8 kind;
+} ActorMsgHit;
+
 typedef struct ActorMsg {
     struct ActorMsg *next;
     u8 unk_04;
     u8 type;
-    u16 id;
-    u8 data[0x30];
+    u16 id; // sender
+    union {
+        u8 data[0x30];
+        ActorMsgHit hit; // type 9
+        struct {
+            u8 unk_08;
+            u8 unk_09;
+            s16 unk_0a;
+            u16 unk_0c;
+        };
+    };
 } ActorMsg;
 
 class Actor;
@@ -39,7 +54,16 @@ typedef struct {
     char *unk_0c;
     u16 kinds[2];
     u16 ids[2];
-    u8 unk_18;
+    union {
+        u8 unk_18;
+        struct {
+            u8 unk_18_0 : 1;
+            u8 unk_18_1 : 1;
+            u8 unk_18_2 : 3;
+            u8 unk_18_5 : 1;
+            u8 unk_18_6 : 2;
+        };
+    };
     u8 unk_19;
     u8 unk_1a;
     u8 unk_1b;
@@ -61,7 +85,13 @@ public:
     s32 unk_0c;
     s32 unk_10;
     s32 unk_14;
-    u8 unk_18;
+    union {
+        u8 unk_18;
+        struct {
+            u8 unk_18_0 : 4; // the ov003 actor ctor pushes its value into unk_18_4 before setting it
+            u8 unk_18_4 : 4;
+        };
+    };
     u8 unk_19;
     u8 unk_1a;
     u8 unk_1b;
@@ -94,14 +124,17 @@ public:
     PauseNode pause;
     ActorMsg *msgs;
     u32 msg_flags;
-    s32 unk_34;
+    void *unk_34; // resource names (0x138 bytes, ctor func_ov000_0218e9c4; filled by func_ov003_021d0a2c)
     Model0218fe1c *model;
     ActorShadow *unk_3c;
     ActorSub40 *fsm; // state block (func_ov000_02198360 switches state)
     ActorSub44 *unk_44;
     ActorSub48 *hit; // collision sphere (a HitSphere: func_0203f260, HitSphere_Link)
     ActorSub4c *targetObj; // Target object (Target_Get / Target_Set)
-    u16 *hp; // hp gauge (hp[0], hp[1]; ov011 Ov011Obj::hp)
+    union {
+        u16 *hp; // hp gauge (hp[0], hp[1]; ov011 Ov011Obj::hp)
+        ActorHp *hpObj; // the same block with its fields
+    };
     void *unk_54;
     void *hitMesh; // HitMesh (HitMesh_Link / func_0203f920)
     void *unk_5c;

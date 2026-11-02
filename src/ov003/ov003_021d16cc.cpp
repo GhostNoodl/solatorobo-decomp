@@ -1,49 +1,5 @@
 #include "types.h"
-
-typedef struct {
-    s32 x, y, z;
-} Ov003SdVec;
-
-typedef struct {
-    s32 m[9];
-    Ov003SdVec t;
-} Ov003SdMtx43;
-
-typedef struct {
-    u8 unk_00[0x24];
-    u8 rob[0x2c];
-    void *unk_50;
-    u8 unk_54[0x24];
-    Ov003SdVec pos;
-    u8 mtx[0x24];
-    u8 unk_a8[0xe];
-    u16 unk_b6;
-    u16 unk_b8;
-    u16 unk_ba;
-    u16 unk_bc;
-    u8 unk_be;
-    u8 unk_bf[3];
-    u16 unk_c2;
-} Ov003SdModel;
-
-typedef struct {
-    Ov003SdMtx43 mtx[2];
-    u8 idx[2];
-    u16 unk_62[2];
-    u8 unk_66[2];
-    Ov003SdModel *sub[2];
-} Ov003SdParts;
-
-typedef struct {
-    u8 unk_00[0x18];
-    u8 unk_18_0 : 1;
-    u8 unk_19[7];
-    u8 mtx[0x24];
-} Ov003SdS4c;
-
-typedef struct {
-    u16 unk_00;
-} Ov003SdS50;
+#include "ov003/Actor.h"
 
 typedef struct {
     u8 unk_00[0x74];
@@ -57,7 +13,7 @@ typedef struct {
     u16 unk_1c;
     u8 unk_1e[2];
     u8 mtx[0x24];
-    Ov003SdVec unk_44;
+    VecFx32 unk_44;
 } Ov003SdTgt;
 
 typedef struct {
@@ -78,37 +34,6 @@ typedef struct {
     s32 unk_100;
 } Ov003SdGame;
 
-typedef struct {
-    u8 unk_00[0xc];
-    u16 unk_0c;
-    u8 unk_0e[0x12];
-    u16 unk_20;
-    u8 unk_22[0x16];
-    Ov003SdModel *model;
-    u8 unk_3c[0x10];
-    Ov003SdS4c *unk_4c;
-    Ov003SdS50 *unk_50;
-    u8 unk_54[8];
-    void *unk_5c;
-    u8 unk_60[8];
-    s32 unk_68;
-    u8 unk_6c[4];
-    Ov003SdVec pos;
-    u16 rot[3];
-    u8 unk_82[0x11];
-    u8 unk_93_0 : 1;
-    u8 unk_94[0x3c];
-    Ov003SdParts *parts;
-    u8 unk_d4[0x16];
-    u16 unk_ea_0 : 3;
-    u16 unk_ea_3 : 3;
-    u16 unk_ea_6 : 3;
-    u16 unk_ea_9 : 1;
-    u16 unk_ea_10 : 3;
-    u16 unk_ea_13 : 1;
-    u16 unk_ea_14 : 1;
-} Ov003Sd;
-
 extern "C" {
 
 extern void *data_ov000_021ccd64;
@@ -121,10 +46,9 @@ extern void NNS_G3dRenderObjSetInitFunc(void *rob, void *func);
 extern void func_ov003_021d0c04(void *self);
 extern void MI_Copy36B(const void *src, void *dst);
 extern void MI_Copy48B(const void *src, void *dst);
-extern u16 func_ov000_0218cea4(Ov003Sd *self);
-extern u16 func_ov000_021903b4(Ov003SdModel *m);
-extern void func_01ffc9fc(Ov003SdVec *out, Ov003SdVec *in, u16 ang);
-extern void VEC_Add(Ov003SdVec *a, Ov003SdVec *b, Ov003SdVec *dst);
+extern u16 func_ov000_0218cea4(Ov003Actor *self);
+extern u16 func_ov000_021903b4(Model0218fe1c *m);
+extern void func_01ffc9fc(VecFx32 *out, VecFx32 *in, u16 ang);
 extern void func_ov000_021bd7a0(void *p);
 
 }
@@ -153,11 +77,11 @@ static inline s32 Ov003Sd_Dist(s64 sq) {
     return (s32)(Ov003Sd_GetSqrtResult32() + 1) >> 1;
 }
 
-static inline void Ov003Sd_SetLight(Ov003SdModel *m) {
-    m->unk_b6 = 0x3def;
-    m->unk_b8 = 0x3def;
-    m->unk_ba = 2;
-    m->unk_bc = 1;
+static inline void Ov003Sd_SetLight(Model0218fe1c *m) {
+    m->color = 0x3def;
+    m->color2 = 0x3def;
+    m->blend = 2;
+    m->blendMax = 1;
 }
 
 static inline BOOL Ov003Game_IsBusy(Ov003SdGame *g) {
@@ -198,21 +122,21 @@ static inline Ov003SdObj *Ov003Sd_FindObj(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-extern "C" u16 func_ov003_021d16cc(Ov003Sd *self) {
+extern "C" u16 func_ov003_021d16cc(Ov003Actor *self) {
     s32 i;
-    Ov003SdModel *sub;
+    Model0218fe1c *sub;
     u8 buf[0x24];
-    Ov003SdVec v;
+    VecFx32 v;
     Ov003SdUnit *unit;
     u8 alpha;
     u16 r;
-    Ov003SdMtx43 *mt;
-    if (self->unk_50 != NULL && self->unk_50->unk_00 == 0 && !self->unk_ea_9) {
+    MtxFx43 *mt;
+    if (self->hpObj != NULL && self->hpObj->cur == 0 && !self->unk_ea_9) {
         Ov003Sd_SetLight(self->model);
-        if (self->parts != NULL && self->unk_ea_3) {
+        if (self->unk_d0 != NULL && self->unk_ea_3) {
             s32 j;
             for (j = 0; j < 2; j++) {
-                sub = self->parts->sub[j];
+                sub = self->unk_d0->models[j];
                 if (sub != NULL) {
                     Ov003Sd_SetLight(sub);
                 }
@@ -247,13 +171,13 @@ extern "C" u16 func_ov003_021d16cc(Ov003Sd *self) {
             alpha = (f * 31) >> 12;
         }
     }
-    if (self->parts != NULL && self->unk_ea_3) {
+    if (self->unk_d0 != NULL && self->unk_ea_3) {
         for (i = 0; i < 2; i++) {
-            if (self->parts->idx[i] != 0xff) {
-                Ov003SdModel *m;
-                self->model->unk_50 = self->parts;
+            if (self->unk_d0->idx[i] != 0xff) {
+                Model0218fe1c *m;
+                self->model->renderUser = self->unk_d0;
                 m = self->model;
-                NNS_G3dRenderObjSetInitFunc(m->rob, (void *)func_ov003_021d0c04);
+                NNS_G3dRenderObjSetInitFunc(m->unk_24, (void *)func_ov003_021d0c04);
                 m->unk_c2 |= 0x20;
                 self->model->unk_c2 |= 0x100;
                 break;
@@ -262,52 +186,52 @@ extern "C" u16 func_ov003_021d16cc(Ov003Sd *self) {
     }
     r = FALSE;
     {
-        Ov003SdS4c *s = self->unk_4c;
+        ActorSub4c *s = self->targetObj;
         if (s != NULL && s->unk_18_0) {
-            MI_Copy36B(s->mtx, buf);
-            MI_Copy36B(buf, self->model->mtx);
+            MI_Copy36B(s->unk_20, buf);
+            MI_Copy36B(buf, &self->model->rot);
             self->unk_93_0 = 1;
         }
     }
     if (alpha == 0x1f) {
         r = func_ov000_0218cea4(self);
     } else if (alpha != 0) {
-        u8 old = self->model->unk_be;
+        u8 old = self->model->alpha;
         if (old > alpha) {
-            self->model->unk_be = alpha;
+            self->model->alpha = alpha;
         }
         r = func_ov000_0218cea4(self);
-        self->model->unk_be = old;
+        self->model->alpha = old;
     }
-    if (self->parts != NULL && self->unk_ea_3) {
+    if (self->unk_d0 != NULL && self->unk_ea_3) {
         for (i = 0; i < 2; i++) {
-            if (r && (sub = self->parts->sub[i]) != NULL) {
-                mt = &self->parts->mtx[i];
-                MI_Copy36B(mt, sub->mtx);
-                sub->pos.x = mt->t.x;
-                sub->pos.y = mt->t.y;
-                sub->pos.z = mt->t.z;
+            if (r && (sub = self->unk_d0->models[i]) != NULL) {
+                mt = &self->unk_d0->mtx[i];
+                MI_Copy36B(mt, &sub->rot);
+                sub->trans.x = mt->_30;
+                sub->trans.y = mt->_31;
+                sub->trans.z = mt->_32;
                 if (alpha == 0x1f) {
                     func_ov000_021903b4(sub);
                 } else if (alpha != 0) {
-                    u8 old = sub->unk_be;
+                    u8 old = sub->alpha;
                     if (old > alpha) {
-                        sub->unk_be = alpha;
+                        sub->alpha = alpha;
                     }
                     r = func_ov000_021903b4(sub);
-                    sub->unk_be = old;
+                    sub->alpha = old;
                 }
-            } else if (self->parts->unk_62[i] != 0xffff) {
-                Ov003SdObj *o = Ov003Sd_FindObj(self->parts->unk_62[i]);
-                if (o != NULL && (sub = (Ov003SdModel *)o->unk_4c) != NULL) {
-                    ((Ov003SdTgt *)sub)->unk_1c = self->unk_0c;
+            } else if (self->unk_d0->unk_62[i] != 0xffff) {
+                Ov003SdObj *o = Ov003Sd_FindObj(self->unk_d0->unk_62[i]);
+                if (o != NULL && (sub = (Model0218fe1c *)o->unk_4c) != NULL) {
+                    ((Ov003SdTgt *)sub)->unk_1c = self->id;
                     if (r) {
-                        MI_Copy48B(&self->parts->mtx[i], ((Ov003SdTgt *)sub)->mtx);
+                        MI_Copy48B(&self->unk_d0->mtx[i], ((Ov003SdTgt *)sub)->mtx);
                     } else {
-                        v.y = self->unk_68 >> 1;
+                        v.y = self->height >> 1;
                         v.x = 0xccd;
                         v.z = 0xccd;
-                        func_01ffc9fc(&v, &v, self->rot[1]);
+                        func_01ffc9fc(&v, &v, self->rot_y);
                         VEC_Add(&v, &self->pos, &v);
                         ((Ov003SdTgt *)sub)->unk_44 = v;
                     }
