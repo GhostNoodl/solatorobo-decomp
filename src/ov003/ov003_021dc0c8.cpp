@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/ActorApi.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "ov003/Shot.h"
@@ -7,9 +8,6 @@ extern "C" {
 
 extern Ov003BeamDef data_ov003_021f49ec[];
 extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
-extern void func_ov000_0219763c(VObj *self);
-extern void func_ov000_02195d88(ActorEx *self);
-extern void func_ov000_02194758(void *self);
 
 void func_ov003_021dc0c8(Ov003Shot *self) {
     self->age = 0;

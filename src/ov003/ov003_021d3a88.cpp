@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/ActorApi.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
@@ -10,7 +11,6 @@ extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 
 extern void HitSphere_Link(ActorSub48 *ctl);
 extern void func_ov000_02199dc0(ActorSub4c *p, void *self);
-extern void Actor_Move(Actor *self, s32 a);
 extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 extern s32 FX_Div(s32 a, s32 b);
 

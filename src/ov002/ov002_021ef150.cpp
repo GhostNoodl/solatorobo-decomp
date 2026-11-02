@@ -83,7 +83,7 @@ void func_ov002_021d25ec(Task021ef99c *self) {
     void *saved;
     int i;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
+    DELETE_VOBJ(self->unk_3c);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->unk_40);
@@ -364,7 +364,7 @@ void func_ov002_021d2ef4(void) {
 
 void func_ov002_021d2ef8(Task021ef99c *self) {
     if (self->unk_3c != NULL) {
-        TASK_VOBJ(self, 0x3c)->vfunc_20();
+        self->unk_3c->vfunc_20();
     }
     if (self->unk_40 != NULL) {
         self->unk_40->vfunc_20();
@@ -410,12 +410,12 @@ void func_ov000_021c37bc(void *self);
 void func_ov000_021c6140(void *self);
 void func_ov000_021c6474(void *list, void *item);
 
-static inline bool ov002_IsActive(void *p) {
-    return FIELD(p, 0x28, s32) != 1 ? 0 : FIELD(p, 0x30, s32);
+static inline bool ov002_IsActive(TimedBuffer021cb920 *p) {
+    return p->unk_28 != 1 ? 0 : (s32)p->unk_30;
 }
 
 static inline bool ov002_HasActive(FieldPlayer *t) {
-    void *p = FIELD(t, 0x118, void *);
+    TimedBuffer021cb920 *p = t->unk_118;
     if (p == NULL) {
         return false;
     }
@@ -495,9 +495,9 @@ void func_ov002_021d2fdc(Task021ef91c *self) {
     {
         FieldPlayer *t = data_ov000_021ccd30;
         if (t != NULL) {
-            if (ov002_HasActive(t) && FIELD(t, 0x118, void *) != NULL) {
-                // Read as a u32, so MWCC does not reuse the void * load from the test above.
-                func_ov000_0216f844((void *)FIELD(t, 0x118, u32), 0);
+            if (ov002_HasActive(t) && t->unk_118 != NULL) {
+                // Read as a u32, so MWCC does not reuse the pointer load from the test above.
+                func_ov000_0216f844((TimedBuffer021cb920 *)FIELD(t, 0x118, u32), 0);
             }
         }
     }
@@ -574,7 +574,7 @@ static inline bool func_ov002_021d3434_idle(void) {
     return r;
 }
 void func_ov002_021d3434(Task021ef91c *self) {
-    void *t;
+    FieldPlayer *t;
     if (!(data_02097dc8->trig & 2) || self->unk_c4 == NULL) {
         return;
     }
@@ -590,8 +590,8 @@ void func_ov002_021d3434(Task021ef91c *self) {
     }
     self->unk_04_0 = 1;
     t = data_ov000_021ccd30;
-    if (t != NULL && FIELD(t, 0x118, void *) != NULL) {
-        func_ov000_0216f844(FIELD(t, 0x118, void *), 1);
+    if (t != NULL && t->unk_118 != NULL) {
+        func_ov000_0216f844(t->unk_118, 1);
     }
 }
 

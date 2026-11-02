@@ -26,8 +26,8 @@ static inline void ov002_CamMove(Obj021efe6c *c, s32 px, s32 py, s32 pz, s32 tx,
     c->unk_bc.z = tz;
 }
 
-static inline void *ov002_NewDcee0(void) {
-    void *p = Heap_Alloc(0x138);
+static inline Obj021efef0 *ov002_NewDcee0(void) {
+    Obj021efef0 *p = (Obj021efef0 *)Heap_Alloc(sizeof(Obj021efef0));
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021efef0;
         func_ov002_021ddd80(p);
@@ -63,14 +63,14 @@ void func_ov002_021dcf00(Obj021eff10 *self) {
             return;
         }
         {
-            u8 *q = ((u8 *)w->field);
-            void *p;
-            self->unk_24 = FIELD(FIELD(q, 0x6c, u8 *), 6, Nibbles16).n0;
-            self->unk_28 = FIELD(FIELD(q, 0x6c, u8 *), 6, Nibbles16).n1;
+            Obj021efe4c *q = w->field;
+            Obj021efef0 *p;
+            self->unk_24 = q->map->ox;
+            self->unk_28 = q->map->oy;
             Obj021eff50 *t;
             p = ov002_NewDcee0();
             t = self->owner;
-            t->unk_10 = (VObj *)p;
+            t->unk_10 = p;
             t->unk_0c = 0x14;
         }
         func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);

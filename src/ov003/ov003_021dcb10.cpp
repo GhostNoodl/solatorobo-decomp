@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/ActorApi.h"
 #include "Main/Sys/FieldState.h"
 #include "ov003/Unit.h"
 #include "ov003/ActEx.h"
@@ -9,7 +10,6 @@ extern void *data_ov000_021ccd64;
 extern void *func_0203db40(PauseNode *p);
 extern void func_ov000_02190a80(Model0218fe1c *a, void *b);
 extern void Heap_Free(void *p);
-extern void func_ov000_0219433c(ActorEx *self);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 
 void func_ov003_021dcb10(ActorEx *self) {
@@ -72,7 +72,6 @@ extern char data_ov003_021f803c[];
 extern char data_ov003_021f8041[];
 extern char data_ov003_021f8046[];
 extern char data_ov003_021f804b[];
-extern void func_ov000_02194758(ActorEx *self);
 extern void HitMesh_SetMtx(void *obj, MtxFx43 *m);
 extern void HitMesh_SetScale(void *obj, s32 a);
 extern void func_0203f920(void *obj);

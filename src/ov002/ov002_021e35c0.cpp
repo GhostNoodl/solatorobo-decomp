@@ -2,13 +2,13 @@
 
 extern "C" {
 
-void *func_ov002_021e35c0(void *self, u16 id) {
-    void *node = FIELD(self, 0x94, void *);
+Obj021f002c *func_ov002_021e35c0(LoBase021ccb54_021ccbe0 *self, u16 id) {
+    Obj021f002c *node = (Obj021f002c *)self->unk_94;
     while (node != NULL) {
-        if (id == FIELD(node, 0x38, u16)) {
+        if (id == node->id) {
             return node;
         }
-        node = FIELD(node, 0x28, void *);
+        node = (Obj021f002c *)node->next;
     }
     return node;
 }
@@ -22,10 +22,10 @@ void func_ov002_021e35e8(void *a, void *b, VecFx32 *pos, s32 d) {
     func_ov000_021c524c(a, b, &tmp, d);
 }
 
-void func_ov002_021e3620(void *self, void *a, s32 b) {
-    void *obj = func_ov000_02154b58(self, a);
-    FIELD(obj, 0x24, s32) = b;
-    func_ov000_02153c48(obj, FIELD(self, 0x1c, s32), 0, 0, 0);
+void func_ov002_021e3620(UiList *self, u16 id, s32 b) {
+    UiListItem *obj = func_ov000_02154b58(self, id);
+    obj->unk_24 = b;
+    func_ov000_02153c48(obj, self->font, 0, 0, 0);
 }
 
 BOOL func_ov002_021e364c(void) {
@@ -44,24 +44,24 @@ BOOL func_ov002_021e36a0(void) {
     return FALSE;
 }
 
-void *Ov002Vt_021f002c_DtorDelete(void *self) {
+Obj021f002c *Ov002Vt_021f002c_DtorDelete(Obj021f002c *self) {
     void *saved;
     *(VFunc **)self = data_ov002_021f002c;
     HEAP_PUSH(saved);
     {
-        void *p = FIELD(self, 0x30, void *);
+        Model *p = self->model;
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558((Model *)p);
-                func_02041278((PlttRes *)((u8 *)p + 0x88));
+                func_02041558(p);
+                func_02041278(&p->pltt);
                 Heap_Free(p);
             }
-            FIELD(self, 0x30, void *) = NULL;
+            self->model = NULL;
         }
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x34, VObj *));
+    DELETE_VOBJ(self->text);
     HEAP_POP(saved);
     *(VFunc **)self = data_ov002_021ef684;
     func_ov000_021c2310(self);
@@ -69,24 +69,24 @@ void *Ov002Vt_021f002c_DtorDelete(void *self) {
     return self;
 }
 
-void *Ov002Vt_021f002c_Dtor(void *self) {
+Obj021f002c *Ov002Vt_021f002c_Dtor(Obj021f002c *self) {
     void *saved;
     *(VFunc **)self = data_ov002_021f002c;
     HEAP_PUSH(saved);
     {
-        void *p = FIELD(self, 0x30, void *);
+        Model *p = self->model;
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558((Model *)p);
-                func_02041278((PlttRes *)((u8 *)p + 0x88));
+                func_02041558(p);
+                func_02041278(&p->pltt);
                 Heap_Free(p);
             }
-            FIELD(self, 0x30, void *) = NULL;
+            self->model = NULL;
         }
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x34, VObj *));
+    DELETE_VOBJ(self->text);
     HEAP_POP(saved);
     *(VFunc **)self = data_ov002_021ef684;
     func_ov000_021c2310(self);

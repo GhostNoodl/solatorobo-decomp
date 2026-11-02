@@ -30,8 +30,8 @@ void func_ov000_021547e8(void *a, void *b, const char *c, int d);
 void *func_ov000_02162124(void *p);
 void func_ov000_021627ac(void *p);
 void func_ov000_021c95fc(void *p);
-BOOL func_ov002_021d5444(void *self, void *ev);
-BOOL func_ov002_021d5350(void *self, void *ev);
+BOOL func_ov002_021d5444(UiList *self, UiListItem *ev);
+BOOL func_ov002_021d5350(UiList *self, UiListItem *ev);
 void func_ov002_021d66b0(void *self, s32 x, s32 y, s32 z, s32 unused, void *oam, const void *img, u32 charBase, u32 plttBase, s32 unused2, const s32 *ofs);
 
 static inline u8 *ov002_021d58b8_sel(void *g) {
@@ -171,12 +171,12 @@ void func_ov002_021d58b8(Task021efc24 *self) {
             }
         }
     }
-    self->unk_50->onDecide = (UiItemFn)func_ov002_021d5444;
-    self->unk_50->onCursor = (UiItemFn)func_ov002_021d5350;
+    self->unk_50->onDecide = func_ov002_021d5444;
+    self->unk_50->onCursor = func_ov002_021d5350;
     self->unk_50->owner = self;
     {
         VObj *mm = self->unk_50;
-        mm->vfunc_a8(func_ov000_02154b58(mm, (void *)(u32)self->unk_74));
+        mm->vfunc_a8(func_ov000_02154b58(mm, self->unk_74));
     }
     o = (UiObj *)Heap_Alloc(0x8c);
     if (o != NULL) {

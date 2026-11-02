@@ -96,10 +96,8 @@ struct Obj021efeb8 : public VObj {
     u16 unk_12;
     s16 unk_14;
     u8 unk_16[0x2];
-    MtxFx33 unk_18;
-    s32 unk_3c;
-    u8 unk_40[0x4];
-    s32 unk_44;
+    MtxFx33 rot;
+    VecFx32 scale;
     u16 unk_48;
     u8 unk_4a;
     u8 unk_4b;
@@ -113,13 +111,13 @@ struct Obj021efeb8 : public VObj {
     u8 unk_6d[0x3];
     struct Obj021efeb8 *next;
     struct Obj021efeb8 *prev;
-    void *unk_78;
-    void *unk_7c;
-    void *unk_80;
-    void *unk_84;
-    void *unk_88;
-    void *unk_8c;
-    void *unk_90;
+    u32 *unk_78;                 // resource handle: *unk_78 is the model file
+    NNSG3dResMdl *unk_7c;        // the model in that file
+    NNSG3dRenderObj *unk_80;     // Heap_Alloc
+    u32 unk_84;                  // texture upload (func_0203ebf8 / func_0203e63c)
+    NNSG3dAnmObj *unk_88;        // Heap_AllocHi
+    NNSG3dAnmObj *unk_8c;
+    void *unk_90;                // an animation object (021efe9c) or a Model (021efed4)
 };
 
 // A board cell (0xc): the piece covering it (NULL and id 0xffff when empty).
@@ -132,30 +130,36 @@ typedef struct Ov002Cell {
     Obj021efeb8 *obj;
 } Ov002Cell;
 
+// Sound cue of the field animation (6 bytes; table data_ov002_021eeffc, ended by a negative time):
+// func_ov002_021d7320 plays sound id when the animation frame passes time.
+typedef struct Ov002SndCue {
+    s16 time;
+    s16 unk_02;
+    u16 id;
+} Ov002SndCue;
+
 // Vtable data_ov002_021efe4c, 0x70 bytes (ctor func_ov002_021d6e48, dtor func_ov002_021d6ec4): the
-// board's field. func_ov002_021d7238 sets map to the shape of field id unk_68.
+// board's field. func_ov002_021d7238 sets map to the shape of field id unk_68. func_ov002_021d7058
+// builds the two models unk_08/unk_10 from the resource blocks unk_0c/unk_14; func_ov002_021da960
+// copies trans, rot and scale into both before drawing them while visible is set.
 struct Obj021efe4c : public VObj {
-    void *unk_04;
-    void *unk_08;
-    void *unk_0c;
-    void *unk_10;
-    void *unk_14;
-    s32 unk_18;
-    s32 unk_1c;
-    s32 unk_20;
+    ActorRes *unk_04;       // dtor func_ov000_0218ea20
+    Model0218fe1c *unk_08;  // dtor func_ov000_0218fee4
+    ActorRes *unk_0c;
+    Model0218fe1c *unk_10;
+    ActorRes *unk_14;
+    VecFx32 trans;
     s16 unk_24;
     s16 unk_26;
     s16 unk_28;
     u8 unk_2a[0x2];
-    MtxFx33 unk_2c;
-    s32 unk_50;
-    s32 unk_54;
-    s32 unk_58;
-    u8 unk_5c;
-    u8 unk_5d;
+    MtxFx33 rot;            // identity after the ctor
+    VecFx32 scale;          // 0x1000 after the ctor
+    u8 visible;
+    u8 unk_5d;              // set: the cues are played forward (func_ov002_021d7320)
     u8 unk_5e[0x2];
-    s32 unk_60;
-    s32 unk_64;
+    Ov002SndCue *cues;      // data_ov002_021eeffc
+    Ov002SndCue *cue;       // next cue for the animation frame
     u16 unk_68;
     u8 unk_6a[0x2];
     Ov002Shape *map;
@@ -235,7 +239,7 @@ SIZE_ASSERT(Obj021efed4, 0xb4);
 struct Obj021efef0 : public VObj {
     struct Obj021eff50 *owner;
     LoBase021ccb54_021ccbe0 *unk_08; // vtable data_ov002_021f0044
-    VObj *unk_0c;
+    LoBase021ccb54_021ccbe0 *unk_0c; // vtable data_ov002_021f0044 (func_ov002_021def98)
     Obj021efe8c *unk_10;
     Obj021efe8c *unk_14;
     u16 unk_18;
@@ -330,7 +334,9 @@ struct Ov002Text2 : public VObj {
     union {
         u32 flags;
         struct {
-            u32 unk_4_0 : 8;
+            u32 unk_4_0 : 2;
+            u32 unk_4_2 : 1;
+            u32 unk_4_3 : 5;
             u32 alpha : 5;
             u32 polyId : 8;
             u32 unk_4_21 : 11;
@@ -355,6 +361,44 @@ struct Ov002Text2 : public VObj {
     u16 color1;
     s32 unk_78;
 };
+
+// Row of an ov000 item list (vtable data_ov002_021ef684, 0x30 bytes; ctor func_ov000_021c22d8, dtor
+// func_ov000_021c2310, which unlinks it). func_ov000_021c3fd4 appends a row to a list; the list keeps
+// the first row and func_ov002_021e35c0 walks the rows through next.
+struct Ov002Row : public VObj {
+    s32 index; // set by the creator
+    u8 unk_08[0x4];
+    s32 unk_0c;
+    s32 unk_10;
+    s32 unk_14;
+    s32 unk_18;
+    s32 unk_1c;
+    u8 shown : 1; // cleared while the row is scrolled out
+    u8 unk_20_1 : 7;
+    u8 unk_21[0x3];
+    s32 unk_24;
+    struct Ov002Row *next;
+    struct Ov002Row *prev;
+};
+SIZE_ASSERT(Ov002Row, 0x30);
+
+// Board item row (vtable data_ov002_021f002c, 0x4c bytes; ctor func_ov002_021e2f54, dtors
+// Ov002Vt_021f002c_Dtor/DtorDelete). Slot 0x08 (func_ov002_021e2fb4) steps state: 0 builds the
+// item model (when hasModel is set) and the name text, 1 frees them once the row is hidden, 2 waits
+// to be shown again. Slot 0x0c (func_ov002_021e31fc) draws both at the row's position.
+struct Obj021f002c : public Ov002Row {
+    Model *model;
+    Ov002Text2 *text; // func_ov002_021e331c builds it from str
+    u16 id;           // item id (0xffff: none)
+    u16 part;         // model part shown (the shape's unk_4 of the item)
+    void *str;    // name text (a string)
+    void *unk_40; // description text (a string)
+    u8 unk_44;
+    u8 hasModel;
+    u8 unk_46[0x2];
+    s32 state;
+};
+SIZE_ASSERT(Obj021f002c, 0x4c);
 
 // Caption of the board HUD (vtable data_ov002_021f001c, 0x38 bytes): a text window that
 // func_ov002_021e0c28 slides from (fromX, fromY) to (toX, toY) while timer counts down from 8.

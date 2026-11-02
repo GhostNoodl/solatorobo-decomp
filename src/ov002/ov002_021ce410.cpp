@@ -78,15 +78,15 @@ void Ov002Task_SetFlag7(Task *self) {
     self->unk_04_7 = 1;
 }
 
-void func_ov002_021ce660(Task021ef4b0 *self, void *arg) {
+void func_ov002_021ce660(Task021ef4b0 *self, u32 arg) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
+    DELETE_VOBJ(self->unk_3c);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->unk_40);
     HEAP_POP(saved);
-    FIELD(self, 0x44, void *) = arg;
+    self->unk_44 = arg;
     func_ov002_021ce7b8(self);
     self->unk_3c->flags |= 2;
     self->unk_40->flags |= 2;
@@ -95,7 +95,7 @@ void func_ov002_021ce660(Task021ef4b0 *self, void *arg) {
 void func_ov002_021ce724(Task021ef4b0 *self) {
     void *saved;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(TASK_VOBJ(self, 0x3c));
+    DELETE_VOBJ(self->unk_3c);
     HEAP_POP(saved);
     HEAP_PUSH(saved);
     DELETE_VOBJ(self->unk_40);
@@ -210,7 +210,7 @@ void func_ov002_021ce7b8(Task021ef4b0 *self) {
     self->unk_3c->vfunc_74(MsgRes_GetString(g, 0xe3), 4, 0xffff, 4);
     {
         VObj *m = self->unk_3c;
-        m->vfunc_a8(func_ov000_02154b58(m, (void *)(u16)((s32)self->unk_44)));
+        m->vfunc_a8(func_ov000_02154b58(m, self->unk_44));
     }
     self->unk_3c->vfunc_08();
     o = (UiObj *)Heap_Alloc(0x8c);

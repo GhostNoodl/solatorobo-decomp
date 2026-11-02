@@ -32,12 +32,15 @@ typedef struct FieldActor {
     /* 0x60 */ void *unk_60; // passed to func_ov000_0216912c by the ov009 actors
 } FieldActor;
 
+struct TimedBuffer021cb920;
+
+// The field's message queue (ov000/MessageQueue.h MessageQueue021cb980) as main code sees it.
 typedef struct FieldPlayer {
     /* 0x000 */ u8 unk_000[0x114];
     /* 0x114 */ u32 unk_114_0 : 1;
     /* 0x114 */ u32 flag1 : 1;
     /* 0x114 */ u32 unk_114_2 : 30;
-    /* 0x118 */ u8 unk_118[4];
+    /* 0x118 */ struct TimedBuffer021cb920 *unk_118;
     /* 0x11c */ FieldActor *unk_11c;
 } FieldPlayer;
 

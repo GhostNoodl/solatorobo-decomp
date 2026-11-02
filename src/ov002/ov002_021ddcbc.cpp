@@ -2,13 +2,15 @@
 
 extern "C" {
 
-BOOL func_ov002_021ddcbc(void *self, void *ev) {
+// List callbacks of Obj021efef0's lists: owner points at its unk_20/unk_21 (or unk_22/unk_23) pair,
+// [0] set on cancel, [1] set when a usable row is decided.
+BOOL func_ov002_021ddcbc(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev) {
     u8 *t;
     if (ev == NULL) {
         return FALSE;
     }
-    t = FIELD(self, 8, u8 *);
-    if (FIELD(ev, 0x44, u8) != 0) {
+    t = (u8 *)self->owner;
+    if (ev->unk_44 != 0) {
         t[1] = 1;
         func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
     } else {
@@ -18,32 +20,32 @@ BOOL func_ov002_021ddcbc(void *self, void *ev) {
     return TRUE;
 }
 
-BOOL func_ov002_021ddd30(void *self, void *ev) {
+BOOL func_ov002_021ddd30(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev) {
     if (ev == NULL) {
         return FALSE;
     }
-    FIELD(self, 8, u8 *)[0] = 1;
+    ((u8 *)self->owner)[0] = 1;
     func_02049a48(data_02097e4c, 0x1d, -1, -1, -1);
     return TRUE;
 }
 
-void func_ov002_021ddd80(void *self) {
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, s32) = 0;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x14, s32) = 0;
-    FIELD(self, 0x18, u16) = 0xffff;
-    FIELD(self, 0x20, u8) = 0;
-    FIELD(self, 0x21, u8) = 0;
-    FIELD(self, 0x22, u8) = 0;
-    FIELD(self, 0x23, u8) = 0;
-    FIELD(self, 0x30, s32) = 0;
-    FIELD(self, 0x2c, s32) = 0;
-    FIELD(self, 0x24, s32) = 0;
-    FIELD(self, 0x28, s32) = 0;
-    FIELD(self, 0x34, s32) = 0;
-    FIELD(self, 0x38, u8) = 0;
+void func_ov002_021ddd80(Obj021efef0 *self) {
+    self->owner = NULL;
+    self->unk_08 = NULL;
+    self->unk_0c = NULL;
+    self->unk_10 = NULL;
+    self->unk_14 = NULL;
+    self->unk_18 = 0xffff;
+    self->unk_20 = 0;
+    self->unk_21 = 0;
+    self->unk_22 = 0;
+    self->unk_23 = 0;
+    self->unk_30 = 0;
+    self->unk_2c = 0;
+    self->unk_24 = 0;
+    self->unk_28 = 0;
+    self->unk_34 = 0;
+    self->unk_38[0] = 0;
 }
 
 }

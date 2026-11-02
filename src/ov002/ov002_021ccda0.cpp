@@ -200,7 +200,7 @@ void func_ov002_021cd124(Task021ef530 *self) {
     }
     {
         VObj *mm = self->unk_40;
-        mm->vfunc_a8(func_ov000_02154b58(mm, (void *)self->unk_4c));
+        mm->vfunc_a8(func_ov000_02154b58(mm, self->unk_4c));
     }
     func_ov000_021547e8(self->unk_40, data_0214b105, data_0208cb7c, 0xb);
     self->unk_40->vfunc_08();
@@ -235,32 +235,32 @@ void func_ov002_021cd124(Task021ef530 *self) {
         self->unk_48_2 = 1;
     }
     if (self->unk_48_0) {
-        FIELD(func_ov000_02154b58(self->unk_40, (void *)0), 0x24, s32) = 0xe;
+        func_ov000_02154b58(self->unk_40, 0)->unk_24 = 0xe;
     }
     if (self->unk_48_2) {
-        FIELD(func_ov000_02154b58(self->unk_40, (void *)1), 0x24, s32) = 0xe;
+        func_ov000_02154b58(self->unk_40, 1)->unk_24 = 0xe;
     }
     if (self->unk_48_1) {
-        FIELD(func_ov000_02154b58(self->unk_40, (void *)5), 0x24, s32) = 0xe;
+        func_ov000_02154b58(self->unk_40, 5)->unk_24 = 0xe;
     }
     self->vfunc_78(self->unk_4c);
     {
         FieldPlayer *t = data_ov000_021ccd30;
         if (t != NULL) {
-            if (FIELD(t, 0x118, void *) == NULL) {
-                void *task = Heap_Alloc(0x34);
+            if (t->unk_118 == NULL) {
+                TimedBuffer021cb920 *task = (TimedBuffer021cb920 *)Heap_Alloc(sizeof(TimedBuffer021cb920));
                 if (task != NULL) {
                     *(VFunc **)task = data_ov002_021ef410;
                     func_ov000_0216f144(task);
                     *(VFunc **)task = data_ov000_021cb920;
                     func_ov000_0216f828(task);
                 }
-                FIELD(t, 0x118, void *) = task;
+                t->unk_118 = task;
                 func_ov000_0216f398(t, task, 0x10000, t);
-                FIELD(FIELD(t, 0x118, void *), 0x4, u32) |= 0x10;
+                t->unk_118->flags |= 0x10;
             }
-            if (FIELD(data_ov000_021ccd30, 0x118, void *) != NULL) {
-                func_ov000_0216f844(FIELD(data_ov000_021ccd30, 0x118, void *), 1);
+            if (data_ov000_021ccd30->unk_118 != NULL) {
+                func_ov000_0216f844(data_ov000_021ccd30->unk_118, 1);
             }
         }
     }

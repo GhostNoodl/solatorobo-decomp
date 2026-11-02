@@ -6,7 +6,7 @@ void func_ov002_021d01cc(Task021ef79c *self) {
     if (self->vfunc_28() == 0) {
         return;
     }
-    TASK_VOBJ(self, 0x3c)->vfunc_20();
+    self->unk_3c->vfunc_20();
     self->unk_40->vfunc_20();
 }
 

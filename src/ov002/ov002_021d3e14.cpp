@@ -12,8 +12,8 @@ void func_ov000_0215d980(void *a, s32 b, s32 c);
 void func_ov000_02157c90(void *a, void *b);
 void func_ov000_02157d2c(void *a, void *b);
 void *func_0206ee58(u16 id);
-BOOL func_ov002_021d3b10(void *self, void *ev);
-BOOL func_ov002_021d3c30(void *self, void *ev);
+BOOL func_ov002_021d3b10(UiList *self, UiListItem *ev);
+BOOL func_ov002_021d3c30(UiList *self, UiListItem *ev);
 
 static inline bool Ov002_Avail(u8 *blk, void *tbl, u16 i) {
     bool a = func_02059544(data_02fe152c, blk, tbl, 1, i) & 1;
@@ -147,8 +147,8 @@ void func_ov002_021d3e14(Task021ef81c *self) {
     self->unk_3c->unk_c0 = 0x78;
     func_ov000_02157c90(self->unk_3c, MsgRes_GetString(g, 0xa2));
     func_ov000_02157d2c(self->unk_3c, MsgRes_GetString(g, 0x40));
-    self->unk_3c->onDecide = (UiItemFn)func_ov002_021d3b10;
-    self->unk_3c->onCursor = (UiItemFn)func_ov002_021d3c30;
+    self->unk_3c->onDecide = func_ov002_021d3b10;
+    self->unk_3c->onCursor = func_ov002_021d3c30;
     self->unk_3c->owner = self;
     func_ov000_02176590(((u32)self->param));
 

@@ -100,7 +100,7 @@ public:
     u8 unk_68;
     u8 unk_69;
     u8 unk_6a[0x2];
-    void *unk_6c;
+    u32 unk_6c; // list item of task 0x12 (Task021ef4b0::unk_44), kept while its windows are freed
 };
 SIZE_ASSERT(Task021ef71c, 0x70);
 
@@ -121,7 +121,7 @@ public:
     Lo021cadcc *unk_40;
     Lo021cae48 *unk_44;
     Lo021cb5a8 *unk_48;
-    s8 unk_4c;
+    u8 unk_4c; // set while unk_40 shows the row's message (func_ov002_021d3c30)
     u8 unk_4d[0x3];
 };
 SIZE_ASSERT(Task021ef81c, 0x50);
@@ -225,8 +225,9 @@ public:
     Lo021cadcc *unk_54;
     VObj *unk_58;
     VObj *unk_5c;
-    u8 unk_60[0x14];
-    u16 unk_74;
+    s16 unk_60[5]; // per-stat values; func_ov002_021d5f60 stores unk_60[i] + unk_6a[i], clamped to 0..99
+    s16 unk_6a[5];
+    u16 unk_74;    // id of the current list item
     u8 unk_76[0x2];
 };
 SIZE_ASSERT(Task021efc24, 0x78);

@@ -96,7 +96,7 @@ extern "C" {
 void func_ov000_02187b50(void *p);
 void func_02062524(void);
 BOOL func_020624d8(void);
-void MessageQueue_FreeBuffer(void *a, void *b);
+void MessageQueue_FreeBuffer(FieldPlayer *a, TimedBuffer021cb920 *b);
 
 typedef struct {
     u32 b0 : 1;
@@ -184,7 +184,7 @@ void func_ov002_021cd9c0(Task021ef530 *self) {
             break;
         case 5:
             if (!self->unk_48_1) {
-                void *t;
+                FieldPlayer *t;
                 func_0203cc58(self->fadeLen, 2, -1);
                 if (func_020624d8()) {
                     u8 buf[3];
@@ -197,8 +197,8 @@ void func_ov002_021cd9c0(Task021ef530 *self) {
                 }
                 t = data_ov000_021ccd30;
                 if (t != NULL) {
-                    MessageQueue_FreeBuffer(t, FIELD(t, 0x118, void *));
-                    FIELD(t, 0x118, void *) = NULL;
+                    MessageQueue_FreeBuffer(t, t->unk_118);
+                    t->unk_118 = NULL;
                 }
                 self->vfunc_0c(0);
                 func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
@@ -210,7 +210,7 @@ void func_ov002_021cd9c0(Task021ef530 *self) {
     } else if (keys & 2) {
         VObj *m = self->unk_40;
         sel = 5;
-        m->vfunc_a8(func_ov000_02154b58(m, (void *)5));
+        m->vfunc_a8(func_ov000_02154b58(m, 5));
     }
     if (self->unk_4c != sel) {
         self->vfunc_78(sel);

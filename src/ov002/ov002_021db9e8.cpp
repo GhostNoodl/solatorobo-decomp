@@ -2,53 +2,47 @@
 
 extern "C" {
 
-BOOL func_ov000_02191120(void *a);
-void func_ov000_02191780(void *a);
-s32 **func_ov000_02190a30(void *a, int b);
+BOOL func_ov000_02191120(Model0218fe1c *a);
+void func_ov000_02191780(Model0218fe1c *a);
+s32 **func_ov000_02190a30(Model0218fe1c *a, int b);
 
-typedef struct Key021db9e8 {
-    s16 t;
-    s16 a;
-    s16 b;
-} Key021db9e8;
+extern Ov002SndCue data_ov002_021eeffc[];
 
-extern Key021db9e8 data_ov002_021eeffc[];
-
-static inline void *ov002_Step_ctor(void *self) {
+static inline Obj021eff10 *ov002_Step_ctor(Obj021eff10 *self) {
     *(VFunc **)self = data_ov002_021eff10;
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, s32) = 0;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x14, s32) = 0;
-    FIELD(self, 0x18, s32) = 0;
-    FIELD(self, 0x1c, s32) = -1;
-    FIELD(self, 0x20, u8) = 0;
-    FIELD(self, 0x24, s32) = 0;
-    FIELD(self, 0x28, s32) = 0;
-    FIELD(self, 0x2c, s32) = 0;
-    FIELD(self, 0x30, s32) = 0;
-    FIELD(self, 0x34, u8) = 0;
+    self->owner = NULL;
+    self->unk_08 = NULL;
+    self->unk_0c = NULL;
+    self->unk_10 = NULL;
+    self->unk_14 = NULL;
+    self->unk_18 = 0;
+    self->unk_1c = -1;
+    self->unk_20 = 0;
+    self->unk_24 = 0;
+    self->unk_28 = 0;
+    self->unk_2c = NULL;
+    self->unk_30 = NULL;
+    self->unk_34[0] = 0;
     return self;
 }
 
-static inline void ov002_SetNext(void *self, void *a, s32 b) {
-    FIELD(self, 0x10, void *) = a;
-    FIELD(self, 0xc, s32) = b;
+static inline void ov002_SetNext(Obj021eff50 *self, VObj *a, s32 b) {
+    self->unk_10 = a;
+    self->unk_0c = b;
 }
 
-static inline u8 ov002_IsDone(void *p) {
-    u8 r; if (FIELD(p, 0x4, s32) == 5) { r = TRUE; } else { r = FALSE; } return r;
+static inline u8 ov002_IsDone(UiObj *p) {
+    u8 r; if (p->state == 5) { r = TRUE; } else { r = FALSE; } return r;
 }
 
-static inline bool ov002_Ready(u8 *m) {
-    return m[0x5d] != 0 && FIELD(m, 0x10, void *) != NULL && func_ov000_02191120(FIELD(m, 0x10, void *));
+static inline bool ov002_Ready(Obj021efe4c *m) {
+    return m->unk_5d != 0 && m->unk_10 != NULL && func_ov000_02191120(m->unk_10);
 }
 
 void func_ov002_021db9e8(Obj021eff50 *self) {
     switch (self->unk_14) {
     case 0:
-        if (self->unk_34 <= 0 || ov002_Ready(FIELD(((u8 *)self->board), 0x4, u8 *))) {
+        if (self->unk_34 <= 0 || ov002_Ready(self->board->field)) {
             self->unk_34 = 20;
             self->unk_14++;
         } else {
@@ -57,7 +51,7 @@ void func_ov002_021db9e8(Obj021eff50 *self) {
         }
     case 1:
         if (self->unk_34 <= 0) {
-            void *p = Heap_Alloc(0x134);
+            Obj021eff10 *p = (Obj021eff10 *)Heap_Alloc(sizeof(Obj021eff10));
             if (p != NULL) {
                 p = ov002_Step_ctor(p);
             }
@@ -75,12 +69,13 @@ void func_ov002_021db9e8(Obj021eff50 *self) {
                 {
                     void *saved;
                     HEAP_PUSH(saved);
-                    DELETE_VOBJ(FIELD(self, 0x18, VObj *));
+                    DELETE_VOBJ(self->unk_18);
                     HEAP_POP(saved);
                 }
             }
             self->unk_1c = self->unk_14;
-            self->unk_18 = (VObj *)(self->unk_10);          self->unk_14 = self->unk_0c;
+            self->unk_18 = self->unk_10;
+            self->unk_14 = self->unk_0c;
             self->unk_10 = NULL;
             self->unk_0c = -1;
             if (self->unk_18 != NULL) {
@@ -108,28 +103,28 @@ void func_ov002_021db9e8(Obj021eff50 *self) {
             return;
         }
         {
-            Key021db9e8 *k;
-            u8 *m = FIELD(((u8 *)self->board), 0x4, u8 *);
+            Ov002SndCue *k;
+            Obj021efe4c *m = self->board->field;
             s32 x;
-            func_ov000_02191780(FIELD(m, 0x10, void *));
+            func_ov000_02191780(m->unk_10);
             k = data_ov002_021eeffc;
-            FIELD(m, 0x60, Key021db9e8 *) = k;
+            m->cues = k;
             {
-                s32 **pp = func_ov000_02190a30(FIELD(m, 0x10, void *), 0);
+                s32 **pp = func_ov000_02190a30(m->unk_10, 0);
                 x = 0;
                 if (*pp != NULL) {
                     x = **pp;
                 }
             }
-            while (k->t < (x + 0x1000) >> 12) {
-                if (k->t < 0) {
+            while (k->time < (x + 0x1000) >> 12) {
+                if (k->time < 0) {
                     k--;
                     break;
                 }
                 k++;
             }
-            FIELD(m, 0x64, Key021db9e8 *) = k;
-            m[0x5d] = 0;
+            m->cue = k;
+            m->unk_5d = 0;
             func_ov002_021d9c04(self->board);
             self->unk_14 = 50;
         }

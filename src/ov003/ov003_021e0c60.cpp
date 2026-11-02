@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/ActorApi.h"
 #include "Main/Sys/FieldState.h"
 #include "ov000/ActorParts.h"
 #include "ov003/ActEx.h"
@@ -10,10 +11,8 @@ extern BOOL func_ov000_02190cb0(Model0218fe1c *p, const char *name, s32 a, s32 b
 extern BOOL func_ov000_02191120(Model0218fe1c *p);
 extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
-extern void func_ov000_0219433c(ActorEx *self);
 extern void *func_0207011c(s32 id);
 extern void func_ov000_0218f074(ActorRes *p, void *res, s32 a, s32 b, s32 c, s32 d);
-extern BOOL func_ov000_021946f8(ActorEx *self);
 extern BOOL func_ov000_0218f110(ActorRes *p);
 extern void Heap_Free(void *p);
 

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/ActorApi.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "ov003/Shot.h"
@@ -8,7 +9,6 @@ extern "C" {
 extern Ov003ShotDef data_ov003_021f4a34[];
 extern Ov003ShotStep data_ov003_021f49c4[];
 extern const VecFx32 data_02092a50;
-extern void func_ov000_02194758(void *self);
 extern BOOL func_ov000_02198360(ActorSub40 *p, u8 a, BOOL b);
 
 #define OV003AK_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])

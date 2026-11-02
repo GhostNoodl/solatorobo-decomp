@@ -82,7 +82,7 @@ void func_ov002_021dec74(Obj021efef0 *self) {
         return;
     }
     if (self->unk_22) {
-        void *t = FIELD(self->unk_0c, 0xa0, void *);
+        void *t = ((void *)self->unk_0c->unk_a0);
         if (t != NULL) {
             Obj021eff50 *w;
             func_0206ecd4(0x100, (u8 *)self + 0x38, FIELD(t, 0x38, u16));

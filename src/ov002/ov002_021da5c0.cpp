@@ -2,15 +2,15 @@
 
 extern "C" {
 
-void *func_ov000_0218e9c4(void *p);
+ActorRes *func_ov000_0218e9c4(void *p);
 extern char data_ov002_021efd98[];
 extern char data_ov002_021efda3[];
 extern char data_ov002_021efdba[];
 extern char data_ov002_021efdb3[];
 extern char data_ov002_021efdca[];
 
-static inline void *ov002_NewAnim(void) {
-    void *a = Heap_Alloc(0x138);
+static inline ActorRes *ov002_NewAnim(void) {
+    ActorRes *a = (ActorRes *)Heap_Alloc(sizeof(ActorRes));
     if (a != NULL) {
         a = func_ov000_0218e9c4(a);
     }
@@ -76,7 +76,7 @@ void func_ov002_021da5c0(Obj021efe7c *self) {
             ov002_AnimSetC((u8 *)q->unk_04, nm, file);
         }
     }
-    FIELD((u8 *)q->unk_04, 0x0, u16) = 0;
+    q->unk_04->unk_00 = 0;
     q->unk_0c = ov002_NewAnim();
     {
         char *file = data_ov002_021efdb3;
@@ -86,7 +86,7 @@ void func_ov002_021da5c0(Obj021efe7c *self) {
             ov002_AnimSetB((u8 *)q->unk_0c, nm, file);
         }
     }
-    FIELD((u8 *)q->unk_0c, 0x0, u16) = 0;
+    q->unk_0c->unk_00 = 0;
     q->unk_14 = ov002_NewAnim();
     {
         char *file = data_ov002_021efdca;
@@ -96,7 +96,7 @@ void func_ov002_021da5c0(Obj021efe7c *self) {
             ov002_AnimSetB((u8 *)q->unk_14, nm, file);
         }
     }
-    FIELD((u8 *)q->unk_14, 0x0, u16) = 0;
+    q->unk_14->unk_00 = 0;
 }
 
 }

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/ActorApi.h"
 #include "Main/Math/Rot16.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
@@ -29,7 +30,6 @@ extern void func_ov003_021f0c60(ActorEx *self, s32 a);
 extern BOOL func_ov000_02198360(ActorSub40 *p, s32 a, s32 b);
 extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s32 a, s32 b);
 extern void func_ov000_021915a0(Model0218fe1c *model);
-extern void Actor_Move(Actor *self, s32 a);
 extern void func_ov000_021987b8(ActorSub48 *ctl, s32 a, s32 b, s32 c);
 
 extern const Ov003BxDef data_ov003_021f6e60[];

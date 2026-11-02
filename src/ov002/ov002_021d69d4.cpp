@@ -1,4 +1,5 @@
 #include "ov002/ov002.h"
+#include "Main/Gfx/TextWin.h"
 
 extern "C" {
 
@@ -17,16 +18,16 @@ Task021efb24 *Ov002TaskVt_021efb24_Dtor(Task021efb24 *self) {
     return self;
 }
 
-void func_ov002_021d6a54(void *self, void *arg, int a) {
-    MenuCallback3 cb = FIELD(self, 0x80, MenuCallback3);
+void func_ov002_021d6a54(UiObj *self, void *arg, void *arg2) {
+    UiDrawItemFn cb = self->onDrawItem;
     if (cb != NULL) {
-        cb(arg, self, a);
+        cb(arg, self, arg2);
     }
 }
 
-int func_ov002_021d6a78(VObj *self) {
+int func_ov002_021d6a78(UiObj *self) {
     s8 base;
-    data_02097ce0->unk_004 = FIELD(self, 0x1c, s32);
+    data_02097ce0->unk_004 = self->font;
     base = (*(s8 **)GfxMgr_GetFont(data_02097ce0))[1];
     return base + self->vfunc_3c();
 }
@@ -39,65 +40,55 @@ int func_ov002_021d6ac4(VObj *self, int a, int b, int c) {
     return self->vfunc_60(a, b, c);
 }
 
-int func_ov002_021d6ad8(void *self) {
-    MenuCallback cb = FIELD(self, 0x90, MenuCallback);
-    void *node;
-    int r;
+BOOL func_ov002_021d6ad8(UiList *self) {
+    UiItemFn cb = self->unk_90;
+    BOOL r;
     if (cb == NULL) {
-        return 1;
+        return TRUE;
     }
-    node = FIELD(self, 0x98, void *);
-    if (node == NULL) {
-        node = NULL;
-    } else {
-        int n = FIELD(self, 0xb1, s8);
-        while (n-- != 0) {
-            node = FIELD(node, 0x2c, void *);
-        }
-    }
-    r = cb(self, node);
-    FIELD(self, 0x90, MenuCallback) = NULL;
+    r = cb(self, UiList_GetCurrent(self));
+    self->unk_90 = NULL;
     return r;
 }
 
-int func_ov002_021d6b34(void *self, void *arg) {
-    MenuCallback cb = FIELD(self, 0x8c, MenuCallback);
+BOOL func_ov002_021d6b34(UiList *self, UiListItem *item) {
+    UiItemFn cb = self->unk_8c;
     if (cb == NULL) {
-        return 1;
+        return TRUE;
     }
-    return cb(self, arg);
+    return cb(self, item);
 }
 
-int func_ov002_021d6b50(void *self, void *arg) {
-    MenuCallback cb = FIELD(self, 0x88, MenuCallback);
+BOOL func_ov002_021d6b50(UiList *self, UiListItem *item) {
+    UiItemFn cb = self->onCursor;
     if (cb == NULL) {
-        return 1;
+        return TRUE;
     }
-    return cb(self, arg);
+    return cb(self, item);
 }
 
-int func_ov002_021d6b6c(void *self, void *arg) {
-    MenuCallback cb = FIELD(self, 0x84, MenuCallback);
+BOOL func_ov002_021d6b6c(UiList *self, UiListItem *item) {
+    UiItemFn cb = self->onDecide;
     if (cb == NULL) {
-        return 1;
+        return TRUE;
     }
-    return cb(self, arg);
+    return cb(self, item);
 }
 
-static inline int func_ov002_021d6b88_calc(VObj *self) {
-    int a = self->vfunc_40() * FIELD(self, 0x20, s32);
+static inline int func_ov002_021d6b88_calc(UiObj *self) {
+    int a = self->vfunc_40() * self->rows;
     int b = self->vfunc_34();
     int c = self->vfunc_38();
     a += b;
     return a + c;
 }
 
-int func_ov002_021d6b88(VObj *self) {
+int func_ov002_021d6b88(UiObj *self) {
     int r;
-    if (FIELD(self, 0xc, u32) & 0x20000) {
-        FIELD(self, 0x20, s32) += 2;
+    if (self->flags & 0x20000) {
+        self->rows += 2;
         r = func_ov002_021d6b88_calc(self);
-        FIELD(self, 0x20, s32) -= 2;
+        self->rows -= 2;
         return r;
     }
     return func_ov002_021d6b88_calc(self);
@@ -123,8 +114,8 @@ int func_ov002_021d6c5c(void) {
     return 6;
 }
 
-int func_ov002_021d6c64(VObj *self) {
-    return self->vfunc_30() + FIELD(self, 0xc0, u8) + 0x12;
+int func_ov002_021d6c64(UiList *self) {
+    return self->vfunc_30() + self->unk_c0 + 0x12;
 }
 
 int func_ov002_021d6c88(void) {
@@ -135,44 +126,44 @@ int func_ov002_021d6c90(void) {
     return 0;
 }
 
-int func_ov002_021d6c98(void *self) {
-    return FIELD(self, 0xb8, void *) != NULL ? 0x12 : 0;
+int func_ov002_021d6c98(UiList *self) {
+    return self->unk_b8 != NULL ? 0x12 : 0;
 }
 
-int func_ov002_021d6cac(void *self) {
-    return FIELD(self, 0xc1, s8) * 8;
+int func_ov002_021d6cac(UiList *self) {
+    return self->unk_c1 * 8;
 }
 
-int func_ov002_021d6cb8(void *self) {
+int func_ov002_021d6cb8(UiList *self) {
     int r = func_ov002_021d6cf0(self);
-    if (FIELD(self, 0xb4, void *) != NULL && func_02054f10(FIELD(self, 0xb4, void *), 0xffff) == 0) {
+    if (self->unk_b4 != NULL && func_02054f10(self->unk_b4, 0xffff) == 0) {
         r = 0;
     }
     return r;
 }
 
-static inline BOOL func_ov002_021d6cf0_check(void *o) {
-    if (FIELD(o, 0x6c, void *) == NULL) {
+static inline BOOL func_ov002_021d6cf0_check(TextWin *o) {
+    if (o->unk_6c == NULL) {
         return TRUE;
     }
-    if (func_0203e63c((unsigned int)FIELD(o, 0x6c, void *))) {
-        FIELD(o, 0x6c, void *) = NULL;
+    if (func_0203e63c((unsigned int)o->unk_6c)) {
+        o->unk_6c = NULL;
     } else {
-        return !FIELD(o, 4, Bits32).b6 ? TRUE : FALSE;
+        return !o->noVram ? TRUE : FALSE;
     }
     return TRUE;
 }
-BOOL func_ov002_021d6cf0(void *self) {
+BOOL func_ov002_021d6cf0(UiObj *self) {
     BOOL r = TRUE;
-    void *o;
-    if (FIELD(self, 0x10, void *) != NULL && !func_02054f10(FIELD(self, 0x10, void *), 0xffff)) {
+    TextWin *o;
+    if (self->model != NULL && !func_02054f10(self->model, 0xffff)) {
         r = FALSE;
     }
-    o = FIELD(self, 0x14, void *);
+    o = (TextWin *)self->title;
     if (o != NULL && !func_ov002_021d6cf0_check(o)) {
         r = FALSE;
     }
-    o = FIELD(self, 0x18, void *);
+    o = (TextWin *)self->caption;
     if (o != NULL && !func_ov002_021d6cf0_check(o)) {
         r = FALSE;
     }
@@ -200,21 +191,21 @@ VObj *Ov002Vt_021efca4_Dtor(VObj *self) {
 }
 
 void func_ov002_021d6e48(Obj021efe4c *self) {
-    self->unk_18 = 0;
-    self->unk_1c = 0;
-    self->unk_20 = 0;
+    self->trans.x = 0;
+    self->trans.y = 0;
+    self->trans.z = 0;
     self->unk_24 = 0;
     self->unk_26 = 0;
     self->unk_28 = 0;
-    MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x2c));
-    self->unk_50 = 0x1000;
-    self->unk_54 = 0x1000;
-    self->unk_58 = 0x1000;
-    self->unk_5c = 0;
+    MTX_Identity33_(&self->rot);
+    self->scale.x = 0x1000;
+    self->scale.y = 0x1000;
+    self->scale.z = 0x1000;
+    self->visible = 0;
     self->unk_5d = 0;
-    MI_CpuFill8((u8 *)self + 0x6c, 0, 4);
-    self->unk_60 = 0;
-    self->unk_64 = 0;
+    MI_CpuFill8(&self->map, 0, 4);
+    self->cues = NULL;
+    self->cue = NULL;
     self->unk_68 = 0;
     self->map = NULL;
     self->unk_04 = NULL;
@@ -224,9 +215,9 @@ void func_ov002_021d6e48(Obj021efe4c *self) {
     self->unk_14 = NULL;
 }
 
-static inline void func_ov002_021d6ec4_release(void *obj) {
-    void **res = FIELD(*(void **)obj, 0xc, void **);
-    NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet((NNSG3dResFileHeader *)(res != NULL ? *res : NULL)));
+static inline void func_ov002_021d6ec4_release(Model0218fe1c *obj) {
+    ResHandle *res = obj->res->mdl_handle;
+    NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet((NNSG3dResFileHeader *)(res != NULL ? res->unk_00 : NULL)));
 }
 
 void func_ov002_021d6ec4(Obj021efe4c *self) {
@@ -236,13 +227,13 @@ void func_ov002_021d6ec4(Obj021efe4c *self) {
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_WITH(FIELD(self, 0x8, void *), func_ov000_0218fee4);
+        DELETE_WITH(self->unk_08, func_ov000_0218fee4);
         HEAP_POP(saved);
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_WITH(FIELD(self, 0xc, void *), func_ov000_0218ea20);
+        DELETE_WITH(self->unk_0c, func_ov000_0218ea20);
         HEAP_POP(saved);
     }
     if (self->unk_10 != NULL) {
@@ -251,19 +242,19 @@ void func_ov002_021d6ec4(Obj021efe4c *self) {
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_WITH(FIELD(self, 0x10, void *), func_ov000_0218fee4);
+        DELETE_WITH(self->unk_10, func_ov000_0218fee4);
         HEAP_POP(saved);
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_WITH(FIELD(self, 0x14, void *), func_ov000_0218ea20);
+        DELETE_WITH(self->unk_14, func_ov000_0218ea20);
         HEAP_POP(saved);
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_WITH(FIELD(self, 0x4, void *), func_ov000_0218ea20);
+        DELETE_WITH(self->unk_04, func_ov000_0218ea20);
         HEAP_POP(saved);
     }
 }

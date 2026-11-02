@@ -2,23 +2,17 @@
 
 extern "C" {
 
-typedef struct Ev021d7320 {
-    s16 time;
-    s16 unk_02;
-    u16 id;
-} Ev021d7320;
-
 void func_ov002_021d7320(Obj021efe4c *self, s32 t, s32 range) {
-    Ev021d7320 *p = FIELD(self, 0x64, Ev021d7320 *);
+    Ov002SndCue *p = self->cue;
     s32 v;
-    if (p == NULL || FIELD(self, 0x60, Ev021d7320 *) == NULL) {
+    if (p == NULL || self->cues == NULL) {
         return;
     }
     if (self->unk_5d) {
         v = p->time << 12;
         while (v >= 0 && v < t) {
             func_02049a48(data_02097e4c, p->id, -1, -1, -1);
-            p = ++FIELD(self, 0x64, Ev021d7320 *);
+            p = ++self->cue;
             v = p->time << 12;
         }
     } else {
@@ -26,10 +20,10 @@ void func_ov002_021d7320(Obj021efe4c *self, s32 t, s32 range) {
         v = p->time << 12;
         while (v < t && v >= lo) {
             func_02049a48(data_02097e4c, p->id, -1, -1, -1);
-            if (FIELD(self, 0x64, Ev021d7320 *) == FIELD(self, 0x60, Ev021d7320 *)) {
+            if (self->cue == self->cues) {
                 return;
             }
-            p = --FIELD(self, 0x64, Ev021d7320 *);
+            p = --self->cue;
             v = p->time << 12;
         }
     }

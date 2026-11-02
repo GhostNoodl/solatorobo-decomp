@@ -14,23 +14,23 @@ extern VFunc data_ov002_021ef684[];
 extern VFunc data_ov002_021f002c[];
 void func_ov000_021c3af4(void *self);
 void func_ov000_021c22d8(void *self);
-void func_ov002_021e2f54(void *self);
+void func_ov002_021e2f54(Obj021f002c *self);
 void func_ov000_021c3fd4(void *list, void *item);
-BOOL func_ov002_021ddcbc(void *self, void *ev);
-BOOL func_ov002_021ddd30(void *self, void *ev);
+BOOL func_ov002_021ddcbc(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
+BOOL func_ov002_021ddd30(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
 
-static inline void ov002_AddItem(void *list, s32 k, void *a, void *b) {
-    u8 *q = (u8 *)Heap_Alloc(0x4c);
+static inline void ov002_AddItem(LoBase021ccb54_021ccbe0 *list, s32 k, void *str, void *desc) {
+    Obj021f002c *q = (Obj021f002c *)Heap_Alloc(sizeof(Obj021f002c));
     if (q != NULL) {
         *(VFunc **)q = data_ov002_021ef684;
         func_ov000_021c22d8(q);
         *(VFunc **)q = data_ov002_021f002c;
         func_ov002_021e2f54(q);
     }
-    FIELD(q, 0x4, s32) = k;
-    FIELD(q, 0x3c, void *) = a;
-    FIELD(q, 0x40, void *) = b;
-    FIELD(q, 0x44, u8) = 1;
+    q->index = k;
+    q->str = str;
+    q->unk_40 = desc;
+    q->unk_44 = 1;
     func_ov000_021c3fd4(list, q);
 }
 
@@ -109,10 +109,10 @@ void func_ov002_021ddf18(Obj021efef0 *self, Obj021eff50 *owner, s32 h, Obj021efe
     p->rows = 5;
     self->unk_08->width = 0x69;
     {
-        u8 *s_0 = ((u8 *)self->unk_08);
-        FIELD(s_0, 0x64, s16) = 0x96;
-        FIELD(s_0, 0x66, s16) = 0x19;
-        FIELD(s_0, 0x68, s16) = -0x199a;
+        LoBase021ccb54_021ccbe0 *s = self->unk_08;
+        s->posX = 0x96;
+        s->posY = 0x19;
+        s->posZ = -0x199a;
     }
     self->unk_08->flags &= ~0x20000;
     self->unk_08->flags &= ~0x40000;
@@ -123,10 +123,10 @@ void func_ov002_021ddf18(Obj021efef0 *self, Obj021eff50 *owner, s32 h, Obj021efe
     ov002_AddItem(self->unk_08, 4, MsgRes_GetString(g, 0x4c), MsgRes_GetString(g, 0x164));
     self->unk_08->vfunc_08();
     {
-        u8 *s_1 = ((u8 *)self->unk_08);
-        FIELD(s_1, 0x58, s32) = 0x100;
-        FIELD(s_1, 0x5c, s32) = 0;
-        FIELD(s_1, 0x60, s32) = -0x199a;
+        LoBase021ccb54_021ccbe0 *s = self->unk_08;
+        s->slideX = 0x100;
+        s->slideY = 0;
+        s->slideZ = -0x199a;
     }
     self->unk_08->slideMode = 1;
     self->unk_08->owner = (u8 *)self + 0x20;

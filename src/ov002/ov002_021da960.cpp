@@ -3,36 +3,37 @@
 extern "C" {
 
 
-BOOL func_ov000_021903b4(void *a);
+BOOL func_ov000_021903b4(Model0218fe1c *a);
 
 void func_ov002_021da960(Obj021efe7c *self) {
-    u8 *w = ((u8 *)self->board);
-    u8 *cam = FIELD(w, 0x8c, u8 *);
-    u8 *q;
-    u8 *n;
-    NNS_G3dGlb.camPos = FIELD(cam, 0x0, VecFx32);
-    NNS_G3dGlb.camUp = FIELD(cam, 0x18, VecFx32);
-    NNS_G3dGlb.camTarget = FIELD(cam, 0xc, VecFx32);
-    MTX_LookAt((VecFx32 *)cam, (VecFx32 *)(cam + 0x18), (VecFx32 *)(cam + 0xc), (MtxFx43 *)data_02092844);
+    Obj021efe6c *w = self->board;
+    Ov002CamPos *cam = w->cam;
+    Obj021efe4c *q;
+    Obj021efeb8 *n;
+    NNS_G3dGlb.camPos = cam->eye;
+    NNS_G3dGlb.camUp = cam->up;
+    NNS_G3dGlb.camTarget = cam->at;
+    MTX_LookAt(&cam->eye, &cam->up, &cam->at, (MtxFx43 *)data_02092844);
     NNS_G3dGlb.flag &= ~0xe8;
     MTX_PerspectiveW(FX_SINCOS(0x2aa), FX_SINCOS(0x2ab), 0x1548, 0x333, 0x19000, 0x1000, (MtxFx44 *)data_02092800);
     NNS_G3dGlb.flag &= ~0x50;
-    q = FIELD(w, 0x4, u8 *);
-    if (q[0x5c] != 0) {
-        MI_Copy36B(q + 0x2c, FIELD(q, 0x8, u8 *) + 0x84);
-        FIELD(FIELD(q, 0x8, u8 *), 0x78, VecFx32) = FIELD(q, 0x18, VecFx32);
-        FIELD(FIELD(q, 0x8, u8 *), 0xa8, VecFx32) = FIELD(q, 0x50, VecFx32);
-        func_ov000_021903b4(FIELD(q, 0x8, void *));
-        MI_Copy36B(q + 0x2c, FIELD(q, 0x10, u8 *) + 0x84);
-        FIELD(FIELD(q, 0x10, u8 *), 0x78, VecFx32) = FIELD(q, 0x18, VecFx32);
-        FIELD(FIELD(q, 0x10, u8 *), 0xa8, VecFx32) = FIELD(q, 0x50, VecFx32);
-        func_ov000_021903b4(FIELD(q, 0x10, void *));
+    q = w->field;
+    if (q->visible != 0) {
+        MI_Copy36B(&q->rot, &q->unk_08->rot);
+        q->unk_08->trans = q->trans;
+        q->unk_08->scale = q->scale;
+        func_ov000_021903b4(q->unk_08);
+        MI_Copy36B(&q->rot, &q->unk_10->rot);
+        q->unk_10->trans = q->trans;
+        q->unk_10->scale = q->scale;
+        func_ov000_021903b4(q->unk_10);
     }
-    for (n = FIELD(w, 0x6c, u8 *); n != NULL; n = FIELD(n, 0x70, u8 *)) {
-        if (n[0x4a] == 2) {
-            FIELD(n, 0xac, s32) = FIELD(n, 0xa8, u16) <= FIELD(w, 0x8a, u16) ? 2 : 1;
+    for (n = w->pieces; n != NULL; n = n->next) {
+        if (n->unk_4a == 2) {
+            Obj021efed4 *p = (Obj021efed4 *)n;
+            p->unk_ac = p->unk_a8 <= (u16)w->unk_8a ? 2 : 1;
         }
-        ((VObj *)n)->vfunc_10();
+        n->vfunc_10();
     }
     if (self->unk_08 != NULL) {
         self->unk_08->vfunc_14();
@@ -41,52 +42,53 @@ void func_ov002_021da960(Obj021efe7c *self) {
 
 
 void func_ov002_021dab58(Obj021efe7c *self, s32 mode) {
-    VObj *p;
     if (((void *)self->unk_08) != NULL && self->unk_0c == mode) {
         return;
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(FIELD(self, 0x8, VObj *));
+        DELETE_VOBJ(self->unk_08);
         HEAP_POP(saved);
     }
     switch (mode) {
-    case 0:
-        p = (VObj *)Heap_Alloc(0x24);
+    case 0: {
+        Obj021eff74 *p = (Obj021eff74 *)Heap_Alloc(sizeof(Obj021eff74));
         if (p != NULL) {
-            FIELD(p, 0x4, s32) = 0;
+            p->board = NULL;
             *(VFunc **)p = data_ov002_021eff74;
-            FIELD(p, 0x8, s32) = 0;
-            FIELD(p, 0xc, s32) = 0;
-            FIELD(p, 0x10, s32) = 0;
-            FIELD(p, 0x14, s32) = 0;
-            FIELD(p, 0x18, s32) = 0;
-            FIELD(p, 0x1c, s32) = 0;
-            FIELD(p, 0x20, u8) = 0;
+            p->unk_08 = 0;
+            p->unk_0c = NULL;
+            p->unk_10 = NULL;
+            p->unk_14 = 0;
+            p->unk_18 = 0;
+            p->unk_1c = 0;
+            p->unk_20 = 0;
         }
         self->unk_08 = p;
-        FIELD(p, 0x4, s32) = FIELD(self, 0x4, s32);
+        p->board = self->board;
         self->unk_08->vfunc_08();
         break;
-    case 1:
-        p = (VObj *)Heap_Alloc(0x38);
+    }
+    case 1: {
+        Obj021eff50 *p = (Obj021eff50 *)Heap_Alloc(sizeof(Obj021eff50));
         if (p != NULL) {
-            FIELD(p, 0x4, s32) = 0;
+            p->board = NULL;
             *(VFunc **)p = data_ov002_021eff50;
-            FIELD(p, 0x8, s32) = 1;
-            FIELD(p, 0xc, s32) = -1;
-            FIELD(p, 0x10, s32) = 0;
-            FIELD(p, 0x14, s32) = 0;
-            FIELD(p, 0x18, s32) = 0;
-            FIELD(p, 0x20, s32) = 0;
-            FIELD(p, 0x24, s32) = 0;
-            FIELD(p, 0x34, s32) = 0;
+            p->unk_08 = 1;
+            p->unk_0c = -1;
+            p->unk_10 = NULL;
+            p->unk_14 = 0;
+            p->unk_18 = NULL;
+            p->unk_20 = NULL;
+            p->unk_24 = NULL;
+            p->unk_34 = 0;
         }
         self->unk_08 = p;
-        FIELD(p, 0x4, s32) = FIELD(self, 0x4, s32);
+        p->board = self->board;
         self->unk_08->vfunc_08();
         break;
+    }
     case 2:
         break;
     case 3:

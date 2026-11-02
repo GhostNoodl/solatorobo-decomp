@@ -755,7 +755,9 @@ struct LoBase021ccb54_021ccbe0 : public UiObj {
     VObj *unk_94;
     u8 unk_98[0x4];
     s32 unk_9c;
-    u8 unk_a0[0x18];
+    VObj *unk_a0; // a row (ov002 reads its id and texts)
+    VObj *unk_a4; // a row (ov002 reads its index)
+    u8 unk_a8[0x10];
     s32 unk_b8;
     u8 unk_bc[0x4];
     s32 unk_c0;

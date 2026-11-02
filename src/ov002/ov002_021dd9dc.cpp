@@ -11,42 +11,37 @@ typedef struct Ent021dd9dc {
     u16 rest : 8;
 } Ent021dd9dc;
 
-typedef struct Rot021dd9dc {
-    u16 lo : 8;
-    u16 rot : 2;
-    u16 hi : 6;
-} Rot021dd9dc;
 
 
-static inline void ov002_Piece_SetRot(void *self, u16 rot) {
-    FIELD(self, 0x52, Rot021dd9dc).rot = rot;
+static inline void ov002_Piece_SetRot(Obj021efeb8 *self, u16 rot) {
+    self->shape.rot = rot;
     switch (rot) {
     case 0:
-        FIELD(self, 0x10, s16) = 0;
-        FIELD(self, 0x12, s16) = 0;
-        FIELD(self, 0x14, s16) = 0;
-        MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x18));
+        self->unk_10 = 0;
+        self->unk_12 = 0;
+        self->unk_14 = 0;
+        MTX_Identity33_(&self->rot);
         break;
     case 1:
-        FIELD(self, 0x10, s16) = 0;
-        FIELD(self, 0x12, u16) = 0x3fff;
-        FIELD(self, 0x14, s16) = 0;
-        MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x18));
-        MTX_RotY33_((MtxFx33 *)((u8 *)self + 0x18), FX_SINCOS(0x3ff * 2), FX_SINCOS(0x3ff * 2 + 1));
+        self->unk_10 = 0;
+        self->unk_12 = 0x3fff;
+        self->unk_14 = 0;
+        MTX_Identity33_(&self->rot);
+        MTX_RotY33_(&self->rot, FX_SINCOS(0x3ff * 2), FX_SINCOS(0x3ff * 2 + 1));
         break;
     case 2:
-        FIELD(self, 0x10, s16) = 0;
-        FIELD(self, 0x12, u16) = 0x7fff;
-        FIELD(self, 0x14, s16) = 0;
-        MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x18));
-        MTX_RotY33_((MtxFx33 *)((u8 *)self + 0x18), FX_SINCOS(0x7ff * 2), FX_SINCOS(0x7ff * 2 + 1));
+        self->unk_10 = 0;
+        self->unk_12 = 0x7fff;
+        self->unk_14 = 0;
+        MTX_Identity33_(&self->rot);
+        MTX_RotY33_(&self->rot, FX_SINCOS(0x7ff * 2), FX_SINCOS(0x7ff * 2 + 1));
         break;
     case 3:
-        FIELD(self, 0x10, s16) = 0;
-        FIELD(self, 0x12, u16) = 0xbffd;
-        FIELD(self, 0x14, s16) = 0;
-        MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x18));
-        MTX_RotY33_((MtxFx33 *)((u8 *)self + 0x18), FX_SINCOS(0xbff * 2), FX_SINCOS(0xbff * 2 + 1));
+        self->unk_10 = 0;
+        self->unk_12 = 0xbffd;
+        self->unk_14 = 0;
+        MTX_Identity33_(&self->rot);
+        MTX_RotY33_(&self->rot, FX_SINCOS(0xbff * 2), FX_SINCOS(0xbff * 2 + 1));
         break;
     }
 }

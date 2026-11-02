@@ -27,6 +27,7 @@
 #include "ov000/TaskList.h"
 #include "ov000/VObj.h"
 #include "ov000/UiObj.h"
+#include "ov000/MessageQueue.h"
 #include "ov000/ObjLayouts.h"
 #include "ov002/Ov002Task.h"
 #include "ov002/StageObj.h"
@@ -175,7 +176,6 @@ static inline bool func_ov002_isMode4(void) {
         }                               \
     } while (0)
 
-#define TASK_VOBJ(self, off) FIELD(self, off, VObj *)
 
 static inline bool Task_testFlags(Task *self, u32 mask) {
     return self->unk_04 & mask;
@@ -322,7 +322,7 @@ static inline bool Task_isFlag1Clear(Task *self) {
 void func_ov002_021dab58(Obj021efe7c *a, int b);
 BOOL func_ov002_021da8d8(Obj021efe7c *a);
 extern VFunc data_ov002_021efc24[];
-void func_ov002_021d5f60(void *a);
+void func_ov002_021d5f60(Task021efc24 *self);
 void *Task_FindById(int id);
 extern VFunc data_ov002_021efb04[];
 void func_ov000_02163254(void *self);
@@ -338,16 +338,13 @@ extern char data_ov002_021efaeb[];
 extern char data_ov002_021efae1[];
 
 void func_ov002_021da39c(void);
-typedef int (*MenuCallback)(void *self, void *arg);
-typedef void (*MenuCallback2)(void *arg, void *self);
 
 static inline bool func_ov002_isState2(void *self) {
     return FIELD(self, 0x4, s32) == 2;
 }
 
-typedef void (*MenuCallback3)(void *arg, void *self, int a);
 
-int func_ov002_021d6cf0(void *self);
+BOOL func_ov002_021d6cf0(UiObj *self);
 
 void *func_ov000_0218fee4(void *p);
 void *func_ov000_0218ea20(void *p);
@@ -441,7 +438,7 @@ extern VFunc data_ov002_021efe4c[];
 extern VFunc data_ov002_021f0684[];
 extern VFunc data_ov002_021f00ec[];
 extern Ov002Obj021f07d4 *data_ov002_021f0f98; // the model being drawn (func_ov002_021e5b08)
-void func_ov002_021ddd80(void *self);
+void func_ov002_021ddd80(Obj021efef0 *self);
 void func_ov002_021da430(Obj021efe7c *self);
 void func_ov002_021dddd0(Obj021efef0 *self);
 void func_ov002_021dbdb8(Obj021eff10 *self);
@@ -503,8 +500,8 @@ typedef struct Bits32 {
 extern VFunc data_ov002_021f00fc[];
 extern VFunc data_ov002_021f0cf8[];
 extern VFunc data_ov002_021f0ef4[];
-void *func_ov000_02154b58(void *a, void *b);
-void func_ov000_02153c48(void *a, s32 b, int c, int d, u8 e);
+UiListItem *func_ov000_02154b58(void *list, u16 id);
+void func_ov000_02153c48(UiListItem *item, s32 font, BOOL show, BOOL center, u8 e);
 
 extern VFunc data_ov002_021efeb8[];
 extern VFunc data_ov002_021f0674[];
@@ -603,7 +600,7 @@ static inline void func_ov002_021e4d4c_inline(Ov002Obj *self) {
 
 void func_ov002_021ec2ac(Ov002Snd021f0cf8 *self);
 
-BOOL func_ov002_021d52e0(void *self, void *ev);
+BOOL func_ov002_021d52e0(UiList *self, UiListItem *ev);
 typedef BOOL (*EvCallback)(void *, void *);
 void func_ov000_02152294(void *self, u16 a, int b, EvCallback cb);
 u8 LangData_GetLang(void);
@@ -747,7 +744,7 @@ void func_ov002_021e6290(Ov002Obj021f075c *self);
 void *func_0206ec48(u16 id);
 void func_ov002_021e019c(Obj021eff30 *self, u8 a, u8 b);
 
-void func_ov000_0216f844(void *p, int a);
+void func_ov000_0216f844(TimedBuffer021cb920 *p, int a);
 extern VFunc data_ov002_021f070c[];
 
 extern const u8 data_ov002_021eef74[];

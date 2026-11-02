@@ -92,7 +92,7 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
         case 0: {
             int i;
             u16 sum = 0;
-            void *p;
+            Obj021efef0 *p;
             for (i = 0; i < 100; i++) {
                 sum += w->unk_08[i];
             }
@@ -102,14 +102,14 @@ void func_ov002_021dc83c(Obj021eff10 *self) {
                 self->unk_20 = 1;
                 return;
             }
-            p = Heap_Alloc(0x138);
+            p = (Obj021efef0 *)Heap_Alloc(sizeof(Obj021efef0));
             if (p != NULL) {
                 *(VFunc **)p = data_ov002_021efef0;
                 func_ov002_021ddd80(p);
             }
             {
                 Obj021eff50 *t = self->owner;
-                t->unk_10 = (VObj *)p;
+                t->unk_10 = p;
                 t->unk_0c = 0x14;
             }
             func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/ActorApi.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "ov003/Actor.h"
@@ -33,7 +34,6 @@ void HitSphere_Link(ActorSub48 *ctl);
 void func_0203f364(ActorSub48 *ctl);
 void func_ov000_0218996c(u8 a, u8 b);
 void Actor_SendMsg(Ov003Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
-void Actor_Move(Ov003Actor *self, s32 a);
 BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s16 blend, u8 force);
 BOOL func_ov000_02191120(Model0218fe1c *model);
 void func_ov000_021915a0(Model0218fe1c *model);

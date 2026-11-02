@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021e3620(void *self, void *a, s32 b);
+void func_ov002_021e3620(UiList *self, u16 id, s32 b);
 
 
 void func_ov000_021b1d28(void);
@@ -11,37 +11,37 @@ void func_0206d390(void *a, u8 b, u8 c);
 
 s32 func_02049bdc(void *a, int b, int c);
 
-void func_ov002_021d5f60(void *self) {
-    void *g = FIELD(self, 0x50, void *);
+void func_ov002_021d5f60(Task021efc24 *self) {
+    UiList *g = self->unk_50;
     u16 prev;
-    u8 *p;
+    UiListItem *p;
     u8 i;
     if (g == NULL) {
         return;
     }
-    prev = FIELD(self, 0x74, u16);
-    p = FIELD(g, 0x98, u8 *);
+    prev = self->unk_74;
+    p = g->topItem;
     if (p == NULL) {
         p = NULL;
     } else {
-        s32 n = FIELD(g, 0xb1, s8);
+        s32 n = g->cursor;
         while (n-- != 0) {
-            p = FIELD(p, 0x2c, u8 *);
+            p = p->next;
         }
     }
-    FIELD(self, 0x74, u16) = FIELD(p, 0x6, u16);
-    func_ov002_021e3620(FIELD(self, 0x50, void *), (void *)(u32)prev, 0);
-    func_ov002_021e3620(FIELD(self, 0x50, void *), (void *)(u32)FIELD(self, 0x74, u16), 4);
-    func_ov000_0215bb14(FIELD(self, 0x4c, void *), func_0206ec48(FIELD(self, 0x74, u16)));
-    FIELD(self, 0x4c, VObj *)->vfunc_70();
-    data_0214a424->bits18.unk_3 = FIELD(self, 0x74, u16);
+    self->unk_74 = p->id;
+    func_ov002_021e3620(self->unk_50, prev, 0);
+    func_ov002_021e3620(self->unk_50, self->unk_74, 4);
+    func_ov000_0215bb14(self->unk_4c, func_0206ec48(self->unk_74));
+    self->unk_4c->vfunc_70();
+    data_0214a424->bits18.unk_3 = self->unk_74;
     if (func_ov000_0219bf90()) {
         func_ov000_021b1d28();
     } else {
         data_0214a424->bits18.mode = 1;
     }
     for (i = 0; i < 5; i++) {
-        s16 v = ((s16 *)((u8 *)self + 0x60))[i] + ((s16 *)((u8 *)self + 0x6a))[i];
+        s16 v = self->unk_60[i] + self->unk_6a[i];
         if (v < 0) {
             v = 0;
         } else if (v > 99) {

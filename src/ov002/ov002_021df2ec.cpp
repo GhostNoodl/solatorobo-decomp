@@ -101,7 +101,7 @@ void func_ov002_021df2ec(Obj021eff30 *self, Obj021eff50 *own, s32 y, s32 x, u16 
         o->unk_10 = 0;
         o->unk_12 = 0;
         o->unk_14 = 0;
-        MTX_Identity33_(&o->unk_18);
+        MTX_Identity33_(&o->rot);
         o = self->unk_10;
         map = w->field->map;
         if (o->unk_ac != 9 && o->unk_a4 == 0) {

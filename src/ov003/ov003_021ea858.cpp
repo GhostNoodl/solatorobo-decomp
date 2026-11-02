@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/ActorApi.h"
 #include "ov003/ActEx.h"
 
 extern "C" {
@@ -9,7 +10,6 @@ typedef struct {
     u8 unk_16_2 : 1;
 } Ov003Player;
 
-extern void func_ov000_02194758(ActorEx *self);
 extern Ov003Player *func_ov000_0219bf90(void);
 extern void *Heap_Alloc(u32 size);
 extern ActorSub4c *func_ov000_02199b00(ActorSub4c *p);

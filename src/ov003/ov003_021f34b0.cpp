@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/ActorApi.h"
 #include "ov003/Prop.h"
 
 extern "C" {
@@ -12,7 +13,6 @@ extern void func_ov000_0218f074(ActorRes *p, void *res, s32 a, s32 b, s32 c, s32
 extern BOOL func_ov000_0218cf5c(Actor *self);
 extern BOOL func_ov000_0218f110(ActorRes *p);
 extern void Heap_Free(void *p);
-extern void *func_ov000_0219429c(void *p);
 extern void func_ov000_021b4b0c(void *p);
 
 void Ov003ActVt_021fa2e0_Start(Ov003Prop *self) {

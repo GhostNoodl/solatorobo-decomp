@@ -24,7 +24,7 @@ static inline BOOL ov002_021d37f8_on(void *p) {
     return r ? TRUE : FALSE;
 }
 static inline BOOL ov002_021d37f8_busy(FieldPlayer *t) {
-    void *p = FIELD(t, 0x118, void *);
+    void *p = t->unk_118;
     if (p == NULL) {
         return FALSE;
     }
@@ -32,8 +32,8 @@ static inline BOOL ov002_021d37f8_busy(FieldPlayer *t) {
 }
 
 static inline void ov002_021d37f8_stop(FieldPlayer *t) {
-    if (FIELD(t, 0x118, void *) != NULL) {
-        func_ov000_0216f844(FIELD(t, 0x118, void *), 0);
+    if (t->unk_118 != NULL) {
+        func_ov000_0216f844(t->unk_118, 0);
     }
 }
 

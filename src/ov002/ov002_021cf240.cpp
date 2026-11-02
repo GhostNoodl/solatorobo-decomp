@@ -8,7 +8,7 @@ void func_ov002_021cf240(void) {
 void func_ov002_021cf244(Task021ef4b0 *self) {
     if (self->fadeRatio != 0) {
         func_ov000_0217357c(self);
-        TASK_VOBJ(self, 0x3c)->vfunc_20();
+        self->unk_3c->vfunc_20();
         self->unk_40->vfunc_20();
     }
 }

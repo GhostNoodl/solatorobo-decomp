@@ -2,17 +2,17 @@
 
 extern "C" {
 
-void *func_ov000_021c4014(void *list, int idx);
-void func_ov000_021c414c(void *list, void *item);
-void func_ov000_021c403c(void *list, int idx);
-void func_ov002_021e331c(void *self);
-void *func_ov002_021def98(Obj021efef0 *self, u32 kind);
-void *func_ov002_021e35c0(void *self, u16 id);
+Ov002Row *func_ov000_021c4014(LoBase021ccb54_021ccbe0 *list, int idx);
+void func_ov000_021c414c(LoBase021ccb54_021ccbe0 *list, Ov002Row *item);
+void func_ov000_021c403c(LoBase021ccb54_021ccbe0 *list, int idx);
+void func_ov002_021e331c(Obj021f002c *self);
+LoBase021ccb54_021ccbe0 *func_ov002_021def98(Obj021efef0 *self, u32 kind);
+Obj021f002c *func_ov002_021e35c0(LoBase021ccb54_021ccbe0 *self, u16 id);
 void func_ov002_021dec74(Obj021efef0 *self);
 void func_0206ecd4(int a, void *b, u16 c);
 
-static inline bool isState5(void *p) {
-    return FIELD(p, 0x4, s32) == 5;
+static inline bool isState5(UiObj *p) {
+    return p->state == 5;
 }
 
 static inline void ov002_Anim_Update(Ov002Mdl021efe3c *mdl) {
@@ -29,12 +29,12 @@ static inline void ov002_Anim_Update(Ov002Mdl021efe3c *mdl) {
     mdl->frame = (mdl->frame + 0x1000) % mdl->frameCount;
 }
 
-static inline void ov002_SetFlag1(void *p) {
-    FIELD(p, 0xc, Bits32).b1 = 1;
+static inline void ov002_SetFlag1(UiObj *p) {
+    p->hidden = 1;
 }
 
-static inline void ov002_ClrFlag1(void *p) {
-    FIELD(p, 0xc, Bits32).b1 = 0;
+static inline void ov002_ClrFlag1(UiObj *p) {
+    p->hidden = 0;
 }
 
 void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
@@ -73,12 +73,12 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
             cnt[info[0]] += w[i];
         }
         for (i = 0; i < 5; i++) {
-            u8 *o = (u8 *)func_ov000_021c4014(self->unk_08, i);
-            FIELD(o, 0x44, u8) = cnt[i] != 0 ? TRUE : FALSE;
+            Obj021f002c *o = (Obj021f002c *)func_ov000_021c4014(self->unk_08, i);
+            o->unk_44 = cnt[i] != 0 ? TRUE : FALSE;
             func_ov002_021e331c(o);
         }
         ov002_ClrFlag1(self->unk_08);
-        func_ov000_0215bb14(((void *)a->unk_20), FIELD(FIELD(((u8 *)self->unk_08), 0xa0, u8 *), 0x40, void *));
+        func_ov000_0215bb14(a->unk_20, ((Obj021f002c *)self->unk_08->unk_a0)->unk_40);
         a->unk_20->vfunc_70();
         self->unk_20 = 0;
         self->unk_21 = 0;
@@ -91,12 +91,12 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
             self->unk_1c = 0x1e;
         } else if (self->unk_20) {
             self->unk_20 = 0;
-            func_ov000_0215bb14(((void *)a->unk_20), FIELD(FIELD(((u8 *)self->unk_08), 0xa0, u8 *), 0x40, void *));
+            func_ov000_0215bb14(a->unk_20, ((Obj021f002c *)self->unk_08->unk_a0)->unk_40);
             a->unk_20->vfunc_70();
         } else if (self->unk_21) {
-            u8 *l = ((u8 *)self->unk_08);
+            LoBase021ccb54_021ccbe0 *l = self->unk_08;
             self->unk_21 = 0;
-            self->unk_28 = FIELD(FIELD(l, 0xa4, u8 *), 0x4, s32);
+            self->unk_28 = ((Ov002Row *)l->unk_a4)->index;
             ov002_SetFlag1(l);
             self->unk_1c = 10;
         }
@@ -120,15 +120,15 @@ void func_ov002_021de544(Obj021efef0 *self, Obj021eff50 *a) {
             DELETE_VOBJ(self->unk_0c);
             HEAP_POP(saved);
         }
-        self->unk_0c = (VObj *)(func_ov002_021def98(self, self->unk_28));
+        self->unk_0c = func_ov002_021def98(self, self->unk_28);
         if (self->unk_18 != 0xffff) {
             func_ov000_021c414c(self->unk_0c, func_ov002_021e35c0(self->unk_0c, self->unk_18));
             self->unk_18 = 0xffff;
         } else {
             func_ov000_021c403c(self->unk_0c, 0);
         }
-        func_0206ecd4(0x100, self->unk_38, FIELD(FIELD(((u8 *)self->unk_0c), 0xa0, u8 *), 0x38, u16));
-        func_ov000_0215bb14(((void *)a->unk_20), self->unk_38);
+        func_0206ecd4(0x100, self->unk_38, ((Obj021f002c *)self->unk_0c->unk_a0)->id);
+        func_ov000_0215bb14(a->unk_20, self->unk_38);
         a->unk_20->vfunc_70();
         self->unk_22 = 0;
         self->unk_23 = 0;

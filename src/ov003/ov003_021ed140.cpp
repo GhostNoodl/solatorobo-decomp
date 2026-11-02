@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/ActorApi.h"
 #include "Main/Math/Rot16.h"
 #include "ov003/Actor.h"
 #include "ov000/ObjLayouts.h"
@@ -18,7 +19,6 @@ extern void *data_ov000_021ccd64;
 extern Actor *Group_SpawnActor(void *mgr, Ov003SpawnInfo *info, VecFx32 *pos, const void *rot, u16 a);
 extern void func_ov000_0218d46c(Actor *o, u16 a, u8 b);
 extern u32 Rand_UpTo(u32 n);
-extern void func_ov000_0219763c(VObj *self);
 
 void func_ov003_021ed058(ActorEx *self) {
     if (self->fsm->st == 0 && self->unk_18 != 0) {

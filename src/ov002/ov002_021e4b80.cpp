@@ -1,4 +1,5 @@
 #include "ov002/ov002.h"
+#include "ov000/ModelPart.h"
 #include "types.h"
 
 extern "C" {
@@ -2634,29 +2635,6 @@ void func_02041c18(void *a, int b);
 extern VecFx32 data_ov002_021ef104;
 extern VecFx32 data_ov002_021ef0bc;
 
-static inline void *ov002_Model_GetPart(void *self, int idx) {
-    if (idx >= FIELD(self, 0x80, s32)) {
-        return NULL;
-    }
-    return (u8 *)FIELD(self, 0x78, void *) + idx * 0x28;
-}
-
-static inline void ov002_Model_PlayPart(void *model, int idx) {
-    void *res = FIELD(model, 0x28, void *);
-    void *part;
-    void *anim;
-    if (res == NULL) {
-        return;
-    }
-    part = ov002_Model_GetPart(model, idx);
-    if (part != NULL && FIELD(part, 0x4, void *) != NULL) {
-        anim = FIELD(FIELD(part, 0x4, void *), 0x30, void *);
-    } else {
-        anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
-    }
-    func_02042628((Model *)model, anim, (ModelPart *)part, 0);
-}
-
 typedef struct Blk12 {
     s32 w[3];
 } Blk12;
@@ -2710,7 +2688,7 @@ void func_ov002_021e8cc4(Ov002Stage *self) {
         m->x = 0;
         m->y = 0x8a000;
     }
-    ov002_Model_PlayPart(self->unk_124, 0);
+    Model_PlayPart(self->unk_124, 0);
 }
 
 }

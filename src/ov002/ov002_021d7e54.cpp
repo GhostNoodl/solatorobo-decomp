@@ -6,7 +6,7 @@ void func_ov002_021d7e54(Obj021efe9c *self) {
     self->unk_78 = NULL;
     self->unk_7c = NULL;
     self->unk_80 = NULL;
-    self->unk_84 = NULL;
+    self->unk_84 = 0;
     self->unk_88 = NULL;
     self->unk_8c = NULL;
     self->unk_90 = NULL;

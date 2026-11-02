@@ -21,8 +21,8 @@ void func_ov002_021d7238(Obj021efe4c *self) {
     u8 *res;
     char name[0x10];
     int idx;
-    self->map = (Ov002Shape *)(func_02070dcc(*func_0206ef50(FIELD(self, 0x68, u16))));
-    res = FIELD(self->unk_08, 0x4, u8 *);
+    self->map = (Ov002Shape *)(func_02070dcc(*func_0206ef50(self->unk_68)));
+    res = (u8 *)self->unk_08->mdl;
     if (res == NULL) {
         return;
     }

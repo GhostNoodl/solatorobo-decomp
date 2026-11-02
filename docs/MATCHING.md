@@ -8335,3 +8335,46 @@ No symbols were renamed.
 - `chk.py FILES` (rebuild and compare named objects);
 - `dd.sh SRC FUNC` (disassembly diff against a baseline worktree);
 - `b.sh`, `cnt.sh`.
+
+
+### Round acF (ov002 field, piece, item-row and list-callback records typed; ov003 actor API header)
+
+Cleanup only, and every function is still byte-identical.
+
+**How it was checked.** After every step, each rebuilt object was compared function by function, on code bytes and relocations, with a baseline built at `fa9a9cca` (round acD). Before reporting, the round was rebased onto `b412dc17` (round acE), a fresh baseline was built there, and all 1906 objects were compared again: 0 differ.
+
+**Gate.** All of these pass:
+- 0 FAILED, with 19/19 ROM checks and `check symbols` OK;
+- `ninja report` shows 8138 matched (unchanged);
+- `check_drafts.py --score` exits 0 (no draft changed score).
+
+No symbols were renamed.
+
+**Counts.** `FIELD` is `FIELD(` in src and include without the `#define`s; `void *self` is `grep -rn 'void \*self' src/ovNNN include/ovNNN` (src only in brackets). Raw offsets for ov003/ov006 are measured as in round acA.
+
+| overlay | `FIELD` before | `FIELD` after | `void *self` before | `void *self` after |
+|---|---|---|---|---|
+| ov002 | 997 | 502 | 139 (120) | 81 (68) |
+| ov003 | 17 raw | 17 raw | 181 (178) | 176 (173) |
+| ov006 | 28 raw | 28 raw | 65 (60) | 65 (60) |
+
+- **ov002 field (`Obj021efe4c`).** Its members are typed from the ctor/dtor and `func_ov002_021d7058`: the `ActorRes` blocks `unk_04`/`unk_0c`/`unk_14` (dtor `func_ov000_0218ea20`), the two `Model0218fe1c *` models `unk_08`/`unk_10` (dtor `func_ov000_0218fee4`), `trans`, `rot`, `scale` and `visible` (copied into both models by `func_ov002_021da960` before they are drawn), and `cues`/`cue`. `Ov002SndCue` (6 bytes, `data_ov002_021eeffc`) replaces the three local `Key021d7058`/`Key021db9e8`/`Ev021d7320` views.
+- **Board pieces (`Obj021efeb8`).** `rot` (MtxFx33) and `scale` (VecFx32) replace `unk_18`/`unk_3c..unk_44`; `unk_7c` is the `NNSG3dResMdl *`, `unk_80` the `NNSG3dRenderObj *`, `unk_84` the texture task, `unk_88`/`unk_8c` the `NNSG3dAnmObj *`s. `unk_90` stays `void *`: it is an animation object in `Obj021efe9c` and a `Model` in `Obj021efed4`.
+- **Item rows.** `Ov002Row` (0x30, vtable `data_ov002_021ef684`, ctor `func_ov000_021c22d8`; `index`, `shown`, `next`/`prev`) and `Obj021f002c` (0x4c, ctor `func_ov002_021e2f54`: `model`, `text`, `id`, `part`, `str`, `unk_40`, `hasModel`, `state`). `func_ov002_021e2fb4`/`021e31fc`/`021e331c`/`021e35c0`, the dtors, `021ddf18`'s `ov002_AddItem`, `021def98` and `021de544` use them; the local `ov002_Model_PlayPart` copies became `Model_PlayPart` (`ov000/ModelPart.h`) in `021cdf58`, `021d65e0`, `021d8fac`, `021e31fc` and `021e4b80`.
+- **UI callbacks and tasks.** The `UiObj`/`UiList` methods in `021d69d4` (`onDrawItem`, `onDecide`, `onCursor`, `unk_8c`, `unk_90` through `UiList_GetCurrent`, `TextWin::unk_6c`/`noVram`), the list callbacks `021d39ec`, `021d3b10`, `021d3c30`, `021d52e0`, `021d5350`, `021d5444`, `021ddcbc`, `021ddd30` and `021d5f60` take `UiList *`/`UiListItem *` (or `LoBase021ccb54_021ccbe0 *`/`Obj021f002c *`) and their owner tasks; the `onDecide`/`onCursor` stores lost their `(UiItemFn)` casts. `func_ov000_02154b58` returns `UiListItem *` and takes `u16 id`, as its ov000 definition. `Task021efc24` has `s16 unk_60[5]`/`unk_6a[5]`; `Task021ef71c::unk_6c` is the `u32` list item id; `Task021ef81c::unk_4c` is `u8` (it is only read zero-extended). The `TASK_VOBJ` macro is gone (31 uses became members). `021da960`'s mode objects are allocated as `Obj021eff74`/`Obj021eff50`; `021db9e8`'s step as `Obj021eff10`; `021d1258` uses `Task021ef89c`/`Task021ef4b0`/`Task021ef430` for tasks 0x15/0x12/0x11 (ids from their `New` functions) and `SndQueue` for the sound queue.
+- **Shared headers.** Names and pointer types only; no layout moved.
+  - `Main/Sys/Field.h`: `FieldPlayer::unk_118` is `struct TimedBuffer021cb920 *` (nothing read the old byte array). `ov002.h` includes `ov000/MessageQueue.h`; the `data_ov000_021ccd30->unk_118` readers use it, and `func_ov000_0216f844` takes `TimedBuffer021cb920 *`.
+  - `ov000/ObjLayouts.h`: `LoBase021ccb54_021ccbe0::unk_a0[0x18]` is split into `VObj *unk_a0`, `VObj *unk_a4` (rows ov002 reads) and `u8 unk_a8[0x10]`.
+- **`ov003/ActorApi.h` (new).** The ov000 actor functions the ov003 actors call (`0219429c`, `0219433c`, `021946f8`, `02194758`, `02194c08`, `02195d88`, `02196060`, `02196860`, `02197dec`, `Actor_TurnToActor`, `Actor_MoveToPos`, `Actor_Move`, `Actor_GetTarget`, `02197ad0`, `0219763c`, `0218cea4`), declared once with the types of their ov000 definitions. Fourteen ov003 TUs (`021d1e8c`, `021d3524`, `021d3a88`, `021d3d28`, `021dae14`, `021daec0`, `021dc0c8`, `021dcb10`, `021e0c60`, `021ea858`, `021ed140`, `021ed520`, `021efad8`, `021f34b0`) include it in place of their own prototypes.
+
+**Kept forms.**
+- `021d2fdc` reads `data_ov000_021ccd30->unk_118` for the call as `FIELD(t, 0x118, u32)` (its comment says why); `ov002_IsActive` in `021d1258`/`021ef150` keeps `(s32)p->unk_30`, since `p->unk_30 != NULL` changes `021d1258`.
+- `021d39ec` keeps its open-coded current-item walk; `UiList_GetCurrent` changes its code.
+- `Ov002Text2` text pointers stay `s32` (as `Text_Measure` takes them), so `021e331c` stores `(s32)self->str`.
+
+**Left, and why.**
+- ov003: the remaining `void *self` are mostly per-file prototypes of the ov000 actor API. Their callers pass flat file-local views (`Ov003Lever`, `Ov003Bridge`, `Ov003Switch`, `Ov003Bomb`, `Ov003Gimmick`, ...) that are not `ActorEx` subclasses yet, so `ov003/ActorApi.h` cannot replace them until each view is rebuilt on `ActorEx`. The merged TUs (`021e0e8c`, `021f7848`, `021eba54`) have the same problem per namespace.
+- `Ov003Gimmick`: it reads 0xce and 0xcf as two whole bytes (`count`, `state`). `ActorEx` has `u16 unk_ce` and the round-acD bit split with `s8 unk_cf`, so the class still needs a byte view of 0xce in `ov000/ObjLayouts.h`; this round left it alone.
+- ov006: the window copy keeps its `vtbl`/VCALL form. The task base ctor/dtors (`func_ov006_021ccda0`/`021ccddc`) are called with several file-local task views (`ov006_Unk021d908c`, `ov006_Unk021d90e8`, `ov006_Task0`/`1`) that disagree past 0x10, so they keep `void *`.
+- ov002: the largest `FIELD` files are now `021ef150` (resource and item records of the level lists), `021e4b80` (stage), `021ccda0`, `021ce410`, `021d1e44` and `021db64c`.
+- **Scratch:** session scratchpad `acF/`: the acD tools re-pointed (`c.py`, `chk.sh`, `mksig.py`, `rx.py`), rsC's `FIELD`-aware `lf.py` (`lff.py`) and `tryedit.py`, plus `fdiff.py` (code/reloc diff of one function), `mpp.py` (local `ov002_Model_PlayPart` to `Model_PlayPart`), `protofn.py`, and `api2.py`/`apierr.py` (replace per-file prototypes with a shared typed header).

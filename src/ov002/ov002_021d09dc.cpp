@@ -7,7 +7,7 @@ void func_ov002_021d09dc(void) {
 
 void func_ov002_021d09e0(Task021efa1c *self) {
     if (self->unk_3c != NULL) {
-        TASK_VOBJ(self, 0x3c)->vfunc_20();
+        self->unk_3c->vfunc_20();
     }
     if (self->unk_40 != NULL) {
         self->unk_40->vfunc_20();

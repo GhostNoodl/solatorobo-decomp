@@ -1,4 +1,5 @@
 #include "types.h"
+#include "ov003/ActorApi.h"
 #include "ov003/Actor.h"
 #include "Main/Sys/FieldState.h"
 
@@ -54,7 +55,6 @@ extern BOOL func_ov000_021983b0(ActorSub40 *w, u8 a, s32 b, s32 c);
 extern u32 Rand_UpTo(u32 max);
 extern u16 FX_Atan2(s32 x, s32 z);
 extern u16 func_ov000_0219a36c(VecFx32 *pos, s32 r, u16 ang, s32 a, u8 b, u32 c);
-extern void Actor_TurnToActor(Actor *self, Actor *target, s32 a);
 
 }
 

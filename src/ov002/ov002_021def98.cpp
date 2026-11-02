@@ -18,21 +18,21 @@ extern VFunc data_ov002_021f0044[];
 
 void func_ov000_021c3af4(void *self);
 void func_ov000_021c22d8(void *self);
-void func_ov002_021e2f54(void *self);
+void func_ov002_021e2f54(Obj021f002c *self);
 void func_ov000_021c3fd4(void *list, void *item);
-BOOL func_ov002_021ddcbc(void *self, void *ev);
-BOOL func_ov002_021ddd30(void *self, void *ev);
+BOOL func_ov002_021ddcbc(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
+BOOL func_ov002_021ddd30(LoBase021ccb54_021ccbe0 *self, Obj021f002c *ev);
 void func_ov002_021e34fc(void *self, s32 (*cmp)(void *, void *));
 
-void *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
+LoBase021ccb54_021ccbe0 *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
     u16 id;
     s32 n;
     s32 j;
-    UiObj *p;
-    VObj *q;
+    LoBase021ccb54_021ccbe0 *p;
+    Obj021f002c *q;
     s32 i;
     u8 *counts;
-    p = (UiObj *)Heap_Alloc(0xf4);
+    p = (LoBase021ccb54_021ccbe0 *)Heap_Alloc(0xf4);
     if (p != NULL) {
         *(VFunc **)p = data_ov000_021cac60;
         p->vfunc_28();
@@ -52,16 +52,16 @@ void *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
         if (t == kind) {
             n = counts[i];
             for (j = 0; j < n; j++) {
-                q = (VObj *)Heap_Alloc(0x4c);
+                q = (Obj021f002c *)Heap_Alloc(sizeof(Obj021f002c));
                 if (q != NULL) {
                     *(VFunc **)q = data_ov002_021ef684;
                     func_ov000_021c22d8(q);
                     *(VFunc **)q = data_ov002_021f002c;
                     func_ov002_021e2f54(q);
                 }
-                FIELD(q, 0x38, u16) = id;
-                FIELD(q, 0x3c, void *) = func_0206ec48(id);
-                FIELD(q, 0x45, u8) = 1;
+                q->id = id;
+                q->str = func_0206ec48(id);
+                q->hasModel = 1;
                 func_ov000_021c3fd4(p, q);
             }
         }

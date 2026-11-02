@@ -1,14 +1,13 @@
 #include "types.h"
+#include "ov003/ActorApi.h"
 #include "ov003/Actor.h"
 #include "ov000/ObjLayouts.h"
 #include "ov003/Shot.h"
 
 extern "C" {
 
-extern void func_ov000_0219433c(void *self);
 extern void func_01ffc9fc(VecFx32 *src, VecFx32 *dst, u16 angle);
 extern void Heap_Free(void *p);
-extern ActorEx *func_ov000_0219429c(ActorEx *self);
 
 Ov003Shot *Ov003ActVt_021f7de4_Dtor(Ov003Shot *self) {
     func_ov000_0219429c(self);

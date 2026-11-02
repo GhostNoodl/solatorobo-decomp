@@ -16,28 +16,28 @@ void func_ov002_021d7c54(Obj021efe9c *self, u16 rot) {
         self->unk_10 = 0;
         self->unk_12 = 0;
         self->unk_14 = 0;
-        MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x18));
+        MTX_Identity33_(&self->rot);
         break;
     case 1:
         self->unk_10 = 0;
         self->unk_12 = 0x3fff;
         self->unk_14 = 0;
-        MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x18));
-        MTX_RotY33_((MtxFx33 *)((u8 *)self + 0x18), FX_SINCOS(0x3ff * 2), FX_SINCOS(0x3ff * 2 + 1));
+        MTX_Identity33_(&self->rot);
+        MTX_RotY33_(&self->rot, FX_SINCOS(0x3ff * 2), FX_SINCOS(0x3ff * 2 + 1));
         break;
     case 2:
         self->unk_10 = 0;
         self->unk_12 = 0x7fff;
         self->unk_14 = 0;
-        MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x18));
-        MTX_RotY33_((MtxFx33 *)((u8 *)self + 0x18), FX_SINCOS(0x7ff * 2), FX_SINCOS(0x7ff * 2 + 1));
+        MTX_Identity33_(&self->rot);
+        MTX_RotY33_(&self->rot, FX_SINCOS(0x7ff * 2), FX_SINCOS(0x7ff * 2 + 1));
         break;
     case 3:
         self->unk_10 = 0;
         self->unk_12 = 0xbffd;
         self->unk_14 = 0;
-        MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x18));
-        MTX_RotY33_((MtxFx33 *)((u8 *)self + 0x18), FX_SINCOS(0xbff * 2), FX_SINCOS(0xbff * 2 + 1));
+        MTX_Identity33_(&self->rot);
+        MTX_RotY33_(&self->rot, FX_SINCOS(0xbff * 2), FX_SINCOS(0xbff * 2 + 1));
         break;
     }
 }
