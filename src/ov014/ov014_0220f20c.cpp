@@ -1,13 +1,5 @@
 #include "ov014/ov014.h"
 
-struct Ov014Bits93 {
-    u8 b0 : 1;
-    u8 b1 : 3;
-    u8 b4 : 1;
-    u8 b5 : 2;
-    u8 b7 : 1;
-};
-
 static inline u8 Ov014_Kind13(Ov003Actor *a) {
     if (a->fsm != NULL) {
         return a->fsm->current;
@@ -57,7 +49,7 @@ void func_ov014_0220f20c(Actor *self, s32 a, s32 b, s32 c) {
             return;
         }
     }
-    if (FLD(Ov014Bits93, pl, 0x93).b5) {
+    if (pl->unk_93_5) {
         func_02065f88(0x327, &v)->SetScaleAll(pl->radius * 2);
     } else {
         EffectObj *e = func_02065f88(0x325, &v);

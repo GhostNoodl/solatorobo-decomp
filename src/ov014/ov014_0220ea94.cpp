@@ -5,25 +5,19 @@ extern "C" {
 
 extern u8 data_ov014_02217aac[];
 extern char data_ov014_02217c6c[];
-extern void func_ov000_02195d88(ActorEx *self);
-extern void func_ov000_0219763c(VObj *self);
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
-extern s32 **func_ov000_02190a30(void *a, s32 b);
+extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
 extern s32 func_ov000_02191318(void *a, s32 b);
 extern s32 func_ov000_02191f18(void *a, void *b);
-extern s32 func_ov014_0220ec18(s16 *a, u8 *b);
-extern ActorEx *ActorEx_Ctor(ActorEx *self);
-extern void func_ov000_02194758(void *self);
-extern BOOL func_ov000_02194c08(ActorEx *self);
+extern s32 func_ov014_0220ec18(s16 *a, Model0218fe1c *b);
 extern u8 Gfx3DState_NextPolyId(void *p);
 extern void func_ov000_02191920(Model0218fe1c *a, s32 b, s16 c, u8 d);
 extern void func_ov000_02191618(Model0218fe1c *p);
 extern void func_ov000_02191708(Model0218fe1c *p);
 
-extern VecFx32 *func_ov000_0218d2e0(void *self);
 extern BOOL func_ov014_0220eb14(Actor *self);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 
@@ -83,7 +77,7 @@ void func_ov014_0220e72c(Ov014ActEx_0220dcf4 *self) {
             ActorSub48 *m = self->hit;
             m->unk_50 = 0;
             m->unk_54 = 0;
-            FLD(u32, m, 0x58) = 0;
+            m->unk_58 = 0;
         }
         EffectMgr_StopLoop(data_0214a420, self->unk_d0);
         self->unk_d0 = NULL;
@@ -147,7 +141,7 @@ BOOL func_ov014_0220eb14(Actor *self) {
     rad = self->radius;
     if (o->kind == 0x1000) {
         rad = rad + 0x4cd;
-    } else if (FLD(u16, p, 0xb1e) == self->id) {
+    } else if (((Robo021ca458 *)p)->unk_b1e == self->id) {
         rad >>= 1;
     }
     n = func_ov000_0219a510(self, mask, &self->pos, rad, 0, list);
@@ -169,20 +163,20 @@ BOOL func_ov014_0220eb14(Actor *self) {
 
 // The result is kept in the parameter slot: the original reuses a's register
 // for the return value.
-s32 func_ov014_0220ec18(s16 *a, u8 *b) {
-    s32 **q;
+s32 func_ov014_0220ec18(s16 *a, Model0218fe1c *b) {
+    AnimCtrl *q;
     s32 prev;
     if (a[0] == 5) {
         prev = 0;
         q = func_ov000_02190a30(b, 0);
-        if (q != NULL && *q != NULL) {
-            prev = **q;
+        if (q != NULL && q->cur != NULL) {
+            prev = q->cur->frame;
         }
         a = (s16 *)func_ov000_02191318(b, ((u16 *)a)[1] << 12);
         if (q != NULL) {
-            s32 cur = (*q != NULL) ? **q : 0;
+            s32 cur = (q->cur != NULL) ? q->cur->frame : 0;
             if (prev >= cur) {
-                FLD(u32, b, 0xe4) |= 0x20000000;
+                b->unk_e4 |= 0x20000000;
             }
         }
     } else {

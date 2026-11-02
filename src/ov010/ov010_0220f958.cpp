@@ -492,7 +492,7 @@ extern u16 FX_Atan2(s32 y, s32 x);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 extern void func_ov010_02207828(void *self);
 extern void Actor_TurnToPos(void *self, void *t, s32 a);
-extern u8 *func_ov000_02190a30(void *p, s32 a);
+extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
 extern void func_ov000_021911c8(void *p, s32 a);
 extern BOOL func_ov000_02191120(void *p);
 extern void func_ov010_0220984c(void *t, u16 a);
@@ -610,7 +610,7 @@ void func_ov010_02204d44(Ov010Obj02210154 *self) {
     case 0x1e:
         func_ov010_02207828(self);
         Actor_TurnToPos(self, self->arena, 0x400);
-        FLD(Ov010Flags8, func_ov000_02190a30(self->model, 0), 0x111).b3 = 0;
+        func_ov000_02190a30(self->model, 0)->paused = 0;
         func_ov000_021911c8(self->model, 0x2000);
         self->fsm->st = 0x1f;
         break;
@@ -638,7 +638,7 @@ void func_ov010_02204d44(Ov010Obj02210154 *self) {
         break;
     }
     if (flag && self->model->anim_state == 2) {
-        FLD(Ov010Flags8, func_ov000_02190a30(self->model, 0), 0x111).b3 = 1;
+        func_ov000_02190a30(self->model, 0)->paused = 1;
     }
 }
 
@@ -1208,7 +1208,7 @@ extern void func_0203f364(ActorSub48 *p);
 extern void func_0203cb78(s32 a, s32 b, s32 c);
 extern void ActorMgr_BroadcastKind(void *mgr, s32 a, s32 b);
 extern BOOL Ov003Timer_IsStopped(void *a);
-extern u8 *func_ov000_02190a30(void *p, s32 a);
+extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
 
 static inline s32 Ov010g_Mul(s32 a, s64 b) {
     return (s32)((a * b + 0x800) >> 12);

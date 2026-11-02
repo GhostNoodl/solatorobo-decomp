@@ -20,15 +20,15 @@ void func_ov014_0220abf8(Ov014Act_02209280 *self) {
     switch (self->fsm->st) {
     case 0: {
         u32 mask = 0;
-        Ov014Step *p;
+        const Ov003Step *p;
         func_ov000_02190cb0(self->model, data_ov014_02217a72, 0x2ab, 0);
         func_ov000_021911c8(self->model, 0x1000);
         func_ov000_02191318(self->model, 0);
         func_ov000_02191618(self->model);
         p = self->step;
         self->unk_fc = 1;
-        self->unk_f8 = p->unk_04;
-        switch (p->kind) {
+        self->unk_f8 = p->a;
+        switch (p->op) {
         case 0:
             self->unk_f4 = 0xffff;
             break;
@@ -36,7 +36,7 @@ void func_ov014_0220abf8(Ov014Act_02209280 *self) {
             self->unk_f4 = mask;
             break;
         case 2: {
-            u8 n = p->unk_04 - 1;
+            u8 n = p->a - 1;
             if (n <= 31) {
                 mask |= 1 << (u8)Rand_UpTo(n);
             }
@@ -44,7 +44,7 @@ void func_ov014_0220abf8(Ov014Act_02209280 *self) {
             break;
         }
         case 3: {
-            u8 n = p->unk_04 - 1;
+            u8 n = p->a - 1;
             if (n <= 31) {
                 u8 k;
                 for (k = 2; k != 0; k--) {
@@ -60,7 +60,7 @@ void func_ov014_0220abf8(Ov014Act_02209280 *self) {
             break;
         }
         case 4: {
-            u8 n = p->unk_04 - 1;
+            u8 n = p->a - 1;
             if (n <= 31) {
                 u8 k;
                 for (k = 3; k != 0; k--) {
@@ -143,7 +143,7 @@ extern void func_ov014_0220c09c(Ov014Act_02209280 *self);
 extern void func_ov014_0220cd74(Ov014Act_02209280 *self);
 
 void func_ov014_0220afb8(Ov014Act_02209280 *self) {
-    switch (self->step->kind) {
+    switch (self->step->op) {
     case 9:
         func_ov014_0220c09c(self);
         break;
@@ -198,7 +198,7 @@ void func_ov014_0220afe8(Ov014Act_02209280 *self) {
         func_ov000_02190cb0(self->model, data_ov014_02217a78, 0x2ab, 0);
         func_ov000_02191318(self->model, 0);
         func_ov000_02191618(self->model);
-        switch (self->step->kind) {
+        switch (self->step->op) {
         case 5:
             self->unk_f8 = 3;
             break;
@@ -225,9 +225,9 @@ void func_ov014_0220afe8(Ov014Act_02209280 *self) {
         g->cam.base.shakeTime = 5;
         g->cam.base.shakeLen = 7;
         g->cam.base.shakeCur = 7;
-        func_ov014_02209fa0(self, (s16)self->step->unk_04, self->step->kind);
+        func_ov014_02209fa0(self, (s16)self->step->a, self->step->op);
         self->unk_f8--;
-        FLD(s32, self, 0xf4) ^= 1;
+        self->unk_f4 ^= 1;
         self->fsm->st++;
         self->fsm->timer = 0;
     }

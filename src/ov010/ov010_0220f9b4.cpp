@@ -1583,7 +1583,7 @@ extern void Actor_SendMsg(void *obj, u16 id, s32 a, s32 b, s32 c, u8 *d);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern BOOL func_ov000_02190cb0(void *p, const void *a, s32 b, s32 c);
 extern void func_ov000_021915a0(void *p);
-extern u8 *func_ov000_02190a30(void *p, s32 a);
+extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
 extern void func_ov000_02195d88(void *self);
 
 static inline Actor *Ov010_FindObjById(u16 id) {
@@ -1753,8 +1753,7 @@ void func_ov010_0220b890(Obj0220a6b0 *self) {
 }
 
 void func_ov010_0220b8f8(Obj0220a6b0 *self) {
-    u8 *p = func_ov000_02190a30(self->model, 0);
-    FLD(Ov010Flags8, p, 0x111).b3 = 0;
+    func_ov000_02190a30(self->model, 0)->paused = 0;
     func_ov000_02195d88(self);
 }
 
@@ -1970,7 +1969,7 @@ void func_ov010_0220b924(Obj0220a6b0 *self) {
                 return;
             }
             self->unk_180 = t->id;
-            FLD(Ov010Flags8, func_ov000_02190a30(self->model, 0), 0x111).b3 = 1;
+            func_ov000_02190a30(self->model, 0)->paused = 1;
             self->rot_x += (u16)(Rand_UpTo(0x2000) - 0x1000);
             self->rot_y += (u16)(Rand_UpTo(0x2000) - 0x1000);
             q = Target_Get(self->targetObj);
@@ -2407,7 +2406,7 @@ extern void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, const void *f, void *g, s32 h, s32 i, s32 j, s32 k);
 extern BOOL func_ov000_02198360(void *a, s32 b, s32 c);
 extern void *Ov003Mover_GetDir(void *p);
-extern u8 *func_ov000_02190a30(void *p, s32 a);
+extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
 extern void *func_02049f44(void *a, s32 b, void *c, s32 d);
 
 static inline void Ov010_Puff(Obj0220a6b0 *self) {
@@ -2522,7 +2521,7 @@ void func_ov010_0220cba0(Obj0220a6b0 *self) {
         {
             u16 ang;
             FieldState *g;
-            u8 *m;
+            AnimCtrl *m;
             OV010_BLKCPY(&a, &self->pos);
             *(Ov010Blk12 *)&b = data_ov010_0220f588;
             ang = Ov003Vec_Yaw(Ov003Mover_GetDir(&self->mover)) + 0x7fff;
@@ -2545,7 +2544,7 @@ void func_ov010_0220cba0(Obj0220a6b0 *self) {
                 self->rot_x = r;
             }
             m = func_ov000_02190a30(self->model, 0);
-            FLD(u8, m, 0x111) |= 8;
+            m->paused = 1;
             self->targetObj->target = 0xffff;
             self->unk_d8 = 6;
             self->fsmB.st = 0x1e;
@@ -2661,7 +2660,7 @@ void func_ov010_0220d3d8(Obj0220a6b0 *self) {
         if (self->hit->unk_50 & 0x20000000) {
             u16 ang;
             FieldState *g;
-            u8 *m;
+            AnimCtrl *m;
             a.x = self->pos.x;
             a.y = self->pos.y - self->hit->radius;
             a.z = self->pos.z;
@@ -2682,7 +2681,7 @@ void func_ov010_0220d3d8(Obj0220a6b0 *self) {
             g->cam.base.shakeCur = 8;
             self->rot_x += Rand_UpTo(0x2aaa) - 0x1555;
             m = func_ov000_02190a30(self->model, 0);
-            FLD(u8, m, 0x111) |= 8;
+            m->paused = 1;
             self->targetObj->target = 0xffff;
             self->fsmB.st = 2;
             self->unk_d8 = 6;

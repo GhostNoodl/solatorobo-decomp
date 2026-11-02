@@ -29,23 +29,23 @@ Ov003Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self) {
     Ov014Vec16 rot;
     Ov014SpawnDesc desc;
     Ov003Actor *o;
-    pos.x = self->unk_118.x;
-    pos.y = self->unk_118.y;
-    pos.z = self->unk_118.z;
+    pos.x = self->unk_f0.trans.x;
+    pos.y = self->unk_f0.trans.y;
+    pos.z = self->unk_f0.trans.z;
     switch ((self->unk_144 + self->unk_14c) % 4) {
     case 0:
-        pos.x = self->unk_118.x + 0x6000;
+        pos.x = self->unk_f0.trans.x + 0x6000;
         break;
     case 1:
-        pos.x = self->unk_118.x - 0x6000;
+        pos.x = self->unk_f0.trans.x - 0x6000;
         break;
     case 2:
-        pos.x = self->unk_118.x + 0x4000;
-        pos.y = self->unk_118.y + 0x1000;
+        pos.x = self->unk_f0.trans.x + 0x4000;
+        pos.y = self->unk_f0.trans.y + 0x1000;
         break;
     case 3:
-        pos.x = self->unk_118.x - 0x4000;
-        pos.y = self->unk_118.y + 0x1000;
+        pos.x = self->unk_f0.trans.x - 0x4000;
+        pos.y = self->unk_f0.trans.y + 0x1000;
         break;
     }
     rot.x = self->rot_x;
@@ -77,9 +77,9 @@ Ov003Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self) {
         return NULL;
     }
     Ov014Spawn_Init(&desc, 0x4806);
-    pos.x = self->unk_118.x;
-    pos.y = self->unk_118.y;
-    pos.z = self->unk_118.z + 0x2000;
+    pos.x = self->unk_f0.trans.x;
+    pos.y = self->unk_f0.trans.y;
+    pos.z = self->unk_f0.trans.z + 0x2000;
     pos.y -= 0x1000;
     rot.x = self->rot_x;
     rot.y = self->rot_y;

@@ -22,7 +22,7 @@ void func_ov014_02211f0c(Ov014Act_0220f9d0 *self) {
         n = self->unk_44;
         n->unk_22_0 = 0;
         n->unk_22_1 = 0;
-        FLD(Ov014Flags, self->unk_44, 0x22).b4 = 0;
+        self->unk_44->unk_22_4 = 0;
         break;
     }
     case 1: {
@@ -34,7 +34,7 @@ void func_ov014_02211f0c(Ov014Act_0220f9d0 *self) {
         n = self->unk_44;
         n->unk_22_0 = 1;
         n->unk_22_1 = 1;
-        FLD(Ov014Flags, self->unk_44, 0x22).b4 = 1;
+        self->unk_44->unk_22_4 = 1;
         break;
     }
     default: {
@@ -43,7 +43,7 @@ void func_ov014_02211f0c(Ov014Act_0220f9d0 *self) {
         n = self->unk_44;
         n->unk_22_0 = 1;
         n->unk_22_1 = 1;
-        FLD(Ov014Flags, self->unk_44, 0x22).b4 = 1;
+        self->unk_44->unk_22_4 = 1;
         break;
     }
     }
@@ -54,7 +54,7 @@ extern void func_020627a0(u16 a, u16 b);
 extern void func_020627dc(s32 a);
 extern void func_ov000_02182590(void *p);
 extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
-extern s32 **func_ov000_02190a30(void *a, s32 b);
+extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
 extern void func_ov000_0219bd20(s32 a, u16 b, s32 c, s32 d, s32 e, u8 *f);
 extern void func_ov000_0218996c(u8 a, u8 b);
 
@@ -148,9 +148,9 @@ void func_ov014_02212050(Ov014Act_0220f9d0 *self) {
         }
         if (t > 0xfa) {
             s32 a = 0;
-            s32 **q = func_ov000_02190a30(self->model, 0);
-            if (*q != NULL) {
-                a = **q;
+            AnimCtrl *q = func_ov000_02190a30(self->model, 0);
+            if (q->cur != NULL) {
+                a = q->cur->frame;
             }
             if (a >= 0x8000) {
                 func_ov000_02191318(self->model, 0);

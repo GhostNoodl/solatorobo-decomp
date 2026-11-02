@@ -29,8 +29,8 @@ void Ov013Boss_Start(Ov013Boss *self) {
     m = self->hit;
     m->unk_9a_1 = 0;
     m->unk_9a_4 = 0;
-    Ov013_VecSet(&FLD(VecFx32, self->hit, 0x5c), 0, 0x2000, 0);
-    Ov013_VecSet(&FLD(VecFx32, self->unk_44, 0xc), 0, 0x2000, 0);
+    Ov013_VecSet(&self->hit->offset, 0, 0x2000, 0);
+    Ov013_VecSet(&self->unk_44->unk_0c, 0, 0x2000, 0);
     self->unk_93_4 = 1;
     self->target = 0xffff;
     p = func_ov000_0219bf90();
@@ -40,7 +40,7 @@ void Ov013Boss_Start(Ov013Boss *self) {
     self->pos.x = 0;
     self->pos.y = 0;
     self->pos.z = -0x14000;
-    FLD(s32, self->unk_3c, 0x14) = self->radius << 1;
+    self->unk_3c->unk_14 = self->radius << 1;
     self->unk_f1 = 0;
     self->unk_f0 = 0;
     self->side = 0;

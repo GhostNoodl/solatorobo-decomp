@@ -682,7 +682,7 @@ void func_ov009_022009c8(Ov009ActVt_02217128 *self) {
 #pragma force_active on
 Ov009Act_02200b48 *Ov009Act_02200b48_Ctor(Ov009Act_02200b48 *self) {
     func_ov003_021d0c1c(self);
-    FLD(void *, self, 0) = &data_ov009_02216d20;
+    *(void **)self = &data_ov009_02216d20;
     MIi_CpuClear32(0, &FLD(u8, self, 0xf8), 0x34);
     return self;
 }
@@ -1592,14 +1592,14 @@ void func_ov009_022026c8(Ov009Names *self, void *res) {
 #pragma force_active on
 Ov009Act_02202788 *Ov009Act_02202788_Ctor(Ov009Act_02202788 *self) {
     func_ov003_021d0c1c(self);
-    FLD(void *, self, 0) = &data_ov009_02216e78;
+    *(void **)self = &data_ov009_02216e78;
     MIi_CpuClear32(0, &FLD(u8, self, 0xf8), 0x34);
     return self;
 }
 #pragma force_active reset
 
 Ov009Act_02202788 *Ov009Act_02202788_Dtor(Ov009Act_02202788 *self) {
-    FLD(void *, self, 0) = &data_ov009_02216e78;
+    *(void **)self = &data_ov009_02216e78;
     if (self->kind == 0x5055 && func_02035b90(data_ov009_02216b98, 7)) {
         func_02036838(data_02097cdc, data_ov009_02216b98, 7, 0);
     }
@@ -1608,7 +1608,7 @@ Ov009Act_02202788 *Ov009Act_02202788_Dtor(Ov009Act_02202788 *self) {
 }
 
 Ov009Act_02202788 *Ov009Act_02202788_DtorDelete(Ov009Act_02202788 *self) {
-    FLD(void *, self, 0) = &data_ov009_02216e78;
+    *(void **)self = &data_ov009_02216e78;
     if (self->kind == 0x5055 && func_02035b90(data_ov009_02216b98, 7)) {
         func_02036838(data_02097cdc, data_ov009_02216b98, 7, 0);
     }

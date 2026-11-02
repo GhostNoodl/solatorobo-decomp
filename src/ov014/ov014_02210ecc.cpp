@@ -1,11 +1,5 @@
 #include "ov014/ov014.h"
 
-struct Ov014Wave {
-    s16 kind;
-    u16 wait;
-    u16 count;
-};
-
 struct Ov014SpawnDescB {
     u16 kind;
     u16 flags;
@@ -38,7 +32,7 @@ extern char data_ov014_02217d52[];
 extern char data_ov014_02217d5e[];
 extern char data_ov014_02217d64[];
 extern void func_ov000_02191618(Model0218fe1c *a);
-extern s32 **func_ov000_02190a30(void *a, s32 b);
+extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
 extern Ov003Actor *func_ov014_02210d9c(Ov014Act_0220f9d0 *self);
 extern Ov003Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self);
 extern Ov003Actor *func_ov014_02210c5c(Ov014Act_0220f9d0 *self);
@@ -59,7 +53,7 @@ void func_ov014_02210ee0(Ov014Act_0220f9d0 *self) {
         ActorSub44 *n = self->unk_44;
         n->unk_22_0 = 1;
         n->unk_22_1 = 1;
-        FLD(Ov014Flags, self->unk_44, 0x22).b4 = 1;
+        self->unk_44->unk_22_4 = 1;
         self->fsm->st = 40;
         break;
     }
@@ -104,21 +98,21 @@ void func_ov014_02210ee0(Ov014Act_0220f9d0 *self) {
 
 void func_ov014_022110bc(Ov014Act_0220f9d0 *self) {
     ActorSub40 *s = self->fsm;
-    Ov014Wave *p = ((Ov014Wave *)self->unk_140);
+    const Ov003Step *p = self->step;
     switch (ActorSub40_State(s)) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov014_02217d4c, 0x19a, 0);
         func_ov000_021915a0(self->model);
         func_ov000_02191318(self->model, 0);
         self->fsm->st = 20;
-        self->unk_14c = p->count;
+        self->unk_14c = p->a;
         self->unk_144 = Rand_UpTo(0xffff);
         break;
     case 20:
         if (self->model->anim_state != 1) {
             return;
         }
-        switch (p->kind) {
+        switch (p->op) {
         case 0:
             func_ov014_02210878(self);
             break;
@@ -139,7 +133,7 @@ void func_ov014_022110bc(Ov014Act_0220f9d0 *self) {
             self->fsm->timer = 30;
         } else {
             self->fsm->st++;
-            self->fsm->timer = p->wait;
+            self->fsm->timer = p->time;
         }
         break;
     case 21:
@@ -149,7 +143,7 @@ void func_ov014_022110bc(Ov014Act_0220f9d0 *self) {
         }
         func_ov000_02190cb0(self->model, data_ov014_02217d4c, 0x19a, 0);
         func_ov000_021915a0(self->model);
-        if (p->wait <= 35) {
+        if (p->time <= 35) {
             func_ov000_02191318(self->model, 0x24000);
         } else {
             func_ov000_02191318(self->model, 0);
@@ -183,16 +177,16 @@ void func_ov014_022112b8(Ov014Act_0220f9d0 *self) {
         if (t != 0) {
             if (t == 200) {
                 EffectObj *e;
-                v.x = self->unk_118.x;
-                v.y = self->unk_118.y;
-                v.z = self->unk_118.z + 0x3000;
+                v.x = self->unk_f0.trans.x;
+                v.y = self->unk_f0.trans.y;
+                v.z = self->unk_f0.trans.z + 0x3000;
                 e = func_02065f88(0x5e2, &v);
                 e->SetScaleXYZ(0x3000, 0x3000, 0x3000);
                 e->loopCount = 1;
             } else if (t == 100) {
-                v.x = self->unk_118.x;
-                v.y = self->unk_118.y;
-                v.z = self->unk_118.z + 0x3000;
+                v.x = self->unk_f0.trans.x;
+                v.y = self->unk_f0.trans.y;
+                v.z = self->unk_f0.trans.z + 0x3000;
                 Effect3D_Create(data_ov014_02217d1d, data_ov014_02217d52, 0, &v)->SetScaleXYZ(0x3000, 0x3000, 0x3000);
                 func_02049f44(data_02097e4c, 0x5b, (VecFx32 *)((u8 *)self + 0x118), 0);
                 func_02049f44(data_02097e4c, 0x50, (VecFx32 *)((u8 *)self + 0x118), 0);
@@ -219,9 +213,9 @@ void func_ov014_022112b8(Ov014Act_0220f9d0 *self) {
         break;
     case 3: {
         s32 t = 0;
-        s32 **q = func_ov000_02190a30(self->model, 0);
-        if (*q != NULL) {
-            t = **q;
+        AnimCtrl *q = func_ov000_02190a30(self->model, 0);
+        if (q->cur != NULL) {
+            t = q->cur->frame;
         }
         if (t >= 0x3c000) {
             self->fsm->st = 0xffff;
@@ -234,7 +228,7 @@ void func_ov014_022112b8(Ov014Act_0220f9d0 *self) {
 
 extern char data_ov014_02217d70[];
 extern u8 data_ov014_02216d30[];
-extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, VecFx32 *pos, Ov014Rot16 *rot, u16 a);
+extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDescB *d, VecFx32 *pos, Rot16 *rot, u16 a);
 
 void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
     switch (ActorSub40_State(self->fsm)) {
@@ -248,25 +242,25 @@ void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
         if (self->fsm->timer != 0) {
             if (self->fsm->timer == 0x8c) {
                 VecFx32 v;
-                v.x = self->unk_118.x;
-                v.y = self->unk_118.y;
-                v.z = self->unk_118.z + 0x3000;
+                v.x = self->unk_f0.trans.x;
+                v.y = self->unk_f0.trans.y;
+                v.z = self->unk_f0.trans.z + 0x3000;
                 func_02065f88(0x5dd, &v)->SetScaleXYZ(0x3000, 0x3000, 0x3000);
                 func_02049f44(data_02097e4c, 0x5b, &v, 0);
             }
             if (self->fsm->timer == 0x5a) {
                 VecFx32 v;
-                v.x = self->unk_118.x;
-                v.y = self->unk_118.y;
-                v.z = self->unk_118.z + 0x3000;
+                v.x = self->unk_f0.trans.x;
+                v.y = self->unk_f0.trans.y;
+                v.z = self->unk_f0.trans.z + 0x3000;
                 func_02065f88(0x5dd, &v)->SetScaleXYZ(0x3000, 0x3000, 0x3000);
                 func_02049f44(data_02097e4c, 0x5b, &v, 0);
             }
             if (self->fsm->timer == 0x28) {
                 VecFx32 v;
-                v.x = self->unk_118.x;
-                v.y = self->unk_118.y;
-                v.z = self->unk_118.z + 0x3000;
+                v.x = self->unk_f0.trans.x;
+                v.y = self->unk_f0.trans.y;
+                v.z = self->unk_f0.trans.z + 0x3000;
                 func_02065f88(0x196, &v)->SetScaleXYZ(0x2ccd, 0x2ccd, 0x2ccd);
                 func_02049f44(data_02097e4c, 0x44, &v, 0);
             }
@@ -288,19 +282,19 @@ void func_ov014_02211538(Ov014Act_0220f9d0 *self) {
         VecFx32 w;
         VecFx32 v;
         Ov014SpawnDescB desc;
-        Ov014Rot16 rot;
+        Rot16 rot;
         Ov003Actor *o;
         FieldState *g;
         if (self->model->anim_state != 1) {
             break;
         }
         self->model->anim_state = 0;
-        p = self->unk_118;
+        p = self->unk_f0.trans;
         p.y -= 0x800;
         v.x = 0;
         v.y = 0;
         v.z = 0x1000;
-        MTX_MultVec43(&v, (MtxFx43 *)((u8 *)self + 0xf4), &v);
+        MTX_MultVec43(&v, &self->unk_f0.mtx, &v);
         w.x = v.x;
         w.y = 0;
         w.z = v.z;
@@ -352,12 +346,6 @@ extern void func_ov000_02191780(Model0218fe1c *a);
 extern void func_ov000_021917f8(Model0218fe1c *a);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
-struct Ov014WaveB {
-    s16 kind;
-    u16 wait;
-    u16 count;
-};
-
 void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
     switch (ActorSub40_State(self->fsm)) {
     case 0:
@@ -366,30 +354,30 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
         func_ov000_02191618(self->model);
         self->fsm->st++;
         self->fsm->timer = 0xa0;
-        self->unk_14c = ((Ov014WaveB *)self->unk_140)->count;
+        self->unk_14c = self->step->a;
     case 1:
         if (self->fsm->timer != 0) {
             if (self->fsm->timer == 0x9b) {
                 VecFx32 v;
-                v.x = self->unk_118.x;
-                v.y = self->unk_118.y;
-                v.z = self->unk_118.z + 0x3000;
+                v.x = self->unk_f0.trans.x;
+                v.y = self->unk_f0.trans.y;
+                v.z = self->unk_f0.trans.z + 0x3000;
                 func_02065f88(0x5dd, &v)->SetScaleXYZ(0x3000, 0x3000, 0x3000);
                 func_02049f44(data_02097e4c, 0x5b, &v, 0);
             }
             if (self->fsm->timer == 0x69) {
                 VecFx32 v;
-                v.x = self->unk_118.x;
-                v.y = self->unk_118.y;
-                v.z = self->unk_118.z + 0x3000;
+                v.x = self->unk_f0.trans.x;
+                v.y = self->unk_f0.trans.y;
+                v.z = self->unk_f0.trans.z + 0x3000;
                 func_02065f88(0x5dd, &v)->SetScaleXYZ(0x3000, 0x3000, 0x3000);
                 func_02049f44(data_02097e4c, 0x5b, &v, 0);
             }
             if (self->fsm->timer == 0x37) {
                 VecFx32 v;
-                v.x = self->unk_118.x;
-                v.y = self->unk_118.y;
-                v.z = self->unk_118.z + 0x3000;
+                v.x = self->unk_f0.trans.x;
+                v.y = self->unk_f0.trans.y;
+                v.z = self->unk_f0.trans.z + 0x3000;
                 func_02065f88(0x196, &v)->SetScaleAll(0x2ccd);
                 func_02049f44(data_02097e4c, 0x44, &v, 0);
             }
@@ -402,21 +390,21 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
             break;
         }
         {
-            s32 **q;
+            AnimCtrl *q;
             s32 t;
             func_ov000_02190cb0(self->model, data_ov014_02217d76, 0xcd, 0);
             func_ov000_02191618(self->model);
             q = func_ov000_02190a30(self->model, 0);
-            if (*q != NULL) {
-                **q = (FLD(u16, FLD(u8 *, *q, 8), 4) << 12) - 1;
+            if (q->cur != NULL) {
+                q->cur->frame = (FLD(u16, q->cur->res, 4) << 12) - 1;
             }
             t = 0;
             q = func_ov000_02190a30(self->model, 0);
-            if (*q != NULL) {
-                t = **q;
+            if (q->cur != NULL) {
+                t = q->cur->frame;
             }
             self->unk_14a = 0x46;
-            self->unk_148 = ((Ov014WaveB *)self->unk_140)->count * self->unk_14a + 0x2d;
+            self->unk_148 = self->step->a * self->unk_14a + 0x2d;
             func_ov000_021911c8(self->model, (s16)FX_Div(t, self->unk_148 << 12));
             if (Rand_UpTo(1)) {
                 func_ov000_02191780(self->model);
@@ -435,14 +423,14 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
         VecFx32 w;
         VecFx32 v;
         Ov014SpawnDescB desc;
-        Ov014Rot16 rot;
+        Rot16 rot;
         u16 tm = self->fsm->timer;
-        p = self->unk_118;
+        p = self->unk_f0.trans;
         p.y -= 0x800;
         v.x = 0;
         v.y = 0;
         v.z = 0x1000;
-        MTX_MultVec43(&v, (MtxFx43 *)((u8 *)self + 0xf4), &v);
+        MTX_MultVec43(&v, &self->unk_f0.mtx, &v);
         w.x = v.x;
         w.y = 0;
         w.z = v.z;
@@ -499,7 +487,7 @@ void func_ov014_02211980(Ov014Act_0220f9d0 *self) {
                     break;
                 }
                 a->pos = p;
-                FLD(Ov014Rot16, a, 0x7c) = rot;
+                a->rot = rot;
                 break;
             }
             self->fsm->st++;

@@ -21,7 +21,6 @@ extern "C" {
 
 extern char data_ov014_02217d3a[];
 extern Ov003Actor *func_ov000_0219bf90(void);
-extern void Actor_TurnToActor(Actor *self, Actor *target, s32 a);
 extern char data_ov014_02217d4c[];
 extern u8 data_ov014_02216dc0[];
 extern Ov003Actor *Actor_GetTarget(Actor *self);
@@ -195,7 +194,7 @@ void func_ov014_02213318(Ov014Act_0221267c *self) {
                 a = ActorMgr_GetActor(data_ov000_021ccd68, id);
             }
             if (a != NULL) {
-                a->pos = self->unk_33c;
+                a->pos = self->unk_314.trans;
                 a->rot_y = self->unk_34c;
             }
             Ov014_TimerTick(self->fsm);

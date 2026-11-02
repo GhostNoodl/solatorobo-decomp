@@ -2,14 +2,12 @@
 
 extern "C" {
 
-extern void func_ov000_02195d88(ActorEx *self);
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
 
 extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
-extern VecFx32 *func_ov000_0218d2e0(void *self);
 extern void func_ov003_021f0c60(Actor *self, s32 a);
 extern BOOL func_ov014_02216324(Actor *self);
 
@@ -71,7 +69,7 @@ void func_ov014_02215ffc(Ov014ActEx_022152e8 *self) {
             ActorSub48 *m = self->hit;
             m->unk_50 = 0;
             m->unk_54 = 0;
-            FLD(u32, m, 0x58) = 0;
+            m->unk_58 = 0;
         }
         self->unk_ec = 0;
         self->fsm->st++;
@@ -86,7 +84,7 @@ void func_ov014_02215ffc(Ov014ActEx_022152e8 *self) {
         }
         break;
     }
-    FLD(s32, self->unk_3c, 0x14) = 0x2000;
+    self->unk_3c->unk_14 = 0x2000;
 }
 
 void func_ov014_02216300(Ov014ActEx_022152e8 *self) {
@@ -114,7 +112,7 @@ BOOL func_ov014_02216324(Actor *self) {
     rad = self->radius;
     if (o->kind == 0x1000) {
         rad = rad + 0x4cd;
-    } else if (p != NULL && FLD(u16, p, 0xb1e) == self->id) {
+    } else if (p != NULL && ((Robo021ca458 *)p)->unk_b1e == self->id) {
         rad >>= 1;
     }
     n = func_ov000_0219a510(self, mask, &self->pos, rad, 0, list);

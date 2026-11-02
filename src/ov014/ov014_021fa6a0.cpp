@@ -5,13 +5,6 @@ struct Ov014A {
     VecFx32 unk_f8[2];
 };
 
-struct Ov014Flags127 {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 b3 : 5;
-};
-
 extern "C" {
 
 extern u8 data_ov014_02217114[];
@@ -22,8 +15,6 @@ extern char data_ov014_022170f4[];
 
 extern void *func_ov000_0218e9c4(void *p);
 extern void *func_ov000_0218fe1c(void *p);
-extern void Ov003ScriptList_Init(void *p);
-extern void *Ov003Vt_021f7974_Dtor(void *p);
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218ea20(void *p);
 extern void SndMgr_LoadHeapState(SndMgr *a, s32 b, s32 c);
@@ -33,16 +24,16 @@ extern void func_ov000_02187a20(void *a, s32 b);
 Ov003Actor *Ov014Act_021fa6a0_Ctor(Ov014Act_021fa6a0 *self) {
     u8 i;
     func_ov003_021d0c1c(self);
-    FLD(void *, self, 0) = data_ov014_02217114;
-    func_ov000_0218e9c4((u8 *)self + 0x124);
-    func_ov000_0218fe1c((u8 *)self + 0x25c);
-    Ov003ScriptList_Init((u8 *)self + 0x348);
+    *(void **)self = data_ov014_02217114;
+    func_ov000_0218e9c4(&self->unk_124);
+    func_ov000_0218fe1c(&self->mdl);
+    Ov003ScriptList_Init(&self->scripts);
     for (i = 0; i < 2; i++) {
         ((Ov014A *)self)->unk_f8[i] = data_ov014_02216468[i];
     }
     self->unk_f0 = 0;
     self->unk_f4 = 0;
-    FLD(s32, self, 0x344) = 0;
+    self->step = NULL;
     self->unk_11e = 0;
     self->unk_11f = 0;
     self->unk_364 = 0x1000;
@@ -56,22 +47,22 @@ static inline void Ov014_StopSnd(void) {
     }
 }
 
-void *Ov014Act_021fa6a0_Dtor(void *self) {
-    FLD(void *, self, 0) = data_ov014_02217114;
+Ov014Act_021fa6a0 *Ov014Act_021fa6a0_Dtor(Ov014Act_021fa6a0 *self) {
+    *(void **)self = data_ov014_02217114;
     Ov014_StopSnd();
-    Ov003Vt_021f7974_Dtor((u8 *)self + 0x348);
-    func_ov000_0218fee4((u8 *)self + 0x25c);
-    func_ov000_0218ea20((u8 *)self + 0x124);
+    Ov003Vt_021f7974_Dtor(&self->scripts);
+    func_ov000_0218fee4(&self->mdl);
+    func_ov000_0218ea20(&self->unk_124);
     func_ov003_021d0edc(self);
     return self;
 }
 
-void *Ov014Act_021fa6a0_DtorDelete(void *self) {
-    FLD(void *, self, 0) = data_ov014_02217114;
+Ov014Act_021fa6a0 *Ov014Act_021fa6a0_DtorDelete(Ov014Act_021fa6a0 *self) {
+    *(void **)self = data_ov014_02217114;
     Ov014_StopSnd();
-    Ov003Vt_021f7974_Dtor((u8 *)self + 0x348);
-    func_ov000_0218fee4((u8 *)self + 0x25c);
-    func_ov000_0218ea20((u8 *)self + 0x124);
+    Ov003Vt_021f7974_Dtor(&self->scripts);
+    func_ov000_0218fee4(&self->mdl);
+    func_ov000_0218ea20(&self->unk_124);
     func_ov003_021d0edc(self);
     Heap_Free(self);
     return self;

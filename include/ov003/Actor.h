@@ -181,7 +181,7 @@ Actor *func_ov003_021d69f0(Ov003Actor *self, s32 kind, const VecFx32 *pos, const
 void func_ov003_021d6a3c(Ov003Actor *self, BOOL release, BOOL mark, BOOL sound);
 void func_ov003_021d6bac(Ov003Actor *self, const void *scale);
 BOOL func_ov003_021da03c(Ov003Actor *self);
-void func_ov003_021da108(Ov003Actor *self, s32 range, s32 fx, s32 base, s32 top);
+void func_ov003_021da108(Actor *self, s32 range, s32 fx, s32 base, s32 top);
 void func_ov003_021da2c8(Actor *self, s32 speed, s32 velY, s32 friction, s32 gravity);
 ActorEx *func_ov003_021dae44(ActorEx *self);
 Actor *func_ov003_021da32c(u16 id);

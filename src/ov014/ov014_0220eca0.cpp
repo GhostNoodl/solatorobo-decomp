@@ -5,19 +5,14 @@ extern "C" {
 
 extern u8 data_ov014_02217aac[];
 extern char data_ov014_02217c6c[];
-extern void func_ov000_02195d88(ActorEx *self);
-extern void func_ov000_0219763c(VObj *self);
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
-extern s32 **func_ov000_02190a30(void *a, s32 b);
+extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
 extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
 extern s16 *func_ov000_02191f18(s16 *a, Model0218fe1c *b);
-extern s32 func_ov014_0220ec18(s16 *a, u8 *b);
-extern ActorEx *ActorEx_Ctor(ActorEx *self);
-extern void func_ov000_02194758(void *self);
-extern BOOL func_ov000_02194c08(ActorEx *self);
+extern s32 func_ov014_0220ec18(s16 *a, Model0218fe1c *b);
 extern u8 Gfx3DState_NextPolyId(void *p);
 extern void func_ov000_02191920(Model0218fe1c *a, s32 b, s16 c, u8 d);
 extern void func_ov000_02191618(Model0218fe1c *p);
@@ -26,8 +21,8 @@ extern void func_ov000_02191708(Model0218fe1c *p);
 #pragma force_active on
 Ov014ActEx_0220eca0 *Ov014ActEx_0220eca0_Ctor(Ov014ActEx_0220eca0 *self) {
     ActorEx_Ctor(self);
-    FLD(void *, self, 0) = data_ov014_02217aac;
-    FLD(s16, self, 0xce) = 0;
+    *(void **)self = data_ov014_02217aac;
+    self->unk_ce = 0;
     self->unk_d0 = 0x1000;
     self->unk_d4 = 0x1000;
     self->unk_d8.x = 0;
@@ -44,14 +39,14 @@ Ov014ActEx_0220eca0 *Ov014ActEx_0220eca0_Ctor(Ov014ActEx_0220eca0 *self) {
 #pragma force_active reset
 
 Ov014ActEx_0220eca0 *Ov014ActEx_0220eca0_Dtor(Ov014ActEx_0220eca0 *self) {
-    FLD(void *, self, 0) = data_ov014_02217aac;
+    *(void **)self = data_ov014_02217aac;
     func_02049de8(data_02097e4c, 0x38);
     func_ov000_0219429c(self);
     return self;
 }
 
 Ov014ActEx_0220eca0 *Ov014ActEx_0220eca0_DtorDelete(Ov014ActEx_0220eca0 *self) {
-    FLD(void *, self, 0) = data_ov014_02217aac;
+    *(void **)self = data_ov014_02217aac;
     func_02049de8(data_02097e4c, 0x38);
     func_ov000_0219429c(self);
     Heap_Free(self);
@@ -66,13 +61,13 @@ void Ov014ActEx_0220eca0_Draw(Ov014ActEx_0220eca0 *self) {
 void Ov014ActEx_0220eca0_Start(Ov014ActEx_0220eca0 *self) {
     Model0218fe1c *m;
     func_ov000_02194758(self);
-    FLD(s16, self, 0xce) = self->unk_18;
+    self->unk_ce = self->unk_18;
     self->unk_d0 = self->unk_1a << 4;
     self->unk_d4 = self->unk_1c << 4;
     self->model->unk_c2_6 = 0;
     func_ov000_02191920(self->model, 0, 0x1000, 0);
-    FLD(Ov014Flags8, func_ov000_02190a30(self->model, 3), 0x111).b3 = 0;
-    FLD(Ov014Flags8, func_ov000_02190a30(self->model, 3), 0x111).b2 = 1;
+    func_ov000_02190a30(self->model, 3)->paused = 0;
+    func_ov000_02190a30(self->model, 3)->loop = 1;
     func_ov000_02190cb0(self->model, data_ov014_02217c6c, 0x1000, 1);
     func_ov000_02191618(self->model);
     func_ov000_02191708(self->model);
@@ -97,11 +92,11 @@ static inline void Ov014_Flash(u8 c) {
 
 static inline void Ov014_Release(Actor *self) {
     s32 t = 0;
-    s32 **p;
+    AnimCtrl *p;
     self->model->anim_state = 0;
     p = func_ov000_02190a30(self->model, 0);
-    if (*p != NULL) {
-        t = **p;
+    if (p->cur != NULL) {
+        t = p->cur->frame;
     }
     func_ov000_02191318(self->model, t + 0x2000);
 }
@@ -122,7 +117,7 @@ void func_ov014_0220ee9c(Ov014ActEx_0220eca0 *self) {
             Ov014_Flash(0x28);
             func_02049f44(data_02097e4c, 0x1b, &self->pos, 0);
             func_02049f44(data_02097e4c, 0x38, &self->pos, 0);
-            self->fsm->timer = FLD(u16, self, 0xce);
+            self->fsm->timer = self->unk_ce;
             self->fsm->st++;
         }
         break;
@@ -150,7 +145,7 @@ void func_ov014_0220ee9c(Ov014ActEx_0220eca0 *self) {
             func_ov014_0220f20c(self, (u8 *)self + 0xd8, (u8 *)self + 0xf0, (u8 *)self + 0xe4);
         }
 
-        if (t < FLD(u16, self, 0xce) - 0xf && t % 15 == 1) {
+        if (t < self->unk_ce - 0xf && t % 15 == 1) {
             Ov014_Flash(0xc);
         }
         w = self->fsm;

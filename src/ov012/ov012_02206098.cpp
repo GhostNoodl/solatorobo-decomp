@@ -2,9 +2,9 @@
 
 extern "C" {
 
-extern void func_ov012_022065d8(Ov003Actor *self);
+extern void func_ov012_022065d8(Ov012ActExVt_0220b1e8 *self);
 
-void func_ov012_02206098(Ov003Actor *self) {
+void func_ov012_02206098(Ov012ActExVt_0220b1e8 *self) {
     VecFx32 d;
     switch (self->fsm->st) {
     case 0: {
@@ -43,10 +43,10 @@ void func_ov012_02206098(Ov003Actor *self) {
             self->friction = FX_Mul(d.z, 0x4cd);
             FX_Atan2(r, self->unk_84.y - self->pos.y);
             self->rot_x = FX_Atan2(self->pos.y - self->unk_84.y, r);
-            if (!(FLD(u32, self, 0xd0) & 0x100000)) {
-                func_ov000_02190758((u8 *)self + 0x210, &self->rot_x, 0);
+            if (!(self->unk_d0 & 0x100000)) {
+                func_ov000_02190758(&self->mdl, &self->rot_x, 0);
             }
-            FLD(u32, self, 0xd0) |= 0x400000;
+            self->unk_d0 |= 0x400000;
         } else {
             self->speed = 0x4cd;
             self->moveYaw = self->rot_y;
@@ -61,7 +61,7 @@ void func_ov012_02206098(Ov003Actor *self) {
         break;
     }
     case 1:
-        if (FLD(u32, self, 0xd0) & 0x400000) {
+        if (self->unk_d0 & 0x400000) {
             Actor_TurnToPos(self, &self->unk_84, 0x1000);
             VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         } else {

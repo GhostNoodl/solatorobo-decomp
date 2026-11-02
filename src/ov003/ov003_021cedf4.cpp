@@ -2,6 +2,7 @@
 #include "Main/Snd/SndMgr.h"
 #include "Main/Effect/Effect.h"
 #include "Main/Sys/SysState.h"
+#include "ov003/Script.h"
 
 struct Ov003Save {
     u8 unk_00[0x18];
@@ -17,48 +18,6 @@ struct Ov003Save {
 struct Ov003Area {
     u8 unk_00[4];
     u8 bonus : 4;
-};
-
-class Ov003Script {
-public:
-    virtual void v00();
-    virtual void Delete();
-    u16 id;
-    u16 max;
-    u16 val;
-    u16 unk_0a;
-    u32 unk_0c;
-    Ov003Script *next;
-};
-
-typedef void (*Ov003ScriptFunc)(void *self, void *arg);
-
-struct Ov003Step {
-    s16 op;
-    s16 chance;
-    u16 a;
-    u16 b;
-};
-
-struct Ov003Track {
-    void *vtbl;
-    u16 id;
-    u16 max;
-    u16 val;
-    u16 unk_0a;
-    Ov003Step *steps;
-    Ov003Track *next;
-};
-
-struct Ov003ScriptList {
-    void *vtbl;
-    Ov003Script *head;
-    u16 count;
-    u16 unk_0a;
-    Ov003Track *cur;
-    Ov003ScriptFunc func;
-    void *arg;
-    u8 enabled;
 };
 
 extern "C" {
@@ -118,10 +77,10 @@ void Ov003ScriptList_Init(Ov003ScriptList *self) {
 }
 
 static inline void Ov003ScriptList_Clear(Ov003ScriptList *self) {
-    Ov003Script *s = self->head;
+    Ov003Track *s = self->head;
     while (s != NULL) {
         void *old;
-        Ov003Script *next;
+        Ov003Track *next;
         next = s->next;
         old = data_02097dd0->cur;
         data_02097dd0->cur = data_02097dd0->heapHi;
@@ -160,7 +119,7 @@ static inline void Ov003Track_Set(Ov003Track *t, u16 v) {
 
 static inline Ov003Track *Ov003ScriptList_Select(Ov003ScriptList *self, u16 id, u16 val) {
     Ov003Track *t;
-    for (t = (Ov003Track *)self->head; t != NULL; t = t->next) {
+    for (t = self->head; t != NULL; t = t->next) {
         if (id == t->id) {
             break;
         }
@@ -179,8 +138,8 @@ static inline void Ov003Track_Advance(Ov003Track *t) {
     t->val = (u32)t->val % t->max;
 }
 
-Ov003Step *func_ov003_021ceff4(Ov003ScriptList *self) {
-    Ov003Step *step;
+const Ov003Step *func_ov003_021ceff4(Ov003ScriptList *self) {
+    const Ov003Step *step;
     Ov003Track *cur;
     if (self->func != NULL && self->enabled) {
         self->func(self, self->arg);

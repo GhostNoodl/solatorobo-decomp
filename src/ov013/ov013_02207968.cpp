@@ -7,7 +7,7 @@ extern Ov003Actor *func_ov000_0219bf90(void);
 
 Ov013Act_02207968 *Ov013Act_02207968_Ctor(Ov013Act_02207968 *self) {
     func_ov003_021d0c1c(self);
-    FLD(void *, self, 0) = &data_ov013_0220bd2c;
+    *(void **)self = &data_ov013_0220bd2c;
     self->unk_f0 = 0;
     self->unk_f4 = 0;
     self->unk_f1 = 0;
@@ -30,11 +30,11 @@ void Ov013Act_02207968_Start(Ov003Actor *self) {
     self->pos.x = -0x3000;
     self->pos.y = -0x32000;
     self->pos.z = -0x8000;
-    Ov013_VecSet(&FLD(VecFx32, self->hit, 0x5c), 0, -0x4cd, 0);
+    Ov013_VecSet(&self->hit->offset, 0, -0x4cd, 0);
     m = self->hit;
     m->unk_9a_1 = 0;
     m->unk_9a_4 = 0;
-    Ov013_VecSet(&FLD(VecFx32, self->unk_44, 0xc), 0, -0x4cd, 0);
+    Ov013_VecSet(&self->unk_44->unk_0c, 0, -0x4cd, 0);
     self->target = 0xffff;
     p = func_ov000_0219bf90();
     if (p != NULL) {

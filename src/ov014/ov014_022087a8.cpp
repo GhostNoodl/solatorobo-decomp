@@ -4,7 +4,6 @@ extern "C" {
 
 extern Ov003Actor *Target_Get(void *p);
 extern void func_0203f364(ActorSub48 *p);
-extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
 extern void func_ov014_02208a9c(Ov014ActEx_02208618 *self);
 extern void func_ov014_02208fe4(Ov014ActEx_02208618 *self);
 

@@ -2,11 +2,11 @@
 
 extern "C" {
 void func_ov012_02207b7c(Ov012Names *n, void *res);
-void func_ov012_02207c40(Ov003Actor *self) {
-    FLD(void *, self, 0xd8) = (void *)func_ov012_02207b7c;
+void func_ov012_02207c40(Ov012ActVt_0220b280 *self) {
+    self->unk_d8 = (void *)func_ov012_02207b7c;
     func_ov003_021d0fc0(self);
-    func_ov000_0218f074((u8 *)self + 0xf0, func_0207011c((void *)0x480e), 1, 0, 0, 0);
-    FLD(s16, self, 0xf0) = 0;
+    func_ov000_0218f074(&self->unk_f0, func_0207011c((void *)0x480e), 1, 0, 0, 0);
+    self->unk_f0.unk_00 = 0;
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     if (self->kind == 0x5029 || self->kind == 0x5057) {
         self->unk_1a = 1;
@@ -18,9 +18,9 @@ void func_ov012_02207c40(Ov003Actor *self) {
 }
 
 extern "C" {
-BOOL func_ov012_02207cf0(Ov003Actor *self) {
+BOOL func_ov012_02207cf0(Ov012ActVt_0220b280 *self) {
     BOOL r = func_ov000_0218cf5c(self);
-    if (FLD(s16, self, 0xf0) >= 0 && !func_ov000_0218f110((u8 *)self + 0xf0)) {
+    if (self->unk_f0.unk_00 >= 0 && !func_ov000_0218f110(&self->unk_f0)) {
         r = FALSE;
     }
     if (r && !SndMgr_IsLoadDone(data_02097e4c)) {
@@ -33,7 +33,7 @@ BOOL func_ov012_02207cf0(Ov003Actor *self) {
 extern "C" {
 extern const u8 data_ov012_0220a870[];
 extern const u8 data_ov012_0220a878[];
-void func_ov012_02207d44(Ov003Actor *self) {
+void func_ov012_02207d44(Ov012ActVt_0220b280 *self) {
     func_ov003_021d112c(self);
     self->unk_ea_3 = 0;
     if (func_020621c4()) {
@@ -115,7 +115,7 @@ static inline void Ov012_Query_SetPosRot(Ov012Query *q, const VecFx32 *pos, u16 
     q->unk_0c = rot;
 }
 
-void func_ov012_02207dac(Ov003Actor *self) {
+void func_ov012_02207dac(Ov012ActVt_0220b280 *self) {
     s32 n;
     BOOL found;
     s32 i;
@@ -192,11 +192,11 @@ void func_ov012_02207dac(Ov003Actor *self) {
                      func_ov000_021983b0(self->fsm, 0x14, lvl, 1))) {
         self->unk_b8 = v;
         self->fsm->flags |= 0x10000;
-        FLD(u16, self, 0x228) = 0;
+        self->unk_228 = 0;
     } else if (dist < 0x5800) {
         if (hp < 0x28 && !Rand_UpTo(1)) {
             self->fsm->flags |= 0x10000;
-            FLD(u16, self, 0x228) = 0;
+            self->unk_228 = 0;
         } else {
             self->fsm->flags |= 0x8000;
         }

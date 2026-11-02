@@ -44,7 +44,7 @@ void func_ov012_02209268(Ov003Actor *self) {
     }
     self->target = pl->id;
     self->unk_93_4 = 1;
-    o = (Ov003Actor *)Ov012_FindRes(0x4000, 0x4801);
+    o = Ov012_FindRes(0x4000, 0x4801);
     v = pl->pos;
     dist = VEC_Distance(&self->pos, &v);
     kind = self->fsm->current;

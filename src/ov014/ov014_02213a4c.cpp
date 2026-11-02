@@ -26,10 +26,6 @@ static inline void Ov014Spawn_Init(Ov014SpawnDesc *d, u16 k) {
     d->parent = -1;
 }
 
-struct Ov014Bit16 {
-    u8 b0 : 1;
-};
-
 extern char data_ov014_02217d3a[];
 extern char data_ov014_02217d4c[];
 extern u8 data_ov014_02216e08[];
@@ -59,7 +55,7 @@ void func_ov014_022136b4(Ov014Act_0221267c *self) {
         break;
     }
     case 10: {
-        EffectObj *e = func_02065f88(0x5e1, &self->unk_33c);
+        EffectObj *e = func_02065f88(0x5e1, &self->unk_314.trans);
         e->SetScaleXYZ(0x2000, 0x2000, 0x2000);
         self->fsm->st++;
         self->fsm->timer = 0x3c;
@@ -84,13 +80,13 @@ void func_ov014_022136b4(Ov014Act_0221267c *self) {
             break;
         }
         Ov014Spawn_Init(&d, 0x483b);
-        o = Group_SpawnActor(data_ov000_021ccd64, &d, &self->unk_33c, &self->rot_x, 0xffff);
+        o = Group_SpawnActor(data_ov000_021ccd64, &d, &self->unk_314.trans, &self->rot_x, 0xffff);
         o->unk_60 = data_ov014_02216e08;
         o->target = self->target;
         if (o->targetObj != NULL) {
             o->targetObj->target = self->id;
         }
-        FLD(Ov014Bit16, o, 0x16).b0 = 1;
+        o->flags_0 = 1;
         self->target_id = o->id;
         self->unk_312--;
         self->fsm->st++;
@@ -169,7 +165,7 @@ void func_ov014_02213afc(Ov014Act_0221267c *self) {
         }
         b = Interp_SinLerp(FX_Div(self->fsm->timer << 12, 0x78000), 0, 0x1f000) >> 12;
         self->model->alpha = b;
-        self->unk_2e6 = b;
+        self->mdl.alpha = b;
         if (self->fsm->timer == 0) {
             self->fsm->st++;
         }

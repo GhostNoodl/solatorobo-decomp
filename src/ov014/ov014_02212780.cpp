@@ -15,8 +15,8 @@ extern s32 func_ov003_021d1c00(Ov003Actor *self, Ov014Msg *msg);
 
 BOOL Ov014Act_0221267c_IsReady(Ov014Act_0221267c *self) {
     BOOL r = func_ov000_0218cf5c(self);
-    if (self->unk_f0 >= 0) {
-        r = (r & func_ov000_0218f110((u8 *)self + 0xf0)) ? TRUE : FALSE;
+    if (self->unk_f0.unk_00 >= 0) {
+        r = (r & func_ov000_0218f110(&self->unk_f0)) ? TRUE : FALSE;
     }
     return r;
 }
@@ -61,13 +61,13 @@ void Ov014Act_0221267c_Start(Ov014Act_0221267c *self) {
         n->unk_22_0 = 0;
         n->unk_22_1 = 0;
     }
-    FLD(s32, self, 0x314) = func_ov000_021909a8(self->model, data_ov014_02217d9f, data_ov014_02217da0);
-    MTX_Identity43_((MtxFx43 *)((u8 *)self + 0x318));
+    self->unk_314.joint = func_ov000_021909a8(self->model, data_ov014_02217d9f, data_ov014_02217da0);
+    MTX_Identity43_(&self->unk_314.mtx);
     m = self->model;
     NNS_G3dRenderObjSetInitFunc((NNSG3dRenderObj *)m->unk_24, (NNSG3dSbcCallBackFunc)func_ov014_0220f8e4);
     m->clearInit = 0;
     self->model->flushVP = 1;
-    self->model->renderUser = &FLD(u8, self, 0x314);
+    self->model->renderUser = &self->unk_314;
     self->model->alpha = 0;
     self->model->boxTest = 0;
 }

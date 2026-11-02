@@ -13,9 +13,6 @@ struct Ov014Mtx33 {
 extern "C" {
 
 extern u8 data_ov014_02217b44[];
-extern ActorEx *ActorEx_Ctor(ActorEx *self);
-extern void func_ov000_02194758(void *self);
-extern BOOL func_ov000_02194c08(ActorEx *self);
 extern void func_0203f364(ActorSub48 *p);
 extern void func_ov000_02191690(Model0218fe1c *p);
 extern void func_ov000_02191618(Model0218fe1c *p);
@@ -26,7 +23,7 @@ void func_ov014_0220dcf0(void) {
 #pragma force_active on
 Ov014ActEx_0220dcf4 *Ov014ActEx_0220dcf4_Ctor(Ov014ActEx_0220dcf4 *self) {
     ActorEx_Ctor(self);
-    FLD(void *, self, 0) = data_ov014_02217b44;
+    *(void **)self = data_ov014_02217b44;
     self->unk_d0 = NULL;
     self->unk_d4 = 0;
     self->unk_d6 = 0;
@@ -37,14 +34,14 @@ Ov014ActEx_0220dcf4 *Ov014ActEx_0220dcf4_Ctor(Ov014ActEx_0220dcf4 *self) {
 #pragma force_active reset
 
 Ov014ActEx_0220dcf4 *Ov014ActEx_0220dcf4_Dtor(Ov014ActEx_0220dcf4 *self) {
-    FLD(void *, self, 0) = data_ov014_02217b44;
+    *(void **)self = data_ov014_02217b44;
     EffectMgr_Kill(data_0214a420, self->unk_d0);
     func_ov000_0219429c(self);
     return self;
 }
 
 Ov014ActEx_0220dcf4 *Ov014ActEx_0220dcf4_DtorDelete(Ov014ActEx_0220dcf4 *self) {
-    FLD(void *, self, 0) = data_ov014_02217b44;
+    *(void **)self = data_ov014_02217b44;
     EffectMgr_Kill(data_0214a420, self->unk_d0);
     func_ov000_0219429c(self);
     Heap_Free(self);
@@ -203,8 +200,8 @@ void func_ov014_0220de34(Ov014ActEx_0220dcf4 *self) {
         self->friction = FX_Mul(dir.z, sp);
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         self->rot_x += 0x1ff;
-        self->rot_y = FLD(u16, self, 0xd8);
-        self->rot_z = FLD(u16, self, 0xda);
+        self->rot_y = self->unk_d8;
+        self->rot_z = self->unk_da;
         n.x = -dir.x;
         n.y = -dir.y;
         n.z = -dir.z;

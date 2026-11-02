@@ -103,7 +103,7 @@ void func_ov012_02201d28(Ov003Actor *self) {
 }
 
 extern "C" {
-void *Ov012Act_021fee1c_DtorDelete(void *self) {
+Ov012Act_021fee1c *Ov012Act_021fee1c_DtorDelete(Ov012Act_021fee1c *self) {
     func_ov003_021d0edc(self);
     Heap_Free(self);
     return self;
@@ -111,7 +111,7 @@ void *Ov012Act_021fee1c_DtorDelete(void *self) {
 }
 
 extern "C" {
-void *Ov012Act_021fee1c_Dtor(void *self) {
+Ov012Act_021fee1c *Ov012Act_021fee1c_Dtor(Ov012Act_021fee1c *self) {
     func_ov003_021d0edc(self);
     return self;
 }
@@ -121,7 +121,7 @@ extern "C" {
 extern const VecFx32 data_ov012_0220a54c[];
 void Ov012ActExVt_0220af10_Start(Ov012ActExVt_0220af10 *self) {
     s16 t;
-    void *p;
+    Actor *p;
     ActorSub48 *m;
     ActorSub44 *n;
     func_ov000_02194758(self);
@@ -139,7 +139,7 @@ void Ov012ActExVt_0220af10_Start(Ov012ActExVt_0220af10 *self) {
     self->unk_1e = t;
     p = Target_Get(self->targetObj);
     if (p != NULL) {
-        self->unk_e0 = FLD(u16, p, 0xc);
+        self->unk_e0 = p->id;
     }
     VEC_Add(&self->pos, &data_ov012_0220a54c[self->unk_e2], &self->unk_84);
     {
@@ -173,7 +173,7 @@ void Ov012ActExVt_0220af10_Update(Ov012ActExVt_0220af10 *self) {
     if (self->fsm->current != 1) {
         return;
     }
-    FLD(Ov012Flags8, self, 0xe3).b2 = 1;
+    self->unk_e3 |= 4;
     self->target = 0xffff;
     o = (Ov003Actor *)func_ov000_0219bf90();
     if (o != NULL) {
@@ -188,7 +188,7 @@ extern "C" {
 extern const VecFx32 data_ov012_0220a540;
 s32 Rand_Fx(void);
 void func_ov000_02196060(ActorEx *self);
-void Actor_PitchToPos(void *self, VecFx32 *v, s32 a);
+void Actor_PitchToPos(Actor *self, VecFx32 *target, s32 step);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
 
 #define OV012_FXMUL_K(a, k) ((s32)(((s64)(a) * (k) + 0x800) >> 12))
@@ -222,10 +222,10 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
         return;
     }
     if (o->kind == 0x1000) {
-        void *p = self->targetObj;
-        FLD(s32, p, 0x50) = 0x1000;
-        FLD(s32, p, 0x54) = 0x29;
-        FLD(s32, p, 0x58) = 0;
+        ActorSub4c *p = self->targetObj;
+        p->unk_50 = 0x1000;
+        p->unk_54 = 0x29;
+        p->unk_58 = 0;
         self->hit->unk_30 = 0;
         func_ov000_02196060(self);
         return;
@@ -318,7 +318,7 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
             VEC_Add(&r2, &data_ov012_0220a540, &r2);
             VEC_Add(&self->unk_84, &r2, &self->unk_84);
         }
-        FLD(u16, self->hit, 0x9a) |= 0x12;
+        self->hit->unk_9a |= 0x12;
         func_02049f44(data_02097e4c, 0x50, &self->pos, 0);
         self->fsm->st++;
         break;
@@ -434,8 +434,8 @@ void func_ov012_02201f48(Ov012ActExVt_0220af10 *self) {
         self->fsm->st++;
     }
     case 9: {
-        void *p = self->targetObj;
-        BOOL r = func_ov000_0219aae8(self, self, FLD(u16, p, 8), FLD(u16, p, 0xa), 2, NULL, 0, 0x4000, 0, 100, 0x1000);
+        ActorSub4c *p = self->targetObj;
+        BOOL r = func_ov000_0219aae8(self, self, p->unk_08, p->unk_0a, 2, NULL, 0, 0x4000, 0, 100, 0x1000);
         self->model->alpha = 0;
         {
             ActorSub40 *q = self->fsm;

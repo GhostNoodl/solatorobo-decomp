@@ -75,7 +75,7 @@ void func_ov012_02209bd4(Ov003Actor *self) {
             if (n != NULL) {
                 func_ov000_0218d46c((StageObj3D *)n, self->id, 10);
                 if (n->targetObj != NULL) {
-                    FLD(Ov012Flags8, n->targetObj, 0x18).b0 = 0;
+                    n->targetObj->unk_18_0 = 0;
                 }
                 self->unk_d0->target_id = 0xffff;
             }
@@ -149,11 +149,11 @@ void func_ov012_0220a0f4(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         Ov003Actor *o = Ov012_FindActor(self->unk_d0->target_id);
         if (o != NULL) {
-            void *p;
+            ActorSub4c *p;
             func_ov000_0218d46c((StageObj3D *)o, self->id, 10);
             p = o->targetObj;
             if (p != NULL) {
-                FLD(Ov012Flags8, p, 0x18).b0 = 0;
+                p->unk_18_0 = 0;
             }
             self->unk_d0->target_id = 0xffff;
         }
@@ -186,11 +186,11 @@ void func_ov012_0220a244(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         Ov003Actor *o = Ov012_FindActor(self->unk_d0->target_id);
         if (o != NULL) {
-            void *p;
+            ActorSub4c *p;
             func_ov000_0218d46c((StageObj3D *)o, self->id, 10);
             p = o->targetObj;
             if (p != NULL) {
-                FLD(Ov012Flags8, p, 0x18).b0 = 0;
+                p->unk_18_0 = 0;
             }
             self->unk_d0->target_id = 0xffff;
         }
@@ -205,11 +205,11 @@ void func_ov012_0220a2ec(Ov003Actor *self) {
     if (self->fsm->st == 0) {
         Ov003Actor *o = Ov012_FindActor(self->unk_d0->target_id);
         if (o != NULL) {
-            void *p;
+            ActorSub4c *p;
             func_ov000_0218d46c((StageObj3D *)o, self->id, 10);
             p = o->targetObj;
             if (p != NULL) {
-                FLD(Ov012Flags8, p, 0x18).b0 = 0;
+                p->unk_18_0 = 0;
             }
             self->unk_d0->target_id = 0xffff;
         }
@@ -220,14 +220,14 @@ void func_ov012_0220a2ec(Ov003Actor *self) {
 }
 
 extern "C" {
-void *func_ov012_0220a394(void *self) {
+Ov003Actor *func_ov012_0220a394(Ov003Actor *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 }
 
 extern "C" {
-void *func_ov012_0220a3a8(void *self) {
+Ov003Actor *func_ov012_0220a3a8(Ov003Actor *self) {
     func_ov003_021d0edc(self);
     Heap_Free(self);
     return self;

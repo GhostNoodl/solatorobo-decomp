@@ -4,9 +4,6 @@ extern "C" {
 
 extern u8 data_ov014_02217bdc[];
 extern u8 data_ov014_02217b44[];
-extern ActorEx *ActorEx_Ctor(ActorEx *self);
-extern void func_ov000_02194758(void *self);
-extern BOOL func_ov000_02194c08(ActorEx *self);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 
 extern char data_ov014_02217a4e[];
@@ -14,7 +11,7 @@ extern char data_ov014_02217a9c[];
 extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
 extern void func_ov000_02191618(Model0218fe1c *p);
 extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
-extern u8 *func_ov000_0219bf90(void);
+extern Ov003Actor *func_ov000_0219bf90(void);
 extern void func_ov014_0220a490(Ov014Act_02209280 *self, VecFx32 *vel, u16 a, u16 b, u16 c);
 
 void func_ov014_0220d274(Ov014Act_02209280 *self) {
@@ -64,7 +61,7 @@ void func_ov014_0220d274(Ov014Act_02209280 *self) {
         }
         break;
     case 10:
-        self->unk_f8 = self->step->unk_04;
+        self->unk_f8 = self->step->a;
         func_ov000_02190cb0(self->model, data_ov014_02217a9c, 0x2ab, 0);
         func_ov000_02191318(self->model, 0);
         func_ov000_02191618(self->model);
@@ -72,13 +69,13 @@ void func_ov014_0220d274(Ov014Act_02209280 *self) {
         self->fsm->timer = 0;
         break;
     case 11: {
-        u8 *m = (u8 *)self->model;
-        if (FLD(s16, m, 0xc4) == 2) {
-            FLD(s16, m, 0xc4) = 0;
+        Model0218fe1c *m = self->model;
+        if (m->anim_state == 2) {
+            m->anim_state = 0;
             func_ov000_021911c8(self->model, 0x1400);
             break;
         }
-        if (FLD(s16, m, 0xc4) == 1) {
+        if (m->anim_state == 1) {
             FieldState *g = data_ov000_021ccd54;
             g->cam.base.flags |= 0x1c;
             g->cam.base.shakeTime = 0x1e;
@@ -86,13 +83,13 @@ void func_ov014_0220d274(Ov014Act_02209280 *self) {
             g->cam.base.shakeCur = 10;
             self->fsm->st++;
             self->fsm->timer = 0;
-            self->unk_f8 = self->step->unk_04;
+            self->unk_f8 = self->step->a;
         }
         break;
     }
     case 12: {
         u16 t;
-        u8 *pl;
+        Ov003Actor *pl;
         VecFx32 v;
         {
             ActorSub40 *s = self->fsm;
@@ -106,9 +103,9 @@ void func_ov014_0220d274(Ov014Act_02209280 *self) {
         t = self->step->time;
         pl = func_ov000_0219bf90();
         if (pl != NULL && !(self->unk_f8 & 3)) {
-            v.x = FLD(s32, pl, 0x70);
-            v.y = FLD(s32, pl, 0x74);
-            v.z = FLD(s32, pl, 0x78);
+            v.x = pl->pos.x;
+            v.y = pl->pos.y;
+            v.z = pl->pos.z;
             v.y = 0;
         } else {
             s32 x = Rand_UpTo(0x4000) + 0x3000;
@@ -167,7 +164,7 @@ void func_ov014_0220d6f8(Ov014Act_02209280 *self) {
 #pragma force_active on
 Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_Ctor(Ov014ActEx_0220d70c *self) {
     ActorEx_Ctor(self);
-    FLD(void *, self, 0) = data_ov014_02217bdc;
+    *(void **)self = data_ov014_02217bdc;
     self->unk_d0 = NULL;
     self->unk_d4 = NULL;
     self->unk_d8.x = 0;
@@ -178,7 +175,7 @@ Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_Ctor(Ov014ActEx_0220d70c *self) {
 #pragma force_active reset
 
 Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_Dtor(Ov014ActEx_0220d70c *self) {
-    FLD(void *, self, 0) = data_ov014_02217bdc;
+    *(void **)self = data_ov014_02217bdc;
     if (self->unk_d0 != NULL) {
         EffectMgr_Kill(data_0214a420, self->unk_d0);
     }
@@ -190,7 +187,7 @@ Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_Dtor(Ov014ActEx_0220d70c *self) {
 }
 
 Ov014ActEx_0220d70c *Ov014ActEx_0220d70c_DtorDelete(Ov014ActEx_0220d70c *self) {
-    FLD(void *, self, 0) = data_ov014_02217bdc;
+    *(void **)self = data_ov014_02217bdc;
     if (self->unk_d0 != NULL) {
         EffectMgr_Kill(data_0214a420, self->unk_d0);
     }
@@ -222,7 +219,7 @@ void Ov014ActEx_0220d70c_Start(Ov014ActEx_0220d70c *self) {
     }
 }
 
-extern BOOL func_ov000_021b4738(u8 *p);
+extern BOOL func_ov000_021b4738(Ov003Actor *p);
 extern EffectObj *func_ov014_0220f7f0(s32 k, VecFx32 *pos);
 extern void *Target_Get(void *p);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
@@ -244,7 +241,7 @@ static inline void Ov014_d890Fire(Ov014ActEx_0220d70c *self) {
 // (ldrsh) and changes the code, so these reads stay FLD.
 void func_ov014_0220d890(Ov014ActEx_0220d70c *self) {
     BOOL noPl = FALSE;
-    u8 *pl = func_ov000_0219bf90();
+    Ov003Actor *pl = func_ov000_0219bf90();
     if (pl == NULL || func_ov000_021b4738(pl)) {
         noPl = TRUE;
     }

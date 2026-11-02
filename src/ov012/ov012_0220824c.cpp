@@ -2,7 +2,7 @@
 #include "Main/Math/Rot16.h"
 
 extern "C" {
-void func_ov012_0220824c(Ov003Actor *self) {
+void func_ov012_0220824c(Ov012ActVt_0220b280 *self) {
     if (self->fsm->st == 0 && self->unk_1a == 0) {
         func_02049f44(data_02097e4c, 0x600, &self->pos, 0);
     }
@@ -19,7 +19,7 @@ static inline u16 Ov012_HpPct8294(Ov003Actor *self) {
     return self->hp[0] * 100 / self->hp[1];
 }
 
-void func_ov012_02208294(Ov003Actor *self) {
+void func_ov012_02208294(Ov012ActVt_0220b280 *self) {
     Ov003Actor *pl = Ov012_FindActor(self->target);
     ActorSub40 *s = self->fsm;
     VecFx32 t;
@@ -94,8 +94,8 @@ void func_ov012_02208294(Ov003Actor *self) {
             self->velY = 0;
             self->friction = 0;
             self->gravity = 0;
-            if (Ov012_HpPct8294(self) < 0x28 && FLD(u16, self, 0x228) == 0) {
-                FLD(u16, self, 0x228)++;
+            if (Ov012_HpPct8294(self) < 0x28 && self->unk_228 == 0) {
+                self->unk_228++;
                 func_ov000_02198360(self->fsm, 0x10, 1);
             } else {
                 func_ov000_02190cb0(self->model, data_ov012_0220b335, 0x19a, 0);
@@ -133,7 +133,7 @@ void func_ov012_02208294(Ov003Actor *self) {
     case 6:
         s->timer++;
         if (s->timer > 100) {
-            FLD(u16, self, 0x228) = 0;
+            self->unk_228 = 0;
             func_ov000_02198360(self->fsm, 1, 0);
         }
         break;

@@ -116,7 +116,7 @@ static inline EffectObj *Ov003_SpawnScatter(const Ov003Vec *base, s32 range, s32
     return func_02065f88(fx, &p);
 }
 
-void func_ov003_021da108(Ov003Actor *self, s32 range, s32 fx, s32 base, s32 top) {
+void func_ov003_021da108(Actor *self, s32 range, s32 fx, s32 base, s32 top) {
     Ov003Vec pos;
     VecFx32 off = data_ov003_021f4988;
     pos = *(Ov003Vec *)&self->pos; // copied as an Ov003Vec (see ov003/Vec.h)

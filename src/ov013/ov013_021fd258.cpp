@@ -114,14 +114,14 @@ static inline void Ov013_StopHtr(Ov013ActExVt_0220b7d0 *self) {
 }
 
 Ov013ActExVt_0220b7d0 *Ov013ActExVt_0220b7d0_Dtor(Ov013ActExVt_0220b7d0 *self) {
-    FLD(void *, self, 0) = data_ov013_0220b7d0;
+    *(void **)self = data_ov013_0220b7d0;
     Ov013_StopHtr(self);
     func_ov000_0219429c(self);
     return self;
 }
 
 Ov013ActExVt_0220b7d0 *Ov013ActExVt_0220b7d0_DtorDelete(Ov013ActExVt_0220b7d0 *self) {
-    FLD(void *, self, 0) = data_ov013_0220b7d0;
+    *(void **)self = data_ov013_0220b7d0;
     Ov013_StopHtr(self);
     func_ov000_0219429c(self);
     Heap_Free(self);

@@ -5,7 +5,6 @@ extern "C" {
 extern char data_ov014_02217d3a[];
 extern s16 *func_ov000_02191318(Model0218fe1c *a, s32 b);
 extern Ov003Actor *func_ov000_0219bf90(void);
-extern void Actor_TurnToActor(Actor *self, Actor *target, s32 a);
 extern s32 Interp_SinLerp(s32 a, s32 b, s32 c);
 
 static inline void Ov014_TimerTick(ActorSub40 *s) {
@@ -28,7 +27,7 @@ void func_ov014_02212dd4(Ov014Act_0221267c *self) {
         u16 t = s->timer;
         u8 b = Interp_SinLerp(FX_Div(t << 12, 0x78000), 0x1f000, 0) >> 12;
         self->model->alpha = b;
-        self->unk_2e6 = b;
+        self->mdl.alpha = b;
         if (t == 50) {
             func_02065f88(0xcb, &self->pos)->SetScaleXYZ(0x2000, 0x2000, 0x2000);
         }

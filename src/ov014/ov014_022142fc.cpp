@@ -24,9 +24,6 @@ static inline s32 Ov014_Approach(s32 cur, s32 target) {
 extern "C" {
 
 extern u8 data_ov014_02217fb0[];
-extern ActorEx *ActorEx_Ctor(ActorEx *self);
-extern void func_ov000_02194758(void *self);
-extern BOOL func_ov000_02194c08(ActorEx *self);
 extern void func_0203f364(ActorSub48 *p);
 extern Ov003Actor *Target_Get(void *p);
 extern Ov003Actor *func_ov000_0219bf90(void);
@@ -36,7 +33,7 @@ extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
 #pragma force_active on
 Ov014ActEx_022142fc *Ov014ActEx_022142fc_Ctor(Ov014ActEx_022142fc *self) {
     ActorEx_Ctor(self);
-    FLD(void *, self, 0) = data_ov014_02217fb0;
+    *(void **)self = data_ov014_02217fb0;
     self->unk_d0.x = 0;
     self->unk_d0.y = 0;
     self->unk_d0.z = 0;
@@ -46,12 +43,12 @@ Ov014ActEx_022142fc *Ov014ActEx_022142fc_Ctor(Ov014ActEx_022142fc *self) {
 }
 #pragma force_active reset
 
-void *Ov014ActEx_022142fc_Dtor(void *self) {
+Ov014ActEx_022142fc *Ov014ActEx_022142fc_Dtor(Ov014ActEx_022142fc *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *Ov014ActEx_022142fc_DtorDelete(void *self) {
+Ov014ActEx_022142fc *Ov014ActEx_022142fc_DtorDelete(Ov014ActEx_022142fc *self) {
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
@@ -95,7 +92,7 @@ BOOL func_ov014_022143f4(Actor *self) {
     rad = self->radius;
     if (o->kind == 0x1000) {
         rad = rad + 0x4cd;
-    } else if (p != NULL && FLD(u16, p, 0xb1e) == self->id) {
+    } else if (p != NULL && ((Robo021ca458 *)p)->unk_b1e == self->id) {
         rad >>= 1;
     }
     n = func_ov000_0219a510(self, mask, &self->pos, rad, 0, list);
@@ -349,7 +346,6 @@ void func_ov014_022144f8(Ov014ActEx_022142fc *self) {
     }
 }
 
-extern VecFx32 *func_ov000_0218d2e0(void *self);
 
 #define OV014_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV014_SQRT_RESULT (*(volatile u32 *)0x40002b4)

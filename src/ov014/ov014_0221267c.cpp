@@ -16,12 +16,12 @@ extern s32 func_ov003_021d1c00(Ov003Actor *self, Ov014Msg *msg);
 #pragma force_active on
 Ov003Actor *Ov014Act_0221267c_Ctor(Ov014Act_0221267c *self) {
     func_ov003_021d0c1c(self);
-    FLD(void *, self, 0) = data_ov014_02217dc0;
-    func_ov000_0218e9c4((u8 *)self + 0xf0);
-    func_ov000_0218fe1c((u8 *)self + 0x228);
+    *(void **)self = data_ov014_02217dc0;
+    func_ov000_0218e9c4(&self->unk_f0);
+    func_ov000_0218fe1c(&self->mdl);
     self->unk_310 = 0;
     self->unk_312 = 0;
-    MIi_CpuClearFast(0, (u8 *)self + 0x314, 0x34);
+    MIi_CpuClearFast(0, &self->unk_314, sizeof(Ov014JointMtx));
     self->unk_34c = 0;
     self->unk_348 = 0;
     self->unk_350 = 0;
@@ -31,35 +31,35 @@ Ov003Actor *Ov014Act_0221267c_Ctor(Ov014Act_0221267c *self) {
 #pragma force_active reset
 
 Ov014Act_0221267c *Ov014Act_0221267c_Dtor(Ov014Act_0221267c *self) {
-    func_ov000_0218fee4((u8 *)self + 0x228);
-    func_ov000_0218ea20((u8 *)self + 0xf0);
+    func_ov000_0218fee4(&self->mdl);
+    func_ov000_0218ea20(&self->unk_f0);
     func_ov003_021d0edc(self);
     return self;
 }
 
 Ov014Act_0221267c *Ov014Act_0221267c_DtorDelete(Ov014Act_0221267c *self) {
-    func_ov000_0218fee4((u8 *)self + 0x228);
-    func_ov000_0218ea20((u8 *)self + 0xf0);
+    func_ov000_0218fee4(&self->mdl);
+    func_ov000_0218ea20(&self->unk_f0);
     func_ov003_021d0edc(self);
     Heap_Free(self);
     return self;
 }
 
-static inline void Ov014Names_Set(u8 *n, const char *a, const char *b) {
-    STD_CopyString((char *)n + 0x10, a);
-    STD_CopyString((char *)n + 0x30, b);
-    FLD(Ov014Flags8, n, 3).b1 = 1;
+static inline void Ov014Names_Set(Ov014Names *n, const char *a, const char *b) {
+    STD_CopyString(n->mdlDir, a);
+    STD_CopyString(n->mdlName, b);
+    n->ownMdl = 1;
 }
 
 void Ov014Act_0221267c_Init(Ov014Act_0221267c *self) {
     func_ov003_021d0fc0(self);
     {
         const char *b = data_ov014_02217d8e;
-        u8 *n = (u8 *)self + 0xf0;
+        Ov014Names *n = &self->unk_f0;
         if (b) {
             Ov014Names_Set(n, data_ov014_02217d95, b);
         }
-        FLD(u16, n, 0) = 0;
+        n->unk_00 = 0;
     }
 }
 

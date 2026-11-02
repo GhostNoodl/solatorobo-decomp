@@ -65,14 +65,12 @@ void func_ov014_0220840c(Ov014ActEx_0220774c *self) {
 
 
 extern u8 data_ov014_02217708[];
-extern ActorEx *ActorEx_Ctor(ActorEx *self);
-extern void func_ov000_02194758(void *self);
 extern void func_0203f364(ActorSub48 *p);
 
 #pragma force_active on
 Ov014ActEx_02208618 *Ov014ActEx_02208618_Ctor(Ov014ActEx_02208618 *self) {
     ActorEx_Ctor(self);
-    FLD(void *, self, 0) = data_ov014_02217708;
+    *(void **)self = data_ov014_02217708;
     self->unk_d0 = 0;
     self->unk_d8 = NULL;
     self->unk_d4 = 0;
@@ -81,15 +79,15 @@ Ov014ActEx_02208618 *Ov014ActEx_02208618_Ctor(Ov014ActEx_02208618 *self) {
 #pragma force_active reset
 
 Ov014ActEx_02208618 *Ov014ActEx_02208618_Dtor(Ov014ActEx_02208618 *self) {
-    FLD(void *, self, 0) = data_ov014_02217708;
-    Ov014_FreeFx(self, 0xd8);
+    *(void **)self = data_ov014_02217708;
+    Ov014_FreeFx(&self->unk_d8);
     func_ov000_0219429c(self);
     return self;
 }
 
 Ov014ActEx_02208618 *Ov014ActEx_02208618_DtorDelete(Ov014ActEx_02208618 *self) {
-    FLD(void *, self, 0) = data_ov014_02217708;
-    Ov014_FreeFx(self, 0xd8);
+    *(void **)self = data_ov014_02217708;
+    Ov014_FreeFx(&self->unk_d8);
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;

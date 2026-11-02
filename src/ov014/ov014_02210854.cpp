@@ -29,7 +29,7 @@ void func_ov014_02210854(Ov014Act_0220f9d0 *self) {
 extern const Ov014Blk12 data_ov014_02216bf4;
 extern const Ov014Blk12 data_ov014_02216c00;
 extern u8 data_ov014_02216cb8[];
-extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, VecFx32 *pos, Ov014Rot16 *rot, u16 a);
+extern Ov003Actor *Group_SpawnActor(void *mgr, Ov014SpawnDesc *d, VecFx32 *pos, Rot16 *rot, u16 a);
 extern Ov003Actor *func_ov000_0219bf90(void);
 
 Ov003Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
@@ -39,7 +39,7 @@ Ov003Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
     Ov014Mtx33 m2;
     VecFx32 off;
     Ov014Mtx33 m;
-    Ov014Rot16 rot;
+    Rot16 rot;
     Ov003Actor *o;
     Ov003Actor *pl;
     s32 px;
@@ -49,7 +49,7 @@ Ov003Actor *func_ov014_02210878(Ov014Act_0220f9d0 *self) {
     s32 step;
     u16 ang;
     *(Ov014Blk12 *)&base = data_ov014_02216bf4;
-    cnt = FLD(u16, self->unk_140, 4) + 3;
+    cnt = self->step->a + 3;
     step = -0x5554 / cnt;
     ang = step * (u16)((self->unk_144 + self->unk_14c) % cnt) + 0x2aaa;
     *(Ov014Blk12 *)&off = data_ov014_02216c00;
@@ -94,13 +94,13 @@ Ov003Actor *func_ov014_02210a78(Ov014Act_0220f9d0 *self) {
     VecFx32 pos;
     VecFx32 d;
     Ov014SpawnDesc desc;
-    Ov014Rot16 rot;
+    Rot16 rot;
     Ov003Actor *o;
     s32 k;
     s32 i;
-    pos.x = self->unk_118.x;
-    pos.y = self->unk_118.y;
-    pos.z = self->unk_118.z + 0x2000;
+    pos.x = self->unk_f0.trans.x;
+    pos.y = self->unk_f0.trans.y;
+    pos.z = self->unk_f0.trans.z + 0x2000;
     k = ((self->unk_144 + self->unk_14c) % 4) * 0x7fff;
     rot.x = 0xfff;
     rot.y = -0x3fff + (u16)(k / 4);

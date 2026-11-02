@@ -147,26 +147,6 @@ public:
 
 #define FLD(type, p, off) (*(type *)((u8 *)(p) + (off)))
 
-// Generic bitfield views
-struct Ov013Flags {
-    u16 b0 : 1;
-    u16 b1 : 1;
-    u16 b2 : 1;
-    u16 b3 : 1;
-    u16 b4 : 1;
-    u16 b5 : 1;
-    u16 b6 : 1;
-    u16 b7 : 1;
-    u16 b8 : 1;
-    u16 b9 : 1;
-    u16 b10 : 1;
-    u16 b11 : 1;
-    u16 b12 : 1;
-    u16 b13 : 1;
-    u16 b14 : 1;
-    u16 b15 : 1;
-};
-
 struct Ov013Flags8 {
     u8 b0 : 1;
     u8 b1 : 1;
@@ -203,9 +183,11 @@ static inline void Ov013_VecCopyYZ(VecFx32 *d, const VecFx32 *s) {
 struct Ov013Msg {
     u8 unk_00[0x5];
     u8 type;
-    u8 unk_06[0x2];
-    u8 idx;
-    u8 unk_09[0x3];
+    u16 id; // sender
+    union {
+        u8 idx;
+        ActorMsgHit hit; // type 9
+    };
     VecFx32 v;
 };
 
@@ -216,7 +198,7 @@ struct Ov013Msg {
 class Ov003Actor;
 
 struct Ov013Names {
-    u16 unk_00;
+    s16 unk_00; // negative until the resources are loaded
     u8 unk_02;
     u8 unk_03_0 : 1;
     u8 ownMdl : 1;
@@ -240,11 +222,6 @@ public:
     u8 unk_491;
     u16 unk_492;
     VecFx32 unk_494;
-};
-
-struct Ov013Path {
-    VecFx32 start;
-    VecFx32 end;
 };
 
 static inline BOOL Ov013Game_IsBusy(FieldState *g) {
@@ -292,42 +269,44 @@ s32 func_0203db40(void *p);
 void func_ov000_02190a80(void *a, s32 b);
 }
 
-extern "C" void *func_ov003_021da940(void *p);
-
-// Frees the effect handle at self+off with the default heap selected.
-static inline void Ov013_FreeFx(void *self, u32 off) {
-    void *saved = data_02097dd0->cur;
-    data_02097dd0->cur = data_02097dd0->heapHi;
-    if (FLD(void *, self, off) != NULL) {
-        void *p = FLD(void *, self, off);
-        if (p != NULL) {
-            func_ov003_021da940(p);
-            Heap_Free(p);
-        }
-        FLD(void *, self, off) = NULL;
-    }
-    data_02097dd0->cur = saved;
-}
-
-static inline s32 *Ov013_NewFx(void) {
-    s32 *p = (s32 *)Heap_Alloc(4);
-    if (p != NULL) {
-        *p = 0;
-    }
-    return p;
-}
 
 // Actor class of Ov013_DtorDc (vtable data_ov013_0220bbb8).
+class Ov013Cls;
+typedef void (Ov013Cls::*Ov013Pmf)();
+
+// Motion parameters of Ov013ActEx_02204454 (unk_d8; data_ov013_0220b2ec, data_ov013_0220b308).
+struct Ov013Prm {
+    u8 b0 : 1;
+    u8 b1 : 1;
+    u8 b2 : 1;
+    u8 b3 : 5;
+    u8 pad;
+    s16 v2;
+    s16 v4;
+    s16 v6;
+    s16 v8;
+    s16 va;
+    s16 vc;
+    u16 ve;
+    s16 v10;
+    s16 v12;
+    s16 v14;
+    u8 pad2[2];
+    s32 v18;
+};
+
+
 class Ov013ActEx_02204454 : public ActorEx {
 public:
     u16 unk_d0;
     u16 unk_d2;
     u16 unk_d4;
     u8 unk_d6[0x2];
-    void *unk_d8;
-    Ov013Names *unk_dc;
-    void *unk_e0;
-    u8 unk_e4[0x18];
+    Ov013Prm *unk_d8;
+    Ov013Names *unk_dc; // func_ov000_0218e9c4 / func_ov000_0218ea20
+    Model0218fe1c *unk_e0; // func_ov000_0218fee4; drawn at pos while the player locks on to this actor
+    Ov013Pmf unk_e4;
+    u8 unk_ec[0x10]; // Ov003Vt_021f79a8_Ctor / Ov003Vt_021f79a8_Dtor
 };
 SIZE_ASSERT(Ov013ActEx_02204454, 0xfc);
 

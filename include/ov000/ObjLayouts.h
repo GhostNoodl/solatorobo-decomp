@@ -65,7 +65,15 @@ struct ActorEx : public Actor {
             u16 unk_cc_9_f : 7;
         };
     };
-    u16 unk_ce;
+    union {
+        u16 unk_ce;
+        struct { // bytes as some ov013 classes use them
+            u8 unk_ce_0 : 1;
+            u8 unk_ce_1 : 1;
+            u8 unk_ce_2 : 6;
+            s8 unk_cf;
+        };
+    };
 };
 SIZE_ASSERT(ActorEx, 0xd0);
 

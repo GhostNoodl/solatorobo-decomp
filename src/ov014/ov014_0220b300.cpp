@@ -23,7 +23,7 @@ void func_ov014_0220b318(Ov014Act_02209280 *self) {
 extern char data_ov014_02217a84[];
 extern void ActorMgr_BroadcastKind(void *mgr, u16 a, s32 b);
 extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
-extern u8 *func_ov000_02190a30(void *p, s32 a);
+extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
 
 void func_ov014_0220b33c(Ov014Act_02209280 *self) {
     switch (self->fsm->st) {
@@ -52,13 +52,13 @@ void func_ov014_0220b33c(Ov014Act_02209280 *self) {
         VecFx32 p4;
         s32 t;
         s32 v;
-        u8 *a;
+        AnimCtrl *a;
         self->rot_y = func_01ffc128(0, self->rot_y, self->unk_b0->unk_02, 1, 0x8000);
         t = self->fsm->timer;
         v = 0;
         a = func_ov000_02190a30(self->model, 0);
-        if (FLD(s32 *, a, 0) != NULL) {
-            v = *FLD(s32 *, a, 0);
+        if (a->cur != NULL) {
+            v = a->cur->frame;
         }
         if (v > 0x14000) {
             func_ov000_021911c8(self->model, 0);

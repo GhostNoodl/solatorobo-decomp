@@ -24,7 +24,7 @@ void func_ov013_021fdb18(Ov013ActExVt_0220b7d0 *self) {
 
 Ov013ActEx_021fdb70 *Ov013ActEx_021fdb70_Ctor(Ov013ActEx_021fdb70 *self) {
     ActorEx_Ctor(self);
-    FLD(void *, self, 0) = data_ov013_0220b738;
+    *(void **)self = data_ov013_0220b738;
     self->unk_ce = 0;
     self->unk_d0 = -1;
     self->unk_d4 = 0;
@@ -32,8 +32,8 @@ Ov013ActEx_021fdb70 *Ov013ActEx_021fdb70_Ctor(Ov013ActEx_021fdb70 *self) {
 }
 
 static inline void Ov013_SetSpd(Ov003Actor *self, VecFx32 v) {
-    Ov013_VecCopy(&FLD(VecFx32, self->hit, 0x5c), &v);
-    Ov013_VecCopy(&FLD(VecFx32, self->unk_44, 0xc), &v);
+    Ov013_VecCopy(&self->hit->offset, &v);
+    Ov013_VecCopy(&self->unk_44->unk_0c, &v);
 }
 
 void Ov013ActEx_021fdb70_Start(Ov003Actor *self) {

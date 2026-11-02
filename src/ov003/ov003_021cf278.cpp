@@ -1,26 +1,9 @@
 #include "types.h"
 #include "nitro/std.h"
 #include "Main/Sys/SysState.h"
+#include "ov003/Script.h"
 
 typedef void (*VFunc)(void *);
-
-typedef struct Ov003Entry {
-    void *vtbl;
-    u16 id;
-    u16 max;
-    u16 val;
-    u16 unk_0a;
-    u32 unk_0c;
-    struct Ov003Entry *next;
-} Ov003Entry;
-
-typedef struct {
-    u32 unk_00;
-    Ov003Entry *head;
-    u16 count;
-    u16 unk_0a;
-    Ov003Entry *cur;
-} Ov003EntryList;
 
 class Ov003FlagObj {
 public:
@@ -69,15 +52,15 @@ void func_ov003_021cf5e8(Ov003Group *self);
 extern u8 data_ov003_021f7984[];
 extern void *Heap_Alloc(u32 size);
 
-void func_ov003_021cf1f0(Ov003EntryList *self, u16 id, u16 max, u32 c) {
-    Ov003Entry *e = (Ov003Entry *)Heap_Alloc(sizeof(Ov003Entry));
-    Ov003Entry *p;
+void func_ov003_021cf1f0(Ov003ScriptList *self, u16 id, u16 max, const Ov003Step *steps) {
+    Ov003Track *e = (Ov003Track *)Heap_Alloc(sizeof(Ov003Track));
+    Ov003Track *p;
     if (e != NULL) {
-        e->vtbl = data_ov003_021f7984;
+        *(void **)e = data_ov003_021f7984;
         e->id = id;
         e->max = max;
         e->val = 0;
-        e->unk_0c = c;
+        e->steps = steps;
         e->next = NULL;
     }
     if (self->head == NULL) {
@@ -96,8 +79,8 @@ void func_ov003_021cf1f0(Ov003EntryList *self, u16 id, u16 max, u32 c) {
     self->count++;
 }
 
-Ov003Entry *func_ov003_021cf278(Ov003EntryList *self, u16 id, u16 val) {
-    Ov003Entry *e;
+Ov003Track *func_ov003_021cf278(Ov003ScriptList *self, u16 id, u16 val) {
+    Ov003Track *e;
     for (e = self->head; e != NULL; e = e->next) {
         if (id == e->id) {
             break;

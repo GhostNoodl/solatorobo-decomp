@@ -17,7 +17,7 @@ s32 func_ov014_022128f4(Ov014Act_0221267c *self, Ov014Msg *msg) {
 }
 
 
-extern u8 *func_ov000_0219bf90(void);
+extern Ov003Actor *func_ov000_0219bf90(void);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
@@ -36,14 +36,14 @@ static inline BOOL Ov014_WaitB6(Ov003Actor *self) {
 }
 
 void Ov014Act_0221267c_Update(Ov014Act_0221267c *self) {
-    u8 *pl;
+    Ov003Actor *pl;
     if (!Ov014_GameIdle()) {
         return;
     }
     self->target = 0xffff;
     pl = func_ov000_0219bf90();
     if (pl != NULL) {
-        self->target = FLD(u16, pl, 0xc);
+        self->target = pl->id;
     }
     if (Actor_GetTarget(self) == NULL) {
         return;

@@ -20,10 +20,8 @@ extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void func_ov014_02215ffc(Ov014ActEx_022152e8 *self);
 extern void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 extern void Interp_SinLerpVec(VecFx32 *out, s32 t, const VecFx32 *a, const VecFx32 *b);
-extern void Actor_TurnToActor(Actor *self, Actor *target, s32 a);
-extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
-extern u8 *func_ov000_02190a30(void *p, s32 a);
+extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *self, u32 i);
 extern void func_ov003_021f0c60(Actor *self, s32 a);
 
 static inline void Ov014z_Set(VecFx32 *v, s32 x, s32 y, s32 z) { v->x = x; v->y = y; v->z = z; }
@@ -47,7 +45,7 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
         func_ov014_02215ffc(self);
         return;
     }
-    FLD(s32, self->unk_3c, 0x14) = self->unk_ec << 1;
+    self->unk_3c->unk_14 = self->unk_ec << 1;
     st = self->fsm;
     switch (st->st) {
     case 0: {
@@ -275,7 +273,7 @@ void func_ov014_022153e0(Ov014ActEx_022152e8 *self) {
     case 0x15: {
         s16 k;
         Actor_Move(self, 0);
-        k = FLD(s16, func_ov000_02190a30(self->model, 0), 0x112) - 0x29;
+        k = func_ov000_02190a30(self->model, 0)->speed - 0x29;
         if (k < 0) {
             k = 0;
         }

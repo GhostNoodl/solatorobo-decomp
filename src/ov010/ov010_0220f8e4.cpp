@@ -416,7 +416,8 @@ void func_ov010_022029a4(Obj022020c8 *self) {
     s32 d = a;
     switch (self->fsm->st) {
     case 0: {
-        void *m;
+        ActorSub48 *h;
+        Model0218fe1c *m;
         self->model->visible = 1;
         self->speed = a;
         LFLD(VecFx32, self, 0xa0).x = a;
@@ -425,20 +426,21 @@ void func_ov010_022029a4(Obj022020c8 *self) {
         Ov010_SpawnRing(0x12c, &self->pos)->SetScaleAll(0x2000);
         self->fsm->st = 1;
         self->unk_44->unk_22_1 = 0;
-        m = self->hit;
-        FLD(Ov010Flags, m, 0x9a).b3 = 0;
-        func_0203f364(m);
+        h = self->hit;
+        h->unk_9a_3 = 0;
+        func_0203f364(h);
         m = self->model;
-        FLD(u16, m, 0xb6) = 0x53ff;
-        FLD(u16, m, 0xb8) = 0x53ff;
-        FLD(u16, m, 0xba) = 2;
-        FLD(u16, m, 0xbc) = 1;
+        m->color = 0x53ff;
+        m->color2 = 0x53ff;
+        m->blend = 2;
+        m->blendMax = 1;
         self->model->alpha = 0x14;
         func_02049f44(data_02097e4c, 0x2b, &self->pos, 0);
         break;
     }
     case 1: {
-        void *m;
+        ActorSub48 *h;
+        Model0218fe1c *m;
         b = 0x10;
         d = 0x400;
         self->fsm->timer++;
@@ -447,14 +449,14 @@ void func_ov010_022029a4(Obj022020c8 *self) {
             self->fsm->st = 2;
         }
         self->unk_44->unk_22_1 = 0;
-        m = self->hit;
-        FLD(Ov010Flags, m, 0x9a).b3 = 0;
-        func_0203f364(m);
+        h = self->hit;
+        h->unk_9a_3 = 0;
+        func_0203f364(h);
         m = self->model;
-        FLD(u16, m, 0xb6) = 0x53ff;
-        FLD(u16, m, 0xb8) = 0x53ff;
-        FLD(u16, m, 0xba) = 2;
-        FLD(u16, m, 0xbc) = 1;
+        m->color = 0x53ff;
+        m->color2 = 0x53ff;
+        m->blend = 2;
+        m->blendMax = 1;
         break;
     }
     case 2:
@@ -732,7 +734,7 @@ void func_ov010_02202d9c(Obj022020c8 *self) {
     if (chk && tgt != NULL) {
         BOOL hit;
         BOOL r;
-        FLD(u16, self->hit, 0x9a) |= 0x10;
+        self->hit->unk_9a |= 0x10;
         func_ov000_021987b8(self->hit, 0, 0, 0);
         hit = FALSE;
         if (self->hit->unk_50 & 0x20000000) {

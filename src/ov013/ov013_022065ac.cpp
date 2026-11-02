@@ -10,7 +10,7 @@ extern BOOL func_020621c4(void);
 
 Ov013ActEx_022065ac *Ov013ActEx_022065ac_Ctor(Ov013ActEx_022065ac *self) {
     ActorEx_Ctor(self);
-    FLD(void *, self, 0) = &data_ov013_0220bb20;
+    *(void **)self = &data_ov013_0220bb20;
     self->unk_f4 = 0;
     self->unk_f6 = 0;
     return self;
@@ -58,13 +58,13 @@ void Ov013ActVt_0220bdd8_Start(Ov013ActVt_0220bdd8 *self) {
     self->pos.x = -0x3000;
     self->pos.y = 0x5333;
     self->pos.z = -0xe000;
-    Ov013_VecSet(&FLD(VecFx32, self->hit, 0x5c), 0, -0x1800, 0x5800);
+    Ov013_VecSet(&self->hit->offset, 0, -0x1800, 0x5800);
     m = self->hit;
     m->unk_9a_1 = 0;
     m->unk_9a_4 = 0;
     self->hit->unk_9a_5 = 0;
     self->hit->unk_30 = 0;
-    Ov013_VecSet(&FLD(VecFx32, self->unk_44, 0xc), 0, -0x1800, 0x5800);
+    Ov013_VecSet(&self->unk_44->unk_0c, 0, -0x1800, 0x5800);
     self->target = 0xffff;
     p = func_ov000_0219bf90();
     if (p != NULL) {

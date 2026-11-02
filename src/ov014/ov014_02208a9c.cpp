@@ -2,8 +2,6 @@
 
 extern "C" {
 
-extern VecFx32 *func_ov000_0218d2e0(void *self);
-extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
 extern void func_ov014_02208fe4(Ov014ActEx_02208618 *self);
 
 #define OV014_SQRTCNT (*(volatile u16 *)0x40002b0)

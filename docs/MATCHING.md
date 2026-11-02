@@ -8032,3 +8032,97 @@ Cleanup only, every function byte-identical: each changed object was compared fu
   - The `Lo_021814dc` StageRes subclass (vtable `021cc158`, 0xd8) needs a byte view at 0xc6. The `UiList021cb4a8` panel class and the 0x54 class with ctor `0216e574` (`ListBuffer021cb940::unk_54`) are not built yet.
   - `Model_02164a94` and `Lo_02165f94` records have no ctor or allocation evidence and stay as they are.
 - **Scratch:** session scratchpad `acB/`: the loA tools re-pointed (`chk.py` now counts build failures), plus `camfix*.py`, `u8strip.py`/`norm.py`, `sub.py`/`ty.sh`, `cc.py` (bisected cast removal), `vecp.py` and `declfix.py` (retypes `u8 *` locals from the compiler's conversion errors).
+### Round acA (ov012/ov013/ov014 actor records typed; the ov003 script list shared)
+
+Cleanup only, and every function is still byte-identical.
+
+**How it was checked.** After every step, each object was compared function by function, on code bytes and relocations, with a baseline built at `f097b99e` (round rsC). At the end, all 1906 objects were compared again.
+
+**Gate.** All of these pass:
+- 0 FAILED, with 19/19 ROM checks and `check symbols` OK;
+- `ninja report` shows 8138 matched (unchanged);
+- `check_drafts.py --score` exits 0.
+
+No symbols were renamed.
+
+**Counts.** Raw offsets are the `FLD`/`FIELD`/`LFLD`/`ST_FLD`/`F`/`BXF` uses in src and include, without the `#define`s. `void *self` is `grep -rn 'void \*self' src/ovNNN include/ovNNN`.
+
+| overlay | raw offsets before | raw offsets after | `void *self` before | `void *self` after |
+|---|---|---|---|---|
+| ov012 | 209 | 34 | 49 | 3 |
+| ov013 | 293 | 47 | 34 | 21 |
+| ov014 | 288 | 29 | 50 | 1 |
+| ov009 | 120 | 114 | 15 | 15 |
+| ov010 | 144 | 127 | 55 | 55 |
+| ov006 | 113 | 113 | 81 | 81 |
+| ov003 | 36 | 36 | 322 | 321 |
+
+- **`ov003/Script.h` (new): the shared behaviour-script list.**
+  - It holds:
+    - `Ov003Step`: 8 bytes, `op`, `chance`/`time`, `a`, `b`;
+    - `Ov003Track`: vtable `021f7984`, holding `id`, `max`, `val`, `steps` and `next`;
+    - `Ov003ScriptList`: 0x1c bytes, vtable `021f7974`, holding `head`, `count`, `cur`, `func`, `arg` and `enabled`;
+    - the prototypes of `Ov003ScriptList_Init`, `021ceff4` (step), `021cf1f0` (add track) and `021cf278` (select track).
+  - `ov003_021cedf4` and `ov003_021cf278` use it in place of their local copies.
+  - It is embedded as `scripts` (plus `step`, the current step) in these classes:
+    - `Ov012Act_02202b10`;
+    - `Ov014Act_021fa6a0`, `021fd4d4` (two lists: `scripts`/`scripts2`), `0220011c`, `02201b94`, `02209280` and `0220f9d0`.
+  - The hp-driven selectors take `Ov003ScriptList *`: ov012 `02202a78`, ov014 `021fd37c`, `021fd43c`, `022091ec` and `0220f8fc`.
+  - The ov014 step tables are `const Ov003Step`: externs, plus the seven 8-byte rodata tables in `02216ff0` re-spelled with the same bytes.
+  - The duplicate step views were removed:
+    - `Ov014Step`, `Ov014Anim8` and `Ov014Wave`/`Ov014WaveB`;
+    - the u8-pointer `t + 0xc` / `+ 8` arithmetic.
+- **ov012.**
+  - Typed records:
+    - `Ov012Names` is padded to the 0x138 resource block;
+    - `Ov012Msg` has `unk_06` and an `idx`/`unk_08` union;
+    - `Ov012Lift` has `fxId[3]`, names, `mdl` and `arr`;
+    - new classes `Ov012ActExVt_0220b1e8` (0x2fc) and `Ov012ActVt_0220b280` (0x22c);
+    - effect lists are `Ov003FxList *`, with `Ov012_FreeFx(Ov003FxList **)`;
+    - the `0220ad40` record table is `const Ov003BeamDef[6]`.
+  - The camera writes go through `FieldCam` (`&data_ov000_021ccd54->cam`), and the player through `Robo021ca458`.
+  - Dtors, ctors and vtable stores are typed.
+- **ov013.**
+  - `Ov013Msg` has `id` and an `idx`/`hit` union.
+  - `Ov013Names.unk_00` is now `s16`.
+  - `Ov013Prm` and the `Ov013Pmf` member-function pointer were added, and `Ov013ActEx_02204454` holds `Ov013Prm *`, `Ov013Names *`, `Model0218fe1c *` and the PMF.
+  - `Ov013Cam` was merged with the duplicate `Ov013Area`.
+  - The `m_02204a3c`/`m_022058d4` and `m_02205ae4..m_02205fa4` namespaces are typed on their classes.
+  - The anim-controller, hit-offset, vtable-store and `unk_ce` bit rules were applied.
+  - The unused `Ov013_FreeFx`/`Ov013_NewFx` were removed.
+- **ov014.**
+  - Records:
+    - `Ov014Act_021fa6a0` and `Ov014Act_0221267c` embed `Ov014Names` (padded to 0x138) and a `Model0218fe1c mdl`; they formerly had byte gaps and loose `unk_2d4`/`unk_304`.. members.
+    - New `Ov014JointMtx` (0x34): the model `renderUser` that the draw callback `0220f8a4` fills, with joint, mtx and a `trans` view. It is used by `0220f9d0` and `0221267c`.
+    - New `Ov014B4Save`: the 0x10-byte copy of `Ov003Actor::unk_b4..unk_b8`.
+  - `Ov014Msg` has `id`, `idx`/`unk_08` and `v`/`unk_0c`.
+  - `Ov014Rot16` was replaced by `Rot16`.
+  - The anim controller is `AnimCtrl *`, through `->cur->frame` and `->paused`.
+  - The camera is `FieldCam`, the player `Robo021ca458`, the group node `Ov003Unit` and the Target object `ActorSub4c`.
+  - `func_ov014_0220ec18` takes `Model0218fe1c *`, and `Ov014_FreeFx` takes `Ov003FxList **`.
+  - The ov000 actor prototypes (`ActorEx_Ctor`, `0219429c`, `02194758`, `02194c08`, `02195d88`, `0218d2e0`, `Actor_TurnToActor`/`Actor_TurnToPos`) are declared once, typed, at the end of `ov014.h` and `ov012.h`, in place of the per-file `void *` externs.
+- **ov009/ov010.** The anim-controller conversions were applied, plus `self->hit->unk_9a`, the vtable stores and the ov010 `0220f8e4` model colour/blend members (the hit sphere now has its own `ActorSub48 *h` local).
+- **Shared headers (layout-neutral):**
+  - `Main/Sys/FieldState.h`: `FieldCam::unk_e8` is a `VecFx32`.
+  - `ov000/ObjLayouts.h`: `ActorEx::unk_ce` is a union of `u16` and the `unk_ce_0/1/2` bits plus `s8 unk_cf`.
+  - `ov003/Actor.h`: `func_ov003_021da108` takes `Actor *`, since it uses only Actor fields.
+- **Kept forms:**
+  - `v.x = self->pos.x - FLD(s32, self, 0x70)` (ov012, ov014 `0220dcf0`/`0220ea94`): the second load defeats CSE.
+  - The ov012 `Ov012_VecSet(&FLD(VecFx32, a, 0x70), ...)` self-assign; `feacc`/`fec58` keep `u8 *self`.
+  - The `data_ov012_0220a4a4/a8/ac` table reads: the relocation addends change.
+  - ov014 `0220d6f8` keeps the `FLD(u16, self, 0xd8..0xdc)` duration reads, because `Ov014Vec16` loads them signed.
+  - The script steppers in `02208fe4`/`0220f8a4` switch on `self->step->op` (`a[idx].op` swaps registers).
+  - The NNS render-object callbacks (`0220f8a4`, `022091d4`, `0220915c`) keep their `u8 *` views.
+  - ov013 keeps its per-file `void *` externs of the ActorEx functions: several callers still pass `Ov003Actor *` for objects whose class is not yet typed.
+- **Left:**
+  - ov013 `0220b444`'s `info` record (`func_0206fef8`), `fdb18`'s effect-id array, and the `0220ade8`/`021fe948` lists.
+  - Most of ov009, ov010 and ov006, whose remaining offsets sit on untyped `u8 *` locals.
+  - The ov003 `void *self` functions.
+- **Scratch:** session scratchpad `acA/`:
+  - `c.py` (rebuild named objects and compare per function with the baseline);
+  - `chk.sh` (all objects);
+  - `rx.py` (regex rule sets with per-occurrence fallback) with `r1.py`/`r14.py`/`r3.py`;
+  - `anim.py` (anim-controller conversions);
+  - `scr14*.py` (script-list retype);
+  - `proto.py` (shared typed prototypes);
+  - `rawcnt.sh`.

@@ -10,6 +10,8 @@
 #include "ov000/ObjLayouts.h"
 #include "ov003/Actor.h"
 #include "ov003/FxList.h"
+#include "ov003/Script.h"
+#include "ov003/Unit.h"
 #include "Main/Effect/Effect.h"
 #include "Main/Snd/SndMgr.h"
 #include "Main/Res/ResArc.h"
@@ -173,17 +175,6 @@ struct Ov014Flags {
     u16 b15 : 1;
 };
 
-struct Ov014Flags8 {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 1;
-    u8 b3 : 1;
-    u8 b4 : 1;
-    u8 b5 : 1;
-    u8 b6 : 1;
-    u8 b7 : 1;
-};
-
 struct Ov014Vec16 {
     s16 x;
     s16 y;
@@ -191,12 +182,6 @@ struct Ov014Vec16 {
 };
 
 // Three u16 angles.
-struct Ov014Rot16 {
-    u16 x;
-    u16 y;
-    u16 z;
-};
-
 
 static inline void Ov014_VecSet(VecFx32 *v, s32 x, s32 y, s32 z) {
     v->x = x;
@@ -222,27 +207,25 @@ static inline void Ov014_VecCopyYZ(VecFx32 *d, const VecFx32 *s) {
 struct Ov014Msg {
     u8 unk_00[0x5];
     u8 type;
-    u8 unk_06[0x2];
-    u8 idx;
-    u8 unk_09[0x3];
-    VecFx32 v;
+    u16 id; // sender
+    union {
+        u8 idx;
+        s16 unk_08;
+    };
+    u8 unk_0a[0x2];
+    union {
+        VecFx32 v;
+        u16 unk_0c; // type 9: an actor id
+    };
 };
 
 #define OV014_SINCOS FX_SinCosTable_
 #define OV014_SIN(a) (OV014_SINCOS[((a) >> 4) * 2])
 #define OV014_COS(a) (OV014_SINCOS[((a) >> 4) * 2 + 1])
 
-// One step of an Ov014Act_02209280 action script (8 bytes; the actor's step points at the current one).
-struct Ov014Step {
-    s16 kind;
-    u16 time;
-    u16 unk_04;
-    u16 unk_06;
-};
-
 
 struct Ov014Names {
-    u16 unk_00;
+    s16 unk_00; // negative until the resources are loaded
     u8 unk_02;
     u8 unk_03_0 : 1;
     u8 ownMdl : 1;
@@ -257,7 +240,9 @@ struct Ov014Names {
     char anmName[0x58];
     char evDir[0x20];
     char evName[0x20];
+    u8 unk_104[0x34];
 };
+SIZE_ASSERT(Ov014Names, 0x138);
 
 class Ov014Multi : public Ov003Actor {
 public:
@@ -266,11 +251,6 @@ public:
     u8 unk_491;
     u16 unk_492;
     VecFx32 unk_494;
-};
-
-struct Ov014Path {
-    VecFx32 start;
-    VecFx32 end;
 };
 
 static inline BOOL Ov014Game_IsBusy(FieldState *g) {
@@ -313,29 +293,29 @@ u8 *func_02070558(void *res);
 extern "C" {
 void func_ov000_021953b4(ActorEx *self);
 void func_ov003_021dacfc(void *p);
-void *func_ov000_0219429c(void *self);
+void func_ov000_0219763c(Actor *self);
 s32 func_0203db40(void *p);
 void func_ov000_02190a80(void *a, s32 b);
 }
 
 
-// Frees the effect handle at self+off with the default heap selected.
-static inline void Ov014_FreeFx(void *self, u32 off) {
+// Frees the effect list in *slot with the default heap selected.
+static inline void Ov014_FreeFx(Ov003FxList **slot) {
     void *saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
-    if (FLD(void *, self, off) != NULL) {
-        Ov003FxList *p = FLD(Ov003FxList *, self, off);
+    if (*slot != NULL) {
+        Ov003FxList *p = *slot;
         if (p != NULL) {
             func_ov003_021da940(p);
             Heap_Free(p);
         }
-        FLD(void *, self, off) = NULL;
+        *slot = NULL;
     }
     data_02097dd0->cur = saved;
 }
 
 static inline Ov003FxList *Ov014_NewFx(void) {
-    Ov003FxList *p = (Ov003FxList *)Heap_Alloc(4);
+    Ov003FxList *p = (Ov003FxList *)Heap_Alloc(sizeof(Ov003FxList));
     if (p != NULL) {
         p->head = NULL;
     }
@@ -356,24 +336,9 @@ public:
     u8 unk_11f;
     u32 unk_120;
     Ov014Names unk_124;
-    u8 unk_228[0xac];
-    VecFx32 unk_2d4;
-    u8 unk_2e0[0x24];
-    s32 unk_304;
-    s32 unk_308;
-    s32 unk_30c;
-    u8 unk_310[0x2];
-    u16 unk_312;
-    u16 unk_314;
-    u16 unk_316;
-    u16 unk_318;
-    u8 unk_31a[0x4];
-    Ov014Flags unk_31e;
-    u8 unk_320[0x24];
-    u8 *unk_344;
-    u8 unk_348[0xc];
-    u8 *unk_354;
-    u8 unk_358[0xc];
+    Model0218fe1c mdl;
+    const Ov003Step *step; // current step of scripts
+    Ov003ScriptList scripts;
     s16 unk_364;
     u8 unk_366[0x2];
 };
@@ -394,18 +359,10 @@ public:
     u8 unk_138;
     u8 unk_139;
     s16 unk_13a;
-    u8 *unk_13c;
-    u8 unk_140[0xc];
-    u8 *unk_14c;
-    void *unk_150;
-    Ov003Actor *unk_154;
-    u8 unk_158[0x4];
-    u8 *unk_15c;
-    u8 unk_160[0xc];
-    u8 *unk_16c;
-    void *unk_170;
-    Ov003Actor *unk_174;
-    u8 unk_178[0x4];
+    const Ov003Step *step; // current step of scripts
+    Ov003ScriptList scripts; // tracks 0..3, picked by hp (func_ov014_021fd37c)
+    const Ov003Step *step2; // current step of scripts2
+    Ov003ScriptList scripts2; // tracks 10..12, picked by hp (func_ov014_021fd43c)
 };
 SIZE_ASSERT(Ov014Act_021fd4d4, 0x17c);
 
@@ -422,10 +379,8 @@ public:
     u8 unk_fe;
     u8 unk_ff;
     Ov003FxList *unk_100; // effect list (func_ov003_021da940 frees it)
-    u8 *unk_104;
-    u8 unk_108[0xc];
-    u8 *unk_114;
-    u8 unk_118[0xc];
+    const Ov003Step *step; // current step of scripts
+    Ov003ScriptList scripts;
 };
 SIZE_ASSERT(Ov014Act_0220011c, 0x124);
 
@@ -443,10 +398,8 @@ public:
     s16 unk_12c;
     u8 unk_12e;
     u8 unk_12f;
-    s32 unk_130;
-    u8 unk_134[0xc];
-    u8 *unk_140;
-    u8 unk_144[0xc];
+    const Ov003Step *step; // current step of scripts
+    Ov003ScriptList scripts;
     u16 unk_150;
     u8 unk_152;
     u8 unk_153;
@@ -462,17 +415,34 @@ public:
 };
 SIZE_ASSERT(Ov014Act_02201b94, 0x370);
 
+// Render user data of a model: the draw callback (func_ov014_0220f8a4) stores the current
+// matrix of the joint into mtx.
+struct Ov014JointMtx {
+    s32 joint; // func_ov000_021909a8 result
+    union {
+        MtxFx43 mtx;
+        struct {
+            u8 unk_04[0x24];
+            VecFx32 trans; // mtx's translation row
+        };
+    };
+};
+
+// A copy of Ov003Actor::unk_b4..unk_b8 (0x10 bytes, MIi_CpuCopyFast).
+struct Ov014B4Save {
+    u16 unk_b4;
+    u16 unk_b6;
+    VecFx32 unk_b8;
+};
+
 // Actor class of Ov014Act_0221267c_Ctor (vtable data_ov014_02217dc0).
 class Ov014Act_0221267c : public Ov003Actor {
 public:
-    s16 unk_f0;
-    u8 unk_f2[0x1f4];
-    u8 unk_2e6;
-    u8 unk_2e7[0x29];
+    Ov014Names unk_f0;
+    Model0218fe1c mdl;
     u16 unk_310;
     u16 unk_312;
-    u8 unk_314[0x28];
-    VecFx32 unk_33c;
+    Ov014JointMtx unk_314; // the model's renderUser
     s32 unk_348;
     u16 unk_34c;
     u8 unk_34e[0x2];
@@ -485,7 +455,7 @@ SIZE_ASSERT(Ov014Act_0221267c, 0x358);
 // Actor class of Ov014Act_02209280_Ctor (vtable data_ov014_02217968).
 class Ov014Act_02209280 : public Ov003Actor {
 public:
-    Ov014Step *step;
+    const Ov003Step *step; // current step of scripts
     u32 unk_f4;
     u16 unk_f8;
     u8 unk_fa[0x2];
@@ -514,12 +484,7 @@ public:
     s32 unk_1ac;
     s32 unk_1b0;
     VecFx32 unk_1b4;
-    u8 unk_1c0;
-    u8 unk_1c1[0xb];
-    u8 *unk_1cc;
-    void *unk_1d0;
-    void *unk_1d4;
-    u8 unk_1d8[0x4];
+    Ov003ScriptList scripts; // tracks 0..2, picked by hp (func_ov014_022091ec)
     u32 unk_1dc;
     u32 unk_1e0;
     s32 unk_1e4;
@@ -534,15 +499,9 @@ SIZE_ASSERT(Ov014Act_02209280, 0x1f8);
 // Actor class of Ov014Act_0220f9d0_Ctor (vtable data_ov014_02217e6c).
 class Ov014Act_0220f9d0 : public Ov003Actor {
 public:
-    u8 unk_f0[0x28];
-    VecFx32 unk_118;
-    u8 unk_124;
-    u8 unk_125[0xb];
-    u8 *unk_130;
-    void *unk_134;
-    void *unk_138;
-    u8 unk_13c[0x4];
-    u8 *unk_140;
+    Ov014JointMtx unk_f0; // the model's renderUser
+    Ov003ScriptList scripts; // tracks 0..3, picked by hp (func_ov014_0220f8fc)
+    const Ov003Step *step; // current step of scripts
     s32 unk_144;
     u16 unk_148;
     u16 unk_14a;
@@ -552,9 +511,7 @@ public:
     u8 unk_152[0x2];
     void *unk_154;
     u32 unk_158;
-    u8 unk_15c[0x2];
-    s16 unk_15e;
-    u8 unk_160[0xc];
+    Ov014B4Save unk_15c; // Ov003Actor::unk_b4..unk_b8 saved while a 0x200 message is handled
     u8 unk_16c;
     u8 unk_16d[0x13];
     u8 unk_180;
@@ -589,8 +546,8 @@ public:
     u8 unk_d4;
     u8 unk_d5;
     s16 unk_d6;
-    s16 unk_d8;
-    s16 unk_da;
+    u16 unk_d8; // rot_y and rot_z while it flies (0x19)
+    u16 unk_da;
 };
 SIZE_ASSERT(Ov014ActEx_0220dcf4, 0xdc);
 
@@ -694,5 +651,17 @@ public:
     u32 fx; // handle of the effect spawned at full size
 };
 SIZE_ASSERT(Ov014ActExVt_02217838, 0xec);
+
+// ov000 actor functions, typed (round acA).
+extern "C" {
+ActorEx *ActorEx_Ctor(ActorEx *self);
+void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
+void Actor_TurnToPos(Actor *self, const VecFx32 *target, s32 step);
+VecFx32 *func_ov000_0218d2e0(Actor *self);
+ActorEx *func_ov000_0219429c(ActorEx *self);
+void func_ov000_02194758(ActorEx *self);
+BOOL func_ov000_02194c08(ActorEx *self);
+void func_ov000_02195d88(ActorEx *self);
+}
 
 #endif

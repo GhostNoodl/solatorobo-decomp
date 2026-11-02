@@ -145,7 +145,6 @@ extern BOOL Hit_DiffInCylinder(VecFx32 *a, VecFx32 *b, s32 c, s32 d);
 extern void func_ov000_02191618(Model0218fe1c *p);
 extern BOOL func_02049244(VecFx32 *out, s32 speed, const VecFx32 *from, const VecFx32 *to, s32 minDist);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void Actor_TurnToActor(Actor *self, Actor *t, s32 a);
 
 static inline Ov003Actor *Ov014h_FindById(u16 id) {
     return data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
@@ -154,7 +153,7 @@ static inline Ov003Actor *Ov014h_FindById(u16 id) {
 void func_ov014_0220a67c(Ov014Act_02209280 *self) {
     switch (self->fsm->st) {
     case 0: {
-        Ov014Step *p = self->step;
+        const Ov003Step *p = self->step;
         VecFx32 a;
         VecFx32 b;
         VecFx32 c;
@@ -162,8 +161,8 @@ void func_ov014_0220a67c(Ov014Act_02209280 *self) {
         s32 d;
         const void *anim;
         EffectObj *e;
-        if (p->kind == 0xb) {
-            self->unk_b8 = data_ov014_02216aa8[p->unk_04];
+        if (p->op == 0xb) {
+            self->unk_b8 = data_ov014_02216aa8[p->a];
         } else {
             s32 i = Rand_UpTo(6);
             self->unk_b8 = data_ov014_02216aa8[i];

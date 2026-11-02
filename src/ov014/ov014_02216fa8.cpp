@@ -28,9 +28,6 @@ namespace m_021fc220 {
 extern "C" {
 
 extern u8 data_ov014_0221722c[];
-extern void func_ov000_0219763c(void *self);
-extern void *ActorEx_Ctor(void *self);
-extern void func_ov000_02194758(void *self);
 extern void func_0203f364(ActorSub48 *p);
 
 void func_ov014_021fc220(Ov014ActEx_021fbd64 *self) {
@@ -43,7 +40,7 @@ void func_ov014_021fc220(Ov014ActEx_021fbd64 *self) {
 #pragma force_active on
 Ov014ActEx_021fc24c *Ov014ActEx_021fc24c_Ctor(Ov014ActEx_021fc24c *self) {
     ActorEx_Ctor(self);
-    FLD(void *, self, 0) = data_ov014_0221722c;
+    *(void **)self = data_ov014_0221722c;
     self->unk_f8 = 0;
     self->unk_100 = NULL;
     self->unk_f4 = 0;
@@ -67,14 +64,14 @@ static inline void Ov014_Free100(Ov014ActEx_021fc24c *self) {
 }
 
 Ov014ActEx_021fc24c *Ov014ActEx_021fc24c_Dtor(Ov014ActEx_021fc24c *self) {
-    FLD(void *, self, 0) = data_ov014_0221722c;
+    *(void **)self = data_ov014_0221722c;
     Ov014_Free100(self);
     func_ov000_0219429c(self);
     return self;
 }
 
 Ov014ActEx_021fc24c *Ov014ActEx_021fc24c_DtorDelete(Ov014ActEx_021fc24c *self) {
-    FLD(void *, self, 0) = data_ov014_0221722c;
+    *(void **)self = data_ov014_0221722c;
     Ov014_Free100(self);
     func_ov000_0219429c(self);
     Heap_Free(self);
@@ -293,7 +290,6 @@ extern char data_ov014_02217218[];
 extern Ov003Actor *Target_Get(void *p);
 extern void func_ov014_021fcf00(Ov014ActEx_021fc24c *self);
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
-extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
 extern void func_ov003_021f0c60(Actor *self, s32 a);
@@ -323,7 +319,7 @@ void func_ov014_021fc9c8(Ov014ActEx_021fc24c *self) {
                 m = self->hit;
                 m->unk_50 = 0;
                 m->unk_54 = 0;
-                FLD(u32, m, 0x58) = 0;
+                m->unk_58 = 0;
                 if (self->unk_fc != 0) {
                     func_0204a028(data_02097e4c, 0x79, &self->pos, -10);
                 }
@@ -442,9 +438,7 @@ void func_ov014_021fc9c8(Ov014ActEx_021fc24c *self) {
 namespace m_021fcf00 {
 extern "C" {
 
-extern VecFx32 *func_ov000_0218d2e0(void *self);
 extern Ov003Actor *Target_Get(void *p);
-extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
 extern s32 func_ov000_0219a510(Actor *self, u16 mask, VecFx32 *pos, s32 r, s32 a, Ov003Actor **list);
 extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
 extern void func_ov003_021f0c60(Actor *self, s32 a);

@@ -32,7 +32,7 @@ void func_ov013_0220a940(Ov003Actor *self) {
 #pragma force_active on
 Ov013ActEx_0220a9a8 *Ov013ActEx_0220a9a8_Ctor(Ov013ActEx_0220a9a8 *self) {
     ActorEx_Ctor(self);
-    FLD(void *, self, 0) = &data_ov013_0220beb4;
+    *(void **)self = &data_ov013_0220beb4;
     self->unk_ce = 0;
     self->unk_d0 = 0;
     self->unk_d4 = 0;
@@ -59,7 +59,7 @@ void Ov013ActEx_0220a9a8_Start(Ov013ActEx_0220a9a8 *self) {
     }
     fx->SetScale(&data_ov013_0220b3f8);
     fx->AddPos(&data_ov013_0220b404);
-    FLD(s32, self, 0xbc) = fx->id;
+    self->unk_bc = fx->id;
 }
 extern void func_0203f364(void *p);
 extern BOOL func_ov000_021b4738(Ov003Actor *a);

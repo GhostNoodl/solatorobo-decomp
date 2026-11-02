@@ -103,7 +103,7 @@ void func_ov009_02206778(Ov009ActVt_02216dcc *self) {
 
 Ov009ActVt_0221707c *Ov009ActVt_0221707c_DtorDelete(Ov009ActVt_0221707c *self) {
     void *saved;
-    FLD(void *, self, 0) = &data_ov009_0221707c;
+    *(void **)self = &data_ov009_0221707c;
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_104 != NULL) {
@@ -122,7 +122,7 @@ Ov009ActVt_0221707c *Ov009ActVt_0221707c_DtorDelete(Ov009ActVt_0221707c *self) {
 
 Ov009ActVt_0221707c *Ov009ActVt_0221707c_Dtor(Ov009ActVt_0221707c *self) {
     void *saved;
-    FLD(void *, self, 0) = &data_ov009_0221707c;
+    *(void **)self = &data_ov009_0221707c;
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
     if (self->unk_104 != NULL) {

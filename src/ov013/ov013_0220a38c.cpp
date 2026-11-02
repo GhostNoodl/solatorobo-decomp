@@ -87,7 +87,7 @@ Ov003Actor *Ov013ActVt_0220bc80_DtorDelete(Ov003Actor *self) {
 
 Ov013ActEx_0220a4e0 *Ov013ActEx_0220a4e0_Ctor(Ov013ActEx_0220a4e0 *self) {
     ActorEx_Ctor(self);
-    FLD(void *, self, 0) = &data_ov013_0220bf4c;
+    *(void **)self = &data_ov013_0220bf4c;
     self->unk_ce = 0;
     self->unk_d0 = 0;
     self->unk_d4.x = 0;
