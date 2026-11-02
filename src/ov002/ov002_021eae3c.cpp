@@ -2,51 +2,51 @@
 
 extern "C" {
 
-void func_ov002_021eae3c(void *self) {
+void func_ov002_021eae3c(Ov002StageFile *self) {
     func_ov002_021eae48(self);
 }
 
-void func_ov002_021eae48(void *self) {
+void func_ov002_021eae48(Ov002StageFile *self) {
     {
         void *saved;
         HEAP_PUSH(saved);
-        if (FIELD(self, 0x40, void *) != NULL) {
-            Heap_FreeArray(FIELD(self, 0x40, void *));
-            FIELD(self, 0x40, void *) = NULL;
+        if (((void *)self->links) != NULL) {
+            Heap_FreeArray(((void *)self->links));
+            self->links = NULL;
         }
         HEAP_POP(saved);
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        if (FIELD(self, 0x44, void *) != NULL) {
-            Heap_FreeArray(FIELD(self, 0x44, void *));
-            FIELD(self, 0x44, void *) = NULL;
+        if (((void *)self->unk_44) != NULL) {
+            Heap_FreeArray(((void *)self->unk_44));
+            self->unk_44 = NULL;
         }
         HEAP_POP(saved);
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        if (FIELD(self, 0x48, void *) != NULL) {
-            Heap_FreeArray(FIELD(self, 0x48, void *));
-            FIELD(self, 0x48, void *) = NULL;
+        if (((void *)self->unk_48) != NULL) {
+            Heap_FreeArray(((void *)self->unk_48));
+            self->unk_48 = NULL;
         }
         HEAP_POP(saved);
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        if (FIELD(self, 0x4c, void *) != NULL) {
-            Heap_FreeArray(FIELD(self, 0x4c, void *));
-            FIELD(self, 0x4c, void *) = NULL;
+        if (((void *)self->unk_4c) != NULL) {
+            Heap_FreeArray(((void *)self->unk_4c));
+            self->unk_4c = NULL;
         }
         HEAP_POP(saved);
     }
-    FIELD(self, 0x50, s32) = 0;
-    FIELD(self, 0x54, s32) = 0;
-    FIELD(self, 0x58, s32) = 0;
-    FIELD(self, 0x5c, s32) = 0;
+    self->linkCount = 0;
+    self->unk_54 = 0;
+    self->unk_58 = 0;
+    self->unk_5c = 0;
 }
 
 }

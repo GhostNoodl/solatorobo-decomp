@@ -246,9 +246,7 @@ u16 func_02059544(void *a, void *b, void *c, u16 d, u16 e);
 
 void func_ov002_021e90dc(void);
 void func_ov002_021e8f04(s32 id);
-Ov002Obj *func_ov002_021e9b28(void *arg);
 bool func_ov002_021e90ac(void);
-extern void *data_ov002_021f0f9c;
 extern VFunc data_ov002_021ef69c[];
 void func_ov000_021c64b4(void *a, void *b);
 void func_ov000_021c7000(void *a);
@@ -259,33 +257,33 @@ void Movie_Load(void *a, s32 b, int c, int d);
 void Movie_RequestStop(void *a);
 void func_ov000_021c701c(void *a);
 
-void func_ov002_021e4904(void *p);
+void func_ov002_021e4904(Ov002LevelTable *self);
 
-static inline void func_ov002_021e4904_inline(void *self) {
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, s32) = 0;
+static inline void func_ov002_021e4904_inline(Ov002LevelTable *self) {
+    self->src = NULL;
+    self->count = 0;
     {
         void *saved;
         HEAP_PUSH(saved);
-        if (FIELD(self, 0xc, void *) != NULL) {
-            Heap_FreeArray(FIELD(self, 0xc, void *));
-            FIELD(self, 0xc, void *) = NULL;
+        if (self->thresholds != NULL) {
+            Heap_FreeArray(self->thresholds);
+            self->thresholds = NULL;
         }
         HEAP_POP(saved);
     }
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x14, s32) = 0;
+    self->label = NULL;
+    self->desc = NULL;
 }
-void func_ov002_021e4714(void *p);
-void func_ov002_021e49a0(void *p);
+void func_ov002_021e4714(Ov002LevelTable *self);
+void func_ov002_021e49a0(Ov002StrTable *self);
 extern VFunc data_ov002_021ef91c[];
 
 void __cxa_vec_ctor(void *arr, int n, u32 size, void (*ctor)(void *), void (*dtor)(void *));
-void *Ov002Vt_021f00fc_Dtor(void *p);
+Ov002LevelTable *Ov002Vt_021f00fc_Dtor(Ov002LevelTable *self);
 
 extern VFunc data_ov002_021ef99c[];
 
-void func_ov002_021e4b80(void *p);
+void func_ov002_021e4b80(Ov002StrTable *self);
 void func_ov002_021d37f8(Task021ef91c *self);
 extern VFunc data_ov002_021ef81c[];
 void func_ov000_021763c8(void);
@@ -293,7 +291,7 @@ u32 func_ov000_02176538(void);
 u32 func_ov000_02180838(void *a);
 void func_ov002_021d3ccc(Task021ef81c *self);
 
-void *Ov002Vt_021f00ec_Dtor(void *p);
+Ov002StrTable *Ov002Vt_021f00ec_Dtor(Ov002StrTable *self);
 void func_ov002_021d25ec(Task021ef99c *self);
 void __cxa_vec_cleanup(void *arr, int n, u32 size, void (*dtor)(void *));
 extern VFunc data_ov002_021ef684[];
@@ -405,7 +403,7 @@ typedef struct Bits021d8b48 {
     u16 hi : 6;
 } Bits021d8b48;
 
-void func_ov002_021eae48(void *self);
+void func_ov002_021eae48(Ov002StageFile *self);
 extern void *data_ov002_021f0f90[];
 void func_ov002_021df1c4(Obj021eff30 *self);
 
@@ -436,14 +434,14 @@ extern VFunc data_ov002_021eff50[];
 extern VFunc data_ov002_021efe4c[];
 extern VFunc data_ov002_021f0684[];
 extern VFunc data_ov002_021f00ec[];
-extern void *data_ov002_021f0f98;
+extern Ov002Obj021f07d4 *data_ov002_021f0f98; // the model being drawn (func_ov002_021e5b08)
 void func_ov002_021ddd80(void *self);
 void func_ov002_021da430(void *self);
 void func_ov002_021dddd0(Obj021efef0 *self);
 void func_ov002_021dbdb8(Obj021eff10 *self);
 void func_ov002_021db64c(Obj021eff50 *self);
 void func_ov002_021d6ec4(void *self);
-void func_ov002_021eae3c(void *self);
+void func_ov002_021eae3c(Ov002StageFile *self);
 
 typedef struct Nibbles16 {
     u16 n0 : 4;
@@ -472,8 +470,7 @@ void func_ov000_02153c48(void *a, s32 b, int c, int d, u8 e);
 
 extern VFunc data_ov002_021efeb8[];
 extern VFunc data_ov002_021f0674[];
-int func_ov002_021e7ea8(void *a);
-void func_ov002_021e7dac(void *self);
+void func_ov002_021e7dac(Ov002Stage *self);
 void func_ov002_021e0420(void *self);
 void func_ov000_021c524c(void *a, void *b, VecFx32 *pos, s32 d);
 
@@ -529,7 +526,7 @@ extern char data_ov002_021effde[];
 extern char data_ov002_021effeb[];
 extern VFunc data_ov002_021f0ebc[];
 extern VFunc data_ov002_021f001c[];
-void func_ov002_021e4fac(void *self);
+void func_ov002_021e4fac(NNSG3dRS *rs);
 
 typedef struct Bits8 {
     u8 b0 : 1;
@@ -545,26 +542,26 @@ typedef struct Bits8 {
 extern VFunc data_ov002_021f0734[];
 
 static inline void func_ov002_021e4d4c_inline(Ov002Obj *self) {
-    u8 *owner = FIELD(self, 0x48, u8 *);
+    Ov002Obj *owner = self->owner;
     int i;
     if (owner != NULL) {
         for (i = 0; i < 8; i++) {
-            if (((void **)(owner + 0x28))[i] == self) {
-                ((void **)(owner + 0x28))[i] = NULL;
+            if (owner->children[i] == self) {
+                owner->children[i] = NULL;
                 break;
             }
         }
-        FIELD(self, 0x48, void *) = NULL;
+        self->owner = NULL;
     }
     for (i = 0; i < 8; i++) {
-        void *child = ((void **)((u8 *)self + 0x28))[i];
+        Ov002Obj *child = self->children[i];
         if (child != NULL) {
-            FIELD(child, 0x48, void *) = NULL;
+            child->owner = NULL;
         }
     }
 }
 
-void func_ov002_021ec2ac(void *self);
+void func_ov002_021ec2ac(Ov002Snd021f0cf8 *self);
 
 BOOL func_ov002_021d52e0(void *self, void *ev);
 typedef BOOL (*EvCallback)(void *, void *);
@@ -589,7 +586,7 @@ extern u8 data_ov002_021ef038[];
 
 extern VFunc data_ov002_021f075c[];
 void func_ov002_021e5d88(Ov002Obj021f075c *self);
-void func_ov002_021e8cc4(void *self);
+void func_ov002_021e8cc4(Ov002Stage *self);
 void *func_ov000_0214b6d8(void *p);
 void func_ov000_0214b88c(void *p, const void *a);
 void func_ov000_0214b810(void *p);
@@ -622,8 +619,6 @@ void func_ov002_021d9728(void *p);
 
 void func_ov002_021e391c(s32 *m, int rot);
 
-extern void *data_ov002_021f0fac[9];
-void func_ov002_021eea74(void *p);
 int STD_TSNPrintf(void *dst, u32 size, const void *fmt, ...);
 extern void *data_ov002_021f0624[];
 extern u8 data_ov002_021f064c[];
@@ -633,7 +628,7 @@ BOOL func_ov000_0218f110(void *p);
 extern char data_ov002_021efdf6[];
 
 void func_ov002_021d9504(void *self);
-void func_ov002_021ebfd0(void *p);
+void func_ov002_021ebfd0(Ov002Msg021f0ce8 *p);
 extern VFunc data_ov002_021efe6c[];
 
 void func_ov002_021da184(void *self, void *p);
@@ -656,24 +651,21 @@ typedef struct Oam021e7ab8 {
 
 void func_ov002_021d36b8(Task021ef91c *self, s32 n);
 extern VFunc data_ov002_021eff74[];
-void func_ov002_021eacd0(void *self);
+void func_ov002_021eacd0(Ov002StageFile *self);
 void Gfx3DState_Init(void *p);
-void func_ov002_021e7cb4(void *self);
+void func_ov002_021e7cb4(Ov002Stage *self);
 
 BOOL func_ov002_021e41cc(Vec2 *a, Vec2 *b, void *c, void *d, Vec2 *out);
 void func_ov002_021e63f0(Ov002Obj021f075c *self);
-Ov002Obj *func_ov002_021e4ee4(Ov002Obj *self, s32 kind, s32 min);
-void func_ov002_021e61b4(Ov002Obj021f075c *p);
 extern VFunc data_ov002_021f0694[];
 
-void func_ov002_021e6360(Ov002Obj021f075c *self);
 
 Ov002Obj *func_ov002_021e9974(s32 a, s32 b, s16 c, void *d);
 
 void *func_02035fe8(void *a, void *b);
-void func_ov002_021ec010(void *p, const void *src);
+void func_ov002_021ec010(Ov002Msg021f0ce8 *p, const void *src);
 extern VFunc data_ov002_021f07ac[];
-void *Ov002Vt_021f0ce8_Dtor(void *p);
+void *Ov002Vt_021f0ce8_Dtor(Ov002Msg021f0ce8 *p);
 
 extern u8 data_ov002_021ef655[];
 extern u8 data_ov002_021ef659[];
@@ -703,9 +695,9 @@ void func_0206e3a0(void *a, void *b);
 void func_02043b20(void *p);
 void func_ov002_021e5d0c(Ov002Obj021f075c *self);
 
-void *Ov002Vt_021f0ce8_Ctor(void *p);
+void *Ov002Vt_021f0ce8_Ctor(Ov002Msg021f0ce8 *p);
 void func_ov002_021e6a14(Ov002Obj021f07ac *self);
-void func_ov002_021ec1e0(void *self, void *src);
+void func_ov002_021ec1e0(Ov002Snd021f0cf8 *self, void *src);
 
 extern VFunc data_ov002_021f06e4[];
 

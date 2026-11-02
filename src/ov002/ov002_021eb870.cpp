@@ -2,7 +2,6 @@
 
 extern "C" {
 
-Ov002Obj *func_ov002_021e92b0(s32 a, s32 b, s32 c, s32 d, s32 e);
 
 Ov002Obj *func_ov002_021e9380(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 
@@ -18,8 +17,8 @@ typedef struct Rec021eb870 {
     u32 flags;
 } Rec021eb870;
 
-void func_ov002_021eb870(void *self) {
-    u8 *p = FIELD(self, 0x30, u8 *);
+void func_ov002_021eb870(Ov002StageFile *self) {
+    u8 *p = self->unk_30;
     s32 hdr[2];
     Rec021eb870 rec;
     s32 i;

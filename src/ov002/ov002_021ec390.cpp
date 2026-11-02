@@ -1,121 +1,87 @@
 #include "ov002/ov002.h"
-
-typedef struct ov002_StateFlags {
-    u32 active : 1;
-    u32 b1 : 1;
-    u32 paused : 1;
-    u32 b3 : 1;
-    u32 b4 : 1;
-    u32 b5 : 1;
-    u32 rest : 26;
-} ov002_StateFlags;
-
-typedef struct ov002_Key021ec390 {
-    s32 unk0;
-    s32 value;
-} ov002_Key021ec390;
-
-typedef struct ov002_State021ec390 {
-    void *vtbl;
-    ov002_StateFlags flags;
-    s32 state;
-    s32 next;
-    s32 unk10;
-    s32 timer;
-    s32 prevTimer;
-    s32 step;
-    ov002_Key021ec390 *key;
-} ov002_State021ec390;
-
-typedef struct ov002_Ctx021ec390 {
-    u32 flags;
-    u8 unk4[0xc];
-    s32 max;
-    s32 min;
-    s32 step;
-} ov002_Ctx021ec390;
+#include "ov002/StaffRoll.h"
 
 extern "C" {
 
-static inline BOOL ov002_State_IsPaused(ov002_State021ec390 *s) {
-    return s->flags.paused == 1 ? TRUE : FALSE;
+static inline BOOL ov002_State_IsPaused(Ov002StaffNode *s) {
+    return s->clock.flags.paused == 1 ? TRUE : FALSE;
 }
 
-static inline BOOL ov002_State_IsActive(ov002_State021ec390 *s) {
-    return s->flags.active == 1 ? TRUE : FALSE;
+static inline BOOL ov002_State_IsActive(Ov002StaffNode *s) {
+    return s->clock.flags.active == 1 ? TRUE : FALSE;
 }
 
-static inline void ov002_State_Update(ov002_State021ec390 *s) {
-    if (s->next != 0) {
-        s->state = s->next;
-        s->next = 0;
-        s->unk10 = 0;
-        s->timer = 0;
-        s->prevTimer = -1;
-        s->step = 0x1000;
+static inline void ov002_State_Update(Ov002StaffNode *s) {
+    if (s->clock.next != 0) {
+        s->clock.state = s->clock.next;
+        s->clock.next = 0;
+        s->clock.sub = 0;
+        s->clock.timer = 0;
+        s->clock.prevTimer = -1;
+        s->clock.step = 0x1000;
     } else if (!ov002_State_IsPaused(s)) {
-        s->prevTimer = s->timer;
-        s->timer = s->timer + s->step;
+        s->clock.prevTimer = s->clock.timer;
+        s->clock.timer = s->clock.timer + s->clock.step;
     }
 }
 
-static inline void ov002_State_Change(ov002_State021ec390 *s, s32 state) {
-    if (s->state == state) {
+static inline void ov002_State_Change(Ov002StaffNode *s, s32 state) {
+    if (s->clock.state == state) {
         return;
     }
-    s->next = state;
+    s->clock.next = state;
     ov002_State_Update(s);
 }
 
-static inline BOOL ov002_Ctx_InRange(ov002_Ctx021ec390 *ctx, s32 v) {
-    return ctx->max >= v && v > ctx->min ? TRUE : FALSE;
+static inline BOOL ov002_Ctx_InRange(Ov002StaffClock *ctx, s32 v) {
+    return ctx->timer >= v && v > ctx->prevTimer ? TRUE : FALSE;
 }
 
-static inline void ov002_State_Fail(ov002_State021ec390 *s, ov002_Ctx021ec390 *ctx) {
+static inline void ov002_State_HoldClock(Ov002StaffNode *s, Ov002StaffClock *ctx) {
     if (ov002_State_IsActive(s)) {
-        ctx->flags |= 4;
+        ctx->flags.paused = 1;
     }
 }
 
-BOOL func_ov002_021ec390(ov002_State021ec390 *self, ov002_Ctx021ec390 *ctx) {
+BOOL func_ov002_021ec390(Ov002StaffNode *self, Ov002StaffClock *ctx) {
     BOOL result = TRUE;
     ov002_State_Update(self);
-    self->step = ctx->step;
-    if (ov002_Ctx_InRange(ctx, self->key->value)) {
-        self->flags.active = 1;
+    self->clock.step = ctx->step;
+    if (ov002_Ctx_InRange(ctx, self->entry->time)) {
+        self->clock.flags.active = 1;
     }
-    switch (self->state) {
+    switch (self->clock.state) {
     case 1:
-        if (!((VObj *)(self))->vfunc_1c()) {
-            ov002_State_Fail(self, ctx);
+        if (!self->vfunc_1c()) {
+            ov002_State_HoldClock(self, ctx);
             break;
         }
         ov002_State_Change(self, 5);
     case 5:
-        if (!((VObj *)(self))->vfunc_18()) {
-            ov002_State_Fail(self, ctx);
+        if (!self->vfunc_18()) {
+            ov002_State_HoldClock(self, ctx);
             break;
         }
-        self->flags.b4 = 1;
+        self->clock.flags.b4 = 1;
         ov002_State_Change(self, 6);
     case 6:
-        if (!((VObj *)(self))->vfunc_20()) {
-            ov002_State_Fail(self, ctx);
+        if (!self->vfunc_20()) {
+            ov002_State_HoldClock(self, ctx);
             break;
         }
-        self->flags.b5 = 1;
+        self->clock.flags.b5 = 1;
         ov002_State_Change(self, 9);
     case 9:
         if (ov002_State_IsActive(self)) {
-            ((VObj *)(self))->vfunc_24();
-            if (self->state != 7) {
-                self->next = 7;
+            self->vfunc_24();
+            if (self->clock.state != 7) {
+                self->clock.next = 7;
             }
         }
         break;
     case 3:
     case 7:
-        result = ((VObj *)(self))->vfunc_28();
+        result = self->vfunc_28();
         break;
     }
     return result;

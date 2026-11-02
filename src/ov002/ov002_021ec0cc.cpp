@@ -2,91 +2,91 @@
 
 extern "C" {
 
-void func_ov002_021ec0cc(void *self) {
+void func_ov002_021ec0cc(Ov002Msg021f0ce8 *self) {
     u8 *p;
-    if (FIELD(self, 0x8, s16) >= FIELD(self, 0xa, s16)) {
+    if (self->index >= self->count) {
         return;
     }
-    p = FIELD(self, 0xc, u8 *) + (FIELD(self, 0x18, s16) + FIELD(self, 0x1a, s16));
-    FIELD(self, 0xc, u8 *) = p;
+    p = self->body + (self->unk_18 + self->unk_1a);
+    self->body = p;
     MI_CpuCopy8(p, (u8 *)self + 0x10, 0xe);
-    p += FIELD(self, 0x18, s16);
-    FIELD(self, 0x20, u8 *) = p;
-    FIELD(self, 0x24, u8 *) = p + (STD_GetStringLength((char *)p) + 1);
-    FIELD(self, 0x8, s16)++;
+    p += self->unk_18;
+    self->name = (char *)p;
+    self->text = (char *)(p + (STD_GetStringLength((char *)p) + 1));
+    self->index++;
 }
 
-void *Ov002Vt_021f0cf8_Ctor(void *self) {
+void *Ov002Vt_021f0cf8_Ctor(Ov002Snd021f0cf8 *self) {
     *(VFunc **)self = data_ov002_021f0cf8;
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, u16) = 0;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, u16) = 0;
-    FIELD(self, 0x14, s32) = 0;
+    self->src = NULL;
+    self->index = 0;
+    self->mask = 0;
+    self->count = 0;
+    self->cur = NULL;
     return self;
 }
 
-void *Ov002Vt_021f0cf8_Dtor(void *self) {
+void *Ov002Vt_021f0cf8_Dtor(Ov002Snd021f0cf8 *self) {
     *(VFunc **)self = data_ov002_021f0cf8;
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, u16) = 0;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, u16) = 0;
-    FIELD(self, 0x14, s32) = 0;
+    self->src = NULL;
+    self->index = 0;
+    self->mask = 0;
+    self->count = 0;
+    self->cur = NULL;
     return self;
 }
 
-void *Ov002Vt_021f0cf8_DtorDelete(void *self) {
+void *Ov002Vt_021f0cf8_DtorDelete(Ov002Snd021f0cf8 *self) {
     *(VFunc **)self = data_ov002_021f0cf8;
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, u16) = 0;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, u16) = 0;
-    FIELD(self, 0x14, s32) = 0;
+    self->src = NULL;
+    self->index = 0;
+    self->mask = 0;
+    self->count = 0;
+    self->cur = NULL;
     Heap_Free(self);
     return self;
 }
 
-void func_ov002_021ec1c4(void *self) {
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, u16) = 0;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, u16) = 0;
-    FIELD(self, 0x14, s32) = 0;
+void func_ov002_021ec1c4(Ov002Snd021f0cf8 *self) {
+    self->src = NULL;
+    self->index = 0;
+    self->mask = 0;
+    self->count = 0;
+    self->cur = NULL;
 }
 
-void func_ov002_021ec1e0(void *self, void *src) {
+void func_ov002_021ec1e0(Ov002Snd021f0cf8 *self, void *src) {
     s16 n;
     s16 rec[8];
     u8 *p = *(u8 **)src;
     u8 *q;
     int i = 0;
-    FIELD(self, 0x4, void *) = src;
-    FIELD(self, 0x8, s16) = 0;
-    FIELD(self, 0xc, u32) = 0;
-    FIELD(self, 0x10, s16) = 0;
-    FIELD(self, 0x14, u8 *) = NULL;
+    self->src = src;
+    self->index = 0;
+    self->mask = 0;
+    self->count = 0;
+    self->cur = NULL;
     MI_CpuCopy8(p, &n, 2);
-    FIELD(self, 0x10, s16) = n;
-    if (FIELD(self, 0x10, s16) == 0) {
+    self->count = n;
+    if (self->count == 0) {
         return;
     }
-    for (q = p + 2; i < FIELD(self, 0x10, s16); i++, q += 0x10) {
+    for (q = p + 2; i < self->count; i++, q += 0x10) {
         MI_CpuCopy8(q, rec, 0x10);
         if (rec[1] == 6 || rec[1] == 8) {
-            FIELD(self, 0xc, u32) |= 1 << (rec[2] / 256);
+            self->mask |= 1 << (rec[2] / 256);
         }
     }
-    FIELD(self, 0x14, u8 *) = p + 2;
-    FIELD(self, 0x8, s16) = 1;
+    self->cur = (s16 *)(p + 2);
+    self->index = 1;
 }
 
-void func_ov002_021ec2ac(void *self) {
-    if (FIELD(self, 0x8, s16) >= FIELD(self, 0x10, s16)) {
-        FIELD(self, 0x14, s32) = 0;
+void func_ov002_021ec2ac(Ov002Snd021f0cf8 *self) {
+    if (self->index >= self->count) {
+        self->cur = NULL;
     } else {
         FIELD(self, 0x14, s32) += 0x10;
-        FIELD(self, 0x8, s16)++;
+        self->index++;
     }
 }
 

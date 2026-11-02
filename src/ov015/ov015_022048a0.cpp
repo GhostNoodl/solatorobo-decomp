@@ -15,7 +15,7 @@ void func_ov015_0220566c(void *self, s32 id);
 extern u8 data_ov015_02212b88[];
 
 void func_ov015_022048a0(Ov015Scene2c08 *self) {
-    if (((s32)self->unk_50) != 0) {
+    if (self->unk_50 != NULL) {
         return;
     }
     if (FLD(u16, data_02097dc8, 0x12) & 2) {
@@ -366,7 +366,7 @@ void func_ov015_02205034(Ov015Scene2b88 *self) {
             SET_VT(p, data_ov015_022129c0);
             func_ov000_02163224(p);
         }
-        self->unk_4c = p;
+        self->unk_4c = (Ov015MsgBox *)p;
         func_ov000_021632f0(self->unk_4c, 7, data_ov015_02212990, data_ov015_0221299d, 0);
         self->unk_3c->flags |= 4;
         self->unk_40->flags |= 4;

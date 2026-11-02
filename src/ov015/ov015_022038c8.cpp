@@ -452,7 +452,7 @@ void func_ov015_02204284(Ov015Scene2c08 *self) {
             SET_VT(p, data_ov015_022129c0);
             func_ov000_02163224(p);
         }
-        self->unk_50 = p;
+        self->unk_50 = (Ov015MsgBox *)p;
         func_ov000_021632f0(self->unk_50, 6, data_ov015_02212990, data_ov015_0221299d, 0);
         self->unk_3c->flags |= 4;
         self->unk_44->flags |= 2;

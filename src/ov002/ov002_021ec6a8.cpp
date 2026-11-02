@@ -1,4 +1,5 @@
 #include "ov002/ov002.h"
+#include "ov002/StaffRoll.h"
 
 extern "C" {
 
@@ -24,75 +25,75 @@ BOOL func_ov002_021ec6b8(void) {
 void func_ov002_021ec6c0(void) {
 }
 
-void func_ov002_021ec6c4(VObj *self, s32 kind) {
-    s32 k = FIELD(self, 0x24, s32);
+void func_ov002_021ec6c4(Ov002StaffNode *self, s32 screen) {
+    s32 k = self->screen;
     s32 st;
-    if (k != 2 && k != kind) {
+    if (k != 2 && k != screen) {
         return;
     }
-    st = FIELD(self, 0x8, s32);
+    st = self->clock.state;
     if (st == 3 || st == 7) {
-        self->vfunc_2c(kind);
+        self->vfunc_2c(screen);
     }
 }
 
-void func_ov002_021ec6fc(void *node) {
-    void *p = data_ov002_021f0fa0[0];
-    void *prev;
+void func_ov002_021ec6fc(Ov002StaffNode *node) {
+    Ov002StaffNode *p = (Ov002StaffNode *)data_ov002_021f0fa0[0];
+    Ov002StaffNode *prev;
     if (p == NULL) {
         data_ov002_021f0fa0[2] = node;
         data_ov002_021f0fa0[0] = node;
     } else {
         if (p != NULL) {
-            s32 key = FIELD(FIELD(node, 0x20, void *), 4, s32);
+            s32 key = node->entry->time;
             do {
-                if (key < FIELD(FIELD(p, 0x20, void *), 4, s32)) {
+                if (key < p->entry->time) {
                     break;
                 }
                 prev = p;
-                p = FIELD(p, 0x2c, void *);
+                p = p->next;
             } while (p != NULL);
         }
         if (p == NULL) {
-            FIELD(node, 0x28, void *) = prev;
-            FIELD(node, 0x2c, void *) = NULL;
-            FIELD(prev, 0x2c, void *) = node;
+            node->prev = prev;
+            node->next = NULL;
+            prev->next = node;
             data_ov002_021f0fa0[2] = node;
         } else {
-            FIELD(node, 0x28, void *) = FIELD(p, 0x28, void *);
-            FIELD(node, 0x2c, void *) = p;
-            FIELD(p, 0x28, void *) = node;
-            if (FIELD(node, 0x28, void *) != NULL) {
-                FIELD(FIELD(node, 0x28, void *), 0x2c, void *) = node;
+            node->prev = p->prev;
+            node->next = p;
+            p->prev = node;
+            if (node->prev != NULL) {
+                node->prev->next = node;
             } else {
                 data_ov002_021f0fa0[0] = node;
             }
         }
     }
     {
-        s32 idx = FIELD(FIELD(node, 0x20, void *), 0, s32);
-        FIELD(node, 0x30, void *) = data_ov002_021f0fac[idx];
+        s32 idx = node->entry->kind;
+        node->link = data_ov002_021f0fac[idx];
         data_ov002_021f0fac[idx] = node;
     }
 }
 
-void func_ov002_021ec7ac(void *self) {
-    FIELD(self, 0x20, s32) = 0;
-    FIELD(self, 0x24, s32) = 3;
-    FIELD(self, 0x28, s32) = 0;
-    FIELD(self, 0x2c, s32) = 0;
-    FIELD(self, 0x30, s32) = 0;
-    if (FIELD(self, 0x8, s32) != 1) {
-        FIELD(self, 0xc, s32) = 1;
+void func_ov002_021ec7ac(Ov002StaffNode *self) {
+    self->entry = NULL;
+    self->screen = 3;
+    self->prev = NULL;
+    self->next = NULL;
+    self->link = NULL;
+    if (self->clock.state != 1) {
+        self->clock.next = 1;
     }
 }
 
 void func_ov002_021ec7dc(void) {
 }
 
-BOOL func_ov002_021ec7e0(void *self) {
-    if (*FIELD(self, 0x20, s32 *) == 3) {
-        FIELD(data_ov002_021f0fa0[1], 0x4, u32) |= 8;
+BOOL func_ov002_021ec7e0(Ov002StaffNode *self) {
+    if (self->entry->kind == 3) {
+        ((Ov002Staff *)data_ov002_021f0fa0[1])->clock.flags.done = 1;
     }
     return FALSE;
 }
@@ -100,46 +101,46 @@ BOOL func_ov002_021ec7e0(void *self) {
 void func_ov002_021ec80c(void) {
 }
 
-void func_ov002_021ec810(void *self) {
-    FIELD(self, 0x34, s32) = 0;
-    FIELD(self, 0x38, s32) = 0;
-    FIELD(self, 0x3c, s32) = 0;
-    FIELD(self, 0x40, s32) = 0;
-    FIELD(self, 0x44, s32) = 0;
-    FIELD(self, 0x48, u8) = 0;
-    FIELD(self, 0x49, u8) = 0x1e;
+void func_ov002_021ec810(Ov002StaffModel *self) {
+    self->res = NULL;
+    self->model = NULL;
+    self->x = 0;
+    self->y = 0;
+    self->z = 0;
+    self->alpha = 0;
+    self->maxAlpha = 0x1e;
 }
 
-void func_ov002_021ec838(void *self) {
+void func_ov002_021ec838(Ov002StaffModel *self) {
     void *saved;
     HEAP_PUSH(saved);
     {
-        void *p = FIELD(self, 0x38, void *);
+        Model *p = self->model;
         if (p != NULL) {
             if (p != NULL) {
-                func_02041558((Model *)p);
-                func_02041278((PlttRes *)((u8 *)p + 0x88));
+                func_02041558(p);
+                func_02041278(&p->pltt);
                 Heap_Free(p);
             }
-            FIELD(self, 0x38, void *) = NULL;
+            self->model = NULL;
         }
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x34, VObj *));
+    DELETE_VOBJ(self->res);
     HEAP_POP(saved);
 }
 
-static inline BOOL func_ov002_021ec8d8_is5(void *t) {
-    return FIELD(t, 8, s32) == 5 ? TRUE : FALSE;
+static inline BOOL func_ov002_021ec8d8_is5(Ov002StaffModel *t) {
+    return t->clock.state == 5 ? TRUE : FALSE;
 }
-static inline BOOL func_ov002_021ec8d8_flag(void *t) {
-    return FIELD(t, 4, Bits32).b4 == 1 ? TRUE : FALSE;
+static inline BOOL func_ov002_021ec8d8_flag(Ov002StaffModel *t) {
+    return t->clock.flags.b4 == 1 ? TRUE : FALSE;
 }
 BOOL func_ov002_021ec8d8(void) {
-    void *t;
+    Ov002StaffModel *t;
     int n = 0;
-    for (t = data_ov002_021f0fa0[8]; t != NULL; t = FIELD(t, 0x30, void *)) {
+    for (t = (Ov002StaffModel *)data_ov002_021f0fa0[8]; t != NULL; t = (Ov002StaffModel *)t->link) {
         if (func_ov002_021ec8d8_is5(t) || func_ov002_021ec8d8_flag(t)) {
             n++;
         }
@@ -150,22 +151,22 @@ BOOL func_ov002_021ec8d8(void) {
     return TRUE;
 }
 
-BOOL func_ov002_021ec968(void *self) {
-    switch (FIELD(self, 0x10, s32)) {
+BOOL func_ov002_021ec968(Ov002StaffModel *self) {
+    switch (self->clock.sub) {
     case 0: {
-        VObj *o = (VObj *)Heap_Alloc(0x4c);
+        Ov002StaffRes *o = (Ov002StaffRes *)Heap_Alloc(0x4c);
         if (o != NULL) {
             *(VFunc **)o = (VFunc *)data_0208b318;
             o->vfunc_08();
         }
-        FIELD(self, 0x34, VObj *) = o;
-        FIELD(o, 0x44, s32) = 2;
-        FIELD(self, 0x34, VObj *)->vfunc_24(data_ov002_021f0d88.dir, FIELD(FIELD(self, 0x20, void *), 8, void *));
-        FIELD(self, 0x10, s32)++;
+        self->res = o;
+        o->type = 2;
+        self->res->vfunc_24(data_ov002_021f0d88.dir, self->entry->str);
+        self->clock.sub++;
         break;
     }
     case 1:
-        if (FIELD(self, 0x34, VObj *)->vfunc_2c()) {
+        if (self->res->vfunc_2c()) {
             return TRUE;
         }
         break;

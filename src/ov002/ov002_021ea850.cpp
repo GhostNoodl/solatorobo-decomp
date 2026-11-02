@@ -84,26 +84,26 @@ void *Ov002Vt_021f0734_Dtor(Ov002Obj *self) {
     return self;
 }
 
-void *Ov002Vt_021f0684_DtorDelete(void *self) {
+void *Ov002Vt_021f0684_DtorDelete(Ov002StageFile *self) {
     *(VFunc **)self = data_ov002_021f0684;
     func_ov002_021eae3c(self);
     Heap_Free(self);
     return self;
 }
 
-void func_ov002_021eacd0(void *self) {
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, s32) = 0;
+void func_ov002_021eacd0(Ov002StageFile *self) {
+    self->unk_04 = NULL;
+    self->data = NULL;
     MIi_CpuClear32(0, (u8 *)self + 0x10, 0x30);
-    FIELD(self, 0x40, s32) = 0;
-    FIELD(self, 0x44, s32) = 0;
-    FIELD(self, 0x48, s32) = 0;
-    FIELD(self, 0x4c, s32) = 0;
-    FIELD(self, 0x50, s32) = 0;
-    FIELD(self, 0x54, s32) = 0;
-    FIELD(self, 0x58, s32) = 0;
-    FIELD(self, 0x5c, s32) = 0;
-    FIELD(self, 0x60, s32) = 0;
+    self->links = NULL;
+    self->unk_44 = NULL;
+    self->unk_48 = NULL;
+    self->unk_4c = NULL;
+    self->linkCount = 0;
+    self->unk_54 = 0;
+    self->unk_58 = 0;
+    self->unk_5c = 0;
+    self->unk_60 = NULL;
 }
 
 }

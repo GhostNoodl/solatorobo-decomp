@@ -2,8 +2,8 @@
 
 extern "C" {
 
-void func_ov002_021eb7c0(void *self) {
-    u8 *data = FIELD(self, 0x2c, u8 *);
+void func_ov002_021eb7c0(Ov002StageFile *self) {
+    u8 *data = self->unk_2c;
     s32 v[3];
     s32 size;
     s32 id;

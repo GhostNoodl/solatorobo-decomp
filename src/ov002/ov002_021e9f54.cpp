@@ -2,11 +2,11 @@
 
 extern "C" {
 
-void *Ov002Vt_021f0674_Dtor(void *self) {
+void *Ov002Vt_021f0674_Dtor(Ov002Stage *self) {
     *(VFunc **)self = data_ov002_021f0674;
     func_ov002_021e7dac(self);
-    *(VFunc **)((u8 *)self + 0x6c) = data_ov002_021f0684;
-    func_ov002_021eae3c((u8 *)self + 0x6c);
+    *(VFunc **)&self->file = data_ov002_021f0684;
+    func_ov002_021eae3c(&self->file);
     return self;
 }
 
@@ -91,10 +91,10 @@ void *Ov002Vt_021f0784_Dtor(Ov002Obj021f0784 *self) {
 void *Ov002Vt_021f07ac_DtorDelete(Ov002Obj021f07ac *self) {
     *(VFunc **)self = data_ov002_021f07ac;
     if (self->unk_14 != 0) {
-        func_02035acc((u8 *)self + 0x4c, (u8 *)self + 0x6c, 0);
+        func_02035acc(self->unk_4c, self->unk_6c, 0);
     }
     data_02097ce0->unk_010 = 1;
-    Ov002Vt_021f0ce8_Dtor((u8 *)self + 0x8c);
+    Ov002Vt_021f0ce8_Dtor(&self->msg);
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
     Heap_Free(self);
@@ -104,10 +104,10 @@ void *Ov002Vt_021f07ac_DtorDelete(Ov002Obj021f07ac *self) {
 void *Ov002Vt_021f07ac_Dtor(Ov002Obj021f07ac *self) {
     *(VFunc **)self = data_ov002_021f07ac;
     if (self->unk_14 != 0) {
-        func_02035acc((u8 *)self + 0x4c, (u8 *)self + 0x6c, 0);
+        func_02035acc(self->unk_4c, self->unk_6c, 0);
     }
     data_02097ce0->unk_010 = 1;
-    Ov002Vt_021f0ce8_Dtor((u8 *)self + 0x8c);
+    Ov002Vt_021f0ce8_Dtor(&self->msg);
     *(VFunc **)self = data_ov002_021f0734;
     func_ov002_021e4d4c_inline(self);
     return self;

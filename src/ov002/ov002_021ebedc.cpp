@@ -1,121 +1,99 @@
 #include "ov002/ov002.h"
 
-typedef struct ov002_Res021ec010 {
-    u8 *data;
-} ov002_Res021ec010;
-
 typedef struct ov002_Hdr021ec010 {
     s16 count;
     s16 offset;
     s16 pad[2];
 } ov002_Hdr021ec010;
 
-typedef struct ov002_Msg021ec010 {
-    u8 unk0[4];
-    const ov002_Res021ec010 *res;
-    s16 loaded;
-    s16 count;
-    u8 *body;
-    s16 unk10;
-    s16 unk12;
-    s16 unk14;
-    s16 unk16;
-    s16 unk18;
-    s16 unk1A;
-    u8 unk1C;
-    u8 *name;
-    u8 *text;
-} ov002_Msg021ec010;
-
 extern "C" {
 
-void *Ov002Vt_021f0ce8_Ctor(void *self) {
+void *Ov002Vt_021f0ce8_Ctor(Ov002Msg021f0ce8 *self) {
     *(VFunc **)self = data_ov002_021f0ce8;
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, s16) = 0;
-    FIELD(self, 0xa, s16) = 0;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s16) = 0;
-    FIELD(self, 0x12, s16) = 0;
-    FIELD(self, 0x14, s16) = 0;
-    FIELD(self, 0x16, s16) = -1;
-    FIELD(self, 0x18, s16) = 0;
-    FIELD(self, 0x1a, s16) = 0;
-    FIELD(self, 0x1c, u8) = 0;
-    FIELD(self, 0x20, s32) = 0;
-    FIELD(self, 0x24, s32) = 0;
+    self->res = NULL;
+    self->index = 0;
+    self->count = 0;
+    self->body = NULL;
+    self->unk_10 = 0;
+    self->unk_12 = 0;
+    self->unk_14 = 0;
+    self->unk_16 = -1;
+    self->unk_18 = 0;
+    self->unk_1a = 0;
+    self->unk_1c = 0;
+    self->name = NULL;
+    self->text = NULL;
     return self;
 }
 
-void *Ov002Vt_021f0ce8_Dtor(void *self) {
+void *Ov002Vt_021f0ce8_Dtor(Ov002Msg021f0ce8 *self) {
     *(VFunc **)self = data_ov002_021f0ce8;
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, s16) = 0;
-    FIELD(self, 0xa, s16) = 0;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s16) = 0;
-    FIELD(self, 0x12, s16) = 0;
-    FIELD(self, 0x14, s16) = 0;
-    FIELD(self, 0x16, s16) = -1;
-    FIELD(self, 0x18, s16) = 0;
-    FIELD(self, 0x1a, s16) = 0;
-    FIELD(self, 0x1c, u8) = 0;
-    FIELD(self, 0x20, s32) = 0;
-    FIELD(self, 0x24, s32) = 0;
+    self->res = NULL;
+    self->index = 0;
+    self->count = 0;
+    self->body = NULL;
+    self->unk_10 = 0;
+    self->unk_12 = 0;
+    self->unk_14 = 0;
+    self->unk_16 = -1;
+    self->unk_18 = 0;
+    self->unk_1a = 0;
+    self->unk_1c = 0;
+    self->name = NULL;
+    self->text = NULL;
     return self;
 }
 
-void *Ov002Vt_021f0ce8_DtorDelete(void *self) {
+void *Ov002Vt_021f0ce8_DtorDelete(Ov002Msg021f0ce8 *self) {
     *(VFunc **)self = data_ov002_021f0ce8;
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, s16) = 0;
-    FIELD(self, 0xa, s16) = 0;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s16) = 0;
-    FIELD(self, 0x12, s16) = 0;
-    FIELD(self, 0x14, s16) = 0;
-    FIELD(self, 0x16, s16) = -1;
-    FIELD(self, 0x18, s16) = 0;
-    FIELD(self, 0x1a, s16) = 0;
-    FIELD(self, 0x1c, u8) = 0;
-    FIELD(self, 0x20, s32) = 0;
-    FIELD(self, 0x24, s32) = 0;
+    self->res = NULL;
+    self->index = 0;
+    self->count = 0;
+    self->body = NULL;
+    self->unk_10 = 0;
+    self->unk_12 = 0;
+    self->unk_14 = 0;
+    self->unk_16 = -1;
+    self->unk_18 = 0;
+    self->unk_1a = 0;
+    self->unk_1c = 0;
+    self->name = NULL;
+    self->text = NULL;
     Heap_Free(self);
     return self;
 }
 
-void func_ov002_021ebfd0(void *self) {
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, s16) = 0;
-    FIELD(self, 0xa, s16) = 0;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s16) = 0;
-    FIELD(self, 0x12, s16) = 0;
-    FIELD(self, 0x14, s16) = 0;
-    FIELD(self, 0x16, s16) = -1;
-    FIELD(self, 0x18, s16) = 0;
-    FIELD(self, 0x1a, s16) = 0;
-    FIELD(self, 0x1c, u8) = 0;
-    FIELD(self, 0x20, s32) = 0;
-    FIELD(self, 0x24, s32) = 0;
+void func_ov002_021ebfd0(Ov002Msg021f0ce8 *self) {
+    self->res = NULL;
+    self->index = 0;
+    self->count = 0;
+    self->body = NULL;
+    self->unk_10 = 0;
+    self->unk_12 = 0;
+    self->unk_14 = 0;
+    self->unk_16 = -1;
+    self->unk_18 = 0;
+    self->unk_1a = 0;
+    self->unk_1c = 0;
+    self->name = NULL;
+    self->text = NULL;
 }
 
-void func_ov002_021ec010(void *p, const void *src) {
-    ov002_Msg021ec010 *self = (ov002_Msg021ec010 *)p;
-    const ov002_Res021ec010 *res = (const ov002_Res021ec010 *)src;
+void func_ov002_021ec010(Ov002Msg021f0ce8 *self, const void *src) {
+    const Ov002MsgRes *res = (const Ov002MsgRes *)src;
     ov002_Hdr021ec010 hdr;
     u8 *d = res->data;
     self->res = res;
-    self->loaded = 0;
+    self->index = 0;
     self->count = 0;
     self->body = NULL;
-    self->unk10 = 0;
-    self->unk12 = 0;
-    self->unk14 = 0;
-    self->unk16 = -1;
-    self->unk18 = 0;
-    self->unk1A = 0;
-    self->unk1C = 0;
+    self->unk_10 = 0;
+    self->unk_12 = 0;
+    self->unk_14 = 0;
+    self->unk_16 = -1;
+    self->unk_18 = 0;
+    self->unk_1a = 0;
+    self->unk_1c = 0;
     self->name = NULL;
     self->text = NULL;
     MI_CpuCopy8(d, &hdr, 8);
@@ -125,14 +103,14 @@ void func_ov002_021ec010(void *p, const void *src) {
     }
     {
         u8 *body = d + hdr.offset;
-        u8 *name;
+        char *name;
         self->body = body;
-        MI_CpuCopy8(body, &self->unk10, 0xe);
-        name = body + self->unk18;
+        MI_CpuCopy8(body, &self->unk_10, 0xe);
+        name = (char *)body + self->unk_18;
         self->name = name;
-        self->text = name + (STD_GetStringLength((char *)name) + 1);
+        self->text = name + (STD_GetStringLength(name) + 1);
     }
-    self->loaded = 1;
+    self->index = 1;
 }
 
 }

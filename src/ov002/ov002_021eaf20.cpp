@@ -6,17 +6,17 @@ extern char data_ov002_021f0d00[];
 
 extern char data_ov002_021f0d0f[];
 
-void func_ov002_021eb298(void *self);
+void func_ov002_021eb298(Ov002StageFile *self);
 
-void func_ov002_021ebcf8(void *self, int a, s32 b, s32 c);
+void func_ov002_021ebcf8(Ov002StageFile *self, int kind, u8 *data, Ov002Obj021f075c **out);
 
-void func_ov002_021eb0f8(void *self);
+void func_ov002_021eb0f8(Ov002StageFile *self);
 
-void func_ov002_021eb448(void *self);
+void func_ov002_021eb448(Ov002StageFile *self);
 
-void func_ov002_021eb7c0(void *self);
+void func_ov002_021eb7c0(Ov002StageFile *self);
 
-void func_ov002_021eb870(void *self);
+void func_ov002_021eb870(Ov002StageFile *self);
 
 void func_ov002_021e9cec(void *dst, u32 size, void *src, int mode, u8 idx);
 
@@ -44,7 +44,7 @@ typedef struct Rec021eaf20 {
     u16 g;
 } Rec021eaf20;
 
-void func_ov002_021eaf20(void *self) {
+void func_ov002_021eaf20(Ov002StageFile *self) {
     u8 *d;
     s32 stride;
     s32 i;
@@ -55,15 +55,15 @@ void func_ov002_021eaf20(void *self) {
     char bufA[0x20];
     char bufD[0x20];
     char bufC[0x20];
-    void *x;
+    s32 end;
     Hdr021eaf20 hdr;
     func_ov002_021eb298(self);
-    func_ov002_021ebcf8(self, 2, FIELD(self, 0x1c, s32), FIELD(self, 0x44, s32));
-    func_ov002_021ebcf8(self, 3, FIELD(self, 0x20, s32), FIELD(self, 0x48, s32));
-    func_ov002_021ebcf8(self, 3, FIELD(self, 0x24, s32), FIELD(self, 0x4c, s32));
+    func_ov002_021ebcf8(self, 2, self->unk_1c, self->unk_44);
+    func_ov002_021ebcf8(self, 3, self->unk_20, self->unk_48);
+    func_ov002_021ebcf8(self, 3, self->unk_24, self->unk_4c);
     func_ov002_021eb0f8(self);
     func_ov002_021eb448(self);
-    d = FIELD(self, 0x28, u8 *);
+    d = self->unk_28;
     MI_CpuCopy8(d + 8, &hdr, 8);
     n = hdr.count;
     src = d + 0x10;
@@ -76,13 +76,13 @@ void func_ov002_021eaf20(void *self) {
     func_ov002_021eb7c0(self);
     func_ov002_021eb870(self);
     func_ov002_021e9cec(bufA, 0x20, data_ov002_021f0d00, 1, ((u8 (*)(void))LangData_GetLang)());
-    func_ov002_021e9d7c(bufB, 0x20, FIELD(self, 0x4, void *), 1, ((u8 (*)(void))LangData_GetLang)());
+    func_ov002_021e9d7c(bufB, 0x20, self->unk_04, 1, ((u8 (*)(void))LangData_GetLang)());
     func_ov002_021e9bd8(bufA, bufB);
     func_ov002_021e9cec(bufC, 0x20, data_ov002_021f0d0f, 2, ((u8 (*)(void))LangData_GetLang)());
-    func_ov002_021e9d7c(bufD, 0x20, FIELD(self, 0x4, void *), 2, ((u8 (*)(void))LangData_GetLang)());
+    func_ov002_021e9d7c(bufD, 0x20, self->unk_04, 2, ((u8 (*)(void))LangData_GetLang)());
     func_ov002_021e9a50(bufC, bufD);
-    MI_CpuCopy8(FIELD(self, 0x8, u8 *) + 0xc, &x, 4);
-    func_ov002_021e9b28(x);
+    MI_CpuCopy8(self->data + 0xc, &end, 4);
+    func_ov002_021e9b28(end);
 }
 
 void *Heap_AllocArray(u32 size);
@@ -91,9 +91,8 @@ Ov002Obj *func_ov002_021e97e8(u8 *a, u8 *b);
 
 Ov002Obj *func_ov002_021e95c4(u8 *a, u8 *b);
 
-void func_ov002_021e772c(void *self, s32 v);
+void func_ov002_021e772c(Ov002Cam021f0828 *self, s32 deg);
 
-void func_ov002_021e4dac(Ov002Obj *self, void *item);
 
 typedef struct Hdr021eb0f8 {
     s32 count;
@@ -111,10 +110,10 @@ typedef struct Ent021eb0f8 {
     s32 parent;
 } Ent021eb0f8;
 
-void func_ov002_021eb0f8(void *self) {
+void func_ov002_021eb0f8(Ov002StageFile *self) {
     Rec021eb0f8 rec;
     Hdr021eb0f8 hdr;
-    u8 *d = FIELD(self, 0x10, u8 *);
+    u8 *d = self->unk_10;
     s32 n;
     s32 stride;
     u8 *src;
@@ -136,25 +135,25 @@ void func_ov002_021eb0f8(void *self) {
             break;
         case 1:
             obj = func_ov002_021e95c4(NULL, NULL);
-            func_ov002_021e772c(obj, 0x1e000);
+            func_ov002_021e772c((Ov002Cam021f0828 *)obj, 0x1e000);
             break;
         case 2:
             obj = func_ov002_021e95c4(NULL, NULL);
-            func_ov002_021e772c(obj, 0x28000);
+            func_ov002_021e772c((Ov002Cam021f0828 *)obj, 0x28000);
             break;
         case 3:
             obj = func_ov002_021e95c4(NULL, NULL);
-            func_ov002_021e772c(obj, 0xf000);
+            func_ov002_021e772c((Ov002Cam021f0828 *)obj, 0xf000);
             break;
         }
-        FIELD(obj, 0x4c, s32) = rec.id;
+        ((Ov002Cam021f0854 *)obj)->unk_4c = rec.id;
         obj->unk_08 = (i % 2) ? 2 : 1;
-        cnt = FIELD(self, 0x58, s32);
+        cnt = self->unk_58;
         for (k = 0; k < cnt; k++) {
-            u8 *q = FIELD(self, 0x48, u8 **)[k];
-            if (rec.id == FIELD(q, 0x5c, s32)) {
-                FIELD(q, 0x48, void *) = obj;
-                func_ov002_021e4dac(obj, FIELD(self, 0x48, u8 **)[k]);
+            Ov002Obj021f075c *q = self->unk_48[k];
+            if (rec.id == q->unk_5c) {
+                q->owner = obj;
+                func_ov002_021e4dac(obj, self->unk_48[k]);
             }
         }
         tbl[i].obj = obj;
@@ -166,7 +165,7 @@ void func_ov002_021eb0f8(void *self) {
         Ov002Obj *o = tbl[i].obj;
         if (par >= 0) {
             Ov002Obj *po = tbl[par].obj;
-            o->owner = (struct Ov002Obj *)po;
+            o->owner = po;
             func_ov002_021e4dac(po, o);
         }
     }
@@ -175,17 +174,6 @@ void func_ov002_021eb0f8(void *self) {
 
 s32 func_0201e950(const void *a, const void *b, u32 n);
 
-typedef struct Ent021eb298 {
-    s32 kind;
-    u8 *a;
-    u8 *b;
-    s32 c;
-    s32 d;
-    u8 e;
-    u8 f;
-    s32 g;
-} Ent021eb298;
-
 typedef struct Rec021eb298 {
     s32 id;
     u8 kind;
@@ -193,81 +181,79 @@ typedef struct Rec021eb298 {
     u8 pad[2];
 } Rec021eb298;
 
-static inline void ov002_addPair(u8 *list, u8 *a, u8 *b, s32 kind) {
-    u8 *n;
-    for (n = FIELD(list, 0x4, u8 *); n != NULL; n = FIELD(n, 0x4c, u8 *)) {
-        if (func_0201e950(n, a, STD_GetStringLength((char *)n)) == 0 && func_0201e950(n + 0x20, b, STD_GetStringLength((char *)n)) == 0 && FIELD(n, 0x40, s32) == kind) {
+static inline void ov002_addPair(Ov002ResList *list, char *a, char *b, s32 kind) {
+    Ov002ResNode *n;
+    for (n = list->head; n != NULL; n = n->next) {
+        if (func_0201e950(n->a, a, STD_GetStringLength(n->a)) == 0 && func_0201e950(n->b, b, STD_GetStringLength(n->a)) == 0 && n->kind == kind) {
             break;
         }
     }
     if (n == NULL) {
-        n = (u8 *)Heap_Alloc(0x50);
-        MI_CpuFill8(n, 0, 0x20);
-        MI_CpuFill8(n + 0x20, 0, 0x20);
-        FIELD(n, 0x44, u8) = 0;
-        FIELD(n, 0x48, s32) = 0;
-        FIELD(n, 0x4c, u8 *) = NULL;
-        STD_CopyLString((char *)n, (char *)a, 0x20);
-        STD_CopyLString((char *)(n + 0x20), (char *)b, 0x20);
-        FIELD(n, 0x40, s32) = kind;
-        FIELD(n, 0x4c, u8 *) = FIELD(list, 0x4, u8 *);
-        FIELD(list, 0x4, u8 *) = n;
+        n = (Ov002ResNode *)Heap_Alloc(0x50);
+        MI_CpuFill8(n->a, 0, 0x20);
+        MI_CpuFill8(n->b, 0, 0x20);
+        n->unk_44 = 0;
+        n->unk_48 = 0;
+        n->next = NULL;
+        STD_CopyLString(n->a, a, 0x20);
+        STD_CopyLString(n->b, b, 0x20);
+        n->kind = kind;
+        n->next = list->head;
+        list->head = n;
     }
 }
 
-static inline void ov002_initEnt(Ent021eb298 *e) {
-    e->kind = 0;
-    e->a = NULL;
-    e->b = NULL;
-    e->c = 0;
-    e->d = 0;
-    e->e = 0;
-    e->f = 0;
-    e->g = 0;
+static inline void ov002_initEnt(Ov002ObjLink *e) {
+    e->id = 0;
+    e->arc = NULL;
+    e->name = NULL;
+    e->task = 0;
+    e->res = NULL;
+    e->loaded = 0;
+    e->alt = 0;
+    e->res2 = NULL;
 }
 
-void func_ov002_021eb298(void *self) {
+void func_ov002_021eb298(Ov002StageFile *self) {
     Rec021eb298 rec;
     s32 hdr[2];
     u8 *d;
     s32 n;
     u8 *src;
     s32 i;
-    d = FIELD(self, 0x18, u8 *);
+    d = self->unk_18;
     MI_CpuCopy8(d + 8, hdr, 8);
     n = hdr[0];
     src = d + 0x10;
     for (i = 0; i < n; i++) {
-        Ent021eb298 *e;
+        Ov002ObjLink *e;
         u8 fl;
         MI_CpuCopy8(src, &rec, 8);
         fl = rec.flags;
-        e = &FIELD(self, 0x40, Ent021eb298 *)[i];
+        e = &self->links[i];
         ov002_initEnt(e);
         src += 8;
         {
             s32 f1 = fl & 1;
-            e->a = f1 ? src : NULL;
+            e->arc = f1 ? (char *)src : NULL;
             if (f1) {
                 src += 0x18;
             }
         }
         {
             s32 f2 = fl & 2;
-            e->b = f2 ? src : NULL;
+            e->name = f2 ? (char *)src : NULL;
             if (f2) {
                 src += 0x18;
             }
         }
-        e->kind = rec.kind;
-        d = FIELD(self, 0x60, u8 *);
-        if (d != NULL) {
-            ov002_addPair(d, e->a, e->b, 5);
+        e->id = rec.kind;
+        if (self->unk_60 != NULL) {
+            ov002_addPair(self->unk_60, e->arc, e->name, 5);
         }
     }
 }
 
-Ov002Obj *func_ov002_021e91c8(s32 a, s32 b, s32 c, bool d, u8 e);
 void func_ov002_021e50a8(Ov002Obj021f07d4 *self, Ov002ObjLink *src);
 
 typedef struct Hdr021eb448 {
@@ -287,7 +273,7 @@ typedef struct Rec021eb448 {
     u32 mask;
 } Rec021eb448;
 
-void func_ov002_021eb448(void *self) {
+void func_ov002_021eb448(Ov002StageFile *self) {
     Hdr021eb448 hdr;
     Rec021eb448 rec;
     u8 *d;
@@ -295,7 +281,7 @@ void func_ov002_021eb448(void *self) {
     s32 n;
     s32 stride;
     s32 i;
-    d = FIELD(self, 0x14, u8 *);
+    d = self->unk_14;
     MI_CpuCopy8(d + 8, &hdr, 8);
     src = d + 0x10;
     n = hdr.count;
@@ -357,33 +343,33 @@ void func_ov002_021eb448(void *self) {
             off += 0x18;
         }
         s3 = (rec.mask & 4) ? src + off : NULL;
-        obj->unk_50 = (void *)s1;
-        obj->unk_54 = (void *)s2;
-        obj->unk_58 = (void *)s3;
-        for (q = 0; q < FIELD(self, 0x50, s32); q++) {
-            Ov002ObjLink *l = &FIELD(self, 0x40, Ov002ObjLink *)[q];
+        obj->res.arc = (char *)s1;
+        obj->res.name = (char *)s2;
+        obj->res.item = (char *)s3;
+        for (q = 0; q < self->linkCount; q++) {
+            Ov002ObjLink *l = &self->links[q];
             if (l->id == obj->unk_4c) {
                 func_ov002_021e50a8(obj, l);
             }
         }
-        m = FIELD(self, 0x54, s32);
+        m = self->unk_54;
         for (j = 0; j < m; j++) {
-            if (rec.id == FIELD(FIELD(self, 0x44, u8 **)[j], 0x5c, s32)) {
-                func_ov002_021e4dac(obj, FIELD(self, 0x44, u8 **)[j]);
-                FIELD(FIELD(self, 0x44, u8 **)[j], 0x48, Ov002Obj *) = obj;
-                FIELD(FIELD(self, 0x44, u8 **)[j], 0x8, s32) = obj->unk_08;
+            if (rec.id == self->unk_44[j]->unk_5c) {
+                func_ov002_021e4dac(obj, self->unk_44[j]);
+                self->unk_44[j]->owner = obj;
+                self->unk_44[j]->unk_08 = obj->unk_08;
             }
         }
-        m2 = FIELD(self, 0x5c, s32);
+        m2 = self->unk_5c;
         for (k = 0; k < m2; k++) {
-            if (rec.id == FIELD(FIELD(self, 0x4c, u8 **)[k], 0x5c, s32)) {
-                func_ov002_021e4dac(obj, FIELD(self, 0x4c, u8 **)[k]);
-                FIELD(FIELD(self, 0x4c, u8 **)[k], 0x48, Ov002Obj *) = obj;
-                FIELD(FIELD(self, 0x4c, u8 **)[k], 0x8, s32) = obj->unk_08;
+            if (rec.id == self->unk_4c[k]->unk_5c) {
+                func_ov002_021e4dac(obj, self->unk_4c[k]);
+                self->unk_4c[k]->owner = obj;
+                self->unk_4c[k]->unk_08 = obj->unk_08;
             }
         }
-        if (FIELD(self, 0x60, u8 *) != NULL && s1 != NULL && s2 != NULL) {
-            ov002_addPair(FIELD(self, 0x60, u8 *), s1, s2, 4);
+        if (self->unk_60 != NULL && s1 != NULL && s2 != NULL) {
+            ov002_addPair(self->unk_60, (char *)s1, (char *)s2, 4);
         }
         src += stride + rec.extra;
     }

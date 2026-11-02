@@ -321,7 +321,7 @@ void *Ov015Scene2a88_Dtor(Ov015Scene2a88 *self) {
     return self;
 }
 
-void *func_ov015_0220763c(void *self) {
+void *func_ov015_0220763c(Ov015MsgBox *self) {
     SET_VT(self, data_ov015_022129c0);
     func_ov000_02163254(self);
     return self;

@@ -4,27 +4,27 @@ extern "C" {
 
 void *Heap_AllocArray(u32 size);
 
-void func_ov002_021e4814(void *self, u8 *src) {
+void func_ov002_021e4814(Ov002LevelTable *self, u8 *src) {
     u8 *p;
     func_ov002_021e4904_inline(self);
-    FIELD(self, 0x4, u8 *) = src;
-    MI_CpuCopy8(src, (u8 *)self + 0x8, 4);
+    self->src = src;
+    MI_CpuCopy8(src, &self->count, 4);
     p = src + 4;
     {
         void *saved;
         HEAP_PUSH(saved);
-        if (FIELD(self, 0xc, void *) != NULL) {
-            Heap_FreeArray(FIELD(self, 0xc, void *));
-            FIELD(self, 0xc, void *) = NULL;
+        if (self->thresholds != NULL) {
+            Heap_FreeArray(self->thresholds);
+            self->thresholds = NULL;
         }
         HEAP_POP(saved);
     }
-    FIELD(self, 0xc, void *) = Heap_AllocArray(FIELD(self, 0x8, s32) << 2);
-    MI_CpuCopy8(p, FIELD(self, 0xc, void *), FIELD(self, 0x8, s32) << 2);
-    p += FIELD(self, 0x8, s32) * 4;
-    FIELD(self, 0x10, u8 *) = p;
-    FIELD(self, 0x14, u8 *) = p + (STD_GetStringLength((char *)p) + 1);
-    STD_GetStringLength((char *)FIELD(self, 0x14, u8 *));
+    self->thresholds = (s32 *)Heap_AllocArray(self->count << 2);
+    MI_CpuCopy8(p, self->thresholds, self->count << 2);
+    p += self->count * 4;
+    self->label = (char *)p;
+    self->desc = (char *)p + (STD_GetStringLength((char *)p) + 1);
+    STD_GetStringLength(self->desc);
 }
 
 }

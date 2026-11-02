@@ -70,7 +70,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
         SET_VT(p, data_ov000_021cb3a8);
         VCALL(p)->v28();
     }
-    self->unk_04 = (UiList *)p;
+    self->unk_04 = (Lo021cb3a8 *)p;
     p->width = 0xf8;
     self->unk_04->rows = 1;
     Ov015_SetUiPos(self->unk_04, 0, 0x19, -0xccd);
@@ -93,7 +93,7 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
         STD_CopyLString(self->name, data_ov015_02213100, 0x40);
         break;
     }
-    FLD(char *, self->unk_04, 0xe0) = self->name;
+    self->unk_04->srcStr = self->name;
     VCALL(self->unk_04)->v08();
     items = sh->items;
     p = (UiObj *)Heap_Alloc(0x100);
@@ -118,12 +118,12 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
             u16 n;
             void *name;
             u16 k;
-            u8 *e;
+            Lo021cca40 *e;
             u8 *d;
             if (items[i].count == 0) {
                 break;
             }
-            e = (u8 *)Heap_Alloc(0x48);
+            e = (Lo021cca40 *)Heap_Alloc(0x48);
             if (e != NULL) {
                 SET_VT(e, data_ov015_022131ac);
                 func_ov000_021c22d8(e);
@@ -137,9 +137,9 @@ void func_ov015_0220e634(Ov015ResultPanel *self, s32 mode) {
                 k = FLD(u16, d, 2);
             }
             n = items[i].count;
-            FLD(void *, e, 0x38) = name;
-            FLD(u16, e, 0x3c) = n;
-            FLD(s32, e, 0x40) = k * n;
+            e->unk_38 = name;
+            e->unk_3c = n;
+            e->unk_40 = k * n;
             func_ov000_021c3fd4(self->unk_08, e);
         }
     }

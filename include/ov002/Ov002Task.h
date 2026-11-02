@@ -134,15 +134,44 @@ public:
 };
 SIZE_ASSERT(Task021ef89c, 0x44);
 
+// Level table read from a data file (0x18 bytes, vtable data_ov002_021f00fc; ctor
+// func_ov002_021e4714, load func_ov002_021e4814, clear func_ov002_021e4904). The file holds a
+// count, `count` thresholds and two strings; func_ov002_021e4960 gives the level of a value.
+struct Ov002LevelTable : public VObj {
+    /* 0x04 */ u8 *src; // the file data
+    /* 0x08 */ u32 count;
+    /* 0x0c */ s32 *thresholds; // heap copy
+    /* 0x10 */ char *label; // in the file; the list row's text
+    /* 0x14 */ char *desc; // in the file; shown when the row is selected
+};
+SIZE_ASSERT(Ov002LevelTable, 0x18);
+
+// One string pair of an Ov002StrTable (0xc bytes).
+typedef struct Ov002StrPair {
+    /* 0x00 */ u16 index;
+    /* 0x04 */ char *label; // in the file
+    /* 0x08 */ char *desc; // in the file
+} Ov002StrPair;
+
+// String-pair table read from a data file (0x10 bytes, vtable data_ov002_021f00ec; ctor
+// func_ov002_021e49a0, load func_ov002_021e4a78, clear func_ov002_021e4b80).
+struct Ov002StrTable : public VObj {
+    /* 0x04 */ u8 *src; // the file data
+    /* 0x08 */ u32 count;
+    /* 0x0c */ Ov002StrPair *pairs; // heap array
+};
+SIZE_ASSERT(Ov002StrTable, 0x10);
+
 // Vtable data_ov002_021ef91c, 0xd0 bytes.
 class Task021ef91c : public Task {
 public:
     UiObj *unk_3c; // vtable data_ov000_021ccadc
     Lo021cb5a8 *unk_40;
-    u8 unk_44[0x60];
-    void *unk_a4;
-    void *unk_a8;
-    u8 unk_ac[0x10];
+    char unk_44[0x20];
+    char unk_64[0x18];
+    char unk_7c[0x18];
+    Ov002LevelTable unk_94;
+    Ov002StrTable unk_ac;
     s32 unk_bc;
     s32 unk_c0;
     Model *unk_c4;
@@ -157,8 +186,10 @@ public:
     UiObj *unk_3c; // vtable data_ov000_021ccbe0
     Lo021cadcc *unk_40;
     Lo021cb5a8 *unk_44;
-    VObj *unk_48;
-    u8 unk_4c[0xcc];
+    UiObj *unk_48; // vtable data_ov000_021cad50 (0xe8 bytes)
+    Ov002LevelTable unk_4c[7];
+    char unk_f4[0x20];
+    u8 unk_114;
 };
 SIZE_ASSERT(Task021ef99c, 0x118);
 

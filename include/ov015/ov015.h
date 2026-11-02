@@ -13,6 +13,7 @@
 #include "Main/Gfx/G3dGlbSyms.h"
 #include "ov000/TaskList.h"
 #include "ov000/UiObj.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/ActorParts.h"
 #include "ov000/Model0218fe1c.h"
 #include "ov002/StageObj.h"
@@ -543,9 +544,9 @@ struct Ov015StageMdl : public Ov002Obj {
     s32 unk_50c;
     char *unk_510;
     char *unk_514;
-    Ov015V *unk_518;
-    Ov015V *unk_51c;
-    Ov002Obj *unk_520;
+    Ov002Cam021f0854 *unk_518; // the stage's kind 7 camera with unk_4c 2 (screen 1)
+    Ov002Cam021f0854 *unk_51c; // with unk_4c 3 (screen 2)
+    Ov002Obj021f075c *unk_520; // the kind 3 animation object it follows
     Ov015Slot524 slots[8];
 };
 SIZE_ASSERT(Ov015StageMdl, 0x584);
@@ -979,6 +980,23 @@ struct Ov015Scene2a88 : public Task {
 };
 SIZE_ASSERT(Ov015Scene2a88, 0x58);
 
+// Message box, vtable data_ov015_022129c0 (0x2c bytes). Built by func_ov000_02163224,
+// opened by func_ov000_021632f0, torn down by func_ov000_02163254.
+struct Ov015MsgBox : public VObj {
+    u32 unk_04;
+    s32 unk_08;
+    s32 unk_0c;
+    u8 unk_10;
+    u8 unk_11[0x3];
+    s32 unk_14;
+    s32 unk_18;
+    s32 unk_1c;
+    s32 unk_20;
+    s32 unk_24;
+    s32 unk_28;
+};
+SIZE_ASSERT(Ov015MsgBox, 0x2c);
+
 // Scene task, vtable data_ov015_02212a08 (0xb0 bytes, built by func_ov015_02206f7c).
 struct Ov015Scene2a08 : public Task {
     Ov015Ship *ship;
@@ -987,7 +1005,7 @@ struct Ov015Scene2a08 : public Task {
     UiList *unk_80;
     Ov015UiLabel *unk_84;
     UiList *unk_88;
-    void *unk_8c;
+    Ov015MsgBox *unk_8c;
     s32 unk_90;
     s32 unk_94;
     s32 unk_98;
@@ -1007,7 +1025,7 @@ struct Ov015Scene2c08 : public Task {
     UiList *unk_44;
     Ov015UiNum *unk_48;
     void *unk_4c;
-    u8 *unk_50;
+    Ov015MsgBox *unk_50;
     s32 unk_54;
     s32 unk_58;
     s32 unk_5c;
@@ -1025,7 +1043,7 @@ struct Ov015Scene2b88 : public Task {
     Ov015UiLabel *unk_40;
     UiList *unk_44;
     Ov015Dialog *unk_48;
-    u8 *unk_4c;
+    Ov015MsgBox *unk_4c;
     s32 unk_50;
     u16 unk_54;
     u8 unk_56[0x2];
@@ -1100,7 +1118,7 @@ SIZE_ASSERT(Ov015MsgMgr, 0x14);
 // func_ov015_0220e634).
 struct Ov015ResultPanel {
     void *vt;
-    UiList *unk_04; // 0xf0 bytes, vtable data_ov000_021cb3a8
+    Lo021cb3a8 *unk_04;
     UiObj *unk_08; // 0x100 bytes, vtable data_ov000_021ccb54
     Ov015UiNum *unk_0c;
     Ov015UiNum *unk_10;

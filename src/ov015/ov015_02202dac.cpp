@@ -165,7 +165,7 @@ void func_ov015_02203020(Ov015Scene2a08 *self) {
     HEAP_POP(saved);
 }
 
-void *func_ov015_0220318c(void *self) {
+void *func_ov015_0220318c(Ov015MsgBox *self) {
     SET_VT(self, data_ov015_022129c0);
     func_ov000_02163254(self);
     Heap_Free(self);
@@ -351,7 +351,7 @@ void func_ov015_02203298(Ov015Scene2a08 *self) {
                 SET_VT(p, data_ov015_022129c0);
                 func_ov000_02163224(p);
             }
-            FLD(u8 *, self, 0x8c) = p;
+            self->unk_8c = (Ov015MsgBox *)p;
             func_ov000_021632f0(self->unk_8c, 5, data_ov015_02212990, data_ov015_0221299d, 0);
             self->unk_80->flags |= 4;
             self->unk_84->flags |= 4;

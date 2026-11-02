@@ -7,8 +7,6 @@ void Ov015Fade_Start(Ov015Fade *self, u8 a, u8 b, s32 c, u16 d);
 extern u8 *data_02097dc8;
 extern u8 data_ov015_022128ec[];
 extern u8 data_ov015_02213188[];
-extern u8 *data_ov002_021f0f9c;
-void func_ov002_021e7c1c(void);
 void func_ov015_0220ec40(Ov015ResultPanel *self);
 
 extern u8 *data_0214a424;
@@ -247,36 +245,33 @@ void *Ov015ResultPanel_DtorDelete(Ov015ResultPanel *self) {
 }
 
 extern Ov015Globals data_ov015_02213320;
-void func_ov002_021e7b58(void);
-void *func_ov002_021e9b28(s32 a);
-s32 func_ov002_021e7ea8(void *p);
 void Ov015Fade_Reset(Ov015Fade *self);
 void func_ov015_0220f878(Ov015Result *self);
 void func_ov015_0220fb78(Ov015Result *self);
 void func_ov015_0220e634(Ov015ResultPanel *a, s32 b);
-static inline void Ov015_SetCam14(s32 v) {
-    u8 *g = data_ov002_021f0f9c;
-    FLD(s32, g, 0x14) = v;
-    FLD(u16, g, 0x18) = 0;
+static inline void Ov015_SetStageSkip(s32 v) {
+    Ov002Stage *g = data_ov002_021f0f9c;
+    g->unk_14 = v;
+    g->unk_18 = 0;
 }
 BOOL func_ov015_0220f568(Ov015Result *self) {
     BOOL r = TRUE;
     switch (self->state) {
     case 0:
         func_ov002_021e7b58();
-        FLD(u8, data_ov002_021f0f9c, 0x1a) = 0;
-        FLD(s32, data_ov002_021f0f9c, 0x130) = 1;
-        FLD(s32, data_ov002_021f0f9c, 0x134) = 2;
+        data_ov002_021f0f9c->unk_1a = 0;
+        data_ov002_021f0f9c->unk_130 = 1;
+        data_ov002_021f0f9c->unk_134 = 2;
         self->mode = FLD(s32, data_ov015_02213320.unk_00, 0x8);
         switch (self->mode) {
         case 1:
             func_ov015_0220f878(self);
-            Ov015_SetCam14(0x51000);
+            Ov015_SetStageSkip(0x51000);
             self->unk_0c = 0x50000;
             break;
         case 0:
             func_ov015_0220fb78(self);
-            Ov015_SetCam14(0x14a000);
+            Ov015_SetStageSkip(0x14a000);
             self->unk_0c = 0x79000;
             break;
         default:
@@ -289,13 +284,13 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
         if (data_ov002_021f0f9c != NULL) func_ov002_021e7ea8(data_ov002_021f0f9c);
         {
             s32 v = self->unk_0c;
-            u8 *g = data_ov002_021f0f9c;
-            if (v <= FLD(s32, g, 0xd4) || v > FLD(s32, g, 0xd0)) {
+            Ov002Stage *g = data_ov002_021f0f9c;
+            if (v <= g->unk_d4 || v > g->unk_d0) {
                 break;
             }
         }
         func_ov015_0220e634(self->panel, self->mode);
-        FLD(s32, data_ov002_021f0f9c, 0x128) = 0;
+        data_ov002_021f0f9c->unk_128 = 0;
         self->state = 0x14;
     case 0x14: {
         BOOL ok = TRUE;
@@ -315,15 +310,15 @@ BOOL func_ov015_0220f568(Ov015Result *self) {
             HEAP_PUSH(saved);
             DELETE_V(self->panel);
             HEAP_POP(saved);
-            Ov015_SetCam14(-1);
-            func_ov002_021e9b28(FLD(s32, data_ov002_021f0f9c, 0xd0));
+            Ov015_SetStageSkip(-1);
+            func_ov002_021e9b28(data_ov002_021f0f9c->unk_d0);
             self->state = 0x1e;
         }
         if (data_ov002_021f0f9c != NULL) func_ov002_021e7ea8(data_ov002_021f0f9c);
         break;
     }
     case 0x1e: {
-        s32 busy;
+        BOOL busy;
         if (data_ov002_021f0f9c == NULL) {
             busy = 0;
         } else {

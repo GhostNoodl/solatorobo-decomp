@@ -213,7 +213,7 @@ void *Ov015ResultPanel_Dtor(Ov015ResultPanel *self) {
     return self;
 }
 
-void *func_ov015_02210fdc(void *self) {
+void *func_ov015_02210fdc(Lo021cca40 *self) {
     SET_VT(self, data_ov015_022131ac);
     func_ov000_021c2310(self);
     Heap_Free(self);
@@ -226,7 +226,7 @@ void func_ov015_02211004(void) {
 void func_ov015_02211008(void) {
 }
 
-void *func_ov015_0221100c(void *self) {
+void *func_ov015_0221100c(Lo021cca40 *self) {
     SET_VT(self, data_ov015_022131ac);
     func_ov000_021c2310(self);
 

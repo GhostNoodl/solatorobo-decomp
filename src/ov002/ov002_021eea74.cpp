@@ -1,9 +1,8 @@
 #include "ov002/ov002.h"
+#include "ov002/StaffRoll.h"
 
 extern "C" {
 
-extern void *data_0208b3d0[];
-extern u32 data_020828f8[];
 
 static inline void ov002_G3Vec(int cmd, s32 x, s32 y, s32 z) {
     s32 v[3];
@@ -18,8 +17,8 @@ static inline void ov002_G3Cmd1(int cmd, u32 value) {
     NNS_G3dGeBufferOP_N(cmd, &v, 1);
 }
 
-void func_ov002_021eea74(void *self) {
-    s32 t = FX_Div(FIELD(self, 0x14, s32), 0x78000);
+void func_ov002_021eea74(Ov002Staff *self) {
+    s32 t = FX_Div(self->clock.timer, 0x78000);
     u8 alpha;
     if (t >= 0x1000) {
         t = 0x1000;

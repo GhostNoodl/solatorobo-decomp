@@ -52,7 +52,7 @@ BOOL func_ov002_021d178c(Task021ef71c *self) {
         }
     case 1:
         if (data_02097dc8->trig & 2) {
-            func_ov002_021e9b28(FIELD(data_ov002_021f0f9c, 0xd0, void *));
+            func_ov002_021e9b28(data_ov002_021f0f9c->unk_d0);
             self->unk_5c = 7;
         }
         if (!func_ov002_021e90ac()) {
