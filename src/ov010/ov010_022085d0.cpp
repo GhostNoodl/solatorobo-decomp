@@ -41,14 +41,18 @@ void func_ov010_022085d0(Ov010Obj0220ffe4 *self) {
         break;
     case 0x28: {
         Ov010Rot r;
-        void *o;
+        Actor *o;
         r = FLD(Ov010Rot, data_ov010_0220f024, 0x3e);
         o = func_ov003_021da32c(0x5816);
-        Ov010_VecSet(&FLD(VecFx32, o, 0x70), 0x2ee1, -0xc000, -0x2000);
-        FLD(u16, o, 0x7c) = r.v[0]; FLD(u16, o, 0x7e) = r.v[1]; FLD(u16, o, 0x80) = r.v[2];
+        Ov010_VecSet(&o->pos, 0x2ee1, -0xc000, -0x2000);
+        o->rot_x = r.v[0];
+        o->rot_y = r.v[1];
+        o->rot_z = r.v[2];
         o = func_ov003_021da32c(0x5816);
-        Ov010_VecSet(&FLD(VecFx32, o, 0x70), -0x2571, -0xc000, -0x2000);
-        FLD(u16, o, 0x7c) = r.v[0]; FLD(u16, o, 0x7e) = r.v[1]; FLD(u16, o, 0x80) = r.v[2];
+        Ov010_VecSet(&o->pos, -0x2571, -0xc000, -0x2000);
+        o->rot_x = r.v[0];
+        o->rot_y = r.v[1];
+        o->rot_z = r.v[2];
         func_02065f88(0x579, &data_ov010_0220f114)->SetScaleAll(0x2000);
         func_02065f88(0x579, &data_ov010_0220f120)->SetScaleAll(0x2000);
         func_02049f44(data_02097e4c, 0x5c, &self->pos, 0);

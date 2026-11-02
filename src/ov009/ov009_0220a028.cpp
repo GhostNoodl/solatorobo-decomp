@@ -33,7 +33,7 @@ void Ov009ActVt_02217390_Start(Ov009ActVt_02217390 *self) {
     }
     func_ov000_02198360(self->fsm, 0x20, 0);
     self->model->visible = 0;
-    FLD(u8, self, 0x93) |= 0x80;
+    self->unk_93_7_f = 1;
 }
 
 struct Ov009RotS {

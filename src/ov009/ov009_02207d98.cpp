@@ -50,7 +50,7 @@ static inline void Ov009Query_Set(Ov009Query *q, const VecFx32 *pos, u16 ang) {
 
 extern s32 func_ov000_02199180(Ov009Query *q, VecFx32 *pos, Ov003Actor **out, s32 max);
 
-void Ov009Multi_Update(Ov003Actor *self) {
+void Ov009Multi_Update(Ov009Multi *self) {
     Ov009Query q;
     Ov003Actor *res[0x20];
     s32 n;
@@ -60,7 +60,7 @@ void Ov009Multi_Update(Ov003Actor *self) {
     }
     switch (self->unk_b4) {
     case 0:
-        if (self->fsm->current != 1 || FLD(u8, self, 0x490) != 4) {
+        if (self->fsm->current != 1 || self->unk_490 != 4) {
             return;
         }
         self->target = 0xffff;
@@ -77,13 +77,13 @@ void Ov009Multi_Update(Ov003Actor *self) {
         q.unk_2e_3 = 1;
         q.unk_12 = 0x22;
         q.unk_2c = self->id;
-        Ov009Query_Set(&q, &FLD(VecFx32, self, 0x494), FLD(u16, self, 0x492));
+        Ov009Query_Set(&q, &self->unk_494, self->unk_492);
         n = func_ov000_02199180(&q, &q.pos, res, 0x20);
         for (i = 0; i < n; i++) {
             Ov003Actor *a = res[i];
             if (a != NULL && a->kind != self->kind) {
                 self->target = res[i]->id;
-                if (VEC_Distance(&self->pos, &FLD(VecFx32, self, 0x494)) > 0x3c00) {
+                if (VEC_Distance(&self->pos, &self->unk_494) > 0x3c00) {
                     return;
                 }
                 if (VEC_Distance(&self->pos, &res[i]->pos) > 0x5800) {

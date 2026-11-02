@@ -85,8 +85,6 @@ static inline Ov011PNode *Ov011Ent_Find(Ov011Ent *e, void *k) {
 extern "C" {
 
 
-u32 func_ov011_02201244(void *self);
-void *func_ov011_02201254(void *self);
 
 
 #pragma force_active on
@@ -117,7 +115,7 @@ void func_ov011_021fe1d4(Ov011Scene *self) {
     }
     }
     for (n = self->head; n != NULL; n = n->next) {
-        Actor *a = Ov011_FindActor(n->id);
+        Ov011Npc *a = Ov011_FindNpc(n->id);
         if (func_ov011_02201244(a)) {
             Actor *owner = self->actor;
             if (Ov011Ent_Find(&self->ent, func_ov011_02201254(a)) != NULL) {

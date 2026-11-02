@@ -23,7 +23,7 @@ Ov013Act_02207968 *Ov013Act_02207968_Ctor(Ov013Act_02207968 *self) {
     return self;
 }
 
-void Ov013Act_02207968_Start(Ov003Actor *self) {
+void Ov013Act_02207968_Start(Ov013Act_02207968 *self) {
     ActorSub48 *m;
     Ov003Actor *p;
     func_ov003_021d112c(self);

@@ -92,8 +92,6 @@ void func_ov011_021fdd38(void) {
 }
 #pragma force_active reset
 
-u32 func_ov011_02201244(void *self);
-void *func_ov011_02201254(void *self);
 
 void func_ov011_021fdd3c(Ov011Scene *self) {
     Ov011Ent *e = &self->ent;
@@ -113,7 +111,7 @@ void func_ov011_021fdd3c(Ov011Scene *self) {
         self->b2 = 1;
     }
     for (n = self->head; n != NULL; n = n->next) {
-        Actor *a = Ov011_FindActor(n->id);
+        Ov011Npc *a = Ov011_FindNpc(n->id);
         if (func_ov011_02201244(a)) {
             Actor *owner = self->actor;
             if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {

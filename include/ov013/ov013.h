@@ -264,7 +264,14 @@ u8 *func_02070558(void *res);
 extern "C" {
 void func_ov000_021953b4(ActorEx *self);
 void func_ov003_021dacfc(void *p);
-void *func_ov000_0219429c(void *self);
+// ov000 ActorEx members used by the ov013 classes (declared once, round acD).
+ActorEx *ActorEx_Ctor(ActorEx *self);
+ActorEx *func_ov000_0219429c(ActorEx *self);
+void func_ov000_0219433c(ActorEx *self);
+BOOL func_ov000_021946f8(ActorEx *self);
+void func_ov000_02194758(ActorEx *self);
+BOOL func_ov000_02194c08(ActorEx *self);
+void func_ov000_02196060(ActorEx *self);
 s32 func_0203db40(void *p);
 void func_ov000_02190a80(void *a, s32 b);
 }
@@ -400,8 +407,7 @@ SIZE_ASSERT(Ov013ActEx_0220a9a8, 0xd8);
 // The ov000-factory class with vtable data_ov013_0220b7d0 (0xdc bytes).
 class Ov013ActExVt_0220b7d0 : public ActorEx {
 public:
-    s32 unk_d0;
-    s32 unk_d4;
+    s32 unk_d0[2]; // effect handles (func_020657b0)
     s32 unk_d8;
 };
 SIZE_ASSERT(Ov013ActExVt_0220b7d0, 0xdc);

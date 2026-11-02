@@ -4,7 +4,7 @@ extern "C" {
 
 extern void ActorMgr_BroadcastKind(void *mgr, u16 id, s32 msg);
 extern void func_ov000_0218996c(u8 a, u8 b);
-extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
+extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 
 void func_ov009_021fb298(Ov009ActVt_022164a0 *self) {
     if (self->fsm->st == 0 && *self->hp == 0) {
@@ -15,7 +15,7 @@ void func_ov009_021fb298(Ov009ActVt_022164a0 *self) {
 
 void func_ov009_021fb2e4(Ov003Actor *self) {
     s32 range;
-    Ov003Actor *g;
+    ActorGroup *g;
     Actor *o;
     func_ov003_021d452c(self);
     if (self->fsm->current != 0x13) {
@@ -30,7 +30,7 @@ void func_ov009_021fb2e4(Ov003Actor *self) {
     if (g == NULL) {
         return;
     }
-    if (FLD(u16, g, 0x16) > 2) {
+    if (g->count > 2) {
         return;
     }
     do {
@@ -42,7 +42,7 @@ void func_ov009_021fb2e4(Ov003Actor *self) {
             o->pos.y = 0x8000;
             o->pos.z = z;
         }
-    } while (FLD(u16, g, 0x16) <= 2);
+    } while (g->count <= 2);
 }
 
 void func_ov009_021fb3a8(Ov003Actor *self) {

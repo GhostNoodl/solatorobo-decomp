@@ -59,7 +59,7 @@ void func_ov011_02203ef0(Ov011Act7e50 *self) {
         {
             u16 t = self->fsm->timer;
             if (t == 10 || t == 0x19 || t == 0x28) {
-                Ov011Player *pl = (Ov011Player *)func_ov000_0219bf90();
+                Robo021ca458 *pl = (Robo021ca458 *)func_ov000_0219bf90();
                 if (pl != NULL) {
                     Actor *o;
                     v.x = pl->unk_af0.x;

@@ -3,8 +3,6 @@
 extern "C" {
 
 extern void *data_ov013_0220bf4c;
-extern ActorEx *ActorEx_Ctor(ActorEx *self);
-extern void func_ov000_02194758(void *self);
 
 struct Ov013Pair89 {
     u8 a;
@@ -23,7 +21,7 @@ static inline void Ov013_SetPair(Ov013Pair89 *d, const Ov013Pair89 *s, u8 b) {
     d->b = b;
 }
 
-void func_ov013_0220a38c(Ov003Actor *self) {
+void func_ov013_0220a38c(Ov013ActVt_0220bc80 *self) {
     ActorSub40 *q;
     if ((((Ov013Sub50a *)self->hp)->unk_04 >> 12) == 5) {
         func_ov000_02198360(self->fsm, 0x15, 0);
@@ -44,42 +42,42 @@ void func_ov013_0220a38c(Ov003Actor *self) {
     }
 }
 
-void func_ov013_0220a428(Ov003Actor *self) {
+void func_ov013_0220a428(Ov013ActVt_0220bc80 *self) {
     self->vfunc_80();
 }
 
-Ov003Actor *Ov013Act_02207968_DtorDelete(Ov003Actor *self) {
+Ov013Act_02207968 *Ov013Act_02207968_DtorDelete(Ov013Act_02207968 *self) {
     func_ov003_021d0edc(self);
     Heap_Free(self);
     return self;
 }
 
-Ov003Actor *Ov013Act_02207968_Dtor(Ov003Actor *self) {
+Ov013Act_02207968 *Ov013Act_02207968_Dtor(Ov013Act_02207968 *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-void func_ov013_0220a46c(Ov003Actor *self) {
+void func_ov013_0220a46c(Ov013ActVt_0220bdd8 *self) {
     self->vfunc_7c();
 }
 
-Ov003Actor *Ov013ActVt_0220bdd8_Dtor(Ov003Actor *self) {
+Ov013ActVt_0220bdd8 *Ov013ActVt_0220bdd8_Dtor(Ov013ActVt_0220bdd8 *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov003Actor *Ov013ActVt_0220bdd8_DtorDelete(Ov003Actor *self) {
+Ov013ActVt_0220bdd8 *Ov013ActVt_0220bdd8_DtorDelete(Ov013ActVt_0220bdd8 *self) {
     func_ov003_021d0edc(self);
     Heap_Free(self);
     return self;
 }
 
-Ov003Actor *Ov013ActVt_0220bc80_Dtor(Ov003Actor *self) {
+Ov013ActVt_0220bc80 *Ov013ActVt_0220bc80_Dtor(Ov013ActVt_0220bc80 *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov003Actor *Ov013ActVt_0220bc80_DtorDelete(Ov003Actor *self) {
+Ov013ActVt_0220bc80 *Ov013ActVt_0220bc80_DtorDelete(Ov013ActVt_0220bc80 *self) {
     func_ov003_021d0edc(self);
     Heap_Free(self);
     return self;
@@ -96,7 +94,7 @@ Ov013ActEx_0220a4e0 *Ov013ActEx_0220a4e0_Ctor(Ov013ActEx_0220a4e0 *self) {
     return self;
 }
 
-void Ov013ActEx_0220a4e0_Start(Ov003Actor *self) {
+void Ov013ActEx_0220a4e0_Start(Ov013ActEx_0220a4e0 *self) {
     func_ov000_02194758(self);
     func_ov000_02198360(self->fsm, 0xb, 0);
     self->hit->offset.y = -0x800;
@@ -200,9 +198,9 @@ void func_ov013_0220a554(Ov013ActEx_0220a4e0 *self) {
             e->SetScaleAll(self->unk_d0);
             pl = func_ov000_0219bf90();
             if (pl != NULL && !func_ov000_021b4738(pl)) {
-                Ov003Actor *a = func_ov000_0219be1c(0x4813, &self->pos, &self->rot_x, self->targetObj->target, self->target);
+                Ov013ActEx_0220a9a8 *a = (Ov013ActEx_0220a9a8 *)func_ov000_0219be1c(0x4813, &self->pos, &self->rot_x, self->targetObj->target, self->target);
                 if (a != NULL) {
-                    FLD(s32, a, 0xd4) = self->unk_d0;
+                    a->unk_d4 = self->unk_d0;
                 }
             }
             func_02049f44(data_02097e4c, 0x35, &self->pos, 0);

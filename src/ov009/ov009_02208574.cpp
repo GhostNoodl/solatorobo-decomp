@@ -126,14 +126,14 @@ void func_ov009_02208204(Ov009Multi *self) {
     }
     if (moved) {
         s32 r = self->unk_490 * 0xc00;
-        FLD(s32, self, 0x4a4) = self->unk_494.y;
-        FLD(s32, self, 0x4a0) = self->unk_494.x + FX_Mul(r, OV009_SIN(ang));
-        FLD(s32, self, 0x4a8) = self->unk_494.z + FX_Mul(r, OV009_COS(ang));
-        VEC_Add(&FLD(VecFx32, self, 0x4a0), &off, &FLD(VecFx32, self, 0x4a0));
+        self->unk_4a0.y = self->unk_494.y;
+        self->unk_4a0.x = self->unk_494.x + FX_Mul(r, OV009_SIN(ang));
+        self->unk_4a0.z = self->unk_494.z + FX_Mul(r, OV009_COS(ang));
+        VEC_Add(&self->unk_4a0, &off, &self->unk_4a0);
     }
-    d.x = FLD(s32, self, 0x4a0) - self->pos.x;
-    d.y = FLD(s32, self, 0x4a4) - self->pos.y;
-    d.z = FLD(s32, self, 0x4a8) - self->pos.z;
+    d.x = self->unk_4a0.x - self->pos.x;
+    d.y = self->unk_4a0.y - self->pos.y;
+    d.z = self->unk_4a0.z - self->pos.z;
     VEC_MultAdd(k, &d, &self->pos, &self->pos);
 }
 

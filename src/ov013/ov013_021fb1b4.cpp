@@ -17,11 +17,6 @@ static inline void Ov013Spawn_Init(Ov013SpawnDesc *d, u16 k) {
     d->parent = -1;
 }
 
-struct Ov013Bits32 {
-    u32 b0 : 1;
-    u32 rest : 31;
-};
-
 struct Ov013Rot16 {
     u16 x;
     u16 y;
@@ -37,8 +32,8 @@ extern char data_ov013_0220b5ca[];
 extern const Ov013Rot16 data_ov013_0220ae48;
 extern const VecFx32 data_ov013_0220ae7c;
 extern Ov003Actor *func_ov000_0219bf90(void);
-extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
-extern u16 ActorGroup_CountKind(Ov003Actor *a, u16 id);
+extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
+extern u16 ActorGroup_CountKind(ActorGroup *group, u16 kind);
 extern VecFx32 Ov003Vec_DirXZ(const VecFx32 *a, const VecFx32 *b);
 extern void Actor_TurnToPos(Ov003Actor *self, VecFx32 *p, s32 a);
 extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
@@ -114,7 +109,7 @@ void func_ov013_021fb1b4(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, Vec
     s32 range;
     switch (s->st) {
     case 0: {
-        Ov003Actor *a_0;
+        ActorGroup *a_0;
         u16 n_0;
         Actor *p_0;
         func_ov000_02190cb0(self->model, data_ov013_0220b5be, 0x2ab, 0);
@@ -129,10 +124,10 @@ void func_ov013_021fb1b4(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, Vec
         self->rot_y = 0;
         a_0 = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
         n_0 = ActorGroup_CountKind(a_0, 0x5c17);
-        for (p_0 = FLD(Actor *, a_0, 0xc); p_0 != NULL && n_0 != 0; p_0 = p_0->next) {
+        for (p_0 = a_0->head; p_0 != NULL && n_0 != 0; p_0 = p_0->next) {
             if (p_0->kind == 0x5c17) {
                 n_0--;
-                FLD(u8, p_0, 0xf0) = 1;
+                static_cast<Ov013ActVt_0220b5e0 *>(p_0)->unk_f0 = 1;
             }
         }
         self->fsm->st = 1;
@@ -280,17 +275,17 @@ void func_ov013_021fb1b4(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, Vec
             if (dx < self->speed * 2) {
                 Ov013SpawnDesc sd;
                 VecFx32 p_1;
-                Ov003Actor *o;
+                Ov013ActEx_021fdb70 *o;
                 Ov013Spawn_Init(&sd, 0x4823);
                 Ov013_VecCopy(&p_1, &POLE(self, k)->v);
                 p_1.y = self->pos.y + 0x1800;
-                o = Group_SpawnActor(data_ov000_021ccd64, &sd, &p_1, &self->rot_x, 0xffff);
+                o = (Ov013ActEx_021fdb70 *)Group_SpawnActor(data_ov000_021ccd64, &sd, &p_1, &self->rot_x, 0xffff);
                 o->flags_0 = 1;
                 o->target = self->target;
                 if (POLE(self, k)->on) {
-                    FLD(u8, o, 0xd4) = 1;
+                    o->unk_d4 = 1;
                 } else {
-                    FLD(u8, o, 0xd4) = 0;
+                    o->unk_d4 = 0;
                 }
                 if (o->targetObj != NULL) {
                     o->targetObj->target = self->id;
@@ -343,16 +338,16 @@ void func_ov013_021fb1b4(Ov013Boss *self, const VecFx32 *pos, VecFx32 *prev, Vec
         break;
     }
     if (shake) {
-        u8 *cam = (u8 *)data_ov000_021ccd54 + 0xf4;
-        Ov003Actor *pl;
+        FieldCam *cam = &data_ov000_021ccd54->cam;
+        Robo021ca458 *pl;
         if (cam == NULL) {
             return;
         }
-        pl = func_ov000_0219bf90();
+        pl = (Robo021ca458 *)func_ov000_0219bf90();
         if (pl == NULL) {
             return;
         }
-        if ((FLD(Ov013Bits32, pl, 0xb24).b0 ? TRUE : FALSE)) {
+        if ((pl->unk_b24_0 ? TRUE : FALSE)) {
             return;
         }
         {

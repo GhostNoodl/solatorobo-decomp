@@ -8166,3 +8166,98 @@ No symbols were renamed.
 - `Ov003Gimmick` (`ov003_021ec130`) keeps its flat view. Its bytes at 0xce/0xcf (`count`, `state`) do not fit `ActorEx::unk_ce`/`unk_cf` without an `ObjLayouts.h` change. Its dtors in `021ed520` take `ActorEx *` and destroy the ActorRes at 0xdc by offset.
 - `func_ov003_021d0edc` keeps `void *` (`ov003/Actor.h`), because ov010-ov014 call it.
 - The ov006 window `vtbl`/VCALL copy is unchanged.
+
+### Round acD (ov009, ov010, ov011 and ov013 actor and task records typed)
+
+Cleanup only, and every function is still byte-identical.
+
+**How it was checked.** After every step, each rebuilt object was compared function by function, on code bytes and relocations, with a baseline built at `e18c61e4`. After rebasing onto `de5b8f58` (round acC), all 1906 objects were compared again: 0 differ.
+
+**Gate.** All of these pass:
+- 0 FAILED, with 19/19 ROM checks and `check symbols` OK;
+- `ninja report` shows 8138 matched (unchanged);
+- `check_drafts.py --score` exits 0 (no draft changed score).
+
+No symbols were renamed.
+
+**Counts.** Measured as in round acA.
+
+| overlay | raw offsets before | raw offsets after | `void *self` before | `void *self` after |
+|---|---|---|---|---|
+| ov009 | 114 | 47 | 15 | 0 |
+| ov010 | 127 | 27 | 55 | 6 |
+| ov011 | 0 | 0 | 65 | 12 |
+| ov013 | 47 | 15 | 21 | 0 |
+
+- **Shared headers.** Both changes add names only; no layout moved.
+  - `ov000/ObjLayouts.h`: `ActorEx::unk_ce_2` (6 bits) is split into `unk_ce_2`, `unk_ce_3` (1 bit each) and `unk_ce_4` (4 bits), which ov010, ov011 and ov013 classes test one at a time.
+  - `Main/Sys/Field.h`: `FieldActor` gains `unk_60`, the pointer the ov009 actors pass to `func_ov000_0216912c`.
+- **ov010.**
+  - `ov010.h` has these records:
+    - `Ov010Task` (0x24): the overlay's task record;
+    - `Ov010Glow` (0x20), with its `func_ov010_02203bf8` prototype;
+    - `Obj022020c8`, which now derives from `ActorEx` (`unk_d0` .. `unk_f8`, a callback `unk_dc`, and `flagObj`).
+  - The actor-API prototypes (`ActorEx_Ctor`, `func_ov000_0219429c`, `func_ov000_02194758`, `func_ov000_0218cf5c`, `Actor_TurnToActor` and others) are declared once, typed, at the end of the header.
+  - `getPos` callbacks take `Actor *`.
+  - The sources in the change list now use members:
+    - `02201c34`, `02204204`, `02207520`, `022085d0`, `02208898`, `02208c3c`;
+    - `0220f5dc`, `0220f828`, `0220f870`, `0220f8e4`, `0220f958`, `0220f9b4`.
+  - Velocity writes use `velY`/`friction`/`gravity`. A `vel.x` store right after `speed` merged two stores.
+- **ov009.**
+  - `Ov009Multi` gains `unk_4a0`, the point `func_ov009_02208204` moves toward.
+  - About 25 sources now use `Actor`/`ActorEx`/`Ov003Actor` members and `ActorGroup` in place of `FLD` views.
+  - The player's `0xb1e`/`0xb22`/`0xb24` reads (`021fcce8`, `021fdbc8`, `022161f8`) use `Robo021ca458` (`unk_b1e`, `unk_b22_0`, `unk_b24_1`, `unk_b24_5`). Their local bitfield views are gone.
+  - `Actor_TurnToActor` takes `Actor *`.
+- **ov011.**
+  - The `Ov011Player` view was removed. Its users take `Robo021ca458`, which has the same layout.
+  - `ov011.h` declares, once and typed, the ov011 member functions that 14 files redeclared with `void *self`:
+    - `Ov011Npc` (`022011c0`, `02201214`, `02201244`, `02201254`);
+    - `Ov011Mov`;
+    - `Ov011E40` (`021fb66c`);
+    - `Ov011SceneActor` (`021fff38`, `0220023c`, `02200310`, `0220068c`).
+  - The scene node lists hold `Ov011Npc` ids. The new inline `Ov011_FindNpc` returns the actor as `Ov011Npc *`, and the callers' locals use that type.
+  - The dtors of `Ov011SceneActor`, `Ov011Act7cf8`, `Ov011Act7e50` and `Ov011Act7c4c` take their class.
+  - Of the empty vtable slots, `02200b10` .. `02200b2c` and `0220306c` .. `02203084` take `Ov003Actor *`. The ov011 vtables of the `Ov003Actor` classes hold them.
+  - `Actor_TurnToActor` takes `Actor *`.
+- **ov013.**
+  - `ov013.h` declares the ActorEx members once, typed:
+    - `ActorEx_Ctor`, `func_ov000_0219429c`, `0219433c`, `021946f8`, `02194758`, `02194c08`, `02196060`.
+    - The ten local `void *` copies are gone.
+  - Functions held by only one class's vtable now take that class, 39 in all. The class comes from the header's `vtable data_ov013_...` comments, and the vtable slot from `relocs.txt`. They cover:
+    - `Ov013Boss`;
+    - `Ov013Act_02207968`;
+    - `Ov013ActVt_0220b5e0`, `0220bc80` and `0220bdd8`;
+    - `Ov013ActEx_021fdb70` and `0220a4e0`.
+  - With the classes typed, the remaining offsets are members:
+    - `Ov013Boss::unk_f0`/`unk_f1` in `func_ov013_021fc400`;
+    - `Ov013Act_02207968::unk_f0`;
+    - `Ov013ActEx_021fdb70::unk_d4` for the spawned 0x4823 actor;
+    - `Ov013ActEx_0220a9a8::unk_d4` for the 0x4813 actor;
+    - `Ov013ActVt_0220b5e0::unk_f0` for the 0x5c17 actors.
+    - These kinds map to classes through the factories.
+  - `Ov013ActExVt_0220b7d0` holds `s32 unk_d0[2]`, its two effect handles; the indexed `FLD` views are gone.
+  - Effect reads use `EffectObj` (`state`, `alpha`, `child`, `SetScaleXYZ`/`SetScaleAll`/`SetPos`).
+  - `Ov013Rot` is `ActorRot` (`b->rot`, `c->rot`). The spawned shot's def pointer is `Actor::unk_60`.
+  - The player's `0xb24` bit is `Robo021ca458::unk_b24_0`. `ActorMgr_GetGroup` returns `ActorGroup *` (`head`, `key`).
+
+**Kept forms.**
+- ov010:
+  - The `data_ov010_0220f024` views (`02207520`, `022085d0`, `022089d8`) stay. The note in `ov010_0220f958.cpp` explains that this base folds to one literal.
+  - `Ov010Beam_Idle`'s `FLD(u8, b, 0)` stays, as its comment says.
+  - `0220f958`'s spawn-entry bytes stay.
+  - `0220f5dc`'s `func_ov003_021da7e8(...)` + 0x24 stays. That type, `Ov003Follow`, belongs to ov003.
+  - `0220f5dc`'s group-head-as-`Ov010Node` view stays.
+  - The `ActorMgr_GetGroup` uses in `0220f5dc`/`0220f9b4` stay as `FLD`. Including `ov000/Actor.h` there for `ActorGroup` clashes with those files' local externs.
+- ov010 `void *self`: the four `Heap_Free` dtors in `0220f5dc` and two ov003 prototypes in `ov010.h` (`func_ov003_021da788`, `func_ov003_021f0c60`).
+- ov011 `void *self`:
+  - `Ov011Chr` is defined twice in `ov011_02207808.cpp`, once per merged namespace, and the field signedness differs. So `02201f28`, `02202464`, `02202488`, `022024ac` and `022024d4` stay `void *` in `021fc0a0`.
+  - `Ov011TwB` is local to `02207808`.
+  - `Ov003Mover_Start`/`func_ov003_021d7c08` (ov003), `Ov003NodeSrc_NewNode` and `func_ov000_0218cf5c` stay as they are.
+- ov013:
+  - `022065ac` keeps its offsets, since it has a fake parameter, which is a separate fix.
+  - The `func_0206fef8`/`func_020704b4` info-record reads have no struct in Main yet.
+  - The `ov013_0220b444` info reads stay.
+- ov009:
+  - `0x480b`/`0x482d` spawns write 0xcc bits that no class owns.
+  - The `022161f8` render-user block at 0xf8 and the name buffers at 0x88/0xa8 stay; no class owns those either.
+  - The `0x2c`/`0x24` task-chain links in `021ff040`/`02211f44` stay.

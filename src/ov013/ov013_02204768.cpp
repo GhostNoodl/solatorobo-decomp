@@ -6,14 +6,11 @@ extern void *data_ov013_0220bbb8[];
 extern char data_ov013_0220ba58[];
 extern char data_ov013_0220ba60[];
 extern void func_ov003_021d9980(VecFx32 *out, u16 rot, const VecFx32 *v);
-extern ActorEx *ActorEx_Ctor(ActorEx *self);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
 extern void *func_ov000_0218ea20(void *p);
 extern void *func_ov000_0218fee4(void *p);
 extern ResSet *func_ov000_0218e9c4(ResSet *p);
-extern void func_ov000_0219433c(void *self);
-extern BOOL func_ov000_021946f8(ActorEx *self);
 extern BOOL func_ov000_0218f110(void *p);
 
 static inline void Ov013_InitDc(Ov013ActEx_02204454 *self) {
@@ -90,7 +87,6 @@ extern void func_ov003_021cf33c(void *p, void *q);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern void func_ov000_02190758(void *m, u16 *rot, s32 a);
 extern BOOL func_ov000_021903b4(void *m);
-extern BOOL func_ov000_02194c08(ActorEx *self);
 extern Ov013Prm data_ov013_0220b2ec;
 extern u8 *func_020704b4(s32 kind);
 

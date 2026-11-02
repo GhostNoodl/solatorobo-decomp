@@ -1,4 +1,5 @@
 #include "ov009/ov009.h"
+#include "ov000/FieldCam.h"
 #include "Main/Res/ResArc.h"
 #include "nitro/mi.h"
 
@@ -390,15 +391,6 @@ extern Ov003Actor *func_ov000_0219bf90(void);
 extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, VecFx32 *v, s32 f, s32 g, s32 h, s32 i, s32 j);
 
-struct Ov009Bits3 {
-    u16 b0 : 3;
-};
-
-struct Ov009Bits32 {
-    u32 b0 : 1;
-    u32 b1 : 1;
-};
-
 struct Ov009HitMsg2 {
     u8 a;
     u16 b;
@@ -424,7 +416,7 @@ void Ov009ActVt_02217128_Update(Ov009ActVt_02217128 *self) {
     if (Ov009_StateOf(pl->fsm) == 7 || Ov009_StateOf(pl->fsm) == 0x16 || Ov009_StateOf(pl->fsm) == 0x10) {
         self->unk_f0 ^= 1;
         func_ov000_02198360(self->fsm, 0x13, 0);
-    } else if (FLD(Ov009Bits3, func_ov000_0219bf90(), 0xb22).b0 == 4) {
+    } else if (((Robo021ca458 *)func_ov000_0219bf90())->unk_b22_0 == 4) {
         self->unk_f0 ^= 1;
         func_ov000_02198360(self->fsm, 0x13, 0);
     } else if (Ov009_GameIdle()) {
@@ -451,7 +443,7 @@ void Ov009ActVt_02217128_Update(Ov009ActVt_02217128 *self) {
             self->unk_18 = cnt;
             break;
         case 0x5423:
-            if (FLD(Ov009Bits32, pl, 0xb24).b1) {
+            if (((Robo021ca458 *)pl)->unk_b24_1) {
                 cnt++;
                 if (cnt % 100 == 0) {
                     cnt = 0;
@@ -708,7 +700,7 @@ void Ov009Act_02200b48_Init(Ov009Act_02200b48 *self) {
         o->pos.y = self->pos.y;
         o->pos.z = self->pos.z;
         o->vfunc_04();
-        ((Ov009Byte *)&FLD(u8, o, 0x16))->b0 = 1;
+        o->flags_0 = 1;
         if (o->targetObj != NULL) {
             o->targetObj->target = self->id;
         }
@@ -1349,12 +1341,6 @@ extern Ov003Actor *func_ov000_021985c0(Ov003Actor *p);
 extern Ov003Actor *Target_Get(void *p);
 extern void func_ov000_0218d46c(Ov003Actor *a, u16 id, s32 msg);
 
-struct Ov009B24 {
-    u32 b0 : 5;
-    u32 b5 : 2;
-    u32 b7 : 25;
-};
-
 void func_ov009_02201eac(Ov009ActVt_0221707c *self) {
     Ov003Actor *list[32];
     VecFx32 v;
@@ -1462,7 +1448,7 @@ void func_ov009_02201eac(Ov009ActVt_0221707c *self) {
                 ActorSub4c *s = q->targetObj;
                 if (s != NULL && (u8)(s->unk_02 + 0xff) <= 1) {
                     Ov003Actor *b = Target_Get(s);
-                    if (b != NULL && b->kind == 0x1000 && FLD(Ov009B24, func_ov000_0219bf90(), 0xb24).b5 == 0) {
+                    if (b != NULL && b->kind == 0x1000 && ((Robo021ca458 *)func_ov000_0219bf90())->unk_b24_5 == 0) {
                         func_ov000_0218d46c(q, q->id, 0x15);
                     }
                 }
@@ -1697,7 +1683,7 @@ void Ov009Act_02202788_Init(Ov009Act_02202788 *self) {
         o->pos.y = self->pos.y;
         o->pos.z = self->pos.z;
         o->vfunc_04();
-        ((Ov009Byte *)&FLD(u8, o, 0x16))->b0 = 1;
+        o->flags_0 = 1;
         if (o->targetObj != NULL) {
             o->targetObj->target = self->id;
         }
@@ -2196,7 +2182,7 @@ void func_ov009_02203428(Ov009Act_02202788 *self) {
     case 10:
         c = func_02070558((void *)self->kind);
         func_ov000_0219b400(c + 0x3e, c + 0x42, 2, &self->pos, &self->rot_x, 1);
-        func_ov000_0219b5dc(FLD(u16, self->unk_b0, 6), &self->pos, &self->rot_x);
+        func_ov000_0219b5dc(self->unk_b0->unk_06, &self->pos, &self->rot_x);
         self->fsm->timer = 0;
         self->fsm->st++;
         break;
@@ -2667,22 +2653,6 @@ extern void func_0203f364(ActorSub48 *p);
 extern void HitSphere_Link(ActorSub48 *p);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
-struct Ov009AngSrc {
-    u8 unk_00[0x40];
-    u16 unk_40;
-    u8 unk_42[2];
-    u16 unk_44;
-};
-
-extern u16 Camera_GetYaw(Ov009AngSrc *p);
-
-static inline s32 Ov009_GetAng(Ov009AngSrc *p) {
-    if (p->unk_40 != 0) {
-        return p->unk_44;
-    }
-    return Camera_GetYaw(p);
-}
-
 static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
 }
@@ -2705,7 +2675,7 @@ void func_ov009_02204468(Ov009ActVt_02216bc8 *self) {
         }
         obj = func_02065f88(0x389, &self->pos);
         obj->SetScaleAll(0x3000);
-        ang = Ov009_GetAng((Ov009AngSrc *)((u8 *)data_ov000_021ccd54 + 0xf4));
+        ang = FieldCam_GetYaw(&data_ov000_021ccd54->cam);
         v.x = 0;
         v.y = 0;
         v.z = -0x800;
@@ -2902,22 +2872,6 @@ extern void func_ov000_0219bd20(u16 a, u16 b, s32 c, s32 d, s32 e, void *f);
 extern u8 *Group_FindNode(void *mgr, u16 id);
 extern void func_ov000_02191690(void *model);
 
-struct Ov009AngSrc {
-    u8 unk_00[0x40];
-    u16 unk_40;
-    u8 unk_42[2];
-    u16 unk_44;
-};
-
-extern u16 Camera_GetYaw(Ov009AngSrc *p);
-
-static inline s32 Ov009_GetAng(Ov009AngSrc *p) {
-    if (p->unk_40 != 0) {
-        return p->unk_44;
-    }
-    return Camera_GetYaw(p);
-}
-
 static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
 }
@@ -3005,8 +2959,8 @@ void func_ov009_02204a10(Ov009ActVt_02216bc8 *self) {
     case 2: {
         s32 sy;
         Model0218fe1c *m = self->model;
-        h = FLD(s32, m, 0xa8);
-        sy = FLD(s32, m, 0xac);
+        h = m->scale.x;
+        sy = m->scale.y;
         h -= 0x19a;
         if (h <= 0) {
             h = 0;
@@ -3023,9 +2977,9 @@ void func_ov009_02204a10(Ov009ActVt_02216bc8 *self) {
             self->fsm->st = 0x14;
         }
         m = self->model;
-        FLD(s32, m, 0xa8) = h;
-        FLD(s32, m, 0xac) = sy + 0xcd;
-        FLD(s32, m, 0xb0) = h;
+        m->scale.x = h;
+        m->scale.y = sy + 0xcd;
+        m->scale.z = h;
         v = self->unk_b8;
         Ov009_VecSub(&v, &self->pos, &d2);
         VEC_MultAdd(0x19a, &d2, &self->pos, &self->pos);
@@ -3034,7 +2988,7 @@ void func_ov009_02204a10(Ov009ActVt_02216bc8 *self) {
     case 10:
         o = func_02065f88(0x389, &self->pos);
         o->SetScaleAll(0x3000);
-        h = Ov009_GetAng((Ov009AngSrc *)((u8 *)data_ov000_021ccd54 + 0xf4));
+        h = FieldCam_GetYaw(&data_ov000_021ccd54->cam);
         v.x = 0;
         v.y = 0;
         v.z = -0x800;
@@ -3061,9 +3015,9 @@ void func_ov009_02204a10(Ov009ActVt_02216bc8 *self) {
             self->fsm->st = 0x14;
         }
         m = self->model;
-        FLD(s32, m, 0xa8) = h;
-        FLD(s32, m, 0xac) = h;
-        FLD(s32, m, 0xb0) = h;
+        m->scale.x = h;
+        m->scale.y = h;
+        m->scale.z = h;
         break;
     }
     case 0x14: {

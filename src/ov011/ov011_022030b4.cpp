@@ -5,7 +5,7 @@ extern "C" {
 extern void *data_02097e4c;
 extern const char data_ov011_02207bd8[];
 u16 ActorGroup_CountKind(void *g, u16 id);
-void Actor_TurnToActor(void *self, void *target, s32 c);
+void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
 void func_ov000_021911c8(Model0218fe1c *a, s16 b);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 void func_020627a0(u16 a, u16 b);
@@ -65,7 +65,7 @@ void func_ov011_022031a0(Ov003Actor *self) {
             a++;
         }
     } else if (s->st == 20) {
-        void *t;
+        Actor *t;
         if (a <= 15) {
             a = 15;
         } else {

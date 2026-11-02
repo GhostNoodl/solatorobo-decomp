@@ -81,7 +81,7 @@ void func_ov009_021fada8(Ov009ActVt_022164a0 *self) {
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
 extern void func_ov000_021911c8(Model0218fe1c *model, s16 a);
 extern BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, s32 e, void *f, s32 g, s32 h, s32 i, s32 j, s32 k);
-extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
+extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern void func_01ffc9fc(VecFx32 *out, VecFx32 *a, u16 b);
 static inline Ov003Actor *Ov009_FindActor5(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -129,7 +129,7 @@ void func_ov009_021faf48(Ov009ActVt_022164a0 *self) {
         break;
     case 2: {
         u16 a;
-        Ov003Actor *g;
+        ActorGroup *g;
         Actor_Move(self, 0);
         func_ov000_021987b8(self->hit, 0, 0, 0);
         if (self->velY < 0) {
@@ -144,7 +144,7 @@ void func_ov009_021faf48(Ov009ActVt_022164a0 *self) {
         }
         func_02065f88(0x66, &self->pos)->SetScaleAll(0x1c00);
         g = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
-        if (g != NULL && FLD(u16, g, 0x16) <= 3) {
+        if (g != NULL && g->count <= 3) {
             do {
                 Actor *o = func_ov003_021d69a0(self, 0x5404, 4);
                 if (o != NULL) {
@@ -164,7 +164,7 @@ void func_ov009_021faf48(Ov009ActVt_022164a0 *self) {
                     o->gravity = 0x52;
                     o->moveYaw = a;
                 }
-            } while (FLD(u16, g, 0x16) <= 3);
+            } while (g->count <= 3);
         }
         self->fsm->st++;
         self->fsm->timer = 0;

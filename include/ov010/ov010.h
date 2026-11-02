@@ -48,6 +48,7 @@ struct Ov010Flags8 {
 
 // ov010 objects are ov000 actors (ov000/ActorBase.h: Actor, 0xac bytes, ctor Actor_Ctor).
 #include "ov000/ActorBase.h"
+#include "ov000/ObjLayouts.h"
 #include "ov003/Actor.h"
 #include "Main/Effect/Effect.h"
 
@@ -225,6 +226,9 @@ extern const VecFx32 data_ov010_0220ec20;
 // Effect 0x192 at the actor's centre, turned by (a, b) / along a -> b (ov010_0220ea84.cpp).
 EffectObj *func_ov010_0220ea84(Actor *self, u16 a, u16 b);
 EffectObj *func_ov010_0220eaf0(Actor *self, const VecFx32 *a, const VecFx32 *b);
+
+// Effect onUpdate callback: counts unk_04 down, then kills the effect.
+void func_ov010_02209074(EffectObj *p);
 }
 
 // Offset of the actor's attach point (func_ov010_021fa7e0)
@@ -344,9 +348,9 @@ BOOL Ov010Coll_IsFree(Ov010Coll *self);
 
 // ---- The 0x4817 actor (vtable data_ov010_02210378, ctor Ov010ActVt_02210378_Ctor).
 // Spawned by func_ov010_0220da74 and set up by func_ov010_0220a948. Its methods are in
-// ov010_0220f9b4.cpp (0220a6a0..0220d3d8). It is built by ActorEx_Ctor, but uses 0xce as a byte of
-// flag bits and 0xcf as a byte, where ActorEx::unk_ce is one u16 (a counter in ov009/ov013), so it
-// derives from Actor and declares 0xac.. itself.
+// ov010_0220f9b4.cpp (0220a6a0..0220d3d8). It is built by ActorEx_Ctor, but reads 0xcf as an
+// unsigned byte, where ActorEx::unk_cf is signed (a counter in ov013), so it derives from Actor and
+// declares 0xac.. itself.
 class Obj0220a6b0 : public Actor {
 public:
     u8 unk_ac[0x20];
@@ -502,6 +506,13 @@ public:
 class Ov010Obj0221009c : public Ov010Obj02210154 {
 };
 
+extern "C" {
+void Ov010ActVt_02210154_Start(Ov010Obj02210154 *self);
+BOOL func_ov010_0220441c(Ov010Obj02210154 *self, ActorMsg *msg);
+void func_ov010_02207828(Ov010Obj02210154 *self);
+BOOL func_ov010_0220794c(Actor *self);
+}
+
 // ---- The Obj021fa860 actor (vtable data_ov010_0220fccc, ctor Ov010ActVt_0220fccc_Ctor; all its
 // methods are in ov010_0220f5dc.cpp, which defines the types it points to).
 
@@ -529,6 +540,22 @@ struct Ov010TaskList {
 };
 SIZE_ASSERT(Ov010TaskList, 0x20);
 
+// A timed shot task (0x24, Ov010Vt_0220fe08_New / Ov010Vt_0220fdf4_New; queued on an
+// Ov010TaskList with func_ov010_02201ad4): at its time it spawns a 0x4829 shot (Obj022020c8)
+// from actor id, offset by v18 and moving along v0c (func_ov010_02201cc8 / 02201f44).
+struct Ov010Task {
+    void *vtbl;
+    u8 b0 : 1;
+    u8 b1 : 7;
+    u8 unk_05;
+    u16 unk_06; // the shot's target id
+    u16 id;
+    u8 unk_0a[2];
+    VecFx32 v0c;
+    VecFx32 v18;
+};
+SIZE_ASSERT(Ov010Task, 0x24);
+
 // An effect that follows an actor and fades (func_ov010_021ffa6c): getPos returns the point on the
 // actor (func_ov010_021fa7e0), key is the effect handle (EffectMgr_Kill).
 struct Ov010Fade {
@@ -542,7 +569,7 @@ struct Ov010Fade {
     s32 state;
     s32 fxId; // effect id (func_02065f88)
     s32 key;
-    void (*getPos)(VecFx32 *out, u8 *obj);
+    void (*getPos)(VecFx32 *out, Actor *obj);
 };
 SIZE_ASSERT(Ov010Fade, 0x18);
 
@@ -572,6 +599,45 @@ struct Ov010Group {
 };
 SIZE_ASSERT(Ov010Group, 0xc);
 
+// ---- The 0x4829 shot (vtable data_ov010_0220fe6c, ctor Ov010ActVt_0220fe6c_Ctor; methods in
+// ov010_0220f8e4.cpp, spawned by the Ov010Task tasks of ov010_0220f870.cpp).
+
+// The two looping effects that follow an actor (0x20, allocated by the shot's Start, stepped by
+// func_ov010_02203bf8, freed by the dtor): keyA (effect 0x324) is scaled from cur toward tgt,
+// keyB (0x25d, or 0x25e with b3) is created at scale and turned with the actor; both sit at off,
+// rotated by the actor's angles.
+struct Ov010Glow {
+    u8 b0 : 1;
+    u8 b1 : 1; // keyA on
+    u8 b2 : 1; // keyB on
+    u8 b3 : 1;
+    u8 rest : 4;
+    u8 pad_01;
+    u16 id; // the actor followed
+    s16 cur;
+    s16 tgt;
+    s16 scale;
+    u16 pad_0a;
+    s32 keyA; // effect handles
+    s32 keyB;
+    VecFx32 off;
+};
+SIZE_ASSERT(Ov010Glow, 0x20);
+
+extern "C" void func_ov010_02203bf8(Ov010Glow *self);
+
+// ActorEx::unk_ce_0: launched (func_ov010_022024c4 / 02202560), unk_ce_1: hit or done.
+struct Obj022020c8 : public ActorEx {
+    u16 unk_d0;
+    s32 unk_d4;
+    Ov010Glow *unk_d8;
+    BOOL (*unk_dc)(u16 id, const VecFx32 *a, const VecFx32 *b); // checked against the target in flight (func_ov010_02202600)
+    VecFx32 unk_e0;
+    VecFx32 unk_ec;
+    VecFx32 unk_f8;
+    Ov010FlagObj flagObj;
+};
+
 class Obj021fa860 : public Ov003Actor {
 public:
     Ov010Flags8 unk_f0;
@@ -600,5 +666,26 @@ public:
     Ov010StateMachine sm;
     Ov010Group group;
 };
+
+// ov000 / ov003 actor functions, typed (round acD; the same set as ov014.h).
+extern "C" {
+ActorEx *ActorEx_Ctor(ActorEx *self);
+ActorEx *func_ov000_0219429c(ActorEx *self);
+void func_ov000_02194758(ActorEx *self);
+BOOL func_ov000_02194c08(ActorEx *self);
+BOOL func_ov000_021950e8(ActorEx *self, ActorMsg *msg);
+void func_ov000_021953b4(ActorEx *self);
+void func_ov000_02195d88(ActorEx *self);
+void func_ov000_02196060(ActorEx *self);
+void func_ov000_02196c40(ActorEx *self);
+void func_ov000_02197dec(ActorEx *self, u8 a, s16 b);
+BOOL func_ov000_0218cea4(Actor *self);
+BOOL func_ov000_0218cf5c(Actor *self);
+void func_ov000_0218d7e8(Actor *self, u8 a);
+void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
+void Actor_TurnToPos(Actor *self, const VecFx32 *target, s32 step);
+void Actor_Move(Actor *self, s32 turn);
+BOOL func_ov003_021d1c00(Ov003Actor *self, ActorMsg *msg);
+}
 
 #endif

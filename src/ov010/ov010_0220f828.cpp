@@ -162,19 +162,13 @@ struct Ov010FxRot {
     u16 z;
 };
 
-struct Ov010FxBits {
-    u8 lo : 5;
-    u8 f : 2;
-    u8 hi : 1;
-};
-
 extern "C" {
 
 extern void *data_ov000_021ccd68;
 extern BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 extern Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern void *func_ov000_021985c0(void *p);
-extern s32 func_ov000_0219a5c8(void *self, u16 mask, VecFx32 *pos, Ov010FxRot *rot, s32 r, s32 a, VecFx32 **list);
+extern Actor *func_ov000_021985c0(void *hit);
+extern s32 func_ov000_0219a5c8(Actor *self, u16 mask, VecFx32 *pos, Ov010FxRot *rot, s32 r, s32 a, VecFx32 **list);
 extern BOOL func_ov000_0219a8bc(void *hit, void *a, void *b, s32 c, u8 d, const VecFx32 *pos, s16 h, s32 i, s32 scale);
 
 static inline s32 Ov010g_FxMul(s32 a, s64 b) {
@@ -246,7 +240,7 @@ void func_ov010_022000d8(Ov010FxObj *o) {
                 rot.y = o->ry;
                 n = func_ov000_0219a5c8(a, o->unk_04, &o->pos, &rot, Ov010_FxMul(o->unk_08, 0x500), Ov010_FxMul(o->unk_0a, 0xf000), list);
                 if (n > 0) {
-                    void *b;
+                    Actor *b;
                     const char *m3 = data_ov010_0220ef74;
                     const char *m0 = data_ov010_0220ef68;
                     j = 0;
@@ -261,13 +255,13 @@ void func_ov010_022000d8(Ov010FxObj *o) {
                         if (b == NULL) {
                             continue;
                         }
-                        if (FLD(u8 *, b, 0x4c) != NULL && *FLD(u8 *, b, 0x4c) != 0xb) {
+                        if (b->targetObj != NULL && b->targetObj->type != 0xb) {
                             continue;
                         }
                         p = *list[j];
-                        if (FLD(Ov010FxBits, b, 0x93).f) {
+                        if (b->unk_93_5) {
                             EffectObj *e = func_02065f88(0x327, &p);
-                            e->SetScaleAll(FLD(s32, b, 0x64) << 1);
+                            e->SetScaleAll(b->radius << 1);
                         } else {
                             EffectObj *e = EffectGroup_Create(m0, m3, &p);
                             e->SetScaleXYZ(o->unk_06, o->unk_06, o->unk_06);

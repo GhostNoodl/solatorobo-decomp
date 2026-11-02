@@ -25,11 +25,6 @@ struct Ov009Rot {
     s16 z;
 };
 
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 7;
-};
-
 void Ov009ActVt_022178f0_Update(Ov009ActVt_022178f0 *self) {
     Ov003Actor *a;
     if (!Ov009_GameIdle()) {
@@ -118,7 +113,7 @@ void func_ov009_02206e30(Ov009ActVt_022178f0 *self) {
     VecFx32 d;
     ActorSub40 *st;
     EffectObj *e;
-    VecFx32 *v = &FLD(VecFx32, self, 0x9c);
+    VecFx32 *v = &self->vel;
     switch (self->fsm->st) {
     case 0:
         v->x = 0;

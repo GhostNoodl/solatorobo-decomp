@@ -76,10 +76,6 @@ struct F24cList {
 
 extern "C" {
 
-u32 func_ov011_02201244(void *self);
-void func_ov011_021fff38(void *self);
-void func_ov011_0220023c(void *self);
-void func_ov011_02200310(void *self);
 void func_ov011_02202a38(void);
 void func_ov011_021fd638(void *p);
 
@@ -145,11 +141,11 @@ static inline const s32 *F24c_RingAt(const F24cRing *r, u16 i) {
 }
 
 static inline BOOL F24c_Valid(Actor *a) {
-    Ov011Player *pl;
+    Robo021ca458 *pl;
     if (a == NULL) {
         return FALSE;
     }
-    pl = (Ov011Player *)func_ov000_0219bf90();
+    pl = (Robo021ca458 *)func_ov000_0219bf90();
     if (pl == NULL) {
         return FALSE;
     }
@@ -168,8 +164,8 @@ static inline u32 F24c_CountBusy(const F24cList *l) {
         Ov011Node *nd;
         for (nd = l->head; nd != NULL; nd = nd->next) {
             BOOL busy;
-            void *a;
-            if (nd != NULL && (a = Ov011_FindActor(nd->id)) != NULL && func_ov011_02201244(a)) {
+            Ov011Npc *a;
+            if (nd != NULL && (a = Ov011_FindNpc(nd->id)) != NULL && func_ov011_02201244(a)) {
                 busy = TRUE;
             } else {
                 busy = FALSE;
@@ -264,7 +260,7 @@ void Ov011SceneActor_Update(Ov011SceneActor *self) {
                 l = ((F24cList *)self->scene);
                 if (l->f.b0) {
                     for (nd = l->head; nd != NULL; nd = nd->next) {
-                        Actor *a = Ov011_FindActor(nd->id);
+                        Ov011Npc *a = Ov011_FindNpc(nd->id);
                         if (a != NULL && !func_ov011_02201244(a) && F24c_Valid(a)) {
                             found = TRUE;
                             break;
@@ -307,7 +303,7 @@ void Ov011SceneActor_Update(Ov011SceneActor *self) {
     func_ov011_02200310(self);
     func_ov011_02202a38();
     {
-        Ov011Player *pl = (Ov011Player *)func_ov000_0219bf90();
+        Robo021ca458 *pl = (Robo021ca458 *)func_ov000_0219bf90();
         if (pl != NULL) {
             VEC_Add(&self->pos, &self->unk_f4, &v);
             pl->unk_b90 = v;

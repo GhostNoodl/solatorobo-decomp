@@ -6,7 +6,7 @@ extern Ov003Actor *func_ov000_0219bf90(void);
 extern BOOL func_ov000_021b4738(Ov003Actor *a);
 extern void func_0203f364(ActorSub48 *p);
 extern s32 func_01ffbd6c(VecFx32 *a, VecFx32 *b, u32 c, s32 d, s32 e, s32 f);
-extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
+extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 void Ov009ActVt_02216a00_Update(Ov009ActVt_02216a00 *self) {
     s32 dist;
     Ov003Actor *o;
@@ -66,8 +66,8 @@ void Ov009ActVt_02216a00_Update(Ov009ActVt_02216a00 *self) {
         return;
     }
     {
-        Ov003Actor *e = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
-        if (e != NULL && FLD(u16, e, 0x16) <= 3) {
+        ActorGroup *e = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+        if (e != NULL && e->count <= 3) {
             if (self->unk_b6 != 0) {
                 self->unk_b6--;
             }
@@ -129,7 +129,7 @@ void func_ov009_021fa934(Ov009ActVt_02216a00 *self) {
     case 2: {
         u16 flag;
         u16 a;
-        Ov003Actor *g;
+        ActorGroup *g;
         u16 lim;
         Actor_Move(self, 0);
         func_ov000_021987b8(self->hit, 0, 0, 0);
@@ -146,7 +146,7 @@ void func_ov009_021fa934(Ov009ActVt_02216a00 *self) {
         if (data_ov000_021ccd54->unk_ca.c[0] == 2) {
             lim = 3;
         }
-        if (g != NULL && FLD(u16, g, 0x16) < lim) {
+        if (g != NULL && g->count < lim) {
             u16 k = 0x5401;
             Actor *o;
             flag = 0;

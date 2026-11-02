@@ -3,7 +3,6 @@
 extern "C" {
 
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
-void *func_ov011_021fb66c(Ov011E40 *self);
 void func_ov011_02201b28(void *p);
 void func_ov011_0220205c(void *p);
 void func_ov011_02202fbc(void *p);
@@ -58,7 +57,6 @@ void func_ov011_021febd8(Ov011Scene *self) {
 
 
 extern u8 data_ov011_022078f0[];
-void func_ov011_0220068c(void *self);
 
 u32 func_ov011_02202ecc(void *p);
 void func_ov011_02202260(void *p);
@@ -82,14 +80,14 @@ Ov011SceneActor *Ov011SceneActor_Ctor(Ov011SceneActor *self) {
     return self;
 }
 
-void *Ov011SceneActor_Dtor(void *self) {
+void *Ov011SceneActor_Dtor(Ov011SceneActor *self) {
     *(void **)self = data_ov011_022078f0;
     func_ov011_0220068c(self);
     func_ov003_021d0edc(self);
     return self;
 }
 
-void *Ov011SceneActor_DtorDelete(void *self) {
+void *Ov011SceneActor_DtorDelete(Ov011SceneActor *self) {
     *(void **)self = data_ov011_022078f0;
     func_ov011_0220068c(self);
     func_ov003_021d0edc(self);

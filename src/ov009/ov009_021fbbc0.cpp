@@ -12,16 +12,10 @@ extern char data_ov009_02216aaa[];
 extern u8 data_ov009_02216abc[];
 extern void Actor_MoveToPos(Ov003Actor *self, VecFx32 *v, s32 a);
 
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 6;
-};
-
 static inline void Ov009_SpawnChild(Ov009ActVt_022166a4 *self) {
     Actor *o = func_ov003_021d69a0(self, 0x4011, 0);
     if (o != NULL) {
-        ((Ov009Byte *)&FLD(u8, o, 0x16))->b1 = 1;
+        o->flags_1 = 1;
     }
     self->unk_ea_3 = 0;
 }

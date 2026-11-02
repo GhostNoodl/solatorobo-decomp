@@ -4,7 +4,6 @@ extern "C" {
 
 extern void *data_ov013_0220bb20;
 extern char data_ov013_0220b360[];
-extern ActorEx *ActorEx_Ctor(ActorEx *self);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern BOOL func_020621c4(void);
 
@@ -98,7 +97,7 @@ static inline s32 Ov013_Sqrt2(s64 sq) {
 
 // `b` is a local written as an unused trailing parameter, and `t` is `volatile`:
 // both are register-allocation / scheduling levers (docs/MATCHING.md).
-void Ov013ActVt_0220bdd8_Update(Ov003Actor *self, Ov003Actor *b) {
+void Ov013ActVt_0220bdd8_Update(Ov013ActVt_0220bdd8 *self, Ov003Actor *b) {
     BOOL ok;
     s32 n;
     s32 m;

@@ -97,8 +97,6 @@ static inline Ov011PNode *Ov011Ent_Find2(Ov011Ent *e, void *k) {
 
 extern "C" {
 
-u32 func_ov011_02201244(void *self);
-void *func_ov011_02201254(void *self);
 
 void func_ov011_021fb38c(Ov011Mgr *self) {
     Ov011Node *n;
@@ -112,7 +110,7 @@ void func_ov011_021fb38c(Ov011Mgr *self) {
         return;
     }
     for (n = self->list->head; n != NULL; n = n->next) {
-        Actor *a = Ov011_FindActor(n->id);
+        Ov011Npc *a = Ov011_FindNpc(n->id);
         if (func_ov011_02201244(a)) {
             e = self->ent;
             if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {

@@ -130,7 +130,7 @@ void func_ov009_021fcad0(Ov003Actor *self) {
         self->targetObj->target = 0xffff;
         m = self->model;
         m->cull = 2;
-        NNSi_G3dModifyPolygonAttrMask(FLD(void *, m, 4), 0, 0xc0);
+        NNSi_G3dModifyPolygonAttrMask(m->mdl, 0, 0xc0);
         self->unk_ea_3 = 0;
         func_ov000_0218996c(8, 0xa);
         p = self->pos;
@@ -140,13 +140,13 @@ void func_ov009_021fcad0(Ov003Actor *self) {
             s32 s = self->radius + (self->radius >> 3);
             o->SetScaleXYZ(s, s, s);
         }
-        func_ov000_0219b5dc(FLD(u16, self->unk_b0, 6), &p, &self->rot_x);
-        func_ov003_021ce9c4(FLD(u16, self->unk_b0, 4));
-        n = FLD(u16, data_0214a424, 0xa) + 1;
+        func_ov000_0219b5dc(self->unk_b0->unk_06, &p, &self->rot_x);
+        func_ov003_021ce9c4(self->unk_b0->unk_04);
+        n = data_0214a424->unk_00a + 1;
         if (n >= 0xffff) {
             n = 0xffff;
         }
-        FLD(u16, data_0214a424, 0xa) = n;
+        data_0214a424->unk_00a = n;
         self->hp[2] = 0xffff;
         self->fsm->timer = 0;
         self->fsm->st++;

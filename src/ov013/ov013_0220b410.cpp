@@ -51,19 +51,19 @@ extern char data_ov013_0220b5ca[];
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *t, s32 a);
-extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
-extern u16 ActorGroup_CountKind(Ov003Actor *a, u16 id);
+extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
+extern u16 ActorGroup_CountKind(ActorGroup *group, u16 kind);
 extern Ov003Actor *ActorMgr_FindKind(void *mgr, u16 a, u16 b);
 extern BOOL func_ov000_021983b0(void *a, s32 b, s32 c, s32 d);
 
-s32 func_ov013_021fc400(Ov003Actor *self) {
+s32 func_ov013_021fc400(Ov013Boss *self) {
     s32 r = 0x10;
     s32 a = ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, 0x4000), 0x4823);
     s32 b = ActorGroup_CountKind(ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000), 0x5c17);
     if (b >= 2 || a >= 4 || func_ov000_021983b0(self->fsm, r, 3, 1)) {
         s32 rnd = Rand_UpTo(0x63);
         u16 pct = self->hp[0] * 100 / self->hp[1];
-        FLD(u8, self, 0xf1) = 0;
+        self->unk_f1 = 0;
         if (pct >= 0x4b) {
             r = 0xf;
         } else if (pct >= 0x32) {
@@ -74,8 +74,8 @@ s32 func_ov013_021fc400(Ov003Actor *self) {
             }
         } else {
             if ((u32)rnd % pct < 0x19) {
-                FLD(u8, self, 0xf1) = 2;
-                FLD(u8, self, 0xf0) = 1;
+                self->unk_f1 = 2;
+                self->unk_f0 = 1;
             }
             r = 0xe;
         }
@@ -145,7 +145,7 @@ void Ov013ActVt_0220b5e0_Update(Ov013ActVt_0220b5e0 *self) {
     self->unk_b6 = 300;
 }
 
-void func_ov013_021fc71c(Ov003Actor *self) {
+void func_ov013_021fc71c(Ov013ActVt_0220b5e0 *self) {
     ActorSub40 *s = self->fsm;
     Ov003Actor *t;
     if (s->history[0] == 4 && s->history[1] == 10 && s->history[2] == 9) {

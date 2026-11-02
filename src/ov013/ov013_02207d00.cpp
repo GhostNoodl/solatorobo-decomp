@@ -40,7 +40,7 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
             g = data_ov000_021ccd54;
             g->stageFlags = 1;
             func_ov000_02182590(&g->stageFlags);
-            func_ov003_021ce9c4(FLD(u16, self->unk_b0, 4));
+            func_ov003_021ce9c4(self->unk_b0->unk_04);
             {
                 ActorSub44 *n = self->unk_44;
                 n->unk_22_0 = 0;
@@ -79,7 +79,7 @@ void Ov013Act_02207968_Update(Ov013Act_02207968 *self) {
     self->unk_b6 = 0x46;
 }
 
-void func_ov013_02207d00(Ov003Actor *self) {
+void func_ov013_02207d00(Ov013Act_02207968 *self) {
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0:

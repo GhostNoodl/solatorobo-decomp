@@ -44,11 +44,11 @@ void *func_ov010_02201c88(void *o) {
     return o;
 }
 
-void *Ov010Vt_0220fe08_New(void) {
-    u8 *p = (u8 *)Heap_Alloc(0x24);
+Ov010Task *Ov010Vt_0220fe08_New(void) {
+    Ov010Task *p = (Ov010Task *)Heap_Alloc(sizeof(Ov010Task));
     if (p != NULL) {
-        FLD(void *, p, 0) = data_ov010_0220fe08;
-        FLD(Ov010Flags8, p, 4).b0 = 0;
+        p->vtbl = data_ov010_0220fe08;
+        p->b0 = 0;
     }
     return p;
 }

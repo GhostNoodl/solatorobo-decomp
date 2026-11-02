@@ -79,7 +79,7 @@ void func_ov011_022038ac(Ov011Act7cf8 *self) {
     case 2:
         st->timer++;
         if (st->timer == 0x32 && (self->unk_1a & 0x100)) {
-            Ov011Player *pl = (Ov011Player *)func_ov000_0219bf90();
+            Robo021ca458 *pl = (Robo021ca458 *)func_ov000_0219bf90();
             if (pl != NULL) {
                 Actor *o;
                 v.x = pl->unk_af0.x;

@@ -122,8 +122,6 @@ struct Ov011MsgB {
 
 extern "C" {
 
-u32 func_ov011_02201244(void *self);
-void *func_ov011_02201254(void *self);
 void ActorMgr_SendMsg(u16 a, u16 b, u8 c, BOOL d, u32 e, const void *f);
 u32 func_ov011_02201b64(void *p);
 BOOL func_ov011_02201b40(void *p);
@@ -132,9 +130,7 @@ void func_ov011_02201b80(void *p, const VecFx32 *v);
 void func_ov011_02201bac(void *p, u16 ang);
 extern const VecFx32 data_ov011_02207290;
 void *Group_SpawnActor(void *mgr, Ov011SpawnDesc *d, VecFx32 *pos, Ov011Rot *rot, u16 a);
-void func_ov011_022011c0(void *self, u16 v);
 void func_ov011_022011c8(void *a, s32 b);
-void func_ov011_02201214(void *self, void *p);
 Ov011Node *Ov003NodeSrc_NewNode(void *self);
 
 static inline void Ov011_Send(u16 id, s32 a, s32 b) {
@@ -146,7 +142,7 @@ static inline void Ov011_Send(u16 id, s32 a, s32 b) {
 
 static inline BOOL Ov011_NodeAlive(Ov011Node *n) {
     if (n != NULL) {
-        Actor *a = Ov011_FindActor(n->id);
+        Ov011Npc *a = Ov011_FindNpc(n->id);
         if (a != NULL && func_ov011_02201244(a)) {
             return TRUE;
         }
@@ -237,7 +233,7 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
             for (i = 0; i < rem; i++) {
                 Ov011Npc *ob;
                 Ov011Node *nn;
-                void *a;
+                Ov011Npc *a;
                 Ov011Spawn_Init(&d, 0x4812);
                 rot.x = 0;
                 rot.y = 0;
@@ -257,7 +253,7 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
                     }
                     self->head = h;
                 }
-                a = Ov011_FindActor(nn->id);
+                a = Ov011_FindNpc(nn->id);
                 if (a != NULL) {
                     Ov011PNode *pn = NULL;
                     if (e->active) {
@@ -292,7 +288,7 @@ void func_ov011_021fe3b4(Ov011Scene *self) {
     }
     }
     for (Ov011Node *n2 = self->head; n2 != NULL; n2 = n2->next) {
-        Actor *a = Ov011_FindActor(n2->id);
+        Ov011Npc *a = Ov011_FindNpc(n2->id);
         if (func_ov011_02201244(a)) {
             Actor *owner = self->actor;
             if (Ov011Ent_Find(e, func_ov011_02201254(a)) != NULL) {

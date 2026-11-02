@@ -43,7 +43,7 @@ void func_ov011_02205eb4(Ov011Act7da4 *self) {
             e->SetScaleAll(0x2000);
             e->speed = 0x299a;
         } else if (self->fsm->timer == 0) {
-            Ov011Player *pl = (Ov011Player *)func_ov000_0219bf90();
+            Robo021ca458 *pl = (Robo021ca458 *)func_ov000_0219bf90();
             if (pl != NULL) {
                 Actor *o;
                 v.x = pl->unk_af0.x;
@@ -100,7 +100,7 @@ void func_ov011_02206120(Ov011Act7da4 *self) {
             e->SetScaleAll(0x2000);
             e->speed = 0x299a;
         } else if (self->fsm->timer == 0) {
-            Ov011Player *pl = (Ov011Player *)func_ov000_0219bf90();
+            Robo021ca458 *pl = (Robo021ca458 *)func_ov000_0219bf90();
             if (pl != NULL) {
                 Actor *o;
                 v.x = pl->unk_af0.x;

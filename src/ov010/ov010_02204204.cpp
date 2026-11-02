@@ -14,7 +14,6 @@ extern void *Ov003Vt_021f7cd8_Ctor(void *p);
 extern void *Ov003Vt_021f7cd8_Dtor(void *p);
 extern void func_ov010_02207520(Ov010Obj02210154 *self);
 extern void func_ov010_022075bc(Ov010Obj02210154 *self);
-extern BOOL func_ov000_0218cf5c(void *self);
 extern void func_02049678(SndMgr *a, s32 b, s32 c, s32 d);
 extern BOOL SndMgr_IsLoadDone(SndMgr *a);
 

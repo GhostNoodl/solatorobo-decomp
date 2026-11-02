@@ -261,7 +261,7 @@ void Ov009ActVt_022178f0_Start(Ov009ActVt_022178f0 *self) {
     }
     self->unk_108 = 0;
     self->unk_10a = 0;
-    Ov009_VecSet3(&FLD(VecFx32, self->unk_44, 0xc), 0x3800, self->centerY, 0);
+    Ov009_VecSet3(&self->unk_44->unk_0c, 0x3800, self->centerY, 0);
     p = Group_FindNode(data_ov000_021ccd64, self->unk_20);
     if (p != NULL) {
         ((Ov009ByteA2 *)(p + 0xa2))->b0 = 0;

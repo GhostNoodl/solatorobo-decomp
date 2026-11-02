@@ -71,8 +71,8 @@ void func_ov009_021fe3d4(Ov009ActVt_022165f8 *self) {
     e.x = d.x - self->speed;
     e.y = d.y - self->velY;
     e.z = d.z - self->friction;
-    VEC_MultAdd(0x171, &e, &FLD(VecFx32, self, 0x9c), &FLD(VecFx32, self, 0x9c));
-    VEC_Add(&self->pos, &FLD(VecFx32, self, 0x9c), &self->pos);
+    VEC_MultAdd(0x171, &e, &self->vel, &self->vel);
+    VEC_Add(&self->pos, &self->vel, &self->pos);
     if (self->pos.y - t.y < 0x4800) {
         func_ov000_021987b8(self->hit, 1, 0, 0);
     }

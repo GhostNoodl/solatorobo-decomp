@@ -211,9 +211,9 @@ void func_ov011_02206920(Ov011Act7da4 *self) {
             s->timer--;
         }
         if (s->timer == 0) {
-            Ov011Player *pl;
+            Robo021ca458 *pl;
             self->fsm->timer = 0x28;
-            pl = (Ov011Player *)func_ov000_0219bf90();
+            pl = (Robo021ca458 *)func_ov000_0219bf90();
             if (pl != NULL) {
                 self->unk_370[0].x = pl->unk_af0.x;
                 self->unk_370[0].y = pl->unk_af0.y;
@@ -337,34 +337,34 @@ void func_ov011_022071b4(Ov011Act7da4 *self) {
     self->vfunc_7c();
 }
 
-void *Ov011Act7cf8_Dtor(void *self) {
+void *Ov011Act7cf8_Dtor(Ov011Act7cf8 *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-void *Ov011Act7cf8_DtorDelete(void *self) {
-    func_ov003_021d0edc(self);
-    Heap_Free(self);
-    return self;
-}
-
-void *Ov011Act7e50_Dtor(void *self) {
-    func_ov003_021d0edc(self);
-    return self;
-}
-
-void *Ov011Act7e50_DtorDelete(void *self) {
+void *Ov011Act7cf8_DtorDelete(Ov011Act7cf8 *self) {
     func_ov003_021d0edc(self);
     Heap_Free(self);
     return self;
 }
 
-void *Ov011Act7c4c_Dtor(void *self) {
+void *Ov011Act7e50_Dtor(Ov011Act7e50 *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-void *Ov011Act7c4c_DtorDelete(void *self) {
+void *Ov011Act7e50_DtorDelete(Ov011Act7e50 *self) {
+    func_ov003_021d0edc(self);
+    Heap_Free(self);
+    return self;
+}
+
+void *Ov011Act7c4c_Dtor(Ov011Act7c4c *self) {
+    func_ov003_021d0edc(self);
+    return self;
+}
+
+void *Ov011Act7c4c_DtorDelete(Ov011Act7c4c *self) {
     func_ov003_021d0edc(self);
     Heap_Free(self);
     return self;

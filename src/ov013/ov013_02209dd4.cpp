@@ -159,7 +159,7 @@ void func_ov013_02209ed8(Ov013ActVt_0220bc80 *self) {
     func_ov000_021987b8(self->hit, 1, 0, 0);
 }
 
-void func_ov013_0220a080(Ov003Actor *self) {
+void func_ov013_0220a080(Ov013ActVt_0220bc80 *self) {
     VecFx32 v;
     if (self->fsm->st == 0) {
         const char *name = data_ov013_0220bea0;
@@ -180,7 +180,7 @@ void func_ov013_0220a080(Ov003Actor *self) {
     func_ov000_021987b8(self->hit, 1, 0, 0);
 }
 
-void func_ov013_0220a17c(Ov003Actor *self) {
+void func_ov013_0220a17c(Ov013ActVt_0220bc80 *self) {
     ActorSub40 *q;
     if (!Ov013_GameIdle()) {
         func_ov000_02198360(self->fsm, 1, 0);

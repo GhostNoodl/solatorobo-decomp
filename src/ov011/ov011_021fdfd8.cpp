@@ -23,8 +23,6 @@ static inline Ov011PNode *Ov011Ent_Find(Ov011Ent *e, void *k) {
 
 extern "C" {
 
-u32 func_ov011_02201244(void *self);
-void *func_ov011_02201254(void *self);
 
 struct Ov011KeyVal {
     s32 key;
@@ -63,7 +61,7 @@ void func_ov011_021fdfd8(Ov011Scene *self) {
     }
     case 2:
         for (n = self->head; n != NULL; n = n->next) {
-            Actor *a = Ov011_FindActor(n->id);
+            Ov011Npc *a = Ov011_FindNpc(n->id);
             if (func_ov011_02201244(a)) {
                 Actor *owner = self->actor;
                 if (Ov011Ent_Find(&self->ent, func_ov011_02201254(a)) != NULL) {

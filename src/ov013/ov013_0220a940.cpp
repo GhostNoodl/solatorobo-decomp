@@ -5,11 +5,9 @@ extern "C" {
 extern void *data_ov013_0220beb4;
 extern VecFx32 data_ov013_0220b3f8;
 extern VecFx32 data_ov013_0220b404;
-extern ActorEx *ActorEx_Ctor(ActorEx *self);
-extern void func_ov000_02194758(void *self);
 extern Ov003Actor *func_ov000_0219bf90(void);
 
-void func_ov013_0220a940(Ov003Actor *self) {
+void func_ov013_0220a940(Ov013ActEx_0220a4e0 *self) {
     Model0218fe1c *s;
     ActorSub40 *q;
     u8 v;

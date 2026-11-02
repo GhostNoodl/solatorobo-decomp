@@ -15,27 +15,27 @@ static inline Ov003Actor *Ov013_FindActor(u16 id) {
 
 void func_ov013_0220aca0(Ov013ActEx_0220a9a8 *self) {
     s32 v = 0;
-    u8 *p;
+    EffectObj *p;
     Ov003Actor *t;
-    p = (u8 *)func_020657b0(data_0214a420, ((s32)self->unk_bc));
+    p = func_020657b0(data_0214a420, ((s32)self->unk_bc));
     if (p != NULL) {
-        u8 *q;
-        v = FLD(s32, p, 0x7c);
+        EffectObj *q;
+        v = p->alpha;
         if (v > 0) {
             v -= 0x52;
         }
-        FLD(s32, p, 0x7c) = v < 0 ? 0 : v;
-        FLD(s32, p, 0x7c) = v > 0x1000 ? 0x1000 : v;
-        q = FLD(u8 *, p, 0xf0);
+        p->alpha = v < 0 ? 0 : v;
+        p->alpha = v > 0x1000 ? 0x1000 : v;
+        q = p->child;
         if (q != NULL) {
-            FLD(s32, q, 0x7c) = v < 0 ? 0 : v;
-            FLD(s32, q, 0x7c) = v > 0x1000 ? 0x1000 : v;
+            q->alpha = v < 0 ? 0 : v;
+            q->alpha = v > 0x1000 ? 0x1000 : v;
         }
     }
     if (v <= 0) {
         func_ov000_02198360(self->fsm, 0x15, 0);
         if (p != NULL) {
-            FLD(s32, p, 0x1c) = 4;
+            p->state = 4;
         }
         return;
     }
@@ -47,24 +47,24 @@ void func_ov013_0220aca0(Ov013ActEx_0220a9a8 *self) {
                         self->hit->radius, self->unk_d0, -1, 0x1000);
 }
 
-Ov003Actor *Ov013ActEx_0220a9a8_DtorDelete(Ov003Actor *self) {
+Ov013ActEx_0220a9a8 *Ov013ActEx_0220a9a8_DtorDelete(Ov013ActEx_0220a9a8 *self) {
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
 }
 
-Ov003Actor *Ov013ActEx_0220a9a8_Dtor(Ov003Actor *self) {
+Ov013ActEx_0220a9a8 *Ov013ActEx_0220a9a8_Dtor(Ov013ActEx_0220a9a8 *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-Ov003Actor *Ov013ActEx_0220a4e0_DtorDelete(Ov003Actor *self) {
+Ov013ActEx_0220a4e0 *Ov013ActEx_0220a4e0_DtorDelete(Ov013ActEx_0220a4e0 *self) {
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
 }
 
-Ov003Actor *Ov013ActEx_0220a4e0_Dtor(Ov003Actor *self) {
+Ov013ActEx_0220a4e0 *Ov013ActEx_0220a4e0_Dtor(Ov013ActEx_0220a4e0 *self) {
     func_ov000_0219429c(self);
     return self;
 }

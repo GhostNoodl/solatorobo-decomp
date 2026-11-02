@@ -49,7 +49,6 @@ Ov011Link *func_ov011_021fdadc(Ov011Link *head, Ov011Link *n) {
 }
 
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
-void *func_ov011_021fb66c(Ov011E40 *self);
 void func_ov011_02201b28(void *p);
 void func_ov011_0220205c(void *p);
 void func_ov011_02202fbc(void *p);

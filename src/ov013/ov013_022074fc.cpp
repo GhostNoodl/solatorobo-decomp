@@ -7,7 +7,7 @@ extern char data_ov013_0220be94[];
 extern void func_ov000_02191418(Model0218fe1c *a, u16 b, BOOL c);
 extern void *func_0204a028(void *a, s32 b, VecFx32 *c, s32 d);
 
-void func_ov013_022074fc(Ov003Actor *self) {
+void func_ov013_022074fc(Ov013ActVt_0220bdd8 *self) {
     switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov013_0220be94, 0x2ab, 0);
@@ -37,7 +37,7 @@ extern EffectObj *func_ov000_0219b71c(VecFx32 *pos, VecFx32 *v, s32 a, s32 b, s3
 extern void func_ov000_0218996c(u8 a, u8 b);
 extern void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 
-void func_ov013_022075b8(Ov003Actor *self) {
+void func_ov013_022075b8(Ov013ActVt_0220bdd8 *self) {
     ActorSub40 *st = self->fsm;
     switch (st->st) {
     case 0: {

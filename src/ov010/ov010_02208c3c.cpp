@@ -99,7 +99,7 @@ void func_ov010_02208de8(Ov010Sw *self) {
     if (!self->b0) {
         return;
     }
-    if ((u8 *)data_ov000_021ccd54 + 0xf4 == NULL) {
+    if (&data_ov000_021ccd54->cam == NULL) {
         return;
     }
     p = func_ov000_0219bf90();
@@ -109,7 +109,7 @@ void func_ov010_02208de8(Ov010Sw *self) {
     if (Ov010_PlayerBusy(p)) {
         return;
     }
-    func_ov000_0218a358((u8 *)data_ov000_021ccd54 + 0xf4, &self->unk_08, self->unk_14, self->unk_1c, 0, 0x1000, 0x1000, 1);
+    func_ov000_0218a358(&data_ov000_021ccd54->cam, &self->unk_08, self->unk_14, self->unk_1c, 0, 0x1000, 0x1000, 1);
 }
 
 u16 func_ov010_02208e90(s32 a, s32 b) {
@@ -156,16 +156,16 @@ void *Ov010ActVt_0221009c_DtorDelete(Ov010Obj0221009c *self) {
     return self;
 }
 
-void func_ov010_02209074(void *p) {
+void func_ov010_02209074(EffectObj *p) {
     if (p == NULL) {
         return;
     }
-    if (FLD(s32, p, 4) > 0) {
-        FLD(s32, p, 4)--;
+    if (p->unk_04 > 0) {
+        p->unk_04--;
         return;
     }
-    EffectMgr_Kill(data_0214a420, FLD(s32, p, 0x24));
-    FLD(s32, p, 0xdc) = 0;
+    EffectMgr_Kill(data_0214a420, p->id);
+    p->onUpdate = NULL;
 }
 
 extern s32 Ov003Vec_DistSq(const VecFx32 *a, const VecFx32 *b);

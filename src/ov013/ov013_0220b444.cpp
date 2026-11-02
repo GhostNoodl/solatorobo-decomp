@@ -2849,14 +2849,11 @@ extern void *data_ov013_0220bbb8[];
 extern char data_ov013_0220ba58[];
 extern char data_ov013_0220ba60[];
 extern void func_ov003_021d9980(VecFx32 *out, u16 rot, const VecFx32 *v);
-extern void *ActorEx_Ctor(void *self);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
 extern void *func_ov000_0218ea20(void *p);
 extern void *func_ov000_0218fee4(void *p);
 extern void *func_ov000_0218e9c4(void *p);
-extern void func_ov000_0219433c(void *self);
-extern BOOL func_ov000_021946f8(void *self);
 extern BOOL func_ov000_0218f110(void *p);
 
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);

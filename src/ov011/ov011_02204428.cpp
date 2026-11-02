@@ -74,7 +74,7 @@ void func_ov011_02204428(Ov011Act7c4c *self) {
             }
         }
         if (self->fsm->timer == 0) {
-            Ov011Player *pl = (Ov011Player *)func_ov000_0219bf90();
+            Robo021ca458 *pl = (Robo021ca458 *)func_ov000_0219bf90();
             if (pl != NULL) {
                 VecFx32 d;
                 u16 rot[3];

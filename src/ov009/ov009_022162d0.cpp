@@ -82,10 +82,10 @@ void func_ov009_02214508(ActorEx *self) {
 }
 
 extern void func_0203f364(ActorSub48 *p);
-extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
-extern u16 ActorGroup_CountKind(Ov003Actor *a, u16 id);
+extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
+extern u16 ActorGroup_CountKind(ActorGroup *group, u16 kind);
 extern void func_ov000_02198c8c(void *p, s32 a);
-extern void func_ov000_02197dec(void *self, u8 a, s16 b);
+extern void func_ov000_02197dec(ActorEx *self, u8 a, s16 b);
 extern void func_ov000_0218996c(s32 a, s32 b);
 struct Ov009SpawnDesc2 {
     u16 kind;
@@ -98,11 +98,6 @@ struct Ov009Rot16 {
     u16 x;
     u16 y;
     u16 z;
-};
-
-struct Ov009Flag8 {
-    u8 b0 : 1;
-    u8 b1 : 7;
 };
 
 extern Ov003Actor *Group_SpawnActor(void *mgr, Ov009SpawnDesc2 *d, VecFx32 *pos, Ov009Rot16 *rot, u16 a);
@@ -126,7 +121,7 @@ void func_ov009_02214534(ActorEx *self) {
     case 0: {
         u16 i;
         u16 n;
-        Ov003Actor *e;
+        ActorGroup *e;
         s32 s;
         Ov009Spawn_Init(&desc, 0x4006);
         n = 3;
@@ -149,7 +144,7 @@ void func_ov009_02214534(ActorEx *self) {
             r.z = self->rot_z;
             o = Group_SpawnActor(data_ov000_021ccd64, &desc, &p, &r, 0xffff);
             if (o != NULL) {
-                FLD(Ov009Flag8, o, 0x16).b0 = 1;
+                o->flags_0 = 1;
                 o->target = self->target;
                 o->speed = 0;
                 o->velY = 0x333;
@@ -276,15 +271,15 @@ namespace m_02214974 {
 extern "C" {
 
 extern char data_ov009_0221801c[];
-extern void *Target_Get(void *p);
+extern Actor *Target_Get(ActorSub4c *p);
 extern void HitSphere_Link(ActorSub48 *p);
 extern void func_ov000_02196060(Actor *self);
 
 void func_ov009_02214974(Ov009ActExVt_022181f4 *self) {
-    u8 *p = (u8 *)Target_Get(self->targetObj);
+    Actor *p = Target_Get(self->targetObj);
     if (p != NULL) {
-        self->unk_d2 = FLD(u16, p, 0xc);
-        if (FLD(u16, p, 0xe) == 0x501d && self->fsm->st == 0) {
+        self->unk_d2 = p->id;
+        if (p->kind == 0x501d && self->fsm->st == 0) {
             ActorSub44 *s44;
             func_ov000_02190cb0(self->model, data_ov009_0221801c, 0x1000, 0);
             func_ov000_021915a0(self->model);
@@ -345,7 +340,7 @@ extern void HitSphere_Link(ActorSub48 *p);
 extern void func_0203f364(ActorSub48 *p);
 extern void *func_0204a028(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern u16 func_ov000_02198da8(ActorSub48 *p, u16 a);
-extern void *Target_Get(void *p);
+extern Actor *Target_Get(ActorSub4c *p);
 
 void func_ov009_02214ac0(Ov009ActExVt_022181f4 *self) {
     VecFx32 v;
@@ -419,14 +414,14 @@ void func_ov009_02214ac0(Ov009ActExVt_022181f4 *self) {
     {
         ActorSub4c *p4c = self->targetObj;
         if (p4c != NULL && p4c->target != 0xffff && p4c->unk_01 == 1) {
-            void *p;
+            Actor *p;
             s32 r = self->radius + 0x4cd;
             if (r < 0xccd) {
                 r = 0xccd;
             }
             self->hit->unk_44 = r;
             p = Target_Get(self->targetObj);
-            if (p != NULL && (o48 = FLD(ActorSub48 *, p, 0x48)) != NULL && o48->unk_9a_3) {
+            if (p != NULL && (o48 = p->hit) != NULL && o48->unk_9a_3) {
                 o48->unk_9a_3 = 0;
                 func_0203f364(o48);
                 flag = TRUE;
@@ -499,7 +494,7 @@ extern void func_0203f364(ActorSub48 *p);
 extern Ov003Actor *func_ov000_0219bf90(void);
 extern void Actor_TurnToActor(Actor *self, Ov003Actor *other, s32 a);
 extern void func_ov000_0219433c(Actor *self);
-extern void *Target_Get(void *p);
+extern Actor *Target_Get(ActorSub4c *p);
 
 void func_ov009_02214fe4(ActorEx *self) {
     ActorSub48 *s48;
@@ -523,14 +518,14 @@ void Ov009ActExVt_0221802c_Init(Ov009ActExVt_0221802c *self) {
 
 void Ov009ActExVt_0221802c_Start(Ov009ActExVt_0221802c *self) {
     ActorSub48 *s48;
-    u8 *p;
+    Actor *p;
     func_ov000_02194758(self);
     s48 = self->hit;
     s48->unk_9a_0 = 0;
     s48->unk_9a_3 = 0;
     func_0203f364(s48);
-    p = (u8 *)Target_Get(self->targetObj);
-    if (p != NULL && FLD(s16, p, 0x1c) == 0) {
+    p = Target_Get(self->targetObj);
+    if (p != NULL && p->unk_1c == 0) {
         self->hit->unk_30 = 0;
     }
     func_ov000_02198360(self->fsm, 0xb, 0);
@@ -545,7 +540,7 @@ extern "C" {
 
 extern void *data_02097e4c;
 extern const VecFx32 data_ov009_022161ec;
-extern void *Target_Get(void *p);
+extern Actor *Target_Get(ActorSub4c *p);
 extern void func_0203f364(ActorSub48 *p);
 extern void HitSphere_Link(ActorSub48 *p);
 extern void func_ov009_02215714(Ov009ActExVt_0221802c *self);
@@ -579,9 +574,9 @@ static inline void Ov009_RotX(VecFx32 *out, const VecFx32 *v, u16 ang) {
 }
 
 void func_ov009_022150cc(Ov009ActExVt_0221802c *self) {
-    Ov003Actor *p;
+    Actor *p;
     ActorSub48 *m;
-    p = (Ov003Actor *)Target_Get(self->targetObj);
+    p = Target_Get(self->targetObj);
     if (p != NULL) {
         m = p->hit;
         if (m != NULL && m->unk_9a_3) {

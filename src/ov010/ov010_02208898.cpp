@@ -25,9 +25,6 @@ void func_ov010_02208898(Ov010Obj0220ffe4 *self) {
     }
 }
 
-
-extern void Ov010ActVt_02210154_Start(void *self);
-
 BOOL func_ov010_02208968(Ov010Obj0220ffe4 *self, s32 *out) {
     *out = 9;
     return TRUE;

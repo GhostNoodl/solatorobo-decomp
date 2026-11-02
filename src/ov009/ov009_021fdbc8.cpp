@@ -1,34 +1,17 @@
 #include "ov009/ov009.h"
+#include "ov000/FieldCam.h"
 
 extern "C" {
 
 extern Ov003Actor *func_ov000_0219bf90(void);
-struct Ov009AngSrc3 {
-    u8 unk_00[0x10];
-    VecFx32 pos;
-    u8 unk_1c[0x24];
-    u16 unk_40;
-    u8 unk_42[2];
-    u16 unk_44;
-};
-
-extern u16 Camera_GetYaw(Ov009AngSrc3 *p);
-
-static inline s32 Ov009_GetAng3(Ov009AngSrc3 *p) {
-    if (p->unk_40 != 0) {
-        return p->unk_44;
-    }
-    return Camera_GetYaw(p);
-}
-
 void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
     func_ov003_021d112c(self);
     switch (self->unk_1a) {
     case 0: {
-        Ov009AngSrc3 *g = (Ov009AngSrc3 *)((u8 *)data_ov000_021ccd54 + 0xf4);
-        u16 a = Ov009_GetAng3(g) + Rand_PlusMinus(0x1000);
+        FieldCam *g = &data_ov000_021ccd54->cam;
+        u16 a = FieldCam_GetYaw(g) + Rand_PlusMinus(0x1000);
         s32 r = Rand_PlusMinus(0x1800) + 0x3800;
-        self->pos = g->pos;
+        self->pos = g->base.at;
         self->pos.x += FX_Mul(r, OV009_SIN(a));
         self->pos.z += FX_Mul(r, OV009_COS(a));
         self->pos.y += 0xa000;
@@ -73,20 +56,15 @@ void Ov009ActVt_022165f8_Start(Ov009ActVt_022165f8 *self) {
 }
 
 
-struct Ov009PlB22 {
-    u16 b0 : 3;
-    u16 b3 : 13;
-};
-
 
 void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
     VecFx32 t;
-    Ov003Actor *pl;
+    Robo021ca458 *pl;
     self->unk_93_4 = 0;
     if (*self->hp == 0) {
         return;
     }
-    pl = func_ov000_0219bf90();
+    pl = (Robo021ca458 *)func_ov000_0219bf90();
     if (pl == NULL) {
         return;
     }
@@ -101,7 +79,7 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
         u16 r;
         s32 dist;
         self->unk_f0 = 0;
-        if (FLD(Ov009PlB22, pl, 0xb22).b0 != 3 && FLD(Ov009PlB22, pl, 0xb22).b0 != 4) {
+        if (pl->unk_b22_0 != 3 && pl->unk_b22_0 != 4) {
             self->unk_f0 = 1;
             if (pl->hit != NULL && (pl->hit->unk_50 & 0x20000000)) {
                 if (Ov009_GameIdle()) {
@@ -124,10 +102,10 @@ void Ov009ActVt_022165f8_Update(Ov009ActVt_022165f8 *self) {
             self->unk_b6 = 0;
         }
         {
-            Ov009AngSrc3 *g = (Ov009AngSrc3 *)((u8 *)data_ov000_021ccd54 + 0xf4);
+            FieldCam *g = &data_ov000_021ccd54->cam;
             t = pl->pos;
             t.y += 0x1400;
-            ang = Ov009_GetAng3(g);
+            ang = FieldCam_GetYaw(g);
         }
         if (blocked) {
             ang = pl->rot_y;

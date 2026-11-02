@@ -35,22 +35,20 @@ void *Ov003Vt_021f7d2c_Ctor(void *p);
 extern void *data_02097e4c;
 extern const VecFx32 data_ov011_022072b4;
 
-BOOL func_ov011_02201244(void *o);
 void func_ov011_0220121c(void *o, s32 a);
 void *__cxa_vec_new(u32 count, u32 size, u32 hdr, void *ctor, void *dtor);
-void *func_ov011_021fb66c(Ov011E40 *self);
 void *func_ov011_021fc0a0(void *self);
 BOOL func_ov011_02201f28(void *self, u16 id, const VecFx32 *off, s16 c, s16 d, s16 e);
 void func_ov011_02202464(void *self);
 void *func_02049f44(void *a, s32 b, VecFx32 *c, s32 d);
 
-static inline Actor *Ov011_Find(u16 id) {
-    return data_ov000_021ccd68 == NULL ? NULL : (Actor *)ActorMgr_GetActor(data_ov000_021ccd68, id);
+static inline Ov011Npc *Ov011_Find(u16 id) {
+    return data_ov000_021ccd68 == NULL ? NULL : (Ov011Npc *)ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
 static inline BOOL Ov011_NodeOk(Ov011Node *p) {
     if (p != NULL) {
-        Actor *o = Ov011_Find(p->id);
+        Ov011Npc *o = Ov011_Find(p->id);
         if (o != NULL && func_ov011_02201244(o)) {
             return TRUE;
         }
@@ -80,7 +78,7 @@ void func_ov011_021fbe08(Ov011Mgr3 *self) {
         self->arr8 = (Ov011E40b *)__cxa_vec_new(self->count, 0x40, 8, (void *)func_ov011_021fc0a0, (void *)func_ov011_021fb66c);
         i = 0;
         for (p = head; p != NULL; p = p->next) {
-            Actor *o = Ov011_Find(p->id);
+            Ov011Npc *o = Ov011_Find(p->id);
             if (func_ov011_02201244(o)) {
                 u16 id = o->id;
                 Ov011E40b *e = &self->arr8[i];
@@ -117,7 +115,7 @@ void func_ov011_021fbe08(Ov011Mgr3 *self) {
         y = actor->pos.y;
         z = actor->pos.z;
         for (p = head; p != NULL; p = p->next) {
-            Actor *o = Ov011_Find(p->id);
+            Ov011Npc *o = Ov011_Find(p->id);
             if (func_ov011_02201244(o)) {
                 o->pos.x = x;
                 o->pos.y = y + 0x6800;
@@ -211,8 +209,6 @@ u16 Ov003Vec_Yaw(VecFx32 *v);
 BOOL Ov003Mover_Start(void *p, VecFx32 *a, VecFx32 *b, s32 c, s32 d, s32 e);
 void func_ov011_022011fc(void *a, s32 b);
 void func_ov011_022011c8(void *a, s32 b);
-void func_ov011_02201214(void *a, void *b);
-void *func_ov011_02201254(void *self);
 s32 Rand_PlusMinus(s32 max);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void func_ov011_02202488(void *self, s16 v);
@@ -286,7 +282,7 @@ static inline BOOL Ov011_PlBusy(void) {
     return TRUE;
 }
 
-static inline void Ov011_Act(Ov011Ctl *self, Actor *a, BOOL on) {
+static inline void Ov011_Act(Ov011Ctl *self, Ov011Npc *a, BOOL on) {
     func_ov011_0220121c(a, on);
     func_ov011_022011fc(a, on);
     {
@@ -299,14 +295,14 @@ extern "C" {
 
 void func_ov011_021fc0b8(Ov011Ctl *self) {
     s32 i;
-    Actor *a;
+    Ov011Npc *a;
     Ov011Node *n;
     Ov011List *list;
     for (i = 0; i < self->count; i++) {
         if (self->slots[i].b1) {
             continue;
         }
-        a = Ov011_FindActor(self->slots[i].id);
+        a = Ov011_FindNpc(self->slots[i].id);
         if (a == NULL) {
                         Ov011Slot *s = &self->slots[i];
             s->b0 = 1;
@@ -434,7 +430,7 @@ void func_ov011_021fc0b8(Ov011Ctl *self) {
         on = TRUE;
         for (; n != NULL; n = n->next) {
             Ov011Slot *s;
-            a = Ov011_FindActor(n->id);
+            a = Ov011_FindNpc(n->id);
             s = Ov011Ctl_Find(self, a->id);
             if (s != NULL && !s->b0) {
                 found = s;

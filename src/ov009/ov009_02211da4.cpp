@@ -37,11 +37,6 @@ struct Ov009SpawnDesc {
     s16 parent;
 };
 
-struct Ov009Byte {
-    u8 b0 : 1;
-    u8 b1 : 7;
-};
-
 extern Ov003Actor *func_ov000_02192b24(void *desc);
 
 void func_ov009_02211e6c(Ov009ActSpin *self) {
@@ -73,7 +68,7 @@ void func_ov009_02211e6c(Ov009ActSpin *self) {
     o->pos.y = self->pos.y;
     o->pos.z = self->pos.z;
     o->vfunc_04();
-    ((Ov009Byte *)&FLD(u8, o, 0x16))->b0 = 1;
+    o->flags_0 = 1;
 }
 
 }

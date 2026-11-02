@@ -22,7 +22,7 @@ static inline s32 Ov013_DistXZ(const VecFx32 *a, const VecFx32 *b) {
     return Ov013_Sqrt64(sq);
 }
 
-void func_ov013_021fcef8(Ov003Actor *self) {
+void func_ov013_021fcef8(Ov013ActVt_0220b5e0 *self) {
     switch (self->fsm->st) {
     case 0:
         func_ov000_02190cb0(self->model, data_ov013_0220b5ca, 0x2ab, 0);
@@ -75,14 +75,14 @@ void func_ov013_021fd06c(Ov013ActVt_0220b5e0 *self) {
     func_ov003_021d36fc(self);
 }
 
-void func_ov013_021fd0a4(Ov003Actor *self) {
+void func_ov013_021fd0a4(Ov013ActVt_0220b5e0 *self) {
     if (self->fsm->st == 0) {
         self->hit->unk_30 = 0;
     }
     func_ov003_021d3a88(self);
 }
 
-void func_ov013_021fd0c8(Ov003Actor *self) {
+void func_ov013_021fd0c8(Ov013ActVt_0220b5e0 *self) {
     ActorSub48 *m;
     if (self->fsm->st == 0) {
         if (self->fsm->history[0] == 0xb) {

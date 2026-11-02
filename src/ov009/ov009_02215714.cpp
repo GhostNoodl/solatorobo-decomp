@@ -2,7 +2,7 @@
 
 extern "C" {
 
-extern VecFx32 *func_ov000_0218d2e0(void *self);
+extern VecFx32 *func_ov000_0218d2e0(Actor *self);
 extern void Actor_TurnToPos(Actor *self, VecFx32 *v, s32 a);
 extern void HitSphere_Link(ActorSub48 *p);
 extern void func_ov009_02215a6c(Ov009ActExVt_0221802c *self);

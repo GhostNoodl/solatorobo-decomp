@@ -1,4 +1,5 @@
 #include "ov009/ov009.h"
+#include "ov000/FieldCam.h"
 
 extern "C" {
 
@@ -11,22 +12,6 @@ extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
 extern void func_02049f44(void *mgr, s32 id, const VecFx32 *pos, s32 a);
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern BOOL func_ov000_0219aae8(Actor *a, Actor *b, u16 c, u8 d, u16 e, VecFx32 *f, void *g, s32 h, s32 i, s16 j, s32 k);
-
-struct Ov009AngSrc {
-    u8 unk_00[0x40];
-    u16 unk_40;
-    u8 unk_42[2];
-    u16 unk_44;
-};
-
-extern u16 Camera_GetYaw(Ov009AngSrc *p);
-
-static inline s32 Ov009_GetAng(Ov009AngSrc *p) {
-    if (p->unk_40 != 0) {
-        return p->unk_44;
-    }
-    return Camera_GetYaw(p);
-}
 
 static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
@@ -167,7 +152,7 @@ void func_ov009_02205490(Ov009ActVt_02216bc8 *self) {
         VEC_Distance(&self->pos, &v2);
         o = func_02065f88(0x389, &self->pos);
         o->SetScaleAll(0x3000);
-        h = Ov009_GetAng((Ov009AngSrc *)((u8 *)data_ov000_021ccd54 + 0xf4));
+        h = FieldCam_GetYaw(&data_ov000_021ccd54->cam);
         r.x = 0;
         r.y = 0;
         r.z = -0x800;

@@ -9,9 +9,9 @@ extern u8 data_ov009_02216ab6[];
 extern void func_ov000_0216912c(void *p, u16 id, s32 a, u16 b, u16 c, const VecFx32 *pos);
 
 static inline void Ov009_Notify(u16 id, u16 a, u16 b, const VecFx32 *pos) {
-    void *g = FLD(void *, data_ov000_021ccd30, 0x11c);
-    if (g != NULL && FLD(void *, g, 0x60) != NULL) {
-        func_ov000_0216912c(FLD(void *, g, 0x60), id, 0, a, b, pos);
+    FieldActor *g = data_ov000_021ccd30->unk_11c;
+    if (g != NULL && g->unk_60 != NULL) {
+        func_ov000_0216912c(g->unk_60, id, 0, a, b, pos);
     }
 }
 

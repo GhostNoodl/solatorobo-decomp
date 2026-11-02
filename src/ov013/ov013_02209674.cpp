@@ -19,11 +19,11 @@ static inline Ov003Actor *Ov013_FindActor(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-static inline void Ov013_Land(Ov003Actor *self) {
+static inline void Ov013_Land(Ov013Act_02207968 *self) {
     func_ov000_02190cb0(self->model, data_ov013_0220be82, 0x155, 0);
     func_ov000_02191318(self->model, 0x96000);
     func_0204a028(data_02097e4c, 0x39, &self->pos, 2);
-    FLD(u8, self, 0xf0) = 2;
+    self->unk_f0 = 2;
     func_ov000_02198360(self->fsm, 1, 0);
     self->fsm->st = 7;
 }
@@ -49,7 +49,7 @@ void func_ov013_02209674(Ov013Act_02207968 *self) {
     Ov013_Land(self);
 }
 
-void func_ov013_0220976c(Ov003Actor *self) {
+void func_ov013_0220976c(Ov013Act_02207968 *self) {
     Ov003Actor *t;
     func_ov003_021d3d28(self);
     if (self->fsm->current != 1) {
@@ -63,7 +63,7 @@ void func_ov013_0220976c(Ov003Actor *self) {
     Ov013_Land(self);
 }
 
-void func_ov013_02209830(Ov003Actor *self) {
+void func_ov013_02209830(Ov013Act_02207968 *self) {
     if (self->fsm->st == 0) {
         if (self->pos.y < 0x4800) {
             self->pos.y = 0x4800;
@@ -80,7 +80,7 @@ void func_ov013_02209830(Ov003Actor *self) {
     Ov013_Land(self);
 }
 
-void func_ov013_02209908(Ov003Actor *self) {
+void func_ov013_02209908(Ov013Act_02207968 *self) {
     if (self->fsm->st == 0) {
         if (self->pos.y < 0x4800) {
             self->pos.y = 0x4800;
@@ -97,7 +97,7 @@ void func_ov013_02209908(Ov003Actor *self) {
     Ov013_Land(self);
 }
 
-void func_ov013_022099e0(Ov003Actor *self) {
+void func_ov013_022099e0(Ov013Act_02207968 *self) {
     ActorSub48 *m;
     if (self->fsm->st == 0) {
         m = self->hit;
@@ -113,7 +113,7 @@ void func_ov013_022099e0(Ov003Actor *self) {
     Ov013_Land(self);
 }
 
-void func_ov013_02209aac(Ov003Actor *self) {
+void func_ov013_02209aac(Ov013Act_02207968 *self) {
     if (self->fsm->st == 0) {
         EffectObj *fx;
         ActorMgr_BroadcastKind(data_ov000_021ccd68, 0x4811, 10);

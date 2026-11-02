@@ -45,28 +45,28 @@ void func_ov011_02200af0(Ov003Actor *self) {
     }
 }
 
-void func_ov011_02200b10(void *self) {
+void func_ov011_02200b10(Ov003Actor *self) {
 }
 
-void func_ov011_02200b14(void *self) {
+void func_ov011_02200b14(Ov003Actor *self) {
 }
 
-void func_ov011_02200b18(void *self) {
+void func_ov011_02200b18(Ov003Actor *self) {
 }
 
-void func_ov011_02200b1c(void *self) {
+void func_ov011_02200b1c(Ov003Actor *self) {
 }
 
-void func_ov011_02200b20(void *self) {
+void func_ov011_02200b20(Ov003Actor *self) {
 }
 
-void func_ov011_02200b24(void *self) {
+void func_ov011_02200b24(Ov003Actor *self) {
 }
 
-void func_ov011_02200b28(void *self) {
+void func_ov011_02200b28(Ov003Actor *self) {
 }
 
-void func_ov011_02200b2c(void *self) {
+void func_ov011_02200b2c(Ov003Actor *self) {
 }
 
 void func_ov011_02200b30(Ov011V *self) {
@@ -1510,25 +1510,25 @@ void func_ov011_02203040(Actor *self) {
     func_ov000_02190a80(self->model, func_0203db40(&self->pause));
 }
 
-void func_ov011_0220306c(void *self) {
+void func_ov011_0220306c(Ov003Actor *self) {
 }
 
-void func_ov011_02203070(void *self) {
+void func_ov011_02203070(Ov003Actor *self) {
 }
 
-void func_ov011_02203074(void *self) {
+void func_ov011_02203074(Ov003Actor *self) {
 }
 
-void func_ov011_02203078(void *self) {
+void func_ov011_02203078(Ov003Actor *self) {
 }
 
-void func_ov011_0220307c(void *self) {
+void func_ov011_0220307c(Ov003Actor *self) {
 }
 
-void func_ov011_02203080(void *self) {
+void func_ov011_02203080(Ov003Actor *self) {
 }
 
-void func_ov011_02203084(void *self) {
+void func_ov011_02203084(Ov003Actor *self) {
 }
 
 void Ov011ActVt_02207b34_Start(Ov003Actor *self) {

@@ -6,7 +6,7 @@ extern char data_ov013_0220be7c[];
 extern Ov003Actor *Actor_GetTarget(Actor *self);
 extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *t, s32 a);
 
-void func_ov013_02206ca8(Ov003Actor *self) {
+void func_ov013_02206ca8(Ov013ActVt_0220bdd8 *self) {
     Ov003Actor *t;
     if (self->fsm->st == 0) {
         func_ov000_02190cb0(self->model, data_ov013_0220be7c, 0x19a, 0);

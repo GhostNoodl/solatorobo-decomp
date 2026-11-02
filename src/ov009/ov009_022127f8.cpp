@@ -44,13 +44,6 @@ void func_ov009_022127f8(Ov009ActSpin *self) {
 }
 
 
-struct Ov009CamDA {
-    u8 b0 : 2;
-    u8 b2 : 2;
-    u8 b4 : 1;
-    u8 b5 : 3;
-};
-
 extern void *data_02097e4c;
 extern void func_0203f920(void *mesh);
 extern void *func_02049a48(void *mgr, s32 id, s32 a, s32 b, s32 c);
@@ -133,11 +126,11 @@ void func_ov009_02212978(Ov009ActVt_02217a00 *self) {
         }
         VEC_Add(&self->pos, (VecFx32 *)&self->speed, &self->pos);
         if (self->unk_1a == 0) {
-            u8 *g = (u8 *)data_ov000_021ccd54 + 0xf4;
-            FLD(s32, g, 0xf4) = 0xf000;
-            FLD(Ov009CamDA, g, 0xda).b2 = 1;
-            FLD(u16, g, 0xf8) = 0x1800;
-            FLD(Ov009CamDA, g, 0xda).b4 = 1;
+            FieldCam *g = &data_ov000_021ccd54->cam;
+            g->unk_f4 = 0xf000;
+            g->unk_da_2 = 1;
+            g->unk_f8 = 0x1800;
+            g->unk_da_4 = 1;
             return;
         }
         if (self->fsm->timer % 35 == 0) {

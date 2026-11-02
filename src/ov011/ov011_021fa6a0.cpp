@@ -290,7 +290,6 @@ extern "C" {
 
 BOOL Ov003Mover_Start(void *self, const VecFx32 *target, const VecFx32 *start, s32 speed, s32 maxDist, u8 noSnap);
 void func_ov003_021d7c08(void *self, const VecFx32 *target);
-void func_ov011_02201214(void *self, void *p);
 
 static inline Ov011PNode *Ov011_NewPNode(const VecFx32 *v) {
     Ov011PNode *n = (Ov011PNode *)Heap_Alloc(0x10);
@@ -305,7 +304,7 @@ void func_ov011_021fb02c(Ov011Mgr *self) {
     VecFx32 v;
     VecFx32 p;
     VecFx32 v2;
-    Actor *a;
+    Ov011Npc *a;
     u16 i;
     s32 j;
     Ov011Ent *e;
@@ -316,7 +315,7 @@ void func_ov011_021fb02c(Ov011Mgr *self) {
         v = actor->pos;
         v.y += 0x6800;
         for (i = 0; i < self->count; i++) {
-            a = Ov011_FindActor(self->ids[i]);
+            a = Ov011_FindNpc(self->ids[i]);
             if (a != NULL) {
                 p = a->pos;
                 Ov003Mover_Start(&self->arr8[i], &v, &p, 0x52, 0x3000, 0);
@@ -332,7 +331,7 @@ void func_ov011_021fb02c(Ov011Mgr *self) {
     }
     ok = TRUE;
     for (i = 0; i < self->count; i++) {
-        a = Ov011_FindActor(self->ids[i]);
+        a = Ov011_FindNpc(self->ids[i]);
         if (a != NULL) {
             a->pos = *(VecFx32 *)self->arr8[i].v10();
             if (!self->arr8[i].v14()) {
@@ -344,7 +343,7 @@ void func_ov011_021fb02c(Ov011Mgr *self) {
         return;
     }
     for (j = 0; j < self->count; j++) {
-        a = Ov011_FindActor(self->ids[j]);
+        a = Ov011_FindNpc(self->ids[j]);
         if (a != NULL) {
             VecFx32 delta;
             Ov011PNode *n;

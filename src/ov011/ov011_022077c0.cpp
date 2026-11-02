@@ -265,20 +265,20 @@ void func_ov011_021fff38(Ov011SceneActor *self) {
 namespace m_0220023c {
 extern "C" {
 
-void Actor_TurnToActor(void *self, void *target, s32 c);
+void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
 void func_ov000_02191690(void *a);
 void func_ov000_02191708(void *a);
 void func_ov000_021911c8(void *a, s32 b);
 
 #pragma force_active on
 void func_ov011_0220023c(Ov011SceneActor *self) {
-    void *pl;
+    Actor *pl;
     Ov003Param *q;
     s32 s;
     if (self->unk_108 == NULL) {
         return;
     }
-    pl = func_ov000_0219bf90();
+    pl = (Actor *)func_ov000_0219bf90();
     q = self->unk_b0;
     if (q != NULL && pl != NULL && (s = self->unk_108->unk_02) != 0) {
         Actor_TurnToActor(self, pl, FX_Mul(q->unk_02, s));
@@ -419,7 +419,6 @@ namespace m_0220068c {
 extern "C" {
 
 void __cxa_vec_delete(void *arr, u32 size, u32 hdr, void *dtor);
-void *func_ov011_021fb66c(void *self);
 void func_ov003_021d7800(void *p);
 void func_ov011_02201688(void *p);
 void func_ov011_0220205c(void *p);

@@ -10,16 +10,15 @@ extern "C" {
 extern char data_ov013_0220b88d[];
 extern void func_ov000_0219763c(Actor *self);
 extern void func_ov000_02195d88(Actor *self);
-extern void func_ov000_02196060(Ov003Actor *self);
 extern Ov003Actor *ActorMgr_GetActor(void *mgr, u16 id);
-extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
+extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern BOOL Ov003Vec_Equal(void *a, const Ov013Spot *b);
 
 void func_ov013_021fe884(Ov013ActEx_021fdb70 *self) {
     if (self->fsm->st == 0) {
-        void *p = func_020657b0(data_0214a420, self->unk_d0);
+        EffectObj *p = func_020657b0(data_0214a420, self->unk_d0);
         if (p != NULL) {
-            FLD(s32, p, 0x1c) = 4;
+            p->state = 4;
             self->unk_d0 = -1;
         }
     }
@@ -50,13 +49,13 @@ void func_ov013_021fe90c(void) {
 void func_ov013_021fe910(void) {
 }
 
-Ov003Actor *Ov013ActEx_021fdb70_DtorDelete(Ov003Actor *self) {
+Ov013ActEx_021fdb70 *Ov013ActEx_021fdb70_DtorDelete(Ov013ActEx_021fdb70 *self) {
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
 }
 
-Ov003Actor *Ov013ActEx_021fdb70_Dtor(Ov003Actor *self) {
+Ov013ActEx_021fdb70 *Ov013ActEx_021fdb70_Dtor(Ov013ActEx_021fdb70 *self) {
     func_ov000_0219429c(self);
     return self;
 }

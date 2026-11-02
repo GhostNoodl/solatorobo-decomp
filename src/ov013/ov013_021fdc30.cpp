@@ -18,7 +18,7 @@ static inline Ov003Actor *Ov013_FindActor(u16 id) {
     return ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-void func_ov013_021fdc30(Ov003Actor *self) {
+void func_ov013_021fdc30(Ov013ActEx_021fdb70 *self) {
     Ov003Actor *t = Ov013_FindActor(self->target);
     if (t == NULL) {
         return;
@@ -238,7 +238,7 @@ void func_ov013_021fdedc(Ov013ActEx_021fdb70 *self) {
         break;
     }
     case 0x28: {
-        void *p;
+        EffectObj *p;
         VecFx32 v;
         EffectObj *o;
         q->timer++;
@@ -247,7 +247,7 @@ void func_ov013_021fdedc(Ov013ActEx_021fdb70 *self) {
         }
         p = func_020657b0(data_0214a420, self->unk_d0);
         if (p != NULL) {
-            FLD(s32, p, 0x1c) = 4;
+            p->state = 4;
             self->unk_d0 = -1;
         }
         v.x = self->pos.x;

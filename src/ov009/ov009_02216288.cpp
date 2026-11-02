@@ -164,8 +164,8 @@ void func_ov009_0220d5f8(Ov009ActPair110 *self) {
     }
 }
 
-extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
-extern u16 ActorGroup_CountKind(Ov003Actor *a, u16 id);
+extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
+extern u16 ActorGroup_CountKind(ActorGroup *group, u16 kind);
 
 static inline BOOL Ov009Game_IsPaused(FieldState *g) {
     return g->event != 0;
@@ -1277,17 +1277,13 @@ static inline s32 Ov009_DistXZ(const VecFx32 *a, const VecFx32 *b) {
     return Ov009_Sqrt64(sq);
 }
 
-struct Ov009Group {
-    u8 unk_00[0xc];
-    Ov003Actor *head;
-};
 
-extern Ov009Group *ActorMgr_GetGroup(void *mgr, u16 id);
+extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 
 void Ov009ActVt_02217e08_Update(Ov009ActVt_02217e08 *self) {
     Ov003Actor *p;
-    Ov009Group *g;
-    Ov003Actor *a;
+    ActorGroup *g;
+    Actor *a;
     if (!Ov009_GameIdle()) {
         return;
     }
@@ -1328,7 +1324,7 @@ void Ov009ActVt_02217e08_Update(Ov009ActVt_02217e08 *self) {
             a->hit != NULL) {
             a->hit->unk_30 = 0;
         }
-        a = (a != NULL) ? ((Ov003Actor *)a->next) : g->head;
+        a = (a != NULL) ? a->next : g->head;
     } while (a != NULL);
 }
 

@@ -235,10 +235,6 @@ struct Ov011ArgB {
 };
 
 void ActorMgr_SendMsg(u16 a, u16 b, u8 c, BOOL d, u32 e, const void *f);
-u32 func_ov011_02201244(void *self);
-void *func_ov011_02201254(void *self);
-BOOL Ov011Mov_Start(void *self, const VecFx32 *pos, const VecFx32 *vel, s32 scale, s32 accel);
-VecFx32 *Ov011Mov_GetPos(void *self);
 extern const VecFx32 data_ov011_0220729c;
 extern const VecFx32 data_ov011_022072a8;
 
@@ -305,7 +301,7 @@ void func_ov011_021fb9b8(Ov011Mgr2 *self, Actor *owner) {
     case 0: {
         any = FALSE;
         for (n = head; n != NULL; n = n->next) {
-            if (func_ov011_02201244(Ov011_FindActor(n->id))) {
+            if (func_ov011_02201244(Ov011_FindNpc(n->id))) {
                 any = TRUE;
             }
         }
@@ -328,7 +324,7 @@ void func_ov011_021fb9b8(Ov011Mgr2 *self, Actor *owner) {
     case 1: {
         ok = TRUE;
         for (n = head; n != NULL; n = n->next) {
-            Actor *a = Ov011_FindActor(n->id);
+            Ov011Npc *a = Ov011_FindNpc(n->id);
             if (func_ov011_02201244(a)) {
                 s32 y;
                 Ov011Ent *e;

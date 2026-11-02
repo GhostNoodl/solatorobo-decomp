@@ -124,7 +124,7 @@ void func_ov010_022075bc(Ov010Obj02210154 *self) {
     func_ov003_021cf400(0);
 }
 
-extern s32 func_ov000_02199128(s32 *out, Ov010Query *q, void **list, s32 max);
+extern s32 func_ov000_02199128(s32 *out, Ov010Query *q, Actor **list, s32 max);
 
 extern s32 VEC_Distance(const VecFx32 *a, const VecFx32 *b);
 extern BOOL Ov003Vec_Equal(VecFx32 *a, VecFx32 *b);
@@ -140,12 +140,12 @@ static inline s32 Ov010_Clamp(s32 v, s32 lo, s32 hi) {
     return v;
 }
 
-static inline void Ov010_Move(Ov010Obj0220ffe4 *self) {
+static inline void Ov010_Move(Ov010Obj02210154 *self) {
     Ov003Vec_MultAdd(&self->pos, &self->moveDir, &self->pos, self->speed, self->velY);
     func_ov003_021da2c8(self, self->speed, self->velY, self->friction, self->gravity);
 }
 
-void func_ov010_02207828(Ov010Obj0220ffe4 *self) {
+void func_ov010_02207828(Ov010Obj02210154 *self) {
     VecFx32 t;
     t.x = self->unk_b8.x;
     t.y = self->unk_b8.y;
@@ -185,7 +185,7 @@ static inline void Ov010Query_Set(Ov010Query *q, const VecFx32 *pos, u16 rot, u1
 }
 
 BOOL func_ov010_0220794c(Actor *self) {
-    void *list[0x20];
+    Actor *list[0x20];
     Ov010Query q;
     s32 out;
     BOOL found = FALSE;
@@ -195,15 +195,15 @@ BOOL func_ov010_0220794c(Actor *self) {
     out = 0;
     n = func_ov000_02199128(&out, &q, list, 0x20);
     for (i = 0; i < n; i++) {
-        void *a = list[i];
+        Actor *a = list[i];
         if (a != NULL) {
             u8 st;
-            if (FLD(void *, a, 0x40) != NULL) {
-                st = FLD(u8, FLD(void *, a, 0x40), 0x13);
+            if (a->fsm != NULL) {
+                st = a->fsm->current;
             } else {
                 st = 0;
             }
-            if (st == 0xb && FLD(u16, a, 0x90) == self->id) {
+            if (st == 0xb && a->target == self->id) {
                 found = TRUE;
             }
         }
@@ -220,8 +220,6 @@ extern char data_ov010_0220ffae[];
 extern void *Ov003Vt_021f7d10_Ctor(void *p);
 extern void *Ov003Vt_021f7cd8_Ctor(void *p);
 extern void func_ov010_02207520(Ov010Obj02210154 *self);
-extern void Ov010ActVt_02210154_Start(void *self);
-extern BOOL func_ov010_0220441c(void *self, void *msg);
 
 static inline void Ov010_02204204_Body(Ov010Obj02210154 *self) {
     func_ov003_021d0c1c(self);
@@ -259,8 +257,8 @@ void Ov010ActVt_0220ffe4_Start(Ov010Obj0220ffe4 *self) {
     self->unk_f3 = self->unk_18 == 3;
 }
 
-void func_ov010_02207b90(Ov010Obj0220ffe4 *self, void *msg) {
-    if (msg != NULL && FLD(u8, msg, 5) == 2) {
+void func_ov010_02207b90(Ov010Obj0220ffe4 *self, ActorMsg *msg) {
+    if (msg != NULL && msg->type == 2) {
         self->unk_1fc = 0;
     }
     func_ov010_0220441c(self, msg);
@@ -438,7 +436,6 @@ extern BOOL func_ov000_02191120(Model0218fe1c *a);
 extern const VecFx32 data_ov010_0220f108;
 extern VecFx32 data_ov010_0220f114;
 extern VecFx32 data_ov010_0220f120;
-extern void Actor_Move(Actor *self, s32 a);
 
 struct Ov010Rot3 {
     s16 v[3];
@@ -512,18 +509,18 @@ void func_ov010_0220813c(Ov010Obj0220ffe4 *self) {
     }
     case 0x28: {
         Ov010Rot3 r;
-        void *o;
+        Actor *o;
         r = FLD(Ov010Rot3, data_ov010_0220f024, 0x5c);
         o = func_ov003_021da32c(0x5816);
-        Ov010_VecSet(&FLD(VecFx32, o, 0x70), 0x2ee1, -0xc000, -0x2000);
-        FLD(u16, o, 0x7c) = r.v[0];
-        FLD(u16, o, 0x7e) = r.v[1];
-        FLD(u16, o, 0x80) = r.v[2];
+        Ov010_VecSet(&o->pos, 0x2ee1, -0xc000, -0x2000);
+        o->rot_x = r.v[0];
+        o->rot_y = r.v[1];
+        o->rot_z = r.v[2];
         o = func_ov003_021da32c(0x5816);
-        Ov010_VecSet(&FLD(VecFx32, o, 0x70), -0x2571, -0xc000, -0x2000);
-        FLD(u16, o, 0x7c) = r.v[0];
-        FLD(u16, o, 0x7e) = r.v[1];
-        FLD(u16, o, 0x80) = r.v[2];
+        Ov010_VecSet(&o->pos, -0x2571, -0xc000, -0x2000);
+        o->rot_x = r.v[0];
+        o->rot_y = r.v[1];
+        o->rot_z = r.v[2];
         func_02065f88(0x579, &data_ov010_0220f114)->SetScaleAll(0x2000);
         func_02065f88(0x579, &data_ov010_0220f120)->SetScaleAll(0x2000);
         func_02049f44(data_02097e4c, 0x5c, &self->pos, 0);

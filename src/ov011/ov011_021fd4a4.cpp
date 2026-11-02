@@ -97,8 +97,6 @@ extern const VecFx32 data_ov011_02207284;
 void func_ov011_021fdb28(Ov011Scene *self);
 BOOL func_ov003_021d7814(void *p);
 void func_ov003_021d7800(void *p);
-void *func_ov011_02201254(void *self);
-void func_ov011_02201214(void *self, void *a);
 Ov011PNode *func_ov011_021fa790(Ov011PNode *head, Ov011PNode *item);
 Ov011Node *func_ov011_021fdadc(Ov011Node *head, Ov011Node *n);
 void func_ov011_02201758(void *p);
@@ -175,7 +173,7 @@ void func_ov011_021fd638(Ov011Scene *self) {
     while (n != NULL) {
         next = n->next;
         if (!func_ov003_021d7814(n)) {
-            Actor *a = Ov011_FindActor(n->id);
+            Ov011Npc *a = Ov011_FindNpc(n->id);
             if (a != NULL) {
                 Ov011Ent_Remove(&self->ent, func_ov011_02201254(a));
                 func_ov011_02201214(a, NULL);

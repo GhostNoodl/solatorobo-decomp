@@ -200,6 +200,7 @@ public:
     u8 unk_491;
     u16 unk_492;
     VecFx32 unk_494;
+    VecFx32 unk_4a0; // point the actor moves toward (func_ov009_02208204)
 };
 
 struct Ov009Path {

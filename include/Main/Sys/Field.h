@@ -28,6 +28,8 @@ typedef struct FieldActorState {
 typedef struct FieldActor {
     /* 0x00 */ u8 unk_00[0x54];
     /* 0x54 */ FieldActorState *state;
+    /* 0x58 */ u8 unk_58[0x8];
+    /* 0x60 */ void *unk_60; // passed to func_ov000_0216912c by the ov009 actors
 } FieldActor;
 
 typedef struct FieldPlayer {

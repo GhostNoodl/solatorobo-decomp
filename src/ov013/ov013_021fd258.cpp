@@ -7,9 +7,6 @@ extern char data_ov013_0220b860[];
 extern void *data_ov013_0220b7d0[];
 extern void func_ov000_021984f4(void *a, s32 b, s32 c);
 extern void func_ov000_0219864c(ActorSub48 *a, VecFx32 *b, u16 *c);
-extern void func_ov000_0219433c(void *self);
-extern BOOL func_ov000_021946f8(ActorEx *self);
-extern void func_ov000_02194758(void *self);
 extern Ov003Actor *func_ov000_0219bf90(void);
 
 void func_ov013_021fd258(Ov013ActVt_0220b5e0 *self) {
@@ -78,23 +75,23 @@ void func_ov013_021fd370(Ov003Actor *self) {
     self->vfunc_64();
 }
 
-Ov003Actor *Ov013Boss_Dtor(Ov003Actor *self) {
+Ov013Boss *Ov013Boss_Dtor(Ov013Boss *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov003Actor *Ov013Boss_DtorDelete(Ov003Actor *self) {
+Ov013Boss *Ov013Boss_DtorDelete(Ov013Boss *self) {
     func_ov003_021d0edc(self);
     Heap_Free(self);
     return self;
 }
 
-Ov003Actor *Ov013ActVt_0220b5e0_Dtor(Ov003Actor *self) {
+Ov013ActVt_0220b5e0 *Ov013ActVt_0220b5e0_Dtor(Ov013ActVt_0220b5e0 *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-Ov003Actor *Ov013ActVt_0220b5e0_DtorDelete(Ov003Actor *self) {
+Ov013ActVt_0220b5e0 *Ov013ActVt_0220b5e0_DtorDelete(Ov013ActVt_0220b5e0 *self) {
     func_ov003_021d0edc(self);
     Heap_Free(self);
     return self;
@@ -103,9 +100,9 @@ Ov003Actor *Ov013ActVt_0220b5e0_DtorDelete(Ov003Actor *self) {
 static inline void Ov013_StopHtr(Ov013ActExVt_0220b7d0 *self) {
     s32 i;
     for (i = 0; i < 2; i++) {
-        void *p = func_020657b0(data_0214a420, FLD(s32, (u8 *)self + i * 4, 0xd0));
+        EffectObj *p = func_020657b0(data_0214a420, self->unk_d0[i]);
         if (p != NULL) {
-            FLD(s32, p, 0x1c) = 4;
+            p->state = 4;
         }
     }
     if (func_02035b90(data_ov013_0220b860, 7)) {
@@ -149,7 +146,7 @@ void Ov013ActExVt_0220b7d0_Start(Ov013ActExVt_0220b7d0 *self) {
         self->target = p->id;
     }
     for (i = 0; i < 2; i++) {
-        FLD(s32, (u8 *)self + i * 4, 0xd0) = -1;
+        self->unk_d0[i] = -1;
     }
     self->unk_ce = 0x96;
     self->unk_d8 = 0xccd;
@@ -219,11 +216,11 @@ void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
         o->loopCount = -1;
         o->SetScaleAll(self->unk_d8);
         EffectObj_AddSndCue(o, 0x3e, 6);
-        self->unk_d0 = o->id;
+        self->unk_d0[0] = o->id;
         o = EffectGroup_Create(f, data_ov013_0220b87b, &pos);
         o->loopCount = -1;
         o->SetScaleAll(self->unk_d8 >> 1);
-        self->unk_d4 = o->id;
+        self->unk_d0[1] = o->id;
         self->fsm->st++;
         self->fsm->timer = 0;
         break;
@@ -244,7 +241,7 @@ void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
         break;
     }
     case 2: {
-        EffectObj *o = func_020657b0(data_0214a420, self->unk_d0);
+        EffectObj *o = func_020657b0(data_0214a420, self->unk_d0[0]);
         s32 v = 0;
         if (o != NULL) {
             EffectObj *o2;
@@ -256,7 +253,7 @@ void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
                 v = 0;
             }
             Ov013_SetAlpha(o, v);
-            o2 = func_020657b0(data_0214a420, self->unk_d4);
+            o2 = func_020657b0(data_0214a420, self->unk_d0[1]);
             Ov013_SetAlpha(o2, v);
             if (o2->child != NULL) {
                 Ov013_SetAlpha(o2->child, v);
@@ -277,14 +274,14 @@ void func_ov013_021fd5fc(Ov013ActExVt_0220b7d0 *self) {
     }
     Actor_Move(self, 0);
     for (i = 0; i < 2; i++) {
-        Ov013V *o = (Ov013V *)func_020657b0(data_0214a420, FLD(s32, (u8 *)self + i * 4, 0xd0));
+        EffectObj *o = func_020657b0(data_0214a420, self->unk_d0[i]);
         if (o != NULL) {
             if (i == 0) {
-                o->v14(self->unk_d8, FX_Mul(self->unk_d8, 0x1333), self->unk_d8);
+                o->SetScaleXYZ(self->unk_d8, FX_Mul(self->unk_d8, 0x1333), self->unk_d8);
             } else {
-                o->v0c(self->unk_d8 >> 1);
+                o->SetScaleAll(self->unk_d8 >> 1);
             }
-            o->v18(&self->pos);
+            o->SetPos(&self->pos);
         }
     }
     if (self->pos.y < 0) {

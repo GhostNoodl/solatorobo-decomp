@@ -612,26 +612,6 @@ struct Ov011ActMsg {
     } u;
 };
 
-// The player actor (func_ov000_0219bf90); only the fields ov011 reads.
-class Ov011Player : public Actor {
-public:
-    // 0xac..0xcb laid out as in Ov003Actor
-    u8 unk_ac[0x4];
-    Ov003Param *unk_b0;
-    u16 unk_b4;
-    u16 unk_b6;
-    VecFx32 unk_b8;
-    s32 unk_c4;
-    s32 unk_c8;
-    u8 unk_cc[0xa24];
-    VecFx32 unk_af0;
-    u8 unk_afc[0x20];
-    u16 unk_b1c;
-    u8 unk_b1e[0x72];
-    VecFx32 unk_b90;
-    s32 unk_b9c;
-};
-
 static inline Actor *Ov011_FindActor(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
         return NULL;
@@ -639,14 +619,19 @@ static inline Actor *Ov011_FindActor(u16 id) {
     return (Actor *)ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
+// The scene node lists name Ov011Npc actors by id.
+static inline Ov011Npc *Ov011_FindNpc(u16 id) {
+    return static_cast<Ov011Npc *>(Ov011_FindActor(id));
+}
+
 static inline BOOL Ov011_ActorValid(u16 id) {
     Actor *a;
-    Ov011Player *pl;
+    Robo021ca458 *pl;
     a = Ov011_FindActor(id);
     if (a == NULL) {
         return FALSE;
     }
-    pl = (Ov011Player *)func_ov000_0219bf90();
+    pl = (Robo021ca458 *)func_ov000_0219bf90();
     if (pl == NULL) {
         return FALSE;
     }
@@ -667,7 +652,20 @@ static inline BOOL Ov011_NodeValid(Ov011Node *n) {
     return r;
 }
 
-
+// ov011 member functions, declared once with their classes (round acD).
+extern "C" {
+void func_ov011_022011c0(Ov011Npc *self, u16 v);
+void func_ov011_02201214(Ov011Npc *self, void *p);
+u32 func_ov011_02201244(Ov011Npc *self);
+void *func_ov011_02201254(Ov011Npc *self);
+BOOL Ov011Mov_Start(Ov011Mov *self, const VecFx32 *pos, const VecFx32 *vel, s32 scale, s32 accel);
+VecFx32 *Ov011Mov_GetPos(Ov011Mov *self);
+void *func_ov011_021fb66c(Ov011E40 *self);
+void func_ov011_021fff38(Ov011SceneActor *self);
+void func_ov011_0220023c(Ov011SceneActor *self);
+void func_ov011_02200310(Ov011SceneActor *self);
+void func_ov011_0220068c(Ov011SceneActor *self);
+}
 
 // v * the 3x3 part of m (the rotation of a 4x3 matrix), as MTX_MultVec33 would compute it.
 static inline void Ov011_MulVec33(const VecFx32 *v, const MtxFx43 *m, VecFx32 *out) {

@@ -83,12 +83,12 @@ static inline BOOL Ov009Game_IsPaused(FieldState *g) {
 }
 
 extern Ov003Actor *func_ov000_0219bf90(void);
-extern Ov003Actor *ActorMgr_GetGroup(void *mgr, u16 id);
+extern ActorGroup *ActorMgr_GetGroup(void *mgr, u16 id);
 extern void func_01ffc9fc(VecFx32 *dst, VecFx32 *src, u16 angle);
-extern void Actor_TurnToActor(Ov003Actor *self, Ov003Actor *other, s32 a);
+extern void Actor_TurnToActor(Actor *self, Actor *other, s32 step);
 
 void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
-    Ov003Actor *pl;
+    Robo021ca458 *pl;
     s32 dist;
     s32 dy;
     if (!Ov009_GameIdle()) {
@@ -102,7 +102,7 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
         return;
     }
     self->target = 0xffff;
-    pl = func_ov000_0219bf90();
+    pl = (Robo021ca458 *)func_ov000_0219bf90();
     if (pl == NULL) {
         return;
     }
@@ -138,7 +138,7 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
         max = 3;
         if (self->kind == 0x5012) {
             max = 2;
-            if (FLD(u16, pl, 0xb1e) != 0xffff) {
+            if (pl->unk_b1e != 0xffff) {
                 time = 0x1a4;
             } else {
                 time = 0x12c;
@@ -148,8 +148,8 @@ void Ov009ActVt_02216750_Update(Ov009ActVt_02216750 *self) {
             }
         }
         {
-            Ov003Actor *o = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
-            if (o != NULL && FLD(u16, o, 0x16) < max) {
+            ActorGroup *o = ActorMgr_GetGroup(data_ov000_021ccd68, 0x5000);
+            if (o != NULL && o->count < max) {
                 VecFx32 ofs;
                 Actor *e;
                 ofs.x = 0;

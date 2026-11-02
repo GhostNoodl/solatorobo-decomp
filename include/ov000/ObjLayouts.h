@@ -67,10 +67,12 @@ struct ActorEx : public Actor {
     };
     union {
         u16 unk_ce;
-        struct { // bytes as some ov013 classes use them
+        struct { // bytes as some ov010/ov011/ov013 classes use them
             u8 unk_ce_0 : 1;
             u8 unk_ce_1 : 1;
-            u8 unk_ce_2 : 6;
+            u8 unk_ce_2 : 1;
+            u8 unk_ce_3 : 1;
+            u8 unk_ce_4 : 4;
             s8 unk_cf;
         };
     };

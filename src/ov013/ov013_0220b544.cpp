@@ -1,6 +1,6 @@
 #include "ov013/ov013.h"
 
-struct Ov013Rot { u16 x, y, z; };
+typedef ActorRot Ov013Rot;
 struct Ov013Offs5 { u16 v[5]; };
 
 // A header's zero rotation and vector, plus copies made at startup, among this TU's constants.
@@ -49,7 +49,6 @@ extern const u8 data_ov003_021f4340;
 extern char data_ov013_0220ba6c[];
 extern Ov013Prm data_ov013_0220b308;
 extern u8 data_ov013_0220b324[];
-extern void func_ov000_02194758(void *self);
 extern char data_ov013_0220ba73[];
 extern const Ov013Pmf data_ov013_0220bc60;
 extern Ov013Pmf data_ov013_0220bc68;
@@ -292,7 +291,7 @@ static inline Actor *Ov013_SpawnAt(u16 kind, const VecFx32 *pos, const Ov013Rot 
     Actor *b = func_ov003_021da32c(kind);
     if (b != NULL) {
         b->pos = *pos;
-        FLD(Ov013Rot, b, 0x7c) = *rot;
+        b->rot = *rot;
     }
     return b;
 }
@@ -523,11 +522,7 @@ namespace m_022058d4 {
 class Ov013Cls;
 typedef void (Ov013Cls::*Ov013Pmf)();
 
-struct Ov013Rot {
-    u16 x;
-    u16 y;
-    u16 z;
-};
+typedef ActorRot Ov013Rot;
 
 struct Ov013RotC {
     u16 x;
@@ -550,7 +545,6 @@ extern const u8 data_ov003_021f4340;
 extern char data_ov013_0220ba6c[];
 extern u8 data_ov013_0220b308[];
 extern u8 data_ov013_0220b324[];
-extern void func_ov000_02194758(void *self);
 extern char data_ov013_0220ba73[];
 extern const Ov013Pmf data_ov013_0220bc60;
 extern Ov013Pmf data_ov013_0220bc68;
@@ -608,10 +602,10 @@ void func_ov013_02205760(Ov013ActEx_02204454 *self) {
         c = func_ov003_021da32c(0x480a);
         if (c != NULL) {
             c->pos = self->pos;
-            FLD(Ov013Rot, c, 0x7c) = r;
+            c->rot = r;
             c->target = self->target;
             c->targetObj->target = lvl;
-            FLD(void *, c, 0x60) = data_ov013_0220b324;
+            c->unk_60 = data_ov013_0220b324;
         }
     }
     func_ov000_02198360(self->fsm, 0x15, 1);
@@ -696,11 +690,7 @@ namespace m_02205ae4 {
 class Ov013Cls;
 typedef void (Ov013Cls::*Ov013Pmf)();
 
-struct Ov013Rot {
-    u16 x;
-    u16 y;
-    u16 z;
-};
+typedef ActorRot Ov013Rot;
 
 struct Ov013RotC {
     u16 x;
@@ -726,7 +716,6 @@ extern const u8 data_ov003_021f4340;
 extern char data_ov013_0220ba6c[];
 extern u8 data_ov013_0220b308[];
 extern u8 data_ov013_0220b324[];
-extern void func_ov000_02194758(void *self);
 extern char data_ov013_0220ba73[];
 extern const Ov013Pmf data_ov013_0220bc60;
 extern Ov013Pmf data_ov013_0220bc68;
@@ -774,8 +763,6 @@ extern void func_ov003_021d9980(void *out, u16 rot, const void *v);
 extern void *Ov003Vt_021f79a8_Ctor(void *p);
 extern void *Ov003Vt_021f79a8_Dtor(void *p);
 extern void func_ov003_021cf33c(void *p, void *q);
-extern void *ActorEx_Ctor(void *self);
-extern BOOL func_ov000_02194c08(void *self);
 
 Ov013ActEx_02205ae4 *Ov013ActEx_02205ae4_Ctor(Ov013ActEx_02205ae4 *self) {
     ActorEx_Ctor(self);
@@ -832,11 +819,7 @@ namespace m_02205c64 {
 class Ov013Cls;
 typedef void (Ov013Cls::*Ov013Pmf)();
 
-struct Ov013Rot {
-    u16 x;
-    u16 y;
-    u16 z;
-};
+typedef ActorRot Ov013Rot;
 
 struct Ov013RotC {
     u16 x;
@@ -862,7 +845,6 @@ extern const u8 data_ov003_021f4340;
 extern char data_ov013_0220ba6c[];
 extern u8 data_ov013_0220b308[];
 extern u8 data_ov013_0220b324[];
-extern void func_ov000_02194758(void *self);
 extern char data_ov013_0220ba73[];
 extern const Ov013Pmf data_ov013_0220bc60;
 extern Ov013Pmf data_ov013_0220bc68;
@@ -969,7 +951,6 @@ extern "C" {
 
 extern const u8 data_ov003_021f4344;
 extern char data_ov013_0220ba79[];
-extern void func_ov000_02194758(void *self);
 extern void func_0203f364(ActorSub48 *p);
 extern int func_ov003_021cf330(void *p, const char *name, u8 a);
 extern BOOL func_ov000_021950e8(Actor *self, Ov013Msg *msg);
