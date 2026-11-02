@@ -1,18 +1,15 @@
-#include "ov000/CmdQueue.h"
+#include "ov000/SceneCmd.h"
 #include "ov000/ObjLayouts.h"
 
+// The 0x021ccd50 pool of the scene command TU: data_ov000_021ccd54 is four bytes in.
 typedef struct {
     u8 unk_00[0x4];
-    CmdQueue *unk_04;
+    SceneCmd *scene;
 } Data021ccd50;
 
 typedef struct {
     u16 flags;
 } Obj02097e48;
-
-typedef struct {
-    u8 c[3];
-} Rgb3;
 
 typedef struct {
     u8 unk_00[0x52];
@@ -31,14 +28,14 @@ void *func_0205976c(void *a, int idx);
 u16 func_02059544(void *a, void *b, void *c, u16 d, u16 e);
 BOOL func_020624d8(void);
 
-void func_ov000_02188d28(Rgb3 *rgb) {
+void func_ov000_02188d28(FieldId *id) {
     if (!func_ov000_0219bf90()) {
-        CmdQueue_Push(data_ov000_021ccd50.unk_04, 0xb, 0);
+        CmdObj_Push(data_ov000_021ccd50.scene, 0xb, 0);
     }
     data_02097e48->flags |= 2;
-    CmdQueue_Push(data_ov000_021ccd50.unk_04, 0xa, 0);
-    if (rgb != NULL) {
-        *(Rgb3 *)((u8 *)data_ov000_021ccd50.unk_04 + 0xcd) = *rgb;
+    CmdObj_Push(data_ov000_021ccd50.scene, 0xa, 0);
+    if (id != NULL) {
+        data_ov000_021ccd50.scene->unk_cd = *id;
     }
 }
 

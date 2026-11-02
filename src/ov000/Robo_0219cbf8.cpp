@@ -163,7 +163,7 @@ void func_ov000_0219cdb8(Robo021ca458 *self) {
         v[1] = 0;
         v[2] = 0;
     }
-    if (((u8 *)data_ov000_021ccd54)[0xc9] != 0) {
+    if (data_ov000_021ccd54->unk_c9 != 0) {
         u16 *w = self->hp;
         ListBuffer021cb940 *a;
         u16 v;

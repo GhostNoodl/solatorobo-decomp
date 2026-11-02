@@ -1,4 +1,4 @@
-#include "ov000/CmdObj.h"
+#include "ov000/SceneCmd.h"
 #include "ov000/ActorMgr.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/VObj.h"
@@ -6,62 +6,16 @@
 #include "Main/Gfx/GfxMgr.h"
 
 typedef struct {
-    u8 c[3];
-} Id3;
-
-typedef struct {
     u8 b0 : 2;
     u8 mode : 2;
     u8 b4 : 4;
 } Bits0e;
 
-class Item : public VObj {
-public:
-    u8 pad_04[0xc2];
-    u16 unk_c6;
-    u8 pad_c8[2];
-    u16 unk_ca;
-    u8 pad_cc[8];
-    Item *unk_d4;
-};
-
-class CmdEx : public CmdObj {
-public:
-    u8 unk_ac;
-    u8 pad_ad[7];
-    u16 unk_b4;
-    u8 pad_b6[6];
-    Item *unk_bc;
-    u8 pad_c0[0xa];
-    Id3 unk_ca;
-    Id3 unk_cd;
-    Id3 unk_d0;
-    u8 pad_d3;
-    s32 unk_d4;
-    u8 pad_d8[0xb4];
-    u8 unk_18c;
-    u8 unk_18d;
-    u8 unk_18e;
-    u8 unk_18f;
-};
-
 #define BITS0E(self) (*(Bits0e *)((u8 *)(self) + 0xe))
-
-class Player : public VObj {
-public:
-    u8 pad_04[0x11];
-    u8 unk_15;
-    u8 pad_16[0xb12];
-    u8 f0 : 2;
-    u8 f2 : 1;
-    u8 f3 : 5;
-    u8 pad_b29[5];
-    u8 unk_b2e;
-};
 
 typedef struct {
     u8 pad_00[4];
-    CmdEx *obj;
+    SceneCmd *obj;
 } State021ccd50;
 
 typedef struct {
@@ -100,11 +54,6 @@ typedef struct {
 
 
 typedef struct {
-    u32 b0 : 1;
-    u32 b1 : 31;
-} Obj021ccd70;
-
-typedef struct {
     u8 pad_00[0x12];
     u16 unk_12;
 } Obj02097dc8;
@@ -119,7 +68,6 @@ extern "C" {
 extern State021ccd50 data_ov000_021ccd50;
 extern Mgr021ccd30 *data_ov000_021ccd30;
 extern s32 data_02097d78[];
-extern Obj021ccd70 *data_ov000_021ccd70;
 extern CmdEntry data_ov000_021cc1a0[];
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
@@ -130,12 +78,12 @@ extern void *data_ov000_021ccd64;
 void func_0203cb78(s32 a, s32 b, s32 c);
 BOOL func_ov000_0216f674(void *mgr, s32 a);
 BOOL func_ov000_021705a0(void *p, s32 a);
-Player *func_ov000_0219bf90(void);
-void func_ov000_02188ed0(CmdEx *self);
+Robo021ca458 *func_ov000_0219bf90(void);
+void func_ov000_02188ed0(SceneCmd *self);
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_ov000_021721f4(void *p);
-BOOL func_ov000_02181d70(u8 *p, s32 a);
-void func_02062424(Id3 *id);
+BOOL func_ov000_02181d70(SceneStage *self, u16 id);
+void func_02062424(FieldId *id);
 void func_0204aa10(void *p);
 void func_ov000_0216bcbc(void *p);
 void func_ov000_021645a4(s32 a);
@@ -175,23 +123,23 @@ static inline BOOL Busy(void) {
 }
 
 static inline BOOL Locked(void) {
-    return data_ov000_021ccd70->b0 == 1 ? TRUE : FALSE;
+    return data_ov000_021ccd70->flag0 == 1 ? TRUE : FALSE;
 }
 
 static inline void PlayerIdle(void) {
-    Player *p = func_ov000_0219bf90();
-    if (p != NULL && p->f0 == 0) {
-        p->unk_15 = 3;
-        p->f0 = 0;
-        p->f2 = 1;
+    Robo021ca458 *p = func_ov000_0219bf90();
+    if (p != NULL && p->unk_b28_0 == 0) {
+        p->mode = 3;
+        p->unk_b28_0 = 0;
+        p->unk_b28_2 = 1;
     }
 }
 
-static inline BOOL HasD4(CmdEx *obj) {
-    return (obj->unk_d4 != 0 ? TRUE : FALSE) ? TRUE : FALSE;
+static inline BOOL HasEvent(SceneCmd *obj) {
+    return (obj->event != 0 ? TRUE : FALSE) ? TRUE : FALSE;
 }
 
-static inline BOOL B2e(Player *p) {
+static inline BOOL B2e(Robo021ca458 *p) {
     return p->unk_b2e != 0 ? TRUE : FALSE;
 }
 
@@ -228,15 +176,15 @@ static inline void Start(CmdObj *self, u16 a, u16 b, s32 kind) {
     self->unk_a8 = 0;
 }
 
-static inline BOOL IsFe(CmdEx *self) {
+static inline BOOL IsFe(SceneCmd *self) {
     BOOL r = FALSE;
-    if (self->unk_b4 == 0xfe) {
+    if (self->stage.group == 0xfe) {
         r = TRUE;
     }
     return r;
 }
 
-s32 func_ov000_02189194(CmdEx *self) {
+s32 func_ov000_02189194(SceneCmd *self) {
     BOOL ret = FALSE;
     s32 busy;
     CmdPmf g;
@@ -253,11 +201,11 @@ s32 func_ov000_02189194(CmdEx *self) {
             busy = 1;
         } else {
             if (self->unk_ca.c[0] != 0xfe) {
-                Player *p = func_ov000_0219bf90();
-                if (p != NULL && p->f0 == 0) {
-                    p->unk_15 = 1;
-                    p->f0 = 0;
-                    p->f2 = 0;
+                Robo021ca458 *p = func_ov000_0219bf90();
+                if (p != NULL && p->unk_b28_0 == 0) {
+                    p->mode = 1;
+                    p->unk_b28_0 = 0;
+                    p->unk_b28_2 = 0;
                 }
             }
             self->state = 3;
@@ -316,22 +264,22 @@ s32 func_ov000_02189194(CmdEx *self) {
             break;
         }
         {
-            Player *p = func_ov000_0219bf90();
+            Robo021ca458 *p = func_ov000_0219bf90();
             if (p != NULL) {
                 u16 trg = data_02097dc8->unk_12;
                 if (trg & 0x400) {
                     func_ov000_021721f4(data_ov000_021ccd30);
                 } else if (trg & 8) {
-                    CmdEx *obj = data_ov000_021ccd50.obj;
-                    if (!HasCmd(obj) && !HasD4(obj)) {
+                    SceneCmd *obj = data_ov000_021ccd50.obj;
+                    if (!HasCmd(obj) && !HasEvent(obj)) {
                         BOOL ok = FALSE;
                         if (p->vfunc_14() && !B2e(p)) {
                             ok = TRUE;
                         }
                         if (ok) {
                             u16 n = 0;
-                            Item *it;
-                            for (it = data_ov000_021ccd50.obj->unk_bc; it != NULL; it = it->unk_d4) {
+                            SceneScript *it;
+                            for (it = data_ov000_021ccd50.obj->stage.scripts; it != NULL; it = it->next) {
                                 if (n == 0) {
                                     break;
                                 }
@@ -340,8 +288,8 @@ s32 func_ov000_02189194(CmdEx *self) {
                                 }
                             }
                             if (it != NULL) {
-                                if ((it->unk_c6 == 9 && it->unk_ca >= 3) || (it->unk_c6 == 0x22 && it->unk_ca >= 3) ||
-                                    (it->unk_c6 == 0x35 && it->unk_ca >= 3)) {
+                                if ((it->id == 9 && it->unk_ca >= 3) || (it->id == 0x22 && it->unk_ca >= 3) ||
+                                    (it->id == 0x35 && it->unk_ca >= 3)) {
                                     CmdObj_Push(self, 0x10, 2);
                                 }
                             }
@@ -367,7 +315,7 @@ s32 func_ov000_02189194(CmdEx *self) {
         if (IsMode(3)) {
             break;
         }
-        if (!func_ov000_02181d70(&self->unk_ac, 0xffff)) {
+        if (!func_ov000_02181d70(&self->stage, 0xffff)) {
             break;
         }
         func_02062424(&self->unk_cd);
@@ -391,23 +339,23 @@ s32 func_ov000_02189194(CmdEx *self) {
                 func_ov000_021645a4(TaskVal(mgr->unk_118));
             }
         }
-        self->unk_18c = 0;
-        self->unk_18d = 0;
-        self->unk_18e = 0;
-        self->unk_18f = 0;
+        self->cam.base.shakeRandom = 0;
+        self->cam.base.shakeTime = 0;
+        self->cam.base.shakeLen = 0;
+        self->cam.base.shakeCur = 0;
         EffectMgr_FreeAll(data_0214a420);
         func_ov000_021b53f4(data_ov000_021ccd6c);
         func_ov000_0218be9c(data_ov000_021ccd64);
         ActorMgr_DestroyAll(data_ov000_021ccd68);
         {
-            self->unk_ac = 1;
+            self->stage.pending = 1;
             self->unk_ca.c[0] = 0xff;
             self->unk_ca.c[1] = 0xff;
             self->unk_ca.c[2] = 0xff;
             self->unk_cd.c[0] = 0xff;
             self->unk_cd.c[1] = 0xff;
             self->unk_cd.c[2] = 0xff;
-            if (self->unk_b4 == 0xfe ? TRUE : FALSE) {
+            if (self->stage.group == 0xfe ? TRUE : FALSE) {
                 GfxSys *d = data_02097d48;
                 d->unk_8b0_4 = 0;
                 d->unk_8b0_5 = 1;

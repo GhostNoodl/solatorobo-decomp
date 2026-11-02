@@ -3,12 +3,6 @@
 #include "ov000/ObjLayouts.h"
 #include "ov000/LoCommon.h"
 #include "ov000/Actor.h"
-#include "ov000/CmdQueue.h"
-
-typedef struct {
-    u8 unk_00[0x4];
-    CmdQueue *unk_04;
-} Data021ccd50;
 
 typedef struct {
     u16 flags;
@@ -25,7 +19,6 @@ typedef struct {
 } Bits21b1d28;
 
 extern "C" {
-extern Data021ccd50 data_ov000_021ccd50;
 extern Obj02097e48 *data_02097e48;
 extern void *data_02097e4c;
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);

@@ -1,12 +1,7 @@
 #include "ov000/VObj.h"
 #include "nitro/std.h"
 #include "Main/Sys/SysState.h"
-
-typedef struct {
-    u32 unk_00;
-    VObj *unk_04;
-    VObj *unk_08;
-} Data021ccd24;
+#include "ov000/SceneRes.h"
 
 typedef struct {
     u8 unk_00;
@@ -31,8 +26,6 @@ typedef struct {
 } Data02034f5c;
 
 extern "C" {
-
-extern Data021ccd24 data_ov000_021ccd24;
 extern void *data_ov000_021c9838;
 extern u8 data_0208b318[];
 extern u8 data_0208bf54[];
@@ -118,8 +111,8 @@ void func_ov000_0214b910(Loader *self) {
     }
 }
 
-static inline VObj *CreateLoader(void) {
-    VObj *obj = (VObj *)Heap_Alloc(0xc4);
+static inline SceneRes *CreateLoader(void) {
+    SceneRes *obj = (SceneRes *)Heap_Alloc(sizeof(SceneRes));
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b318);
         obj->vfunc_08();

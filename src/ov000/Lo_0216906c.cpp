@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/SceneRes.h"
 
 typedef struct {
     s32 v[4];
@@ -13,8 +14,6 @@ typedef struct { u32 a : 28; u32 k : 4; } LoW28;
 typedef struct { u32 a : 12; u32 k : 16; } LoW12;
 
 extern "C" {
-
-extern u8 data_ov000_021ccd24[];
 extern void *data_ov000_021ccd44;
 extern u8 data_ov000_021c9b28[];
 void func_020708fc(s32 a, LoFadeP *out);
@@ -41,7 +40,7 @@ static inline BOOL LoFadeDone(void) {
 
 static inline BOOL LoResReady(void) {
     BOOL ret = TRUE;
-    if (!StageRes_IsAllLoaded(LFLD(void *, data_ov000_021ccd24, 8))) {
+    if (!StageRes_IsAllLoaded(data_ov000_021ccd24.unk_08)) {
         ret = FALSE;
     }
     return ret;

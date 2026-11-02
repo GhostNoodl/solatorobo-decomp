@@ -1,8 +1,7 @@
 #include "ov000/LoCommon.h"
+#include "ov000/SceneRes.h"
 
 extern "C" {
-
-extern u8 data_ov000_021ccd24[];
 void func_ov000_02153fd8(void *p);
 
 struct Obj02150cb0 {
@@ -51,7 +50,7 @@ void func_ov000_02150cb0(Obj02150cb0 *self) {
     LO_FREE_M(self, 0x44);
     LO_FREE_V(self, 0x3c);
     if (self->unk_42 == 0xffff) {
-        LO_FREE_V(data_ov000_021ccd24, 8);
+        LO_FREE_V(&data_ov000_021ccd24, 8);
     }
 }
 

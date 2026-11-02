@@ -17,17 +17,17 @@ typedef struct {
     LoGlyphW w;
 } LoGlyph;
 
-extern u8 data_02097d78[];
+extern s32 data_02097d78[5];
 void func_ov000_02162bd4(void *self);
 BOOL func_ov000_02190a30(void *p, s32 a);
 void func_ov000_02190a80(void *p, s32 a);
 void func_0203cb78(s32 a, s32 b, s32 c);
 
 static inline BOOL LoIsMode4(void) {
-    if (LFLD(s32, data_02097d78, 0xc) == 4) {
+    if (data_02097d78[3] == 4) {
         return TRUE;
     }
-    return LFLD(s32, data_02097d78, 4) == 4 ? TRUE : FALSE;
+    return data_02097d78[1] == 4 ? TRUE : FALSE;
 }
 
 void func_ov000_02162a20(void *self) {

@@ -1,17 +1,8 @@
 #include "ov000/HeapScope.h"
-
-typedef struct {
-    u8 pad_00[4];
-    void *unk_04;
-    u8 pad_08[4];
-    void *unk_0c;
-    u8 pad_10[4];
-    void *unk_14;
-} Data021bd09c;
+#include "ov000/Bss021ccd74.h"
 
 extern "C" {
 
-extern Data021bd09c data_ov000_021ccd74;
 
 void func_ov000_021bd09c(void) {
     HEAP_DELETE_MODEL(data_ov000_021ccd74.unk_0c);

@@ -24,7 +24,7 @@ struct Obj0216d14c {
 void func_ov000_0216d14c(Obj0216d14c *self) {
     Model *m;
     s32 x;
-    if (PauseNode_IsDrawPaused((u8 *)data_ov000_021ccd54 + 8, 1)) {
+    if (PauseNode_IsDrawPaused(data_ov000_021ccd54->pause, 1)) {
         return;
     }
     switch (self->unk_04) {

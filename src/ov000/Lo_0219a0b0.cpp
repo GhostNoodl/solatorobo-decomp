@@ -1,11 +1,5 @@
 #include "types.h"
-
-typedef struct {
-    s32 state;
-    u8 pad04[0x8c];
-    s32 unk_90;
-    s32 unk_94;
-} Glob0219a0b0;
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u16 cur;
@@ -52,18 +46,16 @@ typedef struct {
 } Msg0219a0b0;
 
 extern "C" {
-
-extern Glob0219a0b0 *data_ov000_021ccd54;
 extern Mgr0219a0b0 *data_ov000_021ccd30;
 void Actor_SendMsg(Actor0219a0b0 *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_02040a98(char *dst, int num);
 
-static inline BOOL GBusy0219a0b0(Glob0219a0b0 *g) {
-    return g->unk_90 != g->unk_94 ? TRUE : FALSE;
+static inline BOOL GBusy0219a0b0(FieldState *g) {
+    return g->head != g->tail ? TRUE : FALSE;
 }
 
 static inline BOOL GIdle0219a0b0(void) {
-    Glob0219a0b0 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     if (g != NULL) {
         if (GBusy0219a0b0(g)) {
             return FALSE;

@@ -4,10 +4,10 @@
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/Model.h"
 #include "Main/Res/ResArc.h"
+#include "Main/Sys/FieldState.h"
 
 extern "C" {
 
-extern void *data_ov000_021ccd54;
 void *func_ov000_0219bf90(void);
 BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 s32 func_02043d84(void *a);
@@ -39,7 +39,7 @@ void func_ov000_0216adc0(Obj0216adc0 *self, s32 a, s32 b) {
 
 extern "C" {
 extern MessageQueue021cb980 *data_ov000_021ccd30;
-extern u8 data_02097d78[];
+extern s32 data_02097d78[5];
 extern const char *data_0208cc94;
 extern const char *data_0208cc88;
 BOOL func_02054f10(void *m, s32 id);
@@ -54,20 +54,20 @@ typedef struct {
 
 
 static inline void *GetObj0216adf8(void) {
-    void *o = data_ov000_021ccd30->unk_11c;
-    return o != NULL ? LFLD(void *, o, 0x58) : NULL;
+    ListBuffer021cb940 *o = data_ov000_021ccd30->unk_11c;
+    return o != NULL ? o->unk_58 : NULL;
 }
 
-static inline BOOL Busy0216adf8(u8 *p) {
-    return LFLD(s32, p, 0x90) != LFLD(s32, p, 0x94) ? TRUE : FALSE;
+static inline BOOL Busy0216adf8(FieldState *p) {
+    return p->head != p->tail ? TRUE : FALSE;
 }
 
-static inline BOOL Ready0216adf8(u8 *p) {
+static inline BOOL Ready0216adf8(FieldState *p) {
     if (p != NULL) {
         if (Busy0216adf8(p)) {
             return FALSE;
         }
-        if (LFLD(s32, p, 0) != 3) {
+        if (p->state != 3) {
             return FALSE;
         }
         return TRUE;
@@ -76,7 +76,7 @@ static inline BOOL Ready0216adf8(u8 *p) {
 }
 
 static inline BOOL Idle0216adf8(void) {
-    return LFLD(s32, data_02097d78, 0xc) == 0 && LFLD(s32, data_02097d78, 0) == 0 ? TRUE : FALSE;
+    return data_02097d78[3] == 0 && data_02097d78[0] == 0 ? TRUE : FALSE;
 }
 
 static inline BOOL SubFlag0216adf8(void *o) {
@@ -100,7 +100,7 @@ void func_ov000_0216adf8(Obj0216adf8 *self) {
     if (o == NULL) {
         return;
     }
-    if (!Ready0216adf8((u8 *)data_ov000_021ccd54) || !Idle0216adf8()) {
+    if (!Ready0216adf8(data_ov000_021ccd54) || !Idle0216adf8()) {
         self->unk_00.b1 = 0;
     }
     switch (self->unk_04) {

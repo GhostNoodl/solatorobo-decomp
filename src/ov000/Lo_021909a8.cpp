@@ -1,5 +1,4 @@
 #include "ov000/VObj.h"
-#include "ov000/CmdQueue.h"
 
 typedef struct {
     s32 x0;
@@ -7,11 +6,6 @@ typedef struct {
     u16 y0;
     u16 y1;
 } LerpAngle0218a5ec;
-
-typedef struct {
-    u8 unk_00[0x4];
-    CmdQueue *unk_04;
-} Data021ccd50;
 
 typedef struct {
     u16 flags;
@@ -24,7 +18,6 @@ typedef struct {
 extern "C" {
 s32 FX_Div(s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
-extern Data021ccd50 data_ov000_021ccd50;
 extern Obj02097e48 *data_02097e48;
 void *STD_CopyString(void *a, const char *b);
 void *STD_ConcatenateString(void *a, const char *b);

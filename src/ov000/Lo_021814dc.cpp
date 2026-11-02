@@ -10,8 +10,8 @@
 #include "ov000/HeapScope.h"
 #include "ov000/LoCommon.h"
 #include "nitro/std.h"
-#include "ov000/CmdQueue.h"
 #include "ov000/CmdObj.h"
+#include "ov000/SceneCmd.h"
 #include "ov000/MessageQueue.h"
 #include "ov000/Vec.h"
 #include "nitro/fx.h"
@@ -29,7 +29,7 @@ typedef void (*VoidFn0)(void);
 // it; objects defined there are not laid out in definition order, and this order gives the ROM's.
 u8 data_ov000_021ccd50;          // a scene command is running
 VoidFn0 data_ov000_021ccd58;     // per-frame callbacks of the running command (0x58, 0x5c, 0x60)
-void *data_ov000_021ccd54;       // the scene command object
+FieldState *data_ov000_021ccd54; // the scene command object (SceneCmd)
 VoidFn0 data_ov000_021ccd5c;
 VoidFn0 data_ov000_021ccd60;
 
@@ -42,27 +42,10 @@ namespace m_Lo_021814dc {
 
 typedef void (*VoidFn)(void);
 
-class Node021819a4 : public VObj {
-public:
-    u8 pad_04[0xd0];
-    Node021819a4 *next;
-};
-
-typedef struct {
-    u8 unk_00;
-    VObj *unk_04;
-    u16 unk_08;
-    VObj *unk_0c;
-    Node021819a4 *unk_10;
-    s32 unk_14;
-    u8 unk_18;
-} Obj021819a4;
-
 extern "C" {
 extern void *data_ov000_021ccd64;
 extern void *data_ov000_021ccd6c;
 extern void *data_0214a420;
-extern void *data_ov000_021ccd70;
 extern void *data_02149f0c;
 extern u8 *data_02149ef0;
 extern VObj *data_ov000_021ccd30;
@@ -71,7 +54,7 @@ extern u8 data_ov000_021cb980[];
 void *Heap_Alloc(u32 size);
 void Hit_ResetLists(void);
 void func_0206298c(void);
-void *func_ov000_02188ba0(void *p);
+SceneCmd *func_ov000_02188ba0(SceneCmd *self);
 void func_ov000_021b4eec(void);
 void ActorMgr_Create(void);
 void *func_ov000_0218bb34(void *p);
@@ -95,7 +78,7 @@ void func_02058e18(void);
 void func_ov000_02180754(void);
 void func_ov000_0214bc10(void);
 void MsgRes_Delete(void);
-void func_ov000_021819a4(Obj021819a4 *self);
+void func_ov000_021819a4(SceneStage *self);
 void LangRes2_Delete(void);
 void LangData_DeleteRes(void);
 void func_ov000_021bc2d8(void);
@@ -105,14 +88,14 @@ void func_0204b270(void *p, s32 a, s32 b);
 void *Group_Clear(void *p);
 void ActorMgr_Destroy(void);
 void EffectMgr_Delete(void);
-void *func_ov000_02189b14(void *p);
+void *func_ov000_02189b14(FieldCam *self);
 void func_02062a24(void);
 s32 PauseNode_IsUpdatePaused(void *p, s32 a);
 void func_0205a358(void *p);
-void func_ov000_02182590(void *p);
+void func_ov000_02182590(SceneStage *self);
 BOOL func_0205b4ac(void);
-s32 func_ov000_021bc644(void *p);
-s32 func_ov000_02189194(void *p);
+s32 func_ov000_021bc644(FieldFade *p);
+s32 func_ov000_02189194(SceneCmd *self);
 void func_ov000_021b5110(void *p);
 void func_ov000_0218c25c(void *p);
 void func_ov000_0218be54(void *p);
@@ -122,7 +105,7 @@ void func_0203cd10(void);
 void func_ov000_021b53a8(void *p);
 void ActorMgr_Draw(ActorMgr *p);
 void func_02065b84(void *p);
-void func_ov000_021bc6c0(void *p);
+void func_ov000_021bc6c0(FieldFade *p);
 void func_0205a69c(void *p);
 }
 
@@ -137,11 +120,11 @@ void func_ov000_021814dc(void) {
     Hit_ResetLists();
     func_0206298c();
     if (data_ov000_021ccd54 == NULL) {
-        void *p = Heap_Alloc(0x214);
+        SceneCmd *p = (SceneCmd *)Heap_Alloc(sizeof(SceneCmd));
         if (p != NULL) {
             p = func_ov000_02188ba0(p);
         }
-        data_ov000_021ccd54 = (u8 *)p;
+        data_ov000_021ccd54 = (FieldState *)p;
     }
     func_ov000_021b4eec();
     ActorMgr_Create();
@@ -153,7 +136,7 @@ void func_ov000_021814dc(void) {
         data_ov000_021ccd64 = p;
     }
     EffectMgr_Create();
-    *(void **)data_0214a420 = ((u8 *)data_ov000_021ccd54) + 8;
+    *(void **)data_0214a420 = SceneCmd_Get()->pause;
     func_ov000_021bc274();
     if (data_ov000_021ccd30 == NULL) {
         VObj *obj = (VObj *)Heap_Alloc(0x120);
@@ -180,6 +163,7 @@ void func_ov000_02181624(void) {
     register s32 m;
     void *saved;
     u8 *obj;
+    SceneCmd *scene;
     VObj *v;
     s32 zero;
     zero = 0;
@@ -210,7 +194,7 @@ void func_ov000_02181624(void) {
     func_ov000_0214bc10();
     MsgRes_Delete();
     if (data_ov000_021ccd54 != NULL) {
-        func_ov000_021819a4((Obj021819a4 *)(((u8 *)data_ov000_021ccd54) + 0xac));
+        func_ov000_021819a4(&SceneCmd_Get()->stage);
     }
     LangRes2_Delete();
     LangData_DeleteRes();
@@ -239,14 +223,14 @@ void func_ov000_02181624(void) {
     EffectMgr_Delete();
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
-    obj = (u8 *)data_ov000_021ccd54;
-    if (obj != NULL) {
-        if (obj != NULL) {
-            func_ov000_02189b14(obj + 0xf4);
-            func_ov000_021819a4((Obj021819a4 *)(obj + 0xac));
-            Heap_Free(obj);
+    scene = SceneCmd_Get();
+    if (scene != NULL) {
+        if (scene != NULL) {
+            func_ov000_02189b14(&scene->cam);
+            func_ov000_021819a4(&scene->stage);
+            Heap_Free(scene);
         }
-        data_ov000_021ccd54 = (u8 *)zero;
+        data_ov000_021ccd54 = (FieldState *)zero;
     }
     data_02097dd0->cur = saved;
     func_02062a24();
@@ -256,17 +240,17 @@ void func_ov000_02181624(void) {
 void func_ov000_021817d4(void) {
     
     s32 r;
-    if (PauseNode_IsUpdatePaused(((u8 *)data_ov000_021ccd54) + 8, 1) != 0) {
+    if (PauseNode_IsUpdatePaused(SceneCmd_Get()->pause, 1) != 0) {
         return;
     }
     func_0205a358(data_02149f0c);
-    func_ov000_02182590(((u8 *)data_ov000_021ccd54) + 0xac);
+    func_ov000_02182590(&SceneCmd_Get()->stage);
     func_0205b4ac();
     r = func_ov000_021bc644(data_ov000_021ccd70);
-    if (func_ov000_02189194(((u8 *)data_ov000_021ccd54)) != 0 && r != 0) {
-        ((u8 *)data_ov000_021ccd54)[6] = 0;
+    if (func_ov000_02189194(SceneCmd_Get()) != 0 && r != 0) {
+        SceneCmd_Get()->unk_06 = 0;
         {
-            VObj *v = (VObj *)(((u8 *)data_ov000_021ccd54) + 0xf4);
+            VObj *v = (VObj *)&SceneCmd_Get()->cam;
             if (v != NULL) {
                 v->vfunc_00();
             }
@@ -283,7 +267,7 @@ void func_ov000_021817d4(void) {
         }
         func_02065ac0(data_0214a420);
     } else {
-        ((u8 *)data_ov000_021ccd54)[6] = 1;
+        SceneCmd_Get()->unk_06 = 1;
     }
     if (data_ov000_021ccd58 != NULL) {
         data_ov000_021ccd58();
@@ -308,11 +292,11 @@ void func_ov000_0218190c(void) {
     data_ov000_021ccd30->vfunc_24();
 }
 
-void func_ov000_021819a4(Obj021819a4 *self) {
-    Node021819a4 *node;
-    Node021819a4 *next;
+void func_ov000_021819a4(SceneStage *self) {
+    SceneScript *node;
+    SceneScript *next;
     void *saved;
-    node = self->unk_10;
+    node = self->scripts;
     while (node != NULL) {
         next = node->next;
         saved = data_02097dd0->cur;
@@ -326,14 +310,14 @@ void func_ov000_021819a4(Obj021819a4 *self) {
         data_02097dd0->cur = saved;
         node = next;
     }
-    HEAP_DELETE_VOBJ(self->unk_0c);
-    HEAP_DELETE_VOBJ(self->unk_04);
-    self->unk_00 = 0;
-    self->unk_04 = NULL;
-    self->unk_08 = 0xffff;
-    self->unk_0c = NULL;
-    self->unk_10 = NULL;
-    self->unk_14 = 0;
+    HEAP_DELETE_VOBJ(self->main);
+    HEAP_DELETE_VOBJ(self->res);
+    self->pending = 0;
+    self->res = NULL;
+    self->group = 0xffff;
+    self->main = NULL;
+    self->scripts = NULL;
+    self->cur = NULL;
     self->unk_18 = 0;
 }
 
@@ -376,46 +360,41 @@ static inline void Put2(u8 *buf, s32 i, u8 *src) {
     d[1] = src[1];
 }
 
-struct Ser02181af4 {
-    u8 unk_00[0xc];
-    u8 *unk_0c;
-    u8 *unk_10;
-};
-
-s32 func_ov000_02181af4(Ser02181af4 *self, u8 *buf, u32 size) {
+s32 func_ov000_02181af4(SceneStage *self, u8 *buf, u32 size) {
     s32 off = 0;
     u16 n;
-    u8 *p;
+    SceneScript *p;
     MI_CpuFill8(buf, off, size);
-    buf[0] = self->unk_0c != NULL ? 1 : 0;
+    buf[0] = self->main != NULL ? 1 : 0;
     n = 0;
-    for (p = self->unk_10; p != NULL; p = LFLD(u8 *, p, 0xd4)) {
+    for (p = self->scripts; p != NULL; p = p->next) {
         n++;
     }
     buf[1] = n;
-    if (self->unk_0c == NULL) {
+    if (self->main == NULL) {
         off += 10;
     } else {
         off += 10;
-        buf[2] = LFLD(u8, self->unk_0c, 0xc6);
-        buf[3] = LFLD(u8, self->unk_0c, 0xc7);
-        buf[4] = LFLD(u16, self->unk_0c, 0xc8);
-        buf[5] = LFLD(u16, self->unk_0c, 0xca);
-        buf[6] = LFLD(u8, self->unk_0c, 0xcc);
-        buf[7] = LFLD(u8, self->unk_0c, 0xcd);
-        buf[8] = LFLD(u8, self->unk_0c, 0xce);
-        buf[9] = LFLD(u8, self->unk_0c, 0xcf);
+        // id, then the low bytes of unk_c8/unk_ca, then unk_cc and unk_ce byte by byte
+        buf[2] = ((u8 *)&self->main->id)[0];
+        buf[3] = ((u8 *)&self->main->id)[1];
+        buf[4] = self->main->unk_c8;
+        buf[5] = self->main->unk_ca;
+        buf[6] = ((u8 *)&self->main->unk_cc)[0];
+        buf[7] = ((u8 *)&self->main->unk_cc)[1];
+        buf[8] = ((u8 *)&self->main->unk_ce)[0];
+        buf[9] = ((u8 *)&self->main->unk_ce)[1];
     }
-    p = self->unk_10;
+    p = self->scripts;
     if (p == NULL) {
         off += 10;
     } else {
-        Put2(buf, off, p + 0xc6);
-        Put2(buf, off + 2, p + 0xc4);
-        (buf + off)[4] = LFLD(u16, p, 0xc8);
-        (buf + off)[5] = LFLD(u16, p, 0xca);
-        Put2(buf, off + 6, p + 0xcc);
-        Put2(buf, off + 8, p + 0xce);
+        Put2(buf, off, (u8 *)&p->id);
+        Put2(buf, off + 2, (u8 *)&p->order);
+        (buf + off)[4] = p->unk_c8;
+        (buf + off)[5] = p->unk_ca;
+        Put2(buf, off + 6, (u8 *)&p->unk_cc);
+        Put2(buf, off + 8, (u8 *)&p->unk_ce);
         off += 10;
     }
     return (off + 1) & ~1;
@@ -428,8 +407,8 @@ s32 func_ov000_02181af4(Ser02181af4 *self, u8 *buf, u32 size) {
 namespace m_Ser_02181c4c {
 
 extern "C" {
-void func_ov000_02181f54(u8 *self, u16 id, u16 a, u16 b, u16 c, u16 d);
-void func_ov000_02182190(u8 *self, u16 id, u16 a, u16 b, u16 c, u16 d, u16 e);
+void func_ov000_02181f54(SceneStage *self, u16 id, u16 a, u16 b, u16 c, u16 d);
+void func_ov000_02182190(SceneStage *self, u16 id, u16 order, u16 c, u16 d, u16 e, u16 f);
 
 static inline void Get2(u8 *buf, s32 i, u8 *dst) {
     u8 *s = &buf[i];
@@ -454,7 +433,7 @@ static inline void Get2v(const u8 *s, u8 *dst) {
     dst[0] = a;
 }
 
-s32 func_ov000_02181c4c(u8 *self, u8 *buf) {
+s32 func_ov000_02181c4c(SceneStage *self, u8 *buf) {
     u16 id;
     u16 sub;
     u16 d;
@@ -514,41 +493,35 @@ void *Lang_GetGroup(u8 id);
 int func_0200779c(char *dst, const char *fmt, ...);
 void func_0205a840(void *p, void *buf, const void *s);
 
-struct Lo02181d70 {
-    u8 unk_00[0x4];
-    VObj *unk_04;
-    u16 unk_08;
-};
-
-BOOL func_ov000_02181d70(Lo02181d70 *self, u16 id) {
+BOOL func_ov000_02181d70(SceneStage *self, u16 id) {
     char path[0x20];
     char name[0x20];
-    VObj *obj;
+    SceneRes *obj;
     if (id == 0xffff) {
-        if (self->unk_04 == NULL) {
+        if (self->res == NULL) {
             return TRUE;
         }
-        if (self->unk_04->vfunc_34()) {
+        if (self->res->vfunc_34()) {
             return TRUE;
         }
-        if (StageRes_IsAllLoaded(self->unk_04)) {
-            func_0205aa30(self->unk_04);
+        if (StageRes_IsAllLoaded(self->res)) {
+            func_0205aa30(self->res);
             return TRUE;
         }
     } else {
-        if (self->unk_08 == id) {
+        if (self->group == id) {
             return TRUE;
         }
         LO_FREE_V(self, 4);
-        obj = (VObj *)Heap_Alloc(0xc4);
+        obj = (SceneRes *)Heap_Alloc(sizeof(SceneRes));
         if (obj != NULL) {
             VOBJ_SET_VTABLE(obj, data_0208b318);
             obj->vfunc_08();
             VOBJ_SET_VTABLE(obj, data_0208bf54);
             func_0205a6a0(obj);
         }
-        self->unk_04 = obj;
-        self->unk_08 = id;
+        self->res = obj;
+        self->group = id;
         if (id == 0xfe) {
             STD_CopyString(name, data_ov000_021cc0f8);
         } else {
@@ -556,7 +529,7 @@ BOOL func_ov000_02181d70(Lo02181d70 *self, u16 id) {
         }
         STD_CopyString(path, data_ov000_021cc111);
         STD_ConcatenateString(path, data_ov000_021cc119);
-        func_0205a840(self->unk_04, path, name);
+        func_0205a840(self->res, path, name);
     }
     return FALSE;
 }
@@ -576,20 +549,12 @@ typedef struct {
     u16 unk_0e;
 } Data02fe1534;
 
-typedef struct {
-    u8 unk_00[0xc8];
-    u16 unk_c8;
-    u16 unk_ca;
-    u16 unk_cc;
-    u16 unk_ce;
-} Obj02181efc;
-
 extern "C" {
 
 extern Data02fe1534 data_02fe1534;
-s32 func_0205aa98(Obj02181efc *self, s32 a);
+s32 func_0205aa98(SceneScript *self, s32 a);
 
-s32 func_ov000_02181efc(Obj02181efc *self, s32 a) {
+s32 func_ov000_02181efc(SceneScript *self, s32 a) {
     s32 r;
     Data02fe1534 *d = &data_02fe1534;
     d->unk_08 = self->unk_c8;
@@ -625,38 +590,38 @@ void func_0205a6a0(void *p);
 int func_0200779c(char *dst, const char *fmt, ...);
 void func_0205a840(void *p, void *buf, const void *s);
 
-void func_ov000_02181f54(u8 *self, u16 id, u16 a, u16 b, u16 c, u16 d) {
+void func_ov000_02181f54(SceneStage *self, u16 id, u16 a, u16 b, u16 c, u16 d) {
     char path[0x20];
     char name[0x20];
-    VObj *obj;
+    SceneScript *obj;
     func_020592c4(data_02fe152c, 2, 1, id, 1);
-    if (LFLD(VObj *, self, 0xc) != NULL) {
-        if (LFLD(u16, LFLD(VObj *, self, 0xc), 0xc6) == id) {
+    if (self->main != NULL) {
+        if (self->main->id == id) {
             return;
         }
         LO_FREE_V(self, 0xc);
     }
-    obj = (VObj *)Heap_Alloc(0xd8);
+    obj = (SceneScript *)Heap_Alloc(sizeof(SceneScript));
     if (obj != NULL) {
         VOBJ_SET_VTABLE(obj, data_0208b318);
         obj->vfunc_08();
         VOBJ_SET_VTABLE(obj, data_0208bf54);
         func_0205a6a0(obj);
         VOBJ_SET_VTABLE(obj, data_ov000_021cc158);
-        LFLD(u16, obj, 0xc4) = 0;
-        LFLD(u16, obj, 0xc6) = id;
-        LFLD(u16, obj, 0xc8) = a;
-        LFLD(u16, obj, 0xca) = b;
-        LFLD(u16, obj, 0xcc) = c;
-        LFLD(u16, obj, 0xce) = d;
-        LFLD(s32, obj, 0xd0) = 0;
-        LFLD(s32, obj, 0xd4) = 0;
+        obj->order = 0;
+        obj->id = id;
+        obj->unk_c8 = a;
+        obj->unk_ca = b;
+        obj->unk_cc = c;
+        obj->unk_ce = d;
+        obj->prev = NULL;
+        obj->next = NULL;
     }
-    LFLD(VObj *, self, 0xc) = obj;
+    self->main = obj;
     func_0200779c(name, data_ov000_021cc121, id);
     STD_CopyString(path, data_ov000_021cc111);
     STD_ConcatenateString(path, data_ov000_021cc130);
-    func_0205a840(LFLD(VObj *, self, 0xc), path, name);
+    func_0205a840(self->main, path, name);
 }
 
 }
@@ -666,20 +631,6 @@ void func_ov000_02181f54(u8 *self, u16 id, u16 a, u16 b, u16 c, u16 d) {
 // ---- Widget_021820bc
 namespace m_Widget_021820bc {
 
-class Widget021820bc : public VObj {
-public:
-    u8 pad_04[0xc4];
-    u16 unk_c8;
-    u8 pad_ca[0xa];
-    Widget021820bc *unk_d4;
-};
-
-typedef struct {
-    u8 pad_00[0xc];
-    Widget021820bc *unk_0c;
-    Widget021820bc *unk_10;
-} Panel021820bc;
-
 typedef struct {
     u8 pad_00[0x44];
     u16 unk_44;
@@ -688,11 +639,11 @@ typedef struct {
 extern "C" {
 
 extern Dtcm02fe1534 data_02fe1534;
-BOOL StageRes_IsAllLoaded(Widget021820bc *w);
-BOOL func_0205aa30(Widget021820bc *w);
+BOOL StageRes_IsAllLoaded(SceneScript *w);
+BOOL func_0205aa30(SceneScript *w);
 
-BOOL func_ov000_021820bc(Panel021820bc *self, BOOL notify) {
-    Widget021820bc *w = self->unk_10;
+BOOL func_ov000_021820bc(SceneStage *self, BOOL notify) {
+    SceneScript *w = self->scripts;
     BOOL changed;
     u16 saved;
 
@@ -710,10 +661,10 @@ BOOL func_ov000_021820bc(Panel021820bc *self, BOOL notify) {
             }
             changed = TRUE;
         }
-        w = w->unk_d4;
+        w = w->next;
     }
-    if (changed && self->unk_0c != NULL) {
-        self->unk_0c->vfunc_38(1);
+    if (changed && self->main != NULL) {
+        self->main->vfunc_38(1);
     }
     data_02fe1534.unk_44 = saved;
     return changed;
@@ -728,24 +679,6 @@ namespace m_Widget_02182190 {
 
 typedef void (*VFunc02182190)(void);
 
-class Widget02182190 : public VObj {
-public:
-    u8 pad_04[0xc0];
-    u16 order;
-    u16 id;
-    u16 unk_c8;
-    u16 unk_ca;
-    u16 unk_cc;
-    u16 unk_ce;
-    Widget02182190 *prev;
-    Widget02182190 *next;
-};
-
-typedef struct {
-    u8 pad_00[0x10];
-    Widget02182190 *head;
-} Panel02182190;
-
 extern "C" {
 
 extern void *data_02fe152c;
@@ -757,33 +690,33 @@ extern char data_ov000_021cc111[];
 extern char data_ov000_021cc147[];
 void func_020592c4(void *res, s32 a, s32 b, s32 id, s32 e);
 void *Heap_Alloc(u32 size);
-void func_0205a6a0(Widget02182190 *w);
-void func_0205a840(Widget02182190 *w, char *path, char *name);
+void func_0205a6a0(SceneScript *w);
+void func_0205a840(SceneScript *w, char *path, char *name);
 int func_0200779c(char *dst, const char *fmt, ...);
 
-void func_ov000_02182190(Panel02182190 *self, u16 id, u16 order, u16 c, u16 d, u16 e, u16 f) {
+void func_ov000_02182190(SceneStage *self, u16 id, u16 order, u16 c, u16 d, u16 e, u16 f) {
     char path[0x20];
     char name[0x20];
-    Widget02182190 *w;
-    Widget02182190 *cur;
-    Widget02182190 *prev;
+    SceneScript *w;
+    SceneScript *cur;
+    SceneScript *prev;
     u16 count;
 
     func_020592c4(data_02fe152c, 1, 1, id, 0);
     func_020592c4(data_02fe152c, 1, 0x201, id, 1);
-    for (w = self->head; w != NULL; w = w->next) {
+    for (w = self->scripts; w != NULL; w = w->next) {
         if (w->id == id) {
             return;
         }
     }
     count = 0;
-    for (w = self->head; w != NULL; w = w->next) {
+    for (w = self->scripts; w != NULL; w = w->next) {
         count++;
     }
     if (count >= 1) {
         return;
     }
-    w = (Widget02182190 *)Heap_Alloc(0xd8);
+    w = (SceneScript *)Heap_Alloc(sizeof(SceneScript));
     if (w != NULL) {
         *(VFunc02182190 **)w = data_0208b318;
         w->vfunc_08();
@@ -799,9 +732,9 @@ void func_ov000_02182190(Panel02182190 *self, u16 id, u16 order, u16 c, u16 d, u
         w->prev = NULL;
         w->next = NULL;
     }
-    cur = self->head;
+    cur = self->scripts;
     if (cur == NULL) {
-        self->head = w;
+        self->scripts = w;
     } else {
         for (; cur != NULL; cur = cur->next) {
             if (w->order >= cur->order) {
@@ -814,7 +747,7 @@ void func_ov000_02182190(Panel02182190 *self, u16 id, u16 order, u16 c, u16 d, u
             w->next = cur;
             cur->prev = w;
             if (w->prev == NULL) {
-                self->head = w;
+                self->scripts = w;
             }
         } else {
             w->prev = prev;
@@ -834,36 +767,17 @@ void func_ov000_02182190(Panel02182190 *self, u16 id, u16 order, u16 c, u16 d, u
 // ---- Heap_02182374
 namespace m_Heap_02182374 {
 
-class Node02182374 : public VObj {
-public:
-    u8 pad_04[0xc2];
-    u16 id;
-    u8 pad_c8[8];
-    Node02182374 *prev;
-    Node02182374 *next;
-};
-
-typedef struct {
-    u8 unk_00[0xac];
-    u8 unk_ac;
-} Ctrl02182374;
-
-typedef struct {
-    u8 pad_00[0x10];
-    Node02182374 *head;
-} Obj02182374;
-
 extern "C" {
 
 extern void *data_02fe152c;
 u32 func_ov000_0214bf2c(u32 id);
 void func_020592c4(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_02182590(u8 *p);
+void func_ov000_02182590(SceneStage *self);
 
-void func_ov000_02182374(Obj02182374 *self, u32 id, BOOL force) {
+void func_ov000_02182374(SceneStage *self, u32 id, BOOL force) {
     u32 flags = func_ov000_0214bf2c(id);
     BOOL b = TRUE;
-    Node02182374 *node;
+    SceneScript *node;
     if (force) {
         b = FALSE;
         func_020592c4(data_02fe152c, 1, 1, id, 1);
@@ -874,7 +788,7 @@ void func_ov000_02182374(Obj02182374 *self, u32 id, BOOL force) {
     if (b) {
         func_020592c4(data_02fe152c, 1, 0x301, id, 1);
     }
-    for (node = self->head; node != NULL; node = node->next) {
+    for (node = self->scripts; node != NULL; node = node->next) {
         if (node->id == id) {
             break;
         }
@@ -882,7 +796,7 @@ void func_ov000_02182374(Obj02182374 *self, u32 id, BOOL force) {
     if (node->prev != NULL) {
         node->prev->next = node->next;
     } else {
-        self->head = node->next;
+        self->scripts = node->next;
     }
     if (node->next != NULL) {
         node->next->prev = node->prev;
@@ -899,9 +813,9 @@ void func_ov000_02182374(Obj02182374 *self, u32 id, BOOL force) {
         data_02097dd0->cur = saved;
     }
     {
-        Ctrl02182374 *c = (Ctrl02182374 *)data_ov000_021ccd54;
-        c->unk_ac = 1;
-        func_ov000_02182590(&c->unk_ac);
+        SceneCmd *c = SceneCmd_Get();
+        c->stage.pending = 1;
+        func_ov000_02182590(&c->stage);
     }
 }
 
@@ -912,16 +826,10 @@ void func_ov000_02182374(Obj02182374 *self, u32 id, BOOL force) {
 // ---- Stub_021824d0
 namespace m_Stub_021824d0 {
 
-class Node021824d0 : public VObj {
-public:
-    u8 unk_04[0xd0];
-    Node021824d0 *next;
-};
-
 extern "C" {
 
-Node021824d0 *func_ov000_021824d0(void *self, u16 index) {
-    Node021824d0 *n = *(Node021824d0 **)((u8 *)self + 0x10);
+SceneScript *func_ov000_021824d0(SceneStage *self, u16 index) {
+    SceneScript *n = self->scripts;
     u16 i = 0;
     while (n != NULL) {
         if (index == i) {
@@ -952,33 +860,27 @@ public:
     virtual void v30(); virtual void v34(); virtual void vfunc_38(s32 a);
 };
 
-typedef struct {
-    u8 pad_00[0x14];
-    VObj *unk_14;
-    u8 unk_18;
-} Obj02182524;
-
-static inline BOOL IsActive(VObj *p) {
-    return LFLD(u8, p, 0x5a) != 0 ? TRUE : FALSE;
+static inline BOOL IsActive(SceneRes *p) {
+    return p->unk_5a != 0 ? TRUE : FALSE;
 }
 
 extern "C" {
 void func_0206228c(void);
 
-void func_ov000_02182524(Obj02182524 *self) {
-    if (self->unk_14 == NULL) {
+void func_ov000_02182524(SceneStage *self) {
+    if (self->cur == NULL) {
         return;
     }
     if (self->unk_18 != 0) {
-        self->unk_14->vfunc_38(1);
+        self->cur->vfunc_38(1);
     } else {
-        ((VObjB *)self->unk_14)->vfunc_38(1);
+        ((VObjB *)self->cur)->vfunc_38(1);
     }
-    if (!IsActive(self->unk_14)) {
-        self->unk_14 = NULL;
+    if (!IsActive(self->cur)) {
+        self->cur = NULL;
         self->unk_18 = 0;
     }
-    if (self->unk_14 == NULL) {
+    if (self->cur == NULL) {
         func_0206228c();
     }
 }
@@ -991,19 +893,8 @@ namespace m_Widget_02182590 {
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
-typedef struct {
-    u8 unk_00;
-    u8 pad_01[3];
-    VObj *unk_04;
-    u8 pad_08[4];
-    VObj *unk_0c;
-    VObj *unk_10;
-    VObj *unk_14;
-    u8 unk_18;
-} Obj02182590;
-
-static inline BOOL IsActive(VObj *p) {
-    return LFLD(u8, p, 0x5a) != 0 ? TRUE : FALSE;
+static inline BOOL IsActive(SceneRes *p) {
+    return p->unk_5a != 0 ? TRUE : FALSE;
 }
 
 extern "C" {
@@ -1012,7 +903,7 @@ extern u8 data_02fe1534[];
 BOOL func_0205b23c(s32 id);
 void func_0206228c(void);
 
-static inline BOOL CmdQueue_Has2(CmdQueue *q, s32 i, s32 end, s32 kind) {
+static inline BOOL SceneCmd_HasKind(SceneCmd *q, s32 i, s32 end, s32 kind) {
     for (; i != end;) {
         if (q->kinds[i] == kind) {
             return TRUE;
@@ -1028,85 +919,81 @@ static inline BOOL IsBusy(void) {
     return data_02149efc != NULL ? TRUE : FALSE;
 }
 
-static inline CmdQueue *GetQueue02182590(void) {
-    return ((CmdQueue *)data_ov000_021ccd54);
-}
-
-void func_ov000_02182590(Obj02182590 *self) {
-    VObj *w;
-    CmdQueue *q;
+void func_ov000_02182590(SceneStage *self) {
+    SceneScript *w;
+    SceneCmd *q;
     s32 rd;
     s32 wr;
     data_02149efc = NULL;
-    if (self->unk_00 == 0) {
+    if (self->pending == 0) {
         return;
     }
     // The getter, the reused wr and the const-view reload below give the target's registers
     // and its second load of the queue pointer.
-    q = GetQueue02182590();
-    wr = q->unk_90;
+    q = SceneCmd_Get();
+    wr = q->rd;
     rd = wr;
     wr = q->index;
-    if (CmdQueue_Has2(q, rd, wr, 6)) {
+    if (SceneCmd_HasKind(q, rd, wr, 6)) {
         return;
     }
-    if (CmdQueue_Has2(*(CmdQueue *const *)&data_ov000_021ccd54, rd, wr, 7)) {
+    if (SceneCmd_HasKind(*(SceneCmd *const *)&data_ov000_021ccd54, rd, wr, 7)) {
         return;
     }
-    self->unk_00 = 0;
-    if (self->unk_14 != NULL) {
+    self->pending = 0;
+    if (self->cur != NULL) {
         return;
     }
     if (func_0205b23c(0x21b)) {
         return;
     }
-    w = self->unk_10;
+    w = self->scripts;
     if (LFLD(u16, data_02fe1534, 0x44) == 1) {
-        if (self->unk_04 != NULL) {
-            self->unk_04->vfunc_38(1);
+        if (self->res != NULL) {
+            self->res->vfunc_38(1);
             data_02149efc = NULL;
         }
-        if (self->unk_0c != NULL) {
-            self->unk_0c->vfunc_38(1);
+        if (self->main != NULL) {
+            self->main->vfunc_38(1);
             data_02149efc = NULL;
-            if (IsActive(self->unk_0c)) {
-                self->unk_14 = self->unk_0c;
+            if (IsActive(self->main)) {
+                self->cur = self->main;
                 self->unk_18 = 1;
             }
         }
-        for (; w != NULL; w = LFLD(VObj *, w, 0xd4)) {
+        for (; w != NULL; w = w->next) {
             w->vfunc_38(1);
             if (IsActive(w)) {
                 self->unk_18 = 1;
-                self->unk_14 = w;
+                self->cur = w;
             }
         }
     } else {
-        for (; w != NULL; w = LFLD(VObj *, w, 0xd4)) {
+        for (; w != NULL; w = w->next) {
             w->vfunc_38(1);
             if (IsActive(w)) {
-                self->unk_14 = w;
+                self->cur = w;
                 self->unk_18 = 1;
             }
             if (IsBusy()) {
                 break;
             }
         }
-        if (self->unk_0c != NULL && w == NULL) {
-            self->unk_0c->vfunc_38(1);
-            if (IsActive(self->unk_0c)) {
-                self->unk_14 = self->unk_0c;
+        if (self->main != NULL && w == NULL) {
+            self->main->vfunc_38(1);
+            if (IsActive(self->main)) {
+                self->cur = self->main;
                 self->unk_18 = 1;
             }
         }
-        if (self->unk_04 != NULL && !IsBusy()) {
-            self->unk_04->vfunc_38(1);
-            if (IsActive(self->unk_04)) {
-                self->unk_14 = self->unk_04;
+        if (self->res != NULL && !IsBusy()) {
+            self->res->vfunc_38(1);
+            if (IsActive(self->res)) {
+                self->cur = self->res;
             }
         }
     }
-    if (self->unk_14 == NULL) {
+    if (self->cur == NULL) {
         func_0206228c();
     }
 }
@@ -1137,7 +1024,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_0218283c(CmdQueue *self, s32 arg) {
+void func_ov000_0218283c(SceneCmd *self, s32 arg) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -1152,8 +1039,8 @@ void func_ov000_0218283c(CmdQueue *self, s32 arg) {
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    CmdQueue_Push(self, 0x26, 2);
-    CmdQueue_Push(self, 2, (arg << 16) | 1);
+    CmdObj_Push(self, 0x26, 2);
+    CmdObj_Push(self, 2, (arg << 16) | 1);
 }
 
 }
@@ -1183,7 +1070,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_02182920(CmdQueue *self) {
+void func_ov000_02182920(SceneCmd *self) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -1198,8 +1085,8 @@ void func_ov000_02182920(CmdQueue *self) {
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    CmdQueue_Push(self, 0x26, 2);
-    CmdQueue_Push(self, 2, 2);
+    CmdObj_Push(self, 0x26, 2);
+    CmdObj_Push(self, 2, 2);
 }
 
 }
@@ -1229,7 +1116,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_021829f8(CmdQueue *self) {
+void func_ov000_021829f8(SceneCmd *self) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -1244,8 +1131,8 @@ void func_ov000_021829f8(CmdQueue *self) {
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    CmdQueue_Push(self, 0x26, 2);
-    CmdQueue_Push(self, 2, 3);
+    CmdObj_Push(self, 0x26, 2);
+    CmdObj_Push(self, 2, 3);
 }
 
 }
@@ -1257,8 +1144,8 @@ namespace m_Stub_02182ad4 {
 
 extern "C" {
 
-void func_ov000_02182ad4(CmdQueue *self) {
-    CmdQueue_Push(self, 0x3, 0);
+void func_ov000_02182ad4(SceneCmd *self) {
+    CmdObj_Push(self, 0x3, 0);
 }
 
 }
@@ -1313,16 +1200,16 @@ static inline void Prelude(void) {
     }
 }
 
-void func_ov000_02182b0c(CmdQueue *self) {
+void func_ov000_02182b0c(SceneCmd *self) {
     if (StageFlags_IsValid()) {
         Prelude();
-        CmdQueue_Push(self, 0x26, 2);
-        CmdQueue_Push(self, 2, 4);
+        CmdObj_Push(self, 0x26, 2);
+        CmdObj_Push(self, 2, 4);
     } else {
         u8 v = data_0214a424->unk_08;
         Prelude();
-        CmdQueue_Push(self, 0x26, 2);
-        CmdQueue_Push(self, 2, (v << 16) | 1);
+        CmdObj_Push(self, 0x26, 2);
+        CmdObj_Push(self, 2, (v << 16) | 1);
     }
 }
 
@@ -1332,19 +1219,6 @@ void func_ov000_02182b0c(CmdQueue *self) {
 
 // ---- Lo_02182cb8
 namespace m_Lo_02182cb8 {
-
-typedef struct {
-    u8 c[3];
-} Id3;
-
-class CmdEx : public CmdObj {
-public:
-    u8 unk_ac;
-    u8 pad_ad[0xb];
-    VObj *unk_b8;
-    u8 pad_bc[0x11];
-    Id3 unk_cd;
-};
 
 typedef struct {
     u16 b0 : 1;
@@ -1384,7 +1258,7 @@ typedef struct {
     u16 f18 : 1;
     u16 f18_1 : 15;
     u8 pad_1a[0x117];
-    Id3 unk_131;
+    FieldId unk_131;
     u8 pad_134[4];
     u16 unk_138;
     u8 pad_13a[2];
@@ -1428,12 +1302,12 @@ void func_0206cadc(Obj0214a424 *p);
 void func_0206c4c4(Obj0214a424 *p);
 void func_0206ca44(Obj0214a424 *p);
 void func_0206c994(Obj0214a424 *p);
-void func_ov000_02181f54(u8 *p, s32 a, s32 b, s32 c, s32 d, s32 e);
+void func_ov000_02181f54(SceneStage *self, s32 a, s32 b, s32 c, s32 d, s32 e);
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 void func_020626d4(VecFx32 *v, u16 a);
 BOOL StageRes_IsAllLoaded(VObj *p);
 BOOL func_0205aa30(VObj *p);
-BOOL func_ov000_021820bc(u8 *p, s32 a);
+BOOL func_ov000_021820bc(SceneStage *self, s32 a);
 
 static inline BOOL HasObj(void) {
     return data_02fe152c != NULL ? TRUE : FALSE;
@@ -1443,15 +1317,15 @@ static inline BOOL NotFlag(Obj0214a424 *p) {
     return p->f18 ? FALSE : TRUE;
 }
 
-static inline void Warp(const Id3 *id, s32 arg) {
+static inline void Warp(const FieldId *id, s32 arg) {
     data_02097e48->b1 = 1;
-    CmdObj_Push(((CmdEx *)data_ov000_021ccd54), 9, arg);
+    CmdObj_Push(SceneCmd_Get(), 9, arg);
     if (id != NULL) {
-        ((CmdEx *)data_ov000_021ccd54)->unk_cd = *id;
+        SceneCmd_Get()->unk_cd = *id;
     }
 }
 
-s32 func_ov000_02182cb8(CmdEx *self) {
+s32 func_ov000_02182cb8(SceneCmd *self) {
     u16 mode = self->unk_a4;
     switch (self->step) {
     case 0:
@@ -1527,12 +1401,12 @@ s32 func_ov000_02182cb8(CmdEx *self) {
             data_02fe1534.unk_02 = 0;
             data_02fe1534.unk_04 = 0;
             {
-                CmdEx *obj = (CmdEx *)data_ov000_021ccd54;
+                SceneCmd *obj = SceneCmd_Get();
                 CmdObj_Push(obj, 6, 0);
-                func_ov000_02181f54(&obj->unk_ac, 0, 0, 0, 0, 0);
+                func_ov000_02181f54(&obj->stage, 0, 0, 0, 0, 0);
             }
             {
-                Id3 id = data_0214a424->unk_131;
+                FieldId id = data_0214a424->unk_131;
                 Warp(&id, 1);
             }
         } else if ((u32)(mode - 3) <= 1) {
@@ -1545,7 +1419,7 @@ s32 func_ov000_02182cb8(CmdEx *self) {
                 kind = data_0214a424->unk_09;
             }
             if (kind == 1) {
-                Id3 id;
+                FieldId id;
                 id.c[0] = 0xfe;
                 id.c[1] = 0xfe;
                 id.c[2] = 0xfe;
@@ -1580,7 +1454,7 @@ s32 func_ov000_02182cb8(CmdEx *self) {
                     func_020626d4(&v, p->unk_154);
                 }
                 {
-                    Id3 id = data_0214a424->unk_131;
+                    FieldId id = data_0214a424->unk_131;
                     Warp(&id, 0);
                 }
             }
@@ -1592,15 +1466,15 @@ s32 func_ov000_02182cb8(CmdEx *self) {
     }
     case 3: {
         BOOL done;
-        if (self->unk_b8 == NULL || self->unk_b8->vfunc_34()) {
+        if (self->stage.main == NULL || self->stage.main->vfunc_34()) {
             done = TRUE;
-        } else if (!StageRes_IsAllLoaded(self->unk_b8)) {
+        } else if (!StageRes_IsAllLoaded(self->stage.main)) {
             done = FALSE;
         } else {
-            func_0205aa30(self->unk_b8);
+            func_0205aa30(self->stage.main);
             done = TRUE;
         }
-        if (done && func_ov000_021820bc(&self->unk_ac, 0)) {
+        if (done && func_ov000_021820bc(&self->stage, 0)) {
             CmdObj_Done(self);
             return 0;
         }
@@ -1636,26 +1510,26 @@ typedef struct {
 } Flags021ccd44;
 
 extern "C" {
-extern u8 data_02097d78;
-extern u8 *data_ov000_021ccd30;
+extern s32 data_02097d78[5];
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
-BOOL func_ov000_021820bc(void *p, s32 a);
+BOOL func_ov000_021820bc(SceneStage *self, s32 a);
 void func_ov000_0214ba18(void);
 BOOL func_ov000_0214bb04(void);
 s32 func_ov000_0214bb2c(void);
 void func_ov000_0214bb5c(void);
 void func_ov000_0214baa8(void);
-BOOL func_ov000_0216f674(void *mgr, s32 a);
-BOOL func_ov000_0217060c(void *p);
+BOOL func_ov000_0216f674(MessageQueue *self, s32 id);
+BOOL func_ov000_0217060c(ListBuffer021cb940 *self);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
+s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
@@ -1679,7 +1553,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_021833d8(CmdObj *self) {
+s32 func_ov000_021833d8(SceneCmd *self) {
     switch (self->step) {
     case 0:
         self->step++;
@@ -1701,8 +1575,8 @@ namespace m_Stub_0218348c {
 
 extern "C" {
 
-void func_ov000_0218348c(CmdQueue *self, s32 arg) {
-    CmdQueue_Push(self, 0x4, arg);
+void func_ov000_0218348c(SceneCmd *self, s32 arg) {
+    CmdObj_Push(self, 0x4, arg);
 }
 
 }
@@ -1732,14 +1606,14 @@ typedef struct {
 } Flags021ccd44;
 
 extern "C" {
-extern u8 data_02097d78;
+extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
-BOOL func_ov000_021820bc(void *p, s32 a);
+BOOL func_ov000_021820bc(SceneStage *self, s32 a);
 void func_ov000_0214ba18(void);
 BOOL func_ov000_0214bb04(void);
 s32 func_ov000_0214bb2c(void);
@@ -1751,7 +1625,7 @@ void func_ov000_02172390(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
+s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
@@ -1775,10 +1649,10 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_021834c4(CmdObj *self) {
+s32 func_ov000_021834c4(SceneCmd *self) {
     switch (self->step) {
     case 0: {
-        if (!(LFLD(s32, &data_02097d78, 0xc) == 0 && LFLD(s32, &data_02097d78, 0) == 0 ? 1 : 0)) {
+        if (!(data_02097d78[3] == 0 && data_02097d78[0] == 0 ? 1 : 0)) {
             func_0203cb78(0x8000, 0, -1);
         }
         data_0214a424->unk_009 = (u8)self->unk_a4;
@@ -1797,7 +1671,7 @@ s32 func_ov000_021834c4(CmdObj *self) {
     return 1;
 }
 
-s32 func_ov000_021835f4(CmdObj *self) {
+s32 func_ov000_021835f4(SceneCmd *self) {
     switch (self->step) {
     case 0:
         func_ov000_02180660(8, self->unk_a4);
@@ -1822,11 +1696,11 @@ namespace m_Stub_021836d0 {
 
 extern "C" {
 
-void func_ov000_02181f54(void *p, s32 a, s32 b, s32 c, u16 d, u16 e);
+void func_ov000_02181f54(SceneStage *self, s32 a, s32 b, s32 c, u16 d, u16 e);
 
-void func_ov000_021836d0(CmdQueue *self, s32 a, s32 b, s32 c, u16 d, u16 e) {
-    CmdQueue_Push(self, 6, 0);
-    func_ov000_02181f54((u8 *)self + 0xac, a, b, c, d, e);
+void func_ov000_021836d0(SceneCmd *self, s32 a, s32 b, s32 c, u16 d, u16 e) {
+    CmdObj_Push(self, 6, 0);
+    func_ov000_02181f54(&self->stage, a, b, c, d, e);
 }
 
 }
@@ -1836,38 +1710,28 @@ void func_ov000_021836d0(CmdQueue *self, s32 a, s32 b, s32 c, u16 d, u16 e) {
 // ---- Stub_0218372c
 namespace m_Stub_0218372c {
 
-typedef struct {
-    u8 unk_00[0xac];
-    u8 unk_ac;
-} Ctrl0218372c;
-
-typedef struct {
-    u8 unk_00[0xb8];
-    VObj *unk_b8;
-} Obj0218372c;
-
 extern "C" {
 
 extern void *data_02fe152c;
 void func_020592c4(void *p, s32 a, s32 b, s32 c, s32 d);
-void func_ov000_02182590(u8 *p);
+void func_ov000_02182590(SceneStage *self);
 
-void func_ov000_0218372c(Obj0218372c *self, s32 a) {
+void func_ov000_0218372c(SceneCmd *self, s32 a) {
     void *saved;
     func_020592c4(data_02fe152c, 2, 0x101, a, 1);
     saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
-    if (self->unk_b8 != NULL) {
-        if (self->unk_b8 != NULL) {
-            self->unk_b8->vfunc_04();
+    if (self->stage.main != NULL) {
+        if (self->stage.main != NULL) {
+            self->stage.main->vfunc_04();
         }
-        self->unk_b8 = NULL;
+        self->stage.main = NULL;
     }
     data_02097dd0->cur = saved;
     {
-        Ctrl0218372c *c = (Ctrl0218372c *)data_ov000_021ccd54;
-        c->unk_ac = 1;
-        func_ov000_02182590(&c->unk_ac);
+        SceneCmd *c = SceneCmd_Get();
+        c->stage.pending = 1;
+        func_ov000_02182590(&c->stage);
     }
 }
 
@@ -1880,29 +1744,24 @@ namespace m_Stub_021837c0 {
 
 extern "C" {
 
-void func_ov000_02182190(void *p, s32 a, s32 b, s32 c, u16 d, u16 e, u16 f);
-void func_ov000_02182374(void *p, s32 a, s32 b);
+void func_ov000_02182190(SceneStage *self, s32 id, s32 order, s32 c, u16 d, u16 e, u16 f);
+void func_ov000_02182374(SceneStage *self, s32 id, s32 force);
 
-void func_ov000_021837c0(CmdQueue *self) {
-    CmdQueue_Push(self, 0x8, 0);
+void func_ov000_021837c0(SceneCmd *self) {
+    CmdObj_Push(self, 0x8, 0);
 }
 
-void func_ov000_021837f8(void *self, s32 a, s32 b, s32 c, u16 d, u16 e, u16 f) {
-    s32 *index = (s32 *)((u8 *)self + 0x94);
-    ((s32 *)((u8 *)self + 0x10))[*index] = 0x7;
-    ((s32 *)((u8 *)self + 0x50))[*index] = 0;
-    if (++*index >= 0x10) {
-        *index = 0;
-    }
-    func_ov000_02182190((u8 *)self + 0xac, a, b, c, d, e, f);
+void func_ov000_021837f8(SceneCmd *self, s32 a, s32 b, s32 c, u16 d, u16 e, u16 f) {
+    CmdObj_Push(self, 0x7, 0);
+    func_ov000_02182190(&self->stage, a, b, c, d, e, f);
 }
 
-void func_ov000_02183858(void *self, s32 a) {
-    func_ov000_02182374((u8 *)self + 0xac, a, 0);
+void func_ov000_02183858(SceneCmd *self, s32 a) {
+    func_ov000_02182374(&self->stage, a, 0);
 }
 
-void func_ov000_0218386c(void *self, s32 a) {
-    func_ov000_02182374((u8 *)self + 0xac, a, 1);
+void func_ov000_0218386c(SceneCmd *self, s32 a) {
+    func_ov000_02182374(&self->stage, a, 1);
 }
 
 }
@@ -1932,14 +1791,14 @@ typedef struct {
 } Flags021ccd44;
 
 extern "C" {
-extern u8 data_02097d78;
+extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
-BOOL func_ov000_021820bc(void *p, s32 a);
+BOOL func_ov000_021820bc(SceneStage *self, s32 a);
 void func_ov000_0214ba18(void);
 BOOL func_ov000_0214bb04(void);
 s32 func_ov000_0214bb2c(void);
@@ -1951,7 +1810,7 @@ void func_ov000_02172390(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
+s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
@@ -1975,18 +1834,18 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-static inline BOOL WaitB8(CmdObj *self) {
-    if (LFLD(VObj *, self, 0xb8) == NULL || LFLD(VObj *, self, 0xb8)->vfunc_34()) {
+static inline BOOL WaitMain(SceneCmd *self) {
+    if (self->stage.main == NULL || self->stage.main->vfunc_34()) {
         return TRUE;
     }
-    if (!StageRes_IsAllLoaded(LFLD(VObj *, self, 0xb8))) {
+    if (!StageRes_IsAllLoaded(self->stage.main)) {
         return FALSE;
     }
-    func_0205aa30(LFLD(VObj *, self, 0xb8));
+    func_0205aa30(self->stage.main);
     return TRUE;
 }
 
-s32 func_ov000_02183880(CmdObj *self) {
+s32 func_ov000_02183880(SceneCmd *self) {
     switch (self->unk_98) {
     case 6:
         switch (self->step) {
@@ -1994,7 +1853,7 @@ s32 func_ov000_02183880(CmdObj *self) {
             self->step++;
             return 0;
         case 1:
-            if (WaitB8(self)) {
+            if (WaitMain(self)) {
                 CmdObj_Done(self);
             }
             break;
@@ -2006,7 +1865,7 @@ s32 func_ov000_02183880(CmdObj *self) {
             self->step++;
             return 0;
         case 1:
-            if (func_ov000_021820bc((u8 *)self + 0xac, 1)) {
+            if (func_ov000_021820bc(&self->stage, 1)) {
                 CmdObj_Done(self);
             }
             break;
@@ -2040,22 +1899,6 @@ s32 func_ov000_02183880(CmdObj *self) {
 namespace m_Lo_02183a10 {
 
 typedef struct {
-    u8 c[3];
-} Id3;
-
-class CmdEx : public CmdObj {
-public:
-    u8 unk_ac;
-    u8 pad_ad[3];
-    s32 unk_b0;
-    u8 pad_b4[0x14];
-    u8 unk_c8;
-    u8 unk_c9;
-    Id3 unk_ca;
-    Id3 unk_cd;
-};
-
-typedef struct {
     u16 b0 : 1;
     u16 b1 : 1;
     u16 b2 : 14;
@@ -2070,11 +1913,6 @@ typedef struct {
     u32 b0 : 1;
     u32 b1 : 1;
 } Mgr021ccd30;
-
-typedef struct {
-    u8 pad_00[0xb1c];
-    u16 unk_b1c;
-} Obj0219bf90;
 
 typedef struct {
     u8 pad_00[0xc];
@@ -2096,22 +1934,22 @@ typedef struct {
 } Dtcm02fe1534;
 
 extern "C" {
-extern s32 data_02097d78[];
+extern s32 data_02097d78[5];
 extern Obj02097e48 *data_02097e48;
 extern Dtcm02fe1534 data_02fe1534;
 extern Obj021ccd6c *data_ov000_021ccd6c;
 extern void *data_02097e4c;
 extern Mgr021ccd30 *data_ov000_021ccd30;
-Obj0219bf90 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 Actor0218e640 *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
-void func_02062478(Id3 *id);
-void func_ov000_02182590(u8 *p);
+void func_02062478(FieldId *id);
+void func_ov000_02182590(SceneStage *self);
 void func_020624b8(void);
-void func_0206c72c(void *p, Id3 *id);
+void func_0206c72c(void *p, FieldId *id);
 void func_0203c9e8(s32 a, s32 b);
 void func_0203cc58(s32 a, s32 b, s32 c);
-void func_02062424(Id3 *id);
-BOOL func_ov000_02181d70(u8 *p);
+void func_02062424(FieldId *id);
+BOOL func_ov000_02181d70(SceneStage *self);
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 static inline BOOL IsMode1(void) {
@@ -2128,7 +1966,7 @@ static inline BOOL IsMode0(void) {
     return data_02097d78[3] == 0 && data_02097d78[0] == 0;
 }
 
-static inline BOOL IdEq(const Id3 *a, const Id3 *b) {
+static inline BOOL IdEq(const FieldId *a, const FieldId *b) {
     BOOL r = FALSE;
     if (a->c[0] == b->c[0] && a->c[1] == b->c[1] && a->c[2] == b->c[2]) {
         r = TRUE;
@@ -2136,7 +1974,7 @@ static inline BOOL IdEq(const Id3 *a, const Id3 *b) {
     return r;
 }
 
-s32 func_ov000_02183a10(CmdEx *self) {
+s32 func_ov000_02183a10(SceneCmd *self) {
     BOOL hasArg;
     s32 fade;
     if (self->step == 0) {
@@ -2152,8 +1990,8 @@ s32 func_ov000_02183a10(CmdEx *self) {
     }
     CmdObj_Done(self);
     data_02097e48->b1 = 0;
-    if ((self->unk_b0 != 0 ? TRUE : FALSE)) {
-        Obj0219bf90 *obj;
+    if ((self->stage.res != NULL ? TRUE : FALSE)) {
+        Robo021ca458 *obj;
         self->unk_c8 = 0;
         obj = func_ov000_0219bf90();
         if (obj != NULL) {
@@ -2168,8 +2006,8 @@ s32 func_ov000_02183a10(CmdEx *self) {
             }
         }
         func_02062478(&self->unk_cd);
-        self->unk_ac = 1;
-        func_ov000_02182590(&self->unk_ac);
+        self->stage.pending = 1;
+        func_ov000_02182590(&self->stage);
         func_020624b8();
         if (self->unk_c8) {
             self->unk_c8 = 0;
@@ -2193,26 +2031,26 @@ s32 func_ov000_02183a10(CmdEx *self) {
         func_0203cc58(fade, 2, 0);
     }
     if (data_02fe1534.unk_46 == self->unk_cd.c[0]) {
-        if (IdEq(&((CmdEx *)data_ov000_021ccd54)->unk_ca, &self->unk_cd) && self->unk_c9 == 0) {
+        if (IdEq(&SceneCmd_Get()->unk_ca, &self->unk_cd) && self->unk_c9 == 0) {
             if (func_ov000_0219bf90() == NULL) {
-                CmdObj_Push(((CmdEx *)data_ov000_021ccd54), 0xb, 0);
+                CmdObj_Push(SceneCmd_Get(), 0xb, 0);
             }
             data_02097e48->b1 = 1;
-            CmdObj_Push(((CmdEx *)data_ov000_021ccd54), 0xa, 0);
+            CmdObj_Push(SceneCmd_Get(), 0xa, 0);
             if (&self->unk_cd != NULL) {
-                ((CmdEx *)data_ov000_021ccd54)->unk_cd = self->unk_cd;
+                SceneCmd_Get()->unk_cd = self->unk_cd;
             }
             self->state = 3;
         } else {
             func_02062424(&self->unk_cd);
-            ((CmdEx *)data_ov000_021ccd54)->unk_ac = 1;
+            SceneCmd_Get()->stage.pending = 1;
             self->unk_cd.c[0] = 0xff;
             self->unk_cd.c[1] = 0xff;
             self->unk_cd.c[2] = 0xff;
             self->state = 3;
         }
     } else {
-        func_ov000_02181d70(&self->unk_ac);
+        func_ov000_02181d70(&self->stage);
         self->state = 4;
     }
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
@@ -2232,30 +2070,10 @@ s32 func_ov000_02183a10(CmdEx *self) {
 namespace m_Lo_02183db8 {
 
 typedef struct {
-    u8 c[3];
-} Id3;
-
-typedef struct {
     u8 b0 : 2;
     u8 mode : 2;
     u8 b4 : 4;
 } Bits0e;
-
-class CmdEx : public CmdObj {
-public:
-    u8 unk_ac;
-    u8 pad_ad[0x1b];
-    u8 unk_c8;
-    u8 unk_c9;
-    Id3 unk_ca;
-    Id3 unk_cd;
-    Id3 unk_d0;
-    u8 pad_d3[0xb9];
-    u8 unk_18c;
-    u8 unk_18d;
-    u8 unk_18e;
-    u8 unk_18f;
-};
 
 #define BITS0E(self) (*(Bits0e *)((u8 *)(self) + 0xe))
 
@@ -2291,23 +2109,6 @@ typedef struct {
 } Obj021ccd64;
 
 typedef struct {
-    u8 pad_00[0x15];
-    u8 unk_15;
-    u8 pad_16[0xb12];
-    u8 f0 : 2;
-    u8 f2 : 1;
-    u8 f3 : 5;
-} Obj0219bf90;
-
-class Player : public VObj {
-public:
-    u8 pad_04[0x8f];
-    u8 b0 : 4;
-    u8 b4 : 1;
-    u8 b5 : 3;
-};
-
-typedef struct {
     u8 pad_00[0x22];
     u16 unk_22;
 } Ov004Obj;
@@ -2322,7 +2123,7 @@ typedef struct {
 extern "C" {
 extern Mgr021ccd30 *data_ov000_021ccd30;
 extern OvMgr *data_02149ef0;
-extern s32 data_02097d78[];
+extern s32 data_02097d78[5];
 extern Obj021ccd64 *data_ov000_021ccd64;
 extern Obj02097e48 *data_02097e48;
 extern void *data_0214a420;
@@ -2332,7 +2133,7 @@ extern ProtFn data_ov004_021cf86c[];
 extern u8 OVERLAY_3_ID[];
 extern u8 OVERLAY_4_ID[];
 
-Player *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 void func_0204b270(void *p, s32 a, s32 b);
 Ov004Obj *func_ov004_021cce88(void);
 void func_ov004_021ccf10(void);
@@ -2376,7 +2177,7 @@ static inline BOOL IsMode3(void) {
     return r;
 }
 
-static inline BOOL IdEq(const Id3 *a, const Id3 *b) {
+static inline BOOL IdEq(const FieldId *a, const FieldId *b) {
     BOOL r = FALSE;
     if (a->c[0] == b->c[0] && a->c[1] == b->c[1] && a->c[2] == b->c[2]) {
         r = TRUE;
@@ -2392,8 +2193,8 @@ static inline BOOL TaskHasVal(Task118 *t) {
     return (TaskVal(t) != 0 ? TRUE : FALSE) ? TRUE : FALSE;
 }
 
-s32 func_ov000_02183db8(CmdEx *self) {
-    Player *pl = func_ov000_0219bf90();
+s32 func_ov000_02183db8(SceneCmd *self) {
+    Robo021ca458 *pl = func_ov000_0219bf90();
     u16 sub = self->unk_a8;
     switch (self->step) {
     case 0:
@@ -2448,7 +2249,7 @@ s32 func_ov000_02183db8(CmdEx *self) {
         }
         data_ov000_021ccd64->b0 = 1;
         if (self->unk_cd.c[0] != 0xff) {
-            if (!IdEq(&((CmdEx *)data_ov000_021ccd54)->unk_ca, &self->unk_cd) || self->unk_c9 != 0) {
+            if (!IdEq(&SceneCmd_Get()->unk_ca, &self->unk_cd) || self->unk_c9 != 0) {
                 func_0204aa10(data_02097e48);
                 data_02097e48->b2 = 0;
                 self->unk_d0 = self->unk_ca;
@@ -2469,10 +2270,10 @@ s32 func_ov000_02183db8(CmdEx *self) {
                         func_ov000_021645a4(TaskVal(mgr->unk_118));
                     }
                 }
-                self->unk_18c = 0;
-                self->unk_18d = 0;
-                self->unk_18e = 0;
-                self->unk_18f = 0;
+                self->cam.base.shakeRandom = 0;
+                self->cam.base.shakeTime = 0;
+                self->cam.base.shakeLen = 0;
+                self->cam.base.shakeCur = 0;
                 EffectMgr_FreeAll(data_0214a420);
                 func_ov000_021b53f4(data_ov000_021ccd6c);
                 func_ov000_0218be9c(data_ov000_021ccd64);
@@ -2483,15 +2284,15 @@ s32 func_ov000_02183db8(CmdEx *self) {
             }
         }
         {
-            Obj0219bf90 *p = (Obj0219bf90 *)func_ov000_0219bf90();
-            if (p != NULL && p->f0 == 0) {
-                p->unk_15 = 3;
-                p->f0 = 0;
-                p->f2 = 1;
+            Robo021ca458 *p = func_ov000_0219bf90();
+            if (p != NULL && p->unk_b28_0 == 0) {
+                p->mode = 3;
+                p->unk_b28_0 = 0;
+                p->unk_b28_2 = 1;
             }
         }
         if (pl != NULL) {
-            pl->b4 = 0;
+            pl->unk_93_4 = 0;
             if (data_ov000_021ccd30 != NULL) {
                 MessageQueue_RemoveAll(data_ov000_021ccd30, 0x14, 1, 0);
             }
@@ -2561,26 +2362,20 @@ s32 func_ov000_02183db8(CmdEx *self) {
 // ---- Stub_02184498
 namespace m_Stub_02184498 {
 
-typedef struct {
-    s32 unk_00;
-    u8 unk_04[0x8];
-    s32 unk_0c;
-} Data02097d78;
-
 extern "C" {
 
-extern Data02097d78 data_02097d78;
+extern s32 data_02097d78[5];
 void func_0203cb78(s32 a, s32 b, s32 c);
 
 static inline BOOL IsMode(s32 mode) {
-    return data_02097d78.unk_0c == mode ? TRUE : (data_02097d78.unk_00 == mode ? TRUE : FALSE);
+    return data_02097d78[3] == mode ? TRUE : (data_02097d78[0] == mode ? TRUE : FALSE);
 }
 
 static inline BOOL IsIdle(void) {
-    return data_02097d78.unk_0c == 0 && data_02097d78.unk_00 == 0;
+    return data_02097d78[3] == 0 && data_02097d78[0] == 0;
 }
 
-BOOL func_ov000_02184498(void *self) {
+BOOL func_ov000_02184498(SceneCmd *self) {
     if (IsMode(4)) {
         func_0203cb78(0xa000, 0, 0);
     }
@@ -2597,35 +2392,26 @@ BOOL func_ov000_02184498(void *self) {
 // ---- Stub_02184508
 namespace m_Stub_02184508 {
 
-typedef struct {
-    u8 unk_00[0x15];
-    u8 unk_15;
-    u8 unk_16[0xb12];
-    u8 unk_b28_0 : 2;
-    u8 unk_b28_2 : 1;
-    u8 unk_b28_3 : 5;
-} Obj0219bf90;
-
 extern "C" {
 
-Obj0219bf90 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 
-void func_ov000_02184508(void *self) {
-    Obj0219bf90 *p = func_ov000_0219bf90();
+void func_ov000_02184508(SceneCmd *self) {
+    Robo021ca458 *p = func_ov000_0219bf90();
     if (p == NULL) {
         return;
     }
     if (p->unk_b28_0 != 0) {
         return;
     }
-    p->unk_15 = 3;
+    p->mode = 3;
     p->unk_b28_0 = 0;
     p->unk_b28_2 = 1;
 }
 
-void func_ov000_02184548(void *self) {
-    Obj0219bf90 *p;
-    if (*((u8 *)self + 0xca) == 0xfe) {
+void func_ov000_02184548(SceneCmd *self) {
+    Robo021ca458 *p;
+    if (self->unk_ca.c[0] == 0xfe) {
         return;
     }
     p = func_ov000_0219bf90();
@@ -2635,7 +2421,7 @@ void func_ov000_02184548(void *self) {
     if (p->unk_b28_0 != 0) {
         return;
     }
-    p->unk_15 = 1;
+    p->mode = 1;
     p->unk_b28_0 = 0;
     p->unk_b28_2 = 0;
 }
@@ -2649,8 +2435,8 @@ namespace m_Stub_02184594 {
 
 extern "C" {
 
-void func_ov000_02184594(CmdQueue *self) {
-    CmdQueue_Push(self, 0xb, 0);
+void func_ov000_02184594(SceneCmd *self) {
+    CmdObj_Push(self, 0xb, 0);
 }
 
 }
@@ -2660,23 +2446,14 @@ void func_ov000_02184594(CmdQueue *self) {
 // ---- Lo_021845cc
 namespace m_Lo_021845cc {
 
-typedef struct {
-    u8 unk_00[0x15];
-    u8 unk_15;
-    u8 unk_16[0xb12];
-    u8 unk_b28_0 : 2;
-    u8 unk_b28_2 : 1;
-    u8 unk_b28_3 : 5;
-} Obj0219bf90;
-
 extern "C" {
-extern s32 data_02097d78[];
-Obj0219bf90 *func_ov000_0219bf90(void);
+extern s32 data_02097d78[5];
+Robo021ca458 *func_ov000_0219bf90(void);
 VObj *Robo021ca458_Ctor(void *p);
 void *Heap_Alloc(u32 size);
 s32 func_0206ffa0(s32 a);
 void Actor_JoinGroup(void *self, u16 id, u16 kind, s32 arg);
-BOOL func_ov000_0219c86c(Obj0219bf90 *self);
+BOOL func_ov000_0219c86c(Robo021ca458 *self);
 
 static inline BOOL IsMode3(void) {
     BOOL r;
@@ -2689,20 +2466,20 @@ static inline BOOL IsMode3(void) {
 }
 
 static inline void Wake0219bf90(void) {
-    Obj0219bf90 *p = func_ov000_0219bf90();
+    Robo021ca458 *p = func_ov000_0219bf90();
     if (p == NULL) {
         return;
     }
     if (p->unk_b28_0 != 0) {
         return;
     }
-    p->unk_15 = 3;
+    p->mode = 3;
     p->unk_b28_0 = 0;
     p->unk_b28_2 = 1;
 }
 
-s32 func_ov000_021845cc(CmdObj *self) {
-    Obj0219bf90 *cur = func_ov000_0219bf90();
+s32 func_ov000_021845cc(SceneCmd *self) {
+    Robo021ca458 *cur = func_ov000_0219bf90();
     switch (self->step) {
     case 0:
         self->step++;
@@ -2747,8 +2524,8 @@ namespace m_Stub_021847d8 {
 
 extern "C" {
 
-void func_ov000_021847d8(CmdQueue *self) {
-    CmdQueue_Push(self, 0xc, 0);
+void func_ov000_021847d8(SceneCmd *self) {
+    CmdObj_Push(self, 0xc, 0);
 }
 
 }
@@ -2778,14 +2555,14 @@ typedef struct {
 } Flags021ccd44;
 
 extern "C" {
-extern u8 data_02097d78;
+extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
-BOOL func_ov000_021820bc(void *p, s32 a);
+BOOL func_ov000_021820bc(SceneStage *self, s32 a);
 void func_ov000_0214ba18(void);
 BOOL func_ov000_0214bb04(void);
 s32 func_ov000_0214bb2c(void);
@@ -2797,7 +2574,7 @@ void func_ov000_02172390(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
+s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
@@ -2821,7 +2598,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_02184810(CmdObj *self) {
+s32 func_ov000_02184810(SceneCmd *self) {
     func_ov000_0219bf90();
     switch (self->step) {
     case 0:
@@ -2846,29 +2623,15 @@ s32 func_ov000_02184810(CmdObj *self) {
 // ---- Stub_021848d0
 namespace m_Stub_021848d0 {
 
-typedef struct {
-    u8 unk_00[0x10];
-    s32 kinds[0x10];
-    s32 args[0x10];
-    s32 unk_90;
-    s32 index;
-    u8 unk_98[0x32];
-    u8 unk_ca;
-} CmdQueue;
-
 extern "C" {
 
 Robo021ca458 *func_ov000_0219bf90(void);
 
-void func_ov000_021848d0(CmdQueue *self) {
-    if (func_ov000_0219bf90() == NULL || self->unk_ca == 0xfe) {
+void func_ov000_021848d0(SceneCmd *self) {
+    if (func_ov000_0219bf90() == NULL || self->unk_ca.c[0] == 0xfe) {
         return;
     }
-    self->kinds[self->index] = 0xd;
-    self->args[self->index] = 0;
-    if (++self->index >= 0x10) {
-        self->index = 0;
-    }
+    CmdObj_Push(self, 0xd, 0);
 }
 
 }
@@ -2898,14 +2661,14 @@ typedef struct {
 } Flags021ccd44;
 
 extern "C" {
-extern u8 data_02097d78;
+extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
-BOOL func_ov000_021820bc(void *p, s32 a);
+BOOL func_ov000_021820bc(SceneStage *self, s32 a);
 void func_ov000_0214ba18(void);
 BOOL func_ov000_0214bb04(void);
 s32 func_ov000_0214bb2c(void);
@@ -2917,7 +2680,7 @@ void func_ov000_02172390(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
+s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
@@ -2941,7 +2704,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_02184924(CmdObj *self) {
+s32 func_ov000_02184924(SceneCmd *self) {
     switch (self->step) {
     case 0:
         func_ov000_02180660(1, 0);
@@ -2997,26 +2760,26 @@ typedef struct {
 } Flags021ccd44;
 
 extern "C" {
-extern u8 data_02097d78;
-extern u8 *data_ov000_021ccd30;
+extern s32 data_02097d78[5];
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
-BOOL func_ov000_021820bc(void *p, s32 a);
+BOOL func_ov000_021820bc(SceneStage *self, s32 a);
 void func_ov000_0214ba18(void);
 BOOL func_ov000_0214bb04(void);
 s32 func_ov000_0214bb2c(void);
 void func_ov000_0214bb5c(void);
 void func_ov000_0214baa8(void);
-BOOL func_ov000_0216f674(void *mgr, s32 a);
-BOOL func_ov000_0217060c(void *p);
+BOOL func_ov000_0216f674(MessageQueue *self, s32 id);
+BOOL func_ov000_0217060c(ListBuffer021cb940 *self);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
+s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
@@ -3041,20 +2804,20 @@ static inline BOOL MsgDone(void) {
 }
 
 static inline BOOL MgrBusy(void) {
-    u8 *mgr = data_ov000_021ccd30;
+    MessageQueue021cb980 *mgr = data_ov000_021ccd30;
     if (mgr == NULL) {
         return FALSE;
     }
     if (func_ov000_0216f674(mgr, 0xf)) {
         return TRUE;
     }
-    if (LFLD(void *, mgr, 0x11c) == NULL) {
+    if (mgr->unk_11c == NULL) {
         return FALSE;
     }
-    return func_ov000_0217060c(LFLD(void *, mgr, 0x11c));
+    return func_ov000_0217060c(mgr->unk_11c);
 }
 
-s32 func_ov000_02184a1c(CmdObj *self, s32 arg) {
+s32 func_ov000_02184a1c(SceneCmd *self, s32 arg) {
     switch (self->step) {
     case 0:
         func_ov000_02172390(data_ov000_021ccd30, 0, MsgRes_GetString(data_02149ef8, func_02061d54(0x25)));
@@ -3097,8 +2860,8 @@ namespace m_Stub_02184bb0 {
 
 extern "C" {
 
-void func_ov000_02184bb0(CmdQueue *self, s32 arg) {
-    CmdQueue_Push(self, 0xe, arg);
+void func_ov000_02184bb0(SceneCmd *self, s32 arg) {
+    CmdObj_Push(self, 0xe, arg);
 }
 
 }
@@ -3128,14 +2891,14 @@ typedef struct {
 } Flags021ccd44;
 
 extern "C" {
-extern u8 data_02097d78;
+extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
-BOOL func_ov000_021820bc(void *p, s32 a);
+BOOL func_ov000_021820bc(SceneStage *self, s32 a);
 void func_ov000_0214ba18(void);
 BOOL func_ov000_0214bb04(void);
 s32 func_ov000_0214bb2c(void);
@@ -3147,7 +2910,7 @@ void func_ov000_02172390(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
+s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
@@ -3173,7 +2936,7 @@ static inline BOOL MsgDone(void) {
 
 static inline BOOL MgrBusy(void);
 
-s32 func_ov000_02184be8(CmdObj *self) {
+s32 func_ov000_02184be8(SceneCmd *self) {
     switch (self->unk_a4 / 100) {
     case 0:
         func_ov000_02184a1c(self, self->unk_a4);
@@ -3235,8 +2998,8 @@ namespace m_Stub_02184d90 {
 
 extern "C" {
 
-void func_ov000_02184d90(CmdQueue *self, s32 arg) {
-    CmdQueue_Push(self, 0xf, arg);
+void func_ov000_02184d90(SceneCmd *self, s32 arg) {
+    CmdObj_Push(self, 0xf, arg);
 }
 
 }
@@ -3266,14 +3029,14 @@ typedef struct {
 } Flags021ccd44;
 
 extern "C" {
-extern u8 data_02097d78;
+extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
-BOOL func_ov000_021820bc(void *p, s32 a);
+BOOL func_ov000_021820bc(SceneStage *self, s32 a);
 void func_ov000_0214ba18(void);
 BOOL func_ov000_0214bb04(void);
 s32 func_ov000_0214bb2c(void);
@@ -3285,7 +3048,7 @@ void func_ov000_02172390(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
+s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
@@ -3309,7 +3072,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_02184dc8(CmdObj *self) {
+s32 func_ov000_02184dc8(SceneCmd *self) {
     u16 a = self->unk_a4;
     switch (self->step) {
     case 0:
@@ -3333,30 +3096,14 @@ s32 func_ov000_02184dc8(CmdObj *self) {
 // ---- Stub_02184ea4
 namespace m_Stub_02184ea4 {
 
-typedef struct {
-    u8 unk_00[0x10];
-    s32 kinds[0x10];
-    s32 args[0x10];
-    s32 unk_90;
-    s32 index;
-} CmdQueue;
-
 extern "C" {
 
-void func_ov000_02184ea4(CmdQueue *self, s32 a) {
-    self->kinds[self->index] = 0x10;
-    self->args[self->index] = a << 16;
-    if (++self->index >= 0x10) {
-        self->index = 0;
-    }
+void func_ov000_02184ea4(SceneCmd *self, s32 a) {
+    CmdObj_Push(self, 0x10, a << 16);
 }
 
-void func_ov000_02184ee0(CmdQueue *self, s32 a) {
-    self->kinds[self->index] = 0x10;
-    self->args[self->index] = (a << 16) | 1;
-    if (++self->index >= 0x10) {
-        self->index = 0;
-    }
+void func_ov000_02184ee0(SceneCmd *self, s32 a) {
+    CmdObj_Push(self, 0x10, (a << 16) | 1);
 }
 
 }
@@ -3365,31 +3112,6 @@ void func_ov000_02184ee0(CmdQueue *self, s32 a) {
 
 // ---- Lo_02184f20
 namespace m_Lo_02184f20 {
-
-typedef struct {
-    u8 c[3];
-} Id3;
-
-class Item : public VObj {
-public:
-    u8 pad_04[0xc2];
-    u16 unk_c6;
-    u8 pad_c8[2];
-    u16 unk_ca;
-    u16 unk_cc;
-    u8 pad_ce[6];
-    Item *unk_d4;
-};
-
-class CmdEx : public CmdObj {
-public:
-    u8 pad_ac[0x10];
-    Item *unk_bc;
-    u8 pad_c0[9];
-    u8 unk_c9;
-    Id3 unk_ca;
-    Id3 unk_cd;
-};
 
 typedef struct {
     u16 b0 : 1;
@@ -3442,11 +3164,11 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-static inline void Warp(const Id3 *id, s32 arg) {
+static inline void Warp(const FieldId *id, s32 arg) {
     data_02097e48->b1 = 1;
-    CmdObj_Push(((CmdEx *)data_ov000_021ccd54), 9, arg);
+    CmdObj_Push(SceneCmd_Get(), 9, arg);
     if (id != NULL) {
-        ((CmdEx *)data_ov000_021ccd54)->unk_cd = *id;
+        SceneCmd_Get()->unk_cd = *id;
     }
 }
 
@@ -3465,7 +3187,7 @@ static inline BOOL Busy(void) {
     return r;
 }
 
-s32 func_ov000_02184f20(CmdEx *self) {
+s32 func_ov000_02184f20(SceneCmd *self) {
     u16 mode = self->unk_a4;
     u16 arg = self->unk_a6;
     switch (mode) {
@@ -3508,8 +3230,8 @@ s32 func_ov000_02184f20(CmdEx *self) {
                 CmdObj_Done(self);
                 if (func_02062834() == 1) {
                     u16 n = 0;
-                    Item *p;
-                    for (p = ((CmdEx *)data_ov000_021ccd54)->unk_bc; p != NULL; p = p->unk_d4) {
+                    SceneScript *p;
+                    for (p = SceneCmd_Get()->stage.scripts; p != NULL; p = p->next) {
                         if (n == 0) {
                             break;
                         }
@@ -3522,11 +3244,11 @@ s32 func_ov000_02184f20(CmdEx *self) {
                         if (b != NULL) {
                             b->b0 = 1;
                         }
-                        switch (p->unk_c6) {
+                        switch (p->id) {
                         case 9: {
-                            Id3 id;
+                            FieldId id;
                             p->unk_ca = 3;
-                            ((CmdEx *)data_ov000_021ccd54)->unk_c9 = 1;
+                            SceneCmd_Get()->unk_c9 = 1;
                             id.c[0] = 0x11;
                             id.c[1] = 3;
                             id.c[2] = 0;
@@ -3534,9 +3256,9 @@ s32 func_ov000_02184f20(CmdEx *self) {
                             break;
                         }
                         case 0x22: {
-                            Id3 id;
+                            FieldId id;
                             p->unk_ca = 3;
-                            ((CmdEx *)data_ov000_021ccd54)->unk_c9 = 1;
+                            SceneCmd_Get()->unk_c9 = 1;
                             id.c[0] = 7;
                             id.c[1] = 6;
                             id.c[2] = 0;
@@ -3544,7 +3266,7 @@ s32 func_ov000_02184f20(CmdEx *self) {
                             break;
                         }
                         case 0x35: {
-                            Id3 id;
+                            FieldId id;
                             u32 i;
                             Obj0214a424 *q;
                             p->unk_ca = 3;
@@ -3555,7 +3277,7 @@ s32 func_ov000_02184f20(CmdEx *self) {
                                     q->unk_60c[i] = -1;
                                 }
                             }
-                            ((CmdEx *)data_ov000_021ccd54)->unk_c9 = 1;
+                            SceneCmd_Get()->unk_c9 = 1;
                             id.c[0] = 0xc;
                             id.c[1] = 3;
                             id.c[2] = 0;
@@ -3604,10 +3326,10 @@ void func_ov000_02172218(Mgr021854d4 *p);
 
 void func_ov000_0218547c(void *state, u16 arg, void *res, u16 id) {
     func_ov000_02172218(data_ov000_021ccd30);
-    CmdQueue_Push(((CmdQueue *)data_ov000_021ccd54), 0x11, 0);
+    CmdObj_Push(SceneCmd_Get(), 0x11, 0);
 }
 
-void func_ov000_021854d4(CmdQueue *self, s32 a, s32 b) {
+void func_ov000_021854d4(SceneCmd *self, s32 a, s32 b) {
     Mgr021854d4 *mgr = data_ov000_021ccd30;
     if (mgr->unk_11c == NULL) {
         Task021854d4 *task = (Task021854d4 *)Heap_Alloc(0x80);
@@ -3622,7 +3344,7 @@ void func_ov000_021854d4(CmdQueue *self, s32 a, s32 b) {
         mgr->unk_11c->unk_04 |= 0x10;
     }
     func_ov000_02172240(data_ov000_021ccd30, a, b);
-    CmdQueue_Push(self, 0x12, 0);
+    CmdObj_Push(self, 0x12, 0);
 }
 
 }
@@ -3699,7 +3421,7 @@ static inline s32 State11c(void) {
     return r;
 }
 
-s32 func_ov000_021855a4(CmdObj *self) {
+s32 func_ov000_021855a4(SceneCmd *self) {
     switch (self->unk_98) {
     case 0x11:
         switch (self->step) {
@@ -3813,7 +3535,7 @@ typedef struct {
 Actor02185804 *func_ov000_0219bf90(void);
 void func_020626d4(VecFx32 *pos, u16 rot);
 
-void func_ov000_02185804(CmdQueue *self, s32 arg) {
+void func_ov000_02185804(SceneCmd *self, s32 arg) {
     Actor02185804 *o = func_ov000_0219bf90();
     if (o != NULL) {
         VecFx32 v;
@@ -3836,8 +3558,8 @@ void func_ov000_02185804(CmdQueue *self, s32 arg) {
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    CmdQueue_Push(self, 0x26, 1);
-    CmdQueue_Push(self, 0x15, arg);
+    CmdObj_Push(self, 0x26, 1);
+    CmdObj_Push(self, 0x15, arg);
 }
 
 }
@@ -3860,15 +3582,15 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_02185918(CmdQueue *self, s32 arg) {
+void func_ov000_02185918(SceneCmd *self, s32 arg) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    CmdQueue_Push(self, 0x26, 1);
-    CmdQueue_Push(self, 0x16, arg);
+    CmdObj_Push(self, 0x26, 1);
+    CmdObj_Push(self, 0x16, arg);
 }
 }
 
@@ -4018,7 +3740,7 @@ static inline BOOL Busy1a(void) {
     return r;
 }
 
-s32 func_ov000_021859c4(CmdObj *self) {
+s32 func_ov000_021859c4(SceneCmd *self) {
     switch (self->unk_98) {
     case 0x14:
         if (self->step == 0) {
@@ -4227,15 +3949,15 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_02186158(CmdQueue *self, s32 arg) {
+void func_ov000_02186158(SceneCmd *self, s32 arg) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    CmdQueue_Push(self, 0x26, 1);
-    CmdQueue_Push(self, 0x1b, arg);
+    CmdObj_Push(self, 0x26, 1);
+    CmdObj_Push(self, 0x1b, arg);
 }
 }
 
@@ -4257,15 +3979,15 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_02186204(CmdQueue *self, s32 arg) {
+void func_ov000_02186204(SceneCmd *self, s32 arg) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    CmdQueue_Push(self, 0x26, 1);
-    CmdQueue_Push(self, 0x1c, arg);
+    CmdObj_Push(self, 0x26, 1);
+    CmdObj_Push(self, 0x1c, arg);
 }
 }
 
@@ -4338,7 +4060,7 @@ static inline void ClearCallbacks(void) {
     data_ov000_021ccd60 = NULL;
 }
 
-s32 func_ov000_021862b0(CmdObj *self) {
+s32 func_ov000_021862b0(SceneCmd *self) {
     switch (self->unk_98) {
     case 0x1b:
         if (self->step == 0) {
@@ -4451,7 +4173,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_021865f8(CmdQueue *self) {
+void func_ov000_021865f8(SceneCmd *self) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -4466,8 +4188,8 @@ void func_ov000_021865f8(CmdQueue *self) {
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    CmdQueue_Push(self, 0x26, 1);
-    CmdQueue_Push(self, 0x1e, 0);
+    CmdObj_Push(self, 0x26, 1);
+    CmdObj_Push(self, 0x1e, 0);
 }
 
 }
@@ -4513,25 +4235,6 @@ typedef struct {
     Spot021ccd6c *spots;
 } Obj021ccd6c;
 
-typedef struct {
-    u8 pad_00[0x15];
-    u8 unk_15;
-    u8 pad_16[0xaf2];
-    s32 unk_b08;
-    u8 pad_b0c[4];
-    VecFx32 unk_b10;
-    u8 pad_b1c[0xc];
-    u8 unk_b28_0 : 2;
-    u8 unk_b28_2 : 6;
-} Obj0219bf90;
-
-typedef struct {
-    u8 pad_00[0xac];
-    u8 unk_ac;
-    u8 pad_ad[0x1d];
-    u8 unk_ca;
-} CmdObj021866d0;
-
 extern "C" {
 extern void *data_02149efc;
 extern void *data_02149ef8;
@@ -4540,16 +4243,16 @@ extern Obj02097e48 *data_02097e48;
 extern Mgr021ccd30 *data_ov000_021ccd30;
 extern Obj021ccd6c *data_ov000_021ccd6c;
 void func_020623e0(void);
-void func_ov000_02182590(u8 *p);
+void func_ov000_02182590(SceneStage *self);
 u16 func_02061d54(s32 a);
 void *MsgRes_GetString(void *p, s32 a);
 void func_ov000_02172390(void *mgr, s32 a, void *b);
 BOOL func_ov000_0216f674(Mgr021ccd30 *mgr, s32 a);
 BOOL func_ov000_0217060c(void *p);
 u16 func_02062834(void);
-void func_02062500(u8 *p);
+void func_02062500(FieldId *id);
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
-Obj0219bf90 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 
 static inline BOOL Busy0f(void) {
     BOOL r;
@@ -4566,7 +4269,7 @@ static inline BOOL Busy0f(void) {
     return r;
 }
 
-s32 func_ov000_021866d0(CmdObj *self) {
+s32 func_ov000_021866d0(SceneCmd *self) {
     BOOL ready;
     switch (self->step) {
     case 0:
@@ -4574,8 +4277,8 @@ s32 func_ov000_021866d0(CmdObj *self) {
         return 0;
     case 1:
         func_020623e0();
-        ((CmdObj021866d0 *)self)->unk_ac = 1;
-        func_ov000_02182590(&((CmdObj021866d0 *)self)->unk_ac);
+        self->stage.pending = 1;
+        func_ov000_02182590(&self->stage);
         ready = TRUE;
         if (data_02149efc == NULL) {
             ready = FALSE;
@@ -4591,7 +4294,7 @@ s32 func_ov000_021866d0(CmdObj *self) {
         if (!Busy0f()) {
             CmdObj_Done(self);
             if (!func_02062834()) {
-                func_02062500(&((CmdObj021866d0 *)self)->unk_ca);
+                func_02062500(&self->unk_ca);
                 SndMgr_LoadHeapState(data_02097e4c, 1, 1);
                 {
                     Obj02097e48 *p = data_02097e48;
@@ -4613,14 +4316,14 @@ s32 func_ov000_021866d0(CmdObj *self) {
                 if (g->cur != 0xff) {
                     Spot021ccd6c *s = &g->spots[g->cur];
                     VecFx32 v;
-                    Obj0219bf90 *obj;
+                    Robo021ca458 *obj;
                     v.x = s->x << 4;
                     v.y = s->y << 4;
                     v.z = s->z << 4;
                     VEC_Add(&v, &s->base, &v);
                     obj = func_ov000_0219bf90();
                     if (obj != NULL) {
-                        obj->unk_15 = 3;
+                        obj->mode = 3;
                         obj->unk_b28_0 = 2;
                         obj->unk_b10 = v;
                         obj->unk_b08 = 0x252;
@@ -4690,7 +4393,7 @@ static inline void ClearCallbacks(void) {
     data_ov000_021ccd60 = NULL;
 }
 
-s32 func_ov000_02186a24(CmdObj *self) {
+s32 func_ov000_02186a24(SceneCmd *self) {
     switch (self->step) {
     case 0:
         data_ov000_021ccd5c = func_ov000_021865bc;
@@ -4763,7 +4466,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_02186bb0(CmdQueue *self) {
+void func_ov000_02186bb0(SceneCmd *self) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -4778,8 +4481,8 @@ void func_ov000_02186bb0(CmdQueue *self) {
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    CmdQueue_Push(self, 0x26, 1);
-    CmdQueue_Push(self, 0x1f, 0);
+    CmdObj_Push(self, 0x26, 1);
+    CmdObj_Push(self, 0x1f, 0);
 }
 
 }
@@ -4839,7 +4542,7 @@ static inline void ClearCallbacks(void) {
     data_ov000_021ccd60 = NULL;
 }
 
-s32 func_ov000_02186c88(CmdObj *self) {
+s32 func_ov000_02186c88(SceneCmd *self) {
     switch (self->step) {
     case 0:
         data_ov000_021ccd5c = func_ov000_02186b74;
@@ -4867,8 +4570,8 @@ namespace m_Stub_02186dbc {
 
 extern "C" {
 
-void func_ov000_02186dbc(CmdQueue *self) {
-    CmdQueue_Push(self, 0x20, 0);
+void func_ov000_02186dbc(SceneCmd *self) {
+    CmdObj_Push(self, 0x20, 0);
 }
 
 }
@@ -4898,14 +4601,14 @@ typedef struct {
 } Flags021ccd44;
 
 extern "C" {
-extern u8 data_02097d78;
+extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
-BOOL func_ov000_021820bc(void *p, s32 a);
+BOOL func_ov000_021820bc(SceneStage *self, s32 a);
 void func_ov000_0214ba18(void);
 BOOL func_ov000_0214bb04(void);
 s32 func_ov000_0214bb2c(void);
@@ -4917,7 +4620,7 @@ void func_ov000_02172390(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
+s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
@@ -4941,7 +4644,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_02186df4(CmdObj *self) {
+s32 func_ov000_02186df4(SceneCmd *self) {
     switch (self->step) {
     case 0:
         func_ov000_02180660(9, 0);
@@ -5073,15 +4776,6 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-static inline void Queue_Push(void *self, s32 cmd, s32 arg) {
-    s32 *index = (s32 *)((u8 *)self + 0x94);
-    ((s32 *)((u8 *)self + 0x10))[*index] = cmd;
-    ((s32 *)((u8 *)self + 0x50))[*index] = arg;
-    if (++*index >= 0x10) {
-        *index = 0;
-    }
-}
-
 void func_ov000_02187114(void) {
     func_ov006_021ccdc8();
 }
@@ -5095,7 +4789,7 @@ void func_ov000_02187138(void) {
 }
 
 
-void func_ov000_02187150(void *self, s32 arg) {
+void func_ov000_02187150(SceneCmd *self, s32 arg) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -5110,8 +4804,8 @@ void func_ov000_02187150(void *self, s32 arg) {
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    Queue_Push(self, 0x26, 2);
-    Queue_Push(self, 0x21, arg);
+    CmdObj_Push(self, 0x26, 2);
+    CmdObj_Push(self, 0x21, arg);
 }
 
 }
@@ -5134,7 +4828,7 @@ void func_ov000_02187120(void);
 void func_ov000_02187138(void);
 void func_ov000_02186ed4(void);
 
-s32 func_ov000_0218722c(CmdObj *self) {
+s32 func_ov000_0218722c(SceneCmd *self) {
     switch (self->step) {
     case 0:
         data_ov000_021ccd5c = func_ov000_02187114;
@@ -5203,15 +4897,15 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_02187374(CmdQueue *self, s32 arg) {
+void func_ov000_02187374(SceneCmd *self, s32 arg) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    CmdQueue_Push(self, 0x26, 1);
-    CmdQueue_Push(self, 0x22, arg);
+    CmdObj_Push(self, 0x26, 1);
+    CmdObj_Push(self, 0x22, arg);
 }
 }
 
@@ -5238,7 +4932,7 @@ void func_ov000_0218735c(void);
 void func_ov000_02187368(void);
 
 
-s32 func_ov000_02187420(CmdObj *self) {
+s32 func_ov000_02187420(SceneCmd *self) {
     switch (self->step) {
     case 0: {
         func_0204b270(data_02149ef0, (s32)OVERLAY_2_ID, 0);
@@ -5316,7 +5010,7 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_02187588(CmdQueue *self) {
+void func_ov000_02187588(SceneCmd *self) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
@@ -5331,8 +5025,8 @@ void func_ov000_02187588(CmdQueue *self) {
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    CmdQueue_Push(self, 0x26, 2);
-    CmdQueue_Push(self, 0x23, 0);
+    CmdObj_Push(self, 0x26, 2);
+    CmdObj_Push(self, 0x23, 0);
 }
 
 }
@@ -5362,14 +5056,14 @@ typedef struct {
 } Flags021ccd44;
 
 extern "C" {
-extern u8 data_02097d78;
+extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
-BOOL func_ov000_021820bc(void *p, s32 a);
+BOOL func_ov000_021820bc(SceneStage *self, s32 a);
 void func_ov000_0214ba18(void);
 BOOL func_ov000_0214bb04(void);
 s32 func_ov000_0214bb2c(void);
@@ -5381,7 +5075,7 @@ void func_ov000_02172390(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
+s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
@@ -5405,7 +5099,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_02187660(CmdObj *self) {
+s32 func_ov000_02187660(SceneCmd *self) {
     switch (self->step) {
     case 0:
         data_ov000_021ccd5c = func_ov000_02187564;
@@ -5465,15 +5159,15 @@ extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
-void func_ov000_0218781c(CmdQueue *self, s32 arg) {
+void func_ov000_0218781c(SceneCmd *self, s32 arg) {
     SndMgr_LoadHeapState(data_02097e4c, 1, 1);
     {
         Obj02097e48 *p = data_02097e48;
         p->unk_74 = 0x8000;
         p->unk_70 = 0;
     }
-    CmdQueue_Push(self, 0x26, 1);
-    CmdQueue_Push(self, 0x24, arg);
+    CmdObj_Push(self, 0x26, 1);
+    CmdObj_Push(self, 0x24, arg);
 }
 }
 
@@ -5503,7 +5197,7 @@ extern Obj02097e48 *data_02097e48;
 void SndMgr_LoadHeapState(void *p, s32 a, s32 b);
 
 
-s32 func_ov000_021878c8(CmdObj *self) {
+s32 func_ov000_021878c8(SceneCmd *self) {
     if (data_ov000_021ccd5c != NULL) {
         data_ov000_021ccd5c();
     }
@@ -5539,8 +5233,8 @@ namespace m_Stub_02187a20 {
 
 extern "C" {
 
-void func_ov000_02187a20(CmdQueue *self, s32 arg) {
-    CmdQueue_Push(self, 0x25, arg);
+void func_ov000_02187a20(SceneCmd *self, s32 arg) {
+    CmdObj_Push(self, 0x25, arg);
 }
 
 }
@@ -5570,14 +5264,14 @@ typedef struct {
 } Flags021ccd44;
 
 extern "C" {
-extern u8 data_02097d78;
+extern s32 data_02097d78[5];
 extern u8 *data_ov000_021ccd30;
 extern void *data_02149ef8;
 void func_0203cb78(s32 a, s32 b, s32 c);
 void func_0206c620(void *p);
 BOOL StageRes_IsAllLoaded(void *p);
 BOOL func_0205aa30(void *p);
-BOOL func_ov000_021820bc(void *p, s32 a);
+BOOL func_ov000_021820bc(SceneStage *self, s32 a);
 void func_ov000_0214ba18(void);
 BOOL func_ov000_0214bb04(void);
 s32 func_ov000_0214bb2c(void);
@@ -5589,7 +5283,7 @@ void func_ov000_02172390(void *mgr, s32 a, void *b);
 void *MsgRes_GetString(void *p, s32 a);
 u16 func_02061d54(s32 a);
 u16 func_02062834(void);
-s32 func_ov000_02184a1c(CmdObj *self, s32 arg);
+s32 func_ov000_02184a1c(SceneCmd *self, s32 arg);
 extern void *data_02097e4c;
 extern void *data_02097e44;
 extern Obj02097e48 *data_02097e48;
@@ -5613,7 +5307,7 @@ static inline BOOL MsgDone(void) {
     return data_ov000_021ccd44->b1 ? TRUE : FALSE;
 }
 
-s32 func_ov000_02187a58(CmdObj *self) {
+s32 func_ov000_02187a58(SceneCmd *self) {
     switch (self->step) {
     case 0:
         self->step++;
@@ -5642,8 +5336,8 @@ namespace m_Stub_02187b50 {
 
 extern "C" {
 
-void func_ov000_02187b50(CmdQueue *self) {
-    CmdQueue_Push(self, 0x26, 0);
+void func_ov000_02187b50(SceneCmd *self) {
+    CmdObj_Push(self, 0x26, 0);
 }
 
 }
@@ -5654,31 +5348,10 @@ void func_ov000_02187b50(CmdQueue *self) {
 namespace m_Lo_02187b88 {
 
 typedef struct {
-    u8 c[3];
-} Id3;
-
-typedef struct {
     u8 b0 : 2;
     u8 mode : 2;
     u8 b4 : 4;
 } Bits0e;
-
-class CmdEx : public CmdObj {
-public:
-    u8 unk_ac;
-    u8 pad_ad[3];
-    VObj *unk_b0;
-    u16 unk_b4;
-    u8 pad_b6[0x14];
-    Id3 unk_ca;
-    Id3 unk_cd;
-    Id3 unk_d0;
-    u8 pad_d3[0xb9];
-    u8 unk_18c;
-    u8 unk_18d;
-    u8 unk_18e;
-    u8 unk_18f;
-};
 
 #define BITS0E(self) (*(Bits0e *)((u8 *)(self) + 0xe))
 
@@ -5721,7 +5394,7 @@ typedef struct {
 
 extern "C" {
 extern Mgr021ccd30 *data_ov000_021ccd30;
-extern s32 data_02097d78[];
+extern s32 data_02097d78[5];
 extern u8 data_ov000_021cb6d0[];
 extern u8 data_ov000_021cb940[];
 extern u8 data_ov000_021cb920[];
@@ -5750,7 +5423,7 @@ void func_ov000_0218be9c(void *p);
 void ActorMgr_DestroyAll(ActorMgr *p);
 void MessageQueue_FreeBuffer(Mgr021ccd30 *mgr, void *task);
 void func_0206222c(void);
-void func_ov000_021819a4(u8 *p);
+void func_ov000_021819a4(SceneStage *self);
 void func_0205b1b4(void);
 void func_02059974(void *p);
 void func_0204b270(void *p, s32 a, s32 b);
@@ -5777,7 +5450,7 @@ static inline BOOL TaskHasVal(Task118 *t) {
     return (TaskVal(t) != 0 ? TRUE : FALSE) ? TRUE : FALSE;
 }
 
-s32 func_ov000_02187b88(CmdEx *self) {
+s32 func_ov000_02187b88(SceneCmd *self) {
     u16 mode = self->unk_a4;
     switch (mode) {
     case 0:
@@ -5852,7 +5525,7 @@ s32 func_ov000_02187b88(CmdEx *self) {
             self->step++;
             break;
         case 3: {
-            Id3 id;
+            FieldId id;
             id.c[0] = 0xff;
             id.c[1] = 0xff;
             id.c[2] = 0xff;
@@ -5861,8 +5534,8 @@ s32 func_ov000_02187b88(CmdEx *self) {
             data_02fe1534.unk_46 = 0xffff;
             data_02fe1534.unk_48 = 0xffff;
             data_02fe1534.unk_4a = 0xffff;
-            HEAP_DELETE_VOBJ(self->unk_b0);
-            self->unk_b4 = 0xffff;
+            HEAP_DELETE_VOBJ(self->stage.res);
+            self->stage.group = 0xffff;
             func_0204aa10(data_02097e48);
             data_02097e48->b2 = 0;
             self->unk_d0 = self->unk_ca;
@@ -5883,10 +5556,10 @@ s32 func_ov000_02187b88(CmdEx *self) {
                     func_ov000_021645a4(TaskVal(mgr->unk_118));
                 }
             }
-            self->unk_18c = 0;
-            self->unk_18d = 0;
-            self->unk_18e = 0;
-            self->unk_18f = 0;
+            self->cam.base.shakeRandom = 0;
+            self->cam.base.shakeTime = 0;
+            self->cam.base.shakeLen = 0;
+            self->cam.base.shakeCur = 0;
             EffectMgr_FreeAll(data_0214a420);
             func_ov000_021b53f4(data_ov000_021ccd6c);
             func_ov000_0218be9c(data_ov000_021ccd64);
@@ -5903,7 +5576,7 @@ s32 func_ov000_02187b88(CmdEx *self) {
             }
             if (mode == 2) {
                 func_0206222c();
-                func_ov000_021819a4(&self->unk_ac);
+                func_ov000_021819a4(&self->stage);
                 func_0205b1b4();
                 func_02059974(data_02149f0c);
                 func_0204b270(data_02149ef0, -1, 0);
@@ -5924,23 +5597,15 @@ s32 func_ov000_02187b88(CmdEx *self) {
 // ---- Stub_02188140
 namespace m_Stub_02188140 {
 
-static inline void CmdQueue_Push2(CmdQueue *q, s32 kind, s32 lo, u16 hi) {
-    q->kinds[q->index] = kind;
-    q->args[q->index] = lo | (hi << 16);
-    if (++q->index >= 0x10) {
-        q->index = 0;
-    }
-}
-
 extern "C" {
 
-void func_ov000_02188140(CmdQueue *self, s32 a, s32 b, s32 c) {
+void func_ov000_02188140(SceneCmd *self, s32 a, s32 b, s32 c) {
     u16 v;
     if (a == 0) {
         a = 1;
     }
     v = (b & 0xff) | ((c & 0xf) << 8);
-    CmdQueue_Push2(self, 0x27, a, v);
+    CmdObj_Push(self, 0x27, a | (v << 16));
 }
 
 }
@@ -5949,11 +5614,6 @@ void func_ov000_02188140(CmdQueue *self, s32 a, s32 b, s32 c) {
 
 // ---- Lo_0218819c
 namespace m_Lo_0218819c {
-
-typedef struct {
-    u8 pad_00[0xb24];
-    u32 unk_b24_0 : 1;
-} Obj0219bf90;
 
 typedef struct {
     u8 pad_00[6];
@@ -5966,9 +5626,9 @@ typedef struct {
 } Pad02097dc8;
 
 extern "C" {
-extern s32 data_02097d78[];
+extern s32 data_02097d78[5];
 extern Pad02097dc8 *data_02097dc8;
-Obj0219bf90 *func_ov000_0219bf90(void);
+Robo021ca458 *func_ov000_0219bf90(void);
 Obj0205b31c *func_0205b31c(void);
 
 static inline BOOL IsMode0(void) {
@@ -5991,12 +5651,12 @@ static inline BOOL IsMode4(void) {
     return r;
 }
 
-s32 func_ov000_0218819c(CmdObj *self) {
+s32 func_ov000_0218819c(SceneCmd *self) {
     u16 arg = self->unk_a6;
     u16 kind = arg & 0xff;
     u8 mode = (arg >> 8) & 0xf;
     BOOL done = FALSE;
-    Obj0219bf90 *obj;
+    Robo021ca458 *obj;
     u16 count = self->unk_a4;
     BOOL ret;
     switch (self->step) {
@@ -6066,7 +5726,7 @@ typedef struct {
 } Mgr021ccd30;
 
 extern "C" {
-extern s32 data_02097d78[];
+extern s32 data_02097d78[5];
 extern void *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 extern Mgr021ccd30 *data_ov000_021ccd30;
@@ -6089,7 +5749,7 @@ static inline BOOL IsMode4(void) {
     return r;
 }
 
-s32 func_ov000_02188438(CmdObj *self) {
+s32 func_ov000_02188438(SceneCmd *self) {
     switch (self->step) {
     case 0:
         if (IsMode0()) {
@@ -6133,22 +5793,10 @@ s32 func_ov000_02188438(CmdObj *self) {
 // ---- Stub_02188634
 namespace m_Stub_02188634 {
 
-typedef struct {
-    u8 unk_00[0x10];
-    s32 kinds[0x10];
-    s32 args[0x10];
-    s32 unk_90;
-    s32 index;
-} CmdQueue;
-
 extern "C" {
 
-void func_ov000_02188634(CmdQueue *self, s32 a, s32 b) {
-    self->kinds[self->index] = 0x29;
-    self->args[self->index] = a | (b << 16);
-    if (++self->index >= 0x10) {
-        self->index = 0;
-    }
+void func_ov000_02188634(SceneCmd *self, s32 a, s32 b) {
+    CmdObj_Push(self, 0x29, a | (b << 16));
 }
 
 }
@@ -6208,8 +5856,8 @@ void func_0206228c(void);
 Robo021ca458 *func_ov000_0219bf90(void);
 s32 FX_Div(s32 a, s32 b);
 
-static inline BOOL Busy0218867c(VObj *v) {
-    return LFLD(u8, v, 0x5a) ? TRUE : FALSE;
+static inline BOOL Busy0218867c(SceneRes *v) {
+    return v->unk_5a ? TRUE : FALSE;
 }
 
 typedef struct {
@@ -6227,7 +5875,7 @@ static inline VObj *Find0218867c(u16 id) {
     return data_ov000_021ccd68 == NULL ? NULL : ActorMgr_GetActor(data_ov000_021ccd68, id);
 }
 
-s32 func_ov000_0218867c(CmdObj *self) {
+s32 func_ov000_0218867c(SceneCmd *self) {
     s32 hit;
     s32 miss;
     u16 i;
@@ -6260,8 +5908,8 @@ s32 func_ov000_0218867c(CmdObj *self) {
             return 0;
         case 1: {
             u16 n_0 = 0;
-            VObj *p = LFLD(VObj *, ((u8 *)data_ov000_021ccd54), 0xbc);
-            for (; p != NULL; p = LFLD(VObj *, p, 0xd4)) {
+            SceneScript *p = SceneCmd_Get()->stage.scripts;
+            for (; p != NULL; p = p->next) {
                 if (n_0 == 0) {
                     break;
                 }
@@ -6384,25 +6032,25 @@ s32 func_ov000_0218867c(CmdObj *self) {
         self->step = 100;
     }
     if (self->step == 100) {
-        u8 *o_2;
+        SceneCmd *o_2;
         if (data_ov000_021ccd5c != NULL) {
             data_ov000_021ccd5c();
         }
         data_ov000_021ccd5c = NULL;
         data_ov000_021ccd58 = 0;
         data_ov000_021ccd60 = 0;
-        o_2 = (u8 *)data_ov000_021ccd54;
-        if (LFLD(VObj *, o_2, 0xc0) != NULL) {
-            if (o_2[0xc4]) {
-                LFLD(VObj *, o_2, 0xc0)->vfunc_38(1);
+        o_2 = SceneCmd_Get();
+        if (o_2->stage.cur != NULL) {
+            if (o_2->stage.unk_18) {
+                o_2->stage.cur->vfunc_38(1);
             } else {
-                LFLD(VObj *, o_2, 0xc0)->vfunc_38(1U);
+                o_2->stage.cur->vfunc_38(1U);
             }
-            if (!Busy0218867c(LFLD(VObj *, o_2, 0xc0))) {
-                LFLD(VObj *, o_2, 0xc0) = NULL;
-                o_2[0xc4] = 0;
+            if (!Busy0218867c(o_2->stage.cur)) {
+                o_2->stage.cur = NULL;
+                o_2->stage.unk_18 = 0;
             }
-            if (LFLD(VObj *, o_2, 0xc0) == NULL) {
+            if (o_2->stage.cur == NULL) {
                 func_0206228c();
             }
         }

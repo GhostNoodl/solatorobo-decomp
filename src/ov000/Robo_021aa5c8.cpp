@@ -1,13 +1,10 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ActorMgr.h"
 #include "Main/Sys/FieldState.h"
+#include "Main/Math/Rot16.h"
 #include "ov000/Vec.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
-
-typedef struct {
-    u8 c[3];
-} Rgb021aa5c8;
 
 typedef struct {
     u8 b0 : 1;
@@ -25,7 +22,7 @@ typedef struct {
 
 extern "C" {
 
-extern Rgb021aa5c8 data_ov000_021c9fe8;
+extern FieldId data_ov000_021c9fe8;
 extern void *data_02097e4c;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
@@ -35,7 +32,7 @@ s32 func_02049bdc(void *a, s32 b, s32 c);
 void func_ov000_021aa978(u8 *self);
 void func_ov000_021aaf80(u8 *self);
 void func_ov000_021ab68c(u8 *self);
-void func_ov000_0218a358(void *s, VecFx32 *pos, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
+void func_ov000_0218a358(FieldCam *self, const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void VEC_Add(const VecFx32 *a, const VecFx32 *b, VecFx32 *ab);
 
@@ -47,7 +44,7 @@ static inline Actor *FindActor021aa5c8(u16 id) {
     return ActorMgr_GetActor(mgr, id);
 }
 
-static inline BOOL RgbEq021aa5c8(Rgb021aa5c8 *a, Rgb021aa5c8 b) {
+static inline BOOL FieldId_Eq(FieldId *a, FieldId b) {
     BOOL r = FALSE;
     if (a->c[0] == b.c[0] && a->c[1] == b.c[1] && a->c[2] == b.c[2]) {
         r = TRUE;
@@ -94,7 +91,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
             }
             func_ov003_021cedf4(n);
         }
-        if (RgbEq021aa5c8((Rgb021aa5c8 *)((u8 *)data_ov000_021ccd54 + 0xca), data_ov000_021c9fe8)) {
+        if (FieldId_Eq(&data_ov000_021ccd54->unk_ca, data_ov000_021c9fe8)) {
             func_02049bdc(data_02097e4c, 0x5e, Rand_UpTo(3));
         }
     }
@@ -115,7 +112,7 @@ void func_ov000_021aa5c8(Robo021ca458 *self) {
         d.z = FxMulL021aa5c8(d.z, 0x733);
         d.y = self->centerY;
         VEC_Add(&d, (VecFx32 *)((u8 *)self + 0x70), &out);
-        func_ov000_0218a358((u8 *)g + 0xf4, &out, 0, actor->radius + 0x8c00, 1, 0x2333, 0x1000, 1);
+        func_ov000_0218a358(&g->cam, &out, NULL, actor->radius + 0x8c00, 1, 0x2333, 0x1000, 1);
     }
     if (self->fsm->current != 0x11) {
         return;

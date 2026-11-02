@@ -45,7 +45,7 @@ static inline BOOL GIdle02194c08(void) {
 }
 
 static inline BOOL GD4_02194c08(void) {
-    return LFLD(void *, data_ov000_021ccd54, 0xd4) != NULL ? TRUE : FALSE;
+    return data_ov000_021ccd54->event != 0 ? TRUE : FALSE;
 }
 
 static inline BOOL GHasD4_02194c08(void) {

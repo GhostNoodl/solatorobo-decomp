@@ -1,15 +1,8 @@
 #include "nitro/fx.h"
+#include "ov000/Bss021ccd74.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
-
-typedef struct {
-    s8 unk_00;
-    u8 unk_01[0x7];
-    void *unk_08;
-    u8 unk_0c[0x4];
-    void *unk_10;
-} Data021ccd74;
 
 typedef struct {
     u32 b0 : 1;
@@ -21,7 +14,7 @@ typedef struct {
     u8 unk_08[4];
     u8 *model;
     u8 unk_10[0x14];
-    u8 unk_24[0xc];
+    VecFx32 unk_24;
     u16 rx;
     u16 ry;
     u16 rz;
@@ -35,7 +28,6 @@ typedef struct { u16 b0 : 5; u16 b5 : 1; u16 rest : 10; } Bits16;
 
 extern "C" {
 
-extern Data021ccd74 data_ov000_021ccd74;
 void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);
 BOOL func_ov000_021903b4(void *m);
 void func_ov000_021c2078(void *self);
@@ -58,7 +50,7 @@ void func_ov000_021c1e78(Obj021c1e78 *self) {
         return;
     }
     if (self->b2) {
-        data_ov000_021ccd74.unk_10 = self->unk_24;
+        data_ov000_021ccd74.unk_10 = &self->unk_24;
     }
     if (self->b3) {
         BOOL any;

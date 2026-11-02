@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Main/Sys/FieldState.h"
+#include "ov000/VObj.h"
 
 /* Actor factory: picks the class from the actor info type, then from the id. */
 
@@ -14,10 +15,6 @@ typedef struct {
     u16 id;
     u16 sub;
 } Spawn02192b24;
-
-typedef struct {
-    u8 v[3];
-} Rgb02192b24;
 
 extern "C" {
 
@@ -147,7 +144,7 @@ void *Ov014ActEx_022152e8_Ctor(void *p);
         u8 *t = (u8 *)Heap_Alloc(size);     \
         if (t != NULL) {                       \
             Base(t);                           \
-            LFLD(void *, t, 0) = (vt);         \
+            VOBJ_SET_VTABLE(t, vt);         \
         }                                      \
         p = t;                                 \
     }
@@ -167,7 +164,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
                 u8 *t = (u8 *)Heap_Alloc(0x20c);
                 if (t != NULL) {
                     Base(t);
-                    LFLD(void *, t, 0) = data_ov003_021f8a60;
+                    VOBJ_SET_VTABLE(t, data_ov003_021f8a60);
                     func_ov000_0218e9c4(t + 0xd0);
                 }
                 p = t;
@@ -240,7 +237,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
                 u8 *t = (u8 *)Heap_Alloc(0x2fc);
                 if (t != NULL) {
                     Base(t);
-                    LFLD(void *, t, 0) = data_ov012_0220b1e8;
+                    VOBJ_SET_VTABLE(t, data_ov012_0220b1e8);
                     func_ov000_0218e9c4(t + 0xd8);
                     func_ov000_0218fe1c(t + 0x210);
                 }
@@ -305,7 +302,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
                 u8 *t = (u8 *)Heap_Alloc(0xb1c);
                 if (t != NULL) {
                     Base(t);
-                    LFLD(void *, t, 0) = data_ov003_021f8af8;
+                    VOBJ_SET_VTABLE(t, data_ov003_021f8af8);
                     func_ov000_0218e9c4(t + 0xd0);
                     func_ov000_0218e9c4(t + 0x208);
                     func_ov000_0218fe1c(t + 0x340);
@@ -341,7 +338,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
                 u8 *t = (u8 *)Heap_Alloc(0x1c0);
                 if (t != NULL) {
                     Base(t);
-                    LFLD(void *, t, 0) = data_ov003_021f953c;
+                    VOBJ_SET_VTABLE(t, data_ov003_021f953c);
                     func_ov000_0218fe1c(t + 0xd0);
                 }
                 p = t;
@@ -450,7 +447,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             u8 *t = (u8 *)Heap_Alloc(0x304);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov003_021f9834;
+                VOBJ_SET_VTABLE(t, data_ov003_021f9834);
                 func_ov000_0218e9c4(t + 0xd0);
                 func_ov000_0218fe1c(t + 0x208);
             }
@@ -462,7 +459,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             u8 *t = (u8 *)Heap_Alloc(0x314);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov003_021f9704;
+                VOBJ_SET_VTABLE(t, data_ov003_021f9704);
                 func_ov000_0218e9c4(t + 0xd0);
                 func_ov000_0218fe1c(t + 0x208);
                 LFLD(u16, t, 0x2fc) = 0;
@@ -476,7 +473,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             u8 *t = (u8 *)Heap_Alloc(0x304);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov003_021f979c;
+                VOBJ_SET_VTABLE(t, data_ov003_021f979c);
                 func_ov000_0218e9c4(t + 0xd0);
                 func_ov000_0218fe1c(t + 0x208);
             }
@@ -515,7 +512,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             u8 *t = (u8 *)Heap_Alloc(0x218);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov003_021f8638;
+                VOBJ_SET_VTABLE(t, data_ov003_021f8638);
                 func_ov000_0218e9c4(t + 0xd0);
             }
             p = t;
@@ -529,7 +526,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             u8 *t = (u8 *)Heap_Alloc(0x208);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov003_021f8c28;
+                VOBJ_SET_VTABLE(t, data_ov003_021f8c28);
                 func_ov000_0218e9c4(t + 0xd0);
             }
             p = t;
@@ -540,7 +537,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             u8 *t = (u8 *)Heap_Alloc(0x208);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov003_021f89c8;
+                VOBJ_SET_VTABLE(t, data_ov003_021f89c8);
                 func_ov000_0218e9c4(t + 0xd0);
             }
             p = t;
@@ -563,7 +560,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             u8 *t = (u8 *)Heap_Alloc(0xe0);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov003_021f8898;
+                VOBJ_SET_VTABLE(t, data_ov003_021f8898);
                 LFLD(u16, t, 0xd0) = 0;
                 LFLD(u16, t, 0xd2) = 0;
             }
@@ -575,7 +572,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
             u8 *t = (u8 *)Heap_Alloc(0x214);
             if (t != NULL) {
                 Base(t);
-                LFLD(void *, t, 0) = data_ov003_021f8768;
+                VOBJ_SET_VTABLE(t, data_ov003_021f8768);
                 func_ov000_0218e9c4(t + 0xd0);
                 LFLD(s32, t, 0x208) = 0;
             }
@@ -588,7 +585,7 @@ u8 *func_ov000_02192b24(Spawn02192b24 *s) {
     }
     if (p != NULL) {
         Actor_JoinGroup(p, s->sub, s->id, func_0206ffa0(s->id));
-        *(Rgb02192b24 *)(p + 0xac) = *(Rgb02192b24 *)((u8 *)data_ov000_021ccd54 + 0xca);
+        *(FieldId *)(p + 0xac) = data_ov000_021ccd54->unk_ca;
     }
     return p;
 }

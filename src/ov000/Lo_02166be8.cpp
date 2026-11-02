@@ -1,5 +1,6 @@
 #include "ov000/LoCommon.h"
-#include "ov000/CmdQueue.h"
+#include "Main/Sys/FieldState.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/MapCtx.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/PlttRes.h"
@@ -13,9 +14,8 @@ extern "C" {
 
 extern u8 *data_ov000_021ccd6c;
 extern u8 data_ov000_021c9a9c[];
-extern CmdQueue *data_ov000_021ccd54;
-extern u8 data_02097d78[];
-void *func_ov000_0219bf90(void);
+extern s32 data_02097d78[5];
+Robo021ca458 *func_ov000_0219bf90(void);
 void func_ov000_021658e8(void *self);
 u8 *func_ov000_02165f94(void *self);
 void *func_ov000_02165e2c(void *self, void *area);
@@ -23,10 +23,10 @@ void func_ov000_02164c50(void *self, void *tgt);
 void func_ov000_02166180(void *self);
 s32 FX_Div(s32 a, s32 b);
 
-static inline BOOL CmdQueue_Has02166be8(CmdQueue *q, s32 kind) {
+static inline BOOL FieldState_HasCmd(FieldState *q, s32 kind) {
     s32 i;
-    for (i = q->unk_90; i != q->index;) {
-        if (q->kinds[i] == kind) {
+    for (i = q->head; i != q->tail;) {
+        if (q->queue[i] == kind) {
             return TRUE;
         }
         if (++i >= 0x10) {
@@ -37,17 +37,17 @@ static inline BOOL CmdQueue_Has02166be8(CmdQueue *q, s32 kind) {
 }
 
 static inline BOOL IsMode0_02166be8(void) {
-    if (LFLD(s32, data_02097d78, 0xc) == 0 && LFLD(s32, data_02097d78, 0) == 0) {
+    if (data_02097d78[3] == 0 && data_02097d78[0] == 0) {
         return TRUE;
     }
     return FALSE;
 }
 
 static inline BOOL IsMode1_02166be8(void) {
-    if (LFLD(s32, data_02097d78, 0xc) == 1) {
+    if (data_02097d78[3] == 1) {
         return TRUE;
     }
-    return LFLD(s32, data_02097d78, 0) == 1 ? TRUE : FALSE;
+    return data_02097d78[0] == 1 ? TRUE : FALSE;
 }
 
 static inline s32 FxMulS64_02166be8(s32 a, s64 b) {
@@ -59,7 +59,7 @@ static inline BOOL Skip02166be8(void) {
     if (func_ov000_0219bf90() == NULL) {
         skip = TRUE;
     }
-    if (CmdQueue_Has02166be8(data_ov000_021ccd54, 9) || CmdQueue_Has02166be8(data_ov000_021ccd54, 10)) {
+    if (FieldState_HasCmd(data_ov000_021ccd54, 9) || FieldState_HasCmd(data_ov000_021ccd54, 10)) {
         skip = TRUE;
     }
     return skip;
@@ -173,7 +173,7 @@ void func_ov000_02166be8(Obj02166be8 *self) {
             e = (Item0216607c *)func_ov000_02165e2c(self, area);
             if (e != w->cur) {
                 if (e == NULL || w->cur == NULL) {
-                    if (!CmdQueue_Has02166be8(data_ov000_021ccd54, 0x14)) {
+                    if (!FieldState_HasCmd(data_ov000_021ccd54, 0x14)) {
                         k = 0x1000;
                     }
                 }
@@ -255,11 +255,6 @@ typedef struct {
     Oam0_715c w0;
     Oam1_715c w1;
 } Oam715c;
-
-typedef struct {
-    u8 b0 : 2;
-    u8 b2 : 1;
-} PlBits715c;
 
 typedef struct {
     u32 b0 : 4;
@@ -385,8 +380,8 @@ void func_ov000_0216715c(Lo021cb6b0 *self, Work715c *p) {
     void *mgr;
     Pal715c *pal;
     u16 *d;
-    u8 *pl;
-    u8 *g;
+    Robo021ca458 *pl;
+    FieldState *g;
     u8 c;
     u8 kind;
     Ent715c *e2;
@@ -399,7 +394,7 @@ void func_ov000_0216715c(Lo021cb6b0 *self, Work715c *p) {
     kind = p->cur[0x14];
     anim = p->anim + kind;
     Oam715c oam = p->oam;
-    g = (u8 *)data_ov000_021ccd54;
+    g = data_ov000_021ccd54;
     mgr = func_0203bbfc(data_02097d48, 1);
     ox = p->ox;
     oy = p->oy;
@@ -407,12 +402,12 @@ void func_ov000_0216715c(Lo021cb6b0 *self, Work715c *p) {
     if (p->count2 != 0 && p->unk_cd8 > 0x800) {
         NNS_G2dEntryOamManagerOam(mgr, p->oams, p->count2);
     }
-    pl = (u8 *)func_ov000_0219bf90();
+    pl = func_ov000_0219bf90();
     if (pl != NULL) {
         NNS_G2dEntryOamManagerOam(mgr, &p->oamPl, 1);
-        if (LFLD(PlBits715c, pl, 0xb28).b0 == 0) {
+        if (pl->unk_b28_0 == 0) {
             f_1 = TRUE;
-            if (LFLD(PlBits715c, pl, 0xb28).b2 != 1) {
+            if (pl->unk_b28_2 != 1) {
                 f_1 = FALSE;
             }
             if (!f_1 && p->unk_00 == 0 && p->sel != NULL && !LFLD(QBits715c, p->sel, 0).b4) {
@@ -442,7 +437,7 @@ void func_ov000_0216715c(Lo021cb6b0 *self, Work715c *p) {
                 f_0 = FALSE;
             }
         } else {
-            if (r->bits.a == g[0xcb] && r->bits.b == g[0xcc]) {
+            if (r->bits.a == g->unk_ca.c[1] && r->bits.b == g->unk_ca.c[2]) {
                 f_0 = TRUE;
             } else {
                 f_0 = FALSE;

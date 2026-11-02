@@ -59,9 +59,9 @@ void func_ov000_021b6994(Obj021b6994 *self, u8 arg) {
             func_02036838(data_02097cdc, e, 7, 0);
         }
     }
-    p = (u8 *)data_ov000_021ccd54 + 0xd0;
+    p = data_ov000_021ccd54->unk_d0.c;
     if (arg || p[0] == 0xff || p[1] == 0xff || p[2] == 0xff) {
-        p = (u8 *)data_ov000_021ccd54 + 0xca;
+        p = data_ov000_021ccd54->unk_ca.c;
     }
     t = Lang_GetGroup(p[0]);
     func_0206dedc(buf, p);

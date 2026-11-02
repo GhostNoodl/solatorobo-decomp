@@ -5,6 +5,7 @@
 #include "ov000/Task.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/Model.h"
+#include "ov000/SceneRes.h"
 
 typedef struct {
     u8 unk_00[0x68];
@@ -19,7 +20,6 @@ extern "C" {
 extern void *data_02149ef8;
 extern Shared02fe1534 data_02fe1534;
 extern void *data_02fe152c;
-extern u8 data_ov000_021ccd24[];
 extern const char *data_ov000_021ca8d8[];
 extern u8 data_0208ba70[];
 extern const char *data_0208cca0;
@@ -60,14 +60,14 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     u16 i;
     u16 id;
     g = data_02149ef8;
-    if (!LFLD(VObj *, data_ov000_021ccd24, 8)->vfunc_34()) {
-        func_0205aa30(LFLD(void *, data_ov000_021ccd24, 8));
+    if (!data_ov000_021ccd24.unk_08->vfunc_34()) {
+        func_0205aa30(data_ov000_021ccd24.unk_08);
     }
     {
         u16 v = data_0214a424->unk_639;
         data_02fe1534.unk_70 = 1;
         data_02fe1534.unk_7a = v;
-        LFLD(VObj *, data_ov000_021ccd24, 8)->vfunc_38(1);
+        data_ov000_021ccd24.unk_08->vfunc_38(1);
         data_02fe1534.unk_7a = 0;
     }
     m = (Model *)Heap_Alloc(sizeof(Model));
@@ -183,7 +183,7 @@ static inline void Setup0214e9e4(Lo021caa44 *self) {
     id = self->param;
     data_02fe1534.unk_70 = 0;
     data_02fe1534.unk_7a = id;
-    LFLD(VObj *, data_ov000_021ccd24, 8)->vfunc_38(1);
+    data_ov000_021ccd24.unk_08->vfunc_38(1);
     data_02fe1534.unk_7a = 0;
     n = func_0205975c(data_02fe152c, 1);
     for (i = 0; i < n; i++) {

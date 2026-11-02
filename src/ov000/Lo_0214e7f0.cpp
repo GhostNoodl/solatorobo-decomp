@@ -1,11 +1,11 @@
 #include "ov000/VObj.h"
 #include "nitro/std.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/SceneRes.h"
 
 #define LFLD(type, obj, off) (*(type *)((u8 *)(obj) + (off)))
 
 extern "C" {
-extern u8 data_ov000_021ccd24[];
 extern u8 data_0208b318[];
 extern u8 data_0208bf54[];
 extern char data_ov000_021ca8f7[];
@@ -28,7 +28,7 @@ void func_ov000_0214e7f0(Lo021caa44 *self) {
     func_020708fc(0x1000, a);
     func_02070b98(0x1000, b, 1, 2);
     func_020359fc(a, b, 2, 0);
-    data_ov000_021ccd24[0] = 1;
+    data_ov000_021ccd24.unk_00 = 1;
     o = (VObj *)Heap_Alloc(0xc4);
     if (o != NULL) {
         VOBJ_SET_VTABLE(o, data_0208b318);
@@ -36,10 +36,10 @@ void func_ov000_0214e7f0(Lo021caa44 *self) {
         VOBJ_SET_VTABLE(o, data_0208bf54);
         func_0205a6a0(o);
     }
-    LFLD(VObj *, data_ov000_021ccd24, 8) = o;
+    data_ov000_021ccd24.unk_08 = (SceneRes *)o;
     STD_CopyString(name, data_ov000_021ca8f7);
     STD_ConcatenateString(name, data_ov000_021ca8ff);
-    func_0205a840(LFLD(VObj *, data_ov000_021ccd24, 8), name, data_ov000_021ca917);
+    func_0205a840(data_ov000_021ccd24.unk_08, name, data_ov000_021ca917);
     o = (VObj *)Heap_Alloc(0x4c);
     if (o != NULL) {
         VOBJ_SET_VTABLE(o, data_0208b318);

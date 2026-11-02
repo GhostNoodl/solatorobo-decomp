@@ -8455,3 +8455,53 @@ Cleanup only, over `src/ov003`, `src/ov006`, `include/ov003` and `include/ov006`
   - **`021eba54` pointer-bit test.** `func_ov003_021eb818` still has `if ((u32)self & 3)`. Removing it changes the scheduling.
   - **ov006 window copy.** The ov006 window code (`VCALL`, the raw offsets in `021d23dc`/`021d3498`/`021ce374`, and the `func_ov000_021c*` UI prototypes in `ce374`/`da208`) is not on ov000 `UiObj`/`UiList` yet.
   - **Shared task ctor/dtor.** `021ccda0`/`021ccddc` keep `void *`.
+
+### Round acI (ov000 scene-command object `SceneCmd`, scene resources, `Bss021ccd74`)
+
+Cleanup only, over `src/ov000` and `include/ov000`. Every function is still byte-identical. Each rebuilt object was compared function by function, on code bytes and relocations, with a baseline built at `6bf23e45`. After the rebase onto round acH (`e1b18a7e`), all 1906 objects were compared again: 0 differ.
+
+**Gate.**
+- 0 FAILED, with 19/19 ROM checks and `check symbols` OK.
+- `ninja report`: 8138 matched (unchanged).
+- `check_drafts.py --score` exits 0 (30 files, none worse).
+- No symbols were renamed.
+
+**Counts** (`grep -rn 'void \*self'` and `grep -o LFLD -r`, over `src/ov000` + `include/ov000`):
+
+| | before | after |
+|---|---|---|
+| `void *self` | 213 | 204 |
+| `LFLD` | 1204 | 1069 |
+
+- **`SceneCmd` (new `include/ov000/SceneCmd.h`).** This is the C++ class of the 0x214-byte object `data_ov000_021ccd54`:
+  - ctor `02188ba0`, allocated by `021814dc`, freed by `02181624`;
+  - `FieldState` in `Main/Sys/FieldState.h` stays its C view.
+
+  It derives from `CmdObj`. Its fields are:
+  - `SceneStage stage` at 0xac (0x1c);
+  - three `FieldId`s at 0xca/0xcd/0xd0;
+  - `event` at 0xd4;
+  - the camera target at 0xd8..0xf0;
+  - `FieldCam cam` at 0xf4.
+
+  The command handlers in `Lo_021814dc.cpp`, `Cmd_02189194.cpp` and `Cam_02188ed0.cpp` take `SceneCmd *self`, and the remaining `void *self` methods there are typed (`021824d0`, `021837f8`, `02183858/386c`, `02184498/508/548`, `02187150`). The CmdEx/CmdQueue/Ctrl*/Widget/Node/Panel local views were removed. Open-coded queue pushes use `CmdObj_Push`. `CmdObj` names its `pause[8]` block, which the pause users now read as `->pause`.
+- **`include/ov000/CmdQueue.h` was deleted.** It has no users left.
+- **`SceneRes`/`SceneScript`/`SceneResSet` (new `include/ov000/SceneRes.h`).**
+  - `SceneRes` is the 0xc4 VObj-based resource.
+  - `SceneScript` is the 0xd8 linked script, vtable `021cc158`.
+  - `SceneResSet` is `data_ov000_021ccd24`.
+
+  The 21 files that use `data_ov000_021ccd24` include it and free it with `LO_FREE_V(&data_ov000_021ccd24, 8)`.
+- **`Bss021ccd74` (new `include/ov000/Bss021ccd74.h`).** This is the model/matrix block that `Model_021bce90`, `Stub_021c2090`, `Mtx_021c1e78`, `Heap_021bd09c` and `Mtx_021c17dc` share. Its fields are retyped as `MtxFx33`/`VecFx32`.
+- **Smaller changes.**
+  - `data_02097d78` is `s32[5]` and is indexed directly.
+  - The RGB-style triples at 0xca/0xd0 and on the player are `FieldId` (`FieldId_Eq`).
+  - `Obj0219bf90`/`Player` views became `Robo021ca458`.
+  - LFLD vtable stores in `Factory_02192b24`/`Factory_021b4828` use `VOBJ_SET_VTABLE`.
+- **Forms that must stay.** `02182590` reloads the global through `*(SceneCmd *const *)&data_ov000_021ccd54`. A plain `SceneCmd_Get()` merges the reload and mismatches. The draft `0218867c` was updated to the new types and keeps its score.
+- **Left, and why:**
+  - `Task_021c9020`'s perspective view: the offsets and register allocation depend on the view.
+  - `Misc_0214dcc4`: its draft-like notes are delicate.
+  - The `data_ov000_021ccd6c` manager (ctor `021b5054`, 0x294): the views disagree at 0x10/0x14.
+  - `Model_02164a94`, `Lo_02165f94`, `Loader_021633ac` and `Spawn_0219b71c`: no record evidence, or not reached.
+  - `Menu_021763c8`'s local views: left for round pmA.

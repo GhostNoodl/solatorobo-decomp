@@ -5,17 +5,13 @@
 extern "C" {
 
 typedef struct {
-    u8 c[3];
-} Rgb0219d5a0;
-
-typedef struct {
     u8 pad_00[3];
-    Rgb0219d5a0 rgb;
+    FieldId rgb;
 } Def0219d5a0;
 
 extern Def0219d5a0 data_ov000_021c9fe8;
 
-static inline BOOL RgbEq0219d5a0(Rgb0219d5a0 *a, Rgb0219d5a0 b) {
+static inline BOOL FieldId_Eq(FieldId *a, FieldId b) {
     BOOL r = FALSE;
     if (a->c[0] == b.c[0] && a->c[1] == b.c[1] && a->c[2] == b.c[2]) {
         r = TRUE;
@@ -41,7 +37,7 @@ s32 func_ov000_0219d5a0(Robo021ca458 *self) {
     if (!self->unk_b24_1) {
         if (self->unk_b29_4 || busy) {
             result = 2;
-        } else if (!RgbEq0219d5a0((Rgb0219d5a0 *)((u8 *)data_ov000_021ccd54 + 0xca), data_ov000_021c9fe8.rgb)) {
+        } else if (!FieldId_Eq(&data_ov000_021ccd54->unk_ca, data_ov000_021c9fe8.rgb)) {
             if (!(st & 0x20000000) || !self->unk_b24_4) {
                 result = 1;
             }

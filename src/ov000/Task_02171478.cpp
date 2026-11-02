@@ -2,7 +2,7 @@
 #include "ov000/ObjLayouts.h"
 #include "ov000/MessageQueue.h"
 #include "ov000/LoTimer.h"
-#include "ov000/CmdQueue.h"
+#include "Main/Sys/FieldState.h"
 
 typedef struct {
     u32 b0 : 1;
@@ -17,7 +17,6 @@ extern u8 data_0208b318[];
 extern u8 data_ov000_021cb6d0[];
 extern u8 data_ov000_021cb920[];
 extern u8 data_ov000_021cb940[];
-extern CmdQueue *data_ov000_021ccd54;
 extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern s32 data_02097d78[];
 void *Heap_Alloc(u32 size);
@@ -25,7 +24,7 @@ void *func_020359d0(void *a, s32 b, s32 c);
 void func_ov000_0216f1ac(ListBuffer *buf, BufferList *list);
 void func_ov000_0216faac(ListBuffer021cb940 *self);
 VObj *func_ov000_0219bf90(void);
-void func_ov000_021848d0(CmdQueue *q);
+void func_ov000_021848d0(FieldState *q);
 BOOL func_ov000_02170188(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL func_ov000_0217032c(ListBuffer021cb940 *t, s32 b, s32 c);
 BOOL func_ov000_02170448(ListBuffer021cb940 *t, s32 b, s32 c);
@@ -120,16 +119,16 @@ static inline BOOL QueueBusy02171478(void) {
     return q->unk_11c->state == 4 ? TRUE : FALSE;
 }
 
-static inline BOOL CmdQueue_Empty02171478(CmdQueue *q) {
-    return q->unk_90 != q->index ? TRUE : FALSE;
+static inline BOOL FieldState_HasPending(FieldState *q) {
+    return q->head != q->tail ? TRUE : FALSE;
 }
 
-static inline BOOL CmdQueue_Flag0_02171478(CmdQueue *q) {
-    return LFLD(void *, q, 0xd4) != NULL ? TRUE : FALSE;
+static inline BOOL FieldState_HasEvent0(FieldState *q) {
+    return q->event != 0 ? TRUE : FALSE;
 }
 
-static inline BOOL CmdQueue_Flag02171478(CmdQueue *q) {
-    return CmdQueue_Flag0_02171478(q) ? TRUE : FALSE;
+static inline BOOL FieldState_HasEvent(FieldState *q) {
+    return FieldState_HasEvent0(q) ? TRUE : FALSE;
 }
 
 static inline BOOL Pl_Busy02171478(VObj *pl) {
@@ -349,10 +348,10 @@ void func_ov000_02171478(MessageQueue021cb980 *self, s32 a, s32 kind, s32 b, s32
         if (pl == NULL) {
             return;
         }
-        if (CmdQueue_Empty02171478(data_ov000_021ccd54)) {
+        if (FieldState_HasPending(data_ov000_021ccd54)) {
             return;
         }
-        if (CmdQueue_Flag02171478(data_ov000_021ccd54)) {
+        if (FieldState_HasEvent(data_ov000_021ccd54)) {
             return;
         }
         ok = FALSE;

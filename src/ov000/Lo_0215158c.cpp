@@ -1,10 +1,10 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/SceneRes.h"
 
 extern "C" {
 
 extern void *data_02fe152c;
-extern u8 data_ov000_021ccd24[];
 extern void *data_02097e4c;
 void *func_0205976c(void *a, s32 b);
 u32 func_0205975c(void *a, s32 b);
@@ -33,7 +33,7 @@ typedef struct {
 
 static inline BOOL LoIsLoaded24(void) {
     BOOL r = TRUE;
-    if (!StageRes_IsAllLoaded(LFLD(void *, data_ov000_021ccd24, 8))) {
+    if (!StageRes_IsAllLoaded(data_ov000_021ccd24.unk_08)) {
         r = FALSE;
     }
     return r;

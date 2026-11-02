@@ -1,105 +1,65 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
-
-typedef struct {
-    u8 b0 : 1;
-    u8 b1 : 1;
-    u8 b2 : 2;
-    u8 b4 : 1;
-    u8 b5 : 1;
-    u8 b6 : 1;
-    u8 b7 : 1;
-} Bits02188ed0;
-
-typedef struct {
-    u8 unk_00[0x9c];
-    Bits02188ed0 f9c;
-    u8 unk_9d[0x3d];
-    Bits02188ed0 fda;
-    u8 unk_db[0xd];
-    VecFx32 pos;
-    s32 unk_f4;
-    u16 unk_f8;
-    u16 unk_fa;
-} Cam02188ed0;
+#include "ov000/SceneCmd.h"
+#include "ov000/MessageQueue.h"
 
 typedef struct {
     u8 unk_00[4];
-    u8 *unk_04;
+    SceneCmd *scene; // data_ov000_021ccd54, reached through the 0x021ccd50 pool
 } Data021ccd50b;
-
-typedef struct {
-    u8 unk_00[0xb28];
-    u8 lo : 2;
-    u8 hi : 6;
-    u8 unk_b29[5];
-    u8 unk_b2e;
-} Player02188ed0;
 
 extern "C" {
 extern Data021ccd50b data_ov000_021ccd50;
-extern u8 *data_ov000_021ccd30;
-Player02188ed0 *func_ov000_0219bf90(void);
-BOOL func_ov000_0216f674(void *mgr, s32 a);
-BOOL func_ov000_021700c4(void *p);
-void func_ov000_0218a358(Cam02188ed0 *s, void *a, void *b, s32 c, s32 d, s32 e, s32 f, s32 g);
+extern MessageQueue021cb980 *data_ov000_021ccd30;
+Robo021ca458 *func_ov000_0219bf90(void);
+BOOL func_ov000_0216f674(MessageQueue *self, s32 id);
+BOOL func_ov000_021700c4(ListBuffer021cb940 *self);
+void func_ov000_0218a358(FieldCam *self, const VecFx32 *pos, const Rot16 *rot, s32 dist, u8 clamp, s16 a6, s16 a7, u8 a8);
 
 static inline BOOL IsBusy(void) {
-    u8 *c = data_ov000_021ccd30;
+    MessageQueue021cb980 *c = data_ov000_021ccd30;
     if (c == NULL) {
         return FALSE;
     }
     if (func_ov000_0216f674(c, 6)) {
         return TRUE;
     }
-    if (LFLD(void *, c, 0x11c) == NULL) {
+    if (c->unk_11c == NULL) {
         return FALSE;
     }
-    return func_ov000_021700c4(LFLD(void *, c, 0x11c));
+    return func_ov000_021700c4(c->unk_11c);
 }
 
-struct Obj02188ed0 {
-    u8 unk_00[0xd3];
-    u8 unk_d3;
-    s32 unk_d4;
-    VecFx32 unk_d8;
-    u16 unk_e4;
-    u16 unk_e6;
-    u8 unk_e8[0x4];
-    s32 unk_ec;
-    s16 unk_f0;
-};
-
-void func_ov000_02188ed0(Obj02188ed0 *self) {
-    Cam02188ed0 *s = (Cam02188ed0 *)(data_ov000_021ccd50.unk_04 + 0xf4);
+void func_ov000_02188ed0(SceneCmd *self) {
+    FieldCam *s = &data_ov000_021ccd50.scene->cam;
     if (self->unk_d3) {
-        s->pos = self->unk_d8;
-        s->fda.b1 = 1;
-        s->unk_f8 = self->unk_e4;
-        s->fda.b4 = 1;
-        s->unk_fa = self->unk_e6;
-        s->fda.b5 = 1;
+        s->unk_e8 = self->unk_d8;
+        s->unk_da_1 = 1;
+        s->unk_f8 = self->unk_e4.x;
+        s->unk_da_4 = 1;
+        s->unk_fa = self->unk_e4.y;
+        s->unk_da_5 = 1;
         s->unk_f4 = self->unk_ec;
-        s->fda.b2 = 1;
-        s->f9c.b0 = 0;
-        s->f9c.b6 = 0;
+        s->unk_da_2 = 1;
+        s->base.smooth = 0;
+        s->base.wallClip = 0;
         return;
     }
-    s->f9c.b0 = 1;
-    if (self->unk_d4 > 0) {
-        Player02188ed0 *p = func_ov000_0219bf90();
-        if (p != NULL && p->lo == 0 && p->unk_b2e < 2) {
+    s->base.smooth = 1;
+    if ((s32)self->event > 0) {
+        Robo021ca458 *p = func_ov000_0219bf90();
+        if (p != NULL && p->unk_b28_0 == 0 && p->unk_b2e < 2) {
             p->unk_b2e = 2;
         }
-        if (self->unk_d4 != 0xffff && --self->unk_d4 == 0) {
+        if (self->event != 0xffff && --self->event == 0) {
             if (IsBusy()) {
-                self->unk_d4 = 1;
+                self->event = 1;
             }
         }
-        func_ov000_0218a358(s, &self->unk_d8, (u8 *)self + 0xe4, self->unk_ec, 0, self->unk_f0, self->unk_f0, 4);
+        func_ov000_0218a358(s, &self->unk_d8, &self->unk_e4, self->unk_ec, 0, self->unk_f0, self->unk_f0, 4);
     } else {
-        self->unk_d4 = 0;
+        self->event = 0;
     }
 }
 }

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/Bss021ccd74.h"
 #include "nitro/fx.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Gfx/GfxMgr.h"
@@ -20,7 +21,6 @@ extern Glb021c17dc NNS_G3dGlb;
 extern u8 data_02092800[];
 extern u8 data_02092844[];
 extern Ofs021c17dc data_ov000_021cc8f0[];
-extern u8 data_ov000_021ccd74;
 void NNS_G3dGlbPolygonAttr(int light, int polyMode, int cullMode, int polygonID, int alpha, int misc);
 BOOL func_ov000_021903b4(void *m);
 
@@ -64,7 +64,7 @@ void func_ov000_021c17dc(Lo021cc938 *self) {
     p.x = self->unk_78 + o->x;
     p.y = self->unk_7c + o->y;
     p.z = self->unk_80;
-    data_ov000_021ccd74 = LO_FX_MUL(self->unk_88, 0x1e000) >> 12;
+    data_ov000_021ccd74.unk_00 = LO_FX_MUL(self->unk_88, 0x1e000) >> 12;
     LFLD(VecFx32, self->unk_90, 0x78) = p;
     SetScale021c17dc((Model0218fe1c *)self->unk_90, 0x1000, -0x1000, 0x1000);
     func_ov000_021903b4((u8 *)self->unk_90);

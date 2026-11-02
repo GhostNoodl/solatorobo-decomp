@@ -110,7 +110,7 @@ ActorMgr *ActorMgr_Init(ActorMgr *mgr) {
         mgr->msgs[i].type = 0;
     }
     if (data_ov000_021ccd54 != NULL) {
-        mgr->pause.parent = (PauseNode *)((u8 *)data_ov000_021ccd54 + 8);
+        mgr->pause.parent = (PauseNode *)data_ov000_021ccd54->pause;
     }
     for (key = 1; key < 9; key++) {
         group = (ActorGroup *)Heap_Alloc(sizeof(ActorGroup));

@@ -1,14 +1,14 @@
 #include "ov000/LoCommon.h"
-#include "Main/Sys/FieldState.h"
+#include "ov000/SceneCmd.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/Task.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/Model.h"
+#include "ov000/SceneRes.h"
 
 extern "C" {
 
 extern void *data_02fe152c;
-extern u8 data_ov000_021ccd24[];
 extern void *data_02097e4c;
 void *func_0205976c(void *a, s32 b);
 u32 func_0205975c(void *a, s32 b);
@@ -37,7 +37,7 @@ typedef struct {
 
 static inline BOOL LoIsLoaded24(void) {
     BOOL r = TRUE;
-    if (!StageRes_IsAllLoaded(LFLD(void *, data_ov000_021ccd24, 8))) {
+    if (!StageRes_IsAllLoaded(data_ov000_021ccd24.unk_08)) {
         r = FALSE;
     }
     return r;
@@ -61,7 +61,6 @@ BOOL func_ov000_021502d8(Lo021ca9c4 *self) {
 
 extern "C" {
 extern void *data_02149ef8;
-extern u8 data_ov000_021ccd24[];
 extern const char *data_ov000_021ca8d8[];
 extern const char *data_0208cca0;
 extern const char *data_0208cb74;
@@ -81,7 +80,7 @@ s32 func_02061e7c(u16 a);
 void *func_0204c08c(void *a, u16 id, void *out, s32 n);
 void func_0204c6bc(void *a, void *b, void *c, void *fn);
 void func_02040a98(char *buf, s32 n);
-void *func_ov000_021824d0(void *a, s32 b);
+SceneScript *func_ov000_021824d0(SceneStage *self, u16 index);
 void func_ov000_02153f90(void *p);
 void func_ov000_0214dc20(void *self, s32 *msg);
 s32 func_ov000_02151610(VObj *self, s32 a, s32 b, s32 c);
@@ -107,8 +106,8 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     }
     func_ov000_02173648(self);
     if (self->unk_42 == 0xffff) {
-        if (!LFLD(VObj *, data_ov000_021ccd24, 8)->vfunc_34()) {
-            func_0205aa30(LFLD(void *, data_ov000_021ccd24, 8));
+        if (!data_ov000_021ccd24.unk_08->vfunc_34()) {
+            func_0205aa30(data_ov000_021ccd24.unk_08);
         }
     }
     m = (Model *)Heap_Alloc(sizeof(Model));
@@ -215,10 +214,10 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
     if (self->unk_42 != 0xffff) {
         LFLD(u16, p, 6) = self->unk_42;
     } else {
-        LFLD(u16, self->unk_54, 6) = LFLD(u16, func_ov000_021824d0((u8 *)data_ov000_021ccd54 + 0xac, 0), 0xc6);
+        LFLD(u16, self->unk_54, 6) = func_ov000_021824d0(&SceneCmd_Get()->stage, 0)->id;
     }
     {
-        void *r = func_0204c08c(LFLD(void *, LFLD(void *, data_ov000_021ccd24, 8), 0xbc), LFLD(u16, self->unk_54, 6), out, 2);
+        void *r = func_0204c08c(data_ov000_021ccd24.unk_08->sub, LFLD(u16, self->unk_54, 6), out, 2);
         func_0204c6bc(out[0], r, self->unk_54, (void *)func_ov000_0214dc20);
     }
 
@@ -235,7 +234,7 @@ void func_ov000_02150338(Lo021ca9c4 *self) {
 
     self->unk_150 = 3;
     self->unk_140 = 8;
-    self->unk_13c = MsgRes_GetString(LFLD(void *, LFLD(void *, data_ov000_021ccd24, 8), 0xbc), LFLD(u16, self->unk_54, 6));
+    self->unk_13c = MsgRes_GetString(data_ov000_021ccd24.unk_08->sub, LFLD(u16, self->unk_54, 6));
     LoTextInit((u8 *)self + 0x118);
     self->unk_11c |= 0x40;
     self->unk_11c |= 0x1000000;

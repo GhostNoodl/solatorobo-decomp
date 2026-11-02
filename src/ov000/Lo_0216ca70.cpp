@@ -122,7 +122,7 @@ BOOL func_ov000_0216ca70(Obj0216ca70 *self) {
     s32 z;
     u16 id;
 
-    if (PauseNode_IsDrawPaused((u8 *)data_ov000_021ccd54 + 8, TRUE)) {
+    if (PauseNode_IsDrawPaused(data_ov000_021ccd54->pause, TRUE)) {
         self->b2 = 0;
         self->cnt = 0;
         self->state = 4;

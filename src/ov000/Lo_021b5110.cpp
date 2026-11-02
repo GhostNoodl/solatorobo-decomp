@@ -1,6 +1,7 @@
 #include "types.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/Vec.h"
+#include "Main/Sys/FieldState.h"
 
 class Mgr021b5110Cls;
 typedef void (Mgr021b5110Cls::*Mgr021b5110Pmf)();
@@ -48,16 +49,6 @@ typedef struct {
 } Mgr021b5110;
 
 typedef struct {
-    u8 pad_00[0x10];
-    s32 cmd[0x10];
-    s32 arg[0x10];
-    s32 head;
-    s32 tail;
-    u8 pad_98[0x32];
-    u8 col[3];
-} Game021b5110;
-
-typedef struct {
     u8 pad_00[0x15];
     u8 unk_15;
 } Player021b5110;
@@ -65,7 +56,6 @@ typedef struct {
 extern "C" {
 
 extern void *data_02149efc;
-extern Game021b5110 *data_ov000_021ccd54;
 extern void *data_02097e4c;
 BOOL PauseNode_IsUpdatePaused(void *node, s32 a);
 s32 func_ov000_021b7b50(Node021b5110 *n);
@@ -82,15 +72,15 @@ static inline void SetRot(Rot021b5110 *r, u16 x, u16 y, u16 z) {
 }
 
 static inline BOOL QueueBusy(void) {
-    Game021b5110 *g = data_ov000_021ccd54;
+    FieldState *g = data_ov000_021ccd54;
     s32 t = g->tail;
     return g->head != t;
 }
 
 static inline void Push(s32 cmd, s32 arg) {
-    Game021b5110 *g = data_ov000_021ccd54;
-    g->cmd[g->tail] = cmd;
-    g->arg[g->tail] = arg;
+    FieldState *g = data_ov000_021ccd54;
+    g->queue[g->tail] = cmd;
+    g->queueArg[g->tail] = arg;
     if (++g->tail >= 0x10) {
         g->tail = 0;
     }
@@ -156,13 +146,13 @@ void func_ov000_021b5110(Mgr021b5110 *self) {
                 }
             } else {
                 Col021b5110 c;
-                Game021b5110 *gm = data_ov000_021ccd54;
+                FieldState *gm = data_ov000_021ccd54;
                 u8 r = item->c[0];
                 u8 g = item->c[1];
                 u8 b = item->c[2];
-                if (r == 0xff) r = gm->col[0];
-                if (g == 0xff) g = gm->col[1];
-                if (b == 0xff) b = gm->col[2];
+                if (r == 0xff) r = gm->unk_ca.c[0];
+                if (g == 0xff) g = gm->unk_ca.c[1];
+                if (b == 0xff) b = gm->unk_ca.c[2];
                 c.c[0] = r;
                 c.c[1] = g;
                 c.c[2] = b;

@@ -1,6 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
-#include "ov000/CmdQueue.h"
+#include "Main/Sys/FieldState.h"
 #include "Main/Res/StageFlags.h"
 #include "nitro/fx.h"
 #include "Main/Gfx/GfxMgr.h"
@@ -44,7 +44,6 @@ struct Ctr021675ec : Pos021675ec {
 
 extern "C" {
 
-extern CmdQueue *data_ov000_021ccd54;
 extern void *data_ov000_021ccd64;
 // In .rodata; declaring it const lets the 0x74 copy load both words before either store.
 extern const u8 data_ov000_021c9a9c[];
@@ -55,10 +54,10 @@ s32 func_ov000_0218c040(void *mgr, s32 max, VecFx32 *out, s32 kind, u16 id);
 BOOL NNS_G2dEntryOamManagerOam(void *mgr, const void *oam, u16 num);
 
 
-static inline BOOL CmdQueue_Has021675ec(CmdQueue *q, s32 kind) {
+static inline BOOL FieldState_HasCmd(FieldState *q, s32 kind) {
     s32 i;
-    for (i = q->unk_90; i != q->index;) {
-        if (q->kinds[i] == kind) {
+    for (i = q->head; i != q->tail;) {
+        if (q->queue[i] == kind) {
             return TRUE;
         }
         if (++i >= 0x10) {
@@ -140,7 +139,7 @@ void func_ov000_021675ec(Obj021675ec *self, u8 *w) {
     if (func_ov000_0219bf90() == NULL) {
         skip = TRUE;
     }
-    if (CmdQueue_Has021675ec(data_ov000_021ccd54, 9) || CmdQueue_Has021675ec(data_ov000_021ccd54, 10)) {
+    if (FieldState_HasCmd(data_ov000_021ccd54, 9) || FieldState_HasCmd(data_ov000_021ccd54, 10)) {
         skip = TRUE;
     }
     if (skip) {

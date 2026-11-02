@@ -1,7 +1,6 @@
 #include "ov000/LoCommon.h"
 #include "Main/Res/StageCmd.h"
 #include "Main/Sys/FieldState.h"
-#include "ov000/CmdQueue.h"
 #include "ov000/ObjLayouts.h"
 #include "Main/Effect/Effect.h"
 

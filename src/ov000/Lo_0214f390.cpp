@@ -1,13 +1,12 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
+#include "ov000/SceneRes.h"
 
 typedef struct {
     s32 v[4];
 } LoFadeP0214f390;
 
 extern "C" {
-
-extern u8 data_ov000_021ccd24[];
 void func_020708fc(s32 a, LoFadeP0214f390 *out);
 void func_02070b98(s32 a, LoFadeP0214f390 *out, s32 b, s32 c);
 void func_02035acc(LoFadeP0214f390 *a, LoFadeP0214f390 *b, s32 c);
@@ -21,7 +20,7 @@ void func_ov000_0214f390(Lo021caa44 *self) {
     LO_FREE_V(self, 0x44);
     LO_FREE_M(self, 0x40);
     LO_FREE_V(self, 0x3c);
-    LO_FREE_V(data_ov000_021ccd24, 8);
+    LO_FREE_V(&data_ov000_021ccd24, 8);
     {
         LoFadeP0214f390 b;
         LoFadeP0214f390 a;
@@ -29,7 +28,7 @@ void func_ov000_0214f390(Lo021caa44 *self) {
         func_02070b98(0x1000, &b, 1, 2);
         func_02035acc(&a, &b, 2);
     }
-    data_ov000_021ccd24[0] = 0;
+    data_ov000_021ccd24.unk_00 = 0;
 }
 
 }

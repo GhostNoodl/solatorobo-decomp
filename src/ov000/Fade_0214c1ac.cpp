@@ -1,12 +1,11 @@
 #include "types.h"
+#include "ov000/SceneRes.h"
 
 typedef struct {
     s32 v[4];
 } FadeParam;
 
 extern "C" {
-
-extern u8 data_ov000_021ccd24[];
 
 void func_020708fc(s32 a, FadeParam *out);
 void func_02070b98(s32 a, FadeParam *out, s32 b, s32 c);
@@ -21,7 +20,7 @@ void func_ov000_0214c1ac(void) {
     func_020708fc(0x1000, &a);
     func_02070b98(0x1000, &b, 1, 2);
     func_020359fc(&a, &b, 2, 0);
-    data_ov000_021ccd24[0] = 1;
+    data_ov000_021ccd24.unk_00 = 1;
 }
 
 void func_ov000_0214c210(void) {
@@ -31,7 +30,7 @@ void func_ov000_0214c210(void) {
     func_020708fc(0x1000, &a);
     func_02070b98(0x1000, &b, 1, 2);
     func_02035acc(&a, &b, 2);
-    data_ov000_021ccd24[0] = 0;
+    data_ov000_021ccd24.unk_00 = 0;
 }
 
 BOOL func_ov000_0214c270(void) {

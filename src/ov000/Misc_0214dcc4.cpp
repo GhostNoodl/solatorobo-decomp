@@ -61,9 +61,9 @@ void func_ov000_0214dcc4(Obj0214dcc4 *self) {
 // new result are inline temps (33-38), and only fl / i / last / p are user objects. ramerge's model still differs, so it
 // cannot say which band each of key / p / g / k has to move to.
 #include "ov000/LoCommon.h"
+#include "ov000/SceneRes.h"
 
 extern "C" {
-extern u8 data_ov000_021ccd24[];
 extern u8 data_02fe1534[];
 extern void *data_02fe152c;
 void func_ov000_02153f90(void *p);
@@ -152,7 +152,7 @@ Node0214dd3c *func_ov000_0214dd3c(List0214dd3c *self, s32 a, u16 id, u16 c, s32 
     m->id = id;
     m->unk_08 = c;
     m->unk_0c = d;
-    func_0204c6bc(out, func_0204c08c(LFLD(void *, LFLD(u8 *, data_ov000_021ccd24, 8), 0xbc), id, &out, 1), m, (void *)func_ov000_0214dc20);
+    func_0204c6bc(out, func_0204c08c(LFLD(void *, data_ov000_021ccd24.unk_08, 0xbc), id, &out, 1), m, (void *)func_ov000_0214dc20);
     if (self->tail == NULL) {
         self->tail = m;
         self->head = m;

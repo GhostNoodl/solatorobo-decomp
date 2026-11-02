@@ -118,7 +118,7 @@ BOOL func_ov000_021b5578(Mgr021b5578 *self) {
     u8 st;
     char buf[0x20];
     u16 kind;
-    u8 *ids = (u8 *)data_ov000_021ccd54 + 0xca;
+    u8 *ids = data_ov000_021ccd54->unk_ca.c;
     Lang021b5578 *t = Lang_GetGroup(ids[0]);
     switch (self->state) {
     case 0:

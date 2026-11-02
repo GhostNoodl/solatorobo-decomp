@@ -39,7 +39,7 @@ Mgr021b5054 *func_ov000_021b5054(Mgr021b5054 *self) {
     PauseNode_Init(self);
     HitMesh_Init(self->unk_1f4);
     if (data_ov000_021ccd54 != NULL) {
-        self->unk_00 = (u8 *)data_ov000_021ccd54 + 8;
+        self->unk_00 = data_ov000_021ccd54->pause;
     }
     self->unk_08 = 0;
     self->unk_0c = 0;

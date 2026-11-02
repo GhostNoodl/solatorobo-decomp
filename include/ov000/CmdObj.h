@@ -13,7 +13,9 @@ class CmdObj {
 public:
     s32 state;
     u16 step;
-    u8 pad_06[0xa];
+    u8 unk_06;
+    u8 unk_07;
+    u8 pause[8]; // pause node (PauseNode_Init)
     s32 kinds[0x10];
     s32 args[0x10];
     s32 rd;

@@ -27,12 +27,8 @@ typedef struct {
 } Msg_021a6280;
 
 typedef struct {
-    u8 c[3];
-} Rgb_021a6280;
-
-typedef struct {
     u8 pad_00[6];
-    Rgb_021a6280 rgb;
+    FieldId rgb;
 } Def_021a6280;
 
 #define BA4(self) LFLD(Ba4_021a6280, LFLD(u8 *, self, 0xba4), 6)
@@ -87,7 +83,7 @@ static inline u16 AngleTo_021a6280(Robo021ca458 *self, Actor *other) {
     return FX_Atan2(other->pos.x - self->pos.x, other->pos.z - self->pos.z);
 }
 
-static inline BOOL RgbEq_021a6280(Rgb_021a6280 *a, Rgb_021a6280 b) {
+static inline BOOL FieldId_Eq(FieldId *a, FieldId b) {
     BOOL r = FALSE;
     if (a->c[0] == b.c[0] && a->c[1] == b.c[1] && a->c[2] == b.c[2]) {
         r = TRUE;
@@ -369,7 +365,7 @@ void func_ov000_021a6280(Robo021ca458 *self) {
                         func_02049a48(data_02097e4c, se, -1, -1, -1);
                     }
                     if (self->unk_b24_22 != 0 || self->unk_b24_26) {
-                        if (RgbEq_021a6280((Rgb_021a6280 *)((u8 *)data_ov000_021ccd54 + 0xca), data_ov000_021c9fe8.rgb)) {
+                        if (FieldId_Eq(&data_ov000_021ccd54->unk_ca, data_ov000_021c9fe8.rgb)) {
                             func_02049bdc(data_02097e4c, 0x5e, Rand_UpTo(3));
                         }
                     }

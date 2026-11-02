@@ -12,7 +12,7 @@ BOOL PauseNode_IsDrawPaused(void *a, s32 b);
 s32 func_02043d84(void *a);
 
 void func_ov000_0216be58(LoTicker *self) {
-    if (PauseNode_IsDrawPaused((u8 *)data_ov000_021ccd54 + 8, 1)) {
+    if (PauseNode_IsDrawPaused(data_ov000_021ccd54->pause, 1)) {
         return;
     }
     func_ov000_0216c018(self);
@@ -20,7 +20,7 @@ void func_ov000_0216be58(LoTicker *self) {
 }
 
 void func_ov000_0216be94(LoTicker *self) {
-    if (PauseNode_IsDrawPaused((u8 *)data_ov000_021ccd54 + 8, 1)) {
+    if (PauseNode_IsDrawPaused(data_ov000_021ccd54->pause, 1)) {
         return;
     }
     func_ov000_0216c6fc(self);

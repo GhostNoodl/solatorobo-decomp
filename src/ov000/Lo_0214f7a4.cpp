@@ -1,6 +1,7 @@
 #include "ov000/LoCommon.h"
 #include "ov000/ObjLayouts.h"
 #include "ov000/Task.h"
+#include "ov000/SceneRes.h"
 
 typedef struct {
     const void *vtbl;
@@ -25,16 +26,10 @@ typedef struct {
     s32 unk_204;
 } Obj0214c668;
 
-typedef struct {
-    u8 pad[8];
-    u8 *unk_08;
-} Glob021ccd24;
-
 extern "C" {
 
 extern const u8 data_0208ba70[];
 extern const u8 data_0208bbc8[];
-extern Glob021ccd24 data_ov000_021ccd24;
 void func_0204c7d0(void *obj);
 void func_02050f70(void *obj);
 s32 func_0204c08c(void *a, u16 b, s32 *out, s32 c);
@@ -68,7 +63,7 @@ void func_ov000_0214f7a4(Lo021caa44 *self) {
                     Obj0214c668 *w;
                     Obj0214c6b4 *obj;
                     s32 b;
-                    b = func_0204c08c(LFLD(void *, data_ov000_021ccd24.unk_08, 0xbc), self->unk_64, &a, 1);
+                    b = func_0204c08c(data_ov000_021ccd24.unk_08->sub, self->unk_64, &a, 1);
                     w = (Obj0214c668 *)self->unk_60;
                     w->unk_204 = 0x1e;
                     obj = (Obj0214c6b4 *)Heap_Alloc(0xb80);
