@@ -2,6 +2,7 @@
 #pragma dont_reuse_strings off
 #include "ov006/Model.h"
 #include "ov006/SlotManager.h"
+#include "ov006/Racer.h"
 #include "Main/Effect/Effect.h"
 #include "Main/Res/ResArc.h"
 #include "Main/Res/ArcName.h"
@@ -221,11 +222,6 @@ typedef struct ov006_BitsDA {
     u8 b7 : 1;
 } ov006_BitsDA;
 
-typedef struct ov006_Prop {
-    u8 unk0[0xc];
-    u16 unkC;
-} ov006_Prop;
-
 typedef struct ov006_Info021d630c {
     u8 unk0[8];
     u16 unk8;
@@ -257,7 +253,7 @@ BOOL func_ov000_021b5578(void *p);
 void func_ov000_021b5dc0(void *p);
 int func_0206e264(ov006_Party *party);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
-ov006_Prop *func_ov006_021ea430(u32 id, u8 a, const ov006_Pos *pos, const ov006_Rot *rot);
+Ov006Racer *func_ov006_021ea430(u32 id, u8 a, const ov006_Pos *pos, const ov006_Rot *rot);
 void Obj0218c208_AddPoint(void *a, const ov006_Pos *pos, u16 rot);
 void func_ov000_0218be54(void *p);
 BOOL ActorMgr_IsReady(void *p);
@@ -365,9 +361,9 @@ BOOL func_ov006_021d630c(ov006_Task021d630c *self) {
             }
             slot = func_ov006_021db060(data_ov006_021ec884, j);
             if (slot->active) {
-                ov006_Prop *prop = func_ov006_021ea430(slot->unkC, j, &pos, &rot);
+                Ov006Racer *prop = func_ov006_021ea430(slot->unkC, j, &pos, &rot);
                 if (prop != NULL) {
-                    slot->actorId = prop->unkC;
+                    slot->actorId = prop->id;
                     Obj0218c208_AddPoint(data_ov000_021ccd64, &pos, rot.y);
                 }
             }

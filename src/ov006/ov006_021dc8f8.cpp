@@ -1,9 +1,5 @@
 #include "ov006/Model.h"
-
-typedef struct ov006_Unk021dc8f8 {
-    u8 unk0[0x2c];
-    Model *unk2C;
-} ov006_Unk021dc8f8;
+#include "ov006/Racer.h"
 
 extern "C" {
 
@@ -13,7 +9,7 @@ void func_0206e900(char *dst, const char *src);
 void func_02041c34(Model *m, int a, void *cb, int b);
 void *func_ov006_021dc6b4(void *a, u16 *b, void *c, u16 *d);
 
-void func_ov006_021dc8f8(ov006_Unk021dc8f8 *self) {
+void func_ov006_021dc8f8(Ov006Marker *self) {
     char file[0x20];
     Model *model;
     func_0206e900(file, data_ov006_021ec178);
@@ -27,12 +23,12 @@ void func_ov006_021dc8f8(ov006_Unk021dc8f8 *self) {
             STD_CopyString(model->name, path);
         }
     }
-    self->unk2C = model;
-    func_020417e0(self->unk2C, func_02035de0(file, data_ov006_021ec185));
-    self->unk2C->flags |= 2;
-    self->unk2C->flags |= 0x80000;
-    func_02041c34(self->unk2C, 0xf, (void *)func_ov006_021dc6b4, 0);
-    func_02041d9c(self->unk2C, 0, 0xffff);
+    self->model = model;
+    func_020417e0(self->model, func_02035de0(file, data_ov006_021ec185));
+    self->model->flags |= 2;
+    self->model->flags |= 0x80000;
+    func_02041c34(self->model, 0xf, (void *)func_ov006_021dc6b4, 0);
+    func_02041d9c(self->model, 0, 0xffff);
 }
 
 }

@@ -1,54 +1,12 @@
 #include "ov006/SlotManager.h"
+#include "Main/Sys/FieldState.h"
+#include "ov006/Racer.h"
 #include "ov006/ov006.h"
 #include "nitro/fx.h"
 
-typedef struct ov006_Rot021e8ef8 {
-    u16 x;
-    u16 y;
-    u16 z;
-} ov006_Rot021e8ef8;
-
-typedef struct ov006_Cam021e8ef8 {
-    u8 unk0[0x42];
-    u16 unk42;
-    u8 unk44[0x96];
-    u8 unkDA;
-    u8 unkDB[0x1d];
-    u16 unkF8;
-    u16 unkFA;
-} ov006_Cam021e8ef8;
-
-typedef struct ov006_Car021e8ef8 {
-    u8 unk0[0x7c];
-    ov006_Rot021e8ef8 rot;
-    u8 unk82[0x2a];
-    s8 *unkAC;
-    u8 unkB0[0xec];
-    u16 unk19C_0 : 2;
-    u16 mode : 4;
-    u16 boosting : 1;
-    u16 unk19C_7 : 1;
-    u16 swap : 1;
-    u16 unk19C_9 : 7;
-    u8 unk19E;
-    u8 unk19F;
-    s32 speed;
-    u16 held;
-    u16 trig;
-    u8 unk1A8[6];
-    ov006_Rot021e8ef8 look;
-    u16 lookVX;
-    u16 lookVY;
-    u8 unk1B8[2];
-    ov006_Rot021e8ef8 look2;
-    u8 unk1C0[0x4c];
-    u16 unk20C;
-    u16 unk20E;
-} ov006_Car021e8ef8;
 
 extern "C" {
 
-extern u8 *data_ov000_021ccd54;
 u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
 
 static inline void ov006_Limit(u16 *p, u16 d, u16 lim) {
@@ -61,11 +19,11 @@ static inline void ov006_Limit(u16 *p, u16 d, u16 lim) {
     }
 }
 
-void func_ov006_021e8ef8(ov006_Car021e8ef8 *self) {
+void func_ov006_021e8ef8(Ov006Racer *self) {
     u32 kind2;
     u16 h2v;
     u32 mode;
-    ov006_Cam021e8ef8 *cam;
+    FieldCam *cam;
     u16 camv;
     s32 h2;
     u16 mode2;
@@ -78,10 +36,10 @@ void func_ov006_021e8ef8(ov006_Car021e8ef8 *self) {
     u16 base;
 
     cam = NULL;
-    if (self->unk19E == data_ov006_021ec884->unk5) {
-        cam = (ov006_Cam021e8ef8 *)(data_ov000_021ccd54 + 0xf4);
+    if (self->idx == data_ov006_021ec884->unk5) {
+        cam = &data_ov000_021ccd54->cam;
     }
-    h = self->unkAC[6];
+    h = self->prm->unk_06;
     held = self->held;
     dir = held;
     if (self->swap) {
@@ -93,10 +51,10 @@ void func_ov006_021e8ef8(ov006_Car021e8ef8 *self) {
     }
     camv = 0;
     if (cam != NULL) {
-        camv = cam->unk42;
+        camv = cam->base.pitch;
     }
     {
-        u16 a = self->unk20C;
+        u16 a = self->courseRot.x;
         if (a < 0x8000) {
             base = a >> 1;
         } else {
@@ -104,11 +62,11 @@ void func_ov006_021e8ef8(ov006_Car021e8ef8 *self) {
         }
     }
     steer = 0;
-    mode = self->mode;
+    mode = self->turnMode;
     if (!(mode == 5 || mode == 6 || mode == 7 || mode == 9 || mode == 8 || mode == 10)) {
         h2 = h * 2;
         {
-            u16 t = self->speed * (0xc0 - (h2 + 0x80)) / 0xe66;
+            u16 t = self->runSpeed * (0xc0 - (h2 + 0x80)) / 0xe66;
             steer = (u16)(h + 0xc0) - t;
         }
         if (dir & 0x40) {
@@ -129,7 +87,7 @@ void func_ov006_021e8ef8(ov006_Car021e8ef8 *self) {
                 self->look.x = base - 0x1000;
             }
         }
-        if (self->mode == 1) {
+        if (self->turnMode == 1) {
             self->look2.x = self->look.x;
         } else {
             self->look2.x = func_01ffc128(self->look.x, self->look2.x, 0x4cd, 1, 0x8000);
@@ -183,11 +141,11 @@ void func_ov006_021e8ef8(ov006_Car021e8ef8 *self) {
     }
     steer = 0;
     roll = 0;
-    mode2 = self->mode;
+    mode2 = self->turnMode;
     if (!(mode2 == 3 || mode2 == 4 || mode2 == 7 || mode2 == 9 || mode2 == 8 || mode2 == 10)) {
         u16 hh = self->held;
         if (hh & 0x30) {
-            u16 v = (u16)(h2 + 0xa0) - (u16)(self->speed * (0xa0 - (h + (h * 4 + 0x60))) / 0xe66);
+            u16 v = (u16)(h2 + 0xa0) - (u16)(self->runSpeed * (0xa0 - (h + (h * 4 + 0x60))) / 0xe66);
             if (hh & 0x20) {
                 steer = v;
             } else if (hh & 0x10) {
@@ -196,8 +154,8 @@ void func_ov006_021e8ef8(ov006_Car021e8ef8 *self) {
         }
         self->lookVY = func_01ffc128(steer, self->lookVY, (h << 5) + 0x200, 1, 0x8000);
         self->look.y += self->lookVY;
-        ov006_Limit(&self->look.y, self->look.y - self->unk20E, 0x2a00);
-        if (self->mode == 1) {
+        ov006_Limit(&self->look.y, self->look.y - self->courseRot.y, 0x2a00);
+        if (self->turnMode == 1) {
             self->look2.y = self->look.y;
         } else {
             self->look2.y = func_01ffc128(self->look.y, self->look2.y, 0x4cd, 1, 0x8000);
@@ -249,10 +207,10 @@ void func_ov006_021e8ef8(ov006_Car021e8ef8 *self) {
     if (cam == NULL) {
         return;
     }
-    cam->unkF8 = camv;
-    cam->unkDA |= 0x10;
-    cam->unkFA = func_01ffc128(self->look.y, self->rot.y, 0xc00, 1, 0x8000);
-    cam->unkDA |= 0x20;
+    cam->unk_f8 = camv;
+    cam->unk_da |= 0x10;
+    cam->unk_fa = func_01ffc128(self->look.y, self->rot.y, 0xc00, 1, 0x8000);
+    cam->unk_da |= 0x20;
 }
 
 }

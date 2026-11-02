@@ -2,32 +2,7 @@
 #include "nitro/fx.h"
 #include "Main/Save/PlayTime.h"
 #include "Main/Sys/Pad.h"
-
-typedef struct ov006_RacerBits {
-    u16 b0 : 6;
-    u16 b6 : 1;
-    u16 b7 : 1;
-    u16 b8 : 1;
-    u16 rest : 7;
-} ov006_RacerBits;
-
-typedef struct ov006_Racer021d6ff0 {
-    u8 unk0[0x70];
-    VecFx32 pos;
-    u8 unk7C[0x120];
-    ov006_RacerBits bits;
-    u8 unk19E;
-    u8 unk19F;
-    u8 unk1A0[0xa];
-    u8 unk1AA;
-    u8 unk1AB[2];
-    u8 unk1AD;
-    u8 unk1AE[0x48];
-    u16 unk1F6;
-    u8 unk1F8[0x26];
-    u8 unk21E[6];
-    u8 unk224;
-} ov006_Racer021d6ff0;
+#include "ov006/Racer.h"
 
 typedef struct ov006_GObjBits {
     u32 b0 : 13;
@@ -155,8 +130,6 @@ extern ov006_Speed021d6ff0 data_ov006_021eb85c[];
 
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 void *ActorMgr_GetActor(void *a, u16 id);
-BOOL func_ov006_021ea3e8(void *prop);
-void func_ov006_021ea410(void *prop);
 typedef struct ov006_RaceInfo021d6ff0 {
     u16 unk0;
     u8 unk2;
@@ -184,9 +157,9 @@ u8 func_ov006_021d8e30(const PlayTime *t);
 BOOL func_ov006_021cd2a8(ov006_Manager *m);
 BOOL func_ov006_021e616c(int a, u16 b);
 
-static inline ov006_Racer021d6ff0 *ov006_GetRacer(u8 i) {
+static inline Ov006Racer *ov006_GetRacer(u8 i) {
     u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
-    return data_ov000_021ccd68 != NULL ? (ov006_Racer021d6ff0 *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
+    return data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
 }
 
 static inline u8 ov006_CountRemaining(void) {
@@ -200,7 +173,7 @@ static inline u8 ov006_CountRemaining(void) {
     count = 0;
     for (i = 0; i < num; i++) {
         u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
-        void *prop = data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
+        Ov006Racer *prop = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
         if (prop != NULL && func_ov006_021ea3e8(prop)) {
             count++;
         }
@@ -221,7 +194,7 @@ static inline u8 ov006_CountRemainingB(void) {
     count = 0;
     for (i = 0; i < num; i++) {
         u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
-        void *prop = data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
+        Ov006Racer *prop = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
         if (prop != NULL && func_ov006_021ea3e8(prop)) {
             count++;
         }
@@ -258,7 +231,7 @@ static inline void ov006_UpdateMap(ov006_Task021d6ff0 *self) {
         multi = FALSE;
     }
     for (i = 0; i < 4; i++) {
-        ov006_Racer021d6ff0 *r = ov006_GetRacer(i);
+        Ov006Racer *r = ov006_GetRacer(i);
         if (r != NULL) {
             VecFx32 p;
             BOOL fin;
@@ -274,8 +247,8 @@ static inline void ov006_UpdateMap(ov006_Task021d6ff0 *self) {
     }
 }
 
-static inline BOOL ov006_Racer_B8(ov006_Racer021d6ff0 *me) {
-    return me->bits.b8 ? TRUE : FALSE;
+static inline BOOL ov006_Racer_B8(Ov006Racer *me) {
+    return me->swap ? TRUE : FALSE;
 }
 
 static inline void ov006_Gauge_SetCount(ov006_Gauge021d6ff0 *g, u8 cur, u8 n) {
@@ -390,7 +363,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
     ov006_Info021d6ff0 *info;
     int time;
     int kind;
-    ov006_Racer021d6ff0 *me;
+    Ov006Racer *me;
     ov006_Result021d6ff0 *res;
     int i;
     BOOL hl;
@@ -407,7 +380,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
     u8 j;
     {
         u16 id = func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->actorId;
-        me = data_ov000_021ccd68 != NULL ? (ov006_Racer021d6ff0 *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
+        me = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
     }
     info = (ov006_Info021d6ff0 *)data_ov006_021ec884->info;
     switch (self->state) {
@@ -416,9 +389,9 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
         switch (self->sub) {
         case 0: {
             u8 i;
-            ov006_Gauge_SetCount(self->gauge, me->unk19F, info->laps);
+            ov006_Gauge_SetCount(self->gauge, me->unk_19f, info->laps);
             self->gauge->lap = data_ov006_021ec884->unk5 + 1;
-            ov006_Gauge_SetSpeed(self->gauge, me->unk1F6, 0);
+            ov006_Gauge_SetSpeed(self->gauge, me->boost, 0);
             for (i = 0; i < 4; i++) {
                 self->ranks[i].rank = func_ov006_021db060(data_ov006_021ec884, i)->active ? i + 1 : 0;
             }
@@ -519,7 +492,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
                 break;
             }
         }
-        lap = me->unk1AD + 1;
+        lap = me->rank + 1;
         finished = FALSE;
         if (func_ov006_021ea3e8(me)) {
             finished = TRUE;
@@ -558,7 +531,7 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             self->timer = 0;
         }
         {
-            u8 cur = me->unk19F;
+            u8 cur = me->unk_19f;
             int flag;
             if (info->laps != 0) {
                 if (self->lap < cur && self->lap <= 10) {
@@ -572,11 +545,11 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             self->gauge->lap = lap;
             self->gauge->flag13 = ov006_Racer_B8(me);
             flag = 0;
-            if (data_ov006_021ec884->unk13D == 0 && me->bits.b6) {
+            if (data_ov006_021ec884->unk13D == 0 && me->boosting) {
                 flag = 1;
             }
-            ov006_Gauge_SetSpeed(self->gauge, me->unk1F6, flag);
-            ov006_Gauge_SetTilt(self->gauge, data_ov006_021eb85c[me->unk1AA].v);
+            ov006_Gauge_SetSpeed(self->gauge, me->boost, flag);
+            ov006_Gauge_SetTilt(self->gauge, data_ov006_021eb85c[me->unk_1aa].v);
             if (!(ov006_Gauge_Time(self->gauge) & 0x2f)) {
                 ov006_UpdateRanks(self);
             }
@@ -666,12 +639,12 @@ BOOL func_ov006_021d6ff0(ov006_Task021d6ff0 *self) {
             for (i = 0; i < info->laps; i++) {
                 cnt += func_ov006_021d8e30(&split[i]);
             }
-            me->unk224 = cnt;
+            me->unk_21e[6] = cnt;
             for (j = 0; j < 3; j++) {
                 ov006_SlotManager *m = data_ov006_021ec884;
                 u8 v = ov006_GetBonus(m, j);
                 if (v >= 1 && v <= 7) {
-                    ov006_SetBonus(m, j, me->unk21E[v]);
+                    ov006_SetBonus(m, j, me->unk_21e[v]);
                 }
             }
             if (!func_ov006_021cd2a8(data_ov006_021ec860)) {

@@ -1,48 +1,25 @@
 #include "ov006/SlotManager.h"
-
-typedef struct ov006_Vec021eacd8 {
-    s32 x;
-    s32 y;
-    s32 z;
-} ov006_Vec021eacd8;
-
-typedef struct ov006_Game021eacd8 {
-    u8 unk0[0xf8];
-    ov006_Vec021eacd8 unkF8;
-} ov006_Game021eacd8;
-
-typedef struct ov006_Model021eacd8 {
-    u8 unk0[0x78];
-    ov006_Vec021eacd8 pos;
-} ov006_Model021eacd8;
-
-typedef struct ov006_Obj021eacd8 {
-    u8 unk0[0x38];
-    ov006_Model021eacd8 *unk38;
-    u8 unk3C[0x40];
-    u8 unk7C[8];
-    ov006_Vec021eacd8 unk84;
-} ov006_Obj021eacd8;
+#include "Main/Sys/FieldState.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
-extern ov006_Game021eacd8 *data_ov000_021ccd54;
-BOOL Hit_DiffInSphere(ov006_Vec021eacd8 *a, ov006_Vec021eacd8 *b, s32 r);
-void func_ov000_02190758(ov006_Model021eacd8 *a, void *b, int c);
-int func_ov000_021903b4(ov006_Model021eacd8 *a);
+BOOL Hit_DiffInSphere(VecFx32 *a, VecFx32 *b, s32 r);
+void func_ov000_02190758(Model0218fe1c *a, Rot16 *b, int c);
+int func_ov000_021903b4(Model0218fe1c *a);
 
-int Ov006ActVt_021ec7ac_Draw(ov006_Obj021eacd8 *self) {
-    ov006_Model021eacd8 *m;
-    ov006_Vec021eacd8 target;
+int Ov006ActVt_021ec7ac_Draw(ActorEx *self) {
+    Model0218fe1c *m;
+    VecFx32 target;
     int r = 0;
     if (data_ov006_021ec884->unk13D == 0) {
-        m = self->unk38;
-        target.x = data_ov000_021ccd54->unkF8.x;
-        target.y = data_ov000_021ccd54->unkF8.y;
-        target.z = data_ov000_021ccd54->unkF8.z;
-        if (Hit_DiffInSphere(&self->unk84, &target, 0x190000)) {
-            m->pos = self->unk84;
-            func_ov000_02190758(m, self->unk7C, 1);
+        m = self->model;
+        target.x = data_ov000_021ccd54->cam.base.eye.x;
+        target.y = data_ov000_021ccd54->cam.base.eye.y;
+        target.z = data_ov000_021ccd54->cam.base.eye.z;
+        if (Hit_DiffInSphere(&self->unk_84, &target, 0x190000)) {
+            m->trans = self->unk_84;
+            func_ov000_02190758(m, &self->rot, 1);
             r = func_ov000_021903b4(m);
         }
     }

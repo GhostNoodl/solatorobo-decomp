@@ -1,5 +1,6 @@
 #include "ov006/SlotManager.h"
 #include "nitro/fx.h"
+#include "ov006/Racer.h"
 
 typedef struct ov006_Party {
     u8 unk0[0x15];
@@ -11,26 +12,12 @@ typedef struct ov006_Unk021ccd6c {
     ov006_Party *party;
 } ov006_Unk021ccd6c;
 
-typedef struct ov006_Racer021d8914 {
-    u8 unk0[0x70];
-    VecFx32 pos;
-    u8 unk7C[0x18d];
-    u8 unk209;
-    u8 unk20A;
-    u8 unk20B;
-} ov006_Racer021d8914;
-
 typedef struct ov006_RaceInfo {
     u16 unk0;
     u8 unk2;
     u8 ranks;
     VecFx32 unk4;
 } ov006_RaceInfo;
-
-typedef struct ov006_Checkpoint021d8914 {
-    VecFx32 pos;
-    u8 unkC[4];
-} ov006_Checkpoint021d8914;
 
 extern "C" {
 
@@ -39,7 +26,6 @@ extern ov006_Unk021ccd6c *data_ov000_021ccd6c;
 
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 void *ActorMgr_GetActor(void *a, u16 id);
-BOOL func_ov006_021ea3e8(void *prop);
 int func_0206e264(ov006_Party *party);
 ov006_RaceInfo *func_ov006_021dab98(ov006_Slot *self);
 void func_ov006_021daba0(ov006_Slot *self, const ov006_RaceInfo *src);
@@ -56,7 +42,7 @@ static inline u8 ov006_CountRemaining(void) {
     count = 0;
     for (i = 0; i < num; i++) {
         u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
-        void *prop = data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
+        Ov006Racer *prop = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
         if (prop != NULL && func_ov006_021ea3e8(prop)) {
             count++;
         }
@@ -106,7 +92,7 @@ void func_ov006_021d8914(void) {
     remaining = ov006_CountRemaining();
     for (i = 0; i < num; i++) {
         u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
-        ov006_Racer021d8914 *racer = data_ov000_021ccd68 != NULL ? (ov006_Racer021d8914 *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
+        Ov006Racer *racer = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
         if ((racer != NULL && func_ov006_021ea3e8(racer)) || remaining <= 1) {
             rank[i] = (func_ov006_021dab98(slot)->ranks >> (i * 2)) & 3;
             a[i] = 0xff;
@@ -116,9 +102,9 @@ void func_ov006_021d8914(void) {
             b[i] = 0;
             c[i] = 0;
             if (racer != NULL) {
-                a[i] = racer->unk20B;
-                b[i] = racer->unk209;
-                c[i] = racer->unk20A;
+                a[i] = racer->laps;
+                b[i] = racer->lastPt;
+                c[i] = racer->nextPt;
                 pos[i] = racer->pos;
             }
         }
@@ -141,7 +127,7 @@ void func_ov006_021d8914(void) {
                 if (b[i] < b[j]) {
                     n++;
                 } else if (b[i] == b[j]) {
-                    VecFx32 *target = &((ov006_Checkpoint021d8914 *)ov006_GetCheckpoints())[c[i]].pos;
+                    VecFx32 *target = &((Ov006RacerPt *)ov006_GetCheckpoints())[c[i]].pos;
                     fx32 di = VEC_Distance(&pos[i], target);
                     fx32 dj = VEC_Distance(&pos[j], target);
                     if (di > dj) {

@@ -1,25 +1,5 @@
 #include "ov006/SlotManager.h"
-
-typedef struct ov006_Prop {
-    void *vtbl;
-    u8 unk4[0x20];
-    u8 unk24[0x14];
-    void *unk38;
-    u8 unk3C[0x8];
-    void *unk44;
-    void *unk48;
-    u8 unk4C[0x24];
-    s32 posX;
-    s32 posY;
-    s32 posZ;
-    u16 rotX;
-    u16 rotY;
-    u16 rotZ;
-    u8 unk82[0x11c];
-    u8 unk19E;
-    u8 unk19F;
-    u8 unk1A0[0x88];
-} ov006_Prop;
+#include "ov006/Racer.h"
 
 typedef struct ov006_Pos {
     s32 x;
@@ -29,60 +9,60 @@ typedef struct ov006_Pos {
 
 extern "C" {
 
-ov006_Prop *Ov006ActVt_021ec4f4_Ctor(ov006_Prop *self);
+Ov006Racer *Ov006ActVt_021ec4f4_Ctor(Ov006Racer *self);
 void *func_0206ffa0(s32 id);
-void Actor_JoinGroup(ov006_Prop *self, u16 type, u32 id, void *res);
-void func_ov000_021984f4(void *a, int b, int c);
-void func_ov000_0219864c(void *a, int b, int c);
-void *func_0203db40(void *a);
-void func_ov000_02190a80(void *a, void *b);
+void Actor_JoinGroup(Actor *self, u16 type, u32 id, void *res);
+void func_ov000_021984f4(ActorSub44 *a, int b, int c);
+void func_ov000_0219864c(ActorSub48 *a, int b, int c);
+void *func_0203db40(PauseNode *a);
+void func_ov000_02190a80(Model0218fe1c *a, void *b);
 
-BOOL func_ov006_021ea3e8(ov006_Prop *self) {
+BOOL func_ov006_021ea3e8(Ov006Racer *self) {
     BOOL result = FALSE;
-    if (self->unk19F > data_ov006_021ec884->info->unkB) {
+    if (self->unk_19f > data_ov006_021ec884->info->unkB) {
         result = TRUE;
     }
     return result;
 }
 
-void func_ov006_021ea410(ov006_Prop *self) {
-    self->unk19F = data_ov006_021ec884->info->unkB + 1;
+void func_ov006_021ea410(Ov006Racer *self) {
+    self->unk_19f = data_ov006_021ec884->info->unkB + 1;
 }
 
-ov006_Prop *func_ov006_021ea430(u32 id, u8 a, const ov006_Pos *pos, const u16 *rot) {
-    ov006_Prop *prop = (ov006_Prop *)Heap_Alloc(sizeof(ov006_Prop));
+Ov006Racer *func_ov006_021ea430(u32 id, u8 a, const ov006_Pos *pos, const u16 *rot) {
+    Ov006Racer *prop = (Ov006Racer *)Heap_Alloc(sizeof(Ov006Racer));
     if (prop != NULL) {
         prop = Ov006ActVt_021ec4f4_Ctor(prop);
     }
     if (prop != NULL) {
         Actor_JoinGroup(prop, id & 0xf000, id, func_0206ffa0(id));
-        prop->unk19E = a;
-        prop->posX = pos->x;
-        prop->posY = pos->y;
-        prop->posZ = pos->z;
-        prop->rotX = rot[0];
-        prop->rotY = rot[1];
-        prop->rotZ = rot[2];
-        VCALL(prop, 04);
+        prop->idx = a;
+        prop->pos.x = pos->x;
+        prop->pos.y = pos->y;
+        prop->pos.z = pos->z;
+        prop->rot_x = rot[0];
+        prop->rot_y = rot[1];
+        prop->rot_z = rot[2];
+        prop->vfunc_04();
     }
     return prop;
 }
 
-void func_ov006_021ea4d4(ov006_Prop *self) {
-    if (self->unk44 != NULL) {
-        func_ov000_021984f4(self->unk44, 0, 0);
+void func_ov006_021ea4d4(Ov006Racer *self) {
+    if (self->unk_44 != NULL) {
+        func_ov000_021984f4(self->unk_44, 0, 0);
     }
 }
 
-void func_ov006_021ea4f4(ov006_Prop *self) {
-    if (self->unk48 != NULL) {
-        func_ov000_0219864c(self->unk48, 0, 0);
+void func_ov006_021ea4f4(Ov006Racer *self) {
+    if (self->hit != NULL) {
+        func_ov000_0219864c(self->hit, 0, 0);
     }
 }
 
-void func_ov006_021ea514(ov006_Prop *self) {
-    if (self->unk38 != NULL) {
-        func_ov000_02190a80(self->unk38, func_0203db40(self->unk24));
+void func_ov006_021ea514(Ov006Racer *self) {
+    if (self->model != NULL) {
+        func_ov000_02190a80(self->model, func_0203db40(&self->pause));
     }
 }
 

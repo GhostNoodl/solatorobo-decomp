@@ -8126,3 +8126,43 @@ No symbols were renamed.
   - `scr14*.py` (script-list retype);
   - `proto.py` (shared typed prototypes);
   - `rawcnt.sh`.
+
+### Round acC (ov006 racer/marker/item actors and ov003 actor dtors typed)
+
+Cleanup only, and every function is still byte-identical.
+
+**How it was checked.** After every step, each rebuilt object was compared function by function, on code bytes and relocations, with a baseline built at `e18c61e4` (round acA). At the end, all 1906 objects were compared again: 0 differ.
+
+**Gate.** All of these pass:
+- 0 FAILED, with 19/19 ROM checks and `check symbols` OK;
+- `ninja report` shows 8138 matched (unchanged);
+- `check_drafts.py --score` exits 0 (the `ov006_021e6eb0` draft keeps its score).
+
+No symbols were renamed.
+
+**Counts.** Measured as in round acA.
+
+| overlay | raw offsets before | raw offsets after | `void *self` before | `void *self` after |
+|---|---|---|---|---|
+| ov006 | 113 | 28 | 81 | 65 |
+| ov003 | 36 | 17 | 321 | 180 |
+
+- **`ov006/Racer.h` (new).**
+  - `Ov006Marker`: 0x34 bytes, vtable `021ec28c`, ctor `Ov006Vt_021ec28c_Ctor`; the marker over a racer (`target`, `cur`, `ofs`, `model`), with the prototypes of its five methods.
+  - `Ov006Racer : Actor`: 0x228 bytes, vtable `021ec4f4`, allocated by `func_ov006_021ea430`. It embeds a `Model0218fe1c` (`mdl`) and holds `prm` (`Ov006RacerPrm`, the 0xa-byte record `func_020706a0` returns), `marker`, the course points (`pts`, `goal`, `Ov006RacerPt`), lap/point counters, the pad state and the effect ids.
+  - Member names avoid `Actor`'s (`mode`, `kind`, `prev`, `next`): a derived member with the same name hides the base one and changed a store (`turnMode`, `ptCount`/`lastPt`/`nextPt`, `unk_1aa`).
+  - The racer TUs (`021e6210` .. `021ea3e8`), the marker TUs (`021dc714` .. `021dccc8`) and the callers in `021d5b98`, `021d6ff0`, `021d8914` and `021d8cb8` use it in place of their local views; `021e742c`'s state table is a pointer-to-member table on the class.
+- **ov006 items.** `021ea548`, `021ea7ac`, `021ea854`, `021eaab8`, `021eacd8`, `021eb238` and `021eb534` take `ActorEx *`. `ov006_021eb5c4.c` became `.cpp` (delinks updated) so its dtors can take `ActorEx *`.
+- **`ov006/Tasks.h`.** `TaskD37` holds a `Camera cam` and an `int unk40` (written by the decide callback); its models are `Model0218fe1c *`. `ov006_021d3498` sets the camera through the typed fields.
+- **`ov003/ActEx.h` (new).** The ActorEx-family ov003 classes with members built in place by `func_ov000_02192b24`: `Ov003ActExRes` (ActorRes at 0xd0), `Ov003ActExResMdl` (plus a model at 0x208), `Ov003ActExMdl` (model at 0xd0) and `Ov003ActExMesh` (vtable `021f8af8`: two ActorRes, a model and three `Ov003HitMesh` arrays), with the ActorEx, ActorRes and model dtor prototypes.
+- **`ov003/Prop.h` (new).** The actors `func_ov000_021b4828` builds: `Ov003Prop : Actor` (vtable `data_ov000_021cc7cc`, 0xb0 bytes), `Ov003PropRes`, `Ov003PropResMdl` and `Ov003PropMulti` (eight ActorRes and six models).
+- **ov003 dtors.** `021dcb10`, `021de624`, `021e0c60`, `021e72cc`, `021ea858`, `021ebff8`, `021f07d8`, `021f34b0` and `021f4248` became `.cpp` (delinks updated). Their dtors take `ActorEx *`, the classes above or `Ov003Prop *`, and destroy members by name. The other code in those files moved onto `ActorEx` (`021dcb10`'s gate, `021e0c60`, `021ea858`) or `Ov003PropResMdl`. `021ed520`, `021ef558` and `021d7780` type their dtors the same way.
+- **`ov003_021efad8`.** The `Ov003Bx` view and its sub-views are now `ActorEx` with its parts (`fsm`, `hit`, `targetObj`, `param`, `gravity`, model `scale`/`visible`/`boxTest`). All 18 `BXF` uses are gone.
+- **Shared headers.** `ov000/ActorParts.h`: `ActorSub48::unk_74` is a `VecFx32` (layout unchanged).
+
+**Kept forms.**
+- `ov003_021cd744`: its `FIELD` lookups stay. Typing the model as `Main/Gfx/Model.h` `Model` brings that header's `NNS_G2dGetAnimSequenceByIdx(int)` / `NNS_G2dGetCellDataByIdx(u16)` prototypes, and with those the register allocation changes.
+- The `void *self` prototypes left in ov003 (`021e0e8c`, `021f7848`, `021eba54` and others) and in ov006 (`021ce374`, `021d3498`) belong to merged TUs. Each namespace redeclares the same extern "C" function, so one prototype can only be typed when every unit in the file passes the same class.
+- `Ov003Gimmick` (`ov003_021ec130`) keeps its flat view. Its bytes at 0xce/0xcf (`count`, `state`) do not fit `ActorEx::unk_ce`/`unk_cf` without an `ObjLayouts.h` change. Its dtors in `021ed520` take `ActorEx *` and destroy the ActorRes at 0xdc by offset.
+- `func_ov003_021d0edc` keeps `void *` (`ov003/Actor.h`), because ov010-ov014 call it.
+- The ov006 window `vtbl`/VCALL copy is unchanged.

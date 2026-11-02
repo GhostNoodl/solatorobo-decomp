@@ -1,106 +1,61 @@
 #include "ov006/Tasks.h"
 #include "Main/Effect/Effect.h"
+#include "ov006/Racer.h"
 
-typedef struct ov006_Msg6ac4 {
-    u8 unk0[5];
-    u8 unk5;
-    u16 unk6;
-    u8 unk8[2];
-    u8 unkA;
-} ov006_Msg6ac4;
-
-typedef struct ov006_Flags6ac4 {
-    u8 unk0[4];
-    u32 unk4;
-    u32 unk8;
-} ov006_Flags6ac4;
-
-typedef struct ov006_Color6ac4 {
-    u8 unk0[0xb6];
-    u16 unkB6;
-    u16 unkB8;
-    u16 unkBA;
-    u16 unkBC;
-} ov006_Color6ac4;
-
-typedef struct ov006_Prop6ac4 {
-    void *vtbl;
-    u8 unk4[8];
-    u16 unkC;
-    u8 unkE[0x22];
-    u32 unk30;
-    u8 unk34[4];
-    ov006_Color6ac4 *unk38;
-    u8 unk3C[4];
-    ov006_Flags6ac4 *unk40;
-    u8 unk44[0x2c];
-    VecFx32 unk70; // position passed to the effect and the sound
-    u8 unk7C[0x122];
-    u8 unk19E;
-    u8 unk19F[0xe];
-    u8 unk1AD;
-    u8 unk1AE[0x3e];
-    int unk1EC;
-    u8 unk1F0[5];
-    u8 unk1F5;
-    u8 unk1F6[2];
-    u16 unk1F8;
-    u16 unk1FA;
-} ov006_Prop6ac4;
 
 extern "C" {
 
 extern const u16 data_ov006_021eb89c[];
 
-BOOL func_ov000_0218d494(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg);
+BOOL func_ov000_0218d494(Actor *self, ActorMsg *msg);
 
-static inline void ov006_Prop6ac4_Ack(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg) {
-    self->unk30 |= 1 << msg->unk5;
-    msg->unk5 = 0;
+static inline void Ov006Racer_Ack(Ov006Racer *self, ActorMsg *msg) {
+    self->msg_flags |= 1 << msg->type;
+    msg->type = 0;
 }
 
-BOOL func_ov006_021e6ac4(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg) {
+BOOL func_ov006_021e6ac4(Ov006Racer *self, ActorMsg *msg) {
     BOOL pass;
-    if (!VCALL(self, 14)) {
-        ov006_Prop6ac4_Ack(self, msg);
+    if (!self->vfunc_14()) {
+        Ov006Racer_Ack(self, msg);
         return TRUE;
     }
     pass = TRUE;
-    switch (msg->unk5) {
+    switch (msg->type) {
     case 9:
         pass = FALSE;
-        if (self->unk1F5 == 0 && self->unk1F8 == 0) {
-            ov006_Color6ac4 *c;
-            *(u64 *)&self->unk40->unk4 |= 0x40000;
-            c = self->unk38;
-            self->unk1F5 = msg->unkA == 0x10 ? 0x37 : 0x64;
-            c->unkB6 = 0x14bf;
-            c->unkB8 = 0x739f;
-            c->unkBA = 0xb;
-            c->unkBC = 0xa;
+        if (self->unk_1f5 == 0 && self->unk_1f8 == 0) {
+            Model0218fe1c *c;
+            self->fsm->flags |= 0x40000;
+            c = self->model;
+            self->unk_1f5 = msg->hit.kind == 0x10 ? 0x37 : 0x64;
+            c->color = 0x14bf;
+            c->color2 = 0x739f;
+            c->blend = 0xb;
+            c->blendMax = 0xa;
         }
         break;
     case 11:
         pass = FALSE;
-        if (msg->unk6 != self->unkC) {
-            u16 v = data_ov006_021eb89c[self->unk1AD];
-            if (self->unk1FA < v) {
-                self->unk1FA = v;
+        if (msg->id != self->id) {
+            u16 v = data_ov006_021eb89c[self->rank];
+            if (self->unk_1fa < v) {
+                self->unk_1fa = v;
             }
-            if (self->unk19E == data_ov006_021ec884->unk5) {
-                EffectObj *e = func_02065f88(0x648, &self->unk70);
+            if (self->idx == data_ov006_021ec884->unk5) {
+                EffectObj *e = func_02065f88(0x648, &self->pos);
                 if (e != NULL) {
                     EffectObj *old;
                     e->SetScaleAll(0x1800);
                     e->speed = 0x1800;
-                    old = func_020657b0(data_0214a420, self->unk1EC);
+                    old = func_020657b0(data_0214a420, self->unk_1ec);
                     if (old != NULL) {
                         EffectObj_StopLoop(old);
                         old->state = 4;
                     }
-                    self->unk1EC = e->id;
+                    self->unk_1ec = e->id;
                 }
-                func_02049f44(data_02097e4c, 0x41, &self->unk70, 0);
+                func_02049f44(data_02097e4c, 0x41, &self->pos, 0);
             }
         }
         break;
@@ -108,7 +63,7 @@ BOOL func_ov006_021e6ac4(ov006_Prop6ac4 *self, ov006_Msg6ac4 *msg) {
     if (pass && func_ov000_0218d494(self, msg)) {
         return TRUE;
     }
-    ov006_Prop6ac4_Ack(self, msg);
+    Ov006Racer_Ack(self, msg);
     return TRUE;
 }
 

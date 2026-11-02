@@ -1,43 +1,42 @@
 #include "types.h"
+#include "ov003/ActEx.h"
 
-typedef void (*VFunc)(void *);
+extern "C" {
 
 extern void Heap_Free(void *p);
-extern void *func_ov000_0219429c(void *p);
 
-void *Ov003ActVt_021fa07c_Dtor(void *self) {
+ActorEx *Ov003ActVt_021fa07c_Dtor(ActorEx *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *Ov003ActVt_021fa07c_DtorDelete(void *self) {
-    func_ov000_0219429c(self);
-    Heap_Free(self);
-    return self;
-}
-
-void *Ov003ActVt_021fa114_Dtor(void *self) {
-    func_ov000_0219429c(self);
-    return self;
-}
-
-void *Ov003ActVt_021fa114_DtorDelete(void *self) {
+ActorEx *Ov003ActVt_021fa07c_DtorDelete(ActorEx *self) {
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
 }
 
-void *Ov003ActVt_021f9fe4_Dtor(void *self) {
+ActorEx *Ov003ActVt_021fa114_Dtor(ActorEx *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *Ov003ActVt_021f9fe4_DtorDelete(void *self) {
+ActorEx *Ov003ActVt_021fa114_DtorDelete(ActorEx *self) {
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
 }
 
+ActorEx *Ov003ActVt_021f9fe4_Dtor(ActorEx *self) {
+    func_ov000_0219429c(self);
+    return self;
+}
+
+ActorEx *Ov003ActVt_021f9fe4_DtorDelete(ActorEx *self) {
+    func_ov000_0219429c(self);
+    Heap_Free(self);
+    return self;
+}
 
 typedef struct {
     s32 x, y, z;
@@ -177,3 +176,5 @@ s32 func_ov003_021f093c(Ov003CntSelf *self) {
     }
     return r;
 }
+
+} // extern "C"

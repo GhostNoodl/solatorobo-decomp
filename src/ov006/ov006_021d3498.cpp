@@ -10,6 +10,7 @@
 #include "nitro/fx.h"
 #include "nnsys/g3d.h"
 #include "Main/Gfx/PlttRes.h"
+#include "Main/Math/Rot16.h"
 
 // ---- merged from ov006_021d3498.cpp
 namespace m_021d3498 {
@@ -187,7 +188,7 @@ BOOL func_ov006_021d37d0(ov006_Window *window, ov006_ListNode *node) {
 ov006_TaskD37 *func_ov006_021d3874(ov006_TaskD37 *self) {
     OV006_TASKBASE_CTOR(&self->head);
     self->head.vtbl = &data_ov006_021ebdc0;
-    func_0204b370(self->cam);
+    func_0204b370(&self->cam);
     self->step = 0;
     self->unk44 = 0;
     self->unk46 = 0;
@@ -242,7 +243,7 @@ static inline void ov006_TaskD37_Dtor(ov006_TaskD37 *self) {
     OV006_DELETE_OBJECT(self->unk138);
     OV006_DELETE_OBJECT(self->unk13C);
     func_02035acc("ac/c1dum1", "c1dum1", 6);
-    func_0204b420(self->cam);
+    func_0204b420(&self->cam);
     OV006_TASKBASE_DTOR(&self->head);
 }
 
@@ -382,12 +383,6 @@ typedef struct ov006_Unk020706a0 {
     s16 unk0;
 } ov006_Unk020706a0;
 
-typedef struct ov006_Rot021d4118 {
-    u16 x;
-    u16 y;
-    u16 z;
-} ov006_Rot021d4118;
-
 extern "C" {
 
 extern void *data_02149ef8;
@@ -398,13 +393,13 @@ extern void *data_ov000_021cb1b0;
 extern void *data_ov000_021cb0b8;
 extern const u16 data_ov006_021eb6fc;
 extern const u8 data_ov006_021eb6fe[4];
-extern const ov006_Rot021d4118 data_ov006_021eb702;
-extern const ov006_Vec32 data_ov006_021eb764;
-extern const ov006_Vec32 data_ov006_021eb734;
+extern const Rot16 data_ov006_021eb702;
+extern const VecFx32 data_ov006_021eb764;
+extern const VecFx32 data_ov006_021eb734;
 
 const u16 data_ov006_021eb6fc = 0x1000;
 const u8 data_ov006_021eb6fe[4] = {0, 1, 3, 2};
-const ov006_Rot021d4118 data_ov006_021eb702 = {0xfa80, 0x8200, 0};
+const Rot16 data_ov006_021eb702 = {0xfa80, 0x8200, 0};
 
 void *MsgRes_GetString(void *a, int id);
 void func_ov006_021cd580(int a, void *b, int c);
@@ -414,11 +409,11 @@ BOOL func_ov006_021d37d0(ov006_Window *window, ov006_ListNode *node);
 BOOL func_ov006_021d1f00(ov006_Window *window, ov006_ListNode *node);
 void func_ov000_0215bb14(void *a, const void *b);
 ov006_Obj58 *Ov006Vt_021ec2fc_Ctor(void *p);
-ov006_Model64 *func_ov000_0218fe1c(void *p);
-BOOL func_ov000_0218ffdc(ov006_Model64 *a, ov006_Model60 *b, int c, int d);
+Model0218fe1c *func_ov000_0218fe1c(void *p);
+BOOL func_ov000_0218ffdc(Model0218fe1c *a, ov006_Model60 *b, int c, int d);
 BOOL func_ov000_02190cb0(void *a, const void *b, int c, int d);
 void func_ov000_021915a0(void *a);
-void *func_ov000_02190a30(void *a, int b);
+AnimCtrl *func_ov000_02190a30(Model0218fe1c *a, int b);
 void func_ov000_021911c8(void *a, int b);
 ov006_Unk020706a0 *func_020706a0(u16 id);
 void func_ov006_021d526c(ov006_TaskD37 *self, const char *name, s16 speed, u8 loop);
@@ -473,12 +468,12 @@ static inline ov006_Window *ov006_NewWindow_cb0b8(void) {
     return w;
 }
 
-static inline ov006_Model64 *ov006_NewModel64(void) {
+static inline Model0218fe1c *ov006_NewModel64(void) {
     void *p = Heap_Alloc(0xe8);
     if (p != NULL) {
         p = func_ov000_0218fe1c(p);
     }
-    return (ov006_Model64 *)p;
+    return (Model0218fe1c *)p;
 }
 
 static inline void ov006_SetPos3(void *p, int x, int y, int z) {
@@ -510,20 +505,14 @@ static inline void ov006_TaskD37_Select(ov006_TaskD37 *self, u16 id) {
     func_ov006_021e1e6c(self->unk13C, func_0206ec48(id));
 }
 
-static inline void ov006_SetCam(void *self, const ov006_Vec32 *at, const ov006_Vec32 *up, const ov006_Rot021d4118 *rot, int fovy) {
-    F(self, 0x8c, ov006_Vec32) = *at;
-    F(self, 0x98, ov006_Vec32) = *up;
-    F(self, 0xbe, ov006_Rot021d4118) = *rot;
-    F(self, 0xc4, int) = fovy;
-    F(self, 0xbc, u16) = 1;
-}
-
-static inline void ov006_SetCam2(void *self, ov006_Vec32 at, ov006_Vec32 up, ov006_Rot021d4118 rot, int fovy) {
-    F(self, 0x8c, ov006_Vec32) = at;
-    F(self, 0x98, ov006_Vec32) = up;
-    F(self, 0xbe, ov006_Rot021d4118) = rot;
-    F(self, 0xc4, int) = fovy;
-    F(self, 0xbc, u16) = 1;
+static inline void ov006_SetCam(ov006_TaskD37 *self, const VecFx32 *at, const VecFx32 *up, const Rot16 *rot, int dist) {
+    self->cam.at = *at;
+    self->cam.up = *up;
+    self->cam.pitch = rot->x;
+    self->cam.yaw = rot->y;
+    self->cam.roll = rot->z;
+    self->cam.dist = dist;
+    self->cam.mode = 1;
 }
 
 // Message ids of the window texts, and the "no saved cursor" value of unk4A.
@@ -593,20 +582,20 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     self->unk64 = ov006_NewModel64();
     func_ov000_0218ffdc(self->unk64, self->unk60, 0, 1);
     func_ov000_02190cb0(self->unk64, "s00", 0, 1);
-    F(self->unk64, 0xb4, s16) = 0;
+    self->unk64->actor_id = 0;
     func_ov000_021915a0(self->unk64);
-    F(func_ov000_02190a30(self->unk64, 0), 0x112, s16) = 0x400;
+    func_ov000_02190a30(self->unk64, 0)->speed = 0x400;
     self->unk6C = ov006_NewModel64();
     func_ov000_0218ffdc(self->unk6C, self->unk68, 0, 1);
     func_ov000_02190cb0(self->unk6C, "nut00", 0, 1);
-    F(self->unk6C, 0xb4, s16) = 0;
+    self->unk6C->actor_id = 0;
     func_ov000_021915a0(self->unk6C);
     func_ov000_021911c8(self->unk6C, func_020706a0(func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5)->unkC)->unk0);
     func_ov006_021d526c(self, "s00", 0x400, 1);
     {
-        ov006_Vec32 at = data_ov006_021eb764;
-        ov006_Vec32 up = data_ov006_021eb734;
-        ov006_Rot021d4118 rot = data_ov006_021eb702;
+        VecFx32 at = data_ov006_021eb764;
+        VecFx32 up = data_ov006_021eb734;
+        Rot16 rot = data_ov006_021eb702;
         ov006_SetCam(self, &at, &up, &rot, 0x4400);
     }
     {
@@ -636,7 +625,7 @@ void func_ov006_021d4118(ov006_TaskD37 *self) {
     F(self->unk5C, 0x1dc, void *) = MsgRes_GetString(res, 0x18);
     F(self->unk5C, 0x1e0, u16) = 1;
     self->unk5C->onDecide = func_ov006_021d1f00;
-    self->unk5C->owner = (u8 *)self + 0x40;
+    self->unk5C->owner = &self->unk40;
     VCALL(self->unk5C, 08);
     self->unk5C->posZ = -0x1666;
     self->unk5C->flags |= 2;
@@ -688,7 +677,7 @@ u16 func_ov006_021e60e8(int type, u16 mask);
 void func_ov006_021dc048(ov006_Obj58 *p);
 void func_ov006_021e5e00(ov006_Unk021ec888 *self);
 BOOL func_ov000_02190cb0(void *a, const void *b, int c, int d);
-void *func_ov000_02190a30(void *a, int b);
+AnimCtrl *func_ov000_02190a30(Model0218fe1c *a, int b);
 void func_ov006_021d526c(ov006_TaskD37 *self, const char *name, s16 speed, u8 loop);
 ov006_Info021daaa8 *func_ov006_021daaa8(u16 id);
 const void *func_0206ec8c(u16 id);
@@ -808,7 +797,7 @@ void func_ov006_021d4880(ov006_TaskD37 *self) {
         if (!ov006_Window_IsState5(self->unk5C)) {
             return;
         }
-        if (F(self, 0x40, int) == 0) {
+        if (self->unk40 == 0) {
             self->unk44 = 6;
             self->step = 0x1e;
         } else {
@@ -820,7 +809,7 @@ void func_ov006_021d4880(ov006_TaskD37 *self) {
         self->unk54->flags |= 2;
         func_ov006_021dc048(self->unk58);
         func_ov000_02190cb0(self->unk64, "s01", 0, 1);
-        F(func_ov000_02190a30(self->unk64, 0), 0x112, u16) = 0xb33;
+        func_ov000_02190a30(self->unk64, 0)->speed = 0xb33;
         func_ov006_021d526c(self, "s01", 0x1000, 0);
         {
             ov006_Info021daaa8 *info = func_ov006_021daaa8(self->unk4A);
@@ -904,13 +893,6 @@ typedef struct ov006_Unk02046a50 {
     u16 unk4;
 } ov006_Unk02046a50;
 
-typedef struct ov006_Model64Obj {
-    u8 unk0[0x78];
-    VecFx32 trans;
-    MtxFx33 rot;
-    VecFx32 scale;
-} ov006_Model64Obj;
-
 extern "C" {
 
 extern void *data_02097e40;
@@ -929,9 +911,9 @@ void func_ov006_021e0af4(ov006_Unk68 *self);
 void func_ov006_021e0b80(ov006_Unk68 *self);
 void func_ov006_021e1af0(ov006_Obj13C *a);
 void func_ov006_021e1bb4(ov006_Obj13C *a);
-void func_ov000_02190a80(ov006_Model64 *a, int b);
-BOOL func_ov000_021903b4(ov006_Model64 *a);
-BOOL func_ov006_021d5368(ov006_TaskD37 *self, ov006_Model64 *obj);
+void func_ov000_02190a80(Model0218fe1c *a, int b);
+BOOL func_ov000_021903b4(Model0218fe1c *a);
+BOOL func_ov006_021d5368(ov006_TaskD37 *self, Model0218fe1c *obj);
 void ov006_Menu_SetOwnEntry(ov006_Unk021ec888 *self, u16 a, int b, const void *src, u32 size);
 void func_ov006_021cd580(int a, int b, int c);
 void ov006_Menu_ClearEntries(ov006_Unk021ec888 *self);
@@ -1019,7 +1001,7 @@ void func_ov006_021d51cc(ov006_TaskD37 *self) {
     VCALL(self->unk50, 20);
     VCALL(self->unk54, 20);
     VCALL(self->unk5C, 20);
-    VCALL(self->cam, 00);
+    VCALL(&self->cam, 00);
     func_ov000_021903b4(self->unk64);
     func_ov000_021903b4(self->unk6C);
     if (data_ov006_021ec888 != NULL) {
@@ -1051,16 +1033,14 @@ void func_ov006_021d526c(ov006_TaskD37 *self, const char *name, s16 speed, u8 lo
     self->animSpeed = speed;
 }
 
-BOOL func_ov006_021d5368(ov006_TaskD37 *self, ov006_Model64 *m) {
+BOOL func_ov006_021d5368(ov006_TaskD37 *self, Model0218fe1c *m) {
     BOOL r;
     int end;
     int frame;
     ov006_Anm74 *anm;
-    ov006_Model64Obj *obj;
     u32 flag;
     NNSG3dRS rs;
     NNSG3dJntAnmResult result;
-    obj = (ov006_Model64Obj *)m;
     if (self->anm == NULL) {
         return FALSE;
     }
@@ -1083,9 +1063,9 @@ BOOL func_ov006_021d5368(ov006_TaskD37 *self, ov006_Model64 *m) {
         result.scale.y = 0x1000;
         result.scale.z = 0x1000;
     }
-    obj->scale = result.scale;
-    obj->trans = result.trans;
-    MI_Copy36B(&result.rot, &obj->rot);
+    m->scale = result.scale;
+    m->trans = result.trans;
+    MI_Copy36B(&result.rot, &m->rot);
     NNS_G3dRS = NULL;
     anm = self->anm;
     end = (anm->res->numFrame << 12) - 0x1000;

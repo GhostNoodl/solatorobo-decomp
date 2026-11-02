@@ -6,8 +6,6 @@
 
 extern "C" {
 
-typedef void (*VFunc)(void *);
-
 extern void *data_ov000_021ccd64;
 extern char data_ov003_021f9fd0[];
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
@@ -18,49 +16,50 @@ extern void func_ov000_021915a0(Model0218fe1c *p);
 extern void func_ov000_021911c8(Model0218fe1c *p, s16 a);
 extern void Heap_Free(void *p);
 extern void *func_ov000_0218ea20(void *p);
-extern void *func_ov000_0219429c(void *p);
+extern ActorEx *func_ov000_0219429c(ActorEx *self);
 
-void *Ov003ActVt_021f99e8_DtorDelete(void *self) {
+// 021f99e8 is Ov003Gimmick (ov003_021ec130.cpp), whose ActorRes sits at 0xdc.
+ActorEx *Ov003ActVt_021f99e8_DtorDelete(ActorEx *self) {
     func_ov000_0218ea20((u8 *)self + 0xdc);
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
 }
 
-void *Ov003ActVt_021f99e8_Dtor(void *self) {
+ActorEx *Ov003ActVt_021f99e8_Dtor(ActorEx *self) {
     func_ov000_0218ea20((u8 *)self + 0xdc);
     func_ov000_0219429c(self);
     return self;
 }
 
-void *Ov003ActVt_021f9bb0_DtorDelete(void *self) {
+ActorEx *Ov003ActVt_021f9bb0_DtorDelete(ActorEx *self) {
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
 }
 
-void *Ov003ActVt_021f9bb0_Dtor(void *self) {
+ActorEx *Ov003ActVt_021f9bb0_Dtor(ActorEx *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *Ov003ActVt_021f9c48_DtorDelete(void *self) {
+ActorEx *Ov003ActVt_021f9c48_DtorDelete(ActorEx *self) {
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
 }
 
-void *Ov003ActVt_021f9c48_Dtor(void *self) {
+ActorEx *Ov003ActVt_021f9c48_Dtor(ActorEx *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *Ov003ActVt_021f9b18_Dtor(void *self) {
+ActorEx *Ov003ActVt_021f9b18_Dtor(ActorEx *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *Ov003ActVt_021f9b18_DtorDelete(void *self) {
+ActorEx *Ov003ActVt_021f9b18_DtorDelete(ActorEx *self) {
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;

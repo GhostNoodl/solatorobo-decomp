@@ -2,6 +2,7 @@
 #include "nitro/fx.h"
 #include "Main/Effect/Effect.h"
 #include "Main/Gfx/SlidePanel.h"
+#include "ov006/Racer.h"
 
 typedef struct ov006_Query021e7fe4 {
     VecFx32 pos;
@@ -34,28 +35,6 @@ typedef struct ov006_FinderQuery021e7fe4 {
     ov006_Query021e7fe4 q;
 } ov006_FinderQuery021e7fe4;
 
-typedef struct ov006_Hit021e7fe4 {
-    u8 unk0[0x90];
-    u16 unk90;
-} ov006_Hit021e7fe4;
-
-typedef struct ov006_Prop021e7fe4 {
-    u8 unk0[0xc];
-    u16 unkC;
-    u8 unkE[0x62];
-    VecFx32 pos;
-    u8 unk7C[0x120];
-    u16 unk19C_0 : 2;
-    u16 unk19C_2 : 12;
-    u16 unk19C_14 : 1;
-    u16 unk19C_15 : 1;
-    u8 unk19E;
-    u8 unk19F;
-    u8 unk1A0[0x50];
-    int unk1F0;
-    u8 unk1F4[8];
-    u16 unk1FC;
-} ov006_Prop021e7fe4;
 
 extern "C" {
 
@@ -79,15 +58,11 @@ static inline void ov006_FinderQuery_Init(ov006_FinderQuery021e7fe4 *fq) {
     fq->q.exclude = 0xffff;
 }
 
-static inline BOOL ov006_Hit_IsOwner(ov006_Hit021e7fe4 *h, ov006_Prop021e7fe4 *p) {
-    return h->unk90 == p->unkC;
-}
-
-void func_ov006_021e7fe4(ov006_Prop021e7fe4 *self) {
+void func_ov006_021e7fe4(Ov006Racer *self) {
     BOOL found = FALSE;
-    if (self->unk19C_0 & 1) {
+    if (self->unk_19c_0 & 1) {
         ov006_FinderQuery021e7fe4 fq;
-        ov006_Hit021e7fe4 *hits[0x20];
+        Actor *hits[0x20];
         int n;
         int i;
         ov006_FinderQuery_Init(&fq);
@@ -100,35 +75,35 @@ void func_ov006_021e7fe4(ov006_Prop021e7fe4 *self) {
         fq.q.bits.b2 = 0;
         n = func_ov000_02199128(&fq.finder, &fq.q, (void **)hits, 0x20);
         for (i = 0; i < n; i++) {
-            ov006_Hit021e7fe4 *h = hits[i];
-            if (h->unk90 == self->unkC) {
+            Actor *h = hits[i];
+            if (h->target == self->id) {
                 found = TRUE;
                 break;
             }
         }
     }
     if (found) {
-        if (!self->unk19C_14) {
-            self->unk19C_14 = 1;
-            self->unk1FC = 0;
-            if (self->unk1F0 == 0) {
+        if (!self->unk_19c_14) {
+            self->unk_19c_14 = 1;
+            self->unk_1fc = 0;
+            if (self->unk_1f0 == 0) {
                 EffectObj *eff = Effect3D_Create(data_ov006_021ec48c, data_ov006_021ec49b, 0, &self->pos);
-                self->unk1F0 = eff->id;
+                self->unk_1f0 = eff->id;
                 eff->loopCount = -1;
                 eff->unk_28 = 0;
                 eff->speed = 0x2000;
             }
-            if (self->unk19E == data_ov006_021ec884->unk5) {
+            if (self->idx == data_ov006_021ec884->unk5) {
                 func_02049bdc(data_02097e4c, 0x44, 5);
             }
         } else {
-            self->unk1FC++;
-            if ((self->unk1FC & 0xf) == 0 && self->unk19E == data_ov006_021ec884->unk5) {
+            self->unk_1fc++;
+            if ((self->unk_1fc & 0xf) == 0 && self->idx == data_ov006_021ec884->unk5) {
                 func_02049bdc(data_02097e4c, 0x11, 0xc);
             }
         }
     } else {
-        self->unk19C_14 = 0;
+        self->unk_19c_14 = 0;
     }
 }
 

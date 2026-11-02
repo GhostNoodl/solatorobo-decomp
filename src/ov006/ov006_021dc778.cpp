@@ -1,29 +1,23 @@
 #include "ov006/Model.h"
-
-typedef struct ov006_Unk021dc778 {
-    void *vtbl;
-    u8 unk4[0x28];
-    Model *unk2C;
-    Model *unk30;
-} ov006_Unk021dc778;
+#include "ov006/Racer.h"
 
 extern "C" {
 
 extern u8 data_ov006_021ec28c[];
 
-static inline void ov006_Unk021dc778_dtor(ov006_Unk021dc778 *self) {
+static inline void Ov006Marker_Dtor(Ov006Marker *self) {
     self->vtbl = data_ov006_021ec28c;
-    OV006_DELETE_MODEL(self->unk2C);
-    OV006_DELETE_MODEL(self->unk30);
+    OV006_DELETE_MODEL(self->model);
+    OV006_DELETE_MODEL(self->unk_30);
 }
 
-ov006_Unk021dc778 *Ov006Vt_021ec28c_Dtor(ov006_Unk021dc778 *self) {
-    ov006_Unk021dc778_dtor(self);
+Ov006Marker *Ov006Vt_021ec28c_Dtor(Ov006Marker *self) {
+    Ov006Marker_Dtor(self);
     return self;
 }
 
-ov006_Unk021dc778 *Ov006Vt_021ec28c_DtorDelete(ov006_Unk021dc778 *self) {
-    ov006_Unk021dc778_dtor(self);
+Ov006Marker *Ov006Vt_021ec28c_DtorDelete(Ov006Marker *self) {
+    Ov006Marker_Dtor(self);
     Heap_Free(self);
     return self;
 }

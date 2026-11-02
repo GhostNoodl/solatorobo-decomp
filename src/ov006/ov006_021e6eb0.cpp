@@ -1,4 +1,5 @@
 #include "ov006/SlotManager.h"
+#include "ov006/Racer.h"
 
 typedef struct ov006_Sub021e6eb0 {
     u16 buttons;
@@ -11,28 +12,6 @@ typedef struct ov006_Sub021e6eb0 {
     s32 y;
     s32 z;
 } ov006_Sub021e6eb0;
-
-typedef struct ov006_Prop021e6eb0 {
-    u8 unk0[0x70];
-    s32 x;
-    s32 y;
-    s32 z;
-    u8 unk7C[0x120];
-    u16 unk19C_0 : 8;
-    u16 flag : 1;
-    u16 toggle : 1;
-    u16 unk19C_10 : 6;
-    u8 idx;
-    u8 unk19F;
-    int unk1A0;
-    u16 held;
-    u16 trig;
-    u16 release;
-    u8 kind;
-    u8 unk1AB;
-    u8 unk1AC;
-    u8 unk1AD;
-} ov006_Prop021e6eb0;
 
 typedef struct ov006_Disp021e6eb0 {
     u8 unk0[0x18];
@@ -47,10 +26,10 @@ extern ov006_Disp021e6eb0 *data_0214a424;
 const ov006_Sub021e6eb0 *func_ov006_021dab98(ov006_Slot *self);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 
-void func_ov006_021e6eb0(ov006_Prop021e6eb0 *self) {
+void func_ov006_021e6eb0(Ov006Racer *self) {
     const ov006_Sub021e6eb0 *sub;
     sub = func_ov006_021dab98(func_ov006_021db060(data_ov006_021ec884, 0));
-    self->unk1AD = (sub->bits >> (self->idx * 2)) & 3;
+    self->rank = (sub->bits >> (self->idx * 2)) & 3;
     sub = func_ov006_021dab98(func_ov006_021db060(data_ov006_021ec884, self->idx));
     {
         u16 old = self->held;
@@ -61,11 +40,11 @@ void func_ov006_021e6eb0(ov006_Prop021e6eb0 *self) {
         self->release &= (u16)~cur;
         self->held = cur;
     }
-    self->kind = sub->kind;
-    self->flag = sub->flag;
-    self->x = sub->x;
-    self->y = sub->y;
-    self->z = sub->z;
+    self->unk_1aa = sub->kind;
+    self->swap = sub->flag;
+    self->pos.x = sub->x;
+    self->pos.y = sub->y;
+    self->pos.z = sub->z;
     if (!(self->trig & 4)) {
         return;
     }
@@ -97,49 +76,6 @@ void func_ov006_021e6eb0(ov006_Prop021e6eb0 *self) {
 // one local carries both angles; computing y before p gives 28 / 14.
 // Round qpL: not a numbering or block question (raH/rule F do not reach it); left as bgV/pmB found.
 
-typedef struct ov006_Aim7004Tgt {
-    s32 x;
-    s32 y;
-    s32 z;
-    s32 w;
-} ov006_Aim7004Tgt;
-
-typedef struct ov006_Aim7004 {
-    u8 unk0[0x70];
-    s32 posX;
-    s32 posY;
-    s32 posZ;
-    u8 unk7C[0x120];
-    u16 unk19C_0 : 2;
-    u16 unk19C_2 : 4;
-    u16 unk19C_6 : 2;
-    u16 unk19C_8 : 1;
-    u16 unk19C_9 : 7;
-    u8 unk19E;
-    u8 unk19F;
-    s32 unk1A0;
-    u16 unk1A4;
-    u16 unk1A6;
-    u16 unk1A8;
-    u8 unk1AA;
-    u8 unk1AB[0xf];
-    u16 unk1BA;
-    u16 unk1BC;
-    u8 unk1BE[0x38];
-    u16 unk1F6;
-    u8 unk1F8[8];
-    ov006_Aim7004Tgt *tgts;
-    u8 unk204[6];
-    u8 tgtIdx;
-    u8 unk20B;
-    u16 curPitch;
-    u16 curYaw;
-    u16 unk210;
-    u16 pitch;
-    u16 yaw;
-    u16 unk216;
-} ov006_Aim7004;
-
 #define OV006A_SQRTCNT (*(volatile u16 *)0x40002b0)
 #define OV006A_SQRT_RESULT (*(volatile u32 *)0x40002b4)
 #define OV006A_SQRT_PARAM (*(volatile u64 *)0x40002b8)
@@ -156,7 +92,7 @@ static inline u16 ov006_HalfAngle(u16 d) {
     return -(u16)((u16)-d >> 1);
 }
 
-void func_ov006_021e7004(ov006_Aim7004 *self, u16 *keys) {
+void func_ov006_021e7004(Ov006Racer *self, u16 *keys) {
 //DB
     u16 up;
     u16 hy;
@@ -164,7 +100,7 @@ void func_ov006_021e7004(ov006_Aim7004 *self, u16 *keys) {
     BOOL a;
     BOOL b;
     u16 dy;
-    ov006_Aim7004Tgt *t;
+    Ov006RacerPt *t;
     u16 dp;
     u16 hp;
     u16 p;
@@ -175,15 +111,15 @@ void func_ov006_021e7004(ov006_Aim7004 *self, u16 *keys) {
     BOOL over;
 //DE
     *keys = 1;
-    self->pitch = 0;
-    self->yaw = 0;
-    self->unk216 = 0;
-    t = &self->tgts[self->tgtIdx];
+    self->aim.x = 0;
+    self->aim.y = 0;
+    self->aim.z = 0;
+    t = &self->pts[self->nextPt];
     if (t != NULL) {
-        self->yaw = FX_Atan2(t->x - self->posX, t->z - self->posZ);
+        self->aim.y = FX_Atan2(t->pos.x - self->pos.x, t->pos.z - self->pos.z);
         {
-            dz = self->posZ - t->z;
-            dx = self->posX - t->x;
+            dz = self->pos.z - t->pos.z;
+            dx = self->pos.x - t->pos.x;
             sq = (s64)dx * dx;
             sq += (s64)dz * dz;
             OV006A_SQRTCNT = 1;
@@ -191,17 +127,17 @@ void func_ov006_021e7004(ov006_Aim7004 *self, u16 *keys) {
         }
         while (OV006A_SQRTCNT & 0x8000) {
         }
-        self->pitch = -FX_Atan2(t->y - self->posY, (s32)(OV006A_SQRT_RESULT + 1) >> 1);
+        self->aim.x = -FX_Atan2(t->pos.y - self->pos.y, (s32)(OV006A_SQRT_RESULT + 1) >> 1);
     }
-    dp = self->pitch - self->curPitch;
-    dy = self->yaw - self->curYaw;
+    dp = self->aim.x - self->courseRot.x;
+    dy = self->aim.y - self->courseRot.y;
     hp = ov006_HalfAngle(dp);
     hy = ov006_HalfAngle(dy);
-    p = (u16)(hp + self->curPitch) - self->unk1BA;
-    y = (u16)(hy + self->curYaw) - self->unk1BC;
+    p = (u16)(hp + self->courseRot.x) - self->look2.x;
+    y = (u16)(hy + self->courseRot.y) - self->look2.y;
     up = 0x40;
     down = 0x80;
-    if (self->unk19C_8) {
+    if (self->swap) {
         up = 0x80;
         down = 0x40;
     }
@@ -209,40 +145,40 @@ void func_ov006_021e7004(ov006_Aim7004 *self, u16 *keys) {
     b = FALSE;
     if (y > 0x280 && y < 0x8000) {
         *keys |= 0x20;
-        if (y > 0x700 && !(self->unk1A6 & 0x20)) {
+        if (y > 0x700 && !(self->trig & 0x20)) {
             a = TRUE;
         }
     } else if (y < 0xfd80 && y >= 0x8000) {
         *keys |= 0x10;
-        if (y < 0xf900 && !(self->unk1A6 & 0x10)) {
+        if (y < 0xf900 && !(self->trig & 0x10)) {
             a = TRUE;
         }
     }
     if (p > 0x2c0 && p < 0x8000) {
         *keys |= up;
-        if (p > 0x840 && !(self->unk1A6 & up)) {
+        if (p > 0x840 && !(self->trig & up)) {
             b = TRUE;
         }
     } else if (p < 0xfd40 && p >= 0x8000) {
         *keys |= down;
-        if (p < 0xf7c0 && !(self->unk1A6 & down)) {
+        if (p < 0xf7c0 && !(self->trig & down)) {
             b = TRUE;
         }
     }
     if (a) {
         *keys |= 0x300;
-        if (!b && self->unk19C_2 <= 2) {
+        if (!b && self->turnMode <= 2) {
             *keys &= 0xff3f;
         }
     } else if (b) {
         *keys |= 0x300;
-        if (self->unk19C_2 <= 2) {
+        if (self->turnMode <= 2) {
             *keys &= 0xffcf;
         }
     }
     {
         over = FALSE;
-        if (self->unk19F > data_ov006_021ec884->info->unkB) {
+        if (self->unk_19f > data_ov006_021ec884->info->unkB) {
             over = TRUE;
         }
         if (over) {
@@ -252,12 +188,12 @@ void func_ov006_021e7004(ov006_Aim7004 *self, u16 *keys) {
     if (func_ov006_021d8cb8() <= 1) {
         return;
     }
-    if (self->unk1F6 != 0) {
-        if (self->unk1A0 < 0x399 || !(*keys & 0xf0)) {
+    if (self->boost != 0) {
+        if (self->runSpeed < 0x399 || !(*keys & 0xf0)) {
             *keys |= 2;
         }
     }
-    if (self->unk1AA != 0) {
+    if (self->unk_1aa != 0) {
         *keys |= 0x400;
     }
 }

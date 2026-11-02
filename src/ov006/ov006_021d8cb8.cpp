@@ -1,4 +1,5 @@
 #include "ov006/SlotManager.h"
+#include "ov006/Racer.h"
 
 typedef struct ov006_Party {
     u8 unk0[0x15];
@@ -23,7 +24,6 @@ extern ov006_PriceEntry data_ov006_021eb7c4[];
 
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 void *ActorMgr_GetActor(void *a, u16 id);
-BOOL func_ov006_021ea3e8(void *prop);
 int func_0206e264(ov006_Party *party);
 
 u8 func_ov006_021d8cb8(void) {
@@ -37,7 +37,7 @@ u8 func_ov006_021d8cb8(void) {
     count = 0;
     for (i = 0; i < num; i++) {
         u16 id = func_ov006_021db060(data_ov006_021ec884, i)->actorId;
-        void *prop = data_ov000_021ccd68 != NULL ? ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
+        Ov006Racer *prop = data_ov000_021ccd68 != NULL ? (Ov006Racer *)ActorMgr_GetActor(data_ov000_021ccd68, id) : NULL;
         if (prop != NULL && func_ov006_021ea3e8(prop)) {
             count++;
         }

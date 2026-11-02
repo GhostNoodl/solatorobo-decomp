@@ -21,7 +21,7 @@ src/ov006/ov006_021d54b0.cpp:
     complete
     .text       start:0x021d54b0 end:0x021d5b98
 
-src/ov006/ov006_021eb5c4.c:
+src/ov006/ov006_021eb5c4.cpp:
     complete
     .text       start:0x021eb5c4 end:0x021eb6d8
 

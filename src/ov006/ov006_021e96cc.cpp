@@ -4,55 +4,15 @@
 #include "Main/Effect/Effect.h"
 #include "Main/Gfx/SlidePanel.h"
 #include "Main/Snd/SndMgr.h"
+#include "ov006/Racer.h"
 
-typedef struct ov006_Rot021e96cc {
-    u16 x;
-    u16 y;
-    u16 z;
-} ov006_Rot021e96cc;
-
-typedef struct ov006_Col021e96cc {
-    u8 unk0[0x50];
-    u32 unk50;
-    u8 unk54[0x20];
-    VecFx32 pos;
-    VecFx32 nrm;
-} ov006_Col021e96cc;
-
-typedef struct ov006_Car021e96cc {
-    u8 unk0[0x48];
-    ov006_Col021e96cc *col;
-    u8 unk4C[0x24];
-    VecFx32 pos;
-    VecFx32 unk7C;
-    u8 unk88[0x14];
-    VecFx32 vel;
-    u8 unkA8[4];
-    s8 *unkAC;
-    u8 unkB0[0xec];
-    u16 unk19C_0 : 2;
-    u16 unk19C_2 : 14;
-    u8 unk19E;
-    u8 unk19F;
-    s32 speed;
-    u8 unk1A4[9];
-    u8 unk1AD;
-    ov006_Rot021e96cc look;
-    u8 unk1B4[6];
-    ov006_Rot021e96cc rot;
-    VecFx32 unk1C0;
-    u8 unk1CC[0x28];
-    u8 unk1F4;
-    u8 unk1F5[0x2c];
-    u8 unk221;
-} ov006_Car021e96cc;
 
 extern "C" {
 
 extern char data_ov006_021ec4ad[];
 extern char data_ov006_021ec4e0[];
-void func_ov000_021987b8(ov006_Col021e96cc *col, s32 a, VecFx32 *b, VecFx32 *c);
-void func_ov000_02198e34(ov006_Col021e96cc *col, ov006_Rot021e96cc *out, VecFx32 *v, s32 a);
+void func_ov000_021987b8(ActorSub48 *col, s32 a, VecFx32 *b, Rot16 *c);
+void func_ov000_02198e34(ActorSub48 *col, Rot16 *out, VecFx32 *v, s32 a);
 ov006_Slot *func_ov006_021db060(ov006_SlotManager *self, u32 idx);
 ov006_SlotSub *func_ov006_021dab98(ov006_Slot *self);
 
@@ -70,7 +30,7 @@ static inline void ov006_MidTo(u16 *out, u16 *a, u16 *b) {
     }
 }
 
-static inline void ov006_RotYX(MtxFx33 *m, const ov006_Rot021e96cc *rot) {
+static inline void ov006_RotYX(MtxFx33 *m, const Rot16 *rot) {
     MtxFx33 t;
     BOOL any = FALSE;
     u16 ry;
@@ -100,39 +60,39 @@ static inline void ov006_Approach(VecFx32 *cur, const VecFx32 *tgt, fx32 k) {
     VEC_MultAdd(k, &d, cur, cur);
 }
 
-void func_ov006_021e96cc(ov006_Car021e96cc *self) {
+void func_ov006_021e96cc(Ov006Racer *self) {
     VecFx32 v;
     MtxFx33 m;
     VecFx32 p;
     s32 f;
     s8 kind;
 
-    v.z = MUL(self->speed, 0x3800);
+    v.z = MUL(self->runSpeed, 0x3800);
     v.x = 0;
     v.y = 0;
-    ov006_RotYX(&m, &self->rot);
+    ov006_RotYX(&m, &self->look2);
     MTX_MultVec33(&v, &m, &v);
     ov006_Approach(&self->vel, &v, 0xf33);
     if (self->vel.y <= 1 && self->vel.y >= -1) {
         self->vel.y = 0;
     }
-    VEC_Add(&self->unk1C0, &self->vel, &self->unk1C0);
-    if (self->unk1F4 != 0) {
-        self->unk1F4--;
+    VEC_Add(&self->unk_1c0, &self->vel, &self->unk_1c0);
+    if (self->unk_1f4 != 0) {
+        self->unk_1f4--;
     }
     f = 0;
-    func_ov000_021987b8(self->col, f, &self->unk1C0, &self->unk7C);
-    if (self->col->unk50 == 0) {
+    func_ov000_021987b8(self->hit, f, &self->unk_1c0, &self->rot);
+    if (self->hit->unk_50 == 0) {
         return;
     }
-    if (self->speed < 0x266) {
-        self->speed -= 0xc;
+    if (self->runSpeed < 0x266) {
+        self->runSpeed -= 0xc;
     } else {
-        ov006_Rot021e96cc a;
-        ov006_Rot021e96cc b;
-        kind = self->unkAC[8];
-        func_ov000_02198e34(self->col, &a, &self->vel, 0);
-        func_ov000_02198e34(self->col, &b, &self->vel, 1);
+        Rot16 a;
+        Rot16 b;
+        kind = self->prm->unk_08;
+        func_ov000_02198e34(self->hit, &a, &self->vel, 0);
+        func_ov000_02198e34(self->hit, &b, &self->vel, 1);
         switch (kind) {
         case 0:
             f += 0x148;
@@ -164,45 +124,45 @@ void func_ov006_021e96cc(ov006_Car021e96cc *self) {
             break;
         }
         {
-            u16 dd = a.y - self->rot.y;
+            u16 dd = a.y - self->look2.y;
             if (dd > 0x8000) {
                 dd = -dd;
             }
-            self->speed -= self->speed * dd / 0x8000;
+            self->runSpeed -= self->runSpeed * dd / 0x8000;
         }
-        if (data_ov006_021ec860->unk1C == 0 && self->unk19E != data_ov006_021ec884->unk5) {
-            if ((func_ov006_021dab98(func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5))->unk3 & 3) < (u32)self->unk1AD) {
+        if (data_ov006_021ec860->unk1C == 0 && self->idx != data_ov006_021ec884->unk5) {
+            if ((func_ov006_021dab98(func_ov006_021db060(data_ov006_021ec884, data_ov006_021ec884->unk5))->unk3 & 3) < (u32)self->rank) {
                 f = 0;
             }
         }
         if (f != 0) {
-            self->speed -= MUL(self->speed, f);
+            self->runSpeed -= MUL(self->runSpeed, f);
         }
-        if (self->unk1F4 == 0) {
+        if (self->unk_1f4 == 0) {
             if (data_ov006_021ec884->unk13D == 0) {
-                if (++self->unk221 > 99) {
-                    self->unk221 = 99;
+                if (++self->unk_21e[3] > 99) {
+                    self->unk_21e[3] = 99;
                 }
             }
-            if (self->unk19C_0 & 1) {
+            if (self->unk_19c_0 & 1) {
                 BOOL c = FALSE;
-                if (self->unk19F > data_ov006_021ec884->info->unkB) {
+                if (self->unk_19f > data_ov006_021ec884->info->unkB) {
                     c = TRUE;
                 }
                 if (!c && data_ov006_021ec884->unk13D == 0) {
-                    ov006_Col021e96cc *col = self->col;
-                    s32 nx = col->nrm.x;
-                    s32 ny = col->nrm.y;
-                    s32 nz = col->nrm.z;
-                    p = col->pos;
-                    if ((col->unk50 & 0xf0f0f0) == 0x90b0c0) {
+                    ActorSub48 *col = self->hit;
+                    s32 nx = col->unk_80;
+                    s32 ny = col->unk_84;
+                    s32 nz = col->unk_88;
+                    p = col->unk_74;
+                    if ((col->unk_50 & 0xf0f0f0) == 0x90b0c0) {
                         void *e = Effect3D_Create(data_ov006_021ec4ad, data_ov006_021ec4e0, data_ov006_021ec4e0, &self->pos);
                         if (e != NULL) {
                             ((u8 *)e)[0x28] = 0;
                             VCALL(e, 34, b.x, b.y, 0);
                             VCALL(e, 0c, 0x3ccd);
                         }
-                        if (self->unk19E == data_ov006_021ec884->unk5) {
+                        if (self->idx == data_ov006_021ec884->unk5) {
                             func_02049f44(data_02097e4c, 0x35, &p, 0);
                         }
                     } else {
@@ -210,17 +170,17 @@ void func_ov006_021e96cc(ov006_Car021e96cc *self) {
                         if (e != NULL) {
                             VCALL(e, 34, FX_AcosIdx(ny), FX_Atan2(nx, nz), 0);
                         }
-                        if (self->unk19E == data_ov006_021ec884->unk5) {
+                        if (self->idx == data_ov006_021ec884->unk5) {
                             func_02049f44(data_02097e4c, 0x52, &p, 0);
                         }
                     }
                 }
             }
-            self->unk1F4 = 5;
+            self->unk_1f4 = 5;
         }
     }
-    if (self->speed < 0xcd) {
-        self->speed = 0xcd;
+    if (self->runSpeed < 0xcd) {
+        self->runSpeed = 0xcd;
     }
 }
 

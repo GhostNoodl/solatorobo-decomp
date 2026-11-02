@@ -1,25 +1,12 @@
 #include "ov006/Model.h"
+#include "ov006/Racer.h"
 #include "nitro/fx.h"
-
-typedef struct ov006_Marker021dca94 {
-    void *vtbl;
-    u8 active : 1;
-    u8 unk4_1 : 1;
-    u8 alt : 1;
-    u8 unk4_3 : 5;
-    u8 frame;
-    u8 unk6[0xe];
-    VecFx32 pos;
-    VecFx32 ofs;
-    Model *model;
-} ov006_Marker021dca94;
 
 extern "C" {
 
 void func_02041c18(Model *m, int a);
 
-void func_ov006_021dca94(void *p) {
-    ov006_Marker021dca94 *self = (ov006_Marker021dca94 *)p;
+void func_ov006_021dca94(Ov006Marker *self) {
     VecFx32 v;
     s32 y;
     s32 z;
@@ -27,7 +14,7 @@ void func_ov006_021dca94(void *p) {
     if (!self->active) {
         return;
     }
-    VEC_Add(&self->pos, &self->ofs, &v);
+    VEC_Add(&self->cur, &self->ofs, &v);
     y = v.y >> 12;
     x = v.x & ~0xfff;
     z = v.z;

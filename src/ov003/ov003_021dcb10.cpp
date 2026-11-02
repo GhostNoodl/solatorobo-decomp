@@ -1,29 +1,20 @@
 #include "types.h"
 #include "Main/Sys/FieldState.h"
 #include "ov003/Unit.h"
+#include "ov003/ActEx.h"
 
-typedef struct {
-    u8 unk_00[0x20];
-    u16 unk_20;
-    u8 unk_22[2];
-    u8 unk_24[0x14];
-    void *unk_38;
-    u8 unk_3c[0x90];
-    u16 unk_cc_0 : 3;
-    u16 unk_cc_3 : 1;
-} Ov003Obj24;
+extern "C" {
 
 extern void *data_ov000_021ccd64;
-extern void *func_0203db40(void *p);
-extern void func_ov000_02190a80(void *a, void *b);
+extern void *func_0203db40(PauseNode *p);
+extern void func_ov000_02190a80(Model0218fe1c *a, void *b);
 extern void Heap_Free(void *p);
-extern void *func_ov000_0219429c(void *p);
-extern void func_ov000_0219433c(void *p);
+extern void func_ov000_0219433c(ActorEx *self);
 extern Ov003Unit *Group_FindNode(void *mgr, u16 id);
 
-void func_ov003_021dcb10(Ov003Obj24 *self) {
-    if (self->unk_38 != NULL) {
-        func_ov000_02190a80(self->unk_38, func_0203db40(self->unk_24));
+void func_ov003_021dcb10(ActorEx *self) {
+    if (self->model != NULL) {
+        func_ov000_02190a80(self->model, func_0203db40(&self->pause));
     }
 }
 
@@ -55,18 +46,18 @@ void func_ov003_021dcb54(void) {
 
 }
 
-void *Ov003ActVt_021f7d4c_DtorDelete(void *self) {
+ActorEx *Ov003ActVt_021f7d4c_DtorDelete(ActorEx *self) {
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
 }
 
-void *Ov003ActVt_021f7d4c_Dtor(void *self) {
+ActorEx *Ov003ActVt_021f7d4c_Dtor(ActorEx *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void Ov003ActVt_021f7fac_Init(Ov003Obj24 *self) {
+void Ov003ActVt_021f7fac_Init(ActorEx *self) {
     Ov003Unit *unit;
     func_ov000_0219433c(self);
     unit = Group_FindNode(data_ov000_021ccd64, self->unk_20);
@@ -76,105 +67,45 @@ void Ov003ActVt_021f7fac_Init(Ov003Obj24 *self) {
     self->unk_cc_3 = 0;
 }
 
-typedef struct {
-    u8 unk_00[0xc2];
-    u16 unk_c2_0 : 4;
-    u16 unk_c2_4 : 1;
-    u8 unk_c4[0x14];
-    s32 unk_d8;
-    s32 unk_dc;
-} Ov003GtModel;
-
-typedef struct {
-    u8 unk_00[0x111];
-    u8 unk_111_0 : 2;
-    u8 unk_111_2 : 1;
-} Ov003GtAnim;
-
-typedef struct {
-    u8 unk_00[0x22];
-    u16 unk_22_0 : 1;
-    u16 unk_22_1 : 1;
-} Ov003GtS44;
-
-typedef struct {
-    u16 state;
-} Ov003GtWork;
-
-typedef struct {
-    u8 unk_00;
-    u8 unk_01;
-} Ov003GtB0;
-
-typedef struct {
-    u8 unk_00[0xe];
-    u16 unk_0e;
-    u8 unk_10[8];
-    s16 unk_18;
-    s16 unk_1a;
-    u8 unk_1c[0x1c];
-    Ov003GtModel *model;
-    u8 unk_3c[4];
-    Ov003GtWork *work;
-    Ov003GtS44 *unk_44;
-    u8 unk_48[0x10];
-    void *unk_58;
-    u8 unk_5c[0x14];
-    s32 posX;
-    s32 posY;
-    s32 posZ;
-    u16 rotX;
-    u16 rotY;
-    u16 rotZ;
-    u8 unk_82[0x11];
-    u8 unk_93_0 : 1;
-    u8 unk_93_1 : 3;
-    u8 unk_94[0x1c];
-    Ov003GtB0 *unk_b0;
-    u8 unk_b4[0x18];
-    u16 unk_cc_0 : 1;
-    s16 unk_ce;
-} Ov003Gate;
-
 extern const s16 FX_SinCosTable_[];
 extern char data_ov003_021f803c[];
 extern char data_ov003_021f8041[];
 extern char data_ov003_021f8046[];
 extern char data_ov003_021f804b[];
-extern void func_ov000_02194758(void *self);
+extern void func_ov000_02194758(ActorEx *self);
 extern void HitMesh_SetMtx(void *obj, MtxFx43 *m);
 extern void HitMesh_SetScale(void *obj, s32 a);
 extern void func_0203f920(void *obj);
-extern void func_ov000_02197d80(void *self);
-extern BOOL func_ov000_02190cb0(void *model, const char *name, s32 a, s32 b);
-extern void *func_ov000_02191318(void *model, s32 a);
-extern void func_ov000_02191618(void *model);
-extern Ov003GtAnim *func_ov000_02190a30(void *model, s32 n);
+extern void func_ov000_02197d80(ActorEx *self);
+extern BOOL func_ov000_02190cb0(Model0218fe1c *model, const char *name, s32 a, s32 b);
+extern void *func_ov000_02191318(Model0218fe1c *model, s32 a);
+extern void func_ov000_02191618(Model0218fe1c *model);
+extern AnimCtrl *func_ov000_02190a30(Model0218fe1c *model, s32 n);
 
 #define OV003GT_SIN(a) (FX_SinCosTable_[((a) >> 4) * 2])
 #define OV003GT_COS(a) (FX_SinCosTable_[((a) >> 4) * 2 + 1])
 
-static inline void Ov003GtS44_Clear(Ov003GtS44 *s) {
+static inline void Ov003Gate_ClearPart(ActorSub44 *s) {
     if (s != NULL) {
         s->unk_22_0 = 0;
         s->unk_22_1 = 0;
     }
 }
 
-void Ov003ActVt_021f7fac_Start(Ov003Gate *self) {
+void Ov003ActVt_021f7fac_Start(ActorEx *self) {
     void *obj;
     func_ov000_02194758(self);
-    obj = self->unk_58;
-    if (obj != NULL && (self->unk_0e == 0x460b || self->unk_0e == 0x4625)) {
+    obj = self->hitMesh;
+    if (obj != NULL && (self->kind == 0x460b || self->kind == 0x4625)) {
         MtxFx43 t;
         MtxFx43 m;
         u16 rx;
         u16 ry;
         u16 rz;
         BOOL set = FALSE;
-        ry = self->rotY + 0x8000;
-        rz = self->rotZ;
-        rx = self->rotX;
+        ry = self->rot_y + 0x8000;
+        rz = self->rot_z;
+        rx = self->rot_x;
         MTX_Identity43_(&m);
         if (rz != 0) {
             MTX_RotZ43_(&m, OV003GT_SIN(rz), OV003GT_COS(rz));
@@ -198,12 +129,12 @@ void Ov003ActVt_021f7fac_Start(Ov003Gate *self) {
                 set = TRUE;
             }
         }
-        m._30 = self->posX;
-        m._31 = self->posY;
-        m._32 = self->posZ;
+        m._30 = self->pos.x;
+        m._31 = self->pos.y;
+        m._32 = self->pos.z;
         HitMesh_SetMtx(obj, &m);
         if (data_ov000_021ccd54->unk_ca.c[0] == 9) {
-            HitMesh_SetScale(self->unk_58, 0x1b33);
+            HitMesh_SetScale(self->hitMesh, 0x1b33);
         }
     }
     func_ov000_02197d80(self);
@@ -213,10 +144,10 @@ void Ov003ActVt_021f7fac_Start(Ov003Gate *self) {
             func_ov000_02190cb0(self->model, data_ov003_021f803c, 0x1000, 0);
         }
         self->unk_cc_0 = 0;
-        if (self->unk_58 != NULL) {
-            func_0203f920(self->unk_58);
+        if (self->hitMesh != NULL) {
+            func_0203f920(self->hitMesh);
         }
-        Ov003GtS44_Clear(self->unk_44);
+        Ov003Gate_ClearPart(self->unk_44);
         break;
     case 1:
         if (self->model != NULL) {
@@ -234,28 +165,30 @@ void Ov003ActVt_021f7fac_Start(Ov003Gate *self) {
             func_ov000_02190cb0(self->model, data_ov003_021f804b, 0x1000, 0);
         }
         if (self->unk_1a != 1) {
-            Ov003GtS44_Clear(self->unk_44);
+            Ov003Gate_ClearPart(self->unk_44);
         }
         break;
     }
     if (self->model != NULL) {
-        Ov003GtAnim *a;
+        AnimCtrl *a;
         func_ov000_02191318(self->model, -1);
         {
-            Ov003GtModel *m = self->model;
-            m->unk_d8 = 0;
-            m->unk_dc = 0;
+            Model0218fe1c *m = self->model;
+            m->evScript = NULL;
+            m->evCursor = NULL;
         }
         func_ov000_02191618(self->model);
         a = func_ov000_02190a30(self->model, 2);
         if (a != NULL) {
-            a->unk_111_2 = 1;
+            a->loop = 1;
         }
-        if (self->unk_b0->unk_01 == 1) {
-            self->model->unk_c2_4 = 0;
+        if (self->param->unk_01 == 1) {
+            self->model->boxTest = 0;
         }
     }
-    self->work->state = 0;
+    self->fsm->st = 0;
     self->unk_93_1 = (u8)(u16)self->unk_18;
     self->unk_ce = 2;
 }
+
+} // extern "C"

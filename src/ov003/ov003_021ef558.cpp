@@ -1,5 +1,6 @@
 #include "types.h"
 #include "nitro/fx.h"
+#include "ov000/ObjLayouts.h"
 
 class Ov003VObj {
 public:
@@ -38,7 +39,7 @@ extern void func_ov000_02197d80(void *self);
 extern void func_ov000_0218bed8(void *mgr, s32 a, void *obj);
 extern void func_ov000_02194758(void *self);
 extern void Heap_Free(void *p);
-extern void *func_ov000_0219429c(void *p);
+extern ActorEx *func_ov000_0219429c(ActorEx *self);
 
 void Ov003ActVt_021f9d78_Start(Ov003Obj *self) {
     BOOL keep;
@@ -65,45 +66,45 @@ void Ov003ActVt_021f9d78_Start(Ov003Obj *self) {
     func_ov000_02194758(self);
 }
 
-void *Ov003ActVt_021f9f40_Dtor(void *self) {
+ActorEx *Ov003ActVt_021f9f40_Dtor(ActorEx *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *Ov003ActVt_021f9f40_DtorDelete(void *self) {
-    func_ov000_0219429c(self);
-    Heap_Free(self);
-    return self;
-}
-
-void *Ov003ActVt_021f9ea8_Dtor(void *self) {
-    func_ov000_0219429c(self);
-    return self;
-}
-
-void *Ov003ActVt_021f9ea8_DtorDelete(void *self) {
+ActorEx *Ov003ActVt_021f9f40_DtorDelete(ActorEx *self) {
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
 }
 
-void *Ov003ActVt_021f9ce0_Dtor(void *self) {
+ActorEx *Ov003ActVt_021f9ea8_Dtor(ActorEx *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *Ov003ActVt_021f9ce0_DtorDelete(void *self) {
+ActorEx *Ov003ActVt_021f9ea8_DtorDelete(ActorEx *self) {
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;
 }
 
-void *Ov003ActVt_021f9d78_Dtor(void *self) {
+ActorEx *Ov003ActVt_021f9ce0_Dtor(ActorEx *self) {
     func_ov000_0219429c(self);
     return self;
 }
 
-void *Ov003ActVt_021f9d78_DtorDelete(void *self) {
+ActorEx *Ov003ActVt_021f9ce0_DtorDelete(ActorEx *self) {
+    func_ov000_0219429c(self);
+    Heap_Free(self);
+    return self;
+}
+
+ActorEx *Ov003ActVt_021f9d78_Dtor(ActorEx *self) {
+    func_ov000_0219429c(self);
+    return self;
+}
+
+ActorEx *Ov003ActVt_021f9d78_DtorDelete(ActorEx *self) {
     func_ov000_0219429c(self);
     Heap_Free(self);
     return self;

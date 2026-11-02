@@ -1,150 +1,139 @@
 #include "ov006/Tasks.h"
 #include "nitro/fx.h"
 
-#define FIELD(p, off, T) (*(T *)((u8 *)(p) + (off)))
-
-typedef struct {
-    u8 b0 : 1;
-    u8 rest : 7;
-} Bits8_6740;
-
-typedef struct {
-    u16 b0 : 1;
-    u16 rest : 15;
-} Bits16_6740;
-
-typedef struct {
-    s32 x;
-    s32 y;
-    s32 z;
-    u8 pad[4];
-} Node6740;
+#include "ov006/Racer.h"
 
 extern "C" {
 
 void *func_0206fef8(u16 id);
-void *func_ov000_0218fe1c(void *p);
-BOOL func_ov000_0218ffdc(void *p, void *a, int b, int c);
-s32 **func_ov000_02190a30(void *p, int idx);
-void func_ov000_02191920(void *p, int a, s32 b, int c);
-void *func_ov000_021985e8(void *p);
-void func_ov000_02198c8c(void *p, u16 id);
+Model0218fe1c *func_ov000_0218fe1c(void *p);
+BOOL func_ov000_0218ffdc(Model0218fe1c *p, void *a, int b, int c);
+AnimCtrl *func_ov000_02190a30(Model0218fe1c *p, int idx);
+void func_ov000_02191920(Model0218fe1c *p, int a, s32 b, int c);
+ActorSub48 *func_ov000_021985e8(void *p);
+void func_ov000_02198c8c(ActorSub48 *p, u16 id);
 void HitSphere_Link(void *p);
-void *func_ov000_021984c8(void *p);
-void *History_Init(void *p);
-void *Ov006Vt_021ec28c_Ctor(void *p);
-void func_ov006_021dc8f8(void *p);
-void func_ov006_021dcc9c(void *p, int idx, u8 flag);
+ActorSub44 *func_ov000_021984c8(void *p);
+ActorSub40 *History_Init(void *p);
 
-void Ov006ActVt_021ec4f4_Start(u8 *self) {
+void Ov006ActVt_021ec4f4_Start(Ov006Racer *self) {
     u8 *info;
-    void *p;
     s32 v;
-    s32 **a;
+    AnimCtrl *a;
     ov006_Slot *slot;
-    slot = func_ov006_021db060(data_ov006_021ec884, self[0x19e]);
-    FIELD(self, 0x16, Bits8_6740).b0 = 1;
-    info = (u8 *)func_0206fef8(FIELD(self, 0xe, u16));
-    FIELD(self, 0x64, s32) = FIELD(info, 0x14, s16) << 4;
-    FIELD(self, 0x68, s32) = FIELD(info, 0x16, s16) << 4;
-    FIELD(self, 0x6c, s32) = FIELD(self, 0x68, s32) >> 1;
-    p = Heap_Alloc(0xe8);
-    if (p != NULL) {
-        p = func_ov000_0218fe1c(p);
-    }
-    FIELD(self, 0x38, void *) = p;
-    func_ov000_0218ffdc(p, FIELD(self, 0x34, void *), 0, 1);
-    FIELD(FIELD(self, 0x38, u8 *), 0xb4, u16) = FIELD(self, 0xc, u16);
+    slot = func_ov006_021db060(data_ov006_021ec884, self->idx);
+    self->flags_0 = 1;
+    info = (u8 *)func_0206fef8(self->kind);
+    self->radius = *(s16 *)(info + 0x14) << 4;
+    self->height = *(s16 *)(info + 0x16) << 4;
+    self->centerY = self->height >> 1;
     {
-        a = func_ov000_02190a30(FIELD(self, 0x38, void *), 3);
+        Model0218fe1c *p = (Model0218fe1c *)Heap_Alloc(sizeof(Model0218fe1c));
+        if (p != NULL) {
+            p = func_ov000_0218fe1c(p);
+        }
+        self->model = p;
+        func_ov000_0218ffdc(p, self->unk_34, 0, 1);
+    }
+    self->model->actor_id = self->id;
+    {
+        a = func_ov000_02190a30(self->model, 3);
         if (a != NULL) {
-            FIELD(FIELD(self, 0x38, u8 *), 0xc2, u16) |= 0x40;
-            func_ov000_02191920(FIELD(self, 0x38, void *), 0, 0x1000, 0);
-            if (*a != NULL) {
-                **a = 0;
+            self->model->unk_c2 |= 0x40;
+            func_ov000_02191920(self->model, 0, 0x1000, 0);
+            if (a->cur != NULL) {
+                a->cur->frame = 0;
             }
-            FIELD(a, 0x111, u8) |= 8;
+            a->paused = 1;
         }
     }
-    func_ov000_0218ffdc(self + 0xb0, FIELD(self, 0x34, void *), 1, 0);
-    FIELD(self, 0x164, u16) = FIELD(self, 0xc, u16);
-    v = FIELD(self, 0x64, s32);
-    p = Heap_Alloc(0x9c);
-    if (p != NULL) {
-        p = func_ov000_021985e8(p);
-    }
-    FIELD(self, 0x48, void *) = p;
-    func_ov000_02198c8c(p, FIELD(self, 0xc, u16));
-    FIELD(FIELD(self, 0x48, u8 *), 0x38, s32) = v;
+    func_ov000_0218ffdc(&self->mdl, self->unk_34, 1, 0);
+    self->mdl.actor_id = self->id;
+    v = self->radius;
     {
-        u8 *q = FIELD(self, 0x48, u8 *);
-        FIELD(q, 0x9a, Bits16_6740).b0 = 1;
-        FIELD(q, 0x9a, u16) |= 8;
+        ActorSub48 *p = (ActorSub48 *)Heap_Alloc(sizeof(ActorSub48));
+        if (p != NULL) {
+            p = func_ov000_021985e8(p);
+        }
+        self->hit = p;
+        func_ov000_02198c8c(p, self->id);
+    }
+    self->hit->radius = v;
+    {
+        ActorSub48 *q = self->hit;
+        q->unk_9a_0 = 1;
+        q->unk_9a |= 8;
         HitSphere_Link(q);
     }
-    FIELD(FIELD(self, 0x48, u8 *), 0x30, u32) = 0xe0000000;
-    FIELD(FIELD(self, 0x48, u8 *), 0x28, s32) = 0x80;
-    FIELD(FIELD(self, 0x48, u8 *), 0x9a, u16) |= 0x200;
-    p = Heap_Alloc(0x24);
-    if (p != NULL) {
-        p = func_ov000_021984c8(p);
-    }
-    FIELD(self, 0x44, void *) = p;
-    FIELD(p, 0x20, u16) = FIELD(self, 0xc, u16);
-    FIELD(FIELD(self, 0x44, u8 *), 0x1c, s32) = v;
+    self->hit->unk_30 = 0xe0000000;
+    self->hit->unk_28 = 0x80;
+    self->hit->unk_9a |= 0x200;
     {
-        u8 *q = FIELD(self, 0x44, u8 *);
-        FIELD(q, 0x22, Bits16_6740).b0 = 1;
-        FIELD(q, 0x22, u16) |= 2;
+        ActorSub44 *p = (ActorSub44 *)Heap_Alloc(sizeof(ActorSub44));
+        if (p != NULL) {
+            p = func_ov000_021984c8(p);
+        }
+        self->unk_44 = p;
+        p->unk_20 = self->id;
     }
-    p = Heap_Alloc(0x14);
-    if (p != NULL) {
-        p = History_Init(p);
-    }
-    FIELD(self, 0x40, void *) = p;
-    self[0x15] = 1;
-    p = Heap_Alloc(0x34);
-    if (p != NULL) {
-        p = Ov006Vt_021ec28c_Ctor(p);
-    }
-    FIELD(self, 0x198, void *) = p;
-    func_ov006_021dc8f8(p);
-    func_ov006_021dcc9c(FIELD(self, 0x198, void *), self[0x19e], slot->type == 0);
+    self->unk_44->unk_1c = v;
     {
-        u8 *q = FIELD(self, 0x198, u8 *);
-        s32 z = FIELD(q, 0x28, s32);
-        FIELD(q, 0x20, s32) = 0;
-        FIELD(q, 0x24, s32) = -0x6000;
-        FIELD(q, 0x28, s32) = z;
+        ActorSub44 *q = self->unk_44;
+        q->unk_22_0 = 1;
+        q->unk_22 |= 2;
     }
-    FIELD(self, 0x1ae, u16) = FIELD(self, 0x7c, u16);
-    FIELD(self, 0x1b0, u16) = FIELD(self, 0x7e, u16);
-    FIELD(self, 0x1b2, u16) = FIELD(self, 0x80, u16);
-    FIELD(self, 0x1ba, u16) = FIELD(self, 0x7c, u16);
-    FIELD(self, 0x1bc, u16) = FIELD(self, 0x7e, u16);
-    FIELD(self, 0x1be, u16) = FIELD(self, 0x80, u16);
-    FIELD(self, 0x20c, u16) = 0;
-    FIELD(self, 0x20e, u16) = 0;
-    FIELD(self, 0x210, u16) = 0;
     {
-        Node6740 *b;
-        Node6740 *a;
-        a = FIELD(self, 0x200, Node6740 *) + self[0x209];
-        b = FIELD(self, 0x200, Node6740 *) + self[0x20a];
+        ActorSub40 *p = (ActorSub40 *)Heap_Alloc(sizeof(ActorSub40));
+        if (p != NULL) {
+            p = History_Init(p);
+        }
+        self->fsm = p;
+    }
+    self->mode = 1;
+    {
+        Ov006Marker *p = (Ov006Marker *)Heap_Alloc(sizeof(Ov006Marker));
+        if (p != NULL) {
+            p = Ov006Vt_021ec28c_Ctor(p);
+        }
+        self->marker = p;
+        func_ov006_021dc8f8(p);
+    }
+    func_ov006_021dcc9c(self->marker, self->idx, slot->type == 0);
+    {
+        Ov006Marker *q = self->marker;
+        s32 z = q->ofs.z;
+        q->ofs.x = 0;
+        q->ofs.y = -0x6000;
+        q->ofs.z = z;
+    }
+    self->look.x = self->rot_x;
+    self->look.y = self->rot_y;
+    self->look.z = self->rot_z;
+    self->look2.x = self->rot_x;
+    self->look2.y = self->rot_y;
+    self->look2.z = self->rot_z;
+    self->courseRot.x = 0;
+    self->courseRot.y = 0;
+    self->courseRot.z = 0;
+    {
+        Ov006RacerPt *b;
+        Ov006RacerPt *a;
+        a = self->pts + self->lastPt;
+        b = self->pts + self->nextPt;
         if (a != NULL && b != NULL) {
             s32 dx;
             s32 dz;
             s64 sq;
-            FIELD(self, 0x20e, u16) = FX_Atan2(b->x - a->x, b->z - a->z);
-            dx = a->x - b->x;
-            dz = a->z - b->z;
+            self->courseRot.y = FX_Atan2(b->pos.x - a->pos.x, b->pos.z - a->pos.z);
+            dx = a->pos.x - b->pos.x;
+            dz = a->pos.z - b->pos.z;
             sq = (s64)dx * dx;
             sq += (s64)dz * dz;
             REG_SQRTCNT = 1;
             REG_SQRT_PARAM = (u64)(sq * 4);
             while (REG_SQRTCNT & 0x8000) {
             }
-            FIELD(self, 0x20c, u16) = -FX_Atan2(b->y - a->y, (s32)(REG_SQRT_RESULT + 1) >> 1);
+            self->courseRot.x = -FX_Atan2(b->pos.y - a->pos.y, (s32)(REG_SQRT_RESULT + 1) >> 1);
         }
     }
 }

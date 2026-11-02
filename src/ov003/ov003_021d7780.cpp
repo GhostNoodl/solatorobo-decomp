@@ -11,23 +11,23 @@ extern void *Heap_Alloc(u32 size);
 extern void Heap_Free(void *p);
 extern void *ActorMgr_GetActor(void *mgr, u16 id);
 
-void *Ov003ActVt_021f7c0c_Dtor(void *self) {
+Ov003Actor *Ov003ActVt_021f7c0c_Dtor(Ov003Actor *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-void *Ov003ActVt_021f7c0c_DtorDelete(void *self) {
+Ov003Actor *Ov003ActVt_021f7c0c_DtorDelete(Ov003Actor *self) {
     func_ov003_021d0edc(self);
     Heap_Free(self);
     return self;
 }
 
-void *Ov003ActVt_021f7b60_Dtor(void *self) {
+Ov003Actor *Ov003ActVt_021f7b60_Dtor(Ov003Actor *self) {
     func_ov003_021d0edc(self);
     return self;
 }
 
-void *Ov003ActVt_021f7b60_DtorDelete(void *self) {
+Ov003Actor *Ov003ActVt_021f7b60_DtorDelete(Ov003Actor *self) {
     func_ov003_021d0edc(self);
     Heap_Free(self);
     return self;

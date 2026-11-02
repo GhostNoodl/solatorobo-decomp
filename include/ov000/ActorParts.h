@@ -93,7 +93,7 @@ typedef struct ActorSub48 {
     u32 unk_58;
     VecFx32 offset;
     VecFx32 check;
-    u8 unk_74[0xc];
+    VecFx32 unk_74; // contact point of the last map hit (func_ov000_021987b8); unk_80..88: its normal
     s32 unk_80;
     s32 unk_84;
     s32 unk_88;

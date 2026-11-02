@@ -4,91 +4,52 @@
 #include "Main/Effect/Effect.h"
 #include "Main/Gfx/SlidePanel.h"
 #include "Main/Snd/SndMgr.h"
+#include "ov006/Racer.h"
 
-typedef struct ov006_State021e8408 {
-    u16 state;
-} ov006_State021e8408;
-
-typedef struct ov006_Body021e8408 {
-    u8 unk0[0x22];
-    u16 unk22_0 : 1;
-    u16 unk22_1 : 1;
-    u16 unk22_2 : 14;
-} ov006_Body021e8408;
-
-typedef struct ov006_Prop021e8408 {
-    u8 unk0[0x38];
-    void *unk38;
-    u8 unk3C[4];
-    ov006_State021e8408 *st;
-    ov006_Body021e8408 *body;
-    u8 unk48[0x28];
-    VecFx32 pos;
-    u16 rotX;
-    u16 rotY;
-    u16 rotZ;
-    u8 unk82[0x11a];
-    u16 unk19C_0 : 2;
-    u16 unk19C_2 : 4;
-    u16 unk19C_6 : 10;
-    u8 unk19E;
-    u8 unk19F;
-    s32 unk1A0;
-    u8 unk1A4[0xa];
-    u16 unk1AE;
-    u16 unk1B0;
-    u8 unk1B2[8];
-    u16 unk1BA;
-    u16 unk1BC;
-    u8 unk1BE[0x22];
-    int unk1E0;
-    u8 unk1E4[0x11];
-    u8 unk1F5;
-} ov006_Prop021e8408;
 
 extern "C" {
 
 
 void func_ov000_0218996c(u8 a, u8 b);
-BOOL func_ov000_02198360(void *a, s32 b, s32 c);
+BOOL func_ov000_02198360(ActorSub40 *a, s32 b, s32 c);
 void func_ov000_021911c8(void *a, s32 b);
 s32 Rand_PlusMinus(s32 range);
 u16 func_01ffc128(u16 target, u16 cur, s32 rate, u32 minStep, u16 maxStep);
-void func_ov006_021e96cc(ov006_Prop021e8408 *self);
+void func_ov006_021e96cc(Ov006Racer *self);
 
-void func_ov006_021e8408(ov006_Prop021e8408 *self) {
-    self->body->unk22_1 = 0;
-    switch (self->st->state) {
+void func_ov006_021e8408(Ov006Racer *self) {
+    self->unk_44->unk_22_1 = 0;
+    switch (self->fsm->st) {
     case 0: {
         EffectObj *eff;
-        self->unk1A0 >>= 1;
-        self->unk19C_2 = 0;
+        self->runSpeed >>= 1;
+        self->turnMode = 0;
         eff = func_02065f88(0x322, &self->pos);
         if (eff != NULL) {
-            EffectObj *old = func_020657b0(data_0214a420, self->unk1E0);
+            EffectObj *old = func_020657b0(data_0214a420, self->unk_1e0);
             if (old != NULL) {
                 EffectObj_StopLoop(old);
                 old->state = 4;
             }
-            self->unk1E0 = eff->id;
+            self->unk_1e0 = eff->id;
             eff->speed = 0x1800;
         }
         func_02049f44(data_02097e4c, 0x79, &self->pos, 0);
-        if (self->unk19E == data_ov006_021ec884->unk5) {
-            func_ov000_0218996c(8, (u8)(self->unk1F5 - 10));
+        if (self->idx == data_ov006_021ec884->unk5) {
+            func_ov000_0218996c(8, (u8)(self->unk_1f5 - 10));
         }
-        self->st->state++;
+        self->fsm->st++;
         break;
     }
     case 1:
-        if (self->unk1F5 <= 10) {
-            func_ov000_02198360(self->st, 2, 0);
+        if (self->unk_1f5 <= 10) {
+            func_ov000_02198360(self->fsm, 2, 0);
         }
-        self->unk1A0 -= 0x28;
-        if (self->unk1A0 < 0xcd) {
-            self->unk1A0 = 0xcd;
+        self->runSpeed -= 0x28;
+        if (self->runSpeed < 0xcd) {
+            self->runSpeed = 0xcd;
         }
-        if (self->unk1F5 % 25 == 0) {
+        if (self->unk_1f5 % 25 == 0) {
             VecFx32 at;
             EffectObj *eff;
             at = self->pos;
@@ -97,19 +58,19 @@ void func_ov006_021e8408(ov006_Prop021e8408 *self) {
             eff = func_02065f88(0x325, &at);
             if (eff != NULL) {
                 ((VObj *)eff)->vfunc_0c(0xc00);
-                ((VObj *)eff)->vfunc_30(&self->rotX);
+                ((VObj *)eff)->vfunc_30(&self->rot);
             }
         }
         break;
     }
-    self->rotX = func_01ffc128(0, self->rotX, 0x200, 1, 0x8000);
-    self->rotZ = func_01ffc128(0, self->rotZ, 0x200, 1, 0x8000);
-    self->unk1AE = func_01ffc128(self->rotX, self->unk1AE, 0x466, 1, 0x8000);
-    self->unk1BA = func_01ffc128(self->rotX, self->unk1BA, 0x466, 1, 0x8000);
-    self->unk1B0 = func_01ffc128(self->unk1BC, self->unk1B0, 0x466, 1, 0x8000);
-    self->rotY = func_01ffc128(self->unk1BC, self->rotY, 0x466, 1, 0x8000);
+    self->rot.x = func_01ffc128(0, self->rot.x, 0x200, 1, 0x8000);
+    self->rot.z = func_01ffc128(0, self->rot.z, 0x200, 1, 0x8000);
+    self->look.x = func_01ffc128(self->rot.x, self->look.x, 0x466, 1, 0x8000);
+    self->look2.x = func_01ffc128(self->rot.x, self->look2.x, 0x466, 1, 0x8000);
+    self->look.y = func_01ffc128(self->look2.y, self->look.y, 0x466, 1, 0x8000);
+    self->rot.y = func_01ffc128(self->look2.y, self->rot.y, 0x466, 1, 0x8000);
     func_ov006_021e96cc(self);
-    func_ov000_021911c8(self->unk38, (s16)(self->unk1A0 + 0x333));
+    func_ov000_021911c8(self->model, (s16)(self->runSpeed + 0x333));
 }
 
 }

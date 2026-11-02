@@ -6,6 +6,8 @@
 #include "Main/Gfx/SlidePanel.h"
 #include "Main/Sys/Pad.h"
 #include "Main/Res/StageCmd.h"
+#include "Main/Gfx/Camera.h"
+#include "ov000/Model0218fe1c.h"
 
 /* Holds a message box object built by func_ov000_02163224 (vtable data_ov006_021ebc70, 0x2c bytes). */
 typedef struct ov006_MsgBox {
@@ -119,7 +121,6 @@ typedef struct ov006_Model60 {
     char unk4C[0x20];
     char unk6C[0x20];
 } ov006_Model60;
-typedef struct ov006_Model64 ov006_Model64;
 typedef struct ov006_Obj58 ov006_Obj58;
 typedef struct ov006_Obj13C ov006_Obj13C;
 
@@ -142,7 +143,8 @@ typedef struct ov006_TaskD37 {
     ov006_TaskHead head;
     u8 step;
     u8 unk3D;
-    u8 unk3E[6];
+    u8 unk3E[2];
+    int unk40; // written by the unk5C window's decide callback (its owner points here)
     u8 unk44;
     u8 unk45;
     u16 unk46;
@@ -155,15 +157,15 @@ typedef struct ov006_TaskD37 {
     ov006_Obj58 *unk58;
     ov006_Window *unk5C;
     ov006_Model60 *unk60;
-    ov006_Model64 *unk64;
+    Model0218fe1c *unk64;
     ov006_Model60 *unk68;
-    ov006_Model64 *unk6C;
+    Model0218fe1c *unk6C;
     ov006_Model60 *unk70;
     ov006_Anm74 *anm;
     u8 animLoop;
     u8 unk79;
     s16 animSpeed;
-    u8 cam[0xbc];
+    Camera cam;
     ov006_Unk68 *unk138;
     ov006_Obj13C *unk13C;
 } ov006_TaskD37;
