@@ -5,7 +5,6 @@ extern "C" {
 BOOL func_ov000_02191120(void *a);
 void func_ov000_02191780(void *a);
 s32 **func_ov000_02190a30(void *a, int b);
-void func_ov002_021d9c04(void *self);
 
 typedef struct Key021db9e8 {
     s16 t;
@@ -49,7 +48,7 @@ static inline bool ov002_Ready(u8 *m) {
 void func_ov002_021db9e8(Obj021eff50 *self) {
     switch (self->unk_14) {
     case 0:
-        if (self->unk_34 <= 0 || ov002_Ready(FIELD(((u8 *)self->unk_04), 0x4, u8 *))) {
+        if (self->unk_34 <= 0 || ov002_Ready(FIELD(((u8 *)self->board), 0x4, u8 *))) {
             self->unk_34 = 20;
             self->unk_14++;
         } else {
@@ -91,8 +90,8 @@ void func_ov002_021db9e8(Obj021eff50 *self) {
         if (self->unk_18 == NULL) {
             self->unk_08 = 0;
             self->unk_14 = 40;
-            FIELD(self->unk_20, 0xc, u32) |= 2;
-            FIELD(self->unk_24, 0xc, u32) |= 2;
+            self->unk_20->flags |= 2;
+            self->unk_24->flags |= 2;
         } else {
             self->unk_18->vfunc_0c(self);
         }
@@ -110,7 +109,7 @@ void func_ov002_021db9e8(Obj021eff50 *self) {
         }
         {
             Key021db9e8 *k;
-            u8 *m = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
+            u8 *m = FIELD(((u8 *)self->board), 0x4, u8 *);
             s32 x;
             func_ov000_02191780(FIELD(m, 0x10, void *));
             k = data_ov002_021eeffc;
@@ -131,7 +130,7 @@ void func_ov002_021db9e8(Obj021eff50 *self) {
             }
             FIELD(m, 0x64, Key021db9e8 *) = k;
             m[0x5d] = 0;
-            func_ov002_021d9c04(self->unk_04);
+            func_ov002_021d9c04(self->board);
             self->unk_14 = 50;
         }
         break;

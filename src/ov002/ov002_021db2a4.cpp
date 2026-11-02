@@ -24,7 +24,7 @@ static inline u8 *ov002_Menu_GetSel(u8 *m) {
 static inline void ov002_Menu_Close(void *self) {
     FIELD(FIELD(self, 0xc, void *), 0xc, u32) |= 2;
     FIELD(FIELD(self, 0x10, void *), 0xc, u32) |= 2;
-    *(u8 *)data_ov002_021f0f90 = FIELD(self, 0x14, s32);
+    data_ov002_021f0f90.unk_00 = FIELD(self, 0x14, s32);
     FIELD(self, 0x18, s32) = 2;
     if (FIELD(self, 0x8, s32) == 2 || FIELD(self, 0x8, s32) == 3) {
         func_0203cc58(0xa000, 2, -1);

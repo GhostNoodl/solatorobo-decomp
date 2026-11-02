@@ -45,7 +45,7 @@ void *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
     p->posX = 0x73;
     p->posY = 0x19;
     p->posZ = -0x199a;
-    counts = FIELD(((u8 *)self->unk_04), 0x4, u8 *) + 8;
+    counts = self->owner->board->unk_08;
     for (i = 0; i < 100; i++) {
         id = i | 0x2000;
         u8 t = func_0206ede8(id)[0];
@@ -78,12 +78,12 @@ void *func_ov002_021def98(Obj021efef0 *self, u32 kind) {
     {
         s32 k = self->unk_34;
         void *r;
-        u8 *w;
+        Obj021eff50 *w;
         func_ov002_021e34fc(p, data_ov002_021eef8c[k].fn);
         r = MsgRes_GetString(data_02149ef8, data_ov002_021eef90[k].id);
-        w = ((u8 *)self->unk_04);
-        func_ov000_0215bb14(FIELD(w, 0x20, void *), r);
-        FIELD(w, 0x20, VObj *)->vfunc_70();
+        w = self->owner;
+        func_ov000_0215bb14(((void *)w->unk_20), r);
+        w->unk_20->vfunc_70();
     }
     return p;
 }

@@ -2,8 +2,6 @@
 
 extern "C" {
 
-void func_ov002_021d9444(void *self);
-void func_ov002_021d6e48(void *self);
 void *func_ov000_0218e9c4(void *p);
 extern char data_ov002_021efd98[];
 extern char data_ov002_021efda3[];
@@ -37,68 +35,68 @@ static inline void ov002_AnimSetC(u8 *a, char *name, char *file) {
     a[3] |= 0x20;
 }
 
-void func_ov002_021da5c0(void *self) {
-    void *p;
-    void *q;
+void func_ov002_021da5c0(Obj021efe7c *self) {
+    Obj021efe6c *p;
+    Obj021efe4c *q;
     func_020359d0(data_ov002_021efdf6, 7, 0);
-    p = Heap_Alloc(0xc8);
+    p = (Obj021efe6c *)Heap_Alloc(sizeof(Obj021efe6c));
     if (p != NULL) {
         *(VFunc **)p = data_ov002_021efe6c;
         func_ov002_021d9444(p);
     }
-    FIELD(self, 0x4, void *) = p;
+    self->board = p;
     func_ov002_021d9504(p);
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(FIELD(p, 0x4, VObj *));
+        DELETE_VOBJ(p->field);
         HEAP_POP(saved);
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        if (FIELD(p, 0x8c, void *) != NULL) {
-            Heap_Free(FIELD(p, 0x8c, void *));
-            FIELD(p, 0x8c, void *) = NULL;
+        if (p->cam != NULL) {
+            Heap_Free(p->cam);
+            p->cam = NULL;
         }
         HEAP_POP(saved);
     }
     func_ov002_021d9444(p);
-    q = Heap_Alloc(0x70);
+    q = (Obj021efe4c *)Heap_Alloc(sizeof(Obj021efe4c));
     if (q != NULL) {
         *(VFunc **)q = data_ov002_021efe4c;
         func_ov002_021d6e48(q);
     }
-    FIELD(p, 0x4, void *) = q;
-    FIELD(q, 0x4, void *) = ov002_NewAnim();
+    p->field = q;
+    q->unk_04 = ov002_NewAnim();
     {
         char *file = data_ov002_021efd98;
         char *nm = data_ov002_021efda3;
         if (nm) {
-            ov002_AnimSetC(FIELD(q, 0x4, u8 *), nm, file);
+            ov002_AnimSetC((u8 *)q->unk_04, nm, file);
         }
     }
-    FIELD(FIELD(q, 0x4, u8 *), 0x0, u16) = 0;
-    FIELD(q, 0xc, void *) = ov002_NewAnim();
+    FIELD((u8 *)q->unk_04, 0x0, u16) = 0;
+    q->unk_0c = ov002_NewAnim();
     {
         char *file = data_ov002_021efdb3;
         char *nm = data_ov002_021efdba;
         if (nm) {
-            ov002_AnimSetA(FIELD(q, 0xc, u8 *), nm, file);
-            ov002_AnimSetB(FIELD(q, 0xc, u8 *), nm, file);
+            ov002_AnimSetA((u8 *)q->unk_0c, nm, file);
+            ov002_AnimSetB((u8 *)q->unk_0c, nm, file);
         }
     }
-    FIELD(FIELD(q, 0xc, u8 *), 0x0, u16) = 0;
-    FIELD(q, 0x14, void *) = ov002_NewAnim();
+    FIELD((u8 *)q->unk_0c, 0x0, u16) = 0;
+    q->unk_14 = ov002_NewAnim();
     {
         char *file = data_ov002_021efdca;
         char *nm = data_ov002_021efdba;
         if (nm) {
-            ov002_AnimSetA(FIELD(q, 0x14, u8 *), nm, file);
-            ov002_AnimSetB(FIELD(q, 0x14, u8 *), nm, file);
+            ov002_AnimSetA((u8 *)q->unk_14, nm, file);
+            ov002_AnimSetB((u8 *)q->unk_14, nm, file);
         }
     }
-    FIELD(FIELD(q, 0x14, u8 *), 0x0, u16) = 0;
+    FIELD((u8 *)q->unk_14, 0x0, u16) = 0;
 }
 
 }

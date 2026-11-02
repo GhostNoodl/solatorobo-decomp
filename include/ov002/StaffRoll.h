@@ -4,6 +4,7 @@
 #include "types.h"
 #include "ov000/VObj.h"
 #include "Main/Gfx/Model.h"
+#include "ov002/ObjLayouts.h"
 
 // The staff roll: a script file of timed entries, one node object per entry, all driven by the
 // clock of the staff object (data_ov002_021f0fa4).
@@ -94,39 +95,6 @@ struct Ov002StaffModel : public Ov002StaffNode {
 // Photo node (0x50 bytes, vtable data_ov002_021f0ebc over the model node's; entry kind 6).
 struct Ov002StaffPhoto : public Ov002StaffModel {
     /* 0x4c */ void *photo; // built by func_ov000_0214b6d8 (0x3c bytes)
-};
-
-// Text window as the staff roll uses it (vtable data_0208ba70, func_0204c7d0; 0xb8 bytes). It is
-// the object TextWin (Main/Gfx/TextWin.h) describes; this view keeps width and height signed, as
-// Text_Measure writes them and func_ov002_021ed270 halves them.
-struct Ov002Text2 : public VObj {
-    union {
-        u32 flags;
-        struct {
-            u32 unk_4_0 : 8;
-            u32 alpha : 5;
-            u32 polyId : 8;
-            u32 unk_4_21 : 11;
-        };
-    };
-    u8 pad08[0x1c];
-    s32 str;
-    s32 font;
-    s32 unk_2c;
-    u8 pad30[0x4];
-    s16 unk_34;
-    u8 pad36;
-    s8 unk_37;
-    s32 spacing;
-    u8 pad3c[0x8];
-    s32 width;
-    s32 height;
-    s32 unk_4c;
-    u8 pad50[0x20];
-    s32 posZ;
-    u16 color0;
-    u16 color1;
-    s32 unk_78;
 };
 
 typedef struct Ov002StaffLine {

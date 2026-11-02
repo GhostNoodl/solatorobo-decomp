@@ -179,7 +179,7 @@ BOOL func_ov002_021d6cf0(void *self) {
     return r;
 }
 
-void *Ov002Vt_021efb14_Dtor(void *self) {
+Ov002Hud *Ov002Vt_021efb14_Dtor(Ov002Hud *self) {
     *(VFunc **)self = data_ov002_021efb14;
     func_ov002_021e1d28(self);
     return self;
@@ -199,29 +199,29 @@ VObj *Ov002Vt_021efca4_Dtor(VObj *self) {
     return self;
 }
 
-void func_ov002_021d6e48(void *self) {
-    FIELD(self, 0x18, s32) = 0;
-    FIELD(self, 0x1c, s32) = 0;
-    FIELD(self, 0x20, s32) = 0;
-    FIELD(self, 0x24, s16) = 0;
-    FIELD(self, 0x26, s16) = 0;
-    FIELD(self, 0x28, s16) = 0;
+void func_ov002_021d6e48(Obj021efe4c *self) {
+    self->unk_18 = 0;
+    self->unk_1c = 0;
+    self->unk_20 = 0;
+    self->unk_24 = 0;
+    self->unk_26 = 0;
+    self->unk_28 = 0;
     MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x2c));
-    FIELD(self, 0x50, s32) = 0x1000;
-    FIELD(self, 0x54, s32) = 0x1000;
-    FIELD(self, 0x58, s32) = 0x1000;
-    FIELD(self, 0x5c, u8) = 0;
-    FIELD(self, 0x5d, u8) = 0;
+    self->unk_50 = 0x1000;
+    self->unk_54 = 0x1000;
+    self->unk_58 = 0x1000;
+    self->unk_5c = 0;
+    self->unk_5d = 0;
     MI_CpuFill8((u8 *)self + 0x6c, 0, 4);
-    FIELD(self, 0x60, s32) = 0;
-    FIELD(self, 0x64, s32) = 0;
-    FIELD(self, 0x68, s16) = 0;
-    FIELD(self, 0x6c, s32) = 0;
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, s32) = 0;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x14, s32) = 0;
+    self->unk_60 = 0;
+    self->unk_64 = 0;
+    self->unk_68 = 0;
+    self->map = NULL;
+    self->unk_04 = NULL;
+    self->unk_08 = NULL;
+    self->unk_0c = NULL;
+    self->unk_10 = NULL;
+    self->unk_14 = NULL;
 }
 
 static inline void func_ov002_021d6ec4_release(void *obj) {
@@ -229,9 +229,9 @@ static inline void func_ov002_021d6ec4_release(void *obj) {
     NNS_G3dReleaseMdlSet(NNS_G3dGetMdlSet((NNSG3dResFileHeader *)(res != NULL ? *res : NULL)));
 }
 
-void func_ov002_021d6ec4(void *self) {
-    if (FIELD(self, 0x8, void *) != NULL) {
-        func_ov002_021d6ec4_release(FIELD(self, 0x8, void *));
+void func_ov002_021d6ec4(Obj021efe4c *self) {
+    if (self->unk_08 != NULL) {
+        func_ov002_021d6ec4_release(self->unk_08);
     }
     {
         void *saved;
@@ -245,8 +245,8 @@ void func_ov002_021d6ec4(void *self) {
         DELETE_WITH(FIELD(self, 0xc, void *), func_ov000_0218ea20);
         HEAP_POP(saved);
     }
-    if (FIELD(self, 0x10, void *) != NULL) {
-        func_ov002_021d6ec4_release(FIELD(self, 0x10, void *));
+    if (self->unk_10 != NULL) {
+        func_ov002_021d6ec4_release(self->unk_10);
     }
     {
         void *saved;

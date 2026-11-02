@@ -10,34 +10,34 @@ void func_ov002_021dd29c(Obj021eff10 *self);
 void func_ov002_021dd434(Obj021eff10 *self);
 void func_ov002_021dd9dc(Obj021eff10 *self);
 
-static inline void ov002_Anim_Tick(void *a) {
-    s32 v = FIELD(a, 0x30, s32);
-    if (FIELD(a, 0x24, s32 *) != NULL) {
-        *FIELD(a, 0x24, s32 *) = v;
+static inline void ov002_Anim_Tick(Ov002Mdl021efe3c *mdl) {
+    s32 v = mdl->frame;
+    if (mdl->anm[0] != NULL) {
+        mdl->anm[0]->frame = v;
     }
-    if (FIELD(a, 0x28, s32 *) != NULL) {
-        *FIELD(a, 0x28, s32 *) = v;
+    if (mdl->anm[1] != NULL) {
+        mdl->anm[1]->frame = v;
     }
-    if (FIELD(a, 0x2c, s32 *) != NULL) {
-        *FIELD(a, 0x2c, s32 *) = v;
+    if (mdl->anm[2] != NULL) {
+        mdl->anm[2]->frame = v;
     }
-    FIELD(a, 0x30, s32) = (FIELD(a, 0x30, s32) + 0x1000) % FIELD(a, 0x34, s32);
+    mdl->frame = (mdl->frame + 0x1000) % mdl->frameCount;
 }
 
 static inline BOOL ov002_Msg_IsDone(void *m) {
     return FIELD(m, 4, s32) == 5;
 }
 
-void func_ov002_021dc278(Obj021eff10 *self, void *other) {
-    self->unk_04 = other;
-    ov002_Anim_Tick(self->unk_14);
+void func_ov002_021dc278(Obj021eff10 *self, Obj021eff50 *other) {
+    self->owner = other;
+    ov002_Anim_Tick(&self->unk_14->mdl);
     if (self->unk_0c != NULL) {
         self->unk_0c->vfunc_1c();
     }
     {
-        void *m = self->unk_08;
-        ov002_Anim_Tick(m);
-        FIELD(m, 0x1d8, u32) = (u16)(FIELD(m, 0x1d8, u32) + 1);
+        Obj021efe5c *m = self->unk_08;
+        ov002_Anim_Tick(&m->mdl);
+        m->unk_1d8 = (u16)(m->unk_1d8 + 1);
     }
     switch (self->unk_18 / 10 * 10) {
     case 0:
@@ -75,7 +75,7 @@ void func_ov002_021dc278(Obj021eff10 *self, void *other) {
         }
         break;
     case 70: {
-        u8 *o4 = FIELD(self->unk_04, 4, u8 *);
+        u8 *o4 = ((u8 *)self->owner->board);
         s32 row = self->unk_28;
         void *q = FIELD(o4, 4, void *);
         s32 col = self->unk_24;
@@ -94,7 +94,7 @@ void func_ov002_021dc278(Obj021eff10 *self, void *other) {
             FIELD(FIELD(e, 8, u8 *), 0x9c, u8) = 0;
         }
         {
-            void *o = self->unk_04;
+            void *o = self->owner;
             FIELD(o, 0x10, s32) = 0;
             FIELD(o, 0xc, s32) = 0x28;
         }
@@ -102,7 +102,7 @@ void func_ov002_021dc278(Obj021eff10 *self, void *other) {
         break;
     }
     }
-    self->unk_04 = NULL;
+    self->owner = NULL;
 }
 
 }

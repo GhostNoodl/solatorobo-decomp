@@ -15,12 +15,12 @@ void func_ov002_021e00bc(Obj021eff30 *self) {
         return;
     }
     {
-        void *r = func_0206ec48(FIELD(self->unk_10, 0x48, u16));
-        w = self->unk_04;
+        void *r = func_0206ec48(self->unk_10->unk_48);
+        w = self->owner;
         func_ov000_0215bb14(FIELD(w, 0x20, void *), r);
         FIELD(w, 0x20, VObj *)->vfunc_70();
     }
-    q = FIELD(self->unk_04, 4, u8 *);
+    q = ((u8 *)self->owner->board);
     q[0x74] = 7;
     q[0x75] = 1;
     func_ov002_021e019c(self, self->unk_1c, self->unk_20);

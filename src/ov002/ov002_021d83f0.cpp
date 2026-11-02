@@ -21,12 +21,12 @@ static inline s32 ov002_GetT(void *self) {
 void func_ov002_021d83f0(Obj021efe9c *self) {
     switch (self->unk_ac) {
     case 1:
-        self->unk_08 = 0x400;
+        self->trans.y = 0x400;
         self->unk_44 = 0x119a;
         self->unk_3c = 0x119a;
         break;
     case 2:
-        self->unk_08 = 0x29;
+        self->trans.y = 0x29;
         self->unk_44 = 0x1000;
         self->unk_3c = 0x1000;
         if (self->unk_cd == 0) {
@@ -66,7 +66,7 @@ void func_ov002_021d83f0(Obj021efe9c *self) {
     case 6: {
         s32 t = ov002_GetT(self);
         s32 v;
-        self->unk_08 = Interp_SinLerp(t, 0x29, 0x400);
+        self->trans.y = Interp_SinLerp(t, 0x29, 0x400);
         v = Interp_SinLerp(t, 0x1000, 0x119a);
         self->unk_3c = v;
         self->unk_44 = v;
@@ -79,7 +79,7 @@ void func_ov002_021d83f0(Obj021efe9c *self) {
     case 7: {
         s32 t = ov002_GetT(self);
         s32 v;
-        self->unk_08 = Interp_SinLerp(t, 0x400, 0x29);
+        self->trans.y = Interp_SinLerp(t, 0x400, 0x29);
         v = Interp_SinLerp(t, 0x119a, 0x1000);
         self->unk_3c = v;
         self->unk_44 = v;
@@ -93,7 +93,7 @@ void func_ov002_021d83f0(Obj021efe9c *self) {
         s32 t = ov002_GetT(self);
         s32 v;
         Interp_SinLerpVec((u8 *)self + 0x4, t, (u8 *)self + 0xb0, (u8 *)self + 0xbc);
-        self->unk_08 = 0x400;
+        self->trans.y = 0x400;
         v = Interp_SinLerp(t, 0, 0x119a);
         self->unk_3c = v;
         self->unk_44 = v;
@@ -107,7 +107,7 @@ void func_ov002_021d83f0(Obj021efe9c *self) {
         s32 t = ov002_GetT(self);
         s32 v;
         Interp_SinLerpVec((u8 *)self + 0x4, t, (u8 *)self + 0xb0, (u8 *)self + 0xbc);
-        self->unk_08 = 0x400;
+        self->trans.y = 0x400;
         v = Interp_SinLerp(t, 0x119a, 0);
         self->unk_3c = v;
         self->unk_44 = v;

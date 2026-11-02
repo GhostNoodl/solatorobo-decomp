@@ -1,52 +1,49 @@
 #include "ov002/ov002.h"
 
 extern "C" {
-BOOL func_ov002_021e45c4(void *g, void *a, void *b);
-BOOL func_ov002_021e4578(Vec2 *pos, Vec2 *d, void *a, void *b);
-void func_ov002_021d8c34(void *self, s32 d, void *map);
 s32 func_02049bdc(void *a, int b, int c);
 }
 
-static inline void ov002_CamMove(u8 *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {
-    FIELD(c, 0x90, s32) = 15;
-    FIELD(c, 0x94, s32) = 15;
-    *(VecFx32 *)(c + 0x98) = *(VecFx32 *)FIELD(c, 0x8c, u8 *);
-    *(VecFx32 *)(c + 0xa4) = *(VecFx32 *)(FIELD(c, 0x8c, u8 *) + 0xc);
-    FIELD(c, 0xb0, s32) = px;
-    FIELD(c, 0xb4, s32) = py;
-    FIELD(c, 0xb8, s32) = pz;
-    FIELD(c, 0xbc, s32) = tx;
-    FIELD(c, 0xc0, s32) = ty;
-    FIELD(c, 0xc4, s32) = tz;
+static inline void ov002_CamMove(Obj021efe6c *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {
+    c->unk_90 = 15;
+    c->unk_94 = 15;
+    c->unk_98 = c->cam->eye;
+    c->unk_a4 = c->cam->at;
+    c->unk_b0.x = px;
+    c->unk_b0.y = py;
+    c->unk_b0.z = pz;
+    c->unk_bc.x = tx;
+    c->unk_bc.y = ty;
+    c->unk_bc.z = tz;
 }
 
 static inline void ov002_SyncCursor(Obj021eff30 *self) {
-    u8 *g = ((u8 *)self->unk_10);
-    self->unk_1c = FIELD(g, 0x54, s32);
-    self->unk_20 = FIELD(g, 0x58, s32);
+    Obj021efe9c *g = self->unk_10;
+    self->unk_1c = g->unk_54;
+    self->unk_20 = g->unk_58;
     func_ov002_021e019c(self, self->unk_1c, self->unk_20);
 }
 
-static inline BOOL ov002_TryMove(u8 *g, s32 dx, s32 dy, void *map) {
+static inline BOOL ov002_TryMove(Obj021efe9c *g, s32 dx, s32 dy, Ov002Shape *map) {
     BOOL r = FALSE;
     Vec2 d;
-    if (FIELD(g, 0xa4, s32) != 0 || FIELD(g, 0xac, s32) != 1) {
+    if (g->unk_a4 != 0 || g->unk_ac != 1) {
         return FALSE;
     }
     d.x = dx;
     d.y = dy;
-    if (func_ov002_021e4578((Vec2 *)(g + 0x54), &d, map, g + 0x4c)) {
-        FIELD(g, 0x54, s32) += d.x;
-        FIELD(g, 0x58, s32) += d.y;
-        if (FIELD(g, 0xac, s32) == 1) {
-            func_ov002_021e3b0c((s32 *)(g + 0xb0), (s32 *)(g + 0x54), (s32 *)(g + 0x64));
-            FIELD(g, 0xb4, s32) = FIELD(g, 0x8, s32);
-            FIELD(g, 0xbc, s32) = FIELD(g, 0x4, s32);
-            FIELD(g, 0xc0, s32) = FIELD(g, 0x8, s32);
-            FIELD(g, 0xc4, s32) = FIELD(g, 0xc, s32);
-            FIELD(g, 0xa4, s32) = 4;
-            FIELD(g, 0xa8, s32) = 4;
-            FIELD(g, 0xac, s32) = 4;
+    if (func_ov002_021e4578((Vec2 *)&g->unk_54, &d, map, &g->shape)) {
+        g->unk_54 += d.x;
+        g->unk_58 += d.y;
+        if (g->unk_ac == 1) {
+            func_ov002_021e3b0c(&g->unk_b0.x, &g->unk_54, &g->unk_64);
+            g->unk_b0.y = g->trans.y;
+            g->unk_bc.x = g->trans.x;
+            g->unk_bc.y = g->trans.y;
+            g->unk_bc.z = g->trans.z;
+            g->unk_a4 = 4;
+            g->unk_a8 = 4;
+            g->unk_ac = 4;
             func_02049a48(data_02097e4c, 0x22, -1, -1, -1);
         }
         r = TRUE;
@@ -56,22 +53,22 @@ static inline BOOL ov002_TryMove(u8 *g, s32 dx, s32 dy, void *map) {
 
 extern "C" {
 
-static inline u8 *GetUnit021dfcc0(void *self) { return FIELD(FIELD(self, 0x4, u8 *), 0x4, u8 *); }
-static inline u8 *GetMap021dfcc0(u8 *unit) { return FIELD(FIELD(unit, 0x4, u8 *), 0x6c, u8 *); }
+static inline Obj021efe6c *GetUnit021dfcc0(Obj021eff30 *self) { return self->owner->board; }
+static inline Ov002Shape *GetMap021dfcc0(Obj021efe6c *unit) { return unit->field->map; }
 static inline void *GetMgr021dfcc0(void) { return data_02149ef8; }
 
 void func_ov002_021dfcc0(Obj021eff30 *self) {
-    u8 *cam;
+    Obj021efe6c *cam;
     void *mgr;
-    u8 *cur;
+    Obj021efe9c *cur;
     u8 *pad = (u8 *)data_02097dc8;
     s32 trg = FIELD(pad, 0x12, u16);
     u16 rep = FIELD(pad, 0x16, u16);
-    u8 *unit = GetUnit021dfcc0(self);
+    Obj021efe6c *unit = GetUnit021dfcc0(self);
     mgr = GetMgr021dfcc0();
-    u8 *map;
+    Ov002Shape *map;
     if (trg & 2) {
-        if (FIELD(((u8 *)self->unk_10), 0xac, s32) != 1) {
+        if (self->unk_10->unk_ac != 1) {
             return;
         }
         self->unk_18 = 0x1e;
@@ -79,10 +76,10 @@ void func_ov002_021dfcc0(Obj021eff30 *self) {
         return;
     }
     if (trg & 1) {
-        if (FIELD(((u8 *)self->unk_10), 0xac, s32) != 1) {
+        if (self->unk_10->unk_ac != 1) {
             return;
         }
-        if (!func_ov002_021e45c4(((u8 *)self->unk_10), FIELD(unit, 0x6c, void *), FIELD(FIELD(unit, 0x4, u8 *), 0x6c, void *))) {
+        if (!func_ov002_021e45c4(self->unk_10, unit->pieces, unit->field->map)) {
             self->unk_18 = 0x14;
             return;
         }
@@ -94,7 +91,7 @@ void func_ov002_021dfcc0(Obj021eff30 *self) {
         Vec2 d = {0, 0};
         Vec2 p;
         Vec2 out;
-        u8 *g;
+        Obj021efe9c *g;
         if (rep & 0x40) {
             d.y--;
         } else if (rep & 0x80) {
@@ -104,28 +101,28 @@ void func_ov002_021dfcc0(Obj021eff30 *self) {
         } else if (rep & 0x10) {
             d.x++;
         }
-        cur = ((u8 *)self->unk_10);
+        cur = self->unk_10;
         if (ov002_TryMove(cur, d.x, d.y, map)) {
             ov002_SyncCursor(self);
             return;
         }
-        g = ((u8 *)self->unk_10);
-        p = *(Vec2 *)(g + 0x54);
+        g = self->unk_10;
+        p = *(Vec2 *)&g->unk_54;
         p.x += d.x;
         p.y += d.y;
-        func_ov002_021e3dac(&p, map, g + 0x4c, &out);
-        if (out.x < FIELD(map, 0x4, Nibbles16).n2) {
+        func_ov002_021e3dac(&p, map, &g->shape, &out);
+        if (out.x < map->w) {
             return;
         }
         {
             void *s = MsgRes_GetString(mgr, 0x10c);
-            u8 *o = ((u8 *)self->unk_04);
-            func_ov000_0215bb14(FIELD(o, 0x20, void *), s);
-            ((VObj *)(FIELD(o, 0x20, void *)))->vfunc_70();
+            Obj021eff50 *o = self->owner;
+            func_ov000_0215bb14(((void *)o->unk_20), s);
+            ((VObj *)(((void *)o->unk_20)))->vfunc_70();
         }
-        FIELD(unit, 0x74, u8) = 8;
-        FIELD(unit, 0x75, u8) = 1;
-        cam = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
+        unit->unk_74 = 8;
+        unit->unk_75 = 1;
+        cam = self->owner->board;
         { s32 a44 = *(s32 *)(data_ov002_021eef74 + 0x44); s32 a48 = *(s32 *)(data_ov002_021eef74 + 0x48); ov002_CamMove(cam, 0xb33, a44, a48, 0xb33, 0, 0xa4); }
         self->unk_18 = 10;
         func_02049a48(data_02097e4c, 0xe, -1, -1, -1);

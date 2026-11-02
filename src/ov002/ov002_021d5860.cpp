@@ -23,11 +23,10 @@ BOOL func_ov002_021d58b0(void) {
 extern "C" {
 extern VFunc data_ov000_021cadcc[];
 extern VFunc data_ov002_021efca4[];
-extern char *data_0208cb7c;
 extern char data_ov002_021efaf1[];
 extern u8 data_ov002_021eef54[];
 void *func_02035de0(void *a, void *b);
-void func_ov000_021547e8(void *a, void *b, void *c, int d);
+void func_ov000_021547e8(void *a, void *b, const char *c, int d);
 void *func_ov000_02162124(void *p);
 void func_ov000_021627ac(void *p);
 void func_ov000_021c95fc(void *p);
@@ -63,7 +62,7 @@ static inline void ov002_021d58b8_setInfo(void *self, u16 id) {
     }
 }
 
-static inline void ov002_021d58b8_setId(void *x, u16 id) {
+static inline void ov002_021d58b8_setId(Ov002Hud *x, u16 id) {
     if (x != NULL) {
         func_ov002_021e2754(x, id);
     }
@@ -232,16 +231,16 @@ void func_ov002_021d58b8(Task021efc24 *self) {
         }
     }
     {
-        void *t = Task_FindById(0x1b);
+        Task021efba4 *t = (Task021efba4 *)Task_FindById(0x1b);
         if (t != NULL) {
-            if (FIELD(t, 0x3c, void *) != NULL) {
-                func_ov002_021e2690(FIELD(t, 0x3c, void *), 9, 0);
+            if (t->hud != NULL) {
+                func_ov002_021e2690(t->hud, 9, 0);
             }
             func_ov000_021c95fc((u8 *)self + 0x60);
-            if (FIELD(t, 0x3c, u8 *) != NULL) {
-                MI_CpuCopy8((u8 *)self + 0x60, FIELD(t, 0x3c, u8 *) + 0x2c, 0x14);
+            if (t->hud != NULL) {
+                MI_CpuCopy8((u8 *)self + 0x60, t->hud->unk_2c, 0x14);
             }
-            ov002_021d58b8_setId(FIELD(t, 0x3c, void *), self->unk_74);
+            ov002_021d58b8_setId(t->hud, self->unk_74);
         }
     }
     if (func_ov002_isMode4()) {

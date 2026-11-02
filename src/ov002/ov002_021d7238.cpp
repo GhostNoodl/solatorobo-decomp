@@ -17,12 +17,12 @@ static inline int func_ov002_021d7238_find(u8 *res, const char *name) {
     return NNS_G3dGetResDictIdxByName((NNSG3dResDict *)(dict + 4), (NNSG3dResName *)name);
 }
 
-void func_ov002_021d7238(void *self) {
+void func_ov002_021d7238(Obj021efe4c *self) {
     u8 *res;
     char name[0x10];
     int idx;
-    FIELD(self, 0x6c, void *) = func_02070dcc(*func_0206ef50(FIELD(self, 0x68, u16)));
-    res = FIELD(FIELD(self, 0x8, void *), 0x4, u8 *);
+    self->map = (Ov002Shape *)(func_02070dcc(*func_0206ef50(FIELD(self, 0x68, u16))));
+    res = FIELD(self->unk_08, 0x4, u8 *);
     if (res == NULL) {
         return;
     }
@@ -32,7 +32,7 @@ void func_ov002_021d7238(void *self) {
     if (idx < 0) {
         return;
     }
-    switch (FIELD(self, 0x68, u16)) {
+    switch (self->unk_68) {
     case 0x9000:
         NNS_G3dMdlSetMdlAlpha(res, idx, 0x1f);
         break;

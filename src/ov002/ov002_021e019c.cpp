@@ -1,16 +1,16 @@
 #include "ov002/ov002.h"
 
-static inline void ov002_CamMove(u8 *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {
-    FIELD(c, 0x90, s32) = 15;
-    FIELD(c, 0x94, s32) = 15;
-    *(VecFx32 *)(c + 0x98) = *(VecFx32 *)FIELD(c, 0x8c, u8 *);
-    *(VecFx32 *)(c + 0xa4) = *(VecFx32 *)(FIELD(c, 0x8c, u8 *) + 0xc);
-    FIELD(c, 0xb0, s32) = px;
-    FIELD(c, 0xb4, s32) = py;
-    FIELD(c, 0xb8, s32) = pz;
-    FIELD(c, 0xbc, s32) = tx;
-    FIELD(c, 0xc0, s32) = ty;
-    FIELD(c, 0xc4, s32) = tz;
+static inline void ov002_CamMove(Obj021efe6c *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {
+    c->unk_90 = 15;
+    c->unk_94 = 15;
+    c->unk_98 = c->cam->eye;
+    c->unk_a4 = c->cam->at;
+    c->unk_b0.x = px;
+    c->unk_b0.y = py;
+    c->unk_b0.z = pz;
+    c->unk_bc.x = tx;
+    c->unk_bc.y = ty;
+    c->unk_bc.z = tz;
 }
 
 extern "C" {
@@ -23,10 +23,10 @@ void func_ov002_021e019c(Obj021eff30 *self, u8 a, u8 b) {
     s32 pz;
     s32 tx;
     s32 tz;
-    u8 *c;
-    c = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
-    dx = a - FIELD(FIELD(FIELD(c, 0x4, u8 *), 0x6c, u8 *), 6, Nibbles16).n0;
-    dy = b - FIELD(FIELD(FIELD(c, 0x4, u8 *), 0x6c, u8 *), 6, Nibbles16).n1;
+    Obj021efe6c *c;
+    c = self->owner->board;
+    dx = a - c->field->map->ox;
+    dy = b - c->field->map->oy;
     px = *(s32 *)(data_ov002_021eef74 + 0x40);
     py = *(s32 *)(data_ov002_021eef74 + 0x44);
     pz = *(s32 *)(data_ov002_021eef74 + 0x48);

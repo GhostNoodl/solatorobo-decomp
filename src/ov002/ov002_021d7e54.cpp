@@ -2,31 +2,31 @@
 
 extern "C" {
 
-void func_ov002_021d7e54(void *self) {
-    FIELD(self, 0x78, s32) = 0;
-    FIELD(self, 0x7c, s32) = 0;
-    FIELD(self, 0x80, s32) = 0;
-    FIELD(self, 0x84, s32) = 0;
-    FIELD(self, 0x88, s32) = 0;
-    FIELD(self, 0x8c, s32) = 0;
-    FIELD(self, 0x90, s32) = 0;
-    FIELD(self, 0x94, s32) = 0;
-    FIELD(self, 0x98, s32) = 0;
-    FIELD(self, 0x9c, s32) = FX_Div(0x1f000, 0x1f000);
-    FIELD(self, 0xa0, s32) = 0;
-    FIELD(self, 0xa4, s32) = 0;
-    FIELD(self, 0xa8, s32) = 5;
-    FIELD(self, 0xac, s32) = 0xb;
-    FIELD(self, 0xb0, s32) = 0;
-    FIELD(self, 0xb4, s32) = 0;
-    FIELD(self, 0xb8, s32) = 0;
-    FIELD(self, 0xbc, s32) = 0;
-    FIELD(self, 0xc0, s32) = 0;
-    FIELD(self, 0xc4, s32) = 0;
-    FIELD(self, 0xc8, s32) = 0;
-    FIELD(self, 0xcc, u8) = 0;
-    FIELD(self, 0xcd, u8) = 0;
-    FIELD(self, 0xd0, s32) = 0;
+void func_ov002_021d7e54(Obj021efe9c *self) {
+    self->unk_78 = NULL;
+    self->unk_7c = NULL;
+    self->unk_80 = NULL;
+    self->unk_84 = NULL;
+    self->unk_88 = NULL;
+    self->unk_8c = NULL;
+    self->unk_90 = NULL;
+    self->unk_94 = 0;
+    self->unk_98 = 0;
+    self->unk_9c = FX_Div(0x1f000, 0x1f000);
+    self->unk_a0 = 0;
+    self->unk_a4 = 0;
+    self->unk_a8 = 5;
+    self->unk_ac = 0xb;
+    self->unk_b0.x = 0;
+    self->unk_b0.y = 0;
+    self->unk_b0.z = 0;
+    self->unk_bc.x = 0;
+    self->unk_bc.y = 0;
+    self->unk_bc.z = 0;
+    self->unk_c8 = 0;
+    self->unk_cc = 0;
+    self->unk_cd = 0;
+    self->unk_d0 = 0;
 }
 
 void func_ov002_021d7ed8(Obj021efe9c *self) {

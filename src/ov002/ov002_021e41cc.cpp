@@ -2,24 +2,10 @@
 
 extern "C" {
 
-/* A block shape on the puzzle grid (same layout as in ov002_021e3dac.cpp). */
-typedef struct GridShape {
-    u8 *cells;
-    u16 pad : 8;
-    u16 cols : 4;
-    u16 rows : 4;
-    u16 ox : 4;
-    u16 oy : 4;
-    u16 rot : 2;
-    u16 pad2 : 6;
-} GridShape;
-
 /* Returns TRUE if shape `a` placed at `pa` and shape `b` placed at `pb`
  * share a set cell. The first shared cell goes to `out` (-1, -1 when
  * there is none). */
-BOOL func_ov002_021e41cc(Vec2 *pa, Vec2 *pb, void *a, void *b, Vec2 *out) {
-    GridShape *sa = (GridShape *)a;
-    GridShape *sb = (GridShape *)b;
+BOOL func_ov002_021e41cc(Vec2 *pa, Vec2 *pb, Ov002Shape *sa, Ov002Shape *sb, Vec2 *out) {
     s32 ma[4];
     s32 mb[4];
     int hit;
@@ -43,15 +29,15 @@ BOOL func_ov002_021e41cc(Vec2 *pa, Vec2 *pb, void *a, void *b, Vec2 *out) {
     func_ov002_021e391c(ma, sa->rot);
     func_ov002_021e391c(mb, sb->rot);
     oxa = sa->ox;
-    ca = sa->cells;
-    cb = sb->cells;
+    ca = sa->grid;
+    cb = sb->grid;
     oya = sa->oy;
     oxb = sb->ox;
     oyb = sb->oy;
-    wa = sa->cols;
-    na = wa * sa->rows;
-    wb = sb->cols;
-    nb = wb * sb->rows;
+    wa = sa->w;
+    na = wa * sa->h;
+    wb = sb->w;
+    nb = wb * sb->h;
     for (i = 0; i < na; i++) {
         for (j = 0; j < nb; j++) {
             if (ca[i] == 1 && cb[j] == 1) {

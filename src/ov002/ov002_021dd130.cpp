@@ -8,7 +8,6 @@ static inline bool isState5(void *p) {
 
 void func_ov000_0215d980(void *a, u16 b, int c);
 
-void func_ov002_021d9ed8(void *a, void *b, int c);
 
 void *func_ov002_021e3874(s32 *v, int a, int b);
 
@@ -19,19 +18,19 @@ void func_ov002_021dd130(Obj021eff10 *self) {
     s32 out[3];
     s32 a[2];
     s32 b[2];
-    u8 *e;
+    Obj021efe6c *e;
     {
         BOOL st = isState5(self->unk_0c);
         if (!st) {
             return;
         }
     }
-    e = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
+    e = self->owner->board;
     if (self->unk_1c == 0) {
         u16 y = FIELD(((u8 *)self->unk_2c), 0xa8, u16);
-        u16 x = FIELD(e, 0x8a, u16);
-        FIELD(e, 0x8a, u16) = x > y ? x - y : 0;
-        func_ov000_0215d980(FIELD(((u8 *)self->unk_04), 0x24, void *), FIELD(e, 0x8a, u16), 0);
+        u16 x = ((u16)e->unk_8a);
+        e->unk_8a = x > y ? x - y : 0;
+        func_ov000_0215d980(FIELD(((u8 *)self->owner), 0x24, void *), ((u16)e->unk_8a), 0);
         func_ov002_021d9ed8(e, self->unk_2c, 1);
         func_02049a48(data_02097e4c, 0x6e, -1, -1, -1);
         func_02049a48(data_02097e4c, 0x44, -1, -1, -1);
@@ -55,7 +54,6 @@ static inline bool ov002_flag1(void *p) {
     return FIELD(p, 0xc, Bits32).b1;
 }
 
-void func_ov002_021d9ed8(void *self, void *node, BOOL del);
 
 s32 func_02049bdc(void *a, int b, int c);
 
@@ -67,16 +65,16 @@ void func_ov002_021dd29c(Obj021eff10 *self) {
             return;
         }
         if (self->unk_1c == 0) {
-            u8 *o = ((u8 *)self->unk_30);
-            if (FIELD(o, 0xac, s32) != 8 && FIELD(o, 0xa4, s32) == 0) {
-                func_ov002_021e3b0c((s32 *)(o + 0xbc), (s32 *)(o + 0x54), (s32 *)(o + 0x64));
-                FIELD(o, 0xc0, s32) = 0x400;
-                FIELD(o, 0xb0, s32) = 0xb33;
-                FIELD(o, 0xb8, s32) = 0;
-                FIELD(o, 0xb4, s32) = 0x400;
-                FIELD(o, 0xa4, s32) = 0x14;
-                FIELD(o, 0xa8, s32) = 0x14;
-                FIELD(o, 0xac, s32) = 8;
+            Obj021efe9c *o = self->unk_30;
+            if (o->unk_ac != 8 && o->unk_a4 == 0) {
+                func_ov002_021e3b0c(&o->unk_bc.x, &o->unk_54, &o->unk_64);
+                o->unk_bc.y = 0x400;
+                o->unk_b0.x = 0xb33;
+                o->unk_b0.z = 0;
+                o->unk_b0.y = 0x400;
+                o->unk_a4 = 0x14;
+                o->unk_a8 = 0x14;
+                o->unk_ac = 8;
             }
             self->unk_18++;
             func_02049bdc(data_02097e4c, 0x47, -5);
@@ -87,13 +85,13 @@ void func_ov002_021dd29c(Obj021eff10 *self) {
         break;
     }
     case 0x29: {
-        u8 *o = ((u8 *)self->unk_30);
-        u8 *q;
-        if (FIELD(o, 0xac, s32) != 0) {
+        Obj021efe9c *o = self->unk_30;
+        Obj021efe6c *q;
+        if (o->unk_ac != 0) {
             return;
         }
-        q = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
-        (q + 8)[(u16)(FIELD(o, 0x48, u16) & 0xfff)]++;
+        q = self->owner->board;
+        q->unk_08[(u16)(o->unk_48 & 0xfff)]++;
         func_ov002_021d9ed8(q, o, 1);
         func_ov002_021dd7f0(self, (u8 *)self + 0x24, (u8 *)self + 0x24, 1);
         self->unk_18++;
@@ -113,8 +111,8 @@ void func_ov002_021dd29c(Obj021eff10 *self) {
 extern u8 data_ov002_021efe30[];
 
 void func_ov002_021dd434(Obj021eff10 *self) {
-    u8 *w = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
-    u8 *o;
+    Obj021efe6c *w = self->owner->board;
+    Obj021efe9c *o;
     switch (self->unk_18) {
     case 0x32: {
         BOOL t = ov002_flag1(self->unk_0c);
@@ -122,22 +120,22 @@ void func_ov002_021dd434(Obj021eff10 *self) {
             return;
         }
         if (self->unk_1c == 0) {
-            u8 *m;
-            for (o = FIELD(w, 0x6c, u8 *); o != NULL; o = FIELD(o, 0x70, u8 *)) {
-                if (FIELD(o, 0x4a, u8) == 1 && FIELD(o, 0xac, s32) != 8 && FIELD(o, 0xa4, s32) == 0) {
-                    func_ov002_021e3b0c((s32 *)(o + 0xbc), (s32 *)(o + 0x54), (s32 *)(o + 0x64));
-                    FIELD(o, 0xc0, s32) = 0x400;
-                    FIELD(o, 0xb0, s32) = 0xb33;
-                    FIELD(o, 0xb8, s32) = 0;
-                    FIELD(o, 0xb4, s32) = 0x400;
-                    FIELD(o, 0xa4, s32) = 0x14;
-                    FIELD(o, 0xa8, s32) = 0x14;
-                    FIELD(o, 0xac, s32) = 8;
+            Obj021eff50 *m;
+            for (o = (Obj021efe9c *)w->pieces; o != NULL; o = (Obj021efe9c *)o->next) {
+                if (o->unk_4a == 1 && o->unk_ac != 8 && o->unk_a4 == 0) {
+                    func_ov002_021e3b0c(&o->unk_bc.x, &o->unk_54, &o->unk_64);
+                    o->unk_bc.y = 0x400;
+                    o->unk_b0.x = 0xb33;
+                    o->unk_b0.z = 0;
+                    o->unk_b0.y = 0x400;
+                    o->unk_a4 = 0x14;
+                    o->unk_a8 = 0x14;
+                    o->unk_ac = 8;
                 }
             }
-            m = ((u8 *)self->unk_04);
-            func_ov000_0215bb14(FIELD(m, 0x20, void *), data_ov002_021efe30);
-            FIELD(m, 0x20, VObj *)->vfunc_70();
+            m = self->owner;
+            func_ov000_0215bb14(m->unk_20, data_ov002_021efe30);
+            m->unk_20->vfunc_70();
             self->unk_18++;
             func_02049bdc(data_02097e4c, 0x5c, 5);
         } else {
@@ -148,20 +146,20 @@ void func_ov002_021dd434(Obj021eff10 *self) {
     }
     case 0x33: {
         bool all = TRUE;
-        u8 *next;
-        for (o = FIELD(w, 0x6c, u8 *); o != NULL; o = FIELD(o, 0x70, u8 *)) {
-            if (FIELD(o, 0x4a, u8) == 1) {
-                all &= FIELD(o, 0xac, s32) == 0;
+        Obj021efe9c *next;
+        for (o = (Obj021efe9c *)w->pieces; o != NULL; o = (Obj021efe9c *)o->next) {
+            if (o->unk_4a == 1) {
+                all &= o->unk_ac == 0;
             }
         }
         if (!all) {
             return;
         }
-        for (o = FIELD(w, 0x6c, u8 *); o != NULL; o = next) {
-            next = FIELD(o, 0x70, u8 *);
-            if (FIELD(o, 0x4a, u8) == 1) {
-                u8 *q = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
-                (&FIELD(q, 8, u8))[(u16)(FIELD(o, 0x48, u16) & 0xfff)]++;
+        for (o = (Obj021efe9c *)w->pieces; o != NULL; o = next) {
+            next = (Obj021efe9c *)o->next;
+            if (o->unk_4a == 1) {
+                Obj021efe6c *q = self->owner->board;
+                (&FIELD(q, 8, u8))[(u16)(o->unk_48 & 0xfff)]++;
                 func_ov002_021d9ed8(q, o, 1);
             }
         }
@@ -209,11 +207,11 @@ void *func_ov002_021dd6a4(Obj021eff10 *self, s32 a, u16 b) {
     FIELD(p, 0x1d8, u16) = b;
     FIELD(self->unk_0c, 0x1dc, s32) = a;
     FIELD(self->unk_0c, 0x1e0, u16) = 1;
-    FIELD(self->unk_0c, 0x84, void *) = (void *)func_ov002_021e046c;
-    FIELD(self->unk_0c, 0x8, void *) = (u8 *)self + 0x1c;
+    self->unk_0c->onDecide = (UiItemFn)func_ov002_021e046c;
+    self->unk_0c->owner = (u8 *)self + 0x1c;
     self->unk_0c->vfunc_08();
-    FIELD(self->unk_0c, 0x68, s16) = -0x1666;
-    FIELD(self->unk_0c, 0xc, u32) &= ~2;
+    self->unk_0c->posZ = -0x1666;
+    self->unk_0c->flags &= ~2;
     return self->unk_0c;
 }
 

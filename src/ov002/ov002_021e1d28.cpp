@@ -1,105 +1,55 @@
 #include "ov002/ov002.h"
 
-typedef struct ov002_Anim021e0c28 {
-    void *vtbl;
-    u32 unk4;
-    u8 unk8[0x1c];
-    s32 unk24;
-    s32 unk28;
-    s32 unk2C;
-    u8 unk30[4];
-    u16 unk34;
-    u8 unk36;
-    s8 unk37;
-    s32 unk38;
-    u8 unk3C[8];
-    u8 unk44[4];
-    u8 unk48[4];
-    s32 unk4C;
-} ov002_Anim021e0c28;
-
-typedef struct ov002_Caption021e0c28 {
-    void *vtbl;
-    ov002_Anim021e0c28 *anim;
-    s32 text;
-    s32 x;
-    s32 y;
-    s32 nextX;
-    s32 nextY;
-    s32 unk1C;
-    s32 fromX;
-    s32 fromY;
-    s32 toX;
-    s32 toY;
-    s32 timer;
-    u8 mode;
-} ov002_Caption021e0c28;
-
-typedef struct ov002_Flags41 {
-    u8 m0 : 1;
-    u8 m1 : 1;
-    u8 m2 : 1;
-    u8 m3 : 1;
-} ov002_Flags41;
-
 extern "C" {
 
-void func_ov002_021e1d28(void *self) {
+static inline void ov002_Model_Delete(Model *m) {
+    if (m != NULL) {
+        func_02041558(m);
+        func_02041278(&m->pltt);
+        Heap_Free(m);
+    }
+}
+
+void func_ov002_021e1d28(Ov002Hud *self) {
     void *saved;
-    void *p;
+    Model *p;
     s32 i;
     HEAP_PUSH(saved);
-    p = FIELD(self, 0x4, void *);
+    p = self->unk_04;
     if (p != NULL) {
-        if (p != NULL) {
-            func_02041558((Model *)p);
-            func_02041278((PlttRes *)((u8 *)p + 0x88));
-            Heap_Free(p);
-        }
-        FIELD(self, 0x4, void *) = NULL;
+        ov002_Model_Delete(p);
+        self->unk_04 = NULL;
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    p = FIELD(self, 0x8, void *);
+    p = self->unk_08;
     if (p != NULL) {
-        if (p != NULL) {
-            func_02041558((Model *)p);
-            func_02041278((PlttRes *)((u8 *)p + 0x88));
-            Heap_Free(p);
-        }
-        FIELD(self, 0x8, void *) = NULL;
+        ov002_Model_Delete(p);
+        self->unk_08 = NULL;
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    p = FIELD(self, 0xc, void *);
+    p = self->unk_0c;
     if (p != NULL) {
-        if (p != NULL) {
-            func_02041558((Model *)p);
-            func_02041278((PlttRes *)((u8 *)p + 0x88));
-            Heap_Free(p);
-        }
-        FIELD(self, 0xc, void *) = NULL;
+        ov002_Model_Delete(p);
+        self->unk_0c = NULL;
     }
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    p = FIELD(self, 0x10, void *);
+    p = self->unk_10;
     if (p != NULL) {
-        if (p != NULL) {
-            func_02041558((Model *)p);
-            func_02041278((PlttRes *)((u8 *)p + 0x88));
-            Heap_Free(p);
-        }
-        FIELD(self, 0x10, void *) = NULL;
+        ov002_Model_Delete(p);
+        self->unk_10 = NULL;
     }
     HEAP_POP(saved);
     for (i = 0; i < 5; i++) {
         void *saved2;
         HEAP_PUSH(saved2);
-        DELETE_VOBJ((&FIELD(self, 0x14, VObj *))[i]);
+        DELETE_VOBJ(self->captions[i]);
         HEAP_POP(saved2);
     }
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x28, VObj *));
+    DELETE_VOBJ(self->info);
     HEAP_POP(saved);
 }
 
@@ -113,13 +63,13 @@ extern char data_ov002_021effd2[];
 
 void func_0204c7d0(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void TextWin_InitLines(ov002_Anim021e0c28 *a, int b);
-void *func_02035de0(void *file, void *name);
+void TextWin_InitLines(Ov002Text2 *a, int b);
+void *func_02035de0(const char *file, const char *name);
 void func_02041c5c(void *a, void *fn);
 void *func_ov002_021e1988(void *a, void *b, void *c, u16 *d);
 
-static inline ov002_Anim021e0c28 *ov002_Anim_New(void) {
-    ov002_Anim021e0c28 *anim = (ov002_Anim021e0c28 *)Heap_Alloc(0xb8);
+static inline Ov002Text2 *ov002_Anim_New(void) {
+    Ov002Text2 *anim = (Ov002Text2 *)Heap_Alloc(0xb8);
     if (anim != NULL) {
         *(VFunc **)anim = data_0208ba70;
         func_0204c7d0(anim);
@@ -127,26 +77,26 @@ static inline ov002_Anim021e0c28 *ov002_Anim_New(void) {
     return anim;
 }
 
-static inline void ov002_Anim_Start(ov002_Anim021e0c28 *s, s32 a) {
-    s->unk24 = a;
-    s->unk4C = Text_Measure(s->unk28, s->unk38, s->unk24, s->unk44, s->unk48, s->unk37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = s->unk28;
+static inline void ov002_Anim_Start(Ov002Text2 *s, s32 str) {
+    s->str = str;
+    s->unk_4c = Text_Measure(s->font, s->spacing, s->str, &s->width, &s->height, s->unk_37 != 0 ? TRUE : FALSE);
+    data_02097ce0->unk_004 = s->font;
 }
 
-static inline void *ov002_Model_New(void *name, void *file) {
-    u8 *m = (u8 *)Heap_Alloc(0x160);
+static inline Model *ov002_Model_New(char *name, char *file) {
+    Model *m = (Model *)Heap_Alloc(sizeof(Model));
     if (m != NULL) {
-        func_02041218((PlttRes *)(m + 0x88));
-        func_02041440((Model *)m, (char *)name, 0);
-        STD_CopyString((char *)(m + 0x2c), (char *)file);
+        func_02041218(&m->pltt);
+        func_02041440(m, name, 0);
+        STD_CopyString(m->name, file);
     }
     return m;
 }
 
-static inline ov002_Caption021e0c28 *ov002_Caption_New(void) {
-    ov002_Caption021e0c28 *c = (ov002_Caption021e0c28 *)Heap_Alloc(0x38);
+static inline Ov002Caption *ov002_Caption_New(void) {
+    Ov002Caption *c = (Ov002Caption *)Heap_Alloc(sizeof(Ov002Caption));
     if (c != NULL) {
-        c->vtbl = data_ov002_021f001c;
+        *(VFunc **)c = data_ov002_021f001c;
         c->anim = NULL;
         c->text = 0;
         c->y = 0;
@@ -163,7 +113,7 @@ static inline ov002_Caption021e0c28 *ov002_Caption_New(void) {
     return c;
 }
 
-void func_ov002_021e1ed8(void *self) {
+void func_ov002_021e1ed8(Ov002Hud *self) {
     void *res = data_02149ef8;
     char buf[0x20];
     void *arc;
@@ -174,83 +124,83 @@ void func_ov002_021e1ed8(void *self) {
     {
         char *name = data_ov002_021effa4;
         data = func_02034d88(arc, name);
-        FIELD(self, 0x4, void *) = ov002_Model_New(name, buf);
+        self->unk_04 = ov002_Model_New(name, buf);
     }
-    func_020417e0((Model *)FIELD(self, 0x4, void *), data);
-    FIELD(FIELD(self, 0x4, u8 *), 0x6c, u32) |= 2;
-    FIELD(FIELD(self, 0x4, u8 *), 0x150, s32) = -0x2000;
-    func_02041d9c((Model *)FIELD(self, 0x4, void *), 2, 0);
-    FIELD(self, 0x41, u8) |= 1;
+    func_020417e0(self->unk_04, data);
+    self->unk_04->flags |= 2;
+    self->unk_04->unk_150 = -0x2000;
+    func_02041d9c(self->unk_04, 2, 0);
+    self->pending |= 1;
     {
         char *name = data_ov002_021effb0;
         data = func_02034d88(arc, name);
-        FIELD(self, 0x8, void *) = ov002_Model_New(name, buf);
+        self->unk_08 = ov002_Model_New(name, buf);
     }
-    func_020417e0((Model *)FIELD(self, 0x8, void *), data);
-    FIELD(FIELD(self, 0x8, u8 *), 0x6c, u32) |= 2;
-    FIELD(FIELD(self, 0x8, u8 *), 0x150, s32) = -0x1ccd;
-    func_02041d9c((Model *)FIELD(self, 0x8, void *), 2, 0);
-    FIELD(self, 0x41, u8) |= 2;
+    func_020417e0(self->unk_08, data);
+    self->unk_08->flags |= 2;
+    self->unk_08->unk_150 = -0x1ccd;
+    func_02041d9c(self->unk_08, 2, 0);
+    self->pending |= 2;
     {
         char *file = buf;
         char *name = data_ov002_021effbc;
         data = func_02035de0(file, name);
-        FIELD(self, 0xc, void *) = ov002_Model_New(name, file);
+        self->unk_0c = ov002_Model_New(name, file);
     }
-    func_020417e0((Model *)FIELD(self, 0xc, void *), data);
-    FIELD(FIELD(self, 0xc, u8 *), 0x6c, u32) |= 2;
-    FIELD(FIELD(self, 0xc, u8 *), 0x150, s32) = -0x2000;
-    func_02041d9c((Model *)FIELD(self, 0xc, void *), 2, 0);
-    FIELD(self, 0x41, u8) |= 4;
+    func_020417e0(self->unk_0c, data);
+    self->unk_0c->flags |= 2;
+    self->unk_0c->unk_150 = -0x2000;
+    func_02041d9c(self->unk_0c, 2, 0);
+    self->pending |= 4;
     {
         char *file = data_ov002_021effc8;
         char *name = data_ov002_021effd2;
         data = func_02035de0(file, name);
-        FIELD(self, 0x10, void *) = ov002_Model_New(name, file);
+        self->unk_10 = ov002_Model_New(name, file);
     }
-    func_020417e0((Model *)FIELD(self, 0x10, void *), data);
-    FIELD(FIELD(self, 0x10, u8 *), 0x6c, u32) |= 2;
-    FIELD(FIELD(self, 0x10, u8 *), 0x150, s32) = -0x1ccd;
-    func_02041c5c(FIELD(self, 0x10, void *), (void *)func_ov002_021e1988);
-    func_02041d9c((Model *)FIELD(self, 0x10, void *), 2, 1);
-    func_02041d9c((Model *)FIELD(self, 0x10, void *), 2, 8);
-    func_02041d9c((Model *)FIELD(self, 0x10, void *), 2, 9);
-    func_02041d9c((Model *)FIELD(self, 0x10, void *), 2, 10);
-    FIELD(self, 0x41, u8) |= 8;
+    func_020417e0(self->unk_10, data);
+    self->unk_10->flags |= 2;
+    self->unk_10->unk_150 = -0x1ccd;
+    func_02041c5c(self->unk_10, (void *)func_ov002_021e1988);
+    func_02041d9c(self->unk_10, 2, 1);
+    func_02041d9c(self->unk_10, 2, 8);
+    func_02041d9c(self->unk_10, 2, 9);
+    func_02041d9c(self->unk_10, 2, 10);
+    self->pending |= 8;
     for (i = 0; i < 5; i++) {
-        ov002_Caption021e0c28 *c;
+        Ov002Caption *c;
         s32 text;
         s32 y;
-        ((ov002_Caption021e0c28 **)((u8 *)self + 0x14))[i] = ov002_Caption_New();
+        self->captions[i] = ov002_Caption_New();
         text = (s32)MsgRes_GetString(res, data_ov002_021ef058[0][i]);
-        c = ((ov002_Caption021e0c28 **)((u8 *)self + 0x14))[i];
+        c = self->captions[i];
         if (text != 0) {
             if (c->anim == NULL) {
                 c->anim = ov002_Anim_New();
             }
-            ((VObj *)c->anim)->vfunc_08();
-            c->anim->unk28 = 3;
-            c->anim->unk2C = 0;
-            c->anim->unk34 = 1;
+            c->anim->vfunc_08();
+            c->anim->font = 3;
+            c->anim->unk_2c = 0;
+            c->anim->unk_34 = 1;
             ov002_Anim_Start(c->anim, text);
             TextWin_InitLines(c->anim, 8);
-            c->anim->unk4 |= 4;
+            c->anim->flags |= 4;
         }
-        c = ((ov002_Caption021e0c28 **)((u8 *)self + 0x14))[i];
+        c = self->captions[i];
         y = i * 0x12 + 0x1b;
         if (i >= 0 && i <= 3) {
             c->nextX = 0x1c;
             c->nextY = y;
-            c->unk1C = 0x54;
+            c->unk_1c = 0x54;
         } else if (i == 4) {
             c->nextX = 0x26;
             c->nextY = y;
-            c->unk1C = 0x4a;
+            c->unk_1c = 0x4a;
         }
-        c = ((ov002_Caption021e0c28 **)((u8 *)self + 0x14))[i];
+        c = self->captions[i];
         c->x = -0x80;
         c->y = y;
-        c = ((ov002_Caption021e0c28 **)((u8 *)self + 0x14))[i];
+        c = self->captions[i];
         c->fromX = c->x;
         c->fromY = c->y;
         c->toX = c->nextX;

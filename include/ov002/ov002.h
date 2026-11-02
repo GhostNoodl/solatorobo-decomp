@@ -11,6 +11,7 @@
 #include "Main/Res/ResMgr.h"
 #include "Main/Effect/Effect.h"
 #include "Main/Res/ResArc.h"
+#include "Main/Res/ArcName.h"
 #include "Main/Gfx/G3dGlbSyms.h"
 #include "Main/Res/StageRes.h"
 #include "Main/Res/StageCmd.h"
@@ -68,7 +69,6 @@ typedef struct Unk021f0f80 {
 } Unk021f0f80;
 
 extern Unk021f0f80 *data_ov002_021f0f80;
-extern char *data_0208cc94; // an archive name
 extern char data_0214b105[];
 
 
@@ -300,27 +300,27 @@ void func_ov000_021c2310(void *self);
 extern VFunc data_ov002_021efba4[];
 extern VFunc data_ov002_021efb14[];
 extern char data_ov002_021efad1[];
-void func_ov002_021e1d28(void *self);
+void func_ov002_021e1d28(Ov002Hud *self);
 
-void func_ov002_021e1cc8(void *self);
-void func_ov002_021e1ed8(void *self);
-void func_ov002_021e2690(void *self, u8 a, int b);
-void func_ov002_021e23ac(void *self);
-void func_ov002_021e2528(void *self);
+void func_ov002_021e1cc8(Ov002Hud *self);
+void func_ov002_021e1ed8(Ov002Hud *self);
+void func_ov002_021e2690(Ov002Hud *self, u8 row, int force);
+void func_ov002_021e23ac(Ov002Hud *self);
+void func_ov002_021e2528(Ov002Hud *self);
 extern VFunc data_ov002_021efb24[];
 void func_ov002_021da2fc(void);
-void *func_ov002_021da420(void);
-void func_ov002_021da5c0(void *self);
-BOOL func_ov002_021da800(void *self);
-void func_ov002_021da894(void *self);
-void func_ov002_021da960(void *self);
+Obj021efe7c *func_ov002_021da420(void);
+void func_ov002_021da5c0(Obj021efe7c *self);
+BOOL func_ov002_021da800(Obj021efe7c *self);
+void func_ov002_021da894(Obj021efe7c *self);
+void func_ov002_021da960(Obj021efe7c *self);
 
 static inline bool Task_isFlag1Clear(Task *self) {
     return !self->unk_04_1;
 }
 
-void func_ov002_021dab58(void *a, int b);
-BOOL func_ov002_021da8d8(void *a);
+void func_ov002_021dab58(Obj021efe7c *a, int b);
+BOOL func_ov002_021da8d8(Obj021efe7c *a);
 extern VFunc data_ov002_021efc24[];
 void func_ov002_021d5f60(void *a);
 void *Task_FindById(int id);
@@ -333,7 +333,7 @@ void *func_0206ec8c(u32 id);
 u8 *func_0206ef10(u32 id);
 void func_ov000_02162b40(void *a, s32 b, s32 c, const char *d, s32 e, const char *f, s32 g, s16 h);
 void func_ov000_021c95ac(void *a, u16 id);
-void func_ov002_021e2754(void *a, u16 id);
+void func_ov002_021e2754(Ov002Hud *self, u16 id);
 extern char data_ov002_021efaeb[];
 extern char data_ov002_021efae1[];
 
@@ -365,26 +365,32 @@ void *func_ov000_0218ea20(void *p);
     } while (0)
 
 extern VFunc data_ov002_021efe3c[];
+extern VFunc data_ov002_021efe5c[];
+extern VFunc data_ov002_021efe8c[];
 
-void *Ov002Vt_021efe3c_Dtor(void *self);
+Ov002Mdl021efe3c *Ov002Vt_021efe3c_Ctor(Ov002Mdl021efe3c *self);
+Ov002Mdl021efe3c *Ov002Vt_021efe3c_Dtor(Ov002Mdl021efe3c *self);
+void func_ov002_021d7620(Ov002Mdl021efe3c *self);
+void func_ov002_021d788c(Obj021efe8c *self);
+void func_ov002_021d792c(Obj021efe5c *self);
 #define FX_MUL(a, b) ((s32)(((s64)(a) * (b) + 0x800) >> 12))
 
 u8 *func_0206ef50(u32 id);
-void *func_02070dcc(int id);
+Ov002Shape *func_02070dcc(int id);
 void NNS_G3dMdlSetMdlAlpha(void *res, int idx, int val);
 extern char data_ov002_021efddd[];
 
 u8 *func_0206ede8(u16 id);
-BOOL func_ov002_021e38f8(s32 *out, void *ev);
+BOOL func_ov002_021e38f8(s32 *out, Ov002Shape *shape);
 void func_ov002_021d8148(Obj021efe9c *self);
 
-static inline void func_ov002_021d7c04_inline(void *self) {
-    u8 *info = func_0206ede8(FIELD(self, 0x48, u16));
-    void *v;
-    FIELD(self, 0x4a, u8) = info[0] == 0x80 ? 2 : 1;
-    v = func_02070dcc(FIELD(self, 0x4b, u8) = info[1]);
-    MI_CpuCopy8(v, (u8 *)self + 0x4c, 8);
-    func_ov002_021e38f8((s32 *)((u8 *)self + 0x5c), v);
+static inline void func_ov002_021d7c04_inline(Obj021efeb8 *self) {
+    u8 *info = func_0206ede8(self->unk_48);
+    Ov002Shape *v;
+    self->unk_4a = info[0] == 0x80 ? 2 : 1;
+    v = func_02070dcc(self->unk_4b = info[1]);
+    MI_CpuCopy8(v, &self->shape, sizeof(self->shape));
+    func_ov002_021e38f8(self->unk_5c, v);
 }
 
 void func_ov002_021d83f0(Obj021efe9c *self);
@@ -397,14 +403,14 @@ typedef struct Vec2 {
     s32 y;
 } Vec2;
 
-typedef struct Bits021d8b48 {
-    u16 lo : 8;
-    u16 mode : 2;
-    u16 hi : 6;
-} Bits021d8b48;
-
 void func_ov002_021eae48(Ov002StageFile *self);
-extern void *data_ov002_021f0f90[];
+// The board's selection (unk_00, an index into the mode menu) and its top object (func_ov002_021da2fc).
+typedef struct Ov002BoardRef {
+    u8 unk_00;
+    u8 unk_01[0x3];
+    Obj021efe7c *top;
+} Ov002BoardRef;
+extern Ov002BoardRef data_ov002_021f0f90;
 void func_ov002_021df1c4(Obj021eff30 *self);
 
 typedef struct Bits16 {
@@ -436,11 +442,43 @@ extern VFunc data_ov002_021f0684[];
 extern VFunc data_ov002_021f00ec[];
 extern Ov002Obj021f07d4 *data_ov002_021f0f98; // the model being drawn (func_ov002_021e5b08)
 void func_ov002_021ddd80(void *self);
-void func_ov002_021da430(void *self);
+void func_ov002_021da430(Obj021efe7c *self);
 void func_ov002_021dddd0(Obj021efef0 *self);
 void func_ov002_021dbdb8(Obj021eff10 *self);
 void func_ov002_021db64c(Obj021eff50 *self);
-void func_ov002_021d6ec4(void *self);
+void func_ov002_021d6ec4(Obj021efe4c *self);
+void func_ov002_021d6e48(Obj021efe4c *self);
+void func_ov002_021d7058(Obj021efe4c *self);
+void func_ov002_021d7238(Obj021efe4c *self);
+void func_ov002_021d7320(Obj021efe4c *self, s32 t, s32 range);
+void func_ov002_021d9444(Obj021efe6c *self);
+void func_ov002_021d98ac(Obj021efe6c *self);
+void func_ov002_021d9c04(Obj021efe6c *self);
+void func_ov002_021d9e38(Obj021efe6c *self, Obj021efeb8 *node);
+void func_ov002_021d9ed8(Obj021efe6c *self, Obj021efeb8 *obj, bool del);
+void func_ov002_021da054(Obj021efe6c *self);
+void func_ov002_021da184(Obj021efe6c *self, Obj021efeb8 *obj);
+u8 *func_ov002_021dd9d4(Obj021efe6c *self);
+u16 func_ov002_021d9e30(Obj021efeb8 *self);
+void func_ov002_021d8b04(Obj021efe9c *self, Vec2 *out);
+void func_ov002_021d8b2c(Obj021efe9c *self, Vec2 *out);
+Ov002Shape *func_ov002_021d8b40(Obj021efe9c *self);
+u8 func_ov002_021d8b48(Obj021efe9c *self);
+u8 func_ov002_021d8b74(Obj021efe9c *self);
+void func_ov002_021d8b7c(Obj021efe9c *self);
+void func_ov002_021d8ba4(Obj021efe9c *self);
+void func_ov002_021d8bcc(Obj021efe9c *self);
+s32 func_ov002_021dc834(Obj021efe9c *self);
+void func_ov002_021d7c54(Obj021efe9c *self, u16 rot);
+void func_ov002_021df7b4(Obj021efe9c *self, Vec2 *pos);
+void func_ov002_021dbd08(Obj021eff50 *self, VObj *child, s32 state);
+Obj021efe6c *func_ov002_021dc270(Obj021eff50 *self);
+Obj021eff10 *Ov002Vt_021eff10_Ctor(Obj021eff10 *self);
+Obj021efef0 *Ov002Vt_021efef0_Ctor(Obj021efef0 *self);
+void func_ov002_021dfc44(Obj021efef0 *self, u16 id);
+void func_ov002_021d7b80(Obj021efeb8 *self);
+void func_ov002_021d7e54(Obj021efe9c *self);
+void func_ov002_021d8e48(Obj021efed4 *self);
 void func_ov002_021eae3c(Ov002StageFile *self);
 
 typedef struct Nibbles16 {
@@ -476,7 +514,7 @@ void func_ov000_021c524c(void *a, void *b, VecFx32 *pos, s32 d);
 
 extern VFunc data_ov000_021ccbe0[];
 void func_ov000_021c3bb0(void *self);
-void func_ov002_021d95e0(void *a);
+void func_ov002_021d95e0(Obj021efe6c *a);
 
 static inline void *func_ov002_021e0b08_inline(void *self) {
     void *prev;
@@ -509,7 +547,9 @@ typedef struct Bits021e0420 {
 } Bits021e0420;
 
 extern VFunc data_ov002_021f0ce8[];
-int func_ov002_021e3dac(Vec2 *pos, void *a, void *b, Vec2 *out);
+int func_ov002_021e3dac(Vec2 *pos, Ov002Shape *map, Ov002Shape *shape, Vec2 *out);
+void func_ov002_021d7d5c(Obj021efe9c *self, Ov002Shape *map);
+void func_ov002_021d8c34(Obj021efe9c *self, s32 d, Ov002Shape *map);
 
 
 typedef struct Bits021e2f04 {
@@ -519,7 +559,7 @@ typedef struct Bits021e2f04 {
 } Bits021e2f04;
 
 void func_ov002_021e0280(Obj021eff30 *self);
-void func_ov002_021d7988(void *a);
+void func_ov002_021d7988(Obj021efe5c *self);
 void *func_ov000_0214b724(void *p);
 
 extern char data_ov002_021effde[];
@@ -615,7 +655,7 @@ extern char data_ov002_021f00d8[];
 
 extern VFunc data_ov002_021f07d4[];
 void func_ov002_021e51f8(Ov002Obj021f07d4 *self);
-void func_ov002_021d9728(void *p);
+void func_ov002_021d9728(Obj021efe6c *p);
 
 void func_ov002_021e391c(s32 *m, int rot);
 
@@ -627,11 +667,10 @@ extern u8 data_ov002_021f0647[];
 BOOL func_ov000_0218f110(void *p);
 extern char data_ov002_021efdf6[];
 
-void func_ov002_021d9504(void *self);
+void func_ov002_021d9504(Obj021efe6c *self);
 void func_ov002_021ebfd0(Ov002Msg021f0ce8 *p);
 extern VFunc data_ov002_021efe6c[];
 
-void func_ov002_021da184(void *self, void *p);
 void func_ov000_021c9544(void *a, void *b);
 typedef struct Bits021d9e38 {
     u16 b0 : 1;
@@ -655,7 +694,9 @@ void func_ov002_021eacd0(Ov002StageFile *self);
 void Gfx3DState_Init(void *p);
 void func_ov002_021e7cb4(Ov002Stage *self);
 
-BOOL func_ov002_021e41cc(Vec2 *a, Vec2 *b, void *c, void *d, Vec2 *out);
+BOOL func_ov002_021e41cc(Vec2 *a, Vec2 *b, Ov002Shape *c, Ov002Shape *d, Vec2 *out);
+BOOL func_ov002_021e4578(const Vec2 *pos, const Vec2 *d, Ov002Shape *map, Ov002Shape *shape);
+BOOL func_ov002_021e45c4(Obj021efeb8 *self, Obj021efeb8 *list, Ov002Shape *map);
 void func_ov002_021e63f0(Ov002Obj021f075c *self);
 extern VFunc data_ov002_021f0694[];
 

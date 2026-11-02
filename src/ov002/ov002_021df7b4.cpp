@@ -2,12 +2,12 @@
 
 extern "C" {
 
-void func_ov002_021df7b4(void *self, u32 *ev) {
-    u16 y = ev[1];
-    u16 x = ev[0];
-    FIELD(self, 0x54, s32) = x;
-    FIELD(self, 0x58, s32) = y;
-    func_ov002_021e3b0c((s32 *)((u8 *)self + 0x4), (s32 *)((u8 *)self + 0x54), (s32 *)((u8 *)self + 0x64));
+void func_ov002_021df7b4(Obj021efe9c *self, Vec2 *pos) {
+    u16 y = pos->y;
+    u16 x = pos->x;
+    self->unk_54 = x;
+    self->unk_58 = y;
+    func_ov002_021e3b0c(&self->trans.x, &self->unk_54, &self->unk_64);
 }
 
 }

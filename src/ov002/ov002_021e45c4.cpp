@@ -2,7 +2,7 @@
 
 extern "C" {
 
-BOOL func_ov002_021e4578(const Vec2 *pos, const Vec2 *d, void *a, void *b) {
+BOOL func_ov002_021e4578(const Vec2 *pos, const Vec2 *d, Ov002Shape *a, Ov002Shape *b) {
     Vec2 p;
     Vec2 out;
     p.x = pos->x + d->x;
@@ -10,21 +10,21 @@ BOOL func_ov002_021e4578(const Vec2 *pos, const Vec2 *d, void *a, void *b) {
     return !func_ov002_021e3dac(&p, a, b, &out);
 }
 
-BOOL func_ov002_021e45c4(void *self, void *list, void *a2) {
+BOOL func_ov002_021e45c4(Obj021efeb8 *self, Obj021efeb8 *list, Ov002Shape *a2) {
     Vec2 p;
     Vec2 q;
-    p.x = FIELD(self, 0x54, s32);
-    p.y = FIELD(self, 0x58, s32);
-    if (func_ov002_021e3dac(&p, a2, (u8 *)self + 0x4c, NULL)) {
+    p.x = self->unk_54;
+    p.y = self->unk_58;
+    if (func_ov002_021e3dac(&p, a2, &self->shape, NULL)) {
         return TRUE;
     }
-    for (; list != NULL; list = FIELD(list, 0x70, void *)) {
+    for (; list != NULL; list = list->next) {
         if (list == self) {
             continue;
         }
-        q.x = FIELD(list, 0x54, s32);
-        q.y = FIELD(list, 0x58, s32);
-        if (func_ov002_021e41cc(&p, &q, (u8 *)self + 0x4c, (u8 *)list + 0x4c, 0)) {
+        q.x = list->unk_54;
+        q.y = list->unk_58;
+        if (func_ov002_021e41cc(&p, &q, &self->shape, &list->shape, 0)) {
             return TRUE;
         }
     }

@@ -2,59 +2,59 @@
 
 extern "C" {
 
-void *Ov002Vt_021efe8c_Dtor(void *self) {
-    Ov002Vt_021efe3c_Dtor((u8 *)self + 0x4);
+Obj021efe8c *Ov002Vt_021efe8c_Dtor(Obj021efe8c *self) {
+    Ov002Vt_021efe3c_Dtor(&self->mdl);
     return self;
 }
 
-void *Ov002Vt_021efe8c_DtorDelete(void *self) {
-    Ov002Vt_021efe3c_Dtor((u8 *)self + 0x4);
+Obj021efe8c *Ov002Vt_021efe8c_DtorDelete(Obj021efe8c *self) {
+    Ov002Vt_021efe3c_Dtor(&self->mdl);
     Heap_Free(self);
     return self;
 }
 
-void func_ov002_021d788c(void *self) {
-    s32 v = FIELD(self, 0x30, s32);
-    if (FIELD(self, 0x24, s32 *) != NULL) {
-        *FIELD(self, 0x24, s32 *) = v;
+void func_ov002_021d788c(Obj021efe8c *self) {
+    s32 v = self->mdl.frame;
+    if (self->mdl.anm[0] != NULL) {
+        self->mdl.anm[0]->frame = v;
     }
-    if (FIELD(self, 0x28, s32 *) != NULL) {
-        *FIELD(self, 0x28, s32 *) = v;
+    if (self->mdl.anm[1] != NULL) {
+        self->mdl.anm[1]->frame = v;
     }
-    if (FIELD(self, 0x2c, s32 *) != NULL) {
-        *FIELD(self, 0x2c, s32 *) = v;
+    if (self->mdl.anm[2] != NULL) {
+        self->mdl.anm[2]->frame = v;
     }
-    FIELD(self, 0x30, s32) = (FIELD(self, 0x30, s32) + 0x1000) % FIELD(self, 0x34, s32);
+    self->mdl.frame = (self->mdl.frame + 0x1000) % self->mdl.frameCount;
 }
 
-void *Ov002Vt_021efe5c_Dtor(void *self) {
-    func_02041558((Model *)((u8 *)self + 0x74));
-    func_02041278((PlttRes *)((u8 *)self + 0xfc));
-    Ov002Vt_021efe3c_Dtor((u8 *)self + 0x4);
+Obj021efe5c *Ov002Vt_021efe5c_Dtor(Obj021efe5c *self) {
+    func_02041558(&self->model);
+    func_02041278(&self->model.pltt);
+    Ov002Vt_021efe3c_Dtor(&self->mdl);
     return self;
 }
 
-void *Ov002Vt_021efe5c_DtorDelete(void *self) {
-    func_02041558((Model *)((u8 *)self + 0x74));
-    func_02041278((PlttRes *)((u8 *)self + 0xfc));
-    Ov002Vt_021efe3c_Dtor((u8 *)self + 0x4);
+Obj021efe5c *Ov002Vt_021efe5c_DtorDelete(Obj021efe5c *self) {
+    func_02041558(&self->model);
+    func_02041278(&self->model.pltt);
+    Ov002Vt_021efe3c_Dtor(&self->mdl);
     Heap_Free(self);
     return self;
 }
 
-void func_ov002_021d792c(void *self) {
-    s32 v = FIELD(self, 0x30, s32);
-    if (FIELD(self, 0x24, s32 *) != NULL) {
-        *FIELD(self, 0x24, s32 *) = v;
+void func_ov002_021d792c(Obj021efe5c *self) {
+    s32 v = self->mdl.frame;
+    if (self->mdl.anm[0] != NULL) {
+        self->mdl.anm[0]->frame = v;
     }
-    if (FIELD(self, 0x28, s32 *) != NULL) {
-        *FIELD(self, 0x28, s32 *) = v;
+    if (self->mdl.anm[1] != NULL) {
+        self->mdl.anm[1]->frame = v;
     }
-    if (FIELD(self, 0x2c, s32 *) != NULL) {
-        *FIELD(self, 0x2c, s32 *) = v;
+    if (self->mdl.anm[2] != NULL) {
+        self->mdl.anm[2]->frame = v;
     }
-    FIELD(self, 0x30, s32) = (FIELD(self, 0x30, s32) + 0x1000) % FIELD(self, 0x34, s32);
-    FIELD(self, 0x1d8, u32) = (u16)(FIELD(self, 0x1d8, u32) + 1);
+    self->mdl.frame = (self->mdl.frame + 0x1000) % self->mdl.frameCount;
+    self->unk_1d8 = (u16)(self->unk_1d8 + 1);
 }
 
 }

@@ -48,7 +48,7 @@ void func_ov002_021e2fb4(void *self) {
             FIELD(FIELD(self, 0x30, void *), 0x6c, u32) |= 0x200000;
             func_02041c5c(FIELD(self, 0x30, void *), (void *)func_ov002_021e2f04);
             info = func_0206ede8(FIELD(self, 0x38, u16));
-            FIELD(self, 0x3a, u16) = FIELD(func_02070dcc(info[1]), 0x4, Lo8_021e2fb4).lo;
+            FIELD(self, 0x3a, u16) = func_02070dcc(info[1])->unk_4;
             func_02041c18(FIELD(self, 0x30, void *), info[0]);
             func_02041d9c((Model *)FIELD(self, 0x30, void *), 0, FIELD(self, 0x3a, u16));
             FIELD(FIELD(self, 0x30, void *), 0x6c, MdlFlags021e2fb4).alpha = 0x1e;

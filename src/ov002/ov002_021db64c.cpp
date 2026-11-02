@@ -50,7 +50,7 @@ void func_ov002_021db750(Obj021eff50 *self) {
     }
     self->unk_20 = (Lo021cadcc *)o;
     o->width = 0xf8;
-    FIELD(self->unk_20, 0x20, s32) = 2;
+    self->unk_20->rows = 2;
     s = ((u8 *)self->unk_20);
     FIELD(s, 0x64, s16) = 4;
     FIELD(s, 0x66, s16) = 0x97;
@@ -59,13 +59,13 @@ void func_ov002_021db750(Obj021eff50 *self) {
     FIELD(s, 0x58, s32) = -0x100;
     FIELD(s, 0x5c, s32) = 0;
     FIELD(s, 0x60, s32) = -0x666;
-    FIELD(self->unk_20, 0x2c, s32) = 1;
+    self->unk_20->slideMode = 1;
     self->unk_20->vfunc_10(MsgRes_GetString(g, 0xbc));
     self->unk_20->vfunc_14(MsgRes_GetString(g, 0x10a));
     func_ov000_0215bb14(self->unk_20, data_ov002_021efe30);
     self->unk_20->vfunc_08();
     self->unk_20->vfunc_70();
-    FIELD(self->unk_20, 0xc, u32) &= ~2;
+    self->unk_20->flags &= ~2;
     o2 = (UiObj *)Heap_Alloc(0x98);
     if (o2 != NULL) {
         *(VFunc **)o2 = data_ov000_021cac60;
@@ -81,19 +81,19 @@ void func_ov002_021db750(Obj021eff50 *self) {
     FIELD(s, 0x58, s32) = 0x100;
     FIELD(s, 0x5c, s32) = 0;
     FIELD(s, 0x60, s32) = -0x1666;
-    FIELD(self->unk_24, 0x2c, s32) = 1;
-    FIELD(self->unk_24, 0x84, s32) = 3;
-    func_ov000_0215d980(self->unk_24, FIELD(self->unk_04, 0x8a, u16), 0);
+    self->unk_24->slideMode = 1;
+    self->unk_24->unk_84 = 3;
+    func_ov000_0215d980(self->unk_24, ((u16)self->board->unk_8a), 0);
     self->unk_24->vfunc_08();
-    FIELD(self->unk_24, 0xc, u32) &= ~2;
+    self->unk_24->flags &= ~2;
     {
-        B750 *b = &FIELD(FIELD(FIELD(self->unk_04, 0x4, void *), 0x6c, void *), 0x6, B750);
+        B750 *b = &FIELD(FIELD(((void *)self->board->field), 0x6c, void *), 0x6, B750);
         s32 lo = b->a;
         s32 hi = b->b;
         self->unk_28 = lo;
         self->unk_2c = hi;
     }
-    p = FIELD(self->unk_04, 0x4, u8 *);
+    p = ((u8 *)self->board->field);
     if (FIELD(p, 0x5d, u8) == 0) {
         s32 val = 0;
         s32 *q;

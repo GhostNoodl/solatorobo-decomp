@@ -8,8 +8,8 @@ static inline BOOL func_ov002_021db1f0_is5(void *t) {
 void func_ov002_021db1f0(Obj021eff74 *self) {
     switch (self->unk_18) {
     case 0:
-        FIELD(self->unk_0c, 0xc, u32) &= ~2;
-        FIELD(self->unk_10, 0xc, u32) &= ~2;
+        self->unk_0c->flags &= ~2;
+        self->unk_10->flags &= ~2;
         self->unk_18 = 1;
         break;
     case 1:

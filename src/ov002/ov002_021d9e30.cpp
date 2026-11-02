@@ -2,34 +2,34 @@
 
 extern "C" {
 
-u16 func_ov002_021d9e30(void *self) {
-    return FIELD(self, 0x48, u16);
+u16 func_ov002_021d9e30(Obj021efeb8 *self) {
+    return self->unk_48;
 }
 
-void func_ov002_021d9e38(void *self, void *node) {
-    void *p = FIELD(self, 0x6c, void *);
+void func_ov002_021d9e38(Obj021efe6c *self, Obj021efeb8 *node) {
+    Obj021efeb8 *p = self->pieces;
     if (p != NULL) {
         if (p != NULL) {
-            void *q;
+            Obj021efeb8 *q;
             do {
-                q = FIELD(p, 0x70, void *);
+                q = p->next;
                 if (q == NULL) {
                     break;
                 }
                 p = q;
             } while (p != NULL);
         }
-        FIELD(p, 0x70, void *) = node;
-        FIELD(node, 0x74, void *) = p;
+        p->next = node;
+        node->prev = p;
     } else {
-        FIELD(self, 0x6c, void *) = node;
+        self->pieces = node;
     }
     func_ov002_021da184(self, node);
     if (data_0214a424->bits18.mode == 1) {
-        func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
-        func_ov000_021c95ac((u8 *)self + 0x76, data_0214a424->bits18.unk_3 | 0x8000);
+        func_ov000_021c9544(self->unk_76, self->pieces);
+        func_ov000_021c95ac(self->unk_76, data_0214a424->bits18.unk_3 | 0x8000);
     } else {
-        func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
+        func_ov000_021c9544(self->unk_76, self->pieces);
     }
 }
 

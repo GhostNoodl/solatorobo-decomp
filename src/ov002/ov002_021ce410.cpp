@@ -106,8 +106,7 @@ void func_ov002_021ce724(Task021ef4b0 *self) {
 
 extern "C" {
 extern VFunc data_ov000_021cadcc[];
-extern char *data_0208cb7c;
-void func_ov000_021547e8(void *a, void *b, void *c, int d);
+void func_ov000_021547e8(void *a, void *b, const char *c, int d);
 
 typedef struct {
     u32 b0 : 1;

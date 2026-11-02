@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void *Ov002Vt_021efe7c_Dtor(void *self) {
+Obj021efe7c *Ov002Vt_021efe7c_Dtor(Obj021efe7c *self) {
     *(VFunc **)self = data_ov002_021efe7c;
     func_ov002_021da430(self);
     return self;
@@ -96,7 +96,7 @@ void *Ov002Vt_021eff74_Dtor(Obj021eff74 *self) {
     return self;
 }
 
-void *Ov002Vt_021efe6c_Dtor(void *self) {
+void *Ov002Vt_021efe6c_Dtor(Obj021efe6c *self) {
     void *saved;
     *(VFunc **)self = data_ov002_021efe6c;
     func_ov002_021d9504(self);
@@ -104,9 +104,9 @@ void *Ov002Vt_021efe6c_Dtor(void *self) {
     DELETE_VOBJ(FIELD(self, 4, VObj *));
     HEAP_POP(saved);
     HEAP_PUSH(saved);
-    if (FIELD(self, 0x8c, void *) != NULL) {
-        Heap_Free(FIELD(self, 0x8c, void *));
-        FIELD(self, 0x8c, void *) = NULL;
+    if (((void *)self->cam) != NULL) {
+        Heap_Free(((void *)self->cam));
+        self->cam = NULL;
     }
     HEAP_POP(saved);
     return self;
@@ -135,40 +135,40 @@ void *Ov002Vt_021efe9c_Dtor(Obj021efe9c *self) {
 }
 
 void *Ov002Vt_021efeb8_Dtor(Obj021efeb8 *self) {
-    void *prev;
-    void *next;
+    Obj021efeb8 *next;
+    Obj021efeb8 *prev;
     *(VFunc **)self = data_ov002_021efeb8;
-    prev = self->unk_70;
-    if (prev != NULL) {
-        FIELD(prev, 0x74, void *) = self->unk_74;
-    }
-    next = self->unk_74;
+    next = self->next;
     if (next != NULL) {
-        FIELD(next, 0x70, void *) = self->unk_70;
+        next->prev = self->prev;
+    }
+    prev = self->prev;
+    if (prev != NULL) {
+        prev->next = self->next;
     }
     return self;
 }
 
-void *Ov002Vt_021efe4c_Dtor(void *self) {
+void *Ov002Vt_021efe4c_Dtor(Obj021efe4c *self) {
     *(VFunc **)self = data_ov002_021efe4c;
     func_ov002_021d6ec4(self);
     return self;
 }
 
-void *Ov002Vt_021f001c_Dtor(void *self) {
+Ov002Caption *Ov002Vt_021f001c_Dtor(Ov002Caption *self) {
     void *saved;
     *(VFunc **)self = data_ov002_021f001c;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x4, VObj *));
+    DELETE_VOBJ(self->anim);
     HEAP_POP(saved);
     return self;
 }
 
-void *Ov002Vt_021f001c_DtorDelete(void *self) {
+Ov002Caption *Ov002Vt_021f001c_DtorDelete(Ov002Caption *self) {
     void *saved;
     *(VFunc **)self = data_ov002_021f001c;
     HEAP_PUSH(saved);
-    DELETE_VOBJ(FIELD(self, 0x4, VObj *));
+    DELETE_VOBJ(self->anim);
     HEAP_POP(saved);
     Heap_Free(self);
     return self;

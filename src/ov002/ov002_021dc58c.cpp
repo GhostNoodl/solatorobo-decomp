@@ -1,96 +1,72 @@
 #include "ov002/ov002.h"
+#include "ov000/ModelPart.h"
 
 extern "C" {
 
 void func_ov002_021e3b40(s32 *out, s32 x, s32 z, s32 *origin);
 
-
-static inline void *ov002_Model_GetPart(void *self, int idx) {
-    if (idx >= FIELD(self, 0x80, s32)) {
-        return NULL;
-    }
-    return (u8 *)FIELD(self, 0x78, void *) + idx * 0x28;
-}
-
-static inline void ov002_Model_PlayPart(void *model, int idx) {
-    void *res = FIELD(model, 0x28, void *);
-    void *part;
-    void *anim;
-    if (res == NULL) {
-        return;
-    }
-    part = ov002_Model_GetPart(model, idx);
-    if (part != NULL && FIELD(part, 0x4, void *) != NULL) {
-        anim = FIELD(FIELD(part, 0x4, void *), 0x30, void *);
-    } else {
-        anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
-    }
-    func_02042628((Model *)model, anim, (ModelPart *)part, 0);
-}
-
-static inline void updateModel(u8 *m) {
+static inline void updateModel(Obj021efe8c *m) {
     s32 v[3];
-    func_ov002_021e3b40(v, FIELD(m, 0x74, s32), FIELD(m, 0x78, s32), (s32 *)(m + 0x7c));
-    v[1] = FIELD(m, 0x84, s32);
-    FIELD(m, 0x38, s32) = v[0];
-    FIELD(m, 0x3c, s32) = v[1];
-    FIELD(m, 0x40, s32) = v[2];
-    if (FIELD(m, 0x1c, void *) != NULL && func_0203e63c((unsigned int)FIELD(m, 0x20, void *))) {
-        NNS_G3dGlbSetBaseTrans((VecFx32 *)(m + 0x38));
-        NNS_G3dGlbSetBaseScale((VecFx32 *)(m + 0x44));
-        MI_Copy36B(m + 0x50, data_020928b4);
+    func_ov002_021e3b40(v, m->unk_74, m->unk_78, &m->unk_7c);
+    v[1] = m->unk_84;
+    m->mdl.trans.x = v[0];
+    m->mdl.trans.y = v[1];
+    m->mdl.trans.z = v[2];
+    if (m->mdl.renderObj != NULL && func_0203e63c(m->mdl.texTask)) {
+        NNS_G3dGlbSetBaseTrans(&m->mdl.trans);
+        NNS_G3dGlbSetBaseScale(&m->mdl.scale);
+        MI_Copy36B(&m->mdl.rot, data_020928b4);
         NNS_G3dGlb.flag &= ~0xa4;
         NNS_G3dGlbFlushVP();
-        NNS_G3dDraw((NNSG3dRenderObj *)FIELD(m, 0x1c, void *));
+        NNS_G3dDraw(m->mdl.renderObj);
         NNS_G3dGeFlushBuffer();
     }
 }
 
-void func_ov002_021dc58c(Obj021eff10 *self, void *ev) {
+void func_ov002_021dc58c(Obj021eff10 *self, Obj021eff50 *ev) {
     if (self->unk_10 != NULL) {
-        func_02041c20((Model *)self->unk_10, 6, FIELD(FIELD(ev, 0x4, u8 *), 0x6c, void *));
-        ov002_Model_PlayPart(self->unk_10, 6);
+        func_02041c20(self->unk_10, 6, FIELD(((u8 *)ev->board), 0x6c, void *));
+        Model_PlayPart(self->unk_10, 6);
     }
     if (self->unk_18 != 20 && self->unk_18 / 10 != 0) {
-        u8 *m = ((u8 *)self->unk_14);
-        FIELD(m, 0x74, s32) = self->unk_24;
-        FIELD(m, 0x78, s32) = self->unk_28;
-        updateModel(((u8 *)self->unk_14));
+        Obj021efe8c *m = self->unk_14;
+        m->unk_74 = self->unk_24;
+        m->unk_78 = self->unk_28;
+        updateModel(self->unk_14);
     }
     if (self->unk_0c != NULL) {
         self->unk_0c->vfunc_20();
     }
-    FIELD(((u8 *)self->unk_08), 0x1d4, u8) = self->unk_18 == 20;
+    self->unk_08->unk_1d4 = self->unk_18 == 20;
     func_ov002_021d7988(self->unk_08);
 }
 
-void func_ov002_021d9ed8(void *w, void *a, int b);
 
 void func_ov002_021dd7f0(Obj021eff10 *self, void *a, void *b, int c);
 
 void func_ov002_021dc730(Obj021eff10 *self) {
     BOOL done;
-    u8 *w;
-    u8 *a;
-    u8 *next;
-    w = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
+    Obj021efe6c *w;
+    Obj021efe9c *a;
+    Obj021efe9c *next;
+    w = self->owner->board;
     switch (self->unk_18) {
     case 0:
-        for (a = FIELD(w, 0x6c, u8 *); a != NULL; a = FIELD(a, 0x70, u8 *)) {
-            if (FIELD(a, 0x4a, u8) == 1 && FIELD(a, 0x6c, u8) && FIELD(a, 0xa4, s32) == 0) {
-                FIELD(a, 0xa4, s32) = 0xd2;
-                FIELD(a, 0xa8, s32) = 0xd2;
-                FIELD(a, 0xac, s32) = 10;
+        for (a = (Obj021efe9c *)w->pieces; a != NULL; a = (Obj021efe9c *)a->next) {
+            if (a->unk_4a == 1 && a->unk_6c && a->unk_a4 == 0) {
+                a->unk_a4 = 0xd2;
+                a->unk_a8 = 0xd2;
+                a->unk_ac = 10;
             }
         }
         self->unk_18++;
     case 1:
         done = TRUE;
-        a = FIELD(w, 0x6c, u8 *);
+        a = (Obj021efe9c *)w->pieces;
         while (a != NULL) {
-            next = FIELD(a, 0x70, u8 *);
-            if (FIELD(a, 0x4a, u8) == 1 && FIELD(a, 0x6c, u8)) {
-                if (FIELD(a, 0xac, s32) == 3) {
+            next = (Obj021efe9c *)a->next;
+            if (a->unk_4a == 1 && a->unk_6c) {
+                if (a->unk_ac == 3) {
                     func_ov002_021d9ed8(w, a, 1);
                 } else {
                     done = FALSE;

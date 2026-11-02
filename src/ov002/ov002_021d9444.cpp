@@ -2,42 +2,42 @@
 
 extern "C" {
 
-void func_ov002_021d9444(void *self) {
-    FIELD(self, 4, s32) = 0;
+void func_ov002_021d9444(Obj021efe6c *self) {
+    self->field = NULL;
     MI_CpuFill8((u8 *)self + 8, 0, 0x64);
-    FIELD(self, 0x6c, s32) = 0;
-    FIELD(self, 0x70, s32) = 0;
-    FIELD(self, 0x74, u8) = 0;
-    FIELD(self, 0x75, u8) = 0;
+    self->pieces = NULL;
+    self->cells = NULL;
+    self->unk_74 = 0;
+    self->unk_75 = 0;
     MI_CpuFill8((u8 *)self + 0x76, 0, 10);
     MI_CpuFill8((u8 *)self + 0x80, 0, 10);
-    FIELD(self, 0x8a, s16) = 0;
-    FIELD(self, 0x8c, s32) = 0;
-    FIELD(self, 0x90, s32) = 0;
-    FIELD(self, 0x94, s32) = 0;
-    FIELD(self, 0x98, s32) = 0;
-    FIELD(self, 0x9c, s32) = 0;
-    FIELD(self, 0xa0, s32) = 0;
-    FIELD(self, 0xa4, s32) = 0;
-    FIELD(self, 0xa8, s32) = 0;
-    FIELD(self, 0xac, s32) = 0;
-    FIELD(self, 0xb0, s32) = 0;
-    FIELD(self, 0xb4, s32) = 0;
-    FIELD(self, 0xb8, s32) = 0;
-    FIELD(self, 0xbc, s32) = 0;
-    FIELD(self, 0xc0, s32) = 0;
-    FIELD(self, 0xc4, s32) = 0;
+    self->unk_8a = 0;
+    self->cam = NULL;
+    self->unk_90 = 0;
+    self->unk_94 = 0;
+    self->unk_98.x = 0;
+    self->unk_98.y = 0;
+    self->unk_98.z = 0;
+    self->unk_a4.x = 0;
+    self->unk_a4.y = 0;
+    self->unk_a4.z = 0;
+    self->unk_b0.x = 0;
+    self->unk_b0.y = 0;
+    self->unk_b0.z = 0;
+    self->unk_bc.x = 0;
+    self->unk_bc.y = 0;
+    self->unk_bc.z = 0;
 }
 
-void *Ov002Vt_021efe4c_DtorDelete(void *self) {
+void *Ov002Vt_021efe4c_DtorDelete(Obj021efe4c *self) {
     *(VFunc **)self = data_ov002_021efe4c;
     func_ov002_021d6ec4(self);
     Heap_Free(self);
     return self;
 }
 
-void func_ov002_021d9504(void *self) {
-    VObj *o = FIELD(self, 0x6c, VObj *);
+void func_ov002_021d9504(Obj021efe6c *self) {
+    VObj *o = self->pieces;
     while (o != NULL) {
         VObj *next = FIELD(o, 0x70, VObj *);
         void *saved;
@@ -53,9 +53,9 @@ void func_ov002_021d9504(void *self) {
     {
         void *saved;
         HEAP_PUSH(saved);
-        if (FIELD(self, 0x70, void *) != NULL) {
-            Heap_Free(FIELD(self, 0x70, void *));
-            FIELD(self, 0x70, void *) = NULL;
+        if (((void *)self->cells) != NULL) {
+            Heap_Free(((void *)self->cells));
+            self->cells = NULL;
         }
         HEAP_POP(saved);
     }

@@ -19,7 +19,6 @@ s32 **func_ov000_02190a30(void *a, int b);
 void NNSi_G3dModifyPolygonAttrMask(void *a, int b, s32 c);
 
 
-void func_ov002_021d7238(void *self);
 
 extern char data_ov002_021efdd1[];
 
@@ -46,9 +45,9 @@ static inline void ov002_bindPal(void *anim, void *pal) {
     NNS_G3dBindMdlSet(NNS_G3dGetMdlSet((NNSG3dResFileHeader *)(res != NULL ? *res : NULL)), (NNSG3dResTex *)pal);
 }
 
-void func_ov002_021d7058(void *self) {
+void func_ov002_021d7058(Obj021efe4c *self) {
     void *pal;
-    void *src = FIELD(FIELD(self, 0x4, u8 *), 0xfc, void *);
+    void *src = FIELD(((u8 *)self->unk_04), 0xfc, void *);
     Key021d7058 *k;
     s32 x;
     if (src == NULL) {
@@ -56,26 +55,26 @@ void func_ov002_021d7058(void *self) {
     } else {
         pal = NNS_G3dGetTex((NNSG3dResFileHeader *)*(void **)src);
     }
-    FIELD(self, 0x8, void *) = ov002_newAnim();
-    func_ov000_0218ffdc(FIELD(self, 0x8, void *), FIELD(self, 0xc, void *), 0, 1);
-    func_ov000_02190cb0(FIELD(self, 0x8, void *), data_ov002_021efdd1, 0x1000, 0);
-    func_ov000_021915a0(FIELD(self, 0x8, void *));
-    FIELD(FIELD(self, 0x8, u8 *), 0xc2, Bits16).b4 = 0;
-    NNSi_G3dModifyPolygonAttrMask(FIELD(FIELD(self, 0x8, u8 *), 0x4, void *), 1, 0x1f0000);
-    ov002_bindPal(FIELD(self, 0x8, void *), pal);
-    FIELD(FIELD(self, 0x8, u8 *), 0xc2, Bits16).b0 = 1;
-    FIELD(self, 0x10, void *) = ov002_newAnim();
-    func_ov000_0218ffdc(FIELD(self, 0x10, void *), FIELD(self, 0x14, void *), 0, 1);
-    func_ov000_02190cb0(FIELD(self, 0x10, void *), data_ov002_021efdd7, 0x1000, 0);
-    func_ov000_02191618(FIELD(self, 0x10, void *));
-    FIELD(FIELD(self, 0x10, u8 *), 0xc2, Bits16).b4 = 0;
-    ov002_bindPal(FIELD(self, 0x10, void *), pal);
-    FIELD(FIELD(self, 0x10, u8 *), 0xc2, Bits16).b0 = 1;
-    func_ov000_02191780(FIELD(self, 0x10, void *));
+    self->unk_08 = ov002_newAnim();
+    func_ov000_0218ffdc(self->unk_08, self->unk_0c, 0, 1);
+    func_ov000_02190cb0(self->unk_08, data_ov002_021efdd1, 0x1000, 0);
+    func_ov000_021915a0(self->unk_08);
+    FIELD(((u8 *)self->unk_08), 0xc2, Bits16).b4 = 0;
+    NNSi_G3dModifyPolygonAttrMask(FIELD(((u8 *)self->unk_08), 0x4, void *), 1, 0x1f0000);
+    ov002_bindPal(self->unk_08, pal);
+    FIELD(((u8 *)self->unk_08), 0xc2, Bits16).b0 = 1;
+    self->unk_10 = ov002_newAnim();
+    func_ov000_0218ffdc(self->unk_10, self->unk_14, 0, 1);
+    func_ov000_02190cb0(self->unk_10, data_ov002_021efdd7, 0x1000, 0);
+    func_ov000_02191618(self->unk_10);
+    FIELD(((u8 *)self->unk_10), 0xc2, Bits16).b4 = 0;
+    ov002_bindPal(self->unk_10, pal);
+    FIELD(((u8 *)self->unk_10), 0xc2, Bits16).b0 = 1;
+    func_ov000_02191780(self->unk_10);
     k = data_ov002_021eeffc;
     FIELD(self, 0x60, Key021d7058 *) = k;
     {
-        s32 **pp = func_ov000_02190a30(FIELD(self, 0x10, void *), 0);
+        s32 **pp = func_ov000_02190a30(self->unk_10, 0);
         x = 0;
         if (*pp != NULL) {
             x = **pp;
@@ -89,9 +88,9 @@ void func_ov002_021d7058(void *self) {
         k++;
     }
     FIELD(self, 0x64, Key021d7058 *) = k;
-    FIELD(self, 0x5d, u8) = 0;
+    self->unk_5d = 0;
     func_ov002_021d7238(self);
-    FIELD(self, 0x5c, u8) = 1;
+    self->unk_5c = 1;
 }
 
 }

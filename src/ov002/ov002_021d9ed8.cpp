@@ -2,66 +2,59 @@
 
 extern "C" {
 
-typedef struct {
-    u16 b0 : 1;
-    u16 mode : 2;
-    u16 id : 4;
-    u16 rest : 9;
-} Bits9ed8;
-
-void func_ov002_021d9ed8(void *self, void *obj, bool del) {
+void func_ov002_021d9ed8(Obj021efe6c *self, Obj021efeb8 *obj, bool del) {
     s32 j;
     s32 i;
     void *saved;
     s32 rows;
     s32 cols;
-    u8 *grid;
-    void *next = FIELD(obj, 0x70, void *);
-    void *prev = FIELD(obj, 0x74, void *);
+    Ov002Cell *grid;
+    Obj021efeb8 *next = obj->next;
+    Obj021efeb8 *prev = obj->prev;
     if (prev == NULL) {
-        FIELD(self, 0x6c, void *) = next;
+        self->pieces = next;
         if (next != NULL) {
-            FIELD(next, 0x74, void *) = NULL;
+            next->prev = NULL;
         }
     } else {
-        FIELD(prev, 0x70, void *) = next;
+        prev->next = next;
         if (next != NULL) {
-            FIELD(next, 0x74, void *) = prev;
+            next->prev = prev;
         }
     }
-    FIELD(obj, 0x70, void *) = NULL;
-    FIELD(obj, 0x74, void *) = NULL;
+    obj->next = NULL;
+    obj->prev = NULL;
     {
-        u8 *q = FIELD(FIELD(self, 0x4, u8 *), 0x6c, u8 *);
+        Ov002Shape *q = self->field->map;
         u32 h;
-        grid = FIELD(self, 0x70, u8 *);
+        grid = self->cells;
         h = FIELD(q, 4, u16);
         cols = (h << 20) >> 28;
         rows = (h << 16) >> 28;
     }
     for (i = 0; i < rows; i++) {
         for (j = 0; j < cols; j++) {
-            u8 *e = grid + (j + i * cols) * 0xc;
-            if (FIELD(e, 8, void *) == obj) {
-                FIELD(e, 0, u16) = 0xffff;
-                e[2] = 0;
-                e[3] = 0;
-                e[4] = 0;
-                FIELD(e, 8, void *) = NULL;
+            Ov002Cell *e = &grid[j + i * cols];
+            if (e->obj == obj) {
+                e->id = 0xffff;
+                e->unk_2 = 0;
+                e->unk_3 = 0;
+                e->unk_4 = 0;
+                e->obj = NULL;
             }
         }
     }
     if (data_0214a424->bits18.mode == 1) {
-        func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
-        func_ov000_021c95ac((u8 *)self + 0x76, data_0214a424->bits18.unk_3 | 0x8000);
+        func_ov000_021c9544(self->unk_76, self->pieces);
+        func_ov000_021c95ac(self->unk_76, data_0214a424->bits18.unk_3 | 0x8000);
     } else {
-        func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
+        func_ov000_021c9544(self->unk_76, self->pieces);
     }
     if (del) {
         HEAP_PUSH(saved);
         if (obj != NULL) {
             if (obj != NULL) {
-                ((VObj *)(obj))->vfunc_04();
+                obj->vfunc_04();
             }
         }
         HEAP_POP(saved);
@@ -70,49 +63,41 @@ void func_ov002_021d9ed8(void *self, void *obj, bool del) {
 
 void *Heap_AllocArray(u32 size);
 
-void func_ov002_021da054(void *self) {
+void func_ov002_021da054(Obj021efe6c *self) {
     s32 j;
     s32 i;
     s32 rows;
     s32 cols;
-    u8 *p;
-    if (FIELD(self, 0x4, void *) == NULL) {
+    Obj021efeb8 *p;
+    if (self->field == NULL) {
         return;
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        if (FIELD(self, 0x70, void *) != NULL) {
-            Heap_Free(FIELD(self, 0x70, void *));
-            FIELD(self, 0x70, void *) = NULL;
+        if (self->cells != NULL) {
+            Heap_Free(self->cells);
+            self->cells = NULL;
         }
         HEAP_POP(saved);
     }
-    FIELD(self, 0x70, void *) = Heap_AllocArray(FIELD(FIELD(FIELD(self, 0x4, u8 *), 0x6c, u8 *), 0x4, Nibbles16).n3 * FIELD(FIELD(FIELD(self, 0x4, u8 *), 0x6c, u8 *), 0x4, Nibbles16).n2 * 12);
-    cols = FIELD(FIELD(FIELD(self, 0x4, u8 *), 0x6c, u8 *), 0x4, Nibbles16).n2;
-    rows = FIELD(FIELD(FIELD(self, 0x4, u8 *), 0x6c, u8 *), 0x4, Nibbles16).n3;
+    self->cells = (Ov002Cell *)Heap_AllocArray(self->field->map->h * self->field->map->w * sizeof(Ov002Cell));
+    cols = self->field->map->w;
+    rows = self->field->map->h;
     for (i = 0; i < rows; i++) {
         for (j = 0; j < cols; j++) {
-            u8 *e = FIELD(self, 0x70, u8 *) + (j + i * rows) * 12;
-            FIELD(e, 0x0, u16) = 0xffff;
-            FIELD(e, 0x2, u8) = 0;
-            FIELD(e, 0x3, u8) = 0;
-            FIELD(e, 0x4, u8) = 0;
-            FIELD(e, 0x8, s32) = 0;
+            Ov002Cell *e = &self->cells[j + i * rows];
+            e->id = 0xffff;
+            e->unk_2 = 0;
+            e->unk_3 = 0;
+            e->unk_4 = 0;
+            e->obj = NULL;
         }
     }
-    for (p = FIELD(self, 0x6c, u8 *); p != NULL; p = FIELD(p, 0x70, u8 *)) {
+    for (p = self->pieces; p != NULL; p = p->next) {
         func_ov002_021da184(self, p);
     }
 }
-
-typedef struct Cell021da184 {
-    u16 id;
-    u8 a;
-    u8 b;
-    u8 c;
-    void *obj;
-} Cell021da184;
 
 typedef struct Bits021da184 {
     u16 lo : 8;
@@ -122,10 +107,10 @@ typedef struct Bits021da184 {
 
 void func_ov002_021e3aa0(s32 *out, s32 *m, s32 *p, s32 *q, s32 *t);
 
-void func_ov002_021da184(void *self, void *obj) {
-    u8 *g;
+void func_ov002_021da184(Obj021efe6c *self, Obj021efeb8 *obj) {
+    Ov002Shape *g;
     s32 j;
-    u8 *e;
+    Ov002Cell *e;
     s32 i;
     s32 m[4];
     s32 pos[2];
@@ -133,31 +118,31 @@ void func_ov002_021da184(void *self, void *obj) {
     s32 v[2];
     u8 rows;
     u8 cols;
-    pos[0] = FIELD(obj, 0x54, s32);
-    pos[1] = FIELD(obj, 0x58, s32);
-    func_ov002_021e38f8(org, (u8 *)obj + 0x4c);
-    cols = FIELD(obj, 0x50, Nibbles16).n2;
-    rows = FIELD(obj, 0x50, Nibbles16).n3;
-    func_ov002_021e391c(m, FIELD(obj, 0x52, Bits021da184).rot);
+    pos[0] = obj->unk_54;
+    pos[1] = obj->unk_58;
+    func_ov002_021e38f8(org, &obj->shape);
+    cols = obj->shape.w;
+    rows = obj->shape.h;
+    func_ov002_021e391c(m, obj->shape.rot);
     for (i = 0; i < rows; i++) {
         for (j = 0; j < cols; j++) {
-            if (FIELD(obj, 0x4c, u8 *)[i * cols + j] == 1) {
+            if (obj->shape.grid[i * cols + j] == 1) {
                 s32 W;
                 s32 H;
                 v[0] = j;
                 v[1] = i;
                 func_ov002_021e3aa0(v, m, v, org, pos);
-                g = FIELD(FIELD(self, 0x4, u8 *), 0x6c, u8 *);
-                W = FIELD(g, 0x4, Nibbles16).n2;
-                H = FIELD(g, 0x4, Nibbles16).n3;
-                if (v[0] >= 0 && v[1] >= 0 && v[0] < W && v[1] < H && FIELD(g, 0x0, u8 *)[v[1] * H + v[0]] == 0) {
-                    e = (u8 *)&FIELD(self, 0x70, Cell021da184 *)[v[0] + v[1] * H];
-                    u8 *info = func_0206ede8(FIELD(obj, 0x48, u16));
-                    FIELD(e, 0x0, u16) = FIELD(obj, 0x48, u16);
-                    FIELD(e, 0x2, u8) = FIELD(obj, 0x4a, u8);
-                    FIELD(e, 0x3, u8) = info[0];
-                    FIELD(e, 0x4, u8) = info[2];
-                    FIELD(e, 0x8, void *) = obj;
+                g = self->field->map;
+                W = g->w;
+                H = g->h;
+                if (v[0] >= 0 && v[1] >= 0 && v[0] < W && v[1] < H && g->grid[v[1] * H + v[0]] == 0) {
+                    e = &self->cells[v[0] + v[1] * H];
+                    u8 *info = func_0206ede8(obj->unk_48);
+                    e->id = obj->unk_48;
+                    e->unk_2 = obj->unk_4a;
+                    e->unk_3 = info[0];
+                    e->unk_4 = info[2];
+                    e->obj = obj;
                 }
             }
         }

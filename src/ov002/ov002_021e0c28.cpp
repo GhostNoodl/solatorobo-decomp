@@ -1,50 +1,15 @@
 #include "ov002/ov002.h"
 
-typedef struct ov002_Anim021e0c28 {
-    void *vtbl;
-    u32 unk4;
-    u8 unk8[0x1c];
-    s32 unk24;
-    s32 unk28;
-    s32 unk2C;
-    u8 unk30[4];
-    u16 unk34;
-    u8 unk36;
-    s8 unk37;
-    s32 unk38;
-    u8 unk3C[8];
-    u8 unk44[4];
-    u8 unk48[4];
-    s32 unk4C;
-} ov002_Anim021e0c28;
-
-typedef struct ov002_Caption021e0c28 {
-    void *vtbl;
-    ov002_Anim021e0c28 *anim;
-    s32 text;
-    s32 x;
-    s32 y;
-    s32 nextX;
-    s32 nextY;
-    s32 unk1C;
-    s32 fromX;
-    s32 fromY;
-    s32 toX;
-    s32 toY;
-    s32 timer;
-    u8 mode;
-} ov002_Caption021e0c28;
-
 extern "C" {
 
 extern VFunc data_0208ba70[];
 
 void func_0204c7d0(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void TextWin_InitLines(ov002_Anim021e0c28 *a, int b);
+void TextWin_InitLines(Ov002Text2 *a, int b);
 
-static inline ov002_Anim021e0c28 *ov002_Anim_New(void) {
-    ov002_Anim021e0c28 *anim = (ov002_Anim021e0c28 *)Heap_Alloc(0xb8);
+static inline Ov002Text2 *ov002_Anim_New(void) {
+    Ov002Text2 *anim = (Ov002Text2 *)Heap_Alloc(0xb8);
     if (anim != NULL) {
         *(VFunc **)anim = data_0208ba70;
         func_0204c7d0(anim);
@@ -52,14 +17,14 @@ static inline ov002_Anim021e0c28 *ov002_Anim_New(void) {
     return anim;
 }
 
-static inline void ov002_Anim_Start(ov002_Anim021e0c28 *s, s32 a) {
-    s->unk24 = a;
-    s->unk4C = Text_Measure(s->unk28, s->unk38, s->unk24, s->unk44, s->unk48, s->unk37 != 0 ? TRUE : FALSE);
-    data_02097ce0->unk_004 = s->unk28;
+static inline void ov002_Anim_Start(Ov002Text2 *s, s32 str) {
+    s->str = str;
+    s->unk_4c = Text_Measure(s->font, s->spacing, s->str, &s->width, &s->height, s->unk_37 != 0 ? TRUE : FALSE);
+    data_02097ce0->unk_004 = s->font;
 }
 
 
-static inline void ov002_Caption_Lerp(ov002_Caption021e0c28 *self) {
+static inline void ov002_Caption_Lerp(Ov002Caption *self) {
     s32 t;
     s32 dx;
     s32 dy;
@@ -74,11 +39,11 @@ static inline void ov002_Caption_Lerp(ov002_Caption021e0c28 *self) {
     self->y = y;
 }
 
-void func_ov002_021e0c28(ov002_Caption021e0c28 *self) {
+void func_ov002_021e0c28(Ov002Caption *self) {
     if (self->anim == NULL) {
         return;
     }
-    ((VObj *)self->anim)->vfunc_8c();
+    self->anim->vfunc_8c();
     if (self->timer >= 0) {
     switch (self->mode) {
     case 1:
@@ -93,13 +58,13 @@ void func_ov002_021e0c28(ov002_Caption021e0c28 *self) {
                 if (self->anim == NULL) {
                     self->anim = ov002_Anim_New();
                 }
-                ((VObj *)self->anim)->vfunc_08();
-                self->anim->unk28 = 3;
-                self->anim->unk2C = 0;
-                self->anim->unk34 = 1;
+                self->anim->vfunc_08();
+                self->anim->font = 3;
+                self->anim->unk_2c = 0;
+                self->anim->unk_34 = 1;
                 ov002_Anim_Start(self->anim, text);
                 TextWin_InitLines(self->anim, 8);
-                self->anim->unk4 |= 4;
+                self->anim->flags |= 4;
             }
             self->text = 0;
             self->fromX = self->x;

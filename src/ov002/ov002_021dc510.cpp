@@ -2,8 +2,8 @@
 
 extern "C" {
 
-void func_ov002_021dc510(Obj021eff10 *self, void *other) {
-    u8 *o4 = FIELD(other, 4, u8 *);
+void func_ov002_021dc510(Obj021eff10 *self, Obj021eff50 *other) {
+    u8 *o4 = ((u8 *)other->board);
     s32 row = self->unk_28;
     void *q = FIELD(o4, 4, void *);
     s32 col = self->unk_24;
@@ -19,8 +19,8 @@ void func_ov002_021dc510(Obj021eff10 *self, void *other) {
         FIELD(t, 0xcd, u8) = 0;
         FIELD(t, 0x9c, s32) = 0xf85;
     }
-    FIELD(other, 0x28, s32) = self->unk_24;
-    FIELD(other, 0x2c, s32) = self->unk_28;
+    other->unk_28 = self->unk_24;
+    other->unk_2c = self->unk_28;
     func_ov002_021dbdb8(self);
 }
 

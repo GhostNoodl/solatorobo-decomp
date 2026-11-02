@@ -22,7 +22,7 @@ void func_0206d390(void *a, u8 b, u8 c);
 
 u16 func_0206d02c(void *a);
 
-void func_ov002_021d9c04(void *self) {
+void func_ov002_021d9c04(Obj021efe6c *self) {
     u16 id;
     u8 *p;
     u16 i;
@@ -33,7 +33,7 @@ void func_ov002_021d9c04(void *self) {
     u8 r;
     u8 c;
     u8 *shape;
-    for (func_0206d0a8(data_0214a424), n = FIELD(self, 0x6c, u8 *); n != NULL; n = FIELD(n, 0x70, u8 *)) {
+    for (func_0206d0a8(data_0214a424), n = ((u8 *)self->pieces); n != NULL; n = FIELD(n, 0x70, u8 *)) {
         func_0206d0d4(data_0214a424, FIELD(n, 0x48, u16), FIELD(n, 0x54, s32), FIELD(n, 0x58, s32), FIELD(n, 0x52, Bits021da184).rot, 0);
     }
     for (i = 0; i < 0x53; i++) {
@@ -44,7 +44,7 @@ void func_ov002_021d9c04(void *self) {
         }
     }
     {
-        u8 *o = FIELD(self, 0x4, u8 *);
+        u8 *o = ((u8 *)self->field);
         s32 org[2];
         s32 rows;
         org[0] = FIELD(FIELD(o, 0x6c, u8 *), 0x6, Nibbles16).n0;
@@ -55,7 +55,7 @@ void func_ov002_021d9c04(void *self) {
         for (r = 0; r < rows; r++) {
             for (c = 0; c < cols; c++) {
                 u16 k = c + r * cols;
-                if (FIELD(shape, 0x0, u8 *)[k] == 0 && (FIELD(self, 0x70, u8 *) + k * 0xc)[2] != 2) {
+                if (FIELD(shape, 0x0, u8 *)[k] == 0 && (((u8 *)self->cells) + k * 0xc)[2] != 2) {
                     func_0206d3ac(data_0214a424, 1, c, r, org);
                 }
             }
@@ -76,7 +76,7 @@ void func_ov002_021d9c04(void *self) {
     {
         u8 *g;
         u16 c;
-        c = FIELD(self, 0x8a, u16);
+        c = ((u16)self->unk_8a);
         g = (u8 *)data_0214a424;
         if (c > 9999) {
             c = 9999;

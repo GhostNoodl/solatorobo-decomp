@@ -1,78 +1,56 @@
 #include "ov002/ov002.h"
+#include "ov000/ModelPart.h"
 
 extern "C" {
 
-static inline void *ov002_Model_GetPart(void *self, int idx) {
-    if (idx >= FIELD(self, 0x80, s32)) {
-        return NULL;
-    }
-    return (u8 *)FIELD(self, 0x78, void *) + idx * 0x28;
-}
-
-static inline void ov002_Model_PlayPart(void *model, int idx) {
-    void *res = FIELD(model, 0x28, void *);
-    void *part;
-    void *anim;
-    if (res == NULL) {
-        return;
-    }
-    part = ov002_Model_GetPart(model, idx);
-    if (part != NULL && FIELD(part, 0x4, void *) != NULL) {
-        anim = FIELD(FIELD(part, 0x4, void *), 0x30, void *);
-    } else {
-        anim = NNS_G2dGetCellDataByIdx(FIELD(res, 0x4, void *), **(u16 **)FIELD(NNS_G2dGetAnimSequenceByIdx(FIELD(res, 0xc, void *), idx), 0xc, void *));
-    }
-    func_02042628((Model *)model, anim, (ModelPart *)part, 0);
-}
-
-void *Ov002Vt_021f000c_Dtor(void *self) {
+Ov002HudInfo *Ov002Vt_021f000c_Dtor(Ov002HudInfo *self) {
     int i;
     *(VFunc **)self = data_ov002_021f000c;
     for (i = 0; i < 4; i++) {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(((VObj **)((u8 *)self + 8))[i]);
+        DELETE_VOBJ(self->lines[i]);
         HEAP_POP(saved);
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(FIELD(self, 4, VObj *));
+        DELETE_VOBJ(self->unk_04);
         HEAP_POP(saved);
     }
     return self;
 }
 
-void *Ov002Vt_021f000c_DtorDelete(void *self) {
+Ov002HudInfo *Ov002Vt_021f000c_DtorDelete(Ov002HudInfo *self) {
     int i;
     *(VFunc **)self = data_ov002_021f000c;
     for (i = 0; i < 4; i++) {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(((VObj **)((u8 *)self + 8))[i]);
+        DELETE_VOBJ(self->lines[i]);
         HEAP_POP(saved);
     }
     {
         void *saved;
         HEAP_PUSH(saved);
-        DELETE_VOBJ(FIELD(self, 4, VObj *));
+        DELETE_VOBJ(self->unk_04);
         HEAP_POP(saved);
     }
     Heap_Free(self);
     return self;
 }
 
-void func_ov002_021e0ff8(void *self, void *model) {
+void func_ov002_021e0ff8(Ov002HudInfo *self, Model *model) {
     s32 x;
     s32 y;
-    if (FIELD(self, 0x26, u16) == 0xffff) {
+    if (self->shownId == 0xffff) {
         return;
     }
-    x = FIELD(self, 0x18, s32) >> 12;
-    y = FIELD(self, 0x1c, s32) >> 12;
-    if (FIELD(self, 0x29, u8) == 0) {
+    x = self->pos.x >> 12;
+    y = self->pos.y >> 12;
+    if (self->delay == 0) {
         int i;
-        VObj *o;
+        Ov002Text2 *o;
         s32 by;
         /* i has a second, never-taken definition so the backend keeps the
            i = 0 / by order of the source in the loop preheader. */
@@ -82,20 +60,20 @@ void func_ov002_021e0ff8(void *self, void *model) {
         }
         by = y + 0x14;
         do {
-            o = ((VObj **)((u8 *)self + 8))[i];
+            o = self->lines[i];
             o->vfunc_20(i < 2 ? x + 0x12 : x + 0x8a, by + (i % 2) * 16);
             o->vfunc_90();
         } while (++i < 4);
-        o = FIELD(self, 4, VObj *);
-        o->vfunc_20(x + 0x8c + (0x4c - FIELD(o, 0x44, s32)) / 2, y + 4);
-        FIELD(self, 4, VObj *)->vfunc_90();
+        o = self->unk_04;
+        o->vfunc_20(x + 0x8c + (0x4c - o->width) / 2, y + 4);
+        self->unk_04->vfunc_90();
     }
     if (model == NULL) {
         return;
     }
-    FIELD(model, 0x10c, s32) = x << 12;
-    FIELD(model, 0x110, s32) = (y - 0x88) << 12;
-    ov002_Model_PlayPart(model, 0);
+    model->unk_10c = x << 12;
+    model->unk_110 = (y - 0x88) << 12;
+    Model_PlayPart(model, 0);
 }
 
 }

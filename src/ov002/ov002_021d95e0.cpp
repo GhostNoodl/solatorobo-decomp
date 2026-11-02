@@ -10,8 +10,6 @@ typedef struct Bits021d95e0 {
 
 void *GfxCamPos_Init(void *p);
 void func_0206ce78(void *a, u16 b);
-void func_ov002_021d7058(void *self);
-void func_ov002_021d98ac(void *self);
 
 static inline void ov002_Vec_Copy(s32 *src, s32 *dst) {
     dst[0] = src[0];
@@ -25,39 +23,39 @@ static inline void ov002_Vec_Set(s32 *v, s32 x, s32 y, s32 z) {
     v[2] = z;
 }
 
-static inline void ov002_Hud_Set(void *hud, u8 k) {
+static inline void ov002_Hud_Set(Ov002Hud *hud, u8 k) {
     if (hud != NULL) {
         func_ov002_021e2690(hud, k, 0);
     }
 }
 
-void func_ov002_021d95e0(void *self) {
+void func_ov002_021d95e0(Obj021efe6c *self) {
     void *cam;
-    void *t;
+    Task021efba4 *t;
     if (data_0214a424->shapeId == 0x9000 && data_0214a424->bits18.mode != 0) {
         func_0206ce78(data_0214a424, 0x9001);
     }
-    FIELD(FIELD(self, 0x4, void *), 0x68, u16) = data_0214a424->shapeId;
-    func_ov002_021d7058(FIELD(self, 0x4, void *));
+    self->field->unk_68 = data_0214a424->shapeId;
+    func_ov002_021d7058(self->field);
     cam = Heap_Alloc(0x24);
     if (cam != NULL) {
         cam = GfxCamPos_Init(cam);
     }
-    FIELD(self, 0x8c, void *) = cam;
+    self->cam = (struct Ov002CamPos *)cam;
     ov002_Vec_Copy((s32 *)(data_ov002_021eef74 + 0x70), (s32 *)cam);
-    ov002_Vec_Set((s32 *)((u8 *)FIELD(self, 0x8c, void *) + 0xc), -0x2b8, 0, 0x2b8);
-    ov002_Vec_Set((s32 *)((u8 *)FIELD(self, 0x8c, void *) + 0x18), 0, 0x1000, 0);
-    FIELD(self, 0x90, s32) = -1;
-    FIELD(self, 0x94, s32) = 0x14;
+    ov002_Vec_Set((s32 *)((u8 *)((void *)self->cam) + 0xc), -0x2b8, 0, 0x2b8);
+    ov002_Vec_Set((s32 *)((u8 *)((void *)self->cam) + 0x18), 0, 0x1000, 0);
+    self->unk_90 = -1;
+    self->unk_94 = 0x14;
     func_ov002_021d98ac(self);
-    t = Task_FindById(0x1b);
-    if (t != NULL && FIELD(self, 0x75, u8) != 0) {
-        ov002_Hud_Set(FIELD(t, 0x3c, void *), FIELD(self, 0x74, u8));
-        FIELD(self, 0x75, u8) = 0;
+    t = (Task021efba4 *)Task_FindById(0x1b);
+    if (t != NULL && self->unk_75 != 0) {
+        ov002_Hud_Set(t->hud, self->unk_74);
+        self->unk_75 = 0;
     }
-    t = Task_FindById(0x1b);
-    if (t != NULL && FIELD(t, 0x3c, void *) != NULL) {
-        MI_CpuCopy8((u8 *)self + 0x76, FIELD(t, 0x3c, u8 *) + 0x2c, 0x14);
+    t = (Task021efba4 *)Task_FindById(0x1b);
+    if (t != NULL && t->hud != NULL) {
+        MI_CpuCopy8((u8 *)self + 0x76, t->hud->unk_2c, 0x14);
     }
 }
 

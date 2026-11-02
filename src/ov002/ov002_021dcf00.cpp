@@ -13,17 +13,17 @@ static inline void ov002_ShowMsg(void *self, void *str) {
     FIELD(t, 0x20, VObj *)->vfunc_70();
 }
 
-static inline void ov002_CamMove(u8 *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {
-    FIELD(c, 0x90, s32) = 15;
-    FIELD(c, 0x94, s32) = 15;
-    *(VecFx32 *)(c + 0x98) = *(VecFx32 *)FIELD(c, 0x8c, u8 *);
-    *(VecFx32 *)(c + 0xa4) = *(VecFx32 *)(FIELD(c, 0x8c, u8 *) + 0xc);
-    FIELD(c, 0xb0, s32) = px;
-    FIELD(c, 0xb4, s32) = py;
-    FIELD(c, 0xb8, s32) = pz;
-    FIELD(c, 0xbc, s32) = tx;
-    FIELD(c, 0xc0, s32) = ty;
-    FIELD(c, 0xc4, s32) = tz;
+static inline void ov002_CamMove(Obj021efe6c *c, s32 px, s32 py, s32 pz, s32 tx, s32 ty, s32 tz) {
+    c->unk_90 = 15;
+    c->unk_94 = 15;
+    c->unk_98 = c->cam->eye;
+    c->unk_a4 = c->cam->at;
+    c->unk_b0.x = px;
+    c->unk_b0.y = py;
+    c->unk_b0.z = pz;
+    c->unk_bc.x = tx;
+    c->unk_bc.y = ty;
+    c->unk_bc.z = tz;
 }
 
 static inline void *ov002_NewDcee0(void) {
@@ -35,11 +35,11 @@ static inline void *ov002_NewDcee0(void) {
     return p;
 }
 
-static inline u16 sumItems(u8 *w) {
+static inline u16 sumItems(Obj021efe6c *w) {
     u16 sum = 0;
     s32 i;
     for (i = 0; i < 100; i++) {
-        sum += w[8 + i];
+        sum += w->unk_08[i];
     }
     return sum;
 }
@@ -51,10 +51,10 @@ void func_ov002_021dcf00(Obj021eff10 *self) {
     s32 pz;
     s32 tz;
     s32 d;
-    u8 *w;
+    Obj021efe6c *w;
     void *msg;
     trig = data_02097dc8->trig;
-    w = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
+    w = self->owner->board;
     msg = data_02149ef8;
     if (trig & 1) {
         if (sumItems(w) == 0) {
@@ -63,21 +63,21 @@ void func_ov002_021dcf00(Obj021eff10 *self) {
             return;
         }
         {
-            u8 *q = FIELD(w, 0x4, u8 *);
+            u8 *q = ((u8 *)w->field);
             void *p;
             self->unk_24 = FIELD(FIELD(q, 0x6c, u8 *), 6, Nibbles16).n0;
             self->unk_28 = FIELD(FIELD(q, 0x6c, u8 *), 6, Nibbles16).n1;
-            u8 *t;
+            Obj021eff50 *t;
             p = ov002_NewDcee0();
-            t = ((u8 *)self->unk_04);
-            FIELD(t, 0x10, void *) = p;
-            FIELD(t, 0xc, s32) = 0x14;
+            t = self->owner;
+            t->unk_10 = (VObj *)p;
+            t->unk_0c = 0x14;
         }
         func_02049a48(data_02097e4c, 0x1e, -1, -1, -1);
         return;
     }
     if ((trig & 0x20) || (trig & 2)) {
-        d = (u8)self->unk_28 - FIELD(FIELD(FIELD(w, 0x4, u8 *), 0x6c, u8 *), 6, Nibbles16).n1;
+        d = (u8)self->unk_28 - w->field->map->oy;
         px = *(s32 *)(data_ov002_021eef74 + 0x58);
         py = *(s32 *)(data_ov002_021eef74 + 0x5c);
         pz = *(s32 *)(data_ov002_021eef74 + 0x60);

@@ -104,9 +104,8 @@ int func_ov002_021cd104(void) {
 extern "C" {
 extern VFunc data_ov000_021cadcc[];
 extern VFunc data_ov000_021cb920[];
-extern char *data_0208cb7c;
 void func_0204aab0(void *p);
-void func_ov000_021547e8(void *a, void *b, void *c, int d);
+void func_ov000_021547e8(void *a, void *b, const char *c, int d);
 BOOL func_020624d8(void);
 BOOL func_ov000_02188dfc(void);
 void func_ov000_0216f144(void *p);

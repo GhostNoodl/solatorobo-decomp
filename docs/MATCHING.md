@@ -7994,3 +7994,25 @@ Raw-offset macro uses (`FLD`/`FIELD`/`LFLD`/`ST_FLD`/`F`/`BXF`, `src` + `include
   - `protofix2.py` (aligns local prototypes and externs with the definition or the owning shared header; builds, compares and bisects each file);
   - `mdlfld.py` (retypes Model0218fe1c locals and converts their `FLD`s to members; checked per declaration);
   - `fldscan.py` (libclang: the base type of every raw offset) and `rawcnt.sh` (raw-offset counts per overlay).
+
+### Round rsC (ov002 window model record, board/field/piece classes, board HUD typed)
+
+Cleanup only, every function byte-identical: each ov002/ov015 object (242) was compared function by function (code bytes and relocations) with a baseline built at `8e170ed5` after every step, and all 1906 objects again after rebasing onto `b6bf7714` (round pdB; no ov002 file changed upstream). Gate: 0 FAILED, 19/19 ROM checks, `check symbols` OK, `ninja report` 8138 matched (unchanged), `check_drafts.py --score` exit 0. No symbol renames. **ov002 `FIELD(` (src + include): 2395 -> 1001. `void *self` (`grep -rn 'void \*self' src/ov002`): 260 -> 120.**
+
+- **Window model record (`ov002/ObjLayouts.h`).** `Ov002Mdl021efe3c` (0x70, vtable `021efe3c`): arc/name/anim names, the `EffectFile`, `NNSG3dResMdl`, `NNSG3dRenderObj`, the texture task, three `NNSG3dAnmObj *`, frame/frameCount, trans/scale/rot. Its constructor/destructors (`021d7424`), the loader (`021d7620`), the draw (`021d7854`) and the per-frame anim tick inline (`021dc278`, `021de544`, `021deb60`, `021dedf0`, `021e0280`) use it. It is embedded in the cursor `Obj021efe8c` (0x8c) and in `Obj021efe5c` (0x1e8, with a `Model` and a position), which `021ddf18`, `021dbec8` and `021df2ec` build.
+- **Board classes.** `Obj021efe6c` (board, 0xc8: field, piece-count bytes, piece list, cell grid, camera `Ov002CamPos`), `Obj021efe4c` (field, 0x70, with its `Ov002Shape *map`), `Ov002Cell` (0xc grid cell: id and occupying piece), `Ov002Shape` (8 bytes: grid pointer plus the packed size/origin/rotation halfword; replaces the local `GridShape`/`GridMap` of `021e3dac`/`021e41cc`), `Obj021efe7c` (board holder) and `Ov002BoardRef` (`data_ov002_021f0f90`). Pieces (`Obj021efeb8`) have `trans`, `shape` and the `next`/`prev` links; the windows' `owner`, `board` and child members are typed. The board/field/piece API in `ov002.h` takes these types.
+- **Board HUD.** `Ov002Hud` (0x44, vtable `021efb14`, `Task021efba4::hud`; task 0x1b): four `Model *`, five `Ov002Caption`s (0x38, vtable `021f001c`, the sliding captions of `021e0c28`), the info box `Ov002HudInfo` (0x2c, vtable `021f000c`, built by `021e2754`, filled by `021e1148`, drawn by `021e0ff8`), the two count rows and the `row`/`pending` bytes. `Ov002Text2` (the signed-size view of the 0xb8 text window) moved from `StaffRoll.h` to `ObjLayouts.h` and replaces the three file-local text-window structs. The HUD callers (`021d43fc`, `021d5860`, `021d5f60`, `021d637c`, `021d95e0`, `021d9728`, `021dacac`) cast `Task_FindById(0x1b)` to `Task021efba4 *`, and the HUD and caption models go through `Model_PlayPart` (`ov000/ModelPart.h`).
+- **`Main/Res/ArcName.h` (round pdB) adopted.** `ov002.h` includes it instead of its own `char *data_0208cc94`; the file-local `data_0208cb7c`/`data_0208cc88` externs are gone, and the local `func_02035de0`/`func_ov000_021547e8` prototypes take `const char *` names (`021d5860` keeps `void *` for `func_02035de0`: it also passes a `void *` name).
+- **Member pass.** The rsB `lf.py` converted every `FIELD` on a typed pointer to a member access, checking each file against the baseline and reverting what did not match (519 conversions in all).
+- **Kept forms:**
+  - `Cursor_SetMode` keeps the `(char *)` cast on its string initializer (registers swap without it).
+  - `ov002_strSet` takes `const char **`.
+  - `func_ov002_021d9ed8` keeps its `bool del` parameter (it decides the `mov r5` order).
+  - `021dd434` counts through `((u8 *)q->unk_08)[...]`.
+  - `021e38f8` reads the shape halfword as `FIELD(shape, 0x6, u16)`: the bitfield members load it twice.
+  - `021e1d28` frees each HUD model through one `Model *p` temporary.
+  - The `lf.py` partials (`021d7238`, `021d802c`, `021d8fac`) keep the `FIELD`s whose member form changes the code.
+- **Left, and why:**
+  - `func_ov002_021e0ff8` keeps its `(u32)self & 3` second definition of `i`. A plain `for` loop and four other loop forms do not keep the preheader order.
+  - The largest remaining `FIELD` files are `021da960`, `021ef150`, `021d69d4`, `021d1258`, `021e4b80` (stage), `021e2fb4` and `021db9e8`. Their bases are still `void *`/`u8 *` task, event and list pointers.
+- **Scratch:** session scratchpad `rsC/`: the rsB tools re-pointed, plus `c1.py` (compare named objects), `winpass*.py` (owner/board/cell retype passes) and the `tryedit.py` specs used.

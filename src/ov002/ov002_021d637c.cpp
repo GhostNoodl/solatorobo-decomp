@@ -63,7 +63,7 @@ void func_ov002_021d637c(Task021efc24 *self) {
     u16 keys;
     u8 *p;
     void *o;
-    void *x;
+    Task021efba4 *x;
     if (self->unk_5c != NULL) {
         return;
     }
@@ -106,9 +106,9 @@ void func_ov002_021d637c(Task021efc24 *self) {
     self->unk_50->flags |= 4;
     self->unk_54->flags |= 4;
     self->unk_54->flags |= 2;
-    x = Task_FindById(0x1b);
-    if (x != NULL && FIELD(x, 0x3c, void *) != NULL) {
-        func_ov002_021e2690(FIELD(x, 0x3c, void *), z, z);
+    x = (Task021efba4 *)Task_FindById(0x1b);
+    if (x != NULL && x->hud != NULL) {
+        func_ov002_021e2690(x->hud, z, z);
     }
 }
 

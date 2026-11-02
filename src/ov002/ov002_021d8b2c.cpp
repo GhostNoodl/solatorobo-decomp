@@ -2,58 +2,58 @@
 
 extern "C" {
 
-void func_ov002_021d8b2c(void *self, Vec2 *out) {
-    out->x = FIELD(self, 0x64, s32);
-    out->y = FIELD(self, 0x68, s32);
+void func_ov002_021d8b2c(Obj021efe9c *self, Vec2 *out) {
+    out->x = self->unk_64;
+    out->y = self->unk_68;
 }
 
-void *func_ov002_021d8b40(void *self) {
-    return (u8 *)self + 0x4c;
+Ov002Shape *func_ov002_021d8b40(Obj021efe9c *self) {
+    return &self->shape;
 }
 
-u8 func_ov002_021d8b48(void *self) {
-    return FIELD(self, 0x52, Bits021d8b48).mode;
+u8 func_ov002_021d8b48(Obj021efe9c *self) {
+    return self->shape.rot;
 }
 
 void Ov002_MultVec33(void *a, void *b, void *c) {
     MTX_MultVec33((VecFx32 *)c, (MtxFx33 *)b, (VecFx32 *)a);
 }
 
-u8 func_ov002_021d8b74(void *self) {
-    return FIELD(self, 0x4a, u8);
+u8 func_ov002_021d8b74(Obj021efe9c *self) {
+    return self->unk_4a;
 }
 
-void func_ov002_021d8b7c(void *self) {
-    if (FIELD(self, 0xa4, s32) == 0 && FIELD(self, 0xac, s32) == 1) {
-        FIELD(self, 0xa4, s32) = 5;
-        FIELD(self, 0xa8, s32) = 5;
-        FIELD(self, 0xac, s32) = 6;
+void func_ov002_021d8b7c(Obj021efe9c *self) {
+    if (self->unk_a4 == 0 && self->unk_ac == 1) {
+        self->unk_a4 = 5;
+        self->unk_a8 = 5;
+        self->unk_ac = 6;
     }
 }
 
-void func_ov002_021d8ba4(void *self) {
-    if (FIELD(self, 0xa4, s32) == 0 && FIELD(self, 0xac, s32) == 2) {
-        FIELD(self, 0xa4, s32) = 5;
-        FIELD(self, 0xa8, s32) = 5;
-        FIELD(self, 0xac, s32) = 7;
+void func_ov002_021d8ba4(Obj021efe9c *self) {
+    if (self->unk_a4 == 0 && self->unk_ac == 2) {
+        self->unk_a4 = 5;
+        self->unk_a8 = 5;
+        self->unk_ac = 7;
     }
 }
 
-void func_ov002_021d8bcc(void *self) {
-    if (FIELD(self, 0xac, s32) == 8) {
+void func_ov002_021d8bcc(Obj021efe9c *self) {
+    if (self->unk_ac == 8) {
         return;
     }
-    if (FIELD(self, 0xa4, s32) != 0) {
+    if (self->unk_a4 != 0) {
         return;
     }
     func_ov002_021e3b0c((s32 *)((u8 *)self + 0xbc), (s32 *)((u8 *)self + 0x54), (s32 *)((u8 *)self + 0x64));
-    FIELD(self, 0xc0, s32) = 0x400;
-    FIELD(self, 0xb0, s32) = 0xb33;
-    FIELD(self, 0xb8, s32) = 0;
-    FIELD(self, 0xb4, s32) = 0x400;
-    FIELD(self, 0xa4, s32) = 0x14;
-    FIELD(self, 0xa8, s32) = 0x14;
-    FIELD(self, 0xac, s32) = 8;
+    self->unk_bc.y = 0x400;
+    self->unk_b0.x = 0xb33;
+    self->unk_b0.z = 0;
+    self->unk_b0.y = 0x400;
+    self->unk_a4 = 0x14;
+    self->unk_a8 = 0x14;
+    self->unk_ac = 8;
 }
 
 }

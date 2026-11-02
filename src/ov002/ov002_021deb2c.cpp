@@ -2,7 +2,7 @@
 
 extern "C" {
 
-void func_ov002_021deb2c(Obj021efef0 *self, void *dst) {
+void func_ov002_021deb2c(Obj021efef0 *self, Obj021eff50 *dst) {
     void *node = FIELD(self, 0x24, void *);
     u16 id;
     if (node != NULL) {
@@ -10,9 +10,9 @@ void func_ov002_021deb2c(Obj021efef0 *self, void *dst) {
     } else {
         id = 0xffff;
     }
-    FIELD(dst, 0x28, s32) = self->unk_2c;
-    FIELD(dst, 0x2c, s32) = self->unk_30;
-    FIELD(dst, 0x30, u16) = id;
+    dst->unk_28 = self->unk_2c;
+    dst->unk_2c = self->unk_30;
+    dst->unk_30 = id;
     func_ov002_021dddd0(self);
 }
 

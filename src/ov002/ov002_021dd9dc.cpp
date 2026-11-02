@@ -17,9 +17,6 @@ typedef struct Rot021dd9dc {
     u16 hi : 6;
 } Rot021dd9dc;
 
-void func_ov002_021d9ed8(void *w, void *a, int b);
-void func_ov002_021d7b80(void *self);
-void func_ov002_021d7e54(void *self);
 
 static inline void ov002_Piece_SetRot(void *self, u16 rot) {
     FIELD(self, 0x52, Rot021dd9dc).rot = rot;
@@ -54,46 +51,46 @@ static inline void ov002_Piece_SetRot(void *self, u16 rot) {
     }
 }
 
-static inline void ov002_Board_Add(void *self, void *node) {
-    void *p = FIELD(self, 0x6c, void *);
+static inline void ov002_Board_Add(Obj021efe6c *self, Obj021efeb8 *node) {
+    Obj021efeb8 *p = self->pieces;
     if (p != NULL) {
         if (p != NULL) {
-            void *q;
+            Obj021efeb8 *q;
             do {
-                q = FIELD(p, 0x70, void *);
+                q = p->next;
                 if (q == NULL) {
                     break;
                 }
                 p = q;
             } while (p != NULL);
         }
-        FIELD(p, 0x70, void *) = node;
-        FIELD(node, 0x74, void *) = p;
+        p->next = node;
+        node->prev = p;
     } else {
-        FIELD(self, 0x6c, void *) = node;
+        self->pieces = node;
     }
     func_ov002_021da184(self, node);
     if (data_0214a424->bits18.mode == 1) {
-        func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
-        func_ov000_021c95ac((u8 *)self + 0x76, data_0214a424->bits18.unk_3 | 0x8000);
+        func_ov000_021c9544(self->unk_76, self->pieces);
+        func_ov000_021c95ac(self->unk_76, data_0214a424->bits18.unk_3 | 0x8000);
     } else {
-        func_ov000_021c9544((u8 *)self + 0x76, FIELD(self, 0x6c, void *));
+        func_ov000_021c9544(self->unk_76, self->pieces);
     }
 }
 
 // `w` is an unused register parameter reused as a local: it has to be numbered
 // below every compiler temp, which only a parameter is. Each new piece reuses `a`
 // (the first loop's cursor), so it is a split web of `a` with the target's register.
-void func_ov002_021dd9dc(Obj021eff10 *self, u8 *w) {
+void func_ov002_021dd9dc(Obj021eff10 *self, Obj021efe6c *w) {
     Ent021dd9dc *e;
-    w = FIELD(((u8 *)self->unk_04), 0x4, u8 *);
-    u8 *a;
-    u8 *next;
-    a = FIELD(w, 0x6c, u8 *);
+    w = self->owner->board;
+    Obj021efe9c *a;
+    Obj021efe9c *next;
+    a = (Obj021efe9c *)w->pieces;
     if (a != NULL) {
         do {
-            next = FIELD(a, 0x70, u8 *);
-            if (FIELD(a, 0x4a, u8) == 1) {
+            next = (Obj021efe9c *)a->next;
+            if (a->unk_4a == 1) {
                 func_ov002_021d9ed8(w, a, 1);
             }
             a = next;
@@ -104,40 +101,40 @@ void func_ov002_021dd9dc(Obj021eff10 *self, u8 *w) {
         do {
             u16 id = e->id | 0x2000;
             if (func_0206ede8(id)[0] != 0x80) {
-            a = (u8 *)Heap_Alloc(0xd4);
+            a = (Obj021efe9c *)Heap_Alloc(sizeof(Obj021efe9c));
             if (a != NULL) {
                 *(VFunc **)a = data_ov002_021efeb8;
                 func_ov002_021d7b80(a);
                 *(VFunc **)a = data_ov002_021efe9c;
                 func_ov002_021d7e54(a);
             }
-            FIELD(a, 0x48, u16) = id;
-            ((VObj *)(a))->vfunc_08();
-            if (FIELD(a, 0xac, s32) != 2) {
-                FIELD(a, 0xac, s32) = 2;
-                FIELD(a, 0xa4, s32) = 0;
-                FIELD(a, 0xa8, s32) = 5;
+            a->unk_48 = id;
+            a->vfunc_08();
+            if (a->unk_ac != 2) {
+                a->unk_ac = 2;
+                a->unk_a4 = 0;
+                a->unk_a8 = 5;
             }
             {
-                Nibbles16 *d = &FIELD(FIELD(FIELD(w, 0x4, u8 *), 0x6c, u8 *), 0x6, Nibbles16);
-                s32 n0 = d->n0;
-                s32 n1 = d->n1;
-                FIELD(a, 0x64, s32) = n0;
-                FIELD(a, 0x68, s32) = n1;
+                Ov002Shape *d = w->field->map;
+                s32 n0 = d->ox;
+                s32 n1 = d->oy;
+                a->unk_64 = n0;
+                a->unk_68 = n1;
             }
             {
                 s32 x = e->x;
                 s32 y = e->y;
-                FIELD(a, 0x54, s32) = x;
-                FIELD(a, 0x58, s32) = y;
+                a->unk_54 = x;
+                a->unk_58 = y;
             }
-            func_ov002_021e3b0c((s32 *)(a + 0x4), (s32 *)(a + 0x54), (s32 *)(a + 0x64));
+            func_ov002_021e3b0c(&a->trans.x, &a->unk_54, &a->unk_64);
             ov002_Piece_SetRot(a, (u8)e->rot);
             ov002_Board_Add(w, a);
             }
         } while ((++e)->id != 0xffff);
     }
-    MI_CpuCopy8((u8 *)data_0214a424 + 0x2a, w + 0x8, 0x64);
+    MI_CpuCopy8((u8 *)data_0214a424 + 0x2a, w->unk_08, sizeof(w->unk_08));
 }
 
 }

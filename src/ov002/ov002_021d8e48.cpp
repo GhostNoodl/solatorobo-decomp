@@ -2,22 +2,22 @@
 
 extern "C" {
 
-void func_ov002_021d8e48(void *self) {
-    FIELD(self, 0x78, s32) = 0;
-    FIELD(self, 0x7c, s32) = 0;
-    FIELD(self, 0x80, s32) = 0;
-    FIELD(self, 0x84, s32) = 0;
-    FIELD(self, 0x88, s32) = 0;
-    FIELD(self, 0x8c, s32) = 0;
-    FIELD(self, 0x90, s32) = 0;
-    FIELD(self, 0x94, u8) = 0;
-    FIELD(self, 0x98, s32) = 0;
-    FIELD(self, 0x9c, u8) = 0;
-    FIELD(self, 0xa0, s32) = 0;
-    FIELD(self, 0xa4, s32) = 0x1000;
-    FIELD(self, 0xa8, s16) = 0;
-    FIELD(self, 0xac, s32) = 0;
-    FIELD(self, 0xb0, s32) = 0;
+void func_ov002_021d8e48(Obj021efed4 *self) {
+    self->unk_78 = NULL;
+    self->unk_7c = NULL;
+    self->unk_80 = NULL;
+    self->unk_84 = NULL;
+    self->unk_88 = NULL;
+    self->unk_8c = NULL;
+    self->unk_90 = NULL;
+    self->unk_94 = 0;
+    self->unk_98 = 0;
+    self->unk_9c = 0;
+    self->unk_a0 = 0;
+    self->unk_a4 = 0x1000;
+    self->unk_a8 = 0;
+    self->unk_ac = 0;
+    self->unk_b0 = NULL;
 }
 
 void func_ov002_021d8e90(Obj021efed4 *self) {

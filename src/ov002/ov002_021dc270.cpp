@@ -2,8 +2,8 @@
 
 extern "C" {
 
-s32 func_ov002_021dc270(void *self) {
-    return FIELD(self, 0x4, s32);
+Obj021efe6c *func_ov002_021dc270(Obj021eff50 *self) {
+    return self->board;
 }
 
 }

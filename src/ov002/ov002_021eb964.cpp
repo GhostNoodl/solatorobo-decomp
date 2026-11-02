@@ -19,11 +19,11 @@ extern char data_ov002_021f0d7d[];
 void func_ov002_021eb964(Ov002StageFile *self) {
     s32 texSize;
     s32 sneSize;
-    char *p = FIELD(self, 0x8, char *) + 0x10;
+    char *p = ((char *)self->data) + 0x10;
     while (TRUE) {
         if (STD_CompareNString(p, data_ov002_021f0d1e, 8) == 0) {
             s32 hdr[2];
-            FIELD(self, 0x10, char *) = p;
+            self->unk_10 = (u8 *)p;
             MI_CpuCopy8(p + 8, hdr, 8);
             p += hdr[0] * hdr[1] + 0x18;
         } else if (STD_CompareNString(p, data_ov002_021f0d26, 8) == 0) {
@@ -32,7 +32,7 @@ void func_ov002_021eb964(Ov002StageFile *self) {
             s32 n;
             char *q;
             int i;
-            FIELD(self, 0x14, char *) = p;
+            self->unk_14 = (u8 *)p;
             MI_CpuCopy8(p + 8, hdr, 8);
             n = hdr[0];
             q = p + 0x10;
@@ -44,22 +44,22 @@ void func_ov002_021eb964(Ov002StageFile *self) {
             }
             p = q + 8;
         } else if (STD_CompareNString(p, data_ov002_021f0d2e, 8) == 0) {
-            FIELD(self, 0x18, char *) = p;
+            self->unk_18 = (u8 *)p;
             MI_CpuCopy8(p + 0xc, &texSize, 4);
             p += texSize + 0x18;
         } else if (STD_CompareNString(p, data_ov002_021f0d36, 8) == 0) {
             s32 hdr[2];
-            FIELD(self, 0x1c, char *) = p;
+            self->unk_1c = (u8 *)p;
             MI_CpuCopy8(p + 8, hdr, 8);
             p += hdr[0] * hdr[1] + 0x18;
         } else if (STD_CompareNString(p, data_ov002_021f0d3e, 8) == 0) {
             s32 hdr[2];
-            FIELD(self, 0x20, char *) = p;
+            self->unk_20 = (u8 *)p;
             MI_CpuCopy8(p + 8, hdr, 8);
             p += hdr[0] * hdr[1] + 0x18;
         } else if (STD_CompareNString(p, data_ov002_021f0d46, 8) == 0) {
             s32 hdr[2];
-            FIELD(self, 0x24, char *) = p;
+            self->unk_24 = (u8 *)p;
             MI_CpuCopy8(p + 8, hdr, 8);
             p += hdr[0] * hdr[1] + 0x18;
         } else if (STD_CompareNString(p, data_ov002_021f0d4e, 8) == 0) {
@@ -68,7 +68,7 @@ void func_ov002_021eb964(Ov002StageFile *self) {
             s32 n;
             char *q;
             int i;
-            FIELD(self, 0x30, char *) = p;
+            self->unk_30 = (u8 *)p;
             MI_CpuCopy8(p + 8, hdr, 8);
             n = hdr[0];
             q = p + 0x10;
@@ -81,11 +81,11 @@ void func_ov002_021eb964(Ov002StageFile *self) {
             p = q + 8;
         } else if (STD_CompareNString(p, data_ov002_021f0d56, 8) == 0) {
             s32 hdr[2];
-            FIELD(self, 0x28, char *) = p;
+            self->unk_28 = (u8 *)p;
             MI_CpuCopy8(p + 8, hdr, 8);
             p += hdr[0] * hdr[1] + 0x18;
         } else if (STD_CompareNString(p, data_ov002_021f0d5e, 8) == 0) {
-            FIELD(self, 0x2c, char *) = p;
+            self->unk_2c = (u8 *)p;
             MI_CpuCopy8(p + 0xc, &sneSize, 4);
             p += sneSize + 0x18;
         } else if (STD_CompareNString(p, data_ov002_021f0d66, 8) == 0) {

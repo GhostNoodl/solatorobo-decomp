@@ -96,12 +96,11 @@ void *func_0203ebf8(char *name);
 
 
 
-void *func_02035de0(void *file, void *name);
+void *func_02035de0(const char *file, const char *name);
 
 
 void func_02041c34(void *a, int b, void *c, int d);
 
-extern void *data_0208cc88;
 
 
 void *func_ov002_021d8d00(void);
@@ -150,11 +149,11 @@ void func_ov002_021d91d8(Obj021efed4 *self) {
     if (self->unk_94) {
         void *m = Heap_Alloc(0x160);
         if (m != NULL) {
-            void *file = data_0208cc94;
-            void *nm = data_0208cc88;
+            const char *file = data_0208cc94;
+            const char *nm = data_0208cc88;
             func_02041218((PlttRes *)((u8 *)m + 0x88));
-            func_02041440((Model *)m, (char *)nm, 0);
-            STD_CopyString((char *)((u8 *)m + 0x2c), (char *)file);
+            func_02041440((Model *)m, nm, 0);
+            STD_CopyString((char *)((u8 *)m + 0x2c), file);
         }
         self->unk_90 = m;
         func_020417e0((Model *)self->unk_90, func_02035de0(data_0208cc94, data_0208cc88));
@@ -164,7 +163,7 @@ void func_ov002_021d91d8(Obj021efed4 *self) {
         func_02041c34(self->unk_90, 6, (void *)func_ov002_021d8d00, 0);
         func_02041d9c((Model *)self->unk_90, 0, 6);
     }
-    self->unk_08 = 0;
+    self->trans.y = 0;
 }
 
 }

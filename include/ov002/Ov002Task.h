@@ -209,7 +209,7 @@ SIZE_ASSERT(Task021efb24, 0x3c);
 // Vtable data_ov002_021efba4, 0x40 bytes.
 class Task021efba4 : public Task {
 public:
-    VObj *unk_3c; // 0x44-byte object built by func_ov002_021d4f58_ctor
+    struct Ov002Hud *hud; // built by func_ov002_021d4f58 (ov002/ObjLayouts.h)
 };
 SIZE_ASSERT(Task021efba4, 0x40);
 

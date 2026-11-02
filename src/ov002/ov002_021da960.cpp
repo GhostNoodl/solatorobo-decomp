@@ -5,8 +5,8 @@ extern "C" {
 
 BOOL func_ov000_021903b4(void *a);
 
-void func_ov002_021da960(void *self) {
-    u8 *w = FIELD(self, 0x4, u8 *);
+void func_ov002_021da960(Obj021efe7c *self) {
+    u8 *w = ((u8 *)self->board);
     u8 *cam = FIELD(w, 0x8c, u8 *);
     u8 *q;
     u8 *n;
@@ -34,15 +34,15 @@ void func_ov002_021da960(void *self) {
         }
         ((VObj *)n)->vfunc_10();
     }
-    if (FIELD(self, 0x8, VObj *) != NULL) {
-        FIELD(self, 0x8, VObj *)->vfunc_14();
+    if (self->unk_08 != NULL) {
+        self->unk_08->vfunc_14();
     }
 }
 
 
-void func_ov002_021dab58(void *self, s32 mode) {
+void func_ov002_021dab58(Obj021efe7c *self, s32 mode) {
     VObj *p;
-    if (FIELD(self, 0x8, void *) != NULL && FIELD(self, 0xc, s32) == mode) {
+    if (((void *)self->unk_08) != NULL && self->unk_0c == mode) {
         return;
     }
     {
@@ -65,9 +65,9 @@ void func_ov002_021dab58(void *self, s32 mode) {
             FIELD(p, 0x1c, s32) = 0;
             FIELD(p, 0x20, u8) = 0;
         }
-        FIELD(self, 0x8, VObj *) = p;
+        self->unk_08 = p;
         FIELD(p, 0x4, s32) = FIELD(self, 0x4, s32);
-        FIELD(self, 0x8, VObj *)->vfunc_08();
+        self->unk_08->vfunc_08();
         break;
     case 1:
         p = (VObj *)Heap_Alloc(0x38);
@@ -83,16 +83,16 @@ void func_ov002_021dab58(void *self, s32 mode) {
             FIELD(p, 0x24, s32) = 0;
             FIELD(p, 0x34, s32) = 0;
         }
-        FIELD(self, 0x8, VObj *) = p;
+        self->unk_08 = p;
         FIELD(p, 0x4, s32) = FIELD(self, 0x4, s32);
-        FIELD(self, 0x8, VObj *)->vfunc_08();
+        self->unk_08->vfunc_08();
         break;
     case 2:
         break;
     case 3:
         break;
     }
-    FIELD(self, 0xc, s32) = mode;
+    self->unk_0c = mode;
 }
 
 }

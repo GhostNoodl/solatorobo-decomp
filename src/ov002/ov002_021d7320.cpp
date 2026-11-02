@@ -8,13 +8,13 @@ typedef struct Ev021d7320 {
     u16 id;
 } Ev021d7320;
 
-void func_ov002_021d7320(void *self, s32 t, s32 range) {
+void func_ov002_021d7320(Obj021efe4c *self, s32 t, s32 range) {
     Ev021d7320 *p = FIELD(self, 0x64, Ev021d7320 *);
     s32 v;
     if (p == NULL || FIELD(self, 0x60, Ev021d7320 *) == NULL) {
         return;
     }
-    if (FIELD(self, 0x5d, u8)) {
+    if (self->unk_5d) {
         v = p->time << 12;
         while (v >= 0 && v < t) {
             func_02049a48(data_02097e4c, p->id, -1, -1, -1);

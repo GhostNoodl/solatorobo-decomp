@@ -2,39 +2,39 @@
 
 extern "C" {
 
-void func_ov002_021d7b80(void *self) {
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x8, s32) = -0x3000;
-    FIELD(self, 0x10, s16) = 0;
-    FIELD(self, 0x12, s16) = 0;
-    FIELD(self, 0x14, s16) = 0;
+void func_ov002_021d7b80(Obj021efeb8 *self) {
+    self->trans.x = 0;
+    self->trans.z = 0;
+    self->trans.y = -0x3000;
+    self->unk_10 = 0;
+    self->unk_12 = 0;
+    self->unk_14 = 0;
     MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x18));
-    FIELD(self, 0x3c, s32) = 0x1000;
+    self->unk_3c = 0x1000;
     FIELD(self, 0x40, s32) = 0x1000;
-    FIELD(self, 0x44, s32) = 0x1000;
-    FIELD(self, 0x48, s16) = 0;
-    FIELD(self, 0x4a, u8) = 0;
-    FIELD(self, 0x4b, u8) = 0;
+    self->unk_44 = 0x1000;
+    self->unk_48 = 0;
+    self->unk_4a = 0;
+    self->unk_4b = 0;
     MI_CpuFill8((u8 *)self + 0x4c, 0, 8);
-    FIELD(self, 0x54, s32) = 0;
-    FIELD(self, 0x58, s32) = 0;
-    FIELD(self, 0x5c, s32) = 0;
-    FIELD(self, 0x60, s32) = 0;
-    FIELD(self, 0x64, s32) = 0;
-    FIELD(self, 0x68, s32) = 0;
-    FIELD(self, 0x6c, u8) = 0;
-    FIELD(self, 0x70, s32) = 0;
-    FIELD(self, 0x74, s32) = 0;
+    self->unk_54 = 0;
+    self->unk_58 = 0;
+    self->unk_5c[0] = 0;
+    self->unk_5c[1] = 0;
+    self->unk_64 = 0;
+    self->unk_68 = 0;
+    self->unk_6c = 0;
+    self->next = NULL;
+    self->prev = NULL;
 }
 
 void func_ov002_021d7c04(Obj021efeb8 *self) {
     u8 *info = func_0206ede8(self->unk_48);
-    void *v;
+    Ov002Shape *v;
     self->unk_4a = info[0] == 0x80 ? 2 : 1;
     v = func_02070dcc(self->unk_4b = info[1]);
-    MI_CpuCopy8(v, (u8 *)self + 0x4c, 8);
-    func_ov002_021e38f8((s32 *)((u8 *)self + 0x5c), v);
+    MI_CpuCopy8(v, &self->shape, sizeof(self->shape));
+    func_ov002_021e38f8(self->unk_5c, v);
 }
 
 }

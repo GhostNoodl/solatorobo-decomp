@@ -6,81 +6,81 @@ void func_ov002_021d7424(int se) {
     func_02049a48(data_02097e4c, se, -1, -1, -1);
 }
 
-void *Ov002Vt_021efe3c_Ctor(void *self) {
+Ov002Mdl021efe3c *Ov002Vt_021efe3c_Ctor(Ov002Mdl021efe3c *self) {
     *(VFunc **)self = data_ov002_021efe3c;
-    FIELD(self, 0x4, s32) = 0;
-    FIELD(self, 0x8, s32) = 0;
-    FIELD(self, 0xc, s32) = 0;
-    FIELD(self, 0x10, s32) = 0;
-    FIELD(self, 0x14, s32) = 0;
-    FIELD(self, 0x18, s32) = 0;
-    FIELD(self, 0x1c, s32) = 0;
-    FIELD(self, 0x20, s32) = 0;
-    FIELD(self, 0x24, s32) = 0;
-    FIELD(self, 0x28, s32) = 0;
-    FIELD(self, 0x2c, s32) = 0;
-    FIELD(self, 0x30, s32) = 0;
-    FIELD(self, 0x34, s32) = 0;
-    FIELD(self, 0x38, s32) = 0;
-    FIELD(self, 0x3c, s32) = 0;
-    FIELD(self, 0x40, s32) = 0x1000;
-    FIELD(self, 0x44, s32) = 0x1000;
-    FIELD(self, 0x48, s32) = 0x1000;
-    MTX_Identity33_((MtxFx33 *)((u8 *)self + 0x4c));
+    self->arc = NULL;
+    self->name = NULL;
+    self->anmName = NULL;
+    self->file = NULL;
+    self->mdl = NULL;
+    self->renderObj = NULL;
+    self->texTask = 0;
+    self->anm[0] = NULL;
+    self->anm[1] = NULL;
+    self->anm[2] = NULL;
+    self->frame = 0;
+    self->frameCount = 0;
+    self->trans.x = 0;
+    self->trans.y = 0;
+    self->trans.z = 0;
+    self->scale.x = 0x1000;
+    self->scale.y = 0x1000;
+    self->scale.z = 0x1000;
+    MTX_Identity33_(&self->rot);
     return self;
 }
 
-void *Ov002Vt_021efe3c_Dtor(void *self) {
+Ov002Mdl021efe3c *Ov002Vt_021efe3c_Dtor(Ov002Mdl021efe3c *self) {
     *(VFunc **)self = data_ov002_021efe3c;
     {
         void *saved;
         HEAP_PUSH(saved);
-        if (FIELD(self, 0x18, void *) != NULL) {
-            Heap_Free(FIELD(self, 0x18, void *));
-            FIELD(self, 0x18, void *) = NULL;
+        if (self->renderObj != NULL) {
+            Heap_Free(self->renderObj);
+            self->renderObj = NULL;
         }
         HEAP_POP(saved);
     }
-    if (FIELD(self, 0x20, void *) != NULL) {
-        Heap_FreeHi(FIELD(self, 0x20, void *));
-        FIELD(self, 0x20, void *) = NULL;
+    if (self->anm[0] != NULL) {
+        Heap_FreeHi(self->anm[0]);
+        self->anm[0] = NULL;
     }
-    if (FIELD(self, 0x24, void *) != NULL) {
-        Heap_FreeHi(FIELD(self, 0x24, void *));
-        FIELD(self, 0x24, void *) = NULL;
+    if (self->anm[1] != NULL) {
+        Heap_FreeHi(self->anm[1]);
+        self->anm[1] = NULL;
     }
-    if (FIELD(self, 0x28, void *) != NULL) {
-        Heap_FreeHi(FIELD(self, 0x28, void *));
-        FIELD(self, 0x28, void *) = NULL;
+    if (self->anm[2] != NULL) {
+        Heap_FreeHi(self->anm[2]);
+        self->anm[2] = NULL;
     }
-    func_0203f0b4(*FIELD(self, 0x10, void **));
+    func_0203f0b4(self->file->data);
     return self;
 }
 
-void *Ov002Vt_021efe3c_DtorDelete(void *self) {
+Ov002Mdl021efe3c *Ov002Vt_021efe3c_DtorDelete(Ov002Mdl021efe3c *self) {
     *(VFunc **)self = data_ov002_021efe3c;
     {
         void *saved;
         HEAP_PUSH(saved);
-        if (FIELD(self, 0x18, void *) != NULL) {
-            Heap_Free(FIELD(self, 0x18, void *));
-            FIELD(self, 0x18, void *) = NULL;
+        if (self->renderObj != NULL) {
+            Heap_Free(self->renderObj);
+            self->renderObj = NULL;
         }
         HEAP_POP(saved);
     }
-    if (FIELD(self, 0x20, void *) != NULL) {
-        Heap_FreeHi(FIELD(self, 0x20, void *));
-        FIELD(self, 0x20, void *) = NULL;
+    if (self->anm[0] != NULL) {
+        Heap_FreeHi(self->anm[0]);
+        self->anm[0] = NULL;
     }
-    if (FIELD(self, 0x24, void *) != NULL) {
-        Heap_FreeHi(FIELD(self, 0x24, void *));
-        FIELD(self, 0x24, void *) = NULL;
+    if (self->anm[1] != NULL) {
+        Heap_FreeHi(self->anm[1]);
+        self->anm[1] = NULL;
     }
-    if (FIELD(self, 0x28, void *) != NULL) {
-        Heap_FreeHi(FIELD(self, 0x28, void *));
-        FIELD(self, 0x28, void *) = NULL;
+    if (self->anm[2] != NULL) {
+        Heap_FreeHi(self->anm[2]);
+        self->anm[2] = NULL;
     }
-    func_0203f0b4(*FIELD(self, 0x10, void **));
+    func_0203f0b4(self->file->data);
     Heap_Free(self);
     return self;
 }

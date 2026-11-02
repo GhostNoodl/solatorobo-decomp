@@ -88,18 +88,18 @@ void func_ov002_021d60dc(Task021efc24 *self) {
         if (a) {
             BOOL b = isState5(self->unk_54);
             if (b) {
-                void *x = Task_FindById(0x1b);
+                Task021efba4 *x = (Task021efba4 *)Task_FindById(0x1b);
                 if (x != NULL) {
                     u8 buf[0x14];
                     func_ov000_021c95fc(buf);
-                    if (FIELD(x, 0x3c, void *) != NULL) {
-                        MI_CpuCopy8(buf, (u8 *)FIELD(x, 0x3c, void *) + 0x2c, 0x14);
+                    if (x->hud != NULL) {
+                        MI_CpuCopy8(buf, x->hud->unk_2c, 0x14);
                     }
-                    if (FIELD(x, 0x3c, void *) != NULL) {
-                        func_ov002_021e2690(FIELD(x, 0x3c, void *), 0, 0);
+                    if (x->hud != NULL) {
+                        func_ov002_021e2690(x->hud, 0, 0);
                     }
-                    if (FIELD(x, 0x3c, void *) != NULL) {
-                        func_ov002_021e2754(FIELD(x, 0x3c, void *), 0xffff);
+                    if (x->hud != NULL) {
+                        func_ov002_021e2754(x->hud, 0xffff);
                     }
                 }
                 self->unk_04 |= 6;
@@ -113,7 +113,7 @@ void func_ov002_021d60dc(Task021efc24 *self) {
     if (self->unk_5c != NULL && !func_ov000_021633ac(self->unk_5c)) {
         u8 *p;
         u16 id;
-        void *x;
+        Task021efba4 *x;
         {
             void *saved;
             HEAP_PUSH(saved);
@@ -130,9 +130,9 @@ void func_ov002_021d60dc(Task021efc24 *self) {
             func_ov000_0215bb14(self->unk_54, func_0206ec8c(id));
             self->unk_54->vfunc_70();
         }
-        x = Task_FindById(0x1b);
-        if (x != NULL && FIELD(x, 0x3c, void *) != NULL) {
-            func_ov002_021e2690(FIELD(x, 0x3c, void *), 9, 0);
+        x = (Task021efba4 *)Task_FindById(0x1b);
+        if (x != NULL && x->hud != NULL) {
+            func_ov002_021e2690(x->hud, 9, 0);
         }
     }
     self->unk_4c->vfunc_1c();
