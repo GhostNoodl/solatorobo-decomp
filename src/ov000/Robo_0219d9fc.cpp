@@ -25,10 +25,10 @@ void func_ov000_02190758(void *model, void *rot, s32 a);
 BOOL func_ov000_021903b4(void *model);
 void NNS_G3dRenderObjSetInitFunc(void *obj, void *fn);
 void func_ov003_021ce9ac(void *p);
-void func_ov000_021b4130(void *self, BOOL a);
+void func_ov000_021b4130(Robo021ca458 *self, BOOL a);
 void func_ov000_021bd7a0(void *p);
 void func_ov000_02191c24(void *shadow, void *pos);
-void func_ov000_02167fac(void *p, s32 a, s32 b);
+void func_ov000_02167fac(Lo021cb6f0 *self, s32 a, s32 b);
 
 static inline Actor *FindActor_0219d9fc(u16 id) {
     if (data_ov000_021ccd68 == NULL) {

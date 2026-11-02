@@ -13,7 +13,7 @@ extern void *data_02097e4c;
 void func_02062764(s32 a, s32 b);
 u16 func_ov000_0219a36c(VecFx32 *pos, s32 radius, u16 angle, s32 n, u8 flag, u32 mask);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
-void func_ov000_021b1fac(void *self, BOOL a, s32 b);
+void func_ov000_021b1fac(Robo021ca458 *self, BOOL a, s32 b);
 BOOL func_ov000_02198360(void *p, s32 a, s32 b);
 
 static inline void SetRgb021ac080(StageFlags *g, u8 r, u8 gr, u8 b) {
@@ -126,7 +126,7 @@ void func_ov000_02199f88(void *t, void *self);
 void func_ov000_02191418(void *a, s32 b, s32 c);
 BOOL func_ov000_02191120(void *a);
 BOOL func_ov000_02191508(void *m);
-void func_ov000_021b1fac(void *self, BOOL a, s32 b);
+void func_ov000_021b1fac(Robo021ca458 *self, BOOL a, s32 b);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 u16 FX_Atan2(s32 x, s32 z);
 

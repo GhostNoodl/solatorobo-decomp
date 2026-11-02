@@ -1,25 +1,13 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
-void func_ov000_0215fe1c(void *self, s32 a, s32 b);
+void func_ov000_0215fe1c(ObjBase021cac0c_021cb6f0 *self, s32 a, s32 b);
 u32 func_0204045c(void);
 
-struct Obj021697dc {
-    u8 unk_00[0xc];
-    u32 unk_0c;
-    u8 unk_10[0x4c];
-    s32 unk_5c;
-    s32 unk_60;
-    s32 unk_64;
-    u8 unk_68[0x42];
-    u16 unk_aa;
-    s32 unk_ac;
-    s32 unk_b0;
-    s32 unk_b4;
-};
 
-void func_ov000_021697dc(Obj021697dc *self, s32 a, s32 b) {
+void func_ov000_021697dc(Lo021cb798 *self, s32 a, s32 b) {
     if (a < (self->unk_64 >> 12)) {
         self->unk_ac = 9;
         self->unk_b0 = self->unk_5c;

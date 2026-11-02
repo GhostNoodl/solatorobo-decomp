@@ -1,4 +1,5 @@
 #include "ov000/MessageQueue.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/LoTimer.h"
 #include "ov000/LoTicker.h"
 

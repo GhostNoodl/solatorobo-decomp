@@ -17,10 +17,10 @@ void func_ov000_021b05b0(u8 *self);
 u8 func_0206d37c(void *save, s32 a);
 Actor *ActorMgr_GetActor(void *mgr, u16 id);
 
-void func_ov000_0218d46c(void *self, u16 id, u8 value);
+void func_ov000_0218d46c(Actor *self, u16 id, u8 value);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 s32 func_ov000_021a09b8(u8 *self, s32 *list, s32 count);
-void func_ov000_0218d7e8(void *self, u8 arg);
+void func_ov000_0218d7e8(Actor *self, u8 arg);
 
 static inline Actor *GetObj021a0268(u16 id) {
     if (data_ov000_021ccd68 == NULL) {

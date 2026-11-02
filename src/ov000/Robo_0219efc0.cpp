@@ -23,15 +23,15 @@ extern void *data_02097e4c;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 key);
 u16 Pad_LookupDir(void *pad, void *p);
-void func_ov000_021b3738(void *self, void *t);
-void func_ov000_021b2d48(void *self);
-void func_ov000_02168e18(void *self, s32 a, s32 b, VecFx32 *p);
+void func_ov000_021b3738(Robo021ca458 *self, void *t);
+void func_ov000_021b2d48(Robo021ca458 *self);
+void func_ov000_02168e18(Lo021cb840 *self, s32 a, s32 b, VecFx32 *p);
 void func_02062764(s32 a, s32 b);
 BOOL func_ov000_0219b3b4(void *p);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
-void func_ov000_021b1814(void *self, s32 a, s32 b);
-BOOL func_ov000_021b3e90(void *self);
-void func_ov000_021b1a54(void *self, s32 a);
+void func_ov000_021b1814(Robo021ca458 *self, s32 a, s32 b);
+BOOL func_ov000_021b3e90(Robo021ca458 *self);
+void func_ov000_021b1a54(Robo021ca458 *self, s32 a);
 
 static inline Actor *FindActor_0219efc0(u16 id) {
     if (data_ov000_021ccd68 == NULL) {

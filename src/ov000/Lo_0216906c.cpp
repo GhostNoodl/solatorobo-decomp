@@ -22,12 +22,10 @@ void func_02070b98(s32 a, LoFadeP *out, s32 b, s32 c);
 BOOL func_02035bd4(LoFadeP *a, LoFadeP *b, s32 c);
 BOOL StageRes_IsAllLoaded(void *p);
 s32 func_ov000_02180838(void *a);
-void func_ov000_0215fdfc(void *self, s32 a, const void *b);
+void func_ov000_0215fdfc(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
 void func_02041c5c(void *obj, void *value);
 void func_02041c18(void *obj, s32 value);
 u8 *func_0206ede8(u16 id);
-void func_ov000_021566c0(void *self, void *msg, s32 c, s32 d, u8 e, u8 f);
-void *func_ov000_02161bc4(void *self, s32 unused, void *g, u16 *count);
 
 static inline BOOL LoFadeDone(void) {
     LoFadeP a;

@@ -1,10 +1,10 @@
-#include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
-void func_ov000_0215dacc(void *self) {
-    if (*(s32 *)((u8 *)self + 4) == 0) {
-        *(s32 *)((u8 *)self + 0x88) = *(s32 *)((u8 *)self + 0x8c);
+void func_ov000_0215dacc(Lo021cae48 *self) {
+    if (self->state == 0) {
+        self->unk_88 = self->unk_8c;
     }
 }
 

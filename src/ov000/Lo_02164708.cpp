@@ -12,9 +12,6 @@ typedef struct {
 extern "C" {
 
 extern u8 data_02097d78[];
-void func_ov000_02161798(void *self, s32 a, s32 b, s32 c);
-void func_ov000_02161994(void *self, s32 a, s32 b, s32 c);
-void func_ov000_02162bd4(void *self);
 BOOL func_ov000_02190a30(void *p, s32 a);
 void func_ov000_02190a80(void *p, s32 a);
 void func_0203cb78(s32 a, s32 b, s32 c);
@@ -33,7 +30,7 @@ void func_ov000_02164708(void) {
 }
 
 void func_02041c20(void *a, int b, int c);
-void func_ov000_0216715c(void *self, u8 *p);
+void func_ov000_0216715c(Lo021cb6b0 *self, u8 *p);
 void func_ov000_021675ec(void *self, u8 *p);
 
 static inline void LoPlayIf(Model *m, int idx) {

@@ -34,7 +34,7 @@ extern u8 *data_ov000_021ccd6c;
 u8 *Actor_GetTarget(u8 *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_021b1dd8(u8 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim);
-void func_ov000_021b1fac(void *self, BOOL a, s32 b);
+void func_ov000_021b1fac(Robo021ca458 *self, BOOL a, s32 b);
 BOOL func_ov000_02198360(void *st, s32 state, s32 x);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
@@ -45,7 +45,7 @@ BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 mask, VecFx32 *ofs, 
 u16 func_ov000_02198da8(void *body, u16 angle);
 void func_ov000_0218996c(s32 a, s32 b);
 void *func_ov000_021b68b8(void *a, void *pos);
-void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
 
 static inline Actor *FindActor_021a3220(u16 id) {

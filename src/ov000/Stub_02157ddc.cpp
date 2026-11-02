@@ -1,11 +1,11 @@
-#include "ov000/VObj.h"
+#include "ov000/UiObj.h"
 
 extern "C" {
 
-void func_ov000_02157ddc(void *self) {
-    *(s32 *)((u8 *)self + 0xd4) = 0;
-    *(s32 *)((u8 *)self + 0xd8) = 0;
-    *(u8 *)((u8 *)self + 0xdc) = 0;
+void func_ov000_02157ddc(UiList021cb4a8 *self) {
+    self->unk_d4 = NULL;
+    self->unk_d8 = NULL;
+    self->unk_dc = 0;
 }
 
 }

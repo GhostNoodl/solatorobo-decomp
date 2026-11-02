@@ -32,7 +32,6 @@ void VEC_MultAdd(s32 a, const VecFx32 *v1, const VecFx32 *v2, VecFx32 *pDest);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 BOOL func_ov000_02191120(void *a);
 void func_ov000_02191418(void *a, u16 b, s32 c);
-void func_ov000_021b1fac(void *self, s32 a, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, u16 b);
 
 static inline Actor *FindActor021aa978(u16 id) {

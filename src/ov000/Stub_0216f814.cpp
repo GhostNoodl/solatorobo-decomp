@@ -1,11 +1,11 @@
-#include "ov000/VObj.h"
+#include "ov000/MessageQueue.h"
 
 extern "C" {
 
-void func_ov000_0216f23c(void *p, s32 a);
+void func_ov000_0216f23c(BufferList *list, BOOL mode);
 
-void func_ov000_0216f814(void *self) {
-    func_ov000_0216f23c((u8 *)self + 8, 1);
+void func_ov000_0216f814(MessageQueue *self) {
+    func_ov000_0216f23c(&self->list, 1);
 }
 
 void func_ov000_0216f828(void *self) {

@@ -84,7 +84,7 @@ extern void *data_02097e4c;
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_02191008(void *p);
 void SndMgr_StopSeqArc(void *mgr, s32 id);
-void func_ov000_021697dc(void *p, u16 a, u16 b);
+void func_ov000_021697dc(Lo021cb798 *self, u16 a, u16 b);
 void func_ov000_0218ec60(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0218edf0(void *p, s32 a, s32 b, s32 c, s32 d);
 void func_ov000_0218ef10(void *p, s32 a, s32 b, s32 c, s32 d);
@@ -171,17 +171,17 @@ void func_ov000_0219cdb8(Robo021ca458 *self) {
         a = data_ov000_021ccd30->unk_11c;
         if (a != NULL && a->unk_58 != NULL) {
             func_ov000_021697dc(a->unk_58, v, v);
-            LFLD(u32, a->unk_58, 0xc) |= 0x80;
+            a->unk_58->unk_0c |= 0x80;
         }
         self->hpObj->unk_0a = 0;
         Reset0219cdb8(self);
     }
     {
         ListBuffer021cb940 *a = data_ov000_021ccd30->unk_11c;
-        u8 *m = a != NULL ? ((u8 *)a->unk_58) : NULL;
+        Lo021cb798 *m = a != NULL ? a->unk_58 : NULL;
         if (m != NULL) {
-            LFLD(s32, m, 0x5c) = LFLD(s32, m, 0x64);
-            LFLD(s32, m, 0x68) = LFLD(s32, m, 0x64);
+            m->unk_5c = m->unk_64;
+            m->unk_68 = m->unk_64;
         }
     }
     if (self->unk_b22_12) {

@@ -13,7 +13,7 @@ void func_ov000_0218996c(u8 a, u8 b);
 void *func_0204a028(void *a, s32 b, void *c, s32 d);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
-void func_ov000_021b2b08(void *self);
+void func_ov000_021b2b08(Robo021ca458 *self);
 
 static inline Actor *FindActor021b03c8(u16 id) {
     ActorMgr *mgr = data_ov000_021ccd68;

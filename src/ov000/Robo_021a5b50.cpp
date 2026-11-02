@@ -7,7 +7,7 @@ extern u8 data_ov000_021cc678[];
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
 BOOL func_ov000_02198360(ActorSub40 *st, s32 state, s32 x);
-void func_ov000_021b1fac(void *self, BOOL a, s32 b);
+void func_ov000_021b1fac(Robo021ca458 *self, BOOL a, s32 b);
 u16 FX_Atan2(s32 y, s32 x);
 
 void func_ov000_021a5b50(Robo021ca458 *self) {

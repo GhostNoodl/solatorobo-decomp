@@ -19,14 +19,14 @@ void func_ov000_0215d30c(Lo021cad50 *self) {
     }
     self->openTime = self->openLen;
     self->openRatio = 0x1000;
-    o = self->unk_98;
+    o = self->unk_98[0];
     if (o) {
         if (!(self->flags & 0x10000)) {
             LFLD(u32, o, 4) |= 0x4000000;
         }
-        self->unk_98->vfunc_8c();
+        self->unk_98[0]->vfunc_8c();
         if (!LBIT(self, 0xc).b1) {
-            if (self->unk_98->vfunc_10() || (self->flags & 0x40000)) {
+            if (self->unk_98[0]->vfunc_10() || (self->flags & 0x40000)) {
                 LBIT(self, 0xc).b1 = 1;
             }
         }

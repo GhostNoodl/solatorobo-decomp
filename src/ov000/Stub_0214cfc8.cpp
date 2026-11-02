@@ -1,13 +1,14 @@
-#include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
+#include "Main/Gfx/TextWin.h"
 
 extern "C" {
 
-void func_ov000_0214cfc8(void *self) {
+void func_ov000_0214cfc8(Lo021cad50 *self) {
     s32 i;
     for (i = 0; i < 12; i++) {
-        u32 *p = ((u32 **)((u8 *)self + 0x98))[i];
+        TextWin *p = (TextWin *)self->unk_98[i];
         if (p != NULL) {
-            p[1] |= 4;
+            p->flags |= 4;
         }
     }
 }

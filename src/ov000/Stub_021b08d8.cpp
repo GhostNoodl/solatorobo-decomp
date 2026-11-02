@@ -12,7 +12,7 @@ typedef struct {
 
 extern "C" {
 
-void func_ov000_021b0db0(void *self, s32 id);
+void func_ov000_021b0db0(Robo021ca458 *self, s32 id);
 
 void func_ov000_021b08d8(Robo021ca458 *self) {
     func_ov000_021b0db0(self, 0x2cd);
@@ -28,7 +28,7 @@ void *func_ov000_0219be1c(s32 kind, VecFx32 *pos, void *rot, u16 a, u16 b);
 void *func_0204a028(void *a, s32 b, void *c, s32 d);
 void *func_02049f44(void *a, s32 b, void *c, s32 d);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
-void func_ov000_02168e18(void *self, s32 a, s32 b, VecFx32 *p);
+void func_ov000_02168e18(Lo021cb840 *self, s32 a, s32 b, VecFx32 *p);
 
 static inline void SetPal(Model0218fe1c *sub) {
     sub->color = 0x73ea;

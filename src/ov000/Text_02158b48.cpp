@@ -6,7 +6,7 @@
 
 extern "C" {
 extern char data_ov000_021cabf4[];
-void func_ov000_0215429c(void *self);
+void func_ov000_0215429c(UiList *self);
 
 void func_ov000_02158b48(Lo021cb3a8 *self) {
     u16 line;

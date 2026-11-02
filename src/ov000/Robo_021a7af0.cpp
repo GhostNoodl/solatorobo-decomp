@@ -41,9 +41,9 @@ void func_ov000_021987b8(void *body, u8 keep, VecFx32 *pos, const void *rot);
 BOOL Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
 s32 **func_ov000_02190a30(void *model, u32 i);
 void *func_02049a48(void *mgr, s32 id, s32 volume, s32 targetVolume, s32 frame);
-void func_ov000_021b1fac(void *self, BOOL a, s32 b);
+void func_ov000_021b1fac(Robo021ca458 *self, BOOL a, s32 b);
 void func_ov000_021915a0(void *p);
-void Actor_TurnToActor(void *self, void *other, s32 a);
+void Actor_TurnToActor(Actor *self, void *other, s32 a);
 void func_ov000_0218996c(u8 a, u8 b);
 s32 func_02049bdc(void *mgr, s32 id, s32 pan);
 void func_020627a0(u16 a, u16 b);
@@ -56,10 +56,10 @@ u8 func_0206d37c(void *flags, u32 i);
 void func_ov000_0218d46c(void *actor, u16 id, u8 value);
 void Target_Set(void *a, void *b);
 u8 *Target_Get(void *p);
-u16 Actor_YawToPos(void *self, void *target);
+u16 Actor_YawToPos(Actor *self, void *target);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 pan);
 void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s16 d, s16 e);
-void func_ov000_02168490(void *self, s32 a, s32 b, VecFx32 *p, VecFx32 *q);
+void func_ov000_02168490(Lo021cb894 *self, s32 a, s32 b, VecFx32 *p, VecFx32 *q);
 void func_02062764(u16 clear, u16 set);
 
 static inline Actor *FindActor_021a7af0(u16 id) {

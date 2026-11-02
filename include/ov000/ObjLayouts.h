@@ -398,36 +398,68 @@ struct Lo021caa44 : public Task {
 
 // Vtable data_ov000_021caac8; methods in Lo_0214e074.cpp, Lo_0214e3b4.cpp.
 struct Lo021caac8 : public UiList021cb4a8 {
+    Model *unk_e0; // cleared by slot 0x28, freed by slot 0x2c
 };
 
 
 
-// Vtable data_ov000_021cac0c, data_ov000_021cb6f0, data_ov000_021cb744, data_ov000_021cb798, data_ov000_021cb7ec, data_ov000_021cb840, data_ov000_021cb894, data_ov000_021cca88; methods in Lo_021601c4.cpp, Obj_0215fe60.cpp.
+// Bar display base (vtable data_ov000_021cac0c, 0x9c bytes; slot 0x14 func_ov000_02160344 clears
+// it). Subclass vtables data_ov000_021cb6f0, 021cb744, 021cb798, 021cb7ec, 021cb840, 021cb894
+// (all built by func_ov000_02170a58) and 021cca88 (func_ov000_021c2d48) keep its slots 0x08..0x10
+// and 0x40..0x44. Methods in Obj_0215fe60.cpp, Lo_021601c4.cpp, Obj_02160344.c, Obj_0215fdfc.c,
+// Cam_02160414.cpp, ov000_02160534.cpp, Lo_021609ec.cpp, Lo_02160c7c.cpp.
 struct ObjBase021cac0c_021cb6f0 : public VObj {
-    s32 unk_04;
-    u8 unk_08[0x20];
+    s32 unk_04; // state (func_ov000_0215fe60)
+    u32 unk_08;
+    union {
+        u32 unk_0c;
+        struct {
+            u32 unk_0c_0 : 1;
+            u32 unk_0c_1 : 1;
+            u32 unk_0c_2 : 1;
+            u32 unk_0c_3 : 1; // cleared by the subclasses' slot 0x28
+            u32 unk_0c_4 : 1;
+            u32 unk_0c_5 : 1;
+            u32 unk_0c_6 : 1;
+            u32 unk_0c_7 : 1; // unk_5c follows unk_64 (func_ov000_0215fe60, 0215fe1c)
+            u32 unk_0c_8 : 1;
+            u32 unk_0c_9 : 1;
+            u32 unk_0c_10 : 1; // set by slot 0x14
+            u32 unk_0c_11 : 5;
+            u32 unk_0c_16 : 1;
+            u32 unk_0c_17 : 15;
+        };
+    };
+    u16 *colors[6]; // three RGB555 colours each (default data_ov000_021c9912; func_ov000_0215fdfc)
     s32 unk_28;
     s32 unk_2c;
     s32 unk_30;
     s32 unk_34;
     s32 unk_38;
     s32 unk_3c;
-    u8 unk_40[0x4];
+    s32 unk_40;
     s32 unk_44;
     s32 unk_48;
     s32 unk_4c;
     s32 unk_50;
-    u8 unk_54[0x8];
-    s32 unk_5c;
-    s32 unk_60;
-    s32 unk_64;
+    s32 unk_54;
+    s32 unk_58;
+    s32 unk_5c; // shown value
+    s32 unk_60; // maximum (func_ov000_0215fe1c)
+    s32 unk_64; // target value
     s32 unk_68;
     s32 unk_6c;
-    u8 unk_70[0x4];
+    u16 unk_70;
     s32 unk_74;
     s32 unk_78;
     s32 unk_7c;
+    VecFx32 unk_80;
+    s32 unk_8c;
+    s32 unk_90;
+    s32 unk_94;
+    u8 unk_98;
 };
+SIZE_ASSERT(ObjBase021cac0c_021cb6f0, 0x9c);
 
 // Vtable data_ov000_021cacd8; methods in 5 files, Lo_02160ff8.cpp .. Lo_0216150c.cpp.
 struct Lo021cacd8 : public UiObj {
@@ -443,8 +475,12 @@ struct Lo021cacd8 : public UiObj {
 
 // Vtable data_ov000_021cad50; methods in G3_0215d4b4.cpp, Lo_0215d30c.cpp, Lo_0215d3bc.cpp.
 struct Lo021cad50 : public UiObj {
-    u8 unk_84[0x14];
-    VObj *unk_98;
+    s32 unk_84;
+    u16 unk_88;
+    void *unk_8c;      // Heap_FreeHi'd by slot 0x2c
+    void *unk_90;      // Heap_FreeHi'd by slot 0x2c
+    s32 unk_94;
+    VObj *unk_98[12];  // freed by slot 0x2c; slot 0x70 sets bit 2 of each one's word 4
 };
 
 // Vtable data_ov000_021cadcc; methods in Lo_0215bd88.cpp, Lo_0215bf60.cpp, Lo_0215c05c.cpp, Lo_0215c0c4.cpp.
@@ -481,6 +517,8 @@ struct Lo021cb3a8 : public UiList021cb4a8 {
 // Vtable data_ov000_021cb5a8; methods in 6 files, Lo_02159aac.cpp .. Lo_0215a7d8.cpp.
 struct Lo021cb5a8 : public UiList {
     s32 unk_d4;
+    void *dl;     // frame display list (func_ov000_0215a088, G3_BeginMakeDL), Heap_FreeHi'd by slot 0x2c
+    u32 dlSize;
 };
 
 // Vtable data_ov000_021cb6b0; methods in Lo_021645b8.cpp, Lo_02164708.cpp.
@@ -500,88 +538,23 @@ struct Lo021cb6b0 : public VObj {
 };
 
 // Vtable data_ov000_021cb6f0; methods in Lo_021680b4.cpp, Lo_021681c4.cpp, Lo_021681fc.cpp, Lo_021682fc.cpp.
-struct Lo021cb6f0 {
-    u8 unk_00[0x4];
-    s32 unk_04;
-    u8 unk_08[0x4];
-    u32 unk_0c;
-    u8 unk_10[0x18];
-    s32 unk_28;
-    u8 unk_2c[0x4];
-    s32 unk_30;
-    u8 unk_34[0x1c];
-    s32 unk_50;
-    s32 unk_54;
-    s32 unk_58;
-    u8 unk_5c[0x18];
-    s32 unk_74;
-    s32 unk_78;
-    s32 unk_7c;
-    s32 unk_80;
-    s32 unk_84;
-    s32 unk_88;
-    u8 unk_8c[0x10];
+struct Lo021cb6f0 : public ObjBase021cac0c_021cb6f0 {
     Model *unk_9c;
 };
 
 // Vtable data_ov000_021cb744; methods in Lo_0216a608.cpp, Lo_0216a7dc.cpp.
-struct Lo021cb744 {
-    u8 unk_00[0x4];
-    s32 unk_04;
-    u8 unk_08[0x4];
-    u32 unk_0c;
-    u8 unk_10[0x18];
-    s32 unk_28;
-    u8 unk_2c[0x4];
-    s32 unk_30;
-    u8 unk_34[0x4];
-    s32 unk_38;
-    s32 unk_3c;
-    s32 unk_40;
-    u8 unk_44[0xc];
-    s32 unk_50;
-    s32 unk_54;
-    s32 unk_58;
-    u8 unk_5c[0x18];
-    s32 unk_74;
-    s32 unk_78;
-    s32 unk_7c;
-    u8 unk_80[0x1c];
+struct Lo021cb744 : public ObjBase021cac0c_021cb6f0 {
     Model *unk_9c;
     Model *unk_a0;
     u8 unk_a4;
     u8 unk_a5[0x1];
     u16 unk_a6;
     s32 unk_a8;
+    u8 unk_ac; // func_ov000_0216a438
 };
 
 // Vtable data_ov000_021cb798; methods in Lo_021699f0.cpp, Lo_02169c14.cpp, Lo_02169d40.cpp.
-struct Lo021cb798 {
-    u8 unk_00[0x4];
-    s32 unk_04;
-    u8 unk_08[0x4];
-    u32 unk_0c;
-    u8 unk_10[0x18];
-    s32 unk_28;
-    u8 unk_2c[0x4];
-    s32 unk_30;
-    u8 unk_34[0x4];
-    s32 unk_38;
-    s32 unk_3c;
-    s32 unk_40;
-    s32 unk_44;
-    s32 unk_48;
-    s32 unk_4c;
-    u8 unk_50[0x4];
-    s32 unk_54;
-    u8 unk_58[0x4];
-    s32 unk_5c;
-    s32 unk_60;
-    u8 unk_64[0x10];
-    s32 unk_74;
-    s32 unk_78;
-    s32 unk_7c;
-    u8 unk_80[0x1c];
+struct Lo021cb798 : public ObjBase021cac0c_021cb6f0 {
     s32 unk_9c;
     Model *unk_a0;
     Model *unk_a4;
@@ -589,86 +562,37 @@ struct Lo021cb798 {
     u8 unk_a9;
     u16 unk_aa;
     u32 unk_ac;
+    s32 unk_b0;
+    s32 unk_b4;
 };
 
 // Vtable data_ov000_021cb7ec; methods in Lo_0216926c.cpp, Lo_021692e0.cpp, Lo_021694e0.cpp.
-struct Lo021cb7ec {
-    u8 unk_00[0x4];
-    s32 unk_04;
-    u8 unk_08[0x4];
-    u32 unk_0c;
-    u8 unk_10[0x18];
-    s32 unk_28;
-    u8 unk_2c[0x4];
-    s32 unk_30;
-    u8 unk_34[0x1c];
-    s32 unk_50;
-    s32 unk_54;
-    u8 unk_58[0x1c];
-    s32 unk_74;
-    s32 unk_78;
-    s32 unk_7c;
-    u8 unk_80[0x1c];
+struct Lo021cb7ec : public ObjBase021cac0c_021cb6f0 {
     Model *unk_9c;
     s32 unk_a0;
     u16 unk_a4;
     u8 unk_a6[0x2];
     u32 unk_a8;
+    s32 unk_ac;
 };
 
 // Vtable data_ov000_021cb840; methods in Lo_02168ee0.cpp, Lo_02168f50.cpp, Lo_02168f90.cpp, Lo_0216906c.cpp.
-struct Lo021cb840 {
-    u8 unk_00[0x4];
-    s32 unk_04;
-    u8 unk_08[0x4];
-    u32 unk_0c;
-    u8 unk_10[0x18];
-    s32 unk_28;
-    u8 unk_2c[0x4];
-    s32 unk_30;
-    u8 unk_34[0x1c];
-    s32 unk_50;
-    s32 unk_54;
-    s32 unk_58;
-    u8 unk_5c[0x18];
-    s32 unk_74;
-    s32 unk_78;
-    s32 unk_7c;
-    s32 unk_80;
-    s32 unk_84;
-    s32 unk_88;
-    u8 unk_8c[0x1c];
+struct Lo021cb840 : public ObjBase021cac0c_021cb6f0 {
+    s32 unk_9c;
+    s32 unk_a0;
+    s32 unk_a4;
     s32 unk_a8;
 };
 
 // Vtable data_ov000_021cb894; methods in 5 files, Lo_021685f4.cpp .. Lo_021688c4.cpp.
-struct Lo021cb894 : public VObj {
-    s32 unk_04;
-    u8 unk_08[0x4];
-    u32 unk_0c;
-    u8 unk_10[0x18];
-    s32 unk_28;
-    u8 unk_2c[0x4];
-    s32 unk_30;
-    u8 unk_34[0x1c];
-    s32 unk_50;
-    s32 unk_54;
-    s32 unk_58;
-    s32 unk_5c;
-    s32 unk_60;
-    u8 unk_64[0x10];
-    s32 unk_74;
-    s32 unk_78;
-    s32 unk_7c;
-    s32 unk_80;
-    s32 unk_84;
-    s32 unk_88;
-    u8 unk_8c[0x10];
+struct Lo021cb894 : public ObjBase021cac0c_021cb6f0 {
     Model *unk_9c;
-    u8 unk_a0[0xc];
+    s32 unk_a0;
+    s32 unk_a4;
+    s32 unk_a8;
     s32 unk_ac;
     s32 unk_b0;
-    u8 unk_b4[0x4];
+    s32 unk_b4;
     s32 unk_b8;
 };
 

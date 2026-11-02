@@ -1,19 +1,19 @@
-#include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 #include "Main/Gfx/PlttRes.h"
 
 extern "C" {
 
 
-void func_ov000_0215a04c(void *self) {
-    *(s32 *)((u8 *)self + 0xd4) = -1;
-    *(s32 *)((u8 *)self + 0xd8) = 0;
-    *(s32 *)((u8 *)self + 0xdc) = 0;
+void func_ov000_0215a04c(Lo021cb5a8 *self) {
+    self->unk_d4 = -1;
+    self->dl = NULL;
+    self->dlSize = 0;
 }
 
-void func_ov000_0215a064(void *self) {
-    if (*(void **)((u8 *)self + 0xd8) != NULL) {
-        Heap_FreeHi(*(void **)((u8 *)self + 0xd8));
-        *(void **)((u8 *)self + 0xd8) = NULL;
+void func_ov000_0215a064(Lo021cb5a8 *self) {
+    if (self->dl != NULL) {
+        Heap_FreeHi(self->dl);
+        self->dl = NULL;
     }
 }
 

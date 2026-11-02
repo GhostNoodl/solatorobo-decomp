@@ -14,9 +14,9 @@ extern u8 data_ov000_021cc618[];
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02191120(void *a);
 BOOL func_ov000_02198360(ActorSub40 *st, s32 state, s32 x);
-void func_ov000_021b1fac(void *self, BOOL a, s32 b);
-void func_ov000_021b03c8(void *self);
-u8 *Actor_GetTarget(void *self);
+void func_ov000_021b1fac(Robo021ca458 *self, BOOL a, s32 b);
+void func_ov000_021b03c8(Robo021ca458 *self);
+u8 *Actor_GetTarget(Actor *self);
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 void func_ov000_0218d46c(void *a, u16 id, s32 b);
 u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
@@ -51,7 +51,7 @@ void *func_ov000_02191318(void *a, s32 frame);
 void func_ov000_02191780(void *a);
 void *func_02049a48(void *a, s32 b, s32 c, s32 d, s32 e);
 s32 func_01ffbd6c(void *a, void *b, s32 c, s32 d, s32 e, s32 f);
-void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 
 typedef struct {
     u16 x, y, z;

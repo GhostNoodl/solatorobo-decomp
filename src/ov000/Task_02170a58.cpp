@@ -1,4 +1,5 @@
 #include "ov000/MessageQueue.h"
+#include "ov000/ObjLayouts.h"
 #include "ov000/LoTimer.h"
 #include "ov000/LoTicker.h"
 #include "Main/Sys/FieldState.h"
@@ -63,40 +64,40 @@ void func_ov000_02170a58(ListBuffer021cb940 *self) {
     case 0:
         self->state = 1;
     case 1: {
-        VObj *p;
+        Lo021cb798 *p;
         u8 *q;
         LoTicker *tk;
         if (LFLD(Bit0, c, 0x114).b0) {
             break;
         }
-        p = (VObj *)Heap_Alloc(0xb8);
+        p = (Lo021cb798 *)Heap_Alloc(sizeof(Lo021cb798));
         if (p != NULL) {
             *(void **)p = data_ov000_021cac0c;
             p->vfunc_14();
             *(void **)p = data_ov000_021cb798;
             p->vfunc_14();
-            LFLD(s32, p, 0x9c) = 0;
+            p->unk_9c = 0;
         }
         self->unk_58 = p;
-        p = (VObj *)Heap_Alloc(0xb8);
+        p = (Lo021cb798 *)Heap_Alloc(sizeof(Lo021cb798));
         if (p != NULL) {
             *(void **)p = data_ov000_021cac0c;
             p->vfunc_14();
             *(void **)p = data_ov000_021cb798;
             p->vfunc_14();
-            LFLD(s32, p, 0x9c) = 1;
+            p->unk_9c = 1;
         }
         self->unk_5c = p;
-        self->unk_60 = NewObj2(0xb0, data_ov000_021cb7ec);
+        self->unk_60 = (Lo021cb7ec *)NewObj2(sizeof(Lo021cb7ec), data_ov000_021cb7ec);
         q = (u8 *)Heap_Alloc(0x1c);
         if (q != NULL) {
             func_ov000_0216b474(q);
         }
         self->unk_68 = q;
-        self->unk_64 = NewObj2(0xb0, data_ov000_021cb744);
-        self->unk_6c = NewObj2(0xa0, data_ov000_021cb6f0);
-        self->unk_70 = NewObj2(0xac, data_ov000_021cb840);
-        self->unk_74 = NewObj2(0xbc, data_ov000_021cb894);
+        self->unk_64 = (Lo021cb744 *)NewObj2(sizeof(Lo021cb744), data_ov000_021cb744);
+        self->unk_6c = (Lo021cb6f0 *)NewObj2(sizeof(Lo021cb6f0), data_ov000_021cb6f0);
+        self->unk_70 = (Lo021cb840 *)NewObj2(sizeof(Lo021cb840), data_ov000_021cb840);
+        self->unk_74 = (Lo021cb894 *)NewObj2(sizeof(Lo021cb894), data_ov000_021cb894);
         q = (u8 *)Heap_Alloc(0x20);
         if (q != NULL) {
             func_ov000_0216ad04(q);

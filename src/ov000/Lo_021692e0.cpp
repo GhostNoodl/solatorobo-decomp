@@ -10,7 +10,7 @@ extern s32 data_02097d78[5];
 BOOL func_02054f10(void *a, s32 b);
 extern const char *data_0208cc94;
 extern const char *data_0208cc88;
-void func_ov000_0215fdfc(void *self, s32 a, const void *b);
+void func_ov000_0215fdfc(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
 extern u8 data_ov000_021c9ab0[];
 extern s32 data_ov000_021c9bb4[];
 

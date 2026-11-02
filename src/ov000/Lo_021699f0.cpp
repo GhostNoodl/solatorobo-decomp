@@ -9,7 +9,7 @@ extern const char *data_0208cb7c;
 extern const char *data_0208cc94;
 extern const char *data_0208cc88;
 extern u8 data_ov000_021c9ab6[];
-void func_ov000_0215fdfc(void *self, s32 a, const void *b);
+void func_ov000_0215fdfc(ObjBase021cac0c_021cb6f0 *self, s32 a, const void *b);
 
 void func_ov000_021699f0(Lo021cb798 *self) {
     void *res;

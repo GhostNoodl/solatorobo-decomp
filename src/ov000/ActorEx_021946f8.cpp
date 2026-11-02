@@ -11,13 +11,12 @@ extern "C" {
 
 extern const u8 data_ov000_021cc480[];
 
-void *Actor_Ctor(void *self);
-void *func_ov000_0218c928(void *self);
+void *Actor_Ctor(Actor *self);
+void *func_ov000_0218c928(Actor *self);
 ResSet *func_ov000_0218ea20(ResSet *self);
 void Heap_Free(void *ptr);
 BOOL func_ov000_0218cf5c(void *self);
 BOOL func_ov000_0218f110(AnimRes *res);
-BOOL Actor_DespawnIfFar(void *self);
 void *Target_Get(void *p);
 void *func_ov000_0219bf90(void);
 void func_0203f364(ActorSub48 *obj);

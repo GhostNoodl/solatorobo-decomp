@@ -41,8 +41,8 @@ void func_ov000_0216b508(void *p, s32 a, BOOL b);
 BOOL func_ov000_021bd314(void *p, s32 a);
 void func_ov000_021bd624(void *p);
 void func_ov000_021b1110(u8 *self, s32 a);
-void func_ov000_021697dc(void *p, u16 a, u16 b);
-void func_ov000_0216a438(void *p, u16 a, s32 b, BOOL c);
+void func_ov000_021697dc(Lo021cb798 *self, u16 a, u16 b);
+void func_ov000_0216a438(Lo021cb744 *self, u16 a, s32 b, BOOL c);
 
 static inline Actor *GetObj021a0d4c(u16 id) {
     if (data_ov000_021ccd68 == NULL) {
@@ -161,7 +161,7 @@ static inline void Bar021a0d4c(u16 a, u16 b) {
     ListBuffer021cb940 *g = data_ov000_021ccd30->unk_11c;
     if (g != NULL && g->unk_58 != NULL) {
         func_ov000_021697dc(g->unk_58, a, b);
-        LFLD(u32, g->unk_58, 0xc) |= 0x80;
+        g->unk_58->unk_0c |= 0x80;
     }
 }
 

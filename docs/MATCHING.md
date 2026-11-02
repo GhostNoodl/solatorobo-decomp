@@ -8378,3 +8378,27 @@ No symbols were renamed.
 - ov006: the window copy keeps its `vtbl`/VCALL form. The task base ctor/dtors (`func_ov006_021ccda0`/`021ccddc`) are called with several file-local task views (`ov006_Unk021d908c`, `ov006_Unk021d90e8`, `ov006_Task0`/`1`) that disagree past 0x10, so they keep `void *`.
 - ov002: the largest `FIELD` files are now `021ef150` (resource and item records of the level lists), `021e4b80` (stage), `021ccda0`, `021ce410`, `021d1e44` and `021db64c`.
 - **Scratch:** session scratchpad `acF/`: the acD tools re-pointed (`c.py`, `chk.sh`, `mksig.py`, `rx.py`), rsC's `FIELD`-aware `lf.py` (`lff.py`) and `tryedit.py`, plus `fdiff.py` (code/reloc diff of one function), `mpp.py` (local `ov002_Model_PlayPart` to `Model_PlayPart`), `protofn.py`, and `api2.py`/`apierr.py` (replace per-file prototypes with a shared typed header).
+
+### Round acG (ov000 `void *self` typed: bar displays, UI/task slots, queue/list buffers, robot helpers)
+
+Cleanup only, over `src/ov000` and `include/ov000`, and every function is still byte-identical.
+
+**How it was checked.** After every step, each rebuilt object was compared function by function, on code bytes and relocations, with a baseline built at `b412dc17`. `origin/main` moved once (round acF, `58084f49`); the work was rebased, the baseline rebuilt there, and all 1906 objects compared again at the end: 0 differ.
+
+**Gate.** 0 FAILED, with 19/19 ROM checks and `check symbols` OK; `ninja report` 8138 matched (unchanged); `check_drafts.py --score` exits 0 (30 files, none worse). No symbols were renamed.
+
+**Counts.** Measured as in round acB (`grep -rn 'void \*self' src/ov000 include/ov000`, `grep -o LFLD -r src/ov000 include/ov000`).
+
+| | before | after |
+|---|---|---|
+| `void *self` | 453 | 213 |
+| `LFLD` | 1225 | 1204 |
+
+- **Bar displays (`ObjLayouts.h`).** `ObjBase021cac0c_021cb6f0` is now the full 0x9c-byte base (vtable `021cac0c`, cleared by slot 0x14 `func_ov000_02160344`): state, the `unk_0c` bit union, `colors[6]` (the per-bar colour triples drawn by slots 0x40..0x48), shown/maximum/target values and the `unk_80` vector. `Lo021cb6f0`, `021cb744`, `021cb798`, `021cb7ec`, `021cb840` and `021cb894` derive from it and keep only their own fields (each extended from its slot 0x14 init; their sizes are now `sizeof` in `func_ov000_02170a58`). `ListBuffer021cb940::unk_58..unk_74` are typed with these classes. The init/free slots (`02167fcc`, `02168048`, `021684f0`, `02168588`, `02168ea4`, `02168ed0`, `021691dc`, `0216984c`, `02169938`, `0216a474`, `0216a550`), the draw slots (`021609ec`, `02160b18`, `02160c7c`, `02168cb0`, `021c740c`) and the setters (`02167fac`, `0216a438`, `021697dc`, `02168e18`, `0216912c`, `02168490`) take them; the local `Pal021609ec`/`Obj0216xxxx` views are gone, and the robot callers (`Robo_0219cbf8`, `021a0d4c`, `0219efc0`, `021a7af0`, `0219d9fc`, `Stub_021b08d8`, `Stub_021b4738`) pass the typed fields.
+- **UI and task slots.** `Lo021caac8::unk_e0` (Model), `Lo021cb5a8::dl/dlSize` (the frame display list of `func_ov000_0215a088`), and `Lo021cad50`'s 0x84..0x98 fields (`unk_98` is the 12 text windows freed by slot 0x2c) were added from the slot 0x28/0x2c bodies. Typed: `0214e008/014`, `02157ddc`, `02158d90`, `0215a04c/064`, `0214cfc8`, `0215bd78`, `0215bef8`, `0215bf0c`, `0215cee4`, `0215cef8/cf38`, `0215ad9c`, `0215adbc`, `0215da10/da2c/dacc`, `0214f390`, `Task_GetFlag4`, `02172f70`.
+- **Queues and buffers (`MessageQueue.h`).** `ListBuffer021cb940::unk_20` has a bit view (`ready`). `02171464`, `0216f814`, `021721c8`, `02172a3c`, `021700c4/d8/ec`, `021708d8` take `MessageQueue`/`MessageQueue021cb980`/`ListBuffer021cb940`; two `Lo_021814dc.cpp` namespaces (`m_Lo_021855a4`, `m_Lo_021859c4`) use `MessageQueue021cb980` instead of their `Mgr021ccd30`/`Mgr118` views. The ten scene-command pushers in `Lo_021814dc.cpp` take `CmdQueue *` and use `CmdQueue_Push`.
+- **Actors.** The local prototypes of the `Actor_*` API, `0218d7e8`, `0218d2e0`, `0218c928`, `Actor_Ctor` and of the robot methods (`021b1fac`, `021b0db0`, `021b1814/1a54`, `021b2b08..021b4130`, ...) take `Actor *`/`Robo021ca458 *` as their definitions do. `Robo_021b1fac` and `Stub_021b4738` (`021b468c`, `021b4738`, `021b4774`) use `Robo021ca458`/`Actor` members instead of local views; the `Ov000ActVt_021cc7cc` dtors take `Actor *`.
+- **Dead declarations.** 67 local prototypes with a `void *self` parameter that their file never called were removed.
+- **Codegen notes.** `Task_GetFlag4` and `func_ov000_02172a3c` need the test in a `static inline` returning `BOOL` (a direct `return x != 0` in the `bool` function changes the code).
+- **Left, and why:** `Menu_021763c8` (round pmA). The `Lo_021814dc.cpp` scene-command object (`data_ov000_021ccd54`, 0x214 bytes) has no class yet, so `021824d0`, `021837f8`, `02183858/386c`, `02184498..02184548` and `Queue_Push` keep `void *self`. `Stub_0215c1a8`'s `Obj0215c1bc`/`Text0215c1bc` views (the `Lo021cad50` text setter) and `Obj_02163648` stay. The `.c` files `Obj_02160344.c`/`Obj_0215fdfc.c` keep their views (C cannot use the class). Records with no ctor, vtable or caller evidence (`Stub_02163224/3594`, `Stub_021c7000`, `Stub_021c414c`, `Sys_02189068`, the OAM/glyph list builders) are unchanged.
+- **Scratch:** session scratchpad `acG/`: `vmap.py` (function -> vtables/slots and loading functions, from `relocs.txt`), `rt.py NAME TYPE` (retype local prototypes, compare, revert per file), plus acE's `mksig.py`/`chk.py`/`vt.py`.

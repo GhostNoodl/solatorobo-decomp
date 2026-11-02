@@ -15,7 +15,7 @@ typedef struct {
 extern "C" {
 Actor *ActorMgr_GetActor(ActorMgr *mgr, u16 id);
 BOOL func_ov000_02198360(void *a, s32 b, s32 c);
-void Actor_TurnClamped(void *self, u16 angle, u16 center, u16 range, s32 step);
+void Actor_TurnClamped(Actor *self, u16 angle, u16 center, u16 range, s32 step);
 void Actor_SendMsg(void *t, u16 id, s32 a, s32 b, s32 c, void *arg);
 
 static inline Actor *FindActor021b2b08(u16 id) {

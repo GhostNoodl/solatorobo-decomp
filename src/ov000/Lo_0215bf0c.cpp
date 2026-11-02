@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/PlttRes.h"
 
@@ -10,7 +11,6 @@ void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL func_02054f10(void *p, s32 a);
 u16 func_02061d54(u16 a);
 s32 MsgRes_GetString(void *p, s32 a);
-void func_ov000_0215c1bc(void *self, s32 id, s32 v);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 
 typedef struct {
@@ -18,7 +18,7 @@ typedef struct {
     VObj *arr[12];
 } LoArr98;
 
-void func_ov000_0215bf0c(void *self) {
+void func_ov000_0215bf0c(Lo021cadcc *self) {
     LO_FREE_V(self, 0x84);
 }
 

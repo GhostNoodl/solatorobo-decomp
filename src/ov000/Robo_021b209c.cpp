@@ -71,7 +71,7 @@ void Actor_SendMsg(void *a, u16 id, s32 b, s32 c, s32 d, void *e);
 void *func_02049f44(void *snd, s32 id, void *pos, s32 a);
 void func_ov000_0218996c(s32 a, s32 b);
 BOOL func_ov000_0219aae8(void *a, void *b, s32 c, s32 d, s32 e, VecFx32 *f, void *g, s32 h, s32 i, s32 j, s32 k);
-void Actor_Move(void *self, s32 a);
+void Actor_Move(Actor *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 s32 func_02049afc(void *snd, s32 se);
 void func_0204a0d4(void *snd, s32 h, s32 arg);

@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 
 typedef struct {
     s32 v[4];
@@ -11,7 +12,7 @@ void func_020708fc(s32 a, LoFadeP0214f390 *out);
 void func_02070b98(s32 a, LoFadeP0214f390 *out, s32 b, s32 c);
 void func_02035acc(LoFadeP0214f390 *a, LoFadeP0214f390 *b, s32 c);
 
-void func_ov000_0214f390(void *self) {
+void func_ov000_0214f390(Lo021caa44 *self) {
     LO_FREE_V(self, 0x60);
     LO_FREE_V(self, 0x5c);
     LO_FREE_V(self, 0x4c);

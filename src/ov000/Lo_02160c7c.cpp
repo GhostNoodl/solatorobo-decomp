@@ -1,9 +1,5 @@
 #include "ov000/LoCommon.h"
-
-typedef struct {
-    u8 pad_00[0x10];
-    u16 *cols[4];
-} Pal021609ec;
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 void NNS_G3dGeBufferOP_N(int cmd, const void *data, int count);
@@ -33,8 +29,8 @@ static inline void G3_VtxXY(s16 x, s16 y) {
     NNS_G3dGeBufferOP_N(0x25, &v, 1);
 }
 
-void func_ov000_02160c7c(void *self, s32 x, s32 y, s32 z, s32 sx, s32 sy, s32 idx) {
-    u16 *col = ((Pal021609ec *)self)->cols[idx];
+void func_ov000_02160c7c(ObjBase021cac0c_021cb6f0 *self, s32 x, s32 y, s32 z, s32 sx, s32 sy, s32 idx) {
+    u16 *col = self->colors[idx];
     NNS_G3dGeBufferOP_N(0x11, NULL, 0);
     G3_Vec(0x1c, x, y, 0);
     G3_Vec(0x1b, sx, sy, 0x1000);

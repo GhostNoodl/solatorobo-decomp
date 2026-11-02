@@ -5,7 +5,7 @@
 extern "C" {
 BOOL func_ov000_0218f110(void *p);
 BOOL func_ov000_02191b9c(void *p);
-void func_ov000_0219c8e0(void *self);
+void func_ov000_0219c8e0(Robo021ca458 *self);
 
 BOOL Robo021ca458_IsReady(Robo021ca458 *self) {
     BOOL ret = TRUE;

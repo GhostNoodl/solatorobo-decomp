@@ -33,10 +33,10 @@ void SndMgr_StopSeqArc(void *mgr, s32 id);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 void *func_0204a028(void *mgr, s32 id, void *pos, s32 a);
 void func_02062790(u16 a);
-void Actor_Move(void *self, s32 a);
+void Actor_Move(Actor *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 BOOL func_ov000_0219aae8(void *a, void *b, u16 c, u8 d, u16 e, void *v, s32 f, s32 g, s32 h, s32 i, s32 j);
-void func_ov000_021b1fac(void *self, s32 a, s32 b);
+void func_ov000_021b1fac(Robo021ca458 *self, s32 a, s32 b);
 s32 func_ov003_021ce5b8(u32 a);
 
 static inline BOOL GBusy_021ad8ac(FieldState *g) {

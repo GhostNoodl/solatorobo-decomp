@@ -14,7 +14,7 @@ void *func_02049f44(void *a, s32 b, void *c, s32 d);
 void HitSphere_Link(void *a);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);
 void *func_ov000_021b68b8(void *a, void *pos);
-void Actor_Move(void *self, s32 a);
+void Actor_Move(Actor *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 
 static inline void SetVel02196060(ActorEx *self, s32 x, s32 y, s32 z) {

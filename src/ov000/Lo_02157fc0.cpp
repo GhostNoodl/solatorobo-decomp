@@ -7,7 +7,7 @@ extern "C" {
 
 BOOL func_02054f10(void *a, s32 b);
 BOOL func_0203e63c(void *p);
-BOOL func_ov000_021580e8(void *self);
+BOOL func_ov000_021580e8(UiList *self);
 
 static inline BOOL TextReady(TextWin *t) {
     if (t->unk_6c == NULL) {

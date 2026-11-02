@@ -1,13 +1,11 @@
-#include "ov000/VObj.h"
+#include "ov000/Task.h"
 
-struct Bits_04 { u32 b0 : 4; u32 b4 : 1; };
-
-static inline BOOL Bit4_Inline(void *self) { return ((Bits_04 *)((u8 *)self + 4))->b4 != 0; }
+static inline BOOL Task_TestFlag4(Task *self) { return self->unk_04_4 != 0; }
 
 extern "C" {
 
-bool Task_GetFlag4(void *self) {
-    return Bit4_Inline(self);
+bool Task_GetFlag4(Task *self) {
+    return Task_TestFlag4(self);
 }
 
 }

@@ -15,9 +15,9 @@ void func_ov000_02168700(Lo021cb894 *self) {
     if (p == NULL) {
         return;
     }
-    self->unk_80 = p->pos.x;
-    self->unk_84 = p->pos.y;
-    self->unk_88 = p->pos.z;
+    self->unk_80.x = p->pos.x;
+    self->unk_80.y = p->pos.y;
+    self->unk_80.z = p->pos.z;
     VEC_Add((VecFx32 *)((u8 *)self + 0x80), (VecFx32 *)((u8 *)self + 0xa0), (VecFx32 *)((u8 *)self + 0x80));
 }
 

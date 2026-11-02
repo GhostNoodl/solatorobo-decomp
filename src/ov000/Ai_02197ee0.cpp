@@ -22,7 +22,7 @@ typedef struct {
 extern "C" {
 extern void *data_ov000_021ccd6c;
 Robo021ca458 *func_ov000_0219bf90(void);
-void Actor_TurnToActor(void *self, void *other, s32 a);
+void Actor_TurnToActor(Actor *self, void *other, s32 a);
 u8 *func_ov000_021b68b8(void *a, void *pos);
 s32 Rand_UpTo(s32 max);
 u16 FX_Atan2(s32 x, s32 z);

@@ -6,7 +6,7 @@
 
 extern "C" {
 
-void func_ov000_0215429c(void *self);
+void func_ov000_0215429c(UiList *self);
 
 void func_ov000_02157c28(UiList021cb4a8 *self) {
     s32 v;

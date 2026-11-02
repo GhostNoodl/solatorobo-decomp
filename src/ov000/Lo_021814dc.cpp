@@ -12,6 +12,7 @@
 #include "nitro/std.h"
 #include "ov000/CmdQueue.h"
 #include "ov000/CmdObj.h"
+#include "ov000/MessageQueue.h"
 #include "ov000/Vec.h"
 #include "nitro/fx.h"
 #include "types.h"
@@ -1256,13 +1257,8 @@ namespace m_Stub_02182ad4 {
 
 extern "C" {
 
-void func_ov000_02182ad4(void *self) {
-    s32 *index = (s32 *)((u8 *)self + 0x94);
-    ((s32 *)((u8 *)self + 0x10))[*index] = 0x3;
-    ((s32 *)((u8 *)self + 0x50))[*index] = 0;
-    if (++*index >= 0x10) {
-        *index = 0;
-    }
+void func_ov000_02182ad4(CmdQueue *self) {
+    CmdQueue_Push(self, 0x3, 0);
 }
 
 }
@@ -1705,13 +1701,8 @@ namespace m_Stub_0218348c {
 
 extern "C" {
 
-void func_ov000_0218348c(void *self, s32 arg) {
-    s32 *index = (s32 *)((u8 *)self + 0x94);
-    ((s32 *)((u8 *)self + 0x10))[*index] = 0x4;
-    ((s32 *)((u8 *)self + 0x50))[*index] = arg;
-    if (++*index >= 0x10) {
-        *index = 0;
-    }
+void func_ov000_0218348c(CmdQueue *self, s32 arg) {
+    CmdQueue_Push(self, 0x4, arg);
 }
 
 }
@@ -1892,13 +1883,8 @@ extern "C" {
 void func_ov000_02182190(void *p, s32 a, s32 b, s32 c, u16 d, u16 e, u16 f);
 void func_ov000_02182374(void *p, s32 a, s32 b);
 
-void func_ov000_021837c0(void *self) {
-    s32 *index = (s32 *)((u8 *)self + 0x94);
-    ((s32 *)((u8 *)self + 0x10))[*index] = 0x8;
-    ((s32 *)((u8 *)self + 0x50))[*index] = 0;
-    if (++*index >= 0x10) {
-        *index = 0;
-    }
+void func_ov000_021837c0(CmdQueue *self) {
+    CmdQueue_Push(self, 0x8, 0);
 }
 
 void func_ov000_021837f8(void *self, s32 a, s32 b, s32 c, u16 d, u16 e, u16 f) {
@@ -2663,13 +2649,8 @@ namespace m_Stub_02184594 {
 
 extern "C" {
 
-void func_ov000_02184594(void *self) {
-    s32 *index = (s32 *)((u8 *)self + 0x94);
-    ((s32 *)((u8 *)self + 0x10))[*index] = 0xb;
-    ((s32 *)((u8 *)self + 0x50))[*index] = 0;
-    if (++*index >= 0x10) {
-        *index = 0;
-    }
+void func_ov000_02184594(CmdQueue *self) {
+    CmdQueue_Push(self, 0xb, 0);
 }
 
 }
@@ -2766,13 +2747,8 @@ namespace m_Stub_021847d8 {
 
 extern "C" {
 
-void func_ov000_021847d8(void *self) {
-    s32 *index = (s32 *)((u8 *)self + 0x94);
-    ((s32 *)((u8 *)self + 0x10))[*index] = 0xc;
-    ((s32 *)((u8 *)self + 0x50))[*index] = 0;
-    if (++*index >= 0x10) {
-        *index = 0;
-    }
+void func_ov000_021847d8(CmdQueue *self) {
+    CmdQueue_Push(self, 0xc, 0);
 }
 
 }
@@ -3121,13 +3097,8 @@ namespace m_Stub_02184bb0 {
 
 extern "C" {
 
-void func_ov000_02184bb0(void *self, s32 arg) {
-    s32 *index = (s32 *)((u8 *)self + 0x94);
-    ((s32 *)((u8 *)self + 0x10))[*index] = 0xe;
-    ((s32 *)((u8 *)self + 0x50))[*index] = arg;
-    if (++*index >= 0x10) {
-        *index = 0;
-    }
+void func_ov000_02184bb0(CmdQueue *self, s32 arg) {
+    CmdQueue_Push(self, 0xe, arg);
 }
 
 }
@@ -3264,13 +3235,8 @@ namespace m_Stub_02184d90 {
 
 extern "C" {
 
-void func_ov000_02184d90(void *self, s32 arg) {
-    s32 *index = (s32 *)((u8 *)self + 0x94);
-    ((s32 *)((u8 *)self + 0x10))[*index] = 0xf;
-    ((s32 *)((u8 *)self + 0x50))[*index] = arg;
-    if (++*index >= 0x10) {
-        *index = 0;
-    }
+void func_ov000_02184d90(CmdQueue *self, s32 arg) {
+    CmdQueue_Push(self, 0xf, arg);
 }
 
 }
@@ -3666,24 +3632,18 @@ void func_ov000_021854d4(CmdQueue *self, s32 a, s32 b) {
 // ---- Lo_021855a4
 namespace m_Lo_021855a4 {
 
-typedef struct {
-    u8 pad_00[0x118];
-    void *unk_118;
-    void *unk_11c;
-} Mgr021ccd30;
-
 extern "C" {
-extern Mgr021ccd30 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 void func_ov000_0216f844(void *p, s32 a);
-BOOL func_ov000_0216f674(Mgr021ccd30 *mgr, s32 a);
-BOOL func_ov000_021700c4(void *p);
-BOOL func_ov000_021700d8(void *p);
-BOOL func_ov000_021700ec(void *p);
+BOOL func_ov000_0216f674(MessageQueue *self, s32 id);
+BOOL func_ov000_021700c4(ListBuffer021cb940 *self);
+BOOL func_ov000_021700d8(ListBuffer021cb940 *self);
+BOOL func_ov000_021700ec(ListBuffer021cb940 *self);
 s32 func_ov000_02170100(void *p);
 
 static inline BOOL Busy11(void) {
     BOOL r;
-    Mgr021ccd30 *m = data_ov000_021ccd30;
+    MessageQueue021cb980 *m = data_ov000_021ccd30;
     if (m == NULL) {
         r = FALSE;
     } else if (func_ov000_0216f674(m, 6)) {
@@ -3698,7 +3658,7 @@ static inline BOOL Busy11(void) {
 
 static inline BOOL Busy12(void) {
     BOOL r;
-    Mgr021ccd30 *m = data_ov000_021ccd30;
+    MessageQueue021cb980 *m = data_ov000_021ccd30;
     if (m == NULL) {
         r = FALSE;
     } else if (func_ov000_0216f674(m, 7)) {
@@ -3713,7 +3673,7 @@ static inline BOOL Busy12(void) {
 
 static inline BOOL Busy13(void) {
     BOOL r;
-    Mgr021ccd30 *m = data_ov000_021ccd30;
+    MessageQueue021cb980 *m = data_ov000_021ccd30;
     if (m == NULL) {
         r = FALSE;
     } else if (func_ov000_0216f674(m, 8)) {
@@ -3728,7 +3688,7 @@ static inline BOOL Busy13(void) {
 
 static inline s32 State11c(void) {
     s32 r;
-    Mgr021ccd30 *m = data_ov000_021ccd30;
+    MessageQueue021cb980 *m = data_ov000_021ccd30;
     if (m == NULL) {
         r = -1;
     } else if (m->unk_11c == NULL) {
@@ -3918,16 +3878,6 @@ void func_ov000_02185918(CmdQueue *self, s32 arg) {
 namespace m_Lo_021859c4 {
 
 typedef struct {
-    u8 pad_00[0x11c];
-    void *unk_11c;
-} Mgr021ccd30;
-
-typedef struct {
-    u8 pad_00[0x118];
-    void *unk_118;
-} Mgr118;
-
-typedef struct {
     u8 pad_00[0x149];
     u8 unk_149;
 } Obj02097e3c;
@@ -3955,7 +3905,7 @@ typedef struct {
 } Obj02097e48;
 
 extern "C" {
-extern Mgr021ccd30 *data_ov000_021ccd30;
+extern MessageQueue021cb980 *data_ov000_021ccd30;
 extern const char *data_0208cca0;
 extern const char *data_0208cc94;
 extern char data_0214b105[];
@@ -3967,12 +3917,12 @@ extern Obj02097e4c *data_02097e4c;
 extern Obj02097e48 *data_02097e48;
 extern u8 OVERLAY_2_ID[];
 
-void func_ov000_0216f844(void *p, s32 a);
-BOOL func_ov000_0216f674(void *mgr, s32 a);
-BOOL func_ov000_02170568(void *p);
-BOOL func_ov000_021708d8(void *p);
-BOOL func_ov000_021705a0(void *p, s32 a);
-BOOL func_ov000_0217060c(void *p);
+void func_ov000_0216f844(TimedBuffer021cb920 *self, s32 a);
+BOOL func_ov000_0216f674(MessageQueue *self, s32 id);
+BOOL func_ov000_02170568(ListBuffer021cb940 *self);
+BOOL func_ov000_021708d8(ListBuffer021cb940 *self);
+BOOL func_ov000_021705a0(ListBuffer021cb940 *self, s32 check);
+BOOL func_ov000_0217060c(ListBuffer021cb940 *self);
 void LangRes2_Delete(void);
 void LangData_DeleteRes(void);
 void func_0203caf8(s32 a);
@@ -4002,7 +3952,7 @@ static inline void ClearCallbacks(void) {
 
 static inline BOOL Busy14(void) {
     BOOL r;
-    Mgr021ccd30 *mgr = data_ov000_021ccd30;
+    MessageQueue021cb980 *mgr = data_ov000_021ccd30;
     if (mgr == NULL) {
         r = FALSE;
     } else if (func_ov000_0216f674(mgr, 0x10)) {
@@ -4023,7 +3973,7 @@ static inline BOOL Busy14(void) {
 
 static inline BOOL Busy17(void) {
     BOOL r;
-    Mgr021ccd30 *mgr = data_ov000_021ccd30;
+    MessageQueue021cb980 *mgr = data_ov000_021ccd30;
     if (func_ov000_0216f674(mgr, 0x14)) {
         r = TRUE;
     } else if (func_ov000_0216f674(mgr, 0x15)) {
@@ -4038,7 +3988,7 @@ static inline BOOL Busy17(void) {
 
 static inline BOOL Busy18(s32 a) {
     BOOL r;
-    Mgr021ccd30 *mgr = data_ov000_021ccd30;
+    MessageQueue021cb980 *mgr = data_ov000_021ccd30;
     if (mgr == NULL) {
         r = FALSE;
     } else if (func_ov000_0216f674(mgr, 9)) {
@@ -4055,7 +4005,7 @@ static inline BOOL Busy18(s32 a) {
 
 static inline BOOL Busy1a(void) {
     BOOL r;
-    Mgr021ccd30 *mgr = data_ov000_021ccd30;
+    MessageQueue021cb980 *mgr = data_ov000_021ccd30;
     if (mgr == NULL) {
         r = FALSE;
     } else if (func_ov000_0216f674(mgr, 0xf)) {
@@ -4072,7 +4022,7 @@ s32 func_ov000_021859c4(CmdObj *self) {
     switch (self->unk_98) {
     case 0x14:
         if (self->step == 0) {
-            Mgr118 *m = (Mgr118 *)data_ov000_021ccd30;
+            MessageQueue021cb980 *m = data_ov000_021ccd30;
             if (m->unk_118 != NULL) {
                 func_ov000_0216f844(m->unk_118, 1);
             }
@@ -4917,13 +4867,8 @@ namespace m_Stub_02186dbc {
 
 extern "C" {
 
-void func_ov000_02186dbc(void *self) {
-    s32 *index = (s32 *)((u8 *)self + 0x94);
-    ((s32 *)((u8 *)self + 0x10))[*index] = 0x20;
-    ((s32 *)((u8 *)self + 0x50))[*index] = 0;
-    if (++*index >= 0x10) {
-        *index = 0;
-    }
+void func_ov000_02186dbc(CmdQueue *self) {
+    CmdQueue_Push(self, 0x20, 0);
 }
 
 }
@@ -5594,13 +5539,8 @@ namespace m_Stub_02187a20 {
 
 extern "C" {
 
-void func_ov000_02187a20(void *self, s32 arg) {
-    s32 *index = (s32 *)((u8 *)self + 0x94);
-    ((s32 *)((u8 *)self + 0x10))[*index] = 0x25;
-    ((s32 *)((u8 *)self + 0x50))[*index] = arg;
-    if (++*index >= 0x10) {
-        *index = 0;
-    }
+void func_ov000_02187a20(CmdQueue *self, s32 arg) {
+    CmdQueue_Push(self, 0x25, arg);
 }
 
 }
@@ -5702,13 +5642,8 @@ namespace m_Stub_02187b50 {
 
 extern "C" {
 
-void func_ov000_02187b50(void *self) {
-    s32 *index = (s32 *)((u8 *)self + 0x94);
-    ((s32 *)((u8 *)self + 0x10))[*index] = 0x26;
-    ((s32 *)((u8 *)self + 0x50))[*index] = 0;
-    if (++*index >= 0x10) {
-        *index = 0;
-    }
+void func_ov000_02187b50(CmdQueue *self) {
+    CmdQueue_Push(self, 0x26, 0);
 }
 
 }

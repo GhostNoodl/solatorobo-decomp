@@ -1,4 +1,5 @@
 #include "ov000/LoCommon.h"
+#include "ov000/ObjLayouts.h"
 #include "Main/Gfx/GfxMgr.h"
 #include "Main/Gfx/PlttRes.h"
 
@@ -10,49 +11,43 @@ void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
 BOOL func_02054f10(void *p, s32 a);
 u16 func_02061d54(u16 a);
 s32 MsgRes_GetString(void *p, s32 a);
-void func_ov000_0215c1bc(void *self, s32 id, s32 v);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, s32 f);
 
-typedef struct {
-    u8 pad[0x98];
-    VObj *arr[12];
-} LoArr98;
-
-void func_ov000_0215cef8(void *self) {
+void func_ov000_0215cef8(Lo021cad50 *self) {
     s32 i;
-    LFLD(s32, self, 0x1c) = 4;
-    LFLD(s32, self, 0x84) = 0x854;
-    LFLD(u16, self, 0x88) = 0;
-    LFLD(s32, self, 0x8c) = 0;
-    LFLD(s32, self, 0x90) = 0;
-    LFLD(s32, self, 0x94) = 0;
+    self->font = 4;
+    self->unk_84 = 0x854;
+    self->unk_88 = 0;
+    self->unk_8c = NULL;
+    self->unk_90 = NULL;
+    self->unk_94 = 0;
     for (i = 0; i < 12; i++) {
-        LFLD(s32, (u8 *)self + i * 4, 0x98) = 0;
+        self->unk_98[i] = NULL;
     }
 }
 
-void func_ov000_0215cf38(LoArr98 *self) {
+void func_ov000_0215cf38(Lo021cad50 *self) {
     s32 i;
     for (i = 0; i < 12; i++) {
         u32 saved;
         VObj *p;
         LO_HEAP_PUSH(saved);
-        p = self->arr[(u32)i];
+        p = self->unk_98[(u32)i];
         if (p != NULL) {
             if (p != NULL) {
                 p->vfunc_04();
             }
-            self->arr[i] = NULL;
+            self->unk_98[i] = NULL;
         }
         LO_HEAP_POP(saved);
     }
-    if (LFLD(void *, self, 0x8c) != NULL) {
-        Heap_FreeHi(LFLD(void *, self, 0x8c));
-        LFLD(void *, self, 0x8c) = NULL;
+    if (self->unk_8c != NULL) {
+        Heap_FreeHi(self->unk_8c);
+        self->unk_8c = NULL;
     }
-    if (LFLD(void *, self, 0x90) != NULL) {
-        Heap_FreeHi(LFLD(void *, self, 0x90));
-        LFLD(void *, self, 0x90) = NULL;
+    if (self->unk_90 != NULL) {
+        Heap_FreeHi(self->unk_90);
+        self->unk_90 = NULL;
     }
 }
 

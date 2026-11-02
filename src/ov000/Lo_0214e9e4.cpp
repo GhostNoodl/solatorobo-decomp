@@ -36,7 +36,7 @@ void *func_02034d88(void *a, void *b);
 void func_02041c20(void *model, s32 a, void *b);
 void func_0204c7d0(void *p);
 s32 Text_Measure(s32 a, s32 b, s32 c, void *d, void *e, BOOL f);
-void func_ov000_02157c90(void *self, void *a);
+void func_ov000_02157c90(UiList021cb4a8 *self, void *a);
 void func_ov000_021546ec(void *a, const char *b, const char *c, u16 d);
 void *Task_FindById(s32 kind);
 u32 func_0205975c(void *a, s32 b);

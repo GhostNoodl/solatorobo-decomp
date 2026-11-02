@@ -27,7 +27,7 @@ u16 func_01ffc128(u16 target, u16 cur, s32 step, s32 a, s32 b);
 BOOL Hit_DiffInCylinder(void *a, void *b, s32 c, s32 d);
 BOOL func_ov000_02190cb0(void *a, void *b, s32 c, s32 d);
 void func_ov000_021915a0(void *a);
-void Actor_Move(void *self, s32 turn);
+void Actor_Move(Actor *self, s32 turn);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
 void func_ov000_021899d8(void *pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 BOOL func_ov000_02191120(void *a);

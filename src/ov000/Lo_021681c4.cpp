@@ -15,10 +15,10 @@ void func_ov000_021681c4(Lo021cb6f0 *self) {
     if (p == NULL) {
         return;
     }
-    self->unk_80 = p->pos.x;
-    self->unk_84 = p->pos.y;
-    self->unk_88 = p->pos.z;
-    self->unk_84 -= 0x800;
+    self->unk_80.x = p->pos.x;
+    self->unk_80.y = p->pos.y;
+    self->unk_80.z = p->pos.z;
+    self->unk_80.y -= 0x800;
 }
 
 }

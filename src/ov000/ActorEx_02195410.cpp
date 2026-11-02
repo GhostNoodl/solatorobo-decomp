@@ -7,7 +7,7 @@ extern s32 data_ov000_021c9d9c[];
 extern s32 data_ov000_021c9db0[];
 extern s32 data_ov000_021c9dc4[];
 BOOL func_ov000_0219840c(void *s, s32 *list, s32 count, BOOL push);
-void func_ov000_0218d7e8(void *self, u8 arg);
+void func_ov000_0218d7e8(Actor *self, u8 arg);
 
 void func_ov000_02195410(ActorEx *self) {
     ActorSub40 *s = self->fsm;

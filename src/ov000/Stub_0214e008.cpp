@@ -1,4 +1,4 @@
-#include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 #include "Main/Sys/SysState.h"
 #include "Main/Gfx/Model.h"
 
@@ -14,16 +14,16 @@ static inline void Obj0214e014_Delete(Model *obj) {
     }
 }
 
-void func_ov000_0214e008(void *self) {
-    *(s32 *)((u8 *)self + 0xe0) = 0x0;
+void func_ov000_0214e008(Lo021caac8 *self) {
+    self->unk_e0 = NULL;
 }
 
-void func_ov000_0214e014(void *self) {
+void func_ov000_0214e014(Lo021caac8 *self) {
     void *saved = data_02097dd0->cur;
     data_02097dd0->cur = data_02097dd0->heapHi;
-    if (*(u8 **)((u8 *)self + 0xe0) != NULL) {
-        Obj0214e014_Delete(*(Model **)((u8 *)self + 0xe0));
-        *(u8 **)((u8 *)self + 0xe0) = NULL;
+    if (self->unk_e0 != NULL) {
+        Obj0214e014_Delete(self->unk_e0);
+        self->unk_e0 = NULL;
     }
     data_02097dd0->cur = saved;
 }

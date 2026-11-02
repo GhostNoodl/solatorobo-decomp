@@ -5,11 +5,9 @@
 
 extern "C" {
 
-BOOL func_ov000_02152a58(void *self);
-BOOL func_ov000_021580e8(void *self);
+BOOL func_ov000_021580e8(UiList *self);
 BOOL func_02054f10(void *p, s32 a);
 BOOL func_0203e63c(void *p);
-void func_ov000_0215429c(void *self);
 
 static inline BOOL LoSubReady(void *p) {
     if (LFLD(void *, p, 0x6c) == NULL) {

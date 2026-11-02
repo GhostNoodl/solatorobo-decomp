@@ -7,7 +7,7 @@ extern "C" {
 extern void *data_ov000_021ccd30;
 ActorGroup *ActorMgr_GetGroup(ActorMgr *mgr, u16 id);
 void func_ov000_02172450(void *p, s32 a);
-void func_ov000_021b1a54(void *self, s32 a);
+void func_ov000_021b1a54(Robo021ca458 *self, s32 a);
 
 static inline Actor *GroupNext(Actor *head, Actor *cur) {
     return cur != NULL ? cur->next : head;

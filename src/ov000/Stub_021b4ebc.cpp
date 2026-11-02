@@ -1,20 +1,20 @@
-#include "ov000/VObj.h"
+#include "ov000/ActorBase.h"
 
 extern "C" {
 
-void *func_ov000_0218c928(void *ptr);
+Actor *func_ov000_0218c928(Actor *self);
 void Heap_Free(void *ptr);
 void *Heap_Alloc(u32 size);
 void *func_ov000_021b5054(void *p);
 void func_0206e678(void);
 extern void *data_ov000_021ccd6c;
 
-void *Ov000ActVt_021cc7cc_Dtor(void *self) {
+Actor *Ov000ActVt_021cc7cc_Dtor(Actor *self) {
     func_ov000_0218c928(self);
     return self;
 }
 
-void *Ov000ActVt_021cc7cc_DtorDelete(void *self) {
+Actor *Ov000ActVt_021cc7cc_DtorDelete(Actor *self) {
     func_ov000_0218c928(self);
     Heap_Free(self);
     return self;

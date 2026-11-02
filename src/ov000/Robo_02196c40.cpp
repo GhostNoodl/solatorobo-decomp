@@ -30,8 +30,8 @@ void func_ov003_021f0c60(void *self, s32 a);
 void *func_ov003_021f0868(void *pos, s32 a, s32 b);
 void *func_02049f44(void *mgr, s32 id, void *pos, s32 a);
 u8 *func_ov000_021b68b8(void *mgr, void *pos);
-void func_ov000_02197ad0(void *self, BOOL b);
-void Actor_Move(void *self, s32 a);
+void func_ov000_02197ad0(Actor *self, BOOL b);
+void Actor_Move(Actor *self, s32 a);
 void func_ov000_021987b8(void *a, BOOL b, s32 c, s32 d);
 
 static inline s32 FxMul02196c40(s32 a, s64 b) {

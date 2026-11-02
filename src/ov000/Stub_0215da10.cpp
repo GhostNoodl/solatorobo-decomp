@@ -1,13 +1,13 @@
-#include "ov000/VObj.h"
+#include "ov000/ObjLayouts.h"
 
 extern "C" {
 
-void func_ov000_0215da10(void *self) {
-    *(s32 *)((u8 *)self + 0x84) = 0x0;
-    *(s32 *)((u8 *)self + 0x88) = 0x0;
-    *(s32 *)((u8 *)self + 0x8c) = 0x0;
-    *(s32 *)((u8 *)self + 0x90) = 0x0;
-    *(s32 *)((u8 *)self + 0x94) = 0x0;
+void func_ov000_0215da10(Lo021cae48 *self) {
+    self->unk_84 = 0x0;
+    self->unk_88 = 0x0;
+    self->unk_8c = 0x0;
+    self->unk_90 = NULL;
+    self->unk_94 = NULL;
 }
 
 }

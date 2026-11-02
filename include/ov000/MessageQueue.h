@@ -37,6 +37,12 @@ public:
 
 struct LoTicker;
 struct LoTimer;
+struct Lo021cb6f0; // the bar displays, ov000/ObjLayouts.h
+struct Lo021cb744;
+struct Lo021cb798;
+struct Lo021cb7ec;
+struct Lo021cb840;
+struct Lo021cb894;
 
 // Vtable data_ov000_021cb940 (0x80 bytes; base vtable data_ov000_021cb6d0, init func_ov000_0216faac,
 // dtor func_ov000_0216fb14): the field's sub-object holder, data_ov000_021ccd30's 0x11c buffer, made by
@@ -44,7 +50,14 @@ struct LoTimer;
 // is deleted once it reports done) and draws the always-present ones; func_ov000_02171270 draws.
 class ListBuffer021cb940 : public ListBuffer {
 public:
-    u32 unk_20; // bit 1: set by func_ov000_02170a58 when its setup states (0..2) are done
+    union {
+        u32 unk_20;
+        struct {
+            u32 unk_20_0 : 1;
+            u32 ready : 1; // set by func_ov000_02170a58 when its setup states (0..2) are done
+            u32 unk_20_2 : 30;
+        };
+    };
     s32 state;
     VObj *unk_28;
     void *unk_2c;
@@ -58,14 +71,14 @@ public:
     void *unk_4c;
     void *unk_50;
     struct LoTimer *unk_54; // the stage timer
-    VObj *unk_58;
-    VObj *unk_5c;
-    VObj *unk_60;
-    VObj *unk_64;
+    Lo021cb798 *unk_58;
+    Lo021cb798 *unk_5c;
+    Lo021cb7ec *unk_60;
+    Lo021cb744 *unk_64;
     void *unk_68;
-    VObj *unk_6c;
-    VObj *unk_70;
-    VObj *unk_74;
+    Lo021cb6f0 *unk_6c;
+    Lo021cb840 *unk_70;
+    Lo021cb894 *unk_74;
     void *unk_78;
     LoTicker *ticker;
 };

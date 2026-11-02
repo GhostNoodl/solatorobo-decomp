@@ -2,7 +2,6 @@
 
 extern "C" {
 
-void func_ov000_02172f7c(void *self, void *arg);
 
 static inline BOOL LoIsState5(void *o) {
     return LFLD(s32, o, 4) == 5 ? TRUE : FALSE;

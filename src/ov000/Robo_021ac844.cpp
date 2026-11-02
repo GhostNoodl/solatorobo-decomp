@@ -27,9 +27,9 @@ void func_ov000_02191008(void *a);
 void func_ov000_02191418(void *a, s32 b, s32 c);
 BOOL func_ov000_02191120(void *a);
 BOOL func_ov000_02191508(void *a);
-void Actor_Move(void *self, s32 a);
+void Actor_Move(Actor *self, s32 a);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 void func_ov000_0218d46c(void *o, u16 id, s32 c);
 void SndMgr_StopSeqArc(void *mgr, s32 id);
 void *func_02049a48(void *p, s32 a, s32 b, s32 c, s32 d);
@@ -38,7 +38,7 @@ u8 *func_ov000_02199f60(void *p);
 void func_ov000_02199f88(void *t, void *self);
 u16 func_ov000_02198da8(void *body, u16 angle);
 u8 func_0206d204(void *p, s32 a);
-void func_ov000_021b1fac(void *self, s32 a, s32 b);
+void func_ov000_021b1fac(Robo021ca458 *self, s32 a, s32 b);
 
 static inline Actor *FindActor_021ac844(u16 id) {
     if (data_ov000_021ccd68 == NULL) {

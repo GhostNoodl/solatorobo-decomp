@@ -6,11 +6,11 @@
 #include "ov000/ObjLayouts.h"
 
 extern "C" {
-void Actor_MoveByPad(void *self, u16 base, s32 turn, void *range);
-void Actor_MoveToPos(void *self, const VecFx32 *target, s32 turn);
-void Actor_Move(void *self, s32 turn);
+void Actor_MoveByPad(Actor *self, u16 base, s32 turn, void *range);
+void Actor_MoveToPos(Actor *self, const VecFx32 *target, s32 turn);
+void Actor_Move(Actor *self, s32 turn);
 void func_ov000_021987b8(void *a, s32 b, s32 c, s32 d);
-void func_ov000_021b209c(void *self);
+void func_ov000_021b209c(Robo021ca458 *self);
 
 void func_ov000_021b1dd8(Robo021ca458 *self, s32 target, s32 rate, s32 speed, s32 turn, u8 anim) {
     BOOL moved = FALSE;

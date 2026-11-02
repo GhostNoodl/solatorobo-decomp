@@ -17,7 +17,7 @@ extern Save02196258 *data_0214a424;
 void func_0203f364(void *a);
 void *Target_Get(void *p);
 void func_ov003_021f0c60(void *self, s32 a);
-void Actor_Move(void *self, s32 a);
+void Actor_Move(Actor *self, s32 a);
 void func_ov000_0218bed8(void *a, s32 b, void *c);
 void func_02062764(s32 a, s32 b);
 void func_020627a0(u16 kind, u16 id);

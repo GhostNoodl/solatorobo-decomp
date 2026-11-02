@@ -20,7 +20,7 @@ void func_ov000_0218d46c(void *o, u16 id, s32 c);
 void Target_Set(void *a, void *b);
 BOOL func_ov000_02199cd8(void *a, u16 id);
 BOOL func_ov000_02191120(void *a);
-void Actor_SendMsg(void *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
+void Actor_SendMsg(Actor *self, u16 id, u8 type, BOOL notify, u32 size, const void *data);
 u8 *func_020704b4(u16 id);
 void func_ov000_0219b400(u16 *ids, u8 *rates, s32 n, void *pos, void *rot, u8 check);
 BOOL func_ov000_02198360(void *s, s32 a, s32 b);

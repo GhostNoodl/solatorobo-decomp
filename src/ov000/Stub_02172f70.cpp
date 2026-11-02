@@ -1,10 +1,10 @@
-#include "ov000/VObj.h"
+#include "ov000/Task.h"
 
 extern "C" {
 
-void func_ov000_02172f70(void *self, s32 a, s32 b) {
-    *(s32 *)((u8 *)self + 0x14) = a;
-    *(s32 *)((u8 *)self + 0x10) = b;
+void func_ov000_02172f70(Task *self, s32 a, s32 b) {
+    self->id = a;
+    self->priority = b;
 }
 
 }
